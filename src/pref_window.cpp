@@ -1201,8 +1201,9 @@ gnomemeeting_init_pref_window_video_devices (GtkWidget *notebook)
  */
 void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
 {
-  GtkWidget *main_vbox = NULL;
+  GtkWidget *alignment = NULL;
   GtkWidget *vbox = NULL;
+  GtkWidget *buttons_vbox = NULL;
   GtkWidget *hbox = NULL;
   GtkWidget *table = NULL;
   
@@ -1220,10 +1221,10 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
 
 
   /* Packing widgets */
-  main_vbox =  gtk_vbox_new (FALSE, 4);
-  gtk_notebook_append_page (GTK_NOTEBOOK (notebook), main_vbox, NULL);  
+  vbox =  gtk_vbox_new (FALSE, 4);
+  gtk_notebook_append_page (GTK_NOTEBOOK (notebook), vbox, NULL);  
   table =
-    gnomemeeting_vbox_add_table (main_vbox, _("Available Audio Codecs"), 1, 1);
+    gnomemeeting_vbox_add_table (vbox, _("Available Audio Codecs"), 1, 1);
 
   hbox = gtk_hbox_new (FALSE, 0);
   gtk_table_attach (GTK_TABLE (table), hbox, 0, 1, 0, 1,
@@ -1310,40 +1311,47 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
 
 
   /* The buttons */
-  vbox = gtk_vbutton_box_new ();
-  gtk_button_box_set_layout (GTK_BUTTON_BOX (vbox), GTK_BUTTONBOX_END);
+  alignment = gtk_alignment_new (1, 0.5, 0, 0);
+  buttons_vbox = gtk_vbutton_box_new ();
+  
+  gtk_box_set_spacing (GTK_BOX (buttons_vbox), 2 * GNOMEMEETING_PAD_SMALL);
 
-  gtk_box_pack_start (GTK_BOX (hbox), vbox, FALSE, FALSE, 0);
+  gtk_container_add (GTK_CONTAINER (alignment), buttons_vbox);
+  gtk_box_pack_start (GTK_BOX (hbox), alignment, 
+		      TRUE, TRUE, 2 * GNOMEMEETING_PAD_SMALL);
 
   button = gtk_button_new_from_stock (GTK_STOCK_GO_UP);
-  gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (buttons_vbox), button, TRUE, TRUE, 0);
   g_object_set_data (G_OBJECT (button), "operation", (gpointer) "up");
-
   g_signal_connect (G_OBJECT (button), "clicked",
 		    G_CALLBACK (codecs_list_button_clicked_callback), 
 		    GTK_TREE_MODEL (pw->codecs_list_store));
 
   button = gtk_button_new_from_stock (GTK_STOCK_GO_DOWN);
-  gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (buttons_vbox), button, TRUE, TRUE, 0);
   g_object_set_data (G_OBJECT (button), "operation", (gpointer) "down");
-
   g_signal_connect (G_OBJECT (button), "clicked",
 		    G_CALLBACK (codecs_list_button_clicked_callback), 
 		    GTK_TREE_MODEL (pw->codecs_list_store));
 
   button = gtk_button_new_from_stock (GTK_STOCK_DIALOG_INFO);
-  gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
-
+  gtk_box_pack_start (GTK_BOX (buttons_vbox), button, TRUE, TRUE, 0);
   g_signal_connect (G_OBJECT (button), "clicked",
 		    G_CALLBACK (codecs_list_info_button_clicked_callback), 
 		    GTK_TREE_MODEL (pw->codecs_list_store));
+
+  button = gtk_button_new_from_stock (GTK_STOCK_PROPERTIES);
+  gtk_box_pack_start (GTK_BOX (buttons_vbox), button, TRUE, TRUE, 0);
+  //  g_signal_connect (G_OBJECT (button), "clicked",
+  //	    G_CALLBACK (codecs_list_info_button_clicked_callback), 
+  //	    GTK_TREE_MODEL (pw->codecs_list_store));
   
   gtk_widget_show_all (frame);
 
 
   /* Here we add the audio codecs options */
   table = 
-    gnomemeeting_vbox_add_table (main_vbox, _("Audio Codecs Settings"), 2, 1);
+    gnomemeeting_vbox_add_table (vbox, _("Audio Codecs Settings"), 2, 1);
 
   /* Translators: the full sentence is Automatically adjust jitter buffer
      between X and Y ms */
