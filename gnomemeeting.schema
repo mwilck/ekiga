@@ -176,6 +176,50 @@
 	<long>The Audio Codecs List</long>
       </locale>
     </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/audio_settings/gsm_frames</key>
+      <applyto>/apps/gnomemeeting/audio_settings/gsm_frames</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>int</type>
+      <default>4</default>
+      <locale name="C">
+	<short>Number of frames for GSM</short>
+	<long>Number of frames transmitted in each packet for the GSM codec</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/audio_settings/g711_frames</key>
+      <applyto>/apps/gnomemeeting/audio_settings/g711_frames</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>int</type>
+      <default>30</default>
+      <locale name="C">
+	<short>Number of frames for G.711</short>
+	<long>Number of frames transmitted in each packet for the G.711 codec</long>
+      </locale>
+    </schema>
+    <schema>	
+      <key>/schemas/apps/gnomemeeting/audio_settings/g711_sd</key>
+      <applyto>/apps/gnomemeeting/audio_settings/g711_sd</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>bool</type>
+      <default>true</default>
+      <locale name="C">
+	<short>Use Silence Detection for G.711</short>
+	<long>Use Silence Detection for G.711</long>
+      </locale>
+    </schema>
+    <schema>	
+      <key>/schemas/apps/gnomemeeting/audio_settings/gsm_sd</key>
+      <applyto>/apps/gnomemeeting/audio_settings/gsm_sd</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>bool</type>
+      <default>true</default>
+      <locale name="C">
+	<short>Use Silence Detection for GSM</short>
+	<long>Use Silence Detection for GSM</long>
+      </locale>
+    </schema>
     <schema>		
       <key>/schemas/apps/gnomemeeting/ldap/ldap_server</key>
       <applyto>/apps/gnomemeeting/ldap/ldap_server</applyto>

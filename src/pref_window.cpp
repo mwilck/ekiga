@@ -901,9 +901,6 @@ static void gnomemeeting_init_pref_window_codecs_settings (GtkWidget *notebook)
   GtkWidget *general_frame;
   GtkWidget *audio_codecs_notebook;
   GtkWidget *video_codecs_notebook;
-  GtkWidget *jitter_buffer;
-  GtkWidget *gsm_frames;
-  GtkWidget *g711_frames;
 
   GtkTooltips *tip;
 
@@ -964,9 +961,9 @@ static void gnomemeeting_init_pref_window_codecs_settings (GtkWidget *notebook)
 		       20.0, 5000.0, 
 		       1.0, 1.0, 1.0);
 
-  jitter_buffer = gtk_spin_button_new (pw->jitter_buffer_spin_adj, 1.0, 0);
+  pw->jitter_buffer = gtk_spin_button_new (pw->jitter_buffer_spin_adj, 1.0, 0);
   
-  gtk_table_attach (GTK_TABLE (table), jitter_buffer, 1, 2, 0, 1,
+  gtk_table_attach (GTK_TABLE (table), pw->jitter_buffer, 1, 2, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);			
@@ -977,7 +974,7 @@ static void gnomemeeting_init_pref_window_codecs_settings (GtkWidget *notebook)
 		      (gpointer) "/apps/gnomemeeting/audio_settings/jitter_buffer");
 
   tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, jitter_buffer,
+  gtk_tooltips_set_tip (tip, pw->jitter_buffer,
 			_("The jitter buffer delay to buffer audio calls (in ms)"), NULL);
 
 
@@ -995,37 +992,42 @@ static void gnomemeeting_init_pref_window_codecs_settings (GtkWidget *notebook)
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);			
 
-  cout << "FIX ME: gsm frames" << endl << flush;
+  int gsm_frames = gconf_client_get_int (client, 
+					 "/apps/gnomemeeting/audio_settings/gsm_frames", NULL);
   pw->gsm_frames_spin_adj = (GtkAdjustment *) 
-    gtk_adjustment_new(10, 
+    gtk_adjustment_new(gsm_frames, 
 		       1.0, 7.0, 
 		       1.0, 1.0, 1.0);
 
-  gsm_frames = gtk_spin_button_new (pw->gsm_frames_spin_adj, 1.0, 0);
+  pw->gsm_frames = gtk_spin_button_new (pw->gsm_frames_spin_adj, 1.0, 0);
   
-  gtk_table_attach (GTK_TABLE (table), gsm_frames, 1, 2, 0, 1,
+  gtk_table_attach (GTK_TABLE (table), pw->gsm_frames, 1, 2, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
 
+  gtk_signal_connect (GTK_OBJECT (pw->gsm_frames_spin_adj), "value-changed",
+		      GTK_SIGNAL_FUNC (adjustment_changed), 
+		      (gpointer) "/apps/gnomemeeting/audio_settings/gsm_frames");
+
   tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, gsm_frames,
+  gtk_tooltips_set_tip (tip, pw->gsm_frames,
 			_("The number of frames in each transmitted GSM packet"), NULL);
 
 
-  /* if it changes, we have to reinit the capabilities */
-  /*  gtk_signal_connect (GTK_OBJECT (pw->gsm_frames_spin_adj), "value-changed",
-		      GTK_SIGNAL_FUNC (audio_codecs_option_changed_callback), 
-		      (gpointer) pw);
-  */
   pw->gsm_sd = gtk_check_button_new_with_label (_("Silence Detection"));
-  cout << "FIX ME: GSM Silence Detection" << endl << flush;
+
+  bool gsm_sd = gconf_client_get_bool (client, "/apps/gnomemeeting/audio_settings/gsm_sd", NULL);
+
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->gsm_sd),
-				1);
+				gsm_sd);
   gtk_table_attach (GTK_TABLE (table), pw->gsm_sd, 0, 2, 1, 2,
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);			
+  gtk_signal_connect (GTK_OBJECT (pw->gsm_sd), "toggled",
+		      GTK_SIGNAL_FUNC (toggle_changed),
+		      (gpointer) "/apps/gnomemeeting/audio_settings/gsm_sd");
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->gsm_sd,
@@ -1046,33 +1048,34 @@ static void gnomemeeting_init_pref_window_codecs_settings (GtkWidget *notebook)
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);			
 
-  cout << "FIX ME: G.711 frames" << endl << flush;
+  int g711_frames = gconf_client_get_int (client, 
+					  "/apps/gnomemeeting/audio_settings/g711_frames", NULL);
   pw->g711_frames_spin_adj = (GtkAdjustment *) 
-    gtk_adjustment_new(10, 
+    gtk_adjustment_new(g711_frames, 
 		       11.0, 240.0, 
 		       1.0, 1.0, 1.0);
 
-  g711_frames = gtk_spin_button_new (pw->g711_frames_spin_adj, 1.0, 0);
+  pw->g711_frames = gtk_spin_button_new (pw->g711_frames_spin_adj, 1.0, 0);
   
-  gtk_table_attach (GTK_TABLE (table), g711_frames, 1, 2, 0, 1,
+  gtk_table_attach (GTK_TABLE (table), pw->g711_frames, 1, 2, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);			
-
+  gtk_signal_connect (GTK_OBJECT (pw->g711_frames_spin_adj), "value-changed",
+		      GTK_SIGNAL_FUNC (adjustment_changed), 
+		      (gpointer) "/apps/gnomemeeting/audio_settings/g711_frames");
+ 
   tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, g711_frames,
+  gtk_tooltips_set_tip (tip, pw->g711_frames,
 			_("The number of frames in each transmitted G.711 packet"), NULL);
 
 
-  /* If it changes, we have to reinit the capabilities */
-  /*  gtk_signal_connect (GTK_OBJECT (pw->gsm_frames_spin_adj), "value-changed",
-		      GTK_SIGNAL_FUNC (audio_codecs_option_changed_callback), 
-		      (gpointer) pw);
-  */
   pw->g711_sd = gtk_check_button_new_with_label (_("Silence Detection"));
-  cout << "FIX ME: G.711 Silence Detection" << endl << flush;
+
+  bool g711_sd = gconf_client_get_bool (client, "/apps/gnomemeeting/audio_settings/g711_sd", NULL);
+
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->g711_sd),
-				1);
+				g711_sd);
   gtk_table_attach (GTK_TABLE (table), pw->g711_sd, 0, 2, 1, 2,
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
@@ -1082,6 +1085,9 @@ static void gnomemeeting_init_pref_window_codecs_settings (GtkWidget *notebook)
   gtk_tooltips_set_tip (tip, pw->g711_sd,
 			_("Enable silence detection for the G.711 based codecs"), NULL);
 
+  gtk_signal_connect (GTK_OBJECT (pw->g711_sd), "toggled",
+		      GTK_SIGNAL_FUNC (toggle_changed),
+		      (gpointer) "/apps/gnomemeeting/audio_settings/g711_sd");
 
   label = gtk_label_new (_("G.711 Codec Settings"));
 

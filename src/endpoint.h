@@ -69,7 +69,16 @@ class GMH323EndPoint : public H323EndPoint
    */
   ~GMH323EndPoint ();
 
-  
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Updates some of the internal values of the endpoint such as
+   *                 the local username, the capabilities, the tunneling, the fast
+   *                 start, the audio devices to use, the video device to use, ...
+   * PRE          :  /
+   */
+  void UpdateConfig ();
+
+
   /* COMMON NOTICE :
      The following virtual functions override from H323EndPoint */
 
@@ -234,6 +243,14 @@ class GMH323EndPoint : public H323EndPoint
    */
   H323VideoCodec *GetCurrentVideoCodec (void);
 
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Return the current audio codec in use
+   *                 NULL if there is no one.
+   * PRE          :  /
+   */
+  H323AudioCodec *GetCurrentAudioCodec (void);
+
   
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Set the current connection to the parameter.
@@ -277,15 +294,6 @@ class GMH323EndPoint : public H323EndPoint
    * PRE          :  /
    */
   GMVideoGrabber *GetVideoGrabber (void);
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  If we are in a call, and that audio channels are opened
-   *                 using codecs that support silence detection, changes
-   *                 the silence detection.
-   * PRE          :  /
-   */
-  void ChangeSilenceDetection (void);
 
 
   /* DESCRIPTION  :  /

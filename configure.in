@@ -33,7 +33,7 @@ dnl *******************************************
 
 case $OSTYPE in
 
-  Linux)
+  linux-gnu)
     H323_CFLAGS="-DP_LINUX -D_REENTRANT -DP_HAS_SEMAPHORES -DP_PTHREADS -DPBYTE_ORDER=PLITTLE_ENDIAN -DHAS_OSS -O2 -Wall"
     H323_LIBS="-lopenh323 -ldl -lpt -lpthread -lssl -lcrypto"
     LIBPT_FILE="libpt.so"

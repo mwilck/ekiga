@@ -340,9 +340,7 @@ void gnomemeeting_init (GM_window_widgets *gw,
   
   if (debug)
     PTrace::Initialise (3);
-  
-  endpoint->AddAudioCapabilities ();
-  endpoint->AddVideoCapabilities (gconf_client_get_int (GCONF_CLIENT (client), "/apps/gnomemeeting/video_settings/video_size", NULL));
+ 
   
   /* The LDAP part, if needed */
   if (gconf_client_get_bool (GCONF_CLIENT (client), "/apps/gnomemeeting/ldap/register", NULL)) {
@@ -362,88 +360,6 @@ void gnomemeeting_init (GM_window_widgets *gw,
   cout << "FIX ME: GateKeeper" << endl << flush;
  // endpoint->GatekeeperRegister ();
 
-  /* Set recording source and set micro to record */
-  int found_player = 0;
-  int found_recorder = 0;
-
-  gchar *player = gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_player", NULL);
-  gchar *recorder = gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_recorder", NULL);
-
-  /* Is the choosen device detected? */
-  for (int i = gw->audio_player_devices.GetSize () - 1; i >= 0; i--) {
-
-    if (!strcmp (player, gw->audio_player_devices [i]))
-	found_player = 1;
-   
-    if (!strcmp (recorder, gw->audio_recorder_devices [i]))
-      found_recorder = 1;
-  }
-
-  if (found_player) {
-
-    MyApp->Endpoint()->
-      SetSoundChannelPlayDevice (player);
-    text = g_strdup_printf (_("Set Audio player device to %s"), 
-			    (const char *) player);
-  }
-  else {
-
-    MyApp->Endpoint()->
-      SetSoundChannelPlayDevice (gw->audio_player_devices [0]);
-    text = g_strdup_printf (_("Set Audio player device to %s"), 
-			    (const char *) gw->audio_player_devices [0]);
-  }
-
-  gnomemeeting_log_insert (text);
-  g_free (text);
-
-
-  if (found_recorder) {
-
-    MyApp->Endpoint()->
-      SetSoundChannelRecordDevice (recorder);
-    gnomemeeting_set_recording_source (recorder, 0); 
-    text = g_strdup_printf (_("Set Audio recorder device to %s"), 
-			  (const char *) recorder);
-  }
-  else {
-
-    MyApp->Endpoint()->
-      SetSoundChannelRecordDevice (gw->audio_recorder_devices [0]);
-
-    /* just a quick hack for the compiler */
-    gchar *myrecorder = g_strdup ((const char*) gw->audio_recorder_devices [0]);
-    gnomemeeting_set_recording_source (myrecorder, 0); 
-    g_free (myrecorder);
-
-    /* Translators: This is shown in the history. */
-    text = g_strdup_printf (_("Set Audio recorder device to %s"), 
-			    (const char *) gw->audio_recorder_devices [0]);
-  }
-
-  gnomemeeting_log_insert (text);
-  g_free (text);
-  g_free (player);
-  g_free (recorder);
-
-  /* Set the local User name */
-  gchar *firstname =
-    gconf_client_get_string (client, 
-			     "/apps/gnomemeeting/personal_data/firstname", 0);
-  gchar *lastname =
-    gconf_client_get_string (client, 
-			     "/apps/gnomemeeting/personal_data/lastname", 0);
-
-  if ((firstname) && (lastname)) {
-    
-    gchar *local_name = g_strdup ("");
-    local_name = g_strconcat (local_name, firstname, " ", lastname, NULL);
-    
-    endpoint->SetLocalUserName (local_name);
-    g_free (local_name);
-    g_free (firstname);
-    g_free (lastname);
-  }
     
   /* Show the main window */
   gtk_widget_show (GTK_WIDGET (gm));

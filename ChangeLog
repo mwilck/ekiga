@@ -1,3 +1,31 @@
+2002-02-07  Damien Sandras  <dsandras@seconix.com>
+
+	* src/common.h: Added widgets for G711 and GSM frames.
+	
+	* src/config.cpp: Added gconf support GSM, G711 frames & GSM, 
+	G711 silence detection. Fixed gconf support for jitter buffer (thks Robert),
+	Fixed gconf support for H.245 Tunneling, Fast Start, Local User Name,
+	capabilities settings that can't be changed during calls.
+	
+	* src/connection.cpp: Added support for gconfified GSM, G711 Silence 
+	Detection.
+
+	* src/endpoint.cpp: Added UpdateConfig function to update *some of* the 
+	gconf settings that can't be changed during calls. It is called at the end
+	of each call. Added GetCurrentAudioCodec and removed ChangeSilenceDetection.
+
+	* src/endpoint.h: Added GetCurrentAudioCodec and removed 
+	ChangeSilenceDetection.
+
+	* src/main_window.cpp: Move a lot of stuff from gnomemeeting_init to
+	Endpoint::UpdateConfig (all the endpoint related stuff that can't change
+	during calls).
+
+	* src/pref_window.cpp: Added support for gconfified GSM, G711 frames &
+	silence detection.
+
+	* gnomemeeting.schema: Added GSM, G711 frames & GSM, G711 silence detection.
+
 2002-02-07  Roger Hardiman <roger@freebsd.org>
  
  	* configure.in: Identify Linux and FreeBSD and set the right

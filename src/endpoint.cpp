@@ -83,16 +83,15 @@ GMH323EndPoint::GMH323EndPoint ()
   client = gconf_client_get_default ();
 
   clearCallOnRoundTripFail = TRUE;
-  disableFastStart = 1;
-  disableH245Tunneling = 
-    !gconf_client_get_bool (client, 
-			    "/apps/gnomemeeting/general/h245_tunneling", 0);
   
   received_video_device = NULL;
   transmitted_video_device = NULL;
 
   /* We can add this capability here as it will remain the whole life of the EP */
   H323_UserInputCapability::AddAllCapabilities(capabilities, 0, P_MAX_INDEX);
+
+  /* General Configuration */
+  UpdateConfig ();
 }
 
 
@@ -101,6 +100,147 @@ GMH323EndPoint::~GMH323EndPoint ()
   /* We do not delete the webcam and the ils_client 
      threads here, but in the Cleaner thread that is
      called when the user chooses to quit... */
+}
+
+
+void GMH323EndPoint::UpdateConfig ()
+{
+  int found_player = 0;
+  int found_recorder = 0;
+  gchar *text = NULL;
+  gchar *player = NULL;
+  gchar *recorder = NULL;
+  gchar *firstname = NULL;
+  gchar *lastname = NULL;
+  gchar *local_name = NULL;
+
+  /* Do not change these values during calls */
+  if (GetCallingState () == 0) {
+
+    /**/
+    /* Update the capabilities */
+    RemoveAllCapabilities ();
+    AddAudioCapabilities ();
+    AddVideoCapabilities (gconf_client_get_int (GCONF_CLIENT (client), "/apps/gnomemeeting/video_settings/video_size", NULL));
+    
+    
+    /* Set recording source and set micro to record */
+    player = gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_player", NULL);
+    recorder = gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_recorder", NULL);
+
+ 
+    /* Is the choosen device detected? */
+    for (int i = gw->audio_player_devices.GetSize () - 1; i >= 0; i--) {
+      
+      if (!strcmp (player, gw->audio_player_devices [i]))
+	found_player = 1;
+      
+      if (!strcmp (recorder, gw->audio_recorder_devices [i]))
+	found_recorder = 1;
+    }
+    
+
+    /* Change that setting only if needed */
+    if (GetSoundChannelPlayDevice () != PString (player)) { 
+
+      if (found_player) {
+     
+	SetSoundChannelPlayDevice (player);
+	text = g_strdup_printf (_("Set Audio player device to %s"), 
+				(const char *) player);
+      }
+      else {
+      
+	  SetSoundChannelPlayDevice (gw->audio_player_devices [0]);
+	  text = g_strdup_printf (_("Set Audio player device to %s"), 
+				  (const char *) gw->audio_player_devices [0]);
+      }
+
+      gnomemeeting_log_insert (text);
+      g_free (text);
+    } 
+
+    /* Change that setting only if needed */
+    if (GetSoundChannelRecordDevice () != PString (recorder)) { 
+
+      if (found_recorder) {
+
+	SetSoundChannelRecordDevice (recorder);
+	gnomemeeting_set_recording_source (recorder, 0); 
+	text = g_strdup_printf (_("Set Audio recorder device to %s"), 
+				(const char *) recorder);
+      }
+      else {
+
+	SetSoundChannelRecordDevice (gw->audio_recorder_devices [0]);
+
+	/* just a quick hack for the compiler */
+	gchar *myrecorder = g_strdup ((const char*) gw->audio_recorder_devices [0]);
+	gnomemeeting_set_recording_source (myrecorder, 0); 
+	g_free (myrecorder);
+
+	/* Translators: This is shown in the history. */
+	text = g_strdup_printf (_("Set Audio recorder device to %s"), 
+				(const char *) gw->audio_recorder_devices [0]);
+      }
+    
+      gnomemeeting_log_insert (text);
+      g_free (text);
+    }
+
+    g_free (player);
+    g_free (recorder);
+    
+    
+    /**/
+    /* Set the local User name */
+    firstname =
+      gconf_client_get_string (client, 
+			       "/apps/gnomemeeting/personal_data/firstname", 0);
+    lastname =
+      gconf_client_get_string (client, 
+			       "/apps/gnomemeeting/personal_data/lastname", 0);
+    
+    if ((firstname) && (lastname)) {
+      
+      local_name = g_strdup ("");
+      local_name = g_strconcat (local_name, firstname, " ", lastname, NULL);
+      
+      if (GetLocalUserName () != PString (local_name)) 
+	SetLocalUserName (local_name);
+
+      g_free (local_name);
+      g_free (firstname);
+      g_free (lastname);
+    }
+
+
+    /**/
+    /* Update the H.245 Tunneling and Fast Start Settings if needed */
+    if (disableH245Tunneling != !gconf_client_get_bool (client, "/apps/gnomemeeting/general/h245_tunneling", 0)) {
+
+      if (!disableH245Tunneling)
+	text = g_strdup (_("Disabling H.245 Tunneling"));
+      else
+	text = g_strdup (_("Enabling H.245 Tunneling"));
+
+      gnomemeeting_log_insert (text);
+      g_free (text);
+    }
+
+    if (!gconf_client_get_bool (client, "/apps/gnomemeeting/general/fast_start", 0))
+	text = g_strdup (_("Disabling Fast Start"));
+      else
+	text = g_strdup (_("Enabling Fast Start"));
+
+      gnomemeeting_log_insert (text);
+      g_free (text);
+
+    disableFastStart = 1;
+    disableH245Tunneling = 
+      !gconf_client_get_bool (client, 
+			      "/apps/gnomemeeting/general/h245_tunneling", 0);
+  }
 }
 
 
@@ -132,26 +272,16 @@ int GMH323EndPoint::GetCallingState (void)
 
 void GMH323EndPoint::AddVideoCapabilities (int video_size)
 {
-  gchar *msg = NULL;
-
   if (video_size == 1) {
 
     /* CIF Capability in first position */
     SetCapability(0, 1, 
 		  new H323_H261Capability (0, 2, FALSE, FALSE, 6217));
 
-    msg = g_strdup_printf (_("%d. H.261\n (CIF size)"), codecs_count);
-    gnomemeeting_log_insert (msg);
-    g_free (msg);
-
     codecs_count++;
 
     SetCapability(0, 1, 
 		  new H323_H261Capability (4, 0, FALSE, FALSE, 6217));
-
-    msg = g_strdup_printf (_("%d. H.261\n (QCIF size)"), codecs_count);
-    gnomemeeting_log_insert (msg);
-    g_free (msg);
 
     codecs_count++;
   }
@@ -160,18 +290,10 @@ void GMH323EndPoint::AddVideoCapabilities (int video_size)
     SetCapability(0, 1, 
 		  new H323_H261Capability (4, 0, FALSE, FALSE, 6217));
     
-    msg = g_strdup_printf (_("%d. H.261\n (QCIF size)"), codecs_count);
-    gnomemeeting_log_insert (msg);
-    g_free (msg);
-
     codecs_count++;
     
     SetCapability(0, 1, 
 		  new H323_H261Capability (0, 2, FALSE, FALSE, 6217));
-
-    msg = g_strdup_printf (_("%d. H.261\n (CIF size)"), codecs_count);
-    gnomemeeting_log_insert (msg);
-    g_free (msg);
 
     codecs_count++;
   }
@@ -186,21 +308,23 @@ void GMH323EndPoint::AddVideoCapabilities (int video_size)
   }
 }
 
+
 void GMH323EndPoint::AddAudioCapabilities ()
 {
   gchar **codecs;
   gchar *clist_data = NULL;
-  gchar *msg = NULL;
 
-  gnomemeeting_log_insert (_("Usable codecs table:"));
-	
   
-  cout << "FIX ME: # of Frames in audio capabilities" << endl << flush;
   /* Add or not the audio capabilities */ 
   clist_data = gconf_client_get_string (client, "/apps/gnomemeeting/audio_codecs/list", NULL);
   
   codecs = g_strsplit (clist_data, ":", 0);
 
+  int g711_frames = gconf_client_get_int (client, "/apps/gnomemeeting/audio_settings/g711_frames", NULL);
+  int gsm_frames = gconf_client_get_int (client, "/apps/gnomemeeting/audio_settings/gsm_frames", NULL);
+
+
+  /* Let's go */
   for (int i = 0 ; codecs [i] != NULL ; i++) {
     
     gchar **couple = g_strsplit (codecs [i], "=", 0);
@@ -210,13 +334,8 @@ void GMH323EndPoint::AddAudioCapabilities ()
       MicrosoftGSMAudioCapability* gsm_capa; 
       
       SetCapability (0, 0, gsm_capa = new MicrosoftGSMAudioCapability);
-      msg = g_strdup_printf (_("%d. MS-GSM\n(%d frames/packet)"), 
-			     codecs_count, 5);
-      gnomemeeting_log_insert (msg);
       codecs_count++;  
-//      gsm_capa->SetTxFramesInPacket (5);
-      
-      g_free (msg);
+      gsm_capa->SetTxFramesInPacket (gsm_frames);
     }
 
     if ((!strcmp (couple [0], "G.711-uLaw-64k"))&&(!strcmp (couple [1], "1"))) {
@@ -225,13 +344,8 @@ void GMH323EndPoint::AddAudioCapabilities ()
       
       SetCapability (0, 0, g711_capa = new H323_G711Capability 
 		     (H323_G711Capability::muLaw));
-      msg = g_strdup_printf (_("%d. G.711-uLaw\n (%d frames/packet)"), 
-			     codecs_count, 5);
-      gnomemeeting_log_insert (msg);
       codecs_count++;
-  //    g711_capa->SetTxFramesInPacket (5);
-	  
-      g_free (msg);
+      g711_capa->SetTxFramesInPacket (g711_frames);
     }
 
     if ((!strcmp (couple [0], "G.711-ALaw-64k"))&&(!strcmp (couple [1], "1"))) {
@@ -240,13 +354,8 @@ void GMH323EndPoint::AddAudioCapabilities ()
       
       SetCapability (0, 0, g711_capa = new H323_G711Capability 
 		     (H323_G711Capability::ALaw));
-      msg = g_strdup_printf (_("%d. G.711-ALaw\n (%d frames/packet)"), 
-			     codecs_count, 10);
-      gnomemeeting_log_insert (msg);
       codecs_count++;
-    //  g711_capa->SetTxFramesInPacket (opts->g711_frames);
-      
-      g_free (msg);
+      g711_capa->SetTxFramesInPacket (g711_frames);
     }
     
     if ((!strcmp (couple [0], "GSM-06.10"))&&(!strcmp (couple [1], "1"))) {
@@ -254,25 +363,15 @@ void GMH323EndPoint::AddAudioCapabilities ()
       H323_GSM0610Capability * gsm_capa; 
       
       SetCapability (0, 0, gsm_capa = new H323_GSM0610Capability);	
-      msg = g_strdup_printf (_("%d. GSM-06.10\n (%d frames/packet)"), 
-			     codecs_count, 10);
-      gnomemeeting_log_insert (msg);
       codecs_count++;
 
-      //gsm_capa->SetTxFramesInPacket (opts->gsm_frames);
-      
-      g_free (msg);
+      gsm_capa->SetTxFramesInPacket (gsm_frames);
     }
 
     if ((!strcmp (couple [0], "LPC10"))&&(!strcmp (couple [1], "1"))) {
       
       SetCapability(0, 0, new H323_LPC10Capability (*this));
-      msg = g_strdup_printf (_("%d. LPC10"), 
-			     codecs_count);
-      gnomemeeting_log_insert (msg);
       codecs_count++;
-    
-      g_free (msg);
     }
     
     g_strfreev (couple);
@@ -379,46 +478,33 @@ H323VideoCodec *GMH323EndPoint::GetCurrentVideoCodec (void)
 }
 
 
-void GMH323EndPoint::ChangeSilenceDetection (void)
+H323AudioCodec *GMH323EndPoint::GetCurrentAudioCodec (void)
 {
+  H323AudioCodec *audio_codec = NULL;
+
   if (!GetCurrentCallToken ().IsEmpty()) {
     
     H323Connection * connection = GetCurrentConnection ();
     
     if (connection != NULL) {
 
-      H323Channel * chan = 
+      H323Channel * channel = 
 	connection->FindChannel (RTP_Session::DefaultAudioSessionID, 
 				 FALSE);
 
-      if (chan == NULL)
+      if (channel != NULL) {
+	
+	H323Codec * raw_codec  = channel->GetCodec();
 
-	gnomemeeting_log_insert (_("Could not find audio channel"));
-      else {
-
-	H323Codec * rawCodec  = chan->GetCodec();
-	if (!rawCodec->IsDescendant (H323AudioCodec::Class()))
-	  gnomemeeting_log_insert (_("Could not find audio channel"));
-	else {
-	  H323AudioCodec * codec = (H323AudioCodec *) rawCodec;
-	  H323AudioCodec::SilenceDetectionMode mode = 
-	    codec->GetSilenceDetectionMode();
+	if (raw_codec->IsDescendant (H323VideoCodec::Class())) {
 	  
-	  if (mode == H323AudioCodec::AdaptiveSilenceDetection) {
-
-	    mode = H323AudioCodec::NoSilenceDetection;
-	    gnomemeeting_log_insert (_("Disabled Silence Detection"));
-	  } 
-	  else {
-	    mode = H323AudioCodec::AdaptiveSilenceDetection;
-	    gnomemeeting_log_insert (_("Enabled Silence Detection"));
-	  }
-
-	  codec->SetSilenceDetectionMode(mode);
+	  audio_codec = (H323AudioCodec *) raw_codec;
 	}
       }
-    } 
-  }
+    }
+  } 
+  
+  return audio_codec;
 }
 
 
@@ -769,6 +855,9 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   gnomemeeting_enable_disconnect ();
   gnomemeeting_enable_connect ();
+
+  /* Try to update the config if some settings were changed during the call */
+  UpdateConfig ();
 
   gnomemeeting_threads_leave ();
 

@@ -163,6 +163,8 @@ struct _GM_pref_window_widgets
   GtkWidget *show_docklet;
   GtkWidget *directory_update_button;
   GtkWidget *video_device_apply_button;
+  GtkWidget *g711_frames;
+  GtkWidget *gsm_frames;
 
   /* Miscellaneous */
   // contains the row selected by the user

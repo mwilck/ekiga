@@ -55,6 +55,8 @@ static gboolean vb_limit_changed (gpointer);
 static void vb_limit_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static gboolean toggle_changed (gpointer);
 static void toggle_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
+static gboolean ht_fs_changed (gpointer);
+static void ht_fs_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static gboolean entry_changed_ (gpointer);
 static void entry_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static gboolean tr_vq_changed (gpointer);
@@ -104,8 +106,108 @@ static void view_widget_changed_nt (GConfClient *, guint, GConfEntry *,
 static gboolean notebook_info_changed (gpointer);
 static void notebook_info_changed_nt (GConfClient *, guint, GConfEntry *, 
 				      gpointer);
+static gboolean audio_codec_setting_changed (gpointer);
+static void audio_codec_setting_changed_nt (GConfClient *, guint, 
+					    GConfEntry *, gpointer);
+static gboolean silence_detection_changed (gpointer);
+static void silence_detection_changed_nt (GConfClient *, guint, 
+					    GConfEntry *, gpointer);
 
 static void gnomemeeting_update_pref_window_sensitivity (void);
+
+
+
+static gboolean silence_detection_changed (gpointer data)
+{
+  H323AudioCodec *ac = NULL;
+  gdk_threads_enter ();
+  GtkWidget *toggle = GTK_WIDGET (data);
+
+  /* We set the new value for the widget
+     This value is different from the previous one, or we are not called */
+ //  GTK_TOGGLE_BUTTON (toggle)->active = !GTK_TOGGLE_BUTTON (toggle)->active; 
+//   gtk_widget_draw (GTK_WIDGET (toggle), NULL);
+
+  cout << "FIX ME: Silence Detection, Wrong codec ?" << endl << flush;
+  /* We update the silence detection */
+  if (MyApp->Endpoint ()->GetCallingState () == 2) {
+
+    ac = MyApp->Endpoint ()->GetCurrentAudioCodec ();
+
+    if (ac != NULL) {
+
+      H323AudioCodec::SilenceDetectionMode mode = 
+	ac->GetSilenceDetectionMode();
+    
+      if (mode == H323AudioCodec::AdaptiveSilenceDetection) {
+	
+	mode = H323AudioCodec::NoSilenceDetection;
+	gnomemeeting_log_insert (_("Disabled Silence Detection"));
+      } 
+      else {
+	mode = H323AudioCodec::AdaptiveSilenceDetection;
+	gnomemeeting_log_insert (_("Enabled Silence Detection"));
+      }
+
+      ac->SetSilenceDetectionMode(mode);
+    }
+  }
+
+  gdk_threads_leave ();
+  return FALSE;
+}
+
+
+/* DESCRIPTION  :  This callback is called when a silence detection key of
+ *                 the gconf database associated with a toggle changes.
+ * BEHAVIOR     :  It only updates the widget, and the silence detection if we
+ *                 are in a call.
+ * PRE          :  /
+ */
+static void silence_detection_changed_nt (GConfClient *client, guint cid, 
+					  GConfEntry *entry, gpointer data)
+{
+  GtkWidget *toggle = GTK_WIDGET (data);
+
+  if (entry->value->type == GCONF_VALUE_BOOL) {
+    
+    g_idle_add (silence_detection_changed, (gpointer) toggle);
+  }
+}
+
+
+static gboolean audio_codec_setting_changed (gpointer data)
+{
+  gdk_threads_enter ();
+
+  if (MyApp->Endpoint ()->GetCallingState ()) {
+  
+    gchar *msg = g_strdup (_("This setting change will only apply to the next call."));
+    gnomemeeting_warning_popup (GTK_WIDGET (data), msg);
+    g_free (msg);
+  }
+  else
+    MyApp->Endpoint ()->UpdateConfig ();
+
+  gdk_threads_leave ();
+  return FALSE;
+}
+
+
+/* DESCRIPTION  :  This callback is called to update one audio codec related setting
+ *                 (# frames, silence detection)
+ * BEHAVIOR     :  Update it.
+ * PRE          :  /
+ */
+static void audio_codec_setting_changed_nt (GConfClient *client, guint i, 
+					    GConfEntry *entry, gpointer data)
+{
+  if (entry->value->type == GCONF_VALUE_INT) {
+   
+    g_idle_add (audio_codec_setting_changed, 
+		(gpointer) data);
+  }
+}
 
 
 static gboolean fps_limit_changed (gpointer data)
@@ -246,11 +348,9 @@ static gboolean re_vq_changed (gpointer data)
   
   if (MyApp->Endpoint ()->GetCallingState ()) {
   
-  gchar *msg = g_strdup (_("The new video quality hint for the received video stream will only apply to the next call."));
-  
-  gnomemeeting_warning_popup (pw->re_vq, msg);
-  
-  g_free (msg);
+    gchar *msg = g_strdup (_("The new video quality hint for the received video stream will only apply to the next call."));
+    gnomemeeting_warning_popup (pw->re_vq, msg);
+    g_free (msg);
   }
   
   gdk_threads_leave ();
@@ -316,19 +416,24 @@ static void tr_ub_changed_nt (GConfClient *client, guint cid,
 static gboolean jitter_buffer_changed (gpointer data)
 {
   gdk_threads_enter ();
-
   GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
   H323Connection *connection = NULL;
+  RTP_Session *session = NULL;
+  H323EndPoint *ep = MyApp->Endpoint ();
 
-  /* We set the new value for tr_fps_spin_adj */
+  /* We set the new value for jitter_buffer_spin_adj */
   GTK_ADJUSTMENT (pw->jitter_buffer_spin_adj)->value = (int) data;
   gtk_widget_draw (pw->jitter_buffer, NULL);
 
   /* We update the current value */
   connection = MyApp->Endpoint ()->GetCurrentConnection ();
-    
+
   if (connection != NULL)
-    connection->SetMaxAudioDelayJitter ((int) data);
+    session = connection->GetSession (OpalMediaFormat::DefaultAudioSessionID);
+
+  if (session != NULL)
+    session->SetJitterBufferSize ((int) data, ep->GetJitterThreadStackSize());
+
   
   gdk_threads_leave ();
 
@@ -356,7 +461,6 @@ static void jitter_buffer_changed_nt (GConfClient *client, guint cid,
 static gboolean toggle_changed (gpointer data)
 {
   gdk_threads_enter ();
-
   GtkWidget *toggle = GTK_WIDGET (data);
 
   /* We set the new value for the widget
@@ -370,9 +474,51 @@ static gboolean toggle_changed (gpointer data)
 }
 
 
+/* This function is called by the notifier for toggles when specific settings
+   corresponding to toggles need to be changed in the endpoint */
+static gboolean ht_fs_changed (gpointer data)
+{
+  gdk_threads_enter ();
+  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
+  GtkWidget *toggle = GTK_WIDGET (data);
+
+  if (MyApp->Endpoint ()->GetCallingState ()) {
+  
+    gchar *msg = g_strdup (_("This setting change will only apply to the next call."));
+    gnomemeeting_warning_popup (pw->ht, msg);
+    g_free (msg);
+  }
+  else
+    MyApp->Endpoint ()->UpdateConfig ();
+  
+
+  gdk_threads_leave ();
+  return FALSE;
+}
+
+
+/* DESCRIPTION  :  This callback is called when h245Tunneling or Fast Start keys of
+ *                 the gconf database associated with their toggle change.
+ * BEHAVIOR     :  It only updates the widget, then apply the setting. 
+ *                 Display a popup when being in a call.
+ * PRE          :  /
+ */
+static void ht_fs_changed_nt (GConfClient *client, guint cid, 
+			      GConfEntry *entry, gpointer data)
+{
+  GtkWidget *toggle = GTK_WIDGET (data);
+
+  if (entry->value->type == GCONF_VALUE_BOOL) {
+   
+    g_idle_add (ht_fs_changed, (gpointer) toggle);
+  }
+}
+
+
 /* DESCRIPTION  :  Generic notifiers for toggles.
  *                 This callback is called when a specific key of
- *                 the gconf database associated with a toggle changes.
+ *                 the gconf database associated with a toggle changes, this
+ *                 only updates the toggle.
  * BEHAVIOR     :  It only updates the widget.
  * PRE          :  /
  */
@@ -383,7 +529,6 @@ static void toggle_changed_nt (GConfClient *client, guint cid,
 
   if (entry->value->type == GCONF_VALUE_BOOL) {
    
-    /* We set the new value for the widget if needed */
     if ((bool) GTK_TOGGLE_BUTTON (toggle)->active != gconf_value_get_bool (entry->value))
       g_idle_add (toggle_changed, (gpointer) toggle);
   }
@@ -394,7 +539,6 @@ static gboolean entry_changed_ (gpointer data)
 {
   gdk_threads_enter ();
   
-  GConfClient *client = gconf_client_get_default ();
   GtkWidget *e = GTK_WIDGET (data);
   GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
 
@@ -409,33 +553,20 @@ static gboolean entry_changed_ (gpointer data)
   gtk_signal_handler_unblock_by_func (GTK_OBJECT (e),
 				      GTK_SIGNAL_FUNC (entry_changed), 
 				      (gpointer) gtk_object_get_data (GTK_OBJECT (e), "gconf_key")); 
-  
 
-  /* Local User Name */
-  if ((e == pw->firstname)||(e == pw->surname)) {
-    
-    /* Set the local User name */
-    gchar *firstname =
-      gconf_client_get_string (client, 
-			       "/apps/gnomemeeting/personal_data/firstname",
-			       0);
-    gchar *lastname =
-      gconf_client_get_string (client, 
-			       "/apps/gnomemeeting/personal_data/lastname", 
-			       0);
-      
-    if ((firstname) && (lastname)) {
-      
-      gchar *local_name = g_strdup ("");
-      local_name = g_strconcat (local_name, firstname, " ", lastname, NULL);
-      
-      MyApp->Endpoint ()->SetLocalUserName (local_name);
-      g_free (local_name);
-      g_free (firstname);
-      g_free (lastname);
-    }
-  }
   
+  /* Firstname and Surname entries have a special treatment */
+  if ((e == pw->firstname)||(e == pw->surname)) {
+
+    if (MyApp->Endpoint ()->GetCallingState () == 0)
+      /* Update the configuration in order to update 
+	 the local user name for calls */
+      MyApp->Endpoint ()->UpdateConfig ();
+    else 
+      gnomemeeting_warning_popup (GTK_WIDGET (pw->firstname),
+				  _("This change will only affect new calls."));
+  }
+
   gdk_threads_leave ();
 
   return FALSE;
@@ -639,14 +770,9 @@ static void audio_mixer_changed_nt (GConfClient *client, guint cid,
 /* Not able to update the widgets*/
 static gboolean audio_device_changed (gpointer data)
 {
-  gchar *text;
-  gchar *player = NULL, *recorder = NULL;
-  gchar *entry_data = NULL;
-  int found = 0;
-/*  GtkWidget *e = GTK_WIDGET (data);*/
+  /*  GtkWidget *e = GTK_WIDGET (data);*/
   GM_window_widgets *gw = NULL;
   GM_pref_window_widgets *pw = NULL;
-  GConfClient *client = gconf_client_get_default ();
 
   gdk_threads_enter ();
   
@@ -665,58 +791,14 @@ static gboolean audio_device_changed (gpointer data)
   (gpointer) gtk_object_get_data (GTK_OBJECT (e), "gconf_key")); 
   */
   
-  entry_data = gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (data)->entry));
+  if (MyApp->Endpoint ()->GetCallingState () == 0)
+      /* Update the configuration in order to update 
+	 the local user name for calls */
+    MyApp->Endpoint ()->UpdateConfig ();
+  else 
+    gnomemeeting_warning_popup (GTK_WIDGET (pw->audio_player),
+				_("This change will only affect new calls."));
 
-  /* Is the choosen device detected? */
-  for (int i = gw->audio_player_devices.GetSize () - 1; i >= 0; i--) {
-
-    if (data == pw->audio_player) {
-
-      if (!strcmp (entry_data, gw->audio_player_devices [i]))
-	found = 1;
-    }
-    else {
-
-      if (!strcmp (entry_data, gw->audio_recorder_devices [i]))
-	found = 1;
-    }
-  }
-
-  if (found) {
-    
-    player = gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_player", NULL);
-    recorder = gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_recorder", NULL);
-      
-    /* Set recording source and set micro to record */
-    if (player != NULL)
-      MyApp->Endpoint()->SetSoundChannelPlayDevice (player);
-    if (recorder != NULL)
-      MyApp->Endpoint()->SetSoundChannelRecordDevice (recorder);
-      
-    /* Translators: This is shown in the history. */
-    text = g_strdup_printf (_("Set Audio Player to %s"),
-			    player);
-    gnomemeeting_log_insert (text);
-    g_free (text);
-    
-    /* Translators: This is shown in the history. */
-    text = g_strdup_printf (_("Set Audio Recorder to %s"),
-			    recorder);
-    gnomemeeting_log_insert (text);
-    g_free (text);
-    g_free (player);
-    g_free (recorder);
-  }
-  else {
-    
-    gchar *msg = g_strdup_printf (_("%s doesn't seem to be a valid device, please fix this!"), entry_data);
-    GtkWidget *msg_box = gnome_message_box_new (msg, GNOME_MESSAGE_BOX_ERROR, 
-						"OK", NULL);
-    gtk_widget_show (msg_box);
-    
-    g_free (msg);
-  }
-  
   gdk_threads_leave ();
   
   return FALSE;
@@ -1328,7 +1410,7 @@ static gboolean register_changed (gpointer data)
  *                 the button, or if he clicks on "Update" in Personal data, 
  *                 or if he uses gconftool.
  * BEHAVIOR     :  It registers to the LDAP server, IF all recquired fields are
- *                 available.
+ *                 available. And Always update the Local User Name.
  * PRE          :  /
  */
 static void register_changed_nt (GConfClient *client, guint cid, 
@@ -1440,10 +1522,23 @@ static void history_changed_nt (GConfClient *client, guint, GConfEntry *entry,
 }
 #endif
 
+
 /* The functions  */
 void gnomemeeting_init_gconf (GConfClient *client)
 {
   GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/g711_sd",
+			   silence_detection_changed_nt, pw->g711_sd, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/gsm_sd",
+			   silence_detection_changed_nt, pw->gsm_sd, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/gsm_frames",
+			   audio_codec_setting_changed_nt, pw->gsm_frames, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/g711_frames",
+			   audio_codec_setting_changed_nt, pw->g711_frames, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/tr_fps",
 			   fps_limit_changed_nt, pw, 0, 0);
@@ -1486,10 +1581,10 @@ void gnomemeeting_init_gconf (GConfClient *client)
 			   toggle_changed_nt, pw->dnd, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/h245_tunneling",
-			   toggle_changed_nt, pw->ht, 0, 0);
+			   ht_fs_changed_nt, pw->ht, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/fast_start",
-			   toggle_changed_nt, pw->fs, 0, 0);
+			   ht_fs_changed_nt, pw->fs, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/incoming_call_sound", toggle_changed_nt, pw->incoming_call_sound, 0, 0);
 

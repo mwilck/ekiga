@@ -104,17 +104,16 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
     
     g_free (msg);
     
-    cout << "FIX ME: Silence Detection" << endl << flush;
 
     if ((name == "MS-GSM{sw}")||(name == "GSM-06.10{sw}")) {
-      
-      sd = 1;
+  
+      sd = gconf_client_get_bool (client, "/apps/gnomemeeting/audio_settings/gsm_sd", NULL);
       use_sd = 1;
     }
 
     if ((name == "G.711-ALaw-64k{sw}")||(name == "G.711-uLaw-64k{sw}"))	{
 
-      sd = 1;
+      sd = gconf_client_get_bool (client, "/apps/gnomemeeting/audio_settings/g711_sd", NULL);
       use_sd = 1;
     }
 	
