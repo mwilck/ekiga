@@ -45,15 +45,29 @@
 void gm_main_window_dialpad_event (GtkWidget *,
 				   const char);
 
-void gm_main_window_update_video (GtkWidget *main_window,
-			     const guchar *buffer,
-			     int frame_width,
-			     int frame_height,
-			     int zoomed_width,
-			     int zoomed_height,
-			     int display,
-			     gboolean,
-			     gboolean bilinear_filtering);
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Updates the video area in the main window/local or remote
+ * 		   popup with the given RGB buffer and the given destination
+ * 		   size. The correct video area is udpated given the current
+ * 		   display mode and if the given buffer is a buffer for local
+ * 		   or remote video.
+ * PRE          :  The main window GMObject, a valid RGB32 buffer, its width
+ * 		   and height, the zoomed width and height, the display mode
+ * 		   (see gdkvideoio.cpp), and if the given buffer is a remote
+ * 		   or local video image. The last parameter indicates if
+ * 		   there should be bilinear filtering or not.
+ */
+void gm_main_window_update_video (GtkWidget *,
+				  const guchar *,
+				  int,
+				  int,
+				  int,
+				  int,
+				  int,
+				  gboolean,
+				  gboolean);
+
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Displays the gnomemeeting logo in the video window.

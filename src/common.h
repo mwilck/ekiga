@@ -95,7 +95,6 @@
 
 #define GNOMEMEETING_PAD_SMALL 1
 
-#define GM_WINDOW(x) (GmWindow *)(x)
 
 #ifndef _
 #ifdef DISABLE_GNOME
@@ -109,8 +108,6 @@
 #endif
 #endif
 
-
-typedef struct _GmWindow GmWindow;
 
 
 /* Incoming Call Mode */
