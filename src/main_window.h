@@ -53,6 +53,15 @@ void gm_main_window_update_logo (GtkWidget *);
 
 
 /* DESCRIPTION  :  /
+ * BEHAVIOR     :  Update the main window hold call menu and toolbar items
+ * 		   following the call is on hold (TRUE) or not (FALSE).
+ * PRE          :  The main window GMObject.
+ */
+void gm_main_window_set_call_hold (GtkWidget *,
+				   gboolean);
+
+
+/* DESCRIPTION  :  /
  * BEHAVIOR     :  Update the main window sensitivity following the calling
  *                 state.
  * PRE          :  The main window GMObject.

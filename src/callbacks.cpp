@@ -42,6 +42,7 @@
 #include "log_window.h"
 #include "callbacks.h"
 #include "gnomemeeting.h"
+#include "main_window.h"
 #include "misc.h"
 #include "urlhandler.h"
 
@@ -56,61 +57,6 @@ extern GtkWidget *gm;
 
 
 /* The callbacks */
-void 
-hold_call_cb (GtkWidget *widget,
-	      gpointer data)
-{
-  GtkWidget *child = NULL;
-
-  GmWindow *gw = NULL;
-  
-  GMH323EndPoint *endpoint = NULL;
-
-  PString call_token;
-  BOOL is_on_hold = FALSE;
-  
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
-  endpoint = GnomeMeeting::Process ()->Endpoint ();
-
-
-  /* Release the GDK thread to prevent deadlocks, change
-   * the hold state 
-   */
-  gdk_threads_leave ();
-  call_token = endpoint->GetCurrentCallToken ();
-  is_on_hold = endpoint->IsCallOnHold (call_token);
-  if (endpoint->SetCallOnHold (call_token, !is_on_hold))
-    is_on_hold = !is_on_hold; /* It worked */
-  gdk_threads_enter ();
-
-  child = GTK_BIN (gtk_menu_get_widget (gw->main_menu, "hold_call"))->child;
-
-  if (is_on_hold) {
-
-    if (GTK_IS_LABEL (child))
-      gtk_label_set_text_with_mnemonic (GTK_LABEL (child),
-					_("_Retrieve Call"));
-
-    gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_chan_button), FALSE);
-    gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button), FALSE);
-    gtk_menu_set_sensitive (gw->main_menu, "suspend_audio", FALSE);
-    gtk_menu_set_sensitive (gw->main_menu, "suspend_video", FALSE);
-  }
-  else {
-
-    if (GTK_IS_LABEL (child))
-      gtk_label_set_text_with_mnemonic (GTK_LABEL (child),
-					_("_Hold Call"));
-
-    gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_chan_button), TRUE);
-    gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button), TRUE);
-    gtk_menu_set_sensitive (gw->main_menu, "suspend_audio", TRUE);
-    gtk_menu_set_sensitive (gw->main_menu, "suspend_video", TRUE);
-  }
-
-}
-
-
 void
 transfer_call_cb (GtkWidget* widget,
 		  gpointer data)

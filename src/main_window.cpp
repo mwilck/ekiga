@@ -104,6 +104,15 @@ static GmWindow *gm_mw_get_mw (GtkWidget *);
 
 /* Callbacks */
 
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Set the current active call on hold and updates the GUI
+ * 		   accordingly.
+ * PRE          :  The main window GMObject as data.
+ */
+static void hold_current_call_cb (GtkWidget *,
+				  gpointer);
+
+
 /* DESCRIPTION  :  This callback is called when a video window is shown.
  * BEHAVIOR     :  Set the WM HINTS to stay-on-top if the config key is set
  *                 to true.
@@ -273,6 +282,35 @@ gm_mw_get_mw (GtkWidget *main_window)
 
   return GM_MAIN_WINDOW (g_object_get_data (G_OBJECT (main_window), 
 					    "GMObject"));
+}
+
+
+static void 
+hold_current_call_cb (GtkWidget *widget,
+		      gpointer data)
+{
+  PString call_token;
+  GMH323EndPoint *endpoint = NULL;
+
+  BOOL is_on_hold = FALSE;
+  
+  g_return_if_fail (data != NULL);
+  endpoint = GnomeMeeting::Process ()->Endpoint ();
+
+
+  /* Release the GDK thread to prevent deadlocks, change
+   * the hold state at the endpoint level.
+   */
+  gdk_threads_leave ();
+  call_token = endpoint->GetCurrentCallToken ();
+  is_on_hold = endpoint->IsCallOnHold (call_token);
+  if (endpoint->SetCallOnHold (call_token, !is_on_hold))
+    is_on_hold = !is_on_hold; /* It worked */
+  gdk_threads_enter ();
+
+  
+  /* Update the GUI */
+  gm_main_window_set_call_hold (GTK_WIDGET (data), is_on_hold);
 }
 
 
@@ -648,7 +686,8 @@ gm_mw_init_menu (GtkWidget *main_window)
 
       GTK_MENU_ENTRY("hold_call", _("_Hold Call"), _("Hold the current call"),
 		     NULL, 0, 
-		     GTK_SIGNAL_FUNC (hold_call_cb), NULL, FALSE),
+		     GTK_SIGNAL_FUNC (hold_current_call_cb), main_window, 
+		     FALSE),
       GTK_MENU_ENTRY("transfer_call", _("_Transfer Call"),
 		     _("Transfer the current call"),
 		     NULL, 0, 
@@ -1315,6 +1354,58 @@ gm_main_window_dialpad_event (GtkWidget *main_window,
     lid->Unlock ();
   }
 #endif
+}
+
+
+void 
+gm_main_window_set_call_hold (GtkWidget *main_window,
+			      gboolean is_on_hold)
+{
+  GmWindow *mw = NULL;
+  
+  GtkWidget *child = NULL;
+  
+  
+  g_return_if_fail (main_window != NULL);
+  
+  mw = gm_mw_get_mw (main_window);
+  
+  g_return_if_fail (mw != NULL);
+  
+  
+  child = GTK_BIN (gtk_menu_get_widget (mw->main_menu, "hold_call"))->child;
+
+  if (is_on_hold) {
+
+    if (GTK_IS_LABEL (child))
+      gtk_label_set_text_with_mnemonic (GTK_LABEL (child),
+					_("_Retrieve Call"));
+
+    /* Set the audio and video buttons/menu to unsensitive */
+    gtk_widget_set_sensitive (GTK_WIDGET (mw->audio_chan_button), FALSE);
+    gtk_widget_set_sensitive (GTK_WIDGET (mw->video_chan_button), FALSE);
+    
+    GTK_TOGGLE_BUTTON (mw->audio_chan_button)->active = TRUE;
+    GTK_TOGGLE_BUTTON (mw->video_chan_button)->active = TRUE;
+    
+    gtk_menu_set_sensitive (mw->main_menu, "suspend_audio", FALSE);
+    gtk_menu_set_sensitive (mw->main_menu, "suspend_video", FALSE);
+  }
+  else {
+
+    if (GTK_IS_LABEL (child))
+      gtk_label_set_text_with_mnemonic (GTK_LABEL (child),
+					_("_Hold Call"));
+
+    gtk_widget_set_sensitive (GTK_WIDGET (mw->audio_chan_button), TRUE);
+    gtk_widget_set_sensitive (GTK_WIDGET (mw->video_chan_button), TRUE);
+    
+    GTK_TOGGLE_BUTTON (mw->audio_chan_button)->active = FALSE;
+    GTK_TOGGLE_BUTTON (mw->video_chan_button)->active = FALSE;
+    
+    gtk_menu_set_sensitive (mw->main_menu, "suspend_audio", TRUE);
+    gtk_menu_set_sensitive (mw->main_menu, "suspend_video", TRUE);
+  }
 }
 
 

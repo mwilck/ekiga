@@ -201,6 +201,7 @@ GMLid::Close ()
 void
 GMLid::Main ()
 {
+  GtkWidget *main_window = NULL;
   GtkWidget *history_window = NULL;
 
   GMH323EndPoint *endpoint = NULL;
@@ -218,6 +219,10 @@ GMLid::Main ()
   PTime now;
   PTime last_key_press;
 
+  PString call_token;
+
+  BOOL is_on_hold = FALSE;
+
   unsigned int input_vol = 0;
   unsigned int output_vol = 0;
   int lid_odt = 0;
@@ -229,6 +234,8 @@ GMLid::Main ()
   
   endpoint = GnomeMeeting::Process ()->Endpoint ();
   gw = GnomeMeeting::Process ()->GetMainWindow ();
+
+  main_window = gm;
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
 
   
@@ -356,12 +363,19 @@ GMLid::Main ()
       }
 
 
-      /* *1 to hold a call */
+      /* *1 to hold the current call */
       if (old_c == '*' && c == '1'
 	  && calling_state == GMH323EndPoint::Connected) {
 
+	call_token = endpoint->GetCurrentCallToken ();
+	is_on_hold = endpoint->IsCallOnHold (call_token);
+	if (endpoint->SetCallOnHold (call_token, !is_on_hold))
+	  is_on_hold = !is_on_hold; /* It worked */
+
+
+	/* Update the GUI */
 	gnomemeeting_threads_enter ();
-	hold_call_cb (NULL, NULL);
+	gm_main_window_set_call_hold (GTK_WIDGET (main_window), is_on_hold);
 	gnomemeeting_threads_leave ();
       }
 

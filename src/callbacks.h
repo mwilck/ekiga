@@ -43,14 +43,6 @@
 #include "common.h"
 
 
-/* DESCRIPTION  :  This callback is called when the user chooses to hold
- *                 a call.
- * BEHAVIOR     :  Hold the current call.
- * PRE          :  /
- */
-void hold_call_cb (GtkWidget *,
-		   gpointer);
-
 
 /* DESCRIPTION  :  This callback is called when the user chooses to forward
  *                 a call.
