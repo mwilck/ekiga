@@ -696,12 +696,12 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   /* Disable / enable buttons */
   gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame), FALSE);
-  gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), TRUE);
   gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_chan_button), FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (gw->silence_detection_button), FALSE);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->audio_chan_button), FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button), FALSE);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->video_chan_button), FALSE);
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->preview_button), FALSE);
 
   enable_disconnect ();
   enable_connect ();
@@ -709,6 +709,10 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   GM_init_main_interface_logo (gw);
   
   gdk_threads_leave ();
+
+  // Close the Video Grabber
+  GMVideoGrabber *vg = (GMVideoGrabber *) video_grabber;
+  vg->Close ();
 }
 
 
@@ -797,10 +801,22 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
    {
      GMVideoGrabber *vg = (GMVideoGrabber *) video_grabber;
 
+     if (!vg->IsOpened ())
+       {
+	 cout << "Not Opened" << endl<< flush;
+	 vg->Open ();
+       }
+
+     while (!vg->IsOpened ())
+       usleep (100);
+
+     cout << "Opened" << endl<< flush;
+
      PVideoChannel *channel = vg->Channel ();
      transmitted_video_device = vg->Device ();
      vg->StopGrabbing ();
-     
+
+     cout << "OK" << endl<< flush;
      DisplayConfig (0);
 
      return codec.AttachChannel (channel, FALSE);

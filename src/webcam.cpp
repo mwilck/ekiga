@@ -202,7 +202,9 @@ void GMVideoGrabber::VGOpen (void)
   gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame),
 			    TRUE);
 
-  gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), TRUE);
+  if (MyApp->Endpoint ()->CallingState () == 0)
+    gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), TRUE);
+
   gdk_threads_leave ();
 }
 
@@ -279,6 +281,7 @@ void GMVideoGrabber::StopGrabbing (void)
   grabbing = 0;
 
   grabbing_mutex.Wait ();
+  grabbing_mutex.Signal ();
 }
 
 
