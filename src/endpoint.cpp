@@ -700,7 +700,12 @@ GMH323EndPoint::TranslateTCPAddress(PIPSocket::Address &localAddr,
 
     /* Ignore Ip translation for local networks */
     if ( !((remoteAddr.Byte1() == 192) && (remoteAddr.Byte2() == 168))
-	 
+
+	 && !((remoteAddr.Byte1() == 127)
+	      &&(remoteAddr.Byte2()== 0)
+	      &&(remoteAddr.Byte3()==0)
+	      &&(remoteAddr.Byte4()==1))
+	         
 	 && !((remoteAddr.Byte1() == 172) 
 	      && ((remoteAddr.Byte2() >= 16)&&(remoteAddr.Byte2()<=31)))
 	 
