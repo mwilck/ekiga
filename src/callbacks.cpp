@@ -121,7 +121,7 @@ void about_callback (GtkWidget *widget, gpointer parent_window)
       "",
       N_("Code Contributors:"),
       "Kenneth Rohde Christiansen  <kenneth@gnu.org>",
-      "Miguel Rodriguez Perez <migrax@terra.es>",
+      "Miguel Rodríguez Pérez <migrax@terra.es>",
       "Paul <paul  at  argo dot dyndns dot org>", 
       "Roger Hardiman <roger at freebsd dot org>",
       "",
@@ -167,11 +167,7 @@ void about_callback (GtkWidget *widget, gpointer parent_window)
 
   abox = gnome_about_new ("GnomeMeeting",
 			  VERSION,
-			  /* Translators: Please change the (C) to a real
-			     copyright character if your character set allows
-			     it (Hint: iso-8859-1 is one of the character sets
-			     that has this symbol). */
-			  _("Copyright (C) 2000, 2002 Damien Sandras"),
+			  _("Copyright © 2000, 2002 Damien Sandras"),
                           /* Translators: Please test to see if your translation
                            * looks OK and fits within the box */
 			  _("GnomeMeeting is a full-featured H.323\nvideo conferencing application."),
