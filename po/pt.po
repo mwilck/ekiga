@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 2.2\n"
-"POT-Creation-Date: 2003-04-27 13:24+0100\n"
-"PO-Revision-Date: 2003-04-27 13:25+0000\n"
+"Project-Id-Version: 2.4\n"
+"POT-Creation-Date: 2003-05-07 01:54+0100\n"
+"PO-Revision-Date: 2003-05-07 01:59+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -86,7 +86,7 @@ msgstr "Formato Cor"
 msgid "Color Format for the video palette"
 msgstr "Formato de Cor para a paleta vídeo"
 
-#: gnomemeeting.schemas.in.in.h:14 src/ldap_window.cpp:1756
+#: gnomemeeting.schemas.in.in.h:14 src/ldap_window.cpp:2088
 msgid "Comment"
 msgstr "Comentário"
 
@@ -332,7 +332,7 @@ msgstr "Altura do Popup de Vídeo Local"
 msgid "Local Video Popup Width"
 msgstr "Largura do Popup de Vídeo Local"
 
-#: gnomemeeting.schemas.in.in.h:63 src/ldap_window.cpp:1767
+#: gnomemeeting.schemas.in.in.h:63 src/ldap_window.cpp:2099
 msgid "Location"
 msgstr "Localização"
 
@@ -764,7 +764,7 @@ msgstr "Tipo de Capacidade de Entrada de Utilizador"
 msgid "User directory"
 msgstr "Directório utilizador"
 
-#: gnomemeeting.schemas.in.in.h:142 src/ldap_window.cpp:1789
+#: gnomemeeting.schemas.in.in.h:142 src/ldap_window.cpp:2121
 msgid "Version"
 msgstr "Versão"
 
@@ -1002,19 +1002,19 @@ msgstr ""
 "  --fix-permissions      corrige permissões do repositório GConf (executar "
 "como root)"
 
-#: src/config.cpp:408
+#: src/config.cpp:410
 msgid "Changing this setting will only affect new calls"
 msgstr "Alterar esta configuração apenas afectará novas chamadas"
 
-#: src/config.cpp:590
+#: src/config.cpp:592
 msgid "Disabled Silence Detection"
 msgstr "Detecção de Silencio Desactiva"
 
-#: src/config.cpp:596
+#: src/config.cpp:598
 msgid "Enabled Silence Detection"
 msgstr "Detecção de Silencio Activa"
 
-#: src/config.cpp:1391
+#: src/config.cpp:1410
 msgid ""
 "You need to specify an host to forward calls to!\n"
 "Disabling forwarding."
@@ -1167,7 +1167,7 @@ msgid "_Surname:"
 msgstr "Ú_ltimo nome:"
 
 #. The callto url
-#: src/druid.cpp:660 src/ldap_window.cpp:1828
+#: src/druid.cpp:660 src/ldap_window.cpp:2160
 msgid "Callto URL"
 msgstr "URL Callto"
 
@@ -1384,204 +1384,203 @@ msgstr "Configuração terminada - página %d/%d"
 msgid "Forwarding Call to %s (No Answer)"
 msgstr "A Reencaminhar Chamada para %s (Sem Resposta)"
 
-#: src/endpoint.cpp:120 src/endpoint.cpp:1352
+#: src/endpoint.cpp:120 src/endpoint.cpp:1354
 msgid "Call forwarded"
 msgstr "Chamada reencaminhada"
 
 #. GM is started
-#: src/endpoint.cpp:215
+#: src/endpoint.cpp:216
 #, c-format
 msgid "Started GnomeMeeting V%d.%d for %s\n"
 msgstr "Iniciado GnomeMeeting V%d.%d para %s\n"
 
 #. Player is always a correct sound device, thanks to
 #. gnomemeeting_add_string_option_menu
-#: src/endpoint.cpp:301
+#: src/endpoint.cpp:302
 #, c-format
 msgid "Set Audio player device to %s"
 msgstr "Definir reprodução Audio para %s"
 
-#: src/endpoint.cpp:312
+#: src/endpoint.cpp:313
 #, c-format
 msgid "Set Audio recorder device to %s"
 msgstr "Definir gravação Audio para %s"
 
-#: src/endpoint.cpp:329
+#: src/endpoint.cpp:330
 msgid "Enabling H.245 Tunnelling"
 msgstr "A Activar Tunnelling H.245"
 
-#: src/endpoint.cpp:330
+#: src/endpoint.cpp:331
 msgid "Disabling H.245 Tunnelling"
 msgstr "A Desabilitar Tunnelling H.245"
 
-#: src/endpoint.cpp:340
+#: src/endpoint.cpp:341
 msgid "Enabling Fast Start"
 msgstr "A Activar Arranque Rápido"
 
-#: src/endpoint.cpp:341
+#: src/endpoint.cpp:342
 msgid "Disabling Fast Start"
 msgstr "A Desabilitar Arranque Rápido"
 
-#: src/endpoint.cpp:835
+#: src/endpoint.cpp:836
 #, c-format
 msgid "Forwarding Call to %s"
 msgstr "A Reencaminhar Chamada para %s"
 
-#: src/endpoint.cpp:848
+#: src/endpoint.cpp:849
 #, c-format
 msgid "Error forwarding call to %s"
 msgstr "Erro ao reencaminhar chamada para %s"
 
 #. Update the history and status bar
-#: src/endpoint.cpp:923
+#: src/endpoint.cpp:924
 #, c-format
 msgid "Call from %s using %s"
 msgstr "Chamada de %s a utilizar %s"
 
-#: src/endpoint.cpp:938
+#: src/endpoint.cpp:939
 #, c-format
 msgid "Forwarding Call from %s to %s (Forward All Calls)"
 msgstr "A Reencaminhar Chamada %s para %s (Reencaminhar Todas Chamadas)"
 
-#: src/endpoint.cpp:946
+#: src/endpoint.cpp:947
 #, c-format
 msgid "Auto Rejecting Incoming Call from %s (Do Not Disturb)"
 msgstr "Rejeitar Automaticamente Chamada Recebida de %s (Não Perturbar)"
 
-#: src/endpoint.cpp:958
+#: src/endpoint.cpp:959
 #, c-format
 msgid "Forwarding Call from %s to %s (Busy)"
 msgstr "A Reencaminhar Chamada %s para %s (Ocupado)"
 
 #. there is no forwarding, so reject the call
-#: src/endpoint.cpp:967
+#: src/endpoint.cpp:968
 #, c-format
 msgid "Auto Rejecting Incoming Call from %s (Busy)"
 msgstr "Rejeitar Automaticamente Chamada Recebida de %s (Ocupado)"
 
-#: src/endpoint.cpp:991
+#: src/endpoint.cpp:992
 msgid "Auto Rejected"
 msgstr "Rejeitada Automaticamente"
 
-#: src/endpoint.cpp:1000
+#: src/endpoint.cpp:1001
 msgid "Call Forwarded"
 msgstr "Chamada Reencaminhada"
 
-#: src/endpoint.cpp:1165
+#: src/endpoint.cpp:1166
 #, c-format
 msgid "Connected with %s using %s"
 msgstr "Ligado com %s a utilizar %s"
 
-#: src/endpoint.cpp:1167
+#: src/endpoint.cpp:1168
 msgid "Connected"
 msgstr "Ligado"
 
-#: src/endpoint.cpp:1170
+#: src/endpoint.cpp:1171
 msgid "Fast start disabled"
 msgstr "Arranque rápido desabilitado"
 
-#: src/endpoint.cpp:1171
+#: src/endpoint.cpp:1172
 msgid "Fast start enabled"
 msgstr "Arranque rápido activo"
 
-#: src/endpoint.cpp:1174
+#: src/endpoint.cpp:1175
 msgid "H.245 Tunnelling disabled"
 msgstr "Tunnelling H.245 desabilitado"
 
-#: src/endpoint.cpp:1175
+#: src/endpoint.cpp:1176
 msgid "H.245 Tunnelling enabled"
 msgstr "Tunnelling H.245 activo"
 
-#. Translators: the "s" is for "seconds"
-#: src/endpoint.cpp:1285
+#: src/endpoint.cpp:1287
 msgid "s"
 msgstr "s"
 
-#: src/endpoint.cpp:1316
+#: src/endpoint.cpp:1318
 msgid "Local user cleared the call"
 msgstr "Utilizador local limpou a chamada"
 
-#: src/endpoint.cpp:1319
+#: src/endpoint.cpp:1321
 msgid "Remote user cleared the call"
 msgstr "Utilizador remoto limpou a chamada"
 
-#: src/endpoint.cpp:1322 src/endpoint.cpp:1325
+#: src/endpoint.cpp:1324 src/endpoint.cpp:1327
 msgid "Remote user did not accept the call"
 msgstr "Utilizador remoto não aceitou a chamada"
 
-#: src/endpoint.cpp:1328
+#: src/endpoint.cpp:1330
 msgid "Local user did not accept the call"
 msgstr "Utilizador local não aceitou a chamada"
 
-#: src/endpoint.cpp:1331
+#: src/endpoint.cpp:1333
 msgid "The Gatekeeper cleared the call"
 msgstr "O Guardião limpou a chamada"
 
-#: src/endpoint.cpp:1334
+#: src/endpoint.cpp:1336
 msgid "Call not answered in the required time"
 msgstr "A chamada não foi atendida no tempo requerido"
 
-#: src/endpoint.cpp:1337
+#: src/endpoint.cpp:1339
 msgid "Remote user has stopped calling"
 msgstr "Utilizador remoto desligou a chamada"
 
-#: src/endpoint.cpp:1340
+#: src/endpoint.cpp:1342
 msgid "Abnormal call termination"
 msgstr "Terminação anormal da chamada"
 
-#: src/endpoint.cpp:1343
+#: src/endpoint.cpp:1345
 msgid "Could not connect to remote host"
 msgstr "Incapaz de se ligar ao servidor remoto"
 
-#: src/endpoint.cpp:1346
+#: src/endpoint.cpp:1348
 msgid "Insufficient bandwidth"
 msgstr "Largura de banda insuficiente"
 
-#: src/endpoint.cpp:1349
+#: src/endpoint.cpp:1351
 msgid "No common codec"
 msgstr "Nenhum codec comum"
 
-#: src/endpoint.cpp:1355
+#: src/endpoint.cpp:1357
 msgid "Security check Failed"
 msgstr "Falha na validação de segurança"
 
-#: src/endpoint.cpp:1358
+#: src/endpoint.cpp:1360
 msgid "Local user is busy"
 msgstr "Utilizador local está ocupado"
 
-#: src/endpoint.cpp:1361
+#: src/endpoint.cpp:1363
 msgid "Remote user is busy"
 msgstr "Utilizador remoto está ocupado"
 
-#: src/endpoint.cpp:1364 src/endpoint.cpp:1367
+#: src/endpoint.cpp:1366 src/endpoint.cpp:1369
 msgid "Congested link to remote party"
 msgstr "Ligação para entidade remota congestionada"
 
-#: src/endpoint.cpp:1370
+#: src/endpoint.cpp:1372
 msgid "Remote user is unreachable"
 msgstr "Utilizador remoto está inacessível"
 
-#: src/endpoint.cpp:1373
+#: src/endpoint.cpp:1375
 msgid "Remote user is not running GnomeMeeting"
 msgstr "Utilizador remoto não está a executar o GnomeMeeting"
 
-#: src/endpoint.cpp:1376
+#: src/endpoint.cpp:1378
 msgid "Remote host is offline"
 msgstr "Utilizador remoto está desligado"
 
-#: src/endpoint.cpp:1379
+#: src/endpoint.cpp:1381
 msgid "Temporary failure"
 msgstr "Falha temporária"
 
-#: src/endpoint.cpp:1382 src/urlhandler.cpp:181
+#: src/endpoint.cpp:1384 src/urlhandler.cpp:181
 msgid "User not found"
 msgstr "Utilizador não encontrado"
 
-#: src/endpoint.cpp:1386
+#: src/endpoint.cpp:1388
 msgid "Call completed"
 msgstr "Chamada terminada"
 
-#: src/endpoint.cpp:1485 src/main_window.cpp:1722
+#: src/endpoint.cpp:1487 src/main_window.cpp:1722
 msgid ""
 "Lost packets:\n"
 "Late packets:\n"
@@ -1593,11 +1592,11 @@ msgstr ""
 "Atraso de ida e volta:\n"
 "Buffer jitter:"
 
-#: src/endpoint.cpp:1656
+#: src/endpoint.cpp:1658
 msgid "Attaching lid hardware to codec"
 msgstr "A ligar junção de equipamento ao codec"
 
-#: src/endpoint.cpp:1669
+#: src/endpoint.cpp:1671
 msgid ""
 "Could not open audio channel for audio transmission (soundcard busy?).\n"
 "Disabling audio transmission."
@@ -1606,7 +1605,7 @@ msgstr ""
 "ocupada?).\n"
 "A desactivar transmissão audio."
 
-#: src/endpoint.cpp:1671
+#: src/endpoint.cpp:1673
 msgid ""
 "Could not open audio channel for audio reception (soundcard busy?).\n"
 "Disabling audio reception."
@@ -1759,129 +1758,177 @@ msgid "Failed to contact %s."
 msgstr "Falha ao contactar %s."
 
 #. Create the dialog to easily modify the info of a specific contact
-#: src/ldap_window.cpp:420
+#: src/ldap_window.cpp:459
 msgid "Edit the contact information"
 msgstr "Editar a informação do contacto"
 
-#: src/ldap_window.cpp:429
-msgid "Name:"
-msgstr "Nome:"
+#: src/ldap_window.cpp:472
+msgid "<b>Name:</b>"
+msgstr "<b>Nome:</b>"
 
-#: src/ldap_window.cpp:442
-msgid "callto URL:"
-msgstr "URL callto:"
+#: src/ldap_window.cpp:488
+msgid "<b>URL:</b>"
+msgstr "<b>URL:</b>"
 
-#: src/ldap_window.cpp:506
-msgid ""
-"Another user already exists with the same callto:// entry, please delete it "
-"first."
-msgstr ""
-"Já existe outro utilizador com a mesma entrada callto://, apague-a primeiro."
+#: src/ldap_window.cpp:509
+msgid "<b>Groups:</b>"
+msgstr "<b>Grupos:</b>"
 
-#: src/ldap_window.cpp:604
+#: src/ldap_window.cpp:580
+msgid "Please provide a valid name and callto for the user"
+msgstr "Indique um nome e callto válidos para o utilizador"
+
+#. User already in the
+#. selected group
+#: src/ldap_window.cpp:648
+#, c-format
+msgid "Another user with the callto %s already exists in group %s."
+msgstr "Já existe outro utilizador com o callto %s, no grupo %s."
+
+#: src/ldap_window.cpp:659
+msgid "You have to select a group to which you want to add your contact"
+msgstr "Tem de seleccionar um grupo ao qual adicionar o contacto"
+
+#: src/ldap_window.cpp:758
 msgid "Add a new server"
 msgstr "Adicionar novo servidor"
 
-#: src/ldap_window.cpp:605
+#: src/ldap_window.cpp:759
 msgid "Enter the server name:"
 msgstr "Introduza o nome do servidor:"
 
-#: src/ldap_window.cpp:610
+#: src/ldap_window.cpp:764
 msgid "Add a new group"
 msgstr "Adicionar novo grupo"
 
-#: src/ldap_window.cpp:611
+#: src/ldap_window.cpp:765
 msgid "Enter the group name:"
 msgstr "Introduza o nome do grupo:"
 
-#: src/ldap_window.cpp:1217
+#: src/ldap_window.cpp:1450
 msgid "New server"
 msgstr "Novo servidor"
 
-#: src/ldap_window.cpp:1226
+#: src/ldap_window.cpp:1459
 msgid "New group"
 msgstr "Novo grupo"
 
-#: src/ldap_window.cpp:1235
+#: src/ldap_window.cpp:1468
 msgid "_Refresh"
 msgstr "_Actualizar"
 
-#: src/ldap_window.cpp:1240 src/ldap_window.cpp:1254
+#: src/ldap_window.cpp:1473 src/ldap_window.cpp:1487
 msgid "Delete"
 msgstr "Apagar"
 
-#: src/ldap_window.cpp:1249
+#: src/ldap_window.cpp:1482
 msgid "New contact"
 msgstr "Novo contacto"
 
-#: src/ldap_window.cpp:1365
+#: src/ldap_window.cpp:1598
 msgid "Call this user"
 msgstr "Chamar este utilizador"
 
-#: src/ldap_window.cpp:1375
+#: src/ldap_window.cpp:1608
 msgid "Edit this user information"
 msgstr "Editar a informação deste utilizador"
 
-#: src/ldap_window.cpp:1382
+#: src/ldap_window.cpp:1615
 msgid "Delete this user"
 msgstr "Apagar este utilizador"
 
-#: src/ldap_window.cpp:1393
+#: src/ldap_window.cpp:1626
 msgid "Add to group"
 msgstr "Adicionar ao grupo"
 
-#: src/ldap_window.cpp:1492
+#: src/ldap_window.cpp:1727
 msgid "GnomeMeeting Addressbook"
 msgstr "Livro de Endereços GnomeMeeting"
 
-#: src/ldap_window.cpp:1522
-msgid "Contacts"
-msgstr "Contactos"
+#: src/ldap_window.cpp:1743 src/pref_window.cpp:1557
+msgid "Section"
+msgstr "Secção"
 
-#: src/ldap_window.cpp:1541
+#: src/ldap_window.cpp:1745
+msgid "New _server"
+msgstr "Novo _servidor"
+
+#: src/ldap_window.cpp:1750
+msgid "New _group"
+msgstr "Novo _grupo"
+
+#: src/ldap_window.cpp:1757
+msgid "_Delete section"
+msgstr "_Apagar secção"
+
+#: src/ldap_window.cpp:1763
+msgid "Close"
+msgstr "Fechar"
+
+#: src/ldap_window.cpp:1769
+msgid "C_ontact"
+msgstr "C_ontactos"
+
+#: src/ldap_window.cpp:1771
+msgid "New _contact"
+msgstr "Novo _contacto"
+
+#: src/ldap_window.cpp:1776
+msgid "Add _contact to address book"
+msgstr "Adicionar _contacto ao livro de endereços"
+
+#: src/ldap_window.cpp:1781
+msgid "Contact _properties"
+msgstr "_Propriedades do contacto"
+
+#: src/ldap_window.cpp:1787
+msgid "_Delete contact"
+msgstr "_Apagar contacto"
+
+#: src/ldap_window.cpp:1850
 msgid "Servers"
 msgstr "Servidores"
 
-#: src/ldap_window.cpp:1571
+#: src/ldap_window.cpp:1891
 msgid "Groups"
 msgstr "Grupos"
 
 #. Translators: This is "S" as in "Status"
-#: src/ldap_window.cpp:1713
+#: src/ldap_window.cpp:2045
 msgid "S"
 msgstr "E"
 
 #. Translators: This is "A" as in "Audio"
-#: src/ldap_window.cpp:1723 src/pref_window.cpp:1211
+#: src/ldap_window.cpp:2055 src/pref_window.cpp:1211
 msgid "A"
 msgstr "A"
 
 #. Translators: This is "V" as in "Video"
-#: src/ldap_window.cpp:1733
+#: src/ldap_window.cpp:2065
 msgid "V"
 msgstr "V"
 
-#: src/ldap_window.cpp:1742 src/ldap_window.cpp:1815 src/pref_window.cpp:1225
+#: src/ldap_window.cpp:2074 src/ldap_window.cpp:2147 src/pref_window.cpp:1225
 msgid "Name"
 msgstr "Nome"
 
-#: src/ldap_window.cpp:1777
+#: src/ldap_window.cpp:2109
 msgid "Callto"
 msgstr "Callto"
 
-#: src/ldap_window.cpp:1800 src/tools.cpp:163
+#: src/ldap_window.cpp:2132 src/tools.cpp:163
 msgid "IP"
 msgstr "IP"
 
-#: src/ldap_window.cpp:1862
+#: src/ldap_window.cpp:2194
 msgid "First name contains"
 msgstr "Primeiro nome contém"
 
-#: src/ldap_window.cpp:1866
+#: src/ldap_window.cpp:2198
 msgid "Last name contains"
 msgstr "Último nome contém"
 
-#: src/ldap_window.cpp:1870
+#: src/ldap_window.cpp:2202
 msgid "E-mail contains"
 msgstr "E-mail contém"
 
@@ -1925,9 +1972,9 @@ msgid ""
 "You have chosen to start GnomeMeeting hidden, however the notification area "
 "is not present in your panel, GnomeMeeting can thus not start hidden."
 msgstr ""
-"Seleccionou iniciar o GnomeMeeting escondido, no entanto a área de notificação "
-"não está presente no seu painel, pelo que o GnomeMeeting não pode ser iniciado "
-"escondido."
+"Seleccionou iniciar o GnomeMeeting escondido, no entanto a área de "
+"notificação não está presente no seu painel, pelo que o GnomeMeeting não "
+"pode ser iniciado escondido."
 
 #: src/main_window.cpp:517
 #, c-format
@@ -2747,10 +2794,6 @@ msgstr "Codecs Vídeo"
 msgid "Devices"
 msgstr "Dispositivos"
 
-#: src/pref_window.cpp:1557
-msgid "Section"
-msgstr "Secção"
-
 #: src/sound_handling.cpp:411
 #, c-format
 msgid ""
@@ -2977,6 +3020,19 @@ msgstr "O seu controlador vídeo não suporta o formato cor YUV420P"
 #: src/videograbber.cpp:738
 msgid "Tests OK!"
 msgstr "Testes OK!"
+
+#~ msgid "Name:"
+#~ msgstr "Nome:"
+
+#~ msgid "callto URL:"
+#~ msgstr "URL callto:"
+
+#~ msgid ""
+#~ "Another user already exists with the same callto:// entry, please delete "
+#~ "it first."
+#~ msgstr ""
+#~ "Já existe outro utilizador com a mesma entrada callto://, apague-a "
+#~ "primeiro."
 
 #~ msgid "Call duration: %.2ld:%.2ld:%.2ld"
 #~ msgstr "Duração da chamada: %.2ld:%.2ld:%.2ld"
