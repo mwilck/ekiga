@@ -1024,14 +1024,14 @@ gnomemeeting_init (GmWindow *gw,
   gnomemeeting_init_calls_history_window ();
 
   /* Launch the GnomeMeeting H.323 part */
-  static GnomeMeeting instance;
-  endpoint = MyApp->Endpoint ();
-
   gw->audio_player_devices = 
     PSoundChannel::GetDeviceNames (PSoundChannel::Player);
   gw->audio_recorder_devices = 
     PSoundChannel::GetDeviceNames (PSoundChannel::Recorder);
   gw->video_devices = PVideoInputDevice::GetInputDeviceNames ();
+
+  static GnomeMeeting instance;
+  endpoint = MyApp->Endpoint ();
 
   gnomemeeting_init_pref_window ();  
   gnomemeeting_init_ldap_window ();

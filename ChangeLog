@@ -1,5 +1,13 @@
 2002-11-12 Damien Sandras  <dsandras@seconix.com>
 
+	* src/endpoint.cpp: Fixed bug, the mic is now selected to record by
+	default.
+
+	* src/main_window.cpp: Reorganized startup sequence so that the correct
+	device is selected at the beginning.
+	
+2002-11-12 Damien Sandras  <dsandras@seconix.com>
+
 	* src/common.h: Added pointers needed for the stats drawing area.
 	
 	* src/config.cpp: Fixes to support the new tray menu system.

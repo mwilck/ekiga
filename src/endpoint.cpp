@@ -291,9 +291,9 @@ void GMH323EndPoint::UpdateConfig ()
 				 NULL);
       recorder_mixer = 
 	gconf_client_get_string (client, 
-				 "/apps/gnomemeeting/devices/audio_recorder", 
+				 "/apps/gnomemeeting/devices/audio_recorder_mixer", 
 				 NULL);
- 
+
 
       /* Is the choosen device detected? */
       for (int i = gw->audio_player_devices.GetSize () - 1; i >= 0; i--) {
