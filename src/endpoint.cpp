@@ -311,81 +311,86 @@ void GMH323EndPoint::AddAudioCapabilities ()
   
   codecs = g_strsplit (clist_data, ":", 0);
 
-  int g711_frames = gconf_client_get_int (client, "/apps/gnomemeeting/audio_settings/g711_frames", NULL);
-  int gsm_frames = gconf_client_get_int (client, "/apps/gnomemeeting/audio_settings/gsm_frames", NULL);
+  int g711_frames = 
+    gconf_client_get_int (client, "/apps/gnomemeeting/audio_settings/g711_frames", NULL);
+  int gsm_frames = 
+    gconf_client_get_int (client, "/apps/gnomemeeting/audio_settings/gsm_frames", NULL);
 
 
   /* Let's go */
-  for (int i = 0 ; codecs [i] != NULL ; i++) {
+  for (int i = 0 ; ((codecs [i] != NULL) && (i < GM_AUDIO_CODECS_NUMBER)) ; i++) {
     
     gchar **couple = g_strsplit (codecs [i], "=", 0);
 
-    if ((!strcmp (couple [0], "MS-GSM")) && (!strcmp (couple [1], "1"))) {
-      
-      MicrosoftGSMAudioCapability* gsm_capa; 
-      
-      SetCapability (0, 0, gsm_capa = new MicrosoftGSMAudioCapability);
-      codecs_count++;  
-      gsm_capa->SetTxFramesInPacket (gsm_frames);
-    }
+    if ((couple [0] != NULL)&&(couple [1] != NULL)) {
 
-    if ((!strcmp (couple [0], "G.711-uLaw-64k"))&&(!strcmp (couple [1], "1"))) {
+      if ((!strcmp (couple [0], "MS-GSM")) && (!strcmp (couple [1], "1"))) {
       
-      H323_G711Capability *g711_capa; 
+	MicrosoftGSMAudioCapability* gsm_capa; 
       
-      SetCapability (0, 0, g711_capa = new H323_G711Capability 
-		     (H323_G711Capability::muLaw));
-      codecs_count++;
-      g711_capa->SetTxFramesInPacket (g711_frames);
-    }
+	SetCapability (0, 0, gsm_capa = new MicrosoftGSMAudioCapability);
+	codecs_count++;  
+	gsm_capa->SetTxFramesInPacket (gsm_frames);
+      }
 
-    if ((!strcmp (couple [0], "G.711-ALaw-64k"))&&(!strcmp (couple [1], "1"))) {
+      if ((!strcmp (couple [0], "G.711-uLaw-64k"))&&(!strcmp (couple [1], "1"))) {
+	
+	H323_G711Capability *g711_capa; 
       
-      H323_G711Capability *g711_capa; 
+	SetCapability (0, 0, g711_capa = new H323_G711Capability 
+		       (H323_G711Capability::muLaw));
+	codecs_count++;
+	g711_capa->SetTxFramesInPacket (g711_frames);
+      }
+
+      if ((!strcmp (couple [0], "G.711-ALaw-64k"))&&(!strcmp (couple [1], "1"))) {
+	
+	H323_G711Capability *g711_capa; 
+	
+	SetCapability (0, 0, g711_capa = new H323_G711Capability 
+		       (H323_G711Capability::ALaw));
+	codecs_count++;
+	g711_capa->SetTxFramesInPacket (g711_frames);
+      }
       
-      SetCapability (0, 0, g711_capa = new H323_G711Capability 
-		     (H323_G711Capability::ALaw));
-      codecs_count++;
-      g711_capa->SetTxFramesInPacket (g711_frames);
-    }
+      if ((!strcmp (couple [0], "GSM-06.10"))&&(!strcmp (couple [1], "1"))) {
+	
+	H323_GSM0610Capability * gsm_capa; 
+	
+	SetCapability (0, 0, gsm_capa = new H323_GSM0610Capability);	
+	codecs_count++;
+	
+	gsm_capa->SetTxFramesInPacket (gsm_frames);
+      }
+      
+      if ((!strcmp (couple [0], "G.726-16k"))&&(!strcmp (couple [1], "1"))) {
+	
+	H323_G726_Capability * g72616_capa; 
+	
+	SetCapability (0, 0, g72616_capa = 
+		       new H323_G726_Capability (*this, H323_G726_Capability::e_16k));
+	codecs_count++;
+      }
+      
+      if ((!strcmp (couple [0], "G.726-32k"))&&(!strcmp (couple [1], "1"))) {
+	
+	H323_G726_Capability * g72632_capa; 
+	
+	SetCapability (0, 0, g72632_capa = 
+		       new H323_G726_Capability (*this, H323_G726_Capability::e_32k));	
+	codecs_count++;
+      }
+
+      if ((!strcmp (couple [0], "LPC10"))&&(!strcmp (couple [1], "1"))) {
+	
+	SetCapability(0, 0, new H323_LPC10Capability (*this));
+	codecs_count++;
+      }
     
-    if ((!strcmp (couple [0], "GSM-06.10"))&&(!strcmp (couple [1], "1"))) {
-      
-      H323_GSM0610Capability * gsm_capa; 
-      
-      SetCapability (0, 0, gsm_capa = new H323_GSM0610Capability);	
-      codecs_count++;
+      g_strfreev (couple);
+    }	
+  }
 
-      gsm_capa->SetTxFramesInPacket (gsm_frames);
-    }
-
-    if ((!strcmp (couple [0], "G.726-16k"))&&(!strcmp (couple [1], "1"))) {
-      
-      H323_G726_Capability * g72616_capa; 
-      
-      SetCapability (0, 0, g72616_capa = 
-		     new H323_G726_Capability (*this, H323_G726_Capability::e_16k));
-      codecs_count++;
-    }
-
-    if ((!strcmp (couple [0], "G.726-32k"))&&(!strcmp (couple [1], "1"))) {
-      
-      H323_G726_Capability * g72632_capa; 
-      
-      SetCapability (0, 0, g72632_capa = 
-		     new H323_G726_Capability (*this, H323_G726_Capability::e_32k));	
-      codecs_count++;
-    }
-
-    if ((!strcmp (couple [0], "LPC10"))&&(!strcmp (couple [1], "1"))) {
-      
-      SetCapability(0, 0, new H323_LPC10Capability (*this));
-      codecs_count++;
-    }
-    
-    g_strfreev (couple);
-  }	
-  
   g_strfreev (codecs);
   g_free (clist_data);
 }
@@ -519,7 +524,7 @@ H323AudioCodec *GMH323EndPoint::GetCurrentAudioCodec (void)
 	
 	H323Codec * raw_codec  = channel->GetCodec();
 
-	if (raw_codec->IsDescendant (H323VideoCodec::Class())) {
+	if (raw_codec->IsDescendant (H323AudioCodec::Class())) {
 	  
 	  audio_codec = (H323AudioCodec *) raw_codec;
 	}

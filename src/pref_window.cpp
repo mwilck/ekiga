@@ -58,18 +58,30 @@ extern GnomeMeeting *MyApp;
 static void pref_window_clicked_callback (GnomeDialog *, int, gpointer);
 static gint pref_window_destroy_callback (GtkWidget *, gpointer);
 static void personal_data_update_button_clicked (GtkWidget *, gpointer);
-static void codecs_clist_button_clicked_callback (GtkWidget *, gpointer);
-static void codecs_clist_row_selected_callback (GtkWidget *, gint, gint, 
-						GdkEventButton *, gpointer);
+static void codecs_list_button_clicked_callback (GtkWidget *, gpointer);
+static void gnomemeeting_codecs_list_add (GtkTreeIter, GtkListStore *, const gchar *, bool);
+
+static void codecs_list_fixed_toggled (GtkCellRendererToggle *, gchar *, gpointer);
 static void menu_ctree_row_seletected_callback (GtkWidget *, gint, gint, 
 						GdkEventButton *, gpointer);
+
 
 static void gnomemeeting_init_pref_window_general (GtkWidget *);
 static void gnomemeeting_init_pref_window_interface (GtkWidget *);
 static void gnomemeeting_init_pref_window_directories (GtkWidget *);
 static void gnomemeeting_init_pref_window_devices (GtkWidget *);
 static void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *);
-static void gnomemeeting_init_pref_window_codecs_settings (GtkWidget *);
+static void gnomemeeting_init_pref_window_video_codecs (GtkWidget *);
+
+
+enum {
+  
+  COLUMN_ACTIVE,
+  COLUMN_NAME,
+  COLUMN_INFO,
+  COLUMN_BANDWIDTH,
+  COLUMN_NUMBER
+};
 
 
 /* GTK Callbacks */
@@ -174,124 +186,110 @@ static void personal_data_update_button_clicked (GtkWidget *widget,
 
 /* DESCRIPTION  :  This callback is called when the user clicks
  *                 on a button in the Audio Codecs Settings 
- *                 (Add, Del, Up, Down)
- * BEHAVIOR     :  It updates the clist order or the clist data following the
- *                 operation (Up => up, Add => changes row pixmap and set
- *                 row data to 1)
- * PRE          :  gpointer is a valid pointer to a gchar * containing
- *                 the operation (Add / Del / Up / Down)
+ *                 (Up, Down)
+ * BEHAVIOR     :  It updates the list order.
+ * PRE          :  /
  */
-static void codecs_clist_button_clicked_callback (GtkWidget *widget, 
-						  gpointer data)
-{ 		
+static void codecs_list_button_clicked_callback (GtkWidget *widget, 
+						 gpointer data)
+{ 	
+  GConfClient *client = NULL;
+  GtkTreeIter iter;
+  GtkTreeView *tree_view = NULL;
+  GtkTreeSelection *selection = NULL;
   gchar *codec_name = NULL;
-  gchar *gconf_key = 0;
+  gchar *gconf_data = NULL;
+  gchar *selected_codec_name = NULL;
+  gchar *codecs_data = NULL;
+  gchar **codecs;
+  gchar *temp = NULL;
+  gchar *tmp =NULL;
+  int codec_pos = 0;
+  int cpt = 0;
+  int operation = 0;
 
-  int i = 0;
+  client = gconf_client_get_default ();
+  gconf_data = g_strdup ("");
 
-  GdkPixmap *yes, *no;
-  GdkBitmap *mask_yes, *mask_no;
-
-  GM_pref_window_widgets *pw = (GM_pref_window_widgets *) data;
-  GConfClient *client = gconf_client_get_default ();
-
-  gchar *row_data = NULL;   /* Do not free, this is not a copy which is stored,
-			       but a copy of the pointer itself */
-  gchar *old_row_data = NULL;
-
-  row_data = (gchar *) g_malloc (3);
- 
-  cout << "FIXME: pref_window.cpp: 224" << endl << flush;
- //  gnome_stock_pixmap_gdk (GNOME_STOCK_BUTTON_APPLY,
-// 			  NULL, &yes, &mask_yes);
-
-//   gnome_stock_pixmap_gdk (GNOME_STOCK_BUTTON_CANCEL,
-// 			  NULL, &no, &mask_no);
-
-
-  if (!strcmp ((char *) gtk_object_get_data (GTK_OBJECT (widget), "operation"), 
-	       "Add")) {
-    gtk_clist_set_pixmap (GTK_CLIST (pw->clist_avail), pw->row_avail, 
-			  0, yes, mask_yes);
-   
-    /* First we free the old row data */
-    old_row_data = (gchar *) 
-      gtk_clist_get_row_data (GTK_CLIST (pw->clist_avail), pw->row_avail);
-    g_free (old_row_data);
-
-    /* Second, we set the new data */
-    strcpy (row_data, "1");
-    gtk_clist_set_row_data (GTK_CLIST (pw->clist_avail), pw->row_avail, 
-			    (gpointer) row_data);
-  }
-
-  if (!strcmp ((char *) gtk_object_get_data (GTK_OBJECT (widget), "operation"), 
-	       "Del")) {
-    gtk_clist_set_pixmap (GTK_CLIST (pw->clist_avail), pw->row_avail, 
-			  0, no, mask_no);
-
-    /* First we free the old row data */
-    old_row_data = (gchar *)
-      gtk_clist_get_row_data (GTK_CLIST (pw->clist_avail), pw->row_avail);
-    g_free (old_row_data);
-
-    /* Second, we set the new data */
-    strcpy (row_data, "0");
-    gtk_clist_set_row_data (GTK_CLIST (pw->clist_avail), pw->row_avail, 
-			    (gpointer) row_data);
-  }
+  /* Get the current selected codec name, there is always one */
+  tree_view = GTK_TREE_VIEW (g_object_get_data (G_OBJECT (data), "tree_view"));
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view));
   
-  if (!strcmp ((char *) gtk_object_get_data (GTK_OBJECT (widget), "operation"), 
-	       "Up")) {
-    gtk_clist_row_move (GTK_CLIST (pw->clist_avail), pw->row_avail, 
-			pw->row_avail - 1);
-    if (pw->row_avail > 0) pw->row_avail--;
+  gtk_tree_selection_get_selected (GTK_TREE_SELECTION (selection), NULL,
+				   &iter);
+  gtk_tree_model_get (GTK_TREE_MODEL (data), &iter,
+		      COLUMN_NAME, &selected_codec_name, -1);
+
+  /* We set the selected codec name as data of the list store, to select it again
+     once the codecs list has been rebuilt */
+  g_object_set_data (G_OBJECT (data), "selected_codec", 
+		     (gpointer) selected_codec_name); /* the gchar * must not be freed,
+							 it points to the internal
+							 element of the list_store */
+			  
+  /* Read all codecs, build the gconf data for the key, after having set the selected codec
+     one row above its current plance */
+  codecs_data = gconf_client_get_string (client, 
+					 "/apps/gnomemeeting/audio_codecs/list", NULL);
+
+  /* We are adding the codecs */
+  codecs = g_strsplit (codecs_data, ":", 0);
+
+  for (cpt = 0 ; ((codecs [cpt] != NULL) && (cpt < GM_AUDIO_CODECS_NUMBER)) ; cpt++) {
+
+    gchar **couple = g_strsplit (codecs [cpt], "=", 0);
+
+    if (couple [0])
+      if (!strcmp (couple [0], selected_codec_name)) codec_pos = cpt;
+
+    g_strfreev (couple);
   }
-  
-  if (!strcmp ((char *) gtk_object_get_data (GTK_OBJECT (widget), "operation"), 
-	       "Down")) {
-    gtk_clist_row_move (GTK_CLIST (pw->clist_avail), pw->row_avail, 
-			pw->row_avail + 1);
-    if (pw->row_avail < GTK_CLIST (pw->clist_avail)->rows - 1) pw->row_avail++;
+
+  if (!strcmp ((gchar *) g_object_get_data (G_OBJECT (widget), "operation"), "up"))
+    operation = 1;
+
+  /* The selected codec is at pos codec_pos, we will build the gconf key data,
+     and set that codec one pos up or one pos down */
+  if (((codec_pos == 0)&&(operation == 1))||
+      ((codec_pos == GM_AUDIO_CODECS_NUMBER - 1)&&(operation == 0))) {
+
+    g_strfreev (codecs);
+    g_free (codecs_data);
+    g_free (gconf_data);
+
+    return;
   }
 
+  if (operation == 1) {
 
-  /* We have modified the GTK_CLIST, and we will now read it to
-     update the gconf string in the gconf cache */
-  while (gtk_clist_get_text  (GTK_CLIST (pw->clist_avail), i, 1, &codec_name)) {
-    gchar *entry = g_strconcat (codec_name, "=", gtk_clist_get_row_data (GTK_CLIST (pw->clist_avail),
-									 i),
-				NULL);
-    gchar *temp = g_strjoin ((gconf_key) ? (":") : (""),
-			     (gconf_key) ? (gconf_key) : (""), entry, NULL);
-    g_free (entry);
-    if (gconf_key)
-      g_free (gconf_key);
-    gconf_key = temp;
-    i++;
+    temp = codecs [codec_pos - 1];
+    codecs [codec_pos - 1] = codecs [codec_pos];
+    codecs [codec_pos] = temp;
+  }
+  else {
+
+    temp = codecs [codec_pos + 1];
+    codecs [codec_pos + 1] = codecs [codec_pos];
+    codecs [codec_pos] = temp;
   }
 
-  gconf_client_set_string (GCONF_CLIENT (client),
-			   "/apps/gnomemeeting/audio_codecs/list",
-			   gconf_key, NULL);
+  for (cpt = 0 ; cpt < GM_AUDIO_CODECS_NUMBER ; cpt++) {
 
-  g_free (gconf_key);
-}
+    tmp = g_strconcat (gconf_data, codecs [cpt], ":",  NULL);
 
+    if (gconf_data)
+      g_free (gconf_data);
 
-/* DESCRIPTION  :  This callback is called when the user clicks
- *                 on a row of the codecs clist in the Audio Codecs Settings
- * BEHAVIOR     :  It updates the GM_pref_window_widgets * content (row_avail
- *                 field is set to the last selected row)
- * PRE          :  gpointer is a valid pointer to the GM_pref_window_widgets
- */
-static void codecs_clist_row_selected_callback (GtkWidget *widget, gint row, 
-						gint column, 
-						GdkEventButton *event, 
-						gpointer data)
-{
-  GM_pref_window_widgets *pw = (GM_pref_window_widgets *) data;
-  pw->row_avail = row;		
+    gconf_data = tmp;
+    /* do not free codecs, they are pointers to the list_store fields */
+  }
+  g_strfreev (codecs);
+  g_free (codecs_data);
+
+  gconf_client_set_string (client, "/apps/gnomemeeting/audio_codecs/list", 
+			   gconf_data, NULL);
+
+  g_free (gconf_data);
 }
 
 
@@ -383,6 +381,236 @@ void string_option_menu_changed (GtkWidget *menu, gpointer data)
 
   gconf_client_set_string (GCONF_CLIENT (client),
 			   key, text, NULL);
+}
+
+
+static void 
+gnomemeeting_codecs_list_add (GtkTreeIter iter, GtkListStore *store, 
+			      const gchar *codec_name, bool enabled)
+{
+  gchar *data [3];
+
+  data [0] = g_strdup (codec_name);
+
+  if (!strcmp (codec_name, "LPC10")) {
+      data [1] = g_strdup (_("Okay"));
+      data [2] = g_strdup ("3.46 kb");
+  }
+
+  if (!strcmp (codec_name, "MS-GSM")) {
+      data [1] = g_strdup (_("Good Quality"));
+      data [2] = g_strdup ("13 kbits");
+  }
+
+  if (!strcmp (codec_name, "G.711-ALaw-64k")) {
+    data [1] = g_strdup (_("Good Quality"));
+    data [2] = g_strdup ("64 kbits");
+  }
+
+  if (!strcmp (codec_name, "G.711-uLaw-64k")) {
+    data [1] = g_strdup (_("Good Quality"));
+    data [2] = g_strdup ("64 kbits");
+  }
+
+  if (!strcmp (codec_name, "GSM-06.10")) {
+    data [1] = g_strdup (_("Good Quality"));
+    data [2] = g_strdup ("16.5 kbits");
+  }
+
+  if (!strcmp (codec_name, "GSM-06.10")) {
+    data [1] = g_strdup (_("Good Quality"));
+    data [2] = g_strdup ("16.5 kbits");
+  }
+
+  if (!strcmp (codec_name, "G.726-16k")) {
+    data [1] = g_strdup (_("Good Quality"));
+    data [2] = g_strdup ("16 kbits");
+  }
+
+  if (!strcmp (codec_name, "G.726-32k")) {
+    data [1] = g_strdup (_("OKay"));
+    data [2] = g_strdup ("32 kbits");
+  }
+
+  gtk_list_store_append (store, &iter);
+  gtk_list_store_set (store, &iter,
+		      COLUMN_ACTIVE, enabled,
+		      COLUMN_NAME, data [0],
+		      COLUMN_INFO, data [1],
+		      COLUMN_BANDWIDTH, data [2],
+		      -1);
+
+  g_free (data [0]);
+  g_free (data [1]);
+  g_free (data [2]);
+}
+
+
+static void
+codecs_list_fixed_toggled (GtkCellRendererToggle *cell, gchar *path_str, gpointer data)
+{
+  GtkTreeModel *model = (GtkTreeModel *) data;
+  GtkTreePath *path = gtk_tree_path_new_from_string (path_str);
+  GtkTreeIter iter;
+  gchar **codecs, **couple;
+  gchar *codecs_data = NULL;
+  gchar *tmp = NULL;
+  gchar *gconf_data = NULL;
+  GConfClient *client = NULL;
+  gboolean fixed;
+  gchar *selected_codec_name = NULL;
+  int cpt = 0;
+
+  gconf_data = g_strdup ("");
+  client = gconf_client_get_default ();
+
+  /* get toggled iter */
+  gtk_tree_model_get_iter (model, &iter, path);
+  gtk_tree_model_get (model, &iter, COLUMN_ACTIVE, &fixed, -1);
+  gtk_tree_model_get (model, &iter, COLUMN_NAME, &selected_codec_name, -1);
+  fixed ^= 1;
+  gtk_tree_path_free (path);
+
+  /* We set the selected codec name as data of the list store, to select it again
+     once the codecs list has been rebuilt */
+  g_object_set_data (G_OBJECT (data), "selected_codec", 
+		     (gpointer) selected_codec_name); /* Stores a copy of the pointer,
+							 the gchar * must not be freed,
+							 as it points to the list_store
+							 element */
+
+  /* Read all codecs, build the gconf data for the key, after having set the selected codec
+     one row above its current plance */
+  codecs_data = gconf_client_get_string (client, 
+					 "/apps/gnomemeeting/audio_codecs/list", NULL);
+
+  /* We are reading the codecs */
+  codecs = g_strsplit (codecs_data, ":", 0);
+
+  for (cpt = 0 ; ((codecs [cpt] != NULL) && (cpt < GM_AUDIO_CODECS_NUMBER)) ; cpt++) {
+
+    couple = g_strsplit (codecs [cpt], "=", 0);
+
+    if (couple [0])
+      if (!strcmp (couple [0], selected_codec_name)) {
+
+	g_free (couple [1]);
+	couple [1] = g_strdup_printf ("%d", (int) fixed);
+	codecs [cpt] = g_strconcat (couple [0], "=", couple [1],  NULL);
+	g_strfreev (couple);
+      }
+  }  
+
+  /* Rebuilt the gconf_key with the update values */
+  for (cpt = 0 ; cpt < GM_AUDIO_CODECS_NUMBER ; cpt++) {
+
+    tmp = g_strconcat (gconf_data, codecs [cpt], ":",  NULL);
+
+    if (gconf_data)
+      g_free (gconf_data);
+
+    gconf_data = tmp;
+    /* do not free codecs, they are pointers to the list_store fields */
+  }
+  g_strfreev (codecs);
+  g_free (codecs_data);
+
+  gconf_client_set_string (client, "/apps/gnomemeeting/audio_codecs/list", 
+			   gconf_data, NULL);
+
+  g_free (gconf_data);
+}
+
+
+/* Misc functions */
+void gnomemeeting_codecs_list_build (GtkListStore *codecs_list_store, 
+				     gchar *codecs_data)
+{
+  GtkTreeView *tree_view = NULL;
+  GtkTreeSelection *selection = NULL;
+  GtkTreePath *tree_path = NULL;
+  GtkTreeIter list_iter;
+  int selected_row = 0;
+  gchar *cselect_row;
+
+  static const gchar * const available_codecs[] = {
+    "GSM-06.10",
+    "MS-GSM",
+    "G.726-16k",
+    "G.726-32k",
+    "G.711-uLaw-64k",
+    "G.711-ALaw-64k",
+    "LPC10",
+    NULL
+  };
+
+  gchar *selected_codec = NULL;
+  gchar **codecs;
+
+  selected_codec = (gchar *) g_object_get_data (G_OBJECT (codecs_list_store), 
+						"selected_codec");
+
+  gtk_list_store_clear (GTK_LIST_STORE (codecs_list_store));
+
+  /* We are adding the codecs */
+  codecs = g_strsplit (codecs_data, ":", 0);
+
+  for (int i = 0 ; ((codecs [i] != NULL) && (i < GM_AUDIO_CODECS_NUMBER)) ; i++) {
+
+    gchar **couple = g_strsplit (codecs [i], "=", 0);
+
+    if ((couple [0] != NULL) && (couple [1] != NULL)) {
+
+      gnomemeeting_codecs_list_add (list_iter, codecs_list_store, 
+				    couple [0], atoi (couple [1])); 
+
+      /* Select the iter for the row corresponding to the last selected codec */
+      if ((selected_codec) && (!strcmp (couple [0], selected_codec))) {
+      
+	selected_row = i;
+      }
+    }
+
+    g_strfreev (couple);
+  }
+
+  /* This algo needs to be improved */
+  for (int i = 0; available_codecs[i] != NULL; i++) {
+    bool found = false;
+
+    for (int j = 0; ((codecs[j] != NULL) && (j < GM_AUDIO_CODECS_NUMBER)) ; j++) {
+      
+      gchar **couple = g_strsplit (codecs[j], "=", 0);
+
+      if ((couple [0] != NULL) && (couple [1] != NULL))
+	if (!strcmp (available_codecs[i], couple[0])) {
+
+	  found = true;
+	  g_strfreev (couple);
+	  
+	  break;
+	}
+
+      g_strfreev (couple);
+    }
+    
+    if (!found) 
+      gnomemeeting_codecs_list_add (list_iter, codecs_list_store, available_codecs [i], 0); 
+
+  }
+
+  g_strfreev (codecs);
+
+  cselect_row = g_strdup_printf("%d", selected_row);
+  tree_path = gtk_tree_path_new_from_string (cselect_row);
+  tree_view = GTK_TREE_VIEW (g_object_get_data (G_OBJECT (codecs_list_store), 
+						      "tree_view"));
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view));
+	
+  gtk_tree_selection_select_path (GTK_TREE_SELECTION (selection), tree_path);
+
+  g_free (cselect_row);
+  gtk_tree_path_free (tree_path);
 }
 
 
@@ -1066,40 +1294,218 @@ static void gnomemeeting_init_pref_window_devices (GtkWidget *notebook)
 
 }
 
+
+/* BEHAVIOR     :  It builds the notebook page for audio codecs settings and        
+ *                 add it to the notebook.                                     
+ * PRE          :  The notebook.                                               
+ */                                                                            
+void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)               
+{                                                                              
+  GtkWidget *vbox = NULL;                                                      
+  GtkWidget *table = NULL;                                                     
+  GtkWidget *button = NULL;
+  GtkWidget *frame = NULL;
+
+  gchar *codecs_data = NULL;
+  
+  /* For the GTK TreeView */
+  GtkWidget *tree_view;
+  GtkTreePath *tree_path;
+  GtkTreeViewColumn *column;
+  GtkCellRenderer *renderer;                        
+                                                       
+
+  /* Get the data */                                                           
+  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
+  GConfClient *client = gconf_client_get_default ();
+
+
+  /* Packing widgets */                                                        
+  vbox = gnomemeeting_pref_window_build_page (notebook, _("Audio Codecs"));   
+  table = gnomemeeting_pref_window_add_table (vbox, _("Available Audio Codecs"), 2, 2);
+
+  pw->codecs_list_store = gtk_list_store_new (COLUMN_NUMBER,
+					      G_TYPE_BOOLEAN,
+					      G_TYPE_STRING,
+					      G_TYPE_STRING,
+					      G_TYPE_STRING);
+
+  tree_view = 
+    gtk_tree_view_new_with_model (GTK_TREE_MODEL (pw->codecs_list_store));
+  gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (tree_view), TRUE);
+  gtk_tree_view_set_search_column (GTK_TREE_VIEW (tree_view),
+				   COLUMN_FIRSTNAME);
+  
+  frame = gtk_frame_new (NULL);
+  gtk_container_set_border_width (GTK_CONTAINER (frame), 2*GNOMEMEETING_PAD_SMALL);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
+  gtk_container_add (GTK_CONTAINER (frame), tree_view);
+  gtk_container_set_border_width (GTK_CONTAINER (tree_view), 0);
+
+
+  /* Set all Colums */
+  renderer = gtk_cell_renderer_toggle_new ();
+  column = gtk_tree_view_column_new_with_attributes (_("A"),
+						     renderer,
+						     "active", 
+						     COLUMN_ACTIVE,
+						     NULL);
+  gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 25);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+  g_signal_connect (G_OBJECT (renderer), "toggled",
+		    G_CALLBACK (codecs_list_fixed_toggled), 
+		    GTK_TREE_MODEL (pw->codecs_list_store));
+
+  renderer = gtk_cell_renderer_text_new ();
+  column = gtk_tree_view_column_new_with_attributes (_("Name"),
+						     renderer,
+						     "text", 
+						     COLUMN_NAME,
+						     NULL);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+
+  renderer = gtk_cell_renderer_text_new ();
+  column = gtk_tree_view_column_new_with_attributes (_("Info"),
+						     renderer,
+						     "text", 
+						     COLUMN_INFO,
+						     NULL);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+
+  renderer = gtk_cell_renderer_text_new ();
+  column = gtk_tree_view_column_new_with_attributes (_("Bandwidth"),
+						     renderer,
+						     "text", 
+						     COLUMN_BANDWIDTH,
+						     NULL);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+
+  g_object_set_data (G_OBJECT (pw->codecs_list_store), "tree_view", (gpointer) tree_view);
+
+
+  /* Here we add the codec buts in the order they are in the config file */
+  codecs_data = gconf_client_get_string (client, 
+					 "/apps/gnomemeeting/audio_codecs/list", NULL);
+
+  gtk_table_attach (GTK_TABLE (table),  frame, 0, 1, 0, 2,        
+                    (GtkAttachOptions) (GTK_EXPAND),                           
+                    (GtkAttachOptions) (GTK_EXPAND),                           
+                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);           
+
+  gnomemeeting_codecs_list_build (pw->codecs_list_store, codecs_data);
+
+
+  button = gtk_button_new_from_stock (GTK_STOCK_GO_UP);
+  gtk_table_attach (GTK_TABLE (table),  button, 1, 2, 0, 1,        
+                    (GtkAttachOptions) NULL,                           
+                    (GtkAttachOptions) NULL,        
+                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);           
+  g_object_set_data (G_OBJECT (button), "operation", (gpointer) "up");
+  gtk_widget_set_size_request (GTK_WIDGET (button), 70, 30);
+  gtk_container_set_border_width (GTK_CONTAINER (button), GNOMEMEETING_PAD_SMALL);
+  g_signal_connect (G_OBJECT (button), "clicked",
+		    G_CALLBACK (codecs_list_button_clicked_callback), 
+		    GTK_TREE_MODEL (pw->codecs_list_store));
+
+  button = gtk_button_new_from_stock (GTK_STOCK_GO_DOWN);
+  gtk_table_attach (GTK_TABLE (table),  button, 1, 2, 1, 2,        
+                    (GtkAttachOptions) NULL,                           
+                    (GtkAttachOptions) NULL,
+                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);  
+  g_object_set_data (G_OBJECT (button), "operation", (gpointer) "down");         
+  gtk_widget_set_size_request (GTK_WIDGET (button), 70, 30);
+  gtk_container_set_border_width (GTK_CONTAINER (button), GNOMEMEETING_PAD_SMALL);
+  g_signal_connect (G_OBJECT (button), "clicked",
+		    G_CALLBACK (codecs_list_button_clicked_callback), 
+		    GTK_TREE_MODEL (pw->codecs_list_store));
+
+  gtk_widget_show_all (frame);
+
+
+  /* Here we add the audio codecs options */
+  table = gnomemeeting_pref_window_add_table (vbox, _("Audio Codecs Settings"), 4, 2);
+
+  /* Jitter Buffer */
+  pw->jitter_buffer =
+     gnomemeeting_pref_window_add_spin (table, _("Jitter Buffer:"),       
+ 				       "/apps/gnomemeeting/audio_settings/jitter_buffer",
+					_("The jitter buffer delay to buffer audio calls (in ms)."),
+ 				       20.0, 5000.0, 1.0, 1);
+
+  pw->gsm_frames =
+     gnomemeeting_pref_window_add_spin (table, _("GSM Frames per packet:"),       
+ 				       "/apps/gnomemeeting/audio_settings/gsm_frames",
+					_("The number of frames in each transmitted GSM packet."),
+ 				       1.0, 7.0, 1.0, 2);
+
+  pw->g711_frames =
+     gnomemeeting_pref_window_add_spin (table, _("G.711 Frames per packet:"),       
+ 				       "/apps/gnomemeeting/audio_settings/g711_frames",
+					_("The number of frames in each transmitted G.711 packet."),
+ 				       11.0, 240.0, 1.0, 3);
+
+  pw->sd = 
+    gnomemeeting_pref_window_add_toggle (table, _("Enable Silence Detection"),       
+ 				       "/apps/gnomemeeting/audio_settings/sd",
+					_("Enable or not the silence detection for the GSM and G.711 codecs."), 4, 0);
+}
                                                                                
-/* BEHAVIOR     :  It builds the notebook page for the device settings and
- *                 add it to the notebook, default values are set from the
- *                 options struct given as parameter.
- * PRE          :  See init_pref_audio_codecs.
- */
-// static void gnomemeeting_init_pref_window_devices (GtkWidget *notebook)
-// {
 
-//   /* Enable / disable video preview */
-//   pw->video_preview = gtk_check_button_new_with_label (_("Video Preview"));
+/* BEHAVIOR     :  It builds the notebook page for video codecs settings.
+ *                 it adds it to the notebook.                                     
+ * PRE          :  The notebook.                                               
+ */                                                                            
+void gnomemeeting_init_pref_window_video_codecs (GtkWidget *notebook)               
+{                                                                              
+  GtkWidget *vbox = NULL;                                                      
+  GtkWidget *table = NULL;                                                     
 
-//   gtk_table_attach (GTK_TABLE (table), pw->video_preview, 0, 1, 4, 5,
-// 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-// 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-// 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);	
-//   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->video_preview), 
-// 				gconf_client_get_bool (client, "/apps/gnomemeeting/devices/video_preview", NULL));
- 
-//   tip = gtk_tooltips_new ();
-//   gtk_tooltips_set_tip (tip, pw->video_preview,
-// 			_("If enabled, the video preview mode will be set at startup"),	NULL);
+                                                                               
+  /* Get the data */                                                           
+  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);              
+                                                                               
+                                                                               
+  /* Packing widgets for the XDAP directory */                                               
+  vbox = gnomemeeting_pref_window_build_page (notebook, _("Video Codecs"));   
+  table = gnomemeeting_pref_window_add_table (vbox, _("General Settings"),
+                                              3, 1);                           
 
-//   gtk_signal_connect (GTK_OBJECT (pw->video_preview),
-// 		      "toggled",
-// 		      GTK_SIGNAL_FUNC (toggle_changed),
-// 		      (gpointer) "/apps/gnomemeeting/devices/video_preview");
+  /* Add fields */
+  pw->tr_fps =
+    gnomemeeting_pref_window_add_spin (table, _("Maximum Transmitted FPS:"),       
+ 				       "/apps/gnomemeeting/video_settings/tr_fps",
+				       _("The number of video frames transmitted each second."),
+ 				       1.0, 30.0, 1.0, 1);
+
+  pw->fps = 
+    gnomemeeting_pref_window_add_toggle (table, _("Enable FPS Limitation"), "/apps/gnomemeeting/video_settings/enable_fps", _("Enable/disable the limit on the transmitted FPS."), 0, 0);
+
+  pw->vid_tr = 
+    gnomemeeting_pref_window_add_toggle (table, _("Enable Video Transmission"), "/apps/gnomemeeting/video_settings/enable_video_transmission", _("Enable/disable the video transmission."), 2, 0);
 
 
-//   /* The End */									
-//   label = gtk_label_new (_("Device Settings"));
+  /* H.261 Settings */
+  table = gnomemeeting_pref_window_add_table (vbox, _("H.261 Settings"),
+                                              3, 1);                           
 
-//   gtk_notebook_append_page (GTK_NOTEBOOK(notebook), general_frame, label);
-// }
+  pw->tr_vq =
+    gnomemeeting_pref_window_add_spin (table, _("Transmitted Video Quality:"),       
+ 				       "/apps/gnomemeeting/video_settings/tr_vq",
+				       _("The transmitted video quality:  choose 100% on a LAN for the best quality, 1% being the worst quality."),
+ 				       1.0, 100.0, 1.0, 0);
+
+  pw->re_vq =
+    gnomemeeting_pref_window_add_spin (table, _("Received Video Quality:"),       
+ 				       "/apps/gnomemeeting/video_settings/re_vq",
+				       _("The received video quality:  choose 100% on a LAN for the best quality, 1% being the worst quality."),
+ 				       1.0, 100.0, 1.0, 1);
+
+  pw->re_vq =
+    gnomemeeting_pref_window_add_spin (table, _("Transmitted Background Blocks:"),       
+ 				       "/apps/gnomemeeting/video_settings/tr_ub",
+				       _("Here you can choose the number of blocks (that haven't changed) transmitted with each frame. These blocks fill in the background."),
+ 				       1.0, 99.0, 1.0, 2);
+}                                                                              
 
             
 void gnomemeeting_init_pref_window ()
@@ -1155,7 +1561,7 @@ void gnomemeeting_init_pref_window ()
 
   gtk_tree_selection_set_mode (GTK_TREE_SELECTION (selection),
 			       GTK_SELECTION_BROWSE);
-  gtk_widget_set_size_request (tree_view, 200, -1);
+
 
   /* All the notebook pages */
   /* General Section */
@@ -1182,6 +1588,7 @@ void gnomemeeting_init_pref_window ()
   gtk_tree_store_set (GTK_TREE_STORE (model),
 		      &child_iter, 0, _("Device Settings"), 1, 4, -1);
   gnomemeeting_init_pref_window_devices (notebook);
+
   /* Another section */
   gtk_tree_store_append (GTK_TREE_STORE (model), &iter, NULL);
   gtk_tree_store_set (GTK_TREE_STORE (model),
@@ -1195,8 +1602,8 @@ void gnomemeeting_init_pref_window ()
 
   gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
   gtk_tree_store_set (GTK_TREE_STORE (model),
-		      &child_iter, 0, _("Codecs Settings"), 1, 6, -1);
-  gnomemeeting_init_pref_window_codecs_settings (notebook);
+		      &child_iter, 0, _("Video Codecs"), 1, 6, -1);
+  gnomemeeting_init_pref_window_video_codecs (notebook);
 
 
   cell = gtk_cell_renderer_text_new ();
@@ -1213,6 +1620,8 @@ void gnomemeeting_init_pref_window ()
   gtk_paned_pack1 (GTK_PANED (hpaned), tree_view, TRUE, TRUE);
   gtk_paned_pack2 (GTK_PANED (hpaned), notebook, TRUE, TRUE);
 
+  gtk_widget_set_size_request (tree_view, 150, -1);
+  gtk_widget_set_size_request (notebook, 500, -1);
 
   /* Now, add the logo as first page */
   pixmap = gnome_pixmap_new_from_file 
@@ -1235,1018 +1644,5 @@ void gnomemeeting_init_pref_window ()
 
   g_signal_connect (selection, "changed", G_CALLBACK (tree_selection_changed_cb), 
 		    notebook);
-}
-
-
-/* BEHAVIOR     :  It builds the notebook page for audio codecs settings and
- *                 add it to the notebook, default values are set from the
- *                 options struct given as parameter.
- * PRE          :  parameters has to be valid
- *                 (pointer to the notebook)
- */
-static void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook) 
-{
-  GtkWidget *general_frame;
-  GtkWidget *frame, *label;
-  GtkWidget *table;			
-  GtkWidget *vbox;
-  GtkWidget *button;
-  GtkStockItem stock_item;
-  GtkWidget *stock_image;
-  GtkTooltips *tip;
-  gchar *clist_data;
-  static const gchar * const available_codecs[] = {
-    "GSM-06.10",
-    "MS-GSM",
-    "G.726-16k",
-    "G.726-32k",
-    "G.711-uLaw-64k",
-    "G.711-ALaw-64k",
-    "LPC10",
-    NULL
-  };
-
-  gchar * clist_titles [] = {"", N_("Name"), N_("Info"), N_("Bandwidth")};
-
-  for (int i = 1 ; i < 4 ; i++)
-    clist_titles [i] = gettext (clist_titles [i]);
-  
-  /* Get the data */
-  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
-  GConfClient *client = gconf_client_get_default ();
-
-  /* A vbox to pack the frames into it */
-  vbox = gtk_vbox_new (FALSE, GNOMEMEETING_PAD_SMALL);
-
-  general_frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (general_frame), GTK_SHADOW_IN);
-  gtk_container_add (GTK_CONTAINER (general_frame), vbox);
-
-  /* The title of the notebook page */
-  frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
-  gtk_box_pack_start (GTK_BOX (vbox), frame, 
-		      FALSE, TRUE, 0);
-
-  label = gtk_label_new (_("Audio Codecs"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_misc_set_padding (GTK_MISC (label), 2, 1);
-  gtk_container_add (GTK_CONTAINER (frame), label);
-
-  /* In this table we put the frame */
-  frame = gtk_frame_new (_("Available Codecs"));
-  gtk_box_pack_start (GTK_BOX (vbox), frame, 
-		      FALSE, FALSE, 0);
-
-  /* Put a table in the first frame */
-  table = gtk_table_new (2, 4, FALSE);
-  gtk_container_add (GTK_CONTAINER (frame), table);
-  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOMEMEETING_PAD_SMALL);
-    
-  
-  /* Create the Available Audio Codecs Clist */	
-  pw->clist_avail = gtk_clist_new_with_titles(4, clist_titles);
-
-  gtk_clist_freeze (GTK_CLIST (pw->clist_avail));
-  gtk_clist_set_row_height (GTK_CLIST (pw->clist_avail), 18);
-  gtk_clist_set_column_width (GTK_CLIST(pw->clist_avail), 0, 20);
-  gtk_clist_set_column_width (GTK_CLIST(pw->clist_avail), 1, 100);
-  gtk_clist_set_column_width (GTK_CLIST(pw->clist_avail), 2, 100);
-  gtk_clist_set_column_width (GTK_CLIST(pw->clist_avail), 3, 100);
-  gtk_clist_set_shadow_type (GTK_CLIST(pw->clist_avail), GTK_SHADOW_IN);
-  
-  /* Here we add the codec buts in the order they are in the config file */
-  clist_data = gconf_client_get_string (client, "/apps/gnomemeeting/audio_codecs/list", NULL);
-
-  gchar **codecs;
-  codecs = g_strsplit (clist_data, ":", 0);
-
-  for (int i = 0 ; codecs [i] != NULL ; i++) {
-
-    gchar **couple = g_strsplit (codecs [i], "=", 0);
-    gnomemeeting_codecs_list_add (pw->clist_avail, couple [0], couple [1]);
-    g_strfreev (couple);
-  }
-  g_free (clist_data);
-
-  // FIXME: This algo is horrible!!
-  for (int i = 0; available_codecs[i] != NULL; i++) {
-    bool found = false;
-
-    for (int j = 0; codecs[j] != NULL; j++) {
-      gchar **couple = g_strsplit (codecs[j], "=", 0);
-      
-      if (!strcmp (available_codecs[i], couple[0])) {
-	found = true;
-	g_strfreev (couple);
-	break;
-      }
-      g_strfreev (couple);
-    }
-    
-    if (!found)
-      gnomemeeting_codecs_list_add (pw->clist_avail, available_codecs[i], "0");
-  }
-  g_strfreev (codecs);
-  gtk_clist_thaw (GTK_CLIST (pw->clist_avail));
-
-  /* Callback function when a row is selected */
-  gtk_signal_connect(GTK_OBJECT(pw->clist_avail), "select_row",
-		     GTK_SIGNAL_FUNC(codecs_clist_row_selected_callback), 
-		     (gpointer) pw);
-    
-  gtk_table_attach (GTK_TABLE (table), pw->clist_avail, 0, 4, 0, 1,
-		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 
-		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-    
-  /* BUTTONS */						
-  /* Add */
-  if (gtk_stock_lookup (GTK_STOCK_APPLY, &stock_item))
-    stock_image = gtk_image_new_from_stock (GTK_STOCK_APPLY, GTK_ICON_SIZE_BUTTON);
-  button = gnomemeeting_button (_("Enable"), stock_image);
-
-  gtk_table_attach (GTK_TABLE (table), button, 0, 1, 1, 2,
-		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
-		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-  gtk_signal_connect (GTK_OBJECT (button), "clicked",
-		      GTK_SIGNAL_FUNC (codecs_clist_button_clicked_callback), 
-		      (gpointer) pw);
-  gtk_object_set_data (GTK_OBJECT (button), "operation", (gpointer) "Add");
-
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, button,
-			_("Use this button to add the selected codec to the available codecs list"), NULL);
-  
-
-  /* Del */
-  if (gtk_stock_lookup (GTK_STOCK_APPLY, &stock_item))
-    stock_image = gtk_image_new_from_stock (GTK_STOCK_APPLY, GTK_ICON_SIZE_BUTTON);
-  button = gnomemeeting_button (_("Disable"), stock_image);
-
-  gtk_table_attach (GTK_TABLE (table), button, 1, 2, 1, 2,
-		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
-		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-  gtk_signal_connect (GTK_OBJECT (button), "clicked",
-		      GTK_SIGNAL_FUNC (codecs_clist_button_clicked_callback), 
-		      (gpointer) pw);
-  gtk_object_set_data (GTK_OBJECT (button), "operation", (gpointer) "Del");  
-
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, button,
-			_("Use this button to remove the selected codec from the available codecs list"), NULL);
-  
-
-  /* Up */
-  if (gtk_stock_lookup (GTK_STOCK_APPLY, &stock_item))
-    stock_image = gtk_image_new_from_stock (GTK_STOCK_APPLY, GTK_ICON_SIZE_BUTTON);
-
-  button = gnomemeeting_button (_("Up"), stock_image);
-
-  gtk_table_attach (GTK_TABLE (table), button, 2, 3, 1, 2,
-		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
-		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-  gtk_signal_connect (GTK_OBJECT (button), "clicked",
-		      GTK_SIGNAL_FUNC (codecs_clist_button_clicked_callback), 
-		      (gpointer) pw);
-  gtk_object_set_data (GTK_OBJECT (button), "operation", (gpointer) "Up");
-
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, button,
-			_("Use this button to move up the selected codec in the preference order"), NULL);
-
-		
-  /* Down */
-  if (gtk_stock_lookup (GTK_STOCK_APPLY, &stock_item))
-    stock_image = gtk_image_new_from_stock (GTK_STOCK_APPLY, GTK_ICON_SIZE_BUTTON);
-
-  button = gnomemeeting_button (_("Down"), stock_image);
-
-  gtk_table_attach (GTK_TABLE (table), button, 3, 4, 1, 2,
-		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
-		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-  gtk_signal_connect (GTK_OBJECT (button), "clicked",
-		      GTK_SIGNAL_FUNC (codecs_clist_button_clicked_callback), 
-		      (gpointer) pw);
-  gtk_object_set_data (GTK_OBJECT (button), "operation", (gpointer) "Down");
-
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, button,
-			_("Use this button to move down the selected codec in the preference order"), NULL);
-
-
-  label = gtk_label_new (_("Audio Codecs")); 		
-  gtk_notebook_append_page (GTK_NOTEBOOK(notebook),
-			    general_frame, label);		
-}
-
-
-
-
-/* BEHAVIOR     :  It builds the notebook page for the codecs settings and
- *                 add it to the notebook, default values are set from the
- *                 options struct given as parameter.
- * PRE          :  See init_pref_audio_codecs.
- */
-static void gnomemeeting_init_pref_window_codecs_settings (GtkWidget *notebook)
-{
-  GtkWidget *frame, *label;
-  GtkWidget *general_frame;
-  GtkWidget *audio_codecs_notebook;
-  GtkWidget *video_codecs_notebook;
-
-  GtkTooltips *tip;
-
-  GtkWidget *table;
-  GtkWidget *vbox;
-
-  /* Get the data */
-  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
-  GConfClient *client = gconf_client_get_default ();
-		
-  vbox = gtk_vbox_new (FALSE, GNOMEMEETING_PAD_SMALL);
-
-  general_frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (general_frame), GTK_SHADOW_IN);
-
-  gtk_container_add (GTK_CONTAINER (general_frame), vbox);
-
-
-  /* The title of the notebook page */
-  frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
-  gtk_box_pack_start (GTK_BOX (vbox), frame, 
-		      FALSE, TRUE, 0);
-
-  label = gtk_label_new (_("Codecs Settings"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_misc_set_padding (GTK_MISC (label), 2, 1);
-  gtk_container_add (GTK_CONTAINER (frame), label);
-
-
-  /*** Audio Codecs Settings ***/
-
-  frame = gtk_frame_new (_("Audio Codecs Settings"));
-  gtk_box_pack_start (GTK_BOX (vbox), frame, 
-		      FALSE, FALSE, 0);
-
-  /* Put a notebook in the frame */
-  audio_codecs_notebook = gtk_notebook_new ();
-  gtk_container_add (GTK_CONTAINER (frame), audio_codecs_notebook);
-  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOMEMEETING_PAD_SMALL);
-  gtk_container_set_border_width (GTK_CONTAINER (audio_codecs_notebook), 
-				  GNOMEMEETING_PAD_SMALL);
-
-  /* Create a page for each audio codecs having settings */
-  /* General Settings */
-  table = gtk_table_new (2, 4, TRUE);
-
-  label = gtk_label_new (_("Jitter Buffer Delay:"));
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);			
-
-  int jitter_buffer_value = gconf_client_get_int (client, 
-						  "/apps/gnomemeeting/audio_settings/jitter_buffer", NULL);
-  pw->jitter_buffer_spin_adj = (GtkAdjustment *) 
-    gtk_adjustment_new(jitter_buffer_value, 
-		       20.0, 5000.0, 
-		       1.0, 1.0, 1.0);
-
-  pw->jitter_buffer = gtk_spin_button_new (pw->jitter_buffer_spin_adj, 1.0, 0);
-  
-  gtk_table_attach (GTK_TABLE (table), pw->jitter_buffer, 1, 2, 0, 1,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);			
-	
-  /* Connect the signal that updates the gconf cache */
-  gtk_signal_connect (GTK_OBJECT (pw->jitter_buffer_spin_adj), "value-changed",
-		      GTK_SIGNAL_FUNC (adjustment_changed), 
-		      (gpointer) "/apps/gnomemeeting/audio_settings/jitter_buffer");
-
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, pw->jitter_buffer,
-			_("The jitter buffer delay to buffer audio calls (in ms)"), NULL);
-
-
-  label = gtk_label_new (_("General Settings"));
-
-  gtk_notebook_append_page (GTK_NOTEBOOK (audio_codecs_notebook),
-			    table, label);
-
-  /* GSM codec */
-  table = gtk_table_new (2, 4, TRUE);
-
-  label = gtk_label_new (_("GSM Frames"));
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);			
-
-  int gsm_frames = gconf_client_get_int (client, 
-					 "/apps/gnomemeeting/audio_settings/gsm_frames", NULL);
-  pw->gsm_frames_spin_adj = (GtkAdjustment *) 
-    gtk_adjustment_new(gsm_frames, 
-		       1.0, 7.0, 
-		       1.0, 1.0, 1.0);
-
-  pw->gsm_frames = gtk_spin_button_new (pw->gsm_frames_spin_adj, 1.0, 0);
-  
-  gtk_table_attach (GTK_TABLE (table), pw->gsm_frames, 1, 2, 0, 1,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-
-  gtk_signal_connect (GTK_OBJECT (pw->gsm_frames_spin_adj), "value-changed",
-		      GTK_SIGNAL_FUNC (adjustment_changed), 
-		      (gpointer) "/apps/gnomemeeting/audio_settings/gsm_frames");
-
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, pw->gsm_frames,
-			_("The number of frames in each transmitted GSM packet"), NULL);
-
-
-  pw->gsm_sd = gtk_check_button_new_with_label (_("Silence Detection"));
-
-  bool gsm_sd = gconf_client_get_bool (client, "/apps/gnomemeeting/audio_settings/gsm_sd", NULL);
-
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->gsm_sd),
-				gsm_sd);
-  gtk_table_attach (GTK_TABLE (table), pw->gsm_sd, 0, 2, 1, 2,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);			
-  gtk_signal_connect (GTK_OBJECT (pw->gsm_sd), "toggled",
-		      GTK_SIGNAL_FUNC (toggle_changed),
-		      (gpointer) "/apps/gnomemeeting/audio_settings/gsm_sd");
-
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, pw->gsm_sd,
-			_("Enable silence detection for the GSM based codecs"), NULL);
-
-
-  label = gtk_label_new (_("GSM Codec Settings"));
-
-  gtk_notebook_append_page (GTK_NOTEBOOK (audio_codecs_notebook),
-			    table, label);
-
-  /* G.711 codec */
-  table = gtk_table_new (2, 4, TRUE);
-
-  label = gtk_label_new (_("G.711 Frames"));
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);			
-
-  int g711_frames = gconf_client_get_int (client, 
-					  "/apps/gnomemeeting/audio_settings/g711_frames", NULL);
-  pw->g711_frames_spin_adj = (GtkAdjustment *) 
-    gtk_adjustment_new(g711_frames, 
-		       11.0, 240.0, 
-		       1.0, 1.0, 1.0);
-
-  pw->g711_frames = gtk_spin_button_new (pw->g711_frames_spin_adj, 1.0, 0);
-  
-  gtk_table_attach (GTK_TABLE (table), pw->g711_frames, 1, 2, 0, 1,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);			
-  gtk_signal_connect (GTK_OBJECT (pw->g711_frames_spin_adj), "value-changed",
-		      GTK_SIGNAL_FUNC (adjustment_changed), 
-		      (gpointer) "/apps/gnomemeeting/audio_settings/g711_frames");
- 
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, pw->g711_frames,
-			_("The number of frames in each transmitted G.711 packet"), NULL);
-
-
-  pw->g711_sd = gtk_check_button_new_with_label (_("Silence Detection"));
-
-  bool g711_sd = gconf_client_get_bool (client, "/apps/gnomemeeting/audio_settings/g711_sd", NULL);
-
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->g711_sd),
-				g711_sd);
-  gtk_table_attach (GTK_TABLE (table), pw->g711_sd, 0, 2, 1, 2,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);			
-
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, pw->g711_sd,
-			_("Enable silence detection for the G.711 based codecs"), NULL);
-
-  gtk_signal_connect (GTK_OBJECT (pw->g711_sd), "toggled",
-		      GTK_SIGNAL_FUNC (toggle_changed),
-		      (gpointer) "/apps/gnomemeeting/audio_settings/g711_sd");
-
-  label = gtk_label_new (_("G.711 Codec Settings"));
-
-  gtk_notebook_append_page (GTK_NOTEBOOK (audio_codecs_notebook),
-			    table, label);
-
-  /*** Video Codecs Settings ***/
-  frame = gtk_frame_new (_("Video Codecs Settings"));
-
-  gtk_box_pack_start (GTK_BOX (vbox), frame, 
-		      FALSE, FALSE, 0);
-
-
-  /* Put a notebook in the frame */
-  video_codecs_notebook = gtk_notebook_new ();
-  gtk_container_add (GTK_CONTAINER (frame), video_codecs_notebook);
-  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOMEMEETING_PAD_SMALL);
-  gtk_container_set_border_width (GTK_CONTAINER (video_codecs_notebook), 
-				  GNOMEMEETING_PAD_SMALL);
-
-  /* Create a page for each video codecs having settings */
-  /* General Settings */
-  table = gtk_table_new (2, 3, FALSE);
-  gtk_table_set_row_spacings (GTK_TABLE (table), GNOMEMEETING_PAD_SMALL);
-  gtk_table_set_col_spacings (GTK_TABLE (table), GNOMEMEETING_PAD_SMALL);
-
-
-  /* Enable Transmitted FPS Limitation */
-  pw->fps = 
-    gtk_check_button_new_with_label (_("Limit the video transmission to"));
-
-  gtk_table_attach (GTK_TABLE (table), pw->fps, 0, 1, 0, 1,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);		
-
-  GTK_TOGGLE_BUTTON (pw->fps)->active = 
-    gconf_client_get_bool (client, 
-			   "/apps/gnomemeeting/video_settings/enable_fps", 0);
-
-  gtk_signal_connect (GTK_OBJECT (pw->fps),
-		      "toggled",
-		      GTK_SIGNAL_FUNC (toggle_changed),
-		      (gpointer) "/apps/gnomemeeting/video_settings/enable_fps");
-
-  pw->tr_fps_spin_adj = (GtkAdjustment *) 
-    gtk_adjustment_new (gconf_client_get_int (client, "/apps/gnomemeeting/video_settings/tr_fps", 0), 1.0, 30.0, 1.0, 1.0, 1.0);
-
-  pw->tr_fps = gtk_spin_button_new (pw->tr_fps_spin_adj, 1.0, 0);
-
-  gtk_table_attach (GTK_TABLE (table), pw->tr_fps, 1, 2, 0, 1,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-
-  label = gtk_label_new (_("frame(s) per second"));
-  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_RIGHT);
-
-  gtk_table_attach (GTK_TABLE (table), label, 2, 3, 0, 1,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);	
-
-  /* Connect the signal that updates the gconf cache */
-  gtk_signal_connect (GTK_OBJECT (pw->tr_fps_spin_adj), "value-changed",
-		      GTK_SIGNAL_FUNC (adjustment_changed), 
-		      (gpointer) "/apps/gnomemeeting/video_settings/tr_fps");
-
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, pw->tr_fps,
-			_("Here you can set a limit to the number of frames that will be transmitted each second. This limit is set on the Video Grabber."), NULL);
-
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, pw->fps,
-			_("Here you can enable or disable the limit on the number of transmitted frames per second."), NULL);
-
-  
-  /* Enable Video Transmission */
-  pw->vid_tr = 
-    gtk_check_button_new_with_label (_("Video Transmission"));
-
-  gtk_table_attach (GTK_TABLE (table), pw->vid_tr, 0, 3, 1, 2,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);		
-
-  GTK_TOGGLE_BUTTON (pw->vid_tr)->active =
-    gconf_client_get_bool (client, "/apps/gnomemeeting/video_settings/enable_video_transmission", NULL);
-
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, pw->vid_tr,
-			_("Here you can choose to enable or disable video transmission"), NULL);
-
-  gtk_signal_connect (GTK_OBJECT (pw->vid_tr),
-		      "toggled",
-		      GTK_SIGNAL_FUNC (toggle_changed),
-		      (gpointer) "/apps/gnomemeeting/video_settings/enable_video_transmission");
-
-  label = gtk_label_new (_("General Settings"));
-
-  gtk_notebook_append_page (GTK_NOTEBOOK (video_codecs_notebook),
-			    table, label);
-
-
-  /**** H.261 codec ****/
-  table = gtk_table_new (3, 6, FALSE);
-  gtk_table_set_row_spacings (GTK_TABLE (table), GNOMEMEETING_PAD_SMALL);
-  gtk_table_set_col_spacings (GTK_TABLE (table), GNOMEMEETING_PAD_SMALL);
-
-
-  /* Transmitted Video Quality */
-  label = gtk_label_new (_("Transmitted Quality of"));
-  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_RIGHT);
-
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);			
-  
-  pw->tr_vq_spin_adj = (GtkAdjustment *) 
-    gtk_adjustment_new(gconf_client_get_int (client, "/apps/gnomemeeting/video_settings/tr_vq", 0), 1.0, 100.0, 1.0, 5.0, 1.0);
-
-  pw->tr_vq = gtk_spin_button_new (pw->tr_vq_spin_adj, 1.0, 0);
-
-  gtk_table_attach (GTK_TABLE (table), pw->tr_vq, 1, 2, 0, 1,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);			
-
-  /* xgettext:no-c-format */
-  label = gtk_label_new (_("%"));
-  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
-
-  gtk_table_attach (GTK_TABLE (table), label, 2, 3, 0, 1,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);			
-
-  /* Connect the signal that updates the gconf cache */
-  gtk_signal_connect (GTK_OBJECT (pw->tr_vq_spin_adj), "value-changed",
-		      GTK_SIGNAL_FUNC (adjustment_changed), 
-		      (gpointer) "/apps/gnomemeeting/video_settings/tr_vq");	
-
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, pw->tr_vq,
-			_("Here you can choose the transmitted video quality:  choose 100% on a LAN for the best quality, 1% being the worst quality"), NULL);
-
-
-  /* Updated blocks / frame */
-  label = gtk_label_new (_("Transmitted Background Blocks:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
-
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 2, 3,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);			
-  
-  pw->tr_ub_spin_adj = (GtkAdjustment *) 
-    gtk_adjustment_new(gconf_client_get_int (client, "/apps/gnomemeeting/video_settings/tr_ub", 0), 2.0, 99.0, 1.0, 5.0, 1.0);
-
-  pw->tr_ub = gtk_spin_button_new (pw->tr_ub_spin_adj, 2.0, 0);
-  
-  gtk_table_attach (GTK_TABLE (table), pw->tr_ub, 1, 2, 2, 3,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);			
- 
-  /* Connect the signal that updates the gconf cache */
-  gtk_signal_connect (GTK_OBJECT (pw->tr_ub_spin_adj), "value-changed",
-		      GTK_SIGNAL_FUNC (adjustment_changed), 
-		      (gpointer) "/apps/gnomemeeting/video_settings/tr_ub");
-
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, pw->tr_ub,
-			_("Here you can choose the number of blocks (that haven't changed) transmitted with each frame. These blocks fill in the background."), NULL);
-
-
-  /* Received Video Quality */
-  label = gtk_label_new (_("Received Video Quality should be"));
-  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_RIGHT);
-
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 1, 2,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);			
-  
-  pw->re_vq_spin_adj = (GtkAdjustment *) 
-    gtk_adjustment_new(gconf_client_get_int (client, "/apps/gnomemeeting/video_settings/re_vq", 0), 1.0, 100.0, 1.0, 5.0, 1.0);
-
-  pw->re_vq = gtk_spin_button_new (pw->re_vq_spin_adj, 1.0, 0);
-
-
-  gtk_table_attach (GTK_TABLE (table), pw->re_vq, 1, 2, 1, 2,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);		   
-
-  /* xgettext:no-c-format */
-  label = gtk_label_new (_("%"));
-  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
-
-  gtk_table_attach (GTK_TABLE (table), label, 2, 3, 1, 2,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);		    
-
-  /* Connect the signal that updates the gconf cache */
-  gtk_signal_connect (GTK_OBJECT (pw->re_vq_spin_adj), "value-changed",
-		      GTK_SIGNAL_FUNC (adjustment_changed), 
-		      (gpointer) "/apps/gnomemeeting/video_settings/re_vq");
-
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, pw->re_vq,
-			_("The video quality hint to request to the remote"), NULL);
-
-
-  /* Max. video Bandwidth */
-  pw->vb = 
-    gtk_check_button_new_with_label (_("Limit the bandwidth to"));
-
-  GTK_TOGGLE_BUTTON (pw->vb)->active = 
-    gconf_client_get_bool (client, "/apps/gnomemeeting/video_settings/enable_vb", NULL);
-
-  gtk_table_attach (GTK_TABLE (table), pw->vb, 3, 4, 0, 1,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | 0),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);		
-
-  gtk_signal_connect (GTK_OBJECT (pw->vb), "toggled",
- 		      GTK_SIGNAL_FUNC (toggle_changed), 
-		      (gpointer) "/apps/gnomemeeting/video_settings/enable_vb");
-  
-  pw->video_bandwidth_spin_adj = 
-    (GtkAdjustment *) gtk_adjustment_new(gconf_client_get_int (client, "/apps/gnomemeeting/video_settings/video_bandwidth", NULL), 2.0, 100.0, 1.0, 1.0, 1.0);
-
-  pw->video_bandwidth = 
-    gtk_spin_button_new (pw->video_bandwidth_spin_adj, 8.0, 0);
-  
-  gtk_table_attach (GTK_TABLE (table), pw->video_bandwidth, 4, 5, 0, 1,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);			
-
-  /* Connect the signal that updates the gconf cache */
-  gtk_signal_connect (GTK_OBJECT (pw->video_bandwidth_spin_adj), 
-		      "value-changed",
-		      GTK_SIGNAL_FUNC (adjustment_changed), 
-		      (gpointer) "/apps/gnomemeeting/video_settings/video_bandwidth");
-
-  label = gtk_label_new (_("kb/s"));
-  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
-
-  gtk_table_attach (GTK_TABLE (table), label, 5, 6, 0, 1,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);			
- 
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, pw->video_bandwidth,
-			_("Here you can choose the maximum bandwidth that can be used by the H.261 video codec (in kbytes/s)"), NULL);
-
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, pw->vb,
-			_("Here you can choose to enable or disable video bandwidth limitation"), NULL);
-
-
-  /* The End */
-  label = gtk_label_new (_("H.261 Codec Settings"));
-
-  gtk_notebook_append_page (GTK_NOTEBOOK (video_codecs_notebook),
-			    table, label);
-
-  label = gtk_label_new (_("Video Codecs Settings"));
-  gtk_notebook_append_page (GTK_NOTEBOOK(notebook),
-			    general_frame, label);
-
-}
-
-
-/* BEHAVIOR     :  It builds the notebook page for Directories settings and
- *                 add it to the notebook, default values are set from the
- *                 options struct given as parameter.
- * PRE          :  See init_pref_audio_codecs.
- */
-// static void gnomemeeting_init_pref_window_directories (GtkWidget *notebook)
-// {
-//   GtkWidget *general_frame;
-//   GtkWidget *frame;
-//   GtkWidget *vbox;
-//   GtkWidget *table;
-//   GtkWidget *label;
-//   GtkWidget *pixmap;
-//   GtkWidget *menu, *item, *bps;
-
-//   GtkTooltips *tip;
-//   gchar *gconf_string;
-
-//   /* Get the data */
-//   GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
-//   GConfClient *client = gconf_client_get_default ();
-
-
-//   vbox = gtk_vbox_new (FALSE, GNOMEMEETING_PAD_SMALL);
-
-//   general_frame = gtk_frame_new (NULL);
-//   gtk_frame_set_shadow_type (GTK_FRAME (general_frame), GTK_SHADOW_IN);
-
-//   gtk_container_add (GTK_CONTAINER (general_frame), vbox);
-
-//   /* The title of the notebook page */
-//   frame = gtk_frame_new (NULL);
-//   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
-//   gtk_box_pack_start (GTK_BOX (vbox), frame, 
-// 		      FALSE, TRUE, 0);
-
-//   label = gtk_label_new (_("Directories Settings"));
-//   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-//   gtk_misc_set_padding (GTK_MISC (label), 2, 1);
-//   gtk_container_add (GTK_CONTAINER (frame), label);
-
-//   /* ILS settings */
-//   frame = gtk_frame_new (_("LDAP Directory"));
-//   gtk_box_pack_start (GTK_BOX (vbox), frame, 
-// 		      FALSE, FALSE, 0);
-
-
-//   /* Put a table in the first frame */
-//   table = gtk_table_new (2, 2, FALSE);
-//   gtk_container_add (GTK_CONTAINER (frame), table);
-//   gtk_container_set_border_width (GTK_CONTAINER (frame), GNOMEMEETING_PAD_SMALL);
-
-
-//   /* ILS directory */
-
-//   /* Gatekeeper settings */
-//   frame = gtk_frame_new (_("H.323 Gatekeeper Settings"));
-//   gtk_box_pack_start (GTK_BOX (vbox), frame, 
-// 		      FALSE, FALSE, 0);
-
-
-//   /* Put a table in the first frame */
-//   table = gtk_table_new (5, 3, FALSE);
-//   gtk_container_add (GTK_CONTAINER (frame), table);
-//   gtk_container_set_border_width (GTK_CONTAINER (frame), GNOMEMEETING_PAD_SMALL);
-
-//   /* Gatekeeper ID */
-//   label = gtk_label_new (_("Gatekeeper ID:"));
-//   gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
-//   gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_RIGHT);
-
-//   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 1, 2,
-// 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-// 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-// 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-  
-//   pw->gk_id = gtk_entry_new();
-//   gtk_table_attach (GTK_TABLE (table), pw->gk_id, 1, 2, 1, 2,
-// 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-// 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-// 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-//   gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
-// 					   "/apps/gnomemeeting/gatekeeper/gk_id",
-// 					   NULL);
-//   if (gconf_string != NULL)
-//     gtk_entry_set_text (GTK_ENTRY (pw->gk_id), gconf_string); 
-
-//   g_free (gconf_string);
-
-//   gtk_signal_connect (GTK_OBJECT (pw->gk_id), "changed",
-// 		      GTK_SIGNAL_FUNC (entry_changed), 
-// 		      (gpointer) "/apps/gnomemeeting/gatekeeper/gk_id");
-
-//   tip = gtk_tooltips_new ();
-//   gtk_tooltips_set_tip (tip, pw->gk_id,
-// 			_("The Gatekeeper identifier."), NULL);
-
-
-//   /* Gatekeeper Host */
-//   label = gtk_label_new (_("Gatekeeper host:"));
-//   gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
-//   gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_RIGHT);
-
-//   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1,
-// 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-// 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-// 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-  
-//   pw->gk_host = gtk_entry_new();
-//   gtk_table_attach (GTK_TABLE (table), pw->gk_host, 1, 2, 0, 1,
-// 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-// 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-// 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-
-//   gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
-// 					   "/apps/gnomemeeting/gatekeeper/gk_host",
-// 					   NULL);
-//   if (gconf_string != NULL)
-//     gtk_entry_set_text (GTK_ENTRY (pw->gk_host), gconf_string); 
-
-//   g_free (gconf_string);
-
-//   gtk_signal_connect (GTK_OBJECT (pw->gk_host), "changed",
-// 		      GTK_SIGNAL_FUNC (entry_changed), 
-// 		      (gpointer) "/apps/gnomemeeting/gatekeeper/gk_host");
-
-//   tip = gtk_tooltips_new ();
-//   gtk_tooltips_set_tip (tip, pw->gk_host,
-// 			_("The Gatekeeper host to register to."), NULL);
-
-
-//   /* GK registering method */ 
-//   label = gtk_label_new (_("Registering method:"));
-//   gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
-//   gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_RIGHT);
-
-//   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 2, 3,
-// 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-// 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-// 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-
-//   menu = gtk_menu_new ();
-//   pw->gk = gtk_option_menu_new ();
-//   item = gtk_menu_item_new_with_label (_("Do not register"));
-//   gtk_menu_append (GTK_MENU (menu), item);
-//   item = gtk_menu_item_new_with_label (_("Gatekeeper host"));
-//   gtk_menu_append (GTK_MENU (menu), item);
-//   item = gtk_menu_item_new_with_label (_("Gatekeeper ID"));
-//   gtk_menu_append (GTK_MENU (menu), item);
-//   item = gtk_menu_item_new_with_label (_("Automatic Discover"));
-//   gtk_menu_append (GTK_MENU (menu), item);
-//   gtk_option_menu_set_menu (GTK_OPTION_MENU (pw->gk), menu);
-//   gtk_option_menu_set_history (GTK_OPTION_MENU (pw->gk), 
-// 			       gconf_client_get_int (client, "/apps/gnomemeeting/gatekeeper/registering_method", NULL));
-
-//   gtk_table_attach (GTK_TABLE (table), pw->gk, 1, 2, 2, 3,
-// 		    (GtkAttachOptions) (GTK_SHRINK | GTK_FILL),
-// 		    (GtkAttachOptions) (GTK_SHRINK | GTK_FILL),
-// 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-
-//   tip = gtk_tooltips_new ();
-//   gtk_tooltips_set_tip (tip, pw->gk,
-// 			_("Registering method to use"), NULL);
-
-//   /* We set the key as data to be able to get the data in order to block 
-//      the signal in the gconf notifier */
-//   gtk_object_set_data (GTK_OBJECT (pw->gk), "gconf_key",
-// 		       (void *) "/apps/gnomemeeting/gatekeeper/registering_method");
-
-//   gtk_signal_connect (GTK_OBJECT (GTK_OPTION_MENU (pw->gk)->menu), 
-// 		      "deactivate",
-//  		      GTK_SIGNAL_FUNC (option_menu_changed), 
-// 		      (gpointer) gtk_object_get_data (GTK_OBJECT (pw->gk),
-// 						      "gconf_key"));
-
-
-//   /* Max Used Bandwidth spin button */					
-//   label = gtk_label_new (_("Maximum Bandwidth:"));
-//   gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
-//   gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_RIGHT);
-
-//   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 3, 4,
-// 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-// 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-// 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);	
-  
-//   pw->bps_spin_adj = (GtkAdjustment *) gtk_adjustment_new (10, 
-// 							   1000.0, 40000.0, 
-// 							   1.0, 100.0, 1.0);
-//   bps = gtk_spin_button_new (pw->bps_spin_adj, 100.0, 0);
-  
-//   gtk_table_attach (GTK_TABLE (table), bps, 1, 2, 3, 4,
-// 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-// 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-// 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);	
-
-//   tip = gtk_tooltips_new ();
-//   gtk_tooltips_set_tip (tip, bps,
-// 			_("The maximum bandwidth that should be used for the communication. This bandwidth limitation will be transmitted to the gatekeeper."), NULL);
-
-
-//   /* Try button */
-//   pixmap =  gnome_pixmap_new_from_xpm_d ((const gchar **) tb_jump_to_xpm);
-//   pw->gatekeeper_update_button = gnomemeeting_button (_("Update"), pixmap);
-
-//   gtk_table_attach (GTK_TABLE (table),  pw->gatekeeper_update_button, 2, 3, 5, 6,
-// 		    (GtkAttachOptions) (GTK_EXPAND),
-// 		    (GtkAttachOptions) (GTK_EXPAND),
-// 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-
-//   gtk_signal_connect (GTK_OBJECT (pw->gatekeeper_update_button), "clicked",
-// 		      GTK_SIGNAL_FUNC (gatekeeper_update_button_clicked), 
-// 		      (gpointer) pw);
-
-//   tip = gtk_tooltips_new ();
-//   gtk_tooltips_set_tip (tip, pw->directory_update_button,
-// 			_("Click here to try your new settings and update the gatekeeper server you are registered to"), NULL);
-
-
-//   /* The End */									
-//   label = gtk_label_new (_("ILS Settings"));
-
-//   gtk_notebook_append_page (GTK_NOTEBOOK(notebook), general_frame, label);
-// }
-
-
-
-/* Miscellaneous functions */
-
-void 
-gnomemeeting_codecs_list_add (GtkWidget *list, const gchar *CodecName, 
-			      const gchar * Enabled)
-{
-  GdkPixmap *yes, *no;
-  GdkBitmap *mask_yes, *mask_no;
-  gchar *row_data;   /* Do not free, this is not a copy which is stored */ 
-
-  
-  row_data = (gchar *) g_malloc (3);
-		
-  gchar *data [4];
-
-  //  gnome_stock_pixmap_gdk (GNOME_STOCK_BUTTON_APPLY,
-  // 			  NULL, &yes, &mask_yes);
-  
-  //  gnome_stock_pixmap_gdk (GNOME_STOCK_BUTTON_CANCEL,
-  //		  NULL, &no, &mask_no);
-
-
-  data [0] = NULL;
-  data [1] = g_strdup (CodecName);
-
-  if (!strcmp (CodecName, "LPC10")) {
-      data [2] = g_strdup (_("Okay"));
-      data [3] = g_strdup ("3.46 kb");
-  }
-
-  if (!strcmp (CodecName, "MS-GSM")) {
-      data [2] = g_strdup (_("Good Quality"));
-      data [3] = g_strdup ("13 kbits");
-  }
-
-  if (!strcmp (CodecName, "G.711-ALaw-64k")) {
-    data [2] = g_strdup (_("Good Quality"));
-    data [3] = g_strdup ("64 kbits");
-  }
-
-  if (!strcmp (CodecName, "G.711-uLaw-64k")) {
-    data [2] = g_strdup (_("Good Quality"));
-    data [3] = g_strdup ("64 kbits");
-  }
-
-  if (!strcmp (CodecName, "GSM-06.10")) {
-    data [2] = g_strdup (_("Good Quality"));
-    data [3] = g_strdup ("16.5 kbits");
-  }
-
-  if (!strcmp (CodecName, "GSM-06.10")) {
-    data [2] = g_strdup (_("Good Quality"));
-    data [3] = g_strdup ("16.5 kbits");
-  }
-
-  if (!strcmp (CodecName, "G.726-16k")) {
-    data [2] = g_strdup (_("Good Quality"));
-    data [3] = g_strdup ("16 kbits");
-  }
-
-  if (!strcmp (CodecName, "G.726-32k")) {
-    data [2] = g_strdup (_("OKay"));
-    data [3] = g_strdup ("32 kbits");
-  }
-
-  gtk_clist_append (GTK_CLIST (list), (gchar **) data);
-  
-  /* Set the appropriate pixmap */
-  if (strcmp (Enabled, "1") == 0) {
-    //    gtk_clist_set_pixmap (GTK_CLIST (list), 
-    //		  GTK_CLIST (list)->rows - 1, 
-    //		  0, yes, mask_yes);
-    strcpy (row_data, "1");
-    gtk_clist_set_row_data (GTK_CLIST (list), 
-			    GTK_CLIST (list)->rows - 1, 
-			    (gpointer) row_data);
-  }
-  else {
-    //    gtk_clist_set_pixmap (GTK_CLIST (list), 
-    //		  GTK_CLIST (list)->rows - 1, 
-    //		  0, no, mask_no);
-    strcpy (row_data, "0");
-    gtk_clist_set_row_data (GTK_CLIST (list), 
-			    GTK_CLIST (list)->rows - 1, 
-			    (gpointer) row_data);
-  }
-
-  g_free (data [1]);
-  g_free (data [2]);
-  g_free (data [3]);
 }
 

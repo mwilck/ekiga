@@ -76,24 +76,9 @@ static gint gm_quit_callback (GtkWidget *, GdkEvent *, gpointer);
 static void gnomemeeting_init_main_window_video_settings ();
 static void gnomemeeting_init_main_window_audio_settings ();
 static void gnomemeeting_init_main_window_log  ();
-static void notebook_page_changed_callback (GtkNotebook *, gpointer);
 
 
 /* GTK Callbacks */
-
-/* DESCRIPTION  :  This callback is called when something the
-*                  page selected in the notebook changes
- * BEHAVIOR     :  Updated the gconf entry
- * PRE          :  /
- */
-static void notebook_page_changed_callback (GtkNotebook *notebook, gpointer)
-{
-  GConfClient *client = gconf_client_get_default ();
-
-  gconf_client_set_int (client, "/apps/gnomemeeting/view/notebook_info",
-			gtk_notebook_get_current_page (notebook), 0);
-}
-
 
 /* DESCRIPTION  :  This callback is called when the user changes the
  *                 audio settings sliders in the main notebook.
@@ -461,7 +446,7 @@ void gnomemeeting_init_main_window ()
   gw->main_notebook = gtk_notebook_new ();
   gtk_notebook_set_tab_pos (GTK_NOTEBOOK (gw->main_notebook), GTK_POS_BOTTOM);
   gtk_notebook_popup_enable (GTK_NOTEBOOK (gw->main_notebook));
-  gtk_notebook_set_show_tabs (GTK_NOTEBOOK (gw->main_notebook), TRUE);
+  gtk_notebook_set_show_tabs (GTK_NOTEBOOK (gw->main_notebook), FALSE);
 
   gnomemeeting_init_main_window_log ();
   gnomemeeting_init_main_window_audio_settings ();
@@ -473,19 +458,9 @@ void gnomemeeting_init_main_window ()
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    0, 0); 
 
-  int selected_page = 
-    gconf_client_get_int (client, "/apps/gnomemeeting/view/notebook_info", 0);
-
   if (gconf_client_get_bool 
       (client, "/apps/gnomemeeting/view/show_control_panel", 0))
     gtk_widget_show_all (GTK_WIDGET (gw->main_notebook));
-
-  gtk_notebook_set_current_page (GTK_NOTEBOOK (gw->main_notebook), 
-				 selected_page);
-
-  g_signal_connect_after (G_OBJECT (gw->main_notebook), "switch-page",
-			  G_CALLBACK (notebook_page_changed_callback), 
-			  gw->main_notebook);
 
 
   /* The drawing area that will display the webcam images */
@@ -815,7 +790,4 @@ void gnomemeeting_init_main_window_audio_settings ()
 
   gtk_notebook_append_page (GTK_NOTEBOOK (gw->main_notebook), frame, label);
 }
-
-
-
 

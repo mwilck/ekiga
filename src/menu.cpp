@@ -91,7 +91,7 @@ static void double_zoom_callback (GtkWidget *widget, gpointer data)
 
 /* DESCRIPTION  :  This callback is called when the user toggles the 
  *                 corresponding option in the View Menu (it is a toggle menu)
- * BEHAVIOR     :  Writes the selected page to the gcond db
+ * BEHAVIOR     :  Shows the notebook with the correct page.
  * PRE          :  gpointer is a valid pointer to a GonfClient structure.
  */
 static void view_menu_toggles_changed (GtkWidget *widget, gpointer data)
@@ -100,6 +100,10 @@ static void view_menu_toggles_changed (GtkWidget *widget, gpointer data)
   GnomeUIInfo *notebook_view_uiinfo =
     (GnomeUIInfo *) g_object_get_data (G_OBJECT (gm),
 				       "notebook_view_uiinfo");
+  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+
+  gtk_widget_show_all (gw->main_notebook);
+  gconf_client_set_bool (client, "/apps/gnomemeeting/view/show_control_panel", 1, NULL);
 
   /* Only do something when a new CHECK_MENU_ITEM becomes active,
      not when it becomes inactive */
@@ -107,7 +111,7 @@ static void view_menu_toggles_changed (GtkWidget *widget, gpointer data)
 
     for (int i = 0; i < 3; i++) 
       if (GTK_CHECK_MENU_ITEM (notebook_view_uiinfo[i].widget)->active) 
-	gconf_client_set_int (client, (gchar *) data, i, NULL);
+	gtk_notebook_set_current_page (GTK_NOTEBOOK (gw->main_notebook), i);
   }
 }
 
@@ -155,7 +159,7 @@ void gnomemeeting_init_menu ()
 	GNOME_APP_UI_ITEM,
 	N_("_History"), N_("View the log"),
 	(void *) view_menu_toggles_changed, 
-	(gpointer) "/apps/gnomemeeting/view/notebook_info", NULL,
+	NULL, NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	'H', GDK_CONTROL_MASK, NULL
       },
@@ -163,7 +167,7 @@ void gnomemeeting_init_menu ()
 	GNOME_APP_UI_ITEM,
 	N_("_Audio Settings"), N_("View Audio Settings"),
 	(void *) view_menu_toggles_changed, 
-	(gpointer) "/apps/gnomemeeting/view/notebook_info", NULL,
+	NULL, NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	'A', GDK_CONTROL_MASK, NULL
       },
@@ -171,7 +175,7 @@ void gnomemeeting_init_menu ()
 	GNOME_APP_UI_ITEM,
 	N_("_Video Settings"), N_("View Video Settings"),
 	(void *) view_menu_toggles_changed, 
-	(gpointer) "/apps/gnomemeeting/view/notebook_info", NULL,
+	NULL, NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	'V', GDK_CONTROL_MASK, NULL
       },
@@ -371,12 +375,6 @@ void gnomemeeting_init_menu ()
   /* Pause is unsensitive when not in a call */
   gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [6].widget), FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [7].widget), FALSE);
-
-
-  int current_page = gconf_client_get_int (client, "/apps/gnomemeeting/view/notebook_info", 0);
-
-  for (int i = 0; i < 3; i++)
-    gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (notebook_view_uiinfo[i].widget), current_page == i);
 }
 
 

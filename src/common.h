@@ -33,6 +33,8 @@
 #define GM_QSIF_HEIGHT 120
 #define GM_FRAME_SIZE  10
 
+#define GM_AUDIO_CODECS_NUMBER 7
+
 typedef struct _GM_window_widgets GM_window_widgets;
 typedef struct _GM_pref_window_widgets GM_pref_window_widgets;
 typedef struct _GM_ldap_window_widgets GM_ldap_window_widgets;
@@ -125,11 +127,7 @@ struct _GM_pref_window_widgets
   GtkAdjustment *tr_fps_spin_adj;
   GtkWidget *tr_fps;
   GtkWidget *vid_tr;
-  GtkAdjustment *g711_frames_spin_adj;
-  GtkAdjustment *gsm_frames_spin_adj;
-  GtkWidget *g711_sd;
-  GtkWidget *gsm_sd;
-  GtkAdjustment *jitter_buffer_spin_adj;
+  GtkWidget *sd;
   GtkWidget *jitter_buffer;
   GtkAdjustment *video_bandwidth_spin_adj;
   GtkWidget *video_bandwidth;
@@ -145,7 +143,7 @@ struct _GM_pref_window_widgets
   GtkAdjustment *bps_spin_adj;
   GtkWidget *aa;
   GtkWidget *dnd;
-  GtkWidget *clist_avail;
+  GtkListStore *codecs_list_store;
   GtkWidget *ldap_server;
   GtkWidget *ldap_port;
   GtkWidget *ldap;
@@ -158,7 +156,6 @@ struct _GM_pref_window_widgets
   GtkWidget *audio_player_mixer;
   GtkWidget *audio_recorder_mixer;
   GtkWidget *video_device; 
-  GtkAdjustment *video_channel_spin_adj;
   GtkWidget *video_channel;
   GtkWidget *show_docklet;
   GtkWidget *directory_update_button;

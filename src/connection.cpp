@@ -78,13 +78,13 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
   PString name;
   gchar *msg = NULL;
   int sd = 0;
-  int use_sd = 0;
   int re_vq = 2;
   int re_vq_ = 2;
 
   if (!H323Connection::OnStartLogicalChannel (channel))
     return FALSE;
 
+  H323AudioCodec *codec = (H323AudioCodec *) channel.GetCodec ();
 
   gnomemeeting_threads_enter ();
   gnomemeeting_log_insert (_("Started New Logical Channel..."));
@@ -107,45 +107,31 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
     
     g_free (msg);
     
-
-    if ((name == "MS-GSM{sw}")||(name == "GSM-06.10{sw}")) {
-  
-      sd = gconf_client_get_bool (client, "/apps/gnomemeeting/audio_settings/gsm_sd", NULL);
-      use_sd = 1;
-    }
-
-    if ((name == "G.711-ALaw-64k{sw}")||(name == "G.711-uLaw-64k{sw}"))	{
-
-      sd = gconf_client_get_bool (client, "/apps/gnomemeeting/audio_settings/g711_sd", NULL);
-      use_sd = 1;
-    }
-	
-    if (use_sd == 1) {
-
-      H323AudioCodec * codec = (H323AudioCodec *) channel.GetCodec ();
-      codec->SetSilenceDetectionMode(!sd ?
-				     H323AudioCodec::NoSilenceDetection :
-				     H323AudioCodec::AdaptiveSilenceDetection);
-      if (sd)
-	msg = g_strdup_printf (_("Enabled silence detection for %s"), 
-			       (const char *) name);
-      else
-	msg = g_strdup_printf (_("Disabled silence detection for %s"), 
-			       (const char *) name);
+    sd = gconf_client_get_bool (client, "/apps/gnomemeeting/audio_settings/sd", NULL);
+    	
+    codec->SetSilenceDetectionMode(!sd ?
+				   H323AudioCodec::NoSilenceDetection :
+				   H323AudioCodec::AdaptiveSilenceDetection);
+    if (sd)
+      msg = g_strdup_printf (_("Enabled silence detection for %s"), 
+			     (const char *) name);
+    else
+      msg = g_strdup_printf (_("Disabled silence detection for %s"), 
+			     (const char *) name);
       
-      gnomemeeting_threads_enter ();
-      gnomemeeting_log_insert (msg);
-      gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_chan_button),
-				TRUE);
-
-      GTK_TOGGLE_BUTTON (gw->audio_chan_button)->active = TRUE;
-      gtk_widget_queue_draw (GTK_WIDGET (gw->audio_chan_button));
-      gnomemeeting_threads_leave ();
-
-      g_free (msg);
-    }
-    break;
+    gnomemeeting_threads_enter ();
+    gnomemeeting_log_insert (msg);
+    gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_chan_button),
+			      TRUE);
     
+    GTK_TOGGLE_BUTTON (gw->audio_chan_button)->active = TRUE;
+    gtk_widget_queue_draw (GTK_WIDGET (gw->audio_chan_button));
+    gnomemeeting_threads_leave ();
+    
+    g_free (msg);
+
+    break;
+  
   case H323Channel::IsReceiver :
     name = channel.GetCapability().GetFormatName();
     msg = g_strdup_printf (_("Receiving %s"), 
@@ -154,11 +140,11 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
     gnomemeeting_threads_enter ();
     gnomemeeting_log_insert (msg);
     gnomemeeting_threads_leave ();
-
+    
     g_free (msg);
     
     break;
-      
+    
   default :
     break;
   }
@@ -167,21 +153,21 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
   /* Compute the received video quality */
   re_vq_ = gconf_client_get_int (GCONF_CLIENT (client), "/apps/gnomemeeting/video_settings/re_vq", NULL);
   re_vq = 32 - (int) ((double) re_vq_ / 100 * 31);
-
+    
   if (channel.GetDirection() == H323Channel::IsReceiver) {
-
+      
     if (channel.GetCodec ()->IsDescendant(H323VideoCodec::Class()) 
 	&& (re_vq >= 0)) {
-
+	
       msg = g_strdup_printf (_("Requesting remote to send video quality: %d%%"), 
 			     re_vq_);
-
+	
       gnomemeeting_threads_enter ();
       gnomemeeting_log_insert (msg);
       gnomemeeting_threads_leave ();
-
+      
       g_free (msg);
-				 
+      
       /* kludge to wait for channel to ACK to be sent */
       PThread::Current()->Sleep(2000);
       

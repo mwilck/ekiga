@@ -44,13 +44,10 @@ void gnomemeeting_init_pref_window ();
 
 
 /* DESCRIPTION  :  / 
- * BEHAVIOR     :  Add the codec (second parameter) to the codecs clist 
- *                 and the right pixmap (Enabled/Disabled) following the 3rd
- *                 parameter. Also sets row data (1 for Enabled, O for not).
- * PRE          :  First parameter should be a valid clist
+ * BEHAVIOR     :  Add the codecs (3rd parameter) to the codecs clist. 
+ * PRE          :  /
  */
-void gnomemeeting_codecs_list_add (GtkWidget *, const char *, const char *);
-
+void gnomemeeting_codecs_list_build (GtkListStore *, gchar *);
 
 void entry_changed (GtkEditable  *, gpointer);
 void adjustment_changed (GtkAdjustment *, gpointer);

@@ -49,4 +49,5 @@
 void gnomemeeting_init (GM_window_widgets *, GM_pref_window_widgets *, 
 			GM_ldap_window_widgets *, GM_rtp_data *, int, char **, char **);
 
+
 #endif

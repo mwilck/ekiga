@@ -67,17 +67,6 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/view/notebook_info</key>
-      <applyto>/apps/gnomemeeting/view/notebook_info</applyto>
-      <owner>GnomeMeeting</owner>
-      <type>int</type>
-      <default>0</default>
-      <locale name="C">
-	<short>Choose what info to show in the control panel</short>
-	<long>0 shows remote user info, 1 shows the log, 2 shows audio settins and 3 shows video settins</long>
-      </locale>
-    </schema>
-    <schema>
       <key>/schemas/apps/gnomemeeting/view/show_popup</key>
       <applyto>/apps/gnomemeeting/view/show_popup</applyto>
       <owner>GnomeMeeting</owner>
@@ -210,25 +199,14 @@
       </locale>
     </schema>
     <schema>	
-      <key>/schemas/apps/gnomemeeting/audio_settings/g711_sd</key>
-      <applyto>/apps/gnomemeeting/audio_settings/g711_sd</applyto>
+      <key>/schemas/apps/gnomemeeting/audio_settings/sd</key>
+      <applyto>/apps/gnomemeeting/audio_settings/sd</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
       <default>true</default>
       <locale name="C">
-	<short>Use Silence Detection for G.711</short>
-	<long>Use Silence Detection for G.711</long>
-      </locale>
-    </schema>
-    <schema>	
-      <key>/schemas/apps/gnomemeeting/audio_settings/gsm_sd</key>
-      <applyto>/apps/gnomemeeting/audio_settings/gsm_sd</applyto>
-      <owner>GnomeMeeting</owner>
-      <type>bool</type>
-      <default>true</default>
-      <locale name="C">
-	<short>Use Silence Detection for GSM</short>
-	<long>Use Silence Detection for GSM</long>
+	<short>Use Silence Detection for G.711 and GSM</short>
+	<long>Use Silence Detection for G.711 and GSM</long>
       </locale>
     </schema>
     <schema>		
