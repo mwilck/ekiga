@@ -234,6 +234,16 @@ else
 	AC_MSG_RESULT(yes);
 fi
 
+dnl Checking for ENUM support in PWLIB
+AC_MSG_CHECKING(for ENUM support in PWLIB);
+PWLIB_ENUM_SUPPORT=`cat ${with_pwlib_dir}/include/ptbuildopts.h | grep "#define P_DNS 1" | cut -f3  -d ' '`
+if test "x${PWLIB_ENUM_SUPPORT}" != "x1"; then
+	AC_MSG_RESULT(no);
+	AC_MSG_ERROR(Sorry but the PWLib version you are using doesn't support ENUM);
+else
+	AC_MSG_RESULT(yes);
+fi
+
 dnl Check for ptlib-config
 AC_CHECK_FILE(${with_pwlib_dir}/bin/ptlib-config, HAS_PTLIB_CONFIG=1)
 if test "x${HAS_PTLIB_CONFIG}" != "x1" ; then
