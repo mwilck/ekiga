@@ -723,24 +723,29 @@ void GMVideoGrabber::VGClose (int display_logo)
 GMVideoTester::GMVideoTester (GtkWidget *p, GtkWidget *but, GtkWindow *w)
   :PThread (1000, AutoDeleteThread)
 {
+#ifndef DISABLE_GNOME
   progress = p;
   b = but;
   window = w;
 
   this->Resume ();
+#endif
 }
 
 
 GMVideoTester::~GMVideoTester ()
 {
+#ifndef DISABLE_GNOME
   quit_mutex.Wait ();
 
   quit_mutex.Signal ();
+#endif
 }
 
 
 void GMVideoTester::Main ()
 {
+#ifndef DISABLE_GNOME
   quit_mutex.Wait ();
 
   GmWindow *gw = NULL;
@@ -760,8 +765,11 @@ void GMVideoTester::Main ()
 
   gnomemeeting_threads_enter ();
   gw = gnomemeeting_get_main_window (gm);
+
   if (gw->druid)
     gtk_widget_set_sensitive (GTK_WIDGET (b), FALSE);
+
+
   gnomemeeting_threads_leave ();
 
   while (cpt <= 5) {
@@ -862,6 +870,7 @@ void GMVideoTester::Main ()
   gnomemeeting_threads_leave ();
 
   quit_mutex.Signal ();
+#endif
 }
 
 

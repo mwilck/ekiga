@@ -1930,7 +1930,9 @@ int main (int argc, char ** argv, char ** envp)
   gw->pref_window = NULL;
   gw->ldap_window = NULL;
   gw->incoming_call_popup = NULL;
+#ifndef DISABLE_GNOME
   gw->druid = NULL;
+#endif
   gw->progress_timeout = 0;
   gw->cleaner_thread_count = 0;
 
