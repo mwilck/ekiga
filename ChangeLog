@@ -1,3 +1,18 @@
+2002-03-23  Damien Sandras  <dsandras@seconix.com>	
+
+	* Removed intl and macros from CVS, Eeek!
+	
+2002-03-23  Damien Sandras  <dsandras@seconix.com>	
+
+	* src/Makefile.am: Added -DDATADIR for the new gnome_program_init function.
+
+	* src/gdkvideoio.cpp: Playing with copy of pixbuf instead of the real
+	pixbuf to make sure to have it if it is destroyed inside PWLIB.
+
+	* src/endpoint.cpp: Fixed the VideoGrabber Reset Code.
+
+	* src/main_window.cpp: Ported gnome_init_with_popt_table to gnome_program_init.
+	
 2002-03-22  Damien Sandras  <dsandras@seconix.com>	
 
 	* Begin of the Gnome 2 port.
@@ -10,6 +25,7 @@
 
 	* (...) : New branch.
 	
+-- BRANCHED HEAD <-> GNOME_1
 2002-03-07  Damien Sandras  <dsandras@seconix.com>	
 
 	* pixmaps/gnomemeeting-logo.png: Updated to version 0.85.1
