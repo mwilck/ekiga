@@ -530,6 +530,7 @@ gchar *GMILSClient::Search (gchar *ldap_server, gchar *ldap_port, gchar *mail)
   int part4;
   int port = 1720;
   struct timeval t = {10, 0};
+  struct timeval t2 = {7, 0};
 
   bool no_error = TRUE;
   gchar *ip = NULL;
@@ -575,9 +576,9 @@ gchar *GMILSClient::Search (gchar *ldap_server, gchar *ldap_port, gchar *mail)
     
     cn = g_strdup_printf ("(&(cn=%s))", mail);
     rc_search_connection = 
-      ldap_search_s (ldap_search_connection, "objectClass=RTPerson", 
-		     LDAP_SCOPE_BASE,
-		     cn, attrs, 0, &res); 
+      ldap_search_st (ldap_search_connection, "objectClass=RTPerson", 
+		      LDAP_SCOPE_BASE,
+		      cn, attrs, 0, &t2, &res); 
     g_free (cn);
     
     if (rc_search_connection != 0)
