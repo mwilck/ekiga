@@ -104,7 +104,7 @@
       <applyto>/apps/gnomemeeting/video_settings/tr_vq</applyto>
       <owner>GnomeMeeting</owner>
       <type>int</type>
-      <default>12</default>
+      <default>75</default>
       <locale name="C">
 	<short>Video quality</short>
 	<long>The transmitted video quality hint</long>
@@ -456,7 +456,7 @@
       <applyto>/apps/gnomemeeting/video_settings/re_vq</applyto>
       <owner>GnomeMeeting</owner>
       <type>int</type>
-      <default>32</default>
+      <default>75</default>
       <locale name="C">
 	<short>Received Video Quality Hint</short>
 	<long>The Video Quality to request to the remote</long>
@@ -547,6 +547,17 @@
       <locale name="C">
 	<short>Show only the docklet window at startup</short>
 	<long>This need the show_docklet option set to true to have effect</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/video_settings/tr_ub</key>
+      <applyto>/apps/gnomemeeting/video_settings/tr_ub</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>int</type>
+      <default>2</default>
+      <locale name="C">
+	<short>Number of background blocks transmitted at a time</short>
+	<long>Here you can choose the number of blocks (that haven't changed) transmitted with each frame. These blocks fill in the background</long>
       </locale>
     </schema>
   </schemalist>
