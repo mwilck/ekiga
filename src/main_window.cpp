@@ -339,7 +339,7 @@ void gnomemeeting_init (GM_window_widgets *gw,
   cout << "FIX ME: Show Splash" << endl << flush;
   if (1) {
 
-    /* We whow the splash screen */
+    /* We show the splash screen */
     gtk_widget_show (gw->splash_win);
     while (gtk_events_pending ())
       gtk_main_iteration ();
