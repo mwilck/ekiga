@@ -138,8 +138,8 @@ void about_callback (GtkWidget *widget, gpointer parent_window)
       "Christian Rose <menthos@menthos.com>",
       "Christopher R. Gabriel <cgabriel@cgabriel.org>",
       "Cristiano De Michele <demichel@na.infn.it>",
-      "Fabrice Alphonso <fabrice.alphonso@wanadoo.fr>", 
-      "Florin Grad <florin@mandrakesoft.com>,"
+      "Fabrice Alphonso <fabrice@alphonso.dyndns.org>",
+      "Florin Grad <florin@mandrakesoft.com>",
       "Julien Puydt <julien.puydt@club-internet.fr>",
       "Kilian Krause <kk@verfaction.de>",
       "Matthias Marks <matthias@marksweb.de>",
