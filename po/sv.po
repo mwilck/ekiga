@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
-"POT-Creation-Date: 2002-12-27 00:04+0100\n"
-"PO-Revision-Date: 2002-12-27 00:04+0100\n"
+"POT-Creation-Date: 2002-12-27 10:35+0100\n"
+"PO-Revision-Date: 2002-12-27 10:36+0100\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -74,7 +74,7 @@ msgstr "Färgformat"
 msgid "Color Format for the video palette"
 msgstr "Färgformat föt videopaletten"
 
-#: gnomemeeting.schemas.in.in.h:12 src/ldap_window.cpp:1078
+#: gnomemeeting.schemas.in.in.h:12 src/ldap_window.cpp:1192
 msgid "Comment"
 msgstr "Kommentar"
 
@@ -142,7 +142,7 @@ msgstr "Aktivera videoöverföringen för samtal"
 msgid "Fast Start"
 msgstr "Snabbstart"
 
-#: gnomemeeting.schemas.in.in.h:27 src/ldap_window.cpp:1030
+#: gnomemeeting.schemas.in.in.h:27 src/ldap_window.cpp:1144
 msgid "First Name"
 msgstr "Förnamn"
 
@@ -229,7 +229,7 @@ msgstr "Typ av nätverk som valts i guiden"
 msgid "LDAP Server"
 msgstr "LDAP-server"
 
-#: gnomemeeting.schemas.in.in.h:46 src/ldap_window.cpp:1042
+#: gnomemeeting.schemas.in.in.h:46 src/ldap_window.cpp:1156
 msgid "Last Name"
 msgstr "Efternamn"
 
@@ -249,7 +249,7 @@ msgstr "Höjd på lokalt videopopupfönster"
 msgid "Local Video Popup Width"
 msgstr "Bredd på lokalt videopopupfönster"
 
-#: gnomemeeting.schemas.in.in.h:51 src/ldap_window.cpp:1066
+#: gnomemeeting.schemas.in.in.h:51 src/ldap_window.cpp:1180
 msgid "Location"
 msgstr "Plats"
 
@@ -626,7 +626,7 @@ msgstr "UDP-portintervall"
 msgid "Use Quicknet Device"
 msgstr "Använd Quicknet-enhet"
 
-#: gnomemeeting.schemas.in.in.h:128 src/ldap_window.cpp:1090
+#: gnomemeeting.schemas.in.in.h:128 src/ldap_window.cpp:1204
 msgid "Version"
 msgstr "Version"
 
@@ -850,19 +850,19 @@ msgid ""
 msgstr ""
 "  --fix-permissions      fixa rättigheter på GConf-lagret (kör som root)"
 
-#: src/config.cpp:395
+#: src/config.cpp:398
 msgid "Changing this setting will only affect new calls"
 msgstr "Att ändra denna inställning kommer endast att påverka nya samtal"
 
-#: src/config.cpp:508
+#: src/config.cpp:511
 msgid "Disabled Silence Detection"
 msgstr "Inaktiverade tystnadsdetektering"
 
-#: src/config.cpp:514
+#: src/config.cpp:517
 msgid "Enabled Silence Detection"
 msgstr "Aktiverade tystnadsdetektering"
 
-#: src/config.cpp:1051
+#: src/config.cpp:1123
 msgid ""
 "You need to specify an host to forward calls to!\n"
 "Disabling forwarding."
@@ -1528,99 +1528,103 @@ msgstr "Sökning klar: %d användare hittade på %s."
 msgid "Failed to contact %s."
 msgstr "Misslyckades med att kontakta %s."
 
-#: src/ldap_window.cpp:171
+#: src/ldap_window.cpp:258
 msgid "Add a new server"
 msgstr "Lägg till en ny server"
 
-#: src/ldap_window.cpp:172
+#: src/ldap_window.cpp:259
 msgid "Enter the server name:"
 msgstr "Ange namnet på servern:"
 
-#: src/ldap_window.cpp:177
+#: src/ldap_window.cpp:264
 msgid "Add a new group"
 msgstr "Lägg till en ny grupp"
 
-#: src/ldap_window.cpp:178
+#: src/ldap_window.cpp:265
 msgid "Enter the group name:"
 msgstr "Ange namnet på gruppen:"
 
-#: src/ldap_window.cpp:209
+#: src/ldap_window.cpp:296
 msgid "No Name"
 msgstr "Inget namn"
 
-#: src/ldap_window.cpp:525
+#: src/ldap_window.cpp:615
 msgid "New server"
 msgstr "Ny server"
 
-#: src/ldap_window.cpp:534
+#: src/ldap_window.cpp:624
 msgid "New group"
 msgstr "Ny grupp"
 
-#: src/ldap_window.cpp:543
+#: src/ldap_window.cpp:633
 msgid "Delete"
 msgstr "Ta bort"
 
-#: src/ldap_window.cpp:625
+#: src/ldap_window.cpp:720
 msgid "Call this user"
 msgstr "Ring upp denna användare"
 
-#: src/ldap_window.cpp:631
+#: src/ldap_window.cpp:730
+msgid "Delete this user"
+msgstr "Ta bort denna användare"
+
+#: src/ldap_window.cpp:740
 msgid "Add to group"
 msgstr "Lägg till i grupp"
 
-#: src/ldap_window.cpp:714
+#: src/ldap_window.cpp:824
 msgid "XDAP Server Browser"
 msgstr "XDAP-serverbläddrare"
 
-#: src/ldap_window.cpp:744
+#: src/ldap_window.cpp:854
 msgid "Contacts"
 msgstr "Kontakter"
 
 #. Ldap users list
-#: src/ldap_window.cpp:755
+#: src/ldap_window.cpp:865
 msgid "ILS Users List"
 msgstr "ILS-användarlista"
 
-#: src/ldap_window.cpp:767
+#: src/ldap_window.cpp:877
 msgid "Servers"
 msgstr "Servrar"
 
-#: src/ldap_window.cpp:798
+#: src/ldap_window.cpp:908
 msgid "Groups"
 msgstr "Grupper"
 
 #. Translators: This is "S" as in "Status"
-#: src/ldap_window.cpp:1001
+#: src/ldap_window.cpp:1115
 msgid "S"
 msgstr "S"
 
 #. Translators: This is "A" as in "Audio"
-#: src/ldap_window.cpp:1011 src/pref_window.cpp:1267
+#: src/ldap_window.cpp:1125 src/pref_window.cpp:1267
 msgid "A"
 msgstr "L"
 
 #. Translators: This is "V" as in "Video"
-#: src/ldap_window.cpp:1021
+#: src/ldap_window.cpp:1135
 msgid "V"
 msgstr "V"
 
-#: src/ldap_window.cpp:1054
+#: src/ldap_window.cpp:1168
 msgid "E-Mail"
 msgstr "E-post"
 
-#: src/ldap_window.cpp:1103
+#: src/ldap_window.cpp:1217
 msgid "IP"
 msgstr "IP"
 
-#: src/ldap_window.cpp:1117 src/pref_window.cpp:1279
+#: src/ldap_window.cpp:1231 src/pref_window.cpp:1279
 msgid "Name"
 msgstr "Namn"
 
-#: src/ldap_window.cpp:1128
+#: src/ldap_window.cpp:1244
 msgid "Callto URL"
 msgstr "Callto-URL"
 
-#: src/ldap_window.cpp:1139
+#: src/ldap_window.cpp:1257
 msgid "Netmask"
 msgstr "Nätmask"
 
@@ -2817,6 +2821,9 @@ msgid ""
 msgstr ""
 "GnomeMeeting lyckades testa din videoenhet. Drivrutinen verkar kunna "
 "användas för videokonferenser med GnomeMeeting."
+
+#~ msgid "Delete user"
+#~ msgstr "Ta bort användare"
 
 #~ msgid "New Server"
 #~ msgstr "Ny server"
