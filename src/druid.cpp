@@ -1013,7 +1013,7 @@ gnomemeeting_init_druid ()
      "The following steps will set up GnomeMeeting by asking "
      "a few simple questions.\n\nOnce you have completed "
      "these steps, you can always change them later by "
-     "selecting Preferences in the Edit menu. ");
+     "selecting Preferences in the Edit menu.");
 
 
   /* Create the first page */
