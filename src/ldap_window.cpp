@@ -1809,7 +1809,7 @@ contact_activated_cb (GtkTreeView *tree_view,
 			  COLUMN_URL, &contact_url, -1);
     else if (GPOINTER_TO_INT (data) == CONTACTS_SERVERS)
       gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
-			  COLUMN_ILS_URL, &contact_url, -1);
+			  COLUMN_ILS_IP, &contact_url, -1);
     else if (GPOINTER_TO_INT (data) == 3)
       gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
 			  2, &contact_url, -1);

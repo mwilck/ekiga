@@ -1,5 +1,10 @@
 2004-02-07 Damien Sandras  <dsandras@seconix.com>
 
+	* src/ldap_window.cpp: Use the IP instead of the callto to call
+	people so that there is less load on the server.
+	
+2004-02-07 Damien Sandras  <dsandras@seconix.com>
+
 	* src/endpoint.cpp, src/gnomemeeting.cpp: Make sure gnomemeeting
 	doesn't crash if the user is doing stupid things with keys.
 	
