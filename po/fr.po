@@ -1,7 +1,8 @@
-# SOME DESCRIPTIVE TITLE.
+# gnomemeeting fr.po.
 # Copyright (C) 2000-2001 Free Software Foundation, Inc.
 # Damien Sandras <dsandras@acm.org>, 2001.
 # Pablo Saratxaga <pablo@mandrakesoft.com>, 2001.
+# P`tit Lu <ptitlu@ptitlu.org>, 2001.
 #
 # NOTE: selon les normes de typographie française les caractères : ! ?
 # se connectent au mot précedent par une espace insécable (U+00A0, qu'on
@@ -10,59 +11,32 @@
 # et non pas des guillemets droits ( " ). les « et » sont séparés de la
 # partie guillemetée par des espaces insécables.
 #
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: GnomeMeeting 0.10\n"
-"POT-Creation-Date: 2001-10-10 21:45+0200\n"
-"PO-Revision-Date: 2001-06-17 23:02+0200\n"
-"Last-Translator: Damien Sandras <dsandras@acm.org>\n"
-"Language-Team: French <fr@li.org>\n"
+"Project-Id-Version: GnomeMeeting 0.12\n"
+"POT-Creation-Date: 2001-10-19 18:31+0200\n"
+"PO-Revision-Date: 2001-10-19 16:39+0200\n"
+"Last-Translator: P`tit Lu <ptitlu@ptitlu.org>\n"
+"Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #. In this table we put the frame
 #: gnomemeeting.desktop.in.h:1 sounds/GnomeMeeting.soundlist.in.h:1
 #: src/main_interface.cpp:235 src/preferences.cpp:952
-#, fuzzy
 msgid "GnomeMeeting"
-msgstr "Quitter GnomeMeeting"
+msgstr "GnomeMeeting"
 
 #: gnomemeeting.desktop.in.h:2
 msgid "H.323 Client"
-msgstr ""
+msgstr "Client H.323"
 
 #. Auto Answer toggle button
 #: sounds/GnomeMeeting.soundlist.in.h:2 src/preferences.cpp:723
 msgid "Incoming Call"
 msgstr "Appel entrant"
-
-#: src/docklet.cpp:75 src/endpoint.cpp:474 src/toolbar.cpp:37
-msgid "Connect"
-msgstr "Connexion"
-
-#: src/docklet.cpp:75
-#, fuzzy
-msgid "Connect call"
-msgstr "Connexion"
-
-#: src/docklet.cpp:82 src/endpoint.cpp:474 src/toolbar.cpp:44
-msgid "Disconnect"
-msgstr "Déconnexion"
-
-#: src/docklet.cpp:82
-msgid "Drop call"
-msgstr ""
-
-#: src/docklet.cpp:89
-#, fuzzy
-msgid "Toggle main window"
-msgstr "Voir / Cacher GnomeMeeting"
-
-#: src/docklet.cpp:89
-#, fuzzy
-msgid "Show/hide main window"
-msgstr "Voir / Cacher GnomeMeeting"
 
 #: src/callbacks.cpp:136
 msgid "Contributors:"
@@ -73,11 +47,11 @@ msgstr "Contributeurs :"
 #. 'Perez'.
 #: src/callbacks.cpp:143
 msgid "Miguel Rodriguez Perez <migrax@terra.es>"
-msgstr ""
+msgstr "Miguel Rodriguez Pérez <migrax@terra.es>"
 
 #: src/callbacks.cpp:146
 msgid "I18n Maintainer:"
-msgstr "Responsable I18n :"
+msgstr "Responsable i18n :"
 
 #. Translators: Please change the (C) to a real
 #. copyright character if your character set allows it
@@ -88,7 +62,6 @@ msgid "(C) 2000, 2001 Damien Sandras"
 msgstr "(C) 2000-2001 par Damien Sandras"
 
 #: src/callbacks.cpp:162
-#, fuzzy
 msgid ""
 "GnomeMeeting is an H.323 compliant program for GNOME.\n"
 "This program is not supported by Microsoft."
@@ -106,11 +79,11 @@ msgstr "Désolé, port de serveur LDAP invalide !"
 
 #: src/config.cpp:270
 msgid "Please provide your first name!"
-msgstr "Merci de fournir votre prénom !"
+msgstr "Veuillez indiquer votre prénom !"
 
 #: src/config.cpp:278
 msgid "Please provide a valid e-mail!"
-msgstr "Merci de fournir une adresse e-mail valide !"
+msgstr "Veuillez fournir une adresse électronique valide !"
 
 #: src/config.cpp:292 src/config.cpp:301
 msgid "Could not open the player mixer."
@@ -121,10 +94,13 @@ msgid ""
 "Cannot register to an empty host. Please specify the host to contact to "
 "register with the gatekeeper."
 msgstr ""
+"Impossible de s'enregistrer auprès d'un hôte vide. Veuillez spécifier un "
+"portier auquel se connecter."
 
 #: src/config.cpp:342
 msgid "Please specify a Gatekeeper ID to contact to register."
 msgstr ""
+"Veuillez spécifier l'identité du portier à contacter pour l'enregistrement."
 
 #: src/connection.cpp:78
 msgid "Started New Logical Channel..."
@@ -132,39 +108,63 @@ msgstr "Démarre un nouveau canal logique..."
 
 #: src/connection.cpp:85
 msgid "Sending "
-msgstr "Envoie "
+msgstr "Envoi en cours "
 
 #: src/connection.cpp:100
 msgid "Receiving "
-msgstr "Reçoit "
+msgstr "Réception en cours "
 
 #: src/connection.cpp:140
 msgid "Request ok"
-msgstr "Requête ok"
+msgstr "Requête correcte"
 
 #: src/connection.cpp:165 src/connection.cpp:167
 msgid "Audio Channel:  Sending"
-msgstr "Canal Audio :  Envoie"
+msgstr "Canal audio : Envoi en cours"
 
 #: src/connection.cpp:173 src/connection.cpp:175
 msgid "Audio Channel:  Paused"
-msgstr "Canal Audio :  En pause"
+msgstr "Canal audio : En pause"
 
 #: src/connection.cpp:187 src/connection.cpp:189
 msgid "Video Channel:  Sending"
-msgstr "Canal Vidéo :  Envoie"
+msgstr "Canal vidéo : Envoi en cours"
 
 #: src/connection.cpp:195 src/connection.cpp:197
 msgid "Video Channel:  Paused"
-msgstr "Canal Vidéo :  En pause"
+msgstr "Canal vidéo :  En pause"
 
 #: src/connection.cpp:224 src/connection.cpp:225
 msgid "Auto Rejecting Incoming Call"
-msgstr "Réponse automatique à l'appel entrant"
+msgstr "Rejet automatique des appels entrants"
 
 #: src/connection.cpp:238 src/connection.cpp:239
 msgid "Auto Answering Incoming Call"
-msgstr "Réponse automatique à l'appel entrant"
+msgstr "Réponse automatique aux appels entrants"
+
+#: src/docklet.cpp:76 src/endpoint.cpp:474 src/toolbar.cpp:37
+msgid "Connect"
+msgstr "Connexion"
+
+#: src/docklet.cpp:76
+msgid "Connect call"
+msgstr "Appel de connexion"
+
+#: src/docklet.cpp:83 src/endpoint.cpp:474 src/toolbar.cpp:44
+msgid "Disconnect"
+msgstr "Déconnexion"
+
+#: src/docklet.cpp:83
+msgid "Drop call"
+msgstr "Raccrocher"
+
+#: src/docklet.cpp:90
+msgid "Show/hide main window"
+msgstr "Afficher/cacher la fenêtre principale"
+
+#: src/docklet.cpp:90
+msgid "Show/hide the main window"
+msgstr "Afficher/cacher la fenêtre principale"
 
 #: src/endpoint.cpp:160 src/endpoint.cpp:176
 msgid "Added H.261 CIF capability"
@@ -200,17 +200,15 @@ msgstr "Ajout du codec LPC10"
 
 #: src/endpoint.cpp:350 src/endpoint.cpp:355
 msgid "Could not find audio channel"
-msgstr ""
+msgstr "Canal audio introuvable"
 
 #: src/endpoint.cpp:364
-#, fuzzy
 msgid "Disabled Silence Detection"
-msgstr "Permettre la détection du silence"
+msgstr "Désactiver la détection du silence"
 
 #: src/endpoint.cpp:369
-#, fuzzy
 msgid "Enabled Silence Detection"
-msgstr "Permettre la détection du silence"
+msgstr "Activer la détection du silence"
 
 #. only a pointer => destroyed with the PString
 #: src/endpoint.cpp:446
@@ -219,7 +217,6 @@ msgid "Call from %s"
 msgstr "Appel de %s"
 
 #: src/endpoint.cpp:473
-#, fuzzy
 msgid "Incoming call"
 msgstr "Appel entrant"
 
@@ -234,19 +231,19 @@ msgstr "Connecté"
 
 #: src/endpoint.cpp:532
 msgid "Fast start enabled"
-msgstr "Démarrage rapide : on"
+msgstr "Démarrage rapide activé"
 
 #: src/endpoint.cpp:534
 msgid "Fast start disabled"
-msgstr "Démarrage rapide : off"
+msgstr "Démarrage rapide désactivé"
 
 #: src/endpoint.cpp:537
 msgid "H.245 Tunnelling enabled"
-msgstr "Tunnelling H245 : on"
+msgstr "Tunnelling H245 ativé"
 
 #: src/endpoint.cpp:539
 msgid "H.245 Tunnelling disabled"
-msgstr "Tunnelling H245 : off"
+msgstr "Tunnelling H245 désactivé"
 
 #: src/endpoint.cpp:586
 msgid "Remote party has cleared the call"
@@ -258,11 +255,11 @@ msgstr "Le correspondant a stoppé l'appel"
 
 #: src/endpoint.cpp:596 src/endpoint.cpp:616
 msgid "Remote party did not accept your call"
-msgstr "Le correspondant n'a pas accepté l'appel"
+msgstr "Le correspondant n'a pas accepté votre appel"
 
 #: src/endpoint.cpp:601
 msgid "Remote party did not answer your call"
-msgstr "Le correspondant n'a pas répondu à l'appel"
+msgstr "Le correspondant n'a pas répondu à votre appel"
 
 #: src/endpoint.cpp:606
 msgid "This call ended abnormally"
@@ -305,139 +302,144 @@ msgid "Call completed"
 msgstr "Appel terminé"
 
 #: src/gatekeeper.cpp:58 src/gatekeeper.cpp:89 src/gatekeeper.cpp:118
-#, fuzzy, c-format
+#, c-format
 msgid "Gatekeeper set to %s"
-msgstr "Paramètres généraux"
+msgstr "Portier parametré à %s"
 
 #: src/gatekeeper.cpp:69
-#, fuzzy, c-format
+#, c-format
 msgid "Error while registering with Gatekeeper at %s."
-msgstr " Erreur lors de l'enregistrement à l'annuaire ILS"
+msgstr "Erreur lors de l'enregistrement auprés du portier à %s"
 
 #: src/gatekeeper.cpp:100
-#, fuzzy, c-format
+#, c-format
 msgid "Error while registering with Gatekeeper %s."
-msgstr " Erreur lors de l'enregistrement à l'annuaire ILS"
+msgstr "Erreur lors de l'enregistrement auprés du portier %s."
 
 #: src/gatekeeper.cpp:130
 msgid "No gatekeeper found."
-msgstr ""
+msgstr "Aucun portier non trouvé"
 
-#: src/ils.cpp:136
-#, fuzzy, c-format
+#: src/ils.cpp:156
+#, c-format
 msgid "Connecting to ILS directory %s, port %s"
-msgstr "Connexion à l'annuaire ILS"
+msgstr "Connexion à l'annuaire ILS %s, sur le port %s"
 
-#: src/ils.cpp:149
-#, fuzzy, c-format
+#: src/ils.cpp:169
+#, c-format
 msgid "Error while connecting to ILS directory %s, port %s"
-msgstr " Erreur lors de la connexion à l'annuaire ILS"
+msgstr " Erreur lors de la connexion à l'annuaire ILS %s, sur le port %s"
 
-#: src/ils.cpp:319
-#, fuzzy, c-format
+#: src/ils.cpp:339
+#, c-format
 msgid ""
 "Error while connecting to ILS directory %s, port %s:\n"
 "No answer from server."
-msgstr " Erreur lors de la connexion à l'annuaire ILS"
+msgstr ""
+"Erreur lors de la connexion à l'annuaire ILS %s, sur le port %s\n"
+"Pas de réponse du serveur."
 
-#: src/ils.cpp:335
-#, fuzzy, c-format
+#: src/ils.cpp:355
+#, c-format
 msgid "Sucessfully registered to ILS directory %s, port %s"
 msgstr "Enregistrement auprès de l'annuaire ILS initié avec succès"
 
-#: src/ils.cpp:337
-#, fuzzy, c-format
+#: src/ils.cpp:357
+#, c-format
 msgid "Sucessfully unregistered from ILS directory %s, port %s"
-msgstr "Enregistrement auprès de l'annuaire ILS initié avec succès"
+msgstr ""
+"Annulation de l'enregistrement auprès de l'annuaire ILS effectuée avec succès"
 
-#: src/ils.cpp:406
-msgid "Please provide an ILS directory in Settings"
-msgstr " Merci de fournir un annuaire ILS dans les préférences"
+#: src/ils.cpp:433
+msgid "Please provide an ILS directory in the window"
+msgstr "Veuillez spécifier un annuaire ILS dans la fenêtre"
 
-#: src/ils.cpp:421
+#: src/ils.cpp:455
 msgid "Connecting to ILS directory... Please Wait."
-msgstr " Connexion à l'annuaire ILS... Merci de patienter."
+msgstr "Connexion à l'annuaire ILS... Merci de patienter."
 
-#: src/ils.cpp:431 src/ils.cpp:440
+#: src/ils.cpp:471 src/ils.cpp:480
 msgid "Error while connecting to ILS directory"
-msgstr " Erreur lors de la connexion à l'annuaire ILS"
+msgstr "Erreur lors de la connexion à l'annuaire ILS"
 
-#: src/ils.cpp:449
-msgid "Searching for users... Please Wait."
-msgstr "Recherche des utilisateurs... Merci de patienter."
+#: src/ils.cpp:488
+msgid "Fetching users' information... Please Wait."
+msgstr "Récupération des informations des utilisateurs... Veuillez patienter."
 
-#: src/ils.cpp:466
+#: src/ils.cpp:506
 msgid "Search completed!"
 msgstr "Recherche terminée !"
 
 #. Translators: This is as in "Audio".
-#: src/ldap.cpp:241
+#: src/ldap.cpp:229
 msgid "A"
 msgstr "A"
 
 #. Translators: This is as in "Video".
-#: src/ldap.cpp:243
+#: src/ldap.cpp:231
 msgid "V"
 msgstr "V"
 
-#: src/ldap.cpp:244
+#: src/ldap.cpp:232
 msgid "First Name"
 msgstr "Prénom"
 
-#: src/ldap.cpp:244
+#: src/ldap.cpp:232
 msgid "Last name"
-msgstr "Prénom"
+msgstr "Nom"
 
-#: src/ldap.cpp:244
+#: src/ldap.cpp:232
 msgid "E-mail"
 msgstr "E-mail"
 
-#: src/ldap.cpp:245
+#: src/ldap.cpp:233
 msgid "Location"
-msgstr "Lieu"
+msgstr "Emplacement"
 
-#: src/ldap.cpp:245
+#: src/ldap.cpp:233
 msgid "Comment"
 msgstr "Commentaire"
 
-#: src/ldap.cpp:245
+#: src/ldap.cpp:233
 msgid "IP"
 msgstr "IP"
 
-#. Search filter entry
-#: src/ldap.cpp:262
-#, fuzzy
-msgid "Search filter"
-msgstr "Filtre de recherche par nom"
+#. ILS directories combo box
+#: src/ldap.cpp:251
+msgid "ILS directories to browse"
+msgstr "L'annuaire ILS auquel se connecter..."
 
-#: src/ldap.cpp:269
-#, fuzzy
+#: src/ldap.cpp:260
+msgid "ILS directory:"
+msgstr "Annuaire ILS :"
+
+#: src/ldap.cpp:272
+msgid "Refresh"
+msgstr "Rafraîchir"
+
+#: src/ldap.cpp:287
 msgid "first name"
 msgstr "Prénom"
 
-#: src/ldap.cpp:272
-#, fuzzy
+#: src/ldap.cpp:290
 msgid "last name"
-msgstr "Prénom"
+msgstr "Nom"
 
-#: src/ldap.cpp:275
-#, fuzzy
+#: src/ldap.cpp:293
 msgid "e-mail"
 msgstr "E-mail"
 
-#: src/ldap.cpp:278
-#, fuzzy
+#: src/ldap.cpp:296
 msgid "location"
-msgstr "Lieu"
+msgstr "Emplacement"
 
 #. the filter button
-#: src/ldap.cpp:305
-#, fuzzy
+#: src/ldap.cpp:319
 msgid "Apply filter on"
 msgstr "Chercher par"
 
 #. Ldap users list
-#: src/ldap.cpp:339
+#: src/ldap.cpp:328
 msgid "ILS Users List"
 msgstr "Liste des utilisateurs ILS"
 
@@ -455,9 +457,8 @@ msgid "Trying to stop calling"
 msgstr "Essaye de stopper l'appel"
 
 #: src/main.cpp:215 src/main.cpp:226
-#, fuzzy
 msgid "Failed to stop current call"
-msgstr "Stoppe l'appel en cours"
+msgstr "Echec lors de la tentative pour stopper l'appel en cours"
 
 #: src/main.cpp:223
 msgid "Stopping current call"
@@ -469,7 +470,7 @@ msgstr "Refus de l'appel entrant"
 
 #: src/main_interface.cpp:216
 msgid "Prints debug messages in the console"
-msgstr "Imprime des messages de debug dans la console"
+msgstr "Affiche les messages de debug dans la console"
 
 #: src/main_interface.cpp:246
 msgid "Building main interface"
@@ -481,7 +482,7 @@ msgstr "Ajout des codecs Audio"
 
 #: src/main_interface.cpp:270
 msgid "Adding Video Capabilities"
-msgstr "Ajout de codecs Video"
+msgstr "Ajout des codecs Video"
 
 #: src/main_interface.cpp:278
 msgid "Registering to ILS directory"
@@ -492,7 +493,6 @@ msgid "Starting the listener thread"
 msgstr "Mise en écoute"
 
 #: src/main_interface.cpp:293
-#, fuzzy
 msgid ""
 "Could not start the listener thread. You will not be able to receive "
 "incoming calls."
@@ -501,13 +501,12 @@ msgstr ""
 "des appels."
 
 #: src/main_interface.cpp:304
-#, fuzzy
 msgid "Registering to the Gatekeeper"
-msgstr "Enregistrement auprès de l'annuaire ILS"
+msgstr "Enregistrement auprès du portier"
 
 #: src/main_interface.cpp:314
 msgid "Detecting available audio and video devices"
-msgstr ""
+msgstr "Détection des périphériques audio et vidéo disponibles"
 
 #. Translators: This is shown in the history.
 #: src/main_interface.cpp:326 src/preferences.cpp:1889
@@ -545,21 +544,22 @@ msgid ""
 "Audio Transmission Status. During a call, click here to pause the audio "
 "transmission."
 msgstr ""
-"Etat de la transmission audio. Pendant les appels, cliquer ici pour mettre "
-"en pause la transmission audio."
+"Etat de la transmission audio. Pendant l'appel, cliquer ici pour mettre en "
+"pause la transmission audio."
 
 #: src/main_interface.cpp:535
 msgid ""
 "Video Transmission Status. During a call, click here to pause the video "
 "transmission."
 msgstr ""
-"Etat de la transmission vidéo. Pendant les appels, cliquer ici pour mettre "
-"en pause la transmission vidéo."
+"Etat de la transmission vidéo. Pendant l'appel, cliquer ici pour mettre en "
+"pause la transmission vidéo."
 
 #: src/main_interface.cpp:557
 msgid ""
 "This button permits enabling/disabling of silence detection during calls."
 msgstr ""
+"Ce bouton permet d'activer/désactiver la détection de silence durant l'appel."
 
 #: src/main_interface.cpp:578
 msgid "Click here to display the previous section of the Control Panel."
@@ -625,7 +625,7 @@ msgstr "_Déconnexion"
 
 #: src/menu.cpp:43 src/toolbar.cpp:44
 msgid "Close The Current Connection"
-msgstr "Fermer la connexion courante"
+msgstr "Fermer la connexion actuelle"
 
 #: src/menu.cpp:51
 msgid "_Quit"
@@ -641,7 +641,7 @@ msgstr "Info_rmation sur l'utilisateur distant"
 
 #: src/menu.cpp:64
 msgid "View Remote User Info"
-msgstr "Voir Info sur l'utilisateur distant"
+msgstr "Voir les informations sur l'utilisateur distant"
 
 #: src/menu.cpp:71
 msgid "_History"
@@ -672,18 +672,16 @@ msgid "_Status Bar"
 msgstr "Barre d'état"
 
 #: src/menu.cpp:93
-#, fuzzy
 msgid "View/Hide the Status Bar"
-msgstr "Voir / cacher la barre d'état"
+msgstr "Voir/cacher la barre d'état"
 
 #: src/menu.cpp:100
 msgid "_Control Panel"
 msgstr "Panneau de _contrôle"
 
 #: src/menu.cpp:100
-#, fuzzy
 msgid "View/Hide the Control Panel"
-msgstr "Voir / cacher le panneau de contrôle"
+msgstr "Voir/cacher le panneau de contrôle"
 
 #: src/menu.cpp:113 src/menu.cpp:139
 msgid "_Settings"
@@ -710,7 +708,6 @@ msgid "_View"
 msgstr "_Voir"
 
 #: src/menu.cpp:140
-#, fuzzy
 msgid "_Help"
 msgstr "Aide"
 
@@ -773,9 +770,8 @@ msgstr "Paramètres ILS"
 
 #. Gatekeeper settings
 #: src/preferences.cpp:340 src/preferences.cpp:1365 src/preferences.cpp:1454
-#, fuzzy
 msgid "Gatekeeper Settings"
-msgstr "Paramètres généraux"
+msgstr "Paramètres de Gatekeeper"
 
 #. The End
 #: src/preferences.cpp:350 src/preferences.cpp:1705
@@ -861,7 +857,7 @@ msgstr "Voir l'écran de démarrage"
 #: src/preferences.cpp:627
 msgid "If enabled, the splash screen will be displayed at startup time"
 msgstr ""
-"Si permis, un écran de démarrage sera afficher au lancement de l'application"
+"Si activé, un écran de démarrage sera affiché au lancement de l'application"
 
 #. Show / hide the notebook at startup
 #: src/preferences.cpp:631
@@ -879,7 +875,7 @@ msgstr "Voir la barre d'état"
 
 #: src/preferences.cpp:655
 msgid "If enabled, the statusbar is displayed"
-msgstr "Si permis, la barre d'état sera affichée"
+msgstr "Si activé, la barre d'état sera affichée"
 
 #. Behavior
 #: src/preferences.cpp:658
@@ -889,11 +885,11 @@ msgstr "Comportement"
 #. Auto Answer toggle button
 #: src/preferences.cpp:671
 msgid "Auto Answer"
-msgstr "Décrochage automatique"
+msgstr "Décrocher automatiquement"
 
 #: src/preferences.cpp:680
 msgid "If enabled, incoming calls will be automatically answered"
-msgstr "Si coché, GnomeMeeting répondra automatiquement aux appels entrants"
+msgstr "Si activé, GnomeMeeting répondra automatiquement aux appels entrants"
 
 #. DND toggle button
 #: src/preferences.cpp:684
@@ -902,16 +898,16 @@ msgstr "Ne pas déranger"
 
 #: src/preferences.cpp:693
 msgid "If enabled, incoming calls will be automatically refused"
-msgstr "Si coché, GnomeMeeting refusera automatiquement tout appel entrant"
+msgstr "Si activé, GnomeMeeting refusera automatiquement tout appel entrant"
 
 #. Popup display
 #: src/preferences.cpp:697
 msgid "Popup window"
-msgstr ""
+msgstr "Fenêtre popup"
 
 #: src/preferences.cpp:706
 msgid "If enabled, a popup will be displayed when receiving an incoming call"
-msgstr ""
+msgstr "Si activé, une fenêtre popup sera affichée àa la réception d'un appel"
 
 #. Play Sound
 #: src/preferences.cpp:710
@@ -923,8 +919,8 @@ msgid ""
 "If enabled, GnomeMeeting will play a sound when receiving an incoming call "
 "(the sound to play is choosen in the Gnome Control Center)"
 msgstr ""
-"Si permis, GnomeMeeting jouera un son quand il reçoit un appel entrant (le "
-"son à jouer est choisi dans le Centre de Contrôle de Gnome)"
+"Si activé, GnomeMeeting jouera un son à la réception d'un appel entrant (le "
+"son à jouer est choisi dans le Centre de contrôle de GNOME)"
 
 #. In this table we put the frame
 #. *** Transmitted Video Settings Frame ***
@@ -939,15 +935,15 @@ msgstr "Taille de l'image :"
 
 #: src/preferences.cpp:790
 msgid "Small"
-msgstr "Petit"
+msgstr "Petite"
 
 #: src/preferences.cpp:792
 msgid "Large"
-msgstr "Grand"
+msgstr "Grande"
 
 #: src/preferences.cpp:804
 msgid "Here you can choose the transmitted video size"
-msgstr "Ici, vous pouvez choisir la taille de la fenêtre vidéo transmise"
+msgstr "Ici, vous pouvez choisir la taille de la fenêtre vidéo"
 
 #. Video Format Option Menu
 #: src/preferences.cpp:808
@@ -956,7 +952,7 @@ msgstr "Format Vidéo :"
 
 #: src/preferences.cpp:830
 msgid "Here you can choose the transmitted video format"
-msgstr "Ici, vous pouvez choisir le format vidéo transmis"
+msgstr "Ici, vous pouvez choisir le format vidéo"
 
 #. Transmitted Video Quality
 #: src/preferences.cpp:834 src/preferences.cpp:1214
@@ -968,8 +964,8 @@ msgid ""
 "Here you can choose the transmitted video quality:  choose 1 on a LAN for "
 "the best quality, 31 being the worst quality"
 msgstr ""
-"Ici vous pouvez choisir la qualité vidéo transmise :  choisissez 1 sur un "
-"LAN pour une qualité optimale, 31 étant la pire qualité possible"
+"Ici vous pouvez choisir la qualité vidéo :  choisissez 1 sur un LAN pour une "
+"qualité optimale, 31 étant la pire qualité possible"
 
 #. Updated blocks / frame
 #: src/preferences.cpp:856
@@ -981,13 +977,13 @@ msgid ""
 "Here you can choose the number of blocks (that haven't changed) transmitted "
 "with each frame. These blocks fill in the background."
 msgstr ""
-"Ici vous pouvez choisir le nombre de blocs qui n'ont pas été modifiés qui "
+"Ici vous pouvez choisir le nombre de blocs (n'ayant pas été modifiés) qui "
 "doivent être transmis dans chaque image.  Ces blocs remplissent le fond."
 
 #. Transmitted FPS
 #: src/preferences.cpp:878
 msgid "Transmitted frames per second:"
-msgstr ""
+msgstr "Images par secondes (fps):"
 
 #: src/preferences.cpp:896
 msgid "Here you can choose the number of frames transmitted by second"
@@ -1013,7 +1009,7 @@ msgstr "Prénom :"
 
 #: src/preferences.cpp:980
 msgid "Enter your first name"
-msgstr "Entrez simplement votre prénom."
+msgstr "Saisissez votre prénom."
 
 #. Surname entry (LDAP)
 #: src/preferences.cpp:987
@@ -1022,16 +1018,16 @@ msgstr "Nom :"
 
 #: src/preferences.cpp:1003
 msgid "Enter your last name"
-msgstr "Entrez simplement votre nom de famille."
+msgstr "Saisissez votre nom"
 
 #. E-mail (LDAP)
 #: src/preferences.cpp:1010
 msgid "E-mail address:"
-msgstr "Adresse mail :"
+msgstr "Adresse électronique :"
 
 #: src/preferences.cpp:1026
 msgid "Enter your e-mail address"
-msgstr "Entrez simplement votre adresse de courier électronique."
+msgstr "Saisissez votre adresse de courrier électronique."
 
 #. Comment (LDAP)
 #: src/preferences.cpp:1033
@@ -1041,13 +1037,13 @@ msgstr "Commentaire :"
 #: src/preferences.cpp:1049
 msgid "Here you can fill in a comment about yourself for ILS directories"
 msgstr ""
-"Ici, vous pouvez donner un commentaire qui sera affiché lors des "
+"Ici, vous pouvez saisir un commentaire qui sera affiché lors des "
 "consultations d'annuaires ILS"
 
 #. Location
 #: src/preferences.cpp:1056
 msgid "Location:"
-msgstr "Lieu :"
+msgstr "Emplacement :"
 
 #: src/preferences.cpp:1072
 msgid "Where do you call from?"
@@ -1082,13 +1078,12 @@ msgstr "La connection sera établie en mode Démarrage Rapide"
 
 #. Max Used Bandwidth spin button
 #: src/preferences.cpp:1167
-#, fuzzy
 msgid "Maximum Bandwidth:"
-msgstr "Max. bps :"
+msgstr "Bande passante maximum :"
 
 #: src/preferences.cpp:1185
 msgid "The maximum bandwidth that should be used for the communication"
-msgstr "La bande passant maximum qui peut être utilisée"
+msgstr "La bande passante maximum qui peut être utilisée"
 
 #. Silence Detection
 #: src/preferences.cpp:1189
@@ -1101,7 +1096,7 @@ msgid ""
 "silences will not be transmitted over the Internet."
 msgstr ""
 "Permettre ou pas la détection de silence.  Si la détection de silence est "
-"enclenchée, les silences ne seront pas transmis sur l'internet."
+"activée, les silences ne seront pas transmis sur l'internet."
 
 #. *** Received Video Settings Frame ***
 #: src/preferences.cpp:1202
@@ -1114,9 +1109,8 @@ msgstr "La qualité vidéo à demander au correspondant"
 
 #. ILS settings
 #: src/preferences.cpp:1263
-#, fuzzy
 msgid "ILS Directory to register to"
-msgstr "L'annuaire ILS auquel se connecter..."
+msgstr "L'annuaire ILS auquel s'enregistrer..."
 
 #. ILS directory
 #: src/preferences.cpp:1277
@@ -1124,9 +1118,8 @@ msgid "ILS Directory:"
 msgstr "Annuaire ILS :"
 
 #: src/preferences.cpp:1292
-#, fuzzy
 msgid "The ILS directory to register to"
-msgstr "L'annuaire ILS auquel se connecter..."
+msgstr "L'annuaire ILS auquel s'enregistrer..."
 
 #. ILS port
 #: src/preferences.cpp:1299
@@ -1139,98 +1132,96 @@ msgstr "Le port correspondant : 389 est le port d'écoute standard"
 
 #. Use ILS
 #: src/preferences.cpp:1321
-#, fuzzy
 msgid "Register"
 msgstr "Enregistrement auprès de l'annuaire ILS"
 
 #: src/preferences.cpp:1333
 msgid "If enabled, permit to register to the selected ILS directory"
-msgstr "Si coché, cela permet de s'enregistrer auprès de l'annuaire ILS choisi"
+msgstr ""
+"Si activé, cela permet de s'enregistrer auprès de l'annuaire ILS choisi"
 
 #. Gatekeeper ID
 #: src/preferences.cpp:1378
 msgid "Gatekeeper ID"
-msgstr ""
+msgstr "ID Gatekeeper"
 
 #: src/preferences.cpp:1393
 msgid "The Gatekeeper identifier."
-msgstr ""
+msgstr "L'identifiant Gatekeeper"
 
 #. Gatekeeper Host
 #: src/preferences.cpp:1400
 msgid "Gatekeeper host"
-msgstr ""
+msgstr "Hôte Gatekeeper"
 
 #: src/preferences.cpp:1415
 msgid "The Gatekeeper host to register to."
-msgstr ""
+msgstr "Hôte Gatekeeper auquel s'enregistrer"
 
 #. GK registering method
 #: src/preferences.cpp:1422
-#, fuzzy
 msgid "Registering method"
-msgstr "Enregistrement auprès de l'annuaire ILS"
+msgstr "Méthode d'enregistrement auprès de l'annuaire ILS"
 
 #: src/preferences.cpp:1430
 msgid "Do not register to a Gatekeeper"
-msgstr ""
+msgstr "Ne pas s'enreigistrer à un portier"
 
 #: src/preferences.cpp:1432
 msgid "Register using the Gatekeeper host"
-msgstr ""
+msgstr "Enregistrement via l'hôte du portier"
 
 #: src/preferences.cpp:1434
 msgid "Register using the Gatekeeper ID"
-msgstr ""
+msgstr "Enregistrement en utilisant l'identifiant du portier"
 
 #: src/preferences.cpp:1436
 msgid "Try to discover the Gatekeeper"
-msgstr ""
+msgstr "Tenter de trouver le portier"
 
 #: src/preferences.cpp:1451
-#, fuzzy
 msgid "Registering method to use"
-msgstr "Enregistrement auprès de l'annuaire ILS"
+msgstr "Méthode d'enregistrement à utiliser"
 
 #. Audio device
 #: src/preferences.cpp:1484
 msgid "Audio Devices"
-msgstr "Périphériques Audio"
+msgstr "Périphériques audio"
 
 #. Audio Device
 #: src/preferences.cpp:1498
 msgid "Player:"
-msgstr "Player :"
+msgstr "Lecteur :"
 
 #: src/preferences.cpp:1526
 msgid "Enter the audio player device to use"
-msgstr "Entrez simplement le périphérique audio à utiliser pour jouer"
+msgstr "Saisissez le périphérique audio à utiliser pour lire"
 
 #. Audio Recorder Device
 #: src/preferences.cpp:1533
 msgid "Recorder:"
-msgstr "Recorder :"
+msgstr "Enregistreur :"
 
 #: src/preferences.cpp:1563
 msgid "Enter the audio recorder device to use"
-msgstr "Entrez simplement le périphérique audio à utiliser pour enregistrer"
+msgstr "Saisissez le périphérique audio à utiliser pour enregistrer"
 
 #. Audio Mixers
 #: src/preferences.cpp:1570
 msgid "Player Mixer:"
-msgstr "Player Mixer :"
+msgstr "Mixeur de lecture :"
 
 #: src/preferences.cpp:1587
 msgid "The audio mixer to use for player settings"
-msgstr "Le mixer audio à utiliser pour jouer"
+msgstr "Le mixer audio à utiliser pour les paramètres de lecture"
 
 #: src/preferences.cpp:1593
 msgid "Recorder Mixer:"
-msgstr ""
+msgstr "Mixeur d'enregistrement"
 
 #: src/preferences.cpp:1610
 msgid "The audio mixer to use for recorder settings"
-msgstr "Le mixer audio à utiliser pour enregistrer"
+msgstr "Le mixer audio à utiliser pour les paramètres d'enregistrement"
 
 #. Video device
 #: src/preferences.cpp:1617
@@ -1244,12 +1235,12 @@ msgstr "Périphérique Vidéo :"
 
 #: src/preferences.cpp:1656
 msgid "Enter the video device to use"
-msgstr "Entrez le périphérique vidéo à utiliser"
+msgstr "Saisir le périphérique vidéo à utiliser"
 
 #. Video channel spin button
 #: src/preferences.cpp:1663
 msgid "Video Channel:"
-msgstr "Canal Vidéo :"
+msgstr "Canal vidéo :"
 
 #: src/preferences.cpp:1683
 msgid "The video channel number to use (camera, tv, ...)"
@@ -1257,13 +1248,12 @@ msgstr "Le numéro du canal vidéo à utiliser (webcam, tv, ...)"
 
 #. Device test button
 #: src/preferences.cpp:1689
-#, fuzzy
 msgid "Preview Video Settings"
-msgstr "Voir les paramètres vidéo"
+msgstr "Prévisualiser les paramètres vidéo"
 
 #: src/preferences.cpp:1765
 msgid "Okay"
-msgstr "Okay"
+msgstr "D'accord"
 
 #: src/preferences.cpp:1771 src/preferences.cpp:1777 src/preferences.cpp:1783
 #: src/preferences.cpp:1789
@@ -1284,7 +1274,7 @@ msgid "Successfully opened video device %s, channel %d"
 msgstr "Ouverture avec succès du périphérique vidéo %s, canal %d"
 
 #: src/videograbber.cpp:293
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Error while opening video device %s, channel %d.\n"
 "A test image will be transmitted."
@@ -1294,27 +1284,36 @@ msgstr ""
 
 #: src/videograbber.cpp:298
 msgid "Error with the device."
-msgstr ""
+msgstr "Erreur avec le périphérique."
 
 #: src/videograbber.cpp:302
 msgid "Error with the video format."
-msgstr ""
+msgstr "Erreur avec le format vidéo."
 
 #: src/videograbber.cpp:306
 msgid "Error with the choosed channel."
-msgstr ""
+msgstr "Erreur avec le canal choisi."
 
 #: src/videograbber.cpp:310
 msgid "Your driver doesn't support the YUV420P format."
-msgstr ""
+msgstr "Votre pilote ne supporte pas le format YUV420P"
 
 #: src/videograbber.cpp:314
 msgid "Error with the frame rate."
-msgstr ""
+msgstr "Erreur avec le taux de rafraîchissement de l'affichage."
 
 #: src/videograbber.cpp:318
 msgid "Error with the frame size."
-msgstr ""
+msgstr "Erreur avec la taille d'affichage."
+
+#~ msgid "ILS directories list:"
+#~ msgstr "Annuaire ILS :"
+
+#~ msgid "Toggle main window"
+#~ msgstr "Voir/Cacher GnomeMeeting"
+
+#~ msgid "Search filter"
+#~ msgstr "Filtre de recherche par nom"
 
 #~ msgid "Can't create applet!\n"
 #~ msgstr "Ne peut créer l'applet!\n"
@@ -1325,9 +1324,8 @@ msgstr ""
 #~ msgid "Register to ILS directory"
 #~ msgstr "Enregistrement auprès de l'annuaire ILS"
 
-#, fuzzy
 #~ msgid "Video Settings Preview"
-#~ msgstr "Paramètres Vidéo"
+#~ msgstr "Prévisualisation des paramètres vidéo"
 
 #~ msgid ""
 #~ "A call is currently in progress, please disconnect before trying to quit."
@@ -1339,7 +1337,7 @@ msgstr ""
 #~ msgstr "Etes-vous sûr de vouloir quitter ?"
 
 #~ msgid "Error while registering to ILS directory"
-#~ msgstr " Erreur lors de l'enregistrement à l'annuaire ILS"
+#~ msgstr "Erreur lors de l'enregistrement à l'annuaire ILS"
 
 #~ msgid "Impossible to open this device."
 #~ msgstr "Impossible d'ouvrir ce périhpérique."
