@@ -281,3 +281,14 @@ GMSIPEndPoint::OnRegistrationFailed (SIPEndPoint::RegistrationFailReasons r,
   g_free (msg);
   g_free (registrar_host);
 }
+
+
+BOOL 
+GMSIPEndPoint::OnIncomingConnection (OpalConnection &connection)
+{
+  PTRACE (3, "GMSIPEndPoint\tIncoming connection");
+
+  return endpoint.OnIncomingConnection (connection);
+  //return connection.ForwardCall ("h323:seconix.com:1740");
+}
+

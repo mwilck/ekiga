@@ -1,4 +1,4 @@
-AC_INIT(gnomemeeting, 1.3.1, http://bugzilla.gnome.org/enter_bug.cgi?product=gnomemeeting)
+AC_INIT(gnomemeeting-snapshot, 1.3.1, http://bugzilla.gnome.org/enter_bug.cgi?product=gnomemeeting)
 AC_CANONICAL_TARGET
 AC_PREREQ(2.53)
 AC_CONFIG_SRCDIR(src/gnomemeeting.cpp)
@@ -108,7 +108,7 @@ case $target_os in
 
   linux-gnu | linux | Linux)
     ARCH_OPAL_CFLAGS="-DPTRACING -DNDEBUG -Wall -Os -g -fno-exceptions -felide-constructors"
-    ARCH_OPAL_LIBS="-lopal -ldl -lpt -lpthread"
+    ARCH_OPAL_LIBS="-L/home/damien/CVS/opal/lib -lopal_linux_x86_d -ldl -lpt -lpthread"
     AC_MSG_RESULT([yes])
     gm_platform="linux"
 

@@ -218,7 +218,7 @@ class GMEndPoint : public OpalManager
 				gchar * &,
 				gchar * &);
 
-  
+
   /* DESCRIPTION  :  This callback is called when the connection is 
    *                 established and everything is ok.
    * BEHAVIOR     :  Sets the proper values for the current connection 

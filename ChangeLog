@@ -1,3 +1,10 @@
+2004-12-19  Damien Sandras  <dsandras@gnome.org>
+
+	* src/endpoint.cpp, src/endpoint.h, src/h323endpoint.cpp, 
+	src/h323endpoint.h, src/sipendpoint.cpp, src/sipendpoint.h:
+	Moved OnIncomingConnection to the SIP and H.323 endpoints to allow
+	call forwarding. Will only work with the latest patch on OPAL.
+
 2004-12-15  Damien Sandras  <dsandras@gnome.org>
 
 	* src/sipendpoint.cpp: Slight change due to API change in OPAL.

@@ -178,3 +178,13 @@ GMH323EndPoint::OnRTPStatistics (const H323Connection & connection,
 			   session);
 }
 
+
+BOOL 
+GMH323EndPoint::OnIncomingConnection (OpalConnection &connection)
+{
+  PTRACE (3, "GMH323EndPoint\tIncoming connection");
+
+  return endpoint.OnIncomingConnection (connection);
+  //return connection.ForwardCall ("h323:seconix.com:1740");
+}
+

@@ -130,6 +130,14 @@ class GMSIPEndPoint : public SIPEndPoint
 			     BOOL);
   
   
+  /* DESCRIPTION  :  Called when there is an incoming call.
+   * BEHAVIOR     :  Calls the Manage function of the same name of forward
+   * 		     the connection.
+   * PRE          :  /
+   */
+  BOOL OnIncomingConnection (OpalConnection &);
+
+  
  private:
 
   GMEndPoint & endpoint;

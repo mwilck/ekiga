@@ -1357,7 +1357,15 @@ GMEndPoint::Init ()
   /* Set the User Name and Alias */  
   SetUserNameAndAlias ();
 
-  
+  OpalMediaFormatList mediaFormats;
+  PStringArray medias;
+  mediaFormats += pcssEP->GetMediaFormats ();
+  mediaFormats += h323EP->GetMediaFormats ();
+  mediaFormats += sipEP->GetMediaFormats ();
+  for (int i = 0 ; i < mediaFormats.GetSize () ; i++)
+    medias += mediaFormats [i];
+  SetMediaFormatOrder (medias);
+
   /* Add capabilities */
   //FIXME AddAllCapabilities ();
 
@@ -2114,10 +2122,22 @@ GMEndPoint::SendDTMF (PString callToken,
 
     if (connection != NULL) {
 
+      if (!PIsDescendant (&(*connection), SIPConnection))
+	connection = call->GetConnection (0);
+
+      connection->SendUserInputString (dtmf);
+    }
+  }
+  if (call != NULL) {
+
+    connection = call->GetConnection (1);
+
+    if (connection != NULL) {
+
       if (!PIsDescendant (&(*connection), OpalPCSSConnection))
 	connection = call->GetConnection (0);
 
-      connection->OnUserInputString (dtmf);
+      connection->SendUserInputString (dtmf);
     }
   }
 }
