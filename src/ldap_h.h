@@ -111,25 +111,6 @@ void ldap_clist_column_clicked (GtkCList *, gint, gpointer);
 // PRE          :  GM_window_widgets is a valid pointer to a
 //                 GM_window_widgets
 void GM_ldap_init (GM_window_widgets *);
-
-
-// DESCRIPTION  :  /
-// BEHAVIOR     :  populate the users list IF ldap support is enabled
-// PRE          :  /
-void *GM_ldap_populate_ldap_users_clist (void *);
-
-
-// DESCRIPTION  :  /
-// BEHAVIOR     :  register to a ILS directory
-// PRE          :  user options must be ok for ILS support, GM_window_widgets ok
-void *GM_ldap_register (char *, GM_window_widgets *);
-
-
-// DESCRIPTION  :  /
-// BEHAVIOR     :  refresh the ttl entry of a ILS directory
-// PRE          :  user options must be ok for ILS support
-void *GM_ldap_refresh (void);
-
 /******************************************************************************/
 
 #endif

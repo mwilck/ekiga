@@ -24,12 +24,13 @@
 #include "config.h"
 #include "common.h"
 #include "connection.h"
-#include "applet.h"
+#include "docklet.h"
 #include "audio.h"
 #include "videograbber.h"
 #include "gatekeeper.h"
 #include "callbacks.h"
 #include "ils.h"
+#include <status-docklet.h>
 
 #include "../pixmaps/computer.xpm"
 
@@ -42,15 +43,15 @@
 /******************************************************************************/
 
 
-gint PlaySound (GtkWidget *applet)
+gint PlaySound (GtkWidget *widget)
 {
   GtkWidget *object = NULL;
 
-  if (applet != NULL)
+  if (widget != NULL)
   {
     // First we check if it is the phone or the globe that is displayed
     gdk_threads_enter ();
-    object = (GtkWidget *) gtk_object_get_data (GTK_OBJECT (applet),
+    object = (GtkWidget *) gtk_object_get_data (GTK_OBJECT (widget),
 						"pixmapg");
     gdk_threads_leave ();
   }
@@ -280,7 +281,7 @@ BOOL GMH323EndPoint::Initialise ()
 
   // Set the various options
   SetCallingState (0);
-  applet_timeout = 0;
+  docklet_timeout = 0;
   sound_timeout = 0;
 
   if (strcmp (opts->firstname, ""))
@@ -448,24 +449,20 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
 		     (gchar *) msg);
 			 
-  if (gw->applet != NULL)
-    applet_widget_set_tooltip (APPLET_WIDGET (gw->applet),  
-			       (gchar *) msg);
-
   GM_log_insert (gw->log_text, msg);
 
-  if ((applet_timeout == 0) && (gw->applet != NULL))
+  if ((docklet_timeout == 0))
     {
-      applet_timeout = gtk_timeout_add (1000, 
-					(GtkFunction) AppletFlash, 
-					gw->applet);
+      docklet_timeout = gtk_timeout_add (1000, 
+					 (GtkFunction) docklet_flash, 
+					 gw->docklet);
     }
 
   if ((sound_timeout == 0) && (opts->incoming_call_sound))
     {
       sound_timeout = gtk_timeout_add (2000, 
 				       (GtkFunction) PlaySound,
-				       gw->applet);
+				       STATUS_DOCKLET (gw->docklet)->plug);
     }
 
   if ((opts->popup) && (!opts->aa) && (!opts->dnd))
@@ -556,20 +553,16 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   gtk_clist_append (GTK_CLIST (gw->user_list), (gchar **) data);	
   g_free (data [1]);
 
-  if (applet_timeout != 0)
-    gtk_timeout_remove (applet_timeout);
+  if (docklet_timeout != 0)
+    gtk_timeout_remove (docklet_timeout);
 
   if (sound_timeout != 0)
     gtk_timeout_remove (sound_timeout);
 
-  applet_timeout = 0;
+  docklet_timeout = 0;
   sound_timeout = 0;
 
-  if (gw->applet != NULL)
-    {
-      GM_applet_set_content (gw->applet, 0);
-      applet_widget_set_tooltip (APPLET_WIDGET (gw->applet), NULL);
-    }
+  GM_docklet_set_content (gw->docklet, 0);
 
   gdk_threads_leave ();
 
@@ -674,22 +667,19 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   SetCurrentConnection (NULL);
   SetCallingState (0);
 
-  /* Remove the timers if needed and clear the applet */
-  if (applet_timeout != 0)
-    gtk_timeout_remove (applet_timeout);
+  /* Remove the timers if needed and clear the docklet */
+  if (docklet_timeout != 0)
+    gtk_timeout_remove (docklet_timeout);
 
-  applet_timeout = 0;
+  docklet_timeout = 0;
 
   if (sound_timeout != 0)
     gtk_timeout_remove (sound_timeout);
 
   sound_timeout = 0;
 
-  if (gw->applet != NULL)
-    {
-      GM_applet_set_content (gw->applet, 0);
-      applet_widget_set_tooltip (APPLET_WIDGET (gw->applet), NULL);
-    }
+  GM_docklet_set_content (gw->docklet, 0);
+
   gdk_threads_leave ();
   
   gdk_threads_enter ();
@@ -737,20 +727,16 @@ BOOL GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
   gdk_threads_enter ();
 
   /* If needed , delete the timers */
-  if (applet_timeout != 0)
-    gtk_timeout_remove (applet_timeout);
-  applet_timeout = 0;
+  if (docklet_timeout != 0)
+    gtk_timeout_remove (docklet_timeout);
+  docklet_timeout = 0;
 
   if (sound_timeout != 0)
     gtk_timeout_remove (sound_timeout);
   sound_timeout = 0;
 
-  /* Clear the applet */
-  if (gw->applet != NULL)
-    {
-      GM_applet_set_content (gw->applet, 0);
-      applet_widget_set_tooltip (APPLET_WIDGET (gw->applet), NULL);
-    }
+  /* Clear the docklet */
+  GM_docklet_set_content (gw->docklet, 0);
 
   /* Enable the possibility to pause the transmission audio channel and to */
   /* change the silence detection mode                                     */

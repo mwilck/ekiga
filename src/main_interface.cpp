@@ -21,7 +21,7 @@
 #include "main_interface.h"
 #include "main.h"
 #include "callbacks.h"
-#include "applet.h"
+#include "docklet.h"
 #include "splash.h"
 #include "ils.h"
 #include "common.h"
@@ -204,8 +204,6 @@ void GM_init (GM_window_widgets *gw, options *opts, int argc,
   gchar *text = NULL;
   int debug = 0;
   
-  opts->applet = 1;
-
   if (config_first_time ())
     init_config ();
 
@@ -214,8 +212,6 @@ void GM_init (GM_window_widgets *gw, options *opts, int argc,
   // Cope with command line options
   static struct poptOption arguments[] =
     {
-      {"noapplet", 'a', POPT_ARG_NONE, 
-       0, 0, N_("Startup without applet support"), NULL},
       {"debug", 'd', POPT_ARG_NONE, 
        0, 0, N_("Prints debug messages in the console"), NULL},
       {NULL, 0, 0, NULL, 0, NULL, NULL}
@@ -223,25 +219,18 @@ void GM_init (GM_window_widgets *gw, options *opts, int argc,
 
   for (int i = 0; i < argc; i++) 
     {
-      if (!strcmp (argv[i], "-a") || !strcmp (argv[i], "--noapplet"))
-	opts->applet = 0;
-
       if (!strcmp (argv[i], "-d") || !strcmp (argv[i], "--debug"))
 	debug = 1;
     } 
 
   // Gnome Initialisation
-  if (opts->applet == 0)
-    gnome_init_with_popt_table (PACKAGE, VERSION, argc, argv,
-				arguments, 0, NULL);
-  else
-    {
-      applet_widget_init( PACKAGE, VERSION, argc, argv,
-			  arguments, 0, NULL );
-      
-      gw->applet = GM_applet_init (argc, argv);
-      gtk_widget_show (gw->applet);
-    }
+  // CORBA is needed for the docklet stuff
+  CORBA_Environment ev;
+  CORBA_exception_init (&ev);
+  gnome_CORBA_init_with_popt_table (PACKAGE, VERSION, &argc, argv,
+				    arguments, 0, NULL, 
+				    static_cast<GnorbaInitFlags> (0), &ev);
+
 
   gm = gnome_app_new ("gnomemeeting", _("GnomeMeeting"));
   gtk_window_set_policy (GTK_WINDOW (gm), FALSE, FALSE, TRUE);
@@ -256,6 +245,9 @@ void GM_init (GM_window_widgets *gw, options *opts, int argc,
       GM_splash_advance_progress (gw->splash_win, 
 				  _("Building main interface"), 0.15);
     }
+
+  gw->docklet = GM_docklet_init ();
+
   GM_main_interface_init (gw, opts);
   GM_ldap_init (gw);
 
@@ -373,14 +365,10 @@ void GM_init (GM_window_widgets *gw, options *opts, int argc,
     gtk_widget_destroy (gw->splash_win);
 
   // if the user tries to close the window : delete_event
-  if (opts->applet == 1)
-    gtk_signal_connect (GTK_OBJECT (gm), "delete_event",
-			GTK_SIGNAL_FUNC (toggle_window_callback),
-			NULL);
-  else
-    gtk_signal_connect (GTK_OBJECT (gm), "delete_event",
-			GTK_SIGNAL_FUNC (quit_callback),
-			gw);
+
+  gtk_signal_connect (GTK_OBJECT (gm), "delete_event",
+		      GTK_SIGNAL_FUNC (toggle_window_callback),
+		      NULL);
 }
 
 

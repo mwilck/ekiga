@@ -71,7 +71,6 @@ struct _options
   int show_statusbar;
   int show_notebook;
   int incoming_call_sound;
-  int applet;
   char *audio_player;
   char *audio_recorder;
   char *audio_player_mixer;
@@ -89,9 +88,9 @@ struct _GM_window_widgets
   GtkObject *adj_brightness;
   GtkObject *adj_colour;
   GtkObject *adj_contrast;
+  GtkObject *docklet;
   GtkWidget *video_settings_frame;
   GtkWidget *statusbar;
-  GtkWidget *applet;
   GtkWidget *splash_win;
   GtkWidget *combo;
   GtkWidget *log_text;

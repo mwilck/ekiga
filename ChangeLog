@@ -1,3 +1,26 @@
+2001-10-09  Damien Sandras  <dsandras@seconix.com>
+
+	* src/doclet.cpp, src/docklet.h: Moved a #include <> from .cpp to .h
+	* pixmaps/globe-22.xpm, pixmaps/globe2-22.xpm: Added these new icons for
+	the docklet.
+	
+2001-10-09  Miguel Rodríguez Pérez  <migras@atlas.uvigo.es>
+
+	* src/main_interface.cpp: Initialize CORBA, this is need for the docklet,
+	and lots of little changes for the docklet.
+	* src/main.h: Don't include applet-widget.h anymore
+	* src/main.cpp (main): Don't initialize the applet, we don't have any ;)
+	* src/endpoint.h: 
+	* src/endpoint.cpp:  Lots of little changes to adapt the code to the
+	docklet
+	* src/common.h (struct _GM_window_widgets): Now we keep a pointer to the
+	docklet, not to the applet
+	* src/cleaner.cpp (Main): Removed some logic that is not needed now with
+	the docklet
+	* src/callbacks.cpp (gtk_main_quit_callback): Removed some logic to handle
+	the applet
+	* src/Makefile.am: Remove applet.* in favour of docklet.*
+
 2001-10-07  Damien Sandras  <dsandras@seconix.com>
 
 	* src/ils.cpp: Added test to not g_free NULL values, fixed memory leak by

@@ -199,13 +199,7 @@ void gtk_main_quit_callback (int res, gpointer data)
    if (res == 0)
      {
        gtk_widget_hide (GTK_WIDGET (gm));
-       if (gw->applet == NULL)
-	 gtk_main_quit ();
-       else
-	 {
-	   applet_widget_remove (APPLET_WIDGET (gw->applet));
-	   applet_widget_gtk_main_quit ();
-	 }
+       gtk_main_quit ();
      }
 }
 

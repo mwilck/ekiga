@@ -26,7 +26,6 @@
 #include <libgnomeui/gnome-window-icon.h>
 #include <glib.h>
 #include <h323.h>
-#include <applet-widget.h>
 
 #include "common.h"
 #include "endpoint.h"

@@ -30,8 +30,8 @@ gnomemeeting_SOURCES =		\
 	ldap_h.h		\
 	splash.cpp		\
 	splash.h		\
-	applet.cpp		\
-	applet.h		\
+	docklet.cpp		\
+	docklet.h		\
 	main_interface.cpp	\
 	main_interface.h	\
 	audio.cpp		\
@@ -44,5 +44,5 @@ gnomemeeting_SOURCES =		\
 	cleaner.h
 
 
-gnomemeeting_LDADD =  @GNOMEMEETING_LDADD@ -lpanel_applet
+gnomemeeting_LDADD =  @GNOMEMEETING_LDADD@
 

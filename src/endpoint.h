@@ -41,7 +41,7 @@
 /******************************************************************************/
 // DESCRIPTION  :  This callback is called by a timeout function
 // BEHAVIOR     :  Plays the sound choosen in the gnome contro center
-// PRE          :  The pointer to the applet must be valid
+// PRE          :  The pointer to the docklet must be valid
  gint PlaySound (GtkWidget *);
 
 /******************************************************************************/
@@ -101,7 +101,7 @@ class GMH323EndPoint : public H323EndPoint
   //                 with one control channel and x >= 0 logical channel(s)
   //                 opened
   // BEHAVIOR     :  Sets the proper values for the current connection parameters
-  //                 (and updates the applet, log window and statusbar)
+  //                 (and updates the docklet, log window and statusbar)
   // PRE          :  /
   virtual void OnConnectionEstablished (H323Connection &,
 				        const PString &);
@@ -110,7 +110,7 @@ class GMH323EndPoint : public H323EndPoint
   // DESCRIPTION  :  This callback is called when the connection to a remote
   //                 endpoint is cleared
   // BEHAVIOR     :  Sets the proper values for the current connection parameters
-  //                 (and updates the applet, log window and statusbar)
+  //                 (and updates the docklet, log window and statusbar)
   // PRE          :  /
   virtual void OnConnectionCleared (H323Connection &,
 				    const PString &);
@@ -266,7 +266,7 @@ class GMH323EndPoint : public H323EndPoint
   H323ListenerTCP *listener;  // The listener thread
   options *opts;  // pointer to options (will be read in the config file)
   int calling_state; // current calling state
-  int applet_timeout; // timeout associated with the animated applet
+  int docklet_timeout; // timeout associated with the animated docklet
   int sound_timeout; // timeout associated with the sound
   int display_config; // webcam image to display
   GDKVideoOutputDevice *transmitted_video_device; // GDKVideoOutputDevice : sent

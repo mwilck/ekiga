@@ -20,6 +20,12 @@
 #ifndef _MAIN_INTERFACE_H
 #define _MAIN_INTERFACE_H
 
+#include <gnome.h>
+#include <orb/orbit.h>
+extern "C" {
+#include <libgnorba/gnorba.h>
+}
+
 #include "common.h"
 #include "config.h"
 

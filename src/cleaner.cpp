@@ -58,13 +58,9 @@ void GMThreadsCleaner::Main ()
   delete (video_grabber);
 
   gdk_threads_enter ();
-  if (gw->applet == NULL)
-    gtk_main_quit ();
-  else
-    {
-      applet_widget_remove (APPLET_WIDGET (gw->applet));
-      applet_widget_gtk_main_quit ();
-    }
+
+  gtk_main_quit ();
+
   gdk_threads_leave ();
 }
 /******************************************************************************/

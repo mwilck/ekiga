@@ -265,7 +265,6 @@ int main (int argc, char ** argv, char ** envp)
   // Init the GM_window_widgets
   gw = new (GM_window_widgets);
   gw->pixmap = NULL;
-  gw->applet = NULL;
   gw->pref_window = NULL;
   gw->ldap_window = NULL;
   gw->video_grabber_thread_count = 0;
@@ -287,10 +286,7 @@ int main (int argc, char ** argv, char ** envp)
   gtk_timeout_add (1000, (GtkFunction) AppbarUpdate, 
 		   gw->statusbar);
 
-  if (opts->applet)
-    applet_widget_gtk_main ();
-  else
-    gtk_main ();
+  gtk_main ();
 
   delete (opts);
   delete (gw);

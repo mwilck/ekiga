@@ -1,11 +1,11 @@
 /***************************************************************************
-                          applet.h  -  description
+                          docklet.h  -  description
                              -------------------
-    begin                : Mon Mar 19 2000
-    copyright            : (C) 2000-2001 by Damien Sandras
+    begin                : Wed Oct 3 2001
+    copyright            : (C) 2001 by Miguel Rodríguez
     description          : This file contains all functions needed for
-                           Gnome Panel applet
-    email                : dsandras@acm.org
+                           Gnome Panel docklet
+    email                : migrax@terra.es
  ***************************************************************************/
 
 /***************************************************************************
@@ -18,12 +18,12 @@
  ***************************************************************************/
 
 
-#ifndef _APPLET_H_
-#define _APPLET_H_
+#ifndef _DOCKLET_H_
+#define _DOCKLET_H_
 
 #include <glib.h>
 #include <gnome.h>
-#include <applet-widget.h>
+#include <status-docklet.h>
 
 #include "config.h"
 
@@ -33,38 +33,38 @@
 /******************************************************************************/
 
 // DESCRIPTION  :  This callback is called when the user clicks
-//                 on the applet
+//                 on the docklet
 // BEHAVIOR     :  If double clic : hide or show main window
 // PRE          :  /
-void applet_clicked (GtkWidget *, GdkEventButton *, gpointer);
+void docklet_clicked (GtkWidget *, GdkEventButton *, gpointer);
 
 
 // DESCRIPTION  :  This callback is called when the user chooses
-//                 to connect in the applet menu
+//                 to connect in the docklet menu
 // BEHAVIOR     :  Answer incoming call or call somebody
 // PRE          :  /
-void applet_connect (AppletWidget *, gpointer);
+void docklet_connect (GtkWidget *, gpointer);
 
 
 // DESCRIPTION  :  This callback is called when the user chooses
-//                 to disconnect in the applet menu
+//                 to disconnect in the docklet menu
 // BEHAVIOR     :  Refuse incoming call or stops current call
 // PRE          :  /
-void applet_disconnect (AppletWidget *, gpointer);
+void docklet_disconnect (GtkWidget *, gpointer);
 
 
 // DESCRIPTION  :  This callback is called when the user chooses
-//                 toggle in the applet menu
+//                 toggle in the docklet menu
 // BEHAVIOR     :  Hide or show main window
 // PRE          :  /
-void applet_toggle_callback (AppletWidget *, gpointer);
+void docklet_toggle_callback (GtkWidget *, gpointer);
      
 
 // DESCRIPTION  :  This callback is called by a timeout function
-// BEHAVIOR     :  If current picture in applet the applet is globe,
+// BEHAVIOR     :  If current picture in the docklet is globe,
 //                 then displays globe2, else displays globe
 // PRE          :  /
-gint AppletFlash (GtkWidget *);
+gint docklet_flash (GtkWidget *);
 
 /******************************************************************************/
 
@@ -74,16 +74,16 @@ gint AppletFlash (GtkWidget *);
 /******************************************************************************/
 
 // DESCRIPTION  :  /
-// BEHAVIOR     :  Init the applet and menus and callbacks (for this applet)
+// BEHAVIOR     :  Init the docklet and menus and callbacks (for this docklet)
 // PRE          :  /
-GtkWidget *GM_applet_init (int, char **);
+GtkObject *GM_docklet_init ();
 
 
 // DESCRIPTION  :  /
 // BEHAVIOR     :  If int = 1, displays globe2 and plays a sound, else displays
 //                 globe
 // PRE          :  /
-void GM_applet_set_content (GtkWidget *, int);
+void GM_docklet_set_content (GtkObject *, int);
 
 /******************************************************************************/
 
