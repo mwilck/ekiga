@@ -1172,9 +1172,10 @@ call_contact_cb (GtkTreeView *tree_view,
   if (contact) {
 
     /* Call the selected contact */
+    //FIXME
+
     //GnomeMeeting->Connect (contact->url);
 
-    g_warning ("connect here");
     gm_contact_delete (contact);
   }
 }
@@ -1285,6 +1286,58 @@ properties_cb (GtkWidget *w,
 }
 
 
+class SearchThread : public PThread
+{
+  PCLASSINFO (SearchThread, PThread);
+
+public:
+  SearchThread (GtkWidget *w)
+    :PThread (1000, NoAutoDeleteThread), 
+    addressbook_window (w) 
+      { 
+	Resume (); 
+      }
+
+  ~SearchThread ()
+    {
+      PWaitAndSignal m(quit_mutex);
+    }
+
+  void Main ()
+    { 
+      PWaitAndSignal m(quit_mutex);
+
+      /* Get the search parameters from the addressbook_window */
+      //GmAddressbookWindow *aw = gm_aw_get_aw (addressbook_window);
+      //int opt = gtk_option_menu_get_history (GTK_OPTION_MENU (aw->aw_option_menu));
+      //char *filter = gtk_entry_get_text (GTK_ENTRY (aw->aw_search_entry));
+      gdk_threads_enter ();
+      addressbook = gm_aw_get_selected_addressbook (addressbook_window);
+      gdk_threads_leave ();
+
+      GSList *contacts = 
+	gnomemeeting_addressbook_get_contacts (addressbook, 
+					       TRUE,
+					       NULL,
+					       NULL,
+					       NULL,
+					       NULL);
+
+      gdk_threads_enter ();
+      gm_aw_update_addressbook (addressbook_window, 
+				addressbook,
+				contacts);
+      gm_addressbook_delete (addressbook);
+      gdk_threads_leave ();
+    }
+protected:
+  GmAddressbook *addressbook;
+  GtkWidget *addressbook_window;
+
+  PMutex quit_mutex;
+};
+
+
 static void
 search_addressbook_cb (GtkWidget *w,
 		       gpointer data)
@@ -1294,57 +1347,6 @@ search_addressbook_cb (GtkWidget *w,
   g_return_if_fail (data != NULL);
 
   addressbook_window = GTK_WIDGET (data);
-
-  class SearchThread : public PThread
-  {
-    PCLASSINFO (SearchThread, PThread);
-
-public:
-    SearchThread (GtkWidget *w)
-      :PThread (1000, NoAutoDeleteThread), 
-      addressbook_window (w) 
-	{ 
-	  Resume (); 
-	}
-
-    ~SearchThread ()
-      {
-	PWaitAndSignal m(quit_mutex);
-      }
-
-    void Main ()
-      { 
-	PWaitAndSignal m(quit_mutex);
-	
-	/* Get the search parameters from the addressbook_window */
-	//GmAddressbookWindow *aw = gm_aw_get_aw (addressbook_window);
-	//int opt = gtk_option_menu_get_history (GTK_OPTION_MENU (aw->aw_option_menu));
-	//char *filter = gtk_entry_get_text (GTK_ENTRY (aw->aw_search_entry));
-	gdk_threads_enter ();
-	addressbook = gm_aw_get_selected_addressbook (addressbook_window);
-	gdk_threads_leave ();
-	
-	GSList *contacts = 
-	  gnomemeeting_addressbook_get_contacts (addressbook, 
-						 TRUE,
-						 NULL,
-						 NULL,
-						 NULL,
-						 NULL);
-	
-	gdk_threads_enter ();
-	gm_aw_update_addressbook (addressbook_window, 
-				  addressbook,
-				  contacts);
-	gm_addressbook_delete (addressbook);
-	gdk_threads_leave ();
-      }
-protected:
-    GmAddressbook *addressbook;
-    GtkWidget *addressbook_window;
-
-    PMutex quit_mutex;
-  };
 
   new SearchThread (addressbook_window);
 }
