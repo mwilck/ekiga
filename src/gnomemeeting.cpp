@@ -293,12 +293,7 @@ void GnomeMeeting::Main ()
 
 int main (int argc, char ** argv, char ** envp)
 {
-  int esd_client = 0;
-
   PProcess::PreInitialise (argc, argv, envp);
-
-  esd_client = esd_open_sound (NULL);
-  esd_standby (esd_client);
 
   /* The different structures needed by most of the classes and functions */
   GM_window_widgets *gw = NULL;
@@ -369,9 +364,6 @@ int main (int argc, char ** argv, char ** envp)
   /* The GTK loop */
   gtk_main ();
 
-  /* Resume ESD */
-  esd_resume (esd_client);
-  esd_close (esd_client);
 
   delete (gw);
   delete (lw);

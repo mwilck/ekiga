@@ -1,5 +1,12 @@
 2002-02-20  Damien Sandras  <dsandras@seconix.com>
 
+	* src/misc.cpp, src/gnomemeeting.cpp: Do not put ESD into standby mode.
+
+	* src/endpoint.cpp: Put ESD into standby mode when Opening the audio
+	channel and put it into normal mode at the end of the call.
+	
+2002-02-20  Damien Sandras  <dsandras@seconix.com>
+
 	* src/ils.cpp: Added ilsa attribute for the version.
 
 	* src/ldap_window.cpp: Added ilsa attribute for the version.

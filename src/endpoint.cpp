@@ -681,6 +681,7 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 					  const PString & clearedCallToken)
 {
   int exit = 0; /* do not exit */
+  int esd_client = 0;
 
   /* If we are called because the current call has ended and not another
      call, do nothing */
@@ -847,6 +848,12 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
     if (vg->IsOpened ())
       vg->Close ();
   }
+
+  
+  /* Put esd into normal mode */
+  esd_client = esd_open_sound (NULL);
+  esd_resume (esd_client);
+  esd_close (esd_client);
 }
 
 

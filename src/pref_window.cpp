@@ -1755,7 +1755,7 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook)
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->directory_update_button,
-			_("Click here to try your new settings and update the LDAP server you are registered to with the new First Name, Last Name, E-Mail, Comment and Location."), NULL);
+			_("Click here to update the LDAP server you are registered to with the new First Name, Last Name, E-Mail, Comment and Location or to update your alias on the Gatekeeper."), NULL);
 
 
   /* The End */									

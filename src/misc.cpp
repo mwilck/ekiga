@@ -37,8 +37,6 @@
 #include "common.h"
 #include "pref_window.h"
 
-#include <esd.h>
-
 #include "misc.h"
 
 #include "../pixmaps/text_logo.xpm"
@@ -215,10 +213,6 @@ void gnomemeeting_init_main_window_logo ()
 gint PlaySound (GtkWidget *widget)
 {
   GtkWidget *object = NULL;
-  int esd_client = 0;
-
-  /* Put ESD into Resume mode */
-  esd_client = esd_open_sound (NULL);
 
   if (widget != NULL) {
 
@@ -233,14 +227,10 @@ gint PlaySound (GtkWidget *widget)
 
   /* If the applet contents the phone pixmap */
   if (object == NULL) {
-    esd_resume (esd_client);
+
     gnome_triggers_do ("", "program", "GnomeMeeting", 
 		       "incoming_call", NULL);
   }
-  else
-    esd_standby (esd_client);
-
-  esd_close (esd_client);
 
   return TRUE;
 }
