@@ -1562,11 +1562,11 @@ find_contact_in_group_content (gchar *contact_callto,
  */
 gboolean
 get_selected_contact_info (GtkNotebook *notebook,
-			   gchar **contact_section = NULL,
-			   gchar **contact_name = NULL,
-			   gchar **contact_callto = NULL,
-			   gchar **contact_speed_dial = NULL,
-			   gboolean *is_group = NULL)
+			   gchar **contact_section,
+			   gchar **contact_name,
+			   gchar **contact_callto,
+			   gchar **contact_speed_dial,
+			   gboolean *is_group)
 {
   GtkWidget *page = NULL;
 
