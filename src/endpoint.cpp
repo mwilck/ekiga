@@ -1866,7 +1866,7 @@ GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
      else
        deviceName = GetSoundChannelPlayDevice ();
 
-     PSoundChannel *soundChannel = 
+     PSoundChannel *soundchannel = 
        PDeviceManager::GetOpenedSoundDevice(deviceName, 
 					    isEncoding? PDeviceManager::Input 
 					    : PDeviceManager::Output, 
@@ -1874,8 +1874,8 @@ GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
 
      if (soundchannel) {
 
-       soundChannel->SetBuffers(bufferSize, soundChannelBuffers);
-       return codec.AttachChannel(soundChannel);
+       soundchannel->SetBuffers(bufferSize, soundChannelBuffers);
+       return codec.AttachChannel(soundchannel);
      }
      else
        no_error = FALSE;
