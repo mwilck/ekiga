@@ -62,9 +62,8 @@
 #endif
 #endif
 
-
 static void dialog_response_cb (GtkWidget *, gint, gpointer);
-
+  
 extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;
 
@@ -79,7 +78,7 @@ void dialog_response_cb (GtkWidget *w, gint, gpointer data)
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (dw->audio_test_button),
 				false);
 
-  gtk_widget_destroy (w);
+  gtk_widget_hide (w);
 }
 
 
@@ -272,7 +271,8 @@ void GMAudioRP::Main ()
 
   BOOL label_displayed = FALSE;
   int buffer_pos = 0;
-
+  static int nbr_opened_channels = 0;
+  
   PTime now;
   PString device_name;
 
@@ -336,6 +336,8 @@ void GMAudioRP::Main ()
   }
   else {
 
+    nbr_opened_channels++;
+    
     channel->SetBuffers (640, 2);
 
     while (!stop) {
@@ -358,7 +360,8 @@ void GMAudioRP::Main ()
 
 	    gdk_threads_enter ();
 	    gtk_label_set_markup (GTK_LABEL (tester->test_label), msg);
-	    gtk_widget_show_all (GTK_WIDGET (tester->test_dialog));
+	    if (nbr_opened_channels == 2)
+	      gtk_widget_show_all (GTK_WIDGET (tester->test_dialog));
 	    gdk_threads_leave ();
 	    g_free (msg);
 
@@ -383,7 +386,8 @@ void GMAudioRP::Main ()
 
 	    gdk_threads_enter ();
 	    gtk_label_set_markup (GTK_LABEL (tester->test_label), msg);
-	    gtk_widget_show_all (GTK_WIDGET (tester->test_dialog));
+	    if (nbr_opened_channels == 2)
+	      gtk_widget_show_all (GTK_WIDGET (tester->test_dialog));
 	    gdk_threads_leave ();
 	    g_free (msg);
 
@@ -414,12 +418,13 @@ void GMAudioRP::Main ()
     }
   }
 
-
   if (channel) {
 
     channel->Close ();
     delete (channel);
   }
+
+  nbr_opened_channels = PMAX (nbr_opened_channels--, 0);
 
   free (buffer);
 }
@@ -430,8 +435,6 @@ GMAudioTester::GMAudioTester (GMH323EndPoint *e)
   :PThread (1000, NoAutoDeleteThread)
 {
 #ifndef DISABLE_GNOME
-  GmDruidWindow *dw = NULL;
-  
   ep = e;
   stop = FALSE;
 
@@ -460,7 +463,6 @@ GMAudioTester::~GMAudioTester ()
 void GMAudioTester::Main ()
 {
 #ifndef DISABLE_GNOME
-  GtkWidget *dialog = NULL;
   GMAudioRP *player = NULL;
   GMAudioRP *recorder = NULL;
   GmDruidWindow *dw = NULL;
@@ -501,10 +503,10 @@ void GMAudioTester::Main ()
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG (test_dialog)->vbox), 
 		      test_label, FALSE, FALSE, 2);
 
+  g_signal_connect (G_OBJECT (test_dialog), "delete-event",
+		    G_CALLBACK (gtk_widget_hide_on_delete), NULL);
   g_signal_connect (G_OBJECT (test_dialog), "response",
 		    G_CALLBACK (dialog_response_cb), NULL);
-  g_signal_connect (G_OBJECT (test_dialog), "response",
-		    G_CALLBACK (gtk_widget_hide_on_delete), NULL);
 
   gtk_window_set_transient_for (GTK_WINDOW (test_dialog),
 				GTK_WINDOW (gw->druid_window));
