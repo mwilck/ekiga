@@ -26,7 +26,7 @@ dnl ###########################################################################
 MAJOR_VERSION=0
 MINOR_VERSION=99
 BUILD_TYPE=ReleaseCode
-BUILD_NUMBER=0
+BUILD_NUMBER=1
 
 AC_DEFINE_UNQUOTED(MAJOR_VERSION, $MAJOR_VERSION,[fix])
 AC_DEFINE_UNQUOTED(MINOR_VERSION, $MINOR_VERSION,[fix])
@@ -37,7 +37,7 @@ AC_DEFINE_UNQUOTED(BUILD_NUMBER, $BUILD_NUMBER,[fix])
 dnl ###########################################################################
 dnl   This is to check correct gconf installation
 dnl ###########################################################################
-SCHEMA_AGE=40
+SCHEMA_AGE=41
 dnl increment this number if you add anything to the schema file
 AC_SUBST(SCHEMA_AGE)
 

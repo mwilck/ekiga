@@ -144,6 +144,11 @@ static void h245_tunneling_changed_nt (GConfClient *,
 				       GConfEntry *,
 				       gpointer);
 
+static void early_h245_changed_nt (GConfClient *,
+				   guint,
+				   GConfEntry *,
+				   gpointer);
+
 static void fast_start_changed_nt (GConfClient *,
 				   guint,
 				   GConfEntry *,
@@ -388,6 +393,37 @@ h245_tunneling_changed_nt (GConfClient *client,
 			     ep->IsH245TunnelingDisabled ()?
 			     _("H.245 Tunneling disabled"):
 			     _("H.245 Tunneling enabled"));
+    gdk_threads_leave ();
+  }
+}
+
+
+/* DESCRIPTION  :  This notifier is called when the gconf database data
+ *                 associated with the early H.245 key changes.
+ * BEHAVIOR     :  It updates the endpoint and displays a message.
+ * PRE          :  /
+ */
+static void
+early_h245_changed_nt (GConfClient *client,
+		       guint cid, 
+		       GConfEntry *entry,
+		       gpointer data)
+{
+  GMH323EndPoint *ep = NULL;
+  GmWindow *gw = NULL;
+  
+  if (entry->value->type == GCONF_VALUE_BOOL) {
+
+    ep = GnomeMeeting::Process ()->Endpoint ();
+    gw = GnomeMeeting::Process ()->GetMainWindow ();
+    
+    ep->DisableH245inSetup (!gconf_value_get_bool (entry->value));
+    
+    gdk_threads_enter ();
+    gnomemeeting_log_insert (gw->history_text_view,
+			     ep->IsH245inSetupDisabled ()?
+			     _("Early H.245 disabled"):
+			     _("Early H.245 enabled"));
     gdk_threads_leave ();
   }
 }
@@ -1630,14 +1666,19 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
 
   gconf_client_notify_add (client, CALL_FORWARDING_KEY "no_answer_forward", call_forwarding_changed_nt, NULL, 0, 0);
 
-  gconf_client_notify_add (client, GENERAL_KEY "h245_tunneling",
+  gconf_client_notify_add (client, H323_KEY "enable_h245_tunneling",
 			   applicability_check_nt, NULL, 0, 0);
-  gconf_client_notify_add (client, GENERAL_KEY "h245_tunneling",
+  gconf_client_notify_add (client, H323_KEY "enable_h245_tunneling",
 			   h245_tunneling_changed_nt, NULL, 0, 0);
 
-  gconf_client_notify_add (client, GENERAL_KEY "fast_start",
+  gconf_client_notify_add (client, H323_KEY "enable_early_h245",
 			   applicability_check_nt, NULL, 0, 0);
-  gconf_client_notify_add (client, GENERAL_KEY "fast_start",
+  gconf_client_notify_add (client, H323_KEY "enable_early_h245",
+			   early_h245_changed_nt, NULL, 0, 0);
+
+  gconf_client_notify_add (client, H323_KEY "enable_fast_start",
+			   applicability_check_nt, NULL, 0, 0);
+  gconf_client_notify_add (client, H323_KEY "enable_fast_start",
 			   fast_start_changed_nt, NULL, 0, 0);
 
   gconf_client_notify_add (client, GENERAL_KEY "user_input_capability",
@@ -1829,17 +1870,7 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
 
 void gnomemeeting_gconf_upgrade ()
 {
-  int gconf_value_int = 0;
-  gchar *gconf_value = NULL;
   gchar *gconf_url = NULL;
-  gchar *group_name = NULL;
-  gchar *group_content_gconf_key = NULL;
-  gchar *new_group_content_gconf_key = NULL;
-  GSList *group_content = NULL;
-  GSList *group_content_iter = NULL;
-  GSList *new_group_content = NULL;
-  GSList *groups = NULL;
-  GSList *groups_iter = NULL;
   GSList *list = NULL;
 
   int version = 0;
@@ -1848,108 +1879,6 @@ void gnomemeeting_gconf_upgrade ()
   client = gconf_client_get_default ();
   version = gconf_client_get_int (client, GENERAL_KEY "version", NULL);
   
-  /* New Speex Audio codec in 0.95 (all Unix versions of 0.95 will have it)
-     Also enable Fast Start and enable Tunneling */
-  if (version < 95) {
-
-    list = g_slist_append (list, (void *) "SpeexNarrow-8k=1");
-    list = g_slist_append (list, (void *) "MS-GSM=1");
-    list = g_slist_append (list, (void *) "SpeexNarrow-15k=1");
-    list = g_slist_append (list, (void *) "GSM-06.10=1");
-    list = g_slist_append (list, (void *) "G.726-32k=1");
-    list = g_slist_append (list, (void *) "G.711-uLaw-64k=1");
-    list = g_slist_append (list, (void *) "G.711-ALaw-64k=1");
-    list = g_slist_append (list, (void *) "LPC-10=1");
-    list = g_slist_append (list, (void *) "G.723.1=1");
-    gconf_client_set_list (client, AUDIO_CODECS_KEY "codecs_list", 
-			   GCONF_VALUE_STRING, list, NULL);
-
-    g_slist_free (list);
-
-    gconf_client_set_bool (client, GENERAL_KEY "fast_start", false, NULL);
-    gconf_client_set_bool (client, GENERAL_KEY "h245_tunneling", true, NULL);
-  }
-
-
-  /* With 0.97, we convert the old addressbook to the new format,
-     same for the port ranges */
-  if (version < 97) {
-
-    groups =
-      gconf_client_get_list (client, CONTACTS_KEY "groups_list",
-			     GCONF_VALUE_STRING, NULL);
-    groups_iter = groups;
-  
-    while (groups_iter && groups_iter->data) {
-    
-      group_name = g_utf8_strdown ((char *) groups_iter->data, -1);
-      group_content_gconf_key =
-	g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY,
-			 (char *) groups_iter->data);
-      new_group_content_gconf_key =
-	g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, group_name);
-	
-      group_content =
-	gconf_client_get_list (client, group_content_gconf_key,
-			       GCONF_VALUE_STRING, NULL);
-      group_content_iter = group_content;
-      
-      new_group_content =
-	gconf_client_get_list (client, new_group_content_gconf_key,
-			       GCONF_VALUE_STRING, NULL);
-	
-      while (group_content_iter && group_content_iter->data) {
-
-	new_group_content =
-	  g_slist_append (new_group_content, group_content_iter->data);
-	  
-	group_content_iter = g_slist_next (group_content_iter);
-      }
-
-      gconf_client_set_list (client, new_group_content_gconf_key,
-			     GCONF_VALUE_STRING, new_group_content, NULL);
-      gconf_client_unset (client, group_content_gconf_key, NULL);
-      g_free (group_content_gconf_key);
-      g_free (new_group_content_gconf_key);
-      g_free (group_name);
-      g_slist_free (group_content);
-      g_slist_free (new_group_content);
-      new_group_content = NULL;
-      groups_iter = g_slist_next (groups_iter);
-    }
-      
-    g_slist_free (groups);
-
-
-    /* Convert the old ports keys */
-    gconf_value_int =
-      gconf_client_get_int (client, GENERAL_KEY "listen_port", 0);
-    if (gconf_value_int != 0)
-      gconf_client_set_int (client, PORTS_KEY "listen_port",
-			    gconf_value_int, 0);
-    
-    gconf_value =
-      gconf_client_get_string (client, GENERAL_KEY "tcp_port_range", 0);
-    if (gconf_value)
-      gconf_client_set_string (client, PORTS_KEY "tcp_port_range",
-			       gconf_value, 0);
-    g_free (gconf_value);
-    
-    gconf_value =
-      gconf_client_get_string (client, GENERAL_KEY "udp_port_range", 0);
-    if (gconf_value)
-      gconf_client_set_string (client, PORTS_KEY "rtp_port_range",
-			       gconf_value, 0);
-    g_free (gconf_value);
-
-    gconf_client_remove_dir (client, "/apps/gnomemeeting", 0);
-    gconf_client_unset (client, GENERAL_KEY "listen_port", NULL);
-    gconf_client_unset (client, GENERAL_KEY "tcp_port_range", NULL);
-    gconf_client_unset (client, GENERAL_KEY "udp_port_range", NULL);
-    gconf_client_add_dir (client, "/apps/gnomemeeting",
-			  GCONF_CLIENT_PRELOAD_RECURSIVE, 0);
-  }
-
 
   /* Disable bilinear filtering */
   if (version < 99) {

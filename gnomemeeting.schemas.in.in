@@ -543,8 +543,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/general/h245_tunneling</key>
-      <applyto>/apps/gnomemeeting/general/h245_tunneling</applyto>
+      <key>/schemas/apps/gnomemeeting/protocols/h323/enable_h245_tunneling</key>
+      <applyto>/apps/gnomemeeting/protocols/h323/enable_h245_tunneling</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
       <default>true</default>
@@ -554,8 +554,19 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/general/fast_start</key>
-      <applyto>/apps/gnomemeeting/general/fast_start</applyto>
+      <key>/schemas/apps/gnomemeeting/protocols/h323/enable_early_h245</key>
+      <applyto>/apps/gnomemeeting/protocols/h323/enable_early_h245</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>bool</type>
+      <default>true</default>
+      <locale name="C">
+	<short>Enable early H.245</short>
+	<long>This enables H.245 early in the setup.</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/protocols/h323/enable_fast_start</key>
+      <applyto>/apps/gnomemeeting/protocols/h323/enable_fast_start</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
       <default>false</default>

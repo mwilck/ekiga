@@ -1,5 +1,21 @@
 2003-12-28 Damien Sandras  <dsandras@seconix.com>
 
+	* configure.in: Incremented SCHEMA_AGE.
+
+	* NEWS: Updated with latest CVS news.
+	
+	* gnomemeeting.schemas.in.in: Moved H.245 Tunneling and Fast Start
+	to the new protocols/h323/ section and added key for early H.245
+	support.
+
+	* src/common.h: Added define for the protocols/h323 section.
+	
+	* src/config.cpp, src/endpoint.cpp, src/pref_window.cpp: Changes
+	consecutive to the move of the H.245 Tunneling and Fast Start
+	keys. Added support to change Early H.245 in Setup.
+	
+2003-12-28 Damien Sandras  <dsandras@seconix.com>
+
 	* NEWS: Updated with latest CVS news.
 	
 	* configure.in: Incremented SCHEMA_AGE.

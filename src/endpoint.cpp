@@ -1499,9 +1499,9 @@ GMH323EndPoint::Init ()
   autoStartReceiveVideo =
     gconf_get_bool (VIDEO_SETTINGS_KEY "enable_video_reception");
 
-  disableH245Tunneling = !gconf_get_bool (GENERAL_KEY "h245_tunneling");
-  disableFastStart = !gconf_get_bool (GENERAL_KEY "fast_start");
-
+  disableH245Tunneling = !gconf_get_bool (H323_KEY "enable_h245_tunneling");
+  disableFastStart = !gconf_get_bool (H323_KEY "enable_fast_start");
+  disableH245inSetup = !gconf_get_bool (H323_KEY "enable_early_h245");
 
   /* Add capabilities */
   AddAllCapabilities ();
