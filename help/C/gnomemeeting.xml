@@ -76,7 +76,7 @@ This documentation is for version &appversion; of <application>&app;</applicatio
 	You may run the Configuration Assistant at any time from the Edit menu.
 	</para>
 
-        <tip>All settings can be changed via the preferences window at anytime.</tip>
+        <tip><title>Tip</title><para>All settings can be changed via the preferences window at anytime.</para></tip>
 
 	<figure>
 	 <graphic fileref="figures/config_d1.png"></graphic>
@@ -284,7 +284,7 @@ This documentation is for version &appversion; of <application>&app;</applicatio
 <para>
 If you know the URL address of the party that you wish to call, you may enter that URL into the h323: or callto: input box at the top of the screen and press the Connect button; (which looks like an unplugged power socket and is conviently located to the right of the input box). eg: h323:192.168.100.1 and pressing the Connect button would call the user at that respective IP. When the call is connected and you have started communication with your party, the Connect button will now resemble a power plug connected to a socket.</para>
 
-<tip>If you use literal IPv6-addresses, square brackets are required around them so that the last part of the address won't be mistaken for a port: h323:[2001:638:500:200:210:5aff:fe4c:cfd1] or h323:[2001:638:500:200:210:5aff:fe4c:cfd1]:1740</tip>
+<tip><title>Tip</title><para>If you use literal IPv6-addresses, square brackets are required around them so that the last part of the address won't be mistaken for a port: h323:[2001:638:500:200:210:5aff:fe4c:cfd1] or h323:[2001:638:500:200:210:5aff:fe4c:cfd1]:1740</para></tip>
 
 <!--<para>If you don't know the IP address of the party that you wish to call but have connected to an appropriate ILS (Internet Locator Server) server you may use the Gnomemeeting Address Book 
 which is available via Tools -> Address Book. Once selected, a window should appear. At the bottom of the new window will be a drop down box with "Find all contacts" selected, here you
@@ -337,7 +337,7 @@ will now resemble a power plug connected to a socket.</para>-->
 
 <para>Besides the communication through live audio and video streams <application>&app;</application> also provides a text chat interface. This panel is opened via the text chat button in the control bar of the main window. Enter your message into the text entry box under the chat window and press enter to send it to the remote party.
 
-<tip>Text chat works with <application>&app;</application> to <application>&app;</application> clients only.</tip></para>
+<tip><title>Tip</title><para>Text chat works with <application>&app;</application> to <application>&app;</application> clients only.</para></tip></para>
 
 <para><emphasis>Controlling the call</emphasis></para>
 
@@ -353,7 +353,7 @@ will now resemble a power plug connected to a socket.</para>-->
 
 <para>Transferring the remote party: You can transfer the remote user to another H.323 or CALLTO URL by using the appropriate menu entry in the Call menu or by double-clicking on an user in your address book, or in the calls history. 
 
-<tip>All URLs supported by <application>&app;</application> (H.323, CALLTO and Speed Dials) can be used for call transfer.</tip></para>
+<tip><title>Tip</title><para>All URLs supported by <application>&app;</application> (H.323, CALLTO and Speed Dials) can be used for call transfer.</para></tip></para>
 
 <para><emphasis>Taking a snapshot</emphasis></para>
 
@@ -372,7 +372,7 @@ Tools->Generic History.</para>
 
 <para>The Calls History window stores information (date, duration, URL, Software, Remote user) about all outgoing and incoming calls. They are divided into three groups - Received calls, Given calls and Unanswered calls.
 The first group, Received call, contains all incoming calls which were accepted by <application>&app;</application>. Given calls keeps track of all attempts - succesful or not - to call another user. The last group, Unanswered calls, shows incoming calls which timed out or were rejected (if Do Not Disturb is enabled, for instance) by <application>&app;</application>.</para>
-<tip>Double-clicking on a row in the Calls History will call the selected URL or transfer any active call to that URL. Notice that you can also drag and drop entries from the Calls History into the address book.</tip>
+<tip><title>Tip</title><para>Double-clicking on a row in the Calls History will call the selected URL or transfer any active call to that URL. Notice that you can also drag and drop entries from the Calls History into the address book.</para></tip>
 
 <para>This information can be accessed by opening Tools->Calls History and by switching between the three tabs.</para>
 </sect2>
@@ -570,7 +570,7 @@ and one textfield for the IP address/hostname of the host the calls shall be for
 <para><emphasis>Doing calls using a gateway</emphasis></para>
 
 <para>Doing calls using a gateway is very simple. You can fill in the gateway hostname or IP address in the Gateway/Proxy section of the <application>&app;</application> preferences, and then simply use classical H.323 or CALLTO URL's to call users using your gateway or proxy.
-<tip>NOTE - You can not use CALLTO URLs looking on an ILS server when using a gateway or proxy. Notice also that it might be conflicting with your Gatekeeper following your Gatekeeper configuration.</tip>
+<tip><title>Tip</title><para>You can not use CALLTO URLs looking on an ILS server when using a gateway or proxy. Notice also that it might be conflicting with your Gatekeeper following your Gatekeeper configuration.</para></tip>
 </para>
 </sect2>
 
@@ -580,7 +580,7 @@ and one textfield for the IP address/hostname of the host the calls shall be for
 <para>A Quicknet card is hardware that can be used to replace your soundcard. It has several features that are not available to normal soundcard users like echo cancellation, G.723.1 audio codec support, POTS - Plain Old Telephone System - management.</para>
 
 <para>When using a Quicknet card, you can use either an old phone plugged into the card or an headset. You will need to select Quicknet as plugin in the Audio Devices section of the preferences, select the required Audio Input Device and then indicate if you are using a POTS or a headset with your Quicknet card. If you are using a phone, simply plug its cable into the Quicknet card and you are ready to do <application>&app;</application>-managed calls with your phone.
-<tip>You can use the '*' sign of the keypad of your phone to replace the '.' if you want to dial IPv4 addresses. Notice also that if you want to dial complex URLs, you can associate them to speed dials in the address book, and simply dial the given speed dial followed by '#' to immediately start calling that URL.</tip></para>
+<tip><title>Tip</title><para>You can use the '*' sign of the keypad of your phone to replace the '.' if you want to dial IPv4 addresses. Notice also that if you want to dial complex URLs, you can associate them to speed dials in the address book, and simply dial the given speed dial followed by '#' to immediately start calling that URL.</para></tip></para>
 </sect2>
 
 

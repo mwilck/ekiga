@@ -93,9 +93,6 @@ void
 gnomemeeting_sound_daemons_suspend (void)
 {
 #ifndef WIN32
-#if defined(HAS_ESD)
-  return;
-#else
   int esd_client = 0;
   
   /* Put ESD into standby mode */
@@ -105,7 +102,6 @@ gnomemeeting_sound_daemons_suspend (void)
       
   esd_close (esd_client);
 #endif
-#endif
 }
 
 
@@ -113,9 +109,6 @@ void
 gnomemeeting_sound_daemons_resume (void)
 {
 #ifndef WIN32
-#if defined(HAS_ESD)
-  return;
-#else
   int esd_client = 0;
 
   /* Put ESD into normal mode */
@@ -124,7 +117,6 @@ gnomemeeting_sound_daemons_resume (void)
   esd_resume (esd_client);
 
   esd_close (esd_client);
-#endif
 #endif
 }
 
