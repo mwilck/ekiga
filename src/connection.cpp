@@ -330,7 +330,11 @@ BOOL GMH323Connection::OnReceivedFacility(const H323SignalPDU & pdu)
 void 
 GMH323Connection::HandleCallTransferFailure (const int returnError)
 {
+  GmWindow *gw = NULL;
+  
   gnomemeeting_threads_enter ();
+  gw = MyApp->GetMainWindow ();
   gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Call transfer failed"), _("The remote user tried to transfer your call to another user, but it failed."));
+  gnomemeeting_log_insert (gw->history_text_view, _("Call transfer failed"));
   gnomemeeting_threads_leave ();
 }
