@@ -115,7 +115,7 @@ void disconnect_cb (GtkWidget *widget, gpointer data)
 {	
   GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
 
-  if (MyApp->Endpoint ()->GetCallingState () != 0)
+  if (MyApp->Endpoint ()->GetCallingState () == 2)
     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->connect_button),
 				  FALSE);
 }

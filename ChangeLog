@@ -1,5 +1,12 @@
 2002-02-10  Damien Sandras  <dsandras@seconix.com>
 
+	* src/toolbar.cpp: Added test to prevent to call connect when it should
+	not be called.
+	
+	* src/videograbber.cpp: Moved mutexes.
+
+2002-02-10  Damien Sandras  <dsandras@seconix.com>
+
 	* src/callbacks.cpp: Changed connect & disconnect callbacks to
 	update the connect button that will call itself the needed stuff.
 	Added update of the pause buttons inside the corresponding callbacks.
