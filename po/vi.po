@@ -4,15 +4,17 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting VERSION\n"
-"POT-Creation-Date: 2003-01-19 04:04+0100\n"
-"PO-Revision-Date: 2003-01-19 22:07+0700\n"
+"POT-Creation-Date: 2003-09-06 04:05+0200\n"
+"PO-Revision-Date: 2003-09-10 15:17+0700\n"
 "Last-Translator: pclouds <pclouds@gmx.net>\n"
 "Language-Team: GnomeVI <gnomevi-list@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Report-Msgid-Bugs-To: \n"
 
-#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:1086
+#. Add the window icon and title
+#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:1274
 msgid "GnomeMeeting"
 msgstr "GnomeMeeting"
 
@@ -25,43 +27,40 @@ msgid "Video Conferencing"
 msgstr "Hội thoại Video"
 
 #: gnomemeeting.schemas.in.in.h:1
-msgid ""
-"\"If enabled, GnomeMeeting will play a sound when receiving an incoming call "
-"(the sound to play is chosen in the Gnome Control Center)."
-msgstr "Nếu bật, GnomeMeeting sẽ phát âm thanh khi nhận cuộc gọi đến (âm thanh phát ra được chọn trong Trung tâm điều khiển Gnome)."
-
-#: gnomemeeting.schemas.in.in.h:2
 msgid "1: 56Kbps, 2: ISDN, 3:DSL, 4: LAN, 5: Custom"
 msgstr "1: 56Kbps, 2: ISDN, 3:DSL, 4: LAN, 5: Tự chọn"
 
-#: gnomemeeting.schemas.in.in.h:3 src/pref_window.cpp:941
+#: gnomemeeting.schemas.in.in.h:2
 msgid "Always forward calls to the given host"
 msgstr "Luôn chuyển cuộc gọi đến máy được cho"
 
-#: gnomemeeting.schemas.in.in.h:4
+#: gnomemeeting.schemas.in.in.h:3
 msgid "Audio player"
 msgstr "Bộ phát âm"
 
-#: gnomemeeting.schemas.in.in.h:5
+#: gnomemeeting.schemas.in.in.h:4
 msgid "Audio player mixer"
 msgstr "Bộ trộn âm"
 
-#: gnomemeeting.schemas.in.in.h:6
+#: gnomemeeting.schemas.in.in.h:5
 msgid "Audio recorder"
 msgstr "Bộ thu âm"
 
-#: gnomemeeting.schemas.in.in.h:7
+#: gnomemeeting.schemas.in.in.h:6
 msgid "Audio recorder mixer"
 msgstr "Bộ thu âm"
 
-#: gnomemeeting.schemas.in.in.h:8
+#: gnomemeeting.schemas.in.in.h:7
 msgid "Automatic echo cancellation"
 msgstr "Hủy bỏ tự động phản hồi"
 
-#. The toggles
-#: gnomemeeting.schemas.in.in.h:9 src/menu.cpp:874 src/pref_window.cpp:806
+#: gnomemeeting.schemas.in.in.h:8 src/menu.cpp:911
 msgid "Automatically answer calls"
 msgstr "Tự động trả lời cuộc gọi"
+
+#: gnomemeeting.schemas.in.in.h:9 src/pref_window.cpp:829
+msgid "Automatically clear the text chat at the end of calls"
+msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:10
 msgid "Change the control panel section"
@@ -72,11 +71,12 @@ msgid ""
 "Change the control panel section (4 means that the control panel is off)"
 msgstr "Thay đổi phần khung điều khiển (4 nghĩa là không có khung điều khiển)"
 
-#: gnomemeeting.schemas.in.in.h:12 src/pref_window.cpp:1376
+#: gnomemeeting.schemas.in.in.h:12 src/pref_window.cpp:1391
 msgid ""
 "Choose the number of blocks (that have not changed) transmitted with each "
 "frame. These blocks fill in the background."
-msgstr "Chọn số khối gửi mỗi khung (không thay đổi). Những khối này sẽ chứa ảnh nền."
+msgstr ""
+"Chọn số khối gửi mỗi khung (không thay đổi). Những khối này sẽ chứa ảnh nền."
 
 #: gnomemeeting.schemas.in.in.h:13
 msgid "Color Format"
@@ -86,11 +86,11 @@ msgstr "Dạng thức màu"
 msgid "Color Format for the video palette"
 msgstr "Dạng thức màu cho bảng màu của ảnh"
 
-#: gnomemeeting.schemas.in.in.h:15 src/ldap_window.cpp:1725
+#: gnomemeeting.schemas.in.in.h:15 src/ldap_window.cpp:2572
 msgid "Comment"
 msgstr "Ghi chú"
 
-#: gnomemeeting.schemas.in.in.h:16 src/pref_window.cpp:961
+#: gnomemeeting.schemas.in.in.h:16 src/pref_window.cpp:936
 msgid ""
 "Connection will be established in Fast Start mode. Fast Start is a new way "
 "to start calls faster that was introduced in H.323v2. It is not supported by "
@@ -106,362 +106,388 @@ msgstr ""
 msgid "Country code"
 msgstr "Mã quốc gia"
 
-#: gnomemeeting.schemas.in.in.h:18 src/menu.cpp:439 src/pref_window.cpp:808
+#: gnomemeeting.schemas.in.in.h:18
+msgid "Display a popup window when receiving a call"
+msgstr "Hiện cửa sổ khi nhận cuộc gọi"
+
+#: gnomemeeting.schemas.in.in.h:19 src/menu.cpp:446
 msgid "Do not disturb"
 msgstr "Đừng làm phiền"
 
-#: gnomemeeting.schemas.in.in.h:19
+#: gnomemeeting.schemas.in.in.h:20
 msgid "E-mail address"
 msgstr "Địa chỉ email"
 
-#: gnomemeeting.schemas.in.in.h:20 src/pref_window.cpp:961
+#: gnomemeeting.schemas.in.in.h:21
 msgid "Enable 'Fast Start'"
 msgstr "Bật 'Khởi động nhanh'"
 
-#: gnomemeeting.schemas.in.in.h:21 src/pref_window.cpp:958
+#: gnomemeeting.schemas.in.in.h:22
 msgid "Enable H.245 tunnelling"
 msgstr "Bật đường hầm H.245"
 
-#: gnomemeeting.schemas.in.in.h:22 src/pref_window.cpp:978
+#: gnomemeeting.schemas.in.in.h:23
 msgid "Enable IP translation"
 msgstr "Bật chuyển đổi IP"
 
-#: gnomemeeting.schemas.in.in.h:23 src/pref_window.cpp:832
+#: gnomemeeting.schemas.in.in.h:24
 msgid "Enable bilinear filtering on displayed video"
 msgstr "Bật lọc tuyến tính trên ảnh được hiển thị"
 
-#: gnomemeeting.schemas.in.in.h:24 src/pref_window.cpp:832
+#: gnomemeeting.schemas.in.in.h:25 src/pref_window.cpp:824
 msgid ""
 "Enable or disable bilinear interpolation when rendering video images (this "
 "has no effect in fullscreen mode)."
-msgstr "Bật hoặc tắt nội suy tuyến tính khi hiển thị ảnh (không có tác dụng trong chế độ toàn màn hình)."
+msgstr ""
+"Bật hoặc tắt nội suy tuyến tính khi hiển thị ảnh (không có tác dụng trong "
+"chế độ toàn màn hình)."
 
-#: gnomemeeting.schemas.in.in.h:25 src/pref_window.cpp:876
+#: gnomemeeting.schemas.in.in.h:26
 msgid "Enable registering"
 msgstr "Bật đăng ký"
 
-#: gnomemeeting.schemas.in.in.h:26 src/pref_window.cpp:1309
+#: gnomemeeting.schemas.in.in.h:27
 msgid "Enable silence detection"
 msgstr "Bật kiểm tra im lặng"
 
-#: gnomemeeting.schemas.in.in.h:27 src/pref_window.cpp:1346
+#: gnomemeeting.schemas.in.in.h:28
 msgid "Enable video reception"
 msgstr "Bật nhận ảnh"
 
-#: gnomemeeting.schemas.in.in.h:28 src/pref_window.cpp:1343
+#: gnomemeeting.schemas.in.in.h:29
 msgid "Enable video transmission"
 msgstr "Bật truyền ảnh"
 
-#: gnomemeeting.schemas.in.in.h:29 src/pref_window.cpp:761
+#: gnomemeeting.schemas.in.in.h:30 src/pref_window.cpp:747
 msgid "Enter a comment about yourself for the user directory."
 msgstr "Nhập ghi chú về chính bạn vào đây cho thư mục người dùng."
 
-#: gnomemeeting.schemas.in.in.h:30 src/pref_window.cpp:981
+#: gnomemeeting.schemas.in.in.h:31 src/pref_window.cpp:1022
 msgid ""
 "Enter the public IP of your NAT/PAT router if you want to use IP "
 "translation. If you are registered to ils.seconix.com, GnomeMeeting will "
 "automatically fetch the public IP using the ILS service."
-msgstr "Nhập IP công cộn của NAT/PAT router của bạn nếu bạn dùng Chuyển đổi IP. Nếu bạn đã đăng ký trong ils.seconix.com, GnomeMeeting sẽ tự động lấy IP công cộng bằng dịch vụ ILS."
+msgstr ""
+"Nhập IP công cộn của NAT/PAT router của bạn nếu bạn dùng Chuyển đổi IP. Nếu "
+"bạn đã đăng ký trong ils.seconix.com, GnomeMeeting sẽ tự động lấy IP công "
+"cộng bằng dịch vụ ILS."
 
-#: gnomemeeting.schemas.in.in.h:31 src/pref_window.cpp:759
+#: gnomemeeting.schemas.in.in.h:32 src/pref_window.cpp:742
 msgid "Enter your e-mail address."
 msgstr "Nhập địa chỉ email của bạn."
 
-#: gnomemeeting.schemas.in.in.h:32 src/pref_window.cpp:753
+#: gnomemeeting.schemas.in.in.h:33 src/pref_window.cpp:732
 msgid "Enter your first name."
 msgstr "Nhập tên bạn."
 
-#: gnomemeeting.schemas.in.in.h:33 src/pref_window.cpp:757
+#: gnomemeeting.schemas.in.in.h:34 src/pref_window.cpp:737
 msgid "Enter your last name."
 msgstr "Nhập họ của bạn"
 
-#: gnomemeeting.schemas.in.in.h:34 src/pref_window.cpp:763
+#: gnomemeeting.schemas.in.in.h:35 src/pref_window.cpp:752
 msgid "Enter your location (country or city) for the user directory."
 msgstr "Nhập vị trí bạn (quốc gia hoặc thành phố) cho thư mục người dùng."
 
-#: gnomemeeting.schemas.in.in.h:35
+#: gnomemeeting.schemas.in.in.h:36
 msgid "First name"
 msgstr "Tên"
 
-#: gnomemeeting.schemas.in.in.h:36
+#: gnomemeeting.schemas.in.in.h:37
 msgid "Forward calls to host"
 msgstr "Chuyển cuộc gọi cho máy chủ"
 
-#: gnomemeeting.schemas.in.in.h:37 src/pref_window.cpp:947
+#: gnomemeeting.schemas.in.in.h:38
 msgid "Forward calls to the given host if busy"
 msgstr "Chuyển cuộc gọi đến máy cho trước nếu bận"
 
-#: gnomemeeting.schemas.in.in.h:38 src/pref_window.cpp:944
+#: gnomemeeting.schemas.in.in.h:39
 msgid "Forward calls to the given host if no answer"
 msgstr "Chuyển cuộc gọi đến máy cho trước nếu không có trả lời"
 
-#: gnomemeeting.schemas.in.in.h:39
+#: gnomemeeting.schemas.in.in.h:40
 msgid "Fullscreen height"
 msgstr "Chiều cao toàn màn hình"
 
-#: gnomemeeting.schemas.in.in.h:40
+#: gnomemeeting.schemas.in.in.h:41
 msgid "Fullscreen width"
 msgstr "Chiều rộng toàn màn hình"
 
-#: gnomemeeting.schemas.in.in.h:41 src/pref_window.cpp:855
+#: gnomemeeting.schemas.in.in.h:42 src/pref_window.cpp:963
 msgid "Gatekeeper ID"
 msgstr "Gatekeeper ID"
 
-#: gnomemeeting.schemas.in.in.h:42
+#: gnomemeeting.schemas.in.in.h:43
 msgid "Gatekeeper alias"
 msgstr "Bí danh gatekeeper"
 
-#: gnomemeeting.schemas.in.in.h:43 src/pref_window.cpp:854
+#: gnomemeeting.schemas.in.in.h:44 src/pref_window.cpp:962
 msgid "Gatekeeper host"
 msgstr "Máy chủ Gatekeeper"
 
-#: gnomemeeting.schemas.in.in.h:44
+#: gnomemeeting.schemas.in.in.h:45
 msgid "Gatekeeper password"
 msgstr "Mật khẩu Gatekeeper"
 
-#: gnomemeeting.schemas.in.in.h:45 src/pref_window.cpp:798
+#: gnomemeeting.schemas.in.in.h:46
+msgid ""
+"If enabled, GnomeMeeting will play a sound when receiving an incoming call "
+"(the sound to play is chosen in the Gnome Control Center)."
+msgstr ""
+"Nếu bật, GnomeMeeting sẽ phát âm thanh khi nhận cuộc gọi đến (âm thanh phát "
+"ra được chọn trong Trung tâm điều khiển Gnome)."
+
+#: gnomemeeting.schemas.in.in.h:47 src/pref_window.cpp:788
 msgid ""
 "If enabled, GnomeMeeting will start hidden. The docklet must be enabled."
 msgstr "Nếu bật, GnomeMeeting sẽ khởi động ẩn. Docklet phải được bật."
 
-#: gnomemeeting.schemas.in.in.h:46 src/pref_window.cpp:810
-msgid "If enabled, a popup will be displayed when receiving an incoming call."
-msgstr "Nếu bật, một cửa sổ sẽ được hiển thị khi nhận được tín hiệu gọi đến."
+#: gnomemeeting.schemas.in.in.h:48 src/pref_window.cpp:802
+msgid ""
+"If enabled, a popup window will be displayed when receiving an incoming call."
+msgstr "Nếu bật, một cửa sổ sẽ được hiển thị khi nhận được cuộc gọi đến."
 
-#: gnomemeeting.schemas.in.in.h:47 src/pref_window.cpp:947
+#: gnomemeeting.schemas.in.in.h:49 src/pref_window.cpp:901
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you already are in a call or if you are in "
 "Do Not Disturb mode."
-msgstr "Nếu bật, mọi cuộc gọi đến sẽ được chuyển tới máy chủ xác định trong ô dưới đây nếu bạn đang gọi hoặc nếu bạn đang dùng chế độ Đừng làm phiền."
+msgstr ""
+"Nếu bật, mọi cuộc gọi đến sẽ được chuyển tới máy chủ xác định trong ô dưới "
+"đây nếu bạn đang gọi hoặc nếu bạn đang dùng chế độ Đừng làm phiền."
 
-#: gnomemeeting.schemas.in.in.h:48 src/pref_window.cpp:944
+#: gnomemeeting.schemas.in.in.h:50 src/pref_window.cpp:898
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you do not answer the call."
-msgstr "Nếu bật, mọi cuộc gọi đến sẽ được chuyển đến máy chủ xác định trong ô dưới đây nếu bạn không trả lời cuộc gọi."
+msgstr ""
+"Nếu bật, mọi cuộc gọi đến sẽ được chuyển đến máy chủ xác định trong ô dưới "
+"đây nếu bạn không trả lời cuộc gọi."
 
-#: gnomemeeting.schemas.in.in.h:49 src/pref_window.cpp:941
+#: gnomemeeting.schemas.in.in.h:51 src/pref_window.cpp:895
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below."
-msgstr "Nếu bật, mọi cuộc gọi đến sẽ được chuyển cho máy chủ xác định trong ô dưới đây."
+msgstr ""
+"Nếu bật, mọi cuộc gọi đến sẽ được chuyển cho máy chủ xác định trong ô dưới "
+"đây."
 
-#: gnomemeeting.schemas.in.in.h:50 src/pref_window.cpp:1346
+#: gnomemeeting.schemas.in.in.h:52 src/pref_window.cpp:1365
 msgid "If enabled, allows video to be received during a call."
 msgstr "Nếu bật, cho phép nhận ảnh trong suốt cuộc gọi."
 
-#: gnomemeeting.schemas.in.in.h:51 src/pref_window.cpp:806
+#: gnomemeeting.schemas.in.in.h:53 src/pref_window.cpp:796
 msgid "If enabled, incoming calls will be automatically answered."
 msgstr "Nếu bật, sẽ tự động trả lời các cuộc gọi đến."
 
-#: gnomemeeting.schemas.in.in.h:52 src/pref_window.cpp:808
+#: gnomemeeting.schemas.in.in.h:54 src/pref_window.cpp:799
 msgid "If enabled, incoming calls will be automatically refused."
 msgstr "Nếu bật, sẽ tự động từ chối các cuộc gọi đến."
 
-#: gnomemeeting.schemas.in.in.h:53 src/pref_window.cpp:878
+#: gnomemeeting.schemas.in.in.h:55 src/pref_window.cpp:858
 msgid "If enabled, register with the selected user directory."
 msgstr "Nếu bật, sẽ cho phép đăng ký vào thư mục người dùng được chọn."
 
-#: gnomemeeting.schemas.in.in.h:54 src/pref_window.cpp:796
+#: gnomemeeting.schemas.in.in.h:56 src/pref_window.cpp:785
 msgid ""
 "If enabled, the splash screen will be displayed when GnomeMeeting starts."
 msgstr "Nếu bật, splash screen sẽ được hiển thị lúc khởi động."
 
-#: gnomemeeting.schemas.in.in.h:55 src/pref_window.cpp:1311
+#: gnomemeeting.schemas.in.in.h:57 src/pref_window.cpp:829
+msgid ""
+"If enabled, the text chat will automatically be cleared at the end of calls."
+msgstr "Nếu bật, Tán gẫu viết sẽ tự động được xóa khi kết thúc cuộc gọi."
+
+#: gnomemeeting.schemas.in.in.h:58 src/pref_window.cpp:1335
 msgid "If enabled, use silence detection with the GSM and G.711 codecs."
 msgstr "Nếu bật, dùng kiểm tra im lặng với codec GSM và codec G.711."
 
-#: gnomemeeting.schemas.in.in.h:56 src/pref_window.cpp:1343
+#: gnomemeeting.schemas.in.in.h:59 src/pref_window.cpp:1362
 msgid "If enabled, video is transmitted during a call."
 msgstr "Nếu bật, ảnh được gửi đi trong suốt cuộc gọi."
 
-#: gnomemeeting.schemas.in.in.h:57 src/pref_window.cpp:883
+#: gnomemeeting.schemas.in.in.h:60 src/pref_window.cpp:861
 msgid ""
 "If enabled, your details are shown to people browsing the user directory. If "
 "disabled, you are not visible to users browsing the user directory, but they "
 "can still use the callto URL to call you."
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:58
+#: gnomemeeting.schemas.in.in.h:61
 msgid "Kind of network selected in the druid"
 msgstr "Loại mạng được chọn trong druid"
 
-#: gnomemeeting.schemas.in.in.h:59
+#: gnomemeeting.schemas.in.in.h:62
 msgid "Last name"
 msgstr "Họ"
 
-#: gnomemeeting.schemas.in.in.h:60
+#: gnomemeeting.schemas.in.in.h:63
 msgid "Listen Port"
 msgstr "Cổng lắng nghe"
 
-#: gnomemeeting.schemas.in.in.h:61
-msgid "Local Video Popup Height"
-msgstr ""
+#: gnomemeeting.schemas.in.in.h:64
+msgid "Local video window height"
+msgstr "Chiều cao video cục bộ"
 
-#: gnomemeeting.schemas.in.in.h:62
-msgid "Local Video Popup Width"
-msgstr ""
+#: gnomemeeting.schemas.in.in.h:65
+msgid "Local video window width"
+msgstr "Chiều rộng video cục bộ"
 
-#: gnomemeeting.schemas.in.in.h:63 src/ldap_window.cpp:1736
+#: gnomemeeting.schemas.in.in.h:66 src/ldap_window.cpp:2585
 msgid "Location"
 msgstr "Vị trí"
 
-#: gnomemeeting.schemas.in.in.h:64
+#: gnomemeeting.schemas.in.in.h:67
 msgid "Maximum jitter buffer"
 msgstr "Vùng đệm jitter tối đa"
 
-#: gnomemeeting.schemas.in.in.h:65
+#: gnomemeeting.schemas.in.in.h:68
 msgid "Maximum video bandwidth"
 msgstr "Băng thông video tối thiểu"
 
-#: gnomemeeting.schemas.in.in.h:66
+#: gnomemeeting.schemas.in.in.h:69
 msgid "Minimum jitter buffer"
 msgstr "Vùng đệm jitter tối thiểu"
 
-#: gnomemeeting.schemas.in.in.h:67
+#: gnomemeeting.schemas.in.in.h:70
 msgid "Minimum transmitted FPS"
 msgstr "FPS gửi tối thiểu"
 
-#: gnomemeeting.schemas.in.in.h:68
+#: gnomemeeting.schemas.in.in.h:71
 msgid "Minimum transmitted video quality"
 msgstr "Chất lượng ảnh truyền tối thiểu"
 
-#: gnomemeeting.schemas.in.in.h:69
+#: gnomemeeting.schemas.in.in.h:72
 msgid "Number of entries to store in history boxes"
 msgstr "Số mục được lưu vào hộp lược sử"
 
-#: gnomemeeting.schemas.in.in.h:70
+#: gnomemeeting.schemas.in.in.h:73
 msgid "Number of frames for G.711"
 msgstr "Số khung cho G.711"
 
-#: gnomemeeting.schemas.in.in.h:71
+#: gnomemeeting.schemas.in.in.h:74
 msgid "Number of frames for GSM"
 msgstr "Số khung cho GSM"
 
-#: gnomemeeting.schemas.in.in.h:72
+#: gnomemeeting.schemas.in.in.h:75
 msgid "Number of frames transmitted in each packet for the G.711 codec."
 msgstr "Số khung hình được gửi trong mỗi gói tin cho codec G.711."
 
-#: gnomemeeting.schemas.in.in.h:73
+#: gnomemeeting.schemas.in.in.h:76
 msgid "Number of frames transmitted in each packet for the GSM codec."
 msgstr "Số khung hình được trong mỗi gói tin cho codec GSM."
 
-#. The toggles
-#: gnomemeeting.schemas.in.in.h:74 src/pref_window.cpp:840
+#: gnomemeeting.schemas.in.in.h:77
 msgid "Play a sound on incoming calls"
 msgstr "Chơi nhạc khi có cuộc gọi đến"
 
-#: gnomemeeting.schemas.in.in.h:75 src/pref_window.cpp:810
-msgid "Popup window when receiving a call"
-msgstr "Hiện cửa sổ khi nhận cuộc gọi"
-
-#: gnomemeeting.schemas.in.in.h:76
+#: gnomemeeting.schemas.in.in.h:78
 msgid "Public IP of the NAT/PAT router"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:77
+#: gnomemeeting.schemas.in.in.h:79
 msgid "Received Video Quality Hint"
 msgstr "Gợi ý chất lượng ảnh nhận"
 
-#: gnomemeeting.schemas.in.in.h:78
+#: gnomemeeting.schemas.in.in.h:80
 msgid "Registering method"
 msgstr "Cách đăng ký"
 
-#: gnomemeeting.schemas.in.in.h:79 src/pref_window.cpp:903
+#: gnomemeeting.schemas.in.in.h:81 src/pref_window.cpp:990
 msgid "Registering method to use"
 msgstr "Cách đăng ký"
 
-#: gnomemeeting.schemas.in.in.h:80
-msgid "Remote Video Popup Height"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:81
-msgid "Remote Video Popup Width"
-msgstr ""
-
 #: gnomemeeting.schemas.in.in.h:82
+msgid "Remote video window height"
+msgstr "Chiều cao video từ xa"
+
+#: gnomemeeting.schemas.in.in.h:83
+msgid "Remote video window width"
+msgstr "Chiều rộng video từ xa"
+
+#: gnomemeeting.schemas.in.in.h:84
 msgid "Revision of the schema file"
 msgstr "Phiên bản tập tin schema"
 
-#: gnomemeeting.schemas.in.in.h:83 src/druid.cpp:837 src/pref_window.cpp:1023
+#: gnomemeeting.schemas.in.in.h:85 src/druid.cpp:792 src/pref_window.cpp:1060
 msgid "Select the audio player device to use."
 msgstr "Chọn thiết bị âm thanh cần dùng."
 
-#: gnomemeeting.schemas.in.in.h:84 src/druid.cpp:844 src/pref_window.cpp:1030
+#: gnomemeeting.schemas.in.in.h:86 src/druid.cpp:799 src/pref_window.cpp:1067
 msgid "Select the audio recorder device to use."
 msgstr "Chọn thiết bị thu âm cần dùng."
 
-#: gnomemeeting.schemas.in.in.h:85 src/pref_window.cpp:1117
+#: gnomemeeting.schemas.in.in.h:87 src/pref_window.cpp:1140
 msgid ""
 "Select the format for video cameras. (Does not apply to most USB cameras)."
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:86 src/druid.cpp:840 src/pref_window.cpp:1026
+#: gnomemeeting.schemas.in.in.h:88 src/druid.cpp:795 src/pref_window.cpp:1063
 msgid "Select the mixer to use to change the volume of the audio player."
 msgstr "Chọn Bộ trộn âm được dùng để thay đổi âm lượng của thiết bị phát âm."
 
-#: gnomemeeting.schemas.in.in.h:87 src/druid.cpp:847 src/pref_window.cpp:1033
+#: gnomemeeting.schemas.in.in.h:89 src/druid.cpp:802 src/pref_window.cpp:1070
 msgid "Select the mixer to use to change the volume of the audio recorder."
 msgstr "Chọn Bộ trộn âm được dùng để thay đổi âm lượng của thiết bị thu âm."
 
-#: gnomemeeting.schemas.in.in.h:88 src/pref_window.cpp:1114
+#: gnomemeeting.schemas.in.in.h:90 src/pref_window.cpp:1137
 msgid ""
 "Select the transmitted video size: Small (QCIF 176x144) or Large (CIF "
 "352x288)."
 msgstr "Chọn kích thước ảnh gửi đi: Nhỏ (QCIF 176x144) hay Lớn (CIF 352x288)."
 
-#: gnomemeeting.schemas.in.in.h:89 src/pref_window.cpp:1104
+#: gnomemeeting.schemas.in.in.h:91 src/pref_window.cpp:1130
 msgid ""
 "Select the video device to use. Using an invalid video device or \"Picture\" "
 "for video transmission will transmit a test picture."
-msgstr "Chọn thiết bị video cần dùng. Dùng thiết bị video không hợp lệ hoặc \"Picture\" sẽ gửi đi ảnh thử."
+msgstr ""
+"Chọn thiết bị video cần dùng. Dùng thiết bị video không hợp lệ hoặc \"Picture"
+"\" sẽ gửi đi ảnh thử."
 
-#: gnomemeeting.schemas.in.in.h:90
+#: gnomemeeting.schemas.in.in.h:92
 msgid "Show a status bar at the bottom of the main window"
 msgstr "Hiện thanh trạng thái ở đáy cửa sổ chính"
 
-#: gnomemeeting.schemas.in.in.h:91
+#: gnomemeeting.schemas.in.in.h:93
 msgid "Show chat window"
 msgstr "Hiện/Ẩn cửa sổ tán gẫu"
 
-#: gnomemeeting.schemas.in.in.h:92 src/pref_window.cpp:881
+#: gnomemeeting.schemas.in.in.h:94
 msgid "Show my details to other registered users"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:93 src/pref_window.cpp:796
+#: gnomemeeting.schemas.in.in.h:95
 msgid "Show splash screen"
 msgstr "Hiện Splash Screen"
 
-#: gnomemeeting.schemas.in.in.h:94
+#: gnomemeeting.schemas.in.in.h:96
 msgid "Show status bar"
 msgstr "Hiện Thanh trạng thái"
 
-#: gnomemeeting.schemas.in.in.h:95
+#: gnomemeeting.schemas.in.in.h:97
 msgid "Show the chat window in the main window"
 msgstr "Hiện cửa sổ tán gẫu trong cửa sổ chính"
 
-#: gnomemeeting.schemas.in.in.h:96 src/pref_window.cpp:798
+#: gnomemeeting.schemas.in.in.h:98
 msgid "Start hidden"
 msgstr "Khởi động ẩn"
 
-#: gnomemeeting.schemas.in.in.h:97 src/menu.cpp:583 src/menu.cpp:819
+#: gnomemeeting.schemas.in.in.h:99 src/menu.cpp:616 src/menu.cpp:860
 msgid "Switch to fullscreen"
 msgstr "Chuyển sang toàn màn hình"
 
-#: gnomemeeting.schemas.in.in.h:98
+#: gnomemeeting.schemas.in.in.h:100
 msgid "Switch to fullscreen for images displayed in the main GUI."
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:99
+#: gnomemeeting.schemas.in.in.h:101
 msgid "TCP Port Range"
 msgstr "Phạm vi cổng TCP"
 
-#: gnomemeeting.schemas.in.in.h:100
+#: gnomemeeting.schemas.in.in.h:102
 msgid "The Audio Codecs List"
 msgstr "Danh sách Audio Codec"
 
-#: gnomemeeting.schemas.in.in.h:101 src/pref_window.cpp:1042
+#: gnomemeeting.schemas.in.in.h:103 src/pref_window.cpp:1078
 msgid ""
 "The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic "
 "Gain Compensation. Choosing Automatic Gain Compensation modulates the volume "
@@ -470,7 +496,7 @@ msgstr ""
 "Mức Hủy tự động phản hồi: Tắt, Thấp, Vừa, Cao, Tự động. Chọn Tự động sẽ cho "
 "chất lượng âm thanh tốt nhất."
 
-#: gnomemeeting.schemas.in.in.h:102 src/pref_window.cpp:896
+#: gnomemeeting.schemas.in.in.h:104 src/pref_window.cpp:983
 msgid ""
 "The Gatekeeper alias to use when registering (string, or E164 ID if only "
 "0123456789#)."
@@ -478,101 +504,105 @@ msgstr ""
 "Bí danh Gatekeeper được dùng khi đăng ký (chuỗi, hoặc E164 ID nếu chỉ có "
 "0123456789#)."
 
-#: gnomemeeting.schemas.in.in.h:103 src/pref_window.cpp:893
+#: gnomemeeting.schemas.in.in.h:105 src/pref_window.cpp:980
 msgid "The Gatekeeper host to register with."
 msgstr "Máy chủ Gatekeeper cần đăng ký."
 
-#: gnomemeeting.schemas.in.in.h:104 src/pref_window.cpp:890
+#: gnomemeeting.schemas.in.in.h:106 src/pref_window.cpp:977
 msgid "The Gatekeeper identifier to register with."
 msgstr "Định danh Gatekeeper cần đăng ký vào."
 
-#: gnomemeeting.schemas.in.in.h:105 src/pref_window.cpp:899
+#: gnomemeeting.schemas.in.in.h:107 src/pref_window.cpp:986
 msgid ""
 "The Gatekeeper password to use for H.235 authentication to the Gatekeeper."
 msgstr "Mật khẩu để xác thực H.235 cho Gatekeeper."
 
-#: gnomemeeting.schemas.in.in.h:106
+#: gnomemeeting.schemas.in.in.h:108
 msgid "The Video Quality to request to the remote"
 msgstr "Chất lượng hình yêu cầu phía đối diện"
 
-#: gnomemeeting.schemas.in.in.h:107
+#: gnomemeeting.schemas.in.in.h:109
 msgid "The default video view"
 msgstr "Khung video mặc định"
 
-#: gnomemeeting.schemas.in.in.h:108
+#: gnomemeeting.schemas.in.in.h:110
 msgid ""
 "The default video view (0: Local, 1: Remote, 2: Both incrusted, 3: Both with "
-"local in popup, 4: Both)"
+"local video in a separate window, 4: Both)"
 msgstr ""
 "Khung video mặc định (0: Cục bộ, 1: Từ xa, 2: Both incrusted, 3: Both with "
 "local in popup, 4: Cả hai)"
 
-#: gnomemeeting.schemas.in.in.h:109
-msgid "The height of the local video popup"
+#: gnomemeeting.schemas.in.in.h:111
+msgid "The height of the local video window"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:110
-msgid "The height of the remote video popup"
+#: gnomemeeting.schemas.in.in.h:112
+msgid "The height of the remote video window"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:111 src/pref_window.cpp:938
+#: gnomemeeting.schemas.in.in.h:113 src/pref_window.cpp:888
 msgid ""
 "The host where calls should be forwarded to in the cases selected above."
-msgstr "Nhập vào máy chủ cần dùng để chuyển các cuộc gọi đến tới trong các trường hợp trên."
+msgstr ""
+"Nhập vào máy chủ cần dùng để chuyển các cuộc gọi đến tới trong các trường "
+"hợp trên."
 
-#: gnomemeeting.schemas.in.in.h:112 src/pref_window.cpp:827
+#: gnomemeeting.schemas.in.in.h:114 src/pref_window.cpp:819
 msgid "The image height for fullscreen."
 msgstr "Chiều cao ảnh toàn màn hình."
 
-#: gnomemeeting.schemas.in.in.h:113 src/pref_window.cpp:1121
+#: gnomemeeting.schemas.in.in.h:115 src/pref_window.cpp:1143
 msgid ""
 "The image to transmit if \"Picture\" is selected for the video device or if "
 "the opening of the device fails. Leave blank to use the default GnomeMeeting "
 "logo."
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:114 src/pref_window.cpp:821
+#: gnomemeeting.schemas.in.in.h:116 src/pref_window.cpp:818
 msgid "The image width for fullscreen."
 msgstr "Chiều rộng ảnh toàn màn hình."
 
-#: gnomemeeting.schemas.in.in.h:115
+#: gnomemeeting.schemas.in.in.h:117
 msgid "The list of called URLs"
 msgstr "Danh sách URL được gọi"
 
-#: gnomemeeting.schemas.in.in.h:116
+#: gnomemeeting.schemas.in.in.h:118
 msgid "The list of groups"
 msgstr "Danh sách nhóm"
 
-#: gnomemeeting.schemas.in.in.h:117 src/pref_window.cpp:1317
+#: gnomemeeting.schemas.in.in.h:119 src/pref_window.cpp:1331
 msgid "The maximum jitter buffer size for audio reception (in ms)."
 msgstr "Kích thước vùng đệm jitter tối đa để nhận tiếng (mili giây)."
 
-#: gnomemeeting.schemas.in.in.h:118 src/pref_window.cpp:1355
+#: gnomemeeting.schemas.in.in.h:120 src/pref_window.cpp:1373
 msgid ""
 "The maximum video bandwidth in kbytes/s. The video quality and the number of "
 "transmitted frames per second will be dynamically adjusted above their "
 "minimum during calls to try to minimize the bandwidth to the given value."
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:119 src/pref_window.cpp:1314
+#: gnomemeeting.schemas.in.in.h:121 src/pref_window.cpp:1330
 msgid "The minimum jitter buffer size for audio reception (in ms)."
 msgstr "Kích thước vùng đệm jitter tối thiểu để nhận tiếng (mili giây)."
 
-#: gnomemeeting.schemas.in.in.h:120 src/pref_window.cpp:1370
+#: gnomemeeting.schemas.in.in.h:122 src/pref_window.cpp:1386
 msgid ""
 "The minimum number of video frames to transmit each second when trying to "
 "minimize the bandwidth."
 msgstr "Số khung hình tối thiểu để gửi mỗi giây khi giảm tối thiểu băng thông."
 
-#: gnomemeeting.schemas.in.in.h:122
+#: gnomemeeting.schemas.in.in.h:124
 #, no-c-format
 msgid ""
 "The minimum transmitted video quality to keep when trying to minimize the "
 "used bandwidth: choose 100% on a LAN for the best quality, 1% being the "
 "worst quality."
-msgstr "Số khung hình tối thiểu để gửi mỗi giây khi giảm tối thiểu băng thông: chọn 100% trên LAN để có chất lượng tốt nhất, 1% là chất lượng tệ nhất."
+msgstr ""
+"Số khung hình tối thiểu để gửi mỗi giây khi giảm tối thiểu băng thông: chọn "
+"100% trên LAN để có chất lượng tốt nhất, 1% là chất lượng tệ nhất."
 
-#: gnomemeeting.schemas.in.in.h:123
+#: gnomemeeting.schemas.in.in.h:125
 msgid ""
 "The port to listen to for incoming connections. GnomeMeeting needs to be "
 "restarted for the new value to take effect."
@@ -580,7 +610,7 @@ msgstr ""
 "Cổng dùng để lắng nghe cuộc gọi tới. GnomeMeeting cần được khởi động lại để "
 "giá trị mới có tác dụng."
 
-#: gnomemeeting.schemas.in.in.h:124
+#: gnomemeeting.schemas.in.in.h:126
 msgid ""
 "The prefix that will be used to save pictures of the conversation. That "
 "prefix is followed by the snapshot number."
@@ -588,64 +618,72 @@ msgstr ""
 "Tiền tố được dùng để lưu ảnh của cuộc trao đổi. Tiền tố này sẽ được theo sau "
 "bởi một con số (số snapshot)."
 
-#: gnomemeeting.schemas.in.in.h:125
+#: gnomemeeting.schemas.in.in.h:127
 msgid ""
 "The range of TCP ports beside the listen_port that GnomeMeeting will use for "
-"incoming connections. You can change the TCP port range if you are using IP "
+"the H.245 channel. You can change the TCP port range if you are using IP "
 "translation and if you need to have several GnomeMeeting running behind your "
 "NAT/PAT router. GnomeMeeting needs to be restarted for the new values to "
-"take effect."
-msgstr ""
-"Phạm vi cổng TCP bên cạnh listen_port mà GnomeMeeting dùng để nhận kết nối. "
-"Bạn có thể thay đổi phạm vi cổng TCP nếu bạn dùng Chuyển đổi IP và nếu bạn "
-"cần chạy cùng lúc nhiều phiên bản của GnomeMeeting thông qua NAT/PAT router. "
-"GnomeMeeting cần được khởi động lại để giá trị mới có tác dụng."
+"take effect. This port range has no effect if both participants to the "
+"conference are using H.245 Tunneling."
+msgstr "Phạm vi cổng TCP bên cạnh listen_port mà GnomeMeeting dùng để nhận kết nối. Bạn có thể thay đổi phạm vi cổng TCP nếu bạn dùng Chuyển đổi IP và nếu bạn cần chạy cùng lúc nhiều phiên bản của GnomeMeeting thông qua NAT/PAT router. GnomeMeeting cần được khởi động lại để giá trị mới có tác dụng. Phạm vi cổng này không có tác dụng nếu cả hai bên tham gia hội thoại đều dùng H.245 Tunnelling."
 
-#: gnomemeeting.schemas.in.in.h:126
+#: gnomemeeting.schemas.in.in.h:128
 msgid ""
-"The range of UDP ports that GnomeMeeting will use for incoming connections. "
-"You can change the UDP port range if you are using IP translation and if you "
-"need to have several GnomeMeeting running behind your NAT/PAT router. "
-"GnomeMeeting needs to be restarted for the new values to take effect."
-msgstr ""
+"The range of UDP ports that GnomeMeeting will use for RTP (audio and video "
+"communication channels). You can change the UDP port range if you are using "
+"IP translation and if you need to have several GnomeMeeting running behind "
+"your NAT/PAT router. GnomeMeeting needs to be restarted for the new values "
+"to take effect."
+msgstr "Phạm vi cổng UDP bên cạnh listen_port mà GnomeMeeting dùng cho RTP (kênh truyền thông hình và tiếng). Bạn có thể thay đổi phạm vi cổng UDP nếu bạn dùng Chuyển đổi IP và nếu bạn cần chạy cùng lúc nhiều phiên bản của GnomeMeeting thông qua NAT/PAT router. GnomeMeeting cần được khởi động lại để giá trị mới có tác dụng."
 
-#: gnomemeeting.schemas.in.in.h:127
+#: gnomemeeting.schemas.in.in.h:129
+msgid ""
+"The range of UDP ports that GnomeMeeting will use when registering to "
+"gatekeepers. You can change the UDP port range if you are using IP "
+"translation and if you need to have several GnomeMeeting running behind your "
+"NAT/PAT router. GnomeMeeting needs to be restarted for the new values to "
+"take effect. This port range has no effect if you are not registering to a "
+"gatekeeper."
+msgstr "Phạm vi cổng UDP bên cạnh listen_port mà GnomeMeeting dùng khi đăng ký với GateKeeper. Bạn có thể thay đổi phạm vi cổng UDP nếu bạn dùng Chuyển đổi IP và nếu bạn cần chạy cùng lúc nhiều phiên bản GnomeMeeting thông qua NAT/PAT router. GnomeMeeting cần được khởi động lại để giá trị mới có tác dụng. Phạm vi cổng không có tác dụng nếu bạn không đăng ký với GateKeeper."
+
+#: gnomemeeting.schemas.in.in.h:130
 msgid "The save prefix"
 msgstr "Tiền tố lưu"
 
-#: gnomemeeting.schemas.in.in.h:128 src/pref_window.cpp:1045
+#: gnomemeeting.schemas.in.in.h:131 src/pref_window.cpp:1081
 msgid ""
 "The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)."
 msgstr "Mã quốc gia (hai ký tự). Ví dụ: BE, UK, FR, DE, ..."
 
-#: gnomemeeting.schemas.in.in.h:129 src/pref_window.cpp:873
+#: gnomemeeting.schemas.in.in.h:132 src/pref_window.cpp:855
 msgid "The user directory server to register with."
 msgstr "Server thư mục người dùng đăng ký vào."
 
-#: gnomemeeting.schemas.in.in.h:130 src/pref_window.cpp:1110
+#: gnomemeeting.schemas.in.in.h:133 src/pref_window.cpp:1134
 msgid ""
 "The video channel number to use (to select camera, tv or other sources)."
 msgstr "Số kênh hình được dùng (để chọn camera, tv hoặc các nguồn khác)."
 
-#: gnomemeeting.schemas.in.in.h:131
-msgid "The width of the local video popup"
+#: gnomemeeting.schemas.in.in.h:134
+msgid "The width of the local video window"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:132
-msgid "The width of the remote video popup"
+#: gnomemeeting.schemas.in.in.h:135
+msgid "The width of the remote video window"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:133
+#: gnomemeeting.schemas.in.in.h:136
 msgid "The zoom value"
 msgstr "Giá trị phóng"
 
-#: gnomemeeting.schemas.in.in.h:134
+#: gnomemeeting.schemas.in.in.h:137
 msgid ""
 "The zoom value to apply to images displayed in the main GUI (can be 0.50, "
 "1.00, or 2.00)."
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:135 src/pref_window.cpp:958
+#: gnomemeeting.schemas.in.in.h:138 src/pref_window.cpp:933
 msgid ""
 "This enables H.245 Tunnelling mode. In H.245 Tunnelling mode H.245 messages "
 "are encapsulated into the the H.225 channel (port 1720). This saves one TCP "
@@ -659,7 +697,7 @@ msgstr ""
 "trong H.323v2 và Netmeeting không hỗ trợ nó. Việc dùng cả Khởi động nhanh và "
 "H.245 có thể làm hỏng một vài phiên bản của Netmeeting."
 
-#: gnomemeeting.schemas.in.in.h:136 src/pref_window.cpp:978
+#: gnomemeeting.schemas.in.in.h:139 src/pref_window.cpp:1019
 msgid ""
 "This enables IP translation. IP translation is useful if GnomeMeeting is "
 "running behind a NAT/PAT router. You have to put the public IP of the router "
@@ -668,59 +706,59 @@ msgid ""
 "natively supports H.323, you can disable this."
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:137 src/pref_window.cpp:970
+#: gnomemeeting.schemas.in.in.h:140
 msgid ""
 "This permits to set the mode for User Input Capabilities. The values can be "
-"\"String\", \"Signal\", \"rfc2833\", \"None\" or \"All\" (default is All). "
-"Choosing other values than \"All\", \"String\" or \"rfc2833\" disable the "
-"Text Chat."
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:138
-msgid "Transmitted background blocks"
-msgstr "Khối nền gửi"
-
-#: gnomemeeting.schemas.in.in.h:139
-msgid "UDP Port Range"
-msgstr "Phạm vi cổng UDP"
-
-#: gnomemeeting.schemas.in.in.h:140
-msgid "User Input Capabilities type"
+"\"All\" (0), \"None\" (1), \"rfc2833\" (2), \"Signal\" (3) or \"String\" (4) "
+"(default is \"All\"). Choosing other values than \"All\", \"String\" or "
+"\"rfc2833\" disables the Text Chat."
 msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:141
+msgid "Transmitted background blocks"
+msgstr "Khối nền gửi"
+
+#: gnomemeeting.schemas.in.in.h:142
+msgid "UDP Port Range"
+msgstr "Phạm vi cổng UDP"
+
+#: gnomemeeting.schemas.in.in.h:143
+msgid "User Input Capabilities type"
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:144
 msgid "User directory"
 msgstr "Thư mục người dùng"
 
-#: gnomemeeting.schemas.in.in.h:142 src/ldap_window.cpp:1758
+#: gnomemeeting.schemas.in.in.h:145 src/ldap_window.cpp:2609
 msgid "Version"
 msgstr "Phiên bản"
 
-#: gnomemeeting.schemas.in.in.h:143
+#: gnomemeeting.schemas.in.in.h:146
 msgid "Video Preview"
 msgstr "Xem thử video"
 
-#: gnomemeeting.schemas.in.in.h:144
+#: gnomemeeting.schemas.in.in.h:147
 msgid "Video channel"
 msgstr "Kênh hình"
 
-#: gnomemeeting.schemas.in.in.h:145
+#: gnomemeeting.schemas.in.in.h:148
 msgid "Video device"
 msgstr "Thiết bị hình"
 
-#: gnomemeeting.schemas.in.in.h:146
+#: gnomemeeting.schemas.in.in.h:149
 msgid "Video format"
 msgstr "Dạng thức hình"
 
-#: gnomemeeting.schemas.in.in.h:147
+#: gnomemeeting.schemas.in.in.h:150
 msgid "Video image"
 msgstr "Ảnh video"
 
-#: gnomemeeting.schemas.in.in.h:148
+#: gnomemeeting.schemas.in.in.h:151
 msgid "Video size"
 msgstr "Kích thước ảnh"
 
-#: lib/dialog.c:148
+#: lib/dialog.c:182
 msgid "Do not show this dialog again"
 msgstr "Đừng hiện hộp thoại này lần nữa"
 
@@ -732,27 +770,83 @@ msgstr "Cuộc gọi đến"
 msgid "gnomemeeting"
 msgstr "gnomemeeting"
 
-#: src/callbacks.cpp:128
+#: src/callbacks.cpp:87
+msgid "_Retrieve Call"
+msgstr ""
+
+#: src/callbacks.cpp:100 src/menu.cpp:458
+msgid "_Hold Call"
+msgstr ""
+
+#: src/callbacks.cpp:141 src/ldap_window.cpp:708
+msgid "Edit the contact information"
+msgstr "Sửa thông tin liên lạc"
+
+#: src/callbacks.cpp:144 src/menu.cpp:463
+msgid "_Transfer Call"
+msgstr "_Truyền cuộc gọi"
+
+#: src/callbacks.cpp:165
+msgid "Forward call to:"
+msgstr "Chuyển cuộc gọi tới:"
+
+#: src/callbacks.cpp:260 src/menu.cpp:470
+msgid "Suspend _Audio"
+msgstr "Ngừng _tiếng"
+
+#: src/callbacks.cpp:261
+msgid "Resume _Audio"
+msgstr "_Hoàn tiếng"
+
+#: src/callbacks.cpp:262
+msgid "Audio transmission: suspended"
+msgstr "Truyền âm: ngừng"
+
+#: src/callbacks.cpp:263
+msgid "Audio transmission: resumed"
+msgstr "truyền âm: tiếp tục"
+
+#: src/callbacks.cpp:272 src/menu.cpp:475
+msgid "Suspend _Video"
+msgstr "_Ngừng hình"
+
+#: src/callbacks.cpp:273
+msgid "Resume _Video"
+msgstr "_Hoàn hình"
+
+#: src/callbacks.cpp:274
+msgid "Video transmission: suspended"
+msgstr "Truyền ảnh: ngừng"
+
+#: src/callbacks.cpp:275
+msgid "Video transmission: resumed"
+msgstr "Truyền ảnh: tiếp tục"
+
+#: src/callbacks.cpp:381
 msgid "Code Contributors:"
 msgstr "Người tham gia lập trình:"
 
-#: src/callbacks.cpp:134
+#: src/callbacks.cpp:389
+msgid "Artwork:"
+msgstr ""
+
+#: src/callbacks.cpp:392
 msgid "Contributors:"
 msgstr "Người tham gia:"
 
-#: src/callbacks.cpp:155
+#: src/callbacks.cpp:418
 msgid "Internationalisation Maintainer:"
 msgstr "Người quản lý quốc tế hóa:"
 
 #. Translators: Please write translator credits here, and
 #. * seperate names with \n
-#: src/callbacks.cpp:172
+#: src/callbacks.cpp:436
 msgid "translator_credits"
 msgstr "Nguyễn Thái Ngọc Duy"
 
 #. Translators: Please test to see if your translation
 #. * looks OK and fits within the box
-#: src/callbacks.cpp:183
+#: src/callbacks.cpp:447
 msgid ""
 "GnomeMeeting is a full-featured H.323\n"
 "video conferencing application."
@@ -760,21 +854,9 @@ msgstr ""
 "GnomeMeeting là ứng dụng hội thảo qua mạng \n"
 "với đầy đủ tính năng H.323"
 
-#: src/callbacks.cpp:225
-msgid ""
-"An error has happened in the configuration backend.\n"
-"Maybe some of your settings won't be saved."
-msgstr ""
-"Lỗi backend cấu hình.\n"
-"Có thể thiết lập của bạn sẽ không được lưu."
-
-#: src/chat_window.cpp:199
+#: src/chat_window.cpp:205
 msgid "Send Message:"
 msgstr "Gửi thông điệp"
-
-#: src/cleaner.cpp:82
-msgid "Quit in progress..."
-msgstr "Đang thoát..."
 
 #: src/config-tool-i18n.h:1
 msgid "YES"
@@ -901,19 +983,26 @@ msgid ""
 "  --fix-permissions      fix permissions of GConf repository (run as root)"
 msgstr "  --fix-permissions      sửa quyền truy cập của GConf (chạy như root)"
 
-#: src/config.cpp:403
+#: src/config.cpp:409
 msgid "Changing this setting will only affect new calls"
 msgstr "Quá trình đổi thiết lập sẽ chỉ có giá trị đối với các cuộc gọi mới"
 
-#: src/config.cpp:550
+#: src/config.cpp:409
+msgid ""
+"You have changed a setting that doesn't permit to GnomeMeeting to apply the "
+"new change to the current call. Your new setting will only take effect for "
+"the next call."
+msgstr ""
+
+#: src/config.cpp:591
 msgid "Disabled Silence Detection"
 msgstr "Tắt kiểm tra im lặng"
 
-#: src/config.cpp:556
+#: src/config.cpp:597
 msgid "Enabled Silence Detection"
 msgstr "Bật kiểm tra im lặng"
 
-#: src/config.cpp:1232
+#: src/config.cpp:1259
 msgid ""
 "You need to specify an host to forward calls to!\n"
 "Disabling forwarding."
@@ -921,93 +1010,113 @@ msgstr ""
 "Bạn cần xác định máy chủ để chuyển cuộc gọi đến!\n"
 "Tắt chuyển cuộc gọi."
 
-#: src/connection.cpp:109
+#: src/config.cpp:1459
+msgid ""
+"An error has happened in the configuration backend.\n"
+"Maybe some of your settings won't be saved."
+msgstr ""
+"Lỗi backend cấu hình.\n"
+"Có thể thiết lập của bạn sẽ không được lưu."
+
+#: src/connection.cpp:112
 msgid "Started New Logical Channel..."
 msgstr "Đã khởi động kênh logic mới..."
 
-#: src/connection.cpp:116
+#: src/connection.cpp:119
 #, c-format
 msgid "Sending %s"
 msgstr "Đang gửi %s"
 
-#: src/connection.cpp:135
+#: src/connection.cpp:138
 #, c-format
 msgid "Enabled silence detection for %s"
 msgstr "Bật kiểm tra im lặng cho %s"
 
-#: src/connection.cpp:138
+#: src/connection.cpp:141
 #, c-format
 msgid "Disabled silence detection for %s"
 msgstr "Tắt kiểm tra im lặng cho %s"
 
-#: src/connection.cpp:154
+#: src/connection.cpp:157
 #, c-format
 msgid "Receiving %s"
 msgstr "Đang nhận %s"
 
-#: src/connection.cpp:182
+#: src/connection.cpp:187
 #, c-format
 msgid "Requesting remote to send video quality: %d%%"
 msgstr "Đang yêu cầu gửi chất lượng ảnh: %d%%"
 
-#: src/connection.cpp:207
+#: src/connection.cpp:212
 msgid "Request ok"
 msgstr "Yêu cầu xong"
 
-#: src/connection.cpp:238 src/connection.cpp:240
-msgid "Audio Channel:  Sending"
-msgstr "Kênh Audio: Đang gửi"
-
-#: src/connection.cpp:247 src/connection.cpp:249
-msgid "Audio Channel:  Paused"
-msgstr "Kênh Audio: Tạm ngừng"
-
-#: src/connection.cpp:271 src/connection.cpp:273
-msgid "Video Channel:  Sending"
-msgstr "Kênh hình: Đang gửi"
-
-#: src/connection.cpp:279 src/connection.cpp:281
-msgid "Video Channel:  Paused"
-msgstr "Kênh hình: Tạm dừng"
-
-#: src/connection.cpp:329 src/connection.cpp:331
+#: src/connection.cpp:244 src/connection.cpp:246
 msgid "Auto Answering Incoming Call"
 msgstr "Tự động trả lời cuộc gọi đến"
 
-#: src/druid.cpp:336
-msgid ""
-"You chose to NOT use the GnomeMeeting ILS directory. Other users will not be "
-"able to contact you if you don't register to a directory service."
-msgstr ""
-"Bạn đã chọn KHÔNG dùng thư mục GnomeMeeting ILS. Những người dùng khác sẽ "
-"không thể liên lạc với bạn nếu bạn không đăng ký vào dịch vụ thư mục."
+#: src/connection.cpp:337 src/connection.cpp:338 src/urlhandler.cpp:76
+#: src/urlhandler.cpp:77
+msgid "Call transfer failed"
+msgstr "Truyền cuộc gọi thất bại"
 
-#: src/druid.cpp:564 src/druid.cpp:746
+#: src/connection.cpp:337
+msgid ""
+"The remote user tried to transfer your call to another user, but it failed."
+msgstr ""
+
+#: src/druid.cpp:517 src/druid.cpp:699
 msgid "56K modem"
 msgstr "Modem 56K"
 
-#: src/druid.cpp:568 src/druid.cpp:750
+#: src/druid.cpp:521 src/druid.cpp:703
 msgid "ISDN"
 msgstr "ISDN"
 
-#: src/druid.cpp:572
+#: src/druid.cpp:525
 msgid "xDSL/Cable"
 msgstr "xDSL/Cáp"
 
-#: src/druid.cpp:576 src/druid.cpp:758
+#: src/druid.cpp:529 src/druid.cpp:711
 msgid "T1/LAN"
 msgstr "T1/LAN"
 
-#: src/druid.cpp:580 src/druid.cpp:762
+#: src/druid.cpp:533 src/druid.cpp:715
 msgid "Other"
 msgstr "Khác"
 
-#: src/druid.cpp:647
+#: src/druid.cpp:566
+#, c-format
+msgid ""
+"You have now finished the GnomeMeeting configuration. All the settings can "
+"be changed in the GnomeMeeting preferences. Enjoy!\n"
+"\n"
+"\n"
+"Configuration Summary:\n"
+"\n"
+"Username:  %s %s\n"
+"Connection type:  %s\n"
+"Audio player:  %s\n"
+"Audio recorder:  %s\n"
+"Video player: %s\n"
+"My Callto URL: %s\n"
+"PC-To-Phone calls: %s"
+msgstr ""
+
+#: src/druid.cpp:566
+msgid "Enabled"
+msgstr "Bật"
+
+#: src/druid.cpp:566
+msgid "Disabled"
+msgstr "Tắt"
+
+#: src/druid.cpp:600
 #, c-format
 msgid "Personal Information - page %d/%d"
 msgstr "Thông tin cá nhân - trang %d/%d"
 
-#: src/druid.cpp:656
+#: src/druid.cpp:609
 msgid ""
 "Please enter your first name and surname, they will be used when connecting "
 "to other audio/video conferencing software.\n"
@@ -1020,42 +1129,42 @@ msgid ""
 msgstr ""
 
 #. The user fields
-#: src/druid.cpp:660 src/pref_window.cpp:747
+#: src/druid.cpp:613 src/pref_window.cpp:728
 msgid "Personal Information"
 msgstr "Thông tin cá nhân"
 
-#: src/druid.cpp:663
+#: src/druid.cpp:616
 msgid "First _name:"
 msgstr "_Tên:"
 
-#: src/druid.cpp:669
+#: src/druid.cpp:622
 msgid "_Surname:"
 msgstr "_Họ:"
 
 #. The callto url
-#: src/druid.cpp:677 src/ldap_window.cpp:1797
+#: src/druid.cpp:630
 msgid "Callto URL"
 msgstr "Callto URL"
 
-#: src/druid.cpp:680
+#: src/druid.cpp:633 src/pref_window.cpp:742
 msgid "E-_mail address:"
 msgstr "Địa chỉ email:"
 
 #. The ILS registering
-#: src/druid.cpp:687
+#: src/druid.cpp:640
 msgid "Directory of Online GnomeMeeting Users"
 msgstr ""
 
-#: src/druid.cpp:689
+#: src/druid.cpp:642
 msgid "Publish my information on the directory of online GnomeMeeting users"
 msgstr ""
 
-#: src/druid.cpp:730
+#: src/druid.cpp:683
 #, c-format
 msgid "Network Connection - page %d/%d"
 msgstr "Loại kết nối - Trang %d/%d"
 
-#: src/druid.cpp:741
+#: src/druid.cpp:694
 msgid ""
 "Please select your network connection type. This is used to set default "
 "video settings for your bandwidth. It is possible to change these defaults "
@@ -1066,20 +1175,20 @@ msgstr ""
 "chỉnh và thay đổi vài chỗ để có kết quả tốt hơn."
 
 #. Connection type
-#: src/druid.cpp:745
+#: src/druid.cpp:698
 msgid "Connection Type"
 msgstr "Loại kết nối"
 
-#: src/druid.cpp:754
+#: src/druid.cpp:707
 msgid "DSL/Cable"
 msgstr "DSL/Cáp"
 
-#: src/druid.cpp:820
+#: src/druid.cpp:775
 #, c-format
 msgid "Audio Devices - page %d/%d"
 msgstr "Thiết bị âm - trang %d/%d"
 
-#: src/druid.cpp:830
+#: src/druid.cpp:785
 msgid ""
 "Please choose the audio devices to use during the GnomeMeeting session. You "
 "can also choose to use a Quicknet device instead of the soundcard, but the "
@@ -1089,41 +1198,41 @@ msgid ""
 msgstr ""
 
 #. The Audio devices
-#: src/druid.cpp:834 src/pref_window.cpp:1017 src/pref_window.cpp:1541
+#: src/druid.cpp:789 src/pref_window.cpp:1055 src/pref_window.cpp:1572
 msgid "Audio Devices"
 msgstr "Thiết bị âm thanh"
 
-#: src/druid.cpp:837 src/pref_window.cpp:1023
+#: src/druid.cpp:792
 msgid "Audio player:"
 msgstr "Bộ phát âm:"
 
-#: src/druid.cpp:840 src/pref_window.cpp:1026
+#: src/druid.cpp:795
 msgid "Audio player mixer:"
 msgstr "Bộ trộn âm:"
 
-#: src/druid.cpp:844 src/pref_window.cpp:1030
+#: src/druid.cpp:799
 msgid "Audio recorder:"
 msgstr "Bộ thu âm:"
 
-#: src/druid.cpp:847 src/pref_window.cpp:1033
+#: src/druid.cpp:802
 msgid "Audio recorder mixer:"
 msgstr "Bộ trộn thu âm:"
 
 #. Test button
-#: src/druid.cpp:851
+#: src/druid.cpp:806
 msgid "Click here to test your audio devices:"
 msgstr "Nhấn vào đây để kiểm tra thiết bị tiếng của bạn:"
 
-#: src/druid.cpp:853
+#: src/druid.cpp:808
 msgid "Test Audio"
 msgstr "Test tiếng"
 
-#: src/druid.cpp:889
+#: src/druid.cpp:851
 #, c-format
 msgid "Video Devices - page %d/%d"
 msgstr "Thiết bị Video - trang %d/%d"
 
-#: src/druid.cpp:899
+#: src/druid.cpp:861
 msgid ""
 "Please choose the video device to use during the GnomeMeeting session. Click "
 "on the \"Test Video\" button to check if your setup is correct and if your "
@@ -1132,15 +1241,15 @@ msgid ""
 msgstr ""
 
 #. The Video device
-#: src/druid.cpp:903 src/pref_window.cpp:1098 src/pref_window.cpp:1546
+#: src/druid.cpp:865 src/pref_window.cpp:1126 src/pref_window.cpp:1577
 msgid "Video Devices"
 msgstr "Thiết bị hình"
 
-#: src/druid.cpp:906 src/pref_window.cpp:1104
+#: src/druid.cpp:868 src/pref_window.cpp:1130
 msgid "Video device:"
 msgstr "Thiết bị hình:"
 
-#: src/druid.cpp:906
+#: src/druid.cpp:868
 msgid ""
 "Enter the video device to use. Using an invalid video device for video "
 "transmission will transmit a test picture."
@@ -1149,287 +1258,311 @@ msgstr ""
 "ảnh thử."
 
 #. Test button
-#: src/druid.cpp:910
+#: src/druid.cpp:872
 msgid "Test Video"
 msgstr "Kiểm tra video"
 
-#: src/druid.cpp:957
+#: src/druid.cpp:916
 #, c-format
 msgid "PC-To-Phone Setup - page %d/%d"
 msgstr "Thiết lập PC-To-Phone - trang %d/%d"
 
-#: src/druid.cpp:967
+#: src/druid.cpp:926
 msgid ""
 "You can make calls to regular phones and cell numbers worldwide using "
 "GnomeMeeting and the MicroTelco service from Quicknet Technologies. To "
-"enable this feature you need a compatible card from Quicknet Technologies "
-"and you need to enter your MicroTelco Account number and PIN below, then "
-"enable registering to the MicroTelco service."
+"enable this you need to enter your MicroTelco Account number and PIN below, "
+"then enable registering to the MicroTelco service. Please visit the "
+"GnomeMeeting website for more information."
 msgstr ""
 
-#: src/druid.cpp:972 src/druid.cpp:974
-msgid "No Quicknet device detected"
-msgstr "Không tìm ra thiết bị Quicknet"
-
-#: src/druid.cpp:982
+#: src/druid.cpp:931
 msgid "PC-To-Phone Setup"
 msgstr "Thiết lập PC-To-Phone"
 
-#: src/druid.cpp:985
+#: src/druid.cpp:934
 msgid "Account number:"
 msgstr "Số tài khoản:"
 
-#: src/druid.cpp:988
+#: src/druid.cpp:937
 msgid "Password:"
 msgstr "Mật khẩu:"
 
-#: src/druid.cpp:996
+#: src/druid.cpp:944
 msgid "Register to the MicroTelco service"
 msgstr "Đăng ký dịch vụ MicroTelco"
 
-#: src/druid.cpp:1008
+#: src/druid.cpp:962
 msgid ""
 "Click on one of the following links to get more information about your "
 "existing MicroTelco account, or to create a new account."
 msgstr ""
 
-#: src/druid.cpp:1048
+#: src/druid.cpp:966
+msgid "Get an account"
+msgstr "Tạo tài khoản"
+
+#: src/druid.cpp:968
+msgid "Buy a card"
+msgstr "Mua card"
+
+#: src/druid.cpp:998
 msgid "First Time Configuration Druid"
 msgstr "Cấu hình lần đầu tiên"
 
-#: src/druid.cpp:1055
+#: src/druid.cpp:1005
 #, c-format
 msgid "Configuration Druid - page %d/%d"
 msgstr "Druid Cấu hình - trang %d/%d"
 
-#: src/druid.cpp:1058
+#: src/druid.cpp:1008
 msgid ""
 "This is the GnomeMeeting general configuration druid. The following steps "
 "will set up GnomeMeeting by asking a few simple questions.\n"
 "\n"
 "Once you have completed these steps, you can always change them later by "
-"selecting Preferences in the Edit menu. "
+"selecting Preferences in the Edit menu."
 msgstr ""
-"Chào mừng tới druid cấu hình chung của GnomeMeeting. Các bước sau sẽ thiết lập GnomeMeeting bằng cách hỏi vài câu hỏi đơn giản.\n"
+"Đây là druid cấu hình chung của GnomeMeeting. Các bước sau sẽ thiết lập GnomeMeeting bằng cách hỏi vài câu hỏi đơn giản.\n"
 "\n"
 "Một khi bạn đã hoàn tất một bước, bạn vẫn có thể sửa lại bằng cách chọn Thông số trong menu Hiệu chỉnh."
 
-#: src/druid.cpp:1097
+#: src/druid.cpp:1047
 #, c-format
 msgid "Configuration complete - page %d/%d"
 msgstr "Hoàn tất cấu hình - trang %d/%d"
 
-#: src/endpoint.cpp:120
+#: src/endpoint.cpp:117
 #, c-format
 msgid "Forwarding Call to %s (No Answer)"
 msgstr "Đang chuyển cuộc gọi tới %s (Không trả lời)"
 
-#: src/endpoint.cpp:124 src/endpoint.cpp:126 src/endpoint.cpp:953
+#: src/endpoint.cpp:121 src/endpoint.cpp:1468
 msgid "Call forwarded"
 msgstr "Đã chuyển cuộc gọi"
 
-#. GM is started
-#: src/endpoint.cpp:221
-#, c-format
-msgid "Started GnomeMeeting V%d.%d for %s\n"
-msgstr "Đã khởi động GnomeMeeting V%d.%d cho %s\n"
-
 #. Player is always a correct sound device, thanks to
 #. gnomemeeting_add_string_option_menu
-#: src/endpoint.cpp:319
+#: src/endpoint.cpp:314
 #, c-format
 msgid "Set Audio player device to %s"
 msgstr "Đặt thiết bị chơi Audio là %s"
 
-#: src/endpoint.cpp:330
+#: src/endpoint.cpp:325
 #, c-format
 msgid "Set Audio recorder device to %s"
 msgstr "Đặt thiết bị thu audio là %s"
 
-#: src/endpoint.cpp:347
+#: src/endpoint.cpp:342
 msgid "Enabling H.245 Tunnelling"
 msgstr "Đang bật đường hầm H.245"
 
-#: src/endpoint.cpp:348
+#: src/endpoint.cpp:343
 msgid "Disabling H.245 Tunnelling"
 msgstr "Đang tắt đường hầm H.245"
 
-#: src/endpoint.cpp:358
+#: src/endpoint.cpp:353
 msgid "Enabling Fast Start"
 msgstr "Đang bật khởi động nhanh"
 
-#: src/endpoint.cpp:359
+#: src/endpoint.cpp:354
 msgid "Disabling Fast Start"
 msgstr "Đang tắt khởi động nhanh"
 
-#: src/endpoint.cpp:949
-#, c-format
-msgid "Forwarding Call to %s"
-msgstr "Đang chuyển cuộc gọi tới %s"
-
-#: src/endpoint.cpp:962
-#, c-format
-msgid "Error forwarding call to %s"
-msgstr "Lỗi chuyển cuộc gọi tới %s"
-
 #. Update the history and status bar
-#: src/endpoint.cpp:1032
+#: src/endpoint.cpp:945
 #, c-format
 msgid "Call from %s using %s"
 msgstr "Gọi từ %s dùng %s"
 
-#: src/endpoint.cpp:1048
+#: src/endpoint.cpp:960
 #, c-format
-msgid "Forwarding Call from %s to %s (Forward All Calls)"
+msgid "Forwarding call from %s to %s (Forward all calls)"
 msgstr "Đang chuyển cuộc gọi từ %s đến %s (Chuyển mọi cuộc gọi)"
 
-#: src/endpoint.cpp:1056
+#: src/endpoint.cpp:968
 #, c-format
-msgid "Auto Rejecting Incoming Call from %s (Do Not Disturb)"
+msgid "Auto rejecting incoming call from %s (Do not disturb)"
 msgstr "Tự động từ chối cuộc gọi tới từ %s (Đừng làm phiền)"
 
-#: src/endpoint.cpp:1068
+#: src/endpoint.cpp:980
 #, c-format
-msgid "Forwarding Call from %s to %s (Busy)"
+msgid "Forwarding call from %s to %s (Busy)"
 msgstr "Đang chuyển cuộc gọi từ %s đến %s (Bận)"
 
 #. there is no forwarding, so reject the call
-#: src/endpoint.cpp:1077
+#: src/endpoint.cpp:989
 #, c-format
-msgid "Auto Rejecting Incoming Call from %s (Busy)"
+msgid "Auto rejecting incoming call from %s (Busy)"
 msgstr "Tự động từ chối cuộc gọi tới từ %s (Bận)"
 
-#: src/endpoint.cpp:1101 src/endpoint.cpp:1103
+#: src/endpoint.cpp:1013
 msgid "Auto Rejected"
 msgstr "Tự động từ chối"
 
-#: src/endpoint.cpp:1112 src/endpoint.cpp:1114
+#: src/endpoint.cpp:1022
 msgid "Call Forwarded"
 msgstr "Đã chuyển cuộc gọi"
 
-#: src/endpoint.cpp:1264
+#: src/endpoint.cpp:1226
 #, c-format
 msgid "Connected with %s using %s"
 msgstr "Đã kết nối với %s dùng %s"
 
-#: src/endpoint.cpp:1266
+#: src/endpoint.cpp:1228
 msgid "Connected"
 msgstr "Đã kết nối"
 
-#: src/endpoint.cpp:1269
+#: src/endpoint.cpp:1231
 msgid "Fast start disabled"
 msgstr "Đã tắt khởi động nhanh"
 
-#: src/endpoint.cpp:1270
+#: src/endpoint.cpp:1232
 msgid "Fast start enabled"
 msgstr "Đã bật khởi động nhanh"
 
-#: src/endpoint.cpp:1273
+#: src/endpoint.cpp:1235
 msgid "H.245 Tunnelling disabled"
 msgstr "Đã tắt đường hầm H.245"
 
-#: src/endpoint.cpp:1274
+#: src/endpoint.cpp:1236
 msgid "H.245 Tunnelling enabled"
 msgstr "Đã bật đường hầm H.245"
 
-#: src/endpoint.cpp:1389
-msgid "Remote party has cleared the call"
-msgstr "Bên đối diện đã xóa cuộc gọi"
+#: src/endpoint.cpp:1432
+msgid "Local user cleared the call"
+msgstr "Người dùng cục bộ đã xóa cuộc gọi"
 
-#: src/endpoint.cpp:1393
-msgid "Remote party has stopped calling"
-msgstr "Bên đối diện đã ngừng gọi"
+#: src/endpoint.cpp:1435
+msgid "Remote user cleared the call"
+msgstr "Người dùng từ xa đã xóa cuộc gọi"
 
-#: src/endpoint.cpp:1397 src/endpoint.cpp:1421
-msgid "Remote party did not accept your call"
-msgstr "Bên đối diện không chấp nhận cuộc gọi"
+#: src/endpoint.cpp:1438 src/endpoint.cpp:1441
+msgid "Remote user did not accept the call"
+msgstr "Người dùng từ xa không chấp nhận cuộc gọi"
 
-#: src/endpoint.cpp:1401
-msgid "Remote party was busy"
-msgstr "Bên đối diện đang bận"
+#: src/endpoint.cpp:1444
+msgid "Local user did not accept the call"
+msgstr "Người dùng cục bộ không chấp nhận cuộc gọi"
 
-#: src/endpoint.cpp:1405
+#: src/endpoint.cpp:1447
+msgid "The Gatekeeper cleared the call"
+msgstr "Gatekeeper đã xóa cuộc gọi"
+
+#: src/endpoint.cpp:1450
+msgid "Call not answered in the required time"
+msgstr "Cuộc gọi không được trả lời trong thời gian yêu cầu"
+
+#: src/endpoint.cpp:1453
+msgid "Remote user has stopped calling"
+msgstr "Người dùng từ xa đã ngừng gọi"
+
+#: src/endpoint.cpp:1456
+msgid "Abnormal call termination"
+msgstr "Kết thúc cuộc gọi bất thường"
+
+#: src/endpoint.cpp:1459
+msgid "Could not connect to remote host"
+msgstr "Không thể kết nối đến máy ở xa"
+
+#: src/endpoint.cpp:1462
+msgid "Insufficient bandwidth"
+msgstr "Không đủ băng thông"
+
+#: src/endpoint.cpp:1465
+msgid "No common codec"
+msgstr "Không có codec chung"
+
+#: src/endpoint.cpp:1471
+msgid "Security check Failed"
+msgstr "Thất bại kiểm tra an ninh"
+
+#: src/endpoint.cpp:1474
+msgid "Local user is busy"
+msgstr "Người dùng cục bộ đang bận"
+
+#: src/endpoint.cpp:1477
+msgid "Remote user is busy"
+msgstr "Người dùng từ xa đang bận"
+
+#: src/endpoint.cpp:1480 src/endpoint.cpp:1483
 msgid "Congested link to remote party"
 msgstr ""
 
-#: src/endpoint.cpp:1409
-msgid "The call was not answered in the required time"
-msgstr "Cuộc gọi không được trả lời trong thời gian yêu cầu"
+#: src/endpoint.cpp:1486
+msgid "Remote user is unreachable"
+msgstr "Không thể tiếp cận người dùng từ xa"
 
-#: src/endpoint.cpp:1413
-msgid "This call ended abnormally"
-msgstr "Cuộc gọi kết thúc bất thường"
+#: src/endpoint.cpp:1489
+msgid "Remote user is not running GnomeMeeting"
+msgstr "Người dùng từ xa không chạy GnomeMeeting"
 
-#: src/endpoint.cpp:1417
-msgid "Could not find common codec with remote party"
-msgstr "Không thể tìm thấy codec chung với bên đối diện"
+#: src/endpoint.cpp:1492
+msgid "Remote host is offline"
+msgstr "Người dùng từ xa đang ở ngoại tuyến"
 
-#: src/endpoint.cpp:1425
-msgid "Refused incoming call"
-msgstr "Đã từ chối cuộc gọi đến"
+#: src/endpoint.cpp:1495
+msgid "Temporary failure"
+msgstr "Lỗi tạm thời"
 
-#: src/endpoint.cpp:1429
+#: src/endpoint.cpp:1498 src/urlhandler.cpp:366
 msgid "User not found"
 msgstr "Không tìm thấy người dùng"
 
-#: src/endpoint.cpp:1433
-msgid "Call ended: insufficient bandwidth"
-msgstr "Kết thúc cuộc gọi: không đủ băng thông"
-
-#: src/endpoint.cpp:1437
-msgid "Remote party could not be reached"
-msgstr "Không thể tiếp cận bên đối diện"
-
-#: src/endpoint.cpp:1441
-msgid "Remote party is offline"
-msgstr "Bên đối diện đang ở ngoại tuyến"
-
-#: src/endpoint.cpp:1445
-msgid "Transport Error calling"
-msgstr ""
-
-#: src/endpoint.cpp:1449
+#: src/endpoint.cpp:1502
 msgid "Call completed"
 msgstr "Hoàn tất cuộc gọi"
 
-#: src/endpoint.cpp:1459
-#, c-format
-msgid "Call duration: %.2ld:%.2ld:%.2ld"
-msgstr "Thời gian gọi: %.2ld:%.2ld:%.2ld"
-
-#: src/endpoint.cpp:1563
+#: src/endpoint.cpp:1594 src/main_window.cpp:1364
 msgid ""
-"Sent/Received:\n"
-"Lost/Late Packets:\n"
-"Round trip delay:\n"
-"Jitter Buffer:"
+"Lost packets:\n"
+"Late packets:\n"
+"Round-trip delay:\n"
+"Jitter buffer:"
 msgstr ""
-"Gửi/Nhận:\n"
-"Gói mất/trễ:\n"
-"Round trip delay:\n"
+"Số gói mất:\n"
+"Số gói trễ:\n"
+"Round-trip delay:\n"
 "Vùng đệm Jitter:"
 
-#: src/endpoint.cpp:1721
+#: src/endpoint.cpp:1773
 msgid "Attaching lid hardware to codec"
 msgstr "Gắn phần cứng lid với codec"
 
-#: src/endpoint.cpp:1734
-msgid ""
-"Could not open audio channel for audio transmission (soundcard busy?).\n"
-"Disabling audio transmission."
-msgstr ""
-"Không thể mở kênh audio để truyền âm thanh (soundcard bận?).\n"
-"Tắt truyền âm thanh."
+#: src/endpoint.cpp:1788
+msgid "Could not open audio channel for audio transmission"
+msgstr "Không thể mở kênh tiếng để truyền âm thanh"
 
-#: src/endpoint.cpp:1736
+#: src/endpoint.cpp:1788
 msgid ""
-"Could not open audio channel for audio reception (soundcard busy?).\n"
-"Disabling audio reception."
+"An error occured while trying to record from the soundcard for the audio "
+"transmission. Please check that your soundcard is not busy and that your "
+"driver supports full-duplex.\n"
+"The audio transmission has been disabled."
 msgstr ""
-"Không thể mở kênh audio để nhận âm thanh (soundcard bận?).\n"
-"Tắt nhận âm thanh."
 
-#: src/gatekeeper.cpp:126
+#: src/endpoint.cpp:1790
+msgid "Could not open audio channel for audio reception"
+msgstr "Không thể mở kênh tiếng để nhận âm thanh"
+
+#: src/endpoint.cpp:1790
+msgid ""
+"An error occured while trying to play audio to the soundcard for the audio "
+"reception. Please check that your soundcard is not busy and that your driver "
+"supports full-duplex.\n"
+"The audio reception has been disabled."
+msgstr ""
+
+#: src/gatekeeper.cpp:137
+#, c-format
+msgid "Unregistered from gatekeeper %s"
+msgstr ""
+
+#: src/gatekeeper.cpp:151
+msgid "Invalid gatekeeper hostname"
+msgstr "Tên máy chủ Gatekeeper không hợp lệ"
+
+#: src/gatekeeper.cpp:151
 msgid ""
 "Please provide a hostname to use for the gatekeeper.\n"
 "Disabling registering."
@@ -1437,17 +1570,11 @@ msgstr ""
 "Vui lòng cung cấp tên máy chủ dùng như là gatekeeper.\n"
 "Tắt đăng ký."
 
-#: src/gatekeeper.cpp:143 src/gatekeeper.cpp:212 src/gatekeeper.cpp:252
-#, c-format
-msgid "Gatekeeper set to %s"
-msgstr "Gatekeeper là %s"
+#: src/gatekeeper.cpp:159
+msgid "Invalid gatekeeper ID"
+msgstr "ID Gatekeeper không hợp lệ"
 
-#: src/gatekeeper.cpp:156
-#, c-format
-msgid "Error while registering with Gatekeeper at %s."
-msgstr "Lỗi đăng ký với Gatekeeper tại %s."
-
-#: src/gatekeeper.cpp:195
+#: src/gatekeeper.cpp:159
 msgid ""
 "Please provide a valid ID for the gatekeeper.\n"
 "Disabling registering."
@@ -1455,291 +1582,492 @@ msgstr ""
 "Vui lòng cung cấp ID hợp lệ cho gatekeeper.\n"
 "Tắt đăng ký."
 
-#: src/gatekeeper.cpp:225
-msgid "Error while registering with Gatekeeper."
+#: src/gatekeeper.cpp:206
+msgid ""
+"Another user already exists with the same alias, please use another alias."
+msgstr ""
+
+#: src/gatekeeper.cpp:209
+msgid ""
+"You are not allowed to register to the gatekeeper. Please check your login, "
+"password and firewall."
+msgstr ""
+
+#: src/gatekeeper.cpp:212
+msgid "There was a transport error."
+msgstr ""
+
+#: src/gatekeeper.cpp:215 src/gatekeeper.cpp:220
+msgid "No gatekeeper corresponding to your options has been found."
+msgstr ""
+
+#: src/gatekeeper.cpp:222
+msgid "Error while registering with gatekeeper"
 msgstr "Lỗi đăng ký với gatekeeper."
 
-#: src/gatekeeper.cpp:271
-msgid "No gatekeeper found"
-msgstr "Không tìm thấy gatekeeper"
+#: src/gatekeeper.cpp:240
+#, c-format
+msgid "Gatekeeper set to %s"
+msgstr "Gatekeeper là %s"
 
-#: src/gnomemeeting.cpp:111
+#: src/gnomemeeting.cpp:86
+msgid "Notification area not detected"
+msgstr ""
+
+#: src/gnomemeeting.cpp:86
+msgid ""
+"You have chosen to start GnomeMeeting hidden, however the notification area "
+"is not present in your panel, GnomeMeeting can thus not start hidden."
+msgstr ""
+
+#: src/gnomemeeting.cpp:193
 msgid "Answering incoming call"
 msgstr "Đang trả lời cuộc gọi"
 
-#: src/gnomemeeting.cpp:195 src/toolbar.cpp:131
+#: src/gnomemeeting.cpp:264
 msgid "Trying to stop calling"
 msgstr "Đang thử ngừng cuộc gọi"
 
-#: src/gnomemeeting.cpp:208
+#: src/gnomemeeting.cpp:277
 msgid "Stopping current call"
 msgstr "Đang chấm dứt cuộc gọi hiện thời"
 
-#: src/gnomemeeting.cpp:220
+#: src/gnomemeeting.cpp:289
 msgid "Refusing Incoming call"
 msgstr "Đang từ chối cuộc gọi đến"
 
-#: src/ils.cpp:123
+#. no error if Picture is choosen as video device
+#: src/gnomemeeting.cpp:320 src/videograbber.cpp:366 src/videograbber.cpp:683
+msgid "Picture"
+msgstr "Ảnh"
+
+#: src/gnomemeeting.cpp:428
+msgid "Error while starting the listener"
+msgstr "Lỗi khởi động bộ lắng nghe"
+
+#: src/gnomemeeting.cpp:428
+msgid ""
+"You will not be able to receive incoming calls. Please check that no other "
+"program is already running on the port used by GnomeMeeting."
+msgstr ""
+
+#. GM is started
+#: src/gnomemeeting.cpp:505
 #, c-format
-msgid "Parse error: %d %s."
-msgstr "Lỗi phân tích: %d %s."
+msgid "Started GnomeMeeting V%d.%d for %s\n"
+msgstr "Đã khởi động GnomeMeeting V%d.%d cho %s\n"
+
+#: src/ils.cpp:119
+msgid "Parse error"
+msgstr "Lỗi phân tích"
+
+#: src/ils.cpp:119
+#, c-format
+msgid ""
+"There was an error while processing the registering to the user directory: %"
+"d %s."
+msgstr ""
 
 #. No need to display that for unregistering
-#: src/ils.cpp:248
+#: src/ils.cpp:233
+msgid "Invalid parameters"
+msgstr "Tham số không hợp lệ"
+
+#: src/ils.cpp:233
 msgid ""
-"Please provide your first name, last name, and e-mail in the Personal Data "
-"section in order to be able to register to the XDAP server."
-msgstr "Vui lòng cung cấp tên họ, email trong phần Dữ liệu Cá nhân để có thể đăng ký với XDAP server."
+"Please provide your first name and e-mail in the Personal Data section in "
+"order to be able to register to the user directory."
+msgstr "Vui lòng cung cấp tên họ, email trong phần Dữ liệu Cá nhân để có thể đăng ký với thư mục người dùng."
 
-#: src/ils.cpp:280
-msgid "Operation impossible since there is no XDAP server specified."
-msgstr "Thao tác không thể thực hiện vì chưa xác định LDAP server."
+#: src/ils.cpp:268
+msgid "Invalid user directory"
+msgstr "Thư mục người dùng không hợp lệ"
 
-#: src/ils.cpp:346 src/ils.cpp:900
+#: src/ils.cpp:268
+msgid "Operation impossible since there is no user directory specified."
+msgstr "Thao tác không thể thực hiện vì chưa xác định thư mục người dùng."
+
+#: src/ils.cpp:334 src/ils.cpp:921
 #, c-format
 msgid "Contacting %s..."
 msgstr "Đang kết nối %s..."
 
-#: src/ils.cpp:360
-msgid "Failed to parse XML file."
-msgstr "Lỗi phân tích tập tin XML."
+#: src/ils.cpp:347
+msgid "Failed to parse XML file"
+msgstr "Lỗi phân tích tập tin XML"
 
-#: src/ils.cpp:372
+#: src/ils.cpp:347
+msgid ""
+"There was an error while parsing the XML file. Please make sure that it is "
+"correctly installed in your system."
+msgstr ""
+
+#: src/ils.cpp:358
+msgid "Bad information"
+msgstr "Thông tin cá nhân sai"
+
+#: src/ils.cpp:358
 #, c-format
 msgid "Bad ldap information from XML file: %s."
 msgstr "Thông tin LDAP sai trong tập tin XML: %s."
 
-#: src/ils.cpp:383 src/ils.cpp:942
+#: src/ils.cpp:367 src/ils.cpp:377 src/ils.cpp:386
+msgid "Cannot contact the user directory"
+msgstr "Không thể liên hệ thư mục người dùng"
+
+#: src/ils.cpp:367
 #, c-format
-msgid "Failed to open ldap server %s:%d."
-msgstr "Lỗi mở LDAP server %s: %d."
+msgid "Failed to contact the user directory %s:%d."
+msgstr "Lỗi liên hệ thư mục người dùng %s: %d."
 
-#: src/ils.cpp:395 src/ils.cpp:955
-msgid "Failed to set time limit on ldap operations."
-msgstr "Lỗi đặt giới hạn thời gian cho thao tác LDAP."
+#: src/ils.cpp:377
+msgid "Failed to set a time limit on operations."
+msgstr "Lỗi đặt giới hạn thời gian cho thao tác."
 
-#: src/ils.cpp:405
-#, c-format
-msgid "Failed to bind to ldap server: %s."
-msgstr "Lỗi bind to LDAP server: %s."
+#: src/ils.cpp:386
+#, c-format, fuzzy
+msgid "Failed to bind to user directory: %s."
+msgstr "Lỗi bind to user directory: %s."
 
-#: src/ils.cpp:436
+#: src/ils.cpp:417
 #, c-format
 msgid "Successfully registered to %s."
 msgstr "Đã đăng ký thành công vào %s."
 
-#: src/ils.cpp:467
+#: src/ils.cpp:453
 #, c-format
 msgid "Updated information on %s."
 msgstr "Đã cập nhật thông tin trên %s."
 
-#: src/ils.cpp:477
+#: src/ils.cpp:463
 #, c-format
 msgid "Successfully unregistered from %s."
 msgstr "Đã hủy đăng ký thành công từ %s."
 
-#: src/ils.cpp:501
+#: src/ils.cpp:495
 #, c-format
 msgid "Error while registering to %s."
 msgstr "Lỗi đăng ký với %s."
 
-#: src/ils.cpp:504
+#: src/ils.cpp:498
 #, c-format
 msgid "Error while unregistering from %s."
 msgstr "Lỗi hủy đăng ký từ %s."
 
-#: src/ils.cpp:966
+#: src/ils.cpp:929
 #, c-format
-msgid "Failed to bind to ldap server %s: %s."
+msgid "Failed to contact LDAP server %s:%d."
+msgstr "Lỗi liên hệ server LDAP %s: %d."
+
+#: src/ils.cpp:942
+msgid "Failed to set time limit on LDAP operations."
+msgstr "Lỗi đặt giới hạn thời gian cho thao tác LDAP."
+
+#: src/ils.cpp:952
+#, fuzzy, c-format
+msgid "Failed to contact to LDAP server %s: %s."
 msgstr "Lỗi bind to LDAP server %s: %s."
 
-#: src/ils.cpp:976
+#: src/ils.cpp:962
 #, c-format
-msgid "Fetching user information from %s."
-msgstr "Đang lấy thông tin người dùng từ %s."
+msgid "Fetching online users list from %s."
+msgstr "Đang lấy danh sách người dùng trực tuyến từ %s."
 
-#: src/ils.cpp:1239
+#: src/ils.cpp:981
+#, c-format
+msgid "Connection to %s lost..."
+msgstr "Kết nối đến %s bị mất..."
+
+#: src/ils.cpp:984
+msgid "Could not fetch online users list."
+msgstr "Không thể lấy danh sách người dùng trực tuyến."
+
+#: src/ils.cpp:1210
 #, c-format
 msgid "Search completed: %d user(s) listed on a total of %d user(s) from %s."
 msgstr "Tìm xong: tìm thấy %d người dùng trên tổng số %d người dùng từ %s."
 
-#: src/ils.cpp:1244
+#: src/ils.cpp:1215
 #, c-format
 msgid "Search completed: %d user(s) found on %s."
 msgstr "Tìm xong: tìm thấy %d người dùng trên %s."
 
-#: src/ils.cpp:1262
-#, c-format
-msgid "Failed to contact %s."
-msgstr "Lỗi liên lạc với %s."
-
-#. Create the dialog to easily modify the info of a specific contact
-#: src/ldap_window.cpp:403
-msgid "Edit the contact information"
-msgstr "Sửa thông tin liên lạc"
-
-#: src/ldap_window.cpp:412
+#: src/ldap_window.cpp:725
 msgid "Name:"
 msgstr "Tên:"
 
-#: src/ldap_window.cpp:425
-msgid "callto URL:"
-msgstr "callto URL:"
+#: src/ldap_window.cpp:745
+msgid "URL:"
+msgstr "URL:"
 
-#: src/ldap_window.cpp:575
+#: src/ldap_window.cpp:772
+msgid "Speed Dial:"
+msgstr ""
+
+#: src/ldap_window.cpp:796
+msgid "Groups:"
+msgstr "Nhóm:"
+
+#: src/ldap_window.cpp:912
+msgid "Invalid user name or URL"
+msgstr ""
+
+#: src/ldap_window.cpp:912
+msgid ""
+"Please provide a valid name and URL for the contact you want to add to the "
+"address book."
+msgstr ""
+
+#: src/ldap_window.cpp:920
+msgid "Invalid group"
+msgstr ""
+
+#: src/ldap_window.cpp:920
+msgid "You have to select a group to which you want to add your contact."
+msgstr ""
+
+#: src/ldap_window.cpp:934
+msgid "Invalid speed dial"
+msgstr ""
+
+#: src/ldap_window.cpp:934
+msgid ""
+"Another contact with the same speed dial already exists in the address book."
+msgstr ""
+
+#: src/ldap_window.cpp:946
+msgid "Invalid URL"
+msgstr "URL không hợp lệ"
+
+#: src/ldap_window.cpp:946
+msgid "Another contact with the same URL already exists in the address book."
+msgstr ""
+
+#: src/ldap_window.cpp:1073
+#, c-format
+msgid "Add %s to Address Book"
+msgstr "Thêm %s vào Sổ địa chỉ"
+
+#: src/ldap_window.cpp:1093 src/ldap_window.cpp:2258
+msgid "C_all Contact"
+msgstr "Liên lạc _Gọi"
+
+#: src/ldap_window.cpp:1098 src/ldap_window.cpp:2262
+msgid "_Tranfer Call to Contact"
+msgstr ""
+
+#: src/ldap_window.cpp:1109 src/ldap_window.cpp:2280
+msgid "Contact _Properties"
+msgstr ""
+
+#: src/ldap_window.cpp:1115 src/ldap_window.cpp:2244
+msgid "_Delete"
+msgstr "_Xóa"
+
+#: src/ldap_window.cpp:1220
 msgid "Add a new server"
 msgstr "Thêm server mới"
 
-#: src/ldap_window.cpp:576
+#: src/ldap_window.cpp:1221
 msgid "Enter the server name:"
 msgstr "Nhập tên server:"
 
-#: src/ldap_window.cpp:581
+#: src/ldap_window.cpp:1222
+msgid ""
+"Sorry but there is already a server with the same name in the address book."
+msgstr ""
+
+#: src/ldap_window.cpp:1227
 msgid "Add a new group"
 msgstr "Thêm Nhóm mới"
 
-#: src/ldap_window.cpp:582
+#: src/ldap_window.cpp:1228
 msgid "Enter the group name:"
 msgstr "Nhập tên nhóm:"
 
-#: src/ldap_window.cpp:1187
+#: src/ldap_window.cpp:1229
+msgid ""
+"Sorry but there is already a group with the same name in the address book."
+msgstr ""
+
+#: src/ldap_window.cpp:1264
+msgid "Invalid server or group name"
+msgstr "Tên nhóm hoặc tên server không hợp lệ"
+
+#: src/ldap_window.cpp:1350
+#, c-format
+msgid "Are you sure you want to delete server %s?"
+msgstr ""
+
+#: src/ldap_window.cpp:1356
+#, c-format
+msgid "Are you sure you want to delete group %s and all its contacts?"
+msgstr ""
+
+#: src/ldap_window.cpp:1539
 msgid "New server"
 msgstr "Server mới"
 
-#: src/ldap_window.cpp:1196
+#: src/ldap_window.cpp:1548
 msgid "New group"
 msgstr "Nhóm mới"
 
-#: src/ldap_window.cpp:1205
-msgid "_Refresh"
-msgstr "_Cập nhật"
+#: src/ldap_window.cpp:1557
+msgid "_Find"
+msgstr "_Tìm"
 
-#: src/ldap_window.cpp:1210 src/ldap_window.cpp:1224
+#: src/ldap_window.cpp:1562 src/ldap_window.cpp:1576
 msgid "Delete"
 msgstr "Xóa"
 
-#: src/ldap_window.cpp:1219
+#: src/ldap_window.cpp:1571
 msgid "New contact"
 msgstr "Liên lạc mới"
 
-#: src/ldap_window.cpp:1334
-msgid "Call this user"
-msgstr "Gọi người dùng này"
-
-#: src/ldap_window.cpp:1344
-msgid "Edit this user information"
-msgstr "Sửa thông tin người dùng này"
-
-#: src/ldap_window.cpp:1351
-msgid "Delete this user"
-msgstr "Xóa người dùng này"
-
-#: src/ldap_window.cpp:1362
-msgid "Add to group"
-msgstr "Thêm vào nhóm"
-
-#: src/ldap_window.cpp:1461
-msgid "GnomeMeeting Addressbook"
+#: src/ldap_window.cpp:2212
+msgid "GnomeMeeting Address Book"
 msgstr "Sổ địa chỉ GnomeMeeting"
 
-#: src/ldap_window.cpp:1491
-msgid "Contacts"
-msgstr "Liên lạc"
+#: src/ldap_window.cpp:2230
+msgid "_File"
+msgstr "_Tập tin"
 
-#: src/ldap_window.cpp:1510
-msgid "Servers"
-msgstr "Server"
+#: src/ldap_window.cpp:2232
+msgid "New _Server"
+msgstr "Server mớ_i"
 
-#: src/ldap_window.cpp:1540
-msgid "Groups"
-msgstr "Nhóm"
+#: src/ldap_window.cpp:2237
+msgid "New _Group"
+msgstr "Nhóm mớ_i"
+
+#: src/ldap_window.cpp:2250
+msgid "_Close"
+msgstr "Đón_g"
+
+#: src/ldap_window.cpp:2256
+msgid "C_ontact"
+msgstr "_Liên lạc"
+
+#: src/ldap_window.cpp:2268
+msgid "New _Contact"
+msgstr "Liên lạc mớ_i"
+
+#: src/ldap_window.cpp:2273
+msgid "Add Contact to _Address Book"
+msgstr ""
 
 #. Translators: This is "S" as in "Status"
-#: src/ldap_window.cpp:1682
+#: src/ldap_window.cpp:2530
 msgid "S"
 msgstr "S"
 
 #. Translators: This is "A" as in "Audio"
-#: src/ldap_window.cpp:1692 src/pref_window.cpp:1206
+#: src/ldap_window.cpp:2540 src/pref_window.cpp:1218
 msgid "A"
 msgstr "A"
 
 #. Translators: This is "V" as in "Video"
-#: src/ldap_window.cpp:1702
+#: src/ldap_window.cpp:2550
 msgid "V"
 msgstr "V"
 
-#: src/ldap_window.cpp:1711 src/ldap_window.cpp:1784 src/pref_window.cpp:1220
+#: src/ldap_window.cpp:2559 src/ldap_window.cpp:2633 src/pref_window.cpp:1232
 msgid "Name"
 msgstr "Tên"
 
-#: src/ldap_window.cpp:1746
-msgid "Callto"
-msgstr "Callto"
+#: src/ldap_window.cpp:2597 src/ldap_window.cpp:2645 src/tools.cpp:248
+msgid "URL"
+msgstr "URL"
 
-#: src/ldap_window.cpp:1769
+#: src/ldap_window.cpp:2620
 msgid "IP"
 msgstr "IP"
 
-#: src/ldap_window.cpp:1831
+#: src/ldap_window.cpp:2658
+msgid "Speed Dial"
+msgstr ""
+
+#: src/ldap_window.cpp:2711
+msgid "Find all contacts"
+msgstr "Tìm mọi liên lạc"
+
+#: src/ldap_window.cpp:2716
 msgid "First name contains"
 msgstr "Tên chứa"
 
-#: src/ldap_window.cpp:1835
+#: src/ldap_window.cpp:2720
 msgid "Last name contains"
 msgstr "Họ chứa"
 
-#: src/ldap_window.cpp:1839
+#: src/ldap_window.cpp:2724
 msgid "E-mail contains"
 msgstr "E-mail chứa"
 
-#: src/lid.cpp:104
+#: src/ldap_window.cpp:2909
+msgid "Servers"
+msgstr "Server"
+
+#: src/ldap_window.cpp:2955
+msgid "Groups"
+msgstr "Nhóm"
+
+#: src/lid.cpp:132
 #, c-format
 msgid "Using Quicknet device %s"
 msgstr "Dùng thiết bị Quicknet %s"
 
-#: src/lid.cpp:144
+#: src/lid.cpp:174
 msgid "Error while opening the Quicknet device."
 msgstr "Lỗi mở thiết bị Quicknet."
 
-#: src/lid.cpp:256 src/lid.cpp:257
+#: src/lid.cpp:174
+msgid ""
+"Please check that your driver is correctly installed and that the device is "
+"working correctly."
+msgstr ""
+
+#: src/lid.cpp:279 src/lid.cpp:280
 msgid "Phone is off hook"
 msgstr ""
 
-#: src/lid.cpp:285 src/lid.cpp:286
+#: src/lid.cpp:309 src/lid.cpp:310
 msgid "Phone is on hook"
 msgstr ""
 
-#: src/main_window.cpp:272
+#: src/main_window.cpp:255
 #, c-format
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 
-#: src/main_window.cpp:300
+#: src/main_window.cpp:292
 #, c-format
 msgid ""
-"Lost packets: %d\n"
-"Late packets: %d\n"
+"Lost packets: %.1f %%\n"
+"Late packets: %.1f %%\n"
 "Round-trip delay: %d ms\n"
 "Jitter buffer: %d ms"
 msgstr ""
-"Số gói mất: %d\n"
-"Số gói trễ: %d\n"
+"Số gói mất: %.1f %%\n"
+"Số gói trễ: %.1f %%\n"
 "Round-trip delay: %d ms\n"
 "Vùng đệm Jitter: %d ms"
 
-#: src/main_window.cpp:495
+#: src/main_window.cpp:486
 #, c-format
-msgid "Total: %.2f Mb"
-msgstr "Tổng cộng: %.2f Mb"
+msgid "Total: %.2f MB"
+msgstr "Tổng cộng: %.2f MB"
 
-#: src/main_window.cpp:614
+#: src/main_window.cpp:605
+msgid "Cannot run GnomeMeeting"
+msgstr "Không thể chạy GnomeMeeting"
+
+#: src/main_window.cpp:605
 msgid ""
 "GnomeMeeting is already running, if you want it to call a given callto URL, "
-"please use \"gnomemeeting -c URL.\""
+"please use \"gnomemeeting -c URL\"."
 msgstr ""
 
-#: src/main_window.cpp:666
+#: src/main_window.cpp:657
 msgid ""
 "It appears that you do not have gnomemeeting.server installed in a valid "
 "location. Factory mode disabled.\n"
@@ -1747,43 +2075,92 @@ msgstr ""
 "Có lẽ bạn chưa cài đặt gnomemeeting.server vào vị trí thích hợp. Tắt chế độ "
 "Factory.\n"
 
-#: src/main_window.cpp:670
+#: src/main_window.cpp:661
 msgid ""
 "Error registering GnomeMeeting with the activation service; factory mode "
 "disabled.\n"
 msgstr "Lỗi đăng ký GnomeMeeting với dịch vụ kích hoạt; tắt chế độ Factory.\n"
 
-#: src/main_window.cpp:710
+#: src/main_window.cpp:701
 msgid "Failed to retrieve gnomemeeting server from activation server\n"
 msgstr "Lỗi nhận server GnomeMeeting từ server kích hoạt\n"
 
-#: src/main_window.cpp:1064
+#: src/main_window.cpp:1196 src/menu.cpp:566 src/menu.cpp:815
+msgid "Local Video"
+msgstr "Video cục bộ"
+
+#: src/main_window.cpp:1202 src/menu.cpp:572 src/menu.cpp:820
+msgid "Remote Video"
+msgstr "Video từ xa"
+
+#: src/main_window.cpp:1369 src/menu.cpp:526
+msgid "Statistics"
+msgstr "Thống kê"
+
+#: src/main_window.cpp:1430
+msgid "Dialpad"
+msgstr ""
+
+#: src/main_window.cpp:1484
+msgid "Adjust brightness"
+msgstr "Chỉnh độ sáng"
+
+#: src/main_window.cpp:1506
+msgid "Adjust whiteness"
+msgstr "Chỉng màu trắng"
+
+#: src/main_window.cpp:1528
+msgid "Adjust color"
+msgstr "Chỉnh màu"
+
+#: src/main_window.cpp:1550
+msgid "Adjust contrast"
+msgstr "Chỉnh độ tương phản"
+
+#: src/main_window.cpp:1558
+msgid "Video"
+msgstr "Hình ảnh"
+
+#: src/main_window.cpp:1638
+msgid "Audio"
+msgstr "Âm thanh"
+
+#: src/main_window.cpp:1680
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "In thông tin debug ra console (cấp độ giữa 1 và 6)"
 
-#: src/main_window.cpp:1067
-msgid "Makes GnomeMeeting call the given callto:// URL"
-msgstr "Tạo cuộc gọi GnomeMeeting theo địa chỉ callto://"
+#: src/main_window.cpp:1683
+msgid "Makes GnomeMeeting call the given URL"
+msgstr "Tạo cuộc gọi GnomeMeeting theo URL cho trước"
 
-#. We can't use gnomemeeting_error_dialog here, cause we need the
-#. dialog_run and dialog_run can't be used in gnomemeeting_error_dialog
-#. because it doesn't work in threads
-#: src/main_window.cpp:1123
-#, c-format
+#: src/main_window.cpp:1729
+msgid "No usable audio devices detected"
+msgstr "Không tìm ra thiết bị âm hữu dụng"
+
+#: src/main_window.cpp:1729
 msgid ""
-"GnomeMeeting got %d for the GConf key \"/apps/gnomemeeting/gconf_test_age\", "
-"but %d was expected.\n"
+"GnomeMeeting didn't find any usable sound devices. You need to install and "
+"setup a soundcard or a Quicknet card in order to be able to use "
+"GnomeMeeting. Please check your driver settings and permissions."
+msgstr ""
+
+#: src/main_window.cpp:1749
+msgid "Gconf key error"
+msgstr "Lỗi khóa GConf"
+
+#: src/main_window.cpp:1749
+#, fuzzy
+msgid ""
+"GnomeMeeting got an invalid value for the GConf key \"/apps/gnomemeeting/"
+"gconf_test_age\".\n"
 "\n"
-"That key represents the revision of GnomeMeeting setting. If it doesn't "
-"correspond to the expected value, it means that your GConf schemas have not "
-"been correctly installed or the that permissions are not correct.\n"
+"It probably means that your GConf schemas have not been correctly installed "
+"or the that permissions are not correct.\n"
 "\n"
 "Please check the FAQ (http://www.gnomemeeting.org/faq.php), the "
 "throubleshoot section of the GConf site (http://www.gnome.org/projects/"
 "gconf/) or the mailing list archives for more information (http://mail.gnome."
-"org).\n"
-"\n"
-"Using 'gnomemeeting-config-tool' could help you to fix this problem."
+"org) about this problem."
 msgstr ""
 "GnomeMeeting đã lấy được %d cho khóa GConf \"/apps/gnomemeeting/"
 "gconf_test_age\", nhưng lẽ ra phải là %d.\n"
@@ -1797,354 +2174,289 @@ msgstr ""
 "\n"
 "Dùng 'gnomemeeting-config-tool' có thể giúp bạn khắc phục vấn đề này."
 
-#. We can't use gnomemeeting_error_dialog here, cause we need the
-#. dialog_run and dialog_run can't be used in gnomemeeting_error_dialog
-#. because it doesn't work in threads
-#: src/main_window.cpp:1156
-msgid ""
-"GnomeMeeting can't be used without audio devices. Please install a soundcard "
-"or a Quicknet card."
-msgstr "GnomeMeeting không thể dùng thiết bị âm này. Vui lòng cài đặt soundcard hoặc card Quicknet."
-
-#: src/main_window.cpp:1226
-msgid ""
-"GnomeMeeting just installed an URL handler for callto:// URLs. callto URLs "
-"are an easy way to call people on the internet using GnomeMeeting. They are "
-"now available to all GNOME programs able to cope with URLs. You can for "
-"example create an URL launcher on the GNOME panel of the form \"callto://ils."
-"seconix.com/me@foo.com\" to call the person registered on the ILS server ils."
-"seconix.com with the me@foo.com e-mail address."
-msgstr "GnomeMeeting chỉ cài đặt bộ xử lý URL cho các URL callto://. Các URL callto là cách dễ dàng để nói chuyện với người khác trên internet dùng GnomeMeeting. Chúng có thể dùng trong mọi chương trình Gnome có thể xử lý URL. Bạn có thể tạo bộ phóng URL trong Gnome Panel theo mẫu \"callto://ils.seconix.com/me@foo.com\" để gọi người được đăng ký tại ILS server ils.seconix.com với địa chỉ email me@foo.com."
-
-#: src/main_window.cpp:1317
-msgid ""
-"Could not start the listener thread. You will not be able to receive "
-"incoming calls."
-msgstr ""
-"Không thể khởi động listener thread. Bạn sẽ không thể nhận cuộc gọi tới."
-
-#: src/main_window.cpp:1540 src/menu.cpp:533 src/menu.cpp:774
-msgid "Local Video"
-msgstr "Video cục bộ"
-
-#: src/main_window.cpp:1546 src/menu.cpp:539 src/menu.cpp:779
-msgid "Remote Video"
-msgstr "Video từ xa"
-
-#: src/main_window.cpp:1675
-msgid ""
-"Lost packets:\n"
-"Late packets:\n"
-"Round-trip delay:\n"
-"Jitter buffer:"
-msgstr ""
-"Số gói mất:\n"
-"Số gói trễ:\n"
-"Round-trip delay:\n"
-"Vùng đệm Jitter:"
-
-#: src/main_window.cpp:1679 src/menu.cpp:500
-msgid "Statistics"
-msgstr "Thống kê"
-
-#: src/main_window.cpp:1745
-msgid "Dialpad"
-msgstr ""
-
-#: src/main_window.cpp:1804
-msgid "Adjust brightness"
-msgstr "Chỉnh độ sáng"
-
-#: src/main_window.cpp:1830
-msgid "Adjust whiteness"
-msgstr "Chỉng màu trắng"
-
-#: src/main_window.cpp:1856
-msgid "Adjust color"
-msgstr "Chỉnh màu"
-
-#: src/main_window.cpp:1882
-msgid "Adjust contrast"
-msgstr "Chỉnh độ tương phản"
-
-#: src/main_window.cpp:1890
-msgid "Video"
-msgstr "Hình ảnh"
-
-#: src/main_window.cpp:1976
-msgid "Audio"
-msgstr "Âm thanh"
-
-#: src/menu.cpp:425
+#: src/menu.cpp:432
 msgid "C_all"
 msgstr "Gọ_i"
 
-#: src/menu.cpp:427 src/menu.cpp:857
-msgid "_Connect"
+#: src/menu.cpp:434
+msgid "C_onnect"
 msgstr "_Kết nối"
 
-#: src/menu.cpp:427 src/menu.cpp:857
+#: src/menu.cpp:434 src/menu.cpp:894
 msgid "Create a new connection"
 msgstr "Tạo kết nối mới"
 
-#: src/menu.cpp:432 src/menu.cpp:862
+#: src/menu.cpp:439 src/menu.cpp:899
 msgid "_Disconnect"
 msgstr "_Ngắt kết nối"
 
-#: src/menu.cpp:432 src/menu.cpp:862
+#: src/menu.cpp:439 src/menu.cpp:899
 msgid "Close the current connection"
 msgstr "Đóng kết nối hiện thời"
 
-#: src/menu.cpp:439 src/menu.cpp:869
+#: src/menu.cpp:446 src/menu.cpp:906
 msgid "Do _Not Disturb"
 msgstr "Đừng làm _phiền"
 
-#: src/menu.cpp:444 src/menu.cpp:874
+#: src/menu.cpp:451 src/menu.cpp:911
 msgid "Aut_o Answer"
 msgstr "Tự động trả _lời"
 
-#: src/menu.cpp:444
+#: src/menu.cpp:451
 msgid "Auto answer incoming call"
 msgstr "Tự động trả lời cuộc gọi"
 
-#: src/menu.cpp:451
-msgid "_Audio Mute"
-msgstr "_Câm"
-
-#: src/menu.cpp:451
-msgid "Mute the audio transmission"
-msgstr "Ngưng truyền âm"
-
-#: src/menu.cpp:456
-msgid "_Video Mute"
-msgstr "_Không hình"
-
-#: src/menu.cpp:456
-msgid "Mute the video transmission"
-msgstr "Ngưng truyền ảnh"
+#: src/menu.cpp:458
+msgid "Hold the current call"
+msgstr "Giữ cuộc gọi hiện thời"
 
 #: src/menu.cpp:463
+msgid "Transfer the current call"
+msgstr "Truyền cuộc gọi hiện thời"
+
+#: src/menu.cpp:470
+msgid "Suspend or resume the audio transmission"
+msgstr "Ngưng hoặc tiếp tục truyền âm"
+
+#: src/menu.cpp:475
+msgid "Suspend or resume the video transmission"
+msgstr "Ngưng hoặc tiếp tục truyền ảnh"
+
+#: src/menu.cpp:482
 msgid "_Save Current Picture"
 msgstr "_Lưu ảnh hiện thời"
 
-#: src/menu.cpp:463
+#: src/menu.cpp:482
 msgid "Save a snapshot of the current video"
 msgstr "Lưu snapshot của hình hiện thời"
 
-#: src/menu.cpp:469 src/menu.cpp:907
+#: src/menu.cpp:488 src/menu.cpp:951
 msgid "_Quit"
 msgstr "T_hoát"
 
-#: src/menu.cpp:469 src/menu.cpp:907
+#: src/menu.cpp:488 src/menu.cpp:951
 msgid "Quit GnomeMeeting"
 msgstr "Thoát khỏi GnomeMeeting"
 
-#: src/menu.cpp:472
+#: src/menu.cpp:491
 msgid "_Edit"
 msgstr "_Hiệu chỉnh"
 
-#: src/menu.cpp:474
+#: src/menu.cpp:494 src/menu.cpp:499
 msgid "Configuration Druid"
 msgstr "Druid Cấu hình"
 
-#: src/menu.cpp:474
-msgid "Rerun the configuration druid"
-msgstr "Chạy lại Druid Cấu hình"
+#: src/menu.cpp:494 src/menu.cpp:499
+msgid "Run the configuration druid"
+msgstr "Chạy Druid Cấu hình"
 
-#: src/menu.cpp:481 src/menu.cpp:888
+#: src/menu.cpp:506 src/menu.cpp:932
 msgid "_Preferences..."
 msgstr "_Thông số..."
 
-#: src/menu.cpp:481 src/menu.cpp:888
+#: src/menu.cpp:506 src/menu.cpp:932
 msgid "Change your preferences"
 msgstr "Thay đổi cấu hình của bạn"
 
-#: src/menu.cpp:486
+#: src/menu.cpp:511
 msgid "_View"
 msgstr "_Xem"
 
-#: src/menu.cpp:488
+#. Text Chat
+#: src/menu.cpp:513 src/pref_window.cpp:827
 msgid "Text Chat"
 msgstr "Tán gẫu viết"
 
-#: src/menu.cpp:488
+#: src/menu.cpp:513
 msgid "View/Hide the text chat window"
 msgstr "Hiện/Ẩn cửa sổ Tán gẫu viết"
 
-#: src/menu.cpp:493
+#: src/menu.cpp:518
 msgid "Status Bar"
 msgstr "Thanh trạng thái"
 
-#: src/menu.cpp:493
+#: src/menu.cpp:518
 msgid "View/Hide the status bar"
 msgstr "Hiện/Ẩn thanh trạng thái"
 
-#: src/menu.cpp:498
+#: src/menu.cpp:524
 msgid "Control Panel"
 msgstr "Khung điều khiển"
 
-#: src/menu.cpp:501
+#: src/menu.cpp:527
 msgid "View audio/video transmission and reception statistics"
 msgstr "Xem thống kê gửi và nhận Audio/Video"
 
-#: src/menu.cpp:507
+#: src/menu.cpp:533
 msgid "_Dialpad"
 msgstr ""
 
-#: src/menu.cpp:507
+#: src/menu.cpp:533
 msgid "View the dialpad"
 msgstr "Xem dialpad"
 
-#: src/menu.cpp:513
+#: src/menu.cpp:539
 msgid "_Audio Settings"
 msgstr "Thiết lập â_m thanh"
 
-#: src/menu.cpp:513
+#: src/menu.cpp:539
 msgid "View audio settings"
 msgstr "Xem thiết lập âm thanh"
 
-#: src/menu.cpp:519
+#: src/menu.cpp:545
 msgid "_Video Settings"
 msgstr "Thiết lập _hình"
 
-#: src/menu.cpp:519
+#: src/menu.cpp:545
 msgid "View video settings"
 msgstr "Xem thiết lập hình"
 
-#: src/menu.cpp:525 src/pref_window.cpp:1000
+#: src/menu.cpp:551 src/pref_window.cpp:1039
 msgid "Off"
 msgstr "Tắt"
 
-#: src/menu.cpp:525
+#: src/menu.cpp:551
 msgid "Hide the control panel"
 msgstr "Ẩn khung điểu khiển"
 
-#: src/menu.cpp:533
+#: src/menu.cpp:559
+msgid "_Clear text chat"
+msgstr ""
+
+#: src/menu.cpp:559
+msgid "Clear the text chat"
+msgstr "Xóa Tán gẫu viết"
+
+#: src/menu.cpp:566
 msgid "Local video image"
 msgstr "Ảnh video cục bộ"
 
-#: src/menu.cpp:539
+#: src/menu.cpp:572
 msgid "Remote video image"
 msgstr "Ảnh video từ xa"
 
-#: src/menu.cpp:545 src/menu.cpp:784
+#: src/menu.cpp:578 src/menu.cpp:825
 msgid "Both (Local Video Incrusted)"
 msgstr "Cả hai (Local Video Incrusted)"
 
-#: src/menu.cpp:545 src/menu.cpp:551 src/menu.cpp:558
+#: src/menu.cpp:578 src/menu.cpp:584 src/menu.cpp:591
 msgid "Both video images"
 msgstr "Cả ảnh video"
 
-#: src/menu.cpp:551 src/menu.cpp:789
+#: src/menu.cpp:584 src/menu.cpp:830
 msgid "Both (Local Video in New Window)"
 msgstr "Cả hai (Video cục bộ trong cửa sổ mới)"
 
-#: src/menu.cpp:557
+#: src/menu.cpp:590
 msgid "Both (Both in New Windows)"
 msgstr "Cả hai (Cả hai trong cửa sổ mới)"
 
-#: src/menu.cpp:566 src/menu.cpp:802
+#: src/menu.cpp:599 src/menu.cpp:843
 msgid "Zoom In"
 msgstr "Phóng to"
 
-#: src/menu.cpp:566
+#: src/menu.cpp:599
 msgid "Zoom in"
 msgstr "Phóng to"
 
-#: src/menu.cpp:571 src/menu.cpp:807
+#: src/menu.cpp:604 src/menu.cpp:848
 msgid "Zoom Out"
 msgstr "Thu nhỏ"
 
-#: src/menu.cpp:571
+#: src/menu.cpp:604
 msgid "Zoom out"
 msgstr "Thu nhỏ"
 
-#: src/menu.cpp:576 src/menu.cpp:812
+#: src/menu.cpp:609 src/menu.cpp:853
 msgid "Normal Size"
 msgstr "Cỡ bình thường"
 
-#: src/menu.cpp:576
+#: src/menu.cpp:609
 msgid "Normal size"
 msgstr "Cỡ bình thường"
 
-#: src/menu.cpp:583 src/menu.cpp:819
+#: src/menu.cpp:616 src/menu.cpp:860
 msgid "Fullscreen"
 msgstr "Toàn màn hình:"
 
-#: src/menu.cpp:588
+#: src/menu.cpp:621
 msgid "_Tools"
 msgstr "_Công cụ"
 
-#: src/menu.cpp:590 src/menu.cpp:881
+#: src/menu.cpp:623 src/menu.cpp:918
 msgid "Address _Book"
 msgstr "_Sổ địa chỉ"
 
-#: src/menu.cpp:590 src/menu.cpp:881
+#: src/menu.cpp:623 src/menu.cpp:918
 msgid "Open the address book"
 msgstr "Mở sổ địa chỉ"
 
-#: src/menu.cpp:597
-msgid "Generic History"
+#: src/menu.cpp:630 src/tools.cpp:329
+msgid "General History"
 msgstr "Nhật ký chung"
 
-#: src/menu.cpp:597
+#: src/menu.cpp:630
 msgid "View the operations history"
 msgstr "Xem nhận ký thao tác"
 
-#: src/menu.cpp:602 src/tools.cpp:63 src/tools.cpp:69
+#: src/menu.cpp:635 src/menu.cpp:925 src/tools.cpp:200
 msgid "Calls History"
 msgstr "Nhật ký cuộc gọi"
 
-#: src/menu.cpp:602
+#: src/menu.cpp:635 src/menu.cpp:925
 msgid "View the calls history"
 msgstr "Xem nhật ký cuộc gọi"
 
-#: src/menu.cpp:609
+#: src/menu.cpp:642
 msgid "Consult MicroTelco Account"
 msgstr "Tư vấn MicroTelco Account"
 
-#: src/menu.cpp:609
+#: src/menu.cpp:642
 msgid "View the details of your account"
 msgstr "Xem chi tiết tài khoản"
 
-#: src/menu.cpp:614
+#: src/menu.cpp:647
 msgid "_Help"
 msgstr "Trợ _giúp"
 
-#: src/menu.cpp:617 src/menu.cpp:622 src/menu.cpp:896 src/menu.cpp:901
+#: src/menu.cpp:650 src/menu.cpp:655 src/menu.cpp:940 src/menu.cpp:945
 msgid "_About GnomeMeeting"
 msgstr "Giới thiệu GnomeMeeting"
 
-#: src/menu.cpp:617 src/menu.cpp:622 src/menu.cpp:896 src/menu.cpp:901
+#: src/menu.cpp:650 src/menu.cpp:655 src/menu.cpp:940 src/menu.cpp:945
 msgid "View information about GnomeMeeting"
 msgstr "Xem thông tin về GnomeMeeting"
 
-#: src/menu.cpp:774
+#: src/menu.cpp:815
 msgid "Local Video Image"
 msgstr "Ảnh video cục bộ"
 
-#: src/menu.cpp:779
+#: src/menu.cpp:820
 msgid "Remote Video Image"
 msgstr "Ảnh video từ xa"
 
-#: src/menu.cpp:784 src/menu.cpp:789 src/menu.cpp:795
+#: src/menu.cpp:825 src/menu.cpp:830 src/menu.cpp:836
 msgid "Both Video Images"
 msgstr "Cả ảnh video"
 
-#: src/menu.cpp:794
+#: src/menu.cpp:835
 msgid "Both (Local and Remote Video in New Windows)"
 msgstr "Cả hai (Video cục bộ và từ xa trong cửa sổ mới)"
 
-#: src/menu.cpp:869
+#: src/menu.cpp:894
+msgid "_Connect"
+msgstr "_Kết nối"
+
+#: src/menu.cpp:906
 msgid "Do not disturb (reject incoming calls)"
 msgstr "Đừng làm phiền (từ chối nhận cuộc gọi)"
 
-#: src/misc.cpp:206
+#: src/misc.cpp:175
 #, c-format
 msgid "Error: %s\n"
 msgstr "Lỗi: %s\n"
 
-#: src/misc.cpp:230
+#: src/misc.cpp:219
 #, c-format
 msgid ""
 "Call from %s\n"
@@ -2153,380 +2465,534 @@ msgstr ""
 "Gọi từ %s\n"
 "dùng %s"
 
-#: src/misc.cpp:236
-msgid "Connect"
-msgstr "Kết nối"
+#: src/misc.cpp:227
+msgid "Reject"
+msgstr "Từ chối"
 
-#: src/misc.cpp:238
-msgid "Disconnect"
-msgstr "Ngắt kết nối"
+#: src/misc.cpp:229
+msgid "Accept"
+msgstr "Chấp nhận"
 
-#. The video device
-#: src/pref_window.cpp:151 src/pref_window.cpp:1101 src/videograbber.cpp:479
-#: src/videograbber.cpp:773
-msgid "Picture"
-msgstr ""
-
-#: src/pref_window.cpp:417
+#: src/pref_window.cpp:410
 msgid "Please choose the video image"
 msgstr "Vui lòng chọn ảnh video"
 
-#: src/pref_window.cpp:466
+#: src/pref_window.cpp:444
 msgid "Okay"
 msgstr "Đồng ý"
 
-#: src/pref_window.cpp:472 src/pref_window.cpp:488 src/pref_window.cpp:493
+#: src/pref_window.cpp:449 src/pref_window.cpp:464 src/pref_window.cpp:469
 msgid "Excellent"
 msgstr "Xuất sắc"
 
-#: src/pref_window.cpp:477 src/pref_window.cpp:483 src/pref_window.cpp:498
-#: src/pref_window.cpp:503
+#: src/pref_window.cpp:454 src/pref_window.cpp:459 src/pref_window.cpp:474
+#: src/pref_window.cpp:479
 msgid "Good Quality"
 msgstr "Chất lượng tố"
 
-#: src/pref_window.cpp:508
+#: src/pref_window.cpp:484
 msgid "Excellent Quality"
 msgstr "Chất lượng xuất sắc"
 
-#: src/pref_window.cpp:753
-msgid "First name:"
-msgstr "Tên:"
+#: src/pref_window.cpp:732
+msgid "_First name:"
+msgstr "_Tên:"
 
-#: src/pref_window.cpp:757
-msgid "Surname:"
-msgstr "Họ:"
+#: src/pref_window.cpp:737
+msgid "Sur_name:"
+msgstr "_Họ:"
 
-#: src/pref_window.cpp:759
-msgid "E-mail address:"
-msgstr "Địa chỉ email:"
+#: src/pref_window.cpp:747
+msgid "_Comment:"
+msgstr "_Ghi chú:"
 
-#: src/pref_window.cpp:761
-msgid "Comment:"
-msgstr "Ghi chú:"
+#: src/pref_window.cpp:752
+msgid "_Location:"
+msgstr "_Vị trí:"
 
-#: src/pref_window.cpp:763
-msgid "Location:"
-msgstr "Vị trí:"
+#: src/pref_window.cpp:758 src/pref_window.cpp:993
+msgid "_Apply"
+msgstr "Á_p dụng"
 
-#: src/pref_window.cpp:768
+#: src/pref_window.cpp:758
 msgid ""
 "Click here to update the user directory you are registered to with the new "
 "First Name, Last Name, E-Mail, Comment and Location or to update your alias "
 "on the Gatekeeper."
 msgstr ""
 
-#: src/pref_window.cpp:794
+#: src/pref_window.cpp:782
 msgid "GnomeMeeting GUI"
 msgstr "GnomeMeeting GUI"
 
+#: src/pref_window.cpp:785
+msgid "_Show splash screen"
+msgstr "_Hiện Splash Screen"
+
+#: src/pref_window.cpp:788
+msgid "Start _hidden"
+msgstr "Khởi động ẩ_n"
+
 #. Packing widget
-#: src/pref_window.cpp:802
+#: src/pref_window.cpp:792
 msgid "Behavior"
 msgstr "Hành vi"
 
+#: src/pref_window.cpp:796
+msgid "_Automatically answer calls"
+msgstr "_Tự động trả lời cuộc gọi"
+
+#: src/pref_window.cpp:799
+msgid "Do _not disturb"
+msgstr "Đừn_g làm phiền"
+
+#: src/pref_window.cpp:802
+msgid "Display a po_pup window when receiving a call"
+msgstr "_Hiện cửa sổ khi nhận cuộc gọi"
+
 #. Packing widget
-#: src/pref_window.cpp:815
+#: src/pref_window.cpp:806
 msgid "Video Display"
+msgstr "Hiện hình"
+
+#. Translators: the full sentence is Use a fullscreen size
+#. of X by Y pixels
+#: src/pref_window.cpp:811
+msgid "Use a fullscreen size of"
 msgstr ""
 
-#: src/pref_window.cpp:819
-msgid "Fullscreen width:"
-msgstr "Chiều rộng toàn màn hình:"
-
-#: src/pref_window.cpp:825
-msgid "Fullscreen height:"
-msgstr "Chiều cao toàn màn hình:"
-
-#. Packing widget
-#: src/pref_window.cpp:836
-msgid "Sound"
-msgstr "Âm thanh"
-
-#: src/pref_window.cpp:840
-msgid ""
-"If enabled, GnomeMeeting will play a sound when receiving an incoming call "
-"(the sound to play is chosen in the Gnome Control Center)."
+#: src/pref_window.cpp:813
+msgid "by"
 msgstr ""
-"Nếu bật, GnomeMeeting sẽ phát âm thanh khi nhận cuộc gọi đến (âm thanh phát "
-"ra được chọn trong Trung tâm điều khiển Gnome)."
 
-#: src/pref_window.cpp:853
-msgid "Do not register"
-msgstr "Không đăng ký"
+#: src/pref_window.cpp:815
+msgid "pixels"
+msgstr "pixel"
 
-#: src/pref_window.cpp:856
-msgid "Automatically discover"
-msgstr "Tự động khám phá"
+#: src/pref_window.cpp:824
+#, fuzzy
+msgid "Enable bilinear _filtering on displayed video"
+msgstr "Bật lọc tuyến tính trên ảnh được hiển thị"
 
-#: src/pref_window.cpp:866
+#: src/pref_window.cpp:850
 msgid "User Directory"
 msgstr "Thư mục người dùng"
 
-#: src/pref_window.cpp:871
+#: src/pref_window.cpp:855
 msgid "User directory:"
 msgstr "Thư mục người dùng:"
 
-#. Add fields for the gatekeeper
-#: src/pref_window.cpp:887
-msgid "Gatekeeper"
-msgstr "Gatekeeper"
+#: src/pref_window.cpp:858
+msgid "Enable _registering"
+msgstr "_Bật đăng ký"
 
-#: src/pref_window.cpp:890
-msgid "Gatekeeper ID:"
-msgstr "Gatekeeper ID:"
-
-#: src/pref_window.cpp:893
-msgid "Gatekeeper host:"
-msgstr "Máy chủ Gatekeeper:"
-
-#: src/pref_window.cpp:896
-msgid "Gatekeeper alias: "
-msgstr "Bí danh gatekeeper: "
-
-#: src/pref_window.cpp:899
-msgid "Gatekeeper password:"
-msgstr "Mật khẩu Gatekeeper:"
-
-#: src/pref_window.cpp:903
-msgid "Registering method:"
-msgstr "Cách đăng ký:"
-
-#: src/pref_window.cpp:906
-msgid "Click here to update your Gatekeeper settings."
+#: src/pref_window.cpp:861
+msgid "_Publish my details in the users directory"
 msgstr ""
 
-#: src/pref_window.cpp:932
-msgid "H.323 Call Forwarding"
-msgstr "Chuyển cuộc gọi H.323"
+#: src/pref_window.cpp:883 src/pref_window.cpp:1523
+msgid "Call Forwarding"
+msgstr "Chuyển cuộc gọi"
 
-#: src/pref_window.cpp:938
-msgid "Forward calls to host:"
-msgstr "Chuyển cuộc gọi cho máy chủ:"
+#: src/pref_window.cpp:888
+msgid "Forward calls to _host:"
+msgstr "_Chuyển cuộc gọi cho máy chủ:"
 
-#: src/pref_window.cpp:952
-msgid "H.323 V2 Settings"
-msgstr "Thiết lập H.323v2"
+#: src/pref_window.cpp:895
+msgid "_Always forward calls to the given host"
+msgstr "_Luôn chuyển cuộc gọi đến máy được cho"
 
-#: src/pref_window.cpp:966
+#: src/pref_window.cpp:898
+msgid "Forward calls to the given host if _no answer"
+msgstr "_Chuyển cuộc gọi đến máy cho trước nếu không có trả lời"
+
+#: src/pref_window.cpp:901
+msgid "Forward calls to the given host if _busy"
+msgstr "_Chuyển cuộc gọi đến máy cho trước nếu bận"
+
+#: src/pref_window.cpp:915
+msgid "All"
+msgstr "Tất cả"
+
+#: src/pref_window.cpp:916
+msgid "None"
+msgstr "Không"
+
+#: src/pref_window.cpp:917
+msgid "rfc2833"
+msgstr "rfc2833"
+
+#: src/pref_window.cpp:918
+msgid "Signal"
+msgstr "Tín hiệu"
+
+#: src/pref_window.cpp:919
+msgid "String"
+msgstr "Chuỗi"
+
+#: src/pref_window.cpp:929
+msgid "H.323 Version 2 Settings"
+msgstr "Thiết lập H.323 Phiên bản 2"
+
+#: src/pref_window.cpp:933
+msgid "Enable H.245 _tunnelling"
+msgstr "_Bật đường hầm H.245"
+
+#: src/pref_window.cpp:936
+msgid "Enable fast _start procedure"
+msgstr "_Bật Thủ tục Khởi động nhanh"
+
+#: src/pref_window.cpp:941
 msgid "User Input Capabilities"
 msgstr ""
 
-#: src/pref_window.cpp:970
-msgid "User Input Capabilities type:"
+#: src/pref_window.cpp:944
+msgid "User Input Capabilities _type:"
 msgstr ""
+
+#: src/pref_window.cpp:944
+msgid ""
+"This permits to set the mode for User Input Capabilities. The values can be "
+"\"All\", \"None\", \"rfc2833\", \"Signal\" or \"String\" (default is \"All"
+"\"). Choosing other values than \"All\", \"String\" or \"rfc2833\" disables "
+"the Text Chat."
+msgstr ""
+
+#: src/pref_window.cpp:961
+msgid "Do not register"
+msgstr "Không đăng ký"
+
+#: src/pref_window.cpp:964
+msgid "Automatically discover"
+msgstr "Tự động khám phá"
 
 #: src/pref_window.cpp:974
+msgid "Gatekeeper"
+msgstr "Gatekeeper"
+
+#: src/pref_window.cpp:977
+msgid "Gatekeeper _ID:"
+msgstr "Gatekeeper _ID:"
+
+#: src/pref_window.cpp:980
+msgid "Gatekeeper _host:"
+msgstr "_Máy chủ Gatekeeper:"
+
+#: src/pref_window.cpp:983
+msgid "Gatekeeper _alias:"
+msgstr "_Bí danh gatekeeper: "
+
+#: src/pref_window.cpp:986
+msgid "Gatekeeper _password:"
+msgstr "_Mật khẩu Gatekeeper:"
+
+#: src/pref_window.cpp:990
+msgid "Registering method:"
+msgstr "Cách đăng ký:"
+
+#: src/pref_window.cpp:993
+msgid "Click here to update your Gatekeeper settings."
+msgstr "Nhấn vào đây để cập nhật Thiết lập Gatekeeper."
+
+#: src/pref_window.cpp:1016
 msgid "NAT/PAT Router Support"
+msgstr "Hỗ trợ Router NAT/PAT"
+
+#: src/pref_window.cpp:1019
+msgid "Enable IP _translation"
+msgstr "Bật chuyển đổi _IP"
+
+#: src/pref_window.cpp:1022
+msgid "Public _IP of the NAT/PAT router:"
 msgstr ""
 
-#: src/pref_window.cpp:981
-msgid "Public IP of the NAT/PAT router:"
-msgstr ""
-
-#: src/pref_window.cpp:1001
+#: src/pref_window.cpp:1040
 msgid "Low"
 msgstr "Thấp"
 
-#: src/pref_window.cpp:1002
+#: src/pref_window.cpp:1041
 msgid "Medium"
 msgstr "Vừa"
 
-#: src/pref_window.cpp:1003
+#: src/pref_window.cpp:1042
 msgid "High"
 msgstr "Cao"
 
-#: src/pref_window.cpp:1004
+#: src/pref_window.cpp:1043
 msgid "AGC"
 msgstr "AGC"
 
+#: src/pref_window.cpp:1060
+msgid "Playing device:"
+msgstr ""
+
+#: src/pref_window.cpp:1063
+msgid "Playing mixer:"
+msgstr ""
+
+#: src/pref_window.cpp:1067
+msgid "Recording device:"
+msgstr "Thiết bị thu:"
+
+#: src/pref_window.cpp:1070
+msgid "Recording mixer:"
+msgstr ""
+
 #. The Quicknet devices related options
-#: src/pref_window.cpp:1038
+#: src/pref_window.cpp:1075
 msgid "Quicknet Device"
 msgstr "Thiết bị Quicknet"
 
-#: src/pref_window.cpp:1042
-msgid "Automatic echo cancellation:"
-msgstr "Hủy tự động phản hồi:"
+#: src/pref_window.cpp:1078
+msgid "Echo _cancellation:"
+msgstr "_Hủy tự động phản hồi:"
 
-#: src/pref_window.cpp:1045
-msgid "Country code:"
-msgstr "Mã quốc gia:"
+#: src/pref_window.cpp:1081
+msgid "Country _code:"
+msgstr "_Mã quốc gia:"
 
-#: src/pref_window.cpp:1076
+#. That button will refresh the devices list
+#: src/pref_window.cpp:1088 src/pref_window.cpp:1159
+msgid "_Detect devices"
+msgstr "_Dò tìm Thiết bị"
+
+#: src/pref_window.cpp:1088 src/pref_window.cpp:1159
+msgid "Click here to refresh the devices list."
+msgstr ""
+
+#: src/pref_window.cpp:1105
 msgid "Small"
 msgstr "Nhỏ"
 
-#: src/pref_window.cpp:1077
+#: src/pref_window.cpp:1106
 msgid "Large"
 msgstr "Lớn"
 
-#: src/pref_window.cpp:1079
+#: src/pref_window.cpp:1108
 msgid "PAL (Europe)"
 msgstr "PAL (Châu Âu)"
 
-#: src/pref_window.cpp:1080
+#: src/pref_window.cpp:1109
 msgid "NTSC (America)"
 msgstr "NTSC (Mỹ)"
 
-#: src/pref_window.cpp:1081
+#: src/pref_window.cpp:1110
 msgid "SECAM (France)"
 msgstr "SECAM (Pháp)"
 
-#: src/pref_window.cpp:1082
+#: src/pref_window.cpp:1111
 msgid "Auto"
 msgstr "Tự động"
 
-#: src/pref_window.cpp:1108
+#: src/pref_window.cpp:1134
 msgid "Video channel:"
 msgstr "Kênh hình:"
 
-#: src/pref_window.cpp:1114
+#: src/pref_window.cpp:1137
 msgid "Video size:"
 msgstr "Kích thước ảnh:"
 
-#: src/pref_window.cpp:1117
+#: src/pref_window.cpp:1140
 msgid "Video format:"
 msgstr "Dạng thức video:"
 
-#: src/pref_window.cpp:1121
+#: src/pref_window.cpp:1143
 msgid "Video image:"
 msgstr "Ảnh video:"
 
 #. The file selector button
-#: src/pref_window.cpp:1125
-msgid "Browse..."
-msgstr "Duyệt..."
+#: src/pref_window.cpp:1147
+msgid "Choose a picture"
+msgstr "Chọn hình"
 
-#: src/pref_window.cpp:1180
+#: src/pref_window.cpp:1193
 msgid "Available Audio Codecs"
 msgstr "Audio Codec hiện có"
 
-#: src/pref_window.cpp:1231
+#: src/pref_window.cpp:1243
 msgid "Info"
 msgstr "Thông tin"
 
-#: src/pref_window.cpp:1243
+#: src/pref_window.cpp:1255
 msgid "Bandwidth"
 msgstr "Băng thông"
 
 #. Here we add the audio codecs options
-#: src/pref_window.cpp:1306
+#: src/pref_window.cpp:1318
 msgid "Audio Codecs Settings"
 msgstr "Thiết lập Audio Codec"
 
-#: src/pref_window.cpp:1314
-msgid "Minimum jitter buffer:"
-msgstr "Vùng đệm jitter tối thiểu:"
+#: src/pref_window.cpp:1323
+msgid "Automatically adjust _jitter buffer between"
+msgstr ""
 
-#: src/pref_window.cpp:1317
-msgid "Maximum jitter buffer:"
-msgstr "Vùng đệm jitter tối đa:"
+#: src/pref_window.cpp:1325
+msgid "and"
+msgstr "và"
 
-#: src/pref_window.cpp:1338 src/pref_window.cpp:1504
+#: src/pref_window.cpp:1327
+msgid "ms"
+msgstr "ms"
+
+#: src/pref_window.cpp:1335
+msgid "Enable silence _detection"
+msgstr "_Bật kiểm tra im lặng"
+
+#: src/pref_window.cpp:1357 src/pref_window.cpp:1513
 msgid "General Settings"
 msgstr "Thiết lập chung"
 
+#: src/pref_window.cpp:1362
+msgid "Enable video _transmission"
+msgstr "_Bật truyền ảnh"
+
+#: src/pref_window.cpp:1365
+msgid "Enable video _reception"
+msgstr "_Bật nhận ảnh"
+
 #. H.261 Settings
-#: src/pref_window.cpp:1350
+#: src/pref_window.cpp:1369
 msgid "Bandwidth Control"
 msgstr "Điều khiển băng thông"
 
-#: src/pref_window.cpp:1353
-msgid "Maximum video bandwidth:"
-msgstr "Băng thông hình tối đa:"
+#: src/pref_window.cpp:1373
+msgid "Maximum video _bandwidth of"
+msgstr "_Băng thông video tối đa"
 
-#: src/pref_window.cpp:1359
+#: src/pref_window.cpp:1373
+msgid "KB/s"
+msgstr "KB/s"
+
+#: src/pref_window.cpp:1377
 msgid "Advanced Quality Settings"
 msgstr "Thiết lập chất lương nâng cao"
 
-#: src/pref_window.cpp:1362
-msgid "Minimum transmitted video quality:"
-msgstr "Chất lượng ảnh truyền tối thiểu:"
+#: src/pref_window.cpp:1382
+msgid "Keep a minimum video _quality of"
+msgstr "_Giữ Chất lượng ảnh truyền tối thiểu"
 
-#: src/pref_window.cpp:1364
+#: src/pref_window.cpp:1382
 msgid ""
 "The minimum transmitted video quality to keep when trying to minimize the "
 "used bandwidth:  choose 100% on a LAN for the best quality, 1% being the "
 "worst quality."
-msgstr "Chất lượng truyền ảnh cần đảm bảo khi thử giảm thiểu băng thông người dùng: chọn 100% trên LAN để có chất lượng tối đa, 1% sẽ cho chất lượng tệ nhất."
+msgstr ""
+"Chất lượng truyền ảnh cần đảm bảo khi thử giảm thiểu băng thông người dùng: "
+"chọn 100% trên LAN để có chất lượng tối đa, 1% sẽ cho chất lượng tệ nhất."
 
-#: src/pref_window.cpp:1368
-msgid "Minimum transmitted FPS:"
-msgstr "FPS gửi tối đa:"
+#: src/pref_window.cpp:1382
+msgid "%"
+msgstr "%"
 
-#: src/pref_window.cpp:1374
-msgid "Transmitted background blocks:"
-msgstr "Khối nền gửi:"
+#: src/pref_window.cpp:1386
+msgid "Transmit at least"
+msgstr "Gửi ít nhất"
 
-#: src/pref_window.cpp:1422
+#: src/pref_window.cpp:1386
+msgid "_frames per second"
+msgstr "_số khung mỗi giây"
+
+#: src/pref_window.cpp:1391
+msgid "Transmit"
+msgstr "Gửi"
+
+#: src/pref_window.cpp:1391
+msgid "background _blocks with each frame"
+msgstr "Số khối nền mỗi khung"
+
+#: src/pref_window.cpp:1432
 msgid "GnomeMeeting Settings"
 msgstr "Thiết lập GnomeMeeting"
 
-#: src/pref_window.cpp:1495
+#: src/pref_window.cpp:1504
 msgid "General"
 msgstr "Chung"
 
-#: src/pref_window.cpp:1499
+#: src/pref_window.cpp:1508
 msgid "Personal Data"
 msgstr "Dữ liệu cá nhân"
 
-#: src/pref_window.cpp:1509
+#: src/pref_window.cpp:1518
 msgid "Directory Settings"
 msgstr "Thiết lập thư mục"
 
-#: src/pref_window.cpp:1514
-msgid "H.323 Advanced"
-msgstr "H.323 nâng cao"
+#: src/pref_window.cpp:1530
+msgid "H.323 Settings"
+msgstr "Thiết lập H.323"
 
-#: src/pref_window.cpp:1520
+#: src/pref_window.cpp:1534
+msgid "Advanced Settings"
+msgstr "Thiết lập nâng cao"
+
+#: src/pref_window.cpp:1539
+msgid "Gatekeeper Settings"
+msgstr "Thiết lập Gatekeeper"
+
+#: src/pref_window.cpp:1544
+msgid "NAT Settings"
+msgstr "Thiết lập NAT"
+
+#: src/pref_window.cpp:1551
 msgid "Codecs"
 msgstr "Codec"
 
-#: src/pref_window.cpp:1524
+#: src/pref_window.cpp:1555
 msgid "Audio Codecs"
 msgstr "Audio Codec"
 
-#: src/pref_window.cpp:1530
+#: src/pref_window.cpp:1561
 msgid "Video Codecs"
 msgstr "Video Codec"
 
-#: src/pref_window.cpp:1537
+#: src/pref_window.cpp:1568
 msgid "Devices"
 msgstr "Thiết bị"
 
-#: src/pref_window.cpp:1552
+#: src/pref_window.cpp:1583
 msgid "Section"
 msgstr "Phần"
 
-#: src/sound_handling.cpp:372
+#: src/sound_handling.cpp:416
+msgid "Failed to open the device"
+msgstr "Lỗi mở thiết bị"
+
+#: src/sound_handling.cpp:416
 #, c-format
 msgid ""
 "Impossible to open the selected audio device (%s) for playing. Please check "
-"your audio setup."
+"your audio setup, the permissions and that the device is not busy."
 msgstr ""
 
-#: src/sound_handling.cpp:384
+#: src/sound_handling.cpp:428
+msgid "Failed to open the audio device"
+msgstr "Lỗi mở thiết bị âm"
+
+#: src/sound_handling.cpp:428
 #, c-format
 msgid ""
 "Impossible to open the selected audio device (%s) for recording. Please "
-"check your audio setup."
+"check your audio setup, the permissions and that the device is not busy."
 msgstr ""
 
-#: src/sound_handling.cpp:398
+#: src/sound_handling.cpp:447 src/sound_handling.cpp:456
+msgid "Cannot use the audio device"
+msgstr "Không thể dùng thiết bị âm"
+
+#: src/sound_handling.cpp:447
 #, c-format
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
 "to read data from this device. Please check your audio setup."
 msgstr ""
 
-#: src/sound_handling.cpp:407
+#: src/sound_handling.cpp:456
 #, c-format
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
 "to write data to this device. Please check your audio setup."
 msgstr ""
 
-#: src/sound_handling.cpp:424
+#: src/sound_handling.cpp:473
 #, c-format
 msgid ""
 "GnomeMeeting is now recording from %s and playing back to %s. Please say \"1 "
@@ -2535,11 +3001,12 @@ msgid ""
 "\n"
 "Recording... Please talk."
 msgstr ""
-"GnomeMeeting đang thu từ %s và phát lại vào %s. Vui lòng nói \"1 2 3\" trong microphone, bạn sẽ nghe chính bạn từ loa trong năm giây.\n"
+"GnomeMeeting đang thu từ %s và phát lại vào %s. Vui lòng nói \"1 2 3\" trong "
+"microphone, bạn sẽ nghe chính bạn từ loa trong năm giây.\n"
 "\n"
 "Đang thu... Vui lòng nói."
 
-#: src/sound_handling.cpp:453
+#: src/sound_handling.cpp:502
 msgid ""
 "GnomeMeeting is now playing what it is recording with a 5 seconds delay. If "
 "you don't hear yourself with the delay, you will have to fix your audio "
@@ -2548,680 +3015,875 @@ msgid ""
 "\n"
 "Recording and playing... Please talk."
 msgstr ""
-"GnomeMeeting đang phát những gì đã thu trong 5 giây. Nếu bạn không nghe thấy những gì đã nói sau 5 giây, bạn cần chỉnh thiết lập thiết bị âm và có lẽ cần cài đặt driver full-duplex trước khi gọi cho người dùng GnomeMeeting khác.\n"
+"GnomeMeeting đang phát những gì đã thu trong 5 giây. Nếu bạn không nghe thấy "
+"những gì đã nói sau 5 giây, bạn cần chỉnh thiết lập thiết bị âm và có lẽ cần "
+"cài đặt driver full-duplex trước khi gọi cho người dùng GnomeMeeting khác.\n"
 "\n"
 "Đang thu và đang phát... Vui lòng nói."
 
-#: src/toolbar.cpp:95
-msgid "Speaker phone enabled"
-msgstr "Đã bật speaker phone"
-
-#: src/toolbar.cpp:107
-msgid "Speaker phone disabled"
-msgstr "Đã tắt speaker phone"
-
-#: src/toolbar.cpp:266
-msgid "Find friends on the ILS directory service"
-msgstr "Tìm bạn trên dịch vụ thư mục ILS"
-
-#: src/toolbar.cpp:279
-msgid "Make a text chat with your friend"
-msgstr "Tán gẫu bằng văn bản với bạn bè"
-
-#: src/toolbar.cpp:290
-msgid "Display the control panel"
-msgstr "Hiện khung điều khiển"
-
-#: src/toolbar.cpp:322
-msgid "Click here to begin displaying images from your camera device."
-msgstr "Nhấn vào đây để hiện ảnh từ camera của bạn."
-
-#: src/toolbar.cpp:344
-msgid "Click here to activate the speaker phone device of your Quicknet card."
-msgstr ""
-"Nhấn vào đây để kích hoạt thiết bị speaker phone của Card Quicknet của bạn."
-
-#: src/toolbar.cpp:367
+#: src/toolbar.cpp:178
 msgid ""
-"Audio transmission status. During a call, click here to pause the audio "
-"transmission."
+"Enter an URL to call on the left, and click on this button to connect to the "
+"given URL."
 msgstr ""
-"Trạng thái truyền âm. Trong suốt cuộc gọi, nhấn vào đây sẽ tạm ngừng truyền "
-"âm."
 
-#: src/toolbar.cpp:387
+#: src/toolbar.cpp:225
+msgid "Open text chat."
+msgstr "Mở Tán gẫu viết."
+
+#: src/toolbar.cpp:236
+msgid "Open control panel"
+msgstr "Mở bảng điểu khiển"
+
+#: src/toolbar.cpp:248
+msgid "Open address book"
+msgstr "Mở sổ địa chỉ"
+
+#: src/toolbar.cpp:278
+msgid "Display images from your camera device."
+msgstr "Hiện ảnh từ camera của bạn."
+
+#: src/toolbar.cpp:300
 msgid ""
-"Video transmission status. During a call, click here to pause the video "
-"transmission."
+"Audio transmission status. During a call, click here to suspend or resume "
+"the audio transmission."
+msgstr "Trạng thái truyền âm. Trong suốt cuộc gọi, nhấn vào đây sẽ tạm ngừng hoặc tiếp tục truyền âm."
+
+#: src/toolbar.cpp:320
+msgid ""
+"Video transmission status. During a call, click here to suspend or resume "
+"the video transmission."
+msgstr "Trạng thái truyền ảnh. Trong suốt cuộc gọi, nhấn vào đây sẽ tạm ngừng hoặc tiếp tục truyền ảnh."
+
+#: src/tools.cpp:186
+msgid "Received calls"
+msgstr "Đã nhận cuộc gọo"
+
+#: src/tools.cpp:186
+msgid "Given calls"
 msgstr ""
-"Trạng thái truyền ảnh. Trong suốt cuộc gọi, nhấn vào đây sẽ tạm ngừng truyền "
-"ảnh."
 
-#: src/tools.cpp:119 src/tools.cpp:125
-msgid "General History"
-msgstr "Nhật ký chung"
+#: src/tools.cpp:186
+msgid "Unanswered calls"
+msgstr "Cuộc gọi không trả lời"
 
-#: src/tray.cpp:166
+#: src/tools.cpp:231
+msgid "Date"
+msgstr "Ngày"
+
+#: src/tools.cpp:239
+msgid "Remote user"
+msgstr "Người dùng từ xa"
+
+#: src/tools.cpp:258
+msgid "Call duration"
+msgstr "Thời lượng gọi"
+
+#: src/tools.cpp:269
+msgid "Software"
+msgstr "Phần mềm"
+
+#: src/tray.cpp:190
 msgid "GnomeMeeting Tray Icon"
 msgstr "Khay biểu tượng GnomeMeeting"
 
-#: src/urlhandler.cpp:126
-msgid "Searching for user"
-msgstr "Tìm người dùng"
+#: src/urlhandler.cpp:76
+msgid ""
+"The call transfer failed, the user was either unreachable, or simply busy "
+"when he received the call transfer request."
+msgstr ""
 
-#: src/urlhandler.cpp:150 src/urlhandler.cpp:152
-msgid "Error while connecting to ILS directory"
-msgstr "Lỗi kết nối tới thư mục ILS"
+#: src/urlhandler.cpp:268
+#, c-format
+msgid "No contact with speed dial %s# found, will call number %s instead"
+msgstr ""
 
-#: src/urlhandler.cpp:173 src/urlhandler.cpp:174
-msgid "User is offline"
-msgstr "Người dùng đang ở ngoại tuyến"
+#: src/urlhandler.cpp:286
+msgid "Invalid URL handler"
+msgstr "Handler URL không hợp lệ"
 
-#: src/urlhandler.cpp:219
+#: src/urlhandler.cpp:286
+msgid ""
+"Please specify a valid URL handler. Currently both h323: and callto: are "
+"supported."
+msgstr ""
+
+#: src/urlhandler.cpp:314
 #, c-format
 msgid "Calling %s"
 msgstr "Đang gọi %s"
 
-#: src/videograbber.cpp:457 src/videograbber.cpp:458
+#: src/urlhandler.cpp:318
+#, c-format
+msgid "Transferring call to %s"
+msgstr "Đang truyền cuộc gọi tới %s"
+
+#: src/videograbber.cpp:331 src/videograbber.cpp:332
 msgid "Opening Video device"
 msgstr "Mở thiết bị hình"
 
-#: src/videograbber.cpp:506
+#: src/videograbber.cpp:396
 #, c-format
 msgid "Successfully opened video device %s, channel %d"
 msgstr "Mở thiết bị hình %s, kênh %d thành công"
 
-#: src/videograbber.cpp:509
+#: src/videograbber.cpp:399
 msgid "Video Device Opened"
 msgstr "Đã mở thiết bị hình"
 
-#: src/videograbber.cpp:522
+#: src/videograbber.cpp:412
 #, c-format
+msgid "Error while opening video device %s"
+msgstr "Lỗi mở thiết bị hình %s"
+
+#: src/videograbber.cpp:414
 msgid ""
-"Error while opening video device %s, channel %d.\n"
 "The chosen Video Image will be transmitted during calls. If you didn't "
 "choose any image, then the default GnomeMeeting logo will be transmitted. "
 "Notice that you can always transmit a given image or the GnomeMeeting logo "
 "by choosing \"Picture\" as video device."
 msgstr ""
 
-#: src/videograbber.cpp:523
+#: src/videograbber.cpp:415
 msgid "Can't open the Video Device"
 msgstr "Không thể mở thiết bị hình"
 
-#: src/videograbber.cpp:528
-msgid "Error while opening the device."
-msgstr "Lỗi mở thiết bị hình"
+#: src/videograbber.cpp:420
+msgid ""
+"There was an error while opening the device. Please check your permissions "
+"and make sure that the appropriate driver is loaded."
+msgstr ""
 
-#: src/videograbber.cpp:533 src/videograbber.cpp:817
+#: src/videograbber.cpp:425 src/videograbber.cpp:727
 msgid "Your video driver doesn't support the requested video format."
 msgstr "Trình điểu khiển hình không hỗ trợ dạng thức video yêu cầu."
 
-#: src/videograbber.cpp:537 src/videograbber.cpp:821
+#: src/videograbber.cpp:429 src/videograbber.cpp:731
 msgid "Could not open the chosen channel with the chosen video format."
 msgstr "Không thể mở kênh được chọn với dạng thức video được chọn."
 
-#: src/videograbber.cpp:541
-#, c-format
+#: src/videograbber.cpp:433
 msgid ""
-"Your driver doesn't support the %s format.\n"
+"Your driver doesn't seem to support any of the colour formats supported by "
+"GnomeMeeting.\n"
 " Please check your kernel driver documentation in order to determine which "
 "Palette is supported. Set it as GnomeMeeting default with:\n"
 " gconftool --set \"/apps/gnomemeeting/devices/color_format\" YOURPALETTE --"
 "type string"
 msgstr ""
-"Trình điều khiển không hỗ trợ dạng thức %s.\n"
-"Vui lòng kiểm tra tài liệu kernel driver để xác định Palette nào được hỗ trợ "
-"rồi chọn nó làm mặt định cho GnomeMeeting:\n"
-" gconftool --set \"/apps/gnomemeeting/devices/color_format\" PALLETE --chuỗi "
-"loại palette."
+"Trình điều khiển của bạn dường như không hỗ trợ dạng thức màu được hỗ trợ bởi GnomeMeeting.\n"
+"Vui lòng kiểm tra tài liệu kernel driver để xác định Palette nào được hỗ trợ rồi chọn nó làm mặt định cho GnomeMeeting:\n"
+" gconftool --set \"/apps/gnomemeeting/devices/color_format\" PALLETE_CỦA_BẠN --chuỗi_loại_palette."
 
-#: src/videograbber.cpp:545 src/videograbber.cpp:829
-msgid "Error with the frame rate."
-msgstr "Lỗi tốc độ khung"
+#: src/videograbber.cpp:437
+msgid "Error while setting the frame rate."
+msgstr "Lỗi đặt tốc độ khung."
 
-#: src/videograbber.cpp:549 src/videograbber.cpp:833
-msgid "Error with the frame size."
-msgstr "Lỗi kích thước khung."
+#: src/videograbber.cpp:441
+msgid "Error while setting the frame size."
+msgstr "Lỗi đặt kích thước khung."
 
-#: src/videograbber.cpp:678
+#: src/videograbber.cpp:574
 msgid "Video Device Closed"
 msgstr "Đã đóng thiết bị hình"
 
-#: src/videograbber.cpp:796
+#: src/videograbber.cpp:706
 #, c-format
 msgid "Test %d done"
 msgstr "Kiểm tra %d xong"
 
-#: src/videograbber.cpp:813
+#: src/videograbber.cpp:723
 #, c-format
 msgid "Error while opening %s."
 msgstr "Lỗi mở %s."
 
-#: src/videograbber.cpp:825
+#: src/videograbber.cpp:735
 msgid "Your driver doesn't support the YUV420P color format"
 msgstr "Trình điểu khiển không hỗ trợ định dạng màu YUV420P"
 
-#: src/videograbber.cpp:838
+#: src/videograbber.cpp:739
+msgid "Error with the frame rate."
+msgstr "Lỗi tốc độ khung"
+
+#: src/videograbber.cpp:743
+msgid "Error with the frame size."
+msgstr "Lỗi kích thước khung."
+
+#: src/videograbber.cpp:748
 msgid "Tests OK!"
 msgstr "Kiểm tra OK!"
 
-#~ msgid "A comment that will be listed in LDAP directories"
-#~ msgstr "Ghi chú sẽ được ghi trong thư mục LDAP"
+msgid ""
+"\"If enabled, GnomeMeeting will play a sound when receiving an incoming call "
+"(the sound to play is chosen in the Gnome Control Center)."
+msgstr ""
+"Nếu bật, GnomeMeeting sẽ phát âm thanh khi nhận cuộc gọi đến (âm thanh phát "
+"ra được chọn trong Trung tâm điều khiển Gnome)."
+
+msgid "Quit in progress..."
+msgstr "Đang thoát..."
+
+msgid "Audio Channel:  Sending"
+msgstr "Kênh Audio: Đang gửi"
+
+msgid "Audio Channel:  Paused"
+msgstr "Kênh Audio: Tạm ngừng"
+
+msgid "Video Channel:  Sending"
+msgstr "Kênh hình: Đang gửi"
+
+msgid "Video Channel:  Paused"
+msgstr "Kênh hình: Tạm dừng"
+
+msgid ""
+"You chose to NOT use the GnomeMeeting ILS directory. Other users will not be "
+"able to contact you if you don't register to a directory service."
+msgstr ""
+"Bạn đã chọn KHÔNG dùng thư mục GnomeMeeting ILS. Những người dùng khác sẽ "
+"không thể liên lạc với bạn nếu bạn không đăng ký vào dịch vụ thư mục."
+
+msgid "Error forwarding call to %s"
+msgstr "Lỗi chuyển cuộc gọi tới %s"
+
+msgid "This call ended abnormally"
+msgstr "Cuộc gọi kết thúc bất thường"
+
+msgid "Refused incoming call"
+msgstr "Đã từ chối cuộc gọi đến"
+
+msgid "Remote party could not be reached"
+msgstr "Không thể tiếp cận bên đối diện"
 
-#~ msgid "Auto Answer"
-#~ msgstr "Tự động trả lời"
+msgid "Call duration: %.2ld:%.2ld:%.2ld"
+msgstr "Thời gian gọi: %.2ld:%.2ld:%.2ld"
 
-#~ msgid "Display a popup window every time you receive a call"
-#~ msgstr "Hiện cửa sổ mỗi khi nhận cuộc gọi"
+msgid ""
+"Sent/Received:\n"
+"Lost/Late Packets:\n"
+"Round trip delay:\n"
+"Jitter Buffer:"
+msgstr ""
+"Gửi/Nhận:\n"
+"Gói mất/trễ:\n"
+"Round trip delay:\n"
+"Vùng đệm Jitter:"
 
-#~ msgid "Enable FPS"
-#~ msgstr "Bật FPS"
+msgid "Error while registering with Gatekeeper at %s."
+msgstr "Lỗi đăng ký với Gatekeeper tại %s."
 
-#~ msgid "Enable Silence Detection for G.711 and GSM"
-#~ msgstr "Bật kiểm tra im lặng cho G.711 và GSM"
+msgid "No gatekeeper found"
+msgstr "Không tìm thấy gatekeeper"
 
-#~ msgid "Enable registering to the LDAP server"
-#~ msgstr "Bật đăng ký vào LDAP server"
+msgid "callto URL:"
+msgstr "callto URL:"
 
-#~ msgid "Enable the limit on the number of frames per second"
-#~ msgstr "Bật giới hạn số khung mỗi giây"
+msgid "_Refresh"
+msgstr "_Cập nhật"
 
-#~ msgid "Enable the video transmission for calls"
-#~ msgstr "Bật/tắt truyền ảnh cho cuộc gọi"
+msgid "Call this user"
+msgstr "Gọi người dùng này"
 
-#~ msgid "Fast Start"
-#~ msgstr "Khởi động nhanh"
+msgid "Edit this user information"
+msgstr "Sửa thông tin người dùng này"
 
-#~ msgid "Forward calls to this host"
-#~ msgstr "Chuyển cuộc gọi đến máy này"
+msgid "Delete this user"
+msgstr "Xóa người dùng này"
 
-#~ msgid "H.245 Tunnelling"
-#~ msgstr "Đường hầm H.245"
+msgid "Add to group"
+msgstr "Thêm vào nhóm"
 
-#~ msgid "IP Translation"
-#~ msgstr "Chuyển đổi IP"
+msgid ""
+"GnomeMeeting can't be used without audio devices. Please install a soundcard "
+"or a Quicknet card."
+msgstr ""
+"GnomeMeeting không thể dùng thiết bị âm này. Vui lòng cài đặt soundcard hoặc "
+"card Quicknet."
 
-#~ msgid ""
-#~ "If enabled, GnomeMeeting will use the Quicknet device instead of the "
-#~ "regular soundcard during calls."
-#~ msgstr ""
-#~ "Nếu bật, GnomeMeeting sẽ dùng thiết bị Quicknet thay vì card âm thanh "
-#~ "bình thường trong suốt cuộc gọi."
+msgid ""
+"GnomeMeeting just installed an URL handler for callto:// URLs. callto URLs "
+"are an easy way to call people on the internet using GnomeMeeting. They are "
+"now available to all GNOME programs able to cope with URLs. You can for "
+"example create an URL launcher on the GNOME panel of the form \"callto://ils."
+"seconix.com/me@foo.com\" to call the person registered on the ILS server ils."
+"seconix.com with the me@foo.com e-mail address."
+msgstr ""
+"GnomeMeeting chỉ cài đặt bộ xử lý URL cho các URL callto://. Các URL callto "
+"là cách dễ dàng để nói chuyện với người khác trên internet dùng "
+"GnomeMeeting. Chúng có thể dùng trong mọi chương trình Gnome có thể xử lý "
+"URL. Bạn có thể tạo bộ phóng URL trong Gnome Panel theo mẫu \"callto://ils."
+"seconix.com/me@foo.com\" để gọi người được đăng ký tại ILS server ils."
+"seconix.com với địa chỉ email me@foo.com."
 
-#~ msgid "If enabled, calls will be established with H.245 Tunnelling."
-#~ msgstr "Nếu bật, cuộc gọi sẽ được thiết lập với Đường hầm H.245."
+msgid ""
+"Could not start the listener thread. You will not be able to receive "
+"incoming calls."
+msgstr ""
+"Không thể khởi động listener thread. Bạn sẽ không thể nhận cuộc gọi tới."
 
-#~ msgid "Image"
-#~ msgstr "Ảnh"
+msgid "_Audio Mute"
+msgstr "_Câm"
 
-#~ msgid "Incoming Call Sound"
-#~ msgstr "Âm thanh cuộc gọi đến"
+msgid "_Video Mute"
+msgstr "_Không hình"
 
-#~ msgid ""
-#~ "Limitation on the number of transmitted frames grabbed by the grabber"
-#~ msgstr "Giới hạn số khung được gửi bởi grabber"
+msgid "Generic History"
+msgstr "Nhật ký chung"
 
-#~ msgid "Number of background blocks transmitted at a time"
-#~ msgstr "Số khối nền được gửi tại một thời điểm"
+msgid "Disconnect"
+msgstr "Ngắt kết nối"
 
-#~ msgid "Public IP"
-#~ msgstr "IP công cộng"
+msgid "E-mail address:"
+msgstr "Địa chỉ email:"
 
-#~ msgid "Register"
-#~ msgstr "Đăng ký"
+msgid "Fullscreen width:"
+msgstr "Chiều rộng toàn màn hình:"
 
-#~ msgid "Show a docklet in the gnome-panel or KDE systray"
-#~ msgstr "Hiện docklet trong Gnome Panel hoặc KDE Systray"
+msgid "Fullscreen height:"
+msgstr "Chiều cao toàn màn hình:"
 
-#~ msgid "Show a nice window every time GnomeMeeting starts"
-#~ msgstr "Hiện cửa sổ mỗi khi GnomeMeeting khởi động"
+msgid "Sound"
+msgstr "Âm thanh"
 
-#~ msgid "Show docklet"
-#~ msgstr "Hiện Docklet"
+msgid "Browse..."
+msgstr "Duyệt..."
 
-#~ msgid "Show left toolbar"
-#~ msgstr "Hiện thanh công cụ trái"
+msgid "Minimum jitter buffer:"
+msgstr "Vùng đệm jitter tối thiểu:"
 
-#~ msgid "Show only the docklet window at startup"
-#~ msgstr "Chỉ hiện cửa sổ docklet lúc khởi động"
+msgid "Maximum jitter buffer:"
+msgstr "Vùng đệm jitter tối đa:"
 
-#~ msgid "Show splash screen at startup"
-#~ msgstr "Hiện Splash Screen lúc khởi động"
+msgid "Maximum video bandwidth:"
+msgstr "Băng thông hình tối đa:"
 
-#~ msgid "Show the left toolbar on the left of the main window"
-#~ msgstr "Hiện thanh công cụ bên trái của cửa sổ chính"
+msgid "Minimum transmitted video quality:"
+msgstr "Chất lượng ảnh truyền tối thiểu:"
 
-#~ msgid "The E-Mail address that will be listed in the directories"
-#~ msgstr "Địa chỉ email sẽ được ghi vào thư mục"
+msgid "Minimum transmitted FPS:"
+msgstr "FPS gửi tối đa:"
 
-#~ msgid "The Gatekeeper password"
-#~ msgstr "Mật khẩu Gatekeeper"
+msgid "Transmitted background blocks:"
+msgstr "Khối nền gửi:"
 
-#~ msgid "The Gatekeeper to register to"
-#~ msgstr "Máy chủ Gatekeeper cần đăng ký"
+msgid "H.323 Advanced"
+msgstr "H.323 nâng cao"
 
-#~ msgid "The ID of the Gatekeeper to register to"
-#~ msgstr "ID cửa máy chủ Gatekeeper cần đăng ký"
+msgid "Speaker phone enabled"
+msgstr "Đã bật speaker phone"
 
-#~ msgid "The LDAP Server to register to"
-#~ msgstr "Thư mục LDAP cần đăng ký"
+msgid "Speaker phone disabled"
+msgstr "Đã tắt speaker phone"
 
-#~ msgid "The Location that will be published in the LDAP directories"
-#~ msgstr "Vị trí được công bố trong thư mục LDAP"
+msgid "Find friends on the ILS directory service"
+msgstr "Tìm bạn trên dịch vụ thư mục ILS"
 
-#~ msgid "The Method to use to register to the Gatekeeper"
-#~ msgstr "Phương thức được dùng cần đăng ký cho Gatekeeper"
+msgid "Make a text chat with your friend"
+msgstr "Tán gẫu bằng văn bản với bạn bè"
 
-#~ msgid "The Quicknet Device to use during calls."
-#~ msgstr "Thiết bị Quicknet cần dùng trong suốt cuộc gọi."
+msgid "Display the control panel"
+msgstr "Hiện khung điều khiển"
 
-#~ msgid "The Video Channel"
-#~ msgstr "Kênh hình"
+msgid "Click here to activate the speaker phone device of your Quicknet card."
+msgstr ""
+"Nhấn vào đây để kích hoạt thiết bị speaker phone của Card Quicknet của bạn."
 
-#~ msgid "The Video Device to use for recording"
-#~ msgstr "Thiết bị thu hình cần dùng"
+msgid "Searching for user"
+msgstr "Tìm người dùng"
 
-#~ msgid "The Video Format: PAL, NTSC, SECAM, Auto"
-#~ msgstr "Dạng thức hình: PAL, NTSC, SECAM, Tự động"
+msgid "Error while connecting to ILS directory"
+msgstr "Lỗi kết nối tới thư mục ILS"
 
-#~ msgid "The Video Size: QCIF (0) or CIF (1)"
-#~ msgstr "Kích thước ảnh: QCIF (0) hay CIF (1)"
+msgid "User is offline"
+msgstr "Người dùng đang ở ngoại tuyến"
 
-#~ msgid "The alias to use when registering"
-#~ msgstr "Bí danh được dùng khi đăng ký"
+msgid "A comment that will be listed in LDAP directories"
+msgstr "Ghi chú sẽ được ghi trong thư mục LDAP"
 
-#~ msgid ""
-#~ "The alias to use when registering. People will use this alias when "
-#~ "calling you."
-#~ msgstr ""
-#~ "Bí danh dùng để đăng ký. Mọi người sẽ dùng bí danh này khi gọi cho bạn."
+msgid "Auto Answer"
+msgstr "Tự động trả lời"
 
-#~ msgid "The device to use to play audio"
-#~ msgstr "Thiết bị phát âm"
+msgid "Display a popup window every time you receive a call"
+msgstr "Hiện cửa sổ mỗi khi nhận cuộc gọi"
 
-#~ msgid "The device to use to record audio"
-#~ msgstr "Thiết bị thu âm"
+msgid "Enable Silence Detection for G.711 and GSM"
+msgstr "Bật kiểm tra im lặng cho G.711 và GSM"
 
-#~ msgid ""
-#~ "The height of the picture displayed when being in fullscreen (using SDL)"
-#~ msgstr "Chiều cao ảnh hiển thị toàn màn hình (dùng SDL)"
+msgid "Enable registering to the LDAP server"
+msgstr "Bật đăng ký vào LDAP server"
 
-#~ msgid "The host to forward calls to"
-#~ msgstr "Máy chủ chuyển cuộc gọi đến"
+msgid "Enable the limit on the number of frames per second"
+msgstr "Bật giới hạn số khung mỗi giây"
 
-#~ msgid "The hostname of the Gatekeeper to register to"
-#~ msgstr "Tên máy chủ Gatekeeper cần đăng ký"
+msgid "Enable the video transmission for calls"
+msgstr "Bật/tắt truyền ảnh cho cuộc gọi"
 
-#~ msgid "The list of used ILS servers"
-#~ msgstr "Danh sách ILS server được dùng"
+msgid "Fast Start"
+msgstr "Khởi động nhanh"
 
-#~ msgid "The mixer to use for the device that is used to play audio"
-#~ msgstr "Bộ trộn âm dùng để thiết lập âm lượng của thiết bị phát âm"
+msgid "Forward calls to this host"
+msgstr "Chuyển cuộc gọi đến máy này"
 
-#~ msgid "The mixer to use for the device that is used to record audio"
-#~ msgstr "Bộ trộn âm dùng để thiết lập âm lượng của thiết bị thu âm"
+msgid "H.245 Tunnelling"
+msgstr "Đường hầm H.245"
 
-#~ msgid "The user's first name that will be used in the directories"
-#~ msgstr "Tên người dùng được dùng trong thư mục"
+msgid "IP Translation"
+msgstr "Chuyển đổi IP"
 
-#~ msgid ""
-#~ "The width of the picture displayed when being in fullscreen (using SDL)"
-#~ msgstr "Độ rộng ảnh được hiển thị trong chế độ toàn màn hình (dùng SDL)"
+msgid ""
+"If enabled, GnomeMeeting will use the Quicknet device instead of the regular "
+"soundcard during calls."
+msgstr ""
+"Nếu bật, GnomeMeeting sẽ dùng thiết bị Quicknet thay vì card âm thanh bình "
+"thường trong suốt cuộc gọi."
 
-#~ msgid "This need the show_docklet option set to true to have effect"
-#~ msgstr ""
-#~ "Điều này cần phải chọn tùy chọn Hiện Docklet thì mới có thể có tác dụng"
+msgid "If enabled, calls will be established with H.245 Tunnelling."
+msgstr "Nếu bật, cuộc gọi sẽ được thiết lập với Đường hầm H.245."
 
-#~ msgid "Transmitted frames per second"
-#~ msgstr "Số khung gửi mỗi giây"
+msgid "Image"
+msgstr "Ảnh"
 
-#~ msgid "Use Quicknet Device"
-#~ msgstr "Dùng thiết bị Quicknet"
+msgid "Incoming Call Sound"
+msgstr "Âm thanh cuộc gọi đến"
 
-#~ msgid "Video Quality"
-#~ msgstr "Chất lượng ảnh"
+msgid "Limitation on the number of transmitted frames grabbed by the grabber"
+msgstr "Giới hạn số khung được gửi bởi grabber"
 
-#~ msgid ""
-#~ "Warning! GnomeMeeting can't disconnect from the remote party due to a bug "
-#~ "in OpenH323.\n"
-#~ "Forcing the exit in 3 seconds!\n"
-#~ msgstr ""
-#~ "Cảnh báo! GnomeMeeting không thể ngắt kết nối khỏi máy từ xa vì lỗi trong "
-#~ "OpenH323.\n"
-#~ "Đang buộc kết thúc trong 3 giây!\n"
+msgid "Public IP"
+msgstr "IP công cộng"
 
-#~ msgid "Set Audio Mixer for player to %s"
-#~ msgstr "Đặt bộ trộn âm cho bộ phát là %s"
+msgid "Register"
+msgstr "Đăng ký"
 
-#~ msgid "Set Audio Mixer for recorder to %s"
-#~ msgstr "Đặt bộ trộn âm cho bộ thu là %s"
+msgid "Show a docklet in the gnome-panel or KDE systray"
+msgstr "Hiện docklet trong Gnome Panel hoặc KDE Systray"
 
-#~ msgid "Auto Rejecting Incoming Call"
-#~ msgstr "Tự động từ chối cuộc gọi đến"
+msgid "Show a nice window every time GnomeMeeting starts"
+msgstr "Hiện cửa sổ mỗi khi GnomeMeeting khởi động"
 
-#~ msgid "Personal Data - Page 2/4"
-#~ msgstr "Dữ liệu cá nhân - Trang 2/4"
+msgid "Show docklet"
+msgstr "Hiện Docklet"
 
-#~ msgid ""
-#~ "Please enter information about yourself. This information will be used "
-#~ "when connecting to remote H.323 software, and to register in the "
-#~ "directory of GnomeMeeting users. The directory is used to register users "
-#~ "when they are using GnomeMeeting so that you can call them, and they can "
-#~ "call you."
-#~ msgstr ""
-#~ "Vui lòng nhập thông tin về bạn. Thông tin này sẽ được dùng khi đang kết "
-#~ "nối với phần mềm H.323 từ xa, và được dùng để đăng ký trong thư mục của "
-#~ "người dùng GnomeMeeting. Thư mục này được dùng để đăng ký người dùng khi "
-#~ "họ dùng GnomeMeeting, nhờ thế bạn có thể gọi đến họ và họ có thể gọi đến "
-#~ "bạn."
+msgid "Show left toolbar"
+msgstr "Hiện thanh công cụ trái"
 
-#~ msgid "Last Name:"
-#~ msgstr "Họ:"
+msgid "Show only the docklet window at startup"
+msgstr "Chỉ hiện cửa sổ docklet lúc khởi động"
 
-#~ msgid "Do not register me to the GnomeMeeting ILS directory"
-#~ msgstr "Không đăng ký tôi với dịch vụ GnomeMeeting ILS"
+msgid "Show splash screen at startup"
+msgstr "Hiện Splash Screen lúc khởi động"
 
-#~ msgid "Custom"
-#~ msgstr "Tự chọn"
+msgid "Show the left toolbar on the left of the main window"
+msgstr "Hiện thanh công cụ bên trái của cửa sổ chính"
 
-#~ msgid "GnomeMeeting Configuration Assistant - Page 1/4"
-#~ msgstr "Trợ tá cấu hình GnomeMeeting - Trang 1/4"
+msgid "The E-Mail address that will be listed in the directories"
+msgstr "Địa chỉ email sẽ được ghi vào thư mục"
 
-#~ msgid ""
-#~ "You have successfully set up GnomeMeeting. Enjoy!\n"
-#~ "   -- The GnomeMeeting development team"
-#~ msgstr ""
-#~ "Bạn đã thiết lập thành công GnomeMeeting. Hãy thưởng thức!\n"
-#~ "   -- Nhóm phát triển GnomeMeeting"
+msgid "The Gatekeeper password"
+msgstr "Mật khẩu Gatekeeper"
 
-#~ msgid "Done! - Page 4/4"
-#~ msgstr "Xong! - Trang 4/4"
+msgid "The Gatekeeper to register to"
+msgstr "Máy chủ Gatekeeper cần đăng ký"
 
-#~ msgid "Error while opening the Quicknet device. Disabling Quicknet device."
-#~ msgstr "Lỗi mở thiết bị Quicknet. Tắt thiết bị Quicknet."
+msgid "The ID of the Gatekeeper to register to"
+msgstr "ID cửa máy chủ Gatekeeper cần đăng ký"
 
-#~ msgid "XDAP Server Browser"
-#~ msgstr "Bộ duyệt XDAP"
+msgid "The LDAP Server to register to"
+msgstr "Thư mục LDAP cần đăng ký"
 
-#~ msgid "Find users on"
-#~ msgstr "Tìm người dùng trên"
+msgid "The Location that will be published in the LDAP directories"
+msgstr "Vị trí được công bố trong thư mục LDAP"
 
-#~ msgid "ILS Users List"
-#~ msgstr "Danh sách người dùng ILS"
+msgid "The Method to use to register to the Gatekeeper"
+msgstr "Phương thức được dùng cần đăng ký cho Gatekeeper"
 
-#~ msgid "E-Mail"
-#~ msgstr "Email"
+msgid "The Quicknet Device to use during calls."
+msgstr "Thiết bị Quicknet cần dùng trong suốt cuộc gọi."
 
-#~ msgid ""
-#~ "Sent/Received: %.3f Mb/%.3f Mb\n"
-#~ "Lost/Late Packets: %d/%d\n"
-#~ "Round trip delay: %d ms"
-#~ msgstr ""
-#~ "Gửi/Nhận: %.3f Mb/%.3f Mb\n"
-#~ "Gói mất/trễ: %d/%d\n"
-#~ "Round trip delay: %d mili giây"
+msgid "The Video Channel"
+msgstr "Kênh hình"
 
-#~ msgid ""
-#~ "GnomeMeeting just set the new Speex audio codec as default. Speex is a "
-#~ "high quality, GPL audio codec introduced in GnomeMeeting 0.94."
-#~ msgstr ""
-#~ "GnomeMeeting mặc định sẽ dùng audio codec Speex. Speex là GPL audio codec "
-#~ "chất lượng cao, được giới thiệu trong GnomeMeeting 0.94."
+msgid "The Video Device to use for recording"
+msgstr "Thiết bị thu hình cần dùng"
 
-#~ msgid "Video Settings"
-#~ msgstr "Thiết lập hình ảnh"
+msgid "The Video Format: PAL, NTSC, SECAM, Auto"
+msgstr "Dạng thức hình: PAL, NTSC, SECAM, Tự động"
 
-#~ msgid "Audio Settings"
-#~ msgstr "Thiết lập âm thanh"
+msgid "The Video Size: QCIF (0) or CIF (1)"
+msgstr "Kích thước ảnh: QCIF (0) hay CIF (1)"
 
-#~ msgid "_Save"
-#~ msgstr "_Lưu"
+msgid "The alias to use when registering"
+msgstr "Bí danh được dùng khi đăng ký"
 
-#~ msgid "Toolbar"
-#~ msgstr "Thanh công cụ"
+msgid ""
+"The alias to use when registering. People will use this alias when calling "
+"you."
+msgstr ""
+"Bí danh dùng để đăng ký. Mọi người sẽ dùng bí danh này khi gọi cho bạn."
 
-#~ msgid "View/Hide the Toolbar"
-#~ msgstr "Hiện/Ẩn thanh công cụ"
+msgid "The device to use to play audio"
+msgstr "Thiết bị phát âm"
 
-#~ msgid "View/Hide the Tray Icon"
-#~ msgstr "Hiện/Ẩn khay biểu tượng"
+msgid "The device to use to record audio"
+msgstr "Thiết bị thu âm"
 
-#~ msgid "Toggle Fullscreen"
-#~ msgstr "Bật tắt toàn màn hình"
+msgid ""
+"The height of the picture displayed when being in fullscreen (using SDL)"
+msgstr "Chiều cao ảnh hiển thị toàn màn hình (dùng SDL)"
 
-#~ msgid "Configuration Assistant"
-#~ msgstr "Trợ tá cấu hình"
+msgid "The host to forward calls to"
+msgstr "Máy chủ chuyển cuộc gọi đến"
 
-#~ msgid "Start The Configuration Assistant"
-#~ msgstr "Khởi động Druid trợ tá cấu hình"
+msgid "The hostname of the Gatekeeper to register to"
+msgstr "Tên máy chủ Gatekeeper cần đăng ký"
 
-#~ msgid "Do Not Disturb"
-#~ msgstr "Không làm ồn"
+msgid "The list of used ILS servers"
+msgstr "Danh sách ILS server được dùng"
 
-#~ msgid "XDAP Browser"
-#~ msgstr "Bộ duyệt XDAP"
+msgid "The mixer to use for the device that is used to play audio"
+msgstr "Bộ trộn âm dùng để thiết lập âm lượng của thiết bị phát âm"
 
-#~ msgid "_File"
-#~ msgstr "_Tập tin"
+msgid "The mixer to use for the device that is used to record audio"
+msgstr "Bộ trộn âm dùng để thiết lập âm lượng của thiết bị thu âm"
 
-#~ msgid "Ignore"
-#~ msgstr "Bỏ qua"
+msgid "The user's first name that will be used in the directories"
+msgstr "Tên người dùng được dùng trong thư mục"
 
-#~ msgid "Where do you call from?"
-#~ msgstr "Bạn gọi đến từ đâu?"
+msgid "The width of the picture displayed when being in fullscreen (using SDL)"
+msgstr "Độ rộng ảnh được hiển thị trong chế độ toàn màn hình (dùng SDL)"
 
-#~ msgid "Popup window"
-#~ msgstr "Cửa sổ bật"
+msgid "This need the show_docklet option set to true to have effect"
+msgstr ""
+"Điều này cần phải chọn tùy chọn Hiện Docklet thì mới có thể có tác dụng"
 
-#~ msgid "XDAP Directory"
-#~ msgstr "Thư mục XDAP"
+msgid "Use Quicknet Device"
+msgstr "Dùng thiết bị Quicknet"
 
-#~ msgid "XDAP Directory:"
-#~ msgstr "Thư mục XDAP:"
+msgid "Video Quality"
+msgstr "Chất lượng ảnh"
 
-#~ msgid "Automatic Gain Compensation"
-#~ msgstr "Tự động"
+msgid ""
+"Warning! GnomeMeeting can't disconnect from the remote party due to a bug in "
+"OpenH323.\n"
+"Forcing the exit in 3 seconds!\n"
+msgstr ""
+"Cảnh báo! GnomeMeeting không thể ngắt kết nối khỏi máy từ xa vì lỗi trong "
+"OpenH323.\n"
+"Đang buộc kết thúc trong 3 giây!\n"
 
-#~ msgid "Audio Player:"
-#~ msgstr "Bộ phát âm:"
+msgid "Set Audio Mixer for player to %s"
+msgstr "Đặt bộ trộn âm cho bộ phát là %s"
 
-#~ msgid "Player Mixer:"
-#~ msgstr "Bộ trộn âm:"
+msgid "Set Audio Mixer for recorder to %s"
+msgstr "Đặt bộ trộn âm cho bộ thu là %s"
 
-#~ msgid "Audio Recorder:"
-#~ msgstr "Bộ thu âm:"
+msgid "Auto Rejecting Incoming Call"
+msgstr "Tự động từ chối cuộc gọi đến"
 
-#~ msgid "Recorder Mixer:"
-#~ msgstr "Bộ trộn thu:"
+msgid "Personal Data - Page 2/4"
+msgstr "Dữ liệu cá nhân - Trang 2/4"
 
-#~ msgid "Country Code:"
-#~ msgstr "Mã quốc gia:"
+msgid ""
+"Please enter information about yourself. This information will be used when "
+"connecting to remote H.323 software, and to register in the directory of "
+"GnomeMeeting users. The directory is used to register users when they are "
+"using GnomeMeeting so that you can call them, and they can call you."
+msgstr ""
+"Vui lòng nhập thông tin về bạn. Thông tin này sẽ được dùng khi đang kết nối "
+"với phần mềm H.323 từ xa, và được dùng để đăng ký trong thư mục của người "
+"dùng GnomeMeeting. Thư mục này được dùng để đăng ký người dùng khi họ dùng "
+"GnomeMeeting, nhờ thế bạn có thể gọi đến họ và họ có thể gọi đến bạn."
 
-#~ msgid "Use the Quicknet Device"
-#~ msgstr "Dùng thiết bị Quicknet"
+msgid "Last Name:"
+msgstr "Họ:"
 
-#~ msgid "PAL"
-#~ msgstr "PAL"
+msgid "Do not register me to the GnomeMeeting ILS directory"
+msgstr "Không đăng ký tôi với dịch vụ GnomeMeeting ILS"
 
-#~ msgid "NTSC"
-#~ msgstr "NTSC"
+msgid "Custom"
+msgstr "Tự chọn"
 
-#~ msgid "SECAM"
-#~ msgstr "SECAM"
+msgid "GnomeMeeting Configuration Assistant - Page 1/4"
+msgstr "Trợ tá cấu hình GnomeMeeting - Trang 1/4"
 
-#~ msgid "Here you can choose the transmitted video format."
-#~ msgstr "Bạn chọn dạng thức video gửi đi ở đây"
+msgid ""
+"You have successfully set up GnomeMeeting. Enjoy!\n"
+"   -- The GnomeMeeting development team"
+msgstr ""
+"Bạn đã thiết lập thành công GnomeMeeting. Hãy thưởng thức!\n"
+"   -- Nhóm phát triển GnomeMeeting"
 
-#~ msgid ""
-#~ "If enabled, the video preview mode will be set activated and you will be "
-#~ "able to see yourself without being in a call."
-#~ msgstr ""
-#~ "Nếu bật, chế độ xem trước hình sẽ được kích hoạt và bạn sẽ có thể thấy "
-#~ "chính bạn mà không cần gọi đi."
+msgid "Done! - Page 4/4"
+msgstr "Xong! - Trang 4/4"
 
-#~ msgid "Jitter Buffer:"
-#~ msgstr "Vùng đệm jitter:"
+msgid "Error while opening the Quicknet device. Disabling Quicknet device."
+msgstr "Lỗi mở thiết bị Quicknet. Tắt thiết bị Quicknet."
 
-#~ msgid "GSM Frames per packet:"
-#~ msgstr "Số khung GSM mỗi gói:"
+msgid "XDAP Server Browser"
+msgstr "Bộ duyệt XDAP"
 
-#~ msgid "The number of frames in each transmitted GSM packet."
-#~ msgstr "Số khung trong mỗi gói GSM được gửi."
+msgid "Find users on"
+msgstr "Tìm người dùng trên"
 
-#~ msgid "G.711 Frames per packet:"
-#~ msgstr "Số khung G.711 mỗi gói:"
+msgid "ILS Users List"
+msgstr "Danh sách người dùng ILS"
 
-#~ msgid "The number of frames in each transmitted G.711 packet."
-#~ msgstr "Số khung trên mỗi gói G.711 được gửi."
+msgid "E-Mail"
+msgstr "Email"
 
-#~ msgid "Enable FPS Limitation"
-#~ msgstr "Bật giới hạn FPS"
+msgid ""
+"Sent/Received: %.3f Mb/%.3f Mb\n"
+"Lost/Late Packets: %d/%d\n"
+"Round trip delay: %d ms"
+msgstr ""
+"Gửi/Nhận: %.3f Mb/%.3f Mb\n"
+"Gói mất/trễ: %d/%d\n"
+"Round trip delay: %d mili giây"
 
-#~ msgid "Enable/disable the limit on the transmitted FPS."
-#~ msgstr "Bật/tắt giới hạn FPS gửi đi"
+msgid ""
+"GnomeMeeting just set the new Speex audio codec as default. Speex is a high "
+"quality, GPL audio codec introduced in GnomeMeeting 0.94."
+msgstr ""
+"GnomeMeeting mặc định sẽ dùng audio codec Speex. Speex là GPL audio codec "
+"chất lượng cao, được giới thiệu trong GnomeMeeting 0.94."
 
-#~ msgid "Enable/disable the video transmission."
-#~ msgstr "Bật/tắt truyền ảnh"
+msgid "Video Settings"
+msgstr "Thiết lập hình ảnh"
 
-#~ msgid "H.261 Settings"
-#~ msgstr "Thiết lập H.261"
+msgid "_Save"
+msgstr "_Lưu"
 
-#~ msgid "Received Video Quality:"
-#~ msgstr "Chất lượng nhận ảnh:"
+msgid "Toolbar"
+msgstr "Thanh công cụ"
 
-#~ msgid ""
-#~ "The received video quality:  choose 100% on a LAN for the best quality, "
-#~ "1% being the worst quality."
-#~ msgstr ""
-#~ "Chất lượng nhận ảnh: chọn 100% trên LAN để có chất lượng tối đa, 1% sẽ "
-#~ "cho chất lượng tệ nhất."
+msgid "View/Hide the Toolbar"
+msgstr "Hiện/Ẩn thanh công cụ"
 
-#~ msgid "Chat"
-#~ msgstr "Tán gẫu"
+msgid "View/Hide the Tray Icon"
+msgstr "Hiện/Ẩn khay biểu tượng"
 
-#~ msgid "Do Not Accept Calls"
-#~ msgstr "Không chấp nhận cuộc gọi"
+msgid "Toggle Fullscreen"
+msgstr "Bật tắt toàn màn hình"
 
-#~ msgid "Show Main Window"
-#~ msgstr "Hiện cửa sổ chính"
+msgid "Configuration Assistant"
+msgstr "Trợ tá cấu hình"
 
-#~ msgid "Show The Main Window"
-#~ msgstr "Hiện cửa sổ chính"
+msgid "Start The Configuration Assistant"
+msgstr "Khởi động Druid trợ tá cấu hình"
 
-#~ msgid "Copyright (C) 2000, 2002 Damien Sandras"
-#~ msgstr "Copyright (C) 2000, 2002 Damien Sandras"
+msgid "Do Not Disturb"
+msgstr "Không làm ồn"
 
-#~ msgid "Call from %s"
-#~ msgstr "Gọi từ %s"
+msgid "XDAP Browser"
+msgstr "Bộ duyệt XDAP"
 
-#~ msgid "Remote party did not answer your call"
-#~ msgstr "Bên đối diện không trả lời cuộc gọi"
+msgid "Ignore"
+msgstr "Bỏ qua"
 
-#~ msgid "Could not resume ESD"
-#~ msgstr "Không thể tiếp tục ESD"
+msgid "Where do you call from?"
+msgstr "Bạn gọi đến từ đâu?"
 
-#~ msgid "ESD resumed"
-#~ msgstr "ESD đã tiếp tục"
+msgid "Popup window"
+msgstr "Cửa sổ bật"
 
-#~ msgid "Could not suspend ESD"
-#~ msgstr "Không thể suspend ESD"
+msgid "XDAP Directory"
+msgstr "Thư mục XDAP"
 
-#~ msgid "ESD suspended"
-#~ msgstr "Đã suspend ESD"
+msgid "XDAP Directory:"
+msgstr "Thư mục XDAP:"
 
-#~ msgid "Could not suspend artsd"
-#~ msgstr "Không thể suspend aRTsd"
+msgid "Automatic Gain Compensation"
+msgstr "Tự động"
 
-#~ msgid "artsd suspended"
-#~ msgstr "Đã suspend aRTsd"
+msgid "Audio Player:"
+msgstr "Bộ phát âm:"
 
-#~ msgid "Connecting to ILS directory %s, port %s"
-#~ msgstr "Đang kết nối tới thư mục ILS %s, cổng %s"
+msgid "Audio Recorder:"
+msgstr "Bộ thu âm:"
 
-#~ msgid "Error while connecting to ILS directory %s, port %s"
-#~ msgstr "Lỗi kết nối tới thư mục ILS %s, cổng %s"
+msgid "Country Code:"
+msgstr "Mã quốc gia:"
 
-#~ msgid "Sucessfully registered to ILS directory %s, port %s"
-#~ msgstr "Đăng ký với thư mục ILS %s, cổng %s thành công"
+msgid "Use the Quicknet Device"
+msgstr "Dùng thiết bị Quicknet"
 
-#~ msgid "Sucessfully unregistered from ILS directory %s, port %s"
-#~ msgstr "Hủy đăng ký với thư mục ILS %s, cổng %s thành công"
+msgid "PAL"
+msgstr "PAL"
 
-#~ msgid "Please provide an ILS directory in the window"
-#~ msgstr "Vui lòng cung cấp thư mục ILS trong cửa sổ"
+msgid "NTSC"
+msgstr "NTSC"
 
-#~ msgid "Connecting to ILS directory... Please Wait."
-#~ msgstr "Đang kết nối tới thư mục ILS... Vui lòng chờ."
+msgid "SECAM"
+msgstr "SECAM"
 
-#~ msgid "Search completed!"
-#~ msgstr "Tìm hoàn tất!"
+msgid "Here you can choose the transmitted video format."
+msgstr "Bạn chọn dạng thức video gửi đi ở đây"
 
-#~ msgid "Find"
-#~ msgstr "Tìm"
+msgid ""
+"If enabled, the video preview mode will be set activated and you will be "
+"able to see yourself without being in a call."
+msgstr ""
+"Nếu bật, chế độ xem trước hình sẽ được kích hoạt và bạn sẽ có thể thấy chính "
+"bạn mà không cần gọi đi."
 
-#~ msgid "e-mail"
-#~ msgstr "email"
+msgid "Jitter Buffer:"
+msgstr "Vùng đệm jitter:"
 
-#~ msgid "location"
-#~ msgstr "vị trí"
+msgid "GSM Frames per packet:"
+msgstr "Số khung GSM mỗi gói:"
 
-#~ msgid "History Log"
-#~ msgstr "Log Nhật ký"
+msgid "The number of frames in each transmitted GSM packet."
+msgstr "Số khung trong mỗi gói GSM được gửi."
 
-#~ msgid "View/Hide the Docklet"
-#~ msgstr "Hiện/Ẩn docklet"
+msgid "G.711 Frames per packet:"
+msgstr "Số khung G.711 mỗi gói:"
 
-#~ msgid ""
-#~ "Error while opening video device %s, channel %d.\n"
-#~ "A test image will be transmitted."
-#~ msgstr ""
-#~ "Lỗi mở thiết bị hình %s, kênh %d.\n"
-#~ "Ảnh thử sẽ được gửi đi."
+msgid "The number of frames in each transmitted G.711 packet."
+msgstr "Số khung trên mỗi gói G.711 được gửi."
 
-#~ msgid "H.323 Client"
-#~ msgstr "H.323 Client"
+msgid "Enable FPS Limitation"
+msgstr "Bật giới hạn FPS"
 
-#~ msgid "Fake Setting"
-#~ msgstr "Thiết lập làm giả"
+msgid "Enable/disable the limit on the transmitted FPS."
+msgstr "Bật/tắt giới hạn FPS gửi đi"
 
-#~ msgid "Both"
-#~ msgstr "Cả hai"
+msgid "Enable/disable the video transmission."
+msgstr "Bật/tắt truyền ảnh"
 
-#~ msgid "Miguel Rodriguez Perez <migrax@terra.es>"
-#~ msgstr "Miguel Rodriguez Perez <migrax@terra.es>"
+msgid "H.261 Settings"
+msgstr "Thiết lập H.261"
 
-#~ msgid "This change will only affect new calls."
-#~ msgstr "Việc này sẽ chỉ tác động đến các cuộc gọi mới."
+msgid "Received Video Quality:"
+msgstr "Chất lượng nhận ảnh:"
 
-#~ msgid "This change will only affect new calls"
-#~ msgstr "Việc này sẽ chỉ tác động đến các cuộc gọi mới"
+msgid ""
+"The received video quality:  choose 100% on a LAN for the best quality, 1% "
+"being the worst quality."
+msgstr ""
+"Chất lượng nhận ảnh: chọn 100% trên LAN để có chất lượng tối đa, 1% sẽ cho "
+"chất lượng tệ nhất."
 
-#~ msgid "Welcome to GnomeMeeting!"
-#~ msgstr "Chào mừng tới GnomeMeeting!"
+msgid "Chat"
+msgstr "Tán gẫu"
 
-#~ msgid ""
-#~ "Please check your gconf settings and permissions, it seems that gconf is "
-#~ "not properly setup on your system"
-#~ msgstr ""
-#~ "Vui lòng kiểm tra thiết lập gconf và quyền truy cập. Có lẽ gconf không "
-#~ "được thiết lập đúng trên hệ thống"
+msgid "Do Not Accept Calls"
+msgstr "Không chấp nhận cuộc gọi"
 
-#~ msgid ""
-#~ "Error: %s \n"
-#~ "You can choose to ignore and continue, or to close GnomeMeeting."
-#~ msgstr ""
-#~ "Lỗi: %s\n"
-#~ "Bạn có thể chọn Bỏ qua hoặc Tiếp tục, hoặc đóng GnomeMeeting."
+msgid "Show Main Window"
+msgstr "Hiện cửa sổ chính"
 
-#~ msgid "Continue"
-#~ msgstr "Tiếp tục"
+msgid "Show The Main Window"
+msgstr "Hiện cửa sổ chính"
 
-#~ msgid "OKay"
-#~ msgstr "Đồng ý"
+msgid "Copyright (C) 2000, 2002 Damien Sandras"
+msgstr "Copyright (C) 2000, 2002 Damien Sandras"
 
-#~ msgid "This enables H.245 Tunnelling mode."
-#~ msgstr "Bật chế độ đường hầm H.245"
+msgid "Call from %s"
+msgstr "Gọi từ %s"
 
-#~ msgid "Device Settings"
-#~ msgstr "Thiết lập thiết bị"
+msgid "Remote party did not answer your call"
+msgstr "Bên đối diện không trả lời cuộc gọi"
+
+msgid "Could not resume ESD"
+msgstr "Không thể tiếp tục ESD"
+
+msgid "ESD resumed"
+msgstr "ESD đã tiếp tục"
+
+msgid "Could not suspend ESD"
+msgstr "Không thể suspend ESD"
+
+msgid "ESD suspended"
+msgstr "Đã suspend ESD"
+
+msgid "Could not suspend artsd"
+msgstr "Không thể suspend aRTsd"
+
+msgid "artsd suspended"
+msgstr "Đã suspend aRTsd"
+
+msgid "Connecting to ILS directory %s, port %s"
+msgstr "Đang kết nối tới thư mục ILS %s, cổng %s"
+
+msgid "Error while connecting to ILS directory %s, port %s"
+msgstr "Lỗi kết nối tới thư mục ILS %s, cổng %s"
+
+msgid "Sucessfully registered to ILS directory %s, port %s"
+msgstr "Đăng ký với thư mục ILS %s, cổng %s thành công"
+
+msgid "Sucessfully unregistered from ILS directory %s, port %s"
+msgstr "Hủy đăng ký với thư mục ILS %s, cổng %s thành công"
+
+msgid "Please provide an ILS directory in the window"
+msgstr "Vui lòng cung cấp thư mục ILS trong cửa sổ"
+
+msgid "Connecting to ILS directory... Please Wait."
+msgstr "Đang kết nối tới thư mục ILS... Vui lòng chờ."
+
+msgid "Search completed!"
+msgstr "Tìm hoàn tất!"
+
+msgid "e-mail"
+msgstr "email"
+
+msgid "location"
+msgstr "vị trí"
+
+msgid "History Log"
+msgstr "Log Nhật ký"
+
+msgid "View/Hide the Docklet"
+msgstr "Hiện/Ẩn docklet"
+
+msgid ""
+"Error while opening video device %s, channel %d.\n"
+"A test image will be transmitted."
+msgstr ""
+"Lỗi mở thiết bị hình %s, kênh %d.\n"
+"Ảnh thử sẽ được gửi đi."
+
+msgid "H.323 Client"
+msgstr "H.323 Client"
+
+msgid "Fake Setting"
+msgstr "Thiết lập làm giả"
+
+msgid "Both"
+msgstr "Cả hai"
+
+msgid "Miguel Rodriguez Perez <migrax@terra.es>"
+msgstr "Miguel Rodriguez Perez <migrax@terra.es>"
+
+msgid "This change will only affect new calls."
+msgstr "Việc này sẽ chỉ tác động đến các cuộc gọi mới."
+
+msgid "This change will only affect new calls"
+msgstr "Việc này sẽ chỉ tác động đến các cuộc gọi mới"
+
+msgid "Welcome to GnomeMeeting!"
+msgstr "Chào mừng tới GnomeMeeting!"
+
+msgid ""
+"Please check your gconf settings and permissions, it seems that gconf is not "
+"properly setup on your system"
+msgstr ""
+"Vui lòng kiểm tra thiết lập gconf và quyền truy cập. Có lẽ gconf không được "
+"thiết lập đúng trên hệ thống"
+
+msgid ""
+"Error: %s \n"
+"You can choose to ignore and continue, or to close GnomeMeeting."
+msgstr ""
+"Lỗi: %s\n"
+"Bạn có thể chọn Bỏ qua hoặc Tiếp tục, hoặc đóng GnomeMeeting."
+
+msgid "Continue"
+msgstr "Tiếp tục"
+
+msgid "OKay"
+msgstr "Đồng ý"
+
+msgid "This enables H.245 Tunnelling mode."
+msgstr "Bật chế độ đường hầm H.245"
+
+msgid "Device Settings"
+msgstr "Thiết lập thiết bị"
