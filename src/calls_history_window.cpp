@@ -37,7 +37,7 @@
 
 #include <gnome.h>
 
-static void calls_history_window_clicked (GtkDialog *, int, gpointer);
+static gint calls_history_window_clicked (GtkWidget *, GdkEvent *, gpointer);
 
 
 extern GtkWidget *gm;
@@ -47,7 +47,7 @@ extern GtkWidget *gm;
  * BEHAVIOR     :  Hide the window.
  * PRE          :  gpointer is a valid pointer to a GmWindow.
  */
-void calls_history_window_clicked (GtkDialog *widget, int button, 
+gint calls_history_window_clicked (GtkWidget *widget, GdkEvent *ev, 
 				   gpointer data)
 {
   GmWindow *gw = (GmWindow *) data;
@@ -55,6 +55,8 @@ void calls_history_window_clicked (GtkDialog *widget, int button,
   if (gw->ldap_window)
     if (GTK_WIDGET_VISIBLE (gw->calls_history_window))
       gtk_widget_hide_all (gw->calls_history_window);
+
+  return TRUE;
 }
 
 
@@ -101,9 +103,6 @@ void gnomemeeting_init_calls_history_window ()
   gtk_container_add (GTK_CONTAINER (gw->calls_history_window), frame);    
  
   g_signal_connect (G_OBJECT (gw->calls_history_window), "delete_event",
-		    G_CALLBACK (calls_history_window_clicked), (gpointer) gw);
-
-  g_signal_connect (G_OBJECT (gw->calls_history_window), "destroy",
 		    G_CALLBACK (calls_history_window_clicked), (gpointer) gw);
 }
 

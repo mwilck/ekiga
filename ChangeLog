@@ -1,3 +1,18 @@
+2002-09-02  Damien Sandras  <dsandras@seconix.com>
+
+	* src/calls_history_window.cpp: Do not associated the destroy event
+	to a hide. Delete event is called when the window is deleted. Just
+	hide in that case, so that we can make a destroy at the end of the
+	execution.
+
+	* src/ldap_window.cpp: Same.
+
+	* src/pref_window.cpp: Same.	
+	
+	* src/main_window.cpp: Fixed bug: create calls history before the menu.
+
+	* src/menu.cpp: Cosmetic change.
+	
 2002-09-01  Damien Sandras  <dsandras@seconix.com>
 
 	* configure.in: Added Esound to pkg-config.

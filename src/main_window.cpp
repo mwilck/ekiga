@@ -1049,9 +1049,9 @@ gnomemeeting_init (GmWindow *gw,
   gnomemeeting_init_main_window ();
   gnomemeeting_init_ldap_window ();
   gnomemeeting_init_pref_window ();  
+  gnomemeeting_init_calls_history_window ();
   gnomemeeting_init_menu ();
   gnomemeeting_init_toolbar ();
-  gnomemeeting_init_calls_history_window ();
 
  
   /* Launch the GnomeMeeting H.323 part */

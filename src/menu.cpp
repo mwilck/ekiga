@@ -512,7 +512,7 @@ void gnomemeeting_init_menu ()
     {
       {
         GNOME_APP_UI_ITEM,
-        N_("XDAP _Browser"), N_("XDAP Browser"),
+        N_("XDAP Browser"), N_("XDAP Browser"),
 	(void *) gnomemeeting_component_view, gw->ldap_window , NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	0, GDK_CONTROL_MASK, NULL

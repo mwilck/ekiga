@@ -52,7 +52,7 @@ extern GnomeMeeting *MyApp;
 static void row_activated (GtkTreeView *, GtkTreePath *, GtkTreeViewColumn *);
 static void ldap_notebook_clicked (GtkDialog *,  GtkNotebookPage *, 
 				   gint, gpointer);
-static void ldap_window_clicked (GtkDialog *, int, gpointer);
+static gint ldap_window_clicked (GtkWidget *, GdkEvent *, gpointer);
 static void search_entry_modified (GtkWidget *, gpointer);
 static void search_entry_activated (GtkEntry *, gpointer);
 static void refresh_button_clicked (GtkButton *, gpointer);
@@ -146,13 +146,15 @@ void ldap_notebook_clicked (GtkDialog *widget,  GtkNotebookPage *p,
  * BEHAVIOR     :  Hide the window.
  * PRE          :  gpointer is a valid pointer to a GmLdapWindow.
  */
-void ldap_window_clicked (GtkDialog *widget, int button, gpointer data)
+gint ldap_window_clicked (GtkWidget *widget, GdkEvent *ev, gpointer data)
 {
   GmWindow *gw = (GmWindow *) data;
 
   if (gw->ldap_window)
     if (GTK_WIDGET_VISIBLE (gw->ldap_window))
       gtk_widget_hide_all (gw->ldap_window);
+
+  return TRUE;
 }
 
 
@@ -581,9 +583,6 @@ void gnomemeeting_init_ldap_window ()
 		    G_CALLBACK (ldap_notebook_clicked), (gpointer) lw);
 
   g_signal_connect (G_OBJECT (gw->ldap_window), "delete_event",
-		    G_CALLBACK (ldap_window_clicked), (gpointer) gw);
-
-  g_signal_connect (G_OBJECT (gw->ldap_window), "destroy",
 		    G_CALLBACK (ldap_window_clicked), (gpointer) gw);
 }
 

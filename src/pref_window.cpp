@@ -53,7 +53,7 @@ extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;	
 
 static void pref_window_clicked_callback (GtkDialog *, int, gpointer);
-static gint pref_window_destroy_callback (GtkWidget *, gpointer);
+static gint pref_window_destroy_callback (GtkWidget *, GdkEvent *, gpointer);
 static void personal_data_update_button_clicked (GtkWidget *, gpointer);
 static void codecs_list_button_clicked_callback (GtkWidget *, gpointer);
 static void gnomemeeting_codecs_list_add (GtkTreeIter, GtkListStore *, 
@@ -236,11 +236,12 @@ static void pref_window_clicked_callback (GtkDialog *widget, int button,
 }
 
 
-/* DESCRIPTION  :  This callback is called when the pref window is destroyed.
+/* DESCRIPTION  :  This callback is called when the pref window is deleted.
  * BEHAVIOR     :  Prevents the destroy, only hides the window.
  * PRE          :  /
  */
-static gint pref_window_destroy_callback (GtkWidget *widget, gpointer data)
+static gint pref_window_destroy_callback (GtkWidget *widget, GdkEvent *ev,
+					  gpointer data)
 {
   gtk_widget_hide (GTK_WIDGET (widget));
   return (TRUE);
@@ -1857,6 +1858,10 @@ void gnomemeeting_init_pref_window ()
 
   g_signal_connect (G_OBJECT (gw->pref_window), "response",
  		    G_CALLBACK (pref_window_clicked_callback), 
+ 		    (gpointer) pw);
+
+  g_signal_connect (G_OBJECT (gw->pref_window), "delete_event",
+ 		    G_CALLBACK (pref_window_destroy_callback), 
  		    (gpointer) pw);
 
   gtk_window_set_title (GTK_WINDOW (gw->pref_window), 
