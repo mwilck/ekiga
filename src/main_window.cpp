@@ -1107,7 +1107,7 @@ gnomemeeting_init (GmWindow *gw,
 
       gchar *iso_8859_1_local_name = NULL;
       iso_8859_1_local_name = g_convert (local_name, strlen (local_name),
-					 "ISO-8859-1", "UTF8", 0, 0, 0);
+					 "ISO-8859-1", "UTF-8", 0, 0, 0);
       endpoint->SetLocalUserName (iso_8859_1_local_name);
       g_free (iso_8859_1_local_name);
     }

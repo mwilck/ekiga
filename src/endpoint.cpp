@@ -1046,7 +1046,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
     (client, "/apps/gnomemeeting/general/auto_answer", 0);
 
 
-  /* Convert the remote party name and app to UTF8 */
+  /* Convert the remote party name and app to UTF-8 */
   utf8_name = g_convert ((const char *) name, strlen ((const char *) name),
 			 "UTF-8", "ISO-8859-1", NULL, NULL, NULL);
   utf8_app = g_convert ((const char *) app, strlen ((const char *) app),

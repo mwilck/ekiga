@@ -342,7 +342,7 @@ void GMH323Connection::OnUserInputString(const PString & value)
 {
   PString val;
   PString remote = GetRemotePartyName ();
-  /* The remote party name has to be converted to UTF8, but not
+  /* The remote party name has to be converted to UTF-8, but not
      the text */
   gchar *utf8_remote = NULL;
 

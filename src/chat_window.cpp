@@ -59,7 +59,7 @@ static void chat_entry_activate (GtkEditable *w, gpointer data)
   if (endpoint) {
         
     PString local = endpoint->GetLocalUserName ();
-    /* The local party name has to be converted to UTF8, but not
+    /* The local party name has to be converted to UTF-8, but not
        the text */
     gchar *utf8_local = NULL;
 
