@@ -261,6 +261,10 @@ GnomeMeeting::DetectDevices ()
 	  << setfill (' '));
   
 
+  fake_idx = video_managers.GetValuesIndex (PString ("Picture"));
+  if (fake_idx == P_MAX_INDEX)
+    return FALSE;
+
   /* No audio plugin => Exit */
   if (audio_managers.GetSize () == 0)
     return FALSE;
