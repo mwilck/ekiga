@@ -1,3 +1,39 @@
+2005-02-20  Damien Sandras  <dsandras@gnome.org>
+
+	* gnomemeeting.schemas.in.in: Added keys for the accounts and removed
+	unused keys.
+
+	* src/sipregistrar.cpp,.h: Removed those files.
+
+	* src/accounts.*: Added those files to permit several types of VoIP
+	accounts grouped together in the preferences.
+
+	* lib/contacts/gm_contacts-eds.cpp: Fixed problems with EDS 1.2.
+
+	* src/Makefile.am: Added support for accounts.*, 
+	removed old sipregistrar.* code.
+
+	* src/sipendpoint.*: Adapted to latest OPAL API.
+
+	* src/pref_window.*: Added code to allow several VoIP accounts 
+	at the same time in the preferences.
+
+	* srC/main_window.cpp: Fixed problem with GTK+ 2.6.
+
+	* src/h323endpoint.cpp: Added GetIdentifier support to know if we 
+	are rejecting ourselves.
+
+	* src/endpoint.*: Fixed problems with some polycom units. 
+	Added support for the new GMAccountsManager.
+
+	* src/gnomemeeting.cpp: Force exit when there is no Fake picture plugin.
+
+	* src/config.cpp: Added notifiers to rebuild the accounts list 
+	in the UI when an account is changed and to update the fullname 
+	when it is changed.
+
+	* src/common.h: Added PROTOCOLS_KEY define.
+
 2005-02-06  Damien Sandras  <dsandras@gnome.org>
 
 	* help/C/gnomemeeting.xml, help/fr/gnomemeeting.xml: Fixed XML thanks
