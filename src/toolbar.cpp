@@ -36,14 +36,14 @@ void GM_toolbar_init (GtkWidget *gapp, GM_window_widgets *gw,
       {
 	GNOME_APP_UI_ITEM,
 	N_("Connect"), N_("Create A New Connection"),
-	(void *)connect_cb, NULL, NULL,
+	(void *)connect_cb, gw, NULL,
 	GNOME_APP_PIXMAP_DATA, connect_xpm,
 	'C', GDK_CONTROL_MASK, NULL
 	},
 	{
 	GNOME_APP_UI_ITEM,
 	N_("Disconnect"), N_("Close The Current Connection"),
-	(void *)disconnect_cb, NULL, NULL,
+	(void *)disconnect_cb, gw, NULL,
 	GNOME_APP_PIXMAP_DATA, disconnect_xpm,
 	'D', GDK_CONTROL_MASK, NULL
 	},

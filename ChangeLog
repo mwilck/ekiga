@@ -1,5 +1,16 @@
 2001-11-16  Damien Sandras  <dsandras@seconix.com>
 
+	* src/common.h: Added the incoming_call_popup widget to 
+		GM_window_widgets.
+	* src/callbacks.cpp: The popup is now destrpyed even if the use
+	doesn't use it to connect/disconnect.
+	* src/endpoint.cpp: Modified the popup.
+	* src/main.cpp: Small style change.
+	* src/menu.cpp: Added support for the new incoming_call_popup widget.
+	* src/toolbar.cpp: Added support for the new incoming_call_popup widget.
+
+2001-11-16  Damien Sandras  <dsandras@seconix.com>
+
 	* src/main.cpp: Fixed a bug that could appear if the user chooses
 	to answer an incoming call, then immediately chooses to disconnect.
 	* src/ldap.cpp: Make the window a transient for the main application,

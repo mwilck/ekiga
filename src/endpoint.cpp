@@ -438,25 +438,27 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 
   if ((opts->popup) && (!opts->aa) && (!opts->dnd))
     {
-      GtkWidget *msg_box = NULL;
       GtkWidget *label = NULL;
 
-      msg_box = gnome_dialog_new (_("Incoming call"),
-				  _("Connect"), _("Disconnect"),
-				  NULL);
+      gw->incoming_call_popup = gnome_dialog_new (_("Incoming call"),
+						  _("Connect"), _("Disconnect"),
+						  NULL);
 
       label = gtk_label_new (msg);
-      gtk_box_pack_start (GTK_BOX (GNOME_DIALOG (msg_box)->vbox), 
+      gtk_box_pack_start (GTK_BOX 
+			  (GNOME_DIALOG (gw->incoming_call_popup)->vbox), 
 			  label, TRUE, TRUE, 0);
 
-      gnome_dialog_button_connect (GNOME_DIALOG (msg_box),
-				   0, GTK_SIGNAL_FUNC (connect_cb), msg_box);
+      gnome_dialog_button_connect (GNOME_DIALOG (gw->incoming_call_popup),
+				   0, GTK_SIGNAL_FUNC (connect_cb), 
+				   gw);
 
-      gnome_dialog_button_connect (GNOME_DIALOG (msg_box),
-				   1, GTK_SIGNAL_FUNC (disconnect_cb), msg_box);
+      gnome_dialog_button_connect (GNOME_DIALOG (gw->incoming_call_popup),
+				   1, GTK_SIGNAL_FUNC (disconnect_cb), 
+				   gw);
 
       gtk_widget_show (label);
-      gtk_widget_show (msg_box);
+      gtk_widget_show (gw->incoming_call_popup);
     }
   
   g_free (msg);  

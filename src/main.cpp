@@ -74,8 +74,9 @@ gint AppbarUpdate (GtkWidget *statusbar)
 	      minutes = t.GetMinutes () % 60;
 	      seconds = t.GetSeconds () % 60;
 
-	      gchar *msg = g_strdup_printf (_("Connection Time: %.2ld:%.2ld:%.2ld"), 
-					    t.GetHours (), minutes, seconds);
+	      gchar *msg = g_strdup_printf 
+		(_("Connection Time: %.2ld:%.2ld:%.2ld"), 
+		 t.GetHours (), minutes, seconds);
 
 	      gnome_appbar_push (GNOME_APPBAR (statusbar), msg);
 	      
