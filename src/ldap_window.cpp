@@ -1740,7 +1740,7 @@ gnomemeeting_init_ldap_window ()
   
   static MenuEntry addressbook_menu [] =
     {
-      {_("_File"), NULL, NULL, 0, MENU_NEW, NULL, NULL, NULL},
+      {_("Section"), NULL, NULL, 0, MENU_NEW, NULL, NULL, NULL},
 
       {_("New _server"), NULL,
        GM_STOCK_REMOTE_CONTACT, 0, MENU_ENTRY, 
@@ -1752,10 +1752,11 @@ gnomemeeting_init_ldap_window ()
        GTK_SIGNAL_FUNC (new_contact_section_cb),
        GINT_TO_POINTER (CONTACTS_GROUPS), NULL},
 
-      {_("New _contact"), NULL,
-       NULL, 0, MENU_ENTRY, 
-       GTK_SIGNAL_FUNC (edit_contact_cb), GINT_TO_POINTER (1),
-       NULL},
+      {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
+
+      {_("_Delete section"), NULL,
+       GTK_STOCK_DELETE, 0, MENU_ENTRY, 
+       GTK_SIGNAL_FUNC (delete_cb), NULL, NULL},
 
       {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
 
@@ -1765,15 +1766,25 @@ gnomemeeting_init_ldap_window ()
        (gpointer) gw->ldap_window,
        NULL},
 
-      {_("_Edit"), NULL, NULL, 0, MENU_NEW, NULL, NULL, NULL},
+      {_("C_ontact"), NULL, NULL, 0, MENU_NEW, NULL, NULL, NULL},
 
-      {_("_Properties"), NULL,
+      {_("New _contact"), NULL,
+       GTK_STOCK_NEW, 0, MENU_ENTRY, 
+       GTK_SIGNAL_FUNC (edit_contact_cb), GINT_TO_POINTER (1),
+       NULL},
+
+      {_("Add _contact to address book"), NULL,
+       GTK_STOCK_NEW, 0, MENU_ENTRY, 
+       GTK_SIGNAL_FUNC (edit_contact_cb), GINT_TO_POINTER (1),
+       NULL},
+
+      {_("Contact _properties"), NULL,
        GTK_STOCK_PROPERTIES, 0, MENU_ENTRY, 
-       GTK_SIGNAL_FUNC (edit_contact_cb), GINT_TO_POINTER (0), NULL},
+       GTK_SIGNAL_FUNC (edit_contact_cb), GINT_TO_POINTER (0), NULL},  
 
       {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
-      
-      {_("_Delete"), NULL,
+
+      {_("_Delete contact"), NULL,
        GTK_STOCK_DELETE, 0, MENU_ENTRY, 
        GTK_SIGNAL_FUNC (delete_cb), NULL, NULL},
 
