@@ -153,9 +153,9 @@ if test "x${with_ptlib_includes}" != "xno"; then
 	if test "x${ptlib_includes}" != "xno" -a "x${ptlib_includes}" != "x"; then
 		have_ptlib_includes="yes"
                 if test "x${with_ptlib_includes}" != "x/usr/include/ptlib"; then
-                        PTLIB_CFLAGS="-I${with_ptlib_includes}/unix -I${with_ptlib_includes}/.. -I${with_ptlib_includes}/../ptclib"
+                        PTLIB_CFLAGS="-I${with_ptlib_includes}/.. -I${with_ptlib_includes}/../ptclib -I${with_ptlib_includes}/"
                 else
-                        PTLIB_CFLAGS="-I/usr/include/ptlib/unix -I/usr/include/ptclib"
+                        PTLIB_CFLAGS="-I/usr/include/ptclib/ -I/usr/include/ptlib"
                 fi
 		PTLIB_INCLUDE_DIR="${with_ptlib_includes}"
 	else
