@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
 "POT-Creation-Date: 2002-10-07 11:33+0200\n"
-"PO-Revision-Date: 2002-10-07 11:47+0200\n"
+"PO-Revision-Date: 2002-10-10 09:36+0200\n"
 "Last-Translator: GNOME PL Team <translators@gnome.pl>\n"
 "Language-Team: Polish <pl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -100,9 +100,11 @@ msgstr "Nie przeszkadzać"
 msgid "E-Mail address"
 msgstr "Adres e-mail"
 
+#Ja wiem, że to koślawe tłumaczenie, ale tak powinno 
+#ono wyglądać wg tego co rozmawiałęm z Damienem
 #: gnomemeeting.schemas.in.in.h:1
 msgid "Enable FPS"
-msgstr ""
+msgstr "Ograniczanie liczby przesyłanych ramek obrazu"
 
 #: gnomemeeting.schemas.in.in.h:1
 msgid "Enable Silence Detection for G.711 and GSM"
@@ -121,6 +123,8 @@ msgid ""
 "Enable or disable bilinear interpolation when rendering video images (it has "
 "no effect on fullscreen)."
 msgstr ""
+"Włączenie lub wyłączenie dwuliniowej interpolacji dla wyświetlanych obrazów "
+"(opcja ignorowana w trybie pełnoekranowym)."
 
 #: gnomemeeting.schemas.in.in.h:1
 msgid "Enable registering to the LDAP server"
@@ -435,6 +439,8 @@ msgid ""
 "The default video view (0: Local, 1: Remote, 2: Both incrusted, 3: Both with "
 "local in popup, 4: Both)"
 msgstr ""
+"Domyślny widok obrazu (0: lokalny, 1: zdalny, 2: Dwa wtopione, 3: Dwa z "
+"lokalnym w okienku, 4: Dwa)"
 
 #: gnomemeeting.schemas.in.in.h:1
 msgid "The device to use to play audio"
@@ -542,7 +548,7 @@ msgstr "Szerokość okna ze zdalnym obrazem"
 
 #: gnomemeeting.schemas.in.in.h:1
 msgid "This need the show_docklet option set to true to have effect"
-msgstr ""
+msgstr "Wymaga dodatkowego ustawienia wartości true dla opcji show_docklet"
 
 #: gnomemeeting.schemas.in.in.h:1
 msgid "Transmitted frames per second"
@@ -867,18 +873,22 @@ msgstr "Odrzucone"
 
 #: src/connection.cpp:1 src/connection.cpp:1
 msgid "Auto Answering Incoming Call"
-msgstr "Automatyczne odpowiadanie na połączenia przychodzące"
+msgstr "Automatyczne odbieranie połączeń przychodzących"
 
+#Uważam, że ten komunikat jest bzdurny bo nie pokrywa się z prawdą
 #: src/druid.cpp:1
 msgid ""
 "You chose to NOT use the GnomeMeeting ILS directory. Other users will not be "
 "able to contact you if you don't register to a directory service."
 msgstr ""
+"Wybrano nieużywanie katalogu ILS. Inni użytkownicy nie będą mogli połączyć "
+"się z Tobą jeżeli nie nastąpi rejestracja w usłudze katalogowej."
 
 #: src/druid.cpp:1
 msgid "Personal Data - Page 2/4"
 msgstr "Dane osobowe - Strona 2/4"
 
+#Kolejne koślawe tłumaczenie i tekst oryginału też niezgodny do końca z prawdą
 #: src/druid.cpp:1
 msgid ""
 "Please enter information about yourself. This information will be used when "
@@ -886,6 +896,10 @@ msgid ""
 "GnomeMeeting users. The directory is used to register users when they are "
 "using GnomeMeeting so that you can call them, and they can call you."
 msgstr ""
+"Wprowadź dane o sobie. Informacje te zostaną użyte podczas połączeń z innymi "
+"programami zgodnymi z H.323 oraz przy rejestracji w katalogu użytkowników "
+"GnomeMeeting. Katalog jest używany do rejestracji użytkowników programu "
+"GnomeMeeting w celu umożliwienia wzajemnych połączeń."
 
 #: src/druid.cpp:1 src/pref_window.cpp:1
 msgid "First Name:"
@@ -1221,7 +1235,7 @@ msgstr "Nie odnaleziono bramki"
 
 #: src/gnomemeeting.cpp:1
 msgid "Answering incoming call"
-msgstr "Odpowiadanie na połączenie przychodzące"
+msgstr "Odbieranie połączenia przychodzącego"
 
 #: src/gnomemeeting.cpp:1 src/toolbar.cpp:1
 msgid "Trying to stop calling"
@@ -1419,21 +1433,26 @@ msgstr "wys. obr."
 msgid "Re. Vid."
 msgstr "odb. obr."
 
+#dziwnie to wygląda, ale nic innego mi się tu nie nasuwa z tym Factory mode
 #: src/main_window.cpp:1
 msgid ""
 "It appears that you do not have gnomemeeting.server installed in a valid "
 "location. Factory mode disabled.\n"
 msgstr ""
+"Prawdopodobnie plik gnomemeeting.server nie jest zainstalowany we właściwym "
+"miejscu. Tryb generatora jest nieaktywny.\n"
 
 #: src/main_window.cpp:1
 msgid ""
 "Error registering gnomemeeting with the activation service; factory mode "
 "disabled.\n"
 msgstr ""
+"Błąd przy rejestrowaniu z użyciem usługi aktywacji. Tryb generatora jest "
+"nieaktywny.\n"
 
 #: src/main_window.cpp:1
 msgid "Failed to retrieve gnomemeeting server from activation server\n"
-msgstr ""
+msgstr "Nie można uzyskać serwera gnomemeeting od serwera aktywacji.\n"
 
 #: src/main_window.cpp:1
 msgid "Prints debug messages in the console (level between 1 and 6)"
@@ -1464,12 +1483,28 @@ msgid ""
 "\n"
 "Using 'gnomemeeting-config-tool' could help you to fix this problem."
 msgstr ""
+"Wartość klucza GConf \"/apps/gnomemeeting/gconf_test_age\", wynosi %d, ale "
+"wartością oczekiwaną było %d.\n"
+"\n"
+"Klucz ten reprezentuje wersję konfiguracji GnomeMeeting. Jeżeli nie "
+"odpowiada wartości oczekiwanej, oznacza to niepoprawną instalację schematu "
+"lub błędne uprawnienia.\n"
+"\n"
+"Więcej informacji (po angielsku) można uzyskać w FAQ "
+"(http://www.gnomemeeting.org/faq.php), dziale rozwiązywania problemów GConf "
+"(http://www.gnome.org/projects/gconf/) lub archiwach list dyskusyjnych "
+"(http://mail.gnome.org).\n"
+"\n"
+"Pomocny może być w tym wypadku program \"gnomemeeting-config-tool\"."
 
 #: src/main_window.cpp:1
 msgid ""
 "GnomeMeeting just set the new Speex audio codec as default. Speex is a high "
 "quality, GPL audio codec introduced in GnomeMeeting 0.94."
 msgstr ""
+"Domyślnym kodekiem dźwięku w GnomeMeeting jest teraz Speex. Speex jest "
+"wysokiej jakości kodekiem dźwięku, rozpowszechnianym na zasadach licencji "
+"GPL i wprowadzonym do programu w wersji 0.94."
 
 #: src/main_window.cpp:1
 msgid ""
@@ -1480,6 +1515,14 @@ msgid ""
 "\"callto://ils.seconix.com/me@foo.com\" to call the person registered on the "
 "ILS server ils.seconix.com with the me@foo.com e-mail address."
 msgstr ""
+"Program GnomeMeeting zainstalował w środowisku obsługę URL-i typu callto://. "
+"Stanowią one najbardziej uniwersalny sposób na nawiązywanie połączeń z "
+"innymi osobami, gdyż mogą być używane w każdym programie GNOME, który "
+"wywołuje URL-e w standardowy sposób. Można na przykład utworzyć na panelu "
+"ikonę aktywatora, ustalając jego typ na \"Odnośnik\", a w polu \"URL\" "
+"umieszczając napis postaci \"callto://ils.seconix.com/me@foo.com\". W tym "
+"przypadku po użyciu aktywatora nastąpi nawiązanie połączenia z osobą o "
+"adresie e-mail me@foo.com, zarejestrowaną na serwerze ILS ils.seconix.com."
 
 #: src/main_window.cpp:1
 msgid ""
@@ -1830,17 +1873,19 @@ msgstr "Proszę podać nazwisko."
 
 #: src/pref_window.cpp:1
 msgid "Gatekeeper alias: "
-msgstr ""
+msgstr "Pseudonim używany w bramce: "
 
 #: src/pref_window.cpp:1
 msgid ""
 "The Gatekeeper Alias to use when registering (string, or E164 ID if only "
 "0123456789#)."
 msgstr ""
+"Pseudonim używany przy rejestracji w bramce (ciąg znaków, lub identyfikator "
+"E164, wtedy tylko dopuszczalne znaki: 0123456789#)."
 
 #: src/pref_window.cpp:1
 msgid "Enter your e-mail address."
-msgstr "Proszę podać adres e-mail."
+msgstr "Podaj adres e-mail."
 
 #: src/pref_window.cpp:1
 msgid "Here you can fill in a comment about yourself for ILS directories."
@@ -1848,7 +1893,7 @@ msgstr "Tutaj można wprowadzić informacje o sobie prezentowane w katalogu ILS.
 
 #: src/pref_window.cpp:1
 msgid "Where do you call from?"
-msgstr ""
+msgstr "Miejsce z którego dzwonisz"
 
 #: src/pref_window.cpp:1
 msgid ""
@@ -1856,6 +1901,8 @@ msgid ""
 "First Name, Last Name, E-Mail, Comment and Location or to update your alias "
 "on the Gatekeeper."
 msgstr ""
+"Uaktualnienie danych (imię, nazwisko, adres e-mail, informacje i "
+"lokalizacja) na serwerze LDAP lub pseudonimu w bramce."
 
 #: src/pref_window.cpp:1
 msgid "GnomeMeeting GUI"
@@ -1879,6 +1926,8 @@ msgstr "Uruchamianie w trybie ukrytym"
 msgid ""
 "If enabled, GnomeMeeting will start hidden. The docklet must be enabled."
 msgstr ""
+"GnomeMeeting zostanie uruchomiony jako ukryty. Wskaźnik stanu musi być "
+"włączony."
 
 #. Packing widget
 #: src/pref_window.cpp:1
@@ -1930,6 +1979,8 @@ msgid ""
 "If enabled, GnomeMeeting will play a sound when receiving an incoming call "
 "(the sound to play is chosen in the Gnome Control Center)."
 msgstr ""
+"Odtworzenie dzwonka przy połączeniu przychodzącym (dźwięk można wybrać w "
+"Centrum Sterowania GNOME)."
 
 #: src/pref_window.cpp:1
 msgid "Do not register"
@@ -1965,7 +2016,7 @@ msgstr "Rejestracja"
 
 #: src/pref_window.cpp:1
 msgid "If enabled, permit to register to the selected LDAP directory"
-msgstr ""
+msgstr "Pozwolenie na rejestrację w wybranym katalogu LDAP"
 
 #. Add fields for the gatekeeper
 #: src/pref_window.cpp:1
@@ -2009,18 +2060,24 @@ msgid ""
 "Enter here the host where calls should be forwarded in the cases selected "
 "above"
 msgstr ""
+"Nazwa komputera, do którego będą przekazywane połączenia spełniające "
+"powyższe warunki."
 
 #: src/pref_window.cpp:1
 msgid ""
 "If enabled, all incoming calls will always be forwarded to the host that is "
 "specified in the field below."
 msgstr ""
+"Wszystkie połączenia przychodzące będą zawsze przekazywane do komputera "
+"wpisanego w poniższym polu."
 
 #: src/pref_window.cpp:1
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you don't answer the call."
 msgstr ""
+"Wszystkie połączenia przychodzące w przypadku braku odpowiedzi będą "
+"przekazywane do komputera wpisanego w poniższym polu."
 
 #: src/pref_window.cpp:1
 msgid ""
@@ -2028,6 +2085,8 @@ msgid ""
 "specified in the field below if you already are in a call or if you are in "
 "Do Not Disturb mode."
 msgstr ""
+"Wszystkie połączenia przychodzące w przypadku zajętości lub trybu \"nie "
+"przeszkadzać\" będą przekazywane do komputera wpisanego w poniższym polu."
 
 #: src/pref_window.cpp:1
 msgid "H.323 V2 Settings"
@@ -2046,6 +2105,12 @@ msgid ""
 "H.323v2 and Netmeeting doesn't support it. Using both Fast Start and H.245 "
 "Tunnelling can crash some versions of Netmeeting."
 msgstr ""
+"Włączenie tunelowania H.245. W trybie tunelowania H.245, komunikaty H.245 są "
+"ukrywane w kanale H.225 (port 1720). Pozwala to zaoszczędzić jeden losowy "
+"port TCP podczas połączenia. Tunelowanie H.245 zostało wprowadzone w "
+"protokole H.323v2 i nie jest obsługiwane przez program NetMeeting. Użycie "
+"jednocześnie Szybkiego uruchamiania i tunelowania H.245 może spowodować błąd "
+"w niektórych jego wersjach."
 
 #: src/pref_window.cpp:1
 msgid "Enable Fast Start"
@@ -2058,6 +2123,11 @@ msgid ""
 "Netmeeting and using both Fast Start and H.245 Tunnelling can crash some "
 "versions of Netmeeting."
 msgstr ""
+"Połączenie zostanie ustanowione w trybie szybkiego uruchamiania. Szybkie "
+"uruchamianie umożliwia szybsze zestawianie połączeń co zostało wprowadzone w "
+"protokole H.323v2. Metoda ta nie jest obsługiwana przez program NetMeeting i "
+"użycie jednocześnie Szybkiego uruchamiania i tunelowania H.245 może "
+"spowodować błąd w niektórych jego wersjach."
 
 #: src/pref_window.cpp:1
 msgid "Low"
@@ -2202,6 +2272,8 @@ msgid ""
 "If enabled, the video preview mode will be set activated and you will be "
 "able to see yourself without being in a call."
 msgstr ""
+"Włączenie podglądu wideo, umożliwia podgląd obrazu z własnej kamery bez "
+"zestawiania połączenia."
 
 #. The file selector button
 #: src/pref_window.cpp:1
