@@ -328,9 +328,15 @@ GnomeMeeting::DetectDevices ()
   g_free (video_manager);
 #endif
 
+#ifdef TRY_PLUGINS
   if (gw->audio_managers.GetSize () == 0)
     return FALSE;
-
+#else
+  if (gw->audio_player_devices.GetSize () == 0
+      || gw->audio_recorder_devices.GetSize () == 0)
+    return FALSE;
+#endif
+  
   gw->audio_managers += PString ("Quicknet");
   gw->video_devices += PString (_("Picture"));
   gnomemeeting_sound_daemons_resume ();

@@ -1,3 +1,12 @@
+2003-08-24 Damien Sandras  <dsandras@seconix.com>
+
+	* src/gnomemeeting.cpp, src/main_window.cpp: Permit GM to start
+	without manager when plugins are not compiled in, but not without
+	audio devices.
+	
+	* src/videograbber.cpp: Reverted to the old way of initialising 
+	things as it seems some drivers have problems with the new one.
+	
 2003-08-22 Damien Sandras  <dsandras@seconix.com>
 
 	* src/endpoint.cpp: Small cleanup.
