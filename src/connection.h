@@ -83,6 +83,7 @@ class GMH323Connection : public H323Connection
     // PRE          :  /
     void UnPauseChannels (void);
 
+    H323Channel *GetTransmittedAudioChannel (void);
 
     // DESCRIPTION  :  This callback is called to give the opportunity
     //                 to take an action on an incoming call

@@ -440,6 +440,10 @@ void GMILSClient::ils_browse ()
       lw->thread_count--;
       has_to_browse = 0;
 
+      gdk_threads_enter ();
+      gtk_widget_set_sensitive (GTK_WIDGET (lw->refresh_button), TRUE);
+      gdk_threads_leave ();
+
       return;
     }
 
@@ -473,7 +477,13 @@ void GMILSClient::ils_browse ()
       gdk_threads_enter ();
       gnome_appbar_push (GNOME_APPBAR (lw->statusbar), 
 			 _("Error while connecting to ILS directory"));
+      gtk_widget_set_sensitive (GTK_WIDGET (lw->refresh_button), TRUE);
       gdk_threads_leave ();
+      
+      lw->thread_count--;
+      has_to_browse = 0;
+
+      return;
     }
 
   if (ldap_bind_s (ldap_connection, NULL, NULL, LDAP_AUTH_SIMPLE ) 
@@ -482,7 +492,11 @@ void GMILSClient::ils_browse ()
       gdk_threads_enter ();
       gnome_appbar_push (GNOME_APPBAR (lw->statusbar), 
 			 _("Error while connecting to ILS directory"));
+      gtk_widget_set_sensitive (GTK_WIDGET (lw->refresh_button), TRUE);
       gdk_threads_leave ();
+
+      lw->thread_count--;
+      has_to_browse = 0;
     }
 
 

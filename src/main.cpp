@@ -50,7 +50,7 @@ gint gnome_idle_timer (void)
   while (gtk_events_pending())
     gtk_main_iteration(); 
   gdk_threads_leave ();
-  
+
   usleep (100);
   return TRUE;
 }

@@ -811,7 +811,7 @@ void init_pref_codecs_settings (GtkWidget *notebook,
 
   pw->jitter_buffer_spin_adj = (GtkAdjustment *) 
     gtk_adjustment_new(opts->jitter_buffer, 
-		       1.0, 1000.0, 
+		       20.0, 5000.0, 
 		       1.0, 1.0, 1.0);
 
   jitter_buffer = gtk_spin_button_new (pw->jitter_buffer_spin_adj, 1.0, 0);
@@ -1065,7 +1065,7 @@ void init_pref_codecs_settings (GtkWidget *notebook,
   
   pw->video_bandwidth_spin_adj = 
     (GtkAdjustment *) gtk_adjustment_new(opts->video_bandwidth, 
-					 1.0, 100.0, 1.0, 
+					 0.0, 256.0, 1.0, 
 					 1.0, 1.0);
   video_bandwidth = gtk_spin_button_new (pw->video_bandwidth_spin_adj, 8.0, 0);
   
@@ -1075,8 +1075,8 @@ void init_pref_codecs_settings (GtkWidget *notebook,
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);			
  
   tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, tr_ub,
-			_("Here you can choose the maximum bandwidth that can be used by the H.261 video codec."), NULL);
+  gtk_tooltips_set_tip (tip, video_bandwidth,
+			_("Here you can choose the maximum bandwidth that can be used by the H.261 video codec. Choose 0 to disable it."), NULL);
 
   label = gtk_label_new (_("H.261 Codec Settings"));
 
@@ -1351,20 +1351,6 @@ void init_pref_advanced (GtkWidget *notebook, GM_pref_window_widgets *pw,
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->sd,
 			_("Enable or disable silence detection.  If silence detection is enabled, silences will not be transmitted over the Internet."), NULL);
-
-
-  /**** Received Video Settings Frame ****/
-  frame = gtk_frame_new (_("Received Video Codecs"));
-  gtk_box_pack_start (GTK_BOX (vbox), frame, 
-		      FALSE, FALSE, 0);
-
-
-  /* Put a table in the frame */
-  table = gtk_table_new (1, 4, TRUE);
-  gtk_container_add (GTK_CONTAINER (frame), table);
-  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
-		
-
 
   /* The End */
   label = gtk_label_new (_("Advanced Settings"));

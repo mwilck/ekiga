@@ -156,6 +156,7 @@ void popup_menu_remote_callback (GtkWidget *, gpointer);
 // PRE          :  /
 void popup_menu_both_callback (GtkWidget *, gpointer);
 
+void ldap_popup_menu_callback (GtkWidget *, gpointer);
 /******************************************************************************/
 
 #endif

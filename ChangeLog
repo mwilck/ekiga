@@ -1,5 +1,19 @@
 2001-10-28  Damien Sandras  <dsandras@seconix.com>
 
+	* src/config.cpp: Added support for Jitter Buffer, and Video Bandwidth
+	limitation.
+	* src/endpoint.cpp: Fixed bug, Added support for Video Bandwidth limitation.
+	* src/ils.cpp, src/ils.h, src/ldap.cpp: Added a right click menu to call 
+	the selected user. Finished history support. Fixed crash bug when browsing
+	a non-existent server.
+	* src/main.cpp: Fixed a bug.
+	* src/preferences.cpp: Completely reorganised the preferences. Fixed design bugs.
+	* src/menu.cpp: Added the popup menu for ils.
+	* src/connection.cpp: Added a function that returns the current Transmitting
+	Audio Channel.
+	
+2001-10-28  Damien Sandras  <dsandras@seconix.com>
+
 	* src/common.h, src/preferences.cpp : Added widgets for future 
 	support of g.711 frames count, GSM frames count, GSM silence
 	detection, G.711 silence detection, jitter buffer delay, and

@@ -698,6 +698,9 @@ BOOL GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
 				      unsigned bufferSize,
 				      H323AudioCodec & codec)
 {
+  GMH323Connection *c = (GMH323Connection *) Connection ();
+  H323Channel *channel = (H323Channel *) c->GetTransmittedAudioChannel();
+
   gdk_threads_enter ();
 
   /* If needed , delete the timers */
@@ -730,6 +733,8 @@ BOOL GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
   gdk_threads_leave ();
 
   /* */
+  cout << channel->GetCapability().GetFormatName();
+
   codec.SetSilenceDetectionMode(!opts->sd ?
 				H323AudioCodec::NoSilenceDetection :
 				H323AudioCodec::AdaptiveSilenceDetection);
@@ -770,6 +775,13 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
      vg->Stop ();
 
      DisplayConfig (0);
+
+     /* Codecs Settings */
+     codec.SetTxQualityLevel (opts->tr_vq);
+     codec.SetBackgroundFill (opts->tr_ub);   
+
+     if (opts->video_bandwidth != 0)
+       codec.SetAverageBitRate (1024 * PMAX (16, PMIN (2048, opts->video_bandwidth * 8)));
 
      gdk_threads_enter ();
      gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button),

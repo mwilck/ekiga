@@ -432,6 +432,9 @@ void GM_ldap_init_notebook (GM_ldap_window_widgets *lw, int page_num, gchar *tex
 {
   GtkWidget *label;
   GtkWidget *scroll;
+  GtkWidget *menu;
+  GtkWidget *menu_item;
+
   gchar * clist_titles [] = 
     {
      /* Translators: This is as in "Audio". */
@@ -467,11 +470,14 @@ void GM_ldap_init_notebook (GM_ldap_window_widgets *lw, int page_num, gchar *tex
 
   gtk_clist_set_shadow_type (GTK_CLIST (lw->ldap_users_clist [page_num]), GTK_SHADOW_IN);
 
-  gtk_widget_set_usize (GTK_WIDGET (lw->ldap_users_clist [page_num]), 450, 200);
+  gtk_widget_set_usize (GTK_WIDGET (lw->ldap_users_clist [page_num]), 550, 200);
   
   gtk_container_add (GTK_CONTAINER (scroll), lw->ldap_users_clist [page_num]);
   gtk_container_set_border_width (GTK_CONTAINER (lw->ldap_users_clist [page_num]),
 				  GNOME_PAD_SMALL);
+
+  /* The popup menu */
+  GM_ldap_popup_menu_init (lw->ldap_users_clist [page_num], lw);
 
   label = gtk_label_new (text_label);
 

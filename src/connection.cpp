@@ -45,6 +45,8 @@ GMH323Connection::GMH323Connection (GMH323EndPoint & ep, unsigned callReference,
   transmitted_audio = NULL;
   transmitted_video = NULL;
   opened_channels = 0;
+
+  SetMaxAudioDelayJitter (opts->jitter_buffer);
 }
 
 
@@ -248,4 +250,9 @@ H323Connection::AnswerCallResponse
   return AnswerCallPending;
 }
 
+
+H323Channel *GMH323Connection::GetTransmittedAudioChannel (void)
+{
+  return transmitted_audio;
+}
 /******************************************************************************/

@@ -46,7 +46,8 @@ void store_config (options *opts)
   gnome_config_set_int ("VideoSettings/received_video_quality", opts->re_vq);
   gnome_config_set_int ("VideoSettings/transmitted_update_blocks", opts->tr_ub);
   gnome_config_set_int ("VideoSettings/video_transmission", opts->vid_tr);
-  gnome_config_set_int ("VideoSettings/transmitted_fps", opts->tr_fps);
+//  gnome_config_set_int ("VideoSettings/transmitted_fps", opts->tr_fps);
+  gnome_config_set_int ("VideoSettings/video_bandwidth", opts->video_bandwidth);
 
   gnome_config_set_int ("GeneralSettings/show_splash", opts->show_splash);
   gnome_config_set_int ("GeneralSettings/show_notebook", opts->show_notebook);
@@ -70,6 +71,7 @@ void store_config (options *opts)
   gnome_config_set_int ("AdvancedSettings/enable_h245_tunneling", opts->ht); 	
   gnome_config_set_int ("AdvancedSettings/max_bps", opts->bps);
   gnome_config_set_int ("AdvancedSettings/silence_detection", opts->sd);
+  gnome_config_set_int ("AdvancedSettings/jitter_buffer", opts->jitter_buffer);
 
   gnome_config_set_int ("LDAPSettings/ldap", opts->ldap);
   gnome_config_set_string ("LDAPSettings/ldap_server", opts->ldap_server);
@@ -125,10 +127,11 @@ void read_config (options *opts)
   opts->video_size = gnome_config_get_int ("VideoSettings/video_size");
   opts->video_format = gnome_config_get_int ("VideoSettings/video_format");
   opts->tr_vq = gnome_config_get_int ("VideoSettings/transmitted_video_quality");
-  opts->tr_fps = gnome_config_get_int ("VideoSettings/transmitted_fps");
+//  opts->tr_fps = gnome_config_get_int ("VideoSettings/transmitted_fps");
   opts->re_vq = gnome_config_get_int ("VideoSettings/received_video_quality");
   opts->tr_ub = gnome_config_get_int ("VideoSettings/transmitted_update_blocks");
   opts->vid_tr = gnome_config_get_int ("VideoSettings/video_transmission");
+  opts->video_bandwidth = gnome_config_get_int ("VideoSettings/video_bandwidth");
 
   opts->show_splash = gnome_config_get_int ("GeneralSettings/show_splash");
   opts->show_notebook = gnome_config_get_int ("GeneralSettings/show_notebook");
@@ -150,9 +153,9 @@ void read_config (options *opts)
 
   opts->fs = gnome_config_get_int ("AdvancedSettings/enable_fast_start");
   opts->ht = gnome_config_get_int ("AdvancedSettings/enable_h245_tunneling"); 	
-
   opts->bps = gnome_config_get_int ("AdvancedSettings/max_bps");
   opts->sd = gnome_config_get_int ("AdvancedSettings/silence_detection");
+  opts->jitter_buffer = gnome_config_get_int ("AdvancedSettings/jitter_buffer");
 
   opts->ldap = gnome_config_get_int ("LDAPSettings/ldap");
   opts->ldap_server = gnome_config_get_string ("LDAPSettings/ldap_server");
@@ -436,10 +439,12 @@ options * read_config_from_struct (GM_pref_window_widgets *pw)
   opts->video_format = item_index;
       
   opts->tr_vq = (int) pw->tr_vq_spin_adj->value; // Transmitted Video Quality
-  opts->tr_fps = (int) pw->tr_fps_spin_adj->value; // Transmitted FPS
+//  opts->tr_fps = (int) pw->tr_fps_spin_adj->value; // Transmitted FPS
   opts->tr_ub = (int) pw->tr_ub_spin_adj->value; // Number of Updated Blocks
   opts->re_vq = (int) pw->re_vq_spin_adj->value; // Received Video Quality
-	
+  opts->video_bandwidth = (int) pw->video_bandwidth_spin_adj->value;
+  opts->jitter_buffer = (int) pw->jitter_buffer_spin_adj->value;
+
   opts->vid_tr = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->vid_tr));
 
   
@@ -514,10 +519,11 @@ void init_config (void)
   gnome_config_set_int ("VideoSettings/video_size", 0);
   gnome_config_set_int ("VideoSettings/video_format", 2);
   gnome_config_set_int ("VideoSettings/transmitted_video_quality", 3);
-  gnome_config_set_int ("VideoSettings/transmitted_fps", 15);
+//  gnome_config_set_int ("VideoSettings/transmitted_fps", 15);
   gnome_config_set_int ("VideoSettings/received_video_quality", 3);
   gnome_config_set_int ("VideoSettings/transmitted_update_blocks", 2);
   gnome_config_set_int ("VideoSettings/video_transmission", 0);
+  gnome_config_set_int ("VideoSettings/video_bandwidth", 32);
 
   gnome_config_set_string ("UserSettings/firstname", "");
   gnome_config_set_string ("UserSettings/surname", "");
@@ -538,9 +544,9 @@ void init_config (void)
 
   gnome_config_set_int ("AdvancedSettings/enable_fast_start", 0);
   gnome_config_set_int ("AdvancedSettings/enable_h245_tunneling", 0); 	
-
   gnome_config_set_int ("AdvancedSettings/max_bps", 20000);
   gnome_config_set_int ("AdvancedSettings/silence_detection", 1);
+  gnome_config_set_int ("AdvancedSettings/jitter_buffer", 50);
 
   gnome_config_set_int ("LDAPSettings/ldap", 0);
   gnome_config_set_string ("LDAPSettings/ldap_server", "");

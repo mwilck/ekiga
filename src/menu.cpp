@@ -185,4 +185,27 @@ void GM_popup_menu_init (GtkWidget *widget)
                            NULL);
 }
 
+
+void GM_ldap_popup_menu_init (GtkWidget *widget, GM_ldap_window_widgets *lw)
+{
+  GtkWidget *popup_menu_widget;
+
+  static GnomeUIInfo popup_menu [] =
+    {
+      {
+	GNOME_APP_UI_ITEM,
+	N_("Call This User"), N_("Call the selected user"),
+	(void *)ldap_popup_menu_callback, GINT_TO_POINTER(0), NULL,
+	GNOME_APP_PIXMAP_NONE, NULL,
+	0, GDK_CONTROL_MASK, NULL
+      },
+      GNOMEUIINFO_END
+    };
+
+  /* Create a popup menu to attach it to the drawing area */
+  popup_menu_widget = gnome_popup_menu_new (popup_menu);
+  gnome_popup_menu_attach (popup_menu_widget, GTK_WIDGET (widget),
+                           lw);
+}
+
 /******************************************************************************/

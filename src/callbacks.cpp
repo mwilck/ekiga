@@ -264,4 +264,29 @@ void popup_menu_both_callback (GtkWidget *widget, gpointer data)
   endpoint->DisplayConfig (2);
 }
 
+
+void ldap_popup_menu_callback (GtkWidget *widget, gpointer data)
+{
+  GM_ldap_window_widgets *lw = (GM_ldap_window_widgets *) data;
+  gchar *text;
+
+  if (lw->last_selected_row [lw->current_page] != -1)
+    {
+      /* text doesn't need to be freed, it is a pointer to the data */
+      gtk_clist_get_text (GTK_CLIST (lw->ldap_users_clist [lw->current_page]),
+			  lw->last_selected_row [lw->current_page],
+			  7, &text);
+
+      /* if we are waiting for a call, add the IP
+       * to the history, and call that user       */
+      if (MyApp->Endpoint ()->CallingState () == 0)
+	{
+	  /* this function will store a copy of text */
+	  gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (lw->gw->combo)->entry), text);
+	  
+	  connect_cb (NULL, NULL);
+	}
+    }
+}
+
 /******************************************************************************/
