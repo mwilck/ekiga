@@ -508,6 +508,61 @@ class GMH323EndPoint : public H323EndPoint
 #endif
 
 
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Checks if the call is on hold
+   * PRE          :  Non-empty call token.
+   */
+  gboolean IsCallOnHold (PString callToken);
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Sets the call on hold or retrieve it
+   * PRE          :  Non-empty call token.
+   */
+  void SetCallOnHold (PString callToken, gboolean state);
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Checks if the call has an audio channel
+   * PRE          :  Non-empty call token.
+   */
+  gboolean IsCallWithAudio (PString callToken);
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Checks if the call has a video channel
+   * PRE          :  Non-empty call token.
+   */
+  gboolean IsCallWithVideo (PString callToken);
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Checks if the call's audio channel is paused
+   * PRE          :  Non-empty call token.
+   */
+  gboolean IsCallAudioPaused (PString callToken);
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Checks if the call's video channel is paused
+   * PRE          :  Non-empty call token.
+   */
+  gboolean IsCallVideoPaused (PString callToken);
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Sets the call's audio channel on pause, or retrieve it
+   * PRE          :  Non-empty call token.
+   */
+  void SetCallAudioPause (PString callToken, gboolean state);
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Sets the call's video channel on pause, or retrieve it
+   * PRE          :  Non-empty call token.
+   */
+  void SetCallVideoPause (PString callToken, gboolean state);
+
  protected:
 
   /* DESCRIPTION  :  /

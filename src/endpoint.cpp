@@ -2382,6 +2382,187 @@ GMH323EndPoint::RemoveLid (void)
 #endif
 
 
+gboolean
+GMH323EndPoint::IsCallOnHold (PString callToken)
+{
+  H323Connection *connection = NULL;
+  gboolean result = FALSE;
+
+  g_return_val_if_fail (!callToken.IsEmpty (), FALSE);
+
+  connection = FindConnectionWithLock(callToken);
+
+  if (connection) {
+    result = connection->IsCallOnHold ();
+    connection->Unlock ();
+  }
+  else
+    result = FALSE;
+
+  return result;
+}
+
+
+void
+GMH323EndPoint::SetCallOnHold (PString callToken,
+			       gboolean state)
+{
+  H323Connection *connection = NULL;
+
+  g_return_if_fail (!callToken.IsEmpty ());
+
+  connection = FindConnectionWithLock(callToken);
+
+  if (connection) {
+    if (state)
+      connection->HoldCall (TRUE);
+    else
+      connection->RetrieveCall ();
+    connection->Unlock ();
+  }
+}
+
+
+gboolean
+GMH323EndPoint::IsCallWithAudio (PString callToken)
+{
+  H323Connection *connection = NULL;
+  H323Channel *channel = NULL;
+  gboolean result = FALSE;
+
+  g_return_val_if_fail (!callToken.IsEmpty (), FALSE);
+
+  connection = FindConnectionWithLock(callToken);
+
+  if (connection) {
+    channel = connection->FindChannel (RTP_Session::DefaultAudioSessionID,
+				       FALSE);
+    if (channel)
+      result = TRUE;
+    else
+      result = FALSE;
+    connection->Unlock ();
+  }
+
+  return result;
+}
+
+
+gboolean
+GMH323EndPoint::IsCallWithVideo (PString callToken)
+{
+  H323Connection *connection = NULL;
+  H323Channel *channel = NULL;
+  gboolean result = FALSE;
+
+  g_return_val_if_fail (!callToken.IsEmpty (), FALSE);
+
+  connection = FindConnectionWithLock(callToken);
+
+  if (connection) {
+    channel = connection->FindChannel (RTP_Session::DefaultVideoSessionID,
+				       FALSE);
+    if (channel)
+      result = TRUE;
+    else
+      result = FALSE;
+    connection->Unlock ();
+  }
+
+  return result;
+}
+
+
+gboolean
+GMH323EndPoint::IsCallAudioPaused (PString callToken)
+{
+  H323Connection *connection = NULL;
+  H323Channel *channel = NULL;
+  gboolean result = FALSE;
+
+  g_return_val_if_fail (!callToken.IsEmpty (), FALSE);
+
+  connection = FindConnectionWithLock(callToken);
+
+  if (connection) {
+    channel = connection->FindChannel (RTP_Session::DefaultAudioSessionID,
+				       FALSE);
+    if (channel)
+      result = channel->IsPaused ();
+    else
+      result = FALSE;
+    connection->Unlock ();
+  }
+
+  return result;
+}
+
+
+gboolean
+GMH323EndPoint::IsCallVideoPaused (PString callToken)
+{
+  H323Connection *connection = NULL;
+  H323Channel *channel = NULL;
+  gboolean result = FALSE;
+
+  g_return_val_if_fail (!callToken.IsEmpty (), FALSE);
+
+  connection = FindConnectionWithLock(callToken);
+
+  if (connection) {
+    channel = connection->FindChannel (RTP_Session::DefaultVideoSessionID,
+				       FALSE);
+    if (channel)
+      result = channel->IsPaused ();
+    else
+      result = FALSE;
+    connection->Unlock ();
+  }
+
+  return result;
+}
+
+
+void
+GMH323EndPoint::SetCallAudioPause (PString callToken, gboolean state)
+{
+  H323Connection *connection = NULL;
+  H323Channel *channel = NULL;
+
+  g_return_if_fail (!callToken.IsEmpty ());
+
+  connection = FindConnectionWithLock(callToken);
+
+  if (connection) {
+    channel = connection->FindChannel (RTP_Session::DefaultAudioSessionID,
+				       FALSE);
+    if (channel)
+      channel->SetPause (state);
+    connection->Unlock ();
+  }
+}
+
+
+void
+GMH323EndPoint::SetCallVideoPause (PString callToken, gboolean state)
+{
+  H323Connection *connection = NULL;
+  H323Channel *channel = NULL;
+
+  g_return_if_fail (!callToken.IsEmpty ());
+
+  connection = FindConnectionWithLock(callToken);
+
+  if (connection) {
+    channel = connection->FindChannel (RTP_Session::DefaultVideoSessionID,
+				       FALSE);
+    if (channel)
+      channel->SetPause (state);
+    connection->Unlock ();
+  }
+}
+
+
 PString
 GMH323EndPoint::GetLastCallAddress ()
 {
