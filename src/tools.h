@@ -54,7 +54,6 @@ gnomemeeting_calls_history_window_new (GmCallsHistoryWindow *);
 
 
 void gnomemeeting_calls_history_window_add_call (int,
-						 const char *,
 						 const char *, 
 						 const char *,
 						 const char *,

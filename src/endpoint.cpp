@@ -1257,7 +1257,6 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   BOOL dnd = FALSE;
   BOOL reg = FALSE;
   BOOL preview = FALSE;
-  int i = 0;
   
   ch_access_mutex.Wait ();
   player_channel = NULL;
@@ -1279,8 +1278,10 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
     t = PTime () - connection.GetConnectionStartTime();
 
   gnomemeeting_threads_enter ();
-  /* Translators: the "s" is for "seconds" */
-  gnomemeeting_calls_history_window_add_call (GetCallingState (), PTime ().AsString ("www dd MMM, hh:mm:ss"), remote_party_name, remote_ip, t.AsString (2) + PString (_("s")), remote_app);
+  if (t.GetSeconds () == 0 && is_received_call)
+    gnomemeeting_calls_history_window_add_call (2, remote_party_name, remote_ip, 0, remote_app);
+  else 
+    gnomemeeting_calls_history_window_add_call (is_received_call ? 0 : 1, remote_party_name, remote_ip, t.AsString (2), remote_app);
   gnomemeeting_threads_leave ();
 
   /* Get GConf settings */

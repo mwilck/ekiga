@@ -229,8 +229,8 @@ void pause_channel_callback (GtkWidget *widget, gpointer data)
 	  gtk_label_set_text_with_mnemonic (GTK_LABEL (child),
 					    menu_suspend_msg);
 
-	gnomemeeting_log_insert (gw->history_text_view, history_suspend_msg);
-	gnomemeeting_statusbar_flash (gw->statusbar, history_suspend_msg);
+	gnomemeeting_log_insert (gw->history_text_view, history_resume_msg);
+	gnomemeeting_statusbar_flash (gw->statusbar, history_resume_msg);
 
 	g_signal_handlers_block_by_func (G_OBJECT (b),
 					 (gpointer) pause_channel_callback,
@@ -249,8 +249,8 @@ void pause_channel_callback (GtkWidget *widget, gpointer data)
 	  gtk_label_set_text_with_mnemonic (GTK_LABEL (child),
 					    menu_resume_msg);
 
-	gnomemeeting_log_insert (gw->history_text_view, history_resume_msg);
-	gnomemeeting_statusbar_flash (gw->statusbar, history_resume_msg);
+	gnomemeeting_log_insert (gw->history_text_view, history_suspend_msg);
+	gnomemeeting_statusbar_flash (gw->statusbar, history_suspend_msg);
 
 	g_signal_handlers_block_by_func (G_OBJECT (b),
 					 (gpointer) pause_channel_callback,

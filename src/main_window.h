@@ -53,11 +53,11 @@ GtkWidget *
 gnomemeeting_main_window_new (GmWindow *);
 
 
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Gives a pulse to the progressbar of the main window.
- * PRE          :  The progressbar as parameter.
- */
-int
-gnomemeeting_window_appbar_update (gpointer); 
 
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Enable/disable the progress animation in the statusbar.
+ * PRE          :  /
+ */
+void
+gnomemeeting_main_window_enable_statusbar_progress (gboolean);
 #endif

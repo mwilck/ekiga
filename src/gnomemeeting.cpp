@@ -206,13 +206,6 @@ GnomeMeeting::Connect()
 
       url_handler = new GMURLHandler (call_address);
 
-      gnomemeeting_threads_enter ();
-      gw->progress_timeout =
-	gtk_timeout_add (5, gnomemeeting_window_appbar_update, 
-			 gw->progressbar);
-      gtk_widget_show (gw->progressbar);
-      gnomemeeting_threads_leave ();
-
 #ifdef HAS_IXJ
       OpalLineInterfaceDevice *lid = NULL;
       GMLid *lid_thread = NULL;
@@ -250,15 +243,8 @@ GnomeMeeting::Disconnect (H323Connection::CallEndReason reason)
 
 
   gnomemeeting_threads_enter ();
-
-  if (gw->progress_timeout) {
-
-    gtk_timeout_remove (gw->progress_timeout);
-    gw->progress_timeout = 0;
-    gtk_widget_hide (gw->progressbar);
-  }
+  gnomemeeting_main_window_enable_statusbar_progress (false);
   gnomemeeting_statusbar_push (gw->statusbar, NULL);
-
   gnomemeeting_threads_leave ();
 
 

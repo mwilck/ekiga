@@ -50,7 +50,6 @@ extern GnomeMeeting *MyApp;
 /* The functions */
 void
 gnomemeeting_calls_history_window_add_call (int i,
-					    const char *date,
 					    const char *remote_user,
 					    const char *ip,
 					    const char *duration,
@@ -67,18 +66,15 @@ gnomemeeting_calls_history_window_add_call (int i,
   
   switch (i) {
 
-  case 2:
+  case 0:
     list_store = chw->received_calls_list_store;
     break;
   case 1:
     list_store = chw->given_calls_list_store;
     break;
-  case 0:
+  case 2:
     list_store = chw->missed_calls_list_store;
     break;
-  case 3:
-    list_store = chw->missed_calls_list_store;
-    break;    
   }
 
   n = gtk_tree_model_iter_n_children (GTK_TREE_MODEL (list_store), NULL);
@@ -90,12 +86,15 @@ gnomemeeting_calls_history_window_add_call (int i,
 
     gtk_list_store_append (list_store, &iter);
 
+    /* The "s" is for "seconds" */
     gtk_list_store_set (list_store, &iter,
-			0, date,
-			1, remote_user,
-			2, ip,
-			3, duration,
-			4, software, -1);
+			0, (const char *)
+			PTime ().AsString ("www dd MMM, hh:mm:ss"),
+			1, remote_user ? remote_user : "",
+			2, ip ? ip : "",
+			3, duration ? duration : "",
+			4, software ? software : "",
+			-1);
   }
 }
 
@@ -114,7 +113,7 @@ GtkWidget *gnomemeeting_calls_history_window_new (GmCallsHistoryWindow *chw)
   GtkListStore *list_store [3];
   
   gchar *label_text [3] =
-    {N_("Received calls"), N_("Given calls"), N_("Missed calls")};
+    {N_("Received calls"), N_("Given calls"), N_("Unanswered calls")};
   label_text [0] = gettext (label_text [0]);
   label_text [1] = gettext (label_text [1]);
   label_text [2] = gettext (label_text [2]);

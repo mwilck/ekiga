@@ -1,5 +1,24 @@
 2003-06-09 Damien Sandras  <dsandras@seconix.com>
 
+	* src/callbacks.cpp: Code cleanups.
+	
+	* src/endpoint.cpp: Updated to the new API of the calls history window
+	functions.
+	
+	* src/gnomemeeting.cpp: Make use of the 2 new functions to animate
+	the progress bar.
+	
+	* src/main_window.cpp, src/main_window.h: Added enw function to
+	animate the progress bar in the statusbar when calling somebody.
+	
+	* src/tools.cpp, src/tools.h: Changed the API for the calls
+	history window functions.
+	
+	* src/urlhandler.cpp: Added wrong speed dials and callto in the
+	calls history. Fixed various bugs when calls fails.
+	
+2003-06-09 Damien Sandras  <dsandras@seconix.com>
+
 	* src/callbacks.cpp: Fixed default button for call transfer popup.
 	
 	* src/endpoint.cpp, src/endpoint.h: Don't use the same mutexes 

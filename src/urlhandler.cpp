@@ -44,8 +44,10 @@
 #include "gnomemeeting.h"
 #include "misc.h"
 #include "ldap_window.h"
+#include "main_window.h"
 #include "toolbar.h"
 #include "menu.h"
+#include "tools.h"
 
 #include "dialog.h"
 
@@ -188,10 +190,11 @@ GMURLHandler::~GMURLHandler ()
 void GMURLHandler::Main ()
 {
   GmWindow *gw = NULL;
-
+  
   PString call_address;
   PString current_call_token;
-
+  GMURL old_url;
+  
   gchar *msg = NULL;
   
   GMH323EndPoint *endpoint = NULL;
@@ -208,6 +211,8 @@ void GMURLHandler::Main ()
   
   endpoint = MyApp->Endpoint ();
 
+
+  /* Answer the current call in a separate thread if required */
   if (answer_call && endpoint && endpoint->GetCallingState () == 3) {
 
     con = endpoint->GetCurrentConnection ();
@@ -221,7 +226,9 @@ void GMURLHandler::Main ()
 
   if (url.IsEmpty ())
     return;
-    
+
+  old_url = url;
+  
   /* If it is a shortcut (# at the end of the URL), then we use it */
   if (url.GetType () == "shortcut")
     url =
@@ -253,71 +260,87 @@ void GMURLHandler::Main ()
 	call_address = PString ("0610#") + call_address;
     }
 
-    gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
-    gnomemeeting_call_menu_connect_set_sensitive (1, TRUE);
 
     if (!call_address.IsEmpty ()) {
 
-      if (!transfer_call)
+      /* Disable the preview, and enable Disconnect, this is done
+	 in all cases, including when calling an unexisting callto */
+      gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
+      gnomemeeting_call_menu_connect_set_sensitive (1, TRUE);
+
+      if (!transfer_call) {
+
+	gnomemeeting_main_window_enable_statusbar_progress (true);
 	msg = g_strdup_printf (_("Calling %s"), 
 			       (const char *) call_address);
+      }
       else
 	msg = g_strdup_printf (_("Transferring call to %s"), 
 			       (const char *) call_address);
-    gnomemeeting_log_insert (gw->history_text_view, msg);
-    gnomemeeting_statusbar_push (gw->statusbar, msg);
+      gnomemeeting_log_insert (gw->history_text_view, msg);
+      gnomemeeting_statusbar_push (gw->statusbar, msg);
     }
+    g_free (msg);
 
+    /* The button is pressed (calling) */
     connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 1);
-    g_free (msg);		
     gnomemeeting_threads_leave ();
   
     /* Connect to the URL */
     if (!transfer_call) {
-      
-    endpoint->SetCallingState (1);
-    con = 
-      endpoint->MakeCallLocked (call_address, current_call_token);
+
+      endpoint->SetCallingState (1);
+      con = 
+	endpoint->MakeCallLocked (call_address, current_call_token);
     }
     else
       if (!url.IsEmpty ())
 	endpoint->TransferCall (endpoint->GetCurrentCallToken (),
-				url.GetValidURL ());
+				call_address);
   }
-  else
+  else {
+
+    /* If we are here, it is because the user specified an invalid
+       speed dial to call */
+    gnomemeeting_threads_enter ();
     gnomemeeting_statusbar_flash (gw->statusbar,
 				  _("No contact with that speed dial found"));
-
+    if (!transfer_call)
+      gnomemeeting_calls_history_window_add_call (1,
+						  old_url.GetValidURL () + "#",
+						  NULL, "0", NULL);
+    gnomemeeting_threads_leave ();
+  }
 
   if (!transfer_call) {
     
     /* If we have a valid URL, we a have a valid connection, if not
        we put things back in the initial state */
     if (con) {
-    
+
       endpoint->SetCurrentConnection (con);
       endpoint->SetCurrentCallToken (current_call_token);
       con->Unlock ();
     }
     else {
-    
-      endpoint->SetCallingState (0);
 
       gnomemeeting_threads_enter ();
       connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 0);
+      gnomemeeting_main_window_enable_statusbar_progress (false);
       gnomemeeting_call_menu_connect_set_sensitive (1, FALSE);
+      gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), TRUE);
 
-      if (gw->progress_timeout) {
-
-	gtk_timeout_remove (gw->progress_timeout);
-	gw->progress_timeout = 0;
-	gtk_widget_hide (gw->progressbar);
-      }
-
-      if (call_address.Find ("+type=directory") != P_MAX_INDEX)
+      if (call_address.Find ("+type=directory") != P_MAX_INDEX) {
+	
 	gnomemeeting_statusbar_flash (gw->statusbar, _("User not found"));
-
+	if (!transfer_call)
+	  gnomemeeting_calls_history_window_add_call (1, call_address,
+						      NULL, "0", NULL);
+      }
+      
       gnomemeeting_threads_leave ();
+
+      endpoint->SetCallingState (0);
     }
   }
 }
