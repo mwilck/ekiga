@@ -57,8 +57,7 @@ AM_GCONF_SOURCE_2
 dnl ###########################################################################
 dnl   PKG_CONFIG
 dnl ###########################################################################
-PKG_CHECK_MODULES(GNOMEMEETING, gtk+-2.0 >= 2.0.6 esound >= 0.2.28 gconf-2.0 >= 1.2.1 libxml-2.0 >= 2.4.23)
-GNOMEMEETING_CFLAGS="$GNOMEMEETING_CFLAGS -DDISABLE_GNOME"
+PKG_CHECK_MODULES(GNOMEMEETING, gtk+-2.0 >= 2.0.6 esound >= 0.2.28 gconf-2.0 >= 1.2.1 libxml-2.0 >= 2.4.23 libgnome-2.0 >= 2.2.0 libgnomeui-2.0 >= 2.2.0)
 
 
 dnl ###########################################################################
