@@ -1,608 +1,798 @@
 # Japanses translation for GnomeMeeting.
-# Copyright (C) 2001-2002 Free Software Foundation, Inc.
+# Copyright (C) 2001-2002,2004 Free Software Foundation, Inc.
 # Katsumi Saito <katsumi@jo1upk.ymt.prug.or.jp>, 2001-2002.
+# Takeshi AIHANA <aihana@gnome.gr.jp>, 2004.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: GnomeMeeting 0.84.0 cvs\n"
-"POT-Creation-Date: 2002-10-14 10:26+0200\n"
-"PO-Revision-Date: 2002-02-22 02:55+0900\n"
-"Last-Translator: Katsumi Saito <Katsumi@jo1upk.ymt.prug.or.jp>\n"
-"Language-Team: Japanese <translation@gnome.gr.jp>\n"
+"Project-Id-Version: gnomemeeting HEAD\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-02-24 17:08+0900\n"
+"PO-Revision-Date: 2004-02-13 01:36+0900\n"
+"Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
+"Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:916 src/main_window.cpp:920
+#. Add the window icon and title
+#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:1274
 msgid "GnomeMeeting"
 msgstr "GnomeMeeting"
 
 #: gnomemeeting.desktop.in.h:2
+#, fuzzy
 msgid "Talk to people over the internet"
-msgstr ""
+msgstr "インターネットを介して会話します"
 
 #: gnomemeeting.desktop.in.h:3
 #, fuzzy
 msgid "Video Conferencing"
-msgstr "映像チャンネル: 送信中"
+msgstr "ビデオ会議"
 
 #: gnomemeeting.schemas.in.in.h:1
 msgid "1: 56Kbps, 2: ISDN, 3:DSL, 4: LAN, 5: Custom"
-msgstr ""
+msgstr "1: 56Kbps, 2: ISDN, 3:DSL, 4: LAN, 5: Custom"
 
 #: gnomemeeting.schemas.in.in.h:2
-msgid "A comment that will be listed in LDAP directories"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:3 src/pref_window.cpp:1397
 msgid "Always forward calls to the given host"
-msgstr ""
+msgstr "常に指定したホストを呼び出す"
+
+#: gnomemeeting.schemas.in.in.h:3
+#, fuzzy
+msgid "Audio player"
+msgstr "音声のプラグイン"
 
 #: gnomemeeting.schemas.in.in.h:4
 #, fuzzy
-msgid "Audio player"
-msgstr "オーディオ消音"
+msgid "Audio player mixer"
+msgstr "音声のプラグイン"
 
 #: gnomemeeting.schemas.in.in.h:5
 #, fuzzy
-msgid "Audio player Mixer"
-msgstr "ミキサー:"
+msgid "Audio recorder"
+msgstr "音声のコーデック"
 
 #: gnomemeeting.schemas.in.in.h:6
-#, fuzzy
-msgid "Audio recorder"
-msgstr "オーディオコーデック"
-
-#. The toggles
-#: gnomemeeting.schemas.in.in.h:7 src/menu.cpp:466 src/pref_window.cpp:1288
-#: src/tray.cpp:191
-msgid "Auto Answer"
-msgstr "自動応答"
-
-#: gnomemeeting.schemas.in.in.h:8
-msgid "Automatic Echo Cancellation"
+msgid "Audio recorder mixer"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:9
+#: gnomemeeting.schemas.in.in.h:7
+msgid "Automatic echo cancellation"
+msgstr "自動エコー取り消し"
+
+#: gnomemeeting.schemas.in.in.h:8 src/menu.cpp:911
 #, fuzzy
-msgid "Change the control panel section"
-msgstr "制御パネルを表示"
+msgid "Automatically answer calls"
+msgstr "着信に自動応答します"
+
+#: gnomemeeting.schemas.in.in.h:9 src/pref_window.cpp:829
+msgid "Automatically clear the text chat at the end of calls"
+msgstr "会話の最後にチャットしたテキストを自動的にクリアする"
 
 #: gnomemeeting.schemas.in.in.h:10
-msgid ""
-"Change the control panel section (3 means that the control panel is off)"
-msgstr ""
+msgid "Change the control panel section"
+msgstr "コントロール・パネルのセクションを変更する"
 
 #: gnomemeeting.schemas.in.in.h:11
+msgid ""
+"Change the control panel section (4 means that the control panel is off)"
+msgstr "コントロール・パネルのセクションを変更します (4: パネルを表示しない)"
+
+#: gnomemeeting.schemas.in.in.h:12 src/pref_window.cpp:1391
+#, fuzzy
+msgid ""
+"Choose the number of blocks (that have not changed) transmitted with each "
+"frame. These blocks fill in the background."
+msgstr ""
+"各フレームで発信される (変更されていない) ブロック数を選択して下さい。これら"
+"のブロック数はバックグラウンドに埋め込まれます。"
+
+#: gnomemeeting.schemas.in.in.h:13
 #, fuzzy
 msgid "Color Format"
-msgstr "ビデオ形式:"
+msgstr "形式:"
 
-#: gnomemeeting.schemas.in.in.h:12
+#: gnomemeeting.schemas.in.in.h:14
 msgid "Color Format for the video palette"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:13 src/ldap_window.cpp:611
+#: gnomemeeting.schemas.in.in.h:15 src/ldap_window.cpp:2572
 msgid "Comment"
 msgstr "コメント"
 
-#: gnomemeeting.schemas.in.in.h:14
-msgid "Country code"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:15
-msgid "Display a popup window every time you receive a call"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:16
+#: gnomemeeting.schemas.in.in.h:16 src/pref_window.cpp:936
 #, fuzzy
-msgid "Do not disturb"
-msgstr "多忙(DND)"
+msgid ""
+"Connection will be established in Fast Start mode. Fast Start is a new way "
+"to start calls faster that was introduced in H.323v2. It is not supported by "
+"Netmeeting and using both Fast Start and H.245 Tunnelling can crash some "
+"versions of Netmeeting."
+msgstr ""
+"Connection will be established in Fast Start mode. Fast Start is a new way "
+"to start calls faster that was introduced in H.323v2. It is not supported by "
+"Netmeeting and using both Fast Start and H.245 Tunneling can crash some "
+"versions of Netmeeting."
 
 #: gnomemeeting.schemas.in.in.h:17
-#, fuzzy
-msgid "E-Mail address"
-msgstr "電子メールアドレス:"
+msgid "Country code"
+msgstr "国コード"
 
 #: gnomemeeting.schemas.in.in.h:18
-#, fuzzy
-msgid "Enable FPS"
-msgstr "有効"
+msgid "Display a popup window when receiving a call"
+msgstr "着信時にウィンドウをポップアップ表示する"
 
-#: gnomemeeting.schemas.in.in.h:19
+#: gnomemeeting.schemas.in.in.h:19 src/menu.cpp:446
 #, fuzzy
-msgid "Enable Silence Detection for G.711 and GSM"
-msgstr "G.711 に基づいたコーデックのためのサイレンス検出を有効にします"
+msgid "Do not disturb"
+msgstr "登録しない"
 
-#: gnomemeeting.schemas.in.in.h:20 src/pref_window.cpp:1869
-#, fuzzy
-msgid "Enable Video Transmission"
-msgstr "映像転送"
+#: gnomemeeting.schemas.in.in.h:20
+msgid "E-mail address"
+msgstr "E-メール・アドレス"
 
 #: gnomemeeting.schemas.in.in.h:21
-msgid "Enable or disable bilinear filtering"
-msgstr ""
+msgid "Enable 'Fast Start'"
+msgstr "'高速起動' を有効にする"
 
-#: gnomemeeting.schemas.in.in.h:22 src/pref_window.cpp:1315
-msgid ""
-"Enable or disable bilinear interpolation when rendering video images (it has "
-"no effect on fullscreen)."
-msgstr ""
+#: gnomemeeting.schemas.in.in.h:22
+msgid "Enable H.245 tunnelling"
+msgstr "H.245 トンネリングを有効にする"
 
 #: gnomemeeting.schemas.in.in.h:23
-#, fuzzy
-msgid "Enable registering to the LDAP server"
-msgstr "チェックすると、選択した LDAP ディレクトリに登録します"
+msgid "Enable IP translation"
+msgstr "IP 転送を有効にする"
 
 #: gnomemeeting.schemas.in.in.h:24
-#, fuzzy
-msgid "Enable the limit on the number of frames per second"
-msgstr ""
-"ここで、１秒あたりに送信するフレーム数の上限を、有効または無効にすることがで"
-"きます。"
+msgid "Enable bilinear filtering on displayed video"
+msgstr "ビデオの表示で BiLinear フィルタリングを有効にする"
 
-#: gnomemeeting.schemas.in.in.h:25
+#: gnomemeeting.schemas.in.in.h:25 src/pref_window.cpp:824
 #, fuzzy
-msgid "Enable the video transmission for calls"
-msgstr "映像転抑止"
+msgid ""
+"Enable or disable bilinear interpolation when rendering video images (this "
+"has no effect in fullscreen mode)."
+msgstr ""
+"ビデオの映像を描画する際に、BiLinear 補間を有効にするかどうかです (これはフル"
+"スクリーン・モードでは効果ありません)。"
 
 #: gnomemeeting.schemas.in.in.h:26
-#, fuzzy
-msgid "Fast Start"
-msgstr "迅速起動を有効"
+msgid "Enable registering"
+msgstr "レジスタリングを有効にする"
 
-#: gnomemeeting.schemas.in.in.h:27 src/ldap_window.cpp:563
-msgid "First Name"
+#: gnomemeeting.schemas.in.in.h:27
+msgid "Enable silence detection"
+msgstr "検出音を無音にする"
+
+#: gnomemeeting.schemas.in.in.h:28
+msgid "Enable video reception"
+msgstr "ビデオの映像を受信する"
+
+#: gnomemeeting.schemas.in.in.h:29
+msgid "Enable video transmission"
+msgstr "ビデオの映像を転送する"
+
+#: gnomemeeting.schemas.in.in.h:30 src/pref_window.cpp:747
+#, fuzzy
+msgid "Enter a comment about yourself for the user directory."
+msgstr "ユーザ・ディレクトリに対するコメントを入力します。"
+
+#: gnomemeeting.schemas.in.in.h:31 src/pref_window.cpp:1022
+msgid ""
+"Enter the public IP of your NAT/PAT router if you want to use IP "
+"translation. If you are registered to ils.seconix.com, GnomeMeeting will "
+"automatically fetch the public IP using the ILS service."
+msgstr ""
+"IP 転送を行う際に、お使いの NAT/PAT ルータのパブリック IP を入力します。'ils."
+"seconix.com' に登録している場合、GnomeMeeting は ILS サービスを使ってパブリッ"
+"ク IP と自動的に同期します。"
+
+#: gnomemeeting.schemas.in.in.h:32 src/pref_window.cpp:742
+#, fuzzy
+msgid "Enter your e-mail address."
+msgstr "お使いの E-メール・アドレスを入力します"
+
+#: gnomemeeting.schemas.in.in.h:33 src/pref_window.cpp:732
+#, fuzzy
+msgid "Enter your first name."
+msgstr "名前を入力します"
+
+#: gnomemeeting.schemas.in.in.h:34 src/pref_window.cpp:737
+#, fuzzy
+msgid "Enter your last name."
+msgstr "名字を入力します。"
+
+#: gnomemeeting.schemas.in.in.h:35 src/pref_window.cpp:752
+#, fuzzy
+msgid "Enter your location (country or city) for the user directory."
+msgstr "ユーザ・ディレクトリが存在する場所 (国または都市) を入力します。"
+
+#: gnomemeeting.schemas.in.in.h:36
+msgid "First name"
 msgstr "名前"
 
-#: gnomemeeting.schemas.in.in.h:28 src/pref_window.cpp:1403
-msgid "Forward calls to the given host if busy"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:29 src/pref_window.cpp:1400
-msgid "Forward calls to the given host if no answer"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:30
-msgid "Forward calls to this host"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:31
-msgid "Fullscreen Height"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:32
-msgid "Fullscreen Width"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:33
-#, fuzzy
-msgid "H.245 Tunnelling"
-msgstr "H.245 トンネリング有効"
-
-#: gnomemeeting.schemas.in.in.h:34 src/pref_window.cpp:1891
-msgid ""
-"Here you can choose the number of blocks (that haven't changed) transmitted "
-"with each frame. These blocks fill in the background."
-msgstr ""
-"ここで、各フレームで送信されたブロック(変更されていない)数を選択できます。こ"
-"れらのブロックは、背景に書き込まれます。"
-
-#: gnomemeeting.schemas.in.in.h:35
-#, fuzzy
-msgid "IP Translation"
-msgstr "英語翻訳:"
-
-#: gnomemeeting.schemas.in.in.h:36 src/pref_window.cpp:1541
-msgid ""
-"If enabled, GnomeMeeting will use the Quicknet device instead of the regular "
-"soundcard during calls."
-msgstr ""
-
 #: gnomemeeting.schemas.in.in.h:37
-#, fuzzy
-msgid "If enabled, a sound is played on incoming calls."
-msgstr "チェックすると、着信時にポップアップ表示します"
+msgid "Forward calls to host"
+msgstr "ホストへフォワードする"
 
 #: gnomemeeting.schemas.in.in.h:38
-#, fuzzy
-msgid "If enabled, calls will be established in Fast Start mode."
-msgstr "接続は、迅速起動モードで確立される"
+msgid "Forward calls to the given host if busy"
+msgstr "多忙の場合、指定したホストへフォワードする"
 
 #: gnomemeeting.schemas.in.in.h:39
-msgid "If enabled, calls will be established with H.245 Tunnelling."
-msgstr ""
+msgid "Forward calls to the given host if no answer"
+msgstr "応答が無い場合、指定したホストへフォワードする"
 
-#: gnomemeeting.schemas.in.in.h:40 src/pref_window.cpp:1288
-#, fuzzy
-msgid "If enabled, incoming calls will be automatically answered."
-msgstr "チェックすると、着信した際に自動的に応答します"
+#: gnomemeeting.schemas.in.in.h:40
+msgid "Fullscreen height"
+msgstr "フルスクリーンの高さ"
 
-#: gnomemeeting.schemas.in.in.h:41 src/pref_window.cpp:1290
-#, fuzzy
-msgid "If enabled, incoming calls will be automatically refused."
-msgstr "チェックすると、自動的に着信を拒否します"
+#: gnomemeeting.schemas.in.in.h:41
+msgid "Fullscreen width"
+msgstr "フルスクリーンの幅"
 
-#: gnomemeeting.schemas.in.in.h:42
-#, fuzzy
-msgid "Image"
-msgstr "大"
+#: gnomemeeting.schemas.in.in.h:42 src/pref_window.cpp:963
+msgid "Gatekeeper ID"
+msgstr "ゲートキーパの ID"
 
 #: gnomemeeting.schemas.in.in.h:43
-#, fuzzy
-msgid "Incoming Call Sound"
-msgstr "着信"
+msgid "Gatekeeper alias"
+msgstr "ゲートキーパの別名"
 
-#: gnomemeeting.schemas.in.in.h:44
-#, fuzzy
-msgid "Jitter buffer"
-msgstr "Jitterバッファー遅延:"
+#: gnomemeeting.schemas.in.in.h:44 src/pref_window.cpp:962
+msgid "Gatekeeper host"
+msgstr "ゲートキーパのホスト名"
 
 #: gnomemeeting.schemas.in.in.h:45
-#, fuzzy
-msgid "Jitter buffer for audio reception in ms"
-msgstr "Jitterバッファー遅延は、オーディオ呼出(ミリ秒で)をバッファーします"
+msgid "Gatekeeper password"
+msgstr "ゲートキーパのパスワード"
 
 #: gnomemeeting.schemas.in.in.h:46
-msgid "Kind of network selected in the druid"
+msgid ""
+"If enabled, GnomeMeeting will play a sound when receiving an incoming call "
+"(the sound to play is chosen in the Gnome Control Center)."
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:47
+#: gnomemeeting.schemas.in.in.h:47 src/pref_window.cpp:788
 #, fuzzy
-msgid "LDAP Server"
-msgstr "LDAP サーバ参照"
-
-#: gnomemeeting.schemas.in.in.h:48 src/ldap_window.cpp:575
-#, fuzzy
-msgid "Last Name"
-msgstr "姓名:"
-
-#: gnomemeeting.schemas.in.in.h:49
-msgid "Limitation on the number of transmitted frames grabbed by the grabber"
+msgid ""
+"If enabled, GnomeMeeting will start hidden. The docklet must be enabled."
 msgstr ""
+"TRUE にすると、GnomeMeeting は GNOME パネルの通知エリアを隠したまま起動しま"
+"す。"
 
-#: gnomemeeting.schemas.in.in.h:50
-msgid "Listen Port"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:51
+#: gnomemeeting.schemas.in.in.h:48 src/pref_window.cpp:802
 #, fuzzy
-msgid "Local Video Popup Height"
-msgstr "ローカルの映像イメージ"
+msgid ""
+"If enabled, a popup window will be displayed when receiving an incoming call."
+msgstr "TRUE にすると、着信時にウィンドウをポップアップ表示します。"
 
-#: gnomemeeting.schemas.in.in.h:52
+#: gnomemeeting.schemas.in.in.h:49 src/pref_window.cpp:901
 #, fuzzy
-msgid "Local Video Popup Width"
-msgstr "ローカルの映像イメージ"
-
-#: gnomemeeting.schemas.in.in.h:53 src/ldap_window.cpp:599
-msgid "Location"
-msgstr "所在地"
-
-#: gnomemeeting.schemas.in.in.h:54
-msgid "Number of background blocks transmitted at a time"
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the field below if you already are in a call or if you are in "
+"Do Not Disturb mode."
 msgstr ""
+"TRUE にすると、会話中または \"離席\" の場合、次のフィールドに指定したホストへ"
+"着信を転送します。"
 
-#: gnomemeeting.schemas.in.in.h:55
-msgid "Number of entries to store in history boxes"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:56
-msgid "Number of frames for G.711"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:57
-msgid "Number of frames for GSM"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:58
+#: gnomemeeting.schemas.in.in.h:50 src/pref_window.cpp:898
 #, fuzzy
-msgid "Number of frames transmitted in each packet for the G.711 codec"
-msgstr "各送信された G.711 パケット中のフレーム数"
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the field below if you do not answer the call."
+msgstr ""
+"TRUE にすると、着信に応答しない場合、次のフィールドに指定したホストへ全ての着"
+"信を転送します。"
 
-#: gnomemeeting.schemas.in.in.h:59
+#: gnomemeeting.schemas.in.in.h:51 src/pref_window.cpp:895
 #, fuzzy
-msgid "Number of frames transmitted in each packet for the GSM codec"
-msgstr "各送信された GSM パケット中のフレーム数"
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the field below."
+msgstr ""
+"TRUE にすると、次のフィールドに指定したホストへ全ての着信を転送します。"
 
-#: gnomemeeting.schemas.in.in.h:60
+#: gnomemeeting.schemas.in.in.h:52 src/pref_window.cpp:1365
+msgid "If enabled, allows video to be received during a call."
+msgstr "これを有効にすると、着信中はビデオの映像を受信できます"
+
+#: gnomemeeting.schemas.in.in.h:53 src/pref_window.cpp:796
 #, fuzzy
-msgid "Popup on incoming calls"
-msgstr "着信を拒否しました"
+msgid "If enabled, incoming calls will be automatically answered."
+msgstr "着信自動応答しました"
+
+#: gnomemeeting.schemas.in.in.h:54 src/pref_window.cpp:799
+#, fuzzy
+msgid "If enabled, incoming calls will be automatically refused."
+msgstr ""
+"これを有効にすると、全ての着信が上の欄に指定したホストへフォワードされます"
+
+#: gnomemeeting.schemas.in.in.h:55 src/pref_window.cpp:858
+#, fuzzy
+msgid "If enabled, register with the selected user directory."
+msgstr "TRUE にすると、選択したユーザ・ディレクトリに登録します。"
+
+#: gnomemeeting.schemas.in.in.h:56 src/pref_window.cpp:785
+#, fuzzy
+msgid ""
+"If enabled, the splash screen will be displayed when GnomeMeeting starts."
+msgstr ""
+"TRUE にすると、GnomeMeeting の起動時にスプラッシュ・スクリーンが表示されま"
+"す。"
+
+#: gnomemeeting.schemas.in.in.h:57 src/pref_window.cpp:829
+#, fuzzy
+msgid ""
+"If enabled, the text chat will automatically be cleared at the end of calls."
+msgstr ""
+"TRUE にすると、会話を終了したら自動的にテキスト・チャットをクリアします。"
+
+#: gnomemeeting.schemas.in.in.h:58 src/pref_window.cpp:1335
+msgid "If enabled, use silence detection with the GSM and G.711 codecs."
+msgstr ""
+"これを有効にすると、GSM と G.711 コーデックを使って、サイレンス検出を行います"
+
+#: gnomemeeting.schemas.in.in.h:59 src/pref_window.cpp:1362
+msgid "If enabled, video is transmitted during a call."
+msgstr "これを有効にすると、着信時にビデオの映像を送信します"
+
+#: gnomemeeting.schemas.in.in.h:60 src/pref_window.cpp:861
+msgid ""
+"If enabled, your details are shown to people browsing the user directory. If "
+"disabled, you are not visible to users browsing the user directory, but they "
+"can still use the callto URL to call you."
+msgstr ""
+"これを有効にすると、ユーザ・ディレクトリを参照してあなたの詳細な情報が他の人"
+"たちに公開されます。無効にすると、ユーザ・ディレクトリを他の人たちに公開しま"
+"せんが、あなたを呼び出すために 'callto URL' は公開されます"
 
 #: gnomemeeting.schemas.in.in.h:61
-msgid "Public IP"
-msgstr ""
+msgid "Kind of network selected in the druid"
+msgstr "アシスタントで選択したネットワークの種類"
 
-#. The Quicknet devices related options
-#: gnomemeeting.schemas.in.in.h:62 src/pref_window.cpp:1531
-#, fuzzy
-msgid "Quicknet Device"
-msgstr "ビデオデバイス"
+#: gnomemeeting.schemas.in.in.h:62
+msgid "Last name"
+msgstr "名字"
 
 #: gnomemeeting.schemas.in.in.h:63
 #, fuzzy
-msgid "Received Video Quality Hint"
-msgstr "あるべき受信映像品質"
+msgid "Listen Port"
+msgstr "Listen するポート番号"
 
 #: gnomemeeting.schemas.in.in.h:64
-msgid "Register"
-msgstr "登録"
+#, fuzzy
+msgid "Local video window height"
+msgstr "ローカルのビデオ・ウィンドウのサイズ"
 
 #: gnomemeeting.schemas.in.in.h:65
 #, fuzzy
-msgid "Remote Video Popup Height"
-msgstr "リモートの映像イメージ"
+msgid "Local video window width"
+msgstr "ローカルのビデオ・ウィンドウのサイズ"
 
-#: gnomemeeting.schemas.in.in.h:66
-#, fuzzy
-msgid "Remote Video Popup Width"
-msgstr "リモートの映像イメージ"
+#: gnomemeeting.schemas.in.in.h:66 src/ldap_window.cpp:2585
+msgid "Location"
+msgstr "所在地"
 
 #: gnomemeeting.schemas.in.in.h:67
-msgid "Revision of the schema file"
-msgstr ""
+msgid "Maximum jitter buffer"
+msgstr "Jitter バッファの最大値"
 
 #: gnomemeeting.schemas.in.in.h:68
-msgid "Show a docklet in the gnome-panel or KDE systray"
-msgstr ""
+msgid "Maximum video bandwidth"
+msgstr "映像の最大帯域幅"
 
 #: gnomemeeting.schemas.in.in.h:69
-msgid "Show a nice window every time GnomeMeeting starts"
-msgstr ""
+msgid "Minimum jitter buffer"
+msgstr "Jitter バッファの最小値"
 
 #: gnomemeeting.schemas.in.in.h:70
-msgid "Show a status bar at the bottom of the main window"
-msgstr ""
+msgid "Minimum transmitted FPS"
+msgstr "発信した FPS の最小値"
 
 #: gnomemeeting.schemas.in.in.h:71
-#, fuzzy
-msgid "Show chat window"
-msgstr "チャットウィンドウ 表示/隠す"
+msgid "Minimum transmitted video quality"
+msgstr "映像発信品質の最小値"
 
 #: gnomemeeting.schemas.in.in.h:72
-#, fuzzy
-msgid "Show docklet"
-msgstr "Docklet表示"
+msgid "Number of entries to store in history boxes"
+msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:73
-msgid "Show left toolbar"
-msgstr ""
+msgid "Number of frames for G.711"
+msgstr "G.711 のフレーム数"
 
 #: gnomemeeting.schemas.in.in.h:74
-msgid "Show only the docklet window at startup"
-msgstr ""
+msgid "Number of frames for GSM"
+msgstr "GSM のフレーム数"
 
 #: gnomemeeting.schemas.in.in.h:75
 #, fuzzy
-msgid "Show splash screen at startup"
-msgstr "起動画面表示"
+msgid "Number of frames transmitted in each packet for the G.711 codec."
+msgstr "G.711 コーデックに対する１パケット辺りの発信フレーム数です。"
 
 #: gnomemeeting.schemas.in.in.h:76
 #, fuzzy
-msgid "Show status bar"
-msgstr "ステータスバー表示"
+msgid "Number of frames transmitted in each packet for the GSM codec."
+msgstr "GSM コーデックに対する１パケット辺りの発信フレーム数です。"
 
 #: gnomemeeting.schemas.in.in.h:77
 #, fuzzy
-msgid "Show the chat window in the main window"
-msgstr "メインウィンドウ 表示/隠す"
+msgid "Play a sound on incoming calls"
+msgstr "着信時にサウンドを演奏する"
 
 #: gnomemeeting.schemas.in.in.h:78
-msgid "Show the left toolbar on the left of the main window"
-msgstr ""
+msgid "Public IP of the NAT/PAT router"
+msgstr "NAT/PAT ルータのパブリック IP"
 
 #: gnomemeeting.schemas.in.in.h:79
-msgid "TCP Port Range"
+msgid "Received Video Quality Hint"
 msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:80
-#, fuzzy
-msgid "The Audio Codecs List"
-msgstr "オーディオコーデック"
+msgid "Registering method"
+msgstr "登録する方法"
 
-#: gnomemeeting.schemas.in.in.h:81 src/pref_window.cpp:1535
+#: gnomemeeting.schemas.in.in.h:81 src/pref_window.cpp:990
+#, fuzzy
+msgid "Registering method to use"
+msgstr "使用する登録方法です"
+
+#: gnomemeeting.schemas.in.in.h:82
+#, fuzzy
+msgid "Remote video window height"
+msgstr "リモートのビデオ・ウィンドウのサイズ"
+
+#: gnomemeeting.schemas.in.in.h:83
+#, fuzzy
+msgid "Remote video window width"
+msgstr "リモートのビデオ・ウィンドウのサイズ"
+
+#: gnomemeeting.schemas.in.in.h:84
+msgid "Revision of the schema file"
+msgstr "スキーマ・ファイルの版数"
+
+#: gnomemeeting.schemas.in.in.h:85 src/druid.cpp:792 src/pref_window.cpp:1060
+#, fuzzy
+msgid "Select the audio player device to use."
+msgstr "使用する音声入力デバイスを指定します"
+
+#: gnomemeeting.schemas.in.in.h:86 src/druid.cpp:799 src/pref_window.cpp:1067
+#, fuzzy
+msgid "Select the audio recorder device to use."
+msgstr "使用する音声出力デバイスを指定します"
+
+#: gnomemeeting.schemas.in.in.h:87 src/pref_window.cpp:1140
+#, fuzzy
+msgid ""
+"Select the format for video cameras. (Does not apply to most USB cameras)."
+msgstr ""
+"ビデオ・カメラのフォーマットを指定します (多くの USB カメラには適用できませ"
+"ん)"
+
+#: gnomemeeting.schemas.in.in.h:88 src/druid.cpp:795 src/pref_window.cpp:1063
+msgid "Select the mixer to use to change the volume of the audio player."
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:89 src/druid.cpp:802 src/pref_window.cpp:1070
+msgid "Select the mixer to use to change the volume of the audio recorder."
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:90 src/pref_window.cpp:1137
+#, fuzzy
+msgid ""
+"Select the transmitted video size: Small (QCIF 176x144) or Large (CIF "
+"352x288)."
+msgstr ""
+"発信する映像のサイズを指定します: Small (QCIF 176x144) または Large (CIF "
+"352x288)"
+
+#: gnomemeeting.schemas.in.in.h:91 src/pref_window.cpp:1130
+msgid ""
+"Select the video device to use. Using an invalid video device or \"Picture\" "
+"for video transmission will transmit a test picture."
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:92
+msgid "Show a status bar at the bottom of the main window"
+msgstr "メイン・ウィンドの下部にステータス・バーを表示します。"
+
+#: gnomemeeting.schemas.in.in.h:93
+msgid "Show chat window"
+msgstr "チャット・ウィンドウを表示する"
+
+#: gnomemeeting.schemas.in.in.h:94
+msgid "Show my details to other registered users"
+msgstr "他の登録済みユーザへ身元情報を提供する"
+
+#: gnomemeeting.schemas.in.in.h:95
+#, fuzzy
+msgid "Show splash screen"
+msgstr "スプラッシュ・スクリーンを表示する(_S)"
+
+#: gnomemeeting.schemas.in.in.h:96
+msgid "Show status bar"
+msgstr "ステータス・バーを表示する"
+
+#: gnomemeeting.schemas.in.in.h:97
+msgid "Show the chat window in the main window"
+msgstr "メイン・ウィンドウにチャット・ウィンドウを表示します。"
+
+#: gnomemeeting.schemas.in.in.h:98
+msgid "Start hidden"
+msgstr "起動時に隠す"
+
+#: gnomemeeting.schemas.in.in.h:99 src/menu.cpp:616 src/menu.cpp:860
+msgid "Switch to fullscreen"
+msgstr "フルスクリーンに切り替える"
+
+#: gnomemeeting.schemas.in.in.h:100
+#, fuzzy
+msgid "Switch to fullscreen for images displayed in the main GUI."
+msgstr ""
+"着信時に、メインの GUI の中に表示している映像を自動的にフルスクリーンに切り替"
+"えます。"
+
+#: gnomemeeting.schemas.in.in.h:101
+#, fuzzy
+msgid "TCP Port Range"
+msgstr "TCP ポート番号の範囲"
+
+#: gnomemeeting.schemas.in.in.h:102
+msgid "The Audio Codecs List"
+msgstr "音声コーディックのリスト"
+
+#: gnomemeeting.schemas.in.in.h:103 src/pref_window.cpp:1078
 msgid ""
 "The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic "
 "Gain Compensation. Choosing Automatic Gain Compensation modulates the volume "
 "for best quality."
 msgstr ""
+"自動エコー取り消し機能のレベル (Off, Low, Medium, High, Automatic Gain "
+"Compensation) で、Automatic Gain Compensation を選択すると自動的に最適な品質"
+"の音量に調節します"
 
-#: gnomemeeting.schemas.in.in.h:82
-msgid "The E-Mail address that will be listed in the directories"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:83
+#: gnomemeeting.schemas.in.in.h:104 src/pref_window.cpp:983
 #, fuzzy
-msgid "The Gatekeeper to register to"
-msgstr "登録するゲートキーパーホスト。"
-
-#: gnomemeeting.schemas.in.in.h:84
-#, fuzzy
-msgid "The ID of the Gatekeeper to register to"
-msgstr "登録するゲートキーパーホスト。"
-
-#: gnomemeeting.schemas.in.in.h:85
-#, fuzzy
-msgid "The LDAP Server to register to"
-msgstr "登録する ILS ディレクトリ"
-
-#: gnomemeeting.schemas.in.in.h:86
-msgid "The Location that will be published in the LDAP directories"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:87
-#, fuzzy
-msgid "The Method to use to register to the Gatekeeper"
-msgstr "ゲートキーパーのために使用するホスト名を指定して下さい"
-
-#: gnomemeeting.schemas.in.in.h:88
-msgid "The Quicknet Device to use during calls."
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:89
-#, fuzzy
-msgid "The Video Channel"
-msgstr "映像チャンネル:"
-
-#: gnomemeeting.schemas.in.in.h:90
-#, fuzzy
-msgid "The Video Device to use for recording"
-msgstr "レコーダー設定で使用するミキサー"
-
-#: gnomemeeting.schemas.in.in.h:91
-msgid "The Video Format: PAL, NTSC, SECAM, Auto"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:92
-#, fuzzy
-msgid "The Video Quality to request to the remote"
-msgstr "先方に要求をほのめかす映像品質"
-
-#: gnomemeeting.schemas.in.in.h:93
-msgid "The Video Size: QCIF (0) or CIF (1)"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:94
-msgid "The alias to use when registering"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:95
 msgid ""
-"The alias to use when registering. People will use this alias when calling "
-"you."
+"The Gatekeeper alias to use when registering (string, or E164 ID if only "
+"0123456789#)."
 msgstr ""
+"登録時に使用するゲートキーパのエイリアスです (文字列、または 0123456789# の場"
+"合のみ E164)"
 
-#: gnomemeeting.schemas.in.in.h:96
-msgid "The default video view"
-msgstr ""
+#: gnomemeeting.schemas.in.in.h:105 src/pref_window.cpp:980
+#, fuzzy
+msgid "The Gatekeeper host to register with."
+msgstr "登録時に使用するゲートキーパのホスト名です"
 
-#: gnomemeeting.schemas.in.in.h:97
+#: gnomemeeting.schemas.in.in.h:106 src/pref_window.cpp:977
+#, fuzzy
+msgid "The Gatekeeper identifier to register with."
+msgstr "登録時に使用するゲートキーパの ID です"
+
+#: gnomemeeting.schemas.in.in.h:107 src/pref_window.cpp:986
+#, fuzzy
 msgid ""
-"The default video view (0: Local, 1: Remote, 2: Both incrusted, 3: Both with "
-"local in popup, 4: Both)"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:98
-#, fuzzy
-msgid "The device to use to play audio"
-msgstr "プレーヤー設定で使用するミキサー"
-
-#: gnomemeeting.schemas.in.in.h:99
-#, fuzzy
-msgid "The device to use to record audio"
-msgstr "レコーダー設定で使用するミキサー"
-
-#: gnomemeeting.schemas.in.in.h:100
-msgid "The height of the local video popup"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:101
-msgid ""
-"The height of the picture displayed when being in fullscreen (using SDL)"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:102
-msgid "The height of the remote video popup"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:103
-msgid "The host to forward calls to"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:104
-#, fuzzy
-msgid "The hostname of the Gatekeeper to register to"
-msgstr "登録するゲートキーパーホスト。"
-
-#: gnomemeeting.schemas.in.in.h:105 src/pref_window.cpp:1635
-msgid ""
-"The image to transmit if the Picture device is selected as video device or "
-"if the opening of the device fails (none specified = default GnomeMeeting "
-"logo)."
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:106
-#, fuzzy
-msgid "The list of ILS servers"
-msgstr "ILS サーバへの登録成功"
-
-#: gnomemeeting.schemas.in.in.h:107
-msgid "The list of called URLs"
-msgstr ""
+"The Gatekeeper password to use for H.235 authentication to the Gatekeeper."
+msgstr "ゲートキーパに対する H.235 認証で使用するパスワードです"
 
 #: gnomemeeting.schemas.in.in.h:108
-msgid "The list of used ILS servers"
+msgid "The Video Quality to request to the remote"
 msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:109
-msgid "The mixer to use for the device that is used to play audio"
-msgstr ""
+msgid "The default video view"
+msgstr "デフォルトのビデオ表示"
 
 #: gnomemeeting.schemas.in.in.h:110
-msgid "The mixer to use for the device that is used to record audio"
+msgid ""
+"The default video view (0: Local, 1: Remote, 2: Both incrusted, 3: Both with "
+"local video in a separate window, 4: Both)"
 msgstr ""
+"デフォルトのビデオ表示です (0: ローカル、1:リモート、2:枠つきで両方、3:別々の"
+"ウィンドウの中にローカル、4:ローカルとリモートの両方)"
 
 #: gnomemeeting.schemas.in.in.h:111
+#, fuzzy
+msgid "The height of the local video window"
+msgstr "ローカルのビデオ・ウィンドウのサイズ"
+
+#: gnomemeeting.schemas.in.in.h:112
+#, fuzzy
+msgid "The height of the remote video window"
+msgstr "リモートのビデオ・ウィンドウのサイズ"
+
+#: gnomemeeting.schemas.in.in.h:113 src/pref_window.cpp:888
+#, fuzzy
+msgid ""
+"The host where calls should be forwarded to in the cases selected above."
+msgstr "上で選択した場合に呼び出しを転送するホスト名です"
+
+#: gnomemeeting.schemas.in.in.h:114 src/pref_window.cpp:819
+msgid "The image height for fullscreen."
+msgstr "フルスクリーン時の映像の高さです"
+
+#: gnomemeeting.schemas.in.in.h:115 src/pref_window.cpp:1143
+#, fuzzy
+msgid ""
+"The image to transmit if \"Picture\" is selected for the video device or if "
+"the opening of the device fails. Leave blank to use the default GnomeMeeting "
+"logo."
+msgstr ""
+"ビデオのプラグインとして \"映像\" が選択されている場合、またはデバイスのオー"
+"プンに失敗した場合に発信する画像です (空白のままにすると GnomeMeeting デフォ"
+"ルトのログを使用します)"
+
+#: gnomemeeting.schemas.in.in.h:116 src/pref_window.cpp:818
+msgid "The image width for fullscreen."
+msgstr "フルスクリーン時の映像の幅です"
+
+#: gnomemeeting.schemas.in.in.h:117
+msgid "The list of called URLs"
+msgstr "呼び出した URL のリスト"
+
+#: gnomemeeting.schemas.in.in.h:118
+msgid "The list of groups"
+msgstr "グループのリスト"
+
+#: gnomemeeting.schemas.in.in.h:119 src/pref_window.cpp:1331
+msgid "The maximum jitter buffer size for audio reception (in ms)."
+msgstr "音声を受信するための Jitter バッファの最大値 (ミリ秒) です"
+
+#: gnomemeeting.schemas.in.in.h:120 src/pref_window.cpp:1373
+msgid ""
+"The maximum video bandwidth in kbytes/s. The video quality and the number of "
+"transmitted frames per second will be dynamically adjusted above their "
+"minimum during calls to try to minimize the bandwidth to the given value."
+msgstr ""
+"The maximum video bandwidth in kbytes/s. The video quality and the number of "
+"transmitted frames per second will be dynamically adjusted above their "
+"minimum during calls to try to minimize the bandwidth to the given value."
+
+#: gnomemeeting.schemas.in.in.h:121 src/pref_window.cpp:1330
+msgid "The minimum jitter buffer size for audio reception (in ms)."
+msgstr "音声を受信するための Jitter バッファの最小値 (ミリ秒) です"
+
+#: gnomemeeting.schemas.in.in.h:122 src/pref_window.cpp:1386
+#, fuzzy
+msgid ""
+"The minimum number of video frames to transmit each second when trying to "
+"minimize the bandwidth."
+msgstr "最小限の帯域で発信を試みる時の１秒間に発信する映像の最小フレーム数です"
+
+#: gnomemeeting.schemas.in.in.h:124
+#, fuzzy, no-c-format
+msgid ""
+"The minimum transmitted video quality to keep when trying to minimize the "
+"used bandwidth: choose 100% on a LAN for the best quality, 1% being the "
+"worst quality."
+msgstr ""
+"使用する帯域を最小限にした際に保持する最小発信の映像品質です: 最高の品質は "
+"100%で、最低の品質は 1% です。"
+
+#: gnomemeeting.schemas.in.in.h:125
 msgid ""
 "The port to listen to for incoming connections. GnomeMeeting needs to be "
 "restarted for the new value to take effect."
 msgstr ""
+"着信を監視するポート番号です。新しい値を有効にするには GnomeMeeting を再起動"
+"する必要があります。"
 
-#: gnomemeeting.schemas.in.in.h:112
+#: gnomemeeting.schemas.in.in.h:126
 msgid ""
 "The prefix that will be used to save pictures of the conversation. That "
 "prefix is followed by the snapshot number."
 msgstr ""
+"会話中の映像を保存する際に使用する接頭子です。スナップショットの番号に続いて"
+"接頭子が付与されます。"
 
-#: gnomemeeting.schemas.in.in.h:113
+#: gnomemeeting.schemas.in.in.h:127
 msgid ""
 "The range of TCP ports beside the listen_port that GnomeMeeting will use for "
-"incoming connections. You can change the TCP port range if you are using IP "
+"the H.245 channel. You can change the TCP port range if you are using IP "
 "translation and if you need to have several GnomeMeeting running behind your "
 "NAT/PAT router. GnomeMeeting needs to be restarted for the new values to "
-"take effect."
+"take effect. This port range has no effect if both participants to the "
+"conference are using H.245 Tunneling."
 msgstr ""
+"GnomeMeeting が H.245 チャンネルで使用する listen_port 側の TCP ポート番号の"
+"範囲です。IP 転送を利用し、お使いの NAT/PAT ルータから後方で複数の "
+"GnomeMeeting を起動する場合、TCP ポート番号の範囲を変更することができます。新"
+"しい値を有効にするには GnomeMeeting を再起動する必要があります。会議に参加し"
+"ている両方が H.245 トンネリングを利用している場合、このポート番号の範囲は効果"
+"はありません。"
 
-#: gnomemeeting.schemas.in.in.h:114
+#: gnomemeeting.schemas.in.in.h:128
 msgid ""
-"The range of UDP ports that GnomeMeeting will use for incoming connections. "
-"You can change the UDP port range if you are using IP translation and if you "
-"need to have several GnomeMeeting running behind your NAT/PAT router. "
-"GnomeMeeting needs to be restarted for the new values to take effect."
+"The range of UDP ports that GnomeMeeting will use for RTP (audio and video "
+"communication channels). You can change the UDP port range if you are using "
+"IP translation and if you need to have several GnomeMeeting running behind "
+"your NAT/PAT router. GnomeMeeting needs to be restarted for the new values "
+"to take effect."
 msgstr ""
+"GnomeMeeting が RTP (音声と映像通信チャンネル) で利用する UDP ポート番号の範"
+"囲です。IP 転送を利用し、お使いの NAT/PAT ルータから後方で複数の "
+"GnomeMeeting を起動する場合、TCP ポート番号の範囲を変更することができます。新"
+"しい値を有効にするには GnomeMeeting を再起動する必要があります。ゲートキーパ"
+"に登録していない場合、このポート番号の範囲は効果はありません。"
 
-#: gnomemeeting.schemas.in.in.h:115
+#: gnomemeeting.schemas.in.in.h:129
+msgid ""
+"The range of UDP ports that GnomeMeeting will use when registering to "
+"gatekeepers. You can change the UDP port range if you are using IP "
+"translation and if you need to have several GnomeMeeting running behind your "
+"NAT/PAT router. GnomeMeeting needs to be restarted for the new values to "
+"take effect. This port range has no effect if you are not registering to a "
+"gatekeeper."
+msgstr ""
+"GnomeMeeting がゲートキーパに登録している際に利用する UDP ポート番号の範囲で"
+"す。IP 転送を利用し、お使いの NAT/PAT ルータから後方で複数の GnomeMeeting を"
+"起動する場合、TCP ポート番号の範囲を変更することができます。新しい値を有効に"
+"するには GnomeMeeting を再起動する必要があります。ゲートキーパに登録していな"
+"い場合、このポート番号の範囲は効果はありません。"
+
+#: gnomemeeting.schemas.in.in.h:130
 msgid "The save prefix"
-msgstr ""
+msgstr "保存時の接頭子"
 
-#: gnomemeeting.schemas.in.in.h:116
-#, fuzzy
-msgid "The transmitted video quality hint"
-msgstr "送信品質"
-
-#: gnomemeeting.schemas.in.in.h:117 src/pref_window.cpp:1538
+#: gnomemeeting.schemas.in.in.h:131 src/pref_window.cpp:1081
 msgid ""
 "The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)."
-msgstr ""
+msgstr "お住まいの国を示す二文字のコードです (例: JP、BE、UK、FR、DE、...)"
 
-#: gnomemeeting.schemas.in.in.h:118
-msgid "The user's first name that will be used in the directories"
-msgstr ""
+#: gnomemeeting.schemas.in.in.h:132 src/pref_window.cpp:855
+#, fuzzy
+msgid "The user directory server to register with."
+msgstr "登録するユーザ・ディレクトリのサーバです"
 
-#: gnomemeeting.schemas.in.in.h:119
-msgid "The width of the local video popup"
+#: gnomemeeting.schemas.in.in.h:133 src/pref_window.cpp:1134
+#, fuzzy
+msgid ""
+"The video channel number to use (to select camera, tv or other sources)."
 msgstr ""
+"使用する映像チャンネルの番号 (カメラ、テレビ、またはその他のソース) です"
 
-#: gnomemeeting.schemas.in.in.h:120
-msgid "The width of the picture displayed when being in fullscreen (using SDL)"
+#: gnomemeeting.schemas.in.in.h:134
+#, fuzzy
+msgid "The width of the local video window"
+msgstr "ローカルのビデオ・ウィンドウのサイズ"
+
+#: gnomemeeting.schemas.in.in.h:135
+#, fuzzy
+msgid "The width of the remote video window"
+msgstr "リモートのビデオ・ウィンドウのサイズ"
+
+#: gnomemeeting.schemas.in.in.h:136
+msgid "The zoom value"
+msgstr "ズーム率"
+
+#: gnomemeeting.schemas.in.in.h:137
+#, fuzzy
+msgid ""
+"The zoom value to apply to images displayed in the main GUI (can be 0.50, "
+"1.00, or 2.00)."
 msgstr ""
+"メイン GUI の中に表示される映像に適用されるズーム率です (指定可能な値は、"
+"0.50、1.00、または 2.00 のみ)。"
 
-#: gnomemeeting.schemas.in.in.h:121
-msgid "The width of the remote video popup"
+#: gnomemeeting.schemas.in.in.h:138 src/pref_window.cpp:933
+msgid ""
+"This enables H.245 Tunnelling mode. In H.245 Tunnelling mode H.245 messages "
+"are encapsulated into the the H.225 channel (port 1720). This saves one TCP "
+"connection during calls. H.245 Tunnelling was introduced in H.323v2 and "
+"Netmeeting does not support it. Using both Fast Start and H.245 Tunnelling "
+"can crash some versions of Netmeeting."
 msgstr ""
+"これは H.245 トンネリング・モードを有効にします。H.245 トンネリング・モード"
+"の H.245 メッセージは、H.225 チャンネル (ポート番号 1720) の中にカプセル化さ"
+"れます。これは一個の TCP 呼び出し接続を保存します。H.245 トンネリングは "
+"H.323v2 の中で規格化されており、Netmeeting ではサポートされていません。高速起"
+"動と H.245 トンネリングの併用はいくつかの Netmeeting のバージョンでクラッシュ"
+"します。"
 
-#: gnomemeeting.schemas.in.in.h:122 src/pref_window.cpp:1426
+#: gnomemeeting.schemas.in.in.h:139 src/pref_window.cpp:1019
 msgid ""
 "This enables IP translation. IP translation is useful if GnomeMeeting is "
 "running behind a NAT/PAT router. You have to put the public IP of the router "
@@ -610,144 +800,191 @@ msgid ""
 "will automatically fetch the public IP using the ILS service. If your router "
 "natively supports H.323, you can disable this."
 msgstr ""
+"This enables IP translation. IP translation is useful if GnomeMeeting is "
+"running behind a NAT/PAT router. You have to put the public IP of the router "
+"in the field below. If you are registered to ils.seconix.com, GnomeMeeting "
+"will automatically fetch the public IP using the ILS service. If your router "
+"natively supports H.323, you can disable this."
 
-#: gnomemeeting.schemas.in.in.h:123
-msgid "This need the show_docklet option set to true to have effect"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:124
+#: gnomemeeting.schemas.in.in.h:140
 #, fuzzy
-msgid "Transmitted frames per second"
-msgstr "フレーム/秒"
+msgid ""
+"This permits to set the mode for User Input Capabilities. The values can be "
+"\"All\" (0), \"None\" (1), \"rfc2833\" (2), \"Signal\" (3) or \"String\" (4) "
+"(default is \"All\"). Choosing other values than \"All\", \"String\" or "
+"\"rfc2833\" disables the Text Chat."
+msgstr ""
+"これは DTMF 送信のモードをセットするための許可フラグです。設定可能な値は、"
+"\"全て\" (0)、\"なし\" (1)、\"rfc2833\" (2)、\"シグナル\" (3)、\"文字列"
+"\" (4) (デフォルトは \"全て\") です。\"全て\"、\"文字列\" または \"rfc2833\" "
+"以外の値を選択するとチャットが無効になります。"
 
-#: gnomemeeting.schemas.in.in.h:125
+#: gnomemeeting.schemas.in.in.h:141
+msgid "Transmitted background blocks"
+msgstr "発信するバックグラウンド・ブロック数"
+
+#: gnomemeeting.schemas.in.in.h:142
+#, fuzzy
 msgid "UDP Port Range"
+msgstr "UDP ポート番号の範囲"
+
+#: gnomemeeting.schemas.in.in.h:143
+msgid "User Input Capabilities type"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:126
-msgid "Use Quicknet Device"
-msgstr ""
+#: gnomemeeting.schemas.in.in.h:144
+msgid "User directory"
+msgstr "ユーザ・ディレクトリ"
 
-#: gnomemeeting.schemas.in.in.h:127 src/ldap_window.cpp:623
+#: gnomemeeting.schemas.in.in.h:145 src/ldap_window.cpp:2609
 msgid "Version"
 msgstr "バージョン"
 
-#: gnomemeeting.schemas.in.in.h:128
+#: gnomemeeting.schemas.in.in.h:146
 #, fuzzy
-msgid "Video Channel"
-msgstr "映像チャンネル:"
-
-#: gnomemeeting.schemas.in.in.h:129
-msgid "Video Device"
-msgstr "ビデオデバイス"
-
-#: gnomemeeting.schemas.in.in.h:130
-#, fuzzy
-msgid "Video Format"
-msgstr "ビデオ形式:"
-
-#: gnomemeeting.schemas.in.in.h:131 src/pref_window.cpp:1639
 msgid "Video Preview"
 msgstr "映像プレビュー"
 
-#: gnomemeeting.schemas.in.in.h:132
+#: gnomemeeting.schemas.in.in.h:147
+msgid "Video channel"
+msgstr "映像チャンネル"
+
+#: gnomemeeting.schemas.in.in.h:148
 #, fuzzy
-msgid "Video Quality"
-msgstr "良質"
+msgid "Video device"
+msgstr "映像のデバイス"
 
-#: gnomemeeting.schemas.in.in.h:133
-#, fuzzy
-msgid "Video Size"
-msgstr "画面サイズ:"
+#: gnomemeeting.schemas.in.in.h:149
+msgid "Video format"
+msgstr "ビデオの形式"
 
-#: gnomemeeting.schemas.in.in.h:134
-msgid ""
-"You can put here the public IP of your NAT/PAT router if you want to use IP "
-"translation. If you are registered to ils.seconix.com, GnomeMeeting will "
-"automatically fetch the public IP using the ILS service."
-msgstr ""
+#: gnomemeeting.schemas.in.in.h:150
+msgid "Video image"
+msgstr "ビデオの映像"
 
-#: lib/dialog.c:131
+#: gnomemeeting.schemas.in.in.h:151
+msgid "Video size"
+msgstr "映像のサイズ"
+
+#: lib/dialog.c:182
 msgid "Do not show this dialog again"
-msgstr "このダイアログを2度と表示しない"
+msgstr "次回からこのダイアログを表示しない"
 
-#. The toggles
-#: sounds/gnomemeeting.soundlist.in.h:1 src/pref_window.cpp:1323
+#: sounds/gnomemeeting.soundlist.in.h:1
+#, fuzzy
 msgid "Incoming Call"
-msgstr "着信"
+msgstr "着信元"
 
 #: sounds/gnomemeeting.soundlist.in.h:2
 #, fuzzy
 msgid "gnomemeeting"
 msgstr "GnomeMeeting"
 
-#: src/callbacks.cpp:122
+#: src/callbacks.cpp:87
+msgid "_Retrieve Call"
+msgstr "再開(_R)"
+
+#: src/callbacks.cpp:100 src/menu.cpp:458
+msgid "_Hold Call"
+msgstr "保留(_H)"
+
+#: src/callbacks.cpp:141 src/ldap_window.cpp:708
+#, fuzzy
+msgid "Edit the contact information"
+msgstr "コンタクト情報の編集"
+
+#: src/callbacks.cpp:144 src/menu.cpp:463
+msgid "_Transfer Call"
+msgstr "着信の転送(_T)"
+
+#: src/callbacks.cpp:165
+#, fuzzy
+msgid "Forward call to:"
+msgstr "着信をフォワードします"
+
+#: src/callbacks.cpp:260 src/menu.cpp:470
+msgid "Suspend _Audio"
+msgstr "音声の一時停止(_A)"
+
+#: src/callbacks.cpp:261
+msgid "Resume _Audio"
+msgstr "音声の再開(_A)"
+
+#: src/callbacks.cpp:262
+msgid "Audio transmission: suspended"
+msgstr "音声の発信: 一時停止中"
+
+#: src/callbacks.cpp:263
+msgid "Audio transmission: resumed"
+msgstr "音声の発信: 再開中"
+
+#: src/callbacks.cpp:272 src/menu.cpp:475
+msgid "Suspend _Video"
+msgstr "ビデオの一時停止(_V)"
+
+#: src/callbacks.cpp:273
+msgid "Resume _Video"
+msgstr "ビデオの再開(_V)"
+
+#: src/callbacks.cpp:274
+msgid "Video transmission: suspended"
+msgstr "映像の発信: 一時停止中"
+
+#: src/callbacks.cpp:275
+msgid "Video transmission: resumed"
+msgstr "映像の発信: 再開中"
+
+#: src/callbacks.cpp:381
 #, fuzzy
 msgid "Code Contributors:"
-msgstr "投稿者:"
+msgstr "開発の貢献者:"
 
-#: src/callbacks.cpp:128
+#: src/callbacks.cpp:389
+msgid "Artwork:"
+msgstr "グラフィックス:"
+
+#: src/callbacks.cpp:392
 msgid "Contributors:"
-msgstr "投稿者:"
+msgstr "貢献者:"
 
-#: src/callbacks.cpp:149
+#: src/callbacks.cpp:418
 msgid "Internationalisation Maintainer:"
 msgstr ""
 
 #. Translators: Please write translator credits here, and
 #. * seperate names with \n
-#: src/callbacks.cpp:166
+#: src/callbacks.cpp:436
 msgid "translator_credits"
 msgstr ""
+"相花 毅 <aihana@gnome.gr.jp>\n"
+"Katsumi Saito <katsumi@jo1upk.ymt.prug.or.jp>\n"
+"日本GNOMEユーザー会 <http://www.gnome.gr.jp>"
 
 #. Translators: Please test to see if your translation
 #. * looks OK and fits within the box
-#: src/callbacks.cpp:178
-#, fuzzy
+#: src/callbacks.cpp:447
 msgid ""
 "GnomeMeeting is a full-featured H.323\n"
 "video conferencing application."
-msgstr "GnomeMeeting は、H.323 準拠のテレビ会議アプリケーションです。"
+msgstr ""
 
-#: src/callbacks.cpp:216
+#: src/chat_window.cpp:205
 #, fuzzy
-msgid ""
-"An error has happened in the configuration backend.\n"
-"Maybe some of your settings won't be saved."
-msgstr ""
-"構成処理でエラーが発生しました。\n"
-"いくつかの設定は保存されません。"
-
-#: src/chat_window.cpp:148 src/menu.cpp:355
-msgid "Text Chat"
-msgstr "テキストチャット"
-
-#: src/chat_window.cpp:194
 msgid "Send Message:"
-msgstr "送信メッセージ:"
-
-#: src/cleaner.cpp:79
-msgid "Quit in progress..."
-msgstr "処理中に終了..."
-
-#: src/cleaner.cpp:93
-msgid ""
-"Warning! GnomeMeeting can't disconnect from the remote party due to a bug in "
-"OpenH323.\n"
-"Forcing the exit in 3 seconds!\n"
-msgstr ""
+msgstr "送信するメッセージ:"
 
 #: src/config-tool-i18n.h:1
 msgid "YES"
-msgstr ""
+msgstr "YES"
 
 #: src/config-tool-i18n.h:2
 msgid "Sorry, this script won't work while GnomeMeeting is running"
 msgstr ""
+"すみませんが、GnomeMeeting が実行している場合、このスクリプトは動作しません。"
 
 #: src/config-tool-i18n.h:3
 msgid "  WARNING!!!"
-msgstr ""
+msgstr "  警告！！！"
 
 #: src/config-tool-i18n.h:4
 msgid ""
@@ -761,27 +998,37 @@ msgid ""
 "  If so, say \"YES\".\n"
 "\n"
 msgstr ""
+"  このスクリプトは、重要と思われる設定を含む、\n"
+"  全てのユーザの GnomeMeeting 設定を削除します！\n"
+"  GConf デーモンを終了することになるので、\n"
+"  GConf を利用している他のアプリケーションが\n"
+"  動作していないことを確認して下さい。\n"
+"\n"
+"  本当に続行してもよろしいですか？\n"
+"\n"
+"  続行する場合は \"YES\" と入力して下さい。\n"
+"\n"
 
 #: src/config-tool-i18n.h:5
 msgid "Removing $HOME/.gconf/apps/gnomemeeting"
-msgstr ""
+msgstr "$HOME/.gconf/apps/gnomemeeting の削除中"
 
 #: src/config-tool-i18n.h:6 src/config-tool-i18n.h:11
 #: src/config-tool-i18n.h:13
 msgid "Shutting down GConf daemon"
-msgstr ""
+msgstr "GConf デーモンを終了しています"
 
 #: src/config-tool-i18n.h:7
 msgid "...Done."
-msgstr ""
+msgstr "...完了しました。"
 
 #: src/config-tool-i18n.h:8
 msgid "Leaving configuration alone."
-msgstr ""
+msgstr "設定をそのままにしておきます。"
 
 #: src/config-tool-i18n.h:9
 msgid "Have a nice day."
-msgstr ""
+msgstr "それでは。"
 
 #: src/config-tool-i18n.h:10
 msgid ""
@@ -793,14 +1040,22 @@ msgid ""
 "  If so, say \"YES\".\n"
 "\n"
 msgstr ""
+"  GConf デーモンを終了することになるので、\n"
+"  GConf を利用している他のアプリケーションが\n"
+"  動作していないことを確認して下さい。\n"
+"\n"
+"  本当に続行してもよろしいですか？\n"
+"\n"
+"  続行する場合は \"YES\" と入力して下さい。\n"
+"\n"
 
 #: src/config-tool-i18n.h:12
 msgid "Removing schemas"
-msgstr ""
+msgstr "スキーマの削除中"
 
 #: src/config-tool-i18n.h:14
 msgid "Installing schemas"
-msgstr ""
+msgstr "スキーマのインストール中"
 
 #: src/config-tool-i18n.h:15
 msgid ""
@@ -809,2184 +1064,3467 @@ msgid ""
 "\n"
 "Run \"gnomemeeting-config-tool --install-schemas\" as root.\n"
 msgstr ""
+"＊致命的なエラー＊ -- スキーマのインストールに失敗しました。\n"
+"おそらく GConf デーモンが root 権限で実行されていると思われます。\n"
+"\n"
+"root 権限にて `gnomemeeting-config-tool --install-schemas` を実行して下さ"
+"い。\n"
 
 #: src/config-tool-i18n.h:16
 msgid "Usage:  gnomemeeting-config-tool OPTION"
-msgstr ""
+msgstr "用法:  gnomemeeting-config-tool [オプション]"
 
 #: src/config-tool-i18n.h:17
 msgid "Fixes problems with the GnomeMeeting settings"
-msgstr ""
+msgstr "GnomeMeeting の設定による問題を解決するスクリプト"
 
 #: src/config-tool-i18n.h:18
 msgid "  --clean                remove all user settings"
-msgstr ""
+msgstr "  --clean                全てのユーザ設定を削除する"
 
 #: src/config-tool-i18n.h:19
 msgid ""
 "  --install-schemas      install schemas with default settings (run as root)"
 msgstr ""
+"  --install-schemas      デフォルト設定のスキーマをインストールする (root 権"
+"限で実行のこと)"
 
 #: src/config-tool-i18n.h:20
 msgid ""
 "  --clean-schemas        remove schemas with default settings (run as root)"
 msgstr ""
+"  --clean-schemas        デフォルト設定のスキーマを削除する (root 権限で実行"
+"のこと)"
 
 #: src/config-tool-i18n.h:21
 msgid ""
 "  --fix-permissions      fix permissions of GConf repository (run as root)"
 msgstr ""
+"  --fix-permissions      GConf リポジトリの権限を修正する (root 権限で実行の"
+"こと)"
 
-#. Set recording source and set micro to record
-#. Translators: This is shown in the history.
-#: src/config.cpp:412
-#, c-format
-msgid "Set Audio Mixer for player to %s"
-msgstr "%s をプレーヤーとしてオーディオミキサーに設定"
-
-#. Translators: This is shown in the history.
-#: src/config.cpp:418
-#, c-format
-msgid "Set Audio Mixer for recorder to %s"
-msgstr "%s をレコーダーとしてオーディオミキサーに設定"
-
-#: src/config.cpp:447
-#, fuzzy
+#: src/config.cpp:409
 msgid "Changing this setting will only affect new calls"
-msgstr "この変更は、単に新規呼び出しにのみ影響します。"
+msgstr "設定の変更は次回から適用"
 
-#: src/config.cpp:587
+#: src/config.cpp:409
+msgid ""
+"You have changed a setting that doesn't permit to GnomeMeeting to apply the "
+"new change to the current call. Your new setting will only take effect for "
+"the next call."
+msgstr ""
+"ここで変更した設定は、現在の呼び出しに対する新しい設定として適用することがで"
+"きません。新しい設定は次の呼び出しに対してのみ有効になります。"
+
+#: src/config.cpp:591
+#, fuzzy
 msgid "Disabled Silence Detection"
-msgstr "サイレンス検出を無効"
+msgstr "サイレンス検出は無効"
 
-#: src/config.cpp:593
+#: src/config.cpp:597
+#, fuzzy
 msgid "Enabled Silence Detection"
-msgstr "サイレンス検出を有効"
+msgstr "サイレンス検出は有効"
 
-#: src/config.cpp:994
+#: src/config.cpp:1259
+#, fuzzy
 msgid ""
 "You need to specify an host to forward calls to!\n"
 "Disabling forwarding."
 msgstr ""
+"設定ダイアログの呼び出しの転送セクションで、転送先の URL を指定して下さい！\n"
+"\n"
+"転送を無効にします。"
 
-#: src/connection.cpp:93
+#: src/config.cpp:1459
+msgid ""
+"An error has happened in the configuration backend.\n"
+"Maybe some of your settings won't be saved."
+msgstr ""
+"設定バックエンドでエラーが発生しました。\n"
+"おそらく設定のいくつかは保存されていません。"
+
+#: src/connection.cpp:112
 msgid "Started New Logical Channel..."
-msgstr "新しい論理チャンネルを開始しました..."
-
-#: src/connection.cpp:100
-#, c-format
-msgid "Sending %s"
-msgstr "%s 送信中 "
+msgstr ""
 
 #: src/connection.cpp:119
-#, c-format
-msgid "Enabled silence detection for %s"
-msgstr "%s のためにサイレンス検出を有効"
-
-#: src/connection.cpp:122
-#, c-format
-msgid "Disabled silence detection for %s"
-msgstr "%s のためにサイレンス検出を無効"
+#, fuzzy, c-format
+msgid "Sending %s"
+msgstr "DTMF 送信方式"
 
 #: src/connection.cpp:138
-#, c-format
-msgid "Receiving %s"
-msgstr "%s 受信中 "
+#, fuzzy, c-format
+msgid "Enabled silence detection for %s"
+msgstr "サイレンス検出は有効"
 
-#: src/connection.cpp:166
+#: src/connection.cpp:141
+#, fuzzy, c-format
+msgid "Disabled silence detection for %s"
+msgstr "サイレンス検出は無効"
+
+#: src/connection.cpp:157
+#, fuzzy, c-format
+msgid "Receiving %s"
+msgstr "着信"
+
+#: src/connection.cpp:187
 #, c-format
 msgid "Requesting remote to send video quality: %d%%"
-msgstr "リモート送信する映像品質要求: %d%%"
+msgstr ""
 
-#: src/connection.cpp:191
+#: src/connection.cpp:212
 msgid "Request ok"
-msgstr "ok を要求"
-
-#: src/connection.cpp:222 src/connection.cpp:224
-msgid "Audio Channel:  Sending"
-msgstr "音声チャンネル: 送信中"
-
-#: src/connection.cpp:231 src/connection.cpp:233
-msgid "Audio Channel:  Paused"
-msgstr "音声チャンネル: 一時停止"
-
-#: src/connection.cpp:255 src/connection.cpp:257
-msgid "Video Channel:  Sending"
-msgstr "映像チャンネル: 送信中"
-
-#: src/connection.cpp:263 src/connection.cpp:265
-msgid "Video Channel:  Paused"
-msgstr "映像チャンネル: 一時停止"
-
-#: src/connection.cpp:314 src/connection.cpp:316
-msgid "Auto Rejecting Incoming Call"
-msgstr "呼出時自動無視"
-
-#: src/connection.cpp:317 src/endpoint.cpp:1128
-msgid "Auto Rejected"
 msgstr ""
 
-#: src/connection.cpp:329 src/connection.cpp:331
+#: src/connection.cpp:244 src/connection.cpp:246
+#, fuzzy
 msgid "Auto Answering Incoming Call"
-msgstr "呼出時自動応答"
+msgstr "着信に応答中"
 
-#: src/druid.cpp:207
+#: src/connection.cpp:337 src/connection.cpp:338 src/urlhandler.cpp:76
+#: src/urlhandler.cpp:77
+msgid "Call transfer failed"
+msgstr "発信に失敗"
+
+#: src/connection.cpp:337
 msgid ""
-"You chose to NOT use the GnomeMeeting ILS directory. Other users will not be "
-"able to contact you if you don't register to a directory service."
-msgstr ""
+"The remote user tried to transfer your call to another user, but it failed."
+msgstr "リモート・ユーザが他のユーザに発信しましたが、失敗しました。"
 
-#: src/druid.cpp:382
+#: src/druid.cpp:517 src/druid.cpp:699
 #, fuzzy
-msgid "Personal Data - Page 2/4"
-msgstr "個人データ"
-
-#: src/druid.cpp:390
-msgid ""
-"Please enter information about yourself. This information will be used when "
-"connecting to remote H.323 software, and to register in the directory of "
-"GnomeMeeting users. The directory is used to register users when they are "
-"using GnomeMeeting so that you can call them, and they can call you."
-msgstr ""
-
-#: src/druid.cpp:398 src/pref_window.cpp:1233
-msgid "First Name:"
-msgstr "名前:"
-
-#: src/druid.cpp:401 src/pref_window.cpp:1236
-msgid "Last Name:"
-msgstr "姓名:"
-
-#: src/druid.cpp:403 src/pref_window.cpp:1241
-msgid "E-mail Address:"
-msgstr "電子メールアドレス:"
-
-#: src/druid.cpp:405 src/pref_window.cpp:1243
-msgid "Comment:"
-msgstr "コメント:"
-
-#: src/druid.cpp:407 src/pref_window.cpp:1245
-msgid "Location:"
-msgstr "所在地:"
-
-#: src/druid.cpp:410
-#, fuzzy
-msgid "Do not register me to the GnomeMeeting ILS directory"
-msgstr "チェックすると、選択した LDAP ディレクトリに登録します"
-
-#: src/druid.cpp:455
-msgid "Connection Type - Page 3/4"
-msgstr ""
-
-#: src/druid.cpp:465
-msgid ""
-"Please enter your connection type. This setting is used to set default "
-"settings following your bandwidth. It will set good global settings but it "
-"is however possible to tweak and change some of them to obtain a better "
-"result in each particular case."
-msgstr ""
-
-#: src/druid.cpp:473
 msgid "56K modem"
-msgstr ""
+msgstr "56k モデム"
 
-#: src/druid.cpp:481
+#: src/druid.cpp:521 src/druid.cpp:703
 msgid "ISDN"
-msgstr ""
+msgstr "ISDN"
 
-#: src/druid.cpp:489
-#, fuzzy
-msgid "DSL/Cable"
-msgstr "無効"
+#: src/druid.cpp:525
+msgid "xDSL/Cable"
+msgstr "xDSL/ケーブル"
 
-#: src/druid.cpp:497
+#: src/druid.cpp:529 src/druid.cpp:711
 msgid "T1/LAN"
-msgstr ""
+msgstr "T1/LAN"
 
-#: src/druid.cpp:505
-#, fuzzy
-msgid "Custom"
-msgstr "自動"
-
-#: src/druid.cpp:556
-msgid "First Time Configuration Druid"
+#: src/druid.cpp:533 src/druid.cpp:715
+msgid "Other"
 msgstr ""
 
 #: src/druid.cpp:566
-msgid "GnomeMeeting Configuration Assistant - Page 1/4"
-msgstr ""
-
-#: src/druid.cpp:569
-msgid ""
-"Welcome to the GnomeMeeting general configuration druid. The following steps "
-"will set up GnomeMeeting by asking a few simple questions. Once you have "
-"completed these steps, you can always change them later in the preferences. "
-msgstr ""
-
-#: src/druid.cpp:575
-msgid ""
-"You have successfully set up GnomeMeeting. Enjoy!\n"
-"   -- The GnomeMeeting development team"
-msgstr ""
-
-#: src/druid.cpp:605
-msgid "Done! - Page 4/4"
-msgstr ""
-
-#: src/endpoint.cpp:119
-#, c-format
-msgid "Forwarding Call to %s (No Answer)"
-msgstr ""
-
-#: src/endpoint.cpp:124 src/endpoint.cpp:985 src/endpoint.cpp:1086
-#: src/endpoint.cpp:1110
-msgid "Call forwarded"
-msgstr ""
-
-#. GM is started
-#: src/endpoint.cpp:231
-#, c-format
-msgid "Started GnomeMeeting V%d.%d for %s\n"
-msgstr ""
-
-#: src/endpoint.cpp:318 src/endpoint.cpp:324
-#, c-format
-msgid "Set Audio player device to %s"
-msgstr "オーディオプレー装置 %s に設定"
-
-#. Translators: This is shown in the history.
-#: src/endpoint.cpp:341 src/endpoint.cpp:351
-#, c-format
-msgid "Set Audio recorder device to %s"
-msgstr "オーディオレコーダー装置 %s に設定"
-
-#: src/endpoint.cpp:368
-#, fuzzy
-msgid "Disabling H.245 Tunnelling"
-msgstr "H.245 トンネリング無効"
-
-#: src/endpoint.cpp:370
-#, fuzzy
-msgid "Enabling H.245 Tunnelling"
-msgstr "H.245 トンネリング有効"
-
-#: src/endpoint.cpp:384
-#, fuzzy
-msgid "Disabling Fast Start"
-msgstr "迅速起動を有効"
-
-#: src/endpoint.cpp:386
-#, fuzzy
-msgid "Enabling Fast Start"
-msgstr "迅速起動を有効"
-
-#: src/endpoint.cpp:413
-#, c-format
-msgid "Using Quicknet device %s"
-msgstr ""
-
-#: src/endpoint.cpp:480
-#, fuzzy
-msgid "Error while opening the Quicknet device. Disabling Quicknet device."
-msgstr "デバイスを開いている際にエラー。"
-
-#: src/endpoint.cpp:981
-#, c-format
-msgid "Forwarding Call to %s"
-msgstr ""
-
-#: src/endpoint.cpp:994
-#, c-format
-msgid "Error forwarding call to %s"
-msgstr ""
-
-#. Update the history and status bar
-#: src/endpoint.cpp:1063
 #, fuzzy, c-format
-msgid "Call from %s using %s"
-msgstr "%s から呼出"
-
-#: src/endpoint.cpp:1082
-#, c-format
-msgid "Forwarding Call from %s to %s (Forward All Calls)"
-msgstr ""
-
-#: src/endpoint.cpp:1104
-#, c-format
-msgid "Forwarding Call from %s to %s (Busy)"
-msgstr ""
-
-#: src/endpoint.cpp:1123
-#, fuzzy, c-format
-msgid "Auto Rejecting Incoming Call from %s (Busy)"
-msgstr "呼出時自動無視"
-
-#. Connected
-#: src/endpoint.cpp:1264
-#, c-format
-msgid "Connected with %s using %s"
-msgstr "%s について %s を使用して接続しました"
-
-#: src/endpoint.cpp:1270
-msgid "Connected"
-msgstr "接続"
-
-#: src/endpoint.cpp:1273
-msgid "Fast start enabled"
-msgstr "迅速な起動を有効"
-
-#: src/endpoint.cpp:1275
-msgid "Fast start disabled"
-msgstr "迅速な起動を無効"
-
-#: src/endpoint.cpp:1279
-msgid "H.245 Tunnelling enabled"
-msgstr "H.245 トンネリング有効"
-
-#: src/endpoint.cpp:1282
-msgid "H.245 Tunnelling disabled"
-msgstr "H.245 トンネリング無効"
-
-#: src/endpoint.cpp:1384
-msgid "Remote party has cleared the call"
-msgstr "先方は、呼び出しを切りました"
-
-#: src/endpoint.cpp:1388
-msgid "Remote party has stopped calling"
-msgstr "先方は、呼び出しを中止しました"
-
-#: src/endpoint.cpp:1392 src/endpoint.cpp:1416
-msgid "Remote party did not accept your call"
-msgstr "先方は、あなたの呼び出しを受けませんでした"
-
-#: src/endpoint.cpp:1396
-#, fuzzy
-msgid "Remote party was busy"
-msgstr "先方は、呼び出しを中止しました"
-
-#: src/endpoint.cpp:1400
-#, fuzzy
-msgid "Congested link to remote party"
-msgstr "先方では、電話は実行されていません"
-
-#: src/endpoint.cpp:1404
-msgid "The call was not answered in the required time"
-msgstr ""
-
-#: src/endpoint.cpp:1408
-msgid "This call ended abnormally"
-msgstr "この呼び出しは、異常終了しました"
-
-#: src/endpoint.cpp:1412
-msgid "Could not find common codec with remote party"
-msgstr "先方と共通のコーデックが見つかりませんでした"
-
-#: src/endpoint.cpp:1420
-msgid "Refused incoming call"
-msgstr "着信を拒否しました"
-
-#: src/endpoint.cpp:1424 src/urlhandler.cpp:176 src/urlhandler.cpp:177
-msgid "User not found"
-msgstr "ユーザが見つかりません"
-
-#: src/endpoint.cpp:1428
-msgid "Call ended: insufficient bandwidth"
-msgstr "呼出終了: 不十分な帯域幅"
-
-#: src/endpoint.cpp:1432
-msgid "Remote party could not be reached"
-msgstr "先方と連絡できませんでした"
-
-#: src/endpoint.cpp:1436
-#, fuzzy
-msgid "Remote party is offline"
-msgstr "先方は、オンラインです"
-
-#: src/endpoint.cpp:1440
-#, fuzzy
-msgid "Transport Error calling"
-msgstr "呼び出し中に転送エラー"
-
-#: src/endpoint.cpp:1444
-msgid "Call completed"
-msgstr "呼出完了"
-
-#: src/endpoint.cpp:1455
-#, c-format
-msgid "Call duration: %.2ld:%.2ld:%.2ld"
-msgstr ""
-
-#. The second one with some labels
-#: src/endpoint.cpp:1549 src/main_window.cpp:1411
 msgid ""
-"Sent/Received:\n"
-"Lost/Late Packets:\n"
-"Round trip delay:"
-msgstr ""
-
-#: src/endpoint.cpp:1668
-msgid "Attaching lid hardware to codec"
-msgstr ""
-
-#: src/endpoint.cpp:1688
-msgid ""
-"Could not open audio channel for audio transmission (soundcard busy?).\n"
-"Disabling audio transmission."
-msgstr ""
-
-#: src/endpoint.cpp:1690
-msgid ""
-"Could not open audio channel for audio reception (soundcard busy?).\n"
-"Disabling audio reception."
-msgstr ""
-
-#: src/gatekeeper.cpp:112
-#, fuzzy
-msgid ""
-"Please provide a hostname to use for the gatekeeper.\n"
-"Disabling registering."
-msgstr "ゲートキーパーのために使用するホスト名を指定して下さい"
-
-#: src/gatekeeper.cpp:130 src/gatekeeper.cpp:197 src/gatekeeper.cpp:237
-#, c-format
-msgid "Gatekeeper set to %s"
-msgstr "ゲートキーパーは、%s に設定されました"
-
-#: src/gatekeeper.cpp:142
-#, c-format
-msgid "Error while registering with Gatekeeper at %s."
-msgstr "%s をゲートキーパーとして ILS ディレクトリへ登録中にエラー"
-
-#: src/gatekeeper.cpp:180
-#, fuzzy
-msgid ""
-"Please provide a valid ID for the gatekeeper.\n"
-"Disabling registering."
-msgstr "ゲートキーパーに有効な ID を指定して下さい"
-
-#: src/gatekeeper.cpp:209
-#, fuzzy
-msgid "Error while registering with Gatekeeper."
-msgstr "ゲートキーパー %s を登録中にエラー。"
-
-#: src/gatekeeper.cpp:255
-#, fuzzy
-msgid "No gatekeeper found"
-msgstr "ゲートキーパーが見つかりません。"
-
-#: src/gnomemeeting.cpp:115
-msgid "Answering incoming call"
-msgstr "着信に応答中"
-
-#: src/gnomemeeting.cpp:195 src/toolbar.cpp:122
-msgid "Trying to stop calling"
-msgstr "呼び出し終了中"
-
-#: src/gnomemeeting.cpp:208
-msgid "Stopping current call"
-msgstr "現在の呼び出しを終了中"
-
-#: src/gnomemeeting.cpp:220
-msgid "Refusing Incoming call"
-msgstr "着信を拒否"
-
-#: src/ils.cpp:115
-#, c-format
-msgid "Parse error: %d %s."
-msgstr ""
-
-#. No need to display that for unregistering
-#: src/ils.cpp:249
-msgid ""
-"Please provide your first name, last name, comment, e-mail and location "
-"details in the Personal Data section in order to be able to register to the "
-"XDAP server."
-msgstr ""
-
-#: src/ils.cpp:285
-#, fuzzy
-msgid "Operation impossible since there is no XDAP server specified."
-msgstr "指定した LDAP サーバがみつからないので登録しません！"
-
-#: src/ils.cpp:350 src/ils.cpp:857
-#, c-format
-msgid "Contacting %s..."
-msgstr ""
-
-#: src/ils.cpp:363
-msgid "Failed to parse XML file."
-msgstr ""
-
-#: src/ils.cpp:375
-#, c-format
-msgid "Bad ldap information from XML file: %s."
-msgstr ""
-
-#: src/ils.cpp:386 src/ils.cpp:870
-#, c-format
-msgid "Failed to open ldap server %s:%d."
-msgstr ""
-
-#: src/ils.cpp:398 src/ils.cpp:883
-msgid "Failed to set time limit on ldap operations."
-msgstr ""
-
-#: src/ils.cpp:408
-#, c-format
-msgid "Failed to bind to ldap server: %s."
-msgstr ""
-
-#: src/ils.cpp:434
-#, fuzzy, c-format
-msgid "Successfully registered to %s."
-msgstr "ILS サーバへの登録成功"
-
-#: src/ils.cpp:465
-#, c-format
-msgid "Updated information on %s."
-msgstr ""
-
-#: src/ils.cpp:475
-#, fuzzy, c-format
-msgid "Successfully unregistered from %s."
-msgstr "ILS サーバからの抹消成功"
-
-#: src/ils.cpp:499
-#, fuzzy, c-format
-msgid "Error while registering to %s."
-msgstr "ゲートキーパー %s を登録中にエラー。"
-
-#: src/ils.cpp:502
-#, fuzzy, c-format
-msgid "Error while unregistering from %s."
-msgstr "ゲートキーパー %s を登録中にエラー。"
-
-#: src/ils.cpp:894
-#, c-format
-msgid "Failed to bind to ldap server %s: %s."
-msgstr ""
-
-#: src/ils.cpp:904
-#, fuzzy, c-format
-msgid "Fetching user information from %s."
-msgstr "登録されているユーザ情報を収集中... 暫くお待ち下さい。"
-
-#: src/ils.cpp:1171
-#, c-format
-msgid "Search completed: %d user(s) found on %s."
-msgstr ""
-
-#: src/ils.cpp:1188
-#, c-format
-msgid "Failed to contact %s."
-msgstr ""
-
-#. if it was the first "No directory" page, destroy it
-#: src/ldap_window.cpp:228 src/ldap_window.cpp:453
-msgid "No directory"
-msgstr "ディレクトリなし"
-
-#: src/ldap_window.cpp:352
-#, fuzzy
-msgid "XDAP Server Browser"
-msgstr "LDAP サーバ参照"
-
-#. Find button
-#: src/ldap_window.cpp:375
-#, fuzzy
-msgid "Find users on"
-msgstr "ILS上で友達を見つけます"
-
-#. Text label
-#. Translators: Please keep the 2* 2 spaces
-#: src/ldap_window.cpp:393
-msgid "  whose  "
-msgstr ""
-
-#: src/ldap_window.cpp:401
-#, fuzzy
-msgid "first name contains"
-msgstr "名前"
-
-#: src/ldap_window.cpp:405
-#, fuzzy
-msgid "last name contains"
-msgstr "姓名"
-
-#: src/ldap_window.cpp:409
-msgid "e-mail contains"
-msgstr ""
-
-#. Ldap users list
-#: src/ldap_window.cpp:442
-msgid "ILS Users List"
-msgstr "ILS ユーザリスト"
-
-#. Translators: This is "S" as in "Status"
-#: src/ldap_window.cpp:534
-msgid "S"
-msgstr ""
-
-#. Translators: This is "A" as in "Audio"
-#: src/ldap_window.cpp:544 src/pref_window.cpp:1722
-msgid "A"
-msgstr "音"
-
-#. Translators: This is "V" as in "Video"
-#: src/ldap_window.cpp:554
-msgid "V"
-msgstr "映"
-
-#: src/ldap_window.cpp:587
-#, fuzzy
-msgid "E-Mail"
-msgstr "電子メールアドレス"
-
-#: src/ldap_window.cpp:636
-msgid "IP"
-msgstr "IPアドレス"
-
-#: src/main_window.cpp:251
-#, c-format
-msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
-msgstr "%.2ld:%.2ld:%.2ld  音:%.2f/%.2f   映:%.2f/%.2f"
-
-#: src/main_window.cpp:288
-#, c-format
-msgid ""
-"Sent/Received: %.3f Mb/%.3f Mb\n"
-"Lost/Late Packets: %d/%d\n"
-"Round trip delay: %d ms"
-msgstr ""
-
-#: src/main_window.cpp:442
-msgid "Tr. Aud."
-msgstr ""
-
-#: src/main_window.cpp:469
-msgid "Re. Aud."
-msgstr ""
-
-#: src/main_window.cpp:496
-msgid "Tr. Vid."
-msgstr ""
-
-#: src/main_window.cpp:523
-msgid "Re. Vid."
-msgstr ""
-
-#: src/main_window.cpp:665
-msgid ""
-"It appears that you do not have gnomemeeting.server installed in a valid "
-"location. Factory mode disabled.\n"
-msgstr ""
-
-#: src/main_window.cpp:669
-msgid ""
-"Error registering gnomemeeting with the activation service; factory mode "
-"disabled.\n"
-msgstr ""
-
-#: src/main_window.cpp:709
-msgid "Failed to retrieve gnomemeeting server from activation server\n"
-msgstr ""
-
-#: src/main_window.cpp:903
-#, fuzzy
-msgid "Prints debug messages in the console (level between 1 and 6)"
-msgstr "コンソールにデバッグメッセージを印刷します"
-
-#: src/main_window.cpp:906
-msgid "Makes GnomeMeeting call the given callto:// URL"
-msgstr ""
-
-#. We can't use gnomemeeting_error_dialog here, cause we need the
-#. dialog_run and dialog_run can't be used in gnomemeeting_error_dialog
-#. because it doesn't work in threads
-#: src/main_window.cpp:949
-#, c-format
-msgid ""
-"GnomeMeeting got %d for the GConf key \"/apps/gnomemeeting/gconf_test_age\", "
-"but %d was expected.\n"
+"You have now finished the GnomeMeeting configuration. All the settings can "
+"be changed in the GnomeMeeting preferences. Enjoy!\n"
 "\n"
-"That key represents the revision of GnomeMeeting setting. If it doesn't "
-"correspond to the expected value, it means that your GConf schemas have not "
-"been correctly installed or the that permissions are not correct.\n"
 "\n"
-"Please check the FAQ (http://www.gnomemeeting.org/faq.php), the "
-"throubleshoot section of the GConf site (http://www.gnome.org/projects/"
-"gconf/) or the mailing list archives for more information (http://mail.gnome."
-"org).\n"
+"Configuration Summary:\n"
 "\n"
-"Using 'gnomemeeting-config-tool' could help you to fix this problem."
+"Username:  %s %s\n"
+"Connection type:  %s\n"
+"Audio player:  %s\n"
+"Audio recorder:  %s\n"
+"Video player: %s\n"
+"My Callto URL: %s\n"
+"PC-To-Phone calls: %s"
+msgstr ""
+"GnomeMeeting の設定が完了しました。全ての設定は GnomeMeeting の設定ダイアログ"
+"で変更できます。Enjoy!\n"
+"\n"
+"\n"
+"設定結果:\n"
+"\n"
+"ユーザ名:  %s\n"
+"接続の種類:  %s\n"
+"音声マネージャ: %s\n"
+"音声の再生:  %s\n"
+"音声の録音:  %s\n"
+"映像マネージャ: %s\n"
+"映像の再生: %s\n"
+"呼び出し URL: %s\n"
+
+#: src/druid.cpp:566
+msgid "Enabled"
 msgstr ""
 
-#: src/main_window.cpp:993
-msgid ""
-"GnomeMeeting just set the new Speex audio codec as default. Speex is a high "
-"quality, GPL audio codec introduced in GnomeMeeting 0.94."
-msgstr ""
-
-#: src/main_window.cpp:1015
-msgid ""
-"GnomeMeeting just installed an URL handler for callto:// URLs. callto URLs "
-"are an easy way to call people on the internet using GnomeMeeting. They are "
-"now available to all Gnome programs able to cope with URLs. You can for "
-"example create an URL launcher on the Gnome panel of the form \"callto://ils."
-"seconix.com/me@foo.com\" to call the person registered on the ILS server ils."
-"seconix.com with the me@foo.com e-mail address."
-msgstr ""
-
-#: src/main_window.cpp:1145
-msgid ""
-"Could not start the listener thread. You will not be able to receive "
-"incoming calls."
-msgstr "リスナースレッドの開始に失敗しました、着信はできません。"
-
-#: src/main_window.cpp:1311 src/menu.cpp:292 src/menu.cpp:688
+#: src/druid.cpp:566
 #, fuzzy
-msgid "Local Video"
-msgstr "ローカルの映像イメージ"
+msgid "Disabled"
+msgstr "ダイアルパッド"
 
-#: src/main_window.cpp:1321 src/menu.cpp:299 src/menu.cpp:695
-#, fuzzy
-msgid "Remote Video"
-msgstr "リモートの映像イメージ"
-
-#: src/main_window.cpp:1385 src/main_window.cpp:1415 src/menu.cpp:253
-msgid "Statistics"
-msgstr ""
-
-#. Webcam Control Frame
-#: src/main_window.cpp:1443
-msgid "Video Settings"
-msgstr "映像設定"
-
-#: src/main_window.cpp:1474
-msgid "Adjust brightness"
-msgstr "明るさ調整"
-
-#: src/main_window.cpp:1500
-msgid "Adjust whiteness"
-msgstr "白さ調整"
-
-#: src/main_window.cpp:1526
-msgid "Adjust color"
-msgstr "色調整"
-
-#: src/main_window.cpp:1552
-msgid "Adjust contrast"
-msgstr "コントラスト調整"
-
-#: src/main_window.cpp:1559
-msgid "Video"
-msgstr "ビデオ"
-
-#: src/main_window.cpp:1586
-msgid "Audio Settings"
-msgstr "音声設定"
-
-#: src/main_window.cpp:1641
-msgid "Audio"
-msgstr "音声"
-
-#: src/menu.cpp:232
-msgid "_Save"
-msgstr ""
-
-#: src/menu.cpp:232
-msgid "Save A Snapshot of the Current Video"
-msgstr ""
-
-#: src/menu.cpp:240
-msgid "_Quit"
-msgstr "終了(_Q)"
-
-#: src/menu.cpp:240
-msgid "Quit GnomeMeeting"
-msgstr "GnomeMeeting 終了"
-
-#: src/menu.cpp:254
-msgid "View Audio/Video transmission and reception statistics"
-msgstr ""
-
-#: src/menu.cpp:262
-msgid "_Audio Settings"
-msgstr "音声設定(_A)"
-
-#: src/menu.cpp:262
-msgid "View Audio Settings"
-msgstr "音声の設定を表示"
-
-#: src/menu.cpp:270
-msgid "_Video Settings"
-msgstr "映像設定(_V)"
-
-#: src/menu.cpp:270
-msgid "View Video Settings"
-msgstr "映像の設定を表示"
-
-#: src/menu.cpp:278 src/pref_window.cpp:1451
-msgid "Off"
-msgstr ""
-
-#: src/menu.cpp:278
-#, fuzzy
-msgid "Hide the control panel"
-msgstr "制御パネルを 表示/隠す"
-
-#: src/menu.cpp:292 src/menu.cpp:688
-msgid "Local Video Image"
-msgstr "ローカルの映像イメージ"
-
-#: src/menu.cpp:299 src/menu.cpp:695
-msgid "Remote Video Image"
-msgstr "リモートの映像イメージ"
-
-#: src/menu.cpp:306 src/menu.cpp:702
-#, fuzzy
-msgid "Both (Local Video Incrusted)"
-msgstr "ローカルの映像イメージ"
-
-#: src/menu.cpp:306 src/menu.cpp:313 src/menu.cpp:321 src/menu.cpp:702
-#: src/menu.cpp:709 src/menu.cpp:717
-msgid "Both Video Images"
-msgstr "双方の映像イメージ"
-
-#: src/menu.cpp:313 src/menu.cpp:709
-msgid "Both (Local Video in New Window)"
-msgstr ""
-
-#: src/menu.cpp:320 src/menu.cpp:716
-msgid "Both (Local and Remote Video in New Windows)"
-msgstr ""
-
-#: src/menu.cpp:347
-msgid "Toolbar"
-msgstr ""
-
-#: src/menu.cpp:347
-#, fuzzy
-msgid "View/Hide the Toolbar"
-msgstr "Dockletを 表示/隠す"
-
-#: src/menu.cpp:355
-#, fuzzy
-msgid "View/Hide the Text Chat Window"
-msgstr "チャットウィンドウを 表示/隠す"
-
-#: src/menu.cpp:361 src/toolbar.cpp:218
-msgid "Control Panel"
-msgstr "制御パネル"
-
-#: src/menu.cpp:364
-#, fuzzy
-msgid "Status Bar"
-msgstr "ステータスバー(_S)"
-
-#: src/menu.cpp:364
-msgid "View/Hide the Status Bar"
-msgstr "ステータスバーを 表示/隠す"
-
-#: src/menu.cpp:372
-msgid "Tray Icon"
-msgstr ""
-
-#: src/menu.cpp:372
-#, fuzzy
-msgid "View/Hide the Tray Icon"
-msgstr "チャットウィンドウを 表示/隠す"
-
-#: src/menu.cpp:388 src/menu.cpp:737
-#, fuzzy
-msgid "Zoom In"
-msgstr "ズーム 2x"
-
-#: src/menu.cpp:394 src/menu.cpp:743
-#, fuzzy
-msgid "Zoom Out"
-msgstr "ズーム 2x"
-
-#: src/menu.cpp:400 src/menu.cpp:749
-#, fuzzy
-msgid "Normal Size"
-msgstr "標準"
-
-#: src/menu.cpp:408 src/menu.cpp:757
-msgid "Toggle Fullscreen"
-msgstr ""
-
-#: src/menu.cpp:422
-msgid "Configuration Assistant"
-msgstr ""
-
-#: src/menu.cpp:422
-msgid "Start The Configuration Assistant"
-msgstr ""
-
-#: src/menu.cpp:430
-msgid "_Preferences..."
-msgstr ""
-
-#: src/menu.cpp:430
-msgid "Change Your Preferences"
-msgstr "設定を変更します"
-
-#: src/menu.cpp:443
-msgid "_Connect"
-msgstr "接続(_C)"
-
-#: src/menu.cpp:443 src/tray.cpp:167
-msgid "Create A New Connection"
-msgstr "新規に接続を行います"
-
-#: src/menu.cpp:450
-msgid "_Disconnect"
-msgstr "切断(_D)"
-
-#: src/menu.cpp:450 src/tray.cpp:174
-msgid "Close The Current Connection"
-msgstr "現在の接続を閉じます"
-
-#: src/menu.cpp:458
-#, fuzzy
-msgid "Do _Not Disturb"
-msgstr "多忙(DND)"
-
-#: src/menu.cpp:458 src/pref_window.cpp:1290 src/tray.cpp:183
-msgid "Do Not Disturb"
-msgstr "多忙(DND)"
-
-#: src/menu.cpp:466
-#, fuzzy
-msgid "Aut_o Answer"
-msgstr "自動応答"
-
-#: src/menu.cpp:475
-#, fuzzy
-msgid "_Audio Mute"
-msgstr "オーディオ消音"
-
-#: src/menu.cpp:475
-msgid "Mute the audio transmission"
-msgstr "オーディオ転送抑止"
-
-#: src/menu.cpp:482
-#, fuzzy
-msgid "_Video Mute"
-msgstr "映像抑止"
-
-#: src/menu.cpp:482
-msgid "Mute the video transmission"
-msgstr "映像転抑止"
-
-#: src/menu.cpp:494
-#, fuzzy
-msgid "XDAP Browser"
-msgstr "LDAP サーバ参照"
-
-#: src/menu.cpp:502
-#, fuzzy
-msgid "Generic History"
-msgstr "履歴"
-
-#: src/menu.cpp:502
-msgid "View the operations history"
-msgstr ""
-
-#: src/menu.cpp:509 src/tools.cpp:56 src/tools.cpp:62
-#, fuzzy
-msgid "Calls History"
-msgstr "履歴"
-
-#: src/menu.cpp:509
-#, fuzzy
-msgid "View the calls history"
-msgstr "ログを表示"
-
-#: src/menu.cpp:522
-#, fuzzy
-msgid "_About GnomeMeeting"
-msgstr "GnomeMeeting について"
-
-#: src/menu.cpp:522
-#, fuzzy
-msgid "View information about GnomeMeeting"
-msgstr "GnomeMeeting について"
-
-#: src/menu.cpp:533
-msgid "_File"
-msgstr "ファイル(_F)"
-
-#: src/menu.cpp:534
-msgid "_Edit"
-msgstr "編集(_E)"
-
-#: src/menu.cpp:535
-msgid "_View"
-msgstr "表示(_V)"
-
-#: src/menu.cpp:536
-msgid "C_all"
-msgstr "呼び出し(_C)"
-
-#: src/menu.cpp:537
-msgid "_Tools"
-msgstr ""
-
-#: src/menu.cpp:538
-msgid "_Help"
-msgstr "ヘルプ(_H)"
-
-#: src/misc.cpp:211
+#: src/druid.cpp:600
 #, c-format
-msgid "Error: %s\n"
-msgstr ""
+msgid "Personal Information - page %d/%d"
+msgstr "個人の情報 - %d/%d ページ"
 
-#: src/misc.cpp:214
-#, fuzzy
-msgid "GnomeMeeting Error"
-msgstr "GnomeMeeting"
-
-#: src/misc.cpp:217
-#, fuzzy
-msgid "Ignore"
-msgstr "情報"
-
-#: src/misc.cpp:257
-#, fuzzy, c-format
+#: src/druid.cpp:609
 msgid ""
-"Call from %s\n"
-"using %s"
-msgstr "%s から呼出"
-
-#: src/misc.cpp:263 src/tray.cpp:167
-msgid "Connect"
-msgstr "接続"
-
-#: src/misc.cpp:265 src/tray.cpp:174
-msgid "Disconnect"
-msgstr "切断"
-
-#. no error if Picture is choosen as video device
-#: src/pref_window.cpp:216 src/pref_window.cpp:1609 src/videograbber.cpp:482
-msgid "Picture"
+"Please enter your first name and surname, they will be used when connecting "
+"to other audio/video conferencing software.\n"
+"\n"
+"Your e-mail address is used to provide you with a callto address that your "
+"friends can use to call you without knowing your IP address.\n"
+"\n"
+"No information is made public unless you allow it to be published on the "
+"directory of online GnomeMeeting users."
 msgstr ""
 
-#: src/pref_window.cpp:532
-msgid "Please choose the video image"
-msgstr ""
-
-#: src/pref_window.cpp:652
-msgid "Okay"
-msgstr "標準"
-
-#: src/pref_window.cpp:658 src/pref_window.cpp:674 src/pref_window.cpp:679
-msgid "Excellent"
-msgstr ""
-
-#: src/pref_window.cpp:663 src/pref_window.cpp:669 src/pref_window.cpp:684
-#: src/pref_window.cpp:689 src/pref_window.cpp:694
-msgid "Good Quality"
-msgstr "良質"
-
-#: src/pref_window.cpp:1227
-#, fuzzy
+#. The user fields
+#: src/druid.cpp:613 src/pref_window.cpp:728
 msgid "Personal Information"
-msgstr "個人データ"
+msgstr "個人の情報"
 
-#: src/pref_window.cpp:1233
+#: src/druid.cpp:616
 #, fuzzy
-msgid "Enter your first name."
-msgstr "あなたの名前を入力します"
+msgid "First _name:"
+msgstr "名前(_F):"
 
-#: src/pref_window.cpp:1236
+#: src/druid.cpp:622
 #, fuzzy
-msgid "Enter your last name."
-msgstr "あなたの姓名を入力します"
+msgid "_Surname:"
+msgstr "名字(_N):"
 
-#: src/pref_window.cpp:1239
+#. The callto url
+#: src/druid.cpp:630
 #, fuzzy
-msgid "Gatekeeper alias: "
-msgstr "ゲートキーパー別名:"
+msgid "Callto URL"
+msgstr "呼び出し URL - %d/%d ページ"
 
-#: src/pref_window.cpp:1239
+#: src/druid.cpp:633 src/pref_window.cpp:742
+msgid "E-_mail address:"
+msgstr "E-メール・アドレス(_M):"
+
+#. The ILS registering
+#: src/druid.cpp:640
+msgid "Directory of Online GnomeMeeting Users"
+msgstr ""
+
+#: src/druid.cpp:642
+msgid "Publish my information on the directory of online GnomeMeeting users"
+msgstr ""
+
+#: src/druid.cpp:683
+#, fuzzy, c-format
+msgid "Network Connection - page %d/%d"
+msgstr "接続の種類 - %d/%d ページ"
+
+#: src/druid.cpp:694
 msgid ""
-"The Gatekeeper Alias to use when registering (string, or E164 ID if only "
-"0123456789#)."
+"Please select your network connection type. This is used to set default "
+"video settings for your bandwidth. It is possible to change these defaults "
+"later."
 msgstr ""
-"ゲートキーパーを登録する際に使用 (文字列、または 0123456789# なら E164 ID)"
 
-#: src/pref_window.cpp:1241
+#. Connection type
+#: src/druid.cpp:698
 #, fuzzy
-msgid "Enter your e-mail address."
-msgstr "電子メールアドレスを入力します"
+msgid "Connection Type"
+msgstr "接続の種類 - %d/%d ページ"
 
-#: src/pref_window.cpp:1243
+#: src/druid.cpp:707
 #, fuzzy
-msgid "Here you can fill in a comment about yourself for ILS directories."
-msgstr "ここに、ILSディレクトリ用にあなた自身に関するコメントが記入できます"
+msgid "DSL/Cable"
+msgstr "xDSL/ケーブル"
 
-#: src/pref_window.cpp:1245
-msgid "Where do you call from?"
-msgstr "どこから呼びますか？"
+#: src/druid.cpp:775
+#, c-format
+msgid "Audio Devices - page %d/%d"
+msgstr "音声デバイス - %d/%d ページ"
 
-#: src/pref_window.cpp:1250
+#: src/druid.cpp:785
 msgid ""
-"Click here to update the LDAP server you are registered to with the new "
-"First Name, Last Name, E-Mail, Comment and Location or to update your alias "
-"on the Gatekeeper."
-msgstr ""
-"LDAPサーバに、名前、姓名、電子メールアドレス、コメントおよび所在地を新しく登"
-"録または更新する場合、または、ゲートキーパーに別名を更新する場合には、ここを"
-"クリックして下さい。"
-
-#: src/pref_window.cpp:1276
-msgid "GnomeMeeting GUI"
-msgstr "GnomeMeeting GUI"
-
-#: src/pref_window.cpp:1278
-msgid "Show Splash Screen"
-msgstr "起動画面表示"
-
-#: src/pref_window.cpp:1278
-#, fuzzy
-msgid "If enabled, the splash screen will be displayed at startup time."
-msgstr "チェックすると、起動時にスプラッシュ画面が表示されます"
-
-#: src/pref_window.cpp:1280
-msgid "Start Hidden"
-msgstr "画面を隠す"
-
-#: src/pref_window.cpp:1280
-msgid ""
-"If enabled, GnomeMeeting will start hidden. The docklet must be enabled."
-msgstr ""
-"チェックすると、画面を隠します。その際は docket が有効である必要があります。"
-
-#. Packing widget
-#: src/pref_window.cpp:1284
-msgid "Behavior"
-msgstr "動作"
-
-#: src/pref_window.cpp:1292
-msgid "Popup window"
-msgstr "ポップアップウィンドウ"
-
-#: src/pref_window.cpp:1292
-msgid "If enabled, a popup will be displayed when receiving an incoming call"
-msgstr "チェックすると、着信時にポップアップ表示します"
-
-#. Packing widget
-#: src/pref_window.cpp:1297
-#, fuzzy
-msgid "Video Display"
-msgstr "ビデオデバイス"
-
-#: src/pref_window.cpp:1302
-msgid "Fullscreen Width:"
+"Please choose the audio devices to use during the GnomeMeeting session. You "
+"can also choose to use a Quicknet device instead of the soundcard, but the "
+"\"Test Audio\" button will only work for soundcards. Notice that some "
+"webcams models have an internal microphone that can be used with "
+"GnomeMeeting."
 msgstr ""
 
-#: src/pref_window.cpp:1304
-msgid "The image width for fullscreeen."
-msgstr ""
-
-#: src/pref_window.cpp:1308
-msgid "Fullscreen Height:"
-msgstr ""
-
-#: src/pref_window.cpp:1310
-msgid "The image height for fullscreeen."
-msgstr ""
-
-#: src/pref_window.cpp:1315
-#, fuzzy
-msgid "Enable bilinear filtering"
-msgstr "サイレンス検出を有効"
-
-#. Packing widget
-#: src/pref_window.cpp:1319
-msgid "Sound"
-msgstr "サウンド"
-
-#: src/pref_window.cpp:1323
-#, fuzzy
-msgid ""
-"If enabled, GnomeMeeting will play a sound when receiving an incoming call "
-"(the sound to play is chosen in the Gnome Control Center)."
-msgstr ""
-"チェックすると、着信した際に GnomeMeeting がサウンドを鳴らします(Gnome コント"
-"ロールセンターで選択したサウンドを鳴らします)"
-
-#: src/pref_window.cpp:1335
-msgid "Do not register"
-msgstr "登録しない"
-
-#: src/pref_window.cpp:1336
-msgid "Gatekeeper host"
-msgstr "ゲートキーパーホスト"
-
-#: src/pref_window.cpp:1337
-msgid "Gatekeeper ID"
-msgstr "ゲートキーパー ID"
-
-#: src/pref_window.cpp:1338
-msgid "Automatic Discover"
-msgstr "自動ディスカバー"
-
-#: src/pref_window.cpp:1348
-#, fuzzy
-msgid "XDAP Directory"
-msgstr "LDAP ディレクトリ"
-
-#: src/pref_window.cpp:1353
-#, fuzzy
-msgid "XDAP Directory:"
-msgstr "LDAP ディレクトリ"
-
-#: src/pref_window.cpp:1353
-#, fuzzy
-msgid "The XDAP server to register to."
-msgstr "登録する ILS ディレクトリ"
-
-#: src/pref_window.cpp:1356
-#, fuzzy
-msgid "Enable Registering"
-msgstr "登録"
-
-#: src/pref_window.cpp:1356
-msgid "If enabled, permit to register to the selected LDAP directory"
-msgstr "チェックすると、選択した LDAP ディレクトリに登録します"
-
-#. Add fields for the gatekeeper
-#: src/pref_window.cpp:1360
-#, fuzzy
-msgid "Gatekeeper"
-msgstr "ゲートキーパー ID"
-
-#: src/pref_window.cpp:1363
-msgid "Gatekeeper ID:"
-msgstr "ゲートキーパー ID:"
-
-#: src/pref_window.cpp:1363
-#, fuzzy
-msgid "The Gatekeeper identifier to register to."
-msgstr "登録するゲートキーパーホスト。"
-
-#: src/pref_window.cpp:1366
-msgid "Gatekeeper host:"
-msgstr "ゲートキーパーホスト:"
-
-#: src/pref_window.cpp:1366
-msgid "The Gatekeeper host to register to."
-msgstr "登録するゲートキーパーホスト。"
-
-#: src/pref_window.cpp:1369
-msgid "Registering method:"
-msgstr "ILSディレクトリ登録メソッド:"
-
-#: src/pref_window.cpp:1369
-msgid "Registering method to use"
-msgstr "使用するメソッドを登録"
-
-#: src/pref_window.cpp:1388
-#, fuzzy
-msgid "H.323 Call Forwarding"
-msgstr "H.323 クライアント"
-
-#: src/pref_window.cpp:1394
-msgid "Forward calls to host:"
-msgstr ""
-
-#: src/pref_window.cpp:1394
-msgid ""
-"Enter here the host where calls should be forwarded in the cases selected "
-"above"
-msgstr ""
-
-#: src/pref_window.cpp:1397
-msgid ""
-"If enabled, all incoming calls will always be forwarded to the host that is "
-"specified in the field below."
-msgstr ""
-
-#: src/pref_window.cpp:1400
-msgid ""
-"If enabled, all incoming calls will be forwarded to the host that is "
-"specified in the field below if you don't answer the call."
-msgstr ""
-
-#: src/pref_window.cpp:1403
-msgid ""
-"If enabled, all incoming calls will be forwarded to the host that is "
-"specified in the field below if you already are in a call or if you are in "
-"Do Not Disturb mode."
-msgstr ""
-
-#: src/pref_window.cpp:1408
-#, fuzzy
-msgid "H.323 V2 Settings"
-msgstr "H.323 拡張設定"
-
-#: src/pref_window.cpp:1414
-msgid "Enable H.245 Tunnelling"
-msgstr "H.245 トンネリング有効"
-
-#: src/pref_window.cpp:1414
-msgid ""
-"This enables H.245 Tunnelling mode. In H.245 Tunnelling mode H.245 messages "
-"are encapsulated into the the H.225 channel (port 1720). This permits "
-"sparing one random TCP port during calls. H.245 Tunnelling was introduced in "
-"H.323v2 and Netmeeting doesn't support it. Using both Fast Start and H.245 "
-"Tunnelling can crash some versions of Netmeeting."
-msgstr ""
-
-#: src/pref_window.cpp:1417
-msgid "Enable Fast Start"
-msgstr "迅速起動を有効"
-
-#: src/pref_window.cpp:1417
-msgid ""
-"Connection will be established in Fast Start mode. Fast Start is a new way "
-"to start calls faster that was introduced in H.323v2. It is not supported by "
-"Netmeeting and using both Fast Start and H.245 Tunnelling can crash some "
-"versions of Netmeeting."
-msgstr ""
-
-#: src/pref_window.cpp:1422
-msgid "NAT/PAT Router Support"
-msgstr ""
-
-#: src/pref_window.cpp:1426
-#, fuzzy
-msgid "Enable IP Translation"
-msgstr "英語翻訳:"
-
-#: src/pref_window.cpp:1429
-msgid "Public IP of the NAT/PAT router:"
-msgstr ""
-
-#: src/pref_window.cpp:1429
-msgid ""
-"You can put here the public IP of your NAT/PAT router if you want to use IP "
-"translation.  If you are registered to ils.seconix.com, GnomeMeeting will "
-"automatically fetch the public IP using the ILS service."
-msgstr ""
-
-#: src/pref_window.cpp:1452
-msgid "Low"
-msgstr ""
-
-#: src/pref_window.cpp:1453
-msgid "Medium"
-msgstr ""
-
-#: src/pref_window.cpp:1454
-msgid "High"
-msgstr ""
-
-#: src/pref_window.cpp:1455
-msgid "Automatic Gain Compensation"
-msgstr ""
-
-#: src/pref_window.cpp:1471 src/pref_window.cpp:2058
+#. The Audio devices
+#: src/druid.cpp:789 src/pref_window.cpp:1055 src/pref_window.cpp:1572
 msgid "Audio Devices"
-msgstr "オーディオデバイス"
+msgstr "音声のデバイス"
 
-#: src/pref_window.cpp:1491
+#: src/druid.cpp:792
 #, fuzzy
-msgid "Audio Player:"
-msgstr "プレーヤー:"
+msgid "Audio player:"
+msgstr "音声のプラグイン:"
 
-#: src/pref_window.cpp:1491
+#: src/druid.cpp:795
 #, fuzzy
-msgid "Enter the audio player device to use."
-msgstr "音声プレーヤーに使用するデバイスを入力します"
+msgid "Audio player mixer:"
+msgstr "音声のプラグイン:"
 
-#: src/pref_window.cpp:1499
-msgid "Player Mixer:"
-msgstr "ミキサー:"
-
-#: src/pref_window.cpp:1499
+#: src/druid.cpp:799
 #, fuzzy
-msgid "The audio mixer to use to setup the volume of the audio player device."
-msgstr "プレーヤー設定で使用するミキサー"
+msgid "Audio recorder:"
+msgstr "音声のコーデック"
 
-#: src/pref_window.cpp:1518
+#: src/druid.cpp:802
+msgid "Audio recorder mixer:"
+msgstr ""
+
+#. Test button
+#: src/druid.cpp:806
 #, fuzzy
-msgid "Audio Recorder:"
-msgstr "レコーダー:"
+msgid "Click here to test your audio devices:"
+msgstr "ここをクリックすると、デバイス一覧を更新します"
 
-#: src/pref_window.cpp:1518
+#: src/druid.cpp:808
 #, fuzzy
-msgid "Enter the audio recorder device to use."
-msgstr "レコーダーに使用するデバイスを入力します"
+msgid "Test Audio"
+msgstr "音声の再開(_A)"
 
-#: src/pref_window.cpp:1526
-msgid "Recorder Mixer:"
-msgstr "レコーダーミキサー:"
+#: src/druid.cpp:851
+#, c-format
+msgid "Video Devices - page %d/%d"
+msgstr "映像デバイス - %d/%d ページ"
 
-#: src/pref_window.cpp:1526
-#, fuzzy
+#: src/druid.cpp:861
 msgid ""
-"The audio mixer to use to setup the volume of the audio recorder device."
-msgstr "レコーダー設定で使用するミキサー"
-
-#: src/pref_window.cpp:1535
-msgid "Automatic Echo Cancellation:"
+"Please choose the video device to use during the GnomeMeeting session. Click "
+"on the \"Test Video\" button to check if your setup is correct and if your "
+"driver is supported by GnomeMeeting. You can only test the correctness of "
+"your driver if the selected device is not already in use."
 msgstr ""
 
-#: src/pref_window.cpp:1538
-msgid "Country Code:"
-msgstr ""
-
-#: src/pref_window.cpp:1541
-#, fuzzy
-msgid "Use the Quicknet Device"
-msgstr "ビデオデバイスをオープンできません"
-
-#: src/pref_window.cpp:1574
-msgid "Small"
-msgstr "小"
-
-#: src/pref_window.cpp:1575
-msgid "Large"
-msgstr "大"
-
-#: src/pref_window.cpp:1577
-msgid "PAL"
-msgstr ""
-
-#: src/pref_window.cpp:1578
-msgid "NTSC"
-msgstr ""
-
-#: src/pref_window.cpp:1579
-msgid "SECAM"
-msgstr ""
-
-#: src/pref_window.cpp:1580
-#, fuzzy
-msgid "auto"
-msgstr "自動"
-
-#. The video devices related options
-#: src/pref_window.cpp:1598 src/pref_window.cpp:2063
-#, fuzzy
+#. The Video device
+#: src/druid.cpp:865 src/pref_window.cpp:1126 src/pref_window.cpp:1577
 msgid "Video Devices"
-msgstr "ビデオデバイス"
+msgstr "映像のデバイス"
 
-#: src/pref_window.cpp:1613
-msgid "Video Device:"
-msgstr "ビデオデバイス:"
+#: src/druid.cpp:868 src/pref_window.cpp:1130
+#, fuzzy
+msgid "Video device:"
+msgstr "映像のデバイス"
 
-#: src/pref_window.cpp:1613
+#: src/druid.cpp:868
 msgid ""
 "Enter the video device to use. Using an invalid video device for video "
 "transmission will transmit a test picture."
 msgstr ""
 
-#: src/pref_window.cpp:1622
-msgid "Video Channel:"
-msgstr "映像チャンネル:"
-
-#: src/pref_window.cpp:1624
+#. Test button
+#: src/druid.cpp:872
 #, fuzzy
-msgid "The video channel number to use (camera, tv, ...)."
-msgstr "使用する (カメラ、テレビ、...)映像チャンネル"
+msgid "Test Video"
+msgstr "リモートの映像"
 
-#: src/pref_window.cpp:1628
-msgid "Video Size:"
-msgstr "画面サイズ:"
+#: src/druid.cpp:916
+#, fuzzy, c-format
+msgid "PC-To-Phone Setup - page %d/%d"
+msgstr "接続の種類 - %d/%d ページ"
 
-#: src/pref_window.cpp:1628
-msgid "Choose the transmitted video size: QCIF (small) or CIF (large)."
+#: src/druid.cpp:926
+msgid ""
+"You can make calls to regular phones and cell numbers worldwide using "
+"GnomeMeeting and the MicroTelco service from Quicknet Technologies. To "
+"enable this you need to enter your MicroTelco Account number and PIN below, "
+"then enable registering to the MicroTelco service. Please visit the "
+"GnomeMeeting website for more information."
+msgstr ""
+"GnomeMeeting と Quicknet Technology 社の MicroTelco サービスを使って通常の電"
+"話番号と世界規模の携帯番号を呼び出すことができます。これを有効にするには、下"
+"の欄に MicroTelco のアカウント番号と PIN を入力する必要があります。それから "
+"MicroTelco サービスへの登録を有効にして下さい。詳細については、GnomeMeeting "
+"のホームページをご覧下さい。"
+
+#: src/druid.cpp:931
+#, fuzzy
+msgid "PC-To-Phone Setup"
+msgstr "PC-To-Phone の設定"
+
+#: src/druid.cpp:934
+#, fuzzy
+msgid "Account number:"
+msgstr "アカウント番号(_N):"
+
+#: src/druid.cpp:937
+msgid "Password:"
 msgstr ""
 
-#: src/pref_window.cpp:1631
-msgid "Video Format:"
-msgstr "ビデオ形式:"
+#: src/druid.cpp:944
+msgid "Register to the MicroTelco service"
+msgstr ""
 
-#: src/pref_window.cpp:1631
+#: src/druid.cpp:962
+msgid ""
+"Click on one of the following links to get more information about your "
+"existing MicroTelco account, or to create a new account."
+msgstr ""
+"次のリンクを一つクリックすると、所有している MicroTelco アカウントについての"
+"詳細な情報を取得したり、新しいアカウントを登録することができます。"
+
+#: src/druid.cpp:966
+msgid "Get an account"
+msgstr "アカウントを取得する"
+
+#: src/druid.cpp:968
+msgid "Buy a card"
+msgstr "カードを購入する"
+
+#: src/druid.cpp:998
+msgid "First Time Configuration Druid"
+msgstr "初回時の設定ドルイド"
+
+#: src/druid.cpp:1005
+#, c-format
+msgid "Configuration Druid - page %d/%d"
+msgstr "設定ドルイド - %d/%d ページ"
+
+#: src/druid.cpp:1008
+msgid ""
+"This is the GnomeMeeting general configuration druid. The following steps "
+"will set up GnomeMeeting by asking a few simple questions.\n"
+"\n"
+"Once you have completed these steps, you can always change them later by "
+"selecting Preferences in the Edit menu."
+msgstr ""
+"これは GnomeMeeting 全般設定ドルイドです。次のページから、いくつかの簡単な質"
+"問に答えながら GnomeMeeting を設定していきます。\n"
+"\n"
+"これらの設定が完了した後で、メニュー [編集] - [設定] で変更することができま"
+"す。"
+
+#: src/druid.cpp:1047
+#, c-format
+msgid "Configuration complete - page %d/%d"
+msgstr "設定が完了しました - %d/%d ページ"
+
+#: src/endpoint.cpp:117
+#, c-format
+msgid "Forwarding Call to %s (No Answer)"
+msgstr "着信を %s へフォワード中です (応答なし)"
+
+#: src/endpoint.cpp:121 src/endpoint.cpp:1468
+msgid "Call forwarded"
+msgstr "着信を転送しました"
+
+#. Player is always a correct sound device, thanks to
+#. gnomemeeting_add_string_option_menu
+#: src/endpoint.cpp:314
+#, fuzzy, c-format
+msgid "Set Audio player device to %s"
+msgstr "使用する音声入力デバイスを指定します"
+
+#: src/endpoint.cpp:325
+#, fuzzy, c-format
+msgid "Set Audio recorder device to %s"
+msgstr "使用する音声出力デバイスを指定します"
+
+#: src/endpoint.cpp:342
 #, fuzzy
-msgid "Here you can choose the transmitted video format."
-msgstr "ここで、送信するビデオ形式を選択する可能です"
+msgid "Enabling H.245 Tunnelling"
+msgstr "H.245 トンネリングを有効にする"
 
-#: src/pref_window.cpp:1635
+#: src/endpoint.cpp:343
 #, fuzzy
-msgid "Video Image:"
-msgstr "双方の映像イメージ"
+msgid "Disabling H.245 Tunnelling"
+msgstr "H.245 トンネリングを有効にする"
 
-#: src/pref_window.cpp:1639
+#: src/endpoint.cpp:353
+#, fuzzy
+msgid "Enabling Fast Start"
+msgstr "'高速起動' を有効にする"
+
+#: src/endpoint.cpp:354
+#, fuzzy
+msgid "Disabling Fast Start"
+msgstr "'高速起動' を有効にする"
+
+#. Update the history and status bar
+#: src/endpoint.cpp:945
+#, fuzzy, c-format
+msgid "Call from %s using %s"
+msgstr "%s からの着信"
+
+#: src/endpoint.cpp:960
+#, c-format
+msgid "Forwarding call from %s to %s (Forward all calls)"
+msgstr "%s からの着信を %s へ転送中です (全ての呼び出しをフォワードする)"
+
+#: src/endpoint.cpp:968
+#, fuzzy, c-format
+msgid "Auto rejecting incoming call from %s (Do not disturb)"
+msgstr "%s からの着信を拒否中です (多忙)"
+
+#: src/endpoint.cpp:980
+#, c-format
+msgid "Forwarding call from %s to %s (Busy)"
+msgstr "%s からの着信を %s へフォワード中です (多忙)"
+
+#. there is no forwarding, so reject the call
+#: src/endpoint.cpp:989
+#, fuzzy, c-format
+msgid "Auto rejecting incoming call from %s (Busy)"
+msgstr "%s からの着信を拒否中です (多忙)"
+
+#: src/endpoint.cpp:1013
+#, fuzzy
+msgid "Auto Rejected"
+msgstr "拒否"
+
+#: src/endpoint.cpp:1022
+#, fuzzy
+msgid "Call Forwarded"
+msgstr "着信を転送しました"
+
+#: src/endpoint.cpp:1226
+#, c-format
+msgid "Connected with %s using %s"
+msgstr "%2$s を使って %1$s で接続完了しました"
+
+#: src/endpoint.cpp:1228
+msgid "Connected"
+msgstr "接続完了"
+
+#: src/endpoint.cpp:1231
+#, fuzzy
+msgid "Fast start disabled"
+msgstr "高速起動は無効"
+
+#: src/endpoint.cpp:1232
+#, fuzzy
+msgid "Fast start enabled"
+msgstr "高速起動は有効"
+
+#: src/endpoint.cpp:1235
+#, fuzzy
+msgid "H.245 Tunnelling disabled"
+msgstr "H.245 トンネリングは無効"
+
+#: src/endpoint.cpp:1236
+#, fuzzy
+msgid "H.245 Tunnelling enabled"
+msgstr "H.245 トンネリングは有効"
+
+#: src/endpoint.cpp:1432
+msgid "Local user cleared the call"
+msgstr "ローカル・ユーザが呼び出しを切りました"
+
+#: src/endpoint.cpp:1435
+msgid "Remote user cleared the call"
+msgstr "リモート・ユーザが呼び出しを切りました"
+
+#: src/endpoint.cpp:1438 src/endpoint.cpp:1441
+msgid "Remote user did not accept the call"
+msgstr "リモート・ユーザが着信を拒否しました"
+
+#: src/endpoint.cpp:1444
+msgid "Local user did not accept the call"
+msgstr "ローカル・ユーザが着信を拒否しました"
+
+#: src/endpoint.cpp:1447
+msgid "The Gatekeeper cleared the call"
+msgstr "ゲートキーパが呼び出しを切りました"
+
+#: src/endpoint.cpp:1450
+msgid "Call not answered in the required time"
+msgstr "要求時間内に応答していない呼び出しです"
+
+#: src/endpoint.cpp:1453
+msgid "Remote user has stopped calling"
+msgstr "リモート・ユーザは通話を停止しました"
+
+#: src/endpoint.cpp:1456
+msgid "Abnormal call termination"
+msgstr "呼び出しが切断されました (異常あり)"
+
+#: src/endpoint.cpp:1459
+msgid "Could not connect to remote host"
+msgstr "リモート・ホストへ接続できませんでした"
+
+#: src/endpoint.cpp:1462
+msgid "Insufficient bandwidth"
+msgstr "帯域幅<が不十分です"
+
+#: src/endpoint.cpp:1465
+msgid "No common codec"
+msgstr "共通コーデックではありません"
+
+#: src/endpoint.cpp:1471
+msgid "Security check Failed"
+msgstr "セキュリティ・チェックに失敗しました"
+
+#: src/endpoint.cpp:1474
+msgid "Local user is busy"
+msgstr "ローカル・ユーザは多忙のようです"
+
+#: src/endpoint.cpp:1477
+msgid "Remote user is busy"
+msgstr "リモート・ユーザは多忙のようです"
+
+#: src/endpoint.cpp:1480 src/endpoint.cpp:1483
+msgid "Congested link to remote party"
+msgstr "リモートの仲間へのリンクが混在しています"
+
+#: src/endpoint.cpp:1486
+msgid "Remote user is unreachable"
+msgstr "リモート・ユーザに到達しませんでした"
+
+#: src/endpoint.cpp:1489
+#, fuzzy
+msgid "Remote user is not running GnomeMeeting"
+msgstr "GnomeMeeting を起動できません"
+
+#: src/endpoint.cpp:1492
+msgid "Remote host is offline"
+msgstr "リモート・ホストはオフラインです"
+
+#: src/endpoint.cpp:1495
+msgid "Temporary failure"
+msgstr "一時的な障害です"
+
+#: src/endpoint.cpp:1498 src/urlhandler.cpp:366
+msgid "User not found"
+msgstr "ユーザが見つかりません"
+
+#: src/endpoint.cpp:1502
+msgid "Call completed"
+msgstr "呼出が完了しました"
+
+#: src/endpoint.cpp:1594 src/main_window.cpp:1364
+msgid ""
+"Lost packets:\n"
+"Late packets:\n"
+"Round-trip delay:\n"
+"Jitter buffer:"
+msgstr ""
+"消失したパケット数:\n"
+"遅延したパケット数:\n"
+"往復時の遅延:\n"
+"Jitter バッファ:"
+
+#: src/endpoint.cpp:1773
+msgid "Attaching lid hardware to codec"
+msgstr "LID ハードウェアをコーデックにアタッチしています"
+
+#: src/endpoint.cpp:1788
+msgid "Could not open audio channel for audio transmission"
+msgstr "音声発信用の音声チャンネルを開けませんでした"
+
+#: src/endpoint.cpp:1788
+msgid ""
+"An error occured while trying to record from the soundcard for the audio "
+"transmission. Please check that your soundcard is not busy and that your "
+"driver supports full-duplex.\n"
+"The audio transmission has been disabled."
+msgstr ""
+"音声発信に使用するサウンドカードから録音を試みましたが、エラーが発生しまし"
+"た。お使いのサウンドカードがビジー状態ではなく、さらにお使いのドライバが全二"
+"重をサポートしているか確認して下さい。\n"
+"音声発信を無効にしました。"
+
+#: src/endpoint.cpp:1790
+msgid "Could not open audio channel for audio reception"
+msgstr "音声受信用の音声チャンネルを開けませんでした"
+
+#: src/endpoint.cpp:1790
+msgid ""
+"An error occured while trying to play audio to the soundcard for the audio "
+"reception. Please check that your soundcard is not busy and that your driver "
+"supports full-duplex.\n"
+"The audio reception has been disabled."
+msgstr ""
+"音声受信に使用するサウンドカードから音声の再生を試みましたが、エラーが発生し"
+"ました。お使いのサウンドカードがビジー状態ではなく、さらにお使いのドライバが"
+"全二重をサポートしているか確認して下さい。\n"
+"音声受信を無効にしました。"
+
+#: src/gatekeeper.cpp:137
+#, c-format
+msgid "Unregistered from gatekeeper %s"
+msgstr "ゲートキーパ %s は登録されていません"
+
+#: src/gatekeeper.cpp:151
+msgid "Invalid gatekeeper hostname"
+msgstr "ゲートキーパのホスト名が正しくありません"
+
+#: src/gatekeeper.cpp:151
 #, fuzzy
 msgid ""
-"If enabled, the video preview mode will be set activated and you will be "
-"able to see yourself without being in a call."
-msgstr "チェックすると、起動時に映像がプレビューされます"
+"Please provide a hostname to use for the gatekeeper.\n"
+"Disabling registering."
+msgstr "ゲートキーパで使用するホスト名を指定して下さい。"
 
-#. The file selector button
-#: src/pref_window.cpp:1643
-msgid "Browse"
+#: src/gatekeeper.cpp:159
+msgid "Invalid gatekeeper ID"
+msgstr "ゲートキーパの ID が正しくありません"
+
+#: src/gatekeeper.cpp:159
+#, fuzzy
+msgid ""
+"Please provide a valid ID for the gatekeeper.\n"
+"Disabling registering."
+msgstr "ゲートキーパの正しい ID を指定して下さい。"
+
+#: src/gatekeeper.cpp:206
+msgid ""
+"Another user already exists with the same alias, please use another alias."
+msgstr ""
+"同じエイリアスを持つ別のユーザが既に存在します。別のエイリアスを使用して下さ"
+"い。"
+
+#: src/gatekeeper.cpp:209
+msgid ""
+"You are not allowed to register to the gatekeeper. Please check your login, "
+"password and firewall."
+msgstr ""
+"ゲートキーパに登録できません。アカウントとパスワード、そしてファイヤーウォー"
+"ルを確認して下さい。"
+
+#: src/gatekeeper.cpp:212
+msgid "There was a transport error."
+msgstr "転送エラーがありました"
+
+#: src/gatekeeper.cpp:215 src/gatekeeper.cpp:220
+msgid "No gatekeeper corresponding to your options has been found."
+msgstr "オプションに対応したゲートキーパが見つかりませんでした"
+
+#: src/gatekeeper.cpp:222
+msgid "Error while registering with gatekeeper"
+msgstr "ゲートキーパを登録する際にエラー"
+
+#: src/gatekeeper.cpp:240
+#, c-format
+msgid "Gatekeeper set to %s"
+msgstr "ゲートキーパを %s に設定しました"
+
+#: src/gnomemeeting.cpp:86
+msgid "Notification area not detected"
+msgstr "通知エリアを検出できませんでした"
+
+#: src/gnomemeeting.cpp:86
+msgid ""
+"You have chosen to start GnomeMeeting hidden, however the notification area "
+"is not present in your panel, GnomeMeeting can thus not start hidden."
+msgstr ""
+"GnomeMeeting を起動時に隠すよう設定したようですが、通知エリアが GNOME パネル"
+"ん中に存在しません。GnomeMeeting を隠せません。"
+
+#: src/gnomemeeting.cpp:193
+msgid "Answering incoming call"
+msgstr "着信に応答中"
+
+#: src/gnomemeeting.cpp:264
+msgid "Trying to stop calling"
+msgstr "呼び出し終了中"
+
+#: src/gnomemeeting.cpp:277
+msgid "Stopping current call"
+msgstr "現在の呼び出しを終了中"
+
+#: src/gnomemeeting.cpp:289
+msgid "Refusing Incoming call"
+msgstr "着信を拒否"
+
+#. no error if Picture is choosen as video device
+#: src/gnomemeeting.cpp:320 src/videograbber.cpp:366 src/videograbber.cpp:683
+msgid "Picture"
+msgstr "画像"
+
+#: src/gnomemeeting.cpp:428
+msgid "Error while starting the listener"
+msgstr "リスナの起動時にエラーが発生"
+
+#: src/gnomemeeting.cpp:428
+msgid ""
+"You will not be able to receive incoming calls. Please check that no other "
+"program is already running on the port used by GnomeMeeting."
+msgstr ""
+"着信を受け取ることはできません。GnomeMeeting が使用するポート番号で、他のプロ"
+"グラムが起動されていないことを確認して下さい。"
+
+#. GM is started
+#: src/gnomemeeting.cpp:505
+#, fuzzy, c-format
+msgid "Started GnomeMeeting V%d.%d for %s\n"
+msgstr "GnomeMeeting V%d.%d.%d (%s) を起動しました\n"
+
+#: src/ils.cpp:119
+msgid "Parse error"
 msgstr ""
 
-#: src/pref_window.cpp:1697
-#, fuzzy
-msgid "Available Audio Codecs"
-msgstr "可能なコーデック"
+#: src/ils.cpp:119
+#, fuzzy, c-format
+msgid ""
+"There was an error while processing the registering to the user directory: %"
+"d %s."
+msgstr "指定したホストへ転送するときにエラーが発生しました。"
 
-#: src/pref_window.cpp:1734
+#. No need to display that for unregistering
+#: src/ils.cpp:233
+msgid "Invalid parameters"
+msgstr "パラメータが正しくありません"
+
+#: src/ils.cpp:233
+msgid ""
+"Please provide your first name and e-mail in the Personal Data section in "
+"order to be able to register to the user directory."
+msgstr ""
+"ユーザ・ディレクトリに登録できるようにするために、個人情報セクションの中に名"
+"前と E-メールを指定して下さい。"
+
+#: src/ils.cpp:268
+msgid "Invalid user directory"
+msgstr "ユーザ・ディレクトリが正しくありません"
+
+#: src/ils.cpp:268
+msgid "Operation impossible since there is no user directory specified."
+msgstr "指定したユーザ・ディレクトリが存在しないので、操作を実行できません"
+
+#: src/ils.cpp:334 src/ils.cpp:921
+#, fuzzy, c-format
+msgid "Contacting %s..."
+msgstr "%s の呼び出し中です"
+
+#: src/ils.cpp:347
+msgid "Failed to parse XML file"
+msgstr "XML ファイルの解析に失敗しました"
+
+#: src/ils.cpp:347
+msgid ""
+"There was an error while parsing the XML file. Please make sure that it is "
+"correctly installed in your system."
+msgstr ""
+"XML 形式のファイルを解析する際にエラーが発生しました。GnomeMeeting が正しくイ"
+"ンストールされているか確認して下さい。"
+
+#: src/ils.cpp:358
+msgid "Bad information"
+msgstr "おかしな情報です"
+
+#: src/ils.cpp:358
+#, fuzzy, c-format
+msgid "Bad ldap information from XML file: %s."
+msgstr "XML ファイル %s の中におかしな LDAP 情報があります。"
+
+#: src/ils.cpp:367 src/ils.cpp:377 src/ils.cpp:386
+msgid "Cannot contact the user directory"
+msgstr "ユーザ・ディレクトリと通信できません"
+
+#: src/ils.cpp:367
+#, fuzzy, c-format
+msgid "Failed to contact the user directory %s:%d."
+msgstr "ユーザ・ディレクトリ %s への bind に失敗しました"
+
+#: src/ils.cpp:377
+msgid "Failed to set a time limit on operations."
+msgstr "時刻制限をセットする操作が失敗しました"
+
+#: src/ils.cpp:386
+#, c-format
+msgid "Failed to bind to user directory: %s."
+msgstr "ユーザ・ディレクトリ %s への bind に失敗しました"
+
+#: src/ils.cpp:417
+#, c-format
+msgid "Successfully registered to %s."
+msgstr ""
+
+#: src/ils.cpp:453
+#, fuzzy, c-format
+msgid "Updated information on %s."
+msgstr "ユーザ・ディレクトリ %s にある情報を更新しました"
+
+#: src/ils.cpp:463
+#, c-format
+msgid "Successfully unregistered from %s."
+msgstr ""
+
+#: src/ils.cpp:495
+#, fuzzy, c-format
+msgid "Error while registering to %s."
+msgstr "%s へ登録する際にエラー"
+
+#: src/ils.cpp:498
+#, fuzzy, c-format
+msgid "Error while unregistering from %s."
+msgstr "%s へ登録する際にエラー"
+
+#: src/ils.cpp:929
+#, fuzzy, c-format
+msgid "Failed to contact LDAP server %s:%d."
+msgstr "LDAP サーバ %s:%d への通信に失敗しました"
+
+#: src/ils.cpp:942
+#, fuzzy
+msgid "Failed to set time limit on LDAP operations."
+msgstr "時刻制限を設定する LDAP 操作に失敗しました"
+
+#: src/ils.cpp:952
+#, fuzzy, c-format
+msgid "Failed to contact to LDAP server %s: %s."
+msgstr "LDAP サーバ %s への通信に失敗しました: %s"
+
+#: src/ils.cpp:962
+#, fuzzy, c-format
+msgid "Fetching online users list from %s."
+msgstr "%s のオンライン・ユーザ・リストと同期中"
+
+#: src/ils.cpp:981
+#, fuzzy, c-format
+msgid "Connection to %s lost..."
+msgstr "%s への接続が切れました"
+
+#: src/ils.cpp:984
+#, fuzzy
+msgid "Could not fetch online users list."
+msgstr "オンライン・ユーザ・リストの同期に失敗しました"
+
+#: src/ils.cpp:1210
+#, fuzzy, c-format
+msgid "Search completed: %d user(s) listed on a total of %d user(s) from %s."
+msgstr ""
+"検索が完了しました: サーバ %3$s 上で合計 %2$d 人のユーザのうち %1$d 人のユー"
+"ザが表示されています"
+
+#: src/ils.cpp:1215
+#, fuzzy, c-format
+msgid "Search completed: %d user(s) found on %s."
+msgstr "検索が完了しました: %2$s 上に %1$d 人のユーザがいます"
+
+#: src/ldap_window.cpp:725
+msgid "Name:"
+msgstr "氏名:"
+
+#: src/ldap_window.cpp:745
+msgid "URL:"
+msgstr "URL:"
+
+#: src/ldap_window.cpp:772
+msgid "Speed Dial:"
+msgstr "ショートカット:"
+
+#: src/ldap_window.cpp:796
+msgid "Groups:"
+msgstr "グループ:"
+
+#: src/ldap_window.cpp:912
+msgid "Invalid user name or URL"
+msgstr "ユーザ名または URL が正しくありません"
+
+#: src/ldap_window.cpp:912
+msgid ""
+"Please provide a valid name and URL for the contact you want to add to the "
+"address book."
+msgstr "アドレス帳に追加するコンタクトの正しい名前と URL を指定して下さい。"
+
+#: src/ldap_window.cpp:920
+msgid "Invalid group"
+msgstr "グループが正しくありません"
+
+#: src/ldap_window.cpp:920
+msgid "You have to select a group to which you want to add your contact."
+msgstr "追加するコンタクトが所属するグループを選択して下さい。"
+
+#: src/ldap_window.cpp:934
+msgid "Invalid speed dial"
+msgstr "ショートカットが正しくありません"
+
+#: src/ldap_window.cpp:934
+msgid ""
+"Another contact with the same speed dial already exists in the address book."
+msgstr ""
+"アドレス帳の中に同じショートカット・ダイアルを持つコンタクトが既に存在しま"
+"す。"
+
+#: src/ldap_window.cpp:946
+msgid "Invalid URL"
+msgstr "URL が正しくありません"
+
+#: src/ldap_window.cpp:946
+msgid "Another contact with the same URL already exists in the address book."
+msgstr "アドレス帳の中に同じ URL を持つコンタクトが既に存在します。"
+
+#: src/ldap_window.cpp:1073
+#, c-format
+msgid "Add %s to Address Book"
+msgstr "%s をアドレス帳へ追加"
+
+#: src/ldap_window.cpp:1093 src/ldap_window.cpp:2258
+msgid "C_all Contact"
+msgstr "コンタクトの呼び出し(_A)"
+
+#: src/ldap_window.cpp:1098 src/ldap_window.cpp:2262
+msgid "_Tranfer Call to Contact"
+msgstr "コンタクトへ転送(_T)"
+
+#: src/ldap_window.cpp:1109 src/ldap_window.cpp:2280
+msgid "Contact _Properties"
+msgstr "コンタクトのプロパティ(_P)"
+
+#: src/ldap_window.cpp:1115 src/ldap_window.cpp:2244
+msgid "_Delete"
+msgstr "削除(_D)"
+
+#: src/ldap_window.cpp:1220
+#, fuzzy
+msgid "Add a new server"
+msgstr "新しいサーバの追加"
+
+#: src/ldap_window.cpp:1221
+msgid "Enter the server name:"
+msgstr "サーバ名を入力して下さい:"
+
+#: src/ldap_window.cpp:1222
+msgid ""
+"Sorry but there is already a server with the same name in the address book."
+msgstr "すみません、ですが既に同じ名前のサーバがアドレス帳にあります。"
+
+#: src/ldap_window.cpp:1227
+#, fuzzy
+msgid "Add a new group"
+msgstr "新しいグループの追加"
+
+#: src/ldap_window.cpp:1228
+msgid "Enter the group name:"
+msgstr "グループ名を入力して下さい:"
+
+#: src/ldap_window.cpp:1229
+msgid ""
+"Sorry but there is already a group with the same name in the address book."
+msgstr "すみません、ですが既に同じ名前のグループがアドレス帳にあります。"
+
+#: src/ldap_window.cpp:1264
+msgid "Invalid server or group name"
+msgstr "サーバ名またはグループ名が正しくありません"
+
+#: src/ldap_window.cpp:1350
+#, c-format
+msgid "Are you sure you want to delete server %s?"
+msgstr "サーバ %s を削除してもよろしいですか？"
+
+#: src/ldap_window.cpp:1356
+#, c-format
+msgid "Are you sure you want to delete group %s and all its contacts?"
+msgstr "グループ %s と所属する全てのコンタクトを削除してもよろしいですか？"
+
+#: src/ldap_window.cpp:1539
+#, fuzzy
+msgid "New server"
+msgstr "新しいサーバ"
+
+#: src/ldap_window.cpp:1548
+#, fuzzy
+msgid "New group"
+msgstr "新しいグループ"
+
+#: src/ldap_window.cpp:1557
+msgid "_Find"
+msgstr "検索(_F)"
+
+#: src/ldap_window.cpp:1562 src/ldap_window.cpp:1576
+msgid "Delete"
+msgstr "削除"
+
+#: src/ldap_window.cpp:1571
+#, fuzzy
+msgid "New contact"
+msgstr "新しいコンタクト"
+
+#: src/ldap_window.cpp:2212
+#, fuzzy
+msgid "GnomeMeeting Address Book"
+msgstr "GnomeMeeting トレイ・アイコン"
+
+#: src/ldap_window.cpp:2230
+msgid "_File"
+msgstr "ファイル(_F)"
+
+#: src/ldap_window.cpp:2232
+msgid "New _Server"
+msgstr "新しいサーバ(_S)"
+
+#: src/ldap_window.cpp:2237
+msgid "New _Group"
+msgstr "新しいグループ(_G)"
+
+#: src/ldap_window.cpp:2250
+msgid "_Close"
+msgstr "閉じる(_C)"
+
+#: src/ldap_window.cpp:2256
+msgid "C_ontact"
+msgstr "コンタクト(_O)"
+
+#: src/ldap_window.cpp:2268
+msgid "New _Contact"
+msgstr "新しいコンタクト(_C)"
+
+#: src/ldap_window.cpp:2273
+msgid "Add Contact to _Address Book"
+msgstr "コンタクトをアドレス帳へ追加(_A)"
+
+#. Translators: This is "S" as in "Status"
+#: src/ldap_window.cpp:2530
+msgid "S"
+msgstr "状態"
+
+#. Translators: This is "A" as in "Audio"
+#: src/ldap_window.cpp:2540 src/pref_window.cpp:1218
+msgid "A"
+msgstr "音声"
+
+#. Translators: This is "V" as in "Video"
+#: src/ldap_window.cpp:2550
+msgid "V"
+msgstr "映像"
+
+#: src/ldap_window.cpp:2559 src/ldap_window.cpp:2633 src/pref_window.cpp:1232
 msgid "Name"
 msgstr "名称"
 
-#: src/pref_window.cpp:1742
+#: src/ldap_window.cpp:2597 src/ldap_window.cpp:2645 src/tools.cpp:248
+msgid "URL"
+msgstr "URL"
+
+#: src/ldap_window.cpp:2620
+msgid "IP"
+msgstr "IP-アドレス"
+
+#: src/ldap_window.cpp:2658
+msgid "Speed Dial"
+msgstr "ショートカット"
+
+#: src/ldap_window.cpp:2711
+msgid "Find all contacts"
+msgstr "全コンタクトの検索"
+
+#: src/ldap_window.cpp:2716
+msgid "First name contains"
+msgstr "名前が次を含む"
+
+#: src/ldap_window.cpp:2720
+msgid "Last name contains"
+msgstr "名字が次を含む"
+
+#: src/ldap_window.cpp:2724
+msgid "E-mail contains"
+msgstr "E-メールが次を含む"
+
+#: src/ldap_window.cpp:2909
+msgid "Servers"
+msgstr "サーバ"
+
+#: src/ldap_window.cpp:2955
+msgid "Groups"
+msgstr "グループ"
+
+#: src/lid.cpp:132
+#, fuzzy, c-format
+msgid "Using Quicknet device %s"
+msgstr "Quicknet デバイス %s を開きました"
+
+#: src/lid.cpp:174
+msgid "Error while opening the Quicknet device."
+msgstr "Quicknet デバイスを開く際にエラー"
+
+#: src/lid.cpp:174
+msgid ""
+"Please check that your driver is correctly installed and that the device is "
+"working correctly."
+msgstr ""
+"お使いのドライバが正しくインストールされているか、そしてデバイスが正しく動作"
+"しているかを確認して下さい。"
+
+#: src/lid.cpp:279 src/lid.cpp:280
+msgid "Phone is off hook"
+msgstr "電話はオフ・フックです"
+
+#: src/lid.cpp:309 src/lid.cpp:310
+msgid "Phone is on hook"
+msgstr "電話はオン・フックです"
+
+#: src/main_window.cpp:255
+#, c-format
+msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
+msgstr "%.2ld:%.2ld:%.2ld  音:%.2f/%.2f   映:%.2f/%.2f"
+
+#: src/main_window.cpp:292
+#, c-format
+msgid ""
+"Lost packets: %.1f %%\n"
+"Late packets: %.1f %%\n"
+"Round-trip delay: %d ms\n"
+"Jitter buffer: %d ms"
+msgstr ""
+"消失したパケット数: %.1f %%\n"
+"遅延したパケット数: %.1f %%\n"
+"往復時の遅延: %d ms\n"
+"Jitter バッファ: %d ms"
+
+#: src/main_window.cpp:486
+#, c-format
+msgid "Total: %.2f MB"
+msgstr "合計: %.2f Mバイト"
+
+#: src/main_window.cpp:605
+msgid "Cannot run GnomeMeeting"
+msgstr "GnomeMeeting を起動できません"
+
+#: src/main_window.cpp:605
+#, fuzzy
+msgid ""
+"GnomeMeeting is already running, if you want it to call a given callto URL, "
+"please use \"gnomemeeting -c URL\"."
+msgstr ""
+"既に GnomeMeeting が起動されています。指定した \"呼び出しアドレス\" または "
+"h323 URL へ呼び出しを行う場合は、コマンドライン `gnomemeeting -c URL` を使用"
+"して下さい。"
+
+#: src/main_window.cpp:657
+msgid ""
+"It appears that you do not have gnomemeeting.server installed in a valid "
+"location. Factory mode disabled.\n"
+msgstr ""
+"gnomemeeting.server を適切な場所にインストールしていないようです。ファクト"
+"リ・モードを無効にします。\n"
+
+#: src/main_window.cpp:661
+msgid ""
+"Error registering GnomeMeeting with the activation service; factory mode "
+"disabled.\n"
+msgstr ""
+"活性化サービスで GnomeMeeting を登録する際にエラーが発生しました; ファクト"
+"リ・モードを無効にします。\n"
+
+#: src/main_window.cpp:701
+msgid "Failed to retrieve gnomemeeting server from activation server\n"
+msgstr "活性化サーバーから gnomemeeting サーバの取得に失敗\n"
+
+#: src/main_window.cpp:1196 src/menu.cpp:566 src/menu.cpp:815
+msgid "Local Video"
+msgstr "ローカルの映像"
+
+#: src/main_window.cpp:1202 src/menu.cpp:572 src/menu.cpp:820
+msgid "Remote Video"
+msgstr "リモートの映像"
+
+#: src/main_window.cpp:1369 src/menu.cpp:526
+msgid "Statistics"
+msgstr "統計情報"
+
+#: src/main_window.cpp:1430
+msgid "Dialpad"
+msgstr "ダイアルパッド"
+
+#: src/main_window.cpp:1484
+msgid "Adjust brightness"
+msgstr "明るさを調整します"
+
+#: src/main_window.cpp:1506
+msgid "Adjust whiteness"
+msgstr "白さを調整します"
+
+#: src/main_window.cpp:1528
+msgid "Adjust color"
+msgstr "色を調整します"
+
+#: src/main_window.cpp:1550
+msgid "Adjust contrast"
+msgstr "コントラストを調整します"
+
+#: src/main_window.cpp:1558
+msgid "Video"
+msgstr "映像"
+
+#: src/main_window.cpp:1638
+msgid "Audio"
+msgstr "音声"
+
+#: src/main_window.cpp:1685
+msgid "Prints debug messages in the console (level between 1 and 6)"
+msgstr "端末にデバッグ・メッセージを表示する (レベル: 1〜6)"
+
+#: src/main_window.cpp:1688
+msgid "Makes GnomeMeeting call the given URL"
+msgstr "GnomeMeetiing で指定した URL を呼び出す"
+
+#: src/main_window.cpp:1734
+#, fuzzy
+msgid "No usable audio devices detected"
+msgstr "利用可能な音声マネージャが検出されませんでした"
+
+#: src/main_window.cpp:1734
+msgid ""
+"GnomeMeeting didn't find any usable sound devices. You need to install and "
+"setup a soundcard or a Quicknet card in order to be able to use "
+"GnomeMeeting. Please check your driver settings and permissions."
+msgstr ""
+
+#: src/main_window.cpp:1754
+msgid "Gconf key error"
+msgstr "Gconf キーのエラー"
+
+#: src/main_window.cpp:1754
+#, fuzzy
+msgid ""
+"GnomeMeeting got an invalid value for the GConf key \"/apps/gnomemeeting/"
+"gconf_test_age\".\n"
+"\n"
+"It probably means that your GConf schemas have not been correctly installed "
+"or the that permissions are not correct.\n"
+"\n"
+"Please check the FAQ (http://www.gnomemeeting.org/faq.php), the "
+"throubleshoot section of the GConf site (http://www.gnome.org/projects/"
+"gconf/) or the mailing list archives for more information (http://mail.gnome."
+"org) about this problem."
+msgstr ""
+"GnomeMeeting は正しくない GConf キー %s を受け取りました。\n"
+"\n"
+"おそらく、GConf スキーマが正しくインストールされていないか、あるいは権限が正"
+"しくないと思われます。\n"
+"\n"
+"この問題に対する詳細な情報については、FAQ サイト (http://www.gnomemeeting."
+"org/faq.php) にある GConf のサイト (http://www.gnome.org/projects/gconf/) の"
+"トラブルシューティングのセクションをチェックするか、またはメーリング・リスト "
+"(http://mail.gnome.org) のアーカイブをチェックして下さい。"
+
+#: src/menu.cpp:432
+msgid "C_all"
+msgstr "呼び出し(_C)"
+
+#: src/menu.cpp:434
+msgid "C_onnect"
+msgstr "接続(_O)"
+
+#: src/menu.cpp:434 src/menu.cpp:894
+msgid "Create a new connection"
+msgstr "新しい接続を確立します"
+
+#: src/menu.cpp:439 src/menu.cpp:899
+msgid "_Disconnect"
+msgstr "切断(_D)"
+
+#: src/menu.cpp:439 src/menu.cpp:899
+msgid "Close the current connection"
+msgstr "現在の接続を閉じます"
+
+#: src/menu.cpp:446 src/menu.cpp:906
+#, fuzzy
+msgid "Do _Not Disturb"
+msgstr "登録しない"
+
+#: src/menu.cpp:451 src/menu.cpp:911
+#, fuzzy
+msgid "Aut_o Answer"
+msgstr "着信に自動応答します"
+
+#: src/menu.cpp:451
+#, fuzzy
+msgid "Auto answer incoming call"
+msgstr "着信に応答中"
+
+#: src/menu.cpp:458
+msgid "Hold the current call"
+msgstr "現在の呼び出しを保留します"
+
+#: src/menu.cpp:463
+msgid "Transfer the current call"
+msgstr "現在の呼び出しを転送します"
+
+#: src/menu.cpp:470
+msgid "Suspend or resume the audio transmission"
+msgstr "音声の発信を一時停止または再開します"
+
+#: src/menu.cpp:475
+msgid "Suspend or resume the video transmission"
+msgstr "映像の発信を一時停止または再開します"
+
+#: src/menu.cpp:482
+msgid "_Save Current Picture"
+msgstr "現在の映像の保存(_S)"
+
+#: src/menu.cpp:482
+msgid "Save a snapshot of the current video"
+msgstr "現在の映像に対するスナップショットを保存します"
+
+#: src/menu.cpp:488 src/menu.cpp:951
+msgid "_Quit"
+msgstr "終了(_Q)"
+
+#: src/menu.cpp:488 src/menu.cpp:951
+msgid "Quit GnomeMeeting"
+msgstr "GnomeMeeting を終了します"
+
+#: src/menu.cpp:491
+msgid "_Edit"
+msgstr "編集(_E)"
+
+#: src/menu.cpp:494 src/menu.cpp:499
+msgid "Configuration Druid"
+msgstr "設定ドルイド"
+
+#: src/menu.cpp:494 src/menu.cpp:499
+msgid "Run the configuration druid"
+msgstr "設定ドルイドを起動します"
+
+#: src/menu.cpp:506 src/menu.cpp:932
+#, fuzzy
+msgid "_Preferences..."
+msgstr "設定(_P)"
+
+#: src/menu.cpp:506 src/menu.cpp:932
+msgid "Change your preferences"
+msgstr "お使いの設定を変更します"
+
+#: src/menu.cpp:511
+msgid "_View"
+msgstr "表示(_V)"
+
+#. Text Chat
+#: src/menu.cpp:513 src/pref_window.cpp:827
+msgid "Text Chat"
+msgstr "テキスト・チャット"
+
+#: src/menu.cpp:513
+msgid "View/Hide the text chat window"
+msgstr "テキスト形式のチャット・ウィンドウの表示を ON/OFF します"
+
+#: src/menu.cpp:518
+msgid "Status Bar"
+msgstr "ステータス・バー"
+
+#: src/menu.cpp:518
+msgid "View/Hide the status bar"
+msgstr "ステータス・バーの表示を ON/OFF します"
+
+#: src/menu.cpp:524
+msgid "Control Panel"
+msgstr "コントロール・パネル"
+
+#: src/menu.cpp:527
+msgid "View audio/video transmission and reception statistics"
+msgstr "音声/映像の発信と着信に対する統計情報を表示します"
+
+#: src/menu.cpp:533
+msgid "_Dialpad"
+msgstr "ダイアルパッド(_D)"
+
+#: src/menu.cpp:533
+msgid "View the dialpad"
+msgstr "ダイアルを表示します"
+
+#: src/menu.cpp:539
+msgid "_Audio Settings"
+msgstr "音声の設定(_A)"
+
+#: src/menu.cpp:539
+msgid "View audio settings"
+msgstr "音声を設定します"
+
+#: src/menu.cpp:545
+msgid "_Video Settings"
+msgstr "映像の設定(_V)"
+
+#: src/menu.cpp:545
+msgid "View video settings"
+msgstr "映像を設定します"
+
+#: src/menu.cpp:551 src/pref_window.cpp:1039
+msgid "Off"
+msgstr "表示しない"
+
+#: src/menu.cpp:551
+msgid "Hide the control panel"
+msgstr "コントロール・パネルを隠します"
+
+#: src/menu.cpp:559
+#, fuzzy
+msgid "_Clear text chat"
+msgstr "テキスト・チャットのクリア(_C)"
+
+#: src/menu.cpp:559
+msgid "Clear the text chat"
+msgstr "チャット・ウィンドウのテキストを消去します"
+
+#: src/menu.cpp:566
+msgid "Local video image"
+msgstr "ローカルの映像イメージ"
+
+#: src/menu.cpp:572
+msgid "Remote video image"
+msgstr "リモートの映像イメージ"
+
+#: src/menu.cpp:578 src/menu.cpp:825
+msgid "Both (Local Video Incrusted)"
+msgstr "両方 (外枠つきのローカルの映像)"
+
+#: src/menu.cpp:578 src/menu.cpp:584 src/menu.cpp:591
+msgid "Both video images"
+msgstr "両方の映像イメージ"
+
+#: src/menu.cpp:584 src/menu.cpp:830
+msgid "Both (Local Video in New Window)"
+msgstr "両方 (ローカルのみ新しいウィンドウ)"
+
+#: src/menu.cpp:590
+msgid "Both (Both in New Windows)"
+msgstr "両方 (新しいウィンドウ)"
+
+#: src/menu.cpp:599 src/menu.cpp:843
+msgid "Zoom In"
+msgstr "拡大"
+
+#: src/menu.cpp:599
+msgid "Zoom in"
+msgstr "映像を拡大します"
+
+#: src/menu.cpp:604 src/menu.cpp:848
+msgid "Zoom Out"
+msgstr "縮小"
+
+#: src/menu.cpp:604
+msgid "Zoom out"
+msgstr "映像を縮小します"
+
+#: src/menu.cpp:609 src/menu.cpp:853
+msgid "Normal Size"
+msgstr "標準のサイズ"
+
+#: src/menu.cpp:609
+msgid "Normal size"
+msgstr "デフォルトの映像サイズにします"
+
+#: src/menu.cpp:616 src/menu.cpp:860
+msgid "Fullscreen"
+msgstr "フルスクリーン"
+
+#: src/menu.cpp:621
+msgid "_Tools"
+msgstr "ツール(_T)"
+
+#: src/menu.cpp:623 src/menu.cpp:918
+msgid "Address _Book"
+msgstr "アドレス帳(_B)"
+
+#: src/menu.cpp:623 src/menu.cpp:918
+msgid "Open the address book"
+msgstr "アドレス帳を開きます"
+
+#: src/menu.cpp:630 src/tools.cpp:329
+msgid "General History"
+msgstr "全般の履歴"
+
+#: src/menu.cpp:630
+msgid "View the operations history"
+msgstr "操作に関連する履歴を表示します"
+
+#: src/menu.cpp:635 src/menu.cpp:925 src/tools.cpp:200
+msgid "Calls History"
+msgstr "着信履歴"
+
+#: src/menu.cpp:635 src/menu.cpp:925
+msgid "View the calls history"
+msgstr "着信履歴を表示します"
+
+#: src/menu.cpp:642
+#, fuzzy
+msgid "Consult MicroTelco Account"
+msgstr "あなたの MicroTelco アカウント番号をお使い下さい"
+
+#: src/menu.cpp:642
+msgid "View the details of your account"
+msgstr ""
+
+#: src/menu.cpp:647
+msgid "_Help"
+msgstr "ヘルプ(_H)"
+
+#: src/menu.cpp:650 src/menu.cpp:655 src/menu.cpp:940 src/menu.cpp:945
+msgid "_About GnomeMeeting"
+msgstr "GnomeMeeting について(_A)"
+
+#: src/menu.cpp:650 src/menu.cpp:655 src/menu.cpp:940 src/menu.cpp:945
+msgid "View information about GnomeMeeting"
+msgstr "GnomeMeeting の情報を表示します"
+
+#: src/menu.cpp:815
+#, fuzzy
+msgid "Local Video Image"
+msgstr "ローカルの映像イメージ"
+
+#: src/menu.cpp:820
+#, fuzzy
+msgid "Remote Video Image"
+msgstr "リモートの映像イメージ"
+
+#: src/menu.cpp:825 src/menu.cpp:830 src/menu.cpp:836
+#, fuzzy
+msgid "Both Video Images"
+msgstr "両方の映像イメージ"
+
+#: src/menu.cpp:835
+#, fuzzy
+msgid "Both (Local and Remote Video in New Windows)"
+msgstr "両方 (ローカルのみ新しいウィンドウ)"
+
+#: src/menu.cpp:894
+msgid "_Connect"
+msgstr "接続(_C)"
+
+#: src/menu.cpp:906
+msgid "Do not disturb (reject incoming calls)"
+msgstr ""
+
+#: src/misc.cpp:175
+#, c-format
+msgid "Error: %s\n"
+msgstr ""
+
+#: src/misc.cpp:219
+#, fuzzy, c-format
+msgid ""
+"Call from %s\n"
+"using %s"
+msgstr "%s からの着信"
+
+#: src/misc.cpp:227
+msgid "Reject"
+msgstr "拒否"
+
+#: src/misc.cpp:229
+msgid "Accept"
+msgstr "受諾"
+
+#: src/pref_window.cpp:410
+#, fuzzy
+msgid "Please choose the video image"
+msgstr "お使いの映像マネージャを選択して下さい:"
+
+#: src/pref_window.cpp:444
+msgid "Okay"
+msgstr ""
+
+#: src/pref_window.cpp:449 src/pref_window.cpp:464 src/pref_window.cpp:469
+msgid "Excellent"
+msgstr "優良"
+
+#: src/pref_window.cpp:454 src/pref_window.cpp:459 src/pref_window.cpp:474
+#: src/pref_window.cpp:479
+msgid "Good Quality"
+msgstr ""
+
+#: src/pref_window.cpp:484
+#, fuzzy
+msgid "Excellent Quality"
+msgstr "優良"
+
+#: src/pref_window.cpp:732
+msgid "_First name:"
+msgstr "名前(_F):"
+
+#: src/pref_window.cpp:737
+msgid "Sur_name:"
+msgstr "名字(_N):"
+
+#: src/pref_window.cpp:747
+msgid "_Comment:"
+msgstr "コメント(_C):"
+
+#: src/pref_window.cpp:752
+msgid "_Location:"
+msgstr "所在地(_L):"
+
+#: src/pref_window.cpp:758 src/pref_window.cpp:993
+msgid "_Apply"
+msgstr "適用(_A)"
+
+#: src/pref_window.cpp:758
+#, fuzzy
+msgid ""
+"Click here to update the user directory you are registered to with the new "
+"First Name, Last Name, E-Mail, Comment and Location or to update your alias "
+"on the Gatekeeper."
+msgstr ""
+"ここをクリックして、新しい名前、名字、E-メール、コメントと所在地で、登録した"
+"ユーザ・ディレクトリを更新するか、ゲートキーパのエイリアスを更新して下さい"
+
+#: src/pref_window.cpp:782
+msgid "GnomeMeeting GUI"
+msgstr "GnomeMeeting のインタフェース"
+
+#: src/pref_window.cpp:785
+msgid "_Show splash screen"
+msgstr "スプラッシュ・スクリーンを表示する(_S)"
+
+#: src/pref_window.cpp:788
+msgid "Start _hidden"
+msgstr "起動時に隠す(_H)"
+
+#. Packing widget
+#: src/pref_window.cpp:792
+msgid "Behavior"
+msgstr ""
+
+#: src/pref_window.cpp:796
+#, fuzzy
+msgid "_Automatically answer calls"
+msgstr "着信に自動応答します"
+
+#: src/pref_window.cpp:799
+#, fuzzy
+msgid "Do _not disturb"
+msgstr "登録しない"
+
+#: src/pref_window.cpp:802
+#, fuzzy
+msgid "Display a po_pup window when receiving a call"
+msgstr "着信時にウィンドウをポップアップ表示する"
+
+#. Packing widget
+#: src/pref_window.cpp:806
+msgid "Video Display"
+msgstr "映像の表示"
+
+#. Translators: the full sentence is Use a fullscreen size
+#. of X by Y pixels
+#: src/pref_window.cpp:811
+msgid "Use a fullscreen size of"
+msgstr "フルスクリーン時のサイズ: "
+
+#: src/pref_window.cpp:813
+msgid "by"
+msgstr "×"
+
+#: src/pref_window.cpp:815
+msgid "pixels"
+msgstr "ピクセル"
+
+#: src/pref_window.cpp:824
+#, fuzzy
+msgid "Enable bilinear _filtering on displayed video"
+msgstr "ビデオの表示で BiLinear フィルタリングを有効にする"
+
+#: src/pref_window.cpp:850
+msgid "User Directory"
+msgstr "ユーザ・ディレクトリ"
+
+#: src/pref_window.cpp:855
+msgid "User directory:"
+msgstr "ユーザ・ディレクトリ:"
+
+#: src/pref_window.cpp:858
+msgid "Enable _registering"
+msgstr "登録する(_R)"
+
+#: src/pref_window.cpp:861
+#, fuzzy
+msgid "_Publish my details in the users directory"
+msgstr "登録時に個人の情報をユーザ・ディレクトリで公開する(_P)"
+
+#: src/pref_window.cpp:883 src/pref_window.cpp:1523
+msgid "Call Forwarding"
+msgstr "着信のフォワード"
+
+#: src/pref_window.cpp:888
+msgid "Forward calls to _host:"
+msgstr "フォワードするホスト(_H):"
+
+#: src/pref_window.cpp:895
+msgid "_Always forward calls to the given host"
+msgstr "常に指定したホストへフォワードする(_A)"
+
+#: src/pref_window.cpp:898
+msgid "Forward calls to the given host if _no answer"
+msgstr "応答がない場合に指定したホストへフォワードする(_N)"
+
+#: src/pref_window.cpp:901
+msgid "Forward calls to the given host if _busy"
+msgstr "多忙な場合に指定したホストへフォワードする"
+
+#: src/pref_window.cpp:915
+msgid "All"
+msgstr "全て"
+
+#: src/pref_window.cpp:916
+msgid "None"
+msgstr "なし"
+
+#: src/pref_window.cpp:917
+msgid "rfc2833"
+msgstr "rfc2833"
+
+#: src/pref_window.cpp:918
+msgid "Signal"
+msgstr "シングル"
+
+#: src/pref_window.cpp:919
+msgid "String"
+msgstr "文字列"
+
+#: src/pref_window.cpp:929
+msgid "H.323 Version 2 Settings"
+msgstr "H.323 バージョン 2 の設定"
+
+#: src/pref_window.cpp:933
+#, fuzzy
+msgid "Enable H.245 _tunnelling"
+msgstr "H.245 トンネリングを有効にする(_T)"
+
+#: src/pref_window.cpp:936
+msgid "Enable fast _start procedure"
+msgstr "高速起動を有効にする(_S)"
+
+#: src/pref_window.cpp:941
+msgid "User Input Capabilities"
+msgstr ""
+
+#: src/pref_window.cpp:944
+msgid "User Input Capabilities _type:"
+msgstr ""
+
+#: src/pref_window.cpp:944
+#, fuzzy
+msgid ""
+"This permits to set the mode for User Input Capabilities. The values can be "
+"\"All\", \"None\", \"rfc2833\", \"Signal\" or \"String\" (default is \"All"
+"\"). Choosing other values than \"All\", \"String\" or \"rfc2833\" disables "
+"the Text Chat."
+msgstr ""
+"This permits to set the mode for DTMFs sending. The values can be \"All\", "
+"\"None\", \"rfc2833\", \"Signal\" or \"String\" (default is \"All\"). "
+"Choosing other values than \"All\", \"String\" or \"rfc2833\" disables the "
+"Text Chat."
+
+#: src/pref_window.cpp:961
+msgid "Do not register"
+msgstr "登録しない"
+
+#: src/pref_window.cpp:964
+msgid "Automatically discover"
+msgstr "自動的に検出"
+
+#: src/pref_window.cpp:974
+msgid "Gatekeeper"
+msgstr "ゲートキーパ"
+
+#: src/pref_window.cpp:977
+msgid "Gatekeeper _ID:"
+msgstr "ゲートキーパの ID(_I):"
+
+#: src/pref_window.cpp:980
+msgid "Gatekeeper _host:"
+msgstr "ゲートキーパのホスト(_H):"
+
+#: src/pref_window.cpp:983
+msgid "Gatekeeper _alias:"
+msgstr "ゲートキーパのエイリアス(_A):"
+
+#: src/pref_window.cpp:986
+msgid "Gatekeeper _password:"
+msgstr "ゲートキーパのパスワード(_P):"
+
+#: src/pref_window.cpp:990
+msgid "Registering method:"
+msgstr "登録方法:"
+
+#: src/pref_window.cpp:993
+#, fuzzy
+msgid "Click here to update your Gatekeeper settings."
+msgstr "ここをクリックすると、お使いのゲートキーパの設定を更新します"
+
+#: src/pref_window.cpp:1016
+msgid "NAT/PAT Router Support"
+msgstr "NAT/PAT ルータのサポート"
+
+#: src/pref_window.cpp:1019
+msgid "Enable IP _translation"
+msgstr "IP 転送を有効にする(_T)"
+
+#: src/pref_window.cpp:1022
+msgid "Public _IP of the NAT/PAT router:"
+msgstr "NAT/PAT ルータのパブリック IP(_I):"
+
+#: src/pref_window.cpp:1040
+msgid "Low"
+msgstr "低い"
+
+#: src/pref_window.cpp:1041
+msgid "Medium"
+msgstr "中"
+
+#: src/pref_window.cpp:1042
+msgid "High"
+msgstr "高い"
+
+#: src/pref_window.cpp:1043
+msgid "AGC"
+msgstr "AGC"
+
+#: src/pref_window.cpp:1060
+#, fuzzy
+msgid "Playing device:"
+msgstr "入力デバイス:"
+
+#: src/pref_window.cpp:1063
+#, fuzzy
+msgid "Playing mixer:"
+msgstr "リング・トーンを演奏する"
+
+#: src/pref_window.cpp:1067
+#, fuzzy
+msgid "Recording device:"
+msgstr "あなたの声を録音中です"
+
+#: src/pref_window.cpp:1070
+#, fuzzy
+msgid "Recording mixer:"
+msgstr "あなたの声を録音中です"
+
+#. The Quicknet devices related options
+#: src/pref_window.cpp:1075
+#, fuzzy
+msgid "Quicknet Device"
+msgstr "Quicknet デバイス %s を閉じました"
+
+#: src/pref_window.cpp:1078
+msgid "Echo _cancellation:"
+msgstr "エコー・キャンセレーション(_C):"
+
+#: src/pref_window.cpp:1081
+msgid "Country _code:"
+msgstr "国コード(_C):"
+
+#. That button will refresh the devices list
+#: src/pref_window.cpp:1088 src/pref_window.cpp:1159
+msgid "_Detect devices"
+msgstr "デバイスの検出(_D)"
+
+#: src/pref_window.cpp:1088 src/pref_window.cpp:1159
+msgid "Click here to refresh the devices list."
+msgstr "ここをクリックすると、デバイス一覧を更新します"
+
+#: src/pref_window.cpp:1105
+msgid "Small"
+msgstr "小"
+
+#: src/pref_window.cpp:1106
+msgid "Large"
+msgstr "大"
+
+#: src/pref_window.cpp:1108
+msgid "PAL (Europe)"
+msgstr "PAL (欧州)"
+
+#: src/pref_window.cpp:1109
+msgid "NTSC (America)"
+msgstr "NTSC (北米)"
+
+#: src/pref_window.cpp:1110
+msgid "SECAM (France)"
+msgstr "SECAM (フランス)"
+
+#: src/pref_window.cpp:1111
+msgid "Auto"
+msgstr "自動"
+
+#: src/pref_window.cpp:1134
+#, fuzzy
+msgid "Video channel:"
+msgstr "映像チャンネル"
+
+#: src/pref_window.cpp:1137
+#, fuzzy
+msgid "Video size:"
+msgstr "映像のサイズ"
+
+#: src/pref_window.cpp:1140
+#, fuzzy
+msgid "Video format:"
+msgstr "ビデオの形式"
+
+#: src/pref_window.cpp:1143
+#, fuzzy
+msgid "Video image:"
+msgstr "ビデオの映像"
+
+#. The file selector button
+#: src/pref_window.cpp:1147
+#, fuzzy
+msgid "Choose a picture"
+msgstr "画像の選択"
+
+#: src/pref_window.cpp:1193
+msgid "Available Audio Codecs"
+msgstr "利用可能な音声コーデック"
+
+#: src/pref_window.cpp:1243
 msgid "Info"
 msgstr "情報"
 
-#: src/pref_window.cpp:1750
+#: src/pref_window.cpp:1255
 msgid "Bandwidth"
 msgstr "帯域幅"
 
 #. Here we add the audio codecs options
-#: src/pref_window.cpp:1810
+#: src/pref_window.cpp:1318
 msgid "Audio Codecs Settings"
-msgstr "オーディオコーデック設定"
+msgstr "音声コーデックの設定"
 
-#: src/pref_window.cpp:1814
-#, fuzzy
-msgid "Jitter Buffer:"
-msgstr "Jitterバッファー遅延:"
+#: src/pref_window.cpp:1323
+msgid "Automatically adjust _jitter buffer between"
+msgstr "自動的に調整する Jitter バッファの間隔: "
 
-#: src/pref_window.cpp:1816
-#, fuzzy
-msgid "The jitter buffer delay to buffer audio calls (in ms)."
-msgstr "Jitterバッファー遅延は、オーディオ呼出(ミリ秒で)をバッファーします"
+#: src/pref_window.cpp:1325
+msgid "and"
+msgstr "〜"
 
-#: src/pref_window.cpp:1820
-#, fuzzy
-msgid "GSM Frames per packet:"
-msgstr "GSM フレーム"
+#: src/pref_window.cpp:1327
+msgid "ms"
+msgstr "ミリ秒"
 
-#: src/pref_window.cpp:1822
-#, fuzzy
-msgid "The number of frames in each transmitted GSM packet."
-msgstr "各送信された GSM パケット中のフレーム数"
+#: src/pref_window.cpp:1335
+msgid "Enable silence _detection"
+msgstr "サイレンス検出を有効にする(_D)"
 
-#: src/pref_window.cpp:1826
-#, fuzzy
-msgid "G.711 Frames per packet:"
-msgstr "G.711 フレーム"
-
-#: src/pref_window.cpp:1828
-#, fuzzy
-msgid "The number of frames in each transmitted G.711 packet."
-msgstr "各送信された G.711 パケット中のフレーム数"
-
-#: src/pref_window.cpp:1832
-#, fuzzy
-msgid "Enable Silence Detection"
-msgstr "サイレンス検出を有効"
-
-#: src/pref_window.cpp:1834
-#, fuzzy
-msgid "Enable/disable the silence detection for the GSM and G.711 codecs."
-msgstr "GSMに基づいたコーデックのためのサイレンス検出を有効にします"
-
-#: src/pref_window.cpp:1855 src/pref_window.cpp:2020
+#: src/pref_window.cpp:1357 src/pref_window.cpp:1513
 msgid "General Settings"
-msgstr "全般設定"
+msgstr "全般の設定"
 
-#: src/pref_window.cpp:1860
-#, fuzzy
-msgid "Maximum Transmitted FPS:"
-msgstr "最大帯域幅:"
+#: src/pref_window.cpp:1362
+msgid "Enable video _transmission"
+msgstr "映像を発信する(_T)"
 
-#: src/pref_window.cpp:1862
-#, fuzzy
-msgid "The number of video frames transmitted each second."
-msgstr "各送信された GSM パケット中のフレーム数"
-
-#: src/pref_window.cpp:1866
-#, fuzzy
-msgid "Enable FPS Limitation"
-msgstr "迅速起動を有効"
-
-#: src/pref_window.cpp:1866
-#, fuzzy
-msgid "Enable/disable the limit on the transmitted FPS."
-msgstr ""
-"ここで、１秒あたりに送信するフレーム数の上限を、有効または無効にすることがで"
-"きます。"
-
-#: src/pref_window.cpp:1869
-#, fuzzy
-msgid "Enable/disable the video transmission."
-msgstr "映像転抑止"
+#: src/pref_window.cpp:1365
+msgid "Enable video _reception"
+msgstr "映像を受信する(_R)"
 
 #. H.261 Settings
-#: src/pref_window.cpp:1873
-#, fuzzy
-msgid "H.261 Settings"
-msgstr "H.261コーデック設定"
+#: src/pref_window.cpp:1369
+msgid "Bandwidth Control"
+msgstr "帯域幅のコントロール"
 
-#: src/pref_window.cpp:1877
-#, fuzzy
-msgid "Transmitted Video Quality:"
-msgstr "送信品質"
+#: src/pref_window.cpp:1373
+msgid "Maximum video _bandwidth of"
+msgstr "映像の帯域幅の最大値: "
 
-#: src/pref_window.cpp:1879
+#: src/pref_window.cpp:1373
 #, fuzzy
-msgid ""
-"The transmitted video quality:  choose 100% on a LAN for the best quality, "
-"1% being the worst quality."
-msgstr ""
-"ここで、送信する映像品質を選択することが可能: LANでは、最高品質の１００％を選"
-"択し、最低品質は、１％です"
+msgid "KB/s"
+msgstr "Kバイト/秒"
 
-#: src/pref_window.cpp:1883
-#, fuzzy
-msgid "Received Video Quality:"
-msgstr "あるべき受信映像品質"
+#: src/pref_window.cpp:1377
+msgid "Advanced Quality Settings"
+msgstr "拡張品質の設定"
 
-#: src/pref_window.cpp:1885
+#: src/pref_window.cpp:1382
+msgid "Keep a minimum video _quality of"
+msgstr "映像の最低品質を保証する割合: "
+
+#: src/pref_window.cpp:1382
 #, fuzzy
 msgid ""
-"The received video quality:  choose 100% on a LAN for the best quality, 1% "
-"being the worst quality."
+"The minimum transmitted video quality to keep when trying to minimize the "
+"used bandwidth:  choose 100% on a LAN for the best quality, 1% being the "
+"worst quality."
 msgstr ""
-"ここで、送信する映像品質を選択することが可能: LANでは、最高品質の１００％を選"
-"択し、最低品質は、１％です"
+"使用する帯域幅を最低にする際に保持する映像品質の最小値です: LANでは最高品質"
+"の 100% を選択し、最低品質は 1% です"
 
-#: src/pref_window.cpp:1889
-msgid "Transmitted Background Blocks:"
-msgstr "送信するバックグランドブロック:"
+#: src/pref_window.cpp:1382
+msgid "%"
+msgstr "%"
 
-#: src/pref_window.cpp:1936
+#: src/pref_window.cpp:1386
+msgid "Transmit at least"
+msgstr "最低転送フレーム数: "
+
+#: src/pref_window.cpp:1386
+msgid "_frames per second"
+msgstr "フレーム/秒(_F)"
+
+#: src/pref_window.cpp:1391
+msgid "Transmit"
+msgstr "各フレーム毎に転送するバックグラウンドのブロック数: "
+
+#: src/pref_window.cpp:1391
+msgid "background _blocks with each frame"
+msgstr "個/フレーム(_B)"
+
+#: src/pref_window.cpp:1432
 #, fuzzy
 msgid "GnomeMeeting Settings"
-msgstr "GnomeMeeting"
+msgstr "GnomeMeeting イベントの演奏"
 
-#: src/pref_window.cpp:2011
+#: src/pref_window.cpp:1504
 msgid "General"
 msgstr "全般"
 
-#: src/pref_window.cpp:2015
+#: src/pref_window.cpp:1508
 msgid "Personal Data"
-msgstr "個人データ"
+msgstr "個人の情報"
 
-#: src/pref_window.cpp:2025
-#, fuzzy
-msgid "H.323 Advanced"
-msgstr "H.323 拡張設定"
-
-#: src/pref_window.cpp:2030
+#: src/pref_window.cpp:1518
 msgid "Directory Settings"
-msgstr "ディレクトリ設定"
+msgstr "ディレクトリの設定"
 
-#: src/pref_window.cpp:2037
+#: src/pref_window.cpp:1530
+msgid "H.323 Settings"
+msgstr "H.323 の設定"
+
+#: src/pref_window.cpp:1534
+msgid "Advanced Settings"
+msgstr "拡張設定"
+
+#: src/pref_window.cpp:1539
+msgid "Gatekeeper Settings"
+msgstr "ゲートキーパの設定"
+
+#: src/pref_window.cpp:1544
+msgid "NAT Settings"
+msgstr "NAT の設定"
+
+#: src/pref_window.cpp:1551
 msgid "Codecs"
 msgstr "コーデック"
 
-#: src/pref_window.cpp:2041
+#: src/pref_window.cpp:1555
 msgid "Audio Codecs"
-msgstr "オーディオコーデック"
+msgstr "音声のコーデック"
 
-#: src/pref_window.cpp:2047
-#, fuzzy
+#: src/pref_window.cpp:1561
 msgid "Video Codecs"
-msgstr "オーディオコーデック"
+msgstr "映像のコーデック"
 
-#: src/pref_window.cpp:2054
-#, fuzzy
+#: src/pref_window.cpp:1568
 msgid "Devices"
-msgstr "オーディオデバイス"
+msgstr "デバイス"
 
-#: src/pref_window.cpp:2069
+#: src/pref_window.cpp:1583
 #, fuzzy
 msgid "Section"
-msgstr "設定"
+msgstr "所在地"
 
-#: src/toolbar.cpp:86
-msgid "Speakerphone enabled"
-msgstr ""
+#: src/sound_handling.cpp:416
+msgid "Failed to open the device"
+msgstr "デバイスを開けませんでした"
 
-#: src/toolbar.cpp:98
-msgid "Speakerphone disabled"
-msgstr ""
-
-#: src/toolbar.cpp:200
-msgid "ILS Directory"
-msgstr "ILS ディレクトリ"
-
-#: src/toolbar.cpp:201
-msgid "Find friends on ILS"
-msgstr "ILS上で友達を見つけます"
-
-#: src/toolbar.cpp:209
-msgid "Chat"
-msgstr "チャット"
-
-#: src/toolbar.cpp:210
-msgid "Make a text chat with your friend"
-msgstr "あなたの友達とテキストチャットをします"
-
-#: src/toolbar.cpp:219
-msgid "Display the control panel"
-msgstr "制御パネルを表示"
-
-#: src/toolbar.cpp:311
-msgid "Click here to begin to display images from your camera device."
-msgstr "カメラからイメージを表示させるには、ここをクリックして下さい。"
-
-#: src/toolbar.cpp:333
-msgid "Click here to activate the speaker phone device of your Quicknet card."
-msgstr ""
-
-#: src/toolbar.cpp:356
+#: src/sound_handling.cpp:416
+#, c-format
 msgid ""
-"Audio Transmission Status. During a call, click here to pause the audio "
-"transmission."
+"Impossible to open the selected audio device (%s) for playing. Please check "
+"your audio setup, the permissions and that the device is not busy."
 msgstr ""
-"音声送信状況。呼出中、音声送信を一時停止するためには、ここをクリックして下さ"
-"い。"
+"選択した音声のデバイス (%s) を再生用に開けません。音声の設定、権限とデバイス"
+"がビジーでないか確認して下さい。"
 
-#: src/toolbar.cpp:376
+#: src/sound_handling.cpp:428
+#, fuzzy
+msgid "Failed to open the audio device"
+msgstr "デバイスを開けませんでした"
+
+#: src/sound_handling.cpp:428
+#, c-format
 msgid ""
-"Video Transmission Status. During a call, click here to pause the video "
-"transmission."
+"Impossible to open the selected audio device (%s) for recording. Please "
+"check your audio setup, the permissions and that the device is not busy."
 msgstr ""
-"映像送信状況。呼出中、映像送信を一時停止するには、ここをクリックして下さい。"
+"選択した音声のデバイス (%s) を録音用に開けません。音声の設定、権限とデバイス"
+"がビジーでないか確認して下さい。"
 
-#: src/tools.cpp:102 src/tools.cpp:108
-#, fuzzy
-msgid "General History"
-msgstr "全般設定"
+#: src/sound_handling.cpp:447 src/sound_handling.cpp:456
+msgid "Cannot use the audio device"
+msgstr "音声デバイスを利用できません"
 
-#: src/tray.cpp:183
-msgid "Do Not Accept Calls"
+#: src/sound_handling.cpp:447
+#, c-format
+msgid ""
+"The selected audio device (%s) was successfully opened but it is impossible "
+"to read data from this device. Please check your audio setup."
 msgstr ""
+"選択した音声デバイス (%s) を開けましたが、このデバイスからデータを読み込めま"
+"せん。音声の設定をチェックして下さい。"
 
-#: src/tray.cpp:191
-msgid "Automatically Answer Calls"
+#: src/sound_handling.cpp:456
+#, c-format
+msgid ""
+"The selected audio device (%s) was successfully opened but it is impossible "
+"to write data to this device. Please check your audio setup."
 msgstr ""
+"選択した音声デバイス (%s) を開けましたが、このデバイスへ書き込めません。音声"
+"の設定をチェックして下さい。"
 
-#: src/tray.cpp:200
-#, fuzzy
-msgid "Show Main Window"
-msgstr "メインウィンドウ 表示/隠す"
-
-#: src/tray.cpp:200
-#, fuzzy
-msgid "Show The Main Window"
-msgstr "メインウィンドウ 表示/隠す"
-
-#: src/tray.cpp:277
-#, fuzzy
-msgid "GnomeMeeting Tray Icon"
-msgstr "GnomeMeeting GUI"
-
-#: src/urlhandler.cpp:128
-msgid "Searching for user"
-msgstr ""
-
-#: src/urlhandler.cpp:152 src/urlhandler.cpp:154
-msgid "Error while connecting to ILS directory"
-msgstr "ILS ディレクトリ接続中にエラー"
-
-#: src/urlhandler.cpp:224
+#: src/sound_handling.cpp:473
 #, fuzzy, c-format
+msgid ""
+"GnomeMeeting is now recording from %s and playing back to %s. Please say \"1 "
+"2 3\" in your microphone, you should hear yourself back into the speakers in "
+"5 seconds.\n"
+"\n"
+"Recording... Please talk."
+msgstr ""
+"今、GnomeMeeting は %s から録音して %s へ再生しています。お使いのマイクロフォ"
+"ンに \"いち、に、さん\" を話しかけて下さい。4 秒後にスピーカから録音した声が"
+"再生されます。"
+
+#: src/sound_handling.cpp:502
+msgid ""
+"GnomeMeeting is now playing what it is recording with a 5 seconds delay. If "
+"you don't hear yourself with the delay, you will have to fix your audio "
+"setup and probably install a full-duplex driver before calling other "
+"GnomeMeeting users.\n"
+"\n"
+"Recording and playing... Please talk."
+msgstr ""
+
+#: src/toolbar.cpp:178
+#, fuzzy
+msgid ""
+"Enter an URL to call on the left, and click on this button to connect to the "
+"given URL."
+msgstr ""
+"左側に呼び出す URL を入力し、このボタンをクリックして指定した URL へ接続して"
+"下さい"
+
+#: src/toolbar.cpp:225
+#, fuzzy
+msgid "Open text chat."
+msgstr "テキスト・チャットを開きます"
+
+#: src/toolbar.cpp:236
+msgid "Open control panel"
+msgstr "コントロール・パネルを開きます"
+
+#: src/toolbar.cpp:248
+msgid "Open address book"
+msgstr "アドレス帳を開きます"
+
+#: src/toolbar.cpp:278
+#, fuzzy
+msgid "Display images from your camera device."
+msgstr "カメラ・デバイスからの映像を表示します"
+
+#: src/toolbar.cpp:300
+msgid ""
+"Audio transmission status. During a call, click here to suspend or resume "
+"the audio transmission."
+msgstr ""
+"音声の発信状態です (呼び出し中に、ここをクリックすると音声の発信を一時停止し"
+"たり再開します)"
+
+#: src/toolbar.cpp:320
+msgid ""
+"Video transmission status. During a call, click here to suspend or resume "
+"the video transmission."
+msgstr ""
+"映像の発信状態です (呼び出し中に、ここをクリックすると映像の発信を一時停止し"
+"たり再開します)"
+
+#: src/tools.cpp:186
+#, fuzzy
+msgid "Received calls"
+msgstr "着信"
+
+#: src/tools.cpp:186
+#, fuzzy
+msgid "Given calls"
+msgstr "着信"
+
+#: src/tools.cpp:186
+#, fuzzy
+msgid "Unanswered calls"
+msgstr "未応答の着信"
+
+#: src/tools.cpp:231
+msgid "Date"
+msgstr "日付"
+
+#: src/tools.cpp:239
+#, fuzzy
+msgid "Remote user"
+msgstr "リモート・ユーザ"
+
+#: src/tools.cpp:258
+#, fuzzy
+msgid "Call duration"
+msgstr "通話時間"
+
+#: src/tools.cpp:269
+msgid "Software"
+msgstr "ソフトウェア"
+
+#: src/tray.cpp:190
+msgid "GnomeMeeting Tray Icon"
+msgstr "GnomeMeeting トレイ・アイコン"
+
+#: src/urlhandler.cpp:76
+msgid ""
+"The call transfer failed, the user was either unreachable, or simply busy "
+"when he received the call transfer request."
+msgstr ""
+"呼び出しに失敗しました。ユーザに到達しないか、あるいは単にあなたの呼び出し要"
+"求を受信するときにビジーなのかもしれません。"
+
+#: src/urlhandler.cpp:268
+#, c-format
+msgid "No contact with speed dial %s# found, will call number %s instead"
+msgstr ""
+"ショートカット %s# のコンタクトが見つかりません。代わりに呼び出し番号 %s を利"
+"用します"
+
+#: src/urlhandler.cpp:286
+msgid "Invalid URL handler"
+msgstr "URL ハンドラが正しくありません"
+
+#: src/urlhandler.cpp:286
+msgid ""
+"Please specify a valid URL handler. Currently both h323: and callto: are "
+"supported."
+msgstr ""
+"正しい URL ハンドラを指定して下さい。現在は h323: と callto: の両方をサポート"
+"しています。"
+
+#: src/urlhandler.cpp:314
+#, c-format
 msgid "Calling %s"
-msgstr "呼出 %d: %s 呼び出し中"
+msgstr "%s の呼び出し中です"
 
-#: src/videograbber.cpp:460 src/videograbber.cpp:461
+#: src/urlhandler.cpp:318
+#, c-format
+msgid "Transferring call to %s"
+msgstr "呼び出しを %s へ転送中です"
+
+#: src/videograbber.cpp:331 src/videograbber.cpp:332
+#, fuzzy
 msgid "Opening Video device"
-msgstr "ビデオデバイスを開く"
+msgstr "映像のデバイス"
 
-#: src/videograbber.cpp:509
+#: src/videograbber.cpp:396
 #, c-format
 msgid "Successfully opened video device %s, channel %d"
 msgstr "ビデオデバイス %s、チャンネル %d を開くことに成功しました"
 
-#: src/videograbber.cpp:512
+#: src/videograbber.cpp:399
+#, fuzzy
 msgid "Video Device Opened"
-msgstr "ビデオデバイスを開きました"
+msgstr "映像のデバイス"
 
-#: src/videograbber.cpp:525
+#: src/videograbber.cpp:412
 #, c-format
+msgid "Error while opening video device %s"
+msgstr "映像デバイス %s を開く際にエラー"
+
+#: src/videograbber.cpp:414
+#, fuzzy
 msgid ""
-"Error while opening video device %s, channel %d.\n"
 "The chosen Video Image will be transmitted during calls. If you didn't "
 "choose any image, then the default GnomeMeeting logo will be transmitted. "
 "Notice that you can always transmit a given image or the GnomeMeeting logo "
 "by choosing \"Picture\" as video device."
 msgstr ""
+"A moving GnomeMeeting logo will be transmitted during calls. Notice that you "
+"can always transmit a given image or the moving GnomeMeeting logo by "
+"choosing \"Picture\" as video plugin and \"MovingLogo\" or \"StaticPicture\" "
+"as device."
 
-#: src/videograbber.cpp:526
+#: src/videograbber.cpp:415
+#, fuzzy
 msgid "Can't open the Video Device"
-msgstr "ビデオデバイスをオープンできません"
+msgstr "映像デバイスを開けませんでした"
 
-#: src/videograbber.cpp:531
-msgid "Error while opening the device."
-msgstr "デバイスを開いている際にエラー。"
+#: src/videograbber.cpp:420
+msgid ""
+"There was an error while opening the device. Please check your permissions "
+"and make sure that the appropriate driver is loaded."
+msgstr ""
+"デバイスを開く際にエラーが発生しました。権限と正しいドライバが読み込まれてい"
+"るか確認して下さい。"
 
-#: src/videograbber.cpp:536
+#: src/videograbber.cpp:425 src/videograbber.cpp:727
 msgid "Your video driver doesn't support the requested video format."
 msgstr ""
 "あなたのビデオドライバは、要求されたビデオフォーマットをサポートしていませ"
 "ん。"
 
-#: src/videograbber.cpp:540
-#, fuzzy
+#: src/videograbber.cpp:429 src/videograbber.cpp:731
 msgid "Could not open the chosen channel with the chosen video format."
-msgstr "選択されたチャンネルを開けませんでした。"
+msgstr "選択したチャンネルを選択した映像フォーマットで開けませんでした。"
 
-#: src/videograbber.cpp:544
-#, c-format
+#: src/videograbber.cpp:433
+#, fuzzy
 msgid ""
-"Your driver doesn't support the %s format.\n"
+"Your driver doesn't seem to support any of the colour formats supported by "
+"GnomeMeeting.\n"
 " Please check your kernel driver documentation in order to determine which "
 "Palette is supported. Set it as GnomeMeeting default with:\n"
 " gconftool --set \"/apps/gnomemeeting/devices/color_format\" YOURPALETTE --"
 "type string"
 msgstr ""
-"あなたのドライバは、%s 形式をサポートしていません。\n"
-"どのパレットがサポートされているかを知るには、カーネルドライバのドキュメント"
-"を確認して下さい。GnomeMeeting としてのデフォルト設定:\n"
-" gconftool --set \"/apps/gnomemeeting/devices/color_format\" YOURPALETTE --"
-"type string"
+"お使いのドライバは、GnomeMeeting が利用する色の形式をサポートしていないようで"
+"す。\n"
+"どのパレットがサポートされているか確認するには、Kernel ドライバのドキュメント"
+"で確認下さい。"
 
-#: src/videograbber.cpp:548
-msgid "Error with the frame rate."
-msgstr "フレームレートでエラー。"
+#: src/videograbber.cpp:437
+msgid "Error while setting the frame rate."
+msgstr "フレーム・レートを設定する際にエラー"
 
-#: src/videograbber.cpp:552
-msgid "Error with the frame size."
-msgstr "フレームサイズでエラー。"
+#: src/videograbber.cpp:441
+msgid "Error while setting the frame size."
+msgstr "フレーム・サイズを設定する際にエラー"
 
-#: src/videograbber.cpp:680
+#: src/videograbber.cpp:574
 #, fuzzy
 msgid "Video Device Closed"
-msgstr "ビデオデバイスを開きました"
+msgstr "映像のデバイス"
 
-#~ msgid "Miguel Rodriguez Perez <migrax@terra.es>"
-#~ msgstr "Miguel Rodriguez Perez <migrax@terra.es>"
+#: src/videograbber.cpp:706
+#, c-format
+msgid "Test %d done"
+msgstr "%d 個のテストが完了"
 
-#~ msgid "I18n Maintainer:"
-#~ msgstr "I18n メンテナンス者:"
+#: src/videograbber.cpp:723
+#, c-format
+msgid "Error while opening %s."
+msgstr "%s を開く際にエラー"
 
-#~ msgid "Damien Sandras <dsandras@seconix.com>"
-#~ msgstr "Damien Sandras <dsandras@seconix.com>"
+#: src/videograbber.cpp:735
+#, fuzzy
+msgid "Your driver doesn't support the YUV420P color format"
+msgstr ""
+"あなたのビデオドライバは、要求されたビデオフォーマットをサポートしていませ"
+"ん。"
 
-#~ msgid "Copyright (C) 2000, 2001, 2002 Damien Sandras"
-#~ msgstr "Copyright (C) 2000, 2001, 2002 Damien Sandras"
+#: src/videograbber.cpp:739
+msgid "Error with the frame rate."
+msgstr "フレーム・レートでエラー"
 
-#~ msgid "Removed Current Gatekeeper"
-#~ msgstr "カレントゲートキーパーを消去"
+#: src/videograbber.cpp:743
+msgid "Error with the frame size."
+msgstr "フレーム・サイズでエラー"
 
-#~ msgid "This setting change will only apply to the next call."
-#~ msgstr "この設定変更は、次回の呼び出しから反映されます。"
+#: src/videograbber.cpp:748
+msgid "Tests OK!"
+msgstr ""
+
+#~ msgid "Address of public IP detector"
+#~ msgstr "パブリック IP デテクタのアドレス"
+
+#~ msgid "Audio input device"
+#~ msgstr "音声入力デバイス"
+
+#~ msgid "Audio output device"
+#~ msgstr "音声出力デバイス"
 
 #~ msgid ""
-#~ "The new video quality hint for the received video stream will only apply "
-#~ "to the next call."
+#~ "Automatically reject or forward incoming calls if no answer is given "
+#~ "after the specified amount of time (in seconds)"
 #~ msgstr ""
-#~ "新しいビデオ品質のヒントは、受信されたビデオストリームのために、次の呼び出"
-#~ "しにのみ影響します。"
+#~ "指定した時間 (秒) が経過した後まで応答がない場合、自動的に着信拒否または転"
+#~ "送を行います。"
 
-#~ msgid "This change will only affect new calls."
-#~ msgstr "この変更は、新規呼び出しにのみ影響します。"
-
-#~ msgid "%s doesn't seem to be a valid mixer, please fix this!"
-#~ msgstr "%s は、有効なミキサーではありません、修正して下さい！"
+#~ msgid "Clear inactive calls"
+#~ msgstr "アクティブではない会話をクリアする"
 
 #~ msgid ""
-#~ "Preview can't be changed during calls. Changes will take effect after "
-#~ "this call."
+#~ "Connection will be established in Fast Start mode. Fast Start is a new "
+#~ "way to start calls faster that was introduced in H.323v2. It is not "
+#~ "supported by Netmeeting and using both Fast Start and H.245 Tunnelling "
+#~ "can crash some versions of Netmeeting"
 #~ msgstr ""
-#~ "プレビューは、呼び出し中のため変更できません。呼び出し終了後に、効果が現れ"
-#~ "るでしょう。"
+#~ "高速起動モードで接続を確立します。高速起動モードは会話を素早く開始する新し"
+#~ "い手法の一つで、H.323v2 で規格化されています。Netmeeting ではサポートされ"
+#~ "ておらず、高速起動と H.245 トンネリングの併用はいくつかの Netmeeting の"
+#~ "バージョンでクラッシュします。"
+
+#~ msgid "DTMF sending"
+#~ msgstr "DTMF 送信"
+
+#~ msgid "Enable IP checking"
+#~ msgstr "IP チェックを有効にする"
+
+#~ msgid "Enable early H.245"
+#~ msgstr "H.245 (初期) を有効にする"
 
 #~ msgid ""
-#~ "Video transmission can't be changed during calls. Changes will take "
-#~ "effect after this call."
+#~ "Enter a valid URL to connect to a web application that outputs the public "
+#~ "IP of your host"
 #~ msgstr ""
-#~ "映像送信は、呼び出し中のため変更できません。呼び出し終了後に、効果が現れる"
-#~ "でしょう。"
-
-#~ msgid "Not Registering: Please provide your first name!"
-#~ msgstr "登録しません : あなたの名前を入力して下さい！"
-
-#~ msgid "Not Registering: Please provide a valid e-mail!"
-#~ msgstr "登録しません : 有効な電子メールアドレスを入力して下さい！"
-
-#~ msgid "Incoming call"
-#~ msgstr "着信"
-
-#~ msgid "Remote party did not answer your call"
-#~ msgstr "先方は、あなたの呼び出しに答えませんでした"
-
-#~ msgid "Connecting to ILS directory %s, port %s"
-#~ msgstr "ILS ディレクトリ %s、ポート %s へ接続中"
-
-#~ msgid "Error while connecting to ILS directory %s, port %s"
-#~ msgstr "ILS ディレクトリ %s、ポート %s へ接続中にエラー"
+#~ "お使いのホストのパブリック IP を出力するウェブ・アプリケーションに接続する"
+#~ "ための URL を正しく入力します。"
 
 #~ msgid ""
-#~ "Error while connecting to ILS directory %s, port %s:\n"
-#~ "No answer from server."
+#~ "Enter the public IP of your NAT/PAT router if you want to use IP "
+#~ "translation. If you are registered to ils.seconix.com, GnomeMeeting will "
+#~ "automatically fetch the public IP using the ILS service"
 #~ msgstr ""
-#~ "ILS ディレクトリ %s、ポート %s へ接続中にエラー:\n"
-#~ "サーバから応答がありません。"
+#~ "IP 転送を行う際に、お使いの NAT/PAT ルータのパブリック IP を入力しま"
+#~ "す。'ils.seconix.com' に登録している場合、GnomeMeeting は ILS サービスを"
+#~ "使ってパブリック IP と自動的に同期します。"
 
-#~ msgid "Sucessfully registered to ILS directory %s, port %s"
-#~ msgstr "ILS ディレクトリ %s、ポート %s への登録に成功しました"
+#~ msgid "Gatekeeper alias as primary alias"
+#~ msgstr "ゲートキーパの別名 (プライマリ)"
 
-#~ msgid "Sucessfully unregistered from ILS directory %s, port %s"
-#~ msgstr "ILS ディレクトリ %s、ポート %s への登録に成功しました"
+#~ msgid "Gateway/proxy host"
+#~ msgstr "ゲートウェイ/プロキシのホスト名"
 
-#~ msgid "Please provide an ILS directory in the window"
-#~ msgstr "設定には ILS ディレクトリに入力して下さい"
-
-#~ msgid "Connecting to ILS directory... Please Wait."
-#~ msgstr "ILS ディレクトリ接続中... 暫くお待ち下さい。"
-
-#~ msgid "Search completed!"
-#~ msgstr "検索完了！"
-
-#~ msgid "ILS directories to browse"
-#~ msgstr "ILS ディレクトリ表示"
-
-#~ msgid "ILS directory:"
-#~ msgstr "ILS ディレクトリ:"
-
-#~ msgid "Refresh"
-#~ msgstr "更新"
-
-#~ msgid "e-mail"
-#~ msgstr "電子メール"
-
-#~ msgid "location"
-#~ msgstr "所在地"
-
-#~ msgid "Apply filter on"
-#~ msgstr "フィルター適用"
-
-#~ msgid "Search Filter"
-#~ msgstr "検索フィルター"
-
-#~ msgid "Last name"
-#~ msgstr "姓名"
+#~ msgid "If enabled, allows video to be received during a call"
+#~ msgstr "TRUE にすると、着信中は映像を受信できます。"
 
 #~ msgid ""
-#~ "Please check your gconf settings and permissions, it seems that gconf is "
-#~ "not properly setup on your system"
+#~ "If enabled, calls for which no audio and video has been received in the "
+#~ "last 30 seconds are automatically cleared"
 #~ msgstr ""
-#~ "あなたの gconf 設定とパーミッションを確認して下さい、gconf の設定が適切に"
-#~ "されていないように見えます"
+#~ "TRUE にすると、最後の 30秒間に受信していない音声と映像の着信は自動的にクリ"
+#~ "アされます。"
 
-#~ msgid "History Log"
-#~ msgstr "過去ログ"
-
-#~ msgid "_History"
-#~ msgstr "履歴(_H)"
-
-#~ msgid "Control _Panel"
-#~ msgstr "制御パネル(_P)"
-
-#~ msgid "_Chat Window"
-#~ msgstr "チャットウィンドウ(_C)"
-
-#~ msgid "_Docklet"
-#~ msgstr "Docklet(_D)"
-
-#~ msgid "_Settings"
-#~ msgstr "設定(_S)"
-
-#~ msgid "_About"
-#~ msgstr "GnomeMeeting について(_A)"
-
-#~ msgid "1:2"
-#~ msgstr "1:2"
-
-#~ msgid "Zoom 1/2x"
-#~ msgstr "ズーム 1/2x"
-
-#~ msgid "1:1"
-#~ msgstr "1:1"
-
-#~ msgid "2:1"
-#~ msgstr "2:1"
-
-#~ msgid "Local"
-#~ msgstr "ローカル"
-
-#~ msgid "Remote"
-#~ msgstr "リモート"
-
-#~ msgid "Both"
-#~ msgstr "双方"
-
-#~ msgid "Call This User"
-#~ msgstr "このユーザを呼び出します"
-
-#~ msgid "Call the selected user"
-#~ msgstr "選択したユーザを呼び出します"
-
-#~ msgid ""
-#~ "Error: %s \n"
-#~ "You can choose to ignore and continue, or to close GnomeMeeting."
+#~ msgid "If enabled, use silence detection with the GSM and G.711 codecs"
 #~ msgstr ""
-#~ "エラー: %s \n"
-#~ "無視か継続を選択するか、GnomeMeeting を閉じて下さい。"
+#~ "TRUE にすると、GSM と G.711 コーデックを使って、サイレンス検出を行います"
 
-#~ msgid "Continue"
-#~ msgstr "継続"
-
-#~ msgid "GnomeMeeting Preferences"
-#~ msgstr "GnomeMeeting 設定"
-
-#~ msgid "Device Settings"
-#~ msgstr "デバイス設定"
-
-#~ msgid "Codecs Settings"
-#~ msgstr "コーデック設定"
+#~ msgid "If enabled, video is transmitted during a call"
+#~ msgstr "TRUE にすると、着信時に映像を発信します。"
 
 #~ msgid ""
-#~ "Use this button to add the selected codec to the available codecs list"
+#~ "If enabled, your details are shown to people browsing the user directory. "
+#~ "If disabled, you are not visible to users browsing the user directory, "
+#~ "but they can still use the callto URL to call you"
 #~ msgstr ""
-#~ "利用可能なコーデックリストにコーデックに追加するためには、このボタンを使用"
-#~ "します"
+#~ "TRUE にすると、ユーザ・ディレクトリを参照してあなたの詳細な情報が他の人た"
+#~ "ちに公開されます。FALSE にすると、ユーザ・ディレクトリを他の人たちに公開し"
+#~ "ませんが、あなたを呼び出すために 'callto URL' は使用できます。"
+
+#~ msgid "Incoming call mode"
+#~ msgstr "着信モード"
+
+#~ msgid "Missed calls history"
+#~ msgstr "不在履歴"
+
+#~ msgid "No answer timeout"
+#~ msgstr "\"応答なし\" までのタイムアウト"
+
+#~ msgid "Output device type"
+#~ msgstr "出力デバイスの種類"
+
+#~ msgid "Place windows displaying video above other windows during calls"
+#~ msgstr ""
+#~ "着信中は他のウィンドウの上にビデオを表示するウィンドウを配置します。"
+
+#~ msgid "Placed calls history"
+#~ msgstr "発信履歴"
+
+#~ msgid "Play busy tone"
+#~ msgstr "ビジー・トーンを演奏する"
+
+#~ msgid "Position of the local video window"
+#~ msgstr "ローカルのビデオ・ウィンドウに位置"
+
+#~ msgid "Position on the screen of the PC-To-Phone window"
+#~ msgstr "\"PC -> Phone\" ウィンドウの画面上での位置"
+
+#~ msgid "Position on the screen of the address book window"
+#~ msgstr "アドレス帳ウィンドウの画面上での位置"
+
+#~ msgid "Position on the screen of the calls history window"
+#~ msgstr "履歴ウィンドウの画面上での位置"
+
+#~ msgid "Position on the screen of the druid window"
+#~ msgstr "ドルイド・ウィンドウの画面上での位置"
+
+#~ msgid "Position on the screen of the log window"
+#~ msgstr "ログ・ウィンドウの画面上での位置"
+
+#~ msgid "Position on the screen of the main window"
+#~ msgstr "メイン・ウィンドウの画面上での位置"
+
+#~ msgid "Position on the screen of the preferences window"
+#~ msgstr "設定ウィンドウの画面上での位置"
+
+#~ msgid "Received calls history"
+#~ msgstr "着信履歴"
+
+#~ msgid "Remote video window position"
+#~ msgstr "リモートのビデオ・ウィンドウの位置"
 
 #~ msgid ""
-#~ "Use this button to remove the selected codec from the available codecs "
+#~ "Select the video input device to use. If an error occurs when using this "
+#~ "device a test picture will be transmitted."
+#~ msgstr ""
+#~ "使用するビデオ入力デバイスを選択します (このデバイスを使用する際にエラーが"
+#~ "発生した場合は、テスト用の画像が発信されます)"
+
+#~ msgid "Show splash screen at startup"
+#~ msgstr "起動時にスプラッシュ・スクリーンを表示する"
+
+#~ msgid "Size of the PC-To-Phone window"
+#~ msgstr "PC-To-Phone ウィンドウのサイズ"
+
+#~ msgid "Size of the address book window"
+#~ msgstr "アドレス帳ウィンドウのサイズ"
+
+#~ msgid "Size of the calls history window"
+#~ msgstr "着信履歴ウィンドウのサイズ"
+
+#~ msgid "Size of the druid window"
+#~ msgstr "ドルイド・ウィンドウのサイズ"
+
+#~ msgid "Size of the log window"
+#~ msgstr "ログ記録ウィンドウのサイズ"
+
+#~ msgid "Size of the preferences window"
+#~ msgstr "設定ウィンドウのサイズ"
+
+#~ msgid ""
+#~ "The Gateway host is the host to use to do H.323 calls through a gateway "
+#~ "that will relay calls"
+#~ msgstr ""
+#~ "リレー呼び出しを行うゲートウェイを介して H.323 呼び出しを行うために使用す"
+#~ "る (ゲートウェイの) ホスト名です"
+
+#~ msgid ""
+#~ "The audio plugin that will be used to detect the devices and manage them"
+#~ msgstr "デバイスの検出と管理に使用する音声プラグインです"
+
+#~ msgid "The busy tone sound"
+#~ msgstr "ビジー・トーンのサウンド"
+
+#~ msgid ""
+#~ "The chosen sound will be played at the end of calls or calling somebody "
+#~ "who is busy, if enabled"
+#~ msgstr ""
+#~ "(可能ならば) 呼び出し後、またはビジーな人を呼び出す時に選択したサウンドを"
+#~ "演奏します。"
+
+#~ msgid "The chosen sound will be played on incoming calls, if enabled"
+#~ msgstr "(可能ならば) 着信時に選択したサウンドを演奏します。"
+
+#~ msgid "The chosen sound will be played when calling somebody, if enabled"
+#~ msgstr "(可能ならば) 誰かを呼び出す時に選択したサウンドを演奏します。"
+
+#~ msgid "The history of the last 100 missed calls"
+#~ msgstr "最近の不在履歴 (100回分) です。"
+
+#~ msgid "The history of the last 100 placed calls"
+#~ msgstr "最近の発信履歴 (100回分) です。"
+
+#~ msgid "The history of the last 100 received calls"
+#~ msgstr "最近の受信履歴 (100回分) です。"
+
+#~ msgid "The image height for fullscreen"
+#~ msgstr "フルスクリーン時の映像の高さ"
+
+#~ msgid "The image width for fullscreen"
+#~ msgstr "フルスクリーン時の映像の幅"
+
+#~ msgid "The incoming call sound"
+#~ msgstr "着信時のサウンド"
+
+#~ msgid "The maximum jitter buffer size for audio reception (in ms)"
+#~ msgstr "音声の受信に必要な最大 Jitter バッファのサイズ (ミリ秒)"
+
+#~ msgid ""
+#~ "The maximum video bandwidth in kbytes/s. The video quality and the number "
+#~ "of transmitted frames per second will be dynamically adjusted above their "
+#~ "minimum during calls to try to minimize the bandwidth to the given value"
+#~ msgstr ""
+#~ "映像の最大帯域 (Kバイト/秒) です。映像の品質と１秒間に発信するフレーム数"
+#~ "は、指定した値に対する帯域を最小限にして呼び出しを試みる間、最小帯域を動的"
+#~ "に調整されます。"
+
+#~ msgid "The minimum jitter buffer size for audio reception (in ms)"
+#~ msgstr "音声の受信に必要な最小 Jitter バッファのサイズ (ミリ秒)"
+
+#~ msgid ""
+#~ "The output device type is the type of device connected to your Quicknet "
+#~ "card. It can be either a POTS (Plain Old Telephone System) or a headset."
+#~ msgstr ""
+#~ "出力デバイスの種類はお使いの Quickcard へ接続するデバイスの種類になり、"
+#~ "POTS (Plain Old Telephon System) または ヘッドセットのどちらかになります"
+
+#~ msgid "The position of the local video window"
+#~ msgstr "ローカルのビデオ・ウィンドウの位置"
+
+#~ msgid "The position of the remote video window"
+#~ msgstr "リモートのビデオ・ウィンドウに位置"
+
+#~ msgid "The ring tone sound"
+#~ msgstr "着信時のサウンド"
+
+#~ msgid ""
+#~ "The sound that will be played at the end of calls or when calling "
+#~ "somebody who is busy, if enabled"
+#~ msgstr ""
+#~ "(可能ならば) 呼び出し後、またはビジーな人を呼び出す時に選択したサウンドを"
+#~ "演奏します。"
+
+#~ msgid "The sound that will be played on incoming calls, if enabled"
+#~ msgstr "(可能ならば) 着信時に演奏するサウンドです。"
+
+#~ msgid "The sound that will be played when calling somebody, if enabled"
+#~ msgstr "(可能ならば) 発信時に演奏するサウンドです。"
+
+#~ msgid ""
+#~ "The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)"
+#~ msgstr "あなたの国を示す二文字のコードです (例: JP, BE, UK, FR, DE, ...)"
+
+#~ msgid ""
+#~ "The video plugin that will be used to detect the devices and manage them"
+#~ msgstr "デバイスの検出と管理に使用する音声プラグインです"
+
+#~ msgid ""
+#~ "The way to react to incoming calls: 0 displays a popup, 1 automatically "
+#~ "answers the call, 2 automatically rejects the call and 3 forwards the "
+#~ "call to the given URL, if any"
+#~ msgstr ""
+#~ "着信に応答する方法 (0: ポップアップ表示、1: 自動応答、2: 自動応答拒否、3: "
+#~ "指定した URL へ転送) です。"
+
+#~ msgid "This enables H.245 early in the setup"
+#~ msgstr "H.245 トンネリングを有効にします"
+
+#~ msgid ""
+#~ "This enables IP checking from seconix.com and fills the IP in the public "
+#~ "IP of the NAT/PAT gateway field of GnomeMeeting. The returned IP is only "
+#~ "used when IP Translation is enabled. If you disable IP checking, you will "
+#~ "have to manually enter the IP of your gateway in the GnomeMeeting "
+#~ "preferences"
+#~ msgstr ""
+#~ "これは seconix.com による IP チェックを有効にし、GnomeMeeting の NAT/PAT "
+#~ "ゲートウェイの欄にパブリック IP を代入します。返された IP は、IP 転送が有"
+#~ "効な場合にのみ利用されます。IP チェックが無効な場合、GnomeMeeting の設定ダ"
+#~ "イアログで、マニュアルで IP を入力して下さい。"
+
+#~ msgid ""
+#~ "This enables IP translation. IP translation is useful if GnomeMeeting is "
+#~ "running behind a NAT/PAT router. You have to put the public IP of the "
+#~ "router in the field below. If you are registered to ils.seconix.com, "
+#~ "GnomeMeeting will automatically fetch the public IP using the ILS "
+#~ "service. If your router natively supports H.323, you can disable this"
+#~ msgstr ""
+#~ "IP 転送を有効にします。IP 転送は、GnomeMeeting が NAT/PAT の後方で起動して"
+#~ "いる場合に便利です。下の欄にルータのパブリック IP を入力して下さい。'ils."
+#~ "seconix.com' に登録している場合、GnomeMeeting は ILS サービスを使ってパブ"
+#~ "リック IP と自動的に同期します。お使いのルータが標準で H.323 をサポートし"
+#~ "ている場合は、これを無効にすることができます。"
+
+#~ msgid "Use the gateway"
+#~ msgstr "ゲートウェイを利用する"
+
+#~ msgid "Use the specified gateway to do calls"
+#~ msgstr "呼び出す際に指定したゲートウェイを利用します。"
+
+#~ msgid ""
+#~ "Use this option to ensure the above alias is used as the primary alias "
+#~ "when registering with a gatekeeper. This may be required if your "
+#~ "gatekeeper can only perform authentication using the first alias in the "
 #~ "list"
 #~ msgstr ""
-#~ "利用可能なコーデックリストから削除するためには、このボタンを使用します"
+#~ "ゲートキーパを介して登録する際に、上のエイリアスをプライマリ・エイリアスと"
+#~ "して利用することが確実な場合に、このオプションを使用して下さい。お使いの"
+#~ "ゲートキーパがリストの中の先頭にあるエイリアスのみを使って認証を行うことが"
+#~ "可能な場合に必要になるかもしれません。"
 
-#~ msgid "Up"
-#~ msgstr "上"
+#~ msgid "Video input device"
+#~ msgstr "ビデオ入力デバイス"
 
-#~ msgid ""
-#~ "Use this button to move down the selected codec in the preference order"
-#~ msgstr ""
-#~ "選択されたコーデックの設定順を上に移動するために、このボタンを使用します"
+#~ msgid "Video plugin"
+#~ msgstr "ビデオのプラグイン"
 
-#~ msgid "Down"
-#~ msgstr "下"
+#~ msgid "Transfer call to:"
+#~ msgstr "転送先:"
 
-#~ msgid ""
-#~ "Use this button to move up the selected codec in the preference order"
-#~ msgstr ""
-#~ "選択されたコーデックの設定順を下に移動するために、このボタンを使用します"
-
-#~ msgid "If enabled, the chat window will be displayed at startup time"
-#~ msgstr "チェックすると、起動時にチャットウィンドウが表示されます"
-
-#~ msgid "Show Control Panel"
-#~ msgstr "制御パネル表示"
-
-#~ msgid "If enabled, the control panel is displayed"
-#~ msgstr "チェックすると、制御パネルが表示されます"
-
-#~ msgid "If enabled, the statusbar is displayed"
-#~ msgstr "チェックすると、ステータスバーが表示されます"
-
-#~ msgid "If enabled, there is support for a docklet in the Gnome or KDE panel"
-#~ msgstr "チェックすると、GnomeまたはKDEパネルでDockletがサポートされます"
-
-#~ msgid "This enables H.245 Tunnelling mode"
-#~ msgstr "これは、H.245 トンネリングモードを有効にします"
-
-#~ msgid "Silence Detection"
-#~ msgstr "サイレンス検出"
-
-#~ msgid "GSM Codec Settings"
-#~ msgstr "GSMコーデック設定"
-
-#~ msgid "G.711 Codec Settings"
-#~ msgstr "G.711コーデック設定"
-
-#~ msgid "Video Codecs Settings"
-#~ msgstr "ビデオコーデック設定"
-
-#~ msgid "Limit the video transmission to"
-#~ msgstr "映像転送制限"
+#~ msgid "Transfer"
+#~ msgstr "転送"
 
 #~ msgid ""
-#~ "Here you can set a limit to the number of frames that will be transmitted "
-#~ "each second. This limit is set on the Video Grabber."
+#~ "GnomeMeeting is full-featured H.323 compatible videoconferencing, VoIP "
+#~ "and IP-Telephony application that allows you to make audio and video "
+#~ "calls to remote users with H.323 hardware or software."
 #~ msgstr ""
-#~ "ここで、毎秒送信されるフレーム数の上限を設定することができます。この上限"
-#~ "は、ビデオ Grabberで設定されます。"
+#~ "GnomeMeeting は H.323 完全互換のビデオ会議、VoIP、そして IP-Telephony アプ"
+#~ "リケーションで、H.323 ハードウェアまたはソフトウェアを使って音声と映像でリ"
+#~ "モート・ユーザと会話することができます。"
 
-#~ msgid "Here you can choose to enable or disable video transmission"
-#~ msgstr "ここで、映像の転送について有効または無効の選択ができます"
+#~ msgid "Open URI"
+#~ msgstr "URI を開く"
 
-#~ msgid "%"
-#~ msgstr "%"
+#~ msgid "Copy Link Location"
+#~ msgstr "リンク先のアドレスのコピー"
 
-#~ msgid "Limit the bandwidth to"
-#~ msgstr "帯域幅制限"
+#~ msgid "Connect to"
+#~ msgstr "接続"
 
-#~ msgid "kb/s"
-#~ msgstr "kバイト/秒"
+#~ msgid "Add to Address Book"
+#~ msgstr "アドレス帳へ追加"
+
+#~ msgid "Copy Equation"
+#~ msgstr "Equation のコピー"
 
 #~ msgid ""
-#~ "Here you can choose the maximum bandwidth that can be used by the H.261 "
-#~ "video codec (in kbytes/s)"
+#~ "iLBC-13k3 (internet Low Bitrate Codec) is a free speech codec suitable "
+#~ "for robust voice communication over IP. The codec is designed for narrow "
+#~ "band speech and results in a payload bit rate of 13.33 kbit/s with an "
+#~ "encoding frame length of 30 ms. The iLBC codec enables graceful speech "
+#~ "quality degradation in the case of lost frames, which occurs in "
+#~ "connection with lost or delayed IP packets."
 #~ msgstr ""
-#~ "ここで、H.261ビデオコーデック(kbytes/秒の)により使用することができる、最大"
-#~ "帯域幅を選択することができます。"
+#~ "iLBC-13k3 (internet Low Bitrate Codec) is a free speech codec suitable "
+#~ "for robust voice communication over IP. The codec is designed for narrow "
+#~ "band speech and results in a payload bit rate of 13.33 kbit/s with an "
+#~ "encoding frame length of 30 ms. The iLBC codec enables graceful speech "
+#~ "quality degradation in the case of lost frames, which occurs in "
+#~ "connection with lost or delayed IP packets."
 
-#~ msgid "Here you can choose to enable or disable video bandwidth limitation"
-#~ msgstr "ここで、映像帯域幅制限の有効または無効を選択することできます"
-
-#~ msgid "GnomeMeeting General Data"
-#~ msgstr "GnomeMeeting 全般なデータ"
-
-#~ msgid "Update"
-#~ msgstr "更新"
-
-#~ msgid "User Settings"
-#~ msgstr "ユーザ設定"
-
-#~ msgid "Directories Settings"
-#~ msgstr "ディレクトリ設定"
-
-#~ msgid "ILS Directory:"
-#~ msgstr "ILS ディレクトリ:"
-
-#~ msgid "H.323 Gatekeeper Settings"
-#~ msgstr "H.323 ゲートキーパー設定"
-
-#~ msgid "The Gatekeeper identifier."
-#~ msgstr "ゲートキーパー識別子。"
+#~ msgid "13.33 Kbps"
+#~ msgstr "13.33 Kバイト/秒"
 
 #~ msgid ""
-#~ "The maximum bandwidth that should be used for the communication. This "
-#~ "bandwidth limitation will be transmitted to the gatekeeper."
+#~ "iLBC-15k2 (internet Low Bitrate Codec) is a free speech codec suitable "
+#~ "for robust voice communication over IP. The codec is designed for narrow "
+#~ "band speech and results in a payload bitrate of 15.20 kbps with an "
+#~ "encoding length of 20 ms. The iLBC codec enables graceful speech quality "
+#~ "degradation in the case of lost frames, which occurs in connection with "
+#~ "lost or delayed IP packets."
 #~ msgstr ""
-#~ "通信のために使用される最大帯域幅。この帯域幅制限は、ゲートキーパーに送信さ"
-#~ "れます。"
+#~ "iLBC-15k2 (internet Low Bitrate Codec) is a free speech codec suitable "
+#~ "for robust voice communication over IP. The codec is designed for narrow "
+#~ "band speech and results in a payload bitrate of 15.20 kbps with an "
+#~ "encoding length of 20 ms. The iLBC codec enables graceful speech quality "
+#~ "degradation in the case of lost frames, which occurs in connection with "
+#~ "lost or delayed IP packets."
+
+#~ msgid "15.2 Kbps"
+#~ msgstr "15.2 Kバイト/秒"
 
 #~ msgid ""
-#~ "Click here to try your new settings and update the gatekeeper server you "
-#~ "are registered to"
+#~ "Speex is an Open Source/Free Software patent-free audio compression "
+#~ "format designed for speech. The Speex Project aims to lower the barrier "
+#~ "of entry for voice applications by providing a free alternative to "
+#~ "expensive proprietary speech codecs. Moreover, Speex is well-adapted to "
+#~ "Internet applications and provides useful features that are not present "
+#~ "in most other codecs. Finally, Speex is part of the GNU Project and is "
+#~ "available under the Xiph.org variant of the BSD license. SpeexNarrow-15k "
+#~ "is based on CELP and is designed to compress voice at a payload bitrate "
+#~ "of 15 kbps."
 #~ msgstr ""
-#~ "登録している ゲートキーパーサーバに、新しい設定および更新を反映するために"
-#~ "は、ここをクリックして下さい"
+#~ "Speex is an Open Source/Free Software patent-free audio compression "
+#~ "format designed for speech. The Speex Project aims to lower the barrier "
+#~ "of entry for voice applications by providing a free alternative to "
+#~ "expensive proprietary speech codecs. Moreover, Speex is well-adapted to "
+#~ "Internet applications and provides useful features that are not present "
+#~ "in most other codecs. Finally, Speex is part of the GNU Project and is "
+#~ "available under the Xiph.org variant of the BSD license. SpeexNarrow-15k "
+#~ "is based on CELP and is designed to compress voice at a payload bitrate "
+#~ "of 15 kbps."
 
-#~ msgid "ILS Settings"
-#~ msgstr "ILS設定"
-
-#~ msgid "Enter the video device to use"
-#~ msgstr "使用するビデオデバイスを入力"
-
-#~ msgid "Here you can choose the transmitted video size"
-#~ msgstr "ここで、送信する画面サイズを選択することが可能です"
+#~ msgid "15 Kbps"
+#~ msgstr "15 Kバイト/秒"
 
 #~ msgid ""
-#~ "Error while opening video device %s, channel %d.\n"
-#~ "A test image will be transmitted."
+#~ "Speex is an Open Source/Free Software patent-free audio compression "
+#~ "format designed for speech. The Speex Project aims to lower the barrier "
+#~ "of entry for voice applications by providing a free alternative to "
+#~ "expensive proprietary speech codecs. Moreover, Speex is well-adapted to "
+#~ "Internet applications and provides useful features that are not present "
+#~ "in most other codecs. Finally, Speex is part of the GNU Project and is "
+#~ "available under the Xiph.org variant of the BSD license. SpeexNarrow-8k "
+#~ "is based on CELP and is designed to compress voice at a payload bitrate "
+#~ "of 8 kbps."
 #~ msgstr ""
-#~ "ビデオデバイス %s、チャンネル %d を開いている際にエラー。\n"
-#~ "テストパターンが送信されます。"
+#~ "Speex is an Open Source/Free Software patent-free audio compression "
+#~ "format designed for speech. The Speex Project aims to lower the barrier "
+#~ "of entry for voice applications by providing a free alternative to "
+#~ "expensive proprietary speech codecs. Moreover, Speex is well-adapted to "
+#~ "Internet applications and provides useful features that are not present "
+#~ "in most other codecs. Finally, Speex is part of the GNU Project and is "
+#~ "available under the Xiph.org variant of the BSD license. SpeexNarrow-8k "
+#~ "is based on CELP and is designed to compress voice at a payload bitrate "
+#~ "of 8 kbps."
+
+#~ msgid "Good"
+#~ msgstr "良好"
+
+#~ msgid "8 Kbps"
+#~ msgstr "8 Kバイト/秒"
+
+#~ msgid ""
+#~ "MS-GSM is the Microsoft version of GSM 06.10. GSM 06.10 is a standardized "
+#~ "lossy speech compression employed by most European wireless telephones. "
+#~ "It uses RPE/LTP (residual pulse excitation/long term prediction) coding "
+#~ "to compress frames of 160 13-bit samples with a frame rate of 50 Hz into "
+#~ "260 bits.  Microsoft's GSM 06.10 codec is not compatible with the "
+#~ "standard frame format, they use 65-byte-frames (2 x 32 1/2) rather than "
+#~ "rounding to 33, and they number the bits in their bytes from the other "
+#~ "end."
+#~ msgstr ""
+#~ "MS-GSM is the Microsoft version of GSM 06.10. GSM 06.10 is a standardized "
+#~ "lossy speech compression employed by most European wireless telephones. "
+#~ "It uses RPE/LTP (residual pulse excitation/long term prediction) coding "
+#~ "to compress frames of 160 13-bit samples with a frame rate of 50 Hz into "
+#~ "260 bits.  Microsoft's GSM 06.10 codec is not compatible with the "
+#~ "standard frame format, they use 65-byte-frames (2 x 32 1/2) rather than "
+#~ "rounding to 33, and they number the bits in their bytes from the other "
+#~ "end."
+
+#~ msgid "13 Kbps"
+#~ msgstr "13 Kバイト/秒"
+
+#~ msgid ""
+#~ "G.711 is the international standard for encoding telephone audio on 64 "
+#~ "kbps channel. It is a pulse code modulation (PCM) scheme operating at 8 "
+#~ "kHz sample rate, with 8 bits per sample, fully meeting ITU-T "
+#~ "recommendations. This standard has two forms, A-Law and u-Law. A-Law "
+#~ "G.711 PCM encoder converts 13 bit linear PCM samples into 8 bit "
+#~ "compressed PCM (logarithmic form) samples, and the decoder does the "
+#~ "conversion vice versa."
+#~ msgstr ""
+#~ "G.711 is the international standard for encoding telephone audio on 64 "
+#~ "kbps channel. It is a pulse code modulation (PCM) scheme operating at 8 "
+#~ "kHz sample rate, with 8 bits per sample, fully meeting ITU-T "
+#~ "recommendations. This standard has two forms, A-Law and u-Law. A-Law "
+#~ "G.711 PCM encoder converts 13 bit linear PCM samples into 8 bit "
+#~ "compressed PCM (logarithmic form) samples, and the decoder does the "
+#~ "conversion vice versa."
+
+#~ msgid "64 Kbps"
+#~ msgstr "64 Kバイト/秒"
+
+#~ msgid ""
+#~ "G.711 is the international standard for encoding telephone audio on 64 "
+#~ "kbps channel. It is a pulse code modulation (PCM) scheme operating at 8 "
+#~ "kHz sample rate, with 8 bits per sample, fully meeting ITU-T "
+#~ "recommendations. This standard has two forms, A-Law and u-Law. u-Law "
+#~ "G.711 PCM encoder converts 14 bit linear PCM samples into 8 bit "
+#~ "compressed PCM (logarithmic form) samples, and the decoder does the "
+#~ "conversion vice versa."
+#~ msgstr ""
+#~ "G.711 is the international standard for encoding telephone audio on 64 "
+#~ "kbps channel. It is a pulse code modulation (PCM) scheme operating at 8 "
+#~ "kHz sample rate, with 8 bits per sample, fully meeting ITU-T "
+#~ "recommendations. This standard has two forms, A-Law and u-Law. u-Law "
+#~ "G.711 PCM encoder converts 14 bit linear PCM samples into 8 bit "
+#~ "compressed PCM (logarithmic form) samples, and the decoder does the "
+#~ "conversion vice versa."
+
+#~ msgid ""
+#~ "GSM 06.10 is a standardized lossy speech compression employed by first "
+#~ "generation of digital mobile phones in Europe. It uses RPE/LTP (residual "
+#~ "pulse excitation/long term prediction) coding to compress frames of 20 "
+#~ "ms, achieving a bitrate of 13kbps."
+#~ msgstr ""
+#~ "GSM 06.10 is a standardized lossy speech compression employed by first "
+#~ "generation of digital mobile phones in Europe. It uses RPE/LTP (residual "
+#~ "pulse excitation/long term prediction) coding to compress frames of 20 "
+#~ "ms, achieving a bitrate of 13kbps."
+
+#~ msgid "16.5 Kbps"
+#~ msgstr "16.5 Kバイト/秒"
+
+#~ msgid ""
+#~ "G.726 conforms to ITU-T G.726 recommendation that specifies speech "
+#~ "compression and decompression at rates of 16, 24, 32 and 40 Kbps based on "
+#~ "Adaptive Differential Pulse Code Modulation (ADPCM)."
+#~ msgstr ""
+#~ "G.726 conforms to ITU-T G.726 recommendation that specifies speech "
+#~ "compression and decompression at rates of 16, 24, 32 and 40 Kbps based on "
+#~ "Adaptive Differential Pulse Code Modulation (ADPCM)."
+
+#~ msgid "32 Kbps"
+#~ msgstr "32 Kバイト/秒"
+
+#~ msgid ""
+#~ "G.723.1 conforms to ITU-T G.723.1 recommendation. It was designed for "
+#~ "videoconferencing / telephony over standard phone lines, and is optimized "
+#~ "for realtime encode and decode. That codec is only available in "
+#~ "GnomeMeeting when using Quicknet cards due to patents restrictions."
+#~ msgstr ""
+#~ "G.723.1 conforms to ITU-T G.723.1 recommendation. It was designed for "
+#~ "videoconferencing / telephony over standard phone lines, and is optimized "
+#~ "for realtime encode and decode. That codec is only available in "
+#~ "GnomeMeeting when using Quicknet cards due to patents restrictions."
+
+#~ msgid "6.3 or 5.7 Kbps"
+#~ msgstr "6.3/5.7 Kバイト/秒"
+
+#~ msgid "Early H.245 disabled"
+#~ msgstr "初期の H.245 トンネリングは無効"
+
+#~ msgid "Early H.245 enabled"
+#~ msgstr "初期の H.245 トンネリングは有効"
+
+#~ msgid "No gateway or proxy specified"
+#~ msgstr "ゲートウェイまたはプロキシが指定されていません"
+
+#~ msgid "You need to specify a host to use as gateway or proxy."
+#~ msgstr "ゲートウェイまたはプロキシとして使用するホストを指定して下さい。"
+
+#~ msgid "Forward URL not specified"
+#~ msgstr "フォワードする URL が指定されていません"
+
+#~ msgid "Welcome to GnomeMeeting 1.00!"
+#~ msgstr "GnomeMeeting 1.00 へようこそ！"
+
+#~ msgid ""
+#~ "Congratulations, you have just successfully launched GnomeMeeting 1.00 "
+#~ "for the first time.\n"
+#~ "GnomeMeeting is the leading VoIP, videoconferencing and telephony "
+#~ "software for Unix.\n"
+#~ "\n"
+#~ "Thanks to all of you who have helped us along the road to our golden 1.00 "
+#~ "release!\n"
+#~ "\n"
+#~ "The GnomeMeeting Team."
+#~ msgstr ""
+#~ "おめでとうございます。GnomeMeeting 1.00 を初めて起動しました。\n"
+#~ "GnomeMeeting は 先進の VoIP、ビデオ会議やテレフォニーを行う UNIX 向けのソ"
+#~ "フトウェアです。\n"
+#~ "\n"
+#~ "バージョン 1.00 をリリースするまでの間、支援下さった皆様に感謝します！\n"
+#~ "\n"
+#~ "GnomeMeeting Team より。"
+
+#~ msgid "Friends"
+#~ msgstr "お友達"
+
+#~ msgid "Work"
+#~ msgstr "仕事関係"
+
+#~ msgid "Family"
+#~ msgstr "家族"
+
+#~ msgid "Opened codec %s for transmission"
+#~ msgstr "発信用のコーデック %s を開きました"
+
+#~ msgid "Closed codec %s which was opened for transmission"
+#~ msgstr "発信用に開いていたコーデック %s を閉じました"
+
+#~ msgid "Opened codec %s for reception"
+#~ msgstr "着信用のコーデック %s を開きました"
+
+#~ msgid "Closed codec %s which was opened for reception"
+#~ msgstr "着信用に開いていたコーデックを閉じました"
+
+#~ msgid "Failure opening %s for transmission, will try with next common codec"
+#~ msgstr "発信用の %s を開けませんでした。共通コーデックで開いて見て下さい"
+
+#~ msgid "Failure opening %s for reception, will try with next common codec"
+#~ msgstr "着信用の %s を開けませんでした。共通コーデックで開いて見て下さい"
+
+#~ msgid "No device found"
+#~ msgstr "デバイスが見つかりません"
+
+#~ msgid "Keep current settings"
+#~ msgstr "現在の設定のまま"
+
+#~ msgid "Please enter your first name and your surname:"
+#~ msgstr "氏名を入力して下さい:"
+
+#~ msgid ""
+#~ "Your first name and surname will be used when connecting to other VoIP "
+#~ "and videoconferencing software."
+#~ msgstr ""
+#~ "ここで入力した氏名は、他の VoIP やビデオ会議ソフトウェアに接続した際に使用"
+#~ "されます。"
+
+#~ msgid "Please enter your e-mail address:"
+#~ msgstr "E-メール・アドレスを入力して下さい:"
+
+#~ msgid ""
+#~ "Your e-mail address is used when registering to the GnomeMeeting users "
+#~ "directory. It is used to create a callto address permitting your contacts "
+#~ "to easily call you wherever you are."
+#~ msgstr ""
+#~ "ここで入力した E-メール・アドレスは、GnomeMeeting のユーザ・ディレクトリに"
+#~ "登録する際に使用されます。あなたがどこにいても、簡単に通信できるようにす"
+#~ "る \"呼び出しアドレス\" の生成に使用されます。"
+
+#~ msgid ""
+#~ "I don't want to register to the GnomeMeeting users directory and get a "
+#~ "callto address"
+#~ msgstr ""
+#~ "GnomeMeeting ユーザ・ディレクトリに登録せずに、\"呼び出しアドレス\" のみ取"
+#~ "得する"
+
+#~ msgid "Please choose your connection type:"
+#~ msgstr "接続の種類を選択して下さい:"
+
+#~ msgid ""
+#~ "The connection type will permit determining the best quality settings "
+#~ "that GnomeMeeting will use during calls. You can later change the "
+#~ "settings individually in the preferences window."
+#~ msgstr ""
+#~ "ここで選択した接続の種類は、GnomeMeeting が呼び出す際に使用する最適な品質"
+#~ "を決定するために利用されます。後で、設定ウィンドウからそれぞれ変更できま"
+#~ "す。"
+
+#~ msgid "Audio Manager - page %d/%d"
+#~ msgstr "音声マネージャ - %d/%d ページ"
+
+#~ msgid "Please choose your audio manager:"
+#~ msgstr "お使いの音声マネージャを選択して下さい:"
+
+#~ msgid ""
+#~ "The audio manager is the plugin that will manage your audio devices, ALSA "
+#~ "is probably the best choice when available."
+#~ msgstr ""
+#~ "音声マネージャは、お使いの音声デバイスを管理するプラグインです。ALSA が利"
+#~ "用可能ならば、それを選択するのがベストな選択になるでしょう。"
+
+#~ msgid "Please choose the audio output device:"
+#~ msgstr "音声出力デバイスを選択して下さい:"
+
+#~ msgid ""
+#~ "The audio output device is the device managed by the audio manager that "
+#~ "will be used to play audio."
+#~ msgstr ""
+#~ "音声出力デバイスは、オーディオを演奏する際に使用する音声マネージャで管理す"
+#~ "るデバイスです。"
+
+#~ msgid "Please choose the audio input device:"
+#~ msgstr "音声入力デバイスを選択して下さい:"
+
+#~ msgid ""
+#~ "The audio input device is the device managed by the audio manager that "
+#~ "will be used to record your voice."
+#~ msgstr ""
+#~ "音声入力デバイスは、あなたの声を録音する際に使用する音声マネージャで管理す"
+#~ "るデバイスです。"
+
+#~ msgid "Test Settings"
+#~ msgstr "設定のテスト"
+
+#~ msgid "Video Manager - page %d/%d"
+#~ msgstr "映像マネージャ - %d/%d ページ"
+
+#~ msgid ""
+#~ "The video manager is the plugin that will manage your video devices, "
+#~ "Video4Linux is the most common choice if you own a webcam."
+#~ msgstr ""
+#~ "映像マネージャは、お使いのビデオ・デバイスを管理するプラグインで、ウエブカ"
+#~ "ムをお持ちならば、Video4Linux がもっとも共通に使用できる選択になるでしょ"
+#~ "う。"
+
+#~ msgid "Please choose the video input device:"
+#~ msgstr "お使いの映像入力デバイスを選択して下さい:"
+
+#~ msgid ""
+#~ "The video input device is the device managed by the video manager that "
+#~ "will be used to capture video."
+#~ msgstr ""
+#~ "映像入力デバイスは、映像をキャプチャする際に使用する映像マネージャで管理す"
+#~ "るデバイスです。"
+
+#~ msgid "Accepting call from %s (Free For Chat)"
+#~ msgstr "%s からの着信を受諾中です (チャット可)"
+
+#~ msgid "Call rejected"
+#~ msgstr "着信拒否しました"
+
+#~ msgid "Forwarding call to %s"
+#~ msgstr "着信を %s へフォワード中"
+
+#~ msgid "Error while forwarding call to %s"
+#~ msgstr "着信を %s へ転送する際にエラー"
+
+#~ msgid "Opened %s for recording with plugin %s"
+#~ msgstr "%s をプラグイン %s を使って録音用に開きました"
+
+#~ msgid "Opened %s for playing with plugin %s"
+#~ msgstr "%s をプラグイン %s を使って再生用に開きました"
+
+#~ msgid "Cannot contact the users directory"
+#~ msgstr "ユーザ・ディレクトリと通信できません"
+
+#~ msgid ""
+#~ "Failed to contact the users directory %s:%d. The directory is probably "
+#~ "currently overloaded, please try again later."
+#~ msgstr ""
+#~ "ユーザ・ディレクトリ %s:%d との通信に失敗しました。そのディレクトリの負荷"
+#~ "が高くなっているかもしれません。あとでまた試してみて下さい。"
+
+#~ msgid "Unregistered from the users directory %s."
+#~ msgstr "ユーザ・ディレクトリ %s の登録を解除しました"
+
+#~ msgid "Are you sure you want to remove %s [%s] from this group?"
+#~ msgstr "このグループから %s [%s] を削除してもよろしいですか？"
+
+#~ msgid "Copy URL to the Clipboard"
+#~ msgstr "URL をクリップボードへコピー"
+
+#~ msgid "Please enter a new name for server %s:"
+#~ msgstr "サーバ %s の新しい名前を入力して下さい:"
+
+#~ msgid "Please enter a new name for group %s:"
+#~ msgstr "グループ %s の新しい名前を入力して下さい:"
+
+#~ msgid "_Rename"
+#~ msgstr "名前の変更(_R)"
+
+#~ msgid "Address Book"
+#~ msgstr "アドレス帳"
+
+#~ msgid "Sent dtmf %c"
+#~ msgstr "dtmf %c を送信しました"
+
+#~ msgid ""
+#~ "GnomeMeeting didn't find any usable sound manager. Make sure that your "
+#~ "installation is correct."
+#~ msgstr ""
+#~ "GnomeMeeting は利用可能な音声マネージャを検出できませんでした。インストー"
+#~ "ルを確認して下さい。"
+
+#~ msgid "_Available"
+#~ msgstr "応答可能(_A)"
+
+#~ msgid "Display a popup to accept the call"
+#~ msgstr "着信に応答するためにポップアップを表示します"
+
+#~ msgid "Free for Cha_t"
+#~ msgstr "自動応答(_T)"
+
+#~ msgid "_Busy"
+#~ msgstr "多忙(_B)"
+
+#~ msgid "Reject calls"
+#~ msgstr "着信を拒否します"
+
+#~ msgid "_Forward"
+#~ msgstr "フォワード(_F)"
+
+#~ msgid "Speed dials"
+#~ msgstr "ショートカット"
+
+#~ msgid "Close the GnomeMeeting window"
+#~ msgstr "GnomeMeeting のウィンドウを閉じます"
+
+#~ msgid "PC-To-Phone Account"
+#~ msgstr "PC-To-Phone のアカウント"
+
+#~ msgid "Manage your PC-To-Phone account"
+#~ msgstr "PC-To-Phone のアカウントを管理します"
+
+#~ msgid "_Contents"
+#~ msgstr "目次(_C)"
+
+#~ msgid "Get help by reading the GnomeMeeting manual"
+#~ msgstr "GnomeMeeting のマニュアルからヘルプを取得します"
+
+#~ msgid "_About"
+#~ msgstr "情報(_A)"
+
+#~ msgid "Generic error"
+#~ msgstr "一般的なエラー"
+
+#~ msgid "Remote URL:"
+#~ msgstr "リモート URL:"
+
+#~ msgid "Remote Application:"
+#~ msgstr "リモートのアプリ:"
+
+#~ msgid "Codec Information"
+#~ msgstr "コーデックの情報"
+
+#~ msgid "Enter your surname"
+#~ msgstr "あなたの名字を入力して下さい"
+
+#~ msgid "Enter a comment about yourself"
+#~ msgstr "身元を記すコメントを入力して下さい"
+
+#~ msgid "Enter your country or city"
+#~ msgstr "お住まいの国または都市を入力して下さい"
+
+#~ msgid "Place windows displaying video _above other windows"
+#~ msgstr "他のウィンドウの上に映像を表示するウィンドウを配置する(_A)"
+
+#~ msgid ""
+#~ "If enabled, all incoming calls will be forwarded to the host that is "
+#~ "specified in the field above if you do not answer the call"
+#~ msgstr ""
+#~ "これを有効にすると、着信に応答しない場合、全ての着信が上の欄に指定したホス"
+#~ "トへフォワードされます"
+
+#~ msgid ""
+#~ "If enabled, all incoming calls will be forwarded to the host that is "
+#~ "specified in the field above if you already are in a call or if you are "
+#~ "in Do Not Disturb mode"
+#~ msgstr ""
+#~ "これを有効にすると、会話中または \"邪魔しないで下さい\" モードの場合、全て"
+#~ "の着信が上の欄に指定したホストへフォワードされます"
+
+#~ msgid "Call Options"
+#~ msgstr "着信のオプション"
+
+#~ msgid "Automatically _clear calls after 30 seconds of inactivity"
+#~ msgstr "何もせずに 30 秒経過したら着信を自動的にクリアする(_C)"
+
+#~ msgid "Reject or forward unanswered incoming calls after "
+#~ msgstr "拒否またはフォワードする未応答での経過時間: "
+
+#~ msgid "seconds"
+#~ msgstr "秒"
+
+#~ msgid "Event"
+#~ msgstr "イベント"
+
+#~ msgid "Sound to play:"
+#~ msgstr "演奏する曲:"
+
+#~ msgid "Play"
+#~ msgstr "演奏"
+
+#~ msgid ""
+#~ "This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
+#~ "are encapsulated into the the H.225 channel (port 1720). This saves one "
+#~ "TCP connection during calls. H.245 Tunneling was introduced in H.323v2 "
+#~ "and Netmeeting does not support it. Using both Fast Start and H.245 "
+#~ "Tunneling can crash some versions of Netmeeting."
+#~ msgstr ""
+#~ "This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
+#~ "are encapsulated into the the H.225 channel (port 1720). This saves one "
+#~ "TCP connection during calls. H.245 Tunneling was introduced in H.323v2 "
+#~ "and Netmeeting does not support it. Using both Fast Start and H.245 "
+#~ "Tunneling can crash some versions of Netmeeting."
+
+#~ msgid "Enable _early H.245"
+#~ msgstr "初期の H.245 を有効にする(_E)"
+
+#~ msgid "_Send DTMF as:"
+#~ msgstr "DTMF の送信方式(_S):"
+
+#~ msgid "Register this alias as the primary alias with the gatekeeper"
+#~ msgstr "これをプライマリ・エイリアスとしてゲートキーパに登録する"
+
+#~ msgid ""
+#~ "Use this option to ensure the above alias is used as the primary alias "
+#~ "when registering with a gatekeeper. This may be required if your "
+#~ "gatekeeper can only perform authentication using the first alias in the "
+#~ "list."
+#~ msgstr ""
+#~ "Use this option to ensure the above alias is used as the primary alias "
+#~ "when registering with a gatekeeper. This may be required if your "
+#~ "gatekeeper can only perform authentication using the first alias in the "
+#~ "list."
+
+#~ msgid "Gateway/Proxy"
+#~ msgstr "ゲートウェイ/プロキシ"
+
+#~ msgid "Gateway / Proxy host:"
+#~ msgstr "ゲートウェイ/プロキシのホスト:"
+
+#~ msgid "Use gateway or proxy"
+#~ msgstr "ゲートウェイまたはプロキシを使う"
+
+#~ msgid "Enable _automatic IP checking"
+#~ msgstr "自動的に IP をチェックする(_A)"
+
+#~ msgid ""
+#~ "This enables IP checking from seconix.com and fills the IP in the public "
+#~ "IP of the NAT/PAT gateway field of GnomeMeeting. The returned IP is only "
+#~ "used when IP Translation is enabled. If you disable IP checking, you will "
+#~ "have to manually enter the IP of your gateway in the GnomeMeeting "
+#~ "preferences."
+#~ msgstr ""
+#~ "This enables IP checking from seconix.com and fills the IP in the public "
+#~ "IP of the NAT/PAT gateway field of GnomeMeeting. The returned IP is only "
+#~ "used when IP Translation is enabled. If you disable IP checking, you will "
+#~ "have to manually enter the IP of your gateway in the GnomeMeeting "
+#~ "preferences."
+
+#~ msgid "POTS"
+#~ msgstr "POTS"
+
+#~ msgid "Headset"
+#~ msgstr "ヘッドセット"
+
+#~ msgid "Audio Plugin"
+#~ msgstr "音声のプラグイン"
+
+#~ msgid ""
+#~ "The audio plugin that will be used to detect the devices and manage them."
+#~ msgstr "デバイスの検出と管理に使用するオーディオ・プラグインです"
+
+#~ msgid "Output device:"
+#~ msgstr "出力デバイス:"
+
+#~ msgid "Quicknet Hardware"
+#~ msgstr "Quicknet ハードウェア"
+
+#~ msgid "Output device type:"
+#~ msgstr "出力デバイスの種類:"
+
+#~ msgid "Video Plugin"
+#~ msgstr "映像のプラグイン"
+
+#~ msgid "Video plugin:"
+#~ msgstr "映像のプラグイン:"
+
+#~ msgid "Channel:"
+#~ msgstr "チャンネル:"
+
+#~ msgid "Size:"
+#~ msgstr "サイズ:"
+
+#~ msgid "Image:"
+#~ msgstr "画像:"
+
+#~ msgid "Sound Events"
+#~ msgstr "イベントの演奏"
+
+#~ msgid "Gateway / Proxy Settings"
+#~ msgstr "ゲートウェイ/プロキシの設定"
+
+#~ msgid "Opening device for playing"
+#~ msgstr "再生用のデバイスを開いています"
+
+#~ msgid "Opening device for recording"
+#~ msgstr "録音用のデバイスを開いています"
+
+#~ msgid "Recording and playing back"
+#~ msgstr "録音してから再生中です"
+
+#~ msgid "Placed Calls"
+#~ msgstr "発信"
+
+#~ msgid "Call End Reason"
+#~ msgstr "切断の理由"
+
+#~ msgid "_Pin:"
+#~ msgstr "PIN(_P):"
+
+#~ msgid "Use your MicroTelco PIN"
+#~ msgstr "あなたの MicroTelco PIN をお使い下さい"
+
+#~ msgid "Use PC-To-Phone service"
+#~ msgstr "PC-To-Phone サービスを利用する"
+
+#~ msgid "Consult my account details"
+#~ msgstr "自分のアカウント情報を確認する"
+
+#~ msgid "Opening video device %s with plugin %s"
+#~ msgstr "映像デバイス %s をプラグイン %s で開いています"
+
+#~ msgid "Could not open the chosen channel."
+#~ msgstr "選択したチャンネルを開けませんでした"
+
+#~ msgid "Opened the video device using the \"Picture\" video plugin"
+#~ msgstr "\"画像\" プラグインを使って映像デバイスを開きました"
+
+#~ msgid ""
+#~ "GnomeMeeting is now testing the %s video device. If you experience "
+#~ "machine crashes, then report a bug to the video driver author."
+#~ msgstr ""
+#~ "今、GnomeMeeting は %s 映像デバイスをテストしています。マシンがクラッシュ"
+#~ "したら、映像ドライバの作者にバグを報告して下さい。"
+
+#~ msgid "Test %d failed"
+#~ msgstr "%d 個のテストに失敗"
+
+#~ msgid ""
+#~ "Your driver doesn't support any of the color formats tried by GnomeMeeting"
+#~ msgstr ""
+#~ "お使いのドライバは、GnomeMeeting が利用する色の形式をサポートしていませ"
+#~ "ん。"
+
+#~ msgid "Failed to restart the video channel"
+#~ msgstr "ビデオ・チャンネルの再起動に失敗"
+
+#~ msgid ""
+#~ "You have changed a video device related setting during a call. That "
+#~ "requires to restart the video transmission channel, but it failed."
+#~ msgstr ""
+#~ "呼び出し中にビデオ・デバイスに関連する設定を変更しました。この場合、ビデオ"
+#~ "発信チャンネルの再起動が必要ですが、失敗しました。"
