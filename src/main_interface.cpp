@@ -100,48 +100,68 @@ void audio_volume_changed (GtkAdjustment *adjustment, gpointer data)
 void brightness_changed (GtkAdjustment *adjustment, gpointer data)
 { 
   GM_window_widgets *gw = (GM_window_widgets *) data;
+  GMH323Webcam *webcam = MyApp->Endpoint ()->Webcam ();
+  PVideoInputDevice *grabber = MyApp->Endpoint ()->Grabber ();
 
   int brightness;
 
   brightness =  (int) (GTK_ADJUSTMENT (gw->adj_brightness)->value);
 
-  MyApp->Endpoint ()->Webcam ()->SetBrightness (brightness * 256);
+  if (webcam != NULL)
+    webcam->SetBrightness (brightness * 256);
+  else
+    grabber->SetBrightness (brightness * 256);
 }
 
 
 void whiteness_changed (GtkAdjustment *adjustment, gpointer data)
 { 
   GM_window_widgets *gw = (GM_window_widgets *) data;
+  GMH323Webcam *webcam = MyApp->Endpoint ()->Webcam ();
+  PVideoInputDevice *grabber = MyApp->Endpoint ()->Grabber ();
 
   int whiteness;
 
   whiteness =  (int) (GTK_ADJUSTMENT (gw->adj_whiteness)->value);
 
-  MyApp->Endpoint ()->Webcam ()->SetWhiteness (whiteness * 256);
+  if (webcam != NULL)
+    webcam->SetWhiteness (whiteness * 256);
+  else
+    grabber->SetWhiteness (whiteness * 256);
 }
 
 
 void colour_changed (GtkAdjustment *adjustment, gpointer data)
 { 
   GM_window_widgets *gw = (GM_window_widgets *) data;
+  GMH323Webcam *webcam = MyApp->Endpoint ()->Webcam ();
+  PVideoInputDevice *grabber = MyApp->Endpoint ()->Grabber ();
 
   int colour;
 
   colour =  (int) (GTK_ADJUSTMENT (gw->adj_colour)->value);
 
-  MyApp->Endpoint ()->Webcam ()->SetColour (colour * 256);
+  if (webcam != NULL)
+    webcam->SetColour (colour * 256);
+  else
+    grabber->SetColour (colour * 256);
 }
 
 
 void contrast_changed (GtkAdjustment *adjustment, gpointer data)
 { 
   GM_window_widgets *gw = (GM_window_widgets *) data;
+  GMH323Webcam *webcam = MyApp->Endpoint ()->Webcam ();
+  PVideoInputDevice *grabber = MyApp->Endpoint ()->Grabber ();
 
   int contrast;
 
   contrast =  (int) (GTK_ADJUSTMENT (gw->adj_contrast)->value);
 
-  MyApp->Endpoint ()->Webcam ()->SetContrast (contrast * 256);
+  if (webcam != NULL)
+    webcam->SetContrast (contrast * 256);
+  else
+    grabber->SetContrast (contrast * 256);
 }
 
 

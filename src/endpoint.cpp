@@ -87,6 +87,7 @@ GMH323EndPoint::GMH323EndPoint (GM_window_widgets *w, options *o)
 
   webcam = NULL;
   listener = NULL;
+  grabber = NULL;
 }
 
 
@@ -326,6 +327,12 @@ H323Connection *GMH323EndPoint::Connection ()
 GMH323Webcam *GMH323EndPoint::Webcam (void)
 {
   return (GMH323Webcam *) webcam;
+}
+
+
+PVideoInputDevice *GMH323EndPoint::Grabber (void)
+{
+  return grabber;
 }
 
 
@@ -700,7 +707,7 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
      int height, width;
      gchar *msg;
      PVideoChannel *channel = new PVideoChannel ();
-     PVideoInputDevice *grabber = new PVideoInputDevice();
+     grabber = new PVideoInputDevice();
 
      codec.SetTxQualityLevel (opts->tr_vq);
      codec.SetBackgroundFill (opts->tr_ub);
@@ -779,6 +786,13 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 	 grabber->SetFrameSize (height, width);
        }
 
+     grabber->Start ();
+     
+     channel->AttachVideoReader (grabber);
+     channel->AttachVideoPlayer (transmitted_video_device);
+
+     DisplayConfig (0);
+
      // Will change this part when using OPAL
      gdk_threads_enter ();
      gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame), TRUE);
@@ -795,13 +809,6 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
      gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_contrast),
 			       contrast);
      gdk_threads_leave ();
-    
-     grabber->Start ();
-     
-     channel->AttachVideoReader (grabber);
-     channel->AttachVideoPlayer (transmitted_video_device);
-
-     DisplayConfig (0);
 
      return codec.AttachChannel (channel, TRUE);
    }

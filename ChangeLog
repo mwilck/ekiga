@@ -1,5 +1,13 @@
 2001-09-05  Damien Sandras  <dsandras@seconix.com>
 
+	* endpoint.h,endpoint.cpp: Added a function that returns the current 
+	PVideoInputDevice.
+
+	* main_interface.cpp: Changed the GTK callbacks for the video settings
+	so that they can use both the preview mode and the connection's grabber.
+	
+2001-09-05  Damien Sandras  <dsandras@seconix.com>
+
 	* callbacks.cpp: Added support to leave during a call.
 
 	* common.h: Added define's for the CIF and QCIF size to prepare

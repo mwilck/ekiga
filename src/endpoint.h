@@ -244,6 +244,7 @@ class GMH323EndPoint : public H323EndPoint
   // PRE          :  /
   GMH323Webcam *Webcam (void);
 
+  PVideoInputDevice *Grabber ();
 
   void StartVideoGrabber (void);  
   void StopVideoGrabber (int = 1);
@@ -260,6 +261,7 @@ class GMH323EndPoint : public H323EndPoint
   int display_config; // webcam image to display
   GDKVideoOutputDevice *transmitted_video_device; // GDKVideoOutputDevice : sent
   GDKVideoOutputDevice *received_video_device; // GDKVideoOutputDevice : received
+  PVideoInputDevice *grabber;
   GM_window_widgets *gw; // main window widgets that need to be updated
   PThread *webcam;
 };
