@@ -88,13 +88,9 @@ static void
 zoom_changed_callback (GtkWidget *widget,
 		       gpointer data)
 {
-  GConfClient *client = NULL;
   double zoom = 0.0;
   
-  client = gconf_client_get_default ();
-  zoom = 
-    gconf_client_get_float (client, VIDEO_DISPLAY_KEY "zoom_factor", NULL);
-
+  zoom = gconf_get_float (VIDEO_DISPLAY_KEY "zoom_factor");
 
   switch (GPOINTER_TO_INT (data)) {
 
@@ -112,7 +108,7 @@ zoom_changed_callback (GtkWidget *widget,
       zoom = zoom * 2.0;
   }
 
-  gconf_client_set_float (client, VIDEO_DISPLAY_KEY "zoom_factor", zoom, NULL);
+  gconf_set_float (VIDEO_DISPLAY_KEY "zoom_factor", zoom);
 }
 
 
@@ -172,12 +168,10 @@ radio_menu_changed (GtkWidget *widget,
 		    gpointer data)
 {
   GSList *group = NULL;
-  GConfClient *client = NULL;
 
   int group_last_pos = 0;
   int active = 0;
 
-  client = gconf_client_get_default ();
   group = gtk_radio_menu_item_get_group (GTK_RADIO_MENU_ITEM (widget));
   group_last_pos = g_slist_length (group) - 1; /* If length 1, last pos is 0 */
 
@@ -194,7 +188,7 @@ radio_menu_changed (GtkWidget *widget,
       group = g_slist_next (group);
     }
 
-    gconf_client_set_int (client, (gchar *) data, group_last_pos - active, 0);
+    gconf_set_int ((gchar *) data, group_last_pos - active);
   }
 }
 
@@ -207,11 +201,7 @@ radio_menu_changed (GtkWidget *widget,
 static void 
 toggle_menu_changed (GtkWidget *widget, gpointer data)
 {
-  GConfClient *client = gconf_client_get_default ();
-
-  gconf_client_set_bool (client,
-			 (gchar *) data,
-			 GTK_CHECK_MENU_ITEM (widget)->active, NULL);
+  gconf_set_bool ((gchar *) data, GTK_CHECK_MENU_ITEM (widget)->active);
 }
 
 
@@ -222,15 +212,12 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
   GmWindow *gw = NULL;
   GmTextChat *chat = NULL;
 
-  GConfClient *client = NULL;
   GtkWidget *menubar = NULL;
 
   IncomingCallMode icm = AVAILABLE;
   ControlPanelSection cps = CLOSED;
   bool show_status_bar = false;
   bool show_chat_window = false;
-  
-  client = gconf_client_get_default ();
 
   chat = GnomeMeeting::Process ()->GetTextChat ();
   gw = GnomeMeeting::Process ()->GetMainWindow ();
@@ -239,13 +226,13 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 
   /* Default values */
   icm = (IncomingCallMode) 
-    gconf_client_get_int (client, CALL_OPTIONS_KEY "incoming_call_mode", 0); 
+    gconf_get_int (CALL_OPTIONS_KEY "incoming_call_mode"); 
   cps = (ControlPanelSection)
-    gconf_client_get_int (client, USER_INTERFACE_KEY "main_window/control_panel_section", 0); 
+    gconf_get_int (USER_INTERFACE_KEY "main_window/control_panel_section"); 
   show_status_bar =
-    gconf_client_get_bool (client, USER_INTERFACE_KEY "main_window/show_status_bar", 0); 
+    gconf_get_bool (USER_INTERFACE_KEY "main_window/show_status_bar"); 
   show_chat_window =
-    gconf_client_get_bool (client, USER_INTERFACE_KEY "main_window/show_chat_window", 0); 
+    gconf_get_bool (USER_INTERFACE_KEY "main_window/show_chat_window"); 
   
   static MenuEntry gnomemeeting_menu [] =
     {
@@ -597,15 +584,12 @@ GtkWidget *
 gnomemeeting_tray_init_menu (GtkWidget *widget)
 {
   GtkWidget *popup_menu_widget = NULL;
-  GConfClient *client = NULL;
   IncomingCallMode icm = AVAILABLE;
   GmWindow *gw = NULL;
 
   
-  client = gconf_client_get_default ();
   gw = GnomeMeeting::Process ()->GetMainWindow ();
-  icm = (IncomingCallMode) 
-    gconf_client_get_int (client, CALL_OPTIONS_KEY "incoming_call_mode", 0); 
+  icm = (IncomingCallMode)gconf_get_int (CALL_OPTIONS_KEY "incoming_call_mode"); 
 
   static MenuEntry tray_menu [] =
     {

@@ -96,17 +96,13 @@ static void connect_button_clicked (GtkToggleButton *w, gpointer data)
  */
 static void toolbar_cp_button_changed (GtkWidget *w, gpointer data)
 {
-  GConfClient *client = gconf_client_get_default ();
-
-  if (gconf_client_get_int (client, (gchar *) data, 0) 
+  if (gconf_get_int ((gchar *) data) 
       == GM_MAIN_NOTEBOOK_HIDDEN) { 
     
-    gconf_client_set_int (client, (gchar *) data, 0, NULL);
+    gconf_set_int ((gchar *) data, 0);
   } 
-  else {    
-    
-    gconf_client_set_int (client, (gchar *) data, GM_MAIN_NOTEBOOK_HIDDEN, 
-			  NULL);
+  else {   
+    gconf_set_int ((gchar *) data, GM_MAIN_NOTEBOOK_HIDDEN);
   }
 }
 
@@ -119,11 +115,9 @@ static void toolbar_cp_button_changed (GtkWidget *w, gpointer data)
  */
 static void toolbar_button_changed (GtkWidget *widget, gpointer data)
 {
-  GConfClient *client = gconf_client_get_default ();
-  
-  bool shown = gconf_client_get_bool (client, (gchar *) data, NULL);
+  bool shown = gconf_get_bool ((gchar *) data);
 
-  gconf_client_set_bool (client, (gchar *) data, !shown, NULL);
+  gconf_set_bool ((gchar *) data, !shown);
 }
 
 

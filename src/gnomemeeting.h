@@ -193,7 +193,6 @@ class GnomeMeeting : public PProcess
 
   
  private:
-  GConfClient *client;
   GMH323EndPoint *endpoint;
   PThread *url_handler;
   

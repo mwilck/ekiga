@@ -572,12 +572,10 @@ static void
 main_notebook_page_changed (GtkNotebook *notebook, GtkNotebookPage *page,
 			    gint page_num, gpointer user_data) 
 {
-  GConfClient *client = gconf_client_get_default ();
-
   GmWindow *gw = GnomeMeeting::Process ()->GetMainWindow ();
 
-  gconf_client_set_int (client, USER_INTERFACE_KEY "main_window/control_panel_section",
-			gtk_notebook_get_current_page (GTK_NOTEBOOK (gw->main_notebook)), 0);
+  gconf_set_int (USER_INTERFACE_KEY "main_window/control_panel_section",
+		 gtk_notebook_get_current_page (GTK_NOTEBOOK (gw->main_notebook)));
 }
 
 
@@ -942,14 +940,12 @@ gnomemeeting_main_window_new (GmWindow *gw)
   int main_notebook_section = 0;
 
   GmTextChat *chat = NULL;
-  GConfClient *client = NULL;
 
   static GtkTargetEntry dnd_targets [] =
   {
     {"text/plain", GTK_TARGET_SAME_APP, 0}
   };
 
-  client = gconf_client_get_default ();
   chat = GnomeMeeting::Process ()->GetTextChat ();
   
   accel = gtk_accel_group_new ();
@@ -979,8 +975,7 @@ gnomemeeting_main_window_new (GmWindow *gw)
   gtk_box_pack_start (GTK_BOX (hbox), gw->statusbar, 
 		      TRUE, TRUE, 0);
 
-  if (gconf_client_get_bool (client, 
-			     USER_INTERFACE_KEY "main_window/show_status_bar", 0))
+  if (gconf_get_bool (USER_INTERFACE_KEY "main_window/show_status_bar"))
     gtk_widget_show (GTK_WIDGET (gw->statusbar));
   else
     gtk_widget_hide (GTK_WIDGET (gw->statusbar));
@@ -1055,7 +1050,7 @@ gnomemeeting_main_window_new (GmWindow *gw)
 		    6, 6); 
 
   main_notebook_section = 
-    gconf_client_get_int (client, USER_INTERFACE_KEY "main_window/control_panel_section", 0);
+    gconf_get_int (USER_INTERFACE_KEY "main_window/control_panel_section");
 
   if (main_notebook_section != GM_MAIN_NOTEBOOK_HIDDEN) {
 
@@ -1140,8 +1135,7 @@ gnomemeeting_main_window_new (GmWindow *gw)
  		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
  		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
  		    6, 6);
-  if (gconf_client_get_bool 
-      (client, USER_INTERFACE_KEY "main_window/show_chat_window", 0))
+  if (gconf_get_bool (USER_INTERFACE_KEY "main_window/show_chat_window"))
     gtk_widget_show_all (GTK_WIDGET (gw->chat_window));
   
   gtk_widget_set_size_request (GTK_WIDGET (gw->main_notebook),

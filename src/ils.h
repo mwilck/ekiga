@@ -141,8 +141,6 @@ protected:
   PTime starttime;
   LDAP *ldap_connection;
   PMutex quit_mutex;
-
-  GConfClient *client;
 };
 
 

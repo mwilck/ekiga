@@ -392,6 +392,7 @@ void about_callback (GtkWidget *widget, gpointer parent_window)
       "",
       N_("Artwork:"),
       "Jakub Steiner <jimmac@ximian.com>",
+      "Carlos Pardo <me@m4de.com>",
       "",
       N_("Contributors:"),
       "Alexander Larsson <alexl@redhat.com>",
@@ -417,11 +418,13 @@ void about_callback (GtkWidget *widget, gpointer parent_window)
   };
 	
   authors [2] = gettext (authors [2]);
-  authors [10] = gettext (authors [10]);
-  authors [13] = gettext (authors [13]);
+  authors [12] = gettext (authors [12]);
+  authors [16] = gettext (authors [16]);
   
   const char *documenters [] = {
     "Damien Sandras <dsandras@seconix.com>",
+    "Christopher Warner <zanee@kernelcode.com>",
+    "Matthias Redlich <m-redlich@t-online.de>",
     NULL
   };
 

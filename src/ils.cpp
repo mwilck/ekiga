@@ -43,6 +43,7 @@
 #include "ldap_window.h"
 #include "misc.h"
 #include "tools.h"
+#include "gconf_widgets_extensions.h"
 #include "stock-icons.h"
 #include "dialog.h"
 
@@ -69,7 +70,6 @@ GMILSClient::GMILSClient ()
 
   operation = ILS_NONE;
 
-  client = gconf_client_get_default ();
 }
 
 
@@ -86,18 +86,9 @@ BOOL GMILSClient::CheckFieldsConfig (BOOL registering)
   bool no_error = TRUE;
 
   gnomemeeting_threads_enter ();
-  firstname =  
-    gconf_client_get_string (GCONF_CLIENT (client), 
-			     PERSONAL_DATA_KEY "firstname",
-			     NULL);
-  surname =  
-    gconf_client_get_string (GCONF_CLIENT (client),
-			     PERSONAL_DATA_KEY "lastname",
-			     NULL);
-  mail =  
-    gconf_client_get_string (GCONF_CLIENT (client),
-			     PERSONAL_DATA_KEY "mail",
-			     NULL);
+  firstname = gconf_get_string (PERSONAL_DATA_KEY "firstname");
+  surname = gconf_get_string (PERSONAL_DATA_KEY "lastname");
+  mail = gconf_get_string (PERSONAL_DATA_KEY "mail");
   gnomemeeting_threads_leave ();
 
 
@@ -110,7 +101,7 @@ BOOL GMILSClient::CheckFieldsConfig (BOOL registering)
       /* No need to display that for unregistering */
       gnomemeeting_threads_enter ();
       gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Invalid parameters"), _("Please provide your first name and e-mail in the Personal Data section in order to be able to register to the user directory."));
-      gconf_client_set_bool (client, LDAP_KEY "enable_registering", FALSE, NULL);
+      gconf_set_bool (LDAP_KEY "enable_registering", FALSE);
       gnomemeeting_threads_leave ();
       
       no_error = FALSE;
@@ -135,8 +126,7 @@ BOOL GMILSClient::CheckServerConfig ()
 
 
   gnomemeeting_threads_enter ();
-  ldap_server =  
-    gconf_client_get_string (GCONF_CLIENT (client), LDAP_KEY "server", 0);
+  ldap_server = gconf_get_string (LDAP_KEY "server");
   gnomemeeting_threads_leave ();
 
 
@@ -214,9 +204,7 @@ void GMILSClient::ILSOperation (Operation operation)
   if (CheckServerConfig ()) {
 
     gnomemeeting_threads_enter ();
-    ldap_server =  
-      gconf_client_get_string (GCONF_CLIENT (client), LDAP_KEY "server", 
-			       NULL);
+    ldap_server = gconf_get_string (LDAP_KEY "server");
     gnomemeeting_threads_leave ();
 
 
@@ -410,75 +398,53 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
   unsigned long int sip = 0;
 
   gnomemeeting_threads_enter ();
-  GConfClient *client = gconf_client_get_default ();
 
+  firstname = gconf_get_string (PERSONAL_DATA_KEY "firstname");
+  surname = gconf_get_string (PERSONAL_DATA_KEY "lastname");
 
-  firstname = 
-    gconf_client_get_string (GCONF_CLIENT (client),
-			     PERSONAL_DATA_KEY "firstname", 
-			     NULL);
-
-  surname =  
-    gconf_client_get_string (GCONF_CLIENT (client),
-			     PERSONAL_DATA_KEY "lastname", 
-			     NULL);
   if (!surname || !strcmp (surname, ""))
     surname = g_strdup ("-");
   tmp = g_strdup_printf ("%.65s", surname);
   g_free (surname);
   surname = tmp;
   
-  mail =  
-    gconf_client_get_string (GCONF_CLIENT (client),
-			     PERSONAL_DATA_KEY "mail", 
-			     NULL);
+  mail = gconf_get_string (PERSONAL_DATA_KEY "mail");
   tmp = g_strdup_printf ("%.65s", mail);
   g_free (mail);
   mail = tmp;
 
-  comment =  
-    gconf_client_get_string (GCONF_CLIENT (client),
-			     PERSONAL_DATA_KEY "comment", 
-			     NULL);
+  comment = gconf_get_string (PERSONAL_DATA_KEY "comment");
   if (!comment || !strcmp (comment, ""))
     comment = g_strdup ("-");
   tmp = g_strdup_printf ("%.65s", comment);
   g_free (comment);
   comment = tmp;
 
-  location =  
-    gconf_client_get_string (GCONF_CLIENT (client),
-			     PERSONAL_DATA_KEY "location", 
-			     NULL);
+  location = gconf_get_string (PERSONAL_DATA_KEY "location");
   if (!location || !strcmp (location, ""))
     location = g_strdup ("-");
   tmp = g_strdup_printf ("%.65s", location);
   g_free (location);
   location = tmp;
 
-  port = 
-    g_strdup_printf ("%d", 
-		     gconf_client_get_int (GCONF_CLIENT (client),
-					   PORTS_KEY "listen_port",
-					   NULL));
+  port = g_strdup_printf ("%d", gconf_get_int (PORTS_KEY "listen_port"));
 
   version =  g_strdup_printf ("%u", MAJOR_VERSION << 24 | 
 			            MINOR_VERSION << 16 |
 			            BUILD_NUMBER);
 
   if ((GnomeMeeting::Process ()->Endpoint ()->GetCallingState () != GMH323EndPoint::Standby)
-      || (gconf_client_get_int (client, CALL_OPTIONS_KEY "incoming_call_mode", 
-				 NULL)) == BUSY)
+      || (gconf_get_int (CALL_OPTIONS_KEY "incoming_call_mode") == BUSY))
     busy = g_strdup ("1");
   else
     busy = g_strdup ("0");
 
-  if (gconf_client_get_bool (client, LDAP_KEY "show_details", NULL))
+  if (gconf_get_bool (LDAP_KEY "show_details"))
     sflags = g_strdup ("1");
   else
     sflags = g_strdup ("0");
   
-  if (gconf_client_get_bool (client, VIDEO_CODECS_KEY "enable_video_transmission", NULL))
+  if (gconf_get_bool (VIDEO_CODECS_KEY "enable_video_transmission"))
     ilsa32964638 = g_strdup ("1");
   else
     ilsa32964638 = g_strdup ("0");

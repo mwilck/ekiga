@@ -102,8 +102,6 @@ GnomeMeeting::GnomeMeeting ()
   endpoint = NULL;
   url_handler = NULL;
 
-  client = gconf_client_get_default ();
-
   /* Init the different structures */
   gw = new GmWindow ();
   pw = new GmPrefWindow ();
@@ -421,7 +419,7 @@ void GnomeMeeting::BuildGUI ()
   g_signal_connect (G_OBJECT (gw->splash_win), "delete_event",
 		    G_CALLBACK (gtk_widget_hide_on_delete), 0);
 
-  show_splash = gconf_client_get_bool (client, USER_INTERFACE_KEY "show_splash_screen", 0);
+  show_splash = gconf_get_bool (USER_INTERFACE_KEY "show_splash_screen");
   if (show_splash) 
   {
     /* We show the splash screen */
@@ -451,7 +449,7 @@ void GnomeMeeting::BuildGUI ()
 
 
 #ifndef DISABLE_GNOME
- if (gconf_client_get_int (client, GENERAL_KEY "version", NULL) 
+ if (gconf_get_int (GENERAL_KEY "version") 
       < 100 * MAJOR_VERSION + 10 * MINOR_VERSION + BUILD_NUMBER) {
 
    gtk_widget_show_all (GTK_WIDGET (gw->druid_window));

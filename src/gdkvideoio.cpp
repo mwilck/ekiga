@@ -140,7 +140,6 @@ BOOL GDKVideoOutputDevice::Redraw ()
   GdkPixbuf *tmp = NULL;
   int image_width = 0, image_height = 0;
   PMutex both_mutex;
-  GConfClient *client = NULL;
 
   gboolean unref = true;
 
@@ -168,7 +167,6 @@ BOOL GDKVideoOutputDevice::Redraw ()
   ep = GnomeMeeting::Process ()->Endpoint ();
   
   gnomemeeting_threads_enter ();
-  client = gconf_client_get_default ();
 
   
   /* Take the mutexes before the redraw */
@@ -314,7 +312,7 @@ BOOL GDKVideoOutputDevice::Redraw ()
   g_object_unref (tmp);
 
 
-  if (gconf_client_get_bool (client, VIDEO_DISPLAY_KEY "enable_bilinear_filtering", NULL)) 
+  if (gconf_get_bool (VIDEO_DISPLAY_KEY "enable_bilinear_filtering")) 
     interp_type = GDK_INTERP_BILINEAR;
 
 

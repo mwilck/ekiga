@@ -233,7 +233,6 @@ gatekeeper_update_button_clicked (GtkWidget *widget,
 static void codecs_list_button_clicked_callback (GtkWidget *widget, 
 						 gpointer data)
 { 	
-  GConfClient *client = NULL;
   GtkTreeIter iter;
   GtkTreeView *tree_view = NULL;
   GtkTreeSelection *selection = NULL;
@@ -244,8 +243,6 @@ static void codecs_list_button_clicked_callback (GtkWidget *widget,
   gchar **couple;
   int codec_pos = 0;
   int operation = 0;
-
-  client = gconf_client_get_default ();
 
 
   /* Get the current selected codec name, there is always one */
@@ -269,10 +266,7 @@ static void codecs_list_button_clicked_callback (GtkWidget *widget,
 			  
   /* Read all codecs, build the gconf data for the key, after having 
      set the selected codec one row above its current plance */
-  codecs_data =
-    gconf_client_get_list (client, 
-			   AUDIO_CODECS_KEY "list", 
-			   GCONF_VALUE_STRING, NULL);
+  codecs_data = gconf_get_string_list (AUDIO_CODECS_KEY "list"); 
 
   codecs_data_iter = codecs_data;
   while (codecs_data_iter) {
@@ -332,10 +326,7 @@ static void codecs_list_button_clicked_callback (GtkWidget *widget,
   }
 
 
-  gconf_client_set_list (client, 
-			 AUDIO_CODECS_KEY "list", 
-			 GCONF_VALUE_STRING, codecs_data, NULL);
-
+  gconf_set_string_list (AUDIO_CODECS_KEY "list", codecs_data);
   
   g_slist_free (codecs_data);
 }
@@ -621,12 +612,9 @@ codecs_list_fixed_toggled (GtkCellRendererToggle *cell,
   gchar *codec_new = NULL, **couple;
   GSList *codecs_data = NULL, *codecs_data_iter = NULL;
   GSList *codecs_data_element = NULL;
-  GConfClient *client = NULL;
   gboolean fixed;
   gchar *selected_codec_name = NULL;
   int current_row = 0;
-
-  client = gconf_client_get_default ();
 
   /* get toggled iter */
   gtk_tree_model_get_iter (model, &iter, path);
@@ -647,10 +635,7 @@ codecs_list_fixed_toggled (GtkCellRendererToggle *cell,
   /* Read all codecs, build the gconf data for the key, 
      after having set the selected codec
      one row above its current plance */
-  codecs_data = 
-    gconf_client_get_list (client, 
-			   AUDIO_CODECS_KEY "list", 
-			   GCONF_VALUE_STRING, NULL);
+  codecs_data = gconf_get_string_list (AUDIO_CODECS_KEY "list");
 
   /* We are reading the codecs */
   codecs_data_iter = codecs_data;
@@ -686,8 +671,7 @@ codecs_list_fixed_toggled (GtkCellRendererToggle *cell,
   
   g_slist_free (codecs_data_element);
   
-  gconf_client_set_list (client, AUDIO_CODECS_KEY "list",
-			 GCONF_VALUE_STRING, codecs_data, NULL);
+  gconf_set_string_list (AUDIO_CODECS_KEY "list", codecs_data);
 
   g_slist_free (codecs_data);
   g_free (codec_new);

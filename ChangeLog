@@ -1,5 +1,17 @@
 2004-02-10 Damien Sandras  <dsandras@seconix.com>
 
+	* src/connection.cpp, src/gdkvideoio.cpp, src/gnomemeeting.cpp,
+	src/gnomemeeting.h, src/ils.cpp, src/ils.h, src/ldap_window.cpp,
+	src/main_window.cpp, src/menu.cpp, src/pref_window.cpp, 
+	src/toolbar.cpp: Patch from Julien Puydt to use the simplified GConf
+	API everywhere.
+
+	* src/callbacks.cpp: Fixed translation of about box section. Added
+	credit to Matthias Redlich and Christopher Warner for the manual
+	and to Carlos Pardo for drawing Lumi.
+	
+2004-02-10 Damien Sandras  <dsandras@seconix.com>
+
 	* configure.in: Fixed previous commit.
 
 	* src/endpoint.cpp: Made call forwarding go through the gateway if
