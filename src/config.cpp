@@ -334,8 +334,6 @@ control_panel_section_changed_nt (gpointer id,
     gdk_threads_enter ();
     gm_main_window_select_control_panel_section (GTK_WIDGET (data), 
 						 section);
-    gm_main_window_control_panel_section_menu_update (GTK_WIDGET (data), 
-						      section);
     gdk_threads_leave ();
   }
 }
