@@ -1743,8 +1743,10 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
 	else
 	  no_error = FALSE; /* No PSoundChannel */
       }
-      else
-	return FALSE; /* Device was _("No device found"), ignore, no popup */
+      else {
+
+	return TRUE; /* Device was _("No device found"), ignore, no popup */
+      }
     }
 
   
@@ -1764,9 +1766,8 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
 	  gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Could not open audio channel for audio reception"), _("An error occured while trying to play audio to the soundcard for the audio reception. Please check that your soundcard is not busy and that your driver supports full-duplex.\nThe audio reception has been disabled."));
     gnomemeeting_threads_leave ();
   }
-
     
-  return no_error;
+  return TRUE;
 }
 
 
@@ -1822,6 +1823,7 @@ GMH323EndPoint::StartLogicalChannel (const PString & capability_name,
     con->Unlock ();
   }
 
+    
   return no_error;
 }
 
@@ -2324,23 +2326,24 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 			H323VideoCodec::AdaptivePacketDelay |
 			codec.GetVideoMode());
 
+    
+    /* Needed to be able to stop start the channel on-the-fly. When
+     * the channel has been closed, the rawdata channel has been closed
+     * too but not deleted. We delete it now.
+     */
+    CreateVideoGrabber (FALSE, TRUE);
     vg = GetVideoGrabber ();
-    if (!vg) {
-    
-      CreateVideoGrabber (FALSE, TRUE);
-      vg = GetVideoGrabber ();
-    }
-    
     if (vg) {
 
       channel = vg->GetVideoChannel ();
       transmitted_video_device = vg->GetEncodingDevice ();
       vg->Unlock ();
     }
-      
+
     gnomemeeting_threads_enter ();
     gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button), TRUE);
     gnomemeeting_threads_leave ();
+
 
     if (channel)
       result = codec.AttachChannel (channel, FALSE);
