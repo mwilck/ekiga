@@ -63,6 +63,7 @@
 
 #include "../pixmaps/text_logo.xpm"
 
+#include <gdk/gdkkeysyms.h>
 
 #ifndef DISABLE_GNOME
 #include <libgnomeui/gnome-window-icon.h>
