@@ -1416,7 +1416,7 @@ void gnomemeeting_init_pref_window_video_codecs (GtkWidget *notebook)
   pw->tr_vq =
     gnomemeeting_table_add_spin (table, _("Minimum Transmitted Video Quality:"),       
  				       "/apps/gnomemeeting/video_settings/tr_vq",
-				       _("The minimum transmitted video qualityto keep when trying to minimize the used bandwidth:  choose 100% on a LAN for the best quality, 1% being the worst quality."),
+				       _("The minimum transmitted video quality to keep when trying to minimize the used bandwidth:  choose 100% on a LAN for the best quality, 1% being the worst quality."),
  				       1.0, 100.0, 1.0, 1);
 
   pw->tr_fps =
