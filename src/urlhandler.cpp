@@ -47,7 +47,7 @@
 #include "log_window.h"
 #include "main_window.h"
 #include "toolbar.h"
-#include "menu.h"
+#include "tray.h"
 
 #include "dialog.h"
 #include "contacts/gm_contacts.h"
@@ -233,6 +233,7 @@ GMURLHandler::~GMURLHandler ()
 void GMURLHandler::Main ()
 {
   GtkWidget *history_window = NULL;
+  GtkWidget *tray = NULL;
 
   GmWindow *gw = NULL;
   GmContact *contact = NULL;
@@ -262,6 +263,7 @@ void GMURLHandler::Main ()
   gw = GnomeMeeting::Process ()->GetMainWindow ();
   calls_history_window = GnomeMeeting::Process ()->GetCallsHistoryWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
+  tray = GnomeMeeting::Process ()->GetTray ();
 
   endpoint = GnomeMeeting::Process ()->Endpoint ();
 
@@ -344,7 +346,7 @@ void GMURLHandler::Main ()
     if (!call_address.IsEmpty ()) {
 
       gm_main_window_update_sensitivity (GMH323EndPoint::Calling);
-      gnomemeeting_menu_update_sensitivity (GMH323EndPoint::Calling);
+      gm_tray_update_sensitivity (tray, GMH323EndPoint::Calling);
       endpoint->SetCallingState (GMH323EndPoint::Calling);
       
       if (!transfer_call) {
@@ -393,7 +395,7 @@ void GMURLHandler::Main ()
     else {
 
       gnomemeeting_threads_enter ();
-      gnomemeeting_menu_update_sensitivity (GMH323EndPoint::Standby);
+      gm_tray_update_sensitivity (tray, GMH323EndPoint::Standby);
       gm_main_window_update_sensitivity (GMH323EndPoint::Standby);
 
       if (call_address.Find ("+type=directory") != P_MAX_INDEX) {

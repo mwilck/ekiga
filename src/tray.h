@@ -66,6 +66,17 @@ void gm_tray_update (GtkWidget *,
 		     IncomingCallMode,
 		     BOOL = FALSE);
 
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Update the tray sensitivity following the calling
+ *                 state.
+ * PRE          :  The tray GMObject.
+ *                 A valid GMH323EndPoint calling state.
+ */
+void gm_tray_update_sensitivity (GtkWidget *,
+				 int);
+
+
 /* DESCRIPTION  : /
  * BEHAVIOR     : Displays the ringing icon or not.
  * PRE          : A valid tray icon.

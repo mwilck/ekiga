@@ -96,6 +96,23 @@ typedef struct _MenuEntry {
 {NULL, NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL, TRUE, TRUE}
 
 
+/* DESCRIPTION  :  This callback is called when the user 
+ *                 selects a different option in a radio menu.
+ * BEHAVIOR     :  Sets the config key.
+ * PRE          :  data is the config key.
+ */
+void radio_menu_changed_cb (GtkWidget *,
+			    gpointer);
+
+
+/* DESCRIPTION  :  This callback is called when the user toggles an
+ * BEHAVIOR     :  Updates the config key given as parameter.
+ * PRE          :  data is the key.
+ */
+void toggle_menu_changed_cb (GtkWidget *, 
+			     gpointer);
+
+
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Change the sensitivity of a whole Menu section given the
  *                 Menu widget, the identifier of one of the first Menu item

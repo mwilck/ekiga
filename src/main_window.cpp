@@ -42,7 +42,6 @@
 #include "gnomemeeting.h"
 #include "chat_window.h"
 #include "config.h"
-#include "menu.h"
 #include "misc.h"
 #include "toolbar.h"
 #include "callbacks.h"
@@ -204,25 +203,6 @@ zoom_changed_cb (GtkWidget *,
 static void 
 fullscreen_changed_cb (GtkWidget *,
 		       gpointer);
-
-
-/* DESCRIPTION  :  This callback is called when the user 
- *                 selects a different option in a radio menu.
- * BEHAVIOR     :  Sets the config key.
- * PRE          :  data is the config key.
- */
-static void 
-radio_menu_changed_cb (GtkWidget *,
-		       gpointer);
-
-
-/* DESCRIPTION  :  This callback is called when the user toggles an
- * BEHAVIOR     :  Updates the config key given as parameter.
- * PRE          :  data is the key.
- */
-static void 
-toggle_menu_changed_cb (GtkWidget *, 
-			gpointer);
 
 
 /* DESCRIPTION  :  This callback is called when the user toggles an 
@@ -483,13 +463,18 @@ window_closed_cb (GtkWidget *widget,
 		  GdkEvent *event,
 		  gpointer data)
 {
+  GtkWidget *tray = NULL;
+  
   GmWindow *mw = NULL;
+  
   gboolean b = FALSE;
 
   g_return_val_if_fail (data != NULL, FALSE);
   mw = gm_mw_get_mw (GTK_WIDGET (data));
+  tray = GnomeMeeting::Process ()->GetTray ();
+  
 
-  b = gm_tray_is_embedded (mw->docklet);
+  b = gm_tray_is_embedded (tray);
 
   if (!b)
     quit_callback (NULL, data);
@@ -543,50 +528,6 @@ fullscreen_changed_cb (GtkWidget *widget,
 		       gpointer data)
 {
   gm_conf_set_float (VIDEO_DISPLAY_KEY "zoom_factor", -1.0);
-}
-
-
-static void 
-radio_menu_changed_cb (GtkWidget *widget,
-		       gpointer data)
-{
-  GSList *group = NULL;
-
-  int group_last_pos = 0;
-  int active = 0;
-
-  g_return_if_fail (data != NULL);
-
-  
-  group = gtk_radio_menu_item_get_group (GTK_RADIO_MENU_ITEM (widget));
-  group_last_pos = g_slist_length (group) - 1; /* If length 1, last pos is 0 */
-
-  /* Only do something when a new CHECK_MENU_ITEM becomes active,
-     not when it becomes inactive */
-  if (GTK_CHECK_MENU_ITEM (widget)->active) {
-
-    while (group) {
-
-      if (group->data == widget) 
-	break;
-      
-      active++;
-      group = g_slist_next (group);
-    }
-
-    gm_conf_set_int ((gchar *) data, group_last_pos - active);
-  }
-}
-
-
-static void 
-toggle_menu_changed_cb (GtkWidget *widget, 
-			gpointer data)
-{
-  g_return_if_fail (data != NULL);
-  
-  gm_conf_set_bool ((gchar *) data, 
-		    GTK_CHECK_MENU_ITEM (widget)->active);
 }
 
 
@@ -1507,24 +1448,25 @@ gm_main_window_update_sensitivity (//GtkWidget *,
   }
   else {
 
-    if (is_transmitting) {
-      
-      if (!is_video) 
-	gtk_menu_set_sensitive (mw->main_menu, "suspend_audio", TRUE);
-      else
-	gtk_menu_set_sensitive (mw->main_menu, "suspend_video", TRUE);
-    }	
-    else {
-    
-      if (!is_video)
-	gtk_menu_set_sensitive (mw->main_menu, "suspend_audio", FALSE);
-      else
-	gtk_menu_set_sensitive (mw->main_menu, "suspend_audio", FALSE);
-
-    }
-    
     frame = mw->audio_volume_frame;
     button = mw->audio_chan_button;
+  }
+  
+
+  if (is_transmitting) {
+
+    if (!is_video) 
+      gtk_menu_set_sensitive (mw->main_menu, "suspend_audio", TRUE);
+    else
+      gtk_menu_set_sensitive (mw->main_menu, "suspend_video", TRUE);
+  }	
+  else {
+
+    if (!is_video)
+      gtk_menu_set_sensitive (mw->main_menu, "suspend_audio", FALSE);
+    else
+      gtk_menu_set_sensitive (mw->main_menu, "suspend_video", FALSE);
+
   }
 
 
@@ -1826,7 +1768,6 @@ gm_main_window_new (GmWindow *mw)
   gtk_frame_set_shadow_type (GTK_FRAME (mw->video_frame), GTK_SHADOW_IN);
   
   event_box = gtk_event_box_new ();
-  mw->video_popup_menu = gnomemeeting_video_popup_init_menu (event_box, mw->accel);
 
   vbox = gtk_vbox_new (FALSE, 0);
 

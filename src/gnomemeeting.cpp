@@ -43,7 +43,6 @@
 #include "ils.h"
 #include "urlhandler.h"
 #include "addressbook_window.h"
-#include "menu.h"
 #include "pref_window.h"
 #include "chat_window.h"
 #include "calls_history_window.h"
@@ -78,13 +77,13 @@ GtkWidget *gm;
 static gint
 gnomemeeting_tray_hack (gpointer data)
 {
-  GmWindow *gw = NULL;
+  GtkWidget *tray = NULL;
 
+  tray = GnomeMeeting::Process ()->GetTray ();
+  
   gdk_threads_enter ();
 
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
-  
-  if (!gm_tray_is_embedded (gw->docklet)) {
+  if (!gm_tray_is_embedded (tray)) {
 
     gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Notification area not detected"), _("You have chosen to start GnomeMeeting hidden, however the notification area is not present in your panel, GnomeMeeting can thus not start hidden."));
     gnomemeeting_window_show (gm);
@@ -110,8 +109,7 @@ GnomeMeeting::GnomeMeeting ()
 
   addressbook_window = NULL;
   
-  gw->docklet =   
-    gw->splash_win = gw->incoming_call_popup = 
+  gw->splash_win = gw->incoming_call_popup = 
     gw->transfer_call_popup = gw->audio_transmission_popup = 
     gw->audio_reception_popup = 
     NULL;
@@ -148,7 +146,8 @@ GnomeMeeting::~GnomeMeeting()
     gtk_widget_destroy (gm);
   if (druid_window)
     gtk_widget_destroy (druid_window);
-
+  if (tray)
+    gtk_widget_destroy (tray);
 }
 
 
@@ -398,6 +397,13 @@ GnomeMeeting::GetHistoryWindow ()
 }
 
 
+GtkWidget *
+GnomeMeeting::GetTray ()
+{
+  return tray;
+}
+
+
 void GnomeMeeting::Main ()
 {
 }
@@ -450,8 +456,7 @@ void GnomeMeeting::BuildGUI ()
   chat_window = gnomemeeting_text_chat_new ();
   druid_window = gm_druid_window_new ();
 #ifndef WIN32
-  gw->docklet = gm_tray_new ();
-  gw->tray_popup_menu = gnomemeeting_tray_init_menu (gw->docklet);
+  tray = gm_tray_new ();
 #endif
   gm_main_window_new (gw);
 

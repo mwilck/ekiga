@@ -47,7 +47,6 @@
 #include "endpoint.h"
 #include "gnomemeeting.h"
 #include "lid.h"
-#include "menu.h"
 #include "pref_window.h"
 #include "log_window.h"
 #include "calls_history_window.h"
@@ -1270,23 +1269,23 @@ ils_option_changed_nt (gpointer id,
  * BEHAVIOR     :  Modifies the tray icon, and the
  *                 always_forward key following the current mode is FORWARD or
  *                 not.
- * PRE          :  /
+ * PRE          :  The Tray GMObject.
  */
 static void
 incoming_call_mode_changed_nt (gpointer id, 
 			       GmConfEntry *entry,
 			       gpointer data)
 {
-  GmWindow *gw = NULL;
-
   GMH323EndPoint::CallingState calling_state = GMH323EndPoint::Standby;
   GMH323EndPoint *ep = NULL;
 
   gboolean forward_on_busy = FALSE;
 
   ep = GnomeMeeting::Process ()->Endpoint ();
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
 
+  
+  g_return_if_fail (data != NULL);
+  
   
   if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
 
@@ -1303,7 +1302,7 @@ incoming_call_mode_changed_nt (gpointer id,
     forward_on_busy = gm_conf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
        
     /* Update the tray icon */
-    gm_tray_update (gw->docklet, 
+    gm_tray_update (GTK_WIDGET (data),
 		    calling_state, 
 		    (IncomingCallMode)
 		    gm_conf_entry_get_int (entry), 
@@ -1490,6 +1489,7 @@ gnomemeeting_conf_init ()
 {
   GtkWidget *chat_window = NULL;
   GtkWidget *prefs_window = NULL;
+  GtkWidget *tray = NULL;
   
   GmWindow *gw = NULL;
   
@@ -1498,6 +1498,7 @@ gnomemeeting_conf_init ()
   gw = GnomeMeeting::Process ()->GetMainWindow ();
   prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
+  tray = GnomeMeeting::Process ()->GetTray ();
 
 
   /* Start listeners */
@@ -1550,10 +1551,7 @@ gnomemeeting_conf_init ()
 			radio_menu_changed_nt,
 			gtk_menu_get_widget (gw->main_menu, "available"));
   gm_conf_notifier_add (CALL_OPTIONS_KEY "incoming_call_mode",
-			radio_menu_changed_nt,
-			gtk_menu_get_widget (gw->tray_popup_menu, "available"));
-  gm_conf_notifier_add (CALL_OPTIONS_KEY "incoming_call_mode",
-			incoming_call_mode_changed_nt, NULL);
+			incoming_call_mode_changed_nt, tray);
   gm_conf_notifier_add (CALL_OPTIONS_KEY "incoming_call_mode",
 			ils_option_changed_nt, NULL);
  

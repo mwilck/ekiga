@@ -153,6 +153,13 @@ class GnomeMeeting : public PProcess
   GtkWidget *GetHistoryWindow ();
 
   
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns a pointer to the tray.
+   * PRE          :  /
+   */
+  GtkWidget *GetTray ();
+  
+  
   /* Needed for PProcess */
   void Main();
 
@@ -257,6 +264,7 @@ class GnomeMeeting : public PProcess
   GtkWidget *chat_window;
   GtkWidget *druid_window;
   GtkWidget *prefs_window;
+  GtkWidget *tray;
 
   static GnomeMeeting *GM;
 };

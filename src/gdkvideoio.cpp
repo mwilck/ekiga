@@ -42,11 +42,11 @@
 #include "gdkvideoio.h"
 #include "gnomemeeting.h"
 #include "misc.h"
-#include "menu.h"
 #include "main_window.h"
 
 
 #include "gm_conf.h"
+#include "lib/gtk_menu_extensions.h"
 
 #include <ptlib/vconvert.h>
 

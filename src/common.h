@@ -136,6 +136,17 @@ typedef enum {
 } ControlPanelSection;
 
 
+/* Video modes */
+enum {
+
+  LOCAL_VIDEO, 
+  REMOTE_VIDEO, 
+  BOTH_INCRUSTED, 
+  BOTH_LOCAL, 
+  BOTH
+};
+
+
 struct _GmWindow
 {
   GtkObject *adj_input_volume;
@@ -152,12 +163,10 @@ struct _GmWindow
   GtkAccelGroup *accel;
 
   GtkWidget *main_menu;
-  GtkWidget *tray_popup_menu;
   GtkWidget *video_popup_menu;
   GtkWidget *audio_transmission_popup;
   GtkWidget *audio_reception_popup;
   
-  GtkWidget *docklet;
   GtkWidget *statusbar;
   GtkWidget *remote_name;
   GtkWidget *splash_win;

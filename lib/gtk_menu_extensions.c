@@ -167,6 +167,50 @@ menu_widget_destroyed (GtkWidget *w, gpointer data)
 
 /* The public functions */
 void 
+radio_menu_changed_cb (GtkWidget *widget,
+		       gpointer data)
+{
+  GSList *group = NULL;
+
+  int group_last_pos = 0;
+  int active = 0;
+
+  g_return_if_fail (data != NULL);
+
+  
+  group = gtk_radio_menu_item_get_group (GTK_RADIO_MENU_ITEM (widget));
+  group_last_pos = g_slist_length (group) - 1; /* If length 1, last pos is 0 */
+
+  /* Only do something when a new CHECK_MENU_ITEM becomes active,
+     not when it becomes inactive */
+  if (GTK_CHECK_MENU_ITEM (widget)->active) {
+
+    while (group) {
+
+      if (group->data == widget) 
+	break;
+      
+      active++;
+      group = g_slist_next (group);
+    }
+
+    gm_conf_set_int ((gchar *) data, group_last_pos - active);
+  }
+}
+
+
+void 
+toggle_menu_changed_cb (GtkWidget *widget, 
+			gpointer data)
+{
+  g_return_if_fail (data != NULL);
+  
+  gm_conf_set_bool ((gchar *) data, 
+		    GTK_CHECK_MENU_ITEM (widget)->active);
+}
+
+
+void 
 gtk_build_menu (GtkWidget *menubar,
 		MenuEntry *menu,
 		GtkAccelGroup *accel,

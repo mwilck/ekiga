@@ -1,3 +1,18 @@
+2004-08-26  Damien Sandras  <dsandras@gnome.org>
+
+	* lib/gtk_menu_extensions.c, lib/gtk_menu_extensions.h: Added 2
+	callbacks usable with GM's MenuEntries and permitting to update
+	a GConf key with the current state of the radio or toggle menu.
+
+	* src/Makefile.am, src/callbacks.cpp, src/common.h, src/config.cpp,
+	src/connection.cpp, src/endpoint.cpp, src/gdkvideoio.cpp, 
+	src/gnomemeeting.cpp, src/gnomemeeting.h, src/main_window.cpp,
+	src/tray.cpp, src/tray.h, src/urlhandler.cpp, src/videograbber.cpp:
+	Updated tray.h API. Removed now unused menu.* as it is integrated
+	in the respective GMObjects.
+	
+	* src/menu.cpp, src/menu.h: Removed.
+
 2004-08-26  Julien Puydt  <jpuydt@free.fr>
 
 	* src/endpoint.h, src/endpoint.cpp: Added calls to the endpoint to

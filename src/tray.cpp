@@ -48,21 +48,24 @@
 #include "eggtrayicon.h"
 #endif
 
-#include "menu.h"
 #include "callbacks.h"
 #include "misc.h"
 
 #include "stock-icons.h"
 #include "gm_conf.h"
+#include "lib/gtk_menu_extensions.h"
 
 
 /* Declarations */
 
 typedef struct _GmTray {
 
+  GtkWidget *popup_menu;
   GtkWidget *image;
+  
   gboolean ringing;
   gboolean embedded;
+  
 } GmTray;
 
 #define GM_TRAY(x) (GmTray *) (x)
@@ -210,7 +213,22 @@ gm_tray_new ()
   GtkWidget *tray_icon = NULL;
   GtkWidget *event_box = NULL;
 
+  GtkWidget *addressbook_window = NULL;
+  GtkWidget *calls_history_window = NULL;
+  GtkWidget *prefs_window = NULL;
 
+  IncomingCallMode icm = AVAILABLE;
+  
+
+  /* Get the data */
+  addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
+  calls_history_window = GnomeMeeting::Process ()->GetCallsHistoryWindow ();
+  prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
+  
+  icm = 
+    (IncomingCallMode) gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode"); 
+
+  
   /* Start building the GMObject and associate the structure
    * to the object so that it is deleted when the object is
    * destroyed
@@ -228,7 +246,89 @@ gm_tray_new ()
                           (gpointer) gt, 
 			  (GDestroyNotify) (gm_tray_destroy));
 
+  
+  /* The menu */
+  static MenuEntry tray_menu [] =
+    {
+      GTK_MENU_ENTRY("connect", _("_Connect"), _("Create a new connection"), 
+		     GM_STOCK_CONNECT_16, 'c', 
+		     GTK_SIGNAL_FUNC (connect_cb), NULL, TRUE),
+      GTK_MENU_ENTRY("disconnect", _("_Disconnect"),
+		     _("Close the current connection"), 
+		     GM_STOCK_DISCONNECT_16, 'd',
+		     GTK_SIGNAL_FUNC (disconnect_cb), NULL, FALSE),
 
+      GTK_MENU_SEPARATOR,
+
+      GTK_MENU_RADIO_ENTRY("available", _("_Available"),
+			   _("Display a popup to accept the call"),
+			   NULL, 0, 
+			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
+			   (gpointer) CALL_OPTIONS_KEY "incoming_call_mode",
+			   (icm == AVAILABLE), TRUE),
+      GTK_MENU_RADIO_ENTRY("free_for_chat", _("Free for Cha_t"),
+			   _("Auto answer calls"),
+			   NULL, 0, 
+			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
+			   (gpointer) CALL_OPTIONS_KEY "incoming_call_mode",
+			   (icm == FREE_FOR_CHAT), TRUE),
+      GTK_MENU_RADIO_ENTRY("busy", _("_Busy"), _("Reject calls"),
+			   NULL, 0, 
+			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
+			   (gpointer) CALL_OPTIONS_KEY "incoming_call_mode",
+			   (icm == BUSY), TRUE),
+      GTK_MENU_RADIO_ENTRY("forward", _("_Forward"), _("Forward calls"),
+			   NULL, 0,
+			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
+			   (gpointer) CALL_OPTIONS_KEY "incoming_call_mode",
+			   (icm == FORWARD), TRUE),
+
+      GTK_MENU_SEPARATOR,
+
+      GTK_MENU_ENTRY("address_book", _("Address _Book"),
+		     _("Open the address book"),
+		     GM_STOCK_ADDRESSBOOK_16, 0,
+		     GTK_SIGNAL_FUNC (show_window_cb),
+		     (gpointer) addressbook_window, TRUE),
+
+      GTK_MENU_SEPARATOR,
+
+      GTK_MENU_ENTRY("calls_history", _("Calls History"),
+		     _("View the calls history"),
+		     GM_STOCK_CALLS_HISTORY, 0, 
+		     GTK_SIGNAL_FUNC (show_window_cb),
+		     (gpointer) calls_history_window, TRUE),
+
+      GTK_MENU_SEPARATOR,
+
+      GTK_MENU_ENTRY("preferences", _("_Preferences"),
+		     _("Change your preferences"),
+		     GTK_STOCK_PREFERENCES, 'P', 
+		     GTK_SIGNAL_FUNC (show_window_cb),
+		     (gpointer) prefs_window, TRUE),
+
+      GTK_MENU_SEPARATOR,
+     
+      GTK_MENU_ENTRY("about", _("_About..."),
+		     _("View information about GnomeMeeting"),
+		     NULL, 'a', 
+		     GTK_SIGNAL_FUNC (about_callback),
+		     (gpointer) gm, TRUE),
+
+      GTK_MENU_ENTRY("quit", _("_Quit"), 
+		     _("Quit GnomeMeeting"),
+		     GTK_STOCK_QUIT, 'Q', 
+		     GTK_SIGNAL_FUNC (quit_callback),
+		     NULL, TRUE),
+
+      GTK_MENU_END
+    };
+
+  
+  gt->popup_menu = gtk_build_popup_menu (tray_icon, tray_menu, NULL);
+
+  
+  /* The rest of the tray */
   event_box = gtk_event_box_new ();
   gt->image = gtk_image_new_from_stock (GM_STOCK_STATUS_AVAILABLE,
                                         GTK_ICON_SIZE_MENU);
@@ -247,6 +347,7 @@ gm_tray_new ()
   g_signal_connect (G_OBJECT (event_box), "button_press_event",
 		    G_CALLBACK (tray_clicked_cb), NULL);
 
+  
   gtk_widget_show_all (tray_icon);
   
   return tray_icon;
@@ -259,15 +360,23 @@ gm_tray_update (GtkWidget *tray_icon,
 		IncomingCallMode icm,
 		BOOL forward_on_busy)
 {
+  GtkWidget *menu = NULL;
+  
   GmTray *gt = NULL;
-
+  
   g_return_if_fail (tray_icon != NULL);
   
-  
+
   gt = gm_tray_get_tray (tray_icon);
   g_return_if_fail (gt != NULL);
+
+  
+  /* Update the menu with the new icm */
+  menu = gtk_menu_get_widget (gt->popup_menu, "available");
+  gtk_radio_menu_select_with_widget (GTK_WIDGET (menu), icm);
   
   
+  /* Update the icon */
   if (calling_state == GMH323EndPoint::Standby) {
 
     switch (icm) {
@@ -311,6 +420,49 @@ gm_tray_update (GtkWidget *tray_icon,
                                 GM_STOCK_STATUS_IN_A_CALL, 
                                 GTK_ICON_SIZE_MENU);
   }
+}
+
+
+
+void 
+gm_tray_update_sensitivity (GtkWidget *tray,
+			    int calling_state)
+{
+  GmTray *gt = NULL;
+
+  g_return_if_fail (tray != NULL);
+
+
+  gt = gm_tray_get_tray (tray);
+  g_return_if_fail (gt != NULL);
+
+
+  switch (calling_state)
+    {
+    case GMH323EndPoint::Standby:
+
+      gtk_menu_set_sensitive (gt->popup_menu, "connect", TRUE);
+      gtk_menu_set_sensitive (gt->popup_menu, "disconnect", FALSE);
+      break;
+
+
+    case GMH323EndPoint::Calling:
+
+      gtk_menu_set_sensitive (gt->popup_menu, "connect", FALSE);
+      gtk_menu_set_sensitive (gt->popup_menu, "disconnect", TRUE);
+      break;
+
+
+    case GMH323EndPoint::Connected:
+      gtk_menu_set_sensitive (gt->popup_menu, "connect", FALSE);
+      gtk_menu_set_sensitive (gt->popup_menu, "disconnect", TRUE);
+      break;
+
+
+    case GMH323EndPoint::Called:
+      gtk_menu_set_sensitive (gt->popup_menu, "disconnect", TRUE);
+      break;
+    }
 }
 
 

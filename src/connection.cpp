@@ -41,7 +41,6 @@
 #include "connection.h"
 #include "endpoint.h"
 #include "gnomemeeting.h"
-#include "menu.h"
 #include "misc.h"
 #include "chat_window.h"
 #include "log_window.h"

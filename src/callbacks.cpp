@@ -42,13 +42,13 @@
 #include "log_window.h"
 #include "callbacks.h"
 #include "gnomemeeting.h"
-#include "menu.h"
 #include "misc.h"
 #include "urlhandler.h"
 
 #include "gmentrydialog.h"
 #include "gm_conf.h"
 #include "dialog.h"
+#include "lib/gtk_menu_extensions.h"
 
 
 /* Declarations */
@@ -494,13 +494,14 @@ void
 quit_callback (GtkWidget *widget, 
 	       gpointer data)
 {
+  GmWindow *gw = NULL;
+  GMH323EndPoint *ep =NULL;
+  
   GtkWidget *prefs_window = NULL;
   GtkWidget *addressbook_window = NULL;
   GtkWidget *calls_history_window = NULL;
   GtkWidget *history_window = NULL;
-  
-  GmWindow *gw = NULL;
-  GMH323EndPoint *ep =NULL;
+  GtkWidget *tray = NULL;
   
   gw = GnomeMeeting::Process ()->GetMainWindow ();
   ep = GnomeMeeting::Process ()->Endpoint ();
@@ -508,18 +509,19 @@ quit_callback (GtkWidget *widget,
   calls_history_window = GnomeMeeting::Process ()->GetCallsHistoryWindow ();
   prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
+  tray = GnomeMeeting::Process ()->GetTray ();
   
   gnomemeeting_window_hide (gm);
   gnomemeeting_window_hide (history_window);
   gnomemeeting_window_hide (calls_history_window);
   gnomemeeting_window_hide (addressbook_window);
   gnomemeeting_window_hide (prefs_window);
+  gnomemeeting_window_hide (tray);
   
   gdk_threads_leave ();
   ep->ClearAllCalls (H323Connection::EndedByLocalUser, TRUE);
   gdk_threads_enter ();
 
-  gtk_widget_hide (gw->docklet);
 
   gtk_main_quit ();
 }  
