@@ -1067,17 +1067,17 @@ gnomemeeting_init_pref_window_audio_devices (GtkWidget *notebook)
   /* Add all the fields */
   /* The player */
   pw->audio_player =
-    gnomemeeting_table_add_pstring_option_menu (table, _("Audio player:"), gw->audio_player_devices, DEVICES_KEY "audio_player", _("Select the audio player device to use."), 0);
+    gnomemeeting_table_add_pstring_option_menu (table, _("Playing device:"), gw->audio_player_devices, DEVICES_KEY "audio_player", _("Select the audio player device to use."), 0);
 
   pw->audio_player_mixer = 
-    gnomemeeting_table_add_pstring_option_menu (table, _("Audio player mixer:"), gw->audio_mixers, DEVICES_KEY "audio_player_mixer", _("Select the mixer to use to change the volume of the audio player."), 1);
+    gnomemeeting_table_add_pstring_option_menu (table, _("Playing mixer:"), gw->audio_mixers, DEVICES_KEY "audio_player_mixer", _("Select the mixer to use to change the volume of the audio player."), 1);
   
   /* The recorder */
   pw->audio_recorder = 
-    gnomemeeting_table_add_pstring_option_menu (table, _("Audio recorder:"), gw->audio_recorder_devices, DEVICES_KEY "audio_recorder", _("Select the audio recorder device to use."), 2);
+    gnomemeeting_table_add_pstring_option_menu (table, _("Recording device:"), gw->audio_recorder_devices, DEVICES_KEY "audio_recorder", _("Select the audio recorder device to use."), 2);
 
   pw->audio_recorder_mixer = 
-    gnomemeeting_table_add_pstring_option_menu (table, _("Audio recorder mixer:"), gw->audio_mixers, DEVICES_KEY "audio_recorder_mixer", _("Select the mixer to use to change the volume of the audio recorder."), 4);
+    gnomemeeting_table_add_pstring_option_menu (table, _("Recording mixer:"), gw->audio_mixers, DEVICES_KEY "audio_recorder_mixer", _("Select the mixer to use to change the volume of the audio recorder."), 4);
 
 
 #ifdef HAS_IXJ
@@ -1388,7 +1388,7 @@ gnomemeeting_init_pref_window_video_codecs (GtkWidget *notebook)
     gnomemeeting_table_add_spin (table, _("Keep a minimum video _quality of"), VIDEO_SETTINGS_KEY "tr_vq", _("The minimum transmitted video quality to keep when trying to minimize the used bandwidth:  choose 100% on a LAN for the best quality, 1% being the worst quality."), 1.0, 100.0, 1.0, 0, _("%"), true);
 
   pw->tr_fps =
-    gnomemeeting_table_add_spin (table, _("Keep a minimum _frame rate of"), VIDEO_SETTINGS_KEY "tr_fps", _("The minimum number of video frames to transmit each second when trying to minimize the bandwidth."), 1.0, 30.0, 1.0, 1, _("_frames per second"), true);
+    gnomemeeting_table_add_spin (table, _("Transmit at least"), VIDEO_SETTINGS_KEY "tr_fps", _("The minimum number of video frames to transmit each second when trying to minimize the bandwidth."), 1.0, 30.0, 1.0, 1, _("_frames per second"), true);
 				 
   pw->tr_ub =
     gnomemeeting_table_add_spin (table, _("Transmit"), VIDEO_SETTINGS_KEY "tr_ub", _("Choose the number of blocks (that have not changed) transmitted with each frame. These blocks fill in the background."), 1.0, 99.0, 1.0, 2, _("background _blocks with each frame"), true);
