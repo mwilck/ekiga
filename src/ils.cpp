@@ -171,7 +171,7 @@ BOOL GMILSClient::Register (BOOL reg)
      exit */
   if (!reg) {
     if (!registered) {
-      cout << "byé" << endl << flush;
+      has_to_unregister = 0;
       return TRUE;
     }
   }
@@ -222,7 +222,7 @@ BOOL GMILSClient::Register (BOOL reg)
 
     /* Sappid */
     mods [2] = new (LDAPMod);
-    sappid_value [0] = g_strdup ("ms-netmeeting");
+    sappid_value [0] = g_strdup ("GnomeMeeting");
     sappid_value [1] = NULL;
     mods [2]->mod_op = LDAP_MOD_ADD | LDAP_MOD_REPLACE;
     mods [2]->mod_type = g_strdup ("sappid");

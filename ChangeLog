@@ -1,5 +1,11 @@
 2001-11-09  Damien Sandras  <dsandras@seconix.com>
 
+	* ils.cpp: Set sappid to GnomeMeeting. Set has_to_unregister to 0
+	if it doesn't accept to unregister because the user was not previously
+	registered somewhere.
+	
+2001-11-09  Damien Sandras  <dsandras@seconix.com>
+
 	* common.h: Changed FRAME_SIZE to 0.
 	* gdkvideoio.cpp, main_interface.cpp: Only resizes the gdk_drawing_area
 	and no more the video_frame.
