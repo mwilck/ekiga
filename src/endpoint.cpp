@@ -174,7 +174,8 @@ GMH323EndPoint::GMH323EndPoint ()
 
   /* Use IPv6 address family by default if available. */
 #ifdef P_HAS_IPV6
-  PIPSocket::SetDefaultIpAddressFamilyV6();
+  if (PIPSocket::IsIpAddressFamilyV6Supported())
+    PIPSocket::SetDefaultIpAddressFamilyV6();
 #endif
       
   udp_port_range = 
