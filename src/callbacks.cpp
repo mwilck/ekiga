@@ -232,7 +232,7 @@ void about_callback (GtkWidget *widget, gpointer parent_window)
       "",
       N_("Artwork:"),
       "Jakub Steiner <jimmac@ximian.com>",
-      ""
+      "",
       N_("Contributors:"),
       "Alexander Larsson <alexl@redhat.com>",
       "Artur Flinta  <aflinta@at.kernel.pl>",
