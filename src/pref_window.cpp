@@ -773,7 +773,7 @@ gnomemeeting_codecs_list_build (GtkListStore *codecs_list_store)
     if ((couple [0]) && (couple [1])) {
 
       dev = gconf_get_string (AUDIO_DEVICES_KEY "input_device");
-      cout << "FIX ME here for Quicknet" << endl << flush;
+      
       codec = PString (couple [0]);
       if (quicknet)
 	dev = PString (quicknet);
@@ -786,7 +786,7 @@ gnomemeeting_codecs_list_build (GtkListStore *codecs_list_store)
 
       }
       else {
-
+	cout << "la" << endl << flush;
 	gnomemeeting_codecs_list_add (list_iter, codecs_list_store, 
 				      couple [0], atoi (couple [1]),
 				      true, "black");
@@ -1021,7 +1021,6 @@ static void
 gnomemeeting_init_pref_window_call_control (GtkWidget *window,
 					    GtkWidget *container)
 {
-  GtkWidget *entry = NULL;
   GtkWidget *subsection = NULL;
 
   GmPrefWindow *pw = NULL;
@@ -1308,6 +1307,10 @@ gnomemeeting_init_pref_window_audio_devices (GtkWidget *window,
 		   _("AGC"),
 		   NULL};
 
+  gchar *types_array [] = {_("POTS"),
+			   _("headset"),
+			   NULL};
+
 
   gw = GnomeMeeting::Process ()->GetMainWindow ();
   pw = GnomeMeeting::Process ()->GetPrefWindow ();
@@ -1341,17 +1344,17 @@ gnomemeeting_init_pref_window_audio_devices (GtkWidget *window,
 
 #ifdef HAS_IXJ
   /* The Quicknet devices related options */
-  /*
   subsection = gnome_prefs_subsection_new (window, container,
-					   _("Quicknet Device"), 2, 2);
+					   _("Quicknet Hardware"), 3, 2);
+  
+  gnome_prefs_int_option_menu_new (subsection, _("Echo _cancellation:"), aec, AUDIO_DEVICES_KEY "lid_audio_cancellation_level", _("The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic Gain Compensation. Choosing Automatic Gain Compensation modulates the volume for best quality."), 0);
 
-  gnome_prefs_int_option_menu_new (subsection, _("Echo _cancellation:"), aec, DEVICES_KEY "lid_aec", _("The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic Gain Compensation. Choosing Automatic Gain Compensation modulates the volume for best quality."), 0);
-
+  gnome_prefs_int_option_menu_new (subsection, _("Output device type:"), types_array, AUDIO_DEVICES_KEY "lid_output_device_type", _("The output device type is the type of device connected to your Quicknet card. It can be either a POTS (plain old telephone set) or a headset."), 1);
+  
   entry =
-    gnome_prefs_entry_new (subsection, _("Country _code:"), DEVICES_KEY "lid_country", _("The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)."), 1, false);
+    gnome_prefs_entry_new (subsection, _("Country _code:"), AUDIO_DEVICES_KEY "lid_country_code", _("The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)."), 2, false);
   gtk_entry_set_max_length (GTK_ENTRY (entry), 2);
-  gtk_widget_set_size_request (GTK_WIDGET (entry), 100, -1);  
-  */
+  gtk_widget_set_size_request (GTK_WIDGET (entry), 100, -1);
 #endif
 
   

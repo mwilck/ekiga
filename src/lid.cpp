@@ -83,6 +83,7 @@ GMLid::GMLid ()
   /* Open the device */
   Open ();
   this->Resume ();
+  thread_sync_point.Wait ();
 } 
 
 
@@ -100,7 +101,7 @@ void GMLid::Open ()
   gchar *lid_device = NULL;
   gchar *lid_country = NULL;
   int lid_aec = 0;
-
+  
   GmWindow *gw = NULL;
   GConfClient *client = NULL;
 
@@ -117,7 +118,7 @@ void GMLid::Open ()
     lid_device = gconf_get_string (AUDIO_DEVICES_KEY "input_device");
     lid_country = gconf_get_string (AUDIO_DEVICES_KEY "lid_country_code");
     lid_aec = gconf_get_int (AUDIO_DEVICES_KEY "lid_echo_cancellation_level");
-    gnomemeeting_threads_leave ();
+       gnomemeeting_threads_leave ();
 
     if (lid_device == NULL)
       lid_device = g_strdup ("/dev/phone0");
@@ -163,7 +164,7 @@ void GMLid::Open ()
 
       lid->StopTone (0);
       lid->SetLineToLineDirect (0, 1, FALSE);
-      lid->EnableAudio(0, TRUE); 
+
     }
     else {
       
@@ -207,13 +208,15 @@ void GMLid::Main ()
   unsigned int vol = 0;
 
   PWaitAndSignal m(quit_mutex);
-  
+  thread_sync_point.Signal ();
+  cout << "ici" << endl <<flush;
   /* Check the initial hook status. */
   OffHook = lastOffHook = lid->IsLineOffHook (OpalIxJDevice::POTSLine);
 
   gnomemeeting_threads_enter ();
   gw = GnomeMeeting::Process ()->GetMainWindow ();
-
+  int lid_odt = gconf_get_int (AUDIO_DEVICES_KEY "lid_output_device_type");
+  
   /* Update the mixers if the lid is used */
   lid->GetPlayVolume (0, vol);
   GTK_ADJUSTMENT (gw->adj_play)->value = (int) (vol);
@@ -251,17 +254,20 @@ void GMLid::Main ()
       gnomemeeting_statusbar_flash (gw->statusbar, _("Phone is off hook"));
       gnomemeeting_threads_leave ();
 
-      if (calling_state == 3) { /* 3 = incoming call */
-
-	lid->StopTone (0);
+      if (calling_state == 3)  /* 3 = incoming call */
 	GnomeMeeting::Process ()->Connect ();
-      }
+
 
 
       if (calling_state == 0) { /* not connected */
 
-        lid->PlayTone (0, OpalLineInterfaceDevice::DialTone);
-      	lid->EnableAudio (0, TRUE);
+	if (lid_odt == 0) { // POTS
+
+	  lid->PlayTone (0, OpalLineInterfaceDevice::DialTone);
+	  lid->EnableAudio (0, TRUE);
+	}
+	else
+	  lid->EnableAudio (0, FALSE);
 
 	gnomemeeting_threads_enter ();
 	url = gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry)); 
@@ -333,38 +339,53 @@ void GMLid::Main ()
 
 
 void
-GMLid::RingLine (int i)
+GMLid::UpdateState (GMH323EndPoint::CallingState i)
 {
+  int lid_odt = 0;
+  
+  lid_odt = gconf_get_int (AUDIO_DEVICES_KEY "lid_output_device_type");
+  
   if (lid && lid->IsOpen ()) {
     
     switch (i) {
 
-    case 0: /* RingTone */
+    case GMH323EndPoint::Calling:
+      lid->RingLine (0, 0);
+      lid->StopTone (0);
       lid->PlayTone (0, OpalLineInterfaceDevice::RingTone);
-      lid->RingLine (0, 0);
-      break;
       
-    case 1: /* RingLine */
-      lid->RingLine (OpalIxJDevice::POTSLine, 0x33);
       break;
 
-    case 2: /* Busy */
-      lid->StopTone (0);
-      lid->EnableAudio (0, TRUE);
+    case GMH323EndPoint::Called: 
+
+      if (lid_odt == 0)
+	lid->RingLine (OpalIxJDevice::POTSLine, 0x33);
+      else
+	lid->RingLine (0, 0);
+      break;
+
+    case GMH323EndPoint::Standby: /* Busy */
       lid->RingLine (0, 0);
+      lid->StopTone (0);
       lid->PlayTone (0, OpalLineInterfaceDevice::BusyTone);
+      if (lid_odt == 1) 
+	PThread::Current ()->Sleep (2800);
+
+      lid->StopTone (0);
+      
       break;
 
-    case 3:
-      lid->StopTone (0);
-      lid->SetRemoveDTMF (0, TRUE);
-      lid->EnableAudio (0, FALSE);
+    case GMH323EndPoint::Connected:
+
       lid->RingLine (0, 0);
-      
-    case 4: /* Stop tone */
       lid->StopTone (0);
-      break;
+      lid->SetRemoveDTMF (0, TRUE);      
     }
+
+    if (lid_odt == 0) // POTS
+      lid->EnableAudio (0, TRUE);
+    else 
+      lid->EnableAudio (0, FALSE);
   }
 }
 

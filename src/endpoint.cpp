@@ -43,6 +43,7 @@
 #include "gatekeeper.h"
 #include "urlhandler.h"
 #include "ils.h"
+#include "lid.h"
 #include "gnomemeeting.h"
 #include "sound_handling.h"
 #include "tray.h"
@@ -155,16 +156,35 @@ GMH323EndPoint::MakeCallLocked (const PString & call_addr,
   
   con = H323EndPoint::MakeCallLocked (call_addr, call_token);
 
-  if (con)
+#ifdef HAS_IXJ
+  GMLid *lid = NULL;
+  lid = GetLid ();
+#endif
+
+  if (con) {
+    
     OutgoingCallTimer.RunContinuous (PTimeInterval (5));
+
+#ifdef HAX_IXJ
+    lid->UpdateStatus (GMH323EndPoint::Calling); // Calling
+#endif
+  }
   else {
     
     OutgoingCallTimer.Stop ();
+
+#ifdef HAX_IXJ
+    lid->UpdateStatus (GMH323EndPoint::Standby); // Busy
+#endif
 
     sound_event_mutex.Wait ();
     GMSoundEvent ("busy_tone_sound");
     sound_event_mutex.Signal ();
   }
+
+#ifdef HAS_IXJ
+  lid->Unlock ();
+#endif
   
   return con;
 }
@@ -178,6 +198,9 @@ void GMH323EndPoint::UpdateDevices ()
   GmWindow *gw = NULL;
 
   BOOL preview = FALSE;
+
+  PString dev;
+  gchar *audio_input = NULL;
   
   pw = GnomeMeeting::Process ()->GetPrefWindow ();
   gw = GnomeMeeting::Process ()->GetMainWindow ();
@@ -186,6 +209,7 @@ void GMH323EndPoint::UpdateDevices ()
   /* Get the gconf settings */
   gnomemeeting_threads_enter ();
   preview = gconf_get_bool (VIDEO_DEVICES_KEY "enable_preview");
+  audio_input = gconf_get_string (AUDIO_DEVICES_KEY "input_device");
   gnomemeeting_threads_leave ();
   
   gnomemeeting_sound_daemons_suspend ();
@@ -193,12 +217,10 @@ void GMH323EndPoint::UpdateDevices ()
   /* Do not change these values during calls */
   if (GetCallingState () == GMH323EndPoint::Standby) {
 
+    dev = audio_input;
     /* Quicknet hardware */
-    /*    if (PString (player).Find ("/dev/phone") != P_MAX_INDEX
-	|| PString (recorder).Find ("/dev/phone") != P_MAX_INDEX) {
-      
+    if (dev.Find ("phone") != P_MAX_INDEX)
       use_lid = true;
-      }*/
 
     /* Video preview */
     if (preview) 
@@ -217,6 +239,8 @@ void GMH323EndPoint::UpdateDevices ()
   }
 
   gnomemeeting_sound_daemons_resume ();
+
+  g_free (audio_input);
 }
 
 
@@ -248,7 +272,7 @@ GMH323EndPoint::AddAllCapabilities ()
 
 
 void 
-GMH323EndPoint::SetCallingState (unsigned i)
+GMH323EndPoint::SetCallingState (GMH323EndPoint::CallingState i)
 {
   PWaitAndSignal m(cs_access_mutex);
   
@@ -256,7 +280,7 @@ GMH323EndPoint::SetCallingState (unsigned i)
 }
 
 
-unsigned 
+GMH323EndPoint::CallingState
 GMH323EndPoint::GetCallingState (void)
 {
   PWaitAndSignal m(cs_access_mutex);
@@ -593,15 +617,12 @@ GMH323EndPoint::RemoveVideoGrabber ()
 GMVideoGrabber *
 GMH323EndPoint::GetVideoGrabber ()
 {
-  GMVideoGrabber *vg = NULL;
   PWaitAndSignal m(vg_access_mutex);
 
-  vg = video_grabber;
-
-  if (vg)
-    vg->Lock ();
+  if (video_grabber)
+    video_grabber->Lock ();
   
-  return vg;
+  return video_grabber;
 }
 
 
@@ -679,6 +700,10 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   BOOL do_forward = FALSE;
   BOOL do_reject = FALSE;
   BOOL do_answer = FALSE;
+
+#ifdef HAS_IXJ
+  GMLid *l = NULL;
+#endif    
   
   /* Check the gconf keys */
   gnomemeeting_threads_enter ();
@@ -807,13 +832,14 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   gnomemeeting_main_window_update_sensitivity (GMH323EndPoint::Called);
   gnomemeeting_threads_leave ();
 
-  
-#ifdef HAS_IXJ
-  GMLid *l = NULL;
-    
-  if ((l = GetLid ())) {
 
-    l->RingLine (1);
+  /* Update the LID state */
+#ifdef HAS_IXJ
+  l = GetLid ();
+  
+  if (l) {
+
+    l->UpdateState (GMH323EndPoint::Called);
     l->Unlock ();
   }
 #endif
@@ -897,7 +923,11 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   char *msg = NULL;
   BOOL reg = FALSE;
 
+#ifdef HAS_IXJ
+  GMLid *l = NULL;
+#endif
 
+  
   /* Start refreshing the stats */
   RTPTimer.RunContinuous (PTimeInterval (0, 1));
 
@@ -965,11 +995,11 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 
 
 #ifdef HAS_IXJ
-  GMLid *l = NULL;
+  l = GetLid ();
+  
+  if (l) {
 
-  if ((l = GetLid ())) {
-
-    l->RingLine (3);
+    l->UpdateState (GMH323EndPoint::Connected);
     l->Unlock ();
   }
 #endif
@@ -1073,6 +1103,10 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   BOOL not_current = FALSE;
 
   GmRtpData *rtp = NULL;
+
+#ifdef HAS_IXJ
+  GMLid *l = NULL;
+#endif
 
   rtp = GnomeMeeting::Process ()->GetRtpData ();
   
@@ -1222,6 +1256,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   if (not_current) 
     return;
 
+  cout << "iciiii" << endl << flush;
   
   /* Stop the Timers */
   NoAnswerTimer.Stop ();
@@ -1229,16 +1264,6 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   OutgoingCallTimer.Stop ();
 
   
-  /* Play busy tone */
-  sound_event_mutex.Wait ();
-  GMSoundEvent ("busy_tone_sound");
-  sound_event_mutex.Signal ();
-
-  
-  gnomemeeting_threads_enter ();
-  gtk_label_set_text (GTK_LABEL (gw->remote_name), "");
-  gnomemeeting_main_window_enable_statusbar_progress (false);
-
   if (gw->incoming_call_popup) {
 
     gtk_widget_destroy (gw->incoming_call_popup);
@@ -1258,12 +1283,25 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   }
 
 
+  /* Play busy tone */
+  sound_event_mutex.Wait ();
+  GMSoundEvent ("busy_tone_sound");
+  sound_event_mutex.Signal ();
+
+  
+  gnomemeeting_threads_enter ();
+  gtk_label_set_text (GTK_LABEL (gw->remote_name), "");
+  gnomemeeting_main_window_enable_statusbar_progress (false);
+  gnomemeeting_threads_leave ();
+  
+  
   /* Play Busy Tone */
 #ifdef HAS_IXJ
-  GMLid *l = NULL;
-  if ((l = GetLid ())) {
+  l = GetLid ();
+  
+  if (l) {
 
-    l->RingLine (2);
+    l->UpdateState (GMH323EndPoint::Standby);
     l->Unlock ();
   }
 #endif
@@ -1618,8 +1656,6 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
   /* If we are using a hardware LID, connect the audio stream to the LID */
   if (lid_device && lid_device->IsOpen()) {
 
-    l->RingLine (4);
-    
     if (!codec.AttachChannel (new OpalLineChannel (*lid_device,
 						   OpalIxJDevice::POTSLine,
 						   codec))) {
@@ -2178,6 +2214,11 @@ GMH323EndPoint::DeviceVolume (BOOL set,
   H323Codec *raw_codec = NULL;
   H323Connection *con = NULL;
 
+#ifdef HAS_IXJ
+  GMLid *l = NULL;
+  BOOL has_lid = FALSE;
+#endif
+
   BOOL err = TRUE;
   PString call_token;
 
@@ -2187,30 +2228,48 @@ GMH323EndPoint::DeviceVolume (BOOL set,
 
   if (con) {
 
-    for (int cpt = 0 ; cpt < 2 ; cpt ++) {
+#ifdef HAS_IXJ
+    if (set) {
+      
+      l = GetLid ();
+      if (l) {
 
-      /* TRUE = from_remote = playing */
-      channel = 
-	con->FindChannel (RTP_Session::DefaultAudioSessionID, (cpt == 0));
+	l->SetVolume (play_vol, rec_vol);
+	l->Unlock ();
+	has_lid = TRUE;
+      }
+    }
+#endif
 
-      if (channel) {
+    if (!has_lid) {
 
-	raw_codec = channel->GetCodec();
+      for (int cpt = 0 ; cpt < 2 ; cpt ++) {
 
-	if (raw_codec) {
+	/* TRUE = from_remote = playing */
+	channel = 
+	  con->FindChannel (RTP_Session::DefaultAudioSessionID, (cpt == 0));
 
-	  sound_channel = (PSoundChannel *) raw_codec->GetRawDataChannel ();
-	  if (sound_channel)
-	    if (set) {
+	if (channel) {
+
+	  raw_codec = channel->GetCodec();
+
+	  if (raw_codec) {
+
+	    sound_channel = (PSoundChannel *) raw_codec->GetRawDataChannel ();
+	    if (sound_channel)
+	      if (set) {
 	      
-	      err = 
-		sound_channel->SetVolume ((cpt == 0)?play_vol:rec_vol) && err;
-	    }
-	    else {
+		err = 
+		  sound_channel->SetVolume ((cpt == 0)?play_vol:rec_vol)
+		  && err;
+	      }
+	      else {
 
-	      err = 
-		sound_channel->GetVolume ((cpt == 0)?play_vol:rec_vol) && err;
-	    }
+		err = 
+		  sound_channel->GetVolume ((cpt == 0)?play_vol:rec_vol)
+		  && err;
+	      }
+	  }
 	}
       }
     }
@@ -2337,39 +2396,38 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 GMLid *
 GMH323EndPoint::GetLid (void)
 {
-  GMLid *l = NULL;
-
-  lid_access_mutex.Wait ();
-  l = lid;
+  PWaitAndSignal m(lid_access_mutex);
+    
   if (lid) 
     lid->Lock ();
 
-  lid_access_mutex.Signal ();
-
-  return l;
+  return lid;
 }
 
 
-void
+GMLid *
 GMH323EndPoint::CreateLid (void)
 {
-  lid_access_mutex.Wait ();
-  if (!lid)
-    lid = new GMLid ();
-  lid_access_mutex.Signal ();
+  PWaitAndSignal m(lid_access_mutex);
+
+  if (lid)
+    delete (lid);
+
+  lid = new GMLid ();
+
+  return lid;
 }
 
 
 void
 GMH323EndPoint::RemoveLid (void)
 {
-  lid_access_mutex.Wait ();
-  if (lid) {
-    
+  PWaitAndSignal m(lid_access_mutex);
+  
+  if (lid)     
     delete (lid);
-    lid = NULL;
-  }
-  lid_access_mutex.Signal ();
+
+  lid = NULL;
 }
 #endif
 

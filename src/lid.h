@@ -39,12 +39,15 @@
 #ifndef _LID_H_
 #define _LID_H_
 
+#include "../config.h"
+
 #include "common.h"
+#include "endpoint.h"
+
 
 #ifdef HAS_IXJ
 #include <ixjlid.h>
 
-#define GM_LID(x) (GMLid *)(x)
 
 
 class GMLid : public PThread
@@ -64,7 +67,7 @@ class GMLid : public PThread
  
   void Stop ();
 
-  void RingLine (int);
+  void UpdateState (GMH323EndPoint::CallingState);
 
   void SetAEC (unsigned, OpalLineInterfaceDevice::AECLevels);
 
@@ -85,6 +88,7 @@ class GMLid : public PThread
   OpalLineInterfaceDevice *lid;
   PMutex device_access_mutex;
   PMutex quit_mutex;
+  PSyncPoint thread_sync_point;
   
   int stop;
 };

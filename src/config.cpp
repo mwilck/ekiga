@@ -48,6 +48,7 @@
 #include "gnomemeeting.h"
 #include "videograbber.h"
 #include "ils.h"
+#include "lid.h"
 #include "urlhandler.h"
 #include "sound_handling.h"
 #include "pref_window.h"
@@ -59,6 +60,7 @@
 #include "stock-icons.h"
 #include "gtk_menu_extensions.h"
 #include "gconf_widgets_extensions.h"
+
 
 
 /* Declarations */
@@ -167,9 +169,20 @@ static void maximum_bandwidth_changed_nt (GConfClient *,
 					  GConfEntry *,
 					  gpointer);
 #ifdef HAS_IXJ
-static void lid_aec_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
-static void lid_country_changed_nt (GConfClient *, guint, GConfEntry *, 
+static void lid_aec_changed_nt (GConfClient *,
+				guint,
+				GConfEntry *,
+				gpointer);
+
+static void lid_country_changed_nt (GConfClient *,
+				    guint,
+				    GConfEntry *, 
 				    gpointer);
+
+static void lid_output_device_type_changed_nt (GConfClient *,
+					       guint,
+					       GConfEntry *, 
+					       gpointer);
 #endif
 
 
@@ -859,10 +872,11 @@ manager_changed_nt (GConfClient *client,
 
 /* DESCRIPTION  :  This notifier is called when the gconf database data
  *                 associated with the audio devices changes.
- * BEHAVIOR     :  Ensures that either no Quicknet device is used,
- *                 or it is used for both devices.
- *                 It also disables the druid test buttons for cases where
- *                 a test is not possible (Quicknet).
+ * BEHAVIOR     :  Rebuilds the codecs list because some codecs could be
+ *                 enabled or disabled following the device (Quicknet).
+ *                 If a Quicknet device is used, then the Quicknet LID thread
+ *                 is created. If not, it is removed provided we are not in
+ *                 a call.
  *                 Notice that audio devices can not be changed during a call.
  * PRE          :  /
  */
@@ -874,70 +888,31 @@ audio_device_changed_nt (GConfClient *client,
 {
   GMH323EndPoint *ep = NULL;
   
-  GmWindow *gw = NULL;
-  GmDruidWindow *dw = NULL;
   GmPrefWindow *pw = NULL;
   
-  PString dev, dev1, dev2;
+  PString dev;
 
-  gchar *player = NULL;
-  gchar *recorder = NULL;
-
-  BOOL use_lid = FALSE;
-  
-  dw = GnomeMeeting::Process ()->GetDruidWindow ();
   pw = GnomeMeeting::Process ()->GetPrefWindow ();
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
   ep = GnomeMeeting::Process ()->Endpoint ();
   
   if (entry->value->type == GCONF_VALUE_STRING) {
 
+    dev = gconf_value_get_string (entry->value);
+
     gdk_threads_enter ();
-      
-    dev = PString (gconf_value_get_string (entry->value));
-    cout << "FIX ME QUICKNET" << endl << flush;
-    /*
-    if (dev.Find ("phone") != P_MAX_INDEX) {
-
-      use_lid = TRUE;
-      
-      gconf_client_set_string (client, DEVICES_KEY "audio_recorder",
-			       (const char *) dev, NULL);
-      gconf_client_set_string (client, DEVICES_KEY "audio_player",
-			       (const char *) dev, NULL);
-
-      gnomemeeting_codecs_list_build (pw->codecs_list_store);
-#ifndef DISABLE_GNOME
-      gtk_widget_set_sensitive (GTK_WIDGET (dw->audio_test_button), false);
-#endif
-    }
-    else {
-
-      
-      player =
-	gconf_client_get_string (client, DEVICES_KEY "audio_player", NULL);
-      recorder =
-	gconf_client_get_string (client, DEVICES_KEY "audio_recorder",
-				 NULL);
-      dev1 = PString (player);
-      dev2 = PString (recorder);
-      
-      if (dev1.Find ("phone") != P_MAX_INDEX
-	  || dev2.Find ("phone") != P_MAX_INDEX) {
-
-	gconf_client_set_string (client, DEVICES_KEY "audio_recorder",
-			       (const char *) dev, NULL);
-	gconf_client_set_string (client, DEVICES_KEY "audio_player",
-				 (const char *) dev, NULL);
-
-	gnomemeeting_codecs_list_build (pw->codecs_list_store);
-#ifndef DISABLE_GNOME
-	gtk_widget_set_sensitive (GTK_WIDGET (dw->audio_test_button), true);
-#endif
-      }
-      }
-    */
+    gnomemeeting_codecs_list_build (pw->codecs_list_store);
     gdk_threads_leave ();
+
+    if (ep->GetCallingState () == GMH323EndPoint::Standby
+	&& gconf_entry_get_key (entry)
+	&& !strcmp (gconf_entry_get_key (entry),
+		    AUDIO_DEVICES_KEY "input_device")) {
+      
+      if (dev.Find ("phone") != P_MAX_INDEX)
+	ep->CreateLid ();
+      else 
+	ep->RemoveLid ();
+    }
   }
 }
 
@@ -945,7 +920,11 @@ audio_device_changed_nt (GConfClient *client,
 
 /* DESCRIPTION  :  This callback is called when the video device changes
  *                 in the gconf database.
- * BEHAVIOR     :  It resets the video device if we are not in a call.
+ * BEHAVIOR     :  It creates a new video grabber if preview is active with
+ *                 the selected video device.
+ *                 If preview is not enabled, then the potentially existing
+ *                 video grabber is deleted provided we are not in
+ *                 a call.
  *                 Notice that the video device can't be changed during calls,
  *                 but its settings can be changed.
  * PRE          :  /
@@ -972,6 +951,8 @@ video_device_changed_nt (GConfClient *client,
 
       if (preview)
 	ep->CreateVideoGrabber ();
+      else 
+	ep->RemoveVideoGrabber ();
     }
   }
 }
@@ -1552,6 +1533,45 @@ lid_country_changed_nt (GConfClient *client, guint, GConfEntry *entry,
     }
   }
 }
+
+
+/* DESCRIPTION    : This is called when any setting related to the 
+ *                  lid output device type changes.
+ * BEHAVIOR       : Updates it.
+ * PRE            : None
+ */
+static void 
+lid_output_device_type_changed_nt (GConfClient *client,
+				   guint,
+				   GConfEntry *entry, 
+				   gpointer)
+{
+  GMH323EndPoint *ep = NULL;
+
+  GMLid *lid = NULL;
+  OpalLineInterfaceDevice *lid_device = NULL;
+  
+  if (entry->value->type == GCONF_VALUE_INT) {
+    
+    ep = GnomeMeeting::Process ()->Endpoint ();
+    lid = (ep ? ep->GetLid () : NULL);
+
+    if (lid) {
+
+      lid_device = lid->GetLidDevice ();
+
+      if (lid_device) {
+
+	if (gconf_value_get_int (entry->value) == 0) // POTS
+	  lid_device->EnableAudio (0, FALSE);
+	else
+	  lid_device->EnableAudio (0, TRUE);
+      }
+      
+      lid->Unlock ();
+    }
+  }
+}
 #endif
 
 
@@ -1736,9 +1756,16 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
 			   gw->preview_button, 0, 0);
 
 #ifdef HAS_IXJ
-  gconf_client_notify_add (client, AUDIO_DEVICES_KEY "lid_country_code", lid_country_changed_nt, NULL, 0, 0);
+  gconf_client_notify_add (client, AUDIO_DEVICES_KEY "lid_country_code",
+			   lid_country_changed_nt, NULL, 0, 0);
 
-  gconf_client_notify_add (client, AUDIO_DEVICES_KEY "lid_echo_cancellation_level", lid_aec_changed_nt, NULL, 0, 0);
+  gconf_client_notify_add (client,
+			   AUDIO_DEVICES_KEY "lid_echo_cancellation_level",
+			   lid_aec_changed_nt, NULL, 0, 0);
+
+  gconf_client_notify_add (client,
+			   AUDIO_DEVICES_KEY "lid_output_device_type",
+			   lid_output_device_type_changed_nt, NULL, 0, 0);
 #endif
 
   

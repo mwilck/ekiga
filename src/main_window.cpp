@@ -68,6 +68,9 @@
 #include <libintl.h>
 #endif
 
+#include <libxml/parser.h>
+
+
 #define ACT_IID "OAFIID:GNOME_gnomemeeting_Factory"
 
 
@@ -829,18 +832,6 @@ void gnomemeeting_dialpad_event (const char d)
     }
     gdk_threads_enter ();
   }
-
-#ifdef HAS_IXJ
-  GMLid *lid = NULL;
-      
-  lid = endpoint->GetLid ();
-
-  if (lid) {
-    
-    lid->RingLine (4);
-    lid->Unlock ();
-  }
-#endif
 }
 
 

@@ -209,18 +209,6 @@ GnomeMeeting::Connect()
       call_number++;
 
       url_handler = new GMURLHandler (call_address);
-
-#ifdef HAS_IXJ
-      GMLid *lid = NULL;
-      lid = endpoint->GetLid ();
-
-      if (lid) {
-
-	/* Stop all tones and play the call tone */
-	lid->RingLine (0);
-	lid->Unlock ();
-      }
-#endif
     }
     else  /* We untoggle the connect button in the case it was toggled */
       {
@@ -320,11 +308,19 @@ GnomeMeeting::DetectDevices ()
   /* Detect the devices */
   gw->video_devices = PVideoInputDevice::GetDeviceNames (video_plugin);
 
-  gw->audio_recorder_devices = 
-    PSoundChannel::GetDeviceNames (audio_plugin, PSoundChannel::Recorder);
-  gw->audio_player_devices = 
-    PSoundChannel::GetDeviceNames (audio_plugin, PSoundChannel::Player);
+  if (PString ("Quicknet") == audio_plugin) {
 
+    gw->audio_recorder_devices = OpalIxJDevice::GetDeviceNames ();
+    gw->audio_player_devices = gw->audio_recorder_devices;
+  }
+  else {
+    
+    gw->audio_recorder_devices = 
+      PSoundChannel::GetDeviceNames (audio_plugin, PSoundChannel::Recorder);
+    gw->audio_player_devices = 
+      PSoundChannel::GetDeviceNames (audio_plugin, PSoundChannel::Player);
+  }
+    
   if (gw->audio_recorder_devices.GetSize () == 0) 
     gw->audio_recorder_devices += PString (_("No device found"));
   if (gw->audio_player_devices.GetSize () == 0)

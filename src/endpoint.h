@@ -39,17 +39,22 @@
 #ifndef _ENDPOINT_H_
 #define _ENDPOINT_H_
 
+
 #include "../config.h"
 
 #include "common.h"
-#include "gdkvideoio.h"
-#include "videograbber.h"
-#include "ils.h"
-#include "lid.h"
 
 #ifdef HAS_IXJ
 #include <ixjlid.h>
 #endif
+
+
+#include "gdkvideoio.h"
+#include "videograbber.h"
+
+class GMILSClient;
+class GMLid;
+
 
 
 /**
@@ -64,7 +69,7 @@ class GMH323EndPoint : public H323EndPoint
   
  public:
 
-  enum {Standby, Calling, Connected, Called};
+  enum CallingState {Standby, Calling, Connected, Called};
 
   
   /* DESCRIPTION  :  The constructor.
@@ -307,7 +312,7 @@ class GMH323EndPoint : public H323EndPoint
    *                     Called }
    * PRE          :  /
    */
-  void SetCallingState (unsigned);
+  void SetCallingState (CallingState);
 
 
   /* DESCRIPTION  :  /
@@ -318,7 +323,7 @@ class GMH323EndPoint : public H323EndPoint
    *                     Called }
    * PRE          :  /
    */
-  unsigned GetCallingState (void);
+  CallingState GetCallingState (void);
 
 
   /* Overrides from H323Endpoint */
@@ -490,7 +495,7 @@ class GMH323EndPoint : public H323EndPoint
    * BEHAVIOR     :  Create a new Lid.
    * PRE          :  /
    */
-  void CreateLid ();
+  GMLid *CreateLid ();
 #endif
 
 
@@ -600,7 +605,7 @@ class GMH323EndPoint : public H323EndPoint
   H323Connection *current_connection;  
   H323ListenerTCP *listener;  
 
-  unsigned calling_state; 
+  CallingState calling_state; 
 
   GDKVideoOutputDevice *transmitted_video_device; 
   GDKVideoOutputDevice *received_video_device; 
