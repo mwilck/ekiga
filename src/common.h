@@ -39,6 +39,7 @@
 #ifndef GM_COMMON_H_
 #define GM_COMMON_H_
 
+#include <openh323buildopts.h>
 #include <ptbuildopts.h>
 
 #include <ptlib.h>

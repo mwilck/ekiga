@@ -71,17 +71,6 @@ if test x$ac_cv_sizeof_long = x8; then
    ARCH_H323_CFLAGS="$ARCH_H323_CFLAGS -DP_64BIT"
 fi
 
-dnl Check if we are on Big Endian or Little Endian
-AC_C_BIGENDIAN
-case xyes in
-x$ac_cv_c_bigendian)
-   ARCH_H323_CFLAGS="$ARCH_H323_CFLAGS -DPBYTE_ORDER=PBIG_ENDIAN"
-  ;;
-*)
-   ARCH_H323_CFLAGS="$ARCH_H323_CFLAGS -DPBYTE_ORDER=PLITTLE_ENDIAN"
-  ;;
-esac
-	   
 dnl Check the OS type (more types can be added) 
 AC_MSG_CHECKING(whether OS type is supported)
 
@@ -90,7 +79,7 @@ HAS_SPEEX="disabled"
 case $target_os in
 
   linux-gnu | linux | Linux)
-    H323_CFLAGS="-DSPEEX_CODEC -DP_LINUX -D_REENTRANT $ARCH_H323_CFLAGS -DHAS_OSS -O3 -DNDEBUG -fPIC -g -DPHAS_TEMPLATES -DP_USE_PRAGMA -DPTRACING -Wall"
+    H323_CFLAGS="-DP_LINUX -D_REENTRANT $ARCH_H323_CFLAGS -DHAS_OSS -DNDEBUG -DPHAS_TEMPLATES -DP_USE_PRAGMA -DPTRACING -Wall -O2"
     H323_LIBS="-lopenh323 -ldl -lpt -lpthread"
     LIBPT_FILE="libpt.so"
     LIBOPENH323_FILE="libopenh323.so"
@@ -103,7 +92,7 @@ dnl -D_DEBUG -DPMEMORY_CHECK=1 -DPTRACING -g
     ;;
 
   FreeBSD* | freebsd* )
-    H323_CFLAGS="-DSPEEX_CODEC -DP_FREEBSD=400001 $ARCH_H323_CFLAGS -O2 -Wall -DPHAS_TEMPLATES -DP_USE_PRAGMA -DPTRACING -DSTATIC_LIBS_USED"
+    H323_CFLAGS="-DP_FREEBSD=400001 $ARCH_H323_CFLAGS -O2 -Wall -DPHAS_TEMPLATES -DP_USE_PRAGMA -DPTRACING -DSTATIC_LIBS_USED"
     H323_LIBS="-lh323_FreeBSD_x86_r_s -lpt_FreeBSD_x86_r_s -pthread -lssl -lcrypto"
     LIBPT_FILE="libpt_FreeBSD_x86_r_s.a"
     LIBOPENH323_FILE="libh323_FreeBSD_x86_r_s.a"
@@ -113,7 +102,7 @@ dnl -D_DEBUG -DPMEMORY_CHECK=1 -DPTRACING -g
     ;;
 
   darwin* )
-    H323_CFLAGS="-DSPEEX_CODEC -DP_MACOSX $ARCH_H323_CFLAGS -O2 -Wall -DNO_LONG_DOUBLE -DPHAS_TEMPLATES -DP_USE_PRAGMA -DPTRACING -DSTATIC_LIBS_USED"
+    H323_CFLAGS="-DP_MACOSX $ARCH_H323_CFLAGS -O2 -Wall -DNO_LONG_DOUBLE -DPHAS_TEMPLATES -DP_USE_PRAGMA -DPTRACING -DSTATIC_LIBS_USED"
     H323_LIBS="-multiply_defined suppress -lh323_Darwin_ppc_r_s -lpt_Darwin_ppc_r_s -lssl -lcrypto -lX11 -framework AudioToolbox -framework CoreAudio -framework CoreServices"
     LIBPT_FILE="libpt_Darwin_ppc_r_s.a"
     LIBOPENH323_FILE="libh323_Darwin_ppc_r_s.a"
@@ -333,42 +322,6 @@ AC_CHECK_LIB(xml2, xmlFreeDoc)
 AC_CHECK_FUNCS(xmlRegisterNodeDefault)
 
 
-dnl #########################################################################
-dnl  Check for FIREWIRE if available.
-dnl ########################################################################
-HAS_FIREWIRE_DC="disabled"
-firewiredc="no"
-
-AC_ARG_ENABLE(firewiredc, [  --enable-firewiredc     enable Firewire support for DC cameras], firewiredc="yes")
-if test -e "/usr/include/libdc1394/dc1394_control.h" -a "${firewiredc}" != "no"; then
-   HAS_FIREWIRE_DC="enabled"
-   H323_CFLAGS="$H323_CFLAGS -DTRY_1394DC"
-else
-if test "${firewiredc}" != "no"; then
-AC_MSG_ERROR([***Firewire camera headers (libdc1394) not found.])
-fi
-fi
-
-
-HAS_FIREWIRE_AVC="disabled"
-firewireavc="no"
-
-AC_ARG_ENABLE(firewireavc, [  --enable-firewireavc     enable Firewire support for AVC cameras], firewireavc="yes")
-if test -e "/usr/include/libavc1394/avc1394.h" -a -e "/usr/include/libdv/dv.h" -a "${firewireavc}" != "no"; then
-   HAS_FIREWIRE_AVC="enabled"
-   H323_CFLAGS="$H323_CFLAGS -DTRY_1394AVC"
-else
-if test "${firewireavc}" != "no"; then
-AC_MSG_ERROR([***Firewire camera headers (libavc1394, libdv) not found.])
-fi
-fi
-
-if test "${firewireavc}" != "no" -a "${firewiredc}" != "no"; then
-AC_MSG_ERROR([***You can currently not compile DC and AVC Firewire camera support at the same time.])
-fi
-
-
-
 GNOMEMEETING_INCLUDES="$PTLIB_CFLAGS $LDAP_INCLUDES $OPENH323_CFLAGS $H323_CFLAGS $GNOMEMEETING_CFLAGS $SDL_CFLAGS $ARTSC_CFLAGS"
 GNOMEMEETING_LDADD="$PTLIB_LDFLAGS $OPENH323_LDFLAGS $GNOMEMEETING_LIBS $LDAP_LIBS $SDL_LDFLAGS $ARTSC_LDFLAGS $H323_LIBS"
 CFLAGS=""
@@ -448,9 +401,6 @@ echo "    PTLIB Libraries Directory is  :  $PTLIB_LIBS_DIR"
 echo ""
 echo "                Quicknet support  :  $HAS_IXJ"
 echo "          SDL Fullscreen support  :  $HAS_SDL"
-echo "           Speex GPL audio codec  :  $HAS_SPEEX"
-echo "            AVC Firewire support  :  $HAS_FIREWIRE_AVC"
-echo "             DC Firewire support  :  $HAS_FIREWIRE_DC"
 echo ""
 echo "                         OS Type  :  $target_os"
 echo "                    Machine Type  :  $target_cpu"
