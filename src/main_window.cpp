@@ -123,6 +123,20 @@ static void gnomemeeting_init_main_window_dialpad ();
 int i = 0;
 
 /* GTK Callbacks */
+gint IdleUpdate (gpointer data)
+{
+  gdk_threads_enter ();
+
+  while (gtk_events_pending ())
+    gtk_main_iteration ();
+
+  gdk_threads_leave ();
+
+  PThread::Current ()->Sleep (20);
+  return TRUE;
+}
+
+
 gint StressTest (gpointer data)
  {
    gdk_threads_enter ();
@@ -2020,6 +2034,7 @@ int main (int argc, char ** argv, char ** envp)
 
   //  gtk_timeout_add (15000, (GtkFunction) StressTest, 
   //		   NULL);
+  g_idle_add ((GtkFunction) IdleUpdate, NULL);
   
 
   /* The GTK loop */

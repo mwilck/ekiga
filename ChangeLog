@@ -1,5 +1,15 @@
 2003-01-05 Damien Sandras  <dsandras@seconix.com>
 
+	* src/druid.cpp: Reorganised the video test section.
+
+	* src/main_window.cpp: Added idle timer to refresh the GUI.
+
+	* src/sound_handling.cpp: Moved gdk_threads_enter to prevent crash.
+
+	* src/videograbber.cpp: Same here.
+
+2003-01-05 Damien Sandras  <dsandras@seconix.com>
+
 	* gnomemeeting.schemas.in.in: Fixed default for fast start.
 
 	* lib/dialog.c: Added GTK_DESTROY_WITH_PARENT for dialogs.

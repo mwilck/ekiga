@@ -803,7 +803,6 @@ gnomemeeting_init_druid_video_devices_page (GnomeDruid *druid, int p, int t)
 {
   GtkWidget *vbox = NULL;
   GtkWidget *table = NULL;
-  GtkWidget *label = NULL;
 
   gchar *title = NULL;
 
@@ -829,28 +828,24 @@ gnomemeeting_init_druid_video_devices_page (GnomeDruid *druid, int p, int t)
 
 
   /* The Video device */
-  table = gnomemeeting_vbox_add_table (vbox, _("Video Devices"), 3, 3);
+  table = gnomemeeting_vbox_add_table (vbox, _("Video Devices"), 2, 3);
   
   dw->video_device = 
     gnomemeeting_table_add_pstring_option_menu (table, _("Video Device:"), gw->video_devices, DEVICES_KEY "video_recorder", _("Enter the video device to use. Using an invalid video device for video transmission will transmit a test picture."), 0);
   
 
   /* Test button */
-  label = 
-    gtk_label_new (_("Click here to test your video device conformity:"));
-
   dw->video_test_button = gtk_toggle_button_new_with_label (_("Test Video"));
   gtk_table_attach (GTK_TABLE (table), dw->video_test_button, 2, 3, 1, 2,
-		    (GtkAttachOptions) NULL,
-		    (GtkAttachOptions) NULL,
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    0, 0);
 
-  /* Progress bar */
   dw->progress = gtk_progress_bar_new ();
-  gtk_table_attach (GTK_TABLE (table), dw->progress, 0, 3, 2, 3,
+  gtk_table_attach (GTK_TABLE (table), dw->progress, 0, 2, 1, 2,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    10, 10);
+		    0, 0);
 
   g_signal_connect (G_OBJECT (dw->video_test_button), "clicked",
 		    GTK_SIGNAL_FUNC (video_test_button_clicked), NULL);

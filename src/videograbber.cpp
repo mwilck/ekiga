@@ -718,7 +718,7 @@ GMVideoTester::~GMVideoTester ()
   quit_mutex.Wait ();
 
   quit_mutex.Signal ();
-#endif
+ #endif
 }
 
 
@@ -745,18 +745,17 @@ void GMVideoTester::Main ()
 
   video_device =  gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/video_recorder", NULL);
 
-  gnomemeeting_threads_enter ();
+  gdk_threads_enter ();
   gw = gnomemeeting_get_main_window (gm);
   dw = gnomemeeting_get_druid_window (gm);
   gtk_widget_set_sensitive (GTK_WIDGET (dw->video_test_button), FALSE);
-  gnomemeeting_threads_leave ();
+  gtk_progress_bar_set_text (GTK_PROGRESS_BAR (dw->progress), "");
+  gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (dw->progress), 0.0);
 
-  while (cpt <= 5) {
+  while (cpt <= 3) {
 
-    gnomemeeting_threads_enter ();
     gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (dw->progress), per);
     gtk_widget_queue_draw (GTK_WIDGET (dw->progress));
-    gnomemeeting_threads_leave ();
 
     if (!grabber->Open (video_device, FALSE))
       error_code = 0;
@@ -778,70 +777,58 @@ void GMVideoTester::Main ()
     if (error_code != -1)
       break;
 
-    per = cpt * 0.20;
+    msg = g_strdup_printf (_("Test %d done"), cpt);
+    gtk_progress_bar_set_text (GTK_PROGRESS_BAR (dw->progress), msg);
+    g_free (msg);
+
+    per = cpt * 0.33;
     cpt++;
+    PThread::Current () ->Sleep (100);
   }
 
 
   if (error_code != - 1) {
     
-    msg = g_strdup_printf (_("Error while opening the video device %s."),
-			   video_device);
-
     switch (error_code)	{
 	  
     case 0:
-      msg = g_strconcat (msg, "\n", _("Error while opening the device."), 
-			 NULL);
+      msg = g_strdup_printf (_("Error while opening %s."), video_device);
       break;
       
     case 1:
-      msg = g_strconcat (msg, "\n", _("Your video driver doesn't support the requested video format."), NULL);
+      msg = g_strdup_printf (_("Your video driver doesn't support the requested video format."));
       break;
       
     case 2:
-      msg = g_strconcat (msg, "\n", _("Could not open the chosen channel with the chosen video format."), NULL);
+      msg = g_strdup_printf (_("Could not open the chosen channel with the chosen video format."));
       break;
       
     case 3:
-      msg = g_strconcat (msg, "\n", g_strdup_printf(_("Your driver doesn't support the %s format.\n Please check your kernel driver documentation in order to determine which Palette is supported. Set it as GnomeMeeting default with:\n gconftool --set \"/apps/gnomemeeting/devices/color_format\" YOURPALETTE --type string"), "YUV420P"), NULL);
+      msg = g_strdup_printf (_("Your driver doesn't support the YUV420P color format"));
       break;
       
     case 4:
-      msg = g_strconcat (msg, "\n", _("Error with the frame rate."), NULL);
+      msg = g_strdup_printf ( _("Error with the frame rate."));
       break;
       
     case 5:
-      msg = g_strconcat (msg, "\n", _("Error with the frame size."), NULL);
+      msg = g_strdup_printf (_("Error with the frame size."));
       break;
     }
   }  
   else
-    msg = g_strdup (_("GnomeMeeting successfully tested your video device. The driver seems to be usable for videoconferencing with GnomeMeeting."));
+    msg = g_strdup (_("Tests OK!"));
 
-  gnomemeeting_threads_enter ();
-  if (error_code == - 1)
-    if (GTK_WIDGET_VISIBLE (gw->druid_window))
-      gnomemeeting_message_dialog (GTK_WINDOW (gw->druid_window), msg);
-    else
-      gnomemeeting_message_dialog (GTK_WINDOW (gm), msg);
-  else
-    if (GTK_WIDGET_VISIBLE (gw->druid_window))
-      gnomemeeting_error_dialog (GTK_WINDOW (gw->druid_window), msg);
-    else
-      gnomemeeting_error_dialog (GTK_WINDOW (gm), msg);
-  gnomemeeting_threads_leave ();
-
+  gtk_progress_bar_set_text (GTK_PROGRESS_BAR (dw->progress), msg);
   g_free (msg);
 
   delete (grabber);
 
-  gnomemeeting_threads_enter ();
-  gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (dw->progress), 0.0);
+  gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (dw->progress), 1.0);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (dw->video_test_button),
 				FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (dw->video_test_button), TRUE);
-  gnomemeeting_threads_leave ();
+  gdk_threads_leave ();
 
   quit_mutex.Signal ();
 #endif
