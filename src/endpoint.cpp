@@ -1057,15 +1057,15 @@ GMH323EndPoint::GetRemoteConnectionInfo (H323Connection & connection,
   remote_app = connection.GetRemoteApplication ();
 
   gnomemeeting_threads_enter ();
-  if (IsRegisteredWithGatekeeper ()
-      && !remote_alias.IsEmpty ()) {
+  if (IsRegisteredWithGatekeeper ()) {
 
     if (!connection.GetRemotePartyNumber ().IsEmpty ())
       remote_ip = connection.GetRemotePartyNumber ();
-    else
+    else if (!remote_alias.IsEmpty ()) 
       remote_ip = remote_alias;
   }
-  else {
+
+  if (remote_ip.IsEmpty ()) {
 
     /* Get the remote IP to display in the calls history */
     transport = connection.GetSignallingChannel ();
