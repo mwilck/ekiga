@@ -580,9 +580,9 @@ void gnomemeeting_init_main_window ()
   gnomemeeting_init_main_window_audio_settings ();
   gnomemeeting_init_main_window_video_settings ();
 
-  //gtk_widget_set_usize (GTK_WIDGET (gw->main_notebook), 286, 144);
+  gtk_widget_set_usize (GTK_WIDGET (gw->main_notebook), 286, 0);
   gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (gw->main_notebook),
-		    2, 4, 0, 1,
+		    2, 4, 0, 2,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    0, 0); 
