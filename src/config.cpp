@@ -1598,7 +1598,7 @@ void gnomemeeting_init_gconf (GConfClient *client)
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/personal_data/firstname",
 			   entry_changed_nt, pw->firstname, 0, 0);
-
+  
   gconf_client_notify_add (client, "/apps/gnomemeeting/personal_data/mail",
 			   entry_changed_nt, pw->mail, 0, 0);
 
