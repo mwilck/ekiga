@@ -382,6 +382,21 @@ void string_option_menu_changed (GtkWidget *menu, gpointer data)
 
 
 static void 
+notebook_toggle_changed (GtkCheckButton *but, gpointer data)
+{
+  GConfClient *client = gconf_client_get_default ();
+  gchar *key = (gchar *) data;
+
+  if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (but)))
+    gconf_client_set_int (GCONF_CLIENT (client),
+			  key, 0, NULL);
+  else
+    gconf_client_set_int (GCONF_CLIENT (client),
+			  key, 3, NULL);
+}
+
+
+static void 
 gnomemeeting_codecs_list_add (GtkTreeIter iter, GtkListStore *store, 
 			      const gchar *codec_name, bool enabled)
 {
@@ -1061,7 +1076,7 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook)
 {                                                                              
   GtkWidget *vbox = NULL;                                                      
   GtkWidget *table = NULL;                                                     
-                                                                               
+  GConfClient *client = gconf_client_get_default ();
                                                                                
   /* Get the data */                                                           
   GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);              
@@ -1071,21 +1086,11 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook)
   vbox = gnomemeeting_pref_window_build_page (notebook, _("General Settings"));
                                                                                
   table = gnomemeeting_pref_window_add_table (vbox,
-					      _("GnomeMeeting GUI"), 3, 2);
-                                                                               
-                                                                               
-  /* The toggles */                                                            
-  pw->show_chat_window = gnomemeeting_pref_window_add_toggle (table, _("Show Chat Window"), "/apps/gnomemeeting/view/show_chat_window", _("If enabled, the chat window will be displayed at startup time."), 0, 1);
-                                                                               
-  pw->show_splash = gnomemeeting_pref_window_add_toggle (table, _("Show Splash Screen"), "/apps/gnomemeeting/view/show_splash", _("If enabled, the splash screen will be displayed at startup time."), 1, 1);
-                                                                               
-  pw->show_notebook = gnomemeeting_pref_window_add_toggle (table, _("Show Control Panel"), "/apps/gnomemeeting/view/show_control_panel", _("If enabled, the control panel is displayed."), 0, 0);
-                                                                               
-  pw->show_statusbar = gnomemeeting_pref_window_add_toggle (table, _("Show Status Bar"), "/apps/gnomemeeting/view/show_status_bar", _("If enabled, the statusbar is displayed."), 1, 0);
-                                                                               
-  pw->show_docklet = gnomemeeting_pref_window_add_toggle (table, _("Show Docklet"), "/apps/gnomemeeting/view/show_docklet", _("If enabled, there is support for a docklet in the Gnome or KDE panel."), 2, 0);
-                                                                               
-  pw->start_hidden = gnomemeeting_pref_window_add_toggle (table, _("Start Hidden"), "/apps/gnomemeeting/view/start_docked", _("If enabled, GnomeMeeting will start hidden. The docklet must be enabled."), 2, 1);
+					      _("GnomeMeeting GUI"), 2, 2);
+
+  pw->show_splash = gnomemeeting_pref_window_add_toggle (table, _("Show Splash Screen"), "/apps/gnomemeeting/view/show_splash", _("If enabled, the splash screen will be displayed at startup time."), 0, 1);
+                                                                                          
+  pw->start_hidden = gnomemeeting_pref_window_add_toggle (table, _("Start Hidden"), "/apps/gnomemeeting/view/start_docked", _("If enabled, GnomeMeeting will start hidden. The docklet must be enabled."), 1, 1);
 
                                                                                
   /* Packing widget */                                                         

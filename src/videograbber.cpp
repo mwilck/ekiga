@@ -425,6 +425,7 @@ void GMVideoGrabber::SetChannel (int cnum)
 
 void GMVideoGrabber::VGOpen (void)
 {
+  GnomeUIInfo *view_menu_uiinfo = NULL;
   gchar *msg = NULL;
   int error_code = -1;  // No error
   int opened;
@@ -581,6 +582,15 @@ void GMVideoGrabber::VGOpen (void)
 				TRUE);
       gnomemeeting_threads_leave ();
     }
+
+
+    /* Enable zoom settings in the view menu */
+    gnomemeeting_threads_enter ();
+    view_menu_uiinfo = (GnomeUIInfo *) g_object_get_data (G_OBJECT(gm), "view_menu_uiinfo");
+    gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [9].widget), TRUE);
+    gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [10].widget), TRUE);
+    gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [11].widget), TRUE);
+    gnomemeeting_threads_leave ();
   }  
 
   device_mutex.Signal ();
@@ -590,6 +600,7 @@ void GMVideoGrabber::VGOpen (void)
 void GMVideoGrabber::VGClose (int display_logo)
 {
   int opened;
+  GnomeUIInfo *view_menu_uiinfo = NULL;
 
   grabbing_mutex.Wait ();
   device_mutex.Wait ();
@@ -638,6 +649,16 @@ void GMVideoGrabber::VGClose (int display_logo)
   
     gnomemeeting_threads_leave ();
     
+    
+    /* Disable the zoom options */
+    gnomemeeting_threads_enter ();
+    view_menu_uiinfo = (GnomeUIInfo *) g_object_get_data (G_OBJECT(gm), "view_menu_uiinfo");
+    gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [9].widget), FALSE);
+    gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [10].widget), FALSE);
+    gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [11].widget), FALSE);
+    gnomemeeting_threads_leave ();
+
+
     /* Initialisation */
     grabber = NULL;
     channel = NULL;

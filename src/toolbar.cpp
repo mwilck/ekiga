@@ -50,6 +50,7 @@ extern GtkWidget *gm;
 static void connect_button_clicked (GtkToggleButton *, gpointer);
 static void toolbar_toggle_changed (GtkWidget *, gpointer);
 static void toolbar_button_changed (GtkWidget *, gpointer);
+static void toolbar_cp_button_changed (GtkWidget *, gpointer);
 
 
 /* Static functions */
@@ -91,6 +92,27 @@ static void toolbar_toggle_changed (GtkWidget *w, gpointer data)
 }
 
 
+/* DESCRIPTION  :  This callback is called when the user presses the control panel
+ *                 button in the toolbar. 
+ *                 (See menu_toggle_changed)
+ * BEHAVIOR     :  Updates the gconf cache : 0 or 3 (off) for the cp section.
+ * PRE          :  data is the key.
+ */
+static void toolbar_cp_button_changed (GtkWidget *w, gpointer data)
+{
+  GConfClient *client = gconf_client_get_default ();
+
+  if (gconf_client_get_int (client, (gchar *) data, 0) == 3)
+    gconf_client_set_int (client,
+			  (gchar *) data,
+			  0, NULL);
+  else
+    gconf_client_set_int (client,
+			  (gchar *) data,
+			  3, NULL);
+}
+
+
 /* DESCRIPTION  :  This callback is called when the user presses a
  *                 button in the toolbar. 
  *                 (See menu_toggle_changed)
@@ -106,6 +128,7 @@ static void toolbar_button_changed (GtkWidget *w, gpointer data)
 			 (gchar *) data,
 			 !shown, NULL);
 }
+
 
 
 /* The functions */
@@ -157,8 +180,8 @@ void gnomemeeting_init_toolbar ()
                             _("Display the control panel"),
                             NULL,
 			    gtk_image_new_from_pixbuf (control_panel),    
-                            GTK_SIGNAL_FUNC (toolbar_button_changed),
-                            (gpointer) "/apps/gnomemeeting/view/show_control_panel");
+                            GTK_SIGNAL_FUNC (toolbar_cp_button_changed),
+                            (gpointer) "/apps/gnomemeeting/view/control_panel_section");
 
   gtk_toolbar_append_space (GTK_TOOLBAR (left_toolbar));
 

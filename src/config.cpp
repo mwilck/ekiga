@@ -53,6 +53,7 @@ extern GnomeMeeting *MyApp;
 
 static void entry_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static void toggle_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
+static void menu_radio_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
 static void menu_toggle_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
 static void string_option_menu_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
 static void int_option_menu_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
@@ -60,6 +61,7 @@ static void adjustment_changed_nt (GConfClient *, guint, GConfEntry *, gpointer)
 
 static void applicability_check_nt (GConfClient *, guint, GConfEntry *, gpointer);
 static void gatekeeper_method_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
+static void main_notebook_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static void fps_limit_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static void audio_mixer_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static void tr_vq_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
@@ -147,6 +149,39 @@ static void toggle_changed_nt (GConfClient *client, guint cid,
 				       g_object_get_data (G_OBJECT (e), 
 							  "gconf_key")); 
 
+    
+    gdk_threads_leave (); 
+  }
+}
+
+
+/* DESCRIPTION  :  Generic notifiers for radios in the menu.
+ *                 This callback is called when a specific key of
+ *                 the gconf database associated with a radio changes, this
+ *                 only updates the radio in the menu.
+ * BEHAVIOR     :  It only updates the widget.
+ * PRE          :  /
+ */
+static void menu_radio_changed_nt (GConfClient *client, guint cid, 
+				   GConfEntry *entry, gpointer data)
+{
+  if (entry->value->type == GCONF_VALUE_INT) {
+   
+    gdk_threads_enter ();
+  
+    GnomeUIInfo *e = (GnomeUIInfo *) (data);
+
+    /* We set the new value for the widget */
+    for (int i = 0 ; i < 4 ; i++) {
+
+      if (gconf_value_get_int (entry->value) == i)
+	GTK_CHECK_MENU_ITEM (e [i].widget)->active = TRUE;
+      else
+	GTK_CHECK_MENU_ITEM (e [i].widget)->active = FALSE;
+
+      gtk_widget_queue_draw (GTK_WIDGET (e [i].widget));
+  }
+   
     
     gdk_threads_leave (); 
   }
@@ -412,6 +447,38 @@ static void gatekeeper_method_changed_nt (GConfClient *client, guint cid,
     
     /* Register the current Endpoint to the Gatekeeper */
     MyApp->Endpoint ()->GatekeeperRegister ();
+
+    gdk_threads_leave ();
+
+  }
+} 
+
+
+/* DESCRIPTION  :  This callback is called when the control panel section changes.
+ * BEHAVIOR     :  Sets the right page or hide it, and also sets the good value for
+ *                 the toggle in the prefs.
+ * PRE          :  /
+ */
+static void main_notebook_changed_nt (GConfClient *client, guint cid, 
+				      GConfEntry *entry, gpointer data)
+{
+  GM_window_widgets *gw = NULL;
+
+  if (entry->value->type == GCONF_VALUE_INT) {
+
+    gdk_threads_enter ();
+
+    gw = gnomemeeting_get_main_window (gm);
+
+
+    if (gconf_value_get_int (entry->value) == 3)
+      gtk_widget_hide_all (gw->main_notebook);
+    else {
+
+      gtk_widget_show_all (gw->main_notebook);
+      gtk_notebook_set_current_page (GTK_NOTEBOOK (gw->main_notebook),
+				     gconf_value_get_int (entry->value));
+    }
 
     gdk_threads_leave ();
 
@@ -956,6 +1023,8 @@ void gnomemeeting_init_gconf (GConfClient *client)
   GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
   GnomeUIInfo *view_menu = (GnomeUIInfo *) g_object_get_data (G_OBJECT (gm), 
 							      "view_menu_uiinfo");
+  GnomeUIInfo *notebook_view_uiinfo = (GnomeUIInfo *) g_object_get_data (G_OBJECT (gm), 
+								"notebook_view_uiinfo");
   GnomeUIInfo *call_menu = (GnomeUIInfo *) g_object_get_data (G_OBJECT (gm), 
 							      "call_menu_uiinfo");
 
@@ -991,25 +1060,22 @@ void gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_splash", 
 			   toggle_changed_nt, pw->show_splash, 0, 0);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_control_panel", menu_toggle_changed_nt, view_menu [2].widget, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_control_panel", toggle_changed_nt, pw->show_notebook, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_control_panel", view_widget_changed_nt, gw->main_notebook, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/view/control_panel_section", menu_radio_changed_nt, notebook_view_uiinfo, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/view/control_panel_section", main_notebook_changed_nt, notebook_view_uiinfo, 0, 0);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_status_bar", menu_toggle_changed_nt, view_menu [4].widget, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_status_bar", toggle_changed_nt, pw->show_statusbar, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_status_bar", menu_toggle_changed_nt, view_menu [3].widget, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_status_bar", view_widget_changed_nt, gw->statusbar, 0, 0);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_docklet", menu_toggle_changed_nt, view_menu [5].widget, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_docklet", toggle_changed_nt, pw->show_docklet, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_docklet", menu_toggle_changed_nt, view_menu [4].widget, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_docklet", view_widget_changed_nt, gw->docklet, 0, 0);
 
+
   gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_chat_window", menu_toggle_changed_nt, view_menu [3].widget, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_chat_window", toggle_changed_nt, pw->show_chat_window, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_chat_window", view_widget_changed_nt, gw->chat->window, 0, 0);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/left_toolbar", menu_toggle_changed_nt, view_menu [6].widget, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/view/left_toolbar", menu_toggle_changed_nt, view_menu [0].widget, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/view/left_toolbar", view_widget_changed_nt, GTK_WIDGET (gnome_app_get_dock_item_by_name(GNOME_APP (gm), "left_toolbar")), 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/left_toolbar", toggle_changed_nt, pw->show_left_toolbar, 0, 0);
 
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/auto_answer", menu_toggle_changed_nt, call_menu [4].widget, 0, 0);

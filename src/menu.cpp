@@ -31,6 +31,7 @@
 
 #include "callbacks.h"
 #include "menu.h"
+#include "gnomemeeting.h"
 #include "common.h"
 #include "docklet.h"
 #include "misc.h"
@@ -45,6 +46,7 @@
 /* Declarations */
 
 extern GtkWidget *gm;
+extern GnomeMeeting *MyApp;
 
 static void gnomemeeting_init_druid_callback (GtkWidget *, gpointer);
 static void half_zoom_callback (GtkWidget *, gpointer);
@@ -70,12 +72,14 @@ static void gnomemeeting_init_druid_callback (GtkWidget *w, gpointer data)
  *                 factor in the popup menu.
  * BEHAVIOR     :  Sets the zoom to 0.5. That zoom will be read in 
  *                 GDKVideoOutputDEvice.
- * PRE          :  gpointer is a valid pointer to a GM_window_widgets structure.
+ * PRE          :  /
  */
 static void half_zoom_callback (GtkWidget *widget, gpointer data)
 {
-  GM_window_widgets *gw = (GM_window_widgets *) data;
-  gw->zoom = 0.5;
+  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+
+  if (gw->zoom / 2 >= 0.5)
+    gw->zoom = gw->zoom / 2;
 }
 
 
@@ -87,7 +91,8 @@ static void half_zoom_callback (GtkWidget *widget, gpointer data)
  */
 static void normal_zoom_callback (GtkWidget *widget, gpointer data)
 {
-  GM_window_widgets *gw = (GM_window_widgets *) data;
+  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+
   gw->zoom = 1;
 }
 
@@ -100,35 +105,36 @@ static void normal_zoom_callback (GtkWidget *widget, gpointer data)
  */
 static void double_zoom_callback (GtkWidget *widget, gpointer data)
 {
-  GM_window_widgets *gw = (GM_window_widgets *) data;
-  gw->zoom = 2;
+  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+
+  if (gw->zoom * 2 <= 2)
+    gw->zoom = gw->zoom * 2;
 }
 
 
 /* DESCRIPTION  :  This callback is called when the user toggles the 
  *                 corresponding option in the View Menu (it is a toggle menu)
- * BEHAVIOR     :  Shows the notebook with the correct page.
- * PRE          :  gpointer is a valid pointer to a GonfClient structure.
+ * BEHAVIOR     :  Sets the gconf key.
+ * PRE          :  data is the gconf key.
  */
 static void view_menu_toggles_changed (GtkWidget *widget, gpointer data)
 {
   GConfClient *client = gconf_client_get_default ();
+  int active = 0;
   GnomeUIInfo *notebook_view_uiinfo =
     (GnomeUIInfo *) g_object_get_data (G_OBJECT (gm),
 				       "notebook_view_uiinfo");
-  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
-
-  gtk_widget_show_all (gw->main_notebook);
-  gconf_client_set_bool (client, "/apps/gnomemeeting/view/show_control_panel", 1, NULL);
 
   /* Only do something when a new CHECK_MENU_ITEM becomes active,
      not when it becomes inactive */
   if (GTK_CHECK_MENU_ITEM (widget)->active) {
 
-    for (int i = 0; i < 3; i++) 
+    for (int i = 0; i <= 3; i++) 
       if (GTK_CHECK_MENU_ITEM (notebook_view_uiinfo[i].widget)->active) 
-	gtk_notebook_set_current_page (GTK_NOTEBOOK (gw->main_notebook), i);
+ 	active = i;
   }
+
+  gconf_client_set_int (client, "/apps/gnomemeeting/view/control_panel_section", active, 0);
 }
 
 
@@ -162,7 +168,7 @@ void gnomemeeting_init_menu ()
     {
       {
 	GNOME_APP_UI_ITEM,
-	N_("_Save"), N_("Save A Snapshot of the Current Video Stream"),
+	N_("_Save"), N_("Save A Snapshot of the Current Video"),
 	(void *)save_callback, gw, NULL,
 	GNOME_APP_PIXMAP_STOCK, GTK_STOCK_SAVE,
 	'S', GDK_CONTROL_MASK, NULL
@@ -185,7 +191,7 @@ void gnomemeeting_init_menu ()
 	GNOME_APP_UI_ITEM,
 	N_("History"), N_("View the log"),
 	(void *) view_menu_toggles_changed, 
-	NULL, NULL,
+	NULL, (gpointer) "/apps/gnomemeeting/view/control_panel_section",
 	GNOME_APP_PIXMAP_NONE, NULL,
 	0, GDK_CONTROL_MASK, NULL
       },
@@ -193,7 +199,7 @@ void gnomemeeting_init_menu ()
 	GNOME_APP_UI_ITEM,
 	N_("_Audio Settings"), N_("View Audio Settings"),
 	(void *) view_menu_toggles_changed, 
-	NULL, NULL,
+	NULL, (gpointer) "/apps/gnomemeeting/view/control_panel_section",
 	GNOME_APP_PIXMAP_NONE, NULL,
 	0, GDK_CONTROL_MASK, NULL
       },
@@ -201,15 +207,23 @@ void gnomemeeting_init_menu ()
 	GNOME_APP_UI_ITEM,
 	N_("_Video Settings"), N_("View Video Settings"),
 	(void *) view_menu_toggles_changed, 
-	NULL, NULL,
+	NULL, (gpointer) "/apps/gnomemeeting/view/control_panel_section",
+	GNOME_APP_PIXMAP_NONE, NULL,
+	0, GDK_CONTROL_MASK, NULL
+      },
+      {
+	GNOME_APP_UI_ITEM,
+	N_("Off"), N_("Hide the control panel"),
+	(void *) view_menu_toggles_changed, 
+	NULL, (gpointer) "/apps/gnomemeeting/view/control_panel_section",
 	GNOME_APP_PIXMAP_NONE, NULL,
 	0, GDK_CONTROL_MASK, NULL
       },
       GNOMEUIINFO_END
     };
-  
-  
-  static GnomeUIInfo view_menu_uiinfo [] =
+
+ 
+  static GnomeUIInfo notebook_view_submenu_uiinfo [] =
     {
       {
 	GNOME_APP_UI_RADIOITEMS,
@@ -218,23 +232,29 @@ void gnomemeeting_init_menu ()
 	GNOME_APP_PIXMAP_NONE, NULL,
 	0, GDK_CONTROL_MASK, NULL
       },
-      GNOMEUIINFO_SEPARATOR,
+      GNOMEUIINFO_END
+    };
+
+
+  static GnomeUIInfo view_menu_uiinfo [] =
+    {
       {
 	GNOME_APP_UI_TOGGLEITEM,
-	N_("Control Panel"), N_("View/Hide the Control Panel"),
+	N_("Toolbar"), N_("View/Hide the Toolbar"),
 	(void *) menu_toggle_changed, 
-	(gpointer) "/apps/gnomemeeting/view/show_control_panel",
+	(gpointer) "/apps/gnomemeeting/view/left_toolbar",
 	NULL, GNOME_APP_PIXMAP_NONE, NULL,
 	0, GDK_CONTROL_MASK, NULL
       },
       {
 	GNOME_APP_UI_TOGGLEITEM,
-	N_("Chat Window"), N_("View/Hide the Chat Window"),
+	N_("Text Chat"), N_("View/Hide the Text Chat Window"),
 	(void *) menu_toggle_changed, 
 	(gpointer) "/apps/gnomemeeting/view/show_chat_window",
 	NULL, GNOME_APP_PIXMAP_NONE, NULL,
 	0, GDK_CONTROL_MASK, NULL
       },
+      GNOMEUIINFO_SUBTREE (N_("Control Panel"), notebook_view_submenu_uiinfo),
       {
 	GNOME_APP_UI_TOGGLEITEM,
 	N_("Status Bar"), N_("View/Hide the Status Bar"),
@@ -251,13 +271,39 @@ void gnomemeeting_init_menu ()
 	NULL, GNOME_APP_PIXMAP_NONE, NULL,
 	0, GDK_CONTROL_MASK, NULL
       },
+      GNOMEUIINFO_SEPARATOR,
       {
-	GNOME_APP_UI_TOGGLEITEM,
-	N_("Left Toolbar"), N_("View/Hide the left Toolbar"),
-	(void *) menu_toggle_changed, 
-	(gpointer) "/apps/gnomemeeting/view/left_toolbar",
-	NULL, GNOME_APP_PIXMAP_NONE, NULL,
+	GNOME_APP_UI_ITEM,
+	N_("Local Video"), N_("Local Video Image"),
+	(void *) popup_menu_local_callback, NULL, NULL,
+	GNOME_APP_PIXMAP_NONE, NULL,
 	0, GDK_CONTROL_MASK, NULL
+      },
+      {
+	GNOME_APP_UI_ITEM,
+	N_("Remote Remote"), N_("Remote Video Image"),
+	(void *) popup_menu_remote_callback, NULL, NULL,
+	GNOME_APP_PIXMAP_NONE, NULL,
+	0, GDK_CONTROL_MASK, NULL
+      },
+      GNOMEUIINFO_SEPARATOR,
+      { 
+	GNOME_APP_UI_ITEM, N_("Zoom In"), N_("Zoom In"),
+	(void *) double_zoom_callback, NULL, NULL,
+	GNOME_APP_PIXMAP_STOCK, GTK_STOCK_ZOOM_OUT,
+	'+', GDK_CONTROL_MASK, NULL 
+      },
+      { 
+	GNOME_APP_UI_ITEM, N_("Zoom Out"), N_("Zoom Out"),
+	(void *) half_zoom_callback, NULL, NULL,
+	GNOME_APP_PIXMAP_STOCK, GTK_STOCK_ZOOM_OUT,
+	'-', GDK_CONTROL_MASK, NULL 
+      },
+      { 
+	GNOME_APP_UI_ITEM, N_("Normal Size"), N_("Normal Size"),
+	(void *) normal_zoom_callback, NULL, NULL,
+       	GNOME_APP_PIXMAP_STOCK, GTK_STOCK_ZOOM_100,
+	'=', GDK_CONTROL_MASK, NULL 
       },
       GNOMEUIINFO_END
     };  
@@ -374,20 +420,27 @@ void gnomemeeting_init_menu ()
 
 
   /* Update to the initial values */
-  GTK_CHECK_MENU_ITEM (view_menu_uiinfo [2].widget)->active = 
-    gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_control_panel", 0);
+  GTK_CHECK_MENU_ITEM (view_menu_uiinfo [0].widget)->active =
+    gconf_client_get_bool (client, "/apps/gnomemeeting/view/left_toolbar", 0);
 
-  GTK_CHECK_MENU_ITEM (view_menu_uiinfo [3].widget)->active = 
+  GTK_CHECK_MENU_ITEM (view_menu_uiinfo [1].widget)->active = 
     gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_chat_window", 0);
 
-  GTK_CHECK_MENU_ITEM (view_menu_uiinfo [4].widget)->active = 
+  GTK_CHECK_MENU_ITEM (view_menu_uiinfo [3].widget)->active = 
     gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_status_bar", 0);
 
-  GTK_CHECK_MENU_ITEM (view_menu_uiinfo [5].widget)->active =
+  GTK_CHECK_MENU_ITEM (view_menu_uiinfo [4].widget)->active =
     gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_docklet", 0);
 
-  GTK_CHECK_MENU_ITEM (view_menu_uiinfo [6].widget)->active =
-    gconf_client_get_bool (client, "/apps/gnomemeeting/view/left_toolbar", 0);
+  
+  for (int i = 0 ; i < 4 ; i++) {
+
+    if (gconf_client_get_int (client, 
+			      "/apps/gnomemeeting/view/control_panel_section", 0) == i)
+      GTK_CHECK_MENU_ITEM (notebook_view_uiinfo [i].widget)->active = TRUE;
+    gtk_widget_queue_draw (GTK_WIDGET (notebook_view_uiinfo [i].widget));
+  }
+  
 
   GTK_CHECK_MENU_ITEM (call_menu_uiinfo [3].widget)->active =
     gconf_client_get_bool (client, "/apps/gnomemeeting/general/do_not_disturb", 0);
@@ -400,105 +453,20 @@ void gnomemeeting_init_menu ()
 
   if (GTK_CHECK_MENU_ITEM (call_menu_uiinfo [4].widget)->active)
     gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [3].widget), FALSE);
-
+ 
 
   /* Disable disconnect */
   gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [1].widget), FALSE);
 
+  /* Disable remote video and the zoom settings */
+  gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [7].widget), FALSE);
+  gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [9].widget), FALSE);
+  gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [10].widget), FALSE);
+  gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [11].widget), FALSE);
   
   /* Pause is unsensitive when not in a call */
   gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [6].widget), FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [7].widget), FALSE);
 }
 
-
-void gnomemeeting_popup_menu_init (GtkWidget *widget, GM_window_widgets *gw)
-{
-  GtkWidget *popup_menu_widget;
-
-  static GnomeUIInfo zoom_uiinfo[] =
-    {
-      { 
-	GNOME_APP_UI_ITEM, N_("1:2"), N_("Zoom 1/2x"),
-	(void *) half_zoom_callback, NULL, NULL,
-	GNOME_APP_PIXMAP_NONE, NULL,
-	0, GDK_CONTROL_MASK, NULL 
-      },
-      { 
-	GNOME_APP_UI_ITEM, N_("1:1"), N_("Normal"),
-	(void *) normal_zoom_callback, NULL, NULL,
-	GNOME_APP_PIXMAP_NONE, NULL,
-	0, GDK_CONTROL_MASK, NULL 
-      },
-      { 
-	GNOME_APP_UI_ITEM, N_("2:1"), N_("Zoom 2x"),
-	(void *) double_zoom_callback, NULL, NULL,
-	GNOME_APP_PIXMAP_NONE, NULL,
-	0, GDK_CONTROL_MASK, NULL 
-      },
-      GNOMEUIINFO_END
-    };
-
-  
-  static GnomeUIInfo display_uiinfo[] =
-    {
-      {
-	GNOME_APP_UI_ITEM,
-	N_("Local"), N_("Local Video Image"),
-	(void *) popup_menu_local_callback, NULL, NULL,
-	GNOME_APP_PIXMAP_NONE, NULL,
-	0, GDK_CONTROL_MASK, NULL
-      },
-      {
-	GNOME_APP_UI_ITEM,
-	N_("Remote"), N_("Remote Video Image"),
-	(void *) popup_menu_remote_callback, NULL, NULL,
-	GNOME_APP_PIXMAP_NONE, NULL,
-	0, GDK_CONTROL_MASK, NULL
-      },
-      {
-	GNOME_APP_UI_ITEM,
-	N_("Both"), N_("Both Video Images"),
-	(void *) popup_menu_both_callback, NULL, NULL,
-	GNOME_APP_PIXMAP_NONE, NULL,
-	0, GDK_CONTROL_MASK, NULL
-      },
-      GNOMEUIINFO_END
-    };
-
-
-  static GnomeUIInfo popup_menu_uiinfo [] =
-    {
-      {
-	GNOME_APP_UI_RADIOITEMS,
-	NULL, NULL,
-	display_uiinfo, NULL, NULL,
-	GNOME_APP_PIXMAP_NONE, NULL,
-	0, GDK_CONTROL_MASK, NULL
-      },
-      GNOMEUIINFO_SEPARATOR,
-      {
-	GNOME_APP_UI_RADIOITEMS,
-	NULL, NULL,
-	zoom_uiinfo, NULL, NULL,
-	GNOME_APP_PIXMAP_NONE, NULL,
-	0, GDK_CONTROL_MASK, NULL
-      },
-      GNOMEUIINFO_END
-    };
-
-
-  /* Create a popup menu to attach it to the drawing area */
-  popup_menu_widget = gnome_popup_menu_new (popup_menu_uiinfo);
-
-  gnome_popup_menu_attach(popup_menu_widget, GTK_WIDGET (widget),
-			  gw);
-
-  GTK_CHECK_MENU_ITEM (zoom_uiinfo [0].widget)->active = FALSE;
-  GTK_CHECK_MENU_ITEM (zoom_uiinfo [1].widget)->active = TRUE;
-  GTK_CHECK_MENU_ITEM (zoom_uiinfo [2].widget)->active = FALSE;
-
-  g_object_set_data (G_OBJECT (gm), "display_uiinfo", 
-		     display_uiinfo);
-}
 

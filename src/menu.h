@@ -45,12 +45,4 @@
 void gnomemeeting_init_menu ();
 
 
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Creates the popup menu and attach it to the GtkWidget
- *                 given as parameter (for the gtk_drawing_area).
- * PRE          :  /
- */
-void gnomemeeting_popup_menu_init (GtkWidget *, GM_window_widgets *);
-
-
 #endif

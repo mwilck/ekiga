@@ -87,22 +87,23 @@ static void gnomemeeting_init_main_window_log  ();
 /**
  * DESCRIPTION  :  This callback is called when the user changes the
  *                 page in the main notebook.
- * BEHAVIOR     :  Update the menu accordingly.
+ * BEHAVIOR     :  Update the gconf key accordingly.
  * PRE          :  /
  **/
 static void 
 main_notebook_page_changed (GtkNotebook *notebook, GtkNotebookPage *page,
-			    gint page_num, gpointer user_data) {
+			    gint page_num, gpointer user_data) 
+{
+  GConfClient *client = gconf_client_get_default ();
 
   GnomeUIInfo *notebook_view_uiinfo =
     (GnomeUIInfo *) g_object_get_data (G_OBJECT (gm),
 				       "notebook_view_uiinfo");
+
   GmWindow *gw = gnomemeeting_get_main_window (gm);
 
-  for (int i = 0; i < 3; i++) 
-    GTK_CHECK_MENU_ITEM (notebook_view_uiinfo[i].widget)->active =
-      (gtk_notebook_get_current_page (GTK_NOTEBOOK (gw->main_notebook)) == i);
-  
+  gconf_client_set_int (client, "/apps/gnomemeeting/view/control_panel_section",
+			gtk_notebook_get_current_page (GTK_NOTEBOOK (gw->main_notebook)), 0);
 }
 
 
@@ -449,9 +450,6 @@ gnomemeeting_init (GmWindow *gw,
   }
 
 
-  /* Create a popup menu to attach it to the drawing area  */
-  gnomemeeting_popup_menu_init (gw->video_frame, gw);
-
   /* Set icon */
   GdkPixbuf *pixbuf_icon = 
     gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES "/gnomemeeting-logo-icon.png", NULL); 
@@ -488,6 +486,7 @@ void gnomemeeting_init_main_window ()
   GConfClient *client = gconf_client_get_default ();
   GtkWidget *table;	
   GtkWidget *frame;
+  int main_notebook_section = 0;
   
   GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
 
@@ -513,9 +512,14 @@ void gnomemeeting_init_main_window ()
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    0, 0); 
 
-  if (gconf_client_get_bool 
-      (client, "/apps/gnomemeeting/view/show_control_panel", 0))
+  main_notebook_section = 
+    gconf_client_get_int (client, "/apps/gnomemeeting/view/control_panel_section", 0);
+  if (main_notebook_section != 3) {
+
     gtk_widget_show_all (GTK_WIDGET (gw->main_notebook));
+    gtk_notebook_set_current_page (GTK_NOTEBOOK ((gw->main_notebook)), 
+				   main_notebook_section);
+  }
 
 
   /* The drawing area that will display the webcam images */

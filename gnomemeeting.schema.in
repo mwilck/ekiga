@@ -22,7 +22,7 @@
 	<long>Show a status bar at the bottom of the main window</long>
       </locale>
     </schema>
- <schema>	
+    <schema>	
       <key>/schemas/apps/gnomemeeting/view/left_toolbar</key>
       <applyto>/apps/gnomemeeting/view/left_toolbar</applyto>
       <owner>GnomeMeeting</owner>
@@ -45,14 +45,14 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/view/show_control_panel</key>
-      <applyto>/apps/gnomemeeting/view/show_control_panel</applyto>
+      <key>/schemas/apps/gnomemeeting/view/control_panel_section</key>
+      <applyto>/apps/gnomemeeting/view/control_panel_section</applyto>
       <owner>GnomeMeeting</owner>
-      <type>bool</type>
-      <default>false</default>
+      <type>int</type>
+      <default>3</default>
       <locale name="C">
-	<short>Show a control panel</short>
-	<long>Show a control panel in the main window</long>
+	<short>Change the control panel section</short>
+	<long>Change the control panel section (3 means that the control panel is off)</long>
       </locale>
     </schema>
     <schema>

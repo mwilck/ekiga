@@ -906,6 +906,11 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [6].widget), FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [7].widget), FALSE);
 
+  /* Disable Remote Video (Local video is disabled elsewhere) */
+  GnomeUIInfo *view_menu_uiinfo = (GnomeUIInfo *) 
+	g_object_get_data (G_OBJECT(gm), "view_menu_uiinfo");
+  gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [7].widget), FALSE);
+
 
   /* Remove the timers if needed and clear the docklet */
   if (docklet_timeout != 0)
@@ -1025,6 +1030,7 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 				       H323VideoCodec & codec)
 {
   GMVideoGrabber *vg = (GMVideoGrabber *) video_grabber;
+  GnomeUIInfo *view_menu_uiinfo = NULL;
 
   /* If it is possible to transmit and
      if the user enabled transmission and
@@ -1043,21 +1049,11 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
      PVideoChannel *channel = vg->GetVideoChannel ();
      transmitted_video_device = vg->GetEncodingDevice ();
 
-     GtkWidget *object = (GtkWidget *) 
-       g_object_get_data (G_OBJECT (gm),
-			  "display_uiinfo");
+     view_menu_uiinfo = (GnomeUIInfo *) g_object_get_data (G_OBJECT(gm), "view_menu_uiinfo");
+     gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [9].widget), TRUE);
+     gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [10].widget), TRUE);
+     gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [11].widget), TRUE);
 
-     GnomeUIInfo *display_uiinfo = (GnomeUIInfo *) object;
-     
-     GTK_CHECK_MENU_ITEM (display_uiinfo [0].widget)->active = TRUE;
-     GTK_CHECK_MENU_ITEM (display_uiinfo [1].widget)->active = FALSE;
-     GTK_CHECK_MENU_ITEM (display_uiinfo [2].widget)->active = FALSE;
-
-     gtk_widget_queue_draw (GTK_WIDGET (display_uiinfo [0].widget));
-     gtk_widget_queue_draw (GTK_WIDGET (display_uiinfo [1].widget));
-     gtk_widget_queue_draw (GTK_WIDGET (display_uiinfo [2].widget));
-
-     
      /* Codecs Settings */
      if (gconf_client_get_bool (client, "/apps/gnomemeeting/video_settings/enable_vb", NULL))
        codec.SetAverageBitRate (1024 * gconf_client_get_int (client, "/apps/gnomemeeting/video_settings/video_bandwidth", NULL) * 8);
@@ -1099,15 +1095,13 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
       
       gnomemeeting_threads_enter ();
       
-      GtkWidget *object = (GtkWidget *) 
-	g_object_get_data (G_OBJECT (gm),
-			   "display_uiinfo");
-      
-      GnomeUIInfo *display_uiinfo = (GnomeUIInfo *) object;
-      
-      GTK_CHECK_MENU_ITEM (display_uiinfo [0].widget)->active = FALSE;
-      GTK_CHECK_MENU_ITEM (display_uiinfo [1].widget)->active = TRUE;
-      GTK_CHECK_MENU_ITEM (display_uiinfo [2].widget)->active = FALSE;
+      view_menu_uiinfo = (GnomeUIInfo *) 
+	g_object_get_data (G_OBJECT(gm), "view_menu_uiinfo");
+      gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [7].widget), TRUE);
+      gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [9].widget), TRUE);
+      gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [10].widget), TRUE);
+      gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [11].widget), TRUE);
+
       
       SetCurrentDisplay (1); 
       gnomemeeting_threads_leave ();

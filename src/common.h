@@ -120,10 +120,6 @@ struct _GmLdapWindow
 struct _GmPrefWindow
 {
   GtkWidget *show_splash;
-  GtkWidget *show_chat_window;
-  GtkWidget *show_statusbar;
-  GtkWidget *show_notebook;
-  GtkWidget *show_left_toolbar;
   GtkWidget *start_hidden;
   GtkWidget *incoming_call_popup;
   GtkWidget *video_preview;
