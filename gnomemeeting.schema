@@ -1,0 +1,48 @@
+<gconfschemafile>
+  <schemalist>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/view/show_status_bar</key>
+      <applyto>/apps/gnomemeeting/view/show_status_bar</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>bool</type>
+      <default>1</default>
+      <locale name="C">
+	<short>Show the status bar</short>
+	<long>Show a status bar at the bottom of the main window</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/view/show_quick_bar</key>
+      <applyto>/apps/gnomemeeting/view/show_quick_bar</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>bool</type>
+      <default>1</default>
+      <locale name="C">
+	<short>Show the quickbar</short>
+	<long>Show a quickbar in the main window</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/view/show_control_panel</key>
+      <applyto>/apps/gnomemeeting/view/show_control_panel</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>bool</type>
+      <default>1</default>
+      <locale name="C">
+	<short>Show a control panel</short>
+	<long>Show a control panel in the main window</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/view/show_docklet</key>
+      <applyto>/apps/gnomemeeting/view/show_docklet</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>bool</type>
+      <default>1</default>
+      <locale name="C">
+	<short>Show the docklet</short>
+	<long>Show a docklet in the gnome-panel or KDE systray</long>
+      </locale>
+    </schema>
+  </schemalist>
+</gconfschemafile>

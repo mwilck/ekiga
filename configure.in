@@ -229,6 +229,18 @@ GNOME_X_CHECKS
 
 CXXFLAGS="$CXXFLAGS $ORBIT_CFLAGS"
 
+dnl *********************************************************************
+dnl ** Setup gconf schemas installation *********************************
+dnl *********************************************************************
+
+AC_ARG_ENABLE(install_schemas,
+	[  --disable-install-schemas        Disable installation of the gconf schemas])
+AM_CONDITIONAL(INSTALL_SCHEMAS, test x$enable_install_schemas != xno)
+
+if test x$enable_install_schemas != xno; then
+	AM_GCONF_SOURCE
+fi
+
 dnl #########################################################################
 dnl  Check for LDAP if available.
 dnl ########################################################################
