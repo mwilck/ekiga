@@ -238,6 +238,10 @@ class GMH323EndPoint : public H323EndPoint
   virtual void TranslateTCPAddress(PIPSocket::Address &localAddr,
 				   const PIPSocket::Address &remoteAddr);
 
+  BOOL SetRecorderVolume (int);
+  BOOL SetPlayerVolume (int);
+  void StopAudioTester ();
+  void StartAudioTester ();
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Return the current connection or 
@@ -374,15 +378,21 @@ class GMH323EndPoint : public H323EndPoint
   int snapshot_number;
   GDKVideoOutputDevice *transmitted_video_device; 
   GDKVideoOutputDevice *received_video_device; 
+
+  PSoundChannel *player_channel;
+  PSoundChannel *recorder_channel;
+
   GmWindow *gw; 
   GmLdapWindow *lw;
   GmTextChat *chat;
 
   PThread *ils_client;
   PThread *video_grabber;
+  PThread *audio_tester;
   GConfClient *client;
 
   PMutex var_mutex;
+  PMutex quit_mutex;
   int opened_audio_channels;
   int opened_video_channels;
 

@@ -1,5 +1,18 @@
 2002-11-26 Damien Sandras  <dsandras@seconix.com>
 
+	* src/common.h: Cleanups.
+	* src/endpoint.cpp, src/endpoint.h: Added new functions 
+	SetAudioPlayerVolume, SetAudioRecorderVolume, StartAudioTester,
+	StopAudioTester.
+	
+	* src/main_window.cpp: Make use of the new functions.
+	
+	* src/sound_handling.cpp, src/sound_handling.h: Added volume functions.
+	
+	* src/toolbar.cpp: cleanups.
+	
+2002-11-26 Damien Sandras  <dsandras@seconix.com>
+
 	* src/common.h: Removed preview from prefs. Added Video Test button
 	for the control panel. (that button has the same behavior as preview).
 	

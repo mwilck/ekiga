@@ -29,6 +29,7 @@
 #include <ptlib.h>
 #include <iostream>
 
+
 #define GM_CIF_WIDTH   352
 #define GM_CIF_HEIGHT  288
 #define GM_QCIF_WIDTH  176
@@ -62,6 +63,14 @@
 #endif
 #endif
 #endif
+
+
+typedef struct _GmWindow GmWindow;
+typedef struct _GmPrefWindow GmPrefWindow;
+typedef struct _GmLdapWindow GmLdapWindow;
+typedef struct _GmTextChat GmTextChat;
+typedef struct _GmRtpData GmRtpData;
+typedef struct _GmCommandLineOptions GmCommandLineOptions;
 
 
 struct _GmTextChat
@@ -224,13 +233,6 @@ struct _GmCommandLineOptions
   int    daemon;
 };
 
-
-typedef struct _GmWindow GmWindow;
-typedef struct _GmPrefWindow GmPrefWindow;
-typedef struct _GmLdapWindow GmLdapWindow;
-typedef struct _GmTextChat GmTextChat;
-typedef struct _GmRtpData GmRtpData;
-typedef struct _GmCommandLineOptions GmCommandLineOptions;
 
 /* DESCRIPTION  :  / 
  * BEHAVIOR     :  Returns the structure of widgets of the main window.

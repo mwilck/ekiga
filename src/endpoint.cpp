@@ -222,6 +222,10 @@ GMH323EndPoint::GMH323EndPoint ()
 
   received_video_device = NULL;
   transmitted_video_device = NULL;
+  player_channel = NULL;
+  recorder_channel = NULL;
+  audio_tester = NULL;
+
 
   /* We can add this capability here as it will remain 
      the whole life of the EP */
@@ -240,6 +244,7 @@ GMH323EndPoint::GMH323EndPoint ()
 
 GMH323EndPoint::~GMH323EndPoint ()
 {
+  quit_mutex.Wait ();
   delete (ils_client);
   delete (video_grabber);
 
@@ -249,6 +254,7 @@ GMH323EndPoint::~GMH323EndPoint ()
     lid->Close();
   }
 #endif
+  quit_mutex.Signal ();
 }
 
 
@@ -790,6 +796,70 @@ GMH323EndPoint::StartListener ()
   }
    
   return TRUE;
+}
+
+
+BOOL GMH323EndPoint::SetRecorderVolume (int vol)
+{
+  GMAudioTester *at = (GMAudioTester *) audio_tester;
+
+  if (audio_tester) {
+
+    return (at->SetRecorderVolume (vol));
+  }
+  else if (recorder_channel) {
+
+    recorder_channel->SetVolume (vol);
+    return TRUE;
+  }
+  
+  return FALSE;
+}
+
+
+BOOL GMH323EndPoint::SetPlayerVolume (int vol)
+{
+  GMAudioTester *at = (GMAudioTester *) audio_tester;
+
+  if (audio_tester) {
+
+    return (at->SetPlayerVolume (vol));
+  }
+  else if (player_channel) {
+
+    player_channel->SetVolume (vol);
+    return TRUE;
+  }
+
+  return FALSE;
+}
+
+
+void GMH323EndPoint::StartAudioTester ()
+{
+  GMAudioTester *at = (GMAudioTester *) audio_tester;
+
+  if (!audio_tester)
+    audio_tester = new GMAudioTester (this, GTK_WINDOW (gm));
+  else {
+
+    at->Stop ();
+    delete (audio_tester);
+    audio_tester = NULL;
+  }
+}
+
+
+void GMH323EndPoint::StopAudioTester ()
+{
+  GMAudioTester *at = (GMAudioTester *) audio_tester;
+
+  if (audio_tester) {
+   
+    at->Stop ();
+    delete (audio_tester);
+    audio_tester = NULL;
+  }
 }
 
 
@@ -1370,6 +1440,12 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   PTimeInterval t;
   GtkTextIter start_iter, end_iter;
 
+  quit_mutex.Wait ();
+
+  gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_settings_frame), FALSE);
+  player_channel = NULL;
+  recorder_channel = NULL;
+
   /* If we are called because the current incoming call has ended and 
      not another call, ok, else do nothing */
   if (GetCurrentCallToken () == clearedCallToken) {
@@ -1381,6 +1457,8 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
     gnomemeeting_threads_enter ();
     gnomemeeting_statusbar_push (gw->statusbar, NULL);
     gnomemeeting_threads_leave ();
+
+    quit_mutex.Signal ();
 
     return;
   }
@@ -1623,6 +1701,8 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   SetCurrentConnection (NULL);
   SetCallingState (0);
+
+  quit_mutex.Signal ();
 }
 
 
@@ -1701,6 +1781,12 @@ GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
 
     return FALSE;
   }
+
+  if (isEncoding)
+    recorder_channel = (PSoundChannel *) codec.GetRawDataChannel ();
+  else
+    player_channel = (PSoundChannel *) codec.GetRawDataChannel ();
+  gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_settings_frame), TRUE);
 
   return TRUE;
 }

@@ -56,7 +56,6 @@ static void speaker_phone_toggle_changed (GtkToggleButton *, gpointer);
 #endif
 
 static void connect_button_clicked       (GtkToggleButton *, gpointer);
-static void toolbar_toggle_changed       (GtkWidget *, gpointer);
 static void toolbar_button_changed       (GtkWidget *, gpointer);
 static void toolbar_cp_button_changed    (GtkWidget *, gpointer);
 
@@ -127,22 +126,6 @@ static void connect_button_clicked (GtkToggleButton *w, gpointer data)
     }
   else
     MyApp->Disconnect ();
-}
-
-
-/* DESCRIPTION  :  This callback is called when the user toggles the 
- *                 corresponding component in the toolbar. 
- *                 (See menu_toggle_changed)
- * BEHAVIOR     :  Updates the gconf cache.
- * PRE          :  data is the key.
- */
-static void toolbar_toggle_changed (GtkWidget *w, gpointer data)
-{
-  GConfClient *client = gconf_client_get_default ();
-
-  gconf_client_set_bool (client,
-			 (gchar *) data,
-			 gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (w)), NULL);
 }
 
 
@@ -323,7 +306,7 @@ GtkWidget *gnomemeeting_init_left_toolbar (void)
 				gconf_client_get_bool (client, "/apps/gnomemeeting/devices/video_preview", NULL));
 
   g_signal_connect (G_OBJECT (gw->preview_button), "clicked",
-		    G_CALLBACK (toolbar_toggle_changed), 
+		    G_CALLBACK (toggle_changed), 
 		    (gpointer) "/apps/gnomemeeting/devices/video_preview");
 
   gtk_tooltips_set_tip (gw->tips, gw->preview_button,

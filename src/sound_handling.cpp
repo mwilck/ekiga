@@ -271,8 +271,14 @@ GMAudioTester::GMAudioTester (GMH323EndPoint *e, GtkWindow *w)
   ep = e;
   stop = FALSE;
   window = w;
-
+  
   gnomemeeting_sound_daemons_suspend ();
+  gnomemeeting_threads_enter ();
+  gw = gnomemeeting_get_main_window (gm);
+  gnomemeeting_threads_leave ();
+
+  player = new PSoundChannel;
+  recorder = new PSoundChannel;
 
   this->Resume ();
 }
@@ -282,8 +288,14 @@ GMAudioTester::~GMAudioTester ()
 {
   quit_mutex.Wait ();
 
-  quit_mutex.Signal ();
+  player->Close ();
+  recorder->Close ();
+  
+  delete (player);
+  delete (recorder);
+
   gnomemeeting_sound_daemons_resume ();
+  quit_mutex.Signal ();
 }
 
 
@@ -292,18 +304,15 @@ void GMAudioTester::Main ()
   void *buffer = malloc (8 * 1024);
   BOOL displayed = FALSE;
 
-  PSoundChannel *player = new PSoundChannel;
-  PSoundChannel *recorder = new PSoundChannel;
-
   memset (buffer, 0, sizeof (buffer));
 
   /* We try to open the 2 selected devices */
   if (!player->Open (ep->GetSoundChannelPlayDevice (), PSoundChannel::Player,
 		     1, 8000, 16)) {
 
-    gnomemeeting_threads_enter ();
+    gdk_threads_enter ();
     gnomemeeting_error_dialog (GTK_WINDOW (window), _("Impossible to open the selected audio device (%s) for playing. Please check your audio setup."), (const char *) ep->GetSoundChannelPlayDevice ());
-    gnomemeeting_threads_leave ();
+    gdk_threads_leave ();
 
     stop = TRUE;
   }
@@ -312,9 +321,9 @@ void GMAudioTester::Main ()
 		       PSoundChannel::Recorder,
 		       1, 8000, 16)) {
 
-    gnomemeeting_threads_enter ();
+    gdk_threads_enter ();
     gnomemeeting_error_dialog (GTK_WINDOW (window), _("Impossible to open the selected audio device (%s) for recording. Please check your audio setup."), (const char *) ep->GetSoundChannelRecordDevice ());
-    gnomemeeting_threads_leave ();
+    gdk_threads_leave ();
 
     stop = TRUE;
   }
@@ -327,17 +336,17 @@ void GMAudioTester::Main ()
     
     if (!recorder->Read (buffer, 8 * 1024)) {
       
-      gnomemeeting_threads_enter ();
+      gdk_threads_enter ();
       gnomemeeting_error_dialog (GTK_WINDOW (window), _("Impossible to read data from the selected audio device (%s). Please check your audio setup."), (const char*) ep->GetSoundChannelRecordDevice ());
-      gnomemeeting_threads_leave ();
+      gdk_threads_leave ();
 
       stop = TRUE;
     }
     else if (!player->Write (buffer, 8 * 1024)) {
 
-      gnomemeeting_threads_enter ();
+      gdk_threads_enter ();
       gnomemeeting_error_dialog (GTK_WINDOW (window), _("Impossible to write data to the selected audio device (%s). Please check your audio setup."), (const char*) ep->GetSoundChannelPlayDevice ());
-      gnomemeeting_threads_leave ();
+      gdk_threads_leave ();
       
       stop = TRUE;
     }
@@ -345,9 +354,11 @@ void GMAudioTester::Main ()
 
       if (!displayed) {
 
-	gnomemeeting_threads_enter ();
+	gdk_threads_enter ();
 	gnomemeeting_message_dialog (GTK_WINDOW (window), _("GnomeMeeting is now recording from %s and playing back to %s. Please speak in your microphone. You should hear yourself back into the speakers. Please make sure that what you hear is not the electronic feedback but your real recorded voice. If you don't hear yourself speaking, please fix your audio setup before using GnomeMeeting or others won't hear you. Most probably that your driver is not able to do full-duplex."), (const char*) ep->GetSoundChannelRecordDevice (), (const char*) ep->GetSoundChannelPlayDevice ());
-	gnomemeeting_threads_leave ();
+
+	gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_settings_frame), TRUE);
+	gdk_threads_leave ();
       }
 
       displayed = TRUE;
@@ -356,12 +367,35 @@ void GMAudioTester::Main ()
     memset (buffer, 0, 8 * 1024);
   }
   
-  quit_mutex.Signal ();
+  gdk_threads_enter ();
+  gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_settings_frame), FALSE);
+  gdk_threads_leave ();  
 
-  player->Close ();
-  recorder->Close ();
-  delete (player);
-  delete (recorder);
+  quit_mutex.Signal ();
+}
+
+
+BOOL GMAudioTester::SetPlayerVolume (int vol)
+{
+  if (player) {
+
+    player->SetVolume (vol);
+    return TRUE;
+  }
+
+  return FALSE;
+}
+
+
+BOOL GMAudioTester::SetRecorderVolume (int vol)
+{
+  if (recorder) {
+
+    recorder->SetVolume (vol);
+    return TRUE;
+  }
+  
+  return FALSE;
 }
 
 

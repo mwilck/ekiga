@@ -32,8 +32,9 @@
 #ifndef __GM_SOUND_HANDLING_H
 #define __GM_SOUND_HANDLING_H
 
-#include "common.h"
 #include "endpoint.h"
+#include "common.h"
+
 #include <gtk/gtk.h>
 #include <esd.h>
 
@@ -54,6 +55,7 @@
 #include <ptlib.h>
 
 enum { SOURCE_AUDIO, SOURCE_MIC };
+
 
 /* The functions */
 
@@ -137,6 +139,12 @@ public:
   ~GMAudioTester ();
 
 
+  BOOL SetPlayerVolume (int);
+
+
+  BOOL SetRecorderVolume (int);
+
+
   void Main ();
 
 
@@ -148,6 +156,10 @@ protected:
   BOOL stop;
   PMutex quit_mutex;
   GtkWindow *window;
+  PSoundChannel *player;
+  PSoundChannel *recorder;
+
+  GmWindow *gw;
 
   GMH323EndPoint *ep;
 };
