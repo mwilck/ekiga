@@ -1,5 +1,17 @@
 2004-08-30  Damien Sandras  <dsandras@gnome.org>
 
+	* po/POTFILES.in: Removed toolbar.*.
+
+	* src/toolbar.*: Removed those files and integrated the code into
+	main_window.cpp.
+
+	* Makefile.am: Removed toolbar.*.
+	
+	* src/common.h, src/gnomemeeting.cpp, src/main_window.cpp: Code
+	cleanups and GMObjectification.
+
+2004-08-30  Damien Sandras  <dsandras@gnome.org>
+
 	* po/POTFILES.in: Fixed #151424 again.
 
 2004-08-30  Damien Sandras  <dsandras@gnome.org>

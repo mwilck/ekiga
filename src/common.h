@@ -166,6 +166,11 @@ struct _GmWindow
   GtkWidget *audio_transmission_popup;
   GtkWidget *audio_reception_popup;
   
+#ifdef DISABLE_GNOME
+  GtkWidget *window_vbox;
+  GtkWidget *window_hbox;
+#endif
+
   GtkWidget *statusbar;
   GtkWidget *remote_name;
   GtkWidget *splash_win;

@@ -157,7 +157,6 @@ GnomeMeeting::Connect (PString url)
 
     gnomemeeting_threads_enter ();
     gm_history_window_insert (history_window, _("Answering incoming call"));
-    connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 1);
     gnomemeeting_threads_leave ();
 
     url_handler = new GMURLHandler ();
@@ -218,8 +217,6 @@ GnomeMeeting::Disconnect (H323Connection::CallEndReason reason)
 
       gnomemeeting_threads_enter ();	
       gm_history_window_insert (history_window, _("Stopping current call"));
-      connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 
-				    0);
       gnomemeeting_threads_leave ();
 
       endpoint->ClearAllCalls (reason, FALSE);
@@ -228,8 +225,6 @@ GnomeMeeting::Disconnect (H323Connection::CallEndReason reason)
 
       gnomemeeting_threads_enter ();
       gm_history_window_insert (history_window, _("Refusing Incoming call"));
-      connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 
-				    0);
       gnomemeeting_threads_leave ();
 
       endpoint->ClearCall (endpoint->GetCurrentCallToken (),

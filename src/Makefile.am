@@ -20,8 +20,6 @@ gnomemeeting_SOURCES =		\
 	connection.h		\
 	endpoint.cpp		\
 	endpoint.h		\
-	toolbar.cpp		\
-	toolbar.h		\
 	pref_window.cpp		\
 	pref_window.h		\
 	sound_handling.cpp	\

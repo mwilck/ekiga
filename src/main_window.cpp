@@ -50,13 +50,14 @@
 #include "sound_handling.h"
 #include "urlhandler.h"
 
-#include "dialog.h"
-#include "gmentrydialog.h"
-#include "stock-icons.h"
-#include "gm_conf.h"
-#include "contacts/gm_contacts.h"
-#include "gtk_menu_extensions.h"
-#include "stats_drawing_area.h"
+#include <dialog.h>
+#include <gmentrydialog.h>
+#include <stock-icons.h>
+#include <gm_conf.h>
+#include <contacts/gm_contacts.h>
+#include <gtk_menu_extensions.h>
+#include <stats_drawing_area.h>
+#include <widgets/history-combo.h>
 
 
 #include "../pixmaps/text_logo.xpm"
@@ -101,6 +102,61 @@ static void gm_mw_destroy (gpointer);
  * PRE          : The given GtkWidget pointer must be the main window GMObject. 
  */
 static GmWindow *gm_mw_get_mw (GtkWidget *);
+
+
+/* DESCRIPTION  : / 
+ * BEHAVIOR     : Updates the connect button in toggled mode or not.
+ * PRE          : The given GtkWidget pointer must be the main window GMObject,
+ * 		  BOOL is TRUE if the button should be in calling state.
+ */
+static void gm_mw_update_connect_button (GtkWidget *,
+					 BOOL);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Create the toolbars of the main window.
+ *                 The toolbars are created in their initial state, with
+ *                 required items being unsensitive.
+ * PRE          :  The main window GMObject.
+ */
+static void gm_mw_init_toolbars (GtkWidget *);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Create the menu of the main window.
+ *                 The menu is created in its initial state, with
+ *                 required items being unsensitive.
+ * PRE          :  The main window GMObject.
+ */
+static void gm_mw_init_menu (GtkWidget *);
+
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Builds the stats part of the main window.
+ * PRE          : The given GtkWidget pointer must be the main window GMObject. 
+ */
+static void gm_mw_init_stats (GtkWidget *);
+
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Builds the dialpad part of the main window.
+ * PRE          : The given GtkWidget pointer must be the main window GMObject. 
+ */
+static void gm_mw_init_dialpad (GtkWidget *);
+
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Builds the video settings part of the main window.
+ * PRE          : The given GtkWidget pointer must be the main window GMObject. 
+ */
+static void gm_mw_init_video_settings (GtkWidget *);
+
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Builds the audio settings part of the main window.
+ * PRE          : The given GtkWidget pointer must be the main window GMObject. 
+ */
+static void gm_mw_init_audio_settings (GtkWidget *);
 
 
 /* Callbacks */
@@ -175,11 +231,10 @@ static void dnd_call_contact_cb (GtkWidget *widget,
  * BEHAVIOR     :  Update the config key accordingly.
  * PRE          :  A valid pointer to the main window GmObject.
  */
-static void 
-control_panel_section_changed_cb (GtkNotebook *, 
-				  GtkNotebookPage *,
-				  gint, 
-				  gpointer);
+static void control_panel_section_changed_cb (GtkNotebook *, 
+					      GtkNotebookPage *,
+					      gint, 
+					      gpointer);
 
 
 /* DESCRIPTION  :  This callback is called when the user 
@@ -207,9 +262,8 @@ static gint window_closed_cb (GtkWidget *,
  * BEHAVIOR     :  clears text chat
  * PRE          :  The main window GMObject.
  */
-static void 
-text_chat_clear_cb (GtkWidget *,
-		    gpointer);
+static void text_chat_clear_cb (GtkWidget *,
+				gpointer);
 
 
 /* DESCRIPTION  :  This callback is called when the user changes the zoom
@@ -218,9 +272,8 @@ text_chat_clear_cb (GtkWidget *,
  *                 2:1 if data == 2. (Updates the config key).
  * PRE          :  /
  */
-static void 
-zoom_changed_cb (GtkWidget *,
-		 gpointer);
+static void zoom_changed_cb (GtkWidget *,
+			     gpointer);
 
 
 /* DESCRIPTION  :  This callback is called when the user toggles fullscreen
@@ -228,9 +281,8 @@ zoom_changed_cb (GtkWidget *,
  * BEHAVIOR     :  Toggles the fullscreen configuration key. 
  * PRE          :  / 
  */
-static void 
-fullscreen_changed_cb (GtkWidget *,
-		       gpointer);
+static void fullscreen_changed_cb (GtkWidget *,
+				   gpointer);
 
 
 /* DESCRIPTION  :  This callback is called when the user toggles an 
@@ -238,49 +290,45 @@ fullscreen_changed_cb (GtkWidget *,
  * BEHAVIOR     :  Calls the given speed dial.
  * PRE          :  data is the speed dial as a gchar *
  */
-static void
-speed_dial_menu_item_selected_cb (GtkWidget *,
+static void speed_dial_menu_item_selected_cb (GtkWidget *,
+					      gpointer);
+
+
+/* DESCRIPTION  :  This callback is called when the user changes the URL
+ * 		   in the URL bar.
+ * BEHAVIOR     :  It udpates the tooltip with the new URL.
+ * PRE          :  data is a valid pointer to the main window GMObject.
+ */
+static void combo_url_changed_cb (GtkEditable *, 
 				  gpointer);
 
-
-
-/* Misc Functions */
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Create the menu of the main window.
- *                 The menu is created in its initial state, with
- *                 required items being unsensitive.
- * PRE          :  The main window GMObject.
+/* DESCRIPTION  :  This callback is called when the user presses the control 
+ *                 panel button in the toolbar. 
+ * BEHAVIOR     :  Updates the config cache : 0 or 3 (off) for the control
+ * 		   panel section.
+ * PRE          :  /
  */
-static void gm_mw_init_menu (GtkWidget *);
+static void control_panel_button_clicked_cb (GtkWidget *, 
+					     gpointer);
 
 
-/* DESCRIPTION  : /
- * BEHAVIOR     : Builds the stats part of the main window.
- * PRE          : The given GtkWidget pointer must be the main window GMObject. 
+/* DESCRIPTION  :  This callback is called when the user presses a
+ *                 button in the toolbar. 
+ *                 (See menu_toggle_changed)
+ * BEHAVIOR     :  Updates the config cache.
+ * PRE          :  data is the key.
  */
-static void gm_mw_init_stats (GtkWidget *);
+static void toolbar_toggle_button_changed_cb (GtkWidget *, 
+					      gpointer);
 
 
-/* DESCRIPTION  : /
- * BEHAVIOR     : Builds the dialpad part of the main window.
- * PRE          : The given GtkWidget pointer must be the main window GMObject. 
+/* DESCRIPTION  :  This callback is called when the user toggles the 
+ *                 connect button.
+ * BEHAVIOR     :  Connect or disconnect.
+ * PRE          :  /
  */
-static void gm_mw_init_dialpad (GtkWidget *);
-
-
-/* DESCRIPTION  : /
- * BEHAVIOR     : Builds the video settings part of the main window.
- * PRE          : The given GtkWidget pointer must be the main window GMObject. 
- */
-static void gm_mw_init_video_settings (GtkWidget *);
-
-
-/* DESCRIPTION  : /
- * BEHAVIOR     : Builds the audio settings part of the main window.
- * PRE          : The given GtkWidget pointer must be the main window GMObject. 
- */
-static void gm_mw_init_audio_settings (GtkWidget *);
+static void toolbar_connect_button_clicked_cb (GtkToggleButton *, 
+					       gpointer);
 
 
 
@@ -305,384 +353,259 @@ gm_mw_get_mw (GtkWidget *main_window)
 
 
 static void 
-hold_current_call_cb (GtkWidget *widget,
-		      gpointer data)
+gm_mw_update_connect_button (GtkWidget *main_window,
+			     BOOL is_calling)
 {
-  PString call_token;
-  GMH323EndPoint *endpoint = NULL;
-
-  BOOL is_on_hold = FALSE;
+  GmWindow *mw = NULL;
   
-  g_return_if_fail (data != NULL);
-  endpoint = GnomeMeeting::Process ()->Endpoint ();
-
-
-  /* Release the GDK thread to prevent deadlocks, change
-   * the hold state at the endpoint level.
-   */
-  gdk_threads_leave ();
-  call_token = endpoint->GetCurrentCallToken ();
-  is_on_hold = endpoint->IsCallOnHold (call_token);
-  if (endpoint->SetCallOnHold (call_token, !is_on_hold))
-    is_on_hold = !is_on_hold; /* It worked */
-  gdk_threads_enter ();
-
+  GtkWidget *image = NULL;
   
-  /* Update the GUI */
-  gm_main_window_set_call_hold (GTK_WIDGET (data), is_on_hold);
-}
 
-
-static void
-pause_current_call_channel_cb (GtkWidget *widget,
-			       gpointer data)
-{
-  GMH323EndPoint *endpoint = NULL;
-  GMVideoGrabber *vg = NULL;
-
-  GtkWidget *main_window = NULL;
- 
-  PString current_call_token;
-  BOOL is_paused = FALSE;
+  g_return_if_fail (main_window != NULL);
   
-  endpoint = GnomeMeeting::Process ()->Endpoint ();
-  current_call_token = endpoint->GetCurrentCallToken ();
-
-  main_window = gm; 
-
-  cout << "ici" << endl << flush;
+  mw = gm_mw_get_mw (main_window);
+  g_return_if_fail (mw != NULL);
   
-  if (!current_call_token.IsEmpty ()
-      && endpoint->GetCallingState () == GMH323EndPoint::Standby) {
-
-    gdk_threads_leave ();
-    vg = endpoint->GetVideoGrabber ();
-    if (vg && vg->IsGrabbing ())
-      vg->StopGrabbing ();
-    else
-      vg->StartGrabbing ();
-    gdk_threads_enter ();
-  }
-  else {
-
-    if (GPOINTER_TO_INT (data) == 0) {
+  
+  image = (GtkWidget *) g_object_get_data (G_OBJECT (mw->connect_button), 
+					   "image");
+  
+  if (image != NULL) {
+    
+    if (is_calling == 1) {
       
-      gdk_threads_leave ();
-      is_paused = endpoint->IsCallAudioPaused (current_call_token);
-      if (endpoint->SetCallAudioPause (current_call_token, !is_paused))
-	is_paused = !is_paused; /* It worked */
-      gdk_threads_enter ();
-
-      gm_main_window_set_channel_pause (main_window, is_paused, FALSE);
-    }
-    else {
-
-      gdk_threads_leave ();
-      is_paused = endpoint->IsCallVideoPaused (current_call_token);
-      if (endpoint->SetCallVideoPause (current_call_token, !is_paused))
-	is_paused = !is_paused; /* It worked */
-      gdk_threads_enter ();
-      
-      gm_main_window_set_channel_pause (main_window, is_paused, TRUE);
-    }
+        gtk_image_set_from_stock (GTK_IMAGE (image),
+                                  GM_STOCK_CONNECT, 
+                                  GTK_ICON_SIZE_LARGE_TOOLBAR);
+        
+        /* Block the signal */
+        g_signal_handlers_block_by_func (G_OBJECT (mw->connect_button), (void *) toolbar_connect_button_clicked_cb, NULL);
+        gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (mw->connect_button), 
+				      TRUE);
+        g_signal_handlers_unblock_by_func (G_OBJECT (mw->connect_button), (void *) toolbar_connect_button_clicked_cb, NULL);
+	
+      } else {
+        
+        gtk_image_set_from_stock (GTK_IMAGE (image),
+                                  GM_STOCK_DISCONNECT, 
+                                  GTK_ICON_SIZE_LARGE_TOOLBAR);
+        
+        g_signal_handlers_block_by_func (G_OBJECT (mw->connect_button), (void *) toolbar_connect_button_clicked_cb, NULL);
+        gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (mw->connect_button), 
+				      FALSE);
+        g_signal_handlers_unblock_by_func (G_OBJECT (mw->connect_button), (void *) toolbar_connect_button_clicked_cb, NULL);
+      }   
+    
+    gtk_widget_queue_draw (GTK_WIDGET (image));
+    gtk_widget_queue_draw (GTK_WIDGET (mw->connect_button));
   }
 }
 
 
-static void 
-transfer_current_call_cb (GtkWidget *widget,
-			  gpointer data)
-{
-  g_return_if_fail (data != NULL);
-  
-  gm_main_window_transfer_dialog_run (GTK_WIDGET (data), NULL);  
-}
-
-
 static void
-video_window_shown_cb (GtkWidget *w, 
-		       gpointer data)
-{
-  GMH323EndPoint *endpoint = NULL;
-
-  endpoint = GnomeMeeting::Process ()->Endpoint ();
-
-  if (endpoint 
-      && gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top")
-      && endpoint->GetCallingState () == GMH323EndPoint::Connected)
-    gdk_window_set_always_on_top (GDK_WINDOW (w->window), TRUE);
-}
-
-
-static void
-dnd_call_contact_cb (GtkWidget *widget, 
-		     GmContact *contact,
-		     gint x, 
-		     gint y, 
-		     gpointer data)
+gm_mw_init_toolbars (GtkWidget *main_window)
 {
   GmWindow *mw = NULL;
   
-  g_return_if_fail (data != NULL);
+  GtkWidget *toolbar = NULL;
   
-  if (contact && contact->url) {
-    mw = (GmWindow *)data;
-     if (GnomeMeeting::Process ()->Endpoint ()->GetCallingState () == GMH323EndPoint::Standby) {
-       
-       /* this function will store a copy of text */
-       gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (mw->combo)->entry),
-			   PString (contact->url));
-       
-       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (mw->connect_button),
-				     true);
-     }
-     gm_contact_delete (contact);
-  }
-}
+  GtkWidget *hbox = NULL;
+  GtkWidget *image = NULL;
 
-
-static void 
-audio_volume_changed_cb (GtkAdjustment *adjustment, 
-			 gpointer data)
-{
-  GMH323EndPoint *ep = NULL;
+  GtkWidget *addressbook_window = NULL;
   
-  H323Connection *con = NULL;
-  H323Codec *raw_codec = NULL;
-  H323Channel *channel = NULL;
+  addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
 
-  PSoundChannel *sound_channel = NULL;
+  
+  g_return_if_fail (main_window != NULL);
 
-  int play_vol =  0, rec_vol = 0;
+  mw = gm_mw_get_mw (main_window);
+
+  g_return_if_fail (mw != NULL);
+
+  
+  /* The main horizontal toolbar */
+  toolbar = gtk_toolbar_new ();
 
 
-  g_return_if_fail (data != NULL);
-  ep = GnomeMeeting::Process ()->Endpoint ();
+  /* Combo */
+  mw->combo =
+    gm_history_combo_new (USER_INTERFACE_KEY "main_window/urls_history");
 
-  gm_main_window_get_volume_sliders_values (GTK_WIDGET (data), 
-					    play_vol, rec_vol);
+  gtk_combo_set_use_arrows_always (GTK_COMBO(mw->combo), TRUE);
+  gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (mw->combo)->entry), "h323:");
 
-  gdk_threads_leave ();
+  gtk_tooltips_set_tip (mw->tips, GTK_WIDGET (GTK_COMBO (mw->combo)->entry), 
+			"h323:", NULL);
+
+  gtk_combo_disable_activate (GTK_COMBO (mw->combo));
+  g_signal_connect (G_OBJECT (GTK_COMBO (mw->combo)->entry), "activate",
+  		    G_CALLBACK (connect_cb), NULL);
+
+  hbox = gtk_hbox_new (FALSE, 2);
+
+  gtk_box_pack_start (GTK_BOX (hbox), mw->combo, TRUE, TRUE, 1);
+  gtk_box_pack_start (GTK_BOX (hbox), toolbar, FALSE, FALSE, 1);
  
-  con = ep->FindConnectionWithLock (ep->GetCurrentCallToken ());
+  gtk_container_set_border_width (GTK_CONTAINER (toolbar), 2);
 
-  if (con) {
+  g_signal_connect (G_OBJECT (GTK_WIDGET (GTK_COMBO(mw->combo)->entry)),
+		    "changed", G_CALLBACK (combo_url_changed_cb), 
+		    (gpointer) main_window);
 
-    for (int cpt = 0 ; cpt < 2 ; cpt++) {
 
-      channel = 
-        con->FindChannel (RTP_Session::DefaultAudioSessionID, (cpt == 0));         
-      if (channel) {
+  /* The connect button */
+  mw->connect_button = gtk_toggle_button_new ();
+  gtk_tooltips_set_tip (mw->tips, GTK_WIDGET (mw->connect_button), 
+			_("Enter an URL to call on the left, and click on this button to connect to the given URL"), NULL);
+  
+  image = gtk_image_new_from_stock (GM_STOCK_DISCONNECT, 
+                                    GTK_ICON_SIZE_LARGE_TOOLBAR);
 
-        raw_codec = channel->GetCodec();
+  gtk_container_add (GTK_CONTAINER (mw->connect_button), GTK_WIDGET (image));
+  g_object_set_data (G_OBJECT (mw->connect_button), "image", image);
 
-        if (raw_codec) {
+  gtk_widget_set_size_request (GTK_WIDGET (mw->connect_button), 28, 28);
 
-          sound_channel = (PSoundChannel *) raw_codec->GetRawDataChannel ();
+  gtk_toolbar_append_widget (GTK_TOOLBAR (toolbar), mw->connect_button,
+			     NULL, NULL);
 
-          if (sound_channel)
-            ep->SetDeviceVolume (sound_channel, 
-                                 (cpt == 1), 
-                                 (cpt == 1) ? rec_vol : play_vol);
-        }
-      }
-    }
-    con->Unlock ();
-  }
+  g_signal_connect (G_OBJECT (mw->connect_button), "clicked",
+                    G_CALLBACK (toolbar_connect_button_clicked_cb), 
+		    NULL);
 
-  gdk_threads_enter ();
+  gtk_widget_show_all (GTK_WIDGET (hbox));
+  
+#ifndef DISABLE_GNOME
+  gnome_app_add_docked (GNOME_APP (main_window), hbox, "main_toolbar",
+  			BONOBO_DOCK_ITEM_BEH_EXCLUSIVE,
+  			BONOBO_DOCK_TOP, 1, 0, 0);
+#else
+  gtk_box_pack_start (GTK_BOX (mw->window_vbox), hbox, 
+		      FALSE, FALSE, 0);
+#endif
+
+
+  /* The left toolbar */
+  toolbar = gtk_toolbar_new ();
+  gtk_toolbar_set_orientation (GTK_TOOLBAR (toolbar), 
+			       GTK_ORIENTATION_VERTICAL);
+
+  image =
+    gtk_image_new_from_stock (GM_STOCK_TEXT_CHAT, 
+			      GTK_ICON_SIZE_LARGE_TOOLBAR);
+  gtk_widget_show (image);
+  gtk_toolbar_append_item (GTK_TOOLBAR (toolbar),
+			   NULL,
+			   _("Open text chat"), 
+			   NULL,
+			   image,
+			   GTK_SIGNAL_FUNC (toolbar_toggle_button_changed_cb),
+			   (gpointer) USER_INTERFACE_KEY "main_window/show_chat_window");
+  
+  image = gtk_image_new_from_stock (GM_STOCK_CONTROL_PANEL, 
+				    GTK_ICON_SIZE_LARGE_TOOLBAR);
+  gtk_widget_show (image);
+  gtk_toolbar_append_item (GTK_TOOLBAR (toolbar),
+			   NULL,
+			   _("Open control panel"),
+			   NULL,
+			   image,
+			   GTK_SIGNAL_FUNC (control_panel_button_clicked_cb),
+			   NULL);
+
+  
+  image = gtk_image_new_from_stock (GM_STOCK_ADDRESSBOOK_24,
+				    GTK_ICON_SIZE_LARGE_TOOLBAR);
+  gtk_widget_show (image);
+  gtk_toolbar_append_item (GTK_TOOLBAR (toolbar),
+			   NULL,
+			   _("Open address book"),
+			   NULL,
+			   image,
+			   GTK_SIGNAL_FUNC (show_window_cb),
+			   (gpointer) addressbook_window); 
+
+  gtk_toolbar_set_style (GTK_TOOLBAR (toolbar), GTK_TOOLBAR_ICONS);
+
+  
+  /* Video Preview Button */
+  mw->preview_button = gtk_toggle_button_new ();
+
+  image = gtk_image_new_from_stock (GM_STOCK_VIDEO_PREVIEW, 
+                                    GTK_ICON_SIZE_MENU);
+
+  gtk_container_add (GTK_CONTAINER (mw->preview_button), GTK_WIDGET (image));
+  GTK_TOGGLE_BUTTON (mw->preview_button)->active =
+    gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview");
+
+  g_signal_connect (G_OBJECT (mw->preview_button), "toggled",
+		    G_CALLBACK (toolbar_toggle_button_changed_cb),
+		    (gpointer) VIDEO_DEVICES_KEY "enable_preview");
+
+  gtk_tooltips_set_tip (mw->tips, mw->preview_button,
+			_("Display images from your camera device"),
+			NULL);
+
+  gtk_toolbar_append_widget (GTK_TOOLBAR (toolbar), 
+			     mw->preview_button, NULL, NULL);
+
+
+  /* Audio Channel Button */
+  mw->audio_chan_button = gtk_toggle_button_new ();
+ 
+  image = gtk_image_new_from_stock (GM_STOCK_AUDIO_MUTE, 
+                                    GTK_ICON_SIZE_MENU);
+
+  gtk_container_add (GTK_CONTAINER (mw->audio_chan_button), 
+		     GTK_WIDGET (image));
+
+  gtk_widget_set_sensitive (GTK_WIDGET (mw->audio_chan_button), FALSE);
+
+  g_signal_connect (G_OBJECT (mw->audio_chan_button), "clicked",
+		    G_CALLBACK (pause_current_call_channel_cb), 
+		    GINT_TO_POINTER (0));
+
+  gtk_tooltips_set_tip (mw->tips, mw->audio_chan_button,
+			_("Audio transmission status. During a call, click here to suspend or resume the audio transmission."), NULL);
+
+  gtk_toolbar_append_widget (GTK_TOOLBAR (toolbar), 
+			     mw->audio_chan_button, NULL, NULL);
+
+
+  /* Video Channel Button */
+  mw->video_chan_button = gtk_toggle_button_new ();
+
+  image = gtk_image_new_from_stock (GM_STOCK_VIDEO_MUTE,
+				    GTK_ICON_SIZE_MENU);
+  gtk_container_add (GTK_CONTAINER (mw->video_chan_button), 
+		     GTK_WIDGET (image));
+
+  gtk_widget_set_sensitive (GTK_WIDGET (mw->video_chan_button), FALSE);
+
+  g_signal_connect (G_OBJECT (mw->video_chan_button), "clicked",
+		    G_CALLBACK (pause_current_call_channel_cb), 
+		    GINT_TO_POINTER (1));
+
+  gtk_tooltips_set_tip (mw->tips, mw->video_chan_button,
+			_("Video transmission status. During a call, click here to suspend or resume the video transmission."), NULL);
+
+  gtk_toolbar_append_widget (GTK_TOOLBAR (toolbar), 
+			     mw->video_chan_button, NULL, NULL);
+
+#ifndef DISABLE_GNOME
+  gnome_app_add_toolbar (GNOME_APP (main_window), GTK_TOOLBAR (toolbar),
+ 			 "left_toolbar", BONOBO_DOCK_ITEM_BEH_EXCLUSIVE,
+ 			 BONOBO_DOCK_LEFT, 2, 0, 0);
+#else
+  gtk_box_pack_start (GTK_BOX (mw->window_hbox), left_toolbar, 
+		      FALSE, FALSE, 0);
+#endif
+  
+  gtk_widget_show_all (GTK_WIDGET (toolbar));
 }
 
-
-static void 
-video_settings_changed_cb (GtkAdjustment *adjustment, 
-			   gpointer data)
-{ 
-  GMH323EndPoint *ep = NULL;
-  GMVideoGrabber *video_grabber = NULL;
-
-  int brightness = -1;
-  int whiteness = -1;
-  int colour = -1;
-  int contrast = -1;
-
-  g_return_if_fail (data != NULL);
-  
-  ep = GnomeMeeting::Process ()->Endpoint ();
-  
-  gm_main_window_get_video_sliders_values (GTK_WIDGET (data),
-					   brightness,
-					   whiteness,
-					   colour,
-					   contrast);
-
-  /* Notice about mutexes:
-     The GDK lock is taken in the callback. We need to release it, because
-     if CreateVideoGrabber is called in another thread, it will only
-     release its internal mutex (also used by GetVideoGrabber) after it 
-     returns, but it will return only if it is opened, and it can't open 
-     if the GDK lock is held as it will wait on the GDK lock before 
-     updating the GUI */
-  gdk_threads_leave ();
-  if (ep && (video_grabber = ep->GetVideoGrabber ())) {
-    
-    video_grabber->SetWhiteness (whiteness << 8);
-    video_grabber->SetBrightness (brightness << 8);
-    video_grabber->SetColour (colour << 8);
-    video_grabber->SetContrast (contrast << 8);
-    video_grabber->Unlock ();
-  }
-  gdk_threads_enter ();
-}
-
-
-static void 
-control_panel_section_changed_cb (GtkNotebook *notebook, 
-				  GtkNotebookPage *page,
-				  gint page_num, 
-				  gpointer data) 
-{
-  GmWindow *mw = NULL;
-  
-  gint current_page = 0;
-
-  
-  g_return_if_fail (data != NULL);
-  mw = gm_mw_get_mw (GTK_WIDGET (data));
-
-  
-  current_page = 
-    gtk_notebook_get_current_page (GTK_NOTEBOOK (mw->main_notebook));
-  gm_conf_set_int (USER_INTERFACE_KEY "main_window/control_panel_section",
-		   current_page);
-}
-
-
-static void 
-dialpad_button_clicked_cb (GtkButton *button, 
-			   gpointer data)
-{
-  GtkWidget *label = NULL;
-  const char *button_text = NULL;
-
-  g_return_if_fail (data != NULL);
-
-  
-  /* FIXME: separation dans dialpad event du code du endpoint */
-  label = gtk_bin_get_child (GTK_BIN (button));
-  button_text = gtk_label_get_text (GTK_LABEL (label));
-
-  if (button_text
-      && strcmp (button_text, "")
-      && strlen (button_text) > 1
-      && button_text [0])
-    gm_main_window_dialpad_event (GTK_WIDGET (data),
-				  button_text [0]);
-}
-
-
-static gint 
-window_closed_cb (GtkWidget *widget, 
-		  GdkEvent *event,
-		  gpointer data)
-{
-  GtkWidget *tray = NULL;
-  
-  GmWindow *mw = NULL;
-  
-  gboolean b = FALSE;
-
-  g_return_val_if_fail (data != NULL, FALSE);
-  mw = gm_mw_get_mw (GTK_WIDGET (data));
-  tray = GnomeMeeting::Process ()->GetTray ();
-  
-
-  b = gm_tray_is_embedded (tray);
-
-  if (!b)
-    quit_callback (NULL, data);
-  else 
-    gnomemeeting_window_hide (GTK_WIDGET (gm));
-
-  return (TRUE);
-}  
-
-
-static void 
-text_chat_clear_cb (GtkWidget *widget,
-		    gpointer data)
-{
-  g_return_if_fail (data != NULL);
-  
-  gnomemeeting_text_chat_clear (GTK_WIDGET (data));
-}
-
-
-static void 
-zoom_changed_cb (GtkWidget *widget,
-		 gpointer data)
-{
-  double zoom = 0.0;
-  
-  zoom = gm_conf_get_float (VIDEO_DISPLAY_KEY "zoom_factor");
-
-  switch (GPOINTER_TO_INT (data)) {
-
-  case 0:
-    if (zoom > 0.5)
-      zoom = zoom / 2.0;
-    break;
-
-  case 1:
-    zoom = 1.0;
-    break;
-
-  case 2:
-    if (zoom < 2.00)
-      zoom = zoom * 2.0;
-  }
-
-  gm_conf_set_float (VIDEO_DISPLAY_KEY "zoom_factor", zoom);
-}
-
-
-static void 
-fullscreen_changed_cb (GtkWidget *widget,
-		       gpointer data)
-{
-  gm_conf_set_float (VIDEO_DISPLAY_KEY "zoom_factor", -1.0);
-}
-
-
-static void
-speed_dial_menu_item_selected_cb (GtkWidget *w,
-				  gpointer data)
-{
-  GmWindow *mw = NULL;
-  GMH323EndPoint *ep = NULL;
-  
-  gchar *url = NULL;
-    
-  mw = gm_mw_get_mw (gm); 
-  ep = GnomeMeeting::Process ()->Endpoint ();
-  
-  g_return_if_fail (data != NULL);
-
-  url = g_strdup_printf ("%s#", (gchar *) data);
-  gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (mw->combo)->entry),
-		      (gchar *) url);
-    
-  /* FIXME */
-  if (ep->GetCallingState () == GMH323EndPoint::Connected)
-    gm_main_window_transfer_dialog_run (gm, url);
-  else
-    connect_cb (NULL, NULL);
-
-  g_free (url);
-}
-
-
-/* Misc functions */
+	
 static void
 gm_mw_init_menu (GtkWidget *main_window)
 {
@@ -835,7 +758,7 @@ gm_mw_init_menu (GtkWidget *main_window)
 			    NULL, 0,
 			    GTK_SIGNAL_FUNC (toggle_menu_changed_cb),
 			    (gpointer) USER_INTERFACE_KEY "main_window/show_chat_window",
-			     show_chat_window, TRUE),
+			    show_chat_window, TRUE),
       GTK_MENU_TOGGLE_ENTRY("status_bar", _("Status Bar"),
 			    _("View/Hide the status bar"), 
 			    NULL, 0, 
@@ -1544,11 +1467,11 @@ gm_main_window_set_channel_pause (GtkWidget *main_window,
 
   g_signal_handlers_block_by_func (G_OBJECT (b),
 				   (gpointer) pause_current_call_channel_cb,
-				   NULL);
+				   GINT_TO_POINTER (is_video));
   gtk_toggle_button_set_active (b, pause);
   g_signal_handlers_unblock_by_func (G_OBJECT (b),
 				     (gpointer) pause_current_call_channel_cb,
-				     NULL);
+				     GINT_TO_POINTER (is_video));
 
   g_free (msg);
 }
@@ -1559,9 +1482,11 @@ gm_main_window_update_sensitivity (//GtkWidget *main_window,
 				   unsigned calling_state)
 {
   GmWindow *mw = NULL;
+  
+  GtkWidget *main_window = NULL;
 
   mw = GnomeMeeting::Process ()->GetMainWindow ();
-  
+  main_window = gm;
  
   switch (calling_state)
     {
@@ -1571,7 +1496,7 @@ gm_main_window_update_sensitivity (//GtkWidget *main_window,
       gtk_menu_set_sensitive (mw->main_menu, "disconnect", FALSE);
       gtk_menu_section_set_sensitive (mw->main_menu, "hold_call", FALSE);
       gtk_widget_set_sensitive (GTK_WIDGET (mw->preview_button), TRUE);
-      connect_button_update_pixmap (GTK_TOGGLE_BUTTON (mw->connect_button), 0);
+      gm_mw_update_connect_button (main_window, FALSE);
       break;
 
 
@@ -1580,7 +1505,7 @@ gm_main_window_update_sensitivity (//GtkWidget *main_window,
       gtk_menu_set_sensitive (mw->main_menu, "connect", FALSE);
       gtk_menu_set_sensitive (mw->main_menu, "disconnect", TRUE);
       gtk_widget_set_sensitive (GTK_WIDGET (mw->preview_button), FALSE);
-      connect_button_update_pixmap (GTK_TOGGLE_BUTTON (mw->connect_button), 1);
+      gm_mw_update_connect_button (main_window, TRUE);
       break;
 
 
@@ -1590,14 +1515,14 @@ gm_main_window_update_sensitivity (//GtkWidget *main_window,
       gtk_menu_set_sensitive (mw->main_menu, "disconnect", TRUE);
       gtk_menu_section_set_sensitive (mw->main_menu, "hold_call", TRUE);
       gtk_widget_set_sensitive (GTK_WIDGET (mw->preview_button), FALSE);
-      connect_button_update_pixmap (GTK_TOGGLE_BUTTON (mw->connect_button), 1);
+      gm_mw_update_connect_button (main_window, TRUE);
       break;
 
 
     case GMH323EndPoint::Called:
 
       gtk_menu_set_sensitive (mw->main_menu, "disconnect", TRUE);
-      gtk_widget_set_sensitive (GTK_WIDGET (mw->preview_button), FALSE);
+      gm_mw_update_connect_button (main_window, FALSE);
       break;
     }
 }
@@ -1916,22 +1841,463 @@ gm_main_window_transfer_dialog_run (GtkWidget *main_window,
 }
 
 
+/* GTK callbacks */
+
+static void 
+hold_current_call_cb (GtkWidget *widget,
+		      gpointer data)
+{
+  PString call_token;
+  GMH323EndPoint *endpoint = NULL;
+
+  BOOL is_on_hold = FALSE;
+  
+  g_return_if_fail (data != NULL);
+  endpoint = GnomeMeeting::Process ()->Endpoint ();
+
+
+  /* Release the GDK thread to prevent deadlocks, change
+   * the hold state at the endpoint level.
+   */
+  gdk_threads_leave ();
+  call_token = endpoint->GetCurrentCallToken ();
+  is_on_hold = endpoint->IsCallOnHold (call_token);
+  if (endpoint->SetCallOnHold (call_token, !is_on_hold))
+    is_on_hold = !is_on_hold; /* It worked */
+  gdk_threads_enter ();
+
+  
+  /* Update the GUI */
+  gm_main_window_set_call_hold (GTK_WIDGET (data), is_on_hold);
+}
+
+
+static void
+pause_current_call_channel_cb (GtkWidget *widget,
+			       gpointer data)
+{
+  GMH323EndPoint *endpoint = NULL;
+  GMVideoGrabber *vg = NULL;
+
+  GtkWidget *main_window = NULL;
+ 
+  PString current_call_token;
+  BOOL is_paused = FALSE;
+  
+  endpoint = GnomeMeeting::Process ()->Endpoint ();
+  current_call_token = endpoint->GetCurrentCallToken ();
+
+  main_window = gm; 
+
+  cout << "ici" << endl << flush;
+  
+  if (!current_call_token.IsEmpty ()
+      && endpoint->GetCallingState () == GMH323EndPoint::Standby) {
+
+    gdk_threads_leave ();
+    vg = endpoint->GetVideoGrabber ();
+    if (vg && vg->IsGrabbing ())
+      vg->StopGrabbing ();
+    else
+      vg->StartGrabbing ();
+    gdk_threads_enter ();
+  }
+  else {
+
+    if (GPOINTER_TO_INT (data) == 0) {
+      
+      gdk_threads_leave ();
+      is_paused = endpoint->IsCallAudioPaused (current_call_token);
+      if (endpoint->SetCallAudioPause (current_call_token, !is_paused))
+	is_paused = !is_paused; /* It worked */
+      gdk_threads_enter ();
+
+      gm_main_window_set_channel_pause (main_window, is_paused, FALSE);
+    }
+    else {
+
+      gdk_threads_leave ();
+      is_paused = endpoint->IsCallVideoPaused (current_call_token);
+      if (endpoint->SetCallVideoPause (current_call_token, !is_paused))
+	is_paused = !is_paused; /* It worked */
+      gdk_threads_enter ();
+      
+      gm_main_window_set_channel_pause (main_window, is_paused, TRUE);
+    }
+  }
+}
+
+
+static void 
+transfer_current_call_cb (GtkWidget *widget,
+			  gpointer data)
+{
+  g_return_if_fail (data != NULL);
+  
+  gm_main_window_transfer_dialog_run (GTK_WIDGET (data), NULL);  
+}
+
+
+static void
+video_window_shown_cb (GtkWidget *w, 
+		       gpointer data)
+{
+  GMH323EndPoint *endpoint = NULL;
+
+  endpoint = GnomeMeeting::Process ()->Endpoint ();
+
+  if (endpoint 
+      && gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top")
+      && endpoint->GetCallingState () == GMH323EndPoint::Connected)
+    gdk_window_set_always_on_top (GDK_WINDOW (w->window), TRUE);
+}
+
+
+static void
+dnd_call_contact_cb (GtkWidget *widget, 
+		     GmContact *contact,
+		     gint x, 
+		     gint y, 
+		     gpointer data)
+{
+  GmWindow *mw = NULL;
+  
+  g_return_if_fail (data != NULL);
+  
+  if (contact && contact->url) {
+    mw = (GmWindow *)data;
+     if (GnomeMeeting::Process ()->Endpoint ()->GetCallingState () == GMH323EndPoint::Standby) {
+       
+       /* this function will store a copy of text */
+       gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (mw->combo)->entry),
+			   PString (contact->url));
+       
+       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (mw->connect_button),
+				     true);
+     }
+     gm_contact_delete (contact);
+  }
+}
+
+
+static void 
+audio_volume_changed_cb (GtkAdjustment *adjustment, 
+			 gpointer data)
+{
+  GMH323EndPoint *ep = NULL;
+  
+  H323Connection *con = NULL;
+  H323Codec *raw_codec = NULL;
+  H323Channel *channel = NULL;
+
+  PSoundChannel *sound_channel = NULL;
+
+  int play_vol =  0, rec_vol = 0;
+
+
+  g_return_if_fail (data != NULL);
+  ep = GnomeMeeting::Process ()->Endpoint ();
+
+  gm_main_window_get_volume_sliders_values (GTK_WIDGET (data), 
+					    play_vol, rec_vol);
+
+  gdk_threads_leave ();
+ 
+  con = ep->FindConnectionWithLock (ep->GetCurrentCallToken ());
+
+  if (con) {
+
+    for (int cpt = 0 ; cpt < 2 ; cpt++) {
+
+      channel = 
+        con->FindChannel (RTP_Session::DefaultAudioSessionID, (cpt == 0));         
+      if (channel) {
+
+        raw_codec = channel->GetCodec();
+
+        if (raw_codec) {
+
+          sound_channel = (PSoundChannel *) raw_codec->GetRawDataChannel ();
+
+          if (sound_channel)
+            ep->SetDeviceVolume (sound_channel, 
+                                 (cpt == 1), 
+                                 (cpt == 1) ? rec_vol : play_vol);
+        }
+      }
+    }
+    con->Unlock ();
+  }
+
+  gdk_threads_enter ();
+}
+
+
+static void 
+video_settings_changed_cb (GtkAdjustment *adjustment, 
+			   gpointer data)
+{ 
+  GMH323EndPoint *ep = NULL;
+  GMVideoGrabber *video_grabber = NULL;
+
+  int brightness = -1;
+  int whiteness = -1;
+  int colour = -1;
+  int contrast = -1;
+
+  g_return_if_fail (data != NULL);
+  
+  ep = GnomeMeeting::Process ()->Endpoint ();
+  
+  gm_main_window_get_video_sliders_values (GTK_WIDGET (data),
+					   brightness,
+					   whiteness,
+					   colour,
+					   contrast);
+
+  /* Notice about mutexes:
+     The GDK lock is taken in the callback. We need to release it, because
+     if CreateVideoGrabber is called in another thread, it will only
+     release its internal mutex (also used by GetVideoGrabber) after it 
+     returns, but it will return only if it is opened, and it can't open 
+     if the GDK lock is held as it will wait on the GDK lock before 
+     updating the GUI */
+  gdk_threads_leave ();
+  if (ep && (video_grabber = ep->GetVideoGrabber ())) {
+    
+    video_grabber->SetWhiteness (whiteness << 8);
+    video_grabber->SetBrightness (brightness << 8);
+    video_grabber->SetColour (colour << 8);
+    video_grabber->SetContrast (contrast << 8);
+    video_grabber->Unlock ();
+  }
+  gdk_threads_enter ();
+}
+
+
+static void 
+control_panel_section_changed_cb (GtkNotebook *notebook, 
+				  GtkNotebookPage *page,
+				  gint page_num, 
+				  gpointer data) 
+{
+  GmWindow *mw = NULL;
+  
+  gint current_page = 0;
+
+  
+  g_return_if_fail (data != NULL);
+  mw = gm_mw_get_mw (GTK_WIDGET (data));
+
+  
+  current_page = 
+    gtk_notebook_get_current_page (GTK_NOTEBOOK (mw->main_notebook));
+  gm_conf_set_int (USER_INTERFACE_KEY "main_window/control_panel_section",
+		   current_page);
+}
+
+
+static void 
+dialpad_button_clicked_cb (GtkButton *button, 
+			   gpointer data)
+{
+  GtkWidget *label = NULL;
+  const char *button_text = NULL;
+
+  g_return_if_fail (data != NULL);
+
+  
+  /* FIXME: separation dans dialpad event du code du endpoint */
+  label = gtk_bin_get_child (GTK_BIN (button));
+  button_text = gtk_label_get_text (GTK_LABEL (label));
+
+  if (button_text
+      && strcmp (button_text, "")
+      && strlen (button_text) > 1
+      && button_text [0])
+    gm_main_window_dialpad_event (GTK_WIDGET (data),
+				  button_text [0]);
+}
+
+
+static gint 
+window_closed_cb (GtkWidget *widget, 
+		  GdkEvent *event,
+		  gpointer data)
+{
+  GtkWidget *tray = NULL;
+  
+  GmWindow *mw = NULL;
+  
+  gboolean b = FALSE;
+
+  g_return_val_if_fail (data != NULL, FALSE);
+  mw = gm_mw_get_mw (GTK_WIDGET (data));
+  tray = GnomeMeeting::Process ()->GetTray ();
+  
+
+  b = gm_tray_is_embedded (tray);
+
+  if (!b)
+    quit_callback (NULL, data);
+  else 
+    gnomemeeting_window_hide (GTK_WIDGET (gm));
+
+  return (TRUE);
+}  
+
+
+static void 
+text_chat_clear_cb (GtkWidget *widget,
+		    gpointer data)
+{
+  g_return_if_fail (data != NULL);
+  
+  gnomemeeting_text_chat_clear (GTK_WIDGET (data));
+}
+
+
+static void 
+zoom_changed_cb (GtkWidget *widget,
+		 gpointer data)
+{
+  double zoom = 0.0;
+  
+  zoom = gm_conf_get_float (VIDEO_DISPLAY_KEY "zoom_factor");
+
+  switch (GPOINTER_TO_INT (data)) {
+
+  case 0:
+    if (zoom > 0.5)
+      zoom = zoom / 2.0;
+    break;
+
+  case 1:
+    zoom = 1.0;
+    break;
+
+  case 2:
+    if (zoom < 2.00)
+      zoom = zoom * 2.0;
+  }
+
+  gm_conf_set_float (VIDEO_DISPLAY_KEY "zoom_factor", zoom);
+}
+
+
+static void 
+fullscreen_changed_cb (GtkWidget *widget,
+		       gpointer data)
+{
+  gm_conf_set_float (VIDEO_DISPLAY_KEY "zoom_factor", -1.0);
+}
+
+
+static void
+speed_dial_menu_item_selected_cb (GtkWidget *w,
+				  gpointer data)
+{
+  GmWindow *mw = NULL;
+  GMH323EndPoint *ep = NULL;
+  
+  gchar *url = NULL;
+    
+  mw = gm_mw_get_mw (gm); 
+  ep = GnomeMeeting::Process ()->Endpoint ();
+  
+  g_return_if_fail (data != NULL);
+
+  url = g_strdup_printf ("%s#", (gchar *) data);
+  gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (mw->combo)->entry),
+		      (gchar *) url);
+    
+  /* FIXME */
+  if (ep->GetCallingState () == GMH323EndPoint::Connected)
+    gm_main_window_transfer_dialog_run (gm, url);
+  else
+    connect_cb (NULL, NULL);
+
+  g_free (url);
+}
+
+
+static void
+combo_url_changed_cb (GtkEditable  *e, 
+		      gpointer data)
+{
+  GmWindow *mw = NULL;
+
+  gchar *tip_text = NULL;
+  
+  g_return_if_fail (data != NULL);
+  mw = gm_mw_get_mw (gm); 
+
+  g_return_if_fail (mw != NULL);
+  
+  tip_text = (gchar *)
+    gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (mw->combo)->entry));
+
+  gtk_tooltips_set_tip (mw->tips, 
+			GTK_WIDGET (GTK_COMBO (mw->combo)->entry), 
+			tip_text, NULL);
+}
+
+
+static void 
+control_panel_button_clicked_cb (GtkWidget *w, 
+				 gpointer data)
+{
+  if (gm_conf_get_int (USER_INTERFACE_KEY "main_window/control_panel_section") 
+      == GM_MAIN_NOTEBOOK_HIDDEN) { 
+    
+    gm_conf_set_int (USER_INTERFACE_KEY "main_window/control_panel_section", 
+		     0);
+  } 
+  else {   
+    
+    gm_conf_set_int (USER_INTERFACE_KEY "main_window/control_panel_section", 
+		     GM_MAIN_NOTEBOOK_HIDDEN);
+  }
+}
+
+
+static void 
+toolbar_toggle_button_changed_cb (GtkWidget *widget, 
+				  gpointer data)
+{
+  bool shown = gm_conf_get_bool ((gchar *) data);
+
+  gm_conf_set_bool ((gchar *) data, !shown);
+}
+
+
+/* DESCRIPTION  :  This callback is called when the user toggles the 
+ *                 connect button.
+ * BEHAVIOR     :  Connect or disconnect.
+ * PRE          :  /
+ */
+static void 
+toolbar_connect_button_clicked_cb (GtkToggleButton *w, 
+				   gpointer data)
+{
+  if (gtk_toggle_button_get_active (w))  
+    connect_cb (NULL, NULL);  
+  else
+    disconnect_cb (NULL, NULL);
+}
+
+
+/* Public functions */
 GtkWidget *
 gm_main_window_new (GmWindow *mw)
 {
   GtkWidget *window = NULL;
   GtkWidget *table = NULL;	
   GtkWidget *frame = NULL;
-  GtkWidget *vbox = NULL;
   GtkWidget *hbox = NULL;
+  GtkWidget *vbox = NULL;
   GdkPixbuf *pixbuf = NULL;
-#ifdef DISABLE_GNOME
-  GtkWidget *window_vbox = NULL;
-  GtkWidget *window_hbox = NULL;
-#endif
   GtkWidget *event_box = NULL;
-  GtkWidget *main_toolbar = NULL;
-  GtkWidget *left_toolbar = NULL;
   GtkWidget *chat_window = NULL;
 
   int main_notebook_section = 0;
@@ -1963,14 +2329,21 @@ gm_main_window_new (GmWindow *mw)
   gtk_window_add_accel_group (GTK_WINDOW (window), mw->accel);
 
 #ifdef DISABLE_GNOME
-  window_vbox = gtk_vbox_new (0, FALSE);
-  gtk_container_add (GTK_CONTAINER (window), window_vbox);
-  gtk_widget_show (window_vbox);
+  mw->window_vbox = gtk_vbox_new (0, FALSE);
+  gtk_container_add (GTK_CONTAINER (window), mw->window_vbox);
+  gtk_widget_show (mw->window_vbox);
+  mw->window_hbox = gtk_hbox_new (0, FALSE);
+  gtk_box_pack_start (GTK_BOX (mw->window_vbox), mw->window_hbox, 
+		      FALSE, FALSE, 0);
 #endif
 
   
-  /* The main menu */
+  /* The main menu and the toolbars */
   gm_mw_init_menu (window);
+  gm_mw_init_toolbars (window);
+
+    
+  /* The statusbar */
   mw->statusbar = gtk_statusbar_new ();
 #ifndef DISABLE_GNOME
   gnome_app_add_docked (GNOME_APP (window), 
@@ -1979,45 +2352,15 @@ gm_main_window_new (GmWindow *mw)
 			BONOBO_DOCK_ITEM_BEH_EXCLUSIVE,
   			BONOBO_DOCK_TOP, 0, 0, 0);
 #else
-  gtk_box_pack_start (GTK_BOX (window_vbox), mw->main_menu,
+  gtk_box_pack_start (GTK_BOX (mw->window_vbox), mw->main_menu,
 		      FALSE, FALSE, 0);
 #endif
-
-
-  /* The main and left toolbar */
-  main_toolbar = gnomemeeting_init_main_toolbar ();
-#ifndef DISABLE_GNOME
-  gnome_app_add_docked (GNOME_APP (window), main_toolbar, "main_toolbar",
-  			BONOBO_DOCK_ITEM_BEH_EXCLUSIVE,
-  			BONOBO_DOCK_TOP, 1, 0, 0);
-#else
-  gtk_box_pack_start (GTK_BOX (window_vbox), main_toolbar, 
-		      FALSE, FALSE, 0);
-#endif
-
-  left_toolbar = gnomemeeting_init_left_toolbar ();
-#ifndef DISABLE_GNOME
-  gnome_app_add_toolbar (GNOME_APP (window), GTK_TOOLBAR (left_toolbar),
- 			 "left_toolbar", BONOBO_DOCK_ITEM_BEH_EXCLUSIVE,
- 			 BONOBO_DOCK_LEFT, 2, 0, 0);
-#else
-  window_hbox = gtk_hbox_new (0, FALSE);
-  gtk_box_pack_start (GTK_BOX (window_vbox), window_hbox, 
-		      FALSE, FALSE, 0);
-
-  gtk_box_pack_start (GTK_BOX (window_hbox), left_toolbar, 
-		      FALSE, FALSE, 0);
-  gtk_widget_show (window_hbox);
-#endif
-
-  gtk_widget_show (main_toolbar);
-  gtk_widget_show (left_toolbar);
 
   
   /* Create a table in the main window to attach things like buttons */
   table = gtk_table_new (3, 4, FALSE);
 #ifdef DISABLE_GNOME
-  gtk_box_pack_start (GTK_BOX (window_hbox), table, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (mw->window_hbox), table, FALSE, FALSE, 0);
 #else
   gnome_app_set_contents (GNOME_APP (window), table);
 #endif
@@ -2089,7 +2432,7 @@ gm_main_window_new (GmWindow *mw)
   /* The statusbar and the progressbar */
   hbox = gtk_hbox_new (0, FALSE);
 #ifdef DISABLE_GNOME
-  gtk_box_pack_start (GTK_BOX (window_vbox), hbox, 
+  gtk_box_pack_start (GTK_BOX (mw->window_vbox), hbox, 
 		      FALSE, FALSE, 0);
 #else
   gnome_app_add_docked (GNOME_APP (window), hbox, "statusbar",
