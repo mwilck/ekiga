@@ -35,7 +35,11 @@
 #include "common.h"
 #include "misc.h"
 
+#ifndef DISABLE_GNOME
 #include <gnome.h>
+#else
+#include <gtk/gtk.h>
+#endif
 
 
 extern GtkWidget *gm;
@@ -74,8 +78,8 @@ void gnomemeeting_init_calls_history_window ()
 
   scr = gtk_scrolled_window_new (NULL, NULL);
   gtk_container_add (GTK_CONTAINER (frame), scr);
-  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
-  gtk_container_set_border_width (GTK_CONTAINER (scr), GNOME_PAD_SMALL);
+  gtk_container_set_border_width (GTK_CONTAINER (frame), 2);
+  gtk_container_set_border_width (GTK_CONTAINER (scr), 2);
   
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scr),
 				  GTK_POLICY_AUTOMATIC,
@@ -121,8 +125,8 @@ void gnomemeeting_init_history_window ()
 
   scr = gtk_scrolled_window_new (NULL, NULL);
   gtk_container_add (GTK_CONTAINER (frame), scr);
-  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
-  gtk_container_set_border_width (GTK_CONTAINER (scr), GNOME_PAD_SMALL);
+  gtk_container_set_border_width (GTK_CONTAINER (frame), 2);
+  gtk_container_set_border_width (GTK_CONTAINER (scr), 2);
   
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scr),
 				  GTK_POLICY_AUTOMATIC,

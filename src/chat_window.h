@@ -41,7 +41,7 @@ G_BEGIN_DECLS
  *
  * Initializes the text chat view.
  **/
-void gnomemeeting_text_chat_init ();
+GtkWidget *gnomemeeting_text_chat_init ();
 
 
 /**

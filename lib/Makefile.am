@@ -1,6 +1,6 @@
 SUBDIRS =						\
 	widgets						\
-	xdap				
+	xdap						
 
 noinst_LTLIBRARIES = libgnomemeeting.la
 
@@ -25,4 +25,4 @@ INCLUDES =						\
 	$(GNOMEMEETING_CFLAGS)
 
 libgnomemeeting_la_LDFLAGS = -export-dynamic
-libgnomemeeting_la_LIBADD = widgets/libgmwidgets.la xdap/libxdap.la
+libgnomemeeting_la_LIBADD = widgets/libgmwidgets.la xdap/libxdap.la 

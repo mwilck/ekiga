@@ -36,7 +36,8 @@
 
 #include <ptlib.h>
 #include <h323.h>
-#include <gnome.h>
+
+#include <gtk/gtk.h>
 
  
 class GMH323FakeVideoInputDevice : public PFakeVideoInputDevice 

@@ -26,7 +26,8 @@
  *                         chat_window.cpp  -  description
  *                         -------------------------------
  *   begin                : Wed Jan 23 2002
- *   copyright            : (C) 2000-2002 by Damien Sandras, Kenneth Christiansen
+ *   copyright            : (C) 2000-2002 by Damien Sandras, 
+ *                          Kenneth Christiansen
  *   description          : This file contains functions to build the chat
  *                          window. It uses DTMF tones.
  *   email                : dsandras@seconix.com
@@ -35,7 +36,12 @@
 
 #include "../config.h"
 
+#ifndef DISABLE_GNOME
 #include <gnome.h>
+#else
+#include <gtk/gtk.h>
+#endif
+
 #include <ptlib.h>
 #include <h323.h>
 
@@ -127,27 +133,27 @@ gnomemeeting_text_chat_insert (PString local, PString str, int user)
 }
 
 
-void gnomemeeting_text_chat_init ()
+GtkWidget *gnomemeeting_text_chat_init ()
 {
   GtkWidget *entry;
   GtkWidget *scr;
   GtkWidget *label;
   GtkWidget *table;
   GtkWidget *frame;
+  GtkWidget *chat_window;
 
   GtkTextIter  iter;
   GtkTextMark *mark;
 
   /* Get the structs from the application */
-  GmWindow *gw = gnomemeeting_get_main_window (gm);
   GmTextChat *chat = gnomemeeting_get_chat_window (gm);
 
-  gw->chat_window = gtk_frame_new (_("Text Chat"));
+  chat_window = gtk_frame_new (_("Text Chat"));
   table = gtk_table_new (1, 3, FALSE);
 
   gtk_container_set_border_width (GTK_CONTAINER (table), 
-				  GNOME_PAD_SMALL);
-  gtk_container_add (GTK_CONTAINER (gw->chat_window), table);
+				  2);
+  gtk_container_add (GTK_CONTAINER (chat_window), table);
 
   scr = gtk_scrolled_window_new (NULL, NULL);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scr),
@@ -209,4 +215,6 @@ void gnomemeeting_text_chat_init ()
 		    G_CALLBACK (chat_entry_activate), chat->text_view);
 
   chat->buffer_is_empty = TRUE;
+
+  return chat_window;
 }

@@ -37,10 +37,19 @@
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Create the toolbars and add them to the main window.
+ * BEHAVIOR     :  Create the main toolbar and return a pointer to the newly
+ *                 created toolbar.
  * PRE          :  /
  */
-void gnomemeeting_init_toolbar ();
+GtkWidget *gnomemeeting_init_main_toolbar (void);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Create the left toolbar and return a pointer to the newly
+ *                 created toolbar.
+ * PRE          :  /
+ */
+GtkWidget *gnomemeeting_init_left_toolbar (void);
 
 
 /* DESCRIPTION  :  /

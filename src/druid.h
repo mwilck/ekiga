@@ -32,3 +32,4 @@
  * PRE          :  /
  */
 void gnomemeeting_init_druid (gpointer data);
+

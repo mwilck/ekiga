@@ -147,7 +147,7 @@ void GMH323Gatekeeper::Main ()
 	  
       gnomemeeting_threads_enter ();
       gnomemeeting_log_insert (gw->history_text_view, msg);
-      gnomemeeting_statusbar_flash (gm, msg);
+      gnomemeeting_statusbar_flash (gw->statusbar, msg);
       gnomemeeting_threads_leave ();
       
       g_free (msg);
@@ -215,7 +215,7 @@ void GMH323Gatekeeper::Main ()
 
       gnomemeeting_threads_enter ();
       gnomemeeting_log_insert (gw->history_text_view, msg);
-      gnomemeeting_statusbar_flash (gm, msg);
+      gnomemeeting_statusbar_flash (gw->statusbar, msg);
       gnomemeeting_threads_leave ();
       
       g_free (msg);
@@ -256,7 +256,7 @@ void GMH323Gatekeeper::Main ()
 
       gnomemeeting_threads_enter ();
       gnomemeeting_log_insert (gw->history_text_view, msg);
-      gnomemeeting_statusbar_flash (gm, msg);
+      gnomemeeting_statusbar_flash (gw->statusbar, msg);
       gnomemeeting_threads_leave ();
       
       g_free (msg);

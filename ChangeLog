@@ -1,5 +1,18 @@
 2002-11-08 Damien Sandras  <dsandras@seconix.com>
 
+	* lib/Makefile.am, lib/dialog.c, src/callbacks.cpp, src/chat_window.cpp
+	src/chat_window.h, src/cleaner.cpp, src/config.cpp, src/connection.cpp,
+	src/druid.cpp, src/druid.h, src/endpoint.cpp, src/gatekeeper.cpp, 
+	src/gnomemeeting.cpp, src/ils.cpp, src/ldap_window.cpp, 
+	src/main_window.cpp, src/menu.cpp, src/menu.h, src/misc.cpp, 
+	src/sound_handling.cpp, src/toolbar.cpp, src/toolbar.h, 
+	src/tools.cpp, src/tray.cpp, src/urlhandler.cpp, 
+	src/vfakeio.cpp, src/vfakeio.h, src/videograbber.cpp:
+	Changed API of functions in toolbar.cpp, menu.cpp, and adapted the
+	code so that it can compile with and without gnome.
+	
+2002-11-08 Damien Sandras  <dsandras@seconix.com>
+
 	* src/main_window.cpp: Added missing include.
 	
 2002-11-07 Damien Sandras  <dsandras@seconix.com>

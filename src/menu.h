@@ -72,10 +72,11 @@ enum {
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Creates the menus and add them to the main window.
+ * BEHAVIOR     :  Create the menu and return a pointer to the newly created
+ *                 menu.
  * PRE          :  The accel group.
  */
-void gnomemeeting_init_menu (GtkAccelGroup *);
+GtkWidget *gnomemeeting_init_menu (GtkAccelGroup *);
 
 
 /* DESCRIPTION  :  /

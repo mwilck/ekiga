@@ -90,12 +90,9 @@ void GMURLHandler::Main ()
   GmWindow *gw = NULL;
   GMH323EndPoint *endpoint = NULL;
   H323Connection *con = NULL;
-  GnomeUIInfo *call_menu_uiinfo = NULL;
 
   gnomemeeting_threads_enter ();
   gw = gnomemeeting_get_main_window (gm);
-  call_menu_uiinfo = 
-    (GnomeUIInfo *) g_object_get_data (G_OBJECT (gm), "call_menu_uiinfo");
   gnomemeeting_threads_leave ();
 
   endpoint = MyApp->Endpoint ();
@@ -120,10 +117,8 @@ void GMURLHandler::Main ()
     /* We disable the connect button and the connect menu 
        while searching */
     gnomemeeting_threads_enter ();
-    gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [0].widget), 
-			      FALSE);
-    gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [1].widget), 
-			      FALSE);
+    gnomemeeting_call_menu_connect_set_sensitive (0, FALSE);
+    gnomemeeting_call_menu_connect_set_sensitive (1, FALSE);
     gtk_widget_set_sensitive (GTK_WIDGET (gw->connect_button), FALSE);
     gnomemeeting_threads_leave ();
   
@@ -131,7 +126,7 @@ void GMURLHandler::Main ()
     PINDEX p = url.Find (':');
 
     gnomemeeting_threads_enter ();
-    gnomemeeting_statusbar_flash (gm, _("Searching for user"));
+    gnomemeeting_statusbar_flash (gw->statusbar, _("Searching for user"));
     gnomemeeting_threads_leave ();
     /* There is a port */
     if (p != P_MAX_INDEX) {
@@ -154,20 +149,19 @@ void GMURLHandler::Main ()
     if (ip == NULL) {
 
       gnomemeeting_threads_enter ();
-      gnomemeeting_statusbar_flash (gm, 
+      gnomemeeting_statusbar_flash (gw->statusbar, 
 				    _("Error while connecting to ILS directory"));
       gnomemeeting_log_insert (gw->history_text_view, 
 			       _("Error while connecting to ILS directory"));
       connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 0);
-      gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [0].widget), 
-				TRUE);
+      gnomemeeting_call_menu_connect_set_sensitive (0, TRUE);
       gtk_widget_set_sensitive (GTK_WIDGET (gw->connect_button), TRUE);
 
       if (gw->progress_timeout) {
 
 	gtk_timeout_remove (gw->progress_timeout);
 	gw->progress_timeout = 0;
-	gtk_widget_hide (GTK_WIDGET (gnome_appbar_get_progress (GNOME_APPBAR (gw->statusbar))));
+	gtk_widget_hide (GTK_WIDGET (gw->progressbar));
       }
 
       gnomemeeting_threads_leave ();
@@ -179,18 +173,17 @@ void GMURLHandler::Main ()
     if ((ip)&&(!strcmp (ip, "0.0.0.0:1720"))) {
 
       gnomemeeting_threads_enter ();
-      gnomemeeting_statusbar_flash (gm, _("User not found"));
+      gnomemeeting_statusbar_flash (gw->statusbar, _("User not found"));
       gnomemeeting_log_insert (gw->history_text_view, _("User not found"));
       connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 0);
-      gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [0].widget), 
-				TRUE);
+      gnomemeeting_call_menu_connect_set_sensitive (0, TRUE);
       gtk_widget_set_sensitive (GTK_WIDGET (gw->connect_button), TRUE);
 
       if (gw->progress_timeout) {
 
 	gtk_timeout_remove (gw->progress_timeout);
 	gw->progress_timeout = 0;
-	gtk_widget_hide (GTK_WIDGET (gnome_appbar_get_progress (GNOME_APPBAR (gw->statusbar))));
+	gtk_widget_hide (GTK_WIDGET (gw->progressbar));
       }
 
       gnomemeeting_threads_leave ();
@@ -230,7 +223,7 @@ void GMURLHandler::Main ()
 			 (const char *) call_address);
   gnomemeeting_log_insert (gw->history_text_view, msg);
   gnomemeeting_log_insert (gw->calls_history_text_view, msg);
-  gnome_appbar_push (GNOME_APPBAR (gw->statusbar), msg);
+  gnomemeeting_statusbar_push (gw->statusbar, msg);
   connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 1);
   g_free (msg);		
   gnomemeeting_threads_leave ();		 

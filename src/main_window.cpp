@@ -29,6 +29,7 @@
  *   email                : dsandras@seconix.com
  */
 
+
 #include "../config.h"
 
 
@@ -97,11 +98,13 @@ extern GnomeMeeting *MyApp;
 
 static gboolean stats_drawing_area_exposed (GtkWidget *);
 
+#ifndef DISABLE_GNOME
 static gboolean gnomemeeting_invoke_factory (int, char **);
 static void gnomemeeting_new_event (BonoboListener *, const char *, 
 				    const CORBA_any *, CORBA_Environment *,
 				    gpointer);
 static Bonobo_RegistrationResult gnomemeeting_register_as_factory (void);
+#endif
 
 static void main_notebook_page_changed (GtkNotebook *, GtkNotebookPage *,
 					gint, gpointer);
@@ -288,8 +291,7 @@ gint AppbarUpdate (gpointer data)
 
       if (t.GetSeconds () > 5) {
 
-	gnome_appbar_clear_stack (GNOME_APPBAR (gw->statusbar));
-	gnome_appbar_push (GNOME_APPBAR (gw->statusbar), msg);
+	gnomemeeting_statusbar_push (gw->statusbar, msg);
 	gchar *stats_msg = 
 	  g_strdup_printf (_("Sent/Received: %.3f Mb/%.3f Mb\nLost/Late Packets: %d/%d\nRound trip delay: %d ms"), bytes_sent, bytes_received, lost_packets, late_packets, (int) connection->GetRoundTripDelay().GetMilliSeconds());
 
@@ -571,7 +573,7 @@ stats_drawing_area_exposed (GtkWidget *drawing_area)
 
 /* Factory stuff */
 
-
+#ifndef DISABLE_GNOME
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Invoked remotely to instantiate GnomeMeeting 
  *                 with the given URL.
@@ -717,6 +719,7 @@ gnomemeeting_invoke_factory (int argc, char **argv)
   
   return FALSE;
 }
+#endif
 
 
 /**
@@ -869,12 +872,9 @@ gm_quit_callback (GtkWidget *widget, GdkEvent *event,
 int
 gnomemeeting_window_appbar_update (gpointer data) 
 {
-  GtkWidget *statusbar = (GtkWidget *) data;
+  GtkWidget *progress = (GtkWidget *) data;
   
   gdk_threads_enter ();
-
-  GtkProgressBar *progress = 
-    gnome_appbar_get_progress (GNOME_APPBAR (statusbar));
 
   if (GTK_WIDGET_VISIBLE (GTK_WIDGET (progress)))
     gtk_progress_bar_pulse (GTK_PROGRESS_BAR (progress));
@@ -922,6 +922,7 @@ gnomemeeting_init (GmWindow *gw,
   }
 
 
+#ifndef DISABLE_GNOME
   /* Cope with command line options */
   static struct poptOption arguments[] =
     {
@@ -934,7 +935,7 @@ gnomemeeting_init (GmWindow *gw,
     };
 
 
-  /* Gnome Initialisation */
+  /* GnomeMeeting Initialisation */
   gnome_program_init ("GnomeMeeting", VERSION,
 		      LIBGNOMEUI_MODULE, argc, argv,
 		      GNOME_PARAM_POPT_TABLE, arguments,
@@ -942,11 +943,23 @@ gnomemeeting_init (GmWindow *gw,
 		      _("GnomeMeeting"),
 		      GNOME_PARAM_APP_DATADIR, DATADIR,
 		      (void *)NULL);
+  gm = gnome_app_new (_("gnomemeeting"), "gnomemeeting");
+#else
+  gtk_init (&argc, &argv);
+  gm = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+#endif 
 
-  gm = gnome_app_new ("gnomemeeting", _("GnomeMeeting"));
+  gtk_window_set_title (GTK_WINDOW (gm), _("GnomeMeeting"));
+  GdkPixbuf *pixbuf_icon = 
+    gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES "/gnomemeeting-logo-icon.png", NULL); 
+
+  gtk_window_set_icon (GTK_WINDOW (gm), pixbuf_icon);
+  g_object_unref (G_OBJECT (pixbuf_icon));
+  gtk_window_set_resizable (GTK_WINDOW (gm), false);
 
 
   /* The factory */
+#ifndef DISABLE_GNOME
   if (gnomemeeting_invoke_factory (argc, argv)) {
 
     delete (gw);
@@ -956,6 +969,7 @@ gnomemeeting_init (GmWindow *gw,
     delete (chat);
     exit (1);
   }
+#endif
 
 
   /* Some little gconf stuff */  
@@ -1083,12 +1097,9 @@ gnomemeeting_init (GmWindow *gw,
   accel = gtk_accel_group_new ();
   gtk_window_add_accel_group (GTK_WINDOW (gm), accel);
 
-
   /* Build the interface */
   gnomemeeting_init_history_window ();
   gnomemeeting_init_calls_history_window ();
-  gnomemeeting_init_main_window (accel);
-  gnomemeeting_init_ldap_window ();
 
   /* Launch the GnomeMeeting H.323 part */
   static GnomeMeeting instance;
@@ -1101,8 +1112,8 @@ gnomemeeting_init (GmWindow *gw,
   gw->video_devices = PVideoInputDevice::GetInputDeviceNames ();
 
   gnomemeeting_init_pref_window ();  
-  gnomemeeting_init_menu (accel);
-  gnomemeeting_init_toolbar ();
+  gnomemeeting_init_ldap_window ();
+  gnomemeeting_init_main_window (accel);
 
   gnomemeeting_sound_daemons_resume ();
  
@@ -1187,13 +1198,18 @@ gnomemeeting_init (GmWindow *gw,
 
 
   /* Init the druid */
+#ifdef DISABLE_GNOME
+gconf_client_set_int (client, GENERAL_KEY "version", 
+		      100 * MAJOR_VERSION + MINOR_VERSION, NULL);
+#endif 
+#ifndef DISABLE_GNOME
   if (gconf_client_get_int (client, GENERAL_KEY "version", NULL) 
       < 100 * MAJOR_VERSION + MINOR_VERSION)
 
     gnomemeeting_init_druid ((gpointer) "first");
 
   else {
-
+#endif
   /* Show the main window */
     if (!gconf_client_get_bool (GCONF_CLIENT (client), 
 				VIEW_KEY "show_docklet", 0) ||
@@ -1201,21 +1217,10 @@ gnomemeeting_init (GmWindow *gw,
 				VIEW_KEY "start_docked", 0))
 
     gtk_widget_show (GTK_WIDGET (gm));
+#ifndef DISABLE_GNOME
   }
+#endif
 
-
-  /* Set icon */
-  GdkPixbuf *pixbuf_icon = 
-    gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES "/gnomemeeting-logo-icon.png", NULL); 
-
-  gtk_window_set_icon (GTK_WINDOW (gm), pixbuf_icon);
-  g_object_unref (G_OBJECT (pixbuf_icon));
-  gtk_window_set_resizable (GTK_WINDOW (gm), false);
-
-  
-  /* Set the progressbar */
-  gw->progressbar =
-    GTK_WIDGET (gnome_appbar_get_progress (GNOME_APPBAR(gw->statusbar)));
 
   /* Hide the splash */
   if (gw->splash_win)
@@ -1232,11 +1237,6 @@ gnomemeeting_init (GmWindow *gw,
   gnomemeeting_video_submenu_set_sensitive (FALSE, REMOTE_VIDEO);
   gnomemeeting_zoom_submenu_set_sensitive (FALSE);
   gnomemeeting_fullscreen_option_set_sensitive (FALSE);
-
-
-  /* The gtk_widget_show (gm) will show the toolbar, hide it if needed */
-  if (!gconf_client_get_bool (client, VIEW_KEY "left_toolbar", 0)) 
-    gtk_widget_hide (GTK_WIDGET (gnome_app_get_dock_item_by_name(GNOME_APP (gm), "left_toolbar")));
 
 
   /* Call the given host if needed */
@@ -1260,18 +1260,79 @@ void gnomemeeting_init_main_window (GtkAccelGroup *accel)
   GtkWidget *table = NULL;	
   GtkWidget *frame = NULL;
   GtkWidget *vbox = NULL;
+  GtkWidget *hbox = NULL;
+#ifdef DISABLE_GNOME
+  GtkWidget *window_vbox = NULL;
+  GtkWidget *window_hbox = NULL;
+#endif
   GtkWidget *event_box = NULL;
+  GtkWidget *main_toolbar = NULL;
+  GtkWidget *left_toolbar = NULL;
+  GtkWidget *menubar = NULL;
   int main_notebook_section = 0;
   int x = GM_QCIF_WIDTH;
   int y = GM_QCIF_HEIGHT;
   
   GmWindow *gw = gnomemeeting_get_main_window (gm);
 
+#ifdef DISABLE_GNOME
+  window_vbox = gtk_vbox_new (0, FALSE);
+  gtk_container_add (GTK_CONTAINER (gm), window_vbox);
+  gtk_widget_show (window_vbox);
+#endif
+
+  menubar = gnomemeeting_init_menu (accel);
+#ifndef DISABLE_GNOME
+  gnome_app_add_docked (GNOME_APP (gm), 
+			menubar,
+			"menubar",
+			BONOBO_DOCK_ITEM_BEH_EXCLUSIVE,
+  			BONOBO_DOCK_TOP, 0, 0, 0);
+#else
+  gtk_box_pack_start (GTK_BOX (window_vbox), menubar,
+		      FALSE, FALSE, 0);
+#endif
+
+  main_toolbar = gnomemeeting_init_main_toolbar ();
+#ifndef DISABLE_GNOME
+  gnome_app_add_docked (GNOME_APP (gm), main_toolbar, "main_toolbar",
+  			BONOBO_DOCK_ITEM_BEH_EXCLUSIVE,
+  			BONOBO_DOCK_TOP, 1, 0, 0);
+#else
+  gtk_box_pack_start (GTK_BOX (window_vbox), main_toolbar, 
+		      FALSE, FALSE, 0);
+#endif
+
+  left_toolbar = gnomemeeting_init_left_toolbar ();
+#ifndef DISABLE_GNOME
+  gnome_app_add_toolbar (GNOME_APP (gm), GTK_TOOLBAR (left_toolbar),
+ 			 "left_toolbar", BONOBO_DOCK_ITEM_BEH_EXCLUSIVE,
+ 			 BONOBO_DOCK_LEFT, 2, 0, 0);
+#else
+  window_hbox = gtk_hbox_new (0, FALSE);
+  gtk_widget_show_all (window_hbox);
+  gtk_box_pack_start (GTK_BOX (window_vbox), window_hbox, 
+		      FALSE, FALSE, 0);
+
+  gtk_box_pack_start (GTK_BOX (window_hbox), left_toolbar, 
+		      FALSE, FALSE, 0);
+#endif
+
+  gtk_widget_show (main_toolbar);
+  gtk_widget_show (menubar);
+  if (gconf_client_get_bool 
+      (client, "/apps/gnomemeeting/view/left_toolbar", 0))
+    gtk_widget_show (GTK_WIDGET (left_toolbar));
+
+
   /* Create a table in the main window to attach things like buttons */
   table = gtk_table_new (3, 4, FALSE);
-  
-  gnome_app_set_contents (GNOME_APP (gm), GTK_WIDGET (table));
-
+#ifdef DISABLE_GNOME
+  gtk_box_pack_start (GTK_BOX (window_hbox), table, FALSE, FALSE, 0);
+#else
+  gnome_app_set_contents (GNOME_APP (gm), table);
+#endif
+  gtk_widget_show (table);
 
   /* The Notebook */
   gw->main_notebook = gtk_notebook_new ();
@@ -1368,23 +1429,37 @@ void gnomemeeting_init_main_window (GtkAccelGroup *accel)
 
 
   /* The Chat Window */
-  gnomemeeting_text_chat_init ();
+  gw->chat_window = gnomemeeting_text_chat_init ();
   gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (gw->chat_window), 
  		    2, 4, 0, 3,
  		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
  		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
- 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
+ 		    0, 0);
   if (gconf_client_get_bool 
       (client, "/apps/gnomemeeting/view/show_chat_window", 0))
-          gtk_widget_show_all (GTK_WIDGET (gw->chat_window));
+    gtk_widget_show_all (GTK_WIDGET (gw->chat_window));
 
 
-  /* The statusbar */
-  gw->statusbar = gnome_appbar_new (TRUE, TRUE, 
-				    GNOME_PREFERENCES_NEVER);	
-  gtk_widget_hide (GTK_WIDGET (gnome_appbar_get_progress (GNOME_APPBAR (gw->statusbar))));
-  gtk_widget_set_size_request (GTK_WIDGET (gnome_appbar_get_progress (GNOME_APPBAR (gw->statusbar))), 35, -1);
-  gnome_app_set_statusbar (GNOME_APP (gm), gw->statusbar);
+  /* The statusbar and the progressbar */
+  hbox = gtk_hbox_new (0, FALSE);
+#ifdef DISABLE_GNOME
+  gtk_box_pack_start (GTK_BOX (window_vbox), hbox, 
+		      FALSE, FALSE, 0);
+#else
+  gnome_app_add_docked (GNOME_APP (gm), hbox, "statusbar",
+  			BONOBO_DOCK_ITEM_BEH_EXCLUSIVE,
+  			BONOBO_DOCK_BOTTOM, 3, 0, 0);
+#endif
+  gtk_widget_show (hbox);
+
+  gw->progressbar = gtk_progress_bar_new ();
+  gtk_widget_set_size_request (GTK_WIDGET (gw->progressbar), 50, -1);
+  gtk_box_pack_start (GTK_BOX (hbox), gw->progressbar, 
+		      FALSE, FALSE, 0);
+
+  gw->statusbar = gtk_statusbar_new ();
+  gtk_box_pack_start (GTK_BOX (hbox), gw->statusbar, 
+		      TRUE, TRUE, 0);
 
   if (gconf_client_get_bool (client, 
 			     VIEW_KEY "show_status_bar", 0))
@@ -1434,8 +1509,7 @@ void gnomemeeting_init_main_window_stats ()
 		    G_CALLBACK (stats_drawing_area_exposed), NULL);
 
   gtk_container_add (GTK_CONTAINER (frame), vbox);    
-  gtk_container_set_border_width (GTK_CONTAINER (frame),
-				  GNOME_PAD_SMALL);
+  gtk_container_set_border_width (GTK_CONTAINER (frame), 0);
 
   gtk_widget_queue_draw_area (gw->stats_drawing_area, 0, 0, GTK_WIDGET (gw->stats_drawing_area)->allocation.width, GTK_WIDGET (gw->stats_drawing_area)->allocation.height);
 
@@ -1480,8 +1554,7 @@ void gnomemeeting_init_main_window_video_settings ()
   /* Put a table in the first frame */
   table = gtk_table_new (4, 4, FALSE);
   gtk_container_add (GTK_CONTAINER (gw->video_settings_frame), table);
-  gtk_container_set_border_width (GTK_CONTAINER (gw->video_settings_frame), 
-				  GNOME_PAD_SMALL);
+  gtk_container_set_border_width (GTK_CONTAINER (gw->video_settings_frame), 0);
 
 
   /* Brightness */
@@ -1491,7 +1564,7 @@ void gnomemeeting_init_main_window_video_settings ()
   gtk_table_attach (GTK_TABLE (table), pixmap, 0, 1, 0, 1,
 		    (GtkAttachOptions) (NULL),
 		    (GtkAttachOptions) (NULL),
-		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
+		    0, 0);
 
   gw->adj_brightness = gtk_adjustment_new (brightness, 0.0, 
 					   255.0, 1.0, 5.0, 1.0);
@@ -1501,7 +1574,7 @@ void gnomemeeting_init_main_window_video_settings ()
   gtk_table_attach (GTK_TABLE (table), hscale_brightness, 1, 4, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    GNOME_PAD_SMALL, 0);
+		    0, 0);
 
   gtk_tooltips_set_tip (gw->tips, hscale_brightness,
 			_("Adjust brightness"), NULL);
@@ -1515,9 +1588,9 @@ void gnomemeeting_init_main_window_video_settings ()
   pixmap =  gtk_image_new_from_pixbuf (pixbuf);
   g_object_unref (G_OBJECT (pixbuf));
   gtk_table_attach (GTK_TABLE (table), pixmap, 0, 1, 1, 2,
- (GtkAttachOptions) (NULL),
 		    (GtkAttachOptions) (NULL),
-		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
+		    (GtkAttachOptions) (NULL),
+		    0, 0);
 
   gw->adj_whiteness = gtk_adjustment_new (whiteness, 0.0, 
 					  255.0, 1.0, 5.0, 1.0);
@@ -1527,7 +1600,7 @@ void gnomemeeting_init_main_window_video_settings ()
   gtk_table_attach (GTK_TABLE (table), hscale_whiteness, 1, 4, 1, 2,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    GNOME_PAD_SMALL, 0);
+		    0, 0);
 
   gtk_tooltips_set_tip (gw->tips, hscale_whiteness,
 			_("Adjust whiteness"), NULL);
@@ -1543,7 +1616,7 @@ void gnomemeeting_init_main_window_video_settings ()
   gtk_table_attach (GTK_TABLE (table), pixmap, 0, 1, 2, 3,
 		    (GtkAttachOptions) (NULL),
 		    (GtkAttachOptions) (NULL),
-		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
+		    0, 0);
 
   gw->adj_colour = gtk_adjustment_new (colour, 0.0, 
 				       255.0, 1.0, 5.0, 1.0);
@@ -1553,7 +1626,7 @@ void gnomemeeting_init_main_window_video_settings ()
   gtk_table_attach (GTK_TABLE (table), hscale_colour, 1, 4, 2, 3,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    GNOME_PAD_SMALL, 0);
+		    0, 0);
 
   gtk_tooltips_set_tip (gw->tips, hscale_colour,
 			_("Adjust color"), NULL);
@@ -1569,7 +1642,7 @@ void gnomemeeting_init_main_window_video_settings ()
   gtk_table_attach (GTK_TABLE (table), pixmap, 0, 1, 3, 4,
 		    (GtkAttachOptions) (NULL),
 		    (GtkAttachOptions) (NULL),
-		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
+		    0, 0);
 
   gw->adj_contrast = gtk_adjustment_new (contrast, 0.0, 
 					 255.0, 1.0, 5.0, 1.0);
@@ -1579,7 +1652,7 @@ void gnomemeeting_init_main_window_video_settings ()
   gtk_table_attach (GTK_TABLE (table), hscale_contrast, 1, 4, 3, 4,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    GNOME_PAD_SMALL, 0);
+		    0, 0);
 
   gtk_tooltips_set_tip (gw->tips, hscale_contrast,
 			_("Adjust contrast"), NULL);
@@ -1621,14 +1694,14 @@ void gnomemeeting_init_main_window_audio_settings ()
 
   audio_table = gtk_table_new (4, 4, TRUE);
   gtk_container_add (GTK_CONTAINER (frame), audio_table);
-  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
+  gtk_container_set_border_width (GTK_CONTAINER (frame), 0);
 
   gtk_table_attach (GTK_TABLE (audio_table), 
                     gtk_image_new_from_stock (GM_STOCK_VOLUME, GTK_ICON_SIZE_SMALL_TOOLBAR), 
                     0, 1, 0, 1,
 		    (GtkAttachOptions) NULL,
 		    (GtkAttachOptions) NULL,
-		    GNOME_PAD_SMALL, 0);
+		    0, 0);
 
   gchar *player_mixer = gconf_client_get_string (client, DEVICE_KEY "audio_player_mixer", NULL);
   gnomemeeting_volume_get (player_mixer, 0, &vol);
@@ -1645,11 +1718,12 @@ void gnomemeeting_init_main_window_audio_settings ()
 
 
   gtk_table_attach (GTK_TABLE (audio_table), 
-                    gtk_image_new_from_stock (GM_STOCK_MICROPHONE, GTK_ICON_SIZE_SMALL_TOOLBAR), 
+                    gtk_image_new_from_stock (GM_STOCK_MICROPHONE, 
+					      GTK_ICON_SIZE_SMALL_TOOLBAR), 
                     0, 1, 1, 2,
 		    (GtkAttachOptions) NULL,
 		    (GtkAttachOptions) NULL,
-		    GNOME_PAD_SMALL, 0);
+		    0, 0);
 
   gchar *recorder_mixer = gconf_client_get_string (client, DEVICE_KEY "audio_recorder_mixer", NULL);
   gnomemeeting_volume_get (recorder_mixer, 1, &vol);

@@ -374,7 +374,7 @@ void gnomemeeting_init_ldap_window ()
   g_object_unref (G_OBJECT (xdap_pixbuf));
 
   /* a vbox to put the frames, the toolbar and the user list */
-  vbox = gtk_vbox_new (FALSE, GNOME_PAD_SMALL);
+  vbox = gtk_vbox_new (FALSE, 0);
   gtk_container_add (GTK_CONTAINER (gw->ldap_window), vbox);
 
 
@@ -457,13 +457,13 @@ void gnomemeeting_init_ldap_window ()
 
   /* Ldap users list */
   frame = gtk_frame_new (_("ILS Users List"));
-  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
+  gtk_container_set_border_width (GTK_CONTAINER (frame), 0);
 
   /* We will put a GtkNotebook that will contain the ILS dir list */
   lw->notebook = gtk_notebook_new ();
 
   gtk_container_set_border_width (GTK_CONTAINER (lw->notebook), 
-				  GNOME_PAD_SMALL);
+				  0);
   gtk_box_pack_start (GTK_BOX (vbox), lw->notebook, 
 		      TRUE, TRUE, 0);
 
@@ -471,7 +471,7 @@ void gnomemeeting_init_ldap_window ()
 
 
   /* Status Bar */
-  lw->statusbar = gnome_appbar_new (FALSE, TRUE, GNOME_PREFERENCES_NEVER);
+  lw->statusbar = gtk_statusbar_new ();
   gtk_box_pack_end (GTK_BOX (vbox), lw->statusbar, FALSE, FALSE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (lw->statusbar), 0);
 
@@ -662,7 +662,7 @@ void gnomemeeting_init_ldap_window_notebook (int page_num, gchar *text_label)
   gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
 
   gtk_container_add (GTK_CONTAINER (scroll), tree_view);
-  gtk_container_set_border_width (GTK_CONTAINER (tree_view), GNOME_PAD_SMALL);
+  gtk_container_set_border_width (GTK_CONTAINER (tree_view), 0);
 
 
   /* Show or not the tabs following the number of pages */

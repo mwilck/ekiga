@@ -96,7 +96,7 @@ GnomeMeeting::Connect()
   connection = endpoint->GetCurrentConnection ();
   
   gnomemeeting_threads_enter ();
-  gnomemeeting_statusbar_push  (gm, NULL);
+  gnomemeeting_statusbar_push  (gw->statusbar, NULL);
   call_address = (PString) gtk_entry_get_text 
           (GTK_ENTRY (GTK_COMBO (gw->combo)->entry));  
   gnomemeeting_threads_leave ();
@@ -145,7 +145,7 @@ GnomeMeeting::Connect()
       gnomemeeting_threads_enter ();
       gw->progress_timeout =
 	gtk_timeout_add (20, gnomemeeting_window_appbar_update, 
-			 gw->statusbar);
+			 gw->progressbar);
       gtk_widget_show (gw->progressbar);
       gnomemeeting_threads_leave ();
 
@@ -187,7 +187,7 @@ void GnomeMeeting::Disconnect (H323Connection::CallEndReason reason)
     gw->progress_timeout = 0;
     gtk_widget_hide (gw->progressbar);
   }
-  gnomemeeting_statusbar_push (gm, NULL);
+  gnomemeeting_statusbar_push (gw->statusbar, NULL);
 
   gnomemeeting_threads_leave ();
 

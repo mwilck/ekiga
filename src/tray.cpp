@@ -162,78 +162,6 @@ int tray_clicked (GtkWidget *widget, GdkEventButton *event, gpointer data)
  */
 void gnomemeeting_init_tray_popup_menu (GtkWidget *widget)
 {
-  GtkWidget *popup_menu_widget;
-  
-  static GnomeUIInfo popup_menu [] =
-    {
-      {
-	GNOME_APP_UI_ITEM,
-	N_("Connect"), N_("Create A New Connection"),
-	(void *)tray_popup_menu_connect_callback, NULL, NULL,
-	GNOME_APP_PIXMAP_STOCK, GM_STOCK_CONNECT,
-	0, GDK_CONTROL_MASK, NULL
-      },
-      {
-	GNOME_APP_UI_ITEM,
-	N_("Disconnect"), N_("Close The Current Connection"),
-	(void *)tray_popup_menu_disconnect_callback, NULL, 
-	NULL,
-	GNOME_APP_PIXMAP_STOCK, GM_STOCK_DISCONNECT,
-	0, GDK_CONTROL_MASK, NULL
-      },
-      GNOMEUIINFO_SEPARATOR,
-      {
-	GNOME_APP_UI_TOGGLEITEM,
-	N_("Do Not Disturb"), N_("Do Not Accept Calls"),
-	(void *)tray_popup_menu_dnd_callback,
-	NULL, NULL,
-	GNOME_APP_PIXMAP_NONE, NULL,
-	0, GDK_CONTROL_MASK, NULL
-      },
-      {
-	GNOME_APP_UI_TOGGLEITEM,
-	N_("Auto Answer"), N_("Automatically Answer Calls"),
-	(void *)tray_popup_menu_aa_callback, NULL,
-	NULL,
-	GNOME_APP_PIXMAP_NONE, NULL,
-	0, GDK_CONTROL_MASK, NULL
-      },
-      GNOMEUIINFO_SEPARATOR,
-      {
-	GNOME_APP_UI_TOGGLEITEM,
-	N_("Show Main Window"), N_("Show The Main Window"),
-	(void *)tray_popup_menu_show_callback, NULL,
-	NULL,
-	GNOME_APP_PIXMAP_NONE, NULL,
-	0, GDK_CONTROL_MASK, NULL
-      },
-      GNOMEUIINFO_END
-    };
-
-  /* Create a popup menu to attach it to the drawing area */
-  popup_menu_widget = gnome_popup_menu_new (popup_menu);
-  gnome_popup_menu_attach (popup_menu_widget, GTK_WIDGET (widget),
-                           NULL);
-
-  /* Set the state of toggle items */
-  GConfClient *client = gconf_client_get_default ();
-
-  GTK_CHECK_MENU_ITEM (popup_menu[3].widget)->active = 
-    gconf_client_get_bool (client, 
-			   "/apps/gnomemeeting/general/do_not_disturb", 0);
-  GTK_CHECK_MENU_ITEM (popup_menu[4].widget)->active = 
-    gconf_client_get_bool (client, 
-			   "/apps/gnomemeeting/general/auto_answer", 0);
-  GTK_CHECK_MENU_ITEM (popup_menu[6].widget)->active =
-    !gconf_client_get_bool (client,
-			    "/apps/gnomemeeting/view/start_docked", 0);
-
-  gtk_widget_queue_draw (GTK_WIDGET (popup_menu[3].widget));
-  gtk_widget_queue_draw (GTK_WIDGET (popup_menu[4].widget));
-  gtk_widget_queue_draw (GTK_WIDGET (popup_menu[6].widget));
-
-  g_object_set_data (G_OBJECT (widget), "tray_menu_uiinfo",
-		     popup_menu);
 }
 
 /* DESCRIPTION  :  Builds up the tray icon
@@ -367,12 +295,9 @@ gint gnomemeeting_tray_flash (GObject *tray)
  */
 GObject *gnomemeeting_tray_get_uiinfo (GObject *tray, int index)
 {
-  GnomeUIInfo *uiinfo = (GnomeUIInfo *) g_object_get_data (tray, 
-							   "tray_menu_uiinfo");
-  g_return_val_if_fail (uiinfo != NULL, NULL);
-
- return G_OBJECT (uiinfo[index].widget);
+  return NULL;
 }
+
 
 /* DESCRIPTION  : Returns true if the tray shows a rining phone
  * BEHAVIOR     : 

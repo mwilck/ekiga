@@ -1171,8 +1171,8 @@ void gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_chat_window", view_widget_changed_nt, gw->chat_window, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/view/left_toolbar", menu_toggle_changed_nt, gnomemeeting_menu [9].widget, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/left_toolbar", view_widget_changed_nt, GTK_WIDGET (gnome_app_get_dock_item_by_name(GNOME_APP (gm), "left_toolbar")), 0, 0);
-
+  /*  gconf_client_notify_add (client, "/apps/gnomemeeting/view/left_toolbar", view_widget_changed_nt, GTK_WIDGET (gnome_app_get_dock_item_by_name(GNOME_APP (gm), "left_toolbar")), 0, 0);
+   */
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/auto_answer", menu_toggle_changed_nt, gnomemeeting_menu [35].widget, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/auto_answer", 

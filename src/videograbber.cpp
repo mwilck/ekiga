@@ -28,6 +28,7 @@
  *
  */
 
+
 #include "../config.h"
 
 #include "config.h"
@@ -44,6 +45,10 @@
 
 #include <sys/time.h>
 #include <gconf/gconf-client.h>
+#ifndef DISABLE_GNOME
+#include <gnome.h>
+#endif
+
 
 /* Declarations */
 extern GnomeMeeting *MyApp;
@@ -457,7 +462,7 @@ void GMVideoGrabber::VGOpen (void)
     gnomemeeting_threads_enter ();
     gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
     gtk_widget_set_sensitive (GTK_WIDGET (pw->video_preview), FALSE);
-    gnomemeeting_statusbar_flash (gm, _("Opening Video device"));
+    gnomemeeting_statusbar_flash (gw->statusbar, _("Opening Video device"));
     gnomemeeting_log_insert (gw->history_text_view, _("Opening Video device"));
     gnomemeeting_threads_leave ();
     
@@ -509,7 +514,7 @@ void GMVideoGrabber::VGOpen (void)
 	(_("Successfully opened video device %s, channel %d"), 
 	 video_device, video_channel);
       gnomemeeting_log_insert (gw->history_text_view, msg);
-      gnomemeeting_statusbar_flash (gm, _("Video Device Opened"));
+      gnomemeeting_statusbar_flash (gw->statusbar, _("Video Device Opened"));
       g_free (msg);
       gnomemeeting_threads_leave ();
     }
@@ -523,7 +528,7 @@ void GMVideoGrabber::VGOpen (void)
 	gnomemeeting_threads_enter ();
 	msg = g_strdup_printf 
 	  (_("Error while opening video device %s, channel %d.\nThe chosen Video Image will be transmitted during calls. If you didn't choose any image, then the default GnomeMeeting logo will be transmitted. Notice that you can always transmit a given image or the GnomeMeeting logo by choosing \"Picture\" as video device."), video_device, video_channel);
-	gnomemeeting_statusbar_flash (gm, _("Can't open the Video Device"));
+	gnomemeeting_statusbar_flash (gw->statusbar, _("Can't open the Video Device"));
 	
 	switch (error_code)	{
 	  
@@ -677,7 +682,7 @@ void GMVideoGrabber::VGClose (int display_logo)
       gnomemeeting_init_main_window_logo (gw->main_video_image);
 
 
-    gnomemeeting_statusbar_flash (gm, _("Video Device Closed"));
+    gnomemeeting_statusbar_flash (gw->statusbar, _("Video Device Closed"));
     
     /* Disable the video settings frame */
     gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame),

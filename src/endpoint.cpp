@@ -121,7 +121,7 @@ static gint IncomingCallTimeout (gpointer data)
       connection->ForwardCall (PString ((const char *) forward_host));
       msg = g_strdup_printf (_("Forwarding Call to %s (No Answer)"), 
 			     (const char*) forward_host);
-      gnomemeeting_statusbar_push (gm, msg);
+      gnomemeeting_statusbar_push (gw->statusbar, msg);
       gnomemeeting_log_insert (gw->history_text_view, msg);
       gnomemeeting_log_insert (gw->calls_history_text_view, 
  			       _("Call forwarded"));
@@ -987,7 +987,7 @@ GMH323EndPoint::OnConnectionForwarded (H323Connection &,
     gnomemeeting_threads_enter ();
     msg = g_strdup_printf (_("Forwarding Call to %s"), 
 			   (const char*) forward_party);
-    gnomemeeting_statusbar_push (gm, msg);
+    gnomemeeting_statusbar_push (gw->statusbar, msg);
     gnomemeeting_log_insert (gw->history_text_view, msg);
     gnomemeeting_log_insert (gw->calls_history_text_view, _("Call forwarded"));
     gnomemeeting_threads_leave ();
@@ -1081,7 +1081,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 			 (const char *) utf8_app);
 
   gnomemeeting_threads_enter ();
-  gnomemeeting_statusbar_push (gm, (gchar *) msg);
+  gnomemeeting_statusbar_push (gw->statusbar, (gchar *) msg);
   gnomemeeting_log_insert (gw->history_text_view, msg);
   gnomemeeting_log_insert (gw->calls_history_text_view, msg);
   gnomemeeting_threads_leave ();
@@ -1095,7 +1095,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
     msg = 
       g_strdup_printf (_("Forwarding Call from %s to %s (Forward All Calls)"),
 		       (const char *) utf8_name, (const char *) forward_host);
-    gnomemeeting_statusbar_push (gm, msg);
+    gnomemeeting_statusbar_push (gw->statusbar, msg);
     gnomemeeting_log_insert (gw->history_text_view, msg);
     gnomemeeting_log_insert (gw->calls_history_text_view, _("Call forwarded"));
     gnomemeeting_threads_leave ();
@@ -1119,7 +1119,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
       msg = g_strdup_printf (_("Forwarding Call from %s to %s (Busy)"),
 			     (const char *) utf8_name, 
 			     (const char *) forward_host);
-      gnomemeeting_statusbar_push (gm, msg);
+      gnomemeeting_statusbar_push (gw->statusbar, msg);
       gnomemeeting_log_insert (gw->history_text_view, msg);
       gnomemeeting_log_insert (gw->calls_history_text_view, 
 			       _("Call forwarded"));
@@ -1138,7 +1138,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
       gnomemeeting_threads_enter ();
       msg = g_strdup_printf (_("Auto Rejecting Incoming Call from %s (Busy)"),
 			     (const char *) utf8_name);
-      gnomemeeting_statusbar_push (gm, msg);
+      gnomemeeting_statusbar_push (gw->statusbar, msg);
       gnomemeeting_log_insert (gw->history_text_view, msg);
       gnomemeeting_log_insert (gw->calls_history_text_view, 
 			       _("Auto Rejected"));
@@ -1290,7 +1290,7 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   SetCurrentCallToken (token);
   SetCurrentConnection (FindConnectionWithoutLocks (token));
 
-  gnomemeeting_statusbar_push (gm, _("Connected"));
+  gnomemeeting_statusbar_push (gw->statusbar, _("Connected"));
 
   if (gconf_client_get_bool (client, "/apps/gnomemeeting/general/fast_start", 0))    
     gnomemeeting_log_insert (gw->history_text_view, _("Fast start enabled"));
@@ -1378,7 +1378,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   else {
 
     gnomemeeting_threads_enter ();
-    gnomemeeting_statusbar_push (gm, NULL);
+    gnomemeeting_statusbar_push (gw->statusbar, NULL);
     gnomemeeting_threads_leave ();
 
     return;
@@ -1456,7 +1456,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
     msg = g_strdup (_("Call completed"));
   }
   
-  gnomemeeting_statusbar_flash (gm, msg);
+  gnomemeeting_statusbar_flash (gw->statusbar, msg);
   gnomemeeting_log_insert (gw->history_text_view, msg);
   gnomemeeting_log_insert (gw->calls_history_text_view, msg);
   g_free (msg);

@@ -244,6 +244,7 @@ gnomemeeting_sound_play_ringtone (GtkWidget *widget)
   /* First we check the current displayed image in the systray.
      We can't call gnomemeeting_threads_enter as idles and timers
      are executed in the main thread */
+#ifndef DISABLE_GNOME
   gdk_threads_enter ();
   gboolean is_ringing = gnomemeeting_tray_is_ringing (G_OBJECT (widget));
   gdk_threads_leave ();
@@ -254,6 +255,7 @@ gnomemeeting_sound_play_ringtone (GtkWidget *widget)
     gnome_triggers_do ("", NULL, "gnomemeeting", 
 		       "incoming_call", NULL);
   }
+#endif
 
   return TRUE;
 }

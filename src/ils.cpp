@@ -358,7 +358,7 @@ BOOL GMILSClient::Register (int reg)
     msg = g_strdup_printf (_("Contacting %s..."), ldap_server);
 
     if (reg != 2)
-      gnomemeeting_statusbar_flash (gm, msg);
+      gnomemeeting_statusbar_flash (gw->statusbar, msg);
     gnomemeeting_log_insert (gw->history_text_view, msg);    
     g_free (msg);
     gnomemeeting_threads_leave ();
@@ -493,7 +493,7 @@ BOOL GMILSClient::Register (int reg)
       }
 
       if (reg != 2)
-	gnomemeeting_statusbar_flash (gm, msg);
+	gnomemeeting_statusbar_flash (gw->statusbar, msg);
       gnomemeeting_log_insert (gw->history_text_view, msg);
       g_free (msg);
 
@@ -517,7 +517,7 @@ BOOL GMILSClient::Register (int reg)
 			     ldap_server);
     
     gnomemeeting_log_insert (gw->history_text_view, msg);
-    gnomemeeting_statusbar_flash (gm, msg);
+    gnomemeeting_statusbar_flash (gw->statusbar, msg);
     gnomemeeting_error_dialog (GTK_WINDOW (gm), msg);
     g_free (msg);
 
@@ -880,7 +880,7 @@ void GMILSBrowser::Main ()
 
   gnomemeeting_threads_enter ();
   gw = gnomemeeting_get_main_window (gm);
-  gnome_appbar_push (GNOME_APPBAR (lw->statusbar), msg);
+  gnomemeeting_statusbar_push (lw->statusbar, msg);
   g_free (msg);
   gnomemeeting_threads_leave ();
 
@@ -925,7 +925,7 @@ void GMILSBrowser::Main ()
     gnomemeeting_threads_enter ();        
     msg = g_strdup_printf (_("Fetching user information from %s."),
 			   ldap_server);
-    gnome_appbar_push (GNOME_APPBAR (lw->statusbar), msg);
+    gnomemeeting_statusbar_push (lw->statusbar, msg);
     gnomemeeting_threads_leave ();
     g_free (msg);
 
@@ -971,7 +971,7 @@ void GMILSBrowser::Main ()
     }
     
     else
-      gnome_appbar_clear_stack (GNOME_APPBAR (lw->statusbar));
+      gnomemeeting_statusbar_push (lw->statusbar, NULL);
 
     gnomemeeting_threads_leave ();
 
@@ -1197,7 +1197,7 @@ void GMILSBrowser::Main ()
       gtk_widget_set_sensitive (close_button, TRUE);
       msg = g_strdup_printf (_("Search completed: %d user(s) found on %s."),
 			     users_nbr, ldap_server);
-      gnome_appbar_push (GNOME_APPBAR (lw->statusbar), msg); 
+      gnomemeeting_statusbar_push (lw->statusbar, msg); 
       g_free (msg);
       gnomemeeting_threads_leave ();
       
@@ -1213,7 +1213,7 @@ void GMILSBrowser::Main ()
     
     gnomemeeting_threads_enter ();
     msg = g_strdup_printf (_("Failed to contact %s."), ldap_server);
-    gnome_appbar_push (GNOME_APPBAR (lw->statusbar), msg);
+    gnomemeeting_statusbar_push (lw->statusbar, msg);
     g_free (msg);
     gnomemeeting_threads_leave ();
   } 

@@ -170,9 +170,9 @@ void about_callback (GtkWidget *widget, gpointer parent_window)
   /* Translators: Please write translator credits here, and
    * seperate names with \n */
   const char *translator_credits = _("translator_credits");
-
+  
   pixbuf = 
-    gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES "gnomemeeting-logo-icon.png", NULL);
+    gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES "/gnomemeeting-logo-icon.png", NULL);
   
 
   abox = gnome_about_new ("GnomeMeeting",

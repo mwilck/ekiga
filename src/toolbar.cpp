@@ -187,50 +187,14 @@ static void toolbar_button_changed (GtkWidget *widget, gpointer data)
 
 
 /* The functions */
-
-void gnomemeeting_init_toolbar ()
+GtkWidget *
+gnomemeeting_init_main_toolbar ()
 {
-  GtkWidget *hbox;
-  GtkWidget *image;
-  GtkWidget *left_toolbar;
-
-  GConfClient *client = gconf_client_get_default ();
+  GtkWidget *hbox = NULL;
+  GtkWidget *image = NULL;
 
   GmWindow *gw = gnomemeeting_get_main_window (gm);
-
-  left_toolbar = gtk_toolbar_new ();
-
-  gtk_toolbar_append_item (GTK_TOOLBAR (left_toolbar),
-			   _("ILS Directory"),
-			   _("Find friends on ILS"),
-			   NULL,
-			   gtk_image_new_from_stock (GM_STOCK_ILS_DIRECTORY, 
-						     GTK_ICON_SIZE_LARGE_TOOLBAR),
-			   GTK_SIGNAL_FUNC (gnomemeeting_component_view),
-			   (gpointer) gw->ldap_window); 
   
-  gtk_toolbar_append_item (GTK_TOOLBAR (left_toolbar),
-			   _("Chat"),
-			   _("Make a text chat with your friend"), 
-			   NULL,
-			   gtk_image_new_from_stock (GM_STOCK_TEXT_CHAT, 
-						     GTK_ICON_SIZE_LARGE_TOOLBAR),
-			   GTK_SIGNAL_FUNC (toolbar_button_changed),
-			   (gpointer) "/apps/gnomemeeting/view/show_chat_window");
-  
-  gtk_toolbar_append_item (GTK_TOOLBAR (left_toolbar),
-			   _("Control Panel"),
-			   _("Display the control panel"),
-			   NULL,
-			   gtk_image_new_from_stock (GM_STOCK_CONTROL_PANEL, 
-						     GTK_ICON_SIZE_LARGE_TOOLBAR),
-			   GTK_SIGNAL_FUNC (toolbar_cp_button_changed),
-			   (gpointer) "/apps/gnomemeeting/view/control_panel_section");
-
-  gtk_toolbar_append_space (GTK_TOOLBAR (left_toolbar));
-  
-
-  /* Both toolbars */
 
   /* The main horizontal toolbar */
   GtkWidget *toolbar = gtk_toolbar_new ();
@@ -280,13 +244,64 @@ void gnomemeeting_init_toolbar ()
                     G_CALLBACK (connect_button_clicked), 
 		    gw->connect_button);
 
-  gnome_app_add_docked (GNOME_APP (gm), hbox, "main_toolbar",
-  			BONOBO_DOCK_ITEM_BEH_EXCLUSIVE,
-  			BONOBO_DOCK_TOP, 1, 0, 0);
+  gtk_widget_show (GTK_WIDGET (gw->combo));
+  gtk_widget_show_all (GTK_WIDGET (gw->connect_button));
+  gtk_widget_show_all (GTK_WIDGET (hbox));
+  gtk_widget_show_all (GTK_WIDGET (toolbar));
 
-  gnome_app_add_toolbar (GNOME_APP (gm), GTK_TOOLBAR (left_toolbar),
- 			 "left_toolbar", BONOBO_DOCK_ITEM_BEH_EXCLUSIVE,
- 			 BONOBO_DOCK_LEFT, 3, 0, 0);
+  return hbox;
+}
+
+
+GtkWidget *gnomemeeting_init_left_toolbar (void)
+{
+  GtkWidget *image = NULL;
+  GtkWidget *left_toolbar = NULL;
+
+  GmWindow *gw = gnomemeeting_get_main_window (gm);
+
+  GConfClient *client = gconf_client_get_default ();
+
+  left_toolbar = gtk_toolbar_new ();
+  gtk_toolbar_set_orientation (GTK_TOOLBAR (left_toolbar), 
+			       GTK_ORIENTATION_VERTICAL);
+
+  image = gtk_image_new_from_stock (GM_STOCK_ILS_DIRECTORY, 
+				    GTK_ICON_SIZE_LARGE_TOOLBAR);
+  gtk_widget_show (image);
+  gtk_toolbar_append_item (GTK_TOOLBAR (left_toolbar),
+			   NULL,
+			   _("Find friends on ILS"),
+			   NULL,
+			   image,
+			   GTK_SIGNAL_FUNC (gnomemeeting_component_view),
+			   (gpointer) gw->ldap_window); 
+
+
+  image =
+    gtk_image_new_from_stock (GM_STOCK_TEXT_CHAT, 
+			      GTK_ICON_SIZE_LARGE_TOOLBAR);
+  gtk_widget_show (image);
+  gtk_toolbar_append_item (GTK_TOOLBAR (left_toolbar),
+			   NULL,
+			   _("Make a text chat with your friend"), 
+			   NULL,
+			   image,
+			   GTK_SIGNAL_FUNC (toolbar_button_changed),
+			   (gpointer) "/apps/gnomemeeting/view/show_chat_window");
+  
+  image = gtk_image_new_from_stock (GM_STOCK_CONTROL_PANEL, 
+				    GTK_ICON_SIZE_LARGE_TOOLBAR);
+  gtk_widget_show (image);
+  gtk_toolbar_append_item (GTK_TOOLBAR (left_toolbar),
+			   NULL,
+			   _("Display the control panel"),
+			   NULL,
+			   image,
+			   GTK_SIGNAL_FUNC (toolbar_cp_button_changed),
+			   (gpointer) "/apps/gnomemeeting/view/control_panel_section");
+
+  gtk_toolbar_append_space (GTK_TOOLBAR (left_toolbar));
 
   gtk_toolbar_set_style (GTK_TOOLBAR (left_toolbar), GTK_TOOLBAR_ICONS);
  
@@ -382,11 +397,6 @@ void gnomemeeting_init_toolbar ()
   gtk_toolbar_append_widget (GTK_TOOLBAR (left_toolbar), 
 			     gw->video_chan_button, NULL, NULL);
 
-
-  gtk_widget_show_all (GTK_WIDGET (hbox));
-
-  gtk_widget_show (GTK_WIDGET (gw->combo));
-  gtk_widget_show_all (GTK_WIDGET (gw->connect_button));
   gtk_widget_show_all (GTK_WIDGET (gw->preview_button));
 
 #ifdef HAS_IXJ
@@ -397,10 +407,8 @@ void gnomemeeting_init_toolbar ()
   gtk_widget_show_all (GTK_WIDGET (gw->audio_chan_button));
   gtk_widget_show_all (GTK_WIDGET (gw->video_chan_button));
 
-  if (gconf_client_get_bool (client, "/apps/gnomemeeting/view/left_toolbar", 0)) 
-    gtk_widget_show (GTK_WIDGET (gnome_app_get_dock_item_by_name(GNOME_APP (gm), "left_toolbar")));
-  else
-    gtk_widget_hide (GTK_WIDGET (gnome_app_get_dock_item_by_name(GNOME_APP (gm), "left_toolbar")));
+
+  return left_toolbar;
 }
 
 

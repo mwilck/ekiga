@@ -224,7 +224,7 @@ void GMH323Connection::PauseChannel (int chan_num)
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->audio_chan_button), FALSE);
 	gnomemeeting_log_insert (gw->history_text_view,
 				 _("Audio Channel:  Sending"));
-	gnomemeeting_statusbar_flash (gm, 
+	gnomemeeting_statusbar_flash (gw->statusbar, 
 				      _("Audio Channel:  Sending"));
       }
       else {
@@ -233,7 +233,7 @@ void GMH323Connection::PauseChannel (int chan_num)
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->audio_chan_button), TRUE);
 	gnomemeeting_log_insert (gw->history_text_view, 
 				 _("Audio Channel:  Paused"));
-	gnomemeeting_statusbar_flash (gm, 
+	gnomemeeting_statusbar_flash (gw->statusbar, 
 				      _("Audio Channel:  Paused"));
       }
 
@@ -257,7 +257,7 @@ void GMH323Connection::PauseChannel (int chan_num)
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->video_chan_button), FALSE);
 	gnomemeeting_log_insert (gw->history_text_view,
 				 _("Video Channel:  Sending"));
-	gnomemeeting_statusbar_flash (gm,
+	gnomemeeting_statusbar_flash (gw->statusbar,
 				      _("Video Channel:  Sending"));
       }
       else {
@@ -265,7 +265,7 @@ void GMH323Connection::PauseChannel (int chan_num)
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->video_chan_button), TRUE);
 	gnomemeeting_log_insert (gw->history_text_view,
 				 _("Video Channel:  Paused"));
-	gnomemeeting_statusbar_flash (gm,
+	gnomemeeting_statusbar_flash (gw->statusbar,
 				      _("Video Channel:  Paused"));
       }
 
@@ -314,7 +314,7 @@ GMH323Connection::OnAnswerCall (const PString & caller,
       (client, "/apps/gnomemeeting/general/do_not_disturb", 0)) {
 
     gnomemeeting_threads_enter ();
-    gnomemeeting_statusbar_flash (gm,
+    gnomemeeting_statusbar_flash (gw->statusbar,
 				  _("Auto Rejecting Incoming Call"));
     gnomemeeting_log_insert (gw->history_text_view,
 			     _("Auto Rejecting Incoming Call"));
@@ -329,7 +329,7 @@ GMH323Connection::OnAnswerCall (const PString & caller,
       (client, "/apps/gnomemeeting/general/auto_answer", 0)) {
 
     gnomemeeting_threads_enter ();
-    gnomemeeting_statusbar_flash (gm,
+    gnomemeeting_statusbar_flash (gw->statusbar,
 				  _("Auto Answering Incoming Call"));
     gnomemeeting_log_insert (gw->history_text_view,
 			     _("Auto Answering Incoming Call"));

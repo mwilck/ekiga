@@ -99,7 +99,9 @@ popup_menu_callback (GtkWidget *widget, GdkEventButton *event, gpointer data)
 static void 
 menu_item_selected (GtkWidget *w, gpointer data)
 {
-  gnomemeeting_statusbar_push (gm, (char *) data);
+  GmWindow *gw = gnomemeeting_get_main_window (gm);
+
+  gnomemeeting_statusbar_push (gw->statusbar, (char *) data);
 }
 
 
@@ -378,7 +380,7 @@ gnomemeeting_build_menu (GtkWidget *menubar, MenuEntry *gnomemeeting_menu,
 }
 
 
-void 
+GtkWidget *
 gnomemeeting_init_menu (GtkAccelGroup *accel)
 {
   /* Get the data */
@@ -578,10 +580,17 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 
       {_("_Help"), NULL, NULL, 0, MENU_NEW, NULL, NULL, NULL},
 
+#ifndef DISABLE_GNOME
       {_("_About GnomeMeeting"), _("View information about GnomeMeeting"),
        GNOME_STOCK_ABOUT, 'a', MENU_ENTRY, 
        GTK_SIGNAL_FUNC (about_callback),
        (gpointer) gm, NULL},
+#else
+      {_("_About GnomeMeeting"), _("View information about GnomeMeeting"),
+       NULL, 'a', MENU_ENTRY, 
+       GTK_SIGNAL_FUNC (about_callback),
+       (gpointer) gm, NULL},
+#endif
 
       {NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL}
     };
@@ -589,12 +598,7 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
   gnomemeeting_build_menu (menubar, gnomemeeting_menu, accel);
 
   gtk_widget_show_all (GTK_WIDGET (menubar));
-  gnome_app_add_docked (GNOME_APP (gm), 
-			menubar,
-			"menubar",
-			BONOBO_DOCK_ITEM_BEH_EXCLUSIVE,
-  			BONOBO_DOCK_TOP, 0, 0, 0);
-
+  
   g_object_set_data(G_OBJECT(gm), "gnomemeeting_menu", 
 		    gnomemeeting_menu);
 
@@ -633,6 +637,14 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 
   /* Pause is unsensitive when not in a call */
   gnomemeeting_call_menu_pause_set_sensitive (FALSE);
+
+#ifdef DISABLE_GNOME
+  gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [5].widget), FALSE);
+  gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [45].widget), FALSE);
+#endif 
+
+
+  return menubar;
 }
 
 

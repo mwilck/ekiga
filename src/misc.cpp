@@ -31,9 +31,13 @@
 #include "../config.h"
 
 #include <ptlib.h>
-#include <gnome.h>
 #include <esd.h>
 
+#ifndef DISABLE_GNOME
+#include <gnome.h>
+#else
+#include <gtk/gtk.h>
+#endif
 
 #include "config.h"
 #include "main_window.h"
@@ -102,8 +106,8 @@ gnomemeeting_button (gchar *lbl, GtkWidget *pixmap)
   label = gtk_label_new (N_(lbl));
   hbox2 = gtk_hbox_new (FALSE, 0);
 
-  gtk_box_pack_start(GTK_BOX (hbox2), pixmap, TRUE, TRUE, GNOME_PAD_SMALL);  
-  gtk_box_pack_start(GTK_BOX (hbox2), label, TRUE, TRUE, GNOME_PAD_SMALL);
+  gtk_box_pack_start(GTK_BOX (hbox2), pixmap, TRUE, TRUE, 0);  
+  gtk_box_pack_start(GTK_BOX (hbox2), label, TRUE, TRUE, 0);
   
   gtk_container_add (GTK_CONTAINER (button), hbox2);
     
@@ -218,7 +222,6 @@ gnomemeeting_incoming_call_popup_new (gchar * utf8_name,
   GtkWidget *hbox = NULL;
   GtkWidget *widget = NULL;
   GtkWidget *b1 = NULL, *b2 = NULL;
-  gchar     *file = NULL;
   gchar     *msg = NULL;
   GmWindow  *gw = NULL;
 
@@ -240,17 +243,14 @@ gnomemeeting_incoming_call_popup_new (gchar * utf8_name,
 		      (GTK_DIALOG (widget)->vbox), 
 		      hbox, TRUE, TRUE, 0);
   
-  file = 
-    gnome_program_locate_file (NULL, GNOME_FILE_DOMAIN_PIXMAP, 
-			       "gnomemeeting-logo-icon.png", TRUE, NULL);
-  pixbuf = gdk_pixbuf_new_from_file (file, NULL);
+  pixbuf = gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES
+			       "gnomemeeting-logo-icon.png", NULL);
   image = gtk_image_new_from_pixbuf (pixbuf);
   gtk_box_pack_start (GTK_BOX (hbox), 
-		      image, TRUE, TRUE, GNOME_PAD_BIG);
+		      image, TRUE, TRUE, 10);
   gtk_box_pack_start (GTK_BOX (hbox), 
-		      label, TRUE, TRUE, GNOME_PAD_BIG);
+		      label, TRUE, TRUE, 10);
   g_object_unref (pixbuf);
-  g_free (file);
     
   g_signal_connect (G_OBJECT (b1), "clicked",
 		    G_CALLBACK (connect_cb), gw);
@@ -273,17 +273,49 @@ gnomemeeting_incoming_call_popup_new (gchar * utf8_name,
 }
 
 
+static int statusbar_clear_msg (gpointer data)
+{
+  GmWindow *gw = NULL;
+  int id = 0;
+
+  gdk_threads_enter ();
+
+  gw = gnomemeeting_get_main_window (gm);
+  id = gtk_statusbar_get_context_id (GTK_STATUSBAR (gw->statusbar),
+				     "statusbar");
+
+  gtk_statusbar_remove (GTK_STATUSBAR (gw->statusbar), id, 
+			GPOINTER_TO_INT (data));
+
+  gdk_threads_leave ();
+
+  return FALSE;
+}
+
+
 void 
 gnomemeeting_statusbar_flash (GtkWidget *widget, const char *msg, ...)
 {
   va_list args;
   char    buffer [1025];
+  int timeout_id = 0;
+  int msg_id = 0;
+
+  gint id = 0;
+  int len = g_slist_length ((GSList *) (GTK_STATUSBAR (widget)->messages));
+  id = gtk_statusbar_get_context_id (GTK_STATUSBAR (widget), "statusbar");
+  
+  for (int i = 0 ; i < len ; i++)
+    gtk_statusbar_pop (GTK_STATUSBAR (widget), id);
+
 
   va_start (args, msg);
   vsnprintf (buffer, 1024, msg, args);
 
-  gnome_appbar_clear_stack (GNOME_APPBAR (GNOME_APP (widget)->statusbar));
-  gnome_app_flash (GNOME_APP (widget), buffer);
+  msg_id = gtk_statusbar_push (GTK_STATUSBAR (widget), id, buffer);
+
+  timeout_id = gtk_timeout_add (7000, statusbar_clear_msg, 
+				GINT_TO_POINTER (msg_id));
 
   va_end (args);
 }
@@ -292,7 +324,12 @@ gnomemeeting_statusbar_flash (GtkWidget *widget, const char *msg, ...)
 void 
 gnomemeeting_statusbar_push (GtkWidget *widget, const char *msg, ...)
 {
-  gnome_appbar_clear_stack (GNOME_APPBAR (GNOME_APP (widget)->statusbar));
+  gint id = 0;
+  int len = g_slist_length ((GSList *) (GTK_STATUSBAR (widget)->messages));
+  id = gtk_statusbar_get_context_id (GTK_STATUSBAR (widget), "statusbar");
+  
+  for (int i = 0 ; i < len ; i++)
+    gtk_statusbar_pop (GTK_STATUSBAR (widget), id);
 
   if (msg) {
 
@@ -301,9 +338,9 @@ gnomemeeting_statusbar_push (GtkWidget *widget, const char *msg, ...)
 
     va_start (args, msg);
     vsnprintf (buffer, 1024, msg, args);
-    
-    gnome_appbar_push (GNOME_APPBAR (GNOME_APP (widget)->statusbar), buffer);
-    
+
+    gtk_statusbar_push (GTK_STATUSBAR (widget), id, buffer);
+
     va_end (args);
   }
 }

@@ -1,3 +1,4 @@
+
 /* GnomeMeeting -- A Video-Conferencing application
  * Copyright (C) 2000-2001 Damien Sandras
  *
@@ -31,7 +32,11 @@
 
 #include <iostream>
 #include <gtk/gtk.h>
+
+#ifndef DISABLE_GNOME
 #include <gnome.h>
+#endif
+
 #include <gconf/gconf-client.h>
 
 #include "main_window.h"
@@ -39,6 +44,7 @@
 #include "misc.h"
 
 
+#ifndef DISABLE_GNOME
 /* Declarations */
 static void gnomemeeting_druid_quit (GtkWidget *, gpointer);
 static void gnomemeeting_druid_cancel (GtkWidget *, gpointer);
@@ -542,11 +548,13 @@ static void gnomemeeting_init_druid_connection_type_page (GnomeDruid *druid)
   gtk_box_pack_start (GTK_BOX (page_standard->vbox), GTK_WIDGET (table), 
 		      TRUE, TRUE, 8);
 }
+#endif
 
 
 /* Functions */
 void gnomemeeting_init_druid (gpointer data)
 {
+#ifndef DISABLE_GNOME
   GtkWidget *window = NULL;
   GdkPixbuf *logo = NULL;
   GnomeDruidPageEdge *page_edge = NULL;
@@ -615,4 +623,6 @@ void gnomemeeting_init_druid (gpointer data)
 		    G_CALLBACK (gnomemeeting_druid_cancel), data);
 
   gtk_widget_show_all (window);
+#endif
 }
+

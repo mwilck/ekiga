@@ -77,7 +77,7 @@ void GMThreadsCleaner::Main ()
     GPOINTER_TO_INT (g_object_get_data (G_OBJECT (gm), "timeout"));
   gtk_timeout_remove (timeout);
 
-  gnome_appbar_push (GNOME_APPBAR (gw->statusbar), _("Quit in progress..."));
+  gnomemeeting_statusbar_push (gw->statusbar, _("Quit in progress..."));
 
   /* Synchronous End of Call */
   endpoint->ClearCall (endpoint->GetCurrentCallToken (), 

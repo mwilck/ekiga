@@ -32,8 +32,11 @@
 
 #include "../config.h"
 
+#ifndef DISABLE_GNOME
 #include <gnome.h>
-
+#else
+#include <gtk/gtk.h>
+#endif
 
 #include "vfakeio.h"
 #include "misc.h"
