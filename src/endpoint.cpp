@@ -2018,6 +2018,8 @@ GMH323EndPoint::StartLogicalChannel (const PString & capability_name,
   H323Capabilities capabilities;
   BOOL no_error = TRUE;
 
+  PString mode, current_capa, name;
+
   con = FindConnectionWithLock (GetCurrentCallToken ());
 
   if (con) {
@@ -2027,12 +2029,34 @@ GMH323EndPoint::StartLogicalChannel (const PString & capability_name,
     capability = capabilities.FindCapability (capability_name);
 
       
-    if (channel ||
-	!capability ||
-	!con->OpenLogicalChannel (*capability,
-				  capability->GetDefaultSessionID(),
-				  H323Channel::IsTransmitter)) 
-      no_error = FALSE;
+    if (!from_remote) {
+
+      if (channel ||
+	  !capability ||
+	  !con->OpenLogicalChannel (*capability,
+				    capability->GetDefaultSessionID(),
+				    H323Channel::IsTransmitter)) 
+	no_error = FALSE;
+    }
+    else {
+
+      if (id == RTP_Session::DefaultVideoSessionID)
+	channel = con->FindChannel (RTP_Session::DefaultAudioSessionID, TRUE);
+      else
+	channel = con->FindChannel (RTP_Session::DefaultVideoSessionID, TRUE);
+
+      if (channel) {
+
+	current_capa = channel->GetCapability ().GetFormatName ();
+
+	if (!current_capa.IsEmpty ())
+	  mode = name + "\n" + current_capa;
+
+	con->RequestModeChange (mode);
+      }
+      else
+	no_error = TRUE;
+    }
 
     con->Unlock ();
   }
@@ -2042,8 +2066,7 @@ GMH323EndPoint::StartLogicalChannel (const PString & capability_name,
 
 
 BOOL 
-GMH323EndPoint::StopLogicalChannel (const PString & capability_name, 
-				    unsigned id, 
+GMH323EndPoint::StopLogicalChannel (unsigned id, 
 				    BOOL from_remote)
 {
   H323Connection *con = NULL;

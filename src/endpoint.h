@@ -401,7 +401,7 @@ class GMH323EndPoint : public H323EndPoint
   void SetAutoStartTransmitVideo (BOOL a) {autoStartTransmitVideo = a;}
   void SetAutoStartReceiveVideo (BOOL a) {autoStartReceiveVideo = a;}
   BOOL StartLogicalChannel (const PString &, unsigned int, BOOL);
-  BOOL StopLogicalChannel (const PString &, unsigned int, BOOL);
+  BOOL StopLogicalChannel (unsigned int, BOOL);
 
 
 #ifdef HAS_IXJ

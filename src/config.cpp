@@ -135,6 +135,11 @@ static void enable_video_transmission_changed_nt (GConfClient *,
 						  GConfEntry *, 
 						  gpointer);
 
+static void enable_video_reception_changed_nt (GConfClient *, 
+					       guint, 
+					       GConfEntry *, 
+					       gpointer);
+
 static void silence_detection_changed_nt (GConfClient *, guint, 
 					  GConfEntry *, gpointer);
 static void network_settings_changed_nt (GConfClient *, guint, 
@@ -554,8 +559,7 @@ enable_video_transmission_changed_nt (GConfClient *client,
     }
     else {
 
-      ep->StopLogicalChannel (name,
-			      RTP_Session::DefaultVideoSessionID,
+      ep->StopLogicalChannel (RTP_Session::DefaultVideoSessionID,
 			      FALSE);
     }
 
@@ -563,6 +567,49 @@ enable_video_transmission_changed_nt (GConfClient *client,
     if (gconf_client_get_bool (client, LDAP_KEY "register", 0))
       ep->ILSRegister ();
     gdk_threads_leave ();
+  }
+}
+
+
+/* DESCRIPTION  :  This notifier is called when the gconf database data
+ *                 associated with the enable_video_transmission key changes.
+ * BEHAVIOR     :  It updates the endpoint.
+ *                 If the user is in a call, the video channel will be started
+ *                 and stopped on-the-fly as long as the remote has enabled
+ *                 video reception.
+ * PRE          :  /
+ */
+static void
+enable_video_reception_changed_nt (GConfClient *client,
+				   guint cid, 
+				   GConfEntry *entry,
+				   gpointer data)
+{
+  PString name;
+  GMH323EndPoint *ep = NULL;
+
+  ep = MyApp->Endpoint ();
+
+  if (entry->value->type == GCONF_VALUE_BOOL) {
+
+    ep->SetAutoStartReceiveVideo (gconf_value_get_bool (entry->value));
+
+    if (gconf_client_get_int (client, DEVICES_KEY "video_size", NULL) == 0)
+      name = "H.261-QCIF";
+    else
+      name = "H.261-CIF";
+
+    if (!gconf_value_get_bool (entry->value)) {
+	
+      ep->StopLogicalChannel (RTP_Session::DefaultVideoSessionID,
+			      TRUE);
+    }
+    else {
+
+      ep->StartLogicalChannel (name,
+			       RTP_Session::DefaultVideoSessionID,
+			       TRUE);
+    }
   }
 }
 
@@ -1070,8 +1117,7 @@ video_device_setting_changed_nt (GConfClient *client,
       if (gconf_client_get_bool (client, VIDEO_SETTINGS_KEY "enable_video_transmission", 0)) {
 
 	no_error=
-	  ep->StopLogicalChannel (name, 
-				  RTP_Session::DefaultVideoSessionID,
+	  ep->StopLogicalChannel (RTP_Session::DefaultVideoSessionID,
 				  FALSE);
       
 	while (no_error &&
@@ -1841,10 +1887,9 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/tr_fps", adjustment_changed_nt, pw->tr_fps, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/tr_fps", network_settings_changed_nt, 0, 0, 0);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/enable_video_reception", applicability_check_nt, pw->vid_re, 0, 0);	     
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/enable_video_reception", toggle_changed_nt, pw->vid_re, 0, 0);	     
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/enable_video_reception", network_settings_changed_nt, 0, 0, 0);	     
-  gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/enable_video_reception", enable_video_transmission_changed_nt, 0, 0, 0);	     
+  gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/enable_video_reception", enable_video_reception_changed_nt, 0, 0, 0);	     
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/enable_video_transmission", toggle_changed_nt, pw->vid_tr, 0, 0);	     
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/enable_video_transmission", network_settings_changed_nt, 0, 0, 0);	     
