@@ -73,8 +73,8 @@ static void chat_entry_activate (GtkEditable *w, gpointer data)
 	s = PString (gtk_entry_get_text (GTK_ENTRY (w)));
 	connection->SendUserInput ("MSG"+s);
 
-	local = gnomemeeting_pstring_cut (local);
 	utf8_local = gnomemeeting_from_ucs2_to_utf8 (local);
+
 	if (utf8_local)
 	  gnomemeeting_text_chat_insert (utf8_local, s, 0);
 	g_free (utf8_local);
@@ -150,7 +150,7 @@ void gnomemeeting_text_chat_init ()
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scr),
 				  GTK_POLICY_AUTOMATIC,
 				  GTK_POLICY_ALWAYS);
-  gtk_widget_set_size_request (GTK_WIDGET (scr), 225, -1);
+  gtk_widget_set_size_request (GTK_WIDGET (scr), 245, -1);
 
   chat->text_view = gtk_text_view_new ();
   gtk_text_view_set_editable (GTK_TEXT_VIEW (chat->text_view), FALSE);
@@ -195,11 +195,11 @@ void gnomemeeting_text_chat_init ()
 		    0, 0);
 
   entry = gtk_entry_new ();
-  gtk_widget_set_size_request (GTK_WIDGET (entry), 225, -1);
+  gtk_widget_set_size_request (GTK_WIDGET (entry), 245, -1);
   gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (entry), 
 		    0, 1, 2, 3,
-		    (GtkAttachOptions) (NULL),
-		    (GtkAttachOptions) (NULL),
+		    (GtkAttachOptions) (GTK_FILL),
+		    (GtkAttachOptions) (GTK_FILL),
 		    0, 0);
 
   g_signal_connect (GTK_OBJECT (entry), "activate",
