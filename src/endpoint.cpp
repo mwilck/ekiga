@@ -52,7 +52,6 @@
 #include <gsmcodec.h>
 #include <mscodecs.h>
 #include <h261codec.h>
-#include <videoio.h>
 #include <gtk/gtk.h>
 #include <lpc10codec.h>
 
@@ -724,13 +723,13 @@ GMH323EndPoint::StopAudioTester ()
   }
 }
 
-
+/*
 H323Gatekeeper *
 GMH323EndPoint::CreateGatekeeper(H323Transport * transport)
 {
   return new H323GatekeeperWithNAT(*this, transport);
 }
-
+*/
 
 H323Connection *
 GMH323EndPoint::CreateConnection (unsigned callReference)
@@ -1798,6 +1797,8 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
       var_access_mutex.Wait ();
       PVideoChannel *channel = new PVideoChannel;
       received_video_device = new GDKVideoOutputDevice (isEncoding, gw);
+      received_video_device->SetColourFormatConverter ("YUV420P");
+      
       opened_video_channels++;
       var_access_mutex.Signal ();
 

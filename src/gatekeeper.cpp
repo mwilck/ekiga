@@ -249,7 +249,7 @@ void GMH323Gatekeeper::Main ()
    Any question or comment, redirect to Chih-Wei Huang <cwhuang@citron.com.tw>
    This permits to GnomeMeeting clients to register to public GNU GK while
    being behind a non-configured NAT gateway and to still work.
-*/
+*//*
 static bool
 SendTPKT (PTCPSocket *sender,
 	  const PBYTEArray &buf)
@@ -568,3 +568,4 @@ bool H323GatekeeperWithNAT::SendInfo(int state)
   return SendTPKT(incomingTCP, buf);
 }
 
+*/

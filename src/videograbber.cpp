@@ -474,6 +474,7 @@ void GMVideoGrabber::VGOpen (void)
     var_mutex.Wait ();
     channel = new PVideoChannel ();
     encoding_device = new GDKVideoOutputDevice (1, gw);
+    encoding_device->SetColourFormatConverter ("YUV420P");
     var_mutex.Signal ();
     
     channel->AttachVideoReader (grabber);

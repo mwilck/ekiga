@@ -33,7 +33,6 @@
 
 #include <ptlib.h>
 #include <h323.h>
-#include <videoio.h>
 #include <gtk/gtk.h>
 #include <pthread.h>
 
@@ -44,9 +43,9 @@
 #include "common.h"
 
 
-class GDKVideoOutputDevice : public H323VideoDevice
+class GDKVideoOutputDevice : public PVideoOutputDeviceRGB
 {
-  PCLASSINFO(GDKVideoOutputDevice, H323VideoDevice);
+  PCLASSINFO(GDKVideoOutputDevice, PVideoOutputDeviceRGB);
 
 
   public:
@@ -78,11 +77,45 @@ class GDKVideoOutputDevice : public H323VideoDevice
   ~GDKVideoOutputDevice ();
 
 
+  /**Open the device given the device name.
+   */
+  virtual BOOL Open(
+		    const PString & deviceName,   /// Device name to open
+		    BOOL startImmediate = TRUE    /// Immediately start device
+		    )
+    {return TRUE; }
+
+  /**Get a list of all of the drivers available.
+   */
+  virtual PStringList GetDeviceNames() const;
+
+  /**Get the maximum frame size in bytes.
+
+  Note a particular device may be able to provide variable length
+  frames (eg motion JPEG) so will be the maximum size of all frames.
+  */
+  virtual PINDEX GetMaxFrameBytes()
+    { return 352 * 288 * 3 * 2; }
+
+  
   /* Same as in H323VideoDevice.
    */
   virtual BOOL Redraw(const void * frame);
 
+  BOOL IsOpen ();
+  BOOL SetFrameData(
+		    unsigned x,
+		    unsigned y,
+		    unsigned width,
+		    unsigned height,
+		    const BYTE * data,
+		    BOOL endFrame = TRUE
+		    ) ;
 
+  /**Indicate frame may be displayed.
+   */
+  BOOL EndFrame();
+  
  protected:
 
   /* Same as in H323VideoDevice */

@@ -1,5 +1,16 @@
 2003-03-28 Damien Sandras  <dsandras@seconix.com>
 
+	* src/endpoint.cpp, src/endpoint.h: Removed Citron GK support.
+
+	* src/gatekeeper.cpp: Removed Citron GK support.
+
+	* src/gdkvideoio.cpp, src/gdkvideoio.h: Fixes to be compatible
+	with OpenH323 CVS. Directly use RGB for SDL instead of YUVOverlays.
+	
+	* src/videograbber.cpp: Fixes to be compatible with OpenH323 CVS.
+	
+2003-03-28 Damien Sandras  <dsandras@seconix.com>
+
 	* src/endpoint.cpp: Make sure to remove the listener before exiting.
 
 	* src/videograbber.cpp: Fixed video_format setting.

@@ -29,6 +29,8 @@
 
 #include "../config.h"
 
+#include <ptlib.h>
+#include <ptlib/vconvert.h>
 
 #ifdef HAS_SDL
 #include <SDL.h>
@@ -44,6 +46,7 @@
 #include "menu.h"
 
 #define new PNEW
+#define LIMIT(x) (BYTE)(((x>0xffffff)?0xff0000:((x<=0xffff)?0:x&0xff0000))>>16)
 
 
 /* Global Variables */
@@ -66,6 +69,7 @@ GDKVideoOutputDevice::GDKVideoOutputDevice(GmWindow *w)
   /* Used to distinguish between input and output device. */
   device_id = REMOTE; 
 
+  
 #ifdef HAS_SDL
   screen = NULL;
   overlay = NULL;
@@ -82,7 +86,7 @@ GDKVideoOutputDevice::GDKVideoOutputDevice(int idno, GmWindow *w)
 
   /* Used to distinguish between input and output device. */
   device_id = idno; 
-
+  
 #ifdef HAS_SDL
   screen = NULL;
   overlay = NULL;
@@ -135,7 +139,6 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
 
   int display = 0;
 
-
   /* Common to the 2 instances of gdkvideoio */
   static GdkPixbuf *local_pic = NULL;
   static gboolean logo_displayed = false;
@@ -148,6 +151,9 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
   static gboolean old_fullscreen = false;
 
   static int fs_device = 0;
+  Uint32 rmask, gmask, bmask, amask;
+  SDL_Surface *surface = NULL;
+  SDL_Surface *blit_conf = NULL;
 #endif
 
 
@@ -279,10 +285,8 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
   if ((screen) && (!fullscreen)) {
     
     SDL_FreeSurface (screen);
-    if (overlay)
-      SDL_FreeYUVOverlay (overlay);
     screen = NULL;
-    overlay = NULL;
+    
     SDL_Quit ();
   }
   else
@@ -309,16 +313,9 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
 #endif
 
   
-  if ((int) (buffer.GetSize ()) != (int) (frameWidth * frameHeight * 3))
-    buffer.SetSize(frameWidth * frameHeight * 3);
-
-  if (frame)
-    H323VideoDevice::Redraw(frame);
-
-
   /* The real size picture */
   tmp =  
-    gdk_pixbuf_new_from_data ((const guchar *) buffer,
+    gdk_pixbuf_new_from_data ((const guchar *) frame,
 			      GDK_COLORSPACE_RGB, FALSE, 8, frameWidth,
 			      frameHeight, frameWidth * 3, NULL, NULL);
   src_pic = gdk_pixbuf_copy (tmp);
@@ -463,26 +460,37 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
     base = (unsigned char *) frame;
     
 
-    if (overlay)
-      SDL_FreeYUVOverlay (overlay);
-    overlay = SDL_CreateYUVOverlay (frameWidth, frameHeight, 
-				    SDL_IYUV_OVERLAY, screen);
-    
-    SDL_LockYUVOverlay (overlay);
-    overlay->pixels [0] = base;
-    overlay->pixels [1] = base + (frameWidth * frameHeight);
-    overlay->pixels [2] = base + (frameWidth * frameHeight * 5/4);
-    SDL_UnlockYUVOverlay (overlay);
+    /* SDL interprets each pixel as a 32-bit number, so our masks must depend
+       on the endianness (byte order) of the machine */
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+    rmask = 0xff000000;
+    gmask = 0x00ff0000;
+    bmask = 0x0000ff00;
+    amask = 0x000000ff;
+#else
+    rmask = 0x000000ff;
+    gmask = 0x0000ff00;
+    bmask = 0x00ff0000;
+    amask = 0xff000000;
+#endif
+
+    surface =
+      SDL_CreateRGBSurfaceFrom ((void *) gdk_pixbuf_get_pixels (zoomed_pic),
+				zoomed_width, zoomed_height, 24,
+				zoomed_width * 3, rmask, gmask, bmask, amask);
+
+    blit_conf = SDL_DisplayFormat (surface);
 
     dest.x = (int) (screen->w - zoomed_width) / 2;
     dest.y = (int) (screen->h - zoomed_height) / 2;
     dest.w = zoomed_width;
     dest.h = zoomed_height;
-    
-    SDL_LockYUVOverlay (overlay);
-    SDL_DisplayYUVOverlay (overlay, &dest);    
-    SDL_UnlockYUVOverlay (overlay);
-    
+
+    SDL_BlitSurface (blit_conf, NULL, screen, &dest);
+    SDL_UpdateRect(screen, 0, 0, 640, 480);
+
+    SDL_FreeSurface (surface);
+    SDL_FreeSurface (blit_conf);
     sdl_mutex.Signal ();
     gnomemeeting_threads_leave ();
   }
@@ -566,12 +574,138 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
 }
 
 
-BOOL GDKVideoOutputDevice::WriteLineSegment(int x, int y, unsigned len, 
-					    const BYTE * data)
+PStringList GDKVideoOutputDevice::GetDeviceNames() const
 {
-  PINDEX offs = 3 * (x + (y * frameWidth));
-  memcpy(buffer.GetPointer() + offs, data, len*3);
+  PStringList  devlist;
+  devlist.AppendString(GetDeviceName());
+
+  return devlist;
+}
+
+
+BOOL GDKVideoOutputDevice::IsOpen ()
+{
   return TRUE;
 }
 
+
+BOOL GDKVideoOutputDevice::SetFrameData(
+					unsigned x,
+					unsigned y,
+					unsigned width,
+					unsigned height,
+					const BYTE * data,
+					BOOL endFrame)
+{
+  if (x+width > frameWidth || y+height > frameHeight)
+    return FALSE;
+
+  if (!endFrame)
+    return FALSE;
+
+  unsigned size;
+
+  size = width * height;
+
+  // get pointers to the data
+  const BYTE * yplane  = (BYTE *)data;
+  const BYTE * uplane  = yplane + size;
+  const BYTE * vplane  = yplane + size + (size >> 2);
+
+  // get temporary buffers
+  PBYTEArray rgbLine(width*3);  // draw 2 lines at once
+  PBYTEArray rgbLine2(width*3); // draw 2 lines at once
+
+  for (y = 0; y < height; y+=2) {
+
+    const BYTE * yline  = yplane + (y * width);
+    const BYTE * yline2 = yline  + width;
+    const BYTE * uline  = uplane + ((y >> 1) * (width >> 1));
+    const BYTE * vline  = vplane + ((y >> 1) * (width >> 1));
+        
+    BYTE * rgb  = rgbLine.GetPointer();
+    BYTE * rgb2 = rgbLine2.GetPointer();
+
+    for (x = 0; x < width; x+=2) {
+          long Cr = *uline++ - 128;     // calculate once for 4 pixels
+          long Cb = *vline++ - 128;
+          long lrc = 104635 * Cb;
+          long lgc = -25690 * Cr + -53294 * Cb;
+          long lbc = 132278 * Cr;
+
+          if (false)  
+          {
+                  long tmp;     // exchange red component and blue component
+                  tmp=lrc;
+                  lrc=lbc;
+                  lbc=tmp;
+          }
+          
+          long Y  = *yline++ - 16;      // calculate for every pixel
+	  if (Y < 0)
+	    Y = 0;
+          long l  = 76310 * Y;
+          long lr = l + lrc;
+          long lg = l + lgc;
+          long lb = l + lbc;
+
+	  *rgb++ = LIMIT(lr);
+	  *rgb++ = LIMIT(lg);
+	  *rgb++ = LIMIT(lb);         
+          
+	  Y  = *yline++ - 16;       // calculate for every pixel
+	  if (Y < 0)
+	    Y = 0;
+          l  = 76310 * Y;
+          lr = l + lrc;
+          lg = l + lgc;
+          lb = l + lbc;
+
+          *rgb++ = LIMIT(lr);
+	  *rgb++ = LIMIT(lg);
+	  *rgb++ = LIMIT(lb);         
+          
+          Y  = *yline2++ - 16;     // calculate for every pixel
+	  if (Y < 0)
+	    Y = 0;
+          l  = 76310 * Y;
+          lr = l + lrc;
+          lg = l + lgc;
+          lb = l + lbc;
+
+	  *rgb2++ = LIMIT(lr);
+	  *rgb2++ = LIMIT(lg);
+	  *rgb2++ = LIMIT(lb);        
+          
+	  Y  = *yline2++ - 16;      // calculate for every pixel
+	  if (Y < 0)
+	    Y = 0;
+          l  = 76310 * Y;
+          lr = l + lrc;
+          lg = l + lgc;
+          lb = l + lbc;
+
+          *rgb2++ = LIMIT(lr);
+	  *rgb2++ = LIMIT(lg);
+	  *rgb2++ = LIMIT(lb);        
+    }
+
+    PINDEX offs = 3 * (0 + (y * width));
+    memcpy (frameStore.GetPointer() + offs, rgbLine, width*3);
+    offs = 3 * (0 + ((y+1) * width));
+    memcpy (frameStore.GetPointer() + offs, rgbLine2, width*3);
+  }
+
+  EndFrame ();
+  
+  return TRUE;
+}
+
+
+BOOL GDKVideoOutputDevice::EndFrame()
+{
+  Redraw (frameStore);
+  
+  return TRUE;
+}
 
