@@ -38,6 +38,11 @@
  */
 
 #include <gtk/gtk.h>
+
+#if defined(P_FREEBSD)
+#include <sys/types.h>
+#endif
+
 #include <regex.h>
 #include "gtk-text-buffer-addon.h"
 
