@@ -556,7 +556,9 @@ gnomemeeting_aw_update_addressbook (GtkWidget *addressbook_window,
     if (contact->categories)
       gtk_list_store_set (GTK_LIST_STORE (model), &iter,
 			  COLUMN_CATEGORIES, contact->categories, -1);
-    
+    if (contact->speeddial)
+      gtk_list_store_set (GTK_LIST_STORE (model), &iter,
+			  COLUMN_SPEED_DIAL, contact->speeddial, -1);
     if (contact->uid)
       gtk_list_store_set (GTK_LIST_STORE (model), &iter,
 			  COLUMN_UUID, contact->uid, -1);
