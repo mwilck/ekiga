@@ -2033,7 +2033,8 @@ GMH323EndPoint::OnGatewayIPTimeout (PTimer &,
 
   if (ip_checking) {
 
-    if (web_client.GetTextDocument ("http://213.193.144.104/ip/", html)) {
+    gchar *ip_detector = gconf_get_string (NAT_KEY "public_ip_detector");
+    if (ip_detector != NULL && web_client.GetTextDocument (ip_detector, html)) {
 
       if (!html.IsEmpty ()) {
 
@@ -2045,7 +2046,8 @@ GMH323EndPoint::OnGatewayIPTimeout (PTimer &,
 
       }
     }
-
+    if (ip_detector != NULL)
+      g_free (ip_detector);
     if (!ip_address.IsEmpty ()) {
 
       gdk_threads_enter ();

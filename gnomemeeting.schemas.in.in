@@ -641,6 +641,17 @@
 	<long>Enter the public IP of your NAT/PAT router if you want to use IP translation. If you are registered to ils.seconix.com, GnomeMeeting will automatically fetch the public IP using the ILS service.</long>
       </locale>
     </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/general/nat/public_ip_detector</key>
+      <applyto>/apps/gnomemeeting/general/nat/public_ip_detector</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default>http://213.193.144.104/ip/</default>
+      <locale name="C">
+	<short>Address of public IP detector</short>
+        <long>Enter a valid URL to connect to a web application that outputs the public IP of your host.</long>
+      </locale>
+    </schema>
     <schema>	
       <key>/schemas/apps/gnomemeeting/general/user_interface/start_hidden</key>
       <applyto>/apps/gnomemeeting/general/user_interface/start_hidden</applyto>
