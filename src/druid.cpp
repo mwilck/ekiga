@@ -526,7 +526,7 @@ gnomemeeting_druid_page_prepare (GnomeDruidPage *page,
   GmWindow *gw = NULL;
   GmDruidWindow *dw = NULL;
 
-  GmH323EndPoint *ep = NULL;
+  GMH323EndPoint *ep = NULL;
   
   gchar *name = NULL;
   gchar *firstname = NULL;
@@ -685,7 +685,7 @@ gnomemeeting_druid_page_prepare (GnomeDruidPage *page,
     g_free (player);
     g_free (recorder);
 
-    if (ep->GetCallingState () != GmH323EndPoint::Standby)
+    if (ep->GetCallingState () != GMH323EndPoint::Standby)
       gtk_widget_set_sensitive (GTK_WIDGET (dw->audio_test_button), FALSE);
   }
   else if (GPOINTER_TO_INT (data) == 8) {
@@ -721,7 +721,7 @@ gnomemeeting_druid_page_prepare (GnomeDruidPage *page,
    
     g_free (recorder);
 
-    if (ep->GetCallingState () != GmH323EndPoint::Standby)
+    if (ep->GetCallingState () != GMH323EndPoint::Standby)
       gtk_widget_set_sensitive (GTK_WIDGET (dw->video_test_button), FALSE);
   }
   else if (GPOINTER_TO_INT (data) == 9) {
