@@ -302,6 +302,7 @@ void GMH323EndPoint::UpdateConfig ()
       /* Change that setting only if needed */
       if (GetSoundChannelRecordDevice () != PString (recorder)) { 
 
+	gnomemeeting_sound_daemons_suspend ();
 	if (found_recorder) {
 	  
 	  SetSoundChannelRecordDevice (recorder);
@@ -323,6 +324,7 @@ void GMH323EndPoint::UpdateConfig ()
     
 	gnomemeeting_log_insert (gw->history_text_view, text);
 	g_free (text);
+	gnomemeeting_sound_daemons_resume ();
       }
     }
     
@@ -1616,9 +1618,9 @@ GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
     gnomemeeting_threads_enter ();
 
     if (isEncoding)
-      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Could not open audio channel for audio transmission (soundcard busy?).\n Disabling audio transmission."));
+      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Could not open audio channel for audio transmission (soundcard busy?).\nDisabling audio transmission."));
     else
-      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Could not open audio channel for audio reception (soundcard busy?).\n Disabling audio reception."));
+      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Could not open audio channel for audio reception (soundcard busy?).\nDisabling audio reception."));
     gnomemeeting_threads_leave ();
 
     return FALSE;

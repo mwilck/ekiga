@@ -1037,16 +1037,6 @@ gnomemeeting_init (GmWindow *gw,
   }
   
 
-  /* Build the interface */
-  gnomemeeting_init_history_window ();
-  gnomemeeting_init_calls_history_window ();
-  gnomemeeting_init_main_window ();
-  gnomemeeting_init_ldap_window ();
-  gnomemeeting_init_pref_window ();  
-  gnomemeeting_init_menu ();
-  gnomemeeting_init_toolbar ();
-
-
   /* Search for devices */
   gnomemeeting_sound_daemons_suspend ();
   gw->audio_player_devices = 
@@ -1056,6 +1046,17 @@ gnomemeeting_init (GmWindow *gw,
     PSoundChannel::GetDeviceNames (PSoundChannel::Recorder);
 
   gw->video_devices = PVideoInputDevice::GetInputDeviceNames ();
+
+
+  /* Build the interface */
+  gnomemeeting_init_history_window ();
+  gnomemeeting_init_calls_history_window ();
+  gnomemeeting_init_main_window ();
+  gnomemeeting_init_ldap_window ();
+  gnomemeeting_init_pref_window ();  
+  gnomemeeting_init_menu ();
+  gnomemeeting_init_toolbar ();
+
 
   /* Launch the GnomeMeeting H.323 part */
   static GnomeMeeting instance;

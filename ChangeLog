@@ -1,4 +1,15 @@
 2002-10-04 Damien Sandras  <dsandras@seconix.com>
+
+	* src/endpoint.cpp: Fixed messages.
+	
+	* src/main_window.cpp: Fixed bugs in the devices detection with 
+	blocking esd.
+	
+	* src/sound_handling.cpp: Removed messages about ESD when it can't
+	be suspended, most users interpret them as an error. Put it in
+	the PTRACE instead of the history.
+
+2002-10-04 Damien Sandras  <dsandras@seconix.com>
 	
 	* lib/gtk-text-buffer-extentions.h: Make use of new generated file.
 

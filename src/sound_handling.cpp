@@ -211,10 +211,7 @@ gnomemeeting_sound_daemons_suspend (void)
   esd_client = esd_open_sound (NULL);
 
   if (esd_standby (esd_client) != 1) 
-  {  
-    gnomemeeting_log_insert (window->history_text_view, 
-			     _("Failed to suspend ESD"));
-  }
+    PTRACE (0, "Failed to resume ESD");
       
   esd_close (esd_client);
 }
@@ -230,10 +227,7 @@ gnomemeeting_sound_daemons_resume (void)
   esd_client = esd_open_sound (NULL);
 
   if (esd_resume (esd_client) != 1) 
-  {
-    gnomemeeting_log_insert (window->history_text_view, 
-			     _("Failed to resume ESD"));
-  }
+    PTRACE (0, "Failed to resume ESD");
 
   esd_close (esd_client);
 }
