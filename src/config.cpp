@@ -188,9 +188,11 @@ static gboolean answer_mode_changed (gpointer data)
     } 
   }
 
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle), current_state);
-  gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (call_menu_uiinfo[w].widget),
-				  current_state);
+  GTK_TOGGLE_BUTTON (toggle)->active = current_state;                           
+  GTK_CHECK_MENU_ITEM (call_menu_uiinfo [w].widget)->active = current_state;
+
+  gtk_widget_draw (GTK_WIDGET (toggle), NULL);                                  
+  gtk_widget_draw (GTK_WIDGET (call_menu_uiinfo [w].widget), NULL);             
 
   gdk_threads_leave ();
 

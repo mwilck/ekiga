@@ -138,8 +138,8 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
       gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_chan_button),
 				TRUE);
 
-      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->audio_chan_button),
-				    true);
+      GTK_TOGGLE_BUTTON (gw->audio_chan_button)->active = TRUE;
+      gtk_widget_queue_draw (GTK_WIDGET (gw->audio_chan_button));
       gnomemeeting_threads_leave ();
 
       g_free (msg);
@@ -218,8 +218,8 @@ void GMH323Connection::PauseChannel (int chan_num)
       if (transmitted_audio->IsPaused ()) {
 
 	transmitted_audio->SetPause (FALSE);
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->audio_chan_button),
-				      true);
+	GTK_TOGGLE_BUTTON (gw->audio_chan_button)->active = TRUE;
+	gtk_widget_queue_draw (GTK_WIDGET (gw->audio_chan_button));
 	gnomemeeting_log_insert (_("Audio Channel:  Sending"));
 	gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
 			   _("Audio Channel:  Sending"));
@@ -227,8 +227,8 @@ void GMH323Connection::PauseChannel (int chan_num)
       else {
 
 	transmitted_audio->SetPause (TRUE);
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->audio_chan_button),
-				     false);
+	GTK_TOGGLE_BUTTON (gw->audio_chan_button)->active = FALSE;
+	gtk_widget_queue_draw (GTK_WIDGET (gw->audio_chan_button));
 	gnomemeeting_log_insert (_("Audio Channel:  Paused"));
 	gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
 			   _("Audio Channel:  Paused"));
@@ -242,14 +242,16 @@ void GMH323Connection::PauseChannel (int chan_num)
       if (transmitted_video->IsPaused ()) {
 
 	transmitted_video->SetPause (FALSE);
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->video_chan_button), true);
+	GTK_TOGGLE_BUTTON (gw->video_chan_button)->active = TRUE;
+	gtk_widget_queue_draw (GTK_WIDGET (gw->video_chan_button));
 	gnomemeeting_log_insert (_("Video Channel:  Sending"));
 	gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
 			   _("Video Channel:  Sending"));
       }
       else {
 	transmitted_video->SetPause (TRUE);
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->video_chan_button), false);
+	GTK_TOGGLE_BUTTON (gw->video_chan_button)->active = FALSE;
+	gtk_widget_queue_draw (GTK_WIDGET (gw->video_chan_button));
 	gnomemeeting_log_insert (_("Video Channel:  Paused"));
 	gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
 			   _("Video Channel:  Paused"));
