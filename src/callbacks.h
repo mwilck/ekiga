@@ -87,6 +87,15 @@ void about_callback (GtkWidget *,
 		     gpointer);
 
 
+/* DESCRIPTION  :  This callback is called when the user chooses to open
+ *                 the help window.
+ * BEHAVIOR     :  Open the help window.
+ * PRE          :  /
+ */
+void help_cb (GtkWidget *,
+              gpointer);
+
+
 /* DESCRIPTION  :  This callback is called when the user choose to establish
  *                 a connection.
  * BEHAVIOR     :  Call the remote endpoint or accept the incoming call.

@@ -481,11 +481,18 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 
       GTK_MENU_NEW(_("_Help")),
 
-      GTK_MENU_ENTRY("help", _("_Contents"),
+#ifndef DISABLE_GNOME
+       GTK_MENU_ENTRY("help", _("_Contents"),
                      _("Get help by reading the GnomeMeeting manual"),
                      GTK_STOCK_HELP, 0, 
-                     NULL, NULL, TRUE),                        
- 
+                     GTK_SIGNAL_FUNC (help_cb), NULL, TRUE),
+#else
+       GTK_MENU_ENTRY("help", _("_Contents"),
+                     _("Get help by reading the GnomeMeeting manual"),
+                     GTK_STOCK_HELP, 0, 
+                     NULL, NULL, TRUE),
+#endif
+       
 #ifndef DISABLE_GNOME
       GTK_MENU_ENTRY("about", _("_About"),
 		     _("View information about GnomeMeeting"),

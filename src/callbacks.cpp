@@ -460,6 +460,16 @@ void about_callback (GtkWidget *widget, gpointer parent_window)
 }
 
 
+void help_cb (GtkWidget *widget,
+	       gpointer data)
+{
+  GError *err = NULL;
+#ifndef DISABLE_GNOME
+  gnome_help_display ("gnomemeeting.xml", NULL, &err);
+#endif
+}
+
+
 void quit_callback (GtkWidget *widget, gpointer data)
 {
   GmWindow *gw = NULL;
