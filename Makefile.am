@@ -19,5 +19,6 @@ install-schemas: gnomemeeting.schemas
 	GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) gconftool-2 --makefile-install-rule $(SCHEMAS_FILE)
 	gconftool-2 --shutdown
 
+if INSTALL_SCHEMAS
 install-data-local: install-schemas
-
+endif
