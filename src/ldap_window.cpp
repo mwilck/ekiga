@@ -303,6 +303,8 @@ void refresh_button_clicked (GtkButton *button, gpointer data)
 
     g_free (search_filter);
   }
+
+  g_free (entry_content);
 }
 
 
