@@ -291,7 +291,7 @@ GMVideoGrabber::VGOpen (void)
       (PVideoDevice::VideoFormat) gconf_get_int (VIDEO_DEVICES_KEY "format");
 
     height = (size == 0) ? GM_QCIF_HEIGHT : GM_CIF_HEIGHT; 
-    width = (size == 0) ? GM_QCIF_WIDTH : GM_CIF_HEIGHT;
+    width = (size == 0) ? GM_QCIF_WIDTH : GM_CIF_WIDTH;
 
     no_device_found = (input_device == _("No device found"));
     gnomemeeting_threads_leave ();
