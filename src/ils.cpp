@@ -485,13 +485,14 @@ BOOL GMILSClient::Register (int reg)
 
 gchar *GMILSClient::Search (gchar *ldap_server, gchar *ldap_port, gchar *mail)
 {
-  char *attrs [] = { "rfc822mailbox", "sipaddress", NULL };
+  char *attrs [] = { "rfc822mailbox", "sipaddress", "sport", NULL };
   char **ldv = NULL;
   unsigned long int nmip = 0;
   int part1;
   int part2;
   int part3;
   int part4;
+  int port = 1720;
   struct timeval t = {10, 0};
 
   gchar *ip = NULL;
@@ -538,15 +539,27 @@ gchar *GMILSClient::Search (gchar *ldap_server, gchar *ldap_port, gchar *mail)
 
   /* We only take the first entry */
   e = ldap_first_entry (ldap_search_connection, res); 
-  if (e)
+  if (e) {
+
     ldv = ldap_get_values (ldap_search_connection, e, "sipaddress");
 
-  if (ldv != NULL) {
+    if (ldv != NULL) {
 
-    nmip = strtoul (ldv [0], NULL, 10);
-    ldap_value_free (ldv);
-  }
+      nmip = strtoul (ldv [0], NULL, 10);
+      ldap_value_free (ldv);
+    }
+
+    ldv = ldap_get_values (ldap_search_connection, e, "sport");
+
+    if (ldv != NULL) {
       
+      port = atoi (ldv [0]);
+      ldap_value_free (ldv);
+    }
+  }
+
+
+
   part1 = (int) (nmip/(256*256*256));
   part2 = (int) ((nmip - part1 * (256 * 256 * 256)) / (256 * 256));
   part3 = (int) ((nmip - part1 * (256 * 256 * 256) - part2 * (256 * 256)) 
@@ -554,7 +567,7 @@ gchar *GMILSClient::Search (gchar *ldap_server, gchar *ldap_port, gchar *mail)
   part4 = (int) ((nmip - part1 * (256 * 256 * 256) - part2 * (256 * 256) 
 		  - part3 * 256));
   
-  ip = g_strdup_printf ("%d.%d.%d.%d", part4, part3, part2, part1);
+  ip = g_strdup_printf ("%d.%d.%d.%d:%d", part4, part3, part2, part1, port);
 
   ldap_msgfree (res);
   ldap_unbind (ldap_search_connection);
@@ -585,6 +598,7 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
   gchar *version = NULL;
   gchar *busy = NULL;
   gchar *ip = NULL;
+  gchar *port = NULL;
 
   unsigned long int sip = 0;
 
@@ -626,6 +640,12 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
   iso_location = g_convert (location, strlen (location),
 			    "ISO-8859-1", "UTF8", 0, 0, 0);
 
+  port = 
+    g_strdup_printf ("%d", 
+		     gconf_client_get_int (GCONF_CLIENT (client),
+					   "/apps/gnomemeeting/general/listen_port",
+					   NULL));
+
   version =  g_strdup_printf ("%u", MAJOR_VERSION << 24 | 
 			            MINOR_VERSION << 16 |
 			            BUILD_NUMBER);
@@ -658,7 +678,7 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
   else if (!strcmp ((char *) name, "ilsa26214430"))
     entval = xmlStrdup (BAD_CAST busy);
   else if (!strcmp ((char *) name, "port"))
-    entval = xmlStrdup (BAD_CAST "1720");
+    entval = xmlStrdup (BAD_CAST port);
   else if (!strcmp ((char *) name, "decip"))
     entval = xmlStrdup (BAD_CAST "1234567890");
   else if (!strcmp ((char *) name, "email"))
@@ -707,6 +727,7 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
   g_free (version);
   g_free (busy);
   g_free (ip);
+  g_free (port);
 
   return entity;
 }
@@ -746,7 +767,8 @@ void GMILSBrowser::Main ()
   char *datas [] = {NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL};
   char *attrs [] = { "surname", "givenname", "comment", "location", 
 		     "rfc822mailbox", "sipaddress", "ilsa32833566", 
-		     "ilsa32964638", "ilsa26279966", "ilsa26214430", "sappid", 
+		     "ilsa32964638", "ilsa26279966", "ilsa26214430", 
+		     "sport", "sappid", 
 		     NULL };
 
   char **ldv;
@@ -758,6 +780,7 @@ void GMILSBrowser::Main ()
   int part2;
   int part3;
   int part4;
+  int port = 1720;
   int cj = 0;
   int users_nbr = 0;
   int page_exists = 0; /* flag to see if the page still exists 
@@ -952,6 +975,13 @@ void GMILSBrowser::Main ()
 	  datas [4] = g_strdup (ldv [0]);
 	  ldap_value_free (ldv);
 	}
+
+	ldv = ldap_get_values(ldap_connection, e, "sport");
+	if (ldv != NULL) {
+	
+	  port = atoi (ldv [0]);
+	  ldap_value_free (ldv);
+	}
 	
 	ldv = ldap_get_values(ldap_connection, e, "sipaddress");
 	if (ldv != NULL) {
@@ -967,7 +997,7 @@ void GMILSBrowser::Main ()
 	part4 = (int) ((nmip - part1 * (256 * 256 * 256) - part2 * (256 * 256) 
 			- part3 * 256));
 	
-	sprintf (ip, "%d.%d.%d.%d", part4, part3, part2, part1);
+	sprintf (ip, "%d.%d.%d.%d:%d", part4, part3, part2, part1, port);
 	/* ip will be freed (char ip [16]), so we make a copy in datas [7] */
 	
 	datas [8] = g_strdup ((char *) ip);

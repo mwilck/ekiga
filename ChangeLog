@@ -1,5 +1,16 @@
 2002-09-29  Damien Sandras  <dsandras@seconix.com>
 
+	* src/ils.cpp: The listening port of GM is now registered to ILS. That
+	permits to have a unique callto:// URL even if the port is != 1720
+	and changes.
+
+	* src/urlhandler.cpp: port is now taken into account.
+
+	* xdap_data/ils_nm_mod.xml, xdap_data/ils_nm_reg.xml: Made port
+	a GnomeMeeting option.
+	
+2002-09-29  Damien Sandras  <dsandras@seconix.com>
+
 	* src/ils.cpp: Added fixes from Paul <xml@mailandnews.com>
 
 	* src/ldap_window.cpp: Made columns resizable.

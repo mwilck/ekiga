@@ -148,7 +148,8 @@ void GMURLHandler::Main ()
     if (ip == NULL) {
 
       gnomemeeting_threads_enter ();
-      gnomemeeting_statusbar_flash (gm, _("Error while connecting to ILS directory"));
+      gnomemeeting_statusbar_flash (gm, 
+				    _("Error while connecting to ILS directory"));
       gnomemeeting_log_insert (gw->history_text_view, 
 			       _("Error while connecting to ILS directory"));
       connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 0);
@@ -160,6 +161,7 @@ void GMURLHandler::Main ()
 
 	gtk_timeout_remove (gw->progress_timeout);
 	gw->progress_timeout = 0;
+	gtk_widget_hide (GTK_WIDGET (gnome_appbar_get_progress (GNOME_APPBAR (gw->statusbar))));
       }
 
       gnomemeeting_threads_leave ();
@@ -168,7 +170,7 @@ void GMURLHandler::Main ()
       return;
     }
      
-    if ((ip)&&(!strcmp (ip, "0.0.0.0"))) {
+    if ((ip)&&(!strcmp (ip, "0.0.0.0:1720"))) {
 
       gnomemeeting_threads_enter ();
       gnomemeeting_statusbar_flash (gm, _("User not found"));
@@ -182,6 +184,7 @@ void GMURLHandler::Main ()
 
 	gtk_timeout_remove (gw->progress_timeout);
 	gw->progress_timeout = 0;
+	gtk_widget_hide (GTK_WIDGET (gnome_appbar_get_progress (GNOME_APPBAR (gw->statusbar))));
       }
 
       gnomemeeting_threads_leave ();
