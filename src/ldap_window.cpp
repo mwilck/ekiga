@@ -55,6 +55,96 @@ static void tree_selection_changed_cb (GtkTreeSelection *, gpointer);
 
 
 /* GTK Callbacks */
+static void
+add_contact_to_group_callback (GtkWidget *widget, gpointer data)
+{
+  GSList *contacts_list = NULL;
+  GSList *contacts_list_iter = NULL;
+
+  GSList *group_list = NULL;
+
+  GtkWidget *page = NULL;
+  GtkTreeSelection *selection = NULL;
+  GtkTreeModel *model = NULL;
+  GtkTreeView *tree_view = NULL;
+  GtkTreeIter iter;
+
+  GmLdapWindow *lw = NULL;
+
+  gchar *gconf_key = NULL;
+  gchar *contact_firstname = NULL;
+  gchar *contact_lastname = NULL;
+  gchar *contact_netmask = NULL;
+  gchar *server_name = NULL;
+  gchar *contact_callto = NULL;
+  gchar *contact_info = NULL;
+
+  GConfClient *client = NULL;
+  
+  int pos = 0, page_num = 0;
+
+  pos = GPOINTER_TO_INT (data);
+  client = gconf_client_get_default ();
+  lw = gnomemeeting_get_ldap_window (gm);
+
+  contacts_list = 
+    gconf_client_get_list (client, CONTACTS_KEY "groups_list", 
+			   GCONF_VALUE_STRING, NULL);
+
+  if (contacts_list) {
+    
+    contacts_list_iter = g_slist_nth (contacts_list, pos);
+
+    if (contacts_list_iter) {
+     
+      /* The key is for example CONTACTS_KEY/Friends */
+      gconf_key = 
+	g_strdup_printf ("%s%s", CONTACTS_KEY, 
+			 (char *) contacts_list_iter->data);
+      cout << gconf_key << endl << flush;
+      group_list = 
+	gconf_client_get_list (client, gconf_key, GCONF_VALUE_STRING, NULL);
+
+      page_num = gtk_notebook_get_current_page (GTK_NOTEBOOK (lw->notebook));
+      page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), page_num);
+      
+      if (page) {
+
+	tree_view = 
+	  GTK_TREE_VIEW (g_object_get_data (G_OBJECT (page), "tree_view"));
+	server_name = 
+	  (char *) g_object_get_data (G_OBJECT (page), "server_name");
+
+        selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view));
+	if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
+
+	  gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 
+			      3, &contact_firstname, 
+			      4, &contact_lastname, 
+			      5, &contact_callto,
+			      -1);
+	  contact_info = 
+	    g_strdup_printf ("%s %s:callto://%s/%s:None", 
+			     contact_firstname, contact_lastname,
+			     server_name, contact_callto);
+
+	  /* Update the gconf key */
+	  group_list = g_slist_append (group_list, contact_info);
+	  gconf_client_set_list (client, gconf_key, GCONF_VALUE_STRING, 
+				 group_list, NULL);
+
+	  g_free (contact_info);
+	}
+      }
+
+      g_slist_free (group_list);
+      g_free (gconf_key);
+    }
+
+    g_slist_free (contacts_list);
+  }      
+}
+
 
 static void
 new_contact_callback (GtkWidget *widget, gpointer data)
@@ -80,13 +170,13 @@ new_contact_callback (GtkWidget *widget, gpointer data)
 
     dialog_title = g_strdup (_("Add a new server"));
     dialog_text = g_strdup (_("Enter the server name:"));
-    gconf_key = g_strdup (CONTACTS_SERVERS_KEY "ldap_servers_list");
+    gconf_key = g_strdup (CONTACTS_KEY "ldap_servers_list");
   }
   else {
 
     dialog_title = g_strdup (_("Add a new group"));
     dialog_text = g_strdup (_("Enter the group name:"));
-    gconf_key = g_strdup (CONTACTS_GROUPS_KEY "groups_list"); 
+    gconf_key = g_strdup (CONTACTS_KEY "groups_list"); 
   }
     
   dialog = gtk_dialog_new_with_buttons (dialog_title, 
@@ -142,6 +232,7 @@ delete_contact_callback (GtkWidget *widget, gpointer data)
   
   GConfClient *client = NULL;
 
+
   GSList *contacts_list = NULL;
   GSList *contacts_list_iter = NULL;
  
@@ -162,9 +253,9 @@ delete_contact_callback (GtkWidget *widget, gpointer data)
   
   if (gtk_tree_path_get_depth (path) >= 2)
     if (gtk_tree_path_get_indices (path) [0] == 0)
-      gconf_key = g_strdup (CONTACTS_SERVERS_KEY "ldap_servers_list");
+      gconf_key = g_strdup (CONTACTS_KEY "ldap_servers_list");
     else
-      gconf_key = g_strdup (CONTACTS_GROUPS_KEY "groups_list");
+      gconf_key = g_strdup (CONTACTS_KEY "groups_list");
   
   contacts_list =
     gconf_client_get_list (client, gconf_key, GCONF_VALUE_STRING, NULL); 
@@ -351,36 +442,40 @@ void contacts_tree_view_row_activated_cb (GtkTreeView *tree_view,
 
       if (gtk_tree_path_get_depth (path) >= 2) {
 
+	/* We refresh the list only if the user double-clicked on a row
+	   corresponding to a server */
 	if (gtk_tree_path_get_indices (path) [0] == 0) {
       
 	  /* Get the server name */
 	  gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 0, &name, 
 			      1, &name, 2, &page_num, -1);
-	}
-      }
-    }
 
-    if (page_num != - 1) {
+	  if (page_num != - 1) {
     
-      gtk_notebook_set_current_page (GTK_NOTEBOOK (lw->notebook), page_num);
-      page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), 
-					page_num);
+	    gtk_notebook_set_current_page (GTK_NOTEBOOK (lw->notebook), 
+					   page_num);
+	    page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), 
+					      page_num);
 
 	
-      xdap_users_list_store = 
-	GTK_LIST_STORE (g_object_get_data (G_OBJECT (page), "list_store"));
-      gtk_list_store_clear (xdap_users_list_store);
+	    xdap_users_list_store = 
+	      GTK_LIST_STORE (g_object_get_data (G_OBJECT (page), "list_store"));
+	    gtk_list_store_clear (xdap_users_list_store);
 
-      /* Check if there is already a search running */
-      ils_browser = (GMILSBrowser *) g_object_get_data (G_OBJECT (page), 
-							"GMILSBrowser");
-      if (!ils_browser && page_num != -1) {
+	    /* Check if there is already a search running */
+	    ils_browser = (GMILSBrowser *) g_object_get_data (G_OBJECT (page), 
+							      "GMILSBrowser");
+	    if (!ils_browser && page_num != -1) {
 	
-	/* Browse it */
-	ils_browser = new GMILSBrowser (name, "");
+	      /* Browse it */
+	      ils_browser = new GMILSBrowser (name, "");
 
-	/* Set the pointer to the thread as data of that GTK notebook page */
-	g_object_set_data (G_OBJECT (page), "GMILSBrowser", ils_browser);
+	      /* Set the pointer to the thread as data of that 
+		 GTK notebook page */
+	      g_object_set_data (G_OBJECT (page), "GMILSBrowser", ils_browser);
+	    }
+	  }
+	}
       }
     }
   }
@@ -452,7 +547,8 @@ contacts_tree_view_event_after_callback (GtkWidget *w, GdkEventButton *e,
 	    {NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL},
 	  };
 	
-	
+
+	/* Build the appropriate popup menu */
 	if (gtk_tree_path_get_depth (path) >= 2)
 	  gnomemeeting_build_menu (menu, delete_contact_menu, NULL);
 	else
@@ -461,22 +557,6 @@ contacts_tree_view_event_after_callback (GtkWidget *w, GdkEventButton *e,
 	  else
 	    gnomemeeting_build_menu (menu, new_group_menu, NULL);
 
-	/* Set the delete to unsensitive if a search is running */
-	if (page_num != - 1) {
-    
-	  page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), 
-					    page_num);
-
-	  if (page) 	    
-	    /* Check if there is already a search running */
-	    ils_browser = 
-	      (GMILSBrowser *) g_object_get_data (G_OBJECT (page), 
-						  "GMILSBrowser");
-
-	  if (ils_browser || page_num == -1) 
-	    gtk_widget_set_sensitive (GTK_WIDGET (delete_contact_menu [0].widget), FALSE);
-	}
-	
 	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL,
 			e->button, e->time);
 	g_signal_connect (G_OBJECT (menu), "hide",
@@ -491,6 +571,105 @@ contacts_tree_view_event_after_callback (GtkWidget *w, GdkEventButton *e,
     }
   }
 
+  return FALSE;
+}
+
+
+static gint
+contact_info_row_clicked (GtkWidget *w, GdkEventButton *e, gpointer data)
+{
+  GtkWidget *menu = NULL;
+  GtkTreeSelection *selection = NULL;
+  GtkTreeView *tree_view = NULL;
+  GtkTreePath *path = NULL;
+
+  GConfClient *client = NULL;
+  GSList *contacts_list = NULL;
+  GSList *contacts_list_iter = NULL;
+  GSList *last = NULL;
+
+  int cpt = 0, i = 0;
+
+  tree_view = GTK_TREE_VIEW (w);
+
+  if (e->window != gtk_tree_view_get_bin_window (tree_view)) 
+    return FALSE;
+    
+  client = gconf_client_get_default ();
+
+  if (e->type == GDK_BUTTON_PRESS) {
+
+    if (gtk_tree_view_get_path_at_pos (tree_view, (int) e->x, (int) e->y,
+				       &path, NULL, NULL, NULL)) {
+
+      selection = gtk_tree_view_get_selection (tree_view);
+
+      if (e->button == 3 && 
+	  gtk_tree_selection_path_is_selected (selection, path)) {
+	
+	menu = gtk_menu_new ();
+
+	contacts_list =
+	  gconf_client_get_list (client, CONTACTS_KEY "groups_list", 
+				 GCONF_VALUE_STRING, NULL); 
+
+	if (contacts_list) {
+
+	  last = g_slist_last (contacts_list);
+	  i = g_slist_position (contacts_list, last);
+	  i = i + 4; /* There are i+1 elements + Contact + Add to group */
+
+	  MenuEntry user_menu [i];
+
+	  MenuEntry call_entry =
+	    {_("Call this user"), NULL,
+	     NULL, 0, MENU_ENTRY, 
+	     NULL, NULL, NULL};
+	  user_menu [0] = call_entry;
+
+	  MenuEntry group_entry =
+	    {_("Add to group"), NULL,
+	     GTK_STOCK_ADD, 0, MENU_SUBMENU_NEW, 
+	     NULL, NULL, NULL};
+	  user_menu [1] = group_entry;
+	  cpt =  2;
+	    
+	  contacts_list_iter = contacts_list;
+	  while (contacts_list_iter) {
+
+	    MenuEntry entry =
+	      {(char *) contacts_list_iter->data, NULL,
+	       NULL, 0, MENU_ENTRY, 
+	       GTK_SIGNAL_FUNC (add_contact_to_group_callback), 
+	       GINT_TO_POINTER (cpt - 2), NULL};
+
+	    user_menu [cpt] =  entry;
+	    
+	    contacts_list_iter = contacts_list_iter->next;
+	    cpt++;
+	  }
+
+	  MenuEntry end_menu = 
+	    {NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL};
+	  user_menu [i-1] = end_menu;
+
+	  gnomemeeting_build_menu (menu, user_menu, NULL);
+	
+	  gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL,
+			  e->button, e->time);
+	  g_signal_connect (G_OBJECT (menu), "hide",
+			    GTK_SIGNAL_FUNC (g_object_unref), (gpointer) menu);
+	  g_object_ref (G_OBJECT (menu));
+	  gtk_object_sink (GTK_OBJECT (menu));
+	
+	  gtk_tree_path_free (path);
+	  g_slist_free (contacts_list);
+
+	  return TRUE;
+	}
+      }
+    }
+  }
   return FALSE;
 }
 
@@ -588,7 +767,7 @@ void gnomemeeting_init_ldap_window ()
 		      &iter, 0, _("Servers"), 1, _("Servers"), 2, 0, -1);
 
   ldap_servers_list =
-    gconf_client_get_list (client, CONTACTS_SERVERS_KEY "ldap_servers_list",
+    gconf_client_get_list (client, CONTACTS_KEY "ldap_servers_list",
 			   GCONF_VALUE_STRING, NULL); 
     
   ldap_servers_list_iter = ldap_servers_list;
@@ -619,7 +798,7 @@ void gnomemeeting_init_ldap_window ()
 		      &iter, 0, _("Groups"), 1, _("Groups"), 2, 0, -1);
 
   groups_list =
-    gconf_client_get_list (client, CONTACTS_GROUPS_KEY "groups_list",
+    gconf_client_get_list (client, CONTACTS_KEY "groups_list",
 			   GCONF_VALUE_STRING, NULL); 
     
   groups_list_iter = groups_list;
@@ -644,14 +823,20 @@ void gnomemeeting_init_ldap_window ()
   }
   g_slist_free (groups_list);
 
-
   gtk_tree_view_expand_all (GTK_TREE_VIEW (lw->tree_view));
+
+  /* Click on a server name or on a contact group */
   g_signal_connect (G_OBJECT (selection), "changed",
 		    G_CALLBACK (tree_selection_changed_cb), NULL);
+
+  /* Double-click on a server name or on a contact group */
   g_signal_connect (G_OBJECT (lw->tree_view), "row_activated",
 		    G_CALLBACK (contacts_tree_view_row_activated_cb), NULL);  
+
+  /* Right-click on a server name or on a contact group */
   g_signal_connect_object (G_OBJECT (lw->tree_view), "event-after",
-			   G_CALLBACK (contacts_tree_view_event_after_callback), NULL, (enum GConnectFlags) 0);
+			   G_CALLBACK (contacts_tree_view_event_after_callback), 
+			   NULL, (enum GConnectFlags) 0);
 
   /* The toolbar */
   // GtkWidget *handle = gtk_handle_box_new ();
@@ -989,9 +1174,14 @@ int gnomemeeting_init_ldap_window_notebook (gchar *text_label, int type)
   g_object_set_data (G_OBJECT (page), "server_name",
 		     (gpointer) (text_label));
 
-  /* Signal to call the person on the clicked row */
+  /* Signal to call the person on the double-clicked row */
   g_signal_connect (G_OBJECT (tree_view), "row_activated", 
 		    G_CALLBACK (row_activated), NULL);
+
+  /* Right-click on a contact */
+  g_signal_connect_object (G_OBJECT (tree_view), "event-after",
+			   G_CALLBACK (contact_info_row_clicked), 
+			   NULL, (enum GConnectFlags) 0);
 
   return page_num;
 }

@@ -47,8 +47,9 @@
 #define AUDIO_CODECS_KEY    "/apps/gnomemeeting/audio_codecs/"
 #define AUDIO_SETTINGS_KEY  "/apps/gnomemeeting/audio_settings/"
 #define DEVICES_KEY         "/apps/gnomemeeting/devices/"
-#define CONTACTS_SERVERS_KEY "/apps/gnomemeeting/contacts/servers/"
+#define CONTACTS_KEY        "/apps/gnomemeeting/contacts/"
 #define CONTACTS_GROUPS_KEY "/apps/gnomemeeting/contacts/groups/"
+
 
 #define GM_CIF_WIDTH   352
 #define GM_CIF_HEIGHT  288

@@ -950,7 +950,7 @@ static void contacts_list_changed_nt (GConfClient *client, guint cid,
     gtk_tree_model_get_iter_from_string (GTK_TREE_MODEL (model), &iter, 
 					 path);
     g_free (path);
-    
+
     non_empty = 
       gtk_tree_model_iter_children (GTK_TREE_MODEL (model), 
 				    &child_iter, &iter);
@@ -1426,10 +1426,10 @@ void gnomemeeting_init_gconf (GConfClient *client)
 
 
   /* LDAP Window */
-  gconf_client_notify_add (client, CONTACTS_SERVERS_KEY "ldap_servers_list",
+  gconf_client_notify_add (client, CONTACTS_KEY "ldap_servers_list",
 			   contacts_list_changed_nt, 
 			   GINT_TO_POINTER (CONTACTS_SERVERS), 0, 0);	    
-  gconf_client_notify_add (client, CONTACTS_GROUPS_KEY "groups_list",
+  gconf_client_notify_add (client, CONTACTS_KEY "groups_list",
 			   contacts_list_changed_nt, 
 			   GINT_TO_POINTER (CONTACTS_GROUPS), 0, 0);	     
 }
