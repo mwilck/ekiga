@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
-"POT-Creation-Date: 2003-05-05 10:24+0200\n"
-"PO-Revision-Date: 2003-05-05 10:26+0200\n"
+"POT-Creation-Date: 2003-05-12 09:42+0200\n"
+"PO-Revision-Date: 2003-05-12 09:42+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -85,7 +85,7 @@ msgstr "Färgformat"
 msgid "Color Format for the video palette"
 msgstr "Färgformat föt videopaletten"
 
-#: gnomemeeting.schemas.in.in.h:14 src/ldap_window.cpp:2088
+#: gnomemeeting.schemas.in.in.h:14 src/ldap_window.cpp:2006
 msgid "Comment"
 msgstr "Kommentar"
 
@@ -335,7 +335,7 @@ msgstr "Höjd på lokalt videopopupfönster"
 msgid "Local Video Popup Width"
 msgstr "Bredd på lokalt videopopupfönster"
 
-#: gnomemeeting.schemas.in.in.h:63 src/ldap_window.cpp:2099
+#: gnomemeeting.schemas.in.in.h:63 src/ldap_window.cpp:2017
 msgid "Location"
 msgstr "Plats"
 
@@ -766,7 +766,7 @@ msgstr "Typ av kapabiliteter för användarindata"
 msgid "User directory"
 msgstr "Användarkatalog"
 
-#: gnomemeeting.schemas.in.in.h:142 src/ldap_window.cpp:2121
+#: gnomemeeting.schemas.in.in.h:142 src/ldap_window.cpp:2039
 msgid "Version"
 msgstr "Version"
 
@@ -1167,7 +1167,7 @@ msgid "_Surname:"
 msgstr "_Efternamn:"
 
 #. The callto url
-#: src/druid.cpp:660 src/ldap_window.cpp:2160
+#: src/druid.cpp:660 src/ldap_window.cpp:2078
 msgid "Callto URL"
 msgstr "Callto-URL"
 
@@ -1753,179 +1753,168 @@ msgid "Failed to contact %s."
 msgstr "Misslyckades med att kontakta %s."
 
 #. Create the dialog to easily modify the info of a specific contact
-#: src/ldap_window.cpp:459
+#: src/ldap_window.cpp:456
 msgid "Edit the contact information"
 msgstr "Redigera kontaktinformationen"
 
-#: src/ldap_window.cpp:472
-msgid "<b>Name:</b>"
-msgstr "<b>Namn:</b>"
+#: src/ldap_window.cpp:469
+msgid "Name:"
+msgstr "Namn:"
 
-#: src/ldap_window.cpp:488
-msgid "<b>URL:</b>"
-msgstr "<b>URL:</b>"
+#: src/ldap_window.cpp:487
+msgid "URL:"
+msgstr "URL:"
 
-#: src/ldap_window.cpp:509
-msgid "<b>Groups:</b>"
-msgstr "<b>Grupper:</b>"
+#: src/ldap_window.cpp:510
+msgid "Groups:"
+msgstr "Grupper:"
 
 # callto verkar konstigt
-#: src/ldap_window.cpp:580
+#: src/ldap_window.cpp:583
 msgid "Please provide a valid name and callto for the user"
 msgstr "Ange ett giltigt namn och callto för användaren"
 
 # callto verkar konstigt
 #. User already in the
 #. selected group
-#: src/ldap_window.cpp:648
+#: src/ldap_window.cpp:651
 #, c-format
 msgid "Another user with the callto %s already exists in group %s."
 msgstr "En annan användare med callto %s finns redan i grupp %s."
 
-#: src/ldap_window.cpp:659
+#: src/ldap_window.cpp:662
 msgid "You have to select a group to which you want to add your contact"
 msgstr "Du måste välja en grupp som du vill lägga till din kontakt i"
 
-#: src/ldap_window.cpp:758
-msgid "Add a new server"
-msgstr "Lägg till en ny server"
+#: src/ldap_window.cpp:802
+#, c-format
+msgid "Add %s to Address Book"
+msgstr "Lägg till %s i adressboken"
 
-#: src/ldap_window.cpp:759
-msgid "Enter the server name:"
-msgstr "Ange namnet på servern:"
+#: src/ldap_window.cpp:813
+msgid "C_all Contact"
+msgstr "_Ring kontakt"
 
-#: src/ldap_window.cpp:764
-msgid "Add a new group"
-msgstr "Lägg till en ny grupp"
+#: src/ldap_window.cpp:830 src/ldap_window.cpp:1707
+msgid "Contact _Properties"
+msgstr "Kontakt_egenskaper"
 
-#: src/ldap_window.cpp:765
-msgid "Enter the group name:"
-msgstr "Ange namnet på gruppen:"
-
-#: src/ldap_window.cpp:1450
-msgid "New server"
-msgstr "Ny server"
-
-#: src/ldap_window.cpp:1459
-msgid "New group"
-msgstr "Ny grupp"
-
-#: src/ldap_window.cpp:1468
-msgid "_Refresh"
-msgstr "_Uppdatera"
-
-#: src/ldap_window.cpp:1473 src/ldap_window.cpp:1487
+#: src/ldap_window.cpp:836 src/ldap_window.cpp:1150 src/ldap_window.cpp:1164
 msgid "Delete"
 msgstr "Ta bort"
 
-#: src/ldap_window.cpp:1482
+#: src/ldap_window.cpp:898
+msgid "Add a new server"
+msgstr "Lägg till en ny server"
+
+#: src/ldap_window.cpp:899
+msgid "Enter the server name:"
+msgstr "Ange namnet på servern:"
+
+#: src/ldap_window.cpp:904
+msgid "Add a new group"
+msgstr "Lägg till en ny grupp"
+
+#: src/ldap_window.cpp:905
+msgid "Enter the group name:"
+msgstr "Ange namnet på gruppen:"
+
+#: src/ldap_window.cpp:1127
+msgid "New server"
+msgstr "Ny server"
+
+#: src/ldap_window.cpp:1136
+msgid "New group"
+msgstr "Ny grupp"
+
+#: src/ldap_window.cpp:1145
+msgid "_Refresh"
+msgstr "_Uppdatera"
+
+#: src/ldap_window.cpp:1159
 msgid "New contact"
 msgstr "Ny kontakt"
 
-#: src/ldap_window.cpp:1598
-msgid "Call this user"
-msgstr "Ring upp denna användare"
-
-#: src/ldap_window.cpp:1608
-msgid "Edit this user information"
-msgstr "Redigera denna användarinformation"
-
-#: src/ldap_window.cpp:1615
-msgid "Delete this user"
-msgstr "Ta bort denna användare"
-
-#: src/ldap_window.cpp:1626
-msgid "Add to group"
-msgstr "Lägg till i grupp"
-
-#: src/ldap_window.cpp:1727
-msgid "GnomeMeeting Addressbook"
+#: src/ldap_window.cpp:1651
+msgid "GnomeMeeting Address Book"
 msgstr "GnomeMeeting-adressbok"
 
-#: src/ldap_window.cpp:1743 src/pref_window.cpp:1557
-msgid "Section"
-msgstr "Sektion"
+#: src/ldap_window.cpp:1667
+msgid "_File"
+msgstr "_Arkiv"
 
-#: src/ldap_window.cpp:1745
-msgid "New _server"
+#: src/ldap_window.cpp:1669
+msgid "New _Server"
 msgstr "Ny _server"
 
-#: src/ldap_window.cpp:1750
-msgid "New _group"
+#: src/ldap_window.cpp:1674
+msgid "New _Group"
 msgstr "Ny _grupp"
 
-#: src/ldap_window.cpp:1757
-msgid "_Delete section"
-msgstr "_Ta bort sektion"
+#: src/ldap_window.cpp:1681
+msgid "_Delete"
+msgstr "_Ta bort"
 
-#: src/ldap_window.cpp:1763
+#: src/ldap_window.cpp:1687
 msgid "Close"
 msgstr "Stäng"
 
-#: src/ldap_window.cpp:1769
+#: src/ldap_window.cpp:1693
 msgid "C_ontact"
 msgstr "K_ontakt"
 
-#: src/ldap_window.cpp:1771
-msgid "New _contact"
+#: src/ldap_window.cpp:1695
+msgid "New _Contact"
 msgstr "Ny _kontakt"
 
-#: src/ldap_window.cpp:1776
-msgid "Add _contact to address book"
-msgstr "Lägg till _kontakt till adressboken"
+#: src/ldap_window.cpp:1700
+msgid "Add Contact to _Group"
+msgstr "Lägg till kontakt till _grupp"
 
-#: src/ldap_window.cpp:1781
-msgid "Contact _properties"
-msgstr "Kontakt_egenskaper"
-
-#: src/ldap_window.cpp:1787
-msgid "_Delete contact"
-msgstr "_Ta bort kontakt"
-
-#: src/ldap_window.cpp:1850
+#: src/ldap_window.cpp:1771
 msgid "Servers"
 msgstr "Servrar"
 
-#: src/ldap_window.cpp:1891
+#: src/ldap_window.cpp:1812
 msgid "Groups"
 msgstr "Grupper"
 
 #. Translators: This is "S" as in "Status"
-#: src/ldap_window.cpp:2045
+#: src/ldap_window.cpp:1963
 msgid "S"
 msgstr "S"
 
 #. Translators: This is "A" as in "Audio"
-#: src/ldap_window.cpp:2055 src/pref_window.cpp:1211
+#: src/ldap_window.cpp:1973 src/pref_window.cpp:1211
 msgid "A"
 msgstr "L"
 
 #. Translators: This is "V" as in "Video"
-#: src/ldap_window.cpp:2065
+#: src/ldap_window.cpp:1983
 msgid "V"
 msgstr "V"
 
-#: src/ldap_window.cpp:2074 src/ldap_window.cpp:2147 src/pref_window.cpp:1225
+#: src/ldap_window.cpp:1992 src/ldap_window.cpp:2065 src/pref_window.cpp:1225
 msgid "Name"
 msgstr "Namn"
 
-#: src/ldap_window.cpp:2109
+#: src/ldap_window.cpp:2027
 msgid "Callto"
 msgstr "Callto"
 
-#: src/ldap_window.cpp:2132 src/tools.cpp:163
+#: src/ldap_window.cpp:2050 src/tools.cpp:163
 msgid "IP"
 msgstr "IP"
 
-#: src/ldap_window.cpp:2194
+#: src/ldap_window.cpp:2112
 msgid "First name contains"
 msgstr "Förnamn innehåller"
 
-#: src/ldap_window.cpp:2198
+#: src/ldap_window.cpp:2116
 msgid "Last name contains"
 msgstr "Efternamn innehåller"
 
-#: src/ldap_window.cpp:2202
+#: src/ldap_window.cpp:2120
 msgid "E-mail contains"
 msgstr "E-postadress innehåller"
 
@@ -2789,6 +2778,10 @@ msgstr "Videokomprimeringsmetoder"
 msgid "Devices"
 msgstr "Enheter"
 
+#: src/pref_window.cpp:1557
+msgid "Section"
+msgstr "Sektion"
+
 #: src/sound_handling.cpp:411
 #, c-format
 msgid ""
@@ -3015,14 +3008,53 @@ msgstr "Din drivrutin stöder inte YUV420P-färgformatet"
 msgid "Tests OK!"
 msgstr "Testen OK!"
 
-#~ msgid "URL:"
-#~ msgstr "URL:"
+#~ msgid "New Server"
+#~ msgstr "Ny server"
+
+#~ msgid "New Group"
+#~ msgstr "Ny grupp"
+
+#~ msgid "<b>Name:</b>"
+#~ msgstr "<b>Namn:</b>"
+
+#~ msgid "<b>URL:</b>"
+#~ msgstr "<b>URL:</b>"
+
+#~ msgid "<b>Groups:</b>"
+#~ msgstr "<b>Grupper:</b>"
+
+#~ msgid "Call this user"
+#~ msgstr "Ring upp denna användare"
+
+#~ msgid "Edit this user information"
+#~ msgstr "Redigera denna användarinformation"
+
+#~ msgid "Delete this user"
+#~ msgstr "Ta bort denna användare"
+
+#~ msgid "Add to group"
+#~ msgstr "Lägg till i grupp"
+
+#~ msgid "New _server"
+#~ msgstr "Ny _server"
+
+#~ msgid "New _group"
+#~ msgstr "Ny _grupp"
+
+#~ msgid "_Delete section"
+#~ msgstr "_Ta bort sektion"
+
+#~ msgid "Add _contact to address book"
+#~ msgstr "Lägg till _kontakt till adressboken"
+
+#~ msgid "Contact _properties"
+#~ msgstr "Kontakt_egenskaper"
+
+#~ msgid "_Delete contact"
+#~ msgstr "_Ta bort kontakt"
 
 #~ msgid "URL"
 #~ msgstr "URL"
-
-#~ msgid "Groups:"
-#~ msgstr "Grupper:"
 
 #~ msgid "Please provide a valid name and callto for the user."
 #~ msgstr "Ange ett giltigt namn och callto för användaren."
@@ -3039,20 +3071,11 @@ msgstr "Testen OK!"
 #~ msgid "Contact"
 #~ msgstr "Kontakt"
 
-#~ msgid "Add contact to address book"
-#~ msgstr "Lägg till kontakt till adressboken"
-
-#~ msgid "Contact _Properties"
-#~ msgstr "Kontakt_egenskaper"
-
 #~ msgid "Contact Properties"
 #~ msgstr "Kontaktegenskaper"
 
 #~ msgid "Delete contact"
 #~ msgstr "Ta bort kontakt"
-
-#~ msgid "Name:"
-#~ msgstr "Namn:"
 
 #~ msgid "callto URL:"
 #~ msgstr "callto-URL:"
@@ -3505,9 +3528,6 @@ msgstr "Testen OK!"
 #~ msgid "Error while opening the Quicknet device. Disabling Quicknet device."
 #~ msgstr "Fel vid öppnande av Quicknet-enheten. Inaktiverar Quicknet-enheten."
 
-#~ msgid "_File"
-#~ msgstr "_Arkiv"
-
 #~ msgid "[Friends,Family,Work]"
 #~ msgstr "[Vänner,Familj,Arbete]"
 
@@ -3664,12 +3684,6 @@ msgstr "Testen OK!"
 
 #~ msgid "Audio Settings"
 #~ msgstr "Ljudinställningar"
-
-#~ msgid "New Server"
-#~ msgstr "Ny server"
-
-#~ msgid "New Group"
-#~ msgstr "Ny grupp"
 
 #~ msgid "Group"
 #~ msgstr "Grupp"
