@@ -134,7 +134,9 @@ GnomeMeeting::~GnomeMeeting()
     
     endpoint->ClearAllCalls (H323Connection::EndedByLocalUser, TRUE);
     endpoint->RemoveVideoGrabber (true);
+#ifdef HAS_IXJ
     endpoint->RemoveLid ();
+#endif
   }
   RemoveEndpoint ();
 
