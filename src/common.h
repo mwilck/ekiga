@@ -64,7 +64,6 @@ struct _GM_window_widgets
   GtkWidget *splash_win;
   GtkWidget *combo;
   GtkWidget *log_text;
-  GtkWidget *user_list;
   GtkWidget *main_notebook;
   GdkPixmap *pixmap;
   GtkWidget *drawing_area;

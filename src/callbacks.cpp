@@ -38,6 +38,7 @@
 #include "pref_window.h"
 #include "ldap_window.h"
 #include "common.h"
+#include "misc.h"
 #include "cleaner.h"
 
 
@@ -114,24 +115,31 @@ void ldap_callback (GtkButton *button, gpointer data)
 
 void chat_callback (GtkButton *button, gpointer data)
 {
-  GM_window_widgets *gw = (GM_window_widgets *) data;
+  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
   
   if (!GTK_WIDGET_VISIBLE (gw->chat_window))
     gtk_widget_show_all (gw->chat_window);
   else
-    gtk_widget_hide_all (gw->chat_window);
+    gtk_widget_hide (gw->chat_window);
 }
 
 
 void connect_cb (GtkWidget *widget, gpointer data)
 {	
-  if (MyApp->Endpoint ()->GetCallingState () == 0)
-    MyApp->Connect();
+  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+
+  if (MyApp->Endpoint ()->GetCallingState () == 0) {
+
+    MyApp->Connect ();
+    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->connect_button), TRUE);
+  }
 }
 
 
 void disconnect_cb (GtkWidget *widget, gpointer data)
 {	
+  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+
   GMH323Connection *connection = (GMH323Connection *) 
     MyApp->Endpoint ()->GetCurrentConnection ();
 
@@ -139,6 +147,7 @@ void disconnect_cb (GtkWidget *widget, gpointer data)
     connection->UnPauseChannels ();
 
   MyApp->Disconnect();
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->connect_button), FALSE);
 }
 
 

@@ -112,8 +112,8 @@ void gnomemeeting_init_toolbar ()
   
   static GnomeUIInfo main_toolbar [] =
     {
-	GNOMEUIINFO_SEPARATOR,
-	GNOMEUIINFO_END
+      GNOMEUIINFO_SEPARATOR,
+      GNOMEUIINFO_END
     };
 
   static GnomeUIInfo left_toolbar [] =
@@ -152,8 +152,8 @@ void gnomemeeting_init_toolbar ()
   gtk_combo_set_use_arrows_always (GTK_COMBO(gw->combo), TRUE);
 
   gtk_combo_disable_activate (GTK_COMBO (gw->combo));
- //  gtk_signal_connect (GTK_OBJECT (GTK_COMBO (gw->combo)->entry), "activate",
-//  		      GTK_SIGNAL_FUNC (connect_cb), NULL);
+  gtk_signal_connect (GTK_OBJECT (GTK_COMBO (gw->combo)->entry), "activate",
+  		      GTK_SIGNAL_FUNC (connect_cb), NULL);
 
   item = gnome_app_get_dock_item_by_name(GNOME_APP (gm),
 					 GNOME_APP_TOOLBAR_NAME);
@@ -162,10 +162,11 @@ void gnomemeeting_init_toolbar ()
   /* Both toolbars */
   GtkWidget *toolbar = gtk_toolbar_new (GTK_ORIENTATION_HORIZONTAL,
 					GTK_TOOLBAR_ICONS);
+
   gtk_toolbar_append_widget (GTK_TOOLBAR (toolbar), gw->combo, NULL, NULL);
 
   gnome_app_fill_toolbar (GTK_TOOLBAR (toolbar), main_toolbar, NULL);
-  gnome_app_add_toolbar (GNOME_APP (gm), GTK_TOOLBAR(toolbar),
+  gnome_app_add_toolbar (GNOME_APP (gm), GTK_TOOLBAR (toolbar),
 			 "main_toolbar", GNOME_DOCK_ITEM_BEH_EXCLUSIVE,
 			 GNOME_DOCK_TOP, 2, 0, 0);
 

@@ -1,3 +1,21 @@
+2002-02-06  Damien Sandras  <dsandras@seconix.com>
+
+	* src/callbacks.cpp: Changed the connect and disconnect callback to update
+	the connect button.
+
+	* src/chat_window.cpp: Completely changed the chat window, and made it 
+	appear in the main window as it was docked.
+	
+	* src/common.h: Removed some more unused widgets.
+	
+	* src/main_window.cpp: Made the chat window expand from the top to the 
+	bottom, added a frame around video, added labels to the control panel.
+	Added gnomemeeting_init_gconf ().
+	
+	* src/toolbar.cpp: Cosmetic changes.
+
+	* src/videograbber.cpp: Removed gnomemeeting_init_gconf.
+
 2002-02-05  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* src/ils.cpp (ils_browse): Corrected the FIXME and added one byte

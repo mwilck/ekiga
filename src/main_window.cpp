@@ -80,7 +80,6 @@ static gint gm_quit_callback (GtkWidget *, GdkEvent *, gpointer);
 static void gnomemeeting_init_main_window_video_settings ();
 static void gnomemeeting_init_main_window_audio_settings ();
 static void gnomemeeting_init_main_window_log  ();
-static void gnomemeeting_init_main_window_remote_user_info ();
 static void notebook_page_changed_callback (GtkNotebook *, gpointer);
 
 
@@ -245,7 +244,6 @@ void gnomemeeting_init (GM_window_widgets *gw,
   GMH323EndPoint *endpoint = NULL;
   gchar *text = NULL;
   bool show_splash;
-  bool gatekeeper_enabled;
   GConfClient *client;
   int debug = 0;
 
@@ -295,75 +293,24 @@ void gnomemeeting_init (GM_window_widgets *gw,
 
     /* We show the splash screen */
     gtk_widget_show (gw->splash_win);
-    while (gtk_events_pending ())
-      gtk_main_iteration ();
-    // Now we load all the icons
-    // FIXME: Icon for audio/video devices
-    GdkPixbuf *icon_pixbuf = gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES
-						       "/gnomemeeting-logo-icon.png");
-    e_splash_add_icon (E_SPLASH (gw->splash_win), icon_pixbuf);
-    gdk_pixbuf_unref (icon_pixbuf);
-    // FIXME: Icon for main-interface
-    icon_pixbuf = gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES
-					     "/gnomemeeting-logo-icon.png");
-    e_splash_add_icon (E_SPLASH (gw->splash_win), icon_pixbuf);
-    gdk_pixbuf_unref (icon_pixbuf);
-    // FIXME: Icon for Audio capabilities
-    icon_pixbuf = gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES
-					    "/gnomemeeting-logo-icon.png");
-    e_splash_add_icon (E_SPLASH (gw->splash_win), icon_pixbuf);
-    gdk_pixbuf_unref (icon_pixbuf);
-    // FIXME: Icon for Video capabilities
-    icon_pixbuf = gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES
-					    "/gnomemeeting-logo-icon.png");
-    e_splash_add_icon (E_SPLASH (gw->splash_win), icon_pixbuf);
-    gdk_pixbuf_unref (icon_pixbuf);
-    // FIXME: Icon for ILS directory
-    if (gconf_client_get_bool (GCONF_CLIENT (client), "/apps/gnomemeeting/ldap/register", NULL)) {
-      icon_pixbuf = gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES
-					      "/gnomemeeting-logo-icon.png");
-      e_splash_add_icon (E_SPLASH (gw->splash_win), icon_pixbuf);
-      gdk_pixbuf_unref (icon_pixbuf); 
-    }
-    // FIXME: Icon for listener thread
-    icon_pixbuf = gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES
-					    "/gnomemeeting-logo-icon.png");
-    e_splash_add_icon (E_SPLASH (gw->splash_win), icon_pixbuf);
-    gdk_pixbuf_unref (icon_pixbuf);
-    // FIXME: Icon for Gatekeeper
-    icon_pixbuf = gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES
-					    "/gnomemeeting-logo-icon.png");
-    e_splash_add_icon (E_SPLASH (gw->splash_win), icon_pixbuf);
-    gdk_pixbuf_unref (icon_pixbuf);
+
     while (gtk_events_pending ())
       gtk_main_iteration ();
   }
   
+
   /* Search for devices */
-  if (show_splash) {
-    e_splash_set_icon_highlight (E_SPLASH (gw->splash_win), icon_index++, true);
-    while (gtk_events_pending ())
-      gtk_main_iteration ();
-  }
-  
   gw->audio_player_devices = 
     PSoundChannel::GetDeviceNames (PSoundChannel::Player);
   gw->audio_recorder_devices = 
     PSoundChannel::GetDeviceNames (PSoundChannel::Recorder);
   gw->video_devices = PVideoInputDevice::GetInputDeviceNames ();
 
-  /* Main interface creation */
-  if (show_splash) {
-    e_splash_set_icon_highlight (E_SPLASH (gw->splash_win), icon_index++, true);
-    while (gtk_events_pending ())
-      gtk_main_iteration ();
-  }
-  
+
   /* Build the interface */
   gnomemeeting_init_main_window ();
   gnomemeeting_init_ldap_window ();
   gnomemeeting_init_pref_window ();
-  gnomemeeting_init_chat_window ();
   gnomemeeting_init_menu ();
   gnomemeeting_init_toolbar ();	
   
@@ -374,38 +321,16 @@ void gnomemeeting_init (GM_window_widgets *gw,
   if (debug)
     PTrace::Initialise (3);
   
-  if (show_splash) {
-    e_splash_set_icon_highlight (E_SPLASH (gw->splash_win), icon_index++, true);
-    while (gtk_events_pending ())
-      gtk_main_iteration ();
-  }
   endpoint->AddAudioCapabilities ();
-  
-  if (show_splash) {
-    e_splash_set_icon_highlight (E_SPLASH (gw->splash_win), icon_index++, true);
-    while (gtk_events_pending ())
-      gtk_main_iteration ();
-  }
   endpoint->AddVideoCapabilities (gconf_client_get_int (GCONF_CLIENT (client), "/apps/gnomemeeting/video_settings/video_size", NULL));
   
   /* The LDAP part, if needed */
   if (gconf_client_get_bool (GCONF_CLIENT (client), "/apps/gnomemeeting/ldap/register", NULL)) {
-    if (show_splash) {
-      e_splash_set_icon_highlight (E_SPLASH (gw->splash_win), icon_index++, true);
-      while (gtk_events_pending ())
-	gtk_main_iteration ();
-    }
 
     GMILSClient *gm_ils_client = (GMILSClient *) endpoint->GetILSClient ();
     gm_ils_client->Register ();
   }
   
-  /* Run the listener thread */
-  if (show_splash) {
-      e_splash_set_icon_highlight (E_SPLASH (gw->splash_win), icon_index++, true);
-      while (gtk_events_pending ())
-	gtk_main_iteration ();
-  }
   
   if (!endpoint->StartListener ()) {
     GtkWidget *msg_box = gnome_message_box_new (_("Could not start the listener thread. You will not be able to receive incoming calls."), GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
@@ -415,15 +340,7 @@ void gnomemeeting_init (GM_window_widgets *gw,
 
   /* Register to the Gatekeeper */
   cout << "FIX ME: GateKeeper" << endl << flush;
-  if (0) {
-    if (show_splash) {
-	e_splash_set_icon_highlight (E_SPLASH (gw->splash_win), icon_index++, true);
-	while (gtk_events_pending ())
-	  gtk_main_iteration ();
-    }
-    
-    endpoint->GatekeeperRegister ();
-  }
+  endpoint->GatekeeperRegister ();
 
   
   /* Set recording source and set micro to record */
@@ -538,7 +455,7 @@ void gnomemeeting_init (GM_window_widgets *gw,
   if (gw->splash_win)
     gtk_widget_destroy (gw->splash_win);
 
-  //gnomemeeting_init_gconf (client);
+  gnomemeeting_init_gconf (client);
 
   /* if the user tries to close the window : delete_event */
   gtk_signal_connect (GTK_OBJECT (gm), "delete_event",
@@ -556,35 +473,30 @@ void gnomemeeting_init_main_window ()
   GConfClient *client = gconf_client_get_default ();
   GtkWidget *table;	
   GtkWidget *frame;
-  GtkWidget *pixmap;
-  GtkWidget *handle_box;
-
-  GtkTooltips *tip;
   
   GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
 
   /* Create a table in the main window to attach things like buttons */
-  table = gtk_table_new (2, 4, FALSE);
+  table = gtk_table_new (3, 4, FALSE);
   
   gnome_app_set_contents (GNOME_APP (gm), GTK_WIDGET (table));
 
 
   /* The Notebook */
   gw->main_notebook = gtk_notebook_new ();
-  gtk_notebook_set_tab_pos (GTK_NOTEBOOK (gw->main_notebook), GTK_POS_RIGHT);
+  gtk_notebook_set_tab_pos (GTK_NOTEBOOK (gw->main_notebook), GTK_POS_BOTTOM);
   gtk_notebook_popup_enable (GTK_NOTEBOOK (gw->main_notebook));
-  gtk_notebook_set_show_tabs (GTK_NOTEBOOK (gw->main_notebook), FALSE);
+  gtk_notebook_set_show_tabs (GTK_NOTEBOOK (gw->main_notebook), TRUE);
 
-  gnomemeeting_init_main_window_remote_user_info ();
   gnomemeeting_init_main_window_log ();
   gnomemeeting_init_main_window_audio_settings ();
   gnomemeeting_init_main_window_video_settings ();
 
-  gtk_widget_set_usize (GTK_WIDGET (gw->main_notebook), 286, 0);
+  gtk_widget_set_usize (GTK_WIDGET (gw->main_notebook), 215, 0);
   gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (gw->main_notebook),
-		    2, 4, 0, 2,
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    0, 2, 2, 3,
+		    (GtkAttachOptions) (NULL),
+		    (GtkAttachOptions) (NULL),
 		    0, 0); 
 
   int selected_page = 
@@ -603,7 +515,11 @@ void gnomemeeting_init_main_window ()
 
 
   /* The drawing area that will display the webcam images */
+  frame = gtk_frame_new (NULL);
   gw->video_frame = gtk_handle_box_new();
+
+  gtk_container_add (GTK_CONTAINER (frame), gw->video_frame);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
 
   gw->drawing_area = gtk_drawing_area_new ();
 
@@ -617,15 +533,22 @@ void gnomemeeting_init_main_window ()
   gtk_signal_connect (GTK_OBJECT (gw->drawing_area), "expose_event",
 		      (GtkSignalFunc) expose_event, gw);    	
 
-  gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (gw->video_frame), 
+  gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (frame), 
 		    0, 2, 0, 1,
 		    (GtkAttachOptions) NULL,
 		    (GtkAttachOptions) NULL,
 		    10, 10);
 
-  gtk_widget_show (GTK_WIDGET (gw->video_frame));
-  gtk_widget_show (GTK_WIDGET (gw->drawing_area));
+  gtk_widget_show_all (GTK_WIDGET (frame));
 
+
+  /* The Chat Window */
+  gnomemeeting_init_chat_window ();
+  gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (gw->chat_window), 
+ 		    2, 4, 0, 3,
+ 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+ 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+ 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
 
   /* The remote name */
   gw->remote_name = gtk_entry_new ();
@@ -648,53 +571,6 @@ void gnomemeeting_init_main_window ()
     gtk_widget_show (GTK_WIDGET (gw->statusbar));
   else
     gtk_widget_hide (GTK_WIDGET (gw->statusbar));
-}
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Builds the remote user info part of the main window.
- * PRE          :  /
- */
-void gnomemeeting_init_main_window_remote_user_info ()
-{
-  GtkWidget *frame;
-  GtkWidget *label;
-  GtkWidget *scr;
-  gchar * clist_titles [] = {" ", N_("Info")};
-
-  clist_titles [1] = gettext (clist_titles [1]);
-
-  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
-
-  frame = gtk_frame_new (_("Remote User"));
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
-
-  scr = gtk_scrolled_window_new (NULL, NULL);
-
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scr),
-				  GTK_POLICY_AUTOMATIC,
-				  GTK_POLICY_AUTOMATIC);
-
-  gtk_container_add (GTK_CONTAINER (frame), scr);
-
-  gw->user_list = gtk_clist_new_with_titles (2, clist_titles);
-
-  gtk_container_add (GTK_CONTAINER (scr), gw->user_list);
-  gtk_container_set_border_width (GTK_CONTAINER (gw->user_list), 
-				  GNOME_PAD_SMALL);
-  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
-  
-  gtk_clist_set_row_height (GTK_CLIST (gw->user_list), 17);
-  gtk_clist_set_column_width (GTK_CLIST (gw->user_list), 0, 20);
-  gtk_clist_set_column_width (GTK_CLIST (gw->user_list), 1, 180);
-  gtk_clist_set_column_auto_resize (GTK_CLIST (gw->user_list), 1, TRUE);
-
-  gtk_clist_set_shadow_type (GTK_CLIST (gw->user_list), GTK_SHADOW_IN);
-
-  label = gtk_label_new (_("Remote User"));
-
-  gtk_notebook_append_page (GTK_NOTEBOOK (gw->main_notebook), frame, 
-			    label);
 }
 
 
@@ -870,7 +746,7 @@ void gnomemeeting_init_main_window_video_settings ()
 
   gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame), FALSE);
 
-  label = gtk_label_new (_("Video Settings"));  
+  label = gtk_label_new (_("Video"));  
 
   gtk_notebook_append_page (GTK_NOTEBOOK(gw->main_notebook), 
 			    gw->video_settings_frame, 
@@ -951,7 +827,7 @@ void gnomemeeting_init_main_window_audio_settings ()
 		      GTK_SIGNAL_FUNC (audio_volume_changed), (gpointer) gw);
 
   
-  label = gtk_label_new (_("Audio Settings"));
+  label = gtk_label_new (_("Audio"));
 
   gtk_notebook_append_page (GTK_NOTEBOOK (gw->main_notebook), frame, label);
 }
