@@ -1,12 +1,12 @@
 # Czech translation of gnomemeeting.
 # Copyright (C) 2001 Free Software Foundation, Inc.
 # Petr Vokac <vokac@linux.fjfi.cvut.cz>, 2001.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: GnomeMeeting 0.12\n"
-"POT-Creation-Date: 2001-11-22 03:14+0000\n"
-"PO-Revision-Date: 2001-11-15 03:46+0000\n"
+"POT-Creation-Date: 2001-11-22 10:35+0000\n"
+"PO-Revision-Date: 2001-11-22 10:46+0000\n"
 "Last-Translator: Petr Vokáè <vokac@linux.fjfi.cvut.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -23,7 +23,6 @@ msgstr "GnomeMeeting"
 msgid "H.323 Client"
 msgstr "Klient H.323"
 
-#. Auto Answer toggle button
 #: sounds/GnomeMeeting.soundlist.in.h:2 src/preferences.cpp:995
 msgid "Incoming Call"
 msgstr "Pøíchozí volání"
@@ -32,22 +31,31 @@ msgstr "Pøíchozí volání"
 msgid "Contributors:"
 msgstr "Spoluautoøi:"
 
+#. Translators: If your encoding allows it, use iacute (U00ED) for
+#. the 'i' of 'Rodriguez' and eacute (U00E9) for the first 'e' of
+#. 'Perez'.
 #: src/callbacks.cpp:156
 msgid "Miguel Rodriguez Perez <migrax@terra.es>"
-msgstr "Miguel Rodriguez Perez <migrax@terra.es>"
+msgstr "Miguel Rodríguez Pérez <migrax@terra.es>"
 
 #: src/callbacks.cpp:159
 msgid "I18n Maintainer:"
 msgstr "I18n správce"
 
+#. Translators: Replace "English" with the name of your language.
 #: src/callbacks.cpp:162
 msgid "English Translation:"
-msgstr "Anglický pøeklad"
+msgstr "Èeský pøeklad"
 
+#. Translators: Replace my name with your name.
 #: src/callbacks.cpp:164
 msgid "Damien Sandras <dsandras@seconix.com>"
-msgstr "Damien Sandras <dsandras@seconix.com>"
+msgstr "Petr Vokáè <vokac@linux.fjfi.cvut.cz>"
 
+#. Translators: Please change the (C) to a real
+#. copyright character if your character set allows
+#. it (Hint: iso-8859-1 is one of the character sets
+#. that has this symbol).
 #: src/callbacks.cpp:179
 msgid "(C) 2000, 2001 Damien Sandras"
 msgstr "(C) 2000, 2001 Damien Sandras"
@@ -381,6 +389,7 @@ msgstr "Získávají se u¾ivatelské informace... Èekejte prosím."
 msgid "Search completed!"
 msgstr "Hledání dokonèeno!"
 
+#. if it was the first "No directory" page, hide it
 #: src/ldap.cpp:213 src/ldap.cpp:415
 msgid "No directory"
 msgstr "Adresáø neexistuje"
@@ -389,6 +398,7 @@ msgstr "Adresáø neexistuje"
 msgid "LDAP Server Browser"
 msgstr "LDAP prohlí¾eè serverù"
 
+#. ILS directories combo box
 #: src/ldap.cpp:318
 msgid "ILS directories to browse"
 msgstr "ILS adresáøe k prohlí¾ení"
@@ -417,22 +427,27 @@ msgstr "e-mail"
 msgid "location"
 msgstr "umístìní"
 
+#. the filter button
 #: src/ldap.cpp:395
 msgid "Apply filter on"
 msgstr "Pou¾ij filtr na"
 
+#. Ldap users list
 #: src/ldap.cpp:404
 msgid "ILS Users List"
 msgstr "ILS seznam u¾ivatelù"
 
+#. Put the search filter frame at the end
 #: src/ldap.cpp:418
 msgid "Search Filter"
 msgstr "Filtr hledání"
 
+#. Translators: This is as in "Audio".
 #: src/ldap.cpp:462
 msgid "A"
 msgstr "A"
 
+#. Translators: This is as in "Video".
 #: src/ldap.cpp:464
 msgid "V"
 msgstr "V"
@@ -531,11 +546,13 @@ msgstr ""
 msgid "Registering to the Gatekeeper"
 msgstr "Probíhá registrace u Gatekeeperu"
 
+#. Translators: This is shown in the history.
 #: src/main_interface.cpp:378 src/preferences.cpp:2429
 #, c-format
 msgid "Set Audio player device to %s"
 msgstr "Nastavuje se zvukové zaøízení na %s"
 
+#. Translators: This is shown in the history.
 #: src/main_interface.cpp:384 src/preferences.cpp:2435
 #, c-format
 msgid "Set Audio recorder device to %s"
@@ -555,6 +572,7 @@ msgstr ""
 "Standardní nastavení nových\n"
 "voleb bylo ulo¾eno do konfigurace"
 
+#. The remote IP field
 #: src/main_interface.cpp:453
 msgid "Remote host to contact"
 msgstr "Vzdálený poèítaè"
@@ -611,6 +629,7 @@ msgstr "Historie událostí"
 msgid "History"
 msgstr "Historie"
 
+#. Webcam Control Frame
 #: src/main_interface.cpp:783 src/main_interface.cpp:895
 msgid "Video Settings"
 msgstr "Nastavení videa"
@@ -815,10 +834,12 @@ msgstr "Nastavení"
 msgid "GnomeMeeting Preferences"
 msgstr "Nastavení GnomeMeeting"
 
+#. All the notebook pages
 #: src/preferences.cpp:488
 msgid "General"
 msgstr "Obecné"
 
+#. The End
 #: src/preferences.cpp:498 src/preferences.cpp:1484 src/preferences.cpp:1633
 msgid "User Settings"
 msgstr "U¾ivatelská nastavení"
@@ -828,19 +849,23 @@ msgstr "U¾ivatelská nastavení"
 msgid "General Settings"
 msgstr "Obecná nastavení"
 
+#. Advanced Settings
 #: src/preferences.cpp:520 src/preferences.cpp:1669 src/preferences.cpp:1675
 #: src/preferences.cpp:1712
 msgid "Advanced Settings"
 msgstr "Roz¹íøená nastavení"
 
+#. The End
 #: src/preferences.cpp:531 src/preferences.cpp:1748 src/preferences.cpp:1829
 msgid "ILS Settings"
 msgstr "ILS nastavení"
 
+#. The End
 #: src/preferences.cpp:542 src/preferences.cpp:1869 src/preferences.cpp:2002
 msgid "Gatekeeper Settings"
 msgstr "Nastavení Gatekeeper"
 
+#. The End
 #: src/preferences.cpp:553 src/preferences.cpp:2040 src/preferences.cpp:2246
 msgid "Device Settings"
 msgstr "Nastavení zaøízení"
@@ -865,10 +890,13 @@ msgstr "Jméno"
 msgid "Bandwidth"
 msgstr "©íøka pásma"
 
+#. In this table we put the frame
 #: src/preferences.cpp:675
 msgid "Available Codecs"
 msgstr "Dostupné kodeky"
 
+#. BUTTONS
+#. Add
 #: src/preferences.cpp:714
 msgid "Add"
 msgstr "Pøidat"
@@ -877,6 +905,7 @@ msgstr "Pøidat"
 msgid "Use this button to add the selected codec to the available codecs list"
 msgstr "Tímto tláèítkem lze pøidat vybraný kodek do seznamu dostupných kodekù"
 
+#. Del
 #: src/preferences.cpp:732
 msgid "Delete"
 msgstr "Smazat"
@@ -886,6 +915,7 @@ msgid ""
 "Use this button to remove the selected codec from the available codecs list"
 msgstr "Tímto tláèítkem lze odebrat vybraný kodek ze seznamu dostupných kodekù"
 
+#. Up
 #: src/preferences.cpp:750
 msgid "Up"
 msgstr "Nahoru"
@@ -894,6 +924,7 @@ msgstr "Nahoru"
 msgid "Use this button to move down the selected codec in the preference order"
 msgstr "Tímto tláèítkem lze sní¾it prioritu vybraného kodeku"
 
+#. Down
 #: src/preferences.cpp:768
 msgid "Down"
 msgstr "Dolù"
@@ -902,10 +933,12 @@ msgstr "Dolù"
 msgid "Use this button to move up the selected codec in the preference order"
 msgstr "Tímto tláèítkem lze zvý¹it prioritu vybraného kodeku"
 
+#. In this frame we put a vbox
 #: src/preferences.cpp:836
 msgid "GnomeMeeting GUI"
 msgstr "GnomeMeeting GUI"
 
+#. Show / hide splash screen at startup
 #: src/preferences.cpp:846
 msgid "Show Splash Screen"
 msgstr "Povolit úvodní obrazovku"
@@ -914,6 +947,7 @@ msgstr "Povolit úvodní obrazovku"
 msgid "If enabled, the splash screen will be displayed at startup time"
 msgstr "Je-li povoleno, v prùbìhu startu bude zobrazována úvodní obrazovka"
 
+#. Show / hide the notebook at startup
 #: src/preferences.cpp:860
 msgid "Show Control Panel"
 msgstr "Zobrazit ovládací panel"
@@ -922,6 +956,7 @@ msgstr "Zobrazit ovládací panel"
 msgid "If enabled, the control panel is displayed"
 msgstr "Je-li povoleno, bude zobrazen ovládací panel"
 
+#. Show / hide the statusbar at startup
 #: src/preferences.cpp:874
 msgid "Show Status Bar"
 msgstr "Zobrazit stavový øádek"
@@ -946,10 +981,12 @@ msgstr "Dokovatelné"
 msgid "If enabled, there is support for a docklet in the Gnome or KDE panel"
 msgstr "Je-li povoleno, bude pøidán docklet do Gnome nebo KDE panelu"
 
+#. Behavior
 #: src/preferences.cpp:918
 msgid "Behavior"
 msgstr "Chování"
 
+#. Auto Answer toggle button
 #: src/preferences.cpp:929
 msgid "Auto Answer"
 msgstr "Automatická odpovìï"
@@ -958,6 +995,7 @@ msgstr "Automatická odpovìï"
 msgid "If enabled, incoming calls will be automatically answered"
 msgstr "Je-li povoleno, bude na pøíchozí volání automaticky odpovídáno"
 
+#. DND toggle button
 #: src/preferences.cpp:942
 msgid "Do Not Disturb"
 msgstr "Neru¹it"
@@ -966,6 +1004,7 @@ msgstr "Neru¹it"
 msgid "If enabled, incoming calls will be automatically refused"
 msgstr "Je-li povoleno, budou pøíchozí volání automaticky odmítány"
 
+#. Popup display
 #: src/preferences.cpp:955
 msgid "Popup window"
 msgstr "Vyskakovací okno"
@@ -974,6 +1013,7 @@ msgstr "Vyskakovací okno"
 msgid "If enabled, a popup will be displayed when receiving an incoming call"
 msgstr "Je-li povoleno, pøi pøíchozím volání se objeví okno"
 
+#. Enable / disable video preview
 #: src/preferences.cpp:968
 msgid "Video Preview"
 msgstr "Náhled videa"
@@ -982,6 +1022,7 @@ msgstr "Náhled videa"
 msgid "If enabled, the video preview mode will be set at startup"
 msgstr "Je-li povoleno, bude video pøi startu v náhledovém módu"
 
+#. Play Sound
 #: src/preferences.cpp:983
 msgid "Sound"
 msgstr "Zvuk"
@@ -994,6 +1035,7 @@ msgstr ""
 "Je-li povoleno, GnomeMeeting pøehraje pøi obdr¾ení pøíchozího volání zvuk "
 "(pøehrávaný zvuk si lze vybrat v GNOME Øídícím centru)"
 
+#. ** Audio Codecs Settings **
 #: src/preferences.cpp:1064
 msgid "Audio Codecs Settings"
 msgstr "Nastavení zvukových kodekù"
@@ -1022,10 +1064,12 @@ msgstr "G.711 rámce"
 msgid "G.711 Codec Settings"
 msgstr "Nastavení G.711 kodekù"
 
+#. ** Video Codecs Settings **
 #: src/preferences.cpp:1183 src/preferences.cpp:1447
 msgid "Video Codecs Settings"
 msgstr "Nastavení video kodekù"
 
+#. Video Size Option Menu
 #: src/preferences.cpp:1200
 msgid "Video Size:"
 msgstr "Velikost videa:"
@@ -1042,6 +1086,7 @@ msgstr "Velké"
 msgid "Here you can choose the transmitted video size"
 msgstr "Zde mù¾ete vybrat velikost pøená¹eného videa"
 
+#. Video Format Option Menu
 #: src/preferences.cpp:1229
 msgid "Video Format:"
 msgstr "Formát videa:"
@@ -1050,6 +1095,7 @@ msgstr "Formát videa:"
 msgid "Here you can choose the transmitted video format"
 msgstr "Zde mù¾ete vybrat formát pøená¹eného videa"
 
+#. Transmitted Frames per Second
 #: src/preferences.cpp:1259
 msgid "Transmitted FPS:"
 msgstr "Obrázkù/s (FPS):"
@@ -1081,6 +1127,7 @@ msgstr "Pøenos videa"
 msgid "Here you can choose to enable or disable video transmission"
 msgstr "Zde mù¾ete zvolit zda pøená¹et video èi nikoliv"
 
+#. Transmitted Video Quality
 #: src/preferences.cpp:1333
 msgid "Transmitted Quality:"
 msgstr "Kvalita pøenosu:"
@@ -1093,6 +1140,7 @@ msgstr ""
 "Zde mù¾ete vybrat kvalitu pøená¹eného videa: vyberte 1 pro LAN a nejvìt¹í "
 "kvalitu, 31 pro nejhor¹í kvalitu"
 
+#. Updated blocks / frame
 #: src/preferences.cpp:1355
 msgid "Updated blocks:"
 msgstr "Opravené bloky:"
@@ -1105,6 +1153,7 @@ msgstr ""
 "Zde mù¾ete vybrat poèet blokù (které nebyly zmìnìny) pøená¹ených v ka¾dém "
 "rámci. Tyto bloky vyplní pozadí."
 
+#. Received Video Quality
 #: src/preferences.cpp:1376
 msgid "Received Quality:"
 msgstr "Pøijímaná kvalita:"
@@ -1113,6 +1162,7 @@ msgstr "Pøijímaná kvalita:"
 msgid "The video quality to request from the remote party"
 msgstr "Kvalita videa po¾adovaná od vzdáleného systému"
 
+#. Max. video Bandwidth
 #: src/preferences.cpp:1397
 msgid "Max. Video Bandwidth:"
 msgstr "Max. ¹íøka pásma:"
@@ -1137,6 +1187,7 @@ msgstr "Zde mù¾ete zvolit zda zapnout limitování pøenosového pásma videa"
 msgid "H.261 Codec Settings"
 msgstr "Nastavení H.261 kodeku"
 
+#. User Name entry
 #: src/preferences.cpp:1501
 msgid "First Name:"
 msgstr "Jméno:"
@@ -1145,6 +1196,7 @@ msgstr "Jméno:"
 msgid "Enter your first name"
 msgstr "Vlo¾te své jméno"
 
+#. Surname entry (LDAP)
 #: src/preferences.cpp:1524
 msgid "Last name:"
 msgstr "Pøíjmení:"
@@ -1153,6 +1205,7 @@ msgstr "Pøíjmení:"
 msgid "Enter your last name"
 msgstr "Vlo¾te své pøíjmení"
 
+#. E-mail (LDAP)
 #: src/preferences.cpp:1547
 msgid "E-mail address:"
 msgstr "E-mail:"
@@ -1161,6 +1214,7 @@ msgstr "E-mail:"
 msgid "Enter your e-mail address"
 msgstr "Vlo¾te svou e-mailovou adresu"
 
+#. Comment (LDAP)
 #: src/preferences.cpp:1570
 msgid "Comment:"
 msgstr "Komentáø:"
@@ -1169,6 +1223,7 @@ msgstr "Komentáø:"
 msgid "Here you can fill in a comment about yourself for ILS directories"
 msgstr "Zde mù¾ete vlo¾it komentáø o sobì pro ILS adresáø"
 
+#. Location
 #: src/preferences.cpp:1592
 msgid "Location:"
 msgstr "Umístìní:"
@@ -1177,6 +1232,7 @@ msgstr "Umístìní:"
 msgid "Where do you call from?"
 msgstr "Odkud provádíte volání?"
 
+#. Port Entry
 #: src/preferences.cpp:1614
 msgid "Listen Port:"
 msgstr "Prijímací port:"
@@ -1185,6 +1241,7 @@ msgstr "Prijímací port:"
 msgid "The port that GnomeMeeting should listen on"
 msgstr "Port na nìm¾ by mìl GnomeMeeting poslouchat pøíchozí volání"
 
+#. H245 Tunnelling button
 #: src/preferences.cpp:1686
 msgid "Enable H.245 Tunnelling"
 msgstr "Povolit H.245 tunelování"
@@ -1193,6 +1250,7 @@ msgstr "Povolit H.245 tunelování"
 msgid "This enables H.245 Tunnelling mode"
 msgstr "Povolí tunelovací mód H.245"
 
+#. Fast Start button
 #: src/preferences.cpp:1699
 msgid "Enable Fast Start"
 msgstr "Povolit rychlý start"
@@ -1201,10 +1259,12 @@ msgstr "Povolit rychlý start"
 msgid "Connection will be established in Fast Start mode"
 msgstr "Spojení budou navazována ve zrychleném módu"
 
+#. ILS settings
 #: src/preferences.cpp:1754
 msgid "ILS Directory to register to"
 msgstr "ILS adresáø pro zaregistrování"
 
+#. ILS directory
 #: src/preferences.cpp:1766
 msgid "ILS Directory:"
 msgstr "ILS adresáø:"
@@ -1213,6 +1273,7 @@ msgstr "ILS adresáø:"
 msgid "The ILS directory to register to"
 msgstr "ILS adresáø pro zaregistrování"
 
+#. ILS port
 #: src/preferences.cpp:1789
 msgid "ILS Port:"
 msgstr "ILS port:"
@@ -1221,6 +1282,7 @@ msgstr "ILS port:"
 msgid "The corresponding port: 389 is the standard port"
 msgstr "Odpovídající port: 389 je standardní port"
 
+#. Use ILS
 #: src/preferences.cpp:1812
 msgid "Register"
 msgstr "Registrace"
@@ -1229,10 +1291,12 @@ msgstr "Registrace"
 msgid "If enabled, permit to register to the selected ILS directory"
 msgstr "Je-li povoleno, povolí registraci ke zvolenému ILS adresáøi"
 
+#. Gatekeeper settings
 #: src/preferences.cpp:1875
 msgid "Gatekeeper Registering Method"
 msgstr "Gatekeeper registrovací metoda"
 
+#. Gatekeeper ID
 #: src/preferences.cpp:1886
 msgid "Gatekeeper ID:"
 msgstr "Gatekeeper ID:"
@@ -1241,6 +1305,7 @@ msgstr "Gatekeeper ID:"
 msgid "The Gatekeeper identifier."
 msgstr "Identifikace Gatekeeperu."
 
+#. Gatekeeper Host
 #: src/preferences.cpp:1908
 msgid "Gatekeeper host:"
 msgstr "Gatekeeper poèítaè:"
@@ -1249,6 +1314,7 @@ msgstr "Gatekeeper poèítaè:"
 msgid "The Gatekeeper host to register to."
 msgstr "Jméno poèítaèe na nìm¾ se lze zaregistrovat u Gatekeeperu."
 
+#. GK registering method
 #: src/preferences.cpp:1930
 msgid "Registering method:"
 msgstr "Metoda registrování:"
@@ -1273,10 +1339,12 @@ msgstr "Pokusit se vypátrat Gatekeeper"
 msgid "Registering method to use"
 msgstr "Typ registrovací metody"
 
+#. Gatekeeper settings
 #: src/preferences.cpp:1965
 msgid "Gatekeeper Bandwidth"
 msgstr "©íøka pásma Gatekeeperu"
 
+#. Max Used Bandwidth spin button
 #: src/preferences.cpp:1978
 msgid "Maximum Bandwidth:"
 msgstr "Maxímální ¹íøka pásma:"
@@ -1289,10 +1357,12 @@ msgstr ""
 "Maximální ¹íøka pásma, která mù¾e být pou¾ita pro komunikaci. Toto omezení "
 "¹íøky pásma bude pøeneseno na Gatekeeper."
 
+#. Audio device
 #: src/preferences.cpp:2046
 msgid "Audio Devices"
 msgstr "Zvuková zaøízení"
 
+#. Audio Device
 #: src/preferences.cpp:2058
 msgid "Player:"
 msgstr "Pøehrávaè:"
@@ -1301,6 +1371,7 @@ msgstr "Pøehrávaè:"
 msgid "Enter the audio player device to use"
 msgstr "Vlo¾te zaøízení, které má být pou¾ito pro pøehrávání zvukù"
 
+#. Audio Recorder Device
 #: src/preferences.cpp:2092
 msgid "Recorder:"
 msgstr "Záznam:"
@@ -1309,6 +1380,7 @@ msgstr "Záznam:"
 msgid "Enter the audio recorder device to use"
 msgstr "Vlo¾te zaøízení, které má být pou¾ito pro nahrávání zvukù"
 
+#. Audio Mixers
 #: src/preferences.cpp:2126
 msgid "Player Mixer:"
 msgstr "Pøehravací mixér:"
@@ -1325,10 +1397,12 @@ msgstr "Nahrávací mixér:"
 msgid "The audio mixer to use for recorder settings"
 msgstr "Nahrávací mixér vyu¾ívaný pro nastavení vlastností vstupních zvukù"
 
+#. Video device
 #: src/preferences.cpp:2173
 msgid "Video Device"
 msgstr "Video zaøízení"
 
+#. Video Device
 #: src/preferences.cpp:2183
 msgid "Video Device:"
 msgstr "Video zaøízení:"
@@ -1337,6 +1411,7 @@ msgstr "Video zaøízení:"
 msgid "Enter the video device to use"
 msgstr "Vlo¾te video zaøízení, které chcete pou¾ívat"
 
+#. Video channel spin button
 #: src/preferences.cpp:2218
 msgid "Video Channel:"
 msgstr "Video kanál:"
