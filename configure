@@ -1885,7 +1885,7 @@ else
 	{ echo "configure: error: You need PTLib to enjoy GnomeMeeting" 1>&2; exit 1; }
 fi
 
-H323_LIBS="-loh323 -ldl -lpt -lpthread -lssl -lcrypto"
+H323_LIBS="-L/opt/pwlib/lib -L/opt/openh323/lib -lh323_linux_x86_d -ldl -lpt_linux_x86_d -lpthread -lssl -lcrypto"
 
 # Check whether --with-openh323-includes or --without-openh323-includes was given.
 if test "${with_openh323_includes+set}" = set; then
@@ -2006,7 +2006,7 @@ CFLAGS=""
 
 
 
-H323_CFLAGS="-DP_LINUX -D_REENTRANT -DP_HAS_SEMAPHORES -DP_PTHREADS -DPBYTE_ORDER=PLITTLE_ENDIAN -DHAS_OSS -O2"
+H323_CFLAGS="-DP_LINUX -D_REENTRANT -DP_HAS_SEMAPHORES -DP_PTHREADS -DPBYTE_ORDER=PLITTLE_ENDIAN -DHAS_OSS -O2 -D_DEBUG -DPMEMORY_CHECK=1 -DPTRACING -Wall -g"
 
 
 

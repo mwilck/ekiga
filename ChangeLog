@@ -1,3 +1,14 @@
+2001-09-01  Damien Sandras  <dsandras@seconix.com>
+
+	* pixmaps/: Modified the logo to version 0.11
+
+	* src/webcam.cpp: Added ReInitilise method that will restart the webcam
+	thread with other settings; The logo is now displayed when there is no
+	webcam image displayed.
+	
+	* src/preferences.cpp: Modified the ReInitialise method, webcam thread is
+	no more delete, but restarted.
+	
 2001-08-31  Christian Rose  <menthos@menthos.com>
 
 	*  src/callbacks.cpp, src/endpoint.cpp, src/preferences.cpp: String

@@ -295,14 +295,15 @@ BOOL GMH323EndPoint::Initialise ()
 
 void GMH323EndPoint::ReInitialise ()
 {
+  GMH323Webcam *wcam = (GMH323Webcam *) webcam;
+
   // Free the old options
   g_options_free (opts);
 
   // Set the various options
   read_config (opts);
 
-  delete (webcam);
-  webcam = new (GMH323Webcam) (gw, opts);
+  wcam->ReInitialise (opts);
 
   Initialise ();
 }
@@ -323,7 +324,7 @@ H323Connection *GMH323EndPoint::Connection ()
 
 GMH323Webcam *GMH323EndPoint::Webcam (void)
 {
-  return webcam;
+  return (GMH323Webcam *) webcam;
 }
 
 
@@ -671,6 +672,8 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 				       BOOL isEncoding, 
 				       H323VideoCodec & codec)
 {
+  GMH323Webcam *wcam = (GMH323Webcam *) webcam;
+
   /* If it is possible to transmit and
      if the user enabled transmission and
      if OpenVideoDevice is called for the encoding */
@@ -693,9 +696,9 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 				   TRUE);
      gdk_threads_leave ();
 
-     transmitted_video_device = webcam->Device ();
+     transmitted_video_device = wcam->Device ();
      
-     return codec.AttachChannel (webcam->Channel (), FALSE);
+     return codec.AttachChannel (wcam->Channel (), FALSE);
    }
  else
    {

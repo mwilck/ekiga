@@ -229,7 +229,7 @@ int main (int argc, char ** argv, char ** envp)
 
   gtk_idle_add ((GtkFunction) gnome_idle_timer, NULL);
 
-  PTrace::Initialise (3);
+  PTrace::Initialise (6);
 
   if (opts->applet)
     applet_widget_gtk_main ();

@@ -42,6 +42,8 @@ GMH323Webcam::GMH323Webcam (GM_window_widgets *g, options *o)
 
   running = 0;
   grabbing = 0;
+  reinit = 0;
+  logo = 0;
 
   this->Resume ();
 }
@@ -58,9 +60,48 @@ GMH323Webcam::~GMH323Webcam ()
 
 void GMH323Webcam::Main ()
 {
-  GtkWidget *msg_box = NULL;
+  int height = 0, width = 0;
+
+  Initialise ();
+
+  while (running == 1)
+    {
+      if (reinit == 1)
+	{
+	  if (opts->video_size == 0)
+	    { height = 176; width = 144; }
+	  else
+	    { height = 352; width = 288; }
+
+	  Current ()->Sleep (1000);
+	  
+	  Initialise ();
+	  reinit = 0;
+	}
+	 
+      if (grabbing == 1)
+	{
+	  if (channel->Read (video_buffer, height * width * 3))
+	    channel->Write (video_buffer, height * width * 3);
+	}
+
+      if (!logo)
+	{
+	  gdk_threads_enter ();
+	  GM_init_main_interface_logo (gw);
+	  logo = 1;
+	  gdk_threads_leave ();
+	}
+      
+      Current()->Sleep (10);
+    }
+}
+
+
+void GMH323Webcam::Initialise (void)
+{
   int height, width;
-  int error = 0;
+  gchar *msg = NULL;
 
   if (opts->video_size == 0)
     { height = 176; width = 144; }
@@ -74,31 +115,33 @@ void GMH323Webcam::Main ()
       (opts->video_format ? PVideoDevice::NTSC : PVideoDevice::PAL) &&
       grabber->SetChannel (opts->video_channel) &&
       grabber->SetFrameRate (opts->tr_fps)  &&
-      grabber->SetFrameSize (height, width)) 
-    {
-      if (!grabber->SetColourFormatConverter ("YUV420P"))
-	error = !grabber->SetColourFormatConverter ("YUV420P");
-    }
-  else
-    error = 1;
-  
-  if (error == 1)
+      grabber->SetFrameSize (height, width) &&
+      grabber->SetColourFormatConverter ("YUV420P"))
     {
       gdk_threads_enter ();
-      msg_box = 
-	gnome_message_box_new (_("Could not open the video device."), 
-			       GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
-      
-      gtk_widget_show (msg_box);
-      gdk_threads_leave ();
 
-      error = 1;
+      msg = g_strdup_printf (_("Successfully opened video device %s, channel %d"), opts->video_device, opts->video_channel);
+      GM_log_insert (gw->log_text, msg);
+      g_free (msg);
+
+      gdk_threads_leave ();			     
+    }
+  else
+    {
+      gdk_threads_enter ();
+
+      msg = g_strdup_printf (_("Error while opening video device %s, channel %d. A test image will be transmitted."), opts->video_device, opts->video_channel);
+      GM_log_insert (gw->log_text, msg);
+      g_free (msg);
+
+      gdk_threads_leave ();			     
+
 
       // delete the failed grabber and open the fake grabber
       delete grabber;
       
       grabber = new PFakeVideoInputDevice();
-      grabber->SetColourFormatConverter ("YUV411P");
+      grabber->SetColourFormatConverter ("YUV420P");
       grabber->SetVideoFormat (PVideoDevice::PAL);
       grabber->SetChannel (100);     //NTSC static image.
       grabber->SetFrameRate (10);
@@ -107,25 +150,30 @@ void GMH323Webcam::Main ()
     
   grabber->Start ();
      
-  channel->AttachVideoReader (grabber);
-  channel->AttachVideoPlayer (encoding_device);
+  if (reinit == 0)
+    {
+      channel->AttachVideoReader (grabber);
+      channel->AttachVideoPlayer (encoding_device);
+    }
     
   // Ready to run
   running = 1;
-
-  while (running == 1)
-    {
-      if (grabbing == 1)
-	{
-	  if (channel->Read (video_buffer, height * width * 3))
-	    channel->Write (video_buffer, height * width * 3);
-	  Current()->Sleep (50);
-	}
-      else
-	  Current()->Sleep (10);
-    }
 }
 
+
+void GMH323Webcam::ReInitialise (options *o)
+{
+  if (reinit == 0)
+    {
+//      g_options_free (opts);
+      
+//      opts = o;
+      
+      grabber->Close ();
+      cout << "ICI" << endl << flush;
+      reinit = 1;
+    }
+}
 
 void GMH323Webcam::Start (void)
 {
@@ -137,6 +185,7 @@ void GMH323Webcam::Start (void)
 void GMH323Webcam::Stop (void)
 {
   grabbing = 0;
+  logo = 0;
 }
 
 

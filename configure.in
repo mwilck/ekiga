@@ -69,7 +69,7 @@ else
 	AC_MSG_ERROR([You need PTLib to enjoy GnomeMeeting])
 fi
 
-H323_LIBS="-loh323 -ldl -lpt -lpthread -lssl -lcrypto"
+H323_LIBS="-lh323_linux_x86_r -ldl -lpt_linux_x86_r -lpthread -lssl -lcrypto"
 
 dnl ***************************************
 dnl OpenH323

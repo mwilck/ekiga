@@ -262,7 +262,7 @@ class GMH323EndPoint : public H323EndPoint
   GDKVideoOutputDevice *transmitted_video_device; // GDKVideoOutputDevice : sent
   GDKVideoOutputDevice *received_video_device; // GDKVideoOutputDevice : received
   GM_window_widgets *gw; // main window widgets that need to be updated
-  GMH323Webcam *webcam;
+  PThread *webcam;
 };
 
 /******************************************************************************/

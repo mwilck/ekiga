@@ -65,6 +65,8 @@ class GMH323Webcam : public PThread
   void SetContrast (int);
   void GetParameters (int *, int *, int *, int *);
   void Terminate (void);
+  void Initialise (void);
+  void ReInitialise (options *);
 
  protected:
   GM_window_widgets *gw;
@@ -75,6 +77,8 @@ class GMH323Webcam : public PThread
   GDKVideoOutputDevice *encoding_device;
   int running;
   int grabbing;
+  int reinit;
+  int logo;
 };
 
 /******************************************************************************/
