@@ -896,6 +896,10 @@ gnomemeeting_init (GmWindow *gw,
   GConfClient *client;
 
 
+  /* Prevents ESD to spawn */
+  setenv ("ESD_NO_SPAWN", "1", 1);
+
+
   /* Cope with command line options */
   static struct poptOption arguments[] =
     {

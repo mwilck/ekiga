@@ -1055,12 +1055,13 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   name = gnomemeeting_pstring_cut (name);
   app = gnomemeeting_pstring_cut (app);
 
-  utf8_name = gnomemeeting_from_ucs2_to_utf8 (name);
-  if (utf8_name == NULL)
-    utf8_name = gnomemeeting_from_iso88591_to_utf8 (name);
-  
   utf8_app = gnomemeeting_from_iso88591_to_utf8 (app);
-  
+
+  if (g_strrstr (utf8_app, "gnomemeeting") == NULL) 
+    utf8_name = gnomemeeting_from_iso88591_to_utf8 (name);
+  else
+    utf8_name = gnomemeeting_from_ucs2_to_utf8 (name);
+
   if (forward_host_gconf)
     forward_host = PString (forward_host_gconf);
   else
@@ -1249,9 +1250,10 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 
   utf8_app = gnomemeeting_from_iso88591_to_utf8 (app);
 
-  utf8_name = gnomemeeting_from_ucs2_to_utf8 (name);
-  if (utf8_name == NULL)
+  if (g_strrstr (utf8_app, "gnomemeeting") == NULL) 
     utf8_name = gnomemeeting_from_iso88591_to_utf8 (name);
+  else
+    utf8_name = gnomemeeting_from_ucs2_to_utf8 (name);
 
   gnomemeeting_threads_enter ();
 
