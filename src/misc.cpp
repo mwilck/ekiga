@@ -28,6 +28,8 @@
  */
 
 
+#include "../config.h"
+
 #include <ptlib.h>
 #include <gnome.h>
 #include "config.h"
