@@ -32,10 +32,10 @@
  *                          to create dialogs for GnomeMeeting.
  */
 
-#include <config.h>
-#include <libgnome/gnome-i18n.h>
+#include "../config.h"
 #include <gtk/gtk.h>
 #include <glib.h>
+#include <libgnome/gnome-i18n.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdarg.h>
