@@ -222,9 +222,10 @@ static void personal_data_update_button_clicked (GtkWidget *widget,
 
 /* DESCRIPTION  :  This callback is called when the user clicks
  *                 on the Update button of the gatekeeper Settings.
- * BEHAVIOR     :  Updates the values, set the Microtelco key to false
+ * BEHAVIOR     :  Updates the values, set the MicroTelco key to false
  *                 if the Gatekeeper host or the registering method are
- *                 not compatible with microtelco settings.
+ *                 not compatible with microtelco settings, or to true if
+ *                 they correspond to MicroTelco settings.
  * PRE          :  /
  */
 static void gatekeeper_update_button_clicked (GtkWidget *widget, 
@@ -244,13 +245,14 @@ static void gatekeeper_update_button_clicked (GtkWidget *widget,
   
   if (gk_host)
     host = PString (gk_host);
-    
-  if (host.Find ("gk.microtelco.com") == P_MAX_INDEX
-      || registering_method != 1) {
-      
+
+  if (host.Find ("gk.microtelco.com") != P_MAX_INDEX
+      && registering_method == 1)   
+    gconf_client_set_bool (client, SERVICES_KEY "enable_microtelco",
+			   true, 0);
+  else
     gconf_client_set_bool (client, SERVICES_KEY "enable_microtelco",
 			   false, 0);
-  }
 
   g_free (gk_host);
 
