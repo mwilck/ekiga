@@ -28,8 +28,17 @@
 
 #include <sys/time.h>
 
+
+/******************************************************************************/
+/* Global variables                                                           */
+/******************************************************************************/
+
 extern GnomeMeeting *MyApp;
 
+/******************************************************************************/
+
+
+/******************************************************************************/
 
 GMVideoGrabber::GMVideoGrabber (GM_window_widgets *g, options *o)
   :PThread (1000, NoAutoDeleteThread)
@@ -60,7 +69,6 @@ GMVideoGrabber::~GMVideoGrabber ()
   // till the channel and grabber are closed, after the Main method
   // has exited
   quit_mutex.Wait ();
-
 
   gdk_threads_enter ();
 
@@ -134,6 +142,7 @@ void GMVideoGrabber::Main ()
 
   quit_mutex.Signal ();
 }
+
 
 void GMVideoGrabber::Open (int has_to_grab)
 {
@@ -227,6 +236,7 @@ void GMVideoGrabber::GetParameters (int *whiteness, int *brightness,
 void GMVideoGrabber::VGOpen (void)
 {
   gchar *msg = NULL;
+  int error_code = -1;  // No error
 
   // Disable the video preview button while opening
   gdk_threads_enter ();
@@ -244,14 +254,26 @@ void GMVideoGrabber::VGOpen (void)
     
   encoding_device->SetFrameSize (height, width);
 
-  if (grabber->Open (opts->video_device, FALSE) &&
-      grabber->SetVideoFormat 
-      (opts->video_format ? PVideoDevice::NTSC : PVideoDevice::PAL) &&
-      grabber->SetChannel (opts->video_channel) &&
-      grabber->SetColourFormatConverter ("YUV420P") &&
-      grabber->SetFrameRate (opts->tr_fps)  &&
-      grabber->SetFrameSizeConverter (height, width, FALSE))
+  if (!grabber->Open (opts->video_device, FALSE))
+    error_code = 0;
 
+  if (!grabber->SetVideoFormat 
+      (opts->video_format ? PVideoDevice::NTSC : PVideoDevice::PAL))
+    error_code = 1;
+
+  if (!grabber->SetChannel (opts->video_channel))
+    error_code = 2;
+
+  if (!grabber->SetColourFormatConverter ("YUV420P"))
+    error_code = 3;
+
+  if (!grabber->SetFrameRate (opts->tr_fps))
+    error_code = 4;
+
+  if (!grabber->SetFrameSizeConverter (height, width, FALSE))
+    error_code = 5;
+
+  if (error_code == -1) // If no error
     {
       gdk_threads_enter ();
 
@@ -268,10 +290,40 @@ void GMVideoGrabber::VGOpen (void)
       gdk_threads_enter ();
 
       msg = g_strdup_printf 
-	(_("Error while opening video device %s, channel %d. A test image will be transmitted."), 
-	 opts->video_device, opts->video_channel);
+	(_("Error while opening video device %s, channel %d.\nA test image will be transmitted."), opts->video_device, opts->video_channel);
+      
+      switch (error_code)
+	{
+	case 0:
+	  msg = g_strconcat (msg, "\n", _("Error with the device."));
+	  break;
+
+	case 1:
+	  msg = g_strconcat (msg, "\n", _("Error with the video format."));
+	  break;
+
+	case 2:
+	  msg = g_strconcat (msg, "\n", _("Error with the choosed channel."));
+	  break;
+
+	case 3:
+	  msg = g_strconcat (msg, "\n", _("Your driver doesn't support the YUV420P format."));
+	  break;
+
+	case 4:
+	  msg = g_strconcat (msg, "\n", _("Error with the frame rate."));
+	  break;
+
+	case 5:
+	  msg = g_strconcat (msg, "\n", _("Error with the frame size."));
+	  break;
+	}
+      
       GM_log_insert (gw->log_text, msg);
+      GtkWidget *msg_box = gnome_message_box_new (msg, GNOME_MESSAGE_BOX_ERROR,
+						  GNOME_STOCK_BUTTON_OK, NULL);
       g_free (msg);
+      gtk_widget_show (msg_box);
 
       gdk_threads_leave ();			     
 

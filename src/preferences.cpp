@@ -225,7 +225,7 @@ void GMPreferences (int calling_state, GM_window_widgets *gw)
   gchar * ctree_titles [] = {N_("Settings")};
   options *opts;
 
-  GtkWidget *pixmap, *event_box;
+  GtkWidget *pixmap, *event_box, *hpaned;
 
   opts = new (options);
   memset (opts, 0, sizeof (options));
@@ -244,8 +244,7 @@ void GMPreferences (int calling_state, GM_window_widgets *gw)
   /* The notebook on the right */
   GtkWidget *notebook;
 
-  /* The hbox where to pack the widgets */
-  GtkWidget *hbox;
+  /* Box inside the prefs window */
   GtkWidget *dialog_vbox;
 
   /* The widgets structure */
@@ -273,15 +272,16 @@ void GMPreferences (int calling_state, GM_window_widgets *gw)
   ctree = gtk_ctree_new_with_titles (1, 0, ctree_titles);
   clist = GTK_CLIST (ctree);
   notebook = gtk_notebook_new ();
-  hbox = gtk_hbox_new(FALSE, GNOME_PAD_BIG);
+
   dialog_vbox = GNOME_DIALOG (gw->pref_window)->vbox;
 
-  gtk_box_pack_start (GTK_BOX (dialog_vbox), hbox, TRUE, TRUE, 0);
-  gtk_box_pack_start (GTK_BOX (hbox), ctree, TRUE, TRUE, GNOME_PAD_SMALL);
-  gtk_box_pack_start (GTK_BOX (hbox), notebook, TRUE, TRUE, GNOME_PAD_SMALL);
+  hpaned = gtk_hpaned_new ();
+  gtk_paned_pack1 (GTK_PANED (hpaned), ctree, TRUE, TRUE);
+  gtk_paned_pack2 (GTK_PANED (hpaned), notebook, TRUE, TRUE);
+  gtk_box_pack_start (GTK_BOX (dialog_vbox), hpaned, TRUE, TRUE, 0);
 
-  gtk_widget_set_usize (GTK_WIDGET (ctree), 170, 20);
-  gtk_widget_set_usize (GTK_WIDGET (notebook), 460, 300);
+  gtk_widget_set_usize (GTK_WIDGET (ctree), 180, 20);
+  gtk_widget_set_usize (GTK_WIDGET (notebook), 470, 300);
   
   /* All the notebook pages */
   node_txt [0] = g_strdup (_("General"));
