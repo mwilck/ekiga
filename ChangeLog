@@ -1,3 +1,7 @@
+2001-08-25  Christian Rose  <menthos@menthos.com>
+
+	* configure, configure.in: Added gl to ALL_LINGUAS.
+
 2001-08-25  Damien Sandras  <dsandras@seconix.com>
 
 	* Changelog: Updated.
@@ -6,15 +10,18 @@
 
 	* src/main_interface.cpp: Added support for a video preview button.
 
-	* src/webcam.cpp, src/webcam.h: Removed the old C functions to manage the webcam
-	and added a new multi-threaded class to cope with the camera. This class uses PWlib for
-	portability.
+	* src/webcam.cpp, src/webcam.h: Removed the old C functions to manage
+	the webcam and added a new multi-threaded class to cope with the
+	camera. This class uses PWlib for portability.
 
-	* src/endpoint.cpp:  The OpenVideoChannel function now uses the new webcam.cpp class.
+	* src/endpoint.cpp:  The OpenVideoChannel function now uses the new
+	webcam.cpp class.
 
-	* src/main_interface.cpp:  Added support for the new webcam.cpp class in GTK+ callbacks.
+	* src/main_interface.cpp:  Added support for the new webcam.cpp class
+	in GTK+ callbacks.
 
-	* src/preferences.cpp:  Added support for the new webcam.cpp class in apply_options.
+	* src/preferences.cpp:  Added support for the new webcam.cpp class in
+	apply_options.
 
 2001-08-25  Roger Hardiman  <roger@freebsd.org>
 	
