@@ -65,19 +65,13 @@ dnl ###########################################################################
 dnl Set up Operating System specific parameters and endianess
 dnl ###########################################################################
 
-dnl Check if we are on 64 bits architectures
-AC_CHECK_SIZEOF(long)
-if test x$ac_cv_sizeof_long = x8; then
-   ARCH_H323_CFLAGS="$ARCH_H323_CFLAGS -DP_64BIT"
-fi
-
 dnl Check the OS type (more types can be added) 
 AC_MSG_CHECKING(whether OS type is supported)
 
 case $target_os in
 
   linux-gnu | linux | Linux)
-    ARCH_OPENH323_CFLAGS="-DP_LINUX -D_REENTRANT $ARCH_OPENH323_CFLAGS -DHAS_OSS -DPHAS_TEMPLATES -DP_USE_PRAGMA -DPTRACING -Wall -O2 -g"
+    ARCH_OPENH323_CFLAGS="-DP_USE_PRAGMA -DPTRACING -DNDEBUG -Wall -O2 -g"
     ARCH_OPENH323_LIBS="-lopenh323 -ldl -lpt -lpthread"
     AC_MSG_RESULT([yes])
     gm_platform="linux"
@@ -87,14 +81,14 @@ dnl -D_DEBUG -DPMEMORY_CHECK=1 -DPTRACING -g
     ;;
 
   FreeBSD* | freebsd* )
-    ARCH_OPENH323_CFLAGS="-DP_FREEBSD=400001 $ARCH_OPENH323_CFLAGS -O2 -Wall -DPHAS_TEMPLATES -DP_USE_PRAGMA -DPTRACING -DSTATIC_LIBS_USED"
+    ARCH_OPENH323_CFLAGS="-DP_USE_PRAGMA -O2 -Wall -DPTRACING -DNDEBUG -DSTATIC_LIBS_USED"
     ARCH_OPENH323_LIBS="-lh323_FreeBSD_x86_r_s -lpt_FreeBSD_x86_r_s -pthread -lssl -lcrypto"
     AC_MSG_RESULT([yes])
     gm_platform="freebsd"
     ;;
 
   darwin* )
-    ARCH_OPENH323_CFLAGS="-DP_MACOSX $ARCH_OPENH323_CFLAGS -O2 -Wall -DNO_LONG_DOUBLE -DPHAS_TEMPLATES -DP_USE_PRAGMA -DPTRACING -DSTATIC_LIBS_USED"
+    ARCH_OPENH323_CFLAGS="-DP_USE_PRAGMA -O2 -Wall -DPTRACING -DNDEBUG -DNO_LONG_DOUBLE -DSTATIC_LIBS_USED"
     ARCH_OPENH323_LIBS="-multiply_defined suppress -lh323_Darwin_ppc_r_s -lpt_Darwin_ppc_r_s -lssl -lcrypto -lX11 -framework AudioToolbox -framework CoreAudio -framework CoreServices"
     AC_MSG_RESULT([yes])
     gm_platform="macosx"
@@ -104,6 +98,27 @@ dnl -D_DEBUG -DPMEMORY_CHECK=1 -DPTRACING -g
     AC_MSG_ERROR(Only Linux, FreeBSD and Mac OS X are supported. Please contact the author to know how you can add more OS types.)
     ;;
 esac
+
+
+dnl ###########################################################################
+dnl Check for pthreads library
+dnl ###########################################################################
+AC_CHECK_LIB(pthread, pthread_create, HAS_PTHREADS=yes, HAS_PTHREADS=no)
+if test ${HAS_PTHREADS} = yes ; then
+  ARCH_OPENH323_LIBS="$ARCH_OPENH323_LIBS -lpthread"
+  ARCH_OPENH323_CFLAGS="$ARCH_OPENH323_CFLAGS -D_REENTRANT"
+else
+  dnl FreeBSD checks
+  AC_CHECK_LIB(c_r, pthread_create, HAS_PTHREADS=yes, HAS_PTHREADS=no)
+  if test ${HAS_PTHREADS} = yes ; then
+    ARCH_OPENH323_LIBS="$ARCH_OPENH323_LIBS -lpthread"
+    ARCH_OPENH323_CFLAGS="$ARCH_OPENH323_CFLAGS -D_REENTRANT"
+  fi
+fi
+
+if test ${HAS_PTHREADS} != yes ; then
+  AC_MSG_ERROR(must have pthreads!)
+fi
 
 
 dnl ###########################################################################
@@ -201,7 +216,7 @@ fi
 dnl Checking for the library presence
 LIBS_save="$LIBS"
 LIBS="${LIBS} -L${with_openh323_dir}/lib/ -L${with_pwlib_dir}/lib/ -lpt"
-AC_CHECK_LIB(openh323, main, openh323_libs="yes", openh323_libs="no")
+AC_CHECK_LIB(openh323, main, openh323_libs="yes", openh323_libs="yes")
 LIBS="${LIBS_save}"
 
 if test "x${openh323_libs}" != "xno"; then
@@ -219,15 +234,6 @@ AC_MSG_RESULT($OPENH323_VERSION)
 if test "x${OPENH323_VERSION}" != "x${OPENH323_REC_VERSION}"; then
 	AC_MSG_ERROR(Sorry but the recommended Openh323 version is ${OPENH323_REC_VERSION});
 fi
-
-dnl Checking for IXJ support
-CPPFLAGS_save="$CPPFLAGS"
-CPPFLAGS="$CPPFLAGS -I /usr/include/linux -I /usr/include/sys -I /usr/local/include/sys"
-AC_CHECK_HEADER(telephony.h, HAS_IXJ="enabled", HAS_IXJ="disabled",-)
-if test "x${HAS_IXJ}" = "xenabled"; then
-	ARCH_OPENH323_CFLAGS="$ARCH_OPENH323_CFLAGS -DHAS_IXJ"
-fi
-CPPFLAGS="$CPPFLAGS_save"
 
 
 dnl ###########################################################################
