@@ -64,7 +64,7 @@ static PString CodecInfo [GM_AUDIO_CODECS_NUMBER] [5] = {
 
   {"G.711-uLaw-64k", _("G.711 is the international standard for encoding telephone audio on 64 kbps channel. It is a pulse code modulation (PCM) scheme operating at 8 kHz sample rate, with 8 bits per sample, fully meeting ITU-T recommendations. This standard has two forms, A-Law and u-Law. u-Law G.711 PCM encoder converts 14 bit linear PCM samples into 8 bit compressed PCM (logarithmic form) samples, and the decoder does the conversion vice versa."), _("Excellent"), _("64 Kbps")},
 
-  {"GSM-06.10", _("GSM 06.10 is a standardized lossy speech compression employed by most European wireless telephones. It uses RPE/LTP (residual pulse excitation/long term prediction) coding to compress frames of 160 13-bit samples with a frame rate of 50 Hz into 260 bits."), _("Good"), _("16.5 Kbps")},
+  {"GSM-06.10", _("GSM 06.10 is a standardized lossy speech compression employed by first generation of digital mobile phones in Europe. It uses RPE/LTP (residual pulse excitation/long term prediction) coding to compress frames of 20 ms, achieving a bitrate of 13kbps."), _("Good"), _("16.5 Kbps")},
 
   {"G.726-32k", _("G.726 conforms to ITU-T G.726 recommendation that specifies speech compression and decompression at rates of 16, 24, 32 and 40 Kbps based on Adaptive Differential Pulse Code Modulation (ADPCM)."), _("Excellent"), _("32 Kbps")},
   
