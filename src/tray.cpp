@@ -252,13 +252,12 @@ void gnomemeeting_tray_hide (GtkWidget *tray)
 }
 
 
-gint gnomemeeting_tray_flash (GtkWidget *tray)
+void gnomemeeting_tray_flash (GtkWidget *tray)
 {
   gpointer data;
 
   /* we can't call gnomemeeting_threads_enter as idles and timers
      are executed in the main thread */
-  gdk_threads_enter ();
   data = g_object_get_data (G_OBJECT (tray), "available");
 
   if (GPOINTER_TO_INT (data) == 1) {
@@ -266,9 +265,6 @@ gint gnomemeeting_tray_flash (GtkWidget *tray)
   } else {
     gnomemeeting_tray_set_content (tray, 0);
   }
-  gdk_threads_leave ();
-
-  return TRUE;
 }
 
 

@@ -384,8 +384,12 @@ void GMURLHandler::Main ()
 	
 	gnomemeeting_statusbar_flash (gw->statusbar, _("User not found"));
 	if (!transfer_call)
-	  gnomemeeting_calls_history_window_add_call (1, NULL, call_address, 
-						      "0.00", NULL);
+	  gnomemeeting_calls_history_window_add_call (1,
+						      NULL,
+						      call_address, 
+						      "0.00",
+						      _("User not found"),
+						      NULL);
       }
       
       gnomemeeting_threads_leave ();

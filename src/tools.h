@@ -49,21 +49,24 @@
  * BEHAVIOR     :  Build the calls history window and returns a pointer to it.
  * PRE          :  /
  */
-GtkWidget *
-gnomemeeting_calls_history_window_new (GmCallsHistoryWindow *);
+GtkWidget *gnomemeeting_calls_history_window_new (GmCallsHistoryWindow *);
 
 
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Add a call to the history window.
+ * PRE          :  /
+ */
 void gnomemeeting_calls_history_window_add_call (int,
 						 const char *, 
+						 const char *,
 						 const char *,
 						 const char *,
 						 const char *);
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Build the history window.
+ * BEHAVIOR     :  Build the history window and returns it.
  * PRE          :  /
  */
-GtkWidget *
-gnomemeeting_history_window_new ();
+GtkWidget *gnomemeeting_history_window_new ();
 
 #endif

@@ -115,6 +115,7 @@ gnomemeeting_calls_history_window_add_call (int i,
 					    const char *remote_user,
 					    const char *ip,
 					    const char *duration,
+					    const char *reason,
 					    const char *software)
 {
   GtkListStore *list_store = NULL;
@@ -159,7 +160,8 @@ gnomemeeting_calls_history_window_add_call (int i,
 			1, remote_user ? remote_user : "",
 			2, ip ? ip : "",
 			3, duration ? duration : "",
-			4, software ? software : "",
+			4, reason ? reason : "",
+			5, software ? software : "",
 			-1);
 
     g_free (utf8_time);
@@ -220,8 +222,14 @@ gnomemeeting_calls_history_window_new (GmCallsHistoryWindow *chw)
 				    GTK_POLICY_AUTOMATIC);
 
     list_store [i] = 
-      gtk_list_store_new (6, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING,
-			  G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
+      gtk_list_store_new (6,
+			  G_TYPE_STRING,
+			  G_TYPE_STRING,
+			  G_TYPE_STRING,
+			  G_TYPE_STRING,
+			  G_TYPE_STRING,
+			  G_TYPE_STRING,
+			  G_TYPE_STRING);
     
     tree_view = 
       gtk_tree_view_new_with_model (GTK_TREE_MODEL (list_store [i]));
@@ -236,7 +244,7 @@ gnomemeeting_calls_history_window_new (GmCallsHistoryWindow *chw)
     gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
     
     renderer = gtk_cell_renderer_text_new ();
-    column = gtk_tree_view_column_new_with_attributes (_("Remote user"),
+    column = gtk_tree_view_column_new_with_attributes (_("Remote User"),
 						       renderer,
 						       "text", 
 						       1,
@@ -255,7 +263,7 @@ gnomemeeting_calls_history_window_new (GmCallsHistoryWindow *chw)
 		  "underline", TRUE, NULL);
 
     renderer = gtk_cell_renderer_text_new ();
-    column = gtk_tree_view_column_new_with_attributes (_("Call duration"),
+    column = gtk_tree_view_column_new_with_attributes (_("Call Duration"),
 						       renderer,
 						       "text", 
 						       3,
@@ -264,12 +272,20 @@ gnomemeeting_calls_history_window_new (GmCallsHistoryWindow *chw)
     if (i == 2)
       gtk_tree_view_column_set_visible (column, false);
 
-
+    renderer = gtk_cell_renderer_text_new ();
+    column = gtk_tree_view_column_new_with_attributes (_("Call End Reason"),
+						       renderer,
+						       "text", 
+						       4,
+						       NULL);
+    gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+    g_object_set (G_OBJECT (renderer), "style", PANGO_STYLE_ITALIC, NULL);
+    
     renderer = gtk_cell_renderer_text_new ();
     column = gtk_tree_view_column_new_with_attributes (_("Software"),
 						       renderer,
 						       "text", 
-						       4,
+						       5,
 						       NULL);
     gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
     g_object_set (G_OBJECT (renderer), "style", PANGO_STYLE_ITALIC, NULL);

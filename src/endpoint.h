@@ -437,6 +437,13 @@ class GMH323EndPoint : public H323EndPoint
  protected:
 
   /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns the last called call token.
+   * PRE          :  /
+   */
+  PString GetLastCallAddress ();
+
+  
+  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Set the current transfer call token.
    * PRE          :  A valid PString for a call token.
    */
@@ -465,7 +472,7 @@ class GMH323EndPoint : public H323EndPoint
   PDECLARE_NOTIFIER(PTimer, GMH323EndPoint, OnRTPTimeout);
   PDECLARE_NOTIFIER(PTimer, GMH323EndPoint, OnGatewayIPTimeout);
   PDECLARE_NOTIFIER(PTimer, GMH323EndPoint, OnNoAnswerTimeout);
-
+  PDECLARE_NOTIFIER(PTimer, GMH323EndPoint, OnCallPending);
 
   PString called_address;
   PString current_call_token;
@@ -476,9 +483,6 @@ class GMH323EndPoint : public H323EndPoint
   H323ListenerTCP *listener;  
 
   unsigned calling_state; 
-  int docklet_timeout; 
-  int sound_timeout; 
-  int display_config; 
 
   GDKVideoOutputDevice *transmitted_video_device; 
   GDKVideoOutputDevice *received_video_device; 
@@ -487,21 +491,18 @@ class GMH323EndPoint : public H323EndPoint
   PTimer RTPTimer;
   PTimer GatewayIPTimer;
   PTimer NoAnswerTimer;
+  PTimer CallPendingTimer;
 
   BOOL ils_registered;
 
   GmWindow *gw; 
   GmLdapWindow *lw;
   GmTextChat *chat;
-  GConfClient *client;
 
   GMVideoGrabber *video_grabber;
   GMILSClient *ils_client;
   PThread *audio_tester;
 
-  /* Mutexes for the different variables to make
-     sure there is not 2 threads accessing them
-     at the same time */
   PMutex vg_access_mutex;
   PMutex ils_access_mutex;
   PMutex cs_access_mutex;
@@ -509,6 +510,7 @@ class GMH323EndPoint : public H323EndPoint
   PMutex tct_access_mutex;
   PMutex lid_access_mutex;
   PMutex at_access_mutex;
+  PMutex lca_access_mutex;
   
 #ifdef HAS_IXJ
   GMLid *lid;

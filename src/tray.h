@@ -47,12 +47,12 @@
 
 G_BEGIN_DECLS
 
-/* DESCRIPTION  :  This callback is called by a timeout function
+/* DESCRIPTION  :  /
  * BEHAVIOR     :  If current picture in the tray is globe,
  *                 then displays globe2, else displays globe
  * PRE          :  /
  */
-gint gnomemeeting_tray_flash (GtkWidget *);
+void gnomemeeting_tray_flash (GtkWidget *);
 
 
 /* DESCRIPTION  :  /

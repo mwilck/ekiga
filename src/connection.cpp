@@ -44,7 +44,9 @@
 #include "misc.h"
 #include "chat_window.h"
 #include "main_window.h"
+
 #include "dialog.h"
+#include "gconf_widgets_extensions.h"
 
 #include <h323pdu.h>
 
@@ -186,28 +188,17 @@ GMH323Connection::OnAnswerCall (const PString & caller,
 				const H323SignalPDU &,
 				H323SignalPDU &)
 {
-  GConfClient *client = NULL;
   IncomingCallMode icm = AVAILABLE;
 
   MyApp -> Endpoint () -> SetCurrentCallToken (GetCallToken());
 
   gnomemeeting_threads_enter ();  
-  client = gconf_client_get_default ();
   icm = (IncomingCallMode)
-    gconf_client_get_int (client, CALL_CONTROL_KEY "incoming_call_mode", NULL);
+    gconf_get_int (CALL_CONTROL_KEY "incoming_call_mode");
   gnomemeeting_threads_leave ();
 
-  if (icm == FREE_FOR_CHAT) {
-
-    gnomemeeting_threads_enter ();  
-    gnomemeeting_statusbar_flash (gw->statusbar,
-				  _("Auto Answering Incoming Call"));
-    gnomemeeting_log_insert (gw->history_text_view,
-			     _("Auto Answering Incoming Call"));
-    gnomemeeting_threads_leave ();
-    
+  if (icm == FREE_FOR_CHAT) 
     return AnswerCallNow; 
-  }
 
   return AnswerCallPending;
 }
