@@ -975,8 +975,8 @@ gnomemeeting_init (GmWindow *gw,
 
 
 #ifdef SPEEX_CODEC
-  /* New Speex Audio codec in 0.94 */
-  if (gconf_client_get_int (client, GENERAL_KEY "version", NULL) < 94) {
+  /* New Speex Audio codec in 0.95 (all Unix versions of 0.95 will have it) */
+  if (gconf_client_get_int (client, GENERAL_KEY "version", NULL) < 95) {
 
     GSList *list = NULL;
 
@@ -1204,9 +1204,7 @@ gnomemeeting_init (GmWindow *gw,
   gnomemeeting_video_submenu_set_sensitive (FALSE, LOCAL_VIDEO);
   gnomemeeting_video_submenu_set_sensitive (FALSE, REMOTE_VIDEO);
   gnomemeeting_zoom_submenu_set_sensitive (FALSE);
-#ifdef HAS_SDL
   gnomemeeting_fullscreen_option_set_sensitive (FALSE);
-#endif
 
 
   /* The gtk_widget_show (gm) will show the toolbar, hide it if needed */

@@ -84,13 +84,16 @@ esac
 dnl Check the OS type (more types can be added) 
 AC_MSG_CHECKING(whether OS type is supported)
 
+HAS_SPEEX="disabled"
+
 case $target_os in
 
   linux-gnu | linux | Linux)
-    H323_CFLAGS="-DP_LINUX -D_REENTRANT -DP_HAS_SEMAPHORES -DP_PTHREADS $ARCH_H323_CFLAGS -DHAS_OSS -O3 -DNDEBUG -fPIC -g -DPHAS_TEMPLATES -Wall"
+    H323_CFLAGS="-DSPEEX_CODEC -DP_LINUX -D_REENTRANT -DP_HAS_SEMAPHORES -DP_PTHREADS $ARCH_H323_CFLAGS -DHAS_OSS -O3 -DNDEBUG -fPIC -g -DPHAS_TEMPLATES -Wall"
     H323_LIBS="-lopenh323 -ldl -lpt -lpthread -lssl -lcrypto"
     LIBPT_FILE="libpt.so"
     LIBOPENH323_FILE="libopenh323.so"
+    HAS_SPEEX="enabled"
     AC_MSG_RESULT([yes])
     gm_platform="linux"
 
@@ -99,10 +102,11 @@ dnl -D_DEBUG -DPMEMORY_CHECK=1 -DPTRACING -g
     ;;
 
   FreeBSD* | freebsd* )
-    H323_CFLAGS="-DP_FREEBSD=400001 -DP_SSL -DP_PTHREADS  $ARCH_H323_CFLAGS -O2 -Wall -DPHAS_TEMPLATES"
+    H323_CFLAGS="-DSPEEX_CODEC -DP_FREEBSD=400001 -DP_SSL -DP_PTHREADS  $ARCH_H323_CFLAGS -O2 -Wall -DPHAS_TEMPLATES"
     H323_LIBS="-lh323_FreeBSD_x86_r_s -lpt_FreeBSD_x86_r_s -pthread -lssl -lcrypto"
     LIBPT_FILE="libpt_FreeBSD_x86_r_s.a"
     LIBOPENH323_FILE="libh323_FreeBSD_x86_r_s.a"
+    HAS_SPEEX="enabled"
     AC_MSG_RESULT([yes])
     gm_platform="freebsd"
     ;;
@@ -209,22 +213,6 @@ AC_CHECK_HEADER(telephony.h, HAS_IXJ="enabled", HAS_IXJ="disabled",-)
 
 if test "x${HAS_IXJ}" = "xenabled"; then
 	H323_CFLAGS="$H323_CFLAGS -DHAS_IXJ"
-fi
-
-CPPFLAGS="$CPPFLAGS_save"
-
-
-dnl ###########################################################################
-dnl Check if there is Speex codec support
-dnl ###########################################################################
-CPPFLAGS_save="$CPPFLAGS"
-	
-CPPFLAGS="$CPPFLAGS -I /usr/include/ -I /usr/local/include/"
-AC_CHECK_HEADER(speex.h, HAS_SPEEX="enabled", HAS_SPEEX="disabled",-)
-
-if test "x${HAS_SPEEX}" = "xenabled"; then
-	H323_CFLAGS="$H323_CFLAGS -DSPEEX_CODEC"
-	H323_LIBS="$H323_LIBS -lspeex"	
 fi
 
 CPPFLAGS="$CPPFLAGS_save"
