@@ -1873,8 +1873,9 @@ void gnomemeeting_gconf_upgrade ()
     /* Convert the old ports keys */
     gconf_value_int =
       gconf_client_get_int (client, GENERAL_KEY "listen_port", 0);
-    gconf_client_set_int (client, PORTS_KEY "listen_port",
-			  gconf_value_int, 0);
+    if (gconf_value_int != 0)
+      gconf_client_set_int (client, PORTS_KEY "listen_port",
+			    gconf_value_int, 0);
     
     gconf_value =
       gconf_client_get_string (client, GENERAL_KEY "tcp_port_range", 0);
