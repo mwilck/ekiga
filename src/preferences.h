@@ -130,7 +130,8 @@ void vb_changed (GtkToggleButton *, gpointer);
 // PRE          :  The first parameter is the calling_state when the window
 //                 is created.  The second one a pointer
 //                 to a valid GM_window_widgets
-void GMPreferences (int, GM_window_widgets *);
+void GM_preferences_init (int, GM_window_widgets *, GM_pref_window_widgets *,
+			  options *);
 
 
 // DESCRIPTION  :  /

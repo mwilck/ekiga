@@ -23,6 +23,7 @@
 #include "ils.h"
 #include "main.h"
 #include "callbacks.h"
+#include "main_interface.h"
 
 
 extern GnomeMeeting *MyApp;
@@ -44,11 +45,15 @@ GMThreadsCleaner::~GMThreadsCleaner ()
 
 void GMThreadsCleaner::Main ()
 {
-  GMILSClient *ils_client = (GMILSClient *) MyApp->Endpoint ()->get_ils_client();
-  GMVideoGrabber *video_grabber = (GMVideoGrabber *) MyApp->Endpoint ()->GetVideoGrabber ();
+  GMILSClient *ils_client = (GMILSClient *) 
+    MyApp->Endpoint ()->get_ils_client();
+  GMVideoGrabber *video_grabber = (GMVideoGrabber *) 
+    MyApp->Endpoint ()->GetVideoGrabber ();
 
   gdk_threads_enter ();
   disconnect_cb (NULL, NULL);
+  gnome_appbar_push (GNOME_APPBAR (gw->statusbar), _("Quit in progress..."));
+  GM_log_insert (gw->log_text, _("Quit in progress..."));
   gdk_threads_leave ();
 
   while (MyApp->Endpoint ()->CallingState () != 0)

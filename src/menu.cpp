@@ -27,7 +27,8 @@
 /* The functions                                                              */
 /******************************************************************************/
 
-void GM_menu_init (GtkWidget *gapp, GM_window_widgets *gw)
+void GM_menu_init (GtkWidget *gapp, GM_window_widgets *gw, 
+		   GM_pref_window_widgets *pw)
 {
   static GnomeUIInfo file_menu [] =
     {
@@ -111,7 +112,7 @@ void GM_menu_init (GtkWidget *gapp, GM_window_widgets *gw)
       {
 	GNOME_APP_UI_ITEM,
 	N_("_Settings"), N_("Change Your Preferences"),
-	(void *)pref_callback, gw, NULL,
+	(void *)pref_callback, pw, NULL,
 	GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_PREF,
 	's', GDK_CONTROL_MASK, NULL
       },

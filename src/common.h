@@ -122,6 +122,7 @@ struct _GM_window_widgets
   GtkWidget *audio_chan_button;
 
   int video_grabber_thread_count;
+  int cleaner_thread_count;
   PStringArray video_devices;
   PStringArray audio_recorder_devices;
   PStringArray audio_player_devices;

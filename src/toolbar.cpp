@@ -28,7 +28,8 @@
 extern GnomeMeeting *MyApp;
 extern GtkWidget *gm;
 
-void GM_toolbar_init (GtkWidget *gapp, GM_window_widgets *gw)
+void GM_toolbar_init (GtkWidget *gapp, GM_window_widgets *gw,
+		      GM_pref_window_widgets *pw)
 {
   static GnomeUIInfo main_toolbar [] =
     {
@@ -58,7 +59,7 @@ void GM_toolbar_init (GtkWidget *gapp, GM_window_widgets *gw)
 	{
 	GNOME_APP_UI_ITEM,
 	N_("Settings"), N_("Change Your Preferences"),
-	(void *)pref_callback, gw, NULL,
+	(void *)pref_callback, pw, NULL,
 	GNOME_APP_PIXMAP_DATA, settings_xpm,
 	'S', GDK_CONTROL_MASK, NULL
 	},

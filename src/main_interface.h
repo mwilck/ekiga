@@ -113,7 +113,8 @@ void silence_detection_button_clicked (GtkWidget *, gpointer);
 //                 options must have been read before calling these functions
 
 // BEHAVIOR     :  init things, build the initial gm window
-void GM_init (GM_window_widgets *, GM_ldap_window_widgets *, options *, int, 
+void GM_init (GM_window_widgets *, GM_pref_window_widgets *, 
+	      GM_ldap_window_widgets *, options *, int, 
 	      char **, char **);
 
 // BEHAVIOR     :  builds the main interface

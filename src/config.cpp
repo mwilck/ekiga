@@ -498,9 +498,6 @@ void read_config_from_gui (GM_window_widgets *gw, GM_ldap_window_widgets *lw, op
   g_free (opts->ldap_servers_list);
   opts->ldap_servers_list = NULL;
 
-  opts->video_preview = gtk_toggle_button_get_active 
-    (GTK_TOGGLE_BUTTON (gw->preview_button));
-
   while (text = (gchar *) g_list_nth_data (lw->ldap_servers_list, i))
     {
       old_pointer = opts->ldap_servers_list;

@@ -1,3 +1,4 @@
+
 /***************************************************************************
                           preferences.cxx  -  description
                              -------------------
@@ -53,20 +54,18 @@ void pref_window_clicked (GnomeDialog *widget, int button, gpointer data)
 
   switch (button)
     {
-      /* The user clicks on OK => save and destroy */
+      /* The user clicks on OK => save and hide */
     case 2:
       // Save things
       opts = read_config_from_struct ((GM_pref_window_widgets *) data);
+
       if (check_config_from_struct ((GM_pref_window_widgets *) data))
 	{
 	  store_config (opts);
 	  apply_options (opts, (GM_pref_window_widgets *) data);
 	}
 
-      // destroy
-      ((GM_pref_window_widgets *) data)->gw->pref_window = NULL;
-      delete ((GM_pref_window_widgets *) data);
-      gtk_widget_destroy (GTK_WIDGET (widget));
+      gtk_widget_hide (GTK_WIDGET (widget));
       /* opts' content is destroyed with the widgets. */
       delete (opts);
       break;
@@ -84,11 +83,9 @@ void pref_window_clicked (GnomeDialog *widget, int button, gpointer data)
       delete (opts); /* opts' content is destroyed with the widgets */
       break;
 
-      /* the user clicks on cancel => only destroy */
+      /* the user clicks on cancel => only hide */
     case 0:
-      ((GM_pref_window_widgets *) data)->gw->pref_window = NULL;
-      delete ((GM_pref_window_widgets *) data);
-      gtk_widget_destroy (GTK_WIDGET (widget));
+      gtk_widget_hide (GTK_WIDGET (widget));
       break;
     }
 }
@@ -96,6 +93,7 @@ void pref_window_clicked (GnomeDialog *widget, int button, gpointer data)
 
 gint pref_window_destroyed (GtkWidget *widget, gpointer data)
 {
+  gtk_widget_hide (GTK_WIDGET (widget));
   return (TRUE);
 }
 
@@ -245,23 +243,13 @@ void vb_changed (GtkToggleButton *button, gpointer data)
 /* The functions                                                              */
 /******************************************************************************/
 
-void GMPreferences (int calling_state, GM_window_widgets *gw)
+void GM_preferences_init (int calling_state, GM_window_widgets *gw, 
+			  GM_pref_window_widgets *pw, options *opts)
 {
   gchar *node_txt [1]; 
   gchar * ctree_titles [] = {N_("Settings")};
-  options *opts;
 
   GtkWidget *pixmap, *event_box, *hpaned;
-
-  opts = new (options);
-  memset (opts, 0, sizeof (options));
-  
-  /* We read the saved options */
-  read_config (opts);
-  /* But we override some settings with the current options  
-   * from the "quick button bar" */
-  opts->video_preview = 
-    gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (gw->preview_button));
 
   GtkWidget *frame;
 
@@ -277,17 +265,7 @@ void GMPreferences (int calling_state, GM_window_widgets *gw)
 
   /* Box inside the prefs window */
   GtkWidget *dialog_vbox;
-
-  /* The widgets structure */
-  GM_pref_window_widgets *pw = NULL;
-  pw = new (GM_pref_window_widgets); 
-  pw->gw = gw;
-  pw->ldap_changed = 0;
-  pw->audio_mixer_changed = 0;
-  pw->gk_changed = 0;
-  pw->capabilities_changed = 0;
-
-
+ 
   gw->pref_window = gnome_dialog_new (NULL, GNOME_STOCK_BUTTON_CANCEL,
 				      GNOME_STOCK_BUTTON_APPLY,
 				      GNOME_STOCK_BUTTON_OK,
@@ -309,11 +287,12 @@ void GMPreferences (int calling_state, GM_window_widgets *gw)
   hpaned = gtk_hpaned_new ();
   gtk_paned_pack1 (GTK_PANED (hpaned), ctree, TRUE, TRUE);
   gtk_paned_pack2 (GTK_PANED (hpaned), notebook, TRUE, TRUE);
-  gtk_box_pack_start (GTK_BOX (dialog_vbox), hpaned, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (dialog_vbox), hpaned, FALSE, FALSE, 0);
 
-  gtk_widget_set_usize (GTK_WIDGET (ctree), 200, 20);
-  gtk_widget_set_usize (GTK_WIDGET (notebook), 470, 280);
+  gtk_clist_set_column_auto_resize (GTK_CLIST (clist), 0, TRUE);
   
+  gtk_window_set_policy (GTK_WINDOW (gw->pref_window), FALSE, FALSE, TRUE);
+
   /* All the notebook pages */
   node_txt [0] = g_strdup (_("General"));
   node = gtk_ctree_insert_node (GTK_CTREE (ctree), NULL,
@@ -434,7 +413,7 @@ void GMPreferences (int calling_state, GM_window_widgets *gw)
   event_box = gtk_event_box_new ();
   gtk_container_add (GTK_CONTAINER (frame), event_box);
   gtk_container_add (GTK_CONTAINER (event_box), 
-		     GTK_WIDGET (pixmap));
+	  	     GTK_WIDGET (pixmap));
 
   gtk_notebook_prepend_page (GTK_NOTEBOOK (notebook), frame, NULL);
  
@@ -446,14 +425,8 @@ void GMPreferences (int calling_state, GM_window_widgets *gw)
   gtk_clist_set_selectable (clist, 0, FALSE);
   gtk_clist_set_selectable (clist, 7, FALSE);
 
-  gtk_widget_show_all (gw->pref_window);
-
   gtk_signal_connect (GTK_OBJECT (gw->pref_window), "close",
 		      GTK_SIGNAL_FUNC (pref_window_destroyed), pw);
-
- 
-  g_options_free (opts);
-  delete (opts);
 }
 
 
@@ -523,7 +496,7 @@ void init_pref_audio_codecs (GtkWidget *notebook, GM_pref_window_widgets *pw,
   /* Add */
   button = add_button (_("Add"), 
 		       gnome_stock_new_with_icon (GNOME_STOCK_BUTTON_APPLY));  
-  gtk_widget_set_usize (GTK_WIDGET (button), 40, 25);
+
   gtk_table_attach (GTK_TABLE (table), button, 0, 1, 1, 2,
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
@@ -541,7 +514,7 @@ void init_pref_audio_codecs (GtkWidget *notebook, GM_pref_window_widgets *pw,
   /* Del */
   button = add_button (_("Delete"), 
 		       gnome_stock_new_with_icon (GNOME_STOCK_BUTTON_CANCEL));  
-  gtk_widget_set_usize (GTK_WIDGET (button), 40, 25);
+
   gtk_table_attach (GTK_TABLE (table), button, 1, 2, 1, 2,
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
@@ -559,7 +532,7 @@ void init_pref_audio_codecs (GtkWidget *notebook, GM_pref_window_widgets *pw,
   /* Up */
   button = add_button (_("Up"), 
 		       gnome_stock_new_with_icon (GNOME_STOCK_MENU_UP)); 
-  gtk_widget_set_usize (GTK_WIDGET (button), 40, 25);
+
   gtk_table_attach (GTK_TABLE (table), button, 2, 3, 1, 2,
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
@@ -577,7 +550,7 @@ void init_pref_audio_codecs (GtkWidget *notebook, GM_pref_window_widgets *pw,
   /* Down */
   button = add_button (_("Down"), 
 		       gnome_stock_new_with_icon (GNOME_STOCK_MENU_DOWN)); 
-  gtk_widget_set_usize (GTK_WIDGET (button), 40, 25);
+
   gtk_table_attach (GTK_TABLE (table), button, 3, 4, 1, 2,
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
@@ -634,14 +607,14 @@ void init_pref_interface (GtkWidget *notebook, GM_pref_window_widgets *pw,
   gtk_box_pack_start (GTK_BOX (vbox), frame, 
 		      FALSE, FALSE, 0);
 
-  table = gtk_table_new (2, 4, TRUE);
+  table = gtk_table_new (2, 2, TRUE);
   gtk_container_add (GTK_CONTAINER (frame), table);
   gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
   
 
   /* Show / hide splash screen at startup */
   pw->show_splash = gtk_check_button_new_with_label (_("Show Splash Screen"));
-  gtk_table_attach (GTK_TABLE (table), pw->show_splash, 2, 4, 0, 1,
+  gtk_table_attach (GTK_TABLE (table), pw->show_splash, 1, 2, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);	
@@ -655,7 +628,7 @@ void init_pref_interface (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   /* Show / hide the notebook at startup */
   pw->show_notebook = gtk_check_button_new_with_label (_("Show Control Panel"));
-  gtk_table_attach (GTK_TABLE (table), pw->show_notebook, 0, 2, 0, 1,
+  gtk_table_attach (GTK_TABLE (table), pw->show_notebook, 0, 1, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);	
@@ -669,7 +642,7 @@ void init_pref_interface (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   /* Show / hide the statusbar at startup */
   pw->show_statusbar = gtk_check_button_new_with_label (_("Show Status Bar"));
-  gtk_table_attach (GTK_TABLE (table), pw->show_statusbar, 0, 2, 1, 2,
+  gtk_table_attach (GTK_TABLE (table), pw->show_statusbar, 0, 1, 1, 2,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);	
@@ -684,7 +657,7 @@ void init_pref_interface (GtkWidget *notebook, GM_pref_window_widgets *pw,
   /* Show / hide the quickbar at startup */
   pw->show_quickbar = 
     gtk_check_button_new_with_label (_("Show Quick Access Bar"));
-  gtk_table_attach (GTK_TABLE (table), pw->show_quickbar, 2, 4, 1, 2,
+  gtk_table_attach (GTK_TABLE (table), pw->show_quickbar, 1, 2, 1, 2,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);	
@@ -703,14 +676,14 @@ void init_pref_interface (GtkWidget *notebook, GM_pref_window_widgets *pw,
 		      FALSE, FALSE, 0);
 
   /* Put a table in the first frame */
-  table = gtk_table_new (2, 4, TRUE);
+  table = gtk_table_new (2, 2, TRUE);
   gtk_container_add (GTK_CONTAINER (frame), table);
   gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
 
 
   /* Auto Answer toggle button */						
   pw->aa = gtk_check_button_new_with_label (_("Auto Answer"));
-  gtk_table_attach (GTK_TABLE (table), pw->aa, 0, 2, 0, 1,
+  gtk_table_attach (GTK_TABLE (table), pw->aa, 0, 1, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);	
@@ -723,7 +696,7 @@ void init_pref_interface (GtkWidget *notebook, GM_pref_window_widgets *pw,
   
   /* DND toggle button */
   pw->dnd = gtk_check_button_new_with_label (_("Do Not Disturb"));
-  gtk_table_attach (GTK_TABLE (table), pw->dnd, 0, 2, 1, 2,
+  gtk_table_attach (GTK_TABLE (table), pw->dnd, 0, 1, 1, 2,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);	
@@ -736,7 +709,7 @@ void init_pref_interface (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   /* Popup display */
   pw->popup = gtk_check_button_new_with_label (_("Popup window"));
-  gtk_table_attach (GTK_TABLE (table), pw->popup, 2, 4, 0, 1,
+  gtk_table_attach (GTK_TABLE (table), pw->popup, 1, 2, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);	
@@ -749,7 +722,7 @@ void init_pref_interface (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   /* Enable / disable video preview */
   pw->video_preview = gtk_check_button_new_with_label (_("Video Preview"));
-  gtk_table_attach (GTK_TABLE (table), pw->video_preview, 2, 4, 1, 2,
+  gtk_table_attach (GTK_TABLE (table), pw->video_preview, 1, 2, 1, 2,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);	
@@ -768,14 +741,14 @@ void init_pref_interface (GtkWidget *notebook, GM_pref_window_widgets *pw,
 		      FALSE, FALSE, 0);
 
   /* Put a table in the first frame */
-  table = gtk_table_new (1, 4, TRUE);
+  table = gtk_table_new (1, 2, TRUE);
   gtk_container_add (GTK_CONTAINER (frame), table);
   gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
 
 
   /* Auto Answer toggle button */						
   pw->incoming_call_sound = gtk_check_button_new_with_label (_("Incoming Call"));
-  gtk_table_attach (GTK_TABLE (table), pw->incoming_call_sound, 0, 2, 0, 1,
+  gtk_table_attach (GTK_TABLE (table), pw->incoming_call_sound, 0, 1, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);	
@@ -1030,7 +1003,7 @@ void init_pref_codecs_settings (GtkWidget *notebook,
 			    table, label);
 
   /* H.261 codec */
-  table = gtk_table_new (2, 4, TRUE);
+  table = gtk_table_new (2, 4, FALSE);
 
   /* Transmitted Video Quality */
   pw->tr_vq_label = gtk_label_new (_("Transmitted Quality:"));
@@ -1188,7 +1161,7 @@ void init_pref_general (GtkWidget *notebook, GM_pref_window_widgets *pw,
   gtk_box_pack_start (GTK_BOX (vbox), frame, 
 		      FALSE, FALSE, 0);
 
-  table = gtk_table_new (6, 4, TRUE);
+  table = gtk_table_new (6, 2, FALSE);
   gtk_container_add (GTK_CONTAINER (frame), table);
   gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
   
@@ -1201,7 +1174,7 @@ void init_pref_general (GtkWidget *notebook, GM_pref_window_widgets *pw,
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
   
   pw->firstname = gtk_entry_new ();
-  gtk_table_attach (GTK_TABLE (table), pw->firstname, 1, 4, 0, 1,
+  gtk_table_attach (GTK_TABLE (table), pw->firstname, 1, 2, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
@@ -1224,7 +1197,7 @@ void init_pref_general (GtkWidget *notebook, GM_pref_window_widgets *pw,
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
   
   pw->surname = gtk_entry_new ();
-  gtk_table_attach (GTK_TABLE (table), pw->surname, 1, 4, 1, 2,
+  gtk_table_attach (GTK_TABLE (table), pw->surname, 1, 2, 1, 2,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
@@ -1247,7 +1220,7 @@ void init_pref_general (GtkWidget *notebook, GM_pref_window_widgets *pw,
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
   
   pw->mail = gtk_entry_new();
-  gtk_table_attach (GTK_TABLE (table), pw->mail, 1, 4, 2, 3,
+  gtk_table_attach (GTK_TABLE (table), pw->mail, 1, 2, 2, 3,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
@@ -1270,7 +1243,7 @@ void init_pref_general (GtkWidget *notebook, GM_pref_window_widgets *pw,
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
   
   pw->comment = gtk_entry_new();
-  gtk_table_attach (GTK_TABLE (table), pw->comment, 1, 4, 3, 4,
+  gtk_table_attach (GTK_TABLE (table), pw->comment, 1, 2, 3, 4,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
@@ -1292,7 +1265,7 @@ void init_pref_general (GtkWidget *notebook, GM_pref_window_widgets *pw,
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
   
   pw->location = gtk_entry_new();
-  gtk_table_attach (GTK_TABLE (table), pw->location, 1, 4, 4, 5,
+  gtk_table_attach (GTK_TABLE (table), pw->location, 1, 2, 4, 5,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
@@ -1360,7 +1333,7 @@ void init_pref_advanced (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
 
   /* Put a table in this second frame */
-  table = gtk_table_new (2, 4, TRUE);
+  table = gtk_table_new (2, 4, FALSE);
   gtk_container_add (GTK_CONTAINER (frame), table);
   gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
 
@@ -1459,7 +1432,7 @@ void init_pref_ldap (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
 
   /* Put a table in the first frame */
-  table = gtk_table_new (2, 4, TRUE);
+  table = gtk_table_new (2, 2, FALSE);
   gtk_container_add (GTK_CONTAINER (frame), table);
   gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
 
@@ -1472,7 +1445,7 @@ void init_pref_ldap (GtkWidget *notebook, GM_pref_window_widgets *pw,
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
   
   pw->ldap_server = gtk_entry_new();
-  gtk_table_attach (GTK_TABLE (table), pw->ldap_server, 1, 4, 0, 1,
+  gtk_table_attach (GTK_TABLE (table), pw->ldap_server, 1, 2, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
@@ -1510,7 +1483,7 @@ void init_pref_ldap (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   /* Use ILS */ 
   pw->ldap = gtk_check_button_new_with_label (_("Register"));
-  gtk_table_attach (GTK_TABLE (table), pw->ldap, 2, 4, 1, 2,
+  gtk_table_attach (GTK_TABLE (table), pw->ldap, 1, 2, 1, 2,
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
@@ -1559,19 +1532,19 @@ void init_pref_gatekeeper (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
 
   /* Put a table in the first frame */
-  table = gtk_table_new (3, 4, TRUE);
+  table = gtk_table_new (3, 2, FALSE);
   gtk_container_add (GTK_CONTAINER (frame), table);
   gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
 
   /* Gatekeeper ID */
-  label = gtk_label_new (_("Gatekeeper ID"));
+  label = gtk_label_new (_("Gatekeeper ID:"));
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 1, 2,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
   
   pw->gk_id = gtk_entry_new();
-  gtk_table_attach (GTK_TABLE (table), pw->gk_id, 1, 4, 1, 2,
+  gtk_table_attach (GTK_TABLE (table), pw->gk_id, 1, 2, 1, 2,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
@@ -1586,14 +1559,14 @@ void init_pref_gatekeeper (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
 
   /* Gatekeeper Host */
-  label = gtk_label_new (_("Gatekeeper host"));
+  label = gtk_label_new (_("Gatekeeper host:"));
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
   
   pw->gk_host = gtk_entry_new();
-  gtk_table_attach (GTK_TABLE (table), pw->gk_host, 1, 4, 0, 1,
+  gtk_table_attach (GTK_TABLE (table), pw->gk_host, 1, 2, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
@@ -1608,7 +1581,7 @@ void init_pref_gatekeeper (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
 
   /* GK registering method */ 
-  label = gtk_label_new (_("Registering method"));
+  label = gtk_label_new (_("Registering method:"));
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 2, 3,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -1627,7 +1600,7 @@ void init_pref_gatekeeper (GtkWidget *notebook, GM_pref_window_widgets *pw,
   gtk_option_menu_set_menu (GTK_OPTION_MENU (pw->gk), menu);
   gtk_option_menu_set_history (GTK_OPTION_MENU (pw->gk), opts->gk);	
 
-  gtk_table_attach (GTK_TABLE (table), pw->gk, 1, 3, 2, 3,
+  gtk_table_attach (GTK_TABLE (table), pw->gk, 1, 2, 2, 3,
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
@@ -1655,7 +1628,6 @@ void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
   GtkWidget *table;
   GtkWidget *label;
   GtkWidget *video_channel;
-  GtkWidget *test_button;
   GList *audio_player_devices_list = NULL;
   GList *audio_recorder_devices_list = NULL;
   GList *video_devices_list = NULL;
@@ -1676,7 +1648,7 @@ void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
 
   /* Put a table in the first frame */
-  table = gtk_table_new (4, 4, TRUE);
+  table = gtk_table_new (4, 2, FALSE);
   gtk_container_add (GTK_CONTAINER (frame), table);
   gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
 
@@ -1689,7 +1661,7 @@ void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
 
   pw->audio_player = gtk_combo_new ();
-  gtk_table_attach (GTK_TABLE (table), pw->audio_player, 1, 3, 0, 1,
+  gtk_table_attach (GTK_TABLE (table), pw->audio_player, 1, 2, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
@@ -1724,7 +1696,7 @@ void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
 
   pw->audio_recorder = gtk_combo_new ();
-  gtk_table_attach (GTK_TABLE (table), pw->audio_recorder, 1, 3, 2, 3,
+  gtk_table_attach (GTK_TABLE (table), pw->audio_recorder, 1, 2, 2, 3,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
@@ -1761,7 +1733,7 @@ void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
 
   pw->audio_player_mixer = gtk_entry_new ();
-  gtk_table_attach (GTK_TABLE (table), pw->audio_player_mixer, 1, 3, 1, 2,
+  gtk_table_attach (GTK_TABLE (table), pw->audio_player_mixer, 1, 2, 1, 2,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
@@ -1784,7 +1756,7 @@ void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
 
   pw->audio_recorder_mixer = gtk_entry_new ();
-  gtk_table_attach (GTK_TABLE (table), pw->audio_recorder_mixer, 1, 3, 3, 4,
+  gtk_table_attach (GTK_TABLE (table), pw->audio_recorder_mixer, 1, 2, 3, 4,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
@@ -1806,7 +1778,7 @@ void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
 		      FALSE, FALSE, 0);
 
   /* Put a table in the first frame */
-  table = gtk_table_new (2, 4, TRUE);
+  table = gtk_table_new (2, 2, FALSE);
   gtk_container_add (GTK_CONTAINER (frame), table);
   gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
 
@@ -1818,7 +1790,7 @@ void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
   
   pw->video_device = gtk_combo_new ();
-  gtk_table_attach (GTK_TABLE (table), pw->video_device, 1, 3, 0, 1,
+  gtk_table_attach (GTK_TABLE (table), pw->video_device, 1, 2, 0, 1,
  		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
  		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
  		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
@@ -1868,21 +1840,6 @@ void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
   gtk_signal_connect (GTK_OBJECT (pw->video_channel_spin_adj), "value-changed",
 		      GTK_SIGNAL_FUNC (vid_tr_changed), (gpointer) pw);
 
-  /* Device test button */
-  test_button = gtk_toggle_button_new_with_label (_("Preview Video Settings"));
-
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (test_button),
-				gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON
-							      (pw->gw->preview_button)));
-
-  gtk_table_attach (GTK_TABLE (table), test_button, 2, 4, 1, 2,
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);	
-
-  
-  gtk_signal_connect (GTK_OBJECT (test_button), "pressed",
-		      GTK_SIGNAL_FUNC (preview_button_clicked), (gpointer) pw->gw);
 
   /* The End */									
   label = gtk_label_new (_("Device Settings"));
@@ -1912,7 +1869,7 @@ GtkWidget * add_button (gchar *lbl, GtkWidget *pixmap)
   
   gtk_container_add (GTK_CONTAINER (button), hbox2);
   
-  gtk_widget_set_usize (GTK_WIDGET (button), 37, 20);
+  gtk_widget_set_usize (GTK_WIDGET (button), 40, 25);
   
   gtk_widget_show (pixmap);
   gtk_widget_show (label);

@@ -30,7 +30,7 @@
 // DESCRIPTION  :  /
 // BEHAVIOR     :  Creates the menus and add them to the main window
 // PRE          :  gpointer is a valid pointer to the GM_window_widgets
-void GM_menu_init (GtkWidget *, GM_window_widgets *);
+void GM_menu_init (GtkWidget *, GM_window_widgets *, GM_pref_window_widgets *);
 
 
 // DESCRIPTION  :  /

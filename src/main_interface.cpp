@@ -31,6 +31,7 @@
 #include "audio.h"
 #include "videograbber.h"
 #include "endpoint.h"
+#include "preferences.h"
 
 #include "../pixmaps/text_logo.xpm"
 #include "../pixmaps/speaker.xpm"
@@ -201,7 +202,8 @@ void silence_detection_button_clicked (GtkWidget *w, gpointer data)
 /* The functions                                                              */
 /******************************************************************************/
 
-void GM_init (GM_window_widgets *gw, GM_ldap_window_widgets *lw, options *opts, 
+void GM_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
+	      GM_ldap_window_widgets *lw, options *opts, 
 	      int argc, char ** argv, char ** envp)
 {
   GMH323EndPoint *endpoint = NULL;
@@ -252,8 +254,12 @@ void GM_init (GM_window_widgets *gw, GM_ldap_window_widgets *lw, options *opts,
 
   gw->docklet = GM_docklet_init ();
 
+  /* Build the interface */
   GM_main_interface_init (gw, opts);
   GM_ldap_init (gw, lw, opts);
+  GM_preferences_init (0, gw, pw, opts);
+  GM_menu_init (gm, gw, pw);
+  GM_toolbar_init (gm, gw, pw);	
 
   // Launch the GnomeMeeting H.323 part
   static GnomeMeeting instance (gw, opts);
@@ -345,7 +351,6 @@ void GM_init (GM_window_widgets *gw, GM_ldap_window_widgets *lw, options *opts,
 				_("Done!"), 0.9999);
 
   gtk_widget_show (GTK_WIDGET (gm));
-//  gtk_widget_show_all (gm);
 	
   // Start to grab?
   if (opts->video_preview)
@@ -626,10 +631,7 @@ void GM_main_interface_init (GM_window_widgets *gw, options *opts)
 
   if (opts->show_quickbar)
     gtk_widget_show_all (GTK_WIDGET (gw->quickbar_frame));
-
-  // The menu and toolbar
-  GM_menu_init (gm,gw);
-  GM_toolbar_init (gm, gw);	  
+  
 }
 
 

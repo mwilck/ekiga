@@ -243,6 +243,7 @@ int main (int argc, char ** argv, char ** envp)
   GM_window_widgets *gw = NULL;
   GM_ldap_window_widgets *lw = NULL;
   options *opts = NULL;
+  GM_pref_window_widgets *pw = NULL;
 
   // Init the GM_window_widgets
   gw = new (GM_window_widgets);
@@ -250,6 +251,15 @@ int main (int argc, char ** argv, char ** envp)
   gw->pref_window = NULL;
   gw->ldap_window = NULL;
   gw->video_grabber_thread_count = 0;
+  gw->cleaner_thread_count = 0;
+
+  // Init the GM_pref_window_widgets structure
+  pw = new (GM_pref_window_widgets); 
+  pw->gw = gw;
+  pw->ldap_changed = 0;
+  pw->audio_mixer_changed = 0;
+  pw->gk_changed = 0;
+  pw->capabilities_changed = 0;
 
   // Init the GM_ldap_window_widgets structure
   lw = new (GM_ldap_window_widgets);
@@ -264,7 +274,7 @@ int main (int argc, char ** argv, char ** envp)
   textdomain (PACKAGE);
   bindtextdomain (PACKAGE, GNOMELOCALEDIR);
 
-  GM_init (gw, lw, opts, argc, argv, envp);
+  GM_init (gw, pw, lw, opts, argc, argv, envp);
 
   gtk_idle_add ((GtkFunction) gnome_idle_timer, gw);
 

@@ -256,20 +256,20 @@ void GMVideoGrabber::VGOpen (void)
 
   if (!grabber->Open (opts->video_device, FALSE))
     error_code = 0;
-
+  else
   if (!grabber->SetVideoFormat 
       (opts->video_format ? PVideoDevice::NTSC : PVideoDevice::PAL))
     error_code = 1;
-
+  else
   if (!grabber->SetChannel (opts->video_channel))
     error_code = 2;
-
+  else
   if (!grabber->SetColourFormatConverter ("YUV420P"))
     error_code = 3;
-
- if (!grabber->SetFrameRate (5))
+  else
+  if (!grabber->SetFrameRate (5))
    error_code = 4;
-
+  else
   if (!grabber->SetFrameSizeConverter (height, width, FALSE))
     error_code = 5;
 
@@ -295,15 +295,15 @@ void GMVideoGrabber::VGOpen (void)
       switch (error_code)
 	{
 	case 0:
-	  msg = g_strconcat (msg, "\n", _("Error with the device."));
+	  msg = g_strconcat (msg, "\n", _("Error while opening the device."));
 	  break;
 
 	case 1:
-	  msg = g_strconcat (msg, "\n", _("Error with the video format."));
+	  msg = g_strconcat (msg, "\n", _("Your video driver doesn't support the requested video format."));
 	  break;
 
 	case 2:
-	  msg = g_strconcat (msg, "\n", _("Error with the choosed channel."));
+	  msg = g_strconcat (msg, "\n", _("Impossible to open the choosed channel."));
 	  break;
 
 	case 3:
@@ -364,6 +364,12 @@ void GMVideoGrabber::VGOpen (void)
   // Enable the video settings frame
   gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame),
 			    TRUE);
+
+  /* Enable the video preview button if not in a call */
+  if (MyApp->Endpoint ()->CallingState () == 0)
+    gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button),
+			      TRUE);
+
 
   gdk_threads_leave ();
 }

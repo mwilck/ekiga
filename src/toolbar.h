@@ -21,7 +21,8 @@
 #include <gnome.h>
 #include "common.h"
 
-void GM_toolbar_init (GtkWidget *, GM_window_widgets*);
+void GM_toolbar_init (GtkWidget *, GM_window_widgets *, 
+		      GM_pref_window_widgets *);
 void enable_connect ();
 void disable_connect ();
 void enable_disconnect ();

@@ -136,12 +136,22 @@ void refresh_button_clicked (GtkButton *button, gpointer data)
   
   lw->thread_count++;
 
-  // Put the current entry in the history of the combo
-  gtk_list_clear_items (GTK_LIST (GTK_COMBO(lw->ils_server_combo)->list), 0, -1);
-
   /* we make a dup, because the entry text will change */
   entry_content = g_strdup (gtk_entry_get_text 
     (GTK_ENTRY (GTK_COMBO (lw->ils_server_combo)->entry)));  
+
+  /* if it is an empty entry_content, return */
+  if (!g_strcasecmp (entry_content, ""))
+    {
+      lw->thread_count = 0;
+      g_free (entry_content);
+      return;
+    }
+
+
+  /* Put the current entry in the history of the combo */
+  gtk_list_clear_items (GTK_LIST (GTK_COMBO(lw->ils_server_combo)->list), 
+			0, -1);
 
   /* if the entry is not in the list */
   while (text = (gchar *) g_list_nth_data (lw->ldap_servers_list, i))
@@ -157,10 +167,13 @@ void refresh_button_clicked (GtkButton *button, gpointer data)
 
   if (!found)
     /* this will not store a copy of entry_content, but entry_content itself */
-    lw->ldap_servers_list = g_list_prepend (lw->ldap_servers_list, entry_content);
+    lw->ldap_servers_list = g_list_prepend (lw->ldap_servers_list, 
+					    entry_content);
      
-  gtk_combo_set_popdown_strings (GTK_COMBO (lw->ils_server_combo), lw->ldap_servers_list);
-  gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (lw->ils_server_combo)->entry), entry_content);
+  gtk_combo_set_popdown_strings (GTK_COMBO (lw->ils_server_combo), 
+				 lw->ldap_servers_list);
+  gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (lw->ils_server_combo)->entry), 
+		      entry_content);
 
   /* if found, it is not added in the GList, we can free it */
   if (found)
@@ -196,10 +209,11 @@ void refresh_button_clicked (GtkButton *button, gpointer data)
 	{
 	  GM_ldap_init_notebook (lw, page_num, ldap_server);
 
-	  /* if it was the first "No directory" page, remove it */
+	  /* if it was the first "No directory" page, hide it */
 	  if ((page_num == 1)&&(!g_strcasecmp (_("No directory"), text_label)))
-	    gtk_widget_hide (gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook),
-							0));
+	    gtk_widget_hide (gtk_notebook_get_nth_page 
+			     (GTK_NOTEBOOK (lw->notebook),
+			      0));
 	}
       else
 	gtk_notebook_set_page (GTK_NOTEBOOK (lw->notebook), page_num);

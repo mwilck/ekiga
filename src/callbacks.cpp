@@ -79,10 +79,21 @@ void pause_video_callback (GtkWidget *widget, gpointer data)
 
 void pref_callback (GtkWidget *widget, gpointer data)
 {
-  GM_window_widgets *gw = (GM_window_widgets *) data;
+  GM_pref_window_widgets *pw = (GM_pref_window_widgets *) data;
   int call_state = MyApp->Endpoint ()->CallingState ();
+ 
+  if (!GTK_WIDGET_VISIBLE (pw->gw->pref_window))
+    {
+      gtk_widget_show_all (pw->gw->pref_window);
 
-  GMPreferences (call_state, gw);
+      /* update the preview button status in the pref window */
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->video_preview),
+				    gtk_toggle_button_get_active 
+				    (GTK_TOGGLE_BUTTON 
+				     (pw->gw->preview_button)));
+    }
+  else
+    gtk_widget_hide_all (pw->gw->pref_window);
 }
 
 
@@ -146,14 +157,16 @@ void about_callback (GtkWidget *widget, gpointer data)
       N_("I18n Maintainer:"),
       "Christian Rose <menthos@gnu.org>",
       /* Translators: Replace "english" by your language, and my name by your name */
-      N_("English Translation by Damien Sandras <dsandras@seconix.com>"),
+      N_("English Translation:"),
+      N_("Damien Sandras <dsandras@seconix.com>"),
       NULL
     };
 	
   authors [2] = gettext (authors [2]);
   authors [9] = gettext (authors [9]);
   authors [11] = gettext (authors [11]);
-	
+  authors [12] = gettext (authors [12]);
+
   abox = gnome_about_new (PACKAGE,
 			  VERSION,
 			  /* Translators: Please change the (C) to a real
@@ -174,7 +187,11 @@ void quit_callback (GtkWidget *widget, gpointer data)
 {
   GM_window_widgets *gw = (GM_window_widgets *) data;
 
-  new GMThreadsCleaner (gw);
+  if (gw->cleaner_thread_count == 0)
+    {
+      gw->cleaner_thread_count++;
+      new GMThreadsCleaner (gw);
+    }
 }  
 
 
