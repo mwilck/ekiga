@@ -48,11 +48,9 @@
 #include "gnome_prefs_window.h"
 
 
-#ifndef DISABLE_GNOME
 static void pc2phone_window_response_cb (GtkWidget *, gint, gpointer);
 
 static void pc2phone_consult_cb (GtkWidget *, gpointer);
-#endif
 
 
 /* DESCRIPTION  :  This callback is called when the user validates an answer
@@ -61,7 +59,6 @@ static void pc2phone_consult_cb (GtkWidget *, gpointer);
  *                 (if not cancel), ie change the settings and register to gk.
  * PRE          :  /
  */
-#ifndef DISABLE_GNOME
 static void
 pc2phone_window_response_cb (GtkWidget *w,
 			     gint response,
@@ -94,7 +91,6 @@ pc2phone_window_response_cb (GtkWidget *w,
     ep->GatekeeperRegister ();
   }
 }
-#endif
 
 
 /* DESCRIPTION  :  This callback is called when the user clicks on the link
@@ -105,7 +101,6 @@ pc2phone_window_response_cb (GtkWidget *w,
  * 				          == 1 : balance history,
  * 				          == 2 : calls history
  */
-#ifndef DISABLE_GNOME
 static void
 pc2phone_consult_cb (GtkWidget *widget,
 		     gpointer data)
@@ -113,7 +108,10 @@ pc2phone_consult_cb (GtkWidget *widget,
   gchar *account = NULL;
   gchar *pin = NULL;
   gchar *url = NULL;
-  
+#ifdef DISABLE_GNOME
+  gchar *command = NULL;
+#endif
+
   account = gm_conf_get_string (H323_GATEKEEPER_KEY "alias");
   pin = gm_conf_get_string (H323_GATEKEEPER_KEY "password");
 
@@ -127,20 +125,24 @@ pc2phone_consult_cb (GtkWidget *widget,
   else if (GPOINTER_TO_INT (data) == 2)
     url = g_strdup_printf ("https://www.diamondcard.us/exec/voip-login?accId=%s&pinCode=%s&act=ch&spo=gnomemeeting", account, pin);
     
+#ifdef DISABLE_GNOME
+  command = g_strdup_printf ("mozilla %s", url);
+  g_spawn_command_line_async (command, NULL);
+  g_free (command);
+#else
   gnome_url_show (url, NULL);
+#endif
 
   g_free (account);
   g_free (pin);
   g_free (url);
 }
-#endif
 
 
 GtkWidget *
 gm_pc2phone_window_new ()
 {
   GtkWidget *window = NULL;
-#ifndef DISABLE_GNOME
   GtkWidget *button = NULL;
   GtkWidget *label = NULL;
   GtkWidget *use_service_button = NULL;
@@ -150,6 +152,8 @@ gm_pc2phone_window_new ()
   GtkWidget *subsection = NULL;
 
   gchar *txt = NULL;
+  gchar *gatekeeper = NULL;
+  gint method = 0;
   
   window = gtk_dialog_new ();
   gtk_dialog_add_buttons (GTK_DIALOG (window),
@@ -164,7 +168,7 @@ gm_pc2phone_window_new ()
   gtk_window_set_title (GTK_WINDOW (window), _("PC-To-Phone Settings"));
   gtk_window_set_position (GTK_WINDOW (window), GTK_WIN_POS_CENTER);
 
-  label = gtk_label_new (_("You can make calls to regular phones and cell numbers worldwide using GnomeMeeting. To enable this you need to register an account using the URL below, then enter your Account number and PIN, and finally enable registering to the GnomeMeeting PC-To-Phone service.\n\nPlease make sure you are using the URL below to get your account or the service will not work."));
+  label = gtk_label_new (_("You can make calls to regular phones and cell numbers worldwide using GnomeMeeting. To enable this, you need to register an account using the URL below, then enter your Account number and PIN, and finally enable registering to the GnomeMeeting PC-To-Phone service.\n\nPlease make sure you are using the URL below to get your account otherwise the service will not work."));
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
   
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG (window)->vbox), label,
@@ -183,11 +187,21 @@ gm_pc2phone_window_new ()
     gnome_prefs_entry_new (subsection, _("_Pin:"), H323_GATEKEEPER_KEY "password", _("Use your MicroTelco PIN"), 2, false);
   gtk_entry_set_visibility (GTK_ENTRY (entry), FALSE);
 
+
+  /* Use service or not */
   use_service_button =
     gtk_check_button_new_with_label (_("Use PC-To-Phone service"));
+  gatekeeper = gm_conf_get_string (H323_GATEKEEPER_KEY "host");
+  method =  gm_conf_get_int (H323_GATEKEEPER_KEY "registering_method");
+  if (method == 1 && gatekeeper 
+      && !strcmp (gatekeeper, "gk.ast.diamondcard.us"))
+    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (use_service_button), TRUE);
   gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (use_service_button),
 		      FALSE, TRUE, 0);
+  g_free (gatekeeper);
   
+  
+  /* Explanation label */
   label =
     gtk_label_new (_("Click on one of the following links to get more information about your existing GnomeMeeting PC-To-Phone account, or to create a new account."));
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
@@ -199,7 +213,7 @@ gm_pc2phone_window_new ()
   gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (href), FALSE, FALSE, 0);
 
 
-  /* Recharge accouont */
+  /* Recharge account */
   button = gtk_button_new ();
   label = gtk_label_new (NULL);
   txt = g_strdup_printf ("<span foreground=\"blue\"><u>%s</u></span>",
@@ -249,7 +263,6 @@ gm_pc2phone_window_new ()
                     G_CALLBACK (delete_window_cb), NULL);
   
   gtk_widget_show_all (GTK_WIDGET (GTK_DIALOG (window)->vbox));
-#endif
   
   return window;
 }
