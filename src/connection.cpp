@@ -199,7 +199,7 @@ GMH323Connection::OpenLogicalChannel (const H323Capability &capability,
 
     msg =
       g_strdup_printf ((dir == H323Channel::IsTransmitter)
-		       ? _("Failure opening %s for transmission, will try with next common codec"),
+		       ? _("Failure opening %s for transmission, will try with next common codec")
 		       : _("Failure opening %s for reception, will try with next common codec"),
 		       (const char *) capability.GetFormatName ());
     
