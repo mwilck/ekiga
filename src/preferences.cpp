@@ -21,7 +21,7 @@
 #include "../config.h"
 
 #include "preferences.h"
-#include "webcam.h"
+#include "videograbber.h"
 #include "connection.h"
 #include "config.h"
 #include "main.h"
@@ -193,23 +193,6 @@ void audio_mixer_changed (GtkEditable *editable, gpointer data)
   GM_pref_window_widgets *pw = (GM_pref_window_widgets *) data;
 
   pw->audio_mixer_changed = 1;
-}
-
-
-void video_test_button_pressed (GtkButton *button, gpointer data)
-{
-  GM_pref_window_widgets *pw = (GM_pref_window_widgets *) data;
-  GtkWidget *msg_box;
-
-  if (!GM_cam (gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (pw->video_device)->entry)),
-	       (int) pw->video_channel_spin_adj->value))
-    msg_box = gnome_message_box_new (_("Could not open the specified video device."), 
-				     GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
-  else
-    msg_box = gnome_message_box_new (_("These settings are correct."), 
-				     GNOME_MESSAGE_BOX_INFO, "OK", NULL);
-  
-  gtk_widget_show (msg_box);
 }
 
 
@@ -1703,16 +1686,20 @@ void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
 		      GTK_SIGNAL_FUNC (vid_tr_changed), (gpointer) pw);
 
   /* Device test button */
-  test_button = gtk_button_new_with_label (_("Test Video"));
+  test_button = gtk_toggle_button_new_with_label (_("Video Settings Preview"));
 
-  gtk_table_attach (GTK_TABLE (table), test_button, 3, 4, 0, 1,
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (test_button),
+				gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON
+							      (pw->gw->preview_button)));
+
+  gtk_table_attach (GTK_TABLE (table), test_button, 2, 4, 1, 2,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);	
 
   
   gtk_signal_connect (GTK_OBJECT (test_button), "pressed",
-		      GTK_SIGNAL_FUNC (video_test_button_pressed), (gpointer) pw);
+		      GTK_SIGNAL_FUNC (preview_button_clicked), (gpointer) pw->gw);
 
   /* The End */									
   label = gtk_label_new (_("Device Settings"));

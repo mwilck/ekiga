@@ -19,7 +19,7 @@
 #include "config.h"
 #include "common.h"
 #include "audio.h"
-#include "webcam.h"
+#include "videograbber.h"
 #include "main.h"
 
 #include <iostream.h> // 

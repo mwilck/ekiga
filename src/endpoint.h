@@ -33,7 +33,7 @@
 #include <pthread.h>
 
 #include "common.h"
-#include "webcam.h"
+#include "videograbber.h"
 #include "gdkvideoio.h"
 #include "ldap_h.h"
 

@@ -25,7 +25,7 @@
 
 #include "ils.h"
 #include "main.h"
-#include "webcam.h"
+#include "videograbber.h"
 #include "common.h"
 #include "main_interface.h"
 

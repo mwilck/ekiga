@@ -102,14 +102,6 @@ void audio_mixer_changed (GtkEditable *, gpointer);
 
 
 // DESCRIPTION  :  This callback is called when the user clicks
-//                 on the video test button
-// BEHAVIOR     :  It checks if the choosen settings are ok and 
-//                 displays a message box with the test result
-// PRE          :  gpointer is a valid pointer to a GM_pref_window_widgets
-void video_test_button_pressed (GtkButton *, gpointer);
-
-
-// DESCRIPTION  :  This callback is called when the user clicks
 //                 on the video transmission toggle button, or change the video
 //                 device, or the video channel
 // BEHAVIOR     :  It sets a flag 

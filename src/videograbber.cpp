@@ -1,5 +1,5 @@
 /***************************************************************************
-                          webcam.cxx  -  description
+                          videograbber.cpp  -  description
                              -------------------
     begin                : Mon Feb 12 2001
     copyright            : (C) 2001 by Damien Sandras
@@ -20,7 +20,7 @@
 #include "../config.h"
 
 #include "config.h"
-#include "webcam.h"
+#include "videograbber.h"
 #include "main_interface.h"
 #include "gdkvideoio.h"
 #include "common.h"
@@ -355,25 +355,6 @@ void GMVideoGrabber::VGClose (void)
 			    FALSE);
 
   gdk_threads_leave ();
-}
-
-int GM_cam (gchar *video_device, int video_channel)
-{
-
-  PVideoInputDevice *grabber;
-
-  grabber = new PVideoInputDevice ();
-
-  if (!grabber->Open (video_device, FALSE) || !grabber->SetChannel(video_channel))
-    {
-      delete (grabber);
-      return 0;
-    }
-  else
-    {
-      delete (grabber);
-      return 1;
-    }
 }
 
 /******************************************************************************/

@@ -1,3 +1,16 @@
+2001-10-03  Damien Sandras  <dsandras@seconix.com>
+
+	* src/Makefile.am, src/config.cpp, src/endpoint.cpp, src/endpoint.h, 
+	src/ils.cpp, src/ldap.cpp, src/main_interface.cpp, src/preferences.cpp,
+	src/preferences.h: Added support for the new videograbber.cpp, 
+	videograbber.h files.
+	* src/videograbber.cpp, src/videograbber.h: Added those 2 files that 
+	are the old webcam files.
+	* src/videograbber.cpp: Removed the GM_cam function. Added comments to the 
+	class methods.
+	* src/preferences.cpp: Replaced the video_test button by a video
+	preview button that disables/enable the preview mode.
+
 2001-10-02  Damien Sandras  <dsandras@seconix.com>
 
 	* src/webcam.cpp: Added missing #include "../config.h" for translators.

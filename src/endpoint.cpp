@@ -26,7 +26,7 @@
 #include "connection.h"
 #include "applet.h"
 #include "audio.h"
-#include "webcam.h"
+#include "videograbber.h"
 #include "gatekeeper.h"
 #include "callbacks.h"
 #include "ils.h"

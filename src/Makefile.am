@@ -22,10 +22,10 @@ gnomemeeting_SOURCES =		\
 	toolbar.h		\
 	preferences.cpp		\
 	preferences.h		\
-	webcam.cpp		\
-	webcam.h		\
-	config.cpp		\
+	videograbber.h		\
+	videograbber.cpp	\
 	config.h		\
+	config.cpp		\
 	ldap.cpp		\
 	ldap_h.h		\
 	splash.cpp		\

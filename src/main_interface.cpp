@@ -29,7 +29,7 @@
 #include "toolbar.h"
 #include "callbacks.h"
 #include "audio.h"
-#include "webcam.h"
+#include "videograbber.h"
 #include "endpoint.h"
 
 #include "../pixmaps/text_logo.xpm"
@@ -156,13 +156,16 @@ void preview_button_clicked (GtkButton *button, gpointer data)
   GM_window_widgets *gw = (GM_window_widgets *) data;
   GMVideoGrabber *video_grabber = (GMVideoGrabber *) MyApp->Endpoint ()->GetVideoGrabber ();
 
-  if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (button)))
+  if (!video_grabber->IsOpened ())
     {
-      if (gw->pref_window == NULL)
-	video_grabber->Open (1);
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->preview_button), TRUE);
+      video_grabber->Open (1);
     }
   else
-    video_grabber->Close ();
+    {
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->preview_button), FALSE);
+      video_grabber->Close ();
+    }
 }
 
 
