@@ -88,11 +88,11 @@ void connect_button_update_pixmap (GtkToggleButton *w, int pressed)
 
       /* Block the signal */
       g_signal_handlers_block_by_func (G_OBJECT (w), 
-				       connect_button_clicked, 
+				       (gpointer) connect_button_clicked, 
 				       (gpointer) gw->connect_button);
       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (w), TRUE);
       g_signal_handlers_unblock_by_func (G_OBJECT (w), 
-				       connect_button_clicked, 
+				       (gpointer) connect_button_clicked, 
 				       (gpointer) gw->connect_button);
     }
     else {
@@ -100,11 +100,11 @@ void connect_button_update_pixmap (GtkToggleButton *w, int pressed)
       pixbuf = gdk_pixbuf_new_from_xpm_data ((const char **) disconnect_xpm);
   
       g_signal_handlers_block_by_func (G_OBJECT (w), 
-				       connect_button_clicked, 
+				       (gpointer) connect_button_clicked, 
 				       (gpointer) gw->connect_button);
       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (w), FALSE);
       g_signal_handlers_unblock_by_func (G_OBJECT (w), 
-					 connect_button_clicked, 
+					 (gpointer) connect_button_clicked, 
 					 (gpointer) gw->connect_button);
     }
 

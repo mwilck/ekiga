@@ -1,3 +1,10 @@
+2002-04-16  Kenneth Rohde Christiansen  <kenneth@gnu.org>
+
+	* toolbar.cpp (connect_button_update_pixmap): Added some gpointer
+	casts so it now compiles on Red Hat 7.2.
+
+	* config.cpp (video_option_menu_changed): Ditto.
+	
 2002-04-15  Damien Sandras  <dsandras@seconix.com>	
 
 	* src/config.cpp: Ported the XDAP directory registering code to Gnome2 and cleaned

@@ -146,14 +146,14 @@ static void entry_changed_nt (GConfClient *client, guint cid,
 
     /* We set the new value for the widget */
     g_signal_handlers_block_by_func (G_OBJECT (e),
-				     entry_changed, 
+				     (gpointer) entry_changed, 
 				     g_object_get_data (G_OBJECT (e), 
 							"gconf_key")); 
   
     gtk_entry_set_text (GTK_ENTRY (e), gconf_value_get_string (entry->value));
 
     g_signal_handlers_unblock_by_func (G_OBJECT (e),
-				       entry_changed, 
+				       (gpointer) entry_changed, 
 				       g_object_get_data (G_OBJECT (e), 
 							  "gconf_key")); 
 
@@ -181,7 +181,7 @@ static void toggle_changed_nt (GConfClient *client, guint cid,
 
     /* We set the new value for the widget */
     g_signal_handlers_block_by_func (G_OBJECT (e),
-				     toggle_changed, 
+				     (gpointer) toggle_changed, 
 				     g_object_get_data (G_OBJECT (e), 
 							"gconf_key")); 
   
@@ -189,7 +189,7 @@ static void toggle_changed_nt (GConfClient *client, guint cid,
 				  (bool) gconf_value_get_bool (entry->value));
 
     g_signal_handlers_unblock_by_func (G_OBJECT (e),
-				       toggle_changed, 
+				       (gpointer) toggle_changed, 
 				       g_object_get_data (G_OBJECT (e), 
 							  "gconf_key")); 
 
@@ -240,14 +240,14 @@ static void option_menu_changed_nt (GConfClient *client, guint cid,
   
     /* We set the new value for the widget */
     g_signal_handlers_block_by_func (G_OBJECT (data),
-				     option_menu_changed, 
+				     (gpointer) option_menu_changed, 
 				     (gpointer) gtk_object_get_data (GTK_OBJECT (data), 
 								     "gconf_key")); 
     gtk_option_menu_set_history (GTK_OPTION_MENU (data),
 				 gconf_value_get_int (entry->value));
   
     g_signal_handlers_unblock_by_func (G_OBJECT (data),
-				       option_menu_changed, 
+				       (gpointer) option_menu_changed, 
 				       (gpointer) gtk_object_get_data (GTK_OBJECT (data), 
 								       "gconf_key")); 
 
@@ -678,14 +678,14 @@ static gboolean video_option_menu_changed (gpointer data)
   
   /* We set the new value for the widget */
   g_signal_handlers_block_by_func (G_OBJECT (e),
-				   option_menu_changed, 
+				   (gpointer) option_menu_changed, 
 				   (gpointer) gtk_object_get_data (GTK_OBJECT (data), "gconf_key")); 
   /* Can't be done before Gnome 2 
   gtk_option_menu_set_history (GTK_OPTION_MENU (data),
 			       gconf_value_get_int (entry->value));
   */
   g_signal_handlers_unblock_by_func (G_OBJECT (e),
-				     option_menu_changed, 
+				     (gpointer) option_menu_changed, 
 				     (gpointer) gtk_object_get_data (GTK_OBJECT (data), "gconf_key")); 
 
 
