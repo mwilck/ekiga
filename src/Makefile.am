@@ -59,8 +59,8 @@ gnomemeeting_SOURCES =		\
 
 
 gnomemeeting_LDADD = \
-	$(top_builddir)/lib/libgnomemeeting.la	\
-	@GNOMEMEETING_LDADD@
+	@GNOMEMEETING_LDADD@ \
+	$(top_builddir)/lib/libgnomemeeting.la
 
 serverdir = $(libdir)/bonobo/servers
 server_DATA = gnomemeeting.server
