@@ -130,6 +130,8 @@ void about_callback (GtkWidget *widget, gpointer data)
       "",
       N_("Contributors:"),
       "Alex Larsson <alexl@redhat.com>",
+      "Christopher R. Gabriel  <cgabriel@cgabriel.org>",
+      "Kenneth Rohde Christiansen  <kenneth@gnu.org>",
       "Miguel Rodríguez Pérez <migrax@terra.es>",
       "Roger Hardiman <roger@freebsd.org>",
       "",
@@ -139,7 +141,7 @@ void about_callback (GtkWidget *widget, gpointer data)
     };
 	
   authors [2] = gettext (authors [2]);
-  authors [7] = gettext (authors [7]);
+  authors [9] = gettext (authors [9]);
 	
   abox = gnome_about_new (PACKAGE,
 			  VERSION,

@@ -506,7 +506,7 @@ void * GM_ldap_populate_ldap_users_clist (void *lwi)
 		      "(&(cn=%))",
 		      attrs, 0, &res); 
 
-  for (int i = 0 ; i < 9 ; i++)
+  for (int i = 0 ; i < 8 ; i++)
     datas [i] = NULL;
 
 

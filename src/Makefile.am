@@ -5,6 +5,7 @@ INCLUDES = @GNOMEMEETING_INCLUDES@ -DGNOMELOCALEDIR=\""$(datadir)/locale"\" -I$(
 bin_PROGRAMS = gnomemeeting
 
 gnomemeeting_SOURCES =		\
+	common.h		\
 	callbacks.cpp		\
 	callbacks.h		\
 	gdkvideoio.cpp		\
@@ -22,17 +23,18 @@ gnomemeeting_SOURCES =		\
 	preferences.cpp		\
 	preferences.h		\
 	webcam.cpp		\
+	webcam.h		\
 	config.cpp		\
 	config.h		\
 	ldap.cpp		\
-	ldap_h.h			\
+	ldap_h.h		\
 	splash.cpp		\
 	splash.h		\
 	applet.cpp		\
 	applet.h		\
-	main_interface.cpp		\
-	main_interface.h		\
-	audio.cpp				\
+	main_interface.cpp	\
+	main_interface.h	\
+	audio.cpp		\
 	audio.h
 
 
