@@ -452,7 +452,7 @@ static void gnomemeeting_init_druid_connection_type_page (GnomeDruid *druid)
   page_standard = 
     GNOME_DRUID_PAGE_STANDARD (gnome_druid_page_standard_new ());
   gnome_druid_page_standard_set_title (page_standard, 
-				       _("Connection Type- Page 3/4"));
+				       _("Connection Type - Page 3/4"));
   gnome_druid_append_page (druid, GNOME_DRUID_PAGE (page_standard));
 
   logo = gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES "/Lumi.png", NULL); 

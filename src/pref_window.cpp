@@ -1170,7 +1170,7 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook)
                                                                                
   /* Packing widgets */                                                        
   vbox = gtk_vbox_new (FALSE, 4);
-  table = gnomemeeting_pref_window_add_table (vbox, _("Personnal Information"),
+  table = gnomemeeting_pref_window_add_table (vbox, _("Personal Information"),
                                               7, 3);                           
 
                                                                                
