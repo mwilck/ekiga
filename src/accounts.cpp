@@ -50,7 +50,6 @@
 
 #include "gm_conf.h"
 
-
 GmAccount *
 gm_account_new ()
 {
@@ -367,17 +366,16 @@ GMAccountsManager::~GMAccountsManager ()
 
 void GMAccountsManager::Main ()
 {
-  static PMutex instance_mutex;
-
   GSList *accounts = NULL;
   GSList *accounts_iter = NULL;
 
   GmAccount *list_account = NULL;
 
   PWaitAndSignal m(quit_mutex);
-  PWaitAndSignal q(instance_mutex);
   thread_sync_point.Signal ();
-  
+ 
+
+  /* Let's go */
   if (account) {
 
     if (!strcmp (account->protocol_name, "SIP")) 
