@@ -47,6 +47,7 @@
 extern GnomeMeeting *MyApp;
 extern GtkWidget *gm;
 
+static void url_combo_changed (GtkEditable  *, gpointer);
 static void speaker_phone_toggle_changed (GtkToggleButton *, gpointer);
 static void connect_button_clicked (GtkToggleButton *, gpointer);
 static void toolbar_toggle_changed (GtkWidget *, gpointer);
@@ -55,6 +56,17 @@ static void toolbar_cp_button_changed (GtkWidget *, gpointer);
 
 
 /* Static functions */
+static void url_combo_changed (GtkEditable  *e, gpointer data)
+{
+  GtkTooltips *tip = NULL;
+  gchar *tip_text = (gchar *)
+    gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (data)->entry));
+
+  tip = gtk_tooltips_new ();
+  gtk_tooltips_set_tip (tip, GTK_WIDGET (GTK_COMBO (data)->entry), 
+			tip_text, NULL);
+}
+
 
 static void speaker_phone_toggle_changed (GtkToggleButton *w, gpointer data)
 {
@@ -246,6 +258,10 @@ void gnomemeeting_init_toolbar ()
   gtk_box_pack_start (GTK_BOX (hbox), toolbar, FALSE, FALSE, 1);
  
   gtk_container_set_border_width (GTK_CONTAINER (toolbar), 2);
+
+  g_signal_connect (G_OBJECT (GTK_WIDGET (GTK_COMBO(gw->combo)->entry)),
+		    "changed", G_CALLBACK (url_combo_changed), 
+		    (gpointer)  (gw->combo));
 
 
   /* The connect button */
