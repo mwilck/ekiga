@@ -521,7 +521,7 @@ void GMILSClient::ils_browse ()
   char *datas [] = {NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL};
   char *attrs [] = { "surname", "givenname", "comment", "location", 
 		     "rfc822mailbox", "sipaddress", "ilsa32833566", 
-		     "ilsa32964638", "ilsa26279966", NULL };
+		     "ilsa32964638", "ilsa26279966", "sappid", NULL };
   
   LDAPMessage *res = NULL, *e = NULL;
 
@@ -730,8 +730,14 @@ void GMILSClient::ils_browse ()
 	ldap_value_free (ldap_get_values (ldap_connection, e, "comment"));
       }
 
-      if (ldap_get_values(ldap_connection, e, "ilsa26279966") != NULL)	{
+      if (ldap_get_values(ldap_connection, e, "sappid") != NULL)	{
 
+	datas [7]  =
+	  g_strdup (ldap_get_values (ldap_connection, e, "sappid") [0]);
+	ldap_value_free (ldap_get_values (ldap_connection, e, "sappid"));
+      }
+
+      if (ldap_get_values(ldap_connection, e, "ilsa26279966") != NULL)	{
 	gchar *value =
 	  g_strdup (ldap_get_values (ldap_connection, e, "ilsa26279966") [0]);
 	
@@ -742,10 +748,10 @@ void GMILSClient::ils_browse ()
 	c=(v-a*16777216-b*65536);
 	g_free (value);
 
-	datas [7] = g_strdup_printf ("%d.%d.%d", a, b, c); 
+	datas [7] = g_strdup_printf ("%s %d.%d.%d", datas [7], a, b, c); 
 	ldap_value_free (ldap_get_values (ldap_connection, e, "ilsa26279966"));
       }
-      
+
       if (ldap_get_values(ldap_connection, e, "rfc822mailbox") != NULL) {
 	
 	datas [4] = g_strdup (ldap_get_values 
