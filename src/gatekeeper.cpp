@@ -387,7 +387,7 @@ BOOL H323GatekeeperWithNAT::MakeRequest (Request &request)
 	PTRACE(1, "GK\tSwitch to altGK " << gatekeeperIdentifier << " with id " << endpointIdentifier << " successful");
 	if (request.requestPDU.GetChoice ().GetTag() == H323RasPDU::e_admissionRequest) {
 
-	  H225_AdmissionRequest & arq = dynamic_cast<H225_RasMessage&>(request.requestPDU.GetChoice());
+          H225_AdmissionRequest & arq = (H225_AdmissionRequest &) request.requestPDU.GetChoice ();
 
 	  arq.m_gatekeeperIdentifier = gatekeeperIdentifier;
 	  arq.m_endpointIdentifier = endpointIdentifier;
