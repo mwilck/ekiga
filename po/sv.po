@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
-"POT-Creation-Date: 2003-05-19 15:27+0200\n"
-"PO-Revision-Date: 2003-05-19 15:27+0200\n"
+"POT-Creation-Date: 2003-05-23 00:43+0200\n"
+"PO-Revision-Date: 2003-05-23 00:44+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -85,7 +85,7 @@ msgstr "Färgformat"
 msgid "Color Format for the video palette"
 msgstr "Färgformat föt videopaletten"
 
-#: gnomemeeting.schemas.in.in.h:14 src/ldap_window.cpp:1985
+#: gnomemeeting.schemas.in.in.h:14 src/ldap_window.cpp:2171
 msgid "Comment"
 msgstr "Kommentar"
 
@@ -335,7 +335,7 @@ msgstr "Höjd på lokalt videopopupfönster"
 msgid "Local Video Popup Width"
 msgstr "Bredd på lokalt videopopupfönster"
 
-#: gnomemeeting.schemas.in.in.h:63 src/ldap_window.cpp:1996
+#: gnomemeeting.schemas.in.in.h:63 src/ldap_window.cpp:2182
 msgid "Location"
 msgstr "Plats"
 
@@ -766,7 +766,7 @@ msgstr "Typ av kapabiliteter för användarindata"
 msgid "User directory"
 msgstr "Användarkatalog"
 
-#: gnomemeeting.schemas.in.in.h:142 src/ldap_window.cpp:2018
+#: gnomemeeting.schemas.in.in.h:142 src/ldap_window.cpp:2204
 msgid "Version"
 msgstr "Version"
 
@@ -1167,7 +1167,7 @@ msgid "_Surname:"
 msgstr "_Efternamn:"
 
 #. The callto url
-#: src/druid.cpp:660 src/ldap_window.cpp:2056
+#: src/druid.cpp:660 src/ldap_window.cpp:2242
 msgid "Callto URL"
 msgstr "Callto-URL"
 
@@ -1752,179 +1752,190 @@ msgstr "Sökning klar: %d användare hittades på %s."
 msgid "Failed to contact %s."
 msgstr "Misslyckades med att kontakta %s."
 
-#. Create the dialog to easily modify the info of a specific contact
-#: src/ldap_window.cpp:471
+#: src/ldap_window.cpp:648
 msgid "Edit the contact information"
 msgstr "Redigera kontaktinformationen"
 
-#: src/ldap_window.cpp:484
+#: src/ldap_window.cpp:661
 msgid "Name:"
 msgstr "Namn:"
 
-#: src/ldap_window.cpp:502
+#: src/ldap_window.cpp:679
 msgid "URL:"
 msgstr "URL:"
 
-#: src/ldap_window.cpp:523
-msgid "Speed dial:"
-msgstr "Snabbknapp:"
+#: src/ldap_window.cpp:704
+msgid "Shortcut:"
+msgstr "Genväg:"
 
-#: src/ldap_window.cpp:542
+#: src/ldap_window.cpp:725
 msgid "Groups:"
 msgstr "Grupper:"
 
-#: src/ldap_window.cpp:620
-msgid "Please provide a valid name and callto for the contact."
-msgstr "Ange ett giltigt namn och callto för kontakten."
+#: src/ldap_window.cpp:820
+msgid ""
+"Please provide a valid name and URL for the contact you want to add to the "
+"address book."
+msgstr ""
+"Ange ett giltigt namn och URL för kontakten som du vill lägga till i "
+"adressboken."
 
-# callto verkar konstigt
-#: src/ldap_window.cpp:682
-#, c-format
-msgid "Another contact with the callto %s already exists in group %s."
-msgstr "En annan kontakt med callto %s finns redan i grupp %s."
-
-# callto verkar konstigt
-#: src/ldap_window.cpp:694
-msgid "Another contact with the same speed dial already exists."
-msgstr "En annan kontakt med samma snabbtangent finns redan."
-
-#: src/ldap_window.cpp:720
+#: src/ldap_window.cpp:828
 msgid "You have to select a group to which you want to add your contact."
 msgstr "Du måste välja en grupp som du vill lägga till din kontakt i."
 
-#: src/ldap_window.cpp:869
+#: src/ldap_window.cpp:841
+msgid ""
+"Another contact with the same shortcut already exists in the address book."
+msgstr "En annan kontakt med samma genväg finns redan i adressboken."
+
+#: src/ldap_window.cpp:854
+msgid "Another contact with the same URL already exists in the address book."
+msgstr "En annan kontakt med samma URL finns redan i adressboken."
+
+#: src/ldap_window.cpp:954
 #, c-format
 msgid "Add %s to Address Book"
 msgstr "Lägg till %s i adressboken"
 
-#: src/ldap_window.cpp:880
+#: src/ldap_window.cpp:965 src/ldap_window.cpp:982
 msgid "C_all Contact"
 msgstr "_Ring kontakt"
 
-#: src/ldap_window.cpp:897 src/ldap_window.cpp:1748
+#: src/ldap_window.cpp:988 src/ldap_window.cpp:999 src/ldap_window.cpp:1934
 msgid "Contact _Properties"
 msgstr "Kontakt_egenskaper"
 
-#: src/ldap_window.cpp:903 src/ldap_window.cpp:1215 src/ldap_window.cpp:1229
+#: src/ldap_window.cpp:1005 src/ldap_window.cpp:1351 src/ldap_window.cpp:1365
 msgid "Delete"
 msgstr "Ta bort"
 
-#: src/ldap_window.cpp:965
+#: src/ldap_window.cpp:1072
 msgid "Add a new server"
 msgstr "Lägg till en ny server"
 
-#: src/ldap_window.cpp:966
+#: src/ldap_window.cpp:1073
 msgid "Enter the server name:"
 msgstr "Ange namnet på servern:"
 
-#: src/ldap_window.cpp:971
+#: src/ldap_window.cpp:1078
 msgid "Add a new group"
 msgstr "Lägg till en ny grupp"
 
-#: src/ldap_window.cpp:972
+#: src/ldap_window.cpp:1079
 msgid "Enter the group name:"
 msgstr "Ange namnet på gruppen:"
 
-#: src/ldap_window.cpp:1192
+#: src/ldap_window.cpp:1183
+#, c-format
+msgid "Are you sure you want to delete server %s?"
+msgstr "Är du säker på att du vill ta bort servern %s?"
+
+#: src/ldap_window.cpp:1191
+#, c-format
+msgid "Are you sure you want to delete group %s and all its contacts?"
+msgstr "Är du säker på att du vill ta bort gruppen %s och alla dess kontakter?"
+
+#: src/ldap_window.cpp:1328
 msgid "New server"
 msgstr "Ny server"
 
-#: src/ldap_window.cpp:1201
+#: src/ldap_window.cpp:1337
 msgid "New group"
 msgstr "Ny grupp"
 
-#: src/ldap_window.cpp:1210
+#: src/ldap_window.cpp:1346
 msgid "_Refresh"
 msgstr "_Uppdatera"
 
-#: src/ldap_window.cpp:1224
+#: src/ldap_window.cpp:1360
 msgid "New contact"
 msgstr "Ny kontakt"
 
-#: src/ldap_window.cpp:1692
+#: src/ldap_window.cpp:1876
 msgid "GnomeMeeting Address Book"
 msgstr "GnomeMeeting-adressbok"
 
-#: src/ldap_window.cpp:1708
+#: src/ldap_window.cpp:1894
 msgid "_File"
 msgstr "_Arkiv"
 
-#: src/ldap_window.cpp:1710
+#: src/ldap_window.cpp:1896
 msgid "New _Server"
 msgstr "Ny _server"
 
-#: src/ldap_window.cpp:1715
+#: src/ldap_window.cpp:1901
 msgid "New _Group"
 msgstr "Ny _grupp"
 
-#: src/ldap_window.cpp:1722
+#: src/ldap_window.cpp:1908
 msgid "_Delete"
 msgstr "_Ta bort"
 
-#: src/ldap_window.cpp:1728
+#: src/ldap_window.cpp:1914
 msgid "Close"
 msgstr "Stäng"
 
-#: src/ldap_window.cpp:1734
+#: src/ldap_window.cpp:1920
 msgid "C_ontact"
 msgstr "K_ontakt"
 
-#: src/ldap_window.cpp:1736
+#: src/ldap_window.cpp:1922
 msgid "New _Contact"
 msgstr "Ny _kontakt"
 
-#: src/ldap_window.cpp:1741
+#: src/ldap_window.cpp:1927
 msgid "Add Contact to _Address Book"
 msgstr "Lägg till kontakt till _adressboken"
 
 #. Translators: This is "S" as in "Status"
-#: src/ldap_window.cpp:1943
+#: src/ldap_window.cpp:2129
 msgid "S"
 msgstr "S"
 
 #. Translators: This is "A" as in "Audio"
-#: src/ldap_window.cpp:1953 src/pref_window.cpp:1209
+#: src/ldap_window.cpp:2139 src/pref_window.cpp:1209
 msgid "A"
 msgstr "L"
 
 #. Translators: This is "V" as in "Video"
-#: src/ldap_window.cpp:1963
+#: src/ldap_window.cpp:2149
 msgid "V"
 msgstr "V"
 
-#: src/ldap_window.cpp:1972 src/ldap_window.cpp:2044 src/pref_window.cpp:1223
+#: src/ldap_window.cpp:2158 src/ldap_window.cpp:2230 src/pref_window.cpp:1223
 msgid "Name"
 msgstr "Namn"
 
-#: src/ldap_window.cpp:2006
+#: src/ldap_window.cpp:2192
 msgid "Callto"
 msgstr "Callto"
 
-#: src/ldap_window.cpp:2029 src/tools.cpp:163
+#: src/ldap_window.cpp:2215 src/tools.cpp:163
 msgid "IP"
 msgstr "IP"
 
-#: src/ldap_window.cpp:2069
+#: src/ldap_window.cpp:2255
 msgid "Speed Dial"
 msgstr "Snabbtangent"
 
-#: src/ldap_window.cpp:2097
+#: src/ldap_window.cpp:2283
 msgid "First name contains"
 msgstr "Förnamn innehåller"
 
-#: src/ldap_window.cpp:2101
+#: src/ldap_window.cpp:2287
 msgid "Last name contains"
 msgstr "Efternamn innehåller"
 
-#: src/ldap_window.cpp:2105
+#: src/ldap_window.cpp:2291
 msgid "E-mail contains"
 msgstr "E-postadress innehåller"
 
-#: src/ldap_window.cpp:2266
+#: src/ldap_window.cpp:2451
 msgid "Servers"
 msgstr "Servrar"
 
-#: src/ldap_window.cpp:2308
+#: src/ldap_window.cpp:2493
 msgid "Groups"
 msgstr "Grupper"
 
@@ -2899,6 +2910,18 @@ msgstr ""
 "Videoöverföringsstatus. Under ett samtal kan du klicka här för att stänga av "
 "eller återuppta videoöverföringen."
 
+#: src/tools.cpp:110
+msgid "Received calls"
+msgstr "Mottagna samtal"
+
+#: src/tools.cpp:110
+msgid "Given calls"
+msgstr "Givna samtal"
+
+#: src/tools.cpp:110
+msgid "Missed calls"
+msgstr "Missade samtal"
+
 #: src/tools.cpp:145
 msgid "Date"
 msgstr "Datum"
@@ -2929,8 +2952,8 @@ msgid "Calling %s"
 msgstr "Ringer upp %s"
 
 #: src/urlhandler.cpp:195
-msgid "No contact with that speed dial found"
-msgstr "Ingen kontakt med denna snabbtangent hittades"
+msgid "No contact with that shortcut found"
+msgstr "Ingen kontakt med denna genväg hittades"
 
 #: src/videograbber.cpp:324 src/videograbber.cpp:325
 msgid "Opening Video device"
@@ -3021,6 +3044,16 @@ msgstr "Din drivrutin stöder inte YUV420P-färgformatet"
 #: src/videograbber.cpp:738
 msgid "Tests OK!"
 msgstr "Testen OK!"
+
+#~ msgid "Shortcut"
+#~ msgstr "Genväg"
+
+#~ msgid "Speed dial:"
+#~ msgstr "Snabbknapp:"
+
+# callto verkar konstigt
+#~ msgid "Another contact with the same speed dial already exists."
+#~ msgstr "En annan kontakt med samma snabbtangent finns redan."
 
 #~ msgid "Add _Contact to Address Book"
 #~ msgstr "Lägg till _kontakt till adressboken"
@@ -3449,9 +3482,6 @@ msgstr "Testen OK!"
 
 #~ msgid "Given _name:"
 #~ msgstr "För_namn:"
-
-#~ msgid "Given name:"
-#~ msgstr "Förnamn:"
 
 #~ msgid "Where do you call from?"
 #~ msgstr "Var ringer du ifrån?"
@@ -4619,9 +4649,6 @@ msgstr "Testen OK!"
 #~ msgid ""
 #~ "A call is currently in progress, please disconnect before trying to quit."
 #~ msgstr "Ett samtal pågår redan, koppla ifrån innan du försöker avsluta."
-
-#~ msgid "Are you sure you want to quit?"
-#~ msgstr "Är du säker på att du vill avsluta?"
 
 #~ msgid ""
 #~ "Could not open the selected video device, but video transmission is "
