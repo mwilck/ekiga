@@ -1,3 +1,34 @@
+2002-05-20  Damien Sandras  <dsandras@seconix.com>
+
+	* pixmaps/inlines.h: Added Pixmap for Speaker mode of Quicknet cards.
+
+	* src/audio.cpp: Added way to set/get volume from quicknet cards.
+
+	* src/callbacks.cpp: Cleaning.
+
+	* src/common.h: Added widgets for the prefs window containing quicknet
+	options.
+
+	* src/config.cpp: Added notifiers reacting to change in quicknet 
+	options.
+
+	* src/endpoint.cpp: Added functions to add Quicknet Support. Reused
+	code of Roger Hardiman (roger@freebsd.org).
+
+	* src/gdkvideoio.cpp: Fixed bug that made GM crash at the end of calls.
+
+	* src/gnomemeeting.cpp: Added quicknet support.
+
+	* src/main_window.cpp: Added quicknet support.
+
+	* src/pref_window.cpp: Added quicknet support. Added a new section
+	for devices to prevent to have a huge prefs window because of quicknet
+	support.
+
+	* src/toolbar.cpp: Added button to enable Speaker mode.
+
+	* gnomemeeting.schemas.in.in: Added quicknet options.
+
 2002-05-19  Christian Rose  <menthos@menthos.com>
 
 	* src/pref_window.cpp: Fixed a message.
@@ -15,7 +46,6 @@
 	* configure.in: 
 	Require intltool 0.20 or newer.
 	Generate gnomemeeintg.schemas.in from gnomemeeting.schemas.in.in	
-
 2002-05-19  Christian Rose  <menthos@menthos.com>
 
 	* src/config-tool-i18n.h, src/endpoint.cpp,

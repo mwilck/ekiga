@@ -47,6 +47,7 @@
 extern GnomeMeeting *MyApp;
 extern GtkWidget *gm;
 
+static void speaker_phone_toggle_changed (GtkToggleButton *, gpointer);
 static void connect_button_clicked (GtkToggleButton *, gpointer);
 static void toolbar_toggle_changed (GtkWidget *, gpointer);
 static void toolbar_button_changed (GtkWidget *, gpointer);
@@ -54,6 +55,38 @@ static void toolbar_cp_button_changed (GtkWidget *, gpointer);
 
 
 /* Static functions */
+
+static void speaker_phone_toggle_changed (GtkToggleButton *w, gpointer data)
+{
+#ifdef HAS_IXJ
+  OpalLineInterfaceDevice *lid = NULL;
+
+  lid = MyApp->Endpoint ()->GetLidDevice ();
+
+  if (lid) {
+
+    if (gtk_toggle_button_get_active (w)) {
+      
+      gnomemeeting_log_insert (_("Speakerphone enabled"));
+      if (MyApp->Endpoint()->GetCallingState () == 0) /* Not in a call */
+	lid->PlayTone (0, OpalLineInterfaceDevice::DialTone);
+
+      if (MyApp->Endpoint()->GetCallingState () == 1) /* Calling */
+	lid->PlayTone (0, OpalLineInterfaceDevice::RingTone);
+
+      lid->EnableAudio(0, FALSE);
+    }
+    else {
+
+      gnomemeeting_log_insert (_("Speakerphone disabled"));
+      lid->EnableAudio(0, TRUE);
+      lid->StopTone (0);
+    }
+  }
+#endif
+}
+
+
 /* DESCRIPTION  :  This callback is called when the user toggles the 
  *                 connect button.
  * BEHAVIOR     :  Connect or disconnect.
@@ -138,7 +171,7 @@ void gnomemeeting_init_toolbar ()
   GdkPixmap *Pixmap;
   GdkBitmap *mask;
   GdkPixbuf *pixbuf, *ils_directory, *text_chat, *control_panel, 
-    *connect, *disconnect, *video_preview, *audio_mute;
+    *connect, *disconnect, *video_preview, *audio_mute, *speaker_phone;
   GtkWidget *hbox;
   GtkWidget *image;
   GtkWidget *left_toolbar;
@@ -150,12 +183,18 @@ void gnomemeeting_init_toolbar ()
 
   left_toolbar = gtk_toolbar_new ();
 	  
-  ils_directory = gdk_pixbuf_new_from_inline (-1, inline_ils_directory, FALSE, NULL);
-  text_chat     = gdk_pixbuf_new_from_inline (-1, inline_text_chat, FALSE, NULL);
-  control_panel = gdk_pixbuf_new_from_inline (-1, inline_control_panel, FALSE, NULL);
+  ils_directory = gdk_pixbuf_new_from_inline (-1, inline_ils_directory, 
+					      FALSE, NULL);
+  text_chat     = gdk_pixbuf_new_from_inline (-1, inline_text_chat, 
+					      FALSE, NULL);
+  control_panel = gdk_pixbuf_new_from_inline (-1, inline_control_panel, 
+					      FALSE, NULL);
+  speaker_phone = gdk_pixbuf_new_from_inline (-1, inline_speaker_phone, 
+					      FALSE, NULL);
   disconnect = gdk_pixbuf_new_from_inline (-1, inline_connect, FALSE, NULL);
   connect = gdk_pixbuf_new_from_inline (-1, inline_disconnect, FALSE, NULL);
-  video_preview = gdk_pixbuf_new_from_inline (-1, inline_video_preview, FALSE, NULL);
+  video_preview = gdk_pixbuf_new_from_inline (-1, inline_video_preview, 
+					      FALSE, NULL);
   audio_mute = gdk_pixbuf_new_from_inline (-1, inline_audio_mute, FALSE, NULL);
 
   gtk_toolbar_append_item  (GTK_TOOLBAR (left_toolbar),
@@ -263,6 +302,26 @@ void gnomemeeting_init_toolbar ()
 			     gw->preview_button, NULL, NULL);
 
 
+  /* Quicknet LID button speakerphone */
+  gw->speaker_phone_button = gtk_toggle_button_new ();
+
+  image = gtk_image_new_from_pixbuf (speaker_phone);
+  gtk_container_add (GTK_CONTAINER (gw->speaker_phone_button), 
+		     GTK_WIDGET (image));
+
+  g_signal_connect (G_OBJECT (gw->speaker_phone_button), "clicked",
+		    G_CALLBACK (speaker_phone_toggle_changed), 
+		    NULL);
+
+  tip = gtk_tooltips_new ();
+  gtk_tooltips_set_tip (tip, gw->speaker_phone_button,
+			_("Click here to activate the speaker phone device of your Quicknet card."), NULL);
+
+
+  gtk_toolbar_append_widget (GTK_TOOLBAR (left_toolbar), 
+			     gw->speaker_phone_button, NULL, NULL);
+
+
   /* Audio Channel Button */
   gw->audio_chan_button = gtk_toggle_button_new ();
 
@@ -310,6 +369,7 @@ void gnomemeeting_init_toolbar ()
   gtk_widget_show (GTK_WIDGET (gw->combo));
   gtk_widget_show_all (GTK_WIDGET (gw->connect_button));
   gtk_widget_show_all (GTK_WIDGET (gw->preview_button));
+  gtk_widget_show_all (GTK_WIDGET (gw->speaker_phone_button));
   gtk_widget_show_all (GTK_WIDGET (gw->audio_chan_button));
   gtk_widget_show_all (GTK_WIDGET (gw->video_chan_button));
 

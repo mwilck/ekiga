@@ -66,21 +66,36 @@ static void fps_limit_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static void audio_mixer_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static void tr_vq_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static void tr_ub_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
-static void jitter_buffer_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
+static void jitter_buffer_changed_nt (GConfClient*, guint, GConfEntry *, 
+				      gpointer);
 static void register_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
-static void forward_toggle_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
-static void audio_device_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
-static void video_device_setting_changed_nt (GConfClient *, guint, GConfEntry *, 
-					     gpointer);
-static void video_preview_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
-static void enable_fps_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
-static void audio_codecs_list_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
-static void view_widget_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
-static void audio_codec_setting_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
+static void forward_toggle_changed_nt (GConfClient*, guint, GConfEntry *, 
+				       gpointer);
+static void audio_device_changed_nt (GConfClient *, guint, GConfEntry *, 
+				     gpointer);
+static void lid_device_changed_nt (GConfClient *, guint, GConfEntry *, 
+				   gpointer);
+static void video_device_setting_changed_nt (GConfClient *, guint, 
+					     GConfEntry *, gpointer);
+static void video_preview_changed_nt (GConfClient *, guint, GConfEntry *, 
+				      gpointer);
+static void enable_fps_changed_nt (GConfClient *, guint, GConfEntry *, 
+				   gpointer);
+static void audio_codecs_list_changed_nt (GConfClient *, guint, GConfEntry *, 
+					  gpointer);
+static void view_widget_changed_nt (GConfClient *, guint, GConfEntry *, 
+				    gpointer);
+static void audio_codec_setting_changed_nt (GConfClient *, guint, 
+					    GConfEntry *, gpointer);
 static void ht_fs_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
-static void silence_detection_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
+static void silence_detection_changed_nt (GConfClient *, guint, 
+					  GConfEntry *, gpointer);
+static void network_settings_changed_nt (GConfClient *, guint, 
+					 GConfEntry *, gpointer);
+static void lid_aec_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
+static void lid_country_changed_nt (GConfClient *, guint, GConfEntry *, 
+				    gpointer);
 
-static void network_settings_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
 
 
 /* 
@@ -378,7 +393,7 @@ static void audio_mixer_changed_nt (GConfClient *client, guint cid,
     /* Get the volumes for the mixers */
     gnomemeeting_volume_get (player_mixer, 0, &vol_play);
     gnomemeeting_volume_get (recorder_mixer, 1, &vol_rec);
-  
+    
     gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_play),
 			      (int) (vol_play / 257));
     gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_rec),
@@ -742,6 +757,38 @@ static void audio_device_changed_nt (GConfClient *client, guint cid,
 }
 
 
+/* DESCRIPTION  :  This notifier is called when the gconf database data
+ *                 associated with the lid device changes.
+ * BEHAVIOR     :  It updates the endpoint and displays
+ *                 a message in the history. If the device is not valid,
+ *                 i.e. the user erroneously used gconftool, a message is
+ *                 displayed. Disable Speaker Phone mode.
+ * PRE          :  /
+ */
+static void lid_device_changed_nt (GConfClient *client, guint cid, 
+				     GConfEntry *entry, gpointer data)
+{
+  GmWindow *gw = NULL;
+
+  if (entry->value->type == GCONF_VALUE_BOOL) {
+
+    gdk_threads_enter ();
+    gw = gnomemeeting_get_main_window (gm);
+    
+    if (MyApp->Endpoint ()->GetCallingState () == 0) {
+
+      /* Update the configuration in order to update 
+	 the local user name for calls */
+      MyApp->Endpoint ()->UpdateConfig ();
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->speaker_phone_button),
+				    FALSE);
+    }
+
+    gdk_threads_leave ();
+  }
+}
+
+
 /* DESCRIPTION  :  This callback is called when the video device changes in
  *                 the gconf database.
  * BEHAVIOR     :  It resets the video device.
@@ -1083,6 +1130,66 @@ static void network_settings_changed_nt (GConfClient *client, guint,
 }
 
 
+/* DESCRIPTION    : This is called when any setting related to the 
+ *                  lid AEC changes.
+ * BEHAVIOR       : Updates it.
+ * PRE            : None
+ */
+static void 
+lid_aec_changed_nt (GConfClient *client, guint, GConfEntry *entry, gpointer)
+{
+  if (entry->value->type == GCONF_VALUE_INT) {
+
+    int lid_aec = gconf_value_get_int (entry->value);
+    OpalLineInterfaceDevice *lid = MyApp->Endpoint ()->GetLidDevice ();
+
+    if (lid) {
+
+      switch (lid_aec) {
+	
+      case 0:
+	lid->SetAEC (0, OpalLineInterfaceDevice::AECOff);
+	break;
+	
+      case 1:
+	lid->SetAEC (0, OpalLineInterfaceDevice::AECLow);
+	break;
+	
+      case 2:
+	lid->SetAEC (0, OpalLineInterfaceDevice::AECMedium);
+	break;
+	
+      case 3:
+	lid->SetAEC (0, OpalLineInterfaceDevice::AECHigh);
+	break;
+	
+      case 5:
+	lid->SetAEC (0, OpalLineInterfaceDevice::AECAGC);
+	break;
+      }
+    }
+  }
+}
+
+
+/* DESCRIPTION    : This is called when any setting related to the 
+ *                  country code changes.
+ * BEHAVIOR       : Updates it.
+ * PRE            : None
+ */
+static void 
+lid_country_changed_nt (GConfClient *client, guint, GConfEntry *entry, 
+			gpointer)
+{
+  if (entry->value->type == GCONF_VALUE_STRING) {
+
+    OpalLineInterfaceDevice *lid = MyApp->Endpoint ()->GetLidDevice ();
+    if ((gconf_value_get_string (entry->value))&&(lid))
+      lid->SetCountryCodeName (gconf_value_get_string (entry->value));
+  }
+}
+
+
 /* The functions  */
 void gnomemeeting_init_gconf (GConfClient *client)
 {
@@ -1230,6 +1337,16 @@ void gnomemeeting_init_gconf (GConfClient *client)
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_recorder_mixer", entry_changed_nt, pw->audio_recorder_mixer, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_recorder_mixer", audio_mixer_changed_nt, pw->audio_recorder_mixer, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/lid_country", entry_changed_nt, pw->lid_country, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/lid_country", lid_country_changed_nt, pw->lid_country, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/lid_aec", int_option_menu_changed_nt, pw->lid_aec, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/lid_aec", lid_aec_changed_nt, pw->lid_aec, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/lid", toggle_changed_nt, pw->lid, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/lid", lid_device_changed_nt, pw->lid_country, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/lid", applicability_check_nt, pw->lid_country, 0, 0);
 
 
   /* gnomemeeting_pref_window_audio_codecs */

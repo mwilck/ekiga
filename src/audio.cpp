@@ -30,6 +30,7 @@
 
 #include "audio.h" 
 #include "common.h"
+#include "gnomemeeting.h"
 
 #include <ptlib.h>
 
@@ -38,24 +39,55 @@
 #include <signal.h>
 #endif
 
+#ifdef HAS_IXJ
+#include <ixjlid.h>
+#endif
+
+
+extern GnomeMeeting *MyApp;
+
 /* The functions */
 
 int gnomemeeting_volume_set (char *mixer, int source, int *volume)
 {
   int res, mixerfd;
+#ifdef HAS_IXJ
+  OpalLineInterfaceDevice *lid = NULL;
 
-  mixerfd = open(mixer, O_RDWR); 
+  if (!strcmp (mixer, "/dev/phone0")) {
+
+    unsigned vol;
+    if ((MyApp)&&(MyApp->Endpoint ()))
+	lid = MyApp->Endpoint ()->GetLidDevice ();
+
+    if (source == 0) 
+      if (lid)
+	lid->SetPlayVolume (0, vol);
+
+    if (source == 0)
+      if (lid)
+	lid->SetRecordVolume (0, vol);
+
+    *volume = (int) vol;
+  }
+  else {
+#endif
+    mixerfd = open(mixer, O_RDWR); 
       
-  if (mixerfd == -1)
+    if (mixerfd == -1)
       return -1;
 
-  if (source == 0)
-    res = ioctl (mixerfd, MIXER_WRITE (SOUND_MIXER_VOLUME), volume);
+    if (source == 0)
+      res = ioctl (mixerfd, MIXER_WRITE (SOUND_MIXER_VOLUME), volume);
 
-  if (source == 1)
-    res = ioctl (mixerfd, MIXER_WRITE (SOUND_MIXER_MIC), volume);
+    if (source == 1)
+      res = ioctl (mixerfd, MIXER_WRITE (SOUND_MIXER_MIC), volume);
 
-  close (mixerfd);
+    close (mixerfd);
+
+#ifdef HAS_IXJ
+  }
+#endif
 
   return 0;
 }
@@ -64,38 +96,47 @@ int gnomemeeting_volume_set (char *mixer, int source, int *volume)
 int gnomemeeting_volume_get (char *mixer, int source, int *volume)
 {
   int res, mixerfd, caps;
-  
-  mixerfd = open(mixer, O_RDWR);
+
+#ifdef HAS_IXJ
+  OpalLineInterfaceDevice *lid = NULL;
+
+  if (!strcmp (mixer, "/dev/phone0")) {
+
+    unsigned vol;
+    if ((MyApp)&&(MyApp->Endpoint ()))
+      lid = MyApp->Endpoint ()->GetLidDevice ();
+
+    if (source == 0) 
+      if (lid)
+	lid->GetPlayVolume (0, vol);
+
+    if (source == 1)
+      if (lid)
+	lid->GetRecordVolume (0, vol);
+
+    *volume = (int) vol;
+  }
+  else {
+#endif
+
+    mixerfd = open(mixer, O_RDWR);
       
-  if (mixerfd == -1)
+    if (mixerfd == -1)
       return -1;
 
-  if (source == 0)
-    res = ioctl (mixerfd, MIXER_READ (SOUND_MIXER_READ_VOLUME), volume);
+    if (source == 0)
+      res = ioctl (mixerfd, MIXER_READ (SOUND_MIXER_READ_VOLUME), volume);
 
-  if (source == 1)
-    res = ioctl (mixerfd, MIXER_READ (SOUND_MIXER_MIC), volume);
+    if (source == 1)
+      res = ioctl (mixerfd, MIXER_READ (SOUND_MIXER_MIC), volume);
 
-//   int fd, status;
- 
-//   kill_sound_daemons ();
-//   fd = open ("/dev/dsp0", O_RDWR);
- 
-//   status = ioctl(fd, SNDCTL_DSP_GETCAPS, &caps);
- 
-//   if ((fd != -1)&&(status != -1)) {
+    close (mixerfd);
 
-//     if (caps & DSP_CAP_DUPLEX) 
-//       cout << "yes" << endl << flush;
-//     else
-//       cout << "no" << endl << flush;
-//   }
+#ifdef HAS_IXJ
+  }
+#endif  
 
-//   close (fd);
-
-  close (mixerfd);
-
-  return mixerfd;
+  return TRUE;
 }
 
 

@@ -35,6 +35,9 @@
 #include <h323.h>
 #include <gnome.h>
 #include <pthread.h>
+#ifdef HAS_IXJ
+#include <ixjlid.h>
+#endif
 
 #include "common.h"
 #include "videograbber.h"
@@ -324,6 +327,19 @@ class GMH323EndPoint : public H323EndPoint
   PThread* GetILSClient ();
 
 
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Return the current Lid Thread.
+   * PRE          :  /
+   */
+  PThread* GetLidThread ();
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Return the current Lid Device.
+   * PRE          :  /
+   */
+  OpalLineInterfaceDevice *GetLidDevice ();
+
 
  protected:
   
@@ -349,6 +365,12 @@ class GMH323EndPoint : public H323EndPoint
   PMutex var_mutex;
   int opened_audio_channels;
   int opened_video_channels;
+
+#ifdef HAS_IXJ
+  OpalLineInterfaceDevice *lid;
+  PDECLARE_NOTIFIER (PThread, GMH323EndPoint, LidThread);
+  PThread *lid_thread;
+#endif
 };
 
 #endif

@@ -69,7 +69,6 @@ extern GnomeMeeting *MyApp;
 /* The Timer */
 static gint IncomingCallTimeout (gpointer data) 
 {
-
   GM_window_widgets *gw = NULL;
   H323Connection *connection = NULL;
   gchar *msg = NULL;
@@ -138,6 +137,11 @@ GMH323EndPoint::GMH323EndPoint ()
   SetCurrentConnection (NULL);
   SetCallingState (0);
   
+#ifdef HAS_IXJ
+  lid = NULL;
+  lid_thread = NULL;
+#endif
+
   video_grabber = NULL;
   listener = NULL;
   codecs_count = 1;
@@ -183,104 +187,124 @@ GMH323EndPoint::~GMH323EndPoint ()
   /* We do not delete the webcam and the ils_client 
      threads here, but in the Cleaner thread that is
      called when the user chooses to quit... */
+
+  if (lid) {
+ 
+    lid->Close();
+  }
 }
 
 
 void GMH323EndPoint::UpdateConfig ()
 {
+  int vol_rec = 0;
+  int vol_play = 0;
   int found_player = 0;
   int found_recorder = 0;
   gchar *text = NULL;
   gchar *player = NULL;
   gchar *recorder = NULL;
   gchar *recorder_mixer = NULL;
-  GM_pref_window_widgets *pw = NULL;
+  gchar *lid_device = NULL;
+  gchar *lid_country = NULL;
+  int lid_aec = 0;
+  bool use_lid = FALSE;
+  GmPrefWindow *pw = NULL;
+  GmWindow *gw = NULL;
 
   gnomemeeting_threads_enter ();
   pw = gnomemeeting_get_pref_window (gm);
+  gw = gnomemeeting_get_main_window (gm);
 
   /* Do not change these values during calls */
   if (GetCallingState () == 0) {
 
-    /**/
-    /* Update the capabilities */
-    RemoveAllCapabilities ();
-    AddAudioCapabilities ();
-    AddVideoCapabilities (gconf_client_get_int (GCONF_CLIENT (client), "/apps/gnomemeeting/video_settings/video_size", NULL));
-    
-    
-    /* Set recording source and set micro to record */
-    player = gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_player", NULL);
-    recorder = gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_recorder", NULL);
-    recorder_mixer = gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_recorder", NULL);
+    use_lid = 
+      gconf_client_get_bool (client, "/apps/gnomemeeting/devices/lid", 0);
+  
+
+    /* Set recording source and set micro to record if no LID is used */
+    if (!use_lid) {
+
+      player = 
+	gconf_client_get_string (client, 
+				 "/apps/gnomemeeting/devices/audio_player", 
+				 NULL);
+      recorder = 
+	gconf_client_get_string (client, 
+				 "/apps/gnomemeeting/devices/audio_recorder", 
+				 NULL);
+      recorder_mixer = 
+	gconf_client_get_string (client, 
+				 "/apps/gnomemeeting/devices/audio_recorder", 
+				 NULL);
  
-    /* Is the choosen device detected? */
-    for (int i = gw->audio_player_devices.GetSize () - 1; i >= 0; i--) {
-      
-      if (player != NULL) {
 
-	if (!strcmp (player, gw->audio_player_devices [i]))
-	  found_player = 1;
-      }
+      /* Is the choosen device detected? */
+      for (int i = gw->audio_player_devices.GetSize () - 1; i >= 0; i--) {
       
-      if (recorder != NULL) {
+	if (player != NULL) {
 
-	if (!strcmp (recorder, gw->audio_recorder_devices [i]))
-	  found_recorder = 1;
+	  if (!strcmp (player, gw->audio_player_devices [i]))
+	    found_player = 1;
+	}
+      
+	if (recorder != NULL) {
+	  
+	  if (!strcmp (recorder, gw->audio_recorder_devices [i]))
+	    found_recorder = 1;
+	}
       }
-    }
     
 
-    /* Change that setting only if needed */
-    if (GetSoundChannelPlayDevice () != PString (player)) { 
+      /* Change that setting only if needed */
+      if (GetSoundChannelPlayDevice () != PString (player)) { 
 
-      if (found_player) {
+	if (found_player) {
      
-	SetSoundChannelPlayDevice (player);
-	text = g_strdup_printf (_("Set Audio player device to %s"), 
-				(const char *) player);
-      }
-      else {
+	  SetSoundChannelPlayDevice (player);
+	  text = g_strdup_printf (_("Set Audio player device to %s"), 
+				  (const char *) player);
+	}
+	else {
       
 	  SetSoundChannelPlayDevice (gw->audio_player_devices [0]);
 	  text = g_strdup_printf (_("Set Audio player device to %s"), 
 				  (const char *) gw->audio_player_devices [0]);
-      }
+	}
 
-      gnomemeeting_log_insert (text);
-      g_free (text);
-    } 
+	gnomemeeting_log_insert (text);
+	g_free (text);
+      } 
 
-    /* Change that setting only if needed */
-    if (GetSoundChannelRecordDevice () != PString (recorder)) { 
 
-      if (found_recorder) {
+      /* Change that setting only if needed */
+      if (GetSoundChannelRecordDevice () != PString (recorder)) { 
 
-	SetSoundChannelRecordDevice (recorder);
-	gnomemeeting_set_recording_source (recorder_mixer, 0); 
-	text = g_strdup_printf (_("Set Audio recorder device to %s"), 
-				(const char *) recorder);
-      }
-      else {
+	if (found_recorder) {
+	  
+	  SetSoundChannelRecordDevice (recorder);
+	  gnomemeeting_set_recording_source (recorder_mixer, 0); 
+	  text = g_strdup_printf (_("Set Audio recorder device to %s"), 
+				  (const char *) recorder);
+	}
+	else {
 
-	SetSoundChannelRecordDevice (gw->audio_recorder_devices [0]);
+	  SetSoundChannelRecordDevice (gw->audio_recorder_devices [0]);
+	  
+	  gnomemeeting_set_recording_source (recorder_mixer, 0); 
 
-	gnomemeeting_set_recording_source (recorder_mixer, 0); 
-
-	/* Translators: This is shown in the history. */
-	text = g_strdup_printf (_("Set Audio recorder device to %s"), 
-				(const char *) gw->audio_recorder_devices [0]);
-      }
+	  /* Translators: This is shown in the history. */
+	  text = g_strdup_printf (_("Set Audio recorder device to %s"), 
+				  (const char *) gw->audio_recorder_devices [0]);
+	}
     
-      gnomemeeting_log_insert (text);
-      g_free (text);
+	gnomemeeting_log_insert (text);
+	g_free (text);
+      }
     }
+    
 
-    g_free (player);
-    g_free (recorder);
-    g_free (recorder_mixer);
-    
-    
     /**/
     /* Update the H.245 Tunnelling and Fast Start Settings if needed */
     if (disableH245Tunneling != !gconf_client_get_bool (client, "/apps/gnomemeeting/general/h245_tunneling", 0)) {
@@ -314,6 +338,115 @@ void GMH323EndPoint::UpdateConfig ()
       !gconf_client_get_bool (client, 
 			      "/apps/gnomemeeting/general/fast_start", 0);
 
+
+#ifdef HAS_IXJ
+    /* Use the quicknet card if needed */
+    if (use_lid) {
+
+      if (!lid) {
+	
+	lid_device =  
+	  gconf_client_get_string (client, 
+				   "/apps/gnomemeeting/devices/lid_device", 0);
+
+	if (lid_device == NULL)
+	  lid_device = g_strdup ("/dev/phone0");
+
+	lid = new OpalIxJDevice;
+	if (lid->Open ("/dev/phone0")) {
+	
+	  gchar *msg = NULL;
+	  msg = g_strdup_printf (_("Using Quicknet device %s"), 
+				 (const char *) lid->GetName ());
+	  gnomemeeting_log_insert (msg);
+	  g_free (msg);
+	  
+	  lid->EnableAudio(0, TRUE); /* Enable the POTS Telephone handset */
+	  lid->SetLineToLineDirect(0, 1, FALSE);
+	 
+	  lid_country =
+	    gconf_client_get_string (client, 
+				     "/apps/gnomemeeting/devices/lid_country",
+				     NULL);
+	  if (lid_country)
+	    lid->SetCountryCodeName(lid_country);
+	  g_free (lid_country);
+
+	  lid_aec =
+	    gconf_client_get_int (client, 
+				  "/apps/gnomemeeting/devices/lid_aec", NULL);
+	  switch (lid_aec) {
+	    
+	  case 0:
+	    lid->SetAEC (0, OpalLineInterfaceDevice::AECOff);
+	    break;
+
+	  case 1:
+	    lid->SetAEC (0, OpalLineInterfaceDevice::AECLow);
+	    break;
+
+	  case 2:
+	    lid->SetAEC (0, OpalLineInterfaceDevice::AECMedium);
+	    break;
+
+	  case 3:
+	    lid->SetAEC (0, OpalLineInterfaceDevice::AECHigh);
+	    break;
+
+	  case 5:
+	    lid->SetAEC (0, OpalLineInterfaceDevice::AECAGC);
+	    break;
+	  }
+
+	  lid_thread = PThread::Create (PCREATE_NOTIFIER(LidThread), 0,
+					PThread::NoAutoDeleteThread,
+					PThread::NormalPriority,
+					"LidHookMonitor");
+
+	/* Get the volumes for the mixers */
+	  /* Should be fixed: changing the mixers must not changed the sliders
+	     if LID is used and not using LID anymore must restore normal
+	     mixers levels. Moreover it would be great to add a label */
+	//   if (lid_aec != 5) {
+
+// 	    gnomemeeting_volume_get (player_mixer, 0, &vol_play);
+// 	    gnomemeeting_volume_get (recorder_mixer, 1, &vol_rec);
+// 	  }
+
+// 	  gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_play),
+// 				    (int) (vol_play / 257));
+// 	  gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_rec),
+// 				    (int) (vol_rec / 257));
+	  
+	}
+	else
+	  gnomemeeting_warning_popup (NULL, _("Error while opening the Quicknet device"));
+
+
+	g_free (lid_device);
+      }
+    }
+    else { /* If the user chose to not use anymore the Quicknet device */
+      
+      if (lid) {
+
+	delete (lid);
+	lid = NULL;
+      }
+    }
+#endif
+
+
+    /**/
+    /* Update the capabilities */
+    RemoveAllCapabilities ();
+    AddAudioCapabilities ();
+    AddVideoCapabilities (gconf_client_get_int (GCONF_CLIENT (client), "/apps/gnomemeeting/video_settings/video_size", NULL));
+
+
+    g_free (player);
+    g_free (recorder);
+    g_free (recorder_mixer);    
   }
 
   gnomemeeting_threads_leave ();
@@ -397,8 +530,20 @@ void GMH323EndPoint::AddAudioCapabilities ()
 {
   gchar **codecs;
   gchar *clist_data = NULL;
+  BOOL use_pcm16_codecs = TRUE;
 
-  
+#ifdef HAS_IXJ
+  /* Add the audio capabilities provided by the LID Hardware */
+  if ((lid != NULL) && lid->IsOpen()) {
+
+    H323_LIDCapability::AddAllCapabilities (*lid, capabilities, 0, 0);
+
+    /* If the LID can do PCM16 we can use the software codecs like GSM too */
+    use_pcm16_codecs = lid->GetMediaFormats ().GetValuesIndex (OpalMediaFormat(OPAL_PCM16)) != P_MAX_INDEX;
+  }
+#endif
+
+
   /* Add or not the audio capabilities */ 
   clist_data = gconf_client_get_string (client, "/apps/gnomemeeting/audio_codecs/list", NULL);
   
@@ -411,7 +556,7 @@ void GMH323EndPoint::AddAudioCapabilities ()
 
 
   /* Let's go */
-  for (int i = 0 ; ((codecs [i] != NULL) && (i < GM_AUDIO_CODECS_NUMBER)) ; i++) {
+  for (int i = 0 ; ((codecs [i] != NULL) && (i < GM_AUDIO_CODECS_NUMBER)) && (use_pcm16_codecs) ; i++) {
     
     gchar **couple = g_strsplit (codecs [i], "=", 0);
 
@@ -843,7 +988,16 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   current_connection = FindConnectionWithLock
     (connection.GetCallToken ());
   current_connection->Unlock ();
-  
+
+  SetCallingState (3);
+
+
+  /* If we have a LID, make it ring */
+  if ((lid != NULL) && (lid->IsOpen())) {
+
+    lid->RingLine (OpalIxJDevice::POTSLine, 0x33);
+  }
+
 
   /* The timers */
   gnomemeeting_threads_enter ();
@@ -979,6 +1133,7 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 
   gnomemeeting_threads_enter ();
 
+
   /* Set Video Codecs Settings */
   vq = 32 - (int) ((double) gconf_client_get_int (client, "/apps/gnomemeeting/video_settings/tr_vq", NULL) / 100 * 31);
 
@@ -991,6 +1146,7 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   }
 
 
+  /* Connected */
   msg = g_strdup_printf (_("Connected with %s using %s"), 
 			 utf8_name, utf8_app);
 
@@ -1029,6 +1185,13 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 
   docklet_timeout = 0;
   sound_timeout = 0;
+
+
+  /* If we have a LID, make sure it is no longer ringing */
+  if ((lid != NULL) && (lid->IsOpen())) {
+    lid->RingLine (OpalIxJDevice::POTSLine, 0);
+  }
+
 
   gnomemeeting_docklet_set_content (gw->docklet, 0);
 
@@ -1168,6 +1331,17 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   if (exit == 1) 
     return;
 
+  
+  /* Play Busy Tone */
+#ifdef HAS_IXJ
+  if ((lid)&&(GTK_TOGGLE_BUTTON (gw->speaker_phone_button))) {
+
+//    lid->EnableAudio (0, FALSE);
+    lid->PlayTone (0, OpalLineInterfaceDevice::BusyTone);
+  }
+#endif
+
+
   /* Reset the Video Grabber, if preview, else close it */
   GMVideoGrabber *vg = (GMVideoGrabber *) video_grabber;
   if (gconf_client_get_bool (client, 
@@ -1303,18 +1477,36 @@ BOOL GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
   sound_timeout = 0;
 
 
-  /* Clear the docklet */
-  gnomemeeting_docklet_set_content (gw->docklet, 0);
-
-  gnomemeeting_threads_leave ();
-
-  
   /* Put esd into standby mode */
   esd_client = esd_open_sound (NULL);
   esd_standby (esd_client);
   esd_close (esd_client);
 
+
+  /* Clear the docklet */
+  gnomemeeting_docklet_set_content (gw->docklet, 0);
+  gnomemeeting_threads_leave ();
+
   opened_audio_channels++;
+
+  /* If we are using a hardware LID, connect the audio stream to the LID */
+  if ((lid != NULL) && lid->IsOpen()) {
+
+    gnomemeeting_threads_enter ();
+    gchar *msg = g_strdup_printf (_("Attaching lid hardware to codec"));
+    gnomemeeting_log_insert (msg);
+    g_free (msg);
+    gnomemeeting_threads_leave ();
+
+
+    if (!codec.AttachChannel (new OpalLineChannel (*lid,
+			      OpalIxJDevice::POTSLine, codec))) {
+      return FALSE;
+    }
+
+    return TRUE;
+  }
+
 
   if (H323EndPoint::OpenAudioChannel(connection, isEncoding, 
 				     bufferSize, codec)) 
@@ -1412,3 +1604,90 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
       return FALSE;    
   }
 }
+
+
+PThread *GMH323EndPoint::GetLidThread (void)
+{
+#ifdef HAS_IXJ
+  return lid_thread;
+#else
+  return NULL;
+#endif
+}
+
+
+OpalLineInterfaceDevice *GMH323EndPoint::GetLidDevice ()
+{
+#ifdef HAS_IXJ
+  return lid;
+#else
+  return NULL;
+#endif
+}
+
+
+#ifdef HAS_IXJ
+void GMH323EndPoint::LidThread (PThread &, INT)
+{
+  BOOL OffHook, lastOffHook;
+
+
+  /* Check the initial hook status. */
+  OffHook = lastOffHook = lid->IsLineOffHook (OpalIxJDevice::POTSLine);
+
+  /* OffHook can take a few cycles to settle, so on the first pass */
+  /* assume we are off-hook and play a dial tone. */
+  lid->PlayTone(0, OpalLineInterfaceDevice::DialTone);
+
+  while ((lid != NULL) && (lid->IsOpen()) )
+  {
+    OffHook = 
+      (lid->IsLineOffHook (OpalIxJDevice::POTSLine));
+
+
+    /* If there is a state change */
+    if ((OffHook == TRUE) && (lastOffHook == FALSE)) {
+
+      if (GetCallingState() == 3) { /* 3 = incoming call */
+
+	lid->StopTone (0);
+        lid->RingLine(OpalIxJDevice::POTSLine, 0);
+
+        gnomemeeting_threads_enter ();
+	if (gw->incoming_call_popup) {
+
+	  gtk_widget_destroy (gw->incoming_call_popup);
+	  gw->incoming_call_popup = NULL;
+	}
+
+        connect_cb(NULL,NULL);
+	gnomemeeting_threads_leave ();
+      }
+
+
+      if (GetCallingState() == 0) { /* not connected */
+
+        lid->PlayTone (0, OpalLineInterfaceDevice::DialTone);
+      }
+    }
+
+
+    /* if phone is on hook */
+    if ((OffHook == FALSE) && (lastOffHook == TRUE)) {
+
+      if (GetCallingState() == 2) { /* 2 = currently in a call */
+
+	gnomemeeting_threads_enter ();
+        disconnect_cb(NULL,NULL);
+	gnomemeeting_threads_leave ();
+      }
+    }
+
+    lastOffHook = OffHook;
+
+    /* We must poll to read the hook state */
+    PThread::Sleep(50);
+
+  }
+}
+#endif

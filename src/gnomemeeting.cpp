@@ -102,9 +102,11 @@ gint AppbarUpdate (gpointer data)
 
       if (t.GetSeconds () > 1) {
 
-	audio_session = connection->GetSession(RTP_Session::DefaultAudioSessionID);
+	audio_session = 
+	  connection->GetSession(RTP_Session::DefaultAudioSessionID);
 	  
-	video_session = connection->GetSession(RTP_Session::DefaultVideoSessionID);
+	video_session = 
+	  connection->GetSession(RTP_Session::DefaultVideoSessionID);
 	  
 	if (audio_session != NULL) {
 
@@ -197,6 +199,13 @@ void GnomeMeeting::Connect()
   /* If connection, then answer it */
   if (connection != NULL) {
     
+#ifdef HAS_IXJ
+      OpalLineInterfaceDevice *lid = NULL;
+      lid = endpoint->GetLidDevice ();
+      if (lid)
+	lid->StopTone (0);
+#endif
+
       endpoint->SetCallingState (2);
       connection->AnsweringCall (H323Connection::AnswerCallNow);
       
@@ -224,13 +233,22 @@ void GnomeMeeting::Connect()
       endpoint->SetCurrentConnection (con);
       endpoint->SetCurrentCallToken (current_call_token);
       endpoint->SetCallingState (1);
+
+#ifdef HAS_IXJ
+      OpalLineInterfaceDevice *lid = NULL;
+      lid = endpoint->GetLidDevice ();
+      if (lid)
+	lid->PlayTone (0, OpalLineInterfaceDevice::RingTone);
+#endif
+
       con->Unlock ();
       gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
 
       /* Enable disconnect: we must be able to stop calling */
       GnomeUIInfo *call_menu_uiinfo =
 	(GnomeUIInfo *) g_object_get_data (G_OBJECT (gm), "call_menu_uiinfo");
-      gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [1].widget), TRUE);
+      gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [1].widget), 
+				TRUE);
 
       msg = g_strdup_printf (_("Call %d: calling %s"), 
 			     call_number,
@@ -241,7 +259,8 @@ void GnomeMeeting::Connect()
       g_free (msg);				 
     }
     else  /* We untoggle the connect button in the case it was toggled */
-      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->connect_button), FALSE);
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->connect_button), 
+				    FALSE);
   }
 }
 

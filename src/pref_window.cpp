@@ -47,6 +47,7 @@
 
 #define GNOMEMEETING_PAD_SMALL 1
 
+
 /* Declarations */
 
 extern GtkWidget *gm;
@@ -56,9 +57,11 @@ static void pref_window_clicked_callback (GtkDialog *, int, gpointer);
 static gint pref_window_destroy_callback (GtkWidget *, gpointer);
 static void personal_data_update_button_clicked (GtkWidget *, gpointer);
 static void codecs_list_button_clicked_callback (GtkWidget *, gpointer);
-static void gnomemeeting_codecs_list_add (GtkTreeIter, GtkListStore *, const gchar *, bool);
+static void gnomemeeting_codecs_list_add (GtkTreeIter, GtkListStore *, 
+					  const gchar *, bool);
 
-static void codecs_list_fixed_toggled (GtkCellRendererToggle *, gchar *, gpointer);
+static void codecs_list_fixed_toggled (GtkCellRendererToggle *, gchar *, 
+				       gpointer);
 static void menu_ctree_row_seletected_callback (GtkWidget *, gint, gint, 
 						GdkEventButton *, gpointer);
 
@@ -66,7 +69,8 @@ static void menu_ctree_row_seletected_callback (GtkWidget *, gint, gint,
 static void gnomemeeting_init_pref_window_general (GtkWidget *);
 static void gnomemeeting_init_pref_window_interface (GtkWidget *);
 static void gnomemeeting_init_pref_window_directories (GtkWidget *);
-static void gnomemeeting_init_pref_window_devices (GtkWidget *);
+static void gnomemeeting_init_pref_window_video_devices (GtkWidget *);
+static void gnomemeeting_init_pref_window_audio_devices (GtkWidget *);
 static void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *);
 static void gnomemeeting_init_pref_window_video_codecs (GtkWidget *);
 
@@ -82,6 +86,137 @@ enum {
 
 
 /* GTK Callbacks */
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Refreshes the devices list.
+ * PRE          :  /
+ */
+static void refresh_devices (GtkWidget *widget, gpointer data)
+{
+  GmPrefWindow *pw = NULL;
+  GmWindow *gw = NULL;
+  char *gconf_string = NULL;
+  GConfClient *client = NULL;
+  GtkWidget *item = NULL;
+  GtkWidget *menu = NULL;
+  int i = 0;
+  int index = 0;
+  int cpt = 0;
+
+  gw = gnomemeeting_get_main_window (gm);
+  pw = gnomemeeting_get_pref_window (gm);
+  client = gconf_client_get_default ();
+
+  /* The player */
+  gconf_string =  
+    gconf_client_get_string (GCONF_CLIENT (client), 
+			     "/apps/gnomemeeting/devices/audio_player", 
+			     NULL);
+
+  gw->audio_player_devices =
+    PSoundChannel::GetDeviceNames (PSoundChannel::Player);
+
+  i = gw->audio_player_devices.GetSize ();
+  index = gw->audio_player_devices.GetValuesIndex(PString (gconf_string));
+
+  gtk_option_menu_remove_menu (GTK_OPTION_MENU (pw->audio_player));
+  menu = gtk_menu_new ();
+
+  cpt = 0;
+  while (cpt < i) {
+
+    gchar *string = g_strdup (gw->audio_player_devices [cpt]);
+    item = gtk_menu_item_new_with_label (string);
+    gtk_widget_show (item);
+    gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+    g_free (string);
+    cpt++;
+  }
+
+  if (index == P_MAX_INDEX)
+    index = 0;
+
+  gtk_option_menu_set_menu (GTK_OPTION_MENU (pw->audio_player), menu);
+  gtk_option_menu_set_history (GTK_OPTION_MENU (pw->audio_player), index);
+
+  g_signal_connect (G_OBJECT (GTK_OPTION_MENU (pw->audio_player)->menu), 
+		    "deactivate", G_CALLBACK (string_option_menu_changed),
+  		    (gpointer) "/apps/gnomemeeting/devices/audio_player");    
+
+
+  /* The recorder */
+  gconf_string =  
+    gconf_client_get_string (GCONF_CLIENT (client), 
+			     "/apps/gnomemeeting/devices/audio_recorder", 
+			     NULL);
+
+  gw->audio_recorder_devices =
+    PSoundChannel::GetDeviceNames (PSoundChannel::Recorder);
+
+  i = gw->audio_recorder_devices.GetSize ();
+  index = gw->audio_recorder_devices.GetValuesIndex(PString (gconf_string));
+
+  gtk_option_menu_remove_menu (GTK_OPTION_MENU (pw->audio_recorder));
+  menu = gtk_menu_new ();
+
+  cpt = 0;
+  while (cpt < i) {
+
+    gchar *string = g_strdup (gw->audio_recorder_devices [cpt]);
+    item = gtk_menu_item_new_with_label (string);
+    gtk_widget_show (item);
+    gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+    g_free (string);
+    cpt++;
+  }
+
+  if (index == P_MAX_INDEX)
+    index = 0;
+
+  gtk_option_menu_set_menu (GTK_OPTION_MENU (pw->audio_recorder), menu);
+  gtk_option_menu_set_history (GTK_OPTION_MENU (pw->audio_recorder), index);
+
+  g_signal_connect (G_OBJECT (GTK_OPTION_MENU (pw->audio_recorder)->menu), 
+		    "deactivate", G_CALLBACK (string_option_menu_changed),
+  		    (gpointer) "/apps/gnomemeeting/devices/audio_recorder");
+
+
+  /* The Video player */
+  gconf_string =  
+    gconf_client_get_string (GCONF_CLIENT (client), 
+			     "/apps/gnomemeeting/devices/video_recorder", 
+			     NULL);
+
+  gw->video_devices = PVideoInputDevice::GetInputDeviceNames ();
+
+  i = gw->video_devices.GetSize ();
+  index = gw->video_devices.GetValuesIndex(PString (gconf_string));
+
+  gtk_option_menu_remove_menu (GTK_OPTION_MENU (pw->video_device));
+  menu = gtk_menu_new ();
+
+  cpt = 0;
+  while (cpt < i) {
+
+    gchar *string = g_strdup (gw->video_devices [cpt]);
+    item = gtk_menu_item_new_with_label (string);
+    gtk_widget_show (item);
+    gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+    g_free (string);
+    cpt++;
+  }
+
+  if (index == P_MAX_INDEX)
+    index = 0;
+
+  gtk_option_menu_set_menu (GTK_OPTION_MENU (pw->video_device), menu);
+  gtk_option_menu_set_history (GTK_OPTION_MENU (pw->video_device), index);
+
+  g_signal_connect (G_OBJECT (GTK_OPTION_MENU (pw->video_device)->menu), 
+		    "deactivate", G_CALLBACK (string_option_menu_changed),
+  		    (gpointer) "/apps/gnomemeeting/devices/video_recorder");
+}
+
 
 /* DESCRIPTION  :  This callback is called when the user clicks on "Close"
  * BEHAVIOR     :  Closes the window.
@@ -1198,29 +1333,32 @@ void gnomemeeting_init_pref_window_h323_advanced (GtkWidget *notebook)
 }                                                                              
 
 
-/* BEHAVIOR     :  It builds the notebook page for the device settings and
- *                 add it to the notebook.
+/* BEHAVIOR     :  It builds the notebook page for the audio devices 
+ *                 settings and add it to the notebook.
  * PRE          :  See init_pref_audio_codecs.
  */
-static void gnomemeeting_init_pref_window_devices (GtkWidget *notebook)
+static void gnomemeeting_init_pref_window_audio_devices (GtkWidget *notebook)
 {
   GConfClient *client = NULL;
   gchar *gconf_string = NULL;
   GtkWidget *vbox = NULL;                                                      
   GtkWidget *table = NULL; 
+
+  GtkWidget *button = NULL;
+  GtkWidget *table2 = NULL;
+
   int default_present = -1;
   int i = 0;
-  gchar *video_size [] = {_("Small"), 
-			  _("Large"), 
-			  NULL};
-  gchar *video_format [] = {_("PAL"), 
-			    _("NTSC"), 
-			    _("SECAM"), 
-			    _("auto"), 
-			    NULL};                                                  
+
+  gchar *aec [] = {_("Off"),
+		   _("Low"),
+		   _("Medium"),
+		   _("High"),
+		   _("Automatic Gain Compensation"),
+		   NULL};
+
   gchar *audio_player_devices_list [20];
   gchar *audio_recorder_devices_list [20];
-  gchar *video_devices_list [20];
                 
 
   /* Get the data */                                             
@@ -1283,6 +1421,76 @@ static void gnomemeeting_init_pref_window_devices (GtkWidget *notebook)
   pw->audio_recorder_mixer =
     gnomemeeting_pref_window_add_entry (table, _("Recorder Mixer:"), "/apps/gnomemeeting/devices/audio_recorder_mixer", _("The audio mixer to use to setup the volume of the audio recorder device."), 3);
 
+
+#ifdef HAS_IXJ
+  /* The Quicknet devices related options */
+  table = gnomemeeting_pref_window_add_table (vbox, _("Quicknet Device"), 
+					      3, 2);
+
+  pw->lid_aec =
+    gnomemeeting_pref_window_add_int_option_menu (table, _("Automatic Echo Cancellation:"), aec, "/apps/gnomemeeting/devices/lid_aec", _("The Automatic Echo Cancellation level : Off, Low, Medium, High, Automatic Gain Compensation. Choosing Automatic Gain Compensation modulates the volumes for best quality."), 0);
+
+  pw->lid_country =
+    gnomemeeting_pref_window_add_entry (table, _("Country Code:"), "/apps/gnomemeeting/devices/lid_country", _("The 2 letters country code of your country (e.g.: BE, UK, FR, DE, ...)."), 1);
+
+  pw->lid =
+    gnomemeeting_pref_window_add_toggle (table, _("Use the Quicknet Device"), "/apps/gnomemeeting/devices/lid", _("If enabled, GnomeMeeting will use the Quicknet device instead of the classical soundcard during calls."), 2, 0);
+#endif
+
+
+  /* That button will refresh the devices list */
+  button = gtk_button_new_from_stock (GTK_STOCK_REFRESH);
+  table2 = gtk_table_new (1, 6, TRUE);
+  gtk_box_pack_start (GTK_BOX (vbox), table2, FALSE, FALSE, 0);
+  gtk_table_attach (GTK_TABLE (table2), button, 5, 6, 0, 1,         
+                    (GtkAttachOptions) (GTK_SHRINK | GTK_FILL),                
+                    (GtkAttachOptions) (GTK_SHRINK | GTK_FILL),                
+                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);  
+
+  g_signal_connect (G_OBJECT (button), "clicked",
+		    G_CALLBACK (refresh_devices), NULL);
+}
+
+
+/* BEHAVIOR     :  It builds the notebook page for the video devices 
+ *                 settings and add it to the notebook.
+ * PRE          :  See init_pref_audio_codecs.
+ */
+static void gnomemeeting_init_pref_window_video_devices (GtkWidget *notebook)
+{
+  GConfClient *client = NULL;
+  gchar *gconf_string = NULL;
+  GtkWidget *vbox = NULL;                                                      
+  GtkWidget *table = NULL; 
+
+  GtkWidget *button = NULL;
+  GtkWidget *table2 = NULL;
+
+  int default_present = -1;
+  int i = 0;
+  gchar *video_size [] = {_("Small"), 
+			  _("Large"), 
+			  NULL};
+  gchar *video_format [] = {_("PAL"), 
+			    _("NTSC"), 
+			    _("SECAM"), 
+			    _("auto"), 
+			    NULL};
+
+  gchar *video_devices_list [20];
+                
+
+  /* Get the data */                                             
+  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);              
+  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
+  
+  client = gconf_client_get_default ();
+                                                                               
+  /* Packing widgets for the XDAP directory */                                
+  vbox = gtk_vbox_new (FALSE, 4);
+  gtk_notebook_append_page (GTK_NOTEBOOK(notebook), vbox, NULL);    
+
+
   /* The video devices related options */
   table = gnomemeeting_pref_window_add_table (vbox, _("Video Devices"), 5, 2);
 
@@ -1322,14 +1530,26 @@ static void gnomemeeting_init_pref_window_devices (GtkWidget *notebook)
   pw->video_preview =
     gnomemeeting_pref_window_add_toggle (table, _("Video Preview"), "/apps/gnomemeeting/devices/video_preview", _("If enabled, the video preview mode will be set activated and you will be able to see yourself without being in a call."), 5, 0);
 
+
+  /* That button will refresh the devices list */
+  button = gtk_button_new_from_stock (GTK_STOCK_REFRESH);
+  table2 = gtk_table_new (1, 6, TRUE);
+  gtk_box_pack_start (GTK_BOX (vbox), table2, FALSE, FALSE, 0);
+  gtk_table_attach (GTK_TABLE (table2), button, 5, 6, 0, 1,         
+                    (GtkAttachOptions) (GTK_SHRINK | GTK_FILL),                
+                    (GtkAttachOptions) (GTK_SHRINK | GTK_FILL),                
+                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);  
+
+  g_signal_connect (G_OBJECT (button), "clicked",
+		    G_CALLBACK (refresh_devices), NULL);
 }
 
 
-/* BEHAVIOR     :  It builds the notebook page for audio codecs settings and        
+/* BEHAVIOR     :  It builds the notebook page for audio codecs settings and  
  *                 add it to the notebook.                                     
  * PRE          :  The notebook.                                               
  */                                                                            
-void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)               
+void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)         
 {                                                                              
   GtkWidget *vbox = NULL;                                                      
   GtkWidget *table = NULL;                                                     
@@ -1687,10 +1907,20 @@ void gnomemeeting_init_pref_window ()
 		      &child_iter, 0, _("Directory Settings"), 1, 4, -1);
   gnomemeeting_init_pref_window_directories (notebook);
 
+  /* Another section */
+  gtk_tree_store_append (GTK_TREE_STORE (model), &iter, NULL);
+  gtk_tree_store_set (GTK_TREE_STORE (model),
+		      &iter, 0, _("Devices"), 1, 0, -1);
+
   gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
   gtk_tree_store_set (GTK_TREE_STORE (model),
-		      &child_iter, 0, _("Device Settings"), 1, 5, -1);
-  gnomemeeting_init_pref_window_devices (notebook);
+		      &child_iter, 0, _("Audio Devices"), 1, 5, -1);
+  gnomemeeting_init_pref_window_audio_devices (notebook);
+
+  gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
+  gtk_tree_store_set (GTK_TREE_STORE (model),
+		      &child_iter, 0, _("Video Devices"), 1, 6, -1);
+  gnomemeeting_init_pref_window_video_devices (notebook);
 
   /* Another section */
   gtk_tree_store_append (GTK_TREE_STORE (model), &iter, NULL);
@@ -1699,13 +1929,13 @@ void gnomemeeting_init_pref_window ()
 
   gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
   gtk_tree_store_set (GTK_TREE_STORE (model),
-		      &child_iter, 0, _("Audio Codecs"), 1, 6, -1);
+		      &child_iter, 0, _("Audio Codecs"), 1, 7, -1);
   gnomemeeting_init_pref_window_audio_codecs (notebook);
 
 
   gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
   gtk_tree_store_set (GTK_TREE_STORE (model),
-		      &child_iter, 0, _("Video Codecs"), 1, 7, -1);
+		      &child_iter, 0, _("Video Codecs"), 1, 8, -1);
   gnomemeeting_init_pref_window_video_codecs (notebook);
 
 

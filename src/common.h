@@ -90,6 +90,7 @@ struct _GmWindow
   GtkWidget *connect_button;
   GtkWidget *video_chan_button;
   GtkWidget *audio_chan_button;
+  GtkWidget *speaker_phone_button;
   GtkWidget *incoming_call_popup;
 
   int video_grabber_thread_count;
@@ -165,6 +166,10 @@ struct _GmPrefWindow
   GtkWidget *audio_recorder_mixer;
   GtkWidget *video_device; 
   GtkWidget *video_channel;
+  GtkWidget *lid_device;
+  GtkWidget *lid_aec;
+  GtkWidget *lid_country;
+  GtkWidget *lid;
   GtkWidget *show_docklet;
   GtkWidget *directory_update_button;
   GtkWidget *gatekeeper_update_button;

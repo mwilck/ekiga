@@ -95,7 +95,8 @@ void connect_cb (GtkWidget *widget, gpointer data)
 
   gw->incoming_call_popup = NULL;
 
-  if (MyApp->Endpoint ()->GetCallingState () == 0)
+  if ((MyApp->Endpoint ()->GetCallingState () == 0) ||
+      (MyApp->Endpoint ()->GetCallingState () == 3))
     MyApp->Connect ();
 }
 

@@ -342,8 +342,10 @@ gnomemeeting_init (GmWindow *gw,
   esd_standby (esd_client);
   gw->audio_player_devices = 
     PSoundChannel::GetDeviceNames (PSoundChannel::Player);
+
   gw->audio_recorder_devices = 
     PSoundChannel::GetDeviceNames (PSoundChannel::Recorder);
+
   gw->video_devices = PVideoInputDevice::GetInputDeviceNames ();
   esd_resume (esd_client);
   esd_close (esd_client);
@@ -356,13 +358,13 @@ gnomemeeting_init (GmWindow *gw,
   gnomemeeting_init_menu ();
   gnomemeeting_init_toolbar ();	
 
-  
+ 
   /* Launch the GnomeMeeting H.323 part */
   static GnomeMeeting instance;
   endpoint = MyApp->Endpoint ();
 
   if (debug)
-    PTrace::Initialise (6);
+    PTrace::Initialise (3);
 
  
   /* Start the video preview */

@@ -82,6 +82,7 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
 {
   GdkPixbuf *src_pic = NULL;
   GdkPixbuf *zoomed_pic = NULL;
+  GdkPixbuf *tmp = NULL;
   GnomeUIInfo *video_view_menu_uiinfo = NULL;
   GtkRequisition size_request;
   PMutex both_mutex;
@@ -119,10 +120,12 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
   H323VideoDevice::Redraw(frame);
 
   /* The real size picture */
-  src_pic =  
+  tmp =  
     gdk_pixbuf_new_from_data ((const guchar *) buffer,
 			      GDK_COLORSPACE_RGB, FALSE, 8, frameWidth,
 			      frameHeight, frameWidth * 3, NULL, NULL);
+  src_pic = gdk_pixbuf_copy (tmp);
+  g_object_unref (tmp);
 
   /* The zoomed picture */
   if (gw->zoom != 1) {
@@ -158,8 +161,7 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
     
     gnomemeeting_threads_enter ();
     gtk_image_set_from_pixbuf (GTK_IMAGE (gw->video_image), 
-			       GDK_PIXBUF (zoomed_pic));
-    gtk_widget_queue_draw (GTK_WIDGET (gw->video_image));
+ 			       GDK_PIXBUF (zoomed_pic));
     gnomemeeting_threads_leave ();
   }
 
@@ -199,7 +201,6 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
 	
 	gtk_image_set_from_pixbuf (GTK_IMAGE (gw->video_image), 
 				   GDK_PIXBUF (zoomed_pic));
-	gtk_widget_queue_draw (GTK_WIDGET (gw->video_image));
       }
     
       gnomemeeting_threads_leave ();
