@@ -158,7 +158,7 @@ resolve_reply (sw_discovery discovery,
 
   /* creation of the call url */
   contact->url = 
-    g_strdup_printf("h323://%s:%d",
+    g_strdup_printf("h323:%s:%d",
 		    sw_ipv4_address_name (address, (char *) name_buf, 16), 
 		    port);
   zero->mutex.Signal ();
