@@ -320,7 +320,6 @@ void GMVideoGrabber::SetContrast (int constrast)
 void GMVideoGrabber::GetParameters (int *whiteness, int *brightness, 
 				    int *colour, int *contrast)
 {
-  int hue;
   grabber->GetParameters (whiteness, brightness, colour, contrast, &hue);
 
   *whiteness = (int) *whiteness / 256;
@@ -351,8 +350,6 @@ void GMVideoGrabber::VGOpen (void)
   gchar *msg = NULL;
   int error_code = -1;  // No error
   
-  GConfClient *client = gconf_client_get_default ();
-
   /* Disable the video preview button while opening */
   gnomemeeting_threads_enter ();
   gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);

@@ -141,7 +141,7 @@ void gnomemeeting_enable_disconnect ();
 void gnomemeeting_disable_disconnect ();
 
 extern GtkWidget* 
-gnomemeeting_history_combo_box_new (GM_window_widgets* gw);
+gnomemeeting_history_combo_box_new (const gchar *key);
 
 /* DESCRIPTION   :  /
  * BEHAVIOR      : Add a new entry to the history combo and saves it
@@ -152,4 +152,11 @@ void
 gnomemeeting_history_combo_box_add_entry (GtkCombo *, const gchar *, const gchar *);
 
 void gnomemeeting_warning_popup (GtkWidget *, gchar *);
+
+/* DESCRIPTION   :  /
+ * BEHAVIOR      : Frees data in a double linked list
+ * PRE           : the list must have dinamically alocated data
+ */
+void gnomemeeting_free_glist_data (gpointer user_data);
+
 #endif

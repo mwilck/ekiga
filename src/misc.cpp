@@ -43,7 +43,6 @@
 
 /* Declarations */
 extern GtkWidget *gm;
-static void free_g_list_data (gpointer);
 
 /* The functions */
 
@@ -52,7 +51,7 @@ static void free_g_list_data (gpointer);
  * BEHAVIOR      : Frees data in a double linked list
  * PRE           : the list must have dinamically alocated data
  */
-static void free_g_list_data (gpointer user_data)
+void gnomemeeting_free_glist_data (gpointer user_data)
 {
   GList *list = (GList *) user_data;
 
@@ -229,15 +228,12 @@ gint PlaySound (GtkWidget *widget)
 
   /* If the applet contents the phone pixmap */
   if (object == NULL) {
-
     esd_resume (esd_client);
-
     gnome_triggers_do ("", "program", "GnomeMeeting", 
 		       "incoming_call", NULL);
   }
-  else 
+  else
     esd_standby (esd_client);
-
 
   esd_close (esd_client);
 
@@ -330,9 +326,8 @@ void gnomemeeting_disable_disconnect ()
   gtk_widget_set_sensitive (main_toolbar [3].widget, FALSE);
 }
 
-
 GtkWidget*
-gnomemeeting_history_combo_box_new (GM_window_widgets* gw)
+gnomemeeting_history_combo_box_new (const gchar *key)
 {
   GtkWidget* combo;
   gchar **contacts;
@@ -342,7 +337,7 @@ gnomemeeting_history_combo_box_new (GM_window_widgets* gw)
   GList *contacts_list;
   GConfClient *client = gconf_client_get_default ();
   stored_contacts = gconf_client_get_string (client,
-					     "/apps/gnomemeeting/history/called_hosts",
+					     key,
 					     0);
   contacts_list = NULL;
   /* We read the history on the hard disk */
@@ -361,9 +356,11 @@ gnomemeeting_history_combo_box_new (GM_window_widgets* gw)
   gtk_entry_set_text(GTK_ENTRY(GTK_COMBO(combo)->entry), ""); 
   if (contacts_list)
     gtk_object_set_data_full (GTK_OBJECT (combo), "history",
-			      contacts_list, free_g_list_data);
-  return combo; 
-	
+			      contacts_list, gnomemeeting_free_glist_data);
+
+  g_free (contacts);
+
+  return combo; 	
 }
 
 /* DESCRIPTION   :  /
@@ -447,7 +444,7 @@ gnomemeeting_history_combo_box_add_entry(GtkCombo *combo, const gchar *key,
   gtk_object_remove_no_notify (GTK_OBJECT (combo), "history");
   if (contacts_list)
     gtk_object_set_data_full (GTK_OBJECT (combo), "history", 
-			      contacts_list, free_g_list_data);
+			      contacts_list, gnomemeeting_free_glist_data);
 }
 
 static void popup_toggle_changed (GtkCheckButton *but, gpointer data)

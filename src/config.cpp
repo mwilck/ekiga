@@ -1345,6 +1345,48 @@ static void notebook_info_changed_nt (GConfClient *client, guint,
   }
 }
 
+#if 0 /* Uncomment when we are under Gnome2 */
+
+/* DESCRIPTION  :  This callback is called when something toggles the
+ *                 corresponding option in gconf.
+ * BEHAVIOR     :  Updated the combo strings
+ * PRE          :  gpointer is a valid pointer to the combo
+ */
+static void history_changed_nt (GConfClient *client, guint, GConfEntry *entry, 
+				gpointer user_data)
+{
+  GtkCombo *combo = GTK_COMBO (user_data);
+  GList *hosts = 0;
+  gchar **contacts;
+  gchar *old_entry;
+
+  if (entry->value->type != GCONF_VALUE_STRING)
+    return;
+
+  old_entry = gtk_editable_get_chars (GTK_EDITABLE (combo->entry), 0, -1);
+
+  const gchar *new_hosts = gconf_value_get_string (entry->value);
+  contacts = g_strsplit (new_hosts, ":", 0);
+  for (int i = 0; contacts[i] != 0; i++)
+    hosts = g_list_prepend (hosts, contacts[i]);
+
+  gtk_object_remove_data (GTK_OBJECT (combo), "history");
+
+  /* This is just needed if hosts in null */
+  gtk_list_clear_items (GTK_LIST (combo->list), 0, -1);
+
+  gtk_combo_set_popdown_strings (combo, hosts);
+  if (hosts != 0)
+    gtk_object_set_data_full (GTK_OBJECT (combo), "history", hosts,
+			      gnomemeeting_freeg_list_data);
+
+  /* Restore the previous value typed in the entry field */
+  gtk_entry_set_text (GTK_ENTRY (combo->entry), old_entry);
+
+  g_free (contacts);
+  g_free (old_entry);
+}
+#endif
 
 /* The functions  */
 void gnomemeeting_init_gconf (GConfClient *client)
@@ -1439,6 +1481,12 @@ void gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_docklet", view_widget_changed_nt, pw->show_docklet, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/view/notebook_info", notebook_info_changed_nt, NULL, 0, 0);
+
+#if 0 /* FIXME: Uncomment when we are under GNOME2*/
+  gconf_client_notify_add (client, "/apps/gnomemeeting/history/called_hosts", history_changed_nt, gw->combo, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/history/ldap_servers", history_changed_nt, lw->ils_server_combo, 0, 0);
+#endif 
 
   gnomemeeting_update_pref_window_sensitivity ();
 }
