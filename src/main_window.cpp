@@ -624,7 +624,7 @@ gnomemeeting_init (GmWindow *gw,
 
       gconf_client_set_string (GCONF_CLIENT (client),
 			     "/apps/gnomemeeting/audio_codecs/list",
-			     "Speex-5.9k=1:Speex-8.4k=1:GSM-06.10=1:MS-GSM=1:G.726-32k=1:G.711-uLaw-64k=1:G.711-ALaw-64k=1:LPC10=1", 0);
+			     "Speex-8.4k=1:MS-GSM=1:Speex-15k=1:GSM-06.10=1:G.726-32k=1:G.711-uLaw-64k=1:G.711-ALaw-64k=1:LPC10=1", 0);
 
       gnomemeeting_message_dialog (GTK_WINDOW (gm), _("GnomeMeeting just set the new Speex audio codec as default. Speex is a high quality, GPL audio codec introduced in GnomeMeeting 0.94."));
   }

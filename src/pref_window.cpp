@@ -575,9 +575,9 @@ gnomemeeting_codecs_list_add (GtkTreeIter iter, GtkListStore *store,
   }
 
 #ifdef SPEEX_CODEC
-  if (!strcmp (codec_name, "Speex-5.9k")) {
-    data [1] = g_strdup (_("Okay"));
-    data [2] = g_strdup ("5.9 kb");
+  if (!strcmp (codec_name, "Speex-15k")) {
+    data [1] = g_strdup (_("Excellent"));
+    data [2] = g_strdup ("15 kb");
   }
 
   if (!strcmp (codec_name, "Speex-8.4k")) {
@@ -592,12 +592,12 @@ gnomemeeting_codecs_list_add (GtkTreeIter iter, GtkListStore *store,
   }
 
   if (!strcmp (codec_name, "G.711-ALaw-64k")) {
-    data [1] = g_strdup (_("Good Quality"));
+    data [1] = g_strdup (_("Excellent"));
     data [2] = g_strdup ("64 kbits");
   }
 
   if (!strcmp (codec_name, "G.711-uLaw-64k")) {
-    data [1] = g_strdup (_("Good Quality"));
+    data [1] = g_strdup (_("Excellent"));
     data [2] = g_strdup ("64 kbits");
   }
 

@@ -577,7 +577,7 @@ void GMH323EndPoint::AddAudioCapabilities ()
 
 
 #ifdef SPEEX_CODEC
-      if ((!strcmp (couple [0], "Speex-5.9k")) && (!strcmp (couple [1], "1"))) {
+      if ((!strcmp (couple [0], "Speex-15k")) && (!strcmp (couple [1], "1"))) {
       
 	SetCapability (0, 0, new SpeexNarrow2AudioCapability ());
 	codecs_count++;  
