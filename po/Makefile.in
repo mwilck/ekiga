@@ -16,7 +16,7 @@ SHELL = /bin/sh
 srcdir = .
 top_srcdir = ..
 
-prefix = /usr/
+prefix = /usr/local
 exec_prefix = ${prefix}
 datadir = $(prefix)/share
 localedir = $(datadir)/locale
@@ -46,14 +46,14 @@ INCLUDES = -I.. -I$(top_srcdir)/intl
 COMPILE = $(CC) -c $(DEFS) $(INCLUDES) $(CPPFLAGS) $(CFLAGS) $(XCFLAGS)
 
 SOURCES = cat-id-tbl.c
-POFILES =  es.po fr.po gl.po sv.po
-GMOFILES =  es.gmo fr.gmo gl.gmo sv.gmo
+POFILES =  es.po fr.po gl.po sv.po wa.po
+GMOFILES =  es.gmo fr.gmo gl.gmo sv.gmo wa.gmo
 DISTFILES = ChangeLog Makefile.in.in POTFILES.in $(PACKAGE).pot \
 stamp-cat-id $(POFILES) $(GMOFILES) $(SOURCES)
 
 POTFILES = \
 
-CATALOGS =  es.gmo fr.gmo gl.gmo sv.gmo
+CATALOGS =  es.gmo fr.gmo gl.gmo sv.gmo wa.gmo
 CATOBJEXT = .gmo
 INSTOBJEXT = .mo
 

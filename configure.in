@@ -26,18 +26,103 @@ AC_ISC_POSIX
 AC_HEADER_STDC
 AC_ARG_PROGRAM
 
+dnl ************************************************
+dnl PTLib
+dnl Adapted from openh323 check in gnnomemeeting ;-)
+dnl ************************************************
+AC_ARG_WITH(ptlib-includes, [  --with-pt-includes=PFX   Location of PTLib includes.],  
+	with_pt_includes="$withval", with_pt_includes="/usr/include/ptlib")
+have_ptlib_includes="no"
+if test "x${with_ptlib_includes}" != "xno"; then
+	CPPFLAGS_save="$CPPFLAGS"
+	
+	AC_MSG_CHECKING(for PTLib includes)
+	AC_MSG_RESULT()
+	
+	CPPFLAGS="$CPPFLAGS -I${with_pt_includes}/unix -I${with_pt_includes}"
+	AC_CHECK_HEADER(pstring.h, [ pt_includes="yes" ])
+	CPPFLAGS="$CPPFLAGS_save"
+	
+	if test "x${pt_includes}" != "xno" -a "x${pt_includes}" != "x"; then
+		have_pt_includes="yes"
+		PTLIB_CFLAGS="-I${with_pt_includes}/unix -I${with_pt_includes}/.. -I${with_pt_includes}/../ptclib"
+		PTLIB_INCLUDE_DIR="${with_pt_includes}"
+	else
+		AC_MSG_ERROR([You need PTLib's header files to build GnomeMeeting])
+	fi
+else
+	AC_MSG_ERROR([You need PTLib's header files to build GnomeMeeting])
+fi
 
-H323_INCLUDES="-I$PTLIB_INCLUDE_DIR/unix -I$PTLIB_INCLUDE_DIR/.. -I$PTLIB_INCLUDE_DIR/../ptclib -I/usr/include -I$OPENH323_INCLUDE_DIR"
-H323_LIBS="-lh323_linux_x86_r -ldl -lpt_linux_x86_r -lpthread"
+AC_ARG_WITH(ptlib-libs, [  --with-pt-libs=PFX       Location of PTLib libs.],
+	with_pt_libs="$withval", with_pt_libs="/usr/lib")
+if test "x${with_pt_libs}" != "xno" -a "x${have_pt_includes}" != "xno"; then
+	AC_CHECK_FILE(${with_pt_libs}/libpt.so, pt_libs="yes", pt_libs="no")
+	
+	if test "x${pt_libs}" != "xno"; then
+		PTLIB_LDFLAGS="-L${with_pt_libs} ${H323_LIBS}"
+		PTLIB_LIBS_DIR="${with_pt_libs}"
+	else
+		AC_MSG_ERROR([You need PTLib to enjoy GnomeMeeting])
+	fi
+else
+	AC_MSG_ERROR([You need PTLib to enjoy GnomeMeeting])
+fi
 
+H323_LIBS="-loh323 -ldl -lpt -lpthread"
 
-LDAP_INCLUDES="-I/usr/local/include"
+dnl ***************************************
+dnl OpenH323
+dnl Adapted from openssl check in gnome-vfs
+dnl ***************************************
+AC_ARG_WITH(openh323-includes, [  --with-openh323-includes=PFX   Location of OpenH323 includes.],  
+	with_openh_includes="$withval", with_openh_includes="/usr/include/oh323")
+have_openh323_includes="no"
+if test "x${with_openh_includes}" != "xno" -a "x${have_pt_includes}" != "xno"; then
+	CPPFLAGS_save="$CPPFLAGS"
+	
+	AC_MSG_CHECKING(for OpenH323 includes)
+	AC_MSG_RESULT()
+	
+	CPPFLAGS="$CPPFLAGS -I$PTLIB_CFLAGS -I${with_openh_includes}"
+	AC_CHECK_HEADER(h225.h, [ openh323_includes="yes" ])
+	CPPFLAGS="$CPPFLAGS_save"
+	
+	if test "x${openh323_includes}" != "xno" -a "x${openh323_includes}" != "x"; then
+		have_openh323_includes="yes"
+		OPENH323_CFLAGS="-I${with_openh_includes}"
+		OPENH323_INCLUDE_DIR="${with_openh_includes}"
+	else
+		AC_MSG_ERROR([You need OpenH323's header files to build GnomeMeeting])
+	fi
+else
+	AC_MSG_ERROR([You need OpenH323's header files to build GnomeMeeting])
+fi
+
+AC_ARG_WITH(openh323-libs, [  --with-openh323-libs=PFX       Location of OpenH323 libs.],
+	with_openh323_libs="$withval", with_openh323_libs="/usr/lib")
+msg_openh323="no"
+if test "x${with_openh323_libs}" != "xno" -a "x${have_openh323_includes}" != "xno"; then
+	AC_CHECK_FILE(${with_openh323_libs}/libh323_linux_x86_r.so, openh323_libs="yes", openh323_libs="no")
+	if test "x${openh323_libs}" != "xno"; then
+		msg_openh323="yes"
+		OPENH323_LDFLAGS="-L${with_openh323_libs} ${H323_LIBS}"
+		OPENH323_LIBS_DIR="${with_openh323_libs}"
+	else
+		AC_MSG_ERROR([You need OpenH323 to enjoy GnomeMeeting])
+	fi
+else
+	AC_MSG_ERROR([You need OpenH323 to enjoy GnomeMeeting])
+fi
+
+dnl *****************************
+
+LDAP_INCLUDES=""
 LDAP_LIBS="-lldap -llber -lresolv"
 
-GNOMEMEETING_INCLUDES=""
-GNOMEMEETING_LDADD=""
+GNOMEMEETING_INCLUDES="$PTLIB_CFLAGS -I/usr/local/include -I/usr/include $OPENH323_CFLAGS"
+GNOMEMEETING_LDADD="$PTLIB_LDFLAGS $OPENH323_LDFLAGS"
 CFLAGS=""
-
 
 dnl *************************************************************************
 dnl ** OS   *****************************************************************
@@ -53,8 +138,8 @@ dnl *********************************************************************
 dnl ** GNOME ************************************************************
 dnl *********************************************************************
 
-GNOMEMEETING_INCLUDES="$H323_INCLUDES $H323_CFLAGS"
-GNOMEMEETING_LDADD="$GNOME_LIBDIR $GTK_LIBS $GNOMEGNORBA_LIBS $GNOME_APPLETS_LIBS $LDAP_LIBS $H323_LIBS `gtk-config --libs gthread`"
+GNOMEMEETING_INCLUDES="$GNOMEMEETING_INCLUDES $H323_CFLAGS"
+GNOMEMEETING_LDADD="$GNOMEMEETING_LDADD $GNOME_LIBDIR $GTK_LIBS $GNOMEGNORBA_LIBS $GNOME_APPLETS_LIBS $LDAP_LIBS $H323_LIBS `gtk-config --libs gthread`"
 
 GNOME_COMPILE_WARNINGS
 GNOME_X_CHECKS
@@ -127,16 +212,11 @@ echo "================ Final configuration ==================="
 echo "    Installing into prefix: $prefix"
 echo ""
 echo "   OpenH323 Include Directory is  :  $OPENH323_INCLUDE_DIR"
+echo "  OpenH323 Libraries Directory is :  $OPENH323_LIBS_DIR"
 echo "      PTLIB Include Directory is  :  $PTLIB_INCLUDE_DIR"
+echo "      PTLib Libraries Directory is:  $PTLIB_LIBS_DIR"
 echo "                         OS Type  :  $OSTYPE"
 echo "                    Machine Type  :  $MACHTYPE"
-echo ""
-echo " If OpenH323 and PWLIB settings are not correct,"
-echo " please type  :  export OPENH323_INCLUDE_DIR=path_to_your_openh323_include_files"
-echo " and          :  export PTLIB_INCLUDE_DIR=path_to_your_ptlib_include_files"
-echo ""
-echo " and finally re-run the configure script "
-echo ""
 echo ""
 echo " If all settings are OK, type make and make install "
 echo "========================================================"
