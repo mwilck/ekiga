@@ -475,11 +475,12 @@ void GMVideoGrabber::VGOpen (void)
 	gnomemeeting_threads_leave ();
       }
 
-#ifndef TRY_PLUGINS
+
       /* delete the failed grabber and open the fake grabber, either
        because there was an error, either because the user chose to do so */
-      delete grabber;
-#endif
+      if (grabber)
+	delete grabber;
+
 
       gnomemeeting_threads_enter ();
       video_image = gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/video_image", NULL);

@@ -1,5 +1,10 @@
 2003-09-21 Damien Sandras  <dsandras@seconix.com>
 
+	* src/videograbber.cpp: Always delete the grabber when the opening
+	fails, even when plugins are used.
+	
+2003-09-21 Damien Sandras  <dsandras@seconix.com>
+
 	* src/endpoint.cpp: Use http://seconix.com/ip to detect the 
 	gateway IP for use with IP translation.
 	

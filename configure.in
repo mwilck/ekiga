@@ -37,7 +37,7 @@ AC_DEFINE_UNQUOTED(BUILD_NUMBER, $BUILD_NUMBER,[fix])
 dnl ###########################################################################
 dnl   This is to check correct gconf installation
 dnl ###########################################################################
-SCHEMA_AGE=31
+SCHEMA_AGE=30
 dnl increment this number if you add anything to the schema file
 AC_SUBST(SCHEMA_AGE)
 
@@ -153,9 +153,9 @@ if test "x${with_ptlib_includes}" != "xno"; then
 	if test "x${ptlib_includes}" != "xno" -a "x${ptlib_includes}" != "x"; then
 		have_ptlib_includes="yes"
                 if test "x${with_ptlib_includes}" != "x/usr/include/ptlib"; then
-                        PTLIB_CFLAGS="-I${with_ptlib_includes}/.. -I${with_ptlib_includes}/../ptclib -I${with_ptlib_includes}/"
+                        PTLIB_CFLAGS="-I${with_ptlib_includes}/unix -I${with_ptlib_includes}/.. -I${with_ptlib_includes}/../ptclib"
                 else
-                        PTLIB_CFLAGS="-I/usr/include/ptclib/ -I/usr/include/ptlib"
+                        PTLIB_CFLAGS="-I/usr/include/ptlib/unix -I/usr/include/ptclib"
                 fi
 		PTLIB_INCLUDE_DIR="${with_ptlib_includes}"
 	else
