@@ -409,6 +409,11 @@ class GMH323EndPoint : public H323EndPoint
   void SetUserNameAndAlias ();
 
 
+  /* FIX ME: Comments */
+  BOOL SetSoundChannelPlayDevice(const PString &);
+  BOOL SetSoundChannelRecordDevice(const PString &);
+
+
 #ifdef HAS_IXJ
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns the current Lid Thread pointer, locked so that

@@ -373,7 +373,8 @@ void GMVideoGrabber::VGOpen (void)
       if (!grabber->Open (video_device, FALSE))
 	error_code = 0;
 #else
-      grabber = PVideoInputManager::GetOpenedDevice(video_device, FALSE);
+      grabber = 
+	PDeviceManager::GetOpenedVideoInputDevice (video_device, FALSE);
       if (grabber == NULL)
 	error_code = 0;
 #endif
@@ -696,7 +697,8 @@ void GMVideoTester::Main ()
       if (!grabber->Open (video_device, FALSE))
 	error_code = 0;
 #else
-	grabber = PVideoInputManager::GetOpenedDevice(video_device, FALSE);
+      grabber = 
+	PDeviceManager::GetOpenedVideoInputDevice (video_device, FALSE);
       if (!grabber)
 	error_code = 0;
 #endif

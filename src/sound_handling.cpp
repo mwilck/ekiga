@@ -219,8 +219,12 @@ PStringArray gnomemeeting_get_audio_player_devices ()
   PStringArray devices;
   PStringArray d;
   int cpt = 0;
-  
+
+#ifndef TRY_PLUGINS  
   devices = PSoundChannel::GetDeviceNames (PSoundChannel::Player);
+#else
+  devices = PDeviceManager::GetSoundDeviceNames (PDeviceManager::Output);
+#endif
 
 #ifdef HAS_IXJ
   devices += OpalIxJDevice::GetDeviceNames ();
@@ -244,7 +248,11 @@ PStringArray gnomemeeting_get_audio_recorder_devices ()
   PStringArray d;
   int cpt = 0;
   
+#ifndef TRY_PLUGINS
   devices = PSoundChannel::GetDeviceNames (PSoundChannel::Recorder);
+#else
+  devices = PDeviceManager::GetSoundDeviceNames (PDeviceManager::Input);
+#endif
 
 #ifdef HAS_IXJ
   devices += OpalIxJDevice::GetDeviceNames ();
@@ -340,8 +348,11 @@ GMAudioTester::GMAudioTester (GMH323EndPoint *e)
   gw = MyApp->GetMainWindow ();
   gnomemeeting_threads_leave ();
 
+#ifndef TRY_PLUGINS
   player = new PSoundChannel;
   recorder = new PSoundChannel;
+#endif
+
 #endif
 
   this->Resume ();
@@ -355,11 +366,17 @@ GMAudioTester::~GMAudioTester ()
   stop = 1;
   quit_mutex.Wait ();
 
-  player->Close ();
-  recorder->Close ();
-  
-  delete (player);
-  delete (recorder);
+  if (player) {
+
+    player->Close ();
+    delete (player);
+  }
+
+  if (recorder) {
+
+    recorder->Close ();
+    delete (recorder);
+  }
 
   gnomemeeting_sound_daemons_resume ();
   quit_mutex.Signal ();
@@ -407,9 +424,17 @@ void GMAudioTester::Main ()
 
   
   /* We try to open the 2 selected devices */
-  if (!player->Open (ep->GetSoundChannelPlayDevice (), PSoundChannel::Player,
+#ifndef TRY_PLUGINS
+  if (!player->Open (ep->GetSoundChannelPlayDevice (), 
+		     PSoundChannel::Player,
 		     1, 8000, 16)) {
-
+#else
+    player = 
+      PDeviceManager::GetOpenedSoundDevice (ep->GetSoundChannelPlayDevice (),
+					    PDeviceManager::Output,
+					    1, 8000, 16);
+    if (!player) {
+#endif
     gdk_threads_enter ();  
     gnomemeeting_error_dialog (GTK_WINDOW (gw->druid_window), _("Failed to open the device"), _("Impossible to open the selected audio device (%s) for playing. Please check your audio setup, the permissions and that the device is not busy."), (const char *) ep->GetSoundChannelPlayDevice ());
     gdk_threads_leave ();  
@@ -418,9 +443,17 @@ void GMAudioTester::Main ()
   }
 
 
+#ifndef TRY_PLUGINS
   if (!recorder->Open (ep->GetSoundChannelRecordDevice (), 
 		       PSoundChannel::Recorder,
 		       1, 8000, 16)) {
+#else
+    recorder = 
+      PDeviceManager::GetOpenedSoundDevice (ep->GetSoundChannelRecordDevice (),
+					    PDeviceManager::Input,
+					    1, 8000, 16);
+    if (!recorder) {                 
+#endif
 
     gdk_threads_enter ();  
     gnomemeeting_error_dialog (GTK_WINDOW (gw->druid_window), _("Failed to open the audio device"), _("Impossible to open the selected audio device (%s) for recording. Please check your audio setup, the permissions and that the device is not busy."), (const char *) ep->GetSoundChannelRecordDevice ());

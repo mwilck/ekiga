@@ -43,6 +43,9 @@
 #include <ptbuildopts.h>
 
 #include <ptlib.h>
+#ifdef TRY_PLUGINS
+#include <ptlib/plugins.h>
+#endif
 #include <h323.h>
 
 #ifndef DISABLE_GNOME

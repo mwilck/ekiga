@@ -309,7 +309,8 @@ GnomeMeeting::DetectDevices ()
   gw->video_devices += PVideoInput1394AvcDevice::GetInputDeviceNames();
 #endif
 #else
-  gw->video_devices = PVideoInputManager::GetInputDeviceNames ();
+  gw->video_devices = 
+    PDeviceManager::GetVideoDeviceNames (PDeviceManager::Input);
 #endif
   gw->video_devices += PString (_("Picture"));
   gw->audio_mixers = gnomemeeting_get_mixers ();

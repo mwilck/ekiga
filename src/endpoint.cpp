@@ -1796,6 +1796,8 @@ GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
                                  unsigned bufferSize,
                                  H323AudioCodec & codec)
 {
+  BOOL no_error = TRUE;
+
   /* Wait that the primary call has terminated (in case of transfer)
      before opening the channels for the second call */
   TransferCallWait ();
@@ -1853,23 +1855,84 @@ GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
   }
   else
 #endif
-    if (!H323EndPoint::OpenAudioChannel (connection,
-					 isEncoding, 
-					 bufferSize,
-					 codec)) {
-      
-      gnomemeeting_threads_enter ();
+#ifdef TRY_PLUGINS
+   {
+     codec.SetSilenceDetectionMode(GetSilenceDetectionMode());
 
-      if (isEncoding)
-	gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Could not open audio channel for audio transmission"), _("An error occured while trying to record from the soundcard for the audio transmission. Please check that your soundcard is not busy and that your driver supports full-duplex.\nThe audio transmission has been disabled."));
-      else
-	gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Could not open audio channel for audio reception"), _("An error occured while trying to play audio to the soundcard for the audio reception. Please check that your soundcard is not busy and that your driver supports full-duplex.\nThe audio reception has been disabled."));
-      gnomemeeting_threads_leave ();
+     PString deviceName;
+   
+     if (isEncoding)
+       deviceName = GetSoundChannelRecordDevice ();
+     else
+       deviceName = GetSoundChannelPlayDevice ();
 
-      return FALSE;
-    }
+     PSoundChannel *soundChannel = 
+       PDeviceManager::GetOpenedSoundDevice(deviceName, 
+					    isEncoding? PDeviceManager::Input 
+					    : PDeviceManager::Output, 
+					    1, 8000, 16); 
+
+     if (soundchannel) {
+
+       soundChannel->SetBuffers(bufferSize, soundChannelBuffers);
+       return codec.AttachChannel(soundChannel);
+     }
+     else
+       no_error = FALSE;
+
+   }
+#else // not TRY_PLUGINS
+  if (!H323EndPoint::OpenAudioChannel (connection,
+				       isEncoding, 
+				       bufferSize,
+				       codec)) 
+    no_error = FALSE;
+#endif
+
+  if (!no_error) {
+
+    gnomemeeting_threads_enter ();
+
+    if (isEncoding)
+      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Could not open audio channel for audio transmission"), _("An error occured while trying to record from the soundcard for the audio transmission. Please check that your soundcard is not busy and that your driver supports full-duplex.\nThe audio transmission has been disabled."));
+    else
+      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Could not open audio channel for audio reception"), _("An error occured while trying to play audio to the soundcard for the audio reception. Please check that your soundcard is not busy and that your driver supports full-duplex.\nThe audio reception has been disabled."));
+    gnomemeeting_threads_leave ();
+  }
+
+  
+  return no_error;
+}
 
 
+BOOL
+GMH323EndPoint::SetSoundChannelPlayDevice(const PString &name)
+{
+#ifdef TRY_PLUGINS
+  if (PDeviceManager::GetSoundDeviceNames(PDeviceManager::Output).GetValuesIndex(name) == P_MAX_INDEX)
+    return FALSE;
+#else
+  if (PSoundChannel::GetDeviceNames(PSoundChannel::Player).GetValuesIndex(name) == P_MAX_INDEX)
+    return FALSE;
+#endif
+ 
+  soundChannelPlayDevice = name;
+  return TRUE;   
+}
+ 
+ 
+BOOL
+GMH323EndPoint::SetSoundChannelRecordDevice (const PString &name)
+{
+#ifdef TRY_PLUGINS
+  if (PDeviceManager::GetSoundDeviceNames(PDeviceManager::Input).GetValuesIndex(name) == P_MAX_INDEX)
+    return FALSE;
+#else
+  if (PSoundChannel::GetDeviceNames(PSoundChannel::Recorder).GetValuesIndex(name) == P_MAX_INDEX)
+    return FALSE;
+#endif
+    
+  soundChannelRecordDevice = name;
   return TRUE;
 }
 
