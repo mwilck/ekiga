@@ -233,11 +233,6 @@ GMH323EndPoint::~GMH323EndPoint ()
   lid_thread = NULL;
   var_access_mutex.Signal ();
 #endif
-
-  ClearAllCalls (H323Connection::EndedByLocalUser, TRUE);
-  
-  if (listener)
-    RemoveListener (listener);
 }
 
 

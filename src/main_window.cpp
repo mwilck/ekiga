@@ -2071,8 +2071,7 @@ int main (int argc, char ** argv, char ** envp)
   textdomain (GETTEXT_PACKAGE);
   bindtextdomain (GETTEXT_PACKAGE, GNOMELOCALEDIR);
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
-
-  
+ 
   
   /* GnomeMeeting main initialisation */
   gnomemeeting_init (gw, pw, lw, dw, rtp, chat, clo, argc, argv, envp);
@@ -2094,7 +2093,8 @@ int main (int argc, char ** argv, char ** envp)
   /* The GTK loop */
   gtk_main ();
   gdk_threads_leave ();
- 
+
+  MyApp->Endpoint ()->ClearAllCalls (H323Connection::EndedByLocalUser, true);
   delete (MyApp);
   
   delete (gw);

@@ -84,9 +84,10 @@ GnomeMeeting::GnomeMeeting ()
 
 GnomeMeeting::~GnomeMeeting()
 {
-  delete (endpoint);
+  PWaitAndSignal m(var_mutex);
 
   RemoveVideoGrabber (true);
+  delete (endpoint);
 }
 
 
@@ -279,7 +280,7 @@ void GnomeMeeting::RemoveVideoGrabber (BOOL synchronous)
   video_grabber = NULL;
 
   if (synchronous)
-    vg->Wait ();
+    vg->WaitCondition ();
 }
 
 

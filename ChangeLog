@@ -1,5 +1,13 @@
 2003-03-25 Damien Sandras  <dsandras@seconix.com>
 
+	* endpoint.cpp: Changed destructor.
+	* gnomemeeting.cpp: Changed destructor.
+	* main_window.cpp: Make sure the call is cleared before deleting
+	the Main Application.
+	
+	
+2003-03-25 Damien Sandras  <dsandras@seconix.com>
+
 	* src/Makefile.am: Removed cleaner.cpp/.h from the compilation files.
 	
 	* src/callbacks.cpp: Changed the quit callback, the old 
