@@ -239,6 +239,7 @@ static gint gm_quit_callback (GtkWidget *widget, GdkEvent *event,
 void gnomemeeting_init (GM_window_widgets *gw, 
 			GM_pref_window_widgets *pw,
 			GM_ldap_window_widgets *lw, 
+			GM_rtp_data *rtp,
 			int argc, char ** argv, char ** envp)
 {
   GMH323EndPoint *endpoint = NULL;
@@ -272,6 +273,31 @@ void gnomemeeting_init (GM_window_widgets *gw,
   gconf_client_add_dir (client, "/apps/gnomemeeting",
 			GCONF_CLIENT_PRELOAD_RECURSIVE,
 			0);
+  int gconf_test = 0;
+
+  gconf_test = gconf_client_get_int (client, "/apps/gnomemeeting/general/gconf_test", NULL);
+
+  if (gconf_test != 1234) {
+
+    GtkWidget *dialog =gnome_dialog_new (_("Gconf Error"),
+					 _("Exit"), 
+					 NULL);
+    GtkWidget *label = gtk_label_new (_("Please check your gconf settings and permissions, it seems that gconf is not properly setup on your system"));
+    gtk_box_pack_start (GTK_BOX 
+			(GNOME_DIALOG (dialog)->vbox), 
+			label, TRUE, TRUE, 0);
+
+    gtk_widget_show_all (dialog);
+    int reply = gnome_dialog_run(GNOME_DIALOG(dialog));
+    if ((reply == 0)||(reply == -1)) {
+
+       delete (gw);
+       delete (lw);
+       delete (pw);
+       delete (rtp);
+       exit (-1);
+    }
+  }
 
   /* We store all the pointers to the structure as data of gm */
   gtk_object_set_data (GTK_OBJECT (gm), "gw", gw);
@@ -285,7 +311,6 @@ void gnomemeeting_init (GM_window_widgets *gw,
   gw->splash_win = e_splash_new ();
   gtk_signal_connect (GTK_OBJECT (gw->splash_win), "delete_event",
 		      GTK_SIGNAL_FUNC (gtk_widget_hide_on_delete), 0);
-  int icon_index = 0;
 
   show_splash = gconf_client_get_bool (client, "/apps/gnomemeeting/"
 				       "view/show_splash", 0);  
@@ -340,9 +365,8 @@ void gnomemeeting_init (GM_window_widgets *gw,
 
   /* Register to the Gatekeeper */
   cout << "FIX ME: GateKeeper" << endl << flush;
-  endpoint->GatekeeperRegister ();
+ // endpoint->GatekeeperRegister ();
 
-  
   /* Set recording source and set micro to record */
   int found_player = 0;
   int found_recorder = 0;

@@ -349,7 +349,7 @@ int main (int argc, char ** argv, char ** envp)
 
 
   /* GnomeMeeting main initialisation */
-  gnomemeeting_init (gw, pw, lw, argc, argv, envp);
+  gnomemeeting_init (gw, pw, lw, rtp, argc, argv, envp);
 
 
   /* Quick hack to make the GUI refresh even on high load from the other

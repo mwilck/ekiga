@@ -34,6 +34,7 @@
 
 #include "config.h"
 #include "common.h"
+#include "callbacks.h"
 #include "audio.h"
 #include "videograbber.h"
 #include "gnomemeeting.h"

@@ -1,3 +1,19 @@
+2002-02-07  Damien Sandras  <dsandras@seconix.com>
+	
+	* src/config.cpp: Minor changes to gnomemeeting_init_gconf.
+
+	* src/main_window.cpp: Added check to see if gconf is properly
+	installed or not. Exits if not.
+
+	* src/main_window.h: Added rtp parameter to be able to delete it
+	when exiting because of gconf.
+
+	* src/toolbar.cpp: Added Kenneth's changes to be able to expand the
+	toolbar.
+
+	* gnomemeeting.schema: Added fake parameter to check if gconf's install
+	is ok or not.
+
 2002-02-06  Damien Sandras  <dsandras@seconix.com>
 
 	* src/callbacks.cpp: Removed ldap_callback, pref_callback, and replaced

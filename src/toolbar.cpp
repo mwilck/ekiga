@@ -120,18 +120,13 @@ void gnomemeeting_init_toolbar ()
   GdkPixmap *Pixmap;
   GdkBitmap *mask;
   GdkPixbuf *pixbuf;
+  GtkWidget *hbox;
 
   GtkTooltips *tip;
   GConfClient *client = gconf_client_get_default ();
 
   GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
   
-  static GnomeUIInfo main_toolbar [] =
-    {
-      GNOMEUIINFO_SEPARATOR,
-      GNOMEUIINFO_END
-    };
-
   static GnomeUIInfo left_toolbar [] =
     {
       {
@@ -180,13 +175,16 @@ void gnomemeeting_init_toolbar ()
   /* Both toolbars */
   GtkWidget *toolbar = gtk_toolbar_new (GTK_ORIENTATION_HORIZONTAL,
 					GTK_TOOLBAR_ICONS);
+  hbox = gtk_hbox_new (FALSE, 2);
 
-  gtk_toolbar_append_widget (GTK_TOOLBAR (toolbar), gw->combo, NULL, NULL);
+  gnome_app_add_docked (GNOME_APP (gm), hbox, "",
+			GNOME_DOCK_ITEM_BEH_EXCLUSIVE,
+			GNOME_DOCK_TOP, 1, 0, 0);
 
-  gnome_app_fill_toolbar (GTK_TOOLBAR (toolbar), main_toolbar, NULL);
-  gnome_app_add_toolbar (GNOME_APP (gm), GTK_TOOLBAR (toolbar),
-			 "main_toolbar", GNOME_DOCK_ITEM_BEH_EXCLUSIVE,
-			 GNOME_DOCK_TOP, 2, 0, 0);
+  gtk_box_pack_start (GTK_BOX (hbox), gw->combo, TRUE, TRUE, 1);
+  gtk_box_pack_start (GTK_BOX (hbox), toolbar, FALSE, FALSE, 1);
+
+  gtk_container_set_border_width (GTK_CONTAINER (toolbar), 2);
 
   gw->connect_button = gtk_toggle_button_new ();
   pixbuf =  gdk_pixbuf_new_from_xpm_data ((const char **) disconnect_xpm);
@@ -277,7 +275,7 @@ void gnomemeeting_init_toolbar ()
 			     gw->video_chan_button, NULL, NULL);
 
 
-  gtk_widget_show (GTK_WIDGET (toolbar));
+  gtk_widget_show_all (GTK_WIDGET (hbox));
   gtk_widget_show (GTK_WIDGET (toolbar2));
   gtk_widget_show (GTK_WIDGET (gw->combo));
   gtk_widget_show_all (GTK_WIDGET (gw->connect_button));
