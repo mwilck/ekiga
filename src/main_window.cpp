@@ -2071,7 +2071,7 @@ int main (int argc, char ** argv, char ** envp)
 
   //  gtk_timeout_add (15000, (GtkFunction) StressTest, 
   //		   NULL);
-  g_idle_add ((GtkFunction) IdleUpdate, NULL);
+  // g_idle_add ((GtkFunction) IdleUpdate, NULL);
   
 
   /* The GTK loop */
