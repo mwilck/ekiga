@@ -1116,7 +1116,8 @@ gnomemeeting_init (GmWindow *gw,
 
 
 #ifdef SPEEX_CODEC
-  /* New Speex Audio codec in 0.95 (all Unix versions of 0.95 will have it) */
+  /* New Speex Audio codec in 0.95 (all Unix versions of 0.95 will have it)
+     Also disable Fast Start and enable Tunneling */
   if (gconf_client_get_int (client, GENERAL_KEY "version", NULL) < 95) {
 
     GSList *list = NULL;
@@ -1135,7 +1136,8 @@ gnomemeeting_init (GmWindow *gw,
 
     g_slist_free (list);
 
-    gnomemeeting_message_dialog (GTK_WINDOW (gm), _("GnomeMeeting just set the new Speex audio codec as default. Speex is a high quality, GPL audio codec introduced in GnomeMeeting 0.94."));
+    gconf_client_set_bool (client, GENERAL_KEY "fast_start", false, NULL);
+    gconf_client_set_bool (client, GENERAL_KEY "h245_tunneling", true, NULL);
   }
 #endif
 
