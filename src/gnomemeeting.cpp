@@ -263,8 +263,8 @@ GnomeMeeting::Disconnect (H323Connection::CallEndReason reason)
     else {
 
       /* if somebody is calling us, or if we are in call with somebody */
-      
-      if (endpoint->GetCallingState () == 2) {
+      if (endpoint->GetCallingState () == 2
+	  || endpoint->GetCallingState () == 3) {
 
 	gnomemeeting_threads_enter ();	
 	gnomemeeting_log_insert (gw->history_text_view,

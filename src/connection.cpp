@@ -43,6 +43,7 @@
 #include "gnomemeeting.h"
 #include "misc.h"
 #include "chat_window.h"
+#include "dialog.h"
 
 #include <h323pdu.h>
 
@@ -325,3 +326,11 @@ BOOL GMH323Connection::OnReceivedFacility(const H323SignalPDU & pdu)
   return H323Connection::OnReceivedFacility(pdu);
 }
 
+
+void 
+GMH323Connection::HandleCallTransferFailure (const int returnError)
+{
+  gnomemeeting_threads_enter ();
+  gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Call transfer failed"), _("The remote user tried to transfer your call to another user, but it failed."));
+  gnomemeeting_threads_leave ();
+}

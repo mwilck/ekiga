@@ -1,3 +1,20 @@
+2003-06-10 Damien Sandras  <dsandras@seconix.com>
+
+	* src/connection.cpp: Added callback to display a popup when the
+	remote user is trying to transfer your call to another person
+	and that it fails.
+	
+	* src/connection.h: See above.
+	
+	* src/endpoint.cpp: Fixed bug that prevented a call from being
+	accepted after that the previous call has had failed transfer.
+	(The calling party was receiving "Remote is busy" when it was not
+	true).
+	
+	* src/gnomemeeting.cpp: Fixed crash when accepting a call, then
+	trying to disconnect immediately after before the call has been
+	established.
+	
 2003-06-09 Damien Sandras  <dsandras@seconix.com>
 
 	* src/callbacks.cpp: Code cleanups.

@@ -953,7 +953,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
     do_reject = TRUE;
   }
   /* if we are already in a call: forward or reject */
-  else if (!GetCurrentCallToken ().IsEmpty () || GetCallingState () != 0) {
+  else if (GetCallingState () != 0) {
 
     /* if we have enabled forward when busy, do the forward */
     if (!forward_host.IsEmpty() && busy_forward) {
@@ -1074,8 +1074,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 	
 
   /* If no forward or reject, update the internal state */
-  if (GetCurrentCallToken ().IsEmpty ())
-    SetCurrentCallToken (connection.GetCallToken ());
+  SetCurrentCallToken (connection.GetCallToken ());
   SetCallingState (3);
   SetCurrentConnection (FindConnectionWithLock (GetCurrentCallToken ()));
   GetCurrentConnection ()->Unlock ();
@@ -1293,24 +1292,26 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   preview = gconf_client_get_bool (client, DEVICES_KEY "video_preview", NULL);
   gnomemeeting_threads_leave ();
 
-  
+
   /* If we are called because the current incoming call has ended and 
      not another call, ok, else do nothing */
   if (GetCurrentCallToken () == clearedCallToken) {
 
-    if (!GetTransferCallToken ().IsEmpty ()) {
+    if (!GetTransferCallToken ()) {
 
       SetCurrentCallToken (GetTransferCallToken ());
       SetTransferCallToken (PString ());
     }
-    else
+    else {
+
       SetCurrentCallToken (PString ());
+      SetTransferCallToken (PString ());
+    }
   }
   else {
 
     return;
   }
-
 
   opened_video_channels = 0;
   opened_audio_channels = 0;
