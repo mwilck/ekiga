@@ -105,14 +105,13 @@ GnomeMeeting::GnomeMeeting ()
   client = gconf_client_get_default ();
 
   /* Init the different structures */
-  gw = new (GmWindow);
-  pw = new (GmPrefWindow);
-  lw = new (GmLdapWindow);
-  dw = new (GmDruidWindow);
-  chat = new (GmTextChat);
-  chw = new (GmCallsHistoryWindow);
-  rtp = new (GmRtpData);
-  memset (rtp, 0, sizeof (GmRtpData));
+  gw = new GmWindow ();
+  pw = new GmPrefWindow ();
+  lw = new GmLdapWindow ();
+  dw = new GmDruidWindow ();
+  chat = new GmTextChat ();
+  chw = new GmCallsHistoryWindow ();
+  rtp = new GmRtpData ();
 
   call_number = 0;
 
