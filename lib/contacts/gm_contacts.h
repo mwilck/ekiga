@@ -64,8 +64,9 @@ struct GmContact_ {
  */
 struct GmAddressbook_ {
 
-  char *uid;
-  char *name;
+  char *name;                   /* Addressbook Name */
+  char *uid;                    /* Unique ID. Must be the URL in case
+                                   of a remote address book */
 };
 
 

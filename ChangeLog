@@ -1,8 +1,20 @@
-2004-04-18 Julien Puydt <julien.puydt@laposte.net>
+2004-04-18  Damien Sandras  <dsandras@gnome.org>
+
+        * lib/contacts/gm_contacts-eds.cpp: Added body for
+        gm_addressbook_new, gm_addressbook_delete and
+        gnomemeeting_addressbook_modify_contact to be able
+        to edit contact details.
+
+        * lib/contacts/gm_contacts.h: Added comments to GmAddressbook.
+        
+        * src/addressbook_window.cpp: Added code to update an Addressbook
+        content, and to modify a contact.
+
+2004-04-18  Julien Puydt <julien.puydt@laposte.net>
 
 	* src/sound_handling.cpp: removed unused local variable.
 
-2004-04-18 Julien Puydt <julien.puydt@laposte.net>
+2004-04-18  Julien Puydt <julien.puydt@laposte.net>
 
 	* src/calls_history_window.h: removed confusing comment.
 	* src/tools.cpp: removed unneeded warning.
