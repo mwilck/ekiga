@@ -110,8 +110,8 @@ gm_addressbook_get_contact_speeddial_param (EContact *contact)
   GList *attr_param_list = NULL;
   GList *attr_param_list_iter = NULL;
 
-  attr_list = e_contact_get_attributes (E_CONTACT (contact),
-					E_CONTACT_PHONE_TELEX);
+  attr_list = e_vcard_get_attributes (E_VCARD (contact));
+
   attr_list_iter = attr_list;
   while (attr_list_iter && !attr_param) {
 
@@ -406,7 +406,7 @@ gnomemeeting_local_addressbook_get_contacts (GmAddressbook *addbook,
 			       url);
   if (categorie && strcmp (categorie, ""))
     queries [cpt++] = 
-      e_book_query_field_test (E_CONTACT_CATEGORIES,
+      e_book_query_field_test (E_CONTACT_CATEGORY_LIST,
 			       partial_match?
 			       E_BOOK_QUERY_CONTAINS
 			       :
@@ -697,8 +697,19 @@ gnomemeeting_local_addressbook_modify_contact (GmAddressbook *addressbook,
 
 	  param = gm_addressbook_get_contact_speeddial_param (contact);
 
-	  e_vcard_attribute_param_remove_values (param);
-	  e_vcard_attribute_param_add_value (param, ctact->speeddial);
+	  if (param) {
+
+	    e_vcard_attribute_param_remove_values (param);
+	    e_vcard_attribute_param_add_value (param, ctact->speeddial);
+	  }
+	  else {
+
+	    attr = e_vcard_attribute_new (NULL, "TEL");
+	    param = e_vcard_attribute_param_new ("X-GNOMEMEETING-SPEEDDIAL");
+	    e_vcard_attribute_add_param_with_value (attr, 
+						    param, ctact->speeddial);
+	    e_vcard_add_attribute (E_VCARD (contact), attr);
+	  }
 	}
 
 	if (e_book_commit_contact (ebook, contact, NULL))
