@@ -396,11 +396,6 @@ GMLid::UpdateState (GMH323EndPoint::CallingState i)
   
   if (IsOpen ()) {
 
-    if (lid_odt == 0) // POTS
-      EnableAudio (0, TRUE);
-    else 
-      EnableAudio (0, FALSE);
-
     switch (i) {
 
     case GMH323EndPoint::Calling:
@@ -431,8 +426,14 @@ GMLid::UpdateState (GMH323EndPoint::CallingState i)
     case GMH323EndPoint::Connected:
 
       RingLine (0, 0);
-      PlayTone (0, OpalLineInterfaceDevice::NoTone);
+      StopTone (0);
     }    
+
+    
+    if (lid_odt == 0) // POTS
+      EnableAudio (0, TRUE);
+    else 
+      EnableAudio (0, FALSE);
   }
 }
 
