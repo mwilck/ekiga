@@ -1426,6 +1426,7 @@ gnomemeeting_init_ldap_window ()
   GtkTreeSelection *selection = NULL;
   GtkTreeViewColumn *column = NULL;
   GtkTreeStore *model = NULL;
+  GtkTreePath *path = NULL;
   GtkTreeIter iter;
   GtkTreeIter child_iter;
 
@@ -1566,6 +1567,10 @@ gnomemeeting_init_ldap_window ()
 
   /* Expand all */
   gtk_tree_view_expand_all (GTK_TREE_VIEW (lw->tree_view));
+  path = gtk_tree_path_new_from_string ("0:0");
+  gtk_tree_view_set_cursor (GTK_TREE_VIEW (lw->tree_view), path,
+			    NULL, false);
+  gtk_tree_path_free (path);
   
   /* Drag and Drop Setup */
   gtk_drag_dest_set (GTK_WIDGET (lw->tree_view), GTK_DEST_DEFAULT_ALL,
