@@ -824,6 +824,7 @@ void gnomemeeting_init_main_window ()
   GConfClient *client = gconf_client_get_default ();
   GtkWidget *table;	
   GtkWidget *frame;
+  GtkWidget *vbox;
   int main_notebook_section = 0;
   
   GmWindow *gw = gnomemeeting_get_main_window (gm);
@@ -863,8 +864,11 @@ void gnomemeeting_init_main_window ()
   /* The drawing area that will display the webcam images */
   frame = gtk_frame_new (NULL);
   gw->video_frame = gtk_handle_box_new();
+  vbox = gtk_vbox_new (FALSE, 0);
 
-  gtk_container_add (GTK_CONTAINER (frame), gw->video_frame);
+  gtk_container_add (GTK_CONTAINER (frame), vbox);
+  gtk_box_pack_start (GTK_BOX (vbox), gw->video_frame, TRUE, TRUE, 0);
+
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
 
   gtk_widget_set_size_request (GTK_WIDGET (gw->video_frame), 
@@ -874,12 +878,21 @@ void gnomemeeting_init_main_window ()
   gtk_container_add (GTK_CONTAINER (gw->video_frame), gw->video_image);
 
   gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (frame), 
-		    0, 2, 0, 1,
+		    0, 2, 0, 2,
 		    GTK_EXPAND,
 		    (GtkAttachOptions) NULL,
 		    10, 10);
 
   gtk_widget_show_all (GTK_WIDGET (frame));
+
+
+  /* The remote name */
+  gw->remote_name = gtk_entry_new ();
+  gtk_editable_set_editable (GTK_EDITABLE (gw->remote_name), FALSE);
+
+  gtk_box_pack_start (GTK_BOX (vbox), gw->remote_name, TRUE, TRUE, 0);
+
+  gtk_widget_show (GTK_WIDGET (gw->remote_name));
 
 
   /* The Chat Window */
@@ -892,19 +905,6 @@ void gnomemeeting_init_main_window ()
   if (gconf_client_get_bool 
       (client, "/apps/gnomemeeting/view/show_chat_window", 0))
           gtk_widget_show_all (GTK_WIDGET (gw->chat_window));
-
-
-  /* The remote name */
-  gw->remote_name = gtk_entry_new ();
-  gtk_editable_set_editable (GTK_EDITABLE (gw->remote_name), FALSE);
-
-  gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (gw->remote_name), 
-		    0, 2, 1, 2,
-		    (GtkAttachOptions) NULL,
-		    (GtkAttachOptions) NULL,
-		    10, 10);
-
-  gtk_widget_show (GTK_WIDGET (gw->remote_name));
 
 
   /* The statusbar */
