@@ -112,6 +112,8 @@ struct _GmWindow
   GtkWidget *audio_chan_button;
   GtkWidget *speaker_phone_button;
   GtkWidget *incoming_call_popup;
+  GtkWidget *stats_label;
+  GtkWidget *stats_drawing_area;
 
   int progress_timeout;
   int cleaner_thread_count;

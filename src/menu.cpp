@@ -274,6 +274,14 @@ void gnomemeeting_init_menu ()
     {
       {
 	GNOME_APP_UI_ITEM,
+	N_("Statistics"), N_("View Audio/Video transmission and reception statistics"),
+	(void *) view_menu_toggles_changed, 
+	NULL, (gpointer) "/apps/gnomemeeting/view/control_panel_section",
+	GNOME_APP_PIXMAP_NONE, NULL,
+	0, GDK_CONTROL_MASK, NULL
+      },
+      {
+	GNOME_APP_UI_ITEM,
 	N_("History"), N_("View the log"),
 	(void *) view_menu_toggles_changed, 
 	NULL, (gpointer) "/apps/gnomemeeting/view/control_panel_section",
@@ -291,14 +299,6 @@ void gnomemeeting_init_menu ()
       {
 	GNOME_APP_UI_ITEM,
 	N_("_Video Settings"), N_("View Video Settings"),
-	(void *) view_menu_toggles_changed, 
-	NULL, (gpointer) "/apps/gnomemeeting/view/control_panel_section",
-	GNOME_APP_PIXMAP_NONE, NULL,
-	0, GDK_CONTROL_MASK, NULL
-      },
-      {
-	GNOME_APP_UI_ITEM,
-	N_("Statistics"), N_("View Audio/Video transmission and reception statistics"),
 	(void *) view_menu_toggles_changed, 
 	NULL, (gpointer) "/apps/gnomemeeting/view/control_panel_section",
 	GNOME_APP_PIXMAP_NONE, NULL,

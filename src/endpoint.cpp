@@ -1406,8 +1406,12 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   }
 
 
+  /* We update the stats part */
   gnomemeeting_threads_enter ();
   gtk_entry_set_text (GTK_ENTRY (gw->remote_name), "");
+
+  gtk_widget_queue_draw_area (gw->stats_drawing_area, 0, 0, GTK_WIDGET (gw->stats_drawing_area)->allocation.width, GTK_WIDGET (gw->stats_drawing_area)->allocation.height);
+  gtk_label_set_text (GTK_LABEL (gw->stats_label), _("Sent/Received:\nLost/Late Packets:\nRound trip delay:"));
 
 
   /* We destroy the incoming call popup if any */
