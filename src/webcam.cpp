@@ -33,32 +33,42 @@ extern GnomeMeeting *MyApp;
 GMVideoGrabber::GMVideoGrabber (GM_window_widgets *g, options *o)
   :PThread (1000, NoAutoDeleteThread)
 {
+  // Traditionnal options
   gw = g;
   opts = o;
 
-  running = 1;
+  // Internal state
+  is_running = 1;
   has_to_open = 0;
   has_to_close = 0;
-  grabbing = 0;
-  opened = 0;
+  has_to_reset = 0;
+  is_grabbing = 0;
+  is_opened = 0;
 
+  // Start the thread
   this->Resume ();
 }
 
 
 GMVideoGrabber::~GMVideoGrabber ()
 { 
-  running = 0;
-  grabbing = 0;
+  is_running = 0;
+  is_grabbing = 0;
 
+  // So that we can wait, in the Thread (Main ())
+  // till the channel and grabber are closed, after the Main method
+  // has exited
   quit_mutex.Wait ();
+
 
   gdk_threads_enter ();
 
   // Disable the video settings frame
   gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame),
 			    FALSE);
-
+  // Enable the video preview button
+  gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button),
+			    TRUE);
   // Display the logo
   GM_init_main_interface_logo (gw);
 
@@ -68,15 +78,31 @@ GMVideoGrabber::~GMVideoGrabber ()
 
 void GMVideoGrabber::Main ()
 {
+  // Take the mutex, it will be released at the end of the method
+  // because at the end of the method, the class can be deleted.
   quit_mutex.Wait ();
 
-  while (running == 1)
+  while (is_running == 1)
     {
-
       if (has_to_open == 1)
 	VGOpen ();
 
-      if (grabbing == 1)
+      if (has_to_close == 1)
+	VGClose ();
+
+      if (has_to_reset == 1)
+	{
+	  if (is_opened)
+	    {
+	      VGClose ();
+	      VGOpen ();
+	      is_grabbing = 1;
+	    }
+
+	  has_to_reset = 0;
+	}
+
+      if (is_grabbing == 1)
 	{
 	  grabbing_mutex.Wait ();
 
@@ -86,21 +112,17 @@ void GMVideoGrabber::Main ()
 	  grabbing_mutex.Signal ();
 	}
 
-      if (has_to_close == 1)
-	VGClose ();
-
-      Current()->Sleep (10);
+      Current()->Sleep (100);
     }
 
-  if (sensitivity_change)
-    {
-      // Disable the video preview button
-      gdk_threads_enter ();
-      gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
-      gdk_threads_leave ();
-    }
-
-  if (opened == 1)
+  // Disable the video preview button
+  // It will be reenabled in the constructeur
+  // that must be called just after the Main method exits.
+  gdk_threads_enter ();
+  gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
+  gdk_threads_leave ();
+  
+  if (is_opened == 1)
     {
       grabber->Close ();
       channel->Close ();
@@ -110,6 +132,94 @@ void GMVideoGrabber::Main ()
     }
 
   quit_mutex.Signal ();
+}
+
+void GMVideoGrabber::Open (int has_to_grab)
+{
+  has_to_open = 1;
+  is_grabbing = has_to_grab;
+}
+
+
+void GMVideoGrabber::Close (void)
+{
+  has_to_close = 1;
+}
+
+
+void GMVideoGrabber::Reset (void)
+{
+  has_to_reset = 1;
+}
+
+
+void GMVideoGrabber::Start (void)
+{
+  MyApp->Endpoint ()->DisplayConfig (0);
+  is_grabbing = 1;
+}
+
+
+void GMVideoGrabber::Stop (void)
+{
+  is_grabbing = 0;
+
+  // Wait until the grabbing had time to terminate
+  grabbing_mutex.Wait ();
+  grabbing_mutex.Signal ();
+}
+
+
+int GMVideoGrabber::IsOpened (void)
+{
+  return is_opened;
+}
+
+
+GDKVideoOutputDevice *GMVideoGrabber::GetEncodingDevice (void)
+{
+  return encoding_device;
+}
+
+
+PVideoChannel *GMVideoGrabber::GetVideoChannel (void)
+{
+  return channel;
+}
+
+
+void GMVideoGrabber::SetColour (int colour)
+{
+  grabber->SetColour (colour);
+}
+
+
+void GMVideoGrabber::SetBrightness (int brightness)
+{
+  grabber->SetBrightness (brightness);
+}
+
+
+void GMVideoGrabber::SetWhiteness (int whiteness)
+{
+  grabber->SetWhiteness (whiteness);
+}
+
+
+void GMVideoGrabber::SetContrast (int constrast)
+{
+  grabber->SetContrast (constrast);
+}
+
+
+
+void GMVideoGrabber::GetParameters (int *whiteness, int *brightness, 
+				  int *colour, int *contrast)
+{
+  *whiteness = (int) grabber->GetWhiteness () / 256;
+  *brightness = (int) grabber->GetBrightness () / 256;
+  *colour = (int) grabber->GetColour () / 256;
+  *contrast = (int) grabber->GetContrast () / 256;
 }
 
 
@@ -182,7 +292,7 @@ void GMVideoGrabber::VGOpen (void)
   channel->AttachVideoPlayer (encoding_device);
 
   has_to_open = 0;
-  opened = 1;
+  is_opened = 1;
 
   gdk_threads_enter ();
 
@@ -201,23 +311,20 @@ void GMVideoGrabber::VGOpen (void)
   // Enable the video settings frame
   gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame),
 			    TRUE);
-
+  // If not in a call, enable the preview button
+  // If in a call, enable the video channel button
   if (MyApp->Endpoint ()->CallingState () == 0)
     gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), TRUE);
+  else
+    gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button), TRUE);
 
   gdk_threads_leave ();
 }
 
 
-void GMVideoGrabber::Close (void)
-{
-  has_to_close = 1;
-}
-
-
 void GMVideoGrabber::VGClose (void)
 {
-  grabbing = 0;
+  is_grabbing = 0;
 
   // Disable the video preview button while closing
   gdk_threads_enter ();
@@ -234,103 +341,20 @@ void GMVideoGrabber::VGClose (void)
   delete (channel);
 
   has_to_close = 0;
-  opened = 0;
+  is_opened = 0;
 
   gdk_threads_enter ();
-  gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), TRUE);
 
+  // Enable the video preview button 
+  gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), TRUE);
   // Display the logo again
   GM_init_main_interface_logo (gw);
-
   // Disable the video settings frame
   gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame),
 			    FALSE);
+
   gdk_threads_leave ();
 }
-
-
-void GMVideoGrabber::Open (int has_to_grab)
-{
-  has_to_open = 1;
-  grabbing = has_to_grab;
-}
-
-
-int GMVideoGrabber::IsOpened (void)
-{
-  return opened;
-}
-
-
-void GMVideoGrabber::Start (void)
-{
-  MyApp->Endpoint ()->DisplayConfig (0);
-  grabbing = 1;
-}
-
-
-void GMVideoGrabber::Stop (int s = 1)
-{
-  running = 0;
-  sensitivity_change = s;
-}
-
-
-void GMVideoGrabber::StopGrabbing (void)
-{
-  grabbing = 0;
-
-  grabbing_mutex.Wait ();
-  grabbing_mutex.Signal ();
-}
-
-
-GDKVideoOutputDevice *GMVideoGrabber::Device (void)
-{
-  return encoding_device;
-}
-
-
-PVideoChannel *GMVideoGrabber::Channel (void)
-{
-  return channel;
-}
-
-
-void GMVideoGrabber::SetColour (int colour)
-{
-  grabber->SetColour (colour);
-}
-
-
-void GMVideoGrabber::SetBrightness (int brightness)
-{
-  grabber->SetBrightness (brightness);
-}
-
-
-void GMVideoGrabber::SetWhiteness (int whiteness)
-{
-  grabber->SetWhiteness (whiteness);
-}
-
-
-void GMVideoGrabber::SetContrast (int constrast)
-{
-  grabber->SetContrast (constrast);
-}
-
-
-
-void GMVideoGrabber::GetParameters (int *whiteness, int *brightness, 
-				  int *colour, int *contrast)
-{
-  *whiteness = (int) grabber->GetWhiteness () / 256;
-  *brightness = (int) grabber->GetBrightness () / 256;
-  *colour = (int) grabber->GetColour () / 256;
-  *contrast = (int) grabber->GetContrast () / 256;
-}
-
 
 int GM_cam (gchar *video_device, int video_channel)
 {

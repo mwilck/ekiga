@@ -316,7 +316,7 @@ void GM_init (GM_window_widgets *gw, options *opts, int argc,
   // Initialise the devices
   if (opts->show_splash)
     GM_splash_advance_progress (gw->splash_win, 
-				_("Initialising audio devices"), 0.90);
+				_("Detecting available audio and video devices"), 0.90);
   
   /* Search for devices */
   gw->audio_player_devices = PSoundChannel::GetDeviceNames (PSoundChannel::Player);

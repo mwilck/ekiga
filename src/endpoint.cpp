@@ -792,8 +792,6 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 				       BOOL isEncoding, 
 				       H323VideoCodec & codec)
 {
-  int whiteness = 0, brightness = 0, colour = 0, contrast = 0;
-
   /* If it is possible to transmit and
      if the user enabled transmission and
      if OpenVideoDevice is called for the encoding */
@@ -802,21 +800,15 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
      GMVideoGrabber *vg = (GMVideoGrabber *) video_grabber;
 
      if (!vg->IsOpened ())
-       {
-	 cout << "Not Opened" << endl<< flush;
 	 vg->Open ();
-       }
 
      while (!vg->IsOpened ())
        usleep (100);
 
-     cout << "Opened" << endl<< flush;
+     PVideoChannel *channel = vg->GetVideoChannel ();
+     transmitted_video_device = vg->GetEncodingDevice ();
+     vg->Stop ();
 
-     PVideoChannel *channel = vg->Channel ();
-     transmitted_video_device = vg->Device ();
-     vg->StopGrabbing ();
-
-     cout << "OK" << endl<< flush;
      DisplayConfig (0);
 
      return codec.AttachChannel (channel, FALSE);

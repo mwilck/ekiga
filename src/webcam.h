@@ -51,20 +51,17 @@ class GMVideoGrabber : public PThread
 
  public:
   GMVideoGrabber (GM_window_widgets *, options *);
-  ~GMVideoGrabber ();
+  ~GMVideoGrabber (void);
   
-  void Main ();
-  void Start ();
+  void Main (void);
+  void Start (void);
   void Open (int = 0);
   void Close (void);
-  void VGOpen (void);
-  void VGClose (void);
-  void Stop (int = 1);
-  void Initialise ();
-  int IsOpened ();
-  void StopGrabbing ();
-  GDKVideoOutputDevice *Device (void);
-  PVideoChannel *Channel (void);
+  void Reset (void);
+  void Stop (void);
+  int IsOpened (void);
+  GDKVideoOutputDevice *GetEncodingDevice (void);
+  PVideoChannel *GetVideoChannel (void);
   void SetColour (int);
   void SetBrightness (int);
   void SetWhiteness (int);
@@ -72,20 +69,28 @@ class GMVideoGrabber : public PThread
   void GetParameters (int *, int *, int *, int *);
 
  protected:
+  void VGOpen (void);
+  void VGClose (void);
+
   GM_window_widgets *gw;
   options *opts;
+
   int height, width;
   int whiteness, brightness, colour, contrast;
+
   char video_buffer [3 * GM_CIF_WIDTH * GM_CIF_HEIGHT];
+
   PVideoChannel *channel;
   PVideoInputDevice *grabber;
   GDKVideoOutputDevice *encoding_device;
-  int running;
-  int grabbing;
-  int sensitivity_change;
-  int opened;
+
+  int is_running;
+  int is_grabbing;
+  int is_opened;
   int has_to_open;
   int has_to_close;
+  int has_to_reset;
+
   PMutex quit_mutex;
   PMutex grabbing_mutex;
 };

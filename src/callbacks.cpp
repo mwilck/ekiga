@@ -80,21 +80,9 @@ void pause_video_callback (GtkWidget *widget, gpointer data)
 void pref_callback (GtkWidget *widget, gpointer data)
 {
   GM_window_widgets *gw = (GM_window_widgets *) data;
-  int call_state = MyApp->Endpoint ()->CallingState();
-  GMVideoGrabber *video_grabber = MyApp->Endpoint ()->GetVideoGrabber ();
+  int call_state = MyApp->Endpoint ()->CallingState ();
 
-  if (gw->pref_window == NULL)
-    {
-      // First we stop the video preview, if we are not in a call
-      if (call_state == 0)
-	{
-	  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->preview_button),
-					FALSE);
-	  video_grabber->StopGrabbing ();
-	}
-
-      GMPreferences (call_state, gw);
-    }
+  GMPreferences (call_state, gw);
 }
 
 

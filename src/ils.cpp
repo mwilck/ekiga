@@ -45,7 +45,6 @@ GMILSClient::GMILSClient (GM_window_widgets *g, options *o)
   in_the_loop = 0;
   has_to_unregister = 0;
   has_to_browse = 0;
-  cout<< opts->ldap << endl << flush;
 
   // if we need to register to the ILS directory
   if (opts->ldap)
