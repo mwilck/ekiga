@@ -259,9 +259,11 @@ GMH323Connection::OnAnswerCall (const PString & caller,
 				const H323SignalPDU &,
 				H323SignalPDU &)
 {
+  GConfClient *client = gconf_client_get_default ();
   MyApp -> Endpoint () -> SetCurrentCallToken (GetCallToken());
   
-  if (opts->dnd) {
+  if (gconf_client_get_bool 
+      (client, "/apps/gnomemeeting/general/do_not_disturb", 0)) {
 
     gnomemeeting_threads_enter ();
     gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
@@ -275,7 +277,8 @@ GMH323Connection::OnAnswerCall (const PString & caller,
   }
   
   
-  if (opts->aa) {
+  if (gconf_client_get_bool 
+      (client, "/apps/gnomemeeting/general/auto_answer", 0)) {
 
     gnomemeeting_threads_enter ();
     gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 

@@ -169,8 +169,8 @@ static void personnal_data_update_button_clicked (GtkWidget *widget,
   
   /* if registering is enabled,
      trigger the register notifier */
-  if (gconf_client_get_int (GCONF_CLIENT (client), "/apps/gnomemeeting/ldap/register", 0))
-    gconf_client_set_int (GCONF_CLIENT (client),
+  if (gconf_client_get_bool (GCONF_CLIENT (client), "/apps/gnomemeeting/ldap/register", 0))
+    gconf_client_set_bool (GCONF_CLIENT (client),
 			  "/apps/gnomemeeting/ldap/register",
 			  1, 0);
 }
@@ -406,10 +406,11 @@ static void toggle_changed (GtkCheckButton  *but, gpointer data)
   GConfClient *client = gconf_client_get_default ();
   gchar *key = (gchar *) data;
 
-  gconf_client_set_int (GCONF_CLIENT (client),
-			key,
-			(int) gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (but)), 
-			NULL);
+  gconf_client_set_bool (GCONF_CLIENT (client),
+			 key,
+			 gtk_toggle_button_get_active 
+			 (GTK_TOGGLE_BUTTON (but)), 
+			 NULL);
 }
 
 
@@ -582,7 +583,7 @@ void gnomemeeting_init_pref_window (int calling_state, options *opts)
   GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
   GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
 
-  gw->pref_window = gnome_dialog_new (NULL, GNOME_STOCK_BUTTON_OK, NULL);
+  gw->pref_window = gnome_dialog_new (NULL, GNOME_STOCK_BUTTON_CLOSE, NULL);
 	       
   gtk_signal_connect (GTK_OBJECT(gw->pref_window), "clicked",
 		      GTK_SIGNAL_FUNC(pref_window_clicked_callback), 
@@ -1076,7 +1077,11 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);	
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->aa), opts->aa);
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->aa), gconf_client_get_bool (client, "/apps/gnomemeeting/general/auto_answer", 0));
+
+  gtk_signal_connect (GTK_OBJECT(pw->aa), "clicked",
+		      GTK_SIGNAL_FUNC (toggle_changed), 
+		      (gpointer) "/apps/gnomemeeting/general/auto_answer");
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->aa,
@@ -1089,7 +1094,11 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);	
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->dnd), opts->dnd);
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->dnd), gconf_client_get_bool (client, "/apps/gnomemeeting/general/do_not_disturb", 0));
+
+  gtk_signal_connect (GTK_OBJECT(pw->dnd), "clicked",
+		      GTK_SIGNAL_FUNC (toggle_changed), 
+		      (gpointer) "/apps/gnomemeeting/general/do_not_disturb");
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->dnd,
@@ -2041,8 +2050,8 @@ static void gnomemeeting_init_pref_window_directories (GtkWidget *notebook,
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->ldap), 
-				gconf_client_get_int (GCONF_CLIENT (client),
-						      "/apps/gnomemeeting/ldap/register", NULL));
+				gconf_client_get_bool (GCONF_CLIENT (client),
+						       "/apps/gnomemeeting/ldap/register", NULL));
 
   gtk_signal_connect (GTK_OBJECT (pw->ldap), "toggled",
 		      GTK_SIGNAL_FUNC (toggle_changed), 
@@ -2474,8 +2483,8 @@ static void gnomemeeting_update_pref_window_sensitivity ()
     gtk_widget_set_sensitive (GTK_WIDGET (pw->ldap), TRUE);
 
     /* Make the update button sensitive only if the register button is sensitive too */
-    if (gconf_client_get_int (GCONF_CLIENT (client), 
-			      "/apps/gnomemeeting/ldap/register", 0))
+    if (gconf_client_get_bool (GCONF_CLIENT (client), 
+			       "/apps/gnomemeeting/ldap/register", 0))
       gtk_widget_set_sensitive (GTK_WIDGET (pw->directory_update_button), TRUE);
     else
       gtk_widget_set_sensitive (GTK_WIDGET (pw->directory_update_button), FALSE);

@@ -158,11 +158,33 @@
       <key>/schemas/apps/gnomemeeting/ldap/register</key>
       <applyto>/apps/gnomemeeting/ldap/register</applyto>
       <owner>GnomeMeeting</owner>
-      <type>int</type>
+      <type>bool</type>
       <default>0</default>
       <locale name="C">
 	<short>Register</short>
 	<long>Enables registering to the LDAP server</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/general/auto_answer</key>
+      <applyto>/apps/gnomemeeting/general/auto_answer</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>bool</type>
+      <default>0</default>
+      <locale name="C">
+	<short>Auto Answer</short>
+	<long>If enabled, incoming calls will be auto-answered</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/general/do_not_disturb</key>
+      <applyto>/apps/gnomemeeting/general/do_not_disturb</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>bool</type>
+      <default>0</default>
+      <locale name="C">
+	<short>Do not disturb</short>
+	<long>If enabled, incoming calls will be automatically rejected</long>
       </locale>
     </schema>
   </schemalist>

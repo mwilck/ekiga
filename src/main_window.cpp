@@ -448,7 +448,7 @@ void gnomemeeting_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
     e_splash_add_icon (E_SPLASH (gw->splash_win), icon_pixbuf);
     gdk_pixbuf_unref (icon_pixbuf);
     // FIXME: Icon for ILS directory
-    if (gconf_client_get_int (GCONF_CLIENT (client), "/apps/gnomemeeting/ldap/register", NULL)) {
+    if (gconf_client_get_bool (GCONF_CLIENT (client), "/apps/gnomemeeting/ldap/register", NULL)) {
       icon_pixbuf = gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES
 					      "/gnomemeeting-logo-icon.png");
       e_splash_add_icon (E_SPLASH (gw->splash_win), icon_pixbuf);
@@ -518,12 +518,13 @@ void gnomemeeting_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
   endpoint->AddVideoCapabilities (opts->video_size);
   
   /* The LDAP part, if needed */
-  if (gconf_client_get_int (GCONF_CLIENT (client), "/apps/gnomemeeting/ldap/register", NULL)) {
+  if (gconf_client_get_bool (GCONF_CLIENT (client), "/apps/gnomemeeting/ldap/register", NULL)) {
     if (opts->show_splash) {
       e_splash_set_icon_highlight (E_SPLASH (gw->splash_win), icon_index++, true);
       while (gtk_events_pending ())
 	gtk_main_iteration ();
     }
+
     GMILSClient *gm_ils_client = (GMILSClient *) endpoint->GetILSClient ();
     gm_ils_client->Register ();
   }

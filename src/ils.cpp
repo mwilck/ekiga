@@ -141,7 +141,7 @@ void GMILSClient::Main ()
     /* if there is more than 20 minutes that we are registered,
        we refresh the entry */
     if ((t.GetSeconds () > 1200) && 
-	(gconf_client_get_int (GCONF_CLIENT (client), "/apps/gnomemeeting/ldap/register", NULL))) {
+	(gconf_client_get_bool (GCONF_CLIENT (client), "/apps/gnomemeeting/ldap/register", NULL))) {
 
 	has_to_register = 1;
 	starttime = PTime ();

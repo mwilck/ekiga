@@ -259,7 +259,7 @@ BOOL GMH323EndPoint::StartListener ()
 {
   /* Start the listener thread for incoming calls */
   listener = new H323ListenerTCP (*this, INADDR_ANY, 
-				  atoi (opts->listen_port));
+				  1720);
 
   /* Succesfull ? */
   if (!H323EndPoint::StartListener (listener)) {
@@ -491,7 +491,9 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   }
 
   if (gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_popup", 0) 
-      && (!opts->aa) && (!opts->dnd) && (GetCurrentCallToken ().IsEmpty ())) {
+      && (!gconf_client_get_bool (client, "/apps/gnomemeeting/general/do_not_disturb", 0)) 
+      && (!gconf_client_get_bool (client, "/apps/gnomemeeting/general/auto_answer", 0)) 
+      && (GetCurrentCallToken ().IsEmpty ())) {
 
     GtkWidget *label = NULL;
     

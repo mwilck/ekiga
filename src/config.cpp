@@ -44,6 +44,8 @@ extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;
 
 static void fps_limit_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
+static void toggle_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
+static void entry_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static void tr_vq_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static void tr_ub_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static void register_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
@@ -124,6 +126,52 @@ static void tr_ub_changed_nt (GConfClient *client, guint cid,
 }
 
 
+/* DESCRIPTION  :  Generic notifiers for entries.
+ *                 This callback is called when a specific key of
+ *                 the gconf database associated with a toggle changes.
+ * BEHAVIOR     :  It only updates the widget.
+ * PRE          :  /
+ */
+static void toggle_changed_nt (GConfClient *client, guint cid, 
+			       GConfEntry *entry, gpointer data)
+{
+  GtkWidget *toggle = GTK_WIDGET (data);
+
+  if (entry->value->type == GCONF_VALUE_BOOL) {
+   
+    /* We set the new value for the widget */
+    GTK_TOGGLE_BUTTON (toggle)->active = gconf_value_get_bool (entry->value);
+    gtk_widget_draw (GTK_WIDGET (toggle), NULL);
+   
+  }
+}
+
+
+/* DESCRIPTION  :  Generic notifiers for entries.
+ *                 This callback is called when a specific key of
+ *                 the gconf database associated with an entry changes.
+ * BEHAVIOR     :  It only updates the widget.
+ * PRE          :  /
+ */
+static void entry_changed_nt (GConfClient *client, guint cid, 
+			      GConfEntry *entry, gpointer data)
+{
+  GtkWidget *e = GTK_WIDGET (data);
+  guint signal_id;
+
+  cout << "ici" << endl << flush;
+
+  if (entry->value->type == GCONF_VALUE_STRING) {
+   
+    /* We set the new value for the widget */
+    signal_id = gtk_signal_lookup ("changed", GTK_TYPE_ENTRY);
+    gtk_signal_handler_block (GTK_OBJECT (e), signal_id);
+    gtk_entry_set_text (GTK_ENTRY (e), gconf_value_get_string (entry->value));
+    gtk_signal_handler_unblock (GTK_OBJECT (e), signal_id);
+  }
+}
+
+
 /* DESCRIPTION  :  This callback is called when the "register" gconf value changes.
  *                 The "register" value can change if the user plays with the button,
  *                 or if he clicks on "Update" in Personnal data, or if he uses
@@ -143,12 +191,12 @@ static void register_changed_nt (GConfClient *client, guint cid,
   GConfChangeSet* revert_cs; /* To revert the changes */
 
 
-  if (entry->value->type == GCONF_VALUE_INT) {
+  if (entry->value->type == GCONF_VALUE_BOOL) {
     
     /* Update the widgets */
-    GTK_TOGGLE_BUTTON (pw->ldap)->active = gconf_value_get_int (entry->value);
+    GTK_TOGGLE_BUTTON (pw->ldap)->active = gconf_value_get_bool (entry->value);
     gtk_widget_set_sensitive (GTK_WIDGET (pw->directory_update_button), 
-			      gconf_value_get_int (entry->value));
+			      gconf_value_get_bool (entry->value));
 
     /* We check that all the needed information is available
        to update the LDAP directory */
@@ -207,20 +255,18 @@ static void register_changed_nt (GConfClient *client, guint cid,
 
     if (no_error) {
       
-      int registering = gconf_client_get_int (GCONF_CLIENT (client),
-					      "/apps/gnomemeeting/ldap/register", 
-					      NULL);
+      int registering = gconf_client_get_bool (GCONF_CLIENT (client),
+					       "/apps/gnomemeeting/ldap/register", 
+					       NULL);
       GMILSClient *ils_client = (GMILSClient *) endpoint->GetILSClient ();
       
       if (registering) {
       
 	ils_client->Register ();
-	cout << "REGISTER NEEDED" << endl << flush;
       }
       else {
 	
 	ils_client->Unregister ();
-	cout << "UNREGISTER NEEDED" << endl << flush;
       }
     }
   }
@@ -243,6 +289,15 @@ void gnomemeeting_init_gconf (GConfClient *client)
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/ldap/register",
 			   register_changed_nt, pw, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/personnal_data/firstname",
+			   entry_changed_nt, pw->firstname, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/general/auto_answer",
+			   toggle_changed_nt, pw->aa, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/general/do_not_disturb",
+			   toggle_changed_nt, pw->dnd, 0, 0);
 }
 
 
@@ -583,7 +638,7 @@ options *gnomemeeting_read_config_from_struct ()
   opts->location = gtk_entry_get_text (GTK_ENTRY (pw->location));
   opts->mail = gtk_entry_get_text (GTK_ENTRY (pw->mail));
   opts->comment = gtk_entry_get_text (GTK_ENTRY (pw->comment));
-  opts->listen_port = gtk_entry_get_text (GTK_ENTRY (pw->entry_port));
+  //opts->listen_port = gtk_entry_get_text (GTK_ENTRY (pw->entry_port));
   opts->aa = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->aa));
   opts->ht = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->ht));
   opts->fs = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->fs));

@@ -1,3 +1,10 @@
+2001-12-19  Damien Sandras  <dsandras@seconix.com>
+
+	* src/pref_window.cpp, src/config.cpp, src/main_window.cpp: 
+	more gconf port ...
+	(fixed bug for LDAP, ported auto answer and do not disturb).
+	Use of gconftool buggy for firstname field.
+	
 2001-12-19  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* src/e-splash.cpp (ICON_Y): Change pixmap location
@@ -24,23 +31,18 @@
 
 	* src/pref_window.cpp (gnomemeeting_init_pref_window): Don't
 	hardcode the logo location
-
 	* configure.in: Added gnomecanvaspixbuf to the needed libs
-
 	* src/e-splash.cpp (e_splash_construct): Replace evolution 
 	with Gnomemeeting
 	(e_splash_new): Ídem
-
 	* src/Makefile.am (INCLUDES): Added a define for the images
 	location
-
 	* src/e-splash.cpp: Replaced variables called new all over
 	the code with more sensible names (from a C++ compiler POV)
 	(create_darkened_pixbuf): Add proper casts
 	(E_MAKE_TYPE): Copy-pasted from gal
 	(class_init): Add a cast
 	Added backing store supprot for the splash screen from evolution
-
 	* src/Makefile.am (gnomemeeting_SOURCES): Added e-splash.c
 	and e-splash.h from evolution
 
