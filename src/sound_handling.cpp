@@ -244,7 +244,7 @@ gnomemeeting_sound_play_ringtone (GtkWidget *widget)
   /* If the systray icon contains the ringing pic */
   if (is_ringing) {
 
-    gnome_triggers_do ("", "program", "gnomemeeting", 
+    gnome_triggers_do ("", NULL, "gnomemeeting", 
 		       "incoming_call", NULL);
   }
 
