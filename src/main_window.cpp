@@ -1595,7 +1595,7 @@ int main (int argc, char ** argv, char ** envp)
   /* Init the GConf DB, exit if it fails */
   if (!gnomemeeting_init_gconf (gconf_client_get_default ())) {
 
-    dialog = gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Gconf key error"), _("GnomeMeeting got an invalid value for the GConf key \"/apps/gnomemeeting/gconf_test_age\".\n\nIt probably means that your GConf schemas have not been correctly installed or the that permissions are not correct.\n\nPlease check the FAQ (http://www.gnomemeeting.org/faq.php), the throubleshoot section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org) about this problem."));
+    dialog = gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Gconf key error"), _("GnomeMeeting got an invalid value for the GConf key \"/apps/gnomemeeting/general/gconf_test_age\".\n\nIt probably means that your GConf schemas have not been correctly installed or the that permissions are not correct.\n\nPlease check the FAQ (http://www.gnomemeeting.org/faq.php), the throubleshoot section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org) about this problem."));
 
     g_signal_handlers_disconnect_by_func (G_OBJECT (dialog),
 					  (gpointer) gtk_widget_destroy,

@@ -553,9 +553,10 @@ enable_video_transmission_changed_nt (GConfClient *client,
 
     if (gconf_value_get_bool (entry->value)) {
 	
-      ep->StartLogicalChannel (name,
+      bool res = ep->StartLogicalChannel (name,
 			       RTP_Session::DefaultVideoSessionID,
 			       FALSE);
+      cout << "ici " << res << endl << flush;
     }
     else {
 
@@ -1077,7 +1078,7 @@ static void audio_device_changed_nt (GConfClient *client, guint cid,
 
 /* DESCRIPTION  :  This callback is called when the video device changes in
  *                 the gconf database.
- * BEHAVIOR     :  It resets the video device.
+ * BEHAVIOR     :  It resets the video transmission.
  * PRE          :  /
  */
 static void 
@@ -1119,17 +1120,19 @@ video_device_setting_changed_nt (GConfClient *client,
 	no_error=
 	  ep->StopLogicalChannel (RTP_Session::DefaultVideoSessionID,
 				  FALSE);
-      
+
 	while (no_error &&
 	       !ep->StartLogicalChannel (name, 
 					 RTP_Session::DefaultVideoSessionID,
 					 FALSE)) {
 	
 	  max_try++;
-	  PThread::Current ()->Sleep (100);
-
-	  if (max_try >= 10)
+	  PThread::Current ()->Sleep (300);
+	  if (max_try >= 3) {
+	    
 	    no_error = FALSE;
+	    break;
+	  }
 	}
 
 	if (!no_error) {

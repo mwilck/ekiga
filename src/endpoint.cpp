@@ -2035,8 +2035,9 @@ GMH323EndPoint::StartLogicalChannel (const PString & capability_name,
 	  !capability ||
 	  !con->OpenLogicalChannel (*capability,
 				    capability->GetDefaultSessionID(),
-				    H323Channel::IsTransmitter)) 
+				    H323Channel::IsTransmitter)) {
 	no_error = FALSE;
+      }
     }
     else {
 
