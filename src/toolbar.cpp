@@ -263,7 +263,7 @@ GtkWidget *gnomemeeting_init_left_toolbar (void)
   gtk_widget_show (image);
   gtk_toolbar_append_item (GTK_TOOLBAR (left_toolbar),
 			   NULL,
-			   _("Find friends on the ILS directory service"),
+			   _("Open the address book"),
 			   NULL,
 			   image,
 			   GTK_SIGNAL_FUNC (gnomemeeting_component_view),
