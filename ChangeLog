@@ -1,3 +1,18 @@
+2002-05-02  Damien Sandras  <dsandras@seconix.com>
+
+	* src/druid.cpp: Fixed some settings. Defaults to dialup.
+
+	* src/endpoint.cpp: Ported to GTK2. Fixed the incoming call popup
+	(is now modal and transient for GM, and is destroyed when the call
+	is established if not done yet).
+
+	* src/gnomemeeting.cpp: Init incoming_call_popup to NULL.
+
+	* src/callbacks.cpp: Destroy the incoming_call_popup on connect
+	and disconnect.
+
+	* Updated Changelog.
+	
 2002-05-02  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* src/druid.cpp (gnomemeeting_druid_radio_changed) 
