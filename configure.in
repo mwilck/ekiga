@@ -371,8 +371,8 @@ if test -e "/proc/net/if_inet6" -a "${ipv6}" != "no"; then
    H323_CFLAGS="$H323_CFLAGS -DP_HAS_IPV6"
 fi
 
-dnl BSD include file check
-if test -e "/usr/include/netinet6/in6.h" -a "${ipv6}" != "no"; then
+dnl BSD include file check for IPv6 (which does not depend on --enable-ipv6)
+if test -e "/usr/include/netinet6/in6.h" -a "${gm_platform}" != "linux"; then
    HAS_IPV6="enabled"
    H323_CFLAGS="$H323_CFLAGS -DP_HAS_IPV6"
 fi
