@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
-"POT-Creation-Date: 2003-04-16 14:53+0200\n"
-"PO-Revision-Date: 2003-04-16 14:55+0200\n"
+"POT-Creation-Date: 2003-04-17 09:18+0200\n"
+"PO-Revision-Date: 2003-04-17 09:19+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -56,7 +56,7 @@ msgid "Automatic echo cancellation"
 msgstr "Automatisk ekoutsläckning"
 
 #. The toggles
-#: gnomemeeting.schemas.in.in.h:8 src/menu.cpp:1078 src/pref_window.cpp:825
+#: gnomemeeting.schemas.in.in.h:8 src/menu.cpp:1047 src/pref_window.cpp:825
 msgid "Automatically answer calls"
 msgstr "Svara automatiskt på samtal"
 
@@ -105,7 +105,7 @@ msgstr ""
 msgid "Country code"
 msgstr "Landskod"
 
-#: gnomemeeting.schemas.in.in.h:17 src/menu.cpp:619 src/pref_window.cpp:827
+#: gnomemeeting.schemas.in.in.h:17 src/menu.cpp:588 src/pref_window.cpp:827
 msgid "Do not disturb"
 msgstr "Stör inte"
 
@@ -486,7 +486,7 @@ msgstr "Visa chattfönstret i huvudfönstret"
 msgid "Start hidden"
 msgstr "Starta dold"
 
-#: gnomemeeting.schemas.in.in.h:97 src/menu.cpp:782 src/menu.cpp:1023
+#: gnomemeeting.schemas.in.in.h:97 src/menu.cpp:751 src/menu.cpp:992
 msgid "Switch to fullscreen"
 msgstr "Växla till helskärmsläge"
 
@@ -806,7 +806,7 @@ msgstr "Inkommande samtal"
 msgid "gnomemeeting"
 msgstr "gnomemeeting"
 
-#: src/callbacks.cpp:115 src/menu.cpp:644
+#: src/callbacks.cpp:115 src/menu.cpp:613
 msgid "Suspend _Audio"
 msgstr "Stäng av _ljud"
 
@@ -822,7 +822,7 @@ msgstr "Ljudöverföring: avstängd"
 msgid "Audio transmission: resumed"
 msgstr "Ljudöverföring: återupptagen"
 
-#: src/callbacks.cpp:127 src/menu.cpp:649
+#: src/callbacks.cpp:127 src/menu.cpp:618
 msgid "Suspend _Video"
 msgstr "Stäng av _video"
 
@@ -2028,15 +2028,15 @@ msgstr ""
 "Kunde inte starta lyssnartråden. Du kommer inte att kunna ta emot inkommande "
 "samtal."
 
-#: src/main_window.cpp:1574 src/menu.cpp:732 src/menu.cpp:978
+#: src/main_window.cpp:1574 src/menu.cpp:701 src/menu.cpp:947
 msgid "Local Video"
 msgstr "Lokal video"
 
-#: src/main_window.cpp:1580 src/menu.cpp:738 src/menu.cpp:983
+#: src/main_window.cpp:1580 src/menu.cpp:707 src/menu.cpp:952
 msgid "Remote Video"
 msgstr "Fjärrvideo"
 
-#: src/main_window.cpp:1713 src/menu.cpp:699
+#: src/main_window.cpp:1713 src/menu.cpp:668
 msgid "Statistics"
 msgstr "Statistik"
 
@@ -2068,291 +2068,283 @@ msgstr "Video"
 msgid "Audio"
 msgstr "Ljud"
 
-#: src/menu.cpp:117
-msgid ""
-"Enter here the IP address or the name of the host you want to redirect the "
-"current call to."
-msgstr ""
-"Ange här den IP-adress eller namnet på den värd du vill omdirigera det "
-"aktuella samtalet till."
+#: src/menu.cpp:116
+msgid "Forward call to:"
+msgstr "Vidarebefordra samtal till:"
 
-#: src/menu.cpp:123
-msgid "Forward call to..."
-msgstr "Vidarebefordra samtal till..."
-
-#: src/menu.cpp:339
+#: src/menu.cpp:308
 msgid "_Retrieve Call"
 msgstr "_Hämta samtal"
 
-#: src/menu.cpp:352 src/menu.cpp:631
+#: src/menu.cpp:321 src/menu.cpp:600
 msgid "_Hold Call"
 msgstr "_Stoppa samtal"
 
-#: src/menu.cpp:605
+#: src/menu.cpp:574
 msgid "C_all"
 msgstr "_Samtal"
 
-#: src/menu.cpp:607 src/menu.cpp:1061
+#: src/menu.cpp:576 src/menu.cpp:1030
 msgid "_Connect"
 msgstr "_Anslut"
 
-#: src/menu.cpp:607 src/menu.cpp:1061
+#: src/menu.cpp:576 src/menu.cpp:1030
 msgid "Create a new connection"
 msgstr "Skapa en ny anslutning"
 
-#: src/menu.cpp:612 src/menu.cpp:1066
+#: src/menu.cpp:581 src/menu.cpp:1035
 msgid "_Disconnect"
 msgstr "_Koppla från"
 
-#: src/menu.cpp:612 src/menu.cpp:1066
+#: src/menu.cpp:581 src/menu.cpp:1035
 msgid "Close the current connection"
 msgstr "Stäng den nuvarande anslutningen"
 
-#: src/menu.cpp:619 src/menu.cpp:1073
+#: src/menu.cpp:588 src/menu.cpp:1042
 msgid "Do _Not Disturb"
 msgstr "Stör i_nte"
 
-#: src/menu.cpp:624 src/menu.cpp:1078
+#: src/menu.cpp:593 src/menu.cpp:1047
 msgid "Aut_o Answer"
 msgstr "Svara aut_omatiskt"
 
-#: src/menu.cpp:624
+#: src/menu.cpp:593
 msgid "Auto answer incoming call"
 msgstr "Svara automatiskt på inkommande samtal"
 
-#: src/menu.cpp:631
+#: src/menu.cpp:600
 msgid "Hold the current call"
 msgstr "Stoppa det aktuella samtalet"
 
-#: src/menu.cpp:636
-msgid "_Transfert Call"
+#: src/menu.cpp:605
+msgid "_Transfer Call"
 msgstr "_Skicka samtalet vidare"
 
-#: src/menu.cpp:636
-msgid "Transfert the current call"
+#: src/menu.cpp:605
+msgid "Transfer the current call"
 msgstr "Skicka vidare det aktuella samtalet"
 
-#: src/menu.cpp:644
+#: src/menu.cpp:613
 msgid "Suspend or resume the audio transmission"
 msgstr "Stäng av eller återuppta ljudöverföringen"
 
-#: src/menu.cpp:649
+#: src/menu.cpp:618
 msgid "Suspend or resume the video transmission"
 msgstr "Stäng av eller återuppta videoöverföringen"
 
-#: src/menu.cpp:656
+#: src/menu.cpp:625
 msgid "_Save Current Picture"
 msgstr "_Spara aktuell bild"
 
-#: src/menu.cpp:656
+#: src/menu.cpp:625
 msgid "Save a snapshot of the current video"
 msgstr "Spara en ögonblicksbild av den aktuella videobilden"
 
-#: src/menu.cpp:662 src/menu.cpp:1111
+#: src/menu.cpp:631 src/menu.cpp:1080
 msgid "_Quit"
 msgstr "_Avsluta"
 
-#: src/menu.cpp:662 src/menu.cpp:1111
+#: src/menu.cpp:631 src/menu.cpp:1080
 msgid "Quit GnomeMeeting"
 msgstr "Avsluta GnomeMeeting"
 
-#: src/menu.cpp:665
+#: src/menu.cpp:634
 msgid "_Edit"
 msgstr "_Redigera"
 
-#: src/menu.cpp:668 src/menu.cpp:673
+#: src/menu.cpp:637 src/menu.cpp:642
 msgid "Configuration Druid"
 msgstr "Konfigurationsguide"
 
-#: src/menu.cpp:668 src/menu.cpp:673
+#: src/menu.cpp:637 src/menu.cpp:642
 msgid "Rerun the configuration druid"
 msgstr "Kör konfigurationsguiden igen"
 
-#: src/menu.cpp:680 src/menu.cpp:1092
+#: src/menu.cpp:649 src/menu.cpp:1061
 msgid "_Preferences..."
 msgstr "_Inställningar..."
 
-#: src/menu.cpp:680 src/menu.cpp:1092
+#: src/menu.cpp:649 src/menu.cpp:1061
 msgid "Change your preferences"
 msgstr "Ändra dina inställningar"
 
-#: src/menu.cpp:685
+#: src/menu.cpp:654
 msgid "_View"
 msgstr "_Visa"
 
-#: src/menu.cpp:687
+#: src/menu.cpp:656
 msgid "Text Chat"
 msgstr "Textchatt"
 
-#: src/menu.cpp:687
+#: src/menu.cpp:656
 msgid "View/Hide the text chat window"
 msgstr "Visa/Dölj textchattfönstret"
 
-#: src/menu.cpp:692
+#: src/menu.cpp:661
 msgid "Status Bar"
 msgstr "Statusrad"
 
-#: src/menu.cpp:692
+#: src/menu.cpp:661
 msgid "View/Hide the status bar"
 msgstr "Visa/Dölj statusraden"
 
-#: src/menu.cpp:697
+#: src/menu.cpp:666
 msgid "Control Panel"
 msgstr "Kontrollpanel"
 
-#: src/menu.cpp:700
+#: src/menu.cpp:669
 msgid "View audio/video transmission and reception statistics"
 msgstr "Visa statistik för överföring och mottagning av ljud och video"
 
-#: src/menu.cpp:706
+#: src/menu.cpp:675
 msgid "_Dialpad"
 msgstr "_Knappsats"
 
-#: src/menu.cpp:706
+#: src/menu.cpp:675
 msgid "View the dialpad"
 msgstr "Visa knappsatsen"
 
-#: src/menu.cpp:712
+#: src/menu.cpp:681
 msgid "_Audio Settings"
 msgstr "_Ljudinställningar"
 
-#: src/menu.cpp:712
+#: src/menu.cpp:681
 msgid "View audio settings"
 msgstr "Visa ljudinställningar"
 
-#: src/menu.cpp:718
+#: src/menu.cpp:687
 msgid "_Video Settings"
 msgstr "_Videoinställningar"
 
-#: src/menu.cpp:718
+#: src/menu.cpp:687
 msgid "View video settings"
 msgstr "Visa videoinställningar"
 
-#: src/menu.cpp:724 src/pref_window.cpp:1019
+#: src/menu.cpp:693 src/pref_window.cpp:1019
 msgid "Off"
 msgstr "Av"
 
-#: src/menu.cpp:724
+#: src/menu.cpp:693
 msgid "Hide the control panel"
 msgstr "Dölj kontrollpanelen"
 
-#: src/menu.cpp:732
+#: src/menu.cpp:701
 msgid "Local video image"
 msgstr "Lokal videobild"
 
-#: src/menu.cpp:738
+#: src/menu.cpp:707
 msgid "Remote video image"
 msgstr "Fjärrvideobild"
 
-#: src/menu.cpp:744 src/menu.cpp:988
+#: src/menu.cpp:713 src/menu.cpp:957
 msgid "Both (Local Video Incrusted)"
 msgstr "Båda (lokal videobild överlagrad)"
 
-#: src/menu.cpp:744 src/menu.cpp:750 src/menu.cpp:757
+#: src/menu.cpp:713 src/menu.cpp:719 src/menu.cpp:726
 msgid "Both video images"
 msgstr "Båda videobilder"
 
-#: src/menu.cpp:750 src/menu.cpp:993
+#: src/menu.cpp:719 src/menu.cpp:962
 msgid "Both (Local Video in New Window)"
 msgstr "Båda (lokal videobild i nytt fönster)"
 
-#: src/menu.cpp:756
+#: src/menu.cpp:725
 msgid "Both (Both in New Windows)"
 msgstr "Båda (båda i nya fönster)"
 
-#: src/menu.cpp:765 src/menu.cpp:1006
+#: src/menu.cpp:734 src/menu.cpp:975
 msgid "Zoom In"
 msgstr "Zooma in"
 
-#: src/menu.cpp:765
+#: src/menu.cpp:734
 msgid "Zoom in"
 msgstr "Zooma in"
 
-#: src/menu.cpp:770 src/menu.cpp:1011
+#: src/menu.cpp:739 src/menu.cpp:980
 msgid "Zoom Out"
 msgstr "Zooma ut"
 
-#: src/menu.cpp:770
+#: src/menu.cpp:739
 msgid "Zoom out"
 msgstr "Zooma ut"
 
-#: src/menu.cpp:775 src/menu.cpp:1016
+#: src/menu.cpp:744 src/menu.cpp:985
 msgid "Normal Size"
 msgstr "Normal storlek"
 
-#: src/menu.cpp:775
+#: src/menu.cpp:744
 msgid "Normal size"
 msgstr "Normal storlek"
 
-#: src/menu.cpp:782 src/menu.cpp:1023
+#: src/menu.cpp:751 src/menu.cpp:992
 msgid "Fullscreen"
 msgstr "Helskärmsläge"
 
-#: src/menu.cpp:787
+#: src/menu.cpp:756
 msgid "_Tools"
 msgstr "Verk_tyg"
 
-#: src/menu.cpp:789 src/menu.cpp:1085
+#: src/menu.cpp:758 src/menu.cpp:1054
 msgid "Address _Book"
 msgstr "Adress_bok"
 
-#: src/menu.cpp:789 src/menu.cpp:1085 src/toolbar.cpp:271
+#: src/menu.cpp:758 src/menu.cpp:1054 src/toolbar.cpp:271
 msgid "Open the address book"
 msgstr "Öppna adressboken"
 
-#: src/menu.cpp:796
+#: src/menu.cpp:765
 msgid "Generic History"
 msgstr "Allmän historik"
 
-#: src/menu.cpp:796
+#: src/menu.cpp:765
 msgid "View the operations history"
 msgstr "Visa åtgärdshistoriken"
 
-#: src/menu.cpp:801 src/tools.cpp:71 src/tools.cpp:77
+#: src/menu.cpp:770 src/tools.cpp:71 src/tools.cpp:77
 msgid "Calls History"
 msgstr "Samtalshistorik"
 
-#: src/menu.cpp:801
+#: src/menu.cpp:770
 msgid "View the calls history"
 msgstr "Visa samtalshistoriken"
 
-#: src/menu.cpp:808
+#: src/menu.cpp:777
 msgid "Consult MicroTelco Account"
 msgstr "Konsultera MicroTelco-konto"
 
-#: src/menu.cpp:808
+#: src/menu.cpp:777
 msgid "View the details of your account"
 msgstr "Visa dina kontodetaljer"
 
-#: src/menu.cpp:813
+#: src/menu.cpp:782
 msgid "_Help"
 msgstr "_Hjälp"
 
-#: src/menu.cpp:816 src/menu.cpp:821 src/menu.cpp:1100 src/menu.cpp:1105
+#: src/menu.cpp:785 src/menu.cpp:790 src/menu.cpp:1069 src/menu.cpp:1074
 msgid "_About GnomeMeeting"
 msgstr "_Om GnomeMeeting"
 
-#: src/menu.cpp:816 src/menu.cpp:821 src/menu.cpp:1100 src/menu.cpp:1105
+#: src/menu.cpp:785 src/menu.cpp:790 src/menu.cpp:1069 src/menu.cpp:1074
 msgid "View information about GnomeMeeting"
 msgstr "Visa information om GnomeMeeting"
 
-#: src/menu.cpp:978
+#: src/menu.cpp:947
 msgid "Local Video Image"
 msgstr "Lokal videobild"
 
-#: src/menu.cpp:983
+#: src/menu.cpp:952
 msgid "Remote Video Image"
 msgstr "Fjärrvideobild"
 
-#: src/menu.cpp:988 src/menu.cpp:993 src/menu.cpp:999
+#: src/menu.cpp:957 src/menu.cpp:962 src/menu.cpp:968
 msgid "Both Video Images"
 msgstr "Båda videobilder"
 
-#: src/menu.cpp:998
+#: src/menu.cpp:967
 msgid "Both (Local and Remote Video in New Windows)"
 msgstr "Båda (lokal videobild och fjärrvideobild i nya fönster)"
 
-#: src/menu.cpp:1073
+#: src/menu.cpp:1042
 msgid "Do not disturb (reject incoming calls)"
 msgstr "Stör inte (avvisa inkommande samtal)"
 
@@ -2955,6 +2947,22 @@ msgstr "Din drivrutin stöder inte YUV420P-färgformatet"
 msgid "Tests OK!"
 msgstr "Testen OK!"
 
+#~ msgid "Forward call to..."
+#~ msgstr "Vidarebefordra samtal till..."
+
+#~ msgid ""
+#~ "Enter here the IP address or the name of the host you want to redirect "
+#~ "the current call to."
+#~ msgstr ""
+#~ "Ange här den IP-adress eller namnet på den värd du vill omdirigera det "
+#~ "aktuella samtalet till."
+
+#~ msgid "_Transfert Call"
+#~ msgstr "_Skicka samtalet vidare"
+
+#~ msgid "Transfert the current call"
+#~ msgstr "Skicka vidare det aktuella samtalet"
+
 #~ msgid "Suspend Audio"
 #~ msgstr "Stäng av ljud"
 
@@ -2973,12 +2981,6 @@ msgstr "Testen OK!"
 #~ msgstr ""
 #~ "Ange den IP-adress eller namnet på den värd du vill omdirigera det "
 #~ "aktuella samtalet till."
-
-#~ msgid "_Transfer Call"
-#~ msgstr "_Skicka samtalet vidare"
-
-#~ msgid "Transfer the current call"
-#~ msgstr "Skicka vidare det aktuella samtalet"
 
 #~ msgid "Quit in progress..."
 #~ msgstr "Programmet avslutas..."
