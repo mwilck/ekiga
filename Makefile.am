@@ -1,4 +1,4 @@
-SUBDIRS = macros po intl src pixmaps sounds
+SUBDIRS = po intl src pixmaps sounds
 
 
 Applicationsdir = $(datadir)/gnome/apps/Internet
