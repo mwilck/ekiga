@@ -214,7 +214,8 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
       gconf_client_set_string (client, GATEKEEPER_KEY "gk_host",
 			       "gk.microtelco.com", 0);
       gconf_client_set_int (client, GATEKEEPER_KEY "registering_method", 1, 0);
-      gconf_client_set_bool (client, SERVICES_KEY "microtelco", true, 0);
+      gconf_client_set_bool (client, SERVICES_KEY "enable_microtelco",
+			     true, 0);
 
       MyApp->Endpoint ()->SetUserNameAndAlias ();
       MyApp->Endpoint ()->RemoveGatekeeper (0);
@@ -247,7 +248,7 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
     }
   }
   else
-    gconf_client_set_bool (client, SERVICES_KEY "microtelco", false, 0);
+    gconf_client_set_bool (client, SERVICES_KEY "enable_microtelco", false, 0);
 
   gtk_widget_hide_all (GTK_WIDGET (gw->druid_window));
   gnome_druid_set_page (dw->druid, GNOME_DRUID_PAGE (dw->page_edge));
@@ -781,7 +782,8 @@ gnomemeeting_init_druid_audio_devices_page (GnomeDruid *druid, int p, int t)
   GmDruidWindow *dw = gnomemeeting_get_druid_window (gm);
   
   gchar *title = NULL;
-
+  gchar *player = NULL;
+  
   GnomeDruidPageStandard *page_standard = NULL;
 
   GmWindow *gw = gnomemeeting_get_main_window (gm);
@@ -823,10 +825,17 @@ gnomemeeting_init_druid_audio_devices_page (GnomeDruid *druid, int p, int t)
   label = gtk_label_new (_("Click here to test your audio devices:"));
 
   dw->audio_test_button = gtk_toggle_button_new_with_label (_("Test Audio"));
+  player =
+    gconf_client_get_string (client, DEVICES_KEY "audio_player", NULL);
+
+  if (player && PString (player).Find ("phone") != P_MAX_INDEX)
+    gtk_widget_set_sensitive (dw->audio_test_button, false);
+  
   gtk_table_attach (GTK_TABLE (table), dw->audio_test_button, 2, 3, 3, 4,
 		    (GtkAttachOptions) NULL,
 		    (GtkAttachOptions) NULL,
 		    20, 0);
+  
   g_signal_connect (G_OBJECT (dw->audio_test_button), "clicked",
 		    GTK_SIGNAL_FUNC (audio_test_button_clicked),
 		    (gpointer) druid);
@@ -951,11 +960,14 @@ gnomemeeting_init_druid_ixj_device_page (GnomeDruid *druid, int p, int t)
 
 
   /* The register toggle */
-  dw->enable_microtelco = 
-    gnomemeeting_table_add_toggle (table,
-				   _("Register to the MicroTelco service"), 
-				   SERVICES_KEY "enable_microtelco",
-				   NULL, 2, 0);
+  dw->enable_microtelco =
+    gtk_check_button_new_with_label (_("Register to the MicroTelco service"));
+  gtk_table_attach (GTK_TABLE (table), dw->enable_microtelco,
+		    0, 2, 2, 3,
+                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
+                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
+                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);           
+
 
   /* Account Info */
   gchar *gconf_url =

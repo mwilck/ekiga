@@ -231,41 +231,12 @@ static void personal_data_update_button_clicked (GtkWidget *widget,
 
 /* DESCRIPTION  :  This callback is called when the user clicks
  *                 on the Update button of the gatekeeper Settings.
- * BEHAVIOR     :  Updates the values, set the MicroTelco key to false
- *                 if the Gatekeeper host or the registering method are
- *                 not compatible with microtelco settings, or to true if
- *                 they correspond to MicroTelco settings.
+ * BEHAVIOR     :  Updates the values, and try to register to the gatekeeper.
  * PRE          :  /
  */
 static void gatekeeper_update_button_clicked (GtkWidget *widget, 
 					      gpointer data)
 {
-  int registering_method = 0;
-  gchar *gk_host = NULL;
-  PString host;
-
-  GConfClient *client = gconf_client_get_default ();
-  
-  /* Check if we remove microtelco or not */
-  registering_method =
-    gconf_client_get_int (client, GATEKEEPER_KEY "registering_method", 0);
-  gk_host =
-    gconf_client_get_string (client, GATEKEEPER_KEY "gk_host", 0);
-  
-  if (gk_host)
-    host = PString (gk_host);
-
-  if (host.Find ("gk.microtelco.com") != P_MAX_INDEX
-      && registering_method == 1)   
-    gconf_client_set_bool (client, SERVICES_KEY "enable_microtelco",
-			   true, 0);
-  else
-    gconf_client_set_bool (client, SERVICES_KEY "enable_microtelco",
-			   false, 0);
-
-  g_free (gk_host);
-
-  
   /* Remove the current Gatekeeper */
   MyApp->Endpoint ()->RemoveGatekeeper(0);
     

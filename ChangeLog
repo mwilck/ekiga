@@ -1,5 +1,19 @@
 2003-01-25 Damien Sandras  <dsandras@seconix.com>
 
+	* src/druid.cpp: Changed "microtelco" key to "enable_microtelco".
+	Make the audio test button unsensitive when the druid is constructed
+	if a quicknet card is used.
+	
+	* src/gatekeeper.cpp: Check if we successfully register or not
+	to the gk.microtelco.com gatekeeper and change the "enable_microtelco"
+	key appropriately.
+	
+	* src/pref_window.cpp: Do not modify the "enable_microtelco" key
+	when the user clicks on Apply, but modify it in the gatekeeper thread
+	where we know if we register successfully or not.
+	
+2003-01-25 Damien Sandras  <dsandras@seconix.com>
+
 	* gnomemeeting.schemas.in.in: Added missing key.
 	
 	* src/druid.cpp: Changed wrong links.

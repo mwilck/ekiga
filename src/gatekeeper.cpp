@@ -72,8 +72,10 @@ void GMH323Gatekeeper::Main ()
   int method;
 
   /* Register using the gatekeeper host */
-  method = gconf_client_get_int (GCONF_CLIENT (client),
-				  "/apps/gnomemeeting/gatekeeper/registering_method", 0);
+  method =
+    gconf_client_get_int (GCONF_CLIENT (client),
+			  "/apps/gnomemeeting/gatekeeper/registering_method",
+			  0);
 
   endpoint = (H323EndPoint *) MyApp->Endpoint ();
 
@@ -119,6 +121,10 @@ void GMH323Gatekeeper::Main ()
       gnomemeeting_threads_leave ();
 
       gconf_client_set_int (GCONF_CLIENT (client), "/apps/gnomemeeting/gatekeeper/registering_method", 0, NULL);
+  
+      /* We disable microtelco if it was enabled */
+      gconf_client_set_bool (client, SERVICES_KEY "enable_microtelco",
+			     false, 0);
 
       return;
     }
@@ -134,7 +140,17 @@ void GMH323Gatekeeper::Main ()
       gnomemeeting_log_insert (gw->history_text_view, msg);
       gnomemeeting_statusbar_flash (gw->statusbar, msg);
       gnomemeeting_threads_leave ();
-      
+
+
+      /* If the host to which we registered is the MicroTelco GK, enable
+	 MicroTelco, if not disable it, in case it was enabled */
+      if (PString (gconf_string).Find ("gk.microtelco.com") != P_MAX_INDEX)
+	gconf_client_set_bool (client, SERVICES_KEY "enable_microtelco",
+			       true, 0);
+      else
+	gconf_client_set_bool (client, SERVICES_KEY "enable_microtelco",
+			       false, 0);
+
       g_free (msg);
     } 
     else {
@@ -158,7 +174,11 @@ void GMH323Gatekeeper::Main ()
       
       gnomemeeting_threads_leave ();
       gconf_client_set_int (GCONF_CLIENT (client), "/apps/gnomemeeting/gatekeeper/registering_method", 0, NULL);
-      
+
+      /* We disable microtelco if it was enabled */
+      gconf_client_set_bool (client, SERVICES_KEY "enable_microtelco",
+			     false, 0);
+
       g_free (msg);
     }
 
