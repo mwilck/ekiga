@@ -88,6 +88,8 @@ static void view_widget_changed_nt (GConfClient *, guint, GConfEntry *,
 static void audio_codec_setting_changed_nt (GConfClient *, guint, 
 					    GConfEntry *, gpointer);
 static void ht_fs_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
+static void enable_vid_tr_changed_nt (GConfClient *, guint, GConfEntry *, 
+				      gpointer);
 static void silence_detection_changed_nt (GConfClient *, guint, 
 					  GConfEntry *, gpointer);
 static void network_settings_changed_nt (GConfClient *, guint, 
@@ -509,12 +511,32 @@ static void main_notebook_changed_nt (GConfClient *client, guint cid,
 
 
 /* DESCRIPTION  :  This notifier is called when the gconf database data
- *                 associated with the H.245 Tunneling or the Fast Start change.
+ *                 associated with the H.245 Tunneling or 
+ *                 the Fast Start changes.
  * BEHAVIOR     :  It updates the endpoint.
  * PRE          :  /
  */
 static void ht_fs_changed_nt (GConfClient *client, guint cid, 
 			      GConfEntry *entry, gpointer data)
+{
+  if (entry->value->type == GCONF_VALUE_BOOL) {
+
+    gdk_threads_enter ();
+
+    MyApp->Endpoint ()->UpdateConfig ();
+    
+    gdk_threads_leave ();
+  }
+}
+
+
+/* DESCRIPTION  :  This notifier is called when the gconf database data
+ *                 associated with the enable_video_transmission key changes.
+ * BEHAVIOR     :  It updates the endpoint.
+ * PRE          :  /
+ */
+static void enable_vid_tr_changed_nt (GConfClient *client, guint cid, 
+				      GConfEntry *entry, gpointer data)
 {
   if (entry->value->type == GCONF_VALUE_BOOL) {
 
@@ -1074,6 +1096,7 @@ static void register_changed_nt (GConfClient *client, guint cid,
   }
 }
 
+
 /* DESCRIPTION    : This is called when any setting related to the druid 
  *                  network speep selecion changes.
  * BEHAVIOR       : Just writes an entry in the gconf database registering 
@@ -1352,6 +1375,7 @@ void gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/enable_video_transmission", applicability_check_nt, pw->vid_tr, 0, 0);	     
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/enable_video_transmission", toggle_changed_nt, pw->vid_tr, 0, 0);	     
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/enable_video_transmission", network_settings_changed_nt, 0, 0, 0);	     
+  gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/enable_video_transmission", enable_vid_tr_changed_nt, 0, 0, 0);	     
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/tr_vq", tr_vq_changed_nt, pw->tr_vq, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/tr_vq", adjustment_changed_nt, pw->tr_vq, 0, 0);
