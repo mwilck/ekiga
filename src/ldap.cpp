@@ -125,12 +125,44 @@ void refresh_button_clicked (GtkButton *button, gpointer data)
 
   GtkWidget *page;
   GtkWidget *label;
+  GtkWidget *li;
 
   int page_num = 0;
   int found = 0;
-  gchar *text_label, *ldap_server;
-
+  int i = 0;
+  gchar *text_label, *ldap_server, *entry_content, *text;
+  
   lw->thread_count++;
+
+  // Put the current entry in the history of the combo
+  gtk_list_clear_items (GTK_LIST (GTK_COMBO(lw->ils_server_combo)->list), 0, -1);
+
+  /* we make a dup, because the entry text will change */
+  entry_content = g_strdup (gtk_entry_get_text 
+    (GTK_ENTRY (GTK_COMBO (lw->ils_server_combo)->entry)));  
+
+  /* if the entry is not in the list */
+  while (text = (gchar *) g_list_nth_data (lw->ldap_servers_list, i))
+    {
+      /* do not free text, it is not a copy */
+      if (!g_strcasecmp (text, entry_content))
+	{
+	  found = 1;
+	  break;
+	}
+      i++;
+    }
+
+  if (!found)
+    /* this will not store a copy of entry_content, but entry_content itself */
+    lw->ldap_servers_list = g_list_prepend (lw->ldap_servers_list, entry_content);
+  else
+    g_free (entry_content);
+    
+  gtk_combo_set_popdown_strings (GTK_COMBO (lw->ils_server_combo), lw->ldap_servers_list);
+  gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (lw->ils_server_combo)->entry), entry_content);
+
+  found = 0;
 
   // if we are not already browsing
   if (lw->thread_count == 1)
