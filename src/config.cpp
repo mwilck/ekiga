@@ -1873,14 +1873,16 @@ void gnomemeeting_gconf_upgrade ()
     
     gconf_value =
       gconf_client_get_string (client, GENERAL_KEY "tcp_port_range", 0);
-    gconf_client_set_string (client, PORTS_KEY "tcp_port_range",
-			     gconf_value, 0);
+    if (gconf_value)
+      gconf_client_set_string (client, PORTS_KEY "tcp_port_range",
+			       gconf_value, 0);
     g_free (gconf_value);
-
+    
     gconf_value =
       gconf_client_get_string (client, GENERAL_KEY "udp_port_range", 0);
-    gconf_client_set_string (client, PORTS_KEY "rtp_port_range",
-			     gconf_value, 0);
+    if (gconf_value)
+      gconf_client_set_string (client, PORTS_KEY "rtp_port_range",
+			       gconf_value, 0);
     g_free (gconf_value);
 
     gconf_client_remove_dir (client, "/apps/gnomemeeting", 0);
