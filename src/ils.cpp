@@ -1087,7 +1087,10 @@ void GMILSBrowser::Main ()
 			      COLUMN_VERSION, utf8_data [5],
 			      COLUMN_IP, utf8_data [6],
 			      -1);
-	  
+
+
+	  g_object_unref (status_icon);
+          
 	  gnomemeeting_threads_leave ();
 	  
 	  for (int j = 0 ; j < 7 ; j++)
