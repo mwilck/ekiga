@@ -107,7 +107,7 @@ audio_test_button_clicked (GtkWidget *w,
 			       recorder, video_manager, video_recorder);
 
   ep = GnomeMeeting::Process ()->Endpoint ();
-  
+
   if (GTK_TOGGLE_BUTTON (w)->active) {
 
     /* Try to prevent a crossed mutex deadlock */
@@ -492,6 +492,8 @@ gnomemeeting_druid_page_prepare (GnomeDruidPage *page,
   gchar *video_recorder = NULL;
   gchar *video_manager = NULL;
   gchar *audio_manager = NULL;
+
+  int kind_of_net = 0;
   
   char **array = NULL;
 
@@ -550,8 +552,10 @@ gnomemeeting_druid_page_prepare (GnomeDruidPage *page,
        _("T1/LAN"),
        _("Keep current settings"), NULL};
 
+    kind_of_net = gconf_get_int (GENERAL_KEY "kind_of_net") + 1;
     option_menu_update (dw->kind_of_net, options, NULL);
-    
+    gtk_option_menu_set_history (GTK_OPTION_MENU (dw->kind_of_net),
+				 kind_of_net);    
     gnome_druid_set_buttons_sensitive (druid, TRUE, TRUE, TRUE, FALSE);
   }
   else if (GPOINTER_TO_INT (data) == 5) {
@@ -850,7 +854,7 @@ gnomemeeting_init_druid_connection_type_page (GnomeDruid *druid,
   gtk_box_pack_start (GTK_BOX (vbox), dw->kind_of_net, FALSE, FALSE, 0);
 
   label = gtk_label_new (NULL);
-  text = g_strdup_printf ("<i>%s</i>", _("The lable."));
+  text = g_strdup_printf ("<i>%s</i>", _("The connection type is ... Hahaha."));
   gtk_label_set_markup (GTK_LABEL (label), text);
   g_free (text);
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);

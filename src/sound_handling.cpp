@@ -433,11 +433,6 @@ GMAudioTester::~GMAudioTester ()
 #ifndef DISABLE_GNOME
   stop = 1;
   PWaitAndSignal m(quit_mutex);
-
-  gnomemeeting_threads_enter ();
-  if (test_dialog)
-    gtk_widget_destroy (test_dialog);
-  gnomemeeting_threads_leave ();
 #endif
 }
 
@@ -517,8 +512,10 @@ void GMAudioTester::Main ()
   delete (recorder);
 
   gdk_threads_enter ();
-  GTK_TOGGLE_BUTTON (dw->audio_test_button)->active = FALSE;
-  gtk_widget_queue_draw (GTK_WIDGET (dw->audio_test_button));
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (dw->audio_test_button),
+				FALSE);
+  if (test_dialog)
+    gtk_widget_destroy (test_dialog);
   gdk_threads_leave ();
 
   free (buffer_ring);

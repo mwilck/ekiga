@@ -582,9 +582,6 @@ GMVideoTester::~GMVideoTester ()
 {
 #ifndef DISABLE_GNOME
   PWaitAndSignal m(quit_mutex);
-
-  if (test_dialog)
-    gtk_widget_destroy (test_dialog);
 #endif
 }
 
@@ -594,8 +591,6 @@ void GMVideoTester::Main ()
 #ifndef DISABLE_GNOME
   PString device_name = NULL;
   
-  quit_mutex.Wait ();
-
   GmWindow *gw = NULL;
   GmDruidWindow *dw = NULL;
 
@@ -621,8 +616,6 @@ void GMVideoTester::Main ()
     return;
   
   gdk_threads_enter ();
-  gtk_widget_set_sensitive (GTK_WIDGET (dw->video_test_button), FALSE);
-
   test_dialog =
     gtk_dialog_new_with_buttons ("Video test running",
 				 GTK_WINDOW (gw->druid_window),
@@ -656,7 +649,7 @@ void GMVideoTester::Main ()
   
   device_name = video_manager + " " + video_recorder;
 
-  while (cpt < 6) {
+  while (cpt < 6 && error_code == -1) {
 
     if (!device_name.IsEmpty ()
 	&& !video_recorder.IsEmpty ()
@@ -670,13 +663,16 @@ void GMVideoTester::Main ()
       if (!grabber)
 	error_code = 0;
       else
-	if (!grabber->SetVideoChannelFormat (0,  PVideoDevice::Auto))
+	if (!grabber->SetVideoFormat (PVideoDevice::Auto))
 	  error_code = 2;
+      else
+        if (!grabber->SetChannel (0))
+          error_code = 2;
       else
 	if (!grabber->SetColourFormatConverter ("YUV420P"))
 	  error_code = 3;
       else
-	if (!grabber->SetFrameRate (10))
+	if (!grabber->SetFrameRate (30))
 	  error_code = 4;
       else
 	if (!grabber->SetFrameSizeConverter (width, height, FALSE))
@@ -684,29 +680,26 @@ void GMVideoTester::Main ()
       else
 	grabber->Close ();
 
-      cout << "ici" << endl << flush;
       if (grabber)
 	delete (grabber);
-      cout << "ici2" << error_code << endl << flush;
     }
 
 
-    if (error_code == -1) {
-
+    if (error_code == -1) 
       msg = g_strdup_printf (_("Test %d done"), cpt);
-      gdk_threads_enter ();
-      gtk_label_set_text (GTK_LABEL (test_label), msg);
-      gdk_threads_leave ();
-      g_free (msg);
-    }
     else
-      break;
+      msg = g_strdup_printf (_("Test %d failed"), cpt);
+
+    gdk_threads_enter ();
+    gtk_label_set_text (GTK_LABEL (test_label), msg);
+    gdk_threads_leave ();
+    g_free (msg);
 
     cpt++;
     PThread::Current () ->Sleep (100);
   }
 
-
+  
   if (error_code != - 1) {
     
     switch (error_code)	{
@@ -736,16 +729,21 @@ void GMVideoTester::Main ()
       msg = g_strdup_printf (_("Error with the frame size."));
       break;
     }
-  }  
+
+    gdk_threads_enter ();
+    gnomemeeting_error_dialog (GTK_WINDOW (gw->druid_window),
+			       _("Failed to open the device"),
+			       msg);
+    gdk_threads_leave ();
+    
+    g_free (msg);
+  }
 
   gdk_threads_enter ();
-  gnomemeeting_error_dialog (GTK_WINDOW (gw->druid_window),
-			     _("Failed to open the device"),
-			     msg);
-  g_free (msg);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (dw->video_test_button),
 				FALSE);
-  gtk_widget_set_sensitive (GTK_WIDGET (dw->video_test_button), TRUE);
+  if (test_dialog)
+    gtk_widget_destroy (test_dialog);
   gdk_threads_leave ();
 #endif
 }

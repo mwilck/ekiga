@@ -578,7 +578,7 @@ void
 GMH323EndPoint::StopAudioTester ()
 {
   PWaitAndSignal m(at_access_mutex);
-  
+
   if (audio_tester) {
    
     delete (audio_tester);
