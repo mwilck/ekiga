@@ -280,7 +280,6 @@ GMH323EndPoint::AddAllCapabilities ()
   AddAudioCapabilities ();
   AddVideoCapabilities ();
   AddUserInputCapabilities ();
-  cout << capabilities << endl << flush;
 }
 
 
