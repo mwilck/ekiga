@@ -83,7 +83,7 @@ PKG_CHECK_MODULES(GNOMEMEETING, gtk+-2.0 >= 2.4.0 gthread-2.0 >= 2.4.0 esound >=
 fi
 
 PWLIB_REC_VERSION="1.8.3"
-OPAL_REC_VERSION="1.15.2"
+OPAL_REC_VERSION="2.1.1"
 
 
 dnl ###########################################################################
@@ -107,8 +107,8 @@ AC_MSG_CHECKING(whether OS type is supported)
 case $target_os in
 
   linux-gnu | linux | Linux)
-    ARCH_OPAL_CFLAGS="-DPTRACING -D_DEBUG -DNDEBUG -Wall -Os -g -fno-exceptions -felide-constructors"
-    ARCH_OPAL_LIBS="-L/home/damien/CVS/pwlib/lib/ -lopal -ldl -lpt_linux_x86_d  -lpthread"
+    ARCH_OPAL_CFLAGS="-DPTRACING -DNDEBUG -Wall -Os -g -fno-exceptions -felide-constructors"
+    ARCH_OPAL_LIBS="-L/home/damien/CVS/pwlib/lib/ -lopal -ldl -lpt -lpthread"
     AC_MSG_RESULT([yes])
     gm_platform="linux"
 
@@ -264,12 +264,12 @@ AC_MSG_CHECKING(for Opal includes in ${with_opal_dir}/include/)
 AC_MSG_RESULT()
 
 CPPFLAGS_save="$CPPFLAGS"
-CPPFLAGS="$CPPFLAGS -I${with_opal_dir}/include"
-AC_CHECK_FILE(${with_opal_dir}/include/opal/call.h, opal_includes="yes", opal_includes="no")
+CPPFLAGS="$CPPFLAGS -I${with_opal_dir}/include/opal"
+AC_CHECK_FILE(${with_opal_dir}/include/opal/opal/call.h, opal_includes="yes", opal_includes="no")
 CPPFLAGS="$CPPFLAGS_save"
 	
 if test "x${opal_includes}" != "xno" ; then
-	OPAL_CFLAGS="-I${with_opal_dir}/include/"
+	OPAL_CFLAGS="-I${with_opal_dir}/include/opal/"
 else
 	AC_MSG_ERROR(You need the Opal headers to compile GnomeMeeting)
 fi
@@ -289,12 +289,12 @@ else
 fi
 
 dnl Checking for Opal version
-dnl AC_MSG_CHECKING(for Opal version);
-dnl OPAL_VERSION=`cat ${with_opal_dir}/include/opal/opalbuildopts.h | grep VERSION | cut -f2 -d ' ' | sed "s/\"//g"`
-dnl AC_MSG_RESULT($OPAL_VERSION)
-dnl if test "x${OPAL_VERSION}" != "x${OPAL_REC_VERSION}"; then
-dnl	AC_MSG_ERROR(Sorry but the recommended Opal version is ${OPAL_REC_VERSION});
-dnl fi
+AC_MSG_CHECKING(for Opal version);
+OPAL_VERSION=`cat ${with_opal_dir}/include/opal/opal/buildopts.h | grep VERSION | cut -f3 -d ' ' | sed "s/\"//g"`
+AC_MSG_RESULT($OPAL_VERSION)
+if test "x${OPAL_VERSION}" != "x${OPAL_REC_VERSION}"; then
+	AC_MSG_ERROR(Sorry but the recommended Opal version is ${OPAL_REC_VERSION});
+fi
 
 dnl Checking for plugins support in PWLIB
 dnl AC_MSG_CHECKING(for Quicknet support in Opal);

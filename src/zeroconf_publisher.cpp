@@ -152,7 +152,7 @@ GMZeroconfPublisher::Publish()
 int
 GMZeroconfPublisher::GetPersonalData()
 {
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
   
   gchar	*lastname = NULL;
   gchar	*firstname = NULL;
@@ -228,7 +228,7 @@ GMZeroconfPublisher::GetPersonalData()
     }
 
   /* Incoming Call Mode */
-  if ((ep->GetCallingState () != GMH323EndPoint::Standby)
+  if ((ep->GetCallingState () != GMEndPoint::Standby)
       || (gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode") 
 	  == DO_NOT_DISTURB))
     gm_conf_int = 2;

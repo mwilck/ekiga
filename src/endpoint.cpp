@@ -54,6 +54,7 @@
 #include "main_window.h"
 #include "calls_history_window.h"
 #include "stats_drawing_area.h"
+#include "lid.h"
 
 #include "dialog.h"
 #include "gm_conf.h"
@@ -550,17 +551,6 @@ GMEndPoint::ZeroconfUpdate (void)
 #endif
 
 
-#ifdef HAS_HOWL
-void
-GMH323EndPoint::ZeroconfUpdate (void)
-{
-  PWaitAndSignal m(zcp_access_mutex);
-  if (zcp)  
-    zcp->Publish ();
-}
-#endif
-
-
 void
 GMEndPoint::ILSRegister (void)
 {
@@ -828,8 +818,8 @@ GMEndPoint::OnEstablished (OpalConnection &connection)
 
   
   /* Signal the call begin */
-  if (dispatcher)
-    g_signal_emit_by_name (dispatcher, "call-begin", (const gchar *)token);
+  //FIXME if (dispatcher)
+    //g_signal_emit_by_name (dispatcher, "call-begin", (const gchar *)token);
 
   
   /* Update ILS if needed */
@@ -2236,13 +2226,6 @@ GMEndPoint::GetMissedCallsNumber ()
   return missed_calls;
 }
 
-void
-GMH323EndPoint::AddObserver (GObject *observer)
-{
-  g_return_if_fail (observer != NULL);
-
-  gm_events_dispatcher_add_observer (dispatcher, observer);
-}
 
 void
 GMEndPoint::AddObserver (GObject *observer)

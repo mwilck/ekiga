@@ -51,7 +51,7 @@
 
 
 #ifdef HAS_IXJ
-#include <ixjlid.h>
+#include <lids/ixjlid.h>
 #endif
 
 #ifdef __linux__

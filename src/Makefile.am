@@ -7,57 +7,56 @@ bin_SCRIPTS = gnomemeeting-config-tool
 bin_PROGRAMS = gnomemeeting
 
 gnomemeeting_SOURCES =		\
-	common.h		\
+	addressbook_window.cpp	\
+	addressbook_window.h    \
 	callbacks.cpp		\
 	callbacks.h		\
+	calls_history_window.cpp\
+	calls_history_window.h	\
+	chat_window.cpp		\
+	chat_window.h		\
+	common.h		\
+	config.h		\
+	config.cpp		\
 	druid.cpp		\
 	druid.h			\
+	endpoint.cpp		\
+	endpoint.h		\
 	gdkvideoio.cpp		\
 	gdkvideoio.h		\
 	gnomemeeting.cpp	\
 	gnomemeeting.h		\
-	endpoint.cpp		\
-	endpoint.h		\
 	h323endpoint.cpp	\
 	h323endpoint.h		\
 	h323gatekeeper.cpp	\
 	h323gatekeeper.h	\
+	ils.cpp			\
+	ils.h			\
+	log_window.cpp		\
+	log_window.h		\
+	main_window.cpp		\
+	main_window.h		\
+	misc.cpp		\
+	misc.h			\
+	pcssendpoint.cpp	\
+	pcssendpoint.h		\
 	pref_window.cpp		\
 	pref_window.h		\
 	sound_handling.cpp	\
 	sound_handling.h	\
-	videograbber.h		\
-	videograbber.cpp	\
-	config.h		\
-	config.cpp		\
-	main_window.cpp		\
-	main_window.h		\
-	ils.cpp			\
-	ils.h			\
-	misc.cpp		\
-	misc.h			\
-	chat_window.cpp		\
-	chat_window.h		\
-	pcssendpoint.cpp	\
-	pcssendpoint.h		\
 	stunclient.cpp		\
 	stunclient.h		\
+	tools.cpp		\
+	tools.h			\
+	tray.h			\
+	tray.cpp		\
 	urlhandler.cpp		\
 	urlhandler.h		\
 	vfakeio.cpp		\
 	vfakeio.h		\
-	tray.h			\
-	tray.cpp		\
-	tools.cpp		\
-	tools.h			\
-	calls_history_window.cpp\
-	calls_history_window.h	\
-	log_window.cpp		\
-	log_window.h		\
-	lid.cpp			\
-	lid.h			\
-	addressbook_window.cpp	\
-	addressbook_window.h
+	videograbber.h		\
+	videograbber.cpp	
+	
 
 if ! DISABLE_GNOME
 gnomemeeting_SOURCES += bonobo_component.cpp bonobo_component.h

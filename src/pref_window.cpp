@@ -1073,6 +1073,13 @@ gm_pw_init_audio_devices_page (GtkWidget *prefs_window,
 
   gchar **array = NULL;
 
+#ifdef HAS_IXJ
+  GtkWidget *entry = NULL;
+
+  gchar *aec [] = {_("Off"), _("Low"), _("Medium"), _("High"), _("AGC"), NULL};
+  gchar *types_array [] = {_("POTS"), _("Headset"), NULL};
+#endif
+  
   pw = gm_pw_get_pw (prefs_window);
   
 

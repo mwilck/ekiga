@@ -49,7 +49,7 @@
 #endif
 
 #ifdef HAS_IXJ
-#include <ixjlid.h>
+#include <lids/ixjlid.h>
 #endif
 
 
@@ -413,15 +413,6 @@ class GMEndPoint : public OpalManager
   void SetSTUNServer (void);
 
   
-#ifdef HAS_HOWL
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Update the information published by zeroconf.
-   * PRE          :  /
-   */
-  void ZeroconfUpdate (void);
-#endif
-
-
 #ifdef HAS_HOWL
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Update the information published by zeroconf.
@@ -856,9 +847,8 @@ class GMEndPoint : public OpalManager
   PMutex zcp_access_mutex;
 #endif
 
-#ifdef HAS_HOWL
-  GMZeroconfPublisher *zcp;
-  PMutex zcp_access_mutex;
+#ifdef HAS_IXJ
+  GMLid *lid;
 #endif
 };
 

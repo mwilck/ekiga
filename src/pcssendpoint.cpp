@@ -315,7 +315,8 @@ GMPCSSEndPoint::CreateSoundChannel (const OpalPCSSConnection & connection,
   PString plugin;
   PString device;
 
-  unsigned int vol = 0;
+  unsigned int play_vol = 0;
+  unsigned int record_vol = 0;
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
@@ -354,8 +355,11 @@ GMPCSSEndPoint::CreateSoundChannel (const OpalPCSSConnection & connection,
 
       
       /* Update the volume sliders */
-      //FIXME + popups
-      //GetDeviceVolume (sound_channel, is_source, vol);
+      //FIXME popups
+      if (is_source) 
+	sound_channel->GetVolume (record_vol);
+      else 
+	sound_channel->GetVolume (play_vol);
 
       
       /* Translators : the full sentence is "Opening %s for playing with
@@ -368,8 +372,8 @@ GMPCSSEndPoint::CreateSoundChannel (const OpalPCSSConnection & connection,
 				(const char *) plugin);
       
       gm_main_window_set_volume_sliders_values (main_window, 
-						is_source?-1:(int) vol,
-						!is_source?-1:(int) vol);
+						play_vol,
+						record_vol);
       gnomemeeting_threads_leave ();
 
       return sound_channel;
@@ -432,16 +436,17 @@ GMPCSSEndPoint::OnGetDestination (const OpalPCSSConnection &)
 }
 
 
-void
-GMPCSSEndPoint::SetDeviceVolume ()
+void 
+GMPCSSEndPoint::GetDeviceVolume (unsigned int &play_vol,
+				 unsigned int &record_vol)
 {
-  /*
   PSafePtr<OpalCall> call = NULL;
   PSafePtr<OpalConnection> connection = NULL;
-  OpalRTPMediaStream *stream = NULL;
+  OpalAudioMediaStream *stream = NULL;
+  PSoundChannel *channel = NULL;
 
   call = endpoint.FindCallWithLock (endpoint.GetCurrentCallToken ());
-
+  
   if (call != NULL) {
 
     connection = endpoint.GetConnection (call, FALSE);
@@ -450,16 +455,71 @@ GMPCSSEndPoint::SetDeviceVolume ()
 
       stream = (OpalAudioMediaStream *) 
 	connection->GetMediaStream (OpalMediaFormat::DefaultAudioSessionID,
+				    FALSE);
+
+      if (stream) {
+
+	channel = (PSoundChannel *) stream->GetChannel ();
+	channel->GetVolume (play_vol);
+      }
+
+      
+      stream = (OpalAudioMediaStream *) 
+	connection->GetMediaStream (OpalMediaFormat::DefaultAudioSessionID,
 				    TRUE);
 
       if (stream) {
 
-	channel = (PSoundChannel *) stream;
-	channel->SetVolume (100);
+	channel = (PSoundChannel *) stream->GetChannel ();
+	channel->GetVolume (record_vol);
       }
     }
   }
-  */
+}
+
+
+void
+GMPCSSEndPoint::SetDeviceVolume (unsigned int play_vol,
+				 unsigned int record_vol)
+{
+  PSafePtr<OpalCall> call = NULL;
+  PSafePtr<OpalConnection> connection = NULL;
+  OpalAudioMediaStream *stream = NULL;
+  PSoundChannel *channel = NULL;
+
+  g_return_if_fail (play_vol >= 0 && play_vol <= 100);
+  g_return_if_fail (record_vol >= 0 && record_vol <= 100);
+  
+  call = endpoint.FindCallWithLock (endpoint.GetCurrentCallToken ());
+  
+  if (call != NULL) {
+
+    connection = endpoint.GetConnection (call, FALSE);
+
+    if (connection) {
+
+      stream = (OpalAudioMediaStream *) 
+	connection->GetMediaStream (OpalMediaFormat::DefaultAudioSessionID,
+				    FALSE);
+
+      if (stream) {
+
+	channel = (PSoundChannel *) stream->GetChannel ();
+	channel->SetVolume (play_vol);
+      }
+
+      
+      stream = (OpalAudioMediaStream *) 
+	connection->GetMediaStream (OpalMediaFormat::DefaultAudioSessionID,
+				    TRUE);
+
+      if (stream) {
+
+	channel = (PSoundChannel *) stream->GetChannel ();
+	channel->SetVolume (record_vol);
+      }
+    }
+  }
 }
 
 

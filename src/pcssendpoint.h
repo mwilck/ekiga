@@ -89,7 +89,20 @@ public:
   void OnReleased (OpalConnection &);
 
 
-  void SetDeviceVolume ();
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns the playing and recording volume levels.
+   * PRE          :  /
+   */
+  void GetDeviceVolume (unsigned int &,
+			unsigned int &);
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Updates the playing and recording volume levels.
+   * PRE          :  /
+   */
+  void SetDeviceVolume (unsigned int,
+			unsigned int);
 
 private:
   

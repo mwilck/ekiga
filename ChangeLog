@@ -1,3 +1,19 @@
+2004-12-05  Damien Sandras  <dsandras@gnome.org>
+
+	* src/connection.cpp, src/connection.h, src/gatekeeper.cpp, 
+	src/gatekeeper.h: Removed those files.
+
+	* configure.in, src/Makefile.am: Added support for an OPAL version
+	installed in $PREFIX after my commits to OPAL CVS.
+
+	* src/common.h: Disable IXJ for now.
+
+	* src/endpoint.cpp, src/endpoint.h, src/lid.cpp, src/lid.h, 
+	src/main_window.cpp, src/pcssendpoint.cpp, src/pcssendpoint.h,
+	src/pref_window.cpp, src/sound_handling.cpp,
+	src/zeroconf_publisher.cpp: Various fixes. Added possibility to change
+	the audio volume after my commit to OPAL CVS to add support for this.
+
 2004-12-02  Damien Sandras  <dsandras@gnome.org>
 
 	* configure.in: Added OPAL Support.

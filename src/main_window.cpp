@@ -1902,63 +1902,21 @@ audio_volume_changed_cb (GtkAdjustment *adjustment,
 {
   GMEndPoint *ep = NULL;
   GMPCSSEndPoint *pcssEP = NULL;
+  
+  int play_vol = 0; 
+  int rec_vol = 0;
 
   g_return_if_fail (data != NULL);
 
   ep = GnomeMeeting::Process ()->Endpoint ();
   pcssEP = ep->GetPCSSEndPoint ();
-
-  pcssEP->SetDeviceVolume ();
-  /*
-  GMEndPoint *ep = NULL;
   
-  H323Connection *con = NULL;
-  H323Codec *raw_codec = NULL;
-  H323Channel *channel = NULL;
-
-  PSoundChannel *sound_channel = NULL;
-
-  int play_vol =  0, rec_vol = 0;
-
-
-  g_return_if_fail (data != NULL);
-  ep = GnomeMeeting::Process ()->Endpoint ();
-
   gm_main_window_get_volume_sliders_values (GTK_WIDGET (data), 
 					    play_vol, rec_vol);
 
   gdk_threads_leave ();
- 
-  con = ep->FindConnectionWithLock (ep->GetCurrentCallToken ());
-
-  if (con) {
-
-    for (int cpt = 0 ; cpt < 2 ; cpt++) {
-
-      channel = 
-        con->FindChannel (RTP_Session::DefaultAudioSessionID, (cpt == 0));         
-      if (channel) {
-
-        raw_codec = channel->GetCodec();
-
-        if (raw_codec) {
-
-          sound_channel = (PSoundChannel *) raw_codec->GetRawDataChannel ();
-
-          if (sound_channel)
-            ep->SetDeviceVolume (sound_channel, 
-                                 (cpt == 1), 
-                                 (cpt == 1) ? rec_vol : play_vol);
-        }
-      }
-    }
-    con->Unlock ();
-  }
-
+  pcssEP->SetDeviceVolume (play_vol, rec_vol);
   gdk_threads_enter ();
-  */
-  //FIXME
-  cout << "FIXME" << endl << flush;
 }
 
 
