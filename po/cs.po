@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-03 04:07+0200\n"
-"PO-Revision-Date: 2004-06-03 11:44+0200\n"
+"POT-Creation-Date: 2004-06-08 03:57+0200\n"
+"PO-Revision-Date: 2004-06-08 13:22+0200\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -101,7 +101,7 @@ msgstr ""
 msgid "Clear inactive calls"
 msgstr "Ukončovat neaktivní hovory"
 
-#: gnomemeeting.schemas.in.in.h:15 src/addressbook_window.cpp:1135
+#: gnomemeeting.schemas.in.in.h:15 src/addressbook_window.cpp:755
 msgid "Comment"
 msgstr "Komentář"
 
@@ -371,7 +371,7 @@ msgstr "Přijímací port"
 msgid "Local video window size"
 msgstr "Velikost okna lokálního videa"
 
-#: gnomemeeting.schemas.in.in.h:69 src/addressbook_window.cpp:1172
+#: gnomemeeting.schemas.in.in.h:69 src/addressbook_window.cpp:792
 msgid "Location"
 msgstr "Umístění"
 
@@ -576,7 +576,7 @@ msgstr "Velikost okna nastavení"
 msgid "Start hidden"
 msgstr "Spustit skrytě"
 
-#: gnomemeeting.schemas.in.in.h:118 src/menu.cpp:458 src/menu.cpp:585
+#: gnomemeeting.schemas.in.in.h:118 src/menu.cpp:459 src/menu.cpp:586
 msgid "Switch to fullscreen"
 msgstr "Přepnout do celoobrazovkového režimu"
 
@@ -1031,7 +1031,7 @@ msgstr ""
 msgid "_Retrieve Call"
 msgstr "_Přijmout hovor"
 
-#: src/callbacks.cpp:99 src/menu.cpp:297
+#: src/callbacks.cpp:99 src/menu.cpp:298
 msgid "_Hold Call"
 msgstr "_Pozdržet hovor"
 
@@ -1043,7 +1043,7 @@ msgstr "Přesměrovávat hovor na:"
 msgid "Transfer"
 msgstr "Přesměrovat"
 
-#: src/callbacks.cpp:231 src/menu.cpp:307
+#: src/callbacks.cpp:231 src/menu.cpp:308
 msgid "Suspend _Audio"
 msgstr "Pozastavit _zvuk"
 
@@ -1059,7 +1059,7 @@ msgstr "Přenos zvuku: pozastaven"
 msgid "Audio transmission: resumed"
 msgstr "Přenos zvuku: obnoven"
 
-#: src/callbacks.cpp:245 src/menu.cpp:312
+#: src/callbacks.cpp:245 src/menu.cpp:313
 msgid "Suspend _Video"
 msgstr "Pozastavit _Video"
 
@@ -1368,8 +1368,8 @@ msgstr "Nemohu otevřít %s pro odesílání, zkusím další společný kodek"
 msgid "Failure opening %s for reception, will try with next common codec"
 msgstr "Nemohu otevřít %s pro příjem, zkusím další společný kodek"
 
-#: src/connection.cpp:316 src/connection.cpp:317 src/urlhandler.cpp:76
-#: src/urlhandler.cpp:77
+#: src/connection.cpp:316 src/connection.cpp:317 src/urlhandler.cpp:77
+#: src/urlhandler.cpp:78
 msgid "Call transfer failed"
 msgstr "Přesměrování hovoru selhalo"
 
@@ -1465,7 +1465,8 @@ msgstr ""
 "Vstup videa: %s\n"
 "Callto URL: %s\n"
 
-#: src/druid.cpp:831 src/pref_window.cpp:1170
+#: src/druid.cpp:831 src/addressbook_window.cpp:561
+#: src/addressbook_window.cpp:563 src/pref_window.cpp:1170
 msgid "None"
 msgstr "Nic"
 
@@ -1784,7 +1785,7 @@ msgstr "Vzdáleny počítač není připojen"
 msgid "Temporary failure"
 msgstr "Dočasné selhání"
 
-#: src/endpoint.cpp:1202 src/urlhandler.cpp:376 src/urlhandler.cpp:383
+#: src/endpoint.cpp:1202 src/urlhandler.cpp:392 src/urlhandler.cpp:399
 msgid "User not found"
 msgstr "Uživatel nenalezen"
 
@@ -2048,180 +2049,220 @@ msgstr "Odregistrován od adresáře uživatelů %s"
 msgid "Error while registering to %s"
 msgstr "Chyba při registraci u %s"
 
-#: src/addressbook_window.cpp:475
-msgid "Add an address book"
-msgstr "Přidat adresář"
+#: src/addressbook_window.cpp:559
+msgid "Contact collision"
+msgstr "Kolize kontaktů"
 
-#: src/addressbook_window.cpp:492 src/addressbook_window.cpp:1871
-msgid "Name:"
-msgstr "Jméno:"
-
-#: src/addressbook_window.cpp:513
-msgid "Type:"
-msgstr "Typ:"
-
-#: src/addressbook_window.cpp:520
-msgid "Local"
-msgstr "Místní"
-
-#: src/addressbook_window.cpp:525
-msgid "Remote LDAP"
-msgstr "Vzdálený LDAP"
-
-#: src/addressbook_window.cpp:530
-msgid "Remote ILS"
-msgstr "Vzdálený ILS"
-
-#: src/addressbook_window.cpp:562
-msgid "Search Scope:"
-msgstr "Rozsah hledání:"
-
-#: src/addressbook_window.cpp:569
-msgid "Subtree"
-msgstr "Podstrom"
-
-#: src/addressbook_window.cpp:574
-msgid "One Level"
-msgstr "Jedna úroveň"
-
-#: src/addressbook_window.cpp:604
-msgid "Hostname:"
-msgstr "Název počítače:"
-
-#: src/addressbook_window.cpp:625
-msgid "Port:"
-msgstr "Port:"
-
-#: src/addressbook_window.cpp:648
-msgid "Base DN:"
-msgstr "Základní DN:"
-
-#: src/addressbook_window.cpp:671
-msgid "Search Attribute:"
-msgstr "Hledaný atribut:"
-
-#: src/addressbook_window.cpp:769
+#: src/addressbook_window.cpp:561
 #, c-format
-msgid "Are you sure you want to delete %s and all its contacts?"
-msgstr "Jste si jisti, že chcete odstranit %s a všechny kontakty v ní?"
+msgid ""
+"Another contact with the same speed dial already exists in your address "
+"book:\n"
+"\n"
+"<b>Contact Name</b>: %s\n"
+"<b>Contact URL</b>: %s\n"
+"<b>Contact Speed Dial</b>: %s\n"
+msgstr ""
+"Ve vašem adresáři již existuje jiný kontakt se stejným rychlým vytáčením:\n"
+"\n"
+"<b>Jméno kontaktu</b>: %s\n"
+"<b>URL kontaktu</b>: %s\n"
+"<b>Rychlé vytáčení kontaktu</b>: %s\n"
+
+#: src/addressbook_window.cpp:563
+#, c-format
+msgid ""
+"Another contact with similar information already exists in your address "
+"book:\n"
+"\n"
+"<b>Contact Name</b>: %s\n"
+"<b>Contact URL</b>: %s\n"
+"<b>Contact Speed Dial</b>: %s\n"
+"\n"
+"Do you still want to add the contact?"
+msgstr ""
+"Ve vašem adresáři již existuje jiný kontakt s podobnými informacemi:\n"
+"\n"
+"<b>Jméno kontaktu</b>: %s\n"
+"<b>URL kontaktu</b>: %s\n"
+"<b>Rychlé vytáčení kontaktu</b>: %s\n"
+"\n"
+"Chcete ještě přidat tento kontakt?Do you still want to add the contact?"
 
 #. Translators: This is "S" as in "Status"
-#: src/addressbook_window.cpp:1099
+#: src/addressbook_window.cpp:719
 msgid "S"
 msgstr "S"
 
-#: src/addressbook_window.cpp:1110 src/pref_window.cpp:445
+#: src/addressbook_window.cpp:730 src/pref_window.cpp:445
 msgid "Name"
 msgstr "Jméno"
 
-#: src/addressbook_window.cpp:1122
+#: src/addressbook_window.cpp:742
 msgid "URL"
 msgstr "URL"
 
-#: src/addressbook_window.cpp:1148
+#: src/addressbook_window.cpp:768
 msgid "Software"
 msgstr "Software"
 
-#: src/addressbook_window.cpp:1161
+#: src/addressbook_window.cpp:781
 msgid "E-Mail"
 msgstr "E-mail"
 
-#: src/addressbook_window.cpp:1185
+#: src/addressbook_window.cpp:805
 msgid "Categories"
 msgstr "Kategorie"
 
-#: src/addressbook_window.cpp:1198
+#: src/addressbook_window.cpp:818
 msgid "Speed Dial"
 msgstr "Rychlé vytáčení"
 
-#: src/addressbook_window.cpp:1489
+#: src/addressbook_window.cpp:1432
 msgid "Address Book"
 msgstr "Adresář"
 
-#: src/addressbook_window.cpp:1516
+#: src/addressbook_window.cpp:1459
 msgid "_File"
 msgstr "_Soubor"
 
-#: src/addressbook_window.cpp:1518
+#: src/addressbook_window.cpp:1461
 msgid "New _Address Book"
 msgstr "Nový _adresář"
 
-#: src/addressbook_window.cpp:1525
+#: src/addressbook_window.cpp:1468
 msgid "_Delete"
 msgstr "_Odstranit"
 
-#: src/addressbook_window.cpp:1529
+#: src/addressbook_window.cpp:1473
 msgid "_Properties"
 msgstr "_Vlastnosti"
 
-#: src/addressbook_window.cpp:1536 src/menu.cpp:327
+#: src/addressbook_window.cpp:1480 src/menu.cpp:328
 msgid "_Close"
 msgstr "_Zavřít"
 
-#: src/addressbook_window.cpp:1541
+#: src/addressbook_window.cpp:1485
 msgid "C_ontact"
 msgstr "_Kontakt"
 
-#: src/addressbook_window.cpp:1543
+#: src/addressbook_window.cpp:1487
 msgid "C_all Contact"
 msgstr "Za_volat kontaktu"
 
-#: src/addressbook_window.cpp:1549
+#: src/addressbook_window.cpp:1493
 msgid "New _Contact"
 msgstr "Nový _kontakt"
 
-#: src/addressbook_window.cpp:1553
+#: src/addressbook_window.cpp:1497
 msgid "Add Contact to _Address Book"
 msgstr "Přidat kontakt do _adresáře"
 
-#: src/addressbook_window.cpp:1626
+#: src/addressbook_window.cpp:1570
 msgid "On LDAP servers"
 msgstr "Na serverech LDAP"
 
-#: src/addressbook_window.cpp:1634
+#: src/addressbook_window.cpp:1578
 msgid "On This Computer"
 msgstr "V tomto počítači"
 
-#: src/addressbook_window.cpp:1663
+#: src/addressbook_window.cpp:1607
 msgid "Find all contacts"
 msgstr "Hledat všechny kontakty"
 
-#: src/addressbook_window.cpp:1668
+#: src/addressbook_window.cpp:1612
 msgid "Name contains"
 msgstr "Jméno obsahuje"
 
-#: src/addressbook_window.cpp:1672
+#: src/addressbook_window.cpp:1616
 msgid "URL contains"
 msgstr "URL obsahuje"
 
-#: src/addressbook_window.cpp:1676
+#: src/addressbook_window.cpp:1620
 msgid "Belongs to category"
 msgstr "Patří do kategorie"
 
-#: src/addressbook_window.cpp:1780
+#: src/addressbook_window.cpp:1750
+msgid "Edit the Contact Information"
+msgstr "Upravit kontaktní informace"
+
+#: src/addressbook_window.cpp:1771 src/addressbook_window.cpp:2115
+msgid "Name:"
+msgstr "Jméno:"
+
+#: src/addressbook_window.cpp:1791
+msgid "URL:"
+msgstr "URL:"
+
+#: src/addressbook_window.cpp:1811
+msgid "Speed Dial:"
+msgstr "Rychlé vytáčení:"
+
+#: src/addressbook_window.cpp:1833
+msgid "Categories:"
+msgstr "Kategorie:"
+
+#: src/addressbook_window.cpp:1862
+msgid "Local Addressbook:"
+msgstr "Místní adresář:"
+
+#: src/addressbook_window.cpp:2001
 #, c-format
 msgid "Are you sure you want to delete %s from %s?"
 msgstr "Jste si jisti, že chcete odstranit %s z %s?"
 
-#: src/addressbook_window.cpp:1850
-msgid "Edit the Contact Information"
-msgstr "Upravit kontaktní informace"
+#: src/addressbook_window.cpp:2098
+msgid "Add an address book"
+msgstr "Přidat adresář"
 
-#: src/addressbook_window.cpp:1891
-msgid "URL:"
-msgstr "URL:"
+#: src/addressbook_window.cpp:2136
+msgid "Type:"
+msgstr "Typ:"
 
-#: src/addressbook_window.cpp:1911
-msgid "Speed Dial:"
-msgstr "Rychlé vytáčení:"
+#: src/addressbook_window.cpp:2143
+msgid "Local"
+msgstr "Místní"
 
-#: src/addressbook_window.cpp:1933
-msgid "Categories:"
-msgstr "Kategorie:"
+#: src/addressbook_window.cpp:2148
+msgid "Remote LDAP"
+msgstr "Vzdálený LDAP"
 
-#: src/addressbook_window.cpp:1962
-msgid "Local Addressbook:"
-msgstr "Místní adresář:"
+#: src/addressbook_window.cpp:2153
+msgid "Remote ILS"
+msgstr "Vzdálený ILS"
+
+#: src/addressbook_window.cpp:2185
+msgid "Search Scope:"
+msgstr "Rozsah hledání:"
+
+#: src/addressbook_window.cpp:2192
+msgid "Subtree"
+msgstr "Podstrom"
+
+#: src/addressbook_window.cpp:2197
+msgid "One Level"
+msgstr "Jedna úroveň"
+
+#: src/addressbook_window.cpp:2227
+msgid "Hostname:"
+msgstr "Název počítače:"
+
+#: src/addressbook_window.cpp:2248
+msgid "Port:"
+msgstr "Port:"
+
+#: src/addressbook_window.cpp:2271
+msgid "Base DN:"
+msgstr "Základní DN:"
+
+#: src/addressbook_window.cpp:2294
+msgid "Search Attribute:"
+msgstr "Hledaný atribut:"
+
+#: src/addressbook_window.cpp:2392
+#, c-format
+msgid "Are you sure you want to delete %s and all its contacts?"
+msgstr "Jste si jisti, že chcete odstranit %s a všechny kontakty v ní?"
 
 #: src/lid.cpp:135
 #, c-format
@@ -2295,15 +2336,15 @@ msgstr "Chyba při návratu gnomemeeting serveru od aktivační služby\n"
 msgid "Sent dtmf %c"
 msgstr "Odesláno dtmf %c"
 
-#: src/main_window.cpp:1138 src/menu.cpp:410 src/menu.cpp:537
+#: src/main_window.cpp:1138 src/menu.cpp:411 src/menu.cpp:538
 msgid "Local Video"
 msgstr "Lokální video"
 
-#: src/main_window.cpp:1142 src/menu.cpp:416 src/menu.cpp:543
+#: src/main_window.cpp:1142 src/menu.cpp:417 src/menu.cpp:544
 msgid "Remote Video"
 msgstr "Vzdálené video"
 
-#: src/main_window.cpp:1277 src/menu.cpp:371
+#: src/main_window.cpp:1277 src/menu.cpp:372
 msgid "Statistics"
 msgstr "Statistiky"
 
@@ -2381,304 +2422,304 @@ msgstr ""
 msgid "Gconf key error"
 msgstr "Chyba klíče gconf"
 
-#: src/menu.cpp:256
+#: src/menu.cpp:257
 msgid "C_all"
 msgstr "_Hovor"
 
-#: src/menu.cpp:258
+#: src/menu.cpp:259
 msgid "C_onnect"
 msgstr "_Spojit"
 
-#: src/menu.cpp:258 src/menu.cpp:612
+#: src/menu.cpp:259 src/menu.cpp:613
 msgid "Create a new connection"
 msgstr "Vytvořit nové spojení"
 
-#: src/menu.cpp:261 src/menu.cpp:615
+#: src/menu.cpp:262 src/menu.cpp:616
 msgid "_Disconnect"
 msgstr "_Odpojit"
 
-#: src/menu.cpp:262 src/menu.cpp:616
+#: src/menu.cpp:263 src/menu.cpp:617
 msgid "Close the current connection"
 msgstr "Uzavřít současné spojení"
 
-#: src/menu.cpp:268 src/menu.cpp:622
+#: src/menu.cpp:269 src/menu.cpp:623
 msgid "_Available"
 msgstr "K _dispozici"
 
-#: src/menu.cpp:269 src/menu.cpp:623
+#: src/menu.cpp:270 src/menu.cpp:624
 msgid "Display a popup to accept the call"
 msgstr "Zobrazit vyskakovací okno při příchozím hovoru"
 
-#: src/menu.cpp:274 src/menu.cpp:628
+#: src/menu.cpp:275 src/menu.cpp:629
 msgid "Free for Cha_t"
 msgstr "_Volný k diskusi"
 
-#: src/menu.cpp:275 src/menu.cpp:629
+#: src/menu.cpp:276 src/menu.cpp:630
 msgid "Auto answer calls"
 msgstr "Odpovídat na hovory automaticky"
 
-#: src/menu.cpp:280 src/menu.cpp:634
+#: src/menu.cpp:281 src/menu.cpp:635
 msgid "_Busy"
 msgstr "_Zaneprázdněn"
 
-#: src/menu.cpp:280 src/menu.cpp:634
+#: src/menu.cpp:281 src/menu.cpp:635
 msgid "Reject calls"
 msgstr "Odmítat hovory"
 
-#: src/menu.cpp:285 src/menu.cpp:639
+#: src/menu.cpp:286 src/menu.cpp:640
 msgid "_Forward"
 msgstr "_Přesměrovat"
 
-#: src/menu.cpp:285 src/menu.cpp:639
+#: src/menu.cpp:286 src/menu.cpp:640
 msgid "Forward calls"
 msgstr "Přesměrovávat hovory"
 
-#: src/menu.cpp:293
+#: src/menu.cpp:294
 msgid "Speed dials"
 msgstr "Rychlá vytáčení"
 
-#: src/menu.cpp:297
+#: src/menu.cpp:298
 msgid "Hold the current call"
 msgstr "Pozdržet aktuální hovor"
 
-#: src/menu.cpp:300
+#: src/menu.cpp:301
 msgid "_Transfer Call"
 msgstr "_Přesměrovat hovor"
 
-#: src/menu.cpp:301
+#: src/menu.cpp:302
 msgid "Transfer the current call"
 msgstr "Přesměrovat aktuální hovor"
 
-#: src/menu.cpp:308
+#: src/menu.cpp:309
 msgid "Suspend or resume the audio transmission"
 msgstr "Pozastavit nebo obnovit přenos zvuku"
 
-#: src/menu.cpp:313
+#: src/menu.cpp:314
 msgid "Suspend or resume the video transmission"
 msgstr "Pozastavit nebo obnovit přenos videa"
 
-#: src/menu.cpp:320
+#: src/menu.cpp:321
 msgid "_Save Current Picture"
 msgstr "_Uložit aktuální obrázek"
 
-#: src/menu.cpp:321
+#: src/menu.cpp:322
 msgid "Save a snapshot of the current video"
 msgstr "Uložit snímek aktuálního videa"
 
-#: src/menu.cpp:327
+#: src/menu.cpp:328
 msgid "Close the GnomeMeeting window"
 msgstr "Zavřít okno GnomeMeeting"
 
-#: src/menu.cpp:334 src/menu.cpp:677
+#: src/menu.cpp:335 src/menu.cpp:678
 msgid "_Quit"
 msgstr "_Ukončit"
 
-#: src/menu.cpp:334 src/menu.cpp:678
+#: src/menu.cpp:335 src/menu.cpp:679
 msgid "Quit GnomeMeeting"
 msgstr "Ukončit GnomeMeeting"
 
-#: src/menu.cpp:338
+#: src/menu.cpp:339
 msgid "_Edit"
 msgstr "Úp_ravy"
 
-#: src/menu.cpp:340
+#: src/menu.cpp:341
 msgid "Configuration Druid"
 msgstr "Průvodce nastavením"
 
-#: src/menu.cpp:341
+#: src/menu.cpp:342
 msgid "Run the configuration druid"
 msgstr "Spustí druida nastavení"
 
-#: src/menu.cpp:348 src/menu.cpp:663
+#: src/menu.cpp:349 src/menu.cpp:664
 msgid "_Preferences"
 msgstr "_Nastavení"
 
-#: src/menu.cpp:349 src/menu.cpp:664
+#: src/menu.cpp:350 src/menu.cpp:665
 msgid "Change your preferences"
 msgstr "Změna vašeho nastavení"
 
-#: src/menu.cpp:354
+#: src/menu.cpp:355
 msgid "_View"
 msgstr "_Zobrazit"
 
-#: src/menu.cpp:356 src/pref_window.cpp:926
+#: src/menu.cpp:357 src/pref_window.cpp:926
 msgid "Text Chat"
 msgstr "Textový chat"
 
-#: src/menu.cpp:357
+#: src/menu.cpp:358
 msgid "View/Hide the text chat window"
 msgstr "Zobrazit/skrýt textové chatovací okno"
 
-#: src/menu.cpp:362
+#: src/menu.cpp:363
 msgid "Status Bar"
 msgstr "Stavovou lištu"
 
-#: src/menu.cpp:363
+#: src/menu.cpp:364
 msgid "View/Hide the status bar"
 msgstr "Zobrazit/skrýt stavovou lištu"
 
-#: src/menu.cpp:369
+#: src/menu.cpp:370
 msgid "Control Panel"
 msgstr "Ovládací panel"
 
-#: src/menu.cpp:372
+#: src/menu.cpp:373
 msgid "View audio/video transmission and reception statistics"
 msgstr "Zobrazit statistiky zvukového/obrazového příjmu a vysílání"
 
-#: src/menu.cpp:377
+#: src/menu.cpp:378
 msgid "_Dialpad"
 msgstr "_Vytáčení"
 
-#: src/menu.cpp:377
+#: src/menu.cpp:378
 msgid "View the dialpad"
 msgstr "Zobrazit vytáčení"
 
-#: src/menu.cpp:382
+#: src/menu.cpp:383
 msgid "_Audio Settings"
 msgstr "Nastavení _zvuku"
 
-#: src/menu.cpp:383
+#: src/menu.cpp:384
 msgid "View audio settings"
 msgstr "Zobrazit nastavení zvuku"
 
-#: src/menu.cpp:388
+#: src/menu.cpp:389
 msgid "_Video Settings"
 msgstr "Nastavení _videa"
 
-#: src/menu.cpp:389
+#: src/menu.cpp:390
 msgid "View video settings"
 msgstr "Zobrazit nastavení videa"
 
-#: src/menu.cpp:394 src/pref_window.cpp:1301
+#: src/menu.cpp:395 src/pref_window.cpp:1301
 msgid "Off"
 msgstr "Vypnut"
 
-#: src/menu.cpp:394
+#: src/menu.cpp:395
 msgid "Hide the control panel"
 msgstr "Skrýt ovládací panel"
 
-#: src/menu.cpp:402
+#: src/menu.cpp:403
 msgid "_Clear Text Chat"
 msgstr "_Vymazat textový chat"
 
-#: src/menu.cpp:403
+#: src/menu.cpp:404
 msgid "Clear the text chat"
 msgstr "Vymazat textový chat"
 
-#: src/menu.cpp:411 src/menu.cpp:538
+#: src/menu.cpp:412 src/menu.cpp:539
 msgid "Local video image"
 msgstr "Lokální obraz videa"
 
-#: src/menu.cpp:417 src/menu.cpp:544
+#: src/menu.cpp:418 src/menu.cpp:545
 msgid "Remote video image"
 msgstr "Vzdálený obraz videa"
 
-#: src/menu.cpp:422 src/menu.cpp:549
+#: src/menu.cpp:423 src/menu.cpp:550
 msgid "Both (Local Video Incrusted)"
 msgstr "Obojí (lokální video uvnitř)"
 
-#: src/menu.cpp:423 src/menu.cpp:430 src/menu.cpp:437 src/menu.cpp:550
-#: src/menu.cpp:557 src/menu.cpp:564
+#: src/menu.cpp:424 src/menu.cpp:431 src/menu.cpp:438 src/menu.cpp:551
+#: src/menu.cpp:558 src/menu.cpp:565
 msgid "Both video images"
 msgstr "Oba obrazy videa"
 
-#: src/menu.cpp:429 src/menu.cpp:556
+#: src/menu.cpp:430 src/menu.cpp:557
 msgid "Both (Local Video in New Window)"
 msgstr "Obojí (lokální video v novém okně)"
 
-#: src/menu.cpp:436 src/menu.cpp:563
+#: src/menu.cpp:437 src/menu.cpp:564
 msgid "Both (Both in New Windows)"
 msgstr "Obojí (Obojí v nových oknech)"
 
-#: src/menu.cpp:445 src/menu.cpp:572
+#: src/menu.cpp:446 src/menu.cpp:573
 msgid "Zoom In"
 msgstr "Zvětšit"
 
-#: src/menu.cpp:445 src/menu.cpp:572
+#: src/menu.cpp:446 src/menu.cpp:573
 msgid "Zoom in"
 msgstr "Zvětšit"
 
-#: src/menu.cpp:449 src/menu.cpp:576
+#: src/menu.cpp:450 src/menu.cpp:577
 msgid "Zoom Out"
 msgstr "Zmenšit"
 
-#: src/menu.cpp:449 src/menu.cpp:576
+#: src/menu.cpp:450 src/menu.cpp:577
 msgid "Zoom out"
 msgstr "Zmenšit"
 
-#: src/menu.cpp:453 src/menu.cpp:580
+#: src/menu.cpp:454 src/menu.cpp:581
 msgid "Normal Size"
 msgstr "Normální velikost"
 
-#: src/menu.cpp:453 src/menu.cpp:580
+#: src/menu.cpp:454 src/menu.cpp:581
 msgid "Normal size"
 msgstr "Normální velikost"
 
-#: src/menu.cpp:458 src/menu.cpp:585
+#: src/menu.cpp:459 src/menu.cpp:586
 msgid "Fullscreen"
 msgstr "Celoobrazovkový režim"
 
-#: src/menu.cpp:463
+#: src/menu.cpp:464
 msgid "_Tools"
 msgstr "_Nástroje"
 
-#: src/menu.cpp:465 src/menu.cpp:647
+#: src/menu.cpp:466 src/menu.cpp:648
 msgid "Address _Book"
 msgstr "_Adresář"
 
-#: src/menu.cpp:466 src/menu.cpp:648
+#: src/menu.cpp:467 src/menu.cpp:649
 msgid "Open the address book"
 msgstr "Otevřít adresář"
 
-#: src/menu.cpp:473
+#: src/menu.cpp:474
 msgid "General History"
 msgstr "Obecná historie"
 
-#: src/menu.cpp:474
+#: src/menu.cpp:475
 msgid "View the operations history"
 msgstr "Zobrazit historii událostí"
 
-#: src/menu.cpp:478 src/menu.cpp:655
+#: src/menu.cpp:479 src/menu.cpp:656
 msgid "Calls History"
 msgstr "Historie hovorů"
 
-#: src/menu.cpp:479 src/menu.cpp:656
+#: src/menu.cpp:480 src/menu.cpp:657
 msgid "View the calls history"
 msgstr "Zobrazit historii hovorů"
 
-#: src/menu.cpp:487 src/menu.cpp:493
+#: src/menu.cpp:488 src/menu.cpp:494
 msgid "PC-To-Phone Account"
 msgstr "Účet PC-To-Phone"
 
-#: src/menu.cpp:488 src/menu.cpp:494
+#: src/menu.cpp:489 src/menu.cpp:495
 msgid "Manage your PC-To-Phone account"
 msgstr "Spravovat váš účet PC-To-Phone"
 
-#: src/menu.cpp:499
+#: src/menu.cpp:500
 msgid "_Help"
 msgstr "Nápo_věda"
 
-#: src/menu.cpp:502 src/menu.cpp:507
+#: src/menu.cpp:503 src/menu.cpp:508
 msgid "_Contents"
 msgstr "_Obsah"
 
-#: src/menu.cpp:503 src/menu.cpp:508
+#: src/menu.cpp:504 src/menu.cpp:509
 msgid "Get help by reading the GnomeMeeting manual"
 msgstr "Získat nápovědu čtenám manuálu GnomeMeeting"
 
-#: src/menu.cpp:513
+#: src/menu.cpp:514
 msgid "_About"
 msgstr "O _aplikaci"
 
-#: src/menu.cpp:514 src/menu.cpp:672
+#: src/menu.cpp:515 src/menu.cpp:673
 msgid "View information about GnomeMeeting"
 msgstr "Zobraz informace o GnomeMeeting"
 
-#: src/menu.cpp:612
+#: src/menu.cpp:613
 msgid "_Connect"
 msgstr "_Spojit"
 
-#: src/menu.cpp:671
+#: src/menu.cpp:672
 msgid "_About..."
 msgstr "O _aplikaci..."
 
@@ -3438,7 +3479,7 @@ msgid "Opening device for recording"
 msgstr "Otevírám zařízení pro záznam"
 
 #: src/sound_handling.cpp:336 src/sound_handling.cpp:338
-#: src/videograbber.cpp:696
+#: src/videograbber.cpp:697
 msgid "Failed to open the device"
 msgstr "Nemohu otevřít zařízení"
 
@@ -3604,7 +3645,7 @@ msgstr "Zobrazit podrobnosti o mém účtu"
 msgid "GnomeMeeting Tray Icon"
 msgstr "GnomeMeeting zásuvná ikona"
 
-#: src/urlhandler.cpp:76
+#: src/urlhandler.cpp:77
 msgid ""
 "The call transfer failed, the user was either unreachable, or simply busy "
 "when he received the call transfer request."
@@ -3612,17 +3653,17 @@ msgstr ""
 "Přesměrování hovoru selhalo, uživatel nebyl dostupný nebo byl zaneprázdněn, "
 "když dostal požadavek na přesměrování hovoru."
 
-#: src/urlhandler.cpp:290
+#: src/urlhandler.cpp:306
 #, c-format
 msgid "No contact with speed dial %s# found, will call number %s instead"
 msgstr ""
 "Nenalezen kontakt s rychlým vytáčením %s#, místo toho zavolám na číslo %s"
 
-#: src/urlhandler.cpp:307
+#: src/urlhandler.cpp:323
 msgid "Invalid URL handler"
 msgstr "Neplatná obsluha URL"
 
-#: src/urlhandler.cpp:307
+#: src/urlhandler.cpp:323
 msgid ""
 "Please specify a valid URL handler. Currently both h323: and callto: are "
 "supported."
@@ -3630,12 +3671,12 @@ msgstr ""
 "Zadejte prosím platnou obsluhu URL. Momentálně je podporováno h323: i "
 "callto:."
 
-#: src/urlhandler.cpp:327
+#: src/urlhandler.cpp:343
 #, c-format
 msgid "Calling %s"
 msgstr "Volám %s"
 
-#: src/urlhandler.cpp:331
+#: src/urlhandler.cpp:347
 #, c-format
 msgid "Transferring call to %s"
 msgstr "Přesměrovávám hovor na %s"
@@ -3679,7 +3720,7 @@ msgstr ""
 "Při otevírání zařízení došlo k chybě. Zkontrolujte prosím svá oprávnění a "
 "přesvědčte se, že je načten správný ovladač."
 
-#: src/videograbber.cpp:373 src/videograbber.cpp:674
+#: src/videograbber.cpp:373 src/videograbber.cpp:675
 msgid "Your video driver doesn't support the requested video format."
 msgstr "Váš ovladač videa nepodporuje požadovaný formát videa."
 
@@ -3724,36 +3765,36 @@ msgstr ""
 "GnomeMeeting nyní testuje video zařízení %s. Pokud dojde k zatuhnutí "
 "počítače, ohlaste chybu autorovi ovladače zařízení."
 
-#: src/videograbber.cpp:648
+#: src/videograbber.cpp:649
 #, c-format
 msgid "Test %d done"
 msgstr "Test %d proveden"
 
-#: src/videograbber.cpp:650
+#: src/videograbber.cpp:651
 #, c-format
 msgid "Test %d failed"
 msgstr "Test %d selhal"
 
-#: src/videograbber.cpp:669
+#: src/videograbber.cpp:670
 #, c-format
 msgid "Error while opening %s."
 msgstr "Chyba při otevírání %s."
 
-#: src/videograbber.cpp:678
+#: src/videograbber.cpp:679
 msgid "Could not open the chosen channel with the chosen video format."
 msgstr "Nemohu otevřít vybraný kanál s daným formátem videa."
 
-#: src/videograbber.cpp:682
+#: src/videograbber.cpp:683
 msgid ""
 "Your driver doesn't support any of the color formats tried by GnomeMeeting"
 msgstr ""
 "Váš ovladač nepodporuje žádný barevný formát, který GnomeMeeting vyzkoušel"
 
-#: src/videograbber.cpp:686
+#: src/videograbber.cpp:687
 msgid "Error with the frame rate."
 msgstr "Chyba s frekvencí rámců."
 
-#: src/videograbber.cpp:690
+#: src/videograbber.cpp:691
 msgid "Error with the frame size."
 msgstr "Chyba ve velikosti obrazu."
 
@@ -3811,11 +3852,6 @@ msgstr "Chyba ve velikosti obrazu."
 
 #~ msgid "Invalid speed dial"
 #~ msgstr "Neplatné rychlé vytáčení"
-
-#~ msgid ""
-#~ "Another contact with the same speed dial already exists in the address "
-#~ "book."
-#~ msgstr "V adresáři již existuje jiný kontakt se stejným rychlým vytáčením."
 
 #~ msgid "Invalid URL"
 #~ msgstr "Neplatné URL"
