@@ -70,6 +70,8 @@ GMThreadsCleaner::~GMThreadsCleaner ()
 
 void GMThreadsCleaner::Main ()
 {
+  gint timeout;
+
   int x = 0, y = 0;
   GMH323EndPoint *endpoint = MyApp->Endpoint ();
 
@@ -78,6 +80,9 @@ void GMThreadsCleaner::Main ()
   gnomemeeting_threads_enter ();
 
   gnomemeeting_statusbar_push (gw->statusbar, _("Quit in progress..."));
+
+  timeout = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (gm), "timeout"));
+  gtk_timeout_remove (timeout);
 
   /* Synchronous End of Call */
   if (endpoint->GetCallingState () != 0)

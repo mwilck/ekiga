@@ -1,5 +1,12 @@
 2002-12-24 Damien Sandras  <dsandras@seconix.com>
 
+	* src/cleaner.cpp: The Appbar timer is now removed here.
+
+	* src/main_window.cpp: Removed the gtk_timeout_remove for the Appbar
+	Timer.
+
+2002-12-24 Damien Sandras  <dsandras@seconix.com>
+
 	* src/callbacks.cpp, src/cleaner.cpp, src/cleaner.h,
 	  src/endpoint.cpp, src/gnomemeeting.cpp, src/gnomemeeting.h,
 	  src/main_window.cpp, src/misc.cpp: Fixed exit bug.
