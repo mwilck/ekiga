@@ -837,16 +837,19 @@ void gnomemeeting_dialpad_event (const char *key)
     
     /* Replace the * by a . */
     if (endpoint && endpoint->GetCallingState () == GMH323EndPoint::Standby
-	&& !strcmp (button_text, "*")) 
+	&& !strcmp (button_text, "*")) {
+      
       button_text = g_strdup (".");
 
-    new_url = url + PString (button_text);
+      new_url = url + PString (button_text);
 
-    if (!strcmp (".", button_text)) 
-      g_free (button_text);
+      if (!strcmp (".", button_text)) 
+	g_free (button_text);
 
-    gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), new_url);
-  
+      gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), new_url);
+    }
+
+    
     /* Now we send the pressed key as UserInput */
     if (endpoint) {
         

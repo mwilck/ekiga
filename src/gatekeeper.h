@@ -76,10 +76,9 @@ public:
 
 protected:
 
-  GConfClient *client;
-
   int registering_method;
-
+  int ttl;
+  
   PString gk_host;
   PString gk_password;
   PString gk_id;

@@ -42,7 +42,9 @@
 #include "gatekeeper.h"
 #include "gnomemeeting.h"
 #include "misc.h"
+
 #include "dialog.h"
+#include "gconf_widgets_extensions.h"
 
 #include <h323pdu.h>
 
@@ -55,19 +57,14 @@ GMH323Gatekeeper::GMH323Gatekeeper ()
   :PThread (1000, AutoDeleteThread)
 {
   gchar *gconf_string = NULL;
-  
-  client = gconf_client_get_default ();
-
-  
+    
   /* Query the gconf database for options */
-  registering_method =
-    gconf_client_get_int (GCONF_CLIENT (client),
-			  GATEKEEPER_KEY "registering_method", NULL);
-
+  gnomemeeting_threads_enter ();
+  registering_method = gconf_get_int (GATEKEEPER_KEY "registering_method");
+  ttl = gconf_get_int (GATEKEEPER_KEY "time_to_live");
+  
   /* Gatekeeper password */
-  gconf_string =
-    gconf_client_get_string (GCONF_CLIENT (client),
-			     GATEKEEPER_KEY "gk_password", NULL);
+  gconf_string = gconf_get_string (GATEKEEPER_KEY "gk_password");
   if (gconf_string) {
     
     gk_password = PString (gconf_string);
@@ -77,9 +74,7 @@ GMH323Gatekeeper::GMH323Gatekeeper ()
   /* Gatekeeper host */
   if (registering_method == 1) {
     
-    gconf_string =
-      gconf_client_get_string (GCONF_CLIENT (client),
-			       GATEKEEPER_KEY "gk_host", NULL);
+    gconf_string = gconf_get_string (GATEKEEPER_KEY "gk_host");
     if (gconf_string) {
       
       gk_host = PString (gconf_string);
@@ -90,16 +85,15 @@ GMH323Gatekeeper::GMH323Gatekeeper ()
   /* Gatekeeper ID */
   if (registering_method == 2) {
     
-    gconf_string =
-      gconf_client_get_string (GCONF_CLIENT (client),
-			       GATEKEEPER_KEY "gk_id", NULL);
+    gconf_string = gconf_get_string (GATEKEEPER_KEY "gk_id");
     if (gconf_string) {
       
       gk_id = PString (gconf_string);
       g_free (gconf_string);
     }
   }
-
+  gnomemeeting_threads_leave ();
+  
   this->Resume ();
 }
 
@@ -165,7 +159,9 @@ void GMH323Gatekeeper::Main ()
     if (!gk_password.IsEmpty ())
       endpoint->SetGatekeeperPassword (gk_password);
 
-
+    /* Set the Time-To-Live */
+    endpoint->SetRegistrationTimeToLive (ttl);
+    
     /* Registers to the gk */
     if (registering_method == 3) {
     
@@ -221,10 +217,8 @@ void GMH323Gatekeeper::Main ()
       g_free (msg);
     }
     
-    gconf_client_set_int (client, GATEKEEPER_KEY "registering_method",
-			  0, NULL);
-    gconf_client_set_bool (client, SERVICES_KEY "enable_microtelco",
-			   false, 0);
+    gconf_set_int (GATEKEEPER_KEY "registering_method", 0);
+    gconf_set_bool (SERVICES_KEY "enable_microtelco", false);
     gnomemeeting_threads_leave ();
   }
   /* Registering is ok */
@@ -244,11 +238,9 @@ void GMH323Gatekeeper::Main ()
        MicroTelco, if not disable it, in case it was enabled */
     if (registering_method == 1
 	&& PString (gk_host).Find ("gk.microtelco.com") != P_MAX_INDEX)
-      gconf_client_set_bool (client, SERVICES_KEY "enable_microtelco",
-			     true, 0);
+      gconf_set_bool (SERVICES_KEY "enable_microtelco", true);
     else
-      gconf_client_set_bool (client, SERVICES_KEY "enable_microtelco",
-			     false, 0);
+      gconf_set_bool (SERVICES_KEY "enable_microtelco", false);
     gnomemeeting_threads_leave ();
       
     g_free (msg);

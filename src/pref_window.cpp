@@ -850,7 +850,7 @@ gnomemeeting_init_pref_window_gatekeeper (GtkWidget *window,
   
   /* Add fields for the gatekeeper */
   subsection = gnome_prefs_subsection_new (window, container,
-					   _("Gatekeeper"), 4, 3);
+					   _("Gatekeeper"), 5, 3);
 
   gnome_prefs_entry_new (subsection, _("Gatekeeper _ID:"), GATEKEEPER_KEY "gk_id", _("The Gatekeeper identifier to register with."), 1, false);
 
@@ -864,6 +864,8 @@ gnomemeeting_init_pref_window_gatekeeper (GtkWidget *window,
 
   gnome_prefs_int_option_menu_new (subsection, _("Registering method:"), options, GATEKEEPER_KEY "registering_method", _("Registering method to use"), 0);
 
+  /* Translators: the full sentence is Registration Time-To-Live of X s */
+  gnome_prefs_spin_new (subsection, _("Registration Time-To-Live of "), GATEKEEPER_KEY "time_to_live", _("The gatekeeper TTL for the registration, expressed in seconds."), 60.0, 3600.0, 1.0, 5, _("s"), true);
   
   gnomemeeting_pref_window_add_update_button (container, GTK_STOCK_APPLY, _("_Apply"), GTK_SIGNAL_FUNC (gatekeeper_update_button_clicked), _("Click here to update your Gatekeeper settings."), 0);
 }
