@@ -67,8 +67,13 @@ static void chat_entry_activate (GtkEditable *w, gpointer data)
     
     if (endpoint->GetCallingState () == 2 && !s.IsEmpty ()) {
             
-      H323Connection *connection = endpoint->GetCurrentConnection ();
-            
+      /* If the GDK lock is taken, the connection will never get a
+	 chance to be established if we lock its mutex */
+      gdk_threads_leave ();
+      H323Connection *connection = 
+	endpoint->FindConnectionWithLock (endpoint->GetCurrentCallToken ());
+      gdk_threads_enter ();
+
       if (connection != NULL)  {
                 
 	connection->SendUserInput ("MSG"+s);
@@ -83,6 +88,8 @@ static void chat_entry_activate (GtkEditable *w, gpointer data)
 	g_free (utf8_local);
                 
 	gtk_entry_set_text (GTK_ENTRY (w), "");
+
+	connection->Unlock ();
       }
     }
   }

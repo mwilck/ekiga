@@ -243,10 +243,14 @@ void GMURLHandler::Main ()
   /* Answer the current call in a separate thread if required */
   if (answer_call && endpoint && endpoint->GetCallingState () == 3) {
 
-    con = endpoint->GetCurrentConnection ();
+    con = 
+      endpoint->FindConnectionWithLock (endpoint->GetCurrentCallToken ());
 
-    if (con)
+    if (con) {
+
       con->AnsweringCall (H323Connection::AnswerCallNow);
+      con->Unlock ();
+    }
 
     return;
   }
@@ -349,7 +353,6 @@ void GMURLHandler::Main ()
        we put things back in the initial state */
     if (con) {
 
-      endpoint->SetCurrentConnection (con);
       endpoint->SetCurrentCallToken (current_call_token);
       con->Unlock ();
     }

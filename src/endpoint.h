@@ -341,14 +341,6 @@ class GMH323EndPoint : public H323EndPoint
 
 
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Return the current connection or 
-   *                 NULL if there is no one.
-   * PRE          :  /
-   */
-  H323Connection *GetCurrentConnection (void);
-
-
-  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Return the number of video channels in use.
    *                 0 if there is no one, or if we are not in a call.
    * PRE          :  /
@@ -356,13 +348,6 @@ class GMH323EndPoint : public H323EndPoint
   int GetVideoChannelsNumber (void);
 
 
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Set the current connection to the parameter.
-   * PRE          :  A valid pointer to the current connection.
-   */
-  void SetCurrentConnection (H323Connection *);
-
-  
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Set the current call token.
    * PRE          :  A valid PString for a call token.
@@ -414,6 +399,9 @@ class GMH323EndPoint : public H323EndPoint
   BOOL SetSoundChannelRecordDevice(const PString &);
   BOOL SetSoundChannelManager (const PString &);
   PString GetSoundChannelManager () {return soundChannelManager;}
+  BOOL SetDeviceVolume (unsigned int, unsigned int);
+  BOOL GetDeviceVolume (unsigned int &, unsigned int &);
+
 
 #ifdef HAS_IXJ
   /* DESCRIPTION  :  /
@@ -463,6 +451,9 @@ class GMH323EndPoint : public H323EndPoint
    */
   void TransferCallWait ();
 
+  BOOL DeviceVolume (BOOL, unsigned int &, unsigned int &);
+
+
   PDECLARE_NOTIFIER(PTimer, GMH323EndPoint, OnILSTimeout);
 
 
@@ -482,9 +473,6 @@ class GMH323EndPoint : public H323EndPoint
   GDKVideoOutputDevice *transmitted_video_device; 
   GDKVideoOutputDevice *received_video_device; 
 
-  PSoundChannel *player_channel;
-  PSoundChannel *recorder_channel;
-
   PTimer ILSTimer;
   BOOL ils_registered;
 
@@ -502,14 +490,12 @@ class GMH323EndPoint : public H323EndPoint
      at the same time */
   PMutex vg_access_mutex;
   PMutex ils_access_mutex;
-  PMutex cc_access_mutex;
-  PMutex ch_access_mutex;
   PMutex cs_access_mutex;
   PMutex ct_access_mutex;
   PMutex tct_access_mutex;
   PMutex lid_access_mutex;
   
-  PIntCondMutex *vg;
+  PIntCondMutex *vg_int_cond_mutex;
 
   int opened_audio_channels;
   int opened_video_channels;

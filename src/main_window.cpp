@@ -136,12 +136,14 @@ gint StressTest (gpointer data)
 */
 
 
+/* This function should be rewritten */
 gint AppbarUpdate (gpointer data)
 {
   long minutes = 0, seconds = 0;
   int jitter_buffer_size = 0;
   RTP_Session *audio_session = NULL;
   RTP_Session *video_session = NULL;
+  GMH323EndPoint *ep = NULL;
   H323Connection *connection = NULL;
   GmRtpData *rtp = (GmRtpData *) data; 
   GmWindow *gw = NULL;
@@ -152,20 +154,18 @@ gint AppbarUpdate (gpointer data)
   float lost_packets_per = 0.0;
   float late_packets_per = 0.0;
   
-  if (MyApp->Endpoint ()) {
-    
-    PString current_call_token = MyApp->Endpoint ()->GetCurrentCallToken ();
+  ep = MyApp->Endpoint ();
+  gw = MyApp->GetMainWindow ();
 
-    if (current_call_token.IsEmpty ())
+  if (ep && ep->GetCallingState () == 2) {
+
+    connection = 
+      ep->FindConnectionWithLock (ep->GetCurrentCallToken ());
+
+    if (!connection)
       return TRUE;
-    
-    gdk_threads_enter ();
 
-    gw = MyApp->GetMainWindow ();
-
-    connection = MyApp->Endpoint ()->GetCurrentConnection ();
-
-    if ((connection)&&(MyApp->Endpoint ()->GetCallingState () == 2)) {
+    if (connection) {
 
       PTimeInterval t =
 	PTime () - connection->GetConnectionStartTime();
@@ -285,22 +285,24 @@ gint AppbarUpdate (gpointer data)
 	late_packets_per = ((float) late_packets * 100.0
 			    / (float) received_packets);
       }
+
+      connection->Unlock ();
       
       if (t.GetSeconds () > 5) {
 
-	gnomemeeting_statusbar_push (gw->statusbar, msg);
+	gdk_threads_enter ();
+       	gnomemeeting_statusbar_push (gw->statusbar, msg);
 	gchar *stats_msg = 
 	  g_strdup_printf (_("Lost packets: %.1f %%\nLate packets: %.1f %%\nRound-trip delay: %d ms\nJitter buffer: %d ms"), lost_packets_per, late_packets_per, (int) connection->GetRoundTripDelay().GetMilliSeconds(), int (jitter_buffer_size / 8));
 	gtk_label_set_text (GTK_LABEL (gw->stats_label), stats_msg);
 	g_free (stats_msg);
 
 	gtk_widget_queue_draw_area (gw->stats_drawing_area, 0, 0, GTK_WIDGET (gw->stats_drawing_area)->allocation.width, GTK_WIDGET (gw->stats_drawing_area)->allocation.height);
+	gdk_threads_leave ();
       }
 
       g_free (msg);
     }
-    
-    gdk_threads_leave ();
   }
     
   return TRUE;
@@ -752,11 +754,25 @@ main_notebook_page_changed (GtkNotebook *notebook, GtkNotebookPage *page,
  * DESCRIPTION  :  This callback is called when the user changes the
  *                 audio settings sliders in the main notebook.
  * BEHAVIOR     :  Update the volume of the choosen mixers or of the lid.
- * PRE          :  data = AUDIO_VOLUME or AUDIO_MIC
+ * PRE          :  /
  **/
 void 
 audio_volume_changed (GtkAdjustment *adjustment, gpointer data)
 {
+  GmWindow *gw = NULL;
+  GMH323EndPoint *ep = NULL;
+
+  unsigned int play_vol =  0, rec_vol = 0;
+
+  gw = MyApp->GetMainWindow ();
+  ep = MyApp->Endpoint ();
+
+  play_vol = (unsigned int) (GTK_ADJUSTMENT (gw->adj_play)->value);
+  rec_vol = (unsigned int) (GTK_ADJUSTMENT (gw->adj_rec)->value);
+
+  gdk_threads_leave ();
+  ep->SetDeviceVolume (play_vol, rec_vol);  
+  gdk_threads_enter ();
 }
 
 
@@ -777,12 +793,22 @@ brightness_changed (GtkAdjustment *adjustment, gpointer data)
 
   brightness =  (int) (GTK_ADJUSTMENT (gw->adj_brightness)->value);
 
+
+  /* Notice about mutexes:
+     The GDK lock is taken in the callback. We need to release it, because
+     if CreateVideoGrabber is called in another thread, it will only
+     release its internal mutex (also used by GetVideoGrabber) after it 
+     returns, but it will return only if it is opened, and it can't open 
+     if the GDK lock is held as it will wait on the GDK lock before 
+     updating the GUI */
+  gdk_threads_leave ();
   ep = MyApp->Endpoint ();
   if (ep && (video_grabber = ep->GetVideoGrabber ())) {
     
     video_grabber->SetBrightness (brightness << 8);
     video_grabber->Unlock ();
   }
+  gdk_threads_enter ();
 }
 
 
@@ -803,12 +829,14 @@ whiteness_changed (GtkAdjustment *adjustment, gpointer data)
 
   whiteness =  (int) (GTK_ADJUSTMENT (gw->adj_whiteness)->value);
 
+  gdk_threads_leave ();
   ep = MyApp->Endpoint ();
   if (ep && (video_grabber = ep->GetVideoGrabber ())) {
     
     video_grabber->SetWhiteness (whiteness << 8);
     video_grabber->Unlock ();
   }
+  gdk_threads_enter ();
 }
 
 
@@ -829,12 +857,14 @@ colour_changed (GtkAdjustment *adjustment, gpointer data)
 
   colour =  (int) (GTK_ADJUSTMENT (gw->adj_colour)->value);
 
+  gdk_threads_leave ();
   ep = MyApp->Endpoint ();
   if (ep && (video_grabber = ep->GetVideoGrabber ())) {
     
     video_grabber->SetColour (colour << 8);
     video_grabber->Unlock ();
   }
+  gdk_threads_enter ();
 }
 
 
@@ -855,12 +885,14 @@ contrast_changed (GtkAdjustment *adjustment, gpointer data)
 
   contrast =  (int) (GTK_ADJUSTMENT (gw->adj_contrast)->value);
 
+  gdk_threads_leave ();
   ep = MyApp->Endpoint ();
   if (ep && (video_grabber = ep->GetVideoGrabber ())) {
     
     video_grabber->SetContrast (contrast << 8);
     video_grabber->Unlock ();
   }
+  gdk_threads_enter ();
 }
 
 
@@ -988,12 +1020,16 @@ void gnomemeeting_dialpad_event (const char *key)
         
       if (endpoint->GetCallingState () == 2) {
             
-	H323Connection *connection = endpoint->GetCurrentConnection ();
+	gdk_threads_leave ();
+	H323Connection *connection = 
+	  endpoint->FindConnectionWithLock (endpoint->GetCurrentCallToken ());
             
 	if (connection) {
 
 	  connection->SendUserInput (dtmf);
+	  connection->Unlock ();
 	}
+	gdk_threads_enter ();
       }
 
 #ifdef HAS_IXJ
@@ -1560,15 +1596,22 @@ void gnomemeeting_init_main_window_audio_settings ()
   GtkWidget *hbox = NULL;
   GtkWidget *vbox = NULL;
 
-  int vol = 0;
-
-  GConfClient *client = gconf_client_get_default ();
   GmWindow *gw = MyApp->GetMainWindow ();
 
-  
-  vbox = gtk_vbox_new (0, FALSE);
 
+  /* Webcam Control Frame, we need it to disable controls */		
+  gw->audio_settings_frame = gtk_frame_new (NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (gw->audio_settings_frame), 
+			     GTK_SHADOW_NONE);
+  gtk_container_set_border_width (GTK_CONTAINER (gw->audio_settings_frame), 0);
+
+
+  /* The vbox */
+  vbox = gtk_vbox_new (0, FALSE);
+  gtk_container_add (GTK_CONTAINER (gw->audio_settings_frame), vbox);
+  gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_settings_frame), FALSE);
   
+
   /* Audio volume */
   hbox = gtk_hbox_new (0, FALSE);
   gtk_box_pack_start (GTK_BOX (hbox),
@@ -1613,7 +1656,7 @@ void gnomemeeting_init_main_window_audio_settings ()
   label = gtk_label_new (_("Audio"));
 
   gtk_notebook_append_page (GTK_NOTEBOOK (gw->main_notebook),
-			    vbox, label);
+			    gw->audio_settings_frame, label);
 }
 
 
@@ -1716,9 +1759,8 @@ int main (int argc, char ** argv, char ** envp)
   }
 
 
-  /* Build the GUI and init the different components */
+  /* Build the GUI */
   MyApp->BuildGUI ();
-  MyApp->InitComponents ();
 
 
   /* Init the GConf DB, exit if it fails */
@@ -1735,6 +1777,10 @@ int main (int argc, char ** argv, char ** envp)
     delete (MyApp);
     exit (-1);
   }
+
+
+  /* Init the components */
+  MyApp->InitComponents ();
 
   
   /* Debug */

@@ -161,12 +161,6 @@ void
 GnomeMeeting::Connect()
 {
   PString call_address;
-  PString current_call_token;
-  H323Connection *connection = NULL;
-    
-  /* We need a connection to use AnsweringCall */
-  current_call_token = endpoint->GetCurrentCallToken ();
-  connection = endpoint->GetCurrentConnection ();
   
   gnomemeeting_threads_enter ();
   gnomemeeting_statusbar_push  (gw->statusbar, NULL);
@@ -174,8 +168,8 @@ GnomeMeeting::Connect()
   gnomemeeting_threads_leave ();
 
 
-  /* If connection, then answer it */
-  if (connection != NULL) {
+  /* If incoming connection, then answer it */
+ if (endpoint->GetCallingState () == 3) {
 
     gnomemeeting_threads_enter ();
     gnomemeeting_log_insert (gw->history_text_view,
@@ -231,64 +225,48 @@ GnomeMeeting::Connect()
 void
 GnomeMeeting::Disconnect (H323Connection::CallEndReason reason)
 {
-  /* If somebody is calling us, then we do not accept the connection
-     else we finish it */
-  H323Connection *connection = endpoint->GetCurrentConnection ();
-  PString current_call_token = endpoint->GetCurrentCallToken ();
-
-
   gnomemeeting_threads_enter ();
   gnomemeeting_main_window_enable_statusbar_progress (false);
   gnomemeeting_statusbar_push (gw->statusbar, NULL);
   gnomemeeting_threads_leave ();
 
 
-  if (!current_call_token.IsEmpty ()) {
+  /* if we are trying to call somebody */
+  if (endpoint->GetCallingState () == 1) {
 
-    /* if we are trying to call somebody */
-    if (endpoint->GetCallingState () == 1) {
+    gnomemeeting_threads_enter ();
+    gnomemeeting_log_insert (gw->history_text_view,
+			     _("Trying to stop calling"));
+    gnomemeeting_threads_leave ();
+
+    endpoint->ClearCall (endpoint->GetCurrentCallToken (), reason);
+  }
+  else {
+
+    /* if we are in call with somebody */
+    if (endpoint->GetCallingState () == 2) {
+
+      gnomemeeting_threads_enter ();	
+      gnomemeeting_log_insert (gw->history_text_view,
+			       _("Stopping current call"));
+      connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 
+				    0);
+      gnomemeeting_threads_leave ();
+
+      endpoint->ClearAllCalls (reason, FALSE);
+    }
+    else if (endpoint->GetCallingState () == 3) {
 
       gnomemeeting_threads_enter ();
       gnomemeeting_log_insert (gw->history_text_view,
-			       _("Trying to stop calling"));
+			       _("Refusing Incoming call"));
+      connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 
+				    0);
       gnomemeeting_threads_leave ();
 
-      endpoint->ClearCall (current_call_token, reason);
+      endpoint->ClearAllCalls (H323Connection::EndedByRefusal, FALSE);
     }
-    else {
-
-      /* if somebody is calling us, or if we are in call with somebody */
-      if (endpoint->GetCallingState () == 2
-	  || endpoint->GetCallingState () == 3) {
-
-	gnomemeeting_threads_enter ();	
-	gnomemeeting_log_insert (gw->history_text_view,
-				 _("Stopping current call"));
-	connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 
-				      0);
-	gnomemeeting_threads_leave ();
-
-	/* End of Call */
-	endpoint->ClearAllCalls (reason, FALSE);
-      }
-      else {
-
-	gnomemeeting_threads_enter ();
-	gnomemeeting_log_insert (gw->history_text_view,
-				 _("Refusing Incoming call"));
-	connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 
-				      0);
-	gnomemeeting_threads_leave ();
-
-	/* Either the user clicks on disconnect when we are called,
-	   either the reason is different */
-	if (reason == H323Connection::EndedByLocalUser && connection)
-	  connection->AnsweringCall (H323Connection::AnswerCallDenied);
-	else
-	  endpoint->ClearAllCalls (reason, FALSE);
-      }
-    }
-  } 
+  }
 }
 
 

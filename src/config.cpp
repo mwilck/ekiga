@@ -547,20 +547,13 @@ static void silence_detection_changed_nt (GConfClient *client, guint cid,
   H323AudioCodec *ac = NULL;
   GMH323EndPoint *endpoint = NULL;
   
-  PString current_call_token;
-  
   GmWindow *gw = NULL;
   endpoint = MyApp->Endpoint ();
   
   if (entry->value->type == GCONF_VALUE_BOOL) {
 
-    gdk_threads_enter ();
-
-    current_call_token = endpoint->GetCurrentCallToken ();
-
-    if (!current_call_token.IsEmpty ())
-      connection =
-	endpoint->GetCurrentConnection ();
+    connection = 
+      endpoint->FindConnectionWithLock (endpoint->GetCurrentCallToken ());
 
     if (connection) {
 
@@ -578,7 +571,8 @@ static void silence_detection_changed_nt (GConfClient *client, guint cid,
    
       /* We update the silence detection */
       if (ac && MyApp->Endpoint ()->GetCallingState () == 2) {
-	
+
+	gdk_threads_enter ();
 	gw = MyApp->GetMainWindow ();
 	
 	if (ac != NULL) {
@@ -598,13 +592,14 @@ static void silence_detection_changed_nt (GConfClient *client, guint cid,
 	    gnomemeeting_log_insert (gw->history_text_view,
 				     _("Enabled Silence Detection"));
 	  }
+	  gdk_threads_leave ();  
 	  
 	  ac->SetSilenceDetectionMode(mode);
 	}
       }
-    }
 
-    gdk_threads_leave ();  
+      connection->Unlock ();
+    }
   }
 }
 
@@ -643,8 +638,6 @@ static void fps_limit_changed_nt (GConfClient *client, guint cid,
   H323VideoCodec *vc = NULL;
   GMH323EndPoint *endpoint = NULL;
 
-  PString current_call_token;
-
   endpoint = MyApp->Endpoint ();
   
   int fps = 30;
@@ -652,13 +645,8 @@ static void fps_limit_changed_nt (GConfClient *client, guint cid,
 
   if (entry->value->type == GCONF_VALUE_INT) {
 
-    gdk_threads_enter ();
-  
-    current_call_token = endpoint->GetCurrentCallToken ();
-
-    if (!current_call_token.IsEmpty ())
-      connection =
-	endpoint->GetCurrentConnection ();
+    connection =
+      endpoint->FindConnectionWithLock (endpoint->GetCurrentCallToken ());
 
     if (connection) {
 
@@ -682,9 +670,9 @@ static void fps_limit_changed_nt (GConfClient *client, guint cid,
 
       if (vc != NULL)
 	vc->SetTargetFrameTimeMs ((unsigned int) frame_time);
+
+      connection->Unlock ();
     }
-    
-    gdk_threads_leave ();
   }
 }
 
@@ -704,8 +692,6 @@ maximum_video_bandwidth_changed_nt (GConfClient *client, guint cid,
   H323Connection *connection = NULL;
   GMH323EndPoint *endpoint = NULL;
 
-  PString current_call_token;
-
   int bitrate = 2;
 
   endpoint = MyApp->Endpoint ();
@@ -713,13 +699,8 @@ maximum_video_bandwidth_changed_nt (GConfClient *client, guint cid,
 
   if (entry->value->type == GCONF_VALUE_INT) {
 
-    gdk_threads_enter ();
-
-    current_call_token = endpoint->GetCurrentCallToken ();
-
-    if (!current_call_token.IsEmpty ())
-      connection =
-	endpoint->GetCurrentConnection ();
+    connection =
+	endpoint->FindConnectionWithLock (endpoint->GetCurrentCallToken ());
 
     if (connection) {
 
@@ -741,9 +722,8 @@ maximum_video_bandwidth_changed_nt (GConfClient *client, guint cid,
       if (vc != NULL)
 	vc->SetMaxBitRate (bitrate);
 
+      connection->Unlock ();
     }
-    
-    gdk_threads_leave ();
   }
 }
 
@@ -761,21 +741,14 @@ static void tr_vq_changed_nt (GConfClient *client, guint cid,
   H323VideoCodec *vc = NULL;
   GMH323EndPoint *endpoint = NULL;
 
-  PString current_call_token;
-  
   int vq = 1;
 
   endpoint = MyApp->Endpoint ();
 
   if (entry->value->type == GCONF_VALUE_INT) {
 
-    gdk_threads_enter ();
-
-    current_call_token = endpoint->GetCurrentCallToken ();
-
-    if (!current_call_token.IsEmpty ())
-      connection =
-	endpoint->GetCurrentConnection ();
+    connection =
+      endpoint->FindConnectionWithLock (endpoint->GetCurrentCallToken ());
 
     if (connection) {
 
@@ -786,20 +759,17 @@ static void tr_vq_changed_nt (GConfClient *client, guint cid,
       if (channel)
 	raw_codec = channel->GetCodec();
       
-      if (raw_codec && raw_codec->IsDescendant (H323VideoCodec::Class())) {
-
+      if (raw_codec && raw_codec->IsDescendant (H323VideoCodec::Class())) 
 	vc = (H323VideoCodec *) raw_codec;
-      }
 
       /* We update the video quality */
       vq = 25 - (int) ((double) (int) gconf_value_get_int (entry->value) / 100 * 24);
   
       if (vc != NULL)
 	vc->SetTxMaxQuality (vq);
-    }
 
-    
-    gdk_threads_leave ();
+      connection->Unlock ();
+    }
   }
 }
 
@@ -817,19 +787,12 @@ static void tr_ub_changed_nt (GConfClient *client, guint cid,
   H323VideoCodec *vc = NULL;
   GMH323EndPoint *endpoint = NULL;
 
-  PString current_call_token;
-  
   endpoint = MyApp->Endpoint ();
 
   if (entry->value->type == GCONF_VALUE_INT) {
 
-    gdk_threads_enter ();
-
-        current_call_token = endpoint->GetCurrentCallToken ();
-
-    if (!current_call_token.IsEmpty ())
-      connection =
-	endpoint->GetCurrentConnection ();
+    connection =
+	endpoint->FindConnectionWithLock (endpoint->GetCurrentCallToken ());
 
     if (connection) {
 
@@ -848,9 +811,9 @@ static void tr_ub_changed_nt (GConfClient *client, guint cid,
       /* We update the current tr ub rate */
       if (vc != NULL)
 	vc->SetBackgroundFill ((int) gconf_value_get_int (entry->value));
+      
+      connection->Unlock ();
     }
-    
-    gdk_threads_leave ();
   }
 }
 
@@ -899,19 +862,23 @@ static void jitter_buffer_changed_nt (GConfClient *client, guint cid,
 				       (gpointer) adjustment_changed, 
 				       (gpointer) g_object_get_data (G_OBJECT (data), 
 								     "gconf_key")); 
+    gdk_threads_leave ();
 
 
     /* We update the current value */
-    connection = ep->GetCurrentConnection ();
+    connection = 
+      ep->FindConnectionWithLock (ep->GetCurrentCallToken ());
 
-    if (connection != NULL)
+    if (connection) {
+
       session =                                                                
         connection->GetSession (OpalMediaFormat::DefaultAudioSessionID);       
+      connection->Unlock ();
+    }
+
                                                                                
     if (session != NULL)                                                       
       session->SetJitterBufferSize ((int) min_val * 8, (int) max_val * 8); 
-
-    gdk_threads_leave ();
   }
 }
 
@@ -1061,8 +1028,6 @@ static void video_preview_changed_nt (GConfClient *client, guint cid,
   
   if (entry->value->type == GCONF_VALUE_BOOL) {
    
-    gdk_threads_enter ();
-         
     /* We reset the video device */
     ep = MyApp->Endpoint ();
     
@@ -1073,8 +1038,6 @@ static void video_preview_changed_nt (GConfClient *client, guint cid,
       else 
 	ep->RemoveVideoGrabber ();
     }
- 
-    gdk_threads_leave ();
   }
 }
 

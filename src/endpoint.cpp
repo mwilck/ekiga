@@ -78,13 +78,21 @@ static gint
 IncomingCallTimeout (gpointer data) 
 {
   GmWindow *gw = NULL;
+ 
+  GMH323EndPoint *ep = NULL;
   H323Connection *connection = NULL;
+  
   gchar *msg = NULL;
   gchar *forward_host_gconf = NULL;
+  
   PString forward_host;
+
   gboolean no_answer_forward = FALSE;
+  
   GConfClient *client = NULL;
 
+  ep = MyApp->Endpoint ();
+ 
   gdk_threads_enter ();
   client = gconf_client_get_default ();
   
@@ -107,32 +115,36 @@ IncomingCallTimeout (gpointer data)
     gtk_widget_destroy (gw->incoming_call_popup);
     gw->incoming_call_popup = NULL;
   }
+  gdk_threads_leave ();
+
 
   /* If forward host specified and forward requested */
   if ((!forward_host.IsEmpty ())&&(no_answer_forward)) {
 
-    connection = MyApp->Endpoint ()->GetCurrentConnection ();
     if (connection) {
 
+      connection = ep->FindConnectionWithLock (ep->GetCurrentCallToken ());
       connection->ForwardCall (PString ((const char *) forward_host));
+
+      gdk_threads_enter ();
       msg = g_strdup_printf (_("Forwarding Call to %s (No Answer)"), 
 			     (const char *) forward_host);
       gnomemeeting_log_insert (gw->history_text_view, msg);
 
       gnomemeeting_statusbar_push (gw->statusbar, _("Call forwarded"));
       g_free (msg);
+      gdk_threads_leave ();
+
+      connection->Unlock ();
     }
   }
   else {
 
-    if (MyApp->Endpoint ()->GetCallingState () == 3) {
-
-      MyApp->Disconnect (H323Connection::EndedByNoAnswer);
-    }
+    if (ep->GetCallingState () == 3) 
+      ep->ClearAllCalls (H323Connection::EndedByNoAnswer, FALSE);
   }
   g_free (forward_host_gconf);
 
-  gdk_threads_leave ();
 
   return FALSE;
 }
@@ -153,11 +165,10 @@ GMH323EndPoint::GMH323EndPoint ()
   lw = MyApp->GetLdapWindow ();
   chat = MyApp->GetTextChat ();
   client = gconf_client_get_default ();
-  vg = new PIntCondMutex (0, 0);
+  vg_int_cond_mutex = new PIntCondMutex (0, 0);
   
   /* Initialise the endpoint paramaters */
   video_grabber = NULL;
-  SetCurrentConnection (NULL);
   SetCallingState (0);
   
 #ifdef HAS_IXJ
@@ -223,8 +234,6 @@ GMH323EndPoint::GMH323EndPoint ()
 
   received_video_device = NULL;
   transmitted_video_device = NULL;
-  player_channel = NULL;
-  recorder_channel = NULL;
   audio_tester = NULL;
 
   SetNoMediaTimeout (PTimeInterval (0, 15, 0));
@@ -762,7 +771,7 @@ GMH323EndPoint::CreateVideoGrabber (BOOL start_grabbing,
   
   if (!video_grabber)
     video_grabber =
-      new GMVideoGrabber (vg, start_grabbing, synchronous);
+      new GMVideoGrabber (vg_int_cond_mutex, start_grabbing, synchronous);
 }
 
 
@@ -778,7 +787,7 @@ GMH323EndPoint::RemoveVideoGrabber (BOOL synchronous)
   video_grabber = NULL;
 
   if (synchronous)
-    vg->WaitCondition ();
+    vg_int_cond_mutex->WaitCondition ();
 }
 
 
@@ -811,19 +820,6 @@ GMH323EndPoint::CreateConnection (unsigned callReference)
 }
 
 
-H323Connection *
-GMH323EndPoint::GetCurrentConnection ()
-{
-  H323Connection *con = NULL;
-
-  cc_access_mutex.Wait ();
-  con = current_connection;
-  cc_access_mutex.Signal ();
-
-  return con;
-}
-
-
 int
 GMH323EndPoint::GetVideoChannelsNumber (void)
 {
@@ -836,15 +832,6 @@ GMH323EndPoint::ILSRegister (void)
 {
   /* Force the Update */
   ILSTimer.RunContinuous (PTimeInterval (1));
-}
-
-
-void 
-GMH323EndPoint::SetCurrentConnection (H323Connection *c)
-{
-  cc_access_mutex.Wait ();
-  current_connection = c;
-  cc_access_mutex.Signal ();
 }
 
 
@@ -1089,8 +1076,6 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   /* If no forward or reject, update the internal state */
   SetCurrentCallToken (connection.GetCallToken ());
   SetCallingState (3);
-  SetCurrentConnection (FindConnectionWithLock (GetCurrentCallToken ()));
-  GetCurrentConnection ()->Unlock ();
 
   g_free (forward_host_gconf);
   g_free (utf8_name);
@@ -1286,7 +1271,6 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   
   /* Update internal state */
   SetCurrentCallToken (token);
-  SetCurrentConnection (FindConnectionWithoutLocks (token));
   SetCallingState (2);
 
   gnomemeeting_threads_enter ();
@@ -1378,11 +1362,8 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   BOOL dnd = FALSE;
   BOOL reg = FALSE;
   BOOL preview = FALSE;
-  
-  ch_access_mutex.Wait ();
-  player_channel = NULL;
-  recorder_channel = NULL;
-  ch_access_mutex.Signal ();
+
+  GMVideoGrabber *vg = NULL;
   
   if (connection.GetConnectionStartTime ().IsValid ())
     t = PTime () - connection.GetConnectionStartTime();
@@ -1565,21 +1546,20 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
     /* Reset the Video Grabber, if preview, else close it */
     if (preview) {
 
-      vg_access_mutex.Wait ();
-      if (video_grabber) {
+      vg = GetVideoGrabber ();
+      if (vg) {
 	
-	video_grabber->Reset ();
-	vg_access_mutex.Signal ();
+	vg->Reset ();
+	vg->Unlock ();
       }
-      else {
-	
-	vg_access_mutex.Signal ();
+      else 
 	CreateVideoGrabber ();
-      }
+
     }
     else {
       
       RemoveVideoGrabber ();
+
       gnomemeeting_threads_enter ();
       gnomemeeting_init_main_window_logo (gw->main_video_image);
       gnomemeeting_zoom_submenu_set_sensitive (FALSE);
@@ -1641,9 +1621,10 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   gnomemeeting_video_submenu_select (0);
 
 
-  /* Disable / enable buttons */
+  /* Disable / enable buttons and controls */
   if (!preview)
     gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame), FALSE);
+  gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_settings_frame), FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_chan_button), FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button), FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), TRUE);
@@ -1665,7 +1646,6 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
 
   /* Update internal state */
-  SetCurrentConnection (NULL);
   SetCallingState (0);
 
   /* Display the call end reason in the statusbar */
@@ -1878,6 +1858,12 @@ GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
 
      if (sound_channel) {
 
+       /* Make the audio controls sensitive */
+       gnomemeeting_threads_enter ();
+       gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_settings_frame), TRUE);
+       gnomemeeting_threads_leave ();
+
+       /* Control the channel and attach it to the codec */
        sound_channel->SetBuffers (bufferSize, soundChannelBuffers);
        return codec.AttachChannel (sound_channel);
      }
@@ -2002,11 +1988,80 @@ GMH323EndPoint::SetSoundChannelRecordDevice (const PString &name)
 }
 
 
+BOOL
+GMH323EndPoint::SetDeviceVolume (unsigned int play_vol, 
+				 unsigned int rec_vol)
+{
+  return DeviceVolume (TRUE, play_vol, rec_vol);
+}
+
+
+BOOL
+GMH323EndPoint::GetDeviceVolume (unsigned int &play_vol, 
+				 unsigned int &rec_vol)
+{
+  return DeviceVolume (TRUE, play_vol, rec_vol);
+}
+
+
+BOOL 
+GMH323EndPoint::DeviceVolume (BOOL set, 
+			      unsigned int &play_vol, 
+			      unsigned int &rec_vol)
+{
+  H323Channel *channel = NULL;
+  PSoundChannel *sound_channel = NULL;
+  H323Codec *raw_codec = NULL;
+  H323Connection *con = NULL;
+
+  BOOL err = TRUE;
+  PString call_token;
+
+  call_token = GetCurrentCallToken ();
+
+  con = FindConnectionWithLock (call_token);
+
+  if (con) {
+
+    for (int cpt = 0 ; cpt < 2 ; cpt ++) {
+
+      /* TRUE = from_remote = playing */
+      channel = 
+	con->FindChannel (RTP_Session::DefaultAudioSessionID, (cpt == 0));
+
+      if (channel) {
+
+	raw_codec = channel->GetCodec();
+
+	if (raw_codec) {
+
+	  sound_channel = (PSoundChannel *) raw_codec->GetRawDataChannel ();
+	  if (sound_channel)
+	    if (set) {
+	      
+	      err = 
+		sound_channel->SetVolume ((cpt == 0)?play_vol:rec_vol) && err;
+	    }
+	    else
+	      err = 
+		sound_channel->GetVolume ((cpt == 0)?play_vol:rec_vol) && err;
+	}
+      }
+    }
+    con->Unlock ();
+  }
+
+  return err;
+}
+
+
 BOOL 
 GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
                                   BOOL isEncoding, 
                                   H323VideoCodec & codec)
 {
+  GMVideoGrabber *vg = NULL;
+
   bool vid_tr = FALSE;
   bool result = FALSE;
 
@@ -2031,30 +2086,25 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
      if OpenVideoDevice is called for the encoding */
   if (vid_tr && isEncoding) {
 
-    vg_access_mutex.Wait ();
-    if (!video_grabber) {
-
-      vg_access_mutex.Signal ();
+    vg = GetVideoGrabber ();
+    if (!vg) 
       CreateVideoGrabber (FALSE, TRUE); /* Do not grab and
 					   start synchronously */
-    }
     else {
       
-      video_grabber->StopGrabbing ();
-      vg_access_mutex.Signal ();
+      vg->StopGrabbing ();
+      vg->Unlock ();
     }
     
-    gnomemeeting_threads_enter ();
     /* Here, the grabber is opened */
-    ch_access_mutex.Wait ();
-    vg_access_mutex.Wait ();
-    PVideoChannel *channel = video_grabber->GetVideoChannel ();
-    transmitted_video_device = video_grabber->GetEncodingDevice ();
-    vg_access_mutex.Signal ();
+    vg = GetVideoGrabber ();
+    PVideoChannel *channel = vg->GetVideoChannel ();
+    transmitted_video_device = vg->GetEncodingDevice ();
+    vg->Unlock ();
     opened_video_channels++;
-    ch_access_mutex.Signal ();
 
     /* Updates the view menu */
+    gnomemeeting_threads_enter ();
     gnomemeeting_zoom_submenu_set_sensitive (TRUE);
 
 #ifdef HAS_SDL
@@ -2071,10 +2121,9 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 			      TRUE);     
     gnomemeeting_threads_leave ();
 
-    ch_access_mutex.Wait ();
+
     if (channel)
       result = codec.AttachChannel (channel, FALSE);
-    ch_access_mutex.Signal ();
 
     return result;
   }
@@ -2083,18 +2132,19 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
     /* If we only receive */
     if (!isEncoding) {
        
-      ch_access_mutex.Wait ();
       PVideoChannel *channel = new PVideoChannel;
       received_video_device = new GDKVideoOutputDevice (isEncoding, gw);
       received_video_device->SetColourFormatConverter ("YUV420P");      
       opened_video_channels++;
       channel->AttachVideoPlayer (received_video_device);
-      ch_access_mutex.Signal ();
-
-
+     
       /* Stop to grab */
-      if (video_grabber)
-	video_grabber->StopGrabbing ();
+      vg = GetVideoGrabber ();
+      if (vg) {
+
+	vg->StopGrabbing ();
+	vg->Unlock ();
+      }
       
       gnomemeeting_threads_enter ();
 
@@ -2112,10 +2162,8 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
       gnomemeeting_video_submenu_select (1);      
       gnomemeeting_threads_leave ();
 
-      ch_access_mutex.Wait ();
       if (channel)
 	result = codec.AttachChannel (channel);
-      ch_access_mutex.Signal ();
       
       return result;
     }

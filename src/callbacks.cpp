@@ -64,17 +64,15 @@ hold_call_cb (GtkWidget *widget,
   
   H323Connection *connection = NULL;
   GMH323EndPoint *endpoint = NULL;
-  PString current_call_token;
   
-  endpoint = MyApp->Endpoint ();
-  current_call_token = endpoint->GetCurrentCallToken ();
-
   gnomemeeting_menu = gnomemeeting_get_menu (gm);
   gw = MyApp->GetMainWindow ();
-  
-  if (!current_call_token.IsEmpty ())
-    connection =
-      endpoint->GetCurrentConnection ();
+
+  gdk_threads_leave ();
+  endpoint = MyApp->Endpoint ();
+  connection =
+      endpoint->FindConnectionWithLock (endpoint->GetCurrentCallToken ());
+  gdk_threads_enter ();
 
   if (connection) {
 
@@ -111,6 +109,8 @@ hold_call_cb (GtkWidget *widget,
 
       connection->RetrieveCall ();
     }
+
+    connection->Unlock ();
   }
 }
 
