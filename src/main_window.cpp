@@ -294,11 +294,6 @@ gint AppbarUpdate (gpointer data)
 	gtk_widget_queue_draw_area (gw->stats_drawing_area, 0, 0, GTK_WIDGET (gw->stats_drawing_area)->allocation.width, GTK_WIDGET (gw->stats_drawing_area)->allocation.height);
       }
 
-
-      if (t.GetSeconds () > 15 && rtp->re_audio_bytes == 0 &&
-	  rtp->re_video_bytes == 0)
-	MyApp->Disconnect (H323Connection::EndedByTemporaryFailure);
-  
       g_free (msg);
     }
     
