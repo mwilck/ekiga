@@ -1,22 +1,33 @@
-/***************************************************************************
-                          common.h  -  description
-                             -------------------
-    begin                : Wed Mar 21 2001
-    copyright            : (C) 2000-2001 by Damien Sandras
-    email                : dsandras@acm.org
- ***************************************************************************/
 
-/***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
+/* GnomeMeeting -- A Video-Conferencing application
+ * Copyright (C) 2000-2001 Damien Sandras
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
 
-#ifndef _COMMON_H
-#define _COMMON_H
+/*                            common.h
+ *                       -------------------
+ *   begin                : Wed Mar 21 2001
+ *   copyright            : (C) 2000-2002 by Damien Sandras
+ *   description          : This file contains all the general things.
+ *   email                : dsandras@seconix.com
+ */
+
+
+#ifndef _COMMON_H_
+#define _COMMON_H_
 
 #include <gtk/gtk.h>
 
@@ -37,6 +48,7 @@
 
 #define GM_WINDOW(x) (GmWindow *)(x)
 
+
 /* Should be removed at some point */
 typedef struct _GmWindow GM_window_widgets;
 typedef struct _GmPrefWindow GM_pref_window_widgets;
@@ -48,12 +60,14 @@ typedef struct _GmPrefWindow GmPrefWindow;
 typedef struct _GmLdapWindow GmLdapWindow;
 typedef struct _GmTextChat GmTextChat;
 
+
 struct _GmTextChat
 {
   GtkWidget     *text_view;
   GtkTextBuffer *text_buffer;
   gboolean       buffer_is_empty;
 };
+
 
 struct _GmRtpData
 {
@@ -66,7 +80,6 @@ struct _GmRtpData
 
 struct _GmWindow
 {
-  // widgets
   GtkObject *adj_play, *adj_rec;
   GtkObject *adj_whiteness;
   GtkObject *adj_brightness;
@@ -180,26 +193,7 @@ struct _GmPrefWindow
   GtkWidget *always_forward;
   GtkWidget *busy_forward;
   GtkWidget *no_answer_forward;
-
-  /* Miscellaneous */
-  // contains the row selected by the user
-  int row_avail;
-  // pointer to GmWindow ;-)
-  GmWindow *gw;
-  // user has changed ldap related settings
-  int ldap_changed;
-  // user has changed audio mixer related settings
-  int audio_mixer_changed;
-  // user had toggled the video transmission button
-  int vid_tr_changed;
-  // user has changed a gatekeeper relative option
-  int gk_changed;
-  // user has changed the capabilities order, or added/deleted capabilities
-  int capabilities_changed;
-
-  int audio_codecs_changed;
 };
-/******************************************************************************/
 
-
-#endif /* _COMMON_H */
+#endif 
+/* _COMMON_H */

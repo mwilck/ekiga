@@ -60,11 +60,11 @@ int gnomemeeting_volume_set (char *mixer, int source, int *volume)
     if ((MyApp)&&(MyApp->Endpoint ()))
 	lid = MyApp->Endpoint ()->GetLidDevice ();
 
-    if (source == 0) 
+    if (source == SOURCE_AUDIO) 
       if (lid)
 	lid->SetPlayVolume (0, vol);
 
-    if (source == 0)
+    if (source == SOURCE_MIC)
       if (lid)
 	lid->SetRecordVolume (0, vol);
 
@@ -77,10 +77,10 @@ int gnomemeeting_volume_set (char *mixer, int source, int *volume)
     if (mixerfd == -1)
       return -1;
 
-    if (source == 0)
+    if (source == SOURCE_AUDIO)
       res = ioctl (mixerfd, MIXER_WRITE (SOUND_MIXER_VOLUME), volume);
 
-    if (source == 1)
+    if (source == SOURCE_MIC)
       res = ioctl (mixerfd, MIXER_WRITE (SOUND_MIXER_MIC), volume);
 
     close (mixerfd);
@@ -106,11 +106,11 @@ int gnomemeeting_volume_get (char *mixer, int source, int *volume)
     if ((MyApp)&&(MyApp->Endpoint ()))
       lid = MyApp->Endpoint ()->GetLidDevice ();
 
-    if (source == 0) 
+    if (source == SOURCE_AUDIO) 
       if (lid)
 	lid->GetPlayVolume (0, vol);
 
-    if (source == 1)
+    if (source == SOURCE_MIC)
       if (lid)
 	lid->GetRecordVolume (0, vol);
 
@@ -124,10 +124,10 @@ int gnomemeeting_volume_get (char *mixer, int source, int *volume)
     if (mixerfd == -1)
       return -1;
 
-    if (source == 0)
+    if (source == SOURCE_AUDIO)
       res = ioctl (mixerfd, MIXER_READ (SOUND_MIXER_READ_VOLUME), volume);
 
-    if (source == 1)
+    if (source == SOURCE_MIC)
       res = ioctl (mixerfd, MIXER_READ (SOUND_MIXER_MIC), volume);
 
     close (mixerfd);
@@ -153,7 +153,7 @@ int gnomemeeting_set_recording_source (char *mixer, int source)
   if (ioctl (mixerfd, SOUND_MIXER_READ_RECSRC, &rcsrc))
     rcsrc = 0;
 
-  if (source == 0) {
+  if (source == SOURCE_AUDIO) {
     rcsrc |= SOUND_MASK_MIC;
     ioctl (mixerfd, SOUND_MIXER_WRITE_RECSRC, &rcsrc);
   }

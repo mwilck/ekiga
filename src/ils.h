@@ -42,7 +42,6 @@
 
 #include "common.h"
 
-/* This calls will change in 0.13 */
 
 class GMILSClient : public PThread
 {
@@ -56,6 +55,7 @@ public:
   void stop ();
   void Register ();
   void Unregister ();
+  gchar *Search (gchar *, gchar *, gchar *);
   void ils_browse (int);
 
 protected:

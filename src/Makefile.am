@@ -52,3 +52,5 @@ gnomemeeting_SOURCES =		\
 
 gnomemeeting_LDADD =  @GNOMEMEETING_LDADD@
 
+serverdir = $(libdir)/bonobo/servers
+server_DATA = gnomemeeting.server

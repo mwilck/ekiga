@@ -128,7 +128,9 @@ void GMILSClient::Main ()
     /* if there is more than 20 minutes that we are registered,
        we refresh the entry */
     if ((t.GetSeconds () > 1200) && 
-	(gconf_client_get_bool (GCONF_CLIENT (client), "/apps/gnomemeeting/ldap/register", NULL))) {
+	(gconf_client_get_bool (GCONF_CLIENT (client), 
+				"/apps/gnomemeeting/ldap/register", 
+				NULL))) {
 
 	has_to_register = 1;
 	starttime = PTime ();
@@ -150,24 +152,30 @@ void GMILSClient::UpdateConfig ()
   g_free (comment);
   g_free (location);
 
-  ldap_server =  gconf_client_get_string (GCONF_CLIENT (client),
-					  "/apps/gnomemeeting/ldap/ldap_server", 
-					  NULL);
-  firstname =  gconf_client_get_string (GCONF_CLIENT (client),
-					"/apps/gnomemeeting/personal_data/firstname", 
-					NULL);
-  surname =  gconf_client_get_string (GCONF_CLIENT (client),
-				      "/apps/gnomemeeting/personal_data/lastname", 
-				      NULL);
-  mail =  gconf_client_get_string (GCONF_CLIENT (client),
-				   "/apps/gnomemeeting/personal_data/mail", 
-				   NULL);
-  comment =  gconf_client_get_string (GCONF_CLIENT (client),
-				      "/apps/gnomemeeting/personal_data/comment", 
-				      NULL);
-  location =  gconf_client_get_string (GCONF_CLIENT (client),
-				       "/apps/gnomemeeting/personal_data/location", 
-				       NULL);
+  ldap_server =  
+    gconf_client_get_string (GCONF_CLIENT (client),
+			     "/apps/gnomemeeting/ldap/ldap_server", 
+			     NULL);
+  firstname =  
+    gconf_client_get_string (GCONF_CLIENT (client),
+			     "/apps/gnomemeeting/personal_data/firstname", 
+			     NULL);
+  surname =  
+    gconf_client_get_string (GCONF_CLIENT (client),
+			     "/apps/gnomemeeting/personal_data/lastname", 
+			     NULL);
+  mail =  
+    gconf_client_get_string (GCONF_CLIENT (client),
+			     "/apps/gnomemeeting/personal_data/mail", 
+			     NULL);
+  comment =  
+    gconf_client_get_string (GCONF_CLIENT (client),
+			     "/apps/gnomemeeting/personal_data/comment", 
+			     NULL);
+  location =  
+    gconf_client_get_string (GCONF_CLIENT (client),
+			     "/apps/gnomemeeting/personal_data/location", 
+			     NULL);
 }
 
 
@@ -520,6 +528,75 @@ void GMILSClient::ils_browse (int page)
 {
   has_to_browse = 1;
   page_num = page;
+}
+
+
+gchar *GMILSClient::Search (gchar *ldap_server, gchar *ldap_port, gchar *mail)
+{
+  char *attrs [] = { "rfc822mailbox", "sipaddress", NULL };
+  char **ldv = NULL;
+  unsigned long int nmip = 0;
+  int part1;
+  int part2;
+  int part3;
+  int part4;
+
+  gchar *ip = NULL;
+  gchar *cn = NULL;
+
+  LDAPMessage *res = NULL, *e = NULL;
+
+  int rc = 0;
+
+  if (((!strcmp (ldap_server, ""))&&(ldap_server)) 
+      ||((!strcmp (ldap_port, ""))&&(ldap_port)) 
+      ||((!strcmp (mail, ""))&&(mail)))
+    return NULL;
+ 
+  
+  /* Opens the connection to the ILS directory */
+  ldap_connection = ldap_open (ldap_server, atoi (ldap_port));
+
+
+  if ((ldap_connection == NULL) || 
+      (ldap_bind_s (ldap_connection, NULL, NULL, LDAP_AUTH_SIMPLE ) 
+      != LDAP_SUCCESS)) {
+
+    return NULL;
+  }
+  
+
+  cn = g_strdup_printf ("(&(cn=%s))", mail);
+  rc = ldap_search_s (ldap_connection, "objectClass=RTPerson", 
+		      LDAP_SCOPE_BASE,
+		      cn, attrs, 0, &res); 
+  g_free (cn);
+
+      
+  /* We only take the first entry */
+  e = ldap_first_entry (ldap_connection, res); 
+  if (e)
+    ldv = ldap_get_values (ldap_connection, e, "sipaddress");
+
+  if (ldv != NULL) {
+
+    nmip = strtoul (ldv [0], NULL, 10);
+    ldap_value_free (ldv);
+  }
+      
+  part1 = (int) (nmip/(256*256*256));
+  part2 = (int) ((nmip - part1 * (256 * 256 * 256)) / (256 * 256));
+  part3 = (int) ((nmip - part1 * (256 * 256 * 256) - part2 * (256 * 256)) 
+		 / 256);
+  part4 = (int) ((nmip - part1 * (256 * 256 * 256) - part2 * (256 * 256) 
+		  - part3 * 256));
+  
+  ip = g_strdup_printf ("%d.%d.%d.%d", part4, part3, part2, part1);
+
+  ldap_msgfree (res);
+  ldap_unbind (ldap_connection);
+
+  return ip;
 }
 
 

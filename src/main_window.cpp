@@ -31,7 +31,6 @@
 
 #include "../config.h"
 
-#include <libgnomeui/gnome-window-icon.h>
 
 #include "main_window.h"
 #include "gnomemeeting.h"
@@ -52,11 +51,18 @@
 #include "druid.h"
 #include "chat_window.h"
 
+
+#include <libgnomeui/gnome-window-icon.h>
+#include <bonobo-activation/bonobo-activation-activate.h>
+#include <bonobo-activation/bonobo-activation-register.h>
+#include <bonobo/bonobo-exception.h>
+#include <bonobo/bonobo-listener.h>
+#include <gdk/gdkx.h>
 #include <gconf/gconf-client.h>
 #include <esd.h>
 
-#include "../pixmaps/inlines.h"
 
+#include "../pixmaps/inlines.h"
 #include "../pixmaps/brightness.xpm"
 #include "../pixmaps/whiteness.xpm"
 #include "../pixmaps/contrast.xpm"
@@ -83,7 +89,255 @@ static void gnomemeeting_init_main_window_audio_settings ();
 static void gnomemeeting_init_main_window_log  ();
 
 
+/* For stress testing */
+// int i = 0;
+
 /* GTK Callbacks */
+// gint StressTest (gpointer data)
+// {
+//   gdk_threads_enter ();
+
+
+//   GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+
+//   if (!GTK_TOGGLE_BUTTON (gw->connect_button)->active) {
+
+//     i++;
+//     cout << "Call " << i << endl << flush;
+//   }
+
+//   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->connect_button), 
+// 				!GTK_TOGGLE_BUTTON (gw->connect_button)->active);
+
+//   gdk_threads_leave ();
+//   return TRUE;
+// }
+
+
+gint AppbarUpdate (gpointer data)
+{
+  long minutes, seconds;
+  float tr_audio_speed = 0, tr_video_speed = 0;
+  float re_audio_speed = 0, re_video_speed = 0;
+  RTP_Session *audio_session = NULL;
+  RTP_Session *video_session = NULL;
+  H323Connection *connection = NULL;
+  GM_rtp_data *rtp = (GM_rtp_data *) data; 
+  GM_window_widgets *gw = NULL;
+
+
+  if (MyApp->Endpoint ()) {
+
+    PString current_call_token = MyApp->Endpoint ()->GetCurrentCallToken ();
+
+    if (current_call_token.IsEmpty ())
+      return TRUE;
+    
+    gdk_threads_enter ();
+
+    gw = gnomemeeting_get_main_window (gm);
+
+    connection = MyApp->Endpoint ()->GetCurrentConnection ();
+
+    if ((connection)&&(MyApp->Endpoint ()->GetCallingState () == 2)) {
+
+      PTimeInterval t =
+	PTime () - connection->GetConnectionStartTime();
+
+      if (t.GetSeconds () > 1) {
+
+	audio_session = 
+	  connection->GetSession(RTP_Session::DefaultAudioSessionID);
+	  
+	video_session = 
+	  connection->GetSession(RTP_Session::DefaultVideoSessionID);
+	  
+	if (audio_session != NULL) {
+
+	  tr_audio_speed = 
+	    (float) (audio_session->GetOctetsSent()-rtp->tr_audio_bytes)/1024.00;
+	  rtp->tr_audio_bytes = audio_session->GetOctetsSent();
+
+	  re_audio_speed = 
+	    (float) (audio_session->GetOctetsReceived()-rtp->re_audio_bytes)/1024.00;
+	  rtp->re_audio_bytes = audio_session->GetOctetsReceived();
+	}
+
+	if (video_session != NULL) {
+
+	  tr_video_speed = 
+	    (float) (video_session->GetOctetsSent()-rtp->tr_video_bytes)/1024.00;
+	  rtp->tr_video_bytes = video_session->GetOctetsSent();
+
+	  re_video_speed = 
+	    (float) (video_session->GetOctetsReceived()-rtp->re_video_bytes)/1024.00;
+	  rtp->re_video_bytes = video_session->GetOctetsReceived();
+	}
+
+	minutes = t.GetMinutes () % 60;
+	seconds = t.GetSeconds () % 60;
+	
+	gchar *msg = g_strdup_printf 
+	  (_("%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"), 
+	   (long) t.GetHours (), (long) minutes, (long) seconds, 
+	   tr_audio_speed, re_audio_speed,
+	   tr_video_speed, re_video_speed);
+	
+	if (t.GetSeconds () > 3) {
+
+	  gnome_appbar_clear_stack (GNOME_APPBAR (gw->statusbar));
+	  gnome_appbar_push (GNOME_APPBAR (gw->statusbar), msg);
+	}
+
+	g_free (msg);
+      }
+    }
+
+    gdk_threads_leave ();
+  }
+
+  return TRUE;
+}
+
+
+/* Factory stuff */
+
+
+/*
+ * Invoked remotely to instantiate GnomeMeeting with the given URL.
+ */
+static void
+gnomemeeting_new_event (BonoboListener    *listener,
+			const char        *event_name, 
+			const CORBA_any   *any,
+			CORBA_Environment *ev,
+			gpointer           user_data)
+{
+  int i;
+  int argc;
+  char **argv;
+  CORBA_sequence_CORBA_string *args;
+  
+  GmWindow *gw = gnomemeeting_get_main_window (gm);
+
+  args = ( CORBA_sequence_CORBA_string *) any->_value;
+  argc = args->_length;
+  argv = args->_buffer;
+
+  if (strcmp (event_name, "new_gnomemeeting")) {
+
+      g_warning ("Unknown event '%s' on GnomeMeeting", event_name);
+      return;
+    }
+
+  for (i = 0; i < argc; i++) {
+    if (!strcmp (argv [i], "-c") || !strcmp (argv [i], "--callto"))
+      break;
+  } 
+
+
+  if ((i < argc) && (i + 1 < argc) && (argv [i+1])) {
+    
+     /* this function will store a copy of text */
+    if (MyApp->Endpoint ()->GetCallingState () == 0)
+      gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), 
+			  argv [i + 1]);
+      
+    connect_cb (NULL, NULL);
+  }
+}
+
+
+#define ACT_IID "OAFIID:GnomeMeeting_Factory"
+
+static Bonobo_RegistrationResult
+gnomemeeting_register_as_factory (void)
+{
+  char *per_display_iid;
+  BonoboListener *listener;
+  Bonobo_RegistrationResult result;
+
+  listener = bonobo_listener_new (gnomemeeting_new_event, NULL);
+
+  per_display_iid = 
+    bonobo_activation_make_registration_id (ACT_IID, 
+					    DisplayString (gdk_display));
+
+  result = 
+    bonobo_activation_active_server_register (per_display_iid, 
+					      BONOBO_OBJREF (listener));
+
+
+  if (result != Bonobo_ACTIVATION_REG_SUCCESS)
+    bonobo_object_unref (BONOBO_OBJECT (listener));
+
+  g_free (per_display_iid);
+
+  return result;
+}
+
+
+static gboolean
+gnomemeeting_invoke_factory (int argc, char **argv)
+{
+  Bonobo_Listener listener;
+
+  switch (gnomemeeting_register_as_factory ())
+    {
+    case Bonobo_ACTIVATION_REG_SUCCESS:
+      /* we were the first GnomeMeeting to register */
+      return FALSE;
+
+    case Bonobo_ACTIVATION_REG_NOT_LISTED:
+      g_printerr (_("It appears that you do not have gnomemeeting.server installed in a valid location. Factory mode disabled.\n"));
+      return FALSE;
+      
+    case Bonobo_ACTIVATION_REG_ERROR:
+      g_printerr (_("Error registering gnomemeeting with the activation service; factory mode disabled.\n"));
+      return FALSE;
+
+    case Bonobo_ACTIVATION_REG_ALREADY_ACTIVE:
+      /* lets use it then */
+      break;
+    }
+
+
+  listener = 
+    bonobo_activation_activate_from_id (ACT_IID, 
+					Bonobo_ACTIVATION_FLAG_EXISTING_ONLY, 
+					NULL, NULL);
+  
+  if (listener != CORBA_OBJECT_NIL) {
+
+    int i;
+    CORBA_any any;
+    CORBA_sequence_CORBA_string args;
+    CORBA_Environment ev;
+    
+    CORBA_exception_init (&ev);
+
+    any._type = TC_CORBA_sequence_CORBA_string;
+    any._value = &args;
+
+    args._length = argc;
+    args._buffer = g_newa (CORBA_char *, args._length);
+    for (i = 0; i < args._length; i++)
+      args._buffer [i] = argv [i];
+      
+    Bonobo_Listener_event (listener, "new_gnomemeeting", &any, &ev);
+    CORBA_Object_release (listener, &ev);
+
+    if (!BONOBO_EX (&ev))
+      return TRUE;
+
+    CORBA_exception_free (&ev);
+  }
+  else
+    g_printerr (_("Failed to retrieve gnomemeeting server from activation server\n"));
+  
+  return FALSE;
+}
+
 
 /**
  * DESCRIPTION  :  This callback is called when the user changes the
@@ -263,9 +517,10 @@ gnomemeeting_init (GmWindow *gw,
     };
 
   for (int i = 0; i < argc; i++) {
-    if (!strcmp (argv[i], "-d") || !strcmp (argv[i], "--debug"))
+    if (!strcmp (argv [i], "-d") || !strcmp (argv [i], "--debug"))
       debug = 1;
   } 
+
 
   /* Gnome Initialisation */
   GnomeProgram *p = gnome_program_init ("GnomeMeeting", VERSION,
@@ -277,6 +532,19 @@ gnomemeeting_init (GmWindow *gw,
 					NULL);
 
   gm = gnome_app_new ("gnomemeeting", _("GnomeMeeting"));
+
+  
+  /* The factory */
+  if (gnomemeeting_invoke_factory (argc, argv)) {
+
+    delete (gw);
+    delete (lw);
+    delete (pw);
+    delete (rtp);
+    delete (chat);
+    exit (1);
+  }
+
 
   /* Some little gconf stuff */  
   client = gconf_client_get_default ();
@@ -885,3 +1153,91 @@ void gnomemeeting_init_main_window_audio_settings ()
   gtk_notebook_append_page (GTK_NOTEBOOK (gw->main_notebook), frame, label);
 }
 
+
+
+
+
+/* The main () */
+
+int main (int argc, char ** argv, char ** envp)
+{
+  PProcess::PreInitialise (argc, argv, envp);
+
+  /* The different structures needed by most of the classes and functions */
+  GM_window_widgets *gw = NULL;
+  GM_ldap_window_widgets *lw = NULL;
+  GM_pref_window_widgets *pw = NULL;
+  GmTextChat *chat = NULL;
+  GM_rtp_data *rtp = NULL;
+
+
+  /* Init the GM_window_widgets */
+  gw = new (GM_window_widgets);
+  gw->pref_window = NULL;
+  gw->ldap_window = NULL;
+  gw->incoming_call_popup = NULL;
+  gw->video_grabber_thread_count = 0;
+  gw->cleaner_thread_count = 0;
+  gw->zoom = 1;
+
+
+  /* Init the GM_pref_window_widgets structure */
+  pw = new (GM_pref_window_widgets); 
+
+
+  /* Init the GM_ldap_window_widgets structure */
+  lw = new (GM_ldap_window_widgets);
+  lw->ldap_servers_list = NULL;
+
+
+  /* Init the RTP stats structure */
+  rtp = new (GM_rtp_data);
+  rtp->re_audio_bytes = 0;
+  rtp->re_video_bytes = 0;
+  rtp->tr_video_bytes = 0;
+  rtp->tr_audio_bytes = 0;
+
+
+  /* Init the TextChat structure */
+  chat = new (GmTextChat);
+
+
+  /* Threads + Locale Init + Gconf */
+  g_thread_init (NULL);
+  gdk_threads_init ();
+
+  gdk_threads_enter ();
+  gconf_init (argc, argv, 0);
+
+  textdomain (GETTEXT_PACKAGE);
+  bindtextdomain (GETTEXT_PACKAGE, GNOMELOCALEDIR);
+  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+
+  /* GnomeMeeting main initialisation */
+  gnomemeeting_init (gw, pw, lw, rtp, chat, argc, argv, envp);
+
+  /* Set a default gconf error handler */
+  gconf_client_set_error_handling (gconf_client_get_default (),
+				   GCONF_CLIENT_HANDLE_UNRETURNED);
+  gconf_client_set_global_default_error_handler (gconf_error_callback);
+
+
+  /* Quick hack to make the GUI refresh even on high load from the other
+     threads */
+  gtk_timeout_add (1000, (GtkFunction) AppbarUpdate, 
+  		   rtp);
+  /* gtk_timeout_add (10000, (GtkFunction) StressTest, 
+     NULL);
+  */
+  /* The GTK loop */
+  gtk_main ();
+  gdk_threads_leave ();
+
+  delete (gw);
+  delete (lw);
+  delete (pw);
+  delete (rtp);
+  delete (chat); 
+
+  return 0;
+}

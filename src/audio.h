@@ -43,12 +43,14 @@
 #include <fcntl.h>
 #include <ptlib.h>
 
+enum { SOURCE_AUDIO, SOURCE_MIC };
+
 /* The functions */
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Set the given source of the given mixer to the given volume
- * PRE          :  First param = mixer, Second = source (0 : audio,
- *                 1 :mic), Third, the volume
+ * PRE          :  First param = mixer, Second = source (SOURCE_AUDIO or
+ *                 SOURCE_MIC), Third, the volume
  */
 int gnomemeeting_volume_set (char *, int, int *);
 
@@ -56,16 +58,16 @@ int gnomemeeting_volume_set (char *, int, int *);
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Get the volume for the given source of the given mixer, returns
  *                 -1 if error.
- * PRE          :  First param = mixer, Second = source (0 : audio,
- *                 1 :mic), Third, the volume
+ * PRE          :  First param = mixer, Second = source (SOURCE_AUDIO or
+ *                 SOURCE_MIC), Third, the volume
  */
 int gnomemeeting_volume_get (char *, int, int *);
 
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Set the recording source
- * PRE          :  First param = mixer, Second = source (0 : audio,
- *                 1 :mic)
+ * PRE          :  First param = mixer, Second = source (SOURCE_AUDIO or
+ *                 SOURCE_MIC)
  */
 int gnomemeeting_set_recording_source (char *, int);
 

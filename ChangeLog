@@ -1,13 +1,34 @@
+2002-06-06  Damien Sandras  <dsandras@seconix.com>
+
+	* src/Makefile.am: Added gnomemeeting.server.
+
+	* src/common.h: Cleanups (thanks to Julien Puydt).
+
+	* src/gnomemeeting.cpp: Cleanups.
+
+	* src/ils.cpp: Added a function to search an IP corresponding
+	to a give email on a given server.
+
+	* src/main_window.cpp: Code cleanups. The main() is now there.
+	Added functions needed to be able to make the running instance
+	of GM call the IP given by the second instance. (gnomemeeting -c IP)
+	This code is basic and needs improvements.
+
+	* src/gnomemeeting.server: Added this file for OAF.
+
+	* src/audio.cpp, src/audio.h: Code cleanups and IXJ volume bug 
+	fixed (Julien Puydt).
+	
 2002-05-28  Damien Sandras  <dsandras@seconix.com>
 
 	* src/endpoint.cpp: Fixed small bug, the ringing sound is not played
 	if the Auto Answer or the Do Not Disturb mode are sets. Completed 
 	Quicknet support : works now in Fast Start and Tunneling or now,
-	Busy tone is played when the remote disconnects, the phone stops ringing
-	if the remote stops calling, various small other fixes.
+	Busy tone is played when the remote disconnects, the phone stops 
+	ringing	if the remote stops calling, various small other fixes.
 
-	* src/gnomemeeting.cpp: Made Connect and Disconnect thread safe, so that
-	they can be called in all circumstances even by the IXJ thread.
+	* src/gnomemeeting.cpp: Made Connect and Disconnect thread safe, 
+	so that	they can be called in all circumstances even by the IXJ thread.
 
 ====== GnomeMeeting 0.92.1 ====== (tag 0_92_1)
 
