@@ -1,3 +1,23 @@
+2003-01-20 Damien Sandras  <dsandras@seconix.com>
+
+	* gnomemeeting.schemas.in.in: Fixed string.
+	
+	* src/common.h: Removed unused widgets in the GmDruidWindow.
+	
+	* src/config.cpp: Added notifier. When the hostname changes,
+	or the registering method, and when they become "non-mt", then
+	disable "microtelco".
+	
+	* src/druid.cpp: Changed strings.
+	
+	* src/endpoint.cpp: Code cleanup.
+	
+	* src/gatekeeper.cpp: Set the registering method to 0 when the
+	GK registering fails.
+	
+	* src/urlhandler.cpp: Add prefix when MicroTelco is used and
+	G.723.1 is not found.
+	
 2003-01-15 Damien Sandras  <dsandras@seconix.com>
 
 	* src/main_window.cpp: Removed automatic call clearing on no data

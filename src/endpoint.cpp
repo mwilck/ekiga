@@ -1252,7 +1252,7 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
     video_codec->SetTxMaxQuality (vq);
     video_codec->SetBackgroundFill (bf);   
     video_codec->SetMaxBitRate (bitrate * 8 * 1024);
-    video_codec->SetTargetFrameTimeMs (frame_time);
+    video_codec->SetTargetFrameTimeMs ((unsigned int) frame_time);
     video_codec->SetVideoMode (H323VideoCodec::DynamicVideoQuality | 
 			       H323VideoCodec::AdaptivePacketDelay |
 			       video_codec->GetVideoMode());

@@ -202,8 +202,6 @@ struct _GmDruidWindow
   GtkWidget *audio_recorder;
   GtkWidget *audio_recorder_mixer;
   GtkWidget *video_device;
-  GtkWidget *no_quicknet_label;
-  GtkWidget *microtelco_table;
   GnomeDruidPageEdge *page_edge;
 };
 

@@ -89,7 +89,8 @@ void GMURLHandler::Main ()
   GmWindow *gw = NULL;
   GMH323EndPoint *endpoint = NULL;
   H323Connection *con = NULL;
-
+  GConfClient *client = gconf_client_get_default ();
+  
   gnomemeeting_threads_enter ();
   gw = gnomemeeting_get_main_window (gm);
   gnomemeeting_threads_leave ();
@@ -201,6 +202,18 @@ void GMURLHandler::Main ()
   }
     
 
+  /* If the user is using MicroTelco, but G.723.1 is not available for
+     a reason or another, we add the MicroTelco prefix if the URL seems
+     to be a phone number */
+  if (gconf_client_get_bool (client, SERVICES_KEY "enable_microtelco", 0)) {
+
+    if (call_address.FindRegEx ("[A-Z][a-z]") == P_MAX_INDEX &&
+	call_address.Find (".") == P_MAX_INDEX &&
+	endpoint->GetCapabilities ().FindCapability ("G.723.1") == NULL)
+      call_address = PString ("0610#") + call_address;
+  }
+
+  
   /* Connect to the URL */
   con = 
     endpoint->MakeCallLocked (call_address, current_call_token);

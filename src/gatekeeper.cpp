@@ -169,8 +169,9 @@ void GMH323Gatekeeper::Main ()
       g_signal_connect_swapped (GTK_OBJECT (msg_box), "response",
 				G_CALLBACK (gtk_widget_destroy),
 				GTK_OBJECT (msg_box));
-
+      
       gnomemeeting_threads_leave ();
+      gconf_client_set_int (GCONF_CLIENT (client), "/apps/gnomemeeting/gatekeeper/registering_method", 0, NULL);
       
       g_free (msg);
     }
@@ -238,7 +239,7 @@ void GMH323Gatekeeper::Main ()
 				GTK_OBJECT (msg_box));
   
       gnomemeeting_threads_leave ();
-      
+      gconf_client_set_int (GCONF_CLIENT (client), "/apps/gnomemeeting/gatekeeper/registering_method", 0, NULL);
       g_free (msg);
     }
   }
@@ -276,6 +277,7 @@ void GMH323Gatekeeper::Main ()
 				GTK_OBJECT (msg_box));
   
       gnomemeeting_threads_leave ();
+      gconf_client_set_int (GCONF_CLIENT (client), "/apps/gnomemeeting/gatekeeper/registering_method", 0, NULL);
     }
   }
 }

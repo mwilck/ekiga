@@ -98,6 +98,8 @@ static void contacts_list_changed_nt (GConfClient *, guint, GConfEntry *,
 				      gpointer);
 static void view_widget_changed_nt (GConfClient *, guint, GConfEntry *, 
 				    gpointer);
+static void microtelco_option_changed_nt (GConfClient *, guint, 
+					  GConfEntry *, gpointer);
 static void capabilities_changed_nt (GConfClient *, guint, 
 				     GConfEntry *, gpointer);
 static void microtelco_enabled_nt (GConfClient *, guint, GConfEntry *,
@@ -386,6 +388,47 @@ static void view_widget_changed_nt (GConfClient *client, guint cid,
 }
 
 
+/* DESCRIPTION  :  This callback is called when a microtelco related option
+ *                 changes.
+ * BEHAVIOR     :  Set the Microtelco key to false if the Gatekeeper host 
+ *                 or the registering method are not compatible with
+ *                  microtelco settings.
+ * PRE          :  /
+ */
+static void microtelco_option_changed_nt (GConfClient *client, guint cid, 
+					  GConfEntry *entry, gpointer data)
+{
+  PString host;
+  gchar *gk_host = NULL;
+  int registering_method = 0;
+
+  
+  if (entry->value->type == GCONF_VALUE_BOOL
+      || entry->value->type == GCONF_VALUE_STRING) {
+
+    gdk_threads_enter ();
+
+    registering_method =
+      gconf_client_get_int (client, GATEKEEPER_KEY "registering_method", 0);
+    gk_host =
+      gconf_client_get_string (client, GATEKEEPER_KEY "gk_host", 0);
+
+    if (gk_host)
+      host = PString (gk_host);
+
+    if (host.Find ("microtelco") == P_MAX_INDEX
+	|| registering_method != 1)
+      gconf_client_set_bool (client, GATEKEEPER_KEY "enable_microtelco",
+			     false, 0);
+
+    g_free (gk_host);
+
+    gdk_threads_leave ();
+  }
+}
+
+
+
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Displays a popup if we are in a call.
  * PRE          :  /
@@ -610,7 +653,7 @@ static void fps_limit_changed_nt (GConfClient *client, guint cid,
     frame_time = PMAX (33, PMIN(1000000, frame_time));
 
     if (vc != NULL)
-      vc->SetTargetFrameTimeMs (frame_time);
+      vc->SetTargetFrameTimeMs ((unsigned int) frame_time);
 
     gdk_threads_leave ();
   }
@@ -1524,11 +1567,14 @@ void gnomemeeting_init_gconf (GConfClient *client)
 			   ldap_visible_changed_nt, pw->ldap_visible, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/gatekeeper/gk_host",
 			   entry_changed_nt, pw->gk_host, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/gatekeeper/gk_host",
+			   microtelco_option_changed_nt, pw->gk_host, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/gatekeeper/gk_id",
 			   entry_changed_nt, pw->gk_id, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/gatekeeper/gk_password",
 			   entry_changed_nt, pw->gk_password, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/gatekeeper/registering_method", int_option_menu_changed_nt, pw->gk, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/gatekeeper/registering_method", microtelco_option_changed_nt, pw->gk, 0, 0);
 
 
   /* gnomemeeting_init_pref_window_devices */
