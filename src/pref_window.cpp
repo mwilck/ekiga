@@ -414,7 +414,7 @@ static void codecs_list_button_clicked_callback (GtkWidget *widget,
     codecs [codec_pos] = temp;
   }
 
-  for (cpt = 0 ; cpt < GM_AUDIO_CODECS_NUMBER ; cpt++) {
+  for (cpt = 0 ; cpt < GM_AUDIO_CODECS_NUMBER && codecs [cpt]; cpt++) {
 
     tmp = g_strconcat (gconf_data, codecs [cpt], ":",  NULL);
 
@@ -671,7 +671,7 @@ codecs_list_fixed_toggled (GtkCellRendererToggle *cell, gchar *path_str, gpointe
   }  
 
   /* Rebuilt the gconf_key with the update values */
-  for (cpt = 0 ; cpt < GM_AUDIO_CODECS_NUMBER ; cpt++) {
+  for (cpt = 0 ; cpt < GM_AUDIO_CODECS_NUMBER && codecs [cpt]; cpt++) {
 
     tmp = g_strconcat (gconf_data, codecs [cpt], ":",  NULL);
 
