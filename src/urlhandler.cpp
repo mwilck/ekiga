@@ -256,14 +256,26 @@ void GMURLHandler::Main ()
     return;
 
   old_url = url;
-  
+
   /* If it is a shortcut (# at the end of the URL), then we use it */
-  if (url.GetType () == "shortcut")
+  if (url.GetType () == "shortcut") {
+    
     url =
       gnomemeeting_addressbook_get_url_from_speed_dial (url.GetValidURL ());
+    
+    if (url.IsEmpty ()) {
+
+      msg = g_strdup_printf (_("No contact with speed dial %s# found, will call number %s instead"), (const char *) old_url.GetValidURL (), (const char *) old_url.GetValidURL ());
+      gnomemeeting_threads_enter ();
+      gnomemeeting_log_insert (gw->history_text_view, msg);
+      gnomemeeting_threads_leave ();
+      g_free (msg);
+      
+      url = old_url;
+    }
+  } 
 
 
-  /* The shortcut could lead to an empty URL here */
   if (!url.IsEmpty ()) {
 
     call_address = url.GetValidURL ();
@@ -329,19 +341,7 @@ void GMURLHandler::Main ()
 	g_timeout_add (11000, (GtkFunction) TransferTimeOut, NULL);
       }
   }
-  else {
 
-    /* If we are here, it is because the user specified an invalid
-       speed dial to call */
-    gnomemeeting_threads_enter ();
-    gnomemeeting_statusbar_flash (gw->statusbar,
-				  _("No contact with that speed dial found"));
-    if (!transfer_call)
-      gnomemeeting_calls_history_window_add_call (1,
-						  old_url.GetValidURL () + "#",
-						  NULL, "0", NULL);
-    gnomemeeting_threads_leave ();
-  }
 
   if (!transfer_call) {
     

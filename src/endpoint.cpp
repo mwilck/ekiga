@@ -208,6 +208,8 @@ GMH323EndPoint::GMH323EndPoint ()
   recorder_channel = NULL;
   audio_tester = NULL;
 
+  SetNoMediaTimeout (PTimeInterval (0, 0, 15));
+  
   /* Update general configuration */
   UpdateConfig ();
 }
@@ -1224,7 +1226,7 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 
 #ifdef HAS_IXJ
   GMLid *l = NULL;
-  
+
   if ((l = GetLid ())) {
 
     l->RingLine (3);
@@ -1491,7 +1493,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   GMLid *l = NULL;
   if ((l = GetLid ())) {
 
-    l->RingLine (3);
+    l->RingLine (2);
     l->Unlock ();
   }
 #endif
@@ -1673,9 +1675,12 @@ GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
 						   codec))) {
 
       l->Unlock ();
+
       return FALSE;
     }
-   
+    else
+      if (l)
+	l->Unlock ();
 
     gnomemeeting_threads_enter ();
     gchar *msg = g_strdup_printf (_("Attaching lid hardware to codec"));
@@ -1837,8 +1842,9 @@ GMH323EndPoint::GetLid (void)
 
   lid_access_mutex.Wait ();
   l = lid;
-  if (lid)
+  if (lid) 
     lid->Lock ();
+
   lid_access_mutex.Signal ();
 
   return l;

@@ -411,7 +411,7 @@ void GMAudioTester::Main ()
 		     1, 8000, 16)) {
 
     gdk_threads_enter ();  
-    gnomemeeting_error_dialog (GTK_WINDOW (gw->druid_window), _("Impossible to open the selected audio device (%s) for playing. Please check your audio setup."), (const char *) ep->GetSoundChannelPlayDevice ());
+    gnomemeeting_error_dialog (GTK_WINDOW (gw->druid_window), _("Failed to open the device"), _("Impossible to open the selected audio device (%s) for playing. Please check your audio setup, the permissions and that the device is not busy."), (const char *) ep->GetSoundChannelPlayDevice ());
     gdk_threads_leave ();  
 
     stop = TRUE;
@@ -423,7 +423,7 @@ void GMAudioTester::Main ()
 		       1, 8000, 16)) {
 
     gdk_threads_enter ();  
-    gnomemeeting_error_dialog (GTK_WINDOW (gw->druid_window), _("Impossible to open the selected audio device (%s) for recording. Please check your audio setup."), (const char *) ep->GetSoundChannelRecordDevice ());
+    gnomemeeting_error_dialog (GTK_WINDOW (gw->druid_window), _("Failed to open the audio device"), _("Impossible to open the selected audio device (%s) for recording. Please check your audio setup, the permissions and that the device is not busy."), (const char *) ep->GetSoundChannelRecordDevice ());
     gdk_threads_leave ();  
 
     stop = TRUE;
@@ -442,7 +442,7 @@ void GMAudioTester::Main ()
     if (!recorder->Read ((void *) buffer_record, 8 * 1024)) {
       
       gdk_threads_enter ();  
-      gnomemeeting_error_dialog (GTK_WINDOW (gw->druid_window), _("The selected audio device (%s) was successfully opened but it is impossible to read data from this device. Please check your audio setup."), (const char*) ep->GetSoundChannelRecordDevice ());
+      gnomemeeting_error_dialog (GTK_WINDOW (gw->druid_window), _("Cannot use the audio device"), _("The selected audio device (%s) was successfully opened but it is impossible to read data from this device. Please check your audio setup."), (const char*) ep->GetSoundChannelRecordDevice ());
       gdk_threads_leave ();  
 
       stop = TRUE;
@@ -451,7 +451,7 @@ void GMAudioTester::Main ()
 	     && !player->Write ((void *) buffer_play, 8 * 1024)) {
 
       gdk_threads_enter ();  
-      gnomemeeting_error_dialog (GTK_WINDOW (gw->druid_window), _("The selected audio device (%s) was successfully opened but it is impossible to write data to this device. Please check your audio setup."), (const char*) ep->GetSoundChannelPlayDevice ());
+      gnomemeeting_error_dialog (GTK_WINDOW (gw->druid_window), _("Cannot use the audio device"), _("The selected audio device (%s) was successfully opened but it is impossible to write data to this device. Please check your audio setup."), (const char*) ep->GetSoundChannelPlayDevice ());
       gdk_threads_leave ();  
 	
       stop = TRUE;

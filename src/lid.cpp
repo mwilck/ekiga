@@ -176,24 +176,8 @@ void GMLid::Close ()
     lid->Close ();
 
   /* Restore the normal mixers settings */
-  gnomemeeting_threads_enter ();
-  client = gconf_client_get_default ();
-  gw = MyApp->GetMainWindow ();
-
-  mixer =
-    gconf_client_get_string (client, DEVICES_KEY "audio_player_mixer", NULL);
-  vol = gnomemeeting_get_mixer_volume (mixer, SOURCE_AUDIO);
-  g_free (mixer);
-  GTK_ADJUSTMENT (gw->adj_play)->value = (int) (vol & 255);
-  
-  mixer =
-    gconf_client_get_string (client, DEVICES_KEY "audio_recorder_mixer", NULL);
-  vol = gnomemeeting_get_mixer_volume (mixer, SOURCE_MIC);
-  g_free (mixer);
-  GTK_ADJUSTMENT (gw->adj_rec)->value = (int) (vol & 255);
-  gtk_widget_queue_draw (GTK_WIDGET (gw->audio_settings_frame));
-
-  gnomemeeting_threads_leave ();
+  cout << "Restore here the normal mixers settings"
+       << endl << flush;
 }
 
 
@@ -303,7 +287,7 @@ void GMLid::Main ()
 
       PTimeInterval t = now - last_key_press;
       
-      if (t.GetSeconds () > 5 && !do_not_connect) {
+      if ((t.GetSeconds () > 5 && !do_not_connect) || c == '#') {
 
 	if (calling_state == 0)
 	  MyApp->Connect ();
@@ -317,7 +301,7 @@ void GMLid::Main ()
     /* We must poll to read the hook state */
     PThread::Sleep(50);
   }
-
+  
   Close ();
 }
 

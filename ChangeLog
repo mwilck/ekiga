@@ -1,5 +1,18 @@
 2003-06-14 Damien Sandras  <dsandras@seconix.com>
 
+	* src/endpoint.cpp: Added noMediaTimeOut, fixed deadlock with LID.
+	
+	* src/lid.cpp: Made auto-dial when "#" is pressed.
+	
+	* src/sound_handling.cpp: Fixed error message in druid, thanks
+	to Johnny for spotting this.
+	
+	* src/urlhandler.cpp: If no speed dial is found for a given
+	number (e.g. : 156#), the number is called (typical behavior of
+	pro apps).
+	
+2003-06-14 Damien Sandras  <dsandras@seconix.com>
+
 	* src/common.h: Removed the speaker phone button as we now
 	have an automatic speaker phone mode.
 	
