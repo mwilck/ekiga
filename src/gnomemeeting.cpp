@@ -40,6 +40,7 @@
 #include "ils.h"
 #include "urlhandler.h"
 #include "history-combo.h"
+#include "lid.h"
 
 #include <esd.h>
 #include <gconf/gconf-client.h>
@@ -108,7 +109,10 @@ GnomeMeeting::Connect()
     
 #ifdef HAS_IXJ
       OpalLineInterfaceDevice *lid = NULL;
-      lid = endpoint->GetLidDevice ();
+      GMLid *lid_thread = NULL;
+      lid_thread = endpoint->GetLidThread ();
+      if (lid_thread)
+	lid = lid_thread->GetLidDevice ();
       if (lid)
 	lid->StopTone (0);
 #endif
@@ -151,7 +155,10 @@ GnomeMeeting::Connect()
 
 #ifdef HAS_IXJ
       OpalLineInterfaceDevice *lid = NULL;
-      lid = endpoint->GetLidDevice ();
+      GMLid *lid_thread = NULL;
+      lid_thread = endpoint->GetLidThread ();
+      if (lid_thread)
+	lid = lid_thread->GetLidDevice ();
       if (lid)
 	lid->PlayTone (0, OpalLineInterfaceDevice::RingTone);
 #endif

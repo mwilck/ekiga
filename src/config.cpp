@@ -46,6 +46,7 @@
 #include "dialog.h"
 #include "menu.h"
 #include "tray.h"
+#include "lid.h"
 
 #ifndef DISABLE_GNOME
 #include <gnome.h>
@@ -1033,7 +1034,11 @@ lid_aec_changed_nt (GConfClient *client, guint, GConfEntry *entry, gpointer)
   if (entry->value->type == GCONF_VALUE_INT) {
 
     int lid_aec = gconf_value_get_int (entry->value);
-    OpalLineInterfaceDevice *lid = MyApp->Endpoint ()->GetLidDevice ();
+    OpalLineInterfaceDevice *lid = NULL;
+    GMLid *lid_thread = MyApp->Endpoint ()->GetLidThread ();
+
+    if (lid_thread)
+      lid = lid_thread->GetLidDevice ();
 
     if (lid) {
 
@@ -1074,8 +1079,13 @@ lid_country_changed_nt (GConfClient *client, guint, GConfEntry *entry,
 			gpointer)
 {
   if (entry->value->type == GCONF_VALUE_STRING) {
+    
+    GMLid *lid_thread = GM_LID (MyApp->Endpoint ()->GetLidThread ());
+    OpalLineInterfaceDevice *lid = NULL;
 
-    OpalLineInterfaceDevice *lid = MyApp->Endpoint ()->GetLidDevice ();
+    if (lid_thread)
+      lid = lid_thread->GetLidDevice ();
+
     if ((gconf_value_get_string (entry->value))&&(lid))
       lid->SetCountryCodeName (gconf_value_get_string (entry->value));
   }

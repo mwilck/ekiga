@@ -1,5 +1,28 @@
 2002-12-02 Damien Sandras  <dsandras@seconix.com>
 
+	* src/lid.cpp, src/lid.h: Added those files corresponding to the 
+	Quicknet monitoring thread. GnomeMeeting is now able to use a real
+	phone and its dialpad to dial numbers (* = . in IP addresses).
+	The phone should behave like a real phone (on hook, off hook,
+	calling, ...).
+	
+	* src/Makefile.am: Added the 2 previous files.
+	
+	* src/config.cpp: Changes consecutive to the introduction of lid.*
+	
+	* src/endpoint.cpp: See above.
+	
+	* src/endpoint.h: See above.
+	
+	* src/gnomemeeting.cpp: See above.
+	
+	* src/main_window.cpp: See above.
+	
+	* src/toolbar.cpp: See above.
+
+	
+2002-12-02 Damien Sandras  <dsandras@seconix.com>
+
 	* src/videograbber.cpp: Added video device to the error message.
 	
 2002-12-01 Damien Sandras  <dsandras@seconix.com>

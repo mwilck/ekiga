@@ -299,15 +299,30 @@ gint AppbarUpdate (gpointer data)
 	g_free (stats_msg);
 
 	gtk_widget_queue_draw_area (gw->stats_drawing_area, 0, 0, GTK_WIDGET (gw->stats_drawing_area)->allocation.width, GTK_WIDGET (gw->stats_drawing_area)->allocation.height);
-      }
-        
+
+	if (bytes_received == 0 && t.GetSeconds () == 11) {
+	  
+	  GMH323EndPoint *endpoint = NULL;
+	  gchar *err = NULL;
+
+	  endpoint = MyApp->Endpoint ();
+
+	  err = g_strdup (_("No data received in 10 seconds, clearing call"));
+	  gnomemeeting_log_insert (gw->history_text_view, err);
+	  gnomemeeting_log_insert (gw->calls_history_text_view, err);
+	  g_free (err);
+
+	  endpoint->ClearCall (endpoint->GetCurrentCallToken (),
+			       H323Connection::EndedByTransportFail);
+	}
+      }     
+  
       g_free (msg);
     }
-
+    
     gdk_threads_leave ();
   }
-
-
+    
   return TRUE;
 }
 
@@ -846,8 +861,9 @@ void gnomemeeting_dialpad_event (const char *key)
 {
   GMH323EndPoint *endpoint = NULL;
 
-  const gchar *button_text = NULL;
   const gchar *url = NULL;
+  gchar *button_text = NULL;
+  
   PString url_;
   PString new_url;
   PINDEX at;
@@ -859,7 +875,7 @@ void gnomemeeting_dialpad_event (const char *key)
   gw = gnomemeeting_get_main_window (gm);
   endpoint = MyApp->Endpoint ();
 
-  button_text = key;
+  button_text = (gchar *) key;
   url = gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry)); 
   
   if (button_text) {
@@ -871,13 +887,17 @@ void gnomemeeting_dialpad_event (const char *key)
       callto = url_.FindLast ("//");
       dot = url_.FindLast ('.');
 
+      /* Replace the * by a . */
+      if (!strcmp (button_text, "*")) 
+	button_text = g_strdup (".");
+
       /* We remove the callto:// part if any */
       if (callto != P_MAX_INDEX) 
 	url_ = url_.Mid (callto + 2, P_MAX_INDEX);
 
       at = url_.FindLast ('@');
 
-      /* We have 3 types of URL */
+      /* We have 2 types of URL */
       /* The URL only contained the callto */
       if (url_.IsEmpty ())
 	new_url = PString ("callto://") + PString (button_text);
@@ -887,13 +907,7 @@ void gnomemeeting_dialpad_event (const char *key)
 	new_url = PString ("callto://") + url_.Mid (0, at) 
 	  + PString (button_text) + url_.Mid (at, P_MAX_INDEX);
 
-      /* The URL only contained a hostname */
-      } else if (dot != P_MAX_INDEX) {
-
-	new_url = PString ("callto://") + PString (button_text) 
-	  + PString ("@") + url_;
-
-      /* The URL didn't contain a hostname, but something else (alias?) */
+      /* The URL didn't contain a part behind the @ */
       } else {
 	
 	new_url = PString ("callto://") + url_ + PString (button_text);
@@ -902,9 +916,11 @@ void gnomemeeting_dialpad_event (const char *key)
     else
       new_url = PString ("callto://") + PString (button_text);
   
-    gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), new_url);
+    if (!strcmp (".", button_text)) 
+      g_free (button_text);
 
-    
+    gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), new_url);
+  
     /* Now we send the pressed key as UserInput */
     if (endpoint) {
         
@@ -913,12 +929,20 @@ void gnomemeeting_dialpad_event (const char *key)
 	H323Connection *connection = endpoint->GetCurrentConnection ();
             
 	if (connection != NULL) {
-                 
+
 	  connection->SendUserInput (PString (button_text));
-	  OpalLineInterfaceDevice *lid = endpoint->GetLidDevice ();
-	  lid->PlayDTMF (0, button_text, 200, 100);
 	}
       }
+#ifdef HAS_IXJ
+      OpalLineInterfaceDevice *lid = NULL;
+      GMLid *lid_thread = NULL;
+      lid_thread = endpoint->GetLidThread ();
+      if (lid_thread)
+	lid = lid_thread->GetLidDevice ();
+      
+      if (lid) 
+	lid->StopTone (0);
+#endif
     }
   }
 }

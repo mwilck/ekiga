@@ -38,6 +38,7 @@
 #include "stock-icons.h"
 #include "history-combo.h"
 #include "config.h"
+#include "lid.h"
 
 #ifndef DISABLE_GNOME
 #include <gnome.h>
@@ -79,8 +80,12 @@ static void speaker_phone_toggle_changed (GtkToggleButton *w, gpointer data)
 {
   GmWindow *gw = gnomemeeting_get_main_window (gm);
   OpalLineInterfaceDevice *lid = NULL;
+  GMLid *lid_thread = NULL;
 
-  lid = MyApp->Endpoint ()->GetLidDevice ();
+  lid_thread = MyApp->Endpoint ()->GetLidThread ();
+
+  if (lid_thread)
+    lid = lid_thread->GetLidDevice ();
 
   if (lid) {
 

@@ -33,6 +33,7 @@
 
 #include "common.h"
 #include "gdkvideoio.h"
+#include "lid.h"
 
 #include <ptlib.h>
 #include <h323.h>
@@ -391,14 +392,7 @@ class GMH323EndPoint : public H323EndPoint
    * BEHAVIOR     :  Return the current Lid Thread.
    * PRE          :  /
    */
-  PThread *GetLidThread ();
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Return the current Lid Device.
-   * PRE          :  /
-   */
-  OpalLineInterfaceDevice *GetLidDevice ();
+  GMLid *GetLidThread ();
 #endif
 
 
@@ -436,9 +430,7 @@ class GMH323EndPoint : public H323EndPoint
   int opened_video_channels;
 
 #ifdef HAS_IXJ
-  OpalLineInterfaceDevice *lid;
-  PDECLARE_NOTIFIER (PThread, GMH323EndPoint, LidThread);
-  PThread *lid_thread;
+  GMLid *lid_thread;
 #endif
 };
 

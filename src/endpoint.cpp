@@ -43,6 +43,7 @@
 #include "misc.h"
 #include "menu.h"
 #include "main_window.h"
+#include "lid.h"
 
 #include <gconf/gconf-client.h>
 #include <g726codec.h>
@@ -160,7 +161,6 @@ GMH323EndPoint::GMH323EndPoint ()
   SetCallingState (0);
   
 #ifdef HAS_IXJ
-  lid = NULL;
   lid_thread = NULL;
 #endif
 
@@ -237,11 +237,12 @@ GMH323EndPoint::~GMH323EndPoint ()
   delete (video_grabber);
 
 #ifdef HAS_IXJ  
-  if (lid) 
-    lid->Close();
+  if (lid_thread) 
+    delete (lid_thread);
 #endif
 
   quit_mutex.Signal ();
+  PThread::Current ()->Sleep (2000);
 }
 
 
@@ -253,10 +254,8 @@ void GMH323EndPoint::UpdateConfig ()
   gchar *text = NULL;
   gchar *player = NULL;
   gchar *recorder = NULL;
-  gchar *lid_device = NULL;
-  gchar *lid_country = NULL;
+
   int video_size = 0;
-  int lid_aec = 0;
 
   BOOL use_lid = FALSE;
   BOOL h245_tunneling = FALSE;
@@ -273,12 +272,6 @@ void GMH323EndPoint::UpdateConfig ()
   /* Get the gconf settings */
   use_lid = 
     gconf_client_get_bool (client, DEVICES_KEY "lid", NULL);
-  lid_device =  
-    gconf_client_get_string (client, DEVICES_KEY "lid_device", NULL);
-  lid_country =
-    gconf_client_get_string (client, DEVICES_KEY "lid_country", NULL);
-  lid_aec =
-    gconf_client_get_int (client, DEVICES_KEY "lid_aec", NULL);
   player = 
     gconf_client_get_string (client, DEVICES_KEY "audio_player", NULL);
   recorder = 
@@ -351,68 +344,13 @@ void GMH323EndPoint::UpdateConfig ()
     /* Use the quicknet card if needed */
     if (use_lid) {
 
-      if (!lid) {
-
-	if (lid_device == NULL)
-	  lid_device = g_strdup ("/dev/phone0");
-
-	lid = new OpalIxJDevice;
-	if (lid->Open ("/dev/phone0")) {
-	
-	  gchar *msg = NULL;
-	  msg = g_strdup_printf (_("Using Quicknet device %s"), 
-				 (const char *) lid->GetName ());
-	  gnomemeeting_log_insert (gw->history_text_view, msg);
-	  g_free (msg);
-	  
-	  lid->SetLineToLineDirect(0, 1, FALSE);
-	  lid->EnableAudio(0, TRUE); /* Enable the POTS Telephone handset */
-		  
-	  if (lid_country)
-	    lid->SetCountryCodeName(lid_country);
-		 
-	  switch (lid_aec) {
-	    
-	  case 0:
-	    lid->SetAEC (0, OpalLineInterfaceDevice::AECOff);
-	    break;
-
-	  case 1:
-	    lid->SetAEC (0, OpalLineInterfaceDevice::AECLow);
-	    break;
-
-	  case 2:
-	    lid->SetAEC (0, OpalLineInterfaceDevice::AECMedium);
-	    break;
-
-	  case 3:
-	    lid->SetAEC (0, OpalLineInterfaceDevice::AECHigh);
-	    break;
-
-	  case 5:
-	    lid->SetAEC (0, OpalLineInterfaceDevice::AECAGC);
-	    break;
-	  }
-
-	  lid_thread = PThread::Create (PCREATE_NOTIFIER(LidThread), 0,
-					PThread::NoAutoDeleteThread,
-					PThread::NormalPriority,
-					"LidHookMonitor");	  
-	}
-	else {
-
-	  gconf_client_set_bool (client, DEVICES_KEY "lid", 0, 0);
-	  gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (gm), gw->speaker_phone_button, _("Error while opening the Quicknet device. Disabling Quicknet device."));
-	}
-      }
+      if (!lid_thread)
+	lid_thread = new GMLid ();
     }
-    else { /* If the user chose to not use anymore the Quicknet device */
+    else {
       
-      if (lid) {
-
-	delete (lid);
-	lid = NULL;
-      }
+      delete (lid_thread);
+      lid_thread = NULL;
     }
 #endif
 
@@ -430,8 +368,6 @@ void GMH323EndPoint::UpdateConfig ()
 
   g_free (player);
   g_free (recorder);
-  g_free (lid_device);
-  g_free (lid_country);
 }
 
 
@@ -522,12 +458,21 @@ GMH323EndPoint::AddAudioCapabilities ()
 
 #ifdef HAS_IXJ
   /* Add the audio capabilities provided by the LID Hardware */
-  if ((lid != NULL) && lid->IsOpen()) {
+  if (lid_thread) {
 
-    H323_LIDCapability::AddAllCapabilities (*lid, capabilities, 0, 0);
+    OpalLineInterfaceDevice *lid = NULL;
 
-    /* If the LID can do PCM16 we can use the software codecs like GSM too */
-    use_pcm16_codecs = lid->GetMediaFormats ().GetValuesIndex (OpalMediaFormat(OPAL_PCM16)) != P_MAX_INDEX;    
+    lid = lid_thread->GetLidDevice ();
+
+    if (lid && lid->IsOpen ()) {
+
+      H323_LIDCapability::AddAllCapabilities (*lid, capabilities, 0, 0);
+
+      /* If the LID can do PCM16 we can use the software codecs like GSM too */
+      use_pcm16_codecs = 
+	lid->GetMediaFormats ().GetValuesIndex (OpalMediaFormat(OPAL_PCM16)) 
+	!= P_MAX_INDEX;    
+    }
   }
 #endif
 
@@ -1146,10 +1091,16 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   if (!aa && !dnd) {
 
 #ifdef HAS_IXJ
-    /* If we have a LID, make it ring */
-    if (lid && lid->IsOpen()) {
-      
-      lid->RingLine (OpalIxJDevice::POTSLine, 0x33);
+    if (lid_thread) {
+
+      OpalLineInterfaceDevice *lid = NULL;
+      lid = lid_thread->GetLidDevice ();
+
+      /* If we have a LID, make it ring */
+      if (lid && lid->IsOpen()) {
+	
+	lid->RingLine (OpalIxJDevice::POTSLine, 0x33);
+      }
     }
 #endif
 
@@ -1295,9 +1246,18 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 
 
 #ifdef HAS_IXJ
-  /* If we have a LID, make sure it is no longer ringing */
-  if ((lid != NULL) && (lid->IsOpen())) {
-    lid->RingLine (OpalIxJDevice::POTSLine, 0);
+  if (lid_thread) {
+
+    OpalLineInterfaceDevice *lid = NULL;
+    lid = lid_thread->GetLidDevice ();
+    
+    /* If we have a LID, make sure it is no longer ringing */
+    if (lid && lid->IsOpen()) {
+
+      lid->StopTone (0);
+      lid->RingLine (OpalIxJDevice::POTSLine, 0);
+      lid->SetRemoveDTMF(0, TRUE);
+    }
   }
 #endif
 
@@ -1328,6 +1288,7 @@ void
 GMH323EndPoint::OnConnectionCleared (H323Connection & connection, 
                                      const PString & clearedCallToken)
 {
+  gchar *msg_reason = NULL;
   gchar *msg = NULL;
   PTimeInterval t;
   GtkTextIter start_iter, end_iter;
@@ -1378,73 +1339,72 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   switch (connection.GetCallEndReason ()) {
 
   case H323Connection::EndedByRemoteUser :
-    msg = g_strdup (_("Remote party has cleared the call"));
+    msg_reason = g_strdup (_("Remote party has cleared the call"));
     break;
     
   case H323Connection::EndedByCallerAbort :
-    msg = g_strdup (_("Remote party has stopped calling"));
+    msg_reason = g_strdup (_("Remote party has stopped calling"));
     break;
 
   case H323Connection::EndedByRefusal :
-    msg = g_strdup (_("Remote party did not accept your call"));
+    msg_reason = g_strdup (_("Remote party did not accept your call"));
     break;
 
   case H323Connection::EndedByRemoteBusy :
-    msg = g_strdup (_("Remote party was busy"));
+    msg_reason = g_strdup (_("Remote party was busy"));
     break;
 
   case H323Connection::EndedByRemoteCongestion :
-    msg = g_strdup (_("Congested link to remote party"));
+    msg_reason = g_strdup (_("Congested link to remote party"));
     break;
 
   case H323Connection::EndedByNoAnswer :
-    msg = g_strdup (_("The call was not answered in the required time"));
+    msg_reason = g_strdup (_("The call was not answered in the required time"));
     break;
     
   case H323Connection::EndedByTransportFail :
-    msg = g_strdup (_("This call ended abnormally"));
+    msg_reason = g_strdup (_("This call ended abnormally"));
     break;
     
   case H323Connection::EndedByCapabilityExchange :
-    msg = g_strdup (_("Could not find common codec with remote party"));
+    msg_reason = g_strdup (_("Could not find common codec with remote party"));
     break;
 
   case H323Connection::EndedByNoAccept :
-    msg = g_strdup (_("Remote party did not accept your call"));
+    msg_reason = g_strdup (_("Remote party did not accept your call"));
     break;
 
   case H323Connection::EndedByAnswerDenied :
-    msg = g_strdup (_("Refused incoming call"));
+    msg_reason = g_strdup (_("Refused incoming call"));
     break;
 
   case H323Connection::EndedByNoUser :
-    msg = g_strdup (_("User not found"));
+    msg_reason = g_strdup (_("User not found"));
     break;
     
   case H323Connection::EndedByNoBandwidth :
-    msg = g_strdup (_("Call ended: insufficient bandwidth"));
+    msg_reason = g_strdup (_("Call ended: insufficient bandwidth"));
     break;
 
   case H323Connection::EndedByUnreachable :
-    msg = g_strdup (_("Remote party could not be reached"));
+    msg_reason = g_strdup (_("Remote party could not be reached"));
     break;
 
   case H323Connection::EndedByHostOffline :
-    msg = g_strdup (_("Remote party is offline"));
+    msg_reason = g_strdup (_("Remote party is offline"));
     break;
 
   case H323Connection::EndedByConnectFail :
-    msg = g_strdup (_("Transport Error calling"));
+    msg_reason = g_strdup (_("Transport Error calling"));
     break;
 
   default :
-    msg = g_strdup (_("Call completed"));
+    msg_reason = g_strdup (_("Call completed"));
   }
+
+  gnomemeeting_log_insert (gw->history_text_view, msg_reason);
+  gnomemeeting_log_insert (gw->calls_history_text_view, msg_reason);
   
-  gnomemeeting_statusbar_flash (gw->statusbar, msg);
-  gnomemeeting_log_insert (gw->history_text_view, msg);
-  gnomemeeting_log_insert (gw->calls_history_text_view, msg);
-  g_free (msg);
  
   if (connection.GetConnectionStartTime ().GetTimeInSeconds () > 0) {
 
@@ -1529,16 +1489,21 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   }
 
 
-
   /* Play Busy Tone */
 #ifdef HAS_IXJ
-  if (lid) {
+  if (lid_thread) {
 
-    if (GTK_TOGGLE_BUTTON (gw->speaker_phone_button)->active)
-      lid->EnableAudio (0, FALSE);
-
-    lid->PlayTone (0, OpalLineInterfaceDevice::BusyTone);
-    lid->RingLine (OpalIxJDevice::POTSLine, 0);
+    OpalLineInterfaceDevice *lid = NULL;
+    lid = lid_thread->GetLidDevice ();
+    
+    if (lid) {
+      
+      if (GTK_TOGGLE_BUTTON (gw->speaker_phone_button)->active)
+	lid->EnableAudio (0, FALSE);
+      
+      lid->PlayTone (0, OpalLineInterfaceDevice::BusyTone);
+      lid->RingLine (OpalIxJDevice::POTSLine, 0);
+    }
   }
 #endif
 
@@ -1599,6 +1564,13 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   /* Update internal state */
   SetCurrentConnection (NULL);
   SetCallingState (0);
+
+
+  /* Display the call end reason in the statusbar */
+  gdk_threads_enter ();
+  gnomemeeting_statusbar_flash (gw->statusbar, msg_reason);
+  g_free (msg_reason);
+  gdk_threads_leave ();
 
   quit_mutex.Signal ();
 }
@@ -1685,19 +1657,24 @@ GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
 
   opened_audio_channels++;
 #ifdef HAS_IXJ
-  /* If we are using a hardware LID, connect the audio stream to the LID */
-  if ((lid != NULL) && lid->IsOpen()) {
+  OpalLineInterfaceDevice *lid = NULL;
 
+  if (lid_thread) 
+    lid = lid_thread->GetLidDevice ();
+  
+  /* If we are using a hardware LID, connect the audio stream to the LID */
+  if (lid && lid->IsOpen()) {
+    
     gnomemeeting_threads_enter ();
     gchar *msg = g_strdup_printf (_("Attaching lid hardware to codec"));
     gnomemeeting_log_insert (gw->history_text_view, msg);
     g_free (msg);
-
+    
     gnomemeeting_threads_leave ();
-
-
+    
+      
     if (!codec.AttachChannel (new OpalLineChannel (*lid,
-			      OpalIxJDevice::POTSLine, codec))) {
+						   OpalIxJDevice::POTSLine, codec))) {
       return FALSE;
     }
   }
@@ -1851,84 +1828,18 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 
 
 #ifdef HAS_IXJ
-PThread *
+GMLid *
 GMH323EndPoint::GetLidThread (void)
 {
-  return lid_thread;
-}
+  GMLid *l = NULL;
 
+  var_access_mutex.Wait ();
+  l = lid_thread;
+  var_access_mutex.Signal ();
 
-OpalLineInterfaceDevice *
-GMH323EndPoint::GetLidDevice ()
-{
-  return lid;
-}
-#endif
-
-
-#ifdef HAS_IXJ
-void 
-GMH323EndPoint::LidThread (PThread &, INT)
-{
-  BOOL OffHook, lastOffHook;
-
-
-  /* Check the initial hook status. */
-  OffHook = lastOffHook = lid->IsLineOffHook (OpalIxJDevice::POTSLine);
-
-  /* OffHook can take a few cycles to settle, so on the first pass */
-  /* assume we are off-hook and play a dial tone. */
-  lid->PlayTone(0, OpalLineInterfaceDevice::DialTone);
-
-  while ((lid != NULL) && (lid->IsOpen()) )
-  {
-    OffHook = 
-      (lid->IsLineOffHook (OpalIxJDevice::POTSLine));
-
-    if (char c = lid->ReadDTMF (OpalIxJDevice::POTSLine))
-      gnomemeeting_dialpad_event (PString (c));
-
-    /* If there is a state change */
-    if ((OffHook == TRUE) && (lastOffHook == FALSE)) {
-
-      if (GetCallingState() == 3) { /* 3 = incoming call */
-
-	lid->StopTone (0);
-        lid->RingLine(OpalIxJDevice::POTSLine, 0);
-	
-        gnomemeeting_threads_enter ();
-	if (gw->incoming_call_popup) {
-
-	  gtk_widget_destroy (gw->incoming_call_popup);
-	  gw->incoming_call_popup = NULL;
-	}
-	gnomemeeting_threads_leave ();
-
-	MyApp->Connect ();
-      }
-
-
-      if (GetCallingState() == 0) { /* not connected */
-
-        lid->PlayTone (0, OpalLineInterfaceDevice::DialTone);
-      }
-    }
-
-
-    /* if phone is on hook */
-    if ((OffHook == FALSE) && (lastOffHook == TRUE)) {
-
-      if (GetCallingState() == 2) { /* 2 = currently in a call */
-
-	MyApp->Disconnect ();
-      }
-    }
-
-    lastOffHook = OffHook;
-
-    /* We must poll to read the hook state */
-    PThread::Sleep(50);
-  }
+  return l;
 }
 #endif
+
+
 

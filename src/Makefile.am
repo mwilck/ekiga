@@ -52,7 +52,9 @@ gnomemeeting_SOURCES =		\
 	tray.h			\
 	tray.cpp		\
 	tools.cpp		\
-	tools.h
+	tools.h			\
+	lid.cpp			\
+	lid.h
 
 
 gnomemeeting_LDADD = \
