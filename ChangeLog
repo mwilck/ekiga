@@ -1,5 +1,13 @@
 2004-12-19  Damien Sandras  <dsandras@gnome.org>
 
+	* src/config.cpp: Temporarily commented out check for forwarding host 
+	presence.
+
+	* src/sipendpoint.cpp: More work on OnIncomingConnection. Call
+	forward on busy, and call forward always should work now.
+
+2004-12-19  Damien Sandras  <dsandras@gnome.org>
+
 	* src/endpoint.cpp, src/endpoint.h, src/h323endpoint.cpp, 
 	src/h323endpoint.h, src/sipendpoint.cpp, src/sipendpoint.h:
 	Moved OnIncomingConnection to the SIP and H.323 endpoints to allow

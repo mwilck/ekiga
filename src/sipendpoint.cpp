@@ -286,9 +286,91 @@ GMSIPEndPoint::OnRegistrationFailed (SIPEndPoint::RegistrationFailReasons r,
 BOOL 
 GMSIPEndPoint::OnIncomingConnection (OpalConnection &connection)
 {
+  GtkWidget *main_window = NULL;
+  GtkWidget *history_window = NULL;
+  
+  gchar *forward_host = NULL;
+
+  gboolean busy_forward = FALSE;
+  gboolean always_forward = FALSE;
+  
+  gboolean result = FALSE;
+
+  gchar *utf8_name = NULL;
+  gchar *utf8_app = NULL;
+  gchar *utf8_url = NULL;
+
+  gchar *msg = NULL;
+
+  
   PTRACE (3, "GMSIPEndPoint\tIncoming connection");
 
-  return endpoint.OnIncomingConnection (connection);
-  //return connection.ForwardCall ("h323:seconix.com:1740");
+
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
+
+  gnomemeeting_threads_enter ();
+  forward_host = gm_conf_get_string (SIP_KEY "forward_host");
+  busy_forward = gm_conf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
+  always_forward = gm_conf_get_bool (CALL_FORWARDING_KEY "always_forward");
+  gnomemeeting_threads_leave ();
+
+  
+  endpoint.GetRemoteConnectionInfo ((OpalConnection &) connection,
+				    utf8_name, utf8_app, utf8_url);
+
+  if (!forward_host) {
+   
+    g_free (utf8_name);
+    g_free (utf8_app);
+    g_free (utf8_url);
+
+    return endpoint.OnIncomingConnection (connection);
+  }
+  else {
+
+    /* We are forwarding */
+    if (always_forward 
+	|| (busy_forward && 
+	    endpoint.GetCallingState () != GMEndPoint::Standby)) {
+
+      msg = 
+	g_strdup_printf (_("Forwarding call from %s to %s"),
+			 (const char *) utf8_name, 
+			 (const char *) forward_host);
+      
+      /* Add the full message in the log */
+      gnomemeeting_threads_enter ();
+      gm_history_window_insert (history_window, msg);
+      gm_main_window_flash_message (main_window, _("Call forwarded"));
+      gnomemeeting_threads_leave ();
+      
+      result = connection.ForwardCall ("sip:444@seconix.com");
+      
+      g_free (forward_host);
+      g_free (utf8_name);
+      g_free (utf8_app);
+      g_free (utf8_url);
+
+      g_free (msg);
+      
+      return result;
+    }
+    else {
+     
+      g_free (utf8_name);
+      g_free (utf8_app);
+      g_free (utf8_url);
+
+      return endpoint.OnIncomingConnection (connection);
+    }
+  }
+  
+
+  g_free (utf8_app);
+  g_free (utf8_url);
+  g_free (utf8_name);
+
+  return FALSE;
 }
 
