@@ -592,8 +592,9 @@ gnomemeeting_new_event (BonoboListener    *listener,
       return;
   }
 
+  
   for (i = 0; i < argc; i++) {
-    if (!strcmp (argv [i], "-c") || !strcmp (argv [i], "--callto"))
+    if (!strcmp (argv [i], "-c") || !strcmp (argv [i], "--callto")) 
       break;
   } 
 
@@ -609,6 +610,8 @@ gnomemeeting_new_event (BonoboListener    *listener,
     
     connect_cb (NULL, NULL);
   }
+  else
+    cout << endl << _("GnomeMeeting already running, but no URL to call given, exiting.") << endl << flush;
 }
 
 

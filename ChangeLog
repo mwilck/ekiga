@@ -1,5 +1,16 @@
 2003-01-07 Damien Sandras  <dsandras@seconix.com>
 
+	* gnomemeeting.schemas.in.in: Fixed locale bug due to misplaced
+	locale tag thanks to Artur Flinta <aflinta@at.kernel.pl>.
+	
+	* src/ldap_window.cpp: Added Refresh Button again, easier to access.
+	
+	* src/main_window.cpp: Added message when GnomeMeeting is exiting
+	because another instance was already running and no URL to call
+	was given.
+	
+2003-01-07 Damien Sandras  <dsandras@seconix.com>
+
 	* src/common.h: Removed unuseful widget.
 	
 	* src/config.cpp: Added notifier to show/hide the Microtelco

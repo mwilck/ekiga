@@ -67,7 +67,7 @@ static void contact_activated_cb (GtkTreeView *, GtkTreePath *,
 static gint ldap_window_clicked (GtkWidget *, GdkEvent *, gpointer);
 static void contact_section_changed_cb (GtkTreeSelection *, gpointer);
 static void server_content_refresh (GtkWidget *, gint);
-static void search_entry_activated_cb (GtkWidget *, gpointer);
+static void refresh_server_content_cb (GtkWidget *, gpointer);
 static void contact_section_activated_cb (GtkTreeView *, GtkTreePath *,
 						 GtkTreeViewColumn *);
 static gboolean is_contact_member_of_group (gchar *, gchar *);
@@ -907,12 +907,12 @@ server_content_refresh (GtkWidget *notebook, gint page_num)
 }
 
 
-/* DESCRIPTION  :  This callback is called when the user activates 
- *                 (type Enter) in the search entry.
+/* DESCRIPTION  :  This callback is called when the user chooses to refresh
+ *                 the server content.
  * BEHAVIOR     :  Browse the selected server.
- * PRE          :  /
+ * PRE          :  data = page_num of GtkNotebook containing the server.
  */
-void search_entry_activated_cb (GtkWidget *w, gpointer data)
+void refresh_server_content_cb (GtkWidget *w, gpointer data)
 {
   GmLdapWindow *lw = NULL;
 
@@ -1204,7 +1204,7 @@ contact_section_event_after_cb (GtkWidget *w,
 	  {
 	    {_("Refresh"), NULL,
 	     GTK_STOCK_REFRESH, 0, MENU_ENTRY, 
-	     GTK_SIGNAL_FUNC (search_entry_activated_cb), 
+	     GTK_SIGNAL_FUNC (refresh_server_content_cb), 
 	     GINT_TO_POINTER (page_num), NULL},
 	    {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
 	    {_("Delete"), NULL,
@@ -1613,6 +1613,7 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
   GtkWidget *menu_item = NULL;
   GtkWidget *option_menu = NULL;
   GtkWidget *search_entry = NULL;
+  GtkWidget *refresh_button = NULL;
   
   GConfClient *client = NULL;
   
@@ -1855,10 +1856,18 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
     gtk_toolbar_append_widget (GTK_TOOLBAR (toolbar), 
 			       GTK_WIDGET (search_entry),
 			       NULL, NULL);
-    gtk_widget_set_size_request (GTK_WIDGET (search_entry), 270, -1);
+    gtk_widget_set_size_request (GTK_WIDGET (search_entry), 240, -1);
     gtk_toolbar_append_space (GTK_TOOLBAR (toolbar));
     gtk_widget_show_all (handle);
 
+
+    /* The Refresh button */
+    refresh_button = gtk_button_new_from_stock (GTK_STOCK_REFRESH);
+    gtk_toolbar_append_widget (GTK_TOOLBAR (toolbar), 
+			       GTK_WIDGET (refresh_button),
+			       NULL, NULL);
+    gtk_toolbar_append_space (GTK_TOOLBAR (toolbar));
+    
     
     /* The statusbar */
     statusbar = gtk_statusbar_new ();
@@ -1887,12 +1896,17 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
   page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), page_num);
 
 
-  /* Connect to the search entry, if any */
-  if (search_entry)
+  /* Connect to the search entry, and refresh button, if any */
+  if (search_entry) {
+    
     g_signal_connect (G_OBJECT (search_entry), "activate",
-		      G_CALLBACK (search_entry_activated_cb), 
+		      G_CALLBACK (refresh_server_content_cb), 
 		      GINT_TO_POINTER (page_num));
-
+    g_signal_connect (G_OBJECT (refresh_button), "clicked",
+		      G_CALLBACK (refresh_server_content_cb), 
+		      GINT_TO_POINTER (page_num));
+  }
+  
   
   /* If the type of page is "groups", then we populate the page */
   if (type == CONTACTS_GROUPS) 
