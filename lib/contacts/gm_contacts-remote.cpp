@@ -110,6 +110,8 @@ gnomemeeting_get_remote_addressbooks ()
 
     if (elmt->aid && elmt->name) 
       addressbooks = g_slist_append (addressbooks, (gpointer) elmt);
+    else
+      gm_addressbook_delete (elmt);
 
     j = g_slist_next (j);
   }
