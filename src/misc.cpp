@@ -638,7 +638,7 @@ gnomemeeting_table_add_string_option_menu (GtkWidget *table,
   GtkWidget *menu = NULL;
   GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);  
   gchar *gconf_string = NULL;
-  int history = 0;
+  int history = -1;
 
   int cpt = 0;                                                   
 
@@ -675,9 +675,17 @@ gnomemeeting_table_add_string_option_menu (GtkWidget *table,
     cpt++;
   }
 
+  if (history == -1) {
+
+    if (options [0])
+      gconf_client_set_string (client, gconf_key, options [0], NULL);
+    history = 0;
+  }
+
   gtk_option_menu_set_menu (GTK_OPTION_MENU (option_menu), menu);
   gtk_option_menu_set_history (GTK_OPTION_MENU (option_menu), 
  			       history);
+
 
   gtk_table_attach (GTK_TABLE (table), option_menu, 1, 2, row, row+1,         
                     (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                

@@ -56,6 +56,7 @@ static void gnomemeeting_druid_quit (GtkWidget *, gpointer);
 static void gnomemeeting_druid_cancel (GtkWidget *, gpointer);
 static void gnomemeeting_druid_user_page_check (GnomeDruid *);
 static void gnomemeeting_druid_toggle_changed (GtkToggleButton *, gpointer);
+static void gnomemeeting_druid_entry_changed (GtkWidget *, gpointer);
 static void gnomemeeting_druid_radio_changed (GtkToggleButton *, gpointer);
 static void gnomemeeting_druid_page_prepare (GnomeDruidPage *, GnomeDruid *,
 					     gpointer);
@@ -231,6 +232,21 @@ gnomemeeting_druid_toggle_changed (GtkToggleButton *button, gpointer data)
     gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (gm), GTK_WIDGET (button), _("You chose to NOT use the GnomeMeeting ILS directory. Other users will not be able to contact you if you don't register to a directory service."));
 }
 
+
+/* DESCRIPTION  :  Called when the user changes an info in the Personal
+ *                 Information page.
+ * BEHAVIOR     :  Checks if the "Next" button of the "Personal Information"
+ *                 druid page can be sensitive or not. It will if all fields
+ *                 are ok, or if registering is disabled. (Calls the above
+ *                 function).
+ * PRE          :  /
+ */
+static void
+gnomemeeting_druid_entry_changed (GtkWidget *w, gpointer data)
+{
+  gnomemeeting_druid_user_page_check (druid);
+}
+
 					   
 /* DESCRIPTION  :  Called when the radio button of the Connection page changes.
  * BEHAVIOR     :  Set default keys to good default settings.
@@ -359,6 +375,8 @@ static void gnomemeeting_init_druid_user_page (GnomeDruid *druid)
   GtkWidget *table = NULL;
   GtkWidget *label = NULL;
   GtkWidget *toggle = NULL;
+  GtkWidget *entry = NULL;
+
   PangoAttrList     *attrs = NULL; 
   PangoAttribute    *attr = NULL; 
   GnomeDruidPageStandard *page_standard = NULL;
@@ -384,15 +402,27 @@ static void gnomemeeting_init_druid_user_page (GnomeDruid *druid)
   pango_attr_list_unref (attrs);
   gtk_box_pack_start (GTK_BOX (vbox), label,                                   
                       TRUE, TRUE, 0);          
-  
+
   table = gnomemeeting_vbox_add_table (vbox, _("Personal Information"), 6, 2);
-  gnomemeeting_table_add_entry (table, _("First Name:"), "/apps/gnomemeeting/personal_data/firstname", NULL, 0);
 
-  gnomemeeting_table_add_entry (table, _("Last Name:"), "/apps/gnomemeeting/personal_data/lastname", NULL, 1);
-  gnomemeeting_table_add_entry (table, _("E-mail Address:"), "/apps/gnomemeeting/personal_data/mail", NULL, 2);
-  gnomemeeting_table_add_entry (table, _("Comment:"), "/apps/gnomemeeting/personal_data/comment", NULL, 3);
-  gnomemeeting_table_add_entry (table, _("Location:"), "/apps/gnomemeeting/personal_data/location", NULL, 4);
 
+  /* The user fields */
+  entry = gnomemeeting_table_add_entry (table, _("First Name:"), "/apps/gnomemeeting/personal_data/firstname", NULL, 0);
+
+  entry = gnomemeeting_table_add_entry (table, _("Last Name:"), "/apps/gnomemeeting/personal_data/lastname", NULL, 1);
+
+  entry = gnomemeeting_table_add_entry (table, _("E-mail Address:"), "/apps/gnomemeeting/personal_data/mail", NULL, 2);
+
+  entry = gnomemeeting_table_add_entry (table, _("Comment:"), "/apps/gnomemeeting/personal_data/comment", NULL, 3);
+
+  entry = gnomemeeting_table_add_entry (table, _("Location:"), "/apps/gnomemeeting/personal_data/location", NULL, 4);
+
+  g_signal_connect (G_OBJECT (entry), "changed",
+		    G_CALLBACK (gnomemeeting_druid_entry_changed), 
+		    NULL);
+  
+
+  /* The register toggle */
   toggle = gtk_check_button_new_with_label (_("Do not register me to ILS"));   
   gtk_table_attach (GTK_TABLE (table), toggle, 0, 2, 5, 6,
 		    (GtkAttachOptions) NULL, 
@@ -403,6 +433,7 @@ static void gnomemeeting_init_druid_user_page (GnomeDruid *druid)
   g_signal_connect (G_OBJECT (toggle), "toggled",
 		    G_CALLBACK (gnomemeeting_druid_toggle_changed), 
 		    NULL);
+
 
   g_signal_connect_after (G_OBJECT (page_standard), "prepare",
 			  G_CALLBACK (gnomemeeting_druid_page_prepare), 

@@ -1433,7 +1433,11 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   quit_mutex.Wait ();
 
+  gnomemeeting_threads_enter ();
   gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_settings_frame), FALSE);
+  gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_test_button), TRUE);
+  gnomemeeting_threads_leave ();
+
   player_channel = NULL;
   recorder_channel = NULL;
 

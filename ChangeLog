@@ -1,5 +1,18 @@
 2002-11-26 Damien Sandras  <dsandras@seconix.com>
 
+	* src/druid.cpp: Fixed bug: Next is set to sensitive when needed. It
+	was alsways disabled the first time GM is run.
+	
+	* src/endpoint.cpp: Cleanups.
+	
+	* src/misc.cpp, src/misc.h: The function that builds a string option
+	menu now set the gconf key to the first available choice of the menu
+	if the gconf key doesn't correspond to any choice of this menu.
+	
+	* src/sound_handling.cpp: Cleanups.
+
+2002-11-26 Damien Sandras  <dsandras@seconix.com>
+
 	* configure.in: Incremented SCHEMA_AGE.
 
 	* gnomemeeting.schemas.in.in: Removed mixers.

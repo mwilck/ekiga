@@ -113,47 +113,6 @@ gnomemeeting_volume_set (char *mixer, int source, int *volume)
 int 
 gnomemeeting_volume_get (char *mixer, int source, int *volume)
 {
-  int mixerfd = -1, res = -1;
-
-#ifdef HAS_IXJ
-  OpalLineInterfaceDevice *lid = NULL;
-
-  if (!strcmp (mixer, "/dev/phone0")) {
-
-    unsigned vol;
-    if ((MyApp) && (MyApp->Endpoint ()))
-      lid = MyApp->Endpoint ()->GetLidDevice ();
-
-    if (source == SOURCE_AUDIO) 
-      if (lid)
-	lid->GetPlayVolume (0, vol);
-
-    if (source == SOURCE_MIC)
-      if (lid)
-	lid->GetRecordVolume (0, vol);
-
-    *volume = (int) vol;
-  }
-  else {
-#endif
-
-    if (mixer)
-      mixerfd = open (mixer, O_RDWR);
-      
-    if (mixerfd == -1)
-      return -1;
-
-    if (source == SOURCE_AUDIO)
-      res = ioctl (mixerfd, MIXER_READ (SOUND_MIXER_READ_VOLUME), volume);
-
-    if (source == SOURCE_MIC)
-      res = ioctl (mixerfd, MIXER_READ (SOUND_MIXER_MIC), volume);
-
-    close (mixerfd);
-
-#ifdef HAS_IXJ
-  }
-#endif  
 
   return TRUE;
 }
@@ -356,7 +315,7 @@ void GMAudioTester::Main ()
       if (!displayed) {
 
 	gdk_threads_enter ();
-	gnomemeeting_message_dialog (GTK_WINDOW (window), _("GnomeMeeting is now recording from %s and playing back to %s. Please speak in your microphone. You should hear yourself back into the speakers. Please make sure that what you hear is not the electronic feedback but your real recorded voice. If you don't hear yourself speaking, please fix your audio setup before using GnomeMeeting or others won't hear you. Most probably that your driver is not able to do full-duplex."), (const char*) ep->GetSoundChannelRecordDevice (), (const char*) ep->GetSoundChannelPlayDevice ());
+	gnomemeeting_message_dialog (GTK_WINDOW (window), _("GnomeMeeting is now recording from %s and playing back to %s. Please speak in your microphone. You should hear yourself back into the speakers. Please make sure that what you hear is not the electronic feedback but your real recorded voice. If you don't hear yourself speaking, please fix your audio setup before using GnomeMeeting or others won't hear you. You can use the sliders in the control panel to modify the volume of the speakers and of the microphone."), (const char*) ep->GetSoundChannelRecordDevice (), (const char*) ep->GetSoundChannelPlayDevice ());
 
 	gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_settings_frame), TRUE);
 	gdk_threads_leave ();

@@ -156,7 +156,7 @@ GtkWidget *
 gnomemeeting_table_add_int_option_menu (GtkWidget *, gchar *, gchar **, 
 					gchar *, gchar *,int);
 
-
+/* Do not add default, but 1st element in the array */
 GtkWidget *
 gnomemeeting_table_add_string_option_menu (GtkWidget *, gchar *, gchar **,
 					   gchar *, gchar *, int);
