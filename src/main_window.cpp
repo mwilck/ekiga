@@ -584,7 +584,7 @@ void gnomemeeting_init (GM_window_widgets *gw,
   gtk_widget_push_visual(gdk_rgb_get_visual());
   gtk_widget_push_colormap(gdk_rgb_get_cmap());
   gnome_window_icon_set_from_file 
-    (GTK_WINDOW (gm), GNOMEMEETING_IMAGES "gnomemeeting-logo-icon.png");
+    (GTK_WINDOW (gm), GNOMEMEETING_IMAGES "/gnomemeeting-logo-icon.png");
 
   if (gw->splash_win)
     gtk_widget_destroy (gw->splash_win);

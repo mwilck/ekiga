@@ -373,7 +373,7 @@ e_splash_construct (ESplash *splash,
 	gtk_window_set_policy (GTK_WINDOW (splash), FALSE, FALSE, FALSE);
 	gtk_window_set_default_size (GTK_WINDOW (splash), image_width, image_height);
 	gnome_window_icon_set_from_file (GTK_WINDOW (splash), 
-					 GNOMEMEETING_IMAGES "/gnomemeeting-splash.png");
+					 GNOMEMEETING_IMAGES "/gnomemeeting-logo-icon.png");
 	gtk_window_set_title (GTK_WINDOW (splash), "GnomeMeeting");
 
 }
