@@ -1,5 +1,17 @@
 2002-12-03 Damien Sandras  <dsandras@seconix.com>
 
+	* src/common.h: Added the druid.
+
+	* src/druid.cpp: Use the druid above and update the pointer if the
+	druid is destroyed.
+
+	* src/main_window.cpp: ?
+
+	* src/videograbber.cpp, src/videograbber.h: Make sure to only
+	edit the druid if it still existing.
+	
+2002-12-03 Damien Sandras  <dsandras@seconix.com>
+
 	* src/misc.cpp: Added missing slash to display the incoming call
 	icon thanks to tfing on IRC.
 	

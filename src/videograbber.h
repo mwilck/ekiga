@@ -268,9 +268,10 @@ public:
 
   /* DESCRIPTION  :  The constructor.
    * BEHAVIOR     :  
-   * PRE          :  
+   * PRE          :  A progressbar to update, and a toggle button that is
+   *                 released when the test stops.
    */
-  GMVideoTester (GtkWidget *, GtkWindow *);
+  GMVideoTester (GtkWidget *, GtkWidget *, GtkWindow *);
 
 
   /* DESCRIPTION  :  The destructor.
@@ -287,6 +288,7 @@ protected:
 
   PMutex quit_mutex;
   GtkWidget *progress;
+  GtkWidget *b;
   GtkWindow *window;
 };
 #endif

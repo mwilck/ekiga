@@ -24,7 +24,11 @@
 #ifndef GM_COMMON_H_
 #define GM_COMMON_H_
 
+#ifndef DISABLE_GNOME
+#include <gnome.h>
+#else
 #include <gtk/gtk.h>
+#endif
 
 #include <ptlib.h>
 #include <iostream>
@@ -150,6 +154,11 @@ struct _GmWindow
   GtkWidget *stats_drawing_area;
   GtkWidget *audio_test_button;
   GtkWidget *video_test_button;
+
+#ifndef DISABLE_GNOME
+  GnomeDruid *druid;
+#endif
+
   GdkColor colors [6];
 
   int          progress_timeout;

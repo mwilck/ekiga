@@ -720,10 +720,11 @@ void GMVideoGrabber::VGClose (int display_logo)
 
 
 /* The video tester class */
-GMVideoTester::GMVideoTester (GtkWidget *p, GtkWindow *w)
+GMVideoTester::GMVideoTester (GtkWidget *p, GtkWidget *but, GtkWindow *w)
   :PThread (1000, AutoDeleteThread)
 {
   progress = p;
+  b = but;
   window = w;
 
   this->Resume ();
@@ -742,6 +743,7 @@ void GMVideoTester::Main ()
 {
   quit_mutex.Wait ();
 
+  GmWindow *gw = NULL;
   PVideoInputDevice *grabber = new PVideoInputDevice();
   int height = GM_QCIF_HEIGHT; 
   int width = GM_QCIF_WIDTH; 
@@ -756,9 +758,22 @@ void GMVideoTester::Main ()
 
   video_device =  gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/video_recorder", NULL);
 
+  gnomemeeting_threads_enter ();
+  gw = gnomemeeting_get_main_window (gm);
+  if (gw->druid)
+    gtk_widget_set_sensitive (GTK_WIDGET (b), FALSE);
+  gnomemeeting_threads_leave ();
+
   while (cpt <= 5) {
 
-    gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (progress), per);
+    gnomemeeting_threads_enter ();
+    if (gw->druid) {
+
+      gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (progress), per);
+      gtk_widget_queue_draw (GTK_WIDGET (progress));
+    }
+    gnomemeeting_threads_leave ();
+
     if (!grabber->Open (video_device, FALSE))
       error_code = 0;
     else
@@ -779,7 +794,7 @@ void GMVideoTester::Main ()
     if (error_code != -1)
       break;
 
-    per = cpt * 0.25;
+    per = cpt * 0.20;
     cpt++;
   }
 
@@ -822,14 +837,30 @@ void GMVideoTester::Main ()
 
   gnomemeeting_threads_enter ();
   if (error_code == - 1)
-    gnomemeeting_message_dialog (GTK_WINDOW (window), msg);
+    if (gw->druid)
+      gnomemeeting_message_dialog (GTK_WINDOW (window), msg);
+    else
+      gnomemeeting_message_dialog (GTK_WINDOW (gm), msg);
   else
-    gnomemeeting_error_dialog (GTK_WINDOW (window), msg);
+    if (gw->druid)
+      gnomemeeting_error_dialog (GTK_WINDOW (window), msg);
+    else
+      gnomemeeting_error_dialog (GTK_WINDOW (gm), msg);
   gnomemeeting_threads_leave ();
-  
+
   g_free (msg);
 
   delete (grabber);
+
+  gnomemeeting_threads_enter ();
+  if (gw->druid) {
+
+    gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (progress), 0.0);
+    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (b), FALSE);
+    gtk_widget_set_sensitive (GTK_WIDGET (b), TRUE);
+  }
+  gnomemeeting_threads_leave ();
+
   quit_mutex.Signal ();
 }
 
