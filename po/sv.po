@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
-"POT-Creation-Date: 2001-09-05 11:05+0200\n"
-"PO-Revision-Date: 2001-09-05 11:11+0200\n"
+"POT-Creation-Date: 2001-09-06 13:13+0200\n"
+"PO-Revision-Date: 2001-09-06 13:23+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -39,13 +39,15 @@ msgstr "Bidragsgivare:"
 msgid "I18n Maintainer:"
 msgstr "Internationaliseringsansvarig:"
 
-#. Translators: Please change the (C) to a real copyright
-#. character if your character set allows it.
-#: src/callbacks.cpp:148
+#. Translators: Please change the (C) to a real
+#. copyright character if your character set allows it
+#. (Hint: iso-8859-1 is one of the character sets that
+#. has this symbol).
+#: src/callbacks.cpp:150
 msgid "(C) 2000, 2001 Damien Sandras"
 msgstr "© 2000, 2001 Damien Sandras"
 
-#: src/callbacks.cpp:150
+#: src/callbacks.cpp:152
 msgid ""
 "GnomeMeeting is an H.323 compliant program for GNOME.\n"
 "This program is not supported by Microsoft."
@@ -53,7 +55,13 @@ msgstr ""
 "GnomeMeeting är ett H.323-kompatibelt program för GNOME.\n"
 "Detta program stöds inte av Microsoft."
 
-#: src/callbacks.cpp:166
+#: src/callbacks.cpp:168
+msgid ""
+"A call is currently in progress, please disconnect before trying to quit."
+msgstr ""
+"Ett samtal pågår redan, koppla ifrån innan du försöker avsluta."
+
+#: src/callbacks.cpp:176
 msgid "Are you sure you want to quit?"
 msgstr "Är du säker på att du vill avsluta?"
 
@@ -166,93 +174,93 @@ msgstr "Satte ljudinspelningsenhet till %s"
 msgid "Call from %s"
 msgstr "Samtal från %s"
 
-#: src/endpoint.cpp:445
+#: src/endpoint.cpp:446
 #, c-format
 msgid "Connected with %s using %s"
 msgstr "Ansluten till %s med %s"
 
-#: src/endpoint.cpp:453
+#: src/endpoint.cpp:452
 msgid "Connected"
 msgstr "Ansluten"
 
-#: src/endpoint.cpp:456
+#: src/endpoint.cpp:455
 msgid "Fast start enabled"
 msgstr "Snabbstart aktiverad"
 
-#: src/endpoint.cpp:458
+#: src/endpoint.cpp:457
 msgid "Fast start disabled"
 msgstr "Snabbstart deaktiverad"
 
-#: src/endpoint.cpp:461
+#: src/endpoint.cpp:460
 msgid "H.245 Tunnelling enabled"
 msgstr "H.245-tunnling aktiverad"
 
-#: src/endpoint.cpp:463
+#: src/endpoint.cpp:462
 msgid "H.245 Tunnelling disabled"
 msgstr "H.245-tunnling deaktiverad"
 
-#: src/endpoint.cpp:514
+#: src/endpoint.cpp:513
 msgid "Remote party has cleared the call"
 msgstr "Fjärrparten har nollställt samtalet"
 
-#: src/endpoint.cpp:519
+#: src/endpoint.cpp:518
 msgid "Remote party has stopped calling"
 msgstr "Fjärrparten har slutat ringa"
 
-#: src/endpoint.cpp:524 src/endpoint.cpp:544
+#: src/endpoint.cpp:523 src/endpoint.cpp:543
 msgid "Remote party did not accept your call"
 msgstr "Fjärrparten accepterade inte ditt anrop"
 
-#: src/endpoint.cpp:529
+#: src/endpoint.cpp:528
 msgid "Remote party did not answer your call"
 msgstr "Fjärrparten svarade inte på ditt anrop"
 
-#: src/endpoint.cpp:534
+#: src/endpoint.cpp:533
 msgid "This call ended abnormally"
 msgstr "Samtalet avslutades onormalt"
 
-#: src/endpoint.cpp:539
+#: src/endpoint.cpp:538
 msgid "Could not find common codec with remote party"
 msgstr "Kunde inte hitta en komprimeringsmetod gemensam med fjärrparten"
 
-#: src/endpoint.cpp:549
+#: src/endpoint.cpp:548
 msgid "Refused incoming call"
 msgstr "Vägrade ta emot inkommande samtal"
 
-#: src/endpoint.cpp:554
+#: src/endpoint.cpp:553
 msgid "User not found"
 msgstr "Användaren kunde inte hittas"
 
-#: src/endpoint.cpp:559
+#: src/endpoint.cpp:558
 msgid "Call ended: insufficient bandwidth"
 msgstr "Samtalet avslutades: otillräcklig bandbredd"
 
-#: src/endpoint.cpp:567
+#: src/endpoint.cpp:566
 msgid "Remote party could not be reached"
 msgstr "Fjärrparten kunde inte nås"
 
-#: src/endpoint.cpp:572
+#: src/endpoint.cpp:571
 msgid "Remote party is not online"
 msgstr "Fjärrparten är inte ansluten"
 
-#: src/endpoint.cpp:577
+#: src/endpoint.cpp:576
 msgid "No phone running for remote party"
 msgstr "Ingen telefon är på hos fjärrparten"
 
-#: src/endpoint.cpp:582
+#: src/endpoint.cpp:581
 msgid "Transport error calling"
 msgstr "Transportfel vid anrop"
 
-#: src/endpoint.cpp:588 src/endpoint.cpp:591
+#: src/endpoint.cpp:587 src/endpoint.cpp:590
 msgid "Call completed"
 msgstr "Samtalet färdigt"
 
-#: src/endpoint.cpp:758 src/webcam.cpp:168
+#: src/endpoint.cpp:760 src/webcam.cpp:169
 #, c-format
 msgid "Successfully opened video device %s, channel %d"
 msgstr "Lyckades öppna videoenheten %s, kanal %d"
 
-#: src/endpoint.cpp:770 src/webcam.cpp:180
+#: src/endpoint.cpp:772 src/webcam.cpp:181
 #, c-format
 msgid ""
 "Error while opening video device %s, channel %d. A test image will be "
@@ -349,23 +357,28 @@ msgstr "Fel vid registrering i ILS-katalogen"
 msgid "Successfully initiated registering to ILS directory"
 msgstr "Lyckades initiera registrering i ILS-katalogen"
 
-#: src/main.cpp:134
+#: src/main.cpp:135
 msgid "Answering incoming call"
 msgstr "Svarar på inkommande samtal"
 
-#: src/main.cpp:153 src/main.cpp:154
-msgid "Calling..."
-msgstr "Ringer upp..."
+#: src/main.cpp:156
+#, c-format
+msgid "Call %d: calling %s"
+msgstr "Samtal %d: ringer upp %s"
 
-#: src/main.cpp:176
+#: src/main.cpp:182
 msgid "Trying to stop calling"
 msgstr "Försöker stoppa uppringning"
 
-#: src/main.cpp:185
+#: src/main.cpp:185 src/main.cpp:196
+msgid "Failed to stop current call"
+msgstr "Misslyckades med att stoppa aktuellt samtal"
+
+#: src/main.cpp:193
 msgid "Stopping current call"
 msgstr "Stoppar aktuellt samtal"
 
-#: src/main.cpp:190
+#: src/main.cpp:200
 msgid "Refusing incoming call"
 msgstr "Vägrar inkommande samtal"
 
@@ -1077,6 +1090,9 @@ msgstr "ILS-katalog"
 #: src/toolbar.cpp:52
 msgid "Find friends on ILS"
 msgstr "Sök vänner på ILS"
+
+#~ msgid "Calling..."
+#~ msgstr "Ringer upp..."
 
 #~ msgid "_Notebook"
 #~ msgstr "_Flikhäfte"
