@@ -971,20 +971,6 @@ gm_aw_add_addressbook (GtkWidget *addressbook_window,
   g_object_set (G_OBJECT (renderer), "weight", "bold", NULL);
 
   renderer = gtk_cell_renderer_text_new ();
-  column = gtk_tree_view_column_new_with_attributes (_("URL"),
-						     renderer,
-						     "text", 
-						     COLUMN_UURL,
-						     NULL);
-  gtk_tree_view_column_set_sort_column_id (column, COLUMN_UURL);
-  gtk_tree_view_column_set_sizing (GTK_TREE_VIEW_COLUMN (column),
-				   GTK_TREE_VIEW_COLUMN_AUTOSIZE);
-  gtk_tree_view_column_set_resizable (column, true);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (awp->awp_tree_view), column);
-  g_object_set (G_OBJECT (renderer), "foreground", "blue",
-		"underline", TRUE, NULL);
-
-  renderer = gtk_cell_renderer_text_new ();
   column = gtk_tree_view_column_new_with_attributes (_("Comment"),
 						     renderer,
 						     "text", 
@@ -1011,6 +997,20 @@ gm_aw_add_addressbook (GtkWidget *addressbook_window,
   gtk_tree_view_append_column (GTK_TREE_VIEW (awp->awp_tree_view), column);
   if (gnomemeeting_addressbook_is_local (addressbook))
     g_object_set (G_OBJECT (column), "visible", false, NULL);
+
+  renderer = gtk_cell_renderer_text_new ();
+  column = gtk_tree_view_column_new_with_attributes (_("URL"),
+						     renderer,
+						     "text", 
+						     COLUMN_UURL,
+						     NULL);
+  gtk_tree_view_column_set_sort_column_id (column, COLUMN_UURL);
+  gtk_tree_view_column_set_sizing (GTK_TREE_VIEW_COLUMN (column),
+				   GTK_TREE_VIEW_COLUMN_AUTOSIZE);
+  gtk_tree_view_column_set_resizable (column, true);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (awp->awp_tree_view), column);
+  g_object_set (G_OBJECT (renderer), "foreground", "blue",
+		"underline", TRUE, NULL);
 
   renderer = gtk_cell_renderer_text_new ();
   column = gtk_tree_view_column_new_with_attributes (_("E-Mail"),
