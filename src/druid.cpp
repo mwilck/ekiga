@@ -43,6 +43,7 @@
 #include "gnomemeeting.h"
 #include "dialog.h"
 #include "misc.h"
+#include "ils.h"
 #include "videograbber.h"
 #include "stock-icons.h"
 #include "callbacks.h"
@@ -167,18 +168,26 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
   gw = gnomemeeting_get_main_window (gm);
   dw = gnomemeeting_get_druid_window (gm);
 
+
   /* Always register to make the callto available,the user can choose
      to be visible or not */
   gconf_client_set_bool (client, LDAP_KEY "register", true, NULL);
+  (GM_ILS_CLIENT (MyApp->Endpoint ()->GetILSClientThread ()))->Modify ();
 
+
+  /* Fix the toggles */
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (dw->audio_test_button),
 				FALSE);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (dw->video_test_button),
 				FALSE);
 
+
+  /**/
   gconf_client_set_int (client, GENERAL_KEY "version", 
 			MAJOR_VERSION * 100 + MINOR_VERSION, 0);
 
+
+  /* Connection type */
   group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (dw->kind_of_net));
   while (group) {
 
@@ -190,7 +199,8 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
   }
   gconf_client_set_int (client, GENERAL_KEY "kind_of_net", 6 - cpt, NULL);
 
-  
+
+  /* Did the user choose to use the MicroTelco service? */
   if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (dw->enable_microtelco))) {
 
     gconf_string = 
@@ -203,13 +213,18 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
 
       gconf_client_set_string (client, GATEKEEPER_KEY "gk_host", gk_name, 0);
       gconf_client_set_int (client, GATEKEEPER_KEY "registering_method", 1, 0);
+      gconf_client_set_bool (client, SERVICES_KEY "microtelco", true, 0);
 
+      MyApp->Endpoint ()->SetUserNameAndAlias ();
+      MyApp->Endpoint ()->RemoveGatekeeper (0);
       MyApp->Endpoint ()->GatekeeperRegister ();
     }
 
     g_free (gconf_string);   
     g_free (gk_name);
   }
+  else
+    gconf_client_set_bool (client, SERVICES_KEY "microtelco", false, 0);
 
   gtk_widget_hide_all (GTK_WIDGET (gw->druid_window));
   gnome_druid_set_page (dw->druid, GNOME_DRUID_PAGE (dw->page_edge));
@@ -372,8 +387,8 @@ gnomemeeting_druid_radio_changed (GtkToggleButton *b, gpointer data)
   /* DSL / CABLE */
   if (selection == 3) {
     
-    gconf_client_set_int (client, VIDEO_SETTINGS_KEY "tr_fps", 6, NULL);
-    gconf_client_set_int (client, VIDEO_SETTINGS_KEY "tr_vq", 50, NULL);
+    gconf_client_set_int (client, VIDEO_SETTINGS_KEY "tr_fps", 9, NULL);
+    gconf_client_set_int (client, VIDEO_SETTINGS_KEY "tr_vq", 25, NULL);
     gconf_client_set_int (client, VIDEO_SETTINGS_KEY "re_vq", 70, NULL);
     gconf_client_set_int (client, 
 			  VIDEO_SETTINGS_KEY "maximum_video_bandwidth", 
@@ -470,6 +485,7 @@ gnomemeeting_druid_final_page_prepare (GnomeDruid *druid)
   gchar *lastname = NULL;
   gchar *mail = NULL;
   gchar *callto = NULL;
+  bool microtelco = false;
   int cpt = 1;
   
   GSList *group = NULL;
@@ -535,10 +551,13 @@ gnomemeeting_druid_final_page_prepare (GnomeDruid *druid)
     audio_recorder = g_strdup ("");
   if (!video_recorder)
     video_recorder = g_strdup ("");
-	
+
+  microtelco =
+    gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (dw->enable_microtelco));
+  
   callto = g_strdup_printf ("callto://ils.seconix.com/%s", mail);
   
-  text = g_strdup_printf ("You have now finished the GnomeMeeting configuration. All the settings can be changed in the GnomeMeeting preferences. Enjoy!\n\n\nConfiguration Summary:\n\nUsername:  %s %s\nConnection Type:  %s\nAudio Player:  %s\nAudio Recorder:  %s\nVideo Player: %s\nMy Callto URL: %s", firstname, lastname, kind_of_net_name, audio_player, audio_recorder, video_recorder, callto);
+  text = g_strdup_printf ("You have now finished the GnomeMeeting configuration. All the settings can be changed in the GnomeMeeting preferences. Enjoy!\n\n\nConfiguration Summary:\n\nUsername:  %s %s\nConnection Type:  %s\nAudio Player:  %s\nAudio Recorder:  %s\nVideo Player: %s\nMy Callto URL: %s\nPC-To-Phone calls: %s", firstname, lastname, kind_of_net_name, audio_player, audio_recorder, video_recorder, callto, microtelco ? "Enabled" : "Disabled");
   gnome_druid_page_edge_set_text (page_final, text);
     
   g_free (text);
@@ -755,7 +774,7 @@ gnomemeeting_init_druid_audio_devices_page (GnomeDruid *druid, int p, int t)
   /* Packing widgets */
   vbox = gtk_vbox_new (FALSE, 2);
 
-  gnomemeeting_druid_add_graphical_label (vbox, GM_STOCK_DRUID_AUDIO, _("Please choose the audio devices to use during the GnomeMeeting session. You can also choose to use a Quicknet device instead of the soundcard in the preferences. Some webcams models have an internal microphone that can be used with GnomeMeeting."));
+  gnomemeeting_druid_add_graphical_label (vbox, GM_STOCK_DRUID_AUDIO, _("Please choose the audio devices to use during the GnomeMeeting session. You can also choose to use a Quicknet device instead of the soundcard, but the \"Test Audio\" button will only work for soundcards. Notice that some webcams models have an internal microphone that can be used with GnomeMeeting."));
 
 
   /* The Audio devices */
@@ -824,7 +843,7 @@ gnomemeeting_init_druid_video_devices_page (GnomeDruid *druid, int p, int t)
   /* Packing widgets */
   vbox = gtk_vbox_new (FALSE, 2);
 
-  gnomemeeting_druid_add_graphical_label (vbox, GM_STOCK_DRUID_VIDEO, _("Please choose the video device to use during the GnomeMeeting session. Click on the Video Test button to check if your setup is correct and if your driver is supported by GnomeMeeting."));
+  gnomemeeting_druid_add_graphical_label (vbox, GM_STOCK_DRUID_VIDEO, _("Please choose the video device to use during the GnomeMeeting session. Click on the \"Test Video\" button to check if your setup is correct and if your driver is supported by GnomeMeeting. You can only test the correctness of your driver if the selected device is not already in use."));
 
 
   /* The Video device */
@@ -889,11 +908,11 @@ gnomemeeting_init_druid_ixj_device_page (GnomeDruid *druid, int p, int t)
   /* Packing widgets */
   vbox = gtk_vbox_new (FALSE, 2);
 
-  gnomemeeting_druid_add_graphical_label (vbox, GM_STOCK_DRUID_IXJ, _("You can make calls to regular phones and cell numbers worldwide using GnomeMeeting and the MicroTelco service from Quicknet Technologies. To enable this feature you need a compatible card from Quicknet Technologies and you need to enter your MicroTelco Account number and PIN below."));
+  gnomemeeting_druid_add_graphical_label (vbox, GM_STOCK_DRUID_IXJ, _("You can make calls to regular phones and cell numbers worldwide using GnomeMeeting and the MicroTelco service from Quicknet Technologies. To enable this feature you need a compatible card from Quicknet Technologies and you need to enter your MicroTelco Account number and PIN below, then enable registering to the MicroTelco service."));
 
 
   /* The PC-To-Phone setup */
-  table = gnomemeeting_vbox_add_table (vbox, _("PC-To-Phone Setup"), 2, 4);
+  table = gnomemeeting_vbox_add_table (vbox, _("PC-To-Phone Setup"), 3, 4);
 
   entry = 
     gnomemeeting_table_add_entry (table, _("Account Number:"), 
@@ -909,13 +928,10 @@ gnomemeeting_init_druid_ixj_device_page (GnomeDruid *druid, int p, int t)
 
   /* The register toggle */
   dw->enable_microtelco = 
-    gtk_check_button_new_with_label (_("Register to the MicroTelco service"));
-
-  gtk_table_attach (GTK_TABLE (table), dw->enable_microtelco, 0, 2, 3, 4,
-		    (GtkAttachOptions) NULL, 
-		    (GtkAttachOptions) NULL,
-		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
-
+    gnomemeeting_table_add_toggle (table,
+				   _("Register to the MicroTelco service"), 
+				   SERVICES_KEY "enable_microtelco",
+				   NULL, 2, 0);
 
   /* Account Info */
   gchar *gconf_url =

@@ -66,6 +66,7 @@ GMVideoGrabber::GMVideoGrabber ()
 
   gw = gnomemeeting_get_main_window (gm);
   pw = gnomemeeting_get_pref_window (gm);
+  dw = gnomemeeting_get_druid_window (gm);
 
   /* Internal state */
   is_running = 1;
@@ -114,6 +115,7 @@ GMVideoGrabber::~GMVideoGrabber ()
   /* Enable the video preview buttons */
   gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button),
 			    TRUE);
+  gtk_widget_set_sensitive (GTK_WIDGET (dw->video_test_button), true);
 
   /* Display the logo */
   gnomemeeting_init_main_window_logo (gw->main_video_image);
@@ -201,6 +203,7 @@ void GMVideoGrabber::Main ()
      that must be called just after the Main method exits. */
   gnomemeeting_threads_enter ();
   gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
+  gtk_widget_set_sensitive (GTK_WIDGET (dw->video_test_button), FALSE);
   gnomemeeting_threads_leave ();
   
   /* if opened, we close */
@@ -450,6 +453,7 @@ void GMVideoGrabber::VGOpen (void)
     /* Disable the video preview button while opening */
     gnomemeeting_threads_enter ();
     gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
+    gtk_widget_set_sensitive (GTK_WIDGET (dw->video_test_button), FALSE);
     gnomemeeting_statusbar_flash (gw->statusbar, _("Opening Video device"));
     gnomemeeting_log_insert (gw->history_text_view, _("Opening Video device"));
     gnomemeeting_threads_leave ();
@@ -565,6 +569,10 @@ void GMVideoGrabber::VGOpen (void)
       grabber->SetFrameRate (6);
       grabber->SetFrameSizeConverter (width, height, FALSE);
 
+      gnomemeeting_threads_enter ();
+      gtk_widget_set_sensitive (GTK_WIDGET (dw->video_test_button), true);
+      gnomemeeting_threads_leave ();
+      
       g_free (video_image);
     }
 
@@ -603,8 +611,7 @@ void GMVideoGrabber::VGOpen (void)
     if (MyApp->Endpoint ()->GetCallingState () == 0) {
 
       gnomemeeting_threads_enter ();      
-      gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button),
-				TRUE);
+      gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), true);
       gnomemeeting_threads_leave ();
     }
 
@@ -645,6 +652,7 @@ void GMVideoGrabber::VGClose (int display_logo)
     /* Disable the video preview button while closing */
     gnomemeeting_threads_enter ();
     gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
+    gtk_widget_set_sensitive (GTK_WIDGET (dw->video_test_button), FALSE);
     gnomemeeting_threads_leave ();
     
     if (channel) 
@@ -660,6 +668,7 @@ void GMVideoGrabber::VGClose (int display_logo)
   
     /* Enable the video preview button  */
     gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), TRUE);
+    gtk_widget_set_sensitive (GTK_WIDGET (dw->video_test_button), TRUE);
     
     /* Display the logo again */
     if (display_logo)
@@ -751,34 +760,43 @@ void GMVideoTester::Main ()
   gtk_widget_set_sensitive (GTK_WIDGET (dw->video_test_button), FALSE);
   gtk_progress_bar_set_text (GTK_PROGRESS_BAR (dw->progress), "");
   gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (dw->progress), 0.0);
+  gdk_threads_leave ();
 
+  
   while (cpt <= 3) {
 
+    gdk_threads_enter ();
     gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (dw->progress), per);
     gtk_widget_queue_draw (GTK_WIDGET (dw->progress));
+    gdk_threads_leave ();
+    
+    if (strcmp (video_device, _("Picture"))) {
+      
+      if (!grabber->Open (video_device, FALSE))
+	error_code = 0;
+      else
+	if (!grabber->SetVideoChannelFormat (0,  PVideoDevice::Auto))
+	  error_code = 2;
+	else
+	  if (!grabber->SetColourFormatConverter ("YUV420P"))
+	    error_code = 3;
+	  else
+	    if (!grabber->SetFrameRate (10))
+	      error_code = 4;
+	    else
+	      if (!grabber->SetFrameSizeConverter (width, height, FALSE))
+		error_code = 5;
+	      else
+		grabber->Close ();
 
-    if (!grabber->Open (video_device, FALSE))
-      error_code = 0;
-    else
-      if (!grabber->SetVideoChannelFormat (0,  PVideoDevice::Auto))
-	error_code = 2;
-    else
-      if (!grabber->SetColourFormatConverter ("YUV420P"))
-	error_code = 3;
-    else
-      if (!grabber->SetFrameRate (10))
-	error_code = 4;
-    else
-      if (!grabber->SetFrameSizeConverter (width, height, FALSE))
-	error_code = 5;
-    else
-      grabber->Close ();
-
-    if (error_code != -1)
-      break;
-
+      if (error_code != -1)
+	break;
+    }
+    
     msg = g_strdup_printf (_("Test %d done"), cpt);
+    gdk_threads_enter ();
     gtk_progress_bar_set_text (GTK_PROGRESS_BAR (dw->progress), msg);
+    gdk_threads_leave ();
     g_free (msg);
 
     per = cpt * 0.33;
@@ -819,11 +837,14 @@ void GMVideoTester::Main ()
   else
     msg = g_strdup (_("Tests OK!"));
 
+  gdk_threads_enter ();
   gtk_progress_bar_set_text (GTK_PROGRESS_BAR (dw->progress), msg);
+  gdk_threads_leave ();
   g_free (msg);
 
   delete (grabber);
 
+  gdk_threads_enter ();
   gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (dw->progress), 1.0);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (dw->video_test_button),
 				FALSE);

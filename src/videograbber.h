@@ -222,6 +222,7 @@ class GMVideoGrabber : public PThread
   void UpdateConfig (void); /* That function updates the internal values */
 
   GmWindow *gw;
+  GmDruidWindow *dw;
   GmPrefWindow *pw;
 
   int height, width;

@@ -119,7 +119,7 @@ void GMH323Gatekeeper::Main ()
      
       gnomemeeting_threads_enter ();
       msg_box = 
-	gtk_message_dialog_new (GTK_WINDOW (gw->pref_window),
+	gtk_message_dialog_new (GTK_WINDOW (gm),
 				GTK_DIALOG_MODAL,
 				GTK_MESSAGE_ERROR,
 				GTK_BUTTONS_CLOSE,
@@ -157,8 +157,9 @@ void GMH323Gatekeeper::Main ()
 			     gconf_string);
       
       gnomemeeting_threads_enter ();
+      gnomemeeting_log_insert (gw->history_text_view, msg);
       msg_box = 
-	gtk_message_dialog_new (GTK_WINDOW (gw->pref_window),
+	gtk_message_dialog_new (GTK_WINDOW (gm),
 				GTK_DIALOG_MODAL,
 				GTK_MESSAGE_ERROR,
 				GTK_BUTTONS_CLOSE,
@@ -187,7 +188,7 @@ void GMH323Gatekeeper::Main ()
      
       gnomemeeting_threads_enter ();
       msg_box = 
-	gtk_message_dialog_new (GTK_WINDOW (gw->pref_window),
+	gtk_message_dialog_new (GTK_WINDOW (gm),
 				GTK_DIALOG_MODAL,
 				GTK_MESSAGE_ERROR,
 				GTK_BUTTONS_CLOSE,
@@ -225,7 +226,7 @@ void GMH323Gatekeeper::Main ()
       
       gnomemeeting_threads_enter ();
       msg_box = 
-	gtk_message_dialog_new (GTK_WINDOW (gw->pref_window),
+	gtk_message_dialog_new (GTK_WINDOW (gm),
 				GTK_DIALOG_MODAL,
 				GTK_MESSAGE_ERROR,
 				GTK_BUTTONS_CLOSE,
@@ -263,7 +264,7 @@ void GMH323Gatekeeper::Main ()
 
       gnomemeeting_threads_enter ();
       msg_box = 
-	gtk_message_dialog_new (GTK_WINDOW (gw->pref_window),
+	gtk_message_dialog_new (GTK_WINDOW (gm),
 				GTK_DIALOG_MODAL,
 				GTK_MESSAGE_ERROR,
 				GTK_BUTTONS_CLOSE,

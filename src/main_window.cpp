@@ -1157,7 +1157,7 @@ gnomemeeting_init (GmWindow *gw,
 
     g_slist_free (list);
 
-    gconf_client_set_bool (client, GENERAL_KEY "fast_start", true, NULL);
+    gconf_client_set_bool (client, GENERAL_KEY "fast_start", false, NULL);
     gconf_client_set_bool (client, GENERAL_KEY "h245_tunneling", true, NULL);
   }
 #endif

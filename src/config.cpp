@@ -100,6 +100,8 @@ static void view_widget_changed_nt (GConfClient *, guint, GConfEntry *,
 				    gpointer);
 static void audio_codec_setting_changed_nt (GConfClient *, guint, 
 					    GConfEntry *, gpointer);
+static void microtelco_enabled_nt (GConfClient *, guint, GConfEntry *,
+				   gpointer);
 static void ht_fs_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
 static void enable_vid_tr_changed_nt (GConfClient *, guint, GConfEntry *, 
 				      gpointer);
@@ -433,6 +435,38 @@ static void main_notebook_changed_nt (GConfClient *client, guint cid,
 
     gdk_threads_leave ();
 
+  }
+}
+
+
+/* DESCRIPTION  :  This notifier is called when the gconf database data
+ *                 associated with the microtelco service changes.
+ * BEHAVIOR     :  It shows or hides the account option in the tools menu.
+ * PRE          :  /
+ */
+static void microtelco_enabled_nt (GConfClient *client, guint cid, 
+				   GConfEntry *entry, gpointer data)
+{
+  MenuEntry *gnomemeeting_menu = NULL;
+  
+  if (entry->value->type == GCONF_VALUE_BOOL) {
+
+    gdk_threads_enter ();
+
+    gnomemeeting_menu = gnomemeeting_get_menu (gm);
+
+    if (gconf_value_get_bool (entry->value)) {
+
+      gtk_widget_show (GTK_WIDGET (gnomemeeting_menu [43].widget));
+      gtk_widget_show (GTK_WIDGET (gnomemeeting_menu [44].widget));
+    }
+    else {
+
+      gtk_widget_hide (GTK_WIDGET (gnomemeeting_menu [43].widget));
+      gtk_widget_hide (GTK_WIDGET (gnomemeeting_menu [44].widget));
+    }
+    
+    gdk_threads_leave ();
   }
 }
 
@@ -806,6 +840,8 @@ audio_mixer_changed_nt (GConfClient *client,
 static void audio_device_changed_nt (GConfClient *client, guint cid, 
 				     GConfEntry *entry, gpointer data)
 {
+  GmDruidWindow *dw = NULL;
+  
   PString dev, dev1, dev2;
   gchar *player = NULL;
   gchar *recorder = NULL;
@@ -813,7 +849,8 @@ static void audio_device_changed_nt (GConfClient *client, guint cid,
   if (entry->value->type == GCONF_VALUE_STRING) {
 
     gdk_threads_enter ();
-
+    dw = gnomemeeting_get_druid_window (gm);
+    
     dev = PString (gconf_value_get_string (entry->value));
 
     /* If one of the devices that we are using is a quicknet device,
@@ -824,6 +861,8 @@ static void audio_device_changed_nt (GConfClient *client, guint cid,
 			       (const char *) dev, NULL);
       gconf_client_set_string (client, DEVICES_KEY "audio_player",
 			       (const char *) dev, NULL);
+
+      gtk_widget_set_sensitive (GTK_WIDGET (dw->audio_test_button), false);
     }
     else {
 
@@ -845,6 +884,7 @@ static void audio_device_changed_nt (GConfClient *client, guint cid,
 			       (const char *) dev, NULL);
 	gconf_client_set_string (client, DEVICES_KEY "audio_player",
 				 (const char *) dev, NULL);
+	gtk_widget_set_sensitive (GTK_WIDGET (dw->audio_test_button), true);
       }
     }
     
@@ -1625,6 +1665,13 @@ void gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, CONTACTS_KEY "groups",
 			   contacts_list_group_content_changed_nt, 
 			   NULL, 0, 0);
+
+  
+  /* Microtelco */
+#ifndef DISABLE_GNOME
+  gconf_client_notify_add (client, SERVICES_KEY "enable_microtelco",
+			   microtelco_enabled_nt, NULL, 0, 0);
+#endif
 }
 
 

@@ -42,6 +42,7 @@
 #define PERSONAL_DATA_KEY   "/apps/gnomemeeting/personal_data/"
 #define LDAP_KEY            "/apps/gnomemeeting/ldap/"
 #define GATEKEEPER_KEY      "/apps/gnomemeeting/gatekeeper/"
+#define SERVICES_KEY        "/apps/gnomemeeting/services/"
 #define CALL_FORWARDING_KEY "/apps/gnomemeeting/call_forwarding/"
 #define VIDEO_SETTINGS_KEY  "/apps/gnomemeeting/video_settings/"
 #define AUDIO_CODECS_KEY    "/apps/gnomemeeting/audio_codecs/"

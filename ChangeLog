@@ -1,3 +1,21 @@
+2003-01-07 Damien Sandras  <dsandras@seconix.com>
+
+	* src/common.h: Removed unuseful widget.
+	
+	* src/config.cpp: Added notifier to show/hide the Microtelco
+	menu option following it is enabled or not.
+	
+	* src/druid.cpp: Fixed text, fixed microtelco part.
+	
+	* src/gatekeeper.cpp: Added failure message in the log window.
+	
+	* src/menu.cpp: Added microtelco menu section.
+	
+	* src/videograbber.cpp: Disable druid video test during preview 
+	active. Test always succesfull for device "Picture".
+	
+	* src/videograbber.h: Added GmDruidWindow *.
+	
 2003-01-06 Damien Sandras  <dsandras@seconix.com>
 
 	* configure.in: To have experimental IPv6 support the user has

@@ -1,3 +1,4 @@
+
 /* GnomeMeeting -- A Video-Conferencing application
  * Copyright (C) 2000-2002 Damien Sandras
  *
@@ -47,6 +48,7 @@ extern GnomeMeeting *MyApp;
 
 
 /* Static functions */
+static void microtelco_consult_cb (GtkWidget *, gpointer);
 static gint popup_menu_callback (GtkWidget *, GdkEventButton *, gpointer);
 static void menu_item_selected (GtkWidget *, gpointer);
 static void zoom_changed_callback (GtkWidget *, gpointer);
@@ -58,6 +60,53 @@ static void menu_toggle_changed (GtkWidget *, gpointer);
 
 
 /* GTK Callbacks */
+
+static void
+microtelco_consult_cb (GtkWidget *widget, gpointer data)
+{
+#ifndef DISABLE_GNOME
+  GConfClient *client = NULL;
+
+  gchar *filename = NULL;
+  gchar *account = NULL;
+  gchar *pin = NULL;
+  gchar *buffer = NULL;
+  
+  int fd = -1;
+
+  client = gconf_client_get_default ();
+
+  account = gconf_client_get_string (client, GATEKEEPER_KEY "gk_alias", NULL);
+  pin = gconf_client_get_string (client, GATEKEEPER_KEY "gk_password", NULL);
+
+  if (!account || !pin)
+    return;
+  
+  buffer =
+    g_strdup_printf ("<HTML><HEAD><TITLE>MicroTelco Auto-Post</TITLE></HEAD>"
+		     "<BODY BGCOLOR=\"#FFFFFF\" "
+		     "onLoad=\"Javascript:document.autoform.submit()\">"
+		     "<FORM NAME=\"autoform\" "
+		     "ACTION=\"https://%s.an.microtelco.com/acct/Controller\" "
+		     "METHOD=\"POST\">"
+		     "<input type=\"hidden\" name=\"command\" value=\"caller_login\">"
+		     "<input type=\"hidden\" name=\"caller_id\" value=\"%s\">"
+		     "<input type=\"hidden\" name=\"caller_pin\" value=\"%s\">"
+		     "</FORM></BODY></HTML>", account, account, pin);
+
+  fd = g_file_open_tmp ("mktmicro-XXXXXX", &filename, NULL);
+
+  write (fd, (char *) buffer, strlen (buffer));
+
+  gnome_url_show (filename, NULL);
+
+  g_free (filename);
+  g_free (buffer);
+
+  close (fd);
+#endif
+}
+
 
 /* DESCRIPTION  :  This callback is called when the user clicks on an 
  *                 event-box.
@@ -555,6 +604,13 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
        GTK_SIGNAL_FUNC (gnomemeeting_component_view),
        (gpointer) gw->calls_history_window, NULL},
 
+      {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
+
+      {_("Consult MicroTelco Account"), _("View the details of your account"),
+       NULL, 0, MENU_ENTRY, 
+       GTK_SIGNAL_FUNC (microtelco_consult_cb),
+       NULL, NULL},
+      
       {_("_Help"), NULL, NULL, 0, MENU_NEW, NULL, NULL, NULL},
 
 #ifndef DISABLE_GNOME
@@ -611,9 +667,16 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 
 #ifdef DISABLE_GNOME
   gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [4].widget), FALSE);
-  gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [44].widget), FALSE);
-#endif 
+  gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [46].widget), FALSE);
+#endif
 
+#ifndef DISABLE_GNOME
+  if (!gconf_client_get_bool (client, SERVICES_KEY "enable_microtelco", 0)) {
+
+    gtk_widget_hide (GTK_WIDGET (gnomemeeting_menu [43].widget));
+    gtk_widget_hide (GTK_WIDGET (gnomemeeting_menu [44].widget));
+  }
+#endif
 
   return menubar;
 }
