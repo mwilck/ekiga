@@ -35,6 +35,7 @@
 
 #include "common.h"
 
+void gnomemeeting_dialpad_event (const char *);
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Initialise gnomemeeting and builds the windows.

@@ -791,6 +791,59 @@ contrast_changed (GtkAdjustment *adjustment, gpointer data)
 void 
 dialpad_button_clicked (GtkButton *button, gpointer data)
 { 
+  const char *button_text = NULL;
+
+  button_text = gtk_button_get_label (GTK_BUTTON (button));
+  if (button_text)
+    gnomemeeting_dialpad_event (button_text);
+}
+
+
+/**
+ * DESCRIPTION  :  This callback is called when the user tries to close
+ *                 the application using the window manager.
+ * BEHAVIOR     :  Calls the real callback if the notification icon is 
+ *                 not shown else hide GM.
+ * PRE          :  /
+ **/
+static gint 
+gm_quit_callback (GtkWidget *widget, GdkEvent *event, 
+			      gpointer data)
+{
+  GConfClient *client = gconf_client_get_default ();
+  gboolean b = FALSE;
+
+  b = gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_docklet",
+			     NULL);
+
+  if (!b)
+    quit_callback (NULL, data);
+  else 
+    gtk_widget_hide (GTK_WIDGET (gm));
+
+  return (TRUE);
+}  
+
+
+/* The functions */
+int
+gnomemeeting_window_appbar_update (gpointer data) 
+{
+  GtkWidget *progress = (GtkWidget *) data;
+  
+  gdk_threads_enter ();
+
+  if (GTK_WIDGET_VISIBLE (GTK_WIDGET (progress)))
+    gtk_progress_bar_pulse (GTK_PROGRESS_BAR (progress));
+
+  gdk_threads_leave ();
+
+  return 1;
+}
+
+
+void gnomemeeting_dialpad_event (const char *key)
+{
   GMH323EndPoint *endpoint = NULL;
 
   const gchar *button_text = NULL;
@@ -806,7 +859,7 @@ dialpad_button_clicked (GtkButton *button, gpointer data)
   gw = gnomemeeting_get_main_window (gm);
   endpoint = MyApp->Endpoint ();
 
-  button_text = gtk_button_get_label (GTK_BUTTON (button));
+  button_text = key;
   url = gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry)); 
   
   if (button_text) {
@@ -859,54 +912,15 @@ dialpad_button_clicked (GtkButton *button, gpointer data)
             
 	H323Connection *connection = endpoint->GetCurrentConnection ();
             
-	if (connection != NULL)                  
+	if (connection != NULL) {
+                 
 	  connection->SendUserInput (PString (button_text));
+	  OpalLineInterfaceDevice *lid = endpoint->GetLidDevice ();
+	  lid->PlayDTMF (0, button_text, 200, 100);
+	}
       }
     }
   }
-}
-
-
-/**
- * DESCRIPTION  :  This callback is called when the user tries to close
- *                 the application using the window manager.
- * BEHAVIOR     :  Calls the real callback if the notification icon is 
- *                 not shown else hide GM.
- * PRE          :  /
- **/
-static gint 
-gm_quit_callback (GtkWidget *widget, GdkEvent *event, 
-			      gpointer data)
-{
-  GConfClient *client = gconf_client_get_default ();
-  gboolean b = FALSE;
-
-  b = gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_docklet",
-			     NULL);
-
-  if (!b)
-    quit_callback (NULL, data);
-  else 
-    gtk_widget_hide (GTK_WIDGET (gm));
-
-  return (TRUE);
-}  
-
-
-/* The functions */
-int
-gnomemeeting_window_appbar_update (gpointer data) 
-{
-  GtkWidget *progress = (GtkWidget *) data;
-  
-  gdk_threads_enter ();
-
-  if (GTK_WIDGET_VISIBLE (GTK_WIDGET (progress)))
-    gtk_progress_bar_pulse (GTK_PROGRESS_BAR (progress));
-
-  gdk_threads_leave ();
-
-  return 1;
 }
 
 

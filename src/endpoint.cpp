@@ -42,6 +42,7 @@
 #include "ils.h"
 #include "misc.h"
 #include "menu.h"
+#include "main_window.h"
 
 #include <gconf/gconf-client.h>
 #include <g726codec.h>
@@ -1884,6 +1885,8 @@ GMH323EndPoint::LidThread (PThread &, INT)
     OffHook = 
       (lid->IsLineOffHook (OpalIxJDevice::POTSLine));
 
+    if (char c = lid->ReadDTMF (OpalIxJDevice::POTSLine))
+      gnomemeeting_dialpad_event (PString (c));
 
     /* If there is a state change */
     if ((OffHook == TRUE) && (lastOffHook == FALSE)) {
