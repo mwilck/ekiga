@@ -355,18 +355,33 @@ gnomemeeting_history_combo_box_add_entry (GtkCombo *combo, const gchar *key,
 			      contacts_list, gnomemeeting_free_glist_data);
 }
 
+/* Helper functions por the PAssert dialog */
+static void passert_clicked_cb (GnomeDialog *dialog, int reply, gpointer)
+{
+  if (reply == 0)
+    exit (-1);
+}
+
+static gint passert_close_cb (GnomeDialog *dialog, gpointer inAssert)
+{
+  bool *assert = static_cast<bool *> (inAssert);
+  
+  *assert = false;
+
+  return 0; /* FIXME: What I'm supossed to return here? */
+}
 
 /* This function overrides from a pwlib function */
 void PAssertFunc (const char * file, int line, const char * msg)
 
 {
-  static BOOL inAssert;
+  static bool inAssert;
   gchar *mesg = NULL;
 
   if (inAssert)
     return;
 
-  inAssert = TRUE;
+  inAssert = true;
 
   gnomemeeting_threads_enter ();
   mesg = g_strdup_printf (_("Error: %s \nYou can choose to ignore and continue, or to close GnomeMeeting."), msg, NULL);
@@ -378,20 +393,16 @@ void PAssertFunc (const char * file, int line, const char * msg)
 			   _("Continue"),
 			   NULL);
 
-  int reply = gnome_dialog_run(GNOME_DIALOG(dialog));
+  gtk_signal_connect (GTK_OBJECT (dialog), "clicked",
+		      GTK_SIGNAL_FUNC (passert_clicked_cb), 0);
+  gtk_signal_connect (GTK_OBJECT (dialog), "close",
+		      GTK_SIGNAL_FUNC (passert_close_cb), &inAssert); 
+
+  gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (gm));
+				
+  gtk_widget_show (dialog);
  
-  if (reply == 0) {
-
-    gnomemeeting_threads_leave ();
-    exit (-1);
-  }
-
-  if ((reply == 1)||(reply == -1)) {
-
-    inAssert = FALSE;
-    gnomemeeting_threads_leave ();
-    return;
-  }  
+  gnomemeeting_threads_leave ();
 }
 
 

@@ -1,3 +1,10 @@
+2002-03-02  Miguel Rodríguez Pérez  <migrax@terra.es>
+
+	* src/misc.cpp (PAssertFunc, passert_close_cb) 
+	(passert_clicked_cb): Do not run a dialog from a thread, just show
+	it and use callbacks instead.
+	This fixes a warning lots of people were getting...
+
 2002-02-26  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* configure.in: Added AM_GCONF_SOURCE
