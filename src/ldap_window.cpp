@@ -220,12 +220,14 @@ void refresh_button_clicked (GtkButton *button, gpointer data)
 
     if (!found) {
 
+      /* if it was the first "No directory" page, destroy it */
+      if ((page_num == 1)&&(!strcasecmp (_("No directory"), text_label))) {
+
+	gtk_notebook_remove_page (GTK_NOTEBOOK (lw->notebook), 0);
+	page_num--;
+      }
 
       gnomemeeting_init_ldap_window_notebook (page_num, ldap_server);
-
-      /* if it was the first "No directory" page, destroy it */
-      if ((page_num == 1)&&(!strcasecmp (_("No directory"), text_label))) 
-	gtk_notebook_remove_page (GTK_NOTEBOOK (lw->notebook), 0);
     }
     else
       gtk_notebook_set_current_page (GTK_NOTEBOOK (lw->notebook), page_num);
@@ -351,16 +353,26 @@ void search_entry_activated (GtkEntry *e, gpointer data)
  */
 static void ldap_page_close_button_clicked (GtkWidget *button, gpointer data)
 {
-  int page_number;
+  int cpt = 0;
+  int page_number = 0;
   GM_ldap_window_widgets *lw = (GM_ldap_window_widgets *) data;
   GtkWidget *page = GTK_WIDGET (g_object_get_data (G_OBJECT (button), "page"));
 
   page_number = gtk_notebook_page_num (GTK_NOTEBOOK (lw->notebook), page);
 
-  /* We do not remove the first page if it is the only one */
+  /* We do not remove the first page if it is the only one, but we
+     hide the tabs in that case */
   if (!((gtk_notebook_get_current_page (GTK_NOTEBOOK (lw->notebook)) == 0)&&
 	(gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), 1) == NULL)))
+
     gtk_notebook_remove_page (GTK_NOTEBOOK (lw->notebook), page_number);
+
+  while (gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), cpt)) 
+    cpt++;
+ 
+  /* Do not show the tabs if it remains only one page after closing */
+  if (cpt == 1)
+    gtk_notebook_set_show_tabs (GTK_NOTEBOOK (lw->notebook), FALSE);
 }
 
 
@@ -666,6 +678,14 @@ void gnomemeeting_init_ldap_window_notebook (int page_num, gchar *text_label)
   gtk_container_add (GTK_CONTAINER (scroll), tree_view);
   gtk_container_set_border_width (GTK_CONTAINER (tree_view), GNOME_PAD_SMALL);
 
+
+  /* Show or not the tabs following the number of pages */
+ if (page_num > 0)
+   gtk_notebook_set_show_tabs (GTK_NOTEBOOK (lw->notebook), TRUE);
+ else
+   gtk_notebook_set_show_tabs (GTK_NOTEBOOK (lw->notebook), FALSE);
+
+
   /* The page's "label" */
   hbox = gtk_hbox_new (false, 0);
   label = gtk_label_new (text_label);
@@ -694,6 +714,7 @@ void gnomemeeting_init_ldap_window_notebook (int page_num, gchar *text_label)
   gtk_widget_show (tree_view);
   gtk_widget_show (scroll);
   gtk_notebook_append_page (GTK_NOTEBOOK (lw->notebook), scroll, hbox);
+
 
   g_signal_connect (G_OBJECT (close_button), "clicked",
 		    G_CALLBACK (ldap_page_close_button_clicked),

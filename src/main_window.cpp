@@ -53,6 +53,7 @@
 #include "chat_window.h"
 
 #include <gconf/gconf-client.h>
+#include <esd.h>
 
 #include "../pixmaps/inlines.h"
 
@@ -250,6 +251,7 @@ gnomemeeting_init (GmWindow *gw,
   bool show_splash;
   GConfClient *client;
   int debug = 0;
+  int esd_client = 0;
 
   /* Cope with command line options */
   static struct poptOption arguments[] =
@@ -331,11 +333,15 @@ gnomemeeting_init (GmWindow *gw,
   
 
   /* Search for devices */
+  esd_client = esd_open_sound (NULL);
+  esd_standby (esd_client);
   gw->audio_player_devices = 
     PSoundChannel::GetDeviceNames (PSoundChannel::Player);
   gw->audio_recorder_devices = 
     PSoundChannel::GetDeviceNames (PSoundChannel::Recorder);
   gw->video_devices = PVideoInputDevice::GetInputDeviceNames ();
+  esd_resume (esd_client);
+  esd_close (esd_client);
 
 
   /* Build the interface */

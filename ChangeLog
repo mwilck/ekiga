@@ -1,5 +1,16 @@
 2002-05-07  Damien Sandras  <dsandras@seconix.com>
 
+	* src/ldap_window.cpp: The tabs are only shown when needed (more 
+	than one server is browsed/displayed).
+
+	* src/main_window.cpp: Put ESD into standby before the auto-detection
+	of the devices.
+
+	* src/menu.cpp: Fixed bug, the toggles in the menu are now correctly
+	representing the control panel section.
+
+2002-05-07  Damien Sandras  <dsandras@seconix.com>
+
 	* src/endpoint.cpp: Fixed segfault when exiting.
 
 	* src/pref_window.cpp: Fixed string.
@@ -8,24 +19,27 @@
 	
 2002-05-06  Damien Sandras  <dsandras@seconix.com>
 
-	* src/menu.cpp: Removed the popup menu. Cleaned the view menu to conform to the HIG.
-	Added zoom options. Merged the old popup menu in view. Added a control panel sections
-	part.
+	* src/menu.cpp: Removed the popup menu. Cleaned the view menu 
+	to conform to the HIG.
+	Added zoom options. Merged the old popup menu in view. 
+	Added a control panel sections part.
 
 	* src/menu.h: Removed the old popup menu.
 
-	* src/pref_window.cpp: Removed the show_ setting that are already in the view menu.
+	* src/pref_window.cpp: Removed the show_ setting that are already 
+	in the view menu.
 
-	* src/toolbar.cpp: Changed the logic of the show_control_panel button. (Off =
-	section 3).
+	* src/toolbar.cpp: Changed the logic of the show_control_panel 
+	button. (Off = section 3).
 
-	* src/videograbber.cpp: Enable/disable the zoom feature when the device is
-	opened, closed.
+	* src/videograbber.cpp: Enable/disable the zoom feature when 
+	the device is opened, closed.
 
-	* configure.in: Added prereq for old autoconf. Cleaned a bit. Added -lesd.
+	* configure.in: Added prereq for old autoconf. Cleaned a bit. 
+	Added -lesd.
 
-	* gnomemeeting.schema.in: Removed show_control_panel and added a key to remember
-	the last notebook position.
+	* gnomemeeting.schema.in: Removed show_control_panel and added a 
+	key to remember	the last notebook position.
 
 	* config.cpp: Added gconf notifiers for that new key.
 

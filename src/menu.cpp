@@ -435,9 +435,11 @@ void gnomemeeting_init_menu ()
   
   for (int i = 0 ; i < 4 ; i++) {
 
-    if (gconf_client_get_int (client, 
-			      "/apps/gnomemeeting/view/control_panel_section", 0) == i)
+    if (gconf_client_get_int (client, "/apps/gnomemeeting/view/control_panel_section", 0) == i) 
       GTK_CHECK_MENU_ITEM (notebook_view_uiinfo [i].widget)->active = TRUE;
+    else
+      GTK_CHECK_MENU_ITEM (notebook_view_uiinfo [i].widget)->active = FALSE;
+
     gtk_widget_queue_draw (GTK_WIDGET (notebook_view_uiinfo [i].widget));
   }
   
