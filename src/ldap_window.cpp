@@ -304,7 +304,7 @@ dnd_drag_data_received_cb (GtkWidget *tree_view,
       
 	gtk_tree_model_get_value (model, &iter, 
 				  COLUMN_CONTACT_SECTION_NAME, &value);
-	group_name = g_strdup (g_value_get_string (&value));
+	group_name = g_utf8_strdown (g_value_get_string (&value), -1);
 	g_value_unset (&value);
 
 	if (group_name && selection_data && selection_data->data) {
@@ -431,6 +431,7 @@ edit_contact_cb (GtkWidget *widget,
   gchar *contact_section = NULL;
   gchar *contact_info = NULL;
   gchar *group_name = NULL;
+  gchar *group_name_no_case = NULL;
   gchar *gconf_key = NULL;
   gchar *shortcut = NULL;
 
@@ -525,8 +526,11 @@ edit_contact_cb (GtkWidget *widget,
 	  
 	    if (group_name) {
 	    
+	      group_name_no_case = g_utf8_strdown (group_name, -1);
+
 	      gconf_key =
-		g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, group_name);
+		g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, 
+				 group_name_no_case);
 	    
 	      group_content =
 		gconf_client_get_list (client, gconf_key,
@@ -565,6 +569,7 @@ edit_contact_cb (GtkWidget *widget,
 				     group_content, NULL);
 	      valid_answer = true;
 	    
+	      g_free (group_name_no_case);
 	      g_free (gconf_key);
 	      g_slist_free (group_content);
 
@@ -905,6 +910,7 @@ delete_contact_from_group_cb (GtkWidget *widget,
   gchar *contact_name = NULL;
   gchar *gconf_key = NULL;
   gchar *contact_section = NULL;
+  gchar *contact_section_no_case = NULL;
 
   gboolean is_group;
   
@@ -920,9 +926,11 @@ delete_contact_from_group_cb (GtkWidget *widget,
 				 &contact_callto, NULL, &is_group)
       && is_group) {
 
+    contact_section_no_case = g_utf8_strdown (contact_section, -1);
     gconf_key =
       g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, contact_section);
-    
+    g_free (contact_section_no_case);
+
     group_content =
       gconf_client_get_list (client, gconf_key, GCONF_VALUE_STRING, NULL);
     
@@ -1237,6 +1245,8 @@ delete_contact_section_cb (GtkWidget *widget,
   gchar *unset_group_gconf_key = NULL;
   gchar *name = NULL;
 
+  gboolean is_group = false;
+
   gw = gnomemeeting_get_main_window (gm);
   lw = gnomemeeting_get_ldap_window (gm);
   client = gconf_client_get_default ();
@@ -1261,9 +1271,7 @@ delete_contact_section_cb (GtkWidget *widget,
       }
       else {
 
-	unset_group_gconf_key =
-	  g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, name);
-	
+	is_group = true;
 	gconf_key = g_strdup (CONTACTS_KEY "groups_list");
 	confirm_msg = g_strdup_printf (_("Are you sure you want to delete group %s and all its contacts?"), name);
       }
@@ -1285,23 +1293,29 @@ delete_contact_section_cb (GtkWidget *widget,
 	while (name && contacts_list_iter) {
 	
 	  if (!strcasecmp ((char *) name,
-			   (char *) contacts_list_iter->data)) {      
+			   (char *) contacts_list_iter->data)) {
+
 	    contacts_list = 
 	      g_slist_remove_link (contacts_list, contacts_list_iter);
-	    g_slist_free (contacts_list_iter);
-	  
-	    /* Only remove the selected server */
-	    break;
+
+	    if (is_group) {
+
+	      unset_group_gconf_key =
+		g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, name);
+	      gconf_client_set_list (client, unset_group_gconf_key,
+				     GCONF_VALUE_STRING, NULL, NULL);
+	      g_free (unset_group_gconf_key);
+	    }
+
+	    contacts_list_iter = contacts_list;
 	  }
 	
 	  contacts_list_iter = contacts_list_iter->next;
 	}
+	g_slist_free (contacts_list_iter);
       
 	gconf_client_set_list (client, gconf_key, GCONF_VALUE_STRING, 
 			       contacts_list, NULL);
-	if (unset_group_gconf_key)
-	  gconf_client_set_list (client, unset_group_gconf_key,
-				 GCONF_VALUE_STRING, NULL, NULL);
       
 	break;
 
@@ -1310,7 +1324,6 @@ delete_contact_section_cb (GtkWidget *widget,
       gtk_tree_path_free (path);
       g_free (name);
       g_slist_free (contacts_list);
-      g_free (unset_group_gconf_key);
       g_free (gconf_key);
       g_free (confirm_msg);
 
@@ -1688,21 +1701,23 @@ refresh_server_content_cb (GtkWidget *w,
  */
 static gboolean
 is_contact_member_of_group (GMURL contact_url,
-			    const char *group_name)
+			    const char *g_name)
 {
   GSList *group_content = NULL;
   GSList *group_content_iter = NULL;
 
   bool found = false;
   gchar *gconf_key = NULL;
+  gchar *group_name = NULL;
   gchar **contact_info = NULL;
 
   GConfClient *client = NULL;
 
 
-  if (contact_url.IsEmpty () || !group_name)
+  if (contact_url.IsEmpty () || !g_name)
     return false;
   
+  group_name = g_utf8_strdown (g_name, -1);
   gconf_key =
     g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, group_name);
 
@@ -1715,7 +1730,7 @@ is_contact_member_of_group (GMURL contact_url,
   while (group_content_iter && !found) {
 
     if (group_content_iter->data) {
-      
+
       contact_info = g_strsplit ((gchar *) group_content_iter->data, "|", 0);
 
       if (contact_info && contact_info [COLUMN_CALLTO])
@@ -1732,6 +1747,7 @@ is_contact_member_of_group (GMURL contact_url,
   
   g_slist_free (group_content);
   g_free (gconf_key);
+  g_free (group_name);
 
   return found;
 }
@@ -1816,7 +1832,7 @@ get_selected_contact_info (gchar **contact_section,
   if (page && lwp) {
 
     if (contact_section)
-      *contact_section = g_strdup (lwp->contact_section_name);
+      *contact_section = g_utf8_strdown (lwp->contact_section_name, -1);
     // should be freed
       
     selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (lwp->tree_view));
@@ -2178,7 +2194,7 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
 
   
   GmLdapWindowPage *lwp = new (GmLdapWindowPage);
-  lwp->contact_section_name = g_strdup (text_label);
+  lwp->contact_section_name = g_utf8_strdown (text_label, -1);
   lwp->ils_browser = NULL;
   lwp->search_entry = NULL;
   lwp->option_menu = NULL;
@@ -2458,7 +2474,7 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
 
 void
 gnomemeeting_addressbook_group_populate (GtkListStore *list_store,
-					 char *group_name)
+					 char *g_name)
 {
   GtkTreeIter list_iter;
   
@@ -2467,6 +2483,7 @@ gnomemeeting_addressbook_group_populate (GtkListStore *list_store,
 
   char **contact_info = NULL;
   gchar *gconf_key = NULL;
+  gchar *group_name = NULL;
 
   GConfClient *client = NULL;
 
@@ -2474,6 +2491,7 @@ gnomemeeting_addressbook_group_populate (GtkListStore *list_store,
   
   gtk_list_store_clear (GTK_LIST_STORE (list_store));
 
+  group_name = g_utf8_strdown (g_name, -1);
   gconf_key =
     g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, (char *) group_name);
 
@@ -2504,6 +2522,7 @@ gnomemeeting_addressbook_group_populate (GtkListStore *list_store,
   }
 
   g_free (gconf_key);
+  g_free (group_name);
   g_slist_free (group_content);
 }
 
@@ -2638,6 +2657,7 @@ GMURL
 gnomemeeting_addressbook_get_url_from_speed_dial (const char *url)
 {
   gchar *group_content_gconf_key = NULL;
+  gchar *group_name = NULL;
   char **contact_info = NULL;
   
   GSList *group_content = NULL;
@@ -2661,9 +2681,10 @@ gnomemeeting_addressbook_get_url_from_speed_dial (const char *url)
   
   while (groups_iter && groups_iter->data) {
     
+    group_name = g_utf8_strdown ((char *) groups_iter->data, -1);
     group_content_gconf_key =
-      g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY,
-		       (char *) groups_iter->data);
+      g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, group_name);
+		       
 
     group_content =
       gconf_client_get_list (client, group_content_gconf_key,
@@ -2688,6 +2709,7 @@ gnomemeeting_addressbook_get_url_from_speed_dial (const char *url)
     g_slist_free (group_content);
 
     groups_iter = g_slist_next (groups_iter);
+    g_free (group_name);
   }
 
   g_slist_free (groups);
@@ -2714,6 +2736,7 @@ gnomemeeting_addressbook_get_speed_dial_from_url (GMURL url)
   GSList *groups = NULL;
   GSList *groups_iter = NULL;
 
+  gchar *group_name = NULL;
   gchar *result = NULL;
   
   GConfClient *client = NULL;
@@ -2730,9 +2753,10 @@ gnomemeeting_addressbook_get_speed_dial_from_url (GMURL url)
   
   while (groups_iter && groups_iter->data) {
     
+    group_name = g_utf8_strdown ((char *) groups_iter->data, -1);
     group_content_gconf_key =
-      g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY,
-		       (char *) groups_iter->data);
+      g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, group_name);
+
 
     group_content =
       gconf_client_get_list (client, group_content_gconf_key,
@@ -2756,6 +2780,7 @@ gnomemeeting_addressbook_get_speed_dial_from_url (GMURL url)
     g_slist_free (group_content);
 
     groups_iter = g_slist_next (groups_iter);
+    g_free (group_name);
   }
 
   g_slist_free (groups);
@@ -2773,6 +2798,7 @@ gnomemeeting_addressbook_get_speed_dial_from_url (GMURL url)
 static gboolean
 is_contact_member_of_addressbook (GMURL url)
 {
+  gchar *group_name = NULL;
   gchar *group_content_gconf_key = NULL;
   char **contact_info = NULL;
 
@@ -2798,9 +2824,10 @@ is_contact_member_of_addressbook (GMURL url)
   
   while (groups_iter && groups_iter->data) {
     
+    group_name = g_utf8_strdown ((char *) groups_iter->data, -1);
     group_content_gconf_key =
-      g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY,
-		       (char *) groups_iter->data);
+      g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, group_name);
+		       
 
     group_content =
       gconf_client_get_list (client, group_content_gconf_key,
@@ -2820,6 +2847,7 @@ is_contact_member_of_addressbook (GMURL url)
     }
 
     g_free (group_content_gconf_key);
+    g_free (group_name);
     g_slist_free (group_content);
 
     groups_iter = g_slist_next (groups_iter);

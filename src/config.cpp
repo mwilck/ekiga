@@ -1188,9 +1188,6 @@ contacts_sections_list_group_content_changed_nt (GConfClient *client,
   const char *gconf_key = NULL;
   gchar **group_split = NULL;
   gchar *group_name = NULL;
-  gchar *contact_section = NULL;
-
-  GtkListStore *list_store = NULL;
   
   int cpt = 0;
 
@@ -1212,7 +1209,7 @@ contacts_sections_list_group_content_changed_nt (GConfClient *client,
       group_split = g_strsplit (gconf_key, CONTACTS_GROUPS_KEY, 2);
 
       if (group_split [1])
-	group_name = g_strdup (group_split [1]);
+	group_name = g_utf8_strdown (group_split [1], -1);
 
       if (group_name) {
 
@@ -1223,7 +1220,7 @@ contacts_sections_list_group_content_changed_nt (GConfClient *client,
 	  lwp = gnomemeeting_get_ldap_window_page (page);
 
 	  if (lwp && lwp->contact_section_name
-	      && !strcmp (lwp->contact_section_name, group_name)) 
+	      && !strcasecmp (lwp->contact_section_name, group_name)) 
 	    break;
 
 	  cpt++;
