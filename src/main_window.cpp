@@ -61,11 +61,6 @@ extern "C" {
 #include "../pixmaps/whiteness.xpm"
 #include "../pixmaps/contrast.xpm"
 #include "../pixmaps/color.xpm"
-#include "../pixmaps/eye.xpm"
-#include "../pixmaps/quickcam.xpm"
-#include "../pixmaps/left_arrow.xpm"
-#include "../pixmaps/right_arrow.xpm"
-#include "../pixmaps/sample.xpm"
 
 
 /* Declarations */
@@ -79,9 +74,6 @@ static void brightness_changed (GtkAdjustment *, gpointer);
 static void whiteness_changed (GtkAdjustment *, gpointer);
 static void colour_changed (GtkAdjustment *, gpointer);
 static void contrast_changed (GtkAdjustment *, gpointer);
-static void left_arrow_clicked (GtkWidget *, gpointer);
-static void right_arrow_clicked (GtkWidget *, gpointer);
-static void silence_detection_button_clicked (GtkWidget *, gpointer);
 
 static void gnomemeeting_init_main_window ();
 static gint gm_quit_callback (GtkWidget *, GdkEvent *, gpointer);
@@ -226,49 +218,6 @@ void contrast_changed (GtkAdjustment *adjustment, gpointer data)
   contrast =  (int) (GTK_ADJUSTMENT (gw->adj_contrast)->value);
 
   video_grabber->SetContrast (contrast * 256);
-}
-
-
-/* DESCRIPTION  :  This callback is called when the user clicks 
- *                 on the left arrow.
- * BEHAVIOR     :  Writes the new selected tab to the gconf db
- * PRE          :  /
- */
-void left_arrow_clicked (GtkWidget *w, gpointer data)
-{
-  GConfClient *client = GCONF_CLIENT (data);
-  
-  int current = gconf_client_get_int (client,
-				      "/apps/gnomemeeting/view/notebook_info", 0);
-  gconf_client_set_int (client, "/apps/gnomemeeting/view/notebook_info",
-			current - 1, 0);
-}
-
-
-/* DESCRIPTION  :  This callback is called when the user clicks 
- *                 on the right arrow.
- * BEHAVIOR     :  Writes the new selected tab to the gconf db
- * PRE          :  /
- */
-void right_arrow_clicked (GtkWidget *w, gpointer data)
-{
-  GConfClient *client = GCONF_CLIENT (data);
-  
-  int current = gconf_client_get_int (client,
-				      "/apps/gnomemeeting/view/notebook_info", 0);
-  gconf_client_set_int (client, "/apps/gnomemeeting/view/notebook_info",
-			current + 1, 0);
-}
-
-
-/* DESCRIPTION  :  This callback is called when the user clicks 
- *                 on the silence detection button during a call.
- * BEHAVIOR     :  Enable/Disable silence detection.
- * PRE          :  /
- */
-void silence_detection_button_clicked (GtkWidget *w, gpointer data)
-{
-  MyApp->Endpoint ()->ChangeSilenceDetection ();
 }
 
 
@@ -605,61 +554,24 @@ void gnomemeeting_init (GM_window_widgets *gw,
 void gnomemeeting_init_main_window ()
 { 
   GConfClient *client = gconf_client_get_default ();
-  GtkWidget *table, *table_in;	
+  GtkWidget *table;	
   GtkWidget *frame;
   GtkWidget *pixmap;
   GtkWidget *handle_box;
 
   GtkTooltips *tip;
-
   
   GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
 
   /* Create a table in the main window to attach things like buttons */
-  table = gtk_table_new (58, 35, FALSE);
+  table = gtk_table_new (2, 4, FALSE);
   
   gnome_app_set_contents (GNOME_APP (gm), GTK_WIDGET (table));
 
 
-  /* The remote IP field */
-  frame = gtk_frame_new(_("Remote host to contact"));
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
-
-  gtk_widget_set_usize (GTK_WIDGET (frame), 246, 52);
-  gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (frame), 0, 35, 1, 11,
-		    (GtkAttachOptions) NULL,
-		    (GtkAttachOptions) NULL,
-		    10, 10);
-	
-  table_in = gtk_table_new (4, 10, FALSE);
-  gtk_container_add (GTK_CONTAINER (frame), table_in);
-
-  gtk_table_attach (GTK_TABLE (table_in), 
-		    GTK_WIDGET (gtk_label_new (_("Host:"))), 0, 2, 0, 4,
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    0, 0);
-
-  gw->combo = gnomemeeting_history_combo_box_new("/apps/gnomemeeting/"
-						 "history/called_hosts");
-
-  gtk_combo_set_use_arrows_always (GTK_COMBO(gw->combo), TRUE);
-
-  gtk_combo_disable_activate (GTK_COMBO (gw->combo));
-  gtk_signal_connect (GTK_OBJECT (GTK_COMBO (gw->combo)->entry), "activate",
-		      GTK_SIGNAL_FUNC (connect_cb), NULL);
-
-  gtk_table_attach (GTK_TABLE (table_in), GTK_WIDGET (gw->combo), 2, 8, 0, 4,
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    10, 10);
-
-  gtk_widget_show_all (GTK_WIDGET (frame));
-
-
   /* The Notebook */
   gw->main_notebook = gtk_notebook_new ();
-  gtk_notebook_set_tab_pos (GTK_NOTEBOOK (gw->main_notebook), GTK_POS_TOP);
+  gtk_notebook_set_tab_pos (GTK_NOTEBOOK (gw->main_notebook), GTK_POS_RIGHT);
   gtk_notebook_popup_enable (GTK_NOTEBOOK (gw->main_notebook));
   gtk_notebook_set_show_tabs (GTK_NOTEBOOK (gw->main_notebook), FALSE);
 
@@ -668,12 +580,12 @@ void gnomemeeting_init_main_window ()
   gnomemeeting_init_main_window_audio_settings ();
   gnomemeeting_init_main_window_video_settings ();
 
-  gtk_widget_set_usize (GTK_WIDGET (gw->main_notebook), 246, 134);
+  //gtk_widget_set_usize (GTK_WIDGET (gw->main_notebook), 286, 144);
   gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (gw->main_notebook),
-		    5, 30, 38, 58,
+		    2, 4, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    10, 10); 
+		    0, 0); 
 
   int selected_page = 
     gconf_client_get_int (client, "/apps/gnomemeeting/view/notebook_info", 0);
@@ -688,6 +600,7 @@ void gnomemeeting_init_main_window ()
   gtk_signal_connect_after (GTK_OBJECT (gw->main_notebook), "switch-page",
 			    GTK_SIGNAL_FUNC (notebook_page_changed_callback), 
 			    gw->main_notebook);
+
 
   /* The drawing area that will display the webcam images */
   gw->video_frame = gtk_handle_box_new();
@@ -705,7 +618,7 @@ void gnomemeeting_init_main_window ()
 		      (GtkSignalFunc) expose_event, gw);    	
 
   gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (gw->video_frame), 
-		    5, 30, 11, 35,
+		    0, 2, 0, 1,
 		    (GtkAttachOptions) NULL,
 		    (GtkAttachOptions) NULL,
 		    10, 10);
@@ -714,157 +627,18 @@ void gnomemeeting_init_main_window ()
   gtk_widget_show (GTK_WIDGET (gw->drawing_area));
 
 
-  /* The control buttons */
-  gw->quickbar_frame = gtk_frame_new(NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (gw->quickbar_frame), GTK_SHADOW_OUT);
+  /* The remote name */
+  gw->remote_name = gtk_entry_new ();
+  gtk_entry_set_editable (GTK_ENTRY (gw->remote_name), FALSE);
 
-  gtk_widget_set_usize (GTK_WIDGET (gw->quickbar_frame), GM_QCIF_WIDTH, 32);
-  gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (gw->quickbar_frame), 
-		    5, 30, 35, 37,
+  gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (gw->remote_name), 
+		    0, 2, 1, 2,
 		    (GtkAttachOptions) NULL,
 		    (GtkAttachOptions) NULL,
-		    10, 0);
-	
+		    10, 10);
 
-  table_in = gtk_table_new (6, 1, FALSE);
-  gtk_container_add (GTK_CONTAINER (gw->quickbar_frame), table_in);
+  gtk_widget_show (GTK_WIDGET (gw->remote_name));
 
-  /* Video Preview Button */
-  gw->preview_button = gtk_toggle_button_new ();
-
-  pixmap = gnome_pixmap_new_from_xpm_d ((char **) eye_xpm);
-  gtk_container_add (GTK_CONTAINER (gw->preview_button), pixmap);
-
-  gtk_widget_set_usize (GTK_WIDGET (gw->preview_button), 24, 24);
-  gtk_table_attach (GTK_TABLE (table_in), 
-		    gw->preview_button, 0, 1, 0, 1,
-		    (GtkAttachOptions) NULL,
-		    (GtkAttachOptions) NULL,
-		    2, 2);
-
-  GTK_TOGGLE_BUTTON (gw->preview_button)->active = 
-    gconf_client_get_bool (client, "/apps/gnomemeeting/devices/video_preview", NULL);
-
-  gtk_signal_connect (GTK_OBJECT (gw->preview_button), "clicked",
-                      GTK_SIGNAL_FUNC (toggle_changed), 
-		      (gpointer) "/apps/gnomemeeting/devices/video_preview");
-
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, gw->preview_button,
-			_("Click here to begin to display images from your camera device."), NULL);
-
-  /* Audio Channel Button */
-  gw->audio_chan_button = gtk_toggle_button_new ();
-
-  pixmap = gnome_pixmap_new_from_xpm_d ((char **) speaker_xpm);
-  gtk_container_add (GTK_CONTAINER (gw->audio_chan_button), pixmap);
-
-  gtk_widget_set_usize (GTK_WIDGET (gw->audio_chan_button), 24, 24);
-  gtk_table_attach (GTK_TABLE (table_in), 
-		    gw->audio_chan_button, 1, 2, 0, 1,
-		    (GtkAttachOptions) NULL,
-		    (GtkAttachOptions) NULL,
-		    2, 2);
-
-  gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_chan_button), FALSE);
-
-  gtk_signal_connect (GTK_OBJECT (gw->audio_chan_button), "clicked",
-                      GTK_SIGNAL_FUNC (pause_audio_callback), gw);
-
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, gw->audio_chan_button,
-			_("Audio Transmission Status. During a call, click here to pause the audio transmission."), NULL);
-
-  /* Video Channel Button */
-  gw->video_chan_button = gtk_toggle_button_new ();
-
-  pixmap = gnome_pixmap_new_from_xpm_d ((char **) quickcam_xpm);
-  gtk_container_add (GTK_CONTAINER (gw->video_chan_button), pixmap);
-
-  gtk_widget_set_usize (GTK_WIDGET (gw->video_chan_button), 24, 24);
-  gtk_table_attach (GTK_TABLE (table_in), 
-		    gw->video_chan_button, 2, 3, 0, 1,
-		    (GtkAttachOptions) NULL,
-		    (GtkAttachOptions) NULL,
-		    2, 2);
-
-  gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button), FALSE);
-
-  gtk_signal_connect (GTK_OBJECT (gw->video_chan_button), "clicked",
-                      GTK_SIGNAL_FUNC (pause_video_callback), gw);
-
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, gw->video_chan_button,
-			_("Video Transmission Status. During a call, click here to pause the video transmission."), NULL);
-
-  /* Silence Detection Button */
-  gw->silence_detection_button = gtk_toggle_button_new ();
-
-  pixmap = gnome_pixmap_new_from_xpm_d ((char **) sample_xpm);
-  gtk_container_add (GTK_CONTAINER (gw->silence_detection_button), pixmap);
-
-  gtk_widget_set_usize (GTK_WIDGET (gw->silence_detection_button), 24, 24);
-  gtk_table_attach (GTK_TABLE (table_in), 
-		    gw->silence_detection_button, 3, 4, 0, 1,
-		    (GtkAttachOptions) NULL,
-		    (GtkAttachOptions) NULL,
-		    2, 2);
-
-  gtk_widget_set_sensitive (GTK_WIDGET (gw->silence_detection_button), FALSE);
-
-  gtk_signal_connect (GTK_OBJECT (gw->silence_detection_button), "clicked",
-                      GTK_SIGNAL_FUNC (silence_detection_button_clicked), gw);
-
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, gw->silence_detection_button,
-			_("This button permits enabling/disabling of silence detection during calls."), NULL);
-
-  /* Left arrow */
-  gw->left_arrow = gtk_button_new ();
-
-  pixmap = gnome_pixmap_new_from_xpm_d ((char **) left_arrow_xpm);
-  gtk_container_add (GTK_CONTAINER (gw->left_arrow), pixmap);
-
-  gtk_widget_set_usize (GTK_WIDGET (gw->left_arrow), 24, 24);
-
-  gtk_table_attach (GTK_TABLE (table_in), 
-		    gw->left_arrow, 4, 5, 0, 1,
-		    (GtkAttachOptions) NULL,
-		    (GtkAttachOptions) NULL,
-		    2, 2);
-
-  gtk_signal_connect (GTK_OBJECT (gw->left_arrow), "clicked",
-		      GTK_SIGNAL_FUNC (left_arrow_clicked), client);
-
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, gw->left_arrow,
-			_("Click here to display the previous section of the Control Panel."), NULL);
-
-  /* Right arrow */
-  gw->right_arrow = gtk_button_new ();
-
-  pixmap = gnome_pixmap_new_from_xpm_d ((char **) right_arrow_xpm);
-  gtk_container_add (GTK_CONTAINER (gw->right_arrow), pixmap);
-
-  gtk_widget_set_usize (GTK_WIDGET (gw->right_arrow), 24, 24);
-
-  gtk_table_attach (GTK_TABLE (table_in), 
-		    gw->right_arrow, 5, 6, 0, 1,
-		    (GtkAttachOptions) NULL,
-		    (GtkAttachOptions) NULL,
-		    2, 2);
-
-  gtk_signal_connect (GTK_OBJECT (gw->right_arrow), "clicked",
-		      GTK_SIGNAL_FUNC (right_arrow_clicked), client);
-
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, gw->right_arrow,
-			_("Click here to display the next section of the Control Panel."), NULL);
-
-  if (selected_page == 0)
-    gtk_widget_set_sensitive (gw->left_arrow, false);
-  else if (selected_page == 3)
-    gtk_widget_set_sensitive (gw->right_arrow, false);
 
   /* The statusbar */
   gw->statusbar = gnome_appbar_new (FALSE, TRUE, GNOME_PREFERENCES_NEVER);	
@@ -874,9 +648,6 @@ void gnomemeeting_init_main_window ()
     gtk_widget_show (GTK_WIDGET (gw->statusbar));
   else
     gtk_widget_hide (GTK_WIDGET (gw->statusbar));
-
-  if (gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_quick_bar", 0))
-    gtk_widget_show_all (GTK_WIDGET (gw->quickbar_frame));  
 }
 
 
@@ -896,7 +667,7 @@ void gnomemeeting_init_main_window_remote_user_info ()
   GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
 
   frame = gtk_frame_new (_("Remote User"));
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
 
   scr = gtk_scrolled_window_new (NULL, NULL);
 
@@ -940,7 +711,7 @@ void gnomemeeting_init_main_window_log ()
   GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
 
   frame = gtk_frame_new (_("History Log"));
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
 
   gw->log_text = gtk_text_new (NULL, NULL);
   gtk_text_set_line_wrap (GTK_TEXT (gw->log_text), TRUE);
@@ -989,7 +760,7 @@ void gnomemeeting_init_main_window_video_settings ()
   /* Webcam Control Frame */		
   gw->video_settings_frame = gtk_frame_new (_("Video Settings"));
   gtk_frame_set_shadow_type (GTK_FRAME (gw->video_settings_frame), 
-			     GTK_SHADOW_OUT);
+			     GTK_SHADOW_NONE);
 
   /* Put a table in the first frame */
   table = gtk_table_new (4, 4, FALSE);
@@ -1127,7 +898,7 @@ void gnomemeeting_init_main_window_audio_settings ()
   GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
 
   frame = gtk_frame_new (_("Audio Settings"));
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
 
   audio_table = gtk_table_new (4, 4, TRUE);
   gtk_container_add (GTK_CONTAINER (frame), audio_table);

@@ -60,6 +60,7 @@ struct _GM_window_widgets
   GtkWidget *docklet;
   GtkWidget *video_settings_frame;
   GtkWidget *statusbar;
+  GtkWidget *remote_name;
   GtkWidget *splash_win;
   GtkWidget *combo;
   GtkWidget *log_text;
@@ -68,17 +69,14 @@ struct _GM_window_widgets
   GdkPixmap *pixmap;
   GtkWidget *drawing_area;
   GtkWidget *video_frame;
-  GtkWidget *quickbar_frame;
   GtkWidget *pref_window;
   GtkWidget *ldap_window;
   GtkWidget *chat_window;
   GtkWidget *chat_text;
   GtkWidget *preview_button;
-  GtkWidget *silence_detection_button;
+  GtkWidget *connect_button;
   GtkWidget *video_chan_button;
   GtkWidget *audio_chan_button;
-  GtkWidget *left_arrow;
-  GtkWidget *right_arrow;
   GtkWidget *incoming_call_popup;
 
   int video_grabber_thread_count;
@@ -113,7 +111,6 @@ struct _GM_pref_window_widgets
 {
   GtkWidget *show_splash;
   GtkWidget *show_statusbar;
-  GtkWidget *show_quickbar;
   GtkWidget *show_notebook;
   GtkWidget *incoming_call_popup;
   GtkWidget *video_preview;

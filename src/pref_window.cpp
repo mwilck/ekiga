@@ -706,26 +706,6 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook)
 		      (gpointer) "/apps/gnomemeeting/view/show_status_bar");
 
 
-  /* Show / hide the quickbar at startup */
-  pw->show_quickbar = 
-    gtk_check_button_new_with_label (_("Show Quick Access Bar"));
-  gtk_table_attach (GTK_TABLE (table), pw->show_quickbar, 1, 2, 1, 2,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);	
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->show_quickbar), 
-				gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_quick_bar", 0));
-
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, pw->show_quickbar,
-			_("If enabled, the quick access bar is displayed"), 
-			NULL);
-
-  gtk_signal_connect (GTK_OBJECT (pw->show_quickbar), "toggled",
-		      GTK_SIGNAL_FUNC (toggle_changed),
-		      (gpointer) "/apps/gnomemeeting/view/show_quick_bar");
-
-
   /* Show / hide the docklet */
   pw->show_docklet = 
     gtk_check_button_new_with_label (_("Show Docklet"));

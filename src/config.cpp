@@ -1169,24 +1169,6 @@ static gboolean view_widget_changed (gpointer data)
       gtk_widget_hide (gw->statusbar);
   }
 
-  if (data == pw->show_quickbar) {
-
-    /* Update the menu,
-       we are called only if the value has changed */
-    GTK_CHECK_MENU_ITEM (view_menu_uiinfo [4].widget)->active = 
-      !GTK_WIDGET_VISIBLE (gw->quickbar_frame);
-
-    GTK_TOGGLE_BUTTON (pw->show_quickbar)->active =
-      !GTK_WIDGET_VISIBLE (gw->quickbar_frame);
-    
-    gtk_widget_draw (pw->show_quickbar, NULL);
-    gtk_widget_draw (view_menu_uiinfo [4].widget, NULL);
-
-    if (!GTK_WIDGET_VISIBLE (gw->quickbar_frame))
-      gtk_widget_show_all (gw->quickbar_frame);
-    else
-      gtk_widget_hide_all (gw->quickbar_frame);
-  }
 
   if (data == pw->show_docklet) {
     
@@ -1361,13 +1343,6 @@ static gboolean notebook_info_changed (gpointer data)
  gtk_signal_handler_unblock_by_data (GTK_OBJECT (gw->main_notebook),
 				     gw->main_notebook);
 
- gtk_widget_set_sensitive (GTK_WIDGET (gw->left_arrow), true);
- gtk_widget_set_sensitive (GTK_WIDGET (gw->right_arrow), true);
- 
- if (current_page == 0)
-   gtk_widget_set_sensitive (GTK_WIDGET (gw->left_arrow), false);
- else if (current_page == 3) 
-   gtk_widget_set_sensitive (GTK_WIDGET (gw->right_arrow), false);
 
  for (int i = 0; i < 4; i++) {
 
@@ -1529,8 +1504,6 @@ void gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_control_panel", view_widget_changed_nt, pw->show_notebook, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_status_bar", view_widget_changed_nt, pw->show_statusbar, 0, 0);
-
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_quick_bar", view_widget_changed_nt, pw->show_quickbar, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_docklet", view_widget_changed_nt, pw->show_docklet, 0, 0);
 

@@ -1,3 +1,21 @@
+2002-02-04  Damien Sandras  <dsandras@seconix.com>
+
+	* src/common.h: Removed some widgets of the former quickbar, added the
+	connect button.
+
+	* src/config.cpp: Removed the notebook related stuff (arrows).
+
+	* src/connection.cpp: Removed updating of the silence detection button.
+
+	* src/main_window.cpp: Lots of changes : notebook is on the right,
+	IP field in the toolbar, 2 toolbars, new button to connect/disconnect.
+
+	* src/pref_window.cpp: Removed the quickbar related preferences.
+
+	* src/toolbar.cpp: Create the 2 toolbars and the function that updates
+	the toggle's pixmap to connect/disconnect.
+	
+
 2002-02-04  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* src/ils.cpp (ils_browse): 
@@ -17,6 +35,7 @@
 	* src/ldap_window.cpp (gnomemeeting_init_ldap_window_notebook):
 	Added a FIXME
 
+>>>>>>> 1.192
 2002-01-24  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* src/e-splash.cpp (e_splash_construct): Use the same window

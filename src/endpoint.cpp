@@ -47,9 +47,6 @@
 
 #include <gconf/gconf-client.h>
 
-
-#include "../pixmaps/computer.xpm"
-
 #define new PNEW
 
 
@@ -562,15 +559,8 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   const char * remotePartyName = (const char *) name;
   const char * remoteApp = (const char *) app;
   char *msg;
-  GdkPixmap *computer;
-  GdkBitmap *computer_mask;
-
-  gchar *data [2];
 
   gnomemeeting_threads_enter ();
-  computer = gdk_pixmap_create_from_xpm_d (gm->window, &computer_mask,
-					   NULL,
-					   (gchar **) computer_xpm); 
 
   msg = g_strdup_printf (_("Connected with %s using %s"), 
 			 remotePartyName, remoteApp);
@@ -592,18 +582,15 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 
   gnomemeeting_log_insert (msg);
 
-  data [0] = "";
-  data [1] = g_strdup ((gchar *) remotePartyName);
-  gtk_clist_append (GTK_CLIST (gw->user_list), (gchar **) data);	
-  g_free (data [1]);
+  PINDEX bracket = name.Find('[');
+  if (bracket != P_MAX_INDEX)
+    name = name.Left (bracket);
 
-  gtk_clist_set_pixmap (GTK_CLIST (gw->user_list), 
-			0, 0, 
-			computer, computer_mask);
+  bracket = name.Find('(');
+  if (bracket != P_MAX_INDEX)
+    name = name.Left (bracket);
 
-  data [1] = g_strdup ((gchar *) remoteApp);
-  gtk_clist_append (GTK_CLIST (gw->user_list), (gchar **) data);	
-  g_free (data [1]);
+  gtk_entry_set_text (GTK_ENTRY (gw->remote_name), (const char *) name);
 
   if (docklet_timeout != 0)
     gtk_timeout_remove (docklet_timeout);
@@ -615,6 +602,8 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   sound_timeout = 0;
 
   gnomemeeting_docklet_set_content (gw->docklet, 0);
+
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->connect_button), TRUE);
 
   gnomemeeting_threads_leave ();
 
@@ -730,11 +719,13 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
     return;
 
   gnomemeeting_threads_enter ();
-  gtk_clist_clear (GTK_CLIST (gw->user_list));
+  gtk_entry_set_text (GTK_ENTRY (gw->remote_name), "");
   
   SetCurrentConnection (NULL);
   SetCallingState (0);
-  
+
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->connect_button), FALSE);
+
   /* Remove the timers if needed and clear the docklet */
   if (docklet_timeout != 0)
     gtk_timeout_remove (docklet_timeout);
@@ -756,14 +747,11 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   if (!gconf_client_get_bool (client, "/apps/gnomemeeting/devices/video_preview", 0))
     gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame), FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_chan_button), FALSE);
-  gtk_widget_set_sensitive (GTK_WIDGET (gw->silence_detection_button), 
-			    FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button), FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), TRUE);
 
   GTK_TOGGLE_BUTTON (gw->audio_chan_button)->active = FALSE;
   GTK_TOGGLE_BUTTON (gw->video_chan_button)->active = FALSE;
-  GTK_TOGGLE_BUTTON (gw->silence_detection_button)->active = FALSE;
 
   SetCurrentDisplay (0);
 

@@ -137,11 +137,8 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
       gnomemeeting_log_insert (msg);
       gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_chan_button),
 				TRUE);
-      gtk_widget_set_sensitive (GTK_WIDGET (gw->silence_detection_button),
-				TRUE);
 
       GTK_TOGGLE_BUTTON (gw->audio_chan_button)->active = TRUE;
-      GTK_TOGGLE_BUTTON (gw->silence_detection_button)->active = sd;
       gnomemeeting_threads_leave ();
       
       g_free (msg);
