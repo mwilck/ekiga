@@ -26,7 +26,9 @@
  *   email                : dsandras@seconix.com
  *
  */
-
+#undef G_DISABLE_DEPRECATED
+#undef GTK_DISABLE_DEPRECATED
+#undef GNOME_DISABLE_DEPRECATED
 #include "../config.h"
 
 
@@ -600,7 +602,7 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   /* Enable disconnect: we must be able to refuse the incoming call */
   gnomemeeting_threads_enter ();
   GnomeUIInfo *call_menu_uiinfo =
-    (GnomeUIInfo *) gtk_object_get_data (GTK_OBJECT (gm), "call_menu_uiinfo");
+    (GnomeUIInfo *) g_object_get_data (G_OBJECT (gm), "call_menu_uiinfo");
   gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [1].widget), TRUE);
   gnomemeeting_threads_leave ();
 

@@ -26,7 +26,9 @@
  *                          create the preferences window and all its callbacks
  *   Additional code      : Miguel Rodríguez Pérez  <migrax@terra.es> 
  */
-
+#undef G_DISABLE_DEPRECATED
+#undef GTK_DISABLE_DEPRECATED
+#undef GNOME_DISABLE_DEPRECATED
 #include "../config.h"
 
 #include "pref_window.h"

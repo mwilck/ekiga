@@ -31,6 +31,9 @@
  *
  */
 
+#undef G_DISABLE_DEPRECATED
+#undef GTK_DISABLE_DEPRECATED
+#undef GNOME_DISABLE_DEPRECATED
 
 #include "config.h"
 #include "common.h"
@@ -139,7 +142,7 @@ static gboolean answer_mode_changed (gpointer data)
   gdk_threads_enter ();
   
   GnomeUIInfo *call_menu_uiinfo =
-    (GnomeUIInfo *) gtk_object_get_data (GTK_OBJECT (gm), "call_menu_uiinfo");
+    (GnomeUIInfo *) g_object_get_data (G_OBJECT (gm), "call_menu_uiinfo");
 
   pw = gnomemeeting_get_pref_window (gm);
 
@@ -185,11 +188,9 @@ static gboolean answer_mode_changed (gpointer data)
     } 
   }
 
-  GTK_TOGGLE_BUTTON (toggle)->active = current_state;
-  GTK_CHECK_MENU_ITEM (call_menu_uiinfo [w].widget)->active = current_state;
-
-  gtk_widget_draw (GTK_WIDGET (toggle), NULL);
-  gtk_widget_draw (GTK_WIDGET (call_menu_uiinfo [w].widget), NULL);
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle), current_state);
+  gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (call_menu_uiinfo[w].widget),
+				  current_state);
 
   gdk_threads_leave ();
 

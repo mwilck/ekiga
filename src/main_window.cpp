@@ -27,13 +27,6 @@
  *   email                : dsandras@seconix.com
  */
 
-#undef GTK_ENABLE_BROKEN
-#define G_DISABLE_DEPRECATED					
-#define GDK_DISABLE_DEPRECATED
-#define GTK_DISABLE_DEPRECATED
-#define GDK_PIXBUF_DISABLE_DEPRECATED
-#define GNOME_DISABLE_DEPRECATED	
-
 #include "../config.h"
 
 #include <libgnomeui/gnome-window-icon.h>

@@ -1,3 +1,34 @@
+2002-03-30  Miguel Rodríguez Pérez  <migrax@terra.es>
+
+	* src/connection.cpp (PauseChannel): Don't draw thw widget directly
+
+	* src/endpoint.cpp:
+	* src/pref_window.cpp: 
+	* src/config.cpp: 
+	* src/gatekeeper.cpp: 
+	* src/ils.cpp:    
+	* src/misc.cpp: 	
+	* src/chat_window.cpp: 
+	Allow use of deprecated calls in this file
+
+	* src/gnomemeeting.cpp (Connect): Ported
+
+2002-03-30  Miguel Rodríguez Pérez  <migrax@terra.es>
+
+	* src/videograbber.cpp: 
+	* src/toolbar.cpp: 
+	* src/menu.cpp: 
+	* src/main_window.cpp: 
+	* src/ldap_window.cpp: 
+	* src/gdkvideoio.cpp: 
+	* src/e-splash.cpp: 
+	* src/docklet.cpp: 
+	* src/callbacks.cpp: 
+	* src/Makefile.am (INCLUDES): Moved deprecated logic from the
+	files to the Makefile
+
+	* src/e-splash.cpp: Mostly ported
+
 2002-03-29  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* src/docklet.cpp (docklet_clicked): Return false if we haven't

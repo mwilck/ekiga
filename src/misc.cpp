@@ -27,6 +27,10 @@
  *
  */
 
+#undef G_DISABLE_DEPRECATED
+#undef GTK_DISABLE_DEPRECATED
+#undef GNOME_DISABLE_DEPRECATED
+
 #include "../config.h"
 
 #include <ptlib.h>
@@ -126,7 +130,7 @@ GtkWidget *gnomemeeting_button (gchar *lbl, GtkWidget *pixmap)
 GM_window_widgets *gnomemeeting_get_main_window (GtkWidget *gm)
 {
   GM_window_widgets *gw = (GM_window_widgets *) 
-    gtk_object_get_data (GTK_OBJECT (gm), "gw");
+    g_object_get_data (G_OBJECT (gm), "gw");
 
   return gw;
 }
@@ -190,8 +194,8 @@ void gnomemeeting_init_main_window_logo ()
   if ((size_request.width - GM_FRAME_SIZE != 176) || 
       (size_request.height != 144)) {
 
-     gtk_widget_set_usize (GTK_WIDGET (gw->video_frame),
-			   176 + GM_FRAME_SIZE, 144);
+     gtk_widget_set_size_request (GTK_WIDGET (gw->video_frame),
+				  176 + GM_FRAME_SIZE, 144);
   }
 
   text_logo = gdk_pixmap_create_from_xpm_d (gm->window, &text_logo_mask,

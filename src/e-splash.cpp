@@ -20,7 +20,8 @@
  * Author: Ettore Perazzoli
  * Adapted to GnomeMeeting: Miguel Rodríguez
  */
-
+#undef GTK_DISABLE_DEPRECATED
+#undef G_DISABLE_DEPRECATED
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
@@ -92,8 +93,8 @@ widget_realize_callback_for_backing_store (GtkWidget *widget,
 void
 e_make_widget_backing_stored  (GtkWidget *widget)
 {
-	gtk_signal_connect (GTK_OBJECT (widget), "realize",
-			    GTK_SIGNAL_FUNC (widget_realize_callback_for_backing_store), NULL);
+	g_signal_connect (G_OBJECT (widget), "realize",
+			  G_CALLBACK (widget_realize_callback_for_backing_store), NULL);
 }
 
 
@@ -170,9 +171,9 @@ icon_new (ESplash *splash,
 static void
 icon_free (Icon *icon)
 {
-	gdk_pixbuf_unref (icon->dark_pixbuf);
-	gdk_pixbuf_unref (icon->light_pixbuf);
-  	gtk_object_unref (GTK_OBJECT (icon->canvas_item)); 
+	g_object_unref (G_OBJECT (icon->dark_pixbuf));
+	g_object_unref (G_OBJECT (icon->light_pixbuf));
+  	g_object_unref (G_OBJECT (icon->canvas_item)); 
 
 	g_free (icon);
 }
@@ -200,10 +201,10 @@ layout_icons (ESplash *splash)
 
 		icon = (Icon *) p->data;
 
-		gtk_object_set (GTK_OBJECT (icon->canvas_item),
-				"x", (double) x,
-				"y", (double) ICON_Y,
-				NULL);
+		g_object_set (G_OBJECT (icon->canvas_item),
+			      "x", (double) x,
+			      "y", (double) ICON_Y,
+			      NULL);
 
 		x += x_step;
 	}
@@ -252,7 +253,7 @@ impl_destroy (GtkObject *object)
 	priv = splash->priv;
 
 	if (priv->splash_image_pixbuf != NULL)
-		gdk_pixbuf_unref (priv->splash_image_pixbuf);
+		g_object_unref (G_OBJECT (priv->splash_image_pixbuf));
 
 	for (p = priv->icons; p != NULL; p = p->next) {
 		Icon *icon;
@@ -333,7 +334,7 @@ e_splash_construct (ESplash *splash,
 
 	priv = splash->priv;
 
-	priv->splash_image_pixbuf = gdk_pixbuf_ref (splash_image_pixbuf);
+	priv->splash_image_pixbuf = GDK_PIXBUF (g_object_ref (splash_image_pixbuf));
 
 	canvas = gnome_canvas_new_aa ();
 	priv->canvas = GNOME_CANVAS (canvas);
@@ -343,7 +344,7 @@ e_splash_construct (ESplash *splash,
 	image_width = gdk_pixbuf_get_width (splash_image_pixbuf);
 	image_height = gdk_pixbuf_get_height (splash_image_pixbuf);
 
-	gtk_widget_set_usize (canvas, image_width, image_height);
+	gtk_widget_set_size_request (canvas, image_width, image_height);
 	gnome_canvas_set_scroll_region (GNOME_CANVAS (canvas), 0, 0, image_width, image_height);
 	gtk_widget_show (canvas);
 
@@ -359,12 +360,12 @@ e_splash_construct (ESplash *splash,
 			       "pixbuf", splash_image_pixbuf,
 			       NULL);
 	
-	gtk_signal_connect (GTK_OBJECT (splash), "button-press-event",
-			    GTK_SIGNAL_FUNC (button_press_event), splash);
+	g_signal_connect (G_OBJECT (splash), "button-press-event",
+			  G_CALLBACK (button_press_event), splash);
 	
-	gtk_object_set (GTK_OBJECT (splash), "type", GTK_WINDOW_POPUP, NULL);
+	g_object_set (G_OBJECT (splash), "type", GTK_WINDOW_POPUP, NULL);
 	gtk_window_set_position (GTK_WINDOW (splash), GTK_WIN_POS_CENTER);
-	gtk_window_set_policy (GTK_WINDOW (splash), FALSE, FALSE, FALSE);
+	gtk_window_set_resizable (GTK_WINDOW (splash), FALSE);
 	gtk_window_set_default_size (GTK_WINDOW (splash), image_width, image_height);
 	gnome_window_icon_set_from_file (GTK_WINDOW (splash), 
 					 GNOMEMEETING_IMAGES "/gnomemeeting-logo-icon.png");
@@ -391,7 +392,7 @@ e_splash_new (void)
 	newsp = reinterpret_cast<ESplash *> (gtk_type_new (e_splash_get_type ()));
 	e_splash_construct (newsp, splash_image_pixbuf);
 
-	gdk_pixbuf_unref (splash_image_pixbuf);
+	g_object_unref (splash_image_pixbuf);
 
 	return GTK_WIDGET (newsp);
 }
@@ -453,9 +454,9 @@ e_splash_set_icon_highlight  (ESplash *splash,
 
 	icon = (Icon *) g_list_nth_data (priv->icons, num);
 
-	gtk_object_set (GTK_OBJECT (icon->canvas_item),
-			"pixbuf", highlight ? icon->light_pixbuf : icon->dark_pixbuf,
-			NULL);
+	g_object_set (G_OBJECT (icon->canvas_item),
+		      "pixbuf", highlight ? icon->light_pixbuf : icon->dark_pixbuf,
+		      NULL);
 }
 
 #define E_MAKE_TYPE(l,str,t,ci,i,parent) \

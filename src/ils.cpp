@@ -27,6 +27,9 @@
  *
  */
 	
+#undef G_DISABLE_DEPRECATED
+#undef GTK_DISABLE_DEPRECATED
+#undef GNOME_DISABLE_DEPRECATED
 
 #include <sys/time.h>
 

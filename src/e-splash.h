@@ -1,4 +1,4 @@
-/* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 8; tab-width: 8 -*- */
+/* -*- Mode: C++; indent-tabs-mode: t; c-basic-offset: 8; tab-width: 8 -*- */
 /* e-splash.h
  *
  * Copyright (C) 2000  Ximian, Inc.
@@ -53,7 +53,7 @@ struct _ESplashClass {
 };
 
 
-GtkType    e_splash_get_type            (void);
+GType    e_splash_get_type            (void);
 void       e_splash_construct           (ESplash   *splash,
 					 GdkPixbuf *splash_image);
 GtkWidget *e_splash_new                 (void);

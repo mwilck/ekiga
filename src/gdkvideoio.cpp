@@ -27,13 +27,6 @@
  *
  */
 
-#undef GTK_ENABLE_BROKEN
-#define G_DISABLE_DEPRECATED					
-#define GDK_DISABLE_DEPRECATED
-#define GTK_DISABLE_DEPRECATED
-#define GDK_PIXBUF_DISABLE_DEPRECATED
-#define GNOME_DISABLE_DEPRECATED	
-
 #include <sys/time.h>
 
 #include "../config.h"

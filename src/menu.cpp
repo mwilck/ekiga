@@ -27,12 +27,7 @@
  *
  */
 
-#undef GTK_ENABLE_BROKEN
-#define G_DISABLE_DEPRECATED					
-#define GDK_DISABLE_DEPRECATED
-#define GTK_DISABLE_DEPRECATED
-#define GDK_PIXBUF_DISABLE_DEPRECATED
-#define GNOME_DISABLE_DEPRECATED	
+#include "../config.h"
 
 #include "callbacks.h"
 #include "menu.h"
@@ -43,8 +38,6 @@
 
 #include "../pixmaps/connect_16.xpm"
 #include "../pixmaps/disconnect_16.xpm"
-
-#include "../config.h"
 
 
 /* Declarations */

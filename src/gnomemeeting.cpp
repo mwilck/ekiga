@@ -229,7 +229,7 @@ void GnomeMeeting::Connect()
 
       /* Enable disconnect: we must be able to stop calling */
       GnomeUIInfo *call_menu_uiinfo =
-	(GnomeUIInfo *) gtk_object_get_data (GTK_OBJECT (gm), "call_menu_uiinfo");
+	(GnomeUIInfo *) g_object_get_data (G_OBJECT (gm), "call_menu_uiinfo");
       gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [1].widget), TRUE);
 
       msg = g_strdup_printf (_("Call %d: calling %s"), 
