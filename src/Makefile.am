@@ -32,6 +32,8 @@ gnomemeeting_SOURCES =		\
 	config.cpp		\
 	ldap_window.cpp		\
 	ldap_window.h		\
+	addressbook_window.cpp	\
+	addressbook_window.h	\
 	main_window.cpp		\
 	main_window.h		\
 	gatekeeper.cpp		\

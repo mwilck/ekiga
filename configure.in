@@ -79,7 +79,7 @@ if test x"${disable_gnome}" = xyes; then
 PKG_CHECK_MODULES(GNOMEMEETING, gtk+-2.0 >= 2.0.6 gthread-2.0 >= 2.0.6 esound >= 0.2.28 libxml-2.0 >= 2.5.0)
 GNOMEMEETING_CFLAGS="$GNOMEMEETING_CFLAGS -DDISABLE_GNOME"
 else
-PKG_CHECK_MODULES(GNOMEMEETING, gtk+-2.0 >= 2.0.6 gthread-2.0 >= 2.0.6 esound >= 0.2.28 gconf-2.0 >= 1.2.1 libxml-2.0 >= 2.5.0 libgnome-2.0 >= 2.0.0 libgnomeui-2.0 >= 2.0.0 gnome-vfs-2.0 >= 2.2.0)
+PKG_CHECK_MODULES(GNOMEMEETING, gtk+-2.0 >= 2.0.6 gthread-2.0 >= 2.0.6 esound >= 0.2.28 gconf-2.0 >= 1.2.1 libxml-2.0 >= 2.5.0 libgnome-2.0 >= 2.0.0 libgnomeui-2.0 >= 2.0.0 gnome-vfs-2.0 >= 2.2.0 libebook-1.0 >= 0.0.90)
 fi
 
 OPENH323_REC_VERSION="1.13.5"

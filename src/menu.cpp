@@ -45,6 +45,7 @@
 #include "gnomemeeting.h"
 #include "misc.h"
 #include "chat_window.h"
+#include "addressbook_window.h"
 #include "ldap_window.h"
 
 #include "stock-icons.h"
@@ -467,7 +468,7 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 		     _("Open the address book"),
 		     GM_STOCK_ADDRESSBOOK_16, 0,
 		     GTK_SIGNAL_FUNC (show_window_cb),
-		     (gpointer) gw->ldap_window, TRUE),
+		     (gpointer) gw->addressbook_window, TRUE),
 
       GTK_MENU_SEPARATOR,
 

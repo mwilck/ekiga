@@ -19,6 +19,8 @@ libgnomemeeting_la_SOURCES =				\
 	gtk-text-view-addon.h                           \
 	gtk_menu_extensions.c				\
 	gtk_menu_extensions.h				\
+	gm_contacts-eds.c				\
+	gm_contacts-eds.h				\
 	gm_conf.h				 	\
 	gm_conf-widgets_extensions.h			\
 	gm_conf-widgets_extensions.c			\
