@@ -296,6 +296,7 @@ gnomemeeting_sound_play_ringtone (GtkWidget *widget)
 GMAudioTester::GMAudioTester (GMH323EndPoint *e)
   :PThread (1000, AutoDeleteThread)
 {
+#ifndef DISABLE_GNOME
   ep = e;
   stop = FALSE;
   
@@ -306,7 +307,7 @@ GMAudioTester::GMAudioTester (GMH323EndPoint *e)
 
   player = new PSoundChannel;
   recorder = new PSoundChannel;
-
+#endif
 
   this->Resume ();
 }
@@ -314,6 +315,8 @@ GMAudioTester::GMAudioTester (GMH323EndPoint *e)
 
 GMAudioTester::~GMAudioTester ()
 {
+#ifndef DISABLE_GNOME
+  
   stop = 1;
   quit_mutex.Wait ();
 
@@ -325,11 +328,15 @@ GMAudioTester::~GMAudioTester ()
 
   gnomemeeting_sound_daemons_resume ();
   quit_mutex.Signal ();
+  
+#endif
 }
 
 
 void GMAudioTester::Main ()
 {
+#ifndef DISABLE_GNOME
+  
   GConfClient *client = NULL;
   GmDruidWindow *dw = NULL;
   
@@ -483,10 +490,16 @@ void GMAudioTester::Main ()
   free (buffer_play);
   
   quit_mutex.Signal ();
+  
+#endif
 }
 
 
 void GMAudioTester::Stop ()
 {
+#ifndef DISABLE_GNOME
+  
   stop = 1;
+
+#endif
 }

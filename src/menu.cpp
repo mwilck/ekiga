@@ -471,11 +471,17 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 
       {_("_Edit"), NULL, NULL, 0, MENU_NEW, NULL, NULL, NULL},
 
+#ifndef DISABLE_GNOME
       {_("Configuration Druid"), _("Rerun the configuration druid"),
        NULL, 0, MENU_ENTRY, 
        GTK_SIGNAL_FUNC (gnomemeeting_component_view),
        (gpointer) gw->druid_window, NULL},
-
+#else
+      {_("Configuration Druid"), _("Rerun the configuration druid"),
+       NULL, 0, MENU_ENTRY, 
+       NULL, NULL, NULL},
+#endif
+      
       {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
 
       {_("_Preferences..."), _("Change your preferences"), 
@@ -635,6 +641,11 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 		    gnomemeeting_menu);
 
   /* Update to the initial values */
+#ifdef DISABLE_GNOME
+  gtk_widget_hide (GTK_WIDGET (gnomemeeting_menu [MICROTELCO1_TOOLS_MENU_INDICE].widget));
+  gtk_widget_hide (GTK_WIDGET (gnomemeeting_menu [MICROTELCO2_TOOLS_MENU_INDICE].widget));
+#endif
+
   GTK_CHECK_MENU_ITEM (gnomemeeting_menu [CHAT_WINDOW_VIEW_MENU_INDICE].widget)->active = 
     gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_chat_window",
 			   0);
@@ -849,7 +860,7 @@ gnomemeeting_popup_menu_tray_init (GtkWidget *widget, GtkAccelGroup *accel)
   GtkWidget *popup_menu_widget = NULL;
   GConfClient *client = gconf_client_get_default ();
   GmWindow *gw = gnomemeeting_get_main_window (gm);
-
+  
   popup_menu_widget = gtk_menu_new ();
 
   static MenuEntry tray_menu [] =
@@ -926,7 +937,7 @@ gnomemeeting_popup_menu_tray_init (GtkWidget *widget, GtkAccelGroup *accel)
 			 GDK_KEY_PRESS_MASK);
 
 #ifdef DISABLE_GNOME
-  gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [10].widget), FALSE);
+  gtk_widget_set_sensitive (GTK_WIDGET (tray_menu [10].widget), FALSE);
 #endif
 
   /* Update the menu according to the gconf values */

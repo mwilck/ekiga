@@ -115,8 +115,10 @@ GMVideoGrabber::~GMVideoGrabber ()
   /* Enable the video preview buttons */
   gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button),
 			    TRUE);
+#ifndef DISABLE_GNOME
   gtk_widget_set_sensitive (GTK_WIDGET (dw->video_test_button), true);
-
+#endif
+  
   /* Display the logo */
   gnomemeeting_init_main_window_logo (gw->main_video_image);
 
@@ -203,7 +205,9 @@ void GMVideoGrabber::Main ()
      that must be called just after the Main method exits. */
   gnomemeeting_threads_enter ();
   gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
+#ifndef DISABLE_GNOME
   gtk_widget_set_sensitive (GTK_WIDGET (dw->video_test_button), FALSE);
+#endif
   gnomemeeting_threads_leave ();
   
   /* if opened, we close */
@@ -453,7 +457,9 @@ void GMVideoGrabber::VGOpen (void)
     /* Disable the video preview button while opening */
     gnomemeeting_threads_enter ();
     gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
+#ifndef DISABLE_GNOME
     gtk_widget_set_sensitive (GTK_WIDGET (dw->video_test_button), FALSE);
+#endif
     gnomemeeting_statusbar_flash (gw->statusbar, _("Opening Video device"));
     gnomemeeting_log_insert (gw->history_text_view, _("Opening Video device"));
     gnomemeeting_threads_leave ();
@@ -570,7 +576,9 @@ void GMVideoGrabber::VGOpen (void)
       grabber->SetFrameSizeConverter (width, height, FALSE);
 
       gnomemeeting_threads_enter ();
+#ifndef DISABLE_GNOME
       gtk_widget_set_sensitive (GTK_WIDGET (dw->video_test_button), true);
+#endif
       gnomemeeting_threads_leave ();
       
       g_free (video_image);
@@ -652,7 +660,9 @@ void GMVideoGrabber::VGClose (int display_logo)
     /* Disable the video preview button while closing */
     gnomemeeting_threads_enter ();
     gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
+#ifndef DISABLE_GNOME
     gtk_widget_set_sensitive (GTK_WIDGET (dw->video_test_button), FALSE);
+#endif
     gnomemeeting_threads_leave ();
     
     if (channel) 
@@ -668,7 +678,9 @@ void GMVideoGrabber::VGClose (int display_logo)
   
     /* Enable the video preview button  */
     gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), TRUE);
+#ifndef DISABLE_GNOME
     gtk_widget_set_sensitive (GTK_WIDGET (dw->video_test_button), TRUE);
+#endif
     
     /* Display the logo again */
     if (display_logo)

@@ -1443,20 +1443,17 @@ void gnomemeeting_init_main_window (GtkAccelGroup *accel)
  			 BONOBO_DOCK_LEFT, 2, 0, 0);
 #else
   window_hbox = gtk_hbox_new (0, FALSE);
-  gtk_widget_show_all (window_hbox);
   gtk_box_pack_start (GTK_BOX (window_vbox), window_hbox, 
 		      FALSE, FALSE, 0);
 
   gtk_box_pack_start (GTK_BOX (window_hbox), left_toolbar, 
 		      FALSE, FALSE, 0);
+  gtk_widget_show (window_hbox);
 #endif
 
   gtk_widget_show (main_toolbar);
+  gtk_widget_show (left_toolbar);
   gtk_widget_show (menubar);
-  if (gconf_client_get_bool 
-      (client, "/apps/gnomemeeting/view/left_toolbar", 0))
-    gtk_widget_show (GTK_WIDGET (left_toolbar));
-
 
   /* Create a table in the main window to attach things like buttons */
   table = gtk_table_new (3, 4, FALSE);
