@@ -99,6 +99,9 @@ static void groups_list_store_toggled (GtkCellRendererToggle *cell,
 				       gchar *path_str,
 				       gpointer data);
 
+static void new_contact_cb (GtkWidget *,
+			    gpointer);
+
 static void edit_contact_cb (GtkWidget *,
 			     gpointer);
 
@@ -107,14 +110,12 @@ static GmEditContactDialog *addressbook_edit_contact_dialog_new (const char *,
 								 const char *,
 								 const char *);
 
-static gboolean addressbook_edit_contact_valid (GmEditContactDialog *,
-						gboolean);
+static gboolean addressbook_edit_contact_valid (GmEditContactDialog *);
 
 static void delete_contact_from_group_cb (GtkWidget *,
 					  gpointer);
 
-static gchar* gnomemeeting_addressbook_get_speed_dial_from_url (GMURL);
-
+								
 /* Callbacks: Operations on contact sections */
 static void copy_url_to_clipboard_cb (GtkWidget *,
 				      gpointer);
@@ -184,6 +185,10 @@ static gboolean get_selected_contact_info (gchar ** = NULL,
 					   gchar ** = NULL,
 					   gboolean * = NULL);
 
+static void get_contact_info_from_url (GMURL url,
+				       gchar **name,
+				       gchar **speeddial);
+				       
 static gchar *escape_contact_section (const char *,
 				      BOOL = TRUE);
 
@@ -498,6 +503,23 @@ groups_list_store_toggled (GtkCellRendererToggle *cell,
 }
 
 
+/* DESCRIPTION  :  This callback is called when the user chooses to create a
+ *                 new contact
+ * BEHAVIOR     :  Opens a popup, with empty entries
+ */
+static void
+new_contact_cb (GtkWidget *widget,
+		gpointer data)
+{
+  gchar *contact_section = NULL;
+  
+  get_selected_contact_info (&contact_section, NULL, NULL, NULL);
+  gnomemeeting_addressbook_edit_contact_dialog (contact_section,
+						NULL, NULL, NULL);
+  g_free (contact_section);
+}
+
+
 /* DESCRIPTION  :  This callback is called when the user chooses to edit the
  *                 info of a contact from a group or to add an user.
  * BEHAVIOR     :  Opens a popup, and save the modified info.
@@ -508,66 +530,52 @@ static void
 edit_contact_cb (GtkWidget *widget,
 		 gpointer data)
 {
-  GConfClient *client = NULL;
+  gchar *contact_url = NULL;
 
+  get_selected_contact_info (NULL, NULL, &contact_url, NULL, NULL);
+
+  gnomemeeting_addressbook_edit_contact_dialog (contact_url);
+  
+  g_free (contact_url);
+}
+
+
+void
+gnomemeeting_addressbook_edit_contact_dialog (gchar *contact_url)
+{
   gchar *contact_name = NULL;
   gchar *contact_speed_dial = NULL;
-  gchar *contact_url = NULL;
-  gchar *contact_section = NULL;
-  gchar *group_name = NULL;
-  gchar *speed_dial = NULL;
 
+  get_contact_info_from_url (GMURL (contact_url),
+			     &contact_name,
+			     &contact_speed_dial);
+			     
+  gnomemeeting_addressbook_edit_contact_dialog ("",
+						contact_name,
+						contact_url,
+						contact_speed_dial);
+
+  g_free (contact_name);
+  g_free (contact_speed_dial);
+}
+
+
+void  
+gnomemeeting_addressbook_edit_contact_dialog (gchar *contact_section,
+					      gchar *contact_name,
+					      gchar *contact_url,
+					      gchar *contact_speed_dial)
+{
+  gboolean valid_answer = false;
+  gboolean selected = false;
+  int result = 0;
+  GmEditContactDialog *edit_dialog = NULL;
+  gchar *group_name = NULL;
   const char *name_entry_text = NULL;
   const char *url_entry_text = NULL;
   const char *speed_dial_entry_text = NULL;
-  
   GtkTreeIter iter;
-  
-  gboolean is_group = false;
-  gboolean selected = false;
-  gboolean valid_answer = false;
-  int result = 0;
-
-  GmEditContactDialog *edit_dialog = NULL;
-  GmLdapWindow *lw = NULL;
-  GmWindow *gw = NULL;
-    
-  lw = GnomeMeeting::Process ()->GetLdapWindow ();
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
-  
-  client = gconf_client_get_default ();
-
-
-  /* We don't care if it fails as long as contact_section and is_group
-     are correct */
-  get_selected_contact_info (&contact_section, &contact_name,
-			     &contact_url, &contact_speed_dial,
-			     &is_group);
-
-  /* If the selected contact is in ILS, we try to find his speed_dial
-     using GConf in our addressbook */
-  if (!is_group && contact_url) {
-
-    speed_dial =
-      gnomemeeting_addressbook_get_speed_dial_from_url (GMURL (contact_url));
-
-    g_free (contact_speed_dial); /* Free the old allocated string */
-    contact_speed_dial = speed_dial; /* Needs to be freed later */
-  }
-
-  /* If we add a new user, we forget what is selected, except the contact
-     section that we take as default */
-  if (GPOINTER_TO_INT (data) == 1) {
-
-    g_free (contact_name);
-    g_free (contact_url);
-    g_free (contact_speed_dial);
-    contact_name = NULL;
-    contact_url = NULL;
-    contact_speed_dial = NULL;
-  }
-
-  
+ 
   edit_dialog =
     addressbook_edit_contact_dialog_new (contact_section,
 					 contact_name,
@@ -582,9 +590,7 @@ edit_contact_cb (GtkWidget *widget,
       
     case GTK_RESPONSE_ACCEPT:
 
-      valid_answer =
-	addressbook_edit_contact_valid (edit_dialog,
-					(GPOINTER_TO_INT (data) == 1));
+      valid_answer = addressbook_edit_contact_valid (edit_dialog);
 
       if (valid_answer) {
 	
@@ -632,11 +638,6 @@ edit_contact_cb (GtkWidget *widget,
     }
   }
 
-
-  g_free (contact_name);
-  g_free (contact_speed_dial);
-  g_free (contact_url);
-  g_free (contact_section);
   
   if (edit_dialog->dialog) 
     gtk_widget_destroy (edit_dialog->dialog);
@@ -878,7 +879,6 @@ addressbook_edit_contact_dialog_new (const char *contact_section,
 	((contact_url
 	 && is_contact_member_of_group (GMURL (contact_url), group_name))
 	 || !strcasecmp (group_name, contact_section));
-
       
       gtk_list_store_append (edit_dialog->groups_list_store, &iter);
       gtk_list_store_set (edit_dialog->groups_list_store, &iter,
@@ -909,12 +909,10 @@ addressbook_edit_contact_dialog_new (const char *contact_section,
  * BEHAVIOR     :  Returns true if the EditContactDialog contains valid fields,
  *                 or false if it is not the case. A popup is displayed with
  *                 the error message in that case.
- * PRE          :  n is true if we are adding a new contact, false if we are
- *                 editing the properties of an existing contact.
+ * PRE          :  /
  */
 static gboolean
-addressbook_edit_contact_valid (GmEditContactDialog *edit_dialog,
-				gboolean n)
+addressbook_edit_contact_valid (GmEditContactDialog *edit_dialog)
 {
   const char *name_entry_text = NULL;
   const char *url_entry_text = NULL;
@@ -968,7 +966,7 @@ addressbook_edit_contact_valid (GmEditContactDialog *edit_dialog,
      url OR if the user modified an existing user to an user having
      an identical url, display a warning and exit */
   if (url_entry_text && is_contact_member_of_addressbook (entry_url)
-      && (n || (!n && old_entry_url != entry_url))) {
+      && (old_entry_url != entry_url)) {
     
     gnomemeeting_error_dialog (GTK_WINDOW (edit_dialog->dialog), _("Invalid URL"), _("Another contact with the same URL already exists in the address book."));
     return false;
@@ -1153,14 +1151,14 @@ contact_clicked_cb (GtkWidget *w,
 	MenuEntry add =
 	  GTK_MENU_ENTRY("add", msg, NULL,
 			 GTK_STOCK_ADD, 0,
-			 GTK_SIGNAL_FUNC (edit_contact_cb),
-			 GINT_TO_POINTER (0), TRUE);
+			 GTK_SIGNAL_FUNC (new_contact_cb),
+			 NULL, TRUE);
 	
 	MenuEntry props =
 	  GTK_MENU_ENTRY("properties", _("Contact _Properties"), NULL,
 			 GTK_STOCK_PROPERTIES, 0,
 			 GTK_SIGNAL_FUNC (edit_contact_cb),
-			 GINT_TO_POINTER (0), TRUE);
+			 NULL, TRUE);
 
 	MenuEntry clipb =
 	  GTK_MENU_ENTRY("clipboard", _("Copy URL to the clipboard"), NULL,
@@ -1626,8 +1624,8 @@ contact_section_clicked_cb (GtkWidget *w,
 	  {
 	    GTK_MENU_ENTRY("new_contact", _("New contact"), NULL,
 			   NULL, 0, 
-			   GTK_SIGNAL_FUNC (edit_contact_cb), 
-			   GINT_TO_POINTER (1), TRUE),
+			   GTK_SIGNAL_FUNC (new_contact_cb), 
+			   NULL, TRUE),
 
 	    GTK_MENU_SEPARATOR,
 
@@ -2497,6 +2495,90 @@ get_selected_contact_info (gchar **contact_section,
 }
 
 
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Gives access to the speed dial and name corresponding to the
+ *                 URL given as parameter. NULL if none.
+ * PRE          :  A NULL name or speed dial means it is not used.
+ *
+ */
+static void
+get_contact_info_from_url (GMURL url,
+			   gchar **name,
+			   gchar **speed_dial)
+{
+  gchar *group_content_gconf_key = NULL;
+  char **contact_info = NULL;
+
+  GSList *group_content = NULL;
+  GSList *group_content_iter = NULL;
+
+  GSList *groups = NULL;
+  GSList *groups_iter = NULL;
+
+  gchar *group_name = NULL;
+
+  GConfClient *client = NULL;
+
+  gboolean found_something = FALSE;
+
+  if (name)
+    *name = NULL;
+  if (speed_dial)
+    *speed_dial = NULL;
+
+  if (url.IsEmpty ())
+    return; 
+
+  client = gconf_client_get_default ();
+
+  groups =
+    gconf_client_get_list (client, CONTACTS_KEY "groups_list",
+			   GCONF_VALUE_STRING, NULL);
+  groups_iter = groups;
+
+  while (groups_iter && groups_iter->data) {
+
+    group_name = g_utf8_strdown ((char *) groups_iter->data, -1);
+    group_content_gconf_key =
+      g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, group_name);
+
+
+    group_content =
+      gconf_client_get_list (client, group_content_gconf_key,
+			     GCONF_VALUE_STRING, NULL);
+    group_content_iter = group_content;
+
+    while (group_content_iter
+	   && group_content_iter->data && !found_something) {
+
+      contact_info =
+	g_strsplit ((char *) group_content_iter->data, "|", 0);
+
+      if (contact_info [1] && url == GMURL (contact_info [1])) {
+
+	if (name && contact_info [0])
+	  *name = g_strdup (contact_info [0]);
+	if (speed_dial && contact_info [2])
+	  *speed_dial = g_strdup (contact_info [2]);
+
+	found_something = TRUE;
+      }
+
+      g_strfreev (contact_info);
+      group_content_iter = g_slist_next (group_content_iter);
+    }
+
+    g_free (group_content_gconf_key);
+    g_slist_free (group_content);
+
+    groups_iter = g_slist_next (groups_iter);
+    g_free (group_name);
+  }
+
+  g_slist_free (groups);   
+}
+
+
 /* The functions */
 void
 gnomemeeting_addressbook_update_menu_sensitivity ()
@@ -2671,19 +2753,19 @@ gnomemeeting_ldap_window_new (GmLdapWindow *lw)
 
       GTK_MENU_ENTRY("new_contact", _("New _Contact"), NULL,
 		     GTK_STOCK_NEW, 'n', 
-		     GTK_SIGNAL_FUNC (edit_contact_cb), GINT_TO_POINTER (1),
-		     TRUE),
+		     GTK_SIGNAL_FUNC (new_contact_cb), 
+		     NULL, TRUE),
       GTK_MENU_ENTRY("add", _("Add Contact to _Address Book"), NULL,
 		     GTK_STOCK_ADD, 0,
-		     GTK_SIGNAL_FUNC (edit_contact_cb), GINT_TO_POINTER (0),
-		     TRUE),
+		     GTK_SIGNAL_FUNC (edit_contact_cb), 
+		     NULL, TRUE),
 
       GTK_MENU_SEPARATOR,
 
       GTK_MENU_ENTRY("properties", _("Contact _Properties"), NULL,
 		     GTK_STOCK_PROPERTIES, 0, 
-		     GTK_SIGNAL_FUNC (edit_contact_cb), GINT_TO_POINTER (0),
-		     FALSE),
+		     GTK_SIGNAL_FUNC (edit_contact_cb), 
+		     NULL, FALSE),
 
       GTK_MENU_END
     };
@@ -3590,77 +3672,6 @@ gnomemeeting_addressbook_get_speed_dials ()
   g_slist_free (groups);
 
   result = g_slist_nth (result, 0);
-
-  return result;
-}
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Returns the speed dial corresponding to the
- *                 URL given as parameter. NULL if none.
- * PRE          :  /
- *
- */
-static gchar *
-gnomemeeting_addressbook_get_speed_dial_from_url (GMURL url)
-{
-  gchar *group_content_gconf_key = NULL;
-  char **contact_info = NULL;
-  
-  GSList *group_content = NULL;
-  GSList *group_content_iter = NULL;
-
-  GSList *groups = NULL;
-  GSList *groups_iter = NULL;
-
-  gchar *group_name = NULL;
-  gchar *result = NULL;
-  
-  GConfClient *client = NULL;
-
-  if (!url.IsEmpty ())
-    return result;
-
-  client = gconf_client_get_default ();
-
-  groups =
-    gconf_client_get_list (client, CONTACTS_KEY "groups_list",
-			   GCONF_VALUE_STRING, NULL);
-  groups_iter = groups;
-  
-  while (groups_iter && groups_iter->data) {
-    
-    group_name = g_utf8_strdown ((char *) groups_iter->data, -1);
-    group_content_gconf_key =
-      g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, group_name);
-
-
-    group_content =
-      gconf_client_get_list (client, group_content_gconf_key,
-			     GCONF_VALUE_STRING, NULL);
-    group_content_iter = group_content;
-    
-    while (group_content_iter
-	   && group_content_iter->data && !result) {
-      
-      contact_info =
-	g_strsplit ((char *) group_content_iter->data, "|", 0);
-      
-      if (contact_info [1] && url == GMURL (contact_info [1]))
-	result = g_strdup (contact_info [2]);
-
-      g_strfreev (contact_info);
-      group_content_iter = g_slist_next (group_content_iter);
-    }
-
-    g_free (group_content_gconf_key);
-    g_slist_free (group_content);
-
-    groups_iter = g_slist_next (groups_iter);
-    g_free (group_name);
-  }
-
-  g_slist_free (groups);
 
   return result;
 }

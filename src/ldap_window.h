@@ -85,6 +85,12 @@ enum {
 
 
 /* The functions  */
+void gnomemeeting_addressbook_edit_contact_dialog (gchar *url);
+
+void gnomemeeting_addressbook_edit_contact_dialog (gchar *section,
+						   gchar *name,
+						   gchar *url,
+						   gchar *speeddial);
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Build the LDAP window and returns it.

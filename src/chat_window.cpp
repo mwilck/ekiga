@@ -43,6 +43,8 @@
 #include "chat_window.h"
 #include "ldap_window.h"
 #include "gnomemeeting.h"
+#include "ldap_window.h"
+#include "callbacks.h"
 #include "misc.h"
 #include "menu.h"
 #include "callbacks.h"
@@ -119,10 +121,8 @@ connect_uri_callback (const gchar *uri)
 static void
 add_uri_callback (const gchar *uri)
 {
-  /*  cout << "CRASH?" << endl << flush;
   if (uri)
-    gnomemeeting_addressbook_edit_contact_from_url (uri);
-  */
+    gnomemeeting_addressbook_edit_contact_dialog ((gchar *) uri);
 }  
 
 

@@ -119,10 +119,6 @@ void
 transfer_call_cb (GtkWidget* widget,
 		  gpointer data)
 {
-  GtkWidget *hbox = NULL;
-  GtkWidget *label = NULL;
-  GtkWidget *entry = NULL;
-
   GMH323EndPoint *endpoint = NULL;
   GmWindow *gw = NULL;
   GMURL url;
