@@ -1554,11 +1554,7 @@ int main (int argc, char ** argv, char ** envp)
 
   
 #ifndef WIN32
-#if !defined(HAS_ESD)
-  /* If we are not using ESD (ie we are using OSS or ALSA, then
-     prevent ESD from spawning */
   setenv ("ESD_NO_SPAWN", "1", 1);
-#endif
 #endif
   
 
@@ -1576,7 +1572,7 @@ int main (int argc, char ** argv, char ** envp)
   
 #ifndef DISABLE_GNOME
   /* Cope with command line options */
-  static struct poptOption arguments[] =
+  struct poptOption arguments [] =
     {
       {"debug", 'd', POPT_ARG_INT, &debug_level, 
        1, N_("Prints debug messages in the console (level between 1 and 6)"), 
@@ -1585,8 +1581,16 @@ int main (int argc, char ** argv, char ** envp)
        1, N_("Makes GnomeMeeting call the given URL"), NULL},
       {NULL, '\0', 0, NULL, 0, NULL, NULL}
     };
+  
 
+  /* Initialize gettext */
+  textdomain (GETTEXT_PACKAGE);
+#ifndef WIN32
+  bindtextdomain (GETTEXT_PACKAGE, GNOMELOCALEDIR);
+#endif
+  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 
+  
   /* Select the Mic as default source for OSS. Will be removed when
    * ALSA will be everywhere 
    */
@@ -1614,12 +1618,6 @@ int main (int argc, char ** argv, char ** envp)
   
   gdk_threads_enter ();
   gconf_init (argc, argv, 0);
-
-  textdomain (GETTEXT_PACKAGE);
-#ifndef WIN32
-  bindtextdomain (GETTEXT_PACKAGE, GNOMELOCALEDIR);
-#endif
-  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
  
   /* The factory */
 #ifndef DISABLE_GNOME

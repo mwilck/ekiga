@@ -1,11 +1,11 @@
 .\" Process this file with
 .\" groff -man -Tascii gnomemeeting.1
 .\"
-.TH gnomemeeting 1 "23 April 2002" Linux "Version 1.00"
+.TH gnomemeeting 1 "20 March 2004" Linux "Version 1.00"
 .SH NAME
-gnomemeeting \- H323 Videoconferencing for UN*X
+gnomemeeting \- H.323 Videoconferencing for UN*X
 .SH SYNOPSIS
-.B gnomemeeting [-d]
+.B gnomemeeting [-d level] [-c URL]
 .\" .B [--disable-sound] [--enable-sound]
 .\" .B [--espeaker=HOSTNAME:PORT] [--version] [--usage] [--gdk-debug=FLAGS]
 .\" .B [--gdk-no-debug=FLAGS] [--display=DISPLAY] [--sync] [--no-xshm]
@@ -16,14 +16,18 @@ gnomemeeting \- H323 Videoconferencing for UN*X
 .\" .B [--sm-disable]
 .SH DESCRIPTION
 .B GnomeMeeting
-is a H.323 Video Conferencing application which uses the H.323 protocol (provided by the OpenH323 library). It can connect to a variety of other H323 applications including Microsoft NetMeeting. It also supports ILS (the Microsoft version of LDAP) and XDAP servers. GnomeMeeting can work with or without a webcam, and is able to create pure audio communications or traditionnal audio+video communications.  GnomeMeeting has been designed for the GNOME desktop and therefore uses
+is a H.323 Voip, Telephony and Video Conferencing application which uses the H.323 protocol (provided by the OpenH323 library). It can connect to a variety of other H323 applications including Microsoft NetMeeting. It also supports ILS (the Microsoft version of LDAP) servers. GnomeMeeting can work with or without a webcam, and is able to create pure audio communications or traditionnal audio+video communications. GnomeMeeting has been designed for the GNOME desktop and therefore uses
 .BR gconfd-2 (1)
-for storing its userdata. It offers to configure almost every option from within the GUI. The only relevant command-line option is 
+for storing its userdata. It offers to configure almost every option from within the GUI. Command-line options include 
 .B -d
 to turn on debugging during calls.
+.B -c 
+to call another URL.
 .SH OPTIONS
-.IP -d
-turn on debugging (on the console)
+.IP -d level
+turn on debugging (on the console), level should be between 1 and 4.
+.IP -c URL
+Calls the given URL. GnomeMeeting can be running or not when invoking that option. H.323 and CALLTO URLs are supported.
 
 .SH FILES
 .I /etc/gconf/gconf.xml.defaults/apps/gnomemeeting/
@@ -42,27 +46,11 @@ On startup GnomeMeeting reads the system-wide gconf schemas
 (like every other GNOME2 app should do) from
 .IR /etc/gconf/gconf.xml.defaults/apps .
 Every modification of the gconf keys using the GUI, gconftool or gconf-editor is reflected in real-time by GnomeMeeting.
-.SH DIAGNOSTICS
-The following diagnostics may occur:
- 
-.I Please check your gconf settings and permissions, it seems that gconf is not properly setup on your system
 
-.TP
-gconfd-1 is running and you're trying to start gnomemeeting > 0.91 which needs gconfd-2
-.TP
--> kill gconfd-1 and try again
-.TP
-your gconf-dir isn't set to mode 4755
-.TP
--> set chmod -R 4755 /etc/gconf/gconf.xml.defaults
-.TP
-More problems are described in greater detail in the FAQ and Mailinglist-archive (see BUGS and GETTING HELP).
-.SH BUGS
-Currently some users are still experiencing problems with gconf, as the gconf-utilization is newly introduced in GNOME2. Hopefully this will be solved once GNOME2 is shipped with all major distributions with working gconf setup. See bugzilla on
+.SH DOCUMENTATION
+More documentation is available in the manual available through GnomeMeeting's Help menu. There is also a FAQ at:
+http://www.gnomemeeting.org
 
-http://bugzilla.gnome.org/enter_bug.cgi?product=gnomemeeting
-
-to obtain the current list of bugs.
 .SH GETTING HELP
 Feel free to join #gnomemeeting on irc.gnome.org (GIMPnet) or the ML at:
 
@@ -71,23 +59,18 @@ http://mail.gnome.org/mailman/listinfo/gnomemeeting-list
 .B after
 having read the FAQ at 
 
-http://www.gnomemeeting.org/faq.php .
+http://www.gnomemeeting.org/ .
 
 .SH AUTHOR
 Damien Sandras <dsandras at seconix dot com>
-.SH CODE CONTRIBUTORS
-Kenneth Rohde Christiansen <kenneth at gnu dot org>, Miguel Rodriguez Perez <migrax at terra dot es>, Paul <paul at argo dot dyndns dot org>, Roger Hardiman <roger at freebsd dot org>
-.SH CONTRIBUTORS
-Alex Larsson <alexl at redhat dot com>, Alp Toker <alp at toker.com>, Christian Rose <menthos at menthos dot com>, Christopher R. Gabriel <cgabriel at cgabriel dot org>, Fabrice Alphonso <fabrice.alphonso at wanadoo.fr>, Florin <florin at mandrakesoft.com>, Kilian Krause <kk at verfaction dot de>, Rafael Pinilla <r_pinilla at yahoo dot com>, Sander Smeenk <ssmeenk at freshdot dot net>, Santiago Garcia Mantinan <manty at manty dot net>, Stefan Bruens <lurch at gmx dot li>, Vincent Deroo <crossdatabase at aol dot com>, and all the others who are not listed here, but do a great job on the IRC channel.
+
 .SH OTHER INFO
 The webpage for GnomeMeeting is at
 http://www.gnomemeeting.org.
 You can find info about GnomeMeeting there and download the latest version.
 Either as packages for all major distributions or as sourcecode. Patched version of the libs are available, if neccessary.
-CVS instructions are at
-http://www.gnomemeeting.org/faq.php#AEN208.
 .SH COPYRIGHT
-Copyright \(co 2000-2002 Damien Sandras
+Copyright \(co 2000-2004 Damien Sandras
 .br
 This is free software licensed under the GPLv2; see the LICENSE file in the source for copying conditions. There is NO
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
@@ -99,6 +82,6 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 .BR gconftool-2 (1),
 .BR gconfigger (1)
 
-OpenH323 and PWLib can be found at http://www.openh323.org
+OpenH323 and PWLib can be found at http://openh323.sourceforge.net
 
 
