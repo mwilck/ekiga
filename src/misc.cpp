@@ -73,27 +73,25 @@ gnomemeeting_threads_leave ()
 
 
 GtkWidget *
-gnomemeeting_button (gchar *lbl, GtkWidget *pixmap)
+gnomemeeting_button_new (const char *lbl, 
+			 GtkWidget *pixmap)
 {
-  GtkWidget *button;
-  GtkWidget *hbox2;
-  GtkWidget *label;
+  GtkWidget *button = NULL;
+  GtkWidget *hbox2 = NULL;
+  GtkWidget *label = NULL;
   
   button = gtk_button_new ();
-  label = gtk_label_new (N_(lbl));
+  label = gtk_label_new_with_mnemonic (lbl);
   hbox2 = gtk_hbox_new (FALSE, 0);
 
   gtk_box_pack_start(GTK_BOX (hbox2), pixmap, TRUE, TRUE, 0);  
   gtk_box_pack_start(GTK_BOX (hbox2), label, TRUE, TRUE, 0);
   
   gtk_container_add (GTK_CONTAINER (button), hbox2);
-    
-  gtk_widget_show (pixmap);
-  gtk_widget_show (label);
-  gtk_widget_show (hbox2);
-		
+
   return button;
 }
+
 
 void 
 gnomemeeting_log_insert (GtkWidget *text_view, gchar *text)

@@ -69,7 +69,8 @@ gnomemeeting_threads_leave ();
  * PRE          :  /
  */
 GtkWidget *
-gnomemeeting_button (char *, GtkWidget *);
+gnomemeeting_button_new (const char *, 
+			 GtkWidget *);
 
 
 /* DESCRIPTION  :  /

@@ -698,17 +698,20 @@ void gnomemeeting_codecs_list_build (GtkListStore *codecs_list_store)
 static GtkWidget *
 gnomemeeting_pref_window_add_update_button (GtkWidget *table,
 					    const char *stock_id,
+					    const char *label,
 					    GtkSignalFunc func,
 					    gchar *tooltip,  
 					    int row, int col)
 {
+  GtkWidget *image = NULL;
   GtkWidget *button = NULL;                                                    
   GmPrefWindow *pw = NULL;                                           
 
   
   pw = gnomemeeting_get_pref_window (gm);                                      
 
-  button = gtk_button_new_from_stock (stock_id);
+  image = gtk_image_new_from_stock (stock_id, GTK_ICON_SIZE_BUTTON);
+  button = gnomemeeting_button_new (label, image);
 
   gtk_table_attach (GTK_TABLE (table),  button, col, col+1, row, row+1,
                     (GtkAttachOptions) (NULL),                           
@@ -767,7 +770,7 @@ gnomemeeting_init_pref_window_general (GtkWidget *notebook)
 
   /* Add the try button */
   pw->directory_update_button =
-    gnomemeeting_pref_window_add_update_button (table, GTK_STOCK_APPLY, GTK_SIGNAL_FUNC (personal_data_update_button_clicked), _("Click here to update the user directory you are registered to with the new First Name, Last Name, E-Mail, Comment and Location or to update your alias on the Gatekeeper."), 5, 2);
+    gnomemeeting_pref_window_add_update_button (table, GTK_STOCK_APPLY, _("_Apply"), GTK_SIGNAL_FUNC (personal_data_update_button_clicked), _("Click here to update the user directory you are registered to with the new First Name, Last Name, E-Mail, Comment and Location or to update your alias on the Gatekeeper."), 5, 2);
   gtk_container_set_border_width (GTK_CONTAINER (pw->directory_update_button),
 				  GNOMEMEETING_PAD_SMALL*2);
 
@@ -819,6 +822,8 @@ gnomemeeting_init_pref_window_interface (GtkWidget *notebook)
   table = gnomemeeting_vbox_add_table (vbox, _("Video Display"), 2, 1);
 
 #ifdef HAS_SDL
+  /* Translators: the full sentence is Use a fullscreen size 
+     of X by Y pixels */
   gnomemeeting_table_add_spin_range (table, _("Use a fullscreen size of"),
 				     &pw->fullscreen_width,
 				     _("by"),
@@ -1000,7 +1005,7 @@ gnomemeeting_init_pref_window_gatekeeper (GtkWidget *notebook)
     gnomemeeting_table_add_int_option_menu (table, _("Registering method:"), options, GATEKEEPER_KEY "registering_method", _("Registering method to use"), 0);
 
   button =
-    gnomemeeting_pref_window_add_update_button (table, GTK_STOCK_APPLY, GTK_SIGNAL_FUNC (gatekeeper_update_button_clicked), _("Click here to update your Gatekeeper settings."), 5, 2);
+    gnomemeeting_pref_window_add_update_button (table, GTK_STOCK_APPLY, _("_Apply"), GTK_SIGNAL_FUNC (gatekeeper_update_button_clicked), _("Click here to update your Gatekeeper settings."), 5, 2);
 
   gtk_notebook_append_page (GTK_NOTEBOOK(notebook), vbox, NULL);
 }
@@ -1080,7 +1085,7 @@ gnomemeeting_init_pref_window_audio_devices (GtkWidget *notebook)
     gnomemeeting_table_add_pstring_option_menu (table, _("Recording mixer:"), gw->audio_mixers, DEVICES_KEY "audio_recorder_mixer", _("Select the mixer to use to change the volume of the audio recorder."), 3);
 
   /* That button will refresh the devices list */
-  gnomemeeting_pref_window_add_update_button (table, GTK_STOCK_REFRESH, GTK_SIGNAL_FUNC (refresh_devices), _("Click here to refresh the devices list."), 4, 2);
+  gnomemeeting_pref_window_add_update_button (table, GTK_STOCK_REFRESH, _("_Refresh the devices list"), GTK_SIGNAL_FUNC (refresh_devices), _("Click here to refresh the devices list."), 4, 2);
   
 #ifdef HAS_IXJ
   /* The Quicknet devices related options */
@@ -1166,7 +1171,7 @@ gnomemeeting_init_pref_window_video_devices (GtkWidget *notebook)
 
 
   /* That button will refresh the devices list */
-  gnomemeeting_pref_window_add_update_button (table, GTK_STOCK_REFRESH, GTK_SIGNAL_FUNC (refresh_devices), _("Click here to refresh the devices list."), 5, 3);
+  gnomemeeting_pref_window_add_update_button (table, GTK_STOCK_REFRESH, _("_Refresh the devices list"), GTK_SIGNAL_FUNC (refresh_devices), _("Click here to refresh the devices list."), 5, 3);
 }
 
 
@@ -1327,6 +1332,8 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
   /* Here we add the audio codecs options */
   table = gnomemeeting_vbox_add_table (vbox, _("Audio Codecs Settings"), 2, 1);
 
+  /* Translators: the full sentence is Automatically adjust jitter buffer
+     between X and Y ms */
   gnomemeeting_table_add_spin_range (table,
 				     _("Automatically adjust _jitter buffer between"),
 				     &pw->min_jitter_buffer,
@@ -1376,6 +1383,7 @@ gnomemeeting_init_pref_window_video_codecs (GtkWidget *notebook)
   /* H.261 Settings */
   table = gnomemeeting_vbox_add_table (vbox, _("Bandwidth Control"), 1, 1);
 
+  /* Translators: the full sentence is Maximum video bandwidth of X KB/s */
   pw->maximum_video_bandwidth =
     gnomemeeting_table_add_spin (table, _("Maximum video _bandwidth of"), VIDEO_SETTINGS_KEY "maximum_video_bandwidth", _("The maximum video bandwidth in kbytes/s. The video quality and the number of transmitted frames per second will be dynamically adjusted above their minimum during calls to try to minimize the bandwidth to the given value."), 2.0, 100.0, 1.0, 0, _("KB/s"), true);
   
@@ -1384,12 +1392,16 @@ gnomemeeting_init_pref_window_video_codecs (GtkWidget *notebook)
     gnomemeeting_vbox_add_table (vbox, _("Advanced Quality Settings"), 3, 1);
   gtk_table_set_row_spacings (GTK_TABLE (table), 2 * GNOMEMEETING_PAD_SMALL);
   
+  /* Translators: the full sentence is Keep a minimum video quality of X % */
   pw->tr_vq =
     gnomemeeting_table_add_spin (table, _("Keep a minimum video _quality of"), VIDEO_SETTINGS_KEY "tr_vq", _("The minimum transmitted video quality to keep when trying to minimize the used bandwidth:  choose 100% on a LAN for the best quality, 1% being the worst quality."), 1.0, 100.0, 1.0, 0, _("%"), true);
 
+  /* Translators: the full sentence is Transmit at least X frames per second */
   pw->tr_fps =
     gnomemeeting_table_add_spin (table, _("Transmit at least"), VIDEO_SETTINGS_KEY "tr_fps", _("The minimum number of video frames to transmit each second when trying to minimize the bandwidth."), 1.0, 30.0, 1.0, 1, _("_frames per second"), true);
 				 
+  /* Translators: the full sentence is Transmit X background blocks with each
+     frame */
   pw->tr_ub =
     gnomemeeting_table_add_spin (table, _("Transmit"), VIDEO_SETTINGS_KEY "tr_ub", _("Choose the number of blocks (that have not changed) transmitted with each frame. These blocks fill in the background."), 1.0, 99.0, 1.0, 2, _("background _blocks with each frame"), true);
 }
