@@ -98,7 +98,7 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
   /* Take the mutex before the redraw */
   redraw_mutex.Wait ();
 
-  gdk_threads_enter ();
+  gnomemeeting_threads_enter ();
 
   buffer.SetSize(frameWidth * frameHeight * 3);
 
@@ -123,15 +123,19 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
     unref = 0;
   }
 
+  gnomemeeting_threads_leave ();
+
   /* Need to redefine screen size ? */
   if (((gw->drawing_area->allocation.width != zoomed_width) || 
       (gw->drawing_area->allocation.height != zoomed_height)) &&
       (device_id == !display_config)) {
 
+    gnomemeeting_threads_enter ();
     gtk_drawing_area_size (GTK_DRAWING_AREA (gw->drawing_area), 
 			   zoomed_width, zoomed_height);
     gtk_widget_set_usize (GTK_WIDGET (gw->video_frame),
 			  zoomed_width + GM_FRAME_SIZE, zoomed_height);
+    gnomemeeting_threads_leave ();
   }
 
   
@@ -144,6 +148,7 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
       (device_id == 1 && display_config == 0)) &&
       (display_config != 2)) {
     
+    gnomemeeting_threads_enter ();
     gdk_pixbuf_render_to_drawable(zoomed_pic, gw->pixmap,
 				  gw->drawing_area->style->black_gc, 
 				  0, 0,
@@ -153,6 +158,7 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
 				  0, 0);
 
     gtk_widget_draw (gw->drawing_area, NULL);    
+    gnomemeeting_threads_leave ();
   }
 
 
@@ -162,6 +168,7 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
     /* What we receive, in big */
     if (device_id == 0)	{
 
+      gnomemeeting_threads_enter ();
       gdk_pixbuf_render_to_drawable(zoomed_pic, gw->pixmap,
 				    gw->drawing_area->style->black_gc, 
 				    0, 0,
@@ -169,10 +176,13 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
 				    zoomed_width, zoomed_height, 
 				    GDK_RGB_DITHER_NORMAL, 
 				    0, 0);
+      gnomemeeting_threads_leave ();
     }
 
     /* What we transmit, in small */
     if (device_id == 1)	{
+
+      gnomemeeting_threads_enter ();
 
       GdkPixbuf *local_pic = 
 	gdk_pixbuf_scale_simple (zoomed_pic, zoomed_width / 4, 
@@ -191,6 +201,7 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
       
       gdk_pixbuf_unref (local_pic);
 
+      gnomemeeting_threads_leave ();
     }
   }
 
@@ -204,6 +215,9 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
     transmitted_frame_number++;
   }
 
+
+  gnomemeeting_threads_enter ();
+
   gdk_pixbuf_unref (src_pic);
 
   if (unref == 1) {
@@ -211,7 +225,7 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
     gdk_pixbuf_unref (zoomed_pic);
   }
 
-  gdk_threads_leave ();
+  gnomemeeting_threads_leave ();
 
   redraw_mutex.Signal ();
 	

@@ -70,6 +70,7 @@ void gnomemeeting_threads_enter () {
 
   if (PThread::Current ()->GetThreadName () != "gnomemeeting") {
     
+    
     PTRACE(3, "Will Take GDK Lock");
     gdk_threads_enter ();
     PTRACE(3, "GDK Lock Taken");
@@ -86,6 +87,7 @@ void gnomemeeting_threads_leave () {
 
   if (PThread::Current ()->GetThreadName () != "gnomemeeting") {
 
+  
     PTRACE(3, "Will Release GDK Lock");
     gdk_threads_leave ();
     PTRACE(3, "GDK Lock Released");

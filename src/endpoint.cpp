@@ -591,6 +591,8 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 				     (GtkFunction) PlaySound,
 				     gw->docklet);
   }
+  gnomemeeting_threads_leave ();
+
 
   if (gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_popup", 0) 
       && (!gconf_client_get_bool (client, "/apps/gnomemeeting/general/do_not_disturb", 0)) 
@@ -598,7 +600,8 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
       && (GetCurrentCallToken ().IsEmpty ())) {
 
     GtkWidget *label = NULL;
-    
+
+    gnomemeeting_threads_enter ();
     gw->incoming_call_popup = gnome_dialog_new (_("Incoming call"),
 						_("Connect"), 
 						_("Disconnect"),
@@ -622,12 +625,14 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
       
     gtk_widget_show (label);
     gtk_widget_show (gw->incoming_call_popup);
+    gnomemeeting_threads_leave ();
   }
   
   g_free (msg);  
 
-  gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
 
+  gnomemeeting_threads_enter ();
+  gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
   gnomemeeting_threads_leave ();
 
 
@@ -645,6 +650,7 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   const char * remoteApp = (const char *) app;
   char *msg;
 
+  cout << "Dans OnConnectionEstablished" << endl << flush;
   gnomemeeting_threads_enter ();
 
   msg = g_strdup_printf (_("Connected with %s using %s"), 
@@ -937,6 +943,7 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
      if OpenVideoDevice is called for the encoding */
   if ((gconf_client_get_bool (client, "/apps/gnomemeeting/video_settings/enable_video_transmission", 0))&&(isEncoding)) {
 
+     gnomemeeting_threads_enter ();   
      if (!vg->IsOpened ())
        vg->Open (FALSE, TRUE); /* Do not grab, synchronous opening */
 
@@ -944,9 +951,7 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
      PVideoChannel *channel = vg->GetVideoChannel ();
      transmitted_video_device = vg->GetEncodingDevice ();
 
-     vg->Stop ();
-     
-     gnomemeeting_threads_enter ();
+
      SetCurrentDisplay (0);
      
      GtkWidget *object = (GtkWidget *) 
@@ -963,7 +968,6 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
      gtk_widget_draw (GTK_WIDGET (display_uiinfo [1].widget), NULL);
      gtk_widget_draw (GTK_WIDGET (display_uiinfo [2].widget), NULL);
 
-     gnomemeeting_threads_leave ();
      
      /* Codecs Settings */
      if (gconf_client_get_bool (client, "/apps/gnomemeeting/video_settings/enable_vb", NULL))
@@ -978,7 +982,7 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
        codec.SetBackgroundFill (gconf_client_get_int (client, "/apps/gnomemeeting/video_settings/tr_ub", 0));   
      }
      
-     gnomemeeting_threads_enter ();
+
      gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button),
 			       TRUE);
      

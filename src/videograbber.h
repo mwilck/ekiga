@@ -216,6 +216,7 @@ class GMVideoGrabber : public PThread
   void VGClose (int = 1); /* That function really closes the video device, 
 			     display the logo at the end, except if parameter
 			     = 0. */
+  void VGStop ();
   void UpdateConfig (void); /* That function updates the internal values */
 
   GM_window_widgets *gw;
@@ -236,6 +237,7 @@ class GMVideoGrabber : public PThread
   int has_to_open;
   int has_to_close;
   int has_to_reset;
+  int has_to_stop;
 
   gchar *video_device;
   int video_channel;

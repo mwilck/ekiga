@@ -83,9 +83,9 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
   if (!H323Connection::OnStartLogicalChannel (channel))
     return FALSE;
   
+
   gnomemeeting_threads_enter ();
   gnomemeeting_log_insert (_("Started New Logical Channel..."));
-  gnomemeeting_threads_leave ();
   
   switch (channel.GetDirection ()) {
     
@@ -93,14 +93,12 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
     name = channel.GetCapability().GetFormatName();
     msg = g_strdup_printf (_("Sending %s"), (const char *) name);
 
-    if ((name == "H.261-CIF") || (name == "H.261-QCIF"))
+    if ((name == "H.261-CIF") || (name == "H.261-QCIF")) 
       transmitted_video = &channel;
     else
       transmitted_audio = &channel;
 
-    gnomemeeting_threads_enter ();
     gnomemeeting_log_insert (msg);
-    gnomemeeting_threads_leave ();
     
     g_free (msg);
     
@@ -130,14 +128,12 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
 	msg = g_strdup_printf (_("Disabled silence detection for %s"), 
 			       (const char *) name);
       
-      gnomemeeting_threads_enter ();
       gnomemeeting_log_insert (msg);
       gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_chan_button),
 				TRUE);
 
       GTK_TOGGLE_BUTTON (gw->audio_chan_button)->active = TRUE;
       gtk_widget_draw (GTK_WIDGET (gw->audio_chan_button), NULL);
-      gnomemeeting_threads_leave ();
       
       g_free (msg);
     }
@@ -148,9 +144,7 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
     msg = g_strdup_printf (_("Receiving %s"), 
 			   (const char *) name);
     
-    gnomemeeting_threads_enter ();
     gnomemeeting_log_insert (msg);
-    gnomemeeting_threads_leave ();
     
     g_free (msg);
     
@@ -169,10 +163,8 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
     if (channel.GetCodec ()->IsDescendant(H323VideoCodec::Class()) 
 	&& (re_vq >= 0)) {
 
-      gnomemeeting_threads_enter ();
       msg = g_strdup_printf (_("Requesting remote to send video quality : %d/31"), re_vq);
       gnomemeeting_log_insert (msg);
-      gnomemeeting_threads_leave ();
       
       g_free (msg);
 				 
@@ -191,13 +183,13 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
       value = re_vq;
       WriteControlPDU(pdu);
       
-      gnomemeeting_threads_enter ();
       gnomemeeting_log_insert (_("Request ok"));
-      gnomemeeting_threads_leave ();
     }  
   }
 		
   opened_channels++;
+  
+  gnomemeeting_threads_leave ();
 
   return TRUE;
 }
@@ -264,6 +256,13 @@ GMH323Connection::OnAnswerCall (const PString & caller,
 {
   GConfClient *client = gconf_client_get_default ();
   MyApp -> Endpoint () -> SetCurrentCallToken (GetCallToken());
+
+  /* We Make sure that the grabbing stops. We must do that here, 
+     in OpenVideoChannel it is too late */
+  GMVideoGrabber *vg = (GMVideoGrabber *) MyApp->Endpoint ()->GetVideoGrabber ();
+  vg->Stop ();
+
+  PThread::Current ()->Sleep (500);
   
   if (gconf_client_get_bool 
       (client, "/apps/gnomemeeting/general/do_not_disturb", 0)) {

@@ -1,3 +1,18 @@
+2002-02-11  Damien Sandras  <dsandras@seconix.com>
+
+	* src/connection.cpp: Stops the grabber when receiving a call.
+	
+	* src/endpoint.cpp: Added extensive use of gnomemeeting_threads_enter.
+
+	* src/gdkvideoio.cpp: Added extensive use of gnomemeeting_threads_enter.
+	
+	* src/gnomemeeting.cpp: Bug fixes.
+	
+	* src/misc.cpp: Removed unuseful comments.
+	
+	* src/videograbber.cpp: Added function with mutexes (which is probably
+	unuseful).
+
 2002-02-11  Christian Rose  <menthos@menthos.com>
 
 	* src/callbacks.cpp: Changed copyright reference.

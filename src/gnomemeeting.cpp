@@ -200,7 +200,6 @@ void GnomeMeeting::Connect()
       connection->AnsweringCall (H323Connection::AnswerCallNow);
       
       gnomemeeting_log_insert (_("Answering incoming call"));
-
       connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 1);
   }
   else {

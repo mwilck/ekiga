@@ -58,6 +58,7 @@ GMVideoGrabber::GMVideoGrabber ()
   has_to_open = 0;
   has_to_close = 0;
   has_to_reset = 0;
+  has_to_stop = 0;
   is_grabbing = 0;
   is_opened = 0;
 
@@ -85,6 +86,7 @@ GMVideoGrabber::~GMVideoGrabber ()
      till the channel and grabber are closed, after the Main method
      has exited */
   quit_mutex.Wait ();
+
 
   gnomemeeting_threads_enter ();
 
@@ -125,6 +127,11 @@ void GMVideoGrabber::Main ()
       UpdateConfig ();
     }
       
+    if (has_to_stop == 1) {
+
+      VGStop ();
+    }
+
     /* The user can ask several resets */
     if (has_to_reset >= 1) {
 
@@ -267,7 +274,14 @@ void GMVideoGrabber::Start (void)
 
 void GMVideoGrabber::Stop (void)
 {
+  has_to_stop = 1;
+}
+
+
+void GMVideoGrabber::VGStop (void)
+{
   is_grabbing = 0;
+  has_to_stop = 0;
 }
 
 
@@ -358,6 +372,7 @@ void GMVideoGrabber::VGOpen (void)
   int error_code = -1;  // No error
   
   device_mutex.Wait ();
+
 
   if (!is_opened) {
 
