@@ -10,7 +10,9 @@ libgnomemeeting_la_SOURCES =				\
 	stock-icons.c					\
 	stock-icons.h					\
 	e-splash.c					\
-	e-splash.h					
+	e-splash.h					\
+	eggtrayicon.h					\
+	eggtrayicon.c
 
 INCLUDES =						\
 	-DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \
