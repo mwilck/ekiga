@@ -64,10 +64,7 @@
 
 #ifndef DISABLE_GNOME
 #include <libgnomeui/gnome-window-icon.h>
-#include <bonobo-activation/bonobo-activation-activate.h>
-#include <bonobo-activation/bonobo-activation-register.h>
-#include <bonobo/bonobo-exception.h>
-#include <bonobo/bonobo-listener.h>
+#include "bonobo_component.h"
 #endif
 
 #ifndef WIN32
@@ -80,8 +77,6 @@
 
 #include <libxml/parser.h>
 
-
-#define ACT_IID "OAFIID:GNOME_gnomemeeting_Factory"
 
 #define GM_MAIN_WINDOW(x) (GmWindow *) (x)
 
@@ -146,16 +141,6 @@ static void dnd_call_contact_cb (GtkWidget *widget,
 				 gint x, 
 				 gint y, 
 				 gpointer data);
-
-
-/* FIXME: DBUS? */
-#ifndef DISABLE_GNOME
-static gboolean gnomemeeting_invoke_factory (int, char **);
-static void gnomemeeting_new_event (BonoboListener *, const char *, 
-				    const CORBA_any *, CORBA_Environment *,
-				    gpointer);
-static Bonobo_RegistrationResult gnomemeeting_register_as_factory (void);
-#endif
 
 
 /* DESCRIPTION  :  This callback is called when the user changes the
@@ -463,168 +448,6 @@ video_settings_changed_cb (GtkAdjustment *adjustment,
   }
   gdk_threads_enter ();
 }
-
-
-/* Factory stuff */
-
-#ifndef DISABLE_GNOME
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Invoked remotely to instantiate GnomeMeeting 
- *                 with the given URL.
- * PRE          :  /
- */
-static void
-gnomemeeting_new_event (BonoboListener    *listener,
-			const char        *event_name, 
-			const CORBA_any   *any,
-			CORBA_Environment *ev,
-			gpointer           user_data)
-{
-  int i;
-  int argc;
-  char **argv;
-  CORBA_sequence_CORBA_string *args;
-  
-  GmWindow *mw = GnomeMeeting::Process ()->GetMainWindow ();
-
-  args = (CORBA_sequence_CORBA_string *) any->_value;
-  argc = args->_length;
-  argv = args->_buffer;
-
-  if (strcmp (event_name, "new_gnomemeeting")) {
-
-      g_warning ("Unknown event '%s' on GnomeMeeting", event_name);
-      return;
-  }
-
-  
-  for (i = 1; i < argc; i++) {
-    if (!strcmp (argv [i], "-c") || !strcmp (argv [i], "--callto")) 
-      break;
-  } 
-
-
-  if ((i < argc) && (i + 1 < argc) && (argv [i+1])) {
-    
-     /* this function will store a copy of text */
-    if (GnomeMeeting::Process ()->Endpoint ()->GetCallingState () == GMH323EndPoint::Standby) {
-
-      gdk_threads_enter ();
-      gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (mw->combo)->entry), 
-			  argv [i + 1]);
-      gdk_threads_leave ();
-    }
-
-    gdk_threads_enter ();
-    connect_cb (NULL, NULL);
-    gdk_threads_leave ();
-  }
-  else {
-
-    gdk_threads_enter ();
-    gnomemeeting_warning_dialog (GTK_WINDOW (gm), _("Cannot run GnomeMeeting"), _("GnomeMeeting is already running, if you want it to call a given callto or h323 URL, please use \"gnomemeeting -c URL\"."));
-    gdk_threads_leave ();
-  }
-}
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Registers GnomeMeeting as a factory.
- * PRE          :  Returns the registration result.
- */
-static Bonobo_RegistrationResult
-gnomemeeting_register_as_factory (void)
-{
-  char *per_display_iid;
-  BonoboListener *listener;
-  Bonobo_RegistrationResult result;
-
-  listener = bonobo_listener_new (gnomemeeting_new_event, NULL);
-
-  per_display_iid = 
-    bonobo_activation_make_registration_id (ACT_IID, 
-					    DisplayString (gdk_display));
-
-  result = 
-    bonobo_activation_active_server_register (per_display_iid, 
-					      BONOBO_OBJREF (listener));
-
-  if (result != Bonobo_ACTIVATION_REG_SUCCESS)
-    bonobo_object_unref (BONOBO_OBJECT (listener));
-
-  g_free (per_display_iid);
-
-  return result;
-}
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Invoke the factory.
- * PRE          :  Registers the new factory, or use the already registered 
- *                 factory, or displays an error in the terminal.
- */
-static gboolean
-gnomemeeting_invoke_factory (int argc, char **argv)
-{
-  Bonobo_Listener listener;
-
-  switch (gnomemeeting_register_as_factory ())
-    {
-    case Bonobo_ACTIVATION_REG_SUCCESS:
-      /* we were the first GnomeMeeting to register */
-      return FALSE;
-
-    case Bonobo_ACTIVATION_REG_NOT_LISTED:
-      g_printerr (_("It appears that you do not have gnomemeeting.server installed in a valid location. Factory mode disabled.\n"));
-      return FALSE;
-      
-    case Bonobo_ACTIVATION_REG_ERROR:
-      g_printerr (_("Error registering GnomeMeeting with the activation service; factory mode disabled.\n"));
-      return FALSE;
-
-    case Bonobo_ACTIVATION_REG_ALREADY_ACTIVE:
-      /* lets use it then */
-      break;
-    }
-
-
-  listener = 
-    bonobo_activation_activate_from_id (ACT_IID, 
-					Bonobo_ACTIVATION_FLAG_EXISTING_ONLY, 
-					NULL, NULL);
-  
-  if (listener != CORBA_OBJECT_NIL) {
-
-    int i;
-    CORBA_any any;
-    CORBA_sequence_CORBA_string args;
-    CORBA_Environment ev;
-    
-    CORBA_exception_init (&ev);
-
-    any._type = TC_CORBA_sequence_CORBA_string;
-    any._value = &args;
-
-    args._length = argc;
-    args._buffer = g_newa (CORBA_char *, args._length);
-    for (i = 0; i < (signed) (args._length); i++)
-      args._buffer [i] = argv [i];
-      
-    Bonobo_Listener_event (listener, "new_gnomemeeting", &any, &ev);
-    CORBA_Object_release (listener, &ev);
-
-    if (!BONOBO_EX (&ev))
-      return TRUE;
-
-    CORBA_exception_free (&ev);
-  } 
-  else {    
-    g_printerr (_("Failed to retrieve gnomemeeting server from activation server\n"));
-  }
-  
-  return FALSE;
-}
-#endif
 
 
 static void 
@@ -2047,7 +1870,7 @@ int main (int argc, char ** argv, char ** envp)
  
   /* The factory */
 #ifndef DISABLE_GNOME
-  if (gnomemeeting_invoke_factory (argc, argv))
+  if (bonobo_component_init (argc, argv))
     exit (1);
 #endif
 

@@ -58,7 +58,11 @@ gnomemeeting_SOURCES =		\
 	lid.h			\
 	addressbook_window.cpp	\
 	addressbook_window.h
-	
+
+if ! DISABLE_GNOME
+gnomemeeting_SOURCES += bonobo_component.cpp bonobo_component.h
+endif
+
 gnomemeeting_LDADD = \
 	@GNOMEMEETING_LIBS@ \
 	$(top_builddir)/lib/libgnomemeeting.la
