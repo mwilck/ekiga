@@ -1694,7 +1694,7 @@ int main (int argc, char ** argv, char ** envp)
   /* Detect the devices, exit if it fails */
   if (!MyApp->DetectDevices ()) {
     
-    dialog = gnomemeeting_error_dialog (GTK_WINDOW (gm), _("No usable audio devices detected"), _("GnomeMeetind didn't find any usable sound devices. You need to install and setup a soundcard or a Quicknet card in order to be able to use GnomeMeeting. Please check your driver settings and permissions."));
+    dialog = gnomemeeting_error_dialog (GTK_WINDOW (gm), _("No usable audio devices detected"), _("GnomeMeeting didn't find any usable sound devices. You need to install and setup a soundcard or a Quicknet card in order to be able to use GnomeMeeting. Please check your driver settings and permissions."));
 
     g_signal_handlers_disconnect_by_func (G_OBJECT (dialog),
 					  (gpointer) gtk_widget_destroy,
