@@ -297,7 +297,6 @@ GnomeMeeting::Init ()
 BOOL
 GnomeMeeting::DetectDevices ()
 {
-#ifdef TRY_PLUGINS
   GConfClient *client = NULL;
 
   gchar *audio_manager = NULL;
@@ -311,60 +310,33 @@ GnomeMeeting::DetectDevices ()
 
   if (!audio_manager || !video_manager)
     return FALSE;
-#endif
 
   /* Detect the devices */
   gnomemeeting_sound_daemons_suspend ();
 
-#ifndef TRY_PLUGINS
-  /* Detect the devices with pwlib */
-  gw->video_devices = PVideoInputDevice::GetInputDeviceNames ();
-  gw->audio_recorder_devices = 
-    PSoundChannel::GetDeviceNames (PSoundChannel::Recorder);
-  gw->audio_player_devices = 
-    PSoundChannel::GetDeviceNames (PSoundChannel::Recorder);
-#ifdef TRY_1394DC
-  gw->video_devices += PVideoInput1394DcDevice::GetInputDeviceNames();
-#endif
-#ifdef TRY_1394AVC
-  gw->video_devices += PVideoInput1394AvcDevice::GetInputDeviceNames();
-#endif
-#else
   /* Detect the managers */
-  gw->audio_managers = 
-    PDeviceManager::GetDrivers (PDeviceManager::SoundIn 
-				| PDeviceManager::SoundOut);
-  gw->video_managers = 
-    PDeviceManager::GetDrivers (PDeviceManager::VideoIn);
+  gw->audio_managers = PSoundChannel::GetDriverNames ();
+  gw->video_managers = PVideoInputDevice::GetDriverNames ();
 
   /* Detect the devices */
-  gw->video_devices = 
-    PDeviceManager::GetDeviceNames (video_manager, PDeviceManager::VideoIn);
+  gw->video_devices = PVideoInputDevice::GetDeviceNames (video_manager);
 
   gw->audio_recorder_devices = 
-    PDeviceManager::GetDeviceNames (audio_manager, PDeviceManager::SoundIn);
+    PSoundChannel::GetDeviceNames (audio_manager, PSoundChannel::Recorder);
   gw->audio_player_devices = 
-    PDeviceManager::GetDeviceNames (audio_manager, PDeviceManager::SoundOut);
+    PSoundChannel::GetDeviceNames (audio_manager, PSoundChannel::Player);
 
   if (gw->audio_recorder_devices.GetSize () == 0) 
     gw->audio_recorder_devices += PString (_("No device found"));
   if (gw->audio_player_devices.GetSize () == 0)
     gw->audio_player_devices += PString (_("No device found"));
-#endif
 
-#ifdef TRY_PLUGINS
   g_free (audio_manager);
   g_free (video_manager);
-#endif
 
-#ifdef TRY_PLUGINS
+  
   if (gw->audio_managers.GetSize () == 0)
     return FALSE;
-#else
-  if (gw->audio_player_devices.GetSize () == 0
-      || gw->audio_recorder_devices.GetSize () == 0)
-    return FALSE;
-#endif
   
   gw->audio_managers += PString ("Quicknet");
   gw->video_devices += PString (_("Picture"));

@@ -176,6 +176,8 @@ class GMVideoGrabber : public PThread
   PVideoInputDevice *grabber;
   GDKVideoOutputDevice *encoding_device;
 
+  PString video_driver;
+  PString video_recorder;
   BOOL stop;
   BOOL is_grabbing;
   BOOL synchronous;
@@ -184,7 +186,6 @@ class GMVideoGrabber : public PThread
   int has_to_reset;
   int has_to_stop;
 
-  gchar *video_device;
   int video_channel;
   int video_size;
   PVideoDevice::VideoFormat video_format;

@@ -158,62 +158,6 @@ gnomemeeting_mixers_mic_select (void)
 }
 
 
-PStringArray gnomemeeting_get_audio_player_devices ()
-{
-  PStringArray devices;
-  PStringArray d;
-  int cpt = 0;
-
-#ifndef TRY_PLUGINS  
-  devices = PSoundChannel::GetDeviceNames (PSoundChannel::Player);
-#else
-  //  devices = PDeviceManager::GetSoundDeviceNames (PDeviceManager::Output);
-#endif
-
-#ifdef HAS_IXJ
-  devices += OpalIxJDevice::GetDeviceNames ();
-#endif
-  
-  while (cpt < devices.GetSize ()) {
-
-    if (strcmp (devices [cpt], "loopback"))
-      d.AppendString (devices [cpt]);
-
-    cpt++;
-  }
-
-  return d;
-}
-
-
-PStringArray gnomemeeting_get_audio_recorder_devices ()
-{
-  PStringArray devices;
-  PStringArray d;
-  int cpt = 0;
-  
-#ifndef TRY_PLUGINS
-  devices = PSoundChannel::GetDeviceNames (PSoundChannel::Recorder);
-#else
-  //  devices = PDeviceManager::GetSoundDeviceNames (PDeviceManager::Input);
-#endif
-
-#ifdef HAS_IXJ
-  devices += OpalIxJDevice::GetDeviceNames ();
-#endif
-
-  while (cpt < devices.GetSize ()) {
-
-    if (strcmp (devices [cpt], "loopback"))
-      d.AppendString (devices [cpt]);
-
-    cpt++;
-  }
-  
-  return d;
-}
-
-
 gint 
 gnomemeeting_sound_play_ringtone (GtkWidget *widget)
 {
@@ -237,12 +181,13 @@ gnomemeeting_sound_play_ringtone (GtkWidget *widget)
 }
 
 
-GMAudioRP::GMAudioRP (GMAudioTester *t, PString dev, BOOL enc)
+GMAudioRP::GMAudioRP (GMAudioTester *t, PString driv, PString dev, BOOL enc)
   :PThread (1000, NoAutoDeleteThread)
 {
   is_encoding = enc;
   tester = t;
   device_name = dev;
+  driver_name = driv;
   stop = FALSE;
 
   this->Resume ();
@@ -282,10 +227,12 @@ void GMAudioRP::Main ()
 
   /* We try to open the selected devices */
   channel = 
-    PDeviceManager::GetOpenedSoundDevice (device_name,
-					  is_encoding ? PDeviceManager::Input 
-					  : PDeviceManager::Output,
-					  1, 8000, 16);
+    PSoundChannel::CreateOpenedChannel (driver_name,
+					device_name,
+					is_encoding ?
+					PSoundChannel::Recorder
+					: PSoundChannel::Player,
+					1, 8000, 16);
 
   if (!is_encoding)
     msg = g_strdup_printf ("<b>%s</b>", _("Opening device for playing"));
@@ -444,8 +391,6 @@ void GMAudioTester::Main ()
   GMAudioRP *recorder = NULL;
   GmDruidWindow *dw = NULL;
 
-  PString device_name;
-
   gchar *msg = NULL;
 
   dw = GnomeMeeting::Process ()->GetDruidWindow ();
@@ -496,11 +441,8 @@ void GMAudioTester::Main ()
 				GTK_WINDOW (gw->druid_window));
   gdk_threads_leave ();
 
-  device_name = audio_manager + " " + audio_recorder;
-  recorder = new GMAudioRP (this, device_name, TRUE);
-
-  device_name = audio_manager + " " + audio_player;
-  player = new GMAudioRP (this, device_name, FALSE);
+  recorder = new GMAudioRP (this, audio_manager, audio_recorder, TRUE);
+  player = new GMAudioRP (this, audio_manager, audio_player, FALSE);
 
   
   while (!stop && !player->IsTerminated () && !recorder->IsTerminated ()) {

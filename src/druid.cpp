@@ -613,8 +613,8 @@ gnomemeeting_druid_page_prepare (GnomeDruidPage *page,
     recorder = gconf_get_string (DEVICES_KEY "audio_recorder");
     
     gnomemeeting_sound_daemons_suspend ();
-    devices = PDeviceManager::GetDeviceNames (audio_manager,
-					      PDeviceManager::SoundOut);
+    devices = PSoundChannel::GetDeviceNames (audio_manager,
+					     PSoundChannel::Player);
     if (devices.GetSize () == 0) {
 
       devices += PString (_("No device found"));
@@ -627,8 +627,8 @@ gnomemeeting_druid_page_prepare (GnomeDruidPage *page,
     option_menu_update (dw->audio_player, array, player);
     free (array);
 
-    devices = PDeviceManager::GetDeviceNames (audio_manager,
-					      PDeviceManager::SoundIn);
+    devices = PSoundChannel::GetDeviceNames (audio_manager,
+					     PSoundChannel::Recorder);
     if (devices.GetSize () == 0) {
 
       devices += PString (_("No device found"));
@@ -662,8 +662,7 @@ gnomemeeting_druid_page_prepare (GnomeDruidPage *page,
 	
     video_recorder = gconf_get_string (DEVICES_KEY "video_recorder");
     
-    devices = PDeviceManager::GetDeviceNames (video_manager,
-					      PDeviceManager::VideoIn);
+    devices = PVideoInputDevice::GetDeviceNames (video_manager);
 
     if (devices.GetSize () == 0)
       gtk_widget_set_sensitive (GTK_WIDGET (dw->video_test_button), FALSE);
@@ -895,8 +894,8 @@ gnomemeeting_init_druid_audio_manager_page (GnomeDruid *druid,
 					    int p,
 					    int t)
 {
-  GtkWidget *vbox = NULL;
   GtkWidget *label = NULL;
+  GtkWidget *vbox = NULL;
 
   GmDruidWindow *dw = NULL;
   GmWindow *gw = NULL;
@@ -925,7 +924,6 @@ gnomemeeting_init_druid_audio_manager_page (GnomeDruid *druid,
 
 
   /* The Audio devices */
-#ifdef TRY_PLUGINS
   label = gtk_label_new (_("Please choose your audio manager:"));
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
@@ -940,7 +938,6 @@ gnomemeeting_init_druid_audio_manager_page (GnomeDruid *druid,
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, TRUE, 0);
-#endif
 
 
   gtk_box_pack_start (GTK_BOX (page_standard->vbox), GTK_WIDGET (vbox), 
@@ -1055,8 +1052,8 @@ gnomemeeting_init_druid_video_manager_page (GnomeDruid *druid,
 					    int p,
 					    int t)
 {
-  GtkWidget *vbox = NULL;
   GtkWidget *label = NULL;
+  GtkWidget *vbox = NULL;
 
   GmDruidWindow *dw = NULL;
   GmWindow *gw = NULL;
@@ -1085,7 +1082,6 @@ gnomemeeting_init_druid_video_manager_page (GnomeDruid *druid,
 
 
   /* The Audio devices */
-#ifdef TRY_PLUGINS
   label = gtk_label_new (_("Please choose your video manager:"));
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
@@ -1100,7 +1096,6 @@ gnomemeeting_init_druid_video_manager_page (GnomeDruid *druid,
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, TRUE, 0);
-#endif
 
   gtk_box_pack_start (GTK_BOX (page_standard->vbox), GTK_WIDGET (vbox), 
 		      TRUE, TRUE, 8);

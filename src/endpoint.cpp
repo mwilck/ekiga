@@ -207,13 +207,11 @@ void GMH323EndPoint::UpdateDevices ()
 
     
     /* Update the prefs window */
-#ifdef TRY_PLUGINS
     if (manager && (GetSoundChannelManager () != manager)) {
 
       SetSoundChannelManager (manager);
       gnomemeeting_pref_window_refresh_devices_list (NULL, NULL);
     }
-#endif
 
 
     /* Set recording source and set micro to record if no LID is used */
@@ -1631,32 +1629,34 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
   }
   else
 #endif
-#ifdef TRY_PLUGINS
    {
      PSoundChannel *sound_channel = NULL;
-     gchar *audio_manager = NULL;
-     PString device_name;
+     gchar *audio_dri = NULL;
+     PString audio_driver;
+     PString device;
 
+     
      gnomemeeting_threads_enter ();
-     audio_manager = gconf_get_string (DEVICES_KEY "audio_manager");
-     if (audio_manager)
-       device_name = PString (audio_manager) + " ";
+     audio_dri = gconf_get_string (DEVICES_KEY "audio_manager");
+     if (audio_dri)
+       audio_driver = PString (audio_dri);
      gnomemeeting_threads_leave ();
      
      if (is_encoding) 
-       device_name += GetSoundChannelRecordDevice ();
+       device = GetSoundChannelRecordDevice ();
      else
-       device_name += GetSoundChannelPlayDevice ();
+       device = GetSoundChannelPlayDevice ();
 
 
-     if (device_name.Find (_("No device found")) == P_MAX_INDEX) {
+     if (device.Find (_("No device found")) == P_MAX_INDEX) {
 
        sound_channel = 
-	 PDeviceManager::GetOpenedSoundDevice (device_name, 
-					       is_encoding? 
-					       PDeviceManager::Input 
-					       : PDeviceManager::Output, 
-					       1, 8000, 16); 
+	 PSoundChannel::CreateOpenedChannel (audio_driver,
+					     device,
+					     is_encoding ?
+					     PSoundChannel::Recorder
+					     : PSoundChannel::Player, 
+					     1, 8000, 16); 
 
        if (sound_channel) {
 
@@ -1670,14 +1670,6 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
      else
        return FALSE; /* Device was _("No device found"), ignore, no popup */
    }
-#else // not TRY_PLUGINS
-  if (!H323EndPoint::OpenAudioChannel (connection,
-				       is_encoding, 
-				       bufferSize,
-				       codec)) 
-    no_error = FALSE;
-#endif
-
 
   
   gnomemeeting_threads_enter ();
@@ -1713,14 +1705,13 @@ GMH323EndPoint::SetSoundChannelPlayDevice(const PString &name)
 
   PWaitAndSignal m(sch_access_mutex);
   
-#ifdef TRY_PLUGINS
   gchar *audio_manager = NULL;
 
   audio_manager = gconf_get_string (DEVICES_KEY "audio_manager");
 
   if (gw->audio_player_devices.GetSize () == 0) 
     gw->audio_player_devices = 
-      PDeviceManager::GetDeviceNames (audio_manager, PDeviceManager::SoundOut);
+      PSoundChannel::GetDeviceNames (audio_manager, PSoundChannel::Player);
 
   if (!audio_manager 
       || gw->audio_player_devices.GetValuesIndex (name) == P_MAX_INDEX) {
@@ -1732,10 +1723,6 @@ GMH323EndPoint::SetSoundChannelPlayDevice(const PString &name)
   SetSoundChannelManager (PString (audio_manager));
 
   g_free (audio_manager);
-#else
-  if (PSoundChannel::GetDeviceNames(PSoundChannel::Player).GetValuesIndex(name) == P_MAX_INDEX)
-    return FALSE;
-#endif
 
   soundChannelPlayDevice = name;
 
@@ -1774,14 +1761,13 @@ GMH323EndPoint::SetSoundChannelRecordDevice (const PString &name)
 
   PWaitAndSignal m(sch_access_mutex);
   
-#ifdef TRY_PLUGINS
   gchar *audio_manager = NULL;
 
   audio_manager = gconf_get_string (DEVICES_KEY "audio_manager");
 
   if (gw->audio_recorder_devices.GetSize () == 0) 
     gw->audio_recorder_devices = 
-      PDeviceManager::GetDeviceNames (audio_manager, PDeviceManager::SoundIn);
+      PSoundChannel::GetDeviceNames (audio_manager, PSoundChannel::Recorder);
 
 
   if (!audio_manager 
@@ -1794,10 +1780,6 @@ GMH323EndPoint::SetSoundChannelRecordDevice (const PString &name)
   SetSoundChannelManager (PString (audio_manager));
 
   g_free (audio_manager);
-#else
-  if (PSoundChannel::GetDeviceNames(PSoundChannel::Recorder).GetValuesIndex(name) == P_MAX_INDEX)
-    return FALSE;
-#endif
 
   soundChannelRecordDevice = name;
 

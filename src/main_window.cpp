@@ -1646,11 +1646,7 @@ int main (int argc, char ** argv, char ** envp)
   /* Detect the devices, exit if it fails */
   if (!GnomeMeeting::Process ()->DetectDevices ()) {
 
-#ifdef TRY_PLUGINS
     dialog = gnomemeeting_error_dialog (NULL, _("No usable audio manager detected"), _("GnomeMeeting didn't find any usable sound manager. Make sure that your installation is correct."));
-#else
-    dialog = gnomemeeting_error_dialog (NULL, _("No usable audio device detected"), _("GnomeMeeting didn't find any usable sound device. Make sure that your installation is correct."));
-#endif
     
     g_signal_handlers_disconnect_by_func (G_OBJECT (dialog),
 					  (gpointer) gtk_widget_destroy,

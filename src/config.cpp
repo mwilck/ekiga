@@ -1630,14 +1630,13 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
 
 
   /* gnomemeeting_init_pref_window_devices */
-#ifdef TRY_PLUGINS
   gconf_client_notify_add (client, DEVICES_KEY "audio_manager", 
 			   manager_changed_nt, 
 			   NULL, 0, 0);
   gconf_client_notify_add (client, DEVICES_KEY "video_manager", 
 			   manager_changed_nt, 
 			   NULL, 0, 0);
-#endif
+
 
   gconf_client_notify_add (client, DEVICES_KEY "audio_player",
 			   audio_device_changed_nt,

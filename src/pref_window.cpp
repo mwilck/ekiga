@@ -917,7 +917,6 @@ gnomemeeting_init_pref_window_audio_devices (GtkWidget *window,
   pw = GnomeMeeting::Process ()->GetPrefWindow ();
   
 
-#ifdef TRY_PLUGINS
   subsection = gnome_prefs_subsection_new (window, container,
 					   _("Audio Manager"), 1, 2);
                                                                                
@@ -925,7 +924,6 @@ gnomemeeting_init_pref_window_audio_devices (GtkWidget *window,
   array = gw->audio_managers.ToCharArray ();
   gnome_prefs_string_option_menu_new (subsection, _("Audio manager:"), array, DEVICES_KEY "audio_manager", _("The audio manager that will be used to detect the devices and manage them."), 0);
   free (array);
-#endif
 
 
   /* Add all the fields */
@@ -995,7 +993,6 @@ gnomemeeting_init_pref_window_video_devices (GtkWidget *window,
   pw = GnomeMeeting::Process ()->GetPrefWindow ();
   
 
-#ifdef TRY_PLUGINS
   /* The video manager */
   subsection = gnome_prefs_subsection_new (window, container,
 					   _("Video Manager"), 1, 2);
@@ -1003,7 +1000,7 @@ gnomemeeting_init_pref_window_video_devices (GtkWidget *window,
   array = gw->video_managers.ToCharArray ();
   gnome_prefs_string_option_menu_new (subsection, _("Video manager:"), array, DEVICES_KEY "video_manager", _("The video manager that will be used to detect the devices and manage them."), 0);
   free (array);
-#endif
+
 
   /* The video devices related options */
   subsection = gnome_prefs_subsection_new (window, container,

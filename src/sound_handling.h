@@ -80,9 +80,16 @@ void gnomemeeting_sound_daemons_resume ();
  */
 int gnomemeeting_sound_play_ringtone (GtkWidget *widget);
 
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Selects the Mic as recording input. OSS only.
+ * PRE          :  /
+ */
 void gnomemeeting_mixers_mic_select (void);
      
 
+
+/* Audio Tester class */
 class GMAudioTester : public PThread
 {
   PCLASSINFO(GMAudioTester, PThread);
@@ -142,7 +149,7 @@ class GMAudioRP : public PThread
 
  public:
 
-  GMAudioRP (GMAudioTester *, PString, BOOL);
+  GMAudioRP (GMAudioTester *, PString, PString, BOOL);
   ~GMAudioRP ();
 
   void Main ();
@@ -151,6 +158,7 @@ class GMAudioRP : public PThread
 
   BOOL is_encoding;
   GMAudioTester *tester;
+  PString driver_name;
   PString device_name;
   PMutex quit_mutex;
   PSyncPoint thread_sync_point;

@@ -45,6 +45,7 @@
 #include "misc.h"
 
 #include "dialog.h"
+#include "gconf_widgets_extensions.h"
 
 
 /* Declarations */
@@ -78,7 +79,6 @@ GMVideoGrabber::GMVideoGrabber (BOOL start_grabbing,
   channel = NULL;
   grabber = NULL;
   encoding_device = NULL;
-  video_device = NULL;
   video_channel = 0;
   video_size = 0;
   video_format = PVideoDevice::Auto;
@@ -102,8 +102,6 @@ GMVideoGrabber::~GMVideoGrabber ()
   device_mutex.Wait ();
 
   PWaitAndSignal m(quit_mutex);
-
-  g_free (video_device);
 }
 
 
@@ -133,39 +131,21 @@ void GMVideoGrabber::Main ()
 
 void GMVideoGrabber::UpdateConfig ()
 {
-#ifdef TRY_PLUGINS
-  gchar *video_manager = NULL;
-  gchar *tmp = NULL;
-#endif
-
-  g_free (video_device);
+  gchar *video_dri = NULL;
+  gchar *video_rec = NULL;
  
   gnomemeeting_threads_enter ();
-  video_device =  
-    gconf_client_get_string (client, DEVICES_KEY "video_recorder", NULL);
+  video_rec = gconf_get_string (DEVICES_KEY "video_recorder");
+  video_dri = gconf_get_string (DEVICES_KEY "video_manager");
+  video_channel = gconf_get_int (DEVICES_KEY "video_channel");
+  video_size = gconf_get_int (DEVICES_KEY "video_size");
 
-#ifdef TRY_PLUGINS
-  /* The video device name must contain the manager name */
-  video_manager =
-    gconf_client_get_string (client, DEVICES_KEY "video_manager", NULL);
-
-  if (video_device && video_manager) {
-
-    tmp = g_strdup_printf ("%s %s", video_manager, video_device);
-    g_free (video_device);
-    g_free (video_manager);
-    video_device = tmp;
-  }
-#endif
-
-  video_channel =  
-    gconf_client_get_int (client, DEVICES_KEY "video_channel", NULL);
-
-  video_size =  
-    gconf_client_get_int (client, DEVICES_KEY "video_size", NULL);
-
-
-  switch (gconf_client_get_int (client, DEVICES_KEY "video_format", NULL)) {
+  if (video_rec)
+    video_recorder = PString (video_rec);
+  if (video_dri)
+    video_driver = PString (video_dri);
+  
+  switch (gconf_get_int (DEVICES_KEY "video_format")) {
     
   case 0:
     video_format = PVideoDevice::PAL;
@@ -302,25 +282,6 @@ void GMVideoGrabber::VGOpen (void)
     gnomemeeting_log_insert (gw->history_text_view, _("Opening Video device"));
     gnomemeeting_threads_leave ();
 
-#ifndef TRY_PLUGINS    
-#ifdef TRY_1394AVC
-    if (video_device == "/dev/raw1394" ||
-       strncmp (video_device, "/dev/video1394", 14) == 0) {
-            grabber = new PVideoInput1394AvcDevice();
-       }
-    else
-#endif
-#ifdef TRY_1394DC
-    if (video_device == "/dev/raw1394" ||
-        strncmp (video_device, "/dev/video1394", 14) == 0)
-           grabber = new PVideoInput1394DcDevice();
-    else
-#endif
-      {
-	 grabber = new PVideoInputDevice();
-      }
-#endif
-
     if (video_size == 0) { 
       
       height = GM_QCIF_HEIGHT; 
@@ -334,21 +295,17 @@ void GMVideoGrabber::VGOpen (void)
     
 
     /* no error if Picture is choosen as video device */
-    if (video_device 
-	&& PString (video_device).Find(_("Picture")) != P_MAX_INDEX)
+    if (video_recorder.Find(_("Picture")) != P_MAX_INDEX)
       error_code = -2;
 
     if (error_code != -2) {
 
-#ifndef TRY_PLUGINS
-      if (!grabber->Open (video_device, FALSE))
-	error_code = 0;
-#else
       grabber = 
-	PDeviceManager::GetOpenedVideoInputDevice (video_device, FALSE);
+	PVideoInputDevice::CreateOpenedDevice (video_driver,
+					       video_recorder,
+					       FALSE);
       if (grabber == NULL)
 	error_code = 0;
-#endif
       else 
 	if (!grabber->SetVideoFormat(video_format))
 	  error_code = 2;
@@ -373,7 +330,7 @@ void GMVideoGrabber::VGOpen (void)
       gnomemeeting_threads_enter ();
       msg = g_strdup_printf 
 	(_("Successfully opened video device %s, channel %d"), 
-	 video_device, video_channel);
+	 (const char *) video_recorder, video_channel);
       gnomemeeting_log_insert (gw->history_text_view, msg);
       g_free (msg);
       gnomemeeting_threads_leave ();
@@ -387,7 +344,7 @@ void GMVideoGrabber::VGOpen (void)
 
 	gnomemeeting_threads_enter ();
 	title_msg =
-	  g_strdup_printf (_("Error while opening video device %s"), video_device);
+	  g_strdup_printf (_("Error while opening video device %s"), (const char *) video_recorder);
 			   
 	msg = g_strdup (_("The chosen Video Image will be transmitted during calls. If you didn't choose any image, then the default GnomeMeeting logo will be transmitted. Notice that you can always transmit a given image or the GnomeMeeting logo by choosing \"Picture\" as video device."));
 	gnomemeeting_statusbar_flash (gw->statusbar, _("Can't open the Video Device"));
@@ -589,8 +546,6 @@ GMVideoTester::~GMVideoTester ()
 void GMVideoTester::Main ()
 {
 #ifndef DISABLE_GNOME
-  PString device_name = NULL;
-  
   GmWindow *gw = NULL;
   GmDruidWindow *dw = NULL;
 
@@ -648,18 +603,17 @@ void GMVideoTester::Main ()
   gdk_threads_leave ();
 
   
-  device_name = video_manager + " " + video_recorder;
-
   while (cpt < 6 && error_code == -1) {
 
-    if (!device_name.IsEmpty ()
-	&& !video_recorder.IsEmpty ()
+    if (!video_recorder.IsEmpty ()
 	&& !video_manager.IsEmpty ()) {
 
       error_code = -1;
       
       grabber = 
-	PDeviceManager::GetOpenedVideoInputDevice (device_name, FALSE);
+	PVideoInputDevice::CreateOpenedDevice (video_manager,
+					       video_recorder,
+					       FALSE);
 
       if (!grabber)
 	error_code = 0;

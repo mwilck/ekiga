@@ -145,7 +145,7 @@ if test "x${with_ptlib_includes}" != "xno"; then
 	AC_MSG_CHECKING(for PTLib includes)
 	AC_MSG_RESULT()
 	
-	CPPFLAGS="$CPPFLAGS -I${with_ptlib_includes}/unix -I${with_ptlib_includes}"
+	CPPFLAGS="$CPPFLAGS -I${with_ptlib_includes}"
 	ptlib_includes="no"
         AC_CHECK_FILE(${with_ptlib_includes}/pprocess.h, ptlib_includes="yes", ptlib_includes="no")
 	CPPFLAGS="$CPPFLAGS_save"
@@ -153,9 +153,9 @@ if test "x${with_ptlib_includes}" != "xno"; then
 	if test "x${ptlib_includes}" != "xno" -a "x${ptlib_includes}" != "x"; then
 		have_ptlib_includes="yes"
                 if test "x${with_ptlib_includes}" != "x/usr/include/ptlib"; then
-                        PTLIB_CFLAGS="-I${with_ptlib_includes}/unix -I${with_ptlib_includes}/.. -I${with_ptlib_includes}/../ptclib"
+                        PTLIB_CFLAGS="-I${with_ptlib_includes}/ -I${with_ptlib_includes}/../ptclib"
                 else
-                        PTLIB_CFLAGS="-I/usr/include/ptlib/unix -I/usr/include/ptclib"
+                        PTLIB_CFLAGS="-I/usr/include/ptlib/ -I/usr/include/ptclib"
                 fi
 		PTLIB_INCLUDE_DIR="${with_ptlib_includes}"
 	else
