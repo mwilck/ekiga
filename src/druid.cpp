@@ -211,11 +211,12 @@ static void
 gnomemeeting_druid_radio_changed (GtkToggleButton *b, gpointer data)
 {
   GConfClient *client = NULL;
+  int selection = GPOINTER_TO_INT (data);
 
   client = gconf_client_get_default ();
 
   /* Dialup */
-  if (!strcmp ((char *) data, "1")) {
+  if (selection == 1) {
     
     gconf_client_set_int (client, "/apps/gnomemeeting/video_settings/tr_fps",
 			  1, NULL);
@@ -234,7 +235,7 @@ gnomemeeting_druid_radio_changed (GtkToggleButton *b, gpointer data)
   }
 
   /* ISDN */
-  if (!strcmp ((char *) data, "2")) {
+  if (selection == 2) {
     
     gconf_client_set_int (client, "/apps/gnomemeeting/video_settings/tr_fps",
 			  1, NULL);
@@ -253,7 +254,7 @@ gnomemeeting_druid_radio_changed (GtkToggleButton *b, gpointer data)
   }
 
   /* DSL / CABLE */
-  if (!strcmp ((char *) data, "3")) {
+  if (selection == 3) {
     
     gconf_client_set_int (client, "/apps/gnomemeeting/video_settings/tr_fps",
 			  6, NULL);
@@ -272,7 +273,7 @@ gnomemeeting_druid_radio_changed (GtkToggleButton *b, gpointer data)
   }
 
   /* LAN */
-  if (!strcmp ((char *) data, "4")) {
+  if (selection == 4) {
     
     gconf_client_set_int (client, "/apps/gnomemeeting/video_settings/tr_fps",
 			  30, NULL);
@@ -460,7 +461,7 @@ static void gnomemeeting_init_druid_connection_type_page (GnomeDruid *druid)
   gtk_box_pack_start (GTK_BOX (box), radio1, TRUE, TRUE, 0);
   g_signal_connect (G_OBJECT (radio1), "toggled",
 		    G_CALLBACK (gnomemeeting_druid_radio_changed), 
-		    (gpointer) "1");
+		    GINT_TO_POINTER (1));
 
   radio2 = 
     gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (radio1), 
@@ -468,7 +469,7 @@ static void gnomemeeting_init_druid_connection_type_page (GnomeDruid *druid)
   gtk_box_pack_start (GTK_BOX (box), radio2, TRUE, TRUE, 0);
   g_signal_connect (G_OBJECT (radio2), "toggled",
 		    G_CALLBACK (gnomemeeting_druid_radio_changed), 
-		    (gpointer) "2");
+		    GINT_TO_POINTER (2));
 
   radio3 = 
     gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (radio1), 
@@ -476,7 +477,7 @@ static void gnomemeeting_init_druid_connection_type_page (GnomeDruid *druid)
   gtk_box_pack_start (GTK_BOX (box), radio3, TRUE, TRUE, 0);
   g_signal_connect (G_OBJECT (radio3), "toggled",
 		    G_CALLBACK (gnomemeeting_druid_radio_changed), 
-		    (gpointer) "3");
+		    GINT_TO_POINTER (3));
 
   radio4 = 
     gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (radio1), 
@@ -484,7 +485,7 @@ static void gnomemeeting_init_druid_connection_type_page (GnomeDruid *druid)
   gtk_box_pack_start (GTK_BOX (box), radio4, TRUE, TRUE, 0);
   g_signal_connect (G_OBJECT (radio4), "toggled",
 		    G_CALLBACK (gnomemeeting_druid_radio_changed), 
-		    (gpointer) "4");
+		    GINT_TO_POINTER (4));
 
   /* Defaults to the defaults for dialup users */
   gconf_client_set_int (client, "/apps/gnomemeeting/video_settings/tr_vq",
