@@ -71,6 +71,8 @@ struct _GM_window_widgets
   GtkWidget *quickbar_frame;
   GtkWidget *pref_window;
   GtkWidget *ldap_window;
+  GtkWidget *chat_window;
+  GtkWidget *chat_text;
   GtkWidget *preview_button;
   GtkWidget *silence_detection_button;
   GtkWidget *video_chan_button;

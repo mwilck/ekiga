@@ -92,6 +92,9 @@ GMH323EndPoint::GMH323EndPoint ()
   
   received_video_device = NULL;
   transmitted_video_device = NULL;
+
+  /* We can add this capability here as it will remain the whole life of the EP */
+  H323_UserInputCapability::AddAllCapabilities(capabilities, 0, P_MAX_INDEX);
 }
 
 
@@ -762,9 +765,6 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   GTK_TOGGLE_BUTTON (gw->video_chan_button)->active = FALSE;
   GTK_TOGGLE_BUTTON (gw->silence_detection_button)->active = FALSE;
 
-  gnomemeeting_enable_disconnect ();
-  gnomemeeting_enable_connect ();
-
   SetCurrentDisplay (0);
 
   GtkWidget *object = (GtkWidget *) gtk_object_get_data (GTK_OBJECT (gm),
@@ -775,15 +775,19 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   GTK_CHECK_MENU_ITEM (display_uiinfo [0].widget)->active = TRUE;
   GTK_CHECK_MENU_ITEM (display_uiinfo [1].widget)->active = FALSE;
   GTK_CHECK_MENU_ITEM (display_uiinfo [2].widget)->active = FALSE;
-  
+
+  gnomemeeting_enable_disconnect ();
+  gnomemeeting_enable_connect ();
+
   gnomemeeting_threads_leave ();
 
   /* Reset the Video Grabber, if preview, else close it */
   GMVideoGrabber *vg = (GMVideoGrabber *) video_grabber;
 
   if (gconf_client_get_bool (client, "/apps/gnomemeeting/devices/video_preview", 0)){
-   
-    vg->Reset ();
+    vg->Close (TRUE);
+    vg->Open (TRUE, TRUE); /* Do grab, synchronous opening */
+
   }
   else {
 

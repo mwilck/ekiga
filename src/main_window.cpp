@@ -51,6 +51,7 @@ extern "C" {
 #include "config.h"
 #include "misc.h"
 #include "e-splash.h"
+#include "chat_window.h"
 
 #include <gconf/gconf-client.h>
 
@@ -413,6 +414,7 @@ void gnomemeeting_init (GM_window_widgets *gw,
   gnomemeeting_init_main_window ();
   gnomemeeting_init_ldap_window ();
   gnomemeeting_init_pref_window ();
+  gnomemeeting_init_chat_window ();
   gnomemeeting_init_menu ();
   gnomemeeting_init_toolbar ();	
   

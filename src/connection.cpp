@@ -303,3 +303,18 @@ GMH323Connection::OnAnswerCall (const PString & caller,
   return AnswerCallPending;
 }
 
+
+void GMH323Connection::OnUserInputString(const PString & value)
+{
+  gchar *msg = NULL;
+  PString remote = GetRemotePartyName ();
+  
+  msg = g_strdup_printf ("%s: %s\n", (const char *) remote, (const char *) value);
+
+  gdk_threads_enter ();
+  gtk_text_insert (GTK_TEXT (gw->chat_text), NULL, NULL, NULL, msg, -1);
+  gdk_threads_leave ();
+
+  g_free (msg);
+}
+

@@ -241,9 +241,15 @@ void GMVideoGrabber::Open (int has_to_grab, int synchronous)
 }
 
 
-void GMVideoGrabber::Close (void)
+void GMVideoGrabber::Close (int synchronous)
 {
-  has_to_close = 1;
+  if (synchronous == 1) {
+    
+    if (has_to_close != 1)
+      VGClose ();
+  }
+  else
+    has_to_close = 1;
 }
 
 
@@ -352,197 +358,203 @@ void GMVideoGrabber::VGOpen (void)
   gchar *msg = NULL;
   int error_code = -1;  // No error
   
-  /* Disable the video preview button while opening */
-  gnomemeeting_threads_enter ();
-  gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
-  gtk_widget_set_sensitive (GTK_WIDGET (pw->video_preview), FALSE);
-  gnome_appbar_push (GNOME_APPBAR (gw->statusbar), _("Opening Video device"));
-  gnomemeeting_log_insert (_("Opening Video device"));
-  gnomemeeting_threads_leave ();
+  if (!is_opened) {
 
-  channel = new PVideoChannel ();
-  encoding_device = new GDKVideoOutputDevice (1, gw);
-  grabber = new PVideoInputDevice();
-
-  if (video_size == 0) { 
-
-    height = GM_QCIF_WIDTH; 
-    width = GM_QCIF_HEIGHT; 
-  }
-  else { 
-
-    height = GM_CIF_WIDTH; 
-    width = GM_CIF_HEIGHT; 
-  }
-  
-
-  if (!grabber->Open (video_device, FALSE))
-    error_code = 0;
-  else 
-  if (!grabber->SetVideoFormat (video_format))
-    error_code = 1;
-  else
-  if (!grabber->SetChannel (video_channel))
-    error_code = 2;
-  else
-  if (!grabber->SetColourFormatConverter ("YUV420P"))
-    error_code = 3;
-  else
-    if (!grabber->SetFrameRate (tr_fps))
-   error_code = 4;
-  else
-  if (!grabber->SetFrameSizeConverter (height, width, FALSE))
-    error_code = 5;
-
-  /* If no error */
-  if (error_code == -1) {
-
+    /* Disable the video preview button while opening */
     gnomemeeting_threads_enter ();
+    gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
+    gtk_widget_set_sensitive (GTK_WIDGET (pw->video_preview), FALSE);
+    gnome_appbar_push (GNOME_APPBAR (gw->statusbar), _("Opening Video device"));
+    gnomemeeting_log_insert (_("Opening Video device"));
+    gnomemeeting_threads_leave ();
     
-    msg = g_strdup_printf 
-      (_("Successfully opened video device %s, channel %d"), 
-       video_device, video_channel);
-    gnomemeeting_log_insert (msg);
-    gnome_appbar_push (GNOME_APPBAR (gw->statusbar), _("Done"));
-    g_free (msg);
+    channel = new PVideoChannel ();
+    encoding_device = new GDKVideoOutputDevice (1, gw);
+    grabber = new PVideoInputDevice();
 
-    gnomemeeting_threads_leave ();			     
-  }
-  else {
-
-    gnomemeeting_threads_enter ();
+    if (video_size == 0) { 
+      
+      height = GM_QCIF_WIDTH; 
+      width = GM_QCIF_HEIGHT; 
+    }
+    else { 
+      
+      height = GM_CIF_WIDTH; 
+      width = GM_CIF_HEIGHT; 
+    }
     
-    msg = g_strdup_printf 
-      (_("Error while opening video device %s, channel %d.\nA test image will be transmitted."), video_device, video_channel);
+
+    if (!grabber->Open (video_device, FALSE))
+      error_code = 0;
+    else 
+      if (!grabber->SetVideoFormat (video_format))
+	error_code = 1;
+    else
+      if (!grabber->SetChannel (video_channel))
+	error_code = 2;
+    else
+      if (!grabber->SetColourFormatConverter ("YUV420P"))
+	error_code = 3;
+    else
+      if (!grabber->SetFrameRate (tr_fps))
+	error_code = 4;
+    else
+      if (!grabber->SetFrameSizeConverter (height, width, FALSE))
+	error_code = 5;
     
-    switch (error_code)	{
+    /* If no error */
+    if (error_code == -1) {
 
-    case 0:
-      msg = g_strconcat (msg, "\n", _("Error while opening the device."), 
-			 NULL);
-      break;
+      gnomemeeting_threads_enter ();
       
-    case 1:
-      msg = g_strconcat (msg, "\n", _("Your video driver doesn't support the requested video format."), NULL);
-      break;
+      msg = g_strdup_printf 
+	(_("Successfully opened video device %s, channel %d"), 
+	 video_device, video_channel);
+      gnomemeeting_log_insert (msg);
+      gnome_appbar_push (GNOME_APPBAR (gw->statusbar), _("Done"));
+      g_free (msg);
 
-    case 2:
-      msg = g_strconcat (msg, "\n", _("Could not open the chosen channel."),
-			 NULL);
-      break;
-      
-    case 3:
-      msg = g_strconcat (msg, "\n", _("Your driver doesn't support the YUV420P format."), NULL);
-      break;
-      
-    case 4:
-      msg = g_strconcat (msg, "\n", _("Error with the frame rate."), NULL);
-      break;
+      gnomemeeting_threads_leave ();			     
+    }
+    else {
 
-    case 5:
-      msg = g_strconcat (msg, "\n", _("Error with the frame size."), NULL);
-      break;
+      gnomemeeting_threads_enter ();
+    
+      msg = g_strdup_printf 
+	(_("Error while opening video device %s, channel %d.\nA test image will be transmitted."), video_device, video_channel);
+    
+      switch (error_code)	{
+	
+      case 0:
+	msg = g_strconcat (msg, "\n", _("Error while opening the device."), 
+			   NULL);
+	break;
+      
+      case 1:
+	msg = g_strconcat (msg, "\n", _("Your video driver doesn't support the requested video format."), NULL);
+	break;
+
+      case 2:
+	msg = g_strconcat (msg, "\n", _("Could not open the chosen channel."),
+			   NULL);
+	break;
+      
+      case 3:
+	msg = g_strconcat (msg, "\n", _("Your driver doesn't support the YUV420P format."), NULL);
+	break;
+      
+      case 4:
+	msg = g_strconcat (msg, "\n", _("Error with the frame rate."), NULL);
+	break;
+
+      case 5:
+	msg = g_strconcat (msg, "\n", _("Error with the frame size."), NULL);
+	break;
+      }
+
+      gnomemeeting_log_insert (msg);
+      g_free (msg);
+      
+      gnomemeeting_threads_leave ();			     
+    
+
+      /* delete the failed grabber and open the fake grabber */
+      delete grabber;
+      
+      grabber = new PFakeVideoInputDevice();
+      grabber->SetColourFormatConverter ("YUV420P");
+      grabber->SetVideoFormat (PVideoDevice::PAL);
+      grabber->SetChannel (150);    
+      grabber->SetFrameRate (10);
+      grabber->SetFrameSize (height, width);
     }
 
-    gnomemeeting_log_insert (msg);
-    g_free (msg);
+    grabber->Start ();
+    
+    channel->AttachVideoReader (grabber);
+    channel->AttachVideoPlayer (encoding_device);
 
-    gnomemeeting_threads_leave ();			     
+    has_to_open = 0;
+    is_opened = 1;
+  
+    gnomemeeting_threads_enter ();
 
+    encoding_device->SetFrameSize (height, width);  
 
-    /* delete the failed grabber and open the fake grabber */
-    delete grabber;
+    /* Setup the video settings */
+    GetParameters (&whiteness, &brightness, &colour, &contrast);
+ 
+    gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_brightness),
+			      brightness);
+    gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_whiteness),
+			      whiteness);
+    gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_colour),
+			      colour);
+    gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_contrast),
+			      contrast);
+    
+    /* Enable the video settings frame */
+    gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame),
+			      TRUE);
+  
+    /* Enable the video preview button if not in a call */
+    if (MyApp->Endpoint ()->GetCallingState () == 0) {
       
-    grabber = new PFakeVideoInputDevice();
-    grabber->SetColourFormatConverter ("YUV420P");
-    grabber->SetVideoFormat (PVideoDevice::PAL);
-    grabber->SetChannel (150);    
-    grabber->SetFrameRate (10);
-    grabber->SetFrameSize (height, width);
-  }
+      gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button),
+				TRUE);
+      gtk_widget_set_sensitive (GTK_WIDGET (pw->video_preview),
+				TRUE);
+    }
+  }  
 
-  grabber->Start ();
-  
-  channel->AttachVideoReader (grabber);
-  channel->AttachVideoPlayer (encoding_device);
-
-  has_to_open = 0;
-  is_opened = 1;
-  
-  gnomemeeting_threads_enter ();
-
-  encoding_device->SetFrameSize (height, width);  
-
-  /* Setup the video settings */
-  GetParameters (&whiteness, &brightness, &colour, &contrast);
- 
-  gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_brightness),
-			    brightness);
-  gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_whiteness),
-			    whiteness);
-  gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_colour),
-			    colour);
-  gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_contrast),
-			    contrast);
- 
-  /* Enable the video settings frame */
-  gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame),
-			    TRUE);
-  
-  /* Enable the video preview button if not in a call */
-  if (MyApp->Endpoint ()->GetCallingState () == 0) {
-
-    gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button),
-			      TRUE);
-    gtk_widget_set_sensitive (GTK_WIDGET (pw->video_preview),
-			      TRUE);
-  }
-  
   gnomemeeting_threads_leave ();
 }
-
+  
 
 void GMVideoGrabber::VGClose (int display_logo)
 {
-  is_grabbing = 0;
+  if (is_opened) {
 
-  /* Disable the video preview button while closing */
-  gnomemeeting_threads_enter ();
-  gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
-  gtk_widget_set_sensitive (GTK_WIDGET (pw->video_preview), FALSE);
-  gnomemeeting_threads_leave ();
-  
-  grabbing_mutex.Wait ();
-  
-  grabber->Close ();
-  channel->Close ();
-  
-  grabbing_mutex.Signal ();
-  
-  delete (channel);
-  
-  has_to_close = 0;
-  is_opened = 0;
-  
-  /* Enable video preview button */
-  gnomemeeting_threads_enter ();
-  
-  /* Enable the video preview button  */
-  gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), TRUE);
-  gtk_widget_set_sensitive (GTK_WIDGET (pw->video_preview), TRUE);
+    is_grabbing = 0;
 
-  /* Display the logo again */
-  if (display_logo)
-    gnomemeeting_init_main_window_logo ();
-
-  /* Disable the video settings frame */
-  gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame),
-			    FALSE);
+    /* Disable the video preview button while closing */
+    gnomemeeting_threads_enter ();
+    gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
+    gtk_widget_set_sensitive (GTK_WIDGET (pw->video_preview), FALSE);
+    gnomemeeting_threads_leave ();
+    
+    grabbing_mutex.Wait ();
+    
+    grabber->Close ();
+    channel->Close ();
+    
+    grabbing_mutex.Signal ();
+    
+    delete (channel);
   
-  gnomemeeting_threads_leave ();
+    has_to_close = 0;
+    is_opened = 0;
+  
+    /* Enable video preview button */
+    gnomemeeting_threads_enter ();
+  
+    /* Enable the video preview button  */
+    gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), TRUE);
+    gtk_widget_set_sensitive (GTK_WIDGET (pw->video_preview), TRUE);
+    
+    /* Display the logo again */
+    if (display_logo)
+      gnomemeeting_init_main_window_logo ();
 
-  /* Initialisation */
-  grabber = NULL;
-  channel = NULL;
+    /* Disable the video settings frame */
+    gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame),
+			      FALSE);
+  
+    gnomemeeting_threads_leave ();
+    
+    /* Initialisation */
+    grabber = NULL;
+    channel = NULL;
+  }
 }
 

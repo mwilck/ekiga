@@ -117,9 +117,9 @@ class GMVideoGrabber : public PThread
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Puts the has_to_close flag to 1 so that the main 
    *                 thread closes the specified video device.
-   * PRE          :  The video grabber must be opened.
+   * PRE          :  The video grabber must be opened, the argument = async or not
    */
-  void Close (void);
+  void Close (int = 0);
 
 
   /* DESCRIPTION  :  /

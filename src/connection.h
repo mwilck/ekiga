@@ -103,7 +103,14 @@ class GMH323Connection : public H323Connection
   virtual H323Connection::AnswerCallResponse 
     OnAnswerCall (const PString &, const H323SignalPDU &, H323SignalPDU &);
 
-  
+
+  /* DESCRIPTION  :  This is called when we received User Input String.
+   * BEHAVIOR     :  Displays the string in the chat window.
+   * PRE          :  /
+   */
+  virtual void OnUserInputString(const PString &);
+
+
   protected:
     GM_window_widgets *gw;
     H323Channel *transmitted_audio; 

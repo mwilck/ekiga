@@ -78,70 +78,77 @@ gint AppbarUpdate (gpointer data)
   float re_audio_speed = 0, re_video_speed = 0;
   RTP_Session *audio_session = NULL;
   RTP_Session *video_session = NULL;
+  H323Connection *connection = NULL;
   GM_rtp_data *rtp = (GM_rtp_data *) data; 
-  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+  GM_window_widgets *gw = NULL;
 
-  gdk_threads_enter ();
+
 
   if (MyApp->Endpoint ()) {
 
-      if ((MyApp->Endpoint ()->GetCurrentConnection ()) 
-	  &&(MyApp->Endpoint ()->GetCallingState () == 2)) {
+    PString current_call_token = MyApp->Endpoint ()->GetCurrentCallToken ();
 
-	PTimeInterval t =
-	  PTime () - MyApp->Endpoint ()->GetCurrentConnection ()
-	  ->GetConnectionStartTime();
+    if (current_call_token.IsEmpty ())
+      return TRUE;
+    
+    gdk_threads_enter ();
 
-	if (t.GetSeconds () > 5) {
+    gw = gnomemeeting_get_main_window (gm);
 
-	  audio_session = 
-	    MyApp->Endpoint ()->GetCurrentConnection ()
-	    ->GetSession(RTP_Session::DefaultAudioSessionID);
+    connection = MyApp->Endpoint ()->GetCurrentConnection ();
+
+    if ((connection)&&(MyApp->Endpoint ()->GetCallingState () == 2)) {
+
+      PTimeInterval t =
+	PTime () - connection->GetConnectionStartTime();
+
+      if (t.GetSeconds () > 5) {
+
+	audio_session = connection->GetSession(RTP_Session::DefaultAudioSessionID);
 	  
-	  video_session = 
-	    MyApp->Endpoint ()->GetCurrentConnection ()
-	    ->GetSession(RTP_Session::DefaultVideoSessionID);
+	video_session = connection->GetSession(RTP_Session::DefaultVideoSessionID);
 	  
-	  if (audio_session != NULL) {
+	if (audio_session != NULL) {
 
- 	    tr_audio_speed = 
-	      (float) (audio_session->GetOctetsSent()-rtp->tr_audio_bytes)/1024.00;
-	    rtp->tr_audio_bytes = audio_session->GetOctetsSent();
+	  tr_audio_speed = 
+	    (float) (audio_session->GetOctetsSent()-rtp->tr_audio_bytes)/1024.00;
+	  rtp->tr_audio_bytes = audio_session->GetOctetsSent();
 
-	    re_audio_speed = 
-	      (float) (audio_session->GetOctetsReceived()-rtp->re_audio_bytes)/1024.00;
-	    rtp->re_audio_bytes = audio_session->GetOctetsReceived();
-	  }
-
-	  if (video_session != NULL) {
-
- 	    tr_video_speed = 
-	      (float) (video_session->GetOctetsSent()-rtp->tr_video_bytes)/1024.00;
-	    rtp->tr_video_bytes = video_session->GetOctetsSent();
-
-	    re_video_speed = 
-	      (float) (video_session->GetOctetsReceived()-rtp->re_video_bytes)/1024.00;
-	    rtp->re_video_bytes = video_session->GetOctetsReceived();
-	  }
-
-	  minutes = t.GetMinutes () % 60;
-	  seconds = t.GetSeconds () % 60;
-	  
-	  gchar *msg = g_strdup_printf 
-	    (_("%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"), 
-	     t.GetHours (), minutes, seconds, 
-	     tr_audio_speed, re_audio_speed,
-	     tr_video_speed, re_video_speed);
-	  
-	  gnome_appbar_clear_stack (GNOME_APPBAR (gw->statusbar));
-	  gnome_appbar_push (GNOME_APPBAR (gw->statusbar), msg);
-
-	  g_free (msg);
+	  re_audio_speed = 
+	    (float) (audio_session->GetOctetsReceived()-rtp->re_audio_bytes)/1024.00;
+	  rtp->re_audio_bytes = audio_session->GetOctetsReceived();
 	}
+
+	if (video_session != NULL) {
+
+	  tr_video_speed = 
+	    (float) (video_session->GetOctetsSent()-rtp->tr_video_bytes)/1024.00;
+	  rtp->tr_video_bytes = video_session->GetOctetsSent();
+
+	  re_video_speed = 
+	    (float) (video_session->GetOctetsReceived()-rtp->re_video_bytes)/1024.00;
+	  rtp->re_video_bytes = video_session->GetOctetsReceived();
+	}
+
+	minutes = t.GetMinutes () % 60;
+	seconds = t.GetSeconds () % 60;
+	
+	gchar *msg = g_strdup_printf 
+	  (_("%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"), 
+	   t.GetHours (), minutes, seconds, 
+	   tr_audio_speed, re_audio_speed,
+	   tr_video_speed, re_video_speed);
+	
+	gnome_appbar_clear_stack (GNOME_APPBAR (gw->statusbar));
+	gnome_appbar_push (GNOME_APPBAR (gw->statusbar), msg);
+
+	g_free (msg);
       }
+    }
+
+    gdk_threads_leave ();
   }
 
-  gdk_threads_leave ();
   return TRUE;
 }
 

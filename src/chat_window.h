@@ -18,39 +18,21 @@
  */
 
 /*
- *                         ldap_h.h  -  description
- *                         ------------------------
- *   begin                : Wed Feb 28 2001
- *   copyright            : (C) 2000-2001 by Damien Sandras
- *   description          : This file contains functions to build the ldap
- *                          window.
+ *                         chat_window.h  -  description
+ *                         -----------------------------
+ *   begin                : Wed Jan 23 2002
+ *   copyright            : (C) 2000-2002 by Damien Sandras
+ *   description          : This file contains functions to build the chat
+ *                          window. It uses DTMF tones.
  *   email                : dsandras@seconix.com
  *
  */
 
 
-#ifndef _LDAP_H_H_
-#define _LDAP_H_H_
-
-#include <lber.h>
-#include <ldap.h>
-#include <iostream.h>
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <gnome.h>
-#include <glib.h>
-#include <pthread.h>
-#include <sys/socket.h>
-#include <ptlib.h>
-
-
-/* The functions  */
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Build the LDAP window.
+ * BEHAVIOR     :  Build the chat window.
  * PRE          :  /
  */
-void gnomemeeting_init_ldap_window ();
+void gnomemeeting_init_chat_window ();
 
-#endif
