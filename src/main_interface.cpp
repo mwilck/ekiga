@@ -459,7 +459,9 @@ void GM_main_interface_init (GM_window_widgets *gw, options *opts)
 		    0, 0);
 
   gw->combo = gtk_combo_new ();
-  gtk_combo_disable_activate(GTK_COMBO(gw->combo));
+  gtk_combo_disable_activate (GTK_COMBO (gw->combo));
+  gtk_signal_connect (GTK_OBJECT (GTK_COMBO (gw->combo)->entry), "activate",
+		      GTK_SIGNAL_FUNC (connect_cb), NULL);
 
   gtk_table_attach (GTK_TABLE (table_in), GTK_WIDGET (gw->combo), 2, 8, 0, 4,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),

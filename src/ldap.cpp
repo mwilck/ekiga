@@ -424,6 +424,10 @@ void GM_ldap_init (GM_window_widgets *gw, GM_ldap_window_widgets *lw, options *o
   gtk_container_set_border_width (GTK_CONTAINER (lw->statusbar), 0);
 
   /* Signals */
+  gtk_signal_connect (GTK_OBJECT (GTK_COMBO (lw->ils_server_combo)->entry), "activate",
+		      GTK_SIGNAL_FUNC (refresh_button_clicked),
+		      (gpointer) lw);
+
   gtk_signal_connect (GTK_OBJECT (lw->refresh_button), "pressed",
 		      GTK_SIGNAL_FUNC (refresh_button_clicked), 
 		      (gpointer) lw);
