@@ -122,7 +122,11 @@ void about_callback (GtkWidget *widget, gpointer data)
       "Fabrice Alphonso <fabrice.alphonso@wanadoo.fr>",
       "Alp Toker <alp@atoker.com>",
       "Paul <paul666@mailandnews.com>",
-      "",
+      ""
+    };
+
+  const gchar *translators [] =
+    {
       N_("I18n Maintainer:"),
       "Christian Rose <menthos@gnu.org>",
       /* Translators: Replace "English" with the name of your language. */
@@ -134,9 +138,9 @@ void about_callback (GtkWidget *widget, gpointer data)
 	
   authors [2] = gettext (authors [2]);
   authors [6] = gettext (authors [6]);
-  authors [12] = gettext (authors [12]);
-  authors [14] = gettext (authors [14]);
-  authors [15] = gettext (authors [15]);
+  translators [0] = gettext (translators [0]);
+  translators [2] = gettext (translators [2]);
+  translators [3] = gettext (translators [3]);
 
   abox = gnome_about_new (PACKAGE,
 			  VERSION,
@@ -145,9 +149,11 @@ void about_callback (GtkWidget *widget, gpointer data)
 			     it (Hint: iso-8859-1 is one of the character sets
 			     that has this symbol). */
 			  _("Copyright (C) 2000, 2001, 2002 Damien Sandras"),
-			  authors,
 			  _("GnomeMeeting is a full-featured H.323 videoconferencing application."),
-			  GNOMEMEETING_IMAGES "/gnomemeeting-logo.png");
+			  authors,
+			  NULL,
+			  "me",
+			  NULL);
 	
   gtk_widget_show (abox);
   return;

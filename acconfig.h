@@ -15,3 +15,4 @@
 #undef MINOR_VERSION
 #undef BUILD_TYPE
 #undef BUILD_NUMBER
+#undef GETTEXT_PACKAGE

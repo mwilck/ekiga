@@ -114,23 +114,24 @@ void gnomemeeting_chat_window_text_insert (PString local, PString s, int user)
   gdk_color_alloc(cmap, &color);
   lucida_font = gdk_font_load ("-b&h-lucida-bold-r-normal-*-*-100-*-*-p-*-iso8859-1");
 
+  cout << "FIX ME:chat_window.cpp : 117" << endl << flush;
   gtk_text_freeze (GTK_TEXT (gw->chat_text));
   msg = g_strdup_printf ("%s: ", (const char*) local);
   gtk_text_insert (GTK_TEXT (gw->chat_text), lucida_font, &color, 
-		   NULL, msg, -1);
+ 		   NULL, msg, -1);
   g_free (msg);
   
   msg = g_strdup_printf ("%s\n", (const char*) s);
   gtk_text_insert (GTK_TEXT (gw->chat_text), NULL, 
-		   &gw->chat_text->style->black, NULL, msg, -1);
+ 		   &gw->chat_text->style->black, NULL, msg, -1);
   g_free (msg);
   gtk_text_thaw (GTK_TEXT (gw->chat_text));
- 
+  
   vertical_adjustment = GTK_ADJUSTMENT(GTK_TEXT (gw->chat_text)->vadj);
   gtk_adjustment_set_value(vertical_adjustment,
-			   vertical_adjustment->upper
-			   - vertical_adjustment->lower
-			   - vertical_adjustment->page_size);
+ 			   vertical_adjustment->upper
+ 			   - vertical_adjustment->lower
+ 			   - vertical_adjustment->page_size);
 }
 
 
@@ -140,12 +141,12 @@ void gnomemeeting_init_chat_window ()
   GtkWidget *scr;
   GtkWidget *label;
   GtkWidget *table;
-
+  GtkWidget *view;
 
   /* Get the structs from the application */
   GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
 
-  /* a vbox to put the frames and the user list */
+  view = gtk_text_view_new ();
   gw->chat_window = gtk_frame_new (_("Text Chat"));
 
   table = gtk_table_new (1, 3, FALSE);
@@ -164,14 +165,14 @@ void gnomemeeting_init_chat_window ()
   gtk_text_set_line_wrap (GTK_TEXT (gw->chat_text), TRUE);
   gtk_text_set_word_wrap (GTK_TEXT (gw->chat_text), TRUE);
   gtk_text_set_editable (GTK_TEXT (gw->chat_text), FALSE);
-
+  
   gtk_container_add (GTK_CONTAINER (scr), gw->chat_text);
-
+  
   gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (scr), 
-		    0, 1, 0, 1,
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    0, 0);
+ 		    0, 1, 0, 1,
+ 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+ 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+ 		    0, 0);
 
   label = gtk_label_new (_("Send Message:"));
   gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);

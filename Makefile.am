@@ -1,4 +1,4 @@
-SUBDIRS = macros po intl src pixmaps sounds
+SUBDIRS = po src pixmaps sounds
 
 @INTLTOOL_DESKTOP_RULE@
 
@@ -18,9 +18,6 @@ install-schemas: gnomemeeting.schema
 	GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) gconftool --makefile-install-rule $(SCHEMAS_FILE)
 	gconftool --shutdown
 
-if INSTALL_SCHEMAS
 install-data-local: install-schemas
-endif
 
-dist-hook: 
 

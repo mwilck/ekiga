@@ -221,11 +221,12 @@ static void codecs_clist_button_clicked_callback (GtkWidget *widget,
 
   row_data = (gchar *) g_malloc (3);
  
-  gnome_stock_pixmap_gdk (GNOME_STOCK_BUTTON_APPLY,
-			  NULL, &yes, &mask_yes);
+  cout << "FIXME: pref_window.cpp: 224" << endl << flush;
+ //  gnome_stock_pixmap_gdk (GNOME_STOCK_BUTTON_APPLY,
+// 			  NULL, &yes, &mask_yes);
 
-  gnome_stock_pixmap_gdk (GNOME_STOCK_BUTTON_CANCEL,
-			  NULL, &no, &mask_no);
+//   gnome_stock_pixmap_gdk (GNOME_STOCK_BUTTON_CANCEL,
+// 			  NULL, &no, &mask_no);
 
 
   if (!strcmp ((char *) gtk_object_get_data (GTK_OBJECT (widget), "operation"), 
@@ -521,6 +522,8 @@ static void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
   GtkWidget *table;			
   GtkWidget *vbox;
   GtkWidget *button;
+  GtkStockItem stock_item;
+  GtkWidget *stock_image;
   GtkTooltips *tip;
   gchar *clist_data;
   static const gchar * const available_codecs[] = {
@@ -630,8 +633,9 @@ static void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
     
   /* BUTTONS */						
   /* Add */
-  button = gnomemeeting_button (_("Enable"), 
-		       gnome_stock_new_with_icon (GNOME_STOCK_BUTTON_APPLY));  
+  if (gtk_stock_lookup (GTK_STOCK_APPLY, &stock_item))
+    stock_image = gtk_image_new_from_stock (GTK_STOCK_APPLY, GTK_ICON_SIZE_BUTTON);
+  button = gnomemeeting_button (_("Enable"), stock_image);
 
   gtk_table_attach (GTK_TABLE (table), button, 0, 1, 1, 2,
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
@@ -648,8 +652,9 @@ static void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
   
 
   /* Del */
-  button = gnomemeeting_button (_("Disable"), 
-		       gnome_stock_new_with_icon (GNOME_STOCK_BUTTON_CANCEL));  
+  if (gtk_stock_lookup (GTK_STOCK_APPLY, &stock_item))
+    stock_image = gtk_image_new_from_stock (GTK_STOCK_APPLY, GTK_ICON_SIZE_BUTTON);
+  button = gnomemeeting_button (_("Disable"), stock_image);
 
   gtk_table_attach (GTK_TABLE (table), button, 1, 2, 1, 2,
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
@@ -666,8 +671,10 @@ static void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
   
 
   /* Up */
-  button = gnomemeeting_button (_("Up"), 
-		       gnome_stock_new_with_icon (GNOME_STOCK_MENU_UP)); 
+  if (gtk_stock_lookup (GTK_STOCK_APPLY, &stock_item))
+    stock_image = gtk_image_new_from_stock (GTK_STOCK_APPLY, GTK_ICON_SIZE_BUTTON);
+
+  button = gnomemeeting_button (_("Up"), stock_image);
 
   gtk_table_attach (GTK_TABLE (table), button, 2, 3, 1, 2,
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
@@ -684,8 +691,10 @@ static void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
 
 		
   /* Down */
-  button = gnomemeeting_button (_("Down"), 
-				gnome_stock_new_with_icon (GNOME_STOCK_MENU_DOWN)); 
+  if (gtk_stock_lookup (GTK_STOCK_APPLY, &stock_item))
+    stock_image = gtk_image_new_from_stock (GTK_STOCK_APPLY, GTK_ICON_SIZE_BUTTON);
+
+  button = gnomemeeting_button (_("Down"), stock_image);
 
   gtk_table_attach (GTK_TABLE (table), button, 3, 4, 1, 2,
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
@@ -1790,7 +1799,7 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook)
 
 
   /* Try button */
-  pixmap =  gnome_pixmap_new_from_xpm_d ((char **) tb_jump_to_xpm);
+  pixmap =  gnome_pixmap_new_from_xpm_d ((const gchar **) tb_jump_to_xpm);
   pw->directory_update_button = gnomemeeting_button (_("Update"), pixmap);
 
   gtk_table_attach (GTK_TABLE (table),  pw->directory_update_button, 2, 3, 8, 9,
@@ -2087,7 +2096,7 @@ static void gnomemeeting_init_pref_window_directories (GtkWidget *notebook)
 
 
   /* Try button */
-  pixmap =  gnome_pixmap_new_from_xpm_d ((char **) tb_jump_to_xpm);
+  pixmap =  gnome_pixmap_new_from_xpm_d ((const gchar **) tb_jump_to_xpm);
   pw->gatekeeper_update_button = gnomemeeting_button (_("Update"), pixmap);
 
   gtk_table_attach (GTK_TABLE (table),  pw->gatekeeper_update_button, 2, 3, 5, 6,
@@ -2581,12 +2590,13 @@ gnomemeeting_codecs_list_add (GtkWidget *list, const gchar *CodecName,
 		
   gchar *data [4];
 
-  gnome_stock_pixmap_gdk (GNOME_STOCK_BUTTON_APPLY,
-			  NULL, &yes, &mask_yes);
+  //  gnome_stock_pixmap_gdk (GNOME_STOCK_BUTTON_APPLY,
+  // 			  NULL, &yes, &mask_yes);
+  
+  //  gnome_stock_pixmap_gdk (GNOME_STOCK_BUTTON_CANCEL,
+  //		  NULL, &no, &mask_no);
 
-  gnome_stock_pixmap_gdk (GNOME_STOCK_BUTTON_CANCEL,
-			  NULL, &no, &mask_no);
-
+  cout << "FIX ME: pref_window.cpp: 2599, btw pref_window sucks" << endl << flush;
 
   data [0] = NULL;
   data [1] = g_strdup (CodecName);
@@ -2635,24 +2645,24 @@ gnomemeeting_codecs_list_add (GtkWidget *list, const gchar *CodecName,
   
   /* Set the appropriate pixmap */
   if (strcmp (Enabled, "1") == 0) {
-    gtk_clist_set_pixmap (GTK_CLIST (list), 
-			  GTK_CLIST (list)->rows - 1, 
-			  0, yes, mask_yes);
+    //    gtk_clist_set_pixmap (GTK_CLIST (list), 
+    //		  GTK_CLIST (list)->rows - 1, 
+    //		  0, yes, mask_yes);
     strcpy (row_data, "1");
     gtk_clist_set_row_data (GTK_CLIST (list), 
 			    GTK_CLIST (list)->rows - 1, 
 			    (gpointer) row_data);
   }
   else {
-    gtk_clist_set_pixmap (GTK_CLIST (list), 
-			  GTK_CLIST (list)->rows - 1, 
-			  0, no, mask_no);
+    //    gtk_clist_set_pixmap (GTK_CLIST (list), 
+    //		  GTK_CLIST (list)->rows - 1, 
+    //		  0, no, mask_no);
     strcpy (row_data, "0");
     gtk_clist_set_row_data (GTK_CLIST (list), 
 			    GTK_CLIST (list)->rows - 1, 
 			    (gpointer) row_data);
   }
-  
+  cout << "FIX ME: pref_window.cpp: 2665, btw pref_window sucks" << endl << flush;  
   g_free (data [1]);
   g_free (data [2]);
   g_free (data [3]);

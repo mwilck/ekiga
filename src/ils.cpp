@@ -55,16 +55,17 @@ int gnomemeeting_ldap_window_appbar_update (gpointer data)
   float val;
   GtkWidget *statusbar = (GtkWidget *) data;
   
-  GtkProgress *progress = gnome_appbar_get_progress (GNOME_APPBAR (statusbar));
+  cout << "FIX me : ils.cpp:58" << endl << flush;
+//  GtkProgress *progress = gnome_appbar_get_progress (GNOME_APPBAR (statusbar));
 
-  val = gtk_progress_get_value(GTK_PROGRESS (progress));
+//  val = gtk_progress_get_value(GTK_PROGRESS (progress));
   
   val += 0.5;
   
   if (val > 100) 
     val = 0;
    
-  gtk_progress_set_value(GTK_PROGRESS(progress), val);
+//  gtk_progress_set_value(GTK_PROGRESS(progress), val);
    
   return 1;
 }
@@ -549,7 +550,7 @@ void GMILSClient::ils_browse ()
 
   gnomemeeting_threads_enter ();
   gtk_widget_set_sensitive (GTK_WIDGET (lw->refresh_button), FALSE);
-  ldap_server = gtk_entry_get_text 
+  ldap_server = (gchar *) gtk_entry_get_text 
     (GTK_ENTRY (GTK_COMBO (lw->ils_server_combo)->entry));
   gnomemeeting_threads_leave ();
 
@@ -571,8 +572,8 @@ void GMILSClient::ils_browse ()
   }
 
   gnomemeeting_threads_enter ();
-  
-  progress = gnome_appbar_get_progress (GNOME_APPBAR (lw->statusbar));
+  cout << "Fix me: ils.cpp: 575" << endl << flush;
+//  progress = gnome_appbar_get_progress (GNOME_APPBAR (lw->statusbar));
   
   quickcam = gdk_pixmap_create_from_xpm_d (gm->window, &quickcam_mask,
 					   NULL,
@@ -586,8 +587,8 @@ void GMILSClient::ils_browse ()
 		     _("Connecting to ILS directory... Please Wait."));
 
   /* We add a timeout to make the status indicator move in activity mode */
-  gtk_progress_set_activity_mode (GTK_PROGRESS (progress), TRUE);
-  gtk_progress_bar_set_activity_step (GTK_PROGRESS_BAR (progress), 4);
+//  gtk_progress_set_activity_mode (GTK_PROGRESS (progress), TRUE);
+//  gtk_progress_bar_set_activity_step (GTK_PROGRESS_BAR (progress), 4);
   ils_timeout = gtk_timeout_add (50, gnomemeeting_ldap_window_appbar_update, 
 				 lw->statusbar);
 
@@ -605,8 +606,8 @@ void GMILSClient::ils_browse ()
     
     /* Remove the timeout */
     gtk_timeout_remove (ils_timeout);
-    gtk_progress_set_activity_mode (GTK_PROGRESS (progress), FALSE);
-    gtk_progress_set_value(GTK_PROGRESS(progress), 0);
+//    gtk_progress_set_activity_mode (GTK_PROGRESS (progress), FALSE);
+//    gtk_progress_set_value(GTK_PROGRESS(progress), 0);
     
     gnomemeeting_threads_leave ();
     
@@ -669,7 +670,7 @@ void GMILSClient::ils_browse ()
 
   curr_page = gtk_notebook_get_current_page (GTK_NOTEBOOK (lw->notebook));
   page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), curr_page);
-  ldap_server = gtk_entry_get_text 
+  ldap_server = (gchar *) gtk_entry_get_text 
     (GTK_ENTRY (GTK_COMBO (lw->ils_server_combo)->entry));
 
 

@@ -87,6 +87,7 @@ class GDKVideoOutputDevice : public H323VideoDevice
    */
   virtual BOOL Redraw(const void * frame);
 
+  PMutex redraw_mutex;
 
   protected:
 
@@ -99,7 +100,6 @@ class GDKVideoOutputDevice : public H323VideoDevice
 
   PBYTEArray buffer; /* The RGB24 buffer; contains the images */
   int display_config; /* Current display : local or remote or both */
-  PMutex redraw_mutex;
   PMutex display_config_mutex;
     
   GM_window_widgets *gw;

@@ -851,19 +851,19 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
     return;
 
   /* Reset the Video Grabber, if preview, else close it */
-  GMVideoGrabber *vg = (GMVideoGrabber *) video_grabber;
+//   GMVideoGrabber *vg = (GMVideoGrabber *) video_grabber;
 
-  if (gconf_client_get_bool (client, "/apps/gnomemeeting/devices/video_preview", 0)) {
+//   if (gconf_client_get_bool (client, "/apps/gnomemeeting/devices/video_preview", 0)) {
 
-    vg->Close (TRUE);
-    vg->Open (TRUE, TRUE); /* Grab and do a synchronous opening in this thread */
-  }
-  else {
+//     vg->Close (TRUE);
+//     vg->Open (TRUE, TRUE); /* Grab and do a synchronous opening in this thread */
+//   }
+//   else {
     
-    if (vg->IsOpened ())
-      vg->Close ();
-  }
-  
+//     if (vg->IsOpened ())
+//       vg->Close ();
+//   }
+
   gnomemeeting_threads_enter ();
   gtk_entry_set_text (GTK_ENTRY (gw->remote_name), "");
   gtk_editable_delete_text (GTK_EDITABLE (gw->chat_text),

@@ -1,5 +1,5 @@
 
-INCLUDES = @GNOMEMEETING_INCLUDES@ -DGNOMELOCALEDIR=\""$(datadir)/locale"\" -I$(top_srcdir)/src $(GNOME_INCLUDEDIR) -DGNOMEMEETING_IMAGES=\""$(datadir)/pixmaps"\" -DBUILD_ID=\""@BUILD_ID@"\"
+INCLUDES = @GNOMEMEETING_INCLUDES@ -DGNOMELOCALEDIR=\""$(datadir)/locale"\" -I$(top_srcdir)/src $(GNOME_INCLUDEDIR) -DGNOMEMEETING_IMAGES=\""$(datadir)/pixmaps"\" -DBUILD_ID=\""@BUILD_ID@"\" -DGTK_ENABLE_BROKEN
 
 
 bin_PROGRAMS = gnomemeeting

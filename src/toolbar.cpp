@@ -52,6 +52,14 @@
 extern GnomeMeeting *MyApp;
 extern GtkWidget *gm;
 
+/* Here due to a bug in GLIB 2.00 */
+#define	g_signal_handlers_block_by_func(instance, func, data) \
+    g_signal_handlers_block_matched ((instance), (GSignalMatchType) (G_SIGNAL_MATCH_FUNC | G_SIGNAL_MATCH_DATA), \
+				     0, 0, NULL, (func), (data))
+#define	g_signal_handlers_unblock_by_func(instance, func, data) \
+    g_signal_handlers_unblock_matched ((instance), (GSignalMatchType) (G_SIGNAL_MATCH_FUNC | G_SIGNAL_MATCH_DATA), \
+				       0, 0, NULL, (func), (data))
+
 
 /* Static functions */
 static void connect_button_clicked (GtkToggleButton *w, gpointer data)
@@ -87,26 +95,30 @@ void connect_button_update_pixmap (GtkToggleButton *w, int pressed)
 
     if (pressed == 1) {
 
-      pixbuf = gdk_pixbuf_new_from_xpm_data ((const char **) connect_xpm);
-      gtk_signal_handler_block_by_func (GTK_OBJECT (w),
-					GTK_SIGNAL_FUNC (connect_button_clicked), 
-				    (gpointer) gw->connect_button); 
+      pixbuf = 
+	gdk_pixbuf_new_from_xpm_data ((const char **) connect_xpm);
+
+      /* Block the signal */
+      g_signal_handlers_block_by_func (G_OBJECT (w), 
+				       connect_button_clicked, 
+				       (gpointer) gw->connect_button);
       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (w), TRUE);
-      gtk_signal_handler_unblock_by_func (GTK_OBJECT (w),
-					  GTK_SIGNAL_FUNC (connect_button_clicked), 
-					  (gpointer) gw->connect_button); 
+      g_signal_handlers_unblock_by_func (G_OBJECT (w), 
+				       connect_button_clicked, 
+				       (gpointer) gw->connect_button);
     }
     else {
 
-      pixbuf = gdk_pixbuf_new_from_xpm_data ((const char **) disconnect_xpm);
-      gtk_signal_handler_block_by_func (GTK_OBJECT (w),
-					GTK_SIGNAL_FUNC (connect_button_clicked), 
-				    (gpointer) gw->connect_button); 
+      pixbuf = 
+	gdk_pixbuf_new_from_xpm_data ((const char **) disconnect_xpm);
+      
+      g_signal_handlers_block_by_func (G_OBJECT (w), 
+				       connect_button_clicked, 
+				       (gpointer) gw->connect_button);
       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (w), FALSE);
-      gtk_signal_handler_unblock_by_func (GTK_OBJECT (w),
-					  GTK_SIGNAL_FUNC (connect_button_clicked), 
-					  (gpointer) gw->connect_button); 
-
+      g_signal_handlers_unblock_by_func (G_OBJECT (w), 
+					 connect_button_clicked, 
+					 (gpointer) gw->connect_button);
     }
 
     if (pixbuf) {
@@ -147,7 +159,6 @@ static void toolbar_toggle_changed (GtkWidget *widget, gpointer data)
 
 void gnomemeeting_init_toolbar ()
 {
-  GnomeDockItem *item;
   GtkWidget *pixmap;
   GdkPixmap *Pixmap;
   GdkBitmap *mask;
@@ -188,7 +199,6 @@ void gnomemeeting_init_toolbar ()
 	GNOMEUIINFO_END
     };
 
-  gnome_preferences_set_toolbar_labels (FALSE);
 
   /* Combo */
   gw->combo = gnomemeeting_history_combo_box_new("/apps/gnomemeeting/"
@@ -200,21 +210,18 @@ void gnomemeeting_init_toolbar ()
   gtk_signal_connect (GTK_OBJECT (GTK_COMBO (gw->combo)->entry), "activate",
   		      GTK_SIGNAL_FUNC (connect_cb), NULL);
 
-  item = gnome_app_get_dock_item_by_name(GNOME_APP (gm),
-					 GNOME_APP_TOOLBAR_NAME);
-
 
   /* Both toolbars */
-  GtkWidget *toolbar = gtk_toolbar_new (GTK_ORIENTATION_HORIZONTAL,
-					GTK_TOOLBAR_ICONS);
+  GtkWidget *toolbar = gtk_toolbar_new ();
+
   hbox = gtk_hbox_new (FALSE, 2);
 
   gtk_box_pack_start (GTK_BOX (hbox), gw->combo, TRUE, TRUE, 1);
   gtk_box_pack_start (GTK_BOX (hbox), toolbar, FALSE, FALSE, 1);
 
   gnome_app_add_docked (GNOME_APP (gm), hbox, "main_toolbar",
-			GNOME_DOCK_ITEM_BEH_EXCLUSIVE,
-			GNOME_DOCK_TOP, 1, 0, 0);
+ 			BONOBO_DOCK_ITEM_BEH_EXCLUSIVE,
+ 			BONOBO_DOCK_TOP, 1, 0, 0);
 
   gtk_container_set_border_width (GTK_CONTAINER (toolbar), 2);
 
@@ -234,18 +241,18 @@ void gnomemeeting_init_toolbar ()
                       GTK_SIGNAL_FUNC (connect_button_clicked), 
 		      gw->connect_button);
 
-  GtkWidget *toolbar2 = gtk_toolbar_new (GTK_ORIENTATION_VERTICAL,
-				      GTK_TOOLBAR_ICONS);
+  GtkWidget *toolbar2 = gtk_toolbar_new ();
+
   gnome_app_fill_toolbar(GTK_TOOLBAR (toolbar2), left_toolbar, NULL);
   gnome_app_add_toolbar (GNOME_APP (gm), GTK_TOOLBAR(toolbar2),
-			 "left_toolbar", GNOME_DOCK_ITEM_BEH_EXCLUSIVE,
-			 GNOME_DOCK_LEFT, 3, 0, 0);
+ 			 "left_toolbar", BONOBO_DOCK_ITEM_BEH_EXCLUSIVE,
+ 			 BONOBO_DOCK_LEFT, 3, 0, 0);
 
 
   /* Video Preview Button */
   gw->preview_button = gtk_toggle_button_new ();
 
-  pixmap = gnome_pixmap_new_from_xpm_d ((char **) eye_xpm);
+  pixmap = gnome_pixmap_new_from_xpm_d ((const gchar **) eye_xpm);
   gtk_container_add (GTK_CONTAINER (gw->preview_button), pixmap);
 
   gtk_widget_set_usize (GTK_WIDGET (gw->preview_button), 24, 24);
@@ -269,7 +276,7 @@ void gnomemeeting_init_toolbar ()
   /* Audio Channel Button */
   gw->audio_chan_button = gtk_toggle_button_new ();
 
-  pixmap = gnome_pixmap_new_from_xpm_d ((char **) speaker_xpm);
+  pixmap = gnome_pixmap_new_from_xpm_d ((const gchar **) speaker_xpm);
   gtk_container_add (GTK_CONTAINER (gw->audio_chan_button), pixmap);
 
   gtk_widget_set_usize (GTK_WIDGET (gw->audio_chan_button), 24, 24);
@@ -290,7 +297,7 @@ void gnomemeeting_init_toolbar ()
   /* Video Channel Button */
   gw->video_chan_button = gtk_toggle_button_new ();
 
-  pixmap = gnome_pixmap_new_from_xpm_d ((char **) quickcam_xpm);
+  pixmap = gnome_pixmap_new_from_xpm_d ((const gchar **) quickcam_xpm);
   gtk_container_add (GTK_CONTAINER (gw->video_chan_button), pixmap);
 
   gtk_widget_set_usize (GTK_WIDGET (gw->video_chan_button), 24, 24);

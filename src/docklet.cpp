@@ -194,7 +194,7 @@ void gnomemeeting_setup_docklet_properties (GdkWindow *window)
      can be set to zero or the root win I think */
   data[0] = 0;
   gdk_property_change(window, kde_net_system_tray_window_for_atom, 
-		      XA_WINDOW, 32,
+		      (GdkAtom) XA_WINDOW, 32,
 		      GDK_PROP_MODE_REPLACE, (guchar *)&data, 1);
   
 }

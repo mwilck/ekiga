@@ -44,6 +44,13 @@
 
 #include "../config.h"
 
+/* Here due to a bug in GLIB 2.00 */
+#define	g_signal_handlers_block_by_func(instance, func, data) \
+    g_signal_handlers_block_matched ((instance), (GSignalMatchType) (G_SIGNAL_MATCH_FUNC | G_SIGNAL_MATCH_DATA), \
+				     0, 0, NULL, (func), (data))
+#define	g_signal_handlers_unblock_by_func(instance, func, data) \
+    g_signal_handlers_unblock_matched ((instance), (GSignalMatchType) (G_SIGNAL_MATCH_FUNC | G_SIGNAL_MATCH_DATA), \
+				       0, 0, NULL, (func), (data))
 
 /* Declarations */
 extern GtkWidget *gm;
@@ -213,16 +220,16 @@ static gboolean gatekeeper_option_menu_changed (gpointer data)
   GtkWidget *e = GTK_OPTION_MENU (data)->menu;
   
   /* We set the new value for the widget */
-  gtk_signal_handler_block_by_func (GTK_OBJECT (e),
-				    GTK_SIGNAL_FUNC (option_menu_changed), 
-				    (gpointer) gtk_object_get_data (GTK_OBJECT (data), "gconf_key")); 
+  g_signal_handlers_block_by_func (G_OBJECT (e),
+				   option_menu_changed, 
+				   (gpointer) gtk_object_get_data (GTK_OBJECT (data), "gconf_key")); 
   /* Can't be done before Gnome 2 
   gtk_option_menu_set_history (GTK_OPTION_MENU (data),
 			       gconf_value_get_int (entry->value));
   */
-  gtk_signal_handler_unblock_by_func (GTK_OBJECT (e),
-				      GTK_SIGNAL_FUNC (option_menu_changed), 
-				      (gpointer) gtk_object_get_data (GTK_OBJECT (data), "gconf_key")); 
+  g_signal_handlers_unblock_by_func (G_OBJECT (e),
+				     option_menu_changed, 
+				     (gpointer) gtk_object_get_data (GTK_OBJECT (data), "gconf_key")); 
 
 
   /* We update the registering to the gatekeeper */
@@ -677,16 +684,16 @@ static gboolean entry_changed_ (gpointer data)
   GtkWidget *e = GTK_WIDGET (data);
 
   /* We set the new value for the widget */
-  gtk_signal_handler_block_by_func (GTK_OBJECT (e),
-				    GTK_SIGNAL_FUNC (entry_changed), 
-				    (gpointer) gtk_object_get_data (GTK_OBJECT (e), "gconf_key")); 
+  g_signal_handlers_block_by_func (G_OBJECT (e),
+				   entry_changed, 
+				   (gpointer) gtk_object_get_data (GTK_OBJECT (e), "gconf_key")); 
   
   /* I can't set that value till Orbit2 and the new gconf are out! */
 
   /*  gtk_entry_set_text (GTK_ENTRY (e), gconf_value_get_string (entry->value));*/
-  gtk_signal_handler_unblock_by_func (GTK_OBJECT (e),
-				      GTK_SIGNAL_FUNC (entry_changed), 
-				      (gpointer) gtk_object_get_data (GTK_OBJECT (e), "gconf_key")); 
+  g_signal_handlers_unblock_by_func (G_OBJECT (e),
+				     entry_changed, 
+				     (gpointer) gtk_object_get_data (GTK_OBJECT (e), "gconf_key")); 
 
   
   gdk_threads_leave ();
@@ -721,16 +728,16 @@ static gboolean video_option_menu_changed (gpointer data)
   GtkWidget *e = GTK_OPTION_MENU (data)->menu;
   
   /* We set the new value for the widget */
-  gtk_signal_handler_block_by_func (GTK_OBJECT (e),
-				    GTK_SIGNAL_FUNC (option_menu_changed), 
-				    (gpointer) gtk_object_get_data (GTK_OBJECT (data), "gconf_key")); 
+  g_signal_handlers_block_by_func (G_OBJECT (e),
+				   option_menu_changed, 
+				   (gpointer) gtk_object_get_data (GTK_OBJECT (data), "gconf_key")); 
   /* Can't be done before Gnome 2 
   gtk_option_menu_set_history (GTK_OPTION_MENU (data),
 			       gconf_value_get_int (entry->value));
   */
-  gtk_signal_handler_unblock_by_func (GTK_OBJECT (e),
-				      GTK_SIGNAL_FUNC (option_menu_changed), 
-				      (gpointer) gtk_object_get_data (GTK_OBJECT (data), "gconf_key")); 
+  g_signal_handlers_unblock_by_func (G_OBJECT (e),
+				     option_menu_changed, 
+				     (gpointer) gtk_object_get_data (GTK_OBJECT (data), "gconf_key")); 
 
 
   /* We update the Endpoint */
@@ -795,7 +802,7 @@ static gboolean audio_mixer_changed (gpointer data)
   pw = gnomemeeting_get_pref_window (gm);
   gw = gnomemeeting_get_main_window (gm);
 
-  entry_data = gtk_entry_get_text (GTK_ENTRY (data));
+  entry_data = (gchar *) gtk_entry_get_text (GTK_ENTRY (data));
   
   /* Update the GUI */
   /* Not before Gnome 2 :-(

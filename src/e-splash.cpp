@@ -27,16 +27,10 @@
 
 #include "e-splash.h"
 
-#include <gtk/gtkframe.h>
-#include <gtk/gtkmain.h>
-#include <gtk/gtksignal.h>
-#include <gdk-pixbuf/gnome-canvas-pixbuf.h>
-#include <libgnomeui/gnome-window-icon.h>
-
 #include <gdk/gdkx.h>
 #include <X11/Xlib.h>
 
-
+
 #define PARENT_TYPE gtk_window_get_type ()
 static GtkWindowClass *parent_class = NULL;
 
@@ -178,7 +172,7 @@ icon_free (Icon *icon)
 {
 	gdk_pixbuf_unref (icon->dark_pixbuf);
 	gdk_pixbuf_unref (icon->light_pixbuf);
-/*  	gtk_object_unref (GTK_OBJECT (icon->canvas_item)); */
+  	gtk_object_unref (GTK_OBJECT (icon->canvas_item)); 
 
 	g_free (icon);
 }
@@ -391,7 +385,7 @@ e_splash_new (void)
 	ESplash *newsp;
 	GdkPixbuf *splash_image_pixbuf;
 
-	splash_image_pixbuf = gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES "/gnomemeeting-splash.png");
+ 	splash_image_pixbuf = gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES "/gnomemeeting-splash.png", 0);
 	g_return_val_if_fail (splash_image_pixbuf != NULL, NULL);
 
 	newsp = reinterpret_cast<ESplash *> (gtk_type_new (e_splash_get_type ()));
@@ -402,7 +396,7 @@ e_splash_new (void)
 	return GTK_WIDGET (newsp);
 }
 
-
+
 /**
  * e_splash_add_icon:
  * @splash: A pointer to an ESplash widget

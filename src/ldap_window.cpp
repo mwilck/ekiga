@@ -217,7 +217,7 @@ void refresh_button_clicked (GtkButton *button, gpointer data)
 						(GTK_NOTEBOOK (lw->notebook), 
 						 page))))->data);
       gtk_label_get (GTK_LABEL (label), &text_label);
-      ldap_server = gtk_entry_get_text 
+      ldap_server = (gchar *) gtk_entry_get_text 
 	(GTK_ENTRY (GTK_COMBO (lw->ils_server_combo)->entry));
       
       /* if there is a page with the current ils server, that's ok */
@@ -296,7 +296,7 @@ void apply_filter_button_clicked (GtkButton *button, gpointer data)
     last_selected_row = -1;
   }
   
-  entry = gtk_entry_get_text (GTK_ENTRY (lw->search_entry));
+  entry = (gchar *) gtk_entry_get_text (GTK_ENTRY (lw->search_entry));
   
   for (cpt = last_selected_row + 1; cpt < GTK_CLIST (clist)->rows; cpt++) {
     gtk_clist_get_text (GTK_CLIST (clist), cpt, col, &text);
@@ -355,7 +355,7 @@ void gnomemeeting_init_ldap_window ()
   lw->thread_count = 0;
   lw->gw = gw;
 
-  who_pixmap =  gnome_pixmap_new_from_xpm_d ((char **) ldap_refresh_xpm);
+  who_pixmap =  gnome_pixmap_new_from_xpm_d ((const gchar **) ldap_refresh_xpm);
 
   lw->gw->ldap_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_policy (GTK_WINDOW (lw->gw->ldap_window), 

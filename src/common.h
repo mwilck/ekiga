@@ -18,10 +18,8 @@
 #ifndef _COMMON_H
 #define _COMMON_H
 
-#include <gtk/gtkwidget.h>
-#include <gtk/gtkobject.h>
-#include <gdk/gdk.h>
-#include <gtk/gtkadjustment.h>
+#include <gtk/gtk.h>
+
 #include <ptlib.h>
 
 
@@ -64,10 +62,9 @@ struct _GM_window_widgets
   GtkWidget *remote_name;
   GtkWidget *splash_win;
   GtkWidget *combo;
-  GtkWidget *log_text;
+  GtkTextBuffer *log_text;
   GtkWidget *main_notebook;
-  GdkPixmap *pixmap;
-  GtkWidget *drawing_area;
+  GtkWidget *video_image;
   GtkWidget *video_frame;
   GtkWidget *pref_window;
   GtkWidget *ldap_window;

@@ -105,6 +105,7 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
 {
   GdkPixbuf *src_pic = NULL;
   GdkPixbuf *zoomed_pic = NULL;
+  GtkRequisition size_request;
 
   int unref = 1; /* unreference zoomed_pic */
 
@@ -121,6 +122,7 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
 
   /* Take the mutexes before the redraw */
   redraw_mutex.Wait ();
+
   gnomemeeting_threads_enter ();
 
   if (buffer.GetSize () != frameWidth * frameHeight * 3)
@@ -129,6 +131,7 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
   H323VideoDevice::Redraw(frame);
 
   /* The real size picture */
+
   src_pic =  
     gdk_pixbuf_new_from_data ((const guchar *) buffer,
 			      GDK_COLORSPACE_RGB, FALSE, 8, frameWidth,
@@ -147,64 +150,44 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
     unref = 0;
   }
 
-  gnomemeeting_threads_leave ();
 
   /* Need to redefine screen size ? */
-  if (((gw->drawing_area->allocation.width != zoomed_width) || 
-      (gw->drawing_area->allocation.height != zoomed_height)) &&
+  gtk_widget_size_request (GTK_WIDGET (gw->video_frame), &size_request);
+
+  if (((size_request.width - GM_FRAME_SIZE != zoomed_width) || 
+       (size_request.height != zoomed_height)) &&
       (device_id == !display)) {
 
-    gnomemeeting_threads_enter ();
-    gtk_drawing_area_size (GTK_DRAWING_AREA (gw->drawing_area), 
-			   zoomed_width, zoomed_height);
-    gtk_widget_set_usize (GTK_WIDGET (gw->video_frame),
-			  zoomed_width + GM_FRAME_SIZE, zoomed_height);
-    gnomemeeting_threads_leave ();
+     gtk_widget_set_usize (GTK_WIDGET (gw->video_frame),
+			   zoomed_width + GM_FRAME_SIZE, zoomed_height);
   }
 
-  
-  xpos = (gw->drawing_area->allocation.width - zoomed_width) / 2;
-  ypos = (gw->drawing_area->allocation.height - zoomed_height) / 2;
-
+  gnomemeeting_threads_leave ();
 
   /* We display what we transmit, or what we receive */
   if (((device_id == 0 && display == 1) ||
       (device_id == 1 && display == 0)) &&
       (display != 2)) {
     
-    /* We only draw if the drawing area has already been realized */
-    if (gw->pixmap != NULL) {
-      gnomemeeting_threads_enter ();
-      gdk_pixbuf_render_to_drawable(zoomed_pic, gw->pixmap,
-				    gw->drawing_area->style->black_gc, 
-				    0, 0,
-				    xpos, ypos,
-				    zoomed_width, zoomed_height, 
-				    GDK_RGB_DITHER_NORMAL, 
-				    0, 0);
-      
-      gtk_widget_draw (gw->drawing_area, NULL);    
-      gnomemeeting_threads_leave ();
-    }
+    gnomemeeting_threads_enter ();
+    gtk_image_set_from_pixbuf (GTK_IMAGE (gw->video_image), GDK_PIXBUF (zoomed_pic));
+    gtk_widget_queue_draw (GTK_WIDGET (gw->video_image));
+    gnomemeeting_threads_leave ();
   }
 
 
   /* we display both of them */
   if (display == 2) {
 
+
     /* What we receive, in big */
     if (device_id == 0)	{
 
       gnomemeeting_threads_enter ();
-      gdk_pixbuf_render_to_drawable(zoomed_pic, gw->pixmap,
-				    gw->drawing_area->style->black_gc, 
-				    0, 0,
-				    xpos, ypos,
-				    zoomed_width, zoomed_height, 
-				    GDK_RGB_DITHER_NORMAL, 
-				    0, 0);
+      gtk_image_set_from_pixbuf (GTK_IMAGE (gw->video_image), GDK_PIXBUF (zoomed_pic));
       gnomemeeting_threads_leave ();
     }
+
 
     /* What we transmit, in small */
     if (device_id == 1)	{
@@ -212,24 +195,18 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
       gnomemeeting_threads_enter ();
 
       GdkPixbuf *local_pic = 
-	gdk_pixbuf_scale_simple (zoomed_pic, zoomed_width / 4, 
-				 zoomed_height / 4, 
-				 GDK_INTERP_NEAREST);
+ 	gdk_pixbuf_scale_simple (zoomed_pic, zoomed_width / 4, 
+ 				 zoomed_height / 4, 
+ 				 GDK_INTERP_NEAREST);
 
-      gdk_pixbuf_render_to_drawable(local_pic, gw->pixmap,
-				    gw->drawing_area->style->black_gc, 
-				    0, 0,
-				    0, 0,
-				    zoomed_width / 4, zoomed_height / 4, 
-				    GDK_RGB_DITHER_NORMAL, 
-				    0, 0);
-      
-      gtk_widget_draw (gw->drawing_area, NULL);     
+      gtk_image_set_from_pixbuf (GTK_IMAGE (gw->video_image), GDK_PIXBUF (local_pic));
+      gtk_widget_queue_draw (GTK_WIDGET (gw->video_image));
       
       gdk_pixbuf_unref (local_pic);
 
       gnomemeeting_threads_leave ();
     }
+
   }
 
 
@@ -253,6 +230,7 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
   }
 
   gnomemeeting_threads_leave ();
+
   redraw_mutex.Signal ();
 	
   return TRUE;

@@ -27,7 +27,6 @@
  *
  */
 
-
 #include "../config.h"
 
 #include <ptlib.h>
@@ -68,10 +67,11 @@ void gnomemeeting_threads_enter () {
 
   if (PThread::Current ()->GetThreadName () != "gnomemeeting") {
     
-    
+    //    cout << "Will take GDK Lock" << endl << flush;
     PTRACE(1, "Will Take GDK Lock");
     gdk_threads_enter ();
     PTRACE(1, "GDK Lock Taken");
+    //    cout << "GDK Lock Taken" << endl << flush;
   }
   else {
 
@@ -85,10 +85,12 @@ void gnomemeeting_threads_leave () {
 
   if (PThread::Current ()->GetThreadName () != "gnomemeeting") {
 
-  
+    //    cout << "Will Release GDK Lock" << endl << flush;
+    //    cout << PThread::Current ()->GetThreadName () << endl << flush;
     PTRACE(1, "Will Release GDK Lock");
     gdk_threads_leave ();
     PTRACE(1, "GDK Lock Released");
+    //    cout << "GDK Lock Released" << endl << flush;
   }
   else {
 
@@ -150,6 +152,8 @@ GM_ldap_window_widgets *gnomemeeting_get_ldap_window (GtkWidget *gm)
 
 void gnomemeeting_log_insert (gchar *text)
 {
+  GtkTextIter start, end;
+  
   time_t *timeptr;
   char *time_str;
 
@@ -161,9 +165,12 @@ void gnomemeeting_log_insert (gchar *text)
   time (timeptr);
   strftime(time_str, 20, "%H:%M:%S :  ", localtime (timeptr));
 
-  gtk_text_insert (GTK_TEXT (gw->log_text), NULL, NULL, NULL, time_str, -1);
-  gtk_text_insert (GTK_TEXT (gw->log_text), NULL, NULL, NULL, text, -1);
-  gtk_text_insert (GTK_TEXT (gw->log_text), NULL, NULL, NULL, "\n", -1);
+  gtk_text_buffer_get_bounds (GTK_TEXT_BUFFER (gw->log_text), &start, &end);
+  gtk_text_buffer_insert (GTK_TEXT_BUFFER (gw->log_text), &end, time_str, -1);
+  gtk_text_buffer_get_bounds (GTK_TEXT_BUFFER (gw->log_text), &start, &end);
+  gtk_text_buffer_insert (GTK_TEXT_BUFFER (gw->log_text), &end, text, -1);
+  gtk_text_buffer_get_bounds (GTK_TEXT_BUFFER (gw->log_text), &start, &end);
+  gtk_text_buffer_insert (GTK_TEXT_BUFFER (gw->log_text), &end, "\n", -1);
 
   free (time_str);
   delete (timeptr);
@@ -174,37 +181,27 @@ void gnomemeeting_init_main_window_logo ()
 {
   GdkPixmap *text_logo;
   GdkBitmap *text_logo_mask;
-  GdkRectangle update_rec;
-  
-  update_rec.x = 0;
-  update_rec.y = 0;
-  update_rec.width = GM_QCIF_WIDTH;
-  update_rec.height = GM_QCIF_HEIGHT;
+  GtkRequisition size_request;
 
   GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
 
-  if (gw->drawing_area->allocation.width != GM_QCIF_WIDTH &&
-      gw->drawing_area->allocation.height != GM_QCIF_HEIGHT) {
-    
-    gtk_drawing_area_size (GTK_DRAWING_AREA (gw->drawing_area), 
-			   GM_QCIF_WIDTH, GM_QCIF_HEIGHT);
-    gtk_widget_set_usize (GTK_WIDGET (gw->video_frame),
-			  GM_QCIF_WIDTH + GM_FRAME_SIZE, GM_QCIF_HEIGHT);
-  }
+  gtk_widget_size_request (GTK_WIDGET (gw->video_frame), &size_request);
 
-  gdk_draw_rectangle (gw->pixmap, gw->drawing_area->style->black_gc, TRUE,
-		      0, 0, GM_QCIF_WIDTH, GM_QCIF_HEIGHT);
+  if ((size_request.width - GM_FRAME_SIZE != 176) || 
+      (size_request.height != 144)) {
+
+     gtk_widget_set_usize (GTK_WIDGET (gw->video_frame),
+			   176 + GM_FRAME_SIZE, 144);
+  }
 
   text_logo = gdk_pixmap_create_from_xpm_d (gm->window, &text_logo_mask,
 					    NULL,
 					    (gchar **) text_logo_xpm);
 
-  gdk_draw_pixmap (gw->pixmap, gw->drawing_area->style->black_gc, 
-		   text_logo, 0, 0, 
-		   (GM_QCIF_WIDTH - 150) / 2,
-		   (GM_QCIF_HEIGHT - 62) / 2, -1, -1);
+  gtk_image_set_from_pixmap (GTK_IMAGE (gw->video_image), text_logo, text_logo_mask);
 
-  gtk_widget_draw (gw->drawing_area, &update_rec);   
+  g_object_unref (text_logo);
+  g_object_unref (text_logo_mask);
 }
 
 

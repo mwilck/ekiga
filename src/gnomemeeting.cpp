@@ -316,7 +316,6 @@ int main (int argc, char ** argv, char ** envp)
 
   /* Init the GM_window_widgets */
   gw = new (GM_window_widgets);
-  gw->pixmap = NULL;
   gw->pref_window = NULL;
   gw->ldap_window = NULL;
   gw->video_grabber_thread_count = 0;
@@ -349,7 +348,10 @@ int main (int argc, char ** argv, char ** envp)
 
 
   /* Threads + Locale Init + Gconf */
-  g_thread_init(NULL);
+  g_thread_init (NULL);
+  gdk_threads_init ();
+
+  gdk_threads_enter ();
   gconf_init (argc, argv, 0);
 
   textdomain (PACKAGE);
@@ -366,15 +368,15 @@ int main (int argc, char ** argv, char ** envp)
 
   /* Quick hack to make the GUI refresh even on high load from the other
      threads */
-
   gtk_timeout_add (1000, (GtkFunction) AppbarUpdate, 
- 		   rtp);
-//  gtk_timeout_add (10000, (GtkFunction) StressTest, 
-//     		   NULL);
+  		   rtp);
+  gtk_timeout_add (10000, (GtkFunction) StressTest, 
+       		   NULL);
 
   /* The GTK loop */
+  cout << "Begin" << endl << flush;
   gtk_main ();
-
+  gdk_threads_leave ();
 
   delete (gw);
   delete (lw);

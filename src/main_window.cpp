@@ -29,11 +29,7 @@
 
 #include "../config.h"
 
-#include <orb/orbit.h>
-extern "C" {
-#include <libgnorba/gnorba.h>
 #include <libgnomeui/gnome-window-icon.h>
-}
 
 #include "main_window.h"
 #include "gnomemeeting.h"
@@ -68,8 +64,7 @@ extern "C" {
 extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;	
 
-static gint expose_event (GtkWidget *, GdkEventExpose *, gpointer);
-static void realize_event (GtkWidget *, gpointer);
+
 static void audio_volume_changed (GtkAdjustment *, gpointer);
 static void brightness_changed (GtkAdjustment *, gpointer);
 static void whiteness_changed (GtkAdjustment *, gpointer);
@@ -97,44 +92,6 @@ static void notebook_page_changed_callback (GtkNotebook *notebook, gpointer)
 
   gconf_client_set_int (client, "/apps/gnomemeeting/view/notebook_info",
 			gtk_notebook_get_current_page (notebook), 0);
-}
-
-
-/* DESCRIPTION  :  This callback is called when the main window is covered by
- *                 another window or updated.
- * BEHAVIOR     :  Update it
- * PRE          :  gpointer is a valid pointer to GM_window_widgets
- */
-gint expose_event (GtkWidget *widget, GdkEventExpose *event, gpointer data)
-{
-  GM_window_widgets *gw = (GM_window_widgets *) data;
-
-  /* We should first draw the logo ;) */
-  if (gw->pixmap == NULL)
-    return false;
-
-  gdk_draw_pixmap(widget->window,
-		  widget->style->fg_gc[GTK_WIDGET_STATE (widget)],
-		  gw->pixmap,
-		  event->area.x, event->area.y,
-		  event->area.x, event->area.y,
-		  event->area.width, event->area.height);
-
-  return FALSE;
-}
-
-/* DESCRIPTION  :  This callback is called whn the drawing_area is
- *                 first shown
- * BEHAVIOR     :  Create the associated pixmap and draw the logo on it
- * PRE          :  gpointer is a valid pointer to GM_window_widgets
- */
-void realize_event (GtkWidget *drawing_area, gpointer data)
-{
-  GM_window_widgets *gw = (GM_window_widgets *) data;
-
-  gw->pixmap = gdk_pixmap_new (drawing_area->window, 
-			       GM_CIF_WIDTH * 2, GM_CIF_HEIGHT * 2, -1);
-  gnomemeeting_init_main_window_logo ();
 }
 
 
@@ -287,7 +244,7 @@ void gnomemeeting_init (GM_window_widgets *gw,
 				    arguments, 0, NULL);
 
   gm = gnome_app_new ("gnomemeeting", _("GnomeMeeting"));
-  gtk_window_set_policy (GTK_WINDOW (gm), FALSE, TRUE, TRUE);
+  gtk_window_set_policy (GTK_WINDOW (gm), FALSE, FALSE, TRUE);
 
   /* Some little gconf stuff */  
   client = gconf_client_get_default ();
@@ -297,24 +254,24 @@ void gnomemeeting_init (GM_window_widgets *gw,
   gchar *gconf_test = NULL;
   gconf_test = gconf_client_get_string (client, "/apps/gnomemeeting/general/gconf_test", NULL);
 
-  if (gconf_test == NULL || strcmp (gconf_test, BUILD_ID)) {
+   if (gconf_test == NULL || strcmp (gconf_test, BUILD_ID)) {
 
-    GtkWidget *dialog = gnome_message_box_new (_("Please check your gconf settings and permissions, it seems that gconf is not properly setup on your system"),
-					       GNOME_MESSAGE_BOX_ERROR,
-					       GNOME_STOCK_BUTTON_CLOSE,
-					       NULL);
+     GtkWidget *dialog = gnome_message_box_new (_("Please check your gconf settings and permissions, it seems that gconf is not properly setup on your system"),
+ 					       GNOME_MESSAGE_BOX_ERROR,
+ 					       GNOME_STOCK_BUTTON_CLOSE,
+ 					       NULL);
 
-    int reply = gnome_dialog_run(GNOME_DIALOG(dialog));
-    if ((reply == 0)||(reply == -1)) {
+     int reply = gnome_dialog_run(GNOME_DIALOG(dialog));
+     if ((reply == 0)||(reply == -1)) {
 
-       delete (gw);
-       delete (lw);
-       delete (pw);
-       delete (rtp);
-       exit (-1);
-    }
-  }
-  g_free (gconf_test);
+        delete (gw);
+        delete (lw);
+        delete (pw);
+        delete (rtp);
+        exit (-1);
+     }
+   }
+   g_free (gconf_test);
 
   /* We store all the pointers to the structure as data of gm */
   gtk_object_set_data (GTK_OBJECT (gm), "gw", gw);
@@ -330,7 +287,8 @@ void gnomemeeting_init (GM_window_widgets *gw,
 		      GTK_SIGNAL_FUNC (gtk_widget_hide_on_delete), 0);
 
   show_splash = gconf_client_get_bool (client, "/apps/gnomemeeting/"
-				       "view/show_splash", 0);  
+				      "view/show_splash", 0);  
+
   if (show_splash) {
 
     /* We show the splash screen */
@@ -430,10 +388,6 @@ void gnomemeeting_init (GM_window_widgets *gw,
 			  "/apps/gnomemeeting/gatekeeper/registering_method",
 			  method, 0);
 
-  /* The logo */
-  gw->pixmap = NULL;
-  /* Note: The rest of the logo init is moved to the realize event of the
-     drawing_widget */    
 
   /* Show the main window */
   if (!gconf_client_get_bool (GCONF_CLIENT (client), 
@@ -443,16 +397,20 @@ void gnomemeeting_init (GM_window_widgets *gw,
     gtk_widget_show (GTK_WIDGET (gm));
 
   /* Create a popup menu to attach it to the drawing area  */
-  gnomemeeting_popup_menu_init (gw->drawing_area, gw);
+  gnomemeeting_popup_menu_init (gw->video_frame, gw);
 
   /* Set icon */
   gtk_widget_push_visual(gdk_rgb_get_visual());
   gtk_widget_push_colormap(gdk_rgb_get_cmap());
+  cout << "FIX ME: main_window.cpp: 448" << endl;
+  /* This can be copies from evo when they port to gnome2 (I hope) */
   gnome_window_icon_set_from_file 
-    (GTK_WINDOW (gm), GNOMEMEETING_IMAGES "/gnomemeeting-logo-icon.png");
+    (GTK_WINDOW (gm), GNOMEMEETING_IMAGES "/gnomemeeting-logo-icon.png"); 
 
+      /*      if (gw->splash_win)
+      gtk_widget_destroy (gw->splash_win); */
   if (gw->splash_win)
-    gtk_widget_destroy (gw->splash_win);
+    gtk_widget_hide (gw->splash_win);
 
   /* Start the Gconf notifiers */
   gnomemeeting_init_gconf (client);
@@ -461,7 +419,7 @@ void gnomemeeting_init (GM_window_widgets *gw,
   gtk_signal_connect (GTK_OBJECT (gm), "delete_event",
 		      GTK_SIGNAL_FUNC (gm_quit_callback), (gpointer) gw);
 
-
+  gnomemeeting_init_main_window_logo ();
   /* The gtk_widget_show (gm) will show the toolbar, hide it if needed */
   if (!gconf_client_get_bool (client, "/apps/gnomemeeting/view/left_toolbar", 0)) 
     gtk_widget_hide (GTK_WIDGET (gnome_app_get_dock_item_by_name(GNOME_APP (gm), "left_toolbar")));
@@ -524,19 +482,11 @@ void gnomemeeting_init_main_window ()
   gtk_container_add (GTK_CONTAINER (frame), gw->video_frame);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
 
-  gw->drawing_area = gtk_drawing_area_new ();
-
-  gtk_container_add (GTK_CONTAINER (gw->video_frame), gw->drawing_area);
   gtk_widget_set_usize (GTK_WIDGET (gw->video_frame), 
 			GM_QCIF_WIDTH + GM_FRAME_SIZE, GM_QCIF_HEIGHT);
 
-  gtk_drawing_area_size (GTK_DRAWING_AREA (gw->drawing_area), 
-			 GM_QCIF_WIDTH, GM_QCIF_HEIGHT);
-
-  gtk_signal_connect (GTK_OBJECT (gw->drawing_area), "expose_event",
-		      (GtkSignalFunc) expose_event, gw);    	
-  gtk_signal_connect (GTK_OBJECT (gw->drawing_area), "realize",
-		      GTK_SIGNAL_FUNC (realize_event), gw);
+  gw->video_image = gtk_image_new ();
+  gtk_container_add (GTK_CONTAINER (gw->video_frame), gw->video_image);
 
   gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (frame), 
 		    0, 2, 0, 1,
@@ -589,6 +539,7 @@ void gnomemeeting_init_main_window ()
  */
 void gnomemeeting_init_main_window_log ()
 {
+  GtkWidget *view;
   GtkWidget *frame;
   GtkWidget *label;
   GtkWidget *scr;
@@ -598,22 +549,21 @@ void gnomemeeting_init_main_window_log ()
   frame = gtk_frame_new (_("History Log"));
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
 
-  gw->log_text = gtk_text_new (NULL, NULL);
-  gtk_text_set_line_wrap (GTK_TEXT (gw->log_text), TRUE);
-  gtk_text_set_word_wrap (GTK_TEXT (gw->log_text), TRUE);
+  view = gtk_text_view_new ();
+  gtk_text_view_set_editable (GTK_TEXT_VIEW (view), FALSE);
 
+  gw->log_text = gtk_text_view_get_buffer (GTK_TEXT_VIEW (view));
+  
   scr = gtk_scrolled_window_new (NULL, NULL);
   gtk_container_add (GTK_CONTAINER (frame), scr);
   gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
   gtk_container_set_border_width (GTK_CONTAINER (scr), GNOME_PAD_SMALL);
-
+  
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scr),
-                                  GTK_POLICY_AUTOMATIC,
-                                  GTK_POLICY_ALWAYS);
+				  GTK_POLICY_AUTOMATIC,
+				  GTK_POLICY_ALWAYS);
 
-  gtk_text_set_editable (GTK_TEXT (gw->log_text), FALSE);
-
-  gtk_container_add (GTK_CONTAINER (scr), gw->log_text);
+  gtk_container_add (GTK_CONTAINER (scr), view);    
 
   label = gtk_label_new (_("History"));
 
@@ -655,7 +605,7 @@ void gnomemeeting_init_main_window_video_settings ()
 
 
   /* Brightness */
-  pixmap =  gnome_pixmap_new_from_xpm_d ((char **) brightness_xpm);
+  pixmap =  gnome_pixmap_new_from_xpm_d ((const char **) brightness_xpm);
   gtk_table_attach (GTK_TABLE (table), pixmap, 0, 1, 0, 1,
 		    (GtkAttachOptions) (NULL),
 		    (GtkAttachOptions) (NULL),
@@ -680,7 +630,7 @@ void gnomemeeting_init_main_window_video_settings ()
 
 
   /* Whiteness */
-  pixmap =  gnome_pixmap_new_from_xpm_d ((char **) whiteness_xpm);
+  pixmap =  gnome_pixmap_new_from_xpm_d ((const char **) whiteness_xpm);
   gtk_table_attach (GTK_TABLE (table), pixmap, 0, 1, 1, 2,
  (GtkAttachOptions) (NULL),
 		    (GtkAttachOptions) (NULL),
@@ -705,7 +655,7 @@ void gnomemeeting_init_main_window_video_settings ()
 
 
   /* Colour */
-  pixmap =  gnome_pixmap_new_from_xpm_d ((char **) color_xpm);
+  pixmap =  gnome_pixmap_new_from_xpm_d ((const char **) color_xpm);
   gtk_table_attach (GTK_TABLE (table), pixmap, 0, 1, 2, 3,
 		    (GtkAttachOptions) (NULL),
 		    (GtkAttachOptions) (NULL),
@@ -730,7 +680,7 @@ void gnomemeeting_init_main_window_video_settings ()
 
 
   /* Contrast */
-  pixmap =  gnome_pixmap_new_from_xpm_d ((char **) contrast_xpm);
+  pixmap =  gnome_pixmap_new_from_xpm_d ((const char **) contrast_xpm);
   gtk_table_attach (GTK_TABLE (table), pixmap, 0, 1, 3, 4,
 		    (GtkAttachOptions) (NULL),
 		    (GtkAttachOptions) (NULL),
@@ -789,7 +739,7 @@ void gnomemeeting_init_main_window_audio_settings ()
   gtk_container_add (GTK_CONTAINER (frame), audio_table);
   gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
 
-  pixmap = gnome_pixmap_new_from_xpm_d ((char **) speaker_xpm);
+  pixmap = gnome_pixmap_new_from_xpm_d ((const char **) speaker_xpm);
 
   gtk_table_attach (GTK_TABLE (audio_table), pixmap, 0, 1, 0, 1,
 		    (GtkAttachOptions) NULL,
@@ -809,7 +759,7 @@ void gnomemeeting_init_main_window_audio_settings ()
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    0, 0);
 
-  pixmap = gnome_pixmap_new_from_xpm_d ((char **) mic_xpm);
+  pixmap = gnome_pixmap_new_from_xpm_d ((const char **) mic_xpm);
 
   gtk_table_attach (GTK_TABLE (audio_table), pixmap, 0, 1, 1, 2,
 		    (GtkAttachOptions) NULL,
