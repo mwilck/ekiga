@@ -25,9 +25,8 @@
 #include "videograbber.h"
 #include "common.h"
 #include "main_interface.h"
-// Needed for add_button, to be changed !!!
-#include "preferences.h"
 #include "menu.h"
+#include "misc.h"
 
 #include "../pixmaps/quickcam.xpm"
 #include "../pixmaps/sound.xpm"
@@ -349,7 +348,7 @@ void GM_ldap_init (GM_window_widgets *gw, GM_ldap_window_widgets *lw, options *o
   if (lw->ldap_servers_list != NULL)
     gtk_combo_set_popdown_strings (GTK_COMBO (lw->ils_server_combo), lw->ldap_servers_list);
 
-  lw->refresh_button = add_button (_("Refresh"), who_pixmap);
+  lw->refresh_button = gnomemeeting_button (_("Refresh"), who_pixmap);
   gtk_widget_set_usize (GTK_WIDGET (lw->refresh_button), 90, 30);
 
   gtk_table_attach (GTK_TABLE (table), lw->refresh_button, 2, 3, 0, 1,

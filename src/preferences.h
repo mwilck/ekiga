@@ -29,11 +29,8 @@
 #define _PREFERENCES_H_
 
 #include <gnome.h>
-#include <stdlib.h>
-#include <pthread.h>
 
 #include "common.h"
-#include "config.h"
 
 
 /* DESCRIPTION  :  /
@@ -47,18 +44,5 @@
 void gnomemeeting_preferences_init (int, GM_window_widgets *, 
 				    GM_pref_window_widgets *,
 				    options *);
-
-/******************************************************************************/
-/* Miscellaneous functions                                                    */
-/******************************************************************************/
-
-/* DESCRIPTION  :  / 
- * BEHAVIOR     :  Create a button with the GtkWidget * as pixmap and the label
- *                 as label
- * PRE          :  /
- */
-GtkWidget * add_button (char *, GtkWidget *);
-
-/******************************************************************************/
 
 #endif

@@ -1,12 +1,19 @@
+2001-11-24  Damien Sandras  <dsandras@seconix.com>
+
+	* src/misc.cpp: Added function gnomemeeting_button.
+	* src/ldap.cpp, src/preferences.cpp: Added support for that 
+	function and removed the old add_button function from
+	preferences.cpp.
+	
 2001-11-24  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* src/main_interface.cpp (left_arrow_clicked): 
 	(right_arrow_clicked): Make right_arrow and left_arrow sensitive
 	acording to the selected page in the notebook
-
-	* src/common.h (struct _GM_window_widgets): Added left_arrow and right_arrow
-	
-	* src/main_interface.cpp (GM_main_interface_init): Make left_arrow insensitive
+	* src/common.h (struct _GM_window_widgets): Added left_arrow 
+	and right_arrow
+	* src/main_interface.cpp (GM_main_interface_init): Make 
+	left_arrow insensitive
 
 2001-11-23  Damien Sandras  <dsandras@seconix.com>
 

@@ -49,4 +49,12 @@ void gnomemeeting_threads_enter ();
  */
 void gnomemeeting_threads_leave ();
 
+
+/* DESCRIPTION  :  / 
+ * BEHAVIOR     :  Creates a button with the GtkWidget * as pixmap and the label
+ *                 as label.
+ * PRE          :  /
+ */
+GtkWidget *gnomemeeting_button (char *, GtkWidget *);
+
 #endif

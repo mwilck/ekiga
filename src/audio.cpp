@@ -72,15 +72,20 @@ int GM_volume_get (char *mixer, int source, int *volume)
 int GM_set_recording_source (char *mixer, int source)
 {
   int res, mixerfd;
-  int rcsrc = SOUND_MASK_MIC;
+  int rcsrc;
   
   mixerfd = open(mixer, O_RDWR);
       
   if (mixerfd == -1)
       return -1;
 
-  if (source == 0)
+  if (ioctl (mixerfd, SOUND_MIXER_READ_RECSRC, &rcsrc))
+    rcsrc = 0;
+
+  if (source == 0) {
+    rcsrc |= SOUND_MASK_MIC;
     ioctl (mixerfd, SOUND_MIXER_WRITE_RECSRC, &rcsrc);
+  }
 
   close (mixerfd);
 

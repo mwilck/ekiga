@@ -27,8 +27,11 @@
  *
  */
 
+
 #include <ptlib.h>
 #include <gnome.h>
+
+#include "misc.h"
 
 
 void gnomemeeting_threads_enter () {
@@ -64,3 +67,26 @@ void gnomemeeting_threads_leave () {
 }
 
 
+GtkWidget *gnomemeeting_button (gchar *lbl, GtkWidget *pixmap)
+{
+  GtkWidget *button;
+  GtkWidget *hbox2;
+  GtkWidget *label;
+  
+  button = gtk_button_new ();
+  label = gtk_label_new (N_(lbl));
+  hbox2 = gtk_hbox_new (FALSE, 0);
+
+  gtk_box_pack_start(GTK_BOX (hbox2), pixmap, TRUE, TRUE, GNOME_PAD_SMALL);  
+  gtk_box_pack_start(GTK_BOX (hbox2), label, TRUE, TRUE, GNOME_PAD_SMALL);
+  
+  gtk_container_add (GTK_CONTAINER (button), hbox2);
+  
+  gtk_widget_set_usize (GTK_WIDGET (button), 40, 25);
+  
+  gtk_widget_show (pixmap);
+  gtk_widget_show (label);
+  gtk_widget_show (hbox2);
+		
+  return button;
+}

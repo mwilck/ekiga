@@ -40,8 +40,7 @@
 #include "main_interface.h"
 #include "audio.h"
 #include "docklet.h"
-
-#include <iostream.h>
+#include "misc.h"
 
 
 /* Declarations */
@@ -710,7 +709,7 @@ static void init_pref_audio_codecs (GtkWidget *notebook,
     
   /* BUTTONS */						
   /* Add */
-  button = add_button (_("Add"), 
+  button = gnomemeeting_button (_("Add"), 
 		       gnome_stock_new_with_icon (GNOME_STOCK_BUTTON_APPLY));  
 
   gtk_table_attach (GTK_TABLE (table), button, 0, 1, 1, 2,
@@ -728,7 +727,7 @@ static void init_pref_audio_codecs (GtkWidget *notebook,
   
 
   /* Del */
-  button = add_button (_("Delete"), 
+  button = gnomemeeting_button (_("Delete"), 
 		       gnome_stock_new_with_icon (GNOME_STOCK_BUTTON_CANCEL));  
 
   gtk_table_attach (GTK_TABLE (table), button, 1, 2, 1, 2,
@@ -746,7 +745,7 @@ static void init_pref_audio_codecs (GtkWidget *notebook,
   
 
   /* Up */
-  button = add_button (_("Up"), 
+  button = gnomemeeting_button (_("Up"), 
 		       gnome_stock_new_with_icon (GNOME_STOCK_MENU_UP)); 
 
   gtk_table_attach (GTK_TABLE (table), button, 2, 3, 1, 2,
@@ -764,8 +763,8 @@ static void init_pref_audio_codecs (GtkWidget *notebook,
 
 		
   /* Down */
-  button = add_button (_("Down"), 
-		       gnome_stock_new_with_icon (GNOME_STOCK_MENU_DOWN)); 
+  button = gnomemeeting_button (_("Down"), 
+				gnome_stock_new_with_icon (GNOME_STOCK_MENU_DOWN)); 
 
   gtk_table_attach (GTK_TABLE (table), button, 3, 4, 1, 2,
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
@@ -2274,31 +2273,6 @@ static void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
 
 /* Miscellaneous functions */
-
-GtkWidget * add_button (gchar *lbl, GtkWidget *pixmap)
-{
-  GtkWidget *button;
-  GtkWidget *hbox2;
-  GtkWidget *label;
-  
-  button = gtk_button_new ();
-  label = gtk_label_new (N_(lbl));
-  hbox2 = gtk_hbox_new (FALSE, 0);
-
-  gtk_box_pack_start(GTK_BOX (hbox2), pixmap, TRUE, TRUE, GNOME_PAD_SMALL);  
-  gtk_box_pack_start(GTK_BOX (hbox2), label, TRUE, TRUE, GNOME_PAD_SMALL);
-  
-  gtk_container_add (GTK_CONTAINER (button), hbox2);
-  
-  gtk_widget_set_usize (GTK_WIDGET (button), 40, 25);
-  
-  gtk_widget_show (pixmap);
-  gtk_widget_show (label);
-  gtk_widget_show (hbox2);
-		
-  return button;
-}
-
 
 /* DESCRIPTION  :  / 
  * BEHAVIOR     :  Add the codec (second parameter) to the codecs clist (first)
