@@ -1,3 +1,14 @@
+2002-02-07  Miguel Rodríguez Pérez  <migrax@terra.es>
+
+	* src/callbacks.cpp (gconf_error_callback): Added
+	
+	* src/callbacks.h (gconf_error_callback): Add prototype
+
+	* src/gnomemeeting.cpp (main): Set a default handler for gconf errors
+
+	* src/main_window.cpp (gnomemeeting_init): Use a message_dialog
+	instead of a plain dialog to present the error message.
+
 2002-02-07  Damien Sandras  <dsandras@seconix.com>
 	
 	* src/config.cpp: Minor changes to gnomemeeting_init_gconf.

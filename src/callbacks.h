@@ -31,7 +31,8 @@
 #ifndef _CALLBACKS_H
 #define _CALLBACKS_H
 
-#include <gnome.h>
+#include <gtk/gtkwidget.h>
+#include <gconf/gconf-client.h>
 
 
 /* DESCRIPTION  :  This callback is called when the user chooses to pause
@@ -134,5 +135,12 @@ void popup_menu_both_callback (GtkWidget *, gpointer);
  * PRE          :  /
  */
 void ldap_popup_menu_callback (GtkWidget *, gpointer);
+
+/* DESCRIPTION  :  This callback is called when a gconf error happens
+ * BEHAVIOR     :  Pop-up a message-box
+ * PRE          :  /
+ */
+void gconf_error_callback (GConfClient *, GError *);
+
 
 #endif

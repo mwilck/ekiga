@@ -350,6 +350,10 @@ int main (int argc, char ** argv, char ** envp)
 
   /* GnomeMeeting main initialisation */
   gnomemeeting_init (gw, pw, lw, rtp, argc, argv, envp);
+  /* Set a default gconf error handler */
+  gconf_client_set_error_handling (gconf_client_get_default (),
+				   GCONF_CLIENT_HANDLE_UNRETURNED);
+  gconf_client_set_global_default_error_handler (gconf_error_callback);
 
 
   /* Quick hack to make the GUI refresh even on high load from the other

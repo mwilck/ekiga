@@ -274,20 +274,15 @@ void gnomemeeting_init (GM_window_widgets *gw,
 			GCONF_CLIENT_PRELOAD_RECURSIVE,
 			0);
   int gconf_test = 0;
-
   gconf_test = gconf_client_get_int (client, "/apps/gnomemeeting/general/gconf_test", NULL);
 
   if (gconf_test != 1234) {
 
-    GtkWidget *dialog =gnome_dialog_new (_("Gconf Error"),
-					 _("Exit"), 
-					 NULL);
-    GtkWidget *label = gtk_label_new (_("Please check your gconf settings and permissions, it seems that gconf is not properly setup on your system"));
-    gtk_box_pack_start (GTK_BOX 
-			(GNOME_DIALOG (dialog)->vbox), 
-			label, TRUE, TRUE, 0);
+    GtkWidget *dialog = gnome_message_box_new (_("Please check your gconf settings and permissions, it seems that gconf is not properly setup on your system"),
+					       GNOME_MESSAGE_BOX_ERROR,
+					       GNOME_STOCK_BUTTON_CLOSE,
+					       NULL);
 
-    gtk_widget_show_all (dialog);
     int reply = gnome_dialog_run(GNOME_DIALOG(dialog));
     if ((reply == 0)||(reply == -1)) {
 

@@ -31,10 +31,10 @@
 
 #include "../config.h"
 
+#include "callbacks.h"
 #include "gnomemeeting.h"
 #include "endpoint.h"
 #include "connection.h"
-#include "callbacks.h"
 #include "pref_window.h"
 #include "ldap_window.h"
 #include "common.h"
@@ -236,4 +236,19 @@ void ldap_popup_menu_callback (GtkWidget *widget, gpointer data)
       connect_cb (NULL, NULL);
     }
   }
+}
+
+/* DESCRIPTION  :  This callback is called when a gconf error happens
+ * BEHAVIOR     :  Pop-up a message-box
+ * PRE          :  /
+ */
+void gconf_error_callback (GConfClient *, GError *)
+{
+  GtkWidget *dialog = gnome_message_box_new (_("An error has happened in the configuration"
+					       " backend\nMaybe some of your settings won't"
+					       " be stored"), 
+					     GNOME_MESSAGE_BOX_ERROR,
+					     GNOME_STOCK_BUTTON_CLOSE,
+					     NULL);
+  gnome_dialog_run (GNOME_DIALOG (dialog));
 }
