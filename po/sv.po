@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
-"POT-Creation-Date: 2001-10-10 21:45+0200\n"
-"PO-Revision-Date: 2001-10-03 23:10+0200\n"
+"POT-Creation-Date: 2001-10-15 14:36+0200\n"
+"PO-Revision-Date: 2001-10-15 14:39+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -29,32 +29,6 @@ msgstr "H.323-klient"
 #: sounds/GnomeMeeting.soundlist.in.h:2 src/preferences.cpp:723
 msgid "Incoming Call"
 msgstr "Inkommande samtal"
-
-#: src/docklet.cpp:75 src/endpoint.cpp:474 src/toolbar.cpp:37
-msgid "Connect"
-msgstr "Anslut"
-
-#: src/docklet.cpp:75
-#, fuzzy
-msgid "Connect call"
-msgstr "Anslut"
-
-#: src/docklet.cpp:82 src/endpoint.cpp:474 src/toolbar.cpp:44
-msgid "Disconnect"
-msgstr "Koppla från"
-
-#: src/docklet.cpp:82
-msgid "Drop call"
-msgstr ""
-
-#: src/docklet.cpp:89
-#, fuzzy
-msgid "Toggle main window"
-msgstr "Visa/göm huvudfönstret"
-
-#: src/docklet.cpp:89
-msgid "Show/hide main window"
-msgstr "Visa/göm huvudfönstret"
 
 #: src/callbacks.cpp:136
 msgid "Contributors:"
@@ -159,6 +133,30 @@ msgstr "Vägrar automatiskt inkommande samtal"
 msgid "Auto Answering Incoming Call"
 msgstr "Svarar automatiskt på inkommande samtal"
 
+#: src/docklet.cpp:76 src/endpoint.cpp:474 src/toolbar.cpp:37
+msgid "Connect"
+msgstr "Anslut"
+
+#: src/docklet.cpp:76
+msgid "Connect call"
+msgstr "Koppla upp samtal"
+
+#: src/docklet.cpp:83 src/endpoint.cpp:474 src/toolbar.cpp:44
+msgid "Disconnect"
+msgstr "Koppla från"
+
+#: src/docklet.cpp:83
+msgid "Drop call"
+msgstr "Koppla från samtal"
+
+#: src/docklet.cpp:90
+msgid "Show/hide main window"
+msgstr "Visa/göm huvudfönstret"
+
+#: src/docklet.cpp:90
+msgid "Show/hide the main window"
+msgstr "Visa/göm huvudfönstret"
+
 #: src/endpoint.cpp:160 src/endpoint.cpp:176
 msgid "Added H.261 CIF capability"
 msgstr "Lade till H.261 CIF-kapabilitet"
@@ -203,7 +201,6 @@ msgstr "Deaktiverade tystnadsdetektering"
 msgid "Enabled Silence Detection"
 msgstr "Aktiverade tystnadsdetektering"
 
-#. only a pointer => destroyed with the PString
 #: src/endpoint.cpp:446
 #, c-format
 msgid "Call from %s"
@@ -396,34 +393,37 @@ msgstr "Kommentar"
 msgid "IP"
 msgstr "IP"
 
-#. Search filter entry
+#. ILS directories combo box
 #: src/ldap.cpp:262
-msgid "Search filter"
-msgstr "Sökfilter"
+msgid "ILS directories to browse"
+msgstr "ILS-kataloger att bläddra i"
 
-#: src/ldap.cpp:269
+#: src/ldap.cpp:271
+msgid "ILS directories list:"
+msgstr "Lista över ILS-kataloger:"
+
+#: src/ldap.cpp:298
 msgid "first name"
 msgstr "förnamn"
 
-#: src/ldap.cpp:272
+#: src/ldap.cpp:301
 msgid "last name"
 msgstr "efternamn"
 
-#: src/ldap.cpp:275
+#: src/ldap.cpp:304
 msgid "e-mail"
 msgstr "e-post"
 
-#: src/ldap.cpp:278
+#: src/ldap.cpp:307
 msgid "location"
 msgstr "plats"
 
-#. the filter button
-#: src/ldap.cpp:305
+#: src/ldap.cpp:334
 msgid "Apply filter on"
 msgstr "Tillämpa filter på"
 
 #. Ldap users list
-#: src/ldap.cpp:339
+#: src/ldap.cpp:350
 msgid "ILS Users List"
 msgstr "ILS-användarlista"
 
@@ -508,7 +508,6 @@ msgstr "Ställde in ljudinspelningsenhet till %s"
 msgid "Done!"
 msgstr "Klar!"
 
-#. The remote IP field
 #: src/main_interface.cpp:391
 msgid "Remote host to contact"
 msgstr "Fjärrvärd att kontakta"
@@ -541,8 +540,8 @@ msgstr ""
 msgid ""
 "This button permits enabling/disabling of silence detection during calls."
 msgstr ""
-"Denna knapp tillåter att tystnadsdetektering under samtal aktiveras/"
-"deaktiveras."
+"Denna knapp tillåter att tystnadsdetektering under samtal "
+"aktiveras/deaktiveras."
 
 #: src/main_interface.cpp:578
 msgid "Click here to display the previous section of the Control Panel."
@@ -1091,9 +1090,8 @@ msgstr "Videokvaliteten som ska begäras från fjärrparten"
 
 #. ILS settings
 #: src/preferences.cpp:1263
-#, fuzzy
 msgid "ILS Directory to register to"
-msgstr "ILS-katalogen att ansluta till"
+msgstr "ILS-katalog att registrera i"
 
 #. ILS directory
 #: src/preferences.cpp:1277
@@ -1101,9 +1099,8 @@ msgid "ILS Directory:"
 msgstr "ILS-katalog:"
 
 #: src/preferences.cpp:1292
-#, fuzzy
 msgid "The ILS directory to register to"
-msgstr "ILS-katalogen att ansluta till"
+msgstr "ILS-katalogen att registrera i"
 
 #. ILS port
 #: src/preferences.cpp:1299
@@ -1116,9 +1113,8 @@ msgstr "Motsvarande port: 389 är standardporten"
 
 #. Use ILS
 #: src/preferences.cpp:1321
-#, fuzzy
 msgid "Register"
-msgstr "Registreringsmetod"
+msgstr "Registrera"
 
 #: src/preferences.cpp:1333
 msgid "If enabled, permit to register to the selected ILS directory"
@@ -1291,6 +1287,9 @@ msgstr "Fel med ramhastigheten."
 msgid "Error with the frame size."
 msgstr "Fel med ramhastigheten."
 
+#~ msgid "Search filter"
+#~ msgstr "Sökfilter"
+
 #~ msgid "Can't create applet!\n"
 #~ msgstr "Kan inte skapa panelprogram!\n"
 
@@ -1331,8 +1330,7 @@ msgstr "Fel med ramhastigheten."
 #~ "GnomeMeeting will transmit a test image to the remote party during "
 #~ "communications."
 #~ msgstr ""
-#~ "Kunde inte öppna den valda videoenheten, men videoöverföring är "
-#~ "aktiverad.\n"
+#~ "Kunde inte öppna den valda videoenheten, men videoöverföring är aktiverad.\n"
 #~ "GnomeMeeting kommer att skicka en testbild till fjärrparten vid "
 #~ "kommunikation."
 

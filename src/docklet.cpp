@@ -41,9 +41,10 @@ extern GnomeMeeting *MyApp;
 /* GTK Callbacks                                                              */
 /******************************************************************************/
 
-// We must redefine another callback than the connect callback in callbacks.h
-// because the first parameter must be AppletWidget * in this case 
-// FIXME: I don't undestand the above comment (damien?)
+/* We must redefine another callback than the connect callback in callbacks.h
+ * because the first parameter must be AppletWidget * in this case 
+ * FIXME: I don't undestand the above comment (damien?)
+*/
 static void docklet_popup_menu_connect_callback (GtkWidget *, gpointer)
 {
   MyApp->Connect ();
@@ -86,7 +87,7 @@ static void docklet_create_popup_menu (GtkWidget *widget)
       },
       {
 	GNOME_APP_UI_ITEM,
-	N_("Toggle main window"), N_("Show/hide main window"),
+	N_("Show/hide main window"), N_("Show/hide the main window"),
 	(void *)docklet_toggle_callback, GINT_TO_POINTER(2), NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	0, GDK_CONTROL_MASK, NULL
