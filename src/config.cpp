@@ -980,40 +980,40 @@ static void register_changed_nt (GConfClient *client, guint cid,
  * BEHAVIOR     :  Updated the combo strings
  * PRE          :  gpointer is a valid pointer to the combo
  */
-static void history_changed_nt (GConfClient *client, guint, GConfEntry *entry, 
-				gpointer user_data)
-{
-  GtkCombo *combo = GTK_COMBO (user_data);
-  GList *hosts = 0;
-  gchar **contacts;
-  gchar *old_entry;
+// static void history_changed_nt (GConfClient *client, guint, GConfEntry *entry, 
+// 				gpointer user_data)
+// {
+//   GtkCombo *combo = GTK_COMBO (user_data);
+//   GList *hosts = 0;
+//   gchar **contacts;
+//   gchar *old_entry;
 
-  if (entry->value->type != GCONF_VALUE_STRING)
-    return;
+//   if (entry->value->type != GCONF_VALUE_STRING)
+//     return;
 
-  old_entry = gtk_editable_get_chars (GTK_EDITABLE (combo->entry), 0, -1);
+//   old_entry = gtk_editable_get_chars (GTK_EDITABLE (combo->entry), 0, -1);
 
-  const gchar *new_hosts = gconf_value_get_string (entry->value);
-  contacts = g_strsplit (new_hosts, ":", 0);
-  for (int i = 0; contacts[i] != 0; i++)
-    hosts = g_list_prepend (hosts, contacts[i]);
+//   const gchar *new_hosts = gconf_value_get_string (entry->value);
+//   contacts = g_strsplit (new_hosts, ":", 0);
+//   for (int i = 0; contacts[i] != 0; i++)
+//     hosts = g_list_prepend (hosts, contacts[i]);
 
-  gtk_object_remove_data (GTK_OBJECT (combo), "history");
+//   gtk_object_remove_data (GTK_OBJECT (combo), "history");
 
-  /* This is just needed if hosts in null */
-  gtk_list_clear_items (GTK_LIST (combo->list), 0, -1);
+//   /* This is just needed if hosts in null */
+//   gtk_list_clear_items (GTK_LIST (combo->list), 0, -1);
 
-  gtk_combo_set_popdown_strings (combo, hosts);
-  if (hosts != 0)
-    gtk_object_set_data_full (GTK_OBJECT (combo), "history", hosts,
-			      gnomemeeting_freeg_list_data);
+//   gtk_combo_set_popdown_strings (combo, hosts);
+//   if (hosts != 0)
+//     gtk_object_set_data_full (GTK_OBJECT (combo), "history", hosts,
+// 			      gnomemeeting_freeg_list_data);
 
-  /* Restore the previous value typed in the entry field */
-  gtk_entry_set_text (GTK_ENTRY (combo->entry), old_entry);
+//   /* Restore the previous value typed in the entry field */
+//   gtk_entry_set_text (GTK_ENTRY (combo->entry), old_entry);
 
-  g_free (contacts);
-  g_free (old_entry);
-}
+//   g_free (contacts);
+//   g_free (old_entry);
+// }
 
 /* DESCRIPTION    : This is called when any setting related to the druid network speep selecion
  *                  changes.
@@ -1201,9 +1201,9 @@ void gnomemeeting_init_gconf (GConfClient *client)
 
   /**/
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/history/called_hosts", history_changed_nt, gw->combo, 0, 0);
+ //  gconf_client_notify_add (client, "/apps/gnomemeeting/history/called_hosts", history_changed_nt, gw->combo, 0, 0);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/history/ldap_servers", history_changed_nt, lw->ils_server_combo, 0, 0);
+//   gconf_client_notify_add (client, "/apps/gnomemeeting/history/ldap_servers", history_changed_nt, lw->ils_server_combo, 0, 0);
 }
 
 

@@ -45,7 +45,7 @@
 
 #include "../pixmaps/tb_jump_to.xpm"
 
-#define GNOMEMEETING_PAD_SMALL 2
+#define GNOMEMEETING_PAD_SMALL 1
 
 /* Declarations */
 
