@@ -4114,7 +4114,6 @@ int main (int argc, char ** argv, char ** envp)
 
   gm_conf_init (argc, argv);
   
-  gm_events_init ();
   
   /* Upgrade the preferences */
   gnomemeeting_conf_upgrade ();

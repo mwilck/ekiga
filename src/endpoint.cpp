@@ -54,7 +54,6 @@
 #include "main_window.h"
 #include "calls_history_window.h"
 #include "stats_drawing_area.h"
-#include "gm_events.h"
 
 #include "dialog.h"
 #include "gm_conf.h"
@@ -116,8 +115,6 @@ GMH323EndPoint::GMH323EndPoint ()
   NoAnswerTimer.SetNotifier (PCREATE_NOTIFIER (OnNoAnswerTimeout));
   CallPendingTimer.SetNotifier (PCREATE_NOTIFIER (OnCallPending));
   OutgoingCallTimer.SetNotifier (PCREATE_NOTIFIER (OnOutgoingCall));
-
-  dispatcher = gm_events_dispatcher_new ();
 }
 
 
@@ -153,9 +150,6 @@ GMH323EndPoint::~GMH323EndPoint ()
   /* Remove any running audio tester, if any */
   if (audio_tester)
     delete (audio_tester);
-
-  if (dispatcher)
-    g_object_unref (dispatcher);
 }
 
 
@@ -296,16 +290,9 @@ GMH323EndPoint::AddAllCapabilities ()
 void 
 GMH323EndPoint::SetCallingState (GMH323EndPoint::CallingState i)
 {
-  gboolean changed = FALSE;
-
   PWaitAndSignal m(cs_access_mutex);
   
-  if (calling_state != i)
-    changed = TRUE;
   calling_state = i;
-
-  if (changed)
-    g_signal_emit_by_name (dispatcher, "endpoint-state-changed", i);
 }
 
 
@@ -883,10 +870,6 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
     gnomemeeting_threads_leave ();
   }
   
-  
-  g_signal_emit_by_name (dispatcher, "call-begin",
-			 (const char *) GetCurrentCallToken ());
-
 
   g_free (gateway_conf);
   g_free (forward_host_conf);
@@ -1013,8 +996,7 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   /* Update internal state */
   SetCurrentCallToken (token);
   SetCallingState (GMH323EndPoint::Connected);
-  g_signal_emit_by_name (dispatcher, "call-begin",
-			 (const char *)GetCurrentCallToken ());
+
 
   /* Update the GUI */
   gnomemeeting_threads_enter ();
@@ -1300,9 +1282,6 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   gm_main_window_flash_message (main_window, msg_reason);
   gnomemeeting_threads_leave ();
 
-  g_signal_emit_by_name (dispatcher, "call-end", 
-			 (const char *)clearedCallToken);
-  
   g_free (utf8_app);
   g_free (utf8_name);
   g_free (utf8_url);  
@@ -2645,15 +2624,6 @@ GMH323EndPoint::GetMissedCallsNumber ()
   PWaitAndSignal m(mc_access_mutex);
 
   return missed_calls;
-}
-
-
-void
-GMH323EndPoint::AddObserver (GObject *observer)
-{
-  g_return_if_fail (observer != NULL);
-
-  gm_events_dispatcher_add_observer (dispatcher, observer);
 }
 
 

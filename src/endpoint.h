@@ -752,8 +752,6 @@ class GMH323EndPoint : public H323EndPoint
   GMILSClient *ils_client;
   PThread *audio_tester;
 
-  /* the dispatcher for the various signals */
-  GObject *dispatcher;
 
   /* Various mutexes to ensure thread safeness around internal
      variables */

@@ -131,8 +131,8 @@ void GMStunClient::Main ()
 
     if (stun) {
 
-      gnomemeeting_threads_enter ();
       nat_type = name [stun->GetNatType ()];
+      gnomemeeting_threads_enter ();
       gm_history_window_insert (history_window, _("Set STUN server to %s (%s)"), (const char *) stun_host, (const char *) nat_type);
       gnomemeeting_threads_leave ();
     }
@@ -167,9 +167,9 @@ void GMStunClient::Main ()
 	prefered_method = g_strdup_printf (_("GnomeMeeting detected %s. Using a STUN server is most probably the most appropriate method if your router doesn't natively support H.323.\nNotice that STUN support is not enough if you want to contact H.323 clients that do not support H.245 Tunneling like Netmeeting.\n\nEnable STUN Support?"), (const char *) nat_type);
       }
 
-    gnomemeeting_threads_enter ();
     if (stun.GetNatType () != 0 && stun.GetNatType () != 5) {
       
+      gnomemeeting_threads_enter ();
       dialog = 
 	gtk_dialog_new_with_buttons (_("NAT Detection Successfull"),
 				     GTK_WINDOW (druid_window),
@@ -179,9 +179,11 @@ void GMStunClient::Main ()
 				     GTK_STOCK_YES,
 				     GTK_RESPONSE_YES,
 				     NULL);
+      gnomemeeting_threads_leave ();
     }
     else {
 
+      gnomemeeting_threads_enter ();
       dialog = 
 	gtk_dialog_new_with_buttons (_("NAT Detection Successfull"),
 				     GTK_WINDOW (druid_window),
@@ -189,6 +191,7 @@ void GMStunClient::Main ()
 				     GTK_STOCK_OK,
 				     GTK_RESPONSE_ACCEPT,
 				     NULL);
+      gnomemeeting_threads_leave ();
     }
     
     primary_text =
@@ -198,6 +201,7 @@ void GMStunClient::Main ()
     dialog_text =
       g_strdup_printf ("%s\n\n%s", primary_text, prefered_method);
 
+    gnomemeeting_threads_enter ();
     gtk_window_set_title (GTK_WINDOW (dialog), "");
     dialog_label = gtk_label_new (NULL);
     gtk_label_set_markup (GTK_LABEL (dialog_label),

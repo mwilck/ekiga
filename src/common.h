@@ -140,6 +140,7 @@ enum {
   REMOTE_VIDEO, 
   BOTH_INCRUSTED, 
   BOTH,
+  BOTH_SIDE,
   FULLSCREEN
 };
 
