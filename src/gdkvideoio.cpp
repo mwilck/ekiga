@@ -121,6 +121,9 @@ BOOL GDKVideoOutputDevice::Redraw ()
     gm_conf_get_bool (VIDEO_DISPLAY_KEY "enable_bilinear_filtering");
   display = gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view");
   zoom = gm_conf_get_float (VIDEO_DISPLAY_KEY "zoom_factor");
+  if (zoom != 0.0 && zoom != 0.5 && zoom != 1.00 
+      && zoom != 2.00 && zoom != -1.00)
+    zoom = 1.0;
   gnomemeeting_threads_leave ();
 
   
@@ -157,6 +160,12 @@ BOOL GDKVideoOutputDevice::Redraw ()
     
     lzoom = gm_conf_get_float (VIDEO_DISPLAY_KEY "local_zoom_factor");
     rzoom = gm_conf_get_float (VIDEO_DISPLAY_KEY "remote_zoom_factor");
+    if (rzoom != 0.0 && rzoom != 0.5 && rzoom != 1.00 
+	&& rzoom != 2.00)
+      rzoom = 1.0;
+    if (lzoom != 0.0 && lzoom != 0.5 && lzoom != 1.00 
+	&& lzoom != 2.00)
+      lzoom = 1.0;
   }
   else if (display == FULLSCREEN) {
   
