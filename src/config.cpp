@@ -1250,7 +1250,7 @@ contacts_sections_list_group_content_changed_nt (GConfClient *client,
 /* DESCRIPTION  :  This callback is called when something changes in the 
  * 		   servers or groups contacts list. 
  * BEHAVIOR     :  It updates the tree_view widget and the notebook pages.
- * PRE          :  /
+ * PRE          :  data is the page type (CONTACTS_SERVERS or CONTACTS_GROUPS)
  */
 static void contacts_sections_list_changed_nt (GConfClient *client, guint cid,
 					       GConfEntry *e, gpointer data)
@@ -1331,16 +1331,23 @@ static void contacts_sections_list_changed_nt (GConfClient *client, guint cid,
       cpt++;
     }
 
-    contact_icon = 
-      gtk_widget_render_icon (lw->tree_view, 
-			      GM_STOCK_LOCAL_CONTACT,
-			      GTK_ICON_SIZE_MENU, NULL);
+    if (GPOINTER_TO_INT (data) == CONTACTS_GROUPS)
+      contact_icon = 
+	gtk_widget_render_icon (lw->tree_view, 
+				GM_STOCK_LOCAL_CONTACT,
+				GTK_ICON_SIZE_MENU, NULL);
+    else
+      contact_icon = 
+	gtk_widget_render_icon (lw->tree_view, 
+				GM_STOCK_REMOTE_CONTACT,
+				GTK_ICON_SIZE_MENU, NULL);
 
     contacts_sections_iter = contacts_sections;
     /* Add all servers to the notebook if they are not already present */
     while (contacts_sections_iter) {
 
-      const char *contact_section = (const char *) contacts_sections_iter->data;
+      const char *contact_section = 
+	(const char *) contacts_sections_iter->data;
  
       /* This will only add a page to the notebook if there was no page
        * for the given server name */
