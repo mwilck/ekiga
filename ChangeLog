@@ -1,5 +1,17 @@
 2002-08-13  Damien Sandras  <dsandras@seconix.com>
 
+	* src/ils.cpp: Updates the "data" of the page in the LDAP browser
+	when the browser thread exits. Removed some "cout" calls.
+	
+	* src/ils.h: Set the page as private data of the LDAP browser class.
+
+	* src/ldap_window.cpp: When the user clicks on Refresh, checks the
+	data of the page for the ILS server (the page is created if needed
+	a bit before), and see if a thread is already running for that
+	server or not (ie for that page).
+	
+2002-08-13  Damien Sandras  <dsandras@seconix.com>
+
 	* xdap_data/ils_nm_reg.xml: Fixed so that it can work with XDAP.
 	
 2002-08-13  Christian Rose  <menthos@menthos.com>

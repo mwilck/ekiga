@@ -275,12 +275,17 @@ void refresh_button_clicked (GtkButton *button, gpointer data)
   gtk_list_store_clear (xdap_users_list_store);
 
 
-  /* Browse it */
-  ils_browser = new GMILSBrowser (ldap_server);
+  /* Check if there is already a search running */
+  ils_browser = (GMILSBrowser *) g_object_get_data (G_OBJECT (page), 
+						    "GMILSBrowser");
+  if (!ils_browser) {
 
-  
-  /* Set the pointer to the thread as data of that GTK notebook page */
-  g_object_set_data (G_OBJECT (page), "GMILSBrowser", ils_browser);
+    /* Browse it */
+    ils_browser = new GMILSBrowser (ldap_server);
+
+    /* Set the pointer to the thread as data of that GTK notebook page */
+    g_object_set_data (G_OBJECT (page), "GMILSBrowser", ils_browser);
+  }
 }
 
 

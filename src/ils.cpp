@@ -666,7 +666,6 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
 			    name,
 			    XML_INTERNAL_PREDEFINED_ENTITY, 0, 0, entval);
 
-  cout << firstname << " " << entval << endl << flush;
   g_free (firstname);
   g_free (surname);
   g_free (mail);
@@ -692,6 +691,8 @@ GMILSBrowser::GMILSBrowser (gchar *server)
   else
     ldap_server = NULL;
 
+  page = NULL;
+
   this->Resume ();
 }
 
@@ -700,6 +701,10 @@ GMILSBrowser::~GMILSBrowser ()
 {
   if (ldap_server) 
     g_free (ldap_server);
+
+  /* Removes the data associated with the page */
+  if (page)
+    g_object_set_data (G_OBJECT (page), "GMILSBrowser", NULL);
 }
 
 
@@ -732,7 +737,6 @@ void GMILSBrowser::Main ()
   gchar *text_label = NULL;
   gchar *msg = NULL;
 
-  GtkWidget *page = NULL;
   GtkWidget *label = NULL;
   GtkWidget *tab_label = NULL;
   GtkWidget *close_button = NULL;
@@ -826,9 +830,13 @@ void GMILSBrowser::Main ()
       cj++;
     }
     
+    /* If we found a page, we have the LIST_STORE, if not, we can clean
+       the statusbar */
     if (page != NULL)
       xdap_users_list_store = 
 	GTK_LIST_STORE (g_object_get_data (G_OBJECT (page), "list_store"));
+    else
+      gnome_appbar_clear_stack (GNOME_APPBAR (lw->statusbar));
 
     gnomemeeting_threads_leave ();
 

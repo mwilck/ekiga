@@ -115,7 +115,8 @@ class GMILSBrowser : public PThread
    */
   void Main ();
 
-
+  
+  GtkWidget *page;
   GmLdapWindow *lw;
   LDAP *ldap_connection;
   gchar *ldap_server;
