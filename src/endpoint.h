@@ -654,6 +654,9 @@ class GMH323EndPoint : public H323EndPoint
 
   PMutex sound_event_mutex;
   
+  PMutex audio_channel_mutex;
+  PMutex video_channel_mutex;
+
 #ifdef HAS_IXJ
   GMLid *lid;
 #endif

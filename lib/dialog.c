@@ -207,7 +207,7 @@ gnomemeeting_warning_dialog_on_widget (GtkWindow *parent,
                                    0,
                                    GTK_MESSAGE_WARNING,
                                    GTK_BUTTONS_OK,
-                                   NULL);
+                                   "");
   gtk_window_set_transient_for (GTK_WINDOW (dialog), parent);
   gtk_window_present (GTK_WINDOW (dialog));
   
@@ -267,8 +267,10 @@ gnomemeeting_dialog (GtkWindow *parent,
     g_strdup_printf ("%s\n\n%s", primary_text, buffer);
   
   dialog =
-    gtk_message_dialog_new (parent, GTK_DIALOG_MODAL, type,
-			    GTK_BUTTONS_OK, NULL);
+    gtk_message_dialog_new (parent, 
+                            GTK_DIALOG_MODAL, 
+                            type,
+			    GTK_BUTTONS_OK, "");
 
   gtk_window_set_title (GTK_WINDOW (dialog), "");
   gtk_label_set_markup (GTK_LABEL (GTK_MESSAGE_DIALOG (dialog)->label),

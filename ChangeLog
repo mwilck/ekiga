@@ -1,5 +1,16 @@
 2004-02-11 Damien Sandras  <dsandras@seconix.com>
 
+	* gnomemeeting.schemas.in.in: Set Fast Start to false by default.
+
+	* lib/dialog.c: Attempt to fix reported compilation warnings.
+	
+	* src/endpoint.cpp, src/endpoint.h: Added mutexes for concurrent
+	opening of channels.
+	
+	* src/gdkvideoio.cpp: Only show popups when required.
+	
+2004-02-11 Damien Sandras  <dsandras@seconix.com>
+
 	* src/endpoint.cpp: Only recreate a videograbber if the previous
 	video grabber has it PVideoChannel closed, otherwise, reuse it.
 	

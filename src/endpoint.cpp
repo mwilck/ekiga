@@ -1642,6 +1642,7 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
   BOOL sd = FALSE;
   BOOL no_error = TRUE;
 
+  PWaitAndSignal m(audio_channel_mutex);
 
   /* Wait that the primary call has terminated (in case of transfer)
      before opening the channels for the second call */
@@ -2288,6 +2289,7 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 
   BOOL result = FALSE;
 
+  PWaitAndSignal m(video_channel_mutex);
   
   /* Wait that the primary call has terminated (in case of transfer)
      before opening the channels for the second call */
@@ -2338,7 +2340,7 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
     }
       
     if (vg) {
-      
+     
       channel = vg->GetVideoChannel ();
       transmitted_video_device = vg->GetEncodingDevice ();
       vg->Unlock ();
@@ -2362,7 +2364,17 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
     received_video_device = new GDKVideoOutputDevice (is_encoding, gw);
     received_video_device->SetColourFormatConverter ("YUV420P");      
     channel->AttachVideoPlayer (received_video_device);
-     
+
+    vg = GetVideoGrabber ();
+    if (vg) {
+      
+      if (!autoStartTransmitVideo) 
+        vg->StopGrabbing ();
+      
+      vg->Unlock ();
+    }
+      
+
     if (channel)
       result = codec.AttachChannel (channel);
 

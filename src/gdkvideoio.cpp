@@ -214,10 +214,10 @@ BOOL GDKVideoOutputDevice::Redraw ()
       logo_displayed = true;
     }
 
-    if (!GTK_WIDGET_VISIBLE (gw->local_video_window))
+    if (device_id == LOCAL && !GTK_WIDGET_VISIBLE (gw->local_video_window))
       gnomemeeting_window_show (GTK_WIDGET (gw->local_video_window));
     
-    if (!GTK_WIDGET_VISIBLE (gw->remote_video_window))
+    if (device_id == REMOTE && !GTK_WIDGET_VISIBLE (gw->remote_video_window))
       gnomemeeting_window_show (GTK_WIDGET (gw->remote_video_window));
 
     if (device_id == REMOTE) {
@@ -255,7 +255,7 @@ BOOL GDKVideoOutputDevice::Redraw ()
 			     &zoomed_height);
       }
 
-      if (!GTK_WIDGET_VISIBLE (gw->local_video_window))
+      if (device_id == LOCAL && !GTK_WIDGET_VISIBLE (gw->local_video_window))
 	gnomemeeting_window_show (GTK_WIDGET (gw->local_video_window));
       
       if (GTK_WIDGET_VISIBLE (gw->remote_video_window))
