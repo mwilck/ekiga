@@ -60,7 +60,8 @@
 void 
 gnomemeeting_threads_enter () 
 {
-  if ((PThread::Current () != NULL) && (PThread::Current ()->GetThreadName () != "gnomemeeting")) {    
+  if ((PThread::Current () != NULL) 
+      && (PThread::Current ()->GetThreadName () != PACKAGE_NAME)) {    
     gdk_threads_enter ();
   }
 }
@@ -69,7 +70,8 @@ gnomemeeting_threads_enter ()
 void 
 gnomemeeting_threads_leave () 
 {
-  if ((PThread::Current () != NULL) && (PThread::Current ()->GetThreadName () != "gnomemeeting")) {
+  if ((PThread::Current () != NULL) 
+      && (PThread::Current ()->GetThreadName () != PACKAGE_NAME)) {
 
     gdk_threads_leave ();
   }

@@ -108,7 +108,7 @@ case $target_os in
 
   linux-gnu | linux | Linux)
     ARCH_OPAL_CFLAGS="-DPTRACING -DNDEBUG -Wall -Os -g -fno-exceptions -felide-constructors"
-    ARCH_OPAL_LIBS="-L/home/damien/CVS/pwlib/lib/ -lopal -ldl -lpt -lpthread"
+    ARCH_OPAL_LIBS="-lopal -ldl -lpt -lpthread"
     AC_MSG_RESULT([yes])
     gm_platform="linux"
 
@@ -290,7 +290,7 @@ fi
 
 dnl Checking for Opal version
 AC_MSG_CHECKING(for Opal version);
-OPAL_VERSION=`cat ${with_opal_dir}/include/opal/opal/buildopts.h | grep VERSION | cut -f3 -d ' ' | sed "s/\"//g"`
+OPAL_VERSION=`cat ${with_opal_dir}/include/opal/opal/buildopts.h | grep "#define OPAL_VERSION" | cut -f3 -d ' ' | sed "s/\"//g"`
 AC_MSG_RESULT($OPAL_VERSION)
 if test "x${OPAL_VERSION}" != "x${OPAL_REC_VERSION}"; then
 	AC_MSG_ERROR(Sorry but the recommended Opal version is ${OPAL_REC_VERSION});
@@ -511,8 +511,8 @@ dnl ###########################################################################
 AC_OUTPUT(
 Makefile
 src/gnomemeeting-config-tool
-gnomemeeting.schemas.in
-gnomemeeting.service
+AC_PACKAGE_NAME.schemas.in
+AC_PACKAGE_NAME.service
 lib/Makefile
 lib/about/Makefile
 lib/druid/Makefile

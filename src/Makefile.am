@@ -76,4 +76,4 @@ gnomemeeting_LDADD = \
 	$(top_builddir)/lib/libgnomemeeting.la
 
 serverdir = $(libdir)/bonobo/servers
-server_DATA = gnomemeeting.server
+server_DATA = @PACKAGE_NAME@.server
