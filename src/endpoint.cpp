@@ -290,7 +290,7 @@ void GMH323EndPoint::UpdateConfig ()
   fast_start =
     gconf_client_get_bool (client, GENERAL_KEY "fast_start", NULL);
   video_size = 
-    gconf_client_get_int (client, VIDEO_SETTINGS_KEY "video_size", NULL);
+    gconf_client_get_int (client, DEVICES_KEY "video_size", NULL);
 
 
   gnomemeeting_sound_daemons_suspend ();
@@ -492,8 +492,9 @@ GMH323EndPoint::AddUserInputCapabilities ()
   gchar *gconf_string = NULL;
 
   gconf_string =
-    gconf_client_get_string (client, GENERAL_KEY "user_input_capabilities", 0);
+    gconf_client_get_string (client, GENERAL_KEY "user_input_capability", 0);
 
+  cout << gconf_string << endl << flush;
   if (gconf_string) {
 
     cap = PString (gconf_string);

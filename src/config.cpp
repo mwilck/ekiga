@@ -567,13 +567,14 @@ static void silence_detection_changed_nt (GConfClient *client, guint cid,
 
 
 /* DESCRIPTION  :  This callback is called to update capabilities.
- * BEHAVIOR     :  Updates it.
+ * BEHAVIOR     :  Updates them.
  * PRE          :  /
  */
 static void capabilities_changed_nt (GConfClient *client, guint i, 
 				     GConfEntry *entry, gpointer data)
 {
-  if (entry->value->type == GCONF_VALUE_INT) {
+  if (entry->value->type == GCONF_VALUE_INT
+      || entry->value->type == GCONF_VALUE_STRING) {
    
     gdk_threads_enter ();
 
