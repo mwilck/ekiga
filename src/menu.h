@@ -34,8 +34,39 @@
 #include <gtk/gtkwidget.h>
 #include "common.h"
 
+struct _MenuEntry {
+    
+  char *name;
+  char *tooltip;
+  char *stock_id;
+  char accel;
+  short type;
+  GtkSignalFunc func;
+  gpointer data;
+  GtkWidget *widget;
+};
+typedef _MenuEntry MenuEntry;
 
-enum {LOCAL_VIDEO, REMOTE_VIDEO, BOTH_INCRUSTED, BOTH_LOCAL, BOTH};
+enum {
+
+  MENU_ENTRY,
+  MENU_ENTRY_TOGGLE,
+  MENU_ENTRY_RADIO,
+  MENU_SEP,
+  MENU_TEAROFF,
+  MENU_NEW,
+  MENU_SUBMENU_NEW,
+  MENU_END
+};
+
+enum {
+
+  LOCAL_VIDEO, 
+  REMOTE_VIDEO, 
+  BOTH_INCRUSTED, 
+  BOTH_LOCAL, 
+  BOTH
+};
 
 
 /* The functions */
@@ -43,9 +74,9 @@ enum {LOCAL_VIDEO, REMOTE_VIDEO, BOTH_INCRUSTED, BOTH_LOCAL, BOTH};
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Creates the menus and add them to the main window.
- * PRE          :  /
+ * PRE          :  The accel group.
  */
-void gnomemeeting_init_menu ();
+void gnomemeeting_init_menu (GtkAccelGroup *);
 
 
 /* DESCRIPTION  :  /
@@ -85,5 +116,34 @@ void gnomemeeting_video_submenu_set_sensitive (gboolean, int, gboolean = true);
 void gnomemeeting_video_submenu_select (int);
 
 
-void gnomemeeting_popup_menu_init (GtkWidget *);
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Returns a pointer to the main menu.
+ * PRE          :  Valid pointer to gm.
+ */
+MenuEntry *gnomemeeting_get_menu (GtkWidget *);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Returns a pointer to the video menu attached to the main 
+ *                 video image.
+ * PRE          :  Valid pointer to gm.
+ */
+MenuEntry *gnomemeeting_get_video_menu (GtkWidget *);
+
+
+void gnomemeeting_popup_menu_init (GtkWidget *, GtkAccelGroup *);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Enable/disable sensitivity (bool) of connect/disconnect.
+ * PRE          :  true/false, 0 (connect) <= int < 1 (disconnect)
+ */
+void gnomemeeting_call_menu_connect_set_sensitive (int, bool);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Enable/disable sensitivity (bool) of pause.
+ * PRE          :  true/false
+ */
+void gnomemeeting_call_menu_pause_set_sensitive (bool);
 #endif

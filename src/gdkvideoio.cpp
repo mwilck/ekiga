@@ -130,7 +130,6 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
   GdkPixbuf *src_pic = NULL;
   GdkPixbuf *zoomed_pic = NULL;
   GdkPixbuf *tmp = NULL;
-  GnomeUIInfo *video_view_menu_uiinfo = NULL;
   int image_width = 0, image_height = 0;
   PMutex both_mutex;
   GConfClient *client = NULL;
@@ -162,9 +161,6 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
   redraw_mutex.Wait ();
 
   gnomemeeting_threads_enter ();
-  video_view_menu_uiinfo = (GnomeUIInfo *) 
-    g_object_get_data (G_OBJECT(gm), "video_view_menu_uiinfo");
-
   
   /* What do we display: what gconf tells us except if we are not in 
      a call, or if it is not a valid choice */

@@ -289,6 +289,26 @@ gnomemeeting_statusbar_flash (GtkWidget *widget, const char *msg, ...)
 }
 
 
+void 
+gnomemeeting_statusbar_push (GtkWidget *widget, const char *msg, ...)
+{
+  gnome_appbar_clear_stack (GNOME_APPBAR (GNOME_APP (widget)->statusbar));
+
+  if (msg) {
+
+    va_list args;
+    char buffer [1025];
+
+    va_start (args, msg);
+    vsnprintf (buffer, 1024, msg, args);
+    
+    gnome_appbar_push (GNOME_APPBAR (GNOME_APP (widget)->statusbar), buffer);
+    
+    va_end (args);
+  }
+}
+
+
 GtkWidget *gnomemeeting_video_window_new (gchar *title, GtkWidget *&image,
 					  int x, int y)
 {

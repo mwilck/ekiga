@@ -60,7 +60,7 @@ GMH323Connection::GMH323Connection (GMH323EndPoint & ep,
 
   opened_channels = 0;
 
-  SetMaxAudioDelayJitter (gconf_client_get_int (gconf_client_get_default (), "/apps/gnomemeeting/audio_settings/jitter_buffer", NULL));
+  //  SetMaxAudioDelayJitter (gconf_client_get_int (gconf_client_get_default (), "/apps/gnomemeeting/audio_settings/jitter_buffer", NULL));
 }
 
 

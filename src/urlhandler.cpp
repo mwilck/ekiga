@@ -38,6 +38,7 @@
 #include "endpoint.h"
 #include "toolbar.h"
 #include "ils.h"
+#include "menu.h"
 
 
 /* Declarations */
@@ -218,8 +219,7 @@ void GMURLHandler::Main ()
 
 
   /* Enable disconnect: we must be able to stop calling */
-  gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [1].widget), 
-			    TRUE);
+  gnomemeeting_call_menu_connect_set_sensitive (1, TRUE);
   
   msg = g_strdup_printf (_("Calling %s"), 
 			 (const char *) call_address);

@@ -104,6 +104,15 @@ gnomemeeting_statusbar_flash (GtkWidget *, const char *, ...);
 
 
 /* DESCRIPTION   :  /
+ * BEHAVIOR      : Displays a message on the statusbar or clears it if msg = 0.
+ *                 Removes the previous message.
+ * PRE           : The GnomeApp, followed by printf syntax format.
+ */
+void 
+gnomemeeting_statusbar_push (GtkWidget *, const char *, ...);
+
+
+/* DESCRIPTION   :  /
  * BEHAVIOR      : Creates a video window.
  * PRE           : The title of the window, the drawing area, and the width and
  *                 height.

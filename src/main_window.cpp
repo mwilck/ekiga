@@ -105,7 +105,7 @@ static void whiteness_changed          (GtkAdjustment *, gpointer);
 static void colour_changed             (GtkAdjustment *, gpointer);
 static void contrast_changed           (GtkAdjustment *, gpointer);
 
-static void gnomemeeting_init_main_window ();
+static void gnomemeeting_init_main_window (GtkAccelGroup *accel);
 static gint gm_quit_callback (GtkWidget *, GdkEvent *, gpointer);
 static void gnomemeeting_init_main_window_video_settings ();
 static void gnomemeeting_init_main_window_audio_settings ();
@@ -892,9 +892,9 @@ gnomemeeting_init (GmWindow *gw,
   gchar *firstname = NULL;
   gchar *lastname = NULL;
   gchar *alias = NULL;
-  bool show_splash;
-  GConfClient *client;
-
+  bool show_splash = TRUE;
+  GConfClient *client = NULL;
+  GtkAccelGroup *accel = NULL;
 
   /* Prevents ESD to spawn */
   setenv ("ESD_NO_SPAWN", "1", 1);
@@ -1056,13 +1056,16 @@ gnomemeeting_init (GmWindow *gw,
       gtk_main_iteration ();
   }
   
-  /* Search for devices */
   gnomemeeting_sound_daemons_suspend ();
+
+  accel = gtk_accel_group_new ();
+  gtk_window_add_accel_group (GTK_WINDOW (gm), accel);
+
 
   /* Build the interface */
   gnomemeeting_init_history_window ();
   gnomemeeting_init_calls_history_window ();
-  gnomemeeting_init_main_window ();
+  gnomemeeting_init_main_window (accel);
   gnomemeeting_init_ldap_window ();
 
   /* Launch the GnomeMeeting H.323 part */
@@ -1076,7 +1079,7 @@ gnomemeeting_init (GmWindow *gw,
   gw->video_devices = PVideoInputDevice::GetInputDeviceNames ();
 
   gnomemeeting_init_pref_window ();  
-  gnomemeeting_init_menu ();
+  gnomemeeting_init_menu (accel);
   gnomemeeting_init_toolbar ();
 
   gnomemeeting_sound_daemons_resume ();
@@ -1198,7 +1201,6 @@ gnomemeeting_init (GmWindow *gw,
 
 
   /* Add the popup menu and change all menus sensitivity */
-  gnomemeeting_popup_menu_init (gw->main_video_image);
   gnomemeeting_video_submenu_set_sensitive (FALSE, LOCAL_VIDEO);
   gnomemeeting_video_submenu_set_sensitive (FALSE, REMOTE_VIDEO);
   gnomemeeting_zoom_submenu_set_sensitive (FALSE);
@@ -1224,15 +1226,16 @@ gnomemeeting_init (GmWindow *gw,
 
 /**
  * DESCRIPTION  :  /
- * BEHAVIOR     :  Builds the main window.
- * PRE          :  Valid options.
+ * BEHAVIOR     :  Builds the main window and adds the popup to the image.
+ * PRE          :  Accels.
  **/
-void gnomemeeting_init_main_window ()
+void gnomemeeting_init_main_window (GtkAccelGroup *accel)
 { 
   GConfClient *client = gconf_client_get_default ();
-  GtkWidget *table;	
-  GtkWidget *frame;
-  GtkWidget *vbox;
+  GtkWidget *table = NULL;	
+  GtkWidget *frame = NULL;
+  GtkWidget *vbox = NULL;
+  GtkWidget *event_box = NULL;
   int main_notebook_section = 0;
   int x = GM_QCIF_WIDTH;
   int y = GM_QCIF_HEIGHT;
@@ -1278,9 +1281,13 @@ void gnomemeeting_init_main_window ()
   frame = gtk_frame_new (NULL);
   gw->video_frame = gtk_frame_new (NULL);
 
+  event_box = gtk_event_box_new ();
+  gnomemeeting_popup_menu_init (event_box, accel);
+
   vbox = gtk_vbox_new (FALSE, 0);
 
-  gtk_container_add (GTK_CONTAINER (frame), vbox);
+  gtk_container_add (GTK_CONTAINER (frame), event_box);
+  gtk_container_add (GTK_CONTAINER (event_box), vbox);
   gtk_box_pack_start (GTK_BOX (vbox), gw->video_frame, TRUE, TRUE, 0);
   gtk_frame_set_shadow_type (GTK_FRAME (gw->video_frame), GTK_SHADOW_IN);
 

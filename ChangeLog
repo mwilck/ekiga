@@ -1,3 +1,14 @@
+2002-11-04 Damien Sandras  <dsandras@seconix.com>
+
+	* src/config.cpp, src/connection.cpp, src/endpoint.cpp, 
+	src/gdkvideoio.cpp, src/main_window.cpp, src/menu.cpp,
+	src/menu.h, src/misc.cpp, src/misc.h, src/urlhandler.cpp:
+	Added convenience functions to menu.h so that other parts
+	of gnomemeeting do not have to directly access the menu widgets 
+	(e.g. gnomemeeting_call_menu_connect_set_sensitive ). Ported
+	the menu system away from libgnomeui to use pure GTK calls. This
+	is based on a new structure MenuEntry defined in menu.h.
+	
 2002-11-02 Damien Sandras  <dsandras@seconix.com>
 
 	* src/endpoint.cpp: Optimized OnConnectionCleared.

@@ -1158,9 +1158,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
    
   /* Enable disconnect: we must be able to refuse the incoming call */
   gnomemeeting_threads_enter ();
-  GnomeUIInfo *call_menu_uiinfo =
-    (GnomeUIInfo *) g_object_get_data (G_OBJECT (gm), "call_menu_uiinfo");
-  gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [1].widget), TRUE);
+  gnomemeeting_call_menu_connect_set_sensitive (1, TRUE);
   gnomemeeting_threads_leave ();
 
   current_connection = FindConnectionWithLock (connection.GetCallToken ());
@@ -1330,11 +1328,7 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 1);
 
   /* Enable the mute functions in the call menu */
-  GnomeUIInfo *call_menu_uiinfo =
-    (GnomeUIInfo *) g_object_get_data (G_OBJECT (gm), "call_menu_uiinfo");
-  gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [6].widget), TRUE);
-  gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [7].widget), TRUE);
-
+  gnomemeeting_call_menu_pause_set_sensitive (TRUE);
   gnomemeeting_threads_leave ();
 
 
@@ -1576,12 +1570,8 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
 
   /* Disable disconnect, and the mute functions in the call menu */
-  GnomeUIInfo *call_menu_uiinfo =
-    (GnomeUIInfo *) g_object_get_data (G_OBJECT (gm), "call_menu_uiinfo");
-  gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [0].widget), TRUE);
-  gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [1].widget), FALSE);
-  gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [6].widget), FALSE);
-  gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [7].widget), FALSE);
+  gnomemeeting_call_menu_connect_set_sensitive (1, FALSE);
+  gnomemeeting_call_menu_pause_set_sensitive (FALSE);
 
 
   /* Disable Remote Video (Local video is disabled elsewhere) 
