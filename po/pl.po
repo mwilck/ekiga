@@ -9,8 +9,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
-"POT-Creation-Date: 2002-10-07 11:33+0200\n"
-"PO-Revision-Date: 2002-10-10 09:36+0200\n"
+"POT-Creation-Date: 2002-10-12 20:08+0200\n"
+"PO-Revision-Date: 2002-10-13 12:16+0200\n"
 "Last-Translator: GNOME PL Team <translators@gnome.pl>\n"
 "Language-Team: Polish <pl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -100,8 +100,8 @@ msgstr "Nie przeszkadzać"
 msgid "E-Mail address"
 msgstr "Adres e-mail"
 
-#Ja wiem, że to koślawe tłumaczenie, ale tak powinno 
-#ono wyglądać wg tego co rozmawiałęm z Damienem
+# Ja wiem, że to koślawe tłumaczenie, ale tak powinno 
+# ono wyglądać wg tego co rozmawiałęm z Damienem
 #: gnomemeeting.schemas.in.in.h:1
 msgid "Enable FPS"
 msgstr "Ograniczanie liczby przesyłanych ramek obrazu"
@@ -178,6 +178,10 @@ msgid ""
 msgstr ""
 "Wybór ilości bloków (które nie uległy zmianie) transmitowanych w każdej "
 "ramce. Bloki te stanowią tło obrazu."
+
+#: gnomemeeting.schemas.in.in.h:1
+msgid "IP Translation"
+msgstr "Przekształcanie adresów IP"
 
 #: gnomemeeting.schemas.in.in.h:1 src/pref_window.cpp:1
 msgid ""
@@ -286,6 +290,10 @@ msgstr "Liczba ramek transmitowanych w każdym pakiecie dla kodeka GSM"
 msgid "Popup on incoming calls"
 msgstr "Okienko przy połączeniach przychodzących"
 
+#: gnomemeeting.schemas.in.in.h:1
+msgid "Public IP"
+msgstr "Publiczny IP"
+
 #. The Quicknet devices related options
 #: gnomemeeting.schemas.in.in.h:1 src/pref_window.cpp:1
 msgid "Quicknet Device"
@@ -354,6 +362,10 @@ msgstr "Wyświetlanie okna pogawędki w głównym oknie"
 #: gnomemeeting.schemas.in.in.h:1
 msgid "Show the left toolbar on the left of the main window"
 msgstr "Wyświetlanie paska narzędziowego po lewej stronie głównego okna"
+
+#: gnomemeeting.schemas.in.in.h:1
+msgid "TCP Port Range"
+msgstr "Zakres portów TCP"
 
 #: gnomemeeting.schemas.in.in.h:1
 msgid "The Audio Codecs List"
@@ -518,6 +530,33 @@ msgstr ""
 "Przedrostek ten będzie poprzedzał numer zapisywanego obrazu."
 
 #: gnomemeeting.schemas.in.in.h:1
+msgid ""
+"The range of TCP ports beside the listen_port that GnomeMeeting will use for "
+"incoming connections. You can change the TCP port range if you are using IP "
+"translation and if you need to have several GnomeMeeting running behind your "
+"NAT/PAT router. GnomeMeeting needs to be restarted for the new values to "
+"take effect."
+msgstr ""
+"Zakres portów TCP, które zostaną użyte wraz z listen_port do nasłuchu "
+"połączeń przychodzących. Można zmienić zakres portów TCP, jeżeli używane "
+"jest przekształcanie adresów IP i istnieje potrzeba użycia wielu programów "
+"GnomeMeeting za routerem NAT/PAT. Aby nowe wartości zostały uwzględnione, "
+"należy ponownie uruchomić program GnomeMeeting."
+
+#: gnomemeeting.schemas.in.in.h:1
+msgid ""
+"The range of UDP ports that GnomeMeeting will use for incoming connections. "
+"You can change the UDP port range if you are using IP translation and if you "
+"need to have several GnomeMeeting running behind your NAT/PAT router. "
+"GnomeMeeting needs to be restarted for the new values to take effect."
+msgstr ""
+"Zakres portów UDP, które zostaną użyte dla połączeń przychodzących. Można "
+"zmienić zakres portów UDP, jeżeli używane jest przekształcanie adresów IP i "
+"istnieje potrzeba użycia wielu programów GnomeMeeting za routerem NAT/PAT. "
+"Aby nowe wartości zostały uwzględnione, należy ponownie uruchomić program "
+"GnomeMeeting."
+
+#: gnomemeeting.schemas.in.in.h:1
 msgid "The save prefix"
 msgstr "Przedrostek zapisu"
 
@@ -546,6 +585,21 @@ msgstr "Szerokość wyświetlanego obrazu w trybie pełnoekranowym (używa SDL)"
 msgid "The width of the remote video popup"
 msgstr "Szerokość okna ze zdalnym obrazem"
 
+#: gnomemeeting.schemas.in.in.h:1 src/pref_window.cpp:1
+msgid ""
+"This enables IP translation. IP translation is useful if GnomeMeeting is "
+"running behind a NAT/PAT router. You have to put the public IP of the router "
+"in the field below. If you are registered to ils.seconix.com, GnomeMeeting "
+"will automatically fetch the public IP using the ILS service. If your router "
+"natively supports H.323, you can disable this."
+msgstr ""
+"Przekształcanie adresów IP. Przekształcanie adresów IP jest przydatne w "
+"przypadku uruchamiania programu GnomeMeeting za routerem NAT/PAT. W polu "
+"należy wpisać publiczny adres IP routera. Jeżeli nastąpiła rejestracja w "
+"katalogu ils.seconix.com, adres IP zostanie pobrany automatycznie "
+"korzystając z usługi ILS. Jeżeli router obsługuje protokół H.323, można tą "
+"opcję wyłączyć."
+
 #: gnomemeeting.schemas.in.in.h:1
 msgid "This need the show_docklet option set to true to have effect"
 msgstr "Wymaga dodatkowego ustawienia wartości true dla opcji show_docklet"
@@ -553,6 +607,10 @@ msgstr "Wymaga dodatkowego ustawienia wartości true dla opcji show_docklet"
 #: gnomemeeting.schemas.in.in.h:1
 msgid "Transmitted frames per second"
 msgstr "Transmitowane ramki na sekundę"
+
+#: gnomemeeting.schemas.in.in.h:1
+msgid "UDP Port Range"
+msgstr "Zakres portów UDP"
 
 #: gnomemeeting.schemas.in.in.h:1
 msgid "Use Quicknet Device"
@@ -585,6 +643,17 @@ msgstr "Jakość obrazu"
 #: gnomemeeting.schemas.in.in.h:1
 msgid "Video Size"
 msgstr "Rozmiar obrazu"
+
+#: gnomemeeting.schemas.in.in.h:1
+msgid ""
+"You can put here the public IP of your NAT/PAT router if you want to use IP "
+"translation. If you are registered to ils.seconix.com, GnomeMeeting will "
+"automatically fetch the public IP using the ILS service."
+msgstr ""
+"W celu użycia przekształcania adresów IP należy wpisać tutaj publiczny adres "
+"IP routera NAT/PAT. Jeżeli nastąpiła rejestracja w katalogu ils.seconix.com, "
+"program GnomeMeeting automatycznie pobierze adres IP korzystając z usługi "
+"ILS."
 
 #: lib/dialog.c:1
 msgid "Do not show this dialog again"
@@ -875,7 +944,7 @@ msgstr "Odrzucone"
 msgid "Auto Answering Incoming Call"
 msgstr "Automatyczne odbieranie połączeń przychodzących"
 
-#Uważam, że ten komunikat jest bzdurny bo nie pokrywa się z prawdą
+# Uważam, że ten komunikat jest bzdurny bo nie pokrywa się z prawdą
 #: src/druid.cpp:1
 msgid ""
 "You chose to NOT use the GnomeMeeting ILS directory. Other users will not be "
@@ -888,7 +957,7 @@ msgstr ""
 msgid "Personal Data - Page 2/4"
 msgstr "Dane osobowe - Strona 2/4"
 
-#Kolejne koślawe tłumaczenie i tekst oryginału też niezgodny do końca z prawdą
+# Kolejne koślawe tłumaczenie i tekst oryginału też niezgodny do końca z prawdą
 #: src/druid.cpp:1
 msgid ""
 "Please enter information about yourself. This information will be used when "
@@ -997,6 +1066,7 @@ msgid "Forwarding Call to %s (No Answer)"
 msgstr "Przekazywanie połączenia do %s (brak odpowiedzi)"
 
 #: src/endpoint.cpp:1 src/endpoint.cpp:1 src/endpoint.cpp:1
+#: src/endpoint.cpp:1
 msgid "Call forwarded"
 msgstr "Połączenie przekazane"
 
@@ -1121,8 +1191,8 @@ msgid "Congested link to remote party"
 msgstr "Przeciążone łącze do zdalnego użytkownika"
 
 #: src/endpoint.cpp:1
-msgid "Remote party did not answer your call in the required time"
-msgstr "Zdalny użytkownik nie odpowiedział na wywołanie w wymaganym czasie"
+msgid "The call was not answered in the required time"
+msgstr "Wywołanie nie zostało odebrane w wymaganym czasie"
 
 #: src/endpoint.cpp:1
 msgid "This call ended abnormally"
@@ -1351,6 +1421,7 @@ msgstr "Brak katalogu"
 msgid "XDAP Server Browser"
 msgstr "Przeglądarka serwera XDAP"
 
+#. Find button
 #: src/ldap_window.cpp:1
 msgid "Find users on"
 msgstr "Znajdź użytkowników na"
@@ -1433,7 +1504,7 @@ msgstr "wys. obr."
 msgid "Re. Vid."
 msgstr "odb. obr."
 
-#dziwnie to wygląda, ale nic innego mi się tu nie nasuwa z tym Factory mode
+# dziwnie to wygląda, ale nic innego mi się tu nie nasuwa z tym Factory mode
 #: src/main_window.cpp:1
 msgid ""
 "It appears that you do not have gnomemeeting.server installed in a valid "
@@ -2092,7 +2163,6 @@ msgstr ""
 msgid "H.323 V2 Settings"
 msgstr "Ustawienia kodeka H.323 V2"
 
-#. The toggles
 #: src/pref_window.cpp:1
 msgid "Enable H.245 Tunnelling"
 msgstr "Tunelowanie H.245"
@@ -2128,6 +2198,29 @@ msgstr ""
 "protokole H.323v2. Metoda ta nie jest obsługiwana przez program NetMeeting i "
 "użycie jednocześnie Szybkiego uruchamiania i tunelowania H.245 może "
 "spowodować błąd w niektórych jego wersjach."
+
+#: src/pref_window.cpp:1
+msgid "NAT/PAT Router Support"
+msgstr "Obsługa rutera NAT/PAT"
+
+#: src/pref_window.cpp:1
+msgid "Enable IP Translation"
+msgstr "Przekształcanie adresów IP"
+
+#: src/pref_window.cpp:1
+msgid "Public IP of the NAT/PAT router:"
+msgstr "Publiczny IP rutera NAT/PAT:"
+
+#: src/pref_window.cpp:1
+msgid ""
+"You can put here the public IP of your NAT/PAT router if you want to use IP "
+"translation.  If you are registered to ils.seconix.com, GnomeMeeting will "
+"automatically fetch the public IP using the ILS service."
+msgstr ""
+"W celu użycia przekształcania adresów IP należy wpisać tutaj publiczny adres "
+"IP routera NAT/PAT. Jeżeli nastąpiła rejestracja w katalogu ils.seconix.com, "
+"program GnomeMeeting automatycznie pobierze adres IP korzystając z usługi "
+"ILS."
 
 #: src/pref_window.cpp:1
 msgid "Low"
