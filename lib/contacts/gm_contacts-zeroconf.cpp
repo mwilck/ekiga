@@ -314,9 +314,11 @@ GMZeroconfBrowser::GMZeroconfBrowser ()
   browse_id = 0;
   contacts = NULL;
 
-  Start ();
+  if (discovery) {
 
-  thread_sync_point.Wait ();
+    Start ();
+    thread_sync_point.Wait ();
+  }
 }
 
 

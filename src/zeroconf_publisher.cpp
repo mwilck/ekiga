@@ -121,16 +121,16 @@ GMZeroconfPublisher::Publish()
     return (SW_FALSE);
 
   if (publish_id)
-    Stop();
+    Stop ();
 
-  GetPersonalData();
+  GetPersonalData ();
 
   if (name)
-    err = sw_discovery_publish(discovery, 0, name, ZC_H323, NULL, NULL, 
-			       port, 
-			       sw_text_record_bytes (text_record), 
-			       sw_text_record_len (text_record), 
-			       publish_reply, NULL, &publish_id);
+    err = sw_discovery_publish (discovery, 0, name, ZC_H323, NULL, NULL, 
+				port, 
+				sw_text_record_bytes (text_record), 
+				sw_text_record_len (text_record), 
+				publish_reply, NULL, &publish_id);
 
   return err;
 }
@@ -233,7 +233,7 @@ exit:
 
 
 void
-GMZeroconfPublisher::Main()
+GMZeroconfPublisher::Main ()
 {
   PWaitAndSignal m(quit_mutex);
   thread_sync_point.Signal ();
@@ -243,7 +243,7 @@ GMZeroconfPublisher::Main()
 
 
 int 
-GMZeroconfPublisher::Start()
+GMZeroconfPublisher::Start ()
 {
   if (discovery)
     Resume ();
@@ -259,13 +259,13 @@ GMZeroconfPublisher::Stop()
 
   if (discovery) {
 
-    err = sw_discovery_cancel(discovery, publish_id);
-    sw_check_okay(err, exit);
+    err = sw_discovery_cancel (discovery, publish_id);
+    sw_check_okay (err, exit);
   }
 
 
   if (text_record)
-    err = sw_text_record_fina(text_record);
+    err = sw_text_record_fina (text_record);
 
 exit:
   g_free (name);
