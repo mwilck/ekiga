@@ -1,3 +1,20 @@
+2002-05-16  Damien Sandras  <dsandras@seconix.com>
+	
+	* src/endpoint.cpp: Remote User Name and Remote Application Name
+	are now converted from ISO-8859-1 to UTF8.
+	
+	* src/ils.cpp: Strings are encoded from UTF8 to ISO-8859-1 
+	before registering and from ISO-8859-1 to UTF8
+	
+	* src/main_window.cpp: Local User Name is converted from UTF8
+	to ISO-8859-1 before setting it.
+	
+	* src/pref_window.cpp: See here above.
+	
+	* src/videograbber.cpp: Fixed bug. Config is now read in "Open"
+	so that we are sure to Open the grabber with the new parameters
+	even if it is opened synchroneously.
+
 2002-05-17  Kenneth Rohde Christiansen  <kenneth@gnu.org>
 
 	* src/main_window.cpp: Changed warning string a little, plus added 
@@ -5,7 +22,6 @@
 	section.
 
 	* src/callbacks.cpp: Unref'ed a pixbuf.
-	
 
 2002-05-16  Damien Sandras  <dsandras@seconix.com>
 

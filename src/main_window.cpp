@@ -390,7 +390,14 @@ gnomemeeting_init (GmWindow *gw,
     local_name = g_strconcat (local_name, firstname, " ", lastname, NULL);
     
     /* It is the first alias for the gatekeeper */
-    endpoint->SetLocalUserName (local_name);
+    if (local_name != NULL) {
+
+      gchar *iso_8859_1_local_name = NULL;
+      iso_8859_1_local_name = g_convert (local_name, strlen (local_name),
+					 "ISO-8859-1", "UTF8", 0, 0, 0);
+      endpoint->SetLocalUserName (iso_8859_1_local_name);
+      g_free (iso_8859_1_local_name);
+    }
   }
 
   alias =

@@ -1,4 +1,4 @@
-
+ 
 /* GnomeMeeting -- A Video-Conferencing application
  * Copyright (C) 2000-2002 Damien Sandras
  *
@@ -129,6 +129,8 @@ static gint IncomingCallTimeout (gpointer data)
 /* The class */
 GMH323EndPoint::GMH323EndPoint ()
 {
+  gchar *msg = NULL;
+
   gw = gnomemeeting_get_main_window (gm);
   lw = gnomemeeting_get_ldap_window (gm);
   chat = gnomemeeting_get_chat_window (gm);
@@ -167,6 +169,12 @@ GMH323EndPoint::GMH323EndPoint ()
 
   /* General Configuration */
   UpdateConfig ();
+
+  /* GM is started */
+  msg = g_strdup_printf (_("Started GnomeMeeting V%d.%d for %s\n"), 
+			 MAJOR_VERSION, MINOR_VERSION, g_get_user_name ());
+  gnomemeeting_log_insert (msg);
+  g_free (msg);
 }
 
 
@@ -725,12 +733,15 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 {
   char *msg = NULL;
   PString name = connection.GetRemotePartyName ();
+  PString app = connection.GetRemoteApplication ();
   PString forward_host;
+  gchar *utf8_name = NULL;
+  gchar *utf8_app = NULL;
 
   gchar *forward_host_gconf = NULL;
   gboolean always_forward = FALSE;
   gboolean busy_forward = FALSE;
- 
+  
   int no_answer_timeout = 0;
 
   GtkWidget *b1 = NULL, *b2 = NULL;
@@ -748,6 +759,13 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 			   "/apps/gnomemeeting/call_forwarding/busy_forward", 0);
  
 
+  /* Convert the remote party name and app to UTF8 */
+  utf8_name = g_convert ((const char *) name, strlen ((const char *) name),
+			 "UTF8", "ISO-8859-1", NULL, NULL, NULL);
+  utf8_app = g_convert ((const char *) app, strlen ((const char *) app),
+			"UTF8", "ISO-8859-1", NULL, NULL, NULL);
+
+
   if (forward_host_gconf)
     forward_host = PString (forward_host_gconf);
   else
@@ -760,13 +778,14 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
     gnomemeeting_threads_enter ();
     msg = 
       g_strdup_printf (_("Forwarding Call from %s to %s (Forward All Calls)"),
-		       (const char *) name, (const char *) forward_host);
+		       (const char *) utf8_name, (const char *) forward_host);
     gnome_appbar_push (GNOME_APPBAR (gw->statusbar), msg);
     gnomemeeting_log_insert (msg);
     gnomemeeting_threads_leave ();
 
     g_free (forward_host_gconf);
     g_free (msg);
+    g_free (utf8_name);
 
     return !connection.ForwardCall (forward_host);
   }
@@ -780,13 +799,15 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 
       gnomemeeting_threads_enter ();
       msg = g_strdup_printf (_("Forwarding Call from %s to %s (Busy)"),
-			     (const char *) name, (const char *) forward_host);
+			     (const char *) utf8_name, 
+			     (const char *) forward_host);
       gnome_appbar_push (GNOME_APPBAR (gw->statusbar), msg);
       gnomemeeting_log_insert (msg);
       gnomemeeting_threads_leave ();
 
       g_free (forward_host_gconf);
       g_free (msg);
+      g_free (utf8_name);
 
       return !connection.ForwardCall (forward_host);
     } 
@@ -795,7 +816,7 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
       /* there is no forwarding, so reject the call */
       gnomemeeting_threads_enter ();
       msg = g_strdup_printf (_("Auto Rejecting Incoming Call from %s (Busy)"),
-			     (const char *) name);
+			     (const char *) utf8_name);
       gnome_appbar_push (GNOME_APPBAR (gw->statusbar), msg);
       gnomemeeting_log_insert (msg);
       g_free (msg);
@@ -805,6 +826,7 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
       connection.ClearCall(H323Connection::EndedByLocalBusy);   
 
       g_free (forward_host_gconf);
+      g_free (utf8_name);
 
       return FALSE;
     }
@@ -850,7 +872,7 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 
 
   /* Update the history and status bar */
-  msg = g_strdup_printf (_("Call from %s"), (const char*) name);
+  msg = g_strdup_printf (_("Call from %s"), (const char*) utf8_name);
 
   gnomemeeting_threads_enter ();
   gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
@@ -875,9 +897,8 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
     GtkWidget *hbox = NULL;
     gchar *file = NULL;
 
-    msg = g_strdup_printf (_("Call from %s\nusing %s"), 
-			   (const char*) name, 
-			   (const char *) connection.GetRemoteApplication ());
+    msg = g_strdup_printf (_("Call from %s\nusing %s"), (const char*) utf8_name, 
+			   (const char *) utf8_app);
 
     gnomemeeting_threads_enter ();
     gw->incoming_call_popup = gtk_dialog_new ();
@@ -930,6 +951,8 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   SetCurrentCallToken (connection.GetCallToken());
 
   g_free (forward_host_gconf);
+  g_free (utf8_name);
+  g_free (utf8_app);
 
   return TRUE;
 }
@@ -941,10 +964,17 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   H323VideoCodec *video_codec = NULL;
   PString name = connection.GetRemotePartyName();
   PString app = connection.GetRemoteApplication ();
-  const char * remotePartyName = (const char *) name;
-  const char * remoteApp = (const char *) app;
-  char *msg;
+  gchar *utf8_app = NULL;
+  gchar *utf8_name = NULL;
+  char *msg = NULL;
   int vq;
+
+
+  /* Convert remote app and remote name */
+  utf8_app = g_convert ((const char *) app, strlen ((const char *) app),
+			"UTF8", "ISO-8859-1", NULL, NULL, NULL);
+  utf8_name = g_convert ((const char *) name, strlen ((const char *) name),
+			 "UTF8", "ISO-8859-1", NULL, NULL, NULL);
 
 
   gnomemeeting_threads_enter ();
@@ -962,7 +992,7 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 
 
   msg = g_strdup_printf (_("Connected with %s using %s"), 
-			 remotePartyName, remoteApp);
+			 utf8_name, utf8_app);
 
   SetCurrentCallToken (token);
   SetCurrentConnection (FindConnectionWithoutLocks (token));
@@ -989,7 +1019,7 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   if (bracket != P_MAX_INDEX)
     name = name.Left (bracket);
 
-  gtk_entry_set_text (GTK_ENTRY (gw->remote_name), (const char *) name);
+  gtk_entry_set_text (GTK_ENTRY (gw->remote_name), (const char *) utf8_name);
 
   if (docklet_timeout != 0)
     gtk_timeout_remove (docklet_timeout);
@@ -1023,6 +1053,8 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   SetCallingState (2);
 
   g_free (msg);
+  g_free (utf8_name);
+  g_free (utf8_app);
 }
 
 
@@ -1128,18 +1160,18 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   }
   
   gnomemeeting_log_insert (_("Call completed"));
-
   gnomemeeting_threads_leave ();
 
 
- /* If we are called because the current call has ended and not another
+  /* If we are called because the current call has ended and not another
      call, return */
   if (exit == 1) 
     return;
 
   /* Reset the Video Grabber, if preview, else close it */
   GMVideoGrabber *vg = (GMVideoGrabber *) video_grabber;
-  if (gconf_client_get_bool (client, "/apps/gnomemeeting/devices/video_preview", 0)) {
+  if (gconf_client_get_bool (client, 
+			     "/apps/gnomemeeting/devices/video_preview", 0)) {
 
     vg->Close (TRUE);
     vg->Open (TRUE, TRUE); /* Grab and do a synchronous opening
@@ -1154,6 +1186,15 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   gnomemeeting_threads_enter ();
   gtk_entry_set_text (GTK_ENTRY (gw->remote_name), "");
+
+
+  /* We destroy the incoming call popup if any */
+  if (gw->incoming_call_popup) {
+
+    gtk_widget_destroy (gw->incoming_call_popup);
+    gw->incoming_call_popup = NULL;
+  }
+
   
   /* We empty the text chat buffer */ 
   gtk_text_buffer_get_start_iter (chat->text_buffer, &start_iter);

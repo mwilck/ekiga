@@ -51,6 +51,9 @@ extern GtkWidget *gm;
 GMVideoGrabber::GMVideoGrabber ()
   :PThread (1000, NoAutoDeleteThread)
 {
+  height = 0, width = 0;
+  whiteness = 0, brightness = 0, colour = 0, contrast = 0;
+
   gw = gnomemeeting_get_main_window (gm);
   pw = gnomemeeting_get_pref_window (gm);
 
@@ -67,6 +70,7 @@ GMVideoGrabber::GMVideoGrabber ()
   encoding_device = NULL;
   channel = NULL;
   grabber = NULL;
+  encoding_device = NULL;
   client = gconf_client_get_default ();
   color_format = NULL;
   video_device = NULL;
@@ -147,7 +151,7 @@ void GMVideoGrabber::Main ()
       if (IsOpened ()) {
 
  	VGClose (0);
- 	UpdateConfig ();
+	UpdateConfig ();
  	VGOpen ();
 
 	var_mutex.Wait ();
@@ -217,6 +221,7 @@ void GMVideoGrabber::UpdateConfig ()
 
   video_size =  gconf_client_get_int (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/video_size", NULL);
 
+
   /* The number of Transmitted FPS must be equal to 0 to disable */
   if (!gconf_client_get_bool (client, "/apps/gnomemeeting/video_settings/enable_fps", NULL))
     tr_fps = 0;
@@ -251,6 +256,9 @@ void GMVideoGrabber::UpdateConfig ()
 void GMVideoGrabber::Open (int has_to_grab, int synchronous)
 {
   int to_open;
+
+  /* Make sure to open with the right config */
+  UpdateConfig ();
 
   var_mutex.Wait ();
   to_open = has_to_open;

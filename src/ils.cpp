@@ -267,7 +267,8 @@ BOOL GMILSClient::Register (BOOL reg)
   if (!error) {
     /* cn */
     mods [0] = new (LDAPMod);
-    cn_value [0] = g_strdup (mail);
+    cn_value [0] = g_convert (mail, strlen (mail), "ISO-8859-1", "UTF8", 
+			      0, 0, 0);
     cn_value [1] = NULL;
     mods [0]->mod_op = LDAP_MOD_ADD | LDAP_MOD_REPLACE;
     mods [0]->mod_type = g_strdup ("cn");
@@ -310,7 +311,8 @@ BOOL GMILSClient::Register (BOOL reg)
       
     /* the firstname */
     mods [5] = new (LDAPMod);
-    firstname_value [0] = g_strdup (firstname);
+    firstname_value [0] = g_convert (firstname, strlen (firstname), 
+				     "ISO-8859-1", "UTF8", 0, 0, 0);
     firstname_value [1] = NULL;
     mods [5]->mod_op = LDAP_MOD_ADD | LDAP_MOD_REPLACE;
     mods [5]->mod_type = g_strdup ("givenname");
@@ -318,7 +320,8 @@ BOOL GMILSClient::Register (BOOL reg)
   
     /* the surname */
     mods [6] = new (LDAPMod);
-    surname_value [0] = g_strdup (surname);
+    surname_value [0] = g_convert (surname, strlen (surname), 
+				   "ISO-8859-1", "UTF8", 0, 0, 0);
     surname_value [1] = NULL;
     mods [6]->mod_op = LDAP_MOD_ADD | LDAP_MOD_REPLACE;
     mods [6]->mod_type = g_strdup ("surname");
@@ -334,7 +337,8 @@ BOOL GMILSClient::Register (BOOL reg)
 
     /* the comment */
     mods [8] = new (LDAPMod);
-    comment_value [0] = g_strdup (comment);
+    comment_value [0] = g_convert (comment, strlen (comment), 
+				   "ISO-8859-1", "UTF8", 0, 0, 0);
     comment_value [1] = NULL;
     mods [8]->mod_op = LDAP_MOD_ADD | LDAP_MOD_REPLACE;
     mods [8]->mod_type = g_strdup ("comment");
@@ -342,7 +346,8 @@ BOOL GMILSClient::Register (BOOL reg)
     
     /* the location */
     mods [9] = new (LDAPMod);
-    location_value [0] = g_strdup (location);
+    location_value [0] = g_convert (location, strlen (location), 
+				    "ISO-8859-1", "UTF8", 0, 0, 0);
     location_value [1] = NULL;
     mods [9]->mod_op = LDAP_MOD_ADD | LDAP_MOD_REPLACE;
     mods [9]->mod_type = g_strdup ("location");
@@ -799,10 +804,11 @@ void GMILSClient::ils_browse ()
 
  	for (int j = 0 ; j < 7 ; j++) 
 
+	  /* Strings are already UTF8-encoded for LDAP v3,
+	     but Microsoft ILS doesn't take care of that */
 	  if (datas [j + 2])
-	    utf8_data [j] = g_locale_to_utf8 (datas [j + 2], 
-					      strlen (datas [j + 2]), 
-					      NULL, NULL, NULL);
+	    utf8_data [j] = g_convert (datas [j+2], strlen (datas [j + 2]),
+				       "UTF8", "ISO-8859-1", NULL, NULL, NULL);
 
 	gtk_list_store_append (xdap_users_list_store, &list_iter);
 	gtk_list_store_set (xdap_users_list_store, &list_iter,

@@ -109,7 +109,9 @@ class GMVideoGrabber : public PThread
    * BEHAVIOR     :  Puts the has_to_open flag to 1 so that the main thread 
    *                 opens the specified video device. If the argument is 1, 
    *                 starts to grab images just after the device opening.
-   * PRE          :  int = 0 or int = 1, the video grabber device should be closed.
+   *                 Internally reads the gconf config before opening.
+   * PRE          :  int = 0 or int = 1, the video grabber device 
+   *                 should be closed.
    */
   void Open (int = 0, int = 0);
 
@@ -117,7 +119,8 @@ class GMVideoGrabber : public PThread
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Puts the has_to_close flag to 1 so that the main 
    *                 thread closes the specified video device.
-   * PRE          :  The video grabber must be opened, the argument = async or not
+   * PRE          :  The video grabber must be opened, the argument = async 
+   *                 or not.
    */
   void Close (int = 0);
 
@@ -251,7 +254,8 @@ class GMVideoGrabber : public PThread
 			    grabbed from the device */
   PMutex device_mutex;   /* Here to prevent the device to be accessed 2 times
 			    by different threads */
-  PMutex var_mutex;      /* To protect variables that are set from various threads */
+  PMutex var_mutex;      /* To protect variables that are set 
+			    from various threads */
   GConfClient *client;   /* The gconf client */
 };
 
