@@ -1929,7 +1929,7 @@ int main (int argc, char ** argv, char ** envp)
        1, N_("Prints debug messages in the console (level between 1 and 6)"), 
        NULL},
       {"call", 'c', POPT_ARG_STRING, &clo->url,
-       1, N_("Makes GnomeMeeting call the given given URL"), NULL},
+       1, N_("Makes GnomeMeeting call the given URL"), NULL},
       {NULL, '\0', 0, NULL, 0, NULL, NULL}
     };
 
