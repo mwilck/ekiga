@@ -217,7 +217,7 @@ dnl Check if there is Speex codec support
 dnl ###########################################################################
 CPPFLAGS_save="$CPPFLAGS"
 	
-CPPFLAGS="$CPPFLAGS -I /usr/include/linux -I /usr/local/include/sys"
+CPPFLAGS="$CPPFLAGS -I /usr/include/ -I /usr/local/include/"
 AC_CHECK_HEADER(speex.h, HAS_SPEEX="enabled", HAS_SPEEX="disabled",-)
 
 if test "x${HAS_SPEEX}" == "xenabled"; then
