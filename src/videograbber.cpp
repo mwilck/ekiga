@@ -134,6 +134,8 @@ void GMVideoGrabber::Main ()
 
  	VGClose (0);
  	UpdateConfig ();
+	/* Wait a bit, some drivers can be buggy and not support close/open */
+	PThread::Current ()->Sleep (500);
  	VGOpen ();
  	is_grabbing = 1;
       }
