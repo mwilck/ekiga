@@ -93,6 +93,17 @@ static void show_chat_window_changed_nt (gpointer,
 					 gpointer);
 
 
+/* DESCRIPTION  :  This callback is called when the firstname or last name
+ *                 keys changes.
+ * BEHAVIOR     :  Updates the ILS and ZeroConf registrations and the 
+ * 		   main endpoint configuration.
+ * PRE          :  /
+ */
+static void fullname_changed_nt (gpointer, 
+				 GmConfEntry *, 
+				 gpointer);
+
+
 static void maximum_video_bandwidth_changed_nt (gpointer, 
                                                 GmConfEntry *, 
                                                 gpointer);
@@ -124,6 +135,10 @@ static void incoming_call_mode_changed_nt (gpointer,
 static void call_forwarding_changed_nt (gpointer,
 					GmConfEntry *, 
 					gpointer);
+
+static void accounts_list_changed_nt (gpointer,
+				      GmConfEntry *, 
+				      gpointer);
 
 static void manager_changed_nt (gpointer,
 				GmConfEntry *, 
@@ -273,6 +288,26 @@ show_chat_window_changed_nt (gpointer id,
     gm_main_window_show_chat_window (GTK_WIDGET (data), 
 				     gm_conf_entry_get_bool (entry));
     gdk_threads_leave ();
+  }
+}
+
+
+static void 
+fullname_changed_nt (gpointer id, 
+		     GmConfEntry *entry, 
+		     gpointer data)
+{
+  GMEndPoint *endpoint = NULL;
+
+  endpoint = GnomeMeeting::Process ()->Endpoint ();
+  
+  if (gm_conf_entry_get_type (entry) == GM_CONF_STRING) {
+
+    endpoint->SetUserNameAndAlias ();
+    endpoint->ILSRegister ();
+#ifdef HAS_HOWL
+    endpoint->ZeroconfUpdate ();
+#endif
   }
 }
 
@@ -772,6 +807,30 @@ jitter_buffer_changed_nt (gpointer id,
       }
     }
   }
+}
+
+
+/* DESCRIPTION  :  This notifier is called when the config database data
+ *                 associated with an account changes.
+ * BEHAVIOR     :  Updates the GUI and the registrations.
+ * PRE          :  /
+ */
+static void 
+accounts_list_changed_nt (gpointer id,
+			  GmConfEntry *entry, 
+			  gpointer data)
+{
+  GtkWidget *prefs_window = NULL;
+
+  prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
+
+  if (gm_conf_entry_get_type (entry) == GM_CONF_LIST) {
+
+    gdk_threads_enter ();
+    gm_prefs_window_update_accounts_list (prefs_window);
+    gdk_threads_leave ();
+  }
+
 }
 
 
@@ -1393,6 +1452,15 @@ gnomemeeting_conf_init ()
    * several actions.
    */
 
+  
+  /* Notifiers for the PERSONAL_DATA_KEY keys */
+  gm_conf_notifier_add (PERSONAL_DATA_KEY "firstname",
+			fullname_changed_nt, NULL);
+  
+  gm_conf_notifier_add (PERSONAL_DATA_KEY "lastname",
+			fullname_changed_nt, NULL);
+
+  
   /* Notifiers for the USER_INTERFACE_KEY keys */
   gm_conf_notifier_add (USER_INTERFACE_KEY "main_window/control_panel_section",
 			control_panel_section_changed_nt, main_window);
@@ -1471,6 +1539,11 @@ gnomemeeting_conf_init ()
   gm_conf_notifier_add (LDAP_KEY "show_details", ils_option_changed_nt, NULL);
   
   
+  /* Notifiers for the PROTOCOLS_KEY */
+  gm_conf_notifier_add (PROTOCOLS_KEY "accounts_list",
+			accounts_list_changed_nt, NULL);
+  
+  
   /* Notifiers to AUDIO_DEVICES_KEY */
   gm_conf_notifier_add (AUDIO_DEVICES_KEY "plugin", 
 			manager_changed_nt, prefs_window);
@@ -1527,7 +1600,7 @@ gnomemeeting_conf_init ()
   /* Notifiers for the VIDEO_DISPLAY_KEY keys */
   gm_conf_notifier_add (VIDEO_DISPLAY_KEY "stay_on_top", 
 			stay_on_top_changed_nt, main_window);
-
+  
   
   /* Notifiers for SOUND_EVENTS_KEY keys */
   gm_conf_notifier_add (SOUND_EVENTS_KEY "enable_incoming_call_sound", 
