@@ -171,7 +171,6 @@ parseonly (char *filename, xmlEntityPtr (*getent) (void *, const xmlChar *),
   xmlRegisterNodeDefault(registerNode);
   xmlDeregisterNodeDefault(deregisterNode);
 #endif
-  xmlInitParser ();
 
   if (!(xp = xmlSAXParseFile (&sax, filename, 0)))
     return 0;
