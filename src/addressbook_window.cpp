@@ -201,7 +201,8 @@ static void gm_aw_get_search_filter (GtkWidget *,
  * 		  collision.
  * PRE          : The contact to add or modify, and its old version, if any.
  */
-static gboolean gm_aw_check_contact_collision (GmContact *, 
+static gboolean gm_aw_check_contact_collision (GtkWidget *,
+					       GmContact *, 
 					       GmContact *); 
 
 
@@ -650,7 +651,8 @@ gm_aw_get_search_filter (GtkWidget *addressbook_window,
 
 
 static gboolean
-gm_aw_check_contact_collision (GmContact *new_contact, 
+gm_aw_check_contact_collision (GtkWidget *addressbook_window,
+			       GmContact *new_contact, 
 			       GmContact *old_contact) 
 {
   GSList *contacts = NULL;
@@ -753,7 +755,7 @@ gm_aw_check_contact_collision (GmContact *new_contact,
 	g_strdup_printf ("%s\n\n%s", primary_text, secondary_text);
 
       dialog =
-	gtk_message_dialog_new (NULL,
+	gtk_message_dialog_new (GTK_WINDOW (addressbook_window),
 				GTK_DIALOG_MODAL,
 				(cpt == 0) ? 
 				GTK_MESSAGE_ERROR
@@ -1067,9 +1069,12 @@ gm_aw_add_addressbook (GtkWidget *addressbook_window,
   gtk_widget_show (menu_item);
   gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
 
-  menu_item = gtk_menu_item_new_with_label (_("Belongs to category"));
-  gtk_widget_show (menu_item);
-  gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
+  if (gnomemeeting_addressbook_is_local (addressbook)) {
+    
+    menu_item = gtk_menu_item_new_with_label (_("Belongs to category"));
+    gtk_widget_show (menu_item);
+    gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
+  }
 
   awp->awp_option_menu = gtk_option_menu_new ();
   gtk_option_menu_set_menu (GTK_OPTION_MENU (awp->awp_option_menu),
@@ -2408,6 +2413,7 @@ gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
   int nbr = 0;
 
   gboolean collision = TRUE;
+  gboolean valid = FALSE;
 
   
   main_window = GnomeMeeting::Process ()->GetMainWindow (); 
@@ -2594,108 +2600,130 @@ gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
   gtk_widget_show_all (dialog);
 
 
-  /* Now run the dialg */
-  while (collision)  { 
-    
+  /* Now run the dialog */
+  
+  /* The result can be invalid if both a full name and url are missing,
+   * or later if a collision is detected. The dialog will be run during
+   * that time.
+   */
+  while (!valid)  { 
+
     result = gtk_dialog_run (GTK_DIALOG (dialog));
 
-    switch (result) {
+    valid = strcmp (gtk_entry_get_text (GTK_ENTRY (fullname_entry)), "") 
+      || strcmp (gtk_entry_get_text (GTK_ENTRY (url_entry)), "");
 
-    case GTK_RESPONSE_ACCEPT:
+    if (valid) {
 
-      new_contact = gm_contact_new ();
-      new_contact->fullname = 
-	g_strdup (gtk_entry_get_text (GTK_ENTRY (fullname_entry)));
-      new_contact->speeddial = 
-	g_strdup (gtk_entry_get_text (GTK_ENTRY (speeddial_entry)));
-      new_contact->categories = 
-	g_strdup (gtk_entry_get_text (GTK_ENTRY (categories_entry)));
-      new_contact->url = 
-	g_strdup (gtk_entry_get_text (GTK_ENTRY (url_entry)));
-      new_contact->email =
-	g_strdup (gtk_entry_get_text (GTK_ENTRY (email_entry)));
+      switch (result) {
 
-      /* We were editing an existing contact */
-      if (edit_existing_contact) {
+      case GTK_RESPONSE_ACCEPT:
 
-	/* We keep the old UID */
-	new_contact->uid = g_strdup (contact->uid);
-	new_addressbook = addressbook;
-      }
-      else {
+	new_contact = gm_contact_new ();
+	new_contact->fullname = 
+	  g_strdup (gtk_entry_get_text (GTK_ENTRY (fullname_entry)));
+	new_contact->speeddial = 
+	  g_strdup (gtk_entry_get_text (GTK_ENTRY (speeddial_entry)));
+	new_contact->categories = 
+	  g_strdup (gtk_entry_get_text (GTK_ENTRY (categories_entry)));
+	new_contact->url = 
+	  g_strdup (gtk_entry_get_text (GTK_ENTRY (url_entry)));
+	new_contact->email =
+	  g_strdup (gtk_entry_get_text (GTK_ENTRY (email_entry)));
 
-	/* Forget the selected addressbook and use the dialog one instead
-	 * if the user could choose it in the dialog */
-	current_menu_index =
-	  gtk_option_menu_get_history (GTK_OPTION_MENU (option_menu));
-	addc = GM_ADDRESSBOOK (g_slist_nth_data (list, current_menu_index)); 
+	/* We were editing an existing contact */
+	if (edit_existing_contact) {
 
-	if (addc) 
-	  new_addressbook = addc;
-      }
+	  /* We keep the old UID */
+	  new_contact->uid = g_strdup (contact->uid);
+	  new_addressbook = addressbook;
+	}
+	else {
 
-      /* We are editing an existing contact, compare with the old values */
-      if (edit_existing_contact)
-	collision = gm_aw_check_contact_collision (new_contact, contact);
-      else /* We are adding a new contact */ 
-	collision = gm_aw_check_contact_collision (new_contact, NULL);
-	
-      if (!collision) {
+	  /* Forget the selected addressbook and use the dialog one instead
+	   * if the user could choose it in the dialog */
+	  current_menu_index =
+	    gtk_option_menu_get_history (GTK_OPTION_MENU (option_menu));
+	  addc = GM_ADDRESSBOOK (g_slist_nth_data (list, current_menu_index)); 
 
+	  if (addc) 
+	    new_addressbook = addc;
+	}
+
+	/* We are editing an existing contact, compare with the old values */
 	if (edit_existing_contact)
-	  gnomemeeting_addressbook_modify_contact (new_addressbook, 
-						   new_contact);
-	else 
-	  gnomemeeting_addressbook_add_contact (new_addressbook, new_contact);
-	
+	  collision = gm_aw_check_contact_collision (addressbook_window,
+						     new_contact, 
+						     contact);
+	else /* We are adding a new contact */ 
+	  collision = gm_aw_check_contact_collision (addressbook_window,
+						     new_contact, 
+						     NULL);
 
-	
-	/* Update the address book with the content */
-	contacts = gnomemeeting_addressbook_get_contacts (new_addressbook,
-							  nbr,
-							  FALSE,
-							  NULL,
-							  NULL,
-							  NULL,
-							  NULL);
-							
-	gm_aw_update_addressbook (addressbook_window, 
-				  new_addressbook, 
-				  contacts,
-				  NULL);
+	if (!collision) {
 
-	g_slist_foreach (contacts, (GFunc) gm_contact_delete, NULL);
-	g_slist_free (contacts);
+	  if (edit_existing_contact)
+	    gnomemeeting_addressbook_modify_contact (new_addressbook, 
+						     new_contact);
+	  else 
+	    gnomemeeting_addressbook_add_contact (new_addressbook, new_contact);
 
-	
-	/* Find speed dials and update the menu */
-	contacts = gnomemeeting_addressbook_get_contacts (NULL,
-							  nbr,
-							  FALSE,
-							  NULL,
-							  NULL,
-							  NULL,
-							  "*");
-							
-	gm_main_window_speed_dials_menu_update (main_window, contacts);
 
-	g_slist_foreach (contacts, (GFunc) gm_contact_delete, NULL);
-	g_slist_free (contacts);
 
-	
-	/* Update the urls history */
-	gm_main_window_urls_history_update (main_window);
+	  /* Update the address book with the content */
+	  contacts = gnomemeeting_addressbook_get_contacts (new_addressbook,
+							    nbr,
+							    FALSE,
+							    NULL,
+							    NULL,
+							    NULL,
+							    NULL);
+
+	  gm_aw_update_addressbook (addressbook_window, 
+				    new_addressbook, 
+				    contacts,
+				    NULL);
+
+	  g_slist_foreach (contacts, (GFunc) gm_contact_delete, NULL);
+	  g_slist_free (contacts);
+
+
+	  /* Find speed dials and update the menu */
+	  contacts = gnomemeeting_addressbook_get_contacts (NULL,
+							    nbr,
+							    FALSE,
+							    NULL,
+							    NULL,
+							    NULL,
+							    "*");
+
+	  gm_main_window_speed_dials_menu_update (main_window, contacts);
+
+	  g_slist_foreach (contacts, (GFunc) gm_contact_delete, NULL);
+	  g_slist_free (contacts);
+
+
+	  /* Update the urls history */
+	  gm_main_window_urls_history_update (main_window);
+	}
+
+	gm_contact_delete (new_contact);
+
+	break;
+
+      case GTK_RESPONSE_REJECT:
+
+	collision = FALSE;
+	break;
       }
-
-      gm_contact_delete (new_contact);
-
-      break;
-
-    case GTK_RESPONSE_REJECT:
-
-      collision = FALSE;
-      break;
     }
+    else {
+
+	gnomemeeting_error_dialog (GTK_WINDOW (addressbook_window), _("Missing information"), _("Please make sure to provide at least a full name or an URL for the contact."));
+    }
+
+    if (collision)
+      valid = FALSE;
   }
   gtk_widget_destroy (dialog);
 
