@@ -51,6 +51,16 @@ gnomemeeting_get_ldap_window (GtkWidget *gm)
 }
 
 
+GmDruidWindow *
+gnomemeeting_get_druid_window (GtkWidget *gm)
+{
+  GmDruidWindow *dw =
+    (GmDruidWindow *) g_object_get_data (G_OBJECT (gm), "dw");
+
+  return dw;
+}
+
+
 GmTextChat *
 gnomemeeting_get_chat_window (GtkWidget *gm)
 {

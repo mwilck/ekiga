@@ -90,6 +90,7 @@ typedef struct _GmWindow GmWindow;
 typedef struct _GmPrefWindow GmPrefWindow;
 typedef struct _GmLdapWindow GmLdapWindow;
 typedef struct _GmTextChat GmTextChat;
+typedef struct _GmDruidWindow GmDruidWindow;
 typedef struct _GmRtpData GmRtpData;
 typedef struct _GmCommandLineOptions GmCommandLineOptions;
 
@@ -161,7 +162,7 @@ struct _GmWindow
   GtkWidget *stats_drawing_area;
 
 #ifndef DISABLE_GNOME
-  GnomeDruid *druid;
+  GtkWidget *druid_window;
 #endif
 
   GdkColor colors [6];
@@ -181,6 +182,22 @@ struct _GmLdapWindow
   GtkWidget *notebook;
   GtkWidget *tree_view;
   GtkWidget *option_menu;
+};
+
+
+struct _GmDruidWindow
+{
+#ifndef DISABLE_GNOME
+  GnomeDruid *druid;
+#endif
+  GtkWidget *ils_register;
+  GtkWidget *audio_test_button;
+  GtkWidget *video_test_button;
+  GtkWidget *enable_microtelco;
+  GtkWidget *kind_of_net;
+  GtkWidget *progress;
+  
+  GnomeDruidPageEdge *page_edge;
 };
 
 
@@ -286,6 +303,14 @@ GmLdapWindow *gnomemeeting_get_ldap_window (GtkWidget *);
  *                 window.
  */
 GmTextChat *gnomemeeting_get_chat_window (GtkWidget *);
+
+
+/* DESCRIPTION  :  / 
+ * BEHAVIOR     :  Returns the structure of widgets of the druid window.
+ * PRE          :  The GtkWidget must be a pointer to the Main gnomeMeeting 
+ *                 window.
+ */
+GmDruidWindow *gnomemeeting_get_druid_window (GtkWidget *);
 
 
 /* DESCRIPTION  :  / 

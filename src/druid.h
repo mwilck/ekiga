@@ -31,5 +31,5 @@
  * BEHAVIOR     :  Builds the "First time configuration druid".
  * PRE          :  /
  */
-void gnomemeeting_init_druid (gpointer data);
+void gnomemeeting_init_druid ();
 

@@ -54,9 +54,9 @@ static void audio_test_button_clicked (GtkWidget *, gpointer);
 static void video_test_button_clicked (GtkWidget *, gpointer);
 static void gnomemeeting_druid_add_graphical_label (GtkWidget *, gchar *, 
 						    gchar *);
+static void gnomemeeting_druid_cancel (GtkWidget *, gpointer);
 static void gnomemeeting_druid_quit (GtkWidget *, gpointer);
 static void gnomemeeting_druid_destroy (GtkWidget *, GdkEventAny *, gpointer);
-static void gnomemeeting_druid_cancel (GtkWidget *, gpointer);
 static void gnomemeeting_druid_user_page_check (GnomeDruid *);
 static void gnomemeeting_druid_toggle_changed (GtkToggleButton *, gpointer);
 static void gnomemeeting_druid_entry_changed (GtkWidget *, gpointer);
@@ -96,13 +96,9 @@ static void
 video_test_button_clicked (GtkWidget *w, gpointer data)
 {
   GMVideoTester *t = NULL;
-  GmWindow *gw = 
-    gnomemeeting_get_main_window (gm);
-  GtkWindow *window = 
-    (GtkWindow *) g_object_get_data (G_OBJECT (gw->druid), "window");
 
   if (GTK_TOGGLE_BUTTON (w)->active)   
-    t = new GMVideoTester ((GtkWidget *) data, w, window);
+    t = new GMVideoTester ();
 }
 
 
@@ -132,6 +128,21 @@ gnomemeeting_druid_add_graphical_label (GtkWidget *vbox, gchar *stock,
 }
 
 
+/* DESCRIPTION  :  This callback is called when the user clicks on Cancel.
+ * BEHAVIOR     :  Hides the druid and shows GM.
+ * PRE          :  /
+ */
+static void 
+gnomemeeting_druid_cancel (GtkWidget *w, gpointer data)
+{
+  GmWindow *gw = NULL;
+
+  gw = gnomemeeting_get_main_window (gm);
+
+  gtk_widget_hide (gw->druid_window);
+  gtk_widget_show (gm);
+}
+
 
 /* DESCRIPTION  :  This callback is called when the user clicks on finish.
  * BEHAVIOR     :  Destroys the druid and update gconf settings.
@@ -140,44 +151,47 @@ gnomemeeting_druid_add_graphical_label (GtkWidget *vbox, gchar *stock,
 static void 
 gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
 {
-  GtkWindow *window = NULL;
   GConfClient *client = NULL;
-  GtkToggleButton *b = NULL; 
   gchar *gconf_string = NULL;
   gchar *gk_name = NULL;
-
+  int cpt = 1;
+  
+  GSList *group = NULL;
+  
   GmWindow *gw = NULL;
-
+  GmDruidWindow *dw = NULL;
+  
   client = gconf_client_get_default ();
+
   gw = gnomemeeting_get_main_window (gm);
+  dw = gnomemeeting_get_druid_window (gm);
 
-  window = GTK_WINDOW (g_object_get_data (G_OBJECT (gw->druid), "window"));
-  b = GTK_TOGGLE_BUTTON (g_object_get_data (G_OBJECT (gw->druid), "toggle"));
-
-  if (gtk_toggle_button_get_active (b))
+  if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (dw->ils_register)))
     gconf_client_set_bool (client, LDAP_KEY "register", false, NULL);
   else 
     gconf_client_set_bool (client, LDAP_KEY "register", true, NULL);
 
-  b = GTK_TOGGLE_BUTTON (g_object_get_data (G_OBJECT (gw->druid), 
-					    "audio_test"));
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (b), FALSE);
-
-  b = GTK_TOGGLE_BUTTON (g_object_get_data (G_OBJECT (gw->druid), 
-					    "video_test"));
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (b), FALSE);
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (dw->audio_test_button),
+				FALSE);
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (dw->video_test_button),
+				FALSE);
 
   gconf_client_set_int (client, GENERAL_KEY "version", 
 			MAJOR_VERSION * 100 + MINOR_VERSION, 0);
 
-  gconf_client_set_int (client, GENERAL_KEY "kind_of_net",
-			GPOINTER_TO_INT (g_object_get_data (G_OBJECT (gw->druid),
-							    "kind_of_net")),
-			NULL);  
+  group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (dw->kind_of_net));
+  while (group) {
 
-  b = GTK_TOGGLE_BUTTON (g_object_get_data (G_OBJECT (gw->druid), 
-					    "ixj_toggle"));
-  if (gtk_toggle_button_get_active (b)) {
+    if (GTK_TOGGLE_BUTTON (group->data)->active)
+      break;
+    
+    group = g_slist_next (group);
+    cpt++;
+  }
+  gconf_client_set_int (client, GENERAL_KEY "kind_of_net", 6 - cpt, NULL);
+
+  
+  if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (dw->enable_microtelco))) {
 
     gconf_string = 
       gconf_client_get_string (client, GATEKEEPER_KEY "gk_alias" , NULL);
@@ -197,10 +211,8 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
     g_free (gk_name);
   }
 
-
-  gw->druid = NULL;
-
-  gtk_widget_destroy (GTK_WIDGET (window));
+  gtk_widget_hide_all (GTK_WIDGET (gw->druid_window));
+  gnome_druid_set_page (dw->druid, GNOME_DRUID_PAGE (dw->page_edge));
   gtk_widget_show (gm);
 }
 
@@ -212,28 +224,7 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
 static void 
 gnomemeeting_druid_destroy (GtkWidget *w, GdkEventAny *ev, gpointer data)
 {
-  gnomemeeting_druid_cancel (w, data);
-}
-
-
-/* DESCRIPTION  :  This callback is called when the user clicks on cancel.
- * BEHAVIOR     :  Exits. 
- * PRE          :  /
- */
-static void 
-gnomemeeting_druid_cancel (GtkWidget *w, gpointer data)
-{
-  GtkWidget *window = NULL;
-  GmWindow *gw = gnomemeeting_get_main_window (gm);
-
-  window = (GtkWidget *) g_object_get_data (G_OBJECT (gw->druid), "window");
-
-  gtk_widget_destroy (GTK_WIDGET (window));
-  gw->druid = NULL;
-
-  /* Do not quit if we started the druid from the menu */
-  if (strcmp ((gchar *) data, "menu"))
-    quit_callback (NULL, gw);
+  gnomemeeting_druid_quit (w, data);
 }
 
 
@@ -246,15 +237,17 @@ gnomemeeting_druid_cancel (GtkWidget *w, gpointer data)
 static void 
 gnomemeeting_druid_user_page_check (GnomeDruid *druid)
 {
+  GmDruidWindow *dw = NULL;
   GConfClient *client = NULL;
+
   gchar *gconf_string = NULL;
-  GtkWidget *toggle = NULL;
   gboolean error = FALSE;
 
+  
   /* Fetch data */
-  toggle = (GtkWidget *) g_object_get_data (G_OBJECT (druid), "toggle");
   client = gconf_client_get_default ();
-
+  dw = gnomemeeting_get_druid_window (gm);
+  
 
   /* We check that all fields are present, or the toggle desactivated */
   gconf_string = 
@@ -288,7 +281,8 @@ gnomemeeting_druid_user_page_check (GnomeDruid *druid)
   g_free (gconf_string);
 
 
-  if ((!error)||(gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (toggle))))
+  if ((!error)||
+      (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (dw->ils_register))))
     gnome_druid_set_buttons_sensitive (druid, TRUE, TRUE, TRUE, FALSE);
   else
     gnome_druid_set_buttons_sensitive (druid, TRUE, FALSE, TRUE, FALSE);
@@ -306,11 +300,11 @@ gnomemeeting_druid_user_page_check (GnomeDruid *druid)
 static void
 gnomemeeting_druid_toggle_changed (GtkToggleButton *button, gpointer data)
 {
-  GmWindow *gw = NULL;
+  GmDruidWindow *dw = NULL;
 
-  gw = gnomemeeting_get_main_window (gm);
+  dw = gnomemeeting_get_druid_window (gm);
 
-  gnomemeeting_druid_user_page_check (gw->druid);
+  gnomemeeting_druid_user_page_check (dw->druid);
 
   if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (button)))
     gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (gm), GTK_WIDGET (button), _("You chose to NOT use the GnomeMeeting ILS directory. Other users will not be able to contact you if you don't register to a directory service."));
@@ -328,11 +322,11 @@ gnomemeeting_druid_toggle_changed (GtkToggleButton *button, gpointer data)
 static void
 gnomemeeting_druid_entry_changed (GtkWidget *w, gpointer data)
 {
-  GmWindow *gw = NULL;
+  GmDruidWindow *dw = NULL;
 
-  gw = gnomemeeting_get_main_window (gm);
+  dw = gnomemeeting_get_druid_window (gm);
 
-  gnomemeeting_druid_user_page_check (gw->druid);
+  gnomemeeting_druid_user_page_check (dw->druid);
 }
 
 
@@ -347,8 +341,10 @@ gnomemeeting_druid_radio_changed (GtkToggleButton *b, gpointer data)
   int selection = GPOINTER_TO_INT (data);
 
   GmWindow *gw = NULL;
-
+  GmDruidWindow *dw = NULL;
+  
   gw = gnomemeeting_get_main_window (gm);
+  dw = gnomemeeting_get_druid_window (gm);
   client = gconf_client_get_default ();
 
   /* Dialup */
@@ -418,13 +414,6 @@ gnomemeeting_druid_radio_changed (GtkToggleButton *b, gpointer data)
 			   VIDEO_SETTINGS_KEY "enable_video_reception", 
 			   1, NULL);
   }
-
-  /* Other */
-  /* We store the selected network in the druid. Storing right now in gconf 
-     doesn't work, as it would be overwritten. We just write it when the user 
-     closes the druid */
-  g_object_set_data (G_OBJECT (gw->druid), "kind_of_net", 
-		     GINT_TO_POINTER (selection));
 }
 
 
@@ -437,6 +426,11 @@ static void
 gnomemeeting_druid_page_prepare (GnomeDruidPage *page, GnomeDruid *druid,
 				 gpointer data)
 {
+  GmDruidWindow *dw = gnomemeeting_get_druid_window (gm);
+  GConfClient *client = gconf_client_get_default ();
+  int kind_of_net = 1, cpt = 1;
+  GSList *group = NULL;
+  
   if (!strcmp ((char *) data, "0"))
     gnome_druid_set_buttons_sensitive (druid, FALSE, TRUE, TRUE, FALSE);
 
@@ -448,12 +442,34 @@ gnomemeeting_druid_page_prepare (GnomeDruidPage *page, GnomeDruid *druid,
 
   if (!strcmp ((char *) data, "7")) 
     gnomemeeting_druid_final_page_prepare (druid);
+
+  
+  /* Update the radio button corresponding to the kind of net without
+     triggering the signal */
+  if (!strcmp ((char *) data, "3")) {
+
+    group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (dw->kind_of_net));
+    kind_of_net =
+      gconf_client_get_int (client, GENERAL_KEY "kind_of_net", NULL);
+
+    while (group) {
+
+      GTK_TOGGLE_BUTTON (group->data)->active =
+	(kind_of_net == 6 - cpt);
+
+      gtk_widget_queue_draw (GTK_WIDGET (group->data));
+      group = g_slist_next (group);
+      cpt++;
+    }
+  }
 }
 
 
 static void
 gnomemeeting_druid_final_page_prepare (GnomeDruid *druid)
 {
+  GmDruidWindow *dw = NULL;
+  
   GnomeDruidPageEdge *page_final = 
     GNOME_DRUID_PAGE_EDGE (g_object_get_data (G_OBJECT (druid), "page_final"));
 
@@ -465,14 +481,30 @@ gnomemeeting_druid_final_page_prepare (GnomeDruid *druid)
   gchar *firstname = NULL;
   gchar *lastname = NULL;
   BOOL reg = TRUE;
+  int cpt = 1;
   
-  GConfClient *client = gconf_client_get_default ();
+  GSList *group = NULL;
 
-  switch (GPOINTER_TO_INT (g_object_get_data (G_OBJECT (druid), 
-					      "kind_of_net"))) {
-  case 1:
-      kind_of_net_name = g_strdup (_("56K modem"));
+  /* Fetch the data */
+  GConfClient *client = gconf_client_get_default ();
+  dw = gnomemeeting_get_druid_window (gm);
+
+  group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (dw->kind_of_net));
+  while (group) {
+
+    if (GTK_TOGGLE_BUTTON (group->data)->active)
       break;
+    
+    group = g_slist_next (group);
+    cpt++;
+  }
+  
+  
+  switch (6 - cpt) {
+    
+  case 1:
+    kind_of_net_name = g_strdup (_("56K modem"));
+    break;
 
   case 2:
     kind_of_net_name = g_strdup (_("ISDN"));
@@ -514,7 +546,7 @@ gnomemeeting_druid_final_page_prepare (GnomeDruid *druid)
     video_recorder = g_strdup ("");
 	
   reg = 
-    !GTK_TOGGLE_BUTTON (g_object_get_data (G_OBJECT (druid), "toggle"))->active;
+    !gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (dw->ils_register));
 
   text = g_strdup_printf ("You have now finished the GnomeMeeting configuration. All the settings can be changed in the GnomeMeeting preferences. Enjoy!\n\n\nConfiguration Summary:\n\nUsername:  %s %s\nConnection Type:  %s\nAudio Player:  %s\nAudio Recorder:  %s\nVideo Player: %s\nRegistering to GnomeMeeting ILS directory:  %s", firstname, lastname, kind_of_net_name, audio_player, audio_recorder, video_recorder, reg?"Enabled":"Disabled");
   gnome_druid_page_edge_set_text (page_final, text);
@@ -537,12 +569,14 @@ gnomemeeting_init_druid_user_page (GnomeDruid *druid, int p, int t)
 {
   GtkWidget *vbox = NULL;
   GtkWidget *table = NULL;
-  GtkWidget *toggle = NULL;
   GtkWidget *entry = NULL;
   gchar *title = NULL;
 
+  GmDruidWindow *dw = NULL;
   GnomeDruidPageStandard *page_standard = NULL;
 
+
+  dw = gnomemeeting_get_druid_window (gm);
   page_standard = 
     GNOME_DRUID_PAGE_STANDARD (gnome_druid_page_standard_new ());
 
@@ -587,14 +621,13 @@ gnomemeeting_init_druid_user_page (GnomeDruid *druid, int p, int t)
   
 
   /* The register toggle */
-  toggle = gtk_check_button_new_with_label (_("Do not register me to the GnomeMeeting users directory"));   
-  gtk_table_attach (GTK_TABLE (table), toggle, 0, 2, 5, 6,
+  dw->ils_register = gtk_check_button_new_with_label (_("Do not register me to the GnomeMeeting users directory"));   
+  gtk_table_attach (GTK_TABLE (table), dw->ils_register, 0, 2, 5, 6,
 		    (GtkAttachOptions) NULL, 
 		    (GtkAttachOptions) NULL,
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
-  g_object_set_data (G_OBJECT (druid), "toggle", (gpointer) toggle);
 
-  g_signal_connect (G_OBJECT (toggle), "toggled",
+  g_signal_connect (G_OBJECT (dw->ils_register), "toggled",
 		    G_CALLBACK (gnomemeeting_druid_toggle_changed), 
 		    NULL);
 
@@ -618,7 +651,6 @@ gnomemeeting_init_druid_connection_type_page (GnomeDruid *druid, int p, int t)
   GtkWidget *vbox = NULL;
   GtkWidget *box = NULL;
   GtkWidget *table = NULL;
-  GtkWidget *radio1 = NULL;
   GtkWidget *radio2 = NULL;
   GtkWidget *radio3 = NULL;
   GtkWidget *radio4 = NULL;
@@ -627,6 +659,7 @@ gnomemeeting_init_druid_connection_type_page (GnomeDruid *druid, int p, int t)
 
   GConfClient *client = NULL;
 
+  GmDruidWindow *dw = gnomemeeting_get_druid_window (gm);
   GnomeDruidPageStandard *page_standard = NULL;
 
 
@@ -651,22 +684,22 @@ gnomemeeting_init_druid_connection_type_page (GnomeDruid *druid, int p, int t)
   
   /* Connection type */
   table = gnomemeeting_vbox_add_table (vbox, _("Connection Type"), 1, 1);
-  radio1 = gtk_radio_button_new_with_label (NULL, _("56K modem"));
-  gtk_box_pack_start (GTK_BOX (box), radio1, TRUE, TRUE, 0);
+  dw->kind_of_net = gtk_radio_button_new_with_label (NULL, _("56K modem"));
+  gtk_box_pack_start (GTK_BOX (box), dw->kind_of_net, TRUE, TRUE, 0);
   radio2 = 
-    gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (radio1), 
+    gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (dw->kind_of_net), 
 						 _("ISDN"));
   gtk_box_pack_start (GTK_BOX (box), radio2, TRUE, TRUE, 0);
   radio3 = 
-    gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (radio1), 
+    gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (dw->kind_of_net), 
 						 _("DSL/Cable"));
   gtk_box_pack_start (GTK_BOX (box), radio3, TRUE, TRUE, 0);
   radio4 = 
-    gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (radio1), 
+    gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (dw->kind_of_net), 
 						 _("T1/LAN"));
   gtk_box_pack_start (GTK_BOX (box), radio4, TRUE, TRUE, 0);
   radio5= 
-    gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (radio1), 
+    gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (dw->kind_of_net), 
 						 _("Other"));
   gtk_box_pack_start (GTK_BOX (box), radio5, TRUE, TRUE, 0);
 
@@ -675,32 +708,10 @@ gnomemeeting_init_druid_connection_type_page (GnomeDruid *druid, int p, int t)
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
 
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (dw->kind_of_net), true);
   
-  /* Type of network */
-  int net_selected = 
-    gconf_client_get_int (client, GENERAL_KEY "kind_of_net", NULL);
-  GtkWidget *selected_button = radio1;
-  
-  switch (net_selected) {
-
-  case 1:
-    selected_button = radio1; break;
-  case 2:
-    selected_button = radio2; break;
-  case 3:
-    selected_button = radio3; break;
-  case 4:
-    selected_button = radio4; break;
-  case 5:
-    selected_button = radio5; break;
-  default: net_selected = 1;
-  
-  }
-
-
-  /* Update the buttons to the right value and connect signals */
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (selected_button), true); 
-  g_signal_connect (G_OBJECT (radio1), "toggled",
+  /* Connect signals */
+  g_signal_connect (G_OBJECT (dw->kind_of_net), "toggled",
 		    G_CALLBACK (gnomemeeting_druid_radio_changed), 
 		    GINT_TO_POINTER (1));
   g_signal_connect (G_OBJECT (radio2), "toggled",
@@ -718,6 +729,10 @@ gnomemeeting_init_druid_connection_type_page (GnomeDruid *druid, int p, int t)
 
   gtk_box_pack_start (GTK_BOX (page_standard->vbox), GTK_WIDGET (vbox), 
 		      TRUE, TRUE, 8);
+
+  g_signal_connect_after (G_OBJECT (page_standard), "prepare",
+			  G_CALLBACK (gnomemeeting_druid_page_prepare), 
+			  (gpointer) "3");
 }
 
 
@@ -730,11 +745,12 @@ gnomemeeting_init_druid_audio_devices_page (GnomeDruid *druid, int p, int t)
 {
   GtkWidget *vbox = NULL;
   GtkWidget *table = NULL;
-  GtkWidget *button = NULL;
   GtkWidget *label = NULL;
   GtkWidget *audio_recorder = NULL;
   GtkWidget *audio_player = NULL;
 
+  GmDruidWindow *dw = gnomemeeting_get_druid_window (gm);
+  
   gchar *title = NULL;
   gchar *audio_player_devices_list [20];
   gchar *audio_recorder_devices_list [20];
@@ -804,15 +820,15 @@ gnomemeeting_init_druid_audio_devices_page (GnomeDruid *druid, int p, int t)
   /* Test button */
   label = gtk_label_new (_("Click here to test your audio devices:"));
 
-  button = gtk_toggle_button_new_with_label (_("Test Audio"));
-  gtk_table_attach (GTK_TABLE (table), button, 2, 3, 2, 3,
+  dw->audio_test_button = gtk_toggle_button_new_with_label (_("Test Audio"));
+  gtk_table_attach (GTK_TABLE (table), dw->audio_test_button, 2, 3, 2, 3,
 		    (GtkAttachOptions) NULL,
 		    (GtkAttachOptions) NULL,
 		    0, 0);
-  g_signal_connect (G_OBJECT (button), "clicked",
+  g_signal_connect (G_OBJECT (dw->audio_test_button), "clicked",
 		    GTK_SIGNAL_FUNC (audio_test_button_clicked),
 		    (gpointer) druid);
-  g_object_set_data (G_OBJECT (druid), "audio_test", button);
+
 
   /**/
   gtk_box_pack_start (GTK_BOX (page_standard->vbox), GTK_WIDGET (vbox), 
@@ -829,9 +845,7 @@ gnomemeeting_init_druid_video_devices_page (GnomeDruid *druid, int p, int t)
 {
   GtkWidget *vbox = NULL;
   GtkWidget *table = NULL;
-  GtkWidget *button = NULL;
   GtkWidget *video_device = NULL;
-  GtkWidget *progress = NULL;
   GtkWidget *label = NULL;
 
   gchar *title = NULL;
@@ -841,6 +855,7 @@ gnomemeeting_init_druid_video_devices_page (GnomeDruid *druid, int p, int t)
   GnomeDruidPageStandard *page_standard = NULL;
 
   GmWindow *gw = gnomemeeting_get_main_window (gm);
+  GmDruidWindow *dw = gnomemeeting_get_druid_window (gm);
 
   page_standard = 
     GNOME_DRUID_PAGE_STANDARD (gnome_druid_page_standard_new ());
@@ -878,23 +893,21 @@ gnomemeeting_init_druid_video_devices_page (GnomeDruid *druid, int p, int t)
   label = 
   gtk_label_new (_("Click here to test your video device conformity:"));
 
-  button = gtk_toggle_button_new_with_label (_("Test Video"));
-  gtk_table_attach (GTK_TABLE (table), button, 2, 3, 1, 2,
+  dw->video_test_button = gtk_toggle_button_new_with_label (_("Test Video"));
+  gtk_table_attach (GTK_TABLE (table), dw->video_test_button, 2, 3, 1, 2,
 		    (GtkAttachOptions) NULL,
 		    (GtkAttachOptions) NULL,
 		    0, 0);
 
   /* Progress bar */
-  progress = gtk_progress_bar_new ();
-  gtk_table_attach (GTK_TABLE (table), progress, 0, 3, 2, 3,
+  dw->progress = gtk_progress_bar_new ();
+  gtk_table_attach (GTK_TABLE (table), dw->progress, 0, 3, 2, 3,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    10, 10);
 
-  g_signal_connect (G_OBJECT (button), "clicked",
-		    GTK_SIGNAL_FUNC (video_test_button_clicked),
-		    (gpointer) progress);
-  g_object_set_data (G_OBJECT (druid), "video_test", button);
+  g_signal_connect (G_OBJECT (dw->video_test_button), "clicked",
+		    GTK_SIGNAL_FUNC (video_test_button_clicked), NULL);
 
   /**/
   gtk_box_pack_start (GTK_BOX (page_standard->vbox), GTK_WIDGET (vbox), 
@@ -910,12 +923,12 @@ static void
 gnomemeeting_init_druid_ixj_device_page (GnomeDruid *druid, int p, int t)
 {
   GtkWidget *href = NULL;
-  GtkWidget *toggle = NULL;
   GtkWidget *entry = NULL;
   GtkWidget *vbox = NULL;
   GtkWidget *table = NULL;
   GtkWidget *label = NULL;
 
+  GmDruidWindow *dw = gnomemeeting_get_druid_window (gm);
   GConfClient *client = gconf_client_get_default ();
 
   gchar *title = NULL;
@@ -954,14 +967,13 @@ gnomemeeting_init_druid_ixj_device_page (GnomeDruid *druid, int p, int t)
 
 
   /* The register toggle */
-  toggle = 
+  dw->enable_microtelco = 
     gtk_check_button_new_with_label (_("Register to the MicroTelco service"));
 
-  gtk_table_attach (GTK_TABLE (table), toggle, 0, 2, 3, 4,
+  gtk_table_attach (GTK_TABLE (table), dw->enable_microtelco, 0, 2, 3, 4,
 		    (GtkAttachOptions) NULL, 
 		    (GtkAttachOptions) NULL,
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
-  g_object_set_data (G_OBJECT (druid), "ixj_toggle", (gpointer) toggle);
 
 
   /* Account Info */
@@ -976,7 +988,6 @@ gnomemeeting_init_druid_ixj_device_page (GnomeDruid *druid, int p, int t)
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
 
   gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (label), FALSE, FALSE, 0);
-  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (href), FALSE, FALSE, 0);
   href = gnome_href_new ("http://www.microtelco.com", "Get An Account");
   gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (href), FALSE, FALSE, 0);
   href = gnome_href_new ("http://www.linuxjack.com", "Buy a card");
@@ -993,26 +1004,27 @@ gnomemeeting_init_druid_ixj_device_page (GnomeDruid *druid, int p, int t)
 
 /* Functions */
 void 
-gnomemeeting_init_druid (gpointer data)
+gnomemeeting_init_druid ()
 {
 #ifndef DISABLE_GNOME
   GmWindow *gw = NULL;
-  GtkWidget *window = NULL;
+  GmDruidWindow *dw = NULL;
+
   gchar *title = NULL;
 
-  GnomeDruidPageEdge *page_edge = NULL;
   GnomeDruidPageEdge *page_final = NULL;
 
   gw = gnomemeeting_get_main_window (gm);
-  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_title (GTK_WINDOW (window), 
+  dw = gnomemeeting_get_druid_window (gm);
+  
+  gw->druid_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  gtk_window_set_title (GTK_WINDOW (gw->druid_window), 
 			_("First Time Configuration Druid"));
-  gtk_window_set_position (GTK_WINDOW (window), GTK_WIN_POS_CENTER);
-  gw->druid = GNOME_DRUID (gnome_druid_new ());
+  gtk_window_set_position (GTK_WINDOW (gw->druid_window), GTK_WIN_POS_CENTER);
+  dw->druid = GNOME_DRUID (gnome_druid_new ());
 
-  gtk_container_add (GTK_CONTAINER (window), GTK_WIDGET (gw->druid));
+  gtk_container_add (GTK_CONTAINER (gw->druid_window), GTK_WIDGET (dw->druid));
 
-  g_object_set_data (G_OBJECT (gw->druid), "window", window);
 
   title = g_strdup_printf (_("Configuration Druid - page %d/%d"), 1, 7);
   static const gchar text[] =
@@ -1025,32 +1037,32 @@ gnomemeeting_init_druid (gpointer data)
 
 
   /* Create the first page */
-  page_edge =
+  dw->page_edge =
     GNOME_DRUID_PAGE_EDGE (gnome_druid_page_edge_new
 			   (GNOME_EDGE_START));
-  gnome_druid_page_edge_set_title (page_edge, title);
+  gnome_druid_page_edge_set_title (dw->page_edge, title);
   g_free (title);
 			   
-  gnome_druid_page_edge_set_text (page_edge, _(text));
+  gnome_druid_page_edge_set_text (dw->page_edge, _(text));
 
-  gnome_druid_append_page (gw->druid, GNOME_DRUID_PAGE (page_edge));
-  gnome_druid_set_page (gw->druid, GNOME_DRUID_PAGE (page_edge));
+  gnome_druid_append_page (dw->druid, GNOME_DRUID_PAGE (dw->page_edge));
+  gnome_druid_set_page (dw->druid, GNOME_DRUID_PAGE (dw->page_edge));
   
-  g_signal_connect_after (G_OBJECT (page_edge), "prepare",
+  g_signal_connect_after (G_OBJECT (dw->page_edge), "prepare",
 			  G_CALLBACK (gnomemeeting_druid_page_prepare), 
 			  (gpointer) "0");
 
 
   /* Create the user page */
-  gnomemeeting_init_druid_user_page (gw->druid, 2, 7);
+  gnomemeeting_init_druid_user_page (dw->druid, 2, 7);
   
   /* Create connection type */
-  gnomemeeting_init_druid_connection_type_page (gw->druid, 3, 7);
+  gnomemeeting_init_druid_connection_type_page (dw->druid, 3, 7);
   
   /* Create the devices pages */
-  gnomemeeting_init_druid_audio_devices_page (gw->druid, 4, 7);
-  gnomemeeting_init_druid_video_devices_page (gw->druid, 5, 7);
-  gnomemeeting_init_druid_ixj_device_page (gw->druid, 6, 7);
+  gnomemeeting_init_druid_audio_devices_page (dw->druid, 4, 7);
+  gnomemeeting_init_druid_video_devices_page (dw->druid, 5, 7);
+  gnomemeeting_init_druid_ixj_device_page (dw->druid, 6, 7);
 
   /* Create final page */
   page_final =
@@ -1060,24 +1072,22 @@ gnomemeeting_init_druid (gpointer data)
   gnome_druid_page_edge_set_title (page_final, title);
   g_free (title);
 
-  gnome_druid_append_page (gw->druid, GNOME_DRUID_PAGE (page_final));
+  gnome_druid_append_page (dw->druid, GNOME_DRUID_PAGE (page_final));
 
   g_signal_connect_after (G_OBJECT (page_final), "prepare",
 			  G_CALLBACK (gnomemeeting_druid_page_prepare), 
 			  (gpointer) "7");  
-  g_object_set_data (G_OBJECT (gw->druid), "page_final", 
+  g_object_set_data (G_OBJECT (dw->druid), "page_final", 
 		     (gpointer) page_final);
 
   g_signal_connect (G_OBJECT (page_final), "finish",
-		    G_CALLBACK (gnomemeeting_druid_quit), gw->druid);
+		    G_CALLBACK (gnomemeeting_druid_quit), dw->druid);
 
-  g_signal_connect (G_OBJECT (gw->druid), "cancel",
-		    G_CALLBACK (gnomemeeting_druid_cancel), data);
+  g_signal_connect (G_OBJECT (dw->druid), "cancel",
+		    G_CALLBACK (gnomemeeting_druid_cancel), NULL);
 
-  g_signal_connect (G_OBJECT (window), "delete_event",
-		    G_CALLBACK (gnomemeeting_druid_destroy), data);
-
-  gtk_widget_show_all (window);
+  g_signal_connect (G_OBJECT (gw->druid_window), "delete_event",
+		    G_CALLBACK (gnomemeeting_druid_destroy), NULL);
 #endif
 }
 

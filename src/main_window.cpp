@@ -1008,7 +1008,8 @@ void gnomemeeting_dialpad_event (const char *key)
 void 
 gnomemeeting_init (GmWindow *gw, 
                    GmPrefWindow *pw,
-                   GmLdapWindow *lw, 
+                   GmLdapWindow *lw,
+		   GmDruidWindow *dw, 
                    GmRtpData *rtp,
 		   GmTextChat *chat,
 		   GmCommandLineOptions *clo,
@@ -1110,6 +1111,7 @@ gnomemeeting_init (GmWindow *gw,
 
     delete (gw);
     delete (lw);
+    delete (dw);
     delete (pw);
     delete (rtp);
     delete (chat);
@@ -1173,6 +1175,7 @@ gnomemeeting_init (GmWindow *gw,
   /* We store all the pointers to the structure as data of gm */
   g_object_set_data (G_OBJECT (gm), "gw", gw);
   g_object_set_data (G_OBJECT (gm), "lw", lw);
+  g_object_set_data (G_OBJECT (gm), "dw", dw);
   g_object_set_data (G_OBJECT (gm), "pw", pw);
   g_object_set_data (G_OBJECT (gm), "chat", chat);
   g_object_set_data (G_OBJECT (gm), "rtp", rtp);
@@ -1213,7 +1216,7 @@ gnomemeeting_init (GmWindow *gw,
   /* Build the interface */
   gnomemeeting_init_history_window ();
   gnomemeeting_init_calls_history_window ();
-
+  
   /* Launch the GnomeMeeting H.323 part */
   gw->audio_player_devices = 
     PSoundChannel::GetDeviceNames (PSoundChannel::Player);
@@ -1227,6 +1230,7 @@ gnomemeeting_init (GmWindow *gw,
 
   gnomemeeting_init_pref_window ();  
   gnomemeeting_init_ldap_window ();
+  gnomemeeting_init_druid ();
   gnomemeeting_init_main_window (accel);
 
   gnomemeeting_sound_daemons_resume ();
@@ -1277,17 +1281,18 @@ gconf_client_set_int (client, GENERAL_KEY "version",
 		      100 * MAJOR_VERSION + MINOR_VERSION, NULL);
 #endif 
 #ifndef DISABLE_GNOME
-  if (gconf_client_get_int (client, GENERAL_KEY "version", NULL) 
+ if (gconf_client_get_int (client, GENERAL_KEY "version", NULL) 
       < 100 * MAJOR_VERSION + MINOR_VERSION) {
 
-    gnomemeeting_init_druid ((gpointer) "first");
+   gtk_widget_show_all (GTK_WIDGET (gw->druid_window));
   }
   else {
 #endif
-  /* Show the main window */
+    /* Show the main window */
     /* We need to do this to let the embedded signal reach the tray */
-    while (gtk_events_pending ()) // FIXME: Doesn't work                        
+    while (gtk_events_pending ()) 
       gtk_main_iteration ();
+    
     if (gnomemeeting_tray_is_visible (G_OBJECT (gw->docklet)) ||
 	!gconf_client_get_bool (GCONF_CLIENT (client),
 				VIEW_KEY "start_docked", 0))
@@ -1938,6 +1943,7 @@ int main (int argc, char ** argv, char ** envp)
   /* The different structures needed by most of the classes and functions */
   GmWindow *gw = NULL;
   GmLdapWindow *lw = NULL;
+  GmDruidWindow *dw = NULL;
   GmPrefWindow *pw = NULL;
   GmTextChat *chat = NULL;
   GmRtpData *rtp = NULL;
@@ -1950,7 +1956,7 @@ int main (int argc, char ** argv, char ** envp)
   gw->ldap_window = NULL;
   gw->incoming_call_popup = NULL;
 #ifndef DISABLE_GNOME
-  gw->druid = NULL;
+  gw->druid_window = NULL;
 #endif
   gw->progress_timeout = 0;
   gw->cleaner_thread_count = 0;
@@ -1962,6 +1968,10 @@ int main (int argc, char ** argv, char ** envp)
 
   /* Init the GmLdapWindow structure */
   lw = new (GmLdapWindow);
+
+  
+  /* Init the GmDruidWindow structure */
+  dw = new (GmDruidWindow);
 
 
   /* Init the RTP stats structure */
@@ -2000,7 +2010,7 @@ int main (int argc, char ** argv, char ** envp)
 
 
   /* GnomeMeeting main initialisation */
-  gnomemeeting_init (gw, pw, lw, rtp, chat, clo, argc, argv, envp);
+  gnomemeeting_init (gw, pw, lw, dw, rtp, chat, clo, argc, argv, envp);
 
   /* Set a default gconf error handler */
   gconf_client_set_error_handling (gconf_client_get_default (),
@@ -2026,6 +2036,7 @@ int main (int argc, char ** argv, char ** envp)
   
   delete (gw);
   delete (lw);
+  delete (dw);
   delete (pw);
   delete (rtp);
   delete (chat);

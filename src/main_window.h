@@ -37,12 +37,13 @@
 
 void gnomemeeting_dialpad_event (const char *);
 
+
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Initialise gnomemeeting and builds the windows.
  * PRE          :  /
  */
 void gnomemeeting_init (GmWindow *, GmPrefWindow *, 
-			GmLdapWindow *, GmRtpData *, 
+			GmLdapWindow *, GmDruidWindow *, GmRtpData *, 
 			GmTextChat *, GmCommandLineOptions *, int, 
 			char **, char **);
 

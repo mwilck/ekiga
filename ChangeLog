@@ -1,3 +1,25 @@
+2002-01-03 Damien Sandras  <dsandras@seconix.com>
+
+	* src/common.cpp: Added function to get the druid window from the
+	GUI with the related widgets.
+	
+	* src/common.h: Added structure that contains the widgets of the
+	druid window.
+	
+	* src/druid.cpp: Changes to use the new widgets structure, but also
+	to make the druid window hide on close.
+	
+	* src/druid.h: See above.
+	
+	* src/main_window.cpp, .h: Changes related to the new druid window
+	behavior.
+	
+	* src/menu.cpp: Same.
+	
+	* src/videograbber.cpp, src/videograbber.h: Removed unneeded parameters
+	from the GMVideoTester as we can get them using the new function
+	in common.cpp.
+	
 2002-12-31 Damien Sandras  <dsandras@seconix.com>
 
 	* src/druid.cpp: Removed unuseful URL in druid.

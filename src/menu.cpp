@@ -1,4 +1,3 @@
-
 /* GnomeMeeting -- A Video-Conferencing application
  * Copyright (C) 2000-2002 Damien Sandras
  *
@@ -33,7 +32,6 @@
 #include "menu.h"
 #include "gnomemeeting.h"
 #include "misc.h"
-#include "druid.h"
 #include "stock-icons.h"
 
 #include <gtk/gtkwidget.h>
@@ -51,7 +49,6 @@ extern GnomeMeeting *MyApp;
 /* Static functions */
 static gint popup_menu_callback (GtkWidget *, GdkEventButton *, gpointer);
 static void menu_item_selected (GtkWidget *, gpointer);
-static void gnomemeeting_init_druid_callback (GtkWidget *, gpointer);
 static void zoom_changed_callback (GtkWidget *, gpointer);
 static void fullscreen_changed_callback (GtkWidget *, gpointer);
 
@@ -102,19 +99,6 @@ menu_item_selected (GtkWidget *w, gpointer data)
   GmWindow *gw = gnomemeeting_get_main_window (gm);
 
   gnomemeeting_statusbar_push (gw->statusbar, (char *) data);
-}
-
-
-/* DESCRIPTION  :  This callback is called when the druid is called from the
- *                 Edit menu.
- * BEHAVIOR     :  Builds the druid.
- * PRE          :  gpointer is a valid pointer to a char* containing "menu"
- *                 to indicate if we are called from the menu.
- */
-static void 
-gnomemeeting_init_druid_callback (GtkWidget *w, gpointer data)
-{
-  gnomemeeting_init_druid (data);
 }
 
 
@@ -401,10 +385,10 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 
       {_("_Edit"), NULL, NULL, 0, MENU_NEW, NULL, NULL, NULL},
 
-      {_("Configuration Assistant"), _("Start The Configuration Assistant"),
+      {_("Configuration druid"), _("Start The Configuration duid"),
        NULL, 0, MENU_ENTRY, 
-       GTK_SIGNAL_FUNC (gnomemeeting_init_druid_callback), (gpointer) "menu",
-       NULL},
+       GTK_SIGNAL_FUNC (gnomemeeting_component_view),
+       (gpointer) gw->druid_window, NULL},
 
       {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
 

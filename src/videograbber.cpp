@@ -702,13 +702,10 @@ void GMVideoGrabber::VGClose (int display_logo)
 
 
 /* The video tester class */
-GMVideoTester::GMVideoTester (GtkWidget *p, GtkWidget *but, GtkWindow *w)
+GMVideoTester::GMVideoTester ()
   :PThread (1000, AutoDeleteThread)
 {
 #ifndef DISABLE_GNOME
-  progress = p;
-  b = but;
-  window = w;
 
   this->Resume ();
 #endif
@@ -731,7 +728,10 @@ void GMVideoTester::Main ()
   quit_mutex.Wait ();
 
   GmWindow *gw = NULL;
+  GmDruidWindow *dw = NULL;
+  
   PVideoInputDevice *grabber = new PVideoInputDevice();
+  
   int height = GM_QCIF_HEIGHT; 
   int width = GM_QCIF_WIDTH; 
   int error_code = -1;
@@ -747,21 +747,15 @@ void GMVideoTester::Main ()
 
   gnomemeeting_threads_enter ();
   gw = gnomemeeting_get_main_window (gm);
-
-  if (gw->druid)
-    gtk_widget_set_sensitive (GTK_WIDGET (b), FALSE);
-
-
+  dw = gnomemeeting_get_druid_window (gm);
+  gtk_widget_set_sensitive (GTK_WIDGET (dw->video_test_button), FALSE);
   gnomemeeting_threads_leave ();
 
   while (cpt <= 5) {
 
     gnomemeeting_threads_enter ();
-    if (gw->druid) {
-
-      gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (progress), per);
-      gtk_widget_queue_draw (GTK_WIDGET (progress));
-    }
+    gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (dw->progress), per);
+    gtk_widget_queue_draw (GTK_WIDGET (dw->progress));
     gnomemeeting_threads_leave ();
 
     if (!grabber->Open (video_device, FALSE))
@@ -827,13 +821,13 @@ void GMVideoTester::Main ()
 
   gnomemeeting_threads_enter ();
   if (error_code == - 1)
-    if (gw->druid)
-      gnomemeeting_message_dialog (GTK_WINDOW (window), msg);
+    if (GTK_WIDGET_VISIBLE (gw->druid_window))
+      gnomemeeting_message_dialog (GTK_WINDOW (gw->druid_window), msg);
     else
       gnomemeeting_message_dialog (GTK_WINDOW (gm), msg);
   else
-    if (gw->druid)
-      gnomemeeting_error_dialog (GTK_WINDOW (window), msg);
+    if (GTK_WIDGET_VISIBLE (gw->druid_window))
+      gnomemeeting_error_dialog (GTK_WINDOW (gw->druid_window), msg);
     else
       gnomemeeting_error_dialog (GTK_WINDOW (gm), msg);
   gnomemeeting_threads_leave ();
@@ -843,12 +837,10 @@ void GMVideoTester::Main ()
   delete (grabber);
 
   gnomemeeting_threads_enter ();
-  if (gw->druid) {
-
-    gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (progress), 0.0);
-    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (b), FALSE);
-    gtk_widget_set_sensitive (GTK_WIDGET (b), TRUE);
-  }
+  gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (dw->progress), 0.0);
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (dw->video_test_button),
+				FALSE);
+  gtk_widget_set_sensitive (GTK_WIDGET (dw->video_test_button), TRUE);
   gnomemeeting_threads_leave ();
 
   quit_mutex.Signal ();
