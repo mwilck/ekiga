@@ -301,7 +301,7 @@ GnomeMeeting::DetectDevices ()
   gnomemeeting_sound_daemons_suspend ();
 
   /* Detect the plugins */
-  gw->audio_managers = PSoundChannel::GetDriverNames ();
+  gw->audio_managers = PStringArray (PSoundChannel::GetDriverNames ());
   gw->video_managers = PVideoInputDevice::GetDriverNames ();
 
   /* Detect the devices */

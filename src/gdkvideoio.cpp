@@ -78,8 +78,7 @@ GDKVideoOutputDevice::GDKVideoOutputDevice(int idno, GmWindow *w)
 
 GDKVideoOutputDevice::~GDKVideoOutputDevice()
 {
-  redraw_mutex.Wait ();
-  redraw_mutex.Signal ();
+  PWaitAndSignal m(redraw_mutex);
 
 #ifdef HAS_SDL
   /* If it is needed, delete the SDL window */
@@ -121,7 +120,7 @@ BOOL GDKVideoOutputDevice::Redraw ()
   int zoomed_width = GM_QCIF_WIDTH; 
   int zoomed_height = GM_QCIF_HEIGHT;
 
-  int display = 0;
+  int display = LOCAL_VIDEO;
 
   /* Common to the 2 instances of gdkvideoio */
   static GdkPixbuf *local_pic = NULL;
@@ -166,9 +165,9 @@ BOOL GDKVideoOutputDevice::Redraw ()
   
   /* What do we display: what gconf tells us except if we are not in 
      a call, or if it is not a valid choice */
-  if (GnomeMeeting::Process ()->Endpoint ()->GetCallingState () != 2) {
+  if (GnomeMeeting::Process ()->Endpoint ()->GetCallingState () != GMH323EndPoint::Connected) {
 
-    display = 0;
+    display = LOCAL_VIDEO;
   }
   else {
 
@@ -387,9 +386,9 @@ BOOL GDKVideoOutputDevice::Redraw ()
 
 
   /* We display what we transmit, or what we receive */
-  if ( (((device_id == 0 && display == 1) ||
-	(device_id == 1 && display == 0)) && (display != 2)) 
-       || ((display == 3) && (device_id == 0)) ) {
+  if ( (((device_id == REMOTE && display == REMOTE_VIDEO) ||
+	(device_id == LOCAL && display == LOCAL_VIDEO)) && (display != BOTH_INCRUSTED)) 
+       || ((display == BOTH_LOCAL) && (device_id == REMOTE)) ) {
     
     gnomemeeting_threads_enter ();
     gtk_image_set_from_pixbuf (GTK_IMAGE (gw->main_video_image), 
@@ -472,10 +471,10 @@ BOOL GDKVideoOutputDevice::Redraw ()
 
 
   /* we display both of them */
-  if (display == 2) {
+  if (display == BOTH_INCRUSTED) {
 
     /* What we transmit, in small */
-    if (device_id == 1) {
+    if (device_id == LOCAL) {
 
       both_mutex.Wait ();
       gnomemeeting_threads_enter ();
@@ -495,7 +494,7 @@ BOOL GDKVideoOutputDevice::Redraw ()
     }
 
     /* What we receive, in big */
-    if ((device_id == 0) && (local_pic))  {
+    if ((device_id == REMOTE) && (local_pic))  {
 
       both_mutex.Wait ();
       gnomemeeting_threads_enter ();

@@ -814,7 +814,7 @@ void gnomemeeting_dialpad_event (const char d)
   if (gw->transfer_call_popup)
     gm_entry_dialog_set_text (GM_ENTRY_DIALOG (gw->transfer_call_popup),
 			      new_url);
-  else 
+  else if (endpoint->GetCallingState () == GMH323EndPoint::Standby)
     gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), new_url);
 
   if (dtmf == '#' && gw->transfer_call_popup)
