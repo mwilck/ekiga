@@ -1470,7 +1470,9 @@ void gnomemeeting_init_main_window_video_settings ()
 {
   GtkWidget *label;
   
+  GtkWidget *main_table;
   GtkWidget *table;
+  GtkWidget *button;
 
   GtkWidget *pixmap;
   GdkPixbuf *pixbuf;
@@ -1480,6 +1482,9 @@ void gnomemeeting_init_main_window_video_settings ()
   int brightness = 0, colour = 0, contrast = 0, whiteness = 0;
   
   GmWindow *gw = gnomemeeting_get_main_window (gm);
+
+  /* The main_table to put the frame and the preview button */
+  main_table = gtk_table_new (2, 4, FALSE);
 
   /* Webcam Control Frame */		
   gw->video_settings_frame = gtk_frame_new (_("Video Settings"));
@@ -1595,13 +1600,30 @@ void gnomemeeting_init_main_window_video_settings ()
   g_signal_connect (G_OBJECT (gw->adj_contrast), "value-changed",
 		    G_CALLBACK (contrast_changed), (gpointer) gw);
   
+
+  /* Audio Preview */
+  button = gtk_toggle_button_new_with_label (_("Video Preview"));
+
+
+  /* Pack things in the vbox */
+  gtk_table_attach (GTK_TABLE (main_table), gw->video_settings_frame, 
+		    0, 4, 0, 1,
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    0, 0);
+  gtk_table_attach (GTK_TABLE (main_table), button,
+		    3, 4, 1, 2,
+		    (GtkAttachOptions) (NULL),
+		    (GtkAttachOptions) (NULL),
+		    5, 5);
+
+
   gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame), FALSE);
 
   label = gtk_label_new (_("Video"));  
 
   gtk_notebook_append_page (GTK_NOTEBOOK(gw->main_notebook), 
-			    gw->video_settings_frame, 
-			    label);
+			    main_table, label);
 
 }
 
