@@ -1,23 +1,32 @@
 
-/***************************************************************************
-                          preferences.cxx  -  description
-                             -------------------
-    begin                : Tue Dec 26 2000
-    copyright            : (C) 2000-2001 by Damien Sandras
-    description          : This file contains all the functions needed to
-                           create the preferences window and all its callbacks
-    email                : dsandras@seconix.com
- ***************************************************************************/
+/* GnomeMeeting -- A Video-Conferencing application
+ * Copyright (C) 2000-2001 Damien Sandras
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
 
-/***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
-
+/*
+ *                         preferences.cxx  -  description
+ *                        -------------------
+ *   begin                : Tue Dec 26 2000
+ *   copyright            : (C) 2000-2001 by Damien Sandras
+ *   description          : This file contains all the functions needed to
+ *                          create the preferences window and all its callbacks
+ *   email                : dsandras@seconix.com
+ *
+ */
 
 #include "../config.h"
 
@@ -34,71 +43,118 @@
 #include <iostream.h>
 
 
-/******************************************************************************/
-/* Global Variables                                                           */
-/******************************************************************************/
+/* Declarations */
 
 extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;	
 
-/******************************************************************************/
+static void pref_window_clicked_callback (GnomeDialog *, int, gpointer);
+static gint pref_window_destroy_callback (GtkWidget *, gpointer);
+static void codecs_clist_button_clicked_callback (GtkWidget *, gpointer);
+static void codecs_clist_row_selected_callback (GtkWidget *, gint, gint, 
+						GdkEventButton *, gpointer);
+static void menu_ctree_row_seletected_callback (GtkWidget *, gint, gint, 
+						GdkEventButton *, gpointer);
+static void ldap_option_changed_callback (GtkEditable *, gpointer);
+static void audio_option_changed_callback (GtkEditable *, gpointer);
+static void video_transmission_option_changed_callback (GtkToggleButton *, 
+							gpointer);
+static void video_bandwidth_limit_option_changed_callback (GtkToggleButton *, 
+							   gpointer);
+static void gatekeeper_option_changed (GtkWidget *, gpointer);
+
+static void init_pref_general (GtkWidget *, GM_pref_window_widgets *,
+			       int, options *);
+static void init_pref_interface (GtkWidget *, GM_pref_window_widgets *,
+				 int, options *);
+static void init_pref_advanced (GtkWidget *, GM_pref_window_widgets *,
+				int, options *);
+static void init_pref_ldap (GtkWidget *, GM_pref_window_widgets *,
+			    int, options *);
+static void init_pref_gatekeeper (GtkWidget *, GM_pref_window_widgets *,
+				  int, options *);
+static void init_pref_devices (GtkWidget *, GM_pref_window_widgets *,
+			       int, options *);
+static void init_pref_audio_codecs (GtkWidget *, GM_pref_window_widgets *,
+				    int, options *);
+static void init_pref_codecs_settings (GtkWidget *, GM_pref_window_widgets *,
+				       int, options *);
+static void apply_options (options *, GM_pref_window_widgets *);
+static void add_codec (GtkWidget *, gchar *, gchar *);
 
 
-/******************************************************************************/
-/* GTK Callbacks                                                              */
-/******************************************************************************/
+/* GTK Callbacks */
 
-void pref_window_clicked (GnomeDialog *widget, int button, gpointer data)
+/* DESCRIPTION  :  This callback is called when the user clicks on a button : 
+ *                 OK, CANCEL, APPLY.
+ * BEHAVIOR     :  OK closes (hides) the window and save settings, APPLY
+ *                 applies the settings, and cancel do nothing except hiding
+ *                 the window.
+ * PRE          :  gpointer is a valid pointer to a GM_pref_window_widgets.
+ */
+static void pref_window_clicked_callback (GnomeDialog *widget, int button, 
+					  gpointer data)
 {
   options *opts;
 
-  switch (button)
-    {
-      /* The user clicks on OK => save and hide */
-    case 2:
-      // Save things
-      opts = read_config_from_struct ((GM_pref_window_widgets *) data);
-
-      if (check_config_from_struct ((GM_pref_window_widgets *) data))
-	{
-	  store_config (opts);
-	  apply_options (opts, (GM_pref_window_widgets *) data);
-	}
-
-      gtk_widget_hide (GTK_WIDGET (widget));
-      /* opts' content is destroyed with the widgets. */
-      delete (opts);
-      break;
-
-      /* The user clicks on apply => only save */
-    case 1:
-      opts = read_config_from_struct ((GM_pref_window_widgets *) data);
-
-      if (check_config_from_struct ((GM_pref_window_widgets *) data))
-	{
-	  store_config (opts);
-	  apply_options (opts, (GM_pref_window_widgets *) data);
-	}
-
-      delete (opts); /* opts' content is destroyed with the widgets */
-      break;
-
-      /* the user clicks on cancel => only hide */
-    case 0:
-      gtk_widget_hide (GTK_WIDGET (widget));
-      break;
+  switch (button) {
+    /* The user clicks on OK => save and hide */
+  case 2:
+    // Save things
+    opts = read_config_from_struct ((GM_pref_window_widgets *) data);
+    
+    if (check_config_from_struct ((GM_pref_window_widgets *) data)) {
+      store_config (opts);
+      apply_options (opts, (GM_pref_window_widgets *) data);
     }
+    
+    gtk_widget_hide (GTK_WIDGET (widget));
+    /* opts' content is destroyed with the widgets. */
+    delete (opts);
+    break;
+    
+    /* The user clicks on apply => only save */
+  case 1:
+    opts = read_config_from_struct ((GM_pref_window_widgets *) data);
+    
+    if (check_config_from_struct ((GM_pref_window_widgets *) data)) {
+      store_config (opts);
+      apply_options (opts, (GM_pref_window_widgets *) data);
+    }
+    
+    delete (opts); /* opts' content is destroyed with the widgets */
+    break;
+
+    /* the user clicks on cancel => only hide */
+  case 0:
+    gtk_widget_hide (GTK_WIDGET (widget));
+    break;
+  }
 }
 
 
-gint pref_window_destroyed (GtkWidget *widget, gpointer data)
+/* DESCRIPTION  :  This callback is called when the pref window is destroyed.
+ * BEHAVIOR     :  Prevents the destroy, only hides the window.
+ * PRE          :  //
+ */
+static gint pref_window_destroy_callback (GtkWidget *widget, gpointer data)
 {
   gtk_widget_hide (GTK_WIDGET (widget));
   return (TRUE);
 }
 
 
-void button_clicked (GtkWidget *widget, gpointer data)
+/* DESCRIPTION  :  This callback is called when the user clicks
+ *                 on a button in the Audio Codecs Settings 
+ *                 (Add, Del, Up, Down)
+ * BEHAVIOR     :  It updates the clist order or the clist data following the
+ *                 operation (Up => up, Add => changes row pixmap and set
+ *                 row data to 1)
+ * PRE          :  gpointer is a valid pointer to a gchar * containing
+ *                 the operation (Add / Del / Up / Down)
+ */
+static void codecs_clist_button_clicked_callback (GtkWidget *widget, 
+						  gpointer data)
 { 		
   GdkPixmap *yes, *no;
   GdkBitmap *mask_yes, *mask_no;
@@ -118,55 +174,66 @@ void button_clicked (GtkWidget *widget, gpointer data)
 
 
   if (!strcmp ((char *) gtk_object_get_data (GTK_OBJECT (widget), "operation"), 
-	       "Add"))
-    {
-      gtk_clist_set_pixmap (GTK_CLIST (pw->clist_avail), pw->row_avail, 
-			    0, yes, mask_yes);
-      strcpy (row_data, "1");
-      gtk_clist_set_row_data (GTK_CLIST (pw->clist_avail), pw->row_avail, 
-			      (gpointer) row_data);
-    }
+	       "Add")) {
+    gtk_clist_set_pixmap (GTK_CLIST (pw->clist_avail), pw->row_avail, 
+			  0, yes, mask_yes);
+    strcpy (row_data, "1");
+    gtk_clist_set_row_data (GTK_CLIST (pw->clist_avail), pw->row_avail, 
+			    (gpointer) row_data);
+  }
 
   if (!strcmp ((char *) gtk_object_get_data (GTK_OBJECT (widget), "operation"), 
-	       "Del"))  
-    {
-      gtk_clist_set_pixmap (GTK_CLIST (pw->clist_avail), pw->row_avail, 
-			    0, no, mask_no);
-      strcpy (row_data, "0");
-      gtk_clist_set_row_data (GTK_CLIST (pw->clist_avail), pw->row_avail, 
-			      (gpointer) row_data);
-    }
+	       "Del")) {
+    gtk_clist_set_pixmap (GTK_CLIST (pw->clist_avail), pw->row_avail, 
+			  0, no, mask_no);
+    strcpy (row_data, "0");
+    gtk_clist_set_row_data (GTK_CLIST (pw->clist_avail), pw->row_avail, 
+			    (gpointer) row_data);
+  }
   
   if (!strcmp ((char *) gtk_object_get_data (GTK_OBJECT (widget), "operation"), 
-	       "Up"))  
-    {
-      gtk_clist_row_move (GTK_CLIST (pw->clist_avail), pw->row_avail, 
-			  pw->row_avail - 1);
-      if (pw->row_avail > 0) pw->row_avail--;
-    }
+	       "Up")) {
+    gtk_clist_row_move (GTK_CLIST (pw->clist_avail), pw->row_avail, 
+			pw->row_avail - 1);
+    if (pw->row_avail > 0) pw->row_avail--;
+  }
   
   if (!strcmp ((char *) gtk_object_get_data (GTK_OBJECT (widget), "operation"), 
-	       "Down"))  
-    {
-      gtk_clist_row_move (GTK_CLIST (pw->clist_avail), pw->row_avail, 
-			  pw->row_avail + 1);
-      if (pw->row_avail < GTK_CLIST (pw->clist_avail)->rows - 1) pw->row_avail++;
-    }
+	       "Down")) {
+    gtk_clist_row_move (GTK_CLIST (pw->clist_avail), pw->row_avail, 
+			pw->row_avail + 1);
+    if (pw->row_avail < GTK_CLIST (pw->clist_avail)->rows - 1) pw->row_avail++;
+  }
 
   pw->capabilities_changed = 1;
 }
 
 
-void clist_row_selected (GtkWidget *widget, gint row, 
-			 gint column, GdkEventButton *event, gpointer data)
+/* DESCRIPTION  :  This callback is called when the user clicks
+ *                 on a row of the codecs clist in the Audio Codecs Settings
+ * BEHAVIOR     :  It updates the GM_pref_window_widgets * content (row_avail
+ *                 field is set to the last selected row)
+ * PRE          :  gpointer is a valid pointer to the GM_pref_window_widgets
+ */
+static void codecs_clist_row_selected_callback (GtkWidget *widget, gint row, 
+						gint column, 
+						GdkEventButton *event, 
+						gpointer data)
 {
   GM_pref_window_widgets *pw = (GM_pref_window_widgets *) data;
   pw->row_avail = row;		
 }
 
 
-void ctree_row_selected (GtkWidget *widget, gint row, 
-			 gint column, GdkEventButton *event, gpointer data)
+/* DESCRIPTION  :  This callback is called when the user clicks
+ *                 on a row of the ctree containing all the sections.
+ * BEHAVIOR     :  It changes the notebook page to the selected one.
+ * PRE          :  data is the gtk_notebook.
+ */
+static void menu_ctree_row_seletected_callback (GtkWidget *widget, gint row, 
+						gint column, 
+						GdkEventButton *event, 
+						gpointer data)
 {
   GtkCTreeNode *n;
   n = gtk_ctree_node_nth (GTK_CTREE (widget), row);
@@ -178,7 +245,12 @@ void ctree_row_selected (GtkWidget *widget, gint row,
 }
 
 
-void ldap_option_changed (GtkEditable *editable, gpointer data)
+/* DESCRIPTION  :  This callback is called when the user changes
+ *                 a ldap related option.
+ * BEHAVIOR     :  It sets a flag to say that LDAP has to be reactivated.
+ * PRE          :  gpointer is a valid pointer to a GM_pref_window_widgets.
+ */
+static void ldap_option_changed_callback (GtkEditable *editable, gpointer data)
 {
   GM_pref_window_widgets *pw = (GM_pref_window_widgets *) data;
 
@@ -186,7 +258,12 @@ void ldap_option_changed (GtkEditable *editable, gpointer data)
 }
 
 
-void audio_mixer_changed (GtkEditable *editable, gpointer data)
+/* DESCRIPTION  :  This callback is called when the user changes
+ *                 one of the audio related devices.
+ * BEHAVIOR     :  It sets a flag.
+ * PRE          :  gpointer is a valid pointer to a GM_pref_window_widgets.
+ */
+static void audio_option_changed_callback (GtkEditable *editable, gpointer data)
 {
   GM_pref_window_widgets *pw = (GM_pref_window_widgets *) data;
 
@@ -194,7 +271,14 @@ void audio_mixer_changed (GtkEditable *editable, gpointer data)
 }
 
 
-void vid_tr_changed (GtkToggleButton *button, gpointer data)
+/* DESCRIPTION  :  This callback is called when the user clicks
+ *                 on the video transmission toggle button, or change the video
+ *                 device, or the video channel or any other video option.
+ * BEHAVIOR     :  It sets a flag.
+ * PRE          :  gpointer is a valid pointer to a GM_pref_window_widgets.
+ */
+static void video_transmission_option_changed_callback (GtkToggleButton *button,
+							gpointer data)
 {
   GM_pref_window_widgets *pw = (GM_pref_window_widgets *) data;
 
@@ -202,7 +286,13 @@ void vid_tr_changed (GtkToggleButton *button, gpointer data)
 }
 
 
-void gk_option_changed (GtkWidget *widget, gpointer data)
+/* DESCRIPTION  :  This callback is called when the user changes
+ *                 any gatekeeper option.
+ * BEHAVIOR     :  It sets a flag.
+ * PRE          :  gpointer is a valid pointer to a GM_pref_window_widgets.
+ */
+static void gatekeeper_option_changed_callback (GtkWidget *widget, 
+						gpointer data)
 {
   GM_pref_window_widgets *pw = (GM_pref_window_widgets *) data;
 
@@ -210,41 +300,40 @@ void gk_option_changed (GtkWidget *widget, gpointer data)
 }
  
 
-void vb_changed (GtkToggleButton *button, gpointer data)
+/* DESCRIPTION  :  This callback is called when the user enables or disables
+ *                 the video bandwidth limitation.
+ * BEHAVIOR     :  It enables/disables other conflicting settings.
+ * PRE          :  gpointer is a valid pointer to a GM_pref_window_widgets.
+ */
+static void video_bandwidth_limit_option_changed_callback (GtkToggleButton *button, gpointer data)
 {
   GM_pref_window_widgets *pw = (GM_pref_window_widgets *) data;
 
   int vb = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->vb));
 
-  if (vb)
-    {
-      gtk_widget_set_sensitive (GTK_WIDGET (pw->tr_ub_label), FALSE);
-      gtk_widget_set_sensitive (GTK_WIDGET (pw->tr_vq_label), FALSE);
-      gtk_widget_set_sensitive (GTK_WIDGET (pw->tr_ub), FALSE);
-      gtk_widget_set_sensitive (GTK_WIDGET (pw->tr_vq), FALSE);
-      gtk_widget_set_sensitive (GTK_WIDGET (pw->video_bandwidth), TRUE);
-      gtk_widget_set_sensitive (GTK_WIDGET (pw->video_bandwidth_label), TRUE);
-
-    }
-  else
-    {
-      gtk_widget_set_sensitive (GTK_WIDGET (pw->tr_ub_label), TRUE);
-      gtk_widget_set_sensitive (GTK_WIDGET (pw->tr_vq_label), TRUE);
-      gtk_widget_set_sensitive (GTK_WIDGET (pw->tr_ub), TRUE);
-      gtk_widget_set_sensitive (GTK_WIDGET (pw->tr_vq), TRUE);
-      gtk_widget_set_sensitive (GTK_WIDGET (pw->video_bandwidth), FALSE);
-      gtk_widget_set_sensitive (GTK_WIDGET (pw->video_bandwidth_label), FALSE);
-    }
+  if (vb) {
+    gtk_widget_set_sensitive (GTK_WIDGET (pw->tr_ub_label), FALSE);
+    gtk_widget_set_sensitive (GTK_WIDGET (pw->tr_vq_label), FALSE);
+    gtk_widget_set_sensitive (GTK_WIDGET (pw->tr_ub), FALSE);
+    gtk_widget_set_sensitive (GTK_WIDGET (pw->tr_vq), FALSE);
+    gtk_widget_set_sensitive (GTK_WIDGET (pw->video_bandwidth), TRUE);
+    gtk_widget_set_sensitive (GTK_WIDGET (pw->video_bandwidth_label), TRUE);
+  }
+  else {
+    gtk_widget_set_sensitive (GTK_WIDGET (pw->tr_ub_label), TRUE);
+    gtk_widget_set_sensitive (GTK_WIDGET (pw->tr_vq_label), TRUE);
+    gtk_widget_set_sensitive (GTK_WIDGET (pw->tr_ub), TRUE);
+    gtk_widget_set_sensitive (GTK_WIDGET (pw->tr_vq), TRUE);
+    gtk_widget_set_sensitive (GTK_WIDGET (pw->video_bandwidth), FALSE);
+    gtk_widget_set_sensitive (GTK_WIDGET (pw->video_bandwidth_label), FALSE);
+  }
 }
-/******************************************************************************/
 
 
-/******************************************************************************/
-/* The functions                                                              */
-/******************************************************************************/
+/* The functions */
 
-void GM_preferences_init (int calling_state, GM_window_widgets *gw, 
-			  GM_pref_window_widgets *pw, options *opts)
+void gnomemeeting_preferences_init (int calling_state, GM_window_widgets *gw, 
+				    GM_pref_window_widgets *pw, options *opts)
 {
   gchar *node_txt [1]; 
   gchar * ctree_titles [] = {N_("Settings")};
@@ -272,7 +361,8 @@ void GM_preferences_init (int calling_state, GM_window_widgets *gw,
 				      NULL);
 	       
   gtk_signal_connect (GTK_OBJECT(gw->pref_window), "clicked",
-		      GTK_SIGNAL_FUNC(pref_window_clicked), (gpointer) pw);
+		      GTK_SIGNAL_FUNC(pref_window_clicked_callback), 
+		      (gpointer) pw);
 
   gtk_window_set_title (GTK_WINDOW (gw->pref_window), 
 			_("GnomeMeeting Preferences"));	
@@ -347,6 +437,7 @@ void GM_preferences_init (int calling_state, GM_window_widgets *gw,
   g_free (node_txt [0]);
   init_pref_ldap (notebook, pw, calling_state, opts);
 
+
   node_txt [0] = g_strdup (_("Gatekeeper Settings"));
   node2 = gtk_ctree_insert_node (GTK_CTREE (ctree), node, 
 				 NULL, node_txt, 0,
@@ -357,6 +448,7 @@ void GM_preferences_init (int calling_state, GM_window_widgets *gw,
   g_free (node_txt [0]);
   init_pref_gatekeeper (notebook, pw, calling_state, opts);
 
+
   node_txt [0] = g_strdup (_("Devices Settings"));
   node2 = gtk_ctree_insert_node (GTK_CTREE (ctree), node, 
 				 NULL, node_txt, 0,
@@ -366,6 +458,7 @@ void GM_preferences_init (int calling_state, GM_window_widgets *gw,
 			       node2, (gpointer) "6");
   g_free (node_txt [0]);
   init_pref_devices (notebook, pw, calling_state, opts);
+
 
   node_txt [0] = g_strdup (_("Codecs"));
   node = gtk_ctree_insert_node (GTK_CTREE (ctree), NULL, 
@@ -400,10 +493,12 @@ void GM_preferences_init (int calling_state, GM_window_widgets *gw,
   g_free (node_txt [0]);
   init_pref_codecs_settings (notebook, pw, calling_state, opts);
 
-  gtk_signal_connect (GTK_OBJECT (ctree), "select_row",
-		      GTK_SIGNAL_FUNC (ctree_row_selected), notebook);
 
-  // Now, add the logo as first page
+  gtk_signal_connect (GTK_OBJECT (ctree), "select_row",
+		      GTK_SIGNAL_FUNC (menu_ctree_row_seletected_callback), 
+		      notebook);
+
+  /* Now, add the logo as first page */
   pixmap = gnome_pixmap_new_from_file 
     ("/usr/share/pixmaps/gnomemeeting-logo.png");
 
@@ -426,12 +521,22 @@ void GM_preferences_init (int calling_state, GM_window_widgets *gw,
   gtk_clist_set_selectable (clist, 7, FALSE);
 
   gtk_signal_connect (GTK_OBJECT (gw->pref_window), "close",
-		      GTK_SIGNAL_FUNC (pref_window_destroyed), pw);
+		      GTK_SIGNAL_FUNC (pref_window_destroy_callback), pw);
 }
 
 
-void init_pref_audio_codecs (GtkWidget *notebook, GM_pref_window_widgets *pw,
-			     int calling_state, options *opts)
+/* BEHAVIOR     :  It builds the notebook page for audio codecs settings and
+ *                 add it to the notebook, default values are set from the
+ *                 options struct given as parameter.
+ * PRE          :  parameters have to be valid
+ *                 * 1 : pointer to the notebook
+ *                 * 2 : pointer to valid GM_pref_window_widgets
+ *                 * 3 : calling_state such as when creating the pref window
+ *                 * 4 : pointer to valid options read in the config file
+ */
+static void init_pref_audio_codecs (GtkWidget *notebook, 
+				    GM_pref_window_widgets *pw,
+				    int calling_state, options *opts)
 {
   GtkWidget *general_frame;
   GtkWidget *frame, *label;
@@ -487,16 +592,16 @@ void init_pref_audio_codecs (GtkWidget *notebook, GM_pref_window_widgets *pw,
   gtk_clist_set_shadow_type (GTK_CLIST(pw->clist_avail), GTK_SHADOW_IN);
   
   /* Here we add the codec buts in the order they are in the config file */
-  while (cpt < 5)
-    {
-      add_codec (pw->clist_avail, opts->audio_codecs [cpt] [0], 
-		 opts->audio_codecs [cpt] [1]);
-      cpt++;
-    }
+  while (cpt < 5) {
+    add_codec (pw->clist_avail, opts->audio_codecs [cpt] [0], 
+	       opts->audio_codecs [cpt] [1]);
+    cpt++;
+  }
 
   /* Callback function when a row is selected */
   gtk_signal_connect(GTK_OBJECT(pw->clist_avail), "select_row",
-		     GTK_SIGNAL_FUNC(clist_row_selected), (gpointer) pw);
+		     GTK_SIGNAL_FUNC(codecs_clist_row_selected_callback), 
+		     (gpointer) pw);
     
   gtk_table_attach (GTK_TABLE (table), pw->clist_avail, 0, 4, 0, 1,
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 
@@ -513,7 +618,7 @@ void init_pref_audio_codecs (GtkWidget *notebook, GM_pref_window_widgets *pw,
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
   gtk_signal_connect (GTK_OBJECT (button), "clicked",
-		      GTK_SIGNAL_FUNC (button_clicked), 
+		      GTK_SIGNAL_FUNC (codecs_clist_button_clicked_callback), 
 		      (gpointer) pw);
   gtk_object_set_data (GTK_OBJECT (button), "operation", (gpointer) "Add");
 
@@ -531,7 +636,7 @@ void init_pref_audio_codecs (GtkWidget *notebook, GM_pref_window_widgets *pw,
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
   gtk_signal_connect (GTK_OBJECT (button), "clicked",
-		      GTK_SIGNAL_FUNC (button_clicked), 
+		      GTK_SIGNAL_FUNC (codecs_clist_button_clicked_callback), 
 		      (gpointer) pw);
   gtk_object_set_data (GTK_OBJECT (button), "operation", (gpointer) "Del");  
 
@@ -549,7 +654,7 @@ void init_pref_audio_codecs (GtkWidget *notebook, GM_pref_window_widgets *pw,
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
   gtk_signal_connect (GTK_OBJECT (button), "clicked",
-		      GTK_SIGNAL_FUNC (button_clicked), 
+		      GTK_SIGNAL_FUNC (codecs_clist_button_clicked_callback), 
 		      (gpointer) pw);
   gtk_object_set_data (GTK_OBJECT (button), "operation", (gpointer) "Up");
 
@@ -567,7 +672,7 @@ void init_pref_audio_codecs (GtkWidget *notebook, GM_pref_window_widgets *pw,
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
   gtk_signal_connect (GTK_OBJECT (button), "clicked",
-		      GTK_SIGNAL_FUNC (button_clicked), 
+		      GTK_SIGNAL_FUNC (codecs_clist_button_clicked_callback), 
 		      (gpointer) pw);
   gtk_object_set_data (GTK_OBJECT (button), "operation", (gpointer) "Down");
 
@@ -575,11 +680,7 @@ void init_pref_audio_codecs (GtkWidget *notebook, GM_pref_window_widgets *pw,
   gtk_tooltips_set_tip (tip, button,
 			_("Use this button to move up the selected codec in the preference order"), NULL);
 
-  /* Disable things  general_frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (general_frame), GTK_SHADOW_IN);
 
-  gtk_container_add (GTK_CONTAINER (general_frame), vbox);
- if we are in call */
   if (calling_state != 0)
       gtk_widget_set_sensitive (GTK_WIDGET (frame), FALSE);
 
@@ -593,8 +694,14 @@ void init_pref_audio_codecs (GtkWidget *notebook, GM_pref_window_widgets *pw,
 }
 
 
-void init_pref_interface (GtkWidget *notebook, GM_pref_window_widgets *pw,
-			  int calling_state, options *opts)
+/* BEHAVIOR     :  It builds the notebook page for interface settings
+ *                 add it to the notebook, default values are set from the
+ *                 options struct given as parameter.
+ * PRE          :  See init_pref_audio_codecs.
+ */
+static void init_pref_interface (GtkWidget *notebook, 
+				 GM_pref_window_widgets *pw,
+				 int calling_state, options *opts)
 {
   GtkWidget *frame, *label;
   GtkWidget *general_frame;
@@ -790,15 +897,20 @@ void init_pref_interface (GtkWidget *notebook, GM_pref_window_widgets *pw,
 }
 
 
-void init_pref_codecs_settings (GtkWidget *notebook, 
-				GM_pref_window_widgets *pw,
-				int calling_state, options *opts)
+/* BEHAVIOR     :  It builds the notebook page for the codecs settings and
+ *                 add it to the notebook, default values are set from the
+ *                 options struct given as parameter.
+ * PRE          :  See init_pref_audio_codecs.
+ */
+static void init_pref_codecs_settings (GtkWidget *notebook, 
+				       GM_pref_window_widgets *pw,
+				       int calling_state, options *opts)
 {
   GtkWidget *frame, *label;
   GtkWidget *general_frame;
 
-  GtkWidget *menu1;  // For the Transmitted Video Size
-  GtkWidget *menu2;  // For the Transmitted Video Format
+  GtkWidget *menu1;  /* For the Transmitted Video Size */
+  GtkWidget *menu2;  /* For the Transmitted Video Format */
   GtkWidget *re_vq;
   GtkWidget *tr_fps;		
   GtkWidget *item;
@@ -942,7 +1054,6 @@ void init_pref_codecs_settings (GtkWidget *notebook,
   gtk_notebook_append_page (GTK_NOTEBOOK (audio_codecs_notebook),
 			    table, label);
 
-
   /*** Video Codecs Settings ***/
 
   frame = gtk_frame_new (_("Video Codecs Settings"));
@@ -1024,7 +1135,7 @@ void init_pref_codecs_settings (GtkWidget *notebook,
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);		
 
   gtk_signal_connect (GTK_OBJECT (pw->vid_tr), "toggled",
-		      GTK_SIGNAL_FUNC (vid_tr_changed), (gpointer) pw);
+		      GTK_SIGNAL_FUNC (video_transmission_option_changed_callback), (gpointer) pw);
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->vid_tr,
@@ -1138,20 +1249,11 @@ void init_pref_codecs_settings (GtkWidget *notebook,
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);		
 
   gtk_signal_connect (GTK_OBJECT (pw->vb), "toggled",
- 		      GTK_SIGNAL_FUNC (vb_changed), (gpointer) pw);
+ 		      GTK_SIGNAL_FUNC (video_bandwidth_limit_option_changed_callback), 
+		      (gpointer) pw);
 
-  if (opts->vb)
-    {
-      gtk_widget_set_sensitive (GTK_WIDGET (pw->tr_ub_label), FALSE);
-      gtk_widget_set_sensitive (GTK_WIDGET (pw->tr_vq_label), FALSE);
-      gtk_widget_set_sensitive (GTK_WIDGET (pw->tr_ub), FALSE);
-      gtk_widget_set_sensitive (GTK_WIDGET (pw->tr_vq), FALSE);
-    }
-  else
-    {
-      gtk_widget_set_sensitive (GTK_WIDGET (pw->video_bandwidth), FALSE);
-      gtk_widget_set_sensitive (GTK_WIDGET (pw->video_bandwidth_label), FALSE);
-    }
+  /* Update the sensitivity */
+  video_bandwidth_limit_option_changed_callback (NULL, pw);
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->vb,
@@ -1170,6 +1272,11 @@ void init_pref_codecs_settings (GtkWidget *notebook,
 }
 
 
+/* BEHAVIOR     :  It builds the notebook page for general settings and
+ *                 add it to the notebook, default values are set from the
+ *                 options struct given as parameter.
+ * PRE          :  See init_pref_audio_codecs.
+ */
 void init_pref_general (GtkWidget *notebook, GM_pref_window_widgets *pw,
 			int calling_state, options *opts)
 {
@@ -1231,7 +1338,7 @@ void init_pref_general (GtkWidget *notebook, GM_pref_window_widgets *pw,
 			_("Enter your first name"), NULL);
 
   gtk_signal_connect (GTK_OBJECT (pw->firstname), "changed",
-		      GTK_SIGNAL_FUNC (ldap_option_changed), (gpointer) pw);
+		      GTK_SIGNAL_FUNC (ldap_option_changed_callback), (gpointer) pw);
 
 
   /* Surname entry (LDAP) */
@@ -1254,7 +1361,7 @@ void init_pref_general (GtkWidget *notebook, GM_pref_window_widgets *pw,
 			_("Enter your last name"), NULL);
 
   gtk_signal_connect (GTK_OBJECT (pw->surname), "changed",
-		      GTK_SIGNAL_FUNC (ldap_option_changed), (gpointer) pw);
+		      GTK_SIGNAL_FUNC (ldap_option_changed_callback), (gpointer) pw);
 
 
   /* E-mail (LDAP) */
@@ -1277,7 +1384,7 @@ void init_pref_general (GtkWidget *notebook, GM_pref_window_widgets *pw,
 			_("Enter your e-mail address"), NULL);
 
   gtk_signal_connect (GTK_OBJECT (pw->mail), "changed",
-		      GTK_SIGNAL_FUNC (ldap_option_changed), (gpointer) pw);
+		      GTK_SIGNAL_FUNC (ldap_option_changed_callback), (gpointer) pw);
 
 
   /* Comment (LDAP) */
@@ -1300,7 +1407,7 @@ void init_pref_general (GtkWidget *notebook, GM_pref_window_widgets *pw,
 			_("Here you can fill in a comment about yourself for ILS directories"), NULL);
 
   gtk_signal_connect (GTK_OBJECT (pw->comment), "changed",
-		      GTK_SIGNAL_FUNC (ldap_option_changed), (gpointer) pw);
+		      GTK_SIGNAL_FUNC (ldap_option_changed_callback), (gpointer) pw);
 
   /* Location */
   label = gtk_label_new (_("Location:"));
@@ -1322,7 +1429,7 @@ void init_pref_general (GtkWidget *notebook, GM_pref_window_widgets *pw,
 			_("Where do you call from?"), NULL);
 
   gtk_signal_connect (GTK_OBJECT (pw->location), "changed",
-		      GTK_SIGNAL_FUNC (ldap_option_changed), (gpointer) pw);
+		      GTK_SIGNAL_FUNC (ldap_option_changed_callback), (gpointer) pw);
 
   /* Port Entry */
   label = gtk_label_new (_("Listen Port:"));
@@ -1350,8 +1457,13 @@ void init_pref_general (GtkWidget *notebook, GM_pref_window_widgets *pw,
 }
 
 
-void init_pref_advanced (GtkWidget *notebook, GM_pref_window_widgets *pw,
-			 int calling_state, options *opts)
+/* BEHAVIOR     :  It builds the notebook page for advanced settings and
+ *                 add it to the notebook, default values are set from the
+ *                 options struct given as parameter.
+ * PRE          :  See init_pref_audio_codecs.
+ */
+static void init_pref_advanced (GtkWidget *notebook, GM_pref_window_widgets *pw,
+				int calling_state, options *opts)
 {
   GtkWidget *frame;
   GtkWidget *general_frame;
@@ -1460,8 +1572,13 @@ void init_pref_advanced (GtkWidget *notebook, GM_pref_window_widgets *pw,
 }
 
 
-void init_pref_ldap (GtkWidget *notebook, GM_pref_window_widgets *pw,
-		     int calling_state, options *opts)
+/* BEHAVIOR     :  It builds the notebook page for ILS settings and
+ *                 add it to the notebook, default values are set from the
+ *                 options struct given as parameter.
+ * PRE          :  See init_pref_audio_codecs.
+ */
+static void init_pref_ldap (GtkWidget *notebook, GM_pref_window_widgets *pw,
+			    int calling_state, options *opts)
 {
   GtkWidget *general_frame;
   GtkWidget *frame;
@@ -1520,7 +1637,8 @@ void init_pref_ldap (GtkWidget *notebook, GM_pref_window_widgets *pw,
 			_("The ILS directory to register to"), NULL);
 
   gtk_signal_connect (GTK_OBJECT (pw->ldap_server), "changed",
-		      GTK_SIGNAL_FUNC (ldap_option_changed), (gpointer) pw);
+		      GTK_SIGNAL_FUNC (ldap_option_changed_callback), 
+		      (gpointer) pw);
 
 
   /* ILS port */
@@ -1542,7 +1660,8 @@ void init_pref_ldap (GtkWidget *notebook, GM_pref_window_widgets *pw,
 			_("The corresponding port: 389 is the standard port"), NULL);
 
   gtk_signal_connect (GTK_OBJECT (pw->ldap_port), "changed",
-		      GTK_SIGNAL_FUNC (ldap_option_changed), (gpointer) pw);
+		      GTK_SIGNAL_FUNC (ldap_option_changed_callback), 
+		      (gpointer) pw);
 
 
   /* Use ILS */ 
@@ -1554,7 +1673,8 @@ void init_pref_ldap (GtkWidget *notebook, GM_pref_window_widgets *pw,
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->ldap), (opts->ldap == 1));
 
   gtk_signal_connect (GTK_OBJECT (pw->ldap), "toggled",
-		      GTK_SIGNAL_FUNC (ldap_option_changed), (gpointer) pw);
+		      GTK_SIGNAL_FUNC (ldap_option_changed_callback), 
+		      (gpointer) pw);
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->ldap,
@@ -1568,8 +1688,14 @@ void init_pref_ldap (GtkWidget *notebook, GM_pref_window_widgets *pw,
 }
 
 
-void init_pref_gatekeeper (GtkWidget *notebook, GM_pref_window_widgets *pw,
-			   int calling_state, options *opts)
+/* BEHAVIOR     :  It builds the notebook page for GateKeeper settings and
+ *                 add it to the notebook, default values are set from the
+ *                 options struct given as parameter.
+ * PRE          :  See init_pref_audio_codecs.
+ */
+static void init_pref_gatekeeper (GtkWidget *notebook, 
+				  GM_pref_window_widgets *pw,
+				  int calling_state, options *opts)
 {
   GtkWidget *general_frame;
   GtkWidget *frame;
@@ -1629,7 +1755,7 @@ void init_pref_gatekeeper (GtkWidget *notebook, GM_pref_window_widgets *pw,
 			_("The Gatekeeper identifier."), NULL);
 
   gtk_signal_connect (GTK_OBJECT (pw->gk_id), "changed",
-		      GTK_SIGNAL_FUNC (gk_option_changed), (gpointer) pw);
+		      GTK_SIGNAL_FUNC (gatekeeper_option_changed_callback), (gpointer) pw);
 
 
   /* Gatekeeper Host */
@@ -1651,7 +1777,7 @@ void init_pref_gatekeeper (GtkWidget *notebook, GM_pref_window_widgets *pw,
 			_("The Gatekeeper host to register to."), NULL);
 
   gtk_signal_connect (GTK_OBJECT (pw->gk_host), "changed",
-		      GTK_SIGNAL_FUNC (gk_option_changed), (gpointer) pw);
+		      GTK_SIGNAL_FUNC (gatekeeper_option_changed_callback), (gpointer) pw);
 
 
   /* GK registering method */ 
@@ -1679,8 +1805,10 @@ void init_pref_gatekeeper (GtkWidget *notebook, GM_pref_window_widgets *pw,
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
 
-  gtk_signal_connect (GTK_OBJECT (GTK_OPTION_MENU (pw->gk)->menu), "deactivate",
-		      GTK_SIGNAL_FUNC (gk_option_changed), (gpointer) pw);
+  gtk_signal_connect (GTK_OBJECT (GTK_OPTION_MENU (pw->gk)->menu), 
+		      "deactivate",
+		      GTK_SIGNAL_FUNC (gatekeeper_option_changed_callback), 
+		      (gpointer) pw);
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->gk,
@@ -1693,8 +1821,13 @@ void init_pref_gatekeeper (GtkWidget *notebook, GM_pref_window_widgets *pw,
 }
 
 
-void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
-			int calling_state, options *opts)
+/* BEHAVIOR     :  It builds the notebook page for the device settings and
+ *                 add it to the notebook, default values are set from the
+ *                 options struct given as parameter.
+ * PRE          :  See init_pref_audio_codecs.
+ */
+static void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
+			       int calling_state, options *opts)
 {
   GtkWidget *general_frame;
   GtkWidget *frame;
@@ -1750,17 +1883,15 @@ void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
 
-  for (int i = pw->gw->audio_player_devices.GetSize () - 1 ; i >= 0; i--) 
-    {
-      if (pw->gw->audio_player_devices [i] != PString (opts->audio_player))
-	{
-	  audio_player_devices_list = g_list_prepend 
-	    (audio_player_devices_list, g_strdup (pw->gw->audio_player_devices [i]));
-	}
-     
-    }
+  for (int i = pw->gw->audio_player_devices.GetSize () - 1 ; i >= 0; i--) {
+    if (pw->gw->audio_player_devices [i] != PString (opts->audio_player)) {
+      audio_player_devices_list = g_list_prepend 
+	(audio_player_devices_list, g_strdup (pw->gw->audio_player_devices [i]));
+    }  
+  }
 
-  audio_player_devices_list = g_list_prepend (audio_player_devices_list, opts->audio_player);
+  audio_player_devices_list = 
+    g_list_prepend (audio_player_devices_list, opts->audio_player);
   gtk_combo_set_popdown_strings (GTK_COMBO (pw->audio_player), 
 				 audio_player_devices_list);
 
@@ -1769,7 +1900,7 @@ void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
 			_("Enter the audio player device to use"), NULL);
 
   gtk_signal_connect (GTK_OBJECT(GTK_COMBO (pw->audio_player)->entry), "changed",
-		      GTK_SIGNAL_FUNC (audio_mixer_changed), (gpointer) pw);
+		      GTK_SIGNAL_FUNC (audio_option_changed_callback), (gpointer) pw);
 
 
   /* Audio Recorder Device */
@@ -1785,16 +1916,13 @@ void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
 
-  for (int i = pw->gw->audio_recorder_devices.GetSize () - 1; i >= 0; i--) 
-    {
-      if (pw->gw->audio_recorder_devices [i] != PString (opts->audio_recorder))
-	{
-	  audio_recorder_devices_list = g_list_prepend 
-	    (audio_recorder_devices_list, 
-	     g_strdup (pw->gw->audio_recorder_devices [i]));
-	}
-     
-    }
+  for (int i = pw->gw->audio_recorder_devices.GetSize () - 1; i >= 0; i--) {
+    if (pw->gw->audio_recorder_devices [i] != PString (opts->audio_recorder)) {
+      audio_recorder_devices_list = g_list_prepend 
+	(audio_recorder_devices_list, 
+	 g_strdup (pw->gw->audio_recorder_devices [i]));
+    }  
+  }
 
   audio_recorder_devices_list = g_list_prepend (audio_recorder_devices_list, 
 						opts->audio_recorder);
@@ -1806,7 +1934,7 @@ void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
 			_("Enter the audio recorder device to use"), NULL);
 
   gtk_signal_connect (GTK_OBJECT(GTK_COMBO (pw->audio_recorder)->entry), "changed",
-		      GTK_SIGNAL_FUNC (audio_mixer_changed), (gpointer) pw);
+		      GTK_SIGNAL_FUNC (audio_option_changed_callback), (gpointer) pw);
     
 
   /* Audio Mixers */
@@ -1830,7 +1958,7 @@ void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
 			_("The audio mixer to use for player settings"), NULL);
 
   gtk_signal_connect (GTK_OBJECT (pw->audio_player_mixer), "changed",
-		      GTK_SIGNAL_FUNC (audio_mixer_changed), (gpointer) pw);
+		      GTK_SIGNAL_FUNC (audio_option_changed_callback), (gpointer) pw);
 
 
   label = gtk_label_new (_("Recorder Mixer:"));
@@ -1853,7 +1981,7 @@ void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
 			_("The audio mixer to use for recorder settings"), NULL);
 
   gtk_signal_connect (GTK_OBJECT (pw->audio_recorder_mixer), "changed",
-		      GTK_SIGNAL_FUNC (audio_mixer_changed), (gpointer) pw);
+		      GTK_SIGNAL_FUNC (audio_option_changed_callback), (gpointer) pw);
 
 
   /* Video device */
@@ -1879,15 +2007,16 @@ void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
  		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
  		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
   
-   for (int i = pw->gw->video_devices.GetSize () - 1; i >= 0; i--) 
-     {
-       if (pw->gw->video_devices [i] != PString (opts->video_device))
-	 video_devices_list = 
-	   g_list_prepend (video_devices_list, g_strdup (pw->gw->video_devices [i]));
-    }
+   for (int i = pw->gw->video_devices.GetSize () - 1; i >= 0; i--) {
+     if (pw->gw->video_devices [i] != PString (opts->video_device))
+       video_devices_list = 
+	 g_list_prepend (video_devices_list, 
+			 g_strdup (pw->gw->video_devices [i]));
+   }
    
    video_devices_list = g_list_prepend (video_devices_list, opts->video_device);
-   gtk_combo_set_popdown_strings (GTK_COMBO (pw->video_device), video_devices_list);
+   gtk_combo_set_popdown_strings (GTK_COMBO (pw->video_device), 
+				  video_devices_list);
    
    tip = gtk_tooltips_new ();
 
@@ -1895,8 +2024,9 @@ void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
  			_("Enter the video device to use"), NULL);
  
 
-  gtk_signal_connect (GTK_OBJECT (GTK_COMBO (pw->video_device)->entry), "changed",
- 		      GTK_SIGNAL_FUNC (vid_tr_changed), (gpointer) pw);
+  gtk_signal_connect (GTK_OBJECT (GTK_COMBO (pw->video_device)->entry), 
+		      "changed",
+ 		      GTK_SIGNAL_FUNC (video_transmission_option_changed_callback), (gpointer) pw);
 
   /* Video channel spin button */					
   label = gtk_label_new (_("Video Channel:"));
@@ -1919,10 +2049,11 @@ void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, video_channel,
-			_("The video channel number to use (camera, tv, ...)"), NULL);
+			_("The video channel number to use (camera, tv, ...)"), 
+			NULL);
 
   gtk_signal_connect (GTK_OBJECT (pw->video_channel_spin_adj), "value-changed",
-		      GTK_SIGNAL_FUNC (vid_tr_changed), (gpointer) pw);
+		      GTK_SIGNAL_FUNC (video_transmission_option_changed_callback), (gpointer) pw);
 
 
   /* The End */									
@@ -1931,12 +2062,8 @@ void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
   gtk_notebook_append_page (GTK_NOTEBOOK(notebook), general_frame, label);
 }
 
-/******************************************************************************/
 
-
-/******************************************************************************/
-/* Miscellaneous functions                                                    */
-/******************************************************************************/
+/* Miscellaneous functions */
 
 GtkWidget * add_button (gchar *lbl, GtkWidget *pixmap)
 {
@@ -1963,11 +2090,17 @@ GtkWidget * add_button (gchar *lbl, GtkWidget *pixmap)
 }
 
 
-void add_codec (GtkWidget *list, gchar *CodecName, gchar * Enabled)
+/* DESCRIPTION  :  / 
+ * BEHAVIOR     :  Add the codec (second parameter) to the codecs clist (first)
+ *                 and the right pixmap (Enabled/Disabled) following the third
+ *                 parameter. Also sets row data (1 for Enabled, O for not).
+ * PRE          :  First parameter should be a valid clist
+ */
+static void add_codec (GtkWidget *list, gchar *CodecName, gchar * Enabled)
 {
   GdkPixmap *yes, *no;
   GdkBitmap *mask_yes, *mask_no;
-  gchar *row_data;   // Do not make free, this is not a copy which is stored 
+  gchar *row_data;   /* Do not free, this is not a copy which is stored */ 
 
   
   row_data = (gchar *) g_malloc (3);
@@ -1984,184 +2117,184 @@ void add_codec (GtkWidget *list, gchar *CodecName, gchar * Enabled)
   data [0] = NULL;
   data [1] = CodecName;
 
-  if (!strcmp (CodecName, "LPC10"))
-    {
+  if (!strcmp (CodecName, "LPC10")) {
       data [2] = g_strdup (_("Okay"));
       data [3] = g_strdup ("3.46 kb");
-    }
+  }
 
-  if (!strcmp (CodecName, "MS-GSM"))
-    {
+  if (!strcmp (CodecName, "MS-GSM")) {
       data [2] = g_strdup (_("Good Quality"));
       data [3] = g_strdup ("13 kbits");
-    }
+  }
 
-  if (!strcmp (CodecName, "G.711-ALaw-64k"))
-    {
-      data [2] = g_strdup (_("Good Quality"));
-      data [3] = g_strdup ("64 kbits");
-    }
+  if (!strcmp (CodecName, "G.711-ALaw-64k")) {
+    data [2] = g_strdup (_("Good Quality"));
+    data [3] = g_strdup ("64 kbits");
+  }
 
-  if (!strcmp (CodecName, "G.711-uLaw-64k"))
-    {
-      data [2] = g_strdup (_("Good Quality"));
-      data [3] = g_strdup ("64 kbits");
-    }
+  if (!strcmp (CodecName, "G.711-uLaw-64k")) {
+    data [2] = g_strdup (_("Good Quality"));
+    data [3] = g_strdup ("64 kbits");
+  }
 
-  if (!strcmp (CodecName, "GSM-06.10"))
-    {
-      data [2] = g_strdup (_("Good Quality"));
-      data [3] = g_strdup ("16.5 kbits");
-    }
+  if (!strcmp (CodecName, "GSM-06.10")) {
+    data [2] = g_strdup (_("Good Quality"));
+    data [3] = g_strdup ("16.5 kbits");
+  }
 
 
   gtk_clist_append (GTK_CLIST (list), (gchar **) data);
   
-  // Set the appropriate pixmap
-  if (strcmp (Enabled, "1") == 0)
-    {
-      gtk_clist_set_pixmap (GTK_CLIST (list), 
+  /* Set the appropriate pixmap */
+  if (strcmp (Enabled, "1") == 0) {
+    gtk_clist_set_pixmap (GTK_CLIST (list), 
+			  GTK_CLIST (list)->rows - 1, 
+			  0, yes, mask_yes);
+    strcpy (row_data, "1");
+    gtk_clist_set_row_data (GTK_CLIST (list), 
 			    GTK_CLIST (list)->rows - 1, 
-			    0, yes, mask_yes);
-      strcpy (row_data, "1");
-      gtk_clist_set_row_data (GTK_CLIST (list), 
-			      GTK_CLIST (list)->rows - 1, 
-			      (gpointer) row_data);
-    }
-  else
-    {
-      gtk_clist_set_pixmap (GTK_CLIST (list), 
+			    (gpointer) row_data);
+  }
+  else {
+    gtk_clist_set_pixmap (GTK_CLIST (list), 
+			  GTK_CLIST (list)->rows - 1, 
+			  0, no, mask_no);
+    strcpy (row_data, "0");
+    gtk_clist_set_row_data (GTK_CLIST (list), 
 			    GTK_CLIST (list)->rows - 1, 
-			    0, no, mask_no);
-      strcpy (row_data, "0");
-      gtk_clist_set_row_data (GTK_CLIST (list), 
-			      GTK_CLIST (list)->rows - 1, 
-			      (gpointer) row_data);
-    }
+			    (gpointer) row_data);
+  }
   
-
   g_free (data [2]);
   g_free (data [3]);
 }
 
 
-void apply_options (options *opts, GM_pref_window_widgets *pw)
+/* BEHAVIOR     :  Apply the options given as parameter to the endpoint
+ *                 and soundcard and video4linux device and LDAP.
+ * PRE          :  A valid pointer to valid options and a valid pointer
+ *                 to GM_pref_window_widgets.
+ */
+static void apply_options (options *opts, GM_pref_window_widgets *pw)
 {
-  // opts has been updated when you call this function
+  /* opts has been updated when this function is called */
 
   GMH323EndPoint *endpoint;
   int vol_play = 0, vol_rec = 0;
 
   endpoint = MyApp->Endpoint ();
 
-  // Reinitialise the endpoint settings
-  // so that the opts structure of the EndPoint class
-  // is up to date.
+  /* Reinitialise the endpoint settings
+     so that the opts structure of the EndPoint class
+     is up to date. */
   endpoint->ReInitialise ();
 
-  // ILS is enabled and an option has changed : register
-  if ((opts->ldap) && (pw->ldap_changed))
-    {
-      // We register to the new ILS directory
-      GMILSClient *ils_client = (GMILSClient *) endpoint->get_ils_client ();
+  /* ILS is enabled and an option has changed : register */
+  if ((opts->ldap) && (pw->ldap_changed)) {
+    /* We register to the new ILS directory */
+    GMILSClient *ils_client = (GMILSClient *) endpoint->get_ils_client ();
+    
+    ils_client->ils_register ();
+    
+    pw->ldap_changed = 0;
+  }
 
-      ils_client->ils_register ();
+  /* ILS is disabled, and an option has changed : unregister */
+  if ((!opts->ldap) && (pw->ldap_changed)) {
+    /* We unregister to the new ILS directory */
+    GMILSClient *ils_client = (GMILSClient *) endpoint->get_ils_client ();
+    
+    ils_client->ils_unregister ();
+    
+    pw->ldap_changed = 0;
+  }
 
-      pw->ldap_changed = 0;
-    }
+  /* Change the audio mixer source */
+  if (pw->audio_mixer_changed) {
+    gchar *text;
+    
+    /* We set the new mixer in the object as data, because me do not want
+       to keep it in memory */
+    gtk_object_remove_data (GTK_OBJECT (pw->gw->adj_play), "audio_player_mixer");
+    gtk_object_set_data (GTK_OBJECT (pw->gw->adj_play), "audio_player_mixer", 
+			 g_strdup (opts->audio_player_mixer));
 
-  // ILS is disabled, and an option has changed : unregister
-  if ((!opts->ldap) && (pw->ldap_changed))
-    {
-      // We unregister to the new ILS directory
-      GMILSClient *ils_client = (GMILSClient *) endpoint->get_ils_client ();
+    gtk_object_remove_data (GTK_OBJECT (pw->gw->adj_rec), 
+			    "audio_recorder_mixer");
+    gtk_object_set_data (GTK_OBJECT (pw->gw->adj_rec), "audio_recorder_mixer", 
+			 g_strdup (opts->audio_recorder_mixer));
 
-      ils_client->ils_unregister ();
+    /* We are sure that those mixers are ok, it has been checked */
+    GM_volume_get (opts->audio_player_mixer, 0, &vol_play);
+    GM_volume_get (opts->audio_recorder_mixer, 1, &vol_rec);
 
-      pw->ldap_changed = 0;
-    }
-
-  // Change the audio mixer source
-  if (pw->audio_mixer_changed)
-    {
-      gchar *text;
-
-      // We set the new mixer in the object as data, because me do not want
-      // to keep it in memory
-      gtk_object_remove_data (GTK_OBJECT (pw->gw->adj_play), "audio_player_mixer");
-      gtk_object_set_data (GTK_OBJECT (pw->gw->adj_play), "audio_player_mixer", 
-			   g_strdup (opts->audio_player_mixer));
-
-      gtk_object_remove_data (GTK_OBJECT (pw->gw->adj_rec), "audio_recorder_mixer");
-      gtk_object_set_data (GTK_OBJECT (pw->gw->adj_rec), "audio_recorder_mixer", 
-			   g_strdup (opts->audio_recorder_mixer));
-
-      // We are sure that those mixers are ok, it has been checked
-      GM_volume_get (opts->audio_player_mixer, 0, &vol_play);
-      GM_volume_get (opts->audio_recorder_mixer, 1, &vol_rec);
-
-      gtk_adjustment_set_value (GTK_ADJUSTMENT (pw->gw->adj_play),
-				 vol_play / 257);
-      gtk_adjustment_set_value (GTK_ADJUSTMENT (pw->gw->adj_rec),
-				 vol_rec / 257);
+    gtk_adjustment_set_value (GTK_ADJUSTMENT (pw->gw->adj_play),
+			      vol_play / 257);
+    gtk_adjustment_set_value (GTK_ADJUSTMENT (pw->gw->adj_rec),
+			      vol_rec / 257);
        
-      // Set recording source and set micro to record
-      MyApp->Endpoint()->SetSoundChannelPlayDevice(opts->audio_player);
-      MyApp->Endpoint()->SetSoundChannelRecordDevice(opts->audio_recorder);
+    /* Set recording source and set micro to record */
+    MyApp->Endpoint()->SetSoundChannelPlayDevice(opts->audio_player);
+    MyApp->Endpoint()->SetSoundChannelRecordDevice(opts->audio_recorder);
 
-      /* Translators: This is shown in the history. */
-      text = g_strdup_printf (_("Set Audio player device to %s"), opts->audio_player);
-      GM_log_insert (pw->gw->log_text, text);
-      g_free (text);
+    /* Translators: This is shown in the history. */
+    text = g_strdup_printf (_("Set Audio player device to %s"), 
+			    opts->audio_player);
+    GM_log_insert (pw->gw->log_text, text);
+    g_free (text);
 
-      /* Translators: This is shown in the history. */
-      text = g_strdup_printf (_("Set Audio recorder device to %s"), 
-				     opts->audio_recorder);
-      GM_log_insert (pw->gw->log_text, text);
-      g_free (text);
-
-      GM_set_recording_source (opts->audio_recorder_mixer, 0); 
-  
-      pw->audio_mixer_changed = 0;
-    }
-
-
-  if (pw->vid_tr_changed)
-    {
-      // kept for future changements in GM.
-      pw->vid_tr_changed = 0;
-    }
+    /* Translators: This is shown in the history. */
+    text = g_strdup_printf (_("Set Audio recorder device to %s"), 
+			    opts->audio_recorder);
+    GM_log_insert (pw->gw->log_text, text);
+    g_free (text);
+    
+    GM_set_recording_source (opts->audio_recorder_mixer, 0); 
+    
+    pw->audio_mixer_changed = 0;
+  }
 
 
-  // Unregister from the Gatekeeper, if any, and if
-  // it is needed
-  if ((MyApp->Endpoint()->Gatekeeper () != NULL) && (pw->gk_changed) && (!opts->gk))
+  if (pw->vid_tr_changed) {
+    /* kept for future changements in GM. */
+    pw->vid_tr_changed = 0;
+  }
+
+
+  /* Unregister from the Gatekeeper, if any, and if
+     it is needed */
+  if ((MyApp->Endpoint()->Gatekeeper () != NULL) 
+      && (pw->gk_changed) && (!opts->gk))
     MyApp->Endpoint()->RemoveGatekeeper ();
 
-  // Register to the gatekeeper
-  if ((opts->gk) && (pw->gk_changed))
-    {
-      MyApp->Endpoint()->GatekeeperRegister ();
-      pw->gk_changed = 0;
-    }
+  /* Register to the gatekeeper */
+  if ((opts->gk) && (pw->gk_changed)) {
+    MyApp->Endpoint()->GatekeeperRegister ();
+    pw->gk_changed = 0;
+  }
 
-  // Reinitialise the capabilities
-  if (pw->capabilities_changed)
-    {
-      MyApp->Endpoint ()->RemoveAllCapabilities ();
-      MyApp->Endpoint ()->AddAudioCapabilities ();
-      MyApp->Endpoint ()->AddVideoCapabilities (opts->video_size);
+  /* Reinitialise the capabilities */
+  if (pw->capabilities_changed) {
+    MyApp->Endpoint ()->RemoveAllCapabilities ();
+    MyApp->Endpoint ()->AddAudioCapabilities ();
+    MyApp->Endpoint ()->AddVideoCapabilities (opts->video_size);
+    
+    pw->capabilities_changed = 0;
+  }
 
-      pw->capabilities_changed = 0;
-    }
+  if (opts->video_preview) {
+    /* it will only be set to active, if it is not already and start the
+       preview */
+    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->gw->preview_button), 
+				  TRUE);
+  }
+  else {
+    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->gw->preview_button), 
+				  FALSE);
+  }
 
-  if (opts->video_preview)
-    // it will only be set to active, if it is not already
-    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->gw->preview_button), TRUE);
-  else
-    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->gw->preview_button), FALSE);
 
-  // Show / Hide notebook and / or statusbar
+  /* Show / Hide notebook and / or statusbar */
   if ( (!(opts->show_notebook)) 
        && (GTK_WIDGET_VISIBLE (GTK_WIDGET (pw->gw->main_notebook))) )
     gtk_widget_hide_all (pw->gw->main_notebook);
@@ -2185,7 +2318,4 @@ void apply_options (options *opts, GM_pref_window_widgets *pw)
   if ( (opts->show_quickbar)
        && (!(GTK_WIDGET_VISIBLE (GTK_WIDGET (pw->gw->quickbar_frame)))) )
     gtk_widget_show_all (pw->gw->quickbar_frame);
-
 }
-
-/******************************************************************************/

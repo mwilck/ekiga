@@ -264,7 +264,7 @@ void GM_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
   /* Build the interface */
   GM_main_interface_init (gw, opts);
   GM_ldap_init (gw, lw, opts);
-  GM_preferences_init (0, gw, pw, opts);
+  gnomemeeting_preferences_init (0, gw, pw, opts);
   GM_menu_init (gm, gw, pw);
   GM_toolbar_init (gm, gw, pw);	
 
