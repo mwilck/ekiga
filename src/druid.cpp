@@ -202,7 +202,7 @@ gm_druid_video_test_button_clicked_cb (GtkWidget *w,
   gchar *video_recorder = NULL;
   GmDruidWindow *dw = NULL;
 
-  dw = (GmDruidWindow *)dw;
+  dw = (GmDruidWindow *)data;
 
   gm_druid_get_all_data (dw, name, mail, con_type, audio_manager, player,
 			 recorder, video_manager, video_recorder);
