@@ -923,8 +923,8 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
     
   /* Remote Name and application */
   utf8_app = gnomemeeting_get_utf8 (gnomemeeting_pstring_cut (app));
-  utf8_name = gnomemeeting_get_utf8 (gnomemeeting_pstring_cut (name));
-
+  
+  utf8_name = gnomemeeting_get_utf8 (name);
 
   /* Update the history and status bar */
   msg = g_strdup_printf (_("Call from %s using %s"), 

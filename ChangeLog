@@ -1,5 +1,13 @@
 2003-10-09 Damien Sandras  <dsandras@seconix.com>
 
+	* src/endpoint.cpp: Display full information (caller ID and IP + remote
+	user name) when displaying the incoming call popup.
+	
+	* src/main_window.cpp: Made sure the bonobo callbacks are protected
+	with gdk_threads_* stuff.
+	
+2003-10-09 Damien Sandras  <dsandras@seconix.com>
+
 	* src/endpoint.cpp: Fixed bug in previous commit.
 	
 2003-10-09 Damien Sandras  <dsandras@seconix.com>

@@ -446,15 +446,21 @@ gnomemeeting_new_event (BonoboListener    *listener,
      /* this function will store a copy of text */
     if (MyApp->Endpoint ()->GetCallingState () == 0) {
 
+      gdk_threads_enter ();
       gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), 
 			  argv [i + 1]);
+      gdk_threads_leave ();
     }
-    
+
+    gdk_threads_enter ();
     connect_cb (NULL, NULL);
+    gdk_threads_leave ();
   }
   else {
 
-    gnomemeeting_warning_dialog (GTK_WINDOW (gm), _("Cannot run GnomeMeeting"), _("GnomeMeeting is already running, if you want it to call a given callto URL, please use \"gnomemeeting -c URL\"."));
+    gdk_threads_enter ();
+    gnomemeeting_warning_dialog (GTK_WINDOW (gm), _("Cannot run GnomeMeeting"), _("GnomeMeeting is already running, if you want it to call a given callto or h323 URL, please use \"gnomemeeting -c URL\"."));
+    gdk_threads_leave ();
   }
 }
 
