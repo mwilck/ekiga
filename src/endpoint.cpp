@@ -885,10 +885,12 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   PString forward_host;
   PString name = connection.GetRemotePartyName ();
   PString app = connection.GetRemoteApplication ();
-
+  PString number = connection.GetRemotePartyNumber ();
+  
   gchar *utf8_name = NULL;
   gchar *utf8_app = NULL;
-
+  gchar *utf8_number = NULL;
+  
   gchar *forward_host_gconf = NULL;
   IncomingCallMode icm = AVAILABLE;
   BOOL busy_forward = FALSE;
@@ -923,13 +925,19 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
     
   /* Remote Name and application */
   utf8_app = gnomemeeting_get_utf8 (gnomemeeting_pstring_cut (app));
-  
+  utf8_number = gnomemeeting_get_utf8 (number);
   utf8_name = gnomemeeting_get_utf8 (name);
 
   /* Update the history and status bar */
-  msg = g_strdup_printf (_("Call from %s using %s"), 
-			 (const char *) utf8_name,
-			 (const char *) utf8_app);
+  if (!number.IsEmpty ())
+      msg = g_strdup_printf (_("Call from %s -%s- using %s"), 
+			     (const char *) utf8_name,
+			     (const char *) utf8_number,
+			     (const char *) utf8_app);
+  else
+    msg = g_strdup_printf (_("Call from %s using %s"), 
+			   (const char *) utf8_name,
+			   (const char *) utf8_app);
 
   gnomemeeting_threads_enter ();
   gnomemeeting_statusbar_push (gw->statusbar, msg);
@@ -1080,6 +1088,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   g_free (forward_host_gconf);
   g_free (utf8_name);
   g_free (utf8_app);
+  g_free (utf8_number);
 
   return TRUE;
 }
