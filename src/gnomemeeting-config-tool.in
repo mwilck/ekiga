@@ -6,8 +6,7 @@ TEXTDOMAIN=gnomemeeting
 
 clean () {
 
-    if ps hu -C gnomemeeting | grep $USER &>/dev/null 2>&1; then
-    gettext "Sorry, this script won't work while GnomeMeeting is running"; echo
+    if ps hu -C gnomemeeting | grep -v gnomemeeting-config-tool | grep $USER &>/dev/null 2>&1; then gettext "Sorry, this script won't work while GnomeMeeting is running"; echo
 
     else
 
