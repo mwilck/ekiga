@@ -1,4 +1,21 @@
-2003-12-01 Damien Sandras  <dsandras@seconix.com>
+2003-12-03 Damien Sandras  <dsandras@seconix.com>
+
+	* sounds/busytone.wav, sounds/gnomemeeting.wav, 
+	sounds/ringtone.wav: Improved sounds.
+	
+	* src/endpoint.cpp: Play busy sounds before updating the GUI
+	for the end of calls.
+	
+	* src/gnomemeeting.cpp: Fixed ClearCall message.
+	
+	* src/pref_window.cpp: Added support for "Play" button and "Choose
+	a file to play" button.
+	
+	* src/sound_handling.cpp: A GMSoundEvent can now be identified
+	by its name (last part of the GConf key) or by the sound filename
+	(be it relative or full).
+	
+2003-12-02 Damien Sandras  <dsandras@seconix.com>
 
 	* configure.in: Incremented SCHEMA_AGE.
 

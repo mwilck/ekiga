@@ -187,20 +187,27 @@ void GMSoundEvent::Main ()
   device = gconf_get_string (AUDIO_DEVICES_KEY "output_device");
 
   enable_event_gconf_key = PString (SOUND_EVENTS_KEY) + "enable_" + event;
-  event_gconf_key = PString (SOUND_EVENTS_KEY) + event;
-  
-  if (gconf_get_bool ((gchar *) (const char *) enable_event_gconf_key)) {
-
+  if (event.Find ("/") == P_MAX_INDEX) {
+    
+    event_gconf_key = PString (SOUND_EVENTS_KEY) + event;
     sound_file = gconf_get_string ((gchar *) (const char *) event_gconf_key);
-    psound_file = PString (sound_file);
+  }
+  
+  if (!sound_file ||
+      gconf_get_bool ((gchar *) (const char *) enable_event_gconf_key)) {
 
+    if (!sound_file)    
+      sound_file = g_strdup ((const char *) event);
+   
+    psound_file = PString (sound_file);    
+    
     if (psound_file.Find ("/") == P_MAX_INDEX)
       psound_file = "/usr/share/sounds/gnomemeeting/" + psound_file;
-
+    
     PWAVFile wav (psound_file, PFile::ReadOnly);
-
+ 
     if (wav.IsValid ()) {
-
+      
       channel =
 	PSoundChannel::CreateOpenedChannel (plugin, device,
 					    PSoundChannel::Player, 
@@ -211,7 +218,10 @@ void GMSoundEvent::Main ()
 
       if (channel) {
 
+	channel->SetBuffers (640, 2);
+	
 	buffer.SetSize (wav.GetDataLength ());
+	memset (buffer.GetPointer (), '0', buffer.GetSize ());
 	wav.Read (buffer.GetPointer (), wav.GetDataLength ());
       
 	sound = buffer;
@@ -221,10 +231,9 @@ void GMSoundEvent::Main ()
 	delete (channel);
       }
     }
-      
-    g_free (sound_file);
   }
-  
+
+  g_free (sound_file);
   g_free (device);
   g_free (plugin);
 }

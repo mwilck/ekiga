@@ -163,7 +163,10 @@ GMH323EndPoint::MakeCallLocked (const PString & call_addr,
   else {
     
     OutgoingCallTimer.Stop ();
+
+    sound_event_mutex.Wait ();
     GMSoundEvent ("busy_tone_sound");
+    sound_event_mutex.Signal ();
   }
   
   return con;
@@ -1213,6 +1216,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   gnomemeeting_statusbar_flash (gw->statusbar, msg_reason);
   gnomemeeting_threads_leave ();
 
+  
   g_free (utf8_app);
   g_free (utf8_name);
   g_free (utf8_url);  
@@ -1220,6 +1224,19 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   if (not_current) 
     return;
+
+  
+  /* Stop the Timers */
+  NoAnswerTimer.Stop ();
+  CallPendingTimer.Stop (); 
+  OutgoingCallTimer.Stop ();
+
+  
+  /* Play busy tone */
+  sound_event_mutex.Wait ();
+  GMSoundEvent ("busy_tone_sound");
+  sound_event_mutex.Signal ();
+
   
   gnomemeeting_threads_enter ();
   gtk_label_set_text (GTK_LABEL (gw->remote_name), "");
@@ -1232,12 +1249,6 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   }
   gnomemeeting_threads_leave ();
   
-
-  /* Stop the Timers */
-  NoAnswerTimer.Stop ();
-  CallPendingTimer.Stop (); 
-  OutgoingCallTimer.Stop ();
-
   
   /* No need to do all that if we are simply receiving an incoming call
      that was rejected because of DND */
@@ -1297,10 +1308,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   gnomemeeting_main_window_update_sensitivity (GMH323EndPoint::Standby);
   gnomemeeting_addressbook_update_menu_sensitivity ();
   gnomemeeting_threads_leave ();
-
   
-  /* Play busy tone */
-  GMSoundEvent ("busy_tone_sound");
   gnomemeeting_sound_daemons_resume ();
 
   
@@ -2110,8 +2118,8 @@ GMH323EndPoint::OnCallPending (PTimer &,
     sound_event_mutex.Signal ();
   }
 
-  
-  CallPendingTimer.RunContinuous (PTimeInterval (0, 1));
+  if (CallPendingTimer.IsRunning ())
+    CallPendingTimer.RunContinuous (PTimeInterval (0, 1));
 }
 
 
@@ -2123,8 +2131,8 @@ GMH323EndPoint::OnOutgoingCall (PTimer &,
   GMSoundEvent ("ring_tone_sound");
   sound_event_mutex.Signal ();
 
-  
-  OutgoingCallTimer.RunContinuous (PTimeInterval (0, 3));
+  if (OutgoingCallTimer.IsRunning ())
+    OutgoingCallTimer.RunContinuous (PTimeInterval (0, 3));
 }
 
 

@@ -98,10 +98,10 @@ static void codecs_list_fixed_toggled (GtkCellRendererToggle *,
 				       gchar *, 
 				       gpointer);
 
-static void video_image_browse_clicked (GtkWidget *,
-					gpointer);
+static void browse_button_clicked_cb (GtkWidget *,
+				      gpointer);
 
-static void file_selector_clicked (GtkWidget *,
+static void file_selector_clicked (GtkFileSelection *,
 				   gpointer);
 
 static void gnomemeeting_init_pref_window_general (GtkWidget *,
@@ -365,32 +365,31 @@ static void codecs_list_info_button_clicked_callback (GtkWidget *widget,
 
 /* DESCRIPTION  :  This callback is called when the user clicks
  *                 on a button of the file selector.
- * BEHAVIOR     :  It sets the selected filename in the video_image gconf key.
+ * BEHAVIOR     :  It sets the selected filename in the good entry (given
+ *                 as data of the object because of the bad API).
  * PRE          :  data = the file selector.
  */
 static void  
-file_selector_clicked (GtkWidget *b, gpointer data) 
+file_selector_clicked (GtkFileSelection *b, gpointer data) 
 {
-  GConfClient *client = NULL;
   gchar *filename = NULL;
 
-  client = gconf_client_get_default ();
   
-  filename = (gchar *)
-    gtk_file_selection_get_filename (GTK_FILE_SELECTION (data));
-  
-  gconf_client_set_string (client, VIDEO_DEVICES_KEY "image",
-			   filename, NULL);
+  filename =
+    (gchar *) gtk_file_selection_get_filename (GTK_FILE_SELECTION (data));
+
+  gtk_entry_set_text (GTK_ENTRY (g_object_get_data (G_OBJECT (data), "entry")),
+		      filename);
 }
 
 
 /* DESCRIPTION  :  This callback is called when the user clicks
- *                 on the browse button.
+ *                 on the browse button (in the video devices or sound events).
  * BEHAVIOR     :  It displays the file selector widget.
  * PRE          :  /
  */
 static void
-video_image_browse_clicked (GtkWidget *b, gpointer data)
+browse_button_clicked_cb (GtkWidget *b, gpointer data)
 {
   GtkWidget *selector = NULL;
 
@@ -398,6 +397,10 @@ video_image_browse_clicked (GtkWidget *b, gpointer data)
 
   gtk_widget_show (selector);
 
+  /* FIX ME: Ugly hack cause the file selector API is not good and I don't
+     want to use global variables */
+  g_object_set_data (G_OBJECT (selector), "entry", (gpointer) data);
+    
   g_signal_connect (G_OBJECT (GTK_FILE_SELECTION (selector)->ok_button),
 		    "clicked",
 		    G_CALLBACK (file_selector_clicked),
@@ -537,6 +540,14 @@ sound_event_clicked_cb (GtkTreeSelection *selection,
       g_free (sound_event);
     }
   }
+}
+
+
+static void
+sound_event_play_clicked_cb (GtkWidget *b,
+			     gpointer data)
+{
+  GMSoundEvent ((const char *) gtk_entry_get_text (GTK_ENTRY (data)));
 }
 
 
@@ -1114,8 +1125,19 @@ gnomemeeting_init_pref_window_sound_events (GtkWidget *window,
   button = gtk_button_new_with_label (_("Choose a file to play"));
   gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 2);
 
+  g_signal_connect (G_OBJECT (button), "clicked",
+		    G_CALLBACK (browse_button_clicked_cb),
+		    (gpointer) entry);
+
+  button = gtk_button_new_with_label (_("Play"));
+  gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 2);
+  
   g_signal_connect (G_OBJECT (selection), "changed",
 		    G_CALLBACK (sound_event_clicked_cb),
+		    (gpointer) entry);
+  
+  g_signal_connect (G_OBJECT (button), "clicked",
+		    G_CALLBACK (sound_event_play_clicked_cb),
 		    (gpointer) entry);
 
   g_signal_connect (G_OBJECT (entry), "changed",
@@ -1379,8 +1401,8 @@ gnomemeeting_init_pref_window_video_devices (GtkWidget *window,
                     GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
 
   g_signal_connect (G_OBJECT (button), "clicked",
-		    G_CALLBACK (video_image_browse_clicked),
-		    entry);
+		    G_CALLBACK (browse_button_clicked_cb),
+		    (gpointer) entry);
 
 
   /* That button will refresh the devices list */
