@@ -63,9 +63,8 @@ entry_changed (GtkEditable  *e,
   current_value = gconf_client_get_string (GCONF_CLIENT (client), key, NULL);
 
   if (!current_value 
-      || (strcmp (gtk_entry_get_text (GTK_ENTRY (e)), "") &&
-	  strcmp (current_value, gtk_entry_get_text (GTK_ENTRY (e))))) {
-  
+      || strcmp (current_value, gtk_entry_get_text (GTK_ENTRY (e)))) {
+
     gconf_client_set_string (GCONF_CLIENT (client),
 			     key,
 			     gtk_entry_get_text (GTK_ENTRY (e)),
@@ -92,7 +91,7 @@ entry_changed_nt (GConfClient *client,
     e = GTK_WIDGET (data);
     current_value = (gchar *) gconf_value_get_string (entry->value);
 
-    if (current_value && strcmp (current_value, "")
+    if (current_value
 	&& strcmp (current_value, gtk_entry_get_text (GTK_ENTRY (e)))) {
 
       g_signal_handlers_block_matched (G_OBJECT (e),

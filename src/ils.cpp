@@ -78,12 +78,11 @@ GMILSClient::~GMILSClient ()
 }
 
 
-BOOL GMILSClient::CheckFieldsConfig ()
+BOOL GMILSClient::CheckFieldsConfig (BOOL registering)
 {
   gchar *firstname = NULL;
   gchar *surname = NULL;
   gchar *mail = NULL;
-  bool registering = TRUE;
   bool no_error = TRUE;
 
   gnomemeeting_threads_enter ();
@@ -99,11 +98,6 @@ BOOL GMILSClient::CheckFieldsConfig ()
     gconf_client_get_string (GCONF_CLIENT (client),
 			     PERSONAL_DATA_KEY "mail",
 			     NULL);
-  
-  registering =
-    gconf_client_get_bool (GCONF_CLIENT (client),
-			   LDAP_KEY "register",
-			   NULL);
   gnomemeeting_threads_leave ();
 
 
@@ -113,7 +107,10 @@ BOOL GMILSClient::CheckFieldsConfig ()
 	|| (mail == NULL) || (!strcmp (mail, ""))) {
       
       /* No need to display that for unregistering */
+      gnomemeeting_threads_enter ();
       gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Invalid parameters"), _("Please provide your first name and e-mail in the Personal Data section in order to be able to register to the user directory."));
+      gconf_client_set_bool (client, LDAP_KEY "register", FALSE, NULL);
+      gnomemeeting_threads_leave ();
       
       no_error = FALSE;
     }
@@ -177,6 +174,7 @@ void GMILSClient::Modify ()
 
 void GMILSClient::ILSOperation (Operation operation)
 {
+  BOOL registering = TRUE;
   bool no_error = TRUE;
   LDAP *ldap = NULL; 
   xmlDocPtr xp = NULL; 
@@ -197,12 +195,19 @@ void GMILSClient::ILSOperation (Operation operation)
   struct timeval time_limit = {10, 0};
 
 
-  if (operation == ILS_REGISTER)
+  if (operation == ILS_REGISTER) {
+    
     xml_filename = DATADIR "/gnomemeeting/xdap/ils_nm_reg.xml";
-  if (operation == ILS_UNREGISTER)
+    registering = TRUE;
+  } else if (operation == ILS_UNREGISTER) {
+    
     xml_filename = DATADIR "/gnomemeeting/xdap/ils_nm_unreg.xml";
-  if (operation == ILS_UPDATE)
+    registering = FALSE;
+  } else if (operation == ILS_UPDATE) {
+    
     xml_filename = DATADIR "/gnomemeeting/xdap/ils_nm_mod.xml";
+    registering = TRUE;
+  }
 
 
   if (CheckServerConfig ()) {
@@ -266,7 +271,7 @@ void GMILSClient::ILSOperation (Operation operation)
     /* all successful, now process the xml ldap elements */
     else {
 
-      bool ok = CheckFieldsConfig ();
+      bool ok = CheckFieldsConfig (registering);
      
       /* If all fields are present, then we continue further,
 	 otherwise an error dialog will be displayed */

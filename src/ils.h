@@ -118,8 +118,8 @@ protected:
 
 
   /* Checks if the fields required for registering are present, if not
-     displays a popup and returns FALSE */
-  BOOL CheckFieldsConfig (void);
+     displays a popup and returns FALSE if the user wanted to register */
+  BOOL CheckFieldsConfig (BOOL);
 
   /* Checks if the server fields required for registering are present, if not
      displays a popup and returns FALSE */

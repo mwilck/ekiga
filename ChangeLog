@@ -1,3 +1,11 @@
+2003-10-19 Damien Sandras  <dsandras@seconix.com>
+
+	* lib/gconf_widgets_extensions.c: Fixed bug. Allow to set empty
+	GConf strings.
+
+	* src/ils.cpp, src/ils.h: Disable ILS registering if ILS fields
+	are missing. Protect the popup around mutexes.
+	
 2003-10-18 Damien Sandras  <dsandras@seconix.com>
 
 	* NEWS: Updated with CVS news.
