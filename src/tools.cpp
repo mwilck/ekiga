@@ -44,6 +44,8 @@
 #include "callbacks.h"
 #include "ldap_window.h"
 #include "misc.h"
+
+#include "gconf_widgets_extensions.h"
 #include "stock-icons.h"
 
 
@@ -110,6 +112,75 @@ dnd_drag_data_get_cb (GtkWidget *tree_view,
 
 /* The functions */
 void
+gnomemeeting_calls_history_window_populate ()
+{
+  GtkTreeIter iter;
+  GtkListStore *list_store = NULL;
+
+  gchar *gconf_key = NULL;
+  gchar **call_data = NULL;
+  
+  GSList *calls_list = NULL;
+
+  GmCallsHistoryWindow *chw = NULL;
+
+  chw = GnomeMeeting::Process ()->GetCallsHistoryWindow ();
+
+  for (int i = 0 ; i < 3 ; i++) {
+    
+    switch (i) {
+
+    case 0:
+      list_store = chw->received_calls_list_store;
+      gconf_key =
+	g_strdup (USER_INTERFACE_KEY "calls_history_window/received_calls_history");
+      break;
+    case 1:
+      list_store = chw->given_calls_list_store;
+      gconf_key =
+	g_strdup (USER_INTERFACE_KEY "calls_history_window/placed_calls_history");
+      break;
+    case 2:
+      list_store = chw->missed_calls_list_store;
+      gconf_key =
+	g_strdup (USER_INTERFACE_KEY "calls_history_window/missed_calls_history");
+      break;
+    }
+
+    gtk_list_store_clear (list_store);
+    
+    calls_list = gconf_get_string_list (gconf_key);
+
+    while (calls_list && calls_list->data) {
+      
+      call_data = g_strsplit ((char *) calls_list->data, "|", 0);
+      
+      if (call_data) {
+	
+	gtk_list_store_append (list_store, &iter);
+	gtk_list_store_set (list_store,
+			    &iter,
+			    0, call_data [0],
+			    1, call_data [1],
+			    2, call_data [2],
+			    3, call_data [3],
+			    4, call_data [4],
+			    5, call_data [5],
+			    -1);
+      }
+      
+      g_strfreev (call_data);
+
+      calls_list = g_slist_next (calls_list);
+    }
+    
+    g_free (gconf_key);
+    g_slist_free (calls_list);
+  }
+}
+
+
+void
 gnomemeeting_calls_history_window_add_call (int i,
 					    const char *remote_user,
 					    const char *ip,
@@ -117,54 +188,59 @@ gnomemeeting_calls_history_window_add_call (int i,
 					    const char *reason,
 					    const char *software)
 {
-  GtkListStore *list_store = NULL;
-  GtkTreeIter iter;
+  PString time;
 
-  gchar *utf8_time = NULL;
-
-  int n = 0;
+  gchar *call_time = NULL;
+  gchar *gconf_key = NULL;
+  gchar *call_data = NULL;
   
-  GmCallsHistoryWindow *chw = NULL;
-
-  chw = GnomeMeeting::Process ()->GetCallsHistoryWindow ();
+  GSList *calls_list = NULL;
+  GSList *tmp = NULL;
+  
+  time = PTime ().AsString ("www dd MMM, hh:mm:ss");
+  call_time = gnomemeeting_from_iso88591_to_utf8 (time);
   
   switch (i) {
 
   case 0:
-    list_store = chw->received_calls_list_store;
+    gconf_key =
+      g_strdup (USER_INTERFACE_KEY "calls_history_window/received_calls_history");
     break;
   case 1:
-    list_store = chw->given_calls_list_store;
+    gconf_key =
+      g_strdup (USER_INTERFACE_KEY "calls_history_window/placed_calls_history");
     break;
   case 2:
-    list_store = chw->missed_calls_list_store;
+    gconf_key =
+      g_strdup (USER_INTERFACE_KEY "calls_history_window/missed_calls_history");
     break;
   }
 
-  n = gtk_tree_model_iter_n_children (GTK_TREE_MODEL (list_store), NULL);
+  
+  call_data =
+    g_strdup_printf ("%s|%s|%s|%s|%s|%s",
+		     call_time ? call_time : "",
+		     remote_user ? remote_user : "",
+		     ip ? ip : "",
+		     duration ? duration : "",
+		     reason ? reason : "",
+		     software ? software : "");
+  
+  calls_list = gconf_get_string_list (gconf_key);
+  calls_list = g_slist_append (calls_list, (gpointer) call_data);
 
+  while (g_slist_length (calls_list) > 100) {
 
-  if (n == 0
-      || gtk_tree_model_iter_nth_child (GTK_TREE_MODEL (list_store),
-					&iter, NULL, n - 1)) {
+    tmp = g_slist_nth (calls_list, 0);
+    calls_list = g_slist_remove_link (calls_list, tmp);
 
-    gtk_list_store_append (list_store, &iter);
-
-    utf8_time = 
-      gnomemeeting_from_iso88591_to_utf8 (PTime ().AsString ("www dd MMM, hh:mm:ss"));
-
-    /* The "s" is for "seconds" */
-    gtk_list_store_set (list_store, &iter,
-			0, utf8_time,
-			1, remote_user ? remote_user : "",
-			2, ip ? ip : "",
-			3, duration ? duration : "",
-			4, reason ? reason : "",
-			5, software ? software : "",
-			-1);
-
-    g_free (utf8_time);
+    g_slist_free_1 (tmp);
   }
+  
+  gconf_set_string_list (gconf_key, calls_list);
+  
+  g_free (gconf_key);
+  g_slist_free (calls_list);
 }
 
 
@@ -324,6 +400,11 @@ gnomemeeting_calls_history_window_new (GmCallsHistoryWindow *chw)
 			    G_CALLBACK (gtk_widget_hide_on_delete),
 			    (gpointer) window);
 
+  
+  /* Fill in the window with old calls */
+  gnomemeeting_calls_history_window_populate ();
+
+  
   gtk_widget_show_all (GTK_WIDGET (GTK_DIALOG (window)->vbox));
   
   return window;

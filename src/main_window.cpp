@@ -796,15 +796,17 @@ gnomemeeting_main_window_enable_statusbar_progress (gboolean i)
 void gnomemeeting_dialpad_event (const char d)
 {
   GMH323EndPoint *endpoint = NULL;
+  H323Connection *connection = NULL;
 #ifdef HAS_IXJ
   GMLid *lid = NULL;
 #endif
   
-  char dtmf;
-  
   PString url;
   PString new_url;
 
+  char dtmf = d;
+  gchar *msg = NULL;
+  
   GmWindow *gw = NULL;
 
   gw = GnomeMeeting::Process ()->GetMainWindow ();
@@ -812,13 +814,11 @@ void gnomemeeting_dialpad_event (const char d)
 
   url = gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry)); 
 
-  /* Replace the * by a . */
-  if (d == '*') 
-    dtmf = '.';
-  else
-    dtmf = d;
-
   if (endpoint->GetCallingState () == GMH323EndPoint::Standby) {
+
+    /* Replace the * by a . */
+    if (dtmf == '*') 
+      dtmf = '.';
 
     new_url = PString (url) + dtmf;
     gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), new_url);
@@ -826,7 +826,7 @@ void gnomemeeting_dialpad_event (const char d)
   else if (endpoint->GetCallingState () == GMH323EndPoint::Connected) {
             
     gdk_threads_leave ();
-    H323Connection *connection = 
+    connection = 
       endpoint->FindConnectionWithLock (endpoint->GetCurrentCallToken ());
             
     if (connection) {
@@ -839,11 +839,18 @@ void gnomemeeting_dialpad_event (const char d)
 	lid->Unlock ();
       }
 #endif
+      msg = g_strdup_printf (_("Sent dtmf %c"), dtmf);
       
       connection->SendUserInput (dtmf);
       connection->Unlock ();
     }
     gdk_threads_enter ();
+
+    if (msg) {
+
+      gnomemeeting_statusbar_flash (gw->statusbar, msg);
+      g_free (msg);
+    }
   }
 }
 

@@ -55,6 +55,7 @@
 #include "ldap_window.h"
 #include "tray.h"
 #include "misc.h"
+#include "tools.h"
 
 #include "dialog.h"
 #include "stock-icons.h"
@@ -84,6 +85,11 @@ static void ldap_visible_changed_nt (GConfClient*, guint,
 				     GConfEntry *, gpointer);
 static void stay_on_top_changed_nt (GConfClient*, guint, 
 				    GConfEntry *, gpointer);
+
+static void calls_history_changed_nt (GConfClient*,
+				      guint, 
+				      GConfEntry *,
+				      gpointer);
 
 static void incoming_call_mode_changed_nt (GConfClient*,
 					   guint, 
@@ -1463,6 +1469,25 @@ static void stay_on_top_changed_nt (GConfClient *client, guint cid,
 }
 
 
+/* DESCRIPTION  :  This callback is called when one of the calls history
+ *                 gconf value changes.
+ * BEHAVIOR     :  Rebuild its content.
+ * PRE          :  /
+ */
+static void calls_history_changed_nt (GConfClient *client,
+				      guint cid, 
+				      GConfEntry *entry,
+				      gpointer data)
+{
+  if (entry->value->type == GCONF_VALUE_LIST) {
+
+    gdk_threads_enter ();
+    gnomemeeting_calls_history_window_populate ();
+    gdk_threads_leave ();
+  }
+}
+
+
 /* DESCRIPTION    : This is called when any setting related to the druid 
  *                  network speep selecion changes.
  * BEHAVIOR       : Just writes an entry in the gconf database registering 
@@ -1599,7 +1624,7 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
   
 #ifndef DISABLE_GCONF
   gconf_client_add_dir (client, "/apps/gnomemeeting",
-			GCONF_CLIENT_PRELOAD_RECURSIVE, 0);
+			GCONF_CLIENT_PRELOAD_NONE, 0);
 #endif
 
     
@@ -1633,6 +1658,12 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, VIEW_KEY "show_chat_window", view_widget_changed_nt, gw->chat_window, 0, 0);
 
 
+  /* Calls History Window */
+  gconf_client_notify_add (client, USER_INTERFACE_KEY "calls_history_window/placed_calls_history", calls_history_changed_nt, NULL, 0, 0);
+  gconf_client_notify_add (client, USER_INTERFACE_KEY "calls_history_window/missed_calls_history", calls_history_changed_nt, NULL, 0, 0);
+  gconf_client_notify_add (client, USER_INTERFACE_KEY "calls_history_window/received_calls_history", calls_history_changed_nt, NULL, 0, 0);
+  
+  
   /* Call Control */
   gconf_client_notify_add (client, CALL_OPTIONS_KEY "incoming_call_mode", 
 			   radio_menu_changed_nt,

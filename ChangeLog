@@ -1,3 +1,17 @@
+2003-12-30 Damien Sandras  <dsandras@seconix.com>
+
+	* gnomemeeting.schemas.in.in: Added keys to store the missed/placed
+	and received calls.
+
+	* src/config.cpp: Added notifier to rebuild the calls history window
+	when one of the above keys is changed.
+	
+	* src/main_window.cpp: Fixed bug discovered by Fabrice Véandre
+	where * was always sent as . when sending DTMF's.
+	
+	* src/tools.cpp, src/tools.h: Save calls history in gconf keys for
+	the last 100 calls of each category.
+	
 2003-12-29 Damien Sandras  <dsandras@seconix.com>
 
 	* src/lid.cpp, src/lid.h, src/config.cpp, src/endpoint.cpp:
