@@ -1885,7 +1885,7 @@ else
 	{ echo "configure: error: You need PTLib to enjoy GnomeMeeting" 1>&2; exit 1; }
 fi
 
-H323_LIBS="-loh323 -ldl -lpt -lpthread"
+H323_LIBS="-loh323 -ldl -lpt -lpthread -lssl -lcrypto"
 
 # Check whether --with-openh323-includes or --without-openh323-includes was given.
 if test "${with_openh323_includes+set}" = set; then
