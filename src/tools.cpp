@@ -43,6 +43,7 @@
 #include "gnomemeeting.h"
 #include "callbacks.h"
 #include "ldap_window.h"
+#include "misc.h"
 #include "stock-icons.h"
 
 
@@ -119,6 +120,8 @@ gnomemeeting_calls_history_window_add_call (int i,
   GtkListStore *list_store = NULL;
   GtkTreeIter iter;
 
+  gchar *utf8_time = NULL;
+
   int n = 0;
   
   GmCallsHistoryWindow *chw = NULL;
@@ -147,15 +150,19 @@ gnomemeeting_calls_history_window_add_call (int i,
 
     gtk_list_store_append (list_store, &iter);
 
+    utf8_time = 
+      gnomemeeting_from_iso88591_to_utf8 (PTime ().AsString ("www dd MMM, hh:mm:ss"));
+
     /* The "s" is for "seconds" */
     gtk_list_store_set (list_store, &iter,
-			0, (const char *)
-			PTime ().AsString ("www dd MMM, hh:mm:ss"),
+			0, utf8_time,
 			1, remote_user ? remote_user : "",
 			2, ip ? ip : "",
 			3, duration ? duration : "",
 			4, software ? software : "",
 			-1);
+
+    g_free (utf8_time);
   }
 }
 
@@ -321,7 +328,7 @@ GtkWidget *gnomemeeting_history_window_new ()
 
   gtk_window_set_title (GTK_WINDOW (window), _("General History"));
   gtk_window_set_position (GTK_WINDOW (window), GTK_WIN_POS_CENTER);
-  gtk_window_set_default_size (GTK_WINDOW (window), 385, 245);
+  gtk_window_set_default_size (GTK_WINDOW (window), 330, 225);
 
   gw->history_text_view = gtk_text_view_new ();
   gtk_text_view_set_editable (GTK_TEXT_VIEW (gw->history_text_view), 

@@ -431,8 +431,8 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
     {
       {_("C_all"), NULL, NULL, 0, MENU_NEW, NULL, NULL, NULL},
 
-      {_("_Connect"), _("Create a new connection"), 
-       GM_STOCK_CONNECT_16, 'c', MENU_ENTRY, 
+      {_("C_onnect"), _("Create a new connection"), 
+       GM_STOCK_CONNECT_16, 'o', MENU_ENTRY, 
        GTK_SIGNAL_FUNC (connect_cb),
        gw, NULL},
 
