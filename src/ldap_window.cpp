@@ -72,14 +72,21 @@ void row_activated (GtkTreeView *tree_view, GtkTreePath *path,
   GtkListStore *xdap_users_list = NULL;
   GtkTreeSelection *selection = NULL;
   GtkWidget *page = NULL;
+  GConfClient *client = NULL;
+  int gk_method = 0;
   PString url;
 
   GtkTreeIter tree_iter;
 
   GmLdapWindow *lw = gnomemeeting_get_ldap_window (gm);
   GmWindow *gw = gnomemeeting_get_main_window (gm);
+  client = gconf_client_get_default ();
 
   gchar *text = NULL;
+  gk_method = 
+    gconf_client_get_int (client, 
+			  "/apps/gnomemeeting/gatekeeper/registering_method",
+			  NULL);
 
   page = 
     gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook),
@@ -104,7 +111,11 @@ void row_activated (GtkTreeView *tree_view, GtkTreePath *path,
      to the history, and call that user       */
   if (MyApp->Endpoint ()->GetCallingState () == 0) {
 
-    url = "callto://" + PString (text);
+    /* If we are registered to a gatekeeper, we add the "@" */
+    if (gk_method)
+      url = "callto://@" + PString (text);
+    else
+      url = "callto://" + PString (text);
 
     /* this function will store a copy of text */
     gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), url);
