@@ -92,6 +92,8 @@ struct _GM_window_widgets
   GtkWidget *pref_window;
   GtkWidget *ldap_window;
   GtkWidget *preview_button;
+  GtkWidget *video_chan_button;
+  GtkWidget *audio_chan_button;
 };
 
 

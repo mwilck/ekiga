@@ -63,25 +63,25 @@ class GnomeMeeting : public PProcess
  public:
 
 
-  // DESCRIPTION  :  Constructor
-  // BEHAVIOR     :  Init variables and Initialise the endpoint.
+  // DESCRIPTION  :  Constructor.
+  // BEHAVIOR     :  Init variables.
   // PRE          :  GM_window_widgets is a valid pointer to the struct
   //                 containing all the widgets needed to manage and
   //                 update the main GUI, options * is valid too
-  GnomeMeeting(GM_window_widgets *, options *);
+  GnomeMeeting (GM_window_widgets *, options *);
 
 
-  // DESCRIPTION  :  Destructor
+  // DESCRIPTION  :  Destructor.
   // BEHAVIOR     :  
   // PRE          :  /
-  ~GnomeMeeting();
+  ~GnomeMeeting ();
 
   
   // DESCRIPTION  :  To connect to a remote endpoint, or to answer a call.
   // BEHAVIOR     :  Answer a call, or call somebody, disable video transmission
   //                 if enabled but not available.
   // PRE          :  /
-  void Connect();
+  void Connect ();
 
 
   // DESCRIPTION  :  /
@@ -101,7 +101,7 @@ class GnomeMeeting : public PProcess
 
   
   // DESCRIPTION  :  /
-  // BEHAVIOR     :  Returns the current call endpoint
+  // BEHAVIOR     :  Returns the current endpoint
   // PRE          :  /
   GMH323EndPoint *Endpoint (void);
 

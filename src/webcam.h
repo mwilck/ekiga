@@ -64,11 +64,12 @@ class GMH323Webcam : public PThread
   void SetWhiteness (int);
   void SetContrast (int);
   void GetParameters (int *, int *, int *, int *);
+  void Terminate (void);
 
  protected:
   GM_window_widgets *gw;
   options *opts;
-  void *video_buffer;
+  char video_buffer [230400];
   PVideoChannel *channel;
   PVideoInputDevice *grabber;
   GDKVideoOutputDevice *encoding_device;

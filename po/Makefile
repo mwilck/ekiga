@@ -52,6 +52,18 @@ DISTFILES = ChangeLog Makefile.in.in POTFILES.in $(PACKAGE).pot \
 stamp-cat-id $(POFILES) $(GMOFILES) $(SOURCES)
 
 POTFILES = \
+	../src/applet.cpp \
+	../src/callbacks.cpp \
+	../src/config.cpp \
+	../src/connection.cpp \
+	../src/endpoint.cpp \
+	../src/gdkvideoio.cpp \
+	../src/ldap.cpp \
+	../src/main.cpp \
+	../src/main_interface.cpp \
+	../src/menu.cpp \
+	../src/preferences.cpp \
+	../src/toolbar.cpp
 
 CATALOGS =  es.gmo fr.gmo gl.gmo sv.gmo
 CATOBJEXT = .gmo

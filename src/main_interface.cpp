@@ -20,13 +20,16 @@
 
 #include "main_interface.h"
 #include "main.h"
+#include "applet.h"
 #include "splash.h"
+#include "ldap_h.h"
 #include "common.h"
 #include "menu.h"
 #include "toolbar.h"
 #include "callbacks.h"
 #include "audio.h"
 #include "webcam.h"
+#include "endpoint.h"
 
 #include "../pixmaps/text_logo.xpm"
 #include "../pixmaps/speaker.xpm"
@@ -36,6 +39,7 @@
 #include "../pixmaps/contrast.xpm"
 #include "../pixmaps/color.xpm"
 #include "../pixmaps/eye.xpm"
+#include "../pixmaps/quickcam.xpm"
 
 
 /******************************************************************************/
@@ -159,21 +163,136 @@ void preview_button_clicked (GtkButton *button, gpointer data)
 /* The functions                                                              */
 /******************************************************************************/
 
+void GM_init (GM_window_widgets *gw, options *opts, int argc, 
+	      char ** argv, char ** envp)
+{
+  GMH323EndPoint *endpoint = NULL;
+
+  if (config_first_time ())
+    init_config ();
+
+  read_config (opts);
+
+  // Cope with command line options
+  static struct poptOption arguments[] =
+    {
+      {"noapplet", 'a', POPT_ARG_NONE, 
+       0, 0, N_("Startup without applet support"), NULL},
+      {NULL, 0, 0, NULL, 0, NULL, NULL}
+    };
+
+  for (int i = 0; i < argc; i++) 
+    {
+      if (!strcmp (argv[i], "-a") || !strcmp (argv[i], "--noapplet"))
+	opts->applet = 0;
+      else
+	opts->applet = 1;  
+    } 
+
+  // Gnome Initialisation
+  if (opts->applet == 0)
+    gnome_init_with_popt_table (PACKAGE, VERSION, argc, argv,
+				arguments, 0, NULL);
+  else
+    {
+      applet_widget_init( PACKAGE, VERSION, argc, argv,
+			  arguments, 0, NULL );
+      
+      gw->applet = GM_applet_init (argc, argv);
+      gtk_widget_show (gw->applet);
+    }
+
+  gm = gnome_app_new ("gnomemeeting", "Gnome Meeting");
+  gtk_window_set_policy (GTK_WINDOW (gm), FALSE, FALSE, TRUE);
+
+  // Startup Process
+  // Main interface creation
+  if (opts->show_splash)
+    {
+      // Init the splash screen
+      gw->splash_win = GM_splash_init ();
+
+      GM_splash_advance_progress (gw->splash_win, 
+				  _("Building main interface"), 0.15);
+    }
+  GM_main_interface_init (gw, opts);
+
+  // Launch the GnomeMeeting H.323 part
+  static GnomeMeeting instance (gw, opts);
+  endpoint = MyApp->Endpoint ();
+  endpoint->Initialise ();
+
+
+  endpoint->RemoveAllCapabilities ();
+
+  if (opts->show_splash)
+    GM_splash_advance_progress (gw->splash_win, _("Adding Audio Capabilities"), 
+				0.30);
+  endpoint->AddAudioCapabilities ();
+
+  if (opts->show_splash)
+    GM_splash_advance_progress (gw->splash_win, _("Adding Video Capabilities"), 
+				0.45);
+  endpoint->AddVideoCapabilities (opts->video_size);
+
+  if (opts->ldap)
+    {
+        GM_splash_advance_progress (gw->splash_win, 
+				    _("Registering to ILS directory"), 
+				    0.60);
+	GM_ldap_register (endpoint->IP (), gw);
+    }
+
+  // Run the webcam
+  if (opts->show_splash)
+    GM_splash_advance_progress (gw->splash_win, 
+				_("Opening Video Device"), 
+				0.75);
+      
+  endpoint->SetWebcam (new (GMH323Webcam) (gw, opts));
+  
+  if (opts->show_splash)
+    GM_splash_advance_progress (gw->splash_win, 
+				_("Done  !"), 0.99);
+
+
+  if (!(opts->show_notebook))
+    gtk_widget_hide (gw->main_notebook);
+
+  if (!(opts->show_statusbar))
+    gtk_widget_hide (gw->statusbar);
+
+  gtk_widget_show_all (gm);
+	
+  // The logo
+  gw->pixmap = gdk_pixmap_new(gw->drawing_area->window, 352, 288, -1);
+  GM_init_main_interface_logo (gw);
+
+  // Create a popup menu to attach it to the drawing area 
+  GM_popup_menu_init (gw->drawing_area);
+
+  // Set icon
+  gtk_widget_push_visual(gdk_imlib_get_visual());
+  gtk_widget_push_colormap(gdk_imlib_get_colormap());
+  gnome_window_icon_set_from_file 
+    (GTK_WINDOW (gm), "/usr/share/pixmaps/gnomemeeting-logo-icon.png");
+
+  gtk_widget_destroy (gw->splash_win);
+
+  // if the user tries to close the window : delete_event
+  gtk_signal_connect (GTK_OBJECT (gm), "delete_event",
+		      GTK_SIGNAL_FUNC (toggle_window_callback),
+		      NULL);
+}
+
+
 void GM_main_interface_init (GM_window_widgets *gw, options *opts)
 { 
   GtkWidget *table, *table_in;	
   GtkWidget *frame;
   GtkWidget *pixmap;
+
   int whiteness = 0, brightness = 0, contrast = 0, colour = 0;
-
-  // Init the splash screen
-  if (opts->show_splash)
-    {
-      gw->splash_win = GM_splash_init ();     
-      GM_splash_advance_progress (gw->splash_win, 
-				  _("Building main interface"), 0.15);
-    }
-
   
   // Create a table in the main window to attach things like buttons
   table = gtk_table_new (58, 35, FALSE);
@@ -264,6 +383,7 @@ void GM_main_interface_init (GM_window_widgets *gw, options *opts)
   table_in = gtk_table_new (4, 1, FALSE);
   gtk_container_add (GTK_CONTAINER (frame), table_in);
 
+  /* Video Preview Button */
   gw->preview_button = gtk_toggle_button_new ();
 
   pixmap = gnome_pixmap_new_from_xpm_d ((char **) eye_xpm);
@@ -279,6 +399,42 @@ void GM_main_interface_init (GM_window_widgets *gw, options *opts)
   gtk_signal_connect (GTK_OBJECT (gw->preview_button), "clicked",
                       GTK_SIGNAL_FUNC (preview_button_clicked), gw);
 
+  /* Audio Channel Button */
+  gw->audio_chan_button = gtk_toggle_button_new ();
+
+  pixmap = gnome_pixmap_new_from_xpm_d ((char **) speaker_xpm);
+  gtk_container_add (GTK_CONTAINER (gw->audio_chan_button), pixmap);
+
+  gtk_widget_set_usize (GTK_WIDGET (gw->audio_chan_button), 24, 24);
+  gtk_table_attach (GTK_TABLE (table_in), 
+		    gw->audio_chan_button, 1, 2, 0, 1,
+		    (GtkAttachOptions) NULL,
+		    (GtkAttachOptions) NULL,
+		    2, 2);
+
+  gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_chan_button), FALSE);
+
+  gtk_signal_connect (GTK_OBJECT (gw->audio_chan_button), "clicked",
+                      GTK_SIGNAL_FUNC (pause_audio_callback), gw);
+
+  /* Video Channel Button */
+  gw->video_chan_button = gtk_toggle_button_new ();
+
+  pixmap = gnome_pixmap_new_from_xpm_d ((char **) quickcam_xpm);
+  gtk_container_add (GTK_CONTAINER (gw->video_chan_button), pixmap);
+
+  gtk_widget_set_usize (GTK_WIDGET (gw->video_chan_button), 24, 24);
+  gtk_table_attach (GTK_TABLE (table_in), 
+		    gw->video_chan_button, 2, 3, 0, 1,
+		    (GtkAttachOptions) NULL,
+		    (GtkAttachOptions) NULL,
+		    2, 2);
+
+  gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button), FALSE);
+
+  gtk_signal_connect (GTK_OBJECT (gw->video_chan_button), "clicked",
+                      GTK_SIGNAL_FUNC (pause_video_callback), gw);
+
 
   // The statusbar
   gw->statusbar = gnome_appbar_new (FALSE, TRUE, GNOME_PREFERENCES_NEVER);	
@@ -289,14 +445,11 @@ void GM_main_interface_init (GM_window_widgets *gw, options *opts)
   GM_menu_init (gm,gw);
   GM_toolbar_init (gm, gw);	  
 
-  // Init sockets
-  static GnomeMeeting instance (gw, opts);
-  
-  /* Read the values */
-  MyApp->Endpoint ()->Webcam ()
+  /* Read the webcam values */
+ /* MyApp->Endpoint ()->Webcam ()
     ->GetParameters (&whiteness, &brightness, &colour, &contrast);
-
-  /* Set the values */
+*/
+  /* Set the values *//*
   MyApp->Endpoint ()->Webcam ()->SetBrightness (brightness * 256);
   gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_brightness),
 			    brightness);
@@ -306,21 +459,8 @@ void GM_main_interface_init (GM_window_widgets *gw, options *opts)
 			    colour);
   gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_contrast),
 			    contrast);
-
-  if (opts->show_splash)
-    {
-      GM_splash_advance_progress (gw->splash_win, "Done  !", 1.00);
-      gtk_widget_destroy (gw->splash_win);
-    }
-
-  gtk_widget_show_all (gm);
-	
-  // The logo
-  gw->pixmap = gdk_pixmap_new(gw->drawing_area->window, 352, 288, -1);
-  GM_init_main_interface_logo (gw);
-
-  // Create a popup menu to attach it to the drawing area 
-  GM_popup_menu_init (gw->drawing_area);
+*/
+ 
 }
 
 

@@ -81,6 +81,10 @@ void preview_button_clicked (GtkButton *, gpointer);
 // COMMON NOTICE : GM_window_widgets and options pointers must be valid,
 //                 options must have been read before calling these functions
 
+// BEHAVIOR     :  init things, build the initial gm window
+void GM_init (GM_window_widgets *, options *, int, 
+	      char **, char **);
+
 // BEHAVIOR     :  builds the main interface
 void GM_main_interface_init (GM_window_widgets *, options *);
 

@@ -1,3 +1,22 @@
+2001-08-25  Damien Sandras  <dsandras@seconix.com>
+
+	* src/main.cpp: Modified the startup process in main () using a new
+	GM_init function.
+
+	* src/main_interface.cpp: Added a new GM_init function that implements
+	the all startup process.
+
+	* src/endpoint.cpp: Moved all the GTK splash screen stuff out of Initialise
+	(and added it to GM_init, more logical)
+
+	* src/menu.cpp: Deleted the pause section of the menu.
+
+	* src/main_interface.cpp: Added 2 toggle buttons (one for audio transmission,
+	and one for video transmission) that are enabled during calls and that
+	permit to pause the audio and or video transmission.
+
+	* src/webcam.cpp: Improved that class.
+
 2001-08-25  Christian Rose  <menthos@enthos.com>
 
 	* stamp-h, stamp-h.in: Removed these files.
@@ -23,6 +42,7 @@
 	* .cvsignore, intl/.cvsignore, pixmaps/.cvsignore, sounds/.cvsignore,
 	src/.cvsignore: Added .cvsignore files.
 
+>>>>>>> 1.13
 2001-08-25  Christian Rose  <menthos@menthos.com>
 
 	* src/callbacks.cpp: Fixed a message.
@@ -54,8 +74,13 @@
 
 2001-08-25  Roger Hardiman  <roger@freebsd.org>
 	
+<<<<<<< ChangeLog
+	* src/config.cpp:  Fixed the bug that made 0.10 crash with 0.9 
+	configuration files.
+=======
 	* src/config.cpp:  Fixed the bug that made 0.10 crash with 0.9
 	configuration files.
+>>>>>>> 1.13
 
 2001-08-25  Christian Rose  <menthos@menthos.com>
 
@@ -95,18 +120,19 @@
 
 	* src/applet.cpp: adding support for resizeable applet
 
-	* src/preferences.cpp, src/config.cpp: added support to change soundcard and the video device
-	and video test button has been added in the preferences
+	* src/preferences.cpp, src/config.cpp: added support to change soundcard 
+	and the video device and video test button has been added in the preferences
 
 	* src/endpoint.cpp: added support for a test image in case of failure 
 
-	* src/main_interface.cpp: added possibility to modify the brightness, contrast, whiteness, 
-	and colour level during calls.
+	* src/main_interface.cpp: added possibility to modify the brightness, 
+	contrast, whiteness, and colour level during calls.
 
-	* src/main_interface.cpp, src/endpoint.cpp: GnomeMeeting logo is displayed again at the end of 
-	each call instead of the last transmitted / received picture.
+	* src/main_interface.cpp, src/endpoint.cpp: GnomeMeeting logo is displayed 
+	again at the end of each call instead of the last transmitted / 
+	received picture.
 
-	* src/menu.cpp: Options were added in the view menu to switch between the "Remote User
-	Info", "History", "Audio Settings", "Video Settings".
+	* src/menu.cpp: Options were added in the view menu to switch between 
+	the "Remote User Info", "History", "Audio Settings", "Video Settings".
 
 	* po/es.po: spanish translation has been added.

@@ -1771,7 +1771,7 @@ test "$program_transform_name" = "" && program_transform_name="s,x,x,"
 
 
 H323_INCLUDES="-I$PTLIB_INCLUDE_DIR/unix -I$PTLIB_INCLUDE_DIR/.. -I$PTLIB_INCLUDE_DIR/../ptclib -I/usr/include -I$OPENH323_INCLUDE_DIR"
-H323_LIBS="-L/opt/pwlib/lib -L/opt/openh323/lib/ -lh323_linux_x86_d -ldl -lpt_linux_x86_d -lpthread"
+H323_LIBS="-lh323_linux_x86_d -ldl -lpt_linux_x86_d -lpthread"
 
 
 LDAP_INCLUDES="-I/usr/local/include"
@@ -1784,7 +1784,7 @@ CFLAGS=""
 
 
 
-H323_CFLAGS="-DP_LINUX -D_REENTRANT -DP_HAS_SEMAPHORES -DP_PTHREADS -DPBYTE_ORDER=PLITTLE_ENDIAN -DHAS_OSS -O2 -D_DEBUG -DPMEMORY_CHECK=1 -DPTRACING -Wall -g"
+H323_CFLAGS="-DP_LINUX -D_REENTRANT -DP_HAS_SEMAPHORES -DP_PTHREADS -DPBYTE_ORDER=PLITTLE_ENDIAN -DHAS_OSS -O2"
 
 
 

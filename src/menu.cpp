@@ -119,26 +119,6 @@ void GM_menu_init (GtkWidget *gapp, GM_window_widgets *gw)
     };
 
 
-static GnomeUIInfo pause_menu [] =
-    {
-      {
-	GNOME_APP_UI_ITEM,
-	N_("_Audio Transmission"), N_("Pause the Audio Transmission"),
-	(void *)pause_audio_callback, NULL, NULL,
-	GNOME_APP_PIXMAP_NONE, NULL,
-	0, GDK_CONTROL_MASK, NULL
-      },
-      {
-	GNOME_APP_UI_ITEM,
-	N_("_Video Transmission"), N_("Pause the Video Transmission"),
-	(void *)pause_video_callback, NULL, NULL,
-	GNOME_APP_PIXMAP_NONE, NULL,
-	0, GDK_CONTROL_MASK, NULL
-      },
-      GNOMEUIINFO_END
-    };
-
-
   static GnomeUIInfo help_menu [] =
     {
       {
@@ -157,7 +137,6 @@ static GnomeUIInfo pause_menu [] =
       GNOMEUIINFO_SUBTREE (N_("_File"), file_menu),
       GNOMEUIINFO_SUBTREE (N_("_View"), view_menu),
       GNOMEUIINFO_SUBTREE (N_("_Settings"), settings_menu),
-      GNOMEUIINFO_SUBTREE (N_("_Pause"), pause_menu),
       GNOMEUIINFO_SUBTREE (N_("_Help"), help_menu),
       GNOMEUIINFO_END
     };

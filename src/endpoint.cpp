@@ -17,7 +17,6 @@
 
 #include "../config.h"
 
-#include "ldap_h.h"
 #include "toolbar.h"
 #include "endpoint.h"
 #include "main.h"
@@ -26,7 +25,6 @@
 #include "common.h"
 #include "connection.h"
 #include "applet.h"
-#include "splash.h"
 #include "audio.h"
 #include "webcam.h"
 
@@ -80,10 +78,6 @@ extern GnomeMeeting *MyApp;
 GMH323EndPoint::GMH323EndPoint (GM_window_widgets *w, options *o)
 {
   opts = o;
-
-  // GM_window_widgets
-  // as the pointer given as parameter will not be freed until the end
-  // of the execution, we make a simple copy of it...
   gw = w;
 
   SetCurrentConnection (NULL);
@@ -235,17 +229,13 @@ char *GMH323EndPoint::IP ()
 
 BOOL GMH323EndPoint::Initialise ()
 {
-  GtkWidget *msg_box;
-  char *ip = NULL;
+  GtkWidget *msg_box = NULL;
   char *name = NULL;
 
   // Set the various options
   SetCallingState (0);
   applet_timeout = 0;
   sound_timeout = 0;
-
-
-  RemoveAllCapabilities ();
 
   if (strcmp (opts->firstname, ""))
     {
@@ -260,51 +250,9 @@ BOOL GMH323EndPoint::Initialise ()
       AddAliasName (name); // for the gatekeeper
       free (name);
     }
-
-  
-  ip = IP ();
-
-  if (opts->show_splash)
-    GM_splash_advance_progress (gw->splash_win, 
-				_("Registering to ILS directory"), 
-				0.45);
-
-  if (opts->ldap)
-    GM_ldap_register ((char *) ip, gw);
-
-
-  // Run the webcam
-  if (opts->vid_tr == 1)
-    {
-      GM_splash_advance_progress (gw->splash_win, 
-				  _("Opening Video Device"), 
-				  0.55);
-
-      webcam = new (GMH323Webcam) (gw, opts);
-
-      while (webcam->Running () == 0) {}
-    }
-  
-
-  // Default codecs
-  RemoveAllCapabilities ();
-
-  if (opts->show_splash)
-    GM_splash_advance_progress (gw->splash_win, _("Adding Audio Capabilities"), 
-				0.65);
-  AddAudioCapabilities ();
-
-  if (opts->show_splash)
-    GM_splash_advance_progress (gw->splash_win, _("Adding Video Capabilities"), 
-				0.75);
-  AddVideoCapabilities (opts->video_size);
-
 	
   //Start the listener thread for incoming calls
   H323ListenerTCP *listener = NULL;
-
-  if (opts->show_splash)
-    GM_splash_advance_progress (gw->splash_win, _("Starting Listener"), 0.90);
 
   listener = new H323ListenerTCP (*this, INADDR_ANY, atoi (opts->listen_port));
 
@@ -321,7 +269,6 @@ BOOL GMH323EndPoint::Initialise ()
       return FALSE;
     }	
   
-  GM_log_insert (gw->log_text, _("Listener started"));
 
   // Set recording source and set micro to record
   SetSoundChannelPlayDevice(opts->audio_device);
@@ -331,7 +278,6 @@ BOOL GMH323EndPoint::Initialise ()
   received_video_device = NULL;
   transmitted_video_device = NULL;
 
-  free (ip);
   return TRUE;
 }
 
@@ -382,6 +328,18 @@ H323Connection *GMH323EndPoint::CreateConnection (unsigned callReference)
 H323Connection *GMH323EndPoint::Connection ()
 {
   return current_connection;
+}
+
+
+GMH323Webcam *GMH323EndPoint::Webcam (void)
+{
+  return webcam;
+}
+
+
+void GMH323EndPoint::SetWebcam (GMH323Webcam *w)
+{
+  webcam = w;
 }
 
 
@@ -642,6 +600,8 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame), FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), TRUE);
+  gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_chan_button), FALSE);
+  gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button), FALSE);
 
   enable_disconnect ();
   enable_connect ();
@@ -675,18 +635,24 @@ BOOL GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
   /* If needed , delete the timers */
   if (applet_timeout != 0)
     gtk_timeout_remove (applet_timeout);
-  
   applet_timeout = 0;
 
   if (sound_timeout != 0)
     gtk_timeout_remove (sound_timeout);
-
   sound_timeout = 0;
 
   if (gw->applet != NULL)
     {
       GM_applet_set_content (gw->applet, 0);
       applet_widget_set_tooltip (APPLET_WIDGET (gw->applet), NULL);
+    }
+
+  if (isEncoding)
+    {
+      gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_chan_button),
+				TRUE);
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->audio_chan_button),
+				    TRUE);
     }
 
   gdk_threads_leave ();
@@ -722,10 +688,19 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
      codec.SetTxQualityLevel (opts->tr_vq);
      codec.SetBackgroundFill (opts->tr_ub);
      
+     gdk_threads_enter ();
      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->preview_button),
 				   FALSE);
+
      gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button),
 			       FALSE);
+
+     gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button),
+			       TRUE);
+
+     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->video_chan_button),
+				   TRUE);
+     gdk_threads_leave ();
 
      transmitted_video_device = webcam->Device ();
      
@@ -749,11 +724,5 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
    }
  
  return FALSE;
-}
-
-
-GMH323Webcam *GMH323EndPoint::Webcam (void)
-{
-  return webcam;
 }
 /******************************************************************************/

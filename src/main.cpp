@@ -25,7 +25,6 @@
 #include "main.h"
 #include "main_interface.h"
 #include "toolbar.h"
-#include "applet.h"
 #include "config.h"
 
 
@@ -52,7 +51,6 @@ gint gnome_idle_timer ()
   while (gtk_events_pending())
     gtk_main_iteration();
   gdk_threads_leave ();
-
   
   usleep (50);
   return TRUE;
@@ -73,15 +71,9 @@ GnomeMeeting::GnomeMeeting (GM_window_widgets *s, options *o)
   // no endpoint for the moment
   endpoint = NULL;
   opts = o;
-
-  endpoint = new GMH323EndPoint (s, o);
-  endpoint->Initialise();
-	
-  // as the pointer given as parameter will not be deleted until the end of
-  // the execution, we make a simple copy of it.
   gw = s;
-
   MyApp = (this);
+  endpoint = new GMH323EndPoint (gw, opts);
 }
 
 
@@ -214,81 +206,30 @@ int main (int argc, char ** argv, char ** envp)
   PProcess::PreInitialise (argc, argv, envp);
 
   GM_window_widgets *gw = NULL;
-  options *opts;
+  options *opts = NULL;
 
+  // Init the GM_window_widgets
   gw = new (GM_window_widgets);
-  opts = new (options);
-  memset (opts, 0, sizeof (options));
-
-  if (config_first_time ())
-      init_config ();
-
-  read_config (opts);
-
-  // Init
-  g_thread_init(NULL);
-
-  textdomain (PACKAGE);
-  bindtextdomain (PACKAGE, GNOMELOCALEDIR);
   gw->pixmap = NULL;
   gw->applet = NULL;
   gw->pref_window = NULL;
   gw->ldap_window = NULL;
 
-  static struct poptOption arguments[] =
-    {
-      {"noapplet", 'a', POPT_ARG_NONE, 
-       0, 0, N_("Startup without applet support"), NULL},
-      {NULL, 0, 0, NULL, 0, NULL, NULL}
-    };
+  // Init the opts
+  opts = new (options);
+  memset (opts, 0, sizeof (options));
 
-  for (int i = 0; i < argc; i++) 
-    {
-      if (!strcmp (argv[i], "-a") || !strcmp (argv[i], "--noapplet"))
-	opts->applet = 0;
-      else
-	opts->applet = 1;  
-    }
-  
-  // Gnome Initialisation
-  if (opts->applet == 0)
-    gnome_init_with_popt_table (PACKAGE, VERSION, argc, argv,
-				arguments, 0, NULL);
-  else
-    {
-      applet_widget_init( PACKAGE, VERSION, argc, argv,
-			  arguments, 0, NULL );
-      
-      gw->applet = GM_applet_init (argc, argv);
-      gtk_widget_show (gw->applet);
-    }
+  // Threads + Locale Init
+  g_thread_init(NULL);
 
-  gm = gnome_app_new ("gnomemeeting", "Gnome Meeting");
-  gtk_window_set_policy (GTK_WINDOW (gm), FALSE, FALSE, TRUE);
+  textdomain (PACKAGE);
+  bindtextdomain (PACKAGE, GNOMELOCALEDIR);
 
-  // Main interface creation
-  GM_main_interface_init (gw, opts);
-
-  PTrace::Initialise (6);
+  GM_init (gw, opts, argc, argv, envp);
 
   gtk_idle_add ((GtkFunction) gnome_idle_timer, NULL);
 
-  // Set icon
-  gtk_widget_push_visual(gdk_imlib_get_visual());
-  gtk_widget_push_colormap(gdk_imlib_get_colormap());
-  gnome_window_icon_set_from_file 
-    (GTK_WINDOW (gm), "/usr/share/pixmaps/gnomemeeting-logo-icon.png");
-
-  // if the user tries to close the window : delete_event
-  gtk_signal_connect (GTK_OBJECT (gm), "delete_event",
-		      GTK_SIGNAL_FUNC (toggle_window_callback),
-		      NULL);
-
-  if (!(opts->show_notebook))
-    gtk_widget_hide (gw->main_notebook);
-
-  if (!(opts->show_statusbar))
-    gtk_widget_hide (gw->statusbar);
+  PTrace::Initialise (6);
 
   if (opts->applet)
     applet_widget_gtk_main ();

@@ -152,21 +152,19 @@ void about_callback (GtkWidget *widget, gpointer data)
 
 void quit_callback (GtkWidget *widget, gpointer data)
 {
-  GMH323Webcam *webcam;  
   GM_window_widgets *gw = (GM_window_widgets *) data;
+  GMH323Webcam *webcam = NULL;
 
   MyApp->Endpoint ()->ClearAllCalls ();
+
   webcam = MyApp->Endpoint ()->Webcam ();
 
   if (webcam != NULL)
-    {
-      webcam->Stop ();
-      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->preview_button),
-				    false);
-    }
-
+    webcam->Stop ();
+  
   gnome_app_question (GNOME_APP(gm), _("Are you sure you want to quit?"),
 		     gtk_main_quit_callback, gw);
+
 }  
 
 

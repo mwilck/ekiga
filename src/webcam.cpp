@@ -50,13 +50,9 @@ GMH323Webcam::GMH323Webcam (GM_window_widgets *g, options *o)
 GMH323Webcam::~GMH323Webcam ()
 {
   Stop ();
-
   running = 0;
 
-  grabber->Close ();
-
   delete (channel);
-  free (video_buffer);
 }
 
 
@@ -114,9 +110,7 @@ void GMH323Webcam::Main ()
      
   channel->AttachVideoReader (grabber);
   channel->AttachVideoPlayer (encoding_device);
-  
-  video_buffer = malloc (height* width * 3);
-
+    
   // Ready to run
   running = 1;
 
@@ -124,11 +118,12 @@ void GMH323Webcam::Main ()
     {
       if (grabbing == 1)
 	{
-	  channel->Read (video_buffer, sizeof (video_buffer));  
-	  channel->Write (video_buffer, sizeof (video_buffer));
+	  if (channel->Read (video_buffer, height * width * 3))
+	    channel->Write (video_buffer, height * width * 3);
+	  Current()->Sleep (50);
 	}
       else
-	  Current()->Sleep(10);
+	  Current()->Sleep (10);
     }
 }
 
@@ -149,6 +144,11 @@ void GMH323Webcam::Stop (void)
 int GMH323Webcam::Running (void)
 {
   return running;
+}
+
+void GMH323Webcam::Terminate (void)
+{
+  PThread::Current()->Terminate ();
 }
 
 

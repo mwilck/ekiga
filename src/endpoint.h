@@ -59,6 +59,7 @@ class GMH323EndPoint : public H323EndPoint
   
   // DESCRIPTION  :  The constructor
   // BEHAVIOR     :  Creates the local endpoint
+  //                 It is needed to Initialise it and to Create the webcam
   // PRE          :  GM_window_widgets is a valid pointer to a valid
   //                 struct containing all the widgets needed to manage
   //                 and update the main GUI, options * is valid too
@@ -237,7 +238,12 @@ class GMH323EndPoint : public H323EndPoint
   // BEHAVIOR     :  Returns the current webcam grabbing device
   // PRE          :  /
   GMH323Webcam *Webcam (void);
-  
+
+  // DESCRIPTION  :  /
+  // BEHAVIOR     :  Sets the current webcam grabbing device
+  // PRE          :  /
+  void SetWebcam (GMH323Webcam *);  
+
  protected:
   
   PString current_call_token;  // the current Call Token
