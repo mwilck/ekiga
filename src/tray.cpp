@@ -54,7 +54,7 @@ static int tray_clicked (GtkWidget *, GdkEventButton *, gpointer);
 static void gnomemeeting_init_tray_popup_menu (GtkWidget *);
 static void gnomemeeting_build_tray (GtkContainer *);
 static void tray_popup_menu_dnd_callback (GtkWidget *, gpointer);
-static void tray_popup_menu_autoanswer_callback (GtkWidget *, gpointer);
+static void tray_popup_menu_aa_callback (GtkWidget *, gpointer);
 
 
 /* GTK Callbacks */
@@ -86,56 +86,62 @@ void tray_popup_menu_disconnect_callback (GtkWidget *, gpointer)
  * BEHAVIOR     :  Hide or show main window
  * PRE          :  /
  */
-void tray_popup_menu_show_callback (GtkWidget *, gpointer menu_item)
+void tray_popup_menu_show_callback (GtkWidget *menu_item, gpointer)
 {
-  /*  GtkCheckMenuItem *item = 
-      GTK_CHECK_MENU_ITEM (((GnomeUIInfo *)menu_item)->widget);*/
-			 
-						
-  if (GTK_WIDGET_VISIBLE (GTK_WIDGET (gm))) {
+  bool visible = GTK_WIDGET_VISIBLE (GTK_WIDGET (gm));
+
+  if (visible) {
     gtk_widget_hide (gm);
   }
   else {
     gtk_widget_show (gm);
   }
-  /*  item->active = GTK_WIDGET_VISIBLE (gm);
-      gtk_widget_queue_draw (GTK_WIDGET (item));*/
+
+  GTK_CHECK_MENU_ITEM (menu_item)->active = visible;
+  gtk_widget_queue_draw (GTK_WIDGET (menu_item));
 }
 
 /* DESCRIPTION  :  This callback is called when the user chooses
- *                 do not disturb in the tray icon menu
+ *                 do not disturb or auto_answerin the tray icon menu
  * BEHAVIOR     :  Hide or show main window
  * PRE          :  /
  */
-void tray_popup_menu_dnd_callback (GtkWidget *, gpointer)
+void tray_popup_menu_dnd_callback (GtkWidget *widget, gpointer)
 {
+  GConfClient *client = gconf_client_get_default ();
 
+  gconf_client_set_bool (client, 
+			 "/apps/gnomemeeting/general/do_not_disturb",
+			 gtk_check_menu_item_get_active (GTK_CHECK_MENU_ITEM (widget)),
+			 0);
 }
 
 /* DESCRIPTION  :  This callback is called when the user chooses
- *                 auto answer in the tray icon menu
+ *                 auto answer or auto_answerin the tray icon menu
  * BEHAVIOR     :  Hide or show main window
  * PRE          :  /
  */
-
-
-void tray_popup_menu_autoanswer_callback (GtkWidget *, gpointer)
+void tray_popup_menu_aa_callback (GtkWidget *widget, gpointer)
 {
+  GConfClient *client = gconf_client_get_default ();
 
+  gconf_client_set_bool (client, 
+			 "/apps/gnomemeeting/general/auto_answer",
+			 gtk_check_menu_item_get_active (GTK_CHECK_MENU_ITEM (widget)),
+			 0);
 }
-
 
 /* DESCRIPTION  :  This callback is called when the user clicks
  *                 on the tray icon.
  * BEHAVIOR     :  If double clic : hide or show main window.
- * PRE          :  /
+ * PRE          :  data is a pointer to the activated popup widget
 */
 int tray_clicked (GtkWidget *widget, GdkEventButton *event, gpointer data)
 {
   g_return_val_if_fail (event != NULL, false);
 
   if ((event->button == 1) && (event->type == GDK_BUTTON_PRESS)) {
-    tray_popup_menu_show_callback (widget, data);
+    tray_popup_menu_show_callback (GTK_WIDGET (data), NULL);
     return true;
   }
 
@@ -175,23 +181,24 @@ void gnomemeeting_init_tray_popup_menu (GtkWidget *widget)
       {
 	GNOME_APP_UI_TOGGLEITEM,
 	N_("Do not Disturb"), N_("Do Not Accept Calls"),
-	(void *)tray_popup_menu_dnd_callback, NULL,
-	NULL,
+	(void *)tray_popup_menu_dnd_callback,
+	NULL, NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	0, GDK_CONTROL_MASK, NULL
       },
-      {GNOME_APP_UI_TOGGLEITEM,
-       N_("Auto Answer"), N_("Automatically Answer Calls"),
-       (void *)tray_popup_menu_autoanswer_callback, NULL,
-       NULL,
-       GNOME_APP_PIXMAP_NONE, NULL,
-       0, GDK_CONTROL_MASK, NULL
+      {
+	GNOME_APP_UI_TOGGLEITEM,
+	N_("Auto Answer"), N_("Automatically Answer Calls"),
+	(void *)tray_popup_menu_aa_callback, NULL,
+	NULL,
+	GNOME_APP_PIXMAP_NONE, NULL,
+	0, GDK_CONTROL_MASK, NULL
       },
       GNOMEUIINFO_SEPARATOR,
       {
 	GNOME_APP_UI_TOGGLEITEM,
 	N_("Show Main Window"), N_("Show The Main Window"),
-	(void *)tray_popup_menu_show_callback, &(popup_menu[6]),
+	(void *)tray_popup_menu_show_callback, NULL,
 	NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	0, GDK_CONTROL_MASK, NULL
@@ -221,6 +228,8 @@ void gnomemeeting_init_tray_popup_menu (GtkWidget *widget)
   gtk_widget_queue_draw (GTK_WIDGET (popup_menu[4].widget));
   gtk_widget_queue_draw (GTK_WIDGET (popup_menu[6].widget));
 
+  g_object_set_data (G_OBJECT (widget), "tray_menu_uiinfo",
+		     popup_menu);
 }
 
 /* DESCRIPTION  :  Builds up the tray icon
@@ -230,6 +239,9 @@ void gnomemeeting_init_tray_popup_menu (GtkWidget *widget)
 static void gnomemeeting_build_tray (GtkContainer *tray_icon)
 {
   GtkWidget *image;
+
+  /* Add the popup menu to the tray */
+  gnomemeeting_init_tray_popup_menu (GTK_WIDGET (tray_icon));
 
   image = gtk_image_new_from_stock (GM_STOCK_PANEL_AVAILABLE,
 				    GTK_ICON_SIZE_MENU);
@@ -241,7 +253,9 @@ static void gnomemeeting_build_tray (GtkContainer *tray_icon)
 			 | GDK_BUTTON_PRESS_MASK | GDK_EXPOSURE_MASK);
   
   g_signal_connect (G_OBJECT (eventbox), "button_press_event",
-		    G_CALLBACK (tray_clicked), NULL);
+		    G_CALLBACK (tray_clicked),
+		    gnomemeeting_tray_get_uiinfo (G_OBJECT (tray_icon), 6));
+  /* 6 is the position of the show docklet entry in the popup menu */
   
   gtk_widget_show (image);
   gtk_widget_show (eventbox);
@@ -251,9 +265,6 @@ static void gnomemeeting_build_tray (GtkContainer *tray_icon)
   g_object_set_data (G_OBJECT (tray_icon), "available", GINT_TO_POINTER (1));
   gtk_container_add (GTK_CONTAINER (eventbox), image);
   gtk_container_add (tray_icon, eventbox);
-  
-  /* Add the popup menu to the plug */
-  gnomemeeting_init_tray_popup_menu (GTK_WIDGET (eventbox));
 }
 
 
@@ -344,4 +355,17 @@ gint gnomemeeting_tray_flash (GObject *tray)
   gdk_threads_leave ();
 
   return TRUE;
+}
+
+/* DESCRIPTION  : Returns a popup menu item
+ * BEHAVIOR     : 
+ * PRE          : /
+ */
+GObject *gnomemeeting_tray_get_uiinfo (GObject *tray, int index)
+{
+  GnomeUIInfo *uiinfo = (GnomeUIInfo *) g_object_get_data (tray, 
+							   "tray_menu_uiinfo");
+  g_return_val_if_fail (uiinfo != NULL, NULL);
+
+ return G_OBJECT (uiinfo[index].widget);
 }

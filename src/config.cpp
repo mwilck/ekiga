@@ -1203,10 +1203,18 @@ void gnomemeeting_init_gconf (GConfClient *client)
 
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/auto_answer", menu_toggle_changed_nt, call_menu [4].widget, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/general/auto_answer", 
+			   menu_toggle_changed_nt,
+			   gnomemeeting_tray_get_uiinfo (G_OBJECT (gw->docklet), 4),
+			   0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/auto_answer", toggle_changed_nt, pw->aa, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/do_not_disturb", toggle_changed_nt, pw->dnd, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/do_not_disturb", menu_toggle_changed_nt, call_menu [3].widget, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/general/do_not_disturb",
+			   menu_toggle_changed_nt, 
+			   gnomemeeting_tray_get_uiinfo (G_OBJECT (gw->docklet), 3),
+			   0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/do_not_disturb", do_not_disturb_changed_nt, pw->dnd, 0, 0);
 
 
