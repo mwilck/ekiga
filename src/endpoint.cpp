@@ -1424,6 +1424,8 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
      that was rejected in connection.cpp because of(DND) */
   if (GetCallingState () != 3) {
 
+    SetCallingState (0);
+
     /* Update ILS if needed */
     if (gconf_client_get_bool (client, "/apps/gnomemeeting/ldap/register", 0))
       ((GMILSClient *) (ils_client))->Modify ();
