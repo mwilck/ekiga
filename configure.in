@@ -59,6 +59,7 @@ dnl *******************************************
 dnl Set up Operating System specific parameters
 dnl *******************************************
 
+AC_MSG_CHECKING(whether OS type is supported)
 case `uname -s` in
 
   linux-gnu | linux | Linux)
@@ -66,6 +67,8 @@ case `uname -s` in
     H323_LIBS="-lopenh323 -ldl -lpt -lpthread -lssl -lcrypto"
     LIBPT_FILE="libpt.so"
     LIBOPENH323_FILE="libopenh323.so"
+    AC_MSG_RESULT([yes])
+
 
 dnl * if debug add this and link to -lh323_linux_x86_d -lpt_linux_x86_d
 dnl * -D_DEBUG -DPMEMORY_CHECK=1 -DPTRACING -g
@@ -76,6 +79,7 @@ dnl * -D_DEBUG -DPMEMORY_CHECK=1 -DPTRACING -g
     H323_LIBS="-lh323_FreeBSD_x86_r -lpt_FreeBSD_x86_r -pthread -lssl -lcrypto"
     LIBPT_FILE="libpt_FreeBSD_x86_r_s.a"
     LIBOPENH323_FILE="libh323_FreeBSD_x86_r_s.a"
+    AC_MSG_RESULT([yes])
     ;;
   *)
     AC_MSG_ERROR("Only Linux and FreeBSD are supported. Please contact the author")
@@ -239,8 +243,6 @@ then
 
     AC_DEFINE(HAVE_ARTS, 1, [Define if you have ARTS sound server])
     HAS_ARTS="enabled"
-    GNOMEMEETING_LDADD="$GNOMEMEETING_LDADD $ARTSC_LIBS"
-    GNOMEMEETING_INCLUDES="$GNOMEMEETING_INCLUDES $ARTSC_CFLAGS"
 else
     HAS_ARTS="disabled"
 fi
@@ -323,8 +325,8 @@ GNOMEMEETING_INCLUDES="$GNOMEMEETING_CFLAGS $PTLIB_CFLAGS $LDAP_INCLUDES $OPENH3
 GNOMEMEETING_LDADD="$PTLIB_LDFLAGS $OPENH323_LDFLAGS $OPENSSL_LDFLAGS $GNOMEMEETING_LIBS"
 CFLAGS=""
 
-GNOMEMEETING_INCLUDES="$GNOMEMEETING_INCLUDES $H323_CFLAGS $GNOME_INCLUDE_DIR $GDK_PIXBUF_CFLAGS $GCONF_CFLAGS $SDL_CFLAGS"
-GNOMEMEETING_LDADD="$LDAP_LIBS $H323_LIBS -lesd $GNOMEMEETING_LDADD $SDL_LDFLAGS"
+GNOMEMEETING_INCLUDES="$GNOMEMEETING_INCLUDES $H323_CFLAGS $GNOME_INCLUDE_DIR $GDK_PIXBUF_CFLAGS $GCONF_CFLAGS $SDL_CFLAGS $ARTSC_CFLAGS"
+GNOMEMEETING_LDADD="$LDAP_LIBS $H323_LIBS -lesd $GNOMEMEETING_LDADD $SDL_LDFLAGS $ARTSC_LDFLAGS"
 
 GNOME_COMPILE_WARNINGS
 
@@ -346,7 +348,7 @@ dnl  Support for internationalization
 dnl ########################################################################
 ALL_LINGUAS="cs de el es fr gl hu it ja nl no pt pt_BR ru sk sv tr vi wa zh_CN zh_TW"
 
-GETTEXT_PACKAGE=gnomemeeting
+GETTEXT_PACKAGE=GnomeMeeting
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE")
 AM_GLIB_GNU_GETTEXT
