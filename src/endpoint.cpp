@@ -60,9 +60,6 @@
 #include "gm_conf.h"
 
 #include <h261codec.h>
-#if H323_RFC2190_AVCODEC
-#include "rfc2190avcodec.h"
-#endif
 
 #include <ptclib/http.h>
 #include <ptclib/html.h>
@@ -335,22 +332,12 @@ GMH323EndPoint::AddVideoCapabilities ()
   /* Add video capabilities */
   if (video_size == 1) {
 
-#if H323_RFC2190_AVCODEC
-    SetCapability (0, 1, new H323_RFC2190_H263Capability (0, 0, 1, 0, 0, 65536, TRUE, FALSE, TRUE, TRUE, FALSE));
-    SetCapability (0, 1, new H323_RFC2190_H263Capability (0, 1, 0, 0, 0, 65536, TRUE, FALSE, TRUE, TRUE, FALSE));
-#endif
-
     /* CIF Capability in first position */
     SetCapability (0, 1, new H323_H261Capability (4, 0, FALSE, FALSE, 6217));
     SetCapability (0, 1, new H323_H261Capability (0, 2, FALSE, FALSE, 6217));
   }
   else {
 
-#if H323_RFC2190_AVCODEC
-    SetCapability (0, 1, new H323_RFC2190_H263Capability (0, 1, 0, 0, 0, 65536, TRUE, FALSE, TRUE, TRUE, FALSE));
-    SetCapability (0, 1, new H323_RFC2190_H263Capability (0, 0, 1, 0, 0, 65536, TRUE, FALSE, TRUE, TRUE, FALSE));
-#endif
-    
     SetCapability (0, 1, new H323_H261Capability (4, 0, FALSE, FALSE, 6217)); 
     SetCapability (0, 1, new H323_H261Capability (0, 2, FALSE, FALSE, 6217));
   }
