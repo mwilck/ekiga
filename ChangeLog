@@ -1,3 +1,13 @@
+2001-11-27  Miguel Rodríguez Pérez  <migrax@terra.es>
+
+	* configure.in: Put LDAP_CFLAGS after H323_CFLAGS to
+	avoid recursion problems including header files
+
+2001-11-27  Miguel Rodríguez Pérez  <miguel@det.uvigo.es>
+
+	* configure.in: Some cleaning
+	Added checks for gconf (commented)
+
 2001-11-27  Damien Sandras  <dsandras@seconix.com>
 
 	* src/pref_window.cpp: Fixed tooltip problem. 
