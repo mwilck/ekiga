@@ -269,48 +269,58 @@ GnomeMeeting::DetectDevices ()
   audio_plugin = gm_conf_get_string (AUDIO_DEVICES_KEY "plugin");
   video_plugin = gm_conf_get_string (VIDEO_DEVICES_KEY "plugin");
  
+  PWaitAndSignal m(dev_access_mutex);
+  
 
   /* Detect the devices */
   gnomemeeting_sound_daemons_suspend ();
 
+  
   /* Detect the plugins */
-  gw->audio_managers = PSoundChannel::GetDriverNames ();
-  gw->video_managers = PVideoInputDevice::GetDriverNames ();
+  audio_managers = PSoundChannel::GetDriverNames ();
+  video_managers = PVideoInputDevice::GetDriverNames ();
 
+  
+  /* No audio plugin => Exit */
+  if (audio_managers.GetSize () == 0)
+    return FALSE;
+  
+  
   /* Detect the devices */
-   gw->video_devices = PVideoInputDevice::GetDriversDeviceNames (video_plugin);
+  video_input_devices = PVideoInputDevice::GetDriversDeviceNames (video_plugin);
  
   if (PString ("Quicknet") == audio_plugin) {
 
-    gw->audio_recorder_devices = OpalIxJDevice::GetDeviceNames ();
-    gw->audio_player_devices = gw->audio_recorder_devices;
+    audio_input_devices = OpalIxJDevice::GetDeviceNames ();
+    audio_output_devices = audio_input_devices;
   }
   else {
     
-    gw->audio_recorder_devices = 
+    audio_input_devices = 
       PSoundChannel::GetDeviceNames (audio_plugin, PSoundChannel::Recorder);
-    gw->audio_player_devices = 
+    audio_output_devices = 
       PSoundChannel::GetDeviceNames (audio_plugin, PSoundChannel::Player);
   }
     
-  if (gw->audio_recorder_devices.GetSize () == 0) 
-    gw->audio_recorder_devices += PString (_("No device found"));
-  if (gw->audio_player_devices.GetSize () == 0)
-    gw->audio_player_devices += PString (_("No device found"));
-  if (gw->video_devices.GetSize () == 0)
-    gw->video_devices += PString (_("No device found"));
+  
+  if (audio_input_devices.GetSize () == 0) 
+    audio_input_devices += PString (_("No device found"));
+  if (audio_output_devices.GetSize () == 0)
+    audio_output_devices += PString (_("No device found"));
+  if (video_input_devices.GetSize () == 0)
+    video_input_devices += PString (_("No device found"));
 
+  
   g_free (audio_plugin);
   g_free (video_plugin);
 
-  if (gw->audio_managers.GetSize () == 0)
-    return FALSE;
 
-  fake_idx = gw->video_managers.GetValuesIndex (PString ("FakeVideo"));
+  fake_idx = video_managers.GetValuesIndex (PString ("FakeVideo"));
   if (fake_idx != P_MAX_INDEX)
-    gw->video_managers.RemoveAt (fake_idx);
+    video_managers.RemoveAt (fake_idx);
   
-  gw->audio_managers += PString ("Quicknet");
+  audio_managers += PString ("Quicknet");
+  
   gnomemeeting_sound_daemons_resume ();
 
   return TRUE;
@@ -492,3 +502,47 @@ void GnomeMeeting::RemoveEndpoint ()
 }
 
 
+PStringArray 
+GnomeMeeting::GetVideoInputDevices ()
+{
+  PWaitAndSignal m(dev_access_mutex);
+
+  return video_input_devices;
+}
+
+
+PStringArray 
+GnomeMeeting::GetAudioInputDevices ()
+{
+  PWaitAndSignal m(dev_access_mutex);
+
+  return audio_input_devices;
+}
+
+
+
+PStringArray 
+GnomeMeeting::GetAudioOutpoutDevices ()
+{
+  PWaitAndSignal m(dev_access_mutex);
+
+  return audio_output_devices;
+}
+
+
+PStringArray 
+GnomeMeeting::GetAudioPlugins ()
+{
+  PWaitAndSignal m(dev_access_mutex);
+
+  return audio_managers;
+}
+
+
+PStringArray 
+GnomeMeeting::GetVideoPlugins ()
+{
+  PWaitAndSignal m(dev_access_mutex);
+
+  return video_managers;
+}

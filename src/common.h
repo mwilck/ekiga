@@ -196,13 +196,6 @@ struct _GmWindow
   GtkWidget *stats_drawing_area;
 
   GdkColor colors [6];
-
-
-  PStringArray video_devices;
-  PStringArray audio_recorder_devices;
-  PStringArray audio_player_devices;
-  PStringArray audio_managers;
-  PStringArray video_managers;
 };
 
 

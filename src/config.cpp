@@ -849,17 +849,26 @@ manager_changed_nt (gpointer id,
 		    GmConfEntry *entry,
 		    gpointer data)
 {
-  PStringList l;
-  /* FIXME */
+  PStringArray audio_input_devices;
+  PStringArray audio_output_devices;
+  PStringArray video_input_devices;
+
+  
   g_return_if_fail (data != NULL);
 
   
   if (gm_conf_entry_get_type (entry) == GM_CONF_STRING) {
 
     GnomeMeeting::Process ()->DetectDevices ();
+    audio_input_devices = GnomeMeeting::Process ()->GetAudioInputDevices ();
+    audio_output_devices = GnomeMeeting::Process ()->GetAudioOutpoutDevices ();
+    video_input_devices = GnomeMeeting::Process ()->GetVideoInputDevices ();
 
     gdk_threads_enter ();
-    gm_prefs_window_update_devices_list (GTK_WIDGET (data), l);
+    gm_prefs_window_update_devices_list (GTK_WIDGET (data), 
+					 audio_input_devices,
+					 audio_output_devices,
+					 video_input_devices);
     gdk_threads_leave ();
   }
 }

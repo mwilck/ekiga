@@ -46,11 +46,14 @@
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Refreshes the devices list in the GUI to update them from
  *                 the GnomeMeeting available devices list.
- * PRE          :  /
+ * PRE          :  The main window GMObject, the audio input devices list,
+ * 		   the audio output devices list, the video input devices list.
  */
 void 
 gm_prefs_window_update_devices_list (GtkWidget *,
-				     PStringList);
+				     PStringArray,
+				     PStringArray,
+				     PStringArray);
 
 
 /* DESCRIPTION  :  /

@@ -802,13 +802,12 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
 
   GtkCellRenderer *renderer = NULL;
 
-  GmWindow *gw = NULL;
+  PStringArray devs;
 
   gchar **array = NULL;
 
 
   pw = gm_pw_get_pw (prefs_window);
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
   
   subsection = gnome_prefs_subsection_new (prefs_window, container,
 					   _("GnomeMeeting Sound Events"), 
@@ -928,7 +927,8 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
 					   _("Output Device"), 
 					   1, 1);
   
-  array = gw->audio_player_devices.ToCharArray ();
+  devs = GnomeMeeting::Process ()->GetAudioInputDevices ();
+  array = devs.ToCharArray ();
   pw->sound_events_output =
     gnome_prefs_string_option_menu_new (subsection, _("Output device:"), array, SOUND_EVENTS_KEY "output_device", _("Select the audio output device to use for sound events"), 0);
   free (array);
@@ -1058,11 +1058,12 @@ static void
 gm_pw_init_audio_devices_page (GtkWidget *prefs_window,
 			       GtkWidget *container)
 {
-  GmWindow *gw = NULL;
   GmPreferencesWindow *pw = NULL;
   
   GtkWidget *entry = NULL;  
   GtkWidget *subsection = NULL;
+
+  PStringArray devs;
 
   gchar **array = NULL;
   gchar *aec [] = {_("Off"),
@@ -1077,7 +1078,6 @@ gm_pw_init_audio_devices_page (GtkWidget *prefs_window,
 			   NULL};
 
 
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
   pw = gm_pw_get_pw (prefs_window);
   
 
@@ -1085,7 +1085,8 @@ gm_pw_init_audio_devices_page (GtkWidget *prefs_window,
 					   _("Audio Plugin"), 1, 2);
                                                                                
   /* Add all the fields for the audio manager */
-  array = gw->audio_managers.ToCharArray ();
+  devs = GnomeMeeting::Process ()->GetAudioPlugins ();
+  array = devs.ToCharArray ();
   gnome_prefs_string_option_menu_new (subsection, _("Audio plugin:"), array, AUDIO_DEVICES_KEY "plugin", _("The audio plugin that will be used to detect the devices and manage them."), 0);
   free (array);
 
@@ -1096,13 +1097,15 @@ gm_pw_init_audio_devices_page (GtkWidget *prefs_window,
                                                                                
 
   /* The player */
-  array = gw->audio_player_devices.ToCharArray ();
+  devs = GnomeMeeting::Process ()->GetAudioOutpoutDevices ();
+  array = devs.ToCharArray ();
   pw->audio_player =
     gnome_prefs_string_option_menu_new (subsection, _("Output device:"), array, AUDIO_DEVICES_KEY "output_device", _("Select the audio output device to use"), 0);
   free (array);
   
   /* The recorder */
-  array = gw->audio_recorder_devices.ToCharArray ();
+  devs = GnomeMeeting::Process ()->GetAudioInputDevices ();
+  array = devs.ToCharArray ();
   pw->audio_recorder =
     gnome_prefs_string_option_menu_new (subsection, _("Input device:"), array, AUDIO_DEVICES_KEY "input_device", _("Select the audio input device to use"), 2);
   free (array);
@@ -1132,13 +1135,14 @@ static void
 gm_pw_init_video_devices_page (GtkWidget *prefs_window,
 			       GtkWidget *container)
 {
-  GmWindow *gw = NULL;
   GmPreferencesWindow *pw = NULL;
   
   GtkWidget *entry = NULL;
   GtkWidget *subsection = NULL;
 
   GtkWidget *button = NULL;
+
+  PStringArray devs;
 
   gchar **array = NULL;
   gchar *video_size [] = {_("Small"),
@@ -1151,7 +1155,6 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
 			    NULL};
 
 
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
   pw = gm_pw_get_pw (prefs_window); 
   
 
@@ -1159,7 +1162,8 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
   subsection = gnome_prefs_subsection_new (prefs_window, container,
 					   _("Video Plugin"), 1, 2);
 
-  array = gw->video_managers.ToCharArray ();
+  devs = GnomeMeeting::Process ()->GetVideoPlugins ();
+  array = devs.ToCharArray ();
   gnome_prefs_string_option_menu_new (subsection, _("Video plugin:"), array, VIDEO_DEVICES_KEY "plugin", _("The video plugin that will be used to detect the devices and manage them"), 0);
   free (array);
 
@@ -1169,7 +1173,8 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
 					   _("Video Devices"), 5, 3);
 
   /* The video device */
-  array = gw->video_devices.ToCharArray ();
+  devs = GnomeMeeting::Process ()->GetVideoInputDevices ();
+  array = devs.ToCharArray ();
   pw->video_device =
     gnome_prefs_string_option_menu_new (subsection, _("Input device:"), array, VIDEO_DEVICES_KEY "input_device", _("Select the video input device to use. If an error occurs when using this device a test picture will be transmitted."), 0);
   free (array);
@@ -1384,13 +1389,21 @@ static void
 refresh_devices_list_cb (GtkWidget *w,
 			 gpointer data)
 {
-  PStringList l;
+  PStringList audio_input_devices;
+  PStringList audio_output_devices;
+  PStringList video_input_devices;
 
   g_return_if_fail (data != NULL);
 
   GnomeMeeting::Process ()->DetectDevices ();
+  audio_input_devices = GnomeMeeting::Process ()->GetAudioInputDevices ();
+  audio_output_devices = GnomeMeeting::Process ()->GetAudioOutpoutDevices ();
+  video_input_devices = GnomeMeeting::Process ()->GetVideoInputDevices ();
 
-  gm_prefs_window_update_devices_list (GTK_WIDGET (data), l);
+  gm_prefs_window_update_devices_list (GTK_WIDGET (data), 
+				       audio_input_devices,
+				       audio_output_devices,
+				       video_input_devices);
 }
 
 
@@ -1628,11 +1641,12 @@ sound_event_toggled_cb (GtkCellRendererToggle *cell,
 /* Public functions */
 void 
 gm_prefs_window_update_devices_list (GtkWidget *prefs_window, 
-				     PStringList l)
+				     PStringArray audio_input_devices,
+				     PStringArray audio_output_devices,
+				     PStringArray video_input_devices)
 {
   GmPreferencesWindow *pw = NULL;
-  GmWindow *gw = GnomeMeeting::Process ()->GetMainWindow ();
-
+  
   gchar **array = NULL;
   
 
@@ -1641,7 +1655,7 @@ gm_prefs_window_update_devices_list (GtkWidget *prefs_window,
   
 
   /* The player */
-  array = gw->audio_player_devices.ToCharArray ();
+  array = audio_output_devices.ToCharArray ();
   gnome_prefs_string_option_menu_update (pw->audio_player,
 					 array,
 					 AUDIO_DEVICES_KEY "output_device");
@@ -1650,8 +1664,9 @@ gm_prefs_window_update_devices_list (GtkWidget *prefs_window,
 					 SOUND_EVENTS_KEY "output_device");
   free (array);
   
+  
   /* The recorder */
-  array = gw->audio_recorder_devices.ToCharArray ();
+  array = audio_input_devices.ToCharArray ();
   gnome_prefs_string_option_menu_update (pw->audio_recorder,
 					 array,
 					 AUDIO_DEVICES_KEY "input_device");
@@ -1659,7 +1674,7 @@ gm_prefs_window_update_devices_list (GtkWidget *prefs_window,
   
   
   /* The Video player */
-  array = gw->video_devices.ToCharArray ();
+  array = video_input_devices.ToCharArray ();
 
   gnome_prefs_string_option_menu_update (pw->video_device,
 					 array,

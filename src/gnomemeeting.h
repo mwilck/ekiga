@@ -187,6 +187,51 @@ class GnomeMeeting : public PProcess
   void BuildGUI ();
 
   
+  /* DESCRIPTION  : / 
+   * BEHAVIOR     : Returns the list of detected video devices. 
+   * 		    That doesn't force a redetection. Use DetectDevices 
+   * 		    for that.
+   * PRE          : /
+   */
+  PStringArray GetVideoInputDevices ();
+  
+  
+  /* DESCRIPTION  : / 
+   * BEHAVIOR     : Returns the list of detected audio input devices. 
+   * 		    That doesn't force a redetection. Use DetectDevices 
+   * 		    for that.
+   * PRE          : /
+   */
+  PStringArray GetAudioInputDevices ();
+  
+  
+  /* DESCRIPTION  : / 
+   * BEHAVIOR     : Returns the list of detected audio output devices. 
+   * 		    That doesn't force a redetection. Use DetectDevices 
+   * 		    for that.
+   * PRE          : /
+   */
+  PStringArray GetAudioOutpoutDevices ();
+  
+  
+  /* DESCRIPTION  : / 
+   * BEHAVIOR     : Returns the list of detected audio plugins. 
+   * 		    That doesn't force a redetection. Use DetectDevices 
+   * 		    for that.
+   * PRE          : /
+   */
+  PStringArray GetAudioPlugins ();
+  
+  
+  /* DESCRIPTION  : / 
+   * BEHAVIOR     : Returns the list of detected video plugins. 
+   * 		    That doesn't force a redetection. Use DetectDevices 
+   * 		    for that.
+   * PRE          : /
+   */
+  PStringArray GetVideoPlugins ();
+  
+  
  private:
   GMH323EndPoint *endpoint;
   PThread *url_handler;
@@ -195,8 +240,18 @@ class GnomeMeeting : public PProcess
   GmRtpData *rtp;
 
   PMutex ep_var_mutex;
+  PMutex dev_access_mutex;
   int call_number;
 
+
+  /* Detected devices and plugins */
+  PStringArray video_input_devices;
+  PStringArray audio_input_devices;
+  PStringArray audio_output_devices;
+  PStringArray audio_managers;
+  PStringArray video_managers;
+
+  
   /* The different components of the GUI */
   GtkWidget *addressbook_window;
   GtkWidget *calls_history_window;

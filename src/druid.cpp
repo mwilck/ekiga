@@ -1268,6 +1268,10 @@ finish_cb (GnomeDruidPage *p,
   gchar *video_manager = NULL;
   gchar *video_recorder = NULL;
 
+  PStringArray audio_input_devices;
+  PStringArray audio_output_devices;
+  PStringArray video_input_devices;
+
   
   g_return_if_fail (data != NULL);
   
@@ -1390,12 +1394,16 @@ finish_cb (GnomeDruidPage *p,
   gnomemeeting_window_show (gm);
 
 
-  /* Will be done through config if the manager changes, but not
+  /* Will be done through the config if the manager changes, but not
      if the manager doesn't change */
   GnomeMeeting::Process ()->DetectDevices ();  
-  /* FIXME */
-  PStringList l;
-  gm_prefs_window_update_devices_list (prefs_window, l);
+  audio_input_devices = GnomeMeeting::Process ()->GetAudioInputDevices ();
+  audio_output_devices = GnomeMeeting::Process ()->GetAudioOutpoutDevices ();
+  video_input_devices = GnomeMeeting::Process ()->GetVideoInputDevices ();
+  gm_prefs_window_update_devices_list (prefs_window, 
+				       audio_input_devices,
+				       audio_output_devices,
+				       video_input_devices);
   
 
   /* Displays a welcome message */
@@ -1465,6 +1473,8 @@ prepare_personal_data_page_cb (GnomeDruidPage *page,
   GmWindow *gw = NULL;
   GmDruidWindow *dw = NULL;
   
+  PStringArray devs;
+  
   gchar *firstname = NULL;
   gchar *lastname = NULL;
   gchar *mail = NULL;
@@ -1514,12 +1524,14 @@ prepare_personal_data_page_cb (GnomeDruidPage *page,
   gtk_option_menu_set_history (GTK_OPTION_MENU (dw->kind_of_net),
 			       kind_of_net - 1);
   
-  array = gw->audio_managers.ToCharArray ();
+  devs = GnomeMeeting::Process ()->GetAudioPlugins ();
+  array = devs.ToCharArray ();
   audio_manager = gm_conf_get_string (AUDIO_DEVICES_KEY "plugin");
   gm_dw_option_menu_update (dw->audio_manager, array, audio_manager);
   free (array);
   
-  array = gw->video_managers.ToCharArray ();
+  devs = GnomeMeeting::Process ()->GetVideoPlugins ();
+  array = devs.ToCharArray ();
   video_manager = gm_conf_get_string (VIDEO_DEVICES_KEY "plugin");
   gm_dw_option_menu_update (dw->video_manager, array, video_manager);
   free (array);
@@ -1579,16 +1591,10 @@ prepare_audio_devices_page_cb (GnomeDruidPage *page,
   dw = gm_dw_get_dw (GTK_WIDGET (data));
 
   ep = GnomeMeeting::Process ()->Endpoint ();
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
-
   
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (dw->audio_test_button),
 				FALSE);
   
-  cursor = gdk_cursor_new (GDK_WATCH);
-  gdk_window_set_cursor (GTK_WIDGET (data)->window, cursor);
-  gdk_cursor_unref (cursor);
-
   child = GTK_BIN (dw->audio_manager)->child;
   
   if (child)
@@ -1617,6 +1623,8 @@ prepare_audio_devices_page_cb (GnomeDruidPage *page,
   gm_dw_option_menu_update (dw->audio_player, array, player);
   free (array);
 
+  cout << "Should be fixed ?" << endl << flush;
+
   if (PString ("Quicknet") == audio_manager)
     devices = OpalIxJDevice::GetDeviceNames ();
   else
@@ -1635,7 +1643,6 @@ prepare_audio_devices_page_cb (GnomeDruidPage *page,
   free (array);
   gnomemeeting_sound_daemons_resume ();
 
-  gdk_window_set_cursor (GTK_WIDGET (data)->window, NULL);
   
   g_free (player);
   g_free (recorder);
