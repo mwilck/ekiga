@@ -182,9 +182,42 @@ GMH323EndPoint::OnRTPStatistics (const H323Connection & connection,
 BOOL 
 GMH323EndPoint::OnIncomingConnection (OpalConnection &connection)
 {
+  gchar *forward_host = NULL;
+
+  gboolean busy_forward = FALSE;
+  gboolean always_forward = FALSE;
+
+  BOOL res = FALSE;
+
+  int reason = 0;
+  
   PTRACE (3, "GMH323EndPoint\tIncoming connection");
 
-  return endpoint.OnIncomingConnection (connection);
-  //return connection.ForwardCall ("h323:seconix.com:1740");
+
+  gnomemeeting_threads_enter ();
+  forward_host = gm_conf_get_string (H323_KEY "forward_host");
+  busy_forward = gm_conf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
+  always_forward = gm_conf_get_bool (CALL_FORWARDING_KEY "always_forward");
+  gnomemeeting_threads_leave ();
+  
+
+  if (forward_host && always_forward)
+    reason = 2; // Forward
+  /* We are in a call */
+  else if (endpoint.GetCallingState () != GMEndPoint::Standby) {
+
+    if (forward_host && busy_forward)
+      reason = 2; // Forward
+    else
+      reason = 1; // Reject
+  }
+  else
+    reason = 0; // Ask the user
+
+  res = endpoint.OnIncomingConnection (connection, reason, forward_host);
+
+  g_free (forward_host);
+
+  return res;
 }
 

@@ -716,6 +716,69 @@ void GMEndPoint::GetRemoteConnectionInfo (OpalConnection & connection,
 }
 
 
+BOOL
+GMEndPoint::OnIncomingConnection (OpalConnection &connection,
+				  int reason,
+				  PString extra)
+{
+  BOOL res = FALSE;
+
+  GtkWidget *main_window = NULL;
+  GtkWidget *history_window = NULL;
+  
+  gchar *short_reason = NULL;
+  gchar *long_reason = NULL;
+
+  gchar *utf8_name = NULL;
+  gchar *utf8_app = NULL;
+  gchar *utf8_url = NULL;
+
+  GetRemoteConnectionInfo (connection, utf8_name, utf8_app, utf8_url);
+
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
+  
+  switch (reason) {
+
+  case 1:
+    connection.ClearCall (OpalConnection::EndedByLocalBusy);
+    res = TRUE;
+    short_reason = g_strdup (_("Rejecting incoming call"));
+    long_reason = 
+      g_strdup_printf (_("Rejecting incoming call from %s"), utf8_name);
+    break;
+    
+  case 2:
+    res = connection.ForwardCall (extra);
+    short_reason = g_strdup (_("Forwarding incoming call"));
+    long_reason = 
+      g_strdup_printf (_("Forwarding incoming call from %s to %s"), 
+		       utf8_name, (const char *) extra);
+    break;
+    
+  default:
+  case 0:
+    res = OpalManager::OnIncomingConnection (connection);
+    break;
+  }
+
+  
+  gnomemeeting_threads_enter ();
+  if (short_reason)
+    gm_main_window_flash_message (main_window, short_reason);
+  if (long_reason)
+    gm_history_window_insert (history_window, long_reason);
+  gnomemeeting_threads_leave ();
+
+
+  g_free (utf8_app);
+  g_free (utf8_name);
+  g_free (utf8_url);
+
+  return res;
+}
+
+
 void 
 GMEndPoint::OnEstablished (OpalConnection &connection)
 {
@@ -733,22 +796,29 @@ GMEndPoint::OnEstablished (OpalConnection &connection)
   IncomingCallMode icm = AVAILABLE;
   
   
-  /* Do not update the current state if it is not the remote connection
-   * that is established.
-   */
-  if (PIsDescendant(&(connection), OpalPCSSConnection)) {
-
-    PTRACE (3, "GMEndPoint\t Will establish the PCSS connection");
-    OpalManager::OnEstablished (connection);
-    return;
-  }
-
-
   /* Get the widgets */
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
   tray = GnomeMeeting::Process ()->GetTray ();
+
+
+  /* Do not update the current state if it is not the remote connection
+   * that is established.
+   */
+  if (PIsDescendant(&(connection), OpalPCSSConnection)) {
+
+    /* Already update part of the main GUI */
+    gnomemeeting_threads_enter ();
+    gm_main_window_update_calling_state (main_window, GMEndPoint::Connected);
+    gm_tray_update_calling_state (tray, GMEndPoint::Connected);
+    gnomemeeting_threads_leave ();
+
+    
+    PTRACE (3, "GMEndPoint\t Will establish the PCSS connection");
+    OpalManager::OnEstablished (connection);
+    return;
+  }
   
   
   /* Start refreshing the stats */
@@ -2117,29 +2187,16 @@ GMEndPoint::SendDTMF (PString callToken,
   call = FindCallWithLock (callToken);
 
   if (call != NULL) {
-
-    connection = call->GetConnection (1);
-
-    if (connection != NULL) {
-
-      if (!PIsDescendant (&(*connection), SIPConnection))
-	connection = call->GetConnection (0);
-
-      connection->SendUserInputString (dtmf);
-    }
-  }
-  if (call != NULL) {
-
-    connection = call->GetConnection (1);
+    
+    PSafePtr<OpalConnection> connection = call->GetConnection(1);
 
     if (connection != NULL) {
-
-      if (!PIsDescendant (&(*connection), OpalPCSSConnection))
-	connection = call->GetConnection (0);
-
-      connection->SendUserInputString (dtmf);
+      if (!PIsDescendant(&(*connection), OpalPCSSConnection))
+	connection = call->GetConnection(0);
+      connection->OnUserInputTone('6', 100);
     }
   }
+  //FIXME
 }
 
 

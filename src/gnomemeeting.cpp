@@ -38,7 +38,6 @@
 #include "../config.h"
 
 #include "gnomemeeting.h"
-#include "pcssendpoint.h"
 #include "callbacks.h"
 #include "sound_handling.h"
 #include "ils.h"
@@ -151,16 +150,12 @@ GnomeMeeting::~GnomeMeeting()
 void 
 GnomeMeeting::Connect (PString url)
 {
-  GMPCSSEndPoint *pcssEP = NULL;
-
-  pcssEP = endpoint->GetPCSSEndPoint ();
-  
   /* If incoming connection, then answer it */
   if (endpoint->GetCallingState () == GMEndPoint::Called) {
 
     gm_history_window_insert (history_window, _("Answering incoming call"));
 
-    pcssEP->AcceptCurrentIncomingCall ();
+    url_handler = new GMURLHandler (FALSE);
   }
   else if (endpoint->GetCallingState () == GMEndPoint::Standby
 	   && !GMURL (url).IsEmpty ()) {
@@ -204,6 +199,9 @@ GnomeMeeting::Disconnect (H323Connection::CallEndReason reason)
       endpoint->ClearCall (call_token,
 			   H323Connection::EndedByAnswerDenied);
     }
+    else
+      endpoint->ClearCall (call_token,
+			   H323Connection::EndedByAnswerDenied);
   }
 }
 
