@@ -1261,9 +1261,9 @@ call_forwarding_changed_nt (GConfClient *client,
 				NULL)) {
 
       if (gconf_client_get_int (client,
-				CALL_CONTROL_KEY "incoming_call_mode",
+				CALL_OPTIONS_KEY "incoming_call_mode",
 				NULL) == FORWARD) {
-	gconf_client_set_int (client, CALL_CONTROL_KEY "incoming_call_mode",
+	gconf_client_set_int (client, CALL_OPTIONS_KEY "incoming_call_mode",
 			      AVAILABLE, NULL);
       }
     }
@@ -1301,9 +1301,9 @@ call_forwarding_changed_nt (GConfClient *client,
 				 NULL)) {
 
 	if (gconf_client_get_int (client,
-				  CALL_CONTROL_KEY "incoming_call_mode",
+				  CALL_OPTIONS_KEY "incoming_call_mode",
 				  NULL) != FORWARD)
-	  gconf_client_set_int (client, CALL_CONTROL_KEY "incoming_call_mode",
+	  gconf_client_set_int (client, CALL_OPTIONS_KEY "incoming_call_mode",
 				FORWARD, NULL);
       }
     }
@@ -1604,16 +1604,16 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
 
 
   /* Call Control */
-  gconf_client_notify_add (client, CALL_CONTROL_KEY "incoming_call_mode", 
+  gconf_client_notify_add (client, CALL_OPTIONS_KEY "incoming_call_mode", 
 			   radio_menu_changed_nt,
 			   gtk_menu_get_widget (gw->main_menu, "available"),
 			   NULL, NULL);
-  gconf_client_notify_add (client, CALL_CONTROL_KEY "incoming_call_mode", 
+  gconf_client_notify_add (client, CALL_OPTIONS_KEY "incoming_call_mode", 
 			   radio_menu_changed_nt,
 			   gtk_menu_get_widget (gw->tray_popup_menu,
 						"available"),
 			   NULL, NULL);
-  gconf_client_notify_add (client, CALL_CONTROL_KEY "incoming_call_mode", 
+  gconf_client_notify_add (client, CALL_OPTIONS_KEY "incoming_call_mode", 
 			   incoming_call_mode_changed_nt, NULL,
 			   NULL, NULL);
 

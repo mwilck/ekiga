@@ -120,7 +120,7 @@ static void gnomemeeting_init_pref_window_sound_events (GtkWidget *,
 static void gnomemeeting_init_pref_window_call_forwarding (GtkWidget *,
 							   GtkWidget *);
 
-static void gnomemeeting_init_pref_window_call_control (GtkWidget *,
+static void gnomemeeting_init_pref_window_call_options (GtkWidget *,
 							GtkWidget *);
 
 static void gnomemeeting_init_pref_window_h323_advanced (GtkWidget *,
@@ -1006,7 +1006,7 @@ gnomemeeting_init_pref_window_call_forwarding (GtkWidget *window,
  * PRE          :  /                                             
  */                                                                            
 static void
-gnomemeeting_init_pref_window_call_control (GtkWidget *window,
+gnomemeeting_init_pref_window_call_options (GtkWidget *window,
 					    GtkWidget *container)
 {
   GtkWidget *subsection = NULL;
@@ -1016,10 +1016,11 @@ gnomemeeting_init_pref_window_call_control (GtkWidget *window,
   pw = GnomeMeeting::Process ()->GetPrefWindow ();
   
   subsection = gnome_prefs_subsection_new (window, container,
-					   _("Maximum Bandwidth"), 1, 1);
+					   _("Calls Clearing"), 1, 1);
 
 
   /* Add all the fields */
+  gnome_prefs_toggle_new (subsection, _("Automatically _clear calls after 30 seconds of inactivity"), CALL_OPTIONS_KEY "clear_inactive_calls", _("If enabled, calls for which no audio and video has been received in the last 30 seconds are automatically cleared."), 1);  
 }
 
 
@@ -1699,8 +1700,8 @@ gnomemeeting_pref_window_new (GmPrefWindow *pw)
   gnomemeeting_init_pref_window_directories (window, container);
   gtk_widget_show_all (GTK_WIDGET (container));
   
-  container = gnome_prefs_window_subsection_new (window, _("Call Control"));
-  gnomemeeting_init_pref_window_call_control (window, container);
+  container = gnome_prefs_window_subsection_new (window, _("Call Options"));
+  gnomemeeting_init_pref_window_call_options (window, container);
   gtk_widget_show_all (GTK_WIDGET (container));
   
   container = gnome_prefs_window_subsection_new (window,

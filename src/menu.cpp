@@ -296,7 +296,7 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 
   /* Default values */
   icm = (IncomingCallMode) 
-    gconf_client_get_int (client, CALL_CONTROL_KEY "incoming_call_mode", 0); 
+    gconf_client_get_int (client, CALL_OPTIONS_KEY "incoming_call_mode", 0); 
   cps = (ControlPanelSection)
     gconf_client_get_int (client, VIEW_KEY "control_panel_section", 0); 
   show_status_bar =
@@ -322,23 +322,23 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 			   _("Display a popup to accept the call"),
 			   NULL, 0, 
 			   GTK_SIGNAL_FUNC (radio_menu_changed),
-			   (gpointer) CALL_CONTROL_KEY "incoming_call_mode",
+			   (gpointer) CALL_OPTIONS_KEY "incoming_call_mode",
 			   (icm == AVAILABLE), TRUE),
       GTK_MENU_RADIO_ENTRY("free_for_chat", _("Free for Cha_t"),
 			   _("Auto answer calls"),
 			   NULL, 0, 
 			   GTK_SIGNAL_FUNC (radio_menu_changed),
-			   (gpointer) CALL_CONTROL_KEY "incoming_call_mode",
+			   (gpointer) CALL_OPTIONS_KEY "incoming_call_mode",
 			   (icm == FREE_FOR_CHAT), TRUE),
       GTK_MENU_RADIO_ENTRY("busy", _("_Busy"), _("Reject calls"),
 			   NULL, 0, 
 			   GTK_SIGNAL_FUNC (radio_menu_changed),
-			   (gpointer) CALL_CONTROL_KEY "incoming_call_mode",
+			   (gpointer) CALL_OPTIONS_KEY "incoming_call_mode",
 			   (icm == BUSY), TRUE),
       GTK_MENU_RADIO_ENTRY("forward", _("_Forward"), _("Forward calls"),
 			   NULL, 0,
 			   GTK_SIGNAL_FUNC (radio_menu_changed),
-			   (gpointer) CALL_CONTROL_KEY "incoming_call_mode",
+			   (gpointer) CALL_OPTIONS_KEY "incoming_call_mode",
 			   (icm == FORWARD), TRUE),
 
       GTK_MENU_SEPARATOR,
@@ -657,7 +657,7 @@ gnomemeeting_tray_init_menu (GtkWidget *widget)
   client = gconf_client_get_default ();
   gw = GnomeMeeting::Process ()->GetMainWindow ();
   icm = (IncomingCallMode) 
-    gconf_client_get_int (client, CALL_CONTROL_KEY "incoming_call_mode", 0); 
+    gconf_client_get_int (client, CALL_OPTIONS_KEY "incoming_call_mode", 0); 
 
   static MenuEntry tray_menu [] =
     {
@@ -675,23 +675,23 @@ gnomemeeting_tray_init_menu (GtkWidget *widget)
 			   _("Display a popup to accept the call"),
 			   NULL, 0, 
 			   GTK_SIGNAL_FUNC (radio_menu_changed),
-			   (gpointer) CALL_CONTROL_KEY "incoming_call_mode",
+			   (gpointer) CALL_OPTIONS_KEY "incoming_call_mode",
 			   (icm == AVAILABLE), TRUE),
       GTK_MENU_RADIO_ENTRY("free_for_chat", _("Free for Cha_t"),
 			   _("Auto answer calls"),
 			   NULL, 0, 
 			   GTK_SIGNAL_FUNC (radio_menu_changed),
-			   (gpointer) CALL_CONTROL_KEY "incoming_call_mode",
+			   (gpointer) CALL_OPTIONS_KEY "incoming_call_mode",
 			   (icm == FREE_FOR_CHAT), TRUE),
       GTK_MENU_RADIO_ENTRY("busy", _("_Busy"), _("Reject calls"),
 			   NULL, 0, 
 			   GTK_SIGNAL_FUNC (radio_menu_changed),
-			   (gpointer) CALL_CONTROL_KEY "incoming_call_mode",
+			   (gpointer) CALL_OPTIONS_KEY "incoming_call_mode",
 			   (icm == BUSY), TRUE),
       GTK_MENU_RADIO_ENTRY("forward", _("_Forward"), _("Forward calls"),
 			   NULL, 0,
 			   GTK_SIGNAL_FUNC (radio_menu_changed),
-			   (gpointer) CALL_CONTROL_KEY "incoming_call_mode",
+			   (gpointer) CALL_OPTIONS_KEY "incoming_call_mode",
 			   (icm == FORWARD), TRUE),
 
       GTK_MENU_SEPARATOR,

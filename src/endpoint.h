@@ -546,7 +546,14 @@ class GMH323EndPoint : public H323EndPoint
    */
   PString CheckTCPPorts ();
 
+  
+  /* DESCRIPTION  :  Notifier called after 30 seconds of no media.
+   * BEHAVIOR     :  Clear the calls.
+   * PRE          :  /
+   */
+  PDECLARE_NOTIFIER(PTimer, GMH323EndPoint, OnNoIncomingMediaTimeout);
 
+  
   /* DESCRIPTION  :  Notifier called periodically to update details on ILS.
    * BEHAVIOR     :  Register, unregister the user from ILS or udpate his
    *                 personal data using the GMILSClient (XDAP).
@@ -610,6 +617,7 @@ class GMH323EndPoint : public H323EndPoint
   GDKVideoOutputDevice *transmitted_video_device; 
   GDKVideoOutputDevice *received_video_device; 
 
+  PTimer NoIncomingMediaTimer;
   PTimer ILSTimer;
   PTimer RTPTimer;
   PTimer GatewayIPTimer;

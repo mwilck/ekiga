@@ -1,6 +1,21 @@
 2003-12-28 Damien Sandras  <dsandras@seconix.com>
 
 	* NEWS: Updated with latest CVS news.
+	
+	* configure.in: Incremented SCHEMA_AGE.
+	
+	* gnomemeeting.schemas.in.in: Added key to enable/disable calls
+	after 30 seconds of inactivity. Renamed the CALL_CONTROL section
+	in CALL_OPTIONS.
+
+	* src/common.h, src/config.cpp, src/connection.cpp, src/endpoint.cpp,
+	src/endpoint.h, src/ils.cpp, src/menu.cpp, src/pref_window.cpp:
+	s/CALL_CONTROL/CALL_OPTIONS. Added possibility to clear automatically
+	calls after 30 seconds of inactivity.
+	
+2003-12-28 Damien Sandras  <dsandras@seconix.com>
+
+	* NEWS: Updated with latest CVS news.
 
 	* lib/dialog.c, lib/dialog.h: Modified 
 	gnomemeeting_warning_dialog_on_widget so that it uses the parent window

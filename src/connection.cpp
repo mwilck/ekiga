@@ -230,7 +230,7 @@ GMH323Connection::OnAnswerCall (const PString & caller,
 
   gnomemeeting_threads_enter ();  
   icm = (IncomingCallMode)
-    gconf_get_int (CALL_CONTROL_KEY "incoming_call_mode");
+    gconf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
   gnomemeeting_threads_leave ();
 
   if (icm == FREE_FOR_CHAT) 

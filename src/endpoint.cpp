@@ -105,7 +105,6 @@ GMH323EndPoint::GMH323EndPoint ()
   transmitted_video_device = NULL;
   audio_tester = NULL;
   
-  SetNoMediaTimeout (PTimeInterval (0, 15, 0));
   ILSTimer.SetNotifier (PCREATE_NOTIFIER (OnILSTimeout));
   ils_registered = false;
 
@@ -113,6 +112,7 @@ GMH323EndPoint::GMH323EndPoint ()
   GatewayIPTimer.SetNotifier (PCREATE_NOTIFIER (OnGatewayIPTimeout));
   GatewayIPTimer.RunContinuous (PTimeInterval (5));
 
+  NoIncomingMediaTimer.SetNotifier (PCREATE_NOTIFIER (OnNoIncomingMediaTimeout));
   NoAnswerTimer.SetNotifier (PCREATE_NOTIFIER (OnNoAnswerTimeout));
   CallPendingTimer.SetNotifier (PCREATE_NOTIFIER (OnCallPending));
   OutgoingCallTimer.SetNotifier (PCREATE_NOTIFIER (OnOutgoingCall));
@@ -711,7 +711,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   forward_host_gconf = gconf_get_string (CALL_FORWARDING_KEY "forward_host");
   busy_forward = gconf_get_bool (CALL_FORWARDING_KEY "busy_forward");
   icm =
-    (IncomingCallMode) gconf_get_int (CALL_CONTROL_KEY "incoming_call_mode");
+    (IncomingCallMode) gconf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
   play_sound = gconf_get_bool (GENERAL_KEY "incoming_call_sound");
   show_popup = gconf_get_bool (VIEW_KEY "show_popup");
   gnomemeeting_threads_leave ();
@@ -1262,7 +1262,8 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   NoAnswerTimer.Stop ();
   CallPendingTimer.Stop (); 
   OutgoingCallTimer.Stop ();
-
+  NoIncomingMediaTimer.Stop ();
+  
   
   if (gw->incoming_call_popup) {
 
@@ -1529,6 +1530,15 @@ GMH323EndPoint::Init ()
   
   if (!StartListener ()) 
     gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Error while starting the listener"), _("You will not be able to receive incoming calls. Please check that no other program is already running on the port used by GnomeMeeting."));
+}
+
+
+void
+GMH323EndPoint::OnNoIncomingMediaTimeout (PTimer &,
+					  INT)
+{
+  if (gconf_get_bool (CALL_OPTIONS_KEY "clear_inactive_calls"))
+    ClearAllCalls (H323Connection::EndedByTransportFail, FALSE);
 }
 
 
@@ -1944,6 +1954,19 @@ GMH323EndPoint::OnRTPTimeout (PTimer &, INT)
     if (rtp->re_video_pos >= 50) rtp->re_video_pos = 0;
   }
 
+
+  /* If we didn't receive any audio and video data this time,
+     then we start the timer */
+  if (rtp->re_video_speed [rtp->re_video_pos -1] == 0
+      && rtp->re_audio_speed [rtp->re_audio_pos -1] == 0) {
+    
+    if (!NoIncomingMediaTimer.IsRunning ()) 
+      NoIncomingMediaTimer.SetInterval (0, 30);
+  }
+  else
+    NoIncomingMediaTimer.Stop ();
+  
+
   msg = g_strdup_printf 
     (_("%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"), 
      (long) t.GetHours (), (long) (t.GetMinutes () % 60), 
@@ -2054,7 +2077,7 @@ GMH323EndPoint::OnGatewayIPTimeout (PTimer &,
     }
   }
 
-  GatewayIPTimer.RunContinuous (PTimeInterval (0, 15));
+  GatewayIPTimer.RunContinuous (PTimeInterval (0, 0, 15));
 }
 
 
