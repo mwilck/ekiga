@@ -123,7 +123,7 @@ EMOTICONS= \
 
 noinst_DATA = inlines.h inline_emoticons.h
 
-EXTRA_DIST= $(pixmap_DATA) $(EMOTICONS_FILES) $(IMAGES_FILES)
+EXTRA_DIST= $(pixmap_DATA) $(EMOTICONS_FILES) $(IMAGES_FILES) text_logo.xpm
 
 inlines.h: $(IMAGE_FILES) Makefile.am
 	gdk-pixbuf-csource --raw --build-list $(IMAGES) > inlines.h

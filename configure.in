@@ -130,7 +130,8 @@ if test "x${with_ptlib_includes}" != "xno"; then
 	AC_MSG_RESULT()
 	
 	CPPFLAGS="$CPPFLAGS -I${with_ptlib_includes}/unix -I${with_ptlib_includes}"
-	ptlib_includes="yes"
+	ptlib_includes="no"
+        AC_CHECK_FILE(${with_ptlib_includes}/pprocess.h, ptlib_includes="yes", ptlib_includes="no")
 	CPPFLAGS="$CPPFLAGS_save"
 	
 	if test "x${ptlib_includes}" != "xno" -a "x${ptlib_includes}" != "x"; then
@@ -172,7 +173,8 @@ if test "x${with_openh_includes}" != "xno" -a "x${have_ptlib_includes}" != "xno"
 	AC_MSG_RESULT()
 	
 	CPPFLAGS="$CPPFLAGS -I$PTLIB_CFLAGS -I${with_openh_includes}"
-	openh323_includes="yes"
+	openh323_includes="no"
+        AC_CHECK_FILE(${with_openh_includes}/h323.h, openh323_includes="yes", openh323_includes="no")
 	CPPFLAGS="$CPPFLAGS_save"
 	
 	if test "x${openh323_includes}" != "xno" -a "x${openh323_includes}" != "x"; then
