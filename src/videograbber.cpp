@@ -786,7 +786,8 @@ void GMVideoTester::Main ()
 
   if (error_code != - 1) {
     
-    msg = g_strdup (_("Error while opening the video device."));
+    msg = g_strdup_printf (_("Error while opening the video device %s."),
+			   video_device);
 
     switch (error_code)	{
 	  
