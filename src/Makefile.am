@@ -63,7 +63,7 @@ gnomemeeting_SOURCES =		\
 
 
 if ENABLE_EDS
-	gnomemeeting_SOURCES += addressbook_window.cpp addressbook_window.h
+gnomemeeting_SOURCES += addressbook_window.cpp addressbook_window.h
 endif
 	
 gnomemeeting_LDADD = \
