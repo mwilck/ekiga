@@ -1,3 +1,26 @@
+2002-10-29 Damien Sandras  <dsandras@seconix.com>
+
+	* src/endpoint.cpp: Changed the API for 
+	gnomemeeting_view_menu_set_sensitive. Only valid choices are 
+	selectable. It is for example impossible to select local video
+	if no local video is sent, even if preview is running. The "Both"
+	choices are also unselectable when only one video channel is opened.
+	
+	* src/endpoint.h: See above.
+	
+	* src/gdkvideoio.cpp: See above.
+
+	* src/gdkvideoio.h: See above.
+
+	* src/ils.cpp: Applied patch from Paul. Fixes small memleak and also
+	permits to use chars like <, >, & in comments in ILS.
+
+	* src/main_window.cpp: See above.
+
+	* src/menu.cpp: See above.
+
+	* src/menu.h: See above.
+
 2002-10-27 Damien Sandras  <dsandras@seconix.com>
 
 	* src/connection.cpp: Fixed #96652.

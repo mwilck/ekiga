@@ -106,7 +106,6 @@ class GDKVideoOutputDevice : public H323VideoDevice
 			stuff at the same time */
 #endif
 
-  enum {LOCAL_VIDEO, REMOTE_VIDEO, BOTH_INCRUSTED, BOTH_LOCAL, BOTH};
   enum {REMOTE, LOCAL};
 
   GmWindow *gw;

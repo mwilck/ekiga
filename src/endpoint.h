@@ -68,9 +68,10 @@ class GMH323EndPoint : public H323EndPoint
 
 
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Updates some of the internal values of the endpoint such as
-   *                 the local username, the capabilities, the tunneling, the fast
-   *                 start, the audio devices to use, the video device to use, ...
+   * BEHAVIOR     :  Updates some of the internal values of the endpoint such 
+   *                 as the local username, the capabilities, the tunneling,
+   *                 the fast start, the audio devices to use, the video 
+   *                 device to use, ...
    * PRE          :  /
    */
   void UpdateConfig ();
@@ -259,6 +260,14 @@ class GMH323EndPoint : public H323EndPoint
    * PRE          :  /
    */
   H323Channel *GetCurrentVideoChannel (void);
+
+  
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Return the number of video channels in use.
+   *                 0 if there is no one, or if we are in a call.
+   * PRE          :  /
+   */
+  int GetVideoChannelsNumber (void);
 
 
   /* DESCRIPTION  :  /

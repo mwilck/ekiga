@@ -629,24 +629,28 @@ void gnomemeeting_fullscreen_option_set_sensitive (gboolean b)
 #endif
 
 
-void gnomemeeting_video_submenu_set_sensitive (gboolean b)
+void gnomemeeting_video_submenu_set_sensitive (gboolean b, int j, gboolean both)
 {
+  int cpt = j;
+  int limit = BOTH;
+
   GnomeUIInfo *video_view_menu_uiinfo = 
     (GnomeUIInfo *) g_object_get_data (G_OBJECT(gm), "video_view_menu_uiinfo");
   GnomeUIInfo *popup_video_view_menu_uiinfo = 
     (GnomeUIInfo *) g_object_get_data (G_OBJECT(gm), 
 				       "popup_video_view_menu_uiinfo");
 
-  gtk_widget_set_sensitive (GTK_WIDGET (video_view_menu_uiinfo [1].widget), b);
-  gtk_widget_set_sensitive (GTK_WIDGET (video_view_menu_uiinfo [2].widget), b);
-  gtk_widget_set_sensitive (GTK_WIDGET (video_view_menu_uiinfo [3].widget), b);
-  gtk_widget_set_sensitive (GTK_WIDGET (video_view_menu_uiinfo [4].widget), b);
+  if (both)
+    limit = BOTH;
+  else
+    limit = REMOTE_VIDEO;
 
+  while (cpt <= limit) {
 
-  gtk_widget_set_sensitive (GTK_WIDGET (popup_video_view_menu_uiinfo [1].widget), b);
-  gtk_widget_set_sensitive (GTK_WIDGET (popup_video_view_menu_uiinfo [2].widget), b);
-  gtk_widget_set_sensitive (GTK_WIDGET (popup_video_view_menu_uiinfo [3].widget), b);
-  gtk_widget_set_sensitive (GTK_WIDGET (popup_video_view_menu_uiinfo [4].widget), b);
+    gtk_widget_set_sensitive (GTK_WIDGET (video_view_menu_uiinfo [cpt].widget), b);
+    gtk_widget_set_sensitive (GTK_WIDGET (popup_video_view_menu_uiinfo [cpt].widget), b);
+    cpt++;
+  }
 }
 
 

@@ -35,6 +35,9 @@
 #include "common.h"
 
 
+enum {LOCAL_VIDEO, REMOTE_VIDEO, BOTH_INCRUSTED, BOTH_LOCAL, BOTH};
+
+
 /* The functions */
 
 
@@ -66,9 +69,12 @@ void gnomemeeting_fullscreen_option_set_sensitive (gboolean);
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Changes sensitivity in the video section of the view menu
  *                 and of the popup menu.
- * PRE          :  /
+ * PRE          :  Sensitive or not / the part of the menu to change the 
+ *                 sensitivity / true if we change the sensitivity of the
+ *                 BOTH, BOTH_LOCAL, and BOTH_INCRUSTED sections too, false
+ *                 if not.
  */
-void gnomemeeting_video_submenu_set_sensitive (gboolean);
+void gnomemeeting_video_submenu_set_sensitive (gboolean, int, gboolean = true);
 
 
 /* DESCRIPTION  :  /

@@ -915,6 +915,13 @@ GMH323EndPoint::GetCurrentVideoChannel (void)
 }
 
 
+int
+GMH323EndPoint::GetVideoChannelsNumber (void)
+{
+  return opened_video_channels;
+}
+
+
 PThread *
 GMH323EndPoint::GetILSClient (void)
 {
@@ -1567,7 +1574,8 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   /* Disable Remote Video (Local video is disabled elsewhere) 
      and select the good section */
-  gnomemeeting_video_submenu_set_sensitive (FALSE);
+  gnomemeeting_video_submenu_set_sensitive (false, LOCAL_VIDEO, true);
+  gnomemeeting_video_submenu_set_sensitive (false, REMOTE_VIDEO, true);
   gnomemeeting_video_submenu_select (0);
 
 
@@ -1719,6 +1727,7 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
      /* Here, the grabber is opened */
      PVideoChannel *channel = vg->GetVideoChannel ();
      transmitted_video_device = vg->GetEncodingDevice ();
+     opened_video_channels++;
 
      /* Updates the view menu */
      gnomemeeting_zoom_submenu_set_sensitive (TRUE);
@@ -1726,6 +1735,12 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 #ifdef HAS_SDL
      gnomemeeting_fullscreen_option_set_sensitive (TRUE);
 #endif
+
+     if (opened_video_channels >= 2) 
+	gnomemeeting_video_submenu_set_sensitive (TRUE, LOCAL_VIDEO, TRUE);
+      else
+	gnomemeeting_video_submenu_set_sensitive (TRUE, LOCAL_VIDEO, FALSE);
+
 
      /* Default Codecs Settings */
      codec.SetTxQualityLevel (-1);
@@ -1737,8 +1752,6 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
      gnomemeeting_threads_leave ();
 
      bool result = codec.AttachChannel (channel, FALSE); 
-     
-     opened_video_channels++;
 
      return result;
   }
@@ -1750,7 +1763,8 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
       PVideoChannel *channel = new PVideoChannel;
       
       received_video_device = new GDKVideoOutputDevice (isEncoding, gw);
-      
+      opened_video_channels++;
+
       channel->AttachVideoPlayer (received_video_device);
 
       /* Stop to grab */
@@ -1767,14 +1781,16 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
       gnomemeeting_fullscreen_option_set_sensitive (TRUE);
 #endif
 
-      gnomemeeting_video_submenu_set_sensitive (TRUE);
+      if (opened_video_channels >= 2) 
+	gnomemeeting_video_submenu_set_sensitive (TRUE, REMOTE_VIDEO, TRUE);
+      else
+	gnomemeeting_video_submenu_set_sensitive (TRUE, REMOTE_VIDEO, FALSE);
+
       gnomemeeting_video_submenu_select (1);
       
       gnomemeeting_threads_leave ();
       
       bool result = codec.AttachChannel (channel);
-
-      opened_video_channels++;
 
       return result;
     }

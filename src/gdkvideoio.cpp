@@ -167,14 +167,25 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
 
   
   /* What do we display: what gconf tells us except if we are not in 
-     a call */
-  if (MyApp->Endpoint ()->GetCallingState () == 2) 
+     a call, or if it is not a valid choice */
+  if (MyApp->Endpoint ()->GetCallingState () != 2) {
+
+    display = 0;
+  }
+  else {
+
     display = 
       gconf_client_get_int (client, 
 			    "/apps/gnomemeeting/video_display/video_view", 
 			    NULL);
-  else
-    display = 0;
+
+    if (MyApp->Endpoint ()->GetVideoChannelsNumber () <= 1)
+      if (device_id == REMOTE)
+	display = REMOTE_VIDEO;
+      else if (device_id == LOCAL)
+	display = LOCAL_VIDEO;
+  }
+
   gnomemeeting_video_submenu_select (display);
 
   /* Show or hide the different windows if needed */

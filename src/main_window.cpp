@@ -1204,7 +1204,8 @@ gnomemeeting_init (GmWindow *gw,
 
   /* Add the popup menu and change all menus sensitivity */
   gnomemeeting_popup_menu_init (gw->main_video_image);
-  gnomemeeting_video_submenu_set_sensitive (FALSE);
+  gnomemeeting_video_submenu_set_sensitive (FALSE, LOCAL_VIDEO);
+  gnomemeeting_video_submenu_set_sensitive (FALSE, REMOTE_VIDEO);
   gnomemeeting_zoom_submenu_set_sensitive (FALSE);
 #ifdef HAS_SDL
   gnomemeeting_fullscreen_option_set_sensitive (FALSE);

@@ -637,6 +637,7 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
 {
   xmlEntityPtr entity;
   xmlChar *entval;
+  xmlChar *encentval;
   xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
 
   gchar *firstname = NULL;
@@ -740,6 +741,9 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
     entval = xmlStrdup (BAD_CAST version);
   else
     return 0;
+
+  encentval = xmlEncodeSpecialChars(((xmlParserCtxtPtr) ctx)->myDoc, entval);
+
   if (!ctxt->myDoc->intSubset) {
     (void) xmlCreateIntSubset (ctxt->myDoc, BAD_CAST "ils",
 			       BAD_CAST "SYSTEM",
@@ -752,14 +756,17 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
 
   entity = xmlGetDocEntity(((xmlParserCtxtPtr) ctx)->myDoc, name);
   if (entity) {
-    if (strcmp((char *)entity->content, (char *)entval))
+    if (strcmp((char *)entity->content, (char *)encentval))
       fprintf(stderr,
 	      "Warning: New entity value will be ignored %s %s %s\n",
-	      name, entval, entity->content);
+	      name, encentval, entity->content);
   } else
     entity = xmlAddDocEntity (((xmlParserCtxtPtr) ctx)->myDoc,
-			      name, XML_INTERNAL_GENERAL_ENTITY, 0, 0, entval);
+			      name, XML_INTERNAL_GENERAL_ENTITY, 0, 0, 
+			      encentval);
 
+  xmlFree(entval);
+  xmlFree(encentval);
 
   g_free (firstname);
   g_free (surname);
