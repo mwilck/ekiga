@@ -1500,7 +1500,8 @@ contact_clicked_cb (GtkWidget *w,
   addressbook = 
     GM_ADDRESSBOOK (gm_aw_get_selected_addressbook (GTK_WIDGET (data)));
 
-  g_return_val_if_fail (addressbook != NULL, FALSE);
+  if (addressbook != NULL)
+    return FALSE;
   
   contact = gm_aw_get_selected_contact (GTK_WIDGET (data));
 
