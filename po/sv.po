@@ -7,16 +7,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
-"POT-Creation-Date: 2002-08-01 14:08+0200\n"
-"PO-Revision-Date: 2002-08-01 14:08+0200\n"
+"POT-Creation-Date: 2002-08-02 01:06+0200\n"
+"PO-Revision-Date: 2002-08-02 01:06+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: gnomemeeting.desktop.in.h:1 sounds/GnomeMeeting.soundlist.in.h:1
-#: src/main_window.cpp:568 src/main_window.cpp:572
+#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:568 src/main_window.cpp:572
 msgid "GnomeMeeting"
 msgstr "GnomeMeeting"
 
@@ -527,8 +526,7 @@ msgid "Video Size"
 msgstr "Videostorlek"
 
 #. The toggles
-#: sounds/GnomeMeeting.soundlist.in.h:2 sounds/gnomemeeting.soundlist.in.h:1
-#: src/pref_window.cpp:1261
+#: sounds/gnomemeeting.soundlist.in.h:1 src/pref_window.cpp:1261
 msgid "Incoming Call"
 msgstr "Inkommande samtal"
 
@@ -594,7 +592,7 @@ msgstr "Skicka meddelande:"
 msgid "Quit in progress..."
 msgstr "Programmet avslutas..."
 
-#: src/cleaner.cpp:96
+#: src/cleaner.cpp:94
 msgid ""
 "Warning! GnomeMeeting can't disconnect from the remote party due to a bug in "
 "OpenH323.\n"
@@ -729,30 +727,30 @@ msgstr ""
 
 #. Set recording source and set micro to record
 #. Translators: This is shown in the history.
-#: src/config.cpp:412
+#: src/config.cpp:410
 #, c-format
 msgid "Set Audio Mixer for player to %s"
 msgstr "Ställde in ljudmixerenhet för spelaren till %s"
 
 #. Translators: This is shown in the history.
-#: src/config.cpp:418
+#: src/config.cpp:416
 #, c-format
 msgid "Set Audio Mixer for recorder to %s"
 msgstr "Ställde in ljudmixerenhet för inspelningsenhet till %s"
 
-#: src/config.cpp:447
+#: src/config.cpp:445
 msgid "Changing this setting will only affect new calls"
 msgstr "Att ändra denna inställning kommer endast att påverka nya samtal"
 
-#: src/config.cpp:580
+#: src/config.cpp:578
 msgid "Disabled Silence Detection"
 msgstr "Inaktiverade tystnadsdetektering"
 
-#: src/config.cpp:585
+#: src/config.cpp:583
 msgid "Enabled Silence Detection"
 msgstr "Aktiverade tystnadsdetektering"
 
-#: src/config.cpp:980
+#: src/config.cpp:984
 msgid ""
 "You need to specify an host to forward calls to!\n"
 "Disabling forwarding."
@@ -760,7 +758,7 @@ msgstr ""
 "Du måste ange en värd att vidarebefordra samtalen till!\n"
 "Inaktiverar vidarebefordran."
 
-#: src/config.cpp:1048
+#: src/config.cpp:1052
 msgid ""
 "Not Registering because there is no LDAP server specified!\n"
 "Disabling registering."
@@ -768,7 +766,7 @@ msgstr ""
 "Registrerar inte eftersom ingen LDAP-server är angiven!\n"
 "Inaktiverar registrering."
 
-#: src/config.cpp:1073
+#: src/config.cpp:1077
 msgid ""
 "Please provide your first name, last name, comment, e-mail and location "
 "details in the Personal Data section in order to be able to register to the "
@@ -837,7 +835,7 @@ msgstr "Vägrar automatiskt inkommande samtal"
 msgid "Auto Answering Incoming Call"
 msgstr "Svarar automatiskt på inkommande samtal"
 
-#: src/docklet.cpp:137 src/misc.cpp:306
+#: src/docklet.cpp:137 src/misc.cpp:312
 msgid "Connect"
 msgstr "Anslut"
 
@@ -845,7 +843,7 @@ msgstr "Anslut"
 msgid "Create A New Connection"
 msgstr "Skapa en ny anslutning"
 
-#: src/docklet.cpp:144 src/misc.cpp:308
+#: src/docklet.cpp:144 src/misc.cpp:314
 msgid "Disconnect"
 msgstr "Koppla från"
 
@@ -976,195 +974,171 @@ msgstr ""
 msgid "Done! - Page 4/4"
 msgstr "Klar! - Sida 4/4"
 
-#: src/endpoint.cpp:112
+#: src/endpoint.cpp:107
 #, c-format
 msgid "Forwarding Call to %s (No Answer)"
 msgstr "Vidarebefordrar samtal till %s (inget svar)"
 
 #. GM is started
-#: src/endpoint.cpp:187
+#: src/endpoint.cpp:182
 #, c-format
 msgid "Started GnomeMeeting V%d.%d for %s\n"
 msgstr "Startade GnomeMeeting v%d.%d för %s\n"
 
-#: src/endpoint.cpp:275 src/endpoint.cpp:281
+#: src/endpoint.cpp:270 src/endpoint.cpp:276
 #, c-format
 msgid "Set Audio player device to %s"
 msgstr "Ställde in ljudspelarenhet till %s"
 
 #. Translators: This is shown in the history.
-#: src/endpoint.cpp:297 src/endpoint.cpp:307
+#: src/endpoint.cpp:292 src/endpoint.cpp:302
 #, c-format
 msgid "Set Audio recorder device to %s"
 msgstr "Ställde in ljudinspelningsenhet till %s"
 
-#: src/endpoint.cpp:322
+#: src/endpoint.cpp:317
 msgid "Disabling H.245 Tunnelling"
 msgstr "Inaktiverar H.245-tunnling"
 
-#: src/endpoint.cpp:324
+#: src/endpoint.cpp:319
 msgid "Enabling H.245 Tunnelling"
 msgstr "Aktiverar H.245-tunnling"
 
-#: src/endpoint.cpp:338
+#: src/endpoint.cpp:333
 msgid "Disabling Fast Start"
 msgstr "Inaktiverar snabbstart"
 
-#: src/endpoint.cpp:340
+#: src/endpoint.cpp:335
 msgid "Enabling Fast Start"
 msgstr "Aktiverar snabbstart"
 
-#: src/endpoint.cpp:368
+#: src/endpoint.cpp:363
 #, c-format
 msgid "Using Quicknet device %s"
 msgstr "Använder Quicknet-enheten %s"
 
-#: src/endpoint.cpp:432
-msgid "Error while opening the Quicknet device"
-msgstr "Fel vid öppnande av Quicknet-enheten"
+#: src/endpoint.cpp:428
+msgid "Error while opening the Quicknet device. Disabling Quicknet device."
+msgstr "Fel vid öppnande av Quicknet-enheten. Inaktiverar Quicknet-enheten."
 
-#: src/endpoint.cpp:860
+#: src/endpoint.cpp:859
 #, c-format
 msgid "Forwarding Call to %s"
 msgstr "Vidarebefordrar samtal till %s"
 
-#: src/endpoint.cpp:872
+#: src/endpoint.cpp:871
 #, c-format
 msgid "Error forwarding call to %s"
 msgstr "Fel vid vidarebefordrande av samtal till %s"
 
-#: src/endpoint.cpp:944
+#: src/endpoint.cpp:943
 #, c-format
 msgid "Forwarding Call from %s to %s (Forward All Calls)"
 msgstr "Vidarebefordrar samtal från %s till %s (vidarebefordrar alla samtal)"
 
-#: src/endpoint.cpp:965
+#: src/endpoint.cpp:964
 #, c-format
 msgid "Forwarding Call from %s to %s (Busy)"
 msgstr "Vidarbefordrar samtal från %s till %s (upptagen)"
 
-#: src/endpoint.cpp:982
+#: src/endpoint.cpp:981
 #, c-format
 msgid "Auto Rejecting Incoming Call from %s (Busy)"
 msgstr "Vägrar automatiskt inkommande samtal från %s (upptagen)"
 
 #. Update the history and status bar
-#: src/endpoint.cpp:1054
+#: src/endpoint.cpp:1053
 #, c-format
 msgid "Call from %s"
 msgstr "Samtal från %s"
 
 #. Connected
-#: src/endpoint.cpp:1132
+#: src/endpoint.cpp:1131
 #, c-format
 msgid "Connected with %s using %s"
 msgstr "Ansluten till %s med %s"
 
-#: src/endpoint.cpp:1138
+#: src/endpoint.cpp:1137
 msgid "Connected"
 msgstr "Ansluten"
 
-#: src/endpoint.cpp:1141
+#: src/endpoint.cpp:1140
 msgid "Fast start enabled"
 msgstr "Snabbstart aktiverad"
 
-#: src/endpoint.cpp:1143
+#: src/endpoint.cpp:1142
 msgid "Fast start disabled"
 msgstr "Snabbstart inaktiverad"
 
-#: src/endpoint.cpp:1146
+#: src/endpoint.cpp:1145
 msgid "H.245 Tunnelling enabled"
 msgstr "H.245-tunnling aktiverad"
 
-#: src/endpoint.cpp:1148
+#: src/endpoint.cpp:1147
 msgid "H.245 Tunnelling disabled"
 msgstr "H.245-tunnling inaktiverad"
 
-#: src/endpoint.cpp:1240
+#: src/endpoint.cpp:1238
 msgid "Remote party has cleared the call"
 msgstr "Fjärrparten har nollställt samtalet"
 
-#: src/endpoint.cpp:1245
+#: src/endpoint.cpp:1243
 msgid "Remote party has stopped calling"
 msgstr "Fjärrparten har slutat ringa"
 
-#: src/endpoint.cpp:1250 src/endpoint.cpp:1280
+#: src/endpoint.cpp:1248 src/endpoint.cpp:1278
 msgid "Remote party did not accept your call"
 msgstr "Fjärrparten accepterade inte ditt anrop"
 
-#: src/endpoint.cpp:1255
+#: src/endpoint.cpp:1253
 msgid "Remote party was busy"
 msgstr "Fjärrparten var upptagen"
 
-#: src/endpoint.cpp:1260
+#: src/endpoint.cpp:1258
 msgid "Congested link to remote party"
 msgstr "Överbelastad länk till fjärrparten"
 
-#: src/endpoint.cpp:1265
+#: src/endpoint.cpp:1263
 msgid "Remote party did not answer your call"
 msgstr "Fjärrparten svarade inte på ditt anrop"
 
-#: src/endpoint.cpp:1270
+#: src/endpoint.cpp:1268
 msgid "This call ended abnormally"
 msgstr "Samtalet avslutades onormalt"
 
-#: src/endpoint.cpp:1275
+#: src/endpoint.cpp:1273
 msgid "Could not find common codec with remote party"
 msgstr "Kunde inte hitta en komprimeringsmetod gemensam med fjärrparten"
 
-#: src/endpoint.cpp:1285
+#: src/endpoint.cpp:1283
 msgid "Refused incoming call"
 msgstr "Vägrade ta emot inkommande samtal"
 
-#: src/endpoint.cpp:1290 src/urlhandler.cpp:173 src/urlhandler.cpp:174
+#: src/endpoint.cpp:1288 src/urlhandler.cpp:173 src/urlhandler.cpp:174
 msgid "User not found"
 msgstr "Användaren kunde inte hittas"
 
-#: src/endpoint.cpp:1295
+#: src/endpoint.cpp:1293
 msgid "Call ended: insufficient bandwidth"
 msgstr "Samtalet avslutades: otillräcklig bandbredd"
 
-#: src/endpoint.cpp:1300
+#: src/endpoint.cpp:1298
 msgid "Remote party could not be reached"
 msgstr "Fjärrparten kunde inte nås"
 
-#: src/endpoint.cpp:1305
+#: src/endpoint.cpp:1303
 msgid "Remote party is offline"
 msgstr "Fjärrparten är inte ansluten"
 
-#: src/endpoint.cpp:1310
+#: src/endpoint.cpp:1308
 msgid "Transport Error calling"
 msgstr "Transportfel vid anrop"
 
-#: src/endpoint.cpp:1315 src/endpoint.cpp:1318
+#: src/endpoint.cpp:1313 src/endpoint.cpp:1316
 msgid "Call completed"
 msgstr "Samtalet färdigt"
 
-#: src/endpoint.cpp:1454
-msgid "Could not resume ESD"
-msgstr "Kunde inte återuppta ESD"
-
-#: src/endpoint.cpp:1458
-msgid "ESD resumed"
-msgstr "ESD återupptagen"
-
-#: src/endpoint.cpp:1507
-msgid "Could not suspend ESD"
-msgstr "Kunde inte koppla från ESD"
-
-#: src/endpoint.cpp:1511
-msgid "ESD suspended"
-msgstr "ESD frånkopplad"
-
-#: src/endpoint.cpp:1529
-msgid "Could not suspend artsd"
-msgstr "Kunde inte koppla från artsd"
-
-#: src/endpoint.cpp:1533
-msgid "artsd suspended"
-msgstr "artsd frånkopplad"
-
-#: src/endpoint.cpp:1552
+#: src/endpoint.cpp:1500
 msgid "Attaching lid hardware to codec"
 msgstr "Fäster bländarhårdvara vid komprimeringsmetoden"
 
@@ -1651,20 +1625,20 @@ msgstr "_Samtal"
 msgid "_Help"
 msgstr "_Hjälp"
 
-#: src/misc.cpp:254
+#: src/misc.cpp:260
 #, c-format
 msgid "Error: %s\n"
 msgstr "Fel: %s\n"
 
-#: src/misc.cpp:257
+#: src/misc.cpp:263
 msgid "GnomeMeeting Error"
 msgstr "GnomeMeeting-fel"
 
-#: src/misc.cpp:260
+#: src/misc.cpp:266
 msgid "Ignore"
 msgstr "Ignorera"
 
-#: src/misc.cpp:300
+#: src/misc.cpp:306
 #, c-format
 msgid ""
 "Call from %s\n"
@@ -1672,6 +1646,18 @@ msgid ""
 msgstr ""
 "Samtal från %s\n"
 "använder %s"
+
+#: src/misc.cpp:379
+msgid "Could not suspend ESD"
+msgstr "Kunde inte koppla från ESD"
+
+#: src/misc.cpp:397
+msgid "Could not suspend artsd"
+msgstr "Kunde inte koppla från artsd"
+
+#: src/misc.cpp:415
+msgid "Could not resume ESD"
+msgstr "Kunde inte återuppta ESD"
 
 #. no error if Picture is choosen as video device
 #: src/pref_window.cpp:204 src/pref_window.cpp:1528 src/videograbber.cpp:479
@@ -2329,10 +2315,16 @@ msgstr "Videoenhet öppnad"
 #, c-format
 msgid ""
 "Error while opening video device %s, channel %d.\n"
-"The chosen Video Image will be transmitted during calls."
+"The chosen Video Image will be transmitted during calls. If you didn't "
+"choose any image, then the default GnomeMeeting logo will be transmitted. "
+"Notice that you can always transmit a given image or the GnomeMeeting logo "
+"by choosing \"Picture\" as video device."
 msgstr ""
 "Fel vid öppnande av videoenheten %s, kanal %d.\n"
-"Den valda videobilden kommer att överföras under samtal."
+"Den valda videobilden kommer att överföras under samtal. Om du inte väljer "
+"någon bild kommer GnomeMeetings standardlogotyp att överföras. Observera att "
+"du alltid kan skicka en angiven bild eller GnomeMeetings logotyp genom att "
+"välja \"Bild\" som videoenhet."
 
 #: src/videograbber.cpp:523
 msgid "Can't open the Video Device"
@@ -2377,6 +2369,22 @@ msgstr "Fel med ramhastigheten."
 #: src/videograbber.cpp:676
 msgid "Video Device Closed"
 msgstr "Videoenhet stängd"
+
+#~ msgid "ESD resumed"
+#~ msgstr "ESD återupptagen"
+
+#~ msgid "ESD suspended"
+#~ msgstr "ESD frånkopplad"
+
+#~ msgid "artsd suspended"
+#~ msgstr "artsd frånkopplad"
+
+#~ msgid ""
+#~ "Error while opening video device %s, channel %d.\n"
+#~ "The chosen Video Image will be transmitted during calls."
+#~ msgstr ""
+#~ "Fel vid öppnande av videoenheten %s, kanal %d.\n"
+#~ "Den valda videobilden kommer att överföras under samtal."
 
 #~ msgid "H.323 Client"
 #~ msgstr "H.323-klient"
