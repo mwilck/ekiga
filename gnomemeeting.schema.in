@@ -60,7 +60,7 @@
       <applyto>/apps/gnomemeeting/view/show_docklet</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
-      <default>true</default>
+      <default>false</default>
       <locale name="C">
 	<short>Show the docklet</short>
 	<long>Show a docklet in the gnome-panel or KDE systray</long>
@@ -240,6 +240,17 @@
       <locale name="C">
 	<short>Auto Answer</short>
 	<long>If enabled, incoming calls will be auto-answered</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/general/version</key>
+      <applyto>/apps/gnomemeeting/general/version</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>int</type>
+      <default>9</default>
+      <locale name="C">
+	<short>Version</short>
+	<long>Version</long>
       </locale>
     </schema>
     <schema>

@@ -47,6 +47,7 @@
 #include "config.h"
 #include "misc.h"
 #include "e-splash.h"
+#include "druid.h"
 #include "chat_window.h"
 
 #include <gconf/gconf-client.h>
@@ -326,7 +327,7 @@ void gnomemeeting_init (GM_window_widgets *gw,
   gnomemeeting_init_pref_window ();  
   gnomemeeting_init_menu ();
   gnomemeeting_init_toolbar ();	
-  
+
   
   /* Launch the GnomeMeeting H.323 part */
   static GnomeMeeting instance;
@@ -399,6 +400,11 @@ void gnomemeeting_init (GM_window_widgets *gw,
      gtk_widget_destroy (dialog);
   }
 
+  
+  /* Start the Gconf notifiers */
+  gnomemeeting_init_gconf (client);
+
+
   /* Register to the Gatekeeper */
   int method = gconf_client_get_int (GCONF_CLIENT (client), "/apps/gnomemeeting/gatekeeper/registering_method", 0);
 
@@ -409,12 +415,23 @@ void gnomemeeting_init (GM_window_widgets *gw,
 			  method, 0);
 
 
+  /* Init the druid */
+  if (gconf_client_get_int (client, 
+			    "/apps/gnomemeeting/general/version", NULL) < 92)
+
+    gnomemeeting_init_druid ();
+
+  else {
+
   /* Show the main window */
   if (!gconf_client_get_bool (GCONF_CLIENT (client), 
 			     "/apps/gnomemeeting/view/show_docklet", 0) ||
       !gconf_client_get_bool (GCONF_CLIENT (client),
 			     "/apps/gnomemeeting/view/start_docked", 0))
+
     gtk_widget_show (GTK_WIDGET (gm));
+  }
+
 
   /* Create a popup menu to attach it to the drawing area  */
   gnomemeeting_popup_menu_init (gw->video_frame, gw);
@@ -432,14 +449,13 @@ void gnomemeeting_init (GM_window_widgets *gw,
     gtk_widget_hide (gw->splash_win);
 
 
-  /* Start the Gconf notifiers */
-  gnomemeeting_init_gconf (client);
-
   /* if the user tries to close the window : delete_event */
   g_signal_connect (G_OBJECT (gm), "delete_event",
 		    G_CALLBACK (gm_quit_callback), (gpointer) gw);
 
   gnomemeeting_init_main_window_logo ();
+
+
   /* The gtk_widget_show (gm) will show the toolbar, hide it if needed */
   if (!gconf_client_get_bool (client, "/apps/gnomemeeting/view/left_toolbar", 0)) 
     gtk_widget_hide (GTK_WIDGET (gnome_app_get_dock_item_by_name(GNOME_APP (gm), "left_toolbar")));

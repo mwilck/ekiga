@@ -1497,7 +1497,7 @@ void gnomemeeting_init_pref_window_video_codecs (GtkWidget *notebook)
 				       _("The received video quality:  choose 100% on a LAN for the best quality, 1% being the worst quality."),
  				       1.0, 100.0, 1.0, 1);
 
-  pw->re_vq =
+  pw->tr_ub =
     gnomemeeting_pref_window_add_spin (table, _("Transmitted Background Blocks:"),       
  				       "/apps/gnomemeeting/video_settings/tr_ub",
 				       _("Here you can choose the number of blocks (that haven't changed) transmitted with each frame. These blocks fill in the background."),

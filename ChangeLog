@@ -1,3 +1,22 @@
+2002-05-01  Damien Sandras  <dsandras@seconix.com>
+
+	* gnomemeeting.schema.in: Changed default value for version,
+	added new key to test for per version first execution (version).
+
+	* pixmaps/Makefile.am: Added Lumi.png.
+
+	* pixmaps/Lumi.png: Added.
+
+	* src/Makefile.am: Added druid.cpp and druid.h.
+
+	* src/druid.cpp, src/druid.h: Added those 2 files. Contains functions
+	to create a 4 pages configuration druid to help with the setup.
+
+	* src/main_window.cpp: Added support to call the first time druid
+	if needed.
+
+	* src/pref_window.cpp: Fixed bug (confusion between tr_ub and tr_vq).
+	
 2002-04-30  Damien Sandras  <dsandras@seconix.com>	
 
 	* src/ldap_window.cpp: Add last browsed server as default.
