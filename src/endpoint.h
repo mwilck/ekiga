@@ -495,6 +495,7 @@ class GMH323EndPoint : public H323EndPoint
   PMutex ct_access_mutex;
   PMutex tct_access_mutex;
   PMutex lid_access_mutex;
+  PMutex at_access_mutex;
   
   PIntCondMutex *vg_int_cond_mutex;
 

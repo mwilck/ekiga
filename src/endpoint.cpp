@@ -754,7 +754,9 @@ GMH323EndPoint::StartListener ()
 void 
 GMH323EndPoint::StartAudioTester ()
 {
-  if (audio_tester)
+  PWaitAndSignal m(at_access_mutex);
+  
+  if (audio_tester)     
     delete (audio_tester);
 
   audio_tester = new GMAudioTester (this);
@@ -764,6 +766,8 @@ GMH323EndPoint::StartAudioTester ()
 void 
 GMH323EndPoint::StopAudioTester ()
 {
+  PWaitAndSignal m(at_access_mutex);
+  
   if (audio_tester) {
    
     delete (audio_tester);

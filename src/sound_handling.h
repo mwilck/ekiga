@@ -110,6 +110,7 @@ protected:
 
   BOOL stop;
   PMutex quit_mutex;
+  PSyncPoint thread_sync_point;
   PSoundChannel *player;
   PSoundChannel *recorder;
 
@@ -141,6 +142,7 @@ class GMAudioRP : public PThread
   GMAudioTester *tester;
   PString device;
   PMutex quit_mutex;
-
+  PSyncPoint thread_sync_point;
+  
   BOOL stop;
 };

@@ -246,6 +246,9 @@ GMAudioRP::GMAudioRP (GMAudioTester *t, PString dev, BOOL enc)
   tester = t;
   device = dev;
   stop = FALSE;
+
+  this->Resume ();
+  thread_sync_point.Wait ();
 }
 
 
@@ -266,10 +269,12 @@ void GMAudioRP::Main ()
   char *buffer = NULL;
   int buffer_pos = 0;
 
+  PTime now;
   PString device_name;
 
   PWaitAndSignal m(quit_mutex);
-
+  thread_sync_point.Signal ();
+  
   gw = MyApp->GetMainWindow ();
   client = gconf_client_get_default ();
 
@@ -341,20 +346,25 @@ void GMAudioRP::Main ()
       }
       else {
 
-	tester->buffer_ring_access_mutex.Wait ();
-	memcpy (buffer, &tester->buffer_ring [buffer_pos], 640); 
-	tester->buffer_ring_access_mutex.Signal ();
+	if ((now - PTime ()).GetSeconds () > 3) {
+	  
+	  tester->buffer_ring_access_mutex.Wait ();
+	  memcpy (buffer, &tester->buffer_ring [buffer_pos], 640); 
+	  tester->buffer_ring_access_mutex.Signal ();
 	
-	buffer_pos += 640;
+	  buffer_pos += 640;
 
-	if (!channel->Write ((void *) buffer, 640)) {
+	  if (!channel->Write ((void *) buffer, 640)) {
       
-	  gdk_threads_enter ();  
-	  gnomemeeting_error_dialog (GTK_WINDOW (gw->druid_window), _("Cannot use the audio device"), _("The selected audio device (%s) was successfully opened but it is impossible to write data to this device. Please check your audio setup."), (const char*) device);
-	  gdk_threads_leave ();  
+	    gdk_threads_enter ();  
+	    gnomemeeting_error_dialog (GTK_WINDOW (gw->druid_window), _("Cannot use the audio device"), _("The selected audio device (%s) was successfully opened but it is impossible to write data to this device. Please check your audio setup."), (const char*) device);
+	    gdk_threads_leave ();  
 
-	  stop = TRUE;
+	    stop = TRUE;
+	  }
 	}
+	else
+	  PThread::Current ()->Sleep (100);
       }
 
       if (buffer_pos >= 80000)
@@ -378,18 +388,17 @@ GMAudioTester::GMAudioTester (GMH323EndPoint *e)
   :PThread (1000, NoAutoDeleteThread)
 {
 #ifndef DISABLE_GNOME
+  GmDruidWindow *dw = NULL;
+  
   ep = e;
   stop = FALSE;
-  
-  gnomemeeting_sound_daemons_suspend ();
-  gnomemeeting_threads_enter ();
-  gw = MyApp->GetMainWindow ();
-  gnomemeeting_threads_leave ();
 
+  gw = MyApp->GetMainWindow ();
 
 #endif
-
+  
   this->Resume ();
+  thread_sync_point.Wait ();
 }
 
 
@@ -397,10 +406,7 @@ GMAudioTester::~GMAudioTester ()
 {
 #ifndef DISABLE_GNOME
   stop = 1;
-  quit_mutex.Wait ();
-
-  gnomemeeting_sound_daemons_resume ();
-  quit_mutex.Signal ();
+  PWaitAndSignal m(quit_mutex);
 #endif
 }
 
@@ -410,29 +416,26 @@ void GMAudioTester::Main ()
 #ifndef DISABLE_GNOME
   GMAudioRP *player = NULL;
   GMAudioRP *recorder = NULL;
+  GmDruidWindow *dw = NULL;
+  
+  dw = MyApp->GetDruidWindow ();
 
   PWaitAndSignal m(quit_mutex);
-
+  thread_sync_point.Signal ();
+  
   buffer_ring = (char *) malloc (8000 /*Hz*/ * 5 /*s*/ * 2 /*16bits*/);
 
   memset (buffer_ring, '0', sizeof (buffer_ring));
 
-  player = new GMAudioRP (this, ep->GetSoundChannelPlayDevice (), FALSE);
   recorder = new GMAudioRP (this, ep->GetSoundChannelRecordDevice (), TRUE);
-
-  PTime now;
-
-  recorder->Resume ();
+  player = new GMAudioRP (this, ep->GetSoundChannelPlayDevice (), FALSE);
 
 
   while (!stop) {
 
-    if ((PTime () - now).GetSeconds () > 3)
-      player->Resume ();
-
     PThread::Current ()->Sleep (100);
   }
-  
+
   delete (player);
   delete (recorder);
 
