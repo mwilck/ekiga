@@ -70,10 +70,10 @@ class GnomeMeeting : public PProcess
 
   
   /* DESCRIPTION  :  To connect to a remote endpoint, or to answer a call.
-   * BEHAVIOR     :  Answer a call, or call somebody.
+   * BEHAVIOR     :  Answer a call, or call the person with the given URL.
    * PRE          :  /
    */
-  void Connect ();
+  void Connect (PString = PString ());
 
 
   /* DESCRIPTION  :  /
