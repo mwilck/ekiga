@@ -1270,6 +1270,8 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   PString remote_app;
   PString remote_ip;
 
+  H323TransportAddress address;
+  
   gchar *utf8_name = NULL;
   gchar *utf8_app = NULL;
 
@@ -1284,10 +1286,13 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   recorder_channel = NULL;
   ch_access_mutex.Signal ();
 
+
   /* Get information about the remote user */
   remote_name = connection.GetRemotePartyName ();
   remote_app = connection.GetRemoteApplication ();
-  utf8_app = gnomemeeting_get_utf8 (gnomemeeting_pstring_cut (remote_app));
+  remote_ip = connection.GetRemotePartyName ();
+  remote_ip = remote_ip.Mid (remote_ip.Find ("[")+1, remote_ip.Find ("]")-2);
+  utf8_app = gnomemeeting_get_utf8 (remote_app);
   utf8_name = gnomemeeting_get_utf8 (gnomemeeting_pstring_cut (remote_name));
 
   if (connection.GetConnectionStartTime ().IsValid ())
@@ -1295,9 +1300,11 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   gnomemeeting_threads_enter ();
   if (t.GetSeconds () == 0 && connection.HadAnsweredCall ())
-    gnomemeeting_calls_history_window_add_call (2, utf8_name, remote_ip, 0, utf8_app);
+    gnomemeeting_calls_history_window_add_call (2, utf8_name,
+						(const char *) remote_ip,
+						"0", utf8_app);
   else 
-    gnomemeeting_calls_history_window_add_call (connection.HadAnsweredCall () ? 0 : 1, utf8_name, remote_ip, t.AsString (2), utf8_app);
+    gnomemeeting_calls_history_window_add_call (connection.HadAnsweredCall () ? 0 : 1, utf8_name, (const char *) remote_ip, t.AsString (2), utf8_app);
 
   g_free (utf8_app);
   g_free (utf8_name);

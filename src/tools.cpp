@@ -41,10 +41,77 @@
 
 #include "tools.h"
 #include "gnomemeeting.h"
+#include "callbacks.h"
 
 
 extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;
+
+
+static void call_activated_cb (GtkTreeView *,
+			       GtkTreePath *,
+			       GtkTreeViewColumn *,
+			       gpointer);
+
+  
+/* DESCRIPTION  :  This callback is called when the user double clicks on
+ *                 a row corresonding to an user.
+ * BEHAVIOR     :  Add the user name in the combo box and call him or transfer
+ *                 the call to that user.
+ * PRE          :  data is the page type.
+ */
+static void 
+call_activated_cb (GtkTreeView *tree_view,
+		   GtkTreePath *path,
+		   GtkTreeViewColumn *column,
+		   gpointer data)
+{
+  GtkTreeModel *model = NULL;
+  GtkTreeSelection *selection = NULL;
+  GtkTreeIter iter;
+  
+  gchar *contact_url = NULL;
+  
+  GmWindow *gw = NULL;
+  gw = MyApp->GetMainWindow ();
+
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view));
+  
+  if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
+
+    if (path) {
+
+        
+      /* Get the server name */
+      gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
+			  2, &contact_url, -1);
+	
+	if (contact_url) {
+	  
+	  /* if we are waiting for a call, add the IP
+	     to the history, and call that user       */
+	  if (MyApp->Endpoint ()->GetCallingState () == 0) {
+	  
+	    /* this function will store a copy of text */
+	    gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry),
+				PString ("h323:@") + contact_url);
+	  
+	    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->connect_button),
+					  true);
+	  }
+	  else if (MyApp->Endpoint ()->GetCallingState () == 2) {
+
+	    transfer_call_cb (NULL,
+			      (gpointer) (const char *)
+			      (PString ("h323:@") + contact_url));
+	  }
+	}
+    }
+  }
+
+
+  g_free (contact_url);
+}
 
 
 /* The functions */
@@ -190,6 +257,10 @@ GtkWidget *gnomemeeting_calls_history_window_new (GmCallsHistoryWindow *chw)
     
     gtk_container_add (GTK_CONTAINER (scr), tree_view);
     gtk_notebook_append_page (GTK_NOTEBOOK (notebook), scr, label);
+
+    /* Signal to call the person on the double-clicked row */
+    g_signal_connect (G_OBJECT (tree_view), "row_activated", 
+		      G_CALLBACK (call_activated_cb), NULL);
   }
 
   chw->received_calls_list_store = list_store [0];
@@ -213,7 +284,9 @@ GtkWidget *gnomemeeting_history_window_new ()
   GtkTextIter end;
 
   GmWindow *gw = MyApp->GetMainWindow ();
-  cout << "TO BE FIXED" << endl << flush;
+
+  /* Fix me, create a structure for that so that we don't use
+     gw here */
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_title (GTK_WINDOW (window), _("General History"));
   gtk_window_set_position (GTK_WINDOW (window), GTK_WIN_POS_CENTER);
