@@ -306,7 +306,7 @@ gnomemeeting_get_zero_addressbooks ()
   
   elmt = gm_addressbook_new ();
   elmt->aid = g_strdup ("1086500000@ethium01");
-  elmt->name = g_strdup (_("People Around"));
+  elmt->name = g_strdup (_("Contacts Near Me"));
   elmt->url = g_strdup ("zero://local");
   addressbooks = g_slist_append (addressbooks, (gpointer) elmt);
   
