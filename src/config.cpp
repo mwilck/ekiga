@@ -1136,6 +1136,8 @@ audio_codecs_list_changed_nt (gpointer id,
   GMH323EndPoint *ep = NULL;
   GmPrefWindow *pw = NULL;
 
+  OpalMediaFormat::List l;
+
   BOOL use_quicknet = FALSE;
   BOOL soft_codecs_supported = FALSE;
   
@@ -1154,12 +1156,11 @@ audio_codecs_list_changed_nt (gpointer id,
     }
 #endif
 
+    l = ep->GetAvailableAudioCapabilities ();
     
     /* Update the GUI */
     gdk_threads_enter ();
-    gnomemeeting_codecs_list_build (pw->codecs_list_store,
-				    use_quicknet,
-				    soft_codecs_supported);
+    gnomemeeting_pref_window_update_audio_codecs_list (pw, l);
     gdk_threads_leave ();
   } 
 }

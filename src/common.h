@@ -249,6 +249,7 @@ struct _GmLdapWindowPage
 struct _GmPrefWindow
 {
   GtkListStore *codecs_list_store;
+  GtkWidget *audio_codecs_list;
   GtkWidget *sound_events_list;
   GtkWidget *audio_player;
   GtkWidget *audio_recorder;

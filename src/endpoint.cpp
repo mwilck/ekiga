@@ -60,7 +60,6 @@
 #include "dialog.h"
 #include "gm_conf.h"
 
-#include <g726codec.h>
 #include <h261codec.h>
 #include <ptclib/http.h>
 #include <ptclib/html.h>
@@ -277,9 +276,11 @@ GMH323EndPoint::AddAllCapabilities ()
 {
   RemoveAllCapabilities ();
   
+
   AddAudioCapabilities ();
   AddVideoCapabilities ();
   AddUserInputCapabilities ();
+  cout << capabilities << endl << flush;
 }
 
 
@@ -365,65 +366,45 @@ GMH323EndPoint::AddUserInputCapabilities ()
 }
 
 
+OpalMediaFormat::List
+GMH323EndPoint::GetAvailableAudioCapabilities ()
+{
+  return OpalMediaFormat::GetRegisteredMediaFormats ();
+}
+
+
 void 
 GMH323EndPoint::AddAudioCapabilities ()
 {
   gchar **couple = NULL;
   GSList *codecs_data = NULL;
   BOOL use_pcm16_codecs = TRUE;
-  int g711_frames = 0;
-  int gsm_frames = 0;
-  MicrosoftGSMAudioCapability* gsm_capa = NULL; 
-  H323_G711Capability *g711_capa = NULL; 
-  H323_G726_Capability * g72616_capa = NULL; 
-  H323_GSM0610Capability *gsm2_capa = NULL; 
-
-  PStringArray to_remove;
-  PStringArray to_reorder;
+  BOOL is_using_lid = FALSE;
   
   /* Read config settings */ 
   codecs_data = gm_conf_get_string_list (AUDIO_CODECS_KEY "list");
-  g711_frames = gm_conf_get_int (AUDIO_CODECS_KEY "g711_frames");
-  gsm_frames = gm_conf_get_int (AUDIO_CODECS_KEY "gsm_frames");
 
 #ifdef HAS_IXJ
+  /* FIXME */
   /* Add the audio capabilities provided by the LID Hardware */
-  GMLid *l = NULL;
+  /*GMLid *l = NULL;
   if ((l = GetLid ())) {
 
-    if (l->IsOpen ())
+    if (l->IsOpen ()) {
+    
       H323_LIDCapability::AddAllCapabilities (*l, capabilities, 0, 0);
-
-    /* If the LID can do PCM16 we can use the software
-       codecs like GSM too */
+      is_using_lid = TRUE;
+    }
+      
     use_pcm16_codecs = l->areSoftwareCodecsSupported ();
 
     if (use_pcm16_codecs)
       capabilities.Remove ("G.711");
 
     l->Unlock ();
-  }
+  }*/
 #endif
 
-
-  if (use_pcm16_codecs && codecs_data) {
-
-    
-    g711_capa = new H323_G711Capability (H323_G711Capability::muLaw);
-    SetCapability (0, 0, g711_capa);
-    if (g711_frames > 0)
-      g711_capa->SetTxFramesInPacket (g711_frames);
-
-    g711_capa = new H323_G711Capability (H323_G711Capability::ALaw);
-    SetCapability (0, 0, g711_capa);
-    if (g711_frames > 0)
-      g711_capa->SetTxFramesInPacket (g711_frames);
-
-    g72616_capa = 
-      new H323_G726_Capability (*this, H323_G726_Capability::e_32k);
-    SetCapability (0, 0, g72616_capa);
-  }
-  
   
   /* Let's go */
   while (use_pcm16_codecs && codecs_data) {
@@ -432,18 +413,13 @@ GMH323EndPoint::AddAudioCapabilities ()
 
     if (couple && couple [0] && couple [1] != NULL) {
 
-      if (!strcmp (couple [1], "0")) 
-	to_remove.AppendString (couple [0]);
-      else
-	to_reorder.AppendString (couple [0]);
+      if (!strcmp (couple [1], "1")) 
+	H323EndPoint::AddAllCapabilities (0, 0, PString (couple [0]) + (is_using_lid?PString("*"):PString("*{sw}")));
     }
 
     g_strfreev (couple);
     codecs_data = codecs_data->next;
   }
-
-  capabilities.Remove (to_remove);
-  capabilities.Reorder (to_reorder);
 
   g_slist_free (codecs_data);
 }

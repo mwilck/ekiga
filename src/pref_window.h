@@ -53,6 +53,16 @@ gnomemeeting_pref_window_update_devices_list ();
 
 
 /* DESCRIPTION  :  /
+ * BEHAVIOR     :  Refreshes the codecs list in the GUI to update them from
+ *                 the detected codecs following the user configuration.
+ * PRE          :  /
+ */
+void
+gnomemeeting_pref_window_update_audio_codecs_list (GmPrefWindow *,
+						   OpalMediaFormat::List);
+
+
+/* DESCRIPTION  :  /
  * BEHAVIOR     :  It builds the preferences window
  *                 (sections' ctree / Notebook pages) and connect GTK signals
  *                 to appropriate callbacks, then returns it.
@@ -68,17 +78,6 @@ gnomemeeting_pref_window_new (GmPrefWindow *);
  */
 void
 gnomemeeting_prefs_window_sound_events_list_build (GtkTreeView *); 
-
-
-/* DESCRIPTION  :  / 
- * BEHAVIOR     :  Add the codecs to the codecs list. 
- * PRE          :  The second argument indicates if a quicknet card is used
- *                 and the third if software codecs are supported or not.
- */
-void 
-gnomemeeting_codecs_list_build (GtkListStore *,
-				BOOL,
-				BOOL);
 
 
 #endif

@@ -241,7 +241,8 @@ GMLid::Main ()
   gtk_widget_queue_draw (GTK_WIDGET (gw->audio_settings_frame));
 
   /* Update the codecs list */
-  gnomemeeting_codecs_list_build (pw->codecs_list_store, TRUE, soft_codecs);
+  //FIXME
+  //gnomemeeting_codecs_list_build (pw->codecs_list_store, TRUE, soft_codecs);
   gnomemeeting_threads_leave ();
 
   endpoint->AddAllCapabilities ();
@@ -374,7 +375,8 @@ GMLid::Main ()
 
   /* Update the codecs list */
   gnomemeeting_threads_enter ();
-  gnomemeeting_codecs_list_build (pw->codecs_list_store, FALSE, FALSE);
+  // FIXME
+  //gnomemeeting_codecs_list_build (pw->codecs_list_store, FALSE, FALSE);
   gnomemeeting_threads_leave ();
 }
 

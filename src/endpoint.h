@@ -273,6 +273,14 @@ class GMH323EndPoint : public H323EndPoint
    */
   void AddAllCapabilities (void);
 
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns the list of audio capabilities supported by
+   * 		     the endpoint.
+   * PRE          :  /
+   */
+  OpalMediaFormat::List GMH323EndPoint::GetAvailableAudioCapabilities ();
+  
   
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Add audio capabilities following the user config.

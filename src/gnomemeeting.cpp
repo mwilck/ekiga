@@ -408,7 +408,12 @@ void GnomeMeeting::Main ()
 void GnomeMeeting::BuildGUI ()
 {
   bool show_splash = TRUE;
+  OpalMediaFormat::List available_capabilities;
 
+
+  /* Get the available capabilities list */
+  available_capabilities = endpoint->GetAvailableAudioCapabilities ();
+  
   
   /* Init the splash screen */
   gw->splash_win = e_splash_new ();
@@ -434,6 +439,9 @@ void GnomeMeeting::BuildGUI ()
   gw->calls_history_window = gnomemeeting_calls_history_window_new ();
   gw->pc_to_phone_window = gnomemeeting_pc_to_phone_window_new ();  
   gw->pref_window = gnomemeeting_pref_window_new (pw);  
+  gnomemeeting_pref_window_update_audio_codecs_list (pw, 
+						     available_capabilities);
+  
 #ifdef ENABLE_EDS
   gw->addressbook_window = gm_addressbook_window_new ();
 #endif
