@@ -456,10 +456,12 @@ void GMVideoGrabber::VGOpen (void)
 	gnomemeeting_threads_leave ();
       }
 
+#ifndef TRY_PLUGINS
       /* delete the failed grabber and open the fake grabber, either
        because there was an error, either because the user chose to do so */
       delete grabber;
-      
+#endif
+
       gnomemeeting_threads_enter ();
       video_image = gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/video_image", NULL);
       gnomemeeting_threads_leave ();
@@ -766,7 +768,8 @@ void GMVideoTester::Main ()
   gdk_threads_leave ();
   g_free (msg);
 
-  delete (grabber);
+  if (grabber)
+    delete (grabber);
 
   gdk_threads_enter ();
   gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (dw->progress), 1.0);
