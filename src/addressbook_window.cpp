@@ -1358,7 +1358,7 @@ gm_aw_update_addressbook (GtkWidget *addressbook_window,
     status_icon = 
       gtk_widget_render_icon (addressbook_window,
 			      contact->state ? 
-			      GM_STOCK_STATUS_BUSY 
+			      GM_STOCK_STATUS_DO_NOT_DISTURB 
 			      :
 			      GM_STOCK_STATUS_AVAILABLE,
 			      GTK_ICON_SIZE_MENU, NULL);

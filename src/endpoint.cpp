@@ -812,10 +812,10 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 		       (const char *) utf8_name, (const char *) forward_host);
     do_forward = TRUE;
   }
-  else if (icm == BUSY) {
+  else if (icm == DO_NOT_DISTURB) {
 
     msg =
-      g_strdup_printf (_("Rejecting call from %s (Busy)"),
+      g_strdup_printf (_("Rejecting call from %s (Do Not Disturb)"),
 		       (const char *) utf8_name);
     
     do_reject = TRUE;
@@ -842,10 +842,10 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
       do_reject = TRUE;
     }
   }
-  else if (icm == FREE_FOR_CHAT) {
+  else if (icm == AUTO_ANSWER) {
 
     msg =
-      g_strdup_printf (_("Accepting call from %s (Free For Chat)"),
+      g_strdup_printf (_("Accepting call from %s (Auto Answer)"),
 		       (const char *) utf8_name);
     
     do_answer = TRUE;

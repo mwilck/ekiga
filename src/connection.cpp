@@ -228,7 +228,7 @@ GMH323Connection::OnAnswerCall (const PString & caller,
     gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
   gnomemeeting_threads_leave ();
 
-  if (icm == FREE_FOR_CHAT) 
+  if (icm == AUTO_ANSWER)
     return AnswerCallNow; 
   
   return AnswerCallPending;

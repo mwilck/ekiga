@@ -113,8 +113,8 @@
 typedef enum {
 
   AVAILABLE,
-  FREE_FOR_CHAT,
-  BUSY,
+  AUTO_ANSWER,
+  DO_NOT_DISTURB,
   FORWARD,
   NUM_MODES
 } IncomingCallMode;

@@ -242,9 +242,12 @@ void GMILSClient::ILSOperation (Operation operation)
     /* must be able to reach ldap server */
     else if (!(ldap = ldap_init (ldap_server, 389))) {
       
+      msg = g_strdup_printf (_("ILS registration failed: unable to connect to %s"), ldap_server);
       gnomemeeting_threads_enter ();
-      gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Cannot contact the users directory"), _("Failed to contact the users directory %s:%d. The directory is probably currently overloaded, please try again later."), ldap_server, "389");
+      gm_main_window_push_message (main_window, msg);
+      gm_history_window_insert (history_window, msg);
       gnomemeeting_threads_leave ();
+      g_free (msg);
 
       no_error = FALSE;
     }
@@ -252,18 +255,24 @@ void GMILSClient::ILSOperation (Operation operation)
     else if (ldap_set_option (ldap, LDAP_OPT_NETWORK_TIMEOUT, &time_limit)
 	     != LDAP_OPT_SUCCESS) {
      
+      msg = g_strdup (_("ILS registration failed: unable to set time limit on operations"));
       gnomemeeting_threads_enter ();
-      gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Cannot contact the users directory"), _("Failed to set a time limit on operations."));
+      gm_main_window_push_message (main_window, msg);
+      gm_history_window_insert (history_window, msg);
       gnomemeeting_threads_leave ();
+      g_free (msg);
 
       no_error = FALSE;  
     }
     /* must be able to bind to ldap server */
     else if ((rc = ldap_bind_s (ldap, who, cred, method))) {
       
+      msg = g_strdup_printf (_("ILS registration failed: failed to bind to %s"), ldap_server);
       gnomemeeting_threads_enter ();
-      gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Cannot contact the users directory"), _("Failed to bind to users directory: %s."), ldap_err2string (rc));
+      gm_main_window_push_message (main_window, msg);
+      gm_history_window_insert (history_window, msg);
       gnomemeeting_threads_leave ();
+      g_free (msg);
 
       no_error = FALSE;
     }
@@ -286,16 +295,16 @@ void GMILSClient::ILSOperation (Operation operation)
 	ldap_unbind_s (ldap);
 
 	if (operation == ILS_REGISTER || operation == ILS_UPDATE) 
-	  msg = g_strdup_printf (_("Updated information on the users directory %s."), ldap_server);
+	  msg = g_strdup_printf (_("Updated information on %s"), ldap_server);
 
 	
 	if (operation == ILS_UNREGISTER) 
-	  msg = g_strdup_printf (_("Unregistered from the users directory %s."), ldap_server);	
+	  msg = g_strdup_printf (_("Unregistered from %s"), ldap_server);	
 
 	gnomemeeting_threads_enter ();
 	gm_history_window_insert (history_window, msg);
-	g_free (msg);
 	gnomemeeting_threads_leave ();
+	g_free (msg);
       }
     }
   }
@@ -444,7 +453,7 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
 			            BUILD_NUMBER);
 
   if ((GnomeMeeting::Process ()->Endpoint ()->GetCallingState () != GMH323EndPoint::Standby)
-      || (gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode") == BUSY))
+      || (gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode") == DO_NOT_DISTURB))
     busy = g_strdup ("1");
   else
     busy = g_strdup ("0");

@@ -65,9 +65,9 @@ gnomemeeting_stock_icons_init (void)
 		{ GM_STOCK_VIDEO_MUTE,    gm_video_mute_stock_data },
 		{ GM_STOCK_STATUS_AVAILABLE, gm_status_available_stock_data },
 		{ GM_STOCK_STATUS_RINGING,   gm_status_ringing_stock_data},
-		{ GM_STOCK_STATUS_BUSY, gm_status_busy_stock_data},
+		{ GM_STOCK_STATUS_DO_NOT_DISTURB, gm_status_do_not_disturb_stock_data},
 		{ GM_STOCK_STATUS_FORWARD, gm_status_forward_stock_data },
-		{ GM_STOCK_STATUS_FREE_FOR_CHAT, gm_status_free_for_chat_stock_data },
+		{ GM_STOCK_STATUS_AUTO_ANSWER, gm_status_auto_answer_stock_data },
 		{ GM_STOCK_STATUS_IN_A_CALL, gm_status_in_a_call_stock_data },
 	
 		{ GM_STOCK_DRUID_AUDIO, gm_druid_audio_stock_data},

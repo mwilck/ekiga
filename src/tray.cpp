@@ -268,17 +268,18 @@ gm_tray_new ()
 			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
 			   (gpointer) CALL_OPTIONS_KEY "incoming_call_mode",
 			   (icm == AVAILABLE), TRUE),
-      GTK_MENU_RADIO_ENTRY("free_for_chat", _("Free for Cha_t"),
+      GTK_MENU_RADIO_ENTRY("auto_answer", _("Aut_o Answer"),
 			   _("Auto answer calls"),
 			   NULL, 0, 
 			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
 			   (gpointer) CALL_OPTIONS_KEY "incoming_call_mode",
-			   (icm == FREE_FOR_CHAT), TRUE),
-      GTK_MENU_RADIO_ENTRY("busy", _("_Busy"), _("Reject calls"),
+			   (icm == AUTO_ANSWER), TRUE),
+      GTK_MENU_RADIO_ENTRY("do_not_disturb", _("_Do Not Disturb"), 
+			   _("Reject calls"),
 			   NULL, 0, 
 			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
 			   (gpointer) CALL_OPTIONS_KEY "incoming_call_mode",
-			   (icm == BUSY), TRUE),
+			   (icm == DO_NOT_DISTURB), TRUE),
       GTK_MENU_RADIO_ENTRY("forward", _("_Forward"), _("Forward calls"),
 			   NULL, 0,
 			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
@@ -311,11 +312,29 @@ gm_tray_new ()
 
       GTK_MENU_SEPARATOR,
      
-      GTK_MENU_ENTRY("about", _("_About..."),
+#ifndef DISABLE_GNOME
+       GTK_MENU_ENTRY("help", _("_Contents"),
+                     _("Get help by reading the GnomeMeeting manual"),
+                     GTK_STOCK_HELP, GDK_F1, 
+                     GTK_SIGNAL_FUNC (help_cb), NULL, TRUE),
+       
+      GTK_MENU_ENTRY("about", _("_About"),
+		     _("View information about GnomeMeeting"),
+		     GNOME_STOCK_ABOUT, 'a', 
+		     GTK_SIGNAL_FUNC (about_callback), (gpointer) main_window,
+		     TRUE),
+#else
+      GTK_MENU_ENTRY("help", _("_Contents"),
+                     _("Get help by reading the GnomeMeeting manual"),
+                     GTK_STOCK_HELP, GDK_F1, 
+                     NULL, NULL, FALSE),
+       
+      GTK_MENU_ENTRY("about", _("_About"),
 		     _("View information about GnomeMeeting"),
 		     NULL, 'a', 
-		     GTK_SIGNAL_FUNC (about_callback),
-		     (gpointer) main_window, TRUE),
+		     GTK_SIGNAL_FUNC (about_callback), (gpointer) main_window,
+		     TRUE),
+#endif
 
       GTK_MENU_ENTRY("quit", _("_Quit"), 
 		     _("Quit GnomeMeeting"),
@@ -389,15 +408,15 @@ gm_tray_update (GtkWidget *tray_icon,
                                 GTK_ICON_SIZE_MENU);
       break;
    
-    case (FREE_FOR_CHAT):  
+    case (AUTO_ANSWER):  
       gtk_image_set_from_stock (GTK_IMAGE (gt->image), 
-                                GM_STOCK_STATUS_FREE_FOR_CHAT, 
+                                GM_STOCK_STATUS_AUTO_ANSWER,
                                 GTK_ICON_SIZE_MENU);
       break;
     
-    case (BUSY):  
+    case (DO_NOT_DISTURB):  
       gtk_image_set_from_stock (GTK_IMAGE (gt->image), 
-                                GM_STOCK_STATUS_BUSY, 
+                                GM_STOCK_STATUS_DO_NOT_DISTURB, 
                                 GTK_ICON_SIZE_MENU);
       break;
     

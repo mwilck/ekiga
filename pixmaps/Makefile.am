@@ -47,9 +47,9 @@ IMAGES_FILES= \
 	video-mute.png \
 	status-available-16.png \
 	status-in-a-call-16.png \
-	status-free-for-chat-16.png \
+	status-auto-answer-16.png \
 	status-ringing-16.png \
-	status-busy-16.png \
+	status-do-not-disturb-16.png \
 	status-forward-16.png \
 	druid_audio.png \
 	druid_video.png \
@@ -84,8 +84,8 @@ IMAGES= \
 	gm_status_ringing_stock_data $(srcdir)/status-ringing-16.png \
 	gm_status_in_a_call_stock_data $(srcdir)/status-in-a-call-16.png \
 	gm_status_forward_stock_data $(srcdir)/status-forward-16.png \
-	gm_status_busy_stock_data $(srcdir)/status-busy-16.png \
-	gm_status_free_for_chat_stock_data $(srcdir)/status-free-for-chat-16.png \
+	gm_status_do_not_disturb_stock_data $(srcdir)/status-do-not-disturb-16.png \
+	gm_status_auto_answer_stock_data $(srcdir)/status-auto-answer-16.png \
 	gm_druid_audio_stock_data $(srcdir)/druid_audio.png \
 	gm_druid_video_stock_data $(srcdir)/druid_video.png \
 	gm_druid_ixj_stock_data $(srcdir)/druid_ixj.png \

@@ -99,8 +99,6 @@ struct _GmWindow
   GtkObject *adj_contrast;
   GtkWidget *video_settings_frame;
   
-  GtkWidget *dialpad_button [12];
-
   GtkTooltips *tips;
   GtkAccelGroup *accel;
 
@@ -948,17 +946,18 @@ gm_mw_init_menu (GtkWidget *main_window)
 			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
 			   (gpointer) CALL_OPTIONS_KEY "incoming_call_mode",
 			   (icm == AVAILABLE), TRUE),
-      GTK_MENU_RADIO_ENTRY("free_for_chat", _("Free for Cha_t"),
+      GTK_MENU_RADIO_ENTRY("auto_answer", _("Aut_o Answer"),
 			   _("Auto answer calls"),
 			   NULL, 0, 
 			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
 			   (gpointer) CALL_OPTIONS_KEY "incoming_call_mode",
-			   (icm == FREE_FOR_CHAT), TRUE),
-      GTK_MENU_RADIO_ENTRY("busy", _("_Busy"), _("Reject calls"),
+			   (icm == AUTO_ANSWER), TRUE),
+      GTK_MENU_RADIO_ENTRY("do_not_disturb", _("_Do Not Disturb"), 
+			   _("Reject calls"),
 			   NULL, 0, 
 			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
 			   (gpointer) CALL_OPTIONS_KEY "incoming_call_mode",
-			   (icm == BUSY), TRUE),
+			   (icm == DO_NOT_DISTURB), TRUE),
       GTK_MENU_RADIO_ENTRY("forward", _("_Forward"), _("Forward calls"),
 			   NULL, 0,
 			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
@@ -1261,6 +1260,7 @@ gm_mw_init_dialpad (GtkWidget *main_window)
 {
   GmWindow *mw = NULL;
   
+  GtkWidget *button = NULL;
   GtkWidget *label = NULL;
   GtkWidget *table = NULL;
 
@@ -1284,6 +1284,7 @@ gm_mw_init_dialpad (GtkWidget *main_window)
   table = gtk_table_new (4, 3, TRUE);
   gtk_container_set_border_width (GTK_CONTAINER (table), 6);
   
+
   for (i = 0 ; i < 12 ; i++) {
 
     label = gtk_label_new (NULL);
@@ -1291,21 +1292,21 @@ gm_mw_init_dialpad (GtkWidget *main_window)
       g_strdup_printf ("%s<sub><span size=\"small\">%s</span></sub>",
 		       key_n [i], key_a [i]);
     gtk_label_set_markup (GTK_LABEL (label), text_label); 
-    mw->dialpad_button [i] = gtk_button_new ();
-    gtk_container_set_border_width (GTK_CONTAINER (mw->dialpad_button [i]), 0);
-    gtk_container_add (GTK_CONTAINER (mw->dialpad_button [i]), label);
+    button = gtk_button_new ();
+    gtk_container_set_border_width (GTK_CONTAINER (button), 0);
+    gtk_container_add (GTK_CONTAINER (button), label);
    
-    gtk_widget_add_accelerator (mw->dialpad_button [i], "activate", 
+    gtk_widget_add_accelerator (button, "activate", 
 				mw->accel, key_kp [i], 
-				(GdkModifierType) 0, GTK_ACCEL_VISIBLE);
+				(GdkModifierType) 0, (GtkAccelFlags) 0);
     
-    gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (mw->dialpad_button [i]), 
+    gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (button), 
 		      i%3, i%3+1, i/3, i/3+1,
 		      (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		      (GtkAttachOptions) (GTK_FILL),
 		      1, 1);
     
-    g_signal_connect (G_OBJECT (mw->dialpad_button [i]), "clicked",
+    g_signal_connect (G_OBJECT (button), "clicked",
 		      GTK_SIGNAL_FUNC (dialpad_button_clicked_cb), 
 		      main_window);
 
