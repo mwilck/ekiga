@@ -707,7 +707,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   busy_forward = gconf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
   icm =
     (IncomingCallMode) gconf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
-  show_popup = gconf_get_bool (USER_INTERFACE_KEY "main_interface/show_popup");
+  show_popup = gconf_get_bool (USER_INTERFACE_KEY "show_popup");
   gnomemeeting_threads_leave ();
 
   if (forward_host_gconf)

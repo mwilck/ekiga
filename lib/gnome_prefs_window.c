@@ -743,6 +743,8 @@ gnome_prefs_window_new (gchar *logo_name)
   GtkWidget *pixmap = NULL;
   GtkWidget *hsep = NULL;
 
+  GdkColor cwhite;
+
   PangoAttrList *attrs = NULL; 
   PangoAttribute *attr = NULL; 
 
@@ -771,6 +773,10 @@ gnome_prefs_window_new (gchar *logo_name)
   event_box = gtk_event_box_new ();
   gtk_container_add (GTK_CONTAINER (event_box),
 		     GTK_WIDGET (pixmap));
+
+  gdk_color_white (gdk_colormap_get_system (), &cwhite); 
+  gtk_widget_modify_bg (GTK_WIDGET (event_box),
+			GTK_STATE_NORMAL, &cwhite);
 
   gtk_notebook_prepend_page (GTK_NOTEBOOK (gpw->notebook), event_box, NULL);
 
@@ -844,7 +850,7 @@ gnome_prefs_window_new (gchar *logo_name)
 
   hsep = gtk_hseparator_new ();
   gtk_box_pack_start (GTK_BOX (vbox), hsep, FALSE, FALSE, 0); 
-  gtk_box_pack_start (GTK_BOX (vbox), gpw->notebook, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox), gpw->notebook, TRUE, TRUE, 0);
 
   gtk_widget_show_all (GTK_WIDGET (dialog_vbox));
   gtk_widget_show_all (GTK_WIDGET (gpw->sections_tree_view));
