@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
-"POT-Creation-Date: 2002-07-03 23:29+0200\n"
-"PO-Revision-Date: 2002-06-08 12:51+0200\n"
+"POT-Creation-Date: 2002-07-04 13:10+0200\n"
+"PO-Revision-Date: 2002-07-04 13:12+0200\n"
 "Last-Translator: Stefan Brüns <lurchi@kawo1.rwth-aachen.de>\n"
 "Language-Team:  <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -58,14 +58,14 @@ msgstr "Automatische Echo-Unterdrückung"
 
 #: gnomemeeting.schemas.in.in.h:9
 msgid "Change the control panel section"
-msgstr "Kontroll-Panel-Bereich verändern"
+msgstr "Inhalt für Kontroll-Panel ändern"
 
 #: gnomemeeting.schemas.in.in.h:10
 msgid ""
 "Change the control panel section (3 means that the control panel is off)"
 msgstr ""
-"Verändere Kontroll-Panel-Bereich (3 bedeutet, das Kontroll-Panel ist "
-"abgeschaltet)"
+"Inhalt, der im Kontroll-Panel angezeigt werden soll: Meldungen(0), Audio(1), "
+"Video(2), abgeschaltet(3)"
 
 #: gnomemeeting.schemas.in.in.h:11
 msgid "Color Format"
@@ -141,11 +141,11 @@ msgstr "Anrufe an angegebenen Rechner weiterleiten"
 
 #: gnomemeeting.schemas.in.in.h:29
 msgid "Fullscreen Height"
-msgstr ""
+msgstr "Vollbild-Höhe"
 
 #: gnomemeeting.schemas.in.in.h:30
 msgid "Fullscreen Width"
-msgstr ""
+msgstr "Vollbild-Breite"
 
 #: gnomemeeting.schemas.in.in.h:31
 msgid "H.245 Tunnelling"
@@ -269,7 +269,7 @@ msgstr "Anmeldung"
 
 #: gnomemeeting.schemas.in.in.h:58
 msgid "Revision of the schema file"
-msgstr ""
+msgstr "Revision der Schema-Datei"
 
 #: gnomemeeting.schemas.in.in.h:59
 msgid "Show a docklet in the gnome-panel or KDE systray"
@@ -293,7 +293,7 @@ msgstr "Docklet zeigen"
 
 #: gnomemeeting.schemas.in.in.h:64
 msgid "Show left toolbar"
-msgstr "Linke Werkzeugleiste  zeigen"
+msgstr "Linke Werkzeugleiste zeigen"
 
 #: gnomemeeting.schemas.in.in.h:65
 msgid "Show only the docklet window at startup"
@@ -356,7 +356,7 @@ msgstr "Die Methode, die für die Anmeldung am Gatekeeper benutzt werden soll"
 
 #: gnomemeeting.schemas.in.in.h:78
 msgid "The Quicknet Device to use during calls."
-msgstr "Das Quicknet-Gerät das für Anrufe verwendet werden soll."
+msgstr "Das Quicknet-Gerät, das für Anrufe verwendet werden soll."
 
 #: gnomemeeting.schemas.in.in.h:79
 msgid "The Video Channel"
@@ -402,6 +402,8 @@ msgstr "Das Gerät für die Audio-Aufzeichnung"
 msgid ""
 "The height of the picture displayed when being in fullscreen (using SDL)"
 msgstr ""
+"Die Höhe des dargestellten Bildes im Vollbild-Modus (unter Verwendung von "
+"SDL)"
 
 #: gnomemeeting.schemas.in.in.h:89
 msgid "The host to forward calls to"
@@ -416,9 +418,8 @@ msgid "The list of ILS servers"
 msgstr "Liste der ILS-Verzeichnisse"
 
 #: gnomemeeting.schemas.in.in.h:92
-#, fuzzy
 msgid "The list of called URLs"
-msgstr "Liste der angerufenen Rechner"
+msgstr "Liste der angerufenen URLs"
 
 #: gnomemeeting.schemas.in.in.h:93
 msgid "The list of used ILS servers"
@@ -458,7 +459,7 @@ msgstr "Das Speicher-Präfix"
 
 #: gnomemeeting.schemas.in.in.h:99
 msgid "The transmitted video quality hint"
-msgstr "Sendequalität für Video:"
+msgstr "Bevorzugte Sendequalität für Video"
 
 #: gnomemeeting.schemas.in.in.h:100 src/pref_window.cpp:1454
 msgid ""
@@ -474,6 +475,8 @@ msgstr "Der Vorname des Benutzers, der in Verzeichnissen benutzt wird"
 #: gnomemeeting.schemas.in.in.h:102
 msgid "The width of the picture displayed when being in fullscreen (using SDL)"
 msgstr ""
+"Die Breite des dargestellten Bildes im Vollbild-Modus (unter Verwendung von "
+"SDL)"
 
 #: gnomemeeting.schemas.in.in.h:103
 msgid "This need the show_docklet option set to true to have effect"
@@ -582,8 +585,8 @@ msgid ""
 "OpenH323.\n"
 "Forcing the exit in 3 seconds!\n"
 msgstr ""
-"Warnung! GnomeMeeting kann die Verbindung zur Gegenseite aufgrund eines "
-"Fehlers in OpenH323 nicht nicht beenden.\n"
+"Warnung! Die Verbindung zur Gegenseite kann aufgrund eines Fehlers in "
+"OpenH323 nicht von GnomeMeeting beendet werden.\n"
 "Ende wird in 3 Sekunden erzwungen!\n"
 
 #: src/config-tool-i18n.h:1
@@ -617,7 +620,7 @@ msgstr ""
 "\n"
 "  Soll der Deamon wirklich beendet werden?\n"
 "\n"
-"  Wenn dies so ist, bitte \"JA\" eingeben.\n"
+"  Wenn dies so ist, bitte »JA« eingeben.\n"
 "\n"
 
 #: src/config-tool-i18n.h:5
@@ -656,7 +659,7 @@ msgstr ""
 "\n"
 "  Soll der Deamon wirklich beendet werden?\n"
 "\n"
-"  Wenn dies so ist, bitte \"JA\" eingeben.\n"
+"  Wenn dies so ist, bitte »JA« eingeben.\n"
 "\n"
 
 #: src/config-tool-i18n.h:12
@@ -674,10 +677,10 @@ msgid ""
 "\n"
 "Run \"gnomemeeting-config-tool --install-schemas\" as root.\n"
 msgstr ""
-"KRITISCHER FEHLER -- Installation des Schemas fehlgeschlagen.\n"
+"KRITISCHER FEHLER ­– Installation des Schemas fehlgeschlagen.\n"
 "Wahrscheinlich läuft der GConf-Daemon als root.\n"
 "\n"
-"\"gnomemeeting-config-tool --install-schemas\" sollte als root ausgeführt "
+"»gnomemeeting-config-tool --install-schemas« sollte als root ausgeführt "
 "werden.\n"
 
 #: src/config-tool-i18n.h:16
@@ -686,7 +689,7 @@ msgstr "Benutzung:  gnomemeeting-config-tool OPTION"
 
 #: src/config-tool-i18n.h:17
 msgid "Fixes problems with the GnomeMeeting settings"
-msgstr "Behebt Probleme mit den GnomeMeeting-Einstellungen"
+msgstr "Zur Behebung von Problemen mit den GnomeMeeting-Einstellungen"
 
 #: src/config-tool-i18n.h:18
 msgid "  --clean                remove all user settings"
@@ -868,11 +871,11 @@ msgid ""
 "GnomeMeeting users. The directory is used to register users when they are "
 "using GnomeMeeting so that you can call them, and they can call you."
 msgstr ""
-"Bitte Persönliche Daten angeben. Diese Informationen werden bei der "
-"Verbindung zu anderen H.323 Gegenstellen und bei der Anmeldung am "
-"GnomeMeeting-Benutzerverzeichnis verwendet. Das Verzeichnis dient dazu, "
-"GnomeMeeting-User zu registrieren, so dass diese sich untereinander anrufen "
-"können."
+"Hier können die persönlichen Daten angeben werden. Diese Informationen "
+"werden bei der Verbindung zu anderen H.323 Gegenstellen und bei der "
+"Anmeldung am GnomeMeeting-Benutzerverzeichnis verwendet. Das Verzeichnis "
+"dient dazu, GnomeMeeting-User zu registrieren, so dass diese sich "
+"untereinander anrufen können."
 
 #: src/druid.cpp:398 src/pref_window.cpp:1171
 msgid "First Name:"
@@ -899,9 +902,8 @@ msgid "Do not register me to the GnomeMeeting ILS directory"
 msgstr "Ich möchte nicht beim GnomeMeeting-ILS-Verzeichnis angemeldet werden"
 
 #: src/druid.cpp:455
-#, fuzzy
 msgid "Connection Type - Page 3/4"
-msgstr "  Verbindungs-Typ - Seite 3/4"
+msgstr "Verbindungs-Typ - Seite 3/4"
 
 #: src/druid.cpp:465
 msgid ""
@@ -910,11 +912,11 @@ msgid ""
 "is however possible to tweak and change some of them to obtain a better "
 "result in each particular case."
 msgstr ""
-"Bitte den Verbindungstyp angeben. Diese Angabe wird benutzt, um der "
-"Bandbreite entsprechende Grundeinstellungen vorzunehmen. Es werden "
-"Einstellungen ausgewählt, die im Allgemeinen zu guten Ergebnissen führen, "
-"trotzdem kann es vorkommen, dass Änderungen in einigen Fällen zu besseren "
-"Ergebnissen führen."
+"Hier kann der eigene Verbindungstyp angeben werden. Diese Angabe wird "
+"benutzt, um der Bandbreite entsprechende Grundeinstellungen vorzunehmen. Es "
+"werden Einstellungen ausgewählt, die im Allgemeinen zu guten Ergebnissen "
+"führen, trotzdem kann es vorkommen, dass Änderungen in einigen Fällen zu "
+"besseren Ergebnissen führen."
 
 #: src/druid.cpp:473
 msgid "56K modem"
@@ -953,7 +955,7 @@ msgstr ""
 "Willkommen zum Druiden für die grundlegende GnomeMeeting-Konfiguration. In "
 "den folgenden Schritten wird durch ein paar einfache Fragen eine "
 "GnomeMeeting-Konfiguration erstellt. Nach Beendigung dieser Schritte kann "
-"diese jederzeit in den \"Vorlieben\" verändert werden."
+"diese jederzeit in den »Vorlieben« verändert werden."
 
 #: src/druid.cpp:575
 msgid ""
@@ -961,7 +963,7 @@ msgid ""
 "   -- The GnomeMeeting development team"
 msgstr ""
 "GnomeMeeting wurde erfolgreich konfiguriert. Viel Spaß!\n"
-"  -- Das GnomeMeeting-Entwicklerteam"
+"   –- Das GnomeMeeting-Entwicklerteam"
 
 #: src/druid.cpp:605
 msgid "Done! - Page 4/4"
@@ -1071,91 +1073,91 @@ msgstr "H.245-Tunnel aktiviert"
 msgid "H.245 Tunnelling disabled"
 msgstr "H.245-Tunnel deaktiviert"
 
-#: src/endpoint.cpp:1235
+#: src/endpoint.cpp:1229
 msgid "Remote party has cleared the call"
 msgstr "Gegenseite hat Verbindung beendet"
 
-#: src/endpoint.cpp:1240
+#: src/endpoint.cpp:1234
 msgid "Remote party has stopped calling"
 msgstr "Gegenseite ruft nicht mehr an"
 
-#: src/endpoint.cpp:1245 src/endpoint.cpp:1275
+#: src/endpoint.cpp:1239 src/endpoint.cpp:1269
 msgid "Remote party did not accept your call"
 msgstr "Gegenseite hat Verbindungsaufbau abgelehnt"
 
-#: src/endpoint.cpp:1250
+#: src/endpoint.cpp:1244
 msgid "Remote party was busy"
 msgstr "Gegenseite war besetzt"
 
-#: src/endpoint.cpp:1255
+#: src/endpoint.cpp:1249
 msgid "Congested link to remote party"
 msgstr "Verbindung zur Gegenseite ausgelastet"
 
-#: src/endpoint.cpp:1260
+#: src/endpoint.cpp:1254
 msgid "Remote party did not answer your call"
 msgstr "Gegenseite hat Anruf nicht entgegengenommen"
 
-#: src/endpoint.cpp:1265
+#: src/endpoint.cpp:1259
 msgid "This call ended abnormally"
 msgstr "Verbindung wurde unerwartet beendet"
 
-#: src/endpoint.cpp:1270
+#: src/endpoint.cpp:1264
 msgid "Could not find common codec with remote party"
 msgstr "Gemeinsamer Codec mit Gegenseite konnte nicht gefunden werden"
 
-#: src/endpoint.cpp:1280
+#: src/endpoint.cpp:1274
 msgid "Refused incoming call"
 msgstr "Eingehender Anruf wurde abgelehnt"
 
-#: src/endpoint.cpp:1285 src/urlhandler.cpp:173 src/urlhandler.cpp:174
+#: src/endpoint.cpp:1279 src/urlhandler.cpp:176 src/urlhandler.cpp:177
 msgid "User not found"
 msgstr "Benutzer nicht gefunden"
 
-#: src/endpoint.cpp:1290
+#: src/endpoint.cpp:1284
 msgid "Call ended: insufficient bandwidth"
 msgstr "Verbindungsaufbau beendet, Bandbreite nicht ausreichend"
 
-#: src/endpoint.cpp:1295
+#: src/endpoint.cpp:1289
 msgid "Remote party could not be reached"
 msgstr "Gegenseite konnte nicht erreicht werden"
 
-#: src/endpoint.cpp:1300
+#: src/endpoint.cpp:1294
 msgid "Remote party is offline"
 msgstr "Gegenseite ist offline"
 
-#: src/endpoint.cpp:1305
+#: src/endpoint.cpp:1299
 msgid "Transport Error calling"
 msgstr "Fehler bei Verbindungsaufbau"
 
-#: src/endpoint.cpp:1310 src/endpoint.cpp:1313
+#: src/endpoint.cpp:1304 src/endpoint.cpp:1307
 msgid "Call completed"
 msgstr "Verbindung beendet"
 
-#: src/endpoint.cpp:1449
+#: src/endpoint.cpp:1443
 msgid "Could not resume ESD"
-msgstr ""
+msgstr "ESD konnte nicht wiederhergestellt werden"
 
-#: src/endpoint.cpp:1453
+#: src/endpoint.cpp:1447
 msgid "ESD resumed"
-msgstr ""
+msgstr "ESD wurde wiederhergestellt"
 
-#: src/endpoint.cpp:1502
+#: src/endpoint.cpp:1496
 msgid "Could not suspend ESD"
-msgstr ""
+msgstr "ESD konnte nicht in den Ruhezustand versetzt werden"
 
-#: src/endpoint.cpp:1506
+#: src/endpoint.cpp:1500
 msgid "ESD suspended"
-msgstr ""
+msgstr "ESD wurde in den Ruhezustand versetzt"
 
-#: src/endpoint.cpp:1524
+#: src/endpoint.cpp:1518
 msgid "Could not suspend artsd"
-msgstr ""
+msgstr "artsd konnte nicht in den Ruhezustand versetzt werden"
 
-#: src/endpoint.cpp:1528
+#: src/endpoint.cpp:1522
 msgid "artsd suspended"
-msgstr ""
+msgstr "artsd wurde in den Ruhezustand versetzt"
 
-#: src/endpoint.cpp:1547
+#: src/endpoint.cpp:1541
 msgid "Attaching lid hardware to codec"
 msgstr "lid-Hardware wird zu Codecs hinzugefügt"
 
@@ -1219,42 +1221,42 @@ msgstr "Verbindungsaufbau zu ILS-Verzeichnis %s, Port %s"
 msgid "Error while connecting to ILS directory %s, port %s"
 msgstr "Fehler beim Verbinden mit ILS-Verzeichnis %s, Port %s"
 
-#: src/ils.cpp:479
+#: src/ils.cpp:478
 #, c-format
 msgid "Sucessfully registered to ILS directory %s, port %s"
 msgstr "Erfolgreich am ILS-Verzeichnis %s, Port %s angemeldet"
 
-#: src/ils.cpp:480
+#: src/ils.cpp:479
 msgid "Succesfully registered to ILS server"
 msgstr "Erfolgreich am ILS-Verzeichnis angemeldet"
 
-#: src/ils.cpp:485
+#: src/ils.cpp:483
 #, c-format
 msgid "Sucessfully unregistered from ILS directory %s, port %s"
 msgstr "Erfolgreich von ILS-Verzeichnis %s, Port %s abgemeldet"
 
-#: src/ils.cpp:486
+#: src/ils.cpp:484
 msgid "Succesfully unregistered from ILS server"
 msgstr "Erfolgreich vom ILS-Verzeichnis abgemeldet"
 
-#: src/ils.cpp:662
+#: src/ils.cpp:661
 msgid "Please provide an ILS directory in the window"
 msgstr "Bitte ein ILS-Verzeichnis eintragen"
 
-#: src/ils.cpp:680
+#: src/ils.cpp:679
 msgid "Connecting to ILS directory... Please Wait."
 msgstr "Verbindungsaufbau zum ILS-Verzeichnis. Bitte warten ..."
 
-#: src/ils.cpp:697 src/ils.cpp:716 src/urlhandler.cpp:151
-#: src/urlhandler.cpp:152
+#: src/ils.cpp:696 src/ils.cpp:715 src/urlhandler.cpp:153
+#: src/urlhandler.cpp:154
 msgid "Error while connecting to ILS directory"
 msgstr "Fehler beim Verbindungsaufbau zum ILS-Verzeichnis"
 
-#: src/ils.cpp:740
+#: src/ils.cpp:739
 msgid "Fetching users' information... Please Wait."
 msgstr "Benutzer-Informationen werden geholt. Bitte warten ..."
 
-#: src/ils.cpp:755
+#: src/ils.cpp:754
 msgid "Search completed!"
 msgstr "Suche abgeschlossen!"
 
@@ -1322,28 +1324,32 @@ msgid ""
 "It appears that you do not have gnomemeeting.server installed in a valid "
 "location. Factory mode disabled.\n"
 msgstr ""
+"Anscheinend wurde gnomemeeting.server nicht unter einem passendem Pfad "
+"installiert. Werks-Modus wurde deaktiviert.\n"
 
 #: src/main_window.cpp:321
 msgid ""
 "Error registering gnomemeeting with the activation service; factory mode "
 "disabled.\n"
 msgstr ""
+"GnomeMeeting konnte nicht beim Aktivierungs-Dienst registriert werden;  "
+"Werks-Modus wurde deaktiviert.\n"
 
 #: src/main_window.cpp:361
 msgid "Failed to retrieve gnomemeeting server from activation server\n"
 msgstr ""
+"GnomeMeeting-Server konnte nicht vom Aktivierungs-Server empfangen werden\n"
 
 #: src/main_window.cpp:555
-#, fuzzy
 msgid "Prints debug messages in the console (level between 1 and 6)"
-msgstr "Debug-Meldungen in der Konsole ausgeben"
+msgstr "Debug-Meldungen in der Konsole ausgeben (Stufe zwischen 1 und 6)"
 
 #: src/main_window.cpp:558
 msgid "Makes GnomeMeeting call the given callto:// URL"
-msgstr ""
+msgstr "Lässt GnomeMeeting die angegebene »callto://«-URL anrufen"
 
 #: src/main_window.cpp:598
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "GnomeMeeting got %d for the GConf key \"/apps/gnomemeeting/gconf_test_age\", "
 "but %d was expected.\n"
@@ -1359,12 +1365,13 @@ msgid ""
 "\n"
 "Using 'gnomemeeting-config-tool' could help you fix these problem."
 msgstr ""
-"Gnomemeeting wurde %s als GConf-Schlüssel \"/apps/gnomemeeting/gconf_test\" "
-"zurückgeliefert, es wurde jedoch %s erwartet.\n"
+"Gnomemeeting wurde %d als GConf-Schlüssel »/apps/gnomemeeting/"
+"gconf_test_age« zurückgeliefert, es wurde jedoch %d erwartet.\n"
 "\n"
-"Dieser Schlüssel beinhaltet den Kompilierungs-Zeitpunkt von GnomeMeeting. "
-"Wenn dieser nicht korrekt ist, bedeutet dies, das das GConf-Schema nicht "
-"richtig installiert wurde oder die Rechte nicht korrekt sind.\n"
+"Dieser Schlüssel beinhaltet die Revision der GnomeMeeting-"
+"Standardeinstellungen. Wenn dieser nicht korrekt ist, bedeutet dies, dass "
+"Ihre GConf-Schemas nicht richtig installiert wurden oder die Rechte nicht "
+"korrekt sind.\n"
 "\n"
 "Weitere Informationen finden sich in der FAQ (http://www.gnomemeeting.org/"
 "faq.php), im Troubleshooting-Abschnitt der GConf-Seite (http://www.gnome.org/"
@@ -1382,6 +1389,13 @@ msgid ""
 "seconix.com/me@foo.com\" to call the person registered on the ILS server ils."
 "seconix.com with the me@foo.com e-mail address."
 msgstr ""
+"Es wurde gerade eine URL-Handler für »callto://«-URLs von GnomeMeeting "
+"eingerichtet. »callto«-URLs stellen eine einfache Möglichkeit dar, jemanden "
+"mit GnomeMeeting über das Internet anzurufen. Sie stehen allen Gnome-"
+"Programmen zur Verfügung, die mit URLs zurechtkommen. Es kann z.B. ein URL-"
+"Starter im Gnome-Panel mit der Adresse »callto://ils.seconix.com/ich@foo.de« "
+"erstellt werden, um die Person, die am ILS-Server »ils.seconix.com« mit der "
+"E-Mail-Adresse »ich@foo.de« registriert ist, anzurufen."
 
 #: src/main_window.cpp:738
 msgid ""
@@ -1493,9 +1507,8 @@ msgid "Remote Video Image"
 msgstr "Videobild der Gegenseite"
 
 #: src/menu.cpp:329 src/menu.cpp:696
-#, fuzzy
 msgid "Both (Local Video Incrusted)"
-msgstr "Lokales Videobild"
+msgstr "Beide (Lokales Videobild verkleinert)"
 
 #: src/menu.cpp:329 src/menu.cpp:337 src/menu.cpp:696 src/menu.cpp:704
 msgid "Both Video Images"
@@ -1503,7 +1516,7 @@ msgstr "Beide Videobilder"
 
 #: src/menu.cpp:337 src/menu.cpp:704
 msgid "Both (Local Video in New Window)"
-msgstr ""
+msgstr "Beide (Lokales Videobild in neuem Fenster)"
 
 #: src/menu.cpp:364
 msgid "Toolbar"
@@ -1551,7 +1564,7 @@ msgstr "Normale Größe"
 
 #: src/menu.cpp:425 src/menu.cpp:745
 msgid "Toggle Fullscreen"
-msgstr ""
+msgstr "Vollbild umschalten"
 
 #: src/menu.cpp:439
 msgid "Configuration Assistant"
@@ -1563,7 +1576,7 @@ msgstr "Konfigurations-Assistenten starten"
 
 #: src/menu.cpp:447
 msgid "_Preferences..."
-msgstr "Vorlieben ..."
+msgstr "_Vorlieben ..."
 
 #: src/menu.cpp:447
 msgid "Change Your Preferences"
@@ -1666,7 +1679,6 @@ msgid "Good Quality"
 msgstr "Gute Qualität"
 
 #: src/pref_window.cpp:1165
-#, fuzzy
 msgid "Personal Information"
 msgstr "Persönliche Daten"
 
@@ -1753,23 +1765,23 @@ msgstr "Wenn aktiviert, wird bei ankommenden Anrufen ein Auswahlmenü angezeigt"
 #. Packing widget
 #: src/pref_window.cpp:1235
 msgid "Fullscreen"
-msgstr ""
+msgstr "Vollbild"
 
 #: src/pref_window.cpp:1240
 msgid "Fullscreen Width:"
-msgstr ""
+msgstr "Vollbild-Breite:"
 
 #: src/pref_window.cpp:1242
 msgid "The image width for fullscreeen."
-msgstr ""
+msgstr "Die Bildbreite für den Vollbild-Modus."
 
 #: src/pref_window.cpp:1246
 msgid "Fullscreen Height:"
-msgstr ""
+msgstr "Vollbild-Höhe:"
 
 #: src/pref_window.cpp:1248
 msgid "The image height for fullscreeen."
-msgstr ""
+msgstr "Die Bildhöhe für den Vollbild-Modus."
 
 #. Packing widget
 #: src/pref_window.cpp:1254
@@ -1860,12 +1872,11 @@ msgid "Forward calls to host:"
 msgstr "Anrufe an Rechner weiterleiten:"
 
 #: src/pref_window.cpp:1329
-#, fuzzy
 msgid ""
 "Enter here the host where calls should be forwarded in the cases selected "
-"above"
+"below"
 msgstr ""
-"Den Rechner eintragen, zu dem Anrufe in den unten ausgewählten Fällen "
+"Den Rechner eintragen, zu dem Anrufe in den oben ausgewählten Fällen "
 "weitergeleitet werden sollen"
 
 #: src/pref_window.cpp:1332
@@ -1881,8 +1892,8 @@ msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you don't answer the call."
 msgstr ""
-"Wenn aktiviert, werden alle ankommenden Anrufe an den untenstehenden Rechner "
-"weitergeleitet, wenn dieser nicht entgegengenommen wird."
+"Wenn aktiviert, werden alle ankommenden Anrufe, die nicht "
+"entgegengenommenwerden, an den untenstehenden Rechner weitergeleitet."
 
 #: src/pref_window.cpp:1338
 msgid ""
@@ -1911,10 +1922,10 @@ msgid ""
 "H.323v2 and Netmeeting doesn't support it. Using both Fast Start and H.245 "
 "Tunnelling can crash some versions of Netmeeting."
 msgstr ""
-"Dies aktiviert den H.245-Tunnelmodus. Im H.245-Tunnelmodus werden H.245-"
-"Nachrichten im H.225-Kanal (Port 1720) eingekapselt. Dies ermöglicht es, auf "
-"einen zufälligen TCP-Port zu verzichten. H.245-Tunnel wurden mit H.323v2 "
-"eingeführt, Netmeeting unterstützt diese nicht. Die Benutzung des "
+"Hiermit wird der H.245-Tunnelmodus aktiviert. Im H.245-Tunnelmodus werden "
+"H.245-Nachrichten im H.225-Kanal (Port 1720) eingekapselt. Dies ermöglicht "
+"es, auf einen zufälligen TCP-Port zu verzichten. H.245-Tunnel wurden mit "
+"H.323v2 eingeführt, Netmeeting unterstützt diese nicht. Die Benutzung des "
 "Schnellstartmodus zusammen mit H.245-Tunneln kann einige Versionen von "
 "Netmeeting zum Abstürzen bringen."
 
@@ -1931,9 +1942,9 @@ msgid ""
 msgstr ""
 "Verbindungen werden im Schnellstart-Modus hergestellt. Der Schnellstart-"
 "Modus ist ein neuer Weg um Verbindungen schneller herzustellen, er wurde mit "
-"H.323v2 eingeführt. Dies wird Netmeeting nicht unterstützt, die Benutzung "
-"des Schnellstartmodus zusammen mit H.245-Tunneln kann einige Versionen von "
-"Netmeeting zum Abstürzen bringen."
+"H.323v2 eingeführt. Dies wird von Netmeeting nicht unterstützt, die "
+"Benutzung des Schnellstartmodus zusammen mit H.245-Tunneln kann einige "
+"Versionen von Netmeeting zum Abstürzen bringen."
 
 #: src/pref_window.cpp:1374
 msgid "Low"
@@ -2042,8 +2053,8 @@ msgid ""
 "Enter the video device to use. Using an invalid video device for video "
 "transmission will transmit a test picture."
 msgstr ""
-"Video-Gerät das benutzt werden soll, eintragen. Bei Benutzung eines falschen "
-"Gerätes wird ein Testbild übertragen."
+"Video-Gerät, das benutzt werden soll, eintragen. Bei Benutzung eines "
+"falschen Gerätes wird ein Testbild übertragen."
 
 #: src/pref_window.cpp:1538
 msgid "Video Channel:"
@@ -2245,7 +2256,7 @@ msgstr "ILS-Verzeichnis"
 
 #: src/toolbar.cpp:194
 msgid "Find friends on ILS"
-msgstr "Freunde beim ILS suchen"
+msgstr "Freunde im ILS suchen"
 
 #: src/toolbar.cpp:202
 msgid "Chat"
@@ -2287,55 +2298,55 @@ msgstr ""
 "Video-Übertragungs-Status. Während einer Verbindung hier klicken, um die "
 "Video-Übertragung anzuhalten."
 
-#: src/urlhandler.cpp:128
+#: src/urlhandler.cpp:129
 msgid "Searching for user"
-msgstr ""
+msgstr "Person wird gesucht"
 
-#: src/urlhandler.cpp:220
-#, fuzzy, c-format
+#: src/urlhandler.cpp:223
+#, c-format
 msgid "Calling %s"
-msgstr "Anruf Nr. %d: %s wird angerufen"
+msgstr "%s wird angerufen"
 
-#: src/videograbber.cpp:454 src/videograbber.cpp:455
+#: src/videograbber.cpp:455 src/videograbber.cpp:456
 msgid "Opening Video device"
 msgstr "Video-Gerät wird geöffnet"
 
-#: src/videograbber.cpp:495
+#: src/videograbber.cpp:496
 #, c-format
 msgid "Successfully opened video device %s, channel %d"
 msgstr "Video-Gerät %s, Kanal %d wurde erfolgreich geöffnet"
 
-#: src/videograbber.cpp:498
+#: src/videograbber.cpp:499
 msgid "Video Device Opened"
 msgstr "Video-Gerät geöffnet"
 
-#: src/videograbber.cpp:506
+#: src/videograbber.cpp:507
 #, c-format
 msgid ""
 "Error while opening video device %s, channel %d.\n"
 "A test image will be transmitted."
 msgstr ""
-"Fehler beim Öffnen des Video-Gerät %s, Kanal %d.\n"
+"Fehler beim Öffnen des Video-Gerätes %s, Kanal %d.\n"
 "Ein Testbild wird übertragen."
 
-#: src/videograbber.cpp:507
+#: src/videograbber.cpp:509
 msgid "Can't open the Video Device"
 msgstr "Das Video-Gerät kann nicht geöffnet werden"
 
-#: src/videograbber.cpp:512
+#: src/videograbber.cpp:514
 msgid "Error while opening the device."
 msgstr "Fehler beim Öffnen des Gerätes."
 
-#: src/videograbber.cpp:517
+#: src/videograbber.cpp:519
 msgid "Your video driver doesn't support the requested video format."
 msgstr "Video-Gerät unterstützt angefordertes Video-Format nicht."
 
-#: src/videograbber.cpp:521
+#: src/videograbber.cpp:523
 msgid "Could not open the chosen channel with the chosen video format."
 msgstr ""
 "Ausgewählter Kanal konnte nicht mit ausgewähltem Format geöffnet werden."
 
-#: src/videograbber.cpp:525
+#: src/videograbber.cpp:527
 #, c-format
 msgid ""
 "Your driver doesn't support the %s format.\n"
@@ -2348,18 +2359,18 @@ msgstr ""
 " In der Dokumentation für den Kerneltreiber kann überprüft werden, welche "
 "Palette unterstützt wird. Es kann folgendermaßen für GnomeMeeting als "
 "Voreinstellung eingetragen werden:\n"
-" gconftool --set \"/apps/gnomemeeting/devices/color_format\" PALETTENFORMAT "
-"--type string"
+" gconftool --set »/apps/gnomemeeting/devices/color_format« PALETTENFORMAT --"
+"type string"
 
-#: src/videograbber.cpp:529
+#: src/videograbber.cpp:531
 msgid "Error with the frame rate."
 msgstr "Fehlerhafte Bildrate."
 
-#: src/videograbber.cpp:533
+#: src/videograbber.cpp:535
 msgid "Error with the frame size."
 msgstr "Fehlerhafte Bildgröße."
 
-#: src/videograbber.cpp:653
+#: src/videograbber.cpp:654
 msgid "Video Device Closed"
 msgstr "Video-Gerät geschlossen"
 
