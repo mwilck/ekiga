@@ -761,6 +761,7 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 {
   int exit = 0; /* do not exit */
   int esd_client = 0;
+  GtkTextIter start_iter, end_iter;
 
   /* If we are called because the current call has ended and not another
      call, do nothing */
@@ -879,8 +880,11 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   gnomemeeting_threads_enter ();
   gtk_entry_set_text (GTK_ENTRY (gw->remote_name), "");
-  gtk_editable_delete_text (GTK_EDITABLE (gw->chat_view),
-			    0, -1);
+  
+  gtk_text_buffer_get_start_iter (gw->chat_buffer, &start_iter);
+  gtk_text_buffer_get_end_iter (gw->chat_buffer, &end_iter);
+
+  gtk_text_buffer_delete (gw->chat_buffer, &start_iter, &end_iter);
   
   SetCurrentConnection (NULL);
   SetCallingState (0);
