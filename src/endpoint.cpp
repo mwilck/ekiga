@@ -579,7 +579,7 @@ void GMH323EndPoint::AddAudioCapabilities ()
 #ifdef SPEEX_CODEC
       if ((!strcmp (couple [0], "Speex-15k")) && (!strcmp (couple [1], "1"))) {
       
-	SetCapability (0, 0, new SpeexNarrow2AudioCapability ());
+	SetCapability (0, 0, new SpeexNarrow5AudioCapability ());
 	codecs_count++;  
       }
 
@@ -1539,9 +1539,18 @@ BOOL GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
   else
 #endif
   if (!H323EndPoint::OpenAudioChannel(connection, isEncoding, 
-				      bufferSize, codec))
-    return FALSE;
+				      bufferSize, codec)) {
 
+    gnomemeeting_threads_enter ();
+
+    if (isEncoding)
+      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Could not open audio channel for audio transmission (soundcard busy?).\n Disabling audio transmission."));
+    else
+      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Could not open audio channel for audio reception (soundcard busy?).\n Disabling audio reception."));
+    gnomemeeting_threads_leave ();
+
+    return FALSE;
+  }
 
   return TRUE;
 }
