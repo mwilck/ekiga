@@ -650,7 +650,6 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   const char * remoteApp = (const char *) app;
   char *msg;
 
-  cout << "Dans OnConnectionEstablished" << endl << flush;
   gnomemeeting_threads_enter ();
 
   msg = g_strdup_printf (_("Connected with %s using %s"), 

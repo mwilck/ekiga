@@ -359,11 +359,12 @@ void gnomemeeting_init_ldap_window ()
 
   lw->gw->ldap_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_policy (GTK_WINDOW (lw->gw->ldap_window), 
-			 FALSE, FALSE, TRUE);
+			 FALSE, TRUE, TRUE);
   gtk_window_set_title (GTK_WINDOW (lw->gw->ldap_window), 
 			_("LDAP Server Browser"));
   gtk_window_set_position (GTK_WINDOW (lw->gw->ldap_window), 
 			   GTK_WIN_POS_CENTER);
+  gtk_window_set_default_size (GTK_WINDOW (lw->gw->ldap_window), 450, 350);
 
   /* a vbox to put the frames and the user list */
   vbox = gtk_vbox_new (FALSE, GNOME_PAD_SMALL);
@@ -380,7 +381,7 @@ void gnomemeeting_init_ldap_window ()
 
   GtkWidget *label = gtk_label_new (_("ILS directory:"));
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1,
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
 
@@ -427,7 +428,7 @@ void gnomemeeting_init_ldap_window ()
 			       1);
 
   gtk_table_attach (GTK_TABLE (entry_table), lw->option_menu, 1, 4, 0, 2,
-		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 
+		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
 
@@ -443,7 +444,7 @@ void gnomemeeting_init_ldap_window ()
   apply_filter_button = gtk_button_new_with_label (_("Apply filter on"));
 
   gtk_table_attach (GTK_TABLE (entry_table), apply_filter_button, 0, 1, 0, 2,
-		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 
+		    (GtkAttachOptions) (GTK_FILL), 
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
 
@@ -458,7 +459,7 @@ void gnomemeeting_init_ldap_window ()
   gtk_container_set_border_width (GTK_CONTAINER (lw->notebook), 
 				  GNOME_PAD_SMALL);
   gtk_box_pack_start (GTK_BOX (vbox), lw->notebook, 
-		      FALSE, FALSE, 0);
+		      TRUE, TRUE, 0);
 
   gnomemeeting_init_ldap_window_notebook (0, _("No directory"));
 
@@ -470,7 +471,7 @@ void gnomemeeting_init_ldap_window ()
 
   /* Status Bar */
   lw->statusbar = gnome_appbar_new (TRUE, TRUE, GNOME_PREFERENCES_NEVER);
-  gtk_container_add (GTK_CONTAINER (vbox), lw->statusbar);
+  gtk_box_pack_end (GTK_BOX (vbox), lw->statusbar, FALSE, FALSE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (lw->statusbar), 0);
 
   /* Signals */
@@ -546,8 +547,6 @@ void gnomemeeting_init_ldap_window_notebook (int page_num, gchar *text_label)
 
   gtk_clist_set_shadow_type (GTK_CLIST (clist), GTK_SHADOW_IN);
 
-  gtk_widget_set_usize (GTK_WIDGET (clist), 550, 200);
-  
   gtk_container_add (GTK_CONTAINER (scroll), clist);
   gtk_container_set_border_width (GTK_CONTAINER (clist), GNOME_PAD_SMALL);
 
@@ -558,7 +557,7 @@ void gnomemeeting_init_ldap_window_notebook (int page_num, gchar *text_label)
   hbox = gtk_hbox_new (false, 0);
   label = gtk_label_new (text_label);
   close_button = gtk_button_new ();
-
+  gtk_button_set_relief (GTK_BUTTON (close_button), GTK_RELIEF_NONE);
   close_cross = gdk_pixbuf_new_from_xpm_data (small_close_xpm);
   gdk_pixbuf_render_pixmap_and_mask (close_cross, &close_pixmap, 
 				     &close_bitmap, 127);

@@ -29,6 +29,9 @@
  */
 
 
+#include "../config.h"
+
+
 #include <gnome.h>
 #include <ptlib.h>
 #include <h323.h>
@@ -38,8 +41,6 @@
 #include "gnomemeeting.h"
 #include "misc.h"
 #include "common.h"
-
-#include "../config.h"
 
 
 extern GtkWidget *gm;
