@@ -207,8 +207,19 @@ void GMH323EndPoint::UpdateConfig ()
       local_name = g_strdup ("");
       local_name = g_strconcat (local_name, firstname, " ", lastname, NULL);
       
-      if (GetLocalUserName () != PString (local_name)) 
+      if (GetLocalUserName () != PString (local_name)) {
+
+	/* It is the first alias for the gatekeeper */
 	SetLocalUserName (local_name);
+	
+	/* Remove the old aliases */
+	if (GetAliasNames ().GetSize () > 1) {
+
+	  PString alias = GetAliasNames () [1];
+	  RemoveAliasName (GetAliasNames () [1]);
+	  AddAliasName (GetAliasNames () [1]);
+	}
+      }
 
       g_free (local_name);
       g_free (firstname);
