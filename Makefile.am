@@ -19,7 +19,7 @@ install-schemas: gnomemeeting.schema
 	gconftool --shutdown
 
 if INSTALL_SCHEMAS
-install-dada-local: install-schemas
+install-data-local: install-schemas
 endif
 
 dist-hook: 
