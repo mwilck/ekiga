@@ -706,7 +706,7 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
   port = 
     g_strdup_printf ("%d", 
 		     gconf_client_get_int (GCONF_CLIENT (client),
-					   "/apps/gnomemeeting/general/listen_port",
+					   PORTS_KEY "listen_port",
 					   NULL));
 
   version =  g_strdup_printf ("%u", MAJOR_VERSION << 24 | 
@@ -715,7 +715,7 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
 
   if ((MyApp->Endpoint ()->GetCallingState () != 0)
       || (gconf_client_get_bool (client, 
-				 "/apps/gnomemeeting/general/do_not_disturb", 
+				 GENERAL_KEY "do_not_disturb", 
 				 NULL)))
     busy = g_strdup ("1");
   else
