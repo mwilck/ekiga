@@ -72,6 +72,8 @@ struct _GmDruidWindow
   GtkWidget *use_callto;
   GtkWidget *mail;
   GnomeDruidPageEdge *page_edge;
+
+  GMStunClient *stun_client;
 };
 
 
@@ -182,6 +184,16 @@ static void gm_dw_init_callto_page (GtkWidget *,
 static void gm_dw_init_connection_type_page (GtkWidget *, 
 					     int, 
 					     int);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Init the NAT type page.
+ * PRE          :  A valid pointer to the druid window GMObject. Followed by
+ * 		   the current page number and the total pages number.
+ */
+static void gm_dw_init_nat_type_page (GtkWidget *, 
+				      int, 
+				      int);
 
 
 /* DESCRIPTION  :  /
@@ -394,13 +406,27 @@ static void prepare_final_page_cb (GnomeDruidPage *,
 				   gpointer);
 
 
+/* DESCRIPTION  :  Called when the user clicks on the NAT detect button.
+ * BEHAVIOR     :  Detects the NAT type and displays an help dialog.
+ * PRE          :  The druid window GMObject.
+ */
+static void nat_detect_button_clicked_cb (GtkWidget *,
+					  gpointer);
+
 
 static void 
-gm_dw_destroy (gpointer dw)
+gm_dw_destroy (gpointer d)
 {
-  g_return_if_fail (dw != NULL);
+  GmDruidWindow *dw = NULL;
+  
+  g_return_if_fail (d != NULL);
  
-  delete ((GmDruidWindow *) dw);
+  dw = GM_DRUID_WINDOW (d);
+  
+  if (dw->stun_client)
+    delete (dw->stun_client);
+  
+  delete (dw);
 }
 
 
@@ -796,6 +822,66 @@ gm_dw_init_connection_type_page (GtkWidget *druid_window,
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, TRUE, 0);
+
+  gtk_box_pack_start (GTK_BOX (page_standard->vbox), GTK_WIDGET (vbox), 
+		      TRUE, TRUE, 8);
+}
+
+
+static void 
+gm_dw_init_nat_type_page (GtkWidget *druid_window,
+			  int p, 
+			  int t)
+{
+  GmDruidWindow *dw = NULL;
+  
+  GtkWidget *vbox = NULL;
+  GtkWidget *label = NULL;
+  GtkWidget *button = NULL;
+
+  gchar *title = NULL;
+  gchar *text = NULL;
+  
+  GnomeDruidPageStandard *page_standard = NULL;
+
+
+  g_return_if_fail (druid_window != NULL);
+  
+  dw = gm_dw_get_dw (druid_window);
+
+  
+  /* Get data */
+  page_standard = 
+    GNOME_DRUID_PAGE_STANDARD (gnome_druid_page_standard_new ());
+  
+  title = g_strdup_printf (_("NAT Type - page %d/%d"), p, t);
+  gnome_druid_page_standard_set_title (page_standard, title);
+  g_free (title);
+
+  gnome_druid_append_page (dw->druid, GNOME_DRUID_PAGE (page_standard));
+
+
+  /* Start packing widgets */
+  vbox = gtk_vbox_new (FALSE, 2);
+
+  label = gtk_label_new (_("Click here to detect your NAT Type:"));
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+
+  button = gtk_button_new_with_label (_("Detect NAT Type"));
+  gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
+  
+  label = gtk_label_new (NULL);
+  text = g_strdup_printf ("<i>%s</i>", _("The NAT type detection will permit to assist you in configuring your NAT router to be able to do calls with GnomeMeeting."));
+  gtk_label_set_markup (GTK_LABEL (label), text);
+  g_free (text);
+  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, TRUE, 0);
+
+  g_signal_connect (G_OBJECT (button), "clicked",
+		    GTK_SIGNAL_FUNC (nat_detect_button_clicked_cb), 
+		    (gpointer) druid_window);
 
   gtk_box_pack_start (GTK_BOX (page_standard->vbox), GTK_WIDGET (vbox), 
 		      TRUE, TRUE, 8);
@@ -1758,6 +1844,28 @@ prepare_final_page_cb (GnomeDruidPage *page,
 }
 
 
+static void
+nat_detect_button_clicked_cb (GtkWidget *button,
+			      gpointer data)
+{
+  GmDruidWindow *dw = NULL;
+
+  PString nat_type;
+
+  g_return_if_fail (data != NULL);
+
+  dw = gm_dw_get_dw (GTK_WIDGET (data));
+
+  g_return_if_fail (dw != NULL);
+
+  gdk_threads_leave ();
+  if (dw->stun_client) 
+    delete (dw->stun_client);
+  dw->stun_client = new GMStunClient (FALSE);
+  gdk_threads_enter ();
+}
+
+
 /* Functions */
 GtkWidget *
 gm_druid_window_new ()
@@ -1774,6 +1882,7 @@ gm_druid_window_new ()
   gtk_window_set_position (GTK_WINDOW (window), GTK_WIN_POS_CENTER);
 
   dw = new GmDruidWindow;
+  dw->stun_client = NULL;
   g_object_set_data_full (G_OBJECT (window), "GMObject",
 			  (gpointer) dw, 
 			  gm_dw_destroy);
@@ -1783,15 +1892,16 @@ gm_druid_window_new ()
   gtk_container_add (GTK_CONTAINER (window), GTK_WIDGET (dw->druid));
 
   /* Create the different pages */
-  gm_dw_init_welcome_page (window, 9);
-  gm_dw_init_personal_data_page (window, 2, 9);
-  gm_dw_init_callto_page (window, 3, 9);
-  gm_dw_init_connection_type_page (window, 4, 9);
-  gm_dw_init_audio_manager_page (window, 5, 9);
-  gm_dw_init_audio_devices_page (window, 6, 9);
-  gm_dw_init_video_manager_page (window, 7, 9);
-  gm_dw_init_video_devices_page (window, 8, 9);
-  gm_dw_init_final_page (window, 9);
+  gm_dw_init_welcome_page (window, 10);
+  gm_dw_init_personal_data_page (window, 2, 10);
+  gm_dw_init_callto_page (window, 3, 10);
+  gm_dw_init_connection_type_page (window, 4, 10);
+  gm_dw_init_nat_type_page (window, 5, 10);
+  gm_dw_init_audio_manager_page (window, 6, 10);
+  gm_dw_init_audio_devices_page (window, 7, 10);
+  gm_dw_init_video_manager_page (window, 8, 10);
+  gm_dw_init_video_devices_page (window, 9, 10);
+  gm_dw_init_final_page (window, 10);
 
   g_signal_connect (G_OBJECT (dw->druid), "cancel",
 		    G_CALLBACK (cancel_cb), 

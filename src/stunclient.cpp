@@ -45,6 +45,7 @@
 #include "misc.h"
 
 #include <lib/gm_conf.h>
+#include <lib/dialog.h>
 
 #include <ptclib/pstun.h>
 
@@ -79,6 +80,7 @@ GMStunClient::~GMStunClient ()
 void GMStunClient::Main ()
 {
   GtkWidget *history_window = NULL;
+  GtkWidget *druid_window = NULL;
 
   GMH323EndPoint *endpoint = NULL;
   PSTUNClient *stun = NULL;
@@ -87,7 +89,9 @@ void GMStunClient::Main ()
   
   endpoint = GnomeMeeting::Process ()->Endpoint ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
+  druid_window = GnomeMeeting::Process ()->GetDruidWindow ();
 
+  gchar *prefered_method = NULL;
   char *name [] = { N_("Unknown NAT"), N_("Open NAT"),
     N_("Cone NAT"), N_("Restricted NAT"), N_("Port Restricted NAT"),
     N_("Symmetric NAT"), N_("Symmetric Firewall"), N_("Blocked"),
@@ -102,7 +106,7 @@ void GMStunClient::Main ()
   regist = gm_conf_get_bool (NAT_KEY "enable_stun_support");
   gnomemeeting_threads_leave ();
 
-  if (!regist) {
+  if (!regist && reg) {
 
     ((H323EndPoint *) endpoint)->SetSTUNServer (PString ());
     gnomemeeting_threads_enter ();
@@ -137,12 +141,30 @@ void GMStunClient::Main ()
 		      endpoint->GetRtpIpPortMax());
 
     nat_type = name [stun.GetNatType ()];
+
+    switch (stun.GetNatType ())
+      {
+      case 0:
+	prefered_method = g_strdup (_("GnomeMeeting couldn't detect the type of NAT you are using, the most appropriate method if your router doesn't support H.323 is probably to use IP Translation or a gatekeeper in proxy mode."));
+	break;
+
+      case 5:
+	prefered_method = g_strdup (_("GnomeMeeting detected Symmetric NAT. The most appropriate method if your router doesn't support H.323 is to use IP Translation or a gatekeeper in proxy mode."));
+	break;
+	
+      default:
+	prefered_method = g_strdup (_("Using a STUN server is most probably the most appropriate method if your router doesn't support H.323."));
+      }
+
+    gnomemeeting_threads_enter ();
+    gnomemeeting_message_dialog (GTK_WINDOW (druid_window), 
+				 _("NAT detection successfull"),
+				 _("Detected %s using %s.\n\n%s"), 
+				 (const char *) nat_type,
+				 (const char *) stun_host,
+				 prefered_method);
+    gnomemeeting_threads_leave ();
+
+    g_free (prefered_method);
   }
 }
-
-
-PString GMStunClient::GetNatType ()
-{
-  return nat_type;
-}
-

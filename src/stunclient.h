@@ -71,13 +71,6 @@ public:
    * PRE          :  /
    */
   void Main ();
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns the detected NAT type.
-   * PRE          :  /
-   */
-  PString GetNatType ();
   
 
 protected:
@@ -88,5 +81,6 @@ protected:
 
   PMutex quit_mutex;
 };
+
 
 #endif
