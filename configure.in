@@ -145,7 +145,7 @@ dnl ** GNOME ************************************************************
 dnl *********************************************************************
 
 GNOMEMEETING_INCLUDES="$GNOMEMEETING_INCLUDES $H323_CFLAGS"
-GNOMEMEETING_LDADD="$GNOMEMEETING_LDADD $GNOME_LIBDIR $GTK_LIBS $GNOMEGNORBA_LIBS $LDAP_LIBS $H323_LIBS `gtk-config --libs gthread` `gnome-config --libs docklets gdk_pixbuf`"
+GNOMEMEETING_LDADD="$GNOMEMEETING_LDADD $GNOME_LIBDIR $GTK_LIBS $GNOMEGNORBA_LIBS $LDAP_LIBS $H323_LIBS `gtk-config --libs gthread` `gnome-config --libs gdk_pixbuf`"
 
 GNOME_COMPILE_WARNINGS
 GNOME_X_CHECKS

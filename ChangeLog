@@ -1,3 +1,18 @@
+2001-11-15  Miguel Rodríguez Pérez  <migrax@terra.es>
+
+	* src/common.h (struct _GM_window_widgets): Make docklet a GtkWidget
+
+	* src/docklet.cpp: Rewrite a lot of code
+
+	* src/docklet.h: We don't include status-docklet anymore
+
+	* src/docklet.cpp (setup_docklet_properties): added
+
+2001-11-15  Miguel Rodríguez  <miguel@det.uvigo.es>
+
+	* configure.in: I'm afraid we won't need docklet support from libpanel
+	anymore
+
 2001-11-15  Damien Sandras  <dsandras@seconix.com>
 
 	* src/common.h: Added preliminary support to show/hide the docklet.

@@ -23,7 +23,6 @@
 
 #include <glib.h>
 #include <gnome.h>
-#include <status-docklet.h>
 
 #include "config.h"
 
@@ -76,14 +75,14 @@ gint docklet_flash (GtkWidget *);
 // DESCRIPTION  :  /
 // BEHAVIOR     :  Init the docklet and menus and callbacks (for this docklet)
 // PRE          :  /
-GtkObject *GM_docklet_init ();
+GtkWidget *GM_docklet_init ();
 
 
 // DESCRIPTION  :  /
 // BEHAVIOR     :  If int = 1, displays globe2 and plays a sound, else displays
 //                 globe
 // PRE          :  /
-void GM_docklet_set_content (GtkObject *, int);
+void GM_docklet_set_content (GtkWidget *, int);
 
 /******************************************************************************/
 

@@ -103,7 +103,7 @@ struct _GM_window_widgets
   GtkObject *adj_brightness;
   GtkObject *adj_colour;
   GtkObject *adj_contrast;
-  GtkObject *docklet;
+  GtkWidget *docklet;
   GtkWidget *video_settings_frame;
   GtkWidget *statusbar;
   GtkWidget *splash_win;
