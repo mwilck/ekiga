@@ -1,3 +1,10 @@
+2002-12-09 Damien Sandras  <dsandras@seconix.com>
+
+	* src/endpoint.cpp: Added RingLine (0, 0) in the IncomingCallTimeout.
+
+	* src/lid.cpp: Removed unuseful RingLine (0, 0). Thanks to
+	Alexandre Aractingi for the VOIP Blaster debug!
+	
 2002-12-08 Damien Sandras  <dsandras@seconix.com>
 
 	* src/endpoint.cpp: Remove G.711 hw from the capabilities if the 

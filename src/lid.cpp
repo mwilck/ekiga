@@ -222,7 +222,6 @@ void GMLid::Main ()
       if (calling_state == 3) { /* 3 = incoming call */
 
 	lid->StopTone (0);
-        lid->RingLine(0, 0);
 	
 	MyApp->Connect ();
       }
@@ -234,7 +233,7 @@ void GMLid::Main ()
       }
     }
 
-
+    
     /* if phone is on hook */
     if ((OffHook == FALSE) && (lastOffHook == TRUE)) {
 
