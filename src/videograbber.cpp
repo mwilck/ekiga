@@ -371,9 +371,6 @@ void GMVideoGrabber::VGOpen (void)
       if (!grabber->Open (video_device, FALSE))
 	error_code = 0;
       else
-	if (!grabber->SetFrameSizeConverter (width, height, FALSE))
-	  error_code = 5;
-      else
 	if (!grabber->SetVideoFormat(video_format))
 	  error_code = 2;
       else
@@ -385,6 +382,9 @@ void GMVideoGrabber::VGOpen (void)
       else
 	if (!grabber->SetFrameRate (30))
 	  error_code = 4;
+      else
+	if (!grabber->SetFrameSizeConverter (width, height, FALSE))
+	  error_code = 5;
     }
 
 
@@ -685,9 +685,6 @@ void GMVideoTester::Main ()
       if (!grabber->Open (video_device, FALSE))
 	error_code = 0;
       else
-	if (!grabber->SetFrameSizeConverter (width, height, FALSE))
-	  error_code = 5;
-      else
 	if (!grabber->SetVideoChannelFormat (0,  PVideoDevice::Auto))
 	  error_code = 2;
       else
@@ -696,6 +693,9 @@ void GMVideoTester::Main ()
       else
 	if (!grabber->SetFrameRate (10))
 	  error_code = 4;
+      else
+	if (!grabber->SetFrameSizeConverter (width, height, FALSE))
+	  error_code = 5;
       else
 	grabber->Close ();
 

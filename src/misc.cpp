@@ -687,7 +687,7 @@ gnomemeeting_table_add_spin_range (GtkWidget *table,
 		    (GtkAttachOptions) (NULL),
 		    0, 0);
   
-  gtk_tooltips_set_tip (pw->tips, *spin1, spin2_tooltip, NULL);
+  gtk_tooltips_set_tip (pw->tips, *spin1, spin1_tooltip, NULL);
   gtk_tooltips_set_tip (pw->tips, *spin2, spin2_tooltip, NULL);
   
   
