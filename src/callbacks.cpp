@@ -146,6 +146,7 @@ void about_callback (GtkWidget *widget, gpointer parent_window)
       "Rafael Pinilla <r_pinilla@yahoo.com>",
       "Sander Smeenk <ssmeenk@freshdot.net>",
       "Santiago García Mantiñán <manty@manty.net>",
+      "Shawn Pai-Hsiang Hsiao <shawn@eecs.harvard.edu>",
       "Stefan Bruens <lurch@gmx.li>",
       "Vincent Deroo <crossdatabase@aol.com>",
       NULL
