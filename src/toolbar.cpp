@@ -174,6 +174,8 @@ gnomemeeting_init_main_toolbar ()
 
   /* The connect button */
   gw->connect_button = gtk_toggle_button_new ();
+  gtk_tooltips_set_tip (gw->tips, GTK_WIDGET (gw->connect_button), 
+			_("Enter an URL to call on the left, and click on this button to connect to the given URL."), NULL);
   
   image = gtk_image_new_from_stock (GM_STOCK_DISCONNECT, 
                                     GTK_ICON_SIZE_LARGE_TOOLBAR);
