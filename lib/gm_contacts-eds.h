@@ -36,34 +36,53 @@
  */
 
 #include <libebook/e-book.h>
-
+#include "gm_contacts.h"
 
 G_BEGIN_DECLS
 
-/* An Address Book is identified by its name and its URL */
+
+/* An Address Book is identified by its name and its uid.
+ * The UID is its URL, and must be unique.
+ * An Address Book can be local or remote 
+ */
 struct GmAddressbook_ {
 
+  char *uid;
   char *name;
-  char *uri;
 };
 
-
-/* A Contact is identified by its full name, url, speed dial and groups.
- * All of them are optional.
- */
-struct GmContact_ {
-
-  char *fullname;
-  char *url;
-  char *speeddial;
-  char *groups;
-};
 
 typedef struct GmAddressbook_ GmAddressbook;
-typedef struct GmContact_ GmContact;
+
+
+#define GM_ADDRESSBOOK(x) (GmAddressbook *) (x)
 
 
 /* The API */
+
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Returns an empty GmContact. Only the UID field has a unique
+ *                value.
+ * PRE          : /
+ */
+GmContact *gm_contact_new ();
+
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Deletes the contact given as argument and frees the 
+ *                corresponding memory.
+ * PRE          : /
+ */
+void gm_contact_delete (GmContact *);
+
+
+/*
+GmAddressbook *gm_addressbook_new ();
+
+gm_addressbook_delete (GmAddressbook *);
+*/
+
 
 /* DESCRIPTION  : /
  * BEHAVIOR     : Returns a GSList of GmAddressbook elements corresponding
@@ -71,6 +90,14 @@ typedef struct GmContact_ GmContact;
  * PRE          : /
  */
 GSList *gnomemeeting_get_local_addressbooks ();
+
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Returns a GSList of GmAddressbook elements corresponding
+ *                to the remote address books (ils, ldap).
+ * PRE          : /
+ */
+GSList *gnomemeeting_get_remote_addressbooks ();
 
 
 /* DESCRIPTION  : /

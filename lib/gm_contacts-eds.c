@@ -39,57 +39,6 @@
 #include "gm_contacts-eds.h"
 
 
-static gchar *
-gnomemeeting_addressbook_find_contact_uid (GmAddressbook *addressbook,
-                                           GmContact *contact)
-{
-  EBook *ebook = NULL;
-  
-  EBookQuery *queries [4];
-  EBookQuery *query = NULL;
-
-  gchar *uid = NULL;
-  int qn = 1;
-
-  GList *list = NULL;
-  
-  ebook = e_book_new ();
-
-  if (e_book_load_uri (ebook, addressbook->uri, FALSE, NULL)) {
-
-    queries [0] = e_book_query_field_exists (E_CONTACT_UID);
-    
-    if (contact->fullname) {
-      queries [qn] = e_book_query_field_test (E_CONTACT_FULL_NAME, 
-                                             E_BOOK_QUERY_IS,
-                                             contact->fullname);
-      qn++;
-    }
-
-    if (contact->url) {
-      queries [qn] = e_book_query_field_test (E_CONTACT_VIDEO_URL, 
-                                             E_BOOK_QUERY_IS,
-                                             contact->url);
-      qn++;
-    }
-
-    query = e_book_query_and (qn, queries, TRUE);
-    
-    if (e_book_get_contacts (ebook, query, &list, NULL)) {
-
-      if (list) {
-        
-        uid = g_strdup (e_contact_get_const (E_CONTACT (list->data),
-                                             E_CONTACT_UID));                                        
-        g_list_free (list);
-      }
-    }
-
-    e_book_query_unref (query);
-  }
- 
-  return uid;
-}
 
 
 static ESourceGroup *
@@ -132,17 +81,54 @@ gnomemeeting_addressbook_get_local_source_group ()
         j = g_slist_next (j);
       }
       
+      g_slist_foreach (addressbooks, (GFunc) g_object_unref, NULL);
       g_slist_free (addressbooks);
 
       l = g_slist_next (l);
     }
 
+    g_list_foreach (source_groups, (GFunc) g_object_unref, NULL);
     g_slist_free (source_groups);
   }
 
   return result;
 }
 
+
+GmContact *
+gm_contact_new ()
+{
+  GmContact *contact = NULL;
+  EContact *econtact = NULL;
+
+  contact = g_malloc (sizeof (GmContact));
+  
+  econtact = e_contact_new ();
+  
+  contact->fullname = NULL;
+  contact->categories = NULL;
+  contact->url = NULL;
+  contact->speeddial = NULL;
+  contact->uid =  
+    g_strdup (e_contact_get_const (E_CONTACT (econtact), 
+                                   E_CONTACT_UID));
+  g_object_unref (econtact);
+}
+
+
+void
+gm_contact_delete (GmContact *contact)
+{
+  g_return_if_fail (contact != NULL);
+
+  g_free (contact->uid);
+  g_free (contact->fullname);
+  g_free (contact->url);
+  g_free (contact->speeddial);
+  g_free (contact->categories);
+
+  g_free (contact);
+}
 
 
 GSList *
@@ -183,7 +169,7 @@ gnomemeeting_get_local_addressbooks ()
           elmt = g_malloc (sizeof (GmAddressbook));
           
           elmt->name = g_strdup (e_source_peek_name (E_SOURCE (j->data)));
-          elmt->uri = g_strdup (uri); 
+          elmt->uid = g_strdup (uri); 
           
           addressbooks = g_slist_append (addressbooks, (gpointer) elmt);
 
@@ -194,6 +180,7 @@ gnomemeeting_get_local_addressbooks ()
       }
       
       l = g_slist_next (l);
+      
       g_slist_free (groups);
     }
 
@@ -201,6 +188,13 @@ gnomemeeting_get_local_addressbooks ()
   }
 
   return addressbooks;
+}
+
+
+GSList *
+gnomemeeting_get_remote_addressbooks ()
+{
+  return NULL;
 }
 
 
@@ -221,7 +215,7 @@ gnomemeeting_addressbook_get_contacts (GmAddressbook *addressbook)
 
   ebook = e_book_new ();
 
-  if (e_book_load_uri (ebook, addressbook->uri, FALSE, NULL)) {
+  if (e_book_load_uri (ebook, addressbook->uid, FALSE, NULL)) {
 
     query = e_book_query_field_exists (E_CONTACT_UID);
     if (e_book_get_contacts (ebook, query, &list, NULL)) {
@@ -231,13 +225,16 @@ gnomemeeting_addressbook_get_contacts (GmAddressbook *addressbook)
 
         contact = g_malloc (sizeof (GmContact));
 
+        contact->uid =  
+          g_strdup (e_contact_get_const (E_CONTACT (l->data), 
+                                         E_CONTACT_UID));
         contact->fullname =  
           g_strdup (e_contact_get_const (E_CONTACT (l->data), 
                                          E_CONTACT_FULL_NAME));
         contact->url =  
           g_strdup (e_contact_get_const (E_CONTACT (l->data), 
                                          E_CONTACT_VIDEO_URL));
-        contact->groups =  
+        contact->categories =  
           g_strdup (e_contact_get_const (E_CONTACT (l->data), 
                                          E_CONTACT_CATEGORIES));      
         contact->speeddial = NULL;  
@@ -248,6 +245,7 @@ gnomemeeting_addressbook_get_contacts (GmAddressbook *addressbook)
         l = g_list_next (l);
       }
 
+      g_list_foreach (list, (GFunc) g_object_unref, NULL);
       g_list_free (list);
     }
     e_book_query_unref (query);
@@ -290,7 +288,7 @@ gnomemeeting_addressbook_delete (GmAddressbook *addressbook)
 
   ebook = e_book_new ();
 
-  if (e_book_load_uri (ebook, addressbook->uri, FALSE, NULL)) 
+  if (e_book_load_uri (ebook, addressbook->uid, FALSE, NULL)) 
     if (e_book_remove (ebook, &err)) 
       return TRUE;
     
@@ -314,16 +312,13 @@ gnomemeeting_addressbook_delete_contact (GmAddressbook *addressbook,
 
   ebook = e_book_new ();
 
-  if (e_book_load_uri (ebook, addressbook->uri, FALSE, NULL)) {
+  if (e_book_load_uri (ebook, addressbook->uid, FALSE, NULL)) {
 
-    uid = gnomemeeting_addressbook_find_contact_uid (addressbook, contact);
-
-    if (uid) {
+    if (contact->uid) {
     
-      l = g_list_append (l, (gpointer) uid);
+      l = g_list_append (l, (gpointer) contact->uid);
       e_book_remove_contacts (ebook, l, NULL);
       g_list_free (l);
-      g_free (uid);
     }
   }
   
@@ -346,16 +341,18 @@ gnomemeeting_addressbook_add_contact (GmAddressbook *addressbook,
 
   ebook = e_book_new ();
 
-  if (e_book_load_uri (ebook, addressbook->uri, FALSE, NULL)) {
+  if (e_book_load_uri (ebook, addressbook->uid, FALSE, NULL)) {
 
     contact = e_contact_new ();
     
+    if (ctact->uid)
+      e_contact_set (contact, E_CONTACT_UID, ctact->uid);
     if (ctact->fullname)
       e_contact_set (contact, E_CONTACT_FULL_NAME, ctact->fullname);
     if (ctact->url)
-      e_contact_set (contact, E_CONTACT_VIDEO_URL, ctact->fullname);
-    if (ctact->groups)
-      e_contact_set (contact, E_CONTACT_CATEGORIES, ctact->fullname);
+      e_contact_set (contact, E_CONTACT_VIDEO_URL, ctact->url);
+    if (ctact->categories)
+      e_contact_set (contact, E_CONTACT_CATEGORIES, ctact->categories);
 
     if (e_book_add_contact (ebook, contact, NULL))
       return TRUE;

@@ -31,18 +31,24 @@
  *                         ---------------------------------
  *   begin                : Mon Apr 12 2004
  *   copyright            : (C) 2000-2004 by Damien Sandras
- *   description          : declaration of the gm-specific contact
+ *   description          : Declaration of the gm-specific contact
  *
  */
 
-typedef struct GmContact_ GmContact;
 
-/* A Contact is identified by its full name, url, speed dial and groups.
- * All of them are optional.
+/* A Contact is identified by its full name, url, speed dial, categories and
+ * his uid. The UID must be unique.
  */
 struct GmContact_ {
+
+  char *uid;
   char *fullname;
   char *url;
   char *speeddial;
-  char *groups;
+  char *categories;
 };
+
+typedef struct GmContact_ GmContact;
+
+#define GM_CONTACT(x)     (GmContact *) (x)
+
