@@ -344,6 +344,7 @@ dnl ########################################################################
 AC_CHECK_LIB(xml2, xmlFreeDoc)
 AC_CHECK_FUNCS(xmlRegisterNodeDefault)
 
+
 dnl #########################################################################
 dnl  Check for IPV6 if available.
 dnl ########################################################################
@@ -367,17 +368,35 @@ fi
 dnl #########################################################################
 dnl  Check for FIREWIRE if available.
 dnl ########################################################################
-HAS_FIREWIRE="disabled"
-firewire="no"
+HAS_FIREWIRE_DC="disabled"
+firewiredc="no"
 
-AC_ARG_ENABLE(firewire, [  --enable-firewire     enable Firewire support], firewire="yes")
-if test -e "/usr/include/libdc1394/dc1394_control.h" -a -e "/usr/include/libavc1394/avc1394.h" -a -e "/usr/include/libdv/dv.h" -a "${firewire}" != "no"; then
-   HAS_FIREWIRE="enabled"
-   H323_CFLAGS="$H323_CFLAGS -DTRY_1394DC -DTRY_1394AVC"
+AC_ARG_ENABLE(firewiredc, [  --enable-firewire-dc     enable Firewire support for DC cameras], firewiredc="yes")
+if test -e "/usr/include/libdc1394/dc1394_control.h" -a "${firewiredc}" != "no"; then
+   HAS_FIREWIRE_DC="enabled"
+   H323_CFLAGS="$H323_CFLAGS -DTRY_1394DC"
 else
-if test "${firewire}" != "no"; then
-AC_MSG_ERROR([***Firewire camera headers (libcd1394, libavc1394, libdv) not found.])
+if test "${firewiredc}" != "no"; then
+AC_MSG_ERROR([***Firewire camera headers (libdc1394) not found.])
 fi
+fi
+
+
+HAS_FIREWIRE_AVC="disabled"
+firewireavc="no"
+
+AC_ARG_ENABLE(firewireavc, [  --enable-firewire-avc     enable Firewire support for AVC cameras], firewireavc="yes")
+if test -e "/usr/include/libavc1394/avc1394.h" -a -e "/usr/include/libdv/dv.h" -a "${firewire}" != "no"; then
+   HAS_FIREWIRE_AVC="enabled"
+   H323_CFLAGS="$H323_CFLAGS -DTRY_1394AVC"
+else
+if test "${firewireavc}" != "no"; then
+AC_MSG_ERROR([***Firewire camera headers (libavc1394, libdv) not found.])
+fi
+fi
+
+if test "${firewireavc}"!="no" -a "${firewiredc}" != "no"; then
+AC_MSG_ERROR([***You can currently not compile DC and AVC Firewire camera at the same time.])
 fi
 
 
@@ -465,7 +484,8 @@ echo "           Speex GPL audio codec  :  $HAS_SPEEX"
 echo "  GNOME Features (Bonobo, Druid," 
 echo "   Session, Incoming Call Sound)  :  $HAS_GNOME"
 echo "     IPv6 Support (EXPERIMENTAL)  :  $HAS_IPV6"
-echo "                Firewire support  :  $HAS_FIREWIRE"
+echo "            AVC Firewire support  :  $HAS_FIREWIRE_AVC"
+echo "             DC Firewire support  :  $HAS_FIREWIRE_DC"
 echo ""
 echo "                         OS Type  :  $target_os"
 echo "                    Machine Type  :  $target_cpu"
