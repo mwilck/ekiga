@@ -171,6 +171,7 @@ GMH323Connection::OnLogicalChannel (H323Channel *channel,
   gm_main_window_update_sensitivity (main_window, is_video, is_video?is_receiving_video:is_receiving_audio, is_video?is_transmitting_video:is_transmitting_audio);
   if (!is_receiving_video && !is_transmitting_video && !preview)
     gm_main_window_update_logo (main_window);
+  gm_main_window_set_channel_pause (main_window, FALSE, is_video);
   gnomemeeting_threads_leave ();
   
   g_free (msg);

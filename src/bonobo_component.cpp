@@ -34,6 +34,9 @@
  *   description          : Implementation of the bonobo component
  */
 
+#include "../config.h"
+
+
 #include "common.h"
 #include "callbacks.h"
 #include "gnomemeeting.h"

@@ -933,7 +933,7 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
   devs = GnomeMeeting::Process ()->GetAudioInputDevices ();
   array = devs.ToCharArray ();
   pw->sound_events_output =
-    gnome_prefs_string_option_menu_new (subsection, _("Output device:"), array, SOUND_EVENTS_KEY "output_device", _("Select the audio output device to use for sound events"), 0);
+    gnome_prefs_string_option_menu_new (subsection, _("Output device:"), array, SOUND_EVENTS_KEY "output_device", _("Select the audio output device to use for the ring sound event"), 0);
   free (array);
 }
 

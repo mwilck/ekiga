@@ -1,3 +1,33 @@
+2004-10-14  Damien Sandras  <dsandras@gnome.org>
+
+	* src/bonobo_component.cpp: Added config.h.
+
+	* src/connection.cpp: Fixed (#150230), thanks Simon. Mute buttons
+	are now reset in their initial state at the end of a call.
+	
+	* src/gdkvideoio.cpp: Added guards against bad frame sizes. Fixes
+	problem reported by Johnny and Simon (#150317).
+	
+	* src/main_window.cpp: Fixed #150282 and #150230. Hold and mute
+	buttons are correct when an held call fails. Added guards against
+	bad zoom values.
+
+	* src/pref_window.cpp: Permit the incoming call sound (and only that
+	sound) to be played in a separate device.
+
+	* src/sound_handling.cpp: Same as above.
+
+	* gnomemeeting.schemas.in.in: Same as above.
+
+2004-10-13  Damien Sandras  <dsandras@gnome.org>
+
+	* src/addressbook_window.cpp: Don't permit to add a contact if there
+	is no full name and no url. Don't close the contact edit dialog if
+	a contact is not valid (no full name, no url, collision). Don't permit
+	a search on "Belongs to category" on remote address books.
+
+	* src/stunclient.cpp: More precise messages.
+
 2004-10-12  Damien Sandras  <dsandras@gnome.org>
 
 	* src/endpoint.cpp: Clear the URL bar on incoming calls when they

@@ -740,6 +740,8 @@ gm_mw_init_toolbars (GtkWidget *main_window)
   gtk_container_add (GTK_CONTAINER (button), image);
   gtk_container_add (GTK_CONTAINER (item), button);
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
+  gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (item), 
+			     mw->tips, _("Open text chat"), NULL);
   
   gtk_widget_show (button);
   gtk_toolbar_insert (GTK_TOOLBAR (toolbar), 
@@ -2509,41 +2511,46 @@ gm_main_window_update_video (GtkWidget *main_window,
   /* The real size picture, if required */
   if (display_type != REMOTE_VIDEO && lbuffer) {
     
-    lsrc_pic =  
-      gdk_pixbuf_new_from_data (lbuffer, GDK_COLORSPACE_RGB, 
-				FALSE, 8, lf_width, lf_height, 
-				lf_width * 3, 
-				NULL, NULL);
-    if (lzoom != 1.0)
-      zlsrc_pic = 
-	gdk_pixbuf_scale_simple (lsrc_pic, 
-				 (int) (lf_width * lzoom),
-				 (int) (lf_height * lzoom),
-				 bilinear_filtering?
-				 GDK_INTERP_BILINEAR:GDK_INTERP_NEAREST);
-    else
-      zlsrc_pic = gdk_pixbuf_copy (lsrc_pic);
+    if (lf_width > 0 && lf_height > 0) {
 
+      lsrc_pic =  
+	gdk_pixbuf_new_from_data (lbuffer, GDK_COLORSPACE_RGB, 
+				  FALSE, 8, lf_width, lf_height, 
+				  lf_width * 3, 
+				  NULL, NULL);
+      if (lzoom != 1.0 && lzoom > 0)
+	zlsrc_pic = 
+	  gdk_pixbuf_scale_simple (lsrc_pic, 
+				   (int) (lf_width * lzoom),
+				   (int) (lf_height * lzoom),
+				   bilinear_filtering?
+				   GDK_INTERP_BILINEAR:GDK_INTERP_NEAREST);
+      else
+	zlsrc_pic = gdk_pixbuf_copy (lsrc_pic);
+    }
   }
   
   if (display_type != LOCAL_VIDEO && rbuffer) {
    
-    rsrc_pic =  
-      gdk_pixbuf_new_from_data (rbuffer, GDK_COLORSPACE_RGB, 
-				FALSE, 8, rf_width, rf_height, 
-				rf_width * 3, 
-				NULL, NULL);
-    if (rzoom != 1.0)
-      zrsrc_pic = 
-	gdk_pixbuf_scale_simple (rsrc_pic, 
-				 (int) (rf_width * rzoom),
-				 (int) (rf_height * rzoom),
-				 bilinear_filtering?
-				 GDK_INTERP_BILINEAR:GDK_INTERP_NEAREST);
-    else
-      zrsrc_pic = gdk_pixbuf_copy (rsrc_pic);
+    if (rf_width > 0 && rf_height > 0) {
 
-    g_object_unref (rsrc_pic);
+      rsrc_pic =  
+	gdk_pixbuf_new_from_data (rbuffer, GDK_COLORSPACE_RGB, 
+				  FALSE, 8, rf_width, rf_height, 
+				  rf_width * 3, 
+				  NULL, NULL);
+      if (rzoom != 1.0 && rzoom > 0) 
+	zrsrc_pic = 
+	  gdk_pixbuf_scale_simple (rsrc_pic, 
+				   (int) (rf_width * rzoom),
+				   (int) (rf_height * rzoom),
+				   bilinear_filtering?
+				   GDK_INTERP_BILINEAR:GDK_INTERP_NEAREST);
+      else
+	zrsrc_pic = gdk_pixbuf_copy (rsrc_pic);
+
+      g_object_unref (rsrc_pic);
+    }
   }
 
   
@@ -2844,11 +2851,11 @@ gm_main_window_set_call_hold (GtkWidget *main_window,
     gtk_widget_set_sensitive (GTK_WIDGET (mw->audio_chan_button), FALSE);
     gtk_widget_set_sensitive (GTK_WIDGET (mw->video_chan_button), FALSE);
     
-    GTK_TOGGLE_BUTTON (mw->audio_chan_button)->active = TRUE;
-    GTK_TOGGLE_BUTTON (mw->video_chan_button)->active = TRUE;
-    
     gtk_menu_set_sensitive (mw->main_menu, "suspend_audio", FALSE);
     gtk_menu_set_sensitive (mw->main_menu, "suspend_video", FALSE);
+    
+    gm_main_window_set_channel_pause (main_window, TRUE, FALSE);
+    gm_main_window_set_channel_pause (main_window, TRUE, TRUE);
   }
   else {
 
@@ -2859,11 +2866,11 @@ gm_main_window_set_call_hold (GtkWidget *main_window,
     gtk_widget_set_sensitive (GTK_WIDGET (mw->audio_chan_button), TRUE);
     gtk_widget_set_sensitive (GTK_WIDGET (mw->video_chan_button), TRUE);
     
-    GTK_TOGGLE_BUTTON (mw->audio_chan_button)->active = FALSE;
-    GTK_TOGGLE_BUTTON (mw->video_chan_button)->active = FALSE;
-    
     gtk_menu_set_sensitive (mw->main_menu, "suspend_audio", TRUE);
     gtk_menu_set_sensitive (mw->main_menu, "suspend_video", TRUE);
+
+    gm_main_window_set_channel_pause (main_window, FALSE, FALSE);
+    gm_main_window_set_channel_pause (main_window, FALSE, TRUE);
   }
 }
 
@@ -2944,16 +2951,27 @@ gm_main_window_update_calling_state (GtkWidget *main_window,
     {
     case GMH323EndPoint::Standby:
 
+      
+      /* Update the hold state */
+      gm_main_window_set_call_hold (main_window, FALSE);
+
+
+      /* Update the sensitivity, all channels are closed */
+      gm_main_window_update_sensitivity (main_window, TRUE, FALSE, FALSE);
+      gm_main_window_update_sensitivity (main_window, FALSE, FALSE, FALSE);
+
+      
       /* Update the menus and toolbar items */
       gtk_menu_set_sensitive (mw->main_menu, "connect", TRUE);
       gtk_menu_set_sensitive (mw->main_menu, "disconnect", FALSE);
       gtk_menu_section_set_sensitive (mw->main_menu, "hold_call", FALSE);
       gtk_widget_set_sensitive (GTK_WIDGET (mw->preview_button), TRUE);
 
+      
       /* Update the connect button */
       gm_mw_update_connect_button (main_window, FALSE);
       
-    
+	
       /* Destroy the incoming call popup */
       if (mw->incoming_call_popup) {
 

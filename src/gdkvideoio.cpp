@@ -213,10 +213,13 @@ BOOL GDKVideoOutputDevice::SetFrameData (unsigned x,
 					 const BYTE * data,
 					 BOOL endFrame)
 {
-  if (x+width > frameWidth || y+height > frameHeight)
+  if (x+width > width || y+height > height)
     return FALSE;
 
-  if (frameWidth <= 0 || frameHeight <= 0)
+  if (width != GM_CIF_WIDTH && width != GM_QCIF_WIDTH) 
+    return FALSE;
+  
+  if (height != GM_CIF_HEIGHT && height != GM_QCIF_HEIGHT) 
     return FALSE;
 
   if (!endFrame)
@@ -225,8 +228,8 @@ BOOL GDKVideoOutputDevice::SetFrameData (unsigned x,
   if (device_id == LOCAL) {
 
     lframeStore.SetSize (width * height * 3);
-    lf_width = frameWidth;
-    lf_height = frameHeight;
+    lf_width = width;
+    lf_height = height;
 
     if (converter)
       converter->Convert (data, lframeStore.GetPointer ());
@@ -234,9 +237,9 @@ BOOL GDKVideoOutputDevice::SetFrameData (unsigned x,
   else {
 
     rframeStore.SetSize (width * height * 3);
-    rf_width = frameWidth;
-    rf_height = frameHeight;
-    
+    rf_width = width;
+    rf_height = height;
+
     if (converter)
       converter->Convert (data, rframeStore.GetPointer ());
   }
