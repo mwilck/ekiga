@@ -35,7 +35,7 @@ AC_DEFINE_UNQUOTED(BUILD_NUMBER, $BUILD_NUMBER)
 dnl #############################################################################
 dnl   This is to check correct gconf installation
 dnl #############################################################################
-SCHEMA_AGE=2
+SCHEMA_AGE=3
 dnl increment this number if you add anything to the schema file
 AC_SUBST(SCHEMA_AGE)
 
@@ -62,7 +62,7 @@ dnl *******************************************
 case `uname -s` in
 
   linux-gnu | linux | Linux)
-    H323_CFLAGS="-DP_LINUX -D_REENTRANT -DP_HAS_SEMAPHORES -DP_PTHREADS -DPBYTE_ORDER=PLITTLE_ENDIAN -DHAS_OSS -O3 -DNDEBUG -fPIC -g"
+    H323_CFLAGS="-DP_LINUX -D_REENTRANT -DP_HAS_SEMAPHORES -DP_PTHREADS -DPBYTE_ORDER=PLITTLE_ENDIAN -DHAS_OSS -O3 -DNDEBUG -fPIC -g -DPHAS_TEMPLATES"
     H323_LIBS="-lopenh323 -ldl -lpt -lpthread -lssl -lcrypto"
     LIBPT_FILE="libpt.so"
     LIBOPENH323_FILE="libopenh323.so"
@@ -72,7 +72,7 @@ dnl * -D_DEBUG -DPMEMORY_CHECK=1 -DPTRACING -g
     ;;
 
   FreeBSD)
-    H323_CFLAGS="-DP_FREEBSD=400001 -DP_SSL -DP_PTHREADS -DPBYTE_ORDER=PLITTLE_ENDIAN -O2 -Wall"
+    H323_CFLAGS="-DP_FREEBSD=400001 -DP_SSL -DP_PTHREADS -DPBYTE_ORDER=PLITTLE_ENDIAN -O2 -Wall -DPHAS_TEMPLATES"
     H323_LIBS="-lh323_FreeBSD_x86_r -lpt_FreeBSD_x86_r -pthread -lssl -lcrypto"
     LIBPT_FILE="libpt_FreeBSD_x86_r_s.a"
     LIBOPENH323_FILE="libh323_FreeBSD_x86_r_s.a"
