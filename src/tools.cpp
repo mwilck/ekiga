@@ -46,11 +46,18 @@
 #include "misc.h"
 
 #include "gconf_widgets_extensions.h"
+#include "gnome_prefs_window.h"
 #include "stock-icons.h"
 
 
 extern GtkWidget *gm;
 
+static void pc_to_phone_window_response_cb (GtkWidget *,
+					    gint,
+					    gpointer);
+
+static void microtelco_consult_cb (GtkWidget *,
+				   gpointer);
 
 static void dnd_drag_data_get_cb (GtkWidget *,
 				  GdkDragContext *,
@@ -58,7 +65,98 @@ static void dnd_drag_data_get_cb (GtkWidget *,
 				  guint,
 				  guint,
 				  gpointer);
+
+
+/* DESCRIPTION  :  This callback is called when the user validates an answer
+ *                 to the PC-To-Phone window.
+ * BEHAVIOR     :  Hide the window (if not Apply), and apply the settings
+ *                 (if not cancel), ie change the settings and register to gk.
+ * PRE          :  /
+ */
+static void
+pc_to_phone_window_response_cb (GtkWidget *w,
+				gint response,
+				gpointer data)
+{
+  GMH323EndPoint *ep = NULL;
+
+  ep = GnomeMeeting::Process ()->Endpoint ();
   
+  if (response != 1)
+    gnomemeeting_window_hide (w);
+  
+
+  if (response == 1 || response == 0) {
+
+    if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (data))) {
+	
+      /* The Username and PIN already are correct, update the other settings */
+      gconf_set_bool (H323_KEY "enable_fast_start", TRUE);
+      gconf_set_bool (H323_KEY "enable_h245_tunneling", TRUE);
+      gconf_set_bool (H323_KEY "enable_early_h245", TRUE);
+      gconf_set_string (GATEKEEPER_KEY "gk_host", "gk.microtelco.com");
+      gconf_set_int (GATEKEEPER_KEY "registering_method", 1);
+    }
+    else
+      gconf_set_int (GATEKEEPER_KEY "registering_method", 0);
+    
+    /* Register the current Endpoint to the Gatekeeper */
+    ep->GatekeeperRegister ();
+  }
+}
+
+
+/* DESCRIPTION  :  This callback is called when the user clicks on the link
+ *                 button to consult his account details.
+ * BEHAVIOR     :  Builds a filename with autopost html in /tmp/ and opens it
+ *                 with the GNOME preferred browser.
+ * PRE          :  /
+ */
+static void
+microtelco_consult_cb (GtkWidget *widget,
+		       gpointer data)
+{
+  gchar *tmp_filename = NULL;
+  gchar *filename = NULL;
+  gchar *account = NULL;
+  gchar *pin = NULL;
+  gchar *buffer = NULL;
+  
+  int fd = -1;
+
+  account = gconf_get_string (GATEKEEPER_KEY "gk_alias");
+  pin = gconf_get_string (GATEKEEPER_KEY "gk_password");
+
+  if (!account || !pin)
+    return;
+  
+  buffer =
+    g_strdup_printf ("<HTML><HEAD><TITLE>MicroTelco Auto-Post</TITLE></HEAD>"
+		     "<BODY BGCOLOR=\"#FFFFFF\" "
+		     "onLoad=\"Javascript:document.autoform.submit()\">"
+		     "<FORM NAME=\"autoform\" "
+		     "ACTION=\"https://%s.an.microtelco.com/acct/Controller\" "
+		     "METHOD=\"POST\">"
+		     "<input type=\"hidden\" name=\"command\" value=\"caller_login\">"
+		     "<input type=\"hidden\" name=\"caller_id\" value=\"%s\">"
+		     "<input type=\"hidden\" name=\"caller_pin\" value=\"%s\">"
+		     "</FORM></BODY></HTML>", account, account, pin);
+
+  fd = g_file_open_tmp ("mktmicro-XXXXXX", &tmp_filename, NULL);
+  filename = g_strdup_printf ("file:///%s", tmp_filename);
+  
+  write (fd, (char *) buffer, strlen (buffer)); 
+  close (fd);
+  
+  gnome_url_show (filename, NULL);
+
+  g_free (tmp_filename);
+  g_free (filename);
+  g_free (buffer);
+  g_free (account);
+  g_free (pin);
+}
+
 
 /* DESCRIPTION  :  This callback is called when the user has released the drag.
  * BEHAVIOR     :  Puts the required data into the selection_data, we put
@@ -411,7 +509,95 @@ gnomemeeting_calls_history_window_new (GmCallsHistoryWindow *chw)
 }
 
 
-GtkWidget *gnomemeeting_history_window_new ()
+GtkWidget *
+gnomemeeting_pc_to_phone_window_new ()
+{
+  GtkWidget *window = NULL;
+  GtkWidget *button = NULL;
+  GtkWidget *label = NULL;
+  GtkWidget *use_service_button = NULL;
+  GtkWidget *entry = NULL;
+  GtkWidget *href = NULL;
+  GtkWidget *vbox = NULL;
+  GtkWidget *subsection = NULL;
+
+  gchar *txt = NULL;
+  
+  window = gtk_dialog_new ();
+  gtk_dialog_add_buttons (GTK_DIALOG (window),
+			  GTK_STOCK_APPLY,  1,
+			  GTK_STOCK_CANCEL, 2,
+			  GTK_STOCK_OK, 0);
+  
+  g_object_set_data_full (G_OBJECT (window), "window_name",
+			  g_strdup ("pc_to_phone_window"), g_free);
+  
+  gtk_window_set_title (GTK_WINDOW (window), _("PC-To-Phone Settings"));
+  gtk_window_set_position (GTK_WINDOW (window), GTK_WIN_POS_CENTER);
+
+  label = gtk_label_new (_("You can make calls to regular phones and cell numbers worldwide using GnomeMeeting and the MicroTelco service from Quicknet Technologies. To enable this you need to enter your MicroTelco Account number and PIN below, then enable registering to the MicroTelco service. Please visit the GnomeMeeting website for more information."));
+  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
+  
+  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (window)->vbox), label,
+		      FALSE, FALSE, 20);
+
+
+  vbox = GTK_DIALOG (window)->vbox;
+  
+  subsection =
+    gnome_prefs_subsection_new (window, vbox,
+				_("PC-To-Phone Settings"), 3, 1);
+
+  gnome_prefs_entry_new (subsection, _("Gatekeeper _alias:"), GATEKEEPER_KEY "gk_alias", _("The Gatekeeper alias to use when registering (string, or E164 ID if only 0123456789#)."), 3, false);
+
+  entry =
+    gnome_prefs_entry_new (subsection, _("Gatekeeper _password:"), GATEKEEPER_KEY "gk_password", _("The Gatekeeper password to use for H.235 authentication to the Gatekeeper."), 4, false);
+  gtk_entry_set_visibility (GTK_ENTRY (entry), FALSE);
+
+  use_service_button =
+    gtk_check_button_new_with_label (_("Use PC-To-Phone service"));
+  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (use_service_button),
+		      FALSE, TRUE, 0);
+  
+  label =
+    gtk_label_new (_("Click on one of the following links to get more information about your existing MicroTelco account, or to create a new account."));
+  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
+
+  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (label), FALSE, FALSE, 20);
+  href = gnome_href_new ("http://www.linuxjack.com", _("Get an account"));
+  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (href), FALSE, FALSE, 0);
+  href = gnome_href_new ("http://www.linuxjack.com", _("Buy a card"));
+  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (href), FALSE, FALSE, 0);
+  button = gtk_button_new ();
+  label = gtk_label_new (NULL);
+  txt = g_strdup_printf ("<span foreground=\"blue\"><u>%s</u></span>",
+			 _("Consult my account details"));
+  gtk_label_set_markup (GTK_LABEL (label), txt);
+  g_free (txt);
+  gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
+  gtk_container_add (GTK_CONTAINER (button), label);
+  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (button), FALSE, FALSE, 0);
+  g_signal_connect (GTK_OBJECT (button), "clicked",
+		    G_CALLBACK (microtelco_consult_cb), NULL);
+				
+  g_signal_connect (GTK_OBJECT (window), 
+		    "response", 
+		    G_CALLBACK (pc_to_phone_window_response_cb),
+		    (gpointer) use_service_button);
+
+  g_signal_connect_swapped (GTK_OBJECT (window), 
+			    "delete-event", 
+			    G_CALLBACK (gtk_widget_hide_on_delete),
+			    (gpointer) window);
+  
+  gtk_widget_show_all (GTK_WIDGET (GTK_DIALOG (window)->vbox));
+
+  return window;
+}
+
+
+GtkWidget *
+gnomemeeting_history_window_new ()
 {
   GtkWidget *window = NULL;
   GtkWidget *scr = NULL;

@@ -775,28 +775,13 @@ gm_quit_callback (GtkWidget *widget, GdkEvent *event,
 
 
 /* The functions */
-void
-gnomemeeting_main_window_enable_statusbar_progress (gboolean i)
-{
-  GmWindow *gw = GnomeMeeting::Process ()->GetMainWindow ();
-  
-  if (i) {
-    
-
-    gtk_widget_show (gw->progressbar);
-  }
-  else {
-
-
-    gtk_widget_hide (gw->progressbar);
-  }    
-}
-
-
 void gnomemeeting_dialpad_event (const char d)
 {
   GMH323EndPoint *endpoint = NULL;
   H323Connection *connection = NULL;
+
+  GtkWidget *entry = NULL;
+
 #ifdef HAS_IXJ
   GMLid *lid = NULL;
 #endif
@@ -812,33 +797,38 @@ void gnomemeeting_dialpad_event (const char d)
   gw = GnomeMeeting::Process ()->GetMainWindow ();
   endpoint = GnomeMeeting::Process ()->Endpoint ();
 
-  url = gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry)); 
+  if (gw->transfer_call_popup)    
+      entry =
+	GTK_WIDGET (g_object_get_data (G_OBJECT (gw->transfer_call_popup),
+				       "entry"));
+  else
+    entry = GTK_COMBO (gw->combo)->entry;
+  
+  url = gtk_entry_get_text (GTK_ENTRY (entry)); 
 
   if (endpoint->GetCallingState () == GMH323EndPoint::Standby) {
 
     /* Replace the * by a . */
     if (dtmf == '*') 
       dtmf = '.';
-
-    new_url = PString (url) + dtmf;
-    gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), new_url);
   }
-  else if (endpoint->GetCallingState () == GMH323EndPoint::Connected) {
-            
+      
+  new_url = PString (url) + dtmf;
+  gtk_entry_set_text (GTK_ENTRY (entry), new_url);
+
+  if (dtmf == '#')
+    gtk_dialog_response (GTK_DIALOG (gw->transfer_call_popup),
+			 GTK_RESPONSE_ACCEPT);
+  
+  if (endpoint->GetCallingState () == GMH323EndPoint::Connected
+      && !gw->transfer_call_popup) {
+
     gdk_threads_leave ();
     connection = 
       endpoint->FindConnectionWithLock (endpoint->GetCurrentCallToken ());
             
     if (connection) {
 
-#ifdef HAS_IXJ
-      lid = endpoint->GetLid ();
-      if (lid) {
-	
-	lid->PlayDTMF (&dtmf);
-	lid->Unlock ();
-      }
-#endif
       msg = g_strdup_printf (_("Sent dtmf %c"), dtmf);
       
       connection->SendUserInput (dtmf);
@@ -852,6 +842,15 @@ void gnomemeeting_dialpad_event (const char d)
       g_free (msg);
     }
   }
+
+#ifdef HAS_IXJ
+  lid = endpoint->GetLid ();
+  if (lid) {
+
+    lid->StopTone (0);
+    lid->Unlock ();
+  }
+#endif
 }
 
 
@@ -977,11 +976,6 @@ gnomemeeting_main_window_new (GmWindow *gw)
   gtk_widget_show (hbox);
 
   
-  gw->progressbar = gtk_progress_bar_new ();
-  gtk_widget_set_size_request (GTK_WIDGET (gw->progressbar), 25, -1);
-  gtk_box_pack_start (GTK_BOX (hbox), gw->progressbar, 
-		      FALSE, FALSE, 0);
-
   gw->statusbar = gtk_statusbar_new ();
   gtk_statusbar_set_has_resize_grip (GTK_STATUSBAR (gw->statusbar), FALSE);
   gtk_box_pack_start (GTK_BOX (hbox), gw->statusbar, 

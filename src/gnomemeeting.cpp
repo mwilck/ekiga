@@ -114,7 +114,6 @@ GnomeMeeting::GnomeMeeting ()
   rtp = new GmRtpData ();
 
   memset ((void *) rtp, 0, sizeof (struct _GmRtpData));
-  gw->progress_timeout = 0;
   gw->docklet = gw->ldap_window = gw->pref_window = gw->calls_history_window =
     gw->splash_win = gw->incoming_call_popup = gw->history_window =
     gw->audio_transmission_popup = gw->audio_reception_popup =
@@ -228,7 +227,6 @@ void
 GnomeMeeting::Disconnect (H323Connection::CallEndReason reason)
 {
   gnomemeeting_threads_enter ();
-  gnomemeeting_main_window_enable_statusbar_progress (false);
   gnomemeeting_statusbar_push (gw->statusbar, NULL);
   gnomemeeting_threads_leave ();
 
@@ -445,7 +443,8 @@ void GnomeMeeting::BuildGUI ()
   gnomemeeting_stock_icons_init ();
   gw->tips = gtk_tooltips_new ();
   gw->history_window = gnomemeeting_history_window_new ();
-  gw->calls_history_window = gnomemeeting_calls_history_window_new (chw);  
+  gw->calls_history_window = gnomemeeting_calls_history_window_new (chw);
+  gw->pc_to_phone_window = gnomemeeting_pc_to_phone_window_new ();  
   gw->pref_window = gnomemeeting_pref_window_new (pw);  
   gw->ldap_window = gnomemeeting_ldap_window_new (lw);
 #ifndef DISABLE_GNOME

@@ -55,9 +55,6 @@ extern GtkWidget *gm;
 
 
 /* Static functions */
-static void microtelco_consult_cb (GtkWidget *,
-				   gpointer);
-
 static void zoom_changed_callback (GtkWidget *,
 				   gpointer);
 
@@ -79,54 +76,6 @@ static void toggle_menu_changed (GtkWidget *,
 
 
 /* GTK Callbacks */
-static void
-microtelco_consult_cb (GtkWidget *widget,
-		       gpointer data)
-{
-#ifndef DISABLE_GNOME
-  GConfClient *client = NULL;
-
-  gchar *filename = NULL;
-  gchar *account = NULL;
-  gchar *pin = NULL;
-  gchar *buffer = NULL;
-  
-  int fd = -1;
-
-  client = gconf_client_get_default ();
-
-  account = gconf_client_get_string (client, GATEKEEPER_KEY "gk_alias", NULL);
-  pin = gconf_client_get_string (client, GATEKEEPER_KEY "gk_password", NULL);
-
-  if (!account || !pin)
-    return;
-  
-  buffer =
-    g_strdup_printf ("<HTML><HEAD><TITLE>MicroTelco Auto-Post</TITLE></HEAD>"
-		     "<BODY BGCOLOR=\"#FFFFFF\" "
-		     "onLoad=\"Javascript:document.autoform.submit()\">"
-		     "<FORM NAME=\"autoform\" "
-		     "ACTION=\"https://%s.an.microtelco.com/acct/Controller\" "
-		     "METHOD=\"POST\">"
-		     "<input type=\"hidden\" name=\"command\" value=\"caller_login\">"
-		     "<input type=\"hidden\" name=\"caller_id\" value=\"%s\">"
-		     "<input type=\"hidden\" name=\"caller_pin\" value=\"%s\">"
-		     "</FORM></BODY></HTML>", account, account, pin);
-
-  fd = g_file_open_tmp ("mktmicro-XXXXXX", &filename, NULL);
-
-  write (fd, (char *) buffer, strlen (buffer));
-
-  gnome_url_show (filename, NULL);
-
-  g_free (filename);
-  g_free (buffer);
-
-  close (fd);
-#endif
-}
-
-
 /* DESCRIPTION  :  This callback is called when the user changes the zoom
  *                 factor in the menu.
  * BEHAVIOR     :  Sets zoom to 1:2 if data == 0, 1:1 if data == 1, 
@@ -541,10 +490,13 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 		     GTK_SIGNAL_FUNC (show_window_cb),
 		     (gpointer) gw->calls_history_window, TRUE),
 
-      GTK_MENU_ENTRY("microtelco", _("Consult MicroTelco Account"),
-		     _("View the details of your account"),
+      GTK_MENU_SEPARATOR,
+      
+      GTK_MENU_ENTRY("pc-to-phone", _("PC-To-Phone Account"),
+		     _("Manage your PC-To-Phone account"),
 		     NULL, 0, 
-		     GTK_SIGNAL_FUNC (microtelco_consult_cb), NULL, TRUE),
+		     GTK_SIGNAL_FUNC (show_window_cb),
+		     (gpointer) gw->pc_to_phone_window, TRUE),
 
       GTK_MENU_NEW(_("_Help")),
 
@@ -569,9 +521,6 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
   gnomemeeting_speed_dials_menu_update (menubar);
   gtk_widget_show_all (GTK_WIDGET (menubar));
   
-  if (!gconf_client_get_bool (client, SERVICES_KEY "enable_microtelco", NULL))
-    gtk_widget_hide (gtk_menu_get_widget (menubar, "microtelco"));
-    
   return menubar;
 }
 

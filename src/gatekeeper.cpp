@@ -61,7 +61,7 @@ GMH323Gatekeeper::GMH323Gatekeeper ()
   /* Query the gconf database for options */
   gnomemeeting_threads_enter ();
   registering_method = gconf_get_int (GATEKEEPER_KEY "registering_method");
-  
+
   /* Gatekeeper password */
   gconf_string = gconf_get_string (GATEKEEPER_KEY "gk_password");
   if (gconf_string) {
@@ -127,6 +127,7 @@ void GMH323Gatekeeper::Main ()
     msg = g_strdup_printf (_("Unregistered from gatekeeper %s"),
 			   (const char *) gk_name);
     gnomemeeting_log_insert (gw->history_text_view, msg);
+    gnomemeeting_statusbar_flash (gw->statusbar, msg);
     g_free (msg);
   }
   gnomemeeting_threads_leave ();
@@ -138,7 +139,7 @@ void GMH323Gatekeeper::Main ()
   if (registering_method == 1 && gk_host.IsEmpty ()) {
   
     gnomemeeting_threads_enter ();
-    gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Invalid gatekeeper hostname"), _("Please provide a hostname to use for the gatekeeper.\nDisabling registering."));
+    gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Invalid gatekeeper hostname"), _("Please provide a hostname to use for the gatekeeper."));
     gnomemeeting_threads_leave ();
 
     no_error = FALSE;
@@ -146,7 +147,7 @@ void GMH323Gatekeeper::Main ()
   else if (registering_method == 2 && gk_id.IsEmpty ()) {
 
     gnomemeeting_threads_enter ();
-    gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Invalid gatekeeper ID"), _("Please provide a valid ID for the gatekeeper.\nDisabling registering."));
+    gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Invalid gatekeeper ID"), _("Please provide a valid ID for the gatekeeper."));
     gnomemeeting_threads_leave ();
 
     no_error = FALSE;

@@ -205,7 +205,6 @@ struct _GmWindow
   GtkWidget *video_settings_frame;
   GtkWidget *audio_settings_frame;
   GtkWidget *statusbar;
-  GtkWidget *progressbar;
   GtkWidget *remote_name;
   GtkWidget *splash_win;
   GtkWidget *combo;
@@ -222,11 +221,13 @@ struct _GmWindow
   GtkWidget *ldap_window;
   GtkWidget *chat_window;
   GtkWidget *calls_history_window;
+  GtkWidget *pc_to_phone_window;
   GtkWidget *preview_button;
   GtkWidget *connect_button;
   GtkWidget *video_chan_button;
   GtkWidget *audio_chan_button;
   GtkWidget *incoming_call_popup;
+  GtkWidget *transfer_call_popup;
   GtkWidget *stats_label;
   GtkWidget *stats_drawing_area;
 
@@ -236,7 +237,6 @@ struct _GmWindow
 
   GdkColor colors [6];
 
-  int          progress_timeout;
 
   PStringArray video_devices;
   PStringArray audio_recorder_devices;

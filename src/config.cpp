@@ -45,6 +45,7 @@
 
 #include "config.h"
 #include "connection.h"
+#include "endpoint.h"
 #include "gnomemeeting.h"
 #include "videograbber.h"
 #include "ils.h"
@@ -141,10 +142,7 @@ static void view_widget_changed_nt (GConfClient *, guint, GConfEntry *,
 				    gpointer);
 static void capabilities_changed_nt (GConfClient *, guint, 
 				     GConfEntry *, gpointer);
-#ifndef DISABLE_GNOME
-static void microtelco_enabled_nt (GConfClient *, guint, GConfEntry *,
-				   gpointer);
-#endif
+
 static void h245_tunneling_changed_nt (GConfClient *,
 				       guint,
 				       GConfEntry *,
@@ -333,44 +331,6 @@ static void main_notebook_changed_nt (GConfClient *client, guint cid,
 
   }
 }
-
-
-/* DESCRIPTION  :  This notifier is called when the gconf database data
- *                 associated with the microtelco service changes.
- * BEHAVIOR     :  It shows or hides the account option in the tools menu and
- *                 also updates the ixj druid page.
- * PRE          :  /
- */
-#ifndef DISABLE_GNOME
-static void microtelco_enabled_nt (GConfClient *client, guint cid, 
-				   GConfEntry *entry, gpointer data)
-{
-  GmWindow *gw = NULL;
-  GmDruidWindow *dw = NULL;
-  
-  if (entry->value->type == GCONF_VALUE_BOOL) {
-
-    gdk_threads_enter ();
-
-    dw = GnomeMeeting::Process ()->GetDruidWindow ();
-    gw = GnomeMeeting::Process ()->GetMainWindow ();
-    
-    if (gconf_value_get_bool (entry->value)) {
-
-      gtk_widget_show (gtk_menu_get_widget (gw->main_menu, "microtelco"));
-      // GTK_TOGGLE_BUTTON (dw->enable_microtelco)->active = true;
-    }
-    else {
-      
-      gtk_widget_hide (gtk_menu_get_widget (gw->main_menu, "microtelco"));
-      //GTK_TOGGLE_BUTTON (dw->enable_microtelco)->active = false;
-    }
-    
-    //gtk_widget_queue_draw (GTK_WIDGET (dw->enable_microtelco));
-    gdk_threads_leave ();
-  }
-}
-#endif
 
 
 /* DESCRIPTION  :  This notifier is called when the gconf database data
@@ -910,9 +870,7 @@ manager_changed_nt (GConfClient *client,
 
 /* DESCRIPTION  :  This notifier is called when the gconf database data
  *                 associated with the audio devices changes.
- * BEHAVIOR     :  Rebuilds the codecs list because some codecs could be
- *                 enabled or disabled following the device (Quicknet).
- *                 If a Quicknet device is used, then the Quicknet LID thread
+ * BEHAVIOR     :  If a Quicknet device is used, then the Quicknet LID thread
  *                 is created. If not, it is removed provided we are not in
  *                 a call.
  *                 Notice that audio devices can not be changed during a call.
@@ -925,7 +883,6 @@ audio_device_changed_nt (GConfClient *client,
 			 gpointer data)
 {
   GMH323EndPoint *ep = NULL;
-  
   GmPrefWindow *pw = NULL;
 
   PString dev;
@@ -942,7 +899,7 @@ audio_device_changed_nt (GConfClient *client,
 	&& !strcmp (gconf_entry_get_key (entry),
 		    AUDIO_DEVICES_KEY "input_device")) {
       
-      if (dev.Find ("phone") != P_MAX_INDEX)
+      if (dev.Find ("phone") != P_MAX_INDEX) 
 	ep->CreateLid (dev);
       else 
 	ep->RemoveLid ();
@@ -1881,13 +1838,6 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, CONTACTS_KEY "groups",
 			   contacts_sections_list_group_content_changed_nt, 
 			   NULL, 0, 0);
-
-  
-  /* Microtelco */
-#ifndef DISABLE_GNOME
-  gconf_client_notify_add (client, SERVICES_KEY "enable_microtelco",
-			   microtelco_enabled_nt, NULL, 0, 0);
-#endif
 
   return TRUE;
 }

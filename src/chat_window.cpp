@@ -275,7 +275,7 @@ GtkWidget *gnomemeeting_text_chat_new (GmTextChat *chat)
     gtk_text_tag_add_actions_to_regex (regex_tag,
 				       _("Connect to"),
 				       connect_uri_callback,
-				       _("Add to adressbook"),
+				       _("Add to Address Book"),
 				       add_uri_callback,
 				       _("Copy Link Location"),
 				       copy_uri_callback,

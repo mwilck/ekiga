@@ -76,4 +76,11 @@ void gnomemeeting_calls_history_window_add_call (int,
  */
 GtkWidget *gnomemeeting_history_window_new ();
 
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Build the PC-To-Phone window and returns it.
+ * PRE          :  /
+ */
+GtkWidget *gnomemeeting_pc_to_phone_window_new ();
+
 #endif

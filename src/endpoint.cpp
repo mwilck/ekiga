@@ -151,7 +151,6 @@ GMH323EndPoint::MakeCallLocked (const PString & call_addr,
   H323Connection *con = NULL;
   
   called_address = call_addr;
-  
   con = H323EndPoint::MakeCallLocked (call_addr, call_token);
 
 #ifdef HAS_IXJ
@@ -163,9 +162,9 @@ GMH323EndPoint::MakeCallLocked (const PString & call_addr,
     
     OutgoingCallTimer.RunContinuous (PTimeInterval (5));
 
-#ifdef HAX_IXJ
+#ifdef HAS_IXJ
     if (lid)
-      lid->UpdateStatus (GMH323EndPoint::Calling); // Calling
+      lid->UpdateState (GMH323EndPoint::Calling); // Calling
 #endif
   }
   else {
@@ -218,25 +217,35 @@ void GMH323EndPoint::UpdateDevices ()
   /* Do not change these values during calls */
   if (GetCallingState () == GMH323EndPoint::Standby) {
 
+#ifdef HAS_IXJ
+    GMLid *l = GetLid ();
+    if (l) {
+      
+      use_lid = TRUE;
+      l->Unlock ();
+    }
+    else
+      use_lid = FALSE;
+
     dev = audio_input;
+    
     /* Quicknet hardware */
-    if (dev.Find ("phone") != P_MAX_INDEX)
-      use_lid = true;
+    if (dev.Find ("phone") != P_MAX_INDEX) {
+          
+      /* Use the quicknet card if needed */
+      if (!use_lid) 
+	CreateLid (audio_input);
+    }
+    else
+      RemoveLid ();
+#endif
+    
 
     /* Video preview */
     if (preview) 
       CreateVideoGrabber (TRUE, TRUE);
     else
       RemoveVideoGrabber ();
-
-    
-#ifdef HAS_IXJ
-    /* Use the quicknet card if needed */
-    if (use_lid) 
-      CreateLid (audio_input);
-    else
-      RemoveLid ();
-#endif
   }
 
   gnomemeeting_sound_daemons_resume ();
@@ -375,11 +384,13 @@ GMH323EndPoint::AddAudioCapabilities ()
   g711_frames = gconf_get_int (AUDIO_SETTINGS_KEY "g711_frames");
   gsm_frames = gconf_get_int (AUDIO_SETTINGS_KEY "gsm_frames");
 
-  
 #ifdef HAS_IXJ
   /* Add the audio capabilities provided by the LID Hardware */
   GMLid *l = NULL;
   if ((l = GetLid ())) {
+
+    if (l->IsOpen ())
+      H323_LIDCapability::AddAllCapabilities (*l, capabilities, 0, 0);
 
     /* If the LID can do PCM16 we can use the software
        codecs like GSM too */
@@ -425,17 +436,6 @@ GMH323EndPoint::AddAudioCapabilities ()
 
     SetCapability(0, 0, new H323_LPC10Capability (*this));
   }
-
-  
-#ifdef HAS_IXJ
-  if ((l = GetLid ())) {
-
-    if (l->IsOpen ())
-      H323_LIDCapability::AddAllCapabilities (*l, capabilities, 0, 0);
-
-    l->Unlock ();
-  }
-#endif
   
   
   /* Let's go */
@@ -938,17 +938,6 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   gnomemeeting_threads_enter ();
   reg = gconf_get_bool (LDAP_KEY "register");
   gnomemeeting_threads_leave ();
-
-
-  /* Remove the progress timeout */
-  if (gw->progress_timeout) {
-
-    gnomemeeting_threads_enter ();
-    gtk_timeout_remove (gw->progress_timeout);
-    gw->progress_timeout = 0;
-    gtk_widget_hide (gw->progressbar);
-    gnomemeeting_threads_leave ();
-  }
   
   
   /* Connected */
@@ -1266,6 +1255,10 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
     gtk_widget_destroy (gw->incoming_call_popup);
     gw->incoming_call_popup = NULL;
   }
+
+  if (gw->transfer_call_popup) 
+    gtk_dialog_response (GTK_DIALOG (gw->transfer_call_popup),
+			 GTK_RESPONSE_REJECT);
   gnomemeeting_threads_leave ();
   
   
@@ -1288,7 +1281,6 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   
   gnomemeeting_threads_enter ();
   gtk_label_set_text (GTK_LABEL (gw->remote_name), "");
-  gnomemeeting_main_window_enable_statusbar_progress (false);
   gnomemeeting_threads_leave ();
   
   /* Play Busy Tone */
@@ -1498,21 +1490,17 @@ GMH323EndPoint::Init ()
   disableFastStart = !gconf_get_bool (H323_KEY "enable_fast_start");
   disableH245inSetup = !gconf_get_bool (H323_KEY "enable_early_h245");
 
-  /* Add capabilities */
-  AddAllCapabilities ();
-
-
   /* Setup ports */
   SetPorts ();
-
   
   /* Update general devices configuration */
   UpdateDevices ();
-
   
   /* Set the User Name and Alias */  
   SetUserNameAndAlias ();
 
+  /* Add capabilities */
+  AddAllCapabilities ();
 
   /* Register to gatekeeper */
   if (gconf_get_int (GATEKEEPER_KEY "registering_method"))
@@ -1640,6 +1628,8 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
   /* If we are using a hardware LID, connect the audio stream to the LID */
   if ((l = GetLid ()) && l->IsOpen()) {
 
+    lid->StopTone (0);
+    
     if (!codec.AttachChannel (new OpalLineChannel (*l,
 						   OpalIxJDevice::POTSLine,
 						   codec))) {

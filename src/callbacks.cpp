@@ -118,7 +118,6 @@ void
 transfer_call_cb (GtkWidget* widget,
 		  gpointer data)
 {
-  GtkWidget *transfer_call_popup = NULL;
   GtkWidget *hbox = NULL;
   GtkWidget *label = NULL;
   GtkWidget *entry = NULL;
@@ -130,13 +129,10 @@ transfer_call_cb (GtkWidget* widget,
   char *gconf_forward_value = NULL;
   gint answer = 0;
   
-  GConfClient *client = NULL;
-
-  client = gconf_client_get_default ();
   endpoint = GnomeMeeting::Process ()->Endpoint ();
   gw = GnomeMeeting::Process ()->GetMainWindow ();
 
-  transfer_call_popup =
+  gw->transfer_call_popup =
         gtk_dialog_new_with_buttons (_("Edit the contact information"), 
 				     NULL, GTK_DIALOG_MODAL,
 				     GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
@@ -144,31 +140,31 @@ transfer_call_cb (GtkWidget* widget,
 				     NULL);
   if (!data) {
 
-    gtk_window_set_transient_for (GTK_WINDOW (transfer_call_popup),
+    gtk_window_set_transient_for (GTK_WINDOW (gw->transfer_call_popup),
 				  GTK_WINDOW (gm));
     gconf_forward_value =
-      gconf_client_get_string (GCONF_CLIENT (client),
-			       CALL_FORWARDING_KEY "forward_host",
-			       NULL);
+      gconf_get_string (CALL_FORWARDING_KEY "forward_host");
   }
   else {
     
-    gtk_window_set_transient_for (GTK_WINDOW (transfer_call_popup),
+    gtk_window_set_transient_for (GTK_WINDOW (gw->transfer_call_popup),
 				  GTK_WINDOW (gw->ldap_window));
     gconf_forward_value = g_strdup ((gchar *) data);
   }
   
-  gtk_dialog_set_default_response (GTK_DIALOG (transfer_call_popup),
+  gtk_dialog_set_default_response (GTK_DIALOG (gw->transfer_call_popup),
 				   GTK_RESPONSE_ACCEPT);
   
   label = gtk_label_new (_("Forward call to:"));
   hbox = gtk_hbox_new (0, 0);
   
   gtk_box_pack_start (GTK_BOX 
-		      (GTK_DIALOG (transfer_call_popup)->vbox), 
+		      (GTK_DIALOG (gw->transfer_call_popup)->vbox), 
 		      hbox, TRUE, TRUE, 10);
     
   entry = gtk_entry_new ();
+  g_object_set_data (G_OBJECT (gw->transfer_call_popup),
+		     "entry", (gpointer) entry);
   if (gconf_forward_value && strcmp (gconf_forward_value, ""))
     gtk_entry_set_text (GTK_ENTRY (entry), gconf_forward_value);
   else
@@ -184,11 +180,11 @@ transfer_call_cb (GtkWidget* widget,
   gtk_box_pack_start (GTK_BOX (hbox), 
 		      entry, TRUE, TRUE, 10);
 
-  gtk_window_set_modal (GTK_WINDOW (transfer_call_popup), TRUE);
+  gtk_window_set_modal (GTK_WINDOW (gw->transfer_call_popup), TRUE);
 
-  gtk_widget_show_all (transfer_call_popup);
+  gtk_widget_show_all (gw->transfer_call_popup);
 
-  answer = gtk_dialog_run (GTK_DIALOG (transfer_call_popup));
+  answer = gtk_dialog_run (GTK_DIALOG (gw->transfer_call_popup));
   switch (answer) {
 
   case GTK_RESPONSE_ACCEPT:
@@ -202,7 +198,8 @@ transfer_call_cb (GtkWidget* widget,
     break;
   }
 
-  gtk_widget_destroy (transfer_call_popup);
+  gtk_widget_destroy (gw->transfer_call_popup);
+  gw->transfer_call_popup = NULL;
 }
 
 

@@ -65,7 +65,6 @@ extern GtkWidget *gm;
 static gboolean
 transfer_callback_cb (gpointer data)
 {
-  cout << "Check if it is still needed" << endl << flush;
   gdk_threads_enter ();
   transfer_call_cb (NULL, NULL);
   gdk_threads_leave ();
@@ -79,7 +78,8 @@ GMLid::GMLid (PString d)
   :PThread (1000, NoAutoDeleteThread)
 {
   stop = FALSE;
-
+  soft_codecs = FALSE;
+  
   dev_name = d;
 
   /* Open the device */
@@ -149,7 +149,10 @@ GMLid::Open ()
 	EnableAudio (0, TRUE);
       else 
 	EnableAudio (0, FALSE);
-      
+
+      soft_codecs =
+	GetMediaFormats ().GetValuesIndex (OpalMediaFormat (OPAL_PCM16)) 
+	!= P_MAX_INDEX;
       return_val = TRUE;
     }
     else {
@@ -237,19 +240,19 @@ GMLid::Main ()
   gnomemeeting_threads_leave ();
   
 
-  /* Update the mixers if the lid is used */
   gnomemeeting_threads_enter ();
+  /* Update the mixers if the lid is used */
   GetPlayVolume (0, vol);
   GTK_ADJUSTMENT (gw->adj_play)->value = (int) (vol);
   GetRecordVolume (0, vol);
   GTK_ADJUSTMENT (gw->adj_rec)->value = (int) (vol);
   gtk_widget_queue_draw (GTK_WIDGET (gw->audio_settings_frame));
 
-  /* Update the codecs list in the prefs */
-  gnomemeeting_codecs_list_build (pw->codecs_list_store, TRUE,
-				  areSoftwareCodecsSupported ());
+  /* Update the codecs list */
+  gnomemeeting_codecs_list_build (pw->codecs_list_store, TRUE, soft_codecs);
   gnomemeeting_threads_leave ();
 
+  endpoint->AddAllCapabilities ();
 
   while (IsOpen() && !stop) {
 
@@ -374,11 +377,10 @@ GMLid::Main ()
 
     
     /* We must poll to read the hook state */
-    PThread::Sleep (100);
+    PThread::Sleep (50);
   }
 
-
-  /* We are exiting and thus closing, update the codecs list again */
+  /* Update the codecs list */
   gnomemeeting_threads_enter ();
   gnomemeeting_codecs_list_build (pw->codecs_list_store, FALSE, FALSE);
   gnomemeeting_threads_leave ();
@@ -389,17 +391,22 @@ void
 GMLid::UpdateState (GMH323EndPoint::CallingState i)
 {
   int lid_odt = 0;
-  
+
   lid_odt = gconf_get_int (AUDIO_DEVICES_KEY "lid_output_device_type");
   
   if (IsOpen ()) {
-    
+
+    if (lid_odt == 0) // POTS
+      EnableAudio (0, TRUE);
+    else 
+      EnableAudio (0, FALSE);
+
     switch (i) {
 
     case GMH323EndPoint::Calling:
       RingLine (0, 0);
-      StopTone (0);
       PlayTone (0, OpalLineInterfaceDevice::RingTone);
+      SetRemoveDTMF (0, TRUE);
       
       break;
 
@@ -414,23 +421,18 @@ GMLid::UpdateState (GMH323EndPoint::CallingState i)
     case GMH323EndPoint::Standby: /* Busy */
       RingLine (0, 0);
       PlayTone (0, OpalLineInterfaceDevice::BusyTone);
-      if (lid_odt == 1) 
+      if (lid_odt == 1) {
+	
 	PThread::Current ()->Sleep (2800);
-      StopTone (0);
-      
+	PlayTone (0, OpalLineInterfaceDevice::NoTone);
+      }
       break;
 
     case GMH323EndPoint::Connected:
 
       RingLine (0, 0);
-      StopTone (0);
-      SetRemoveDTMF (0, TRUE);      
-    }
-
-    if (lid_odt == 0) // POTS
-      EnableAudio (0, TRUE);
-    else 
-      EnableAudio (0, FALSE);
+      PlayTone (0, OpalLineInterfaceDevice::NoTone);
+    }    
   }
 }
 
@@ -461,10 +463,9 @@ BOOL
 GMLid::areSoftwareCodecsSupported ()
 {
   if (IsOpen ())
-    return (GetMediaFormats ().GetValuesIndex (OpalMediaFormat(OPAL_PCM16)) 
-	    != P_MAX_INDEX);
+    return soft_codecs;
   else
-    return TRUE;
+    return FALSE;
 }
 
 

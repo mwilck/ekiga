@@ -1,3 +1,39 @@
+2003-01-02 Damien Sandras  <dsandras@seconix.com>
+
+	* src/main_window.cpp, src/callbacks.cpp: Improved transfer 
+	call dialog so that it is closed at the end of calls, and so 
+	that people can transfer calls using their POTS connected to a 
+	Quicknet card only, without keyboard and mouse interaction.
+	
+	* src/common.h: Added new widgets.
+	
+	* src/config.cpp: Removed unneeded Microtelco code.
+	
+	* src/endpoint.cpp: See above.
+	
+	* src/gatekeeper.cpp: Do not switch to "No registering" when
+	registering to the GK fails. Flash a msg in the statusbar
+	when unregistering from a GK.
+	
+	* src/gnomemeeting.cpp: Build new PC-To-Phone configuration window.
+	
+	* src/lid.cpp, src/lid.h: Misc. fixes.
+	
+	* src/menu.cpp: Added item to manage his PC-To-Phone settings.
+	
+	* src/tools.cpp, src/tools.h: Created new PC-To-Phone settings config
+	dialog.
+	
+	* src/urlhandler.cpp: Removed unneeded microtelco code.
+
+	* NEWS: Updated with CVS news.
+
+	* gnomemeeting.schemas.in.in: Added gconf keys to store pos and
+	sizes for the PC-To-Phone settings window.
+
+	* src/chat_window.cpp: Fixed typo bug #130362 thanks to Alexander
+	Winston and Javier F. Serrador.
+	
 2004-01-02  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* src/Makefile.am: 

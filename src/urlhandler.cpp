@@ -310,19 +310,7 @@ void GMURLHandler::Main ()
       gnomemeeting_threads_leave ();
     }
   
-    /* If the user is using MicroTelco, but G.723.1 is not available for
-       a reason or another, we add the MicroTelco prefix if the URL seems
-       to be a phone number */
     gnomemeeting_threads_enter ();
-    if (gconf_client_get_bool (client, SERVICES_KEY "enable_microtelco", 0)) {
-
-      if (call_address.FindRegEx ("[A-Z][a-z]") == P_MAX_INDEX &&
-	  call_address.Find (".") == P_MAX_INDEX &&
-	  endpoint->GetCapabilities ().FindCapability ("G.723.1") == NULL)
-	call_address = PString ("0610#") + call_address;
-    }
-
-
     if (!call_address.IsEmpty ()) {
 
       gnomemeeting_main_window_update_sensitivity (GMH323EndPoint::Calling);

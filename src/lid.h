@@ -149,6 +149,7 @@ class GMLid : public PThread, public OpalIxJDevice
 
   PString dev_name;
   BOOL stop;
+  BOOL soft_codecs;
 };
 #endif
 
