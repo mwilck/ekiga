@@ -28,6 +28,12 @@
  *
  */
 
+#undef GTK_ENABLE_BROKEN
+#define G_DISABLE_DEPRECATED					
+#define GDK_DISABLE_DEPRECATED
+#define GTK_DISABLE_DEPRECATED
+#define GDK_PIXBUF_DISABLE_DEPRECATED
+#define GNOME_DISABLE_DEPRECATED
 
 #include "../config.h"
 
@@ -193,53 +199,19 @@ void popup_menu_both_callback (GtkWidget *widget, gpointer data)
 }
 
 
-void ldap_popup_menu_callback (GtkWidget *widget, gpointer data)
-{
-  GM_ldap_window_widgets *lw = (GM_ldap_window_widgets *) data;
-  gchar *text;
-  int last_selected_row;
-  GtkCList *ldap_users_clist;
-  GtkWidget *curr_page;
-
-  curr_page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook),
-					 gtk_notebook_get_current_page (GTK_NOTEBOOK
-									(lw->notebook)));
-
-  ldap_users_clist = GTK_CLIST (gtk_object_get_data (GTK_OBJECT (curr_page), 
-						     "ldap_users_clist"));
-  last_selected_row = GPOINTER_TO_INT (gtk_object_get_data (GTK_OBJECT (ldap_users_clist),
-							    "last_selected_row"));
-
-  if (last_selected_row != -1) {
-
-    /* text doesn't need to be freed, it is a pointer to the data */
-    gtk_clist_get_text (GTK_CLIST (ldap_users_clist),
-			last_selected_row,
-			8, &text);
-    
-    /* if we are waiting for a call, add the IP
-       to the history, and call that user       */
-    if (MyApp->Endpoint ()->GetCallingState () == 0) {
-
-      /* this function will store a copy of text */
-      gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (lw->gw->combo)->entry), text);
-      
-      connect_cb (NULL, NULL);
-    }
-  }
-}
-
 /* DESCRIPTION  :  This callback is called when a gconf error happens
  * BEHAVIOR     :  Pop-up a message-box
  * PRE          :  /
  */
 void gconf_error_callback (GConfClient *, GError *)
 {
-  GtkWidget *dialog = gnome_message_box_new (_("An error has happened in the configuration"
-					       " backend\nMaybe some of your settings won't"
-					       " be stored"), 
-					     GNOME_MESSAGE_BOX_ERROR,
-					     GNOME_STOCK_BUTTON_CLOSE,
-					     NULL);
-  gnome_dialog_run (GNOME_DIALOG (dialog));
+  GtkWidget *dialog = 
+    gtk_message_dialog_new (NULL, GTK_DIALOG_MODAL,
+			    GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE,
+			    _("An error has happened in the configuration"
+			    " backend\nMaybe some of your settings won't"
+			      " be stored"));
+
+  gtk_dialog_run (GTK_DIALOG (dialog));
+  gtk_widget_destroy (dialog);
 }

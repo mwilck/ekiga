@@ -27,6 +27,13 @@
  *   email                : dsandras@seconix.com
  */
 
+#undef GTK_ENABLE_BROKEN
+#define G_DISABLE_DEPRECATED					
+#define GDK_DISABLE_DEPRECATED
+#define GTK_DISABLE_DEPRECATED
+#define GDK_PIXBUF_DISABLE_DEPRECATED
+#define GNOME_DISABLE_DEPRECATED	
+
 #include "../config.h"
 
 #include <libgnomeui/gnome-window-icon.h>
@@ -240,17 +247,16 @@ void gnomemeeting_init (GM_window_widgets *gw,
   } 
 
   /* Gnome Initialisation */
-  gnome_program_init ("GnomeMeeting", VERSION,
-		      LIBGNOMEUI_MODULE, argc, argv,
-		      GNOME_PARAM_POPT_TABLE, arguments,	    
-		      GNOME_PARAM_HUMAN_READABLE_NAME,
-		      _("The GNOME text editor"),
-		      GNOME_PARAM_APP_DATADIR, DATADIR,
-		      NULL);
+  GnomeProgram *p = gnome_program_init ("GnomeMeeting", VERSION,
+					LIBGNOMEUI_MODULE, argc, argv,
+					GNOME_PARAM_POPT_TABLE, arguments,	    
+					GNOME_PARAM_HUMAN_READABLE_NAME,
+					_("The GNOME text editor"),
+					GNOME_PARAM_APP_DATADIR, DATADIR,
+					NULL);
 
-  cout << "main_window.cpp:251, FIX ME not needed" << endl << flush;
   gm = gnome_app_new ("gnomemeeting", _("GnomeMeeting"));
-  gtk_window_set_policy (GTK_WINDOW (gm), FALSE, FALSE, TRUE);
+
 
   /* Some little gconf stuff */  
   client = gconf_client_get_default ();
@@ -262,35 +268,37 @@ void gnomemeeting_init (GM_window_widgets *gw,
 
    if (gconf_test == NULL || strcmp (gconf_test, BUILD_ID)) {
 
-     GtkWidget *dialog = gnome_message_box_new (_("Please check your gconf settings and permissions, it seems that gconf is not properly setup on your system"),
- 					       GNOME_MESSAGE_BOX_ERROR,
- 					       GNOME_STOCK_BUTTON_CLOSE,
- 					       NULL);
+     int reply = 0;
+     GtkWidget *dialog = 
+       gtk_message_dialog_new (GTK_WINDOW (gm),
+			       GTK_DIALOG_DESTROY_WITH_PARENT,
+			       GTK_MESSAGE_ERROR,
+			       GTK_BUTTONS_CLOSE,
+			       _("Please check your gconf settings and permissions, it seems that gconf is not properly setup on your system"));
 
-     int reply = gnome_dialog_run(GNOME_DIALOG(dialog));
-     if ((reply == 0)||(reply == -1)) {
+     gtk_dialog_run (GTK_DIALOG (dialog));
+     gtk_widget_destroy (dialog);
 
-        delete (gw);
-        delete (lw);
-        delete (pw);
-        delete (rtp);
-        exit (-1);
-     }
+     delete (gw);
+     delete (lw);
+     delete (pw);
+     delete (rtp);
+     exit (-1);
    }
    g_free (gconf_test);
 
   /* We store all the pointers to the structure as data of gm */
-  gtk_object_set_data (GTK_OBJECT (gm), "gw", gw);
-  gtk_object_set_data (GTK_OBJECT (gm), "lw", lw);
-  gtk_object_set_data (GTK_OBJECT (gm), "pw", pw);
+  g_object_set_data (G_OBJECT (gm), "gw", gw);
+  g_object_set_data (G_OBJECT (gm), "lw", lw);
+  g_object_set_data (G_OBJECT (gm), "pw", pw);
 
   /* Startup Process */
   gw->docklet = gnomemeeting_init_docklet ();
 
   /* Init the splash screen */
   gw->splash_win = e_splash_new ();
-  gtk_signal_connect (GTK_OBJECT (gw->splash_win), "delete_event",
-		      GTK_SIGNAL_FUNC (gtk_widget_hide_on_delete), 0);
+  g_signal_connect (G_OBJECT (gw->splash_win), "delete_event",
+		    G_CALLBACK (gtk_widget_hide_on_delete), 0);
 
   show_splash = gconf_client_get_bool (client, "/apps/gnomemeeting/"
 				      "view/show_splash", 0);  
@@ -380,9 +388,16 @@ void gnomemeeting_init (GM_window_widgets *gw,
   
   
   if (!endpoint->StartListener ()) {
-    GtkWidget *msg_box = gnome_message_box_new (_("Could not start the listener thread. You will not be able to receive incoming calls."), GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
 
-    gtk_widget_show (msg_box);
+    GtkWidget *dialog = 
+       gtk_message_dialog_new (GTK_WINDOW (gm),
+			       GTK_DIALOG_MODAL,
+			       GTK_MESSAGE_ERROR,
+			       GTK_BUTTONS_OK,
+			       _("Could not start the listener thread. You will not be able to receive incoming calls."));
+
+     gtk_dialog_run (GTK_DIALOG (dialog));
+     gtk_widget_destroy (dialog);
   }
 
   /* Register to the Gatekeeper */
@@ -406,24 +421,24 @@ void gnomemeeting_init (GM_window_widgets *gw,
   gnomemeeting_popup_menu_init (gw->video_frame, gw);
 
   /* Set icon */
-  gtk_widget_push_visual(gdk_rgb_get_visual());
-  gtk_widget_push_colormap(gdk_rgb_get_cmap());
-  cout << "FIX ME: main_window.cpp: 448" << endl;
-  /* This can be copies from evo when they port to gnome2 (I hope) */
-  gnome_window_icon_set_from_file 
-    (GTK_WINDOW (gm), GNOMEMEETING_IMAGES "/gnomemeeting-logo-icon.png"); 
+  GdkPixbuf *pixbuf_icon = 
+    gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES "/gnomemeeting-logo-icon.png", NULL); 
 
-      /*      if (gw->splash_win)
-      gtk_widget_destroy (gw->splash_win); */
+  gtk_window_set_icon (GTK_WINDOW (gm), pixbuf_icon);
+  g_object_unref (G_OBJECT (pixbuf_icon));
+  gtk_window_set_resizable (GTK_WINDOW (gm), false);
+
+  /* Hide the splash */
   if (gw->splash_win)
     gtk_widget_hide (gw->splash_win);
+
 
   /* Start the Gconf notifiers */
   gnomemeeting_init_gconf (client);
 
   /* if the user tries to close the window : delete_event */
-  gtk_signal_connect (GTK_OBJECT (gm), "delete_event",
-		      GTK_SIGNAL_FUNC (gm_quit_callback), (gpointer) gw);
+  g_signal_connect (G_OBJECT (gm), "delete_event",
+		    G_CALLBACK (gm_quit_callback), (gpointer) gw);
 
   gnomemeeting_init_main_window_logo ();
   /* The gtk_widget_show (gm) will show the toolbar, hide it if needed */
@@ -473,12 +488,12 @@ void gnomemeeting_init_main_window ()
       (client, "/apps/gnomemeeting/view/show_control_panel", 0))
     gtk_widget_show_all (GTK_WIDGET (gw->main_notebook));
 
-  gtk_notebook_set_page (GTK_NOTEBOOK (gw->main_notebook), 
-			 selected_page);
+  gtk_notebook_set_current_page (GTK_NOTEBOOK (gw->main_notebook), 
+				 selected_page);
 
-  gtk_signal_connect_after (GTK_OBJECT (gw->main_notebook), "switch-page",
-			    GTK_SIGNAL_FUNC (notebook_page_changed_callback), 
-			    gw->main_notebook);
+  g_signal_connect_after (G_OBJECT (gw->main_notebook), "switch-page",
+			  G_CALLBACK (notebook_page_changed_callback), 
+			  gw->main_notebook);
 
 
   /* The drawing area that will display the webcam images */
@@ -488,8 +503,8 @@ void gnomemeeting_init_main_window ()
   gtk_container_add (GTK_CONTAINER (frame), gw->video_frame);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
 
-  gtk_widget_set_usize (GTK_WIDGET (gw->video_frame), 
-			GM_QCIF_WIDTH + GM_FRAME_SIZE, GM_QCIF_HEIGHT);
+  gtk_widget_set_size_request (GTK_WIDGET (gw->video_frame), 
+			       GM_QCIF_WIDTH + GM_FRAME_SIZE, GM_QCIF_HEIGHT);
 
   gw->video_image = gtk_image_new ();
   gtk_container_add (GTK_CONTAINER (gw->video_frame), gw->video_image);
@@ -517,7 +532,7 @@ void gnomemeeting_init_main_window ()
 
   /* The remote name */
   gw->remote_name = gtk_entry_new ();
-  gtk_entry_set_editable (GTK_ENTRY (gw->remote_name), FALSE);
+  gtk_editable_set_editable (GTK_EDITABLE (gw->remote_name), FALSE);
 
   gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (gw->remote_name), 
 		    0, 2, 1, 2,
@@ -589,6 +604,7 @@ void gnomemeeting_init_main_window_video_settings ()
   GtkWidget *table;
 
   GtkWidget *pixmap;
+  GdkPixbuf *pixbuf;
   GtkWidget *hscale_brightness, *hscale_colour, 
     *hscale_contrast, *hscale_whiteness;
 
@@ -611,7 +627,9 @@ void gnomemeeting_init_main_window_video_settings ()
 
 
   /* Brightness */
-  pixmap =  gnome_pixmap_new_from_xpm_d ((const char **) brightness_xpm);
+  pixbuf = gdk_pixbuf_new_from_xpm_data ((const char **) brightness_xpm);
+  pixmap =  gtk_image_new_from_pixbuf (pixbuf);
+  g_object_unref (G_OBJECT (pixbuf));
   gtk_table_attach (GTK_TABLE (table), pixmap, 0, 1, 0, 1,
 		    (GtkAttachOptions) (NULL),
 		    (GtkAttachOptions) (NULL),
@@ -631,12 +649,14 @@ void gnomemeeting_init_main_window_video_settings ()
   gtk_tooltips_set_tip (tip, hscale_brightness,
 			_("Adjust brightness"), NULL);
 
-  gtk_signal_connect (GTK_OBJECT (gw->adj_brightness), "value-changed",
-		      GTK_SIGNAL_FUNC (brightness_changed), (gpointer) gw);
+  g_signal_connect (G_OBJECT (gw->adj_brightness), "value-changed",
+		    G_CALLBACK (brightness_changed), (gpointer) gw);
 
 
   /* Whiteness */
-  pixmap =  gnome_pixmap_new_from_xpm_d ((const char **) whiteness_xpm);
+  pixbuf = gdk_pixbuf_new_from_xpm_data ((const char **) whiteness_xpm);
+  pixmap =  gtk_image_new_from_pixbuf (pixbuf);
+  g_object_unref (G_OBJECT (pixbuf));
   gtk_table_attach (GTK_TABLE (table), pixmap, 0, 1, 1, 2,
  (GtkAttachOptions) (NULL),
 		    (GtkAttachOptions) (NULL),
@@ -656,12 +676,14 @@ void gnomemeeting_init_main_window_video_settings ()
   gtk_tooltips_set_tip (tip, hscale_whiteness,
 			_("Adjust whiteness"), NULL);
 
-  gtk_signal_connect (GTK_OBJECT (gw->adj_whiteness), "value-changed",
-		      GTK_SIGNAL_FUNC (whiteness_changed), (gpointer) gw);
+  g_signal_connect (G_OBJECT (gw->adj_whiteness), "value-changed",
+		    G_CALLBACK (whiteness_changed), (gpointer) gw);
 
 
   /* Colour */
-  pixmap =  gnome_pixmap_new_from_xpm_d ((const char **) color_xpm);
+  pixbuf = gdk_pixbuf_new_from_xpm_data ((const char **) color_xpm);
+  pixmap =  gtk_image_new_from_pixbuf (pixbuf);
+  g_object_unref (G_OBJECT (pixbuf));
   gtk_table_attach (GTK_TABLE (table), pixmap, 0, 1, 2, 3,
 		    (GtkAttachOptions) (NULL),
 		    (GtkAttachOptions) (NULL),
@@ -681,12 +703,14 @@ void gnomemeeting_init_main_window_video_settings ()
   gtk_tooltips_set_tip (tip, hscale_colour,
 			_("Adjust color"), NULL);
 
-  gtk_signal_connect (GTK_OBJECT (gw->adj_colour), "value-changed",
-		      GTK_SIGNAL_FUNC (colour_changed), (gpointer) gw);
+  g_signal_connect (G_OBJECT (gw->adj_colour), "value-changed",
+		    G_CALLBACK (colour_changed), (gpointer) gw);
 
 
   /* Contrast */
-  pixmap =  gnome_pixmap_new_from_xpm_d ((const char **) contrast_xpm);
+  pixbuf = gdk_pixbuf_new_from_xpm_data ((const char **) contrast_xpm);
+  pixmap =  gtk_image_new_from_pixbuf (pixbuf);
+  g_object_unref (G_OBJECT (pixbuf));
   gtk_table_attach (GTK_TABLE (table), pixmap, 0, 1, 3, 4,
 		    (GtkAttachOptions) (NULL),
 		    (GtkAttachOptions) (NULL),
@@ -706,9 +730,9 @@ void gnomemeeting_init_main_window_video_settings ()
   gtk_tooltips_set_tip (tip, hscale_contrast,
 			_("Adjust contrast"), NULL);
 
-  gtk_signal_connect (GTK_OBJECT (gw->adj_contrast), "value-changed",
-		      GTK_SIGNAL_FUNC (contrast_changed), (gpointer) gw);
-
+  g_signal_connect (G_OBJECT (gw->adj_contrast), "value-changed",
+		    G_CALLBACK (contrast_changed), (gpointer) gw);
+  
   gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame), FALSE);
 
   label = gtk_label_new (_("Video"));  
@@ -729,6 +753,7 @@ void gnomemeeting_init_main_window_audio_settings ()
   GtkWidget *label;
   GtkWidget *hscale_play, *hscale_rec;
   GtkWidget *audio_table;
+  GdkPixbuf *pixbuf;
   GtkWidget *pixmap;
 
   int vol = 0;
@@ -745,8 +770,9 @@ void gnomemeeting_init_main_window_audio_settings ()
   gtk_container_add (GTK_CONTAINER (frame), audio_table);
   gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
 
-  pixmap = gnome_pixmap_new_from_xpm_d ((const char **) speaker_xpm);
-
+  pixbuf = gdk_pixbuf_new_from_xpm_data ((const char **) speaker_xpm); 
+  pixmap = gtk_image_new_from_pixbuf (pixbuf);
+  g_object_unref (G_OBJECT (pixbuf));
   gtk_table_attach (GTK_TABLE (audio_table), pixmap, 0, 1, 0, 1,
 		    (GtkAttachOptions) NULL,
 		    (GtkAttachOptions) NULL,
@@ -765,8 +791,9 @@ void gnomemeeting_init_main_window_audio_settings ()
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    0, 0);
 
-  pixmap = gnome_pixmap_new_from_xpm_d ((const char **) mic_xpm);
-
+  pixbuf = gdk_pixbuf_new_from_xpm_data ((const char **) mic_xpm); 
+  pixmap = gtk_image_new_from_pixbuf (pixbuf);
+  g_object_unref (G_OBJECT (pixbuf));
   gtk_table_attach (GTK_TABLE (audio_table), pixmap, 0, 1, 1, 2,
 		    (GtkAttachOptions) NULL,
 		    (GtkAttachOptions) NULL,
@@ -785,11 +812,11 @@ void gnomemeeting_init_main_window_audio_settings ()
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    0, 0);
 
-  gtk_signal_connect (GTK_OBJECT (gw->adj_play), "value-changed",
-		      GTK_SIGNAL_FUNC (audio_volume_changed), (gpointer) gw);
+  g_signal_connect (G_OBJECT (gw->adj_play), "value-changed",
+		    G_CALLBACK (audio_volume_changed), (gpointer) gw);
 
-  gtk_signal_connect (GTK_OBJECT (gw->adj_rec), "value-changed",
-		      GTK_SIGNAL_FUNC (audio_volume_changed), (gpointer) gw);
+  g_signal_connect (G_OBJECT (gw->adj_rec), "value-changed",
+		    G_CALLBACK (audio_volume_changed), (gpointer) gw);
 
   
   label = gtk_label_new (_("Audio"));

@@ -53,11 +53,4 @@ void gnomemeeting_init_menu ();
 void gnomemeeting_popup_menu_init (GtkWidget *, GM_window_widgets *);
 
 
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Creates the popup menu and attach it to the GtkWidget
- *                 given as parameter (for the ldap window).
- * PRE          :  /
- */
-void gnomemeeting_init_ldap_window_popup_menu (GtkWidget *);
-
 #endif

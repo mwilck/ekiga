@@ -121,13 +121,6 @@ void popup_menu_remote_callback (GtkWidget *, gpointer);
 void popup_menu_both_callback (GtkWidget *, gpointer);
 
 
-/* DESCRIPTION  :  This callback is called when the user clicks on "Call
- *                 this user" in the ldap window.
- * BEHAVIOR     :  Add the user name in the combo box and call him.
- * PRE          :  /
- */
-void ldap_popup_menu_callback (GtkWidget *, gpointer);
-
 /* DESCRIPTION  :  This callback is called when a gconf error happens
  * BEHAVIOR     :  Pop-up a message-box
  * PRE          :  /

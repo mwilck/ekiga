@@ -467,29 +467,3 @@ void gnomemeeting_popup_menu_init (GtkWidget *widget, GM_window_widgets *gw)
 		       display_uiinfo);
 }
 
-
-void gnomemeeting_init_ldap_window_popup_menu (GtkWidget *widget)
-{
-  GtkWidget *popup_menu_widget;
-
-  GM_ldap_window_widgets *lw = gnomemeeting_get_ldap_window (gm);
-
-  static GnomeUIInfo popup_menu [] =
-    {
-      {
-	GNOME_APP_UI_ITEM,
-	N_("Call This User"), N_("Call the selected user"),
-	(void *) ldap_popup_menu_callback, GINT_TO_POINTER(0), NULL,
-	GNOME_APP_PIXMAP_NONE, NULL,
-	0, GDK_CONTROL_MASK, NULL
-      },
-      GNOMEUIINFO_END
-    };
-
-  /* Create a popup menu to attach it to the drawing area */
-  popup_menu_widget = gnome_popup_menu_new (popup_menu);
-  gnome_popup_menu_attach (popup_menu_widget, GTK_WIDGET (widget),
-                           lw);
-}
-
-

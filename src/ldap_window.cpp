@@ -39,14 +39,10 @@
 #include "../config.h"
 
 #include "ldap_window.h"
-#include "ils.h"
-#include "config.h"
-#include "gnomemeeting.h"
-#include "videograbber.h"
-#include "common.h"
-#include "main_window.h"
-#include "menu.h"
 #include "misc.h"
+#include "ils.h"
+#include "gnomemeeting.h"
+#include "callbacks.h"
 
 #include "../pixmaps/ldap_refresh.xpm"
 #include "../pixmaps/small-close.xpm"
@@ -57,6 +53,7 @@
 extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;	
 
+static void row_activated (GtkTreeView *, GtkTreePath *, GtkTreeViewColumn *);
 static void ldap_window_clicked (GtkDialog *, int, gpointer);
 static void search_entry_modified (GtkWidget *, gpointer);
 static void search_entry_activated (GtkEntry *, gpointer);
@@ -66,6 +63,52 @@ static void gnomemeeting_init_ldap_window_notebook (int, gchar *);
 
 
 /* GTK Callbacks */
+
+/* DESCRIPTION  :  This callback is called when the user double clicks on
+ *                 a row corresonding to an user.
+ * BEHAVIOR     :  Add the user name in the combo box and call him.
+ * PRE          :  /
+ */
+void row_activated (GtkTreeView *tree_view, GtkTreePath *path,
+		    GtkTreeViewColumn *column) {
+
+  GtkListStore *xdap_users_list = NULL;
+  GtkTreeSelection *selection = NULL;
+  GtkWidget *page = NULL;
+
+  GtkTreeIter tree_iter;
+
+  GM_ldap_window_widgets *lw = gnomemeeting_get_ldap_window (gm);
+  gchar *text = NULL;
+
+  page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook),
+				    gtk_notebook_get_current_page (GTK_NOTEBOOK
+								   (lw->notebook)));
+
+  
+  /* Get data for the current page */
+  xdap_users_list = 
+    GTK_LIST_STORE (g_object_get_data (G_OBJECT (page), "list_store"));
+  
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view));
+  
+  gtk_tree_selection_get_selected (GTK_TREE_SELECTION (selection), NULL,
+				   &tree_iter);
+  
+  gtk_tree_model_get (GTK_TREE_MODEL (xdap_users_list), &tree_iter,
+		      COLUMN_IP, &text, -1);
+
+  /* if we are waiting for a call, add the IP
+     to the history, and call that user       */
+  if (MyApp->Endpoint ()->GetCallingState () == 0) {
+
+    /* this function will store a copy of text */
+    gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (lw->gw->combo)->entry), text);
+      
+    connect_cb (NULL, NULL);
+  }
+}
+
 
 /* DESCRIPTION  :  This callback is called when the user clicks
  *                 closes the window (destroy or delete_event signals).
@@ -348,7 +391,7 @@ void gnomemeeting_init_ldap_window ()
     gdk_pixbuf_new_from_xpm_data ((const gchar **) xdap_directory_xpm); 
 
   refresh_image =  gtk_image_new_from_stock (GTK_STOCK_REFRESH, 
-					  GTK_ICON_SIZE_SMALL_TOOLBAR);
+					     GTK_ICON_SIZE_SMALL_TOOLBAR);
 
   lw->gw->ldap_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_title (GTK_WINDOW (lw->gw->ldap_window), 
@@ -666,4 +709,8 @@ void gnomemeeting_init_ldap_window_notebook (int page_num, gchar *text_label)
 		     (gpointer) (xdap_users_list_store));
   g_object_set_data (G_OBJECT (page), "tree_view",
 		     (gpointer) (tree_view));
+
+  /* Signal to call the person on the clicked row */
+  g_signal_connect (G_OBJECT (tree_view), "row_activated", 
+		    G_CALLBACK (row_activated), NULL);
 }
