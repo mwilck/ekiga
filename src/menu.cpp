@@ -51,7 +51,6 @@
 
 /* Declarations */
 extern GtkWidget *gm;
-extern GnomeMeeting *MyApp;
 
 
 /* Static functions */
@@ -252,8 +251,8 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
   
   client = gconf_client_get_default ();
 
-  chat = MyApp->GetTextChat ();
-  gw = MyApp->GetMainWindow ();
+  chat = GnomeMeeting::Process ()->GetTextChat ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
   
   menubar = gtk_menu_bar_new ();
 
@@ -613,7 +612,7 @@ gnomemeeting_tray_init_menu (GtkWidget *widget)
 
   
   client = gconf_client_get_default ();
-  gw = MyApp->GetMainWindow ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
   icm = (IncomingCallMode) 
     gconf_client_get_int (client, CALL_CONTROL_KEY "incoming_call_mode", 0); 
 
@@ -712,7 +711,7 @@ gnomemeeting_menu_update_sensitivity (unsigned calling_state)
 {
   GmWindow *gw = NULL;
 
-  gw = MyApp->GetMainWindow ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
   
   switch (calling_state)
     {
@@ -759,7 +758,7 @@ gnomemeeting_menu_update_sensitivity (BOOL is_video,
 {
   GmWindow *gw = NULL;
 
-  gw = MyApp->GetMainWindow ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
   
   if (is_video) {
 

@@ -43,7 +43,11 @@
 #include "endpoint.h"
 
 
-/* The main gnomeMeeting class */
+/**
+ * COMMON NOTICE: The Application must be initialized with Init after its
+ * creation.
+ */
+
 class GnomeMeeting : public PProcess
 {
   PCLASSINFO(GnomeMeeting, PProcess);
@@ -78,6 +82,13 @@ class GnomeMeeting : public PProcess
    */
   void Disconnect (H323Connection::CallEndReason
 		   = H323Connection::EndedByLocalUser);
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Init the endpoint component of the application.
+   * PRE          :  /
+   */
+  void Init ();
 
   
   /* DESCRIPTION  :  /
@@ -165,14 +176,9 @@ class GnomeMeeting : public PProcess
   GMH323EndPoint *Endpoint (void);
   
 
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Initializes the GnomeMeeting application.
-   *                 (video grabber, endpoint, ILS, gatekeeper registering).
-   * PRE          :  /
-   */
-  void InitComponents (); 
+  static GnomeMeeting *Process ();
 
-
+  
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Builds the GUI of GnomeMeeting. GConf, GNOME
    *                 and GTK need to have been initialized before.
@@ -199,7 +205,9 @@ class GnomeMeeting : public PProcess
   GmRtpData *rtp;
 
   PMutex ep_var_mutex;
-  int call_number; 
+  int call_number;
+
+  static GnomeMeeting *GM;
 };
 
 #endif

@@ -63,7 +63,6 @@
 
 /* Declarations */
 extern GtkWidget *gm;
-extern GnomeMeeting *MyApp;
 
 
 static void applicability_check_nt (GConfClient *,
@@ -256,8 +255,8 @@ applicability_check_nt (GConfClient *client,
   GmWindow *gw = NULL;
   GMH323EndPoint *ep = NULL;
   
-  gw = MyApp->GetMainWindow ();
-  ep = MyApp->Endpoint ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
+  ep = GnomeMeeting::Process ()->Endpoint ();
   
   if ((entry->value->type == GCONF_VALUE_BOOL)
       ||(entry->value->type == GCONF_VALUE_STRING)
@@ -288,7 +287,7 @@ static void main_notebook_changed_nt (GConfClient *client, guint cid,
 
     gdk_threads_enter ();
 
-    gw = MyApp->GetMainWindow ();
+    gw = GnomeMeeting::Process ()->GetMainWindow ();
 
     if (gconf_value_get_int (entry->value) == GM_MAIN_NOTEBOOK_HIDDEN)
       gtk_widget_hide_all (gw->main_notebook);
@@ -322,8 +321,8 @@ static void microtelco_enabled_nt (GConfClient *client, guint cid,
 
     gdk_threads_enter ();
 
-    dw = MyApp->GetDruidWindow ();
-    gw = MyApp->GetMainWindow ();
+    dw = GnomeMeeting::Process ()->GetDruidWindow ();
+    gw = GnomeMeeting::Process ()->GetMainWindow ();
     
     if (gconf_value_get_bool (entry->value)) {
 
@@ -359,8 +358,8 @@ h245_tunneling_changed_nt (GConfClient *client,
   
   if (entry->value->type == GCONF_VALUE_BOOL) {
 
-    ep = MyApp->Endpoint ();
-    gw = MyApp->GetMainWindow ();
+    ep = GnomeMeeting::Process ()->Endpoint ();
+    gw = GnomeMeeting::Process ()->GetMainWindow ();
     
     ep->DisableH245Tunneling (!gconf_value_get_bool (entry->value));
     
@@ -390,8 +389,8 @@ fast_start_changed_nt (GConfClient *client,
   
   if (entry->value->type == GCONF_VALUE_BOOL) {
 
-    ep = MyApp->Endpoint ();
-    gw = MyApp->GetMainWindow ();
+    ep = GnomeMeeting::Process ()->Endpoint ();
+    gw = GnomeMeeting::Process ()->GetMainWindow ();
     
     ep->DisableFastStart (!gconf_value_get_bool (entry->value));
     
@@ -421,7 +420,7 @@ enable_video_transmission_changed_nt (GConfClient *client,
   PString name;
   GMH323EndPoint *ep = NULL;
 
-  ep = MyApp->Endpoint ();
+  ep = GnomeMeeting::Process ()->Endpoint ();
 
   if (entry->value->type == GCONF_VALUE_BOOL) {
 
@@ -468,7 +467,7 @@ enable_video_reception_changed_nt (GConfClient *client,
   PString name;
   GMH323EndPoint *ep = NULL;
 
-  ep = MyApp->Endpoint ();
+  ep = GnomeMeeting::Process ()->Endpoint ();
 
   if (entry->value->type == GCONF_VALUE_BOOL) {
 
@@ -510,7 +509,7 @@ static void silence_detection_changed_nt (GConfClient *client, guint cid,
   GMH323EndPoint *endpoint = NULL;
   
   GmWindow *gw = NULL;
-  endpoint = MyApp->Endpoint ();
+  endpoint = GnomeMeeting::Process ()->Endpoint ();
   
   if (entry->value->type == GCONF_VALUE_BOOL) {
 
@@ -532,10 +531,10 @@ static void silence_detection_changed_nt (GConfClient *client, guint cid,
       }
    
       /* We update the silence detection */
-      if (ac && MyApp->Endpoint ()->GetCallingState () == GMH323EndPoint::Connected) {
+      if (ac && GnomeMeeting::Process ()->Endpoint ()->GetCallingState () == GMH323EndPoint::Connected) {
 
 	gdk_threads_enter ();
-	gw = MyApp->GetMainWindow ();
+	gw = GnomeMeeting::Process ()->GetMainWindow ();
 	
 	if (ac != NULL) {
 	  
@@ -582,7 +581,7 @@ capabilities_changed_nt (GConfClient *client,
       || entry->value->type == GCONF_VALUE_LIST
       || entry->value->type == GCONF_VALUE_STRING) {
    
-    ep = MyApp->Endpoint ();
+    ep = GnomeMeeting::Process ()->Endpoint ();
 
     ep->RemoveAllCapabilities ();
     ep->AddAllCapabilities ();
@@ -603,7 +602,7 @@ static void fps_limit_changed_nt (GConfClient *client, guint cid,
   H323VideoCodec *vc = NULL;
   GMH323EndPoint *endpoint = NULL;
 
-  endpoint = MyApp->Endpoint ();
+  endpoint = GnomeMeeting::Process ()->Endpoint ();
   
   int fps = 30;
   double frame_time = 0.0;
@@ -659,7 +658,7 @@ maximum_video_bandwidth_changed_nt (GConfClient *client, guint cid,
 
   int bitrate = 2;
 
-  endpoint = MyApp->Endpoint ();
+  endpoint = GnomeMeeting::Process ()->Endpoint ();
   
 
   if (entry->value->type == GCONF_VALUE_INT) {
@@ -708,7 +707,7 @@ static void tr_vq_changed_nt (GConfClient *client, guint cid,
 
   int vq = 1;
 
-  endpoint = MyApp->Endpoint ();
+  endpoint = GnomeMeeting::Process ()->Endpoint ();
 
   if (entry->value->type == GCONF_VALUE_INT) {
 
@@ -752,7 +751,7 @@ static void tr_ub_changed_nt (GConfClient *client, guint cid,
   H323VideoCodec *vc = NULL;
   GMH323EndPoint *endpoint = NULL;
 
-  endpoint = MyApp->Endpoint ();
+  endpoint = GnomeMeeting::Process ()->Endpoint ();
 
   if (entry->value->type == GCONF_VALUE_INT) {
 
@@ -793,7 +792,7 @@ static void jitter_buffer_changed_nt (GConfClient *client, guint cid,
 {
   RTP_Session *session = NULL;  
   H323Connection *connection = NULL;
-  GMH323EndPoint *ep = MyApp->Endpoint ();  
+  GMH323EndPoint *ep = GnomeMeeting::Process ()->Endpoint ();  
   gdouble min_val = 20.0;
   gdouble max_val = 500.0;
 
@@ -837,7 +836,7 @@ manager_changed_nt (GConfClient *client,
 {
   GMH323EndPoint *ep = NULL;
 
-  ep = MyApp->Endpoint ();
+  ep = GnomeMeeting::Process ()->Endpoint ();
   
   if (entry->value->type == GCONF_VALUE_STRING) {
 
@@ -882,10 +881,10 @@ audio_device_changed_nt (GConfClient *client,
 
   BOOL use_lid = FALSE;
   
-  dw = MyApp->GetDruidWindow ();
-  pw = MyApp->GetPrefWindow ();
-  gw = MyApp->GetMainWindow ();
-  ep = MyApp->Endpoint ();
+  dw = GnomeMeeting::Process ()->GetDruidWindow ();
+  pw = GnomeMeeting::Process ()->GetPrefWindow ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
+  ep = GnomeMeeting::Process ()->Endpoint ();
   
   if (entry->value->type == GCONF_VALUE_STRING) {
 
@@ -978,7 +977,7 @@ video_device_changed_nt (GConfClient *client,
 {
   GMH323EndPoint *ep = NULL;
 
-  ep = MyApp->Endpoint ();
+  ep = GnomeMeeting::Process ()->Endpoint ();
   
   if ((entry->value->type == GCONF_VALUE_STRING) ||
       (entry->value->type == GCONF_VALUE_INT)) {
@@ -1014,7 +1013,7 @@ video_device_setting_changed_nt (GConfClient *client,
 
   GMH323EndPoint *ep = NULL;
 
-  ep = MyApp->Endpoint ();
+  ep = GnomeMeeting::Process ()->Endpoint ();
 
 
   if ((entry->value->type == GCONF_VALUE_STRING) ||
@@ -1082,7 +1081,7 @@ static void video_preview_changed_nt (GConfClient *client, guint cid,
   if (entry->value->type == GCONF_VALUE_BOOL) {
    
     /* We reset the video device */
-    ep = MyApp->Endpoint ();
+    ep = GnomeMeeting::Process ()->Endpoint ();
     
     if (ep && ep->GetCallingState () == GMH323EndPoint::Standby) {
     
@@ -1113,7 +1112,7 @@ audio_codecs_list_changed_nt (GConfClient *client,
    
     gdk_threads_enter ();
 
-    pw = MyApp->GetPrefWindow ();
+    pw = GnomeMeeting::Process ()->GetPrefWindow ();
 
     gnomemeeting_codecs_list_build (pw->codecs_list_store);
 
@@ -1145,7 +1144,7 @@ contacts_sections_list_group_content_changed_nt (GConfClient *client,
   
     gdk_threads_enter ();
 
-    lw = MyApp->GetLdapWindow ();
+    lw = GnomeMeeting::Process ()->GetLdapWindow ();
     
     gconf_key = gconf_entry_get_key (e);
 
@@ -1235,7 +1234,7 @@ call_forwarding_changed_nt (GConfClient *client,
 
     gdk_threads_enter ();
 
-    gw = MyApp->GetMainWindow ();
+    gw = GnomeMeeting::Process ()->GetMainWindow ();
 
   
     /* If "always_forward" is not set, we can always change the
@@ -1307,7 +1306,7 @@ call_forwarding_changed_nt (GConfClient *client,
 static void register_changed_nt (GConfClient *client, guint cid, 
 				 GConfEntry *entry, gpointer data)
 {
-  GMH323EndPoint *endpoint = MyApp->Endpoint ();
+  GMH323EndPoint *endpoint = GnomeMeeting::Process ()->Endpoint ();
  
   if (entry->value->type == GCONF_VALUE_BOOL) {
 
@@ -1327,7 +1326,7 @@ static void register_changed_nt (GConfClient *client, guint cid,
 static void ldap_visible_changed_nt (GConfClient *client, guint cid, 
 				     GConfEntry *entry, gpointer data)
 {
-  GMH323EndPoint *endpoint = MyApp->Endpoint ();
+  GMH323EndPoint *endpoint = GnomeMeeting::Process ()->Endpoint ();
 
   if (entry->value->type == GCONF_VALUE_BOOL) {
 
@@ -1354,7 +1353,7 @@ incoming_call_mode_changed_nt (GConfClient *client,
 			       GConfEntry *entry,
 			       gpointer data)
 {
-  GMH323EndPoint *endpoint = MyApp->Endpoint ();
+  GMH323EndPoint *endpoint = GnomeMeeting::Process ()->Endpoint ();
   GmWindow *gw = NULL;
 
   if (entry->value->type == GCONF_VALUE_INT) {
@@ -1363,7 +1362,7 @@ incoming_call_mode_changed_nt (GConfClient *client,
     if (gconf_client_get_bool (client, LDAP_KEY "register", 0))
       endpoint->ILSRegister ();
 
-    gw = MyApp->GetMainWindow ();
+    gw = GnomeMeeting::Process ()->GetMainWindow ();
 
     if (gconf_value_get_int (entry->value) == FORWARD)
       gconf_client_set_bool (client, CALL_FORWARDING_KEY "always_forward",
@@ -1395,7 +1394,7 @@ static void stay_on_top_changed_nt (GConfClient *client, guint cid,
 
     gdk_threads_enter ();
 
-    gw = MyApp->GetMainWindow ();
+    gw = GnomeMeeting::Process ()->GetMainWindow ();
 
     val = gconf_value_get_bool (entry->value);
 
@@ -1441,7 +1440,7 @@ lid_aec_changed_nt (GConfClient *client, guint, GConfEntry *entry, gpointer)
 
     lid_aec = gconf_value_get_int (entry->value);
 
-    ep = MyApp->Endpoint ();
+    ep = GnomeMeeting::Process ()->Endpoint ();
     lid = (ep ? ep->GetLid () : NULL);
 
     if (lid) {
@@ -1490,7 +1489,7 @@ lid_country_changed_nt (GConfClient *client, guint, GConfEntry *entry,
   
   if (entry->value->type == GCONF_VALUE_STRING) {
     
-    ep = MyApp->Endpoint ();
+    ep = GnomeMeeting::Process ()->Endpoint ();
     lid = (ep ? ep->GetLid () : NULL);
 
     country_code = g_strdup (gconf_value_get_string (entry->value));
@@ -1529,8 +1528,8 @@ gconf_error_callback (GConfClient *,
 /* The functions  */
 gboolean gnomemeeting_init_gconf (GConfClient *client)
 {
-  GmPrefWindow *pw = MyApp->GetPrefWindow ();
-  GmWindow *gw = MyApp->GetMainWindow ();
+  GmPrefWindow *pw = GnomeMeeting::Process ()->GetPrefWindow ();
+  GmWindow *gw = GnomeMeeting::Process ()->GetMainWindow ();
   int gconf_test = -1;
   
 #ifndef DISABLE_GCONF

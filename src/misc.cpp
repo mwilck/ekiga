@@ -52,7 +52,6 @@
                                                                                 
 /* Declarations */
 extern GtkWidget *gm;
-extern GnomeMeeting *MyApp;
 
 
 /* The functions */
@@ -141,7 +140,7 @@ void gnomemeeting_init_main_window_logo (GtkWidget *image)
   GdkPixbuf *text_logo_pix = NULL;
   GtkRequisition size_request;
 
-  GmWindow *gw = MyApp->GetMainWindow ();
+  GmWindow *gw = GnomeMeeting::Process ()->GetMainWindow ();
 
   gtk_widget_size_request (GTK_WIDGET (gw->video_frame), &size_request);
 
@@ -217,7 +216,7 @@ gnomemeeting_incoming_call_popup_new (gchar *utf8_name,
   gchar *msg = NULL;
   GmWindow  *gw = NULL;
     
-  gw = MyApp->GetMainWindow ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
 
   widget = gtk_dialog_new ();
   b2 = gtk_dialog_add_button (GTK_DIALOG (widget),
@@ -288,7 +287,7 @@ static int statusbar_clear_msg (gpointer data)
 
   gdk_threads_enter ();
 
-  gw = MyApp->GetMainWindow ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
   id = gtk_statusbar_get_context_id (GTK_STATUSBAR (gw->statusbar),
 				     "statusbar");
 

@@ -55,7 +55,6 @@
 /* Global Variables */
 
 extern GtkWidget *gm;
-extern GnomeMeeting *MyApp;
 
 int GDKVideoOutputDevice::devices_nbr = 0;
 
@@ -166,7 +165,7 @@ BOOL GDKVideoOutputDevice::Redraw ()
   
   /* What do we display: what gconf tells us except if we are not in 
      a call, or if it is not a valid choice */
-  if (MyApp->Endpoint ()->GetCallingState () != 2) {
+  if (GnomeMeeting::Process ()->Endpoint ()->GetCallingState () != 2) {
 
     display = 0;
   }

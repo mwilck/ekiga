@@ -49,7 +49,6 @@
 
 /* Declarations */
 extern GtkWidget *gm;
-extern GnomeMeeting *MyApp;	
 
 struct GmEditContactDialog_ {
 
@@ -268,8 +267,8 @@ dnd_drag_motion_cb (GtkWidget *tree_view,
   GValue value =  {0, };
   GtkTreeIter iter;
 
-  lw = MyApp->GetLdapWindow ();
-  chw = MyApp->GetCallsHistoryWindow ();
+  lw = GnomeMeeting::Process ()->GetLdapWindow ();
+  chw = GnomeMeeting::Process ()->GetCallsHistoryWindow ();
   
   src_widget = gtk_drag_get_source_widget (context);
   src_model = gtk_tree_view_get_model (GTK_TREE_VIEW (src_widget));
@@ -529,8 +528,8 @@ edit_contact_cb (GtkWidget *widget,
   GmLdapWindow *lw = NULL;
   GmWindow *gw = NULL;
     
-  lw = MyApp->GetLdapWindow ();
-  gw = MyApp->GetMainWindow ();
+  lw = GnomeMeeting::Process ()->GetLdapWindow ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
   
   client = gconf_client_get_default ();
 
@@ -691,7 +690,7 @@ addressbook_edit_contact_dialog_new (const char *contact_section,
   gboolean selected = false;
 
   
-  gw = MyApp->GetMainWindow ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
   client = gconf_client_get_default ();
 
   edit_dialog = new (GmEditContactDialog);
@@ -967,7 +966,7 @@ delete_contact_from_group_cb (GtkWidget *widget,
   int result = 0;
   gboolean is_group;
 
-  gw = MyApp->GetMainWindow ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
   
   /* Check that a contact is selected in a group */
   if (get_selected_contact_info (&contact_section, &contact_name,
@@ -1053,7 +1052,7 @@ contact_clicked_cb (GtkWidget *w,
   gboolean is_group = false;
   bool already_member = false;
   
-  lw = MyApp->GetLdapWindow ();
+  lw = GnomeMeeting::Process ()->GetLdapWindow ();
 
 
   if (e->type == GDK_BUTTON_PRESS || e->type == GDK_KEY_PRESS) {
@@ -1141,7 +1140,7 @@ contact_clicked_cb (GtkWidget *w,
 			 GTK_STOCK_DELETE, 0, 
 			 GTK_SIGNAL_FUNC (delete_cb), NULL, TRUE);
 
-	ep = MyApp->Endpoint ();
+	ep = GnomeMeeting::Process ()->Endpoint ();
 	calling_state = ep->GetCallingState ();
 
 	if (calling_state == GMH323EndPoint::Connected)
@@ -1232,7 +1231,7 @@ new_contact_section_cb (GtkWidget *widget,
   gchar *dialog_error_text = NULL;
   gchar *dialog_title = NULL;
   
-  gw = MyApp->GetMainWindow ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
   client = gconf_client_get_default ();
 
   is_group = (GPOINTER_TO_INT (data) == CONTACTS_GROUPS);
@@ -1329,8 +1328,8 @@ modify_contact_section_cb (GtkWidget *widget,
   gchar *gconf_key = NULL;
   gboolean is_group = false;
 
-  gw = MyApp->GetMainWindow ();
-  lw = MyApp->GetLdapWindow ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
+  lw = GnomeMeeting::Process ()->GetLdapWindow ();
   client = gconf_client_get_default ();
 
   selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (lw->tree_view));
@@ -1459,7 +1458,7 @@ contact_section_changed_cb (GtkTreeSelection *selection,
   GmLdapWindow *lw = NULL;
   GmLdapWindowPage *lwp = NULL;
 
-  lw = MyApp->GetLdapWindow ();
+  lw = GnomeMeeting::Process ()->GetLdapWindow ();
   
   if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
 
@@ -1524,7 +1523,7 @@ contact_section_clicked_cb (GtkWidget *w,
   if (e->window != gtk_tree_view_get_bin_window (tree_view)) 
     return FALSE;
 
-  lw = MyApp->GetLdapWindow ();
+  lw = GnomeMeeting::Process ()->GetLdapWindow ();
 
   if (e->type == GDK_BUTTON_PRESS || e->type == GDK_KEY_PRESS) {
 
@@ -1660,7 +1659,7 @@ delete_cb (GtkWidget *w,
 {
   GmLdapWindow *lw = NULL;
 
-  lw = MyApp->GetLdapWindow ();
+  lw = GnomeMeeting::Process ()->GetLdapWindow ();
 
 
   if (get_selected_contact_info (NULL, NULL, NULL, NULL, NULL)) 
@@ -1700,7 +1699,7 @@ call_user_cb (GtkWidget *w,
   /* Called from the addressbook main menu */
   if (!data) {
 
-    lw = MyApp->GetLdapWindow ();
+    lw = GnomeMeeting::Process ()->GetLdapWindow ();
     
     page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), 
 				      gtk_notebook_get_current_page
@@ -1752,7 +1751,7 @@ contact_activated_cb (GtkTreeView *tree_view,
   
   GmWindow *gw = NULL;
 
-  gw = MyApp->GetMainWindow ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
 
   selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view));
   
@@ -1774,7 +1773,7 @@ contact_activated_cb (GtkTreeView *tree_view,
     
       /* if we are waiting for a call, add the IP
 	 to the history, and call that user       */
-      if (MyApp->Endpoint ()->GetCallingState () == GMH323EndPoint::Standby) {
+      if (GnomeMeeting::Process ()->Endpoint ()->GetCallingState () == GMH323EndPoint::Standby) {
       
 	/* this function will store a copy of text */
 	gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry),
@@ -1783,7 +1782,7 @@ contact_activated_cb (GtkTreeView *tree_view,
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->connect_button),
 				      true);
       }
-      else if (MyApp->Endpoint ()->GetCallingState () == GMH323EndPoint::Connected) {
+      else if (GnomeMeeting::Process ()->Endpoint ()->GetCallingState () == GMH323EndPoint::Connected) {
 
 	transfer_call_cb (NULL, (gpointer) contact_url);
       }
@@ -1814,8 +1813,8 @@ contact_section_activated_cb (GtkTreeView *tree_view,
   GmWindow *gw = NULL;
   GmLdapWindow *lw = NULL;
 
-  gw = MyApp->GetMainWindow ();
-  lw = MyApp->GetLdapWindow ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
+  lw = GnomeMeeting::Process ()->GetLdapWindow ();
 
   selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view));
   
@@ -1864,7 +1863,7 @@ refresh_server_content_cb (GtkWidget *w,
   
   GtkWidget *page = NULL;
 
-  lw = MyApp->GetLdapWindow ();
+  lw = GnomeMeeting::Process ()->GetLdapWindow ();
   gtk_notebook_set_current_page (GTK_NOTEBOOK (lw->notebook), 
 				 page_num);
   page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), 
@@ -2403,7 +2402,7 @@ get_selected_contact_info (gchar **contact_section,
   GmLdapWindowPage *lwp = NULL;
   GmLdapWindow *lw = NULL;
 
-  lw = MyApp->GetLdapWindow ();
+  lw = GnomeMeeting::Process ()->GetLdapWindow ();
   
   /* Get the required data from the GtkNotebook page */
   page_num = gtk_notebook_get_current_page (GTK_NOTEBOOK (lw->notebook));
@@ -2485,8 +2484,8 @@ gnomemeeting_addressbook_update_menu_sensitivity ()
   GMH323EndPoint *ep = NULL;
   int calling_state = GMH323EndPoint::Standby;
   
-  lw = MyApp->GetLdapWindow ();
-  ep = MyApp->Endpoint ();
+  lw = GnomeMeeting::Process ()->GetLdapWindow ();
+  ep = GnomeMeeting::Process ()->Endpoint ();
 
   if (!get_selected_contact_info (NULL, NULL, &contact_url, NULL, &is_group))
     is_section = true;
@@ -2800,7 +2799,7 @@ void gnomemeeting_ldap_window_destroy_notebook_pages ()
   GtkWidget *page = NULL;
   int i = 0;
 
-  lw = MyApp->GetLdapWindow ();
+  lw = GnomeMeeting::Process ()->GetLdapWindow ();
   
   while ((page =
 	  gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), i))) {
@@ -2849,7 +2848,7 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
       {"text/plain", GTK_TARGET_SAME_APP, 0}
     };
  
-  GmLdapWindow *lw = MyApp->GetLdapWindow ();
+  GmLdapWindow *lw = GnomeMeeting::Process ()->GetLdapWindow ();
   GmLdapWindowPage *current_lwp = NULL;
 
   
@@ -3269,7 +3268,7 @@ gnomemeeting_addressbook_sections_populate ()
   int p = 0, cpt = 0;
   int selected_page = 0;
   
-  lw = MyApp->GetLdapWindow ();
+  lw = GnomeMeeting::Process ()->GetLdapWindow ();
   client = gconf_client_get_default ();
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (lw->tree_view));
   selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (lw->tree_view));

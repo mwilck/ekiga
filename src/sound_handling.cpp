@@ -65,7 +65,6 @@
 static void dialog_response_cb (GtkWidget *, gint, gpointer);
   
 extern GtkWidget *gm;
-extern GnomeMeeting *MyApp;
 
 
 /* The GTK callbacks */
@@ -73,7 +72,7 @@ void dialog_response_cb (GtkWidget *w, gint, gpointer data)
 {
   GmDruidWindow *dw = NULL;
 
-  dw = MyApp->GetDruidWindow ();
+  dw = GnomeMeeting::Process ()->GetDruidWindow ();
 
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (dw->audio_test_button),
 				false);
@@ -279,7 +278,7 @@ void GMAudioRP::Main ()
   PWaitAndSignal m(quit_mutex);
   thread_sync_point.Signal ();
   
-  gw = MyApp->GetMainWindow ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
   client = gconf_client_get_default ();
 
 #ifndef TRY_PLUGINS
@@ -438,7 +437,7 @@ GMAudioTester::GMAudioTester (GMH323EndPoint *e)
   ep = e;
   stop = FALSE;
 
-  gw = MyApp->GetMainWindow ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
 
 #endif
   
@@ -469,7 +468,7 @@ void GMAudioTester::Main ()
   
   gchar *msg = NULL;
 
-  dw = MyApp->GetDruidWindow ();
+  dw = GnomeMeeting::Process ()->GetDruidWindow ();
 
   PWaitAndSignal m(quit_mutex);
   thread_sync_point.Signal ();

@@ -53,7 +53,6 @@
 #include "gtk_menu_extensions.h"
 
 /* Declarations */
-extern GnomeMeeting *MyApp;
 extern GtkWidget *gm;
 
 static gint
@@ -66,14 +65,14 @@ TransferTimeOut (gpointer data)
   GMH323EndPoint *ep = NULL;
   
   gdk_threads_enter ();
-  ep = MyApp->Endpoint ();
+  ep = GnomeMeeting::Process ()->Endpoint ();
 
   if (ep)
     call_token = ep->GetCurrentCallToken ();
 
   if (!call_token.IsEmpty ()) {
 
-    gw = MyApp->GetMainWindow ();
+    gw = GnomeMeeting::Process ()->GetMainWindow ();
     gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Call transfer failed"), _("The call transfer failed, the user was either unreachable, or simply busy when he received the call transfer request."));
     gnomemeeting_log_insert (gw->history_text_view, _("Call transfer failed"));
   }
@@ -201,7 +200,7 @@ BOOL GMURL::operator != (GMURL u)
 GMURLHandler::GMURLHandler (PString c, BOOL transfer)
   :PThread (1000, AutoDeleteThread)
 {
-  gw = MyApp->GetMainWindow ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
   url = GMURL (c);
 
   answer_call = FALSE;
@@ -214,7 +213,7 @@ GMURLHandler::GMURLHandler (PString c, BOOL transfer)
 GMURLHandler::GMURLHandler ()
   :PThread (1000, AutoDeleteThread)
 {
-  gw = MyApp->GetMainWindow ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
 
   answer_call = TRUE;
   
@@ -249,10 +248,10 @@ void GMURLHandler::Main ()
   
   gnomemeeting_threads_enter ();
   client = gconf_client_get_default ();
-  gw = MyApp->GetMainWindow ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
   gnomemeeting_threads_leave ();
   
-  endpoint = MyApp->Endpoint ();
+  endpoint = GnomeMeeting::Process ()->Endpoint ();
 
 
   /* Answer the current call in a separate thread if required */

@@ -54,8 +54,6 @@
 
 
 /* Declarations */
-
-extern GnomeMeeting *MyApp;
 extern GtkWidget *gm;
 
 
@@ -68,7 +66,7 @@ GMH323Connection::GMH323Connection (GMH323EndPoint & ep,
   int max_jitter = 1000;
 
   gnomemeeting_threads_enter ();
-  gw = MyApp->GetMainWindow ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
 
   opened_audio_channels = 0;
   opened_video_channels = 0;
@@ -190,7 +188,7 @@ GMH323Connection::OnAnswerCall (const PString & caller,
 {
   IncomingCallMode icm = AVAILABLE;
 
-  MyApp -> Endpoint () -> SetCurrentCallToken (GetCallToken());
+  GnomeMeeting::Process () -> Endpoint () -> SetCurrentCallToken (GetCallToken());
 
   gnomemeeting_threads_enter ();  
   icm = (IncomingCallMode)
@@ -284,7 +282,7 @@ GMH323Connection::HandleCallTransferFailure (const int returnError)
   GmWindow *gw = NULL;
   
   gnomemeeting_threads_enter ();
-  gw = MyApp->GetMainWindow ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
   gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Call transfer failed"), _("The remote user tried to transfer your call to another user, but it failed."));
   gnomemeeting_log_insert (gw->history_text_view, _("Call transfer failed"));
   gnomemeeting_threads_leave ();

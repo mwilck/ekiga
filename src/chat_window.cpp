@@ -49,12 +49,11 @@
 #include "gtk_menu_extensions.h"
 
 extern GtkWidget *gm;
-extern GnomeMeeting *MyApp;
 
 
 static void chat_entry_activate (GtkEditable *w, gpointer data)
 {
-  GMH323EndPoint *endpoint = MyApp->Endpoint ();
+  GMH323EndPoint *endpoint = GnomeMeeting::Process ()->Endpoint ();
   PString s;
     
   if (endpoint) {
@@ -103,7 +102,7 @@ void gnomemeeting_text_chat_clear (GtkWidget *w, GmTextChat *chat)
   GmWindow *gw = NULL;
   GtkTextIter start_iter, end_iter;
 
-  gw = MyApp->GetMainWindow ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
   
   gtk_text_buffer_get_start_iter (chat->text_buffer, &start_iter);
   gtk_text_buffer_get_end_iter (chat->text_buffer, &end_iter);
@@ -125,8 +124,8 @@ gnomemeeting_text_chat_insert (PString local, PString str, int user)
   GmTextChat *chat = NULL;
   GmWindow *gw = NULL;
 
-  gw = MyApp->GetMainWindow ();
-  chat = MyApp->GetTextChat ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
+  chat = GnomeMeeting::Process ()->GetTextChat ();
 
   gtk_text_buffer_get_end_iter (chat->text_buffer, &iter);
 

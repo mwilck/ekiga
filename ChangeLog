@@ -1,5 +1,20 @@
 2003-10-28 Damien Sandras  <dsandras@seconix.com>
 
+	* src/callbacks.cpp, src/chat_window.cpp, src/config.cpp,
+	src/connection.cpp, src/druid.cpp, src/endpoint.cpp, 
+	src/endpoint.h, src/gatekeeper.cpp, src/gdkvideoio.cpp,
+	src/gnomemeeting.cpp, src/gnomemeeting.h, src/ils.cpp,
+	src/ldap_window.cpp, src/lid.cpp, src/main_window.cpp,
+	src/menu.cpp, src/misc.cpp, src/pref_window.cpp,
+	src/sound_handling.cpp, src/toolbar.cpp, src/tools.cpp, src/tray.cpp,
+	src/urlhandler.cpp, src/videograbber.cpp: Added a static method to
+	the GnomeMeeting class to get the current and first instance
+	of the class. That permits to get rid of one global variable
+	in all files as we can use the static method to get a pointer
+	to the first and unique instance.
+	
+2003-10-28 Damien Sandras  <dsandras@seconix.com>
+
 	* src/endpoint.cpp: Tried to fix the problem described
 	by Flynn about the remote party number.
 	

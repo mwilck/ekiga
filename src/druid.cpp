@@ -72,7 +72,6 @@ static void gnomemeeting_init_druid_connection_type_page (GnomeDruid *,
 							  int, int);
 
 extern GtkWidget *gm;
-extern GnomeMeeting *MyApp;
 
 
 /* GTK Callbacks */
@@ -81,7 +80,7 @@ static void
 audio_test_button_clicked (GtkWidget *w,
 			   gpointer data)
 {
-  GMH323EndPoint *ep = MyApp->Endpoint ();
+  GMH323EndPoint *ep = GnomeMeeting::Process ()->Endpoint ();
 
   if (GTK_TOGGLE_BUTTON (w)->active) {
 
@@ -145,8 +144,8 @@ gnomemeeting_druid_cancel (GtkWidget *w, gpointer data)
   GmWindow *gw = NULL;
   GmDruidWindow *dw = NULL;
 
-  gw = MyApp->GetMainWindow ();
-  dw = MyApp->GetDruidWindow ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
+  dw = GnomeMeeting::Process ()->GetDruidWindow ();
 
   gnome_druid_set_page (dw->druid, GNOME_DRUID_PAGE (dw->page_edge));
   gtk_widget_hide (gw->druid_window);
@@ -173,8 +172,8 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
   
   client = gconf_client_get_default ();
 
-  gw = MyApp->GetMainWindow ();
-  dw = MyApp->GetDruidWindow ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
+  dw = GnomeMeeting::Process ()->GetDruidWindow ();
 
 
   /* Always register to make the callto available,the user can choose
@@ -216,7 +215,7 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
       gconf_client_set_bool (client, SERVICES_KEY "enable_microtelco",
 			     true, 0);
 
-      MyApp->Endpoint ()->GatekeeperRegister ();
+      GnomeMeeting::Process ()->Endpoint ()->GatekeeperRegister ();
     }
 
     g_free (gconf_string);   
@@ -256,7 +255,7 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
 	&& registering_method == 1) {
 
       gconf_client_set_int (client, GATEKEEPER_KEY "registering_method", 0, 0);
-      MyApp->Endpoint ()->GatekeeperRegister ();
+      GnomeMeeting::Process ()->Endpoint ()->GatekeeperRegister ();
     }
 
     g_free (gk_name);
@@ -297,7 +296,7 @@ gnomemeeting_druid_user_page_check (GnomeDruid *druid)
   
   /* Fetch data */
   client = gconf_client_get_default ();
-  dw = MyApp->GetDruidWindow ();
+  dw = GnomeMeeting::Process ()->GetDruidWindow ();
   
 
   /* We check that all fields are present, or the toggle desactivated */
@@ -339,7 +338,7 @@ gnomemeeting_druid_entry_changed (GtkWidget *w, gpointer data)
 {
   GmDruidWindow *dw = NULL;
 
-  dw = MyApp->GetDruidWindow ();
+  dw = GnomeMeeting::Process ()->GetDruidWindow ();
 
   gnomemeeting_druid_user_page_check (dw->druid);
 }
@@ -358,8 +357,8 @@ gnomemeeting_druid_radio_changed (GtkToggleButton *b, gpointer data)
   GmWindow *gw = NULL;
   GmDruidWindow *dw = NULL;
   
-  gw = MyApp->GetMainWindow ();
-  dw = MyApp->GetDruidWindow ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
+  dw = GnomeMeeting::Process ()->GetDruidWindow ();
   client = gconf_client_get_default ();
 
   /* Dialup */
@@ -441,7 +440,7 @@ static void
 gnomemeeting_druid_page_prepare (GnomeDruidPage *page, GnomeDruid *druid,
 				 gpointer data)
 {
-  GmDruidWindow *dw = MyApp->GetDruidWindow ();
+  GmDruidWindow *dw = GnomeMeeting::Process ()->GetDruidWindow ();
   GConfClient *client = gconf_client_get_default ();
   
   int kind_of_net = 1, cpt = 1;
@@ -506,7 +505,7 @@ gnomemeeting_druid_final_page_prepare (GnomeDruid *druid)
 
   /* Fetch the data */
   GConfClient *client = gconf_client_get_default ();
-  dw = MyApp->GetDruidWindow ();
+  dw = GnomeMeeting::Process ()->GetDruidWindow ();
 
   group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (dw->kind_of_net));
   while (group) {
@@ -601,7 +600,7 @@ gnomemeeting_init_druid_user_page (GnomeDruid *druid, int p, int t)
   GnomeDruidPageStandard *page_standard = NULL;
 
 
-  dw = MyApp->GetDruidWindow ();
+  dw = GnomeMeeting::Process ()->GetDruidWindow ();
   page_standard = 
     GNOME_DRUID_PAGE_STANDARD (gnome_druid_page_standard_new ());
 
@@ -682,7 +681,7 @@ gnomemeeting_init_druid_connection_type_page (GnomeDruid *druid, int p, int t)
 
   GConfClient *client = NULL;
 
-  GmDruidWindow *dw = MyApp->GetDruidWindow ();
+  GmDruidWindow *dw = GnomeMeeting::Process ()->GetDruidWindow ();
   GnomeDruidPageStandard *page_standard = NULL;
 
 
@@ -772,8 +771,8 @@ gnomemeeting_init_druid_audio_devices_page (GnomeDruid *druid, int p, int t)
 
   GConfClient *client = gconf_client_get_default ();
 
-  GmDruidWindow *dw = MyApp->GetDruidWindow ();
-  GmWindow *gw = MyApp->GetMainWindow ();
+  GmDruidWindow *dw = GnomeMeeting::Process ()->GetDruidWindow ();
+  GmWindow *gw = GnomeMeeting::Process ()->GetMainWindow ();
 
   gchar **array = NULL;
   gchar *title = NULL;
@@ -864,8 +863,8 @@ gnomemeeting_init_druid_video_devices_page (GnomeDruid *druid, int p, int t)
 
   GnomeDruidPageStandard *page_standard = NULL;
 
-  GmWindow *gw = MyApp->GetMainWindow ();
-  GmDruidWindow *dw = MyApp->GetDruidWindow ();
+  GmWindow *gw = GnomeMeeting::Process ()->GetMainWindow ();
+  GmDruidWindow *dw = GnomeMeeting::Process ()->GetDruidWindow ();
 
   page_standard = 
     GNOME_DRUID_PAGE_STANDARD (gnome_druid_page_standard_new ());
@@ -934,7 +933,7 @@ gnomemeeting_init_druid_ixj_device_page (GnomeDruid *druid, int p, int t)
   GtkWidget *vbox = NULL;
   GtkWidget *label = NULL;
 
-  GmDruidWindow *dw = MyApp->GetDruidWindow ();
+  GmDruidWindow *dw = GnomeMeeting::Process ()->GetDruidWindow ();
     
   GConfClient *client = gconf_client_get_default ();
 

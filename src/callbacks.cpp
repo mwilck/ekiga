@@ -48,7 +48,6 @@
 
 
 /* Declarations */
-extern GnomeMeeting *MyApp;	
 extern GtkWidget *gm;
 
 
@@ -64,10 +63,10 @@ hold_call_cb (GtkWidget *widget,
   H323Connection *connection = NULL;
   GMH323EndPoint *endpoint = NULL;
   
-  gw = MyApp->GetMainWindow ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
 
   gdk_threads_leave ();
-  endpoint = MyApp->Endpoint ();
+  endpoint = GnomeMeeting::Process ()->Endpoint ();
   connection =
       endpoint->FindConnectionWithLock (endpoint->GetCurrentCallToken ());
   gdk_threads_enter ();
@@ -132,8 +131,8 @@ transfer_call_cb (GtkWidget* widget,
   GConfClient *client = NULL;
 
   client = gconf_client_get_default ();
-  endpoint = MyApp->Endpoint ();
-  gw = MyApp->GetMainWindow ();
+  endpoint = GnomeMeeting::Process ()->Endpoint ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
 
   transfer_call_popup =
         gtk_dialog_new_with_buttons (_("Edit the contact information"), 
@@ -207,7 +206,7 @@ transfer_call_cb (GtkWidget* widget,
 
 void save_callback (GtkWidget *widget, gpointer data)
 {
-  MyApp->Endpoint ()->SavePicture ();
+  GnomeMeeting::Process ()->Endpoint ()->SavePicture ();
 }
 
 
@@ -231,10 +230,10 @@ void pause_channel_callback (GtkWidget *widget, gpointer data)
 
   gdk_threads_leave ();
   
-  endpoint = MyApp->Endpoint ();
+  endpoint = GnomeMeeting::Process ()->Endpoint ();
   current_call_token = endpoint->GetCurrentCallToken ();
 
-  gw = MyApp->GetMainWindow ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
 
   if (!current_call_token.IsEmpty ())
     connection =
@@ -360,29 +359,29 @@ void gnomemeeting_component_view (GtkWidget *w, gpointer data)
 
 void connect_cb (GtkWidget *widget, gpointer data)
 {	
-  GmWindow *gw = MyApp->GetMainWindow ();
+  GmWindow *gw = GnomeMeeting::Process ()->GetMainWindow ();
 
   if (gw->incoming_call_popup)
     gtk_widget_destroy (gw->incoming_call_popup);
 
   gw->incoming_call_popup = NULL;
 
-  if ((MyApp->Endpoint ()->GetCallingState () == GMH323EndPoint::Standby) ||
-      (MyApp->Endpoint ()->GetCallingState () == GMH323EndPoint::Called))
-    MyApp->Connect ();
+  if ((GnomeMeeting::Process ()->Endpoint ()->GetCallingState () == GMH323EndPoint::Standby) ||
+      (GnomeMeeting::Process ()->Endpoint ()->GetCallingState () == GMH323EndPoint::Called))
+    GnomeMeeting::Process ()->Connect ();
 }
 
 
 void disconnect_cb (GtkWidget *widget, gpointer data)
 {	
-  GmWindow *gw = MyApp->GetMainWindow ();
+  GmWindow *gw = GnomeMeeting::Process ()->GetMainWindow ();
 
   if (gw->incoming_call_popup)
     gtk_widget_destroy (gw->incoming_call_popup);
 
   gw->incoming_call_popup = NULL;
   
-  MyApp->Disconnect ();
+  GnomeMeeting::Process ()->Disconnect ();
 }
 
 
@@ -482,7 +481,7 @@ void about_callback (GtkWidget *widget, gpointer parent_window)
 
 void quit_callback (GtkWidget *widget, gpointer data)
 {
-  GmWindow *gw = MyApp->GetMainWindow ();
+  GmWindow *gw = GnomeMeeting::Process ()->GetMainWindow ();
 
   gtk_widget_hide (gm);
   gtk_widget_hide (gw->docklet);

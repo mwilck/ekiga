@@ -48,7 +48,6 @@
 
 
 extern GtkWidget *gm;
-extern GnomeMeeting *MyApp;
 
 
 static void dnd_drag_data_get_cb (GtkWidget *,
@@ -127,7 +126,7 @@ gnomemeeting_calls_history_window_add_call (int i,
   
   GmCallsHistoryWindow *chw = NULL;
 
-  chw = MyApp->GetCallsHistoryWindow ();
+  chw = GnomeMeeting::Process ()->GetCallsHistoryWindow ();
   
   switch (i) {
 
@@ -336,7 +335,7 @@ GtkWidget *gnomemeeting_history_window_new ()
   GtkTextBuffer *buffer = NULL;
   GtkTextIter end;
 
-  GmWindow *gw = MyApp->GetMainWindow ();
+  GmWindow *gw = GnomeMeeting::Process ()->GetMainWindow ();
 
   /* Fix me, create a structure for that so that we don't use
      gw here */

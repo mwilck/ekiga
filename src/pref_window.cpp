@@ -54,7 +54,6 @@
 /* Declarations */
 
 extern GtkWidget *gm;
-extern GnomeMeeting *MyApp;	
 
 
 static void personal_data_update_button_clicked (GtkWidget *,
@@ -152,7 +151,7 @@ static void personal_data_update_button_clicked (GtkWidget *widget,
   GMH323EndPoint *endpoint = NULL;
   GConfClient *client = NULL;
 
-  endpoint = MyApp->Endpoint ();
+  endpoint = GnomeMeeting::Process ()->Endpoint ();
   client = gconf_client_get_default ();
 
   /* Both are able to not register if the option is not active */
@@ -170,7 +169,7 @@ static void gatekeeper_update_button_clicked (GtkWidget *widget,
 					      gpointer data)
 {
   /* Register the current Endpoint to the Gatekeeper */
-  MyApp->Endpoint ()->GatekeeperRegister ();
+  GnomeMeeting::Process ()->Endpoint ()->GatekeeperRegister ();
 }
 
 
@@ -311,7 +310,7 @@ static void codecs_list_info_button_clicked_callback (GtkWidget *widget,
   GtkTreeSelection *selection = NULL;
 
 
-  gw = MyApp->GetMainWindow ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
 
   /* Get the current selected codec name, there is always one */
   tree_view = GTK_TREE_VIEW (g_object_get_data (G_OBJECT (data), "tree_view"));
@@ -613,7 +612,7 @@ gnomemeeting_pref_window_add_update_button (GtkWidget *box,
   GmPrefWindow *pw = NULL;                                           
 
   
-  pw = MyApp->GetPrefWindow ();                                      
+  pw = GnomeMeeting::Process ()->GetPrefWindow ();                                      
 
   image = gtk_image_new_from_stock (stock_id, GTK_ICON_SIZE_BUTTON);
   button = gnomemeeting_button_new (label, image);
@@ -805,7 +804,7 @@ gnomemeeting_init_pref_window_h323_advanced (GtkWidget *window,
 			    _("String"),
 			    NULL};
 
-  pw = MyApp->GetPrefWindow ();
+  pw = GnomeMeeting::Process ()->GetPrefWindow ();
 
   
   /* Packing widget */
@@ -915,8 +914,8 @@ gnomemeeting_init_pref_window_audio_devices (GtkWidget *window,
 		   NULL};
 
 
-  gw = MyApp->GetMainWindow ();
-  pw = MyApp->GetPrefWindow ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
+  pw = GnomeMeeting::Process ()->GetPrefWindow ();
   
 
 #ifdef TRY_PLUGINS
@@ -993,8 +992,8 @@ gnomemeeting_init_pref_window_video_devices (GtkWidget *window,
 			    NULL};
 
 
-  gw = MyApp->GetMainWindow ();
-  pw = MyApp->GetPrefWindow ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
+  pw = GnomeMeeting::Process ()->GetPrefWindow ();
   
 
 #ifdef TRY_PLUGINS
@@ -1068,7 +1067,7 @@ gnomemeeting_init_pref_window_audio_codecs (GtkWidget *window,
                                                        
 
   /* Get the data */
-  GmPrefWindow *pw = MyApp->GetPrefWindow ();
+  GmPrefWindow *pw = GnomeMeeting::Process ()->GetPrefWindow ();
 
 
   /* Packing widgets */
@@ -1215,8 +1214,8 @@ gnomemeeting_init_pref_window_video_codecs (GtkWidget *window,
   GtkWidget *subsection = NULL;
   GmPrefWindow *pw = NULL;
 
-  pw = MyApp->GetPrefWindow ();
-  
+  pw = GnomeMeeting::Process ()->GetPrefWindow ();
+
   subsection = gnome_prefs_subsection_new (window, container,
 					   _("General Settings"), 2, 1);
 
@@ -1263,12 +1262,12 @@ gnomemeeting_pref_window_refresh_devices_list (GtkWidget *widget,
 
   gchar **array = NULL;
   
-  gw = MyApp->GetMainWindow ();
-  pw = MyApp->GetPrefWindow ();
-  dw = MyApp->GetDruidWindow ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
+  pw = GnomeMeeting::Process ()->GetPrefWindow ();
+  dw = GnomeMeeting::Process ()->GetDruidWindow ();
 
-  MyApp->DetectDevices ();
-  
+  GnomeMeeting::Process ()->DetectDevices ();
+
   /* The player */
   array = gw->audio_player_devices.ToCharArray ();
   gnome_prefs_string_option_menu_update (pw->audio_player,

@@ -72,16 +72,15 @@
 
 
 extern GtkWidget *gm;
-extern GnomeMeeting *MyApp;
 
 
 /* The class */
 GMH323EndPoint::GMH323EndPoint ()
 {
   /* Get the GTK structures and GConf client */
-  gw = MyApp->GetMainWindow ();
-  lw = MyApp->GetLdapWindow ();
-  chat = MyApp->GetTextChat ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
+  lw = GnomeMeeting::Process ()->GetLdapWindow ();
+  chat = GnomeMeeting::Process ()->GetTextChat ();
   
   /* Initialise the endpoint paramaters */
   video_grabber = NULL;
@@ -120,8 +119,6 @@ GMH323EndPoint::GMH323EndPoint ()
 
   NoAnswerTimer.SetNotifier (PCREATE_NOTIFIER (OnNoAnswerTimeout));
   CallPendingTimer.SetNotifier (PCREATE_NOTIFIER (OnCallPending));
-
-  Init ();
 }
 
 
@@ -170,8 +167,8 @@ void GMH323EndPoint::UpdateDevices ()
 
   BOOL preview = FALSE;
   
-  pw = MyApp->GetPrefWindow ();
-  gw = MyApp->GetMainWindow ();
+  pw = GnomeMeeting::Process ()->GetPrefWindow ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
 
 
   /* Get the gconf settings */
@@ -1099,7 +1096,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   GmRtpData *rtp = NULL;
 
-  rtp = MyApp->GetRtpData ();
+  rtp = GnomeMeeting::Process ()->GetRtpData ();
   
   if (connection.GetConnectionStartTime ().IsValid ())
     t = PTime () - connection.GetConnectionStartTime();
@@ -1922,8 +1919,8 @@ GMH323EndPoint::OnRTPTimeout (PTimer &, INT)
   float lost_packets_per = 0.0;
   float late_packets_per = 0.0;
 
-  rtp = MyApp->GetRtpData ();
-  gw = MyApp->GetMainWindow ();
+  rtp = GnomeMeeting::Process ()->GetRtpData ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
 
   con = FindConnectionWithLock (GetCurrentCallToken ());
 
@@ -2146,7 +2143,7 @@ GMH323EndPoint::OnNoAnswerTimeout (PTimer &,
   else
     forward_host = PString ("");
 
-  gw = MyApp->GetMainWindow ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
 
   /* Destroy the incoming call popup */
   if (gw->incoming_call_popup) {
@@ -2194,7 +2191,7 @@ GMH323EndPoint::OnCallPending (PTimer &,
   GmWindow *gw = NULL;
   BOOL is_ringing;
   
-  gw = MyApp->GetMainWindow ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
 
   gdk_threads_enter ();
   gnomemeeting_tray_flash (gw->docklet);

@@ -51,7 +51,12 @@
 #include <ixjlid.h>
 #endif
 
- 
+
+/**
+ * COMMON NOTICE: The Endpoint must be initialized with Init after its
+ * creation.
+ */
+
 class GMH323EndPoint : public H323EndPoint
 {
   PCLASSINFO(GMH323EndPoint, H323EndPoint);
@@ -76,6 +81,14 @@ class GMH323EndPoint : public H323EndPoint
   ~GMH323EndPoint ();
 
 
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Init the endpoint internal values and the various
+   *                 components.
+   * PRE          :  /
+   */
+  void Init ();
+
+  
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Makes a call to the given address, and fills in the
    *                 call taken. It returns a locked pointer to the connection
@@ -509,14 +522,6 @@ class GMH323EndPoint : public H323EndPoint
    * PRE          :  /
    */
   void TransferCallWait ();
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Init the endpoint internal values and the various
-   *                 components.
-   * PRE          :  /
-   */
-  void Init ();
 
   
   /* DESCRIPTION  :  /

@@ -77,7 +77,6 @@
 
 /* Declarations */
 extern GtkWidget *gm;
-extern GnomeMeeting *MyApp;	
 
 
 static void video_window_shown_cb (GtkWidget *, gpointer);
@@ -119,7 +118,7 @@ gint StressTest (gpointer data)
    gdk_threads_enter ();
 
 
-   GmWindow *gw = MyApp->GetMainWindow ();
+   GmWindow *gw = GnomeMeeting::Process ()->GetMainWindow ();
 
    if (!GTK_TOGGLE_BUTTON (gw->connect_button)->active) {
 
@@ -147,7 +146,7 @@ video_window_shown_cb (GtkWidget *w, gpointer data)
   GConfClient *client = NULL;
   GMH323EndPoint *endpoint = NULL;
 
-  endpoint = MyApp->Endpoint ();
+  endpoint = GnomeMeeting::Process ()->Endpoint ();
   client = gconf_client_get_default ();
 
   if (endpoint
@@ -175,8 +174,8 @@ stats_drawing_area_exposed (GtkWidget *drawing_area, gpointer data)
   int cpt = 0;
   int pos = 0;
   
-  GmWindow *gw = MyApp->GetMainWindow ();
-  GmRtpData *rtp = MyApp->GetRtpData (); 
+  GmWindow *gw = GnomeMeeting::Process ()->GetMainWindow ();
+  GmRtpData *rtp = GnomeMeeting::Process ()->GetRtpData (); 
   GdkPoint points [50];
 
   int width_step = (int) GTK_WIDGET (drawing_area)->allocation.width / 40;
@@ -239,7 +238,7 @@ stats_drawing_area_exposed (GtkWidget *drawing_area, gpointer data)
 
 
   /* Compute the height_step */
-  if (MyApp->Endpoint ()->GetCallingState () == GMH323EndPoint::Connected) {
+  if (GnomeMeeting::Process ()->Endpoint ()->GetCallingState () == GMH323EndPoint::Connected) {
 
     for (cpt = 0 ; cpt < 50 ; cpt++) {
     
@@ -380,7 +379,7 @@ dnd_drag_data_received_cb (GtkWidget *widget,
   gchar **data_split = NULL;
 
 
-  gw = MyApp->GetMainWindow ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
   
   if (selection_data && selection_data->data) {
 
@@ -388,7 +387,7 @@ dnd_drag_data_received_cb (GtkWidget *widget,
 
     if (data_split && data_split [1]) {
 
-      if (MyApp->Endpoint ()->GetCallingState () == GMH323EndPoint::Standby) {
+      if (GnomeMeeting::Process ()->Endpoint ()->GetCallingState () == GMH323EndPoint::Standby) {
       
 	/* this function will store a copy of text */
 	gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry),
@@ -422,7 +421,7 @@ gnomemeeting_new_event (BonoboListener    *listener,
   char **argv;
   CORBA_sequence_CORBA_string *args;
   
-  GmWindow *gw = MyApp->GetMainWindow ();
+  GmWindow *gw = GnomeMeeting::Process ()->GetMainWindow ();
 
   args = (CORBA_sequence_CORBA_string *) any->_value;
   argc = args->_length;
@@ -444,7 +443,7 @@ gnomemeeting_new_event (BonoboListener    *listener,
   if ((i < argc) && (i + 1 < argc) && (argv [i+1])) {
     
      /* this function will store a copy of text */
-    if (MyApp->Endpoint ()->GetCallingState () == GMH323EndPoint::Standby) {
+    if (GnomeMeeting::Process ()->Endpoint ()->GetCallingState () == GMH323EndPoint::Standby) {
 
       gdk_threads_enter ();
       gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), 
@@ -576,7 +575,7 @@ main_notebook_page_changed (GtkNotebook *notebook, GtkNotebookPage *page,
 {
   GConfClient *client = gconf_client_get_default ();
 
-  GmWindow *gw = MyApp->GetMainWindow ();
+  GmWindow *gw = GnomeMeeting::Process ()->GetMainWindow ();
 
   gconf_client_set_int (client, VIEW_KEY "control_panel_section",
 			gtk_notebook_get_current_page (GTK_NOTEBOOK (gw->main_notebook)), 0);
@@ -597,8 +596,8 @@ audio_volume_changed (GtkAdjustment *adjustment, gpointer data)
 
   unsigned int play_vol =  0, rec_vol = 0;
 
-  gw = MyApp->GetMainWindow ();
-  ep = MyApp->Endpoint ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
+  ep = GnomeMeeting::Process ()->Endpoint ();
 
   play_vol = (unsigned int) (GTK_ADJUSTMENT (gw->adj_play)->value);
   rec_vol = (unsigned int) (GTK_ADJUSTMENT (gw->adj_rec)->value);
@@ -635,7 +634,7 @@ brightness_changed (GtkAdjustment *adjustment, gpointer data)
      if the GDK lock is held as it will wait on the GDK lock before 
      updating the GUI */
   gdk_threads_leave ();
-  ep = MyApp->Endpoint ();
+  ep = GnomeMeeting::Process ()->Endpoint ();
   if (ep && (video_grabber = ep->GetVideoGrabber ())) {
     
     video_grabber->SetBrightness (brightness << 8);
@@ -663,7 +662,7 @@ whiteness_changed (GtkAdjustment *adjustment, gpointer data)
   whiteness =  (int) (GTK_ADJUSTMENT (gw->adj_whiteness)->value);
 
   gdk_threads_leave ();
-  ep = MyApp->Endpoint ();
+  ep = GnomeMeeting::Process ()->Endpoint ();
   if (ep && (video_grabber = ep->GetVideoGrabber ())) {
     
     video_grabber->SetWhiteness (whiteness << 8);
@@ -691,7 +690,7 @@ colour_changed (GtkAdjustment *adjustment, gpointer data)
   colour =  (int) (GTK_ADJUSTMENT (gw->adj_colour)->value);
 
   gdk_threads_leave ();
-  ep = MyApp->Endpoint ();
+  ep = GnomeMeeting::Process ()->Endpoint ();
   if (ep && (video_grabber = ep->GetVideoGrabber ())) {
     
     video_grabber->SetColour (colour << 8);
@@ -719,7 +718,7 @@ contrast_changed (GtkAdjustment *adjustment, gpointer data)
   contrast =  (int) (GTK_ADJUSTMENT (gw->adj_contrast)->value);
 
   gdk_threads_leave ();
-  ep = MyApp->Endpoint ();
+  ep = GnomeMeeting::Process ()->Endpoint ();
   if (ep && (video_grabber = ep->GetVideoGrabber ())) {
     
     video_grabber->SetContrast (contrast << 8);
@@ -759,7 +758,7 @@ gm_quit_callback (GtkWidget *widget, GdkEvent *event,
 			      gpointer data)
 {
   gboolean b;
-  GmWindow *gw = MyApp->GetMainWindow ();
+  GmWindow *gw = GnomeMeeting::Process ()->GetMainWindow ();
 
   b = gnomemeeting_tray_is_visible (gw->docklet);
 
@@ -792,7 +791,7 @@ gnomemeeting_main_window_appbar_update (gpointer data)
 void
 gnomemeeting_main_window_enable_statusbar_progress (gboolean i)
 {
-  GmWindow *gw = MyApp->GetMainWindow ();
+  GmWindow *gw = GnomeMeeting::Process ()->GetMainWindow ();
   
   if (i) {
     
@@ -826,8 +825,8 @@ void gnomemeeting_dialpad_event (const char *key)
 
   GmWindow *gw = NULL;
 
-  gw = MyApp->GetMainWindow ();
-  endpoint = MyApp->Endpoint ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
+  endpoint = GnomeMeeting::Process ()->Endpoint ();
 
   button_text = (gchar *) key;
   url = gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry)); 
@@ -886,7 +885,7 @@ gnomemeeting_main_window_update_sensitivity (unsigned calling_state)
 {
   GmWindow *gw = NULL;
 
-  gw = MyApp->GetMainWindow ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
   
   switch (calling_state)
     {
@@ -928,7 +927,7 @@ gnomemeeting_main_window_update_sensitivity (BOOL is_video,
   GtkWidget *button = NULL;
   GtkWidget *frame = NULL;
   
-  gw = MyApp->GetMainWindow ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
   
   if (is_video) {
 
@@ -979,7 +978,7 @@ gnomemeeting_main_window_new (GmWindow *gw)
   };
 
   client = gconf_client_get_default ();
-  chat = MyApp->GetTextChat ();
+  chat = GnomeMeeting::Process ()->GetTextChat ();
   
   accel = gtk_accel_group_new ();
   gtk_window_add_accel_group (GTK_WINDOW (window), accel);
@@ -1227,7 +1226,7 @@ void gnomemeeting_init_main_window_stats ()
   GtkWidget *label = NULL;
   GtkWidget *vbox = NULL;
 
-  GmWindow *gw = MyApp->GetMainWindow ();
+  GmWindow *gw = GnomeMeeting::Process ()->GetMainWindow ();
 
   /* The first frame with statistics display */
   frame2 = gtk_frame_new (NULL);
@@ -1300,7 +1299,7 @@ void gnomemeeting_init_main_window_dialpad ()
   int j = 0;
   int j2 = 0;
 
-  GmWindow *gw = MyApp->GetMainWindow ();
+  GmWindow *gw = GnomeMeeting::Process ()->GetMainWindow ();
 
   table = gtk_table_new (4, 3, TRUE);
   gtk_container_set_border_width (GTK_CONTAINER (table), 3);
@@ -1363,7 +1362,7 @@ void gnomemeeting_init_main_window_video_settings ()
 
   int brightness = 0, colour = 0, contrast = 0, whiteness = 0;
   
-  GmWindow *gw = MyApp->GetMainWindow ();
+  GmWindow *gw = GnomeMeeting::Process ()->GetMainWindow ();
 
   
   /* Webcam Control Frame, we need it to disable controls */		
@@ -1486,7 +1485,7 @@ void gnomemeeting_init_main_window_audio_settings ()
   GtkWidget *hbox = NULL;
   GtkWidget *vbox = NULL;
 
-  GmWindow *gw = MyApp->GetMainWindow ();
+  GmWindow *gw = GnomeMeeting::Process ()->GetMainWindow ();
 
 
   /* Webcam Control Frame, we need it to disable controls */		
@@ -1558,10 +1557,13 @@ int main (int argc, char ** argv, char ** envp)
 
   GtkWidget *dialog = NULL;
   GmWindow *gw = NULL;
+
   gchar *url = NULL;
-  int debug_level = 0;
   gchar *key_name = NULL;
   gchar *msg = NULL;
+
+  int debug_level = 0;
+
   
 #ifndef WIN32
 #if !defined(HAS_ESD)
@@ -1635,11 +1637,11 @@ int main (int argc, char ** argv, char ** envp)
 
   
   /* GnomeMeeting main initialisation */
-  MyApp = new GnomeMeeting;
+  static GnomeMeeting instance;
 
-
+  
   /* Detect the devices, exit if it fails */
-  if (!MyApp->DetectDevices ()) {
+  if (!GnomeMeeting::Process ()->DetectDevices ()) {
 
 #ifdef TRY_PLUGINS
     dialog = gnomemeeting_error_dialog (NULL, _("No usable audio manager detected"), _("GnomeMeeting didn't find any usable sound manager. Make sure that your installation is correct."));
@@ -1652,13 +1654,13 @@ int main (int argc, char ** argv, char ** envp)
 					  G_OBJECT (dialog));
 
     gtk_dialog_run (GTK_DIALOG (dialog));
-    delete (MyApp);
     exit (-1);
   }
 
 
-  /* Build the GUI */
-  MyApp->BuildGUI ();
+  /* Init the process and build the GUI */
+  GnomeMeeting::Process ()->BuildGUI ();
+  GnomeMeeting::Process ()->Init ();
 
 
   /* Init the GConf DB, exit if it fails */
@@ -1679,13 +1681,8 @@ int main (int argc, char ** argv, char ** envp)
     g_free (key_name);
     
     gtk_dialog_run (GTK_DIALOG (dialog));
-    delete (MyApp);
     exit (-1);
   }
-
-
-  /* Init the components */
-  MyApp->InitComponents ();
 
   
   /* Debug */
@@ -1699,7 +1696,7 @@ int main (int argc, char ** argv, char ** envp)
   /* Call the given host if needed */
   if (url) {
 
-    gw = MyApp->GetMainWindow ();
+    gw = GnomeMeeting::Process ()->GetMainWindow ();
     gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), url);
     connect_cb (NULL, NULL);
   }
@@ -1711,7 +1708,7 @@ int main (int argc, char ** argv, char ** envp)
   gtk_main ();
   gdk_threads_leave ();
 
-  delete (MyApp);
+  //  delete (GnomeMeeting::Process ());
   
 #ifdef DISABLE_GCONF
   gconf_save_content_to_file ();

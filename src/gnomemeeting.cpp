@@ -66,9 +66,8 @@
 static gint
 gnomemeeting_tray_hack (gpointer);
 
+GnomeMeeting *GnomeMeeting::GM = NULL;
 
-/* Declarations */
-GnomeMeeting *MyApp;	
 GtkWidget *gm;
 
 
@@ -79,7 +78,7 @@ gnomemeeting_tray_hack (gpointer data)
 
   gdk_threads_enter ();
 
-  gw = MyApp->GetMainWindow ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
   
   if (!gnomemeeting_tray_is_visible (gw->docklet)) {
 
@@ -124,7 +123,7 @@ GnomeMeeting::GnomeMeeting ()
 							     
   call_number = 0;
 
-  MyApp = (this);
+  GM = this;
 }
 
 
@@ -281,6 +280,19 @@ GnomeMeeting::Disconnect (H323Connection::CallEndReason reason)
 }
 
 
+void
+GnomeMeeting::Init ()
+{
+#ifndef WIN32
+  /* Ignore SIGPIPE */
+  signal (SIGPIPE, SIG_IGN);
+#endif
+
+  endpoint = new GMH323EndPoint ();
+  endpoint->Init ();
+}
+
+
 BOOL
 GnomeMeeting::DetectDevices ()
 {
@@ -373,6 +385,13 @@ GnomeMeeting::Endpoint ()
 }
 
 
+GnomeMeeting *
+GnomeMeeting::Process ()
+{
+  return GM;
+}
+
+
 GmWindow *
 GnomeMeeting::GetMainWindow ()
 {
@@ -422,18 +441,8 @@ GnomeMeeting::GetRtpData ()
 }
 
 
-void GnomeMeeting::Main () {}
-
-
-void
-GnomeMeeting::InitComponents ()
+void GnomeMeeting::Main ()
 {
-#ifndef WIN32
-  /* Ignore SIGPIPE */
-  signal (SIGPIPE, SIG_IGN);
-#endif
-  
-  endpoint = new GMH323EndPoint ();
 }
 
 

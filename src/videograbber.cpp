@@ -48,7 +48,6 @@
 
 
 /* Declarations */
-extern GnomeMeeting *MyApp;
 extern GtkWidget *gm;
 
 
@@ -61,9 +60,9 @@ GMVideoGrabber::GMVideoGrabber (BOOL start_grabbing,
   height = 0, width = 0;
   whiteness = 0, brightness = 0, colour = 0, contrast = 0;
 
-  gw = MyApp->GetMainWindow ();
-  pw = MyApp->GetPrefWindow ();
-  dw = MyApp->GetDruidWindow ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
+  pw = GnomeMeeting::Process ()->GetPrefWindow ();
+  dw = GnomeMeeting::Process ()->GetDruidWindow ();
 
   /* Internal state */
   stop = FALSE;
@@ -488,7 +487,7 @@ void GMVideoGrabber::VGOpen (void)
     gnomemeeting_threads_leave ();
 
     /* Enable the video preview button if not in a call */
-    if (MyApp->Endpoint ()->GetCallingState () == GMH323EndPoint::Standby) {
+    if (GnomeMeeting::Process ()->Endpoint ()->GetCallingState () == GMH323EndPoint::Standby) {
 
       gnomemeeting_threads_enter ();      
       gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), TRUE);
@@ -531,7 +530,7 @@ void GMVideoGrabber::VGClose ()
     gtk_widget_set_sensitive (GTK_WIDGET (dw->video_test_button), TRUE);
 #endif
 
-    if (MyApp->Endpoint ()->GetCallingState () == GMH323EndPoint::Standby) {
+    if (GnomeMeeting::Process ()->Endpoint ()->GetCallingState () == GMH323EndPoint::Standby) {
       
       gnomemeeting_menu_update_sensitivity (TRUE, FALSE, FALSE);
       gnomemeeting_init_main_window_logo (gw->main_video_image);
@@ -619,8 +618,8 @@ void GMVideoTester::Main ()
   }
 #endif
 
-  gw = MyApp->GetMainWindow ();
-  dw = MyApp->GetDruidWindow ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
+  dw = GnomeMeeting::Process ()->GetDruidWindow ();
   gtk_widget_set_sensitive (GTK_WIDGET (dw->video_test_button), FALSE);
   gtk_progress_bar_set_text (GTK_PROGRESS_BAR (dw->progress), "");
   gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (dw->progress), 0.0);

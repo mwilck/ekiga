@@ -51,8 +51,6 @@
 #include "gconf_widgets_extensions.h"
 
 /* Declarations */
-
-extern GnomeMeeting *MyApp;
 extern GtkWidget *gm;
 
 
@@ -66,7 +64,7 @@ static void toolbar_cp_button_changed    (GtkWidget *, gpointer);
 /* Static functions */
 static void url_combo_changed (GtkEditable  *e, gpointer data)
 {
-  GmWindow *gw = MyApp->GetMainWindow ();
+  GmWindow *gw = GnomeMeeting::Process ()->GetMainWindow ();
 
   gchar *tip_text = (gchar *)
     gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (data)->entry));
@@ -84,12 +82,12 @@ static void url_combo_changed (GtkEditable  *e, gpointer data)
 static void connect_button_clicked (GtkToggleButton *w, gpointer data)
 {
   if (gtk_toggle_button_get_active (w))
-    if (MyApp->Endpoint ()->GetCallingState () == GMH323EndPoint::Standby) 
-      MyApp->Connect ();
+    if (GnomeMeeting::Process ()->Endpoint ()->GetCallingState () == GMH323EndPoint::Standby) 
+      GnomeMeeting::Process ()->Connect ();
     else 
       connect_button_update_pixmap (w, 1);
   else
-    MyApp->Disconnect ();
+    GnomeMeeting::Process ()->Disconnect ();
 }
 
 
@@ -140,7 +138,7 @@ gnomemeeting_init_main_toolbar ()
   GtkWidget *hbox = NULL;
   GtkWidget *image = NULL;
 
-  GmWindow *gw = MyApp->GetMainWindow ();
+  GmWindow *gw = GnomeMeeting::Process ()->GetMainWindow ();
   
 
   /* The main horizontal toolbar */
@@ -209,7 +207,7 @@ GtkWidget *gnomemeeting_init_left_toolbar (void)
 
   PString dev;
   
-  GmWindow *gw = MyApp->GetMainWindow ();
+  GmWindow *gw = GnomeMeeting::Process ()->GetMainWindow ();
 
   GConfClient *client = gconf_client_get_default ();
 
@@ -330,7 +328,7 @@ void connect_button_update_pixmap (GtkToggleButton *button, int pressed)
 {
   GtkWidget *image = NULL;
   
-  GmWindow *gw = MyApp->GetMainWindow ();
+  GmWindow *gw = GnomeMeeting::Process ()->GetMainWindow ();
   
   image = (GtkWidget *) g_object_get_data (G_OBJECT (button), "image");
   

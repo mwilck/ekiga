@@ -54,7 +54,6 @@ static gboolean transfer_callback_cb (gpointer data);
 
 /* Declarations */
 extern GtkWidget *gm;
-extern GnomeMeeting *MyApp;
 
 
 /* DESCRIPTION  :  /
@@ -108,7 +107,7 @@ void GMLid::Open ()
   
   gnomemeeting_threads_enter ();
   client = gconf_client_get_default ();
-  gw = MyApp->GetMainWindow ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
   gnomemeeting_threads_leave ();
 
   if (!lid) {
@@ -215,7 +214,7 @@ void GMLid::Main ()
   OffHook = lastOffHook = lid->IsLineOffHook (OpalIxJDevice::POTSLine);
 
   gnomemeeting_threads_enter ();
-  gw = MyApp->GetMainWindow ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
 
   /* Update the mixers if the lid is used */
   lid->GetPlayVolume (0, vol);
@@ -228,7 +227,7 @@ void GMLid::Main ()
 
   while (lid && lid->IsOpen() && !stop) {
 
-    endpoint = MyApp->Endpoint ();
+    endpoint = GnomeMeeting::Process ()->Endpoint ();
     calling_state = endpoint->GetCallingState ();
 
     OffHook = (lid->IsLineOffHook (0));
@@ -257,7 +256,7 @@ void GMLid::Main ()
       if (calling_state == 3) { /* 3 = incoming call */
 
 	lid->StopTone (0);
-	MyApp->Connect ();
+	GnomeMeeting::Process ()->Connect ();
       }
 
 
@@ -271,7 +270,7 @@ void GMLid::Main ()
 	gnomemeeting_threads_leave ();
 	
 	if (url && !GMURL (url).IsEmpty ())
-	  MyApp->Connect ();
+	  GnomeMeeting::Process ()->Connect ();
       }
     }
 
@@ -292,7 +291,7 @@ void GMLid::Main ()
 
       if (calling_state == 2 || calling_state == 1) {
 
-	MyApp->Disconnect ();
+	GnomeMeeting::Process ()->Disconnect ();
       }
     }
 
@@ -304,7 +303,7 @@ void GMLid::Main ()
       if ((t.GetSeconds () > 5 && !do_not_connect) || c == '#') {
 
 	if (calling_state == 0)
-	  MyApp->Connect ();
+	  GnomeMeeting::Process ()->Connect ();
 	do_not_connect = TRUE;
       }
 

@@ -48,7 +48,6 @@
 
 
 /* Declarations */
-extern GnomeMeeting *MyApp;
 extern GtkWidget *gm;
 
 /* The class */
@@ -122,10 +121,8 @@ void GMH323Gatekeeper::Main ()
   BOOL no_error = TRUE;
   GmWindow *gw = NULL;
   
-  endpoint = MyApp->Endpoint ();
-  gnomemeeting_threads_enter ();
-  gw = MyApp->GetMainWindow ();
-  gnomemeeting_threads_leave ();
+  endpoint = GnomeMeeting::Process ()->Endpoint ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
 
   
   /* Remove the current Gatekeeper */

@@ -51,7 +51,6 @@
 
 
 /* Declarations */
-extern GnomeMeeting *MyApp;
 extern GtkWidget *gm;
 
 
@@ -64,8 +63,8 @@ static xmlEntityPtr xdap_getentity (void *, const xmlChar *);
 /* The methods */
 GMILSClient::GMILSClient ()
 {
-  gw = MyApp->GetMainWindow ();
-  lw = MyApp->GetLdapWindow ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
+  lw = GnomeMeeting::Process ()->GetLdapWindow ();
 
   operation = ILS_NONE;
 
@@ -465,7 +464,7 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
 			            MINOR_VERSION << 16 |
 			            BUILD_NUMBER);
 
-  if ((MyApp->Endpoint ()->GetCallingState () != GMH323EndPoint::Standby)
+  if ((GnomeMeeting::Process ()->Endpoint ()->GetCallingState () != GMH323EndPoint::Standby)
       || (gconf_client_get_int (client, CALL_CONTROL_KEY "incoming_call_mode", 
 				 NULL)) == BUSY)
     busy = g_strdup ("1");
@@ -483,7 +482,7 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
     ilsa32964638 = g_strdup ("0");
   gnomemeeting_threads_leave ();
 
-  pip = MyApp->Endpoint ()->GetCurrentIP ();
+  pip = GnomeMeeting::Process ()->Endpoint ()->GetCurrentIP ();
   sip = inet_addr ((const char *) pip);
   ip = g_strdup_printf ("%lu", sip);
 
@@ -571,7 +570,7 @@ GMILSBrowser::GMILSBrowser (GmLdapWindowPage *lwpage,
 			    gchar *filter)
   :PThread (1000, AutoDeleteThread)
 {
-  lw = MyApp->GetLdapWindow ();
+  lw = GnomeMeeting::Process ()->GetLdapWindow ();
   lwp = lwpage;
   
   if (server)
@@ -659,7 +658,7 @@ void GMILSBrowser::Main ()
   lwp->search_quit_mutex.Wait ();
 
   gnomemeeting_threads_enter ();
-  gw = MyApp->GetMainWindow ();  
+  gw = GnomeMeeting::Process ()->GetMainWindow ();  
   users_list_store =
     GTK_LIST_STORE (gtk_tree_view_get_model (GTK_TREE_VIEW (lwp->tree_view)));
   gtk_list_store_clear (GTK_LIST_STORE (users_list_store));
