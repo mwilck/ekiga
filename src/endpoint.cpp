@@ -1605,7 +1605,6 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   /* Resume sound daemons */
   gnomemeeting_sound_daemons_resume ();
-
   gnomemeeting_threads_leave ();
 
   /* Try to update the config if some settings were changed 

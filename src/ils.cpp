@@ -66,7 +66,7 @@ process (LDAP * ldap, xmlDocPtr xp, xmlNodePtr * curp)
   unsigned int ignoremask;
 
   /* process the current node and update to next node */
-  msgid = ldaprun (ldap, xp, curp, &op, &ignoremask, 0);  /* 0 == async */
+  msgid = ldaprun (ldap, xp, curp, &op, &ignoremask, 1);  /* 0 == async */
 
   if (msgid > 0) {
     do {

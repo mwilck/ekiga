@@ -60,9 +60,9 @@ gnomemeeting_threads_enter ()
   if (PThread::Current ()->GetThreadName () != "gnomemeeting") 
   {    
     //    cout << "Will take GDK Lock" << endl << flush;
-    PTRACE(1, "Will Take GDK Lock");
+    PTRACE(1, "Will Take GDK Lock " << PThread::Current ()->GetThreadName ());
     gdk_threads_enter ();
-    PTRACE(1, "GDK Lock Taken");
+    PTRACE(1, "GDK Lock Taken " << PThread::Current ()->GetThreadName ());
     //    cout << "GDK Lock Taken" << endl << flush;
   }
   else {
@@ -80,9 +80,9 @@ gnomemeeting_threads_leave ()
 
     //    cout << "Will Release GDK Lock" << endl << flush;
     //    cout << PThread::Current ()->GetThreadName () << endl << flush;
-    PTRACE(1, "Will Release GDK Lock");
+    PTRACE(1, "Will Release GDK Lock " << PThread::Current ()->GetThreadName ());
     gdk_threads_leave ();
-    PTRACE(1, "GDK Lock Released");
+    PTRACE(1, "GDK Lock Released " << PThread::Current ()->GetThreadName ());
     //    cout << "GDK Lock Released" << endl << flush;
   }
   else {
