@@ -837,7 +837,7 @@ gnomemeeting_init_pref_window_interface (GtkWidget *notebook)
     gnomemeeting_table_add_toggle (table, _("Do _not disturb"), GENERAL_KEY "do_not_disturb", _("If enabled, incoming calls will be automatically refused."), 0);
                                                                                
   pw->incoming_call_popup =
-    gnomemeeting_table_add_toggle (table, _("Display a po_pup window when receiving a call"), GENERAL_KEY "show_popup", _("If enabled, a popup window will be displayed when receiving an incoming call."), 2);
+    gnomemeeting_table_add_toggle (table, _("Display a po_pup window when receiving a call"), VIEW_KEY "show_popup", _("If enabled, a popup window will be displayed when receiving an incoming call."), 2);
 
   
   /* Packing widget */
