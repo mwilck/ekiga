@@ -391,7 +391,10 @@ BOOL GMILSClient::Register (BOOL reg)
 
     /* ilsa */
     mods [15] = new (LDAPMod);
-    ilsa26279966_value [0] = g_strdup ("5570561");
+    ilsa26279966_value [0] = g_strdup_printf ("%lu",
+					      MAJOR_VERSION << 24 | 
+					      MINOR_VERSION << 16 |
+					      BUILD_NUMBER);
     ilsa26279966_value [1] = NULL;
     mods [15]->mod_op = LDAP_MOD_ADD | LDAP_MOD_REPLACE;
     mods [15]->mod_type = g_strdup ("ilsa26279966");
@@ -726,11 +729,11 @@ void GMILSClient::ils_browse ()
 	gchar *value =
 	  g_strdup (ldv [0]);
 	
-	int v,a,b,c;
-	v = atoi (value); 
-	a=v / (16777216);
-	b=(v-a*16777216)/65536;
-	c=(v-a*16777216-b*65536);
+	unsigned int v, a, b, c;
+	v = atoi (value);
+	a = (v & 0xff000000) >> 24;
+	b = (v & 0x00ff0000) >> 16;
+	c = v & 0x0000ffff;
 	g_free (value);
 
 	if (datas [7] != NULL)
