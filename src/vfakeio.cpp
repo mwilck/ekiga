@@ -134,6 +134,12 @@ GMH323FakeVideoInputDevice::~GMH323FakeVideoInputDevice ()
 }
 
 
+BOOL GMH323FakeVideoInputDevice::GetFrame (PBYTEArray &a)
+{
+  return GetFrameDataNoDelay (a.GetPointer ());
+}
+
+
 BOOL GMH323FakeVideoInputDevice::GetFrameDataNoDelay (BYTE *frame, PINDEX *i)
 {
   GdkPixbuf *data_pix_tmp = NULL;

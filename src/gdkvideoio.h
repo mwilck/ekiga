@@ -128,7 +128,12 @@ class GDKVideoOutputDevice : public PVideoOutputDeviceRGB
    * PRE          :  /
    */
   BOOL EndFrame();
+
+
+  BOOL Start () {return TRUE;};
   
+  BOOL Stop () {return TRUE;};
+    
  protected:
 
 

@@ -70,8 +70,9 @@ class GMH323FakeVideoInputDevice : public PFakeVideoInputDevice
    * BEHAVIOR     :  /
    * PRE          :  /
    */
-  virtual BOOL GetFrameDataNoDelay (BYTE *, PINDEX *);
+  BOOL GetFrameDataNoDelay (BYTE *, PINDEX * = NULL);
 
+  BOOL GetFrame (PBYTEArray &);
 
   BYTE *data;
   GdkPixbuf *data_pix;
