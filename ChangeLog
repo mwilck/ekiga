@@ -1,3 +1,21 @@
+2002-11-28 Damien Sandras  <dsandras@seconix.com>
+
+	* src/gnomemeeting-config-tool.in: Added patch from Stefan Bruëns 
+	<lurch@gmx.li>. That fixes the following problems:
+	
+		- Added $TEXTDOMAINDIR, else only translations 
+		in /usr/share/locale would be found.
+		- exchanged gettext for $GETTEXT, 
+		if gettext could not be found, echo is used instead
+		- fixed typo in the "usage" section, 
+		"settings defaults"->"default settings". 
+		- pkginstallschemas and installfailure have been removed 
+		as they are not used
+		- in fixgconfperm(): "killall gconfd-1"->"killall gconfd-2"
+		- exchanged gconftool-2 for $GCONFTOOL, $GCONFTOOL is set to 
+		@prefix@/bin/gconftool-2 , this should work for all 
+		distributions, but is needed for suse.
+	
 2002-11-27 Damien Sandras  <dsandras@seconix.com>
 
 	* src/druid.cpp: Changed bold text to italic. Removed \t.

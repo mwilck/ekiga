@@ -4,16 +4,25 @@ prefix=@prefix@
 SYSCONFDIR=@sysconfdir@
 TEXTDOMAIN=gnomemeeting
 export TEXTDOMAIN
+TEXTDOMAINDIR=@prefix@/share/locale/
+export TEXTDOMAINDIR
+
+# if gettext can not be found, use echo instead
+GETTEXT=`which gettext 2> /dev/null`
+if [ -z $GETTEXT ] ; then GETTEXT='echo -n'; fi
+# use complete path for gconftool
+GCONFTOOL=@prefix@/bin/gconftool-2
+test `$GCONFTOOL -v` || exit 1; 
 
 # NB.: Avoid !\n in the translatable strings!
-ACCEPT=`gettext "YES"`
+ACCEPT=`$GETTEXT "YES"`
 
 clean () {
 
 	echo
-	gettext "  WARNING!!!"; echo
+	$GETTEXT "  WARNING!!!"; echo
 	echo    "  ---------------------------------------------------------------"
-	printf "`gettext "  This script will delete all user GnomeMeeting configuration,\n  including preferences that may be important! \n  The GConf daemon will be shut down, so make sure you have no\n  applications depending on it running.\n\n  Please make sure that GnomeMeeting is not running!\n\n  Do you really want to do this?\n\n  If so, say $ACCEPT.\n\n"`";
+	printf "`$GETTEXT "  This script will delete all user GnomeMeeting configuration,\n  including preferences that may be important! \n  The GConf daemon will be shut down, so make sure you have no\n  applications depending on it running.\n\n  Please make sure that GnomeMeeting is not running!\n\n  Do you really want to do this?\n\n  If so, say $ACCEPT.\n\n"`";
 
 	read WARNINGANSWER
 	
@@ -21,18 +30,18 @@ clean () {
 	
 	if [ -n "$WARNINGANSWER" ] && [ "$WARNINGANSWER" = $ACCEPT ]; then
 	    
-	    gettext "Removing $HOME/.gconf/apps/gnomemeeting"; echo
+	    $GETTEXT "Removing $HOME/.gconf/apps/gnomemeeting"; echo
 	    rm -rf $HOME/.gconf/apps/gnomemeeting
 	    
-	    gettext "Shutting down GConf daemon"; echo
-	    gconftool-2 --shutdown
+	    $GETTEXT "Shutting down GConf daemon"; echo
+	    $GCONFTOOL --shutdown
 	    
-	    gettext "...Done."; echo
+	    $GETTEXT "...Done."; echo
 	    
 	else
-	    gettext "Leaving configuration alone."; echo
+	    $GETTEXT "Leaving configuration alone."; echo
 	    echo
-	    gettext "Have a nice day."; echo
+	    $GETTEXT "Have a nice day."; echo
 	    
 	fi
 	
@@ -41,9 +50,9 @@ clean () {
 
 shutdownwarning () {
     echo
-    gettext "  WARNING!!!"; echo
+    $GETTEXT "  WARNING!!!"; echo
     echo    "  ---------------------------------------------------------------"
-    printf "`gettext "  The GConf daemon will be shut down, so make sure you have no\n  applications depending on it running.\n\n  Please make sure that GnomeMeeting is not running!\n\n  Do you really want to do this?\n\n  If so, say $ACCEPT.\n\n"`";
+    printf "`$GETTEXT "  The GConf daemon will be shut down, so make sure you have no\n  applications depending on it running.\n\n  Please make sure that GnomeMeeting is not running!\n\n  Do you really want to do this?\n\n  If so, say $ACCEPT.\n\n"`";
 }
 
 cleanschemas () {
@@ -55,12 +64,12 @@ cleanschemas () {
 
 	echo ""
 
-	SOURCE=`gconftool-2 --get-default-source`
+	SOURCE=`$GCONFTOOL --get-default-source`
 	    
-	gettext "Shutting down GConf daemon"; echo
-	gconftool-2 --shutdown
+	$GETTEXT "Shutting down GConf daemon"; echo
+	$GCONFTOOL --shutdown
 
-	gettext "Removing schemas"; echo
+	$GETTEXT "Removing schemas"; echo
 	SOURCE=`echo $SOURCE | sed "s/xml:://"`
 	SCHEMAS=$SOURCE/schemas/apps/gnomemeeting
 	SOURCE=$SOURCE/apps/gnomemeeting
@@ -80,38 +89,20 @@ installschemas () {
 
 	echo
 
-	SOURCE=`gconftool-2 --get-default-source`
+	SOURCE=`$GCONFTOOL --get-default-source`
 	    
-	gettext "Shutting down GConf daemon"; echo
-	gconftool-2 --shutdown
+	$GETTEXT "Shutting down GConf daemon"; echo
+	$GCONFTOOL --shutdown
 
-	gettext "Installing schemas"; echo
-	GCONF_CONFIG_SOURCE=$SOURCE  gconftool-2 \
+	$GETTEXT "Installing schemas"; echo
+	GCONF_CONFIG_SOURCE=$SOURCE  $GCONFTOOL \
 	--makefile-install-rule $SYSCONFDIR/gconf/schemas/gnomemeeting.schemas
     fi
 }
 
-pkginstallschemas ()
-{
-    SOURCE=xml::/etc/gconf/gconf.xml.defaults
-
-    GCONF_CONFIG_SOURCE=$SOURCE  gconftool-2 \
-    --makefile-install-rule $SYSCONFDIR/gconf/schemas/gnomemeeting.schemas \
-    2>/dev/null >/dev/null \
-    || installfailure;
-}
-
-installfailure ()
-{
-    echo
-    printf "`gettext "CRITICAL ERROR -- Schema installation failed.\nMost probably you have the GConf daemon running as root.\n\nRun \"gnomemeeting-config-tool --install-schemas\" as root.\n"`";
-
-    exit 1
-}
-
 fixgconfperm ()
 {
-    killall gconfd-1 2>/dev/null >/dev/null
+    killall gconfd-2 2>/dev/null >/dev/null
     chmod -R o+rX $SYSCONFDIR/gconf
 }
 
@@ -122,9 +113,6 @@ case "$1" in
   *--install-schemas)
         installschemas;
         ;;
-  *--pkg-install-schemas)
-        pkginstallschemas;
-        ;;
   *--clean-schemas)
 	cleanschemas;
         ;;
@@ -132,12 +120,12 @@ case "$1" in
         fixgconfperm;
         ;;
   *)
-        gettext "Usage:  gnomemeeting-config-tool OPTION"; echo
-	gettext "Fixes problems with the GnomeMeeting settings"; echo; echo
-	gettext "  --clean                remove all user settings"; echo
-	gettext "  --install-schemas      install schemas with settings defaults (run as root)"; echo
-	gettext "  --clean-schemas        remove schemas with settings defaults (run as root)"; echo
-	gettext "  --fix-permissions      fix permissions of GConf repository (run as root)"; echo
+        $GETTEXT "Usage:  gnomemeeting-config-tool OPTION"; echo
+	$GETTEXT "Fixes problems with the GnomeMeeting settings"; echo; echo
+	$GETTEXT "  --clean                remove all user settings"; echo
+	$GETTEXT "  --install-schemas      install schemas with default settings (run as root)"; echo
+	$GETTEXT "  --clean-schemas        remove schemas with default settings (run as root)"; echo
+	$GETTEXT "  --fix-permissions      fix permissions of GConf repository (run as root)"; echo
         exit 1
         ;;
 esac
