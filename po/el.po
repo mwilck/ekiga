@@ -8,11 +8,12 @@
 # nikos update          214 messages 12aug03
 # nikos update          245 messages 23aug03
 # nikos update          303 messages 02sep03
+# nikos update          322 messages 12Noe03
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting 0.12.2\n"
-"POT-Creation-Date: 2003-09-02 02:41+0300\n"
-"PO-Revision-Date: 2003-09-02 03:54-0200\n"
+"POT-Creation-Date: 2003-11-12 17:55+0200\n"
+"PO-Revision-Date: 2003-11-12 18:37-0200\n"
 "Last-Translator: Nikos Charonitakis <charosn@her.fothnet.gr>\n"
 "Language-Team: Greek <nls@tux.hellug.gr>\n"
 "MIME-Version: 1.0\n"
@@ -127,7 +128,7 @@ msgstr "Ενεργοποίηση 'Γρήγορης Εκκίνησης'"
 
 #: gnomemeeting.schemas.in.in.h:22
 msgid "Enable H.245 tunnelling"
-msgstr ""
+msgstr "Ενεργοποίηση H.245 tunnelling"
 
 #: gnomemeeting.schemas.in.in.h:23
 #, fuzzy
@@ -737,7 +738,7 @@ msgstr "Μέγεθος βίντεο"
 
 #: lib/dialog.c:182
 msgid "Do not show this dialog again"
-msgstr ""
+msgstr "Να μην εμφανιστεί ξανά αυτός ο διάλογος"
 
 #: sounds/gnomemeeting.soundlist.in.h:1
 msgid "Incoming Call"
@@ -774,7 +775,7 @@ msgstr "Προώθηση κλήσης σε:"
 #: src/callbacks.cpp:260
 #: src/menu.cpp:470
 msgid "Suspend _Audio"
-msgstr ""
+msgstr "Αναστολή _Ηχου"
 
 #: src/callbacks.cpp:261
 msgid "Resume _Audio"
@@ -793,7 +794,7 @@ msgstr "Δικαιώματα"
 #: src/callbacks.cpp:272
 #: src/menu.cpp:475
 msgid "Suspend _Video"
-msgstr ""
+msgstr "Αναστολή _Βίντεο"
 
 #: src/callbacks.cpp:273
 #, fuzzy
@@ -811,18 +812,16 @@ msgid "Video transmission: resumed"
 msgstr "Δικαιώματα"
 
 #: src/callbacks.cpp:381
-#, fuzzy
 msgid "Code Contributors:"
-msgstr "Συνεργάτες του GNOME:"
+msgstr "Εισφορά Κώδικα:"
 
 #: src/callbacks.cpp:389
 msgid "Artwork:"
 msgstr "Καλλιτεχνική επιμέλεια:"
 
 #: src/callbacks.cpp:392
-#, fuzzy
 msgid "Contributors:"
-msgstr "Συνεργάτες του GNOME:"
+msgstr "Συντελεστές:"
 
 #: src/callbacks.cpp:418
 msgid "Internationalisation Maintainer:"
@@ -930,7 +929,7 @@ msgstr ""
 
 #: src/config-tool-i18n.h:18
 msgid "  --clean                remove all user settings"
-msgstr ""
+msgstr "  --clean                απομάκρυνση όλων των ρυθμίσεων του χρήστη"
 
 #: src/config-tool-i18n.h:19
 msgid "  --install-schemas      install schemas with default settings (run as root)"
@@ -1367,7 +1366,7 @@ msgstr ""
 #: src/endpoint.cpp:1232
 #, fuzzy
 msgid "Fast start enabled"
-msgstr "Ενεργοποίηση ενημέρωσης"
+msgstr "Ενεργοποίηση"
 
 #: src/endpoint.cpp:1235
 msgid "H.245 Tunnelling disabled"
@@ -1606,7 +1605,7 @@ msgstr ""
 
 #: src/ils.cpp:119
 msgid "Parse error"
-msgstr ""
+msgstr "Σφάλμα ανάλυσης"
 
 #: src/ils.cpp:119
 #, c-format
@@ -1638,7 +1637,7 @@ msgstr "Γίνεται επαφή με τον %s..."
 
 #: src/ils.cpp:347
 msgid "Failed to parse XML file"
-msgstr ""
+msgstr "Αποτυχία ανάλυσης αρχείου XML"
 
 #: src/ils.cpp:347
 msgid "There was an error while parsing the XML file. Please make sure that it is correctly installed in your system."
@@ -2060,8 +2059,9 @@ msgid "Adjust brightness"
 msgstr "Ρύθμιση λαμπρότητας"
 
 #: src/main_window.cpp:1506
+#, fuzzy
 msgid "Adjust whiteness"
-msgstr ""
+msgstr "Ρύθμιση λευκού"
 
 #: src/main_window.cpp:1528
 msgid "Adjust color"
@@ -2079,28 +2079,28 @@ msgstr "Βίντεο"
 msgid "Audio"
 msgstr "Ήχος"
 
-#: src/main_window.cpp:1680
+#: src/main_window.cpp:1685
 #, fuzzy
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Επικόλληση μηνύματος στο πρόχειρο"
 
-#: src/main_window.cpp:1683
+#: src/main_window.cpp:1688
 msgid "Makes GnomeMeeting call the given URL"
 msgstr ""
 
-#: src/main_window.cpp:1729
+#: src/main_window.cpp:1734
 msgid "No usable audio devices detected"
 msgstr ""
 
-#: src/main_window.cpp:1729
+#: src/main_window.cpp:1734
 msgid "GnomeMeeting didn't find any usable sound devices. You need to install and setup a soundcard or a Quicknet card in order to be able to use GnomeMeeting. Please check your driver settings and permissions."
 msgstr ""
 
-#: src/main_window.cpp:1749
+#: src/main_window.cpp:1754
 msgid "Gconf key error"
 msgstr "Σφάλμα κλειδιού Gconf"
 
-#: src/main_window.cpp:1749
+#: src/main_window.cpp:1754
 msgid ""
 "GnomeMeeting got an invalid value for the GConf key \"/apps/gnomemeeting/gconf_test_age\".\n"
 "\n"
@@ -2560,7 +2560,7 @@ msgstr ""
 
 #: src/pref_window.cpp:813
 msgid "by"
-msgstr ""
+msgstr "επί"
 
 #: src/pref_window.cpp:815
 msgid "pixels"
@@ -2668,9 +2668,8 @@ msgid "Automatically discover"
 msgstr ""
 
 #: src/pref_window.cpp:974
-#, fuzzy
 msgid "Gatekeeper"
-msgstr "Δε βρέθηκαν ταιριάσματα."
+msgstr "Gatekeeper"
 
 #: src/pref_window.cpp:977
 #, fuzzy
@@ -2731,26 +2730,22 @@ msgid "AGC"
 msgstr ""
 
 #: src/pref_window.cpp:1060
-#, fuzzy
 msgid "Playing device:"
 msgstr "Συσκευή αναπαραγωγής:"
 
 #: src/pref_window.cpp:1063
-#, fuzzy
 msgid "Playing mixer:"
-msgstr "Μέγεθος Σ&ελίδας:"
+msgstr "Μίκτης αναπαραγωγής:"
 
 #
 #: src/pref_window.cpp:1067
-#, fuzzy
 msgid "Recording device:"
-msgstr "Προβολή Εγγραφής"
+msgstr "Συσκευή ηχογράφησης:"
 
 #
 #: src/pref_window.cpp:1070
-#, fuzzy
 msgid "Recording mixer:"
-msgstr "Προβολή Εγγραφής"
+msgstr "Μίκτης ηχογράφησης:"
 
 #
 #. The Quicknet devices related options
@@ -2910,16 +2905,14 @@ msgid "%"
 msgstr "%"
 
 #: src/pref_window.cpp:1386
-#, fuzzy
 msgid "Transmit at least"
-msgstr "Μεταφρασμενο κείμενο:"
+msgstr "Μετάδοση τουλάχιστον"
 
 #: src/pref_window.cpp:1386
 msgid "_frames per second"
 msgstr "_καρέ ανά δευτερόλεπτο"
 
 #: src/pref_window.cpp:1391
-#, fuzzy
 msgid "Transmit"
 msgstr "Μετάδοση"
 
@@ -2955,9 +2948,8 @@ msgid "Advanced Settings"
 msgstr "Προχωρημένες Ρυθμίσεις"
 
 #: src/pref_window.cpp:1539
-#, fuzzy
 msgid "Gatekeeper Settings"
-msgstr "Γενικές Ρυθμίσεις"
+msgstr "Ρυθμίσεις Gatekeeper"
 
 #: src/pref_window.cpp:1544
 msgid "NAT Settings"
@@ -3070,7 +3062,7 @@ msgstr "Εισερχόμενες κλησεις"
 
 #: src/tools.cpp:186
 msgid "Given calls"
-msgstr ""
+msgstr "Εξερχόμενες κλήσεις"
 
 #: src/tools.cpp:186
 msgid "Unanswered calls"
