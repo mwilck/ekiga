@@ -34,7 +34,7 @@ dnl *******************************************
 case $OSTYPE in
 
   linux-gnu)
-    H323_CFLAGS="-DP_LINUX -D_REENTRANT -DP_HAS_SEMAPHORES -DP_PTHREADS -DPBYTE_ORDER=PLITTLE_ENDIAN -DHAS_OSS -O3 -Wall"
+    H323_CFLAGS="-DP_LINUX -D_REENTRANT -DP_HAS_SEMAPHORES -DP_PTHREADS -DPBYTE_ORDER=PLITTLE_ENDIAN -DHAS_OSS -O3 -DNDEBUG -fPIC -g"
     H323_LIBS="-lopenh323 -ldl -lpt -lpthread -lssl -lcrypto"
     LIBPT_FILE="libpt.so"
     LIBOPENH323_FILE="libopenh323.so"
@@ -270,7 +270,7 @@ GNOMEMEETING_LDADD="$GNOMEMEETING_LDADD $GNOME_LIBDIR $GNOMEUI_LIBS $GTK_LIBS $L
 GNOME_COMPILE_WARNINGS
 GNOME_X_CHECKS
 
-CXXFLAGS="$CXXFLAGS $ORBIT_CFLAGS"
+CXXFLAGS="-O3 $ORBIT_CFLAGS"
 
 dnl *********************************************************************
 dnl ** Setup gconf schemas installation *********************************

@@ -367,6 +367,59 @@ gnomemeeting_history_combo_box_add_entry (GtkCombo *combo, const gchar *key,
 			      contacts_list, gnomemeeting_free_glist_data);
 }
 
+
+/* This function overrides from a pwlib function */
+void PAssertFunc (const char * file, int line, const char * msg)
+
+{
+  static BOOL inAssert;
+
+  if (inAssert)
+    return;
+
+  inAssert = TRUE;
+
+  ostream & trace = PTrace::Begin(0, file, line);
+  trace << "PWLib\tAssertion fail";
+  if (msg != NULL)
+    trace << ": " << msg;
+  trace << PTrace::End;
+
+  if (&trace != &PError) {
+    PError << "Assertion fail: File " << file << ", Line " << line << endl;
+    if (msg != NULL)
+      PError << msg << endl;
+  }
+
+
+  for(;;) {
+    PError << "\nAbort, Core dump, Ignore"
+
+           << "? " << flush;
+    int c = getchar();
+
+    switch (c) {
+      case 'a' :
+      case 'A' :
+        PError << "\nAborting.\n";
+        _exit(1);
+
+      case 'c' :
+      case 'C' :
+        PError << "\nDumping core.\n";
+        kill(getpid(), SIGABRT);
+
+      case 'i' :
+      case 'I' :
+      case EOF :
+        PError << "\nIgnoring.\n";
+        inAssert = FALSE;
+        return;
+    }
+  }
+}
+
+
 static void popup_toggle_changed (GtkCheckButton *but, gpointer data)
 {
   if (GTK_TOGGLE_BUTTON (but)->active) 

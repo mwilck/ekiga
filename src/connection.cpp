@@ -307,14 +307,42 @@ GMH323Connection::OnAnswerCall (const PString & caller,
 void GMH323Connection::OnUserInputString(const PString & value)
 {
   gchar *msg = NULL;
+  GdkColormap *cmap;
+  GdkColor color;
+  GdkFont *lucida_font;
+
   PString remote = GetRemotePartyName ();
-  
-  msg = g_strdup_printf ("%s: %s\n", (const char *) remote, (const char *) value);
+
+  PINDEX bracket = remote.Find('[');
+  if (bracket != P_MAX_INDEX)
+    remote = remote.Left (bracket);
+
+  bracket = remote.Find('(');
+  if (bracket != P_MAX_INDEX)
+    remote = remote.Left (bracket);
 
   gnomemeeting_threads_enter ();
-  gtk_text_insert (GTK_TEXT (gw->chat_text), NULL, NULL, NULL, msg, -1);
-  gnomemeeting_threads_leave ();
 
+  /* Get the system color map and allocate the color red */
+  cmap = gdk_colormap_get_system();
+  color.red = 0xffff;
+  color.green = 0;
+  color.blue = 0;
+  gdk_color_alloc(cmap, &color);
+  lucida_font = 
+    gdk_font_load ("-b&h-lucida-bold-r-normal-*-*-100-*-*-p-*-iso8859-1");
+
+  gtk_text_freeze (GTK_TEXT (gw->chat_text));
+  msg = g_strdup_printf ("%s: ", (const char *) remote);
+  gtk_text_insert (GTK_TEXT (gw->chat_text), lucida_font, &color, NULL, msg, -1);
   g_free (msg);
+
+  msg = g_strdup_printf ("%s\n", (const char *) value);
+  gtk_text_insert (GTK_TEXT (gw->chat_text), NULL, &gw->chat_text->style->black, 
+		   NULL, msg, -1);
+  g_free (msg);
+  gtk_text_thaw (GTK_TEXT (gw->chat_text));
+
+  gnomemeeting_threads_leave ();
 }
 

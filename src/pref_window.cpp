@@ -725,7 +725,7 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook)
   gtk_container_set_border_width (GTK_CONTAINER (frame), GNOMEMEETING_PAD_SMALL);
   
 
-  /* Show / hide splash screen at startup */
+  /* Show / hide chat window at startup */
   pw->show_chat_window = gtk_check_button_new_with_label (_("Show Chat Window"));
   gtk_table_attach (GTK_TABLE (table), pw->show_chat_window, 1, 2, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
@@ -816,6 +816,25 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook)
   gtk_signal_connect (GTK_OBJECT(pw->show_docklet), "toggled",
 		      GTK_SIGNAL_FUNC (toggle_changed), 
 		      (gpointer) "/apps/gnomemeeting/view/show_docklet");
+
+
+  /* Start hidden */
+  pw->start_hidden = gtk_check_button_new_with_label (_("Start Hidden"));
+  gtk_table_attach (GTK_TABLE (table), pw->start_hidden, 1, 2, 2, 3,
+		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);	
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->start_hidden), 
+				gconf_client_get_bool (client, "/apps/gnomemeeting/"
+						       "view/start_docked",
+						       0));
+
+  tip = gtk_tooltips_new ();
+  gtk_tooltips_set_tip (tip, pw->start_hidden,
+			_("If enabled, GnomeMeeting will start hidden. The docklet must be enabled."), NULL);
+  gtk_signal_connect (GTK_OBJECT (pw->start_hidden), "toggled",
+		      GTK_SIGNAL_FUNC (toggle_changed),
+		      (gpointer) "/apps/gnomemeeting/view/start_docked");
 
 
   /* Behavior */

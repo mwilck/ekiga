@@ -78,6 +78,9 @@ void GMThreadsCleaner::Main ()
   gnome_appbar_push (GNOME_APPBAR (gw->statusbar), _("Quit in progress..."));
   gnomemeeting_log_insert (_("Quit in progress..."));
 
+  gtk_widget_hide (GTK_WIDGET (gm));
+  gtk_widget_hide (GTK_WIDGET (gw->docklet));
+
   /* Synchronous End of Call */
   endpoint->ClearAllCalls (H323Connection::EndedByLocalUser, FALSE);
 
@@ -88,8 +91,8 @@ void GMThreadsCleaner::Main ()
     /* if OpenH323 doesn't disconnect, we force the exit */
     if (counter > 50) {
 
-      cout << "Warning: We have forced the exit" << endl << flush;
-      gtk_main_quit ();      
+      cerr << "Warning: We have forced the exit" << endl << flush;
+      exit (-1);
     }
 
     Current ()->Sleep (100);

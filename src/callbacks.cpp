@@ -159,7 +159,7 @@ void about_callback (GtkWidget *widget, gpointer data)
 			     that has this symbol). */
 			  _("Copyright (C) 2000, 2001, 2002 Damien Sandras"),
 			  authors,
-			  _("GnomeMeeting is an H.323 compliant program for GNOME.\nThis program is not supported by Microsoft."),
+			  _("GnomeMeeting is a full-featured H.323 videoconferencing application."),
 			  "/usr/share/pixmaps/gnomemeeting-logo.png");
 	
   gtk_widget_show (abox);

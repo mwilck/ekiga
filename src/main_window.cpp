@@ -405,7 +405,7 @@ void gnomemeeting_init (GM_window_widgets *gw,
       endpoint->AddAliasName (Alias);
   }
 
-
+  
   /* The LDAP part, if needed */
   if (gconf_client_get_bool (GCONF_CLIENT (client), "/apps/gnomemeeting/ldap/register", NULL)) {
 
@@ -490,11 +490,10 @@ void gnomemeeting_init_main_window ()
   gnomemeeting_init_main_window_audio_settings ();
   gnomemeeting_init_main_window_video_settings ();
 
-  gtk_widget_set_usize (GTK_WIDGET (gw->main_notebook), 215, 0);
   gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (gw->main_notebook),
 		    0, 2, 2, 3,
-		    (GtkAttachOptions) (NULL),
-		    (GtkAttachOptions) (NULL),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    0, 0); 
 
   int selected_page = 

@@ -47,13 +47,22 @@
 GtkWidget *gm;
 GnomeMeeting *MyApp;	
 
+int i = 0;
 
 /* GTK Callbacks */
 gint StressTest (gpointer data)
 {
   gdk_threads_enter ();
 
+
   GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+
+  if (!GTK_TOGGLE_BUTTON (gw->connect_button)->active) {
+
+    i++;
+    cout << "Call " << i << endl << flush;
+  }
+
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->connect_button), 
 				!GTK_TOGGLE_BUTTON (gw->connect_button)->active);
 
@@ -354,8 +363,8 @@ int main (int argc, char ** argv, char ** envp)
   gtk_timeout_add (1000, (GtkFunction) AppbarUpdate, 
  		   rtp);
 
-//  gtk_timeout_add (5000, (GtkFunction) StressTest, 
-//  		   NULL);
+//   gtk_timeout_add (5000, (GtkFunction) StressTest, 
+//   		   NULL);
 
   /* The GTK loop */
   gtk_main ();

@@ -917,10 +917,12 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
      if OpenVideoDevice is called for the encoding */
   if ((gconf_client_get_bool (client, "/apps/gnomemeeting/video_settings/enable_video_transmission", 0))&&(isEncoding)) {
 
+     /* Quick hack cause it seems that the video preview can give problems */
+     if (vg->IsOpened ())
+       vg->Close (TRUE);
+
      if (!vg->IsOpened ())
        vg->Open (FALSE, TRUE); /* Do not grab, synchronous opening */
-     else
-       vg->Stop ();
 
      gnomemeeting_threads_enter ();
 

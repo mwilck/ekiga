@@ -188,10 +188,13 @@ void GMVideoGrabber::Main ()
 
 void GMVideoGrabber::UpdateConfig ()
 {
+  g_free (color_format);
   g_free (video_device);
  
   video_device =  gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/video_recorder", NULL);
-  
+
+  color_format = gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/color_format", NULL);
+
   video_channel =  gconf_client_get_int (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/video_channel", NULL);
 
   video_size =  gconf_client_get_int (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/video_size", NULL);
@@ -253,7 +256,7 @@ void GMVideoGrabber::Close (int synchronous)
   if (synchronous == 1) {
     
     if (has_to_close != 1)
-      VGClose ();
+      VGClose (FALSE);
   }
   else
     has_to_close = 1;
@@ -409,6 +412,7 @@ void GMVideoGrabber::VGOpen (void)
       width = GM_CIF_HEIGHT; 
     }
     
+    grabber->SetPreferredColourFormat (color_format);
 
     if (!grabber->Open (video_device, FALSE))
       error_code = 0;
@@ -463,7 +467,7 @@ void GMVideoGrabber::VGOpen (void)
 	break;
       
       case 3:
-	msg = g_strconcat (msg, "\n", _("Your driver doesn't support the YUV420P format."), NULL);
+	msg = g_strconcat (msg, "\n", _("Your driver doesn't support the %s format.\n Please check your kernel driver documentation in order to determine which Palette is supported. Set it as GnomeMeeting default with :\n gconftool --set \"/apps/gnomemeeting/devices/color_format\" YOURPALETTE --type string"), NULL);
 	break;
       
       case 4:

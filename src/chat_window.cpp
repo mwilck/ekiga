@@ -50,6 +50,10 @@ extern GnomeMeeting *MyApp;
 static void chat_entry_activate (GtkEditable *w, gpointer data)
 {
   gchar *msg = NULL;
+  GdkColormap *cmap;
+  GdkColor color;
+  GdkFont *lucida_font;
+
   /* Get the structs from the application */
   GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
 
@@ -58,19 +62,44 @@ static void chat_entry_activate (GtkEditable *w, gpointer data)
   
   if (endpoint) {
 
+    PString local = endpoint->GetLocalUserName ();
+
+    PINDEX bracket = local.Find('[');
+    if (bracket != P_MAX_INDEX)
+      local = local.Left (bracket);
+    
+    bracket = local.Find('(');
+    if (bracket != P_MAX_INDEX)
+      local = local.Left (bracket);
+    
     if (endpoint->GetCallingState () == 2) {
 
-      H323Connection *connection = 
-	endpoint->FindConnectionWithLock (endpoint->GetCurrentCallToken ());
+      H323Connection *connection = endpoint->GetCurrentConnection ();
 
       if (connection != NULL)  {
 	
 	s = PString (gtk_entry_get_text (GTK_ENTRY (w)));
  	connection->SendUserInput (s);
- 	connection->Unlock();
-	msg = g_strdup_printf ("%s: %s\n", "You", (const char *) s);
-	gtk_text_insert (GTK_TEXT (gw->chat_text), NULL, NULL, NULL, msg, -1);
+
+	/* Get the system color map and allocate the color red */
+	cmap = gdk_colormap_get_system();
+	color.red = 0;
+	color.green = 0;
+	color.blue = 0xffff;
+	gdk_color_alloc(cmap, &color);
+	lucida_font = gdk_font_load ("-b&h-lucida-bold-r-normal-*-*-100-*-*-p-*-iso8859-1");
+
+	gtk_text_freeze (GTK_TEXT (gw->chat_text));
+	msg = g_strdup_printf ("%s: ", (const char*) local);
+	gtk_text_insert (GTK_TEXT (gw->chat_text), lucida_font, &color, 
+			 NULL, msg, -1);
 	g_free (msg);
+
+	msg = g_strdup_printf ("%s\n", (const char*) s);
+	gtk_text_insert (GTK_TEXT (gw->chat_text), NULL, 
+			 &gw->chat_text->style->black, NULL, msg, -1);
+	g_free (msg);
+	gtk_text_thaw (GTK_TEXT (gw->chat_text));
 	
 	gtk_entry_set_text (GTK_ENTRY (w), "");
       }  
