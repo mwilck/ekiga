@@ -3739,6 +3739,11 @@ gm_main_window_new ()
   
   /* The main menu and the toolbars */
   gm_mw_init_menu (window); 
+#ifdef DISABLE_GNOME
+  gtk_box_pack_start (GTK_BOX (mw->window_vbox), mw->main_menu,
+		      FALSE, FALSE, 0);
+#endif
+  
   gm_mw_init_toolbars (window);
 
 
@@ -3749,8 +3754,6 @@ gm_main_window_new ()
 			BONOBO_DOCK_ITEM_BEH_EXCLUSIVE,
   			BONOBO_DOCK_TOP, 0, 0, 0);
 #else
-  gtk_box_pack_start (GTK_BOX (mw->window_vbox), mw->main_menu,
-		      FALSE, FALSE, 0);
   gtk_box_pack_start (GTK_BOX (mw->window_vbox), mw->window_hbox, 
 		      FALSE, FALSE, 0);
 #endif
