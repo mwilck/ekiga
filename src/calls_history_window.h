@@ -47,14 +47,6 @@ enum {
 
 typedef struct _GmCallsHistory GmCallsHistory;
 
-struct _GmCallsHistory
-{
-  GtkListStore *given_calls_list_store;
-  GtkListStore *received_calls_list_store;
-  GtkListStore *missed_calls_list_store;
-  GtkWidget *search_entry;
-};
-
 /* The functions  */
 
 /* DESCRIPTION  :  /

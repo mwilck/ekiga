@@ -49,6 +49,15 @@
 #include "gnome_prefs_window.h"
 #include "stock-icons.h"
 
+/* internal representation */
+struct _GmCallsHistory
+{
+  GtkListStore *given_calls_list_store;
+  GtkListStore *received_calls_list_store;
+  GtkListStore *missed_calls_list_store;
+  GtkWidget *search_entry;
+};
+
 /* Helpers' declarations */
 static void gm_calls_history_destroy (gpointer pointer);
 
