@@ -90,7 +90,7 @@ pc2phone_window_response_cb (GtkWidget *w,
       gm_conf_set_int (H323_KEY "gatekeeper_registering_method", 0);
     
     /* Register the current Endpoint to the Gatekeeper */
-    h323EP->GatekeeperRegister ();
+    //h323EP->GatekeeperRegister ();
   }
 }
 
