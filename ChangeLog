@@ -1,5 +1,13 @@
 2004-02-16 Damien Sandras  <dsandras@seconix.com>
 
+	* lib/gtk_menu_extensions.c: Better not select anything in a radio
+	menu than an unsensitive entry.
+
+	* src/gdkvideoio.cpp, src/gdkvideoio.h: Got rid of one static variable.
+	We don't need it.
+	
+2004-02-16 Damien Sandras  <dsandras@seconix.com>
+
 	* src/endpoint.cpp, src/endpoint.h, src/lid.cpp,
 	src/lid.h, src/main_window.cpp: Changed API to Set/Get audio volumes
 	so that it also works in fast start mode when opening the channel.

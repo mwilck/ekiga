@@ -161,8 +161,6 @@ class GDKVideoOutputDevice : public PVideoOutputDevice
 
   enum {REMOTE, LOCAL};
 
-  static int devices_nbr;
-  
   GmWindow *gw;
 };
 #endif

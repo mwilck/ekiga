@@ -58,8 +58,6 @@
 
 extern GtkWidget *gm;
 
-int GDKVideoOutputDevice::devices_nbr = 0;
-
 
 /* The Methods */
 GDKVideoOutputDevice::GDKVideoOutputDevice(int idno, GmWindow *w)
@@ -73,8 +71,6 @@ GDKVideoOutputDevice::GDKVideoOutputDevice(int idno, GmWindow *w)
   /* Used to distinguish between input and output device. */
   device_id = idno; 
 
-  devices_nbr++;
-  
 #ifdef HAS_SDL
   screen = NULL;
   overlay = NULL;
@@ -119,8 +115,6 @@ GDKVideoOutputDevice::~GDKVideoOutputDevice()
   }
 #endif
 
-  devices_nbr--;
-  
   /* Hide the 2 popup windows */
   gnomemeeting_threads_enter ();
   gnomemeeting_window_hide (GTK_WIDGET (gw->local_video_window));
@@ -187,7 +181,8 @@ BOOL GDKVideoOutputDevice::Redraw ()
    */
   display = gconf_get_int (VIDEO_DISPLAY_KEY "video_view");
 
-  if (devices_nbr <= 1) {
+  if (!ep->CanAutoStartTransmitVideo () 
+      || !ep->CanAutoStartReceiveVideo ()) {
 
     if (device_id == REMOTE)
       display = REMOTE_VIDEO;
