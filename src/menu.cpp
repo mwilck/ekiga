@@ -599,7 +599,7 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
   
   GTK_CHECK_MENU_ITEM (gnomemeeting_menu [33].widget)->active =
     gconf_client_get_bool (client, "/apps/gnomemeeting/general/do_not_disturb", 0);
-  GTK_CHECK_MENU_ITEM (gnomemeeting_menu [33].widget)->active =
+  GTK_CHECK_MENU_ITEM (gnomemeeting_menu [34].widget)->active =
     gconf_client_get_bool (client, "/apps/gnomemeeting/general/auto_answer", 
   		   0);
   
