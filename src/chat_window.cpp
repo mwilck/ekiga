@@ -41,6 +41,7 @@
 #include "../config.h"
 
 #include "chat_window.h"
+#include "ldap_window.h"
 #include "gnomemeeting.h"
 #include "misc.h"
 #include "menu.h"
@@ -52,50 +53,85 @@
 
 extern GtkWidget *gm;
 
+
 #ifndef DISABLE_GNOME
+/* DESCRIPTION  :  Called when an URL is clicked.
+ * BEHAVIOR     :  Displays it with gnome_url_show.
+ * PRE          :  /
+ */
 static void
 open_uri_callback (const gchar *uri)
 {
-  if (uri != NULL)
+  if (uri)
     gnome_url_show (uri, NULL);
 }
 #endif
 
+
+/* DESCRIPTION  :  Called when an URL is clicked.
+ * BEHAVIOR     :  Set the text in the clipboard.
+ * PRE          :  /
+ */
 static void
 copy_uri_callback (const gchar *uri)
 {
-  if (uri != NULL)
+  if (uri)
     gtk_clipboard_set_text (gtk_clipboard_get (GDK_SELECTION_PRIMARY),
 			    uri, -1);
 }
 
+
+/* DESCRIPTION  :  Called when an URL is clicked.
+ * BEHAVIOR     :  Connect to the given URL or transfer the call to that URL.
+ * PRE          :  /
+ */
 static void
 connect_uri_callback (const gchar *uri)
 {
-  if (uri != NULL
-      && GnomeMeeting::Process ()->Endpoint ()->GetCallingState () 
-      == GMH323EndPoint::Standby) {
+  GMH323EndPoint *ep = NULL;
+  GmWindow *gw = NULL;
+  
+  ep = GnomeMeeting::Process ()->Endpoint ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
+    
+  if (uri) {
 
-      GmWindow *gw = GnomeMeeting::Process ()->GetMainWindow ();
+    if (ep->GetCallingState () == GMH323EndPoint::Standby) {
+
+      gw = GnomeMeeting::Process ()->GetMainWindow ();
       gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry),
 			  uri);
       
       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->connect_button),
 				    true);
-      
     }
+    else if (ep->GetCallingState () == GMH323EndPoint::Connected)
+      transfer_call_cb (NULL, (gpointer) uri);
+  }
 }
 
+
+/* DESCRIPTION  :  Called when an URL has to be added to the addressbook.
+ * BEHAVIOR     :  Displays the popup.
+ * PRE          :  /
+ */
 static void
 add_uri_callback (const gchar *uri)
 {
-  if (uri != NULL)
-    {
-	    // FIXME: reimplement with new API
-    }
+  /*  cout << "CRASH?" << endl << flush;
+  if (uri)
+    gnomemeeting_addressbook_edit_contact_from_url (uri);
+  */
 }  
 
-static void chat_entry_activate (GtkEditable *w, gpointer data)
+
+/* DESCRIPTION  :  Called when the chat entry is activated.
+ * BEHAVIOR     :  Send the given message to the remote user.
+ * PRE          :  /
+ */
+static void
+chat_entry_activate (GtkEditable *w,
+		     gpointer data)
 {
   GMH323EndPoint *endpoint = GnomeMeeting::Process ()->Endpoint ();
   PString s;
@@ -140,7 +176,9 @@ static void chat_entry_activate (GtkEditable *w, gpointer data)
   }
 }
 
-void gnomemeeting_text_chat_clear (GtkWidget *w, GmTextChat *chat)
+
+void gnomemeeting_text_chat_clear (GtkWidget *w,
+				   GmTextChat *chat)
 {
   GmWindow *gw = NULL;
   GtkTextIter start_iter, end_iter;
@@ -156,8 +194,11 @@ void gnomemeeting_text_chat_clear (GtkWidget *w, GmTextChat *chat)
   gtk_menu_set_sensitive (gw->main_menu, "clear_text_chat", FALSE);
 }
 
+
 void 
-gnomemeeting_text_chat_insert (PString local, PString str, int user)
+gnomemeeting_text_chat_insert (PString local,
+			       PString str,
+			       int user)
 {
   gchar *msg = NULL;
   GtkTextIter iter;
@@ -199,7 +240,9 @@ gnomemeeting_text_chat_insert (PString local, PString str, int user)
   gtk_menu_set_sensitive (gw->main_menu, "clear_text_chat", TRUE);
 }
 
-GtkWidget *gnomemeeting_text_chat_new (GmTextChat *chat)
+
+GtkWidget *
+gnomemeeting_text_chat_new (GmTextChat *chat)
 {
   GtkWidget *entry = NULL;
   GtkWidget *scr = NULL;
@@ -211,6 +254,8 @@ GtkWidget *gnomemeeting_text_chat_new (GmTextChat *chat)
 
   GtkTextIter  iter;
   GtkTextMark *mark = NULL;
+  GtkTextTag *regex_tag = NULL;
+
 
   /* Get the structs from the application */
   chat_window = gtk_frame_new (NULL);
@@ -248,7 +293,8 @@ GtkWidget *gnomemeeting_text_chat_new (GmTextChat *chat)
 			      "foreground", "darkblue", 
 			      "weight", 900, NULL);
 
-  GtkTextTag *regex_tag;
+  
+  /* Create the various tags for the different urls types */
   regex_tag = gtk_text_buffer_create_tag (chat->text_buffer,
 					  "uri-http",
 					  "foreground", "blue",
@@ -264,8 +310,7 @@ GtkWidget *gnomemeeting_text_chat_new (GmTextChat *chat)
 				       copy_uri_callback,
 				       NULL);
   }
-  else
-    g_warning (_("Couldn't compile http/ftp regex!"));
+
   
   regex_tag = gtk_text_buffer_create_tag (chat->text_buffer, "uri-h323",
 					  "foreground", "pink",
@@ -281,8 +326,6 @@ GtkWidget *gnomemeeting_text_chat_new (GmTextChat *chat)
 				       copy_uri_callback,
 				       NULL);
   }
-  else
-    g_warning (_("Couldn't compile http/ftp regex!"));
 
   regex_tag = gtk_text_buffer_create_tag (chat->text_buffer, "smileys",
 					  "foreground", "grey",
@@ -290,8 +333,6 @@ GtkWidget *gnomemeeting_text_chat_new (GmTextChat *chat)
   if (gtk_text_tag_set_regex (regex_tag,
 			      "(:[-]?(\\)|\\(|o|O|p|P|D|\\||/)|\\}:(\\(|\\))|\\|[-]?(\\(|\\))|:'\\(|:\\[|:-(\\.|\\*|x)|;[-]?\\)|(8|B)[-]?\\)|X(\\(|\\||\\))|\\((\\.|\\|)\\)|x\\*O)"))
     gtk_text_tag_set_regex_display (regex_tag, gtk_text_buffer_insert_smiley);
-  else
-    g_warning (_("Couldn't compile smiley regex!"));
 
   regex_tag = gtk_text_buffer_create_tag (chat->text_buffer, "latex",
 					  "foreground", "grey",
@@ -301,9 +342,8 @@ GtkWidget *gnomemeeting_text_chat_new (GmTextChat *chat)
     gtk_text_tag_add_actions_to_regex (regex_tag,
 				       _("Copy equation"),
 				       copy_uri_callback, NULL);
-  else
-    g_warning (_("Couldn't compile latex regex!"));
 
+  /* */
   frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
   gtk_container_add (GTK_CONTAINER (scr), chat->text_view);
