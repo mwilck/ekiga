@@ -177,7 +177,6 @@ chat_entry_activate (GtkEditable *w,
   }
 }
 
-
 void gnomemeeting_text_chat_clear (GtkWidget *w,
 				   GmTextChat *chat)
 {
@@ -194,6 +193,59 @@ void gnomemeeting_text_chat_clear (GtkWidget *w,
   gtk_menu_set_sensitive (gw->main_menu, "clear_text_chat", FALSE);
 }
 
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Used by the two notification functions, to display an informative
+ *		text message when an event occurs; starting allows to know if the
+ *		call is beginning or ending
+ * PRE          :  /
+ */
+static void
+gnomemeeting_text_chat_call_startstop_notification (gboolean starting)
+{
+  GtkTextIter iter;
+  GmTextChat *chat = NULL;
+  GmWindow *gw = NULL;
+  gchar *text = NULL;
+
+  // find the time at which the event occured	
+  time_t *timeptr;
+  char *time_str;
+  
+  time_str = (char *) malloc (21);
+  timeptr = new (time_t);
+ 
+  time (timeptr);
+  strftime(time_str, 20, "%H:%M:%S", localtime (timeptr));
+
+  // prepare the message to be displayed
+  if (starting)
+    text = g_strdup_printf ("---- Call begins at %s\n", time_str);
+  else
+    text = g_strdup_printf ("---- Call ends at %s\n", time_str);
+
+  // displays the message
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
+  chat = GnomeMeeting::Process ()->GetTextChat ();
+  gtk_text_buffer_get_end_iter (chat->text_buffer, &iter);
+
+  gtk_text_buffer_insert(chat->text_buffer, &iter, text, -1);
+
+  // freeing what we need to
+  free (time_str);
+  g_free (text);
+}
+
+void
+gnomemeeting_text_chat_call_start_notification (void)
+{
+   gnomemeeting_text_chat_call_startstop_notification (TRUE);
+}
+
+void
+gnomemeeting_text_chat_call_stop_notification (void)
+{
+   gnomemeeting_text_chat_call_startstop_notification (FALSE);
+}
 
 void 
 gnomemeeting_text_chat_insert (PString local,

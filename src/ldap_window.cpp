@@ -530,13 +530,19 @@ static void
 edit_contact_cb (GtkWidget *widget,
 		 gpointer data)
 {
+  gchar *contact_section = NULL;
+  gchar *contact_name = NULL;
   gchar *contact_url = NULL;
+  gchar *contact_speed_dial = NULL;
 
-  get_selected_contact_info (NULL, NULL, &contact_url, NULL, NULL);
+  get_selected_contact_info (&contact_section, &contact_name, &contact_url, &contact_speed_dial, NULL);
 
-  gnomemeeting_addressbook_edit_contact_dialog (contact_url);
+  gnomemeeting_addressbook_edit_contact_dialog (contact_section, contact_name, contact_url, contact_speed_dial);
   
+  g_free (contact_section);
+  g_free (contact_name);
   g_free (contact_url);
+  g_free (contact_speed_dial);
 }
 
 
@@ -1151,7 +1157,7 @@ contact_clicked_cb (GtkWidget *w,
 	MenuEntry add =
 	  GTK_MENU_ENTRY("add", msg, NULL,
 			 GTK_STOCK_ADD, 0,
-			 GTK_SIGNAL_FUNC (new_contact_cb),
+			 GTK_SIGNAL_FUNC (edit_contact_cb),
 			 NULL, TRUE);
 	
 	MenuEntry props =
@@ -3512,7 +3518,7 @@ gnomemeeting_addressbook_sections_populate ()
 
 
 GMURL
-gnomemeeting_addressbook_get_url_from_speed_dial (const char *url)
+gnomemeeting_addressbook_get_url_from_speed_dial (const char *speed_dial)
 {
   gchar *group_content_gconf_key = NULL;
   gchar *group_name = NULL;
@@ -3523,12 +3529,12 @@ gnomemeeting_addressbook_get_url_from_speed_dial (const char *url)
   GSList *groups = NULL;
   GSList *groups_iter = NULL;
 
-  GMURL result;
+  GMURL url;
   
   GConfClient *client = NULL;
 
-  if (!url || (url && !strcmp (url, "")))
-    return result;
+  if (!speed_dial || (speed_dial && !strcmp (speed_dial, "")))
+    return url;
 
   client = gconf_client_get_default ();
 
@@ -3550,14 +3556,14 @@ gnomemeeting_addressbook_get_url_from_speed_dial (const char *url)
     group_content_iter = group_content;
     
     while (group_content_iter
-	   && group_content_iter->data && result.IsEmpty ()) {
+	   && group_content_iter->data && url.IsEmpty ()) {
       
       contact_info =
 	g_strsplit ((char *) group_content_iter->data, "|", 0);
 
       if (contact_info [2] && strcmp (contact_info [2], "")
-	  && !strcmp (contact_info [2], (const char *) url)) 
-	result = GMURL (contact_info [1]);
+	  && !strcmp (contact_info [2], (const char *) speed_dial)) 
+	url = GMURL (contact_info [1]);
 
       g_strfreev (contact_info);
       group_content_iter = g_slist_next (group_content_iter);
@@ -3572,7 +3578,7 @@ gnomemeeting_addressbook_get_url_from_speed_dial (const char *url)
 
   g_slist_free (groups);
 
-  return result;
+  return url;
 }
 
 

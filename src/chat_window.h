@@ -65,9 +65,18 @@ gnomemeeting_text_chat_clear (GtkWidget *,
 			      GmTextChat *);
 
 
+/* DESCRIPTION: /
+ * BEHAVIOR :  Signals the text chat that a connection begins or ends
+ */
+void
+gnomemeeting_text_chat_call_start_notification (void);
+void
+gnomemeeting_text_chat_call_stop_notification (void);
+
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Displays the colored text chat message, and replaces
- *                 text smileys by real icon smileys.
+ * BEHAVIOR     :  Displays the colored text chat message,
+ *		with some enhancements (context menu
+ *		for uris, graphics for smileys, etc)
  * PRE          :  The name of the user, the name of the remote user,
  *                 0 for local user string, 1 for remote user received string.
  */

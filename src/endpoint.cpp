@@ -946,6 +946,7 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 			 utf8_name, utf8_app);
   gnomemeeting_statusbar_push (gw->statusbar, _("Connected"));
   gnomemeeting_log_insert (gw->history_text_view, msg);
+  gnomemeeting_text_chat_call_start_notification ();
 
   gtk_label_set_text (GTK_LABEL (gw->remote_name), (const char *) utf8_name);
   gtk_window_set_title (GTK_WINDOW (gw->remote_video_window), 
@@ -1230,6 +1231,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
 
   gnomemeeting_log_insert (gw->history_text_view, msg_reason);
+  gnomemeeting_text_chat_call_stop_notification ();
   gnomemeeting_statusbar_flash (gw->statusbar, msg_reason);
   gnomemeeting_threads_leave ();
 
