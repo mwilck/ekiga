@@ -126,7 +126,8 @@ gnomemeeting_warning_dialog_on_widget (GtkWindow *parent,
     return;
   }
   
-  button = gtk_check_button_new_with_label ("Do not show this dialog again");
+  button = 
+    gtk_check_button_new_with_label ("Do not show this dialog again");
   
   g_signal_connect (G_OBJECT (button), "toggled",
                     G_CALLBACK (popup_toggle_changed),
@@ -190,7 +191,9 @@ gnomemeeting_dialog (GtkWindow *parent,
                                    GTK_BUTTONS_OK,
                                    buffer);
   
-  gtk_dialog_run (GTK_DIALOG (dialog));
+  g_signal_connect_swapped (GTK_OBJECT (dialog), "response",
+                            G_CALLBACK (gtk_widget_destroy),
+                            GTK_OBJECT (dialog));
   
-  gtk_widget_destroy (dialog);
+  gtk_widget_show_all (dialog);
 }
