@@ -450,12 +450,12 @@ void GMH323EndPoint::AddAudioCapabilities ()
 	gsm_capa->SetTxFramesInPacket (gsm_frames);
       }
       
-      if ((!strcmp (couple [0], "G.726-16k"))&&(!strcmp (couple [1], "1"))) {
+      if ((!strcmp (couple [0], "G.726-24k"))&&(!strcmp (couple [1], "1"))) {
 	
 	H323_G726_Capability * g72616_capa; 
 	
 	SetCapability (0, 0, g72616_capa = 
-		       new H323_G726_Capability (*this, H323_G726_Capability::e_16k));
+		       new H323_G726_Capability (*this, H323_G726_Capability::e_24k));
 	codecs_count++;
       }
       

@@ -289,13 +289,14 @@ gnomemeeting_init (GmWindow *gw,
    if (gconf_test == NULL || strcmp (gconf_test, BUILD_ID)) {
 
      int reply = 0;
+     gchar *msg = g_strdup_printf (_("GnomeMeeting got %s for the gconf key \"/apps/gnomemeeting/gconf_test\", but %s was expected.\nThat key represents the build date of GnomeMeeting. If it is not correct, it means that your gconf schemas are not well installed or the that permissions are not correct.\nPlease check the FAQ (http://www.gnomemeeting.org/faq.php) and the mailing list archives for more information (http://mail.gnome.org)."), gconf_test, BUILD_ID);
      GtkWidget *dialog = 
        gtk_message_dialog_new (GTK_WINDOW (gm),
 			       GTK_DIALOG_DESTROY_WITH_PARENT,
 			       GTK_MESSAGE_ERROR,
 			       GTK_BUTTONS_CLOSE,
-			       _("Please check your gconf settings and permissions, it seems that gconf is not properly setup on your system"));
-
+			       msg);
+     g_free (msg);
      gtk_dialog_run (GTK_DIALOG (dialog));
      gtk_widget_destroy (dialog);
 

@@ -448,9 +448,9 @@ gnomemeeting_codecs_list_add (GtkTreeIter iter, GtkListStore *store,
     data [2] = g_strdup ("16.5 kbits");
   }
 
-  if (!strcmp (codec_name, "G.726-16k")) {
+  if (!strcmp (codec_name, "G.726-24k")) {
     data [1] = g_strdup (_("Good Quality"));
-    data [2] = g_strdup ("16 kbits");
+    data [2] = g_strdup ("24 kbits");
   }
 
   if (!strcmp (codec_name, "G.726-32k")) {
@@ -562,7 +562,7 @@ void gnomemeeting_codecs_list_build (GtkListStore *codecs_list_store,
   static const gchar * const available_codecs[] = {
     "GSM-06.10",
     "MS-GSM",
-    "G.726-16k",
+    "G.726-24k",
     "G.726-32k",
     "G.711-uLaw-64k",
     "G.711-ALaw-64k",
