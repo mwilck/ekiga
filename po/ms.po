@@ -1,12 +1,15 @@
-# Duit PPRT siapa yang kebas????      
-# Copyright (C) 2001 Free Software Foundation, Inc.
-# Hasbullah Bin Pit (sebol) <sebol@ikhlas.com>, 200R31.
+# Malay Translation of GnomeMeeting HEAD.
+# Copyright (C) 2003 Free Software Foundation
+# This file is distributed under the same license as the PACKAGE package.
+# 1. Hasbulah Bin Pit <sebol@ikhlas.com> 2003
+# 2. MIMOS Open Source Development Group <opensource@mimos.my>, 2003.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-meeting\n"
-"POT-Creation-Date: 2003-07-22 00:32+0800\n"
-"PO-Revision-Date: 2003-07-22 00:29+0800\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-11-23 06:49+0800\n"
+"PO-Revision-Date: 2003-11-23 06:49+0800\n"
 "Last-Translator: Hasbullah Bin Pit <sebol@ikhlas.com>\n"
 "Language-Team: Projek Gabai <gabai-penyumbang@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -14,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #. Add the window icon and title
-#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:1265
+#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:1197
 msgid "GnomeMeeting"
 msgstr "GnomeMeeting"
 
@@ -32,613 +35,610 @@ msgstr "1: 56Kbps, 2: ISDN, 3:DSL, 4: LAN, 5: Tersendiri"
 
 #: gnomemeeting.schemas.in.in.h:2
 msgid "Always forward calls to the given host"
-msgstr ""
+msgstr "Sentiasa sambungkan panggilan ke hos yang diberikan"
 
 #: gnomemeeting.schemas.in.in.h:3
-msgid "Audio player"
-msgstr "Pemain audio"
+msgid "Audio input device"
+msgstr "Peranti input audio"
 
 #: gnomemeeting.schemas.in.in.h:4
-msgid "Audio player mixer"
-msgstr "Mixer pemain audio"
+msgid "Audio output device"
+msgstr "Peranti output audio"
 
 #: gnomemeeting.schemas.in.in.h:5
-msgid "Audio recorder"
-msgstr "Perekod bunyi"
+msgid "Audio plugin"
+msgstr "Plugin audio"
 
 #: gnomemeeting.schemas.in.in.h:6
-msgid "Audio recorder mixer"
-msgstr "Mixer perekod audio"
-
-#: gnomemeeting.schemas.in.in.h:7
-#, fuzzy
 msgid "Automatic echo cancellation"
-msgstr "Konfigurasi proksi _automatik"
+msgstr "Pembatalan automatik gema"
 
-#: gnomemeeting.schemas.in.in.h:8 src/menu.cpp:911
-#, fuzzy
-msgid "Automatically answer calls"
-msgstr "Automatik mula pencarian"
-
-#: gnomemeeting.schemas.in.in.h:9 src/pref_window.cpp:867
-#, fuzzy
+#: gnomemeeting.schemas.in.in.h:7 src/pref_window.cpp:744
 msgid "Automatically clear the text chat at the end of calls"
-msgstr "Automatik simpan dokumen semasa pada selangmasa biasa"
-
-#: gnomemeeting.schemas.in.in.h:10
-#, fuzzy
-msgid "Change the control panel section"
-msgstr "Batal fungsi semasa"
-
-#: gnomemeeting.schemas.in.in.h:11
-msgid ""
-"Change the control panel section (4 means that the control panel is off)"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:12 src/pref_window.cpp:1427
+#: gnomemeeting.schemas.in.in.h:8
+msgid "Change the control panel section"
+msgstr "Mengubah bahagian panel kawalan"
+
+#: gnomemeeting.schemas.in.in.h:9
+msgid ""
+"Change the control panel section (4 means that the control panel is off)"
+msgstr "Mengubah bahagian panel kawalan (4 bermakna panel kawalan ditutup)"
+
+#: gnomemeeting.schemas.in.in.h:10 src/pref_window.cpp:1266
 msgid ""
 "Choose the number of blocks (that have not changed) transmitted with each "
 "frame. These blocks fill in the background."
 msgstr ""
+"Pilih bilangan blok (yang tidak diubah) yang dipindahkan dengan setiap "
+"bingkai. Blok ini diisi di latar belakang."
 
-#: gnomemeeting.schemas.in.in.h:13
-#, fuzzy
-msgid "Color Format"
-msgstr "Tukar Format"
-
-#: gnomemeeting.schemas.in.in.h:14
-msgid "Color Format for the video palette"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:15 src/ldap_window.cpp:2572
+#: gnomemeeting.schemas.in.in.h:11 src/ldap_window.cpp:2975
 msgid "Comment"
 msgstr "Komen"
 
-#: gnomemeeting.schemas.in.in.h:16 src/pref_window.cpp:974
+#: gnomemeeting.schemas.in.in.h:12 src/pref_window.cpp:837
 msgid ""
 "Connection will be established in Fast Start mode. Fast Start is a new way "
 "to start calls faster that was introduced in H.323v2. It is not supported by "
 "Netmeeting and using both Fast Start and H.245 Tunnelling can crash some "
 "versions of Netmeeting."
 msgstr ""
+"Sambungan akan diwujudkan dalam mod Mula Cepat. Mula Cepat ialah cara baru "
+"untuk memulakan panggilan dengan lebih cepat yang diperkenalkan dalam "
+"H.323v2. Ia tidak disokong oleh Netmeeting dan menggunakan Mula Cepat dan "
+"Penerowongan H.245 boleh merosakkan beberapa versi Netmeeting."
 
-#: gnomemeeting.schemas.in.in.h:17
+#: gnomemeeting.schemas.in.in.h:13
 msgid "Country code"
 msgstr "Kod Kawasan"
 
-#: gnomemeeting.schemas.in.in.h:18
+#: gnomemeeting.schemas.in.in.h:14
 msgid "Display a popup window when receiving a call"
-msgstr ""
+msgstr "Papar tetingkap pop-up apabila menerima panggilan"
 
-#: gnomemeeting.schemas.in.in.h:19 src/menu.cpp:446
-#, fuzzy
-msgid "Do not disturb"
-msgstr "Jangan Ganggu"
-
-#: gnomemeeting.schemas.in.in.h:20
-#, fuzzy
+#: gnomemeeting.schemas.in.in.h:15
 msgid "E-mail address"
-msgstr "Alamat Email:"
+msgstr "Alamat e-mel"
 
-#: gnomemeeting.schemas.in.in.h:21
-#, fuzzy
+#: gnomemeeting.schemas.in.in.h:16
 msgid "Enable 'Fast Start'"
-msgstr "takboleh untuk stat"
+msgstr "Hidupkan 'Mula Cepat'"
 
-#: gnomemeeting.schemas.in.in.h:22
+#: gnomemeeting.schemas.in.in.h:17
 msgid "Enable H.245 tunnelling"
 msgstr "Hidupkan penerowongan H.245"
 
-#: gnomemeeting.schemas.in.in.h:23
-#, fuzzy
-msgid "Enable IP translation"
-msgstr "Hidupkan animasi"
+#: gnomemeeting.schemas.in.in.h:18
+msgid "Enable IP checking"
+msgstr "Hidupkan menyemakan IP"
 
-#: gnomemeeting.schemas.in.in.h:24
+#: gnomemeeting.schemas.in.in.h:19
+msgid "Enable IP translation"
+msgstr "Hidupkan penterjemahan IP"
+
+#: gnomemeeting.schemas.in.in.h:20
 msgid "Enable bilinear filtering on displayed video"
 msgstr "Hidupkan penapisan bilinear pada video dipaparkan"
 
-#: gnomemeeting.schemas.in.in.h:25 src/pref_window.cpp:862
+#: gnomemeeting.schemas.in.in.h:21
 msgid ""
 "Enable or disable bilinear interpolation when rendering video images (this "
 "has no effect in fullscreen mode)."
 msgstr ""
+"Hidupkan atau matikan interpolasi bilinear apabila menyediakan imej video "
+"(ini tidak memberikan kesan dalam mod skrin penuh)."
+
+#: gnomemeeting.schemas.in.in.h:22
+msgid "Enable registering"
+msgstr "Hidupkan mendaftar"
+
+#: gnomemeeting.schemas.in.in.h:23
+msgid "Enable silence detection"
+msgstr "Hidupkan pengesanan senyap"
+
+#: gnomemeeting.schemas.in.in.h:24
+msgid "Enable video reception"
+msgstr "Hidupkan penerimaan video"
+
+#: gnomemeeting.schemas.in.in.h:25
+msgid "Enable video transmission"
+msgstr "Hidupkan penghantaran video"
 
 #: gnomemeeting.schemas.in.in.h:26
-#, fuzzy
-msgid "Enable registering"
-msgstr "Bolehkan penapis"
-
-#: gnomemeeting.schemas.in.in.h:27
-#, fuzzy
-msgid "Enable silence detection"
-msgstr "Hidupkan butang sembunyi"
-
-#: gnomemeeting.schemas.in.in.h:28
-#, fuzzy
-msgid "Enable video reception"
-msgstr "Hidupkan butang sembunyi"
-
-#: gnomemeeting.schemas.in.in.h:29
-#, fuzzy
-msgid "Enable video transmission"
-msgstr "Penghantaran mel elektronik"
-
-#: gnomemeeting.schemas.in.in.h:30 src/pref_window.cpp:784
 msgid "Enter a comment about yourself for the user directory."
 msgstr "Masukkan komen perihal diri anda untuk direktori pengguna."
 
-#: gnomemeeting.schemas.in.in.h:31 src/pref_window.cpp:1060
+#: gnomemeeting.schemas.in.in.h:27 src/pref_window.cpp:906
 msgid ""
 "Enter the public IP of your NAT/PAT router if you want to use IP "
 "translation. If you are registered to ils.seconix.com, GnomeMeeting will "
 "automatically fetch the public IP using the ILS service."
 msgstr ""
+"Masukkan IP awam bagi penghala NAT/PAT anda jika anda mahu menggunakan "
+"penterjemahan IP. Jika anda didaftarkan ke ils.seconix.com, GnomeMeeting "
+"akan secara automatik mendapatkan IP awam dengan menggunakan khidmat ILS."
 
-#: gnomemeeting.schemas.in.in.h:32 src/pref_window.cpp:779
-#, fuzzy
+#: gnomemeeting.schemas.in.in.h:28 src/pref_window.cpp:683
 msgid "Enter your e-mail address."
-msgstr "Apakah alamat emel anda?"
+msgstr "Masukkan alamat e-mel anda"
 
-#: gnomemeeting.schemas.in.in.h:33 src/pref_window.cpp:769
-#, fuzzy
+#: gnomemeeting.schemas.in.in.h:29 src/pref_window.cpp:669
 msgid "Enter your first name."
-msgstr "Apakah nama pertama anda?"
+msgstr "Masukkan nama pertama anda"
 
-#: gnomemeeting.schemas.in.in.h:34 src/pref_window.cpp:774
-#, fuzzy
+#: gnomemeeting.schemas.in.in.h:30 src/pref_window.cpp:676
 msgid "Enter your last name."
-msgstr "Apakah nama akhir anda?"
+msgstr "Masukkan nama keluarga anda"
 
-#: gnomemeeting.schemas.in.in.h:35 src/pref_window.cpp:789
+#: gnomemeeting.schemas.in.in.h:31
 msgid "Enter your location (country or city) for the user directory."
 msgstr "Masukkan lokasi anda (negara atau banda) untuk direktori pengguna."
 
-#: gnomemeeting.schemas.in.in.h:36
+#: gnomemeeting.schemas.in.in.h:32
 msgid "First name"
 msgstr "Nama Pertama"
 
-#: gnomemeeting.schemas.in.in.h:37
-#, fuzzy
+#: gnomemeeting.schemas.in.in.h:33
 msgid "Forward calls to host"
-msgstr "Maju Zon Induk"
+msgstr "Sambungkan panggilan ke hos"
 
-#: gnomemeeting.schemas.in.in.h:38
+#: gnomemeeting.schemas.in.in.h:34
 msgid "Forward calls to the given host if busy"
 msgstr "Majukan panggilan ke hos yg diberi jika sibuk"
 
-#: gnomemeeting.schemas.in.in.h:39
+#: gnomemeeting.schemas.in.in.h:35
 msgid "Forward calls to the given host if no answer"
 msgstr "Majukan panggilan ke hos yg diberi jika tiada jawapan"
 
-#: gnomemeeting.schemas.in.in.h:40
-#, fuzzy
+#: gnomemeeting.schemas.in.in.h:36
 msgid "Fullscreen height"
-msgstr "Mod Layar penuh"
+msgstr "Tinggi skrin penuh"
 
-#: gnomemeeting.schemas.in.in.h:41
-#, fuzzy
+#: gnomemeeting.schemas.in.in.h:37
 msgid "Fullscreen width"
-msgstr "Mod Layar penuh"
+msgstr "Lebar skrin penuh"
 
-#: gnomemeeting.schemas.in.in.h:42 src/pref_window.cpp:1001
+#: gnomemeeting.schemas.in.in.h:38 src/pref_window.cpp:863
 msgid "Gatekeeper ID"
 msgstr "ID Gatekeeper"
 
-#: gnomemeeting.schemas.in.in.h:43
+#: gnomemeeting.schemas.in.in.h:39
 msgid "Gatekeeper alias"
 msgstr "Alias Gatekeeper"
 
-#: gnomemeeting.schemas.in.in.h:44 src/pref_window.cpp:1000
+#: gnomemeeting.schemas.in.in.h:40 src/pref_window.cpp:862
 msgid "Gatekeeper host"
 msgstr "Hos Gatekeeper"
 
-#: gnomemeeting.schemas.in.in.h:45
-#, fuzzy
+#: gnomemeeting.schemas.in.in.h:41
 msgid "Gatekeeper password"
-msgstr "Ingat katalaluan"
+msgstr "Kata laluan penjaga get"
 
-#: gnomemeeting.schemas.in.in.h:46
+#: gnomemeeting.schemas.in.in.h:42
 msgid ""
 "If enabled, GnomeMeeting will play a sound when receiving an incoming call "
 "(the sound to play is chosen in the Gnome Control Center)."
 msgstr ""
+"Jika dibolehkan, GnomeMeeting akan memainkan bunyi apabila menerima "
+"panggilan (bunyi yang dimainkan dipilih dalam Pusat Kawalan Gnome)."
 
-#: gnomemeeting.schemas.in.in.h:47 src/pref_window.cpp:826
+#: gnomemeeting.schemas.in.in.h:43
 msgid ""
 "If enabled, GnomeMeeting will start hidden. The docklet must be enabled."
 msgstr ""
+"Jika dibolehkan, GnomeMeeting akan mula tersembunyi. Doklet mestilah "
+"dibolehkan."
 
-#: gnomemeeting.schemas.in.in.h:48 src/pref_window.cpp:840
+#: gnomemeeting.schemas.in.in.h:44
 msgid ""
 "If enabled, a popup window will be displayed when receiving an incoming call."
 msgstr ""
+"Jika dibolehkan, menu pop-up akan dipaparkan apabila menerima panggilan."
 
-#: gnomemeeting.schemas.in.in.h:49 src/pref_window.cpp:939
+#: gnomemeeting.schemas.in.in.h:45
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you already are in a call or if you are in "
 "Do Not Disturb mode."
 msgstr ""
+" Jika dibolehkan, semua panggilan masuk akan disambungkan ke hos yang "
+"ditetapkan dalam medan di bawah jika anda berada dalam mod panggilan atau "
+"jika anda dalam mod Jangan Ganggu."
 
-#: gnomemeeting.schemas.in.in.h:50 src/pref_window.cpp:936
+#: gnomemeeting.schemas.in.in.h:46
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you do not answer the call."
 msgstr ""
+"Jika dibolehkan, semua panggilan masuk akan disambungkan ke hos yang "
+"ditetapkan dalam medan di bawah jika anda tidak menjawab panggilan."
 
-#: gnomemeeting.schemas.in.in.h:51 src/pref_window.cpp:933
+#: gnomemeeting.schemas.in.in.h:47
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below."
 msgstr ""
+"Jika dibolehkan, semua panggilan masuk akan disambungkan ke hos yang "
+"ditetapkan dalam medan di bawah."
 
-#: gnomemeeting.schemas.in.in.h:52 src/pref_window.cpp:1401
+#: gnomemeeting.schemas.in.in.h:48 src/pref_window.cpp:1242
 msgid "If enabled, allows video to be received during a call."
-msgstr ""
+msgstr "Jika dibolehkan, benarkan video diterima semasa menerima panggilan"
 
-#: gnomemeeting.schemas.in.in.h:53 src/pref_window.cpp:834
-msgid "If enabled, incoming calls will be automatically answered."
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:54 src/pref_window.cpp:837
-msgid "If enabled, incoming calls will be automatically refused."
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:55 src/pref_window.cpp:896
-#, fuzzy
+#: gnomemeeting.schemas.in.in.h:49 src/pref_window.cpp:768
 msgid "If enabled, register with the selected user directory."
-msgstr "Padam direktori dipilih"
+msgstr "Jika dibolehkan, daftarkan dalam direktori pengguna yang dipilih"
 
-#: gnomemeeting.schemas.in.in.h:56 src/pref_window.cpp:823
+#: gnomemeeting.schemas.in.in.h:50 src/pref_window.cpp:723
 msgid ""
 "If enabled, the splash screen will be displayed when GnomeMeeting starts."
 msgstr ""
+"Jika dibolehkan, skrin percikan akan dipaparkan apabila GnomeMeeting bermula."
 
-#: gnomemeeting.schemas.in.in.h:57 src/pref_window.cpp:867
+#: gnomemeeting.schemas.in.in.h:51 src/pref_window.cpp:744
 msgid ""
 "If enabled, the text chat will automatically be cleared at the end of calls."
-msgstr ""
+msgstr "Jika dibolehkan, chat teksautomatik di kosongkan selepas akhir panggilan."
 
-#: gnomemeeting.schemas.in.in.h:58 src/pref_window.cpp:1371
+#: gnomemeeting.schemas.in.in.h:52 src/pref_window.cpp:1217
 msgid "If enabled, use silence detection with the GSM and G.711 codecs."
 msgstr ""
+"Jika dibolehkan, gunakan pengesan senyap dengan pengekod GSM dan "
+"G.711"
 
-#: gnomemeeting.schemas.in.in.h:59 src/pref_window.cpp:1398
+#: gnomemeeting.schemas.in.in.h:53 src/pref_window.cpp:1239
 msgid "If enabled, video is transmitted during a call."
-msgstr ""
+msgstr "Jika dibolehkan, video dihantar semasa menerima panggilan."
 
-#: gnomemeeting.schemas.in.in.h:60 src/pref_window.cpp:899
+#: gnomemeeting.schemas.in.in.h:54 src/pref_window.cpp:770
 msgid ""
 "If enabled, your details are shown to people browsing the user directory. If "
 "disabled, you are not visible to users browsing the user directory, but they "
 "can still use the callto URL to call you."
 msgstr ""
+"Jika dibolehkan,perincian anda akan ditunjukkan untuk orang ramai yang "
+"melayari direktori pengguna. Jika dilumpuhkan, anda tidak dapat dilihat oleh "
+"pengguna yang melayari direktori pengguna, tetapi mereka masih boleh "
+"menggunakan panggilanke URL untuk menghubungi anda."
 
-#: gnomemeeting.schemas.in.in.h:61
+#: gnomemeeting.schemas.in.in.h:55
+msgid "Incoming call mode"
+msgstr "Mod panggilan masuk"
+
+#: gnomemeeting.schemas.in.in.h:56
 msgid "Kind of network selected in the druid"
 msgstr "Jenis rangkaian dipilih pada druid"
 
-#: gnomemeeting.schemas.in.in.h:62
-#, fuzzy
+#: gnomemeeting.schemas.in.in.h:57
 msgid "Last name"
-msgstr "Nama Keluarga"
+msgstr "Nama keluarga"
 
-#: gnomemeeting.schemas.in.in.h:63
-#, fuzzy
+#: gnomemeeting.schemas.in.in.h:58
 msgid "Listen Port"
-msgstr "Dengar pada port UDP: "
+msgstr "Port Dengar"
 
-#: gnomemeeting.schemas.in.in.h:64
-#, fuzzy
+#: gnomemeeting.schemas.in.in.h:59
 msgid "Local video window height"
-msgstr "Alih tetingkap ke kanan"
+msgstr "Tinggi Tetingkap video setempat"
 
-#: gnomemeeting.schemas.in.in.h:65
-#, fuzzy
+#: gnomemeeting.schemas.in.in.h:60
 msgid "Local video window width"
-msgstr "Lebar tetingkap utama GnomeICU"
+msgstr "Lebar tetingkap video setempat"
 
-#: gnomemeeting.schemas.in.in.h:66 src/ldap_window.cpp:2585
+#: gnomemeeting.schemas.in.in.h:61 src/ldap_window.cpp:2988
 msgid "Location"
 msgstr "Lokasi"
 
-#: gnomemeeting.schemas.in.in.h:67
-#, fuzzy
+#: gnomemeeting.schemas.in.in.h:62
 msgid "Maximum jitter buffer"
-msgstr "Saiz maksima bagi ruler"
+msgstr "Penimbal ketaran maksimum"
+
+#: gnomemeeting.schemas.in.in.h:63
+msgid "Maximum video bandwidth"
+msgstr "Lebar maksimum jalur video"
+
+#: gnomemeeting.schemas.in.in.h:64
+msgid "Minimum jitter buffer"
+msgstr "Penimbal ketaran minimum"
+
+#: gnomemeeting.schemas.in.in.h:65
+msgid "Minimum transmitted FPS"
+msgstr "FPS minimum yang dihantar"
+
+#: gnomemeeting.schemas.in.in.h:66
+msgid "Minimum transmitted video quality"
+msgstr "Kualiti minimum video yang dihantar"
+
+#: gnomemeeting.schemas.in.in.h:67
+msgid "Number of entries to store in history boxes"
+msgstr "Bilangan entri untuk menyimpan kotak sejarah"
 
 #: gnomemeeting.schemas.in.in.h:68
-#, fuzzy
-msgid "Maximum video bandwidth"
-msgstr "Lebar minima anak"
+msgid "Number of frames for G.711"
+msgstr "Bilangan bingkai bagi G.711"
 
 #: gnomemeeting.schemas.in.in.h:69
-#, fuzzy
-msgid "Minimum jitter buffer"
-msgstr "Pengguna Minimum:"
+msgid "Number of frames for GSM"
+msgstr "Bilangan bingkai bagi GSM"
 
 #: gnomemeeting.schemas.in.in.h:70
-msgid "Minimum transmitted FPS"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:71
-msgid "Minimum transmitted video quality"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:72
-#, fuzzy
-msgid "Number of entries to store in history boxes"
-msgstr "Bilangan kemasukan pada peta semaphore"
-
-#: gnomemeeting.schemas.in.in.h:73
-#, fuzzy
-msgid "Number of frames for G.711"
-msgstr "Bilangan halaman"
-
-#: gnomemeeting.schemas.in.in.h:74
-#, fuzzy
-msgid "Number of frames for GSM"
-msgstr "Bilangan halaman"
-
-#: gnomemeeting.schemas.in.in.h:75
 msgid "Number of frames transmitted in each packet for the G.711 codec."
 msgstr ""
+"Bilangan bingkai yang dihantar dalam setiap bingkisan bagi pengekod-"
+"penyahkod G.711"
 
-#: gnomemeeting.schemas.in.in.h:76
-#, fuzzy
+#: gnomemeeting.schemas.in.in.h:71
 msgid "Number of frames transmitted in each packet for the GSM codec."
-msgstr "Bilangan aksara supaya ruang ditinggalkan untuk kemasukan."
+msgstr ""
+"Bilangan bingkai yang dihantar dalam setiap bingkisan bagi pengekod-"
+"penyahkod GSM"
 
-#: gnomemeeting.schemas.in.in.h:77
-#, fuzzy
+#: gnomemeeting.schemas.in.in.h:72 src/pref_window.cpp:738
+msgid "Place windows displaying video above other windows during calls."
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:73
 msgid "Play a sound on incoming calls"
-msgstr "Mainkan bunyi bila mel baru tiba"
+msgstr "Mainkan bunyi untuk panggilan masuk"
 
-#: gnomemeeting.schemas.in.in.h:78
+#: gnomemeeting.schemas.in.in.h:74
 msgid "Public IP of the NAT/PAT router"
 msgstr "IP Awam bagi router NAT/PAT"
 
-#: gnomemeeting.schemas.in.in.h:79
-#, fuzzy
+#: gnomemeeting.schemas.in.in.h:75
 msgid "Received Video Quality Hint"
-msgstr "Senarai Kenalan Diterima"
+msgstr "Menerima Petunjuk Kualiti Video"
+
+#: gnomemeeting.schemas.in.in.h:76
+msgid "Registering method"
+msgstr "Mendaftarkan kaedah"
+
+#: gnomemeeting.schemas.in.in.h:77 src/pref_window.cpp:882
+msgid "Registering method to use"
+msgstr "Mendaftarkan kaedah untuk digunakan"
+
+#: gnomemeeting.schemas.in.in.h:78
+msgid "Remote video window height"
+msgstr "Tinggi tetingkap video Jauh"
+
+#: gnomemeeting.schemas.in.in.h:79
+msgid "Remote video window width"
+msgstr "Lebar tetingkap video Video Jauh"
 
 #: gnomemeeting.schemas.in.in.h:80
-#, fuzzy
-msgid "Registering method"
-msgstr "Kaedah pemulihan"
+msgid "Revision of the schema file"
+msgstr "Semakan fail skema"
 
-#: gnomemeeting.schemas.in.in.h:81 src/pref_window.cpp:1028
-#, fuzzy
-msgid "Registering method to use"
-msgstr "Daftar dengan agen ini"
+#: gnomemeeting.schemas.in.in.h:81 src/pref_window.cpp:960
+msgid "Select the audio input device to use."
+msgstr "Pilih peranti input audio untuk digunakan."
 
 #: gnomemeeting.schemas.in.in.h:82
-#, fuzzy
-msgid "Remote video window height"
-msgstr "Alih tetingkap ke kanan"
+msgid "Select the audio output device device to use."
+msgstr "Pilih peranti output audio untuk digunakan."
 
-#: gnomemeeting.schemas.in.in.h:83
-#, fuzzy
-msgid "Remote video window width"
-msgstr "Lebar tetingkap utama GnomeICU"
-
-#: gnomemeeting.schemas.in.in.h:84
-#, fuzzy
-msgid "Revision of the schema file"
-msgstr "Versi pakej"
-
-#: gnomemeeting.schemas.in.in.h:85 src/druid.cpp:792 src/pref_window.cpp:1098
-#, fuzzy
-msgid "Select the audio player device to use."
-msgstr "Nyatakan peranti untuk digunakan."
-
-#: gnomemeeting.schemas.in.in.h:86 src/druid.cpp:799 src/pref_window.cpp:1105
-#, fuzzy
-msgid "Select the audio recorder device to use."
-msgstr "Pilih peranti bersiri yang betul bagi tetikus."
-
-#: gnomemeeting.schemas.in.in.h:87 src/pref_window.cpp:1176
+#: gnomemeeting.schemas.in.in.h:83 src/pref_window.cpp:1039
 msgid ""
 "Select the format for video cameras. (Does not apply to most USB cameras)."
 msgstr ""
+"Pilih format bagi kamera video. (Jangan gunakan untuk kebanyakan kamera USB)."
 
-#: gnomemeeting.schemas.in.in.h:88 src/druid.cpp:795 src/pref_window.cpp:1101
-#, fuzzy
-msgid "Select the mixer to use to change the volume of the audio player."
-msgstr "Pilih Jurupacu untuk digunakan untuk Girilan ini."
-
-#: gnomemeeting.schemas.in.in.h:89 src/druid.cpp:802 src/pref_window.cpp:1108
-#, fuzzy
-msgid "Select the mixer to use to change the volume of the audio recorder."
-msgstr "Pilih Jurupacu untuk digunakan untuk Girilan ini."
-
-#: gnomemeeting.schemas.in.in.h:90 src/pref_window.cpp:1173
+#: gnomemeeting.schemas.in.in.h:84 src/pref_window.cpp:1037
 msgid ""
 "Select the transmitted video size: Small (QCIF 176x144) or Large (CIF "
 "352x288)."
 msgstr ""
+"Pilih saiz video yang dihantar: Kecil (QCIF 176x144) atau Besar (CIF "
+"352x288)."
 
-#: gnomemeeting.schemas.in.in.h:91 src/pref_window.cpp:1166
+#: gnomemeeting.schemas.in.in.h:85
+#, fuzzy
 msgid ""
-"Select the video device to use. Using an invalid video device or \"Picture\" "
-"for video transmission will transmit a test picture."
+"Select the video input device to use. Using an invalid video device or "
+"\"Picture\" for video transmission will transmit a test picture."
 msgstr ""
+"Pilih peranti video yang akan digunakan. Dengan menggunakan peranti video "
+"yang tak sah atau \"Gambar\" bagi penghantaran video akan menghantar gambar "
+"ujian."
+
+#: gnomemeeting.schemas.in.in.h:86
+msgid "Show a status bar at the bottom of the main window"
+msgstr "Tunjukkan bar status di bahagian bawah tetingkap utama"
+
+#: gnomemeeting.schemas.in.in.h:87
+msgid "Show chat window"
+msgstr "Tunjukkan tetingkap sembang"
+
+#: gnomemeeting.schemas.in.in.h:88
+msgid "Show my details to other registered users"
+msgstr "Tunjukkan perincian saya kepada pengguna berdaftar yang lain"
+
+#: gnomemeeting.schemas.in.in.h:89
+msgid "Show splash screen"
+msgstr "Tunjukkan skrin percikan"
+
+#: gnomemeeting.schemas.in.in.h:90
+msgid "Show status bar"
+msgstr "Tunjukkan bar status"
+
+#: gnomemeeting.schemas.in.in.h:91
+msgid "Show the chat window in the main window"
+msgstr "Tunjukkan tetingkap sembang dalam tetingkap utama"
 
 #: gnomemeeting.schemas.in.in.h:92
-#, fuzzy
-msgid "Show a status bar at the bottom of the main window"
-msgstr "Samada memapar bar status pada sebelah bawah tetingkap"
-
-#: gnomemeeting.schemas.in.in.h:93
-#, fuzzy
-msgid "Show chat window"
-msgstr "Papar tetingkap utama"
-
-#: gnomemeeting.schemas.in.in.h:94
-msgid "Show my details to other registered users"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:95
-#, fuzzy
-msgid "Show splash screen"
-msgstr "Papar skrin splash"
-
-#: gnomemeeting.schemas.in.in.h:96
-#, fuzzy
-msgid "Show status bar"
-msgstr "Papar statusbar"
-
-#: gnomemeeting.schemas.in.in.h:97
-#, fuzzy
-msgid "Show the chat window in the main window"
-msgstr "Papar tetingkap utama"
-
-#: gnomemeeting.schemas.in.in.h:98
 msgid "Start hidden"
 msgstr "Dimulakan dengan tersorok"
 
-#: gnomemeeting.schemas.in.in.h:99 src/menu.cpp:616 src/menu.cpp:860
+#: gnomemeeting.schemas.in.in.h:93 src/menu.cpp:517 src/menu.cpp:633
 msgid "Switch to fullscreen"
 msgstr "Bertukar ke skrinpenuh"
 
-#: gnomemeeting.schemas.in.in.h:100
+#: gnomemeeting.schemas.in.in.h:94
 msgid "Switch to fullscreen for images displayed in the main GUI."
-msgstr ""
+msgstr "Bertukar kepada skrin penuh bagi imej yang dipaparkan dalam GUI utama"
 
-#: gnomemeeting.schemas.in.in.h:101
+#: gnomemeeting.schemas.in.in.h:95
 msgid "TCP Port Range"
 msgstr "Julat Liang TCP"
 
-#: gnomemeeting.schemas.in.in.h:102
+#: gnomemeeting.schemas.in.in.h:96
 msgid "The Audio Codecs List"
 msgstr "Senarai Codec Audio"
 
-#: gnomemeeting.schemas.in.in.h:103 src/pref_window.cpp:1118
+#: gnomemeeting.schemas.in.in.h:97
 msgid ""
 "The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic "
 "Gain Compensation. Choosing Automatic Gain Compensation modulates the volume "
 "for best quality."
 msgstr ""
+"Aras Pembatalan Gema Automatik: Tutup, Rendah, Sederhana, Tinggi, Automatik "
+"Pampasan Tambahan. Memilih Pampasan Tambahan Automatik memodulasikan bunyi "
+"untuk kualiti yang terbaik."
 
-#: gnomemeeting.schemas.in.in.h:104 src/pref_window.cpp:1021
+#: gnomemeeting.schemas.in.in.h:98 src/pref_window.cpp:876
 msgid ""
 "The Gatekeeper alias to use when registering (string, or E164 ID if only "
 "0123456789#)."
 msgstr ""
+"Alias Penjaga get yang akan digunakan apabila mendaftarkan (rentetan, atau "
+"ID E164 hanya jika 0123456789#)."
 
-#: gnomemeeting.schemas.in.in.h:105 src/pref_window.cpp:1018
+#: gnomemeeting.schemas.in.in.h:99 src/pref_window.cpp:874
 msgid "The Gatekeeper host to register with."
-msgstr ""
+msgstr "Hos Penjaga get untuk didaftarkan"
 
-#: gnomemeeting.schemas.in.in.h:106 src/pref_window.cpp:1015
+#: gnomemeeting.schemas.in.in.h:100 src/pref_window.cpp:872
 msgid "The Gatekeeper identifier to register with."
-msgstr ""
+msgstr "Pengecam Penjaga get untuk didaftarkan"
 
-#: gnomemeeting.schemas.in.in.h:107 src/pref_window.cpp:1024
+#: gnomemeeting.schemas.in.in.h:101 src/pref_window.cpp:879
 msgid ""
 "The Gatekeeper password to use for H.235 authentication to the Gatekeeper."
 msgstr ""
+"Kata laluan Penjaga get yang akan digunakan bagi pengesahan H.235 untuk "
+"Penjaga get."
 
-#: gnomemeeting.schemas.in.in.h:108
+#: gnomemeeting.schemas.in.in.h:102
 msgid "The Video Quality to request to the remote"
+msgstr "Kualiti Video sebagai permintaan untuk kawasan yang jauh"
+
+#: gnomemeeting.schemas.in.in.h:103 src/pref_window.cpp:942
+msgid ""
+"The audio plugin that will be used to detect the devices and manage them."
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:109
-#, fuzzy
+#: gnomemeeting.schemas.in.in.h:104
 msgid "The default video view"
-msgstr "Font default adalah italik-"
+msgstr "Pandangan video piawai"
 
-#: gnomemeeting.schemas.in.in.h:110
+#: gnomemeeting.schemas.in.in.h:105
+#, fuzzy
 msgid ""
 "The default video view (0: Local, 1: Remote, 2: Both incrusted, 3: Both with "
 "local video in a separate window, 4: Both)"
 msgstr ""
+"Pandangan video piawai (0: Setempat, 1: Jauh, 2: Kedua-duanya dilapisi, 3: "
+"Kedua-duanya dengan setempat dalam pop-up, 4: Kedua-duanya)"
 
-#: gnomemeeting.schemas.in.in.h:111
+#: gnomemeeting.schemas.in.in.h:106
 #, fuzzy
 msgid "The height of the local video window"
-msgstr "Tinggi default tetingkap penglogan"
+msgstr "Tinggi pop-up video setempat"
 
-#: gnomemeeting.schemas.in.in.h:112
+#: gnomemeeting.schemas.in.in.h:107
 #, fuzzy
 msgid "The height of the remote video window"
-msgstr "tetapkan tinggi bagi tetingkap"
+msgstr "Tinggi pop-up video jauh"
 
-#: gnomemeeting.schemas.in.in.h:113 src/pref_window.cpp:926
+#: gnomemeeting.schemas.in.in.h:108 src/pref_window.cpp:792
 msgid ""
 "The host where calls should be forwarded to in the cases selected above."
-msgstr ""
+msgstr "Hos yang panggilan seharusnya disambungkan dalam kes terpilih di atas."
 
-#: gnomemeeting.schemas.in.in.h:114 src/pref_window.cpp:857
-#, fuzzy
+#: gnomemeeting.schemas.in.in.h:109 src/pref_window.cpp:735
 msgid "The image height for fullscreen."
-msgstr "Lihat imej pada mod skrinpenuh"
+msgstr "Tinggi imej bagi skrin penuh."
 
-#: gnomemeeting.schemas.in.in.h:115 src/pref_window.cpp:1179
+#: gnomemeeting.schemas.in.in.h:110 src/pref_window.cpp:1042
 msgid ""
 "The image to transmit if \"Picture\" is selected for the video device or if "
 "the opening of the device fails. Leave blank to use the default GnomeMeeting "
 "logo."
 msgstr ""
+"Imej untuk dihantar jika \"Gambar\" dipilih untuk peranti video atau jika "
+"peranti gagal dibuka. Biarkan kosong untuk menggunakan logo piawai "
+"GnomeMeeting."
 
-#: gnomemeeting.schemas.in.in.h:116 src/pref_window.cpp:856
-#, fuzzy
+#: gnomemeeting.schemas.in.in.h:111 src/pref_window.cpp:735
 msgid "The image width for fullscreen."
-msgstr "Maksima tetingkap skrinpenuh"
+msgstr "Lebar imej bagi skrin penuh."
 
-#: gnomemeeting.schemas.in.in.h:117
+#: gnomemeeting.schemas.in.in.h:112
 msgid "The list of called URLs"
 msgstr "Senarai URL dipanggil"
 
-#: gnomemeeting.schemas.in.in.h:118
-#, fuzzy
+#: gnomemeeting.schemas.in.in.h:113
 msgid "The list of groups"
-msgstr "Simpan log kumpulan chat"
+msgstr "Senarai kumpulan"
 
-#: gnomemeeting.schemas.in.in.h:119 src/pref_window.cpp:1367
+#: gnomemeeting.schemas.in.in.h:114 src/pref_window.cpp:1215
 msgid "The maximum jitter buffer size for audio reception (in ms)."
-msgstr ""
+msgstr "Saiz maksimum penimbal ketaran bagi penerimaan audio (dalam ms)."
 
-#: gnomemeeting.schemas.in.in.h:120 src/pref_window.cpp:1409
+#: gnomemeeting.schemas.in.in.h:115 src/pref_window.cpp:1250
 msgid ""
 "The maximum video bandwidth in kbytes/s. The video quality and the number of "
 "transmitted frames per second will be dynamically adjusted above their "
 "minimum during calls to try to minimize the bandwidth to the given value."
 msgstr ""
+"Lebar maksimum jalur video dalam kbait. Kualiti video dan bilangan bingkai "
+"yang dihantar setiap saat akan diselaraskan secara dinamik melebihi nilai "
+"minimum semasa panggilan untuk cuba meminimumkan lebar jalur mengikut nilai "
+"yang diberikan."
 
-#: gnomemeeting.schemas.in.in.h:121 src/pref_window.cpp:1366
+#: gnomemeeting.schemas.in.in.h:116 src/pref_window.cpp:1215
 msgid "The minimum jitter buffer size for audio reception (in ms)."
-msgstr ""
+msgstr "Saiz minimum penimbal ketaran bagi penerimaan audio (dalam ms)."
 
-#: gnomemeeting.schemas.in.in.h:122 src/pref_window.cpp:1422
+#: gnomemeeting.schemas.in.in.h:117 src/pref_window.cpp:1262
 msgid ""
 "The minimum number of video frames to transmit each second when trying to "
 "minimize the bandwidth."
 msgstr ""
+"Bilangan minimum bingkai video untuk dihantar setiap saat apabila cuba untuk "
+"meminimumkan lebar jalur."
 
-#: gnomemeeting.schemas.in.in.h:124
+#: gnomemeeting.schemas.in.in.h:119
 #, no-c-format
 msgid ""
 "The minimum transmitted video quality to keep when trying to minimize the "
 "used bandwidth: choose 100% on a LAN for the best quality, 1% being the "
 "worst quality."
 msgstr ""
+"Kualiti minimum video yang dihantar untuk disimpan apabila cuba meminimumkan "
+"lebar jalur yang digunakan: pilih 100% pada LAN bagi kualiti terbaik, 1% "
+"adalah kualiti paling teruk."
 
-#: gnomemeeting.schemas.in.in.h:125
+#: gnomemeeting.schemas.in.in.h:120
 msgid ""
 "The port to listen to for incoming connections. GnomeMeeting needs to be "
 "restarted for the new value to take effect."
 msgstr ""
+"Port untuk mendengar bagi sambungan masuk. GnomeMeeting perlu dimulakan "
+"semula untuk melaksanakan nilai baru."
 
-#: gnomemeeting.schemas.in.in.h:126
+#: gnomemeeting.schemas.in.in.h:121
 msgid ""
 "The prefix that will be used to save pictures of the conversation. That "
 "prefix is followed by the snapshot number."
 msgstr ""
+"Awalan yang akan digunakan untuk menyimpan gambar perbualan. Awalan tersebut "
+"diikuti dengan nombor gambar."
 
-#: gnomemeeting.schemas.in.in.h:127
+#: gnomemeeting.schemas.in.in.h:122
+#, fuzzy
 msgid ""
 "The range of TCP ports beside the listen_port that GnomeMeeting will use for "
 "the H.245 channel. You can change the TCP port range if you are using IP "
@@ -647,8 +647,14 @@ msgid ""
 "take effect. This port range has no effect if both participants to the "
 "conference are using H.245 Tunneling."
 msgstr ""
+"Julat port TCP selain port_dengar yang akan digunakan oleh GnomeMeeting "
+"untuk sambungan masuk. Anda boleh mengubah julat port TCP jika anda "
+"menggunakan terjemahan IP dan jika anda memerlukan beberapa GnomeMeeting "
+"dijalankan di belakang penghala NAT/PAT anda. GnomeMeeting perlu dimulakan "
+"semula untuk melaksanakan nilai baru."
 
-#: gnomemeeting.schemas.in.in.h:128
+#: gnomemeeting.schemas.in.in.h:123
+#, fuzzy
 msgid ""
 "The range of UDP ports that GnomeMeeting will use for RTP (audio and video "
 "communication channels). You can change the UDP port range if you are using "
@@ -656,8 +662,14 @@ msgid ""
 "your NAT/PAT router. GnomeMeeting needs to be restarted for the new values "
 "to take effect."
 msgstr ""
+"Julat port UDP yang akan digunakan oleh GnomeMeeting untuk sambungan masuk."
+"Anda boleh mengubah julat port UDP jika anda menggunakan terjemahan IP dan "
+"jika anda memerlukan beberapa GnomeMeeting dijalankan di belakang penghala "
+"NAT/PAT anda. GnomeMeeting perlu dimulakan semula untuk melaksanakan nilai "
+"baru."
 
-#: gnomemeeting.schemas.in.in.h:129
+#: gnomemeeting.schemas.in.in.h:124
+#, fuzzy
 msgid ""
 "The range of UDP ports that GnomeMeeting will use when registering to "
 "gatekeepers. You can change the UDP port range if you are using IP "
@@ -666,42 +678,57 @@ msgid ""
 "take effect. This port range has no effect if you are not registering to a "
 "gatekeeper."
 msgstr ""
+"Julat port UDP yang akan digunakan oleh GnomeMeeting untuk sambungan masuk."
+"Anda boleh mengubah julat port UDP jika anda menggunakan terjemahan IP dan "
+"jika anda memerlukan beberapa GnomeMeeting dijalankan di belakang penghala "
+"NAT/PAT anda. GnomeMeeting perlu dimulakan semula untuk melaksanakan nilai "
+"baru."
 
-#: gnomemeeting.schemas.in.in.h:130
+#: gnomemeeting.schemas.in.in.h:125
 msgid "The save prefix"
 msgstr "Simpan prefiks"
 
-#: gnomemeeting.schemas.in.in.h:131 src/pref_window.cpp:1121
+#: gnomemeeting.schemas.in.in.h:126
 msgid ""
 "The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)."
 msgstr "Kod negara dua-huruf bagi negara anda (cth: MY, BE, UK, FR, DE ...)."
 
-#: gnomemeeting.schemas.in.in.h:132 src/pref_window.cpp:893
+#: gnomemeeting.schemas.in.in.h:127 src/pref_window.cpp:766
 msgid "The user directory server to register with."
 msgstr "Pelayan direktori pengguna untuk didaftar."
 
-#: gnomemeeting.schemas.in.in.h:133 src/pref_window.cpp:1170
+#: gnomemeeting.schemas.in.in.h:128 src/pref_window.cpp:1035
 msgid ""
 "The video channel number to use (to select camera, tv or other sources)."
 msgstr ""
 "nombor saluran video untuk digunakan (untuk memilih kamera, tv atau sumber "
 "lain)."
 
-#: gnomemeeting.schemas.in.in.h:134
-#, fuzzy
+#: gnomemeeting.schemas.in.in.h:129 src/pref_window.cpp:1020
+msgid ""
+"The video plugin that will be used to detect the devices and manage them."
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:130
+msgid ""
+"The way to react to incoming calls: 0 displays a popup, 1 automatically "
+"answers the call, 2 automatically rejects the call and 3 forwards the call "
+"to the given URL, if any."
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:131
 msgid "The width of the local video window"
-msgstr "tetapkan lebar bagi tetingkap"
+msgstr "Lebar bagi tetingkap video setempat"
 
-#: gnomemeeting.schemas.in.in.h:135
-#, fuzzy
+#: gnomemeeting.schemas.in.in.h:132
 msgid "The width of the remote video window"
-msgstr "Lebar default bagi kekotaksenarai fail jauh"
+msgstr "Lebar bagi tetingkap video jauh"
 
-#: gnomemeeting.schemas.in.in.h:136
+#: gnomemeeting.schemas.in.in.h:133
 msgid "The zoom value"
 msgstr "Nilai zum"
 
-#: gnomemeeting.schemas.in.in.h:137
+#: gnomemeeting.schemas.in.in.h:134
 msgid ""
 "The zoom value to apply to images displayed in the main GUI (can be 0.50, "
 "1.00, or 2.00)."
@@ -709,7 +736,7 @@ msgstr ""
 "Nilai zum untuk diterapkan pada imej yg dipaparkan pada GUI utama (boleh "
 "jadi be 0.50, 1.00, or 2.00)."
 
-#: gnomemeeting.schemas.in.in.h:138 src/pref_window.cpp:971
+#: gnomemeeting.schemas.in.in.h:135 src/pref_window.cpp:834
 msgid ""
 "This enables H.245 Tunnelling mode. In H.245 Tunnelling mode H.245 messages "
 "are encapsulated into the the H.225 channel (port 1720). This saves one TCP "
@@ -717,8 +744,21 @@ msgid ""
 "Netmeeting does not support it. Using both Fast Start and H.245 Tunnelling "
 "can crash some versions of Netmeeting."
 msgstr ""
+"Ini membolehkan mod Penerowongan H.245. Dalam mod Penerowongan H.245, mod "
+"mesej H.245 dipadatkan ke dalam saluran H.225 (port 1720). Ini menyimpan "
+"satu sambungan TCP semasa panggilan dibuat. Penerowongan H.245 diperkenalkan "
+"dalam H.323v2 dan Netmeeting tidak menyokongnya. Dengan menggunakan Mula "
+"Cepat dan Penerowongan H.245 beberapa versi Netmeeting boleh rosak."
 
-#: gnomemeeting.schemas.in.in.h:139 src/pref_window.cpp:1057
+#: gnomemeeting.schemas.in.in.h:136
+msgid ""
+"This enables IP checking from dyndns.org and fills the IP in the public IP "
+"of the NAT/PAT gateway field of GnomeMeeting. The returned IP is only used "
+"when IP Translation is enabled. If you disable IP checking, you will have to "
+"manually enter the IP of your gateway in the GnomeMeeting preferences."
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:137 src/pref_window.cpp:904
 msgid ""
 "This enables IP translation. IP translation is useful if GnomeMeeting is "
 "running behind a NAT/PAT router. You have to put the public IP of the router "
@@ -726,124 +766,130 @@ msgid ""
 "will automatically fetch the public IP using the ILS service. If your router "
 "natively supports H.323, you can disable this."
 msgstr ""
+"Ini membolehkan terjemahan IP. Terjemahan IP berguna jika GnomeMeeting "
+"dijalankan di belakang penghala NAT/PAT. Anda perlu meletakkan IP awam bagi "
+"penghala dalam medan di bawah. Jika anda mendaftar ke ils.seconix.com, "
+"GnomeMeeting akan secara automatik mendapatkan IP awam dengan menggunakan "
+"khidmat ILS. Jika penghala anda secara natif menyokong H.323, anda boleh "
+"melumpuhkannya."
 
-#: gnomemeeting.schemas.in.in.h:140
+#: gnomemeeting.schemas.in.in.h:138
 msgid ""
 "This permits to set the mode for User Input Capabilities. The values can be "
 "\"All\" (0), \"None\" (1), \"rfc2833\" (2), \"Signal\" (3) or \"String\" (4) "
 "(default is \"All\"). Choosing other values than \"All\", \"String\" or "
 "\"rfc2833\" disables the Text Chat."
 msgstr ""
+"Ini membenarkan mod disetkan untuk Keupayaan Input Pengguna. Nilai mungkin "
+"\"Semua\" (0), \"Tiada\" (1), \"rfc2833\" (2), \"Isyarat\" (3) atau "
+"\"Rentetan\" (4) (piawai ialah \"Semua\"). Memilih nilai lain selain \"Semua"
+"\", \"Rentetan\" atau \"rfc2833\" melumpuhkan Sembang Teks."
+
+#: gnomemeeting.schemas.in.in.h:139
+msgid "Transmitted background blocks"
+msgstr "Blok latar belakang yang dihantar"
+
+#: gnomemeeting.schemas.in.in.h:140
+msgid "UDP Port Range"
+msgstr "Julai Port UDP"
 
 #: gnomemeeting.schemas.in.in.h:141
-#, fuzzy
-msgid "Transmitted background blocks"
-msgstr "Latar belakang telus"
+msgid "User Input Capabilities type"
+msgstr "Jenis Keupayaan Input Pengguna"
 
 #: gnomemeeting.schemas.in.in.h:142
-#, fuzzy
-msgid "UDP Port Range"
-msgstr "Julat Liang TCP"
-
-#: gnomemeeting.schemas.in.in.h:143
-#, fuzzy
-msgid "User Input Capabilities type"
-msgstr "Kebolehan Klien: "
-
-#: gnomemeeting.schemas.in.in.h:144
-#, fuzzy
 msgid "User directory"
-msgstr "direktori pengguna"
+msgstr "Direktori Pengguna"
 
-#: gnomemeeting.schemas.in.in.h:145 src/ldap_window.cpp:2609
+#: gnomemeeting.schemas.in.in.h:143 src/ldap_window.cpp:3012
 msgid "Version"
 msgstr "Versi"
 
+#: gnomemeeting.schemas.in.in.h:144
+msgid "Video channel"
+msgstr "Saluran video"
+
+#: gnomemeeting.schemas.in.in.h:145
+msgid "Video format"
+msgstr "Format video"
+
 #: gnomemeeting.schemas.in.in.h:146
-#, fuzzy
-msgid "Video Preview"
-msgstr "lakukan Prebiu"
+msgid "Video image"
+msgstr "Imej video"
 
 #: gnomemeeting.schemas.in.in.h:147
-#, fuzzy
-msgid "Video channel"
-msgstr "%d saluran"
+msgid "Video input device"
+msgstr "Peranti input video"
 
 #: gnomemeeting.schemas.in.in.h:148
-#, fuzzy
-msgid "Video device"
-msgstr "peranti mixer"
+msgid "Video plugin"
+msgstr "Plugin Video"
 
 #: gnomemeeting.schemas.in.in.h:149
-#, fuzzy
-msgid "Video format"
-msgstr "format masa"
+msgid "Video preview"
+msgstr "Prebiu video"
 
 #: gnomemeeting.schemas.in.in.h:150
-#, fuzzy
-msgid "Video image"
-msgstr "Tiada Imej"
-
-#: gnomemeeting.schemas.in.in.h:151
-#, fuzzy
 msgid "Video size"
-msgstr "Sembunyi saiz"
+msgstr "Saiz video"
 
 #: lib/dialog.c:182
-#, fuzzy
 msgid "Do not show this dialog again"
-msgstr "Jangan papar mesej ini lagi"
+msgstr "Jangan tunjukkan dialog ini lagi"
+
+#: lib/gtk-text-buffer-extentions.c:489
+msgid "Open Link"
+msgstr "Buka Pautan"
+
+#: lib/gtk-text-buffer-extentions.c:496
+msgid "Copy Link Address"
+msgstr "Salin Alamat Pautan"
 
 #: sounds/gnomemeeting.soundlist.in.h:1
-#, fuzzy
 msgid "Incoming Call"
-msgstr "Fail Masuk"
+msgstr "Panggilan Masuk"
 
 #: sounds/gnomemeeting.soundlist.in.h:2
-#, fuzzy
 msgid "gnomemeeting"
-msgstr "GnomeMeeting"
+msgstr "gnomemeeting"
 
-#: src/callbacks.cpp:87
+#: src/callbacks.cpp:82
 msgid "_Retrieve Call"
 msgstr "_Terima Panggilan"
 
-#: src/callbacks.cpp:100 src/menu.cpp:458
-#, fuzzy
+#: src/callbacks.cpp:95 src/menu.cpp:349
 msgid "_Hold Call"
-msgstr "_Sembunyi Semua"
+msgstr "_Tahan Panggilan"
 
-#: src/callbacks.cpp:141 src/ldap_window.cpp:708
+#: src/callbacks.cpp:138 src/ldap_window.cpp:733
 msgid "Edit the contact information"
 msgstr "Edit maklumat hubungan"
 
-#: src/callbacks.cpp:144 src/menu.cpp:463
-#, fuzzy
+#: src/callbacks.cpp:141 src/menu.cpp:352
 msgid "_Transfer Call"
-msgstr "Pemindahan Panggilan"
+msgstr "_Pindahkan Panggilan"
 
-#: src/callbacks.cpp:165
+#: src/callbacks.cpp:162
 msgid "Forward call to:"
 msgstr "Maju panggilan ke:"
 
-#: src/callbacks.cpp:260 src/menu.cpp:470
+#: src/callbacks.cpp:258 src/menu.cpp:359
 msgid "Suspend _Audio"
 msgstr "Gantung _Audio"
 
-#: src/callbacks.cpp:261
+#: src/callbacks.cpp:259
 msgid "Resume _Audio"
 msgstr "Sambung _Audio"
 
-#: src/callbacks.cpp:262
-#, fuzzy
+#: src/callbacks.cpp:260
 msgid "Audio transmission: suspended"
-msgstr "saluran penghantaran"
+msgstr "Penghantaran audio: tergantung"
 
-#: src/callbacks.cpp:263
+#: src/callbacks.cpp:261
 msgid "Audio transmission: resumed"
 msgstr "Penghantaran audio: disambung"
 
-#: src/callbacks.cpp:272 src/menu.cpp:475
+#: src/callbacks.cpp:272 src/menu.cpp:364
 msgid "Suspend _Video"
 msgstr "Gantung Video"
 
@@ -852,48 +898,194 @@ msgid "Resume _Video"
 msgstr "Sambung _Video"
 
 #: src/callbacks.cpp:274
-#, fuzzy
 msgid "Video transmission: suspended"
-msgstr "saluran penghantaran"
+msgstr "Penghantaran video: tergantung"
 
 #: src/callbacks.cpp:275
 msgid "Video transmission: resumed"
 msgstr "Penghantaran video: disambung"
 
-#: src/callbacks.cpp:381
+#: src/callbacks.cpp:397
 msgid "Code Contributors:"
 msgstr "Penyumbang Kod:"
 
-#: src/callbacks.cpp:389
-#, fuzzy
+#: src/callbacks.cpp:405
 msgid "Artwork:"
-msgstr "Rangkaian"
+msgstr "Kerjaseni:"
 
-#: src/callbacks.cpp:392
+#: src/callbacks.cpp:408
 msgid "Contributors:"
 msgstr "Penyumbang:"
 
-#: src/callbacks.cpp:418
+#: src/callbacks.cpp:434
 msgid "Internationalisation Maintainer:"
-msgstr ""
+msgstr "Penyelenggara Antarabangsa:"
 
 #. Translators: Please write translator credits here, and
 #. * seperate names with \n
-#: src/callbacks.cpp:436
+#: src/callbacks.cpp:452
 msgid "translator_credits"
-msgstr "translator_credits"
+msgstr ""
+"Hasbullah Bin Pit <sebol@ikhlas.com>\n"
+"MIMOS Open Source Development Group <opensource@mimos.my>."
 
 #. Translators: Please test to see if your translation
 #. * looks OK and fits within the box
-#: src/callbacks.cpp:447
+#: src/callbacks.cpp:463
 msgid ""
 "GnomeMeeting is a full-featured H.323\n"
 "video conferencing application."
 msgstr ""
+"GnomeMeeting ialah aplikasi persidangan video\n"
+"berciri penuh H.323"
 
-#: src/chat_window.cpp:209
+#: src/chat_window.cpp:220
 msgid "Send Message:"
 msgstr "Kirim Mesej:"
+
+#: src/codec_info.h:53
+msgid ""
+"iLBC-13k3 (internet Low Bitrate Codec) is a free speech codec suitable for "
+"robust voice communication over IP. The codec is designed for narrow band "
+"speech and results in a payload bit rate of 13.33 kbit/s with an encoding "
+"frame length of 30 ms. The iLBC codec enables graceful speech quality "
+"degradation in the case of lost frames, which occurs in connection with lost "
+"or delayed IP packets."
+msgstr ""
+
+#: src/codec_info.h:53 src/codec_info.h:55 src/codec_info.h:57
+#: src/codec_info.h:63 src/codec_info.h:65 src/codec_info.h:69
+#: src/codec_info.h:71
+msgid "Excellent"
+msgstr "Bagus"
+
+#: src/codec_info.h:53
+msgid "13.33 Kbps"
+msgstr "13.22 Kbps"
+
+#: src/codec_info.h:55
+msgid ""
+"iLBC-15k2 (internet Low Bitrate Codec) is a free speech codec suitable for "
+"robust voice communication over IP. The codec is designed for narrow band "
+"speech and results in a payload bitrate of 15.20 kbps with an encoding "
+"length of 20 ms. The iLBC codec enables graceful speech quality degradation "
+"in the case of lost frames, which occurs in connection with lost or delayed "
+"IP packets."
+msgstr ""
+
+#: src/codec_info.h:55
+msgid "15.2 Kbps"
+msgstr "15.2 Kbps"
+
+#: src/codec_info.h:57
+msgid ""
+"Speex is an Open Source/Free Software patent-free audio compression format "
+"designed for speech. The Speex Project aims to lower the barrier of entry "
+"for voice applications by providing a free alternative to expensive "
+"proprietary speech codecs. Moreover, Speex is well-adapted to Internet "
+"applications and provides useful features that are not present in most other "
+"codecs. Finally, Speex is part of the GNU Project and is available under the "
+"Xiph.org variant of the BSD license. SpeexNarrow-15k is based on CELP and is "
+"designed to compress voice at a payload bitrate of 15 kbps."
+msgstr ""
+
+#: src/codec_info.h:57
+msgid "15 Kbps"
+msgstr "15 Kbps"
+
+#: src/codec_info.h:59
+msgid ""
+"Speex is an Open Source/Free Software patent-free audio compression format "
+"designed for speech. The Speex Project aims to lower the barrier of entry "
+"for voice applications by providing a free alternative to expensive "
+"proprietary speech codecs. Moreover, Speex is well-adapted to Internet "
+"applications and provides useful features that are not present in most other "
+"codecs. Finally, Speex is part of the GNU Project and is available under the "
+"Xiph.org variant of the BSD license. SpeexNarrow-8k is based on CELP and is "
+"designed to compress voice at a payload bitrate of 8 kbps."
+msgstr ""
+
+#: src/codec_info.h:59 src/codec_info.h:61 src/codec_info.h:67
+msgid "Good"
+msgstr "Baik"
+
+#: src/codec_info.h:59
+msgid "8 Kbps"
+msgstr "8 Kbps"
+
+#: src/codec_info.h:61
+msgid ""
+"MS-GSM is the Microsoft version of GSM 06.10. GSM 06.10 is a standardized "
+"lossy speech compression employed by most European wireless telephones. It "
+"uses RPE/LTP (residual pulse excitation/long term prediction) coding to "
+"compress frames of 160 13-bit samples with a frame rate of 50 Hz into 260 "
+"bits.  Microsoft's GSM 06.10 codec is not compatible with the standard frame "
+"format, they use 65-byte-frames (2 x 32 1/2) rather than rounding to 33, and "
+"they number the bits in their bytes from the other end."
+msgstr ""
+
+#: src/codec_info.h:61
+msgid "13 Kbps"
+msgstr "13 Kbps"
+
+#: src/codec_info.h:63
+msgid ""
+"G.711 is the international standard for encoding telephone audio on 64 kbps "
+"channel. It is a pulse code modulation (PCM) scheme operating at 8 kHz "
+"sample rate, with 8 bits per sample, fully meeting ITU-T recommendations. "
+"This standard has two forms, A-Law and u-Law. A-Law G.711 PCM encoder "
+"converts 13 bit linear PCM samples into 8 bit compressed PCM (logarithmic "
+"form) samples, and the decoder does the conversion vice versa."
+msgstr ""
+
+#: src/codec_info.h:63 src/codec_info.h:65
+msgid "64 Kbps"
+msgstr "64 Kbps"
+
+#: src/codec_info.h:65
+msgid ""
+"G.711 is the international standard for encoding telephone audio on 64 kbps "
+"channel. It is a pulse code modulation (PCM) scheme operating at 8 kHz "
+"sample rate, with 8 bits per sample, fully meeting ITU-T recommendations. "
+"This standard has two forms, A-Law and u-Law. u-Law G.711 PCM encoder "
+"converts 14 bit linear PCM samples into 8 bit compressed PCM (logarithmic "
+"form) samples, and the decoder does the conversion vice versa."
+msgstr ""
+
+#: src/codec_info.h:67
+msgid ""
+"GSM 06.10 is a standardized lossy speech compression employed by most "
+"European wireless telephones. It uses RPE/LTP (residual pulse excitation/"
+"long term prediction) coding to compress frames of 160 13-bit samples with a "
+"frame rate of 50 Hz into 260 bits."
+msgstr ""
+
+#: src/codec_info.h:67
+msgid "16.5 Kbps"
+msgstr "16.5 Kbps"
+
+#: src/codec_info.h:69
+msgid ""
+"G.726 conforms to ITU-T G.726 recommendation that specifies speech "
+"compression and decompression at rates of 16, 24, 32 and 40 Kbps based on "
+"Adaptive Differential Pulse Code Modulation (ADPCM)."
+msgstr ""
+
+#: src/codec_info.h:69
+msgid "32 Kbps"
+msgstr "32 Kbps"
+
+#: src/codec_info.h:71
+msgid ""
+"G.723.1 conforms to ITU-T G.723.1 recommendation. It was designed for video "
+"conferencing / telephony over standard phone lines, and is optimized for "
+"realtime encode and decode. That codec is only available in GnomeMeeting "
+"when using Quicknet cards due to patents restrictions."
+msgstr ""
+
+#: src/codec_info.h:71
+msgid "6.3 or 5.7 Kbps"
+msgstr "6.3 or 5.7 Kbps"
 
 #: src/config-tool-i18n.h:1
 msgid "YES"
@@ -902,6 +1094,7 @@ msgstr "YA"
 #: src/config-tool-i18n.h:2
 msgid "Sorry, this script won't work while GnomeMeeting is running"
 msgstr ""
+"Maaf, skrip ini tidak dapat digunakan jika Gnomemeeting sedang dijalankan"
 
 #: src/config-tool-i18n.h:3
 msgid "  WARNING!!!"
@@ -919,30 +1112,31 @@ msgid ""
 "  If so, say \"YES\".\n"
 "\n"
 msgstr ""
+"  Skrip ini akan menghapuskan semua pengguna konfigurasi GnomeMeeting,\n"
+"  termasuk keutamaan yang mungkin penting! \n"
+"  Demon GConf akan ditutup, oleh itu pastikan anda tidak menjalankan\n"
+"  aplikasi yang bersandar padanya.\n"
 
 #: src/config-tool-i18n.h:5
 msgid "Removing $HOME/.gconf/apps/gnomemeeting"
-msgstr ""
+msgstr "Mengeluarkan $HOME/.gconf/apps/gnomemeeting"
 
 #: src/config-tool-i18n.h:6 src/config-tool-i18n.h:11
 #: src/config-tool-i18n.h:13
-#, fuzzy
 msgid "Shutting down GConf daemon"
-msgstr "Mematikan deamon NFS:"
+msgstr "Menutup demon GConf"
 
 #: src/config-tool-i18n.h:7
-#, fuzzy
 msgid "...Done."
-msgstr "Selesai."
+msgstr "...Selesai."
 
 #: src/config-tool-i18n.h:8
-#, fuzzy
 msgid "Leaving configuration alone."
-msgstr "Mengulangmuat konfigurasi: "
+msgstr "Membiarkan konfigurasi"
 
 #: src/config-tool-i18n.h:9
 msgid "Have a nice day."
-msgstr ""
+msgstr "Terima kasih"
 
 #: src/config-tool-i18n.h:10
 msgid ""
@@ -954,16 +1148,21 @@ msgid ""
 "  If so, say \"YES\".\n"
 "\n"
 msgstr ""
+"  Demon GConf akan ditutup, maka pastikan anda tidak\n"
+"  menjalankan aplikasi yang bersandar padanya.\n"
+"\n"
+"  Adakah anda benar-benar ingin melakukannya?\n"
+"\n"
+"  Jika ya, katakan \"YA\".\n"
+"\n"
 
 #: src/config-tool-i18n.h:12
-#, fuzzy
 msgid "Removing schemas"
-msgstr "Membuang Pakej"
+msgstr "Mengeluarkan skema"
 
 #: src/config-tool-i18n.h:14
-#, fuzzy
 msgid "Installing schemas"
-msgstr "Memasang Pakej"
+msgstr "Memasang skema"
 
 #: src/config-tool-i18n.h:15
 msgid ""
@@ -972,15 +1171,18 @@ msgid ""
 "\n"
 "Run \"gnomemeeting-config-tool --install-schemas\" as root.\n"
 msgstr ""
+"RALAT KRITIKAL -- Pemasangan skema gagal.\n"
+"Kemungkinan besar anda menjalankan demon GConf sebagai akar.\n"
+"\n"
+"Jalankan \"--gnomemeeting-konfig-alat --pasang-skema \" sebagai akar.\n"
 
 #: src/config-tool-i18n.h:16
-#, fuzzy
 msgid "Usage:  gnomemeeting-config-tool OPTION"
-msgstr "Penggunaan: redhat-config-xfree86 [OPSYEN]"
+msgstr "Penggunaan: OPTION gnomemeeting-konfig-alat"
 
 #: src/config-tool-i18n.h:17
 msgid "Fixes problems with the GnomeMeeting settings"
-msgstr ""
+msgstr "Selesaikan masalah dengan seting GnomeMeeting"
 
 #: src/config-tool-i18n.h:18
 msgid "  --clean                remove all user settings"
@@ -1007,110 +1209,137 @@ msgstr ""
 "  --fix-permissions      perbetul keizinan bagi repositori GConf (laksana "
 "sebagai root)"
 
-#: src/config.cpp:409
+#: src/config.cpp:268 src/config.cpp:491
 msgid "Changing this setting will only affect new calls"
 msgstr "Perubahan tetapan ini akan memberi kesan pada panggilan baru"
 
-#: src/config.cpp:409
+#: src/config.cpp:268 src/config.cpp:491
 msgid ""
 "You have changed a setting that doesn't permit to GnomeMeeting to apply the "
 "new change to the current call. Your new setting will only take effect for "
 "the next call."
 msgstr ""
 
-#: src/config.cpp:591
-#, fuzzy
+#: src/config.cpp:369
+msgid "H.245 Tunneling disabled"
+msgstr "Penerowongan H.245 diimatikan"
+
+#: src/config.cpp:370
+msgid "H.245 Tunneling enabled"
+msgstr "Penerowongan H.245 dibolehkan"
+
+#: src/config.cpp:400
+msgid "Fast Start disabled"
+msgstr "Mula Cepat dilumpuhkan"
+
+#: src/config.cpp:401
+msgid "Fast Start enabled"
+msgstr "Mula Cepat dibolehkan"
+
+#: src/config.cpp:551
 msgid "Disabled Silence Detection"
-msgstr "Matikan butang bahasa"
+msgstr "Lumpuhkan Pengesanan Senyap"
 
-#: src/config.cpp:597
-#, fuzzy
+#: src/config.cpp:557
 msgid "Enabled Silence Detection"
-msgstr "Hidupkan _Autentikasi SMB"
+msgstr "Hidupkan Pengesanan Senyap"
 
-#: src/config.cpp:1259
+#: src/config.cpp:1040
+msgid "Failed to restart the video channel"
+msgstr "Gagal mengulanghidupkan saluran video"
+
+#: src/config.cpp:1040
 msgid ""
-"You need to specify an host to forward calls to!\n"
-"Disabling forwarding."
+"You have changed a video device related setting during a call. That requires "
+"to restart the video transmission channel, but it failed."
 msgstr ""
 
-#: src/config.cpp:1459
+#: src/config.cpp:1261
+msgid "Forward URL not specified"
+msgstr "URL Maju tak dinyatakan"
+
+#: src/config.cpp:1262
+#, fuzzy
+msgid ""
+"You need to specify an URL where to forward calls in the call forwarding "
+"section of the preferences!\n"
+"\n"
+"Disabling forwarding."
+msgstr ""
+"Anda perlu menentukan hos untuk menyambungkan panggilan ke!\n"
+"Melumpuhkan sambungan."
+
+#: src/config.cpp:1508
 msgid ""
 "An error has happened in the configuration backend.\n"
 "Maybe some of your settings won't be saved."
 msgstr ""
+"Ada ralat di bahagian belakang konfigurasi.\n"
+"Mungkin beberapa seting anda tidak akan disimpan."
 
-#: src/connection.cpp:112
-msgid "Started New Logical Channel..."
-msgstr ""
-
-#: src/connection.cpp:119
-#, fuzzy, c-format
-msgid "Sending %s"
-msgstr "Mengirim"
-
-#: src/connection.cpp:138
+#: src/connection.cpp:162
 #, c-format
-msgid "Enabled silence detection for %s"
-msgstr ""
+msgid "Started transmission of %s"
+msgstr "penghantaran dimulakan bagi %s"
 
-#: src/connection.cpp:141
-#, fuzzy, c-format
-msgid "Disabled silence detection for %s"
-msgstr "_Dimatikan jika tidak digunakan selama"
-
-#: src/connection.cpp:157
-#, fuzzy, c-format
-msgid "Receiving %s"
-msgstr "Menerima"
-
-#: src/connection.cpp:187
+#: src/connection.cpp:165
 #, c-format
-msgid "Requesting remote to send video quality: %d%%"
+msgid "Stopped transmission of %s"
+msgstr "Penghantaran dihentikan bagi %s"
+
+#: src/connection.cpp:169
+#, fuzzy, c-format
+msgid "Started reception of %s"
+msgstr "Memulakan GnomeMeeting V%d.%d bagi %s\n"
+
+#: src/connection.cpp:172
+#, c-format
+msgid "Stopped reception of %s"
 msgstr ""
 
-#: src/connection.cpp:212
-#, fuzzy
-msgid "Request ok"
-msgstr "Minta Alasan/sebab"
-
-#: src/connection.cpp:244 src/connection.cpp:246
-msgid "Auto Answering Incoming Call"
-msgstr ""
-
-#: src/connection.cpp:337 src/connection.cpp:338 src/urlhandler.cpp:76
+#: src/connection.cpp:296 src/connection.cpp:297 src/urlhandler.cpp:76
 #: src/urlhandler.cpp:77
-#, fuzzy
 msgid "Call transfer failed"
-msgstr "Pemindahan FTP gagal: %s"
+msgstr "Pemindahan Panggilan gagal"
 
-#: src/connection.cpp:337
+#: src/connection.cpp:296
 msgid ""
 "The remote user tried to transfer your call to another user, but it failed."
 msgstr ""
 
-#: src/druid.cpp:517 src/druid.cpp:699
-msgid "56K modem"
-msgstr "modem 56K"
+#: src/druid.cpp:525
+msgid "56k Modem"
+msgstr "Modem 56K"
 
-#: src/druid.cpp:521 src/druid.cpp:703
+#: src/druid.cpp:526
 msgid "ISDN"
 msgstr "ISDN"
 
-#: src/druid.cpp:525
+#: src/druid.cpp:527
 msgid "xDSL/Cable"
 msgstr "xDSL/Kabel"
 
-#: src/druid.cpp:529 src/druid.cpp:711
+#: src/druid.cpp:528
 msgid "T1/LAN"
 msgstr "T1/LAN"
 
-#: src/druid.cpp:533 src/druid.cpp:715
-msgid "Other"
-msgstr "Lain-lain"
+#: src/druid.cpp:529
+msgid "Keep current settings"
+msgstr "Kekalkan tetapan semasa"
 
-#: src/druid.cpp:566
-#, c-format
+#: src/druid.cpp:626 src/druid.cpp:640 src/endpoint.cpp:1606
+#: src/gnomemeeting.cpp:329 src/gnomemeeting.cpp:331
+#: src/sound_handling.cpp:404 src/sound_handling.cpp:405
+#: src/videograbber.cpp:527
+msgid "No device found"
+msgstr "Tiada peranti dijumpai"
+
+#: src/druid.cpp:677 src/videograbber.cpp:528
+msgid "Picture"
+msgstr "Gambar"
+
+#: src/druid.cpp:694
+#, fuzzy, c-format
 msgid ""
 "You have now finished the GnomeMeeting configuration. All the settings can "
 "be changed in the GnomeMeeting preferences. Enjoy!\n"
@@ -1118,239 +1347,183 @@ msgid ""
 "\n"
 "Configuration Summary:\n"
 "\n"
-"Username:  %s %s\n"
+"Username:  %s\n"
 "Connection type:  %s\n"
+"Audio manager: %s\n"
 "Audio player:  %s\n"
 "Audio recorder:  %s\n"
+"Video Manager: %s\n"
 "Video player: %s\n"
 "My Callto URL: %s\n"
-"PC-To-Phone calls: %s"
 msgstr ""
+"Anda telah selesai melakukan konfigurasi GnomeMeeting. Semua seting boleh "
+"diubah dalam keutamaan GnomeMeeting. \n"
+"\n"
+"\n"
+"Ringkasan Konfigurasi:\n"
+"\n"
+"Nama pengguna:  %s %s\n"
+"Jenis sambungan:  %s\n"
+"Pemain audio:  %s\n"
+"Perakam audio:  %s\n"
+"Pemain video: %s\n"
+"Panggilan Saya ke URL: %s\n"
+"Panggilan PC-ke-Telefon: %s"
 
-#: src/druid.cpp:566
-msgid "Enabled"
-msgstr "Dihidupkan"
+#: src/druid.cpp:694 src/pref_window.cpp:818
+msgid "None"
+msgstr "Tiada"
 
-#: src/druid.cpp:566
-msgid "Disabled"
-msgstr "Dimatikan"
-
-#: src/druid.cpp:600
+#: src/druid.cpp:723
 #, c-format
 msgid "Personal Information - page %d/%d"
 msgstr "Maklumat Personal - halaman %d/%d"
 
-#: src/druid.cpp:609
-msgid ""
-"Please enter your first name and surname, they will be used when connecting "
-"to other audio/video conferencing software.\n"
-"\n"
-"Your e-mail address is used to provide you with a callto address that your "
-"friends can use to call you without knowing your IP address.\n"
-"\n"
-"No information is made public unless you allow it to be published on the "
-"directory of online GnomeMeeting users."
-msgstr ""
-
 #. The user fields
-#: src/druid.cpp:613 src/pref_window.cpp:765
-msgid "Personal Information"
-msgstr "Maklumat Personal"
-
-#: src/druid.cpp:616
-#, fuzzy
-msgid "First _name:"
-msgstr "Nama Pertama"
-
-#: src/druid.cpp:622
-#, fuzzy
-msgid "_Surname:"
-msgstr "Surinam"
-
-#. The callto url
-#: src/druid.cpp:630
-#, fuzzy
-msgid "Callto URL"
-msgstr "URL Bestari"
-
-#: src/druid.cpp:633 src/pref_window.cpp:779
-msgid "E-_mail address:"
-msgstr "Alamat E_mail:"
-
-#. The ILS registering
-#: src/druid.cpp:640
-#, fuzzy
-msgid "Directory of Online GnomeMeeting Users"
-msgstr "Pilih fail atau direktori"
-
-#: src/druid.cpp:642
-msgid "Publish my information on the directory of online GnomeMeeting users"
+#: src/druid.cpp:736
+msgid "Please enter your firstname and your surname:"
 msgstr ""
 
-#: src/druid.cpp:683
+#: src/druid.cpp:744
+msgid ""
+"Your firstname and surname will be used when connecting to other VoIP and "
+"videoconferencing software."
+msgstr ""
+
+#: src/druid.cpp:787
 #, fuzzy, c-format
-msgid "Network Connection - page %d/%d"
-msgstr "Tiada sambungan rangkaian"
+msgid "Callto URL - page %d/%d"
+msgstr "Druid Konfigurasi - halaman %d/%d"
 
-#: src/druid.cpp:694
+#: src/druid.cpp:798
+#, fuzzy
+msgid "Please enter your e-mail address:"
+msgstr "Masukkan alamat e-mel anda"
+
+#: src/druid.cpp:806
 msgid ""
-"Please select your network connection type. This is used to set default "
-"video settings for your bandwidth. It is possible to change these defaults "
-"later."
+"Your e-mail address is used when registering to the GnomeMeeting users "
+"directory. It is used to create a callto address permitting your contacts to "
+"easily call you wherever you are."
 msgstr ""
 
-#. Connection type
-#: src/druid.cpp:698
-msgid "Connection Type"
-msgstr "Jenis Sambungan"
+#: src/druid.cpp:815
+msgid ""
+"I don't want to register to the GnomeMeeting users directory and get a "
+"callto address"
+msgstr ""
 
-#: src/druid.cpp:707
-msgid "DSL/Cable"
-msgstr "DSL/Kabel"
+#: src/druid.cpp:865
+#, fuzzy, c-format
+msgid "Connection Type - page %d/%d"
+msgstr "Sambungan Rangkaian - halaman %d/%d"
 
-#: src/druid.cpp:775
+#. The connection type
+#: src/druid.cpp:877
+#, fuzzy
+msgid "Please choose your connection type:"
+msgstr "Tutup sambungan semasa"
+
+#: src/druid.cpp:885
+msgid ""
+"The connection type will permit determining the best quality settings that "
+"GnomeMeeting will use during calls. You can later change the settings "
+"individually in the preferences window."
+msgstr ""
+
+#: src/druid.cpp:924
 #, c-format
-msgid "Audio Devices - page %d/%d"
-msgstr ""
-
-#: src/druid.cpp:785
-msgid ""
-"Please choose the audio devices to use during the GnomeMeeting session. You "
-"can also choose to use a Quicknet device instead of the soundcard, but the "
-"\"Test Audio\" button will only work for soundcards. Notice that some "
-"webcams models have an internal microphone that can be used with "
-"GnomeMeeting."
-msgstr ""
+msgid "Audio Manager - page %d/%d"
+msgstr "Pengurus Audio - halaman %d/%d"
 
 #. The Audio devices
-#: src/druid.cpp:789 src/pref_window.cpp:1093 src/pref_window.cpp:1609
-msgid "Audio Devices"
-msgstr "Peranti Audio"
-
-#: src/druid.cpp:792
-msgid "Audio player:"
-msgstr "Pemain Audio:"
-
-#: src/druid.cpp:795
-msgid "Audio player mixer:"
-msgstr "Mixer pemain audio:"
-
-#: src/druid.cpp:799
-msgid "Audio recorder:"
-msgstr "Perekod audio:"
-
-#: src/druid.cpp:802
-#, fuzzy
-msgid "Audio recorder mixer:"
-msgstr "Mixer audio"
-
-#. Test button
-#: src/druid.cpp:806
-#, fuzzy
-msgid "Click here to test your audio devices:"
-msgstr "Klik sini untuk mengembalikan tetingkap tersembunyi."
-
-#: src/druid.cpp:808
-#, fuzzy
-msgid "Test Audio"
-msgstr "Lihat sebagai Audio"
-
-#: src/druid.cpp:851
-#, c-format
-msgid "Video Devices - page %d/%d"
-msgstr ""
-
-#: src/druid.cpp:861
-msgid ""
-"Please choose the video device to use during the GnomeMeeting session. Click "
-"on the \"Test Video\" button to check if your setup is correct and if your "
-"driver is supported by GnomeMeeting. You can only test the correctness of "
-"your driver if the selected device is not already in use."
-msgstr ""
-
-#. The Video device
-#: src/druid.cpp:865 src/pref_window.cpp:1162 src/pref_window.cpp:1614
-#, fuzzy
-msgid "Video Devices"
-msgstr "Peranti Modem"
-
-#: src/druid.cpp:868 src/pref_window.cpp:1166
-#, fuzzy
-msgid "Video device:"
-msgstr "Peranti Radio"
-
-#: src/druid.cpp:868
-msgid ""
-"Enter the video device to use. Using an invalid video device for video "
-"transmission will transmit a test picture."
-msgstr ""
-
-#. Test button
-#: src/druid.cpp:872
-#, fuzzy
-msgid "Test Video"
-msgstr "Pelihat Ujian"
-
-#: src/druid.cpp:916
-#, c-format
-msgid "PC-To-Phone Setup - page %d/%d"
-msgstr ""
-
-#: src/druid.cpp:926
-msgid ""
-"You can make calls to regular phones and cell numbers worldwide using "
-"GnomeMeeting and the MicroTelco service from Quicknet Technologies. To "
-"enable this you need to enter your MicroTelco Account number and PIN below, "
-"then enable registering to the MicroTelco service. Please visit the "
-"GnomeMeeting website for more information."
-msgstr ""
-
-#: src/druid.cpp:931
-#, fuzzy
-msgid "PC-To-Phone Setup"
-msgstr "Tetapan FTP"
-
-#: src/druid.cpp:934
-#, fuzzy
-msgid "Account number:"
-msgstr "Nama akaun:"
-
-#: src/druid.cpp:937
-msgid "Password:"
-msgstr "Katalaluan:"
+#: src/druid.cpp:936
+msgid "Please choose your audio manager:"
+msgstr "Sila pilih pengurus audio anda:"
 
 #: src/druid.cpp:944
-#, fuzzy
-msgid "Register to the MicroTelco service"
-msgstr "Ulang servisl dipilih"
-
-#: src/druid.cpp:962
 msgid ""
-"Click on one of the following links to get more information about your "
-"existing MicroTelco account, or to create a new account."
+"The audio manager is the plugin that will manage your audio devices, ALSA is "
+"probably the best choice when available."
 msgstr ""
 
-#: src/druid.cpp:966
-#, fuzzy
-msgid "Get an account"
-msgstr "Akaun Tetamu"
+#: src/druid.cpp:985
+#, c-format
+msgid "Audio Devices - page %d/%d"
+msgstr "Peranti Audio - halaman %d/%d"
 
-#: src/druid.cpp:968
-#, fuzzy
-msgid "Buy a card"
-msgstr "Laksanakan arahan"
-
-#: src/druid.cpp:998
-#, fuzzy
-msgid "First Time Configuration Druid"
-msgstr "Konfigurasi Tapak"
+#. The Audio devices
+#: src/druid.cpp:997
+msgid "Please choose the audio output device:"
+msgstr "Sila pilih peranti output audio:"
 
 #: src/druid.cpp:1005
-#, fuzzy, c-format
-msgid "Configuration Druid - page %d/%d"
-msgstr "Fail Konfigurasi"
+msgid ""
+"The audio output device is the device managed by the audio manager that will "
+"be used to play audio."
+msgstr ""
 
-#: src/druid.cpp:1008
+#: src/druid.cpp:1015
+#, fuzzy
+msgid "Please choose the audio input device:"
+msgstr "Sila pilih imej video"
+
+#: src/druid.cpp:1023
+msgid ""
+"The audio input device is the device managed by the audio manager that will "
+"be used to record your voice."
+msgstr ""
+
+#: src/druid.cpp:1036 src/druid.cpp:1174
+#, fuzzy
+msgid "Test those settings"
+msgstr "Lihat seting video"
+
+#: src/druid.cpp:1082
+#, fuzzy, c-format
+msgid "Video Manager - page %d/%d"
+msgstr "Peranti Video - halaman %d/%d"
+
+#. The Audio devices
+#: src/druid.cpp:1094
+#, fuzzy
+msgid "Please choose your video manager:"
+msgstr "Sila pilih imej video"
+
+#: src/druid.cpp:1102
+msgid ""
+"The video manager is the plugin that will manage your video devices, "
+"Video4Linux is the most common choice if you own a webcam."
+msgstr ""
+
+#: src/druid.cpp:1142
+#, c-format
+msgid "Video Devices - page %d/%d"
+msgstr "Peranti Video - halaman %d/%d"
+
+#. The Video devices
+#: src/druid.cpp:1154
+#, fuzzy
+msgid "Please choose the video input device:"
+msgstr "Sila pilih imej video"
+
+#: src/druid.cpp:1162
+msgid ""
+"The video input device is the device managed by the video manager that will "
+"be used to capture video."
+msgstr ""
+
+#: src/druid.cpp:1206
+msgid "First Time Configuration Druid"
+msgstr "Kali Pertama Melakukan Druid Konfigurasi"
+
+#: src/druid.cpp:1213
+#, c-format
+msgid "Configuration Druid - page %d/%d"
+msgstr "Druid Konfigurasi - halaman %d/%d"
+
+#: src/druid.cpp:1216
+#, fuzzy
 msgid ""
 "This is the GnomeMeeting general configuration druid. The following steps "
 "will set up GnomeMeeting by asking a few simple questions.\n"
@@ -1358,228 +1531,218 @@ msgid ""
 "Once you have completed these steps, you can always change them later by "
 "selecting Preferences in the Edit menu."
 msgstr ""
+"Ini ialah druid konfigurasi am GnomeMeeting. Langkah berikut akan "
+"menyediakan GnomeMeeting dengan menanyakan beberapa soalan mudah.\n"
+"\n"
+"Setelah anda selesai menjalankan langkah ini, anda boleh mengubahnya "
+"kemudian dengan memilih Keutamaan dalam menu Edit. "
 
-#: src/druid.cpp:1047
-#, fuzzy, c-format
+#: src/druid.cpp:1256
+#, c-format
 msgid "Configuration complete - page %d/%d"
-msgstr "Pecahan selesai"
-
-#: src/endpoint.cpp:117
-#, c-format
-msgid "Forwarding Call to %s (No Answer)"
-msgstr ""
-
-#: src/endpoint.cpp:121 src/endpoint.cpp:1468
-#, fuzzy
-msgid "Call forwarded"
-msgstr "Maju Pantas"
-
-#. Player is always a correct sound device, thanks to
-#. gnomemeeting_add_string_option_menu
-#: src/endpoint.cpp:314
-#, fuzzy, c-format
-msgid "Set Audio player device to %s"
-msgstr "Peranti mixer untuk digunakan"
-
-#: src/endpoint.cpp:325
-#, c-format
-msgid "Set Audio recorder device to %s"
-msgstr ""
-
-#: src/endpoint.cpp:342
-msgid "Enabling H.245 Tunnelling"
-msgstr ""
-
-#: src/endpoint.cpp:343
-msgid "Disabling H.245 Tunnelling"
-msgstr ""
-
-#: src/endpoint.cpp:353
-#, fuzzy
-msgid "Enabling Fast Start"
-msgstr "faktor skala"
-
-#: src/endpoint.cpp:354
-#, fuzzy
-msgid "Disabling Fast Start"
-msgstr "Matikan titlebar"
+msgstr "Konfigurasi selesai - halaman %d/%d"
 
 #. Update the history and status bar
-#: src/endpoint.cpp:945
+#: src/endpoint.cpp:691
 #, fuzzy, c-format
-msgid "Call from %s using %s"
-msgstr "Mengosongkan %s pada %s"
+msgid "Call from %s"
+msgstr "Panggilan dari %s menggunakan %s"
 
-#: src/endpoint.cpp:960
-#, c-format
+#: src/endpoint.cpp:703
+#, fuzzy, c-format
 msgid "Forwarding call from %s to %s (Forward all calls)"
-msgstr ""
-
-#: src/endpoint.cpp:968
-#, c-format
-msgid "Auto rejecting incoming call from %s (Do not disturb)"
-msgstr ""
-
-#: src/endpoint.cpp:980
-#, c-format
-msgid "Forwarding call from %s to %s (Busy)"
-msgstr ""
+msgstr "Menyambungkan Panggilan dari %s ke %s (Sambungkan Semua Panggilan)"
 
 #. there is no forwarding, so reject the call
-#: src/endpoint.cpp:989
+#: src/endpoint.cpp:710 src/endpoint.cpp:731
+#, fuzzy, c-format
+msgid "Rejecting call from %s (Busy)"
+msgstr "Menolak Panggilan Masuk secara Automatik dari %s (Sibuk)"
+
+#: src/endpoint.cpp:722
+#, fuzzy, c-format
+msgid "Forwarding call from %s to %s (Busy)"
+msgstr "Menyambungkan Panggilan dari %s ke %s (Sibuk)"
+
+#: src/endpoint.cpp:740
 #, c-format
-msgid "Auto rejecting incoming call from %s (Busy)"
+msgid "Accepting call from %s (Free For Chat)"
 msgstr ""
 
-#: src/endpoint.cpp:1013
+#: src/endpoint.cpp:764
 #, fuzzy
-msgid "Auto Rejected"
-msgstr "Autodetec_t"
+msgid "Call rejected"
+msgstr "Panggilan tamat"
 
-#: src/endpoint.cpp:1022
+#: src/endpoint.cpp:773 src/endpoint.cpp:1136 src/endpoint.cpp:2042
+msgid "Call forwarded"
+msgstr "Panggilan disambungkan"
+
+#: src/endpoint.cpp:782
 #, fuzzy
-msgid "Call Forwarded"
-msgstr "Maju Pantas"
+msgid "Call automatically answered"
+msgstr "Menjawab panggilan secara automatik"
 
-#: src/endpoint.cpp:1226
+#: src/endpoint.cpp:850
 #, fuzzy, c-format
-msgid "Connected with %s using %s"
-msgstr "Tersambung menggunakan SSL"
+msgid "Forwarding call to %s"
+msgstr "Menyambungkan Panggilan ke %s"
 
-#: src/endpoint.cpp:1228
+#: src/endpoint.cpp:861
+#, fuzzy, c-format
+msgid "Error while forwarding call to %s"
+msgstr "Ralat menyambungkan panggilan ke %s"
+
+#: src/endpoint.cpp:864
+#, fuzzy
+msgid "There was an error when forwarding the call to the given host."
+msgstr "Sentiasa sambungkan panggilan ke hos yang diberikan"
+
+#: src/endpoint.cpp:917
+#, c-format
+msgid "Connected with %s using %s"
+msgstr "Disambungkan dengan %s menggunakan %s"
+
+#: src/endpoint.cpp:919
 msgid "Connected"
 msgstr "Tersambung"
 
-#: src/endpoint.cpp:1231
-#, fuzzy
-msgid "Fast start disabled"
-msgstr "Tidak boleh stat() fail"
-
-#: src/endpoint.cpp:1232
-#, fuzzy
-msgid "Fast start enabled"
-msgstr "stat gagal"
-
-#: src/endpoint.cpp:1235
-msgid "H.245 Tunnelling disabled"
-msgstr ""
-
-#: src/endpoint.cpp:1236
-msgid "H.245 Tunnelling enabled"
-msgstr ""
-
-#: src/endpoint.cpp:1432
+#: src/endpoint.cpp:1100
 msgid "Local user cleared the call"
-msgstr ""
+msgstr "Pengguna setempat mengosongkan panggilan"
 
-#: src/endpoint.cpp:1435
-#, fuzzy
+#: src/endpoint.cpp:1103
 msgid "Remote user cleared the call"
-msgstr "Buang katalog yang dipilih"
+msgstr "Pengguna jauh mengosongkan panggilan"
 
-#: src/endpoint.cpp:1438 src/endpoint.cpp:1441
+#: src/endpoint.cpp:1106
 msgid "Remote user did not accept the call"
-msgstr ""
+msgstr "Pengguna jauh tidak menerima panggilan"
 
-#: src/endpoint.cpp:1444
+#: src/endpoint.cpp:1109 src/endpoint.cpp:1112
 msgid "Local user did not accept the call"
-msgstr ""
+msgstr "Pengguna setempat tidak menerima panggilan"
 
-#: src/endpoint.cpp:1447
+#: src/endpoint.cpp:1115
 msgid "The Gatekeeper cleared the call"
-msgstr ""
+msgstr "Penjaga get mengosongkan panggilan"
 
-#: src/endpoint.cpp:1450
-#, fuzzy
+#: src/endpoint.cpp:1118
 msgid "Call not answered in the required time"
-msgstr "Tak dapat menjumpai wiget yang diperlukan pada %s."
+msgstr "Panggilan tidak dijawab dalam masa yang diperlukan"
 
-#: src/endpoint.cpp:1453
+#: src/endpoint.cpp:1121
 msgid "Remote user has stopped calling"
-msgstr ""
+msgstr "Pengguna jauh menamatkan panggilan"
 
-#: src/endpoint.cpp:1456
-#, fuzzy
+#: src/endpoint.cpp:1124
 msgid "Abnormal call termination"
-msgstr "EPenamatan proses anak tidak normal."
+msgstr "Penamatan panggilan secara luar biasa"
 
-#: src/endpoint.cpp:1459
-#, fuzzy
+#: src/endpoint.cpp:1127
 msgid "Could not connect to remote host"
-msgstr "Gagal menyambung ke hos"
+msgstr "Tidak dapat disambungkan ke hos jauh"
 
-#: src/endpoint.cpp:1462
+#: src/endpoint.cpp:1130
 msgid "Insufficient bandwidth"
-msgstr ""
+msgstr "Lebar jalur tidak mencukupi"
 
-#: src/endpoint.cpp:1465
-#, fuzzy
+#: src/endpoint.cpp:1133
 msgid "No common codec"
-msgstr "Tiada Pemuat But"
+msgstr "Tiada pengekod-penyahkod biasa"
 
-#: src/endpoint.cpp:1471
-#, fuzzy
+#: src/endpoint.cpp:1139
 msgid "Security check Failed"
-msgstr "Pemeriksaan kebergantungan gagal."
+msgstr "Pemeriksaan keselamatan Gagal"
 
-#: src/endpoint.cpp:1474
+#: src/endpoint.cpp:1142
 msgid "Local user is busy"
-msgstr ""
+msgstr "Pengguna setempat sibuk"
 
-#: src/endpoint.cpp:1477
+#: src/endpoint.cpp:1145
 msgid "Remote user is busy"
-msgstr ""
+msgstr "Pengguna jauh sibuk"
 
-#: src/endpoint.cpp:1480 src/endpoint.cpp:1483
+#: src/endpoint.cpp:1148 src/endpoint.cpp:1151
 msgid "Congested link to remote party"
-msgstr ""
+msgstr "Pautan sesak untuk pihak jauh"
 
-#: src/endpoint.cpp:1486
+#: src/endpoint.cpp:1154
 msgid "Remote user is unreachable"
-msgstr ""
+msgstr "Pengguna jauh tidak dapat dihubungkan"
 
-#: src/endpoint.cpp:1489
+#: src/endpoint.cpp:1157
 msgid "Remote user is not running GnomeMeeting"
-msgstr ""
+msgstr "Pengguna jauh tidak menjalankan GnomeMeeting"
 
-#: src/endpoint.cpp:1492
-#, fuzzy
+#: src/endpoint.cpp:1160
 msgid "Remote host is offline"
-msgstr "Buang Kolum ini"
+msgstr "Hos jauh luar talian"
 
-#: src/endpoint.cpp:1495
-#, fuzzy
+#: src/endpoint.cpp:1163
 msgid "Temporary failure"
-msgstr "Direktori _sementara:"
+msgstr "Gagal sementara"
 
-#: src/endpoint.cpp:1498 src/urlhandler.cpp:366
-#, fuzzy
+#: src/endpoint.cpp:1166 src/urlhandler.cpp:382 src/urlhandler.cpp:388
 msgid "User not found"
-msgstr "%s tidak dijumpai"
+msgstr "Pengguna tidak dijumpai"
 
-#: src/endpoint.cpp:1502
-#, fuzzy
+#: src/endpoint.cpp:1170
 msgid "Call completed"
-msgstr "Selesai"
+msgstr "Panggilan tamat"
 
-#: src/endpoint.cpp:1594 src/main_window.cpp:1362
+#: src/endpoint.cpp:1255 src/main_window.cpp:1284
 msgid ""
 "Lost packets:\n"
 "Late packets:\n"
 "Round-trip delay:\n"
 "Jitter buffer:"
 msgstr ""
+"Bingkisan hilang:\n"
+"Bingkisan lewat:\n"
+"Lengah perjalanan pergi balik:\n"
+"Penimbal ketaran:"
 
-#: src/endpoint.cpp:1773
-msgid "Attaching lid hardware to codec"
+#: src/endpoint.cpp:1461
+#, fuzzy
+msgid "Error while starting the listener"
+msgstr "Ralat semasa mendaftar dengan Penjaga get."
+
+#: src/endpoint.cpp:1461
+msgid ""
+"You will not be able to receive incoming calls. Please check that no other "
+"program is already running on the port used by GnomeMeeting."
 msgstr ""
 
-#: src/endpoint.cpp:1788
+#: src/endpoint.cpp:1590
+msgid "Attaching lid hardware to codec"
+msgstr "Melampirkan perkakasan penutup untuk pengekod-penyahkod"
+
+#. Translators : the full sentence is "Opening %s for playing with
+#. plugin %s" or "Opening %s for recording with plugin"
+#: src/endpoint.cpp:1620
+#, c-format
+msgid "Opened %s for %s with plugin %s"
+msgstr ""
+
+#: src/endpoint.cpp:1622
+#, fuzzy
+msgid "recording"
+msgstr "Merekod mixer:"
+
+#: src/endpoint.cpp:1622
+msgid "playing"
+msgstr "Memain"
+
+#: src/endpoint.cpp:1656
 #, fuzzy
 msgid "Could not open audio channel for audio transmission"
-msgstr "Tidak boleh buka mailbox untuk spooling"
+msgstr ""
+"Tidak dapat membuka saluran audio untuk penghantaran audio (kad bunyi "
+"sibuk?).\n"
+"Melumpuhkan penghantaran audio."
 
-#: src/endpoint.cpp:1788
+#: src/endpoint.cpp:1656
 msgid ""
 "An error occured while trying to record from the soundcard for the audio "
 "transmission. Please check that your soundcard is not busy and that your "
@@ -1587,12 +1750,15 @@ msgid ""
 "The audio transmission has been disabled."
 msgstr ""
 
-#: src/endpoint.cpp:1790
+#: src/endpoint.cpp:1658
 #, fuzzy
 msgid "Could not open audio channel for audio reception"
-msgstr "Tidak boleh buka mailbox untuk spooling"
+msgstr ""
+"Tidak dapat membuka saluran audio untuk penerimaan audio (kad bunyi "
+"sibuk?).\n"
+"Melumpuhkan penerimaan audio."
 
-#: src/endpoint.cpp:1790
+#: src/endpoint.cpp:1658
 msgid ""
 "An error occured while trying to play audio to the soundcard for the audio "
 "reception. Please check that your soundcard is not busy and that your driver "
@@ -1600,660 +1766,626 @@ msgid ""
 "The audio reception has been disabled."
 msgstr ""
 
-#: src/gatekeeper.cpp:137
-#, c-format
-msgid "Unregistered from gatekeeper %s"
-msgstr ""
-
-#: src/gatekeeper.cpp:151
-#, fuzzy
-msgid "Invalid gatekeeper hostname"
-msgstr "Namahos tidak sah"
-
-#: src/gatekeeper.cpp:151
-msgid ""
-"Please provide a hostname to use for the gatekeeper.\n"
-"Disabling registering."
-msgstr ""
-
-#: src/gatekeeper.cpp:159
-#, fuzzy
-msgid "Invalid gatekeeper ID"
-msgstr "ID Jabber tidak sah"
-
-#: src/gatekeeper.cpp:159
-msgid ""
-"Please provide a valid ID for the gatekeeper.\n"
-"Disabling registering."
-msgstr ""
-
-#: src/gatekeeper.cpp:206
-msgid ""
-"Another user already exists with the same alias, please use another alias."
-msgstr ""
-
-#: src/gatekeeper.cpp:209
-msgid ""
-"You are not allowed to register to the gatekeeper. Please check your login, "
-"password and firewall."
-msgstr ""
-
-#: src/gatekeeper.cpp:212
-#, fuzzy
-msgid "There was a transport error."
-msgstr "Terdapat ralat pengaktifan yang tidak diketahui."
-
-#: src/gatekeeper.cpp:215 src/gatekeeper.cpp:220
-#, fuzzy
-msgid "No gatekeeper corresponding to your options has been found."
-msgstr "Tiada pelayan yang padan denga kueri anda"
-
-#: src/gatekeeper.cpp:222
-#, fuzzy
-msgid "Error while registering with gatekeeper"
-msgstr "Ralat ketika menulis ke soket."
-
-#: src/gatekeeper.cpp:240
-#, c-format
-msgid "Gatekeeper set to %s"
-msgstr ""
-
-#: src/gnomemeeting.cpp:86
-#, fuzzy
-msgid "Notification area not detected"
-msgstr "Kilang Kawasan Pemakluman"
-
-#: src/gnomemeeting.cpp:86
-msgid ""
-"You have chosen to start GnomeMeeting hidden, however the notification area "
-"is not present in your panel, GnomeMeeting can thus not start hidden."
-msgstr ""
-
-#: src/gnomemeeting.cpp:183
-#, fuzzy
-msgid "Answering incoming call"
-msgstr "Ambil mail mendatang baru"
-
-#: src/gnomemeeting.cpp:254
-#, fuzzy
-msgid "Trying to stop calling"
-msgstr "Bersedia untuk memasang..."
-
-#: src/gnomemeeting.cpp:267
-#, fuzzy
-msgid "Stopping current call"
-msgstr "Henti pemuatan lokasi semasa"
-
-#: src/gnomemeeting.cpp:279
-msgid "Refusing Incoming call"
-msgstr ""
-
-#. no error if Picture is choosen as video device
-#: src/gnomemeeting.cpp:310 src/videograbber.cpp:366 src/videograbber.cpp:683
-#, fuzzy
-msgid "Picture"
-msgstr "Gambar"
-
-#: src/gnomemeeting.cpp:418
-#, fuzzy
-msgid "Error while starting the listener"
-msgstr "Ralat berlaku bila membaca fail"
-
-#: src/gnomemeeting.cpp:418
-msgid ""
-"You will not be able to receive incoming calls. Please check that no other "
-"program is already running on the port used by GnomeMeeting."
-msgstr ""
-
-#. GM is started
-#: src/gnomemeeting.cpp:495
-#, c-format
-msgid "Started GnomeMeeting V%d.%d for %s\n"
-msgstr ""
-
-#: src/ils.cpp:119
-msgid "Parse error"
-msgstr "Ralat Penghantaran"
-
-# Gnome-control-center v2.0 Bahasa Melayu (ms)
-# 1. Hasbullah Bin Pit (sebol) <sebol@ikhlas.com>, 2002
-# 2. Khairulanuar Abd Majid (khai) <khairul@ikhlas.com>, 2002
-#: src/ils.cpp:119
-#, fuzzy, c-format
-msgid ""
-"There was an error while processing the registering to the user directory: %"
-"d %s."
-msgstr "Terdapat ralat melancarkan dialog keutamaan tetikus: %s"
-
-#. No need to display that for unregistering
-#: src/ils.cpp:233
-msgid "Invalid parameters"
-msgstr "Parameter yang tidak sah"
-
-#: src/ils.cpp:233
-msgid ""
-"Please provide your first name and e-mail in the Personal Data section in "
-"order to be able to register to the user directory."
-msgstr ""
-
-#: src/ils.cpp:268
-#, fuzzy
-msgid "Invalid user directory"
-msgstr "direktori pengguna"
-
-#: src/ils.cpp:268
-msgid "Operation impossible since there is no user directory specified."
-msgstr ""
-
-#: src/ils.cpp:334 src/ils.cpp:921
-#, fuzzy, c-format
-msgid "Contacting %s..."
-msgstr "Menghubungi pelayan..."
-
-#: src/ils.cpp:347
-#, fuzzy
-msgid "Failed to parse XML file"
-msgstr "Gagal menghantar fail XML \"%s\""
-
-#: src/ils.cpp:347
-#, fuzzy
-msgid ""
-"There was an error while parsing the XML file. Please make sure that it is "
-"correctly installed in your system."
-msgstr ""
-"Ralat semasa memuat fail imej \"%s\".\n"
-"Sila pastikan pemasangan Stones-GNOME betul."
-
-#: src/ils.cpp:358
-#, fuzzy
-msgid "Bad information"
-msgstr "Maklumat Kad"
-
-#: src/ils.cpp:358
-#, fuzzy, c-format
-msgid "Bad ldap information from XML file: %s."
-msgstr "Maklumat pengguna bagi %s tidak ada: %s"
-
-#: src/ils.cpp:367 src/ils.cpp:377 src/ils.cpp:386
-#, fuzzy
-msgid "Cannot contact the user directory"
-msgstr "Tak boleh mencipta direktori menu pengguna"
-
-#: src/ils.cpp:367
-#, fuzzy, c-format
-msgid "Failed to contact the user directory %s:%d."
-msgstr "Gagal mencipta direktori pengguna: %s\n"
-
-#: src/ils.cpp:377
-#, fuzzy
-msgid "Failed to set a time limit on operations."
-msgstr "Gagal memperolehi maklumat DPMS"
-
-#: src/ils.cpp:386
-#, fuzzy, c-format
-msgid "Failed to bind to user directory: %s."
-msgstr "Gagal mencipta direktori pengguna: %s\n"
-
-#: src/ils.cpp:417
-#, fuzzy, c-format
-msgid "Successfully registered to %s."
-msgstr "Berjaya menukarnama %s ke %s\n"
-
-#: src/ils.cpp:453
-#, fuzzy, c-format
-msgid "Updated information on %s."
-msgstr "Maklumat kemaskini"
-
-#: src/ils.cpp:463
-#, fuzzy, c-format
-msgid "Successfully unregistered from %s."
-msgstr "Berjaya dipindahkan %s\n"
-
-#: src/ils.cpp:495
-#, fuzzy, c-format
-msgid "Error while registering to %s."
-msgstr "Ralat ketika menulis ke soket."
-
-#: src/ils.cpp:498
-#, fuzzy, c-format
-msgid "Error while unregistering from %s."
-msgstr "Ralat ketika membaca dari soket."
-
-#: src/ils.cpp:929
-#, fuzzy, c-format
-msgid "Failed to contact LDAP server %s:%d."
-msgstr "Gagal menyambung ke pelayan FTP"
-
-#: src/ils.cpp:942
-#, fuzzy
-msgid "Failed to set time limit on LDAP operations."
-msgstr "Gagal memperolehi maklumat DPMS"
-
-#: src/ils.cpp:952
-#, fuzzy, c-format
-msgid "Failed to contact to LDAP server %s: %s."
-msgstr "Gagal menyambung ke pelayan FTP"
-
-#: src/ils.cpp:962
-#, c-format
-msgid "Fetching online users list from %s."
-msgstr ""
-
-#: src/ils.cpp:981
-#, fuzzy, c-format
-msgid "Connection to %s lost..."
-msgstr "Disambungkan ke %s ..."
-
-#: src/ils.cpp:984
-#, fuzzy
-msgid "Could not fetch online users list."
-msgstr "Tak dapat mencari rentetan."
-
-#: src/ils.cpp:1210
-#, c-format
-msgid "Search completed: %d user(s) listed on a total of %d user(s) from %s."
-msgstr ""
-
-#: src/ils.cpp:1215
-#, c-format
-msgid "Search completed: %d user(s) found on %s."
-msgstr ""
-
-#: src/ldap_window.cpp:725
-msgid "Name:"
-msgstr "Nama:"
-
-#: src/ldap_window.cpp:745
-msgid "URL:"
-msgstr "URL:"
-
-#: src/ldap_window.cpp:772
-#, fuzzy
-msgid "Speed Dial:"
-msgstr "Nilai seed:"
-
-#: src/ldap_window.cpp:796
-#, fuzzy
-msgid "Groups:"
-msgstr "Kumpulan"
-
-#: src/ldap_window.cpp:912
-#, fuzzy
-msgid "Invalid user name or URL"
-msgstr "Namapengguna tidak sah"
-
-#: src/ldap_window.cpp:912
-msgid ""
-"Please provide a valid name and URL for the contact you want to add to the "
-"address book."
-msgstr ""
-
-#: src/ldap_window.cpp:920
-#, fuzzy
-msgid "Invalid group"
-msgstr "%s: Kumpulan tidak sah"
-
-#: src/ldap_window.cpp:920
-msgid "You have to select a group to which you want to add your contact."
-msgstr ""
-
-#: src/ldap_window.cpp:934
-#, fuzzy
-msgid "Invalid speed dial"
-msgstr "Pengguna tidak sah"
-
-#: src/ldap_window.cpp:934
-#, fuzzy
-msgid ""
-"Another contact with the same speed dial already exists in the address book."
-msgstr "fail yang sama telah tersedia ada pada direktori sasaran"
-
-#: src/ldap_window.cpp:946
-msgid "Invalid URL"
-msgstr "URL tak sah"
-
-#: src/ldap_window.cpp:946
-#, fuzzy
-msgid "Another contact with the same URL already exists in the address book."
-msgstr "fail yang sama telah tersedia ada pada direktori sasaran"
-
-#: src/ldap_window.cpp:1073
-#, fuzzy, c-format
-msgid "Add %s to Address Book"
-msgstr "Buku Alamat LDAP"
-
-#: src/ldap_window.cpp:1093 src/ldap_window.cpp:2258
-#, fuzzy
-msgid "C_all Contact"
-msgstr "Semua Kenalan"
-
-#: src/ldap_window.cpp:1098 src/ldap_window.cpp:2262
-#, fuzzy
-msgid "_Tranfer Call to Contact"
-msgstr "Tambah Rakan secara manual"
-
-#: src/ldap_window.cpp:1109 src/ldap_window.cpp:2280
-#, fuzzy
-msgid "Contact _Properties"
-msgstr "_Ciri-ciri Sambungan"
-
-#: src/ldap_window.cpp:1115 src/ldap_window.cpp:2244
-msgid "_Delete"
-msgstr "Pa_dam"
-
-#: src/ldap_window.cpp:1220
-#, fuzzy
-msgid "Add a new server"
-msgstr "Tambah sessi baru"
-
-#: src/ldap_window.cpp:1221
-#, fuzzy
-msgid "Enter the server name:"
-msgstr "Masukkan Nama Pelayan"
-
-#: src/ldap_window.cpp:1222
-msgid ""
-"Sorry but there is already a server with the same name in the address book."
-msgstr ""
-
-#: src/ldap_window.cpp:1227
-#, fuzzy
-msgid "Add a new group"
-msgstr "Tambah Kumpulan baru"
-
-#: src/ldap_window.cpp:1228
-#, fuzzy
-msgid "Enter the group name:"
-msgstr "Masukkan nama baru : "
-
-#: src/ldap_window.cpp:1229
-msgid ""
-"Sorry but there is already a group with the same name in the address book."
-msgstr ""
-
-#: src/ldap_window.cpp:1264
-#, fuzzy
-msgid "Invalid server or group name"
-msgstr "Penguna atau kumpulan yang tidak wujud"
-
-#: src/ldap_window.cpp:1350
-#, fuzzy, c-format
-msgid "Are you sure you want to delete server %s?"
-msgstr "Adakah anda pasti untuk memadam volum logikal \"%s\"?"
-
-#: src/ldap_window.cpp:1356
-#, fuzzy, c-format
-msgid "Are you sure you want to delete group %s and all its contacts?"
-msgstr "Kamu pasti untuk memadam submenu ini dan semua isinya?"
-
-#: src/ldap_window.cpp:1539
-#, fuzzy
-msgid "New server"
-msgstr "Pelayan Berita"
-
-#: src/ldap_window.cpp:1548
-msgid "New group"
-msgstr "Kumpulan baru"
-
-#: src/ldap_window.cpp:1557
-msgid "_Find"
-msgstr "_Cari"
-
-#: src/ldap_window.cpp:1562 src/ldap_window.cpp:1576
-msgid "Delete"
-msgstr "Padam"
-
-#: src/ldap_window.cpp:1571
-#, fuzzy
-msgid "New contact"
-msgstr "Nama untuk dihubungi"
-
-#: src/ldap_window.cpp:2212
-#, fuzzy
-msgid "GnomeMeeting Address Book"
-msgstr "Buku Alamat GnomeCard"
-
-#: src/ldap_window.cpp:2230
-msgid "_File"
-msgstr "_Fail"
-
-#: src/ldap_window.cpp:2232
-#, fuzzy
-msgid "New _Server"
-msgstr "Pelayan Berita"
-
-#: src/ldap_window.cpp:2237
-#, fuzzy
-msgid "New _Group"
-msgstr "Kumpulan baru"
-
-#: src/ldap_window.cpp:2250
-msgid "_Close"
-msgstr "_Tutup"
-
-#: src/ldap_window.cpp:2256
-#, fuzzy
-msgid "C_ontact"
-msgstr "Kenalan"
-
-#: src/ldap_window.cpp:2268
-#, fuzzy
-msgid "New _Contact"
-msgstr "_Kenalan"
-
-#: src/ldap_window.cpp:2273
-#, fuzzy
-msgid "Add Contact to _Address Book"
-msgstr "Pilih Buku Alamat"
-
-#. Translators: This is "S" as in "Status"
-#: src/ldap_window.cpp:2530
-msgid "S"
-msgstr "S"
-
-#. Translators: This is "A" as in "Audio"
-#: src/ldap_window.cpp:2540 src/pref_window.cpp:1254
-msgid "A"
-msgstr "A"
-
-#. Translators: This is "V" as in "Video"
-#: src/ldap_window.cpp:2550
-msgid "V"
-msgstr ""
-
-#: src/ldap_window.cpp:2559 src/ldap_window.cpp:2633 src/pref_window.cpp:1268
-msgid "Name"
-msgstr "Nama"
-
-#: src/ldap_window.cpp:2597 src/ldap_window.cpp:2645 src/tools.cpp:237
-msgid "URL"
-msgstr "URL"
-
-#: src/ldap_window.cpp:2620
-msgid "IP"
-msgstr "IP"
-
-#: src/ldap_window.cpp:2658
-#, fuzzy
-msgid "Speed Dial"
-msgstr "Istimewa"
-
-#: src/ldap_window.cpp:2711
-#, fuzzy
-msgid "Find all contacts"
-msgstr "Semua Kenalan"
-
-#: src/ldap_window.cpp:2716
-#, fuzzy
-msgid "First name contains"
-msgstr "[Nama fail] mengandungi [bantuan]"
-
-#: src/ldap_window.cpp:2720
-msgid "Last name contains"
-msgstr "Nama akhir mengandugi"
-
-#: src/ldap_window.cpp:2724
-msgid "E-mail contains"
-msgstr "Emel mengandungi"
-
-#: src/ldap_window.cpp:2909
-msgid "Servers"
-msgstr "Pelayan"
-
-#: src/ldap_window.cpp:2955
-msgid "Groups"
-msgstr "Kumpulan"
-
-#: src/lid.cpp:132
-#, c-format
-msgid "Using Quicknet device %s"
-msgstr "Mengguna peranti Quicknet %s"
-
-#: src/lid.cpp:174
-msgid "Error while opening the Quicknet device."
-msgstr "Ralat bila membuka peranti Quicknet."
-
-#: src/lid.cpp:174
-msgid ""
-"Please check that your driver is correctly installed and that the device is "
-"working correctly."
-msgstr ""
-
-#: src/lid.cpp:279 src/lid.cpp:280
-msgid "Phone is off hook"
-msgstr ""
-
-#: src/lid.cpp:309 src/lid.cpp:310
-msgid "Phone is on hook"
-msgstr ""
-
-#: src/main_window.cpp:255
+#: src/endpoint.cpp:1875
 #, c-format
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
-msgstr ""
+msgstr "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 
-#: src/main_window.cpp:292
-#, c-format
+#: src/endpoint.cpp:1917
+#, fuzzy, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
 "Late packets: %.1f %%\n"
 "Round-trip delay: %d ms\n"
 "Jitter buffer: %d ms"
 msgstr ""
+"Bingkisan hilang: %d\n"
+"Bingkisan lewat: %d\n"
+"Lengah perjalanan pergi balik: %d ms\n"
+"Penimbal ketaran : %d ms"
 
-#: src/main_window.cpp:486
-#, fuzzy, c-format
-msgid "Total: %.2f MB"
-msgstr "Jumlah penuh: %d%%"
+#: src/endpoint.cpp:2038
+#, c-format
+msgid "Forwarding Call to %s (No Answer)"
+msgstr "Menyambungkan Panggilan ke %s (Tiada Jawapan)"
 
-#: src/main_window.cpp:605
+#: src/gatekeeper.cpp:127
+#, c-format
+msgid "Unregistered from gatekeeper %s"
+msgstr "Tidak didaftarkan dari penjaga get %s"
+
+#: src/gatekeeper.cpp:141
 #, fuzzy
-msgid "Cannot run GnomeMeeting"
-msgstr "GnomeMeeting"
+msgid "Invalid gatekeeper hostname"
+msgstr "Hos Gatekeeper"
 
-#: src/main_window.cpp:605
+#: src/gatekeeper.cpp:141
 msgid ""
-"GnomeMeeting is already running, if you want it to call a given callto URL, "
-"please use \"gnomemeeting -c URL\"."
+"Please provide a hostname to use for the gatekeeper.\n"
+"Disabling registering."
+msgstr ""
+"Sila berikan nama hos untuk menggunakan penjaga get.\n"
+"Melumpuhkan pendaftaran."
+
+#: src/gatekeeper.cpp:149
+msgid "Invalid gatekeeper ID"
+msgstr "ID Gatekeeper tidak sah"
+
+#: src/gatekeeper.cpp:149
+msgid ""
+"Please provide a valid ID for the gatekeeper.\n"
+"Disabling registering."
+msgstr ""
+"Sila berikan ID yang sah untuk penjaga get.\n"
+"Melumpuhkan pendaftaran."
+
+#: src/gatekeeper.cpp:196
+msgid ""
+"Another user already exists with the same alias, please use another alias."
 msgstr ""
 
-#: src/main_window.cpp:657
+#: src/gatekeeper.cpp:199
+msgid ""
+"You are not allowed to register to the gatekeeper. Please check your login, "
+"password and firewall."
+msgstr ""
+
+#: src/gatekeeper.cpp:202
+msgid "There was a transport error."
+msgstr "Terdapat ralat pengangkut."
+
+#: src/gatekeeper.cpp:205 src/gatekeeper.cpp:210
+msgid "No gatekeeper corresponding to your options has been found."
+msgstr ""
+
+#: src/gatekeeper.cpp:212
 #, fuzzy
+msgid "Error while registering with gatekeeper"
+msgstr "Ralat semasa mendaftar dengan Penjaga get."
+
+#: src/gatekeeper.cpp:228
+#, c-format
+msgid "Gatekeeper set to %s"
+msgstr "Penjaga get disetkan ke %s"
+
+#: src/gnomemeeting.cpp:87
+msgid "Notification area not detected"
+msgstr ""
+
+#: src/gnomemeeting.cpp:87
+msgid ""
+"You have chosen to start GnomeMeeting hidden, however the notification area "
+"is not present in your panel, GnomeMeeting can thus not start hidden."
+msgstr ""
+"Anda telah memilih untuk memulakan GnomeMeeting secara tersembunyi, walau "
+"bagaimanapun kawasan pemberitahuan tidak ada dalam panel anda, GnomeMeeting "
+"boleh dimulakan secara tidak tersembunyi."
+
+#: src/gnomemeeting.cpp:188
+msgid "Answering incoming call"
+msgstr "Menjawab panggilan masuk"
+
+#: src/gnomemeeting.cpp:251
+msgid "Trying to stop calling"
+msgstr "Cuba menamatkan panggilan"
+
+#: src/gnomemeeting.cpp:263
+msgid "Stopping current call"
+msgstr "Menamatkan panggilan semasa"
+
+#: src/gnomemeeting.cpp:274
+msgid "Refusing Incoming call"
+msgstr "Menolak panggilan Masuk"
+
+#. GM is started
+#: src/gnomemeeting.cpp:496
+#, c-format
+msgid "Started GnomeMeeting V%d.%d for %s\n"
+msgstr "Memulakan GnomeMeeting V%d.%d bagi %s\n"
+
+#: src/ils.cpp:110
+msgid "Invalid parameters"
+msgstr "Parameter yang tidak sah"
+
+#: src/ils.cpp:110
+#, fuzzy
+msgid ""
+"Please provide your first name and e-mail in the Personal Data section in "
+"order to be able to register to the user directory."
+msgstr ""
+"Sila berikan nama pertama anda dan e-melkan dalam bahagian Data Peribadi "
+"untuk membolehkan anda didaftarkan ke pelayan ILS."
+
+#: src/ils.cpp:145
+msgid "Invalid user directory"
+msgstr "Direktori pengguna tak sah"
+
+#: src/ils.cpp:145
+#, fuzzy
+msgid "Operation impossible since there is no user directory specified."
+msgstr ""
+"Operasi tidak dapat dijalankan kerana tidak ada pelayan XDAP ditentukan."
+
+#: src/ils.cpp:226
+msgid "Failed to parse XML file"
+msgstr "Gagal menghantar fail XML"
+
+#: src/ils.cpp:226
+#, fuzzy
+msgid ""
+"There was an error while parsing the XML file. Please make sure that it is "
+"correctly installed in your system."
+msgstr ""
+"Terdapat ralat ketika membuka peranti. Sila periksa keizinan anda dan "
+"pastikan jurupacu sesuai dimuatkan."
+
+#: src/ils.cpp:237
+msgid "Bad information"
+msgstr "Maklumat teruk"
+
+#: src/ils.cpp:237
+#, c-format
+msgid "Bad ldap information from XML file: %s."
+msgstr "Maklumat salah ldap dari fail XML: %s."
+
+#: src/ils.cpp:246
+#, fuzzy
+msgid "Cannot contact the users directory"
+msgstr "Masukkan komen perihal diri anda untuk direktori pengguna."
+
+#: src/ils.cpp:246
+#, c-format
+msgid ""
+"Failed to contact the users directory %s:%d. The directory is probably "
+"currently overloaded, try again later."
+msgstr ""
+
+#: src/ils.cpp:256 src/ils.cpp:265
+#, fuzzy
+msgid "Cannot contact the user directory"
+msgstr "Masukkan komen perihal diri anda untuk direktori pengguna."
+
+#: src/ils.cpp:256
+#, fuzzy
+msgid "Failed to set a time limit on operations."
+msgstr "Gagal mengesetkan had masa bagi operasi ldap"
+
+#: src/ils.cpp:265
+#, fuzzy, c-format
+msgid "Failed to bind to user directory: %s."
+msgstr "Gagal mengikat pelayan ldap: %s"
+
+#: src/ils.cpp:289
+#, fuzzy, c-format
+msgid "Updated information on the users directory %s."
+msgstr "Maklumat dikemas kini pada %s"
+
+#: src/ils.cpp:293
+#, fuzzy, c-format
+msgid "Unregistered from the users directory %s."
+msgstr "Tidak didaftarkan dari penjaga get %s"
+
+#: src/ils.cpp:315
+#, c-format
+msgid "Error while registering to %s."
+msgstr "Ralat semasa mendaftarkan ke %s"
+
+#: src/ils.cpp:674
+#, c-format
+msgid "Failed to contact LDAP server %s:%d."
+msgstr "Gagal menghubungi pelayan LDAP %s:%d."
+
+#: src/ils.cpp:687
+msgid "Failed to set time limit on LDAP operations."
+msgstr "Gagal menetapkan had masa bagi operasi LDAP."
+
+#: src/ils.cpp:697
+#, fuzzy, c-format
+msgid "Failed to contact to LDAP server %s: %s."
+msgstr "Ralat untuk mengikat ke pelayan ldap %s: %s."
+
+#: src/ils.cpp:707
+#, fuzzy, c-format
+msgid "Fetching online users list from %s."
+msgstr "Mendapatkan maklumat pengguna dari %s."
+
+#: src/ils.cpp:725
+#, fuzzy
+msgid "Could not fetch online users list."
+msgstr "Tidak dapat disambungkan ke hos jauh"
+
+#: src/ils.cpp:741
+#, fuzzy, c-format
+msgid "Connection to %s lost..."
+msgstr "Menghubungi %s..."
+
+#: src/ils.cpp:958
+#, c-format
+msgid "Search completed: %d user(s) listed on a total of %d user(s) from %s."
+msgstr ""
+"Carian selesai: %d pengguna disenaraikan dengan jumlah %d pengguna dari %s."
+
+#: src/ils.cpp:963
+#, c-format
+msgid "Search completed: %d user(s) found on %s."
+msgstr "Carian selesai: %d pengguna dijumpai pada %s."
+
+#: src/ldap_window.cpp:750
+msgid "Name:"
+msgstr "Nama:"
+
+#: src/ldap_window.cpp:770
+msgid "URL:"
+msgstr "URL:"
+
+#: src/ldap_window.cpp:797
+msgid "Speed Dial:"
+msgstr "Dial Cepat:"
+
+#: src/ldap_window.cpp:821
+msgid "Groups:"
+msgstr "Kumpulan:"
+
+#: src/ldap_window.cpp:938
+#, fuzzy
+msgid "Invalid user name or URL"
+msgstr "URL tak sah"
+
+#: src/ldap_window.cpp:938
+#, fuzzy
+msgid ""
+"Please provide a valid name and URL for the contact you want to add to the "
+"address book."
+msgstr "Sila berikan nama dan panggilanke yang betul bagi penggguna"
+
+#: src/ldap_window.cpp:946
+#, fuzzy
+msgid "Invalid group"
+msgstr "URL tak sah"
+
+#: src/ldap_window.cpp:946
+#, fuzzy
+msgid "You have to select a group to which you want to add your contact."
+msgstr "Anda telah memilih kumpulan yang ingin anda tambahkan kenalan anda"
+
+#: src/ldap_window.cpp:960
+msgid "Invalid speed dial"
+msgstr "Dail cepat tidak sah"
+
+#: src/ldap_window.cpp:960
+#, fuzzy
+msgid ""
+"Another contact with the same speed dial already exists in the address book."
+msgstr ""
+"Pengguna lain dengan panggilanke %s yang telah wujud dalam kumpulan %s."
+
+#: src/ldap_window.cpp:972
+msgid "Invalid URL"
+msgstr "URL tak sah"
+
+#: src/ldap_window.cpp:972
+#, fuzzy
+msgid "Another contact with the same URL already exists in the address book."
+msgstr ""
+"Pengguna lain dengan panggilanke %s yang telah wujud dalam kumpulan %s."
+
+#: src/ldap_window.cpp:1009
+#, c-format
+msgid "Are you sure you want to remove %s [%s] from this group?"
+msgstr ""
+
+#: src/ldap_window.cpp:1115
+#, c-format
+msgid "Add %s to Address Book"
+msgstr "Tambahkan %s ke Buku Alamat"
+
+#: src/ldap_window.cpp:1141 src/ldap_window.cpp:2659
+msgid "C_all Contact"
+msgstr "H_ubungi Kenalan"
+
+#: src/ldap_window.cpp:1147 src/ldap_window.cpp:2662
+msgid "_Tranfer Call to Contact"
+msgstr "_Pindahkan Panggilan ke Kenalan"
+
+#: src/ldap_window.cpp:1159 src/ldap_window.cpp:2679
+msgid "Contact _Properties"
+msgstr "Ciri _Kenalan"
+
+#: src/ldap_window.cpp:1165
+msgid "Copy URL to the clipboard"
+msgstr "Salin URL ke papanklip"
+
+#: src/ldap_window.cpp:1171 src/ldap_window.cpp:1616 src/ldap_window.cpp:2641
+msgid "_Delete"
+msgstr "Pa_dam"
+
+#: src/ldap_window.cpp:1273
+msgid "Add a new server"
+msgstr "Tambahkan pelayan baru"
+
+#: src/ldap_window.cpp:1274
+msgid "Enter the server name:"
+msgstr "Masukkan nama pelayan"
+
+#: src/ldap_window.cpp:1275 src/ldap_window.cpp:1388
+msgid ""
+"Sorry but there is already a server with the same name in the address book."
+msgstr ""
+
+#: src/ldap_window.cpp:1279
+msgid "Add a new group"
+msgstr "Tambahkan kumpulan baru"
+
+#: src/ldap_window.cpp:1280
+msgid "Enter the group name:"
+msgstr "Masukkan nama kumpulan"
+
+#: src/ldap_window.cpp:1281 src/ldap_window.cpp:1399
+msgid ""
+"Sorry but there is already a group with the same name in the address book."
+msgstr ""
+
+#: src/ldap_window.cpp:1315 src/ldap_window.cpp:1448
+#, fuzzy
+msgid "Invalid server or group name"
+msgstr "Masukkan nama kumpulan"
+
+#: src/ldap_window.cpp:1384
+#, c-format
+msgid "Please enter a new name for server %s:"
+msgstr ""
+
+#: src/ldap_window.cpp:1386
+#, c-format
+msgid "Are you sure you want to delete server %s?"
+msgstr ""
+
+#: src/ldap_window.cpp:1395
+#, c-format
+msgid "Please enter a new name for group %s:"
+msgstr ""
+
+#: src/ldap_window.cpp:1397
+#, c-format
+msgid "Are you sure you want to delete group %s and all its contacts?"
+msgstr ""
+
+#: src/ldap_window.cpp:1584
+msgid "New server"
+msgstr "Pelayan baru"
+
+#: src/ldap_window.cpp:1594
+msgid "New group"
+msgstr "Kumpulan baru"
+
+#: src/ldap_window.cpp:1604
+msgid "_Find"
+msgstr "_Cari"
+
+#: src/ldap_window.cpp:1611 src/ldap_window.cpp:1633 src/ldap_window.cpp:2645
+msgid "_Rename"
+msgstr "_Tukarnama"
+
+#: src/ldap_window.cpp:1626
+msgid "New contact"
+msgstr "Kenalan baru"
+
+#: src/ldap_window.cpp:1638
+msgid "Delete"
+msgstr "Padam"
+
+#: src/ldap_window.cpp:2610
+#, fuzzy
+msgid "GnomeMeeting Address Book"
+msgstr "Buku Alamat"
+
+#: src/ldap_window.cpp:2628
+msgid "_File"
+msgstr "_Fail"
+
+#: src/ldap_window.cpp:2630
+msgid "New _Server"
+msgstr "Pelayan _Baru"
+
+#: src/ldap_window.cpp:2634
+msgid "New _Group"
+msgstr "Kumpulan _Baru"
+
+#: src/ldap_window.cpp:2652 src/menu.cpp:379
+msgid "_Close"
+msgstr "_Tutup"
+
+#: src/ldap_window.cpp:2657
+msgid "C_ontact"
+msgstr "K_enalan"
+
+#: src/ldap_window.cpp:2668
+msgid "New _Contact"
+msgstr "Kenalan _Baru"
+
+#: src/ldap_window.cpp:2672
+msgid "Add Contact to _Address Book"
+msgstr "Tambahkan Kenalan ke Buku_Alamat"
+
+#. Translators: This is "S" as in "Status"
+#: src/ldap_window.cpp:2933
+msgid "S"
+msgstr "S"
+
+#. Translators: This is "A" as in "Audio"
+#: src/ldap_window.cpp:2943 src/pref_window.cpp:1123
+msgid "A"
+msgstr "A"
+
+#. Translators: This is "V" as in "Video"
+#: src/ldap_window.cpp:2953
+msgid "V"
+msgstr "V"
+
+#: src/ldap_window.cpp:2962 src/ldap_window.cpp:3036 src/pref_window.cpp:1137
+msgid "Name"
+msgstr "Nama"
+
+#: src/ldap_window.cpp:3000 src/ldap_window.cpp:3048 src/tools.cpp:255
+msgid "URL"
+msgstr "URL"
+
+#: src/ldap_window.cpp:3023
+msgid "IP"
+msgstr "IP"
+
+#: src/ldap_window.cpp:3061
+msgid "Speed Dial"
+msgstr "Dial Cepat"
+
+#: src/ldap_window.cpp:3114
+msgid "Find all contacts"
+msgstr "Cari semua kenalan"
+
+#: src/ldap_window.cpp:3119
+msgid "First name contains"
+msgstr "Nama pertama mengandungi"
+
+#: src/ldap_window.cpp:3123
+msgid "Last name contains"
+msgstr "Nama akhir mengandugi"
+
+#: src/ldap_window.cpp:3127
+msgid "E-mail contains"
+msgstr "Emel mengandungi"
+
+#: src/ldap_window.cpp:3313
+msgid "Servers"
+msgstr "Pelayan"
+
+#: src/ldap_window.cpp:3359
+msgid "Groups"
+msgstr "Kumpulan"
+
+#: src/lid.cpp:129
+#, c-format
+msgid "Using Quicknet device %s"
+msgstr "Mengguna peranti Quicknet %s"
+
+#: src/lid.cpp:171
+msgid "Error while opening the Quicknet device."
+msgstr "Ralat bila membuka peranti Quicknet."
+
+#: src/lid.cpp:171
+msgid ""
+"Please check that your driver is correctly installed and that the device is "
+"working correctly."
+msgstr ""
+
+#: src/lid.cpp:250 src/lid.cpp:251
+msgid "Phone is off hook"
+msgstr "Gagang telefon diangkat"
+
+#: src/lid.cpp:280 src/lid.cpp:281
+msgid "Phone is on hook"
+msgstr "Gagang telefon diletakkan"
+
+#: src/main_window.cpp:338
+#, c-format
+msgid "Total: %.2f MB"
+msgstr "Jumlah: %.2f MB"
+
+#: src/main_window.cpp:462
+msgid "Cannot run GnomeMeeting"
+msgstr "Tak dapat melaksanakan GnomeMeeting"
+
+#: src/main_window.cpp:462
+msgid ""
+"GnomeMeeting is already running, if you want it to call a given callto or "
+"h323 URL, please use \"gnomemeeting -c URL\"."
+msgstr ""
+"GnomeMeeting telah dijalankan, jika anda ingin ia memanggil  URL callto atau "
+"H323 yang diberikan, sila gunakan \"gnomemeeting -c URL.\""
+
+#: src/main_window.cpp:515
 msgid ""
 "It appears that you do not have gnomemeeting.server installed in a valid "
 "location. Factory mode disabled.\n"
 msgstr ""
-"Nampaknya anda tidak mempunyai gnome-terminal.server dipasang pada lokasi "
-"tidak sah. Mod kilang dimatikan.\n"
+"Anda tidak memasang gnomemeeting.server dalam lokasi yang betul. Mod kilang "
+"dilumpuhkan.\n"
 
-#: src/main_window.cpp:661
-#, fuzzy
+#: src/main_window.cpp:519
 msgid ""
 "Error registering GnomeMeeting with the activation service; factory mode "
 "disabled.\n"
 msgstr ""
-"Ralat mendaftar terminal dengan servis pengaktifan; mod kilang dimatikan.\n"
+"Ralat mendaftarkan GnomeMeeting dengan khidmat pengaktifan; mod kilang "
+"dilumpuhkan.\n"
 
-#: src/main_window.cpp:701
-#, fuzzy
+#: src/main_window.cpp:559
 msgid "Failed to retrieve gnomemeeting server from activation server\n"
-msgstr "Gagal memperolehi pelayan terminal dari pelayan pengaktifan\n"
+msgstr ""
+"Gagal mendapatkan semula pelayan gnomemeeting dari pelayan pengaktifan\n"
 
-#: src/main_window.cpp:1191 src/menu.cpp:566 src/menu.cpp:815
-#, fuzzy
+#: src/main_window.cpp:1151 src/menu.cpp:469 src/menu.cpp:585
 msgid "Local Video"
-msgstr "Fail lokal"
+msgstr "Video Setempat"
 
-#: src/main_window.cpp:1197 src/menu.cpp:572 src/menu.cpp:820
-#, fuzzy
+#: src/main_window.cpp:1157 src/menu.cpp:475 src/menu.cpp:591
 msgid "Remote Video"
-msgstr "Buang Paparan"
+msgstr "Video Jauh"
 
-#: src/main_window.cpp:1366 src/menu.cpp:526
+#: src/main_window.cpp:1289 src/menu.cpp:430
 msgid "Statistics"
 msgstr "Statistik"
 
-#: src/main_window.cpp:1432
-#, fuzzy
+#: src/main_window.cpp:1350
 msgid "Dialpad"
-msgstr "Dial"
+msgstr "Pad dial"
 
-#: src/main_window.cpp:1489
-#, fuzzy
+#: src/main_window.cpp:1404
 msgid "Adjust brightness"
-msgstr "Ubahsuai kecerahan dan kontras"
+msgstr "Selaraskan kecerahan"
 
-#: src/main_window.cpp:1515
-#, fuzzy
+#: src/main_window.cpp:1426
 msgid "Adjust whiteness"
-msgstr "Penyesuaian"
+msgstr "Selaraskan keputihan"
 
-#: src/main_window.cpp:1541
-#, fuzzy
+#: src/main_window.cpp:1448
 msgid "Adjust color"
-msgstr "Ubahsuai imbangan warna"
+msgstr "Selaraskan warna"
 
-#: src/main_window.cpp:1567
-#, fuzzy
+#: src/main_window.cpp:1470
 msgid "Adjust contrast"
-msgstr "Penyesuaian"
+msgstr "Selaraskan kontras"
 
-#: src/main_window.cpp:1575
+#: src/main_window.cpp:1478
 msgid "Video"
 msgstr "Video"
 
-#: src/main_window.cpp:1665
+#: src/main_window.cpp:1554
 msgid "Audio"
 msgstr "Audio"
 
-#: src/main_window.cpp:1708
+#: src/main_window.cpp:1604
 msgid "Prints debug messages in the console (level between 1 and 6)"
-msgstr ""
+msgstr "Cetakan menyahpepijat mesej dalam konsol (aras antara 1 dengan 6)"
 
-#: src/main_window.cpp:1711
-msgid "Makes GnomeMeeting call the given URL"
-msgstr ""
-
-#: src/main_window.cpp:1757
-msgid "No usable audio devices detected"
-msgstr ""
-
-#: src/main_window.cpp:1757
-msgid ""
-"GnomeMeeting didn't find any usable sound devices. You need to install and "
-"setup a soundcard or a Quicknet card in order to be able to use "
-"GnomeMeeting. Please check your driver settings and permissions."
-msgstr ""
-
-#: src/main_window.cpp:1777
+#: src/main_window.cpp:1607
 #, fuzzy
-msgid "Gconf key error"
-msgstr "Ralat GConf"
+msgid "Makes GnomeMeeting call the given URL"
+msgstr "Menyebabkan GnomeMeeting memanggil panggilanke://URL yang diberikan"
 
-#: src/main_window.cpp:1777
+#: src/main_window.cpp:1656
+msgid "No usable audio manager detected"
+msgstr ""
+
+#: src/main_window.cpp:1656
 msgid ""
-"GnomeMeeting got an invalid value for the GConf key \"/apps/gnomemeeting/"
-"gconf_test_age\".\n"
+"GnomeMeeting didn't find any usable sound manager. Make sure that your "
+"installation is correct."
+msgstr ""
+
+#: src/main_window.cpp:1676
+#, fuzzy, c-format
+msgid ""
+"GnomeMeeting got an invalid value for the GConf key %s.\n"
 "\n"
 "It probably means that your GConf schemas have not been correctly installed "
 "or the that permissions are not correct.\n"
@@ -2263,949 +2395,1015 @@ msgid ""
 "gconf/) or the mailing list archives for more information (http://mail.gnome."
 "org) about this problem."
 msgstr ""
+"GnomeMeeting mendapat %d untuk kekunci GConf \"/apps/gnomemeeting/"
+"gconf_ujian_umur\", tetapi %d dijangkakan.\n"
+"\n"
+"Kekunci tersebut mewakili semakan seting GnomeMeeting. Jika ia tidak sepadan "
+"dengan nilai dijangkakan, ini bermakna skema GConf anda tidak dipasang "
+"dengan betul atau kebenaran tersebut tidak betul.\n"
+"\n"
+"Sila semak FAQ (http://www.gnomemeeting.org/faq.php), bahagian penyelesaian "
+"masalah laman GConf (http://www.gnome.org/projects/gconf/) atau arkib "
+"senarai mel untuk maklumat lanjut (http://mail.gnome.org).\n"
+"\n"
+"Dengan menggunakan 'gnomemeeting-konfig-alat' dapat membantu anda "
+"menyelesaikan masalah."
 
-#: src/menu.cpp:432
-#, fuzzy
+#: src/main_window.cpp:1679
+msgid "Gconf key error"
+msgstr ""
+
+#: src/menu.cpp:308
 msgid "C_all"
-msgstr "semua"
+msgstr "P_anggilan"
 
-#: src/menu.cpp:434 src/menu.cpp:894
-msgid "_Connect"
-msgstr "_Sambung"
-
-#: src/menu.cpp:434 src/menu.cpp:894
+#: src/menu.cpp:310
 #, fuzzy
-msgid "Create a new connection"
-msgstr "Cipta Sambungan Internet baru"
+msgid "C_onnect"
+msgstr "Sambung"
 
-#: src/menu.cpp:439 src/menu.cpp:899
+#: src/menu.cpp:310 src/menu.cpp:663
+msgid "Create a new connection"
+msgstr "Wujudkan sambungan baru"
+
+#: src/menu.cpp:313 src/menu.cpp:666
 msgid "_Disconnect"
 msgstr "_Putus"
 
-#: src/menu.cpp:439 src/menu.cpp:899
-#, fuzzy
+#: src/menu.cpp:314 src/menu.cpp:667
 msgid "Close the current connection"
 msgstr "Tutup sambungan semasa"
 
-#: src/menu.cpp:446 src/menu.cpp:906
-#, fuzzy
-msgid "Do _Not Disturb"
-msgstr "Jangan Ganggu"
+#: src/menu.cpp:320 src/menu.cpp:673
+msgid "_Available"
+msgstr "_Ada"
 
-#: src/menu.cpp:451 src/menu.cpp:911
+#: src/menu.cpp:321 src/menu.cpp:674
 #, fuzzy
-msgid "Aut_o Answer"
-msgstr "_Jawapan"
+msgid "Display a popup to accept the call"
+msgstr "Pengguna setempat tidak menerima panggilan"
 
-#: src/menu.cpp:451
-#, fuzzy
-msgid "Auto answer incoming call"
-msgstr "Ambil mail mendatang baru"
+#: src/menu.cpp:326 src/menu.cpp:679
+msgid "Free for Cha_t"
+msgstr ""
 
-#: src/menu.cpp:458
+#: src/menu.cpp:327 src/menu.cpp:680
+msgid "Auto answer calls"
+msgstr "Autojawab panggilan"
+
+#: src/menu.cpp:332 src/menu.cpp:685
+msgid "_Busy"
+msgstr "_Sibuk"
+
+#: src/menu.cpp:332 src/menu.cpp:685
 #, fuzzy
+msgid "Reject calls"
+msgstr "Panggilan diterima"
+
+#: src/menu.cpp:337 src/menu.cpp:690
+msgid "_Forward"
+msgstr "_Maju"
+
+#: src/menu.cpp:337 src/menu.cpp:690
+msgid "Forward calls"
+msgstr "Maju panggilan"
+
+#: src/menu.cpp:345
+msgid "Speed dials"
+msgstr "Dail cepat"
+
+#: src/menu.cpp:349
 msgid "Hold the current call"
-msgstr "Tamatkan permainan ini"
+msgstr "Menahan panggilan semasa"
 
-#: src/menu.cpp:463
-#, fuzzy
+#: src/menu.cpp:353
 msgid "Transfer the current call"
-msgstr "Cetak fail semasa"
+msgstr "Pindahkan panggilan semasa"
 
-#: src/menu.cpp:470
+#: src/menu.cpp:360
 msgid "Suspend or resume the audio transmission"
-msgstr ""
+msgstr "Gantung atau sambung semula penghantaran audio"
 
-#: src/menu.cpp:475
+#: src/menu.cpp:365
 msgid "Suspend or resume the video transmission"
-msgstr ""
+msgstr "Gantung atau sambung semula penghantaran video"
 
-#: src/menu.cpp:482
-#, fuzzy
+#: src/menu.cpp:372
 msgid "_Save Current Picture"
-msgstr "_Simpan tetapan semasa"
+msgstr "_Simpan Gambar Semasa"
 
-#: src/menu.cpp:482
-#, fuzzy
+#: src/menu.cpp:373
 msgid "Save a snapshot of the current video"
-msgstr "Tak dapat mencekup skrin desktop semasa. :("
+msgstr "Simpan gambar video semasa"
 
-#: src/menu.cpp:488 src/menu.cpp:951
+#: src/menu.cpp:379
+msgid "Close the GnomeMeeting window"
+msgstr "_Tutup Tetingkap GnomeMeeting"
+
+#: src/menu.cpp:386 src/menu.cpp:736
 msgid "_Quit"
 msgstr "_Keluar"
 
-#: src/menu.cpp:488 src/menu.cpp:951
-#, fuzzy
+#: src/menu.cpp:386 src/menu.cpp:736
 msgid "Quit GnomeMeeting"
-msgstr "GnomeMeeting"
+msgstr "Keluar dari GnomeMeeting"
 
-#: src/menu.cpp:491
+#: src/menu.cpp:390
 msgid "_Edit"
 msgstr "_Edit"
 
-#: src/menu.cpp:494 src/menu.cpp:499
-#, fuzzy
+#: src/menu.cpp:393 src/menu.cpp:399
 msgid "Configuration Druid"
-msgstr "Kongfigurasi"
+msgstr "Druid Konfigurasi"
 
-#: src/menu.cpp:494 src/menu.cpp:499
-#, fuzzy
+#: src/menu.cpp:394 src/menu.cpp:400
 msgid "Run the configuration druid"
-msgstr "Autokonfigurasi gagal! :("
+msgstr "Jalankan  druid konfigurasi"
 
-#: src/menu.cpp:506 src/menu.cpp:932
+#: src/menu.cpp:407 src/menu.cpp:714
 msgid "_Preferences..."
 msgstr "Ke_utamaan..."
 
-#: src/menu.cpp:506 src/menu.cpp:932
+#: src/menu.cpp:408 src/menu.cpp:715
 msgid "Change your preferences"
 msgstr "Ubah keutamaan anda"
 
-#: src/menu.cpp:511
+#: src/menu.cpp:413
 msgid "_View"
 msgstr "_Lihat"
 
-#. Text Chat
-#: src/menu.cpp:513 src/pref_window.cpp:865
+#: src/menu.cpp:415 src/pref_window.cpp:742
 msgid "Text Chat"
 msgstr "Chat Teks"
 
-#: src/menu.cpp:513
-#, fuzzy
+#: src/menu.cpp:416
 msgid "View/Hide the text chat window"
-msgstr "Lihat atau sorok bar status bagi tetingkap ini"
+msgstr "Lihat/Sembunyikan tetingkap sembang teks"
 
-#: src/menu.cpp:518
+#: src/menu.cpp:421
 msgid "Status Bar"
 msgstr "Bar Status"
 
-#: src/menu.cpp:518
+#: src/menu.cpp:422
 msgid "View/Hide the status bar"
 msgstr "Papar/Sorok bar status"
 
-#: src/menu.cpp:524
+#: src/menu.cpp:428
 msgid "Control Panel"
 msgstr "Panel Kawalan"
 
-#: src/menu.cpp:527
+#: src/menu.cpp:431
 msgid "View audio/video transmission and reception statistics"
-msgstr ""
+msgstr "Lihat penghantaran audio/video dan penerimaan statistik"
 
-#: src/menu.cpp:533
-#, fuzzy
+#: src/menu.cpp:436
 msgid "_Dialpad"
-msgstr "_Dimatikan"
+msgstr "_Pad dial"
 
-#: src/menu.cpp:533
-#, fuzzy
+#: src/menu.cpp:436
 msgid "View the dialpad"
-msgstr "Lihat imej"
+msgstr "Lihat pad dial"
 
-#: src/menu.cpp:539
+#: src/menu.cpp:441
 msgid "_Audio Settings"
 msgstr "Tetapan _Audio"
 
-#: src/menu.cpp:539
+#: src/menu.cpp:442
 msgid "View audio settings"
 msgstr "Lihat tetapan audio"
 
-#: src/menu.cpp:545
+#: src/menu.cpp:447
 msgid "_Video Settings"
 msgstr "Tetapan _Video"
 
-#: src/menu.cpp:545
-#, fuzzy
+#: src/menu.cpp:448
 msgid "View video settings"
-msgstr "Tetapan kad video"
+msgstr "Lihat seting video"
 
-#: src/menu.cpp:551 src/pref_window.cpp:1077
+#: src/menu.cpp:453 src/pref_window.cpp:925
 msgid "Off"
 msgstr "Off"
 
-#: src/menu.cpp:551
-#, fuzzy
+#: src/menu.cpp:453
 msgid "Hide the control panel"
-msgstr "Sembunyi panel ini"
+msgstr "Sembunyikan panel kawalan"
 
-#: src/menu.cpp:559
-#, fuzzy
+#: src/menu.cpp:461
 msgid "_Clear text chat"
-msgstr "Teks Jernih"
+msgstr "_Kosongkan chat teks"
 
-#: src/menu.cpp:559
-#, fuzzy
+#: src/menu.cpp:462
 msgid "Clear the text chat"
-msgstr "Kosongkan pilihan"
+msgstr "Kosongkan chat teks"
 
-#: src/menu.cpp:566
-#, fuzzy
+#: src/menu.cpp:470 src/menu.cpp:586
 msgid "Local video image"
-msgstr "_Memuatkan imej"
+msgstr "Imej video setempat"
 
-#: src/menu.cpp:572
-#, fuzzy
+#: src/menu.cpp:476 src/menu.cpp:592
 msgid "Remote video image"
-msgstr "Buang Halaman Sidebar"
+msgstr "Imej video jauh"
 
-#: src/menu.cpp:578 src/menu.cpp:825
+#: src/menu.cpp:481 src/menu.cpp:597
 msgid "Both (Local Video Incrusted)"
-msgstr ""
+msgstr "Kedua-duanya (Video Setempat Dilapisi)"
 
-#: src/menu.cpp:578 src/menu.cpp:584 src/menu.cpp:591
-#, fuzzy
+#: src/menu.cpp:482 src/menu.cpp:489 src/menu.cpp:496 src/menu.cpp:598
+#: src/menu.cpp:605 src/menu.cpp:612
 msgid "Both video images"
-msgstr "Bukan imej CD yang sah"
+msgstr "Kedua-dua imej video"
 
-#: src/menu.cpp:584 src/menu.cpp:830
-#, fuzzy
+#: src/menu.cpp:488 src/menu.cpp:604
 msgid "Both (Local Video in New Window)"
-msgstr "Buka Pautan di Tetingkap Baru"
+msgstr "Kedua-duanya (Video Setempat dalam Tetingkap Baru)"
 
-#: src/menu.cpp:590
-#, fuzzy
+#: src/menu.cpp:495 src/menu.cpp:611
 msgid "Both (Both in New Windows)"
-msgstr "_Buka di Tetingkap Baru"
+msgstr "Kedua-duanya (Kedua-duanya dalam Tetingkap Baru)"
 
-#: src/menu.cpp:599 src/menu.cpp:843
+#: src/menu.cpp:504 src/menu.cpp:620
 msgid "Zoom In"
 msgstr "Zoom Masuk"
 
-#: src/menu.cpp:599
+#: src/menu.cpp:504 src/menu.cpp:620
 msgid "Zoom in"
 msgstr "Zoom masuk"
 
-#: src/menu.cpp:604 src/menu.cpp:848
+#: src/menu.cpp:508 src/menu.cpp:624
 msgid "Zoom Out"
 msgstr "Zoom Keluar"
 
-#: src/menu.cpp:604
+#: src/menu.cpp:508 src/menu.cpp:624
 msgid "Zoom out"
 msgstr "Zoom keluar"
 
-#: src/menu.cpp:609 src/menu.cpp:853
-#, fuzzy
+#: src/menu.cpp:512 src/menu.cpp:628
 msgid "Normal Size"
-msgstr "Sai_z Normal"
+msgstr "Saiz normal"
 
-#: src/menu.cpp:609
-#, fuzzy
+#: src/menu.cpp:512 src/menu.cpp:628
 msgid "Normal size"
-msgstr "Sai_z Normal"
+msgstr "Saiz normal"
 
-#: src/menu.cpp:616 src/menu.cpp:860
+#: src/menu.cpp:517 src/menu.cpp:633
 msgid "Fullscreen"
 msgstr "Skrinpenuh"
 
-#: src/menu.cpp:621
+#: src/menu.cpp:522
 msgid "_Tools"
 msgstr "_Radas"
 
-#: src/menu.cpp:623 src/menu.cpp:918
-#, fuzzy
+#: src/menu.cpp:524 src/menu.cpp:698
 msgid "Address _Book"
-msgstr "Buku Alamat"
+msgstr "_Buku Alamat"
 
-#: src/menu.cpp:623 src/menu.cpp:918 src/toolbar.cpp:246
+#: src/menu.cpp:525 src/menu.cpp:699
 msgid "Open the address book"
 msgstr "Buka buku alamat"
 
-#: src/menu.cpp:630
-#, fuzzy
-msgid "Generic History"
-msgstr "Ralat generik"
+#: src/menu.cpp:532 src/tools.cpp:345
+msgid "General History"
+msgstr "Sejarah Umum"
 
-#: src/menu.cpp:630
-#, fuzzy
+#: src/menu.cpp:533
 msgid "View the operations history"
-msgstr "Tetapkan direktori operasi"
+msgstr "Lihat sejarah operasi"
 
-#: src/menu.cpp:635 src/menu.cpp:925 src/tools.cpp:191
-#, fuzzy
+#: src/menu.cpp:537 src/menu.cpp:706 src/tools.cpp:201
 msgid "Calls History"
-msgstr "Kosongkan Sejarah"
+msgstr "Sejarah Panggilan"
 
-#: src/menu.cpp:635 src/menu.cpp:925
-#, fuzzy
+#: src/menu.cpp:538 src/menu.cpp:707
 msgid "View the calls history"
-msgstr "Lihat katalog"
+msgstr "Lihat sejarah panggilan"
 
-#: src/menu.cpp:642
+#: src/menu.cpp:543
 msgid "Consult MicroTelco Account"
-msgstr ""
+msgstr "Hubungi Akaun MicroTelco"
 
-#: src/menu.cpp:642
+#: src/menu.cpp:544
 msgid "View the details of your account"
-msgstr ""
+msgstr "Lihat perincian akaun anda"
 
-#: src/menu.cpp:647
+#: src/menu.cpp:548
 msgid "_Help"
 msgstr "_Bantuan"
 
-#: src/menu.cpp:650 src/menu.cpp:655 src/menu.cpp:940 src/menu.cpp:945
-#, fuzzy
+#: src/menu.cpp:551 src/menu.cpp:557 src/menu.cpp:723 src/menu.cpp:729
 msgid "_About GnomeMeeting"
-msgstr "GnomeMeeting"
+msgstr "_Perihal GnomeMeeting"
 
-#: src/menu.cpp:650 src/menu.cpp:655 src/menu.cpp:940 src/menu.cpp:945
-#, fuzzy
+#: src/menu.cpp:552 src/menu.cpp:558 src/menu.cpp:724 src/menu.cpp:730
 msgid "View information about GnomeMeeting"
-msgstr "Lihat maklumat perihal pengguna ini"
+msgstr "Lihat maklumat tentang GnomeMeeting"
 
-#: src/menu.cpp:815
-#, fuzzy
-msgid "Local Video Image"
-msgstr "Muatkan imej"
-
-#: src/menu.cpp:820
-#, fuzzy
-msgid "Remote Video Image"
-msgstr "Buang Halaman Sidebar"
-
-#: src/menu.cpp:825 src/menu.cpp:830 src/menu.cpp:836
-#, fuzzy
-msgid "Both Video Images"
-msgstr "_Isih Imej"
-
-#: src/menu.cpp:835
-msgid "Both (Local and Remote Video in New Windows)"
-msgstr ""
-
-#: src/menu.cpp:906
-msgid "Do not disturb (reject incoming calls)"
-msgstr ""
+#: src/menu.cpp:663
+msgid "_Connect"
+msgstr "_Sambung"
 
 #: src/misc.cpp:175
-#, c-format
-msgid "Error: %s\n"
-msgstr "Ralat: %s\n"
+msgid "Generic error"
+msgstr "Ralat generik"
 
-#: src/misc.cpp:219
-#, c-format
-msgid ""
-"Call from %s\n"
-"using %s"
-msgstr ""
-
-#: src/misc.cpp:227
-#, fuzzy
+#: src/misc.cpp:223
 msgid "Reject"
-msgstr "Eject"
+msgstr "Tolak"
 
-#: src/misc.cpp:229
+#: src/misc.cpp:225
 msgid "Accept"
 msgstr "Terima"
 
-#: src/pref_window.cpp:449
+#: src/misc.cpp:232
+msgid "Incoming call from"
+msgstr "Panggilan masuk drpd"
+
+#: src/misc.cpp:245
 #, fuzzy
+msgid "Remote URL:"
+msgstr "URL jauh:"
+
+#: src/misc.cpp:257
+msgid "Remote Application:"
+msgstr "Aplikasi Jauh:"
+
+#: src/pref_window.cpp:346
+#, fuzzy
+msgid "Codec Information"
+msgstr "Maklumat Personal"
+
+#: src/pref_window.cpp:385
 msgid "Please choose the video image"
-msgstr "Sila pilih satu imej."
+msgstr "Sila pilih imej video"
 
-#: src/pref_window.cpp:483
-#, fuzzy
-msgid "Okay"
-msgstr "Ok"
+#: src/pref_window.cpp:663
+msgid "Personal Information"
+msgstr "Maklumat Personal"
 
-#: src/pref_window.cpp:488 src/pref_window.cpp:503 src/pref_window.cpp:508
-#, fuzzy
-msgid "Excellent"
-msgstr "sel"
-
-#: src/pref_window.cpp:493 src/pref_window.cpp:498 src/pref_window.cpp:513
-#: src/pref_window.cpp:518
-#, fuzzy
-msgid "Good Quality"
-msgstr "Kualiti _Zoom"
-
-#: src/pref_window.cpp:523
-msgid "Excellent Quality"
-msgstr ""
-
-#: src/pref_window.cpp:769
-#, fuzzy
+#: src/pref_window.cpp:667
 msgid "_First name:"
-msgstr "Nama _Pertama:"
+msgstr "Nama _pertama:"
 
-#: src/pref_window.cpp:774
-#, fuzzy
+#: src/pref_window.cpp:674
 msgid "Sur_name:"
-msgstr "Surinam"
+msgstr "Nama _keluarga:"
 
-#: src/pref_window.cpp:784
+#: src/pref_window.cpp:681
+msgid "E-_mail address:"
+msgstr "Alamat E_mail:"
+
+#: src/pref_window.cpp:688
 msgid "_Comment:"
 msgstr "_Komen:"
 
-#: src/pref_window.cpp:789
+#: src/pref_window.cpp:690
+#, fuzzy
+msgid "Enter a comment about yourself."
+msgstr "Masukkan komen perihal diri anda untuk direktori pengguna."
+
+#: src/pref_window.cpp:695
 msgid "_Location:"
 msgstr "_Lokasi:"
 
-#: src/pref_window.cpp:795 src/pref_window.cpp:1031
+#: src/pref_window.cpp:697
+msgid "Enter your country or city."
+msgstr "Masukkan negara anda atau bandar."
+
+#. Add the update button
+#: src/pref_window.cpp:703 src/pref_window.cpp:884
 msgid "_Apply"
 msgstr "Ter_ap"
 
-#: src/pref_window.cpp:795
+#: src/pref_window.cpp:703
 msgid ""
 "Click here to update the user directory you are registered to with the new "
 "First Name, Last Name, E-Mail, Comment and Location or to update your alias "
 "on the Gatekeeper."
 msgstr ""
+"Klik di sini untuk mengemas kini direktori pengguna yang telah anda "
+"daftarkan Nama Pertama, Nama Keluarga, E-mel, Komen dan Lokasi baru atau "
+"untuk mengemas kini alias anda pada Penjaga get."
 
-#: src/pref_window.cpp:820
+#: src/pref_window.cpp:721
 msgid "GnomeMeeting GUI"
 msgstr "GUI GnomeMeeting"
 
-#: src/pref_window.cpp:823
-#, fuzzy
+#: src/pref_window.cpp:723
 msgid "_Show splash screen"
-msgstr "Papar skrin splash"
+msgstr "_Papar skrin percikan"
 
-#: src/pref_window.cpp:826
-#, fuzzy
+#: src/pref_window.cpp:725
 msgid "Start _hidden"
-msgstr "Dimulakan dengan tersorok"
+msgstr "Dimulakan dengan _tersorok"
 
-#. Packing widget
-#: src/pref_window.cpp:830
-msgid "Behavior"
-msgstr "Kelakuan"
-
-#: src/pref_window.cpp:834
+#: src/pref_window.cpp:725
 #, fuzzy
-msgid "_Automatically answer calls"
-msgstr "Automatik mula pencarian"
-
-#: src/pref_window.cpp:837
-#, fuzzy
-msgid "Do _not disturb"
-msgstr "Jangan Ganggu"
-
-#: src/pref_window.cpp:840
-msgid "Display a po_pup window when receiving a call"
+msgid ""
+"If enabled, GnomeMeeting will start hidden. The notification area must be "
+"present in the panel."
 msgstr ""
+"Jika dibolehkan, GnomeMeeting akan mula tersembunyi. Doklet mestilah "
+"dibolehkan."
 
-#. Packing widget
-#: src/pref_window.cpp:844
+#: src/pref_window.cpp:730
 msgid "Video Display"
 msgstr "Paparan Video"
 
 #. Translators: the full sentence is Use a fullscreen size
 #. of X by Y pixels
-#: src/pref_window.cpp:849
-#, fuzzy
+#: src/pref_window.cpp:735
 msgid "Use a fullscreen size of"
-msgstr "Lungsur dalam mod skrin penuh"
+msgstr "Guna skrin penuh bagi"
 
-#: src/pref_window.cpp:851
-#, fuzzy
+#: src/pref_window.cpp:735
 msgid "by"
-msgstr "badan"
+msgstr ""
 
-#: src/pref_window.cpp:853
+#: src/pref_window.cpp:735
 msgid "pixels"
 msgstr "piksel"
 
-#: src/pref_window.cpp:862
-msgid "Enable bilinear _filtering on displayed video"
-msgstr ""
+#: src/pref_window.cpp:738
+msgid "Place windows displaying video _above other windows"
+msgstr "Letak tetingkap memapar video di _atas tetingkap lain"
 
-#: src/pref_window.cpp:888
+#: src/pref_window.cpp:762
 msgid "User Directory"
 msgstr "Direktori Pengguna"
 
-#: src/pref_window.cpp:893
+#. Add all the fields
+#: src/pref_window.cpp:766
 msgid "User directory:"
 msgstr "Direktori pengguna:"
 
-#: src/pref_window.cpp:896
+#: src/pref_window.cpp:768
 msgid "Enable _registering"
 msgstr "Hidupkan pen_daftaran"
 
-#: src/pref_window.cpp:899
-#, fuzzy
-msgid "_Allow others to see my details in the directory"
-msgstr "Benarkan pengguna lain melihat saya di laman web ICQ"
+#: src/pref_window.cpp:770
+msgid "_Publish my details in the users directory when registering"
+msgstr ""
 
-#: src/pref_window.cpp:921 src/pref_window.cpp:1560
+#: src/pref_window.cpp:787 src/pref_window.cpp:1327
 msgid "Call Forwarding"
 msgstr "Pemajuan Panggilan"
 
-#: src/pref_window.cpp:926
+#: src/pref_window.cpp:792
 msgid "Forward calls to _host:"
 msgstr "Majukan panggilan ke _hos:"
 
-#: src/pref_window.cpp:933
+#: src/pref_window.cpp:797
+#, fuzzy
 msgid "_Always forward calls to the given host"
-msgstr ""
+msgstr "Sentiasa sambungkan panggilan ke hos yang diberikan"
 
-#: src/pref_window.cpp:936
+#: src/pref_window.cpp:797
+#, fuzzy
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the field above."
+msgstr ""
+"Jika dibolehkan, semua panggilan masuk akan disambungkan ke hos yang "
+"ditetapkan dalam medan di bawah."
+
+#: src/pref_window.cpp:799
+#, fuzzy
 msgid "Forward calls to the given host if _no answer"
-msgstr ""
+msgstr "Majukan panggilan ke hos yg diberi jika tiada jawapan"
 
-#: src/pref_window.cpp:939
+#: src/pref_window.cpp:799
+#, fuzzy
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the field above if you do not answer the call."
+msgstr ""
+"Jika dibolehkan, semua panggilan masuk akan disambungkan ke hos yang "
+"ditetapkan dalam medan di bawah jika anda tidak menjawab panggilan."
+
+#: src/pref_window.cpp:801
+#, fuzzy
 msgid "Forward calls to the given host if _busy"
-msgstr ""
+msgstr "Majukan panggilan ke hos yg diberi jika sibuk"
 
-#: src/pref_window.cpp:953
+#: src/pref_window.cpp:801
+#, fuzzy
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the field above if you already are in a call or if you are in "
+"Do Not Disturb mode."
+msgstr ""
+" Jika dibolehkan, semua panggilan masuk akan disambungkan ke hos yang "
+"ditetapkan dalam medan di bawah jika anda berada dalam mod panggilan atau "
+"jika anda dalam mod Jangan Ganggu."
+
+#: src/pref_window.cpp:817
 msgid "All"
 msgstr "Semua"
 
-#: src/pref_window.cpp:954
-msgid "None"
-msgstr "Tiada"
-
-#: src/pref_window.cpp:955
+#: src/pref_window.cpp:819
 msgid "rfc2833"
 msgstr "rfc2833"
 
-#: src/pref_window.cpp:956
+#: src/pref_window.cpp:820
 msgid "Signal"
 msgstr "Isyarat"
 
-#: src/pref_window.cpp:957
+#: src/pref_window.cpp:821
 msgid "String"
 msgstr "Rentetan"
 
-#: src/pref_window.cpp:967
+#: src/pref_window.cpp:830
 msgid "H.323 Version 2 Settings"
 msgstr "Tetapan H.323 Versi 2"
 
-#: src/pref_window.cpp:971
+#: src/pref_window.cpp:834
+#, fuzzy
 msgid "Enable H.245 _tunnelling"
-msgstr ""
+msgstr "Hidupkan penerowongan H.245"
 
-#: src/pref_window.cpp:974
+#: src/pref_window.cpp:837
+#, fuzzy
 msgid "Enable fast _start procedure"
-msgstr ""
+msgstr "Hidupkan 'Mula Cepat'"
 
-#: src/pref_window.cpp:979
+#: src/pref_window.cpp:843
 msgid "User Input Capabilities"
 msgstr "Kebolehan Input Pengguna"
 
-#: src/pref_window.cpp:982
-#, fuzzy
-msgid "User Input Capabilities _type:"
-msgstr "Kebolehan Klien: "
+#: src/pref_window.cpp:846
+msgid "T_ype:"
+msgstr "J_enis:"
 
-#: src/pref_window.cpp:982
+#: src/pref_window.cpp:846
 msgid ""
 "This permits to set the mode for User Input Capabilities. The values can be "
 "\"All\", \"None\", \"rfc2833\", \"Signal\" or \"String\" (default is \"All"
 "\"). Choosing other values than \"All\", \"String\" or \"rfc2833\" disables "
 "the Text Chat."
 msgstr ""
+"Ini membenarkan mod disetkan untuk Keupayaan Input Pengguna. Nilai mungkin "
+"\"Semua\", \"Tiada\", \"rfc2833\", \"Isyarat\" atau \"Rentetan\" (piawai "
+"ialah \"Semua\"). Memilih nilai lain selain \"Semua\", \"Rentetan\" atau "
+"\"rfc2833\" melumpuhkan Sembang Teks."
 
-#: src/pref_window.cpp:999
+#: src/pref_window.cpp:861
 msgid "Do not register"
 msgstr "Jangan daftar"
 
-#: src/pref_window.cpp:1002
-#, fuzzy
+#: src/pref_window.cpp:864
 msgid "Automatically discover"
-msgstr "Dikesan secara automatik"
+msgstr "Secara automatik mengetahui"
 
-#: src/pref_window.cpp:1012
+#: src/pref_window.cpp:870
 msgid "Gatekeeper"
-msgstr ""
+msgstr "Penjaga get "
 
-#: src/pref_window.cpp:1015
+#: src/pref_window.cpp:872
 msgid "Gatekeeper _ID:"
-msgstr ""
+msgstr "_ID penjaga get:"
 
-#: src/pref_window.cpp:1018
+#: src/pref_window.cpp:874
 msgid "Gatekeeper _host:"
-msgstr ""
+msgstr "_Hos penjaga get:"
 
-#: src/pref_window.cpp:1021
+#: src/pref_window.cpp:876
 msgid "Gatekeeper _alias:"
-msgstr ""
+msgstr "_Alias penjaga get:"
 
-#: src/pref_window.cpp:1024
+#: src/pref_window.cpp:879
 msgid "Gatekeeper _password:"
 msgstr "Katalaluan gatekeeper:"
 
-#: src/pref_window.cpp:1028
+#: src/pref_window.cpp:882
 msgid "Registering method:"
 msgstr "Kaedah pendaftaran:"
 
-#: src/pref_window.cpp:1031
+#: src/pref_window.cpp:884
 msgid "Click here to update your Gatekeeper settings."
-msgstr ""
+msgstr "Klik di sini untuk mengemas kini seting Penjaga get."
 
-#: src/pref_window.cpp:1054
+#: src/pref_window.cpp:902
 msgid "NAT/PAT Router Support"
 msgstr "Sokongan Router NAT/PAT"
 
-#: src/pref_window.cpp:1057
-#, fuzzy
+#: src/pref_window.cpp:904
 msgid "Enable IP _translation"
-msgstr "Hidupkan animasi"
+msgstr "Hidupkan pen_terjemahan IP"
 
-#: src/pref_window.cpp:1060
+#: src/pref_window.cpp:906
 msgid "Public _IP of the NAT/PAT router:"
-msgstr ""
+msgstr "_IP Awam bagi penghala NAT/PAT:"
 
-#: src/pref_window.cpp:1078
+#: src/pref_window.cpp:926
 msgid "Low"
 msgstr "Rendah"
 
-#: src/pref_window.cpp:1079
+#: src/pref_window.cpp:927
 msgid "Medium"
 msgstr "Sederhana"
 
-#: src/pref_window.cpp:1080
+#: src/pref_window.cpp:928
 msgid "High"
 msgstr "Tinggi"
 
-#: src/pref_window.cpp:1081
+#: src/pref_window.cpp:929
 msgid "AGC"
 msgstr "AGC"
 
-#: src/pref_window.cpp:1098
-msgid "Playing device:"
-msgstr "Peranti pemain"
+#: src/pref_window.cpp:938
+msgid "Audio Plugin"
+msgstr "Plugin Audio"
 
-#: src/pref_window.cpp:1101
-msgid "Playing mixer:"
-msgstr "Mixer pemain:"
+#: src/pref_window.cpp:942
+msgid "Audio plugin:"
+msgstr "Plugin audio:"
 
-#: src/pref_window.cpp:1105
-msgid "Recording device:"
-msgstr "Merekod peranti:"
+#: src/pref_window.cpp:948 src/pref_window.cpp:1354
+msgid "Audio Devices"
+msgstr "Peranti Audio"
 
-#: src/pref_window.cpp:1108
-msgid "Recording mixer:"
-msgstr "Merekod mixer:"
+#: src/pref_window.cpp:954
+msgid "Output device:"
+msgstr "Peranti output:"
+
+#: src/pref_window.cpp:954
+msgid "Select the audio output device to use."
+msgstr "Pilih peranti output audio untuk digunakan."
+
+#: src/pref_window.cpp:960 src/pref_window.cpp:1031
+msgid "Input device:"
+msgstr "Peranti input:"
 
 #. That button will refresh the devices list
-#: src/pref_window.cpp:1111 src/pref_window.cpp:1195
+#: src/pref_window.cpp:980 src/pref_window.cpp:1058
 msgid "_Detect devices"
 msgstr "_Kesan peranti"
 
-#: src/pref_window.cpp:1111 src/pref_window.cpp:1195
+#: src/pref_window.cpp:980 src/pref_window.cpp:1058
 msgid "Click here to refresh the devices list."
 msgstr "Klik sini untuk menyegarkan senarai peranti."
 
-#. The Quicknet devices related options
-#: src/pref_window.cpp:1115
-msgid "Quicknet Device"
-msgstr "Peranti Quicknet"
-
-#: src/pref_window.cpp:1118
-msgid "Echo _cancellation:"
-msgstr "_Pembatalan gema:"
-
-#: src/pref_window.cpp:1121
-msgid "Country _code:"
-msgstr "_Kod negara:"
-
-#: src/pref_window.cpp:1141
+#: src/pref_window.cpp:1001
 msgid "Small"
 msgstr "Kecil"
 
-#: src/pref_window.cpp:1142
+#: src/pref_window.cpp:1002
 msgid "Large"
 msgstr "Besar"
 
-#: src/pref_window.cpp:1144
+#: src/pref_window.cpp:1004
 msgid "PAL (Europe)"
-msgstr ""
+msgstr "PAL (Eropah)"
 
-#: src/pref_window.cpp:1145
+#: src/pref_window.cpp:1005
 msgid "NTSC (America)"
 msgstr "NTSC (Amerika)"
 
-#: src/pref_window.cpp:1146
+#: src/pref_window.cpp:1006
 msgid "SECAM (France)"
 msgstr "SECAM (Perancis)"
 
-#: src/pref_window.cpp:1147
+#: src/pref_window.cpp:1007
 msgid "Auto"
 msgstr "Auto"
 
-#: src/pref_window.cpp:1170
-msgid "Video channel:"
-msgstr "Saluran video:"
+#: src/pref_window.cpp:1017
+msgid "Video Plugin"
+msgstr "Plugin Video"
 
-#: src/pref_window.cpp:1173
-msgid "Video size:"
-msgstr "Saiz video:"
+#: src/pref_window.cpp:1020
+msgid "Video plugin:"
+msgstr "Plugin video:"
 
-#: src/pref_window.cpp:1176
-msgid "Video format:"
-msgstr "Format video:"
+#: src/pref_window.cpp:1026 src/pref_window.cpp:1357
+msgid "Video Devices"
+msgstr "Peranti Video"
 
-#: src/pref_window.cpp:1179
-msgid "Video image:"
-msgstr "Imej video:"
+#: src/pref_window.cpp:1031
+msgid ""
+"Select the video device to use. Using an invalid video device or \"Picture\" "
+"for video transmission will transmit a test picture."
+msgstr ""
+"Pilih peranti video yang akan digunakan. Dengan menggunakan peranti video "
+"yang tak sah atau \"Gambar\" bagi penghantaran video akan menghantar gambar "
+"ujian."
+
+#. Video Channel
+#: src/pref_window.cpp:1035
+msgid "Channel:"
+msgstr "Saluran:"
+
+#: src/pref_window.cpp:1037
+msgid "Size:"
+msgstr "Saiz:"
+
+#: src/pref_window.cpp:1039
+msgid "Format:"
+msgstr "Format:"
+
+#: src/pref_window.cpp:1042
+msgid "Image:"
+msgstr "Imej:"
 
 #. The file selector button
-#: src/pref_window.cpp:1183
-msgid "Browse..."
-msgstr "Lungsur..."
+#: src/pref_window.cpp:1046
+msgid "Choose a picture"
+msgstr "Pilih gambar"
 
-#: src/pref_window.cpp:1229
+#: src/pref_window.cpp:1091
 msgid "Available Audio Codecs"
 msgstr "Codec Yang Ada"
 
-#: src/pref_window.cpp:1279
+#: src/pref_window.cpp:1148
 msgid "Info"
 msgstr "Maklumat"
 
-#: src/pref_window.cpp:1291
+#: src/pref_window.cpp:1160
 msgid "Bandwidth"
 msgstr "lebarjalur"
 
-#. Here we add the audio codecs options
-#: src/pref_window.cpp:1354
+#: src/pref_window.cpp:1211
 msgid "Audio Codecs Settings"
 msgstr "Tetapan Codec Audio"
 
-#: src/pref_window.cpp:1359
-#, fuzzy
+#. Translators: the full sentence is Automatically adjust jitter buffer
+#. between X and Y ms
+#: src/pref_window.cpp:1215
 msgid "Automatically adjust _jitter buffer between"
-msgstr "Automatik ulangmuat tapak semasa selalu"
+msgstr ""
 
-#: src/pref_window.cpp:1361
+#: src/pref_window.cpp:1215
 msgid "and"
 msgstr "dan"
 
-#: src/pref_window.cpp:1363
+#: src/pref_window.cpp:1215
 msgid "ms"
 msgstr "ms"
 
-#: src/pref_window.cpp:1371
+#: src/pref_window.cpp:1217
 msgid "Enable silence _detection"
 msgstr "Hidupkan pe_ngesanan senyap"
 
-#: src/pref_window.cpp:1393 src/pref_window.cpp:1550
+#: src/pref_window.cpp:1235 src/pref_window.cpp:1320
 msgid "General Settings"
 msgstr "Tetapan Umum"
 
-#: src/pref_window.cpp:1398
+#. Add fields
+#: src/pref_window.cpp:1239
 msgid "Enable video _transmission"
 msgstr "Hidupkan peng_hantaran video"
 
-#: src/pref_window.cpp:1401
+#: src/pref_window.cpp:1242
 msgid "Enable video _reception"
 msgstr "Hidupkan pe_nerimaan video"
 
-#. H.261 Settings
-#: src/pref_window.cpp:1405
+#: src/pref_window.cpp:1247
 msgid "Bandwidth Control"
 msgstr "Kawalan Lebarjalur"
 
-#: src/pref_window.cpp:1409
+#. Translators: the full sentence is Maximum video bandwidth of X KB/s
+#: src/pref_window.cpp:1250
 msgid "Maximum video _bandwidth of"
 msgstr "Lebarjalur video maksimum bagi"
 
-#: src/pref_window.cpp:1409
+#: src/pref_window.cpp:1250
 msgid "KB/s"
-msgstr ""
+msgstr "KB/s"
 
-#: src/pref_window.cpp:1413
+#: src/pref_window.cpp:1256
 msgid "Advanced Quality Settings"
 msgstr "Tetapan Kualiti Lanjutan"
 
-#: src/pref_window.cpp:1418
+#. Translators: the full sentence is Keep a minimum video quality of X %
+#: src/pref_window.cpp:1259
 msgid "Keep a minimum video _quality of"
-msgstr ""
+msgstr "Kekalkan _kualiti video mnimum bagi"
 
-#: src/pref_window.cpp:1418
+#: src/pref_window.cpp:1259
 msgid ""
 "The minimum transmitted video quality to keep when trying to minimize the "
 "used bandwidth:  choose 100% on a LAN for the best quality, 1% being the "
 "worst quality."
 msgstr ""
+"Kualiti minimum video yang dihantar untuk disimpan apabila cuba meminimumkan "
+"lebar jalur yang digunakan:  pilih 100% pada LAN bagi kualiti terbaik, 1% "
+"ialah kualiti paling teruk."
 
-#: src/pref_window.cpp:1418
+#: src/pref_window.cpp:1259
 msgid "%"
 msgstr "%"
 
-#: src/pref_window.cpp:1422
+#. Translators: the full sentence is Transmit at least X frames per second
+#: src/pref_window.cpp:1262
 msgid "Transmit at least"
 msgstr "Hantar sekurang-kurang"
 
-#: src/pref_window.cpp:1422
+#: src/pref_window.cpp:1262
 msgid "_frames per second"
 msgstr "_kerangka per saat"
 
-#: src/pref_window.cpp:1427
+#. Translators: the full sentence is Transmit X background blocks with each
+#. frame
+#: src/pref_window.cpp:1266
 msgid "Transmit"
 msgstr "Hantar"
 
-#: src/pref_window.cpp:1427
+#: src/pref_window.cpp:1266
 msgid "background _blocks with each frame"
 msgstr ""
 
-#: src/pref_window.cpp:1468
-msgid "GnomeMeeting Settings"
-msgstr "Tetapan GnomeMeeting"
-
-#: src/pref_window.cpp:1541
+#: src/pref_window.cpp:1315
 msgid "General"
 msgstr "Umum"
 
-#: src/pref_window.cpp:1545
+#: src/pref_window.cpp:1316
 msgid "Personal Data"
 msgstr "Data Peribadi"
 
-#: src/pref_window.cpp:1555
+#: src/pref_window.cpp:1324
 msgid "Directory Settings"
 msgstr "Tetapan Direktori"
 
-#: src/pref_window.cpp:1567
+#: src/pref_window.cpp:1331
 msgid "H.323 Settings"
 msgstr "Tetapan H.323"
 
-#: src/pref_window.cpp:1571
+#: src/pref_window.cpp:1333
 msgid "Advanced Settings"
 msgstr "Tetapan Lanjutan"
 
-#: src/pref_window.cpp:1576
+#: src/pref_window.cpp:1337
 msgid "Gatekeeper Settings"
 msgstr "Tetapan Gatekeeper"
 
-#: src/pref_window.cpp:1581
+#: src/pref_window.cpp:1340
 msgid "NAT Settings"
 msgstr "Tetapan NAT"
 
-#: src/pref_window.cpp:1588
+#: src/pref_window.cpp:1344
 msgid "Codecs"
 msgstr "Codec"
 
-#: src/pref_window.cpp:1592
+#: src/pref_window.cpp:1346
 msgid "Audio Codecs"
 msgstr "Codec Audio"
 
-#: src/pref_window.cpp:1598
+#: src/pref_window.cpp:1349
 msgid "Video Codecs"
 msgstr "Codec Video"
 
-#: src/pref_window.cpp:1605
+#: src/pref_window.cpp:1353
 msgid "Devices"
 msgstr "Peranti"
 
-#: src/pref_window.cpp:1620
-msgid "Section"
-msgstr "Seksyen"
+#: src/sound_handling.cpp:238
+msgid "Opening device for playing"
+msgstr "Membuka Peranti untuk memain"
 
-#: src/sound_handling.cpp:414
+#: src/sound_handling.cpp:240
+msgid "Opening device for recording"
+msgstr "Membuka peranti untuk merekod"
+
+#: src/sound_handling.cpp:251 src/sound_handling.cpp:253
+#: src/videograbber.cpp:649
 msgid "Failed to open the device"
 msgstr "Gagal membuka peranti"
 
-#: src/sound_handling.cpp:414
-#, c-format
-msgid ""
-"Impossible to open the selected audio device (%s) for playing. Please check "
-"your audio setup, the permissions and that the device is not busy."
-msgstr ""
-
-#: src/sound_handling.cpp:426
-msgid "Failed to open the audio device"
-msgstr "Gagal membuka peranti audio"
-
-#: src/sound_handling.cpp:426
+#: src/sound_handling.cpp:251
 #, c-format
 msgid ""
 "Impossible to open the selected audio device (%s) for recording. Please "
 "check your audio setup, the permissions and that the device is not busy."
 msgstr ""
+"Peranti audio yang dipilih (%s) tidak dapat dibuka untuk merakam. Sila semak "
+"persediaan audio anda, keizinan dan peranti tidak sibuk."
 
-#: src/sound_handling.cpp:445 src/sound_handling.cpp:454
+#: src/sound_handling.cpp:253
+#, c-format
+msgid ""
+"Impossible to open the selected audio device (%s) for playing. Please check "
+"your audio setup, the permissions and that the device is not busy."
+msgstr ""
+"Mustahil membuka peranti audio yang dipilih (%s) tidak dapat dibuka untuk "
+"dimainkan. Sila semak persediaan audio anda, keizinan dan peranti tidak "
+"sibuk."
+
+#: src/sound_handling.cpp:269 src/sound_handling.cpp:325
 msgid "Cannot use the audio device"
 msgstr "Tak dapat menggunakan peranti audio"
 
-#: src/sound_handling.cpp:445
+#: src/sound_handling.cpp:269
 #, c-format
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
 "to read data from this device. Please check your audio setup."
 msgstr ""
+"Peranti audio yang dipilih (%s) berjaya dibuka tetapi data tidak dapat "
+"dibaca dari peranti ini. Sila semak persediaan audio anda."
 
-#: src/sound_handling.cpp:454
+#: src/sound_handling.cpp:278
+msgid "Recording your voice"
+msgstr "Merekod suara anda"
+
+#: src/sound_handling.cpp:304
+msgid "Recording and playing back"
+msgstr "Merekod dan memain semula"
+
+#: src/sound_handling.cpp:325
 #, c-format
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
 "to write data to this device. Please check your audio setup."
 msgstr ""
+"Peranti audio yang dipilih (%s) berjaya dibuka tetapi data tidak dapat "
+"ditulis ke peranti ini. Sila semak persediaan audio anda."
 
-#: src/sound_handling.cpp:471
+#: src/sound_handling.cpp:421
 #, c-format
 msgid ""
 "GnomeMeeting is now recording from %s and playing back to %s. Please say \"1 "
-"2 3\" in your microphone, you should hear yourself back into the speakers in "
-"5 seconds.\n"
-"\n"
-"Recording... Please talk."
+"2 3\" in your microphone, you should hear yourself back into the speakers "
+"with a 4 seconds delay."
 msgstr ""
+"GnomeMeeting sedang merakam dari %s dan memainkan semula ke %s. Sila katakan "
+"\"1 2 3\" menggunakan mikrofon anda, anda seharusnya mendengar suara anda "
+"pada pembesar suara dalam 4 saat."
 
-#: src/sound_handling.cpp:500
+#: src/toolbar.cpp:177
 msgid ""
-"GnomeMeeting is now playing what it is recording with a 5 seconds delay. If "
-"you don't hear yourself with the delay, you will have to fix your audio "
-"setup and probably install a full-duplex driver before calling other "
-"GnomeMeeting users.\n"
-"\n"
-"Recording and playing... Please talk."
+"Enter an URL to call on the left, and click on this button to connect to the "
+"given URL."
 msgstr ""
+"Masukkan URL untuk dipanggil pada kiri, dan klik pada butang ini untuk "
+"menyambung ke URL diberi."
 
 #: src/toolbar.cpp:223
-msgid "Open the text chat."
+msgid "Open text chat."
 msgstr "Buka chat teks."
 
 #: src/toolbar.cpp:234
-msgid "Open the control panel"
+msgid "Open control panel"
 msgstr "Buka panel kawalan"
 
-#: src/toolbar.cpp:279
+#: src/toolbar.cpp:246
+msgid "Open address book"
+msgstr "Buka buku alamat"
+
+#: src/toolbar.cpp:270
 msgid "Display images from your camera device."
 msgstr "Papar imej daripada peranti kamera anda."
 
-#: src/toolbar.cpp:301
+#: src/toolbar.cpp:292
 msgid ""
 "Audio transmission status. During a call, click here to suspend or resume "
 "the audio transmission."
 msgstr ""
+"Status penghantaran audio. Semasa panggilan, klik di sini untuk menggantung "
+"atau menyambung semula penghantaran audio."
 
-#: src/toolbar.cpp:321
+#: src/toolbar.cpp:312
 msgid ""
 "Video transmission status. During a call, click here to suspend or resume "
 "the video transmission."
 msgstr ""
+"Status penghantaran video. Semasa panggilan, klik di sini untuk menggantung "
+"atau menyambung semula penghantaran video."
 
-#: src/tools.cpp:179
-msgid "Received calls"
-msgstr "Panggilan diterima"
+#: src/tools.cpp:187
+msgid "Received Calls"
+msgstr "Panggilan Diterima"
 
-#: src/tools.cpp:179
-msgid "Given calls"
-msgstr "Panggilan dibuat"
+#: src/tools.cpp:187
+#, fuzzy
+msgid "Placed Calls"
+msgstr "_Tahan Panggilan"
 
-#: src/tools.cpp:179
-msgid "Unanswered calls"
+#: src/tools.cpp:187
+#, fuzzy
+msgid "Unanswered Calls"
 msgstr "Panggilan tak dijawab"
 
-#: src/tools.cpp:220
+#: src/tools.cpp:238
 msgid "Date"
 msgstr "Tarikh"
 
-#: src/tools.cpp:228
-msgid "Remote user"
-msgstr "Pengguna jauh"
+#: src/tools.cpp:246
+msgid "Remote User"
+msgstr "Pengguna Jauh"
 
-#: src/tools.cpp:247
+#: src/tools.cpp:264
+msgid "Call Duration"
+msgstr "Tempoh Panggilan"
+
+#: src/tools.cpp:274
 #, fuzzy
-msgid "Call duration"
-msgstr "_Pengiraan"
+msgid "Call End Reason"
+msgstr "Tempoh panggilan"
 
-#: src/tools.cpp:258
+#: src/tools.cpp:283
 msgid "Software"
 msgstr "Perisian"
 
-#: src/tools.cpp:311 src/tools.cpp:315
-msgid "General History"
-msgstr "Sejarah Umum"
-
-#: src/tray.cpp:190
+#: src/tray.cpp:189
 msgid "GnomeMeeting Tray Icon"
 msgstr "Ikon Dulang GnomeMeeting"
 
@@ -3215,16 +3413,16 @@ msgid ""
 "when he received the call transfer request."
 msgstr ""
 
-#: src/urlhandler.cpp:268
+#: src/urlhandler.cpp:284
 #, c-format
 msgid "No contact with speed dial %s# found, will call number %s instead"
 msgstr ""
 
-#: src/urlhandler.cpp:286
+#: src/urlhandler.cpp:302
 msgid "Invalid URL handler"
 msgstr "Pengendali URL tidak sah"
 
-#: src/urlhandler.cpp:286
+#: src/urlhandler.cpp:302
 msgid ""
 "Please specify a valid URL handler. Currently both h323: and callto: are "
 "supported."
@@ -3232,47 +3430,50 @@ msgstr ""
 "Sila nyatakan pengendali URL yang sah. Kini kedua-dua h323: dan callto: "
 "adalah disokong."
 
-#: src/urlhandler.cpp:314
+#: src/urlhandler.cpp:335
 #, c-format
 msgid "Calling %s"
 msgstr "Memanggil %s"
 
-#: src/urlhandler.cpp:318
+#: src/urlhandler.cpp:339
 #, c-format
 msgid "Transferring call to %s"
 msgstr "Memindah panggilan ke %s"
 
-#: src/videograbber.cpp:331 src/videograbber.cpp:332
+#: src/videograbber.cpp:264
 msgid "Opening Video device"
 msgstr "Membuka Peranti video"
 
-#: src/videograbber.cpp:396
+#: src/videograbber.cpp:308
 #, c-format
 msgid "Successfully opened video device %s, channel %d"
 msgstr "Berjaya membuka peranti video %s, saluran %d"
 
-#: src/videograbber.cpp:399
-msgid "Video Device Opened"
-msgstr "Peranti Video Dibuka"
-
-#: src/videograbber.cpp:412
+#: src/videograbber.cpp:321
 #, c-format
 msgid "Error while opening video device %s"
 msgstr "Ralat bila membuka peranti video %s"
 
-#: src/videograbber.cpp:414
+#. Translators: Do not translate MovingLogo and StaticPicture
+#: src/videograbber.cpp:324
+#, fuzzy
 msgid ""
-"The chosen Video Image will be transmitted during calls. If you didn't "
-"choose any image, then the default GnomeMeeting logo will be transmitted. "
-"Notice that you can always transmit a given image or the GnomeMeeting logo "
-"by choosing \"Picture\" as video device."
+"A moving GnomeMeeting logo will be transmitted during calls. Notice that you "
+"can always transmit a given image or the moving GnomeMeeting logo by "
+"choosing \"Picture\" as video plugin and \"MovingLogo\" or \"StaticPicture\" "
+"as device."
 msgstr ""
+"Ralat semasa membuka peranti video %s, saluran %d.\n"
+"Imej Video yang dipilih akan dihantarkan semasa panggilan. Jika anda tidak "
+"memilih sebarang imej, maka logo piawai GnomeMeeting akan dihantarkan."
+"Perhatikan bahawa anda sentiasa boleh menghantar imej yang diberikan atau "
+"logo GnomeMeeting dengan memilih \"Gambar\" sebagai peranti video."
 
-#: src/videograbber.cpp:415
+#: src/videograbber.cpp:325
 msgid "Can't open the Video Device"
 msgstr "Tak dapat membuka Peranti Video"
 
-#: src/videograbber.cpp:420
+#: src/videograbber.cpp:330
 msgid ""
 "There was an error while opening the device. Please check your permissions "
 "and make sure that the appropriate driver is loaded."
@@ -3280,67 +3481,69 @@ msgstr ""
 "Terdapat ralat ketika membuka peranti. Sila periksa keizinan anda dan "
 "pastikan jurupacu sesuai dimuatkan."
 
-#: src/videograbber.cpp:425 src/videograbber.cpp:727
-#, fuzzy
+#: src/videograbber.cpp:335 src/videograbber.cpp:627
 msgid "Your video driver doesn't support the requested video format."
-msgstr "Pemuat imej PNM tidak menyokong subformat PNM ini"
+msgstr "Jurupacu video anda tidak menyokong format video yang diminta."
 
-#: src/videograbber.cpp:429 src/videograbber.cpp:731
-#, fuzzy
+#: src/videograbber.cpp:339 src/videograbber.cpp:631
 msgid "Could not open the chosen channel with the chosen video format."
 msgstr ""
-"Tak dapat membuka fail  \"%s\" kerana ia mengandungi data dalam format yang "
-"tidak sah."
+"Tidak dapat membuka saluran yang dipilih dengan format video yang dipilih."
 
-#: src/videograbber.cpp:433
+#: src/videograbber.cpp:343
+#, fuzzy
 msgid ""
 "Your driver doesn't seem to support any of the colour formats supported by "
 "GnomeMeeting.\n"
 " Please check your kernel driver documentation in order to determine which "
-"Palette is supported. Set it as GnomeMeeting default with:\n"
-" gconftool --set \"/apps/gnomemeeting/devices/color_format\" YOURPALETTE --"
-"type string"
+"Palette is supported."
+msgstr ""
+"Jurupacu anda tidak menyokong format %s.\n"
+"Sila semak dokumentasi pemacu kernel anda untuk menentukan Pelet mana yang "
+"disokong. Setkannya sebagai piawai GnomeMeeting dengan:\n"
+" alatgconf --set \"/apli/gnomemeeting/peranti/format_warna\" PELET ANDA --"
+
+#: src/videograbber.cpp:347
+msgid "Error while setting the frame rate."
+msgstr "Ralat bila menetapkan kadar kerangka."
+
+#: src/videograbber.cpp:351
+msgid "Error while setting the frame size."
+msgstr "Ralat bila menetapkan saiz kerangka."
+
+#: src/videograbber.cpp:540
+#, c-format
+msgid ""
+"GnomeMeeting is now testing the %s video device. If you experience machine "
+"crashes, then report a bug to the video driver author."
 msgstr ""
 
-#: src/videograbber.cpp:437
-#, fuzzy
-msgid "Error while setting the frame rate."
-msgstr "Ralat bila membaca helaian."
-
-#: src/videograbber.cpp:441
-#, fuzzy
-msgid "Error while setting the frame size."
-msgstr "Ralat berlaku bila membaca fail"
-
-#: src/videograbber.cpp:574
-#, fuzzy
-msgid "Video Device Closed"
-msgstr "Peranti mixer untuk digunakan"
-
-#: src/videograbber.cpp:706
-#, fuzzy, c-format
+#: src/videograbber.cpp:601
+#, c-format
 msgid "Test %d done"
-msgstr "Ujian %s"
+msgstr "Ujian %d selesai"
 
-#: src/videograbber.cpp:723
-#, fuzzy, c-format
+#: src/videograbber.cpp:603
+#, c-format
+msgid "Test %d failed"
+msgstr "Ujian %d gagal"
+
+#: src/videograbber.cpp:622
+#, c-format
 msgid "Error while opening %s."
-msgstr "Ralat bila menyalin."
+msgstr "Ralat semasa membuka %s"
 
-#: src/videograbber.cpp:735
-msgid "Your driver doesn't support the YUV420P color format"
-msgstr "Jurupacu anda tak menyokong format warna YUV420P"
+#: src/videograbber.cpp:635
+msgid ""
+"Your driver doesn't support any of the color formats tried by GnomeMeeting"
+msgstr ""
+"Jurupacu anda tak menyokong sebarang format warna iyang dicuba oleh "
+"GnomeMeeting"
 
-#: src/videograbber.cpp:739
+#: src/videograbber.cpp:639
 msgid "Error with the frame rate."
 msgstr "Ralat dengan kadar kerangka"
 
-#: src/videograbber.cpp:743
-#, fuzzy
+#: src/videograbber.cpp:643
 msgid "Error with the frame size."
-msgstr "_Semua halaman  dengan  saiz sama."
-
-#: src/videograbber.cpp:748
-#, fuzzy
-msgid "Tests OK!"
-msgstr "Ujian 1"
+msgstr "Ralat dengan saiz bingkai"
