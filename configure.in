@@ -15,7 +15,7 @@ dnl ###########################################################################
 MAJOR_VERSION=0
 MINOR_VERSION=99
 BUILD_TYPE=ReleaseCode
-BUILD_NUMBER=8
+BUILD_NUMBER=9
 
 AC_DEFINE_UNQUOTED(MAJOR_VERSION, $MAJOR_VERSION,[fix])
 AC_DEFINE_UNQUOTED(MINOR_VERSION, $MINOR_VERSION,[fix])
@@ -42,7 +42,7 @@ AC_CHECK_DECLS(strcasecmp)
 dnl ###########################################################################
 dnl   This is to check correct gconf installation
 dnl ###########################################################################
-SCHEMA_AGE=46
+SCHEMA_AGE=47
 AC_SUBST(SCHEMA_AGE)
 
 
