@@ -2601,7 +2601,7 @@ gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
 
 
   /* Now run the dialog */
-  
+
   /* The result can be invalid if both a full name and url are missing,
    * or later if a collision is detected. The dialog will be run during
    * that time.
@@ -2613,11 +2613,12 @@ gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
     valid = strcmp (gtk_entry_get_text (GTK_ENTRY (fullname_entry)), "") 
       || strcmp (gtk_entry_get_text (GTK_ENTRY (url_entry)), "");
 
-    if (valid) {
 
-      switch (result) {
+    switch (result) {
 
       case GTK_RESPONSE_ACCEPT:
+
+      if (valid) {
 
 	new_contact = gm_contact_new ();
 	new_contact->fullname = 
@@ -2708,25 +2709,27 @@ gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
 	}
 
 	gm_contact_delete (new_contact);
-
-	break;
-
-      case GTK_RESPONSE_REJECT:
-
-	collision = FALSE;
-	break;
       }
-    }
-    else {
+      else {
 
 	gnomemeeting_error_dialog (GTK_WINDOW (addressbook_window), _("Missing information"), _("Please make sure to provide at least a full name or an URL for the contact."));
+      }
+
+      break;
+
+    case GTK_RESPONSE_REJECT:
+
+      collision = FALSE;
+      valid = TRUE;
+      break;
     }
 
     if (collision)
       valid = FALSE;
   }
+  
   gtk_widget_destroy (dialog);
-
+  
   g_slist_foreach (list, (GFunc) gm_addressbook_delete, NULL);
   g_slist_free (list);
 }
