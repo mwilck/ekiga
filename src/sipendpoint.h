@@ -119,14 +119,15 @@ class GMSIPEndPoint : public SIPEndPoint
    * BEHAVIOR     :  Displays a message in the status bar and history. 
    * PRE          :  /
    */
-  void OnRegistered ();
+  void OnRegistered (BOOL);
   
   
   /* DESCRIPTION  :  Called when the registration fails.
    * BEHAVIOR     :  Displays a message in the status bar and history. 
    * PRE          :  /
    */
-  void OnRegistrationFailed ();
+  void OnRegistrationFailed (SIPEndPoint::RegistrationFailReasons,
+			     BOOL);
   
   
  private:

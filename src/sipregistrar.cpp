@@ -133,14 +133,7 @@ void GMSIPRegistrar::Main ()
   
   if (registering_method == 0) {
     
-    sipEP->Unregister (TRUE);
-    
-    msg = g_strdup_printf ("Unregistered from registrar");
-    gnomemeeting_threads_enter ();
-    gm_main_window_push_message (main_window, msg);
-    gm_history_window_insert (history_window, msg);
-    g_free (msg);
-    gnomemeeting_threads_leave ();
+    sipEP->Unregister (FALSE);
   }
   /* Check if we have all the needed information, if so we register */
   else if (registering_method == 1) {

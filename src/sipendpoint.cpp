@@ -188,7 +188,7 @@ GMSIPEndPoint::OnRTPStatistics (const SIPConnection & connection,
 
 
 void
-GMSIPEndPoint::OnRegistered ()
+GMSIPEndPoint::OnRegistered (BOOL wasRegistering)
 {
   GtkWidget *history_window = NULL;
   GtkWidget *main_window = NULL;
@@ -203,8 +203,11 @@ GMSIPEndPoint::OnRegistered ()
   registrar_host = gm_conf_get_string (SIP_KEY "registrar_host");
   
   /* Registering is ok */
-  msg =
-    g_strdup_printf (_("Registrar set to %s"), (const char *) registrar_host);
+  if (wasRegistering)
+    msg = g_strdup_printf (_("Registrar set to %s"), 
+			   (const char *) registrar_host);
+  else
+    msg = g_strdup_printf (_("Unregistration successful")); 
 
   gm_history_window_insert (history_window, msg);
   gm_main_window_flash_message (main_window, msg);
@@ -216,11 +219,13 @@ GMSIPEndPoint::OnRegistered ()
 
 
 void
-GMSIPEndPoint::OnRegistrationFailed ()
+GMSIPEndPoint::OnRegistrationFailed (SIPEndPoint::RegistrationFailReasons r,
+				     BOOL wasRegistering)
 {
   GtkWidget *history_window = NULL;
   GtkWidget *main_window = NULL;
 
+  gchar *msg_reason = NULL;
   gchar *registrar_host = NULL;
   gchar *msg = NULL;
 
@@ -231,9 +236,43 @@ GMSIPEndPoint::OnRegistrationFailed ()
   registrar_host = gm_conf_get_string (SIP_KEY "registrar_host");
   
   /* Registering is ok */
-  msg =
-    g_strdup_printf (_("Registration to %s failed"), 
-		     (const char *) registrar_host);
+  switch (r) {
+
+  case SIPEndPoint::BadRequest:
+    msg_reason = g_strdup ("Bad request");
+    break;
+
+  case SIPEndPoint::PaymentRequired:
+    msg_reason = g_strdup ("Payment required");
+    break;
+
+  case SIPEndPoint::Forbidden:
+    msg_reason = g_strdup ("Forbidden");
+    break;
+
+  case SIPEndPoint::Timeout:
+    msg_reason = g_strdup ("Timeout");
+    break;
+
+  case SIPEndPoint::Conflict:
+    msg_reason = g_strdup ("Conflict");
+    break;
+
+  case SIPEndPoint::TemporarilyUnavailable:
+    msg_reason = g_strdup ("Temporarily unavailable");
+    break;
+
+  default:
+    msg_reason = g_strdup ("Registration failed");
+  }
+  
+  if (wasRegistering)
+    msg = g_strdup_printf (_("Registration to %s failed: %s"), 
+			   (const char *) registrar_host,
+			   msg_reason);
+  else
+    msg = g_strdup_printf (_("Unregistration failed: %s"), 
+			   msg_reason);
 
   gm_history_window_insert (history_window, msg);
   gm_main_window_push_message (main_window, msg);
