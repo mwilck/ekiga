@@ -65,6 +65,7 @@
 #include <gnome.h>
 #endif
 
+#include <stdlib.h>
 #include <gdk/gdkx.h>
 #include <gconf/gconf-client.h>
 
