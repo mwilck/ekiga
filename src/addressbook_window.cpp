@@ -1777,11 +1777,16 @@ public:
 			       addressbook->name);
       /* Translators, pay attention to the singular/plural distinction */
       else if (nbr == (int) g_slist_length (contacts))
-	msg = g_strdup_printf (ngettext (_("Found %d user in %s"), 
-					 _("Found %d users in %s"), nbr), 
+	msg = g_strdup_printf (ngettext ("Found %d user in %s", 
+					 "Found %d users in %s", nbr), 
 			       nbr, addressbook->name);
       else
-	msg = g_strdup_printf (ngettext (_("Found %d user in %s for a total of %d users"), _("Found %d users in %s for a total of %d users"), nbr), g_slist_length (contacts), addressbook->name, nbr);
+	msg = g_strdup_printf (ngettext ("Found %d user in %s for a "
+					 "total of %d users",
+					 "Found %d users in %s for a "
+					 "total of %d users", nbr),
+			       g_slist_length (contacts),
+			       addressbook->name, nbr);
 	
       gdk_threads_enter ();
       gm_aw_update_addressbook (addressbook_window, 

@@ -1362,8 +1362,8 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
     /* Translators, pay attention to the singular/plural distinction */
     gm_main_window_push_info_message (main_window, 
-				      ngettext (_("Missed %d call"),
-						_("Missed %d calls"),
+				      ngettext ("Missed %d call",
+						"Missed %d calls",
 						missed_calls), 
 				      missed_calls);
   }
