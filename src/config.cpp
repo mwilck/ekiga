@@ -71,6 +71,13 @@ static void applicability_check_nt (gpointer,
 				    GmConfEntry *,
 				    gpointer);
 
+
+/* DESCRIPTION  :  This callback is called when the control panel 
+ *                 section key changes.
+ * BEHAVIOR     :  Sets the right page or hide it, and also sets 
+ *                 the good value for the radio menu.
+ * PRE          :  /
+ */
 static void control_panel_section_changed_nt (gpointer, 
                                               GmConfEntry *, 
                                               gpointer);
@@ -311,12 +318,6 @@ applicability_check_nt (gpointer id,
 }
 
 
-/* DESCRIPTION  :  This callback is called when the control panel 
- *                 section changes.
- * BEHAVIOR     :  Sets the right page or hide it, and also sets 
- *                 the good value for the radio menu.
- * PRE          :  /
- */
 static void 
 control_panel_section_changed_nt (gpointer id, 
                                   GmConfEntry *entry, 
