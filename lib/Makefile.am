@@ -9,8 +9,12 @@ libgnomemeeting_la_SOURCES =				\
 	dialog.h					\
 	stock-icons.c					\
 	stock-icons.h					\
-	gtk-text-buffer-extentions.c			\
-	gtk-text-buffer-extentions.h			\
+	gtk-text-tag-addon.c                            \
+	gtk-text-tag-addon.h                            \
+	gtk-text-buffer-addon.c                         \
+	gtk-text-buffer-addon.h                         \
+	gtk-text-view-addon.c                           \
+	gtk-text-view-addon.h                           \
 	gtk_menu_extensions.c				\
 	gtk_menu_extensions.h				\
 	gconf_widgets_extensions.h			\

@@ -45,11 +45,55 @@
 #include "misc.h"
 #include "menu.h"
 
-#include "gtk-text-buffer-extentions.h"
+#include "gtk-text-tag-addon.h"
+#include "gtk-text-buffer-addon.h"
+#include "gtk-text-view-addon.h"
 #include "gtk_menu_extensions.h"
 
 extern GtkWidget *gm;
 
+#ifndef DISABLE_GNOME
+static void
+open_uri_callback (const gchar *uri)
+{
+  if (uri != NULL)
+    gnome_url_show (uri, NULL);
+}
+#endif
+
+static void
+copy_uri_callback (const gchar *uri)
+{
+  if (uri != NULL)
+    gtk_clipboard_set_text (gtk_clipboard_get (GDK_SELECTION_PRIMARY),
+			    uri, -1);
+}
+
+static void
+connect_uri_callback (const gchar *uri)
+{
+  if (uri != NULL
+      && GnomeMeeting::Process ()->Endpoint ()->GetCallingState () 
+      == GMH323EndPoint::Standby) {
+
+      GmWindow *gw = GnomeMeeting::Process ()->GetMainWindow ();
+      gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry),
+			  uri);
+      
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->connect_button),
+				    true);
+      
+    }
+}
+
+static void
+add_uri_callback (const gchar *uri)
+{
+  if (uri != NULL)
+    {
+	    // FIXME: reimplement with new API
+    }
+}  
 
 static void chat_entry_activate (GtkEditable *w, gpointer data)
 {
@@ -96,7 +140,6 @@ static void chat_entry_activate (GtkEditable *w, gpointer data)
   }
 }
 
-
 void gnomemeeting_text_chat_clear (GtkWidget *w, GmTextChat *chat)
 {
   GmWindow *gw = NULL;
@@ -112,7 +155,6 @@ void gnomemeeting_text_chat_clear (GtkWidget *w, GmTextChat *chat)
 
   gtk_menu_set_sensitive (gw->main_menu, "clear_text_chat", FALSE);
 }
-
 
 void 
 gnomemeeting_text_chat_insert (PString local, PString str, int user)
@@ -146,7 +188,7 @@ gnomemeeting_text_chat_insert (PString local, PString str, int user)
   
   g_free (msg);
   
-  gtk_text_buffer_insert_with_addons (chat->text_buffer, &iter, 
+  gtk_text_buffer_insert_with_regex (chat->text_buffer, &iter, 
 					 (const char *) str);
 
   mark = gtk_text_buffer_get_mark (chat->text_buffer, "current-position");
@@ -156,7 +198,6 @@ gnomemeeting_text_chat_insert (PString local, PString str, int user)
 
   gtk_menu_set_sensitive (gw->main_menu, "clear_text_chat", TRUE);
 }
-
 
 GtkWidget *gnomemeeting_text_chat_new (GmTextChat *chat)
 {
@@ -184,7 +225,7 @@ GtkWidget *gnomemeeting_text_chat_new (GmTextChat *chat)
 				  GTK_POLICY_AUTOMATIC,
 				  GTK_POLICY_ALWAYS);
 
-  chat->text_view = gtk_text_view_new ();
+  chat->text_view = gtk_text_view_new_with_regex ();
   gtk_text_view_set_editable (GTK_TEXT_VIEW (chat->text_view), FALSE);
   gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (chat->text_view),
 			       GTK_WRAP_WORD);
@@ -205,6 +246,61 @@ GtkWidget *gnomemeeting_text_chat_new (GmTextChat *chat)
   gtk_text_buffer_create_tag (chat->text_buffer, "secondary-user",
 			      "foreground", "#38b749", 
 			      "weight", 900, NULL);
+
+  GtkTextTag *regex_tag;
+  regex_tag = gtk_text_buffer_create_tag (chat->text_buffer, "uri-http",
+					  "foreground", "blue",
+					  NULL);
+  if (gtk_text_tag_set_regex (regex_tag,
+			      "\\<([s]?(ht|f)tp://[^[:blank:]]+)\\>")) {
+    gtk_text_tag_add_actions_to_regex (regex_tag,
+#ifndef DISABLE_GNOME
+				       _("Open URI"),
+				       open_uri_callback,
+#endif
+				       _("Copy Link Location"),
+				       copy_uri_callback,
+				       NULL);
+  }
+  else
+    g_warning (_("Couldn't compile http/ftp regex!"));
+  
+  regex_tag = gtk_text_buffer_create_tag (chat->text_buffer, "uri-h323",
+					  "foreground", "pink",
+					  NULL);
+  if (gtk_text_tag_set_regex (regex_tag,
+			      "\\<(h323:[^[:blank:]]+)\\>")) {
+    gtk_text_tag_add_actions_to_regex (regex_tag,
+				       _("Connect to"),
+				       connect_uri_callback,
+				       _("Add to adressbook"),
+				       add_uri_callback,
+				       _("Copy Link Location"),
+				       copy_uri_callback,
+				       NULL);
+  }
+  else
+    g_warning (_("Couldn't compile http/ftp regex!"));
+
+  regex_tag = gtk_text_buffer_create_tag (chat->text_buffer, "smileys",
+					  "foreground", "grey",
+					  NULL);
+  if (gtk_text_tag_set_regex (regex_tag,
+			      "(:[-]?(\\)|\\(|o|O|p|P|D|\\||/)|\\}:(\\(|\\))|\\|[-]?(\\(|\\))|:'\\(|:\\[|:-(\\.|\\*|x)|;[-]?\\)|(8|B)[-]?\\)|X(\\(|\\||\\))|\\((\\.|\\|)\\)|x\\*O)"))
+    gtk_text_tag_set_regex_display (regex_tag, gtk_text_buffer_insert_smiley);
+  else
+    g_warning (_("Couldn't compile smiley regex!"));
+
+  regex_tag = gtk_text_buffer_create_tag (chat->text_buffer, "latex",
+					  "foreground", "grey",
+					  NULL);
+  if (gtk_text_tag_set_regex (regex_tag,
+			      "(\\$[^$]*\\$|\\$\\$[^$]*\\$\\$)"))
+    gtk_text_tag_add_actions_to_regex (regex_tag,
+				       _("Copy equation"),
+				       copy_uri_callback, NULL);
+  else
+    g_warning (_("Couldn't compile latex regex!"));
 
   frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);

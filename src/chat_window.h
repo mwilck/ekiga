@@ -43,7 +43,6 @@
 
 #include "common.h"
 
-
 G_BEGIN_DECLS
 
 
