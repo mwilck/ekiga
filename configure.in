@@ -129,11 +129,11 @@ dnl -D_DEBUG -DPMEMORY_CHECK=1 -DPTRACING -g
     ;;
 
   darwin* )
-    H323_CFLAGS="-DSPEEX_CODEC -DP_MACOSX -DP_SSL -DP_PTHREADS  $ARCH_H323_CFLAGS -O2 -Wall -DNO_LONG_DOUBLE -DPHAS_TEMPLATES -DHAS_ESD -DSTATIC_LIBS_USED -multiply_defined suppress"
-    H323_LIBS="-multiply_defined suppress -lh323_Darwin_ppc_r_s -lpt_Darwin_ppc_r_s -lssl -lcrypto -lX11"
-    LIBPT_FILE="libpt_Darwin_ppc_r_s.a"
-    LIBOPENH323_FILE="libh323_Darwin_ppc_r_s.a"
-    HAS_SPEEX="enabled"
+    H323_CFLAGS="-DSPEEX_CODEC -DP_MACOSX -DP_SSL -DP_PTHREADS  $ARCH_H323_CFLAGS -O2 -Wall -DNO_LONG_DOUBLE -DPHAS_TEMPLATES -DSTATIC_LIBS_USED"
+    H323_LIBS="-multiply_defined suppress -lh323_Darwin_ppc_r_s -lpt_Darwin_ppc_r_s -lssl -lcrypto -lX11 -framework AudioToolbox -framework CoreAudio -framework CoreServices"
+    LIBPT_FILE="libpt_Darwin_ppc_r_s.a"
+    LIBOPENH323_FILE="libh323_Darwin_ppc_r_s.a"
+    HAS_SPEEX="enabled"
     AC_MSG_RESULT([yes])
     gm_platform="macosx"
     ;;

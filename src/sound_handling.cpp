@@ -414,6 +414,9 @@ void GMAudioTester::Main ()
     stop = TRUE;
   }
 
+  recorder->SetBuffers (512, 1);
+  player->SetBuffers (512, 1);
+  
   quit_mutex.Wait ();
 
   while (!stop) {
