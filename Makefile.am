@@ -10,14 +10,14 @@ endif
 @INTLTOOL_DESKTOP_RULE@
 @INTLTOOL_SCHEMAS_RULE@
 
-DESKTOP_IN_FILES=gnomemeeting.desktop.in
+DESKTOP_IN_FILES=@PACKAGE_NAME@.desktop.in
 DESKTOP_FILES=$(DESKTOP_IN_FILES:.desktop.in=.desktop)
 
-SCHEMAS_FILE = gnomemeeting.schemas
+SCHEMAS_FILE = @PACKAGE_NAME@.schemas
 
 
 ### Extra dist
-EXTRA_DIST = $(DESKTOP_IN_FILES) $(DESKTOP_FILES) intltool-extract.in intltool-merge.in intltool-update.in FAQ README $(SCHEMAS_FILE) src/gnomemeeting.server lib/gm_events_marshalers.list
+EXTRA_DIST = $(DESKTOP_IN_FILES) $(DESKTOP_FILES) intltool-extract.in intltool-merge.in intltool-update.in FAQ README $(SCHEMAS_FILE) src/@PACKAGE_NAME@.server lib/gm_events_marshalers.list
 Applicationsdir = $(datadir)/applications
 Applications_DATA = $(DESKTOP_FILES)
 
@@ -25,19 +25,19 @@ Applications_DATA = $(DESKTOP_FILES)
 ### Install the schemas file in /etc if GNOME support is not compiled in,
 ### and do not install the schemas at all
 if DISABLE_GNOME
-schemasdir = $(sysconfdir)/gnomemeeting
+schemasdir = $(sysconfdir)/@PACKAGE_NAME@
 schemas_DATA = $(SCHEMAS_FILE)
 else
 schemasdir = $(GCONF_SCHEMA_FILE_DIR)
 schemas_DATA = $(SCHEMAS_FILE)
 endif
 
-install-schemas: gnomemeeting.schemas
+install-schemas: @PACKAGE_NAME@.schemas
 	GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) gconftool-2 --makefile-install-rule $(SCHEMAS_FILE) 2>&1 > /dev/null
 	gconftool-2 --shutdown
 
-install-services: gnomemeeting.service
-	cp gnomemeeting.service $(libdir)/dbus-1.0/services/
+install-services: @PACKAGE_NAME@.service
+	cp @PACKAGE_NAME@.service $(libdir)/dbus-1.0/services/
 
 if GCONF_SCHEMAS_INSTALL
 install-data-local: install-schemas 
