@@ -1,3 +1,17 @@
+2001-10-28  Damien Sandras  <dsandras@seconix.com>
+
+	* src/preferences.cpp: Added support for a callback function that
+	disables Transmitted Video Quality, and Background Fill Settings
+	if video bandwidth limitation is used (the reverse works too).
+	Added support for "Enable Video Bandwidth Limitation" widget.
+	* src/common.h: See above.
+	* src/videograbber.cpp: Fixed bug with quickbar buttons.
+	* src/endpoint.cpp: Fixed several bugs when beginning, ending, or
+	answering calls. Added support for video bandwidth limitation if
+	enabled in the options.
+	* src/config.cpp: Added support for "Enable Video Bandwidth 
+	Limitation" option.
+	
 2001-10-29  Christian Rose  <menthos@menthos.com>
 
 	* src/ldap.cpp: Changed some comments to C-style to work around some

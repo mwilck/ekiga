@@ -89,6 +89,7 @@ struct _options
   char *video_device;
   int video_channel; 
   int video_bandwidth;
+  int vb;
 };
 
 
@@ -177,6 +178,11 @@ struct _GM_pref_window_widgets
   GtkWidget *opt1, *opt2;
   // Transmitted Video Quality
   GtkAdjustment *tr_vq_spin_adj;
+  GtkWidget *tr_vq_label;
+  GtkWidget *tr_ub_label;
+  GtkWidget *tr_vq;
+  GtkWidget *tr_ub;
+  GtkWidget *video_bandwidth;
   // Number of Updated Blocks / Frame
   GtkAdjustment *tr_ub_spin_adj;
   // Received Video Quality
@@ -191,7 +197,9 @@ struct _GM_pref_window_widgets
   GtkWidget *gsm_sd;
   GtkAdjustment *jitter_buffer_spin_adj;
   GtkAdjustment *video_bandwidth_spin_adj;
-  
+  GtkWidget *video_bandwidth_label;
+  GtkWidget *vb;
+
   /* General Settings */
   // User name, and listener port
   GtkWidget * firstname, *entry_port;

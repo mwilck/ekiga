@@ -408,6 +408,10 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   const char * remotePartyName = (const char *)name;  
   // only a pointer => destroyed with the PString
 
+  current_connection = FindConnectionWithLock
+    (connection.GetCallToken ());
+  current_connection->Unlock ();
+
   msg = g_strdup_printf (_("Call from %s"), remotePartyName);
 
   gdk_threads_enter ();
@@ -454,6 +458,8 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
     }
   
   g_free (msg);  
+
+  gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
 
   gdk_threads_leave ();
 
@@ -662,11 +668,12 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   enable_disconnect ();
   enable_connect ();
 
-  GM_init_main_interface_logo (gw);
+  
+  //GM_init_main_interface_logo (gw);
   
   gdk_threads_leave ();
 
-  // Start the Video Grabber if video preview
+  // Start to grab with Video Grabber if video preview
   // else close the grabber
   GMVideoGrabber *vg = (GMVideoGrabber *) video_grabber;
 
@@ -675,7 +682,8 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
       if (opts->video_preview)
 	vg->Start ();
       else
-	vg->Close ();
+	if (vg->IsOpened ())
+	  vg->Close ();
     }
 }
 
@@ -698,9 +706,6 @@ BOOL GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
 				      unsigned bufferSize,
 				      H323AudioCodec & codec)
 {
-  GMH323Connection *c = (GMH323Connection *) Connection ();
-  H323Channel *channel = (H323Channel *) c->GetTransmittedAudioChannel();
-
   gdk_threads_enter ();
 
   /* If needed , delete the timers */
@@ -731,9 +736,6 @@ BOOL GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
     }
 
   gdk_threads_leave ();
-
-  /* */
-  cout << channel->GetCapability().GetFormatName();
 
   codec.SetSilenceDetectionMode(!opts->sd ?
 				H323AudioCodec::NoSilenceDetection :
@@ -780,8 +782,10 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
      codec.SetTxQualityLevel (opts->tr_vq);
      codec.SetBackgroundFill (opts->tr_ub);   
 
-     if (opts->video_bandwidth != 0)
+     if (opts->vb != 0)
        codec.SetAverageBitRate (1024 * PMAX (16, PMIN (2048, opts->video_bandwidth * 8)));
+     else
+       codec.SetAverageBitRate (0); // Disable
 
      gdk_threads_enter ();
      gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button),

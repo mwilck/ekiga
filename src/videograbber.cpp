@@ -364,12 +364,6 @@ void GMVideoGrabber::VGOpen (void)
   // Enable the video settings frame
   gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame),
 			    TRUE);
-  // If not in a call, enable the preview button
-  // If in a call, enable the video channel button
-  if (MyApp->Endpoint ()->CallingState () == 0)
-    gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), TRUE);
-  else
-    gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button), TRUE);
 
   gdk_threads_leave ();
 }

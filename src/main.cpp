@@ -184,7 +184,7 @@ void GnomeMeeting::Disconnect()
 {
   // If somebody is calling us, then we do not accept the connection
   // else we finish it
-  H323Connection *connection;
+  H323Connection *connection = endpoint->Connection ();
   PString current_call_token = endpoint->CallToken ();
 
   if (!current_call_token.IsEmpty ())
@@ -210,11 +210,8 @@ void GnomeMeeting::Disconnect()
 	    }
 	  else
 	    {
-	      GM_log_insert (gw->log_text, _("Refusing incoming call"));
-	      connection = endpoint->FindConnectionWithLock
-		(endpoint->CallToken ());
+	      GM_log_insert (gw->log_text, _("Refusing Incoming call"));
 	      connection->AnsweringCall (H323Connection::AnswerCallDenied);	
-	      connection->Unlock ();
 	    }
 	}
     } 

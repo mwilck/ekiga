@@ -212,6 +212,32 @@ void gk_option_changed (GtkWidget *widget, gpointer data)
 }
  
 
+void vb_changed (GtkToggleButton *button, gpointer data)
+{
+  GM_pref_window_widgets *pw = (GM_pref_window_widgets *) data;
+
+  int vb = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->vb));
+
+  if (vb)
+    {
+      gtk_widget_set_sensitive (GTK_WIDGET (pw->tr_ub_label), FALSE);
+      gtk_widget_set_sensitive (GTK_WIDGET (pw->tr_vq_label), FALSE);
+      gtk_widget_set_sensitive (GTK_WIDGET (pw->tr_ub), FALSE);
+      gtk_widget_set_sensitive (GTK_WIDGET (pw->tr_vq), FALSE);
+      gtk_widget_set_sensitive (GTK_WIDGET (pw->video_bandwidth), TRUE);
+      gtk_widget_set_sensitive (GTK_WIDGET (pw->video_bandwidth_label), TRUE);
+
+    }
+  else
+    {
+      gtk_widget_set_sensitive (GTK_WIDGET (pw->tr_ub_label), TRUE);
+      gtk_widget_set_sensitive (GTK_WIDGET (pw->tr_vq_label), TRUE);
+      gtk_widget_set_sensitive (GTK_WIDGET (pw->tr_ub), TRUE);
+      gtk_widget_set_sensitive (GTK_WIDGET (pw->tr_vq), TRUE);
+      gtk_widget_set_sensitive (GTK_WIDGET (pw->video_bandwidth), FALSE);
+      gtk_widget_set_sensitive (GTK_WIDGET (pw->video_bandwidth_label), FALSE);
+    }
+}
 /******************************************************************************/
 
 
@@ -286,7 +312,7 @@ void GMPreferences (int calling_state, GM_window_widgets *gw)
   gtk_box_pack_start (GTK_BOX (dialog_vbox), hpaned, TRUE, TRUE, 0);
 
   gtk_widget_set_usize (GTK_WIDGET (ctree), 200, 20);
-  gtk_widget_set_usize (GTK_WIDGET (notebook), 490, 280);
+  gtk_widget_set_usize (GTK_WIDGET (notebook), 470, 280);
   
   /* All the notebook pages */
   node_txt [0] = g_strdup (_("General"));
@@ -762,8 +788,6 @@ void init_pref_codecs_settings (GtkWidget *notebook,
   GtkWidget *menu1;  // For the Transmitted Video Size
   GtkWidget *menu2;  // For the Transmitted Video Format
   GtkWidget *re_vq;
-  GtkWidget *tr_vq;
-  GtkWidget *tr_ub;		
   GtkWidget *tr_fps;		
   GtkWidget *item;
   GtkWidget *audio_codecs_notebook;
@@ -771,11 +795,11 @@ void init_pref_codecs_settings (GtkWidget *notebook,
   GtkWidget *jitter_buffer;
   GtkWidget *gsm_frames;
   GtkWidget *g711_frames;
-  GtkWidget *video_bandwidth;
 
   GtkTooltips *tip;
 
   GtkWidget *table;
+  GtkWidget *table2;
   GtkWidget *vbox;
 		
   vbox = gtk_vbox_new (FALSE, GNOME_PAD_SMALL);
@@ -912,7 +936,7 @@ void init_pref_codecs_settings (GtkWidget *notebook,
 
   /* Create a page for each video codecs having settings */
   /* General Settings */
-  table = gtk_table_new (2, 4, TRUE);
+  table = gtk_table_new (3, 4, TRUE);
 
   /* Video Size Option Menu */
   label = gtk_label_new (_("Video Size:"));
@@ -929,7 +953,7 @@ void init_pref_codecs_settings (GtkWidget *notebook,
   gtk_menu_append (GTK_MENU (menu1), item);
   gtk_option_menu_set_menu (GTK_OPTION_MENU (pw->opt1), menu1);
   gtk_option_menu_set_history (GTK_OPTION_MENU (pw->opt1), opts->video_size);	
-  
+
   gtk_table_attach (GTK_TABLE (table), pw->opt1, 1, 2, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -991,10 +1015,10 @@ void init_pref_codecs_settings (GtkWidget *notebook,
 
   /* H.261 codec */
   table = gtk_table_new (2, 4, TRUE);
-  
+
   /* Transmitted Video Quality */
-  label = gtk_label_new (_("Transmitted Quality:"));
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1,
+  pw->tr_vq_label = gtk_label_new (_("Transmitted Quality:"));
+  gtk_table_attach (GTK_TABLE (table), pw->tr_vq_label, 0, 1, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);			
@@ -1002,21 +1026,21 @@ void init_pref_codecs_settings (GtkWidget *notebook,
   pw->tr_vq_spin_adj = (GtkAdjustment *) gtk_adjustment_new(opts->tr_vq, 
 							1.0, 31.0, 
 							1.0, 1.0, 1.0);
-  tr_vq = gtk_spin_button_new (pw->tr_vq_spin_adj, 1.0, 0);
+  pw->tr_vq = gtk_spin_button_new (pw->tr_vq_spin_adj, 1.0, 0);
   
-  gtk_table_attach (GTK_TABLE (table), tr_vq, 1, 2, 0, 1,
+  gtk_table_attach (GTK_TABLE (table), pw->tr_vq, 1, 2, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);			
 										
   tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, tr_vq,
+  gtk_tooltips_set_tip (tip, pw->tr_vq,
 			_("Here you can choose the transmitted video quality:  choose 1 on a LAN for the best quality, 31 being the worst quality"), NULL);
 
 
   /* Updated blocks / frame */
-  label = gtk_label_new (_("Updated blocks:"));
-  gtk_table_attach (GTK_TABLE (table), label, 2, 3, 0, 1,
+  pw->tr_ub_label = gtk_label_new (_("Updated blocks:"));
+  gtk_table_attach (GTK_TABLE (table), pw->tr_ub_label, 0, 1, 1, 2,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);			
@@ -1024,20 +1048,20 @@ void init_pref_codecs_settings (GtkWidget *notebook,
   pw->tr_ub_spin_adj = (GtkAdjustment *) gtk_adjustment_new(opts->tr_ub, 
 							2.0, 99.0, 1.0, 
 							1.0, 1.0);
-  tr_ub = gtk_spin_button_new (pw->tr_ub_spin_adj, 2.0, 0);
+  pw->tr_ub = gtk_spin_button_new (pw->tr_ub_spin_adj, 2.0, 0);
   
-  gtk_table_attach (GTK_TABLE (table), tr_ub, 3, 4, 0, 1,
+  gtk_table_attach (GTK_TABLE (table), pw->tr_ub, 1, 2, 1, 2,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);			
  
   tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, tr_ub,
+  gtk_tooltips_set_tip (tip, pw->tr_ub,
 			_("Here you can choose the number of blocks (that haven't changed) transmitted with each frame. These blocks fill in the background."), NULL);
 
   /* Received Video Quality */
   label = gtk_label_new (_("Received Quality:"));
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 1, 2,
+  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 2, 3,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);			
@@ -1047,7 +1071,7 @@ void init_pref_codecs_settings (GtkWidget *notebook,
 							    1.0, 1.0);
   re_vq = gtk_spin_button_new (pw->re_vq_spin_adj, 1.0, 0);
 
-  gtk_table_attach (GTK_TABLE (table), re_vq, 1, 2, 1, 2,
+  gtk_table_attach (GTK_TABLE (table), re_vq, 1, 2, 2, 3,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
@@ -1057,26 +1081,59 @@ void init_pref_codecs_settings (GtkWidget *notebook,
 			_("The video quality to request from the remote party"), NULL);
 
   /* Max. video Bandwidth */
-  label = gtk_label_new (_("Max. Video Bandwidth:"));
-  gtk_table_attach (GTK_TABLE (table), label, 2, 3, 1, 2,
+  pw->video_bandwidth_label = gtk_label_new (_("Max. Video Bandwidth:"));
+  gtk_table_attach (GTK_TABLE (table), pw->video_bandwidth_label, 2, 3, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);			
   
   pw->video_bandwidth_spin_adj = 
     (GtkAdjustment *) gtk_adjustment_new(opts->video_bandwidth, 
-					 0.0, 256.0, 1.0, 
+					 2.0, 256.0, 1.0, 
 					 1.0, 1.0);
-  video_bandwidth = gtk_spin_button_new (pw->video_bandwidth_spin_adj, 8.0, 0);
+  pw->video_bandwidth = gtk_spin_button_new (pw->video_bandwidth_spin_adj, 8.0, 0);
   
-  gtk_table_attach (GTK_TABLE (table), video_bandwidth, 3, 4, 1, 2,
+  gtk_table_attach (GTK_TABLE (table), pw->video_bandwidth, 3, 4, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);			
  
   tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, video_bandwidth,
+  gtk_tooltips_set_tip (tip, pw->video_bandwidth,
 			_("Here you can choose the maximum bandwidth that can be used by the H.261 video codec. Choose 0 to disable it."), NULL);
+
+  /* Enable Bandwidth Limitation */
+  pw->vb = 
+    gtk_check_button_new_with_label (_("Bandwidth Limitation"));
+
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->vb), 
+				(opts->vb == 1));
+
+  gtk_table_attach (GTK_TABLE (table), pw->vb, 2, 4, 1, 2,
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);		
+
+  gtk_signal_connect (GTK_OBJECT (pw->vb), "toggled",
+ 		      GTK_SIGNAL_FUNC (vb_changed), (gpointer) pw);
+
+  if (opts->vb)
+    {
+      gtk_widget_set_sensitive (GTK_WIDGET (pw->tr_ub_label), FALSE);
+      gtk_widget_set_sensitive (GTK_WIDGET (pw->tr_vq_label), FALSE);
+      gtk_widget_set_sensitive (GTK_WIDGET (pw->tr_ub), FALSE);
+      gtk_widget_set_sensitive (GTK_WIDGET (pw->tr_vq), FALSE);
+    }
+  else
+    {
+      gtk_widget_set_sensitive (GTK_WIDGET (pw->video_bandwidth), FALSE);
+      gtk_widget_set_sensitive (GTK_WIDGET (pw->video_bandwidth_label), FALSE);
+    }
+
+  tip = gtk_tooltips_new ();
+  gtk_tooltips_set_tip (tip, pw->vb,
+			_("Here you can choose to enable or disable video bandwidth limitation"), NULL);
+
 
   label = gtk_label_new (_("H.261 Codec Settings"));
 

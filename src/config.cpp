@@ -48,6 +48,7 @@ void store_config (options *opts)
   gnome_config_set_int ("VideoSettings/video_transmission", opts->vid_tr);
 //  gnome_config_set_int ("VideoSettings/transmitted_fps", opts->tr_fps);
   gnome_config_set_int ("VideoSettings/video_bandwidth", opts->video_bandwidth);
+  gnome_config_set_int ("VideoSettings/vb", opts->vb);
 
   gnome_config_set_int ("GeneralSettings/show_splash", opts->show_splash);
   gnome_config_set_int ("GeneralSettings/show_notebook", opts->show_notebook);
@@ -132,6 +133,7 @@ void read_config (options *opts)
   opts->tr_ub = gnome_config_get_int ("VideoSettings/transmitted_update_blocks");
   opts->vid_tr = gnome_config_get_int ("VideoSettings/video_transmission");
   opts->video_bandwidth = gnome_config_get_int ("VideoSettings/video_bandwidth");
+  opts->vb = gnome_config_get_int ("VideoSettings/vb");
 
   opts->show_splash = gnome_config_get_int ("GeneralSettings/show_splash");
   opts->show_notebook = gnome_config_get_int ("GeneralSettings/show_notebook");
@@ -446,6 +448,7 @@ options * read_config_from_struct (GM_pref_window_widgets *pw)
   opts->jitter_buffer = (int) pw->jitter_buffer_spin_adj->value;
 
   opts->vid_tr = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->vid_tr));
+  opts->vb = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->vb));
 
   
   /* Audio codecs clist */
@@ -524,6 +527,7 @@ void init_config (void)
   gnome_config_set_int ("VideoSettings/transmitted_update_blocks", 2);
   gnome_config_set_int ("VideoSettings/video_transmission", 0);
   gnome_config_set_int ("VideoSettings/video_bandwidth", 32);
+  gnome_config_set_int ("VideoSettings/vb", 0);
 
   gnome_config_set_string ("UserSettings/firstname", "");
   gnome_config_set_string ("UserSettings/surname", "");

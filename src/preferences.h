@@ -114,6 +114,8 @@ void vid_tr_changed (GtkToggleButton *, gpointer);
 // BEHAVIOR     :  It sets a flag 
 // PRE          :  gpointer is a valid pointer to a GM_pref_window_widgets
 void gk_option_changed (GtkWidget *, gpointer);
+
+void vb_changed (GtkToggleButton *, gpointer);
 /******************************************************************************/
 
 
