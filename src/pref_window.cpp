@@ -668,7 +668,7 @@ gnomemeeting_codecs_list_add (GtkTreeIter iter, GtkListStore *store,
 
   if (!strcmp (codec_name, "Speex-8k")) {
     data [1] = g_strdup (_("Good Quality"));
-    data [2] = g_strdup ("8.4 kb");
+    data [2] = g_strdup ("8 kb");
   }
 #endif
 
