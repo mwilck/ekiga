@@ -337,6 +337,12 @@ LIBS="$LDAP_LIBS $LIBS"
 AC_CHECK_LIB(ldap, ldap_simple_bind, LIBS="$LDAP_LIBS $LIBS", AC_MSG_ERROR([***
 LDAP library is not found.]), -llber)
 
+dnl #########################################################################  
+dnl  Check for recent libxml2 which has xmlRegisterNodeDefault()
+dnl ########################################################################   
+
+AC_CHECK_LIB(xml2, xmlFreeDoc)
+AC_CHECK_FUNCS(xmlRegisterNodeDefault)
 
 dnl #########################################################################
 dnl  Check for IPV6 if available.

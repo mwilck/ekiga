@@ -494,6 +494,12 @@ BOOL GMILSClient::Register (int reg)
 
 
   xmlFreeDoc (xp);
+#if !HAVE_XMLREGISTERNODEDEFAULT
+  xdapfree();
+#endif
+#if XDAPLEAKCHECK
+  xdapleakcheck();
+#endif
 
   if (!no_error) {
 

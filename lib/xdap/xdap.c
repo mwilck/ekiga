@@ -23,6 +23,114 @@ static char *evalcmd (char *);
 
 extern char **environ;
 
+/* For registration of libxml private pointers */
+static int nregs = 0;
+static struct {
+	int refcount;
+	void *val;
+} regs[REGMAX];
+
+/* free all allocated pointers */
+/* only need to use this if using an old version of libxml */
+void
+xdapfree(void)
+{
+	int i;
+	for (i = 0; i < nregs; i++)
+		if (regs[i].refcount != 0) {
+			if ((regs[i].val == 0) || (regs[i].val == (void *)0xdeadbeef))
+				fprintf(stderr, "BOGUSFREE %d %d %lx\n", i, regs[i].refcount, (unsigned long)regs[i].val);
+			else {
+#if DEBUGXDAPLEAK
+				fprintf(stderr, "FREE %d %d %lx\n", i, regs[i].refcount, (unsigned long)regs[i].val);
+#endif
+				free(regs[i].val);
+				regs[i].refcount = 0;
+				regs[i].val = (void *)0xdeadbeef;
+			}
+		}
+}
+
+/* check if libxml failed to call our unregister handler on any pointer */
+void
+xdapleakcheck(void)
+{
+	int i;
+	for (i = 0; i < nregs; i++)
+		if (regs[i].refcount != 0)
+			fprintf(stderr, "LEAK %d %d %lx\n", i, regs[i].refcount, (unsigned long)regs[i].val);
+}
+
+/* register a pointer manually */
+static void
+registerptr(void *ptr)
+{
+	int i;
+	int first = 0; /* reuse old slot */
+	if (ptr == 0)
+		return;
+	for (i = 0; i < nregs; i++)
+		if (regs[i].refcount > 0) {
+			if (regs[i].val == ptr) {
+				/* can't think of a good reason to have multiple references to same ptr */
+				/* but, just in case... */
+				regs[i].refcount++;
+				break;
+			}
+		} else if (!first)
+			first = i;
+	if (i >= nregs) {
+		if (first) {
+			i = first;
+			nregs--; /* negate later increment */
+		}
+		regs[i].refcount = 1;
+		regs[i].val = ptr;
+		if (i >= REGMAX - 3) /* overflow */
+			fprintf(stderr, "OVERFLOW %d %d %lx\n", i, regs[i].refcount, (unsigned long)regs[i].val);
+		else
+			nregs++;
+	}
+#if DEBUGXDAPLEAK
+	fprintf(stderr, "RP %d %d %lx\n", i, regs[i].refcount, (unsigned long)regs[i].val);
+#endif
+}
+
+/* this is the new libxml node registration function */
+/* however it always gets called before we've filled in _private */
+/* so it's not much use for us at the moment */
+static void
+registerNode(xmlNodePtr node)
+{
+	registerptr(node->_private);
+}
+
+/* deregister a node */
+static void
+deregisterNode(xmlNodePtr node)
+{
+	int i;
+	if (node->_private == 0)
+		return;
+	for (i = 0; i < nregs; i++)
+		if ((regs[i].refcount > 0) && (regs[i].val == node->_private)) {
+			regs[i].refcount--;
+			fprintf(stderr, "DN %d %d %lx\n", i, regs[i].refcount, (unsigned long)regs[i].val);
+			if (regs[i].refcount == 0) {
+				free(regs[i].val);
+				regs[i].val = (void *)0xdeadbeef;
+			}
+			break;
+		}
+	if (i >= nregs) {
+		regs[i].refcount = -1;
+		regs[i].val = node->_private;
+#if DEBUGXDAPLEAK
+		fprintf(stderr, "DN %d %d %lx\n", i, regs[i].refcount, (unsigned long)regs[i].val);
+#endif
+	}
+}
+
 /* Parse an xml file and process it */
 /* Returns PFERR if file fails to parse or error from parsedoc() */
 int
@@ -56,6 +164,10 @@ parseonly (char *filename, xmlEntityPtr (*getent) (void *, const xmlChar *),
   }
   sax.getEntity = getent;
   D (D_TRACE, fprintf (stderr, "Parsing %s\n", filename));
+#if HAVE_XMLREGISTERNODEDEFAULT
+  xmlRegisterNodeDefault(registerNode);
+  xmlDeregisterNodeDefault(deregisterNode);
+#endif
   if (!(xp = xmlSAXParseFile (&sax, filename, 0)))
     return 0;
   return xp;
@@ -191,6 +303,7 @@ getldapinfo (xmlDocPtr xp, xmlNodePtr * current, char **hostp, int *portp,
   ep->fertile = 1;
   ep->modop = 0;
   root->_private = (void *) ep;
+  registerptr(ep);
   *hostp = (char *) host;
   *portp = atoi ((char *) port);
   xmlFree (method);
@@ -313,6 +426,7 @@ ldaprun (LDAP * ldap, xmlDocPtr xp, xmlNodePtr * current, int *opp,
     ep->fertile = 1;
     ep->modop = 0;
     (*current)->_private = (void *) ep;
+    registerptr(ep);
   } else if (!strcmp ((char *) ((*current)->name), "modify")) {
     if (!(ep = (struct edata *) malloc (sizeof (struct edata))))
       return PFNOMEM;
@@ -320,6 +434,7 @@ ldaprun (LDAP * ldap, xmlDocPtr xp, xmlNodePtr * current, int *opp,
     ep->fertile = 1;
     ep->modop = LDAP_MOD_REPLACE;
     (*current)->_private = (void *) ep;
+    registerptr(ep);
   } else if (!strcmp ((char *) ((*current)->name), "delete")) {
     if (!(ep = (struct edata *) malloc (sizeof (struct edata))))
       return PFNOMEM;
@@ -327,6 +442,7 @@ ldaprun (LDAP * ldap, xmlDocPtr xp, xmlNodePtr * current, int *opp,
     ep->fertile = 1;
     ep->modop = 0;
     (*current)->_private = (void *) ep;
+    registerptr(ep);
 #ifdef DOSYS
   } else if (!strcmp ((char *) ((*current)->name), "system")) {
     if (!(ep = (struct edata *) malloc (sizeof (struct edata))))
@@ -335,6 +451,7 @@ ldaprun (LDAP * ldap, xmlDocPtr xp, xmlNodePtr * current, int *opp,
     ep->fertile = 0;
     ep->modop = 0;
     (*current)->_private = (void *) ep;
+    registerptr(ep);
 #endif
   } else if (!strcmp ((char *) ((*current)->name), "search")) {
     if (!(ep = (struct edata *) malloc (sizeof (struct edata))))
@@ -343,6 +460,7 @@ ldaprun (LDAP * ldap, xmlDocPtr xp, xmlNodePtr * current, int *opp,
     ep->fertile = 1;
     ep->modop = 0;
     (*current)->_private = (void *) ep;
+    registerptr(ep);
     /* Process search attributes */
     if (!(base = xmlGetProp (*current, BAD_CAST "base")))
       base = xmlStrdup (BAD_CAST "");
@@ -515,6 +633,7 @@ doldapop (LDAP * ldap, xmlDocPtr xp, int sync, xmlNodePtr node, int optype,
 	ep->optype = ep->fertile = ep->modop =
 	  ep->eval = 0;
 	node->_private = (void *) ep;
+        registerptr(ep);
       } else {
 	if (!
 	    (ep =
@@ -524,6 +643,7 @@ doldapop (LDAP * ldap, xmlDocPtr xp, int sync, xmlNodePtr node, int optype,
 	ep->optype = ep->fertile = ep->modop =
 	  ep->eval = 0;
 	node->_private = (void *) ep;
+        registerptr(ep);
 
 	/* if no "op" mod_op, inherit from parent */
 	if (!(modop = xmlGetProp (node, BAD_CAST "op"))) {
@@ -789,7 +909,9 @@ evalcmd (char *cmd)
     return "NOEXEC";
   default:
     close (pfd[1]);
-    while ((nc = read (pfd[0], buf, sizeof buf)) > 0) {
+    while (((errno = 0), (nc = read (pfd[0], buf, sizeof buf)) > 0) || (errno == EINTR)) {
+      if (nc <= 0)
+        continue;
       if (!rb) {
 	if (!(rb = (char *) malloc (nc)))
 	  return "NOMEM";

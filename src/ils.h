@@ -1,6 +1,6 @@
 
 /* GnomeMeeting -- A Video-Conferencing application
- * Copyright (C) 2000-2001 Damien Sandras
+ * Copyright (C) 2000-2003 Damien Sandras
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,14 +15,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *
+ *
+ * GnomeMeting is licensed under the GPL license and as a special exception,
+ * you have permission to link or otherwise combine this program with the
+ * programs OpenH323 and Pwlib, and distribute the combination, without
+ * applying the requirements of the GNU GPL to the OpenH323 program, as long
+ * as you do follow the requirements of the GNU GPL for all the rest of the
+ * software thus combined.
  */
+
 
 /*
  *                         ils.h  -  description
  *                         ---------------------
  *   begin                : Sun Sep 23 2001
- *   copyright            : (C) 2000-2002 by Damien Sandras
- *   description          : The ldap thread.
+ *   copyright            : (C) 2000-2003 by Damien Sandras
+ *   description          : The ILS registering thread, and the ILS browser
+ *                          threads.
+ *
  *   email                : dsandras@seconix.com
  *
  */
@@ -31,9 +42,11 @@
 #ifndef _ILS_H_
 #define _ILS_H_
 
+
 #include <iostream>
 #include <gtk/gtk.h>
 #include <glib.h>
+
 #include <ptlib.h>
 #include <ldap.h>
 
@@ -45,23 +58,90 @@
 #define GM_ILS_CLIENT(x) (GMILSClient *)(x)
 
 
+/* This class is the ILS registering thread. It will run the whole life of
+   the application, and execute inside the thread the required operations
+   (Register/Modify/Unregister). It is using XDAP for those operations.
+*/
 class GMILSClient : public PThread
 {
   PCLASSINFO(GMILSClient, PThread);
 
-public:
+  
+ public:
+  
+  /* DESCRIPTION  :  The constructor.
+   * BEHAVIOR     :  Creates the ILS registering thread and starts it. It will
+   *                 automatically register to the ILS server given in the
+   *                 gconf preferences if the user chose to register.
+   * PRE          :  /
+   */
   GMILSClient ();
+
+  
+  /* DESCRIPTION  :  The destructor.
+   * BEHAVIOR     :  Only returns when the thread has ended all operations.
+   * PRE          :  /
+   */
   ~GMILSClient ();
 
-
+  
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Set the flag to register to 1. When all operations will
+   *                 be terminated, the thread will try to register to the
+   *                 ILS server. Options are stored in the GConf database.
+   * PRE          :  /
+   */
   void Register ();
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Set the flag to unregister to 1. When all operations will
+   *                 be terminated, the thread will try to unregister from the
+   *                 ILS server. 
+   * PRE          :  /
+   */
   void Unregister ();
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Set the flag to modify to 1. When all operations will
+   *                 be terminated, the thread will try to update the
+   *                 current registered options on the ILS server. Options
+   *                 are stored in the GConf database.
+   * PRE          :  /
+   */
   void Modify ();
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Searches the IP registered on the ILS server for the given
+   *                 e-mail address. Returns NULL if there is no IP registered
+   *                 for the given ILS server, port and e-mail address.
+   * PRE          :  non-NULL ILS server, ILS port and e-mail address.
+   */
   gchar *Search (gchar *, gchar *, gchar *);
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Checks that all fields needed to register to ILS are
+   *                 present in the GConf database (firstname, email). If not
+   *                 returns FALSE and displays a popup to warn the user.
+   * PRE          :  /
+   */
   BOOL CheckFieldsConfig (void);
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Checks that all fields needed to register to ILS are
+   *                 present in the GConf database (server). If not
+   *                 returns FALSE and displays a popup to warn the user.
+   * PRE          :  /
+   */
   BOOL CheckServerConfig (void);
 
+  
 protected:
+
   void Main ();
   BOOL Register (int);
 

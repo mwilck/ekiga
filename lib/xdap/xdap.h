@@ -109,6 +109,12 @@ void dumpres (LDAP *, LDAPMessage *);
 int parsefile (char *, xmlEntityPtr (*)(void *, const xmlChar *),
 	       xmlEntityPtr (**)(void *, const xmlChar *));
 
+#define XDAPLEAKCHECK 1 /* define this to show leaks of libxml node->_private */
+#define REGMAX 500 /* maximum no of slots to store malloced pointers */
+#define DEBUGXDAPLEAK 0 /* show allocs/frees */
+void xdapleakcheck(void);
+void xdapfree(void);
+
 G_END_DECLS
 
 #endif
