@@ -255,8 +255,6 @@ struct _GmPrefWindow
   GtkWidget    *lid_device;
   GtkWidget    *lid_aec;
   GtkWidget    *lid_country;
-  GtkWidget    *lid;
-  GtkWidget    *show_docklet;
   GtkWidget    *directory_update_button;
   GtkWidget    *video_device_apply_button;
   GtkWidget    *forward_host;

@@ -212,13 +212,12 @@ static void menu_radio_changed_nt (GConfClient *client, guint cid,
     for (int i = 0 ; i <= GM_MAIN_NOTEBOOK_HIDDEN ; i++) {
 
       if (gconf_value_get_int (entry->value) == i)
-	GTK_CHECK_MENU_ITEM (e [13+i].widget)->active = TRUE;
+	GTK_CHECK_MENU_ITEM (e [12+i].widget)->active = TRUE;
       else
-	GTK_CHECK_MENU_ITEM (e [13+i].widget)->active = FALSE;
+	GTK_CHECK_MENU_ITEM (e [12+i].widget)->active = FALSE;
 
-      gtk_widget_queue_draw (GTK_WIDGET (e [13+i].widget));
+      gtk_widget_queue_draw (GTK_WIDGET (e [12+i].widget));
     }
-   
     
     gdk_threads_leave (); 
   }
@@ -800,16 +799,55 @@ audio_mixer_changed_nt (GConfClient *client,
  * BEHAVIOR     :  It updates the endpoint and displays
  *                 a message in the history. If the device is not valid,
  *                 i.e. the user erroneously used gconftool, a message is
- *                 displayed.
+ *                 displayed. Notice that the code ensures that either no
+ *                 no Quicknet device is used, or it is used for both devices.
  * PRE          :  /
  */
 static void audio_device_changed_nt (GConfClient *client, guint cid, 
 				     GConfEntry *entry, gpointer data)
 {
+  PString dev, dev1, dev2;
+  gchar *player = NULL;
+  gchar *recorder = NULL;
+  
   if (entry->value->type == GCONF_VALUE_STRING) {
 
     gdk_threads_enter ();
-  
+
+    dev = PString (gconf_value_get_string (entry->value));
+
+    /* If one of the devices that we are using is a quicknet device,
+       we update the other devices too */
+    if (dev.Find ("phone") != P_MAX_INDEX) {
+
+      gconf_client_set_string (client, DEVICES_KEY "audio_recorder",
+			       (const char *) dev, NULL);
+      gconf_client_set_string (client, DEVICES_KEY "audio_player",
+			       (const char *) dev, NULL);
+    }
+    else {
+
+      /* If what we changed right now has now a non quicknet value,
+	 and that the other device value is a quicknet device, we change
+	 it, because Quicknet can't be used for one device and not for
+	 the other */
+      player = gconf_client_get_string (client, DEVICES_KEY "audio_player",
+					NULL);
+      recorder = gconf_client_get_string (client, DEVICES_KEY "audio_recorder",
+					  NULL);
+      dev1 = PString (player);
+      dev2 = PString (recorder);
+      
+      if (dev1.Find ("phone") != P_MAX_INDEX
+	  || dev2.Find ("phone") != P_MAX_INDEX) {
+
+	gconf_client_set_string (client, DEVICES_KEY "audio_recorder",
+			       (const char *) dev, NULL);
+	gconf_client_set_string (client, DEVICES_KEY "audio_player",
+				 (const char *) dev, NULL);
+      }
+    }
+    
     if (MyApp->Endpoint ()->GetCallingState () == 0)
       /* Update the configuration in order to update 
 	 the local user name for calls */
@@ -1515,10 +1553,6 @@ void gnomemeeting_init_gconf (GConfClient *client)
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/lid_aec", int_option_menu_changed_nt, pw->lid_aec, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/lid_aec", lid_aec_changed_nt, pw->lid_aec, 0, 0);
-
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/lid", toggle_changed_nt, pw->lid, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/lid", lid_device_changed_nt, pw->lid_country, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/lid", applicability_check_nt, pw->lid_country, 0, 0);
 #endif
 
 

@@ -173,8 +173,8 @@ void GMURLHandler::Main ()
     if ((ip)&&(!strcmp (ip, "0.0.0.0:1720"))) {
 
       gnomemeeting_threads_enter ();
-      gnomemeeting_statusbar_flash (gw->statusbar, _("User not found"));
-      gnomemeeting_log_insert (gw->history_text_view, _("User not found"));
+      gnomemeeting_statusbar_flash (gw->statusbar, _("User is offline"));
+      gnomemeeting_log_insert (gw->history_text_view, _("User is offline"));
       connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 0);
       gnomemeeting_call_menu_connect_set_sensitive (0, TRUE);
       gtk_widget_set_sensitive (GTK_WIDGET (gw->connect_button), TRUE);

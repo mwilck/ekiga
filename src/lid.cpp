@@ -88,17 +88,17 @@ void GMLid::Open ()
   if (!lid) {
 
     lid_device =  
-      gconf_client_get_string (client, DEVICES_KEY "lid_device", NULL);
+      gconf_client_get_string (client, DEVICES_KEY "audio_player", NULL);
     lid_country =
       gconf_client_get_string (client, DEVICES_KEY "lid_country", NULL);
     lid_aec =
       gconf_client_get_int (client, DEVICES_KEY "lid_aec", NULL);
-    
+
     if (lid_device == NULL)
       lid_device = g_strdup ("/dev/phone0");
-    
+
     lid = new OpalIxJDevice;
-    if (lid->Open ("/dev/phone0")) {
+    if (lid->Open (lid_device)) {
       
       gchar *msg = NULL;
       msg = g_strdup_printf (_("Using Quicknet device %s"), 

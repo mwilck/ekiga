@@ -282,11 +282,10 @@ void GMH323EndPoint::UpdateConfig ()
   gnomemeeting_threads_enter ();
   pw = gnomemeeting_get_pref_window (gm);
   gw = gnomemeeting_get_main_window (gm);
+  gnomemeeting_threads_leave ();
 
-
+  
   /* Get the gconf settings */
-  use_lid = 
-    gconf_client_get_bool (client, DEVICES_KEY "lid", NULL);
   player = 
     gconf_client_get_string (client, DEVICES_KEY "audio_player", NULL);
   recorder = 
@@ -304,16 +303,23 @@ void GMH323EndPoint::UpdateConfig ()
   /* Do not change these values during calls */
   if (GetCallingState () == 0) {
 
+    if (PString (player).Find ("/dev/phone") != P_MAX_INDEX
+	|| PString (recorder).Find ("/dev/phone") != P_MAX_INDEX) {
+      
+      use_lid = true;
+    }
+    
+
     /**/
     /* Set recording source and set micro to record if no LID is used */
     if (!use_lid) {
 
+      gnomemeeting_threads_enter ();
       /* Change that setting only if needed */
       if (player && (GetSoundChannelPlayDevice () != PString (player))) { 
 	
 	/* Player is always a correct sound device, thanks to 
 	   gnomemeeting_add_string_option_menu */
-	SetSoundChannelPlayDevice (player);
 	text = g_strdup_printf (_("Set Audio player device to %s"), 
 				(const char *) player);
 	gnomemeeting_log_insert (gw->history_text_view, text);
@@ -331,6 +337,7 @@ void GMH323EndPoint::UpdateConfig ()
 	  g_free (text);
 
       }
+      gnomemeeting_threads_leave ();
     }
     
 
@@ -338,20 +345,24 @@ void GMH323EndPoint::UpdateConfig ()
     /* Update the H.245 Tunnelling and Fast Start Settings if needed */
     if (disableH245Tunneling != !h245_tunneling) {
 
+      gnomemeeting_threads_enter ();
       gnomemeeting_log_insert (gw->history_text_view, 
 			       h245_tunneling?
 			       _("Enabling H.245 Tunnelling"):
 			       _("Disabling H.245 Tunnelling"));
+      gnomemeeting_threads_leave ();
       disableH245Tunneling = !h245_tunneling;
     }
 
     if (disableFastStart != !fast_start) {
 
+      gnomemeeting_threads_enter ();
       gnomemeeting_log_insert (gw->history_text_view, 
 			       fast_start?
 			       _("Enabling Fast Start"):
 			       _("Disabling Fast Start"));
       disableFastStart = !fast_start;
+      gnomemeeting_threads_leave ();
     }
 
 
@@ -372,14 +383,14 @@ void GMH323EndPoint::UpdateConfig ()
 
     /**/
     /* Update the capabilities */
+    gnomemeeting_threads_enter ();
     RemoveAllCapabilities ();
     AddAudioCapabilities ();
     AddVideoCapabilities (video_size);
+    gnomemeeting_threads_leave ();
   }
 
   gnomemeeting_sound_daemons_resume ();
-
-  gnomemeeting_threads_leave ();
 
   g_free (player);
   g_free (recorder);

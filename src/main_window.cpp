@@ -144,6 +144,18 @@ gint StressTest (gpointer data)
 }
 
 
+gint IdleUpdate (gpointer data)
+{
+  gdk_threads_enter ();
+  while (gtk_events_pending ())
+    gtk_main_iteration ();
+  gdk_threads_leave ();
+
+  PThread::Current ()->Sleep (100);
+  
+  return true;
+}
+
 
 gint AppbarUpdate (gpointer data)
 {
@@ -344,7 +356,7 @@ stats_drawing_area_exposed (GtkWidget *drawing_area, gpointer data)
   GmRtpData *rtp = gnomemeeting_get_rtp_data (gm); 
   GdkPoint points [50];
 
-  int width_step = GTK_WIDGET (drawing_area)->allocation.width / 50;
+  int width_step = (int) GTK_WIDGET (drawing_area)->allocation.width / 50;
   x = width_step;
   int allocation_height = GTK_WIDGET (drawing_area)->allocation.height - 5;
   float height_step = allocation_height;
@@ -433,7 +445,7 @@ stats_drawing_area_exposed (GtkWidget *drawing_area, gpointer data)
     pos = rtp->tr_audio_pos;
     for (int cpt = 0 ; cpt < 50 ; cpt++) {
 
-      points [cpt].x = cpt * width_step;
+      points [cpt].x = (cpt+2) * width_step;
 
       points [cpt].y = allocation_height + 15 -
 	(gint) (rtp->tr_audio_speed [pos] * height_step);
@@ -449,7 +461,7 @@ stats_drawing_area_exposed (GtkWidget *drawing_area, gpointer data)
     pos = rtp->re_audio_pos;
     for (int cpt = 0 ; cpt < 50 ; cpt++) {
 
-      points [cpt].x = cpt * width_step;
+      points [cpt].x = (cpt+2) * width_step;
 
       points [cpt].y = allocation_height + 15 -
 	(gint) (rtp->re_audio_speed [pos] * height_step);
@@ -465,7 +477,7 @@ stats_drawing_area_exposed (GtkWidget *drawing_area, gpointer data)
     pos = rtp->tr_video_pos;
     for (int cpt = 0 ; cpt < 50 ; cpt++) {
 
-      points [cpt].x = cpt * width_step;
+      points [cpt].x = (cpt+2) * width_step;
 
       points [cpt].y = allocation_height + 15 -
 	(gint) (rtp->tr_video_speed [pos] * height_step);
@@ -481,7 +493,7 @@ stats_drawing_area_exposed (GtkWidget *drawing_area, gpointer data)
     pos = rtp->re_video_pos;
     for (int cpt = 0 ; cpt < 50 ; cpt++) {
 
-      points [cpt].x = cpt * width_step;
+      points [cpt].x = (cpt+2) * width_step;
 
       points [cpt].y = allocation_height + 15 -
 	(gint) (rtp->re_video_speed [pos] * height_step);
@@ -2019,6 +2031,8 @@ int main (int argc, char ** argv, char ** envp)
   gint timeout = gtk_timeout_add (500, (GtkFunction) AppbarUpdate, rtp);
   g_object_set_data (G_OBJECT (gm), "timeout", GINT_TO_POINTER (timeout));
 
+  gtk_idle_add ((GtkFunction) IdleUpdate, NULL);
+  
   /*  gtk_timeout_add (10000, (GtkFunction) StressTest, 
       NULL);*/
   

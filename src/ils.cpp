@@ -198,7 +198,8 @@ void GMILSClient::Main ()
 	starttime = PTime ();
       }
 
-    Current ()->Sleep (500);
+    gnomemeeting_threads_leave ();
+    Current ()->Sleep (100);
   }
 
   /* After the thread has stopped,
@@ -854,7 +855,7 @@ void GMILSBrowser::Main ()
   char *attrs [] = { "surname", "givenname", "comment", "location", 
 		     "rfc822mailbox", "sipaddress", "ilsa32833566", 
 		     "ilsa32964638", "ilsa26279966", "ilsa26214430", 
-		     "sport", "sappid", 
+		     "sport", "sappid", "xstatus", 
 		     NULL };
 
   char **ldv;
@@ -1049,6 +1050,15 @@ void GMILSBrowser::Main ()
 	     random ports to ILS, but it only supports 1720 */
 	  if (datas [7]&&!strcmp (datas [7], "ms-netmeeting")&&port == 1503)
 	    port = 1720;
+
+	  ldap_value_free (ldv);
+	}
+
+	
+	ldv = ldap_get_values(ldap_connection, e, "xstatus");
+	if ((ldv != NULL)&&(ldv [0] != NULL)) {
+
+	  cout << (char *) ldv [0] << endl << flush;
 
 	  ldap_value_free (ldv);
 	}

@@ -980,16 +980,13 @@ static void gnomemeeting_init_pref_window_audio_devices (GtkWidget *notebook)
 #ifdef HAS_IXJ
   /* The Quicknet devices related options */
   table = gnomemeeting_vbox_add_table (vbox, _("Quicknet Device"), 
-					      3, 2);
+					      2, 2);
 
   pw->lid_aec =
-    gnomemeeting_table_add_int_option_menu (table, _("Automatic Echo Cancellation:"), aec, "/apps/gnomemeeting/devices/lid_aec", _("The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic Gain Compensation. Choosing Automatic Gain Compensation modulates the volume for best quality."), 1);
+    gnomemeeting_table_add_int_option_menu (table, _("Automatic Echo Cancellation:"), aec, "/apps/gnomemeeting/devices/lid_aec", _("The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic Gain Compensation. Choosing Automatic Gain Compensation modulates the volume for best quality."), 0);
 
   pw->lid_country =
-    gnomemeeting_table_add_entry (table, _("Country Code:"), "/apps/gnomemeeting/devices/lid_country", _("The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)."), 2);
-
-  pw->lid =
-    gnomemeeting_table_add_toggle (table, _("Use the Quicknet Device"), "/apps/gnomemeeting/devices/lid", _("If enabled, GnomeMeeting will use the Quicknet device instead of the regular soundcard during calls."), 0, 0);
+    gnomemeeting_table_add_entry (table, _("Country Code:"), "/apps/gnomemeeting/devices/lid_country", _("The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)."), 1);
 #endif
 
 

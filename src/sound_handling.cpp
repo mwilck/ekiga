@@ -187,6 +187,10 @@ PStringArray gnomemeeting_get_audio_player_devices ()
   
   devices = PSoundChannel::GetDeviceNames (PSoundChannel::Player);
 
+#ifdef HAS_IXJ
+  devices += OpalIxJDevice::GetDeviceNames ();
+#endif
+  
   while (cpt < devices.GetSize ()) {
 
     if (strcmp (devices [cpt], "loopback"))
@@ -206,6 +210,10 @@ PStringArray gnomemeeting_get_audio_recorder_devices ()
   int cpt = 0;
   
   devices = PSoundChannel::GetDeviceNames (PSoundChannel::Recorder);
+
+#ifdef HAS_IXJ
+  devices += OpalIxJDevice::GetDeviceNames ();
+#endif
 
   while (cpt < devices.GetSize ()) {
 

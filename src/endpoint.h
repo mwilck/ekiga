@@ -147,7 +147,7 @@ class GMH323EndPoint : public H323EndPoint
   virtual BOOL OpenAudioChannel (H323Connection &, BOOL,
 				 unsigned, H323AudioCodec &);
 
-
+			       
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Starts the listener thread on the port choosen 
    *                 in the options.

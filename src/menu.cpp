@@ -183,7 +183,7 @@ video_view_changed_callback (GtkWidget *widget, gpointer data)
 
     right_menu = gnomemeeting_menu;
     bad_menu = video_menu;
-    i = 19;
+    i = 18;
     j = 0;
   }
   else {
@@ -191,7 +191,7 @@ video_view_changed_callback (GtkWidget *widget, gpointer data)
     right_menu = video_menu;
     bad_menu = gnomemeeting_menu;
     i = 0;
-    j = 19;
+    j = 18;
   }
 
   
@@ -229,7 +229,7 @@ view_menu_toggles_changed (GtkWidget *widget, gpointer data)
   if (GTK_CHECK_MENU_ITEM (widget)->active) {
 
     for (int i = 0; i <= GM_MAIN_NOTEBOOK_HIDDEN; i++) 
-      if (GTK_CHECK_MENU_ITEM (gnomemeeting_menu [i+13].widget)->active) 
+      if (GTK_CHECK_MENU_ITEM (gnomemeeting_menu [i+12].widget)->active) 
  	active = i;
   }
 

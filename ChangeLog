@@ -1,5 +1,31 @@
 2003-01-04 Damien Sandras  <dsandras@seconix.com>
 
+	* gnomemeeting.schemas.in.in: Removed unused LID keys.
+	
+	* src/common.h: Removed some unused widgets.
+	
+	* src/config.cpp: Make sure that the same device is used for player
+	and recorder when Quicknet device is selectionned. Get back to normal
+	devices when Quicknet is unselectionned.
+	
+	* src/endpoint.cpp, src/endpoint.h: Changed UpdateConfig.
+	
+	* src/ils.cpp: Added support for xstatus attribute.
+	
+	* src/lid.cpp: The device is now stored in audio_player key.
+	
+	* src/main_window.cpp: Added callback on idle.
+	
+	* src/menu.cpp: Fixed wrong indices for View.
+	
+	* src/pref_window.cpp: Removed unused LID widget.
+	
+	* src/sound_handling.cpp: Added auto-detection of LID devices.
+	
+	* src/urlhandler.cpp: Changed message on User Not Found.
+	
+2003-01-04 Damien Sandras  <dsandras@seconix.com>
+
 	* src/menu.cpp, src/config.cpp: Fixed widget number for DND and AA.
 	
 2003-01-04 Damien Sandras  <dsandras@seconix.com>
