@@ -733,7 +733,7 @@ void GMILSClient::ils_browse ()
       if (ldap_get_values(ldap_connection, e, "ilsa26279966") != NULL)	{
 
 	gchar *value =
-	  g_strdup (ldap_get_values (ldap_connection, e, " ilsa26279966") [0]);
+	  g_strdup (ldap_get_values (ldap_connection, e, "ilsa26279966") [0]);
 	
 	int v,a,b,c;
 	v = atoi (value); 

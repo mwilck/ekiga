@@ -51,14 +51,6 @@ void pause_audio_callback (GtkWidget *, gpointer);
 void pause_video_callback (GtkWidget *, gpointer);
 
 
-/* DESCRIPTION  :  This callback is called when the user choose to hide
- *                 or show the main window.
- * BEHAVIOR     :  Hide or show the main window.
- * PRE          :  /
- */
-void toggle_window_callback (GtkWidget *, gpointer);
-
-
 /* DESCRIPTION  :  This callback is called when the user chooses to open
  *                 the about window.
  * BEHAVIOR     :  Open the about window.

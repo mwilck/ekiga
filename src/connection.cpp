@@ -79,6 +79,7 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
   int sd = 0;
   int use_sd = 0;
   int re_vq = 2;
+  int re_vq_ = 2;
 
   if (!H323Connection::OnStartLogicalChannel (channel))
     return FALSE;
@@ -163,15 +164,16 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
 
 
   /* Compute the received video quality */
-  re_vq = gconf_client_get_int (GCONF_CLIENT (client), "/apps/gnomemeeting/video_settings/re_vq", NULL);
-  re_vq = 32 - (int) ((double) re_vq / 100 * 31);
+  re_vq_ = gconf_client_get_int (GCONF_CLIENT (client), "/apps/gnomemeeting/video_settings/re_vq", NULL);
+  re_vq = 32 - (int) ((double) re_vq_ / 100 * 31);
 
   if (channel.GetDirection() == H323Channel::IsReceiver) {
 
     if (channel.GetCodec ()->IsDescendant(H323VideoCodec::Class()) 
 	&& (re_vq >= 0)) {
 
-      msg = g_strdup_printf (_("Requesting remote to send video quality : %d/31"), re_vq);
+      msg = g_strdup_printf (_("Requesting remote to send video quality : %d%%"), 
+			     re_vq_);
 
       gnomemeeting_threads_enter ();
       gnomemeeting_log_insert (msg);

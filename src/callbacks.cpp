@@ -48,20 +48,6 @@ extern GtkWidget *gm;
 
 
 /* The callbacks */
-void toggle_window_callback (GtkWidget *widget, gpointer data)
-{
-  /* if data == NULL, we hide data, else we hide the widget 
-     given as parameter */
-  if (GTK_IS_WIDGET (data))
-      widget = GTK_WIDGET (data);
-
-  if (GTK_WIDGET_VISIBLE (GTK_WIDGET (widget)))
-    gtk_widget_hide (widget);
-  else
-    gtk_widget_show (widget);
-}
-
-
 void pause_audio_callback (GtkWidget *widget, gpointer data)
 {
   GM_window_widgets *gw = gnomemeeting_get_main_window (gm);

@@ -35,6 +35,8 @@
 #include "gnomemeeting.h"
 #include "menu.h"
 #include "callbacks.h"
+#include "misc.h"
+
 #include <gconf/gconf-client.h>
 
 #include <gdk/gdkx.h>
@@ -90,10 +92,18 @@ void docklet_popup_menu_disconnect_callback (GtkWidget *, gpointer)
  */
 void docklet_toggle_callback (GtkWidget *, gpointer)
 {
-  if (GTK_WIDGET_VISIBLE (GTK_WIDGET (gm)))
+  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+  
+  if (GTK_WIDGET_VISIBLE (GTK_WIDGET (gm))) {
+
+    gdk_window_get_root_origin (GTK_WIDGET (gm)->window, &gw->x, &gw->y);
     gtk_widget_hide (gm);
-  else
+  }
+  else {
+    
+    gtk_widget_set_uposition (GTK_WIDGET (gm), gw->x, gw->y);
     gtk_widget_show (gm);
+  }
 }
 
 
@@ -109,10 +119,7 @@ void docklet_clicked (GtkWidget *widget, GdkEventButton *event, gpointer data)
 
   if ((event->button == 1) && (event->type == GDK_BUTTON_PRESS)) {
 
-    if (GTK_WIDGET_VISIBLE (GTK_WIDGET (gm)))
-      gtk_widget_hide (gm);
-    else
-      gtk_widget_show (gm);
+    docklet_toggle_callback (widget, data);
   }
 }
 

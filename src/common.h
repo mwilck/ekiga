@@ -51,6 +51,7 @@ struct _GM_rtp_data
 
 struct _GM_window_widgets
 {
+  int x, y; /* the position of the main window */
   // widgets
   GtkObject *adj_play, *adj_rec;
   GtkObject *adj_whiteness;
