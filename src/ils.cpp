@@ -1141,7 +1141,7 @@ void GMILSBrowser::Main ()
 			    COLUMN_ILS_AUDIO, b_ldap_data [1],
 			    COLUMN_ILS_VIDEO, b_ldap_data [0],
 			    COLUMN_ILS_NAME, utf8_username,
-			    COLUMN_ILS_CALLTO, utf8_callto,
+			    COLUMN_ILS_URL, utf8_callto,
 			    COLUMN_ILS_LOCATION, utf8_char_ldap_data [2],
 			    COLUMN_ILS_COMMENT, utf8_char_ldap_data [3],
 			    COLUMN_ILS_VERSION, utf8_remote_app,

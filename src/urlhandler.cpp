@@ -225,44 +225,54 @@ void GMURLHandler::Main ()
     url =
       gnomemeeting_addressbook_get_url_from_speed_dial (url.GetValidURL ());
 
-  call_address = url.GetValidURL ();
-  
-  if (!url.IsSupported ()) {
 
+  /* The shortcut could lead to an empty URL here */
+  if (!url.IsEmpty ()) {
+
+    call_address = url.GetValidURL ();
+  
+    if (!url.IsSupported ()) {
+
+      gnomemeeting_threads_enter ();
+      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Please specify a valid URL handler. Currently both h323: and callto: are supported."));
+      gnomemeeting_threads_leave ();
+    }
+
+  
+    /* If the user is using MicroTelco, but G.723.1 is not available for
+       a reason or another, we add the MicroTelco prefix if the URL seems
+       to be a phone number */
     gnomemeeting_threads_enter ();
-    gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Please specify a valid URL handler. Currently both h323: and callto: are supported."));
+    if (gconf_client_get_bool (client, SERVICES_KEY "enable_microtelco", 0)) {
+
+      if (call_address.FindRegEx ("[A-Z][a-z]") == P_MAX_INDEX &&
+	  call_address.Find (".") == P_MAX_INDEX &&
+	  endpoint->GetCapabilities ().FindCapability ("G.723.1") == NULL)
+	call_address = PString ("0610#") + call_address;
+    }
+
+    gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
+    gnomemeeting_call_menu_connect_set_sensitive (1, TRUE);
+    msg = g_strdup_printf (_("Calling %s"), 
+			   (const char *) call_address);
+    gnomemeeting_log_insert (gw->history_text_view, msg);
+    gnomemeeting_statusbar_push (gw->statusbar, msg);
+    connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 1);
+    g_free (msg);		
     gnomemeeting_threads_leave ();
-  }
-
   
-  /* If the user is using MicroTelco, but G.723.1 is not available for
-     a reason or another, we add the MicroTelco prefix if the URL seems
-     to be a phone number */
-  gnomemeeting_threads_enter ();
-  if (gconf_client_get_bool (client, SERVICES_KEY "enable_microtelco", 0)) {
-
-    if (call_address.FindRegEx ("[A-Z][a-z]") == P_MAX_INDEX &&
-	call_address.Find (".") == P_MAX_INDEX &&
-	endpoint->GetCapabilities ().FindCapability ("G.723.1") == NULL)
-      call_address = PString ("0610#") + call_address;
-  }
-
-  gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
-  gnomemeeting_call_menu_connect_set_sensitive (1, TRUE);
-  msg = g_strdup_printf (_("Calling %s"), 
-			 (const char *) call_address);
-  gnomemeeting_log_insert (gw->history_text_view, msg);
-  gnomemeeting_statusbar_push (gw->statusbar, msg);
-  connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 1);
-  g_free (msg);		
-  gnomemeeting_threads_leave ();
+    /* Connect to the URL */
+    endpoint->SetCallingState (1);
   
-  /* Connect to the URL */
-  endpoint->SetCallingState (1);
-
-  if (call_address != PString ("callto:"))
     con = 
       endpoint->MakeCallLocked (call_address, current_call_token);
+  }
+  else
+    gnomemeeting_statusbar_flash (gw->statusbar, _("No contact with that speed dial found"));
+
+
+  /* If we have a valid URL, we a have a valid connection, if not
+     we put things back in the initial state */
   if (con) {
     
     endpoint->SetCurrentConnection (con);
@@ -286,12 +296,7 @@ void GMURLHandler::Main ()
 
     if (call_address.Find ("+type=directory") != P_MAX_INDEX)
       gnomemeeting_statusbar_flash (gw->statusbar, _("User not found"));
-    else
-      if (call_address == PString ("callto:")) 
-	gnomemeeting_statusbar_flash (gw->statusbar, _("No contact with that shortcut found"));
-      else
-	gnomemeeting_statusbar_flash (gw->statusbar, "");
-    
+
     gnomemeeting_threads_leave ();
   }
 }

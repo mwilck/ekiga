@@ -1,12 +1,20 @@
 2003-05-30 Damien Sandras  <dsandras@seconix.com>
 
+	* src/ils.cpp, src/ldap_window.cpp, src/ldap_window.h:
+	Replaced Callto by URL.
+	
+	* src/urlhandler.cpp: Fixed wrong behavior when an unexistent speed 
+	dial is called.
+	
+2003-05-30 Damien Sandras  <dsandras@seconix.com>
+
 	* src/common.h: Added a GtkLabel to GmLdapWindowPage.
 
 	* src/ldap_window.cpp: Added a label at the top of each page
 	of the contact section to remind what contact section is used.
 
 	* src/main_window.cpp: Fixed dialpad bug.
-
+	
 2003-05-29 Damien Sandras  <dsandras@seconix.com>
 
 	* src/common.h: Removed unneeded users_list_store variable from
@@ -44,6 +52,7 @@
 
 2003-05-29 Damien Sandras  <dsandras@seconix.com>
 
+>>>>>>> 1.848
 	* src/ldap_window.cpp: Added scrolled window in the edit_dialog,
 	allowed key navigation between groups and contacts, added "Call
 	contact" menu option in the address book...

@@ -56,7 +56,7 @@ struct GmEditContactDialog_ {
   GtkWidget *dialog;
   GtkWidget *name_entry;
   GtkWidget *url_entry;
-  GtkWidget *shortcut_entry;
+  GtkWidget *speed_dial_entry;
   
   GtkListStore *groups_list_store;
 
@@ -198,7 +198,7 @@ dnd_drag_motion_cb (GtkWidget *tree_view,
   gchar *group_name = NULL;
   gchar *contact_name = NULL;
   gchar *contact_section = NULL;
-  gchar *contact_callto = NULL;
+  gchar *contact_url = NULL;
 
   gboolean is_group = false;
   
@@ -211,9 +211,9 @@ dnd_drag_motion_cb (GtkWidget *tree_view,
 
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (tree_view));
 
-  /* Get the callto field of the contact info from the source GtkTreeView */
+  /* Get the url field of the contact info from the source GtkTreeView */
   if (get_selected_contact_info (&contact_section, &contact_name,
-				 &contact_callto, NULL, &is_group)) {
+				 &contact_url, NULL, &is_group)) {
     
     /* See if the path in the destination GtkTreeView corresponds to a valid
        row (ie a group row, and a row corresponding to a group the user
@@ -232,8 +232,8 @@ dnd_drag_motion_cb (GtkWidget *tree_view,
 	   the selected row corresponds to a group and not a server */
 	if (gtk_tree_path_get_depth (path) >= 2 &&
 	    gtk_tree_path_get_indices (path) [0] >= 1 
-	    && group_name && contact_callto &&
-	    !is_contact_member_of_group (GMURL (contact_callto), group_name)) {
+	    && group_name && contact_url &&
+	    !is_contact_member_of_group (GMURL (contact_url), group_name)) {
     
 	  gtk_tree_view_set_drag_dest_row (GTK_TREE_VIEW (tree_view),
 					   path,
@@ -250,7 +250,7 @@ dnd_drag_motion_cb (GtkWidget *tree_view,
     return false;
 
   g_free (contact_name);
-  g_free (contact_callto);
+  g_free (contact_url);
   g_free (contact_section);
   
   return true;
@@ -347,7 +347,7 @@ dnd_drag_data_received_cb (GtkWidget *tree_view,
 
 /* DESCRIPTION  :  This callback is called when the user has released the drag.
  * BEHAVIOR     :  Puts the required data into the selection_data, we put
- *                 name and the callto fields for now.
+ *                 name and the url fields for now.
  * PRE          :  data = the type of the page from where the drag occured :
  *                 CONTACTS_GROUPS or CONTACTS_SERVERS.
  */
@@ -360,15 +360,15 @@ dnd_drag_data_get_cb (GtkWidget *tree_view,
 		      gpointer data)
 {
   gchar *contact_name = NULL;
-  gchar *contact_callto = NULL;
+  gchar *contact_url = NULL;
   gchar *drag_data = NULL;
 
 
   if (get_selected_contact_info (NULL, &contact_name,
-				 &contact_callto, NULL, NULL)
-      && contact_name && contact_callto) {
+				 &contact_url, NULL, NULL)
+      && contact_name && contact_url) {
       
-    drag_data = g_strdup_printf ("%s|%s", contact_name, contact_callto);
+    drag_data = g_strdup_printf ("%s|%s", contact_name, contact_url);
     
     gtk_selection_data_set (selection_data, selection_data->target, 
 			    8, (const guchar *) drag_data,
@@ -377,7 +377,7 @@ dnd_drag_data_get_cb (GtkWidget *tree_view,
   }
 
   g_free (contact_name);
-  g_free (contact_callto);
+  g_free (contact_url);
 }
 
 
@@ -428,21 +428,21 @@ edit_contact_cb (GtkWidget *widget,
   GConfClient *client = NULL;
 
   gchar *contact_name = NULL;
-  gchar *contact_shortcut = NULL;
+  gchar *contact_speed_dial = NULL;
   gchar *contact_url = NULL;
   gchar *contact_section = NULL;
   gchar *contact_info = NULL;
   gchar *group_name = NULL;
   gchar *group_name_no_case = NULL;
   gchar *gconf_key = NULL;
-  gchar *shortcut = NULL;
+  gchar *speed_dial = NULL;
 
   GSList *group_content = NULL;
   GSList *group_content_iter = NULL;
   
   const char *name_entry_text = NULL;
   const char *url_entry_text = NULL;
-  const char *shortcut_entry_text = NULL;
+  const char *speed_dial_entry_text = NULL;
   
   GtkTreeIter iter;
   
@@ -464,18 +464,18 @@ edit_contact_cb (GtkWidget *widget,
   /* We don't care if it fails as long as contact_section and is_group
      are correct */
   get_selected_contact_info (&contact_section, &contact_name,
-			     &contact_url, &contact_shortcut,
+			     &contact_url, &contact_speed_dial,
 			     &is_group);
 
   /* If the selected contact is in ILS, we try to find his speed_dial
      using GConf in our addressbook */
   if (!is_group && contact_url) {
 
-    shortcut =
+    speed_dial =
       gnomemeeting_addressbook_get_speed_dial_from_url (GMURL (contact_url));
 
-    g_free (contact_shortcut); /* Free the old allocated string */
-    contact_shortcut = shortcut; /* Needs to be freed later */
+    g_free (contact_speed_dial); /* Free the old allocated string */
+    contact_speed_dial = speed_dial; /* Needs to be freed later */
   }
 
   /* If we add a new user, we forget what is selected */
@@ -483,16 +483,16 @@ edit_contact_cb (GtkWidget *widget,
 
     g_free (contact_name);
     g_free (contact_url);
-    g_free (contact_shortcut);
+    g_free (contact_speed_dial);
     contact_name = NULL;
     contact_url = NULL;
-    contact_shortcut = NULL;
+    contact_speed_dial = NULL;
   }
 
   
   edit_dialog =
     addressbook_edit_contact_dialog_new (contact_name, contact_url,
-					 contact_shortcut);
+					 contact_speed_dial);
   
   while (!valid_answer) {
     
@@ -512,12 +512,12 @@ edit_contact_cb (GtkWidget *widget,
 	  gtk_entry_get_text (GTK_ENTRY (edit_dialog->name_entry));
 	url_entry_text =
 	  gtk_entry_get_text (GTK_ENTRY (edit_dialog->url_entry));
-	shortcut_entry_text =
-	  gtk_entry_get_text (GTK_ENTRY (edit_dialog->shortcut_entry));
+	speed_dial_entry_text =
+	  gtk_entry_get_text (GTK_ENTRY (edit_dialog->speed_dial_entry));
       
 	contact_info =
 	  g_strdup_printf ("%s|%s|%s", name_entry_text, url_entry_text,
-			   shortcut_entry_text);
+			   speed_dial_entry_text);
       
 	/* Determine the groups where we want to add the contact */
 	if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (edit_dialog->groups_list_store), &iter)) {
@@ -538,7 +538,7 @@ edit_contact_cb (GtkWidget *widget,
 		gconf_client_get_list (client, gconf_key,
 				       GCONF_VALUE_STRING, NULL);
 	    
-	      /* Once we find the contact corresponding to the old saved callto
+	      /* Once we find the contact corresponding to the old saved url
 		 (if we are editing an existing user and not adding a new one),
 		 we delete him and insert the new one at the same position;
 		 if the group is not selected for that user, we delete him from
@@ -596,7 +596,7 @@ edit_contact_cb (GtkWidget *widget,
 
 
   g_free (contact_name);
-  g_free (contact_shortcut);
+  g_free (contact_speed_dial);
   g_free (contact_url);
   g_free (contact_section);
   
@@ -630,7 +630,7 @@ edit_dialog_destroy (gpointer data)
 static GmEditContactDialog*
 addressbook_edit_contact_dialog_new (const char *contact_name,
 				     const char *contact_url,
-				     const char *contact_shortcut)
+				     const char *contact_speed_dial)
 {
   GmWindow *gw = NULL;
   GmEditContactDialog *edit_dialog = NULL;
@@ -727,24 +727,24 @@ addressbook_edit_contact_dialog_new (const char *contact_name,
 
   label = gtk_label_new (NULL);
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
-  label_text = g_strdup_printf ("<b>%s</b>", _("Call shortcut:"));
+  label_text = g_strdup_printf ("<b>%s</b>", _("Speed Dial:"));
   gtk_label_set_markup (GTK_LABEL (label), label_text);
   g_free (label_text);
 
-  edit_dialog->shortcut_entry = gtk_entry_new ();
-  if (contact_shortcut)
-    gtk_entry_set_text (GTK_ENTRY (edit_dialog->shortcut_entry),
-			contact_shortcut);
+  edit_dialog->speed_dial_entry = gtk_entry_new ();
+  if (contact_speed_dial)
+    gtk_entry_set_text (GTK_ENTRY (edit_dialog->speed_dial_entry),
+			contact_speed_dial);
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 2, 3, 
 		    (GtkAttachOptions) (GTK_FILL),
 		    (GtkAttachOptions) (GTK_FILL),
 		    3 * GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-  gtk_table_attach (GTK_TABLE (table), edit_dialog->shortcut_entry,
+  gtk_table_attach (GTK_TABLE (table), edit_dialog->speed_dial_entry,
 		    1, 2, 2, 3, 
 		    (GtkAttachOptions) (GTK_FILL),
 		    (GtkAttachOptions) (GTK_FILL),
 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-  g_signal_connect (G_OBJECT (edit_dialog->shortcut_entry), "activate",
+  g_signal_connect (G_OBJECT (edit_dialog->speed_dial_entry), "activate",
 		    GTK_SIGNAL_FUNC (gtk_dialog_response_accept),
 		    (gpointer) edit_dialog->dialog);
 
@@ -844,7 +844,7 @@ addressbook_edit_contact_valid (GmEditContactDialog *edit_dialog,
 {
   const char *name_entry_text = NULL;
   const char *url_entry_text = NULL;
-  const char *shortcut_entry_text = NULL;
+  const char *speed_dial_entry_text = NULL;
 
   GMURL other_speed_dial_url;
   GMURL entry_url;
@@ -853,12 +853,12 @@ addressbook_edit_contact_valid (GmEditContactDialog *edit_dialog,
   name_entry_text = gtk_entry_get_text (GTK_ENTRY (edit_dialog->name_entry));
   url_entry_text = gtk_entry_get_text (GTK_ENTRY (edit_dialog->url_entry));
   entry_url = GMURL (url_entry_text);
-  shortcut_entry_text =
-    gtk_entry_get_text (GTK_ENTRY (edit_dialog->shortcut_entry));
+  speed_dial_entry_text =
+    gtk_entry_get_text (GTK_ENTRY (edit_dialog->speed_dial_entry));
   if (edit_dialog->old_contact_url)
     old_entry_url = GMURL (edit_dialog->old_contact_url);
     
-  /* If there is no name or an empty callto, display an error message
+  /* If there is no name or an empty url, display an error message
      and exit */
   if (!strcmp (name_entry_text, "") || entry_url.IsEmpty ()) {
 
@@ -878,13 +878,13 @@ addressbook_edit_contact_valid (GmEditContactDialog *edit_dialog,
   /* If we can find another url for the same speed dial, display an error
      message and exit */
   other_speed_dial_url =
-    gnomemeeting_addressbook_get_url_from_speed_dial (shortcut_entry_text);
+    gnomemeeting_addressbook_get_url_from_speed_dial (speed_dial_entry_text);
 
   if (!other_speed_dial_url.IsEmpty () && !entry_url.IsEmpty ()
       && other_speed_dial_url != entry_url
       && other_speed_dial_url != old_entry_url) {
 		
-    gnomemeeting_error_dialog (GTK_WINDOW (edit_dialog->dialog), _("Another contact with the same shortcut already exists in the address book."));
+    gnomemeeting_error_dialog (GTK_WINDOW (edit_dialog->dialog), _("Another contact with the same speed_dial already exists in the address book."));
 
     return false;
   }
@@ -915,7 +915,7 @@ delete_contact_from_group_cb (GtkWidget *widget,
 {
   GConfClient *client = NULL;
   
-  gchar *contact_callto = NULL;
+  gchar *contact_url = NULL;
   gchar *contact_name = NULL;
   gchar *gconf_key = NULL;
   gchar *contact_section = NULL;
@@ -932,7 +932,7 @@ delete_contact_from_group_cb (GtkWidget *widget,
   client = gconf_client_get_default ();
 
   if (get_selected_contact_info (&contact_section, &contact_name,
-				 &contact_callto, NULL, &is_group)
+				 &contact_url, NULL, &is_group)
       && is_group) {
 
     contact_section_no_case = g_utf8_strdown (contact_section, -1);
@@ -944,7 +944,7 @@ delete_contact_from_group_cb (GtkWidget *widget,
       gconf_client_get_list (client, gconf_key, GCONF_VALUE_STRING, NULL);
     
     group_content_iter =
-      find_contact_in_group_content (contact_callto, group_content);
+      find_contact_in_group_content (contact_url, group_content);
     
     group_content = g_slist_remove_link (group_content,
 					 group_content_iter);
@@ -959,7 +959,7 @@ delete_contact_from_group_cb (GtkWidget *widget,
 
   g_free (contact_section);
   g_free (contact_name);
-  g_free (contact_callto);
+  g_free (contact_url);
 }
 
 
@@ -1593,7 +1593,7 @@ contact_activated_cb (GtkTreeView *tree,
 {
   gchar *contact_section = NULL;
   gchar *contact_name = NULL;
-  gchar *contact_callto = NULL;
+  gchar *contact_url = NULL;
 
   gboolean is_group;
   
@@ -1602,7 +1602,7 @@ contact_activated_cb (GtkTreeView *tree,
   gw = gnomemeeting_get_main_window (gm);
   
   if (get_selected_contact_info (&contact_section, &contact_name,
-				 &contact_callto, NULL, &is_group)) {
+				 &contact_url, NULL, &is_group)) {
     
     /* if we are waiting for a call, add the IP
        to the history, and call that user       */
@@ -1610,7 +1610,7 @@ contact_activated_cb (GtkTreeView *tree,
       
       /* this function will store a copy of text */
       gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry),
-			  contact_callto);
+			  contact_url);
       
       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->connect_button),
 				    true);
@@ -1619,7 +1619,7 @@ contact_activated_cb (GtkTreeView *tree,
 
   g_free (contact_section);
   g_free (contact_name);
-  g_free (contact_callto);
+  g_free (contact_url);
 }
 
 
@@ -1743,7 +1743,7 @@ refresh_server_content_cb (GtkWidget *w,
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Returns true if contact_callto corresponds to a contact
+ * BEHAVIOR     :  Returns true if contact_url corresponds to a contact
  *                 of group group_name.
  * PRE          :  /
  */
@@ -1781,8 +1781,8 @@ is_contact_member_of_group (GMURL contact_url,
 
       contact_info = g_strsplit ((gchar *) group_content_iter->data, "|", 0);
 
-      if (contact_info && contact_info [COLUMN_CALLTO])
-	if (GMURL (contact_info [COLUMN_CALLTO]) == contact_url) {
+      if (contact_info && contact_info [COLUMN_URL])
+	if (GMURL (contact_info [COLUMN_URL]) == contact_url) {
 	  
 	  found = true;
 	  break;
@@ -1803,11 +1803,11 @@ is_contact_member_of_group (GMURL contact_url,
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Returns a link to the contact corresponding to the given
- *                 contact_callto in the group_content list, or NULL if none.
+ *                 contact_url in the group_content list, or NULL if none.
  * PRE          :  /
  */
 static GSList *
-find_contact_in_group_content (const char *contact_callto,
+find_contact_in_group_content (const char *contact_url,
 			       GSList *group_content)
 {
   GSList *group_content_iter = NULL;
@@ -1820,15 +1820,15 @@ find_contact_in_group_content (const char *contact_callto,
     if (group_content_iter->data) {
       
       /* The member 1 of the split coming from the key is the
-	 user callto, compare it with the callto of the user
+	 user url, compare it with the url of the user
 	 before we edited it, to remove the old version of
 	 the user in the gconf database */
       group_content_split =
 	g_strsplit ((char *) group_content_iter->data, "|", 0);
 
-      if ((group_content_split && group_content_split [1] && contact_callto
-	   && !strcasecmp (group_content_split [1], contact_callto))
-	  || (!contact_callto && !group_content_split [1]))
+      if ((group_content_split && group_content_split [1] && contact_url
+	   && !strcasecmp (group_content_split [1], contact_url))
+	  || (!contact_url && !group_content_split [1]))
 	break;
 	    
       g_strfreev (group_content_split);
@@ -1855,7 +1855,7 @@ find_contact_in_group_content (const char *contact_callto,
 static gboolean
 get_selected_contact_info (gchar **contact_section,
 			   gchar **contact_name,
-			   gchar **contact_callto,
+			   gchar **contact_url,
 			   gchar **contact_speed_dial,
 			   gboolean *is_group)
 {
@@ -1896,9 +1896,9 @@ get_selected_contact_info (gchar **contact_section,
 	  gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 
 			      COLUMN_ILS_NAME, contact_name, -1);
 
-	if (contact_callto)
+	if (contact_url)
 	  gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 
-			      COLUMN_ILS_CALLTO, contact_callto, -1);
+			      COLUMN_ILS_URL, contact_url, -1);
 
 	if (is_group)
 	  *is_group = false;
@@ -1909,9 +1909,9 @@ get_selected_contact_info (gchar **contact_section,
 	  gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 
 			      COLUMN_NAME, contact_name, -1);
 	
-	if (contact_callto)
+	if (contact_url)
 	  gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 
-			      COLUMN_CALLTO, contact_callto, -1);
+			      COLUMN_URL, contact_url, -1);
 
 	if (contact_speed_dial)
 	  gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 
@@ -2362,12 +2362,12 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
     gtk_tree_view_append_column (GTK_TREE_VIEW (lwp->tree_view), column);
 
     renderer = gtk_cell_renderer_text_new ();
-    column = gtk_tree_view_column_new_with_attributes (_("Callto"),
+    column = gtk_tree_view_column_new_with_attributes (_("URL"),
 						       renderer,
 						       "text", 
-						       COLUMN_ILS_CALLTO,
+						       COLUMN_ILS_URL,
 						       NULL);
-    gtk_tree_view_column_set_sort_column_id (column, COLUMN_ILS_CALLTO);
+    gtk_tree_view_column_set_sort_column_id (column, COLUMN_ILS_URL);
     gtk_tree_view_column_set_resizable (column, true);
     gtk_tree_view_append_column (GTK_TREE_VIEW (lwp->tree_view), column);
     g_object_set (G_OBJECT (renderer), "foreground", "blue",
@@ -2412,12 +2412,12 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
     g_object_set (G_OBJECT (renderer), "weight", "bold", NULL);
     
     renderer = gtk_cell_renderer_text_new ();
-    column = gtk_tree_view_column_new_with_attributes (_("Callto URL"),
+    column = gtk_tree_view_column_new_with_attributes (_("URL"),
 						       renderer,
 						       "text", 
-						       COLUMN_CALLTO,
+						       COLUMN_URL,
 						       NULL);
-    gtk_tree_view_column_set_sort_column_id (column, COLUMN_CALLTO);
+    gtk_tree_view_column_set_sort_column_id (column, COLUMN_URL);
     gtk_tree_view_column_set_resizable (column, true);
     gtk_tree_view_column_set_min_width (GTK_TREE_VIEW_COLUMN (column), 280);
     gtk_tree_view_append_column (GTK_TREE_VIEW (lwp->tree_view), column);
@@ -2603,7 +2603,7 @@ gnomemeeting_addressbook_group_populate (GtkListStore *list_store,
 			  COLUMN_NAME, contact_info [0], -1);
     if (contact_info [1])
       gtk_list_store_set (list_store, &list_iter,
-			  COLUMN_CALLTO, contact_info [1], -1);
+			  COLUMN_URL, contact_info [1], -1);
 
     if (contact_info [2])
       gtk_list_store_set (list_store, &list_iter,
@@ -2808,7 +2808,7 @@ gnomemeeting_addressbook_get_url_from_speed_dial (const char *url)
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Returns the speed dial (or shortcut) corresponding to the
+ * BEHAVIOR     :  Returns the speed dial corresponding to the
  *                 URL given as parameter. NULL if none.
  * PRE          :  /
  *
