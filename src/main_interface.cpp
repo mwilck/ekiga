@@ -153,18 +153,22 @@ void contrast_changed (GtkAdjustment *adjustment, gpointer data)
 
 void preview_button_clicked (GtkButton *button, gpointer data)
 {
-  GM_window_widgets *gw = (GM_window_widgets *) data;
+  options *opts = (options *) data;
   GMVideoGrabber *video_grabber = (GMVideoGrabber *) MyApp->Endpoint ()->GetVideoGrabber ();
 
   if (!video_grabber->IsOpened ())
     {
-      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->preview_button), TRUE);
+      // Start the video preview
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), TRUE);
       video_grabber->Open (1);
+      opts->video_preview = 1;
     }
   else
     {
-      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->preview_button), FALSE);
+      // Stop the video preview
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), FALSE);
       video_grabber->Close ();
+      opts->video_preview = 0;
     }
 }
 
@@ -197,8 +201,8 @@ void silence_detection_button_clicked (GtkWidget *w, gpointer data)
 /* The functions                                                              */
 /******************************************************************************/
 
-void GM_init (GM_window_widgets *gw, options *opts, int argc, 
-	      char ** argv, char ** envp)
+void GM_init (GM_window_widgets *gw, GM_ldap_window_widgets *lw, options *opts, 
+	      int argc, char ** argv, char ** envp)
 {
   GMH323EndPoint *endpoint = NULL;
   gchar *text = NULL;
@@ -249,7 +253,7 @@ void GM_init (GM_window_widgets *gw, options *opts, int argc,
   gw->docklet = GM_docklet_init ();
 
   GM_main_interface_init (gw, opts);
-  GM_ldap_init (gw);
+  GM_ldap_init (gw, lw);
 
   // Launch the GnomeMeeting H.323 part
   static GnomeMeeting instance (gw, opts);
@@ -335,7 +339,6 @@ void GM_init (GM_window_widgets *gw, options *opts, int argc,
   
   GM_set_recording_source (opts->audio_recorder_mixer, 0); 
 
-
   if (opts->show_splash)
     GM_splash_advance_progress (gw->splash_win, 
 				_("Done!"), 0.9999);
@@ -348,6 +351,14 @@ void GM_init (GM_window_widgets *gw, options *opts, int argc,
 
   gtk_widget_show_all (gm);
 	
+  // Start to grab?
+  if (opts->video_preview)
+    {
+      GMVideoGrabber *video_grabber = (GMVideoGrabber *) endpoint->GetVideoGrabber ();
+
+      video_grabber->Open (1);
+    }
+  
   // The logo
   gw->pixmap = gdk_pixmap_new(gw->drawing_area->window, GM_CIF_WIDTH, GM_CIF_HEIGHT, -1);
   GM_init_main_interface_logo (gw);
@@ -483,8 +494,10 @@ void GM_main_interface_init (GM_window_widgets *gw, options *opts)
 		    (GtkAttachOptions) NULL,
 		    2, 2);
 
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->preview_button), opts->video_preview);
+
   gtk_signal_connect (GTK_OBJECT (gw->preview_button), "clicked",
-                      GTK_SIGNAL_FUNC (preview_button_clicked), gw);
+                      GTK_SIGNAL_FUNC (preview_button_clicked), opts);
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, gw->preview_button,

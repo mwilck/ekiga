@@ -233,21 +233,15 @@ void apply_filter_button_clicked (GtkButton *button, gpointer data)
 /* The functions                                                              */
 /******************************************************************************/
 
-void GM_ldap_init (GM_window_widgets *gw)
+void GM_ldap_init (GM_window_widgets *gw, GM_ldap_window_widgets *lw)
 {
   GtkWidget *table, *entry_table;
   GtkWidget *vbox;
   GtkWidget *frame;
-  GtkWidget *scroll;
   GtkWidget *apply_filter_button;
-  GtkWidget *user_add_button;
   GtkWidget *who_pixmap;
   GtkWidget *menu;
   GtkWidget *menu_item;
-
-  GM_ldap_window_widgets *lw = NULL;
-
-  lw = new (GM_ldap_window_widgets);
 
   lw->thread_count = 0;
   lw->gw = gw;

@@ -135,23 +135,6 @@ void GnomeMeeting::Connect()
   call_address = (PString) gtk_entry_get_text 
     (GTK_ENTRY (GTK_WIDGET(GTK_COMBO(gw->combo)->entry)));
 
-/*
-  if ((connection != NULL) || (!call_address.IsEmpty ()))
-    {
-
-      if (gtk_toggle_button_get_active 
-	  (GTK_TOGGLE_BUTTON (gw->preview_button)))
-	{
-	  // Stop to grab and do not change the sensitivity of
-	  // the GTK widgets
-	  MyApp->Endpoint ()->StopVideoGrabber (0);
-	  GM_init_main_interface_logo (gw);
-	  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->preview_button), 
-					FALSE);
-	}
-    }
-*/
-
   // If connection, then answer it
   if (connection != NULL)
     {
@@ -259,7 +242,9 @@ int main (int argc, char ** argv, char ** envp)
 {
   PProcess::PreInitialise (argc, argv, envp);
 
+  // The different structures needed by most of the classes and functions
   GM_window_widgets *gw = NULL;
+  GM_ldap_window_widgets *lw = NULL;
   options *opts = NULL;
 
   // Init the GM_window_widgets
@@ -268,6 +253,9 @@ int main (int argc, char ** argv, char ** envp)
   gw->pref_window = NULL;
   gw->ldap_window = NULL;
   gw->video_grabber_thread_count = 0;
+
+  // Init the GM_ldap_window_widgets structure
+  lw = new (GM_ldap_window_widgets);
 
   // Init the opts
   opts = new (options);
@@ -279,7 +267,7 @@ int main (int argc, char ** argv, char ** envp)
   textdomain (PACKAGE);
   bindtextdomain (PACKAGE, GNOMELOCALEDIR);
 
-  GM_init (gw, opts, argc, argv, envp);
+  GM_init (gw, lw, opts, argc, argv, envp);
 
   gtk_idle_add ((GtkFunction) gnome_idle_timer, gw);
 
@@ -288,9 +276,13 @@ int main (int argc, char ** argv, char ** envp)
 
   gtk_main ();
 
+  // We delete what we allocated, 
+  // and save the options before to quit
+  store_config (opts);
   delete (opts);
   delete (gw);
- 
+  delete (lw);
+
   return 0;
 }
 

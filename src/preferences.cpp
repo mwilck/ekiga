@@ -230,7 +230,12 @@ void GMPreferences (int calling_state, GM_window_widgets *gw)
   opts = new (options);
   memset (opts, 0, sizeof (options));
   
+  // We read the saved options
   read_config (opts);
+  // But we override some settings with the current options 
+  // from the "quick button bar"
+  opts->video_preview = 
+    gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (gw->preview_button));
 
   GtkWidget *frame;
 
@@ -653,6 +658,22 @@ void init_pref_interface (GtkWidget *notebook, GM_pref_window_widgets *pw,
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->show_statusbar,
 			_("If enabled, the statusbar is displayed"), NULL);
+
+
+  /* Enable / disable video preview */
+  pw->video_preview = gtk_check_button_new_with_label (_("Video Preview"));
+  gtk_table_attach (GTK_TABLE (table), pw->video_preview, 2, 4, 1, 2,
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);	
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->video_preview), 
+				opts->video_preview);
+
+  tip = gtk_tooltips_new ();
+  gtk_tooltips_set_tip (tip, pw->video_preview,
+			_("If enabled, the video preview mode will be set at startup"), 
+			NULL);
+
 
   /* Behavior */
   frame = gtk_frame_new (_("Behavior"));
@@ -1930,6 +1951,12 @@ void apply_options (options *opts, GM_pref_window_widgets *pw)
 
       pw->capabilities_changed = 0;
     }
+
+  if (opts->video_preview)
+    // it will only be set to active, if it is not already
+    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->gw->preview_button), TRUE);
+  else
+    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->gw->preview_button), FALSE);
 
   // Show / Hide notebook and / or statusbar
   if ( (!(opts->show_notebook)) 

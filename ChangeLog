@@ -1,3 +1,15 @@
+2001-10-22  Damien Sandras  <dsandras@seconix.com>
+
+	* common.h, config.cpp, preferences.cpp: Added support for a video_preview button
+	located in the preferences window (has the same effect and purpose than
+	the button in the quick bar).
+	* ldap.cpp, ldap_h.h, main.cpp: Removed memory leak.
+	* main_interface.cpp: Fixes to remove the memory leak. Fixed bug about
+	the video and audio channel on the quick bar.
+	* endpoint.cpp: Improved video preview support : if the video device is opened
+	it will stay opened during the communication and after; if the video device is
+	close, it will be opened only for the communication.
+	
 2001-10-21  Damien Sandras  <dsandras@seconix.com>
 
 	* common.h, ldap.cpp, ils.cpp: Completed multiple ILS directories support.

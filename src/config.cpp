@@ -56,6 +56,7 @@ void store_config (options *opts)
   gnome_config_set_int ("GeneralSettings/dnd", opts->dnd);
   gnome_config_set_int ("GeneralSettings/enable_auto_answer", opts->aa);
   gnome_config_set_int ("GeneralSettings/enable_popup", opts->popup);
+  gnome_config_set_int ("GeneralSettings/video_preview", opts->video_preview);
 
   gnome_config_set_string ("UserSettings/firstname", opts->firstname);
   gnome_config_set_string ("UserSettings/surname", opts->surname);
@@ -136,6 +137,7 @@ void read_config (options *opts)
   opts->aa = gnome_config_get_int ("GeneralSettings/enable_auto_answer");
   opts->dnd = gnome_config_get_int ("GeneralSettings/dnd");
   opts->popup = gnome_config_get_int ("GeneralSettings/enable_popup");
+  opts->video_preview = gnome_config_get_int ("GeneralSettings/video_preview");
 
   opts->firstname = gnome_config_get_string ("UserSettings/firstname");
   opts->listen_port = gnome_config_get_string ("UserSettings/listen_port");	
@@ -394,6 +396,8 @@ options * read_config_from_struct (GM_pref_window_widgets *pw)
   opts->sd = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->sd));
   opts->dnd = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->dnd));
   opts->popup = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->popup));
+  opts->video_preview = 
+    gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->video_preview));
 
   /* LDAP Settings */
   opts->ldap =  gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->ldap));
@@ -498,9 +502,10 @@ void init_config (void)
   gnome_config_set_int ("GeneralSettings/show_notebook", 1);
   gnome_config_set_int ("GeneralSettings/show_statusbar", 1);
   gnome_config_set_int ("GeneralSettings/incoming_call_sound", 1);
-  gnome_config_set_int ("AdvancedSettings/enable_auto_answer", 0);
-  gnome_config_set_int ("AdvancedSettings/dnd", 0);
-  gnome_config_set_int ("AdvancedSettings/enable_popup", 0);
+  gnome_config_set_int ("GeneralSettings/enable_auto_answer", 0);
+  gnome_config_set_int ("GeneralSettings/dnd", 0);
+  gnome_config_set_int ("GeneralSettings/enable_popup", 0);
+  gnome_config_set_int ("GeneralSettings/video_preview", 0);
 
   gnome_config_set_int ("AdvancedSettings/enable_fast_start", 0);
   gnome_config_set_int ("AdvancedSettings/enable_h245_tunneling", 0); 	

@@ -108,11 +108,12 @@ void silence_detection_button_clicked (GtkWidget *, gpointer);
 /* The functions to build the main window                                     */
 /******************************************************************************/
 
-// COMMON NOTICE : GM_window_widgets and options pointers must be valid,
+// COMMON NOTICE : GM_window_widgets, GM_ldap_window_widgets and options 
+//                 pointers must be valid,
 //                 options must have been read before calling these functions
 
 // BEHAVIOR     :  init things, build the initial gm window
-void GM_init (GM_window_widgets *, options *, int, 
+void GM_init (GM_window_widgets *, GM_ldap_window_widgets *, options *, int, 
 	      char **, char **);
 
 // BEHAVIOR     :  builds the main interface

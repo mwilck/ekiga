@@ -104,24 +104,6 @@ GMH323EndPoint::~GMH323EndPoint ()
   // We do not delete the webcam and the ils_client 
   // threads here, but in the Cleaner thread that is
   // called when the user chooses to quit...
-
-/*
-  GMILSClient *gm_ils_client = (GMILSClient *) ils_client;
-
-  if (webcam != NULL)
-    {
-      delete (webcam);
-      webcam=NULL;
-    }
-*/
-  // TO BE CHANGED
-/*
-  if (ils_client != NULL)
-    gm_ils_client->stop ();
-
-  usleep (1000);
-  delete (ils_client);
-*/
 }
 
 
@@ -386,23 +368,6 @@ PThread *GMH323EndPoint::get_ils_client (void)
 {
   return ils_client;
 }
-
-/*
-void GMH323EndPoint::ils_register (void)
-{
-  GMILSClient *gm_ils_client = NULL;
-  
-  // if there is still no ILSClient thread running, then we
-  // create a new thread
-  if (ils_client == NULL)
-    ils_client = new GMILSClient (gw, opts);
-
-  gm_ils_client = (GMILSClient *) ils_client;
-
-  // And now, we register to the ILS directory
-  gm_ils_client->ils_register ();
-}
-*/
 
 
 void GMH323EndPoint::SetCurrentConnection (H323Connection *c)
@@ -688,10 +653,11 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame), FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_chan_button), FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (gw->silence_detection_button), FALSE);
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->audio_chan_button), FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button), FALSE);
+  gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), TRUE);
+
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->audio_chan_button), FALSE);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->video_chan_button), FALSE);
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->preview_button), FALSE);
 
   enable_disconnect ();
   enable_connect ();
@@ -700,9 +666,14 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   
   gdk_threads_leave ();
 
-  // Close the Video Grabber
+  // Start the Video Grabber if video preview
+  // else close the grabber
   GMVideoGrabber *vg = (GMVideoGrabber *) video_grabber;
-  vg->Close ();
+
+  if (opts->video_preview)
+    vg->Start ();
+  else
+    vg->Close ();
 }
 
 
@@ -747,7 +718,7 @@ BOOL GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
       gtk_widget_set_sensitive (GTK_WIDGET (gw->silence_detection_button),
 				TRUE);
 
-      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->silence_detection_button),
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->audio_chan_button),
 				    TRUE);
       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->silence_detection_button),
 				    opts->sd);
@@ -797,7 +768,15 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 
      DisplayConfig (0);
 
-     return codec.AttachChannel (channel, FALSE);
+     gdk_threads_enter ();
+     gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button),
+			       TRUE);
+
+     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->video_chan_button),
+				   TRUE);
+     gdk_threads_leave ();
+     
+     return codec.AttachChannel (channel, FALSE); // do not close the channel at the end
    }
  else
    {

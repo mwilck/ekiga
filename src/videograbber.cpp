@@ -383,21 +383,22 @@ void GMVideoGrabber::VGClose (void)
   gdk_threads_enter ();
   gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
   gdk_threads_leave ();
-
+  
   grabbing_mutex.Wait ();
-
+      
   grabber->Close ();
   channel->Close ();
-
+      
   grabbing_mutex.Signal ();
 
   delete (channel);
 
   has_to_close = 0;
   is_opened = 0;
-
+  
+  // Enable video preview button
   gdk_threads_enter ();
-
+  
   // Enable the video preview button 
   gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), TRUE);
   // Display the logo again
@@ -407,6 +408,7 @@ void GMVideoGrabber::VGClose (void)
 			    FALSE);
 
   gdk_threads_leave ();
+
 }
 
 /******************************************************************************/

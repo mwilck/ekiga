@@ -36,6 +36,7 @@ typedef struct _options options;
 /* This structure contains the fields for all the parameters of gnomemeeting */
 struct _options
 {
+	int video_preview;
   int video_size;   // 1 = small ; 2 = large
   int video_format; // 1 = default ; 2 = pal ; 3 = ntsc
   int tr_vq;  // transmitted video quality
@@ -151,6 +152,8 @@ struct _GM_pref_window_widgets
   GtkWidget *show_notebook;
   // Toggle to popup a window when receiving an incoming call
   GtkWidget *popup;
+  // Toggle to enable video preview or not
+  GtkWidget *video_preview;
   // Toggle to play or not a sound when receiving an incoming call
   GtkWidget *incoming_call_sound;
 
