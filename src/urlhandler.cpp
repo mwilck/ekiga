@@ -497,8 +497,9 @@ void GMURLHandler::Main ()
   }
   else {
 
-//FIXME    endpoint->TransferCall (endpoint->GetCurrentCallToken (),
-//			    call_address);
-    g_timeout_add (11000, (GtkFunction) TransferTimeOut, NULL);
+    PSafePtr<OpalCall> call = endpoint->FindCallWithLock (endpoint->GetCurrentCallToken ());
+    PSafePtr<OpalConnection> con = endpoint->GetConnection (call, TRUE);
+    con->TransferConnection (call_address);
+    //FIXME g_timeout_add (11000, (GtkFunction) TransferTimeOut, NULL);
   }
 }
