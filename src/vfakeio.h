@@ -235,6 +235,11 @@ class GMH323FakeVideoInputDevice : public PVideoInputDevice
 			   unsigned &,
 			   unsigned &);
   
+  BOOL GetParameters (int *,
+		      int *,
+		      int *,
+		      int *,
+		      int *);
   
   PBYTEArray data;
   bool moving;

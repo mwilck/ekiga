@@ -1,3 +1,13 @@
+2005-03-25  Damien Sandras  <dsandras@gnome.org>
+
+	* src/main_window.cpp, src/videograbber.cpp: Do not update
+	the video sliders if the driver returns values of zero for all
+	settings, instead reuse the former values. Thanks to
+	schorpp   _@_   schorpp.dyndns.dk.
+
+	* src/vfakeio.cpp, src/vfakeio.h: Added GetParameters function that
+	returns 0 for all settings.
+
 2005-03-23  Adi Attar  <aattar@cvs.gnome.org>
 
 	* configure.in: Added 'xh' to ALL_LINGUAS.
