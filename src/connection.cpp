@@ -61,11 +61,22 @@ GMH323Connection::GMH323Connection (GMH323EndPoint & ep,
 				    unsigned callReference)
   :H323Connection(ep, callReference)
 {
+  int min_jitter = 20;
+  int max_jitter = 1000;
+
   gw = gnomemeeting_get_main_window (gm);
 
   opened_channels = 0;
 
-  //  SetMaxAudioDelayJitter (gconf_client_get_int (gconf_client_get_default (), "/apps/gnomemeeting/audio_settings/jitter_buffer", NULL));
+  min_jitter = 
+    gconf_client_get_int (gconf_client_get_default (), 
+			  AUDIO_SETTINGS_KEY "min_jitter_buffer", NULL);
+
+  max_jitter = 
+    gconf_client_get_int (gconf_client_get_default (), 
+			  AUDIO_SETTINGS_KEY "max_jitter_buffer", NULL);
+
+  SetMaxAudioDelayJitter (min_jitter, max_jitter);
 }
 
 

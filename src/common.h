@@ -189,7 +189,8 @@ struct _GmPrefWindow
   GtkWidget    *tr_fps;
   GtkWidget    *vid_tr;
   GtkWidget    *sd;
-  GtkWidget    *jitter_buffer;
+  GtkWidget    *min_jitter_buffer;
+  GtkWidget    *max_jitter_buffer;
   GtkWidget    *video_bandwidth;
   GtkWidget    *vb;
   GtkWidget    *fps;

@@ -635,13 +635,18 @@ static void jitter_buffer_changed_nt (GConfClient *client, guint cid,
   RTP_Session *session = NULL;  
   H323Connection *connection = NULL;
   H323EndPoint *ep = MyApp->Endpoint ();  
-  gdouble val = 20.0;
+  gdouble min_val = 20.0;
+  gdouble max_val = 500.0;
 
   if (entry->value->type == GCONF_VALUE_INT) {
 
     gdk_threads_enter ();
 
-    val = gconf_value_get_int (entry->value);
+    min_val = 
+      gconf_client_get_int (client, AUDIO_SETTINGS_KEY "min_jitter_buffer", 0);
+    max_val = 
+      gconf_client_get_int (client, AUDIO_SETTINGS_KEY "max_jitter_buffer", 0);
+			    
 
     /* We update the current value */
     connection = MyApp->Endpoint ()->GetCurrentConnection ();
@@ -651,8 +656,7 @@ static void jitter_buffer_changed_nt (GConfClient *client, guint cid,
         connection->GetSession (OpalMediaFormat::DefaultAudioSessionID);       
                                                                                
     if (session != NULL)                                                       
-      session->SetJitterBufferSize ((int) val * 8, 
-				    ep->GetJitterThreadStackSize());
+      session->SetJitterBufferSize ((int) min_val * 8, (int) max_val * 8); 
 
     gdk_threads_leave ();
   }
@@ -1103,9 +1107,6 @@ void gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_status_bar", menu_toggle_changed_nt, gnomemeeting_menu [11].widget, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_status_bar", view_widget_changed_nt, gw->statusbar, 0, 0);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_docklet", menu_toggle_changed_nt, gnomemeeting_menu [12].widget, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_docklet", view_widget_changed_nt, gw->docklet, 0, 0);
-
   gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_chat_window", menu_toggle_changed_nt, gnomemeeting_menu [10].widget, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_chat_window", view_widget_changed_nt, gw->chat_window, 0, 0);
 
@@ -1225,9 +1226,19 @@ void gnomemeeting_init_gconf (GConfClient *client)
   /* gnomemeeting_pref_window_audio_codecs */
   gconf_client_notify_add (client, "/apps/gnomemeeting/audio_codecs/codecs_list", audio_codecs_list_changed_nt, pw->codecs_list_store, 0, 0);	     
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/jitter_buffer", jitter_buffer_changed_nt, pw->jitter_buffer, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/jitter_buffer", adjustment_changed_nt, pw->jitter_buffer, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/jitter_buffer", network_settings_changed_nt, 0, 0, 0);
+  gconf_client_notify_add (client, AUDIO_SETTINGS_KEY "min_jitter_buffer", 
+			   jitter_buffer_changed_nt, pw->min_jitter_buffer, 
+			   0, 0);
+  gconf_client_notify_add (client, AUDIO_SETTINGS_KEY "min_jitter_buffer", 
+			   adjustment_changed_nt, pw->min_jitter_buffer, 
+			   0, 0);
+
+  gconf_client_notify_add (client, AUDIO_SETTINGS_KEY "max_jitter_buffer", 
+			   jitter_buffer_changed_nt, pw->max_jitter_buffer, 
+			   0, 0);
+  gconf_client_notify_add (client, AUDIO_SETTINGS_KEY "max_jitter_buffer", 
+			   adjustment_changed_nt, pw->max_jitter_buffer, 
+			   0, 0);
 
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/gsm_frames", audio_codec_setting_changed_nt, pw->gsm_frames, 0, 0);

@@ -45,6 +45,7 @@
 #include "misc.h"
 #include "videograbber.h"
 #include "stock-icons.h"
+#include "callbacks.h"
 
 
 #ifndef DISABLE_GNOME
@@ -183,13 +184,14 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
 
 
 /* DESCRIPTION  :  This callback is called when the user clicks on cancel.
- * BEHAVIOR     :  Exits. (Possible memory leak here with the structs).
+ * BEHAVIOR     :  Exits. 
  * PRE          :  /
  */
 static void 
 gnomemeeting_druid_cancel (GtkWidget *w, gpointer data)
 {
   GtkWidget *window = NULL;
+  GmWindow *gw = gnomemeeting_get_main_window (gm);
 
   window = (GtkWidget *) g_object_get_data (G_OBJECT (druid), "window");
 
@@ -197,7 +199,7 @@ gnomemeeting_druid_cancel (GtkWidget *w, gpointer data)
 
   /* Do not quit if we started the druid from the menu */
   if (strcmp ((gchar *) data, "menu"))
-    gtk_main_quit ();
+    quit_callback (NULL, gw);
 }
 
 

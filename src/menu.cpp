@@ -434,15 +434,16 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
        GTK_SIGNAL_FUNC (menu_toggle_changed),
        (gpointer) "/apps/gnomemeeting/view/show_status_bar", NULL},
 
-      {_("Notification Icon"), _("View/Hide the Icon in the Notification Area"), 
-       NULL, 0, MENU_ENTRY_TOGGLE, 
-       GTK_SIGNAL_FUNC (menu_toggle_changed),
-       (gpointer) "/apps/gnomemeeting/view/show_docklet", NULL},
-
       {_("Control Panel"), NULL, NULL, 0, MENU_SUBMENU_NEW, NULL, NULL, NULL},
 
       {_("Statistics"), 
        _("View Audio/Video transmission and reception statistics"),
+       NULL, 0, MENU_ENTRY_RADIO, 
+       GTK_SIGNAL_FUNC (view_menu_toggles_changed), 
+       (gpointer) "/apps/gnomemeeting/view/control_panel_section",
+       NULL},
+
+      {_("_Dialpad"), _("View the dialpad"),
        NULL, 0, MENU_ENTRY_RADIO, 
        GTK_SIGNAL_FUNC (view_menu_toggles_changed), 
        (gpointer) "/apps/gnomemeeting/view/control_panel_section",
@@ -611,9 +612,6 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
   GTK_CHECK_MENU_ITEM (gnomemeeting_menu [11].widget)->active = 
     gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_status_bar", 
 			   0);
-  GTK_CHECK_MENU_ITEM (gnomemeeting_menu [12].widget)->active =
-    gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_docklet", 0);
-
   
   for (int i = 0 ; i <= GM_MAIN_NOTEBOOK_HIDDEN ; i++) {
     

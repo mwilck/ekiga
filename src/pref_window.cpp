@@ -1350,31 +1350,34 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
 
 
   /* Here we add the audio codecs options */
-  table = gnomemeeting_vbox_add_table (vbox, _("Audio Codecs Settings"), 4, 2);
-
-  /* Jitter Buffer */
-  pw->jitter_buffer =
-     gnomemeeting_table_add_spin (table, _("Jitter Buffer:"),       
- 				       "/apps/gnomemeeting/audio_settings/jitter_buffer",
-					_("The jitter buffer delay to buffer audio calls (in ms)."),
- 				       20.0, 5000.0, 1.0, 1);
+  table = gnomemeeting_vbox_add_table (vbox, _("Audio Codecs Settings"), 3, 2);
 
   pw->gsm_frames =
      gnomemeeting_table_add_spin (table, _("GSM Frames per packet:"),       
  				       "/apps/gnomemeeting/audio_settings/gsm_frames",
 					_("The number of frames in each transmitted GSM packet."),
- 				       1.0, 7.0, 1.0, 2);
+ 				       1.0, 7.0, 1.0, 0);
 
   pw->g711_frames =
      gnomemeeting_table_add_spin (table, _("G.711 Frames per packet:"),       
  				       "/apps/gnomemeeting/audio_settings/g711_frames",
 					_("The number of frames in each transmitted G.711 packet."),
- 				       11.0, 240.0, 1.0, 3);
+ 				       11.0, 240.0, 1.0, 1);
 
   pw->sd = 
     gnomemeeting_table_add_toggle (table, _("Enable Silence Detection"),       
  				       "/apps/gnomemeeting/audio_settings/sd",
-					_("Enable/disable the silence detection for the GSM and G.711 codecs."), 4, 0);
+					_("Enable/disable the silence detection for the GSM and G.711 codecs."), 2, 0);
+
+
+  /* The jitter buffer */
+  table = gnomemeeting_vbox_add_table (vbox, _("Dynamic Jitter Buffer"), 2, 2);
+
+  pw->min_jitter_buffer =
+    gnomemeeting_table_add_spin (table, _("Minimal Jitter Buffer:"), AUDIO_SETTINGS_KEY "min_jitter_buffer", _("The minimal jitter buffer size for audio reception (in ms)."), 20.0, 1000.0, 10.0, 0);
+
+  pw->max_jitter_buffer =
+    gnomemeeting_table_add_spin (table, _("Maximal Jitter Buffer:"), AUDIO_SETTINGS_KEY "max_jitter_buffer", _("The maximal jitter buffer size for audio reception (in ms)."), 500.0, 1000.0, 10.0, 1);
 }
                                                                                
 
