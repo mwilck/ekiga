@@ -1,14 +1,14 @@
 # Translation of gnomemeeting to Catalan.
-# Copyright © 2002, 2003, 2004 Free Software Foundation, Inc.
+# Copyright © 2002, 2003, 2004, 2005 Free Software Foundation, Inc.
 # This file is distributed under the same license as the GnomeMeeting package.
-# Josep Puigdemont i Casamajó <josep@imatge-sintetica.com>, 2002, 2003, 2004.
+# Josep Puigdemont i Casamajó <josep@imatge-sintetica.com>, 2002, 2003, 2004, 2005.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-11-26 15:11+0100\n"
-"PO-Revision-Date: 2004-11-29 00:15+0100\n"
+"POT-Creation-Date: 2005-02-22 15:30+0100\n"
+"PO-Revision-Date: 2005-02-22 19:05+0100\n"
 "Last-Translator: Josep Puigdemont <josep@imatge-sintetica.com>\n"
 "Language-Team: Catalan <gnome@softcatala.net>\n"
 "MIME-Version: 1.0\n"
@@ -17,8 +17,8 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #. Add the window icon and title
-#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:3710
-#: src/main_window.cpp:3907
+#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:3717
+#: src/main_window.cpp:3909
 msgid "GnomeMeeting"
 msgstr "GnomeMeeting"
 
@@ -359,7 +359,7 @@ msgstr "Mode per a trucades entrants"
 
 #: gnomemeeting.schemas.in.in.h:64
 msgid "Kind of network selected in the druid"
-msgstr "Tipus de xarxa seleccionada en l'assistent"
+msgstr "Tipus de xarxa seleccionada en l'auxiliar"
 
 #: gnomemeeting.schemas.in.in.h:65
 msgid "Last name"
@@ -461,7 +461,7 @@ msgstr "Posició en pantalla de la finestra de l'historial de trucades"
 
 #: gnomemeeting.schemas.in.in.h:89
 msgid "Position on the screen of the druid window"
-msgstr "Posició en pantalla de la finestra de l'auxiliar de la configuració"
+msgstr "Posició en pantalla de la finestra de l'auxiliar de configuració"
 
 #: gnomemeeting.schemas.in.in.h:90
 msgid "Position on the screen of the log window"
@@ -582,8 +582,8 @@ msgstr "Mida de la finestra de preferències"
 msgid "Start hidden"
 msgstr "Arrenca amagat"
 
-#: gnomemeeting.schemas.in.in.h:117 src/main_window.cpp:1131
-#: src/main_window.cpp:1635 src/main_window.cpp:1658
+#: gnomemeeting.schemas.in.in.h:117 src/main_window.cpp:1143
+#: src/main_window.cpp:1649 src/main_window.cpp:1674
 msgid "Switch to fullscreen"
 msgstr "Commuta a pantalla completa"
 
@@ -1277,7 +1277,7 @@ msgstr "_Fitxer"
 msgid "New _Address Book"
 msgstr "_Afegeix llibreta d'adreces"
 
-#: src/addressbook_window.cpp:2269 src/main_window.cpp:1007
+#: src/addressbook_window.cpp:2269 src/main_window.cpp:1018
 msgid "_Close"
 msgstr "Tan_ca"
 
@@ -1478,7 +1478,7 @@ msgstr "Trucades fetes"
 msgid "Missed Calls"
 msgstr "Trucades perdudes"
 
-#: src/calls_history_window.cpp:658 src/main_window.cpp:1151 src/tray.cpp:302
+#: src/calls_history_window.cpp:658 src/main_window.cpp:1164 src/tray.cpp:302
 msgid "Calls History"
 msgstr "Historial de trucades"
 
@@ -1789,8 +1789,8 @@ msgid ""
 "Once you have completed these steps, you can always change them later by "
 "selecting Preferences in the Edit menu."
 msgstr ""
-"Aquest és l'auxiliar per a la configuració del GnomeMeeting. Els següents "
-"passos us permetran configurar el GnomeMeeting d'una manera molt senzilla.\n"
+"Aquest és l'auxiliar de configuració del GnomeMeeting. Els següents passos "
+"us permetran configurar el GnomeMeeting d'una manera molt senzilla.\n"
 " \n"
 "Més endavant, un cop finalitzats aquests passos, podreu canviar qualsevol "
 "dels paràmetres en el menú Preferències del menú Edita."
@@ -1798,7 +1798,7 @@ msgstr ""
 #: src/druid.cpp:613
 #, c-format
 msgid "Configuration Druid - page 1/%d"
-msgstr "Auxiliar de la configuració - pàgina 1/%d"
+msgstr "Auxiliar de configuració - pàgina 1/%d"
 
 #: src/druid.cpp:655
 #, c-format
@@ -1977,11 +1977,11 @@ msgstr ""
 #: src/druid.cpp:1195
 #, c-format
 msgid "Configuration complete - page %d/%d"
-msgstr "Configuració finalitzada - pàgina %d/%d"
+msgstr "S'ha finalitzat la configuració - pàgina %d/%d"
 
 #: src/druid.cpp:1432 src/druid.cpp:1692 src/druid.cpp:1709 src/druid.cpp:1775
-#: src/endpoint.cpp:1830 src/gnomemeeting.cpp:269 src/gnomemeeting.cpp:271
-#: src/gnomemeeting.cpp:273 src/sound_handling.cpp:564
+#: src/endpoint.cpp:1835 src/gnomemeeting.cpp:275 src/gnomemeeting.cpp:277
+#: src/gnomemeeting.cpp:279 src/sound_handling.cpp:564
 #: src/sound_handling.cpp:565 src/videograbber.cpp:310
 #: src/videograbber.cpp:566
 msgid "No device found"
@@ -2026,7 +2026,7 @@ msgid ""
 "Callto URL: %s\n"
 msgstr ""
 "Acabeu de configurar el GnomeMeeting. Tots els paràmetres es poden canviar "
-"en les preferències del GnomeMeeting. Que disfruteu!\n"
+"en les preferències del GnomeMeeting. Passeu-ho bé!\n"
 "\n"
 "\n"
 "Resum de la configuració:\n"
@@ -2080,7 +2080,7 @@ msgstr "S'està acceptant la trucada de %s (contesta automàticament)"
 msgid "Call rejected"
 msgstr "S'ha rebutjat la trucada"
 
-#: src/endpoint.cpp:909 src/endpoint.cpp:1308 src/endpoint.cpp:2255
+#: src/endpoint.cpp:909 src/endpoint.cpp:1313 src/endpoint.cpp:2260
 msgid "Call forwarded"
 msgstr "S'ha desviat la trucada"
 
@@ -2111,98 +2111,98 @@ msgstr "Connectat"
 msgid "Connected with %s using %s"
 msgstr "S'ha establert connexió amb %s utilitzant %s"
 
-#: src/endpoint.cpp:1272
+#: src/endpoint.cpp:1277
 msgid "Local user cleared the call"
 msgstr "L'usuari local ha tallat la trucada"
 
-#: src/endpoint.cpp:1275
+#: src/endpoint.cpp:1280
 msgid "Remote user cleared the call"
 msgstr "L'usuari remot ha tallat la trucada"
 
-#: src/endpoint.cpp:1278
+#: src/endpoint.cpp:1283
 msgid "Remote user did not accept the call"
 msgstr "L'usuari remot no ha acceptat la trucada"
 
-#: src/endpoint.cpp:1281 src/endpoint.cpp:1284
+#: src/endpoint.cpp:1286 src/endpoint.cpp:1289
 msgid "Local user did not accept the call"
 msgstr "L'usuari local no ha acceptat la trucada"
 
-#: src/endpoint.cpp:1287
+#: src/endpoint.cpp:1292
 msgid "The Gatekeeper cleared the call"
 msgstr "El gatekeeper ha tallat la trucada"
 
-#: src/endpoint.cpp:1290
+#: src/endpoint.cpp:1295
 msgid "Call not answered in the required time"
 msgstr "No s'ha respost la trucada dins el termini establert"
 
-#: src/endpoint.cpp:1293
+#: src/endpoint.cpp:1298
 msgid "Remote user has stopped calling"
 msgstr "L'usuari remot ha deixat de trucar"
 
-#: src/endpoint.cpp:1296
+#: src/endpoint.cpp:1301
 msgid "Abnormal call termination"
 msgstr "La trucada ha acabat anormalment"
 
-#: src/endpoint.cpp:1299
+#: src/endpoint.cpp:1304
 msgid "Could not connect to remote host"
 msgstr "No s'ha pogut connectar a l'ordinador remot"
 
-#: src/endpoint.cpp:1302
+#: src/endpoint.cpp:1307
 msgid "Insufficient bandwidth"
 msgstr "No hi ha prou amplada de banda"
 
-#: src/endpoint.cpp:1305
+#: src/endpoint.cpp:1310
 msgid "No common codec"
 msgstr "No hi ha cap còdec en comú"
 
-#: src/endpoint.cpp:1311
+#: src/endpoint.cpp:1316
 msgid "Security check failed"
 msgstr "Ha fallat la verificació de seguretat"
 
-#: src/endpoint.cpp:1314
+#: src/endpoint.cpp:1319
 msgid "Local user is busy"
 msgstr "L'usuari local està ocupat"
 
-#: src/endpoint.cpp:1317
+#: src/endpoint.cpp:1322
 msgid "Remote user is busy"
 msgstr "L'usuari remot està ocupat"
 
-#: src/endpoint.cpp:1320 src/endpoint.cpp:1323
+#: src/endpoint.cpp:1325 src/endpoint.cpp:1328
 msgid "Congested link to remote party"
 msgstr "L'enllaç cap al vostre interlocutor està saturat"
 
-#: src/endpoint.cpp:1326 src/endpoint.cpp:1329
+#: src/endpoint.cpp:1331 src/endpoint.cpp:1334
 msgid "Remote user is unreachable"
 msgstr "No s'ha pogut trobar l'usuari remot"
 
-#: src/endpoint.cpp:1332
+#: src/endpoint.cpp:1337
 msgid "Remote host is offline"
 msgstr "L'usuari remot no està en línia"
 
-#: src/endpoint.cpp:1335
+#: src/endpoint.cpp:1340
 msgid "Temporary failure"
 msgstr "Fallada temporal"
 
-#: src/endpoint.cpp:1338 src/urlhandler.cpp:464 src/urlhandler.cpp:469
+#: src/endpoint.cpp:1343 src/urlhandler.cpp:466 src/urlhandler.cpp:471
 msgid "User not found"
 msgstr "No s'ha trobat aquest usuari"
 
-#: src/endpoint.cpp:1342
+#: src/endpoint.cpp:1347
 msgid "Call completed"
 msgstr "S'ha finalitzat la trucada"
 
-#: src/endpoint.cpp:1365
+#: src/endpoint.cpp:1370
 #, c-format
 msgid "Missed %d call"
 msgid_plural "Missed %d calls"
 msgstr[0] "S'ha perdut %d trucada"
 msgstr[1] "S'han perdut %d trucades"
 
-#: src/endpoint.cpp:1665
+#: src/endpoint.cpp:1670
 msgid "Error while starting the listener"
 msgstr "Hi ha hagut un error en iniciar l'escoltador"
 
-#: src/endpoint.cpp:1665
+#: src/endpoint.cpp:1670
 msgid ""
 "You will not be able to receive incoming calls. Please check that no other "
 "program is already running on the port used by GnomeMeeting."
@@ -2210,25 +2210,25 @@ msgstr ""
 "No podreu rebre trucades entrants. Comproveu que no hi hagi cap altre "
 "programa que faci servir els mateixos ports que el GnomeMeeting."
 
-#: src/endpoint.cpp:1816
+#: src/endpoint.cpp:1821
 msgid "Attaching lid hardware to codec"
 msgstr "S'està adjuntant maquinari lid al còdec"
 
-#: src/endpoint.cpp:1850
+#: src/endpoint.cpp:1855
 #, c-format
 msgid "Opened %s for recording with plugin %s"
 msgstr "S'ha obert %s per enregistrar amb el connector %s"
 
-#: src/endpoint.cpp:1851
+#: src/endpoint.cpp:1856
 #, c-format
 msgid "Opened %s for playing with plugin %s"
 msgstr "S'ha obert %s per reproduir amb el connector %s"
 
-#: src/endpoint.cpp:1887
+#: src/endpoint.cpp:1892
 msgid "Could not open audio channel for audio transmission"
 msgstr "No s'ha pogut obrir el canal d'àudio per a la transmissió"
 
-#: src/endpoint.cpp:1887
+#: src/endpoint.cpp:1892
 msgid ""
 "An error occured while trying to record from the soundcard for the audio "
 "transmission. Please check that your soundcard is not busy and that your "
@@ -2240,11 +2240,11 @@ msgstr ""
 "que el controlador sigui full-dúplex.\n"
 "S'ha inhabilitat la transmissió d'àudio."
 
-#: src/endpoint.cpp:1892
+#: src/endpoint.cpp:1897
 msgid "Could not open audio channel for audio reception"
 msgstr "No s'ha pogut obrir el canal d'àudio per a la recepció"
 
-#: src/endpoint.cpp:1892
+#: src/endpoint.cpp:1897
 msgid ""
 "An error occured while trying to play audio to the soundcard for the audio "
 "reception. Please check that your soundcard is not busy and that your driver "
@@ -2256,12 +2256,12 @@ msgstr ""
 "controlador sigui full-dúplex.\n"
 "S'ha inhabilitat la recepció d'àudio."
 
-#: src/endpoint.cpp:2082
+#: src/endpoint.cpp:2087
 #, c-format
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 
-#: src/endpoint.cpp:2252
+#: src/endpoint.cpp:2257
 #, c-format
 msgid "Forwarding Call to %s (No Answer)"
 msgstr "S'està desviant la trucada a %s (no s'ha contestat)"
@@ -2338,15 +2338,15 @@ msgid "Refusing Incoming call"
 msgstr "S'està refusant la trucada entrant"
 
 #. Init the address book
-#: src/gnomemeeting.cpp:418
+#: src/gnomemeeting.cpp:424
 msgid "On This Computer"
 msgstr "A aquest ordinador"
 
-#: src/gnomemeeting.cpp:418
+#: src/gnomemeeting.cpp:424
 msgid "Personal"
 msgstr "Personal"
 
-#: src/gnomemeeting.cpp:476
+#: src/gnomemeeting.cpp:482
 #, c-format
 msgid "Started GnomeMeeting %d.%d.%d for user %s"
 msgstr "S'ha iniciat el GnomeMeeting %d.%d.%d per a l'usuari %s"
@@ -2450,34 +2450,34 @@ msgstr "El telèfon està despenjat"
 msgid "Phone is on hook"
 msgstr "El telèfon està penjat"
 
-#: src/log_window.cpp:121 src/main_window.cpp:1146
+#: src/log_window.cpp:121 src/main_window.cpp:1159
 msgid "General History"
 msgstr "Historial genèric"
 
-#: src/main_window.cpp:705
+#: src/main_window.cpp:704
 msgid ""
 "Enter an URL to call on the left, and click on this button to connect to the "
 "given URL"
 msgstr ""
 "Introduïu una URL on trucar, i feu clic a aquest botó per connectar-vos-hi"
 
-#: src/main_window.cpp:751
+#: src/main_window.cpp:756
 msgid "Open text chat"
 msgstr "Obre el xat de text"
 
-#: src/main_window.cpp:775
+#: src/main_window.cpp:780
 msgid "Open control panel"
 msgstr "Obre el quadre de control"
 
-#: src/main_window.cpp:794
+#: src/main_window.cpp:799
 msgid "Open address book"
 msgstr "Obre la llibreta d'adreces"
 
-#: src/main_window.cpp:815
+#: src/main_window.cpp:820
 msgid "Display images from your camera device"
 msgstr "Mostra imatges de la càmera"
 
-#: src/main_window.cpp:841
+#: src/main_window.cpp:846
 msgid ""
 "Audio transmission status. During a call, click here to suspend or resume "
 "the audio transmission."
@@ -2485,7 +2485,7 @@ msgstr ""
 "Estat de la transmissió d'àudio. Durant una trucada, feu clic aquí per "
 "aturar o reprendre la transmissió d'àudio."
 
-#: src/main_window.cpp:864
+#: src/main_window.cpp:869
 msgid ""
 "Video transmission status. During a call, click here to suspend or resume "
 "the video transmission."
@@ -2493,311 +2493,311 @@ msgstr ""
 "Estat de la transmissió de vídeo. Durant una trucada, feu clic aquí per "
 "aturar o rependre la transmissió de vídeo."
 
-#: src/main_window.cpp:933
+#: src/main_window.cpp:944
 msgid "C_all"
 msgstr "_Trucada"
 
-#: src/main_window.cpp:935
+#: src/main_window.cpp:946
 msgid "C_onnect"
 msgstr "C_onnecta"
 
-#: src/main_window.cpp:935 src/tray.cpp:258
+#: src/main_window.cpp:946 src/tray.cpp:258
 msgid "Create a new connection"
 msgstr "Crea una nova connexió"
 
-#: src/main_window.cpp:938 src/tray.cpp:261
+#: src/main_window.cpp:949 src/tray.cpp:261
 msgid "_Disconnect"
 msgstr "_Desconnecta"
 
-#: src/main_window.cpp:939 src/tray.cpp:262
+#: src/main_window.cpp:950 src/tray.cpp:262
 msgid "Close the current connection"
 msgstr "Tanca la connexió actual"
 
-#: src/main_window.cpp:945 src/tray.cpp:268
+#: src/main_window.cpp:956 src/tray.cpp:268
 msgid "_Available"
 msgstr "_Disponible"
 
-#: src/main_window.cpp:946 src/tray.cpp:269
+#: src/main_window.cpp:957 src/tray.cpp:269
 msgid "Display a popup to accept the call"
 msgstr "Mostra una finestra emergent per acceptar la trucada"
 
-#: src/main_window.cpp:951 src/tray.cpp:274
+#: src/main_window.cpp:962 src/tray.cpp:274
 msgid "Aut_o Answer"
 msgstr "Contesta aut_omàticament"
 
-#: src/main_window.cpp:952 src/tray.cpp:275
+#: src/main_window.cpp:963 src/tray.cpp:275
 msgid "Auto answer calls"
 msgstr "Contesta trucades automàticament"
 
-#: src/main_window.cpp:957 src/tray.cpp:280
+#: src/main_window.cpp:968 src/tray.cpp:280
 msgid "_Do Not Disturb"
 msgstr "No _molestar"
 
-#: src/main_window.cpp:958 src/tray.cpp:281
+#: src/main_window.cpp:969 src/tray.cpp:281
 msgid "Reject calls"
 msgstr "Rebutja les trucades"
 
-#: src/main_window.cpp:963 src/tray.cpp:286
+#: src/main_window.cpp:974 src/tray.cpp:286
 msgid "_Forward"
 msgstr "D_esvia"
 
-#: src/main_window.cpp:963 src/tray.cpp:286
+#: src/main_window.cpp:974 src/tray.cpp:286
 msgid "Forward calls"
 msgstr "Desvia les trucades"
 
-#: src/main_window.cpp:971
+#: src/main_window.cpp:982
 msgid "Speed dials"
 msgstr "Tecla de marcatge ràpid"
 
-#: src/main_window.cpp:975 src/main_window.cpp:2884
+#: src/main_window.cpp:986 src/main_window.cpp:2889
 msgid "_Hold Call"
 msgstr "_Mantingues la trucada"
 
-#: src/main_window.cpp:975
+#: src/main_window.cpp:986
 msgid "Hold the current call"
 msgstr "Mantingues la trucada en curs"
 
-#: src/main_window.cpp:979
+#: src/main_window.cpp:990
 msgid "_Transfer Call"
 msgstr "_Transfereix trucada"
 
-#: src/main_window.cpp:980
+#: src/main_window.cpp:991
 msgid "Transfer the current call"
 msgstr "Transfereix la trucada actual"
 
-#: src/main_window.cpp:987 src/main_window.cpp:2918
+#: src/main_window.cpp:998 src/main_window.cpp:2923
 msgid "Suspend _Audio"
 msgstr "_Atura l'àudio"
 
-#: src/main_window.cpp:988
+#: src/main_window.cpp:999
 msgid "Suspend or resume the audio transmission"
 msgstr "Atura o reprèn la transmissió d'àudio"
 
-#: src/main_window.cpp:992 src/main_window.cpp:2920
+#: src/main_window.cpp:1003 src/main_window.cpp:2925
 msgid "Suspend _Video"
 msgstr "Atura el _vídeo"
 
-#: src/main_window.cpp:993
+#: src/main_window.cpp:1004
 msgid "Suspend or resume the video transmission"
 msgstr "Atura o reprèn la transmissió de vídeo"
 
-#: src/main_window.cpp:1000
+#: src/main_window.cpp:1011
 msgid "_Save Current Picture"
 msgstr "De_sa la imatge actual"
 
-#: src/main_window.cpp:1001
+#: src/main_window.cpp:1012
 msgid "Save a snapshot of the current video"
 msgstr "Desa una instantània del vídeo actual"
 
-#: src/main_window.cpp:1007
+#: src/main_window.cpp:1018
 msgid "Close the GnomeMeeting window"
 msgstr "Tanca la finestra del GnomeMeeting"
 
-#: src/main_window.cpp:1014 src/tray.cpp:342
+#: src/main_window.cpp:1025 src/tray.cpp:342
 msgid "_Quit"
 msgstr "S_urt"
 
-#: src/main_window.cpp:1014 src/tray.cpp:343
+#: src/main_window.cpp:1025 src/tray.cpp:343
 msgid "Quit GnomeMeeting"
 msgstr "Surt del GnomeMeeting"
 
-#: src/main_window.cpp:1018
+#: src/main_window.cpp:1029
 msgid "_Edit"
 msgstr "_Edita"
 
-#: src/main_window.cpp:1020
+#: src/main_window.cpp:1031
 msgid "Configuration Druid"
-msgstr "Assistent per a la configuració"
+msgstr "Auxiliar de configuració"
 
-#: src/main_window.cpp:1021
+#: src/main_window.cpp:1032
 msgid "Run the configuration druid"
-msgstr "Inicia l'assistent per a la configuració"
+msgstr "Inicia l'auxiliar de configuració"
 
-#: src/main_window.cpp:1028 src/tray.cpp:310
+#: src/main_window.cpp:1039 src/tray.cpp:310
 msgid "_Preferences"
 msgstr "_Preferències"
 
-#: src/main_window.cpp:1029 src/tray.cpp:311
+#: src/main_window.cpp:1040 src/tray.cpp:311
 msgid "Change your preferences"
 msgstr "Canvia les preferències"
 
-#: src/main_window.cpp:1034
+#: src/main_window.cpp:1045
 msgid "_View"
 msgstr "_Visualitza"
 
-#: src/main_window.cpp:1036 src/pref_window.cpp:714
+#: src/main_window.cpp:1047 src/pref_window.cpp:714
 msgid "Text Chat"
 msgstr "Xat"
 
-#: src/main_window.cpp:1037
+#: src/main_window.cpp:1048
 msgid "View/Hide the text chat window"
 msgstr "Mostra/Amaga finestra del xat"
 
-#: src/main_window.cpp:1043
+#: src/main_window.cpp:1054
 msgid "Control Panel"
 msgstr "Quadre de control"
 
-#: src/main_window.cpp:1045 src/main_window.cpp:1247
+#: src/main_window.cpp:1056 src/main_window.cpp:1260
 msgid "Statistics"
 msgstr "Estadístiques"
 
-#: src/main_window.cpp:1046
+#: src/main_window.cpp:1057
 msgid "View audio/video transmission and reception statistics"
 msgstr "Mostra estadístiques de transmissió i recepció d'àudio i vídeo"
 
-#: src/main_window.cpp:1051
+#: src/main_window.cpp:1062
 msgid "_Dialpad"
 msgstr "Marca_dor"
 
-#: src/main_window.cpp:1051
+#: src/main_window.cpp:1062
 msgid "View the dialpad"
 msgstr "Visualitza el marcador"
 
-#: src/main_window.cpp:1056
+#: src/main_window.cpp:1067
 msgid "_Audio Settings"
 msgstr "P_aràmetres d'àudio"
 
-#: src/main_window.cpp:1057
+#: src/main_window.cpp:1068
 msgid "View audio settings"
 msgstr "Mostra els paràmetres d'àudio"
 
-#: src/main_window.cpp:1062
+#: src/main_window.cpp:1073
 msgid "_Video Settings"
 msgstr "Paràmetres de _vídeo"
 
-#: src/main_window.cpp:1063
+#: src/main_window.cpp:1074
 msgid "View video settings"
 msgstr "Mostra els paràmetres de vídeo"
 
-#: src/main_window.cpp:1068 src/pref_window.cpp:1077
+#: src/main_window.cpp:1079 src/pref_window.cpp:1077
 msgid "Off"
 msgstr "Inactiu"
 
-#: src/main_window.cpp:1068
+#: src/main_window.cpp:1079
 msgid "Hide the control panel"
 msgstr "Amaga el quadre de control"
 
-#: src/main_window.cpp:1076
+#: src/main_window.cpp:1087
 msgid "_Clear Text Chat"
 msgstr "_Neteja el xat de text"
 
-#: src/main_window.cpp:1077
+#: src/main_window.cpp:1088
 msgid "Clear the text chat"
 msgstr "Neteja la finestra de xat"
 
-#: src/main_window.cpp:1084 src/main_window.cpp:3859
+#: src/main_window.cpp:1095 src/main_window.cpp:3861
 msgid "Local Video"
 msgstr "Vídeo local"
 
-#: src/main_window.cpp:1085
+#: src/main_window.cpp:1096
 msgid "Local video image"
 msgstr "Imatge del vídeo local"
 
-#: src/main_window.cpp:1090 src/main_window.cpp:3865
+#: src/main_window.cpp:1101 src/main_window.cpp:3867
 msgid "Remote Video"
 msgstr "Vídeo remot"
 
-#: src/main_window.cpp:1091
+#: src/main_window.cpp:1102
 msgid "Remote video image"
 msgstr "Imatge del vídeo remota"
 
-#: src/main_window.cpp:1096
+#: src/main_window.cpp:1107
 msgid "Both (Picture-in-Picture)"
 msgstr "Ambdues (imatge en imatge)"
 
-#: src/main_window.cpp:1097 src/main_window.cpp:1103 src/main_window.cpp:1110
+#: src/main_window.cpp:1108 src/main_window.cpp:1114 src/main_window.cpp:1121
 msgid "Both video images"
 msgstr "Ambdues imatges de vídeo"
 
-#: src/main_window.cpp:1102
+#: src/main_window.cpp:1113
 msgid "Both (Side-by-Side)"
 msgstr "Ambdues (de costat)"
 
-#: src/main_window.cpp:1109
+#: src/main_window.cpp:1120
 msgid "Both (Both in New Windows)"
 msgstr "Ambdues (ambdues en finestres noves)"
 
-#: src/main_window.cpp:1118 src/main_window.cpp:1622 src/main_window.cpp:1645
+#: src/main_window.cpp:1129 src/main_window.cpp:1635 src/main_window.cpp:1660
 msgid "Zoom In"
 msgstr "Apropa"
 
-#: src/main_window.cpp:1118 src/main_window.cpp:1622 src/main_window.cpp:1645
+#: src/main_window.cpp:1129 src/main_window.cpp:1635 src/main_window.cpp:1660
 msgid "Zoom in"
 msgstr "Apropa"
 
-#: src/main_window.cpp:1122 src/main_window.cpp:1626 src/main_window.cpp:1649
+#: src/main_window.cpp:1133 src/main_window.cpp:1639 src/main_window.cpp:1664
 msgid "Zoom Out"
 msgstr "Allunya"
 
-#: src/main_window.cpp:1122 src/main_window.cpp:1626 src/main_window.cpp:1649
+#: src/main_window.cpp:1133 src/main_window.cpp:1639 src/main_window.cpp:1664
 msgid "Zoom out"
 msgstr "Allunya"
 
-#: src/main_window.cpp:1126 src/main_window.cpp:1630 src/main_window.cpp:1653
+#: src/main_window.cpp:1137 src/main_window.cpp:1643 src/main_window.cpp:1668
 msgid "Normal Size"
 msgstr "Mida normal"
 
-#: src/main_window.cpp:1126 src/main_window.cpp:1630 src/main_window.cpp:1653
+#: src/main_window.cpp:1137 src/main_window.cpp:1643 src/main_window.cpp:1668
 msgid "Normal size"
 msgstr "Mida normal"
 
-#: src/main_window.cpp:1131 src/main_window.cpp:1635 src/main_window.cpp:1658
+#: src/main_window.cpp:1143 src/main_window.cpp:1649 src/main_window.cpp:1674
 msgid "Fullscreen"
 msgstr "Pantalla completa"
 
-#: src/main_window.cpp:1136
+#: src/main_window.cpp:1149
 msgid "_Tools"
 msgstr "Ei_nes"
 
-#: src/main_window.cpp:1138 src/tray.cpp:294
+#: src/main_window.cpp:1151 src/tray.cpp:294
 msgid "Address _Book"
 msgstr "Lli_breta d'adreces"
 
-#: src/main_window.cpp:1139 src/tray.cpp:295
+#: src/main_window.cpp:1152 src/tray.cpp:295
 msgid "Open the address book"
 msgstr "Obre la llibreta d'adreces"
 
-#: src/main_window.cpp:1147
+#: src/main_window.cpp:1160
 msgid "View the operations history"
 msgstr "Mostra l'historial d'operacions"
 
-#: src/main_window.cpp:1152 src/tray.cpp:303
+#: src/main_window.cpp:1165 src/tray.cpp:303
 msgid "View the calls history"
 msgstr "Mostra l'historial de trucades"
 
-#: src/main_window.cpp:1159
+#: src/main_window.cpp:1172
 msgid "PC-To-Phone Account"
 msgstr "Compte PC-a-Telèfon"
 
-#: src/main_window.cpp:1160
+#: src/main_window.cpp:1173
 msgid "Manage your PC-To-Phone account"
 msgstr "Administreu el vostre compte PC-a-Telèfon"
 
-#: src/main_window.cpp:1165
+#: src/main_window.cpp:1178
 msgid "_Help"
 msgstr "_Ajuda"
 
-#: src/main_window.cpp:1168 src/main_window.cpp:1179 src/tray.cpp:319
+#: src/main_window.cpp:1181 src/main_window.cpp:1192 src/tray.cpp:319
 #: src/tray.cpp:330
 msgid "_Contents"
 msgstr "_Continguts"
 
-#: src/main_window.cpp:1169 src/main_window.cpp:1180 src/tray.cpp:320
+#: src/main_window.cpp:1182 src/main_window.cpp:1193 src/tray.cpp:320
 #: src/tray.cpp:331
 msgid "Get help by reading the GnomeMeeting manual"
 msgstr "Obtingueu ajuda llegint el manual del GnomeMeeting"
 
-#: src/main_window.cpp:1173 src/main_window.cpp:1184 src/tray.cpp:324
+#: src/main_window.cpp:1186 src/main_window.cpp:1197 src/tray.cpp:324
 #: src/tray.cpp:335
 msgid "_About"
 msgstr "Quant _a"
 
-#: src/main_window.cpp:1174 src/main_window.cpp:1185 src/tray.cpp:325
+#: src/main_window.cpp:1187 src/main_window.cpp:1198 src/tray.cpp:325
 #: src/tray.cpp:336
 msgid "View information about GnomeMeeting"
 msgstr "Mostra informació quant al GnomeMeeting"
 
-#: src/main_window.cpp:1242 src/main_window.cpp:4049
+#: src/main_window.cpp:1255 src/main_window.cpp:4051
 msgid ""
 "Lost packets:\n"
 "Late packets:\n"
@@ -2809,84 +2809,84 @@ msgstr ""
 "Retard del retorn:\n"
 "Mem. int. pel jitter:"
 
-#: src/main_window.cpp:1311
+#: src/main_window.cpp:1324
 msgid "Dialpad"
 msgstr "Marcador"
 
-#: src/main_window.cpp:1367
+#: src/main_window.cpp:1380
 msgid "Adjust brightness"
 msgstr "Ajusta la lluminositat"
 
-#: src/main_window.cpp:1390
+#: src/main_window.cpp:1403
 msgid "Adjust whiteness"
 msgstr "Ajusta la blancor"
 
-#: src/main_window.cpp:1413
+#: src/main_window.cpp:1426
 msgid "Adjust color"
 msgstr "Ajusta el color"
 
-#: src/main_window.cpp:1436
+#: src/main_window.cpp:1449
 msgid "Adjust contrast"
 msgstr "Ajusta el contrast"
 
-#: src/main_window.cpp:1445
+#: src/main_window.cpp:1458
 msgid "Video"
 msgstr "Vídeo"
 
-#: src/main_window.cpp:1523
+#: src/main_window.cpp:1536
 msgid "Audio"
 msgstr "Àudio"
 
-#: src/main_window.cpp:2068
+#: src/main_window.cpp:2085
 #, c-format
 msgid "Sent DTMF %s"
 msgstr "Envia DTMF %s"
 
-#: src/main_window.cpp:2868
+#: src/main_window.cpp:2873
 msgid "_Retrieve Call"
 msgstr "_Recupera la trucada"
 
-#: src/main_window.cpp:2922
+#: src/main_window.cpp:2927
 msgid "Resume _Audio"
 msgstr "Reprèn l'à_udio"
 
-#: src/main_window.cpp:2924
+#: src/main_window.cpp:2929
 msgid "Resume _Video"
 msgstr "Reprèn el _vídeo"
 
-#: src/main_window.cpp:3538
+#: src/main_window.cpp:3545
 msgid "Transfer call to:"
 msgstr "S'està transferint la trucada a:"
 
-#: src/main_window.cpp:3539 src/main_window.cpp:3612
+#: src/main_window.cpp:3546 src/main_window.cpp:3619
 msgid "Transfer"
 msgstr "Transfereix"
 
-#: src/main_window.cpp:3610
+#: src/main_window.cpp:3617
 msgid "Reject"
 msgstr "Rebutja"
 
-#: src/main_window.cpp:3614
+#: src/main_window.cpp:3621
 msgid "Accept"
 msgstr "Accepta"
 
-#: src/main_window.cpp:3622
+#: src/main_window.cpp:3629
 msgid "Incoming call from"
 msgstr "Trucada entrant de"
 
-#: src/main_window.cpp:3635
+#: src/main_window.cpp:3642
 msgid "Remote URL:"
 msgstr "URL remota:"
 
-#: src/main_window.cpp:3647
+#: src/main_window.cpp:3654
 msgid "Remote Application:"
 msgstr "Aplicació remota:"
 
-#: src/main_window.cpp:3979
+#: src/main_window.cpp:3981
 msgid "Click to clear"
 msgstr "Feu clic per netejar"
 
-#: src/main_window.cpp:4075
+#: src/main_window.cpp:4077
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2899,19 +2899,19 @@ msgstr ""
 "Retard del retorn: %d ms\n"
 "Mem. int. pel jitter: %d ms"
 
-#: src/main_window.cpp:4187
+#: src/main_window.cpp:4189
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Imprimeix missatges de depuració a la consola (nivell entre 1 i 6)"
 
-#: src/main_window.cpp:4190
+#: src/main_window.cpp:4192
 msgid "Makes GnomeMeeting call the given URL"
 msgstr "Fa que el GnomeMeeting truqui la URL indicada"
 
-#: src/main_window.cpp:4225
+#: src/main_window.cpp:4227
 msgid "No usable audio plugin detected"
 msgstr "No s'ha pogut detectar cap gestor d'àudio adequat"
 
-#: src/main_window.cpp:4225
+#: src/main_window.cpp:4227
 msgid ""
 "GnomeMeeting didn't find any usable audio plugin. Make sure that your "
 "installation is correct."
@@ -2919,7 +2919,7 @@ msgstr ""
 "No s'ha pogut trobar cap gestor d'àudio que es pugui fer servir. Assegureu-"
 "vos que la instal·lació és correcta."
 
-#: src/main_window.cpp:4247
+#: src/main_window.cpp:4249
 #, c-format
 msgid ""
 "GnomeMeeting got an invalid value for the GConf key %s.\n"
@@ -2942,7 +2942,7 @@ msgstr ""
 "(http://www.gnome.org/projects/gconf/) o als arxius de les llistres de "
 "distribució (http://mail.gnome.org)."
 
-#: src/main_window.cpp:4250
+#: src/main_window.cpp:4252
 msgid "Gconf key error"
 msgstr "Error en la clau Gconf"
 
@@ -3916,11 +3916,11 @@ msgstr "S'ha detectat amb èxit el tipus de NAT"
 msgid "Set STUN server to %s"
 msgstr "S'ha establert el servidor STUN %s"
 
-#: src/tools.cpp:172 src/tools.cpp:192
+#: src/tools.cpp:171 src/tools.cpp:191
 msgid "PC-To-Phone Settings"
 msgstr "Paràmetres per a PC-a-Telèfon"
 
-#: src/tools.cpp:181
+#: src/tools.cpp:180
 msgid ""
 "You can make calls to regular phones and cell numbers worldwide using "
 "GnomeMeeting. To enable this, you need to register an account using the URL "
@@ -3939,27 +3939,27 @@ msgstr ""
 "Assegureu-vos de fer servir alguna de les URL d'aquí sota, sinó el compte no "
 "funcionarà."
 
-#: src/tools.cpp:194
+#: src/tools.cpp:193
 msgid "Account _number:"
 msgstr "_Número del compte:"
 
-#: src/tools.cpp:194
+#: src/tools.cpp:193
 msgid "Use your MicroTelco account number"
 msgstr "Feu servir el número del compte MicroTelco"
 
-#: src/tools.cpp:197
+#: src/tools.cpp:196
 msgid "_Pin:"
 msgstr "_Pin:"
 
-#: src/tools.cpp:197
+#: src/tools.cpp:196
 msgid "Use your MicroTelco PIN"
 msgstr "Feu servir el PIN del vostre compte MicroTelco"
 
-#: src/tools.cpp:203
+#: src/tools.cpp:202
 msgid "Use PC-To-Phone service"
 msgstr "Utilitza el servei PC-a-Telèfon"
 
-#: src/tools.cpp:216
+#: src/tools.cpp:215
 msgid ""
 "Click on one of the following links to get more information about your "
 "existing GnomeMeeting PC-To-Phone account, or to create a new account."
@@ -3967,19 +3967,19 @@ msgstr ""
 "Feu clic en algun dels enllaços següents per obtenir més informació sobre el "
 "vostre compte PC-a-Telèfon per a GnomeMeeting, o per crear-ne un de nou."
 
-#: src/tools.cpp:225
+#: src/tools.cpp:224
 msgid "Get a GnomeMeeting PC-To-Phone account"
 msgstr "Obtingueu un compte PC-a-Telèfon per a GnomeMeeting"
 
-#: src/tools.cpp:239
+#: src/tools.cpp:238
 msgid "Recharge the account"
 msgstr "Recarrega el compte"
 
-#: src/tools.cpp:253
+#: src/tools.cpp:252
 msgid "Consult the balance history"
 msgstr "Consulta l'historial del balanç"
 
-#: src/tools.cpp:267
+#: src/tools.cpp:266
 msgid "Consult the calls history"
 msgstr "Consulta l'historial de trucades"
 
@@ -4176,7 +4176,7 @@ msgstr "Hi ha hagut un error en la mida del quadre."
 #~ msgstr "Títol"
 
 #~ msgid "Title of the druid"
-#~ msgstr "Títol de l'assistent"
+#~ msgstr "Títol de l'auxiliar"
 
 #~ msgid "Logo"
 #~ msgstr "Logotip"
@@ -5494,10 +5494,10 @@ msgstr "Hi ha hagut un error en la mida del quadre."
 #~ msgstr "De_sa"
 
 #~ msgid "Configuration Assistant"
-#~ msgstr "Assistent per a la configuració"
+#~ msgstr "Auxiliar de configuració"
 
 #~ msgid "Start The Configuration Assistant"
-#~ msgstr "Inicia l'assistent per a la configuració"
+#~ msgstr "Inicia l'auxiliar de configuració"
 
 #~ msgid "Toolbar"
 #~ msgstr "Barra d'eines"
