@@ -187,6 +187,11 @@ GMH323EndPoint::GMH323EndPoint ()
   /* Start the ILSClient PThread */
   ils_client = new GMILSClient ();
 
+  /* Use IPv6 address family by default if available. */
+#ifdef P_HAS_IPV6
+  PIPSocket::SetDefaultIpAddressFamilyV6();
+#endif
+      
   udp_port_range = 
     gconf_client_get_string (client, GENERAL_KEY "udp_port_range", NULL);
   tcp_port_range = 
@@ -703,7 +708,9 @@ GMH323EndPoint::StartListener ()
     gconf_client_get_int (client, GENERAL_KEY "listen_port", NULL);
 
   /* Start the listener thread for incoming calls */
-  listener = new H323ListenerTCP (*this, INADDR_ANY, listen_port);
+  listener =
+    new H323ListenerTCP (*this, PIPSocket::GetDefaultIpAny(), listen_port);
+   
 
   /* unsuccesfull */
   if (!H323EndPoint::StartListener (listener)) {
