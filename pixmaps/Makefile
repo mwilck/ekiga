@@ -40,10 +40,10 @@ pkgincludedir = $(includedir)/GnomeMeeting
 
 top_builddir = ..
 
-ACLOCAL = /home/bjack/gnomemeeting-0.10/missing aclocal -I macros
-AUTOCONF = /home/bjack/gnomemeeting-0.10/missing autoconf
-AUTOMAKE = /home/bjack/gnomemeeting-0.10/missing automake
-AUTOHEADER = /home/bjack/gnomemeeting-0.10/missing autoheader
+ACLOCAL = /home/bjack/GnomeMeeting/gnomemeeting-0.10/missing aclocal -I macros
+AUTOCONF = /home/bjack/GnomeMeeting/gnomemeeting-0.10/missing autoconf
+AUTOMAKE = /home/bjack/GnomeMeeting/gnomemeeting-0.10/missing automake
+AUTOHEADER = /home/bjack/GnomeMeeting/gnomemeeting-0.10/missing autoheader
 
 INSTALL = /usr/bin/install -c
 INSTALL_PROGRAM = ${INSTALL} $(AM_INSTALL_PROGRAM_FLAGS)
@@ -96,7 +96,7 @@ LD = /usr/bin/ld
 LIBTOOL = $(SHELL) $(top_builddir)/libtool
 LN_S = ln -s
 MAINT = #
-MAKEINFO = /home/bjack/gnomemeeting-0.10/missing makeinfo
+MAKEINFO = /home/bjack/GnomeMeeting/gnomemeeting-0.10/missing makeinfo
 MKINSTALLDIRS = ./mkinstalldirs
 NM = /usr/bin/nm -B
 OBJDUMP = @OBJDUMP@
