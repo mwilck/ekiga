@@ -207,6 +207,48 @@ else
 fi
 
 
+dnl #########################################################################
+dnl Activate support for automatic arts suspension
+dnl #########################################################################
+AC_PATH_PROG(ARTSCCONFIG, artsc-config)
+AC_CACHE_CHECK([for aRts Sound server],
+        ac_cv_c_artsserver,
+        if test x$ARTSCCONFIG = x -o x$ARTSCCONFIG = x'"$ARTSCCONFIG"';
+        then
+            ac_cv_c_artsserver=no
+        else
+            ARTSC_CFLAGS=`$ARTSCCONFIG --cflags`
+            ARTSC_LIBS=`$ARTSCCONFIG --libs`
+            ac_cv_c_artsserver=no
+            save_CFLAGS="$CFLAGS"
+            CFLAGS="$CFLAGS $ARTSC_CFLAGS"
+            AC_TRY_COMPILE([
+             #include <artsc.h>
+            ],[
+             arts_stream_t stream;
+            ],[
+            ac_cv_c_artsserver=yes
+            ])
+            CFLAGS="$save_CFLAGS"
+        fi)
+
+if test "$ac_cv_c_artsserver" = "yes"
+then
+    AC_SUBST(ARTSLIBS, $ARTSC_LIBS)
+    AC_SUBST(ARTSINCL, $ARTSC_CFLAGS)
+
+    AC_DEFINE(HAVE_ARTS, 1, [Define if you have ARTS sound server])
+    HAS_ARTS="enabled"
+    GNOMEMEETING_LDADD="$GNOMEMEETING_LDADD $ARTSC_LIBS"
+    GNOMEMEETING_INCLUDES="$GNOMEMEETING_INCLUDES $ARTSC_CFLAGS"
+else
+    HAS_ARTS="disabled"
+fi
+
+
+
+
+
 dnl ***************************************
 dnl OpenSSL
 dnl ***************************************
@@ -368,6 +410,7 @@ echo "               LDAP Directory is  :  $LDAP_DIR"
 echo ""
 echo "                Quicknet support  :  $HAS_IXJ"
 echo "   SDL (with fullscreen) support  :  $HAS_SDL"
+echo "            ARTS suspend support  :  $HAS_ARTS"
 echo ""
 echo "                         OS Type  :  $OSTYPE"
 echo "                    Machine Type  :  $MACHTYPE"

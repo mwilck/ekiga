@@ -623,7 +623,7 @@ gnomemeeting_init (GmWindow *gw,
 			   "/desktop/gnome/url-handlers/callto/enabled", 
 			   true, NULL);
 
-    gnomemeeting_warning_dialog (GTK_WINDOW (gm), _("GnomeMeeting just installed an URL handler for callto:// URLs. callto URLs are an easy way to call people on the internet using GnomeMeeting. They are now available to all Gnome programs able to cope with URLs. You can for example create an URL launcher on the Gnome panel of the form \"callto://ils.seconix.com/me@foo.com\" to call the person registered on the ILS server ils.seconix.com with the me@foo.com e-mail address."));
+    gnomemeeting_message_dialog (GTK_WINDOW (gm), _("GnomeMeeting just installed an URL handler for callto:// URLs. callto URLs are an easy way to call people on the internet using GnomeMeeting. They are now available to all Gnome programs able to cope with URLs. You can for example create an URL launcher on the Gnome panel of the form \"callto://ils.seconix.com/me@foo.com\" to call the person registered on the ILS server ils.seconix.com with the me@foo.com e-mail address."));
   }
 
 

@@ -56,6 +56,11 @@
 #include <gnome.h>
 #include <lpc10codec.h>
 
+
+#ifdef HAVE_ARTS
+#include <artsc.h>
+#endif
+
 #define new PNEW
 
 
@@ -1429,7 +1434,18 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
    
   /* Put esd into normal mode */
   esd_client = esd_open_sound (NULL);
-  esd_resume (esd_client);
+
+  gnomemeeting_threads_enter ();
+  if (esd_resume (esd_client) != 1) {
+
+    gnomemeeting_log_insert (_("Could not resume ESD"));
+  }
+  else {
+
+    gnomemeeting_log_insert (_("ESD resumed"));
+  }
+  gnomemeeting_threads_leave ();
+
   esd_close (esd_client);
 }
 
@@ -1469,10 +1485,45 @@ BOOL GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
   sound_timeout = 0;
 
 
-  /* Put esd into standby mode */
-  esd_client = esd_open_sound (NULL);
-  esd_standby (esd_client);
-  esd_close (esd_client);
+  if (isEncoding) {
+
+    /* Put esd into standby mode */
+    esd_client = esd_open_sound (NULL);
+    if (esd_standby (esd_client) != 1) {
+      
+      gnomemeeting_log_insert (_("Could not suspend ESD"));
+    }
+    else {
+      
+      gnomemeeting_log_insert (_("ESD suspended"));
+    }
+    
+    esd_close (esd_client);
+
+
+    /* Put artsd into standby mode */
+#ifdef HAVE_ARTS
+    int artserror = arts_init();
+    if (artserror) {
+      
+      gchar* artsmsg = g_strdup(arts_error_text(artserror));
+      gnomemeeting_log_insert(artsmsg);
+    } 
+    else {
+  
+      if (0 == arts_suspend()) {
+	
+	gnomemeeting_log_insert (_("Could not suspend artsd"));
+      } 
+      else {
+	
+	gnomemeeting_log_insert (_("artsd suspended"));
+      }
+      
+      arts_free();
+    }
+#endif
+  }
 
 
   /* Clear the docklet */
