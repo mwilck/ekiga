@@ -5,13 +5,21 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting 0.1\n"
-"POT-Creation-Date: 2001-09-13 04:32+0200\n"
-"PO-Revision-Date: 2001-09-05 13:17+02:00\n"
+"POT-Creation-Date: 2001-09-13 11:57+0200\n"
+"PO-Revision-Date: 2001-09-13 11:58+02:00\n"
 "Last-Translator: Christopher R. Gabriel <cgabriel@cgabriel.org>\n"
 "Language-Team: Italian <it@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: gnomemeeting.desktop.in.h:1
+msgid "GnomeMeeting"
+msgstr "GnomeMeeting"
+
+#: gnomemeeting.desktop.in.h:2
+msgid "H.323 Client"
+msgstr "Client H.323"
 
 #: src/applet.cpp:112
 msgid "Can't create applet!\n"
@@ -33,7 +41,7 @@ msgstr "Toggle finestra principale"
 msgid "Contributors:"
 msgstr "Contributori:"
 
-#: src/callbacks.cpp:136
+#: src/callbacks.cpp:138
 msgid "I18n Maintainer:"
 msgstr "Traduttori:"
 
@@ -41,11 +49,11 @@ msgstr "Traduttori:"
 #. copyright character if your character set allows it
 #. (Hint: iso-8859-1 is one of the character sets that
 #. has this symbol).
-#: src/callbacks.cpp:150
+#: src/callbacks.cpp:152
 msgid "(C) 2000, 2001 Damien Sandras"
 msgstr "© 2000, 2001 Damien Sandras"
 
-#: src/callbacks.cpp:152
+#: src/callbacks.cpp:154
 msgid ""
 "GnomeMeeting is an H.323 compliant program for GNOME.\n"
 "This program is not supported by Microsoft."
@@ -53,12 +61,12 @@ msgstr ""
 "GnomeMeeting è un programma H.323 compatibile per GNOME.\n"
 "Questo programma non viene supportato da Microsoft."
 
-#: src/callbacks.cpp:168
+#: src/callbacks.cpp:170
 msgid ""
 "A call is currently in progress, please disconnect before trying to quit."
-msgstr ""
+msgstr "È in corso una chiamata, disconnettersi e tentare di uscire nuovamente."
 
-#: src/callbacks.cpp:176
+#: src/callbacks.cpp:178
 msgid "Are you sure you want to quit?"
 msgstr "Veramente sicuri di voler uscire?"
 
@@ -363,16 +371,15 @@ msgstr "Risposta alla chiamata in ingresso"
 #: src/main.cpp:156
 #, c-format
 msgid "Call %d: calling %s"
-msgstr ""
+msgstr "Chiamata %d: chiamo %s"
 
 #: src/main.cpp:182
 msgid "Trying to stop calling"
 msgstr "Tentativo di interrompere la chiamata"
 
 #: src/main.cpp:185 src/main.cpp:196
-#, fuzzy
 msgid "Failed to stop current call"
-msgstr "Interrompi chiamata corrente"
+msgstr "Impossibile interrompere chiamata corrente"
 
 #: src/main.cpp:193
 msgid "Stopping current call"
@@ -630,11 +637,11 @@ msgstr "Entrambe le immagini video"
 
 #: src/preferences.cpp:205
 msgid "Impossible to open this device."
-msgstr ""
+msgstr "Impossibile aprire questa periferica"
 
 #: src/preferences.cpp:208
 msgid "These settings are correct."
-msgstr ""
+msgstr "Queste impostazioni sono corrette."
 
 #: src/preferences.cpp:233 src/toolbar.cpp:60
 msgid "Settings"
@@ -1090,9 +1097,8 @@ msgstr "Il numero del canale video da utilizzare (videocamera, tv, ...)"
 
 #. Device test button
 #: src/preferences.cpp:1560
-#, fuzzy
 msgid "Video Test"
-msgstr "Codec Video"
+msgstr "Test Video"
 
 #: src/preferences.cpp:1632
 msgid "Okay"
