@@ -95,7 +95,7 @@ void ldap_option_changed (GtkEditable *, gpointer);
 
 // DESCRIPTION  :  This callback is called when the user changes
 //                 the audio device
-// BEHAVIOR     :  It sets a flag to say that the new audio mixer has to
+// BEHAVIOR     :  It sets a flag to say that the new audio mixers have to
 //                 be tested
 // PRE          :  gpointer is a valid pointer to a GM_pref_window_widgets
 void audio_mixer_changed (GtkEditable *, gpointer);

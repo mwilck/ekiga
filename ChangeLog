@@ -1,3 +1,39 @@
+2001-08-31  Damien Sandras  <dsandras@seconix.com>
+
+	* pixmaps/: added left_arrow.xpm, right_arrow.xpm, computer.xpm
+	
+2001-08-30  Damien Sandras  <dsandras@seconix.com>
+
+	* src/main_interface.cpp: added buttons in the quick control panel to 
+	switch between the different sections of the control panel.
+
+	* src/endpoint.cpp: removed all calls to strcat, strcpy, by calls to
+	g_strdup_printf.
+
+	* src/endpoint.cpp: add a small computer icon when connected.
+
+	* src/ldap.cpp: added g_free calls, but needs to be changed again, 
+	gtk_clist_append stores a copy of the structures.
+
+	* src/preferences.cpp: removed the video test button
+
+	* src/callbacks.cpp, src/toolbar.cpp: it is now possible to quit during calls
+	
+2001-08-29  Damien Sandras  <dsandras@seconix.com>
+
+	* src/endpoint.cpp, src/main_interface.cpp: added function GM_init to cope 
+	with the endpoint's initialise. That permits to remove the gtk stuff and 
+	the splash screen from the Initialise Method in endpoint.
+
+	* src/config.cpp, src/preferences.cpp, src/main_interface.cpp: improved 
+	support	for different soundcards. Updated the Audio Settings in the control
+	panel.
+	
+2001-08-28  Miguel Rodríguez Pérez  <migras@atlas.uvigo.es>
+
+	* configure.in: Just try to locate openh323 and pwlib
+	in the configure script.
+
 2001-08-28  Pablo Saratxaga  <pablo@mandrakesoft.com>
 
 	* configure.in: ALL_LINGUAS: added Walloon (wa) language

@@ -41,6 +41,8 @@
 #include "../pixmaps/color.xpm"
 #include "../pixmaps/eye.xpm"
 #include "../pixmaps/quickcam.xpm"
+#include "../pixmaps/left_arrow.xpm"
+#include "../pixmaps/right_arrow.xpm"
 
 
 /******************************************************************************/
@@ -75,18 +77,23 @@ gint expose_event (GtkWidget *widget, GdkEventExpose *event, gpointer data)
 void audio_volume_changed (GtkAdjustment *adjustment, gpointer data)
 {
   int vol_play, vol_rec;
-  char *audio_mixer;
+  char *audio_recorder_mixer;
+  char *audio_player_mixer;
 
   GM_window_widgets *gw = (GM_window_widgets *) data;
   
   vol_play =  (int) (GTK_ADJUSTMENT (gw->adj_play)->value) * 257;
   vol_rec =  (int) (GTK_ADJUSTMENT (gw->adj_rec)->value) * 257;
 
-  audio_mixer = (gchar *) 
-    gtk_object_get_data (GTK_OBJECT (gw->adj_play), "audio_mixer");
+  // returns a pointer to the data, not a copy => no need to free
+  audio_player_mixer = (gchar *) 
+    gtk_object_get_data (GTK_OBJECT (gw->adj_play), "audio_player_mixer");
 
-  GM_volume_set (audio_mixer, 0, &vol_play);
-  GM_volume_set (audio_mixer, 1, &vol_rec);
+  audio_recorder_mixer = (gchar *) 
+    gtk_object_get_data (GTK_OBJECT (gw->adj_rec), "audio_recorder_mixer");
+
+  GM_volume_set (audio_player_mixer, 0, &vol_play);
+  GM_volume_set (audio_recorder_mixer, 1, &vol_rec);
 }
 
 
@@ -157,6 +164,23 @@ void preview_button_clicked (GtkButton *button, gpointer data)
 	webcam->Stop ();
     }
 }
+
+
+void left_arrow_clicked (GtkWidget *w, gpointer data)
+{
+  GM_window_widgets *gw = (GM_window_widgets *) data;
+
+  gtk_notebook_prev_page (GTK_NOTEBOOK (gw->main_notebook));
+}
+
+
+void right_arrow_clicked (GtkWidget *w, gpointer data)
+{
+  GM_window_widgets *gw = (GM_window_widgets *) data;
+
+  gtk_notebook_next_page (GTK_NOTEBOOK (gw->main_notebook));
+}
+
 /******************************************************************************/
 
 
@@ -251,10 +275,23 @@ void GM_init (GM_window_widgets *gw, options *opts, int argc,
 				0.75);
       
   endpoint->SetWebcam (new (GMH323Webcam) (gw, opts));
-  
+ 
+  // Run the listener thread
   if (opts->show_splash)
     GM_splash_advance_progress (gw->splash_win, 
-				_("Done!"), 0.99);
+				_("Starting the listener thread"), 
+				0.90);
+
+  if (!endpoint->StartListener ())
+    {
+      GtkWidget *msg_box = gnome_message_box_new (_("Could not start the listener thread, you will not be able to receive incoming calls."), GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
+
+      gtk_widget_show (msg_box);
+    }
+ 
+  if (opts->show_splash)
+    GM_splash_advance_progress (gw->splash_win, 
+				_("Done!"), 0.9999);
 
 
   if (!(opts->show_notebook))
@@ -288,7 +325,7 @@ void GM_init (GM_window_widgets *gw, options *opts, int argc,
   else
     gtk_signal_connect (GTK_OBJECT (gm), "delete_event",
 			GTK_SIGNAL_FUNC (quit_callback),
-			NULL);
+			gw);
 }
 
 
@@ -297,6 +334,7 @@ void GM_main_interface_init (GM_window_widgets *gw, options *opts)
   GtkWidget *table, *table_in;	
   GtkWidget *frame;
   GtkWidget *pixmap;
+  GtkWidget *left_arrow, *right_arrow;
 
   int whiteness = 0, brightness = 0, contrast = 0, colour = 0;
   
@@ -386,7 +424,7 @@ void GM_main_interface_init (GM_window_widgets *gw, options *opts)
 		    10, 0);
 	
 
-  table_in = gtk_table_new (4, 1, FALSE);
+  table_in = gtk_table_new (6, 1, FALSE);
   gtk_container_add (GTK_CONTAINER (frame), table_in);
 
   /* Video Preview Button */
@@ -441,6 +479,40 @@ void GM_main_interface_init (GM_window_widgets *gw, options *opts)
   gtk_signal_connect (GTK_OBJECT (gw->video_chan_button), "clicked",
                       GTK_SIGNAL_FUNC (pause_video_callback), gw);
 
+  /* Left arrow */
+  left_arrow = gtk_button_new ();
+
+  pixmap = gnome_pixmap_new_from_xpm_d ((char **) left_arrow_xpm);
+  gtk_container_add (GTK_CONTAINER (left_arrow), pixmap);
+
+  gtk_widget_set_usize (GTK_WIDGET (left_arrow), 24, 24);
+
+  gtk_table_attach (GTK_TABLE (table_in), 
+		    left_arrow, 3, 4, 0, 1,
+		    (GtkAttachOptions) NULL,
+		    (GtkAttachOptions) NULL,
+		    2, 2);
+
+  gtk_signal_connect (GTK_OBJECT (left_arrow), "clicked",
+		      GTK_SIGNAL_FUNC (left_arrow_clicked), gw);
+
+  /* Right arrow */
+  right_arrow = gtk_button_new ();
+
+  pixmap = gnome_pixmap_new_from_xpm_d ((char **) right_arrow_xpm);
+  gtk_container_add (GTK_CONTAINER (right_arrow), pixmap);
+
+  gtk_widget_set_usize (GTK_WIDGET (right_arrow), 24, 24);
+
+  gtk_table_attach (GTK_TABLE (table_in), 
+		    right_arrow, 4, 5, 0, 1,
+		    (GtkAttachOptions) NULL,
+		    (GtkAttachOptions) NULL,
+		    2, 2);
+
+  gtk_signal_connect (GTK_OBJECT (right_arrow), "clicked",
+		      GTK_SIGNAL_FUNC (right_arrow_clicked), gw);
+
 
   // The statusbar
   gw->statusbar = gnome_appbar_new (FALSE, TRUE, GNOME_PREFERENCES_NEVER);	
@@ -476,20 +548,23 @@ void GM_init_main_interface_remote_user_info (GtkWidget *notebook,
 {
   GtkWidget *frame;
   GtkWidget *label;
-  gchar * clist_titles [] = {N_("Info")};
+  gchar * clist_titles [] = {"", N_("Info")};
+
+  clist_titles [1] = gettext (clist_titles [1]);
 
   frame = gtk_frame_new (_("Remote User Info"));
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
 
-  gw->user_list = gtk_clist_new_with_titles (1, clist_titles);
+  gw->user_list = gtk_clist_new_with_titles (2, clist_titles);
 
   gtk_container_add (GTK_CONTAINER (frame), gw->user_list);
   gtk_container_set_border_width (GTK_CONTAINER (gw->user_list), 
 				  GNOME_PAD_SMALL);
   gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
   
-  gtk_clist_set_row_height (GTK_CLIST (gw->user_list), 15);
-  gtk_clist_set_column_width (GTK_CLIST (gw->user_list), 0, 200);
+  gtk_clist_set_row_height (GTK_CLIST (gw->user_list), 17);
+  gtk_clist_set_column_width (GTK_CLIST (gw->user_list), 1, 50);
+  gtk_clist_set_column_width (GTK_CLIST (gw->user_list), 2, 200);
   
   gtk_clist_set_shadow_type (GTK_CLIST (gw->user_list), GTK_SHADOW_IN);
 
@@ -697,7 +772,7 @@ void GM_init_main_interface_audio_settings (GtkWidget *notebook,
 		    (GtkAttachOptions) NULL,
 		    GNOME_PAD_SMALL, 0);
 
-  GM_volume_get (opts->audio_mixer, 0, &vol);
+  GM_volume_get (opts->audio_player_mixer, 0, &vol);
   vol = vol * 100 / 25700;
   gw->adj_play = gtk_adjustment_new (vol, 0.0, 100.0, 1.0, 5.0, 1.0);
   hscale_play = gtk_hscale_new (GTK_ADJUSTMENT (gw->adj_play));
@@ -716,7 +791,7 @@ void GM_init_main_interface_audio_settings (GtkWidget *notebook,
 		    (GtkAttachOptions) NULL,
 		    GNOME_PAD_SMALL, 0);
 
-  GM_volume_get (opts->audio_mixer, 1, &vol);
+  GM_volume_get (opts->audio_recorder_mixer, 1, &vol);
   vol = vol * 100 / 25700;
   gw->adj_rec = gtk_adjustment_new (vol, 0.0, 100.0, 1.0, 5.0, 1.0);
   hscale_rec = gtk_hscale_new (GTK_ADJUSTMENT (gw->adj_rec));
@@ -735,8 +810,11 @@ void GM_init_main_interface_audio_settings (GtkWidget *notebook,
 		      GTK_SIGNAL_FUNC (audio_volume_changed), (gpointer) gw);
 
   /* To prevent opts to become global, add data to adj_play */
-  gtk_object_set_data (GTK_OBJECT (gw->adj_play), "audio_mixer", 
-		       (gpointer) opts->audio_mixer);
+  gtk_object_set_data (GTK_OBJECT (gw->adj_play), "audio_player_mixer", 
+		       g_strdup (opts->audio_player_mixer));
+
+  gtk_object_set_data (GTK_OBJECT (gw->adj_rec), "audio_recorder_mixer", 
+		       g_strdup (opts->audio_recorder_mixer));
 
   label = gtk_label_new (_("Audio Settings"));
 

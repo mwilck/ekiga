@@ -65,7 +65,8 @@ struct _options
   int applet;
   char *audio_player;
   char *audio_recorder;
-  char *audio_mixer;
+  char *audio_player_mixer;
+  char *audio_recorder_mixer;
   char *video_device;
   int video_channel; 
 };
@@ -198,8 +199,9 @@ struct _GM_pref_window_widgets
   GtkWidget *audio_player;
   // The audio recorder device
   GtkWidget *audio_recorder;
-  // The audio mixer
-  GtkWidget *audio_mixer;
+  // The audio mixers
+  GtkWidget *audio_player_mixer;
+  GtkWidget *audio_recorder_mixer;
   // The video device
   GtkWidget *video_device; 
   // The video channel to use

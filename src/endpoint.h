@@ -131,11 +131,16 @@ class GMH323EndPoint : public H323EndPoint
   virtual BOOL OpenAudioChannel (H323Connection &, BOOL,
 				 unsigned, H323AudioCodec &);
 
-  
+
+  // DESCRIPTION  :  /
+  // BEHAVIOR     :  Starts the listener thread on the port choosen in the options
+  // PRE          :  returns TRUE if success and FALSE in case of error
+  BOOL StartListener ();
+
+
   // DESCRIPTION  :  /
   // BEHAVIOR     :  Initialises the endpoint's parameters following the config
-  //                 file and register to LDAP server if needed and sets audio
-  //                 sources
+  //                 file and sets audio sources
   // PRE          :  /
   BOOL Initialise ();
 
@@ -248,6 +253,7 @@ class GMH323EndPoint : public H323EndPoint
   
   PString current_call_token;  // the current Call Token
   H323Connection *current_connection;  // pointer to the current connection
+  H323ListenerTCP *listener;  // The listener thread
   options *opts;  // pointer to options (will be read in the config file)
   int calling_state; // current calling state
   int applet_timeout; // timeout associated with the animated applet

@@ -87,6 +87,24 @@ int GM_set_recording_source (char *mixer, int source)
   return 0;
 }
 
+
+int GM_get_mixer_name (char *mixer, char *name)
+{
+  int mixerfd, res;
+  mixer_info info;
+
+  mixerfd = open(mixer, O_RDWR);
+      
+  if (mixerfd == -1)
+      return -1;
+  
+  res = ioctl(mixerfd, SOUND_MIXER_INFO, &info);
+  strcpy (name, info.name);
+
+  close (mixerfd);
+
+  return 0;
+}
 /******************************************************************************/
 
 

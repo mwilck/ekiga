@@ -89,7 +89,7 @@ void disable_connect ()
   GnomeUIInfo *file_menu = (GnomeUIInfo *) object;
 
   gtk_widget_set_sensitive (file_menu [0].widget, FALSE);
-  gtk_widget_set_sensitive (file_menu [3].widget, FALSE);
+
 
   object = (GtkWidget *) gtk_object_get_data (GTK_OBJECT (gm),
 					      "settings_menu");
@@ -118,7 +118,6 @@ void enable_connect ()
   GnomeUIInfo *file_menu = (GnomeUIInfo *) object;
 
   gtk_widget_set_sensitive (file_menu [0].widget, TRUE);
-  gtk_widget_set_sensitive (file_menu [3].widget, TRUE);
 
 
   object = (GtkWidget *) gtk_object_get_data (GTK_OBJECT (gm),
@@ -141,13 +140,6 @@ void enable_disconnect ()
   gtk_widget_set_sensitive (main_toolbar [1].widget, TRUE);
   gtk_widget_set_sensitive (main_toolbar [3].widget, TRUE);
   gtk_widget_set_sensitive (main_toolbar [5].widget, TRUE);
-
-  object = (GtkWidget *) gtk_object_get_data (GTK_OBJECT (gm),
-					      "file_menu");
-
-  GnomeUIInfo *file_menu = (GnomeUIInfo *) object;
-
-  gtk_widget_set_sensitive (file_menu [1].widget, TRUE);
 }
 
 
@@ -162,11 +154,4 @@ void disable_disconnect ()
   gtk_widget_set_sensitive (main_toolbar [1].widget, FALSE);
   gtk_widget_set_sensitive (main_toolbar [3].widget, FALSE);
   gtk_widget_set_sensitive (main_toolbar [5].widget, FALSE);
-
-  object = (GtkWidget *) gtk_object_get_data (GTK_OBJECT (gm),
-					      "file_menu");
-
-  GnomeUIInfo *file_menu = (GnomeUIInfo *) object;
-
-  gtk_widget_set_sensitive (file_menu [1].widget, FALSE);
 }

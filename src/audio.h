@@ -58,6 +58,12 @@ int GM_volume_get (char *, int, int *);
 //                 1 :mic)
 int GM_set_recording_source (char *, int);
 
+
+// DESCRIPTION  :  /
+// BEHAVIOR     :  Gets the device name
+// PRE          :  First param = mixer, Second = char * to contain the name
+int GM_get_mixer_name (char *, char *);
+
 /******************************************************************************/
 
 #endif

@@ -576,6 +576,9 @@ void * GM_ldap_populate_ldap_users_clist (void *lwi)
 				sound, sound_mask);
 	}
 
+      for (int j = 0 ; j < 7 ; j++)
+	g_free (datas [j]);
+
     } // end of for
   
   gdk_threads_leave ();

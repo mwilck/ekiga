@@ -74,6 +74,23 @@ void contrast_changed (GtkAdjustment *, gpointer);
 // BEHAVIOR     :  Displays the webcam images
 // PRE          :  /
 void preview_button_clicked (GtkButton *, gpointer);
+
+
+// DESCRIPTION  :  This callback is called when the user clicks 
+//                 on the left arrow
+// BEHAVIOR     :  If the Notebook page is not the first, switches to
+//                 the previous page.
+// PRE          :  /
+void left_arrow_clicked (GtkWidget *, gpointer);
+
+
+// DESCRIPTION  :  This callback is called when the user clicks 
+//                 on the right arrow
+// BEHAVIOR     :  If the Notebook page is not the last, switches to
+//                 the next page.
+// PRE          :  /
+void right_arrow_clicked (GtkWidget *, gpointer);
+
 /******************************************************************************/
 /* The functions to build the main window                                     */
 /******************************************************************************/

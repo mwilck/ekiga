@@ -28,6 +28,8 @@
 #include "audio.h"
 #include "webcam.h"
 
+#include "../pixmaps/computer.xpm"
+
 #include <iostream.h> //
 
 #define new PNEW
@@ -84,6 +86,7 @@ GMH323EndPoint::GMH323EndPoint (GM_window_widgets *w, options *o)
   SetCallingState (0);
 
   webcam = NULL;
+  listener = NULL;
 }
 
 
@@ -227,11 +230,27 @@ char *GMH323EndPoint::IP ()
 }
 
 
+BOOL GMH323EndPoint::StartListener ()
+{
+  //Start the listener thread for incoming calls
+  listener = new H323ListenerTCP (*this, INADDR_ANY, atoi (opts->listen_port));
+
+  if (!H323EndPoint::StartListener (listener))
+    {
+      delete listener;
+      listener = NULL;
+      return FALSE;
+    }
+   
+  return TRUE;
+}
+
+
 BOOL GMH323EndPoint::Initialise ()
 {
-  GtkWidget *msg_box = NULL;
   char *name = NULL;
-
+  char *text = NULL;
+  
   // Set the various options
   SetCallingState (0);
   applet_timeout = 0;
@@ -239,47 +258,31 @@ BOOL GMH323EndPoint::Initialise ()
 
   if (strcmp (opts->firstname, ""))
     {
-      name = (char *) malloc (50);
-      strcpy (name, "");
-      strncat (name, opts->firstname, 24);
-      strcat (name, " ");
+      // if firstname and surname
       if (strcmp (opts->surname, ""))
-	strncat (name, opts->surname, 24);
+	name = g_strdup_printf ("%s %s", opts->firstname, opts->surname);
+      else  // if only firstname
+	name = g_strdup_printf ("%s", opts->firstname);
 
       SetLocalUserName (name);
-      AddAliasName (name); // for the gatekeeper
-      free (name);
+      g_free (name);
     }
 	
-  //Start the listener thread for incoming calls
-  H323ListenerTCP *listener = NULL;
-
-  listener = new H323ListenerTCP (*this, INADDR_ANY, atoi (opts->listen_port));
-
-  if (!StartListener (listener))
-    {
-      msg_box = gnome_message_box_new (_("Could not start listener."), 
-				       GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
-
-      gnome_dialog_set_parent (GNOME_DIALOG (msg_box), GTK_WINDOW (gm));
-
-      gtk_widget_show (msg_box);
-
-
-      return FALSE;
-    }	
-  
 
   // Set recording source and set micro to record
   SetSoundChannelPlayDevice(opts->audio_player);
   SetSoundChannelRecordDevice(opts->audio_recorder);
 
-  GM_log_insert (gw->log_text, _("Set Audio player device to:"));
-  GM_log_insert (gw->log_text, opts->audio_player);
-  GM_log_insert (gw->log_text, _("Set Audio recorder device to:"));
-  GM_log_insert (gw->log_text, opts->audio_recorder);
+  text = g_strdup_printf (_("Set Audio player device to: %s"), opts->audio_player);
+  GM_log_insert (gw->log_text, text);
+  g_free (text);
 
-  GM_set_recording_source (opts->audio_mixer, 0); 
+  text = g_strdup_printf (_("Set Audio recorder device to: %s"), 
+			  opts->audio_recorder);
+  GM_log_insert (gw->log_text, text);
+  g_free (text);
+
+  GM_set_recording_source (opts->audio_recorder_mixer, 0); 
 
   received_video_device = NULL;
   transmitted_video_device = NULL;
@@ -290,48 +293,16 @@ BOOL GMH323EndPoint::Initialise ()
 
 void GMH323EndPoint::ReInitialise ()
 {
-  char *name = NULL;
-
   // Free the old options
   g_options_free (opts);
 
   // Set the various options
   read_config (opts);
 
-  if (strcmp (opts->firstname, ""))
-    {
-      name = (char *) malloc (50);
-      strcpy (name, "");
-      strncat (name, opts->firstname, 24);
-      strcat (name, " ");
-      if (strcmp (opts->surname, ""))
-	strncat (name, opts->surname, 24);
-
-      SetLocalUserName (name);
-      free (name);
-    }
-
   delete (webcam);
   webcam = new (GMH323Webcam) (gw, opts);
 
-  // Default codecs
-  RemoveAllCapabilities ();
-  AddAudioCapabilities ();
-  AddVideoCapabilities (opts->video_size);
-
-  // Set recording source and set micro to record
-  SetSoundChannelPlayDevice(opts->audio_player);
-  SetSoundChannelRecordDevice(opts->audio_recorder);
-
-  GM_log_insert (gw->log_text, _("Set Audio player device to:"));
-  GM_log_insert (gw->log_text, opts->audio_player);
-  GM_log_insert (gw->log_text, _("Set Audio recorder device to:"));
-  GM_log_insert (gw->log_text, opts->audio_recorder);
-
-  GM_set_recording_source (opts->audio_mixer, 0); 
-  
-  received_video_device = NULL;
-  transmitted_video_device = NULL;
+  Initialise ();
 }
 
 
@@ -381,19 +352,17 @@ PString GMH323EndPoint::CallToken ()
 BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection, 
 				     const H323SignalPDU &, H323SignalPDU &)
 {
-  char *msg = (char *) calloc (200, 1);
+  char *msg = NULL;
   PString name = connection.GetRemotePartyName();
   const char * remotePartyName = (const char *)name;  
   // only a pointer => destroyed with the PString
 
-  strncpy ((char *) msg, _("Call from: "), 200);
-  strcat ((char *) msg, (char *) remotePartyName);
-  
+  msg = g_strdup_printf (_("Call from: %s"), remotePartyName);
 
   gdk_threads_enter ();
   gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
 		     (gchar *) msg);
-
+			 
   if (gw->applet != NULL)
     applet_widget_set_tooltip (APPLET_WIDGET (gw->applet),  
 			       (gchar *) msg);
@@ -416,7 +385,7 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 
   gdk_threads_leave ();
 
-  free (msg);  
+  g_free (msg);  
 
   if (CallToken ().IsEmpty ())
     {
@@ -433,27 +402,23 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 {
   PString name = connection.GetRemotePartyName();
   PString app = connection.GetRemoteApplication ();
-  const char * remotePartyName = (const char *)name;
-  const char * remoteApp = (const char *)app;
+  const char * remotePartyName = (const char *) name;
+  const char * remoteApp = (const char *) app;
   char *msg;
+  GdkPixmap *computer;
+  GdkBitmap *computer_mask;
 
-  char cname [40];
-  char capp[80];
-  gchar *data [1];
+  gchar *data [2];
 
-  msg = (char *) malloc (300);
+  computer = gdk_pixmap_create_from_xpm_d (gm->window, &computer_mask,
+					   NULL,
+					   (gchar **) computer_xpm); 
 
-  strncpy ((char *) cname, (char *) remotePartyName, 39);
-  strncpy ((char *) capp, (char *) remoteApp, 79);
-	
-  strcpy (msg, "");
-  strcat (msg, _("Connected with "));
-  strcat (msg, cname);
-  strcat (msg, _(" using "));
-  strcat (msg, capp);
+  msg = g_strdup_printf (_("Connected with %s using %s."), 
+			 remotePartyName, remoteApp);
 
   SetCurrentCallToken (token);
-  SetCurrentConnection (FindConnectionWithoutLocks (CallToken ()));
+  SetCurrentConnection (FindConnectionWithoutLocks (token));
 
 
   gdk_threads_enter ();
@@ -471,11 +436,18 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 
   GM_log_insert (gw->log_text, msg);
 
-  data [0] = (gchar *) cname;
+  data [0] = "";
+  data [1] = g_strdup ((gchar *) remotePartyName);
   gtk_clist_append (GTK_CLIST (gw->user_list), (gchar **) data);	
+  g_free (data [1]);
 
-  data [0] = (gchar *) capp;
+  gtk_clist_set_pixmap (GTK_CLIST (gw->user_list), 
+			0, 0, 
+			computer, computer_mask);
+
+  data [1] = g_strdup ((gchar *) remoteApp);
   gtk_clist_append (GTK_CLIST (gw->user_list), (gchar **) data);	
+  g_free (data [1]);
 
   if (applet_timeout != 0)
     gtk_timeout_remove (applet_timeout);
@@ -496,7 +468,7 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 
   calling_state = 2;
 
-  free (msg);
+  g_free (msg);
 }
 
 

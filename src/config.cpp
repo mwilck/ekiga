@@ -73,7 +73,8 @@ void store_config (options *opts)
 
   gnome_config_set_string ("Devices/audio_player", opts->audio_player);
   gnome_config_set_string ("Devices/audio_recorder", opts->audio_recorder);
-  gnome_config_set_string ("Devices/audio_mixer", opts->audio_mixer);
+  gnome_config_set_string ("Devices/audio_player_mixer", opts->audio_player_mixer);
+  gnome_config_set_string ("Devices/audio_recorder_mixer", opts->audio_recorder_mixer);
   gnome_config_set_string ("Devices/video_device", opts->video_device);
   gnome_config_set_int ("Devices/video_channel", opts->video_channel);
 
@@ -147,7 +148,9 @@ void read_config (options *opts)
 
   opts->audio_player = gnome_config_get_string ("Devices/audio_player");
   opts->audio_recorder = gnome_config_get_string ("Devices/audio_recorder");
-  opts->audio_mixer = gnome_config_get_string ("Devices/audio_mixer");
+  opts->audio_player_mixer = gnome_config_get_string ("Devices/audio_player_mixer");
+  opts->audio_recorder_mixer = 
+    gnome_config_get_string ("Devices/audio_recorder_mixer");
   opts->video_device = gnome_config_get_string ("Devices/video_device");
   opts->video_channel = gnome_config_get_int ("Devices/video_channel");
 
@@ -174,7 +177,11 @@ void read_config (options *opts)
     opts->audio_recorder =  
       g_strdup (PSoundChannel::GetDefaultDevice (PSoundChannel::Recorder));
 
-  if(opts->audio_mixer == NULL)  opts->audio_mixer = g_strdup ("/dev/mixer");
+  if(opts->audio_player_mixer == NULL)  
+    opts->audio_player_mixer = g_strdup ("/dev/mixer");
+
+  if(opts->audio_recorder_mixer == NULL)  
+    opts->audio_recorder_mixer = g_strdup ("/dev/mixer");
 
   if (opts->video_device == NULL)
     opts->video_device = 
@@ -192,7 +199,8 @@ void g_options_free (options *opts)
   g_free (opts->comment);
   g_free (opts->audio_player);
   g_free (opts->audio_recorder);
-  g_free (opts->audio_mixer);
+  g_free (opts->audio_player_mixer);
+  g_free (opts->audio_recorder_mixer);
   g_free (opts->video_device);
 
   for (int i = 0 ; i < 5 ; i++)
@@ -254,18 +262,26 @@ gboolean check_config_from_struct (GM_pref_window_widgets *pw)
     }
 
 
-  // Check Audio Settings
+  // Check Audio Mixer Settings for the Recorder and the Player device.
   if (pw->audio_mixer_changed)
     {
-      if (GM_volume_get (gtk_entry_get_text (GTK_ENTRY (pw->audio_mixer)), 
+      if (GM_volume_get (gtk_entry_get_text (GTK_ENTRY (pw->audio_player_mixer)), 
 			 0, &vol) == -1)
 	{
-	  msg_box = gnome_message_box_new (_("Could not open the mixer."), 
+	  msg_box = gnome_message_box_new (_("Could not open the player mixer."), 
 					   GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
 
 	  no_error = FALSE;
 	}
-      
+
+      if (GM_volume_get (gtk_entry_get_text (GTK_ENTRY (pw->audio_recorder_mixer)), 
+			 0, &vol) == -1)
+	{
+	  msg_box = gnome_message_box_new (_("Could not open the player mixer."), 
+					   GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
+
+	  no_error = FALSE;
+	}    
     }
 
 
@@ -375,7 +391,9 @@ options * read_config_from_struct (GM_pref_window_widgets *pw)
     (GTK_ENTRY (GTK_COMBO (pw->audio_player)->entry));
   opts->audio_recorder = gtk_entry_get_text 
     (GTK_ENTRY (GTK_COMBO (pw->audio_recorder)->entry));
-  opts->audio_mixer = gtk_entry_get_text (GTK_ENTRY (pw->audio_mixer));
+  opts->audio_player_mixer = gtk_entry_get_text (GTK_ENTRY (pw->audio_player_mixer));
+  opts->audio_recorder_mixer = 
+    gtk_entry_get_text (GTK_ENTRY (pw->audio_recorder_mixer));
   opts->video_device = gtk_entry_get_text 
     (GTK_ENTRY (GTK_COMBO (pw->video_device)->entry));
   opts->video_channel = (int) pw->video_channel_spin_adj->value; 
@@ -444,7 +462,8 @@ void init_config (void)
 			   PSoundChannel::GetDefaultDevice (PSoundChannel::Player));
   gnome_config_set_string ("Devices/audio_recorder", 
 			   PSoundChannel::GetDefaultDevice (PSoundChannel::Recorder));
-  gnome_config_set_string ("Devices/audio_mixer", "/dev/mixer");
+  gnome_config_set_string ("Devices/audio_player_mixer", "/dev/mixer");
+  gnome_config_set_string ("Devices/audio_recorder_mixer", "/dev/mixer");
   gnome_config_set_string ("Devices/video_device", 
 			   PVideoChannel::GetDefaultDevice (PVideoChannel::Player));
   gnome_config_set_int ("Devices/video_channel", 0);

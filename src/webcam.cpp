@@ -76,8 +76,7 @@ void GMH323Webcam::Main ()
       grabber->SetFrameRate (opts->tr_fps)  &&
       grabber->SetFrameSize (height, width)) 
     {
-      // Quick hack for Philips Webcams (which should not be needed)
-      if (!grabber->SetColourFormatConverter ("YUV411P"))
+      if (!grabber->SetColourFormatConverter ("YUV420P"))
 	error = !grabber->SetColourFormatConverter ("YUV420P");
     }
   else
