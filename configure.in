@@ -375,6 +375,15 @@ AC_CHECK_LIB(ldap, ldap_simple_bind, LIBS="$LDAP_LIBS $LIBS", AC_MSG_ERROR([***
 LDAP library is not found.]), -llber)
 
 
+dnl #########################################################################  
+dnl  Check for IPV6 if available.                                              
+dnl ########################################################################   
+HAS_IPV6="disabled"
+if test -e "/proc/net/if_inet6"; then
+	HAS_IPV6="enabled"
+	H323_CFLAGS+="-DP_HAS_IPV6"
+fi
+
 
 
 GNOMEMEETING_INCLUDES="$GNOMEMEETING_CFLAGS $PTLIB_CFLAGS $LDAP_INCLUDES $OPENH323_CFLAGS $OPENSSL_CFLAGS $H323_CFLAGS $SDL_CFLAGS $ARTSC_CFLAGS"
@@ -455,12 +464,13 @@ echo "   OpenH323 Include Directory is  :  $OPENH323_INCLUDE_DIR"
 echo " OpenH323 Libraries Directory is  :  $OPENH323_LIBS_DIR"
 echo "      PTLIB Include Directory is  :  $PTLIB_INCLUDE_DIR"
 echo "    PTLIB Libraries Directory is  :  $PTLIB_LIBS_DIR"
-echo ""
+cho ""
 echo "                Quicknet support  :  $HAS_IXJ"
 echo "          SDL Fullscreen support  :  $HAS_SDL"
 echo "           Speex GPL audio codec  :  $HAS_SPEEX"
 echo "  GNOME Features (Bonobo, Druid," 
 echo "   Session, Incoming Call Sound)  :  $HAS_GNOME"
+echo "     IPv6 Support (EXPERIMENTAL)  :  $HAS_IPV6"
 echo ""
 echo "                         OS Type  :  $target_os"
 echo "                    Machine Type  :  $target_cpu"
