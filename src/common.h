@@ -191,6 +191,7 @@ struct _GmPrefWindow
   GtkWidget    *incoming_call_sound;
   GtkWidget    *opt1, *opt2;
   GtkWidget    *tr_vq;
+  GtkWidget    *maximum_video_bandwidth;
   GtkWidget    *tr_ub;
   GtkWidget    *bps_frame;
   GtkWidget    *tr_fps;

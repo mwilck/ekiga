@@ -18,7 +18,7 @@
  */
 
 /*
- *                         endpoint.cpp  -  description
+*                         endpoint.cpp  -  description
  *                         ----------------------------
  *   begin                : Sat Dec 23 2000
  *   copyright            : (C) 2000-2002 by Damien Sandras
@@ -1222,6 +1222,7 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   int vq = 0;
   int bf = 0;
   int tr_fps = 0;
+  int bitrate = 2;
   double frame_time = 0.0;
 
 
@@ -1233,6 +1234,7 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   /* Get the gconf settings */
   vq = gconf_client_get_int (client, VIDEO_SETTINGS_KEY "tr_vq", NULL);
   bf = gconf_client_get_int (client, VIDEO_SETTINGS_KEY "tr_ub", NULL);
+  bitrate = gconf_client_get_int (client, VIDEO_SETTINGS_KEY "maximum_video_bandwidth", NULL);
   tr_fps = gconf_client_get_int (client, VIDEO_SETTINGS_KEY "tr_fps", NULL);
   reg = gconf_client_get_bool (client, LDAP_KEY "register", NULL);
 
@@ -1248,16 +1250,18 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   
   
   /* Set Video Codecs Settings */
-  vq = 32 - (int) ((double) vq / 100 * 31);
+  vq = 25 - (int) ((double) vq / 100 * 24);
   frame_time = (unsigned) (1000.0/tr_fps);
   frame_time = PMAX (33, PMIN(1000000, frame_time));
   video_codec = GetCurrentVideoCodec ();
   if (video_codec) {
 
-    video_codec->SetTxMinQuality (vq);
-    video_codec->SetTxMaxQuality (1);
+    /* The maximum quality corresponds to the lowest quality indice, 1
+     * and the lowest quality corresponds to 24 */
+    video_codec->SetTxMinQuality (1);
+    video_codec->SetTxMaxQuality (vq);
     video_codec->SetBackgroundFill (bf);   
-    video_codec->SetMaxBitRate (300000);
+    video_codec->SetMaxBitRate (bitrate * 8 * 1024);
     video_codec->SetTargetFrameTimeMs (frame_time);
     video_codec->SetVideoMode (H323VideoCodec::DynamicVideoQuality | 
 			       H323VideoCodec::AdaptivePacketDelay |
@@ -1692,6 +1696,9 @@ GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
                                  unsigned bufferSize,
                                  H323AudioCodec & codec)
 {
+  if (opened_audio_channels >= 2)
+    return FALSE;
+  
   gnomemeeting_threads_enter ();
 
   /* If needed , delete the timers */
@@ -1832,8 +1839,6 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
      
      gnomemeeting_threads_leave ();
      
-     codec.SetMaxBitRate (300000);
-
      bool result = codec.AttachChannel (channel, FALSE); 
 
      return result;

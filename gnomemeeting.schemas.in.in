@@ -80,6 +80,17 @@
       </locale>
     </schema>
     <schema>
+      <key>/schemas/apps/gnomemeeting/video_settings/max_video_bandwidth</key>
+      <applyto>/apps/gnomemeeting/video_settings/max_video_bandwidth</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>int</type>
+      <default>6</default>
+      <locale name="C">
+	<short></short>
+	<long></long>
+      </locale>
+    </schema>
+    <schema>
       <key>/schemas/apps/gnomemeeting/video_settings/tr_vq</key>
       <applyto>/apps/gnomemeeting/video_settings/tr_vq</applyto>
       <owner>GnomeMeeting</owner>
@@ -628,17 +639,6 @@
       <locale name="C">
 	<short>Image</short>
 	<long>The image to transmit if the Picture device is selected as video device or if the opening of the device fails (none specified = default GnomeMeeting logo).</long>
-      </locale>
-    </schema>
-    <schema>
-      <key>/schemas/apps/gnomemeeting/video_settings/enable_fps</key>
-      <applyto>/apps/gnomemeeting/video_settings/enable_fps</applyto>
-      <owner>GnomeMeeting</owner>
-      <type>bool</type>
-      <default>0</default>
-      <locale name="C">
-	<short>Enable FPS</short>
-	<long>Enable the limit on the number of frames per second</long>
       </locale>
     </schema>
     <schema>

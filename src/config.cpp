@@ -68,6 +68,7 @@ static void adjustment_changed_nt (GConfClient *, guint, GConfEntry *, gpointer)
 static void applicability_check_nt (GConfClient *, guint, GConfEntry *, gpointer);
 static void main_notebook_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static void fps_limit_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
+static void maximum_video_bandwidth_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static void tr_vq_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static void tr_ub_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static void jitter_buffer_changed_nt (GConfClient*, guint, GConfEntry *, 
@@ -576,6 +577,36 @@ static void fps_limit_changed_nt (GConfClient *client, guint cid,
 }
 
 
+/* DESCRIPTION  :  This callback is called when the user changes the maximum
+ *                 video bandwidth.
+ * BEHAVIOR     :  It updates it.
+ * PRE          :  /
+ */
+static void 
+maximum_video_bandwidth_changed_nt (GConfClient *client, guint cid, 
+				    GConfEntry *entry, gpointer data)
+{
+  H323VideoCodec *vc = NULL;
+  int bitrate = 2;
+
+
+  if (entry->value->type == GCONF_VALUE_INT) {
+
+    gdk_threads_enter ();
+  
+    /* We update the video quality */
+    vc = MyApp->Endpoint ()->GetCurrentVideoCodec ();
+  
+    bitrate = gconf_value_get_int (entry->value) * 8 * 1024;
+  
+    if (vc != NULL)
+      vc->SetMaxBitRate (bitrate);
+  
+    gdk_threads_leave ();
+  }
+}
+
+
 /* DESCRIPTION  :  This callback is called the transmitted video quality.
  * BEHAVIOR     :  It updates the video quality.
  * PRE          :  /
@@ -593,11 +624,11 @@ static void tr_vq_changed_nt (GConfClient *client, guint cid,
   
     /* We update the video quality */
     vc = MyApp->Endpoint ()->GetCurrentVideoCodec ();
-  
-    vq = 32 - (int) ((double) (int) gconf_value_get_int (entry->value) / 100 * 31);
+
+    vq = 25 - (int) ((double) (int) gconf_value_get_int (entry->value) / 100 * 24);
   
     if (vc != NULL)
-      vc->SetTxMinQuality (vq);
+      vc->SetTxMaxQuality (vq);
   
     gdk_threads_leave ();
   }
@@ -1284,18 +1315,20 @@ void gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/tr_fps", adjustment_changed_nt, pw->tr_fps, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/tr_fps", network_settings_changed_nt, 0, 0, 0);
 
-
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/enable_video_transmission", applicability_check_nt, pw->vid_tr, 0, 0);	     
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/enable_video_transmission", toggle_changed_nt, pw->vid_tr, 0, 0);	     
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/enable_video_transmission", network_settings_changed_nt, 0, 0, 0);	     
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/enable_video_transmission", enable_vid_tr_changed_nt, 0, 0, 0);	     
 
+  gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/maximum_video_bandwidth", maximum_video_bandwidth_changed_nt, pw->maximum_video_bandwidth, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/maximum_video_bandwidth", adjustment_changed_nt, pw->maximum_video_bandwidth, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/maximum_video_bandwidth", network_settings_changed_nt, 0, 0, 0);
+
+
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/tr_vq", tr_vq_changed_nt, pw->tr_vq, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/tr_vq", adjustment_changed_nt, pw->tr_vq, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/tr_vq", network_settings_changed_nt, 0, 0, 0);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/re_vq", adjustment_changed_nt, pw->re_vq, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/re_vq", applicability_check_nt, pw->re_vq, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/re_vq", network_settings_changed_nt, 0, 0, 0);
 
 

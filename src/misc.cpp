@@ -733,25 +733,36 @@ gnomemeeting_vbox_add_table (GtkWidget *vbox,
 			     gchar *frame_name,       
 			     int rows, int cols)      
 {                                                                              
-  GtkWidget *frame;                                                            
-  GtkWidget *table;                                                            
-                                                                               
-  frame = gtk_frame_new (frame_name);                                          
+  GtkWidget *frame;
+  GtkWidget *table;
+  PangoAttrList *attrs;
+  PangoAttribute *attr;
+   
+  
+  frame = gtk_frame_new (frame_name);                                           gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
 
-  gtk_box_pack_start (GTK_BOX (vbox), frame,                                   
+  attrs = pango_attr_list_new ();
+  attr = pango_attr_weight_new (PANGO_WEIGHT_HEAVY);
+  attr->start_index = 0;
+  attr->end_index = strlen (frame_name);
+  pango_attr_list_insert (attrs, attr);
+
+  
+  gtk_label_set_attributes (GTK_LABEL (gtk_frame_get_label_widget (GTK_FRAME (frame))), attrs);
+  pango_attr_list_unref (attrs);
+    
+  gtk_box_pack_start (GTK_BOX (vbox), frame,
                       FALSE, FALSE, 0);                                        
-                                                                               
+                                                                              
   table = gtk_table_new (rows, cols, FALSE);                                   
+                                                                              
+  gtk_container_add (GTK_CONTAINER (frame), table); 
+  gtk_container_set_border_width (GTK_CONTAINER (frame), 4);
+  gtk_container_set_border_width (GTK_CONTAINER (table), 4); 
                                                                                
-  gtk_container_add (GTK_CONTAINER (frame), table);                            
-  gtk_container_set_border_width (GTK_CONTAINER (frame), 
-				  GNOMEMEETING_PAD_SMALL * 2);
-  gtk_container_set_border_width (GTK_CONTAINER (table), 
-				  GNOMEMEETING_PAD_SMALL * 3);
-                                                                               
-  gtk_table_set_row_spacings (GTK_TABLE (table), GNOMEMEETING_PAD_SMALL);      
-  gtk_table_set_col_spacings (GTK_TABLE (table), GNOMEMEETING_PAD_SMALL);      
-                                                                               
-  return table;                                                                
+  gtk_table_set_row_spacings (GTK_TABLE (table), GNOMEMEETING_PAD_SMALL);     
+  gtk_table_set_col_spacings (GTK_TABLE (table), GNOMEMEETING_PAD_SMALL);     
+  
+  return table;
 }                                                                              
         

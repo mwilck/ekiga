@@ -1352,7 +1352,7 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
 
 
   /* Here we add the audio codecs options */
-  table = gnomemeeting_vbox_add_table (vbox, _("Audio Codecs Settings"), 3, 2);
+  table = gnomemeeting_vbox_add_table (vbox, _("Audio Codecs Settings"), 5, 2);
 
   pw->gsm_frames =
      gnomemeeting_table_add_spin (table, _("GSM Frames per packet:"),       
@@ -1369,17 +1369,13 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
   pw->sd = 
     gnomemeeting_table_add_toggle (table, _("Enable Silence Detection"),       
  				       "/apps/gnomemeeting/audio_settings/sd",
-					_("Enable/disable the silence detection for the GSM and G.711 codecs."), 2, 0);
-
-
-  /* The jitter buffer */
-  table = gnomemeeting_vbox_add_table (vbox, _("Dynamic Jitter Buffer"), 2, 2);
+					_("Enable/disable the silence detection for the GSM and G.711 codecs."), 4, 0);
 
   pw->min_jitter_buffer =
-    gnomemeeting_table_add_spin (table, _("Minimal Jitter Buffer:"), AUDIO_SETTINGS_KEY "min_jitter_buffer", _("The minimal jitter buffer size for audio reception (in ms)."), 20.0, 1000.0, 1.0, 0);
+    gnomemeeting_table_add_spin (table, _("Minimal Jitter Buffer:"), AUDIO_SETTINGS_KEY "min_jitter_buffer", _("The minimal jitter buffer size for audio reception (in ms)."), 20.0, 1000.0, 1.0, 2);
 
   pw->max_jitter_buffer =
-    gnomemeeting_table_add_spin (table, _("Maximal Jitter Buffer:"), AUDIO_SETTINGS_KEY "max_jitter_buffer", _("The maximal jitter buffer size for audio reception (in ms)."), 20.0, 1000.0, 1.0, 1);
+    gnomemeeting_table_add_spin (table, _("Maximal Jitter Buffer:"), AUDIO_SETTINGS_KEY "max_jitter_buffer", _("The maximal jitter buffer size for audio reception (in ms)."), 20.0, 1000.0, 1.0, 3);
 }
                                                                                
 
@@ -1409,25 +1405,31 @@ void gnomemeeting_init_pref_window_video_codecs (GtkWidget *notebook)
 
 
   /* H.261 Settings */
-  table = gnomemeeting_vbox_add_table (vbox, _("H.261 Settings"), 3, 1);       
+  table = gnomemeeting_vbox_add_table (vbox, _("Bandwidth Control"), 4, 1);       
+
+  pw->maximum_video_bandwidth =
+    gnomemeeting_table_add_spin (table, _("Maximum video bandwidth:"), 
+				 VIDEO_SETTINGS_KEY "maximum_video_bandwidth",
+				 _("The maximum video bandwidth in kbytes/s. The video quality and the number of transmitted frames per second will be dynamically adjusted above their minimum during calls to try to minimize the bandwidth to the given value"), 2.0, 100.0, 1.0, 0);
+
 
   pw->tr_vq =
     gnomemeeting_table_add_spin (table, _("Minimum Transmitted Video Quality:"),       
  				       "/apps/gnomemeeting/video_settings/tr_vq",
 				       _("The minimum transmitted video qualityto keep when trying to minimize the used bandwidth:  choose 100% on a LAN for the best quality, 1% being the worst quality."),
- 				       1.0, 100.0, 1.0, 0);
+ 				       1.0, 100.0, 1.0, 1);
 
   pw->tr_fps =
     gnomemeeting_table_add_spin (table, _("Minimum Transmitted FPS:"),       
  				       "/apps/gnomemeeting/video_settings/tr_fps",
 				       _("The minimum number of video frames to transmit each second when trying to minimize the bandwidth."),
- 				       1.0, 30.0, 1.0, 1);
+ 				       1.0, 30.0, 1.0, 2);
 
   pw->tr_ub =
     gnomemeeting_table_add_spin (table, _("Transmitted Background Blocks:"),       
  				       "/apps/gnomemeeting/video_settings/tr_ub",
 				       _("Here you can choose the number of blocks (that haven't changed) transmitted with each frame. These blocks fill in the background."),
- 				       1.0, 99.0, 1.0, 2);
+ 				       1.0, 99.0, 1.0, 3);
 }                                                                              
 
             

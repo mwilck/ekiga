@@ -1,5 +1,28 @@
 2002-12-20 Damien Sandras  <dsandras@seconix.com>
 
+	* configure.in: Incremented SCHEMA_AGE.
+
+	* gnomemeeting.schemas.in.in: Added gconf key for video bandwidth.
+
+	* src/common.h: Added widget for video bandwidth.
+
+	* src/config.cpp: Added notifier when video bandwidth is modified 
+	and updated the tr_fps and tr_vq notifiers so that they do not
+	change the FPS and the video quality but the limits.
+
+	* src/druid.cpp: Changed the druid so that it updates the values
+	for the limits.
+
+	* src/endpoint.cpp: Fixed code.
+
+	* src/misc.cpp: Removed frames to see what it looks like and to
+	follow HIG. This change will possibly be reverted back.
+
+	* src/pref_window.cpp: Put jitter buffer in the audio codecs 
+	settings section.
+
+2002-12-20 Damien Sandras  <dsandras@seconix.com>
+
 	* src/common.h: Removed unused widgets.
 
 	* src/config.cpp: Changed notifiers so that changing the FPS limit
