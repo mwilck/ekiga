@@ -75,6 +75,10 @@ void dialog_response_cb (GtkWidget *w, gint, gpointer data)
 void 
 gnomemeeting_sound_daemons_suspend (void)
 {
+
+#if defined(HAS_ESD)
+  return;
+#else
   int esd_client = 0;
   
   /* Put ESD into standby mode */
@@ -84,12 +88,16 @@ gnomemeeting_sound_daemons_suspend (void)
     PTRACE (0, "Failed to resume ESD");
       
   esd_close (esd_client);
+#endif
 }
 
 
 void 
 gnomemeeting_sound_daemons_resume (void)
 {
+#if defined(HAS_ESD)
+  return;
+#else
   int esd_client = 0;
 
   /* Put ESD into normal mode */
@@ -99,6 +107,7 @@ gnomemeeting_sound_daemons_resume (void)
     PTRACE (0, "Failed to resume ESD");
 
   esd_close (esd_client);
+#endif
 }
 
 

@@ -78,7 +78,7 @@
 #include "../pixmaps/contrast.xpm"
 #include "../pixmaps/color.xpm"
 
-#ifdef __FreeBSD__
+#if defined(P_FREEBSD) || defined (P_MACOSX)
 #include <libintl.h>
 #endif
 
@@ -1052,9 +1052,12 @@ gnomemeeting_init (GmWindow *gw,
     {"text/plain", GTK_TARGET_SAME_APP, 0}
   };
 
-  
-  /* Prevents ESD to spawn */
+ 
+#if !defined(HAS_ESD)
+  /* If we are not using ESD (ie we are using OSS or ALSA, then
+     prevent ESD from spawning */
   setenv ("ESD_NO_SPAWN", "1", 1);
+#endif
 
 
   /* Ignore SIGPIPE */
