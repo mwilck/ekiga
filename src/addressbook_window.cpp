@@ -1193,6 +1193,7 @@ void gnomemeeting_aw_update_menu_sensitivity (GtkWidget *addressbook_window,
   
   aw = gnomemeeting_aw_get_aw (addressbook_window);
 
+  gtk_menu_set_sensitive (aw->aw_menu, "call", rs || ls);
   gtk_menu_set_sensitive (aw->aw_menu, "add", rs);
   gtk_menu_set_sensitive (aw->aw_menu, "properties", !rs);
 }
@@ -1294,9 +1295,6 @@ gm_addressbook_window_new ()
       GTK_MENU_NEW(_("C_ontact")),
 
       GTK_MENU_ENTRY("call", _("C_all Contact"), NULL,
-		     NULL, 0, 
-		     NULL, NULL, FALSE),
-      GTK_MENU_ENTRY("transfer", _("_Tranfer Call to Contact"), NULL,
 		     NULL, 0, 
 		     NULL, NULL, FALSE),
 
