@@ -556,14 +556,17 @@ class GMH323EndPoint : public H323EndPoint
    * BEHAVIOR     :  Sets the call's audio channel on pause, or retrieve it
    * PRE          :  Non-empty call token.
    */
-  void SetCallAudioPause (PString callToken, gboolean state);
+  BOOL SetCallAudioPause (PString callToken, 
+			  BOOL state);
 
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Sets the call's video channel on pause, or retrieve it
    * PRE          :  Non-empty call token.
    */
-  void SetCallVideoPause (PString callToken, gboolean state);
+  BOOL SetCallVideoPause (PString callToken, 
+			  BOOL state);
+  
 
  protected:
 

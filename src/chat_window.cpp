@@ -44,6 +44,7 @@
 #include "gnomemeeting.h"
 #include "callbacks.h"
 #include "misc.h"
+#include "main_window.h"
 
 #include "gm_conf.h"
 #include "gtk-text-tag-addon.h"
@@ -51,6 +52,7 @@
 #include "gtk-text-view-addon.h"
 #include "gtk_menu_extensions.h"
 
+extern GtkWidget *gm;
 
 /* internal structure used by the text chat */
 typedef struct _GmTextChat
@@ -142,7 +144,7 @@ connect_uri_callback (const gchar *uri)
 				  true);
   }
   else if (ep->GetCallingState () == GMH323EndPoint::Connected)
-    transfer_call_cb (NULL, (gpointer) uri);
+    gm_main_window_transfer_dialog_run (gm, (gchar *) uri);
 }
 
 

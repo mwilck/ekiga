@@ -44,30 +44,12 @@
 
 
 
-/* DESCRIPTION  :  This callback is called when the user chooses to forward
- *                 a call.
- * BEHAVIOR     :  Forward the current call.
- * PRE          :  /
- */
-void transfer_call_cb (GtkWidget *,
-		       gpointer);
-
-
 /* DESCRIPTION  :  This callback is called when the user chooses to save.
  * BEHAVIOR     :  Saves the picture in the current video stream in a file.
  * PRE          :  /
  */
 void save_callback (GtkWidget *,
 		    gpointer);
-
-
-/* DESCRIPTION  :  This callback is called when the user chooses to pause
- *                 the audio transmission.
- * BEHAVIOR     :  Pause the audio or video channel transmission.
- * PRE          :  gpointer = 0 (audio) or 1 (video)
- */
-void pause_channel_callback (GtkWidget *,
-			     gpointer);
 
 
 /* DESCRIPTION  :  This callback is called when the user chooses to open

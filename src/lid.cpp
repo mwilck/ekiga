@@ -66,11 +66,13 @@ extern GtkWidget *gm;
 static gboolean
 transfer_callback_cb (gpointer data)
 {
+  g_return_val_if_fail (data != NULL, FALSE);
+  
   gdk_threads_enter ();
-  transfer_call_cb (NULL, NULL);
+  gm_main_window_transfer_dialog_run (GTK_WIDGET (data), NULL);
   gdk_threads_leave ();
 
-  return false;
+  return FALSE;
 }
 
 
@@ -385,7 +387,7 @@ GMLid::Main ()
 	  && calling_state == GMH323EndPoint::Connected) {
 
 	gnomemeeting_threads_enter ();
-	g_idle_add (transfer_callback_cb, NULL);
+	g_idle_add (transfer_callback_cb, gm);
 	gnomemeeting_threads_leave ();
       }
     }

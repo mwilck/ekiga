@@ -2537,43 +2537,60 @@ GMH323EndPoint::IsCallVideoPaused (PString callToken)
 }
 
 
-void
-GMH323EndPoint::SetCallAudioPause (PString callToken, gboolean state)
+BOOL
+GMH323EndPoint::SetCallAudioPause (PString callToken, 
+				   BOOL state)
 {
+  BOOL result = FALSE;
+  
   H323Connection *connection = NULL;
   H323Channel *channel = NULL;
 
-  g_return_if_fail (!callToken.IsEmpty ());
 
-  connection = FindConnectionWithLock(callToken);
+  connection = FindConnectionWithLock (callToken);
 
   if (connection) {
+  
     channel = connection->FindChannel (RTP_Session::DefaultAudioSessionID,
 				       FALSE);
-    if (channel)
+    if (channel) {
+      
       channel->SetPause (state);
+      result = TRUE;
+    }
+    
     connection->Unlock ();
   }
+
+  return result;
 }
 
 
-void
-GMH323EndPoint::SetCallVideoPause (PString callToken, gboolean state)
+BOOL
+GMH323EndPoint::SetCallVideoPause (PString callToken, 
+				   BOOL state)
 {
+  BOOL result = FALSE;
+
   H323Connection *connection = NULL;
   H323Channel *channel = NULL;
 
-  g_return_if_fail (!callToken.IsEmpty ());
 
-  connection = FindConnectionWithLock(callToken);
+  connection = FindConnectionWithLock (callToken);
 
   if (connection) {
+    
     channel = connection->FindChannel (RTP_Session::DefaultVideoSessionID,
 				       FALSE);
-    if (channel)
+    if (channel) {
+      
       channel->SetPause (state);
+      result = TRUE;
+    }
     connection->Unlock ();
   }
+
+  return result;
 }
 
 

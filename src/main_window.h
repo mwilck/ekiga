@@ -62,6 +62,18 @@ void gm_main_window_set_call_hold (GtkWidget *,
 
 
 /* DESCRIPTION  :  /
+ * BEHAVIOR     :  Update the main window pause channel menu and toolbar items
+ * 		   following the channel is paused (TRUE) or not (FALSE). The
+ * 		   last argument is true if we are modifying a video channel
+ * 		   item.
+ * PRE          :  The main window GMObject.
+ */
+void gm_main_window_set_channel_pause (GtkWidget *,
+				       gboolean,
+				       gboolean);
+
+
+/* DESCRIPTION  :  /
  * BEHAVIOR     :  Update the main window sensitivity following the calling
  *                 state.
  * PRE          :  The main window GMObject.
@@ -151,6 +163,16 @@ void gm_main_window_get_volume_sliders_values (GtkWidget *,
  */
 void gm_main_window_speed_dials_menu_update (GtkWidget *,
 					     GSList *);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Runs a dialog to transfer a call. The default transfer
+ * 		   destination is the specified forward host if any, if not
+ * 		   it will be the forward host from the configuration, if any.
+ * PRE          :  The main window GMObject.
+ */
+void gm_main_window_transfer_dialog_run (GtkWidget *,
+					 gchar *);
 
 
 /* DESCRIPTION  :  /

@@ -48,6 +48,7 @@
 #include "tray.h"
 #include "lid.h"
 #include "sound_handling.h"
+#include "urlhandler.h"
 
 #include "dialog.h"
 #include "gmentrydialog.h"
@@ -111,6 +112,24 @@ static GmWindow *gm_mw_get_mw (GtkWidget *);
  */
 static void hold_current_call_cb (GtkWidget *,
 				  gpointer);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Set the current active call audio or video channel on pause
+ * 		   or not and update the GUI accordingly.
+ * PRE          :  GPOINTER_TO_INT (data) = 0 if audio, 1 if video.
+ */
+static void pause_current_call_channel_cb (GtkWidget *,
+					   gpointer);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Creates a dialog to transfer the current call and transfer
+ * 		   it if required.
+ * PRE          :  The main window GMObject as data.
+ */
+static void transfer_current_call_cb (GtkWidget *,
+				      gpointer);
 
 
 /* DESCRIPTION  :  This callback is called when a video window is shown.
@@ -311,6 +330,72 @@ hold_current_call_cb (GtkWidget *widget,
   
   /* Update the GUI */
   gm_main_window_set_call_hold (GTK_WIDGET (data), is_on_hold);
+}
+
+
+static void
+pause_current_call_channel_cb (GtkWidget *widget,
+			       gpointer data)
+{
+  GMH323EndPoint *endpoint = NULL;
+  GMVideoGrabber *vg = NULL;
+
+  GtkWidget *main_window = NULL;
+ 
+  PString current_call_token;
+  BOOL is_paused = FALSE;
+  
+  endpoint = GnomeMeeting::Process ()->Endpoint ();
+  current_call_token = endpoint->GetCurrentCallToken ();
+
+  main_window = gm; 
+
+  cout << "ici" << endl << flush;
+  
+  if (!current_call_token.IsEmpty ()
+      && endpoint->GetCallingState () == GMH323EndPoint::Standby) {
+
+    gdk_threads_leave ();
+    vg = endpoint->GetVideoGrabber ();
+    if (vg && vg->IsGrabbing ())
+      vg->StopGrabbing ();
+    else
+      vg->StartGrabbing ();
+    gdk_threads_enter ();
+  }
+  else {
+
+    if (GPOINTER_TO_INT (data) == 0) {
+      
+      gdk_threads_leave ();
+      is_paused = endpoint->IsCallAudioPaused (current_call_token);
+      if (endpoint->SetCallAudioPause (current_call_token, !is_paused))
+	is_paused = !is_paused; /* It worked */
+      gdk_threads_enter ();
+
+      gm_main_window_set_channel_pause (main_window, is_paused, FALSE);
+    }
+    else {
+
+      gdk_threads_leave ();
+      is_paused = endpoint->IsCallVideoPaused (current_call_token);
+      if (endpoint->SetCallVideoPause (current_call_token, !is_paused))
+	is_paused = !is_paused; /* It worked */
+      gdk_threads_enter ();
+      
+      gm_main_window_set_channel_pause (main_window, is_paused, TRUE);
+    }
+  }
+}
+
+
+static void 
+transfer_current_call_cb (GtkWidget *widget,
+			  gpointer data)
+{
+  g_return_if_fail (data != NULL);
+  
+  gm_main_window_transfer_dialog_run (GTK_WIDGET (data), NULL);  
 }
 
 
@@ -589,7 +674,7 @@ speed_dial_menu_item_selected_cb (GtkWidget *w,
     
   /* FIXME */
   if (ep->GetCallingState () == GMH323EndPoint::Connected)
-    transfer_call_cb (NULL, (gpointer) url);
+    gm_main_window_transfer_dialog_run (gm, url);
   else
     connect_cb (NULL, NULL);
 
@@ -691,19 +776,20 @@ gm_mw_init_menu (GtkWidget *main_window)
       GTK_MENU_ENTRY("transfer_call", _("_Transfer Call"),
 		     _("Transfer the current call"),
 		     NULL, 0, 
-		     GTK_SIGNAL_FUNC (transfer_call_cb), NULL, FALSE),
+		     GTK_SIGNAL_FUNC (transfer_current_call_cb), main_window, 
+		     FALSE),
 
       GTK_MENU_SEPARATOR,
 
       GTK_MENU_ENTRY("suspend_audio", _("Suspend _Audio"),
 		     _("Suspend or resume the audio transmission"),
 		     NULL, 0,
-		     GTK_SIGNAL_FUNC (pause_channel_callback),
+		     GTK_SIGNAL_FUNC (pause_current_call_channel_cb),
 		     GINT_TO_POINTER (0), FALSE),
       GTK_MENU_ENTRY("suspend_video", _("Suspend _Video"),
 		     _("Suspend or resume the video transmission"),
 		     NULL, 0, 
-		     GTK_SIGNAL_FUNC (pause_channel_callback),
+		     GTK_SIGNAL_FUNC (pause_current_call_channel_cb),
 		     GINT_TO_POINTER (1), FALSE),
 
       GTK_MENU_SEPARATOR,
@@ -1409,6 +1495,65 @@ gm_main_window_set_call_hold (GtkWidget *main_window,
 }
 
 
+void 
+gm_main_window_set_channel_pause (GtkWidget *main_window,
+				  gboolean pause,
+				  gboolean is_video)
+{
+  GmWindow *mw = NULL;
+  
+  GtkWidget *child = NULL;
+  GtkToggleButton *b = NULL;
+
+  gchar *msg = NULL;
+  
+  g_return_if_fail (main_window != NULL);
+  
+  mw = gm_mw_get_mw (main_window);
+  
+  g_return_if_fail (mw != NULL);
+  
+
+  if (!pause && !is_video)
+    msg = g_strdup (_("Suspend _Audio"));
+  else if (!pause && is_video)
+    msg = g_strdup (_("Suspend _Video"));
+  else if (pause && !is_video)
+    msg = g_strdup (_("Resume _Audio"));
+  else if (pause && is_video)
+    msg = g_strdup (_("Resume _Video"));
+
+  
+  if (is_video) {
+    
+    b = GTK_TOGGLE_BUTTON (mw->video_chan_button);
+    child =
+      GTK_BIN (gtk_menu_get_widget (mw->main_menu, "suspend_video"))->child;
+  }
+  else {
+    
+    b = GTK_TOGGLE_BUTTON (mw->audio_chan_button);
+    child =
+      GTK_BIN (gtk_menu_get_widget (mw->main_menu, "suspend_audio"))->child;
+  }
+	
+
+  if (GTK_IS_LABEL (child)) 
+    gtk_label_set_text_with_mnemonic (GTK_LABEL (child),
+				      msg);
+
+  g_signal_handlers_block_by_func (G_OBJECT (b),
+				   (gpointer) pause_current_call_channel_cb,
+				   NULL);
+  gtk_toggle_button_set_active (b, pause);
+  g_signal_handlers_unblock_by_func (G_OBJECT (b),
+				     (gpointer) pause_current_call_channel_cb,
+				     NULL);
+
+  g_free (msg);
+}
+
+
 void
 gm_main_window_update_sensitivity (//GtkWidget *main_window,
 				   unsigned calling_state)
@@ -1702,6 +1847,75 @@ gm_main_window_speed_dials_menu_update (GtkWidget *main_window,
 }
 
 
+void 
+gm_main_window_transfer_dialog_run (GtkWidget *main_window,
+				    gchar *u)
+{
+  GMH323EndPoint *endpoint = NULL;
+  GmWindow *mw = NULL;
+  
+  GMURL url;
+ 
+  gchar *conf_forward_value = NULL;
+  gint answer = 0;
+  
+
+  g_return_if_fail (main_window != NULL);
+  
+  mw = gm_mw_get_mw (main_window);
+
+  g_return_if_fail (mw != NULL);
+  
+  endpoint = GnomeMeeting::Process ()->Endpoint ();
+  
+  mw->transfer_call_popup = 
+    gm_entry_dialog_new (_("Transfer call to:"),
+			 _("Transfer"));
+
+  gtk_window_set_transient_for (GTK_WINDOW (mw->transfer_call_popup),
+				GTK_WINDOW (main_window));
+  
+  if (u)
+    conf_forward_value = g_strdup (u);
+  else
+    conf_forward_value =
+      gm_conf_get_string (CALL_FORWARDING_KEY "forward_host");
+  
+  gtk_dialog_set_default_response (GTK_DIALOG (mw->transfer_call_popup),
+				   GTK_RESPONSE_ACCEPT);
+  
+  if (conf_forward_value && strcmp (conf_forward_value, ""))
+    gm_entry_dialog_set_text (GM_ENTRY_DIALOG (mw->transfer_call_popup),
+			      conf_forward_value);
+  else
+    gm_entry_dialog_set_text (GM_ENTRY_DIALOG (mw->transfer_call_popup),
+			      (const char *) url.GetDefaultURL ());
+
+  g_free (conf_forward_value);
+  conf_forward_value = NULL;
+  
+  gnomemeeting_threads_dialog_show (mw->transfer_call_popup);
+
+  answer = gtk_dialog_run (GTK_DIALOG (mw->transfer_call_popup));
+  switch (answer) {
+
+  case GTK_RESPONSE_ACCEPT:
+
+    conf_forward_value =
+      (gchar *) gm_entry_dialog_get_text (GM_ENTRY_DIALOG (mw->transfer_call_popup));
+    new GMURLHandler (conf_forward_value, TRUE);
+      
+    break;
+
+  default:
+    break;
+  }
+
+  gtk_widget_destroy (mw->transfer_call_popup);
+  mw->transfer_call_popup = NULL;
+}
+
+
 GtkWidget *
 gm_main_window_new (GmWindow *mw)
 {
@@ -1967,6 +2181,7 @@ gm_main_window_new (GmWindow *mw)
 
   g_signal_connect (G_OBJECT (window), "show", 
 		    GTK_SIGNAL_FUNC (video_window_shown_cb), NULL);
+
   
   return window;
 }

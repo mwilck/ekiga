@@ -274,8 +274,8 @@ GtkWidget *gnomemeeting_init_left_toolbar (void)
 
   gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_chan_button), FALSE);
 
-  g_signal_connect (G_OBJECT (gw->audio_chan_button), "clicked",
-		    G_CALLBACK (pause_channel_callback), GINT_TO_POINTER (0));
+  //g_signal_connect (G_OBJECT (gw->audio_chan_button), "clicked",
+//		    G_CALLBACK (pause_channel_callback), GINT_TO_POINTER (0));
 
   gtk_tooltips_set_tip (gw->tips, gw->audio_chan_button,
 			_("Audio transmission status. During a call, click here to suspend or resume the audio transmission."), NULL);
@@ -294,8 +294,8 @@ GtkWidget *gnomemeeting_init_left_toolbar (void)
 
   gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button), FALSE);
 
-  g_signal_connect (G_OBJECT (gw->video_chan_button), "clicked",
-		    G_CALLBACK (pause_channel_callback), GINT_TO_POINTER (1));
+  //g_signal_connect (G_OBJECT (gw->video_chan_button), "clicked",
+//		    G_CALLBACK (pause_channel_callback), GINT_TO_POINTER (1));
 
   gtk_tooltips_set_tip (gw->tips, gw->video_chan_button,
 			_("Video transmission status. During a call, click here to suspend or resume the video transmission."), NULL);
