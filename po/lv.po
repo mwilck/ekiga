@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
-"POT-Creation-Date: 2003-01-01 05:03+0100\n"
-"PO-Revision-Date: 2003-01-01 18:31+0200\n"
+"POT-Creation-Date: 2003-01-03 05:03+0100\n"
+"PO-Revision-Date: 2003-01-03 21:52+0200\n"
 "Last-Translator: Artis Trops <hornet@navigator.lv>\n"
 "Language-Team: Latvian <ll10nt@os.lv>\n"
 "MIME-Version: 1.0\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: gnomemeeting.desktop.in.h:1
-#: src/main_window.cpp:1063
+#: src/main_window.cpp:1064
 msgid "GnomeMeeting"
 msgstr "GnomeMeeting"
 
@@ -36,7 +36,7 @@ msgid "A comment that will be listed in LDAP directories"
 msgstr "Komentārs, kas parādīsies LDAP direktorijās"
 
 #: gnomemeeting.schemas.in.in.h:3
-#: src/pref_window.cpp:867
+#: src/pref_window.cpp:885
 msgid "Always forward calls to the given host"
 msgstr "Vienmēr pārsūtīt zvanus uz doto hostdatoru"
 
@@ -58,9 +58,9 @@ msgstr "Audio ierakstītāja mikseris"
 
 #. The toggles
 #: gnomemeeting.schemas.in.in.h:8
-#: src/menu.cpp:542
-#: src/menu.cpp:830
-#: src/pref_window.cpp:747
+#: src/menu.cpp:522
+#: src/menu.cpp:808
+#: src/pref_window.cpp:765
 msgid "Auto Answer"
 msgstr "Auto Atbide"
 
@@ -85,7 +85,7 @@ msgid "Color Format for the video palette"
 msgstr "Krāsas Formāts video paletei"
 
 #: gnomemeeting.schemas.in.in.h:14
-#: src/ldap_window.cpp:1651
+#: src/ldap_window.cpp:1719
 msgid "Comment"
 msgstr "Komentārs"
 
@@ -114,12 +114,12 @@ msgid "Enable Silence Detection for G.711 and GSM"
 msgstr "Aktivizēt Klusuma Noteikšanu priekš G.711 un GSM"
 
 #: gnomemeeting.schemas.in.in.h:21
-#: src/pref_window.cpp:1252
+#: src/pref_window.cpp:1270
 msgid "Enable Video Reception"
 msgstr "Aktivizēt Video Saņemšanu"
 
 #: gnomemeeting.schemas.in.in.h:22
-#: src/pref_window.cpp:1249
+#: src/pref_window.cpp:1267
 msgid "Enable Video Transmission"
 msgstr "Aktivizēt Video Pārraidi"
 
@@ -128,7 +128,7 @@ msgid "Enable or disable bilinear filtering"
 msgstr "Aktivizēt vai deaktivizēt bilineāro filtrēšanu"
 
 #: gnomemeeting.schemas.in.in.h:24
-#: src/pref_window.cpp:774
+#: src/pref_window.cpp:792
 msgid "Enable or disable bilinear interpolation when rendering video images (it has no effect on fullscreen)."
 msgstr "Aktivizēt vai deaktivizēt bilineāro interpolāciju, kad attēloju video attēlus (tam nav efekta pilnekrānā)."
 
@@ -153,12 +153,12 @@ msgid "First Name"
 msgstr "Vārds"
 
 #: gnomemeeting.schemas.in.in.h:30
-#: src/pref_window.cpp:873
+#: src/pref_window.cpp:891
 msgid "Forward calls to the given host if busy"
 msgstr "Pārsūtīt zvanus uz doto hostdatoru, ja aizņemts"
 
 #: gnomemeeting.schemas.in.in.h:31
-#: src/pref_window.cpp:870
+#: src/pref_window.cpp:888
 msgid "Forward calls to the given host if no answer"
 msgstr "Pārsūtīt zvanus uz doto hostdatoru, ja nav atbildes"
 
@@ -179,7 +179,7 @@ msgid "H.245 Tunnelling"
 msgstr "H.245 Tunelēšana"
 
 #: gnomemeeting.schemas.in.in.h:36
-#: src/pref_window.cpp:1282
+#: src/pref_window.cpp:1300
 msgid "Here you can choose the number of blocks (that haven't changed) transmitted with each frame. These blocks fill in the background."
 msgstr "Šeit jūs varat izvēlēties katrā kadrā pārsūtāmo bloku (kas nav mainījušies) skaitu. Šie bloki aizpildās fonā."
 
@@ -188,7 +188,7 @@ msgid "IP Translation"
 msgstr "IP Translēšana"
 
 #: gnomemeeting.schemas.in.in.h:38
-#: src/pref_window.cpp:966
+#: src/pref_window.cpp:984
 msgid "If enabled, GnomeMeeting will use the Quicknet device instead of the regular soundcard during calls."
 msgstr "Ja aktivizēts, GnomeMeeting lietos Quicknet iekārtu parastas skaņas kartes vietā zvanu laikā."
 
@@ -205,12 +205,12 @@ msgid "If enabled, calls will be established with H.245 Tunnelling."
 msgstr "Ja aktivizēts, zvani tieks savienoti ar H.245 Tunelēšanu."
 
 #: gnomemeeting.schemas.in.in.h:42
-#: src/pref_window.cpp:747
+#: src/pref_window.cpp:765
 msgid "If enabled, incoming calls will be automatically answered."
 msgstr "Ja aktivizēts, ienākošie zvani tieks automātiki atbildēti."
 
 #: gnomemeeting.schemas.in.in.h:43
-#: src/pref_window.cpp:749
+#: src/pref_window.cpp:767
 msgid "If enabled, incoming calls will be automatically refused."
 msgstr "Ja aktivizēts, ienākošie zvani tieks automātiki atteikti."
 
@@ -251,7 +251,7 @@ msgid "Local Video Popup Width"
 msgstr "Lokālā Video Iznirstošā Loga Platums"
 
 #: gnomemeeting.schemas.in.in.h:53
-#: src/ldap_window.cpp:1662
+#: src/ldap_window.cpp:1730
 msgid "Location"
 msgstr "Lokācija"
 
@@ -297,7 +297,7 @@ msgstr "Publiska IP"
 
 #. The Quicknet devices related options
 #: gnomemeeting.schemas.in.in.h:64
-#: src/pref_window.cpp:956
+#: src/pref_window.cpp:974
 msgid "Quicknet Device"
 msgstr "Quicknet Iekārta"
 
@@ -350,8 +350,8 @@ msgid "Show the chat window in the main window"
 msgstr "Parādīt tērzēšanas logu galvenajā logā"
 
 #: gnomemeeting.schemas.in.in.h:77
-#: src/menu.cpp:518
-#: src/menu.cpp:779
+#: src/menu.cpp:498
+#: src/menu.cpp:757
 msgid "Switch to fullscreen"
 msgstr "Pārslēgties uz pilnekrānu"
 
@@ -368,7 +368,7 @@ msgid "The Audio Codecs List"
 msgstr "Audio Kodeku Saraksts"
 
 #: gnomemeeting.schemas.in.in.h:81
-#: src/pref_window.cpp:960
+#: src/pref_window.cpp:978
 msgid "The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic Gain Compensation. Choosing Automatic Gain Compensation modulates the volume for best quality."
 msgstr "Automātiskā Eho Atsaukšanas līmenisl: Izslēgts, Zems, Vidējs, Augsts, Automātiska Gain Kompensācija. Izvēloties Automatisku Gain Kompensāciju, tiek modelēts skaļums vislabākajai kvalitātei."
 
@@ -473,7 +473,7 @@ msgid "The hostname of the Gatekeeper to register to"
 msgstr "Gatekeeper hostdatora vārds, kurā reģistrēties"
 
 #: gnomemeeting.schemas.in.in.h:107
-#: src/pref_window.cpp:1042
+#: src/pref_window.cpp:1060
 msgid "The image to transmit if the Picture device is selected as video device or if the opening of the device fails (none specified = default GnomeMeeting logo)."
 msgstr "Attēls, ko pārraidīt, ja Bildes iekārta ir izvēlēta kā video iekārta vai ja iekārtas atvēršana neizdodas (nenorādīta = noklusētais GnomeMeeting logo)."
 
@@ -490,22 +490,24 @@ msgid "The list of groups"
 msgstr "Grupu sarakstsILS serveru saraksts"
 
 #: gnomemeeting.schemas.in.in.h:111
-#: src/pref_window.cpp:1223
+#: src/pref_window.cpp:1241
 msgid "The maximal jitter buffer size for audio reception (in ms)."
 msgstr "Maksimālais jitter bufera izmērs audio uztveršanai (ms)."
 
 #: gnomemeeting.schemas.in.in.h:112
-#: src/pref_window.cpp:1220
+#: src/pref_window.cpp:1238
 msgid "The minimal jitter buffer size for audio reception (in ms)."
 msgstr "Minimālais jitter bufera izmērs audio uztveršanai (ms)."
 
 #: gnomemeeting.schemas.in.in.h:113
-#: src/pref_window.cpp:944
+#: src/druid.cpp:784
+#: src/pref_window.cpp:962
 msgid "The mixer to use to change the volume of the audio player."
 msgstr "Lietojamais mikseris audio atskaņotāja skaļuma maiņai."
 
 #: gnomemeeting.schemas.in.in.h:114
-#: src/pref_window.cpp:951
+#: src/druid.cpp:791
+#: src/pref_window.cpp:969
 msgid "The mixer to use to change the volume of the audio recorder."
 msgstr "Lietojamais mikseris audio ierakstītāja skaļuma maiņai."
 
@@ -534,7 +536,7 @@ msgid "The transmitted video quality hint"
 msgstr "Pārsūtītā video kvalitātes norāde"
 
 #: gnomemeeting.schemas.in.in.h:121
-#: src/pref_window.cpp:963
+#: src/pref_window.cpp:981
 msgid "The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)."
 msgstr "Jūsu valsts divu burtu kods (piem.: BE, UK, FR, LV, ...)."
 
@@ -563,7 +565,7 @@ msgid "The zoom value to apply to images displayed in the main GUI (can be 0.50,
 msgstr "Tālummaiņas vērtība, kuru pielietot attēliem, kas parādīti galvenajā GUI (can be 0.50, 1.00, or 2.00)."
 
 #: gnomemeeting.schemas.in.in.h:128
-#: src/pref_window.cpp:896
+#: src/pref_window.cpp:914
 msgid "This enables IP translation. IP translation is useful if GnomeMeeting is running behind a NAT/PAT router. You have to put the public IP of the router in the field below. If you are registered to ils.seconix.com, GnomeMeeting will automatically fetch the public IP using the ILS service. If your router natively supports H.323, you can disable this."
 msgstr "Šis aktivizē IP translēšanu. IP ir noderīga, ja GnomeMeeting tiek darbināts aiz NAT/PAT maršrutizatora. Jums būs jāieraksta maršrutizatora publiskā IP zemākeošajā sarakstā. Ja esat reģistrēts ils.seconix.com, GnomeMeeting automātiski dabūs publisko IP, lietojot ILS servisu. Ja jūsu maršrutizators iedzimti atbalsta H.323, jūs varat šo deaktivizēt."
 
@@ -580,7 +582,7 @@ msgid "Use Quicknet Device"
 msgstr "Lietot Quicknet Iekārtu"
 
 #: gnomemeeting.schemas.in.in.h:132
-#: src/ldap_window.cpp:1686
+#: src/ldap_window.cpp:1752
 msgid "Version"
 msgstr "Versija"
 
@@ -609,9 +611,13 @@ msgid "Video Size"
 msgstr "Video Izmērs"
 
 #: gnomemeeting.schemas.in.in.h:139
-#: src/pref_window.cpp:899
+#: src/pref_window.cpp:917
 msgid "You can put here the public IP of your NAT/PAT router if you want to use IP translation. If you are registered to ils.seconix.com, GnomeMeeting will automatically fetch the public IP using the ILS service."
 msgstr "Jūs varat šeit noteikt jūsu NAT/PAT maršrutizatora pubisko IP, ja vēlaties lietot IP translēšanu. Ja esat reģistrēts ils.seconix.com, GnomeMeeting automātiski dabūs publisko IP, lietojot ILS servisu."
+
+#: gnomemeeting.schemas.in.in.h:140
+msgid "[Friends,Family,Work]"
+msgstr "[Draugi,Ģimene,Darbs]"
 
 #: lib/dialog.c:148
 msgid "Do not show this dialog again"
@@ -870,205 +876,217 @@ msgstr "Auto Noraidīts"
 msgid "Auto Answering Incoming Call"
 msgstr "Auto Atbildu Ienākošajam Zvanam"
 
-#: src/druid.cpp:316
+#: src/druid.cpp:313
 msgid "You chose to NOT use the GnomeMeeting ILS directory. Other users will not be able to contact you if you don't register to a directory service."
 msgstr "Jūs izvēlējāties NELIETOTGnomeMeeting ILS direktoriju. Citi lietotāji nevarēs sakontaktēties ar jums, ja jūs nereģistrēsieties direktorijas servisā."
 
-#: src/druid.cpp:474
-#: src/druid.cpp:654
+#: src/druid.cpp:509
+#: src/druid.cpp:690
 msgid "56K modem"
 msgstr "56K modems"
 
-#: src/druid.cpp:478
-#: src/druid.cpp:658
+#: src/druid.cpp:513
+#: src/druid.cpp:694
 msgid "ISDN"
 msgstr "ISDN"
 
-#: src/druid.cpp:482
-#: src/druid.cpp:662
+#: src/druid.cpp:517
+#: src/druid.cpp:698
 msgid "DSL/Cable"
 msgstr "DSL/Kablis"
 
-#: src/druid.cpp:486
-#: src/druid.cpp:666
+#: src/druid.cpp:521
+#: src/druid.cpp:702
 msgid "T1/LAN"
 msgstr "T1/LAN"
 
-#: src/druid.cpp:490
-#: src/druid.cpp:670
+#: src/druid.cpp:525
+#: src/druid.cpp:706
 msgid "Other"
 msgstr "Cits"
 
-#: src/druid.cpp:549
+#: src/druid.cpp:586
 #, c-format
 msgid "Personal Information - page %d/%d"
 msgstr "Personas Informācija - lapa %d/%d"
 
-#: src/druid.cpp:558
+#: src/druid.cpp:595
 msgid "Please enter information about yourself. This information will be used when connecting to other audio/video conferencing software, and to register to the Internet Locator Service directory of online GnomeMeeting users, an easy way to find your friends. You can even add some comments to personalize your registration, and precise your geographical location in the Location field."
 msgstr "Lūdzu ievadiet informāciju par sevi. Šī informācija tiks lietota, piesēdzoties citai audio/video konferences programmatūrai un reģistrējoties GnomeMeeting lietotāju Internet Lokatora Servisa direktorijā, viegls veids, kā atrast savus draugus. Jūs pat varat pievienot komentārus, lai personificētu savu reģistrāciju un precizētu savu ģeogrāfisko atrašanās vietu Lokācijas laukā."
 
-#: src/druid.cpp:560
-#: src/pref_window.cpp:689
+#: src/druid.cpp:597
+#: src/pref_window.cpp:707
 msgid "Personal Information"
 msgstr "Personīga Informācija"
 
-#: src/druid.cpp:565
+#: src/druid.cpp:602
 msgid "First _name:"
 msgstr "_Vārds:"
 
-#: src/druid.cpp:569
+#: src/druid.cpp:606
 msgid "_Last name:"
 msgstr "_Uzvārds:"
 
-#: src/druid.cpp:573
+#: src/druid.cpp:610
 msgid "E-_mail address:"
 msgstr "_E-pastal Adrese:"
 
-#: src/druid.cpp:577
+#: src/druid.cpp:614
 msgid "_Comment:"
 msgstr "_Komentārs:"
 
-#: src/druid.cpp:581
+#: src/druid.cpp:618
 msgid "_Geographical location:"
 msgstr "Ģeogrā_fiskā lokācija:"
 
 #. The register toggle
-#: src/druid.cpp:590
+#: src/druid.cpp:627
 msgid "Do not register me to the GnomeMeeting users directory"
 msgstr "Nereģistrēt mani GnomeMeting lietotāju direktorijā"
 
-#: src/druid.cpp:638
+#: src/druid.cpp:674
 #, c-format
 msgid "Network Connection - page %d/%d"
 msgstr "Tīkla Savienojums - lapa %d/%d"
 
-#: src/druid.cpp:649
+#: src/druid.cpp:685
 msgid "Please enter your network connection type. This setting is used to set default settings following your bandwidth. It will set good default settings but it is still possible to change them later to obtain a better result in each particular case."
 msgstr "Lūdzu izvēlaties savu tīkla savienojuma tipu. Šis uzstādījums tiek lietots, lai iestatītu noklusetos uzstādījumu vadoties no caurlaidspējas. Tas uzstādīs labus vispārīgos uzstādījumus, bet ir arī iespējams pieregulēt un izmainīt tos vēlāk, lai panāktu labāku rezultātu katram konkrētajam gadījumam."
 
 #. Connection type
-#: src/druid.cpp:653
+#: src/druid.cpp:689
 msgid "Connection Type"
 msgstr "Savienojuma Tips"
 
-#: src/druid.cpp:750
+#: src/druid.cpp:764
 #, c-format
 msgid "Audio Devices - page %d/%d"
 msgstr "Audio Iekārtas - lapa %d/%d"
 
-#: src/druid.cpp:760
+#: src/druid.cpp:774
 msgid "Please choose the audio devices to use during the GnomeMeeting session. You can also choose to use a Quicknet device instead of the soundcard in the preferences. Some webcams models have an internal microphone that can be used with GnomeMeeting."
 msgstr "Lūdzu izvēlaties lietojamās audio iekārtas GnomeMeeting sesijas laikā. Jūs varat izvēlēties lietot arī Quicknet iekārtu skaņas katres vietā preferencēs. Dažiem webkameru modeļiem ir iekšējais mikrafons, kas var tikt lietots ar GnomeMeeting."
 
-#. The Audio player
-#: src/druid.cpp:764
-#: src/pref_window.cpp:935
-#: src/pref_window.cpp:1448
+#. The Audio devices
+#: src/druid.cpp:778
+#: src/pref_window.cpp:953
+#: src/pref_window.cpp:1466
 msgid "Audio Devices"
 msgstr "Audio Iekārtas"
 
-#: src/druid.cpp:778
-msgid "Player:"
-msgstr "Atskaņotājs:"
+#: src/druid.cpp:781
+#: src/pref_window.cpp:959
+msgid "Audio Player:"
+msgstr "Audio Atskaņotājs:"
 
-#: src/druid.cpp:778
-#: src/pref_window.cpp:941
+#: src/druid.cpp:781
+#: src/pref_window.cpp:959
 msgid "Enter the audio player device to use."
 msgstr "Ievadiet lietojamo audio atskņotāja iekārtu."
 
-#: src/druid.cpp:798
-msgid "Recorder:"
-msgstr "Ierakstītājs:"
+#: src/druid.cpp:784
+#: src/pref_window.cpp:962
+msgid "Audio player mixer:"
+msgstr "Audio atskaņotāja mikseris:"
 
-#: src/druid.cpp:798
-#: src/pref_window.cpp:948
+#: src/druid.cpp:788
+#: src/pref_window.cpp:966
+msgid "Audio Recorder:"
+msgstr "Audio Ierakstītājs:"
+
+#: src/druid.cpp:788
+#: src/pref_window.cpp:966
 msgid "Enter the audio recorder device to use."
 msgstr "Ievadiet lietojamo audio ierakstītāja iekārtu."
 
+#: src/druid.cpp:791
+#: src/pref_window.cpp:969
+msgid "Audio recorder mixer:"
+msgstr "Audio ierakstītāja mikseris:"
+
 #. Test button
-#: src/druid.cpp:805
+#: src/druid.cpp:795
 msgid "Click here to test your audio devices:"
 msgstr "Klikšķis šeit, lai notestētu jūsu audio iekārtas:"
 
-#: src/druid.cpp:807
+#: src/druid.cpp:797
 msgid "Test Audio"
 msgstr "Testēt Audio"
 
-#: src/druid.cpp:848
+#: src/druid.cpp:834
 #, c-format
 msgid "Video Devices - page %d/%d"
 msgstr "Video Iekārtas - lapa %d/%d"
 
-#: src/druid.cpp:858
+#: src/druid.cpp:844
 msgid "Please choose the video device to use during the GnomeMeeting session. Click on the Video Test button to check if your setup is correct and if your driver is supported by GnomeMeeting."
 msgstr "Lūdzu izvēlaties lietjoamo video iekārtu GnomeMeeting sesijas laikā. Klikšķiniet Video Testa pogu, lai pārbaudītu, vai jūsu uzstādījums ir pareizs un vai jūsu draiveri atbalsta GnomeMeeting."
 
 #. The Video device
-#: src/druid.cpp:862
-#: src/pref_window.cpp:1019
-#: src/pref_window.cpp:1453
+#: src/druid.cpp:848
+#: src/pref_window.cpp:1037
+#: src/pref_window.cpp:1471
 msgid "Video Devices"
 msgstr "Video Iekārtas"
 
-#: src/druid.cpp:872
-#: src/pref_window.cpp:1025
+#: src/druid.cpp:851
+#: src/pref_window.cpp:1043
 msgid "Video Device:"
 msgstr "Video Iekārtas:"
 
-#: src/druid.cpp:872
-#: src/pref_window.cpp:1025
+#: src/druid.cpp:851
+#: src/pref_window.cpp:1043
 msgid "Enter the video device to use. Using an invalid video device for video transmission will transmit a test picture."
 msgstr "Ievadiet lietojamo video iekārtu. Lietojot nederīgu video iekārtu video pārsūtie, pārsūtīs testa bildi."
 
-#: src/druid.cpp:879
+#: src/druid.cpp:856
 msgid "Click here to test your video device conformity:"
 msgstr "Kikšķis šeit, lai testētu jūsu video iekārtas atbilstību:"
 
-#: src/druid.cpp:881
+#: src/druid.cpp:858
 msgid "Test Video"
 msgstr "Testēt Video"
 
-#: src/druid.cpp:928
+#: src/druid.cpp:903
 #, c-format
 msgid "PC-To-Phone Setup - page %d/%d"
 msgstr "PC-To-Phone Uzstādījumi - lapa %d/%d"
 
-#: src/druid.cpp:938
+#: src/druid.cpp:913
 msgid "You can make calls to regular phones and cell numbers worldwide using GnomeMeeting and the MicroTelco service from Quicknet Technologies. To enable this feature you need a compatible card from Quicknet Technologies and you need to enter your MicroTelco Account number and PIN below."
 msgstr "Jūs varat izdarīt zvanus uz parastiem un kameras numuriem visā pasaulē, lietojot GnomeMeeting un MicroTelco servisu no Quicknet Technologies. Lai šo iespēju aktivizētu, jums nepieciešama savietojama karte no Quicknet Technologies un jāievada MicroTelco Konta numurs un PIN zemāk."
 
 #. The PC-To-Phone setup
-#: src/druid.cpp:942
+#: src/druid.cpp:917
 msgid "PC-To-Phone Setup"
 msgstr "PC-To-Phone Uzstādīšana"
 
-#: src/druid.cpp:945
+#: src/druid.cpp:920
 msgid "Account Number:"
 msgstr "Konta Numurs:"
 
-#: src/druid.cpp:950
+#: src/druid.cpp:925
 msgid "Password:"
 msgstr "Parole:"
 
-#: src/druid.cpp:958
+#: src/druid.cpp:933
 msgid "Register to the MicroTelco service"
 msgstr "Reģistrēties MicroTelco servisā"
 
-#: src/druid.cpp:975
+#: src/druid.cpp:949
 msgid "Click on one of the following links to get more information about your existing MicroTelco account, or to create a new account."
 msgstr "Klikšķis uz sekojošajām saitēm, lai saņemtu vairak informāciju par jūsu eksistējošo MicroTelco kontu vai izveidotu jaunu kontu."
 
-#: src/druid.cpp:1009
+#: src/druid.cpp:984
 msgid "First Time Configuration Druid"
 msgstr "Pirmās Reizes Konfigurācijas Vednis"
 
-#: src/druid.cpp:1017
+#: src/druid.cpp:991
 #, c-format
 msgid "Configuration Druid - page %d/%d"
 msgstr "Konfigurācijas Vednis - lapa %d/%d"
 
-#: src/druid.cpp:1020
+#: src/druid.cpp:994
 msgid ""
 "This is the GnomeMeeting general configuration druid. The following steps will set up GnomeMeeting by asking a few simple questions.\n"
 "\n"
@@ -1078,7 +1096,7 @@ msgstr ""
 "\n"
 "Kad būsiet pabeidzis šos soļus, jūs vienmēr tos varat izmainīt Preferencēs no Rediģēšanas izvēlnes. "
 
-#: src/druid.cpp:1059
+#: src/druid.cpp:1033
 #, c-format
 msgid "Configuration complete - page %d/%d"
 msgstr "Konfigurācija pabeigta - lapa %d/%d"
@@ -1257,7 +1275,7 @@ msgid "Call duration: %.2ld:%.2ld:%.2ld"
 msgstr "Zvana ilgums: %.2ld:%.2ld:%.2ld"
 
 #: src/endpoint.cpp:1502
-#: src/main_window.cpp:1623
+#: src/main_window.cpp:1626
 msgid ""
 "Sent/Received:\n"
 "Lost/Late Packets:\n"
@@ -1425,130 +1443,130 @@ msgid "Failed to contact %s."
 msgstr "Neizdevās sakontaktēt %s."
 
 #. Create the dialog to easily modify the info of a specific contact
-#: src/ldap_window.cpp:388
+#: src/ldap_window.cpp:403
 msgid "Edit the contact information"
 msgstr "Rediģēt kontakta informāciju"
 
-#: src/ldap_window.cpp:397
+#: src/ldap_window.cpp:412
 msgid "Name:"
 msgstr "Nosaukums:"
 
-#: src/ldap_window.cpp:410
+#: src/ldap_window.cpp:425
 msgid "callto URL:"
 msgstr "callto URL:"
 
-#: src/ldap_window.cpp:560
+#: src/ldap_window.cpp:575
 msgid "Add a new server"
 msgstr "Pievienot jaunu serveri"
 
-#: src/ldap_window.cpp:561
+#: src/ldap_window.cpp:576
 msgid "Enter the server name:"
 msgstr "Ievadiet servera nosaukumu:"
 
-#: src/ldap_window.cpp:566
+#: src/ldap_window.cpp:581
 msgid "Add a new group"
 msgstr "Pievienot jaunu grupu"
 
-#: src/ldap_window.cpp:567
+#: src/ldap_window.cpp:582
 msgid "Enter the group name:"
 msgstr "Ievadiet grupas nosaukumu:"
 
-#: src/ldap_window.cpp:598
-msgid "No Name"
-msgstr "Nav Nosaukuma"
-
-#: src/ldap_window.cpp:1125
+#: src/ldap_window.cpp:1187
 msgid "New server"
 msgstr "Jauns serveris"
 
-#: src/ldap_window.cpp:1134
+#: src/ldap_window.cpp:1196
 msgid "New group"
 msgstr "Jauna grupa"
 
-#: src/ldap_window.cpp:1143
-#: src/ldap_window.cpp:1156
+#: src/ldap_window.cpp:1205
+msgid "Refresh"
+msgstr "Atsvaidzināt"
+
+#: src/ldap_window.cpp:1210
+#: src/ldap_window.cpp:1224
 msgid "Delete"
 msgstr "Dzēst"
 
-#: src/ldap_window.cpp:1152
+#: src/ldap_window.cpp:1219
 msgid "New contact"
 msgstr "Jauns kontakts"
 
-#: src/ldap_window.cpp:1266
+#: src/ldap_window.cpp:1334
 msgid "Call this user"
 msgstr "Izsaukt šo lietotāju"
 
-#: src/ldap_window.cpp:1276
+#: src/ldap_window.cpp:1344
 msgid "Edit this user information"
 msgstr "Rediģēt šo lietotāja informāciju"
 
-#: src/ldap_window.cpp:1283
+#: src/ldap_window.cpp:1351
 msgid "Delete this user"
 msgstr "Dzēst šo lietotāju"
 
-#: src/ldap_window.cpp:1294
+#: src/ldap_window.cpp:1362
 msgid "Add to group"
 msgstr "Pievienot grupai"
 
-#: src/ldap_window.cpp:1392
+#: src/ldap_window.cpp:1460
 msgid "GnomeMeeting Addressbook"
 msgstr "GnomeMeeting Adrešu grāmata"
 
-#: src/ldap_window.cpp:1422
+#: src/ldap_window.cpp:1490
 msgid "Contacts"
 msgstr "Kontakti"
 
-#: src/ldap_window.cpp:1441
+#: src/ldap_window.cpp:1509
 msgid "Servers"
 msgstr "Servri"
 
-#: src/ldap_window.cpp:1471
+#: src/ldap_window.cpp:1539
 msgid "Groups"
 msgstr "Grupas"
 
 #. Translators: This is "S" as in "Status"
-#: src/ldap_window.cpp:1608
+#: src/ldap_window.cpp:1676
 msgid "S"
 msgstr "S"
 
 #. Translators: This is "A" as in "Audio"
-#: src/ldap_window.cpp:1618
-#: src/pref_window.cpp:1124
+#: src/ldap_window.cpp:1686
+#: src/pref_window.cpp:1142
 msgid "A"
 msgstr "A"
 
 #. Translators: This is "V" as in "Video"
-#: src/ldap_window.cpp:1628
+#: src/ldap_window.cpp:1696
 msgid "V"
 msgstr "V"
 
-#: src/ldap_window.cpp:1637
-#: src/ldap_window.cpp:1712
-#: src/pref_window.cpp:1136
+#: src/ldap_window.cpp:1705
+#: src/ldap_window.cpp:1778
+#: src/pref_window.cpp:1154
 msgid "Name"
 msgstr "Nosaukums"
 
-#: src/ldap_window.cpp:1674
+#: src/ldap_window.cpp:1740
 msgid "Callto"
 msgstr "Callto"
 
-#: src/ldap_window.cpp:1697
+#: src/ldap_window.cpp:1763
 msgid "IP"
 msgstr "IP"
 
-#: src/ldap_window.cpp:1725
+#: src/ldap_window.cpp:1791
 msgid "Callto URL"
 msgstr "Callto URL"
 
-#: src/ldap_window.cpp:1758
+#: src/ldap_window.cpp:1825
 msgid "First name contains"
 msgstr "Vārds satur"
 
-#: src/ldap_window.cpp:1762
+#: src/ldap_window.cpp:1829
 msgid "Last name contains"
 msgstr "Uzvārds satur"
 
-#: src/ldap_window.cpp:1766
+#: src/ldap_window.cpp:1833
 msgid "E-mail contains"
 msgstr "E-pasts satur"
 
@@ -1605,18 +1623,18 @@ msgstr "Kļūda reģistējot gnomemeeting ar aktivācijas servisu; ražotnes re�
 msgid "Failed to retrieve gnomemeeting server from activation server\n"
 msgstr "Neizdevās atgūt gnomemeeting serveri no aktivācijas servera\n"
 
-#: src/main_window.cpp:1041
+#: src/main_window.cpp:1042
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Izdrukā atkļūdošanas informāciju konsolē (līmenis starp 1 un 6)"
 
-#: src/main_window.cpp:1044
+#: src/main_window.cpp:1045
 msgid "Makes GnomeMeeting call the given callto:// URL"
 msgstr "Liek GnomeMeeting zvanīt dotajam callto:// URL"
 
 #. We can't use gnomemeeting_error_dialog here, cause we need the
 #. dialog_run and dialog_run can't be used in gnomemeeting_error_dialog
 #. because it doesn't work in threads
-#: src/main_window.cpp:1100
+#: src/main_window.cpp:1101
 #, c-format
 msgid ""
 "GnomeMeeting got %d for the GConf key \"/apps/gnomemeeting/gconf_test_age\", but %d was expected.\n"
@@ -1635,315 +1653,307 @@ msgstr ""
 "\n"
 "'gnomemeeting-config-tool' lietošana varētu līdzēt problēmas novēršanā."
 
-#: src/main_window.cpp:1168
+#: src/main_window.cpp:1170
 msgid "GnomeMeeting just installed an URL handler for callto:// URLs. callto URLs are an easy way to call people on the internet using GnomeMeeting. They are now available to all Gnome programs able to cope with URLs. You can for example create an URL launcher on the Gnome panel of the form \"callto://ils.seconix.com/me@foo.com\" to call the person registered on the ILS server ils.seconix.com with the me@foo.com e-mail address."
 msgstr "GnomeMeeting tikko uzinstalēja URL apdarinātāju callto:// URLiem. callto URLi ir viegls veids, kā izsaukt cilvēkus internetā, lietojot GnomeMeeting. Tie šobrīd ir pieejami visās Gnome programmās, kas tiek galā ar URLiem. Jūs, piemēram, varat izveidot URL palaidēju Gnome panelī ar ormu \"callto://ils.seconix.com/me@foo.com\", lai izsauktu personu, kas reģistrēta ILS serverī ils.seconix.com ar me@foo.com e-pasta adresi."
 
-#: src/main_window.cpp:1266
+#: src/main_window.cpp:1268
 msgid "Could not start the listener thread. You will not be able to receive incoming calls."
 msgstr "Nevarēju sāknēt klausītāja atzaru. Jūs nevarēsiet saņemt ienākošos zvanus."
 
-#: src/main_window.cpp:1488
-#: src/menu.cpp:468
-#: src/menu.cpp:734
+#: src/main_window.cpp:1491
+#: src/menu.cpp:448
+#: src/menu.cpp:712
 msgid "Local Video"
 msgstr "Lokālais Video"
 
-#: src/main_window.cpp:1494
-#: src/menu.cpp:474
-#: src/menu.cpp:739
+#: src/main_window.cpp:1497
+#: src/menu.cpp:454
+#: src/menu.cpp:717
 msgid "Remote Video"
 msgstr "Attālinātais Video"
 
-#: src/main_window.cpp:1627
-#: src/menu.cpp:435
+#: src/main_window.cpp:1630
+#: src/menu.cpp:415
 msgid "Statistics"
 msgstr "Statistika"
 
-#: src/main_window.cpp:1693
+#: src/main_window.cpp:1696
 msgid "Dialpad"
 msgstr "Ciparnīca"
 
-#: src/main_window.cpp:1752
+#: src/main_window.cpp:1755
 msgid "Adjust brightness"
 msgstr "Pielāgot gaišumu"
 
-#: src/main_window.cpp:1778
+#: src/main_window.cpp:1781
 msgid "Adjust whiteness"
 msgstr "Pielāgot bālumu"
 
-#: src/main_window.cpp:1804
+#: src/main_window.cpp:1807
 msgid "Adjust color"
 msgstr "Pielāgot krāsu"
 
-#: src/main_window.cpp:1830
+#: src/main_window.cpp:1833
 msgid "Adjust contrast"
 msgstr "Pielāgot kontrastu"
 
-#: src/main_window.cpp:1838
+#: src/main_window.cpp:1841
 msgid "Video"
 msgstr "Video"
 
-#: src/main_window.cpp:1924
+#: src/main_window.cpp:1927
 msgid "Audio"
 msgstr "Audio"
 
-#: src/menu.cpp:391
+#: src/menu.cpp:376
 msgid "_File"
 msgstr "_Fails"
 
-#: src/menu.cpp:393
+#: src/menu.cpp:378
 msgid "_Save"
 msgstr "_Saglabāt"
 
-#: src/menu.cpp:393
+#: src/menu.cpp:378
 msgid "Save A Snapshot of the Current Video"
 msgstr "Saglabāt Pašreizējā Video Momentuzņēmumu"
 
-#: src/menu.cpp:399
+#: src/menu.cpp:384
 msgid "_Quit"
 msgstr "_Iziet"
 
-#: src/menu.cpp:399
+#: src/menu.cpp:384
 msgid "Quit GnomeMeeting"
 msgstr "Iziet no GnomeMeeting"
 
-#: src/menu.cpp:402
+#: src/menu.cpp:387
 msgid "_Edit"
 msgstr "_Rediģēt"
 
-#: src/menu.cpp:404
-msgid "Configuration Assistant"
-msgstr "Konfigurācijas Asistents"
+#: src/menu.cpp:389
+msgid "Configuration druid"
+msgstr "Konfigurācijas vednis"
 
-#: src/menu.cpp:404
-msgid "Start The Configuration Assistant"
-msgstr "Sāknēt Konfigurācijas Asistentu"
+#: src/menu.cpp:389
+msgid "Start The Configuration duid"
+msgstr "Sāknēt Konfigurācijas vedni"
 
-#: src/menu.cpp:411
+#: src/menu.cpp:396
 msgid "_Preferences..."
 msgstr "_Preferences..."
 
-#: src/menu.cpp:411
+#: src/menu.cpp:396
 msgid "Change Your Preferences"
 msgstr "Mainīt Savas Preferences"
 
-#: src/menu.cpp:416
+#: src/menu.cpp:401
 msgid "_View"
 msgstr "_Skats"
 
-#: src/menu.cpp:418
-msgid "Toolbar"
-msgstr "Rīkjosla"
-
-#: src/menu.cpp:418
-msgid "View/Hide the Toolbar"
-msgstr "Rādīt/Slēpt Rīkjoslu"
-
-#: src/menu.cpp:423
+#: src/menu.cpp:403
 msgid "Text Chat"
 msgstr "Teksta Tērzēšana"
 
-#: src/menu.cpp:423
+#: src/menu.cpp:403
 msgid "View/Hide the Text Chat Window"
 msgstr "Rādīt/Slēpt Teksta Tērzēšanas Logu"
 
-#: src/menu.cpp:428
+#: src/menu.cpp:408
 msgid "Status Bar"
 msgstr "Statusjosla"
 
-#: src/menu.cpp:428
+#: src/menu.cpp:408
 msgid "View/Hide the Status Bar"
 msgstr "Rādīt/Slēpt Statusjoslu"
 
-#: src/menu.cpp:433
+#: src/menu.cpp:413
 msgid "Control Panel"
 msgstr "Kontroles Panelis"
 
-#: src/menu.cpp:436
+#: src/menu.cpp:416
 msgid "View Audio/Video transmission and reception statistics"
 msgstr "Skatīt Audio/Video pārraides un uztveršanas statistiku"
 
-#: src/menu.cpp:442
+#: src/menu.cpp:422
 msgid "_Dialpad"
 msgstr "_Ciparnīca"
 
-#: src/menu.cpp:442
+#: src/menu.cpp:422
 msgid "View the dialpad"
 msgstr "Skatīt ciparnīcu"
 
-#: src/menu.cpp:448
+#: src/menu.cpp:428
 msgid "_Audio Settings"
 msgstr "_Audio Uzstādījumi"
 
-#: src/menu.cpp:448
+#: src/menu.cpp:428
 msgid "View Audio Settings"
 msgstr "Skatīt Audio Uzstādījumus"
 
-#: src/menu.cpp:454
+#: src/menu.cpp:434
 msgid "_Video Settings"
 msgstr "_Video Uzstādījumi"
 
-#: src/menu.cpp:454
+#: src/menu.cpp:434
 msgid "View Video Settings"
 msgstr "Skatīt Video Uzstādījumus"
 
-#: src/menu.cpp:460
-#: src/pref_window.cpp:918
+#: src/menu.cpp:440
+#: src/pref_window.cpp:936
 msgid "Off"
 msgstr "Izslēgts"
 
-#: src/menu.cpp:460
+#: src/menu.cpp:440
 msgid "Hide the control panel"
 msgstr "Paslēpt kontroles paneli"
 
-#: src/menu.cpp:468
-#: src/menu.cpp:734
+#: src/menu.cpp:448
+#: src/menu.cpp:712
 msgid "Local Video Image"
 msgstr "Lokālā Video Attēls"
 
-#: src/menu.cpp:474
-#: src/menu.cpp:739
+#: src/menu.cpp:454
+#: src/menu.cpp:717
 msgid "Remote Video Image"
 msgstr "Attālinātā Video Attēls"
 
-#: src/menu.cpp:480
-#: src/menu.cpp:744
+#: src/menu.cpp:460
+#: src/menu.cpp:722
 msgid "Both (Local Video Incrusted)"
 msgstr "Abi (Lokālais Video Iekļauts)"
 
-#: src/menu.cpp:480
-#: src/menu.cpp:486
-#: src/menu.cpp:493
-#: src/menu.cpp:744
-#: src/menu.cpp:749
-#: src/menu.cpp:755
+#: src/menu.cpp:460
+#: src/menu.cpp:466
+#: src/menu.cpp:473
+#: src/menu.cpp:722
+#: src/menu.cpp:727
+#: src/menu.cpp:733
 msgid "Both Video Images"
 msgstr "Abi Video Attēli"
 
-#: src/menu.cpp:486
-#: src/menu.cpp:749
+#: src/menu.cpp:466
+#: src/menu.cpp:727
 msgid "Both (Local Video in New Window)"
 msgstr "Abi (Lokālais Video Jaunā Logā)"
 
-#: src/menu.cpp:492
-#: src/menu.cpp:754
+#: src/menu.cpp:472
+#: src/menu.cpp:732
 msgid "Both (Local and Remote Video in New Windows)"
 msgstr "Abi (Lokālais un Attālinātais Video Jaunā Logā)"
 
-#: src/menu.cpp:501
-#: src/menu.cpp:762
+#: src/menu.cpp:481
+#: src/menu.cpp:740
 msgid "Zoom In"
 msgstr "Tuvināt"
 
-#: src/menu.cpp:506
-#: src/menu.cpp:767
+#: src/menu.cpp:486
+#: src/menu.cpp:745
 msgid "Zoom Out"
 msgstr "Tālināt"
 
-#: src/menu.cpp:511
-#: src/menu.cpp:772
+#: src/menu.cpp:491
+#: src/menu.cpp:750
 msgid "Normal Size"
 msgstr "Normāla Izmēra"
 
-#: src/menu.cpp:518
-#: src/menu.cpp:779
+#: src/menu.cpp:498
+#: src/menu.cpp:757
 msgid "Fullscreen"
 msgstr "Pilnekrānā"
 
-#: src/menu.cpp:523
+#: src/menu.cpp:503
 msgid "C_all"
 msgstr "_Zvanīt"
 
-#: src/menu.cpp:525
-#: src/menu.cpp:813
+#: src/menu.cpp:505
+#: src/menu.cpp:791
 msgid "_Connect"
 msgstr "_Pieslēgties"
 
-#: src/menu.cpp:525
-#: src/menu.cpp:813
+#: src/menu.cpp:505
+#: src/menu.cpp:791
 msgid "Create A New Connection"
 msgstr "Izveidot Jaunu Savienojumu"
 
-#: src/menu.cpp:530
-#: src/menu.cpp:818
+#: src/menu.cpp:510
+#: src/menu.cpp:796
 msgid "_Disconnect"
 msgstr "_Atslēgties"
 
-#: src/menu.cpp:530
-#: src/menu.cpp:818
+#: src/menu.cpp:510
+#: src/menu.cpp:796
 msgid "Close The Current Connection"
 msgstr "Aizvērt Pašreizējo Savienojumu"
 
-#: src/menu.cpp:537
-#: src/menu.cpp:825
+#: src/menu.cpp:517
+#: src/menu.cpp:803
 msgid "Do _Not Disturb"
 msgstr "_Netraucēt"
 
-#: src/menu.cpp:537
-#: src/menu.cpp:825
-#: src/pref_window.cpp:749
+#: src/menu.cpp:517
+#: src/menu.cpp:803
+#: src/pref_window.cpp:767
 msgid "Do Not Disturb"
 msgstr "Netraucēt"
 
-#: src/menu.cpp:542
-#: src/menu.cpp:830
+#: src/menu.cpp:522
+#: src/menu.cpp:808
 msgid "Aut_o Answer"
 msgstr "A_utoatildētājs"
 
-#: src/menu.cpp:549
+#: src/menu.cpp:529
 msgid "_Audio Mute"
 msgstr "_Audio Kluss"
 
-#: src/menu.cpp:549
+#: src/menu.cpp:529
 msgid "Mute the audio transmission"
 msgstr "Klusināt audio pārraidi"
 
-#: src/menu.cpp:554
+#: src/menu.cpp:534
 msgid "_Video Mute"
 msgstr "_Video Kluss"
 
-#: src/menu.cpp:554
+#: src/menu.cpp:534
 msgid "Mute the video transmission"
 msgstr "Kluināt video pārraidi"
 
-#: src/menu.cpp:559
+#: src/menu.cpp:539
 msgid "_Tools"
 msgstr "_Rīki"
 
-#: src/menu.cpp:561
+#: src/menu.cpp:541
 msgid "XDAP Browser"
 msgstr "XDAP Pārlūks"
 
-#: src/menu.cpp:568
+#: src/menu.cpp:548
 msgid "Generic History"
 msgstr "Vispārējā Vēsture"
 
-#: src/menu.cpp:568
+#: src/menu.cpp:548
 msgid "View the operations history"
 msgstr "Skatīt operāciju vēsturi"
 
-#: src/menu.cpp:573
+#: src/menu.cpp:553
 #: src/tools.cpp:60
 #: src/tools.cpp:66
 msgid "Calls History"
 msgstr "Zvanu Vēsture"
 
-#: src/menu.cpp:573
+#: src/menu.cpp:553
 msgid "View the calls history"
 msgstr "Skatīt zvanu vēsturi"
 
-#: src/menu.cpp:578
+#: src/menu.cpp:558
 msgid "_Help"
 msgstr "_Palīdzība"
 
-#: src/menu.cpp:581
-#: src/menu.cpp:586
+#: src/menu.cpp:561
+#: src/menu.cpp:566
 msgid "_About GnomeMeeting"
 msgstr "_Par GnomeMeeting"
 
-#: src/menu.cpp:581
-#: src/menu.cpp:586
+#: src/menu.cpp:561
+#: src/menu.cpp:566
 msgid "View information about GnomeMeeting"
 msgstr "Skatīt informāciju par GnomeMeeting"
 
@@ -1967,548 +1977,539 @@ msgstr "Pieslēgties"
 msgid "Disconnect"
 msgstr "Atslēgties"
 
-#: src/pref_window.cpp:397
-msgid "Please choose the video image"
-msgstr "Lūdzu izvēlaties video attēlu"
-
-#: src/pref_window.cpp:445
-msgid "Okay"
-msgstr "Labi"
-
-#: src/pref_window.cpp:451
-#: src/pref_window.cpp:467
-#: src/pref_window.cpp:472
-msgid "Excellent"
-msgstr "Lieliski"
-
-#: src/pref_window.cpp:456
-#: src/pref_window.cpp:462
-#: src/pref_window.cpp:477
-#: src/pref_window.cpp:482
-msgid "Good Quality"
-msgstr "Laba Kvalitāte"
-
-#: src/pref_window.cpp:695
-msgid "First Name:"
-msgstr "Vārds:"
-
-#: src/pref_window.cpp:695
-msgid "Enter your first name."
-msgstr "Ievadiet savu vārdu."
-
-#: src/pref_window.cpp:698
-msgid "Last Name:"
-msgstr "Uzvārds:"
-
-#: src/pref_window.cpp:698
-msgid "Enter your last name."
-msgstr "Ievadiet savu uzvārdu."
-
-#: src/pref_window.cpp:700
-msgid "E-mail Address:"
-msgstr "E-pastal Adrese:"
-
-#: src/pref_window.cpp:700
-msgid "Enter your e-mail address."
-msgstr "Ievadiet savu e-pasta adresi."
-
-#: src/pref_window.cpp:702
-msgid "Comment:"
-msgstr "Komentārs:"
-
-#: src/pref_window.cpp:702
-msgid "Here you can fill in a comment about yourself for ILS directories."
-msgstr "Šeit jūs varat aizpildīt komentāru par sevi ILS direktorijām."
-
-#: src/pref_window.cpp:704
-msgid "Location:"
-msgstr "Lokācija:"
-
-#: src/pref_window.cpp:704
-msgid "Where do you call from?"
-msgstr "No kurienes jūs zvanāt?"
-
-#: src/pref_window.cpp:709
-msgid "Click here to update the LDAP server you are registered to with the new First Name, Last Name, E-Mail, Comment and Location or to update your alias on the Gatekeeper."
-msgstr "Klikšķis šeit, lai atjauninātu LDAP serveri, kurā esat reģistrēts, ar jaunu Vārdu, Uzvārdu, E-Pastu, Komentāru un Lokāciju vai lai atjauninātu jūsu aizstājvārdu uz Gatekeeper."
-
-#: src/pref_window.cpp:735
-msgid "GnomeMeeting GUI"
-msgstr "GnomeMeeting GUI"
-
-#: src/pref_window.cpp:737
-msgid "Show Splash Screen"
-msgstr "Parādīt Brīža Attēlu"
-
-#: src/pref_window.cpp:737
-msgid "If enabled, the splash screen will be displayed at startup time."
-msgstr "Ja aktivizēts, brīža attēls tiks parādīts sāknēšanās laikā."
-
-#: src/pref_window.cpp:739
-msgid "Start Hidden"
-msgstr "Sāknēt Paslēptu"
-
-#: src/pref_window.cpp:739
-msgid "If enabled, GnomeMeeting will start hidden. The docklet must be enabled."
-msgstr "Ja aktivizēts, GnomeMeeting tiks sāknēts paslēpts. Jābūt aktivizētam docklet."
-
-#. Packing widget
-#: src/pref_window.cpp:743
-msgid "Behavior"
-msgstr "Uzvedība"
-
-#: src/pref_window.cpp:751
-msgid "Popup window"
-msgstr "Iznirstošais logs"
-
-#: src/pref_window.cpp:751
-msgid "If enabled, a popup will be displayed when receiving an incoming call"
-msgstr "Ja aktivizēts, tiks parādīt izlecējlogs pie ienākošā zvana saņemšanas"
-
-#. Packing widget
-#: src/pref_window.cpp:756
-msgid "Video Display"
-msgstr "Video Displejs"
-
-#: src/pref_window.cpp:761
-msgid "Fullscreen Width:"
-msgstr "Pilnekrāna Platums:"
-
-#: src/pref_window.cpp:763
-msgid "The image width for fullscreeen."
-msgstr "Attēla platums pilnekrānā."
-
-#: src/pref_window.cpp:767
-msgid "Fullscreen Height:"
-msgstr "Pilnekrāna Augstums:"
-
-#: src/pref_window.cpp:769
-msgid "The image height for fullscreeen."
-msgstr "Attēla augstums pilnekrānā."
-
-#: src/pref_window.cpp:774
-msgid "Enable bilinear filtering on displayed video"
-msgstr "Aktvizēt bilineāro filtrēšanu parādītajam video"
-
-#. Packing widget
-#: src/pref_window.cpp:778
-msgid "Sound"
-msgstr "Skaņa"
-
-#. The toggles
-#: src/pref_window.cpp:782
-msgid "Play a sound on incoming calls"
-msgstr "Atskaņot skaņu pie ienākošajiem zvaniem"
-
-#: src/pref_window.cpp:782
-msgid "If enabled, GnomeMeeting will play a sound when receiving an incoming call (the sound to play is chosen in the Gnome Control Center)."
-msgstr "Ja aktivizēts, GnomeMeeting atskaņos skaņu pie ienākošā zvana saņemšanas (atskaņojamā skaņa tiek izvēlēta Gnome Kontroles Centrā)."
-
-#: src/pref_window.cpp:795
-msgid "Do not register"
-msgstr "Nereģistrēties"
-
-#: src/pref_window.cpp:796
-msgid "Gatekeeper host"
-msgstr "Gatekeeper hostdators"
-
-#: src/pref_window.cpp:797
-msgid "Gatekeeper ID"
-msgstr "Gatekeeper ID"
-
-#: src/pref_window.cpp:798
-msgid "Automatic Discover"
-msgstr "Automātiski Atklāt"
-
-#: src/pref_window.cpp:808
-msgid "XDAP Directory"
-msgstr "XDAP Direktorija"
-
-#: src/pref_window.cpp:813
-msgid "XDAP Directory:"
-msgstr "XDAP Direktorija:"
-
-#: src/pref_window.cpp:813
-msgid "The XDAP server to register to."
-msgstr "XDAP serveris, kurā reģistrēties."
-
-#: src/pref_window.cpp:816
-msgid "Enable Registering"
-msgstr "Aktivizēt Reģistrēšanu"
-
-#: src/pref_window.cpp:816
-msgid "If enabled, permit to register to the selected LDAP directory"
-msgstr "Ja aktivizēts, atļaut reģistrēties izvēlētajā LDAP direktorijā"
-
-#. Add fields for the gatekeeper
-#: src/pref_window.cpp:820
-msgid "Gatekeeper"
-msgstr "Gatekeeper"
-
-#: src/pref_window.cpp:823
-msgid "Gatekeeper ID:"
-msgstr "Gatekeeper ID:"
-
-#: src/pref_window.cpp:823
-msgid "The Gatekeeper identifier to register to."
-msgstr "Gatekeeper identifikātors, kurā reģistrēties."
-
-#: src/pref_window.cpp:826
-msgid "Gatekeeper host:"
-msgstr "Gatekeeper hostdators:"
-
-#: src/pref_window.cpp:826
-msgid "The Gatekeeper host to register to."
-msgstr "Gatekeeper hostdators, kurā reģistrēties."
-
-#: src/pref_window.cpp:829
-msgid "Gatekeeper alias: "
-msgstr "Gatekeeper alias: "
-
-#: src/pref_window.cpp:829
-msgid "The Gatekeeper Alias to use when registering (string, or E164 ID if only 0123456789#)."
-msgstr "Gatekeeper Alias, ko lietot, kad reģistrējas (virkne vai E164 ID, tikai ja 0123456789#)."
-
-#: src/pref_window.cpp:832
-msgid "Gatekeeper password:"
-msgstr "Gatekeeper parole:"
-
-#: src/pref_window.cpp:832
-msgid "The Gatekeeper password to use for H.235 authentication to the Gatekeeper."
-msgstr "Gatekeeper parole, ko lietot H.235 autentifikācijā uz Gatekeeper."
-
-#: src/pref_window.cpp:836
-msgid "Registering method:"
-msgstr "Reģistrācija metode:"
-
-#: src/pref_window.cpp:836
-msgid "Registering method to use"
-msgstr "Litojamā reģistrācijas metode"
-
-#: src/pref_window.cpp:839
-msgid "Click here to update your Gatekeeper settings."
-msgstr "Klikšķis šeit, lai atjauninātu jūsu Gatekeeper uzstādījumus."
-
-#: src/pref_window.cpp:858
-msgid "H.323 Call Forwarding"
-msgstr "H.323 Zvana Pārsūtīšana"
-
-#: src/pref_window.cpp:864
-msgid "Forward calls to host:"
-msgstr "Pārsūtīt zvanus uz hostdatoru:"
-
-#: src/pref_window.cpp:864
-msgid "Enter here the host where calls should be forwarded in the cases selected above"
-msgstr "Ievadiet šeit hostdatoru, uz kuru zvani pārsūtāmi augstāk izvēlētajos gadījumos"
-
-#: src/pref_window.cpp:867
-msgid "If enabled, all incoming calls will always be forwarded to the host that is specified in the field below."
-msgstr "Ja aktivizēts, visi ienākošie zvani tiks vienmēr pārsūtīti uz hostdatoru, kas norādīts zemāk."
-
-#: src/pref_window.cpp:870
-msgid "If enabled, all incoming calls will be forwarded to the host that is specified in the field below if you don't answer the call."
-msgstr "Ja aktivizēts, visi ienākošie zvani tiks vienmēr pārsūtīti uz hostdatoru, kas norādīts zemāk, ja jūs neatbildat uz zvanu."
-
-#: src/pref_window.cpp:873
-msgid "If enabled, all incoming calls will be forwarded to the host that is specified in the field below if you already are in a call or if you are in Do Not Disturb mode."
-msgstr "Ja aktivizēts, visi ienākošie zvani tiks vienmēr pārsūtīti uz hostdatoru, kas norādīts zemāk, ja jums jau notiek saruna vai arī jūs esat Netraucēt režīmā."
-
-#: src/pref_window.cpp:878
-msgid "H.323 V2 Settings"
-msgstr "H.323 V2 Uzstādījumi"
-
-#: src/pref_window.cpp:884
-msgid "Enable H.245 Tunnelling"
-msgstr "Aktivizēt H.245 Tunelēšanu"
-
-#: src/pref_window.cpp:884
-msgid "This enables H.245 Tunnelling mode. In H.245 Tunnelling mode H.245 messages are encapsulated into the the H.225 channel (port 1720). This permits sparing one random TCP port during calls. H.245 Tunnelling was introduced in H.323v2 and Netmeeting doesn't support it. Using both Fast Start and H.245 Tunnelling can crash some versions of Netmeeting."
-msgstr "Šis aktivizē H.245 Tunelēšanas režīmu. H.245 Tunelēšanas režīmā H.245 ziņas tiek iekapsulētas H.225 kanālā (ports 1720). Tas atļauj aiztaupīt vienu gadījumizvēles TCP portu zvanu laikā. H.245 Tunelēšana tika ieviesta H.323v2 un to neatbalsta Netmeeting. Gan Ātrā Sākuma, gan H.245 Tunelēšanas reizē lietošana var izraisīt avārijas dažās Netmeeting versijās."
-
-#: src/pref_window.cpp:887
-msgid "Enable Fast Start"
-msgstr "Aktivizēt Ātro Sakumu"
-
-#: src/pref_window.cpp:887
-msgid "Connection will be established in Fast Start mode. Fast Start is a new way to start calls faster that was introduced in H.323v2. It is not supported by Netmeeting and using both Fast Start and H.245 Tunnelling can crash some versions of Netmeeting."
-msgstr "Savienojums tiks dibināts Ātrā Sakuma režīmā. Atrais Sākums ir jauns veids, kā sākt zvanus ātrāk, kas tika ieviests H.323v2. To neatbalsta Netmeeting un, lietojot gan Ātrā Sākuma, gan H.245 Tunelēšanu reizē, var izraisīt avārijas dažās Netmeeting versijās."
-
-#: src/pref_window.cpp:892
-msgid "NAT/PAT Router Support"
-msgstr "NAT/PAT Maršrutizatora Atbalsts"
-
-#: src/pref_window.cpp:896
-msgid "Enable IP Translation"
-msgstr "Aktivizēt IP Translēšanu"
-
-#: src/pref_window.cpp:899
-msgid "Public IP of the NAT/PAT router:"
-msgstr "Publiskā IP NAT/PAT maršrutizātoram:"
-
-#: src/pref_window.cpp:919
-msgid "Low"
-msgstr "Zems"
-
-#: src/pref_window.cpp:920
-msgid "Medium"
-msgstr "Vidējs"
-
-#: src/pref_window.cpp:921
-msgid "High"
-msgstr "Augsts"
-
-#: src/pref_window.cpp:922
-msgid "AGC"
-msgstr "AGC"
-
-#: src/pref_window.cpp:941
-msgid "Audio Player:"
-msgstr "Audio Atskaņotājs:"
-
-#: src/pref_window.cpp:944
-msgid "Audio player mixer:"
-msgstr "Audio atskaņotāja mikseris:"
-
-#: src/pref_window.cpp:948
-msgid "Audio Recorder:"
-msgstr "Audio Ierakstītājs:"
-
-#: src/pref_window.cpp:951
-msgid "Audio recorder mixer:"
-msgstr "Audio ierakstītāja mikseris:"
-
-#: src/pref_window.cpp:960
-msgid "Automatic Echo Cancellation:"
-msgstr "Automātiska Eho Atcelšana:"
-
-#: src/pref_window.cpp:963
-msgid "Country Code:"
-msgstr "Valsts Kods:"
-
-#: src/pref_window.cpp:966
-msgid "Use the Quicknet Device"
-msgstr "Lietot Quicknet Iekārtu"
-
-#: src/pref_window.cpp:997
-msgid "Small"
-msgstr "Mazs"
-
-#: src/pref_window.cpp:998
-msgid "Large"
-msgstr "Liels"
-
-#: src/pref_window.cpp:1000
-msgid "PAL"
-msgstr "PAL"
-
-#: src/pref_window.cpp:1001
-msgid "NTSC"
-msgstr "NTSC"
-
-#: src/pref_window.cpp:1002
-msgid "SECAM"
-msgstr "SECAM"
-
-#: src/pref_window.cpp:1003
-msgid "auto"
-msgstr "auto"
-
 #. The video device
-#: src/pref_window.cpp:1022
+#: src/pref_window.cpp:148
+#: src/pref_window.cpp:1040
 #: src/videograbber.cpp:475
 msgid "Picture"
 msgstr "Bilde"
 
-#: src/pref_window.cpp:1029
+#: src/pref_window.cpp:415
+msgid "Please choose the video image"
+msgstr "Lūdzu izvēlaties video attēlu"
+
+#: src/pref_window.cpp:463
+msgid "Okay"
+msgstr "Labi"
+
+#: src/pref_window.cpp:469
+#: src/pref_window.cpp:485
+#: src/pref_window.cpp:490
+msgid "Excellent"
+msgstr "Lieliski"
+
+#: src/pref_window.cpp:474
+#: src/pref_window.cpp:480
+#: src/pref_window.cpp:495
+#: src/pref_window.cpp:500
+msgid "Good Quality"
+msgstr "Laba Kvalitāte"
+
+#: src/pref_window.cpp:713
+msgid "First Name:"
+msgstr "Vārds:"
+
+#: src/pref_window.cpp:713
+msgid "Enter your first name."
+msgstr "Ievadiet savu vārdu."
+
+#: src/pref_window.cpp:716
+msgid "Last Name:"
+msgstr "Uzvārds:"
+
+#: src/pref_window.cpp:716
+msgid "Enter your last name."
+msgstr "Ievadiet savu uzvārdu."
+
+#: src/pref_window.cpp:718
+msgid "E-mail Address:"
+msgstr "E-pastal Adrese:"
+
+#: src/pref_window.cpp:718
+msgid "Enter your e-mail address."
+msgstr "Ievadiet savu e-pasta adresi."
+
+#: src/pref_window.cpp:720
+msgid "Comment:"
+msgstr "Komentārs:"
+
+#: src/pref_window.cpp:720
+msgid "Here you can fill in a comment about yourself for ILS directories."
+msgstr "Šeit jūs varat aizpildīt komentāru par sevi ILS direktorijām."
+
+#: src/pref_window.cpp:722
+msgid "Location:"
+msgstr "Lokācija:"
+
+#: src/pref_window.cpp:722
+msgid "Where do you call from?"
+msgstr "No kurienes jūs zvanāt?"
+
+#: src/pref_window.cpp:727
+msgid "Click here to update the LDAP server you are registered to with the new First Name, Last Name, E-Mail, Comment and Location or to update your alias on the Gatekeeper."
+msgstr "Klikšķis šeit, lai atjauninātu LDAP serveri, kurā esat reģistrēts, ar jaunu Vārdu, Uzvārdu, E-Pastu, Komentāru un Lokāciju vai lai atjauninātu jūsu aizstājvārdu uz Gatekeeper."
+
+#: src/pref_window.cpp:753
+msgid "GnomeMeeting GUI"
+msgstr "GnomeMeeting GUI"
+
+#: src/pref_window.cpp:755
+msgid "Show Splash Screen"
+msgstr "Parādīt Brīža Attēlu"
+
+#: src/pref_window.cpp:755
+msgid "If enabled, the splash screen will be displayed at startup time."
+msgstr "Ja aktivizēts, brīža attēls tiks parādīts sāknēšanās laikā."
+
+#: src/pref_window.cpp:757
+msgid "Start Hidden"
+msgstr "Sāknēt Paslēptu"
+
+#: src/pref_window.cpp:757
+msgid "If enabled, GnomeMeeting will start hidden. The docklet must be enabled."
+msgstr "Ja aktivizēts, GnomeMeeting tiks sāknēts paslēpts. Jābūt aktivizētam docklet."
+
+#. Packing widget
+#: src/pref_window.cpp:761
+msgid "Behavior"
+msgstr "Uzvedība"
+
+#: src/pref_window.cpp:769
+msgid "Popup window"
+msgstr "Iznirstošais logs"
+
+#: src/pref_window.cpp:769
+msgid "If enabled, a popup will be displayed when receiving an incoming call"
+msgstr "Ja aktivizēts, tiks parādīt izlecējlogs pie ienākošā zvana saņemšanas"
+
+#. Packing widget
+#: src/pref_window.cpp:774
+msgid "Video Display"
+msgstr "Video Displejs"
+
+#: src/pref_window.cpp:779
+msgid "Fullscreen Width:"
+msgstr "Pilnekrāna Platums:"
+
+#: src/pref_window.cpp:781
+msgid "The image width for fullscreeen."
+msgstr "Attēla platums pilnekrānā."
+
+#: src/pref_window.cpp:785
+msgid "Fullscreen Height:"
+msgstr "Pilnekrāna Augstums:"
+
+#: src/pref_window.cpp:787
+msgid "The image height for fullscreeen."
+msgstr "Attēla augstums pilnekrānā."
+
+#: src/pref_window.cpp:792
+msgid "Enable bilinear filtering on displayed video"
+msgstr "Aktvizēt bilineāro filtrēšanu parādītajam video"
+
+#. Packing widget
+#: src/pref_window.cpp:796
+msgid "Sound"
+msgstr "Skaņa"
+
+#. The toggles
+#: src/pref_window.cpp:800
+msgid "Play a sound on incoming calls"
+msgstr "Atskaņot skaņu pie ienākošajiem zvaniem"
+
+#: src/pref_window.cpp:800
+msgid "If enabled, GnomeMeeting will play a sound when receiving an incoming call (the sound to play is chosen in the Gnome Control Center)."
+msgstr "Ja aktivizēts, GnomeMeeting atskaņos skaņu pie ienākošā zvana saņemšanas (atskaņojamā skaņa tiek izvēlēta Gnome Kontroles Centrā)."
+
+#: src/pref_window.cpp:813
+msgid "Do not register"
+msgstr "Nereģistrēties"
+
+#: src/pref_window.cpp:814
+msgid "Gatekeeper host"
+msgstr "Gatekeeper hostdators"
+
+#: src/pref_window.cpp:815
+msgid "Gatekeeper ID"
+msgstr "Gatekeeper ID"
+
+#: src/pref_window.cpp:816
+msgid "Automatic Discover"
+msgstr "Automātiski Atklāt"
+
+#: src/pref_window.cpp:826
+msgid "XDAP Directory"
+msgstr "XDAP Direktorija"
+
+#: src/pref_window.cpp:831
+msgid "XDAP Directory:"
+msgstr "XDAP Direktorija:"
+
+#: src/pref_window.cpp:831
+msgid "The XDAP server to register to."
+msgstr "XDAP serveris, kurā reģistrēties."
+
+#: src/pref_window.cpp:834
+msgid "Enable Registering"
+msgstr "Aktivizēt Reģistrēšanu"
+
+#: src/pref_window.cpp:834
+msgid "If enabled, permit to register to the selected LDAP directory"
+msgstr "Ja aktivizēts, atļaut reģistrēties izvēlētajā LDAP direktorijā"
+
+#. Add fields for the gatekeeper
+#: src/pref_window.cpp:838
+msgid "Gatekeeper"
+msgstr "Gatekeeper"
+
+#: src/pref_window.cpp:841
+msgid "Gatekeeper ID:"
+msgstr "Gatekeeper ID:"
+
+#: src/pref_window.cpp:841
+msgid "The Gatekeeper identifier to register to."
+msgstr "Gatekeeper identifikātors, kurā reģistrēties."
+
+#: src/pref_window.cpp:844
+msgid "Gatekeeper host:"
+msgstr "Gatekeeper hostdators:"
+
+#: src/pref_window.cpp:844
+msgid "The Gatekeeper host to register to."
+msgstr "Gatekeeper hostdators, kurā reģistrēties."
+
+#: src/pref_window.cpp:847
+msgid "Gatekeeper alias: "
+msgstr "Gatekeeper alias: "
+
+#: src/pref_window.cpp:847
+msgid "The Gatekeeper Alias to use when registering (string, or E164 ID if only 0123456789#)."
+msgstr "Gatekeeper Alias, ko lietot, kad reģistrējas (virkne vai E164 ID, tikai ja 0123456789#)."
+
+#: src/pref_window.cpp:850
+msgid "Gatekeeper password:"
+msgstr "Gatekeeper parole:"
+
+#: src/pref_window.cpp:850
+msgid "The Gatekeeper password to use for H.235 authentication to the Gatekeeper."
+msgstr "Gatekeeper parole, ko lietot H.235 autentifikācijā uz Gatekeeper."
+
+#: src/pref_window.cpp:854
+msgid "Registering method:"
+msgstr "Reģistrācija metode:"
+
+#: src/pref_window.cpp:854
+msgid "Registering method to use"
+msgstr "Litojamā reģistrācijas metode"
+
+#: src/pref_window.cpp:857
+msgid "Click here to update your Gatekeeper settings."
+msgstr "Klikšķis šeit, lai atjauninātu jūsu Gatekeeper uzstādījumus."
+
+#: src/pref_window.cpp:876
+msgid "H.323 Call Forwarding"
+msgstr "H.323 Zvana Pārsūtīšana"
+
+#: src/pref_window.cpp:882
+msgid "Forward calls to host:"
+msgstr "Pārsūtīt zvanus uz hostdatoru:"
+
+#: src/pref_window.cpp:882
+msgid "Enter here the host where calls should be forwarded in the cases selected above"
+msgstr "Ievadiet šeit hostdatoru, uz kuru zvani pārsūtāmi augstāk izvēlētajos gadījumos"
+
+#: src/pref_window.cpp:885
+msgid "If enabled, all incoming calls will always be forwarded to the host that is specified in the field below."
+msgstr "Ja aktivizēts, visi ienākošie zvani tiks vienmēr pārsūtīti uz hostdatoru, kas norādīts zemāk."
+
+#: src/pref_window.cpp:888
+msgid "If enabled, all incoming calls will be forwarded to the host that is specified in the field below if you don't answer the call."
+msgstr "Ja aktivizēts, visi ienākošie zvani tiks vienmēr pārsūtīti uz hostdatoru, kas norādīts zemāk, ja jūs neatbildat uz zvanu."
+
+#: src/pref_window.cpp:891
+msgid "If enabled, all incoming calls will be forwarded to the host that is specified in the field below if you already are in a call or if you are in Do Not Disturb mode."
+msgstr "Ja aktivizēts, visi ienākošie zvani tiks vienmēr pārsūtīti uz hostdatoru, kas norādīts zemāk, ja jums jau notiek saruna vai arī jūs esat Netraucēt režīmā."
+
+#: src/pref_window.cpp:896
+msgid "H.323 V2 Settings"
+msgstr "H.323 V2 Uzstādījumi"
+
+#: src/pref_window.cpp:902
+msgid "Enable H.245 Tunnelling"
+msgstr "Aktivizēt H.245 Tunelēšanu"
+
+#: src/pref_window.cpp:902
+msgid "This enables H.245 Tunnelling mode. In H.245 Tunnelling mode H.245 messages are encapsulated into the the H.225 channel (port 1720). This permits sparing one random TCP port during calls. H.245 Tunnelling was introduced in H.323v2 and Netmeeting doesn't support it. Using both Fast Start and H.245 Tunnelling can crash some versions of Netmeeting."
+msgstr "Šis aktivizē H.245 Tunelēšanas režīmu. H.245 Tunelēšanas režīmā H.245 ziņas tiek iekapsulētas H.225 kanālā (ports 1720). Tas atļauj aiztaupīt vienu gadījumizvēles TCP portu zvanu laikā. H.245 Tunelēšana tika ieviesta H.323v2 un to neatbalsta Netmeeting. Gan Ātrā Sākuma, gan H.245 Tunelēšanas reizē lietošana var izraisīt avārijas dažās Netmeeting versijās."
+
+#: src/pref_window.cpp:905
+msgid "Enable Fast Start"
+msgstr "Aktivizēt Ātro Sakumu"
+
+#: src/pref_window.cpp:905
+msgid "Connection will be established in Fast Start mode. Fast Start is a new way to start calls faster that was introduced in H.323v2. It is not supported by Netmeeting and using both Fast Start and H.245 Tunnelling can crash some versions of Netmeeting."
+msgstr "Savienojums tiks dibināts Ātrā Sakuma režīmā. Atrais Sākums ir jauns veids, kā sākt zvanus ātrāk, kas tika ieviests H.323v2. To neatbalsta Netmeeting un, lietojot gan Ātrā Sākuma, gan H.245 Tunelēšanu reizē, var izraisīt avārijas dažās Netmeeting versijās."
+
+#: src/pref_window.cpp:910
+msgid "NAT/PAT Router Support"
+msgstr "NAT/PAT Maršrutizatora Atbalsts"
+
+#: src/pref_window.cpp:914
+msgid "Enable IP Translation"
+msgstr "Aktivizēt IP Translēšanu"
+
+#: src/pref_window.cpp:917
+msgid "Public IP of the NAT/PAT router:"
+msgstr "Publiskā IP NAT/PAT maršrutizātoram:"
+
+#: src/pref_window.cpp:937
+msgid "Low"
+msgstr "Zems"
+
+#: src/pref_window.cpp:938
+msgid "Medium"
+msgstr "Vidējs"
+
+#: src/pref_window.cpp:939
+msgid "High"
+msgstr "Augsts"
+
+#: src/pref_window.cpp:940
+msgid "AGC"
+msgstr "AGC"
+
+#: src/pref_window.cpp:978
+msgid "Automatic Echo Cancellation:"
+msgstr "Automātiska Eho Atcelšana:"
+
+#: src/pref_window.cpp:981
+msgid "Country Code:"
+msgstr "Valsts Kods:"
+
+#: src/pref_window.cpp:984
+msgid "Use the Quicknet Device"
+msgstr "Lietot Quicknet Iekārtu"
+
+#: src/pref_window.cpp:1015
+msgid "Small"
+msgstr "Mazs"
+
+#: src/pref_window.cpp:1016
+msgid "Large"
+msgstr "Liels"
+
+#: src/pref_window.cpp:1018
+msgid "PAL"
+msgstr "PAL"
+
+#: src/pref_window.cpp:1019
+msgid "NTSC"
+msgstr "NTSC"
+
+#: src/pref_window.cpp:1020
+msgid "SECAM"
+msgstr "SECAM"
+
+#: src/pref_window.cpp:1021
+msgid "auto"
+msgstr "auto"
+
+#: src/pref_window.cpp:1047
 msgid "Video Channel:"
 msgstr "Video Kanāls:"
 
-#: src/pref_window.cpp:1031
+#: src/pref_window.cpp:1049
 msgid "The video channel number to use (camera, tv, ...)."
 msgstr "Lietojamā video kanāla numurs (kamera, tv, ...)."
 
-#: src/pref_window.cpp:1035
+#: src/pref_window.cpp:1053
 msgid "Video Size:"
 msgstr "Video Izmērs:"
 
-#: src/pref_window.cpp:1035
+#: src/pref_window.cpp:1053
 msgid "Choose the transmitted video size: QCIF (small) or CIF (large)."
 msgstr "Izvēlaties pārsūtāmā video izmēru: QCIF (mazs) vai CIF (liels)."
 
-#: src/pref_window.cpp:1038
+#: src/pref_window.cpp:1056
 msgid "Video Format:"
 msgstr "Video Formāts:"
 
-#: src/pref_window.cpp:1038
+#: src/pref_window.cpp:1056
 msgid "Here you can choose the transmitted video format."
 msgstr "Šeit jūs varat izvēlēties pārsūtāmā video formātu."
 
-#: src/pref_window.cpp:1042
+#: src/pref_window.cpp:1060
 msgid "Video Image:"
 msgstr "Video Attēls:"
 
 #. The file selector button
-#: src/pref_window.cpp:1046
+#: src/pref_window.cpp:1064
 msgid "Browse"
 msgstr "Pārlūkot"
 
-#: src/pref_window.cpp:1100
+#: src/pref_window.cpp:1118
 msgid "Available Audio Codecs"
 msgstr "Pieejamie Audio Kodeki"
 
-#: src/pref_window.cpp:1144
+#: src/pref_window.cpp:1162
 msgid "Info"
 msgstr "Info"
 
-#: src/pref_window.cpp:1152
+#: src/pref_window.cpp:1170
 msgid "Bandwidth"
 msgstr "Caurlaidība"
 
 #. Here we add the audio codecs options
-#: src/pref_window.cpp:1212
+#: src/pref_window.cpp:1230
 msgid "Audio Codecs Settings"
 msgstr "Audio Kodeku Uzstādījumi"
 
-#: src/pref_window.cpp:1215
+#: src/pref_window.cpp:1233
 msgid "Enable Silence Detection"
 msgstr "Aktivizēt Klusumu Noteikšanu"
 
-#: src/pref_window.cpp:1217
+#: src/pref_window.cpp:1235
 msgid "Enable/disable the silence detection for the GSM and G.711 codecs."
 msgstr "Aktivizēt/deaktivizēt klusuma noteikšanu GSM un G.711 kodekiem."
 
-#: src/pref_window.cpp:1220
+#: src/pref_window.cpp:1238
 msgid "Minimal Jitter Buffer:"
 msgstr "Minimālais Jitter Buferis:"
 
-#: src/pref_window.cpp:1223
+#: src/pref_window.cpp:1241
 msgid "Maximal Jitter Buffer:"
 msgstr "Maksimālais Jitter Buferis:"
 
-#: src/pref_window.cpp:1244
-#: src/pref_window.cpp:1410
+#: src/pref_window.cpp:1262
+#: src/pref_window.cpp:1428
 msgid "General Settings"
 msgstr "Vispārīgie Uzstādījumi"
 
-#: src/pref_window.cpp:1249
+#: src/pref_window.cpp:1267
 msgid "Enable/disable the video transmission."
 msgstr "Aktivizēt/deaktivizēt video pārraidi."
 
-#: src/pref_window.cpp:1252
+#: src/pref_window.cpp:1270
 msgid "Enable/disable the video reception."
 msgstr "Aktivizēt/deaktivizēt video uztveršanu."
 
 #. H.261 Settings
-#: src/pref_window.cpp:1256
+#: src/pref_window.cpp:1274
 msgid "Bandwidth control"
 msgstr "Caurlaidspējas kontrole"
 
-#: src/pref_window.cpp:1259
+#: src/pref_window.cpp:1277
 msgid "Maximum video bandwidth:"
 msgstr "Maksimālai video joslas platums:"
 
-#: src/pref_window.cpp:1261
+#: src/pref_window.cpp:1279
 msgid "The maximum video bandwidth in kbytes/s. The video quality and the number of transmitted frames per second will be dynamically adjusted above their minimum during calls to try to minimize the bandwidth to the given value"
 msgstr "Maksimālais video joslas platums kbaitos/s. Video kvalitāte un pārsūtīto kadru daudzums sekundē tiks dinamiski pieregulēts virs to minimuma zvanu laikā, lai mēģinātu samazināt joslas platumu līdz dotajai vērtībai"
 
-#: src/pref_window.cpp:1265
+#: src/pref_window.cpp:1283
 msgid "Advanced quality settings"
 msgstr "Paplašinātie kvalitātes uzstādījumi"
 
-#: src/pref_window.cpp:1268
+#: src/pref_window.cpp:1286
 msgid "Minimum Transmitted Video Quality:"
 msgstr "Minimālā Pārsūtītā Video Kvalitāte:"
 
-#: src/pref_window.cpp:1270
+#: src/pref_window.cpp:1288
 msgid "The minimum transmitted video quality to keep when trying to minimize the used bandwidth:  choose 100% on a LAN for the best quality, 1% being the worst quality."
 msgstr "Minimālā pārsūtītā video kvalitāte, kuru uzturēt, kad mēģina samazināt lietoto joslas platumu:  izvēlaties 100% iekš LAN vislabākajai kvalitātei, 1% vissliktākajai."
 
-#: src/pref_window.cpp:1274
+#: src/pref_window.cpp:1292
 msgid "Minimum Transmitted FPS:"
 msgstr "Minimums Pārraidītie FPS:"
 
-#: src/pref_window.cpp:1276
+#: src/pref_window.cpp:1294
 msgid "The minimum number of video frames to transmit each second when trying to minimize the bandwidth."
 msgstr "Minimālais video kadru skaits, ko pārsūtīt katru sekundi, kad mēģina samazināt joslas platumu."
 
-#: src/pref_window.cpp:1280
+#: src/pref_window.cpp:1298
 msgid "Transmitted Background Blocks:"
 msgstr "Pārraidītie Fona Bloki:"
 
-#: src/pref_window.cpp:1328
+#: src/pref_window.cpp:1346
 msgid "GnomeMeeting Settings"
 msgstr "GnomeMeeting Uzstādījumi"
 
-#: src/pref_window.cpp:1401
+#: src/pref_window.cpp:1419
 msgid "General"
 msgstr "Vispārīgi"
 
-#: src/pref_window.cpp:1405
+#: src/pref_window.cpp:1423
 msgid "Personal Data"
 msgstr "Personas Dati"
 
-#: src/pref_window.cpp:1415
+#: src/pref_window.cpp:1433
 msgid "H.323 Advanced"
 msgstr "H.323 Paplašināti"
 
-#: src/pref_window.cpp:1420
+#: src/pref_window.cpp:1438
 msgid "Directory Settings"
 msgstr "Derktorija Uzstādījumi"
 
-#: src/pref_window.cpp:1427
+#: src/pref_window.cpp:1445
 msgid "Codecs"
 msgstr "Kodeki"
 
-#: src/pref_window.cpp:1431
+#: src/pref_window.cpp:1449
 msgid "Audio Codecs"
 msgstr "Audio Kodeki"
 
-#: src/pref_window.cpp:1437
+#: src/pref_window.cpp:1455
 msgid "Video Codecs"
 msgstr "Video Kodeki"
 
-#: src/pref_window.cpp:1444
+#: src/pref_window.cpp:1462
 msgid "Devices"
 msgstr "Iekārtas"
 
-#: src/pref_window.cpp:1459
+#: src/pref_window.cpp:1477
 msgid "Section"
 msgstr "Sekcija"
 
-#: src/sound_handling.cpp:290
+#: src/sound_handling.cpp:360
 #, c-format
 msgid "Impossible to open the selected audio device (%s) for playing. Please check your audio setup."
 msgstr "Neiespējami atvērt izvēlēto audio iekārtu (%s) atskaņošanai. Lūdzu pārbaudiet savus audio uzstādījumus."
 
-#: src/sound_handling.cpp:302
+#: src/sound_handling.cpp:372
 #, c-format
 msgid "Impossible to open the selected audio device (%s) for recording. Please check your audio setup."
 msgstr "Neiespējami atvērt izvēlēto audio iekārtu (%s) ierakstīšanai. Lūdzu pārbaudiet savus audio uzstādījumus"
 
-#: src/sound_handling.cpp:316
+#: src/sound_handling.cpp:386
 #, c-format
 msgid "The selected audio device (%s) was successfully opened but it is impossible to read data from this device. Please check your audio setup."
 msgstr "Izvēlētā audio iekārta (%s) tika veiksmīgi atvērta, bet ir neiespējami no tās nolasīt datus. Lūdzu pārbaudiet savus audio uzstādījumus."
 
-#: src/sound_handling.cpp:325
+#: src/sound_handling.cpp:395
 #, c-format
 msgid "The selected audio device (%s) was successfully opened but it is impossible to write data to this device. Please check your audio setup."
 msgstr "Izvēlētā audio iekārta (%s) tika veiksmīgi atvērta, bet ir neiespējami tajā ierakstīt datus. Lūdzu pārbaudiet savus audio uzstādījumus."
 
-#: src/sound_handling.cpp:335
+#: src/sound_handling.cpp:414
 #, c-format
 msgid ""
-"GnomeMeeting is now recording from %s and playing back to %s. Please say \"1 2 3\" in your microphone, you should hear yourself back into the speakers with a 5 seconds delay.\n"
+"GnomeMeeting is now recording from %s and playing back to %s. Please say \"1 2 3\" in your microphone, you should hear yourself back into the speakers in 5 seconds.\n"
 "\n"
-"If you don't hear yourself at all, or if you hear yourself instantly in the speakers and not with a 5 seconds delay, it means that you audio setup is incorrect and probably not full-duplex. Please fix it before using GnomeMeeting or others won't hear you.\n"
-"\n"
-"You can use the sliders in the control panel to adjust the volume of the speakers and of the microphone."
+"Recording... Please talk."
 msgstr ""
-"GnomeMeeting pašlaik ieraksta no %s un atskaņo uz %s. Lūdzu sakiet \" 1 2 3\" savā mikrafonā, jums vajadzētu dzirdēt sevi skaļruņos ar 5 sekunžu aizturi.\n"
+"GnomeMeeting pašlaik ieraksta no %s un atskaņo uz %s. Lūdzu sakiet \"1 2 3\" savā mikrafonā, jums būtu sevi jādzird sevi skaļruņos pēc 5 sekundēm.\n"
 "\n"
-"Ja jūs vispār sevi nedzirdat vai jūs dzirdat sevi skaļruņos uzreiz un nevis ar 5 sekunžu aizkavēšanos, tas nozīmē, ka jūsu audio uzstādījumi nav pilnīgi un visdrīzāk nav pilndupleksā. Llūdzu salabojiet to pirms GnomeMeeting lietošanas vai arī citi jūs nedzirdēs.\n"
+"Ierakstu... Lūdzu runājiet."
+
+#: src/sound_handling.cpp:442
+msgid ""
+"GnomeMeeting is now playing what it is recording with a 5 seconds delay. If you don't hear yourself with the delay, you will have to fix your audio setup and probably install a full-duplex driver before calling other GnomeMeeting users.\n"
 "\n"
-"Jūs varat lietot slīdņus kontroles panelī, lai noregulētu skaļruņu un mikrafona skaļumu."
+"Recording and playing... Please talk."
+msgstr ""
+"GnomeMeeting patreiz atskaņo to, ko tas ierakstīja ar 5 sekunžu aizturi. Ja jūs nedzirdat sevi ar aizkavēšanos, jums būs jāsalabo savi audio uzstādījumi un, iespējams, jāuzinstalē pulndupleksa draiveris pirms citu  GnomeMeeting lietotāju izsaukšanas.\n"
+"\n"
+"Ierakstu un atskaņoju... Lūdzu runājiet."
 
 #: src/toolbar.cpp:95
 msgid "Speakerphone enabled"
@@ -2595,22 +2596,22 @@ msgid "Can't open the Video Device"
 msgstr "Nevaru atvērt Video Iekārtu"
 
 #: src/videograbber.cpp:524
-#: src/videograbber.cpp:800
+#: src/videograbber.cpp:794
 msgid "Error while opening the device."
 msgstr "Kļūda atverot iekārtu."
 
 #: src/videograbber.cpp:529
-#: src/videograbber.cpp:805
+#: src/videograbber.cpp:799
 msgid "Your video driver doesn't support the requested video format."
 msgstr "Jūsu video draiveris neatbalsta pieprasīto video formātu."
 
 #: src/videograbber.cpp:533
-#: src/videograbber.cpp:809
+#: src/videograbber.cpp:803
 msgid "Could not open the chosen channel with the chosen video format."
 msgstr "Nvarēju atvērt izvēlēto kanālu ar izvēlēto video formātu."
 
 #: src/videograbber.cpp:537
-#: src/videograbber.cpp:813
+#: src/videograbber.cpp:807
 #, c-format
 msgid ""
 "Your driver doesn't support the %s format.\n"
@@ -2622,12 +2623,12 @@ msgstr ""
 " gconftool --set \"/apps/gnomemeeting/devices/color_format\" JŪSUPALETE --type virkne"
 
 #: src/videograbber.cpp:541
-#: src/videograbber.cpp:817
+#: src/videograbber.cpp:811
 msgid "Error with the frame rate."
 msgstr "Kļūda ar kadru ātrumu."
 
 #: src/videograbber.cpp:545
-#: src/videograbber.cpp:821
+#: src/videograbber.cpp:815
 msgid "Error with the frame size."
 msgstr "Kļūda ar kadru izmēru."
 
@@ -2635,12 +2636,12 @@ msgstr "Kļūda ar kadru izmēru."
 msgid "Video Device Closed"
 msgstr "Video Iekārta Aizvērta"
 
-#: src/videograbber.cpp:794
+#: src/videograbber.cpp:788
 #, c-format
 msgid "Error while opening the video device %s."
 msgstr "Kļūda atverot video iekārtu %s."
 
-#: src/videograbber.cpp:826
+#: src/videograbber.cpp:820
 msgid "GnomeMeeting successfully tested your video device. The driver seems to be usable for videoconferencing with GnomeMeeting."
 msgstr "GnomeMeeting ir veiksmīgi notesējis jūsu video iekārtu. Izskatās, ka draiveris varētu būt lietojams videokonferencēs ar GnomeMeeting."
 
