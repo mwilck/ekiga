@@ -169,6 +169,8 @@ static GmAddressbook *get_selected_addressbook (GtkWidget *);
  */
 static void gnomemeeting_aw_add_addressbook (GtkWidget *, GmAddressbook *);
 
+static void gnomemeeting_aw_delete_addressbook (GtkWidget *addressbook_window,
+						GmAddressbook *addressbook);
 
 /* DESCRIPTION  : / 
  * BEHAVIOR     : Adds the given GmAddressbook to the address book window
@@ -605,7 +607,8 @@ gm_addressbook_delete_dialog_run (GtkWidget *addressbook_window,
 
   case GTK_RESPONSE_YES:
 
-    gnomemeeting_addressbook_delete (addressbook);
+    if (gnomemeeting_addressbook_delete (addressbook))
+      gnomemeeting_aw_delete_addressbook (addressbook_window, addressbook);
 
     break;
   }
@@ -1005,6 +1008,51 @@ gnomemeeting_aw_add_addressbook (GtkWidget *addressbook_window,
   if (gnomemeeting_addressbook_is_local (addressbook)) 
     gnomemeeting_aw_update_addressbook (addressbook_window,
 					addressbook);
+}
+
+
+static void
+gnomemeeting_aw_delete_addressbook (GtkWidget *addressbook_window,
+				    GmAddressbook *addressbook)
+{
+  GmAddressbookWindow *aw = NULL;
+
+  GtkTreeModel *model = NULL;
+  GtkTreeIter iter;
+  
+  gchar *test = NULL;
+  
+  int p = -1;
+  
+  aw = gnomemeeting_aw_get_aw (addressbook_window);
+
+  g_return_if_fail (addressbook_window && addressbook && aw);
+  
+  model = gtk_tree_view_get_model (GTK_TREE_VIEW (aw->aw_tree_view));
+
+  for (int i = 0 ; i < 2 ; i++) {
+
+    gtk_tree_model_get_iter_from_string (GTK_TREE_MODEL (model), 
+					 &iter, (i == 0) ? "0:0" : "1:0");
+
+    do {
+
+      gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
+			  COLUMN_UID, &test, 
+			  COLUMN_NOTEBOOK_PAGE, &p,
+			  -1);
+
+      if (test && addressbook->uid && !strcmp (test, addressbook->uid)) {
+
+	gtk_notebook_remove_page (GTK_NOTEBOOK (aw->aw_notebook), p);
+	gtk_tree_store_remove (GTK_TREE_STORE (model), &iter);
+	g_free (test);
+	break;
+      }
+      g_free (test);
+
+    } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (model), &iter));
+  }
 }
 
 

@@ -1,6 +1,11 @@
 noinst_LTLIBRARIES = libgmcontacts.la
 
-libgmcontacts_la_SOURCES = gm_contacts.h
+libgmcontacts_la_SOURCES = \
+			gm_contacts.h \
+			gm_contacts.cpp \
+			gm_contacts-remote.h \
+			gm_contacts-remote.cpp \
+			gm_contacts-local.h
 
 if DISABLE_GNOME
 libgmcontacts_la_SOURCES += gm_contacts-gm_conf.cpp

@@ -172,21 +172,21 @@ gboolean gnomemeeting_addressbook_is_local (GmAddressbook *);
 
 
 /* DESCRIPTION  : /
- * BEHAVIOR     : Deletes the given GmContact from the given GmAddressbook.
- *                Return TRUE on success and FALSE on failure.
- * PRE          : The uri field of the GmAddressbook must exist.
- */
-gboolean gnomemeeting_addressbook_delete_contact (GmAddressbook *,
-                                                  GmContact *);
-
-
-/* DESCRIPTION  : /
  * BEHAVIOR     : Add the given GmContact to the given GmAddressbook.
  *                Return TRUE on success and FALSE on failure.
  * PRE          : The uri field of the GmAddressbook must exist.
  */
 gboolean gnomemeeting_addressbook_add_contact (GmAddressbook *,
                                                GmContact *);
+
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Deletes the given GmContact from the given GmAddressbook.
+ *                Return TRUE on success and FALSE on failure.
+ * PRE          : The uri field of the GmAddressbook must exist.
+ */
+gboolean gnomemeeting_addressbook_delete_contact (GmAddressbook *,
+                                                  GmContact *);
 
 
 /* DESCRIPTION  : /
