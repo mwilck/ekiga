@@ -1,5 +1,23 @@
 2003-06-08 Damien Sandras  <dsandras@seconix.com>
 
+	* src/config.cpp: Don't delete the old group key when upgrading.
+
+	* src/gnomemeeting.cpp, src/gnomemeeting.h: Added function to
+	detect the devices.
+	
+	* src/ils.cpp: Changed the color for busy users to light gray.
+
+	* src/pref_window.cpp: Makes use of the new function in 
+	gnomemeeting.h.
+
+	* src/ldap_window.cpp: Make the search entry unsensitive when
+	the user is using no filter.
+	
+	* src/main_window.cpp: Changed the startup sequence to fix bug
+	in the druid (devices were detected after the GUI has been built).
+	
+2003-06-08 Damien Sandras  <dsandras@seconix.com>
+
 	* src/gnomemeeting.cpp, src/gnomemeeting.h: Makes the Init method
 	fail and exit when no audio device is detected.
 	

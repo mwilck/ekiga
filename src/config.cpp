@@ -1855,6 +1855,10 @@ void gnomemeeting_gconf_upgrade ()
 	gconf_client_get_list (client, group_content_gconf_key,
 			       GCONF_VALUE_STRING, NULL);
       group_content_iter = group_content;
+      
+      new_group_content =
+	gconf_client_get_list (client, new_group_content_gconf_key,
+			       GCONF_VALUE_STRING, NULL);
 	
       while (group_content_iter && group_content_iter->data) {
 

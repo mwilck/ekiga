@@ -111,10 +111,10 @@ static void refresh_devices (GtkWidget *widget, gpointer data)
   gw = MyApp->GetMainWindow ();
   pw = MyApp->GetPrefWindow ();
   dw = MyApp->GetDruidWindow ();
+
+  MyApp->DetectDevices ();
   
   /* The player */
-  gw->audio_player_devices = gnomemeeting_get_audio_player_devices ();
-  
   gnomemeeting_update_pstring_option_menu (pw->audio_player,
 					   gw->audio_player_devices,
 					   DEVICES_KEY "audio_player");
@@ -123,9 +123,6 @@ static void refresh_devices (GtkWidget *widget, gpointer data)
 					   gw->audio_player_devices,
 					   DEVICES_KEY "audio_player");
 #endif
-
-  gw->audio_mixers =
-    gnomemeeting_get_mixers ();
 
   gnomemeeting_update_pstring_option_menu (pw->audio_player_mixer,
 					   gw->audio_mixers,
@@ -137,8 +134,6 @@ static void refresh_devices (GtkWidget *widget, gpointer data)
 #endif
   
   /* The recorder */
-  gw->audio_recorder_devices = gnomemeeting_get_audio_recorder_devices ();
-
   gnomemeeting_update_pstring_option_menu (pw->audio_recorder,
 					   gw->audio_recorder_devices,
 					   DEVICES_KEY "audio_recorder");
@@ -159,21 +154,12 @@ static void refresh_devices (GtkWidget *widget, gpointer data)
 
   
   /* The Video player */
-  gw->video_devices = PVideoInputDevice::GetInputDeviceNames ();
-#ifdef TRY_1394DC
-  gw->video_devices += PVideoInput1394DcDevice::GetInputDeviceNames();
-#endif
-#ifdef TRY_1394AVC
-  gw->video_devices += PVideoInput1394AvcDevice::GetInputDeviceNames();
-#endif
-
 #ifndef DISABLE_GNOME
   gnomemeeting_update_pstring_option_menu (dw->video_device,
 					   gw->video_devices,
 					   DEVICES_KEY "video_recorder");
 #endif
 
-  gw->video_devices += PString (_("Picture"));
   gnomemeeting_update_pstring_option_menu (pw->video_device,
 					   gw->video_devices,
 					   DEVICES_KEY "video_recorder");
@@ -1085,7 +1071,7 @@ gnomemeeting_init_pref_window_audio_devices (GtkWidget *notebook)
     gnomemeeting_table_add_pstring_option_menu (table, _("Recording mixer:"), gw->audio_mixers, DEVICES_KEY "audio_recorder_mixer", _("Select the mixer to use to change the volume of the audio recorder."), 3);
 
   /* That button will refresh the devices list */
-  gnomemeeting_pref_window_add_update_button (table, GTK_STOCK_REFRESH, _("_Refresh the devices list"), GTK_SIGNAL_FUNC (refresh_devices), _("Click here to refresh the devices list."), 4, 2);
+  gnomemeeting_pref_window_add_update_button (table, GTK_STOCK_REFRESH, _("_Detect devices"), GTK_SIGNAL_FUNC (refresh_devices), _("Click here to refresh the devices list."), 4, 2);
   
 #ifdef HAS_IXJ
   /* The Quicknet devices related options */
@@ -1171,7 +1157,7 @@ gnomemeeting_init_pref_window_video_devices (GtkWidget *notebook)
 
 
   /* That button will refresh the devices list */
-  gnomemeeting_pref_window_add_update_button (table, GTK_STOCK_REFRESH, _("_Refresh the devices list"), GTK_SIGNAL_FUNC (refresh_devices), _("Click here to refresh the devices list."), 5, 3);
+  gnomemeeting_pref_window_add_update_button (table, GTK_STOCK_REFRESH, _("_Detect devices"), GTK_SIGNAL_FUNC (refresh_devices), _("Click here to refresh the devices list."), 5, 3);
 }
 
 

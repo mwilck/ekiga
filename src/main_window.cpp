@@ -1683,14 +1683,35 @@ int main (int argc, char ** argv, char ** envp)
 #endif
   
 
-  /* Start the Gconf notifiers */
+  /* Upgrade the preferences */
   gnomemeeting_gconf_upgrade ();
 
   
   /* GnomeMeeting main initialisation */
   MyApp = new GnomeMeeting;
 
-  
+
+  /* Detect the devices, exit if it fails */
+  if (!MyApp->DetectDevices ()) {
+    
+    dialog = gnomemeeting_error_dialog (GTK_WINDOW (gm), _("No usable audio devices detected"), _("GnomeMeetind didn't find any usable sound devices. You need to install and setup a soundcard or a Quicknet card in order to be able to use GnomeMeeting. Please check your driver settings and permissions."));
+
+    g_signal_handlers_disconnect_by_func (G_OBJECT (dialog),
+					  (gpointer) gtk_widget_destroy,
+					  G_OBJECT (dialog));
+
+    gtk_dialog_run (GTK_DIALOG (dialog));
+    delete (MyApp);
+    exit (-1);
+  }
+
+
+  /* Build the GUI and init the different components */
+  MyApp->BuildGUI ();
+  MyApp->InitComponents ();
+
+
+  /* Init the GConf DB, exit if it fails */
   if (!gnomemeeting_init_gconf (gconf_client_get_default ())) {
 
     dialog = gnomemeeting_error_dialog (NULL, _("Gconf key error"), _("GnomeMeeting got an invalid value for the GConf key \"/apps/gnomemeeting/gconf_test_age\".\n\nIt probably means that your GConf schemas have not been correctly installed or the that permissions are not correct.\n\nPlease check the FAQ (http://www.gnomemeeting.org/faq.php), the throubleshoot section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org) about this problem."));
@@ -1701,7 +1722,7 @@ int main (int argc, char ** argv, char ** envp)
 
     
     gtk_dialog_run (GTK_DIALOG (dialog));
-
+    delete (MyApp);
     exit (-1);
   }
 

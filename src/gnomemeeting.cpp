@@ -121,26 +121,32 @@ GnomeMeeting::GnomeMeeting ()
   call_number = 0;
 
   MyApp = (this);
-  BuildGUI ();
-  endpoint = new GMH323EndPoint ();
-  Init ();
 }
 
 
 GnomeMeeting::~GnomeMeeting()
 {
-  endpoint->ClearAllCalls (H323Connection::EndedByLocalUser, TRUE);
+  if (endpoint)
+    endpoint->ClearAllCalls (H323Connection::EndedByLocalUser, TRUE);
   RemoveVideoGrabber (true);
   RemoveEndpoint ();
 
-  gnomemeeting_ldap_window_destroy_notebook_pages ();
-  gtk_widget_destroy (gw->ldap_window);
-  gtk_widget_destroy (gw->pref_window);
-  gtk_widget_destroy (gw->history_window);
-  gtk_widget_destroy (gw->calls_history_window);
-  gtk_widget_destroy (gm);
+  if (gw->ldap_window) {
+    gnomemeeting_ldap_window_destroy_notebook_pages ();
+    gtk_widget_destroy (gw->ldap_window);
+  }
+  
+  if (gw->pref_window)
+    gtk_widget_destroy (gw->pref_window);
+  if (gw->history_window)
+    gtk_widget_destroy (gw->history_window);
+  if (gw->calls_history_window)
+    gtk_widget_destroy (gw->calls_history_window);
+  if (gm)
+    gtk_widget_destroy (gm);
 #ifndef DISABLE_GNOME
-  gtk_widget_destroy (gw->druid_window);
+  if (gw->druid_window)
+    gtk_widget_destroy (gw->druid_window);
 #endif
   
   delete (gw);
@@ -305,6 +311,32 @@ GnomeMeeting::Disconnect (H323Connection::CallEndReason reason)
 }
 
 
+BOOL
+GnomeMeeting::DetectDevices ()
+{
+  /* Detect the devices */
+  gnomemeeting_sound_daemons_suspend ();
+  gw->audio_player_devices = gnomemeeting_get_audio_player_devices ();
+  gw->audio_recorder_devices = gnomemeeting_get_audio_recorder_devices ();
+  gw->video_devices = PVideoInputDevice::GetInputDeviceNames ();
+#ifdef TRY_1394DC
+  gw->video_devices += PVideoInput1394DcDevice::GetInputDeviceNames();
+#endif
+#ifdef TRY_1394AVC
+  gw->video_devices += PVideoInput1394AvcDevice::GetInputDeviceNames();
+#endif
+  gw->audio_mixers = gnomemeeting_get_mixers ();
+  gnomemeeting_mixers_mic_select ();
+  gnomemeeting_sound_daemons_resume ();
+
+  if (gw->audio_player_devices.GetSize () == 0
+      || gw->audio_recorder_devices.GetSize () ==0)
+    return FALSE;
+  else
+    return TRUE;
+}
+
+
 GMH323EndPoint *
 GnomeMeeting::Endpoint ()
 {
@@ -370,16 +402,15 @@ void GnomeMeeting::Main () {}
 
 
 void
-GnomeMeeting::Init ()
+GnomeMeeting::InitComponents ()
 {
-  GtkWidget *dialog = NULL;
-
 #ifndef WIN32
   /* Ignore SIGPIPE */
   signal (SIGPIPE, SIG_IGN);
 #endif
   
-
+  endpoint = new GMH323EndPoint ();
+  
   /* Start the video preview */
   if (gconf_client_get_bool (client, DEVICES_KEY "video_preview", NULL))
     MyApp->CreateVideoGrabber ();
@@ -401,37 +432,6 @@ GnomeMeeting::Init ()
   
   if (!endpoint->StartListener ()) 
     gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Error while starting the listener"), _("You will not be able to receive incoming calls. Please check that no other program is already running on the port used by GnomeMeeting."));
-
-
-  /* Detect the devices */
-  gnomemeeting_sound_daemons_suspend ();
-  gw->audio_player_devices = gnomemeeting_get_audio_player_devices ();
-  gw->audio_recorder_devices = gnomemeeting_get_audio_recorder_devices ();
-  gw->video_devices = PVideoInputDevice::GetInputDeviceNames ();
-#ifdef TRY_1394DC
-  gw->video_devices += PVideoInput1394DcDevice::GetInputDeviceNames();
-#endif
-#ifdef TRY_1394AVC
-  gw->video_devices += PVideoInput1394AvcDevice::GetInputDeviceNames();
-#endif
-  gw->audio_mixers = gnomemeeting_get_mixers ();
-  gnomemeeting_mixers_mic_select ();
-  gnomemeeting_sound_daemons_resume ();
-
-
-  if (gw->audio_player_devices.GetSize () == 0
-      || gw->audio_recorder_devices.GetSize () ==0) {
-
-    dialog = gnomemeeting_error_dialog (GTK_WINDOW (gm), _("No usable audio devices detected"), _("GnomeMeetind didn't find any usable sound devices. You need to install and setup a soundcard or a Quicknet card in order to be able to use GnomeMeeting. Please check your driver settings and permissions."));
-
-    g_signal_handlers_disconnect_by_func (G_OBJECT (dialog),
-					  (gpointer) gtk_widget_destroy,
-					  G_OBJECT (dialog));
-
-    gtk_dialog_run (GTK_DIALOG (dialog));
-    delete (MyApp);
-    exit (-1);
-  }
 }
 
 

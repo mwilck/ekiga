@@ -66,6 +66,10 @@ struct GmEditContactDialog_ {
 typedef struct GmEditContactDialog_ GmEditContactDialog;
 
 
+/* Callbacks */
+static void filter_option_menu_changed (GtkWidget *,
+					gpointer);
+
 /* Callbacks: Drag and drop management */
 static gboolean dnd_drag_motion_cb (GtkWidget *,
 				    GdkDragContext *,
@@ -178,6 +182,29 @@ static void update_menu_sensitivity (gboolean,
 
 
 /* GTK Callbacks */
+
+/* DESCRIPTION  :  This callback is called when the user changes the filter
+ *                 type in an ILS page.
+ * BEHAVIOR     :  If "Find all" is selected, unsensitive the search entry.
+ * PRE          :  data = the search entry.
+ */
+static void
+filter_option_menu_changed (GtkWidget *menu,
+			    gpointer data)
+{
+  guint item_index;
+  GtkWidget *active_item;
+
+  active_item = gtk_menu_get_active (GTK_MENU (menu));
+  item_index = g_list_index (GTK_MENU_SHELL (GTK_MENU (menu))->children, 
+			     active_item);
+ 
+  if (item_index == 0)
+    gtk_widget_set_sensitive (GTK_WIDGET (data), FALSE);
+  else
+    gtk_widget_set_sensitive (GTK_WIDGET (data), TRUE);
+}
+
 
 /* DESCRIPTION  :  This callback is called when the user moves the drag.
  * BEHAVIOR     :  Draws a rectangle around the groups in which the user info
@@ -2384,6 +2411,8 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
 						       COLUMN_ILS_COMMENT,
 						       NULL);
     gtk_tree_view_column_set_sort_column_id (column, COLUMN_ILS_COMMENT);
+    gtk_tree_view_column_add_attribute (column, renderer, "foreground", 
+					COLUMN_ILS_COLOR);
     gtk_tree_view_column_set_resizable (column, true);
     gtk_tree_view_append_column (GTK_TREE_VIEW (lwp->tree_view), column);
     g_object_set (G_OBJECT (renderer), "style", PANGO_STYLE_ITALIC, NULL);
@@ -2395,6 +2424,8 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
 						       COLUMN_ILS_LOCATION,
 						       NULL);
     gtk_tree_view_column_set_sort_column_id (column, COLUMN_ILS_LOCATION);
+    gtk_tree_view_column_add_attribute (column, renderer, "foreground", 
+					COLUMN_ILS_COLOR);
     gtk_tree_view_column_set_resizable (column, true);
     gtk_tree_view_append_column (GTK_TREE_VIEW (lwp->tree_view), column);
 
@@ -2430,9 +2461,7 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
     gtk_tree_view_column_set_sort_column_id (column, COLUMN_ILS_IP);
     gtk_tree_view_column_set_resizable (column, true);
     gtk_tree_view_append_column (GTK_TREE_VIEW (lwp->tree_view), column);
-    g_object_set (G_OBJECT (renderer), "style", PANGO_STYLE_ITALIC,
-		  "foreground", "darkgray", NULL);
-
+    g_object_set (G_OBJECT (renderer), "style", PANGO_STYLE_ITALIC, NULL);
   }
   else {
 
@@ -2538,12 +2567,12 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
     gtk_option_menu_set_history (GTK_OPTION_MENU (lwp->option_menu),
 				 0);
     gtk_box_pack_start (GTK_BOX (hbox), lwp->option_menu, FALSE, FALSE, 2);
-    
+
     
     /* entry */
     lwp->search_entry = gtk_entry_new ();
     gtk_box_pack_start (GTK_BOX (hbox), lwp->search_entry, TRUE, TRUE, 2);
-
+    gtk_widget_set_sensitive (GTK_WIDGET (lwp->search_entry), FALSE);
 
     /* The Find button */
     find_button = gtk_button_new_from_stock (GTK_STOCK_FIND);
@@ -2554,6 +2583,12 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
     lwp->statusbar = gtk_statusbar_new ();
     gtk_box_pack_start (GTK_BOX (vbox), lwp->statusbar, FALSE, FALSE, 0);
     gtk_statusbar_set_has_resize_grip (GTK_STATUSBAR (lwp->statusbar), FALSE);
+
+
+    /* The search entry is unsensitive when "Find all" is selected */
+    g_signal_connect (G_OBJECT (GTK_OPTION_MENU (lwp->option_menu)->menu),
+		      "deactivate", G_CALLBACK (filter_option_menu_changed),
+		      lwp->search_entry);
   }
 
 

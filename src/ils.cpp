@@ -1107,7 +1107,7 @@ void GMILSBrowser::Main ()
 	    gtk_widget_render_icon (lwp->tree_view, 
 				    GM_STOCK_STATUS_OCCUPIED,
 				    GTK_ICON_SIZE_MENU, NULL);
-	  color = g_strdup ("darkred");
+	  color = g_strdup ("#8a8a8a");
         }        
 	gnomemeeting_threads_leave ();
 

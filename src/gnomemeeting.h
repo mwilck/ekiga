@@ -53,8 +53,8 @@ class GnomeMeeting : public PProcess
 
 
   /* DESCRIPTION  :  Constructor.
-   * BEHAVIOR     :  Init variables, and calls Init and BuildGUI.
-   * PRE          :  
+   * BEHAVIOR     :  Init variables.
+   * PRE          :  /
    */
   GnomeMeeting ();
 
@@ -80,7 +80,17 @@ class GnomeMeeting : public PProcess
   void Disconnect (H323Connection::CallEndReason
 		   = H323Connection::EndedByLocalUser);
 
+  
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Detects the available audio devices, audio mixers,
+   *                 and video devices and puts the result in the internal
+   *                 GmWindow structure. Returns FALSE if no audio device
+   *                 is detected.
+   * PRE          :  /
+   */
+  BOOL DetectDevices ();
 
+  
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns a pointer to the GmWindow structure
    *                 of widgets.
@@ -177,18 +187,14 @@ class GnomeMeeting : public PProcess
    * PRE          :  /
    */
   GMH323EndPoint *Endpoint (void);
-
-
- private:
+  
 
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Initialize the GnomeMeeting application.
-   *                 (video grabber, ILS, gatekeeper registering).
-   *                 If not audio devices are detected, then
-   *                 make it exit as it is a fatal error.
+   * BEHAVIOR     :  Initializes the GnomeMeeting application.
+   *                 (video grabber, endpoint, ILS, gatekeeper registering).
    * PRE          :  /
    */
-  void Init (); 
+  void InitComponents (); 
 
 
   /* DESCRIPTION  :  /
@@ -202,7 +208,8 @@ class GnomeMeeting : public PProcess
    */
   void BuildGUI ();
 
-
+  
+ private:
   GConfClient *client;
   GMH323EndPoint *endpoint;
   PThread *url_handler;
