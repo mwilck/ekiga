@@ -26,7 +26,6 @@
  *   Additional Code      : De Michele Cristiano, Miguel Rodríguez 
  *
  */
-
 #undef G_DISABLE_DEPRECATED
 #undef GTK_DISABLE_DEPRECATED
 #undef GNOME_DISABLE_DEPRECATED
@@ -139,7 +138,7 @@ GM_window_widgets *gnomemeeting_get_main_window (GtkWidget *gm)
 GM_pref_window_widgets *gnomemeeting_get_pref_window (GtkWidget *gm)
 {
   GM_pref_window_widgets *pw = (GM_pref_window_widgets *) 
-    gtk_object_get_data (GTK_OBJECT (gm), "pw");
+    g_object_get_data (G_OBJECT (gm), "pw");
 
   return pw;
 }
@@ -148,7 +147,7 @@ GM_pref_window_widgets *gnomemeeting_get_pref_window (GtkWidget *gm)
 GM_ldap_window_widgets *gnomemeeting_get_ldap_window (GtkWidget *gm)
 {
   GM_ldap_window_widgets *lw = (GM_ldap_window_widgets *) 
-    gtk_object_get_data (GTK_OBJECT (gm), "lw");
+    g_object_get_data (G_OBJECT (gm), "lw");
 
   return lw;
 }
@@ -219,8 +218,8 @@ gint PlaySound (GtkWidget *widget)
        We can't call gnomemeeting_threads_enter as idles and timers
        are executed in the main thread */
     gdk_threads_enter ();
-    object = (GtkWidget *) gtk_object_get_data (GTK_OBJECT (widget),
-						"pixmapg");
+    object = GTK_WIDGET (g_object_get_data (G_OBJECT (widget),
+						"pixmapg"));
     gdk_threads_leave ();
   }
 
@@ -264,8 +263,8 @@ gnomemeeting_history_combo_box_new (const gchar *key)
 
   gtk_entry_set_text(GTK_ENTRY(GTK_COMBO(combo)->entry), ""); 
   if (contacts_list)
-    gtk_object_set_data_full (GTK_OBJECT (combo), "history",
-			      contacts_list, gnomemeeting_free_glist_data);
+    g_object_set_data_full (G_OBJECT (combo), "history",
+			    contacts_list, gnomemeeting_free_glist_data);
 
   g_free (contacts);
 
@@ -292,7 +291,7 @@ gnomemeeting_history_combo_box_add_entry (GtkCombo *combo, const gchar *key,
 			    (GTK_ENTRY (GTK_COMBO (combo)->entry)));  
   
   /* if it is an empty entry_content, return */
-  if (!g_strcasecmp (entry_content, "")) {
+  if (!strcmp (entry_content, "")) {
     g_free (entry_content);
     return;
   }
@@ -350,20 +349,20 @@ gnomemeeting_history_combo_box_add_entry (GtkCombo *combo, const gchar *key,
   if (found)
     g_free (entry_content);
   
-  gtk_object_remove_no_notify (GTK_OBJECT (combo), "history");
+  g_object_steal_data (G_OBJECT (combo), "history");
   if (contacts_list)
-    gtk_object_set_data_full (GTK_OBJECT (combo), "history", 
-			      contacts_list, gnomemeeting_free_glist_data);
+    g_object_set_data_full (G_OBJECT (combo), "history", 
+			    contacts_list, gnomemeeting_free_glist_data);
 }
 
 /* Helper functions por the PAssert dialog */
-static void passert_clicked_cb (GnomeDialog *dialog, int reply, gpointer)
+static void passert_response_cb (GtkDialog *dialog, int response, gpointer)
 {
-  if (reply == 0)
+  if (response != 10)
     exit (-1);
 }
 
-static gint passert_close_cb (GnomeDialog *dialog, gpointer inAssert)
+static gint passert_close_cb (GtkDialog *dialog, gpointer inAssert)
 {
   bool *assert = static_cast<bool *> (inAssert);
   
@@ -390,19 +389,19 @@ void PAssertFunc (const char * file, int line, const char * msg)
   mesg = g_strdup_printf (_("Error: %s \nYou can choose to ignore and continue, or to close GnomeMeeting."), msg, NULL);
 
   GtkWidget *dialog = 
-    gnome_message_box_new (mesg,
-			   GNOME_MESSAGE_BOX_ERROR,
-			   GNOME_STOCK_BUTTON_CLOSE,
-			   _("Continue"),
-			   NULL);
+    gtk_message_dialog_new (GTK_WINDOW (gm),
+			    GTK_DIALOG_MODAL,
+			    GTK_MESSAGE_ERROR,
+			    GTK_BUTTONS_CLOSE,
+			    msg, 0);
+  gtk_dialog_add_buttons (GTK_DIALOG (dialog), 
+			  _("Continue"), 10);
 
-  gtk_signal_connect (GTK_OBJECT (dialog), "clicked",
-		      GTK_SIGNAL_FUNC (passert_clicked_cb), 0);
-  gtk_signal_connect (GTK_OBJECT (dialog), "close",
-		      GTK_SIGNAL_FUNC (passert_close_cb), &inAssert); 
+  g_signal_connect (G_OBJECT (dialog), "response",
+		    G_CALLBACK (passert_response_cb), 0);
+  g_signal_connect (G_OBJECT (dialog), "close",
+		    G_CALLBACK (passert_close_cb), &inAssert); 
 
-  gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (gm));
-				
   gtk_widget_show (dialog);
  
   gnomemeeting_threads_leave ();
@@ -412,41 +411,38 @@ void PAssertFunc (const char * file, int line, const char * msg)
 static void popup_toggle_changed (GtkCheckButton *but, gpointer data)
 {
   if (GTK_TOGGLE_BUTTON (but)->active) 
-    gtk_object_set_data (GTK_OBJECT (data), "widget_data", (gpointer) "1");
+    g_object_set_data (G_OBJECT (data), "widget_data", GINT_TO_POINTER (1));
   else
-    gtk_object_set_data (GTK_OBJECT (data), "widget_data", (gpointer) "0");
+    g_object_set_data (G_OBJECT (data), "widget_data", GINT_TO_POINTER (0));
 }
 
 
 void gnomemeeting_warning_popup (GtkWidget *w, gchar *m)
 {
   gchar *msg = NULL;
-  gchar *widget_data = NULL;
+  gint widget_data;
   GtkWidget *msg_box = NULL;
   GtkWidget *toggle_button = NULL;
 
   msg = g_strdup (m);
      
-  widget_data = (gchar *) gtk_object_get_data (GTK_OBJECT (w), "widget_data");
+  widget_data = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (w), "widget_data"));
 
   toggle_button = 
     gtk_check_button_new_with_label (_("Do not show this dialog again"));
   
-  gtk_signal_connect (GTK_OBJECT (toggle_button), "toggled",
-		      GTK_SIGNAL_FUNC (popup_toggle_changed),
-		      w);
+  g_signal_connect (G_OBJECT (toggle_button), "toggled",
+		    G_CALLBACK (popup_toggle_changed),
+		    w);
 		 
   /* If it is the first time that we are called OR if data is != 0 */
-  if (!gtk_object_get_data (GTK_OBJECT (w), "widget_data")||
-      (strcmp ((gchar *) gtk_object_get_data (GTK_OBJECT (w), "widget_data"), "0"))) {
-
+  if (GPOINTER_TO_INT (g_object_get_data (G_OBJECT (w), "widget_data")) != 0) {
     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle_button), TRUE);
-    gtk_object_set_data (GTK_OBJECT (w), "widget_data", (gpointer) "1");
+    g_object_set_data (G_OBJECT (w), "widget_data", GINT_TO_POINTER (1));
   }
 
   
-  if ((widget_data == NULL)||(!strcmp ((gchar *) gtk_object_get_data (GTK_OBJECT (w), "widget_data"), "0"))) {
-
+  if (widget_data == 0) {
     msg_box = gnome_message_box_new (msg, GNOME_MESSAGE_BOX_WARNING, 
 				   "OK", NULL);
 
