@@ -179,7 +179,7 @@ void GMStunClient::Main ()
       
       gnomemeeting_threads_enter ();
       dialog = 
-	gtk_dialog_new_with_buttons (_("NAT Detection Successfull"),
+	gtk_dialog_new_with_buttons (_("NAT Detection Finished"),
 				     GTK_WINDOW (druid_window),
 				     GTK_DIALOG_MODAL,
 				     GTK_STOCK_NO,
@@ -193,7 +193,7 @@ void GMStunClient::Main ()
 
       gnomemeeting_threads_enter ();
       dialog = 
-	gtk_dialog_new_with_buttons (_("NAT Detection Successfull"),
+	gtk_dialog_new_with_buttons (_("NAT Detection Finished"),
 				     GTK_WINDOW (druid_window),
 				     GTK_DIALOG_MODAL,
 				     GTK_STOCK_OK,
@@ -204,7 +204,7 @@ void GMStunClient::Main ()
     
     primary_text =
       g_strdup_printf ("<span weight=\"bold\" size=\"larger\">%s</span>",
-		       _("The type of NAT was successfully detected"));
+		       _("The detection of your NAT type is finished"));
 
     dialog_text =
       g_strdup_printf ("%s\n\n%s", primary_text, prefered_method);
