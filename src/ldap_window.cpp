@@ -42,7 +42,7 @@
 #include "../pixmaps/small-close.xpm"
 #include "../pixmaps/xdap-directory.xpm"
 
-#define GM_HISTORY_LDAP_SERVERS "/apps/gnomemeeting/history/directory_servers"
+#define GM_HISTORY_LDAP_SERVERS "/apps/gnomemeeting/history/ldap_servers_list"
 
 /* Declarations */
 

@@ -122,7 +122,7 @@ GnomeMeeting::Connect()
     gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), call_address);
     
     gm_history_combo_add_entry (GM_HISTORY_COMBO (gw->combo), 
-				"/apps/gnomemeeting/history/connections", 
+				"/apps/gnomemeeting/history/called_urls_list", 
 				gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry)));
     gnomemeeting_threads_leave ();
 
