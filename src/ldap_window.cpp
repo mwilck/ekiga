@@ -622,6 +622,7 @@ void gnomemeeting_init_ldap_window_notebook (int page_num, gchar *text_label)
 
   /* Set all Colums */
   renderer = gtk_cell_renderer_pixbuf_new ();
+  /* Translators: This is "S" as in "Status" */
   column = gtk_tree_view_column_new_with_attributes (_("S"),
 						     renderer,
 						     "pixbuf", 
@@ -632,6 +633,7 @@ void gnomemeeting_init_ldap_window_notebook (int page_num, gchar *text_label)
   gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
 
   renderer = gtk_cell_renderer_toggle_new ();
+  /* Translators: This is "A" as in "Audio" */
   column = gtk_tree_view_column_new_with_attributes (_("A"),
 						     renderer,
 						     "active", 
@@ -642,6 +644,7 @@ void gnomemeeting_init_ldap_window_notebook (int page_num, gchar *text_label)
   gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
 
   renderer = gtk_cell_renderer_toggle_new ();
+  /* Translators: This is "V" as in "Video" */
   column = gtk_tree_view_column_new_with_attributes (_("V"),
 						     renderer,
 						     "active", 
