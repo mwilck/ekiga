@@ -79,20 +79,23 @@ void GMLid::Open ()
   int lid_aec = 0;
 
   GmWindow *gw = NULL;
-  GConfClient *client = gconf_client_get_default ();
+  GConfClient *client = NULL;
   
   gnomemeeting_threads_enter ();
+  client = gconf_client_get_default ();
   gw = gnomemeeting_get_main_window (gm);
   gnomemeeting_threads_leave ();
 
   if (!lid) {
 
+    gnomemeeting_threads_enter ();
     lid_device =  
       gconf_client_get_string (client, DEVICES_KEY "audio_player", NULL);
     lid_country =
       gconf_client_get_string (client, DEVICES_KEY "lid_country", NULL);
     lid_aec =
       gconf_client_get_int (client, DEVICES_KEY "lid_aec", NULL);
+    gnomemeeting_threads_leave ();
 
     if (lid_device == NULL)
       lid_device = g_strdup ("/dev/phone0");
@@ -176,10 +179,10 @@ void GMLid::Close ()
   if (lid)
     lid->Close ();
 
-  client = gconf_client_get_default ();
 
   /* Restore the normal mixers settings */
   gnomemeeting_threads_enter ();
+  client = gconf_client_get_default ();
   gw = gnomemeeting_get_main_window (gm);
 
   mixer =

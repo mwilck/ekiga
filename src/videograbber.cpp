@@ -226,6 +226,7 @@ void GMVideoGrabber::UpdateConfig ()
   g_free (color_format);
   g_free (video_device);
  
+  gnomemeeting_threads_enter ();
   video_device =  gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/video_recorder", NULL);
 
   color_format = gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/color_format", NULL);
@@ -257,6 +258,8 @@ void GMVideoGrabber::UpdateConfig ()
     video_format = PVideoDevice::Auto;
     break;
   }
+  gnomemeeting_threads_leave ();
+
 }
 
 
@@ -569,7 +572,9 @@ void GMVideoGrabber::VGOpen (void)
        because there was an error, either because the user chose to do so */
       delete grabber;
       
+      gnomemeeting_threads_enter ();
       video_image = gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/video_image", NULL);
+      gnomemeeting_threads_leave ();
 
       grabber = new GMH323FakeVideoInputDevice (video_image);
       grabber->SetColourFormatConverter ("YUV420P");
@@ -765,17 +770,17 @@ void GMVideoTester::Main ()
   gchar *msg = NULL;
   gchar *video_device = NULL;
 
+  gnomemeeting_threads_enter ();
   GConfClient *client = gconf_client_get_default ();
 
   video_device =  gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/video_recorder", NULL);
 
-  gdk_threads_enter ();
   gw = gnomemeeting_get_main_window (gm);
   dw = gnomemeeting_get_druid_window (gm);
   gtk_widget_set_sensitive (GTK_WIDGET (dw->video_test_button), FALSE);
   gtk_progress_bar_set_text (GTK_PROGRESS_BAR (dw->progress), "");
   gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (dw->progress), 0.0);
-  gdk_threads_leave ();
+  gnomemeeting_threads_leave ();
 
   
   while (cpt <= 3) {

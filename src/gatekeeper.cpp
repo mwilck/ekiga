@@ -64,7 +64,7 @@ void GMH323Gatekeeper::Main ()
   GtkWidget *msg_box = NULL;
   gchar *msg = NULL;
   gchar *gconf_string = NULL;
-  GConfClient *client = gconf_client_get_default ();
+  GConfClient *client = NULL;
   H323EndPoint *endpoint = NULL;
   GmPrefWindow *pw = NULL;
   GmWindow *gw = NULL;
@@ -72,14 +72,20 @@ void GMH323Gatekeeper::Main ()
   int method;
 
   /* Register using the gatekeeper host */
+  gnomemeeting_threads_enter ();
+  client = gconf_client_get_default ();
   method =
     gconf_client_get_int (GCONF_CLIENT (client),
 			  "/apps/gnomemeeting/gatekeeper/registering_method",
 			  0);
+  gnomemeeting_threads_leave ();
 
   endpoint = (H323EndPoint *) MyApp->Endpoint ();
 
+  gnomemeeting_threads_enter ();
   gconf_string = gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/gatekeeper/gk_password", 0);
+  gnomemeeting_threads_leave ();
+
   endpoint->SetGatekeeperPassword ("");
   if ((gconf_string != NULL)&&(strcmp ("", gconf_string))) {
 
@@ -101,7 +107,9 @@ void GMH323Gatekeeper::Main ()
   /* Use the hostname */
   if (method == 1) {
 
+    gnomemeeting_threads_enter ();
     gconf_string = gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/gatekeeper/gk_host", 0);
+    gnomemeeting_threads_leave ();
 
     if ((gconf_string == NULL) || (!strcmp ("", gconf_string))) {
      
@@ -118,13 +126,12 @@ void GMH323Gatekeeper::Main ()
 				G_CALLBACK (gtk_widget_destroy),
 				GTK_OBJECT (msg_box));
 
-      gnomemeeting_threads_leave ();
-
       gconf_client_set_int (GCONF_CLIENT (client), "/apps/gnomemeeting/gatekeeper/registering_method", 0, NULL);
   
       /* We disable microtelco if it was enabled */
       gconf_client_set_bool (client, SERVICES_KEY "enable_microtelco",
 			     false, 0);
+      gnomemeeting_threads_leave ();
 
       return;
     }
@@ -139,8 +146,6 @@ void GMH323Gatekeeper::Main ()
       gnomemeeting_threads_enter ();
       gnomemeeting_log_insert (gw->history_text_view, msg);
       gnomemeeting_statusbar_flash (gw->statusbar, msg);
-      gnomemeeting_threads_leave ();
-
 
       /* If the host to which we registered is the MicroTelco GK, enable
 	 MicroTelco, if not disable it, in case it was enabled */
@@ -150,6 +155,7 @@ void GMH323Gatekeeper::Main ()
       else
 	gconf_client_set_bool (client, SERVICES_KEY "enable_microtelco",
 			       false, 0);
+      gnomemeeting_threads_leave ();
 
       g_free (msg);
     } 
@@ -172,12 +178,12 @@ void GMH323Gatekeeper::Main ()
 				G_CALLBACK (gtk_widget_destroy),
 				GTK_OBJECT (msg_box));
       
-      gnomemeeting_threads_leave ();
       gconf_client_set_int (GCONF_CLIENT (client), "/apps/gnomemeeting/gatekeeper/registering_method", 0, NULL);
 
       /* We disable microtelco if it was enabled */
       gconf_client_set_bool (client, SERVICES_KEY "enable_microtelco",
 			     false, 0);
+      gnomemeeting_threads_leave ();
 
       g_free (msg);
     }
@@ -190,10 +196,11 @@ void GMH323Gatekeeper::Main ()
   if (method == 2) {
 
     /* We disable microtelco if it was enabled */
+    gnomemeeting_threads_enter ();
     gconf_client_set_bool (client, SERVICES_KEY "enable_microtelco",
 			   false, 0);
-
     gconf_string = gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/gatekeeper/gk_id", 0);
+    gnomemeeting_threads_leave ();
 
     if ((gconf_string == NULL) || (!strcmp ("", gconf_string))) {
      
@@ -210,9 +217,8 @@ void GMH323Gatekeeper::Main ()
 				G_CALLBACK (gtk_widget_destroy),
 				GTK_OBJECT (msg_box));
     
-      gnomemeeting_threads_leave ();
-
       gconf_client_set_int (GCONF_CLIENT (client), "/apps/gnomemeeting/gatekeeper/registering_method", 0, NULL);
+      gnomemeeting_threads_leave ();
 
       return;
     }
@@ -248,8 +254,9 @@ void GMH323Gatekeeper::Main ()
 				G_CALLBACK (gtk_widget_destroy),
 				GTK_OBJECT (msg_box));
   
-      gnomemeeting_threads_leave ();
       gconf_client_set_int (GCONF_CLIENT (client), "/apps/gnomemeeting/gatekeeper/registering_method", 0, NULL);
+      gnomemeeting_threads_leave ();
+
       g_free (msg);
     }
   }
@@ -259,8 +266,10 @@ void GMH323Gatekeeper::Main ()
   if (method == 3) {
 
     /* We disable microtelco if it was enabled */
+    gnomemeeting_threads_enter ();
     gconf_client_set_bool (client, SERVICES_KEY "enable_microtelco",
 			   false, 0);
+    gnomemeeting_threads_leave ();
 
     if (MyApp->Endpoint ()->DiscoverGatekeeper ()) {
  
@@ -290,13 +299,16 @@ void GMH323Gatekeeper::Main ()
 				G_CALLBACK (gtk_widget_destroy),
 				GTK_OBJECT (msg_box));
   
-      gnomemeeting_threads_leave ();
       gconf_client_set_int (GCONF_CLIENT (client), "/apps/gnomemeeting/gatekeeper/registering_method", 0, NULL);
+      gnomemeeting_threads_leave ();
+
     }
   }
 
+  gnomemeeting_threads_enter ();
   if (method == 0)
     /* We disable microtelco if it was enabled */
     gconf_client_set_bool (client, SERVICES_KEY "enable_microtelco",
 			   false, 0);
+  gnomemeeting_threads_leave ();
 }

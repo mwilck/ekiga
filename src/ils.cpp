@@ -184,6 +184,7 @@ void GMILSClient::Main ()
 
     /* if there is more than 20 minutes that we are registered,
        we refresh the entry */
+    gnomemeeting_threads_enter ();
     if ((t.GetSeconds () > 1200) && 
 	(gconf_client_get_bool (GCONF_CLIENT (client), 
 				"/apps/gnomemeeting/ldap/register", 
@@ -193,6 +194,7 @@ void GMILSClient::Main ()
 	has_to_register = 1;
 	starttime = PTime ();
       }
+    gnomemeeting_threads_leave ();
 
     Current ()->Sleep (100);
   }
@@ -227,7 +229,6 @@ BOOL GMILSClient::CheckFieldsConfig ()
 			   "/apps/gnomemeeting/ldap/register", 
 			   NULL);
 
-
   if (registering) {
 
     if ((firstname == NULL) || (!strcmp (firstname, ""))
@@ -257,10 +258,13 @@ BOOL GMILSClient::CheckServerConfig ()
   gchar *ldap_server = NULL;
 
 
+  gnomemeeting_threads_enter ();
   ldap_server =  
     gconf_client_get_string (GCONF_CLIENT (client),
 			     "/apps/gnomemeeting/ldap/ldap_server", 
 			     NULL);
+  gnomemeeting_threads_leave ();
+
 
   /* We check that there is an ILS server specified */
   if ((ldap_server == NULL) || (!strcmp (ldap_server, ""))) {
@@ -326,12 +330,12 @@ BOOL GMILSClient::Register (int reg)
 
   if (CheckServerConfig ()) {
 
+    gnomemeeting_threads_enter ();
     ldap_server =  
       gconf_client_get_string (GCONF_CLIENT (client),
 			       "/apps/gnomemeeting/ldap/ldap_server", 
 			       NULL);
 
-    gnomemeeting_threads_enter ();
     msg = g_strdup_printf (_("Contacting %s..."), ldap_server);
 
     if (reg != 2)
@@ -430,10 +434,13 @@ BOOL GMILSClient::Register (int reg)
 	     to the gateway IP of the translation */
 	  
 	  gchar *ip = NULL;
+	  gnomemeeting_threads_enter ();
 	  gchar *mail =  
 	    gconf_client_get_string (GCONF_CLIENT (client), 
 				     "/apps/gnomemeeting/personal_data/mail", 
 				     NULL);
+	  gnomemeeting_threads_leave ();
+
 	  if ((mail)&&(strcmp (mail, ""))
 	      &&(!strcmp (ldap_server, "ils.seconix.com")))
 	    ip = Search (ldap_server, "389", mail);
@@ -446,9 +453,11 @@ BOOL GMILSClient::Register (int reg)
 	    if (prt != P_MAX_INDEX)
 	      IP = IP.Left (prt);
 	    
+	    gnomemeeting_threads_enter ();
 	    if (PString ("0.0.0.0") != IP)
 	      gconf_client_set_string (client, "/apps/gnomemeeting/general/public_ip", (const char *) IP, NULL);
-	    
+	    gnomemeeting_threads_leave ();
+
 	    g_free (ip);
 	    g_free (mail);
 	  }
@@ -656,6 +665,7 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
   
   unsigned long int sip = 0;
 
+  gnomemeeting_threads_enter ();
   GConfClient *client = gconf_client_get_default ();
 
 
@@ -717,6 +727,7 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
     ilsa32964638 = g_strdup ("1");
   else
     ilsa32964638 = g_strdup ("0");
+  gnomemeeting_threads_leave ();
 
   ip = MyApp->Endpoint ()->GetCurrentIP ();
   sip = inet_addr (ip);

@@ -150,6 +150,8 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
   static int fs_device = 0;
 #endif
 
+
+  gnomemeeting_threads_enter ();
   client = gconf_client_get_default ();
 
   /* Take the mutexes before the redraw */
@@ -172,7 +174,6 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
 
 
   /* Let's go for the GTK stuff */
-  gnomemeeting_threads_enter ();
   
   /* What do we display: what gconf tells us except if we are not in 
      a call, or if it is not a valid choice */

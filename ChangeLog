@@ -1,5 +1,12 @@
 2003-02-26 Damien Sandras  <dsandras@seconix.com>
 
+	* src/connection.cpp, src/endpoint.cpp, src/gatekeeper.cpp, 
+	src/gdkvideoio.cpp, src/ils.cpp, src/lid.cpp, src/urlhandler.cpp,
+	src/videograbber.cpp: Made sure that gconf calls are protected by
+	the GDK Mutex.
+
+2003-02-26 Damien Sandras  <dsandras@seconix.com>
+
 	* src/ils.cpp: Fixed crash with pwlib 1.4.8 on PPC.
 	
 2003-02-24 Damien Sandras  <dsandras@seconix.com>

@@ -86,9 +86,8 @@ IncomingCallTimeout (gpointer data)
   gboolean no_answer_forward = FALSE;
   GConfClient *client = NULL;
 
-  client = gconf_client_get_default ();
-
   gdk_threads_enter ();
+  client = gconf_client_get_default ();
 
   /* Forwarding on no answer */
   no_answer_forward = 
@@ -275,8 +274,6 @@ void GMH323EndPoint::UpdateConfig ()
   gnomemeeting_threads_enter ();
   pw = gnomemeeting_get_pref_window (gm);
   gw = gnomemeeting_get_main_window (gm);
-  gnomemeeting_threads_leave ();
-
   
   /* Get the gconf settings */
   player = 
@@ -289,7 +286,7 @@ void GMH323EndPoint::UpdateConfig ()
     gconf_client_get_bool (client, GENERAL_KEY "fast_start", NULL);
   video_size = 
     gconf_client_get_int (client, DEVICES_KEY "video_size", NULL);
-
+  gnomemeeting_threads_leave ();
 
   gnomemeeting_sound_daemons_suspend ();
 
@@ -377,12 +374,10 @@ void GMH323EndPoint::UpdateConfig ()
 
     /**/
     /* Update the capabilities */
-    gnomemeeting_threads_enter ();
     RemoveAllCapabilities ();
     AddAudioCapabilities ();
     AddVideoCapabilities (video_size);
     AddUserInputCapabilities ();
-    gnomemeeting_threads_leave ();
   }
 
   gnomemeeting_sound_daemons_resume ();
@@ -436,14 +431,15 @@ GMH323EndPoint::AddVideoCapabilities (int video_size)
   BOOL enable_video_reception = TRUE;
 
   /* Enable video transmission / reception */
+  gnomemeeting_threads_enter ();
   enable_video_transmission = 
     gconf_client_get_bool (client, 
 			   VIDEO_SETTINGS_KEY "enable_video_transmission", 0);
   enable_video_reception = 
     gconf_client_get_bool (client, 
 			   VIDEO_SETTINGS_KEY "enable_video_reception", 0);
+  gnomemeeting_threads_leave ();
 
-  
   /* Capabilities we can send and receive */
   if (enable_video_reception) {
     
@@ -491,9 +487,10 @@ GMH323EndPoint::AddUserInputCapabilities ()
 {
   int cap = 0;
 
+  gnomemeeting_threads_enter ();
   cap =
     gconf_client_get_int (client, GENERAL_KEY "user_input_capability", 0);
-
+  gnomemeeting_threads_leave ();
     
   if (cap == 3)
     capabilities.SetCapability (0, P_MAX_INDEX, new H323_UserInputCapability(H323_UserInputCapability::SignalToneH245));
@@ -526,6 +523,7 @@ GMH323EndPoint::AddAudioCapabilities ()
   PStringArray to_reorder;
   
   /* Read GConf settings */ 
+  gnomemeeting_threads_enter ();
   codecs_data = 
     gconf_client_get_list (client, AUDIO_CODECS_KEY "codecs_list", 
 			   GCONF_VALUE_STRING, NULL);
@@ -533,8 +531,9 @@ GMH323EndPoint::AddAudioCapabilities ()
     gconf_client_get_int (client, AUDIO_SETTINGS_KEY "g711_frames", NULL);
   gsm_frames = 
     gconf_client_get_int (client, AUDIO_SETTINGS_KEY "gsm_frames", NULL);
+  gnomemeeting_threads_leave ();
 
-
+  
 #ifdef HAS_IXJ
   /* Add the audio capabilities provided by the LID Hardware */
   if (GetLidThread ()) {
@@ -663,8 +662,10 @@ GMH323EndPoint::TranslateTCPAddress(PIPSocket::Address &localAddr,
   BOOL ip_translation = FALSE;
   gchar *ip = NULL;
 
+  gnomemeeting_threads_enter ();
   ip_translation = 
     gconf_client_get_bool (client, GENERAL_KEY "ip_translation", NULL);
+  gnomemeeting_threads_leave ();
 
   if (ip_translation) {
 
@@ -676,8 +677,10 @@ GMH323EndPoint::TranslateTCPAddress(PIPSocket::Address &localAddr,
 	 
 	 && !(remoteAddr.Byte1() == 10)) {
 
+      gnomemeeting_threads_enter ();
       ip = 
 	gconf_client_get_string (client, GENERAL_KEY "public_ip", NULL);
+      gnomemeeting_threads_leave ();
 
       if (ip) {
 
@@ -993,6 +996,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 
 
   /* Check the gconf keys */
+  gnomemeeting_threads_enter ();
   forward_host_gconf = 
     gconf_client_get_string (client, CALL_FORWARDING_KEY "forward_host", NULL);
   always_forward = 
@@ -1007,6 +1011,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
     gconf_client_get_bool (client, GENERAL_KEY "incoming_call_sound", NULL);
   show_popup =
     gconf_client_get_bool (client, VIEW_KEY "show_popup", NULL);
+  gnomemeeting_threads_leave ();
 
   if (forward_host_gconf)
     forward_host = PString (forward_host_gconf);
@@ -1213,11 +1218,13 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 
   
   /* Get the gconf settings */
+  gnomemeeting_threads_enter ();
   vq = gconf_client_get_int (client, VIDEO_SETTINGS_KEY "tr_vq", NULL);
   bf = gconf_client_get_int (client, VIDEO_SETTINGS_KEY "tr_ub", NULL);
   bitrate = gconf_client_get_int (client, VIDEO_SETTINGS_KEY "maximum_video_bandwidth", NULL);
   tr_fps = gconf_client_get_int (client, VIDEO_SETTINGS_KEY "tr_fps", NULL);
   reg = gconf_client_get_bool (client, LDAP_KEY "register", NULL);
+  gnomemeeting_threads_leave ();
 
   /* Remove the progress timeout */
   if (gw->progress_timeout) {
@@ -1352,10 +1359,11 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
 
   /* Get GConf settings */
+  gnomemeeting_threads_enter ();
   dnd = gconf_client_get_bool (client, GENERAL_KEY "do_not_disturb", NULL);
   reg = gconf_client_get_bool (client, LDAP_KEY "register", NULL);
   preview = gconf_client_get_bool (client, DEVICES_KEY "video_preview", NULL);
- 
+  gnomemeeting_threads_leave ();
 
   /* If we are called because the current incoming call has ended and 
      not another call, ok, else do nothing */
@@ -1646,12 +1654,14 @@ void GMH323EndPoint::SetUserNameAndAlias ()
   gchar *alias = NULL;
   
   /* Set the local User name */
+  gnomemeeting_threads_enter ();
   firstname = 
     gconf_client_get_string (client,PERSONAL_DATA_KEY "firstname", NULL);
   lastname  = 
     gconf_client_get_string (client, PERSONAL_DATA_KEY "lastname", NULL);
   alias = 
     gconf_client_get_string (client, GATEKEEPER_KEY "gk_alias", NULL);  
+  gnomemeeting_threads_leave ();
 
   if (firstname && lastname && strcmp (firstname, ""))  { 
 
@@ -1758,10 +1768,12 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 
     
   /* Get the gconf config */
+  gnomemeeting_threads_enter ();
   vid_tr = 
     gconf_client_get_bool (client, 
 			   VIDEO_SETTINGS_KEY "enable_video_transmission", 
 			   NULL);
+  gnomemeeting_threads_leave ();
 
   /* If it is possible to transmit and
      if the user enabled transmission and

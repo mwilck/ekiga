@@ -64,6 +64,7 @@ GMH323Connection::GMH323Connection (GMH323EndPoint & ep,
   int min_jitter = 20;
   int max_jitter = 1000;
 
+  gnomemeeting_threads_enter ();
   gw = gnomemeeting_get_main_window (gm);
 
   opened_channels = 0;
@@ -75,6 +76,7 @@ GMH323Connection::GMH323Connection (GMH323EndPoint & ep,
   max_jitter = 
     gconf_client_get_int (gconf_client_get_default (), 
 			  AUDIO_SETTINGS_KEY "max_jitter_buffer", NULL);
+  gnomemeeting_threads_leave ();
 
   SetAudioJitterDelay (min_jitter, max_jitter);
 }
@@ -89,7 +91,7 @@ void GMH323Connection::OnClosedLogicalChannel(H323Channel & channel)
 
 BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
 {
-  GConfClient *client = gconf_client_get_default ();
+  GConfClient *client = NULL;
   PString name;
   gchar *msg = NULL;
   int sd = 0;
@@ -105,6 +107,7 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
   H323AudioCodec *codec = (H323AudioCodec *) channel.GetCodec ();
 
   gnomemeeting_threads_enter ();
+  client = gconf_client_get_default ();
   gnomemeeting_log_insert (gw->history_text_view,
 			   _("Started New Logical Channel..."));
   gnomemeeting_threads_leave ();
@@ -117,13 +120,13 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
 
     gnomemeeting_threads_enter ();
     gnomemeeting_log_insert (gw->history_text_view, msg);
-    gnomemeeting_threads_leave ();
-    
+   
     g_free (msg);
     
     sd = 
       gconf_client_get_bool (client, "/apps/gnomemeeting/audio_settings/sd", 
 			     NULL);
+    gnomemeeting_threads_leave ();
     	
     codec->SetSilenceDetectionMode(!sd ?
 				   H323AudioCodec::NoSilenceDetection :
@@ -168,9 +171,11 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
 
 
   /* Compute the received video quality */
+  gnomemeeting_threads_enter ();
   re_vq_ = gconf_client_get_int (GCONF_CLIENT (client), 
 				 "/apps/gnomemeeting/video_settings/re_vq", 
 				 NULL);
+  gnomemeeting_threads_leave ();
   re_vq = 32 - (int) ((double) re_vq_ / 100 * 31);
     
   if (channel.GetDirection() == H323Channel::IsReceiver) {
@@ -310,7 +315,9 @@ GMH323Connection::OnAnswerCall (const PString & caller,
 				const H323SignalPDU &,
 				H323SignalPDU &)
 {
-  GConfClient *client = gconf_client_get_default ();
+  GConfClient *client = NULL;
+  BOOL aa = FALSE;
+
   MyApp -> Endpoint () -> SetCurrentCallToken (GetCallToken());
 
   GMVideoGrabber *vg = 
@@ -318,11 +325,17 @@ GMH323Connection::OnAnswerCall (const PString & caller,
   vg->Stop ();
 
   PThread::Current ()->Sleep (500);
-  
-  if (gconf_client_get_bool 
-      (client, "/apps/gnomemeeting/general/auto_answer", 0)) {
 
-    gnomemeeting_threads_enter ();
+  gnomemeeting_threads_enter ();  
+  client = gconf_client_get_default ();
+  aa = 
+    gconf_client_get_bool (client, "/apps/gnomemeeting/general/auto_answer",
+			   NULL); 
+  gnomemeeting_threads_leave ();
+
+  if (aa) {
+
+    gnomemeeting_threads_enter ();  
     gnomemeeting_statusbar_flash (gw->statusbar,
 				  _("Auto Answering Incoming Call"));
     gnomemeeting_log_insert (gw->history_text_view,
