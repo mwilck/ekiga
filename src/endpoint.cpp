@@ -109,7 +109,6 @@ static gint IncomingCallTimeout (gpointer data)
 
   gw->incoming_call_popup = NULL;
 
-
   /* If forward host specified */
   if ((!forward_host.IsEmpty ())&&(no_answer_forward)) {
 
@@ -122,7 +121,7 @@ static gint IncomingCallTimeout (gpointer data)
       gnome_appbar_push (GNOME_APPBAR (gw->statusbar), msg);
       gnomemeeting_log_insert (gw->history_text_view, msg);
       gnomemeeting_log_insert (gw->calls_history_text_view, 
-			       _("Call forwarded"));
+ 			       _("Call forwarded"));
       g_free (msg);
     }
   }
@@ -1023,7 +1022,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 		       (const char *) utf8_name, (const char *) forward_host);
     gnome_appbar_push (GNOME_APPBAR (gw->statusbar), msg);
     gnomemeeting_log_insert (gw->history_text_view, msg);
-    gnomemeeting_log_insert (gw->calls_history_text_view, msg);
+    gnomemeeting_log_insert (gw->calls_history_text_view, _("Call forwarded"));
     gnomemeeting_threads_leave ();
 
     g_free (forward_host_gconf);
