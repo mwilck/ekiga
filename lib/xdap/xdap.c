@@ -346,7 +346,7 @@ ldaprun (LDAP * ldap, xmlDocPtr xp, xmlNodePtr * current, int *opp,
   int optype;		/* ldap operation */
   xmlChar *base = 0;	/* search base */
   xmlChar *scope = 0;	/* search scope symbolic */
-  int iscope;		/* search scope */
+  int iscope = 0;	/* search scope */
   xmlChar *filter = 0;	/* search filter */
   xmlChar *attrlist = 0;	/* attribute list to return */
   char *attra[MAXATTRS];	/* attribute list in array form */
@@ -567,7 +567,7 @@ doldapop (LDAP * ldap, xmlDocPtr xp, int sync, xmlNodePtr node, int optype,
   LDAPMod *attrs[MAXATTRS];	/* attribute pointers */
   LDAPMessage *res;	/* result list from search */
   int nattrs = 0;		/* Number of attributes */
-  int rc;
+  int rc = 0;
   char *text = 0;		/* shell command */
   xmlChar *modop;		/* attribute mod_op */
   xmlChar *eval;		/* evaluate the element text */
