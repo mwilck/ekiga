@@ -1,3 +1,11 @@
+2003-01-13 Damien Sandras  <dsandras@seconix.com>
+
+	* src/endpoint.cpp: Fixed Leak in IP translation.
+	* src/ldap_window.cpp: Bind 'Alt-R' to Refresh.
+	* src/main_window.cpp: Fixed stats display, added "total" of upload/
+	download in graphs display. Splitted Lost and Late packets display
+	to minimize used space.
+	
 2003-01-11 Roger Hardiman <roger@freebsd.org>
 
 	* pref_window.cpp: Tidy up the strings. Fix end_index warning.

@@ -1202,7 +1202,7 @@ contact_section_event_after_cb (GtkWidget *w,
 	
 	MenuEntry delete_refresh_contact_section_menu [] =
 	  {
-	    {_("Refresh"), NULL,
+	    {_("_Refresh"), NULL,
 	     GTK_STOCK_REFRESH, 0, MENU_ENTRY, 
 	     GTK_SIGNAL_FUNC (refresh_server_content_cb), 
 	     GINT_TO_POINTER (page_num), NULL},

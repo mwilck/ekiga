@@ -277,15 +277,11 @@ gint AppbarUpdate (gpointer data)
 	 rtp->tr_video_speed [rtp->tr_video_pos - 1], 
 	 rtp->re_video_speed [rtp->re_video_pos - 1]);
 	
-      float bytes_sent = 0;
-      float bytes_received = 0;
       int lost_packets = 0;
       int late_packets = 0;
 
       if (audio_session) {
 	  
-	bytes_sent = (float) audio_session->GetOctetsSent ();
-	bytes_received = (float) audio_session->GetOctetsReceived ();
 	lost_packets = audio_session->GetPacketsLost ();
 	late_packets = audio_session->GetPacketsTooLate ();
 	jitter_buffer_size = audio_session->GetJitterBufferSize ();
@@ -293,28 +289,24 @@ gint AppbarUpdate (gpointer data)
 	
       if (video_session) {
 
-	bytes_sent = (float) bytes_sent+video_session->GetOctetsSent ();
-	bytes_received = 
-	  (float) bytes_received+video_session->GetOctetsReceived ();
 	lost_packets = lost_packets+video_session->GetPacketsLost ();
 	late_packets = late_packets+video_session->GetPacketsTooLate ();
       }
 
-      bytes_sent = (float) bytes_sent / 1024 / 1024;
-      bytes_received = (float) bytes_received / 1024 / 1024;
-
+      
       if (t.GetSeconds () > 5) {
 
 	gnomemeeting_statusbar_push (gw->statusbar, msg);
 	gchar *stats_msg = 
-	  g_strdup_printf (_("Sent/Received: %.3f Mb/%.3f Mb\nLost/Late packets: %d/%d\nRound-trip delay: %d ms\nJitter buffer: %d ms"), bytes_sent, bytes_received, lost_packets, late_packets, (int) connection->GetRoundTripDelay().GetMilliSeconds(), int (jitter_buffer_size / 8));
+	  g_strdup_printf (_("Lost packets: %d\nLate packets: %d\nRound-trip delay: %d ms\nJitter buffer: %d ms"), lost_packets, late_packets, (int) connection->GetRoundTripDelay().GetMilliSeconds(), int (jitter_buffer_size / 8));
 
 	gtk_label_set_text (GTK_LABEL (gw->stats_label), stats_msg);
 	g_free (stats_msg);
 
 	gtk_widget_queue_draw_area (gw->stats_drawing_area, 0, 0, GTK_WIDGET (gw->stats_drawing_area)->allocation.width, GTK_WIDGET (gw->stats_drawing_area)->allocation.height);
 
-	if (bytes_received == 0 && t.GetSeconds () == 11) {
+	if (rtp->re_video_bytes + rtp->re_audio_bytes == 0
+	    && t.GetSeconds () == 11) {
 	  
 	  GMH323EndPoint *endpoint = NULL;
 	  gchar *err = NULL;
@@ -346,20 +338,25 @@ stats_drawing_area_exposed (GtkWidget *drawing_area, gpointer data)
 {
   GdkSegment s [50];
   gboolean success [256];
+
+  static PangoLayout *pango_layout = NULL;
+  static PangoContext *pango_context = NULL;
   static GdkGC *gc = NULL;
   static GdkColormap *colormap = NULL;
 
+  gchar *pango_text = NULL;
+  
   int x = 0, y = 0;
   int cpt = 0;
   int pos = 0;
-
+  
   GmWindow *gw = gnomemeeting_get_main_window (gm);
   GmRtpData *rtp = gnomemeeting_get_rtp_data (gm); 
   GdkPoint points [50];
 
-  int width_step = (int) GTK_WIDGET (drawing_area)->allocation.width / 50;
+  int width_step = (int) GTK_WIDGET (drawing_area)->allocation.width / 40;
   x = width_step;
-  int allocation_height = GTK_WIDGET (drawing_area)->allocation.height - 5;
+  int allocation_height = GTK_WIDGET (drawing_area)->allocation.height;
   float height_step = allocation_height;
 
   if (!gc)
@@ -446,9 +443,9 @@ stats_drawing_area_exposed (GtkWidget *drawing_area, gpointer data)
     pos = rtp->tr_audio_pos;
     for (int cpt = 0 ; cpt < 50 ; cpt++) {
 
-      points [cpt].x = (cpt+2) * width_step;
+      points [cpt].x = cpt * width_step;
 
-      points [cpt].y = allocation_height + 15 -
+      points [cpt].y = allocation_height -
 	(gint) (rtp->tr_audio_speed [pos] * height_step);
       pos++;
 
@@ -462,9 +459,9 @@ stats_drawing_area_exposed (GtkWidget *drawing_area, gpointer data)
     pos = rtp->re_audio_pos;
     for (int cpt = 0 ; cpt < 50 ; cpt++) {
 
-      points [cpt].x = (cpt+2) * width_step;
+      points [cpt].x = cpt * width_step;
 
-      points [cpt].y = allocation_height + 15 -
+      points [cpt].y = allocation_height -
 	(gint) (rtp->re_audio_speed [pos] * height_step);
       pos++;
 
@@ -478,9 +475,9 @@ stats_drawing_area_exposed (GtkWidget *drawing_area, gpointer data)
     pos = rtp->tr_video_pos;
     for (int cpt = 0 ; cpt < 50 ; cpt++) {
 
-      points [cpt].x = (cpt+2) * width_step;
+      points [cpt].x = cpt * width_step;
 
-      points [cpt].y = allocation_height + 15 -
+      points [cpt].y = allocation_height -
 	(gint) (rtp->tr_video_speed [pos] * height_step);
       pos++;
 
@@ -494,15 +491,34 @@ stats_drawing_area_exposed (GtkWidget *drawing_area, gpointer data)
     pos = rtp->re_video_pos;
     for (int cpt = 0 ; cpt < 50 ; cpt++) {
 
-      points [cpt].x = (cpt+2) * width_step;
+      points [cpt].x = cpt * width_step;
 
-      points [cpt].y = allocation_height + 15 -
+      points [cpt].y = allocation_height -
 	(gint) (rtp->re_video_speed [pos] * height_step);
       pos++;
 
       if (pos >= 50) pos = 0;
     }
     gdk_draw_lines (GDK_DRAWABLE (drawing_area->window), gc, points, 50);
+
+
+    /* Text */
+    if (!pango_context)
+      pango_context = gtk_widget_get_pango_context (GTK_WIDGET (drawing_area));
+    if (!pango_layout)
+      pango_layout = pango_layout_new (pango_context);
+
+    pango_text =
+      g_strdup_printf (_("Total: %.2f Mb"),
+		       (float) (rtp->tr_video_bytes+rtp->tr_audio_bytes
+		       +rtp->re_video_bytes+rtp->re_audio_bytes)
+		       / 1024 / 1024);
+    pango_layout_set_text (pango_layout, pango_text, strlen (pango_text));
+    gdk_draw_layout_with_colors (GDK_DRAWABLE (drawing_area->window),
+				 gc, 5, 2,
+				 pango_layout,
+				 &gw->colors [5], &gw->colors [0]);
+    g_free (pango_text);
   }
   else {
 
@@ -1645,7 +1661,7 @@ void gnomemeeting_init_main_window_stats ()
 
   /* The second one with some labels */
   gw->stats_label =
-    gtk_label_new (_("Sent/Received:\nLost/Late packets:\nRound-trip delay:\nJitter buffer:"));
+    gtk_label_new (_("Lost packets:\nLate packets:\nRound-trip delay:\nJitter buffer:"));
   gtk_misc_set_alignment (GTK_MISC (gw->stats_label), 0, 0);
   gtk_box_pack_start (GTK_BOX (vbox), gw->stats_label, FALSE, TRUE, 0);
   

@@ -695,6 +695,8 @@ GMH323EndPoint::TranslateTCPAddress(PIPSocket::Address &localAddr,
 	if (addr != PIPSocket::Address ("0.0.0.0"))
 	  localAddr = addr;
       }
+
+      g_free (ip);
     }
   }
 }
