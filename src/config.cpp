@@ -36,7 +36,7 @@
  *                          Callbacks that updates the config cache 
  *                          are in their file, except some generic one that
  *                          are in this file.
- *   Additional code      : Miguel Rodríguez Pérez  <migrax@terra.es>
+ *   Additional code      : Miguel RodrÃ­guez PÃ©rez  <miguelrp@gmail.com>
  *
  */
 

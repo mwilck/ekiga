@@ -33,7 +33,7 @@
  *   copyright            : (C) 2000-2004 by Damien Sandras
  *   description          : This file contains all the functions needed to
  *                          create the preferences window and all its callbacks
- *   Additional code      : Miguel Rodríguez Pérez  <migrax@terra.es> 
+ *   Additional code      : Miguel RodrÃ­guez PÃ©rez  <miguelrp@gmail.com> 
  */
 
 

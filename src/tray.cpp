@@ -31,10 +31,10 @@
  *                         ------------------------
  *   begin                : Wed Oct 3 2001
  *   copyright            : (C) 2000-2004 by Damien Sandras, 2002 by Miguel 
- *                          Rodríguez
+ *                          RodrÃ­guez
  *   description          : This file contains all functions needed for
  *                          system tray icon.
- *   Additional code      : migrax@terra.es
+ *   Additional code      : miguelrp@gmail.com
  *
  */
 
