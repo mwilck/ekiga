@@ -361,9 +361,9 @@ void GMH323EndPoint::UpdateConfig ()
 	  gnomemeeting_log_insert (msg);
 	  g_free (msg);
 	  
-	  lid->EnableAudio(0, TRUE); /* Enable the POTS Telephone handset */
 	  lid->SetLineToLineDirect(0, 1, FALSE);
-	 
+	  lid->EnableAudio(0, TRUE); /* Enable the POTS Telephone handset */
+	  	 
 	  lid_country =
 	    gconf_client_get_string (client, 
 				     "/apps/gnomemeeting/devices/lid_country",
@@ -540,6 +540,9 @@ void GMH323EndPoint::AddAudioCapabilities ()
 
     /* If the LID can do PCM16 we can use the software codecs like GSM too */
     use_pcm16_codecs = lid->GetMediaFormats ().GetValuesIndex (OpalMediaFormat(OPAL_PCM16)) != P_MAX_INDEX;
+    
+    /* Not well supported with my Quicknet Card => do not use them */
+    use_pcm16_codecs = FALSE;
   }
 #endif
 
@@ -1462,9 +1465,6 @@ BOOL GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
 {
   int esd_client = 0;
 
-  if (opened_audio_channels >= 2)
-    return FALSE;
-
   gnomemeeting_threads_enter ();
 
   /* If needed , delete the timers */
@@ -1488,7 +1488,7 @@ BOOL GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
   gnomemeeting_threads_leave ();
 
   opened_audio_channels++;
-
+#ifdef HAS_IXJ
   /* If we are using a hardware LID, connect the audio stream to the LID */
   if ((lid != NULL) && lid->IsOpen()) {
 
@@ -1496,6 +1496,9 @@ BOOL GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
     gchar *msg = g_strdup_printf (_("Attaching lid hardware to codec"));
     gnomemeeting_log_insert (msg);
     g_free (msg);
+
+    if (GTK_TOGGLE_BUTTON (gw->speaker_phone_button)->active)
+      lid->EnableAudio (0, FALSE);
     gnomemeeting_threads_leave ();
 
 
@@ -1503,24 +1506,15 @@ BOOL GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
 			      OpalIxJDevice::POTSLine, codec))) {
       return FALSE;
     }
-
-    return TRUE;
   }
-
-
-  if (H323EndPoint::OpenAudioChannel(connection, isEncoding, 
-				     bufferSize, codec)) 
-    return TRUE;
-
-
-  cerr << "Could not open sound device ";
-  if (isEncoding)
-    cerr << GetSoundChannelRecordDevice();
   else
-    cerr << GetSoundChannelPlayDevice();
-  cerr << " - Check permissions or full duplex capability." << endl;
+#endif
+  if (!H323EndPoint::OpenAudioChannel(connection, isEncoding, 
+				      bufferSize, codec))
+    return FALSE;
 
-  return FALSE;
+
+  return TRUE;
 }
 
 
