@@ -1,3 +1,15 @@
+2002-10-01  Kenneth Rohde Christiansen  <kenneth@gnu.org>
+
+	* src/ils.cpp (Main): Use the GM stock icons, so it works with 
+	theming. Fixes #92002.
+
+	TreeView doesn't seem to have been made for stock icons, so I do 
+	something similar to the stockrenderer in libegg.
+
+	Fabrice has confirmed that everything works as it should, and that
+	it is quite faster on displaying things when they have been
+	fetched from the ILS servers - long live the stock icon cache.
+
 2002-09-30  Kenneth Christiansen <kenneth@gnu.org>
 
 	* lib/dialog.c:

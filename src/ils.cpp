@@ -37,7 +37,7 @@
 #include "gnomemeeting.h"
 #include "common.h"
 #include "misc.h"
-
+#include "stock-icons.h"
 #include "dialog.h"
 #include "xdap.h"
 
@@ -797,7 +797,8 @@ void GMILSBrowser::Main ()
   GtkWidget *tab_label = NULL;
   GtkWidget *close_button = NULL;
   GtkListStore *xdap_users_list_store = NULL;
-  GdkPixbuf *status_pixbuf = NULL;
+  GtkWidget *xdap_users_tree_view = NULL;
+  GdkPixbuf *status_icon = NULL;
   GtkTreeIter list_iter;
 
   GmWindow *gw = NULL;
@@ -889,9 +890,14 @@ void GMILSBrowser::Main ()
     /* If we found a page, we have the LIST_STORE, if not, we can clean
        the statusbar */
     if (page != NULL)
-      xdap_users_list_store = 
-	GTK_LIST_STORE (g_object_get_data (G_OBJECT (page), "list_store"));
-    else
+    {
+            xdap_users_list_store = 
+                    GTK_LIST_STORE (g_object_get_data (G_OBJECT (page), "list_store"));
+            xdap_users_tree_view =
+                    GTK_WIDGET (g_object_get_data (G_OBJECT (page), "tree_view"));
+    }
+    
+      else
       gnome_appbar_clear_stack (GNOME_APPBAR (lw->statusbar));
 
     gnomemeeting_threads_leave ();
@@ -1035,13 +1041,20 @@ void GMILSBrowser::Main ()
 
 	gnomemeeting_threads_enter ();
 	if (available)
-	  status_pixbuf = 
-	    gdk_pixbuf_new_from_inline (-1, gm_available_stock_data,
-					FALSE, NULL);
-	else
-	  status_pixbuf = 
-	    gdk_pixbuf_new_from_inline (-1, gm_occupied_stock_data,
-					FALSE, NULL);
+        {
+                status_icon = gtk_widget_render_icon 
+                        (xdap_users_tree_view, 
+                         GM_STOCK_AVAILABLE,
+                         GTK_ICON_SIZE_MENU, NULL);
+	} 
+        else 
+        {
+                status_icon = gtk_widget_render_icon 
+                        (xdap_users_tree_view, 
+                         GM_STOCK_OCCUPIED,
+                         GTK_ICON_SIZE_MENU, NULL);
+        }
+        
 	gnomemeeting_threads_leave ();
 
 
@@ -1063,7 +1076,7 @@ void GMILSBrowser::Main ()
 
 	  gtk_list_store_append (xdap_users_list_store, &list_iter);
 	  gtk_list_store_set (xdap_users_list_store, &list_iter,
-			      COLUMN_STATUS, status_pixbuf,
+			      COLUMN_STATUS, status_icon,
 			      COLUMN_AUDIO, audio,
 			      COLUMN_VIDEO, video,
 			      COLUMN_FIRSTNAME, utf8_data [0],
@@ -1074,8 +1087,6 @@ void GMILSBrowser::Main ()
 			      COLUMN_VERSION, utf8_data [5],
 			      COLUMN_IP, utf8_data [6],
 			      -1);
-	  
-	  g_object_unref (status_pixbuf);
 	  
 	  gnomemeeting_threads_leave ();
 	  
