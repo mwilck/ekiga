@@ -61,6 +61,8 @@ AM_GCONF_SOURCE_2
 dnl ###########################################################################
 dnl Set up Operating System specific parameters and endianess
 dnl ###########################################################################
+AC_CANONICAL_TARGET
+
 ARCH_H323_CFLAGS=""
 
 dnl Check if we are on 64 bits architectures
@@ -83,7 +85,7 @@ esac
 dnl Check the OS type (more types can be added) 
 AC_MSG_CHECKING(whether OS type is supported)
 
-case `uname -s` in
+case $target_os in
 
   linux-gnu | linux | Linux)
     H323_CFLAGS="-DP_LINUX -D_REENTRANT -DP_HAS_SEMAPHORES -DP_PTHREADS $ARCH_H323_CFLAGS -DHAS_OSS -O3 -DNDEBUG -fPIC -g -DPHAS_TEMPLATES -Wall"
