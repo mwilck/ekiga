@@ -63,14 +63,14 @@ static void chat_entry_activate (GtkEditable *w, gpointer data)
        the text */
     gchar *utf8_local = NULL;
 
-
-    if (endpoint->GetCallingState () == 2) {
+    s = PString (gtk_entry_get_text (GTK_ENTRY (w)));
+    
+    if (endpoint->GetCallingState () == 2 && !s.IsEmpty ()) {
             
       H323Connection *connection = endpoint->GetCurrentConnection ();
             
       if (connection != NULL)  {
                 
-	s = PString (gtk_entry_get_text (GTK_ENTRY (w)));
 	connection->SendUserInput ("MSG"+s);
 
 	if (g_utf8_validate ((gchar *) (const unsigned char*) local, -1, NULL))

@@ -616,8 +616,6 @@ edit_contact_cb (GtkWidget *widget,
 	      g_free (escaped_group_name);
 	      g_free (gconf_key);
 	      g_slist_free (group_content);
-
-	      gnomemeeting_addressbook_update_menu_sensitivity (); 
 	    }
 	  
 	    g_free (group_name);
@@ -1011,7 +1009,7 @@ delete_contact_from_group_cb (GtkWidget *widget,
     g_free (gconf_key);
     g_free (contact_section_escaped);
   }
-
+  
   g_free (contact_section);
   g_free (contact_name);
   g_free (contact_url);
@@ -1133,15 +1131,15 @@ contact_clicked_cb (GtkWidget *w,
 	else 
 	  server_contact_menu [0] = call;
 
-	if (!already_member) {
+	if (GPOINTER_TO_INT (data) == 0) {
+	  
+	  if (!already_member) {
 
-	  server_contact_menu [1] = sep;
-	  server_contact_menu [2] = add;
-	  server_contact_menu [3] = endt;
-	}
-	else {
-
-	  if (GPOINTER_TO_INT (data) == 0) {
+	    server_contact_menu [1] = sep;
+	    server_contact_menu [2] = add;
+	    server_contact_menu [3] = endt;
+	  }
+	  else {
 	    
 	    if (!is_group) {
 
@@ -1157,9 +1155,9 @@ contact_clicked_cb (GtkWidget *w,
 	      server_contact_menu [4] = endt;
 	    }
 	  }
-	  else /* No props and delete if the contact is in the history */
-	    server_contact_menu [1] = endt;
 	}
+	else /* No props and delete if the contact is in the history */
+	  server_contact_menu [1] = endt;	
 
 	gnomemeeting_build_menu (menu, server_contact_menu, 0);
 	
@@ -2869,6 +2867,8 @@ gnomemeeting_addressbook_group_populate (GtkListStore *list_store,
   g_free (group_name);
   g_free (group_name_escaped);
   g_slist_free (group_content);
+
+  gnomemeeting_addressbook_update_menu_sensitivity ();  
 }
 
 

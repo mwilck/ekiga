@@ -278,9 +278,9 @@ gint AppbarUpdate (gpointer data)
       }
 
       if (received_packets > 0) {
-	
-	lost_packets_per = lost_packets / received_packets;
-	late_packets_per = late_packets / received_packets;
+
+	lost_packets_per = (lost_packets / received_packets) * 100;
+	late_packets_per = (late_packets / received_packets) * 100;
       }
       
       if (t.GetSeconds () > 5) {
