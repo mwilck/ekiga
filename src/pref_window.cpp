@@ -1314,7 +1314,7 @@ static void gnomemeeting_init_pref_window_devices (GtkWidget *notebook)
 				       0.0, 10.0, 1.0, 2);
   
   pw->opt1 =
-    gnomemeeting_pref_window_add_int_option_menu (table, _("Video Size:"), video_size, "/apps/gnomemeeting/devices/video_size", _("Choose the transmitted video size : QCIF (Small) or CIF (Large)."), 3);
+    gnomemeeting_pref_window_add_int_option_menu (table, _("Video Size:"), video_size, "/apps/gnomemeeting/devices/video_size", _("Choose the transmitted video size: QCIF (small) or CIF (large)."), 3);
 
   pw->opt2 =
     gnomemeeting_pref_window_add_int_option_menu (table, _("Video Format:"), video_format, "/apps/gnomemeeting/devices/video_format", _("Here you can choose the transmitted video format."), 4);
