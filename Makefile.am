@@ -1,6 +1,6 @@
 SUBDIRS = macros po intl src pixmaps sounds
 
-@INTLTOOL_MERGE_DESKTOP_RULE@
+@INTLTOOL_DESKTOP_RULE@
 
 DESKTOP_IN_FILES=gnomemeeting.desktop.in
 DESKTOP_FILES=$(DESKTOP_IN_FILES:.desktop.in=.desktop)
