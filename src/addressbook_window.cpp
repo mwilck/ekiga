@@ -52,10 +52,12 @@
 
 struct GmAddressbookWindow_ {
 
-  GtkWidget *aw_tree_view; /* The GtkTreeView that contains the address books
-                              list */
-  GtkWidget *aw_notebook;  /* The GtkNotebook that contains the different
-                              listings for each of the address books */
+  GtkWidget *aw_tree_view;      /* The GtkTreeView that contains the address 
+                                   books list */
+  GtkWidget *aw_notebook;       /* The GtkNotebook that contains the different
+                                   listings for each of the address books */
+  GtkWidget *aw_option_menu;    /* The option menu for the search */
+  GtkWidget *aw_search_entry;   /* The search entry */ 
 };
 
 
@@ -112,7 +114,7 @@ gm_awp_destroy (gpointer awp)
 {
   g_return_if_fail (awp != NULL);
   
-  delete (awp);
+  delete ((GmAddressbookWindowPage *) awp);
 }
 
 
@@ -121,7 +123,7 @@ gm_aw_destroy (gpointer aw)
 {
   g_return_if_fail (aw != NULL);
   
-  delete (aw);
+  delete ((GmAddressbookWindow *) aw);
 }
 
 
@@ -131,22 +133,138 @@ delete_contact_cb (GtkWidget *w,
 {
   GmContact *contact = NULL;
   GmAddressbook *abook = NULL;
+  
+  GtkWidget *addressbook_window = NULL;
+  
 
+  addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
   
-  GtkWidget *addressbook = NULL;
+  contact = get_selected_contact (addressbook_window);
+  abook = get_selected_addressbook (addressbook_window);
   
-  addressbook = GnomeMeeting::Process ()->GetAddressbookWindow ();
-  
-  contact = get_selected_contact (addressbook);
-  abook = get_selected_addressbook (addressbook);
-  
-  gm_addressbook_delete_contact_dialog_run (addressbook, 
+  gm_addressbook_delete_contact_dialog_run (addressbook_window, 
                                             abook, 
                                             contact, 
-                                            addressbook);
+                                            addressbook_window);
   
   gm_contact_delete (contact);  
   gm_addressbook_delete (abook);
+}
+
+
+static void 
+new_addressbook_cb (GtkWidget *w,
+                    gpointer data)
+{
+  GtkWidget *dialog = NULL;
+  GtkWidget *parent_window = NULL;
+  
+  GtkWidget *addressbook_name_entry = NULL;
+  
+  GtkWidget *table = NULL;
+  GtkWidget *label = NULL;
+
+  GtkWidget *menu_item = NULL;
+  GtkWidget *menu = NULL;
+  GtkWidget *option_menu = NULL;
+  
+  gchar *label_text = NULL;
+  int result = -1;
+  
+  
+  /* Create the dialog to create a new addressbook */
+  dialog =
+    gtk_dialog_new_with_buttons (_("Add an address book"), 
+                                 GTK_WINDOW (parent_window),
+				 GTK_DIALOG_MODAL,
+				 GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
+				 GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
+				 NULL);
+  gtk_dialog_set_default_response (GTK_DIALOG (dialog),
+				   GTK_RESPONSE_ACCEPT);
+  
+  table = gtk_table_new (4, 2, FALSE);
+  gtk_table_set_row_spacings (GTK_TABLE (table), 3 * GNOMEMEETING_PAD_SMALL);
+  gtk_table_set_col_spacings (GTK_TABLE (table), 3 * GNOMEMEETING_PAD_SMALL);
+  
+  
+  /* The Server Name entry */
+  label = gtk_label_new (NULL);
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  label_text = g_strdup_printf ("<b>%s</b>", _("Name:"));
+  gtk_label_set_markup (GTK_LABEL (label), label_text);
+  g_free (label_text);
+
+  addressbook_name_entry = gtk_entry_new ();
+  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1, 
+		    (GtkAttachOptions) (GTK_FILL),
+		    (GtkAttachOptions) (GTK_FILL),
+		    3 * GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+  gtk_table_attach (GTK_TABLE (table), addressbook_name_entry, 1, 2, 0, 1, 
+		    (GtkAttachOptions) (GTK_FILL),
+		    (GtkAttachOptions) (GTK_FILL),
+		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+  gtk_entry_set_activates_default (GTK_ENTRY (addressbook_name_entry), TRUE);
+  
+
+  /* Addressbook type */
+  label = gtk_label_new (NULL);
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  label_text = g_strdup_printf ("<b>%s</b>", _("Type:"));
+  gtk_label_set_markup (GTK_LABEL (label), label_text);
+  g_free (label_text);
+  
+  menu = gtk_menu_new ();
+
+  menu_item =
+    gtk_menu_item_new_with_label (_("Local"));
+  gtk_widget_show (menu_item);
+  gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
+
+  menu_item =
+    gtk_menu_item_new_with_label (_("Remote ILS"));
+  gtk_widget_show (menu_item);
+  gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
+
+  menu_item =
+    gtk_menu_item_new_with_label (_("Remote LDAP"));
+  gtk_widget_show (menu_item);
+  gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
+  
+  option_menu = gtk_option_menu_new ();
+  gtk_option_menu_set_menu (GTK_OPTION_MENU (option_menu), menu);
+
+  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 1, 2, 
+		    (GtkAttachOptions) (GTK_FILL),
+		    (GtkAttachOptions) (GTK_FILL),
+		    3 * GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+  gtk_table_attach (GTK_TABLE (table), option_menu, 1, 2, 1, 2, 
+		    (GtkAttachOptions) (GTK_FILL),
+		    (GtkAttachOptions) (GTK_FILL),
+		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+
+  
+  /* Pack the gtk entries and the list store in the window */
+  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), table,
+		      FALSE, FALSE, 3 * GNOMEMEETING_PAD_SMALL);
+  gtk_widget_show_all (dialog);
+  
+
+  /* Now run the dialg */
+  result = gtk_dialog_run (GTK_DIALOG (dialog));
+
+  switch (result) {
+
+  case GTK_RESPONSE_ACCEPT:
+
+    break;
+
+  case GTK_RESPONSE_REJECT:
+
+    break;
+  }
+
+  gtk_widget_destroy (dialog);
 }
 
 
@@ -174,6 +292,27 @@ edit_contact_cb (GtkWidget *w,
 
   gm_contact_delete (contact);
   gm_addressbook_delete (abook);
+}
+
+
+static void
+addressbook_search_cb (GtkWidget *w,
+                       gpointer data)
+{
+  GmAddressbook *addressbook = NULL;
+  GtkWidget *addressbook_window = NULL;
+
+  g_return_if_fail (data != NULL);
+  
+  addressbook_window = GTK_WIDGET (data);
+  addressbook = get_selected_addressbook (addressbook_window);
+
+  g_return_if_fail (addressbook != NULL);
+  
+  gnomemeeting_aw_update_addressbook (addressbook_window,
+                                      addressbook);
+
+  gm_addressbook_delete (addressbook);
 }
 
 
@@ -520,7 +659,10 @@ gnomemeeting_aw_update_addressbook (GtkWidget *addressbook_window,
   GtkTreeIter iter;
 
   int page_num = -1;
+  int opt = -1;
 
+  const char *filter = NULL;
+  
 
   page_num = 
     gnomemeeting_aw_get_notebook_page (addressbook_window,
@@ -539,8 +681,14 @@ gnomemeeting_aw_update_addressbook (GtkWidget *addressbook_window,
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (awp->awp_tree_view));
 
   gtk_list_store_clear (GTK_LIST_STORE (model));
-                                   
-  contacts = gnomemeeting_addressbook_get_contacts (addressbook, "*");
+               
+  /* Get the search parameters from the addressbook_window */
+  opt = gtk_option_menu_get_history (GTK_OPTION_MENU (aw->aw_option_menu));
+  filter = gtk_entry_get_text (GTK_ENTRY (aw->aw_search_entry));
+  contacts = gnomemeeting_addressbook_get_contacts (addressbook, 
+                                                    (opt == 1)?(gchar *) filter:NULL,
+                                                    (opt == 2)?(gchar *) filter:NULL,
+                                                    (opt == 3)?(gchar *) filter:NULL);
   l = contacts;
   while (l) {
 
@@ -582,7 +730,6 @@ gm_addressbook_window_new ()
   GtkWidget *main_vbox = NULL;
   GtkWidget *vbox2 = NULL;
   GtkWidget *hbox = NULL;
-  GtkWidget *search_entry = NULL;
   GtkWidget *find_button = NULL;
   GtkWidget *handle = NULL;
   GtkWidget *menu = NULL;
@@ -644,14 +791,9 @@ gm_addressbook_window_new ()
     {
       GTK_MENU_NEW(_("_File")),
 
-      GTK_MENU_ENTRY("new_server", _("New _Server"), NULL,
+      GTK_MENU_ENTRY("new_addressbook", _("New _Address Book"), NULL,
 		     GM_STOCK_REMOTE_CONTACT, 0,
-                     NULL,
-		     GINT_TO_POINTER (CONTACTS_SERVERS), TRUE),
-      GTK_MENU_ENTRY("new_group", _("New _Group"), NULL,
-		     GM_STOCK_LOCAL_CONTACT, 0, 
-		     NULL,
-		     GINT_TO_POINTER (CONTACTS_GROUPS), TRUE),
+                     GTK_SIGNAL_FUNC (new_addressbook_cb), NULL, TRUE),
 
       GTK_MENU_SEPARATOR,
 
@@ -812,29 +954,28 @@ gm_addressbook_window_new ()
   gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
 
   menu_item =
-    gtk_menu_item_new_with_label (_("First name contains"));
+    gtk_menu_item_new_with_label (_("Name contains"));
   gtk_widget_show (menu_item);
   gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
 
-  menu_item = gtk_menu_item_new_with_label (_("Last name contains"));
+  menu_item = gtk_menu_item_new_with_label (_("URL contains"));
   gtk_widget_show (menu_item);
   gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
 
-  menu_item = gtk_menu_item_new_with_label (_("E-mail contains"));
+  menu_item = gtk_menu_item_new_with_label (_("Belongs to category"));
   gtk_widget_show (menu_item);
   gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
 
-  GtkWidget *option_menu = gtk_option_menu_new ();
-  gtk_option_menu_set_menu (GTK_OPTION_MENU (option_menu),
+  aw->aw_option_menu = gtk_option_menu_new ();
+  gtk_option_menu_set_menu (GTK_OPTION_MENU (aw->aw_option_menu),
                             menu);
-  gtk_option_menu_set_history (GTK_OPTION_MENU (option_menu),
+  gtk_option_menu_set_history (GTK_OPTION_MENU (aw->aw_option_menu),
                                0);
-  gtk_box_pack_start (GTK_BOX (hbox), option_menu, FALSE, FALSE, 2);
+  gtk_box_pack_start (GTK_BOX (hbox), aw->aw_option_menu, FALSE, FALSE, 2);
 
   /* The entry */
-  search_entry = gtk_entry_new ();
-  gtk_box_pack_start (GTK_BOX (hbox), search_entry, TRUE, TRUE, 2);
-  gtk_widget_set_sensitive (GTK_WIDGET (search_entry), FALSE);
+  aw->aw_search_entry = gtk_entry_new ();
+  gtk_box_pack_start (GTK_BOX (hbox), aw->aw_search_entry, TRUE, TRUE, 2);
 
   /* The Find button */
   find_button = gtk_button_new_from_stock (GTK_STOCK_FIND);
@@ -852,6 +993,9 @@ gm_addressbook_window_new ()
                     G_CALLBACK (addressbook_changed_cb), 
                     aw->aw_notebook);
 
+  g_signal_connect (G_OBJECT (find_button), "clicked",
+                    G_CALLBACK (addressbook_search_cb),
+                    window);
   /*
      gtk_drag_dest_set (GTK_WIDGET (lw->tree_view),
      GTK_DEST_DEFAULT_ALL,
@@ -977,7 +1121,7 @@ gm_addressbook_edit_contact_dialog_run (GtkWidget *addressbook_window,
   
   /* The Full Name entry */
   label = gtk_label_new (NULL);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   label_text = g_strdup_printf ("<b>%s</b>", _("Name:"));
   gtk_label_set_markup (GTK_LABEL (label), label_text);
   g_free (label_text);
@@ -997,7 +1141,7 @@ gm_addressbook_edit_contact_dialog_run (GtkWidget *addressbook_window,
 
   /* The URL entry */
   label = gtk_label_new (NULL);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   label_text = g_strdup_printf ("<b>%s</b>", _("URL:"));
   gtk_label_set_markup (GTK_LABEL (label), label_text);
   g_free (label_text);
@@ -1017,7 +1161,7 @@ gm_addressbook_edit_contact_dialog_run (GtkWidget *addressbook_window,
   
   /* The Speed Dial */
   label = gtk_label_new (NULL);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   label_text = g_strdup_printf ("<b>%s</b>", _("Speed Dial:"));
   gtk_label_set_markup (GTK_LABEL (label), label_text);
   g_free (label_text);
@@ -1039,7 +1183,7 @@ gm_addressbook_edit_contact_dialog_run (GtkWidget *addressbook_window,
   
   /* The Speed Dial */
   label = gtk_label_new (NULL);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   label_text = g_strdup_printf ("<b>%s</b>", _("Categories:"));
   gtk_label_set_markup (GTK_LABEL (label), label_text);
   g_free (label_text);

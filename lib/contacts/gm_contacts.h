@@ -137,10 +137,12 @@ GSList *gnomemeeting_get_remote_addressbooks ();
 /* DESCRIPTION  : /
  * BEHAVIOR     : Returns a GSList of GmContact elements members of a given
  *                GmAddressbook. Only return the elements corresponding to the
- *                given filter.
- * PRE          : /
+ *                given filter (fullname, url, categorie).
+ * PRE          : Only one filter at a time.
  */
 GSList *gnomemeeting_addressbook_get_contacts (GmAddressbook *,
+                                               gchar *,
+                                               gchar *,
                                                gchar *);
 
 

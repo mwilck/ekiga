@@ -250,7 +250,9 @@ gnomemeeting_get_remote_addressbooks ()
 
 GSList *
 gnomemeeting_addressbook_get_contacts (GmAddressbook *addressbook,
-                                       gchar * filter)
+                                       gchar *fullname,
+                                       gchar *url,
+                                       gchar *categorie)
 {
   EBook *ebook = NULL;
   EBookQuery *query = NULL;
@@ -276,7 +278,23 @@ gnomemeeting_addressbook_get_contacts (GmAddressbook *addressbook,
 
   if (e_book_load_uri (ebook, addressbook->uid, FALSE, NULL)) {
 
-    query = e_book_query_field_exists (E_CONTACT_UID);
+    /* Build the filter */ 
+    if (fullname && strcmp (fullname, ""))
+      query = e_book_query_field_test (E_CONTACT_FULL_NAME,
+                                       E_BOOK_QUERY_CONTAINS,
+                                       fullname);
+    else if (url && strcmp (url, ""))
+      query = e_book_query_field_test (E_CONTACT_VIDEO_URL,
+                                       E_BOOK_QUERY_CONTAINS,
+                                       url);
+    else if (categorie && strcmp (categorie, ""))
+      query = e_book_query_field_test (E_CONTACT_CATEGORIES,
+                                       E_BOOK_QUERY_IS,
+                                       categorie);
+    else
+      query = e_book_query_field_exists (E_CONTACT_UID);
+    
+    /* Get the contacts for that fitler */
     if (e_book_get_contacts (ebook, query, &list, NULL)) {
 
       l = list;
@@ -331,14 +349,11 @@ gnomemeeting_addressbook_get_contacts (GmAddressbook *addressbook,
           }
           
 
-        //  g_list_foreach (attr_param_list, 
-         //                 (GFunc) e_vcard_attribute_param_free, NULL);
           g_list_free (attr_param_list);
 
           attr_list_iter = g_list_next (attr_list_iter);
         }
 
-        //g_list_foreach (attr_list, (GFunc) e_vcard_attribute_free, NULL);
         g_list_free (attr_list);
         
 
