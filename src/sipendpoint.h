@@ -44,7 +44,6 @@
 
 #include "common.h"
 #include "endpoint.h"
-#include "sipregistrar.h"
 
 
 /* Minimal SIP endpoint implementation */
@@ -75,15 +74,6 @@ class GMSIPEndPoint : public SIPEndPoint
    * PRE          :  /
    */
   void Init ();
-
-  
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Register to (or unregister from) the gatekeeper 
-   *                 given in the options, if any. Starts or stop the force
-   *                 renewal timer.
-   * PRE          :  /
-   */
-  void RegistrarRegister (void);
   
   
   /* DESCRIPTION  :  /
@@ -120,6 +110,7 @@ class GMSIPEndPoint : public SIPEndPoint
    * PRE          :  /
    */
   void OnRegistered (const PString &,
+		     const PString &,
 		     BOOL);
   
   
@@ -128,7 +119,8 @@ class GMSIPEndPoint : public SIPEndPoint
    * PRE          :  /
    */
   void OnRegistrationFailed (const PString &,
-			     SIPEndPoint::RegistrationFailReasons,
+			     const PString &,
+			     SIPInfo::FailureReasons,
 			     BOOL);
   
   
@@ -146,7 +138,7 @@ class GMSIPEndPoint : public SIPEndPoint
    */
   void OnMWIReceived (const PString & remoteAddress,
 		      const PString & user,
-		      SIPEndPoint::MWIType type,
+		      SIPMWISubscribe::MWIType type,
 		      const PString & msgs);
 
      
@@ -155,7 +147,6 @@ class GMSIPEndPoint : public SIPEndPoint
  private:
 
   GMEndPoint & endpoint;
-  GMSIPRegistrar *registrar;
 };
 
 #endif

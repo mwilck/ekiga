@@ -42,6 +42,7 @@
 #include "gnomemeeting.h"
 
 #include "main_window.h"
+#include "pref_window.h"
 #include "log_window.h"
 #include "misc.h"
 
@@ -56,14 +57,11 @@
 GMSIPEndPoint::GMSIPEndPoint (GMEndPoint & ep)
 	: SIPEndPoint (ep), endpoint (ep)
 {
-  registrar = NULL;
 }
 
 
 GMSIPEndPoint::~GMSIPEndPoint ()
 {
-  if (registrar)
-    delete (registrar);
 }
 
 
@@ -105,31 +103,9 @@ GMSIPEndPoint::Init ()
 	      outbound_proxy_login, 
 	      outbound_proxy_password);
 
-  /* Register to registrar */
-  if (gm_conf_get_int (SIP_KEY "registrar_registering_method"))
-    RegistrarRegister ();
-
   g_free (outbound_proxy_host);
   g_free (outbound_proxy_login);
   g_free (outbound_proxy_password);
-}
-
-
-void
-GMSIPEndPoint::RegistrarRegister ()
-{
-  int timeout = 0;
-
-  gnomemeeting_threads_enter ();   
-  timeout = gm_conf_get_int (SIP_KEY "registrar_registration_timeout");
-  gnomemeeting_threads_leave ();
-
-  if (registrar)
-    delete (registrar);
-
-  SetRegistrarTimeToLive (PTimeInterval (0, PMAX (120, PMIN (3600, timeout * 60))));
-
-  registrar = new GMSIPRegistrar ();
 }
 
 
@@ -180,46 +156,65 @@ GMSIPEndPoint::OnRTPStatistics (const SIPConnection & connection,
 
 void
 GMSIPEndPoint::OnRegistered (const PString & domain,
+			     const PString & username,
 			     BOOL wasRegistering)
 {
+  GtkWidget *prefs_window = NULL;
   GtkWidget *history_window = NULL;
   GtkWidget *main_window = NULL;
 
   gchar *msg = NULL;
-  gchar *registrar_login = NULL;
 
+  prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
 
   gnomemeeting_threads_enter ();
   /* Registering is ok */
-  if (wasRegistering)
+  if (wasRegistering) {
+    
     msg = g_strdup_printf (_("Registered to %s"), 
 			   (const char *) domain);
-  else
+    gm_prefs_window_update_account_state (prefs_window, 
+					  FALSE,
+					  (const char *) domain, 
+					  (const char *) username, 
+					  _("Registered"));
+  }
+  else {
+    
     msg = g_strdup_printf (_("Unregistered from %s"),
 			   (const char *) domain); 
+    gm_prefs_window_update_account_state (prefs_window, 
+					  FALSE,
+					  (const char *) domain, 
+					  (const char *) username, 
+					  _("Unregistered"));
+  }
 
   gm_history_window_insert (history_window, msg);
   gm_main_window_flash_message (main_window, msg);
   gnomemeeting_threads_leave ();
 
+
+  /* MWI Subscribe */
+  if (wasRegistering && !IsSubscribed (domain, username))
+    MWISubscribe (domain, username); 
+
+  /* Signal the SIPEndPoint */
+  SIPEndPoint::OnRegistered (domain, username, wasRegistering);
+
   g_free (msg);
-
-  /* Login */
-  registrar_login = gm_conf_get_string (SIP_KEY "registrar_login");
-  if (wasRegistering && registrar_login)
-    MWISubscribe (domain, registrar_login); 
-
-  g_free (registrar_login);
 }
 
 
 void
 GMSIPEndPoint::OnRegistrationFailed (const PString & domain,
-				     SIPEndPoint::RegistrationFailReasons r,
+				     const PString & user,
+				     SIPInfo::FailureReasons r,
 				     BOOL wasRegistering)
 {
+  GtkWidget *prefs_window = NULL;
   GtkWidget *history_window = NULL;
   GtkWidget *main_window = NULL;
 
@@ -227,53 +222,75 @@ GMSIPEndPoint::OnRegistrationFailed (const PString & domain,
   gchar *msg = NULL;
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
+  prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
 
   gnomemeeting_threads_enter ();
   /* Registering is ok */
   switch (r) {
 
-  case SIPEndPoint::BadRequest:
-    msg_reason = g_strdup ("Bad request");
+  case SIPInfo::BadRequest:
+    msg_reason = g_strdup (_("Bad request"));
     break;
 
-  case SIPEndPoint::PaymentRequired:
-    msg_reason = g_strdup ("Payment required");
+  case SIPInfo::PaymentRequired:
+    msg_reason = g_strdup (_("Payment required"));
     break;
 
-  case SIPEndPoint::Forbidden:
-    msg_reason = g_strdup ("Forbidden");
+  case SIPInfo::Forbidden:
+    msg_reason = g_strdup (_("Forbidden"));
     break;
 
-  case SIPEndPoint::Timeout:
-    msg_reason = g_strdup ("Timeout");
+  case SIPInfo::Timeout:
+    msg_reason = g_strdup (_("Timeout"));
     break;
 
-  case SIPEndPoint::Conflict:
-    msg_reason = g_strdup ("Conflict");
+  case SIPInfo::Conflict:
+    msg_reason = g_strdup (_("Conflict"));
     break;
 
-  case SIPEndPoint::TemporarilyUnavailable:
-    msg_reason = g_strdup ("Temporarily unavailable");
+  case SIPInfo::TemporarilyUnavailable:
+    msg_reason = g_strdup (_("Temporarily unavailable"));
     break;
 
   default:
-    msg_reason = g_strdup ("Registration failed");
+    msg_reason = g_strdup (_("Registration failed"));
   }
   
-  if (wasRegistering)
+  if (wasRegistering) {
+    
     msg = g_strdup_printf (_("Registration to %s failed: %s"), 
 			   (const char *) domain,
 			   msg_reason);
-  else
+    
+    gm_prefs_window_update_account_state (prefs_window, 
+					  FALSE,
+					  (const char *) domain, 
+					  (const char *) user, 
+					  _("Registration failed"));
+  }
+  else {
+    
     msg = g_strdup_printf (_("Unregistration from %s failed: %s"), 
 			   (const char *) domain,
 			   msg_reason);
-
+    
+    gm_prefs_window_update_account_state (prefs_window, 
+					  FALSE,
+					  (const char *) domain, 
+					  (const char *) user, 
+					  _("Unregistration failed"));
+  }
+  
   gm_history_window_insert (history_window, msg);
   gm_main_window_push_message (main_window, msg);
   gnomemeeting_threads_leave ();
 
+
+  /* Signal the SIP EndPoint */
+  SIPEndPoint::OnRegistrationFailed (domain, user, r, wasRegistering);
+  
+  
   g_free (msg);
 }
 
@@ -281,6 +298,9 @@ GMSIPEndPoint::OnRegistrationFailed (const PString & domain,
 BOOL 
 GMSIPEndPoint::OnIncomingConnection (OpalConnection &connection)
 {
+  PSafePtr<OpalConnection> con = NULL;
+  PSafePtr<OpalCall> call = NULL;
+  
   gchar *forward_host = NULL;
 
   gboolean busy_forward = FALSE;
@@ -292,7 +312,6 @@ GMSIPEndPoint::OnIncomingConnection (OpalConnection &connection)
   
   PTRACE (3, "GMSIPEndPoint\tIncoming connection");
 
-
   gnomemeeting_threads_enter ();
   forward_host = gm_conf_get_string (SIP_KEY "forward_host");
   busy_forward = gm_conf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
@@ -300,7 +319,12 @@ GMSIPEndPoint::OnIncomingConnection (OpalConnection &connection)
   gnomemeeting_threads_leave ();
   
 
-  if (forward_host && always_forward)
+  call = endpoint.FindCallWithLock (endpoint.GetCurrentCallToken());
+  if (call)
+    con = endpoint.GetConnection (call, TRUE);
+  if (con && con->GetIdentifier () == connection.GetIdentifier()) 
+    reason = 1;
+  else if (forward_host && always_forward)
     reason = 2; // Forward
   /* We are in a call */
   else if (endpoint.GetCallingState () != GMEndPoint::Standby) {
@@ -324,7 +348,7 @@ GMSIPEndPoint::OnIncomingConnection (OpalConnection &connection)
 void 
 GMSIPEndPoint::OnMWIReceived (const PString & remoteAddress,
 			      const PString & user,
-			      SIPEndPoint::MWIType type,
+			      SIPMWISubscribe::MWIType type,
 			      const PString & msgs)
 {
   GtkWidget *main_window = NULL;
