@@ -588,7 +588,7 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
       {_("_Tools"), NULL, NULL, 0, MENU_NEW, NULL, NULL, NULL},
 
       {_("Address _Book"), _("Open the address book"),
-       NULL, 0, MENU_ENTRY, 
+       GM_STOCK_ILS_DIRECTORY, 0, MENU_ENTRY, 
        GTK_SIGNAL_FUNC (gnomemeeting_component_view),
        (gpointer) gw->ldap_window, NULL},
 
@@ -878,15 +878,17 @@ gnomemeeting_popup_menu_tray_init (GtkWidget *widget, GtkAccelGroup *accel)
 
       {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
 
+      {_("Address _Book"), _("Open the address book"),
+       GM_STOCK_ILS_DIRECTORY, 0, MENU_ENTRY, 
+       GTK_SIGNAL_FUNC (gnomemeeting_component_view),
+       (gpointer) gw->ldap_window, NULL},
+
+      {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
+
       {_("_Preferences..."), _("Change your preferences"),
        GTK_STOCK_PREFERENCES, 'P', MENU_ENTRY, 
        GTK_SIGNAL_FUNC (gnomemeeting_component_view),
        (gpointer) gw->pref_window, NULL},
-
-      {_("Address _Book"), _("Open the address book"),
-       NULL, 0, MENU_ENTRY, 
-       GTK_SIGNAL_FUNC (gnomemeeting_component_view),
-       (gpointer) gw->ldap_window, NULL},
 
       {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
 
@@ -924,7 +926,7 @@ gnomemeeting_popup_menu_tray_init (GtkWidget *widget, GtkAccelGroup *accel)
 			 GDK_KEY_PRESS_MASK);
 
 #ifdef DISABLE_GNOME
-  gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [9].widget), FALSE);
+  gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [10].widget), FALSE);
 #endif
 
   /* Update the menu according to the gconf values */
