@@ -1,5 +1,10 @@
 2003-06-10 Damien Sandras  <dsandras@seconix.com>
 
+	* src/callbacks.cpp: Fixed crash when forward gconf key is NULL
+	in transfer_call_cb.
+	
+2003-06-10 Damien Sandras  <dsandras@seconix.com>
+
 	* src/connection.cpp: Added callback to display a popup when the
 	remote user is trying to transfer your call to another person
 	and that it fails.

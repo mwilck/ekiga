@@ -115,10 +115,11 @@ transfer_call_cb (GtkWidget* widget,
 		      hbox, TRUE, TRUE, 10);
     
   entry = gtk_entry_new ();
-  gtk_entry_set_text (GTK_ENTRY (entry),
-		      (strcmp (gconf_forward_value, "") ?
-		       gconf_forward_value : 
-		       (const char *) url.GetDefaultURL ()));
+  if (gconf_forward_value && strcmp (gconf_forward_value, ""))
+    gtk_entry_set_text (GTK_ENTRY (entry), gconf_forward_value);
+  else
+    gtk_entry_set_text (GTK_ENTRY (entry),
+			(const char *) url.GetDefaultURL ());
   g_free (gconf_forward_value);
 
   gconf_forward_value = NULL;
