@@ -371,7 +371,7 @@ dnl ########################################################################
 HAS_FIREWIRE_DC="disabled"
 firewiredc="no"
 
-AC_ARG_ENABLE(firewiredc, [  --enable-firewire-dc     enable Firewire support for DC cameras], firewiredc="yes")
+AC_ARG_ENABLE(firewiredc, [  --enable-firewiredc     enable Firewire support for DC cameras], firewiredc="yes")
 if test -e "/usr/include/libdc1394/dc1394_control.h" -a "${firewiredc}" != "no"; then
    HAS_FIREWIRE_DC="enabled"
    H323_CFLAGS="$H323_CFLAGS -DTRY_1394DC"
@@ -385,8 +385,8 @@ fi
 HAS_FIREWIRE_AVC="disabled"
 firewireavc="no"
 
-AC_ARG_ENABLE(firewireavc, [  --enable-firewire-avc     enable Firewire support for AVC cameras], firewireavc="yes")
-if test -e "/usr/include/libavc1394/avc1394.h" -a -e "/usr/include/libdv/dv.h" -a "${firewire}" != "no"; then
+AC_ARG_ENABLE(firewireavc, [  --enable-firewireavc     enable Firewire support for AVC cameras], firewireavc="yes")
+if test -e "/usr/include/libavc1394/avc1394.h" -a -e "/usr/include/libdv/dv.h" -a "${firewireavc}" != "no"; then
    HAS_FIREWIRE_AVC="enabled"
    H323_CFLAGS="$H323_CFLAGS -DTRY_1394AVC"
 else
@@ -395,8 +395,8 @@ AC_MSG_ERROR([***Firewire camera headers (libavc1394, libdv) not found.])
 fi
 fi
 
-if test "${firewireavc}"!="no" -a "${firewiredc}" != "no"; then
-AC_MSG_ERROR([***You can currently not compile DC and AVC Firewire camera at the same time.])
+if test "${firewireavc}" != "no" -a "${firewiredc}" != "no"; then
+AC_MSG_ERROR([***You can currently not compile DC and AVC Firewire camera support at the same time.])
 fi
 
 
