@@ -920,7 +920,7 @@ void GMILSBrowser::Main ()
       for (int i = 0 ; i < 6 ; i++) {
 	  
 	if (utf8_char_ldap_data [i])
-	  free (utf8_char_ldap_data [i]);
+	  g_free (utf8_char_ldap_data [i]);
 
 	utf8_char_ldap_data [i] = NULL;
       }
