@@ -80,14 +80,16 @@ PKG_CHECK_MODULES(GNOMEMEETING, gtk+-2.0 >= 2.4.0 gthread-2.0 >= 2.4.0 esound >=
 GNOMEMEETING_CFLAGS="$GNOMEMEETING_CFLAGS -DDISABLE_GNOME"
 else
 PKG_CHECK_MODULES(GNOMEMEETING, gtk+-2.0 >= 2.4.0 gthread-2.0 >= 2.4.0 esound >= 0.2.28 gconf-2.0 >= 2.2.0 libxml-2.0 >= 2.6.0 libgnome-2.0 >= 2.2.0 libgnomeui-2.0 >= 2.2.0 gnome-vfs-2.0 >= 2.2.0)
-PKG_CHECK_MODULES(GNOMEMEETING, libebook-1.2 >= 1.1.4,ebook12=yes,ebook12=no)
+PKG_CHECK_MODULES(EDS, libebook-1.2 >= 1.1.4,ebook12=yes,ebook12=no)
 if test x"${ebook12}" = xno ; then
-PKG_CHECK_MODULES(GNOMEMEETING, libebook-1.0 >= 0.0.94)
+PKG_CHECK_MODULES(EDS, libebook-1.0 >= 0.0.94)
 fi
+GNOMEMEETING_CFLAGS="$GNOMEMEETING_CFLAGS $EDS_CFLAGS"
+GNOMEMEETING_LIBS="$GNOMEMEETING_LIBS $EDS_LIBS"
 fi
 
-PWLIB_REC_VERSION="1.8.3"
-OPENH323_REC_VERSION="1.15.2"
+PWLIB_REC_VERSION="1.8.4"
+OPENH323_REC_VERSION="1.15.3"
 
 
 dnl ###########################################################################
