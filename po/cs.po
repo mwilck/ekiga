@@ -1,4 +1,3 @@
-# translation of cs.po to Czech
 # Czech translation of gnomemeeting.
 # Copyright (C) 2001,2003 Free Software Foundation, Inc.
 #
@@ -9,9 +8,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: cs\n"
-"POT-Creation-Date: 2003-04-16 12:04+0200\n"
-"PO-Revision-Date: 2003-04-16 20:44+0200\n"
+"Project-Id-Version: gnomemeeting VERSION\n"
+"POT-Creation-Date: 2003-04-17 12:14+0200\n"
+"PO-Revision-Date: 2003-04-17 13:39+0200\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -66,7 +65,7 @@ msgid "Automatic echo cancellation"
 msgstr "Automatické potlačení ozvěny"
 
 #. The toggles
-#: gnomemeeting.schemas.in.in.h:8 src/menu.cpp:1078 src/pref_window.cpp:825
+#: gnomemeeting.schemas.in.in.h:8 src/menu.cpp:1047 src/pref_window.cpp:825
 msgid "Automatically answer calls"
 msgstr "Odpovídat na hovory automaticky"
 
@@ -120,7 +119,7 @@ msgid "Country code"
 msgstr "Kód země"
 
 # src/pref_window.cpp:949
-#: gnomemeeting.schemas.in.in.h:17 src/menu.cpp:619 src/pref_window.cpp:827
+#: gnomemeeting.schemas.in.in.h:17 src/menu.cpp:588 src/pref_window.cpp:827
 msgid "Do not disturb"
 msgstr "Nerušit"
 
@@ -542,7 +541,7 @@ msgstr "Zobrazit chatovací okno v hlavním okně"
 msgid "Start hidden"
 msgstr "Spustit skrytě"
 
-#: gnomemeeting.schemas.in.in.h:97 src/menu.cpp:782 src/menu.cpp:1023
+#: gnomemeeting.schemas.in.in.h:97 src/menu.cpp:751 src/menu.cpp:992
 msgid "Switch to fullscreen"
 msgstr "Přepnout do celoobrazovkového režimu"
 
@@ -887,7 +886,7 @@ msgstr "Příchozí hovor"
 msgid "gnomemeeting"
 msgstr "gnomemeeting"
 
-#: src/callbacks.cpp:115 src/menu.cpp:644
+#: src/callbacks.cpp:115 src/menu.cpp:613
 msgid "Suspend _Audio"
 msgstr "Pozastavit _zvuk"
 
@@ -905,7 +904,7 @@ msgstr "Přenos zvuku: pozastaven"
 msgid "Audio transmission: resumed"
 msgstr "Přenos zvuku: obnoven"
 
-#: src/callbacks.cpp:127 src/menu.cpp:649
+#: src/callbacks.cpp:127 src/menu.cpp:618
 msgid "Suspend _Video"
 msgstr "Pozastavit _Video"
 
@@ -2210,16 +2209,16 @@ msgstr ""
 "hovory."
 
 # src/menu.cpp:446
-#: src/main_window.cpp:1574 src/menu.cpp:732 src/menu.cpp:978
+#: src/main_window.cpp:1574 src/menu.cpp:701 src/menu.cpp:947
 msgid "Local Video"
 msgstr "Lokální video"
 
 # src/menu.cpp:453
-#: src/main_window.cpp:1580 src/menu.cpp:738 src/menu.cpp:983
+#: src/main_window.cpp:1580 src/menu.cpp:707 src/menu.cpp:952
 msgid "Remote Video"
 msgstr "Vzdálené video"
 
-#: src/main_window.cpp:1713 src/menu.cpp:699
+#: src/main_window.cpp:1713 src/menu.cpp:668
 msgid "Statistics"
 msgstr "Statistiky"
 
@@ -2256,336 +2255,328 @@ msgstr "Obraz"
 msgid "Audio"
 msgstr "Zvuk"
 
-#: src/menu.cpp:117
-msgid ""
-"Enter here the IP address or the name of the host you want to redirect the "
-"current call to."
-msgstr ""
-"Zadejte zde IP adresu nebo jméno počítače, na který chcete přesměrovat "
-"aktuální hovor."
+#: src/menu.cpp:116
+msgid "Forward call to:"
+msgstr "Přesměrovat hovor na:"
 
-#: src/menu.cpp:123
-msgid "Forward call to..."
-msgstr "Přesměrovat hovor na..."
-
-#: src/menu.cpp:339
+#: src/menu.cpp:308
 msgid "_Retrieve Call"
 msgstr "_Přijmout hovor"
 
-#: src/menu.cpp:352 src/menu.cpp:631
+#: src/menu.cpp:321 src/menu.cpp:600
 msgid "_Hold Call"
 msgstr "_Pozdržet hovor"
 
 # src/pref_window.cpp:1242
-#: src/menu.cpp:605
+#: src/menu.cpp:574
 msgid "C_all"
 msgstr "_Hovor"
 
 # src/menu.cpp:256
-#: src/menu.cpp:607 src/menu.cpp:1061
+#: src/menu.cpp:576 src/menu.cpp:1030
 msgid "_Connect"
 msgstr "_Spojit"
 
 # src/menu.cpp:256 src/toolbar.cpp:60
-#: src/menu.cpp:607 src/menu.cpp:1061
+#: src/menu.cpp:576 src/menu.cpp:1030
 msgid "Create a new connection"
 msgstr "Vytvořit nové spojení"
 
 # src/menu.cpp:263
-#: src/menu.cpp:612 src/menu.cpp:1066
+#: src/menu.cpp:581 src/menu.cpp:1035
 msgid "_Disconnect"
 msgstr "_Odpojit"
 
 # src/menu.cpp:263 src/toolbar.cpp:67
-#: src/menu.cpp:612 src/menu.cpp:1066
+#: src/menu.cpp:581 src/menu.cpp:1035
 msgid "Close the current connection"
 msgstr "Uzavřít současné spojení"
 
 # src/pref_window.cpp:949
-#: src/menu.cpp:619 src/menu.cpp:1073
+#: src/menu.cpp:588 src/menu.cpp:1042
 msgid "Do _Not Disturb"
 msgstr "_Nerušit"
 
 # src/pref_window.cpp:936
-#: src/menu.cpp:624 src/menu.cpp:1078
+#: src/menu.cpp:593 src/menu.cpp:1047
 msgid "Aut_o Answer"
 msgstr "Aut_omatická odpověď"
 
 # src/gnomemeeting.cpp:177
-#: src/menu.cpp:624
+#: src/menu.cpp:593
 msgid "Auto answer incoming call"
 msgstr "Automatická odpověď na příchozí hovor"
 
 # src/gnomemeeting.cpp:235
-#: src/menu.cpp:631
+#: src/menu.cpp:600
 msgid "Hold the current call"
 msgstr "Pozdržet aktuální hovor"
 
-#: src/menu.cpp:636
-msgid "_Transfert Call"
+#: src/menu.cpp:605
+msgid "_Transfer Call"
 msgstr "_Přesměrovat hovor"
 
 # src/endpoint.cpp:654
-#: src/menu.cpp:636
-msgid "Transfert the current call"
+#: src/menu.cpp:605
+msgid "Transfer the current call"
 msgstr "Přesměrovat aktuální hovor"
 
 # src/pref_window.cpp:1341
-#: src/menu.cpp:644
+#: src/menu.cpp:613
 msgid "Suspend or resume the audio transmission"
 msgstr "Pozastavit nebo obnovit přenos zvuku"
 
 # src/pref_window.cpp:1341
-#: src/menu.cpp:649
+#: src/menu.cpp:618
 msgid "Suspend or resume the video transmission"
 msgstr "Pozastavit nebo obnovit přenos videa"
 
-#: src/menu.cpp:656
+#: src/menu.cpp:625
 msgid "_Save Current Picture"
 msgstr "_Uložit aktuální obrázek"
 
-#: src/menu.cpp:656
+#: src/menu.cpp:625
 msgid "Save a snapshot of the current video"
 msgstr "Uložit snímek aktuálního videa"
 
 # src/menu.cpp:271
-#: src/menu.cpp:662 src/menu.cpp:1111
+#: src/menu.cpp:631 src/menu.cpp:1080
 msgid "_Quit"
 msgstr "_Ukončit"
 
 # src/menu.cpp:271
-#: src/menu.cpp:662 src/menu.cpp:1111
+#: src/menu.cpp:631 src/menu.cpp:1080
 msgid "Quit GnomeMeeting"
 msgstr "Ukončit GnomeMeeting"
 
 # src/menu.cpp:271
-#: src/menu.cpp:665
+#: src/menu.cpp:634
 msgid "_Edit"
 msgstr "Úp_ravy"
 
-#: src/menu.cpp:668 src/menu.cpp:673
+#: src/menu.cpp:637 src/menu.cpp:642
 msgid "Configuration Druid"
 msgstr "Průvodce nastavením"
 
-#: src/menu.cpp:668 src/menu.cpp:673
+#: src/menu.cpp:637 src/menu.cpp:642
 msgid "Rerun the configuration druid"
 msgstr "Znovu spustí průvodce nastavením"
 
-#: src/menu.cpp:680 src/menu.cpp:1092
+#: src/menu.cpp:649 src/menu.cpp:1061
 msgid "_Preferences..."
 msgstr "_Nastavení..."
 
 # src/menu.cpp:360 src/toolbar.cpp:83
-#: src/menu.cpp:680 src/menu.cpp:1092
+#: src/menu.cpp:649 src/menu.cpp:1061
 msgid "Change your preferences"
 msgstr "Změna vašeho nastavení"
 
 # src/menu.cpp:385
-#: src/menu.cpp:685
+#: src/menu.cpp:654
 msgid "_View"
 msgstr "_Pohled"
 
-#: src/menu.cpp:687
+#: src/menu.cpp:656
 msgid "Text Chat"
 msgstr "Textový chat"
 
 # src/menu.cpp:333
-#: src/menu.cpp:687
+#: src/menu.cpp:656
 msgid "View/Hide the text chat window"
 msgstr "Zobrazit/skrýt textové chatovací okno"
 
 # src/menu.cpp:333
-#: src/menu.cpp:692
+#: src/menu.cpp:661
 msgid "Status Bar"
 msgstr "Stavový řádek"
 
 # src/menu.cpp:333
-#: src/menu.cpp:692
+#: src/menu.cpp:661
 msgid "View/Hide the status bar"
 msgstr "Zobrazit/skrýt stavovou lištu"
 
 # src/menu.cpp:326
-#: src/menu.cpp:697
+#: src/menu.cpp:666
 msgid "Control Panel"
 msgstr "Ovládací panel"
 
-#: src/menu.cpp:700
+#: src/menu.cpp:669
 msgid "View audio/video transmission and reception statistics"
 msgstr "Zobrazit statistiky zvukového/obrazového příjmu a vysílání"
 
-#: src/menu.cpp:706
+#: src/menu.cpp:675
 msgid "_Dialpad"
 msgstr "_Vytáčení"
 
-#: src/menu.cpp:706
+#: src/menu.cpp:675
 msgid "View the dialpad"
 msgstr "Zobrazit vytáčení"
 
 # src/menu.cpp:298
-#: src/menu.cpp:712
+#: src/menu.cpp:681
 msgid "_Audio Settings"
 msgstr "Nastavení _zvuku"
 
 # src/menu.cpp:298
-#: src/menu.cpp:712
+#: src/menu.cpp:681
 msgid "View audio settings"
 msgstr "Zobrazit nastavení zvuku"
 
 # src/menu.cpp:305
-#: src/menu.cpp:718
+#: src/menu.cpp:687
 msgid "_Video Settings"
 msgstr "Nastavení _videa"
 
 # src/menu.cpp:305
-#: src/menu.cpp:718
+#: src/menu.cpp:687
 msgid "View video settings"
 msgstr "Zobrazit nastavení videa"
 
-#: src/menu.cpp:724 src/pref_window.cpp:1019
+#: src/menu.cpp:693 src/pref_window.cpp:1019
 msgid "Off"
 msgstr "Vypnut"
 
 # src/menu.cpp:326
-#: src/menu.cpp:724
+#: src/menu.cpp:693
 msgid "Hide the control panel"
 msgstr "Skrýt ovládací panel"
 
 # src/menu.cpp:446
-#: src/menu.cpp:732
+#: src/menu.cpp:701
 msgid "Local video image"
 msgstr "Lokální obraz videa"
 
 # src/menu.cpp:453
-#: src/menu.cpp:738
+#: src/menu.cpp:707
 msgid "Remote video image"
 msgstr "Vzdálený obraz videa"
 
 # src/menu.cpp:446
-#: src/menu.cpp:744 src/menu.cpp:988
+#: src/menu.cpp:713 src/menu.cpp:957
 msgid "Both (Local Video Incrusted)"
 msgstr "Oba (lokální video uvnitř)"
 
 # src/menu.cpp:460
-#: src/menu.cpp:744 src/menu.cpp:750 src/menu.cpp:757
+#: src/menu.cpp:713 src/menu.cpp:719 src/menu.cpp:726
 msgid "Both video images"
 msgstr "Oba obrazy videa"
 
-#: src/menu.cpp:750 src/menu.cpp:993
+#: src/menu.cpp:719 src/menu.cpp:962
 msgid "Both (Local Video in New Window)"
 msgstr "Oba (lokální video v novém okně)"
 
-#: src/menu.cpp:756
+#: src/menu.cpp:725
 msgid "Both (Both in New Windows)"
 msgstr "Oba (Oba v nových oknech)"
 
 # src/menu.cpp:433
-#: src/menu.cpp:765 src/menu.cpp:1006
+#: src/menu.cpp:734 src/menu.cpp:975
 msgid "Zoom In"
 msgstr "Zvětšení"
 
 # src/menu.cpp:433
-#: src/menu.cpp:765
+#: src/menu.cpp:734
 msgid "Zoom in"
 msgstr "Zvětšit"
 
 # src/menu.cpp:433
-#: src/menu.cpp:770 src/menu.cpp:1011
+#: src/menu.cpp:739 src/menu.cpp:980
 msgid "Zoom Out"
 msgstr "Zmenšit"
 
 # src/menu.cpp:433
-#: src/menu.cpp:770
+#: src/menu.cpp:739
 msgid "Zoom out"
 msgstr "Zmenšit"
 
 # src/menu.cpp:427
-#: src/menu.cpp:775 src/menu.cpp:1016
+#: src/menu.cpp:744 src/menu.cpp:985
 msgid "Normal Size"
 msgstr "Normální velikost"
 
 # src/menu.cpp:427
-#: src/menu.cpp:775
+#: src/menu.cpp:744
 msgid "Normal size"
 msgstr "Normální velikost"
 
-#: src/menu.cpp:782 src/menu.cpp:1023
+#: src/menu.cpp:751 src/menu.cpp:992
 msgid "Fullscreen"
 msgstr "Celoobrazovkový režim"
 
-#: src/menu.cpp:787
+#: src/menu.cpp:756
 msgid "_Tools"
 msgstr "Nástrojová liš_ta"
 
-#: src/menu.cpp:789 src/menu.cpp:1085
+#: src/menu.cpp:758 src/menu.cpp:1054
 msgid "Address _Book"
 msgstr "A_dresář"
 
-#: src/menu.cpp:789 src/menu.cpp:1085 src/toolbar.cpp:271
+#: src/menu.cpp:758 src/menu.cpp:1054 src/toolbar.cpp:271
 msgid "Open the address book"
 msgstr "Otevřít adresář"
 
 # src/main_window.cpp:864
-#: src/menu.cpp:796
+#: src/menu.cpp:765
 msgid "Generic History"
 msgstr "Obecná historie"
 
-#: src/menu.cpp:796
+#: src/menu.cpp:765
 msgid "View the operations history"
 msgstr "Zobrazit historii událostí"
 
 # src/main_window.cpp:864
-#: src/menu.cpp:801 src/tools.cpp:71 src/tools.cpp:77
+#: src/menu.cpp:770 src/tools.cpp:71 src/tools.cpp:77
 msgid "Calls History"
 msgstr "Historie hovorů"
 
 # src/menu.cpp:291
-#: src/menu.cpp:801
+#: src/menu.cpp:770
 msgid "View the calls history"
 msgstr "Zobrazit historii hovorů"
 
-#: src/menu.cpp:808
+#: src/menu.cpp:777
 msgid "Consult MicroTelco Account"
 msgstr "Konzultovat účet MicroTelco"
 
-#: src/menu.cpp:808
+#: src/menu.cpp:777
 msgid "View the details of your account"
 msgstr "Zobrazit podrobnosti vašeho účtu"
 
 # src/menu.cpp:387
-#: src/menu.cpp:813
+#: src/menu.cpp:782
 msgid "_Help"
 msgstr "Nápo_věda"
 
 # src/menu.cpp:373
-#: src/menu.cpp:816 src/menu.cpp:821 src/menu.cpp:1100 src/menu.cpp:1105
+#: src/menu.cpp:785 src/menu.cpp:790 src/menu.cpp:1069 src/menu.cpp:1074
 msgid "_About GnomeMeeting"
 msgstr "_O GnomeMeeting"
 
 # src/menu.cpp:373
-#: src/menu.cpp:816 src/menu.cpp:821 src/menu.cpp:1100 src/menu.cpp:1105
+#: src/menu.cpp:785 src/menu.cpp:790 src/menu.cpp:1069 src/menu.cpp:1074
 msgid "View information about GnomeMeeting"
 msgstr "Zobraz informace o GnomeMeeting"
 
 # src/menu.cpp:446
-#: src/menu.cpp:978
+#: src/menu.cpp:947
 msgid "Local Video Image"
 msgstr "Lokální obraz videa"
 
 # src/menu.cpp:453
-#: src/menu.cpp:983
+#: src/menu.cpp:952
 msgid "Remote Video Image"
 msgstr "Vzdálený obraz videa"
 
 # src/menu.cpp:460
-#: src/menu.cpp:988 src/menu.cpp:993 src/menu.cpp:999
+#: src/menu.cpp:957 src/menu.cpp:962 src/menu.cpp:968
 msgid "Both Video Images"
 msgstr "Oba obrazy videa"
 
-#: src/menu.cpp:998
+#: src/menu.cpp:967
 msgid "Both (Local and Remote Video in New Windows)"
 msgstr "Oba (lokální a vzdálené video v novém okně)"
 
-#: src/menu.cpp:1073
+#: src/menu.cpp:1042
 msgid "Do not disturb (reject incoming calls)"
 msgstr "Nerušit (odmítat příchozí hovory)"
 
@@ -3270,22 +3261,6 @@ msgstr "Testy dopadly dobře!"
 #~ msgid "Quit in progress..."
 #~ msgstr "Probíhá ukončení..."
 
-# src/endpoint.cpp:606
-#~ msgid "This call ended abnormally"
-#~ msgstr "Tento hovor skončil chybou"
-
-# src/endpoint.cpp:639
-#~ msgid "Remote party could not be reached"
-#~ msgstr "Není možné navázat spojení se vzdálenou stranou"
-
-# src/pref_window.cpp:575 src/pref_window.cpp:673 src/pref_window.cpp:793
-#~ msgid "_Audio Mute"
-#~ msgstr "Ztišit zv_uk"
-
-# src/pref_window.cpp:1234
-#~ msgid "_Video Mute"
-#~ msgstr "Vypnout _video"
-
 #~ msgid "Searching for user"
 #~ msgstr "Hledám uživatele"
 
@@ -3844,26 +3819,6 @@ msgstr "Testy dopadly dobře!"
 #~ "Přenos videa nelze měnit během hovoru. Změna se projeví až u dalších "
 #~ "hovorů"
 
-# src/config.cpp:325
-#~ msgid "Not Registering: Please provide your first name!"
-#~ msgstr "Neregistrováno: Prosím zadejte své křestní jméno!"
-
-# src/config.cpp:325
-#~ msgid "Not Registering: Please provide your last name!"
-#~ msgstr "Neregistrováno: Prosím zadejte příjmnení!"
-
-# src/config.cpp:333
-#~ msgid "Not Registering: Please provide a comment!"
-#~ msgstr "Neregistrováno: Prosím zadejte komentář!"
-
-# src/config.cpp:333
-#~ msgid "Not Registering: Please provide a location!"
-#~ msgstr "Neregistrováno: Prosím zadejte umístění!"
-
-# src/config.cpp:333
-#~ msgid "Not Registering: Please provide a valid e-mail!"
-#~ msgstr "Neregistrováno: Prosím zadejte platnou e-mailovou adresu!"
-
 # src/endpoint.cpp:456
 #~ msgid "Incoming call"
 #~ msgstr "Příchozí hovor"
@@ -3887,13 +3842,6 @@ msgstr "Testy dopadly dobře!"
 # src/ldap_window.cpp:474
 #~ msgid "Search Filter"
 #~ msgstr "Filtr hledání"
-
-#~ msgid ""
-#~ "Please check your gconf settings and permissions, it seems that gconf is "
-#~ "not properly setup on your system"
-#~ msgstr ""
-#~ "Prosím zkontrolůjte Vaše gconf nastavení a práva. Vypadá to, že gconf "
-#~ "není správně nastaven na Vašem systému."
 
 # src/menu.cpp:291
 #~ msgid "_History"
@@ -3940,10 +3888,6 @@ msgstr "Testy dopadly dobře!"
 # src/pref_window.cpp:554 src/pref_window.cpp:2096 src/pref_window.cpp:2302
 #~ msgid "Device Settings"
 #~ msgstr "Nastavení zařízení"
-
-# src/pref_window.cpp:588 src/pref_window.cpp:1066
-#~ msgid "Codecs Settings"
-#~ msgstr "Nastavené kodeků"
 
 # src/pref_window.cpp:732
 #~ msgid ""
