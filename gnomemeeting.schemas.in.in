@@ -40,7 +40,7 @@
       <applyto>/apps/gnomemeeting/view/show_chat_window</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
-      <default>true</default>
+      <default>false</default>
       <locale name="C">
 	<short>Show chat window</short>
 	<long>Show the chat window in the main window</long>
@@ -524,7 +524,7 @@
       <applyto>/apps/gnomemeeting/history/called_urls_list</applyto>
       <owner>GnomeMeeting</owner>
       <type>list</type>
-      <listtype>string</listtype>
+      <list_type>string</list_type>
       <default></default>
       <locale name="C">
 	<short>The list of called URLs</short>
@@ -546,8 +546,8 @@
       <applyto>/apps/gnomemeeting/history/ldap_servers_list</applyto>
       <owner>GnomeMeeting</owner>
       <type>list</type>
-      <listtype>string</listtype>
-      <default>ils.seconix.com</default>
+      <list_type>string</list_type>
+      <default>[ils.seconix.com]</default>
       <locale name="C">
 	<short>The list of used ILS servers</short>
 	<long>The list of ILS servers</long>
