@@ -17,9 +17,9 @@ AC_ISC_POSIX
 AC_HEADER_STDC
 
 
-dnl #############################################################################
+dnl ###########################################################################
 dnl   Versioning
-dnl #############################################################################
+dnl ###########################################################################
 
 MAJOR_VERSION=0
 MINOR_VERSION=94
@@ -32,38 +32,44 @@ AC_DEFINE_UNQUOTED(BUILD_TYPE, $BUILD_TYPE)
 AC_DEFINE_UNQUOTED(BUILD_NUMBER, $BUILD_NUMBER)
 
 
-dnl #############################################################################
+dnl ###########################################################################
 dnl   This is to check correct gconf installation
-dnl #############################################################################
+dnl ###########################################################################
 SCHEMA_AGE=4
 dnl increment this number if you add anything to the schema file
 AC_SUBST(SCHEMA_AGE)
 
 
-dnl #############################################################################
+dnl ###########################################################################
 dnl   PKG_CONFIG
-dnl #############################################################################
+dnl ###########################################################################
 PKG_CHECK_MODULES(GNOMEMEETING, libgnomeui-2.0 >= 1.112.0 linc >= 0.5.0 libbonobo-2.0 >= 2.0.0)
 
+
+dnl ###########################################################################
+dnl For the static library
+dnl ###########################################################################
 AC_SUBST(GNOMEMEETING_CFLAGS)
-AC_SUBST(GNOMEMEETING_LIBS)
 
 
-dnl ############################################################################
+dnl ###########################################################################
 dnl GConf related settings
-dnl ############################################################################
+dnl ###########################################################################
 AM_GCONF_SOURCE_2
 
 
-dnl *******************************************
-dnl Set up Operating System specific parameters
-dnl *******************************************
-
+dnl ###########################################################################
+dnl Set up Operating System specific parameters and endianess
+dnl ###########################################################################
 ARCH_H323_CFLAGS=""
+
+dnl Check if we are on 64 bits architectures
 AC_CHECK_SIZEOF(long)
 if test x$ac_cv_sizeof_long = x8; then
    ARCH_H323_CFLAGS="$ARCH_H323_CFLAGS -DP_64BIT"
 fi
+
+dnl Check if we are on Big Endian or Little Endian
 AC_C_BIGENDIAN
 case xyes in
 x$ac_cv_c_bigendian)
@@ -73,8 +79,10 @@ x$ac_cv_c_bigendian)
    ARCH_H323_CFLAGS="$ARCH_H323_CFLAGS -DPBYTE_ORDER=PLITTLE_ENDIAN"
   ;;
 esac
-	    
+	   
+dnl Check the OS type (more types can be added) 
 AC_MSG_CHECKING(whether OS type is supported)
+
 case `uname -s` in
 
   linux-gnu | linux | Linux)
@@ -84,9 +92,8 @@ case `uname -s` in
     LIBOPENH323_FILE="libopenh323.so"
     AC_MSG_RESULT([yes])
 
-
-dnl * if debug add this and link to -lh323_linux_x86_d -lpt_linux_x86_d
-dnl * -D_DEBUG -DPMEMORY_CHECK=1 -DPTRACING -g
+dnl if debug add this and link to -lh323_linux_x86_d -lpt_linux_x86_d
+dnl -D_DEBUG -DPMEMORY_CHECK=1 -DPTRACING -g
     ;;
 
   FreeBSD)
@@ -97,19 +104,17 @@ dnl * -D_DEBUG -DPMEMORY_CHECK=1 -DPTRACING -g
     AC_MSG_RESULT([yes])
     ;;
   *)
-    AC_MSG_ERROR("Only Linux and FreeBSD are supported. Please contact the author")
+    AC_MSG_ERROR("Only Linux and FreeBSD are supported. Please contact the author. You can add more OS types.")
     ;;
 esac
 
 
-
-dnl ************************************************
-dnl PTLib
-dnl Adapted from openh323 check in gnomemeeting ;-)
-dnl ************************************************
-AC_ARG_WITH(ptlib-includes, [  --with-ptlib-includes=PFX   Location of PTLib includes.],  
-	with_ptlib_includes="$withval", with_ptlib_includes="/usr/include/ptlib")
+dnl ###########################################################################
+dnl PTLib Headers and Libraries
+dnl ###########################################################################
+AC_ARG_WITH(ptlib-includes, [  --with-ptlib-includes=PFX   Location of PTLib includes.], with_ptlib_includes="$withval", with_ptlib_includes="/usr/include/ptlib")
 have_ptlib_includes="no"
+
 if test "x${with_ptlib_includes}" != "xno"; then
 	CPPFLAGS_save="$CPPFLAGS"
 	
@@ -131,13 +136,13 @@ else
 	AC_MSG_ERROR([You need PTLib's header files to build GnomeMeeting])
 fi
 
-AC_ARG_WITH(ptlib-libs, [  --with-ptlib-libs=PFX       Location of PTLib libs.],
-	with_ptlib_libs="$withval", with_ptlib_libs="/usr/lib")
+
+AC_ARG_WITH(ptlib-libs, [  --with-ptlib-libs=PFX       Location of PTLib libs.], with_ptlib_libs="$withval", with_ptlib_libs="/usr/lib")
 if test "x${with_ptlib_libs}" != "xno" -a "x${have_ptlib_includes}" != "xno"; then
 	AC_CHECK_FILE(${with_ptlib_libs}/${LIBPT_FILE}, ptlib_libs="yes", ptlib_libs="no")
 	
 	if test "x${ptlib_libs}" != "xno"; then
-		PTLIB_LDFLAGS="-L${with_ptlib_libs} ${H323_LIBS}"
+		PTLIB_LDFLAGS="-L${with_ptlib_libs}"
 		PTLIB_LIBS_DIR="${with_ptlib_libs}"
 	else
 		AC_MSG_ERROR([You need PTLib to enjoy GnomeMeeting])
@@ -147,12 +152,10 @@ else
 fi
 
 
-dnl ***************************************
+dnl ###########################################################################
 dnl OpenH323
-dnl Adapted from openssl check in gnome-vfs
-dnl ***************************************
-AC_ARG_WITH(openh323-includes, [  --with-openh323-includes=PFX   Location of OpenH323 includes.],  
-	with_openh_includes="$withval", with_openh_includes="/usr/include/openh323")
+dnl ###########################################################################
+AC_ARG_WITH(openh323-includes, [  --with-openh323-includes=PFX   Location of OpenH323 includes.], with_openh_includes="$withval", with_openh_includes="/usr/include/openh323")
 have_openh323_includes="no"
 if test "x${with_openh_includes}" != "xno" -a "x${have_ptlib_includes}" != "xno"; then
 	CPPFLAGS_save="$CPPFLAGS"
@@ -175,14 +178,15 @@ else
 	AC_MSG_ERROR([You need OpenH323's header files to build GnomeMeeting])
 fi
 
-AC_ARG_WITH(openh323-libs, [  --with-openh323-libs=PFX       Location of OpenH323 libs.],
-	with_openh323_libs="$withval", with_openh323_libs="/usr/lib")
+
+AC_ARG_WITH(openh323-libs, [  --with-openh323-libs=PFX       Location of OpenH323 libs.], with_openh323_libs="$withval", with_openh323_libs="/usr/lib")
 msg_openh323="no"
+
 if test "x${with_openh323_libs}" != "xno" -a "x${have_openh323_includes}" != "xno"; then
 	AC_CHECK_FILE(${with_openh323_libs}/${LIBOPENH323_FILE}, openh323_libs="yes", openh323_libs="no")
 	if test "x${openh323_libs}" != "xno"; then
 		msg_openh323="yes"
-		OPENH323_LDFLAGS="-L${with_openh323_libs} ${H323_LIBS}"
+		OPENH323_LDFLAGS="-L${with_openh323_libs}"
 		OPENH323_LIBS_DIR="${with_openh323_libs}"
 	else
 		AC_MSG_ERROR([You need OpenH323 to enjoy GnomeMeeting])
@@ -192,14 +196,13 @@ else
 fi
 
 
-
-dnl *********************************************************************
-dnl * Check if there is IXJ support
-dnl *********************************************************************
+dnl ###########################################################################
+dnl Check if there is IXJ support
+dnl ###########################################################################
 CPPFLAGS_save="$CPPFLAGS"
 	
 CPPFLAGS="$CPPFLAGS -I /usr/include/linux -I /usr/include/sys -I /usr/local/include/sys"
-AC_CHECK_HEADER(telephony.h, HAS_IXJ="enabled", HAS_IXJ="disabled")
+AC_CHECK_HEADER(telephony.h, HAS_IXJ="enabled", HAS_IXJ="disabled",-)
 
 if test "x${HAS_IXJ}" == "xenabled"; then
 	H323_CFLAGS="$H323_CFLAGS -DHAS_IXJ"
@@ -208,9 +211,9 @@ fi
 CPPFLAGS="$CPPFLAGS_save"
 
 
-dnl #############################################################################
+dnl ###########################################################################
 dnl   Check for SDL
-dnl #############################################################################
+dnl ###########################################################################
 SDL_VERSION=1.1.3
 SDL_HAS_SDL=
 AM_PATH_SDL($SDL_VERSION,
@@ -226,9 +229,9 @@ else
 fi
 
 
-dnl #########################################################################
+dnl ###########################################################################
 dnl Activate support for automatic arts suspension
-dnl #########################################################################
+dnl ###########################################################################
 AC_PATH_PROG(ARTSCCONFIG, artsc-config)
 AC_CACHE_CHECK([for aRts Sound server],
         ac_cv_c_artsserver,
@@ -263,15 +266,12 @@ else
 fi
 
 
-
-
-
-dnl ***************************************
+dnl ###########################################################################
 dnl OpenSSL
-dnl ***************************************
-AC_ARG_WITH(openssl-includes, [  --with-openssl-includes=PFX   Location of OpenSSL includes.],
-        with_openssl_includes="$withval", with_openssl_includes="/usr/include/openssl")
+dnl ###########################################################################
+AC_ARG_WITH(openssl-includes, [  --with-openssl-includes=PFX   Location of OpenSSL includes.], with_openssl_includes="$withval", with_openssl_includes="/usr/include/openssl")
 have_openssl_includes="no"
+
 if test "x${with_openssl_includes}" != "xno" ; then
         CPPFLAGS_save="$CPPFLAGS"
 
@@ -293,9 +293,10 @@ else
         AC_MSG_ERROR([You need OpenSSL's header files to build GnomeMeeting])
 fi
 
-AC_ARG_WITH(openssl-libs, [  --with-openssl-libs=PFX       Location of OpenSSL libs.],
-        with_openssl_libs="$withval", with_openssl_libs="/usr/lib")
+
+AC_ARG_WITH(openssl-libs, [  --with-openssl-libs=PFX       Location of OpenSSL libs.], with_openssl_libs="$withval", with_openssl_libs="/usr/lib")
 msg_openssl="no"
+
 if test "x${with_openssl_libs}" != "xno" -a "x${have_openssl_includes}" != "xno"; then
         AC_CHECK_FILE(${with_openssl_libs}/libssl.so, openssl_libs="yes", openssl_libs="no")
         if test "x${openssl_libs}" != "xno"; then
@@ -309,9 +310,10 @@ else
         AC_MSG_ERROR([You need OpenSSL to enjoy GnomeMeeting])
 fi
 
-dnl *****************************
-dnl * LDAP Checks
-dnl *****************************
+
+dnl ###########################################################################
+dnl LDAP Checks
+dnl ###########################################################################
 
 LDAP_INCLUDES=""
 
@@ -326,7 +328,12 @@ if test "x${with_ldap}" != "xno" -a "x${have_ldap}" != "xno"; then
 		ldap="yes"
 	        LDAP_DIR="${with_ldap}"
 		LDAP_LIBS="-L${LDAP_DIR}/lib ${LDAP_LIBS}"
-		LDAP_INCLUDES="-I${LDAP_DIR}/include ${LDAP_INCLUDES}"
+		if test "x${LDAP_DIR}" != "x/usr" -a "x${LDAP_DIR}" != "x/usr/local"; then 
+			LDAP_INCLUDES="-I${LDAP_DIR}/include ${LDAP_INCLUDES}"
+		else
+			LDAP_INCLUDES="${LDAP_INCLUDES}"
+		fi
+	
 	else
 		AC_MSG_ERROR([You need ldap to enjoy GnomeMeeting])
 	fi
@@ -336,14 +343,9 @@ fi
 
 
 
-GNOMEMEETING_INCLUDES="$GNOMEMEETING_CFLAGS $PTLIB_CFLAGS $LDAP_INCLUDES $OPENH323_CFLAGS $OPENSSL_CFLAGS"
-GNOMEMEETING_LDADD="$PTLIB_LDFLAGS $OPENH323_LDFLAGS $OPENSSL_LDFLAGS $GNOMEMEETING_LIBS"
+GNOMEMEETING_INCLUDES="$GNOMEMEETING_CFLAGS $PTLIB_CFLAGS $LDAP_INCLUDES $OPENH323_CFLAGS $OPENSSL_CFLAGS $H323_CFLAGS $SDL_CFLAGS $ARTSC_CFLAGS"
+GNOMEMEETING_LDADD="$PTLIB_LDFLAGS $OPENH323_LDFLAGS $OPENSSL_LDFLAGS $GNOMEMEETING_LIBS $LDAP_LIBS $SDL_LDFLAGS $ARTSC_LDFLAGS $H323_LIBS"
 CFLAGS=""
-
-GNOMEMEETING_INCLUDES="$GNOMEMEETING_INCLUDES $H323_CFLAGS $GNOME_INCLUDE_DIR $GDK_PIXBUF_CFLAGS $GCONF_CFLAGS $SDL_CFLAGS $ARTSC_CFLAGS"
-GNOMEMEETING_LDADD="$LDAP_LIBS $H323_LIBS -lesd $GNOMEMEETING_LDADD $SDL_LDFLAGS $ARTSC_LDFLAGS"
-
-GNOME_COMPILE_WARNINGS
 
 CXXFLAGS="-O3 $ORBIT_CFLAGS"
 
@@ -409,9 +411,9 @@ pixmaps/Makefile
 sounds/Makefile)
 
 
-dnl ######################################################################################
-dnl   Summary
-dnl #####################################################################################
+dnl ###########################################################################
+dnl Summary
+dnl ###########################################################################
 
 echo ""
 echo "================ Final configuration ==================="

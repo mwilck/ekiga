@@ -29,7 +29,7 @@
 
 #include "../config.h"
 
-#include <iostream.h>
+#include <iostream>
 #include <gtk/gtk.h>
 #include <gnome.h>
 #include <gconf/gconf-client.h>

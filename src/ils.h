@@ -32,7 +32,7 @@
 
 #include <lber.h>
 #include <ldap.h>
-#include <iostream.h>
+#include <iostream>
 #include <gnome.h>
 #include <glib.h>
 #include <sys/socket.h>

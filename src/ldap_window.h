@@ -34,7 +34,7 @@
 
 #include <lber.h>
 #include <ldap.h>
-#include <iostream.h>
+#include <iostream>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
