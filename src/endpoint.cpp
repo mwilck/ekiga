@@ -2227,12 +2227,12 @@ GMH323EndPoint::DeviceVolume (PSoundChannel *sound_channel,
 
         l->SetVolume (is_encoding, vol);
         l->Unlock ();
+
+        con->Unlock ();
+
+        return TRUE; /* Ignore the sound channel if a LID is used. Hopefully,
+                        OpenH323 will be fixed soon */
       }
-
-      con->Unlock ();
-
-      return TRUE; /* Ignore the sound channel if a LID is used. Hopefully,
-                      OpenH323 will be fixed soon */
     }
 #endif
 
