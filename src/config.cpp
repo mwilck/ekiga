@@ -52,6 +52,7 @@ static gboolean fps_limit_changed (gpointer);
 static void fps_limit_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static gboolean vb_limit_changed (gpointer);
 static void vb_limit_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
+static gboolean toggle_changed (gpointer);
 static void toggle_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static gboolean entry_changed_ (gpointer);
 static void entry_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
@@ -71,8 +72,10 @@ static void audio_mixer_changed_nt (GConfClient *, guint, GConfEntry *, gpointer
 static gboolean audio_device_changed (gpointer);
 static void audio_device_changed_nt (GConfClient *, guint, GConfEntry *, 
 				     gpointer);
+static gboolean video_device_changed (gpointer);
 static void video_device_changed_nt (GConfClient *, guint, GConfEntry *, 
 				     gpointer);
+static gboolean video_channel_changed (gpointer);
 static void video_channel_changed_nt (GConfClient *, guint, GConfEntry *, 
 				      gpointer);
 static gboolean video_option_menu_changed (gpointer);
@@ -375,7 +378,7 @@ static void toggle_changed_nt (GConfClient *client, guint cid,
   if (entry->value->type == GCONF_VALUE_BOOL) {
    
     /* We set the new value for the widget if needed */
-    if (GTK_TOGGLE_BUTTON (toggle)->active != gconf_value_get_bool (entry->value))
+    if ((bool) GTK_TOGGLE_BUTTON (toggle)->active != gconf_value_get_bool (entry->value))
       g_idle_add (toggle_changed, (gpointer) toggle);
   }
 }
@@ -519,7 +522,7 @@ static void video_option_menu_changed_nt (GConfClient *client, guint cid,
 /* Is Not able to modify the widgets */
 static gboolean audio_mixer_changed (gpointer data)
 {
-  GtkWidget *e = GTK_WIDGET (data);
+/*  GtkWidget *e = GTK_WIDGET (data);*/
   GM_pref_window_widgets *pw = NULL;
   GM_window_widgets *gw = NULL;
   int vol_play = 0, vol_rec = 0;
@@ -634,7 +637,7 @@ static gboolean audio_device_changed (gpointer data)
   gchar *player = NULL, *recorder = NULL;
   gchar *entry_data = NULL;
   int found = 0;
-  GtkWidget *e = GTK_WIDGET (data);
+/*  GtkWidget *e = GTK_WIDGET (data);*/
   GM_window_widgets *gw = NULL;
   GM_pref_window_widgets *pw = NULL;
   GConfClient *client = gconf_client_get_default ();
@@ -732,6 +735,46 @@ static void audio_device_changed_nt (GConfClient *client, guint cid,
 }
 
 
+/* Not able to update widgets */
+static gboolean video_device_changed (gpointer data)
+{
+  GMVideoGrabber *vg = NULL;
+  GtkWidget *e = GTK_WIDGET (data);
+
+  gdk_threads_enter ();
+       
+  /* We set the new value for the widget */
+  /* No possible before Gnome2 
+  gtk_signal_handler_block_by_func (GTK_OBJECT (GTK_COMBO (e)->entry),
+				    GTK_SIGNAL_FUNC (entry_changed), 
+				    (gpointer) gtk_object_get_data (GTK_OBJECT (e), "gconf_key")); 
+  gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (e)->entry), 
+		      gconf_value_get_string (entry->value));
+  gtk_signal_handler_unblock_by_func (GTK_OBJECT (GTK_COMBO (e)->entry),
+				      GTK_SIGNAL_FUNC (entry_changed), 
+				      (gpointer) gtk_object_get_data (GTK_OBJECT (e), "gconf_key")); 
+  */
+
+  /* We reset the video device */
+  if (MyApp->Endpoint ()->GetCallingState () == 0) {
+    
+    vg = MyApp->Endpoint ()->GetVideoGrabber ();
+
+    if (vg)
+      vg->Reset ();
+  }
+  else {
+    
+    gnomemeeting_warning_popup (e, 
+				_("This change will only affect new calls"));
+  }            
+  
+  gdk_threads_leave ();
+
+  return FALSE;
+}
+
+
 /* DESCRIPTION  :  This callback is called when the video device changes in
  *                 the gconf database.
  * BEHAVIOR     :  It updates the widget and resets the video device.
@@ -740,60 +783,26 @@ static void audio_device_changed_nt (GConfClient *client, guint cid,
 static void video_device_changed_nt (GConfClient *client, guint cid, 
 				     GConfEntry *entry, gpointer data)
 {
-  GMVideoGrabber *vg = NULL;
-  GtkWidget *e = GTK_WIDGET (data);
-  
-
   if (entry->value->type == GCONF_VALUE_STRING) {
-   
-    /* We set the new value for the widget */
-    gtk_signal_handler_block_by_func (GTK_OBJECT (GTK_COMBO (e)->entry),
-				      GTK_SIGNAL_FUNC (entry_changed), 
-				      (gpointer) gtk_object_get_data (GTK_OBJECT (e), "gconf_key")); 
-    gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (e)->entry), 
-			gconf_value_get_string (entry->value));
-    gtk_signal_handler_unblock_by_func (GTK_OBJECT (GTK_COMBO (e)->entry),
-					GTK_SIGNAL_FUNC (entry_changed), 
-					(gpointer) gtk_object_get_data (GTK_OBJECT (e), "gconf_key")); 
   
-
-    /* We reset the video device */
-    if (MyApp->Endpoint ()->GetCallingState () == 0) {
-      
-      vg = MyApp->Endpoint ()->GetVideoGrabber ();
-
-      if (vg)
-	vg->Reset ();
-    }
-    else {
-
-      gchar *msg = g_strdup (_("This change will only affect new calls."));
-      GtkWidget *msg_box = gnome_message_box_new (msg, GNOME_MESSAGE_BOX_WARNING, 
-						  "OK", NULL);
-      gtk_widget_show (msg_box);
-
-      g_free (msg);
-      }            
+    g_idle_add (video_device_changed, data);
   }
 }
 
 
-/* DESCRIPTION  :  This callback is called when the video channel changes in
- *                 the gconf database.
- * BEHAVIOR     :  It updates the widget and the video device, if not in a call,
- *                 or displays a popup.
- * PRE          :  /
- */
-static void video_channel_changed_nt (GConfClient *client, guint cid, 
-				      GConfEntry *entry, gpointer data)
+static gboolean video_channel_changed (gpointer data)
 {
   GMVideoGrabber *vg = NULL;
-  GM_pref_window_widgets *pw = (GM_pref_window_widgets *) data;
-  
-  if (entry->value->type == GCONF_VALUE_INT) {
-   
-    /* We set the new value for the widget */
-    gtk_signal_handler_block_by_func (GTK_OBJECT (pw->video_channel_spin_adj),
+  GM_pref_window_widgets *pw = NULL;
+  GtkWidget *e = GTK_WIDGET (data);
+
+  gdk_threads_enter ();
+
+  pw = gnomemeeting_get_pref_window (gm);
+
+  /* We set the new value for the widget */
+  /* Not able to do this with Gnome 1 :(
+     gtk_signal_handler_block_by_func (GTK_OBJECT (pw->video_channel_spin_adj),
 				      GTK_SIGNAL_FUNC (adjustment_changed), 
 				      (gpointer) gtk_object_get_data (GTK_OBJECT (pw->video_channel_spin_adj), "gconf_key")); 
     gtk_adjustment_set_value (GTK_ADJUSTMENT (pw->video_channel_spin_adj),
@@ -801,24 +810,40 @@ static void video_channel_changed_nt (GConfClient *client, guint cid,
     gtk_signal_handler_unblock_by_func (GTK_OBJECT (pw->video_channel_spin_adj),
 					GTK_SIGNAL_FUNC (adjustment_changed), 
 					(gpointer) gtk_object_get_data (GTK_OBJECT (pw->video_channel_spin_adj), "gconf_key")); 
+   */
 
-    /* We reset the video device */
-    if (MyApp->Endpoint ()->GetCallingState () == 0) {
-     
-      vg = MyApp->Endpoint ()->GetVideoGrabber ();
-     
-      if (vg) 
-	vg->Reset ();
-    }
-    else {
+  /* We reset the video device */
+  if (MyApp->Endpoint ()->GetCallingState () == 0) {
+    
+    vg = MyApp->Endpoint ()->GetVideoGrabber ();
+    
+    if (vg) 
+      vg->Reset ();
+  }
+  else {
 
-      gchar *msg = g_strdup (_("This change will only affect new calls."));
-      GtkWidget *msg_box = gnome_message_box_new (msg, GNOME_MESSAGE_BOX_WARNING, 
-						  "OK", NULL);
-      gtk_widget_show (msg_box);
+    gnomemeeting_warning_popup (e,
+				_("This change will only affect new calls.")); 
+  }
+ 
+  gdk_threads_leave ();
 
-      g_free (msg);
-    }
+  return FALSE;
+}
+
+
+/* DESCRIPTION  :  This callback is called when the video channel changes in
+ *                 the gconf database.
+ * BEHAVIOR     :  It updates the widget and the video device, if not in a 
+ *                 all, or displays a popup.
+ * PRE          :  /
+ */
+static void video_channel_changed_nt (GConfClient *client, guint cid, 
+				      GConfEntry *entry, gpointer data)
+{
+  if (entry->value->type == GCONF_VALUE_INT) {
+   
+    g_idle_add (video_channel_changed, data);
   }
 }
 
@@ -1320,48 +1345,6 @@ static void notebook_info_changed_nt (GConfClient *client, guint,
   }
 }
 
-#if 0 /* Uncomment when we are under Gnome2 */
-
-/* DESCRIPTION  :  This callback is called when something toggles the
- *                 corresponding option in gconf.
- * BEHAVIOR     :  Updated the combo strings
- * PRE          :  gpointer is a valid pointer to the combo
- */
-static void history_changed_nt (GConfClient *client, guint, GConfEntry *entry, 
-				gpointer user_data)
-{
-  GtkCombo *combo = GTK_COMBO (user_data);
-  GList *hosts = 0;
-  gchar **contacts;
-  gchar *old_entry;
-
-  if (entry->value->type != GCONF_VALUE_STRING)
-    return;
-
-  old_entry = gtk_editable_get_chars (GTK_EDITABLE (combo->entry), 0, -1);
-
-  const gchar *new_hosts = gconf_value_get_string (entry->value);
-  contacts = g_strsplit (new_hosts, ":", 0);
-  for (int i = 0; contacts[i] != 0; i++)
-    hosts = g_list_prepend (hosts, contacts[i]);
-
-  gtk_object_remove_data (GTK_OBJECT (combo), "history");
-
-  /* This is just needed if hosts in null */
-  gtk_list_clear_items (GTK_LIST (combo->list), 0, -1);
-
-  gtk_combo_set_popdown_strings (combo, hosts);
-  if (hosts != 0)
-    gtk_object_set_data_full (GTK_OBJECT (combo), "history", hosts,
-			      gnomemeeting_freeg_list_data);
-
-  /* Restore the previous value typed in the entry field */
-  gtk_entry_set_text (GTK_ENTRY (combo->entry), old_entry);
-
-  g_free (contacts);
-  g_free (old_entry);
-}
-#endif
 
 /* The functions  */
 void gnomemeeting_init_gconf (GConfClient *client)
@@ -1432,7 +1415,7 @@ void gnomemeeting_init_gconf (GConfClient *client)
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_recorder", video_device_changed_nt, pw->video_device, 0, 0);			   
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_channel", video_channel_changed_nt, pw, 0, 0);			   
+  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_channel", video_channel_changed_nt, pw->video_channel, 0, 0);			   
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_preview", video_preview_changed_nt, pw, 0, 0);			   
   
@@ -1456,12 +1439,6 @@ void gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_docklet", view_widget_changed_nt, pw->show_docklet, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/view/notebook_info", notebook_info_changed_nt, NULL, 0, 0);
-
-#if 0 /* FIXME: Uncomment when we are under GNOME2*/
-  gconf_client_notify_add (client, "/apps/gnomemeeting/history/called_hosts", history_changed_nt, gw->combo, 0, 0);
-
-  gconf_client_notify_add (client, "/apps/gnomemeeting/history/ldap_servers", history_changed_nt, lw->ils_server_combo, 0, 0);
-#endif 
 
   gnomemeeting_update_pref_window_sensitivity ();
 }

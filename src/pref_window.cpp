@@ -1885,7 +1885,6 @@ static void gnomemeeting_init_pref_window_devices (GtkWidget *notebook)
   GtkWidget *vbox;
   GtkWidget *table;
   GtkWidget *label;
-  GtkWidget *video_channel;
   GtkWidget *menu1, *menu2;
   GtkWidget *item;
   GList *audio_player_devices_list = NULL;
@@ -2193,15 +2192,16 @@ static void gnomemeeting_init_pref_window_devices (GtkWidget *notebook)
   pw->video_channel_spin_adj = (GtkAdjustment *) 
     gtk_adjustment_new (gconf_client_get_int (client, "/apps/gnomemeeting/devices/video_channel", 0), 0.0, 10.0, 1.0, 1.0, 1.0);
 
-  video_channel = gtk_spin_button_new (pw->video_channel_spin_adj, 100.0, 0);
+  pw->video_channel = 
+    gtk_spin_button_new (pw->video_channel_spin_adj, 100.0, 0);
   
-  gtk_table_attach (GTK_TABLE (table), video_channel, 1, 2, 1, 2,
+  gtk_table_attach (GTK_TABLE (table), pw->video_channel, 1, 2, 1, 2,
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
 
   tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, video_channel,
+  gtk_tooltips_set_tip (tip, pw->video_channel,
 			_("The video channel number to use (camera, tv, ...)"), 
 			NULL);
 

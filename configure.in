@@ -1,6 +1,6 @@
 AC_INIT(src/gnomemeeting.cpp)
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE(GnomeMeeting, 0.12.2)
+AM_INIT_AUTOMAKE(GnomeMeeting, 0.13-CVS)
 AM_MAINTAINER_MODE
 AM_ACLOCAL_INCLUDE(macros)
 AC_PROG_INTLTOOL
@@ -9,9 +9,9 @@ dnl   Versioning
 dnl #############################################################################
 
 MAJOR_VERSION=0
-MINOR_VERSION=12
+MINOR_VERSION=13
 BUILD_TYPE=ReleaseCode
-BUILD_NUMBER=2
+BUILD_NUMBER=1
 
 AC_DEFINE_UNQUOTED(MAJOR_VERSION, $MAJOR_VERSION)
 AC_DEFINE_UNQUOTED(MINOR_VERSION, $MINOR_VERSION)

@@ -173,6 +173,7 @@ struct _GM_pref_window_widgets
   GtkWidget *audio_recorder_mixer;
   GtkWidget *video_device; 
   GtkAdjustment *video_channel_spin_adj;
+  GtkWidget *video_channel;
   GtkWidget *show_docklet;
   GtkWidget *directory_update_button;
   GtkWidget *video_device_apply_button;

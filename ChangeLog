@@ -1,45 +1,12 @@
-2002-01-19  Miguel Rodríguez Pérez  <migrax@terra.es>
+2002-01-19  Damien Sandras  <dsandras@seconix.com>
 
-	* src/misc.h (gnomemeeting_free_glist_data): 
-	Added the prototype
+	* src/config.cpp: Some more gconf port to g_idle.
 
-	* gnomemeeting.schema: Revert default ILS server to
-	argo.dyndns.org, this one really works
+	* src/endpoint.cpp, src/gnomemeeting.cpp: Added support to close
+	ESD if needed for calls.
+
+	* src/common.h, src/pref_window.cpp: Added video_channel widget.
 	
-	* src/misc.cpp (gnomemeeting_free_glist_data): 
-	Changed name to make it public
-	(gnomemeeting_history_combo_box_add_entry): 
-	(gnomemeeting_history_combo_box_new): 
-	* src/config.cpp (history_changed_nt): 
-	Use he new name
-
-	* src/config.cpp 
-	(history_changed_nt): Moved here
-
-	* src/misc.cpp (gnomemeeting_history_combo_box_new): 
-	Moved history notifiers
-
-2002-01-19  Miguel Rodríguez Pérez  <migrax@terra.es>
-
-	* src/misc.cpp (gnomemeeting_history_combo_box_new): One
-	leak less
-	(history_changed_nt): Added
-
-	* src/ldap_window.cpp (refresh_button_clicked): Removed
-	a lot of code, and use gnomemeeting_history funcs
-
-	* gnomemeeting.schema: Added .../history/ldap_servers
-
-	* src/misc.h: 
-	* src/main_window.cpp (gnomemeeting_init_main_window): 
-	Addapt to the new prototype of gnomemeeting_history_combo_box_new
-
-	* src/misc.cpp (gnomemeeting_history_combo_box_new): Don't
-	hardcode the gconf key
-
-	* src/main_window.cpp (gnomemeeting_init_main_window): 
-	Removed an already fixed FIXME	
-
 2002-01-17  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* src/ldap_window.cpp: Don't include sound.xpm amd quickcam.xpm
@@ -75,7 +42,7 @@
 	* src/gnomemeeting.cpp (AddContactIP): Removed
 
 	* src/misc.cpp (gnomemeeting_history_combo_box_add_entry): 
-	Use the key passed as a parameter, don't hardcode it.
+	Use the key passed as a parameter, don't harcode it.
 
 2002-01-17  Damien Sandras  <dsandras@seconix.com>
 

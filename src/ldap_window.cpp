@@ -180,18 +180,49 @@ void refresh_button_clicked (GtkButton *button, gpointer data)
     (GTK_ENTRY (GTK_COMBO (lw->ils_server_combo)->entry)));  
 
   /* if it is an empty entry_content, return */
-  if (!g_strcasecmp (entry_content, "")) {
+  if (!g_strcasecmp (entry_content, ""))
+    {
       lw->thread_count = 0;
       g_free (entry_content);
       return;
-  }
+    }
 
 
   /* Put the current entry in the history of the combo */
-  gnomemeeting_history_combo_box_add_entry (GTK_COMBO (lw->ils_server_combo),
-					    "/apps/gnomemeeting/history/ldap_servers",
+  gtk_list_clear_items (GTK_LIST (GTK_COMBO(lw->ils_server_combo)->list), 
+			0, -1);
+
+  /* if the entry is not in the list */
+  while ((text = (gchar *) g_list_nth_data (lw->ldap_servers_list, i))) {
+
+    /* do not free text, it is not a copy */
+    if (!g_strcasecmp (text, entry_content)) {
+
+      found = 1;
+      break;
+    }
+    i++;
+  }
+
+  if (!found) {
+
+    /* this will not store a copy of entry_content, but entry_content itself */
+    lw->ldap_servers_list = g_list_prepend (lw->ldap_servers_list, 
 					    entry_content);
-					    
+  }
+     
+  gtk_combo_set_popdown_strings (GTK_COMBO (lw->ils_server_combo), 
+				 lw->ldap_servers_list);
+
+  gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (lw->ils_server_combo)->entry), 
+		      entry_content);
+
+  /* if found, it is not added in the GList, we can free it */
+  if (found)
+    g_free (entry_content);
+  
+  found = 0;
+  
   /* if we are not already browsing */
   if (lw->thread_count == 1) {
 
@@ -349,13 +380,26 @@ void gnomemeeting_init_ldap_window ()
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
 
   lw->ils_server_combo = gtk_combo_new ();
-  lw->ils_server_combo = gnomemeeting_history_combo_box_new ("/apps/gnomemeeting/"
-							     "history/ldap_servers");
   gtk_combo_disable_activate (GTK_COMBO(lw->ils_server_combo));
   gtk_table_attach (GTK_TABLE (table), lw->ils_server_combo, 1, 2, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
+
+  /* We read the history on the hard disk */
+  cout << "FIX ME: LDAP Servers History" << endl << flush;
+  servers = g_strsplit ("argo.dyndns.org", ":", 0);
+  i = 0;
+  while (servers [i] != NULL) {
+    
+    lw->ldap_servers_list = 
+      g_list_insert (lw->ldap_servers_list, servers [i], 0);
+    i++;
+  }
+     
+  if (lw->ldap_servers_list != NULL)
+    gtk_combo_set_popdown_strings (GTK_COMBO (lw->ils_server_combo), 
+				   lw->ldap_servers_list);
 
   lw->refresh_button = gnomemeeting_button (_("Refresh"), who_pixmap);
   gtk_widget_set_usize (GTK_WIDGET (lw->refresh_button), 90, 30);
