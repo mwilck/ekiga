@@ -426,7 +426,7 @@ void GMAudioTester::Main ()
 					   GTK_RESPONSE_ACCEPT, false);
 	gtk_window_set_transient_for (GTK_WINDOW (dialog),
 				      GTK_WINDOW (gw->druid_window));
-	//	gtk_widget_show_all (dialog);
+       	gtk_widget_show (dialog);
       }
 
       displayed = TRUE;
