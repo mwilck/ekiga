@@ -104,6 +104,8 @@ void ldap_clist_column_clicked (GtkCList *, gint, gpointer);
 // PRE          :  GM_window_widgets is a valid pointer to a
 //                 GM_window_widgets
 void GM_ldap_init (GM_window_widgets *);
+
+void GM_ldap_init_notebook (GM_ldap_window_widgets *, gchar *);
 /******************************************************************************/
 
 #endif

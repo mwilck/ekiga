@@ -122,6 +122,8 @@ void refresh_button_clicked (GtkButton *button, gpointer data)
       gtk_clist_clear (GTK_CLIST (lw->ldap_users_clist));
       gtk_clist_thaw (GTK_CLIST (lw->ldap_users_clist));
 
+//      gtk_notebook_set_
+
       ils_client->ils_browse (lw);
     }   
 }
@@ -203,7 +205,6 @@ void GM_ldap_init (GM_window_widgets *gw)
 {
   GtkWidget *table, *entry_table;
   GtkWidget *vbox;
-  GtkWidget *vbox2;
   GtkWidget *frame;
   GtkWidget *scroll;
   GtkWidget *refresh_button;
@@ -223,15 +224,6 @@ void GM_ldap_init (GM_window_widgets *gw)
   lw->thread_count = 0;
   lw->gw = gw;
 
-  gchar * clist_titles [] = 
-    {
-     /* Translators: This is as in "Audio". */
-     N_("A"),
-     /* Translators: This is as in "Video". */
-     N_("V"),
-     N_("First Name"), N_("Last name"), N_("E-mail"), 
-     N_("Location"), N_("Comment"), N_("IP")};
-
   who_pixmap =  gnome_pixmap_new_from_xpm_d ((char **) ldap_refresh_xpm);
 
   lw->gw->ldap_window = gtk_window_new (GTK_WINDOW_DIALOG);
@@ -243,19 +235,14 @@ void GM_ldap_init (GM_window_widgets *gw)
   vbox = gtk_vbox_new (FALSE, GNOME_PAD_SMALL);
   gtk_container_add (GTK_CONTAINER (lw->gw->ldap_window), vbox);
 
-  // Intl
-  for (int i = 0 ; i < 8 ; i++)
-    clist_titles [i] = gettext (clist_titles [i]);
-
   /* ILS directories combo box */
   frame = gtk_frame_new (_("ILS directories to browse"));
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
   gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
 
   // Put a table in that first frame
   table = gtk_table_new (1, 3, FALSE);
   gtk_container_add (GTK_CONTAINER (frame), table);
-  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_BIG);
+  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
 
   GtkWidget *label = gtk_label_new (_("ILS directory:"));
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1,
@@ -263,8 +250,9 @@ void GM_ldap_init (GM_window_widgets *gw)
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
 
-  lw->ils_server_entry = gtk_combo_new ();
-  gtk_table_attach (GTK_TABLE (table), lw->ils_server_entry, 1, 2, 0, 1,
+  lw->ils_server_combo = gtk_combo_new ();
+  gtk_combo_disable_activate (GTK_COMBO(lw->ils_server_combo));
+  gtk_table_attach (GTK_TABLE (table), lw->ils_server_combo, 1, 2, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
@@ -326,54 +314,28 @@ void GM_ldap_init (GM_window_widgets *gw)
 
   /* Ldap users list */
   frame = gtk_frame_new (_("ILS Users List"));
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
-  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_BIG);
+  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
 
-  gtk_box_pack_start (GTK_BOX (vbox), frame, 
+  // We will put a GtkNotebook that will contain the ILS dir list
+  lw->notebook = gtk_notebook_new ();
+
+  gtk_container_set_border_width (GTK_CONTAINER (lw->notebook), 
+				  GNOME_PAD_SMALL);
+  gtk_box_pack_start (GTK_BOX (vbox), lw->notebook, 
 		      FALSE, FALSE, 0);
 
-  // A new vbox to put in the frame
-  vbox2 = gtk_vbox_new (FALSE, GNOME_PAD_SMALL);  
-  gtk_container_add (GTK_CONTAINER (frame), vbox2);
+  GM_ldap_init_notebook (lw, _("No directory"));
 
-  table = gtk_table_new (2, 10, FALSE);
-
-  gtk_box_pack_start (GTK_BOX (vbox2), table, FALSE, FALSE, 0);
-  gtk_box_pack_start (GTK_BOX (vbox2), entry_table, FALSE, FALSE, 0);
-
-  scroll = gtk_scrolled_window_new (NULL, NULL);
-
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scroll), 
-				  GTK_POLICY_AUTOMATIC,
-				  GTK_POLICY_AUTOMATIC);
-
-  lw->ldap_users_clist = gtk_clist_new_with_titles (8, clist_titles);
-
-  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist), 0, TRUE);
-  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist), 1, TRUE);
-  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist), 2, TRUE);
-  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist), 3, TRUE);
-  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist), 4, TRUE);
-  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist), 5, TRUE);
-  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist), 6, TRUE);
-  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist), 7, TRUE);
-  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist), 8, TRUE);
-
-  gtk_clist_set_shadow_type (GTK_CLIST (lw->ldap_users_clist), GTK_SHADOW_IN);
-
-  gtk_widget_set_usize (GTK_WIDGET (lw->ldap_users_clist), 450, 200);
-  
-  gtk_container_add (GTK_CONTAINER (scroll), lw->ldap_users_clist);
-  gtk_table_attach (GTK_TABLE (table), scroll, 0, 10, 0, 2,
-		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 
-		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
-		    GNOME_PAD_BIG, GNOME_PAD_BIG);
+  // Put the search filter frame at the end
+  frame = gtk_frame_new (_("Search Filter"));
+  gtk_container_add (GTK_CONTAINER (frame), entry_table);
+  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
+  gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
 
   /* Status Bar */
   lw->statusbar = gnome_appbar_new (TRUE, TRUE, GNOME_PREFERENCES_NEVER);
   gtk_container_add (GTK_CONTAINER (vbox), lw->statusbar);
   gtk_container_set_border_width (GTK_CONTAINER (lw->statusbar), 0);
-
 
   /* Signals */
   gtk_signal_connect (GTK_OBJECT (refresh_button), "pressed",
@@ -399,4 +361,53 @@ void GM_ldap_init (GM_window_widgets *gw)
 
   gtk_signal_connect (GTK_OBJECT (gw->ldap_window), "destroy",
 		      GTK_SIGNAL_FUNC (ldap_window_clicked), (gpointer) lw);
+}
+
+
+void GM_ldap_init_notebook (GM_ldap_window_widgets *lw, gchar *text_label)
+{
+  GtkWidget *label;
+  GtkWidget *scroll;
+  gchar * clist_titles [] = 
+    {
+     /* Translators: This is as in "Audio". */
+     N_("A"),
+     /* Translators: This is as in "Video". */
+     N_("V"),
+     N_("First Name"), N_("Last name"), N_("E-mail"), 
+     N_("Location"), N_("Comment"), N_("IP")};
+
+  // Intl
+  for (int i = 0 ; i < 8 ; i++)
+    clist_titles [i] = gettext (clist_titles [i]);
+
+  scroll = gtk_scrolled_window_new (NULL, NULL);
+
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scroll), 
+				  GTK_POLICY_AUTOMATIC,
+				  GTK_POLICY_AUTOMATIC);
+
+  lw->ldap_users_clist = gtk_clist_new_with_titles (8, clist_titles);
+
+  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist), 0, TRUE);
+  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist), 1, TRUE);
+  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist), 2, TRUE);
+  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist), 3, TRUE);
+  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist), 4, TRUE);
+  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist), 5, TRUE);
+  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist), 6, TRUE);
+  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist), 7, TRUE);
+  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist), 8, TRUE);
+
+  gtk_clist_set_shadow_type (GTK_CLIST (lw->ldap_users_clist), GTK_SHADOW_IN);
+
+  gtk_widget_set_usize (GTK_WIDGET (lw->ldap_users_clist), 450, 200);
+  
+  gtk_container_add (GTK_CONTAINER (scroll), lw->ldap_users_clist);
+  gtk_container_set_border_width (GTK_CONTAINER (lw->ldap_users_clist),
+				  GNOME_PAD_SMALL);
+
+  label = gtk_label_new (text_label);
+
+  gtk_notebook_append_page (GTK_NOTEBOOK(lw->notebook), scroll, label);
 }

@@ -424,7 +424,8 @@ void GMILSClient::ils_browse ()
   guint ils_timeout;
 
 
-  ldap_server = gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (lw->ils_server_entry)->entry));
+  ldap_server = gtk_entry_get_text 
+    (GTK_ENTRY (GTK_COMBO (lw->ils_server_combo)->entry));
 
   if (!strcmp (ldap_server, ""))
     {
