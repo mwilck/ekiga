@@ -27,6 +27,13 @@
  *
  */
 
+#undef GTK_ENABLE_BROKEN
+#define G_DISABLE_DEPRECATED					
+#define GDK_DISABLE_DEPRECATED
+#define GTK_DISABLE_DEPRECATED
+#define GDK_PIXBUF_DISABLE_DEPRECATED
+#define GNOME_DISABLE_DEPRECATED	
+
 #include "callbacks.h"
 #include "menu.h"
 #include "common.h"
@@ -98,8 +105,8 @@ static void view_menu_toggles_changed (GtkWidget *widget, gpointer data)
 {
   GConfClient *client = gconf_client_get_default ();
   GnomeUIInfo *notebook_view_uiinfo =
-    (GnomeUIInfo *) gtk_object_get_data (GTK_OBJECT (gm),
-                                         "notebook_view_uiinfo");
+    (GnomeUIInfo *) g_object_get_data (G_OBJECT (gm),
+				       "notebook_view_uiinfo");
 
   /* Only do something when a new CHECK_MENU_ITEM becomes active,
      not when it becomes inactive */
@@ -142,7 +149,7 @@ void gnomemeeting_init_menu ()
 	GNOME_APP_UI_ITEM,
 	N_("_Quit"), N_("Quit GnomeMeeting"),
 	(void *)quit_callback, gw, NULL,
-	GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_QUIT,
+	GNOME_APP_PIXMAP_STOCK, GTK_STOCK_QUIT,
 	'Q', GDK_CONTROL_MASK, NULL
       },
       GNOMEUIINFO_END
@@ -238,7 +245,7 @@ void gnomemeeting_init_menu ()
 	GNOME_APP_UI_ITEM,
 	N_("_Settings"), N_("Change Your Preferences"),
 	(void *) gnomemeeting_component_view, gw->pref_window, NULL,
-	GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_PREF,
+	GNOME_APP_PIXMAP_STOCK, GTK_STOCK_PREFERENCES,
 	's', GDK_CONTROL_MASK, NULL
       },
       GNOMEUIINFO_END
@@ -303,7 +310,7 @@ void gnomemeeting_init_menu ()
 	GNOME_APP_UI_ITEM,
 	N_("_About GnomeMeeting"), N_("View information about GnomeMeeting"),
 	(void *)about_callback, NULL, NULL,
-	GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_ABOUT,
+	GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_ABOUT,
 	'A', GDK_CONTROL_MASK, NULL
       },
       GNOMEUIINFO_END
@@ -321,15 +328,15 @@ void gnomemeeting_init_menu ()
     };
   
   
-  gtk_object_set_data(GTK_OBJECT(gm), "file_menu_uiinfo", file_menu_uiinfo);
-  gtk_object_set_data(GTK_OBJECT(gm), "settings_menu_uiinfo", 
-		      settings_menu_uiinfo);
-  gtk_object_set_data(GTK_OBJECT(gm), "notebook_view_uiinfo", 
-		      notebook_view_uiinfo);
-  gtk_object_set_data(GTK_OBJECT(gm), "view_menu_uiinfo", 
-		      view_menu_uiinfo);
-  gtk_object_set_data(GTK_OBJECT(gm), "call_menu_uiinfo", 
-		      call_menu_uiinfo);
+  g_object_set_data(G_OBJECT(gm), "file_menu_uiinfo", file_menu_uiinfo);
+  g_object_set_data(G_OBJECT(gm), "settings_menu_uiinfo", 
+		    settings_menu_uiinfo);
+  g_object_set_data(G_OBJECT(gm), "notebook_view_uiinfo", 
+		    notebook_view_uiinfo);
+  g_object_set_data(G_OBJECT(gm), "view_menu_uiinfo", 
+		    view_menu_uiinfo);
+  g_object_set_data(G_OBJECT(gm), "call_menu_uiinfo", 
+		    call_menu_uiinfo);
 
   gnome_app_create_menus (GNOME_APP (gm), main_menu_uiinfo);
   gnome_app_install_menu_hints (GNOME_APP (gm), main_menu_uiinfo);
@@ -463,7 +470,7 @@ void gnomemeeting_popup_menu_init (GtkWidget *widget, GM_window_widgets *gw)
   GTK_CHECK_MENU_ITEM (zoom_uiinfo [1].widget)->active = TRUE;
   GTK_CHECK_MENU_ITEM (zoom_uiinfo [2].widget)->active = FALSE;
 
-  gtk_object_set_data (GTK_OBJECT (gm), "display_uiinfo", 
-		       display_uiinfo);
+  g_object_set_data (G_OBJECT (gm), "display_uiinfo", 
+		     display_uiinfo);
 }
 
