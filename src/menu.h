@@ -35,18 +35,20 @@
 #define CONNECT_CALL_MENU_INDICE 1
 #define DND_CALL_MENU_INDICE 4
 #define AA_CALL_MENU_INDICE 5
-#define AUDIO_PAUSE_CALL_MENU_INDICE 7
-#define VIDEO_PAUSE_CALL_MENU_INDICE 8
-#define DRUID_EDIT_MENU_INDICE 14
-#define CHAT_WINDOW_VIEW_MENU_INDICE 18
-#define STATUS_BAR_VIEW_MENU_INDICE 19
-#define CONTROL_PANEL_VIEW_MENU_INDICE 21
-#define VIDEO_VIEW_MENU_INDICE 27
-#define MICROTELCO1_TOOLS_MENU_INDICE 43
-#define MICROTELCO2_TOOLS_MENU_INDICE 44
-#define ZOOM_VIEW_MENU_INDICE 33
-#define FULLSCREEN_VIEW_MENU_INDICE 37
-#define ABOUT_HELP_MENU_INDICE 46
+#define HOLD_CALL_MENU_INDICE 7
+#define TRANSFERT_CALL_MENU_INDICE 8
+#define AUDIO_PAUSE_CALL_MENU_INDICE 10
+#define VIDEO_PAUSE_CALL_MENU_INDICE 11
+#define DRUID_EDIT_MENU_INDICE 17
+#define CHAT_WINDOW_VIEW_MENU_INDICE 21
+#define STATUS_BAR_VIEW_MENU_INDICE 22
+#define CONTROL_PANEL_VIEW_MENU_INDICE 24
+#define VIDEO_VIEW_MENU_INDICE 30
+#define ZOOM_VIEW_MENU_INDICE 36
+#define FULLSCREEN_VIEW_MENU_INDICE 40
+#define MICROTELCO1_TOOLS_MENU_INDICE 46
+#define MICROTELCO2_TOOLS_MENU_INDICE 47
+#define ABOUT_HELP_MENU_INDICE 49
 
 
 struct _MenuEntry {
@@ -163,10 +165,11 @@ void gnomemeeting_call_menu_connect_set_sensitive (int, bool);
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Enable/disable sensitivity (bool) of pause audio/video.
+ * BEHAVIOR     :  Enable/disable sensitivity (bool) of call relative functions
+ *                 that can only enabled when a call is established.
  * PRE          :  true/false
  */
-void gnomemeeting_call_menu_pause_set_sensitive (bool);
+void gnomemeeting_call_menu_functions_set_sensitive (bool);
 
 
 /* DESCRIPTION  :  /

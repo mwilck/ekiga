@@ -34,6 +34,8 @@
 #include "gnomemeeting.h"
 #include "misc.h"
 #include "stock-icons.h"
+#include "connection.h"
+#include "endpoint.h"
 
 #include <gtk/gtkwidget.h>
 #include <gconf/gconf-client.h>
@@ -52,6 +54,7 @@ static void microtelco_consult_cb (GtkWidget *, gpointer);
 static gint popup_menu_callback (GtkWidget *, GdkEventButton *, gpointer);
 static void menu_item_selected (GtkWidget *, gpointer);
 static void zoom_changed_callback (GtkWidget *, gpointer);
+static void hold_call_callback (GtkWidget *, gpointer);
 static void fullscreen_changed_callback (GtkWidget *, gpointer);
 
 static void video_view_changed_callback (GtkWidget *, gpointer);
@@ -186,6 +189,54 @@ zoom_changed_callback (GtkWidget *widget, gpointer data)
   gconf_client_set_float (client, 
 			  "/apps/gnomemeeting/video_display/zoom_factor", 
 			  zoom, 0);
+}
+
+
+/* DESCRIPTION  :  
+ *                 
+ * BEHAVIOR     :  
+ *                 
+ * PRE          :  /
+ */
+static void 
+hold_call_callback (GtkWidget *widget, gpointer data)
+{
+  GtkWidget *child = NULL;
+  MenuEntry *gnomemeeting_menu = NULL;
+  
+  H323Connection *connection = NULL;
+  GMH323EndPoint *endpoint = NULL;
+  PString current_call_token;
+  
+  endpoint = MyApp->Endpoint ();
+  current_call_token = endpoint->GetCurrentCallToken ();
+  gnomemeeting_menu = gnomemeeting_get_menu (gm);
+  
+  if (!current_call_token.IsEmpty ())
+    connection =
+      endpoint->FindConnectionWithLock (current_call_token);
+
+  if (connection) {
+
+    child = GTK_BIN (gnomemeeting_menu [HOLD_CALL_MENU_INDICE].widget)->child;
+    
+    if (!connection->IsCallOnHold ()) {
+
+      if (GTK_IS_LABEL (child))
+	gtk_label_set_text_with_mnemonic (GTK_LABEL (child),
+					  _("_Retrieve Call"));
+      connection->HoldCall (TRUE);
+    }
+    else {
+      
+      if (GTK_IS_LABEL (child))
+	gtk_label_set_text_with_mnemonic (GTK_LABEL (child),
+					  _("_Hold Call"));
+      connection->RetrieveCall ();
+    }
+
+    connection->Unlock ();
+  }
 }
 
 
@@ -448,6 +499,18 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 
       {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
 
+      {_("_Hold Call"), _("Hold the current call"),
+       NULL, 0, MENU_ENTRY, 
+       GTK_SIGNAL_FUNC (hold_call_callback),
+       (gpointer) gw, NULL},
+
+      {_("_Transfert Call"), _("Transfert the current call"),
+       NULL, 0, MENU_ENTRY, 
+       GTK_SIGNAL_FUNC (pause_video_callback),
+       (gpointer) gw, NULL},
+
+      {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
+
       {_("_Audio Mute"), _("Mute the audio transmission"),
        NULL, 0, MENU_ENTRY, 
        GTK_SIGNAL_FUNC (pause_audio_callback),
@@ -667,8 +730,8 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
   /* Disable disconnect */
   gnomemeeting_call_menu_connect_set_sensitive (1, FALSE);
 
-  /* Pause is unsensitive when not in a call */
-  gnomemeeting_call_menu_pause_set_sensitive (FALSE);
+  /* Call functions are unsensitive when not in a call */
+  gnomemeeting_call_menu_functions_set_sensitive (FALSE);
 
 #ifdef DISABLE_GNOME
   gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [DRUID_EDIT_MENU_INDICE].widget), FALSE);
@@ -961,12 +1024,14 @@ gnomemeeting_call_menu_connect_set_sensitive (int i, bool b)
 
 
 void
-gnomemeeting_call_menu_pause_set_sensitive (bool b)
+gnomemeeting_call_menu_functions_set_sensitive (bool b)
 {
   MenuEntry *gnomemeeting_menu = gnomemeeting_get_menu (gm);
 
   gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [AUDIO_PAUSE_CALL_MENU_INDICE].widget), b);
   gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [VIDEO_PAUSE_CALL_MENU_INDICE].widget), b);
+  gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [HOLD_CALL_MENU_INDICE].widget), b);
+  gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [TRANSFERT_CALL_MENU_INDICE].widget), b);
 }
 
 
