@@ -1292,7 +1292,7 @@ static void gnomemeeting_init_pref_window_devices (GtkWidget *notebook)
     gnomemeeting_pref_window_add_int_option_menu (table, _("Video Format:"), video_format, "/apps/gnomemeeting/devices/video_format", _("Here you can choose the transmitted video format."), 4);
 
   pw->video_preview =
-    gnomemeeting_pref_window_add_toggle (table, _("Video Preview"), "/apps/gnomemeeting/devices/video_preview", _("If enabled, the video preview mode will be set at started even if you are not in a call."), 5, 0);
+    gnomemeeting_pref_window_add_toggle (table, _("Video Preview"), "/apps/gnomemeeting/devices/video_preview", _("If enabled, the video preview mode will be set activated and you will be able to see yourself without being in a call."), 5, 0);
 
 }
 

@@ -939,18 +939,6 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   GTK_TOGGLE_BUTTON (gw->audio_chan_button)->active = FALSE;
   GTK_TOGGLE_BUTTON (gw->video_chan_button)->active = FALSE;
 
-  GtkWidget *object = (GtkWidget *) g_object_get_data (G_OBJECT (gm),
-						       "display_uiinfo");
-
-  GnomeUIInfo *display_uiinfo = (GnomeUIInfo *) object;
-  
-  GTK_CHECK_MENU_ITEM (display_uiinfo [0].widget)->active = TRUE;
-  GTK_CHECK_MENU_ITEM (display_uiinfo [1].widget)->active = FALSE;
-  GTK_CHECK_MENU_ITEM (display_uiinfo [2].widget)->active = FALSE;
-  gtk_widget_queue_draw (GTK_WIDGET (display_uiinfo [0].widget));
-  gtk_widget_queue_draw (GTK_WIDGET (display_uiinfo [1].widget));
-  gtk_widget_queue_draw (GTK_WIDGET (display_uiinfo [2].widget));
-
   gnomemeeting_threads_leave ();
 
   /* Try to update the config if some settings were changed during the call */

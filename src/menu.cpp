@@ -281,7 +281,7 @@ void gnomemeeting_init_menu ()
       },
       {
 	GNOME_APP_UI_ITEM,
-	N_("Remote Remote"), N_("Remote Video Image"),
+	N_("Remote Video"), N_("Remote Video Image"),
 	(void *) popup_menu_remote_callback, NULL, NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	0, GDK_CONTROL_MASK, NULL
