@@ -2020,9 +2020,6 @@ int main (int argc, char ** argv, char ** envp)
 			y, NULL);
 
 
-  /* Hide the gm widget and deletes them */
-  gtk_widget_hide (GTK_WIDGET (gm));
-
   gdk_threads_leave ();
 
   delete (gw);

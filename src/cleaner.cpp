@@ -80,8 +80,9 @@ void GMThreadsCleaner::Main ()
   gnomemeeting_statusbar_push (gw->statusbar, _("Quit in progress..."));
 
   /* Synchronous End of Call */
-  endpoint->ClearCall (endpoint->GetCurrentCallToken (), 
-		       H323Connection::EndedByLocalUser);
+  if (endpoint->GetCallingState () != 0)
+    endpoint->ClearCall (endpoint->GetCurrentCallToken (), 
+			 H323Connection::EndedByLocalUser);
 
   gnomemeeting_threads_leave ();
 
@@ -91,6 +92,9 @@ void GMThreadsCleaner::Main ()
   delete (endpoint);
 
   gnomemeeting_threads_enter ();
+
   gtk_main_quit ();
+  PThread::Current ()->Sleep (5000);
+
   gnomemeeting_threads_leave ();
 }

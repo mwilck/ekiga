@@ -190,7 +190,7 @@ void gnomemeeting_init_main_window_logo (GtkWidget *image)
 
 
 /* This function overrides from a pwlib function */
-#ifdef STATIC_LIBS_USED
+#ifndef STATIC_LIBS_USED
 void 
 PAssertFunc (const char *file, int line, 
 	     const char *className, const char *msg)
@@ -206,6 +206,8 @@ PAssertFunc (const char *file, int line,
   gnomemeeting_error_dialog (GTK_WINDOW (gm), 
 			     _("Error: %s\n"), msg);
   gnomemeeting_threads_leave ();
+
+  cout << msg << endl << flush;
 
   inAssert = FALSE;
 
@@ -317,7 +319,7 @@ gnomemeeting_statusbar_flash (GtkWidget *widget, const char *msg, ...)
 
   msg_id = gtk_statusbar_push (GTK_STATUSBAR (widget), id, buffer);
 
-  timeout_id = gtk_timeout_add (7000, statusbar_clear_msg, 
+  timeout_id = gtk_timeout_add (4000, statusbar_clear_msg, 
 				GINT_TO_POINTER (msg_id));
 
   va_end (args);
@@ -735,7 +737,8 @@ gnomemeeting_vbox_add_table (GtkWidget *vbox,
   GtkWidget *table;                                                            
                                                                                
   frame = gtk_frame_new (frame_name);                                          
-                                                                               
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
+
   gtk_box_pack_start (GTK_BOX (vbox), frame,                                   
                       FALSE, FALSE, 0);                                        
                                                                                
