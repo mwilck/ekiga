@@ -91,7 +91,8 @@ GMH323EndPoint::GMH323EndPoint ()
   received_video_device = NULL;
   transmitted_video_device = NULL;
 
-  /* We can add this capability here as it will remain the whole life of the EP */
+  /* We can add this capability here as it will remain 
+     the whole life of the EP */
   H323_UserInputCapability::AddAllCapabilities(capabilities, 0, P_MAX_INDEX);
 
   /* General Configuration */
@@ -854,11 +855,11 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   /* Reset the Video Grabber, if preview, else close it */
   GMVideoGrabber *vg = (GMVideoGrabber *) video_grabber;
-
   if (gconf_client_get_bool (client, "/apps/gnomemeeting/devices/video_preview", 0)) {
 
     vg->Close (TRUE);
-    vg->Open (TRUE, TRUE); /* Grab and do a synchronous opening in this thread */
+    vg->Open (TRUE, TRUE); /* Grab and do a synchronous opening
+			      in this thread */
   }
   else {
     

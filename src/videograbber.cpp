@@ -65,6 +65,7 @@ GMVideoGrabber::GMVideoGrabber ()
   /* Initialisation */
   grabber = NULL;
   client = gconf_client_get_default ();
+  color_format = NULL;
   video_device = NULL;
   video_channel = 0;
   video_size = 0;
@@ -463,7 +464,7 @@ void GMVideoGrabber::VGOpen (void)
     if (!grabber->Open (video_device, FALSE))
       error_code = 0;
     else
-      if (!grabber->SetVideoDeviceParameters (video_channel, video_format))
+      if (!grabber->SetVideoChannelFormat (video_channel, video_format))
 	error_code = 2;
     else
       if (!grabber->SetColourFormatConverter ("YUV420P"))
@@ -595,6 +596,7 @@ void GMVideoGrabber::VGClose (int display_logo)
   opened = is_opened;
   var_mutex.Signal ();
 
+
   if (opened) {
 
     var_mutex.Wait ();
@@ -607,11 +609,8 @@ void GMVideoGrabber::VGClose (int display_logo)
     gtk_widget_set_sensitive (GTK_WIDGET (pw->video_preview), FALSE);
     gnomemeeting_threads_leave ();
     
-    grabbing_mutex.Wait ();
-    grabber->Close ();
-    grabbing_mutex.Signal ();
-
-    delete (channel);
+    if (channel) 
+      delete (channel);
 
     var_mutex.Wait ();
     has_to_close = 0;
