@@ -827,7 +827,7 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   case H323Connection::EndedByHostOffline :
     gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-		       _("Remote partt is offline"));
+		       _("Remote party is offline"));
     break;
 
   case H323Connection::EndedByConnectFail :
