@@ -134,8 +134,6 @@ void GMVideoGrabber::Main ()
 
  	VGClose (0);
  	UpdateConfig ();
-	/* Wait a bit, some drivers can be buggy and not support close/open */
-	PThread::Current ()->Sleep (500);
  	VGOpen ();
  	is_grabbing = 1;
       }
@@ -149,18 +147,17 @@ void GMVideoGrabber::Main ()
 
     if (is_grabbing == 1) {
 
+      device_mutex.Wait ();
       grabbing_mutex.Wait ();
       
-      channel->Read (video_buffer, height * width * 3);
-      channel->Write (video_buffer, height * width * 3);
-      
-      grabbing_mutex.Signal ();
+      if (IsOpened ()) {
 
-      if (encoding_device) {
-	
-	/* Wait that the redraw has finished, then continue */
-	encoding_device->Wait ();
+	channel->Read (video_buffer, height * width * 3);
+	channel->Write (video_buffer, height * width * 3);
       }
+    
+      grabbing_mutex.Signal ();
+      device_mutex.Signal ();
     }
 
     Current()->Sleep (50);
@@ -280,12 +277,6 @@ void GMVideoGrabber::Start (void)
 
 void GMVideoGrabber::Stop (void)
 {
-  if (encoding_device != NULL) {
-
-    /* Wait that the redraw has terminated */
-    encoding_device->Wait ();
-  }
-  
   is_grabbing = 0;
   grabbing_mutex.Wait ();
   grabbing_mutex.Signal ();
@@ -373,6 +364,7 @@ void GMVideoGrabber::SetFrameSize (int height, int width)
   }
 }
 
+
 void GMVideoGrabber::SetChannel (int cnum)
 {
   if (grabber != NULL)
@@ -419,14 +411,11 @@ void GMVideoGrabber::VGOpen (void)
     if (!grabber->Open (video_device, FALSE))
       error_code = 0;
     else
+      if (!grabber->SetVideoDeviceParameters (video_channel, video_format))
+	error_code = 2;
+    else
       if (!grabber->SetColourFormatConverter ("YUV420P"))
 	error_code = 3;
-    else 
-      if (!grabber->SetVideoFormat (video_format))
-	error_code = 1;
-    else
-      if (!grabber->SetChannel (video_channel))
-	error_code = 2;
     else
       if (!grabber->SetFrameRate (tr_fps))
 	error_code = 4;
@@ -466,8 +455,7 @@ void GMVideoGrabber::VGOpen (void)
 	break;
 
       case 2:
-	msg = g_strconcat (msg, "\n", _("Could not open the chosen channel."),
-			   NULL);
+	msg = g_strconcat (msg, "\n", _("Could not open the chosen channel with the chosen video format."), NULL);
 	break;
       
       case 3:
@@ -483,9 +471,7 @@ void GMVideoGrabber::VGOpen (void)
 	break;
       }
 
-      GtkWidget *msg_box = gnome_message_box_new (msg, GNOME_MESSAGE_BOX_ERROR, 
-						  GNOME_STOCK_BUTTON_OK, NULL);
-      gtk_widget_show (msg_box);
+      gnomemeeting_warning_popup (gw->preview_button, msg);
       g_free (msg);
       gnomemeeting_threads_leave ();
 
@@ -495,8 +481,8 @@ void GMVideoGrabber::VGOpen (void)
       grabber = new PFakeVideoInputDevice();
       grabber->SetColourFormatConverter ("YUV420P");
       grabber->SetVideoFormat (PVideoDevice::PAL);
-      grabber->SetChannel (150);    
-      grabber->SetFrameRate (10);
+      grabber->SetChannel (1);    
+      grabber->SetFrameRate (30);
       grabber->SetFrameSize (height, width);
     }
 
@@ -561,9 +547,6 @@ void GMVideoGrabber::VGClose (int display_logo)
     grabber->Close ();
     grabbing_mutex.Signal ();
 
-    /* Just wait that it has unlocked */
-    encoding_device->Wait ();
-
     delete (channel);
     has_to_close = 0;
     is_opened = 0;
@@ -579,6 +562,8 @@ void GMVideoGrabber::VGClose (int display_logo)
     if (display_logo)
       gnomemeeting_init_main_window_logo ();
 
+    gnome_appbar_push (GNOME_APPBAR (gw->statusbar), _("Video Device Closed"));
+    
     /* Disable the video settings frame */
     gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame),
 			      FALSE);
@@ -589,6 +574,10 @@ void GMVideoGrabber::VGClose (int display_logo)
     grabber = NULL;
     channel = NULL;
   }
+
+  /* Quick Hack for buggy drivers that return from the ioctl before the device
+     is really closed */
+  PThread::Current ()->Sleep (500);
 
   device_mutex.Signal ();
 }

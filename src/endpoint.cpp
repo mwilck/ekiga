@@ -48,6 +48,8 @@
 #include <gconf/gconf-client.h>
 #include <esd.h>
 
+#include <g726codec.h>
+
 #define new PNEW
 
 
@@ -73,39 +75,11 @@ GMH323EndPoint::GMH323EndPoint ()
   docklet_timeout = 0;
   sound_timeout = 0;
 
-  lid = NULL;
-  lid_thread = NULL;
-
   /* Start the ILSClient PThread, do not register to it */
   ils_client = new GMILSClient ();
 
   /* Start the video grabber thread */
   video_grabber = new GMVideoGrabber ();
-
-
-/* START OF HARD CODED VALUES */
-// BOOL quicknet_selected = TRUE;
- BOOL quicknet_selected = FALSE;
-
- PString quicknet_device = "/dev/phone0";
-/* END OF HARD CODED VALUES */
-
-  /* Open the quicknet device */
-  if (quicknet_selected) {
-    lid = new OpalIxJDevice;
-    if (lid->Open(quicknet_device)) {
-      cout << "Using Quicknet " << lid->GetName() << endl;
-      lid->SetLineToLineDirect(0, 1, FALSE);
-      lid->EnableAudio(0, TRUE); /* Enable the POTS Telephone handset */
-      /* ALSO SET COUNTRY CODE, VOLUMES, AGC, AEC */
-      lid_thread = PThread::Create(PCREATE_NOTIFIER(LidThread), 0,
-                                   PThread::NoAutoDeleteThread,
-                                   PThread::NormalPriority,
-                                   "LidHookMonitor");
-    } else {
-      cerr << "Could not open " << quicknet_device << endl;
-    }
-  }
 
   /* The gconf client */
   client = gconf_client_get_default ();
@@ -125,14 +99,9 @@ GMH323EndPoint::GMH323EndPoint ()
 
 GMH323EndPoint::~GMH323EndPoint ()
 {
-  /* We do not delete the webcam and the ils_client
-     and the lid threads here, but in the Cleaner thread
-     that is called when the user chooses to quit... */
-
-  if (lid != NULL) {
-    lid->Close();
-  }
-
+  /* We do not delete the webcam and the ils_client 
+     threads here, but in the Cleaner thread that is
+     called when the user chooses to quit... */
 }
 
 
@@ -318,20 +287,8 @@ void GMH323EndPoint::AddAudioCapabilities ()
 {
   gchar **codecs;
   gchar *clist_data = NULL;
-  BOOL use_pcm16_codecs = TRUE;
 
-#ifdef HAS_IXJ
-  /* Add the audio capabilities provided by the LID Hardware */
-  if ((lid != NULL) && lid->IsOpen()) {
-    H323_LIDCapability::AddAllCapabilities(*lid, capabilities, 0, 0);
-    gnomemeeting_log_insert (_("Added hardware audio capabilities"));
-
-    /* If the LID can do PCM16 we can use the software codecs like GSM too */
-    use_pcm16_codecs = lid->GetMediaFormats().GetValuesIndex(OpalMediaFormat(OPAL_PCM16)) != P_MAX_INDEX;
-  }
-#endif
-
-
+  
   /* Add or not the audio capabilities */ 
   clist_data = gconf_client_get_string (client, "/apps/gnomemeeting/audio_codecs/list", NULL);
   
@@ -342,7 +299,7 @@ void GMH323EndPoint::AddAudioCapabilities ()
 
 
   /* Let's go */
-  for (int i = 0 ; (codecs [i] != NULL) && (use_pcm16_codecs) ; i++) {
+  for (int i = 0 ; codecs [i] != NULL ; i++) {
     
     gchar **couple = g_strsplit (codecs [i], "=", 0);
 
@@ -383,6 +340,24 @@ void GMH323EndPoint::AddAudioCapabilities ()
       codecs_count++;
 
       gsm_capa->SetTxFramesInPacket (gsm_frames);
+    }
+
+    if ((!strcmp (couple [0], "G.726-16k"))&&(!strcmp (couple [1], "1"))) {
+      
+      H323_G726_Capability * g72616_capa; 
+      
+      SetCapability (0, 0, g72616_capa = 
+		     new H323_G726_Capability (*this, H323_G726_Capability::e_16k));
+      codecs_count++;
+    }
+
+    if ((!strcmp (couple [0], "G.726-32k"))&&(!strcmp (couple [1], "1"))) {
+      
+      H323_G726_Capability * g72632_capa; 
+      
+      SetCapability (0, 0, g72632_capa = 
+		     new H323_G726_Capability (*this, H323_G726_Capability::e_32k));	
+      codecs_count++;
     }
 
     if ((!strcmp (couple [0], "LPC10"))&&(!strcmp (couple [1], "1"))) {
@@ -590,14 +565,7 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
     connection.ClearCall(H323Connection::EndedByLocalBusy);   
     return FALSE;
   }
-
-  SetCallingState (3);
-
-  /* If we have a LID, make it ring */
-  if ((lid != NULL) && (lid->IsOpen())) {
-    lid->RingLine(OpalIxJDevice::POTSLine, 0x33);
-  }
-
+  
   current_connection = FindConnectionWithLock
     (connection.GetCallToken ());
   current_connection->Unlock ();
@@ -676,11 +644,6 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   const char * remoteApp = (const char *) app;
   char *msg;
 
-  /* If we have a LID, make sure it is no longer ringing */
-  if ((lid != NULL) && (lid->IsOpen())) {
-    lid->RingLine(OpalIxJDevice::POTSLine, 0);
-  }
-
   gnomemeeting_threads_enter ();
 
   msg = g_strdup_printf (_("Connected with %s using %s"), 
@@ -728,7 +691,7 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   
   gnomemeeting_threads_leave ();
 
-  SetCallingState (2);
+  calling_state = 2;
 
   g_free (msg);
 }
@@ -833,12 +796,6 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   gnomemeeting_log_insert (_("Call completed"));
 
   gnomemeeting_threads_leave ();
-
-
-  /* make sure the LID is not ringing, incase we Aborted an incoming call */
-  if ((lid != NULL) && (lid->IsOpen())) {
-    lid->RingLine(OpalIxJDevice::POTSLine, 0);
-  }
 
 
  /* If we are called because the current call has ended and not another
@@ -957,16 +914,7 @@ BOOL GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
 
   gnomemeeting_threads_leave ();
 
-  /* If we are using a hardware LID, connect the audio stream to the LID */
-  if ((lid != NULL) && lid->IsOpen()) {
-    cerr << "Attaching lid hardware to codec " << codec << endl;
-    if (!codec.AttachChannel(new OpalLineChannel(*lid,
-                                 OpalIxJDevice::POTSLine,codec))) {
-      return FALSE;
-    }
-    return TRUE;
-  }
-
+  
   /* Put esd into standby mode */
   esd_client = esd_open_sound (NULL);
   esd_standby (esd_client);
@@ -1092,65 +1040,3 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
       return FALSE;    
   }
 }
-
-PThread *GMH323EndPoint::GetLidThread (void)
-{
-#ifdef HAS_IXJ
-  return lid_thread;
-#else
-  return NULL;
-#endif
-}
-
-#ifdef HAS_IXJ
-void GMH323EndPoint::LidThread (PThread &, INT)
-{
-  cout << "Lid hook monitoring thread started" << endl;
-
-  BOOL OffHook, lastOffHook;
-
-  /* Check the initial hook status. */
-  OffHook = lastOffHook = lid->IsLineOffHook( OpalIxJDevice::POTSLine );
-
-  /* OffHook can take a few cycles to settle, so on the first pass */
-  /* assume we are off-hook and play a dial tone. */
-  lid->PlayTone(0, OpalLineInterfaceDevice::DialTone);
-
-  while ((lid != NULL) && (lid->IsOpen()) )
-  {
-    OffHook = lid->IsLineOffHook( OpalIxJDevice::POTSLine );
-
-    if ((OffHook == TRUE) && (lastOffHook == FALSE)) {
-      cout << "off hook - " << GetCallingState() << endl;
-      if (GetCallingState() == 3) { /* 3 = incoming call */
-        cout << "calling connect cb " << endl;
-        lid->RingLine(OpalIxJDevice::POTSLine, 0);
-//        gnomemeeting_threads_enter ();
-//        gtk_widget_hide (gw->incoming_call_popup);
-//        gnomemeeting_threads_leave ();
-        connect_cb(NULL,NULL);
-      }
-      if (GetCallingState() == 0) { /* not connected */
-        cout << "play dialtone" << endl;
-        lid->PlayTone(0, OpalLineInterfaceDevice::DialTone);
-      }
-    }
-
-    if ((OffHook == FALSE) && (lastOffHook == TRUE)) {
-      cout << "on hook - " << GetCallingState() << endl;
-      if (GetCallingState() == 2) { /* 2 = currently in a call */
-        disconnect_cb(NULL,NULL);
-      }
-    }
-
-    lastOffHook = OffHook;
-
-    /* We must poll to read the hook state */
-    PThread::Sleep(50);
-
-  }
-
-  cout << "Lid hook monitoring thread finished" << endl;
-
-}
-#endif

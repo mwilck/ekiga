@@ -87,13 +87,6 @@ class GDKVideoOutputDevice : public H323VideoDevice
   virtual BOOL Redraw(const void * frame);
 
 
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Wait that the redraw is done then returns.
-   * PRE          :  /
-   */
-  void Wait ();
-
-
   protected:
 
   /* Same as in H323VideoDevice */

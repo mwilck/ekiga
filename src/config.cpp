@@ -1393,6 +1393,42 @@ static gboolean register_changed (gpointer data)
     }
     g_free (gconf_string);
 
+    
+    /* Check if there is a surname */
+    gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
+					     "/apps/gnomemeeting/personal_data/lastname", NULL);
+
+    if ((gconf_string == NULL) || (!strcmp (gconf_string, ""))) {
+      
+      msg_box = gnome_message_box_new (_("Not Registering: Please provide your last name!"), GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
+      no_error = FALSE;
+    }
+    g_free (gconf_string);
+
+
+    /* Check if there is a comment */
+    gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
+					     "/apps/gnomemeeting/personal_data/comment", NULL);
+
+    if ((gconf_string == NULL) || (!strcmp (gconf_string, ""))) {
+      
+      msg_box = gnome_message_box_new (_("Not Registering: Please provide a comment!"), GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
+      no_error = FALSE;
+    }
+    g_free (gconf_string);
+
+
+    /* Check if there is a location */
+    gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
+					     "/apps/gnomemeeting/personal_data/location", NULL);
+
+    if ((gconf_string == NULL) || (!strcmp (gconf_string, ""))) {
+      
+      msg_box = gnome_message_box_new (_("Not Registering: Please provide a location!"), GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
+      no_error = FALSE;
+    }
+    g_free (gconf_string);
+
 
     /* Check if there is a mail */
     gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
@@ -1598,7 +1634,7 @@ void gnomemeeting_init_gconf (GConfClient *client)
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/personal_data/firstname",
 			   entry_changed_nt, pw->firstname, 0, 0);
-  
+
   gconf_client_notify_add (client, "/apps/gnomemeeting/personal_data/mail",
 			   entry_changed_nt, pw->mail, 0, 0);
 

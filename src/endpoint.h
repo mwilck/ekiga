@@ -40,9 +40,6 @@
 #include <videoio.h>
 #include <gnome.h>
 #include <lpc10codec.h>
-#ifdef HAS_IXJ
-#include <ixjlid.h>
-#endif
 #include <pthread.h>
 
 #include "common.h"
@@ -207,7 +204,6 @@ class GMH323EndPoint : public H323EndPoint
    *                   0 : not in a call
    *                   1 : calling somebody
    *                   2 : currently in a call 
-   *                   3 : incoming call
    * PRE          :  /
    */
   void SetCallingState (int);
@@ -218,7 +214,6 @@ class GMH323EndPoint : public H323EndPoint
    *                   0 : not in a call
    *                   1 : calling somebody
    *                   2 : currently in a call 
-   *                   3 : incoming call
    * PRE          :  /
    */
   int GetCallingState (void);
@@ -315,12 +310,6 @@ class GMH323EndPoint : public H323EndPoint
   PThread* GetILSClient ();
 
 
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Return the current Lid Thread.
-   * PRE          :  /
-   */
-  PThread* GetLidThread ();
-
  protected:
   
   PString current_call_token;  
@@ -339,12 +328,6 @@ class GMH323EndPoint : public H323EndPoint
   PThread *ils_client;
   PThread *video_grabber;
   GConfClient *client;
-
-#ifdef HAS_IXJ
-  OpalLineInterfaceDevice *lid;
-  PDECLARE_NOTIFIER(PThread, GMH323EndPoint, LidThread);
-  PThread *lid_thread;
-#endif
 };
 
 #endif

@@ -85,19 +85,23 @@ void gnomemeeting_component_view (GtkWidget *w, gpointer data)
 
 void connect_cb (GtkWidget *widget, gpointer data)
 {	
-  MyApp->Connect ();
+  if (MyApp->Endpoint ()->GetCallingState () == 0)
+    MyApp->Connect ();
 }
 
 
 void disconnect_cb (GtkWidget *widget, gpointer data)
 {	
-  GMH323Connection *connection = 
-    (GMH323Connection *) MyApp->Endpoint ()->GetCurrentConnection ();
-	
-  if (connection != NULL)
-    connection->UnPauseChannels ();
+  if (MyApp->Endpoint ()->GetCallingState () != 0) {
 
-  MyApp->Disconnect ();
+    GMH323Connection *connection = 
+      (GMH323Connection *) MyApp->Endpoint ()->GetCurrentConnection ();
+	
+    if (connection != NULL)
+      connection->UnPauseChannels ();
+
+    MyApp->Disconnect ();
+  }
 }
 
 

@@ -78,7 +78,6 @@ GDKVideoOutputDevice::GDKVideoOutputDevice(int idno, GM_window_widgets *w)
 }
 
 
-
 GDKVideoOutputDevice::~GDKVideoOutputDevice()
 {
   redraw_mutex.Wait ();
@@ -258,8 +257,3 @@ BOOL GDKVideoOutputDevice::WriteLineSegment(int x, int y, unsigned len,
 }
 
 
-void GDKVideoOutputDevice::Wait (void)
-{
-  redraw_mutex.Wait ();
-  redraw_mutex.Signal ();
-}
