@@ -47,7 +47,7 @@
 #include "misc.h"
 #include "dialog.h"
 #include "stock-icons.h"
-
+#include "calls_history_window.h"
 
 /* Declarations */
 extern GtkWidget *gm;
@@ -268,13 +268,13 @@ dnd_drag_motion_cb (GtkWidget *tree_view,
   gchar *contact_url = NULL;
 
   GmLdapWindow *lw = NULL;
-  GmCallsHistoryWindow *chw = NULL;
+  GmCallsHistory *chw = NULL;
   
   GValue value =  {0, };
   GtkTreeIter iter;
 
   lw = GnomeMeeting::Process ()->GetLdapWindow ();
-  chw = GnomeMeeting::Process ()->GetCallsHistoryWindow ();
+  chw = (GmCallsHistory *)g_object_get_data (G_OBJECT (GnomeMeeting::Process ()->GetCallsHistoryWindow ()), "GMObject");
   
   src_widget = gtk_drag_get_source_widget (context);
   src_model = gtk_tree_view_get_model (GTK_TREE_VIEW (src_widget));

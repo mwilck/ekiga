@@ -43,12 +43,12 @@
 #include "urlhandler.h"
 #include "gnomemeeting.h"
 #include "misc.h"
+#include "calls_history_window.h"
 #include "log_window.h"
 #include "ldap_window.h"
 #include "main_window.h"
 #include "toolbar.h"
 #include "menu.h"
-#include "tools.h"
 
 #include "dialog.h"
 #include "gm_conf.h"
@@ -375,7 +375,8 @@ void GMURLHandler::Main ()
 	
 	gnomemeeting_statusbar_flash (gw->statusbar, _("User not found"));
 	if (!transfer_call)
-	  gnomemeeting_calls_history_window_add_call (1,
+	  gnomemeeting_calls_history_window_add_call (gw->calls_history_window,
+						      1,
 						      NULL,
 						      call_address, 
 						      "0.00",

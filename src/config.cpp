@@ -51,6 +51,7 @@
 #include "pref_window.h"
 #include "ldap_window.h"
 #include "log_window.h"
+#include "calls_history_window.h"
 #include "tray.h"
 #include "misc.h"
 #include "tools.h"
@@ -1462,12 +1463,14 @@ calls_history_changed_nt (gpointer id,
                           GmConfEntry *entry,
                           gpointer data)
 {
-  if (gm_conf_entry_get_type (entry) == GM_CONF_LIST) {
+  GmWindow *gw = NULL;
 
-    gdk_threads_enter ();
-    gnomemeeting_calls_history_window_populate ();
-    gdk_threads_leave ();
-  }
+  g_return_if_fail (gm_conf_entry_get_type (entry) == GM_CONF_LIST);
+
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
+  gdk_threads_enter ();
+  gnomemeeting_calls_history_window_populate (gw->calls_history_window);
+  gdk_threads_leave ();
 }
 
 

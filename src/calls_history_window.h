@@ -27,25 +27,60 @@
 
 
 /*
- *                         tools.h  -  description
+ *                         calls_history_window.h  -  description
  *                         -----------------------
  *   begin                : Sun Sep 1 2002
  *   copyright            : (C) 2000-2004 by Damien Sandras 
- *   description          : This file contains functions to build the simple
- *                          tools of the tools menu.
- *
+ *   description          : This file declares functions to manage the
+ *                          calls history
  */
 
+#ifndef _CALLS_HISTORY_WINDOW_H_
+#define _CALLS_HISTORY_WINDOW_H_
 
-#ifndef _TOOLS_H_
-#define _TOOLS_H_
+enum {
+  RECEIVED_CALL,
+  PLACED_CALL,
+  MISSED_CALL,
+  MAX_VALUE_CALL // hackish... sorry... just keep it last
+};
 
-#include "common.h"
+typedef struct _GmCallsHistory GmCallsHistory;
+
+struct _GmCallsHistory
+{
+  GtkListStore *given_calls_list_store;
+  GtkListStore *received_calls_list_store;
+  GtkListStore *missed_calls_list_store;
+  GtkWidget *search_entry;
+};
+
+/* The functions  */
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Build the PC-To-Phone window and returns it.
+ * BEHAVIOR     :  Build the calls history window and returns a pointer to it.
  * PRE          :  /
  */
-GtkWidget *gnomemeeting_pc_to_phone_window_new ();
+GtkWidget *gnomemeeting_calls_history_window_new ();
 
-#endif
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Populate the calls history window.
+ * PRE          :  /
+ */
+void gnomemeeting_calls_history_window_populate (GtkWidget *);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Add a call to the calls history window.
+ * PRE          :  /
+ */
+void gnomemeeting_calls_history_window_add_call (GtkWidget *,
+						 int,
+						 const char *, 
+						 const char *,
+						 const char *,
+						 const char *,
+						 const char *);
+
+#endif /* _CALLS_HISTORY_WINDOW_H_ */

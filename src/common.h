@@ -117,7 +117,6 @@ typedef struct _GmPrefWindow GmPrefWindow;
 typedef struct _GmLdapWindow GmLdapWindow;
 typedef struct _GmLdapWindowPage GmLdapWindowPage;
 typedef struct _GmDruidWindow GmDruidWindow;
-typedef struct _GmCallsHistoryWindow GmCallsHistoryWindow;
 typedef struct _GmRtpData GmRtpData;
 
 
@@ -267,15 +266,6 @@ struct _GmDruidWindow
   GtkWidget *use_callto;
   GtkWidget *mail;
   GnomeDruidPageEdge *page_edge;
-};
-
-
-struct _GmCallsHistoryWindow
-{
-  GtkListStore *given_calls_list_store;
-  GtkListStore *received_calls_list_store;
-  GtkListStore *missed_calls_list_store;
-  GtkWidget *search_entry;
 };
 
 

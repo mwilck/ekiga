@@ -50,6 +50,8 @@ gnomemeeting_SOURCES =		\
 	tray.cpp		\
 	tools.cpp		\
 	tools.h			\
+	calls_history_window.cpp\
+	calls_history_window.h	\
 	log_window.cpp		\
 	log_window.h		\
 	lid.cpp			\

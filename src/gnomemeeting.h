@@ -136,11 +136,11 @@ class GnomeMeeting : public PProcess
 
 
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns a pointer to the GmCallsHistoryWindow 
+   * BEHAVIOR     :  Returns a pointer to the calls history window 
    *                 structure of widgets.
    * PRE          :  /
    */
-  GmCallsHistoryWindow *GetCallsHistoryWindow ();
+  GtkWidget *GetCallsHistoryWindow ();
 
 
   /* DESCRIPTION  :  /
@@ -191,7 +191,6 @@ class GnomeMeeting : public PProcess
   GmWindow *gw;
   GmLdapWindow *lw;
   GmDruidWindow *dw;
-  GmCallsHistoryWindow *chw;
   GmPrefWindow *pw;
   GmRtpData *rtp;
 

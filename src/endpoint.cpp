@@ -55,7 +55,7 @@
 #include "log_window.h"
 #include "pref_window.h"
 #include "main_window.h"
-#include "tools.h"
+#include "calls_history_window.h"
 
 #include "dialog.h"
 #include "gm_conf.h"
@@ -1246,20 +1246,23 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   gnomemeeting_threads_enter ();
   if (t.GetSeconds () == 0 && connection.HadAnsweredCall ())
-    gnomemeeting_calls_history_window_add_call (MISSED_CALL, utf8_name,
+    gnomemeeting_calls_history_window_add_call (gw->calls_history_window,
+						MISSED_CALL, utf8_name,
 						utf8_url,
 						"0",
 						msg_reason,
 						utf8_app);
   else
     if (connection.HadAnsweredCall ())
-      gnomemeeting_calls_history_window_add_call (RECEIVED_CALL, utf8_name,
+      gnomemeeting_calls_history_window_add_call (gw->calls_history_window,
+						  RECEIVED_CALL, utf8_name,
 						  utf8_url,
 						  t.AsString (0),
 						  msg_reason,
 						  utf8_app);
     else
-      gnomemeeting_calls_history_window_add_call (PLACED_CALL, utf8_name,
+      gnomemeeting_calls_history_window_add_call (gw->calls_history_window,
+						  PLACED_CALL, utf8_name,
 						  GetLastCallAddress (),
 						  t.AsString (0),
 						  msg_reason,
@@ -1267,7 +1270,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
 
   gnomemeeting_log_insert (gw->log_window, msg_reason);
-  gnomemeeting_text_chat_call_stop_notification (GnomeMeeting::Process ()->GetMainWindow ()->chat_window);
+  gnomemeeting_text_chat_call_stop_notification (gw->chat_window);
   gnomemeeting_statusbar_flash (gw->statusbar, msg_reason);
   gnomemeeting_threads_leave ();
 

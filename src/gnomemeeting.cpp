@@ -46,6 +46,7 @@
 #include "menu.h"
 #include "pref_window.h"
 #include "chat_window.h"
+#include "calls_history_window.h"
 #include "druid.h"
 #include "tools.h"
 #include "tray.h"
@@ -109,7 +110,6 @@ GnomeMeeting::GnomeMeeting ()
   pw = new GmPrefWindow ();
   lw = new GmLdapWindow ();
   dw = new GmDruidWindow ();
-  chw = new GmCallsHistoryWindow ();
   rtp = new GmRtpData ();
 
   memset ((void *) rtp, 0, sizeof (struct _GmRtpData));
@@ -159,7 +159,6 @@ GnomeMeeting::~GnomeMeeting()
   delete (pw);
   delete (lw);
   delete (dw);
-  delete (chw);
   delete (rtp);
 }
 
@@ -379,10 +378,10 @@ GnomeMeeting::GetDruidWindow ()
 }
 
 
-GmCallsHistoryWindow *
+GtkWidget *
 GnomeMeeting::GetCallsHistoryWindow ()
 {
-  return chw;
+  return gw->calls_history_window;
 }
 
 
@@ -424,7 +423,7 @@ void GnomeMeeting::BuildGUI ()
   gw->chat_window = gnomemeeting_text_chat_new ();
   gw->tips = gtk_tooltips_new ();
   gw->log_window = gnomemeeting_log_window_new ();
-  gw->calls_history_window = gnomemeeting_calls_history_window_new (chw);
+  gw->calls_history_window = gnomemeeting_calls_history_window_new ();
   gw->pc_to_phone_window = gnomemeeting_pc_to_phone_window_new ();  
   gw->pref_window = gnomemeeting_pref_window_new (pw);  
   gw->ldap_window = gnomemeeting_ldap_window_new (lw);

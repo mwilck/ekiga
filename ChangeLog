@@ -1,5 +1,18 @@
 2004-04-13 Julien Puydt <julien.puydt@laposte.net>
 
+	* src/tools.h, src/tools.cpp, src/common.h: removed the calls history
+	code;
+	* src/calls_history_window.h, src/calls_history_window.cpp: put the
+	calls history code, modified to use the get-a-widget-as-first-argument
+	api;
+	* src/config.cpp, src/endpoint.cpp, src/gnomemeeting.cpp,
+	src/gnomemeeting.h, src/ldap_window.cpp, src/urlhandler.cpp: modified
+	to cope with the new calls history api;
+	* src/Makefile.am: added the calls_history_window.* files to the list
+	of sources
+
+2004-04-13 Julien Puydt <julien.puydt@laposte.net>
+
 	* configure.in: made all Makefiles' creation unconditional. Fixes all
 	dist* targets!
 	* lib/Makefile.am: made it a little more readable.
