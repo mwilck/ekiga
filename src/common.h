@@ -18,7 +18,10 @@
 #ifndef _COMMON_H
 #define _COMMON_H
 
-#include <gnome.h>
+#include <gtk/gtkwidget.h>
+#include <gtk/gtkobject.h>
+#include <gdk/gdk.h>
+#include <gtk/gtkadjustment.h>
 #include <ptlib.h>
 
 
@@ -81,9 +84,6 @@ struct _options
   char *gk_id;
   int notfirst;
   int show_splash;
-  int show_statusbar;
-  int show_notebook;
-  int show_quickbar;
   int incoming_call_sound;
   char *audio_player;
   char *audio_recorder;
@@ -93,7 +93,6 @@ struct _options
   int video_channel; 
   int video_bandwidth;
   int vb;
-  int show_docklet;
 };
 
 

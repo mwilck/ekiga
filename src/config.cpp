@@ -69,13 +69,6 @@ void gnomemeeting_store_config (options *opts)
   gnome_config_set_int ("VideoSettings/vb", opts->vb);
 
   gnome_config_set_int ("GeneralSettings/show_splash", opts->show_splash);
-  gnome_config_set_int ("GeneralSettings/show_notebook", opts->show_notebook);
-  gnome_config_set_int ("GeneralSettings/show_statusbar", 
-			opts->show_statusbar);
-  gnome_config_set_int ("GeneralSettings/show_quickbar", 
-			opts->show_quickbar);
-  gnome_config_set_int ("GeneralSettings/show_docklet", 
-			opts->show_docklet);
   gnome_config_set_int ("GeneralSettings/incoming_call_sound", 
 			opts->incoming_call_sound);
   gnome_config_set_int ("GeneralSettings/dnd", opts->dnd);
@@ -165,10 +158,6 @@ void gnomemeeting_read_config (options *opts)
   opts->vb = gnome_config_get_int ("VideoSettings/vb");
 
   opts->show_splash = gnome_config_get_int ("GeneralSettings/show_splash");
-  opts->show_docklet = gnome_config_get_int ("GeneralSettings/show_docklet");
-  opts->show_notebook = gnome_config_get_int ("GeneralSettings/show_notebook");
-  opts->show_statusbar = gnome_config_get_int ("GeneralSettings/show_statusbar");
-  opts->show_quickbar = gnome_config_get_int ("GeneralSettings/show_quickbar");
   opts->incoming_call_sound = 
     gnome_config_get_int ("GeneralSettings/incoming_call_sound");
   opts->aa = gnome_config_get_int ("GeneralSettings/enable_auto_answer");
@@ -420,14 +409,6 @@ options *gnomemeeting_read_config_from_struct ()
   /* General Settings */
   opts->show_splash = gtk_toggle_button_get_active 
     (GTK_TOGGLE_BUTTON (pw->show_splash));
-  opts->show_notebook = gtk_toggle_button_get_active 
-    (GTK_TOGGLE_BUTTON (pw->show_notebook));
-  opts->show_statusbar = gtk_toggle_button_get_active 
-    (GTK_TOGGLE_BUTTON (pw->show_statusbar));
-  opts->show_quickbar = gtk_toggle_button_get_active 
-    (GTK_TOGGLE_BUTTON (pw->show_quickbar));
-  opts->show_docklet = gtk_toggle_button_get_active 
-    (GTK_TOGGLE_BUTTON (pw->show_docklet));
   opts->incoming_call_sound = gtk_toggle_button_get_active 
     (GTK_TOGGLE_BUTTON (pw->incoming_call_sound));
 
@@ -549,15 +530,6 @@ void gnomemeeting_read_config_from_gui (options *opts)
     gtk_object_get_data (GTK_OBJECT (gm), "view_menu_uiinfo");
 
   GnomeUIInfo *view_menu_uiinfo = (GnomeUIInfo *) object;
-  
-  opts->show_notebook =  
-    GTK_CHECK_MENU_ITEM (view_menu_uiinfo [2].widget)->active;
-  opts->show_quickbar =  
-    GTK_CHECK_MENU_ITEM (view_menu_uiinfo [3].widget)->active;
-  opts->show_statusbar =  
-    GTK_CHECK_MENU_ITEM (view_menu_uiinfo [4].widget)->active;
-  opts->show_docklet =  
-    GTK_CHECK_MENU_ITEM (view_menu_uiinfo [5].widget)->active;
 }
 
 

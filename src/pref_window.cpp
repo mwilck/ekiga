@@ -39,8 +39,8 @@
 #include "ils.h"
 #include "misc.h"
 #include "audio.h"
-#include "docklet.h"
 #include "misc.h"
+#include <gconf/gconf-client.h>
 
 
 /* Declarations */
@@ -66,6 +66,9 @@ static void fps_limit_option_changed_callback (GtkToggleButton *,
 static void gatekeeper_option_changed (GtkWidget *, gpointer);
 static void gatekeeper_option_type_changed_callback (GtkWidget *, gpointer);
 static void audio_codecs_option_changed_callback (GtkAdjustment *, gpointer);
+
+static void show_docklet_clicked_callback (GtkCheckButton *, gpointer);
+static void view_docklet_changed (GConfClient*, guint, GConfEntry *, gpointer);
 
 static void gnomemeeting_init_pref_window_general (GtkWidget *, 
 						   int, options *);
@@ -428,6 +431,64 @@ static void audio_codecs_option_changed_callback (GtkAdjustment *w,
   pw->audio_codecs_changed = 1;
 }
 
+/* DESCRIPTION  :  This callback is called when the user changes any
+ *                 the pref to show/hide the Status Bar
+ * BEHAVIOR     :  Writes the new value to the gconf database
+ * PRE          :  gpointer is a valid pointer to the gconfclient
+ */
+static void show_status_bar_clicked_callback (GtkCheckButton *button, gpointer data)
+{
+  gconf_client_set_bool (GCONF_CLIENT (data),
+			 "/apps/gnomemeeting/view/show_status_bar",
+			 GTK_TOGGLE_BUTTON (button)->active, 0);
+}
+/* DESCRIPTION  :  This callback is called when the user changes any
+ *                 the pref to show/hide the Control Panel
+ * BEHAVIOR     :  Writes the new value to the gconf database
+ * PRE          :  gpointer is a valid pointer to the gconfclient
+ */
+static void show_control_panel_clicked_callback (GtkCheckButton *button, gpointer data)
+{
+  gconf_client_set_bool (GCONF_CLIENT (data),
+			 "/apps/gnomemeeting/view/show_control_panel",
+			 GTK_TOGGLE_BUTTON (button)->active, 0);
+}
+
+/* DESCRIPTION  :  This callback is called when the user changes any
+ *                 the pref to show/hide the Quick Access Bar
+ * BEHAVIOR     :  Writes the new value to the gconf database
+ * PRE          :  gpointer is a valid pointer to the gconfclient
+ */
+static void show_quick_bar_clicked_callback (GtkCheckButton *button, gpointer data)
+{
+  gconf_client_set_bool (GCONF_CLIENT (data),
+			 "/apps/gnomemeeting/view/show_quick_bar",
+			 GTK_TOGGLE_BUTTON (button)->active, 0);
+}
+
+/* DESCRIPTION  :  This callback is called when the user changes any
+ *                 the pref to show/hide the docklet
+ * BEHAVIOR     :  Writes the new value to the gconf database
+ * PRE          :  gpointer is a valid pointer to the gconfclient
+ */
+static void show_docklet_clicked_callback (GtkCheckButton *button, gpointer data)
+{
+  gconf_client_set_bool (GCONF_CLIENT (data),
+			 "/apps/gnomemeeting/view/show_docklet",
+			 GTK_TOGGLE_BUTTON (button)->active, 0);
+}
+
+/* DESCRIPTION  :  This callback is called when something toggles the 
+ *                 corresponding option in gconf.
+ * BEHAVIOR     :  Toggles the menu corresponding
+ * PRE          :  gpointer is a valid pointer to the toggle button
+ */
+static void view_widget_changed (GConfClient *client, guint, GConfEntry *entry, gpointer data)
+{
+  if (entry->value->type == GCONF_VALUE_BOOL)
+    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (data),
+				  gconf_value_get_bool (entry->value));
+}
 
 /* The functions */
 
@@ -815,6 +876,7 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook,
   GtkWidget *table;
  
   GtkTooltips *tip;
+  GConfClient *client = gconf_client_get_default ();
 
 
   /* Get the data */
@@ -870,12 +932,21 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);	
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->show_notebook), 
-				opts->show_notebook);
+				gconf_client_get_bool (client, 
+						       "/apps/gnomemeeting/view/show_control_panel", 
+						       0));
+  gtk_widget_set_sensitive (GTK_WIDGET (pw->show_notebook),
+			    gconf_client_key_is_writable (client,
+							  "/apps/gnomemeeting/view/show_control_panel", 0));
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->show_notebook,
 			_("If enabled, the control panel is displayed"), NULL);
-
+  gtk_signal_connect (GTK_OBJECT (pw->show_notebook), "clicked",
+		      GTK_SIGNAL_FUNC (show_control_panel_clicked_callback),
+		      (gpointer) client);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_control_panel",
+			   view_widget_changed, pw->show_notebook, 0, 0);
 
   /* Show / hide the statusbar at startup */
   pw->show_statusbar = gtk_check_button_new_with_label (_("Show Status Bar"));
@@ -884,12 +955,20 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);	
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->show_statusbar), 
-				opts->show_statusbar);
+				gconf_client_get_bool (client, 
+						       "/apps/gnomemeeting/view/show_status_bar", 0));
+  gtk_widget_set_sensitive (GTK_WIDGET (pw->show_statusbar),
+			    gconf_client_key_is_writable (client,
+						      "/apps/gnomemeeting/view/show_status_bar", 0));
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->show_statusbar,
 			_("If enabled, the statusbar is displayed"), NULL);
-
+  gtk_signal_connect (GTK_OBJECT (pw->show_statusbar), "clicked",
+		      GTK_SIGNAL_FUNC (show_status_bar_clicked_callback),
+		      (gpointer) client);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_status_bar",
+			   view_widget_changed, pw->show_statusbar, 0, 0);
 
   /* Show / hide the quickbar at startup */
   pw->show_quickbar = 
@@ -899,12 +978,21 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);	
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->show_quickbar), 
-				opts->show_quickbar);
+				gconf_client_get_bool (client, 
+						       "/apps/gnomemeeting/view/show_quick_bar", 0));
+  gtk_widget_set_sensitive (GTK_WIDGET (pw->show_quickbar),
+			    gconf_client_key_is_writable (client,
+						      "/apps/gnomemeeting/view/show_quick_bar", 0));
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->show_quickbar,
 			_("If enabled, the quick access bar is displayed"), 
 			NULL);
+  gtk_signal_connect (GTK_OBJECT (pw->show_quickbar), "clicked",
+		      GTK_SIGNAL_FUNC (show_quick_bar_clicked_callback),
+		      (gpointer) client);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_quick_bar",
+			   view_widget_changed, pw->show_quickbar, 0, 0);
 
   /* Show / hide the docklet */
   pw->show_docklet = 
@@ -914,12 +1002,20 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);	
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->show_docklet), 
-				opts->show_docklet);
+				gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_docklet", 0));
+  gtk_widget_set_sensitive (GTK_WIDGET (pw->show_docklet),
+			    gconf_client_key_is_writable (client,
+						      "/apps/gnomemeeting/view/show_docklet", 0));
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->show_docklet,
 			_("If enabled, there is support for a docklet in the Gnome or KDE panel"), 
 			NULL);
+  gtk_signal_connect (GTK_OBJECT(pw->show_docklet), "clicked",
+		      GTK_SIGNAL_FUNC (show_docklet_clicked_callback), 
+		      (gpointer) client);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_docklet",
+			   view_widget_changed, pw->show_docklet, 0, 0);
 
   /* Behavior */
   frame = gtk_frame_new (_("Behavior"));
@@ -2538,49 +2634,4 @@ static void apply_options (options *opts)
 			 "view_menu_uiinfo");
 
   GnomeUIInfo *view_menu_uiinfo = (GnomeUIInfo *) object;
-
-  if (!(opts->show_notebook)) {
-
-    gtk_widget_hide_all (pw->gw->main_notebook);
-    GTK_CHECK_MENU_ITEM (view_menu_uiinfo [2].widget)->active = FALSE;
-  }
-  else {
-
-    gtk_widget_show_all (pw->gw->main_notebook);  
-    GTK_CHECK_MENU_ITEM (view_menu_uiinfo [2].widget)->active = TRUE;
-  }
-
-
- if (!(opts->show_statusbar)) {
-
-    gtk_widget_hide_all (pw->gw->statusbar);
-    GTK_CHECK_MENU_ITEM (view_menu_uiinfo [3].widget)->active = FALSE;
-  }
-  else {
-
-    gtk_widget_show_all (pw->gw->statusbar);  
-    GTK_CHECK_MENU_ITEM (view_menu_uiinfo [3].widget)->active = TRUE;
-  }
-
-
- if (!(opts->show_quickbar)) {
-
-    gtk_widget_hide_all (pw->gw->quickbar_frame);
-    GTK_CHECK_MENU_ITEM (view_menu_uiinfo [4].widget)->active = FALSE;
-  }
-  else {
-
-    gtk_widget_show_all (pw->gw->quickbar_frame);  
-    GTK_CHECK_MENU_ITEM (view_menu_uiinfo [4].widget)->active = TRUE;
-  }
- 
- if (!opts->show_docklet) {
-
-   GTK_CHECK_MENU_ITEM (view_menu_uiinfo [5].widget)->active = FALSE;
-   gnomemeeting_docklet_hide (pw->gw->docklet);
- }
- else {
-   GTK_CHECK_MENU_ITEM (view_menu_uiinfo [5].widget)->active = TRUE;
-   gnomemeeting_docklet_show (pw->gw->docklet);
- }
 }

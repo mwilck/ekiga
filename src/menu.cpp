@@ -32,6 +32,7 @@
 #include "common.h"
 #include "docklet.h"
 #include "misc.h"
+#include <gconf/gconf-client.h>
 
 #include "../config.h"
 
@@ -47,9 +48,6 @@ static void view_remote_user_info_callback (GtkWidget *, gpointer);
 static void view_log_callback (GtkWidget *, gpointer);
 static void view_audio_settings_callback (GtkWidget *, gpointer);
 static void view_video_settings_callback (GtkWidget *, gpointer);
-static void view_statusbar_callback (GtkWidget *, gpointer data);
-static void view_notebook_callback (GtkWidget *, gpointer);
-static void view_quickbar_callback (GtkWidget *, gpointer);
 static void view_docklet_callback (GtkWidget *, gpointer);
 
 /* GTK Callbacks */
@@ -157,102 +155,79 @@ static void view_video_settings_callback (GtkWidget *widget, gpointer data)
   gtk_widget_set_sensitive (gw->left_arrow, TRUE);
 }
 
-
-/* DESCRIPTION  :  This callback is called when the user toggles the 
- *                 corresponding option in the View Menu.
- * BEHAVIOR     :  Shows or hide the widget, and toggles the corresponding
- *                 button in the preferences window with the good value.
- * PRE          :  gpointer is a valid pointer to a GM_pref_window_widgets 
+/* DESCRIPTION  :  This callback is called when something toggles the 
+ *                 corresponding option in gconf.
+ * BEHAVIOR     :  Toggles the menu corresponding
+ * PRE          :  gpointer is a valid pointer to the menu item
  *                 structure.
  */
-static void view_statusbar_callback (GtkWidget *widget, gpointer data)
+static void view_widget_changed (GConfClient* client,
+				  guint cnxn_id,
+				  GConfEntry *entry,
+				  gpointer user_data)
 {
-  GM_pref_window_widgets *pw = (GM_pref_window_widgets *) data;
+  GM_pref_window_widgets *pw = (GM_pref_window_widgets *) user_data;
 
-  if (GTK_WIDGET_VISIBLE (GTK_WIDGET (pw->gw->statusbar))) {
-
-    gtk_widget_hide_all (pw->gw->statusbar);
-    GTK_TOGGLE_BUTTON (pw->show_statusbar)->active = FALSE;
-  }
-  else {
-
-    gtk_widget_show_all (pw->gw->statusbar);  
-    GTK_TOGGLE_BUTTON (pw->show_statusbar)->active = TRUE;
-  }
+  if (entry->value->type == GCONF_VALUE_BOOL)
+    gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (user_data),
+				    gconf_value_get_bool (entry->value));
 }
-
 
 /* DESCRIPTION  :  This callback is called when the user toggles the 
  *                 corresponding option in the View Menu.
  * BEHAVIOR     :  Shows or hide the widget, and toggles the corresponding
  *                 button in the preferences window with the good value.
- * PRE          :  gpointer is a valid pointer to a GM_pref_window_widgets 
- *                 structure.
- */
-static void view_notebook_callback (GtkWidget *widget, gpointer data)
-{
-  GM_pref_window_widgets *pw = (GM_pref_window_widgets *) data;
-
-  if (GTK_WIDGET_VISIBLE (GTK_WIDGET (pw->gw->main_notebook))) {
-    
-    gtk_widget_hide_all (pw->gw->main_notebook);
-    GTK_TOGGLE_BUTTON (pw->show_notebook)->active = FALSE;
-  }
-  else {
-
-    gtk_widget_show_all (pw->gw->main_notebook);  
-    GTK_TOGGLE_BUTTON (pw->show_notebook)->active = TRUE;
-  }
-}
-
-
-/* DESCRIPTION  :  This callback is called when the user toggles the 
- *                 corresponding option in the View Menu.
- * BEHAVIOR     :  Shows or hide the widget, and toggles the corresponding
- *                 button in the preferences window with the good value.
- * PRE          :  gpointer is a valid pointer to a GM_pref_window_widgets 
- *                 structure.
- */
-static void view_quickbar_callback (GtkWidget *widget, gpointer data)
-{
-  GM_pref_window_widgets *pw = (GM_pref_window_widgets *) data;
-
-  if (GTK_WIDGET_VISIBLE (GTK_WIDGET (pw->gw->quickbar_frame))) {
-
-    gtk_widget_hide_all (pw->gw->quickbar_frame);
-    GTK_TOGGLE_BUTTON (pw->show_quickbar)->active = FALSE;
-  }
-  else {
-
-    gtk_widget_show_all (pw->gw->quickbar_frame);  
-    GTK_TOGGLE_BUTTON (pw->show_quickbar)->active = TRUE;
-  }
-}
-
-
-/* DESCRIPTION  :  This callback is called when the user toggles the 
- *                 corresponding option in the View Menu.
- * BEHAVIOR     :  Shows or hide the widget, and toggles the corresponding
- *                 button in the preferences window with the good value.
- * PRE          :  gpointer is a valid pointer to a GM_pref_window_widgets 
- *                 structure.
  */
 static void view_docklet_callback (GtkWidget *widget, gpointer data)
 {
-  GM_pref_window_widgets *pw = (GM_pref_window_widgets *) data;
+  GConfClient *client = GCONF_CLIENT (data);
 
-  if (GTK_WIDGET_VISIBLE (pw->gw->docklet)) {
-
-    gnomemeeting_docklet_hide (pw->gw->docklet);
-    GTK_TOGGLE_BUTTON (pw->show_docklet)->active = FALSE;
-  }
-  else {
-
-    gnomemeeting_docklet_show (pw->gw->docklet);
-    GTK_TOGGLE_BUTTON (pw->show_docklet)->active = TRUE;
-  }
+  gconf_client_set_bool (client,
+			 "/apps/gnomemeeting/view/show_docklet",
+			 GTK_CHECK_MENU_ITEM (widget)->active, 0);
 }
 
+/* DESCRIPTION  :  This callback is called when the user toggles the 
+ *                 corresponding option in the View Menu.
+ * BEHAVIOR     :  Shows or hide the widget, and toggles the corresponding
+ *                 button in the preferences window with the good value.
+ */
+static void view_control_panel_callback (GtkWidget *widget, gpointer data)
+{
+  GConfClient *client = GCONF_CLIENT (data);
+
+  gconf_client_set_bool (client,
+			 "/apps/gnomemeeting/view/show_control_panel",
+			 GTK_CHECK_MENU_ITEM (widget)->active, 0);
+}
+
+/* DESCRIPTION  :  This callback is called when the user toggles the 
+ *                 corresponding option in the View Menu.
+ * BEHAVIOR     :  Shows or hide the widget, and toggles the corresponding
+ *                 button in the preferences window with the good value.
+ */
+static void view_status_bar_callback (GtkWidget *widget, gpointer data)
+{
+  GConfClient *client = GCONF_CLIENT (data);
+
+  gconf_client_set_bool (client,
+			 "/apps/gnomemeeting/view/show_status_bar",
+			 GTK_CHECK_MENU_ITEM (widget)->active, 0);
+}
+
+/* DESCRIPTION  :  This callback is called when the user toggles the 
+ *                 corresponding option in the View Menu.
+ * BEHAVIOR     :  Shows or hide the widget, and toggles the corresponding
+ *                 button in the preferences window with the good value.
+ */
+static void view_quick_bar_callback (GtkWidget *widget, gpointer data)
+{
+  GConfClient *client = GCONF_CLIENT (data);
+
+  gconf_client_set_bool (client,
+			 "/apps/gnomemeeting/view/show_quick_bar",
+			 GTK_CHECK_MENU_ITEM (widget)->active, 0);
+}
 
 /* The functions */
 
@@ -261,6 +236,7 @@ void gnomemeeting_init_menu ()
   /* Get the data */
   GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
   GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
+  GConfClient *client = gconf_client_get_default ();
 
   static GnomeUIInfo file_menu_uiinfo [] =
     {
@@ -337,34 +313,33 @@ void gnomemeeting_init_menu ()
       {
 	GNOME_APP_UI_TOGGLEITEM,
 	N_("_Control Panel"), N_("View/Hide the Control Panel"),
-	(void *) view_notebook_callback, pw, NULL,
+	(void *) view_control_panel_callback, client, NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	NULL, GDK_CONTROL_MASK, NULL
       },
       {
 	GNOME_APP_UI_TOGGLEITEM,
 	N_("_Status Bar"), N_("View/Hide the Status Bar"),
-	(void *) view_statusbar_callback, pw, NULL,
+	(void *) view_status_bar_callback, client, NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	NULL, GDK_CONTROL_MASK, NULL
       },
       {
 	GNOME_APP_UI_TOGGLEITEM,
 	N_("_Quick Access Bar"), N_("View/Hide the Quick Access Bar"),
-	(void *) view_quickbar_callback, pw, NULL,
+	(void *) view_quick_bar_callback, client, NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	NULL, GDK_CONTROL_MASK, NULL
       },
       {
 	GNOME_APP_UI_TOGGLEITEM,
 	N_("_Docklet"), N_("View/Hide the Docklet"),
-	(void *) view_docklet_callback, pw, NULL,
+	(void *) view_docklet_callback, client, NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	NULL, GDK_CONTROL_MASK, NULL
       },
       GNOMEUIINFO_END
-    };
-  
+    };  
   
   static GnomeUIInfo settings_menu_uiinfo [] =
     {
@@ -414,13 +389,36 @@ void gnomemeeting_init_menu ()
   gnome_app_install_menu_hints (GNOME_APP (gm), main_menu_uiinfo);
 
   GTK_CHECK_MENU_ITEM (view_menu_uiinfo [2].widget)->active = 
-    gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->show_notebook));
+    gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_control_panel", 0);
+  gtk_widget_set_sensitive (view_menu_uiinfo[2].widget, 
+			    gconf_client_key_is_writable (client,
+							  "/apps/gnomemeeting/view/show_control_panel", 
+							  0));
   GTK_CHECK_MENU_ITEM (view_menu_uiinfo [3].widget)->active = 
-    gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->show_statusbar));
+    gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_status_bar", 0);
+  gtk_widget_set_sensitive (view_menu_uiinfo[3].widget, 
+			    gconf_client_key_is_writable (client,
+							  "/apps/gnomemeeting/view/show_status_bar", 0));
   GTK_CHECK_MENU_ITEM (view_menu_uiinfo [4].widget)->active =
-    gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->show_quickbar));
+    gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_quick_bar", 0);
+  gtk_widget_set_sensitive (view_menu_uiinfo[4].widget, 
+			    gconf_client_key_is_writable (client,
+							  "/apps/gnomemeeting/view/show_quick_bar", 0));
   GTK_CHECK_MENU_ITEM (view_menu_uiinfo [5].widget)->active =
-    gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->show_docklet));
+    gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_docklet", 0);
+  gtk_widget_set_sensitive (view_menu_uiinfo[5].widget, 
+			    gconf_client_key_is_writable (client,
+							  "/apps/gnomemeeting/view/show_docklet", 
+							  0));
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_control_panel",
+			   view_widget_changed, view_menu_uiinfo[2].widget, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_status_bar",
+			   view_widget_changed, view_menu_uiinfo[3].widget, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_quick_bar",
+			   view_widget_changed, view_menu_uiinfo[4].widget, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_docklet",
+			   view_widget_changed, view_menu_uiinfo[5].widget, 0, 0);
 }
 
 

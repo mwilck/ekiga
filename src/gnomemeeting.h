@@ -32,9 +32,6 @@
 
 #include <ptlib.h>
 #include <gsmcodec.h>
-#include <gnome.h>
-#include <libgnomeui/gnome-window-icon.h>
-#include <glib.h>
 #include <h323.h>
 
 #include "common.h"

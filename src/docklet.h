@@ -32,8 +32,7 @@
 #ifndef _DOCKLET_H_
 #define _DOCKLET_H_
 
-#include <glib.h>
-#include <gnome.h>
+#include <gtk/gtkwidget.h>
 
 #include "config.h"
 

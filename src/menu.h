@@ -31,7 +31,7 @@
 #ifndef _MENU_H_
 #define _MENU_H_
 
-#include <gnome.h>
+#include <gtk/gtkwidget.h>
 #include "common.h"
 
 

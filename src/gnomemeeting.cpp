@@ -37,6 +37,7 @@
 #include "toolbar.h"
 #include "config.h"
 #include "misc.h"
+#include <gconf/gconf-client.h>
 
 
 #define new PNEW
@@ -263,6 +264,7 @@ void GnomeMeeting::Main ()
 int main (int argc, char ** argv, char ** envp)
 {
   PProcess::PreInitialise (argc, argv, envp);
+  gconf_init (argc, argv, 0);
 
   /* The different structures needed by most of the classes and functions */
   GM_window_widgets *gw = NULL;

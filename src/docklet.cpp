@@ -35,6 +35,7 @@
 #include "gnomemeeting.h"
 #include "menu.h"
 #include "callbacks.h"
+#include <gconf/gconf-client.h>
 
 #include <gdk/gdkx.h>
 #include <X11/Xatom.h>
@@ -61,6 +62,24 @@ static void gnomemeeting_build_docklet (GtkWindow *);
 /* We must redefine another callback than the connect callback in callbacks.h
    because the first parameter must be AppletWidget * in this case 
    FIXME: I don't undestand the above comment (damien?) */
+
+/* DESCRIPTION  :  This callback is called when something toggles the 
+ *                 corresponding option in gconf.
+ * BEHAVIOR     :  Toggles the menu corresponding
+ * PRE          :  gpointer is a valid pointer to the menu item
+ *                 structure.
+ */
+static void view_docklet_changed (GConfClient* client,
+				  guint cnxn_id,
+				  GConfEntry *entry,
+				  gpointer user_data)
+{
+  if (entry->value->type == GCONF_VALUE_BOOL)
+    if (gconf_value_get_bool (entry->value))
+      gnomemeeting_docklet_show (GTK_WIDGET (user_data));
+    else
+      gnomemeeting_docklet_hide (GTK_WIDGET (user_data));
+}
 
 
 /* DESCRIPTION  :  This callback is called when the user chooses
@@ -243,6 +262,7 @@ static void gnomemeeting_build_docklet (GtkWindow *docklet)
 GtkWidget *gnomemeeting_init_docklet ()
 {
   GtkWindow *docklet;
+  GConfClient *client = gconf_client_get_default ();
 
   docklet = (GtkWindow *)gtk_window_new(GTK_WINDOW_TOPLEVEL);
   gtk_window_set_title(GTK_WINDOW(docklet), "gnomemeeting_status_plugin");
@@ -254,6 +274,12 @@ GtkWidget *gnomemeeting_init_docklet ()
   gnomemeeting_build_docklet (docklet);
   
   gnomemeeting_setup_docklet_properties (GTK_WIDGET (docklet)->window);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_docklet",
+			   view_docklet_changed, docklet, 0, 0);
+
+  if (gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_docklet", 0))
+    gnomemeeting_docklet_show (GTK_WIDGET (docklet));
 
   return GTK_WIDGET (docklet);
 }

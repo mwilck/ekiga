@@ -32,6 +32,7 @@
 #include <orb/orbit.h>
 extern "C" {
 #include <libgnorba/gnorba.h>
+#include <libgnomeui/gnome-window-icon.h>
 }
 
 #include "main_window.h"
@@ -49,6 +50,7 @@ extern "C" {
 #include "endpoint.h"
 #include "pref_window.h"
 #include "misc.h"
+#include <gconf/gconf-client.h>
 
 #include "../pixmaps/speaker.xpm"
 #include "../pixmaps/mic.xpm"
@@ -78,8 +80,9 @@ static void preview_button_clicked (GtkButton *, gpointer);
 static void left_arrow_clicked (GtkWidget *, gpointer);
 static void right_arrow_clicked (GtkWidget *, gpointer);
 static void silence_detection_button_clicked (GtkWidget *, gpointer);
+// FIXME: the options argument should dissapear int the near future...
+static void gnomemeeting_init_main_window (options *, GConfClient *client);
 static gint gm_quit_callback (GtkWidget *, GdkEvent *, gpointer);
-static void gnomemeeting_init_main_window (options *);
 static void gnomemeeting_init_main_window_video_settings (options *);
 static void gnomemeeting_init_main_window_audio_settings (options *);
 static void gnomemeeting_init_main_window_log  (options *);
@@ -87,6 +90,24 @@ static void gnomemeeting_init_main_window_remote_user_info (options *);
 
 
 /* GTK Callbacks */
+
+/* DESCRIPTION  :  This callback is called when something toggles the 
+ *                 corresponding option in gconf.
+ * BEHAVIOR     :  Toggles the visibility of the widget
+ * PRE          :  gpointer is a valid pointer to the menu item
+ *                 structure.
+ */
+static void view_widget_changed_callback (GConfClient* client,
+					  guint cnxn_id,
+					  GConfEntry *entry,
+					  gpointer user_data)
+{
+  if (entry->value->type == GCONF_VALUE_BOOL)
+    if (gconf_value_get_bool (entry->value))
+      gtk_widget_show (GTK_WIDGET (user_data));
+    else
+      gtk_widget_hide (GTK_WIDGET (user_data));
+}
 
 /* DESCRIPTION  :  This callback is called when the main window is covered by
  *                 another window or updated.
@@ -359,16 +380,18 @@ void gnomemeeting_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
       debug = 1;
   } 
 
-  /* Gnome Initialisation 
-     CORBA was needed for the docklet stuff */
-  CORBA_Environment ev;
-  CORBA_exception_init (&ev);
-  gnome_CORBA_init_with_popt_table (PACKAGE, VERSION, &argc, argv,
-				    arguments, 0, NULL, 
-				    static_cast<GnorbaInitFlags> (0), &ev);
+  /* Gnome Initialisation */
+  gnome_init_with_popt_table (PACKAGE, VERSION, argc, argv,
+				    arguments, 0, NULL);
 
   gm = gnome_app_new ("gnomemeeting", _("GnomeMeeting"));
   gtk_window_set_policy (GTK_WINDOW (gm), FALSE, FALSE, TRUE);
+
+  /* Some little gconf stuff */
+  GConfClient *client = gconf_client_get_default ();
+  gconf_client_add_dir (client, "/apps/gnomemeeting",
+			GCONF_CLIENT_PRELOAD_RECURSIVE,
+			0);
 
   /* We store all the pointers to the structure as data of gm */
   gtk_object_set_data (GTK_OBJECT (gm), "gw", gw);
@@ -377,8 +400,6 @@ void gnomemeeting_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
 
   /* Startup Process */
   gw->docklet = gnomemeeting_init_docklet ();
-  if (opts->show_docklet)
-    gnomemeeting_docklet_show (gw->docklet);
 
   /* Init the splash screen */
   gw->splash_win = gnomemeeting_splash_init ();
@@ -401,7 +422,7 @@ void gnomemeeting_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
   }
 
   /* Build the interface */
-  gnomemeeting_init_main_window (opts);
+  gnomemeeting_init_main_window (opts, client);
   gnomemeeting_init_ldap_window (opts);
   gnomemeeting_init_pref_window (0, opts);
   gnomemeeting_init_menu ();
@@ -516,6 +537,14 @@ void gnomemeeting_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
     gtk_widget_show (msg_box);
   }
 
+  /* Add notifiers to some gconf settings */
+  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_control_panel",
+			   view_widget_changed_callback, gw->main_notebook, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_quick_bar",
+			   view_widget_changed_callback, gw->quickbar_frame, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_status_bar",
+			   view_widget_changed_callback, gw->statusbar, 0, 0);
+
   /* if the user tries to close the window : delete_event */
   gtk_signal_connect (GTK_OBJECT (gm), "delete_event",
 		      GTK_SIGNAL_FUNC (gm_quit_callback), (gpointer) gw);
@@ -526,7 +555,7 @@ void gnomemeeting_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
  * BEHAVIOR     :  Builds the main window.
  * PRE          :  Valid options.
  */
-void gnomemeeting_init_main_window (options *opts)
+void gnomemeeting_init_main_window (options *opts, GConfClient *client)
 { 
   GtkWidget *table, *table_in;	
   GtkWidget *frame;
@@ -594,7 +623,7 @@ void gnomemeeting_init_main_window (options *opts)
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    10, 10); 
 
-  if (opts->show_notebook)
+  if (gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_control_panel", 0))
     gtk_widget_show_all (GTK_WIDGET (gw->main_notebook));
 
 
@@ -774,14 +803,13 @@ void gnomemeeting_init_main_window (options *opts)
   gw->statusbar = gnome_appbar_new (FALSE, TRUE, GNOME_PREFERENCES_NEVER);	
   gnome_app_set_statusbar (GNOME_APP (gm), gw->statusbar);
 
-  if (opts->show_statusbar)
+  if (gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_status_bar", 0))
     gtk_widget_show (GTK_WIDGET (gw->statusbar));
   else
     gtk_widget_hide (GTK_WIDGET (gw->statusbar));
 
-  if (opts->show_quickbar)
-    gtk_widget_show_all (GTK_WIDGET (gw->quickbar_frame));
-  
+  if (gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_quick_bar", 0))
+    gtk_widget_show_all (GTK_WIDGET (gw->quickbar_frame));  
 }
 
 
