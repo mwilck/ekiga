@@ -135,8 +135,10 @@ void GnomeMeeting::Connect()
   call_address = (PString) gtk_entry_get_text 
     (GTK_ENTRY (GTK_WIDGET(GTK_COMBO(gw->combo)->entry)));
 
+/*
   if ((connection != NULL) || (!call_address.IsEmpty ()))
     {
+
       if (gtk_toggle_button_get_active 
 	  (GTK_TOGGLE_BUTTON (gw->preview_button)))
 	{
@@ -148,6 +150,7 @@ void GnomeMeeting::Connect()
 					FALSE);
 	}
     }
+*/
 
   // If connection, then answer it
   if (connection != NULL)

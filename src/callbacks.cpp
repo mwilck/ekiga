@@ -81,6 +81,7 @@ void pref_callback (GtkWidget *widget, gpointer data)
 {
   GM_window_widgets *gw = (GM_window_widgets *) data;
   int call_state = MyApp->Endpoint ()->CallingState();
+  GMVideoGrabber *video_grabber = MyApp->Endpoint ()->GetVideoGrabber ();
 
   if (gw->pref_window == NULL)
     {
@@ -89,7 +90,7 @@ void pref_callback (GtkWidget *widget, gpointer data)
 	{
 	  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->preview_button),
 					FALSE);
-	  MyApp->Endpoint ()->StopVideoGrabber ();
+	  video_grabber->StopGrabbing ();
 	}
 
       GMPreferences (call_state, gw);

@@ -253,12 +253,10 @@ class GMH323EndPoint : public H323EndPoint
   // DESCRIPTION  :  /
   // BEHAVIOR     :  Returns the current webcam grabbing device
   // PRE          :  /
-  GMH323Webcam *Webcam (void);
+  GMVideoGrabber *GetVideoGrabber (void);
 
   PVideoInputDevice *Grabber ();
   void ChangeSilenceDetection (void);
-  void StartVideoGrabber (void);  
-  void StopVideoGrabber (int = 1);
   PThread *get_ils_client ();
 
  protected:
@@ -275,8 +273,8 @@ class GMH323EndPoint : public H323EndPoint
   GDKVideoOutputDevice *received_video_device; // GDKVideoOutputDevice : received
   PVideoInputDevice *grabber;
   GM_window_widgets *gw; // main window widgets that need to be updated
-  PThread *webcam;
   PThread *ils_client; // the ILS client PThread
+  PThread *video_grabber;
 };
 
 /******************************************************************************/

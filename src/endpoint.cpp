@@ -88,12 +88,13 @@ GMH323EndPoint::GMH323EndPoint (GM_window_widgets *w, options *o)
   SetCurrentConnection (NULL);
   SetCallingState (0);
 
-  webcam = NULL;
+  video_grabber = NULL;
   listener = NULL;
   grabber = NULL;
 
   // Start the ILSClient PThread, do not register to it
   ils_client = new GMILSClient (gw, opts);
+  video_grabber = new GMVideoGrabber (gw, opts);
 }
 
 
@@ -327,9 +328,9 @@ H323Connection *GMH323EndPoint::Connection ()
 }
 
 
-GMH323Webcam *GMH323EndPoint::Webcam (void)
+GMVideoGrabber *GMH323EndPoint::GetVideoGrabber (void)
 {
-  return (GMH323Webcam *) webcam;
+  return (GMVideoGrabber *) video_grabber;
 }
 
 
@@ -401,28 +402,6 @@ void GMH323EndPoint::ils_register (void)
   gm_ils_client->ils_register ();
 }
 */
-
-void GMH323EndPoint::StartVideoGrabber (void)
-{
-  // first check that it is not already started
-  if (webcam == NULL)
-    webcam = new (GMH323Webcam) (gw, opts);
-}
-
-
-void GMH323EndPoint::StopVideoGrabber (int s = 1)
-{
-  GMH323Webcam * wcam = (GMH323Webcam *) webcam;
-
-  // first check that it is not already stopped
-  if (webcam != NULL)
-    {
-      wcam->Stop (s);
-
-      // This it an AutoDeleteThread Thread 
-      webcam = NULL;
-    }
-}
 
 
 void GMH323EndPoint::SetCurrentConnection (H323Connection *c)
@@ -816,114 +795,15 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
      if OpenVideoDevice is called for the encoding */
  if ((opts->vid_tr) && (isEncoding)) 
    {
-     int height, width;
-     gchar *msg;
-     PVideoChannel *channel = new PVideoChannel ();
-     grabber = new PVideoInputDevice();
+     GMVideoGrabber *vg = (GMVideoGrabber *) video_grabber;
 
-     codec.SetTxQualityLevel (opts->tr_vq);
-     codec.SetBackgroundFill (opts->tr_ub);
-
-     if (opts->video_size == 0)
-       { height = GM_QCIF_WIDTH; width = GM_QCIF_HEIGHT; }
-     else
-       { height = GM_CIF_WIDTH; width = GM_CIF_HEIGHT; }
-
-     transmitted_video_device = new GDKVideoOutputDevice (isEncoding, gw);
-     transmitted_video_device->SetFrameSize (height, width);
-
-     gdk_threads_enter ();
-     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->preview_button),
-				   FALSE);
-
-     gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button),
-			       FALSE);
-
-     gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button),
-			       TRUE);
-
-     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->video_chan_button),
-				   TRUE);
-
-     gdk_threads_leave ();
-
-     // First, we wait that the video grabber thread count becomes 0
-     while (gw->video_grabber_thread_count != 0)
-       { usleep (50); }
-
-     // I'm not using my GMH323Webcam class.
-     // This is ugly, but using this class gave me many problems
-     // because of the video design of OpenH323.
-     // This is a temporary fix.
-     // I hope that OPAL will solve this.
-     if (grabber->Open (opts->video_device, FALSE) &&
-	 grabber->SetVideoFormat 
-	 (opts->video_format ? PVideoDevice::NTSC : PVideoDevice::PAL) &&
-	 grabber->SetColourFormatConverter ("YUV420P") &&
-	 grabber->SetChannel (opts->video_channel) &&
-	 grabber->SetFrameRate (opts->tr_fps)  &&
-	 grabber->SetFrameSizeConverter (height, width, FALSE))
-
-       {
-	 gdk_threads_enter ();
-	 
-	 msg = g_strdup_printf 
-	   (_("Successfully opened video device %s, channel %d"), 
-	 opts->video_device, opts->video_channel);
-	 GM_log_insert (gw->log_text, msg);
-	 g_free (msg);
-	 
-	 gdk_threads_leave ();			     
-       }
-     else
-       {
-	 gdk_threads_enter ();
-	 
-	 msg = g_strdup_printf 
-	   (_("Error while opening video device %s, channel %d. A test image will be transmitted."), 
-	    opts->video_device, opts->video_channel);
-	 GM_log_insert (gw->log_text, msg);
-	 g_free (msg);
-	 
-	 gdk_threads_leave ();			     
-	 
-	 
-	 // delete the failed grabber and open the fake grabber
-	 delete grabber;
-	 
-	 grabber = new PFakeVideoInputDevice();
-	 grabber->SetColourFormatConverter ("YUV420P");
-	 grabber->SetVideoFormat (PVideoDevice::PAL);
-	 grabber->SetChannel (100);     //NTSC static image.
-	 grabber->SetFrameRate (10);
-	 grabber->SetFrameSizeConverter (height, width, FALSE);
-       }
-
-     grabber->Start ();
+     PVideoChannel *channel = vg->Channel ();
+     transmitted_video_device = vg->Device ();
+     vg->StopGrabbing ();
      
-     channel->AttachVideoReader (grabber);
-     channel->AttachVideoPlayer (transmitted_video_device);
-
      DisplayConfig (0);
 
-     // Will change this part when using OPAL
-     gdk_threads_enter ();
-     gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame), TRUE);
-     whiteness = (int) grabber->GetWhiteness () / 256;
-     brightness = (int) grabber->GetBrightness () / 256;
-     colour = (int) grabber->GetColour () / 256;
-     contrast = (int) grabber->GetContrast () / 256;
-     gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_brightness),
-			       brightness);
-     gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_whiteness),
-			       whiteness);
-     gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_colour),
-			       colour);
-     gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_contrast),
-			       contrast);
-     gdk_threads_leave ();
-
-     return codec.AttachChannel (channel, TRUE);
+     return codec.AttachChannel (channel, FALSE);
    }
  else
    {

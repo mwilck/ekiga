@@ -30,28 +30,23 @@
 extern GnomeMeeting *MyApp;
 
 
-GMH323Webcam::GMH323Webcam (GM_window_widgets *g, options *o)
+GMVideoGrabber::GMVideoGrabber (GM_window_widgets *g, options *o)
   :PThread (1000, NoAutoDeleteThread)
 {
   gw = g;
   opts = o;
 
-  channel = new PVideoChannel ();
-  encoding_device = new GDKVideoOutputDevice (1, gw);
-  grabber = new PVideoInputDevice();
-
   running = 1;
-  grabbing = 1;
-  initialised = 0;
-  sensitivity_change = 0;
-
-  gw->video_grabber_thread_count++;
+  has_to_open = 0;
+  has_to_close = 0;
+  grabbing = 0;
+  opened = 0;
 
   this->Resume ();
 }
 
 
-GMH323Webcam::~GMH323Webcam ()
+GMVideoGrabber::~GMVideoGrabber ()
 { 
   running = 0;
   grabbing = 0;
@@ -60,70 +55,39 @@ GMH323Webcam::~GMH323Webcam ()
 
   gdk_threads_enter ();
 
-  if (sensitivity_change)
-    {
-      // Enable the video preview button
-      gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), TRUE);
-    }
-
   // Disable the video settings frame
   gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame),
 			    FALSE);
 
   // Display the logo
   GM_init_main_interface_logo (gw);
-  gdk_threads_leave ();
 
-  gw->video_grabber_thread_count--;
+  gdk_threads_leave ();
 }
 
 
-void GMH323Webcam::Main ()
+void GMVideoGrabber::Main ()
 {
-  int height = 0, width = 0;
-  int whiteness = 0, brightness = 0, colour = 0, contrast = 0;
-
-  if (opts->video_size == 0)
-    { height = GM_QCIF_WIDTH; width = GM_QCIF_HEIGHT; }
-  else
-    { height = GM_CIF_WIDTH; width = GM_CIF_HEIGHT; }
-
-  Initialise ();
-
-  // Enable the video preview button
-  gdk_threads_enter ();
-  gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), TRUE);
-
-  // Setup the video settings
-
-  GetParameters (&whiteness, &brightness, &colour, &contrast);
-
-  gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_brightness),
-			    brightness);
-  gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_whiteness),
-			    whiteness);
-  gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_colour),
-			    colour);
-  gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_contrast),
-			    contrast);
-
-  // Enable the video settings frame
-  gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame),
-			    TRUE);
-
-  gdk_threads_leave ();
-
-  initialised = 1;
-
   quit_mutex.Wait ();
 
   while (running == 1)
     {
+
+      if (has_to_open == 1)
+	VGOpen ();
+
       if (grabbing == 1)
 	{
+	  grabbing_mutex.Wait ();
+
 	  channel->Read (video_buffer, height * width * 3);
 	  channel->Write (video_buffer, height * width * 3);
+
+	  grabbing_mutex.Signal ();
 	}
+
+      if (has_to_close == 1)
+	VGClose ();
 
       Current()->Sleep (10);
     }
@@ -136,20 +100,31 @@ void GMH323Webcam::Main ()
       gdk_threads_leave ();
     }
 
-  grabber->Close ();
-  channel->Close ();
-  Current ()->Sleep (500);
+  if (opened == 1)
+    {
+      grabber->Close ();
+      channel->Close ();
+      Current ()->Sleep (500);
 
-  delete (channel);
+      delete (channel);
+    }
 
   quit_mutex.Signal ();
 }
 
 
-void GMH323Webcam::Initialise (void)
+void GMVideoGrabber::VGOpen (void)
 {
-  int height, width;
   gchar *msg = NULL;
+
+  // Disable the video preview button while opening
+  gdk_threads_enter ();
+  gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
+  gdk_threads_leave ();
+
+  channel = new PVideoChannel ();
+  encoding_device = new GDKVideoOutputDevice (1, gw);
+  grabber = new PVideoInputDevice();
 
   if (opts->video_size == 0)
     { height = GM_QCIF_WIDTH; width = GM_QCIF_HEIGHT; }
@@ -205,72 +180,146 @@ void GMH323Webcam::Initialise (void)
      
   channel->AttachVideoReader (grabber);
   channel->AttachVideoPlayer (encoding_device);
+
+  has_to_open = 0;
+  opened = 1;
+
+  gdk_threads_enter ();
+
+  // Setup the video settings
+  GetParameters (&whiteness, &brightness, &colour, &contrast);
+
+  gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_brightness),
+			    brightness);
+  gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_whiteness),
+			    whiteness);
+  gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_colour),
+			    colour);
+  gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_contrast),
+			    contrast);
+
+  // Enable the video settings frame
+  gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame),
+			    TRUE);
+
+  gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), TRUE);
+  gdk_threads_leave ();
 }
 
 
-int GMH323Webcam::Initialised (void)
+void GMVideoGrabber::Close (void)
 {
-  return initialised;
+  has_to_close = 1;
 }
 
 
-void GMH323Webcam::Start (void)
+void GMVideoGrabber::VGClose (void)
+{
+  grabbing = 0;
+
+  // Disable the video preview button while closing
+  gdk_threads_enter ();
+  gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
+  gdk_threads_leave ();
+
+  grabbing_mutex.Wait ();
+
+  grabber->Close ();
+  channel->Close ();
+
+  grabbing_mutex.Signal ();
+
+  delete (channel);
+
+  has_to_close = 0;
+  opened = 0;
+
+  gdk_threads_enter ();
+  gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), TRUE);
+
+  // Display the logo again
+  GM_init_main_interface_logo (gw);
+
+  // Disable the video settings frame
+  gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame),
+			    FALSE);
+  gdk_threads_leave ();
+}
+
+
+void GMVideoGrabber::Open (int has_to_grab)
+{
+  has_to_open = 1;
+  grabbing = has_to_grab;
+}
+
+
+int GMVideoGrabber::IsOpened (void)
+{
+  return opened;
+}
+
+
+void GMVideoGrabber::Start (void)
 {
   MyApp->Endpoint ()->DisplayConfig (0);
+  grabbing = 1;
 }
 
 
-void GMH323Webcam::Stop (int s = 1)
+void GMVideoGrabber::Stop (int s = 1)
 {
   running = 0;
   sensitivity_change = s;
 }
 
 
-void GMH323Webcam::StopGrabbing (void)
+void GMVideoGrabber::StopGrabbing (void)
 {
   grabbing = 0;
+
+  grabbing_mutex.Wait ();
 }
 
 
-GDKVideoOutputDevice *GMH323Webcam::Device (void)
+GDKVideoOutputDevice *GMVideoGrabber::Device (void)
 {
   return encoding_device;
 }
 
 
-PVideoChannel *GMH323Webcam::Channel (void)
+PVideoChannel *GMVideoGrabber::Channel (void)
 {
   return channel;
 }
 
 
-void GMH323Webcam::SetColour (int colour)
+void GMVideoGrabber::SetColour (int colour)
 {
   grabber->SetColour (colour);
 }
 
 
-void GMH323Webcam::SetBrightness (int brightness)
+void GMVideoGrabber::SetBrightness (int brightness)
 {
   grabber->SetBrightness (brightness);
 }
 
 
-void GMH323Webcam::SetWhiteness (int whiteness)
+void GMVideoGrabber::SetWhiteness (int whiteness)
 {
   grabber->SetWhiteness (whiteness);
 }
 
 
-void GMH323Webcam::SetContrast (int constrast)
+void GMVideoGrabber::SetContrast (int constrast)
 {
   grabber->SetContrast (constrast);
 }
 
 
 
-void GMH323Webcam::GetParameters (int *whiteness, int *brightness, 
+void GMVideoGrabber::GetParameters (int *whiteness, int *brightness, 
 				  int *colour, int *contrast)
 {
   *whiteness = (int) grabber->GetWhiteness () / 256;

@@ -102,85 +102,67 @@ void audio_volume_changed (GtkAdjustment *adjustment, gpointer data)
 void brightness_changed (GtkAdjustment *adjustment, gpointer data)
 { 
   GM_window_widgets *gw = (GM_window_widgets *) data;
-  GMH323Webcam *webcam = MyApp->Endpoint ()->Webcam ();
-  PVideoInputDevice *grabber = MyApp->Endpoint ()->Grabber ();
+  GMVideoGrabber *video_grabber = MyApp->Endpoint ()->GetVideoGrabber ();
 
   int brightness;
 
   brightness =  (int) (GTK_ADJUSTMENT (gw->adj_brightness)->value);
 
-  if (webcam != NULL)
-    webcam->SetBrightness (brightness * 256);
-  else
-    grabber->SetBrightness (brightness * 256);
+  video_grabber->SetBrightness (brightness * 256);
 }
 
 
 void whiteness_changed (GtkAdjustment *adjustment, gpointer data)
 { 
   GM_window_widgets *gw = (GM_window_widgets *) data;
-  GMH323Webcam *webcam = MyApp->Endpoint ()->Webcam ();
-  PVideoInputDevice *grabber = MyApp->Endpoint ()->Grabber ();
+  GMVideoGrabber *video_grabber = MyApp->Endpoint ()->GetVideoGrabber ();
 
   int whiteness;
 
   whiteness =  (int) (GTK_ADJUSTMENT (gw->adj_whiteness)->value);
 
-  if (webcam != NULL)
-    webcam->SetWhiteness (whiteness * 256);
-  else
-    grabber->SetWhiteness (whiteness * 256);
+  video_grabber->SetWhiteness (whiteness * 256);
 }
 
 
 void colour_changed (GtkAdjustment *adjustment, gpointer data)
 { 
   GM_window_widgets *gw = (GM_window_widgets *) data;
-  GMH323Webcam *webcam = MyApp->Endpoint ()->Webcam ();
-  PVideoInputDevice *grabber = MyApp->Endpoint ()->Grabber ();
+  GMVideoGrabber *video_grabber = MyApp->Endpoint ()->GetVideoGrabber ();
 
   int colour;
 
   colour =  (int) (GTK_ADJUSTMENT (gw->adj_colour)->value);
 
-  if (webcam != NULL)
-    webcam->SetColour (colour * 256);
-  else
-    grabber->SetColour (colour * 256);
+  video_grabber->SetColour (colour * 256);
 }
 
 
 void contrast_changed (GtkAdjustment *adjustment, gpointer data)
 { 
   GM_window_widgets *gw = (GM_window_widgets *) data;
-  GMH323Webcam *webcam = MyApp->Endpoint ()->Webcam ();
-  PVideoInputDevice *grabber = MyApp->Endpoint ()->Grabber ();
+  GMVideoGrabber *video_grabber = MyApp->Endpoint ()->GetVideoGrabber ();
 
   int contrast;
 
   contrast =  (int) (GTK_ADJUSTMENT (gw->adj_contrast)->value);
 
-  if (webcam != NULL)
-    webcam->SetContrast (contrast * 256);
-  else
-    grabber->SetContrast (contrast * 256);
+  video_grabber->SetContrast (contrast * 256);
 }
 
 
 void preview_button_clicked (GtkButton *button, gpointer data)
 {
   GM_window_widgets *gw = (GM_window_widgets *) data;
+  GMVideoGrabber *video_grabber = (GMVideoGrabber *) MyApp->Endpoint ()->GetVideoGrabber ();
 
   if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (button)))
     {
       if (gw->pref_window == NULL)
-	{
-	  gtk_widget_set_sensitive (GTK_WIDGET (button), FALSE);
-	  MyApp->Endpoint ()->StartVideoGrabber ();
-	}
+	video_grabber->Open (1);
     }
   else
-      MyApp->Endpoint ()->StopVideoGrabber ();
+    video_grabber->Close ();
 }
 
 
@@ -512,9 +494,6 @@ void GM_main_interface_init (GM_window_widgets *gw, options *opts)
 
   gtk_signal_connect (GTK_OBJECT (gw->preview_button), "clicked",
                       GTK_SIGNAL_FUNC (preview_button_clicked), gw);
-
-  // TO BE REMOVED
-  gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, gw->preview_button,

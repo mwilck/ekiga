@@ -45,19 +45,23 @@
 
 int GM_cam (gchar *, int);
 
-class GMH323Webcam : public PThread
+class GMVideoGrabber : public PThread
 {
-  PCLASSINFO(GMH323Webcam, PThread);
+  PCLASSINFO(GMVideoGrabber, PThread);
 
  public:
-  GMH323Webcam (GM_window_widgets *, options *);
-  ~GMH323Webcam ();
+  GMVideoGrabber (GM_window_widgets *, options *);
+  ~GMVideoGrabber ();
   
   void Main ();
   void Start ();
+  void Open (int = 0);
+  void Close (void);
+  void VGOpen (void);
+  void VGClose (void);
   void Stop (int = 1);
   void Initialise ();
-  int Initialised ();
+  int IsOpened ();
   void StopGrabbing ();
   GDKVideoOutputDevice *Device (void);
   PVideoChannel *Channel (void);
@@ -70,15 +74,20 @@ class GMH323Webcam : public PThread
  protected:
   GM_window_widgets *gw;
   options *opts;
+  int height, width;
+  int whiteness, brightness, colour, contrast;
   char video_buffer [3 * GM_CIF_WIDTH * GM_CIF_HEIGHT];
   PVideoChannel *channel;
   PVideoInputDevice *grabber;
   GDKVideoOutputDevice *encoding_device;
   int running;
   int grabbing;
-  int initialised;
   int sensitivity_change;
+  int opened;
+  int has_to_open;
+  int has_to_close;
   PMutex quit_mutex;
+  PMutex grabbing_mutex;
 };
 
 /******************************************************************************/

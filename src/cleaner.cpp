@@ -45,7 +45,7 @@ GMThreadsCleaner::~GMThreadsCleaner ()
 void GMThreadsCleaner::Main ()
 {
   GMILSClient *ils_client = (GMILSClient *) MyApp->Endpoint ()->get_ils_client();
-  GMH323Webcam *webcam = (GMH323Webcam *) MyApp->Endpoint ()->Webcam ();
+  GMVideoGrabber *video_grabber = (GMVideoGrabber *) MyApp->Endpoint ()->GetVideoGrabber ();
 
   gdk_threads_enter ();
   disconnect_cb (NULL, NULL);
@@ -55,7 +55,7 @@ void GMThreadsCleaner::Main ()
     Current ()->Sleep (100);
 
   delete (ils_client);
-  delete (webcam);
+  delete (video_grabber);
 
   gdk_threads_enter ();
   if (gw->applet == NULL)
