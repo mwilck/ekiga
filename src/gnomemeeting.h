@@ -120,14 +120,6 @@ class GnomeMeeting : public PProcess
 
 
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns a pointer to the GmLdapWindow 
-   *                 structure of widgets.
-   * PRE          :  /
-   */
-  GmLdapWindow *GetLdapWindow ();
-
-
-  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns a pointer to the druid window
    *                 structure of widgets.
    * PRE          :  /
@@ -195,12 +187,16 @@ class GnomeMeeting : public PProcess
   PThread *url_handler;
   
   GmWindow *gw;
-  GmLdapWindow *lw;
   GmPrefWindow *pw;
   GmRtpData *rtp;
 
   PMutex ep_var_mutex;
   int call_number;
+
+  /* The different components of the GUI */
+  GtkWidget *addressbook_window;
+  GtkWidget *calls_history_window;
+  GtkWidget *druid_window;
 
   static GnomeMeeting *GM;
 };

@@ -634,7 +634,6 @@ class GMH323EndPoint : public H323EndPoint
   BOOL ils_registered;
 
   GmWindow *gw; 
-  GmLdapWindow *lw;
 
 
   /* The encoding video grabber */

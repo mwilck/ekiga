@@ -37,7 +37,6 @@
 
 #include "common.h"
 
-typedef struct _GmDruidWindow GmDruidWindow;
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Builds the "First time configuration druid" and returns it.
@@ -45,8 +44,10 @@ typedef struct _GmDruidWindow GmDruidWindow;
  */
 GtkWidget *gm_druid_window_new ();
 
+
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Makes the device test buttons active/inactive
  * PRE          :  /
  */
-void gm_druid_set_test_buttons_sensitivity (GtkWidget *, gboolean);
+void gm_druid_window_set_test_buttons_sensitivity (GtkWidget *, 
+						   gboolean);

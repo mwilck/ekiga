@@ -190,13 +190,15 @@ gnomemeeting_init_main_toolbar ()
 
 GtkWidget *gnomemeeting_init_left_toolbar (void)
 {
+  GtkWidget *addressbook_window = NULL;
+  
   GtkWidget *image = NULL;
   GtkWidget *left_toolbar = NULL;
 
   PString dev;
   
   GmWindow *gw = GnomeMeeting::Process ()->GetMainWindow ();
-
+  addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
 
   left_toolbar = gtk_toolbar_new ();
   gtk_toolbar_set_orientation (GTK_TOOLBAR (left_toolbar), 
@@ -235,7 +237,7 @@ GtkWidget *gnomemeeting_init_left_toolbar (void)
 			   NULL,
 			   image,
 			   GTK_SIGNAL_FUNC (show_window_cb),
-			   (gpointer) gw->addressbook_window); 
+			   (gpointer) addressbook_window); 
 
   gtk_toolbar_set_style (GTK_TOOLBAR (left_toolbar), GTK_TOOLBAR_ICONS);
 

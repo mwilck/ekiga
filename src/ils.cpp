@@ -65,10 +65,8 @@ static xmlEntityPtr xdap_getentity (void *, const xmlChar *);
 GMILSClient::GMILSClient ()
 {
   gw = GnomeMeeting::Process ()->GetMainWindow ();
-  lw = GnomeMeeting::Process ()->GetLdapWindow ();
 
   operation = ILS_NONE;
-
 }
 
 

@@ -1,11 +1,24 @@
-2004-08-10 Julien Puydt <jpuydt@free.fr>
+2004-08-10  Damien Sandras  <dsandras@gnome.org>
+
+	* src/callbacks.cpp, src/calls_history_window.cpp, src/common.h,
+	src/config.cpp, src/druid.cpp, src/druid.h, src/endpoint.cpp,
+	src/endpoint.h, src/gnomemeeting.cpp, src/gnomemeeting.h,
+	src/ils.cpp, src/ils.h, src/main_window.h, src/menu.cpp,
+	src/sound_handling.cpp, src/toolbar.cpp, src/tray.cpp, 
+	src/urlhandler.cpp, src/videograbber.cpp: More GMObjectization
+	and compliance with the coding rule for the druid window, calls
+	history window. Removed the address book, druid and calls history
+	windows from GmWindow. Removed references to the GmLdapWindow.
+	Added documentation, and g_return_if_fail assertions.
+
+2004-08-10  Julien Puydt <jpuydt@free.fr>
 
 	* lib/contacts/gm_contacts.cpp, lib/contacts/gm_contacts.h,
 	lib/contacts/gm_contacts-dnd.c, lib/contacts/gm_contacts-dnd.h: Moved
 	code around like Damien suggested: all DnD implementation is now in
 	gm_contacts-dnd.c.
 
-2004-08-08 Julien Puydt <jpuydt@free.fr>
+2004-08-08  Julien Puydt <jpuydt@free.fr>
 
 	* lib/contacts/gm_contacts-dnd.c, lib/contacts/gm_contacts-dnd.h:
 	Added those files, with the internal DnD-managing routines.

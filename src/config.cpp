@@ -1345,13 +1345,14 @@ calls_history_changed_nt (gpointer id,
                           GmConfEntry *entry,
                           gpointer data)
 {
-  GmWindow *gw = NULL;
+  GtkWidget *calls_history_window = NULL;
 
   g_return_if_fail (gm_conf_entry_get_type (entry) == GM_CONF_LIST);
 
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
+  calls_history_window = GnomeMeeting::Process ()->GetCallsHistoryWindow ();
+  
   gdk_threads_enter ();
-  gnomemeeting_calls_history_window_populate (gw->calls_history_window);
+  gnomemeeting_calls_history_window_populate (calls_history_window);
   gdk_threads_leave ();
 }
 

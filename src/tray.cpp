@@ -137,7 +137,7 @@ tray_icon_destroyed (GtkWidget *tray,
 /* DESCRIPTION  :  This callback is called when the user double clicks on the 
  *                 tray event-box.
  * BEHAVIOR     :  Show / hide the GnomeMeeting GUI.
- * PRE          :  data != NULL.
+ * PRE          :  /
  */
 static gint
 tray_clicked_callback (GtkWidget *w,
@@ -145,16 +145,19 @@ tray_clicked_callback (GtkWidget *w,
 		       gpointer data)
 {
   GtkWidget *widget = NULL;
+  GtkWidget *addressbook_window = NULL;
+  
   GmWindow *gw = NULL;
 
   gw = GnomeMeeting::Process ()->GetMainWindow ();
-  
+  addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
+
   if (event->type == GDK_BUTTON_PRESS) {
 
     if (event->button == 1)
       widget = gm;
     else if (event->button == 2)
-      widget = gw->addressbook_window;
+      widget = addressbook_window;
     else
       return FALSE;
 

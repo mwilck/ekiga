@@ -109,14 +109,16 @@ GnomeMeeting::GnomeMeeting ()
   /* Init the different structures */
   gw = new GmWindow ();
   pw = new GmPrefWindow ();
-  lw = new GmLdapWindow ();
   rtp = new GmRtpData ();
 
   memset ((void *) rtp, 0, sizeof (struct _GmRtpData));
-  gw->docklet = gw->addressbook_window = gw->pref_window = 
-    gw->calls_history_window = gw->splash_win = gw->incoming_call_popup = 
+
+  addressbook_window = NULL;
+  
+  gw->docklet =  gw->pref_window = 
+    gw->splash_win = gw->incoming_call_popup = 
     gw->transfer_call_popup = gw->log_window = gw->audio_transmission_popup = 
-    gw->audio_reception_popup = gw->druid_window =
+    gw->audio_reception_popup = 
     NULL;
 
   GM = this;
@@ -139,21 +141,20 @@ GnomeMeeting::~GnomeMeeting()
   
   RemoveEndpoint ();
 
-  if (gw->addressbook_window) 
-    gtk_widget_destroy (gw->addressbook_window);  
+  if (addressbook_window) 
+    gtk_widget_destroy (addressbook_window);  
   if (gw->pref_window)
     gtk_widget_destroy (gw->pref_window);
   if (gw->log_window)
     gtk_widget_destroy (gw->log_window);
-  if (gw->calls_history_window)
-    gtk_widget_destroy (gw->calls_history_window);
+  if (calls_history_window)
+    gtk_widget_destroy (calls_history_window);
   if (gm)
     gtk_widget_destroy (gm);
-  if (gw->druid_window)
-    gtk_widget_destroy (gw->druid_window);
+  if (druid_window)
+    gtk_widget_destroy (druid_window);
   
   delete (pw);
-  delete (lw);
   delete (rtp);
 }
 
@@ -352,31 +353,24 @@ GnomeMeeting::GetPrefWindow ()
 }
 
 
-GmLdapWindow *
-GnomeMeeting::GetLdapWindow ()
-{
-  return lw;
-}
-
-
 GtkWidget *
 GnomeMeeting::GetDruidWindow ()
 {
-  return gw->druid_window;
+  return druid_window;
 }
 
 
 GtkWidget *
 GnomeMeeting::GetCallsHistoryWindow ()
 {
-  return gw->calls_history_window;
+  return calls_history_window;
 }
 
 
 GtkWidget *
 GnomeMeeting::GetAddressbookWindow ()
 {
-  return gw->addressbook_window;
+  return addressbook_window;
 }
 
 
@@ -430,14 +424,14 @@ void GnomeMeeting::BuildGUI ()
   gw->chat_window = gnomemeeting_text_chat_new ();
   gw->tips = gtk_tooltips_new ();
   gw->log_window = gnomemeeting_log_window_new ();
-  gw->calls_history_window = gnomemeeting_calls_history_window_new ();
   gw->pc_to_phone_window = gnomemeeting_pc_to_phone_window_new ();  
   gw->pref_window = gnomemeeting_pref_window_new (pw);  
   gnomemeeting_pref_window_update_audio_codecs_list (pw, 
 						     available_capabilities);
   
-  gw->addressbook_window = gm_addressbook_window_new ();
-  gw->druid_window = gm_druid_window_new ();
+  calls_history_window = gnomemeeting_calls_history_window_new ();
+  addressbook_window = gm_addressbook_window_new ();
+  druid_window = gm_druid_window_new ();
 #ifndef WIN32
   gw->docklet = gnomemeeting_tray_new ();
   gw->tray_popup_menu = gnomemeeting_tray_init_menu (gw->docklet);
@@ -449,7 +443,7 @@ void GnomeMeeting::BuildGUI ()
  if (gm_conf_get_int (GENERAL_KEY "version") 
       < 1000 * MAJOR_VERSION + 10 * MINOR_VERSION + BUILD_NUMBER) {
 
-   gtk_widget_show_all (GTK_WIDGET (gw->druid_window));
+   gtk_widget_show_all (GTK_WIDGET (druid_window));
   }
   else {
 #endif

@@ -50,8 +50,8 @@
 #include "stock-icons.h"
 #include "gm_conf.h"
 
-/* private data */
 
+/* Private data for the GmObject */
 struct _GmDruidWindow
 {
   GnomeDruid *druid;
@@ -74,86 +74,1076 @@ struct _GmDruidWindow
   GnomeDruidPageEdge *page_edge;
 };
 
+
+typedef struct _GmDruidWindow GmDruidWindow;
+
+
+#define GM_DRUID_WINDOW(x) (GmDruidWindow *) (x)
+
+
 /* Declarations */
-static void gm_druid_destroy_internal_struct (gpointer);
 
-static gint gm_druid_kind_of_net_hack (gpointer);
 
-static void gm_druid_audio_test_button_clicked_cb (GtkWidget *,
-						   gpointer);
+/* GUI functions */
 
-static void gm_druid_video_test_button_clicked_cb (GtkWidget *,
-						   gpointer);
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Frees a GmDruidWindow and its content.
+ * PRE          : A non-NULL pointer to a GmDruidWindow.
+ */
+static void gm_dw_destroy (gpointer);
 
-static void gm_druid_cancel_cb (GtkWidget *, gpointer);
-static void gm_druid_finish_cb (GnomeDruidPage *, GtkWidget *, gpointer);
-static void gm_druid_delete_event_cb (GtkWidget *, 
-				      GdkEventAny *, gpointer);
 
-static void gm_druid_check_name (GmDruidWindow *);
-static void gm_druid_check_callto (GmDruidWindow *);
-static void gm_druid_name_changed_cb (GtkWidget *, gpointer);
-static void gm_druid_email_changed_cb (GtkWidget *, gpointer);
-static void gm_druid_ils_register_toggle_cb (GtkToggleButton *b, gpointer data);
-static void gm_druid_option_menu_update (GtkWidget *option_menu, gchar **options,
-					 gchar *default_value);
-static void gm_druid_get_all_data (GmDruidWindow *, gchar *&, gchar *&,
-				   gchar *&, gchar *&, gchar *&,
-				   gchar *&, gchar *&, gchar *&);
-static void gm_druid_prepare_welcome_page_cb (GnomeDruidPage *,
-					      GnomeDruid *, gpointer);
-static void gm_druid_prepare_personal_data_page_cb (GnomeDruidPage *page,
-						    GnomeDruid *druid,
-						    gpointer data);
-static void gm_druid_prepare_callto_page_cb (GnomeDruidPage *,
-					     GnomeDruid *, gpointer);
-static void gm_druid_prepare_audio_devices_page_cb (GnomeDruidPage *page,
-						    GnomeDruid *druid,
-						    gpointer data);
-static void gm_druid_prepare_video_devices_page_cb (GnomeDruidPage *page,
-						    GnomeDruid *druid, 
-						    gpointer data);
-static void gm_druid_prepare_final_page_cb (GnomeDruidPage *,
-					    GnomeDruid *, gpointer);
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Returns a pointer to the private GmDruidWindow
+ *                used by the druid window GMObject.
+ * PRE          : The given GtkWidget pointer must be a druid window GMObject.
+ */
+static GmDruidWindow *gm_dw_get_dw (GtkWidget *);
 
-static void gm_druid_init_welcome_page (GmDruidWindow *, int);
-static void gm_druid_init_personal_data_page (GmDruidWindow *, int, int);
-static void gm_druid_init_callto_page (GmDruidWindow *, int, int);
-static void gm_druid_init_connection_type_page (GmDruidWindow *, int, int);
-static void gm_druid_init_audio_manager_page (GmDruidWindow *, int, int);
-static void gm_druid_init_audio_devices_page (GmDruidWindow *, int, int);
-static void gm_druid_init_video_manager_page (GmDruidWindow *, int, int);
-static void gm_druid_init_video_devices_page (GmDruidWindow *, int, int);
-static void gm_druid_init_final_page (GmDruidWindow *, int);
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Checks if the "Next" button of the "Personal Information"
+ *                 druid page can be sensitive or not. It will if the name
+ *                 field is ok.
+ * PRE          :  The druid window GMObject.
+ */
+static void gm_dw_check_name (GtkWidget *);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Checks if the "Next" button of the "Callto URL"
+ *                 druid page can be sensitive or not. It will if the email
+ *                 field is ok, or if registering is disabled.
+ * PRE          :  The druid window GMObject.
+ */
+static void gm_dw_check_callto (GtkWidget *);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Updates the given GtkOptionMenu with the given array and
+ * 		   sets the default value.
+ * PRE          :  /
+ */
+static void gm_dw_option_menu_update (GtkWidget *, 
+				      gchar **,
+				      gchar *);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Retrieves the data from the various fields of the druid 
+ * 		   window GMObject and fills the parameters in.
+ * PRE          :  A valid pointer to the druid window GMObject.
+ */
+static void gm_dw_get_all_data (GtkWidget *,
+				gchar *&, 
+				gchar *&,
+				gchar *&, 
+				gchar *&, 
+				gchar *&,
+				gchar *&, 
+				gchar *&, 
+				gchar *&);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Init the welcome page.
+ * PRE          :  A valid pointer to the druid window GMObject. Followed by
+ * 		   the current page number.
+ */
+static void gm_dw_init_welcome_page (GtkWidget *, 
+				     int);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Init the personal data page.
+ * PRE          :  A valid pointer to the druid window GMObject. Followed by
+ * 		   the current page number and the total pages number.
+ */
+static void gm_dw_init_personal_data_page (GtkWidget *, 
+					   int, 
+					   int);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Init the callto url page.
+ * PRE          :  A valid pointer to the druid window GMObject. Followed by
+ * 		   the current page number and the total pages number.
+ */
+static void gm_dw_init_callto_page (GtkWidget *, 
+				    int, 
+				    int);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Init the connection type page.
+ * PRE          :  A valid pointer to the druid window GMObject. Followed by
+ * 		   the current page number and the total pages number.
+ */
+static void gm_dw_init_connection_type_page (GtkWidget *, 
+					     int, 
+					     int);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Init the audio plugin page.
+ * PRE          :  A valid pointer to the druid window GMObject. Followed by
+ * 		   the current page number and the total pages number.
+ */
+static void gm_dw_init_audio_manager_page (GtkWidget *, 
+					   int, 
+					   int);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Init the audio devices page.
+ * PRE          :  A valid pointer to the druid window GMObject. Followed by
+ * 		   the current page number and the total page number.
+ */
+static void gm_dw_init_audio_devices_page (GtkWidget *, 
+					   int, 
+					   int);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Init the video manager page.
+ * PRE          :  A valid pointer to the druid window GMObject. Followed by
+ * 		   the current page number and the total pages number.
+ */
+static void gm_dw_init_video_manager_page (GtkWidget *, 
+					   int, 
+					   int);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Init the video devices page.
+ * PRE          :  A valid pointer to the druid window GMObject. Followed by
+ * 		   the current page number and the total pages number.
+ */
+static void gm_dw_init_video_devices_page (GtkWidget *, 
+					   int, 
+					   int);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Init the summary page.
+ * PRE          :  A valid pointer to the druid window GMObject. Followed by
+ * 		   the total pages number.
+ */
+static void gm_dw_init_final_page (GtkWidget *, 
+				   int);
+
+
+/* GTK Callbacks */
+
+/* DESCRIPTION  : Timeout function called with delay of 2 seconds to update
+ * 		  the kind_of_net GConf key to avoid collision with
+ * 		  other notifiers triggered when video gconf related keys
+ * 		  are updated (leading to kind_of_net being set to 5). 
+ * 		  Ugly hack.
+ * BEHAVIOR     : Updates the key.
+ * PRE          : GPOINTER_TO_INT (data) = 1 = PSTN, 2 = ISDN, 
+ * 		3 = DSL/CABLE, 4 = LAN, 5 = Custom
+ */
+static gint kind_of_net_hack_cb (gpointer);
+
+
+/* DESCRIPTION  : Callback called when the audio test button is clicked in the
+ * 		  druid window GMObject.
+ * BEHAVIOR     : Start or stop the GMH323EndPoint Audio Tester following
+ * 		  the toggle is active or not.
+ * PRE          : A valid pointer to a valid druid window GMObject.
+ */
+static void audio_test_button_clicked_cb (GtkWidget *,
+					  gpointer);
+
+
+/* DESCRIPTION  : Callback called when the video test button is clicked in the
+ * 		  druid window GMObject.
+ * BEHAVIOR     : Start a Video Tester thread.
+ * PRE          : A valid pointer to a valid druid window GMObject.
+ */
+static void video_test_button_clicked_cb (GtkWidget *,
+					  gpointer);
+
+
+/* DESCRIPTION  :  This callback is called when the user clicks on Cancel.
+ * BEHAVIOR     :  Hides the druid and shows GM.
+ * PRE          :  A valid pointer to a valid druid window GMObject.
+ */
+static void cancel_cb (GtkWidget *, 
+		       gpointer);
+
+
+/* DESCRIPTION  :  This callback is called when the user clicks on finish.
+ * BEHAVIOR     :  Destroys the druid, update config settings and update
+ *                 the internal structures for devices and the corresponding
+ *                 prefs window menus. Displays a welcome message.
+ * PRE          :  A valid pointer to a valid druid window GMObject.
+ */
+static void finish_cb (GnomeDruidPage *, 
+		       GtkWidget *, 
+		       gpointer);
+
+
+/* DESCRIPTION  :  This callback is called when the user destroys the druid.
+ * BEHAVIOR     :  Exits. 
+ * PRE          :  A Valid pointer to a valid druid window GMObject. 
+ */
+static void delete_event_cb (GtkWidget *, 
+			     GdkEventAny *, 
+			     gpointer);
+
+
+/* DESCRIPTION  :  Called when the user changes an info in the Personal
+ *                 Information page.
+ * BEHAVIOR     :  Checks if the "Next" button of the "Personal Information"
+ *                 druid page can be sensitive or not. It will if the name
+ *                 field is ok.
+ * PRE          :  The druid window GMObject.
+ */
+static void name_changed_cb (GtkWidget *, 
+			     gpointer);
+
+
+/* DESCRIPTION  :  Called when the user changes an info in the Callto URL page.
+ * BEHAVIOR     :  Checks if the "Next" button of the "Callto URL"
+ *                 druid page can be sensitive or not. It will if email field
+ *                 is ok, or if registering is disabled.
+ * PRE          :  The druid window GMObject.
+ */
+static void email_changed_cb (GtkWidget *, 
+			      gpointer);
+
+
+/* DESCRIPTION  :  Called when the user changes the registering toggle.
+ * BEHAVIOR     :  Checks if the "Next" button of the "Personal Information"
+ *                 druid page can be sensitive or not. It will if all fields
+ *                 are ok, or if registering is disabled. (Calls the above
+ *                 function).
+ * PRE          :  The druid window GMObject.
+ */
+static void ils_register_toggled_cb (GtkToggleButton *, 
+				     gpointer);
+
+
+/* DESCRIPTION  :  Called when the user switches from one page to another.
+ * BEHAVIOR     :  Updates the Back/Next buttons accordingly following
+ * 		   if all fields are correct or not.
+ * PRE          :  /
+ */
+static void prepare_welcome_page_cb (GnomeDruidPage *,
+				     GnomeDruid *, 
+				     gpointer);
+
+
+/* DESCRIPTION  :  Called when the user switches from one page to another.
+ * BEHAVIOR     :  Updates the Back/Next buttons accordingly following
+ * 		   if all fields are correct or not. Updates the fields
+ * 		   contents for all pages of the druid following the current
+ * 		   preferences.
+ * PRE          :  The druid window GMObject.
+ */
+static void prepare_personal_data_page_cb (GnomeDruidPage *,
+					   GnomeDruid *,
+					   gpointer);
+
+
+/* DESCRIPTION  :  Called when the user switches from one page to another.
+ * BEHAVIOR     :  Updates the Back/Next buttons accordingly following
+ * 		   if all fields are correct (not register and no email, or
+ * 		   register to ILS and an email specified).
+ * PRE          :  The druid window GMObject.
+ */
+static void prepare_callto_page_cb (GnomeDruidPage *,
+				    GnomeDruid *, 
+				    gpointer);
+
+
+/* DESCRIPTION  :  Called when the user switches from one page to another.
+ * BEHAVIOR     :  Updates the Back/Next buttons accordingly following
+ * 		   if all fields are correct or not. Updates the audio
+ * 		   devices list following the audio manager choosen at the
+ * 		   previous page.
+ * PRE          :  The druid window GMObject.
+ */
+static void prepare_audio_devices_page_cb (GnomeDruidPage *,
+					   GnomeDruid *,
+					   gpointer);
+
+
+/* DESCRIPTION  :  Called when the user switches from one page to another.
+ * BEHAVIOR     :  Updates the Back/Next buttons accordingly following
+ * 		   if all fields are correct or not. Updates the video devices
+ * 		   list following the video manager chosen at the previous 
+ * 		   page.
+ * PRE          :  The druid window GMObject.
+ */
+static void prepare_video_devices_page_cb (GnomeDruidPage *,
+					   GnomeDruid *, 
+					   gpointer);
+
+
+/* DESCRIPTION  :  Called when the user switches from one page to another.
+ * BEHAVIOR     :  Updates the Back/Next buttons accordingly following
+ * 		   if all fields are correct or not. Prepares the summary
+ * 		   of preferences.
+ * PRE          :  The druid window GMObject.
+ */
+static void prepare_final_page_cb (GnomeDruidPage *,
+				   GnomeDruid *, 
+				   gpointer);
+
 
 extern GtkWidget *gm;
 
-/* used to free the memory of the attached GmDruidWindow */
+
 static void 
-gm_druid_destroy_internal_struct (gpointer ptr)
+gm_dw_destroy (gpointer dw)
+{
+  g_return_if_fail (dw != NULL);
+ 
+  delete ((GmDruidWindow *) dw);
+}
+
+
+GmDruidWindow *
+gm_dw_get_dw (GtkWidget *druid_window)
+{
+    g_return_val_if_fail (druid_window != NULL, NULL);
+
+      return GM_DRUID_WINDOW (g_object_get_data (G_OBJECT (druid_window), "GMObject"));
+}
+
+
+static void 
+gm_dw_check_name (GtkWidget *druid_window)
+{
+  GmDruidWindow *dw = NULL;
+  
+  gchar ** couple = NULL;
+
+  g_return_if_fail (druid_window != NULL);
+
+  dw = gm_dw_get_dw (druid_window);
+  
+  couple = g_strsplit (gtk_entry_get_text (GTK_ENTRY (dw->name)), " ", 2);
+  
+  if (couple && couple [0] && couple [1]
+      && !PString (couple [0]).Trim ().IsEmpty ()
+      && !PString (couple [1]).Trim ().IsEmpty ()) 
+    gnome_druid_set_buttons_sensitive (dw->druid, TRUE, TRUE, TRUE, FALSE);
+  else
+    gnome_druid_set_buttons_sensitive (dw->druid, TRUE, FALSE, TRUE, FALSE);
+}
+
+
+static void 
+gm_dw_check_callto (GtkWidget *druid_window)
+{
+  GmDruidWindow *dw = NULL;
+  
+  PString mail;
+  BOOL correct = FALSE;
+
+
+  g_return_if_fail (druid_window != NULL);
+
+  dw = gm_dw_get_dw (druid_window); 
+
+  if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (dw->use_callto)))
+    correct = TRUE;
+  else {    
+    mail = PString (gtk_entry_get_text (GTK_ENTRY (dw->mail)));
+    if (!mail.IsEmpty () && mail.Find ("@") != P_MAX_INDEX)
+      correct = TRUE;
+  }
+   
+  if (correct)
+    gnome_druid_set_buttons_sensitive (dw->druid, TRUE, TRUE, TRUE, FALSE);
+  else
+    gnome_druid_set_buttons_sensitive (dw->druid, TRUE, FALSE, TRUE, FALSE);
+}
+
+
+static void
+gm_dw_option_menu_update (GtkWidget *option_menu,
+			  gchar **options,
+			  gchar *default_value)
+{
+  GtkWidget *menu = NULL;
+  GtkWidget *item = NULL;
+
+  int history = -1;
+  int cpt = 0;                                                   
+
+  cpt = 0;
+
+  g_return_if_fail (options != NULL);
+
+  gtk_option_menu_remove_menu (GTK_OPTION_MENU (option_menu));
+  menu = gtk_menu_new ();
+
+  if (!options)
+    return;
+
+
+  while (options [cpt]) {
+
+    if (default_value && !strcmp (options [cpt], default_value)) 
+      history = cpt;
+
+    item = gtk_menu_item_new_with_label (options [cpt]);
+    gtk_widget_show (item);
+    gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+
+    cpt++;
+  }
+
+  gtk_option_menu_set_menu (GTK_OPTION_MENU (option_menu), menu);
+
+  if (history != -1)
+    gtk_option_menu_set_history (GTK_OPTION_MENU (option_menu), history);
+}
+
+
+static void
+gm_dw_get_all_data (GtkWidget *druid_window,
+		    gchar * &name,
+		    gchar * &mail,
+		    gchar * &connection_type,
+		    gchar * &audio_manager,
+		    gchar * &player,
+		    gchar * &recorder,
+		    gchar * &video_manager,
+		    gchar * &video_recorder)
+{
+  GmDruidWindow *dw = NULL;
+  
+  GtkWidget *child = NULL;
+  
+  g_return_if_fail (druid_window != NULL);
+  
+  dw = gm_dw_get_dw (druid_window);
+  
+  name = (gchar *) gtk_entry_get_text (GTK_ENTRY (dw->name));
+  mail = (gchar *) gtk_entry_get_text (GTK_ENTRY (dw->mail));
+  child = GTK_BIN (dw->kind_of_net)->child;
+  if (child)
+    connection_type = (gchar *) gtk_label_get_text (GTK_LABEL (child));
+  else
+    connection_type = "";
+
+  child = GTK_BIN (dw->audio_manager)->child;
+  if (child)
+    audio_manager = (gchar *) gtk_label_get_text (GTK_LABEL (child));
+  else
+    audio_manager = "";
+
+  child = GTK_BIN (dw->video_manager)->child;
+  if (child)
+    video_manager = (gchar *) gtk_label_get_text (GTK_LABEL (child));
+  else
+    video_manager = "";
+
+  child = GTK_BIN (dw->audio_player)->child;
+  if (child)
+    player = (gchar *) gtk_label_get_text (GTK_LABEL (child));
+  else
+    player = "";
+
+  child = GTK_BIN (dw->audio_recorder)->child;
+  if (child)
+    recorder = (gchar *) gtk_label_get_text (GTK_LABEL (child));
+  else
+    recorder = "";
+
+  child = GTK_BIN (dw->video_device)->child;
+  if (child)
+    video_recorder = (gchar *) gtk_label_get_text (GTK_LABEL (child));
+  else
+    video_recorder = "";
+}
+
+
+static void
+gm_dw_init_welcome_page (GtkWidget *druid_window,
+			 int t)
 {
   GmDruidWindow *dw = NULL;
 
-  dw = (GmDruidWindow *)ptr;
- 
-  delete (dw);
+  gchar *title = NULL;
+
+  static const gchar text[] =
+    N_
+    ("This is the GnomeMeeting general configuration druid. "
+     "The following steps will set up GnomeMeeting by asking "
+     "a few simple questions.\n\nOnce you have completed "
+     "these steps, you can always change them later by "
+     "selecting Preferences in the Edit menu.");
+
+
+  g_return_if_fail (druid_window != NULL);
+
+  dw = gm_dw_get_dw (druid_window);
+
+  
+  title = g_strdup_printf (_("Configuration Druid - page 1/%d"), t);
+  
+  dw->page_edge =
+    GNOME_DRUID_PAGE_EDGE (gnome_druid_page_edge_new_aa (GNOME_EDGE_START));
+  gnome_druid_page_edge_set_title (dw->page_edge, title);
+			   
+  gnome_druid_page_edge_set_text (dw->page_edge, _(text));
+  
+  gnome_druid_append_page (dw->druid, GNOME_DRUID_PAGE (dw->page_edge));
+  gnome_druid_set_page (dw->druid, GNOME_DRUID_PAGE (dw->page_edge));
+  
+  g_signal_connect_after (G_OBJECT (dw->page_edge), "prepare",
+			  G_CALLBACK (prepare_welcome_page_cb), 
+			  druid_window);
+
+  g_free (title);
 }
+
+
+static void 
+gm_dw_init_personal_data_page (GtkWidget *druid_window,
+			       int p, 
+			       int t)
+{
+  GmDruidWindow *dw = NULL;
+  
+  GtkWidget *label = NULL;
+  GtkWidget *vbox = NULL;
+
+  gchar *title = NULL;
+  gchar *text = NULL;
+  
+  GtkWidget *page = NULL;
+
+
+  g_return_if_fail (druid_window != NULL);
+
+  dw = gm_dw_get_dw (druid_window);
+
+  
+  page = gnome_druid_page_standard_new ();
+
+  title = g_strdup_printf (_("Personal Information - page %d/%d"), p, t);
+  gnome_druid_page_standard_set_title (GNOME_DRUID_PAGE_STANDARD (page),
+				       title);
+  g_free (title);
+  
+  gnome_druid_append_page (dw->druid, GNOME_DRUID_PAGE (page));
+
+  
+  /* Start packing widgets */
+  vbox = gtk_vbox_new (FALSE, 2);
+
+  
+  /* The user fields */
+  label = gtk_label_new (_("Please enter your first name and your surname:"));
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+
+  dw->name = gtk_entry_new ();
+  gtk_box_pack_start (GTK_BOX (vbox), dw->name, FALSE, FALSE, 0);
+
+  label = gtk_label_new (NULL);
+  text = g_strdup_printf ("<i>%s</i>", _("Your first name and surname will be used when connecting to other VoIP and videoconferencing software."));
+  gtk_label_set_markup (GTK_LABEL (label), text);
+  g_free (text);
+  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, TRUE, 0);
+
+  g_signal_connect (G_OBJECT (dw->name), "changed",
+		    G_CALLBACK (name_changed_cb), 
+		    druid_window);
+
+  g_signal_connect_after (G_OBJECT (page), "prepare",
+			  G_CALLBACK (prepare_personal_data_page_cb), 
+			  druid_window);
+  
+  gtk_box_pack_start (GTK_BOX (GNOME_DRUID_PAGE_STANDARD (page)->vbox),
+		      GTK_WIDGET (vbox), 
+		      TRUE, TRUE, 8);
+}
+
+
+static void 
+gm_dw_init_callto_page (GtkWidget *druid_window,
+			int p,
+			int t)
+{
+  GmDruidWindow *dw = NULL;
+  
+  GtkWidget *label = NULL;
+  GtkWidget *vbox = NULL;
+  GtkWidget *align = NULL;
+  
+  gchar *title = NULL;
+  gchar *text = NULL;
+  
+  GtkWidget *page = NULL;
+
+
+  g_return_if_fail (druid_window != NULL);
+
+  dw = gm_dw_get_dw (druid_window);
+
+
+  page = gnome_druid_page_standard_new ();
+
+  title = g_strdup_printf (_("Callto URL - page %d/%d"), p, t);
+  gnome_druid_page_standard_set_title (GNOME_DRUID_PAGE_STANDARD (page),
+				       title);
+  g_free (title);
+				
+  gnome_druid_append_page (dw->druid, GNOME_DRUID_PAGE (page));
+
+  
+  /* Start packing widgets */
+  vbox = gtk_vbox_new (FALSE, 2);
+
+  label = gtk_label_new (_("Please enter your e-mail address:"));
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+
+  dw->mail = gtk_entry_new ();
+  gtk_box_pack_start (GTK_BOX (vbox), dw->mail, FALSE, FALSE, 0);
+
+  label = gtk_label_new (NULL);
+  text = g_strdup_printf ("<i>%s</i>", _("Your e-mail address is used when registering to the GnomeMeeting users directory. It is used to create a callto address permitting your contacts to easily call you wherever you are."));
+  gtk_label_set_markup (GTK_LABEL (label), text);
+  g_free (text);
+  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, TRUE, 0);
+
+
+  dw->use_callto = gtk_check_button_new ();
+  label = gtk_label_new (_("I don't want to register to the GnomeMeeting users directory and get a callto address"));
+  gtk_container_add (GTK_CONTAINER (dw->use_callto), label);
+  align = gtk_alignment_new (0, 1.0, 0, 0);
+  gtk_container_add (GTK_CONTAINER (align), dw->use_callto);
+  gtk_box_pack_start (GTK_BOX (vbox), align, TRUE, TRUE, 0);
+
+  g_signal_connect (G_OBJECT (dw->mail), "changed",
+		    G_CALLBACK (email_changed_cb), 
+		    druid_window);
+
+  g_signal_connect (G_OBJECT (dw->use_callto), "toggled",
+		    G_CALLBACK (ils_register_toggled_cb), 
+		    druid_window);
+
+  g_signal_connect_after (G_OBJECT (page), "prepare",
+			  G_CALLBACK (prepare_callto_page_cb), 
+			  druid_window);
+  
+  gtk_box_pack_start (GTK_BOX (GNOME_DRUID_PAGE_STANDARD (page)->vbox),
+		      GTK_WIDGET (vbox), 
+		      TRUE, TRUE, 8);
+}
+
+
+static void 
+gm_dw_init_connection_type_page (GtkWidget *druid_window,
+				 int p, 
+				 int t)
+{
+  GmDruidWindow *dw = NULL;
+  
+  GtkWidget *vbox = NULL;
+  GtkWidget *label = NULL;
+
+  gchar *title = NULL;
+  gchar *text = NULL;
+  
+  GnomeDruidPageStandard *page_standard = NULL;
+
+
+  g_return_if_fail (druid_window != NULL);
+  
+  dw = gm_dw_get_dw (druid_window);
+
+  
+  /* Get data */
+  page_standard = 
+    GNOME_DRUID_PAGE_STANDARD (gnome_druid_page_standard_new ());
+  
+  title = g_strdup_printf (_("Connection Type - page %d/%d"), p, t);
+  gnome_druid_page_standard_set_title (page_standard, title);
+  g_free (title);
+
+  gnome_druid_append_page (dw->druid, GNOME_DRUID_PAGE (page_standard));
+
+
+  /* Start packing widgets */
+  vbox = gtk_vbox_new (FALSE, 2);
+
+
+  /* The connection type */
+  label = gtk_label_new (_("Please choose your connection type:"));
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+  
+  dw->kind_of_net = gtk_option_menu_new ();
+  gtk_box_pack_start (GTK_BOX (vbox), dw->kind_of_net, FALSE, FALSE, 0);
+
+  label = gtk_label_new (NULL);
+  text = g_strdup_printf ("<i>%s</i>", _("The connection type will permit determining the best quality settings that GnomeMeeting will use during calls. You can later change the settings individually in the preferences window."));
+  gtk_label_set_markup (GTK_LABEL (label), text);
+  g_free (text);
+  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, TRUE, 0);
+
+  gtk_box_pack_start (GTK_BOX (page_standard->vbox), GTK_WIDGET (vbox), 
+		      TRUE, TRUE, 8);
+}
+
+
+static void 
+gm_dw_init_audio_manager_page (GtkWidget *druid_window,
+			       int p,
+			       int t)
+{
+  GmDruidWindow *dw = NULL;
+  
+  GtkWidget *label = NULL;
+  GtkWidget *vbox = NULL;
+
+  gchar *title = NULL;
+  gchar *text = NULL;
+  
+  GnomeDruidPageStandard *page_standard = NULL;
+
+
+  g_return_if_fail (druid_window != NULL);
+
+  dw = gm_dw_get_dw (druid_window);
+  
+
+  /* Get data */  
+  page_standard = 
+    GNOME_DRUID_PAGE_STANDARD (gnome_druid_page_standard_new ());
+  
+  title = g_strdup_printf (_("Audio Manager - page %d/%d"), p, t);
+  gnome_druid_page_standard_set_title (page_standard, title);
+  g_free (title);
+
+  gnome_druid_append_page (dw->druid, GNOME_DRUID_PAGE (page_standard));
+
+
+  /* Start packing widgets */
+  vbox = gtk_vbox_new (FALSE, 2);
+
+
+  /* The Audio devices */
+  label = gtk_label_new (_("Please choose your audio manager:"));
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+  
+  dw->audio_manager = gtk_option_menu_new ();
+  gtk_box_pack_start (GTK_BOX (vbox), dw->audio_manager, FALSE, FALSE, 0);
+
+  label = gtk_label_new (NULL);
+  text = g_strdup_printf ("<i>%s</i>", _("The audio manager is the plugin that will manage your audio devices, ALSA is probably the best choice when available."));
+  gtk_label_set_markup (GTK_LABEL (label), text);
+  g_free (text);
+  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, TRUE, 0);
+
+
+  gtk_box_pack_start (GTK_BOX (page_standard->vbox), GTK_WIDGET (vbox), 
+		      TRUE, TRUE, 8);
+}
+
+
+static void 
+gm_dw_init_audio_devices_page (GtkWidget *druid_window, 
+			       int p, 
+			       int t)
+{
+  GmDruidWindow *dw = NULL;
+  
+  GtkWidget *align = NULL;
+  GtkWidget *vbox = NULL;
+  GtkWidget *label = NULL;
+
+  gchar *title = NULL;
+  gchar *text = NULL;
+  
+  GnomeDruidPageStandard *page_standard = NULL;
+
+
+  g_return_if_fail (druid_window);
+
+  dw = gm_dw_get_dw (druid_window);
+
+  
+  /* Get data */
+  page_standard = 
+    GNOME_DRUID_PAGE_STANDARD (gnome_druid_page_standard_new ());
+  
+  title = g_strdup_printf (_("Audio Devices - page %d/%d"), p, t);
+  gnome_druid_page_standard_set_title (page_standard, title);
+  g_free (title);
+
+  gnome_druid_append_page (dw->druid, GNOME_DRUID_PAGE (page_standard));
+
+
+  /* Start packing widgets */
+  vbox = gtk_vbox_new (FALSE, 2);
+
+
+  /* The Audio devices */
+  label = gtk_label_new (_("Please choose the audio output device:"));
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+  
+  dw->audio_player = gtk_option_menu_new ();
+  gtk_box_pack_start (GTK_BOX (vbox), dw->audio_player, FALSE, FALSE, 0);
+
+  label = gtk_label_new (NULL);
+  text = g_strdup_printf ("<i>%s</i>", _("The audio output device is the device managed by the audio manager that will be used to play audio."));
+  gtk_label_set_markup (GTK_LABEL (label), text);
+  g_free (text);
+  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, TRUE, 0);
+
+  label = gtk_label_new (" ");
+  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+
+  label = gtk_label_new (_("Please choose the audio input device:"));
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+  
+  dw->audio_recorder = gtk_option_menu_new ();
+  gtk_box_pack_start (GTK_BOX (vbox), dw->audio_recorder, FALSE, FALSE, 0);
+
+  label = gtk_label_new (NULL);
+  text = g_strdup_printf ("<i>%s</i>", _("The audio input device is the device managed by the audio manager that will be used to record your voice."));
+  gtk_label_set_markup (GTK_LABEL (label), text);
+  g_free (text);
+  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, TRUE, 0);
+
+
+  label = gtk_label_new (" ");
+  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+
+  align = gtk_alignment_new (1.0, 0, 0, 0);
+  dw->audio_test_button =
+    gtk_toggle_button_new_with_label (_("Test Settings"));
+  gtk_container_add (GTK_CONTAINER (align), dw->audio_test_button);
+  gtk_box_pack_start (GTK_BOX (vbox), align, FALSE, FALSE, 0);
+  
+  g_signal_connect (G_OBJECT (dw->audio_test_button), "clicked",
+		    GTK_SIGNAL_FUNC (audio_test_button_clicked_cb),
+		    (gpointer) druid_window);
+
+  g_signal_connect_after (G_OBJECT (page_standard), "prepare",
+			  G_CALLBACK (prepare_audio_devices_page_cb), 
+			  druid_window);
+
+
+  /**/
+  gtk_box_pack_start (GTK_BOX (page_standard->vbox), GTK_WIDGET (vbox), 
+		      TRUE, TRUE, 8);
+}
+
+
+static void 
+gm_dw_init_video_manager_page (GtkWidget *druid_window, 
+			       int p, 
+			       int t)
+{
+  GmDruidWindow *dw = NULL;
+  
+  GtkWidget *label = NULL;
+  GtkWidget *vbox = NULL;
+
+  gchar *title = NULL;
+  gchar *text = NULL;
+  
+  GnomeDruidPageStandard *page_standard = NULL;
+
+
+  g_return_if_fail (druid_window != NULL);
+
+  dw = gm_dw_get_dw (druid_window);
+
+  
+  /* Get data */
+  page_standard = 
+    GNOME_DRUID_PAGE_STANDARD (gnome_druid_page_standard_new ());
+  
+  title = g_strdup_printf (_("Video Manager - page %d/%d"), p, t);
+  gnome_druid_page_standard_set_title (page_standard, title);
+  g_free (title);
+
+  gnome_druid_append_page (dw->druid, GNOME_DRUID_PAGE (page_standard));
+
+
+  /* Start packing widgets */
+  vbox = gtk_vbox_new (FALSE, 2);
+
+
+  /* The Audio devices */
+  label = gtk_label_new (_("Please choose your video manager:"));
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+  
+  dw->video_manager = gtk_option_menu_new ();
+  gtk_box_pack_start (GTK_BOX (vbox), dw->video_manager, FALSE, FALSE, 0);
+
+  label = gtk_label_new (NULL);
+  text = g_strdup_printf ("<i>%s</i>", _("The video manager is the plugin that will manage your video devices, Video4Linux is the most common choice if you own a webcam."));
+  gtk_label_set_markup (GTK_LABEL (label), text);
+  g_free (text);
+  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, TRUE, 0);
+
+  gtk_box_pack_start (GTK_BOX (page_standard->vbox), GTK_WIDGET (vbox), 
+		      TRUE, TRUE, 8);
+}
+
+
+static void 
+gm_dw_init_video_devices_page (GtkWidget *druid_window,
+			       int p, 
+			       int t)
+{
+  GmDruidWindow *dw = NULL;
+  
+  GtkWidget *align = NULL;
+  GtkWidget *vbox = NULL;
+  GtkWidget *label = NULL;
+
+  gchar *title = NULL;
+  gchar *text = NULL;
+  
+  GnomeDruidPageStandard *page_standard = NULL;
+
+
+  g_return_if_fail (druid_window != NULL);
+
+  dw = gm_dw_get_dw (druid_window);
+
+
+  /* Get data */
+  page_standard = 
+    GNOME_DRUID_PAGE_STANDARD (gnome_druid_page_standard_new ());
+  
+  title = g_strdup_printf (_("Video Devices - page %d/%d"), p, t);
+  gnome_druid_page_standard_set_title (page_standard, title);
+  g_free (title);
+
+  gnome_druid_append_page (dw->druid, GNOME_DRUID_PAGE (page_standard));
+
+
+  /* Start packing widgets */
+  vbox = gtk_vbox_new (FALSE, 2);
+
+
+  /* The Video devices */
+  label = gtk_label_new (_("Please choose the video input device:"));
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+  
+  dw->video_device = gtk_option_menu_new ();
+  gtk_box_pack_start (GTK_BOX (vbox), dw->video_device, FALSE, FALSE, 0);
+
+  label = gtk_label_new (NULL);
+  text = g_strdup_printf ("<i>%s</i>", _("The video input device is the device managed by the video manager that will be used to capture video."));
+  gtk_label_set_markup (GTK_LABEL (label), text);
+  g_free (text);
+  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, TRUE, 0);
+
+  label = gtk_label_new (" ");
+  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+
+  align = gtk_alignment_new (1.0, 0, 0, 0);
+  dw->video_test_button =
+    gtk_toggle_button_new_with_label (_("Test Settings"));
+  gtk_container_add (GTK_CONTAINER (align), dw->video_test_button);
+  gtk_box_pack_start (GTK_BOX (vbox), align, FALSE, FALSE, 0);
+  
+  g_signal_connect (G_OBJECT (dw->video_test_button), "clicked",
+		    GTK_SIGNAL_FUNC (video_test_button_clicked_cb),
+		    (gpointer) druid_window);
+
+  g_signal_connect_after (G_OBJECT (page_standard), "prepare",
+			  G_CALLBACK (prepare_video_devices_page_cb), 
+			  druid_window);
+
+  /**/
+  gtk_box_pack_start (GTK_BOX (page_standard->vbox), GTK_WIDGET (vbox), 
+		      TRUE, TRUE, 8);
+}
+
+
+static void
+gm_dw_init_final_page (GtkWidget *druid_window, 
+		       int t)
+{
+  GmDruidWindow *dw = NULL;
+  
+  gchar *title = NULL;
+
+  GnomeDruidPageEdge *page_final = NULL;
+
+  g_return_if_fail (druid_window != NULL);
+
+  dw = gm_dw_get_dw (druid_window);
+
+
+  page_final =
+    GNOME_DRUID_PAGE_EDGE (gnome_druid_page_edge_new (GNOME_EDGE_FINISH));
+  
+  title = g_strdup_printf (_("Configuration complete - page %d/%d"), t, t);
+  gnome_druid_page_edge_set_title (page_final, title);
+
+  gnome_druid_append_page (dw->druid, GNOME_DRUID_PAGE (page_final));
+
+  g_signal_connect_after (G_OBJECT (page_final), "prepare",
+			  G_CALLBACK (prepare_final_page_cb), 
+			  druid_window);  
+
+  g_signal_connect (G_OBJECT (page_final), "finish",
+		    G_CALLBACK (finish_cb), 
+		    druid_window);
+
+  g_free (title);
+}
+
 
 /* GTK Callbacks */
 static gint
-gm_druid_kind_of_net_hack (gpointer data)
+kind_of_net_hack_cb (gpointer data)
 {
-  gm_conf_set_int (GENERAL_KEY "kind_of_net", GPOINTER_TO_INT (data));
+  gm_conf_set_int (GENERAL_KEY "kind_of_net", 
+		   GPOINTER_TO_INT (data));
 
   return FALSE;
 }
 
 
 static void
-gm_druid_audio_test_button_clicked_cb (GtkWidget *w,
-				       gpointer data)
-{
+audio_test_button_clicked_cb (GtkWidget *w,
+			      gpointer data)
+{ 
   GMH323EndPoint *ep = NULL;
+
+  GtkWidget *druid_window = NULL;
   
   gchar *name = NULL;
   gchar *con_type = NULL;
@@ -163,14 +1153,23 @@ gm_druid_audio_test_button_clicked_cb (GtkWidget *w,
   gchar *recorder = NULL;
   gchar *video_manager = NULL;
   gchar *video_recorder = NULL;
-  GmDruidWindow *dw = NULL;
+  
 
-  dw = (GmDruidWindow *)data;
-
-  gm_druid_get_all_data (dw, name, mail, con_type, audio_manager, player,
-			 recorder, video_manager, video_recorder);
-
+  g_return_if_fail (data != NULL);
+  
   ep = GnomeMeeting::Process ()->Endpoint ();
+  druid_window = GTK_WIDGET (data);
+
+  gm_dw_get_all_data (druid_window, 
+		      name, 
+		      mail, 
+		      con_type, 
+		      audio_manager, 
+		      player,
+		      recorder, 
+		      video_manager, 
+		      video_recorder);
+
 
   if (GTK_TOGGLE_BUTTON (w)->active) {
 
@@ -189,11 +1188,13 @@ gm_druid_audio_test_button_clicked_cb (GtkWidget *w,
 
 
 static void
-gm_druid_video_test_button_clicked_cb (GtkWidget *w,
-				       gpointer data)
+video_test_button_clicked_cb (GtkWidget *w,
+			      gpointer data)
 {
   GMVideoTester *t = NULL;
 
+  GtkWidget *druid_window = NULL;
+  
   gchar *name = NULL;
   gchar *con_type = NULL;
   gchar *mail = NULL;
@@ -202,51 +1203,53 @@ gm_druid_video_test_button_clicked_cb (GtkWidget *w,
   gchar *recorder = NULL;
   gchar *video_manager = NULL;
   gchar *video_recorder = NULL;
-  GmDruidWindow *dw = NULL;
 
-  dw = (GmDruidWindow *)data;
+  g_return_if_fail (data != NULL);
 
-  gm_druid_get_all_data (dw, name, mail, con_type, audio_manager, player,
-			 recorder, video_manager, video_recorder);
+  druid_window = GTK_WIDGET (data);
+  
+  gm_dw_get_all_data (druid_window, 
+		      name, 
+		      mail, 
+		      con_type, 
+		      audio_manager, 
+		      player,
+		      recorder, 
+		      video_manager, 
+		      video_recorder);
 
   if (GTK_TOGGLE_BUTTON (w)->active)   
     t = new GMVideoTester (video_manager, video_recorder);
 }
 
 
-/* DESCRIPTION  :  This callback is called when the user clicks on Cancel.
- * BEHAVIOR     :  Hides the druid and shows GM.
- * PRE          :  /
- */
 static void 
-gm_druid_cancel_cb (GtkWidget *w, gpointer data)
+cancel_cb (GtkWidget *w, 
+	   gpointer data)
 {
-  GmWindow *gw = NULL;
   GmDruidWindow *dw = NULL;
 
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
-  dw = (GmDruidWindow *)data;
+  g_return_if_fail (data != NULL);
+
+  dw = gm_dw_get_dw (GTK_WIDGET (data));
   
   gnome_druid_set_page (dw->druid, GNOME_DRUID_PAGE (dw->page_edge));
-  gnomemeeting_window_hide (gw->druid_window);
+  gnomemeeting_window_hide (GTK_WIDGET (data));
   gnomemeeting_window_show (gm);
 }
 
 
-/* DESCRIPTION  :  This callback is called when the user clicks on finish.
- * BEHAVIOR     :  Destroys the druid, update config settings and update
- *                 the internal structures for devices and the corresponding
- *                 prefs window menus. Displays a welcome message.
- * PRE          :  /
- */
 static void 
-gm_druid_finish_cb (GnomeDruidPage *p, GtkWidget *w, gpointer data)
+finish_cb (GnomeDruidPage *p, 
+	   GtkWidget *w, 
+	   gpointer data)
 {
   GmWindow *gw = NULL;
   GmDruidWindow *dw = NULL;
 
   GMH323EndPoint *ep = NULL;
   
+  GtkWidget *druid_window = NULL;
   GtkWidget *active_item = NULL;
   int item_index = 0;
   int version = 0;
@@ -263,8 +1266,14 @@ gm_druid_finish_cb (GnomeDruidPage *p, GtkWidget *w, gpointer data)
   gchar *video_manager = NULL;
   gchar *video_recorder = NULL;
 
+  
+  g_return_if_fail (data != NULL);
+  
+  druid_window = GTK_WIDGET (data);
+
+  
   gw = GnomeMeeting::Process ()->GetMainWindow ();
-  dw = (GmDruidWindow *)data;
+  dw = gm_dw_get_dw (druid_window);
   ep = GnomeMeeting::Process ()->Endpoint ();
 
   
@@ -273,8 +1282,16 @@ gm_druid_finish_cb (GnomeDruidPage *p, GtkWidget *w, gpointer data)
   item_index =
     g_list_index (GTK_MENU_SHELL (GTK_MENU (GTK_OPTION_MENU (dw->kind_of_net)->menu))->children, active_item) + 1;
 
-  gm_druid_get_all_data (dw, name, mail, con_type, audio_manager, player,
-			 recorder, video_manager, video_recorder);
+
+  gm_dw_get_all_data (druid_window, 
+		      name, 
+		      mail, 
+		      con_type, 
+		      audio_manager, 
+		      player,
+		      recorder, 
+		      video_manager, 
+		      video_recorder);
 
   
   /* Set the personal data: firstname, lastname and mail
@@ -345,7 +1362,7 @@ gm_druid_finish_cb (GnomeDruidPage *p, GtkWidget *w, gpointer data)
 		      has_video_device);
     gm_conf_set_bool (VIDEO_CODECS_KEY "enable_video_reception", TRUE);
   }
-  else if (item_index == 4) { /* LDAN */
+  else if (item_index == 4) { /* LAN */
     
     gm_conf_set_int (VIDEO_CODECS_KEY "transmitted_video_quality", 100);
     gm_conf_set_int (VIDEO_CODECS_KEY "maximum_video_bandwidth", 100);
@@ -354,7 +1371,8 @@ gm_druid_finish_cb (GnomeDruidPage *p, GtkWidget *w, gpointer data)
     gm_conf_set_bool (VIDEO_CODECS_KEY "enable_video_reception", TRUE);
   }  
 
-  g_timeout_add (2000, (GtkFunction) gm_druid_kind_of_net_hack,
+  g_timeout_add (2000, 
+		 (GtkFunction) kind_of_net_hack_cb,
 		 GINT_TO_POINTER (item_index));
 
   
@@ -363,7 +1381,7 @@ gm_druid_finish_cb (GnomeDruidPage *p, GtkWidget *w, gpointer data)
   
   
   /* Hide the druid and show GnomeMeeting */
-  gnomemeeting_window_hide (GTK_WIDGET (gw->druid_window));
+  gnomemeeting_window_hide (druid_window);
   gnome_druid_set_page (dw->druid, GNOME_DRUID_PAGE (dw->page_edge));
   gnomemeeting_window_show (gm);
 
@@ -387,220 +1405,60 @@ gm_druid_finish_cb (GnomeDruidPage *p, GtkWidget *w, gpointer data)
 }
 
 
-/* DESCRIPTION  :  This callback is called when the user destroys the druid.
- * BEHAVIOR     :  Exits. 
- * PRE          :  /
- */
 static void 
-gm_druid_delete_event_cb (GtkWidget *w, GdkEventAny *ev, gpointer data)
+delete_event_cb (GtkWidget *w, GdkEventAny *ev, gpointer data)
 {
-  gm_druid_cancel_cb (w, data);
-}
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Checks if the "Next" button of the "Personal Information"
- *                 druid page can be sensitive or not. It will if the name
- *                 field is ok.
- * PRE          :  The druid window.
- */
-static void 
-gm_druid_check_name (GmDruidWindow *dw)
-{
-  GnomeDruid *druid = dw->druid;
-  gchar ** couple = NULL;
-
-  couple = g_strsplit (gtk_entry_get_text (GTK_ENTRY (dw->name)), " ", 2);
-  
-  if (couple && couple [0] && couple [1]
-      && !PString (couple [0]).Trim ().IsEmpty ()
-      && !PString (couple [1]).Trim ().IsEmpty ()) 
-    gnome_druid_set_buttons_sensitive (druid, TRUE, TRUE, TRUE, FALSE);
-  else
-    gnome_druid_set_buttons_sensitive (druid, TRUE, FALSE, TRUE, FALSE);
-}
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Checks if the "Next" button of the "Callto URL"
- *                 druid page can be sensitive or not. It will if the email
- *                 field is ok, or if registering is disabled.
- * PRE          :  The druid window.
- */
-static void 
-gm_druid_check_callto (GmDruidWindow *dw)
-{
-  GnomeDruid *druid = dw->druid;
-  PString mail;
-  BOOL correct = FALSE;
-
-  if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (dw->use_callto)))
-    correct = TRUE;
-  else {    
-    mail = PString (gtk_entry_get_text (GTK_ENTRY (dw->mail)));
-    if (!mail.IsEmpty () && mail.Find ("@") != P_MAX_INDEX)
-      correct = TRUE;
-  }
-   
-  if (correct)
-    gnome_druid_set_buttons_sensitive (druid, TRUE, TRUE, TRUE, FALSE);
-  else
-    gnome_druid_set_buttons_sensitive (druid, TRUE, FALSE, TRUE, FALSE);
-}
-
-/* DESCRIPTION  :  Called when the user changes an info in the Personal
- *                 Information page.
- * BEHAVIOR     :  Checks if the "Next" button of the "Personal Information"
- *                 druid page can be sensitive or not. It will if the name
- *                 field is ok.
- * PRE          :  /
- */
-static void
-gm_druid_name_changed_cb (GtkWidget *w, gpointer data)
-{
-  GmDruidWindow *dw = NULL;
-
-  dw = (GmDruidWindow *)data;
-
-  gm_druid_check_name (dw);
-}
-
-/* DESCRIPTION  :  Called when the user changes an info in the Callto URL page.
- * BEHAVIOR     :  Checks if the "Next" button of the "Callto URL"
- *                 druid page can be sensitive or not. It will if email field
- *                 is ok, or if registering is disabled.
- * PRE          :  /
- */
-static void
-gm_druid_email_changed_cb (GtkWidget *w, gpointer data)
-{
-  GmDruidWindow *dw = NULL;
-
-  dw = (GmDruidWindow *)data;
-
-  gm_druid_check_callto (dw);
-}
-
-/* DESCRIPTION  :  Called when the user changes the registering toggle.
- * BEHAVIOR     :  Checks if the "Next" button of the "Personal Information"
- *                 druid page can be sensitive or not. It will if all fields
- *                 are ok, or if registering is disabled. (Calls the above
- *                 function).
- * PRE          :  /
- */
-static void
-gm_druid_ils_register_toggle_cb (GtkToggleButton *b, gpointer data)
-{
-  GmDruidWindow *dw = NULL;
-
-  dw = (GmDruidWindow *)data;
-
-  gm_druid_check_callto (dw);
+  cancel_cb (w, data);
 }
 
 
 static void
-gm_druid_option_menu_update (GtkWidget *option_menu,
-			     gchar **options,
-			     gchar *default_value)
+name_changed_cb (GtkWidget *w, 
+		 gpointer data)
 {
-  GtkWidget *menu = NULL;
-  GtkWidget *item = NULL;
+  g_return_if_fail (data != NULL);
 
-  int history = -1;
-  int cpt = 0;                                                   
-
-  cpt = 0;
-
-  g_return_if_fail (options != NULL);
-
-  gtk_option_menu_remove_menu (GTK_OPTION_MENU (option_menu));
-  menu = gtk_menu_new ();
-
-  while (options [cpt]) {
-
-    if (default_value && !strcmp (options [cpt], default_value)) 
-      history = cpt;
-
-    item = gtk_menu_item_new_with_label (options [cpt]);
-    gtk_widget_show (item);
-    gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
-
-    cpt++;
-  }
-
-  gtk_option_menu_set_menu (GTK_OPTION_MENU (option_menu), menu);
-
-  if (history != -1)
-    gtk_option_menu_set_history (GTK_OPTION_MENU (option_menu), history);
+  gm_dw_check_name (GTK_WIDGET (data));
 }
 
 
 static void
-gm_druid_get_all_data (GmDruidWindow *dw,
-		       gchar * &name,
-		       gchar * &mail,
-		       gchar * &connection_type,
-		       gchar * &audio_manager,
-		       gchar * &player,
-		       gchar * &recorder,
-		       gchar * &video_manager,
-		       gchar * &video_recorder)
+email_changed_cb (GtkWidget *w, 
+		  gpointer data)
 {
-  GtkWidget *child = NULL;
-  
-  name = (gchar *) gtk_entry_get_text (GTK_ENTRY (dw->name));
-  mail = (gchar *) gtk_entry_get_text (GTK_ENTRY (dw->mail));
-  child = GTK_BIN (dw->kind_of_net)->child;
-  if (child)
-    connection_type = (gchar *) gtk_label_get_text (GTK_LABEL (child));
-  else
-    connection_type = "";
+  g_return_if_fail (data != NULL);
 
-  child = GTK_BIN (dw->audio_manager)->child;
-  if (child)
-    audio_manager = (gchar *) gtk_label_get_text (GTK_LABEL (child));
-  else
-    audio_manager = "";
-
-  child = GTK_BIN (dw->video_manager)->child;
-  if (child)
-    video_manager = (gchar *) gtk_label_get_text (GTK_LABEL (child));
-  else
-    video_manager = "";
-
-  child = GTK_BIN (dw->audio_player)->child;
-  if (child)
-    player = (gchar *) gtk_label_get_text (GTK_LABEL (child));
-  else
-    player = "";
-
-  child = GTK_BIN (dw->audio_recorder)->child;
-  if (child)
-    recorder = (gchar *) gtk_label_get_text (GTK_LABEL (child));
-  else
-    recorder = "";
-
-  child = GTK_BIN (dw->video_device)->child;
-  if (child)
-    video_recorder = (gchar *) gtk_label_get_text (GTK_LABEL (child));
-  else
-    video_recorder = "";
+  gm_dw_check_callto (GTK_WIDGET (data));
 }
+
+
+static void
+ils_register_toggled_cb (GtkToggleButton *b, 
+			 gpointer data)
+{
+  g_return_if_fail (data != NULL);
+
+  gm_dw_check_callto (GTK_WIDGET (data));
+}
+
 
 static void 
-gm_druid_prepare_welcome_page_cb (GnomeDruidPage *page,
-				  GnomeDruid *druid, gpointer data)
+prepare_welcome_page_cb (GnomeDruidPage *page,
+			 GnomeDruid *druid, 
+			 gpointer data)
 {
   gnome_druid_set_buttons_sensitive (druid, FALSE, TRUE, TRUE, FALSE);
 }
 
+
 static void
-gm_druid_prepare_personal_data_page_cb (GnomeDruidPage *page,
-					GnomeDruid *druid, 
-					gpointer data)
+prepare_personal_data_page_cb (GnomeDruidPage *page,
+			       GnomeDruid *druid, 
+			       gpointer data)
 {
   GmWindow *gw = NULL;
   GmDruidWindow *dw = NULL;
+  
   gchar *firstname = NULL;
   gchar *lastname = NULL;
   gchar *mail = NULL;
@@ -617,8 +1475,13 @@ gm_druid_prepare_personal_data_page_cb (GnomeDruidPage *page,
      _("T1/LAN"),
      _("Keep current settings"), NULL};
  
+
+  /* Get the data */
+  g_return_if_fail (page != NULL && druid != NULL && data != NULL);
+
+  dw = gm_dw_get_dw (GTK_WIDGET (data));
   gw = GnomeMeeting::Process ()->GetMainWindow ();
-  dw = (GmDruidWindow *)data;
+
   
   firstname = gm_conf_get_string (PERSONAL_DATA_KEY "firstname");
   lastname = gm_conf_get_string (PERSONAL_DATA_KEY "lastname");
@@ -641,23 +1504,23 @@ gm_druid_prepare_personal_data_page_cb (GnomeDruidPage *page,
       && mail)
     gtk_entry_set_text (GTK_ENTRY (dw->mail), mail);
   
-  gm_druid_option_menu_update (dw->kind_of_net, options, NULL);
+  gm_dw_option_menu_update (dw->kind_of_net, options, NULL);
   gtk_option_menu_set_history (GTK_OPTION_MENU (dw->kind_of_net),
 			       kind_of_net - 1);
   
   array = gw->audio_managers.ToCharArray ();
   audio_manager = gm_conf_get_string (AUDIO_DEVICES_KEY "plugin");
-  gm_druid_option_menu_update (dw->audio_manager, array, audio_manager);
+  gm_dw_option_menu_update (dw->audio_manager, array, audio_manager);
   free (array);
   
   array = gw->video_managers.ToCharArray ();
   video_manager = gm_conf_get_string (VIDEO_DEVICES_KEY "plugin");
-  gm_druid_option_menu_update (dw->video_manager, array, video_manager);
+  gm_dw_option_menu_update (dw->video_manager, array, video_manager);
   free (array);
   
   GTK_TOGGLE_BUTTON (dw->use_callto)->active = !ils_register;
   
-  gm_druid_check_name (dw);
+  gm_dw_check_name (GTK_WIDGET (data));
   
   g_free (video_manager);
   g_free (audio_manager);    
@@ -667,24 +1530,34 @@ gm_druid_prepare_personal_data_page_cb (GnomeDruidPage *page,
 
 }
 
+
 static void 
-gm_druid_prepare_callto_page_cb (GnomeDruidPage *page, GnomeDruid *druid, 
-				 gpointer data)
+prepare_callto_page_cb (GnomeDruidPage *page, 
+			GnomeDruid *druid, 
+			gpointer data)
 {
   GmDruidWindow *dw = NULL;
+  
+  
+  /* Get the data */
+  g_return_if_fail (page != NULL && druid != NULL && data != NULL);
 
-  dw = (GmDruidWindow *)data;
+  dw = gm_dw_get_dw (GTK_WIDGET (data));
 
-  gm_druid_check_callto (dw);
+  gm_dw_check_callto (GTK_WIDGET (data));
 }
 
+
 static void
-gm_druid_prepare_audio_devices_page_cb (GnomeDruidPage *page, GnomeDruid *druid, 
-					gpointer data)
+prepare_audio_devices_page_cb (GnomeDruidPage *page, 
+			       GnomeDruid *druid,
+			       gpointer data)
 {
   GmWindow *gw = NULL;
-  GMH323EndPoint *ep = NULL;
   GmDruidWindow *dw = NULL;
+
+  GMH323EndPoint *ep = NULL;
+
   GtkWidget *child = NULL;
   gchar *audio_manager = NULL;
   gchar *player = NULL;
@@ -693,7 +1566,12 @@ gm_druid_prepare_audio_devices_page_cb (GnomeDruidPage *page, GnomeDruid *druid,
   PStringArray devices;
   char **array = NULL;
 
-  dw = (GmDruidWindow *)data;
+
+  /* Get the data */
+  g_return_if_fail (page != NULL && druid != NULL && data != NULL);
+
+  dw = gm_dw_get_dw (GTK_WIDGET (data));
+
   ep = GnomeMeeting::Process ()->Endpoint ();
   gw = GnomeMeeting::Process ()->GetMainWindow ();
 
@@ -702,7 +1580,7 @@ gm_druid_prepare_audio_devices_page_cb (GnomeDruidPage *page, GnomeDruid *druid,
 				FALSE);
   
   cursor = gdk_cursor_new (GDK_WATCH);
-  gdk_window_set_cursor (GTK_WIDGET (gw->druid_window)->window, cursor);
+  gdk_window_set_cursor (GTK_WIDGET (data)->window, cursor);
   gdk_cursor_unref (cursor);
 
   child = GTK_BIN (dw->audio_manager)->child;
@@ -730,7 +1608,7 @@ gm_druid_prepare_audio_devices_page_cb (GnomeDruidPage *page, GnomeDruid *druid,
     gtk_widget_set_sensitive (GTK_WIDGET (dw->audio_test_button), TRUE);
   
   array = devices.ToCharArray ();
-  gm_druid_option_menu_update (dw->audio_player, array, player);
+  gm_dw_option_menu_update (dw->audio_player, array, player);
   free (array);
 
   if (PString ("Quicknet") == audio_manager)
@@ -747,11 +1625,11 @@ gm_druid_prepare_audio_devices_page_cb (GnomeDruidPage *page, GnomeDruid *druid,
     gtk_widget_set_sensitive (GTK_WIDGET (dw->audio_test_button), TRUE);
   
   array = devices.ToCharArray ();
-  gm_druid_option_menu_update (dw->audio_recorder, array, recorder);
+  gm_dw_option_menu_update (dw->audio_recorder, array, recorder);
   free (array);
   gnomemeeting_sound_daemons_resume ();
 
-  gdk_window_set_cursor (GTK_WIDGET (gw->druid_window)->window, NULL);
+  gdk_window_set_cursor (GTK_WIDGET (data)->window, NULL);
   
   g_free (player);
   g_free (recorder);
@@ -760,26 +1638,40 @@ gm_druid_prepare_audio_devices_page_cb (GnomeDruidPage *page, GnomeDruid *druid,
     gtk_widget_set_sensitive (GTK_WIDGET (dw->audio_test_button), FALSE);
 }
 
+
 static void
-gm_druid_prepare_video_devices_page_cb (GnomeDruidPage *page, GnomeDruid *druid, 
-					gpointer data)
+prepare_video_devices_page_cb (GnomeDruidPage *page, 
+			       GnomeDruid *druid, 
+			       gpointer data)
 {
   GmWindow *gw = NULL;
   GmDruidWindow *dw = NULL;
+  
   GMH323EndPoint *ep = NULL;
+
   GdkCursor *cursor = NULL;
   GtkWidget *child = NULL;
+  GtkWidget *druid_window = NULL;
+  
   gchar *video_manager = NULL;
   gchar *video_recorder = NULL;
   PStringArray devices;
   char **array = NULL;
  
-  dw = (GmDruidWindow *)data;
+
+  /* Get the data */
+  g_return_if_fail (page != NULL && druid != NULL && data != NULL);
+
+  dw = gm_dw_get_dw (GTK_WIDGET (data));
+
   gw = GnomeMeeting::Process ()->GetMainWindow ();
   ep = GnomeMeeting::Process ()->Endpoint ();
 
+  druid_window = GTK_WIDGET (data);
+
+
   cursor = gdk_cursor_new (GDK_WATCH);
-  gdk_window_set_cursor (GTK_WIDGET (gw->druid_window)->window, cursor);
+  gdk_window_set_cursor (GTK_WIDGET (druid_window)->window, cursor);
   gdk_cursor_unref (cursor);
 
   child = GTK_BIN (dw->video_manager)->child;
@@ -802,10 +1694,10 @@ gm_druid_prepare_video_devices_page_cb (GnomeDruidPage *page, GnomeDruid *druid,
     gtk_widget_set_sensitive (GTK_WIDGET (dw->video_test_button), TRUE);
   
   array = devices.ToCharArray ();
-  gm_druid_option_menu_update (dw->video_device, array, video_recorder);
+  gm_dw_option_menu_update (dw->video_device, array, video_recorder);
   free (array);
   
-  gdk_window_set_cursor (GTK_WIDGET (gw->druid_window)->window, NULL);
+  gdk_window_set_cursor (GTK_WIDGET (data)->window, NULL);
   
   g_free (video_recorder);
   
@@ -814,18 +1706,15 @@ gm_druid_prepare_video_devices_page_cb (GnomeDruidPage *page, GnomeDruid *druid,
 
 }
 
-/* DESCRIPTION  :  Called when the user switches between the pages 1, 2, and 6.
- * BEHAVIOR     :  Update the Next/Back buttons following the fields and the
- *                 page. Updates the text of the last page.
- * PRE          :  GPOINTER_TO_INT (data) = page number to prepare.
- */
+
 static void
-gm_druid_prepare_final_page_cb (GnomeDruidPage *page,
-				GnomeDruid *druid,
-				gpointer data)
+prepare_final_page_cb (GnomeDruidPage *page,
+		       GnomeDruid *druid,
+		       gpointer data)
 {
   GmWindow *gw = NULL;
   GmDruidWindow *dw = NULL;
+  
   GMH323EndPoint *ep = NULL;
   
   gchar *name = NULL;
@@ -841,12 +1730,25 @@ gm_druid_prepare_final_page_cb (GnomeDruidPage *page,
   
   PStringArray devices;
   
-  dw = (GmDruidWindow *)data;
+
+  /* Get the data */
+  g_return_if_fail (page != NULL && druid != NULL && data != NULL);
+
+  dw = gm_dw_get_dw (GTK_WIDGET (data));
+
   gw = GnomeMeeting::Process ()->GetMainWindow ();
   ep = GnomeMeeting::Process ()->Endpoint ();
 
-  gm_druid_get_all_data (dw, name, mail, connection_type, audio_manager,
-			 player, recorder, video_manager, video_recorder);
+  gm_dw_get_all_data (GTK_WIDGET (data), 
+		      name, 
+		      mail, 
+		      connection_type, 
+		      audio_manager,
+		      player, 
+		      recorder, 
+		      video_manager, 
+		      video_recorder);
+
   callto_url = g_strdup_printf ("callto:ils.seconix.com/%s",
 				mail ? mail : "");
     
@@ -857,512 +1759,6 @@ gm_druid_prepare_final_page_cb (GnomeDruidPage *page,
   g_free (text);
 }
 
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Builds the welcome druid page.
- * PRE          :  /
- */
-static void
-gm_druid_init_welcome_page (GmDruidWindow *dw, int t)
-{
-
-  gchar *title = NULL;
-
-  static const gchar text[] =
-    N_
-    ("This is the GnomeMeeting general configuration druid. "
-     "The following steps will set up GnomeMeeting by asking "
-     "a few simple questions.\n\nOnce you have completed "
-     "these steps, you can always change them later by "
-     "selecting Preferences in the Edit menu.");
-
-  title = g_strdup_printf (_("Configuration Druid - page 1/%d"), t);
-  
-  dw->page_edge =
-    GNOME_DRUID_PAGE_EDGE (gnome_druid_page_edge_new_aa (GNOME_EDGE_START));
-  gnome_druid_page_edge_set_title (dw->page_edge, title);
-			   
-  gnome_druid_page_edge_set_text (dw->page_edge, _(text));
-  
-  gnome_druid_append_page (dw->druid, GNOME_DRUID_PAGE (dw->page_edge));
-  gnome_druid_set_page (dw->druid, GNOME_DRUID_PAGE (dw->page_edge));
-  
-  g_signal_connect_after (G_OBJECT (dw->page_edge), "prepare",
-			  G_CALLBACK (gm_druid_prepare_welcome_page_cb), dw);
-
-  g_free (title);
-}
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Builds the druid page for the Personal Information.
- * PRE          :  /
- */
-static void 
-gm_druid_init_personal_data_page (GmDruidWindow *dw, int p, int t)
-{
-  GtkWidget *label = NULL;
-  GtkWidget *vbox = NULL;
-
-  gchar *title = NULL;
-  gchar *text = NULL;
-  
-  GnomeDruid *druid = dw->druid;
-  GtkWidget *page = NULL;
-
-
-  page = gnome_druid_page_standard_new ();
-
-  title = g_strdup_printf (_("Personal Information - page %d/%d"), p, t);
-  gnome_druid_page_standard_set_title (GNOME_DRUID_PAGE_STANDARD (page),
-				       title);
-  g_free (title);
-  
-  gnome_druid_append_page (druid, GNOME_DRUID_PAGE (page));
-
-  
-  /* Start packing widgets */
-  vbox = gtk_vbox_new (FALSE, 2);
-
-  
-  /* The user fields */
-  label = gtk_label_new (_("Please enter your first name and your surname:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
-
-  dw->name = gtk_entry_new ();
-  gtk_box_pack_start (GTK_BOX (vbox), dw->name, FALSE, FALSE, 0);
-
-  label = gtk_label_new (NULL);
-  text = g_strdup_printf ("<i>%s</i>", _("Your first name and surname will be used when connecting to other VoIP and videoconferencing software."));
-  gtk_label_set_markup (GTK_LABEL (label), text);
-  g_free (text);
-  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, TRUE, 0);
-
-  g_signal_connect (G_OBJECT (dw->name), "changed",
-		    G_CALLBACK (gm_druid_name_changed_cb), dw);
-
-  g_signal_connect_after (G_OBJECT (page), "prepare",
-			  G_CALLBACK (gm_druid_prepare_personal_data_page_cb), 
-			  dw);
-  
-  gtk_box_pack_start (GTK_BOX (GNOME_DRUID_PAGE_STANDARD (page)->vbox),
-		      GTK_WIDGET (vbox), 
-		      TRUE, TRUE, 8);
-}
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Builds the druid page for ILS registering and callto.
- * PRE          :  /
- */
-static void 
-gm_druid_init_callto_page (GmDruidWindow *dw, int p, int t)
-{
-  GtkWidget *label = NULL;
-  GtkWidget *vbox = NULL;
-  GtkWidget *align = NULL;
-  
-  gchar *title = NULL;
-  gchar *text = NULL;
-  
-  GnomeDruid *druid = dw->druid;
-  GtkWidget *page = NULL;
-
-
-  page = gnome_druid_page_standard_new ();
-
-  title = g_strdup_printf (_("Callto URL - page %d/%d"), p, t);
-  gnome_druid_page_standard_set_title (GNOME_DRUID_PAGE_STANDARD (page),
-				       title);
-  g_free (title);
-				
-  gnome_druid_append_page (druid, GNOME_DRUID_PAGE (page));
-
-  
-  /* Start packing widgets */
-  vbox = gtk_vbox_new (FALSE, 2);
-
-  label = gtk_label_new (_("Please enter your e-mail address:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
-
-  dw->mail = gtk_entry_new ();
-  gtk_box_pack_start (GTK_BOX (vbox), dw->mail, FALSE, FALSE, 0);
-
-  label = gtk_label_new (NULL);
-  text = g_strdup_printf ("<i>%s</i>", _("Your e-mail address is used when registering to the GnomeMeeting users directory. It is used to create a callto address permitting your contacts to easily call you wherever you are."));
-  gtk_label_set_markup (GTK_LABEL (label), text);
-  g_free (text);
-  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, TRUE, 0);
-
-
-  dw->use_callto = gtk_check_button_new ();
-  label = gtk_label_new (_("I don't want to register to the GnomeMeeting users directory and get a callto address"));
-  gtk_container_add (GTK_CONTAINER (dw->use_callto), label);
-  align = gtk_alignment_new (0, 1.0, 0, 0);
-  gtk_container_add (GTK_CONTAINER (align), dw->use_callto);
-  gtk_box_pack_start (GTK_BOX (vbox), align, TRUE, TRUE, 0);
-
-  g_signal_connect (G_OBJECT (dw->mail), "changed",
-		    G_CALLBACK (gm_druid_email_changed_cb), dw);
-
-  g_signal_connect (G_OBJECT (dw->use_callto), "toggled",
-		    G_CALLBACK (gm_druid_ils_register_toggle_cb), dw);
-
-  g_signal_connect_after (G_OBJECT (page), "prepare",
-			  G_CALLBACK (gm_druid_prepare_callto_page_cb), 
-			  dw);
-  
-  gtk_box_pack_start (GTK_BOX (GNOME_DRUID_PAGE_STANDARD (page)->vbox),
-		      GTK_WIDGET (vbox), 
-		      TRUE, TRUE, 8);
-}
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Builds the druid page for the Connection page.
- * PRE          :  /
- */
-static void 
-gm_druid_init_connection_type_page (GmDruidWindow *dw, int p, int t)
-{
-  GtkWidget *vbox = NULL;
-  GtkWidget *label = NULL;
-
-  GnomeDruid *druid = dw->druid;
-
-  gchar *title = NULL;
-  gchar *text = NULL;
-  
-  GnomeDruidPageStandard *page_standard = NULL;
-
-  /* Get data */
-  page_standard = 
-    GNOME_DRUID_PAGE_STANDARD (gnome_druid_page_standard_new ());
-  
-  title = g_strdup_printf (_("Connection Type - page %d/%d"), p, t);
-  gnome_druid_page_standard_set_title (page_standard, title);
-  g_free (title);
-
-  gnome_druid_append_page (druid, GNOME_DRUID_PAGE (page_standard));
-
-
-  /* Start packing widgets */
-  vbox = gtk_vbox_new (FALSE, 2);
-
-
-  /* The connection type */
-  label = gtk_label_new (_("Please choose your connection type:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
-  
-  dw->kind_of_net = gtk_option_menu_new ();
-  gtk_box_pack_start (GTK_BOX (vbox), dw->kind_of_net, FALSE, FALSE, 0);
-
-  label = gtk_label_new (NULL);
-  text = g_strdup_printf ("<i>%s</i>", _("The connection type will permit determining the best quality settings that GnomeMeeting will use during calls. You can later change the settings individually in the preferences window."));
-  gtk_label_set_markup (GTK_LABEL (label), text);
-  g_free (text);
-  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, TRUE, 0);
-
-  gtk_box_pack_start (GTK_BOX (page_standard->vbox), GTK_WIDGET (vbox), 
-		      TRUE, TRUE, 8);
-}
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Builds the druid page for the audio manager configuration.
- * PRE          :  /
- */
-static void 
-gm_druid_init_audio_manager_page (GmDruidWindow *dw, int p, int t)
-{
-  GtkWidget *label = NULL;
-  GtkWidget *vbox = NULL;
-
-  GnomeDruid *druid = dw->druid;
-
-  gchar *title = NULL;
-  gchar *text = NULL;
-  
-  GnomeDruidPageStandard *page_standard = NULL;
-
-  /* Get data */  
-  page_standard = 
-    GNOME_DRUID_PAGE_STANDARD (gnome_druid_page_standard_new ());
-  
-  title = g_strdup_printf (_("Audio Manager - page %d/%d"), p, t);
-  gnome_druid_page_standard_set_title (page_standard, title);
-  g_free (title);
-
-  gnome_druid_append_page (druid, GNOME_DRUID_PAGE (page_standard));
-
-
-  /* Start packing widgets */
-  vbox = gtk_vbox_new (FALSE, 2);
-
-
-  /* The Audio devices */
-  label = gtk_label_new (_("Please choose your audio manager:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
-  
-  dw->audio_manager = gtk_option_menu_new ();
-  gtk_box_pack_start (GTK_BOX (vbox), dw->audio_manager, FALSE, FALSE, 0);
-
-  label = gtk_label_new (NULL);
-  text = g_strdup_printf ("<i>%s</i>", _("The audio manager is the plugin that will manage your audio devices, ALSA is probably the best choice when available."));
-  gtk_label_set_markup (GTK_LABEL (label), text);
-  g_free (text);
-  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, TRUE, 0);
-
-
-  gtk_box_pack_start (GTK_BOX (page_standard->vbox), GTK_WIDGET (vbox), 
-		      TRUE, TRUE, 8);
-}
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Builds the druid page for the audio devices configuration.
- * PRE          :  /
- */
-static void 
-gm_druid_init_audio_devices_page (GmDruidWindow *dw, int p, int t)
-{
-  GtkWidget *align = NULL;
-  GtkWidget *vbox = NULL;
-  GtkWidget *label = NULL;
-
-  GnomeDruid *druid = dw->druid;
-
-  gchar *title = NULL;
-  gchar *text = NULL;
-  
-  GnomeDruidPageStandard *page_standard = NULL;
-
-  /* Get data */
-  page_standard = 
-    GNOME_DRUID_PAGE_STANDARD (gnome_druid_page_standard_new ());
-  
-  title = g_strdup_printf (_("Audio Devices - page %d/%d"), p, t);
-  gnome_druid_page_standard_set_title (page_standard, title);
-  g_free (title);
-
-  gnome_druid_append_page (druid, GNOME_DRUID_PAGE (page_standard));
-
-
-  /* Start packing widgets */
-  vbox = gtk_vbox_new (FALSE, 2);
-
-
-  /* The Audio devices */
-  label = gtk_label_new (_("Please choose the audio output device:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
-  
-  dw->audio_player = gtk_option_menu_new ();
-  gtk_box_pack_start (GTK_BOX (vbox), dw->audio_player, FALSE, FALSE, 0);
-
-  label = gtk_label_new (NULL);
-  text = g_strdup_printf ("<i>%s</i>", _("The audio output device is the device managed by the audio manager that will be used to play audio."));
-  gtk_label_set_markup (GTK_LABEL (label), text);
-  g_free (text);
-  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, TRUE, 0);
-
-  label = gtk_label_new (" ");
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
-
-  label = gtk_label_new (_("Please choose the audio input device:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
-  
-  dw->audio_recorder = gtk_option_menu_new ();
-  gtk_box_pack_start (GTK_BOX (vbox), dw->audio_recorder, FALSE, FALSE, 0);
-
-  label = gtk_label_new (NULL);
-  text = g_strdup_printf ("<i>%s</i>", _("The audio input device is the device managed by the audio manager that will be used to record your voice."));
-  gtk_label_set_markup (GTK_LABEL (label), text);
-  g_free (text);
-  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, TRUE, 0);
-
-
-  label = gtk_label_new (" ");
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
-
-  align = gtk_alignment_new (1.0, 0, 0, 0);
-  dw->audio_test_button =
-    gtk_toggle_button_new_with_label (_("Test Settings"));
-  gtk_container_add (GTK_CONTAINER (align), dw->audio_test_button);
-  gtk_box_pack_start (GTK_BOX (vbox), align, FALSE, FALSE, 0);
-  
-  g_signal_connect (G_OBJECT (dw->audio_test_button), "clicked",
-		    GTK_SIGNAL_FUNC (gm_druid_audio_test_button_clicked_cb),
-		    (gpointer) dw);
-
-  g_signal_connect_after (G_OBJECT (page_standard), "prepare",
-			  G_CALLBACK (gm_druid_prepare_audio_devices_page_cb), 
-			  dw);
-
-
-  /**/
-  gtk_box_pack_start (GTK_BOX (page_standard->vbox), GTK_WIDGET (vbox), 
-		      TRUE, TRUE, 8);
-}
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Builds the druid page for the video manager configuration.
- * PRE          :  /
- */
-static void 
-gm_druid_init_video_manager_page (GmDruidWindow *dw, int p, int t)
-{
-  GtkWidget *label = NULL;
-  GtkWidget *vbox = NULL;
-
-  GnomeDruid *druid = dw->druid;
-
-  gchar *title = NULL;
-  gchar *text = NULL;
-  
-  GnomeDruidPageStandard *page_standard = NULL;
-
-  /* Get data */
-  page_standard = 
-    GNOME_DRUID_PAGE_STANDARD (gnome_druid_page_standard_new ());
-  
-  title = g_strdup_printf (_("Video Manager - page %d/%d"), p, t);
-  gnome_druid_page_standard_set_title (page_standard, title);
-  g_free (title);
-
-  gnome_druid_append_page (druid, GNOME_DRUID_PAGE (page_standard));
-
-
-  /* Start packing widgets */
-  vbox = gtk_vbox_new (FALSE, 2);
-
-
-  /* The Audio devices */
-  label = gtk_label_new (_("Please choose your video manager:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
-  
-  dw->video_manager = gtk_option_menu_new ();
-  gtk_box_pack_start (GTK_BOX (vbox), dw->video_manager, FALSE, FALSE, 0);
-
-  label = gtk_label_new (NULL);
-  text = g_strdup_printf ("<i>%s</i>", _("The video manager is the plugin that will manage your video devices, Video4Linux is the most common choice if you own a webcam."));
-  gtk_label_set_markup (GTK_LABEL (label), text);
-  g_free (text);
-  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, TRUE, 0);
-
-  gtk_box_pack_start (GTK_BOX (page_standard->vbox), GTK_WIDGET (vbox), 
-		      TRUE, TRUE, 8);
-}
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Builds the druid page for the video devices configuration.
- * PRE          :  /
- */
-static void 
-gm_druid_init_video_devices_page (GmDruidWindow *dw, int p, int t)
-{
-  GtkWidget *align = NULL;
-  GtkWidget *vbox = NULL;
-  GtkWidget *label = NULL;
-
-  GnomeDruid *druid = dw->druid;
-
-  gchar *title = NULL;
-  gchar *text = NULL;
-  
-  GnomeDruidPageStandard *page_standard = NULL;
-
-  /* Get data */
-  page_standard = 
-    GNOME_DRUID_PAGE_STANDARD (gnome_druid_page_standard_new ());
-  
-  title = g_strdup_printf (_("Video Devices - page %d/%d"), p, t);
-  gnome_druid_page_standard_set_title (page_standard, title);
-  g_free (title);
-
-  gnome_druid_append_page (druid, GNOME_DRUID_PAGE (page_standard));
-
-
-  /* Start packing widgets */
-  vbox = gtk_vbox_new (FALSE, 2);
-
-
-  /* The Video devices */
-  label = gtk_label_new (_("Please choose the video input device:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
-  
-  dw->video_device = gtk_option_menu_new ();
-  gtk_box_pack_start (GTK_BOX (vbox), dw->video_device, FALSE, FALSE, 0);
-
-  label = gtk_label_new (NULL);
-  text = g_strdup_printf ("<i>%s</i>", _("The video input device is the device managed by the video manager that will be used to capture video."));
-  gtk_label_set_markup (GTK_LABEL (label), text);
-  g_free (text);
-  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, TRUE, 0);
-
-  label = gtk_label_new (" ");
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
-
-  align = gtk_alignment_new (1.0, 0, 0, 0);
-  dw->video_test_button =
-    gtk_toggle_button_new_with_label (_("Test Settings"));
-  gtk_container_add (GTK_CONTAINER (align), dw->video_test_button);
-  gtk_box_pack_start (GTK_BOX (vbox), align, FALSE, FALSE, 0);
-  
-  g_signal_connect (G_OBJECT (dw->video_test_button), "clicked",
-		    GTK_SIGNAL_FUNC (gm_druid_video_test_button_clicked_cb),
-		    (gpointer) dw);
-
-  g_signal_connect_after (G_OBJECT (page_standard), "prepare",
-			  G_CALLBACK (gm_druid_prepare_video_devices_page_cb), 
-			  dw);
-
-  /**/
-  gtk_box_pack_start (GTK_BOX (page_standard->vbox), GTK_WIDGET (vbox), 
-		      TRUE, TRUE, 8);
-}
-
-static void
-gm_druid_init_final_page (GmDruidWindow *dw, int t)
-{
-  gchar *title = NULL;
-
-  GnomeDruidPageEdge *page_final = NULL;
-
-  page_final =
-    GNOME_DRUID_PAGE_EDGE (gnome_druid_page_edge_new (GNOME_EDGE_FINISH));
-  
-  title = g_strdup_printf (_("Configuration complete - page %d/%d"), t, t);
-  gnome_druid_page_edge_set_title (page_final, title);
-
-  gnome_druid_append_page (dw->druid, GNOME_DRUID_PAGE (page_final));
-
-  g_signal_connect_after (G_OBJECT (page_final), "prepare",
-			  G_CALLBACK (gm_druid_prepare_final_page_cb), 
-			  dw);  
-
-  g_signal_connect (G_OBJECT (page_final), "finish",
-		    G_CALLBACK (gm_druid_finish_cb), dw);
-
-  g_free (title);
-}
 
 /* Functions */
 GtkWidget *
@@ -1381,28 +1777,31 @@ gm_druid_window_new ()
 
   dw = new GmDruidWindow;
   g_object_set_data_full (G_OBJECT (window), "GMObject",
-			  (gpointer)dw, gm_druid_destroy_internal_struct);
+			  (gpointer) dw, 
+			  gm_dw_destroy);
 
   dw->druid = GNOME_DRUID (gnome_druid_new ());
 
   gtk_container_add (GTK_CONTAINER (window), GTK_WIDGET (dw->druid));
 
   /* Create the different pages */
-  gm_druid_init_welcome_page (dw, 9);
-  gm_druid_init_personal_data_page (dw, 2, 9);
-  gm_druid_init_callto_page (dw, 3, 9);
-  gm_druid_init_connection_type_page (dw, 4, 9);
-  gm_druid_init_audio_manager_page (dw, 5, 9);
-  gm_druid_init_audio_devices_page (dw, 6, 9);
-  gm_druid_init_video_manager_page (dw, 7, 9);
-  gm_druid_init_video_devices_page (dw, 8, 9);
-  gm_druid_init_final_page (dw, 9);
+  gm_dw_init_welcome_page (window, 9);
+  gm_dw_init_personal_data_page (window, 2, 9);
+  gm_dw_init_callto_page (window, 3, 9);
+  gm_dw_init_connection_type_page (window, 4, 9);
+  gm_dw_init_audio_manager_page (window, 5, 9);
+  gm_dw_init_audio_devices_page (window, 6, 9);
+  gm_dw_init_video_manager_page (window, 7, 9);
+  gm_dw_init_video_devices_page (window, 8, 9);
+  gm_dw_init_final_page (window, 9);
 
   g_signal_connect (G_OBJECT (dw->druid), "cancel",
-		    G_CALLBACK (gm_druid_cancel_cb), dw);
+		    G_CALLBACK (cancel_cb), 
+		    window);
 
   g_signal_connect (G_OBJECT (window), "delete_event",
-		    G_CALLBACK (gm_druid_delete_event_cb), dw);
+		    G_CALLBACK (delete_event_cb), 
+		    window);
 
   gtk_widget_show_all (GTK_WIDGET (dw->druid));
 
@@ -1410,12 +1809,12 @@ gm_druid_window_new ()
 }
 
 void 
-gm_druid_set_test_buttons_sensitivity (GtkWidget *druid,
-				       gboolean value)
+gm_druid_window_set_test_buttons_sensitivity (GtkWidget *druid,
+					      gboolean value)
 {
   GmDruidWindow *dw = NULL;
 
-  dw = (GmDruidWindow *)g_object_get_data (G_OBJECT (druid), "GMObject");
+  dw = gm_dw_get_dw (druid);
 
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (dw->video_test_button),
 				value);

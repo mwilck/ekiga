@@ -112,8 +112,6 @@
 
 typedef struct _GmWindow GmWindow;
 typedef struct _GmPrefWindow GmPrefWindow;
-typedef struct _GmLdapWindow GmLdapWindow;
-typedef struct _GmLdapWindowPage GmLdapWindowPage;
 typedef struct _GmRtpData GmRtpData;
 
 
@@ -196,9 +194,7 @@ struct _GmWindow
   GtkWidget *remote_video_window;
   GtkWidget *video_frame;
   GtkWidget *pref_window;
-  GtkWidget *addressbook_window;
   GtkWidget *chat_window;
-  GtkWidget *calls_history_window;
   GtkWidget *pc_to_phone_window;
   GtkWidget *preview_button;
   GtkWidget *connect_button;
@@ -208,7 +204,6 @@ struct _GmWindow
   GtkWidget *transfer_call_popup;
   GtkWidget *stats_label;
   GtkWidget *stats_drawing_area;
-  GtkWidget *druid_window;
 
   GdkColor colors [6];
 
@@ -218,31 +213,6 @@ struct _GmWindow
   PStringArray audio_player_devices;
   PStringArray audio_managers;
   PStringArray video_managers;
-};
-
-
-struct _GmLdapWindow
-{
-  GtkWidget *main_menu;
-  GtkWidget *notebook;
-  GtkWidget *tree_view;
-  GtkWidget *option_menu;
-};
-
-
-struct _GmLdapWindowPage
-{
-  GtkWidget *section_name;
-  GtkWidget *tree_view;
-  GtkWidget *statusbar;
-  GtkWidget *option_menu;
-  GtkWidget *search_entry;
-
-  PThread *ils_browser;
-  PMutex search_quit_mutex;
-  
-  gchar *contact_section_name;
-  gint page_type;
 };
 
 

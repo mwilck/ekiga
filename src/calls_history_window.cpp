@@ -116,7 +116,7 @@ static void find_button_clicked_cb (GtkButton *,
 /* DESCRIPTION  : / 
  * BEHAVIOR     : This callback is called when the user clicks on a contact.
  * 		  Displays a popup.
- * PRE          : /
+ * PRE          : A valid pointer to the calls history window GMObject.
  */
 static gint contact_clicked_cb (GtkWidget *w,
 				GdkEventButton *e,
@@ -631,6 +631,8 @@ gnomemeeting_calls_history_window_new ()
   chw = new GmCallsHistoryWindow ();
   g_object_set_data_full (G_OBJECT (window), "GMObject", 
 			  chw, gm_chw_destroy);
+
+
   /* The notebook containing the 3 lists of calls */
   chw->chw_notebook = gtk_notebook_new ();
   gtk_container_set_border_width (GTK_CONTAINER (chw->chw_notebook), 6);

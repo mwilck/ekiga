@@ -134,7 +134,6 @@ protected:
 
 
   GmWindow *gw;
-  GmLdapWindow *lw;
 
   int operation;
 

@@ -233,6 +233,8 @@ void GMURLHandler::Main ()
   GmWindow *gw = NULL;
   GmContact *contact = NULL;
 
+  GtkWidget *calls_history_window = NULL;
+  
   BOOL use_gateway = FALSE;
   
   PString gateway;
@@ -254,6 +256,8 @@ void GMURLHandler::Main ()
   gnomemeeting_threads_leave ();
 
   gw = GnomeMeeting::Process ()->GetMainWindow ();
+  calls_history_window = GnomeMeeting::Process ()->GetCallsHistoryWindow ();
+
   endpoint = GnomeMeeting::Process ()->Endpoint ();
 
 
@@ -391,7 +395,7 @@ void GMURLHandler::Main ()
 	
 	gnomemeeting_statusbar_flash (gw->statusbar, _("User not found"));
 	if (!transfer_call)
-	  gnomemeeting_calls_history_window_add_call (gw->calls_history_window,
+	  gnomemeeting_calls_history_window_add_call (calls_history_window,
 						      1,
 						      NULL,
 						      call_address, 

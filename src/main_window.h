@@ -66,6 +66,14 @@ void gnomemeeting_main_window_update_sensitivity (BOOL,
 						  BOOL);
 
 
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Update the main window video sliders to the given values,
+ * 		   notice it only updates the GUI.
+ * PRE          :  A valid pointer to the main window GMObject, followed
+ * 		   by the whiteness, brightness, colourness and contrast.
+ * 		   Their values must be comprised between -1 (no change) and 
+ * 		   255.
+ */
 void gm_main_window_set_video_sliders_values (GtkWidget *,
 					      int,
 					      int,
@@ -73,6 +81,16 @@ void gm_main_window_set_video_sliders_values (GtkWidget *,
 					      int);
 
 
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Gets the values for the main window video sliders and
+ * 		   updates the parameters accordingly.
+ * 		   Notice it only reads the values from the GUI, not from
+ * 		   the video grabber.
+ * PRE          :  A valid pointer to the main window GMObject, followed
+ * 		   by the whiteness, brightness, colourness and contrast.
+ * 		   Their values will be comprised between 0 and 255 when
+ * 		   the function returns.
+ */
 void gm_main_window_get_video_sliders_values (GtkWidget *,
 					      int &,
 					      int &,
@@ -80,11 +98,26 @@ void gm_main_window_get_video_sliders_values (GtkWidget *,
 					      int &);
 
 
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Update the main window audio sliders to the given values,
+ * 		   notice it only updates the GUI.
+ * PRE          :  A valid pointer to the main window GMObject, followed
+ * 		   by the output and input volumes.
+ * 		   Their values must be comprised between -1 (no change) and 
+ * 		   255.
+ */
 void gm_main_window_set_volume_sliders_values (GtkWidget *,
 					       int, 
 					       int);
 
 
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Gets the values of the main window audio sliders.
+ * PRE          :  A valid pointer to the main window GMObject, followed
+ * 		   by the output and input volumes.
+ * 		   Their values will be comprised between 0 and 255 when 
+ * 		   the function returns.
+ */
 void gm_main_window_get_volume_sliders_values (GtkWidget *,
 					       int &, 
 					       int &);

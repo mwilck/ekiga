@@ -230,7 +230,10 @@ GtkWidget *
 gnomemeeting_init_menu (GtkAccelGroup *accel)
 {
   GmWindow *gw = NULL;
-
+  
+  GtkWidget *addressbook_window = NULL;
+  GtkWidget *druid_window = NULL;
+  GtkWidget *calls_history_window = NULL;
   GtkWidget *menubar = NULL;
 
   IncomingCallMode icm = AVAILABLE;
@@ -239,7 +242,10 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
   bool show_chat_window = false;
 
   gw = GnomeMeeting::Process ()->GetMainWindow ();
-  
+  addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
+  calls_history_window = GnomeMeeting::Process ()->GetCallsHistoryWindow ();
+  druid_window = GnomeMeeting::Process ()->GetDruidWindow ();
+
   menubar = gtk_menu_bar_new ();
 
   /* Default values */
@@ -342,7 +348,7 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 		     _("Run the configuration druid"),
 		     NULL, 0, 
 		     GTK_SIGNAL_FUNC (show_window_cb),
-		     (gpointer) gw->druid_window, TRUE),
+		     (gpointer) druid_window, TRUE),
 
       GTK_MENU_SEPARATOR,
 
@@ -467,7 +473,7 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 		     _("Open the address book"),
 		     GM_STOCK_ADDRESSBOOK_16, 0,
 		     GTK_SIGNAL_FUNC (show_window_cb),
-		     (gpointer) gw->addressbook_window, TRUE),
+		     (gpointer) addressbook_window, TRUE),
       
       GTK_MENU_SEPARATOR,
 
@@ -480,7 +486,7 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 		     _("View the calls history"),
 		     GM_STOCK_CALLS_HISTORY, 'h',
 		     GTK_SIGNAL_FUNC (show_window_cb),
-		     (gpointer) gw->calls_history_window, TRUE),
+		     (gpointer) calls_history_window, TRUE),
 
       GTK_MENU_SEPARATOR,
 
@@ -601,11 +607,17 @@ GtkWidget *
 gnomemeeting_tray_init_menu (GtkWidget *widget)
 {
   GtkWidget *popup_menu_widget = NULL;
+  GtkWidget *addressbook_window = NULL;
+  GtkWidget *calls_history_window = NULL;
+
   IncomingCallMode icm = AVAILABLE;
   GmWindow *gw = NULL;
 
   
   gw = GnomeMeeting::Process ()->GetMainWindow ();
+  addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
+  calls_history_window = GnomeMeeting::Process ()->GetCallsHistoryWindow ();
+  
   icm = (IncomingCallMode)gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode"); 
 
   static MenuEntry tray_menu [] =
@@ -649,7 +661,7 @@ gnomemeeting_tray_init_menu (GtkWidget *widget)
 		     _("Open the address book"),
 		     GM_STOCK_ADDRESSBOOK_16, 0,
 		     GTK_SIGNAL_FUNC (show_window_cb),
-		     (gpointer) gw->addressbook_window, TRUE),
+		     (gpointer) addressbook_window, TRUE),
 
       GTK_MENU_SEPARATOR,
 
@@ -657,7 +669,7 @@ gnomemeeting_tray_init_menu (GtkWidget *widget)
 		     _("View the calls history"),
 		     GM_STOCK_CALLS_HISTORY, 0, 
 		     GTK_SIGNAL_FUNC (show_window_cb),
-		     (gpointer) gw->calls_history_window, TRUE),
+		     (gpointer) calls_history_window, TRUE),
 
       GTK_MENU_SEPARATOR,
 

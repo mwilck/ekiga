@@ -77,7 +77,6 @@ GMH323EndPoint::GMH323EndPoint ()
 {
   /* Get the GTK structures */
   gw = GnomeMeeting::Process ()->GetMainWindow ();
-  lw = GnomeMeeting::Process ()->GetLdapWindow ();
   
   /* Initialise the endpoint paramaters */
   video_grabber = NULL;
@@ -1060,6 +1059,8 @@ void
 GMH323EndPoint::OnConnectionCleared (H323Connection & connection, 
                                      const PString & clearedCallToken)
 {
+  GtkWidget *calls_history_window = NULL;
+  
   gchar *msg_reason = NULL;
   
   gchar *utf8_url = NULL;
@@ -1082,7 +1083,9 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 #endif
 
   rtp = GnomeMeeting::Process ()->GetRtpData ();
-  
+  calls_history_window = GnomeMeeting::Process ()->GetCallsHistoryWindow ();
+
+
   if (connection.GetConnectionStartTime ().IsValid ())
     t = PTime () - connection.GetConnectionStartTime();
 
@@ -1199,7 +1202,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   gnomemeeting_threads_enter ();
   if (t.GetSeconds () == 0 && connection.HadAnsweredCall ())
-    gnomemeeting_calls_history_window_add_call (gw->calls_history_window,
+    gnomemeeting_calls_history_window_add_call (calls_history_window,
 						MISSED_CALL, utf8_name,
 						utf8_url,
 						"0",
@@ -1207,14 +1210,14 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 						utf8_app);
   else
     if (connection.HadAnsweredCall ())
-      gnomemeeting_calls_history_window_add_call (gw->calls_history_window,
+      gnomemeeting_calls_history_window_add_call (calls_history_window,
 						  RECEIVED_CALL, utf8_name,
 						  utf8_url,
 						  t.AsString (0),
 						  msg_reason,
 						  utf8_app);
     else
-      gnomemeeting_calls_history_window_add_call (gw->calls_history_window,
+      gnomemeeting_calls_history_window_add_call (calls_history_window,
 						  PLACED_CALL, utf8_name,
 						  GetLastCallAddress (),
 						  t.AsString (0),

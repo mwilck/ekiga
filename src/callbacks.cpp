@@ -118,13 +118,16 @@ transfer_call_cb (GtkWidget* widget,
   GMH323EndPoint *endpoint = NULL;
   GmWindow *gw = NULL;
   GMURL url;
+
+  GtkWidget *addressbook_window = NULL;
   
   char *conf_forward_value = NULL;
   gint answer = 0;
   
   endpoint = GnomeMeeting::Process ()->Endpoint ();
   gw = GnomeMeeting::Process ()->GetMainWindow ();
-
+  addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
+  
   gw->transfer_call_popup = gm_entry_dialog_new (_("Transfer call to:"),
 						 _("Transfer"));
 
@@ -138,7 +141,7 @@ transfer_call_cb (GtkWidget* widget,
   else {
     
     gtk_window_set_transient_for (GTK_WINDOW (gw->transfer_call_popup),
-				  GTK_WINDOW (gw->addressbook_window));
+				  GTK_WINDOW (addressbook_window));
     conf_forward_value = g_strdup ((gchar *) data);
   }
   
@@ -473,16 +476,21 @@ void help_cb (GtkWidget *widget,
 
 void quit_callback (GtkWidget *widget, gpointer data)
 {
+  GtkWidget *addressbook_window = NULL;
+  GtkWidget *calls_history_window = NULL;
+  
   GmWindow *gw = NULL;
   GMH323EndPoint *ep =NULL;
   
   gw = GnomeMeeting::Process ()->GetMainWindow ();
   ep = GnomeMeeting::Process ()->Endpoint ();
+  addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
+  calls_history_window = GnomeMeeting::Process ()->GetCallsHistoryWindow ();
   
   gnomemeeting_window_hide (gm);
   gnomemeeting_window_hide (gw->log_window);
-  gnomemeeting_window_hide (gw->calls_history_window);
-  gnomemeeting_window_hide (gw->addressbook_window);
+  gnomemeeting_window_hide (calls_history_window);
+  gnomemeeting_window_hide (addressbook_window);
   gnomemeeting_window_hide (gw->pref_window);
   
   gdk_threads_leave ();
