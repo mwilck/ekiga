@@ -22,8 +22,15 @@
 
   <publisher>
     <publishername>Christopher Warner</publishername>
+    <address><email>zanee@kernelcode.com</email></address>
+  </publisher>
+  <publisher>
     <publishername>Damien Sandras</publishername>
+    <address><email>dsandras@seconix.com</email></address>
+  </publisher>
+  <publisher>
     <publishername>Matthias Redlich</publishername>
+    <address><email>m-redlich@t-online.de</email></address>
   </publisher>
 
   <authorgroup>
@@ -31,24 +38,21 @@
       <firstname>Christopher</firstname>
       <surname>Warner</surname>
       <othername> zanee </othername>
-      <email>zanee@kernelcode.com</email>
     </author>
 
     <author>
       <firstname>Matthias</firstname>
       <surname>Redlich</surname>
-      <email>m-redlich@t-online.de</email>
     </author>
 
     <author>
       <firstname>Damien</firstname>
       <surname>Sandras</surname>
-      <email>dsandras@seconix.com</email>
     </author>
   </authorgroup>
 
   <releaseinfo>
-    Cette documentation est celle de <application>&app;</application> version &appversion;.
+    Cette documentation est celle de &app; version &appversion;.
   </releaseinfo>
 </articleinfo>
 
@@ -76,10 +80,10 @@
   <para>
     Elle se base sur le standard ITU H.323 et permet de réaliser des liaisons audio/vidéo vers des correspondants distants en s'appuyant sur du matériel ou des logiciels H.323 (comme NetMeeting de Microsoft). Il offre toutes les fonctionnalités modernes de vidéo conférence, telles que l'enregistrement à l'annuaire d'un Service de Recherche sur Internet (ILS),
 l'accès aux GateKeepers, la mise en conférence de multiples utilsateurs en utilisant une Unité de Contrôle Multipoints (MCU) ou encore l'utilisation de cartes Quicknet permettant l'appel de téléphones normaux.
+  </para>
     <para>
       <graphic fileref="figures/lumi.png"></graphic> 
     </para>
-  </para>
 </sect1>
 
 <sect1 id="gnomemeeting-getting-started">
@@ -98,6 +102,7 @@ l'accès aux GateKeepers, la mise en conférence de multiples utilsateurs en uti
   </tip>
 
   <figure>
+    <title/>
     <graphic fileref="figures/config_d1.png"></graphic>
   </figure>
 
@@ -115,6 +120,7 @@ l'accès aux GateKeepers, la mise en conférence de multiples utilsateurs en uti
   </para>
 
   <figure>
+    <title/>
     <graphic fileref="figures/config_d2.png"></graphic>
   </figure>
 
@@ -129,6 +135,7 @@ l'accès aux GateKeepers, la mise en conférence de multiples utilsateurs en uti
   </para>
 
   <figure>
+    <title/>
     <graphic fileref="figures/config_d3.png"></graphic>
   </figure>
 
@@ -142,6 +149,7 @@ l'accès aux GateKeepers, la mise en conférence de multiples utilsateurs en uti
   </para>
 
   <figure>
+    <title/>
     <graphic fileref="figures/config_d4.png"></graphic>
   </figure>
 
@@ -160,6 +168,7 @@ l'accès aux GateKeepers, la mise en conférence de multiples utilsateurs en uti
   </para>
 
   <figure>
+    <title/>
     <graphic fileref="figures/config_d5.png"></graphic>
   </figure>
 	
@@ -177,6 +186,7 @@ l'accès aux GateKeepers, la mise en conférence de multiples utilsateurs en uti
   </para>
 
   <figure>
+    <title/>
     <graphic fileref="figures/config_d6.png"></graphic>
   </figure>
 
@@ -189,6 +199,7 @@ l'accès aux GateKeepers, la mise en conférence de multiples utilsateurs en uti
   </para>
 
   <figure>
+    <title/>
     <graphic fileref="figures/config_d7.png"></graphic>
   </figure>
 
@@ -208,6 +219,7 @@ l'accès aux GateKeepers, la mise en conférence de multiples utilsateurs en uti
   </para>
 
   <figure>
+    <title/>
     <graphic fileref="figures/config_d8.png"></graphic>
   </figure>
 
@@ -220,6 +232,7 @@ l'accès aux GateKeepers, la mise en conférence de multiples utilsateurs en uti
   </para>
 
   <figure>
+    <title/>
     <graphic fileref="figures/config_d9.png"></graphic>
   </figure>
 
@@ -240,6 +253,7 @@ l'accès aux GateKeepers, la mise en conférence de multiples utilsateurs en uti
   </para>
 
   <figure>
+    <title/>
     <graphic fileref="figures/config_d10.png"></graphic>
   </figure>
 
@@ -456,8 +470,8 @@ l'accès aux GateKeepers, la mise en conférence de multiples utilsateurs en uti
 
     <para>
       Vous pouvez obtenir l'attribution d'un numéro ENUM sur <ulink url="http://www.e164.org" type="http">www.e164.org</ulink>. Elle permet d'associer votre propre numéro de téléphone à toute adresse H.323 valide. Ainsi, les autres utilisateurs pourront vous appeler en utilisant ce numéro.
-Par exemple: <emphasis>+3210444555</emphasis> peut être associé à <emphasis>h323:monhote.com</emphasis> et les autres utilisateurs pourront vous appeler en utilisant <emphasis>h323:3210444555</emphasis>
-    </para>.
+Par exemple: <emphasis>+3210444555</emphasis> peut être associé à <emphasis>h323:monhote.com</emphasis> et les autres utilisateurs pourront vous appeler en utilisant <emphasis>h323:3210444555</emphasis>.
+    </para>
   </sect2>
 
 
@@ -533,19 +547,29 @@ Par exemple: <emphasis>+3210444555</emphasis> peut être associé à <emphasis>h
 
     <itemizedlist>
       <listitem>
+	<para>      
         Terminer un appel: pour mettre fin à la communication, choisir Appel -> Se déconnecter.
+        </para>      
       </listitem>
       <listitem>
+	<para>      
         Suspendre un appel: pour mettre un appel en attente choisir Appel -> suspendre l'appel. Ceci crée une pause dans la transmission audio/vidéo. Pour reprendre la communication, choisir Appel -> reprendre l'appel.
+        </para>      
       </listitem>
       <listitem>
+	<para>      
         Pause Audio: Arrête la tranmission audio vers votre correspondant.
+        </para>      
       </listitem>
       <listitem>
+	<para>      
         Pause Video: Arrête la tranmission vidéo vers votre correspondant.
+        </para>      
       </listitem>
       <listitem>
+	<para>      
         Transférer l'appel: pour transférer l'appel en cours vers un autre correspondant (H.323 ou Callto), choisir Appel -> Rediriger ou double cliquez sur le nom du nouveau correspondant dans le carnet d'adresse ou dans l'historique des appels.
+        </para>      
       </listitem>
     </itemizedlist>
 

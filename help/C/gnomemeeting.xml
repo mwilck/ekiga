@@ -25,8 +25,15 @@
 
   <publisher>
     <publishername>Christopher Warner</publishername>
+    <address><email>zanee@kernelcode.com</email></address>
+  </publisher>
+  <publisher>
     <publishername>Damien Sandras</publishername>
+    <address><email>dsandras@seconix.com</email></address>
+  </publisher>
+  <publisher>
     <publishername>Matthias Redlich</publishername>
+    <address><email>m-redlich@t-online.de</email></address>
   </publisher>
 
 <authorgroup>
@@ -34,22 +41,19 @@
 	<firstname>Christopher</firstname>
 	<surname>Warner</surname>
   	<othername> zanee </othername>
-	<email>zanee@kernelcode.com</email>
   </author>
   <author>
 	<firstname>Matthias</firstname>
 	<surname>Redlich</surname>
-	<email>m-redlich@t-online.de</email>
   </author>
   <author>
 	<firstname>Damien</firstname>
 	<surname>Sandras</surname>
-        <email>dsandras@seconix.com</email>
   </author>
 </authorgroup>
 
 <releaseinfo>
-This documentation is for version &appversion; of <application>&app;</application>.
+This documentation is for version &appversion; of &app;.
 </releaseinfo>
 </articleinfo>
 
@@ -69,9 +73,9 @@ This documentation is for version &appversion; of <application>&app;</applicatio
 <sect1 id="gnomemeeting-introduction">
     <title>Introduction</title>
     <para><application>&app;</application> is a free audio/video-conferencing application for Linux and other Unices (e.g BSD or MacOSX). It was written by Damien Sandras and is licensed under the GNU/GPL. It is based on the H.323 ITU standard and allows you to make audio and video calls to remote users with H.323 hardware or software (such as Microsoft Netmeeting). It also supports all modern videoconferencing features, such as registering to an Internet Locator Service (ILS) directory, gatekeeper support, making multi-user conference calls using an external Multipoint Control Unit (MCU), using modern Quicknet telephony cards and making PC-To-Phone calls.
+    </para>
     <para>
     <graphic fileref="figures/lumi.png"></graphic> 
-    </para>
     </para>
 </sect1>
 
@@ -89,6 +93,7 @@ This documentation is for version &appversion; of <application>&app;</applicatio
         <tip><title>Tip</title><para>All settings can be changed via the preferences window at anytime.</para></tip>
 
 	<figure>
+	 <title/>
 	 <graphic fileref="figures/config_d1.png"></graphic>
 	</figure>
 	<para><emphasis>Configuration Assistant Introduction</emphasis></para>
@@ -107,6 +112,7 @@ This documentation is for version &appversion; of <application>&app;</applicatio
 
 
 	 <figure>
+	 <title/>
          <graphic fileref="figures/config_d2.png"></graphic>
         </figure>
 
@@ -123,6 +129,7 @@ This documentation is for version &appversion; of <application>&app;</applicatio
 	</para>
 
          <figure>
+	 <title/>
          <graphic fileref="figures/config_d3.png"></graphic>
         </figure>
 
@@ -137,6 +144,7 @@ This documentation is for version &appversion; of <application>&app;</applicatio
 
 
 	<figure>
+	 <title/>
          <graphic fileref="figures/config_d4.png"></graphic>
         </figure>
 
@@ -155,6 +163,7 @@ This documentation is for version &appversion; of <application>&app;</applicatio
 	</para>	
 
 	<figure>
+	 <title/>
 	 <graphic fileref="figures/config_d5.png"></graphic>
 	</figure>
 	
@@ -165,6 +174,7 @@ This documentation is for version &appversion; of <application>&app;</applicatio
 	</para>
 	
 	<figure>
+	 <title/>
 	 <graphic fileref="figures/config_d6.png"></graphic>
 	</figure>
 	
@@ -176,6 +186,7 @@ This documentation is for version &appversion; of <application>&app;</applicatio
 
 
 	<figure>
+	 <title/>
          <graphic fileref="figures/config_d7.png"></graphic>
         </figure>
 
@@ -200,6 +211,7 @@ This documentation is for version &appversion; of <application>&app;</applicatio
 	</para>
 
 	<figure>
+	 <title/>
 	 <graphic fileref="figures/config_d8.png"></graphic>
 	</figure>
 
@@ -211,6 +223,7 @@ This documentation is for version &appversion; of <application>&app;</applicatio
 
 
 	<figure>
+	 <title/>
          <graphic fileref="figures/config_d9.png"></graphic>
         </figure>
 
@@ -232,6 +245,7 @@ This documentation is for version &appversion; of <application>&app;</applicatio
 
 
 	<figure>
+	 <title/>
          <graphic fileref="figures/config_d10.png"></graphic>
         </figure>
 	<para><emphasis>Configuration Complete</emphasis></para>
@@ -345,7 +359,7 @@ will now resemble a power plug connected to a socket.</para>-->
 <para>If your company is running an H.323 gatekeeper on a public IP, it can be configured to accept calls and redirect them to the correct GnomeMeeting client based on the called URL. For example, if a gatekeeper is installed on <emphasis>example.com</emphasis> and user <emphasis>joe</emphasis> is registered to that gatekeeper, then other users will be able to call <emphasis>joe</emphasis> using the following URL: <emphasis>h323:joe@example.com</emphasis>.</para>
 
 <para><emphasis>Using an ENUM record</emphasis></para>
-<para>You can register an ENUM record on <ulink url="http://www.e164.org" type="http">www.e164.org</ulink>. That will permit you to associate your real phone number to any valid H.323 URL, and other users will be able to call you using your real phone number. For example, <emphasis>+3210444555</emphasis> will be directly linked to <emphasis>h323:myhostname.com</emphasis> and other users will be able to call you using <emphasis>h323:3210444555</emphasis></para>.
+<para>You can register an ENUM record on <ulink url="http://www.e164.org" type="http">www.e164.org</ulink>. That will permit you to associate your real phone number to any valid H.323 URL, and other users will be able to call you using your real phone number. For example, <emphasis>+3210444555</emphasis> will be directly linked to <emphasis>h323:myhostname.com</emphasis> and other users will be able to call you using <emphasis>h323:3210444555</emphasis>.</para>
 
 </sect2>
 
@@ -444,13 +458,13 @@ The first group, Received call, contains all incoming calls which were accepted 
 <para>The ILS directory can be browsed by selecting the menu option Tools -> Address Book or by 
 selecting the ILS address book icon from the main window. To view the updated contents of the 
 directory click on the 'Find' box.
+</para>
 
 <para><emphasis>Searching for users</emphasis></para>
 
 <para>
 The address book can be searched on the first name, last name and email address fields. 
 Select the field you wish to search, enter the search query and press enter.
-</para>
 </para>
 </sect2>
 
