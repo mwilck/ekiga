@@ -195,6 +195,13 @@ void silence_detection_button_clicked (GtkWidget *w, gpointer data)
   MyApp->Endpoint ()->ChangeSilenceDetection ();
 }
 
+
+static void gm_quit_callback (GtkWidget *widget, GdkEvent *event, 
+			      gpointer data)
+{
+  quit_callback (NULL, data);
+}  
+
 /******************************************************************************/
 
 
@@ -380,8 +387,7 @@ void GM_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
 
   /* if the user tries to close the window : delete_event */
   gtk_signal_connect (GTK_OBJECT (gm), "delete_event",
-		      GTK_SIGNAL_FUNC (quit_callback),
-		      gw);
+		      GTK_SIGNAL_FUNC (gm_quit_callback), (gpointer) gw);
 }
 
 

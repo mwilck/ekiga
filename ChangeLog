@@ -1,3 +1,12 @@
+2001-11-07  Damien Sandras  <dsandras@seconix.com>
+
+	* src/main_interface.cpp: Added a callback to really make the 
+	application quit when the user tries to destroy the window
+	thanks to the WM. That callback calls the quit_callback called
+	when the user tries to quit from the menu, but with the right
+	parameters (the callback linked to a delete_event needs a
+	supplementary GdkEvent *parameter).
+	
 2001-11-06  Miguel Rodríguez Pérez  <migrax@terra.es>
  
  	* src/ldap.cpp (GM_ldap_init): Test that we have a valid list 
