@@ -537,7 +537,7 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 
       {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
 
-      {_("Do _Not Disturb"), _("Do _Not Disturb"),
+      {_("Do _Not Disturb"), _("Do Not Disturb"),
        NULL, 'n', MENU_ENTRY_TOGGLE, 
        GTK_SIGNAL_FUNC (menu_toggle_changed),
        (gpointer) "/apps/gnomemeeting/general/do_not_disturb", NULL},
