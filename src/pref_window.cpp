@@ -350,7 +350,7 @@ void toggle_changed (GtkCheckButton *but, gpointer data)
 }
 
 
-void option_menu_changed (GtkWidget *menu, gpointer data)
+void int_option_menu_changed (GtkWidget *menu, gpointer data)
 {
   GConfClient *client = gconf_client_get_default ();
   gchar *key = (gchar *) data;
@@ -363,6 +363,23 @@ void option_menu_changed (GtkWidget *menu, gpointer data)
  
   gconf_client_set_int (GCONF_CLIENT (client),
 			key, item_index, NULL);
+}
+
+
+void string_option_menu_changed (GtkWidget *menu, gpointer data)
+{
+  GtkWidget *label;
+  GtkWidget *active_item;
+  GConfClient *client = gconf_client_get_default ();
+
+  gchar *key = (gchar *) data;
+  guint item_index;
+
+  active_item = gtk_menu_get_active (GTK_MENU (menu));
+  label = GTK_BIN (active_item)->child;
+
+  gconf_client_set_string (GCONF_CLIENT (client),
+			   key, gtk_label_get_text (GTK_LABEL (label)), NULL);
 }
 
 
@@ -531,12 +548,71 @@ gnomemeeting_pref_window_add_toggle (GtkWidget *table,
 
 
 static GtkWidget *
-gnomemeeting_pref_window_add_option_menu (GtkWidget *table,       
-					  gchar *label_txt, 
-					  gchar **options,
-					  gchar *gconf_key,       
-					  gchar *tooltip,         
-					  int row)       
+gnomemeeting_pref_window_add_spin (GtkWidget *table,       
+				   gchar *label_txt,       
+				   gchar *gconf_key,       
+				   gchar *tooltip,         
+				   double min, double max, double step, int row)       
+{
+  GtkAdjustment *adj = NULL;
+  GtkWidget *label = NULL;
+  GtkWidget *spin_button = NULL;
+  GtkTooltips *tip = NULL;                                                     
+                                                                               
+                                                                               
+  GConfClient *client = NULL;                                                  
+                                                                               
+  client = gconf_client_get_default ();                                        
+
+
+  label = gtk_label_new (label_txt);                                           
+
+  gtk_table_attach (GTK_TABLE (table), label, 0, 1, row, row+1,                
+                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
+                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
+                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);           
+                                                                               
+  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);                         
+  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_RIGHT);                
+
+
+  adj = (GtkAdjustment *) 
+    gtk_adjustment_new (gconf_client_get_int (client, gconf_key, 0), min, max, step, 
+			2.0, 1.0);
+
+  spin_button =
+    gtk_spin_button_new (adj, 1.0, 0);
+                                                                               
+  gtk_table_attach (GTK_TABLE (table), spin_button, 1, 2, row, row+1,         
+                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
+                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
+                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);           
+                                                                               
+  gtk_adjustment_set_value (GTK_ADJUSTMENT (adj), 
+			    gconf_client_get_int (client, gconf_key, NULL));
+
+                                                                               
+  tip = gtk_tooltips_new ();                                                   
+  gtk_tooltips_set_tip (tip, spin_button, tooltip, NULL);                           
+
+  /* We set the key as data to be able to get the data in order to block       
+     the signal in the gconf notifier */                             
+  g_object_set_data (G_OBJECT (adj), "gconf_key", (void *) gconf_key);
+                                                                               
+  g_signal_connect (G_OBJECT (adj), "value-changed", G_CALLBACK (adjustment_changed),
+		    (gpointer) gconf_key);                                   
+                                                                               
+  return spin_button;
+}                                                                              
+
+
+static GtkWidget *
+gnomemeeting_pref_window_add_int_option_menu (GtkWidget *table,       
+					      gchar *label_txt, 
+					      gchar **options,
+					      gchar *gconf_key,       
+					      gchar *tooltip,         
+					      int row)       
 {
   GtkWidget *item = NULL;
   GtkWidget *label = NULL;                                                     
@@ -567,6 +643,7 @@ gnomemeeting_pref_window_add_option_menu (GtkWidget *table,
   while (options [cpt]) {
 
     item = gtk_menu_item_new_with_label (options [cpt]);
+    gtk_widget_show (item);
     gtk_menu_append (GTK_MENU (menu), item);
     cpt++;
   }
@@ -589,12 +666,88 @@ gnomemeeting_pref_window_add_option_menu (GtkWidget *table,
   g_object_set_data (G_OBJECT (option_menu), "gconf_key", (void *) gconf_key);
                                                                                
   g_signal_connect (G_OBJECT (GTK_OPTION_MENU (option_menu)->menu), 
-		    "deactivate", G_CALLBACK (option_menu_changed),
+		    "deactivate", G_CALLBACK (int_option_menu_changed),
   		    (gpointer) gconf_key);                                   
                                                                                
   return option_menu;
 }                                                                              
+
+
+static GtkWidget *
+gnomemeeting_pref_window_add_string_option_menu (GtkWidget *table,       
+						 gchar *label_txt, 
+						 gchar **options,
+						 gchar *gconf_key,       
+						 gchar *tooltip,         
+						 int row)       
+{
+  GtkWidget *item = NULL;
+  GtkWidget *label = NULL;                                                     
+  GtkWidget *option_menu = NULL;
+  GtkWidget *menu = NULL;
+  GtkTooltips *tip = NULL;        
+  gchar *gconf_string = NULL;
+  int history = 0;
+
+  int cpt = 0;                                                   
+
+  GConfClient *client = NULL;                                                  
                                                                                
+  client = gconf_client_get_default ();                                        
+
+
+  label = gtk_label_new (label_txt);                                           
+
+  gtk_table_attach (GTK_TABLE (table), label, 0, 1, row, row+1,                
+                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
+                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
+                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);           
+                                                                               
+  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);                         
+  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_RIGHT);                
+
+
+  menu = gtk_menu_new ();
+  option_menu = gtk_option_menu_new ();
+
+  gconf_string = gconf_client_get_string (client, gconf_key, NULL);
+
+  while (options [cpt]) {
+
+    if (gconf_string != NULL)
+      if (!strcmp (gconf_string, options [cpt]))
+	history = cpt;
+
+    item = gtk_menu_item_new_with_label (options [cpt]);
+    gtk_widget_show (item);
+    gtk_menu_append (GTK_MENU (menu), item);
+    cpt++;
+  }
+
+  gtk_option_menu_set_menu (GTK_OPTION_MENU (option_menu), menu);
+  gtk_option_menu_set_history (GTK_OPTION_MENU (option_menu), 
+ 			       history);
+
+  gtk_table_attach (GTK_TABLE (table), option_menu, 1, 2, row, row+1,         
+                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
+                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
+                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);           
+                                                                               
+                                                                               
+  tip = gtk_tooltips_new ();                                                   
+  gtk_tooltips_set_tip (tip, option_menu, tooltip, NULL);                  
+
+  /* We set the key as data to be able to get the data in order to block       
+     the signal in the gconf notifier */                             
+  g_object_set_data (G_OBJECT (option_menu), "gconf_key", (void *) gconf_key);
+                                                                               
+  g_signal_connect (G_OBJECT (GTK_OPTION_MENU (option_menu)->menu), 
+		    "deactivate", G_CALLBACK (string_option_menu_changed),
+  		    (gpointer) gconf_key);                                   
+                                                                               
+  return option_menu;
+}
+
                                                                                
 static GtkWidget *
 gnomemeeting_pref_window_add_update_button (GtkWidget *table,
@@ -781,9 +934,170 @@ void gnomemeeting_init_pref_window_directories (GtkWidget *notebook)
     gnomemeeting_pref_window_add_entry (table, _("Gatekeeper host:"), "/apps/gnomemeeting/gatekeeper/gk_host", _("The Gatekeeper host to register to."), 1);
 
   pw->gk = 
-    gnomemeeting_pref_window_add_option_menu (table, _("Registering method:"), options, "/apps/gnomemeeting/gatekeeper/registering_method", _("Registering method to use"), 2);
+    gnomemeeting_pref_window_add_int_option_menu (table, _("Registering method:"), options, "/apps/gnomemeeting/gatekeeper/registering_method", _("Registering method to use"), 2);
 }                                                                              
+
+
+/* BEHAVIOR     :  It builds the notebook page for the device settings and
+ *                 add it to the notebook.
+ * PRE          :  See init_pref_audio_codecs.
+ */
+static void gnomemeeting_init_pref_window_devices (GtkWidget *notebook)
+{
+  GConfClient *client = NULL;
+  gchar *gconf_string = NULL;
+  GtkWidget *vbox = NULL;                                                      
+  GtkWidget *table = NULL; 
+  int default_present = -1;
+  int i = 0;
+  gchar *video_size [] = {_("Small"), 
+			  _("Large"), 
+			  NULL};
+  gchar *video_format [] = {_("PAL"), 
+			    _("NTSC"), 
+			    _("SECAM"), 
+			    _("auto"), 
+			    NULL};                                                  
+  gchar *audio_player_devices_list [20];
+  gchar *audio_recorder_devices_list [20];
+  gchar *video_devices_list [20];
+                
+
+  /* Get the data */                                             
+  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);              
+  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
+  
+  client = gconf_client_get_default ();
                                                                                
+  /* Packing widgets for the XDAP directory */                                
+  vbox = gnomemeeting_pref_window_build_page (notebook, _("Devices Settings"));   
+  table = gnomemeeting_pref_window_add_table (vbox, _("Audio Devices"),
+                                              4, 2);                           
+                                                                               
+  /* Add all the fields */                 
+  /* The player */
+  gconf_string =  gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/audio_player", NULL);
+
+  i = gw->audio_player_devices.GetSize () - 1;
+  if (i >= 20) i = 19;
+
+  for (int j = i ; j >= 0; j--) 
+    audio_player_devices_list [j] = g_strdup (gw->audio_player_devices [j]);
+
+  
+  audio_player_devices_list [i+1] = NULL;
+
+  pw->audio_player = 
+    gnomemeeting_pref_window_add_string_option_menu (table, _("Audio Player:"), audio_player_devices_list, "/apps/gnomemeeting/devices/audio_player", _("Enter the audio player device to use."), 0);
+
+  for (int j = i ; j >= 0; j--) 
+    g_free (audio_player_devices_list [j]);
+  g_free (gconf_string); 
+
+  
+  pw->audio_player_mixer =
+    gnomemeeting_pref_window_add_entry (table, _("Audio Player Mixer:"), "/apps/gnomemeeting/devices/audio_player_mixer", _("The audio mixer to use to setup the volume of the audio player device."), 1);
+
+
+  /* The recorder */
+  gconf_string =  gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/audio_recorder", NULL);
+
+  i = gw->audio_recorder_devices.GetSize () - 1;
+  if (i >= 20) i = 19;
+
+  for (int j = i ; j >= 0; j--) 
+    audio_recorder_devices_list [j] = 
+      g_strdup (gw->audio_recorder_devices [j]);
+  
+  audio_recorder_devices_list [i+1] = NULL;
+
+  pw->audio_recorder = 
+    gnomemeeting_pref_window_add_string_option_menu (table, _("Audio Recorder:"), audio_recorder_devices_list, "/apps/gnomemeeting/devices/audio_recorder", _("Enter the audio recorder device to use."), 2);
+
+  for (int j = i ; j >= 0; j--) 
+    g_free (audio_recorder_devices_list [j]);
+  g_free (gconf_string);
+
+
+  pw->audio_recorder_mixer =
+    gnomemeeting_pref_window_add_entry (table, _("Audio Player Recorder:"), "/apps/gnomemeeting/devices/audio_recorder_mixer", _("The audio mixer to use to setup the volume of the audio recorder device."), 3);
+
+  /* The video devices related options */
+  table = gnomemeeting_pref_window_add_table (vbox, _("Video Devices"), 5, 2);
+
+  /* The video device */
+  gconf_string =  gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/video_recorder", NULL);
+
+  i = gw->video_devices.GetSize () - 1;
+  if (i >= 20) i = 19;
+
+  for (int j = i ; j >= 0; j--) 
+    video_devices_list [j] = 
+      g_strdup (gw->video_devices [j]);
+  
+  video_devices_list [i+1] = NULL;
+
+  pw->video_device = 
+    gnomemeeting_pref_window_add_string_option_menu (table, _("Video Device:"), video_devices_list, "/apps/gnomemeeting/devices/video_recorder", _("Enter the video device to use, using a wrong video device for video transmission will transmit a test picture."), 1);
+
+  for (int j = i ; j >= 0; j--) 
+    g_free (video_devices_list [j]);
+  g_free (gconf_string);
+
+
+  /* Video Channel */
+  pw->video_channel =
+    gnomemeeting_pref_window_add_spin (table, _("Video Channel:"),       
+				       "/apps/gnomemeeting/devices/video_channel",       
+				       _("The video channel number to use (camera, tv, ...)."),
+				       0.0, 10.0, 1.0, 2);
+  
+  pw->opt1 =
+    gnomemeeting_pref_window_add_int_option_menu (table, _("Video Size:"), video_size, "/apps/gnomemeeting/devices/video_size", _("Choose the transmitted video size : QCIF (Small) or CIF (Large)."), 3);
+
+  pw->opt2 =
+    gnomemeeting_pref_window_add_int_option_menu (table, _("Video Format:"), video_format, "/apps/gnomemeeting/devices/video_format", _("Here you can choose the transmitted video format."), 4);
+
+  pw->video_preview =
+    gnomemeeting_pref_window_add_toggle (table, _("Video Preview"), "/apps/gnomemeeting/devices/video_preview", _("If enabled, the video preview mode will be set at started even if you are not in a call."), 5, 0);
+
+}
+
+                                                                               
+/* BEHAVIOR     :  It builds the notebook page for the device settings and
+ *                 add it to the notebook, default values are set from the
+ *                 options struct given as parameter.
+ * PRE          :  See init_pref_audio_codecs.
+ */
+// static void gnomemeeting_init_pref_window_devices (GtkWidget *notebook)
+// {
+
+//   /* Enable / disable video preview */
+//   pw->video_preview = gtk_check_button_new_with_label (_("Video Preview"));
+
+//   gtk_table_attach (GTK_TABLE (table), pw->video_preview, 0, 1, 4, 5,
+// 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+// 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+// 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);	
+//   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->video_preview), 
+// 				gconf_client_get_bool (client, "/apps/gnomemeeting/devices/video_preview", NULL));
+ 
+//   tip = gtk_tooltips_new ();
+//   gtk_tooltips_set_tip (tip, pw->video_preview,
+// 			_("If enabled, the video preview mode will be set at startup"),	NULL);
+
+//   gtk_signal_connect (GTK_OBJECT (pw->video_preview),
+// 		      "toggled",
+// 		      GTK_SIGNAL_FUNC (toggle_changed),
+// 		      (gpointer) "/apps/gnomemeeting/devices/video_preview");
+
+
+//   /* The End */									
+//   label = gtk_label_new (_("Device Settings"));
+
+//   gtk_notebook_append_page (GTK_NOTEBOOK(notebook), general_frame, label);
+// }
+
             
 void gnomemeeting_init_pref_window ()
 {
@@ -865,7 +1179,6 @@ void gnomemeeting_init_pref_window ()
   gtk_tree_store_set (GTK_TREE_STORE (model),
 		      &child_iter, 0, _("Device Settings"), 1, 4, -1);
   gnomemeeting_init_pref_window_devices (notebook);
-
   /* Another section */
   gtk_tree_store_append (GTK_TREE_STORE (model), &iter, NULL);
   gtk_tree_store_set (GTK_TREE_STORE (model),
@@ -1841,460 +2154,6 @@ static void gnomemeeting_init_pref_window_codecs_settings (GtkWidget *notebook)
 // }
 
 
-/* BEHAVIOR     :  It builds the notebook page for the device settings and
- *                 add it to the notebook, default values are set from the
- *                 options struct given as parameter.
- * PRE          :  See init_pref_audio_codecs.
- */
-static void gnomemeeting_init_pref_window_devices (GtkWidget *notebook)
-{
-  GtkWidget *general_frame;
-  GtkWidget *frame;
-  GtkWidget *vbox;
-  GtkWidget *table;
-  GtkWidget *label;
-  GtkWidget *menu1, *menu2;
-  GtkWidget *item;
-  GList *audio_player_devices_list = NULL;
-  GList *audio_recorder_devices_list = NULL;
-  GList *video_devices_list = NULL;
-  gchar *gconf_string = NULL;
-  GtkTooltips *tip;
-  int default_present = 0;
-
-  /* Get the data */
-  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
-  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
-  GConfClient *client = gconf_client_get_default ();
-
-  vbox = gtk_vbox_new (FALSE, GNOMEMEETING_PAD_SMALL);
-
-  general_frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (general_frame), GTK_SHADOW_IN);
-
-  gtk_container_add (GTK_CONTAINER (general_frame), vbox);
-
-  /* The title of the notebook page */
-  frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
-  gtk_box_pack_start (GTK_BOX (vbox), frame, 
-		      FALSE, FALSE, 0);
-
-  label = gtk_label_new (_("Device Settings"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_misc_set_padding (GTK_MISC (label), 2, 1);
-  gtk_container_add (GTK_CONTAINER (frame), label);
-
-  /**** Audio devices ****/
-  frame = gtk_frame_new (_("Audio Devices"));
-  gtk_box_pack_start (GTK_BOX (vbox), frame, 
-		      FALSE, FALSE, 0);
-
-
-  /* Put a table in the first frame */
-  table = gtk_table_new (4, 2, FALSE);
-  gtk_table_set_row_spacings (GTK_TABLE (table), GNOMEMEETING_PAD_SMALL);
-  gtk_table_set_col_spacings (GTK_TABLE (table), GNOMEMEETING_PAD_SMALL);
-  gtk_container_add (GTK_CONTAINER (frame), table);
-  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOMEMEETING_PAD_SMALL);
-
-
-  /* Audio Device */
-  label = gtk_label_new (_("Player:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_RIGHT);
-
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-
-  pw->audio_player = gtk_combo_new ();
-  gtk_table_attach (GTK_TABLE (table), pw->audio_player, 1, 2, 0, 1,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-
-  /* Build the list from the auto-detected devices */
-  gconf_string =  gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/audio_player", NULL);
-
-  for (int i = gw->audio_player_devices.GetSize () - 1; i >= 0; i--) {
-  
-    if (gconf_string != NULL)
-      if (!strcmp (gconf_string, gw->audio_player_devices [i]))
-	default_present = 1;
-
-    audio_player_devices_list = g_list_prepend 
-	(audio_player_devices_list, 
-	 g_strdup (gw->audio_player_devices [i]));
-  }
-
-  if (audio_player_devices_list != NULL)
-    gtk_combo_set_popdown_strings (GTK_COMBO (pw->audio_player), 
-				   audio_player_devices_list);
-  gtk_entry_set_editable (GTK_ENTRY (GTK_COMBO (pw->audio_player)->entry),
-			  FALSE);
-
-  if (default_present)
-    gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (pw->audio_player)->entry),
-			gconf_string);    
-  g_free (gconf_string);
-
-  gtk_object_set_data (GTK_OBJECT (pw->audio_player), "gconf_key",
-		       (void *) "/apps/gnomemeeting/devices/audio_player");
-
-  gtk_signal_connect (GTK_OBJECT (GTK_COMBO (pw->audio_player)->entry), 
-		      "changed",
-		      GTK_SIGNAL_FUNC (entry_changed), 
-		      (gpointer) gtk_object_get_data (GTK_OBJECT (pw->audio_player), "gconf_key"));
-
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, GTK_COMBO (pw->audio_player)->entry, 
-			_("Enter the audio player device to use"), NULL);
-
-
-  /* Audio Recorder Device */
-  label = gtk_label_new (_("Recorder:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_RIGHT);
-
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 2, 3,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-
-  pw->audio_recorder = gtk_combo_new ();
-  gtk_table_attach (GTK_TABLE (table), pw->audio_recorder, 1, 2, 2, 3,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-
-  gconf_string =  gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/audio_recorder", NULL);
-  
-  default_present = 0;
-
-  for (int i = gw->audio_recorder_devices.GetSize () - 1; i >= 0; i--) {
-  
-    if (gconf_string != NULL)
-      if (!strcmp (gconf_string, gw->audio_recorder_devices [i]))
-	default_present = 1;
-
-    audio_recorder_devices_list = g_list_prepend 
-	(audio_recorder_devices_list, 
-	 g_strdup (gw->audio_recorder_devices [i]));
-  }
-
-  if (audio_recorder_devices_list != NULL)
-    gtk_combo_set_popdown_strings (GTK_COMBO (pw->audio_recorder), 
-				   audio_recorder_devices_list);
-  gtk_entry_set_editable (GTK_ENTRY (GTK_COMBO (pw->audio_recorder)->entry),
-			  FALSE);
-
-  if (default_present)
-    gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (pw->audio_recorder)->entry),
-			gconf_string);
-  g_free (gconf_string);
-
-  gtk_object_set_data (GTK_OBJECT (pw->audio_recorder), "gconf_key",
-		       (void *) "/apps/gnomemeeting/devices/audio_recorder");
-
-  gtk_signal_connect (GTK_OBJECT (GTK_COMBO (pw->audio_recorder)->entry), 
-		      "changed",
-		      GTK_SIGNAL_FUNC (entry_changed), 
-		      (gpointer) gtk_object_get_data (GTK_OBJECT (pw->audio_recorder), "gconf_key"));
-
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, GTK_COMBO (pw->audio_recorder)->entry, 
-			_("Enter the audio recorder device to use"), NULL);
-
-
-  /* Audio Mixers */
-  label = gtk_label_new (_("Player Mixer:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_RIGHT);
-
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 1, 2,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-
-  pw->audio_player_mixer = gtk_entry_new ();
-  gtk_table_attach (GTK_TABLE (table), pw->audio_player_mixer, 1, 2, 1, 2,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-
-  gconf_string =  gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/audio_player_mixer", NULL);
-  if (gconf_string != NULL)
-    gtk_entry_set_text (GTK_ENTRY (pw->audio_player_mixer), 
-			gconf_string);
-  g_free (gconf_string);
-
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, pw->audio_player_mixer,
-			_("The audio mixer to use for player settings"), NULL);
-
-  gtk_object_set_data (GTK_OBJECT (pw->audio_player_mixer), "gconf_key",
-		       (void *) "/apps/gnomemeeting/devices/audio_player_mixer");
-  gtk_signal_connect (GTK_OBJECT (pw->audio_player_mixer), "changed",
-		      GTK_SIGNAL_FUNC (entry_changed), 
-		      (gpointer) gtk_object_get_data (GTK_OBJECT (pw->audio_player_mixer), "gconf_key"));
-
-
-  /* Recorder Mixer */
-  label = gtk_label_new (_("Recorder Mixer:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_RIGHT);
-
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 3, 4,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-
-  pw->audio_recorder_mixer = gtk_entry_new ();
-  gtk_table_attach (GTK_TABLE (table), pw->audio_recorder_mixer, 1, 2, 3, 4,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-
-  gconf_string =  gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/audio_recorder_mixer", NULL);
-  if (gconf_string != NULL)
-    gtk_entry_set_text (GTK_ENTRY (pw->audio_recorder_mixer), 
-			gconf_string);
-
-  g_free (gconf_string);
-
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, pw->audio_recorder_mixer,
-			_("The audio mixer to use for recorder settings"), NULL);
-
-  gtk_object_set_data (GTK_OBJECT (pw->audio_recorder_mixer), "gconf_key",
-		       (void *) "/apps/gnomemeeting/devices/audio_recorder_mixer");
-  gtk_signal_connect (GTK_OBJECT (pw->audio_recorder_mixer), "changed",
-		      GTK_SIGNAL_FUNC (entry_changed), 
-		      (gpointer) gtk_object_get_data (GTK_OBJECT (pw->audio_recorder_mixer), "gconf_key"));
-
-
-  /**** Video device ****/
-  frame = gtk_frame_new (_("Video Device"));
-  gtk_box_pack_start (GTK_BOX (vbox), frame, 
-		      FALSE, TRUE, 0);
-
-
-  /* Put a table in the first frame */
-  table = gtk_table_new (5, 2, FALSE);
-  gtk_container_add (GTK_CONTAINER (frame), table);
-  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOMEMEETING_PAD_SMALL);
-  gtk_table_set_row_spacings (GTK_TABLE (table), GNOMEMEETING_PAD_SMALL);
-  gtk_table_set_col_spacings (GTK_TABLE (table), GNOMEMEETING_PAD_SMALL);
-
-
-  /* Video Device */
-  label = gtk_label_new (_("Video Device:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_RIGHT);
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-  
-  pw->video_device = gtk_combo_new ();
-  gtk_table_attach (GTK_TABLE (table), pw->video_device, 1, 2, 0, 1,
- 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
- 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
- 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
- 
-  /* Set the correct value from the gconf database, if the device still exists */
-  gconf_string =  gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/video_recorder", NULL);
-  default_present = 0;
-  
-  for (int i = gw->video_devices.GetSize () - 1; i >= 0; i--) {
-
-    if (gconf_string != NULL)
-      if (!strcmp (gconf_string, gw->video_devices [i]))
-	default_present = 1;
-
-    video_devices_list = 
-      g_list_prepend (video_devices_list, 
-		      g_strdup (gw->video_devices [i]));
-  }
-  
-  if (default_present)
-    gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (pw->video_device)->entry),
-			gconf_string);
-  else { /* We must fix the default, as the one already set won't work */
-    gconf_client_set_string (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/video_recorder",
-			     gw->video_devices [0], 0);
-  }
-
-  g_free (gconf_string);
-
-  if (video_devices_list != NULL)
-    gtk_combo_set_popdown_strings (GTK_COMBO (pw->video_device), 
-				   video_devices_list);
-  gtk_entry_set_editable (GTK_ENTRY (GTK_COMBO (pw->video_device)->entry),
-			  FALSE);
-  
-  /* Set the key as data to be able to use it to block the signal */
-  gtk_object_set_data (GTK_OBJECT (pw->video_device), "gconf_key",
-		       (void *) "/apps/gnomemeeting/devices/video_recorder");
-  
-  gtk_signal_connect (GTK_OBJECT (GTK_COMBO (pw->video_device)->entry), 
-		      "changed",
-		      GTK_SIGNAL_FUNC (entry_changed), 
-		      (gpointer) gtk_object_get_data (GTK_OBJECT (pw->video_device), "gconf_key"));
-  
-  
-  tip = gtk_tooltips_new ();
-   
-  gtk_tooltips_set_tip (tip, GTK_COMBO (pw->video_device)->entry, 
- 			_("Enter the video device to use"), NULL);
-
- 
-  /* Video channel spin button */					
-  label = gtk_label_new (_("Video Channel:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_RIGHT);
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 1, 2,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);	
-  
-  pw->video_channel_spin_adj = (GtkAdjustment *) 
-    gtk_adjustment_new (gconf_client_get_int (client, "/apps/gnomemeeting/devices/video_channel", 0), 0.0, 10.0, 1.0, 1.0, 1.0);
-
-  pw->video_channel = 
-    gtk_spin_button_new (pw->video_channel_spin_adj, 100.0, 0);
-  
-  gtk_table_attach (GTK_TABLE (table), pw->video_channel, 1, 2, 1, 2,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, pw->video_channel,
-			_("The video channel number to use (camera, tv, ...)"), 
-			NULL);
-
-  /* Set the key as data to be able to use it to block the signal */
-  gtk_object_set_data (GTK_OBJECT (pw->video_channel_spin_adj), "gconf_key",
-		       (void *) "/apps/gnomemeeting/devices/video_channel");
-  
-  gtk_signal_connect (GTK_OBJECT (pw->video_channel_spin_adj), 
-		      "value_changed",
-		      GTK_SIGNAL_FUNC (adjustment_changed), 
-		      (gpointer) gtk_object_get_data (GTK_OBJECT (pw->video_channel_spin_adj), "gconf_key"));
-  
-
-  /* Video Size Option Menu */
-  label = gtk_label_new (_("Video Size:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_RIGHT);
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 2, 3,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);			
-  
-  menu1 = gtk_menu_new ();
-  pw->opt1 = gtk_option_menu_new ();
-  item = gtk_menu_item_new_with_label (_("Small"));
-  gtk_menu_append (GTK_MENU (menu1), item);
-  item = gtk_menu_item_new_with_label (_("Large"));
-  gtk_menu_append (GTK_MENU (menu1), item);
-  gtk_option_menu_set_menu (GTK_OPTION_MENU (pw->opt1), menu1);
-  gtk_option_menu_set_history (GTK_OPTION_MENU (pw->opt1), 
-			       gconf_client_get_int (client, "/apps/gnomemeeting/devices/video_size", NULL));
-
-  gtk_table_attach (GTK_TABLE (table), pw->opt1, 1, 2, 2, 3,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-
-  /* We set the key as data to be able to get the data in order to block 
-     the signal in the gconf notifier */
-  gtk_object_set_data (GTK_OBJECT (pw->opt1), "gconf_key",
-		       (void *) "/apps/gnomemeeting/devices/video_size");
-
-  gtk_signal_connect (GTK_OBJECT (GTK_OPTION_MENU (pw->opt1)->menu), 
-		      "deactivate",
- 		      GTK_SIGNAL_FUNC (option_menu_changed), 
-		      (gpointer) gtk_object_get_data (GTK_OBJECT (pw->opt1),
-						      "gconf_key"));
-
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, pw->opt1,
-			_("Here you can choose the transmitted video size"), NULL);
-	
-
-  /* Video Format Option Menu */
-  label = gtk_label_new (_("Video Format:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_RIGHT);
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 3, 4,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);			
-  
-  menu2 = gtk_menu_new ();
-  pw->opt2 = gtk_option_menu_new ();
-  item = gtk_menu_item_new_with_label ("PAL");
-  gtk_menu_append (GTK_MENU (menu2), item);
-  item = gtk_menu_item_new_with_label ("NTSC");
-  gtk_menu_append (GTK_MENU (menu2), item);
-  item = gtk_menu_item_new_with_label ("SECAM");
-  gtk_menu_append (GTK_MENU (menu2), item);
-  item = gtk_menu_item_new_with_label (_("Auto"));
-  gtk_menu_append (GTK_MENU (menu2), item);
-  gtk_option_menu_set_menu (GTK_OPTION_MENU (pw->opt2), menu2);
-  gtk_option_menu_set_history (GTK_OPTION_MENU (pw->opt2), 
-			       gconf_client_get_int (client, "/apps/gnomemeeting/devices/video_size", NULL));
-  
-  gtk_table_attach (GTK_TABLE (table), pw->opt2, 1, 2, 3, 4,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-
-  /* Set the data to be able to block the signal later */
-  gtk_object_set_data (GTK_OBJECT (pw->opt2), "gconf_key",
-		       (void *) "/apps/gnomemeeting/devices/video_format");
-  
-  gtk_signal_connect (GTK_OBJECT (GTK_OPTION_MENU (pw->opt2)->menu), 
-		      "deactivate",
- 		      GTK_SIGNAL_FUNC (option_menu_changed), 
-		      (gpointer) gtk_object_get_data (GTK_OBJECT (pw->opt2),
-						      "gconf_key"));
-
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, pw->opt2,
-			_("Here you can choose the transmitted video format"), NULL);
-
-
-  /* Enable / disable video preview */
-  pw->video_preview = gtk_check_button_new_with_label (_("Video Preview"));
-
-  gtk_table_attach (GTK_TABLE (table), pw->video_preview, 0, 1, 4, 5,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);	
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->video_preview), 
-				gconf_client_get_bool (client, "/apps/gnomemeeting/devices/video_preview", NULL));
- 
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, pw->video_preview,
-			_("If enabled, the video preview mode will be set at startup"),	NULL);
-
-  gtk_signal_connect (GTK_OBJECT (pw->video_preview),
-		      "toggled",
-		      GTK_SIGNAL_FUNC (toggle_changed),
-		      (gpointer) "/apps/gnomemeeting/devices/video_preview");
-
-
-  /* The End */									
-  label = gtk_label_new (_("Device Settings"));
-
-  gtk_notebook_append_page (GTK_NOTEBOOK(notebook), general_frame, label);
-}
-
 
 /* Miscellaneous functions */
 
@@ -2317,7 +2176,6 @@ gnomemeeting_codecs_list_add (GtkWidget *list, const gchar *CodecName,
   //  gnome_stock_pixmap_gdk (GNOME_STOCK_BUTTON_CANCEL,
   //		  NULL, &no, &mask_no);
 
-  cout << "FIX ME: pref_window.cpp: 2599, btw pref_window sucks" << endl << flush;
 
   data [0] = NULL;
   data [1] = g_strdup (CodecName);
@@ -2383,7 +2241,7 @@ gnomemeeting_codecs_list_add (GtkWidget *list, const gchar *CodecName,
 			    GTK_CLIST (list)->rows - 1, 
 			    (gpointer) row_data);
   }
-  cout << "FIX ME: pref_window.cpp: 2665, btw pref_window sucks" << endl << flush;  
+
   g_free (data [1]);
   g_free (data [2]);
   g_free (data [3]);

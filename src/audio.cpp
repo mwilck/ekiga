@@ -123,7 +123,7 @@ int gnomemeeting_set_recording_source (char *mixer, int source)
 }
 
 
-int gnomemeeting_get_mixer_name (char *mixer, char *name)
+int gnomemeeting_get_mixer_name (char *mixer, char **name)
 {
 #ifdef __FreeBSD__
   strcpy(name,"/dev/mixer");
@@ -137,7 +137,8 @@ int gnomemeeting_get_mixer_name (char *mixer, char *name)
       return -1;
   
   res = ioctl(mixerfd, SOUND_MIXER_INFO, &info);
-  strcpy (name, info.name);
+  *name = g_strdup (info.name);
+  cout << "ici" << info.name << endl << flush;
 
   close (mixerfd);
 #endif
@@ -147,12 +148,7 @@ int gnomemeeting_get_mixer_name (char *mixer, char *name)
 
 PStringArray gnomemeeting_get_mixers ()
 {
-  char name [100];
-
-  gnomemeeting_get_mixer_name ("/dev/mixer1", name);
-  cout << name << endl << flush;
-  gnomemeeting_get_mixer_name ("/dev/dsp1", name);
-  cout << name << endl << flush;
+  
 }
 
 

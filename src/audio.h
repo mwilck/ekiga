@@ -72,9 +72,9 @@ int gnomemeeting_set_recording_source (char *, int);
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Get the device name
- * PRE          :  First param = mixer, Second = char * to contain the name
+ * PRE          :  First param = mixer, Second = char ** to contain the name
  */
-int gnomemeeting_get_mixer_name (char *, char *);
+int gnomemeeting_get_mixer_name (char *, char **);
 
 PStringArray gnomemeeting_get_mixers ();
 

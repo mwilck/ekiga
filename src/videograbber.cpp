@@ -464,7 +464,7 @@ void GMVideoGrabber::VGOpen (void)
     if (!grabber->Open (video_device, FALSE))
       error_code = 0;
     else
-      if (!grabber->SetVideoChannelFormat (video_channel, video_format))
+      if (!grabber->SetVideoDeviceParameters (video_channel, video_format))
 	error_code = 2;
     else
       if (!grabber->SetColourFormatConverter ("YUV420P"))

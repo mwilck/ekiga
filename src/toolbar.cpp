@@ -28,6 +28,7 @@
  *
  */
 
+
 #include "../config.h"
 
 
@@ -53,7 +54,17 @@
 extern GnomeMeeting *MyApp;
 extern GtkWidget *gm;
 
+static void connect_button_clicked (GtkToggleButton *, gpointer);
+static void toolbar_toggle_changed (GtkWidget *, gpointer);
+static void toolbar_button_changed (GtkWidget *, gpointer);
+
+
 /* Static functions */
+/* DESCRIPTION  :  This callback is called when the user toggles the 
+ *                 connect button.
+ * BEHAVIOR     :  Connect or disconnect.
+ * PRE          :  /
+ */
 static void connect_button_clicked (GtkToggleButton *w, gpointer data)
 {
   if (gtk_toggle_button_get_active (w))
@@ -71,67 +82,29 @@ static void connect_button_clicked (GtkToggleButton *w, gpointer data)
 }
 
 
-void connect_button_update_pixmap (GtkToggleButton *w, int pressed)
-{
-  GtkWidget *image = NULL;
-  GdkPixbuf *pixbuf = NULL;
-
-  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
-
-  image = (GtkWidget *) 
-    g_object_get_data (G_OBJECT (w), "image");
-  
-  if (image != NULL)	{
-
-    if (pressed == 1) {
-
-      pixbuf = gdk_pixbuf_new_from_xpm_data ((const char **) connect_xpm);
-
-      /* Block the signal */
-      g_signal_handlers_block_by_func (G_OBJECT (w), 
-				       (void *) connect_button_clicked, 
-				       (gpointer) gw->connect_button);
-      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (w), TRUE);
-      g_signal_handlers_unblock_by_func (G_OBJECT (w), 
-				       (void *) connect_button_clicked, 
-				       (gpointer) gw->connect_button);
-    }
-    else {
-
-      pixbuf = gdk_pixbuf_new_from_xpm_data ((const char **) disconnect_xpm);
-  
-      g_signal_handlers_block_by_func (G_OBJECT (w), 
-				       (void *) connect_button_clicked, 
-				       (gpointer) gw->connect_button);
-      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (w), FALSE);
-      g_signal_handlers_unblock_by_func (G_OBJECT (w), 
-					 (void *) connect_button_clicked, 
-					 (gpointer) gw->connect_button);
-    }
-
-    if (pixbuf) {
-
-      gtk_image_set_from_pixbuf (GTK_IMAGE (image), GDK_PIXBUF (pixbuf));
-      gtk_widget_queue_draw (GTK_WIDGET (image));
-
-      g_object_unref (pixbuf);
-    }
-    else {
-
-      GTK_TOGGLE_BUTTON (w)->active = !GTK_TOGGLE_BUTTON (w)->active; 
-      gtk_widget_queue_draw (GTK_WIDGET (w));
-    }
-  }
-}
-
-
 /* DESCRIPTION  :  This callback is called when the user toggles the 
  *                 corresponding component in the toolbar. 
  *                 (See menu_toggle_changed)
  * BEHAVIOR     :  Updates the gconf cache.
  * PRE          :  data is the key.
  */
-static void toolbar_toggle_changed (GtkWidget *widget, gpointer data)
+static void toolbar_toggle_changed (GtkWidget *w, gpointer data)
+{
+  GConfClient *client = gconf_client_get_default ();
+
+  gconf_client_set_bool (client,
+			 (gchar *) data,
+			 gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (w)), NULL);
+}
+
+
+/* DESCRIPTION  :  This callback is called when the user presses a
+ *                 button in the toolbar. 
+ *                 (See menu_toggle_changed)
+ * BEHAVIOR     :  Updates the gconf cache.
+ * PRE          :  data is the key.
+ */
+static void toolbar_button_changed (GtkWidget *w, gpointer data)
 {
   GConfClient *client = gconf_client_get_default ();
   bool shown = gconf_client_get_bool (client, (gchar *) data, NULL);
@@ -176,10 +149,10 @@ void gnomemeeting_init_toolbar ()
 
   gtk_toolbar_append_item  (GTK_TOOLBAR (left_toolbar),
                             N_("Chat"),
-                            N_("Make a text chat with your friend"),                           
+                            N_("Make a text chat with your friend"), 
                             NULL,                              
                             gtk_image_new_from_pixbuf (text_chat),    
-                            GTK_SIGNAL_FUNC (toolbar_toggle_changed),
+                            GTK_SIGNAL_FUNC (toolbar_button_changed),
                             (gpointer) "/apps/gnomemeeting/view/show_chat_window");
   
   gtk_toolbar_append_item  (GTK_TOOLBAR (left_toolbar),
@@ -187,7 +160,7 @@ void gnomemeeting_init_toolbar ()
                             N_("Display the control panel"),
                             NULL,
                             image,
-                            GTK_SIGNAL_FUNC (toolbar_toggle_changed),
+                            GTK_SIGNAL_FUNC (toolbar_button_changed),
                             (gpointer) "/apps/gnomemeeting/view/show_control_panel");
 
   /* Both toolbars */
@@ -252,6 +225,11 @@ void gnomemeeting_init_toolbar ()
   gtk_container_add (GTK_CONTAINER (gw->preview_button), GTK_WIDGET (image));
   g_object_unref (pixbuf);
 
+  /* We set the key as data to be able to get the data in order to block       
+     the signal in the gconf notifier */                             
+  g_object_set_data (G_OBJECT (gw->preview_button), "gconf_key", 
+		     (void *) "/apps/gnomemeeting/devices/video_preview");
+
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->preview_button), 
 				gconf_client_get_bool (client, "/apps/gnomemeeting/devices/video_preview", NULL));
 
@@ -261,7 +239,8 @@ void gnomemeeting_init_toolbar ()
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, gw->preview_button,
-			_("Click here to begin to display images from your camera device."), NULL);
+			_("Click here to begin to display images from your camera device."),
+			NULL);
 
   gtk_toolbar_append_widget (GTK_TOOLBAR (left_toolbar), 
 			     gw->preview_button, NULL, NULL);
@@ -298,9 +277,9 @@ void gnomemeeting_init_toolbar ()
   gtk_container_add (GTK_CONTAINER (gw->video_chan_button), 
 		     GTK_WIDGET (image));
   g_object_unref (pixbuf);
-/*
+
   gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button), FALSE);
-*/
+
   g_signal_connect (G_OBJECT (gw->video_chan_button), "clicked",
 		    G_CALLBACK (pause_video_callback), gw);
 
@@ -324,4 +303,58 @@ void gnomemeeting_init_toolbar ()
     gtk_widget_show (GTK_WIDGET (gnome_app_get_dock_item_by_name(GNOME_APP (gm), "left_toolbar")));
   else
     gtk_widget_hide (GTK_WIDGET (gnome_app_get_dock_item_by_name(GNOME_APP (gm), "left_toolbar")));
+}
+
+
+void connect_button_update_pixmap (GtkToggleButton *w, int pressed)
+{
+  GtkWidget *image = NULL;
+  GdkPixbuf *pixbuf = NULL;
+
+  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+
+  image = (GtkWidget *) 
+    g_object_get_data (G_OBJECT (w), "image");
+  
+  if (image != NULL)	{
+
+    if (pressed == 1) {
+
+      pixbuf = gdk_pixbuf_new_from_xpm_data ((const char **) connect_xpm);
+
+      /* Block the signal */
+      g_signal_handlers_block_by_func (G_OBJECT (w), 
+				       (void *) connect_button_clicked, 
+				       (gpointer) gw->connect_button);
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (w), TRUE);
+      g_signal_handlers_unblock_by_func (G_OBJECT (w), 
+				       (void *) connect_button_clicked, 
+				       (gpointer) gw->connect_button);
+    }
+    else {
+
+      pixbuf = gdk_pixbuf_new_from_xpm_data ((const char **) disconnect_xpm);
+  
+      g_signal_handlers_block_by_func (G_OBJECT (w), 
+				       (void *) connect_button_clicked, 
+				       (gpointer) gw->connect_button);
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (w), FALSE);
+      g_signal_handlers_unblock_by_func (G_OBJECT (w), 
+					 (void *) connect_button_clicked, 
+					 (gpointer) gw->connect_button);
+    }
+
+    if (pixbuf) {
+
+      gtk_image_set_from_pixbuf (GTK_IMAGE (image), GDK_PIXBUF (pixbuf));
+      gtk_widget_queue_draw (GTK_WIDGET (image));
+
+      g_object_unref (pixbuf);
+    }
+    else {
+
+      GTK_TOGGLE_BUTTON (w)->active = !GTK_TOGGLE_BUTTON (w)->active; 
+      gtk_widget_queue_draw (GTK_WIDGET (w));
+    }
+  }
 }

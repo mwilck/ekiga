@@ -138,11 +138,17 @@ void GMH323EndPoint::UpdateConfig ()
     /* Is the choosen device detected? */
     for (int i = gw->audio_player_devices.GetSize () - 1; i >= 0; i--) {
       
-      if (!strcmp (player, gw->audio_player_devices [i]))
-	found_player = 1;
+      if (player != NULL) {
+
+	if (!strcmp (player, gw->audio_player_devices [i]))
+	  found_player = 1;
+      }
       
-      if (!strcmp (recorder, gw->audio_recorder_devices [i]))
-	found_recorder = 1;
+      if (recorder != NULL) {
+
+	if (!strcmp (recorder, gw->audio_recorder_devices [i]))
+	  found_recorder = 1;
+      }
     }
     
 
