@@ -28,8 +28,6 @@ gnomemeeting_SOURCES =		\
 	config.cpp		\
 	ldap_window.cpp		\
 	ldap_window.h		\
-	splash.cpp		\
-	splash.h		\
 	docklet.cpp		\
 	docklet.h		\
 	main_window.cpp		\
