@@ -366,9 +366,6 @@ gnomemeeting_local_addressbook_get_contacts (GmAddressbook *addbook,
   EBookQuery *query = NULL;
   EBookQuery *queries [4];
   
-  EVCardAttribute *attr = NULL;
-  EVCardAttributeParam *attr_param = NULL;
-
   GmContact *contact = NULL;
   GmAddressbook *addressbook = NULL;
 
@@ -635,8 +632,6 @@ gnomemeeting_local_addressbook_delete_contact (GmAddressbook *addressbook,
   GList *l = NULL;
 
   EBook *ebook = NULL;
-
-  gchar *uid = NULL;
 
   g_return_val_if_fail (contact != NULL, FALSE);
   g_return_val_if_fail (addressbook != NULL, FALSE);
