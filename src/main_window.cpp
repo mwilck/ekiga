@@ -1637,11 +1637,9 @@ int main (int argc, char ** argv, char ** envp)
 
   /* Debug */
   if (debug_level != 0)
-    PTrace::Initialise (PMAX (PMIN (4, debug_level), 0));
-  /*			"gnomemeeting-debug.log",
+    PTrace::Initialise (PMAX (PMIN (4, debug_level), 0), NULL,
 			PTrace::Timestamp | PTrace::Thread
 			| PTrace::Blocks | PTrace::DateAndTime);
-  */
 
   
   /* Detect the devices, exit if it fails */
