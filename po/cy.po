@@ -1,24 +1,27 @@
+# translation of gnomemeeting.HEAD.cy.po to Cymraeg
 # gnomemeeting yn Gymraeg.
-# www.kyfieithu.co.uk <kyfieithu@dotmon.com>, 2003, 2004.
-# Rhys Jones <rhys@sucs.org>, 2004.
 #
 # [rj] Wedi gwneud s/efo/gyda/ er mwyn cael rhyw fath o gysondeb
+# www.kyfieithu.co.uk <kyfieithu@dotmon.com>, 2003, 2004.
+# Rhys Jones <rhys@sucs.org>, 2004.
+# Dafydd Tomos <l10n@da.fydd.org>, 2004.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gnomemeeting\n"
+"Project-Id-Version: gnomemeeting.HEAD.cy\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-03-15 20:48+0000\n"
-"PO-Revision-Date: 2004-01-07 23:20+0000\n"
-"Last-Translator: Rhys Jones <rhys@sucs.org>\n"
-"Language-Team: Cymraeg <gnome-cy@pengwyn.linux.org.uk>\n"
+"POT-Creation-Date: 2004-08-06 03:47+0200\n"
+"PO-Revision-Date: 2004-08-06 11:13+0100\n"
+"Last-Translator: Dafydd Tomos <l10n@da.fydd.org>\n"
+"Language-Team: Cymraeg <gnome-cy@www.linux.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.0.2\n"
+"X-Generator: KBabel 1.3.1\n"
 
 #. Add the window icon and title
-#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:1179
+#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:1034
+#: src/main_window.cpp:1243
 msgid "GnomeMeeting"
 msgstr "GnomeMeeting"
 
@@ -58,11 +61,11 @@ msgstr "Ategyn sain"
 msgid "Automatic echo cancellation"
 msgstr "Gwaredu adlais yn awtomatig"
 
-#: gnomemeeting.schemas.in.in.h:8 src/pref_window.cpp:946
+#: gnomemeeting.schemas.in.in.h:8 src/pref_window.cpp:928
 msgid "Automatically clear the text chat at the end of calls"
 msgstr "Gwaredu'r testun sgwrs yn awtomatig ar ddiwedd galwadau"
 
-#: gnomemeeting.schemas.in.in.h:9 src/pref_window.cpp:1030
+#: gnomemeeting.schemas.in.in.h:9 src/pref_window.cpp:1012
 msgid ""
 "Automatically reject or forward incoming calls if no answer is given after "
 "the specified amount of time (in seconds)"
@@ -81,11 +84,10 @@ msgid "Change the control panel section"
 msgstr "Newid adran y panel rheoli"
 
 #: gnomemeeting.schemas.in.in.h:12
-msgid ""
-"Change the control panel section (4 means that the control panel is off)"
+msgid "Change the control panel section (4 means that the control panel is off)"
 msgstr "Newid adran y panel rheoli (4 yn golygu bod y panel rheoli i ffwrdd)"
 
-#: gnomemeeting.schemas.in.in.h:13 src/pref_window.cpp:1669
+#: gnomemeeting.schemas.in.in.h:13
 msgid ""
 "Choose the number of blocks (that have not changed) transmitted with each "
 "frame. These blocks fill in the background"
@@ -97,7 +99,7 @@ msgstr ""
 msgid "Clear inactive calls"
 msgstr "Gwaredu galwadau anweithredol"
 
-#: gnomemeeting.schemas.in.in.h:15 src/ldap_window.cpp:2916
+#: gnomemeeting.schemas.in.in.h:15 src/addressbook_window.cpp:810
 msgid "Comment"
 msgstr "Sylwad"
 
@@ -146,14 +148,18 @@ msgid "Enable IP translation"
 msgstr "Galluogi trosi IP"
 
 #: gnomemeeting.schemas.in.in.h:25
+msgid "Enable STUN Support"
+msgstr "Galluogi Cefnogaeth STUN"
+
+#: gnomemeeting.schemas.in.in.h:26
 msgid "Enable bilinear filtering on displayed video"
 msgstr "Galluogi hidlo deulinol ar y fideo a ddangosir"
 
-#: gnomemeeting.schemas.in.in.h:26
+#: gnomemeeting.schemas.in.in.h:27
 msgid "Enable early H.245"
 msgstr "Galluogi H.245 cynnar"
 
-#: gnomemeeting.schemas.in.in.h:27
+#: gnomemeeting.schemas.in.in.h:28
 msgid ""
 "Enable or disable bilinear interpolation when rendering video images (this "
 "has no effect in fullscreen mode)"
@@ -161,27 +167,27 @@ msgstr ""
 "Galluogi neu analluogi rhyngosodiad deulinol wrth lunio delweddau fideo (nid "
 "oes effaith ym modd sgrîn lawn)"
 
-#: gnomemeeting.schemas.in.in.h:28
+#: gnomemeeting.schemas.in.in.h:29
 msgid "Enable registering"
 msgstr "Galluogi cofrestru"
 
-#: gnomemeeting.schemas.in.in.h:29
+#: gnomemeeting.schemas.in.in.h:30
 msgid "Enable silence detection"
 msgstr "Galluogi darganfod tawelwch"
 
-#: gnomemeeting.schemas.in.in.h:30
+#: gnomemeeting.schemas.in.in.h:31
 msgid "Enable video reception"
 msgstr "Galluogi derbyn fideo"
 
-#: gnomemeeting.schemas.in.in.h:31
+#: gnomemeeting.schemas.in.in.h:32
 msgid "Enable video transmission"
 msgstr "Galluogi trosglwyddo fideo"
 
-#: gnomemeeting.schemas.in.in.h:32
+#: gnomemeeting.schemas.in.in.h:33
 msgid "Enter a comment about yourself for the user directory"
 msgstr "Teipiwch sylwad amdanoch eich hun ar gyfer y cyfeiriadur defnyddwyr"
 
-#: gnomemeeting.schemas.in.in.h:33
+#: gnomemeeting.schemas.in.in.h:34
 msgid ""
 "Enter a valid URL to connect to a web application that outputs the public IP "
 "of your host"
@@ -189,7 +195,7 @@ msgstr ""
 "Rhoddwch LAU dilys er mwyn cysylltu gyda rhaglen gwe sy'n rhoi cyfeiriad IP "
 "cyhoeddus eich gwesteiwr"
 
-#: gnomemeeting.schemas.in.in.h:34
+#: gnomemeeting.schemas.in.in.h:35
 msgid ""
 "Enter the public IP of your NAT/PAT router if you want to use IP "
 "translation. If you are registered to ils.seconix.com, GnomeMeeting will "
@@ -200,72 +206,71 @@ msgstr ""
 "bydd GnomeMeeting yn cyrchu'r cyfeiriad IP cyhoeddus yn awtomatig, gan "
 "ddefnyddio'r gwasanaeth ILS"
 
-#: gnomemeeting.schemas.in.in.h:35 src/pref_window.cpp:885
+#: gnomemeeting.schemas.in.in.h:36 src/pref_window.cpp:867
 msgid "Enter your e-mail address"
 msgstr "Rhowch eich cyfeiriad ebost"
 
-#: gnomemeeting.schemas.in.in.h:36 src/pref_window.cpp:871
+#: gnomemeeting.schemas.in.in.h:37 src/pref_window.cpp:853
 msgid "Enter your first name"
 msgstr "Rhowch eich enw cyntaf"
 
-#: gnomemeeting.schemas.in.in.h:37
+#: gnomemeeting.schemas.in.in.h:38
 msgid "Enter your last name"
 msgstr "Rhowch eich enw olaf"
 
-#: gnomemeeting.schemas.in.in.h:38
-msgid "Enter your location (country or city) for the user directory"
-msgstr ""
-"Rhowch eich lleoliad (gwlad neu ddinas) ar gyfer y cyfeiriadur defnyddwyr"
-
 #: gnomemeeting.schemas.in.in.h:39
+msgid "Enter your location (country or city) for the user directory"
+msgstr "Rhowch eich lleoliad (gwlad neu ddinas) ar gyfer y cyfeiriadur defnyddwyr"
+
+#: gnomemeeting.schemas.in.in.h:40
 msgid "First name"
 msgstr "Enw cyntaf"
 
-#: gnomemeeting.schemas.in.in.h:40
+#: gnomemeeting.schemas.in.in.h:41
 msgid "Forward calls to host"
 msgstr "Blaenyrru galwadau at y gwesteiwr"
 
-#: gnomemeeting.schemas.in.in.h:41
+#: gnomemeeting.schemas.in.in.h:42
 msgid "Forward calls to the given host if busy"
 msgstr "Blaenyrru galwadau at y gwesteiwr penodol os yn brysur"
 
-#: gnomemeeting.schemas.in.in.h:42
+#: gnomemeeting.schemas.in.in.h:43
 msgid "Forward calls to the given host if no answer"
 msgstr "Blaenyrru galwadau at y gwesteiwr rhoddedig os nad oes ateb"
 
-#: gnomemeeting.schemas.in.in.h:43
+#: gnomemeeting.schemas.in.in.h:44
 msgid "Fullscreen height"
 msgstr "Taldra sgrîn lawn"
 
-#: gnomemeeting.schemas.in.in.h:44
+#: gnomemeeting.schemas.in.in.h:45
 msgid "Fullscreen width"
 msgstr "Lled sgrîn lawn"
 
-#: gnomemeeting.schemas.in.in.h:45 src/pref_window.cpp:1232
+#: gnomemeeting.schemas.in.in.h:46 src/pref_window.cpp:1229
 msgid "Gatekeeper ID"
 msgstr "ID porthor"
 
-#: gnomemeeting.schemas.in.in.h:46
+#: gnomemeeting.schemas.in.in.h:47
 msgid "Gatekeeper alias"
 msgstr "Ffugenw porthor"
 
-#: gnomemeeting.schemas.in.in.h:47
+#: gnomemeeting.schemas.in.in.h:48
 msgid "Gatekeeper alias as primary alias"
 msgstr "Ffugenw porthor fel prif ffugenw"
 
-#: gnomemeeting.schemas.in.in.h:48 src/pref_window.cpp:1231
+#: gnomemeeting.schemas.in.in.h:49 src/pref_window.cpp:1228
 msgid "Gatekeeper host"
 msgstr "Gwesteiwr porthor"
 
-#: gnomemeeting.schemas.in.in.h:49
+#: gnomemeeting.schemas.in.in.h:50
 msgid "Gatekeeper password"
 msgstr "Cyfrinair porthor"
 
-#: gnomemeeting.schemas.in.in.h:50
+#: gnomemeeting.schemas.in.in.h:51
 msgid "Gateway/proxy host"
 msgstr "Gwesteiwr dirprwy/porthor"
 
-#: gnomemeeting.schemas.in.in.h:51 src/pref_window.cpp:927
+#: gnomemeeting.schemas.in.in.h:52 src/pref_window.cpp:909
 msgid ""
 "If enabled, GnomeMeeting will start hidden provided that the notification "
 "area is present in the GNOME panel"
@@ -273,12 +278,11 @@ msgstr ""
 "Wedi'i alluogi, bydd GnomeMeeting yn cychwyn ar gudd, os yw'r man hysbysu yn "
 "bresennol yn y panel GNOME"
 
-#: gnomemeeting.schemas.in.in.h:52
-msgid ""
-"If enabled, a popup window will be displayed when receiving an incoming call"
+#: gnomemeeting.schemas.in.in.h:53
+msgid "If enabled, a popup window will be displayed when receiving an incoming call"
 msgstr "Wedi'i alluogi, fe ddangosir naidlen pan dderbynnir galwad i fewn"
 
-#: gnomemeeting.schemas.in.in.h:53
+#: gnomemeeting.schemas.in.in.h:54
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below"
@@ -286,7 +290,7 @@ msgstr ""
 "Wedi'i alluogi, bydd pob galwad sy'n cyrraedd yn cael ei flaenyrru i'r "
 "gwesteiwr sydd wedi'i benodi yn y maes isod."
 
-#: gnomemeeting.schemas.in.in.h:54
+#: gnomemeeting.schemas.in.in.h:55
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you already are in a call or if you are in "
@@ -295,7 +299,7 @@ msgstr ""
 "Wedi'i alluogi, blaenyrrir pob galwad sy'n cyrraedd at y gwesteiwr a benodir "
 "yn y maes isod os ydych eisioes mewn galwad neu yn y modd Peidiwch â Tharfu."
 
-#: gnomemeeting.schemas.in.in.h:55
+#: gnomemeeting.schemas.in.in.h:56
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you do not answer the call"
@@ -303,12 +307,11 @@ msgstr ""
 "Wedi'i alluogi, bydd pob galwad sy'n cyrraedd yn cael ei flaenyrru i'r "
 "gwesteiwr sydd wedi'i benodi yn y maes isod os na fyddwch yn ateb yr alwad"
 
-#: gnomemeeting.schemas.in.in.h:56
+#: gnomemeeting.schemas.in.in.h:57
 msgid "If enabled, allows video to be received during a call"
-msgstr ""
-"Wedi'i alluogi, mae'n caniatau i fideo gael ei dderbyn yn ystod yr alwad"
+msgstr "Wedi'i alluogi, mae'n caniatau i fideo gael ei dderbyn yn ystod yr alwad"
 
-#: gnomemeeting.schemas.in.in.h:57 src/pref_window.cpp:1026
+#: gnomemeeting.schemas.in.in.h:58 src/pref_window.cpp:1008
 msgid ""
 "If enabled, calls for which no audio and video has been received in the last "
 "30 seconds are automatically cleared"
@@ -316,31 +319,27 @@ msgstr ""
 "Wedi'i alluogi, bydd unrhyw alwadau na dderbyniodd sain na fideo yn ystod y "
 "30 eiliad ddiwethaf yn cael eu gwaredu'n awtomatig"
 
-#: gnomemeeting.schemas.in.in.h:58 src/pref_window.cpp:970
+#: gnomemeeting.schemas.in.in.h:59
 msgid "If enabled, register with the selected user directory"
-msgstr ""
-"Wedi'i alluogi, cofrestru gyda'r cyfeiriadur defnyddwyr sydd wedi'i benodi"
+msgstr "Wedi'i alluogi, cofrestru gyda'r cyfeiriadur defnyddwyr sydd wedi'i benodi"
 
-#: gnomemeeting.schemas.in.in.h:59 src/pref_window.cpp:925
-msgid ""
-"If enabled, the splash screen will be displayed when GnomeMeeting starts"
+#: gnomemeeting.schemas.in.in.h:60 src/pref_window.cpp:907
+msgid "If enabled, the splash screen will be displayed when GnomeMeeting starts"
 msgstr "Wedi'i alluogi, dangosir y sgrîn groeso wrth gychwyn GnomeMeeting"
 
-#: gnomemeeting.schemas.in.in.h:60 src/pref_window.cpp:946
-msgid ""
-"If enabled, the text chat will automatically be cleared at the end of calls"
-msgstr ""
-"Wedi'i alluogi, gwaredir y testun sgwrs yn awtomatig ar ddiwedd galwadau"
+#: gnomemeeting.schemas.in.in.h:61 src/pref_window.cpp:928
+msgid "If enabled, the text chat will automatically be cleared at the end of calls"
+msgstr "Wedi'i alluogi, gwaredir y testun sgwrs yn awtomatig ar ddiwedd galwadau"
 
-#: gnomemeeting.schemas.in.in.h:61
+#: gnomemeeting.schemas.in.in.h:62
 msgid "If enabled, use silence detection with the GSM and G.711 codecs"
 msgstr "Wedi'i alluogi, ceisir darganfod distawrwydd efo'r codecs GSM a G.711."
 
-#: gnomemeeting.schemas.in.in.h:62
+#: gnomemeeting.schemas.in.in.h:63
 msgid "If enabled, video is transmitted during a call"
 msgstr "Wedi'i alluogi, trosglwyddir fideo yn ystod galwad"
 
-#: gnomemeeting.schemas.in.in.h:63
+#: gnomemeeting.schemas.in.in.h:64
 msgid ""
 "If enabled, your details are shown to people browsing the user directory. If "
 "disabled, you are not visible to users browsing the user directory, but they "
@@ -351,45 +350,41 @@ msgstr ""
 "cyfeiriadur defnyddwyr, ond mae'n dal yn bosibl iddynt ddefnyddio'r LAU "
 "callto i'ch galw"
 
-#: gnomemeeting.schemas.in.in.h:64
+#: gnomemeeting.schemas.in.in.h:65
 msgid "Incoming call mode"
 msgstr "Modd galwad i fewn"
 
-#: gnomemeeting.schemas.in.in.h:65
+#: gnomemeeting.schemas.in.in.h:66
 msgid "Kind of network selected in the druid"
 msgstr "Math o rwydwaith a ddewiswyd yn y cynorthwydd"
 
-#: gnomemeeting.schemas.in.in.h:66
+#: gnomemeeting.schemas.in.in.h:67
 msgid "Last name"
 msgstr "Enw olaf"
 
-#: gnomemeeting.schemas.in.in.h:67
+#: gnomemeeting.schemas.in.in.h:68
 msgid "Listen port"
 msgstr "Porth gwrando"
 
-#: gnomemeeting.schemas.in.in.h:68
+#: gnomemeeting.schemas.in.in.h:69
 msgid "Local video window size"
 msgstr "Maint ffenestr fideo lleol"
 
-#: gnomemeeting.schemas.in.in.h:69 src/ldap_window.cpp:2929
+#: gnomemeeting.schemas.in.in.h:70 src/addressbook_window.cpp:847
 msgid "Location"
 msgstr "Lleoliad"
 
-#: gnomemeeting.schemas.in.in.h:70
+#: gnomemeeting.schemas.in.in.h:71
 msgid "Maximum jitter buffer"
 msgstr "Uchafswm byffer siglo"
 
-#: gnomemeeting.schemas.in.in.h:71
+#: gnomemeeting.schemas.in.in.h:72
 msgid "Maximum video bandwidth"
 msgstr "Uchafswm ystod fideo"
 
-#: gnomemeeting.schemas.in.in.h:72
+#: gnomemeeting.schemas.in.in.h:73
 msgid "Minimum jitter buffer"
 msgstr "Lleiafswm byffer siglo"
-
-#: gnomemeeting.schemas.in.in.h:73
-msgid "Minimum transmitted FPS"
-msgstr "Isafswm FYE (FPS) i'w trosglwyddo"
 
 #: gnomemeeting.schemas.in.in.h:74
 msgid "Minimum transmitted video quality"
@@ -423,7 +418,7 @@ msgstr "Nifer o fframiau a ddarlledir ym mhob paced ar gyfer y codec GSM"
 msgid "Output device type"
 msgstr "Math y ddyfais allbwn"
 
-#: gnomemeeting.schemas.in.in.h:82 src/pref_window.cpp:940
+#: gnomemeeting.schemas.in.in.h:82 src/pref_window.cpp:922
 msgid "Place windows displaying video above other windows during calls"
 msgstr "Gosod ffenestri fideo ar ben ffenestri eraill yn ystod galwadau"
 
@@ -431,15 +426,15 @@ msgstr "Gosod ffenestri fideo ar ben ffenestri eraill yn ystod galwadau"
 msgid "Placed calls history"
 msgstr "Hanes y galwadau a osodwyd"
 
-#: gnomemeeting.schemas.in.in.h:84 src/pref_window.cpp:722
+#: gnomemeeting.schemas.in.in.h:84 src/pref_window.cpp:788
 msgid "Play busy tone"
 msgstr "Chwarae sain prysur"
 
-#: gnomemeeting.schemas.in.in.h:85 src/pref_window.cpp:713
+#: gnomemeeting.schemas.in.in.h:85 src/pref_window.cpp:779
 msgid "Play ring tone"
 msgstr "Chwarae sain canu"
 
-#: gnomemeeting.schemas.in.in.h:86 src/pref_window.cpp:704
+#: gnomemeeting.schemas.in.in.h:86 src/pref_window.cpp:770
 msgid "Play sound on incoming calls"
 msgstr "Chwarae sain ar alwadau i mewn"
 
@@ -499,22 +494,25 @@ msgstr "Lleoliad ffenestr fideo bell"
 msgid "Revision of the schema file"
 msgstr "Addasiad y ffeil sgema"
 
-#: gnomemeeting.schemas.in.in.h:101 src/pref_window.cpp:1358
+#: gnomemeeting.schemas.in.in.h:101 src/pref_window.cpp:1365
 msgid "Select the audio input device to use"
 msgstr "Dewiswch y ddyfais mewnbwn sain i'w defnyddio"
 
-#: gnomemeeting.schemas.in.in.h:102 src/pref_window.cpp:1352
+#: gnomemeeting.schemas.in.in.h:102 src/pref_window.cpp:1359
 msgid "Select the audio output device to use"
 msgstr "Dewiswch y ddyfais allbwn sain i'w defnyddio"
 
-#: gnomemeeting.schemas.in.in.h:103 src/pref_window.cpp:1437
-msgid ""
-"Select the format for video cameras (does not apply to most USB cameras)"
+#: gnomemeeting.schemas.in.in.h:103 src/pref_window.cpp:1167
+msgid "Select the audio output device to use for sound events"
+msgstr "Dewiswch y ddyfais allbwn sain i'w ddefnyddio ar gyfer digwyddiadau sain"
+
+#: gnomemeeting.schemas.in.in.h:104 src/pref_window.cpp:1444
+msgid "Select the format for video cameras (does not apply to most USB cameras)"
 msgstr ""
 "Dewisch y fformat ar gyfer camerâu fideo (nid yw o bwys ar gyfer y rhan "
 "fwyaf o gamerâu USB)"
 
-#: gnomemeeting.schemas.in.in.h:104 src/pref_window.cpp:1435
+#: gnomemeeting.schemas.in.in.h:105 src/pref_window.cpp:1442
 msgid ""
 "Select the transmitted video size: Small (QCIF 176x144) or Large (CIF "
 "352x288)"
@@ -522,7 +520,7 @@ msgstr ""
 "Dewiswch faint y fideo a drosglwyddir: Bach (QCIF 176x144) neu Fawr (CIF "
 "352x288)"
 
-#: gnomemeeting.schemas.in.in.h:105 src/pref_window.cpp:1429
+#: gnomemeeting.schemas.in.in.h:106 src/pref_window.cpp:1436
 msgid ""
 "Select the video input device to use. If an error occurs when using this "
 "device a test picture will be transmitted."
@@ -530,71 +528,71 @@ msgstr ""
 "Dewiswch y dyfais fideo i'w ddefnyddio. Bydd defnyddio dyfais fideo annilys "
 "neu \"Llun\" i drosglwyddo fideo yn trosglwyddo llun profi."
 
-#: gnomemeeting.schemas.in.in.h:106
+#: gnomemeeting.schemas.in.in.h:107
 msgid "Show a status bar at the bottom of the main window"
 msgstr "Dangos bar statws wrth waelod y brif ffenestr"
 
-#: gnomemeeting.schemas.in.in.h:107
+#: gnomemeeting.schemas.in.in.h:108
 msgid "Show chat window"
 msgstr "Dangos ffenestr sgyrsio"
 
-#: gnomemeeting.schemas.in.in.h:108
+#: gnomemeeting.schemas.in.in.h:109
 msgid "Show my details to other registered users"
 msgstr "Dangos fy manylion i ddefnyddwyr cofrestredig eraill"
 
-#: gnomemeeting.schemas.in.in.h:109
+#: gnomemeeting.schemas.in.in.h:110
 msgid "Show splash screen at startup"
 msgstr "Dangos sgrîn groeso wrth ddechrau"
 
-#: gnomemeeting.schemas.in.in.h:110
+#: gnomemeeting.schemas.in.in.h:111
 msgid "Show status bar"
 msgstr "Dangos bar statws"
 
-#: gnomemeeting.schemas.in.in.h:111
+#: gnomemeeting.schemas.in.in.h:112
 msgid "Show the chat window in the main window"
 msgstr "Dangos y ffenestr sgyrsio yn y brif ffenestr"
 
-#: gnomemeeting.schemas.in.in.h:112
+#: gnomemeeting.schemas.in.in.h:113
 msgid "Size of the PC-To-Phone window"
 msgstr "Maint y ffenestr PC-To-Phone"
 
-#: gnomemeeting.schemas.in.in.h:113
+#: gnomemeeting.schemas.in.in.h:114
 msgid "Size of the address book window"
 msgstr "Maint y ffenestr llyfr cyfeiriadau"
 
-#: gnomemeeting.schemas.in.in.h:114
+#: gnomemeeting.schemas.in.in.h:115
 msgid "Size of the calls history window"
 msgstr "Maint y ffenestr hanes galwadau"
 
-#: gnomemeeting.schemas.in.in.h:115
+#: gnomemeeting.schemas.in.in.h:116
 msgid "Size of the druid window"
 msgstr "Maint ffenestr y cynorthwydd"
 
-#: gnomemeeting.schemas.in.in.h:116
+#: gnomemeeting.schemas.in.in.h:117
 msgid "Size of the log window"
 msgstr "Maint y ffenestr logio"
 
-#: gnomemeeting.schemas.in.in.h:117
+#: gnomemeeting.schemas.in.in.h:118
 msgid "Size of the preferences window"
 msgstr "Maint y ffenestr hoffterau"
 
-#: gnomemeeting.schemas.in.in.h:118
+#: gnomemeeting.schemas.in.in.h:119
 msgid "Start hidden"
 msgstr "Dechrau'n guddiedig"
 
-#: gnomemeeting.schemas.in.in.h:119 src/menu.cpp:448 src/menu.cpp:576
+#: gnomemeeting.schemas.in.in.h:120 src/menu.cpp:459 src/menu.cpp:586
 msgid "Switch to fullscreen"
 msgstr "Newid i sgrîn lawn"
 
-#: gnomemeeting.schemas.in.in.h:120
+#: gnomemeeting.schemas.in.in.h:121
 msgid "TCP port range"
 msgstr "Amrediad porthau TCP"
 
-#: gnomemeeting.schemas.in.in.h:121
+#: gnomemeeting.schemas.in.in.h:122
 msgid "The Audio Codecs List"
 msgstr "Rhestr Godecau Sain"
 
-#: gnomemeeting.schemas.in.in.h:122 src/pref_window.cpp:1366
+#: gnomemeeting.schemas.in.in.h:123 src/pref_window.cpp:1373
 msgid ""
 "The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic "
 "Gain Compensation. Choosing Automatic Gain Compensation modulates the volume "
@@ -604,7 +602,7 @@ msgstr ""
 "Cydadferiad Cynnydd Awtomatig. Mae dewis Cydadferiad Cynnydd Awtomatig yn "
 "modylu y sain er mwyn cael y safon gorau."
 
-#: gnomemeeting.schemas.in.in.h:123 src/pref_window.cpp:1245
+#: gnomemeeting.schemas.in.in.h:124 src/pref_window.cpp:1242
 msgid ""
 "The Gatekeeper alias to use when registering (string, or E164 ID if only "
 "0123456789#)"
@@ -612,20 +610,19 @@ msgstr ""
 "Y ffugenw Porthor i'w ddefnyddio wrth gofrestru (llinyn, neu ID E164 os "
 "0123456789# yn unig)"
 
-#: gnomemeeting.schemas.in.in.h:124 src/pref_window.cpp:1243
+#: gnomemeeting.schemas.in.in.h:125 src/pref_window.cpp:1240
 msgid "The Gatekeeper host to register with"
 msgstr "Y gwesteiwr Porthor i gofrestru gydag ef"
 
-#: gnomemeeting.schemas.in.in.h:125 src/pref_window.cpp:1241
+#: gnomemeeting.schemas.in.in.h:126 src/pref_window.cpp:1238
 msgid "The Gatekeeper identifier to register with"
 msgstr "Y dynodydd Porthor i gofrestru gydag ef"
 
-#: gnomemeeting.schemas.in.in.h:126 src/pref_window.cpp:1248
-msgid ""
-"The Gatekeeper password to use for H.235 authentication to the Gatekeeper"
+#: gnomemeeting.schemas.in.in.h:127 src/pref_window.cpp:1245
+msgid "The Gatekeeper password to use for H.235 authentication to the Gatekeeper"
 msgstr "Y cyfrinair Porthor i'w ddefnyddio am ddilysiant H.235 i'r Porthor"
 
-#: gnomemeeting.schemas.in.in.h:127 src/pref_window.cpp:1274
+#: gnomemeeting.schemas.in.in.h:128 src/pref_window.cpp:1271
 msgid ""
 "The Gateway host is the host to use to do H.323 calls through a gateway that "
 "will relay calls"
@@ -633,16 +630,25 @@ msgstr ""
 "Y gwesteiwr Porth yw'r gwesteiwr i'w ddefnyddio er mwyn gwneud galwadau "
 "H.323 trwy borth fydd yn blaenyrru galwadau"
 
-#: gnomemeeting.schemas.in.in.h:128
+#: gnomemeeting.schemas.in.in.h:129
+msgid "The STUN Server"
+msgstr "Y Gweinydd STUN"
+
+#: gnomemeeting.schemas.in.in.h:130 src/pref_window.cpp:1307
 msgid ""
-"The audio plugin that will be used to detect the devices and manage them"
+"The STUN server to use for STUN Support. STUN is a technic that permits to "
+"go through some types of NAT gateways."
+msgstr "Y gweinydd STUN i'w ddefnyddio ar gyfer cefnogaeth STUN. Technoleg yw STUN sy'n caniatau cysylltiad drwy rhai mathau o byrth NAT"
+
+#: gnomemeeting.schemas.in.in.h:131
+msgid "The audio plugin that will be used to detect the devices and manage them"
 msgstr "Yr ategyn sain ddefnyddir i ddarganfod a rheoli'r dyfeisiau"
 
-#: gnomemeeting.schemas.in.in.h:129
+#: gnomemeeting.schemas.in.in.h:132
 msgid "The busy tone sound"
 msgstr "Y sain 'prysur'"
 
-#: gnomemeeting.schemas.in.in.h:130
+#: gnomemeeting.schemas.in.in.h:133
 msgid ""
 "The chosen sound will be played at the end of calls or calling somebody who "
 "is busy, if enabled"
@@ -650,19 +656,19 @@ msgstr ""
 "Wedi'i alluogi, chwaraeir y sain ddewisir ar ddiwedd galwadau neu pan yn "
 "galw rhywun sy'n brysur"
 
-#: gnomemeeting.schemas.in.in.h:131
+#: gnomemeeting.schemas.in.in.h:134
 msgid "The chosen sound will be played on incoming calls, if enabled"
 msgstr "Wedi'i alluogi, chwaraeir y sain ddewisir wrth i alwad ddod i fewn"
 
-#: gnomemeeting.schemas.in.in.h:132
+#: gnomemeeting.schemas.in.in.h:135
 msgid "The chosen sound will be played when calling somebody, if enabled"
 msgstr "Wedi'i alluogi, chwaraeir y sain ddewisir pan yn galw rhywun"
 
-#: gnomemeeting.schemas.in.in.h:133
+#: gnomemeeting.schemas.in.in.h:136
 msgid "The default video view"
 msgstr "Golwg fideo rhagosodedig"
 
-#: gnomemeeting.schemas.in.in.h:134
+#: gnomemeeting.schemas.in.in.h:137
 msgid ""
 "The default video view (0: Local, 1: Remote, 2: Both incrusted, 3: Both with "
 "local video in a separate window, 4: Both)"
@@ -670,27 +676,27 @@ msgstr ""
 "Y golwg fideo rhagosodedig (0: Lleol, 1: Pell, 2: Y ddau yn gramennog, 3: Y "
 "ddau gyda fideo lleol mewn ffenestr ar wahân, 4: Y ddau)"
 
-#: gnomemeeting.schemas.in.in.h:135
+#: gnomemeeting.schemas.in.in.h:138
 msgid "The history of the last 100 missed calls"
 msgstr "Hanes y 100 galwad gollwyd yn fwyaf diweddar"
 
-#: gnomemeeting.schemas.in.in.h:136
+#: gnomemeeting.schemas.in.in.h:139
 msgid "The history of the last 100 placed calls"
 msgstr "Hanes y 100 galwad osodwyd yn fwyaf diweddar"
 
-#: gnomemeeting.schemas.in.in.h:137
+#: gnomemeeting.schemas.in.in.h:140
 msgid "The history of the last 100 received calls"
 msgstr "Hanes y 100 galwad dderbyniwyd yn fwyaf diweddar"
 
-#: gnomemeeting.schemas.in.in.h:138 src/pref_window.cpp:994
+#: gnomemeeting.schemas.in.in.h:141 src/pref_window.cpp:976
 msgid "The host where calls should be forwarded to in the cases selected above"
 msgstr "Y gwesteiwr y dylid blaenyrru galwadau iddo yn y sefyllfeydd uchod"
 
-#: gnomemeeting.schemas.in.in.h:139
+#: gnomemeeting.schemas.in.in.h:142
 msgid "The image height for fullscreen"
 msgstr "Taldra delwedd ar gyfer sgrîn lawn"
 
-#: gnomemeeting.schemas.in.in.h:140 src/pref_window.cpp:1440
+#: gnomemeeting.schemas.in.in.h:143 src/pref_window.cpp:1447
 msgid ""
 "The image to transmit if \"Picture\" is selected as video plugin or if the "
 "opening of the device fails. Leave blank to use the default GnomeMeeting "
@@ -700,28 +706,27 @@ msgstr ""
 "methir agor y ddyfais. Gadewch yn wag er mwyn defnyddio'r logo GnomeMeeting "
 "rhagosodedig."
 
-#: gnomemeeting.schemas.in.in.h:141
+#: gnomemeeting.schemas.in.in.h:144
 msgid "The image width for fullscreen"
 msgstr "Lled delwedd ar gyfer sgrîn lawn"
 
-#: gnomemeeting.schemas.in.in.h:142
+#: gnomemeeting.schemas.in.in.h:145
 msgid "The incoming call sound"
 msgstr "Sain galwad i fewn"
 
-#: gnomemeeting.schemas.in.in.h:143
+#: gnomemeeting.schemas.in.in.h:146
 msgid "The list of called URLs"
 msgstr "Rhestr o URLau galwedig"
 
-#: gnomemeeting.schemas.in.in.h:144
+#: gnomemeeting.schemas.in.in.h:147
 msgid "The list of groups"
 msgstr "Y rhestr grwpiau"
 
-#: gnomemeeting.schemas.in.in.h:145
+#: gnomemeeting.schemas.in.in.h:148
 msgid "The maximum jitter buffer size for audio reception (in ms)"
-msgstr ""
-"Maint uchaf y byffer siglo ar gyfer derbyn sain (mewn milfedau o eiliadau)"
+msgstr "Maint uchaf y byffer siglo ar gyfer derbyn sain (mewn milfedau o eiliadau)"
 
-#: gnomemeeting.schemas.in.in.h:146
+#: gnomemeeting.schemas.in.in.h:149
 msgid ""
 "The maximum video bandwidth in kbytes/s. The video quality and the number of "
 "transmitted frames per second will be dynamically adjusted above their "
@@ -732,20 +737,11 @@ msgstr ""
 "lleiafswm yn ystod galwadau, er mwyn ceisio lleihau yr ystod i'r gwerth "
 "penodol"
 
-#: gnomemeeting.schemas.in.in.h:147
-msgid "The minimum jitter buffer size for audio reception (in ms)"
-msgstr ""
-"Maint lleiaf y byffer siglo ar gyfer derbyn sain (mewn milfedau o eiliadau)"
-
-#: gnomemeeting.schemas.in.in.h:148 src/pref_window.cpp:1665
-msgid ""
-"The minimum number of video frames to transmit each second when trying to "
-"minimize the bandwidth"
-msgstr ""
-"Y nifer lleiaf o fframiau fideo i'w trosglwyddo bob eiliad wrth geisio "
-"lleihau yr ystod"
-
 #: gnomemeeting.schemas.in.in.h:150
+msgid "The minimum jitter buffer size for audio reception (in ms)"
+msgstr "Maint lleiaf y byffer siglo ar gyfer derbyn sain (mewn milfedau o eiliadau)"
+
+#: gnomemeeting.schemas.in.in.h:152
 #, no-c-format
 msgid ""
 "The minimum transmitted video quality to keep when trying to minimize the "
@@ -756,7 +752,7 @@ msgstr ""
 "ystod a ddefnyddir: dewiswch 10% ar LAN am yr ansawdd gorau, ac 1% am yr "
 "ansawdd gwaethaf"
 
-#: gnomemeeting.schemas.in.in.h:151 src/pref_window.cpp:1368
+#: gnomemeeting.schemas.in.in.h:153 src/pref_window.cpp:1375
 msgid ""
 "The output device type is the type of device connected to your Quicknet "
 "card. It can be either a POTS (Plain Old Telephone System) or a headset."
@@ -764,7 +760,7 @@ msgstr ""
 "Math y ddyfais allbwn yw'r math o ddyfais sydd wedi'i gysylltu i'ch cerdyn "
 "Quicknet. Gall fod naill ai'n ffôn cyffredin neu'n benwisg."
 
-#: gnomemeeting.schemas.in.in.h:152
+#: gnomemeeting.schemas.in.in.h:154
 msgid ""
 "The port to listen to for incoming connections. GnomeMeeting needs to be "
 "restarted for the new value to take effect."
@@ -772,15 +768,15 @@ msgstr ""
 "Y porth i wrando iddo am gysylltiadau sy'n cyrraedd. Rhaid ail-gychwyn "
 "GnomeMeeting er mwyn i'r gwerth newydd gymryd effaith."
 
-#: gnomemeeting.schemas.in.in.h:153
+#: gnomemeeting.schemas.in.in.h:155
 msgid "The position of the local video window"
 msgstr "Lleoliad y ffenestr fideo lleol"
 
-#: gnomemeeting.schemas.in.in.h:154
+#: gnomemeeting.schemas.in.in.h:156
 msgid "The position of the remote video window"
 msgstr "Lleoliad y ffenestr fideo bell"
 
-#: gnomemeeting.schemas.in.in.h:155
+#: gnomemeeting.schemas.in.in.h:157
 msgid ""
 "The prefix that will be used to save pictures of the conversation. That "
 "prefix is followed by the snapshot number."
@@ -788,7 +784,7 @@ msgstr ""
 "Y rhagddodiad a ddefnyddir i gadw lluniau o'r sgwrs. Dilynnir y rhagddodiad "
 "yna gan rhif y ciplun."
 
-#: gnomemeeting.schemas.in.in.h:156
+#: gnomemeeting.schemas.in.in.h:158
 msgid ""
 "The range of TCP ports beside the listen_port that GnomeMeeting will use for "
 "the H.245 channel. You can change the TCP port range if you are using IP "
@@ -804,7 +800,7 @@ msgstr ""
 "mwyn i'r gwerthoedd newydd gael effaith. Nid oes gan yr amrediad pyrth yma "
 "unrhyw effaith pan fo'r ddau gynadleddwr yn defnyddio Twnelu H.245."
 
-#: gnomemeeting.schemas.in.in.h:157
+#: gnomemeeting.schemas.in.in.h:159
 msgid ""
 "The range of UDP ports that GnomeMeeting will use for RTP (audio and video "
 "communication channels). You can change the UDP port range if you are using "
@@ -818,7 +814,7 @@ msgstr ""
 "ol i'ch llwybrydd NAT/PAT. Rhaid ail-gychwyn GnomeMeeting er mwyn i'r "
 "gwerthoedd newydd gael effaith."
 
-#: gnomemeeting.schemas.in.in.h:158
+#: gnomemeeting.schemas.in.in.h:160
 msgid ""
 "The range of UDP ports that GnomeMeeting will use when registering to "
 "gatekeepers. You can change the UDP port range if you are using IP "
@@ -834,27 +830,27 @@ msgstr ""
 "gymryd effaith. Nid gan yr amrediad pyrth yma unrhyw effaith os nad ydych yn "
 "cofrestru efo Porthor."
 
-#: gnomemeeting.schemas.in.in.h:159 src/pref_window.cpp:1253
+#: gnomemeeting.schemas.in.in.h:161 src/pref_window.cpp:1250
 msgid "The registering method to use"
 msgstr "Y dull cofrestru i'w ddefnyddio"
 
-#: gnomemeeting.schemas.in.in.h:160
+#: gnomemeeting.schemas.in.in.h:162
 msgid "The ring tone sound"
 msgstr "Sain tôn 'canu'"
 
-#: gnomemeeting.schemas.in.in.h:161
+#: gnomemeeting.schemas.in.in.h:163
 msgid "The save prefix"
 msgstr "Y rhagddodiad cadw"
 
-#: gnomemeeting.schemas.in.in.h:162
+#: gnomemeeting.schemas.in.in.h:164
 msgid "The size of the local video window"
 msgstr "Maint y ffenestr fideo lleol"
 
-#: gnomemeeting.schemas.in.in.h:163
+#: gnomemeeting.schemas.in.in.h:165
 msgid "The size of the remote video window"
 msgstr "Maint y ffenestr fideo bell"
 
-#: gnomemeeting.schemas.in.in.h:164
+#: gnomemeeting.schemas.in.in.h:166
 msgid ""
 "The sound that will be played at the end of calls or when calling somebody "
 "who is busy, if enabled"
@@ -862,34 +858,33 @@ msgstr ""
 "Wedi'i alluogi, dyma'r sain chwaraeir ar ddiwedd galwadau neu pan yn galw "
 "rhywun sy'n brysur"
 
-#: gnomemeeting.schemas.in.in.h:165
+#: gnomemeeting.schemas.in.in.h:167
 msgid "The sound that will be played on incoming calls, if enabled"
 msgstr "Wedi'i alluogi, dyma'r sain chwaraeir wrth i alwadau ddod i fewn"
 
-#: gnomemeeting.schemas.in.in.h:166
+#: gnomemeeting.schemas.in.in.h:168
 msgid "The sound that will be played when calling somebody, if enabled"
 msgstr "Wedi'i alluogi, dyma'r sain chwaraeir pan yn galw rhywun"
 
-#: gnomemeeting.schemas.in.in.h:167
+#: gnomemeeting.schemas.in.in.h:169
 msgid "The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)"
 msgstr "Côd gwlad dwy-lythyren eich gwlad (e.e.: BE, UK, FR, DE, ...)"
 
-#: gnomemeeting.schemas.in.in.h:168 src/pref_window.cpp:968
+#: gnomemeeting.schemas.in.in.h:170
 msgid "The user directory server to register with"
 msgstr "Y gwesteiwr cyfeiriadur defnyddwyr i gofrestru gydag ef"
 
-#: gnomemeeting.schemas.in.in.h:169 src/pref_window.cpp:1433
+#: gnomemeeting.schemas.in.in.h:171 src/pref_window.cpp:1440
 msgid "The video channel number to use (to select camera, tv or other sources)"
 msgstr ""
 "Y rhif sianel fideo i'w ddefnyddio (i ddewis camera, deledu, neu darddiadau "
 "eraill)"
 
-#: gnomemeeting.schemas.in.in.h:170 src/pref_window.cpp:1418
-msgid ""
-"The video plugin that will be used to detect the devices and manage them"
+#: gnomemeeting.schemas.in.in.h:172 src/pref_window.cpp:1425
+msgid "The video plugin that will be used to detect the devices and manage them"
 msgstr "Yr ategyn fideo ddefnyddir er mwyn darganfod a rheoli'r dyfeisiau"
 
-#: gnomemeeting.schemas.in.in.h:171
+#: gnomemeeting.schemas.in.in.h:173
 msgid ""
 "The way to react to incoming calls: 0 displays a popup, 1 automatically "
 "answers the call, 2 automatically rejects the call and 3 forwards the call "
@@ -899,11 +894,11 @@ msgstr ""
 "alwad yn otomatig, 2 yn gwrthod yr alwad yn otomatig, a 3 yn blaenyrru'r "
 "alwad, os oes URL, i'r un a nodir."
 
-#: gnomemeeting.schemas.in.in.h:172
+#: gnomemeeting.schemas.in.in.h:174
 msgid "The zoom value"
 msgstr "Y gwerth chwyddo"
 
-#: gnomemeeting.schemas.in.in.h:173
+#: gnomemeeting.schemas.in.in.h:175
 msgid ""
 "The zoom value to apply to images displayed in the main GUI (can be 0.50, "
 "1.00, or 2.00)"
@@ -911,7 +906,7 @@ msgstr ""
 "Y gwerth chwyddo i'w weithredu ar ddelweddau a ddangosir yn y Prif GUI "
 "(naill ai 0.50, 1.00, neu 2.00)"
 
-#: gnomemeeting.schemas.in.in.h:174
+#: gnomemeeting.schemas.in.in.h:176
 msgid ""
 "This enables H.245 Tunnelling mode. In H.245 Tunnelling mode H.245 messages "
 "are encapsulated into the the H.225 channel (port 1720). This saves one TCP "
@@ -925,12 +920,12 @@ msgstr ""
 "ni'i gynhelir gan Netmeeting. Gall defnyddio Cychwyn Cyflym a Twnelu H.245 "
 "ar yr un pryd chwalu rhai fersiynau o Netmeeting."
 
-#: gnomemeeting.schemas.in.in.h:175 src/pref_window.cpp:1205
+#: gnomemeeting.schemas.in.in.h:177 src/pref_window.cpp:1202
 msgid "This enables H.245 early in the setup"
 msgstr "Mae hyn yn galluogi H.245 yn gynnar yn y gosod"
 
 # EFALLAI: ddim yn deall union ystyr y frawddeg gyntaf
-#: gnomemeeting.schemas.in.in.h:176
+#: gnomemeeting.schemas.in.in.h:178
 msgid ""
 "This enables IP checking from seconix.com and fills the IP in the public IP "
 "of the NAT/PAT gateway field of GnomeMeeting. The returned IP is only used "
@@ -943,7 +938,7 @@ msgstr ""
 "gwirio'r IP, bydd rhaid i chi'ch hun roi IP eich porth i mewn i hoffterau "
 "GnomeMeeting"
 
-#: gnomemeeting.schemas.in.in.h:177
+#: gnomemeeting.schemas.in.in.h:179
 msgid ""
 "This enables IP translation. IP translation is useful if GnomeMeeting is "
 "running behind a NAT/PAT router. You have to put the public IP of the router "
@@ -958,7 +953,13 @@ msgstr ""
 "ddefnyddio'r gwasanaeth ILS. Os yw'ch llwybrydd yn cynnal H.323 yn frodorol, "
 "gellir analluogi hyn"
 
-#: gnomemeeting.schemas.in.in.h:178
+#: gnomemeeting.schemas.in.in.h:180 src/pref_window.cpp:1305
+msgid ""
+"This enables STUN Support. STUN is a technic that permits to go through some "
+"types of NAT gateways."
+msgstr "Mae hyn yn galluogi cefnogaeth STUN. Technoleg yw STUN sy'n caniatau cysylltiad drwy rhai mathau o byrth NAT."
+
+#: gnomemeeting.schemas.in.in.h:181
 msgid ""
 "This permits to set the mode for DTMFs sending. The values can be \"All"
 "\" (0), \"None\" (1), \"rfc2833\" (2), \"Signal\" (3) or \"String\" (4) "
@@ -970,23 +971,23 @@ msgstr ""
 "\" (4) (y rhagosod yw \"popeth\"). Bydd dewis gwerthau heblaw \"Popeth\", "
 "\"Llinyn\" neu \"rfc2833\" yn analluogi'r Sgwrs Testun"
 
-#: gnomemeeting.schemas.in.in.h:179
+#: gnomemeeting.schemas.in.in.h:182
 msgid "Transmitted background blocks"
 msgstr "Blociau cefndir a drosglwyddwyd"
 
-#: gnomemeeting.schemas.in.in.h:180
+#: gnomemeeting.schemas.in.in.h:183
 msgid "UDP port range"
 msgstr "Amrediad Pyrth UDP"
 
-#: gnomemeeting.schemas.in.in.h:181
+#: gnomemeeting.schemas.in.in.h:184
 msgid "Use the gateway"
 msgstr "Defnyddio'r porth"
 
-#: gnomemeeting.schemas.in.in.h:182 src/pref_window.cpp:1276
+#: gnomemeeting.schemas.in.in.h:185 src/pref_window.cpp:1273
 msgid "Use the specified gateway to do calls"
 msgstr "Defnyddio'r porth benodedig i wneud galwadau"
 
-#: gnomemeeting.schemas.in.in.h:183
+#: gnomemeeting.schemas.in.in.h:186
 msgid ""
 "Use this option to ensure the above alias is used as the primary alias when "
 "registering with a gatekeeper. This may be required if your gatekeeper can "
@@ -996,51 +997,59 @@ msgstr ""
 "cofrestru gyda porthor. Gall fod hyn yn angenrheidiol os mai dim ond trwy "
 "ddefnyddio'r ffugenw cyntaf y medr eich porthor wneud dilysiant"
 
-#: gnomemeeting.schemas.in.in.h:184
+#: gnomemeeting.schemas.in.in.h:187
 msgid "User directory"
 msgstr "Cyfeiriadur y defnyddiwr"
 
-#: gnomemeeting.schemas.in.in.h:185 src/ldap_window.cpp:2953
+#: gnomemeeting.schemas.in.in.h:188
 msgid "Version"
 msgstr "Fersiwn"
 
-#: gnomemeeting.schemas.in.in.h:186
+#: gnomemeeting.schemas.in.in.h:189
 msgid "Video channel"
 msgstr "Sianel fideo"
 
-#: gnomemeeting.schemas.in.in.h:187
+#: gnomemeeting.schemas.in.in.h:190
 msgid "Video format"
 msgstr "Fformat fideo"
 
-#: gnomemeeting.schemas.in.in.h:188
+#: gnomemeeting.schemas.in.in.h:191
 msgid "Video image"
 msgstr "Delwedd fideo"
 
-#: gnomemeeting.schemas.in.in.h:189
+#: gnomemeeting.schemas.in.in.h:192
 msgid "Video input device"
 msgstr "Dyfais mewnbwn fideo"
 
-#: gnomemeeting.schemas.in.in.h:190
+#: gnomemeeting.schemas.in.in.h:193
 msgid "Video plugin"
 msgstr "Ategyn fideo"
 
-#: gnomemeeting.schemas.in.in.h:191
+#: gnomemeeting.schemas.in.in.h:194
 msgid "Video preview"
 msgstr "Rhagolwg fideo"
 
-#: gnomemeeting.schemas.in.in.h:192
+#: gnomemeeting.schemas.in.in.h:195
 msgid "Video size"
 msgstr "Maint y fideo"
 
-#: lib/dialog.c:193
+#: lib/dialog.c:254
 msgid "Do not show this dialog again"
 msgstr "Peidied â dangos yr ymgom yma eto"
+
+#: lib/gm_conf-gconf.c:155
+msgid ""
+"An error has happened in the configuration backend.\n"
+"Maybe some of your settings won't be saved."
+msgstr ""
+"Mae gwall wedi digwydd yn ochr gefn y cyfluniad.\n"
+"Efallai ni fydd rhai o'ch gosodiadau yn cael eu cadw."
 
 #: src/callbacks.cpp:86
 msgid "_Retrieve Call"
 msgstr "_Nôl Galwad"
 
-#: src/callbacks.cpp:99 src/menu.cpp:280
+#: src/callbacks.cpp:99 src/menu.cpp:298
 msgid "_Hold Call"
 msgstr "_Dal Galwad"
 
@@ -1052,7 +1061,7 @@ msgstr "Trosglwyddo'r alwad i:"
 msgid "Transfer"
 msgstr "Trosglwyddo"
 
-#: src/callbacks.cpp:231 src/menu.cpp:290
+#: src/callbacks.cpp:231 src/menu.cpp:308
 msgid "Suspend _Audio"
 msgstr "Seibio'r _Sain"
 
@@ -1068,7 +1077,7 @@ msgstr "Trosglwyddiad sain: wedi ei seibio"
 msgid "Audio transmission: resumed"
 msgstr "Trosglwyddiad sain: wedi ailgychwyn"
 
-#: src/callbacks.cpp:245 src/menu.cpp:295
+#: src/callbacks.cpp:245 src/menu.cpp:313
 msgid "Suspend _Video"
 msgstr "Seibio'r _Fideo"
 
@@ -1084,21 +1093,21 @@ msgstr "Trosglwyddiad fideo: wedi ei seibio"
 msgid "Video transmission: resumed"
 msgstr "Trosglwyddiad fideo: wedi ei ail-ddechrau"
 
-#: src/callbacks.cpp:383
+#: src/callbacks.cpp:385
 msgid "Code contributors:"
 msgstr "Cyfranwyr côd:"
 
-#: src/callbacks.cpp:393
+#: src/callbacks.cpp:397
 msgid "Artwork:"
 msgstr "Gwaith Celf:"
 
-#: src/callbacks.cpp:397
+#: src/callbacks.cpp:401
 msgid "Contributors:"
 msgstr "Cyfranwyr:"
 
 #. Translators: Please write translator credits here, and
 #. * seperate names with \n
-#: src/callbacks.cpp:433
+#: src/callbacks.cpp:437
 msgid "translator_credits"
 msgstr ""
 "KGyfieithu - Meddalwedd Cymraeg (www.gyfieithu.co.uk)\n"
@@ -1106,7 +1115,7 @@ msgstr ""
 
 #. Translators: Please test to see if your translation
 #. * looks OK and fits within the box
-#: src/callbacks.cpp:444
+#: src/callbacks.cpp:448
 msgid ""
 "GnomeMeeting is full-featured H.323 compatible videoconferencing, VoIP and "
 "IP-Telephony application that allows you to make audio and video calls to "
@@ -1116,235 +1125,41 @@ msgstr ""
 "GnomeMeeting, sy'n gytunol â H.323. Mae'n eich galluogi i wneud galwadau "
 "sain a fideo i ddefnyddwyr pell a chanddynt feddalwedd neu galedwedd H.323."
 
-#: src/chat_window.cpp:380
+#. shouldn't happen...
+#: src/chat_window.cpp:249
+#, c-format
+msgid "---- Call begins at %s\n"
+msgstr "--- Galwad yn dechrau am %s\n"
+
+#. prepare the message to be displayed
+#: src/chat_window.cpp:284
+#, c-format
+msgid "---- Call ends at %s\n"
+msgstr "--- Galwad yn gorffen am %s\n"
+
+#: src/chat_window.cpp:421
 msgid "Open URI"
 msgstr "Agor URI"
 
-#: src/chat_window.cpp:383 src/chat_window.cpp:399
+#: src/chat_window.cpp:424 src/chat_window.cpp:440
 msgid "Copy Link Location"
 msgstr "Copïo Lleoliad Cyswllt"
 
-#: src/chat_window.cpp:395
+#: src/chat_window.cpp:436
 msgid "Connect to"
 msgstr "Cysylltu â"
 
-#: src/chat_window.cpp:397
+#: src/chat_window.cpp:438
 msgid "Add to Address Book"
 msgstr "Ychwanegu i'r Llyfr Cyfeiriadau"
 
-#: src/chat_window.cpp:417
+#: src/chat_window.cpp:458
 msgid "Copy Equation"
 msgstr "Copïo Hafaliad"
 
-#: src/chat_window.cpp:432
+#: src/chat_window.cpp:473
 msgid "Send message:"
 msgstr "Anfon neges:"
-
-#: src/codec_info.h:53
-msgid ""
-"iLBC-13k3 (internet Low Bitrate Codec) is a free speech codec suitable for "
-"robust voice communication over IP. The codec is designed for narrow band "
-"speech and results in a payload bit rate of 13.33 kbit/s with an encoding "
-"frame length of 30 ms. The iLBC codec enables graceful speech quality "
-"degradation in the case of lost frames, which occurs in connection with lost "
-"or delayed IP packets."
-msgstr ""
-"Codec lleferydd rhydd yw iLBC-13k3 (internet Low Bitrate Codec) sy'n addas "
-"ar gyfer cyfathrebu llais dibynnol dros IP. Llunir y codec ar gyfer "
-"lleferydd band cul, a'r canlyniad yw cyflymder did o 13.33 kdid/eiliad gyda "
-"hyd ffrâm godio o 30 milfed rhan o eiliad. Mae'r codec iLBC yn peri i "
-"ansawdd y llais ostwng yn naturiol os gollir fframau, all ddigwydd os yw "
-"pecynnau IP yn mynd ar goll neu'n cyrraedd yn hwyr."
-
-#: src/codec_info.h:53 src/codec_info.h:55 src/codec_info.h:57
-#: src/codec_info.h:63 src/codec_info.h:65 src/codec_info.h:69
-#: src/codec_info.h:71
-msgid "Excellent"
-msgstr "Ardderchog"
-
-#: src/codec_info.h:53
-msgid "13.33 Kbps"
-msgstr "13.33 Kdye"
-
-#: src/codec_info.h:55
-msgid ""
-"iLBC-15k2 (internet Low Bitrate Codec) is a free speech codec suitable for "
-"robust voice communication over IP. The codec is designed for narrow band "
-"speech and results in a payload bitrate of 15.20 kbps with an encoding "
-"length of 20 ms. The iLBC codec enables graceful speech quality degradation "
-"in the case of lost frames, which occurs in connection with lost or delayed "
-"IP packets."
-msgstr ""
-"Codec lleferydd rhydd yw iLBC-15k2 (internet Low Bitrate Codec) sy'n addas "
-"ar gyfer cyfathrebu llais dibynnol dros IP. Llunir y codec ar gyfer "
-"lleferydd band cul, a'r canlyniad yw cyflymder did o 15.20 kdid/eiliad gyda "
-"hyd ffrâm godio o 20 milfed rhan o eiliad. Mae'r codec iLBC yn peri i "
-"ansawdd y llais ostwng yn naturiol os gollir fframau, all ddigwydd os yw "
-"pecynnau IP yn mynd ar goll neu'n cyrraedd yn hwyr."
-
-#: src/codec_info.h:55
-msgid "15.2 Kbps"
-msgstr "15.2 Kdye"
-
-#: src/codec_info.h:57
-msgid ""
-"Speex is an Open Source/Free Software patent-free audio compression format "
-"designed for speech. The Speex Project aims to lower the barrier of entry "
-"for voice applications by providing a free alternative to expensive "
-"proprietary speech codecs. Moreover, Speex is well-adapted to Internet "
-"applications and provides useful features that are not present in most other "
-"codecs. Finally, Speex is part of the GNU Project and is available under the "
-"Xiph.org variant of the BSD license. SpeexNarrow-15k is based on CELP and is "
-"designed to compress voice at a payload bitrate of 15 kbps."
-msgstr ""
-"Fformat Côd Agored/Meddalwedd Rhydd ar gyfer cywasgu sain yw Speex, "
-"ddyfeisiwyd ar gyfer lleferydd. Bwriad prosiect Speex yw hwyluso datblygiad "
-"rhaglenni llais gan gynnig dewis rhydd a rhad sy'n wahanol i godecau "
-"lleferydd masnachol costus. Yn ogystal, mae Speex wedi ei addasu'n dda ar "
-"gyfer rhaglenni Internet, ac mae'n cynnig nodweddion defnyddiol nad ydynt yn "
-"bresennol yn y rhan fwyaf o godecau eraill. Yn olaf, mae Speex yn rhan o'r "
-"prosiect GNU ac ar gael dan amrywiad Xiph.org o'r drwydded BSD. Mae "
-"SpeexNarrow-15k yn seiliedig ar CELP, ac wedi'i ddyfeisio gyda'r bwriad o "
-"gywasgu lleferydd ar gyflymder did terfynol o 15Kdye."
-
-#: src/codec_info.h:57
-msgid "15 Kbps"
-msgstr "15 Kdye"
-
-#: src/codec_info.h:59
-msgid ""
-"Speex is an Open Source/Free Software patent-free audio compression format "
-"designed for speech. The Speex Project aims to lower the barrier of entry "
-"for voice applications by providing a free alternative to expensive "
-"proprietary speech codecs. Moreover, Speex is well-adapted to Internet "
-"applications and provides useful features that are not present in most other "
-"codecs. Finally, Speex is part of the GNU Project and is available under the "
-"Xiph.org variant of the BSD license. SpeexNarrow-8k is based on CELP and is "
-"designed to compress voice at a payload bitrate of 8 kbps."
-msgstr ""
-"Fformat Côd Agored/Meddalwedd Rhydd ar gyfer cywasgu sain yw Speex, "
-"ddyfeisiwyd ar gyfer lleferydd. Bwriad prosiect Speex yw hwyluso datblygiad "
-"rhaglenni llais gan gynnig dewis rhydd a rhad sy'n wahanol i godecau "
-"lleferydd masnachol costus. Yn ogystal, mae Speex wedi ei addasu'n dda ar "
-"gyfer rhaglenni Internet, ac mae'n cynnig nodweddion defnyddiol nad ydynt yn "
-"bresennol yn y rhan fwyaf o godecau eraill. Yn olaf, mae Speex yn rhan o'r "
-"prosiect GNU ac ar gael dan amrywiad Xiph.org o'r drwydded BSD. Mae "
-"SpeexNarrow-8k yn seiliedig ar CELP, ac wedi'i ddyfeisio gyda'r bwriad o "
-"gywasgu lleferydd ar gyflymder did terfynol o 8Kdye."
-
-#: src/codec_info.h:59 src/codec_info.h:61 src/codec_info.h:67
-msgid "Good"
-msgstr "Da"
-
-#: src/codec_info.h:59
-msgid "8 Kbps"
-msgstr "8 Kdye"
-
-#: src/codec_info.h:61
-msgid ""
-"MS-GSM is the Microsoft version of GSM 06.10. GSM 06.10 is a standardized "
-"lossy speech compression employed by most European wireless telephones. It "
-"uses RPE/LTP (residual pulse excitation/long term prediction) coding to "
-"compress frames of 160 13-bit samples with a frame rate of 50 Hz into 260 "
-"bits.  Microsoft's GSM 06.10 codec is not compatible with the standard frame "
-"format, they use 65-byte-frames (2 x 32 1/2) rather than rounding to 33, and "
-"they number the bits in their bytes from the other end."
-msgstr ""
-"MS-GSM yw fersiwn Microsoft o GSM 06.10. Modd safonol unffordd i gywasgu "
-"lleferydd yw GSM 06.10, ddefnyddir gan y rhan fwyaf o ffonau symudol yn "
-"Ewrop. Mae'n defnyddio RPE/LTP (Residual Pulse Excitation/ Long Term "
-"Prediction) er mwyn cywasgu fframau o 160 sampl 13-did yr un, gydag amledd "
-"ffrâm o 50 Hz, i mewn i 260 did. Nid yw codec GSM 06.10 Microsoft yn gyfunol "
-"â'r fformat ffrâm safonol; maen nhw'n defnyddio fframau o 65-beit (2 x 32 "
-"1/2) yn hytrach na rowndio i 33, a maent yn rhifo'r didau yn eu beitiau y tu "
-"chwith."
-
-#: src/codec_info.h:61
-msgid "13 Kbps"
-msgstr "13 Kdye"
-
-#: src/codec_info.h:63
-msgid ""
-"G.711 is the international standard for encoding telephone audio on 64 kbps "
-"channel. It is a pulse code modulation (PCM) scheme operating at 8 kHz "
-"sample rate, with 8 bits per sample, fully meeting ITU-T recommendations. "
-"This standard has two forms, A-Law and u-Law. A-Law G.711 PCM encoder "
-"converts 13 bit linear PCM samples into 8 bit compressed PCM (logarithmic "
-"form) samples, and the decoder does the conversion vice versa."
-msgstr ""
-"G.711 yw'r safon rhyngwladol ar gyfer codio sain ffôn ar sianel 64 Kdye. "
-"Mae'n safon PCM (Pulse Code Modulation) gydag amledd sampl o 8 kHz, gyda 8 "
-"did y sampl, sy'n llwyr gyrraedd argymhellion yr ITU-T. Mae iddo ddwy ffurf, "
-"A-Law a u-Law. Mae'r codydd A-Law yn trosi samplau llinol 13-did PCM i mewn "
-"i samplau 8-did PCM (ar ffurf logarithmig) wedi eu cywasgu, ac mae'r "
-"dadgodydd yn trosi am yn ôl."
-
-#: src/codec_info.h:63 src/codec_info.h:65
-msgid "64 Kbps"
-msgstr "64 Kdye"
-
-#: src/codec_info.h:65
-msgid ""
-"G.711 is the international standard for encoding telephone audio on 64 kbps "
-"channel. It is a pulse code modulation (PCM) scheme operating at 8 kHz "
-"sample rate, with 8 bits per sample, fully meeting ITU-T recommendations. "
-"This standard has two forms, A-Law and u-Law. u-Law G.711 PCM encoder "
-"converts 14 bit linear PCM samples into 8 bit compressed PCM (logarithmic "
-"form) samples, and the decoder does the conversion vice versa."
-msgstr ""
-"G.711 yw'r safon rhyngwladol ar gyfer codio sain ffôn ar sianel 64 Kdye. "
-"Mae'n safon PCM (Pulse Code Modulation) gydag amledd sampl o 8 kHz, gyda 8 "
-"did y sampl, sy'n llwyr gyrraedd argymhellion yr ITU-T. Mae iddo ddwy ffurf, "
-"A-Law a u-Law. Mae'r codydd u-Law yn trosi samplau llinol 14-did PCM i mewn "
-"i samplau 8-did PCM (ar ffurf logarithmig) wedi eu cywasgu, ac mae'r "
-"dadgodydd yn trosi am yn ôl."
-
-#: src/codec_info.h:67
-msgid ""
-"GSM 06.10 is a standardized lossy speech compression employed by first "
-"generation of digital mobile phones in Europe. It uses RPE/LTP (residual "
-"pulse excitation/long term prediction) coding to compress frames of 20 ms, "
-"achieving a bitrate of 13kbps."
-msgstr ""
-"Modd safonol unffordd i gywasgu lleferydd yw GSM 06.10, ddefnyddir gan y "
-"genhedlaeth gyntaf o ffonau symudol digidol o fewn Ewrop.Mae'n defnyddio RPE/"
-"LTP (Residual Pulse Excitation/Long Term Prediction) er mwyn cywasgu fframau "
-"o 20 milfed eiliad, gan gyrraedd cyflymder did o 13 kdye."
-
-#: src/codec_info.h:67
-msgid "16.5 Kbps"
-msgstr "16.5 Kdye"
-
-#: src/codec_info.h:69
-msgid ""
-"G.726 conforms to ITU-T G.726 recommendation that specifies speech "
-"compression and decompression at rates of 16, 24, 32 and 40 Kbps based on "
-"Adaptive Differential Pulse Code Modulation (ADPCM)."
-msgstr ""
-"Mae G.726 yn gyfunol ag argymhelliad G.726 yr ITU-T, sy'n penodi cywasgu a "
-"datgywasgu lleferydd ar gyflymderau o 16, 24, 32 a 40 kdye yn seiliedig ar "
-"ADPCM (Adaptive Differential Pulse Code Modulation)."
-
-#: src/codec_info.h:69
-msgid "32 Kbps"
-msgstr "32 Kdye"
-
-#: src/codec_info.h:71
-msgid ""
-"G.723.1 conforms to ITU-T G.723.1 recommendation. It was designed for "
-"videoconferencing / telephony over standard phone lines, and is optimized "
-"for realtime encode and decode. That codec is only available in GnomeMeeting "
-"when using Quicknet cards due to patents restrictions."
-msgstr ""
-"Mae G.723.1 yn gyfunol ag argymhelliad G.723.1 yr ITU-T. Fe'i luniwyd ar "
-"gyfer cynhadledda fideo/teleffoni dros linellau ffôn cyffredinol, ac mae "
-"wedi'i optimeiddio ar gyfer codio a dadgodio mewn iawn amser. Oherwydd "
-"rhwystrau patent, dim ond tra'n defnyddio cerdyn Quicknet y mae'r codec hwn "
-"ar gael yn GnomeMeeting."
-
-#: src/codec_info.h:71
-msgid "6.3 or 5.7 Kbps"
-msgstr "6.3 neu 5.7 Kdye"
 
 #: src/config-tool-i18n.h:1
 msgid "YES"
@@ -1352,8 +1167,7 @@ msgstr "YDW"
 
 #: src/config-tool-i18n.h:2
 msgid "Sorry, this script won't work while GnomeMeeting is running"
-msgstr ""
-"Mae'n ddrwg gen i, ni weithia'r sgript yma tra mae GnomeMeeting yn rhedeg."
+msgstr "Mae'n ddrwg gen i, ni weithia'r sgript yma tra mae GnomeMeeting yn rhedeg."
 
 #: src/config-tool-i18n.h:3
 msgid "  WARNING!!!"
@@ -1454,32 +1268,29 @@ msgid "  --clean                remove all user settings"
 msgstr " --clean                gwaredu pob gosodiad defnyddiwr"
 
 #: src/config-tool-i18n.h:19
-msgid ""
-"  --install-schemas      install schemas with default settings (run as root)"
+msgid "  --install-schemas      install schemas with default settings (run as root)"
 msgstr ""
 "  --install-schemas      sefydlu sgemau gyda gosodiadau rhagosod (i'w "
 "rhedeg                          fel y defnyddiwr gwraidd [root])"
 
 #: src/config-tool-i18n.h:20
-msgid ""
-"  --clean-schemas        remove schemas with default settings (run as root)"
+msgid "  --clean-schemas        remove schemas with default settings (run as root)"
 msgstr ""
 "   --clean-schemas       gwaredu sgemau gyda gosodiadau rhagosod (i'w "
 "rhedeg                          fel y defnyddiwr gwraidd [root])"
 
 #: src/config-tool-i18n.h:21
-msgid ""
-"  --fix-permissions      fix permissions of GConf repository (run as root)"
+msgid "  --fix-permissions      fix permissions of GConf repository (run as root)"
 msgstr ""
 "  --fix-permissions      trwsio caniatadau y cronfa GConf (i'w rhedeg "
 "fel                          y defnyddiwr gwraidd [root])"
 
-#: src/config.cpp:347 src/config.cpp:592
+#: src/config.cpp:305 src/config.cpp:549
 msgid "Changing this setting will only affect new calls"
 msgstr "Bydd newid y gosodiad yma yn effeithio galwadau newydd yn unig"
 
 # EFALLAI: ddim yn siwr fod y frawddeg gyntaf yn gwneud synnwyr yn Saesneg!
-#: src/config.cpp:347 src/config.cpp:592
+#: src/config.cpp:306 src/config.cpp:550
 msgid ""
 "You have changed a setting that doesn't permit to GnomeMeeting to apply the "
 "new change to the current call. Your new setting will only take effect for "
@@ -1489,51 +1300,51 @@ msgstr ""
 "newydd i'r galwad cyfredol. Bydd eich gosodiad newydd yn cael effaith i'r "
 "galwad nesaf."
 
-#: src/config.cpp:410
+#: src/config.cpp:368
 msgid "H.245 Tunneling disabled"
 msgstr "Twnelu H.245 wedi ei analluogi"
 
-#: src/config.cpp:411
+#: src/config.cpp:369
 msgid "H.245 Tunneling enabled"
 msgstr "Twnelu H.245 wedi ei alluogi"
 
-#: src/config.cpp:440
+#: src/config.cpp:398
 msgid "Early H.245 disabled"
 msgstr "Twnelu H.245 cynnar wedi ei analluogi"
 
-#: src/config.cpp:441
+#: src/config.cpp:399
 msgid "Early H.245 enabled"
 msgstr "Twnelu H.245 cynnar wedi ei alluogi"
 
-#: src/config.cpp:470
+#: src/config.cpp:428
 msgid "Fast Start disabled"
 msgstr "Dechrau Cyflym wedi ei analluogi"
 
-#: src/config.cpp:471
+#: src/config.cpp:429
 msgid "Fast Start enabled"
 msgstr "Dechrau Cyflym wedi ei alluogi"
 
-#: src/config.cpp:503
+#: src/config.cpp:460
 msgid "No gateway or proxy specified"
 msgstr "Ni benodwyd porth neu ddirprwy"
 
-#: src/config.cpp:503
+#: src/config.cpp:460
 msgid "You need to specify a host to use as gateway or proxy."
 msgstr "Rhaid i chi benodi gwesteiwr i'w ddefnyddio fel porth neu ddirprwy."
 
-#: src/config.cpp:650
+#: src/config.cpp:608
 msgid "Disabled silence detection"
 msgstr "Analluogwyd darganfod distawrwydd"
 
-#: src/config.cpp:655
+#: src/config.cpp:614
 msgid "Enabled silence detection"
 msgstr "Galluogwyd darganfod tawelwch"
 
-#: src/config.cpp:1375
+#: src/config.cpp:1161
 msgid "Forward URL not specified"
 msgstr "URL i flaenyrru iddo heb ei benodi"
 
-#: src/config.cpp:1376
+#: src/config.cpp:1162
 msgid ""
 "You need to specify an URL where to forward calls in the call forwarding "
 "section of the preferences!\n"
@@ -1545,82 +1356,68 @@ msgstr ""
 "\n"
 "Analluogi blaenyrru."
 
-#: src/config.cpp:1660
-msgid ""
-"An error has happened in the configuration backend.\n"
-"Maybe some of your settings won't be saved."
-msgstr ""
-"Mae gwall wedi digwydd yn ochr gefn y cyfluniad.\n"
-"Efallai ni fydd rhai o'ch gosodiadau yn cael eu cadw."
+#: src/config.cpp:1219
+msgid "STUN Server error"
+msgstr "Gwall gweinydd STUN"
 
-#: src/config.cpp:1911 src/ldap_window.cpp:2540
-msgid "Friends"
-msgstr "Ffrindiau"
+#: src/config.cpp:1219
+msgid "You have to specify a valid STUN server in order to use STUN support"
+msgstr "Rhaid i chi nodi gweinydd STUN dilys er mwyn defnyddio cefnogaeth STUN"
 
-#: src/config.cpp:1912 src/ldap_window.cpp:2544
-msgid "Work"
-msgstr "Gwaith"
-
-#: src/config.cpp:1913 src/ldap_window.cpp:2542
-msgid "Family"
-msgstr "Teulu"
-
-#: src/connection.cpp:153
+#: src/connection.cpp:154
 #, c-format
 msgid "Opened codec %s for transmission"
 msgstr "Agorwyd codec %s ar gyfer trosglwyddo"
 
-#: src/connection.cpp:156
+#: src/connection.cpp:157
 #, c-format
 msgid "Closed codec %s which was opened for transmission"
 msgstr "Caewyd codec %s, a agorwyd ar gyfer cyfathrebu"
 
-#: src/connection.cpp:160
+#: src/connection.cpp:161
 #, c-format
 msgid "Opened codec %s for reception"
 msgstr "Agorwyd codec %s ar gyfer derbyn"
 
-#: src/connection.cpp:163
+#: src/connection.cpp:164
 #, c-format
 msgid "Closed codec %s which was opened for reception"
 msgstr "Caewyd codec %s, a agorwyd ar gyfer derbyn"
 
-#: src/connection.cpp:200
+#: src/connection.cpp:202
 #, c-format
 msgid "Failure opening %s for transmission, will try with next common codec"
-msgstr ""
-"Methwyd agor %s ar gyfer trosglwyddiad, yn ceisio'r codec cyffredin nesaf"
+msgstr "Methwyd agor %s ar gyfer trosglwyddiad, yn ceisio'r codec cyffredin nesaf"
 
-#: src/connection.cpp:201
+#: src/connection.cpp:203
 #, c-format
 msgid "Failure opening %s for reception, will try with next common codec"
 msgstr "Methwyd agor %s ar gyfer derbyniad, yn ceisio'r codec cyffredin nesaf"
 
-#: src/connection.cpp:314 src/connection.cpp:315 src/urlhandler.cpp:77
+#: src/connection.cpp:316 src/connection.cpp:317 src/urlhandler.cpp:77
 #: src/urlhandler.cpp:78
 msgid "Call transfer failed"
 msgstr "Methodd drosglwyddo'r alwad"
 
-#: src/connection.cpp:314
-msgid ""
-"The remote user tried to transfer your call to another user, but it failed."
+#: src/connection.cpp:316
+msgid "The remote user tried to transfer your call to another user, but it failed."
 msgstr ""
 "Ceisiodd y defnyddiwr pell drosglwyddo eich galwad i ddefnyddiwr arall, ond "
 "methodd."
 
-#: src/druid.cpp:266 src/druid.cpp:668 src/druid.cpp:685 src/druid.cpp:723
-#: src/endpoint.cpp:1700 src/gnomemeeting.cpp:316 src/gnomemeeting.cpp:318
-#: src/gnomemeeting.cpp:320 src/sound_handling.cpp:569
-#: src/sound_handling.cpp:570 src/videograbber.cpp:309
-#: src/videograbber.cpp:564
+#: src/druid.cpp:319 src/druid.cpp:726 src/druid.cpp:743 src/druid.cpp:798
+#: src/endpoint.cpp:1660 src/gnomemeeting.cpp:299 src/gnomemeeting.cpp:301
+#: src/gnomemeeting.cpp:303 src/sound_handling.cpp:558
+#: src/sound_handling.cpp:559 src/videograbber.cpp:311
+#: src/videograbber.cpp:574
 msgid "No device found"
 msgstr "Ni ddarganfyddwyd dyfais"
 
-#: src/druid.cpp:331
+#: src/druid.cpp:380
 msgid "Welcome to GnomeMeeting 1.00!"
 msgstr "Croeso i GnomeMeeting 1.00!"
 
-#: src/druid.cpp:331
+#: src/druid.cpp:380
 msgid ""
 "Congratulations, you have just successfully launched GnomeMeeting 1.00 for "
 "the first time.\n"
@@ -1641,27 +1438,27 @@ msgstr ""
 "\n"
 "Tîm GnomeMeeting."
 
-#: src/druid.cpp:562
+#: src/druid.cpp:614
 msgid "56k Modem"
 msgstr "Modem 56k"
 
-#: src/druid.cpp:563
+#: src/druid.cpp:615
 msgid "ISDN"
 msgstr "ISDN"
 
-#: src/druid.cpp:564
+#: src/druid.cpp:616
 msgid "xDSL/Cable"
 msgstr "xDSL/Cêbl"
 
-#: src/druid.cpp:565
+#: src/druid.cpp:617
 msgid "T1/LAN"
 msgstr "T1/RhAL (LAN)"
 
-#: src/druid.cpp:566
+#: src/druid.cpp:618
 msgid "Keep current settings"
 msgstr "Cadw'r gosodiadau cyfredol"
 
-#: src/druid.cpp:748
+#: src/druid.cpp:853
 #, c-format
 msgid ""
 "You have now finished the GnomeMeeting configuration. All the settings can "
@@ -1670,13 +1467,13 @@ msgid ""
 "\n"
 "Configuration summary:\n"
 "\n"
-"Username:  %s\n"
-"Connection type:  %s\n"
+"Username: %s\n"
+"Connection type: %s\n"
 "Audio manager: %s\n"
-"Audio player:  %s\n"
-"Audio recorder:  %s\n"
+"Audio player: %s\n"
+"Audio recorder: %s\n"
 "Video manager: %s\n"
-"Video player: %s\n"
+"Video input: %s\n"
 "Callto URL: %s\n"
 msgstr ""
 "Rydych chi'n awr wedi gorffen cyflunio GnomeMeeting. Gellir newid pob un o'r "
@@ -1691,176 +1488,15 @@ msgstr ""
 "Chwaraeydd sain: %s\n"
 "Recordydd sain: %s\n"
 "Rheolydd fideo: %s\n"
-"Chwaraeydd fideo: %s\n"
+"Mewnbwn fideo: %s\n"
 "LAU Callto: %s\n"
 
-#: src/druid.cpp:748 src/pref_window.cpp:1188
+#: src/druid.cpp:853 src/addressbook_window.cpp:614
+#: src/addressbook_window.cpp:616 src/pref_window.cpp:1185
 msgid "None"
 msgstr "Dim"
 
-#: src/druid.cpp:777
-#, c-format
-msgid "Personal Information - page %d/%d"
-msgstr "Gwybodaeth Bersonol - tudalen %d/%d"
-
-#. The user fields
-#: src/druid.cpp:790
-msgid "Please enter your first name and your surname:"
-msgstr "Rhowch eich enw cyntaf a'ch cyfenw:"
-
-#: src/druid.cpp:798
-msgid ""
-"Your first name and surname will be used when connecting to other VoIP and "
-"videoconferencing software."
-msgstr ""
-"Defnyddir eich enw cyntaf a'ch cyfenw pan yn cysylltu â meddalwedd VoIP a "
-"chynhadledda fideo arall."
-
-#: src/druid.cpp:841
-#, c-format
-msgid "Callto URL - page %d/%d"
-msgstr "URL Callto - tudalen %d/%d"
-
-#: src/druid.cpp:852
-msgid "Please enter your e-mail address:"
-msgstr "Rhowch eich cyfeiriad e-bost:"
-
-#: src/druid.cpp:860
-msgid ""
-"Your e-mail address is used when registering to the GnomeMeeting users "
-"directory. It is used to create a callto address permitting your contacts to "
-"easily call you wherever you are."
-msgstr ""
-"Defnyddir eich cyfeiriad e-bost pan yn cofrestru â chyfeiriadur defnyddwyr "
-"GnomeMeeting. Fe'i ddefnyddir er mwyn creu cyfeiriad 'callto', sy'n galluogi "
-"eich cysylltion i'ch galw'n hwylus ble bynnag y boch."
-
-#: src/druid.cpp:869
-msgid ""
-"I don't want to register to the GnomeMeeting users directory and get a "
-"callto address"
-msgstr ""
-"Dydw i ddim am gofrestru gyda chyfeiriadur defnyddwyr GnomeMeeting a derbyn "
-"cyfeiriad 'callto'"
-
-#: src/druid.cpp:919
-#, c-format
-msgid "Connection Type - page %d/%d"
-msgstr "Math y Cysylltiad - tudalen %d/%d"
-
-#. The connection type
-#: src/druid.cpp:931
-msgid "Please choose your connection type:"
-msgstr "Dewiswch math eich cysylltiad:"
-
-#: src/druid.cpp:939
-msgid ""
-"The connection type will permit determining the best quality settings that "
-"GnomeMeeting will use during calls. You can later change the settings "
-"individually in the preferences window."
-msgstr ""
-"Wedi gwybod math y cysylltiad, medr GnomeMeeting ddewis y gosodiadau o'r "
-"ansawdd gorau yn ystod galwadau. Gellwch newid y gosodiadau yn unigol wedyn "
-"yn y ffenest hoffterau."
-
-#: src/druid.cpp:978
-#, c-format
-msgid "Audio Manager - page %d/%d"
-msgstr "Rheolydd Sain - tudalen %d/%d"
-
-#. The Audio devices
-#: src/druid.cpp:990
-msgid "Please choose your audio manager:"
-msgstr "Dewiswch eich rheolydd sain os gwelwch yn dda:"
-
-#: src/druid.cpp:998
-msgid ""
-"The audio manager is the plugin that will manage your audio devices, ALSA is "
-"probably the best choice when available."
-msgstr ""
-"Y rheolydd sain yw'r ategyn fydd yn rheoli'ch dyfeisiau sain. Mwy na thebyg "
-"mai ALSA fyddai'r dewis gorau, pan ar gael."
-
-#: src/druid.cpp:1039
-#, c-format
-msgid "Audio Devices - page %d/%d"
-msgstr "Dyfeisiau Sain - tudalen %d/%d"
-
-#. The Audio devices
-#: src/druid.cpp:1051
-msgid "Please choose the audio output device:"
-msgstr "Dewiswch y ddyfais allbwn fideo os gwelwch yn dda:"
-
-#: src/druid.cpp:1059
-msgid ""
-"The audio output device is the device managed by the audio manager that will "
-"be used to play audio."
-msgstr ""
-"Y ddyfais allbwn sain yw'r ddyfais, reolir gan y rheolydd sain, fydd yn cael "
-"ei ddefnyddio i chwarae sain."
-
-#: src/druid.cpp:1069
-msgid "Please choose the audio input device:"
-msgstr "Dewiswch y ddyfais fewnbwn sain os gwelwch yn dda:"
-
-#: src/druid.cpp:1077
-msgid ""
-"The audio input device is the device managed by the audio manager that will "
-"be used to record your voice."
-msgstr ""
-"Y ddyfais fewnbwn sain yw'r ddyfais, reolir gan y rheolydd sain, fydd yn "
-"cael ei ddefnyddio i recordio'ch llais."
-
-#: src/druid.cpp:1090 src/druid.cpp:1228
-msgid "Test Settings"
-msgstr "Gosodiadau Prawf"
-
-#: src/druid.cpp:1136
-#, c-format
-msgid "Video Manager - page %d/%d"
-msgstr "Rheolydd Fideo - tudalen %d/%d"
-
-#. The Audio devices
-#: src/druid.cpp:1148
-msgid "Please choose your video manager:"
-msgstr "Dewiswch y rheolydd fideo os gwelwch yn dda:"
-
-#: src/druid.cpp:1156
-msgid ""
-"The video manager is the plugin that will manage your video devices, "
-"Video4Linux is the most common choice if you own a webcam."
-msgstr ""
-"Y rheolydd fideo yw'r ategyn fydd yn rheoli'ch dyfeisiau fideo; Video4Linux "
-"yw'r dewis mwyaf cyffredin os yn defnyddio gwê-gamera."
-
-#: src/druid.cpp:1196
-#, c-format
-msgid "Video Devices - page %d/%d"
-msgstr "Dyfeisiau Fideo - tudalen %d/%d"
-
-#. The Video devices
-#: src/druid.cpp:1208
-msgid "Please choose the video input device:"
-msgstr "Dewiswch y ddyfais fewnbwn fideo os gwelwch yn dda:"
-
-#: src/druid.cpp:1216
-msgid ""
-"The video input device is the device managed by the video manager that will "
-"be used to capture video."
-msgstr ""
-"Y ddyfais fewnbwn fideo yw'r ddyfais, reolir gan y rheolydd fideo, fydd yn "
-"cael ei ddefnyddio i gipio fideo."
-
-#: src/druid.cpp:1263
-msgid "First Time Configuration Druid"
-msgstr "Derwydd Cyfluniad Tro Cyntaf"
-
-#: src/druid.cpp:1270
-#, c-format
-msgid "Configuration Druid - page %d/%d"
-msgstr "Derwydd Cyfluniad - tudalen %d/%d"
-
-#: src/druid.cpp:1273
+#: src/druid.cpp:872
 msgid ""
 "This is the GnomeMeeting general configuration druid. The following steps "
 "will set up GnomeMeeting by asking a few simple questions.\n"
@@ -1874,154 +1510,316 @@ msgstr ""
 "Ar ôl i chi gwblhau'r camau yma, gallwch o hyd eu newid yn hwyrach gan "
 "ddewis Hoffterau yn y ddewislen Golygu."
 
+#: src/druid.cpp:878
+#, c-format
+msgid "Configuration Druid - page 1/%d"
+msgstr "Derwydd Cyfluniad - tudalen 1/%d"
+
+#: src/druid.cpp:914
+#, c-format
+msgid "Personal Information - page %d/%d"
+msgstr "Gwybodaeth Bersonol - tudalen %d/%d"
+
+#. The user fields
+#: src/druid.cpp:927
+msgid "Please enter your first name and your surname:"
+msgstr "Rhowch eich enw cyntaf a'ch cyfenw:"
+
+#: src/druid.cpp:935
+msgid ""
+"Your first name and surname will be used when connecting to other VoIP and "
+"videoconferencing software."
+msgstr ""
+"Defnyddir eich enw cyntaf a'ch cyfenw pan yn cysylltu â meddalwedd VoIP a "
+"chynhadledda fideo arall."
+
+#: src/druid.cpp:974
+#, c-format
+msgid "Callto URL - page %d/%d"
+msgstr "URL Callto - tudalen %d/%d"
+
+#: src/druid.cpp:985
+msgid "Please enter your e-mail address:"
+msgstr "Rhowch eich cyfeiriad e-bost:"
+
+#: src/druid.cpp:993
+msgid ""
+"Your e-mail address is used when registering to the GnomeMeeting users "
+"directory. It is used to create a callto address permitting your contacts to "
+"easily call you wherever you are."
+msgstr ""
+"Defnyddir eich cyfeiriad e-bost pan yn cofrestru â chyfeiriadur defnyddwyr "
+"GnomeMeeting. Fe'i ddefnyddir er mwyn creu cyfeiriad 'callto', sy'n galluogi "
+"eich cysylltion i'ch galw'n hwylus ble bynnag y boch."
+
+#: src/druid.cpp:1002
+msgid ""
+"I don't want to register to the GnomeMeeting users directory and get a "
+"callto address"
+msgstr ""
+"Dydw i ddim am gofrestru gyda chyfeiriadur defnyddwyr GnomeMeeting a derbyn "
+"cyfeiriad 'callto'"
+
+#: src/druid.cpp:1044
+#, c-format
+msgid "Connection Type - page %d/%d"
+msgstr "Math y Cysylltiad - tudalen %d/%d"
+
+#. The connection type
+#: src/druid.cpp:1056
+msgid "Please choose your connection type:"
+msgstr "Dewiswch math eich cysylltiad:"
+
+#: src/druid.cpp:1064
+msgid ""
+"The connection type will permit determining the best quality settings that "
+"GnomeMeeting will use during calls. You can later change the settings "
+"individually in the preferences window."
+msgstr ""
+"Wedi gwybod math y cysylltiad, medr GnomeMeeting ddewis y gosodiadau o'r "
+"ansawdd gorau yn ystod galwadau. Gellwch newid y gosodiadau yn unigol wedyn "
+"yn y ffenest hoffterau."
+
+#: src/druid.cpp:1096
+#, c-format
+msgid "Audio Manager - page %d/%d"
+msgstr "Rheolydd Sain - tudalen %d/%d"
+
+#. The Audio devices
+#: src/druid.cpp:1108
+msgid "Please choose your audio manager:"
+msgstr "Dewiswch eich rheolydd sain os gwelwch yn dda:"
+
+#: src/druid.cpp:1116
+msgid ""
+"The audio manager is the plugin that will manage your audio devices, ALSA is "
+"probably the best choice when available."
+msgstr ""
+"Y rheolydd sain yw'r ategyn fydd yn rheoli'ch dyfeisiau sain. Mwy na thebyg "
+"mai ALSA fyddai'r dewis gorau, pan ar gael."
+
+#: src/druid.cpp:1150
+#, c-format
+msgid "Audio Devices - page %d/%d"
+msgstr "Dyfeisiau Sain - tudalen %d/%d"
+
+#. The Audio devices
+#: src/druid.cpp:1162
+msgid "Please choose the audio output device:"
+msgstr "Dewiswch y ddyfais allbwn fideo os gwelwch yn dda:"
+
+#: src/druid.cpp:1170
+msgid ""
+"The audio output device is the device managed by the audio manager that will "
+"be used to play audio."
+msgstr ""
+"Y ddyfais allbwn sain yw'r ddyfais, reolir gan y rheolydd sain, fydd yn cael "
+"ei ddefnyddio i chwarae sain."
+
+#: src/druid.cpp:1180
+msgid "Please choose the audio input device:"
+msgstr "Dewiswch y ddyfais fewnbwn sain os gwelwch yn dda:"
+
+#: src/druid.cpp:1188
+msgid ""
+"The audio input device is the device managed by the audio manager that will "
+"be used to record your voice."
+msgstr ""
+"Y ddyfais fewnbwn sain yw'r ddyfais, reolir gan y rheolydd sain, fydd yn "
+"cael ei ddefnyddio i recordio'ch llais."
+
+#: src/druid.cpp:1201 src/druid.cpp:1325
+msgid "Test Settings"
+msgstr "Gosodiadau Prawf"
+
+#: src/druid.cpp:1240
+#, c-format
+msgid "Video Manager - page %d/%d"
+msgstr "Rheolydd Fideo - tudalen %d/%d"
+
+#. The Audio devices
+#: src/druid.cpp:1252
+msgid "Please choose your video manager:"
+msgstr "Dewiswch y rheolydd fideo os gwelwch yn dda:"
+
+#: src/druid.cpp:1260
+msgid ""
+"The video manager is the plugin that will manage your video devices, "
+"Video4Linux is the most common choice if you own a webcam."
+msgstr ""
+"Y rheolydd fideo yw'r ategyn fydd yn rheoli'ch dyfeisiau fideo; Video4Linux "
+"yw'r dewis mwyaf cyffredin os yn defnyddio gwê-gamera."
+
+#: src/druid.cpp:1293
+#, c-format
+msgid "Video Devices - page %d/%d"
+msgstr "Dyfeisiau Fideo - tudalen %d/%d"
+
+#. The Video devices
+#: src/druid.cpp:1305
+msgid "Please choose the video input device:"
+msgstr "Dewiswch y ddyfais fewnbwn fideo os gwelwch yn dda:"
+
 #: src/druid.cpp:1313
+msgid ""
+"The video input device is the device managed by the video manager that will "
+"be used to capture video."
+msgstr ""
+"Y ddyfais fewnbwn fideo yw'r ddyfais, reolir gan y rheolydd fideo, fydd yn "
+"cael ei ddefnyddio i gipio fideo."
+
+#: src/druid.cpp:1352
 #, c-format
 msgid "Configuration complete - page %d/%d"
 msgstr "Cyfluniad yn gyflawn - tudalen %d/%d"
 
+#: src/druid.cpp:1379
+msgid "First Time Configuration Druid"
+msgstr "Derwydd Cyfluniad Tro Cyntaf"
+
 #. Update the log and status bar
-#: src/endpoint.cpp:748
+#: src/endpoint.cpp:706
 #, c-format
 msgid "Call from %s"
 msgstr "Galwad oddi wrth %s"
 
-#: src/endpoint.cpp:760
+#: src/endpoint.cpp:718
 #, c-format
 msgid "Forwarding call from %s to %s (Forward all calls)"
 msgstr "Anfon galwad o %s i %s (Blaenyrru pob galwad)"
 
 #. there is no forwarding, so reject the call
-#: src/endpoint.cpp:767 src/endpoint.cpp:788
+#: src/endpoint.cpp:725 src/endpoint.cpp:746
 #, c-format
 msgid "Rejecting call from %s (Busy)"
 msgstr "Gwrthod galwad oddi wrth %s (Prysur)"
 
-#: src/endpoint.cpp:779
+#: src/endpoint.cpp:737
 #, c-format
 msgid "Forwarding call from %s to %s (Busy)"
 msgstr "Anfon galwad o %s i %s (Prysur)"
 
-#: src/endpoint.cpp:797
+#: src/endpoint.cpp:755
 #, c-format
 msgid "Accepting call from %s (Free For Chat)"
 msgstr "Derbyn galwad oddi wrth %s (Rhydd i Siarad)"
 
-#: src/endpoint.cpp:822
+#: src/endpoint.cpp:780
 msgid "Call rejected"
 msgstr "Galwad wedi ei gwrthod"
 
-#: src/endpoint.cpp:831 src/endpoint.cpp:1210 src/endpoint.cpp:2143
+#: src/endpoint.cpp:789 src/endpoint.cpp:1160 src/endpoint.cpp:2102
 msgid "Call forwarded"
 msgstr "Galwad wedi'i hanfon ymlaen"
 
-#: src/endpoint.cpp:843
+#: src/endpoint.cpp:801
 msgid "Call automatically answered"
 msgstr "Atebwyd yr alwad yn awtomatig"
 
-#: src/endpoint.cpp:913
+#: src/endpoint.cpp:871
 #, c-format
 msgid "Forwarding call to %s"
 msgstr "Yn blaenyrru'r alwad at %s"
 
-#: src/endpoint.cpp:924
+#: src/endpoint.cpp:882
 #, c-format
 msgid "Error while forwarding call to %s"
 msgstr "Gwall tra'n blaenyrru'r alwad i %s."
 
-#: src/endpoint.cpp:927
+#: src/endpoint.cpp:885
 msgid "There was an error when forwarding the call to the given host."
 msgstr "Roedd yna wall wrth flaenyrru'r alwad at y gwesteiwr penodol."
 
-#: src/endpoint.cpp:978
+#: src/endpoint.cpp:935
 msgid "Connected"
 msgstr "Cysylltwyd"
 
-#: src/endpoint.cpp:979
+#: src/endpoint.cpp:937
 #, c-format
 msgid "Connected with %s using %s"
 msgstr "Cysylltwyd â %s gan ddefnyddio %s"
 
-#: src/endpoint.cpp:1174
+#: src/endpoint.cpp:1124
 msgid "Local user cleared the call"
 msgstr "Cliriodd defnyddiwr lleol yr alwad"
 
-#: src/endpoint.cpp:1177
+#: src/endpoint.cpp:1127
 msgid "Remote user cleared the call"
 msgstr "Cliriodd defnyddiwr pell yr alwad"
 
-#: src/endpoint.cpp:1180
+#: src/endpoint.cpp:1130
 msgid "Remote user did not accept the call"
 msgstr "Ni dderbyniodd y defnyddiwr pell yr alwad"
 
-#: src/endpoint.cpp:1183 src/endpoint.cpp:1186
+#: src/endpoint.cpp:1133 src/endpoint.cpp:1136
 msgid "Local user did not accept the call"
 msgstr "Ni dderbyniodd y defnyddiwr lleol yr alwad"
 
-#: src/endpoint.cpp:1189
+#: src/endpoint.cpp:1139
 msgid "The Gatekeeper cleared the call"
 msgstr "Gwaredodd y Porthor yr alwad"
 
-#: src/endpoint.cpp:1192
+#: src/endpoint.cpp:1142
 msgid "Call not answered in the required time"
 msgstr "Ni atebwyd i'r alwad yn yr amser penodol"
 
-#: src/endpoint.cpp:1195
+#: src/endpoint.cpp:1145
 msgid "Remote user has stopped calling"
 msgstr "Mae'r defnyddiwr pell wedi peidio galw"
 
-#: src/endpoint.cpp:1198
+#: src/endpoint.cpp:1148
 msgid "Abnormal call termination"
 msgstr "Terfynwyd yr alwad yn anarferol"
 
-#: src/endpoint.cpp:1201
+#: src/endpoint.cpp:1151
 msgid "Could not connect to remote host"
 msgstr "Methwyd cysylltu â'r gwesteiwr pell"
 
-#: src/endpoint.cpp:1204
+#: src/endpoint.cpp:1154
 msgid "Insufficient bandwidth"
 msgstr "Ystod annigonol"
 
-#: src/endpoint.cpp:1207
+#: src/endpoint.cpp:1157
 msgid "No common codec"
 msgstr "Dim codec yn gyffredin "
 
-#: src/endpoint.cpp:1213
+#: src/endpoint.cpp:1163
 msgid "Security check Failed"
 msgstr "Methodd y Gwiriad Diogelwch"
 
-#: src/endpoint.cpp:1216
+#: src/endpoint.cpp:1166
 msgid "Local user is busy"
 msgstr "Mae'r defnyddiwr lleol yn brysur"
 
-#: src/endpoint.cpp:1219
+#: src/endpoint.cpp:1169
 msgid "Remote user is busy"
 msgstr "Mae'r defnyddiwr pell yn brysur"
 
-#: src/endpoint.cpp:1222 src/endpoint.cpp:1225
+#: src/endpoint.cpp:1172 src/endpoint.cpp:1175
 msgid "Congested link to remote party"
 msgstr "Cyswllt gorlawn i'r defnyddiwr pell"
 
-#: src/endpoint.cpp:1228 src/endpoint.cpp:1231
+#: src/endpoint.cpp:1178 src/endpoint.cpp:1181
 msgid "Remote user is unreachable"
 msgstr "Methu cysylltu â'r defnyddiwr pell"
 
-#: src/endpoint.cpp:1234
+#: src/endpoint.cpp:1184
 msgid "Remote host is offline"
 msgstr "Mae'r gwesteiwr pell all-lein"
 
-#: src/endpoint.cpp:1237
+#: src/endpoint.cpp:1187
 msgid "Temporary failure"
 msgstr "Methiant dros dro"
 
-#: src/endpoint.cpp:1240 src/urlhandler.cpp:373 src/urlhandler.cpp:379
+#: src/endpoint.cpp:1190 src/urlhandler.cpp:392 src/urlhandler.cpp:399
 msgid "User not found"
 msgstr "Defnyddiwr heb ei ganfod"
 
-#: src/endpoint.cpp:1244
+#: src/endpoint.cpp:1194
 msgid "Call completed"
 msgstr "Galwad wedi gorffen"
 
-#: src/endpoint.cpp:1335 src/main_window.cpp:1266
+#: src/endpoint.cpp:1289 src/main_window.cpp:1334
 msgid ""
 "Lost packets:\n"
 "Late packets:\n"
@@ -2033,11 +1831,11 @@ msgstr ""
 "Oedi taith gron:\n"
 "Byffer sigl:"
 
-#: src/endpoint.cpp:1559
+#: src/endpoint.cpp:1511
 msgid "Error while starting the listener"
 msgstr "Gwall wrth ddechrau'r gwrandäwr"
 
-#: src/endpoint.cpp:1559
+#: src/endpoint.cpp:1511
 msgid ""
 "You will not be able to receive incoming calls. Please check that no other "
 "program is already running on the port used by GnomeMeeting."
@@ -2045,25 +1843,25 @@ msgstr ""
 "Ni fyddwch yn gallu derbyn galwadau sy'n cyrraedd. Gwiriwch nad oes rhaglen "
 "arall yn rhedeg eisioes ar y porth a ddefnyddir gan GnomeMeeting."
 
-#: src/endpoint.cpp:1686
+#: src/endpoint.cpp:1646
 msgid "Attaching lid hardware to codec"
 msgstr "Atodi caledwedd caead i'r codec"
 
-#: src/endpoint.cpp:1720
+#: src/endpoint.cpp:1680
 #, c-format
 msgid "Opened %s for recording with plugin %s"
 msgstr "Agorwyd %s ar gyfer recordio gyda'r ategyn %s"
 
-#: src/endpoint.cpp:1721
+#: src/endpoint.cpp:1681
 #, c-format
 msgid "Opened %s for playing with plugin %s"
 msgstr "Agorwyd %s ar gyfer chwarae gyda'r ategyn %s"
 
-#: src/endpoint.cpp:1759
+#: src/endpoint.cpp:1717
 msgid "Could not open audio channel for audio transmission"
 msgstr "Methu agor y sianel sain i drosglwyddo sain"
 
-#: src/endpoint.cpp:1759
+#: src/endpoint.cpp:1717
 msgid ""
 "An error occured while trying to record from the soundcard for the audio "
 "transmission. Please check that your soundcard is not busy and that your "
@@ -2075,11 +1873,11 @@ msgstr ""
 "modd deublyg llawn.\n"
 "Analluogir trosglwyddo sain."
 
-#: src/endpoint.cpp:1764
+#: src/endpoint.cpp:1722
 msgid "Could not open audio channel for audio reception"
 msgstr "Methu agor y sianel sain i dderbyn sain"
 
-#: src/endpoint.cpp:1764
+#: src/endpoint.cpp:1722
 msgid ""
 "An error occured while trying to play audio to the soundcard for the audio "
 "reception. Please check that your soundcard is not busy and that your driver "
@@ -2091,12 +1889,12 @@ msgstr ""
 "modd deublyg llawn.\n"
 "Analluogwyd derbyn sain."
 
-#: src/endpoint.cpp:1976
+#: src/endpoint.cpp:1934
 #, c-format
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 
-#: src/endpoint.cpp:2018
+#: src/endpoint.cpp:1976
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2109,7 +1907,7 @@ msgstr ""
 "Oedi taith gron: %d ms\n"
 "Byffer siglo: %d ms"
 
-#: src/endpoint.cpp:2140
+#: src/endpoint.cpp:2099
 #, c-format
 msgid "Forwarding Call to %s (No Answer)"
 msgstr "Anfon Galwad at %s (Dim Ateb)"
@@ -2136,10 +1934,8 @@ msgid "Please provide a valid ID for the gatekeeper."
 msgstr "Os gwelwch yn dda, rhowch ID dilys ar gyfer y porthor."
 
 #: src/gatekeeper.cpp:201
-msgid ""
-"Another user already exists with the same alias, please use another alias."
-msgstr ""
-"Mae defnyddiwr arall yn bodoli gyda'r un ffugenw; defnyddiwch ffugenw arall."
+msgid "Another user already exists with the same alias, please use another alias."
+msgstr "Mae defnyddiwr arall yn bodoli gyda'r un ffugenw; defnyddiwch ffugenw arall."
 
 #: src/gatekeeper.cpp:204
 msgid ""
@@ -2166,11 +1962,11 @@ msgstr "Gwall wrth gofrestru gyda'r porthor."
 msgid "Gatekeeper set to %s"
 msgstr "Gosodwyd y porthor i %s"
 
-#: src/gnomemeeting.cpp:86
+#: src/gnomemeeting.cpp:90
 msgid "Notification area not detected"
 msgstr "Ardal hysbysiad heb ei ddarganfod"
 
-#: src/gnomemeeting.cpp:86
+#: src/gnomemeeting.cpp:90
 msgid ""
 "You have chosen to start GnomeMeeting hidden, however the notification area "
 "is not present in your panel, GnomeMeeting can thus not start hidden."
@@ -2178,53 +1974,61 @@ msgstr ""
 "Rydych wedi dewis cychwyn GnomeMeeting yn gudd, ond nid yw'r man hysbysu yn "
 "bresennol yn eich panel. Felly, ni all GnomeMeeting gychwyn yn gudd."
 
-#: src/gnomemeeting.cpp:186
+#: src/gnomemeeting.cpp:168
 msgid "Answering incoming call"
 msgstr "Yn ateb yr alwad i mewn"
 
-#: src/gnomemeeting.cpp:235
+#: src/gnomemeeting.cpp:218
 msgid "Trying to stop calling"
 msgstr "Yn ceisio atal galw"
 
-#: src/gnomemeeting.cpp:246
+#: src/gnomemeeting.cpp:229
 msgid "Stopping current call"
 msgstr "Yn atal yr alwad gyfredol"
 
-#: src/gnomemeeting.cpp:256
+#: src/gnomemeeting.cpp:239
 msgid "Refusing Incoming call"
 msgstr "Yn gwrthod galwad i fewn"
 
-#. GM is started
-#: src/gnomemeeting.cpp:482
+#. Init the address book
+#: src/gnomemeeting.cpp:422 src/addressbook_window.cpp:1820
+msgid "On This Computer"
+msgstr "Ar Y Cyfrifiadur Hwn"
+
+#: src/gnomemeeting.cpp:422
+msgid "Personal"
+msgstr "Personol"
+
+#: src/gnomemeeting.cpp:480
 #, c-format
 msgid "Started GnomeMeeting V%d.%d.%d for %s\n"
 msgstr "Dechreuwyd GnomeMeeting fersiwn %d.%d.%d ar gyfer %s\n"
 
-#: src/ils.cpp:103
+#: src/ils.cpp:102
 msgid "Invalid parameters"
 msgstr "Paramedrau annilys"
 
-#: src/ils.cpp:103
+#: src/ils.cpp:102
 msgid ""
 "Please provide your first name and e-mail in the Personal Data section in "
-"order to be able to register to the user directory."
+"order to be able to register to the users directory."
 msgstr ""
 "Rhowch eich enw cyntaf a'ch ebost yn yr adran Data Personol er mwyn gallu "
 "cofrestru â'r cyfeiriadur defnyddwyr."
 
-#: src/ils.cpp:137
-msgid "Invalid user directory"
+#: src/ils.cpp:136
+msgid "Invalid users directory"
 msgstr "Cyfeiriadur defnyddiwr annilys"
 
-#: src/ils.cpp:137
-msgid "Operation impossible since there is no user directory specified."
+#: src/ils.cpp:136
+msgid "Operation impossible since there is no users directory specified."
 msgstr "Gweithred amhosibl, gan na phenodwyd cyfeiriadur defnyddwyr."
 
-#: src/ils.cpp:216
+#: src/ils.cpp:215
 msgid "Failed to parse XML file"
 msgstr "Methu gramadegu ffeil XML"
 
-#: src/ils.cpp:216
+#: src/ils.cpp:215
 msgid ""
 "There was an error while parsing the XML file. Please make sure that it is "
 "correctly installed in your system."
@@ -2232,20 +2036,20 @@ msgstr ""
 "Roedd gwall wrth ramadegu'r ffeil XML. Gwiriwch ei fod wedi'i ymsefydlu yn "
 "gywir ar eich system."
 
-#: src/ils.cpp:227
+#: src/ils.cpp:226
 msgid "Bad information"
 msgstr "Gwybodaeth ddrwg"
 
-#: src/ils.cpp:227
+#: src/ils.cpp:226
 #, c-format
 msgid "Bad LDAP information from XML file: %s."
 msgstr "Gwybodaeth LDAP anghywir o'r ffeil XML: %s"
 
-#: src/ils.cpp:236
+#: src/ils.cpp:235 src/ils.cpp:245 src/ils.cpp:254
 msgid "Cannot contact the users directory"
 msgstr "Methu cysylltu â chyfeiriadur y defnyddwyr."
 
-#: src/ils.cpp:236
+#: src/ils.cpp:235
 #, c-format
 msgid ""
 "Failed to contact the users directory %s:%d. The directory is probably "
@@ -2254,339 +2058,263 @@ msgstr ""
 "Methu a chysylltu â'r cyfeiriadur defnyddwyr %s:%d. Mwy na thebyg fod y "
 "cyfeiriadur wedi ei orlwytho; ceisiwch eto'n hwyrach."
 
-#: src/ils.cpp:246 src/ils.cpp:255
-msgid "Cannot contact the user directory"
-msgstr "Methu cysylltu â'r cyfeiriadur defnyddwyr"
-
-#: src/ils.cpp:246
+#: src/ils.cpp:245
 msgid "Failed to set a time limit on operations."
 msgstr "Methu gosod terfyn amser ar weithredoedd."
 
-#: src/ils.cpp:255
+#: src/ils.cpp:254
 #, c-format
-msgid "Failed to bind to user directory: %s."
+msgid "Failed to bind to users directory: %s."
 msgstr "Methu clymu at y cyfeiriadur defnyddwyr: %s"
 
-#: src/ils.cpp:279
+#: src/ils.cpp:278
 #, c-format
 msgid "Updated information on the users directory %s."
 msgstr "Diweddarwyd gwybodaeth ar y cyfeiriadur defnyddwyr %s."
 
-#: src/ils.cpp:283
+#: src/ils.cpp:282
 #, c-format
 msgid "Unregistered from the users directory %s."
 msgstr "Anghofrestredig oddi wrth gyfeiriadur defnyddwyr %s"
 
-#: src/ils.cpp:305
+#: src/ils.cpp:304
 #, c-format
 msgid "Error while registering to %s"
 msgstr "Gwall tra'n cofrestru â %s"
 
-#: src/ils.cpp:642
+#: src/addressbook_window.cpp:612
+msgid "Contact collision"
+msgstr "Trawiad cyswllt"
+
+#: src/addressbook_window.cpp:614
 #, c-format
-msgid "Failed to contact LDAP server %s:%d"
-msgstr "Methu cysylltu â'r gweinydd LDAP %s:%d"
-
-#: src/ils.cpp:655
-msgid "Failed to set time limit on LDAP operations"
-msgstr "Methu gosod terfyn amser ar weithredoedd LDAP"
-
-#: src/ils.cpp:665
-#, c-format
-msgid "Failed to contact to LDAP server %s: %s"
-msgstr "Methu cysylltu â'r gweinydd LDAP %s: %s"
-
-#: src/ils.cpp:675
-#, c-format
-msgid "Fetching online users list from %s"
-msgstr "Nôl rhestr o ddefnyddwyr ar-lein oddi wrth %s"
-
-#: src/ils.cpp:693
-msgid "Could not fetch online users list"
-msgstr "Methu nôl rhestr o ddefnyddwyr sydd ar-lein"
-
-#: src/ils.cpp:709
-#, c-format
-msgid "Connection to %s lost"
-msgstr "Cysylltiad â %s wedi'i golli"
-
-#: src/ils.cpp:926
-#, c-format
-msgid "Search completed: %d user(s) listed on a total of %d user(s) from %s"
-msgstr ""
-"Cwblhawyd y chwiliad: %d defnyddiwr wedi eu rhestru ar gyfanswm o %d "
-"defnyddiwr o %s"
-
-#: src/ils.cpp:931
-#, c-format
-msgid "Search completed: %d user(s) found on %s"
-msgstr "Chwilio ar ben: canfuwyd %d defnyddiwr ar %s"
-
-#: src/ldap_window.cpp:737
-msgid "Edit the Contact Information"
-msgstr "Golygu'r Gwybodaeth Cyswllt"
-
-#: src/ldap_window.cpp:754
-msgid "Name:"
-msgstr "Enw:"
-
-#: src/ldap_window.cpp:774
-msgid "URL:"
-msgstr "URL:"
-
-#: src/ldap_window.cpp:801
-msgid "Speed Dial:"
-msgstr "Deialu Brys:"
-
-#: src/ldap_window.cpp:825
-msgid "Groups:"
-msgstr "Grwpiau:"
-
-#: src/ldap_window.cpp:937
-msgid "Invalid user name or URL"
-msgstr "Enw ddefnyddiwr neu URL annilys"
-
-#: src/ldap_window.cpp:937
 msgid ""
-"Please provide a valid name and URL for the contact you want to add to the "
-"address book."
+"Another contact with the same speed dial already exists in your address "
+"book:\n"
+"\n"
+"<b>Contact Name</b>: %s\n"
+"<b>Contact URL</b>: %s\n"
+"<b>Contact Speed Dial</b>: %s\n"
 msgstr ""
-"Rhowch enw ac URL dilys ar gyfer y cyswllt yr ydych eisiau ei ychwanegu i'r "
-"llyfr cyfeiriadau."
+"Mae cyswllt arall gyda'r un côd deialu brys yn bodoli eisioes yn y llyfr "
+"cyfeiriadau:\n"
+"\n"
+"<b>Enw y Cyswllt</b>: %s\n"
+"<b>LAU y Cyswllt</b>: %s\n"
+"<b>Deialu Brys y Cyswllt</b>: %s\n"
 
-#: src/ldap_window.cpp:945
-msgid "Invalid group"
-msgstr "Grŵp annilys"
-
-#: src/ldap_window.cpp:945
-msgid "You have to select a group to which you want to add your contact."
-msgstr "Rhaid i chi ddewis grŵp yr ydych eisiau ychwanegu eich cyswllt iddo."
-
-#: src/ldap_window.cpp:959
-msgid "Invalid speed dial"
-msgstr "Deialu brys annilys"
-
-#: src/ldap_window.cpp:959
+#: src/addressbook_window.cpp:616
+#, c-format
 msgid ""
-"Another contact with the same speed dial already exists in the address book."
+"Another contact with similar information already exists in your address "
+"book:\n"
+"\n"
+"<b>Contact Name</b>: %s\n"
+"<b>Contact URL</b>: %s\n"
+"<b>Contact Speed Dial</b>: %s\n"
+"\n"
+"Do you still want to add the contact?"
 msgstr ""
-"Mae cyswllt arall gyda'r un côd deialu brys mewn bod eisioes yn y llyfr "
-"cyfeiriadau."
-
-#: src/ldap_window.cpp:971
-msgid "Invalid URL"
-msgstr "URL annilys"
-
-#: src/ldap_window.cpp:971
-msgid "Another contact with the same URL already exists in the address book."
-msgstr ""
-"Mae cyswllt arall gyda'r un URL mewn bod eisioes yn y llyfr cyfeiriadau."
-
-#: src/ldap_window.cpp:1008
-#, c-format
-msgid "Are you sure you want to remove %s [%s] from this group?"
-msgstr "Ydych yn siwr eich bod am ddileu'r gweinydd %s[%s] o'r grŵp?"
-
-#: src/ldap_window.cpp:1114
-#, c-format
-msgid "Add %s to Address Book"
-msgstr "Ychwanegu %s i'r llyfr cyfeiriadau"
-
-#: src/ldap_window.cpp:1140 src/ldap_window.cpp:2604
-msgid "C_all Contact"
-msgstr "G_alw Cyswllt"
-
-#: src/ldap_window.cpp:1146 src/ldap_window.cpp:2607
-msgid "_Tranfer Call to Contact"
-msgstr "_Trosglwyddo'r Alwad i'r Cyswllt"
-
-#: src/ldap_window.cpp:1158 src/ldap_window.cpp:2624
-msgid "Contact _Properties"
-msgstr "_Priodweddau Cyswllt"
-
-#: src/ldap_window.cpp:1164
-msgid "Copy URL to the Clipboard"
-msgstr "Copïo'r URL i'r Clipfwrdd"
-
-#: src/ldap_window.cpp:1170 src/ldap_window.cpp:1610 src/ldap_window.cpp:2586
-msgid "_Delete"
-msgstr "_Dileu"
-
-#: src/ldap_window.cpp:1270
-msgid "Add a New Server"
-msgstr "Ychwanegu Gweinydd Newydd"
-
-#: src/ldap_window.cpp:1271
-msgid "Enter the server name:"
-msgstr "Rhowch enw'r gweinydd:"
-
-#: src/ldap_window.cpp:1272 src/ldap_window.cpp:1382
-msgid ""
-"Sorry but there is already a server with the same name in the address book."
-msgstr ""
-"Mae'n ddrwg gennym, ond mae gweinydd gyda'r un enw mewn bod eisioes yn y "
-"llyfr cyfeiriadau."
-
-#: src/ldap_window.cpp:1276
-msgid "Add a New Group"
-msgstr "Ychwanegu Grŵp Newydd"
-
-#: src/ldap_window.cpp:1277
-msgid "Enter the group name:"
-msgstr "Rhowch enw'r grŵp:"
-
-#: src/ldap_window.cpp:1278 src/ldap_window.cpp:1393
-msgid ""
-"Sorry but there is already a group with the same name in the address book."
-msgstr ""
-"Mae'n ddrwg gennym, ond mae grŵp arall gyda'r un enw mewn bod eisioes yn y "
-"llyfr cyfeiriadau."
-
-#: src/ldap_window.cpp:1312 src/ldap_window.cpp:1442
-msgid "Invalid server or group name"
-msgstr "Enw grŵp neu weinydd annilys"
-
-#: src/ldap_window.cpp:1378
-#, c-format
-msgid "Please enter a new name for server %s:"
-msgstr "Rhowch enw newydd ar gyfer gweinydd %s os gwelwch yn dda:"
-
-#: src/ldap_window.cpp:1380
-#, c-format
-msgid "Are you sure you want to delete server %s?"
-msgstr "Ydych yn siwr eich bod am ddileu gweinydd %s?"
-
-#: src/ldap_window.cpp:1389
-#, c-format
-msgid "Please enter a new name for group %s:"
-msgstr "Rhowch enw newydd ar gyfer grŵp %s:"
-
-#: src/ldap_window.cpp:1391
-#, c-format
-msgid "Are you sure you want to delete group %s and all its contacts?"
-msgstr "Ydych chi'n siwr eich bod am dileu grŵp %s a'i gysylltau i gyd?"
-
-#: src/ldap_window.cpp:1578
-msgid "New Server"
-msgstr "Gweinydd Newydd"
-
-#: src/ldap_window.cpp:1588
-msgid "New Group"
-msgstr "Grŵp Newydd"
-
-#: src/ldap_window.cpp:1598
-msgid "_Find"
-msgstr "_Canfod"
-
-#: src/ldap_window.cpp:1605 src/ldap_window.cpp:1627 src/ldap_window.cpp:2590
-msgid "_Rename"
-msgstr "_Ailenwi"
-
-#: src/ldap_window.cpp:1620
-msgid "New Contact"
-msgstr "Cyswllt Newydd"
-
-#: src/ldap_window.cpp:1632
-msgid "Delete"
-msgstr "Dileu"
-
-#: src/ldap_window.cpp:2555
-msgid "Address Book"
-msgstr "Llyfr Cyfeiriadau"
-
-#: src/ldap_window.cpp:2573
-msgid "_File"
-msgstr "_Ffeil"
-
-#: src/ldap_window.cpp:2575
-msgid "New _Server"
-msgstr "G_weinydd Newydd"
-
-#: src/ldap_window.cpp:2579
-msgid "New _Group"
-msgstr "_Grŵp Newydd"
-
-#: src/ldap_window.cpp:2597 src/menu.cpp:310
-msgid "_Close"
-msgstr "_Cau"
-
-#: src/ldap_window.cpp:2602
-msgid "C_ontact"
-msgstr "C_yswllt"
-
-#: src/ldap_window.cpp:2613
-msgid "New _Contact"
-msgstr "Cyswllt _Newydd"
-
-#: src/ldap_window.cpp:2617
-msgid "Add Contact to _Address Book"
-msgstr "Ychwanegu'r Cyswllt at y _Llyfr Cyfeiriadau"
+"Mae cyswllt arall gyda gwybodaeth tebyg yn bodoli eisioes yn y llyfr "
+"cyfeiriadau:\n"
+"\n"
+"<b>Enw y Cyswllt</b>: %s\n"
+"<b>LAU y Cyswllt</b>: %s\n"
+"<b>Deialu Brys y Cyswllt</b>: %s\n"
+"\n"
+"Ydych chi dal eisiau ychwanegu'r cyswllt?"
 
 #. Translators: This is "S" as in "Status"
-#: src/ldap_window.cpp:2874
+#: src/addressbook_window.cpp:774
 msgid "S"
 msgstr "St"
 
-#. Translators: This is "A" as in "Audio"
-#: src/ldap_window.cpp:2884 src/pref_window.cpp:1099 src/pref_window.cpp:1526
-msgid "A"
-msgstr "Sa"
-
-#. Translators: This is "V" as in "Video"
-#: src/ldap_window.cpp:2894
-msgid "V"
-msgstr "Fid"
-
-#: src/ldap_window.cpp:2903 src/ldap_window.cpp:2977 src/pref_window.cpp:1540
+#: src/addressbook_window.cpp:785 src/pref_window.cpp:445
 msgid "Name"
 msgstr "Enw"
 
-#: src/ldap_window.cpp:2941 src/ldap_window.cpp:2989 src/tools.cpp:548
+#: src/addressbook_window.cpp:797
 msgid "URL"
 msgstr "URL"
 
-#: src/ldap_window.cpp:2964
-msgid "IP"
-msgstr "IP"
+#: src/addressbook_window.cpp:823 src/calls_history_window.cpp:742
+msgid "Software"
+msgstr "Meddalwedd"
 
-#: src/ldap_window.cpp:3002
+#: src/addressbook_window.cpp:836
+msgid "E-Mail"
+msgstr "Ebost"
+
+#: src/addressbook_window.cpp:860
+msgid "Categories"
+msgstr "Categorïau"
+
+#: src/addressbook_window.cpp:873
 msgid "Speed Dial"
 msgstr "Deialu Brys"
 
-#: src/ldap_window.cpp:3055
+#: src/addressbook_window.cpp:1204 src/addressbook_window.cpp:1234
+#: src/addressbook_window.cpp:1729 src/calls_history_window.cpp:238
+msgid "C_all Contact"
+msgstr "G_alw Cyswllt"
+
+#: src/addressbook_window.cpp:1209 src/addressbook_window.cpp:1239
+msgid "_Copy URL to clipboard"
+msgstr "_Copïo'r URL i'r clipfwrdd"
+
+#: src/addressbook_window.cpp:1216 src/addressbook_window.cpp:1715
+msgid "_Properties"
+msgstr "_Priodweddau"
+
+#: src/addressbook_window.cpp:1223 src/addressbook_window.cpp:1710
+msgid "_Delete"
+msgstr "_Dileu"
+
+#: src/addressbook_window.cpp:1246 src/addressbook_window.cpp:1739
+#: src/calls_history_window.cpp:245
+msgid "Add Contact to _Address Book"
+msgstr "Ychwanegu'r Cyswllt at y _Llyfr Cyfeiriadau"
+
+#: src/addressbook_window.cpp:1674
+msgid "Address Book"
+msgstr "Llyfr Cyfeiriadau"
+
+#: src/addressbook_window.cpp:1701
+msgid "_File"
+msgstr "_Ffeil"
+
+#: src/addressbook_window.cpp:1703
+msgid "New _Address Book"
+msgstr "Llyfr _Cyfeiriadau Newydd"
+
+#: src/addressbook_window.cpp:1722 src/menu.cpp:328
+msgid "_Close"
+msgstr "_Cau"
+
+#: src/addressbook_window.cpp:1727
+msgid "C_ontact"
+msgstr "C_yswllt"
+
+#: src/addressbook_window.cpp:1735
+msgid "New _Contact"
+msgstr "Cyswllt _Newydd"
+
+#: src/addressbook_window.cpp:1812
+msgid "On LDAP servers"
+msgstr "Ar weinyddion LDAP"
+
+#: src/addressbook_window.cpp:1849
 msgid "Find all contacts"
 msgstr "Canfod pob cysylltiad"
 
-#: src/ldap_window.cpp:3060
-msgid "First name contains"
-msgstr "Enw cyntaf yn cynnwys"
+#: src/addressbook_window.cpp:1854
+msgid "Name contains"
+msgstr "Enw yn cynnwys"
 
-#: src/ldap_window.cpp:3064
-msgid "Last name contains"
-msgstr "Enw olaf yn cynnwys"
+#: src/addressbook_window.cpp:1858
+msgid "URL contains"
+msgstr "URL yn cynnwys"
 
-#: src/ldap_window.cpp:3068
-msgid "E-mail contains"
-msgstr "E-bost yn cynnwys"
+#: src/addressbook_window.cpp:1862
+msgid "Belongs to category"
+msgstr "Yn perthyn y gategori"
 
-#: src/ldap_window.cpp:3247
-msgid "Servers"
-msgstr "Gweinyddion"
+#: src/addressbook_window.cpp:1992
+msgid "Edit the Contact Information"
+msgstr "Golygu'r Gwybodaeth Cyswllt"
 
-#: src/ldap_window.cpp:3290
-msgid "Groups"
-msgstr "Grwpiau"
+#: src/addressbook_window.cpp:2013 src/addressbook_window.cpp:2397
+msgid "Name:"
+msgstr "Enw:"
 
-#: src/lid.cpp:134
+#: src/addressbook_window.cpp:2033
+msgid "URL:"
+msgstr "URL:"
+
+#: src/addressbook_window.cpp:2053
+msgid "Email:"
+msgstr "Ebost:"
+
+#: src/addressbook_window.cpp:2074
+msgid "Speed Dial:"
+msgstr "Deialu Brys:"
+
+#: src/addressbook_window.cpp:2096
+msgid "Categories:"
+msgstr "Categorïau:"
+
+#: src/addressbook_window.cpp:2121
+msgid "Local Addressbook:"
+msgstr "Llyfr Cyfeiriadau Lleol:"
+
+#: src/addressbook_window.cpp:2272
+#, c-format
+msgid "Are you sure you want to delete %s from %s?"
+msgstr "Ydych yn siwr eich bod am ddileu %s o %s?"
+
+#: src/addressbook_window.cpp:2380
+msgid "Add an address book"
+msgstr "Ychwanegu Llyfr Cyfeiriadau"
+
+#: src/addressbook_window.cpp:2418
+msgid "Type:"
+msgstr "Math:"
+
+#: src/addressbook_window.cpp:2425
+msgid "Local"
+msgstr "Lleol"
+
+#: src/addressbook_window.cpp:2430
+msgid "Remote LDAP"
+msgstr "LDAP pell:"
+
+#: src/addressbook_window.cpp:2435
+msgid "Remote ILS"
+msgstr "ILS pell:"
+
+#: src/addressbook_window.cpp:2467
+msgid "Search Scope:"
+msgstr "Terfynau Archwilio:"
+
+#: src/addressbook_window.cpp:2474
+msgid "Subtree"
+msgstr "Is-goeden"
+
+#: src/addressbook_window.cpp:2479
+msgid "One Level"
+msgstr "Un Lefel"
+
+#: src/addressbook_window.cpp:2509
+msgid "Hostname:"
+msgstr "Enw peiriant:"
+
+#: src/addressbook_window.cpp:2530
+msgid "Port:"
+msgstr "Porth:"
+
+#: src/addressbook_window.cpp:2553
+msgid "Base DN:"
+msgstr "DN Sylfaen:"
+
+#: src/addressbook_window.cpp:2574
+msgid "Search Attribute:"
+msgstr "Priodoledd Archwilio:"
+
+#: src/addressbook_window.cpp:2672
+#, c-format
+msgid "Are you sure you want to delete %s and all its contacts?"
+msgstr "Ydych chi'n siwr eich bod am dileu %s a'i gysylltiadau i gyd?"
+
+#: src/lid.cpp:135
 #, c-format
 msgid "Opened Quicknet device %s"
 msgstr "Agorwyd y ddyfais Quicknet %s"
 
-#: src/lid.cpp:157
+#: src/lid.cpp:158
 msgid "Error while opening the Quicknet device."
 msgstr "Gwall wrth agor y ddyfais Quicknet."
 
-#: src/lid.cpp:157
+#: src/lid.cpp:158
 msgid ""
 "Please check that your driver is correctly installed and that the device is "
 "working correctly."
@@ -2594,29 +2322,29 @@ msgstr ""
 "Gwiriwch bod eich gyrrydd wedi'i osod yn gywir a bod y ddyfais yn gweithio "
 "yn iawn."
 
-#: src/lid.cpp:184
+#: src/lid.cpp:186
 #, c-format
 msgid "Closed Quicknet device %s"
 msgstr "Wedi cau'r ddyfais Quicknet %s"
 
-#: src/lid.cpp:272 src/lid.cpp:273
+#: src/lid.cpp:277 src/lid.cpp:278
 msgid "Phone is off hook"
 msgstr "Mae'r ffôn yn brysur"
 
-#: src/lid.cpp:308 src/lid.cpp:309
+#: src/lid.cpp:313 src/lid.cpp:314
 msgid "Phone is on hook"
 msgstr "Mae'r ffôn yn segur"
 
-#: src/main_window.cpp:336
+#: src/main_window.cpp:501
 #, c-format
 msgid "Total: %.2f MB"
 msgstr "Cyfanswm: %.2f MB"
 
-#: src/main_window.cpp:460
+#: src/main_window.cpp:585
 msgid "Cannot run GnomeMeeting"
 msgstr "Methu rhedeg GnomeMeeting"
 
-#: src/main_window.cpp:460
+#: src/main_window.cpp:585
 msgid ""
 "GnomeMeeting is already running, if you want it to call a given callto or "
 "h323 URL, please use \"gnomemeeting -c URL\"."
@@ -2624,7 +2352,7 @@ msgstr ""
 "Mae GnomeMeeting yn rhedeg eisioes.  Os ydych eisiau iddo alw URL 'callto' "
 "neu h323 penodol, defnyddiwch \"gnomemeeting -c URL\"."
 
-#: src/main_window.cpp:513
+#: src/main_window.cpp:638
 msgid ""
 "It appears that you do not have gnomemeeting.server installed in a valid "
 "location. Factory mode disabled.\n"
@@ -2632,7 +2360,7 @@ msgstr ""
 "Ymddengys nad ydych wedi sefydlu gnomemeeting.server mewn man dilys. "
 "Analluogir modd ffatri.\n"
 
-#: src/main_window.cpp:517
+#: src/main_window.cpp:642
 msgid ""
 "Error registering GnomeMeeting with the activation service; factory mode "
 "disabled.\n"
@@ -2640,68 +2368,68 @@ msgstr ""
 "Gwall wrth gofrestru GnomeMeeting gyda'r gwasanaeth gweithredu; analluogir "
 "modd ffatri.\n"
 
-#: src/main_window.cpp:557
+#: src/main_window.cpp:682
 msgid "Failed to retrieve gnomemeeting server from activation server\n"
 msgstr "Methwyd cyrchu gweinydd gnomemeeting o'r gweinydd gweithredu\n"
 
-#: src/main_window.cpp:864
+#: src/main_window.cpp:811
 #, c-format
 msgid "Sent dtmf %c"
 msgstr "Wedi anfon tonau %c"
 
-#: src/main_window.cpp:1134 src/menu.cpp:400 src/menu.cpp:528
+#: src/main_window.cpp:1198 src/menu.cpp:411 src/menu.cpp:538
 msgid "Local Video"
 msgstr "Fideo Lleol"
 
-#: src/main_window.cpp:1138 src/menu.cpp:406 src/menu.cpp:534
+#: src/main_window.cpp:1202 src/menu.cpp:417 src/menu.cpp:544
 msgid "Remote Video"
 msgstr "Fideo Pell"
 
-#: src/main_window.cpp:1271 src/menu.cpp:361
+#: src/main_window.cpp:1339 src/menu.cpp:372
 msgid "Statistics"
 msgstr "Ystadegau"
 
-#: src/main_window.cpp:1327
+#: src/main_window.cpp:1395
 msgid "Dialpad"
 msgstr "Pad deialu"
 
-#: src/main_window.cpp:1382
+#: src/main_window.cpp:1450
 msgid "Adjust brightness"
 msgstr "Addasu gloywder"
 
-#: src/main_window.cpp:1404
+#: src/main_window.cpp:1473
 msgid "Adjust whiteness"
 msgstr "Addasu gwynder"
 
-#: src/main_window.cpp:1426
+#: src/main_window.cpp:1496
 msgid "Adjust color"
 msgstr "Addasu'r lliw"
 
-#: src/main_window.cpp:1448
+#: src/main_window.cpp:1519
 msgid "Adjust contrast"
 msgstr "Addasu'r cyferbyniad"
 
-#: src/main_window.cpp:1456
+#: src/main_window.cpp:1527
 msgid "Video"
 msgstr "Fideo"
 
-#: src/main_window.cpp:1532
+#: src/main_window.cpp:1605
 msgid "Audio"
 msgstr "Sain"
 
-#: src/main_window.cpp:1582
+#: src/main_window.cpp:1668
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Argraffu negeseuon dadnamu yn y terfynell (lefel rhwng 1 a 6)"
 
-#: src/main_window.cpp:1585
+#: src/main_window.cpp:1671
 msgid "Makes GnomeMeeting call the given URL"
 msgstr "Gwneud i GnomeMeeting alw'r URL penodol"
 
-#: src/main_window.cpp:1648
+#: src/main_window.cpp:1706
 msgid "No usable audio manager detected"
 msgstr "Ni ganfyddwyd unrhyw reolydd sain ellid ei ddefnyddio"
 
-#: src/main_window.cpp:1648
+#: src/main_window.cpp:1706
 msgid ""
 "GnomeMeeting didn't find any usable sound manager. Make sure that your "
 "installation is correct."
@@ -2709,7 +2437,7 @@ msgstr ""
 "Methodd GnomeMeeting a darganfod unrhyw reolydd sain medrid ei ddefnyddio. "
 "Sicrhewch fod eich gosodiad yn gywir."
 
-#: src/main_window.cpp:1668
+#: src/main_window.cpp:1726
 #, c-format
 msgid ""
 "GnomeMeeting got an invalid value for the GConf key %s.\n"
@@ -2732,387 +2460,391 @@ msgstr ""
 "archifau'r rhestr ebost (http://mail.gnome.org) am fwy o wybodaeth ynghylch "
 "y broblem yma."
 
-#: src/main_window.cpp:1671
+#: src/main_window.cpp:1729
 msgid "Gconf key error"
 msgstr "Gwall allwedd Gconf"
 
-#: src/menu.cpp:239
+#: src/menu.cpp:257
 msgid "C_all"
 msgstr "G_alwad"
 
-#: src/menu.cpp:241
+#: src/menu.cpp:259
 msgid "C_onnect"
 msgstr "_Cysylltu"
 
-#: src/menu.cpp:241 src/menu.cpp:603
+#: src/menu.cpp:259 src/menu.cpp:613
 msgid "Create a new connection"
 msgstr "Creu cysylltiad newydd"
 
-#: src/menu.cpp:244 src/menu.cpp:606
+#: src/menu.cpp:262 src/menu.cpp:616
 msgid "_Disconnect"
 msgstr "_Datgysylltu"
 
-#: src/menu.cpp:245 src/menu.cpp:607
+#: src/menu.cpp:263 src/menu.cpp:617
 msgid "Close the current connection"
 msgstr "Cau'r cysylltiad cyfredol"
 
-#: src/menu.cpp:251 src/menu.cpp:613
+#: src/menu.cpp:269 src/menu.cpp:623
 msgid "_Available"
 msgstr "Ar _Gael"
 
-#: src/menu.cpp:252 src/menu.cpp:614
+#: src/menu.cpp:270 src/menu.cpp:624
 msgid "Display a popup to accept the call"
 msgstr "Dangos naidlen i dderbyn galwad"
 
-#: src/menu.cpp:257 src/menu.cpp:619
+#: src/menu.cpp:275 src/menu.cpp:629
 msgid "Free for Cha_t"
 msgstr "Rhydd i _Sgyrsio"
 
-#: src/menu.cpp:258 src/menu.cpp:620
+#: src/menu.cpp:276 src/menu.cpp:630
 msgid "Auto answer calls"
 msgstr "Ateb galwadau yn awtomatig"
 
-#: src/menu.cpp:263 src/menu.cpp:625
+#: src/menu.cpp:281 src/menu.cpp:635
 msgid "_Busy"
 msgstr "_Prysur"
 
-#: src/menu.cpp:263 src/menu.cpp:625
+#: src/menu.cpp:281 src/menu.cpp:635
 msgid "Reject calls"
 msgstr "Gwrthod galwadau"
 
-#: src/menu.cpp:268 src/menu.cpp:630
+#: src/menu.cpp:286 src/menu.cpp:640
 msgid "_Forward"
 msgstr "_Blaenyrru"
 
-#: src/menu.cpp:268 src/menu.cpp:630
+#: src/menu.cpp:286 src/menu.cpp:640
 msgid "Forward calls"
 msgstr "Blaenyrru galwadau"
 
-#: src/menu.cpp:276
+#: src/menu.cpp:294
 msgid "Speed dials"
 msgstr "Rhifau deialu Brys"
 
-#: src/menu.cpp:280
+#: src/menu.cpp:298
 msgid "Hold the current call"
 msgstr "Dal yr alwad gyfredol"
 
-#: src/menu.cpp:283
+#: src/menu.cpp:301
 msgid "_Transfer Call"
 msgstr "_Trosglwyddo Galwad"
 
-#: src/menu.cpp:284
+#: src/menu.cpp:302
 msgid "Transfer the current call"
 msgstr "Trosglwyddo'r alwad gyfredol"
 
-#: src/menu.cpp:291
+#: src/menu.cpp:309
 msgid "Suspend or resume the audio transmission"
 msgstr "Seibio neu ailgychwyn y trosglwyddiad sain "
 
-#: src/menu.cpp:296
+#: src/menu.cpp:314
 msgid "Suspend or resume the video transmission"
 msgstr "Seibio neu ailgychwyn y trosglwyddiad fideo"
 
-#: src/menu.cpp:303
+#: src/menu.cpp:321
 msgid "_Save Current Picture"
 msgstr "_Cadw'r Llun Cyfredol"
 
-#: src/menu.cpp:304
+#: src/menu.cpp:322
 msgid "Save a snapshot of the current video"
 msgstr "Cadw ciplun o'r fideo cyfredol"
 
-#: src/menu.cpp:310
+#: src/menu.cpp:328
 msgid "Close the GnomeMeeting window"
 msgstr "_Cau'r ffenestr GnomeMeeting"
 
-#: src/menu.cpp:317 src/menu.cpp:676
+#: src/menu.cpp:335 src/menu.cpp:678
 msgid "_Quit"
 msgstr "_Gadael"
 
-#: src/menu.cpp:317 src/menu.cpp:676
+#: src/menu.cpp:335 src/menu.cpp:679
 msgid "Quit GnomeMeeting"
 msgstr "Gadael GnomeMeeting"
 
-#: src/menu.cpp:321
+#: src/menu.cpp:339
 msgid "_Edit"
 msgstr "_Golygu"
 
-#: src/menu.cpp:324 src/menu.cpp:330
+#: src/menu.cpp:341
 msgid "Configuration Druid"
 msgstr "Derwydd Cyfluniad"
 
-#: src/menu.cpp:325 src/menu.cpp:331
+#: src/menu.cpp:342
 msgid "Run the configuration druid"
 msgstr "Rhedeg y cynorthwydd cyfluniad"
 
-#: src/menu.cpp:338 src/menu.cpp:654
+#: src/menu.cpp:349 src/menu.cpp:664
 msgid "_Preferences"
 msgstr "_Hoffterau"
 
-#: src/menu.cpp:339 src/menu.cpp:655
+#: src/menu.cpp:350 src/menu.cpp:665
 msgid "Change your preferences"
 msgstr "Newid eich hoffterau"
 
-#: src/menu.cpp:344
+#: src/menu.cpp:355
 msgid "_View"
 msgstr "_Golwg"
 
-#: src/menu.cpp:346 src/pref_window.cpp:944
+#: src/menu.cpp:357 src/pref_window.cpp:926
 msgid "Text Chat"
 msgstr "Sgwrs Destun"
 
-#: src/menu.cpp:347
+#: src/menu.cpp:358
 msgid "View/Hide the text chat window"
 msgstr "Dangos/Cuddio'r ffenestr sgwrs destun"
 
-#: src/menu.cpp:352
+#: src/menu.cpp:363
 msgid "Status Bar"
 msgstr "Bar Statws"
 
-#: src/menu.cpp:353
+#: src/menu.cpp:364
 msgid "View/Hide the status bar"
 msgstr "Dangos/Cuddio y bar statws"
 
-#: src/menu.cpp:359
+#: src/menu.cpp:370
 msgid "Control Panel"
 msgstr "Panel Rheoli"
 
-#: src/menu.cpp:362
+#: src/menu.cpp:373
 msgid "View audio/video transmission and reception statistics"
 msgstr "Gweld ystadegau am drosglwyddo a derbyn sain/fideo"
 
-#: src/menu.cpp:367
+#: src/menu.cpp:378
 msgid "_Dialpad"
 msgstr "_Pad deialu"
 
-#: src/menu.cpp:367
+#: src/menu.cpp:378
 msgid "View the dialpad"
 msgstr "Gweld y pad deialu"
 
-#: src/menu.cpp:372
+#: src/menu.cpp:383
 msgid "_Audio Settings"
 msgstr "Gosodiadau _Sain"
 
-#: src/menu.cpp:373
+#: src/menu.cpp:384
 msgid "View audio settings"
 msgstr "Golygu'r gosodiadau sain"
 
-#: src/menu.cpp:378
+#: src/menu.cpp:389
 msgid "_Video Settings"
 msgstr "_Gosodiadau fideo"
 
-#: src/menu.cpp:379
+#: src/menu.cpp:390
 msgid "View video settings"
 msgstr "Golygu'r gosodiadau fideo"
 
-#: src/menu.cpp:384 src/pref_window.cpp:1319
+#: src/menu.cpp:395 src/pref_window.cpp:1326
 msgid "Off"
 msgstr "I ffwrdd"
 
-#: src/menu.cpp:384
+#: src/menu.cpp:395
 msgid "Hide the control panel"
 msgstr "Cuddio'r panel rheoli"
 
-#: src/menu.cpp:392
+#: src/menu.cpp:403
 msgid "_Clear Text Chat"
 msgstr "_Clirio'r Sgwrs Destun"
 
-#: src/menu.cpp:393
+#: src/menu.cpp:404
 msgid "Clear the text chat"
 msgstr "Clirio y sgwrs destun"
 
-#: src/menu.cpp:401 src/menu.cpp:529
+#: src/menu.cpp:412 src/menu.cpp:539
 msgid "Local video image"
 msgstr "Delwedd fideo lleol"
 
-#: src/menu.cpp:407 src/menu.cpp:535
+#: src/menu.cpp:418 src/menu.cpp:545
 msgid "Remote video image"
 msgstr "Delwedd fideo pell"
 
-#: src/menu.cpp:412 src/menu.cpp:540
+#: src/menu.cpp:423 src/menu.cpp:550
 msgid "Both (Local Video Incrusted)"
 msgstr "Y ddau (fideo lleol yn gramennog)"
 
-#: src/menu.cpp:413 src/menu.cpp:420 src/menu.cpp:427 src/menu.cpp:541
-#: src/menu.cpp:548 src/menu.cpp:555
+#: src/menu.cpp:424 src/menu.cpp:431 src/menu.cpp:438 src/menu.cpp:551
+#: src/menu.cpp:558 src/menu.cpp:565
 msgid "Both video images"
 msgstr "Y ddwy ddelwedd fideo"
 
-#: src/menu.cpp:419 src/menu.cpp:547
+#: src/menu.cpp:430 src/menu.cpp:557
 msgid "Both (Local Video in New Window)"
 msgstr "Y Ddwy (Fideo Lleol mewn Ffenestr Newydd)"
 
-#: src/menu.cpp:426 src/menu.cpp:554
+#: src/menu.cpp:437 src/menu.cpp:564
 msgid "Both (Both in New Windows)"
 msgstr "Y Ddwy (Ffenestr Newydd i'r ddwy)"
 
-#: src/menu.cpp:435 src/menu.cpp:563
+#: src/menu.cpp:446 src/menu.cpp:573
 msgid "Zoom In"
 msgstr "Chwyddo i Mewn"
 
-#: src/menu.cpp:435 src/menu.cpp:563
+#: src/menu.cpp:446 src/menu.cpp:573
 msgid "Zoom in"
 msgstr "Chwyddo i mewn"
 
-#: src/menu.cpp:439 src/menu.cpp:567
+#: src/menu.cpp:450 src/menu.cpp:577
 msgid "Zoom Out"
 msgstr "Chwyddo Allan"
 
-#: src/menu.cpp:439 src/menu.cpp:567
+#: src/menu.cpp:450 src/menu.cpp:577
 msgid "Zoom out"
 msgstr "Chwyddo allan"
 
-#: src/menu.cpp:443 src/menu.cpp:571
+#: src/menu.cpp:454 src/menu.cpp:581
 msgid "Normal Size"
 msgstr "Maint Arferol"
 
-#: src/menu.cpp:443 src/menu.cpp:571
+#: src/menu.cpp:454 src/menu.cpp:581
 msgid "Normal size"
 msgstr "Maint arferol"
 
-#: src/menu.cpp:448 src/menu.cpp:576
+#: src/menu.cpp:459 src/menu.cpp:586
 msgid "Fullscreen"
 msgstr "Sgrîn lawn"
 
-#: src/menu.cpp:453
+#: src/menu.cpp:464
 msgid "_Tools"
 msgstr "_Offer"
 
-#: src/menu.cpp:455 src/menu.cpp:638
+#: src/menu.cpp:466 src/menu.cpp:648
 msgid "Address _Book"
 msgstr "_Llyfr Cyfeiriadau"
 
-#: src/menu.cpp:456 src/menu.cpp:639
+#: src/menu.cpp:467 src/menu.cpp:649
 msgid "Open the address book"
 msgstr "Agor y llyfr cyfeiriadau"
 
-#: src/menu.cpp:463 src/tools.cpp:759
+#: src/menu.cpp:474 src/log_window.cpp:60
 msgid "General History"
 msgstr "Hanes Cyffredinol"
 
-#: src/menu.cpp:464
+#: src/menu.cpp:475
 msgid "View the operations history"
 msgstr "Edrych ar yr hanes weithredoedd"
 
-#: src/menu.cpp:468 src/menu.cpp:646 src/tools.cpp:491
+#: src/menu.cpp:479 src/menu.cpp:656 src/calls_history_window.cpp:665
 msgid "Calls History"
 msgstr "Hanes Galwadau"
 
-#: src/menu.cpp:469 src/menu.cpp:647
+#: src/menu.cpp:480 src/menu.cpp:657
 msgid "View the calls history"
 msgstr "Edrych ar yr hanes galwadau"
 
-#: src/menu.cpp:476
+#: src/menu.cpp:488 src/menu.cpp:494
 msgid "PC-To-Phone Account"
 msgstr "Cyfrif CP-i-Ffôn"
 
-#: src/menu.cpp:477
+#: src/menu.cpp:489 src/menu.cpp:495
 msgid "Manage your PC-To-Phone account"
 msgstr "Rheoli'ch cyfrif CP-i-Ffôn"
 
-#: src/menu.cpp:482
+#: src/menu.cpp:500
 msgid "_Help"
 msgstr "_Cymorth"
 
-#: src/menu.cpp:485 src/menu.cpp:490
+#: src/menu.cpp:503 src/menu.cpp:508
 msgid "_Contents"
 msgstr "_Cynnwys"
 
-#: src/menu.cpp:486 src/menu.cpp:491
+#: src/menu.cpp:504 src/menu.cpp:509
 msgid "Get help by reading the GnomeMeeting manual"
 msgstr "Gellwch gael cymorth trwy ddarllen llawlyfr GnomeMeeting"
 
-#: src/menu.cpp:497 src/menu.cpp:503
+#: src/menu.cpp:514
 msgid "_About"
 msgstr "_Ynghylch"
 
-#: src/menu.cpp:498 src/menu.cpp:504 src/menu.cpp:664 src/menu.cpp:670
+#: src/menu.cpp:515 src/menu.cpp:673
 msgid "View information about GnomeMeeting"
 msgstr "Gwylio gwybodaeth ynglŷn â GnomeMeeting"
 
-#: src/menu.cpp:603
+#: src/menu.cpp:613
 msgid "_Connect"
 msgstr "_Cysylltu"
 
-#: src/menu.cpp:663 src/menu.cpp:669
-msgid "_About GnomeMeeting"
-msgstr "_Ynglŷn â GnomeMeeting"
+#: src/menu.cpp:672
+msgid "_About..."
+msgstr "_Ynghylch..."
 
-#: src/misc.cpp:140
+#: src/misc.cpp:143
 msgid "Generic error"
 msgstr "Gwall cyffredinol"
 
-#: src/misc.cpp:186
+#: src/misc.cpp:187
 msgid "Reject"
 msgstr "Gwrthod"
 
-#: src/misc.cpp:188
+#: src/misc.cpp:189
 msgid "Accept"
 msgstr "Derbyn"
 
-#: src/misc.cpp:195
+#: src/misc.cpp:196
 msgid "Incoming call from"
 msgstr "Galwad oddi wrth"
 
-#: src/misc.cpp:208
+#: src/misc.cpp:209
 msgid "Remote URL:"
 msgstr "URL pell:"
 
-#: src/misc.cpp:220
+#: src/misc.cpp:221
 msgid "Remote Application:"
 msgstr "Rhaglen bell:"
 
-#: src/pref_window.cpp:370
-msgid "Codec Information"
-msgstr "Gwybodaeth Codec"
-
-#: src/pref_window.cpp:410
+#: src/pref_window.cpp:314 src/pref_window.cpp:342
 msgid "Choose a Picture"
 msgstr "Dewiswch Lun"
 
-#: src/pref_window.cpp:865
+#: src/pref_window.cpp:431 src/pref_window.cpp:1085
+msgid "A"
+msgstr "Sa"
+
+#: src/pref_window.cpp:456
+msgid "Bandwidth"
+msgstr "Ystod"
+
+#: src/pref_window.cpp:847
 msgid "Personal Information"
 msgstr "Gwybodaeth Bersonol"
 
-#: src/pref_window.cpp:869
+#: src/pref_window.cpp:851
 msgid "_First name:"
 msgstr "Enw _cyntaf:"
 
-#: src/pref_window.cpp:876
+#: src/pref_window.cpp:858
 msgid "Sur_name:"
 msgstr "Cyf_enw:"
 
-#: src/pref_window.cpp:878
+#: src/pref_window.cpp:860
 msgid "Enter your surname"
 msgstr "Rhowch eich cyfenw"
 
-#: src/pref_window.cpp:883
+#: src/pref_window.cpp:865
 msgid "E-_mail address:"
 msgstr "Cyfeiriad E-_bost:"
 
-#: src/pref_window.cpp:890
+#: src/pref_window.cpp:872
 msgid "_Comment:"
 msgstr "_Sylwad:"
 
-#: src/pref_window.cpp:892
+#: src/pref_window.cpp:874
 msgid "Enter a comment about yourself"
 msgstr "Rhowch sylw amdanoch eich hun"
 
-#: src/pref_window.cpp:897
+#: src/pref_window.cpp:879
 msgid "_Location:"
 msgstr "_Lleoliad:"
 
-#: src/pref_window.cpp:899
+#: src/pref_window.cpp:881
 msgid "Enter your country or city"
 msgstr "Rhowch eich gwlad neu ddinas"
 
 #. Add the update button
-#: src/pref_window.cpp:905 src/pref_window.cpp:1255
+#: src/pref_window.cpp:887 src/pref_window.cpp:1252
 msgid "_Apply"
 msgstr "_Gweithredu"
 
-#: src/pref_window.cpp:905
+#: src/pref_window.cpp:887
 msgid ""
-"Click here to update the user directory you are registered to with the new "
+"Click here to update the users directory you are registered to with the new "
 "First Name, Last Name, E-Mail, Comment and Location or to update your alias "
 "on the Gatekeeper"
 msgstr ""
@@ -3120,89 +2852,97 @@ msgstr ""
 "iddo gyda'r Enw Cyntaf, Cyfenw, Ebost, Sylwad a Lleoliad, neu i ddiweddaru "
 "eich ffug-enw ar y Porthor"
 
-#: src/pref_window.cpp:923
+#: src/pref_window.cpp:905
 msgid "GnomeMeeting GUI"
 msgstr "RhDG GnomeMeeting"
 
-#: src/pref_window.cpp:925
+#: src/pref_window.cpp:907
 msgid "_Show splash screen"
 msgstr "_Dangos sgrîn cychwyn"
 
-#: src/pref_window.cpp:927
+#: src/pref_window.cpp:909
 msgid "Start _hidden"
 msgstr "Dechrau'n _gudd"
 
-#: src/pref_window.cpp:932
+#: src/pref_window.cpp:914
 msgid "Video Display"
 msgstr "Dangosydd Fideo"
 
 #. Translators: the full sentence is Use a fullscreen size
 #. of X by Y pixels
-#: src/pref_window.cpp:937
+#: src/pref_window.cpp:919
 msgid "Use a fullscreen size of"
 msgstr "Defnyddio maint sgrîn lawn o"
 
-#: src/pref_window.cpp:937
+#: src/pref_window.cpp:919
 msgid "by"
 msgstr "wrth"
 
-#: src/pref_window.cpp:937
+#: src/pref_window.cpp:919
 msgid "pixels"
 msgstr "picsel"
 
-#: src/pref_window.cpp:937
+#: src/pref_window.cpp:919
 msgid "The image width for fullscreen."
 msgstr "Lled delwedd ar gyfer sgrîn lawn."
 
-#: src/pref_window.cpp:937
+#: src/pref_window.cpp:919
 msgid "The image height for fullscreen."
 msgstr "Taldra delwedd ar gyfer sgrîn lawn."
 
-#: src/pref_window.cpp:940
+#: src/pref_window.cpp:922
 msgid "Place windows displaying video _above other windows"
 msgstr "Gosod ffenestri sy'n dangos fideo _uwchben ffenestri eraill"
 
-#: src/pref_window.cpp:964
-msgid "User Directory"
+#: src/pref_window.cpp:946
+msgid "Users Directory"
 msgstr "Cyfeiriadur Defnyddwyr"
 
 #. Add all the fields
-#: src/pref_window.cpp:968
-msgid "User directory:"
+#: src/pref_window.cpp:950
+msgid "Users directory:"
 msgstr "Cyfeiriadur defnyddwyr:"
 
-#: src/pref_window.cpp:970
+#: src/pref_window.cpp:950
+msgid "The users directory server to register with"
+msgstr "Y gweinydd cyfeiriadur defnyddwyr i gofrestru gydag ef"
+
+#: src/pref_window.cpp:952
 msgid "Enable _registering"
 msgstr "Galluogi _cofrestru"
 
-#: src/pref_window.cpp:972
+#: src/pref_window.cpp:952
+msgid "If enabled, register with the selected users directory"
+msgstr "Wedi'i alluogi, cofrestru gyda'r cyfeiriadur defnyddwyr â ddewiswyd"
+
+#: src/pref_window.cpp:954
 msgid "_Publish my details in the users directory when registering"
 msgstr "_Cyhoeddi fy manylion yn y cyfeiriadur defnyddwyr pan yn cofrestru"
 
-#: src/pref_window.cpp:972
+#: src/pref_window.cpp:954
 msgid ""
-"If enabled, your details are shown to people browsing the user directory. If "
-"disabled, you are not visible to users browsing the user directory, but they "
-"can still use the callto URL to call you."
+"If enabled, your details are shown to people browsing the users directory. "
+"If disabled, you are not visible to users browsing the users directory, but "
+"they can still use the callto URL to call you."
 msgstr ""
 "Wedi'i alluogi, dangosir eich manylion i bobl sy'n pori'r cyfeiriadur "
 "defnyddwyr. Heb ei alluogi, nid ydych yn weladwy i ddefnyddwyr sy'n pori'r "
 "cyfeiriadur defnyddwyr, ond mae'n dal yn bosibl iddynt ddefnyddio'r LAU "
 "callto i'ch galw."
 
-#: src/pref_window.cpp:989 src/pref_window.cpp:1755
+#: src/pref_window.cpp:971 src/pref_window.cpp:1744
 msgid "Call Forwarding"
 msgstr "Blaenyrru Galwadau"
 
-#: src/pref_window.cpp:994
+#: src/pref_window.cpp:976
 msgid "Forward calls to _host:"
 msgstr "Blaenyrru galwadau i _weinydd:"
 
-#: src/pref_window.cpp:999
+#: src/pref_window.cpp:981
 msgid "_Always forward calls to the given host"
 msgstr "_Blaenyrru galwadau o hyd i'r gweinydd penodol"
 
-#: src/pref_window.cpp:999
+#: src/pref_window.cpp:981
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field above"
@@ -3210,11 +2950,11 @@ msgstr ""
 "Os yn alluog, bydd pob galwad sy'n cyrraedd yn cael ei flaenyrru i'r "
 "gwesteiwr sydd wedi'i benodi yn y maes uchod"
 
-#: src/pref_window.cpp:1001
+#: src/pref_window.cpp:983
 msgid "Forward calls to the given host if _no answer"
 msgstr "Blaenyrru galwadau i'r gweinydd penodol os nad oes _ateb"
 
-#: src/pref_window.cpp:1001
+#: src/pref_window.cpp:983
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field above if you do not answer the call"
@@ -3222,11 +2962,11 @@ msgstr ""
 "Os wedi'i alluogi, bydd pob galwad sy'n cyrraedd yn cael ei flaenyrru i'r "
 "gwesteiwr sydd wedi'i benodi yn y maes uchod os na fyddwch yn ateb yr alwad"
 
-#: src/pref_window.cpp:1003
+#: src/pref_window.cpp:985
 msgid "Forward calls to the given host if _busy"
 msgstr "Blaenyrru galwadau i'r gweinydd penodol os yn _brysur"
 
-#: src/pref_window.cpp:1003
+#: src/pref_window.cpp:985
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field above if you already are in a call or if you are in "
@@ -3236,67 +2976,75 @@ msgstr ""
 "y maes uchod os ydych eisioes mewn galwad, neu os ydych yn y modd Peidiwch â "
 "Tharfu"
 
-#: src/pref_window.cpp:1022 src/pref_window.cpp:1736
+#: src/pref_window.cpp:1004 src/pref_window.cpp:1725
 msgid "Call Options"
 msgstr "Opsiynau Galwad"
 
 #. Add all the fields
-#: src/pref_window.cpp:1026
+#: src/pref_window.cpp:1008
 msgid "Automatically _clear calls after 30 seconds of inactivity"
 msgstr "_Clirio galwadau'n awtomatig wedi 30 eiliad heb weithred"
 
 #. Translators: the full sentence is Reject or forward
 #. unanswered incoming calls after X s (seconds)
-#: src/pref_window.cpp:1030
+#: src/pref_window.cpp:1012
 msgid "Reject or forward unanswered incoming calls after "
 msgstr "Ateb neu flaenyrru galwadau i mewn nas atebir ar ôl "
 
-#: src/pref_window.cpp:1030
+#: src/pref_window.cpp:1012
 msgid "seconds"
 msgstr "eiliad"
 
-#: src/pref_window.cpp:1062
+#: src/pref_window.cpp:1048
 msgid "GnomeMeeting Sound Events"
 msgstr "Digwyddiadau Sain GnomeMeeting"
 
-#: src/pref_window.cpp:1111 src/pref_window.cpp:1120 src/pref_window.cpp:1129
+#: src/pref_window.cpp:1097 src/pref_window.cpp:1106 src/pref_window.cpp:1115
 msgid "Event"
 msgstr "Digwyddiad"
 
-#: src/pref_window.cpp:1140
+#: src/pref_window.cpp:1126
 msgid "Sound to play:"
 msgstr "Sain i'w chwarae:"
 
-#: src/pref_window.cpp:1153
+#: src/pref_window.cpp:1139
 msgid "Play"
 msgstr "Chwarae"
 
-#: src/pref_window.cpp:1187
+#: src/pref_window.cpp:1162
+msgid "Output Device"
+msgstr "Dyfais Allbwn"
+
+#: src/pref_window.cpp:1167 src/pref_window.cpp:1359
+msgid "Output device:"
+msgstr "Dyfais allbwn:"
+
+#: src/pref_window.cpp:1184
 msgid "All"
 msgstr "Popeth"
 
-#: src/pref_window.cpp:1189
+#: src/pref_window.cpp:1186
 msgid "rfc2833"
 msgstr "rfc2833"
 
-#: src/pref_window.cpp:1190
+#: src/pref_window.cpp:1187
 msgid "Signal"
 msgstr "Arwydd"
 
-#: src/pref_window.cpp:1191
+#: src/pref_window.cpp:1188
 msgid "String"
 msgstr "Llinyn"
 
-#: src/pref_window.cpp:1200
+#: src/pref_window.cpp:1197
 msgid "H.323 Version 2 Settings"
 msgstr "Gosodiadau H.323 Fersiwn 2"
 
 #. The toggles
-#: src/pref_window.cpp:1203
+#: src/pref_window.cpp:1200
 msgid "Enable H.245 _tunneling"
 msgstr "Galluogi _twnelu H.245"
 
-#: src/pref_window.cpp:1203
+#: src/pref_window.cpp:1200
 msgid ""
 "This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
 "are encapsulated into the the H.225 channel (port 1720). This saves one TCP "
@@ -3310,15 +3058,15 @@ msgstr ""
 "yw Netmeeting yn ei gynnal. Gall defnyddio Cychwyn Cyflym a Twnelu H.245 ar "
 "yr un pryd chwalu rhai fersiynau o Netmeeting."
 
-#: src/pref_window.cpp:1205
+#: src/pref_window.cpp:1202
 msgid "Enable _early H.245"
 msgstr "G_alluogi H.245 cynnar"
 
-#: src/pref_window.cpp:1207
+#: src/pref_window.cpp:1204
 msgid "Enable fast _start procedure"
 msgstr "Galluogi proses cychwyn _cyflym"
 
-#: src/pref_window.cpp:1207
+#: src/pref_window.cpp:1204
 msgid ""
 "Connection will be established in Fast Start mode. Fast Start is a new way "
 "to start calls faster that was introduced in H.323v2. It is not supported by "
@@ -3330,15 +3078,15 @@ msgstr ""
 "chynhelir ef gan Netmeeting, a gall defnyddio Cychwyn Cyflym yr un pryd â "
 "Twnelu H.245 chwalu rhai fersiynau o Netmeeting."
 
-#: src/pref_window.cpp:1213
+#: src/pref_window.cpp:1210
 msgid "DTMF Sending"
 msgstr "Anfon seiniau DTMF"
 
-#: src/pref_window.cpp:1215
+#: src/pref_window.cpp:1212
 msgid "_Send DTMF as:"
 msgstr "_Anfon seiniau DTMF fel:"
 
-#: src/pref_window.cpp:1215
+#: src/pref_window.cpp:1212
 msgid ""
 "This permits to set the mode for DTMFs sending. The values can be \"All\", "
 "\"None\", \"rfc2833\", \"Signal\" or \"String\" (default is \"All\"). "
@@ -3350,39 +3098,39 @@ msgstr ""
 "yw \"Popeth\"). Bydd dewis gwerthoedd heblaw \"Popeth\", \"Llinyn\" neu "
 "\"rfc2833\" yn analluogi'r Sgwrs Testun."
 
-#: src/pref_window.cpp:1230
+#: src/pref_window.cpp:1227
 msgid "Do not register"
 msgstr "Peidio â chofrestru"
 
-#: src/pref_window.cpp:1233
+#: src/pref_window.cpp:1230
 msgid "Automatically discover"
 msgstr "Darganfod yn ymysgogol"
 
-#: src/pref_window.cpp:1239
+#: src/pref_window.cpp:1236
 msgid "Gatekeeper"
 msgstr "Porthor"
 
-#: src/pref_window.cpp:1241
+#: src/pref_window.cpp:1238
 msgid "Gatekeeper _ID:"
 msgstr "_ID y Porthor:"
 
-#: src/pref_window.cpp:1243
+#: src/pref_window.cpp:1240
 msgid "Gatekeeper _host:"
 msgstr "_Gweinydd y Porthor:"
 
-#: src/pref_window.cpp:1245
+#: src/pref_window.cpp:1242
 msgid "Gatekeeper _alias:"
 msgstr "_Ffug-enw'r Porthor:"
 
-#: src/pref_window.cpp:1248
+#: src/pref_window.cpp:1245
 msgid "Gatekeeper _password:"
 msgstr "_Cyfrinair y Porthor:"
 
-#: src/pref_window.cpp:1251
+#: src/pref_window.cpp:1248
 msgid "Register this alias as the primary alias with the gatekeeper"
 msgstr "Cofrestru'r ffugenw hwn gyda'r porthor fel y prif ffugenw."
 
-#: src/pref_window.cpp:1251
+#: src/pref_window.cpp:1248
 msgid ""
 "Use this option to ensure the above alias is used as the primary alias when "
 "registering with a gatekeeper. This may be required if your gatekeeper can "
@@ -3392,35 +3140,35 @@ msgstr ""
 "cofrestru gyda porthor. Gall fod hyn yn angenrheidiol os mai dim ond trwy "
 "ddefnyddio'r ffugenw cyntaf y medr eich porthor wneud dilysiant."
 
-#: src/pref_window.cpp:1253
+#: src/pref_window.cpp:1250
 msgid "Registering method:"
 msgstr "Dull cofrestru:"
 
-#: src/pref_window.cpp:1255
+#: src/pref_window.cpp:1252
 msgid "Click here to update your Gatekeeper settings"
 msgstr "Cliciwch yma i ddiweddaru eich gosodiadau Porthor"
 
-#: src/pref_window.cpp:1272
+#: src/pref_window.cpp:1269
 msgid "Gateway/Proxy"
 msgstr "Porth/Darpar"
 
-#: src/pref_window.cpp:1274
+#: src/pref_window.cpp:1271
 msgid "Gateway / Proxy host:"
 msgstr "Gweinydd Porth / Darpar:"
 
-#: src/pref_window.cpp:1276
+#: src/pref_window.cpp:1273
 msgid "Use gateway or proxy"
 msgstr "Defnyddio gweinydd porth neu ddarpar"
 
-#: src/pref_window.cpp:1294
-msgid "NAT/PAT Router Support"
-msgstr "Cynnal Llwybrydd NAT/PAT"
+#: src/pref_window.cpp:1291
+msgid "IP Translation"
+msgstr "Trosi IP"
 
-#: src/pref_window.cpp:1296
+#: src/pref_window.cpp:1293
 msgid "Enable IP _translation"
 msgstr "Galluogi _trosi IP"
 
-#: src/pref_window.cpp:1296
+#: src/pref_window.cpp:1293
 msgid ""
 "This enables IP translation. IP translation is useful if GnomeMeeting is "
 "running behind a NAT/PAT router. You have to put the public IP of the router "
@@ -3435,12 +3183,12 @@ msgstr ""
 "ddefnyddio'r gwasanaeth ILS. Os yw'ch llwybrydd yn cynnal H.323 yn frodorol, "
 "gellir analluogi hyn."
 
-#: src/pref_window.cpp:1298
+#: src/pref_window.cpp:1295
 msgid "Enable _automatic IP checking"
 msgstr "Galluogi gwirio IP yn _awtomatig"
 
 # EFALLAI: ddim yn deall union ystyr y frawddeg gyntaf
-#: src/pref_window.cpp:1298
+#: src/pref_window.cpp:1295
 msgid ""
 "This enables IP checking from seconix.com and fills the IP in the public IP "
 "of the NAT/PAT gateway field of GnomeMeeting. The returned IP is only used "
@@ -3453,11 +3201,11 @@ msgstr ""
 "gwirio'r IP, bydd rhaid i chi'ch hun roi IP eich porth i mewn i hoffterau "
 "GnomeMeeting."
 
-#: src/pref_window.cpp:1300
+#: src/pref_window.cpp:1297
 msgid "Public _IP of the NAT/PAT router:"
 msgstr "Cyfeiriad IP cyhoeddus y llwybrydd NAT/PAT:"
 
-#: src/pref_window.cpp:1300
+#: src/pref_window.cpp:1297
 msgid ""
 "Enter the public IP of your NAT/PAT router if you want to use IP "
 "translation. If you are registered to ils.seconix.com, GnomeMeeting will "
@@ -3468,221 +3216,217 @@ msgstr ""
 "bydd GnomeMeeting yn cyrchu'r cyfeiriad IP cyhoeddus yn awtomatig, gan "
 "ddefnyddio'r gwasanaeth ILS."
 
-#: src/pref_window.cpp:1320
+#: src/pref_window.cpp:1303
+msgid "STUN Support"
+msgstr "Cefnogaeth STUN"
+
+#: src/pref_window.cpp:1305
+msgid "Enable _STUN Support"
+msgstr "Galluogi Cefnogaeth _STUN"
+
+#: src/pref_window.cpp:1307
+msgid "STUN Se_rver:"
+msgstr "_Gweinydd STUN:"
+
+#: src/pref_window.cpp:1327
 msgid "Low"
 msgstr "Isel"
 
-#: src/pref_window.cpp:1321
+#: src/pref_window.cpp:1328
 msgid "Medium"
 msgstr "Canolig"
 
-#: src/pref_window.cpp:1322
+#: src/pref_window.cpp:1329
 msgid "High"
 msgstr "Uchel"
 
-#: src/pref_window.cpp:1323
+#: src/pref_window.cpp:1330
 msgid "AGC"
 msgstr "AGC"
 
-#: src/pref_window.cpp:1326
+#: src/pref_window.cpp:1333
 msgid "POTS"
 msgstr "Ffôn cyffredin (POTS)"
 
-#: src/pref_window.cpp:1327
+#: src/pref_window.cpp:1334
 msgid "Headset"
 msgstr "Penwisg"
 
-#: src/pref_window.cpp:1336
+#: src/pref_window.cpp:1343
 msgid "Audio Plugin"
 msgstr "Ategyn Sain"
 
-#: src/pref_window.cpp:1340
+#: src/pref_window.cpp:1347
 msgid "Audio plugin:"
 msgstr "Ategyn sain:"
 
-#: src/pref_window.cpp:1340
-msgid ""
-"The audio plugin that will be used to detect the devices and manage them."
+#: src/pref_window.cpp:1347
+msgid "The audio plugin that will be used to detect the devices and manage them."
 msgstr "Yr ategyn sain ddefnyddir i ddarganfod a rheoli'r dyfeisiau."
 
-#: src/pref_window.cpp:1346 src/pref_window.cpp:1780
+#: src/pref_window.cpp:1353 src/pref_window.cpp:1769
 msgid "Audio Devices"
 msgstr "Dyfeisiau Sain"
 
-#: src/pref_window.cpp:1352
-msgid "Output device:"
-msgstr "Dyfais allbwn:"
-
-#: src/pref_window.cpp:1358 src/pref_window.cpp:1429
+#: src/pref_window.cpp:1365 src/pref_window.cpp:1436
 msgid "Input device:"
 msgstr "Dyfais fewnbwn:"
 
-#: src/pref_window.cpp:1364
+#: src/pref_window.cpp:1371
 msgid "Quicknet Hardware"
 msgstr "Caledwedd Quicknet"
 
-#: src/pref_window.cpp:1366
+#: src/pref_window.cpp:1373
 msgid "Echo _cancellation:"
 msgstr "Diddy_mu atsain:"
 
-#: src/pref_window.cpp:1368
+#: src/pref_window.cpp:1375
 msgid "Output device type:"
 msgstr "Math dyfais allbwn:"
 
-#: src/pref_window.cpp:1371
+#: src/pref_window.cpp:1378
 msgid "Country _code:"
 msgstr "Côd _gwlad:"
 
-#: src/pref_window.cpp:1371
-msgid ""
-"The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)."
+#: src/pref_window.cpp:1378
+msgid "The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)."
 msgstr "Côd gwlad dwy-lythyren eich gwlad (e.e.: BE, UK, FR, DE, ...)"
 
 #. That button will refresh the devices list
-#: src/pref_window.cpp:1378 src/pref_window.cpp:1454
+#: src/pref_window.cpp:1385 src/pref_window.cpp:1461
 msgid "_Detect devices"
 msgstr "_Darganfod dyfeisiau"
 
-#: src/pref_window.cpp:1378
+#: src/pref_window.cpp:1385
 msgid "Click here to refresh the devices list"
 msgstr "Cliciwch yma i adfywio y rhestr ddyfeisiau"
 
-#: src/pref_window.cpp:1399
+#: src/pref_window.cpp:1406
 msgid "Small"
 msgstr "Bach"
 
-#: src/pref_window.cpp:1400
+#: src/pref_window.cpp:1407
 msgid "Large"
 msgstr "Mawr"
 
-#: src/pref_window.cpp:1402
+#: src/pref_window.cpp:1409
 msgid "PAL (Europe)"
 msgstr "PAL (Ewrop)"
 
-#: src/pref_window.cpp:1403
+#: src/pref_window.cpp:1410
 msgid "NTSC (America)"
 msgstr "NTSC (America)"
 
-#: src/pref_window.cpp:1404
+#: src/pref_window.cpp:1411
 msgid "SECAM (France)"
 msgstr "SECAM (Ffrainc)"
 
-#: src/pref_window.cpp:1405
+#: src/pref_window.cpp:1412
 msgid "Auto"
 msgstr "Ymysgogol"
 
-#: src/pref_window.cpp:1415
+#: src/pref_window.cpp:1422
 msgid "Video Plugin"
 msgstr "Ategyn Fideo"
 
-#: src/pref_window.cpp:1418
+#: src/pref_window.cpp:1425
 msgid "Video plugin:"
 msgstr "Ategyn fideo:"
 
-#: src/pref_window.cpp:1424 src/pref_window.cpp:1784
+#: src/pref_window.cpp:1431 src/pref_window.cpp:1773
 msgid "Video Devices"
 msgstr "Dyfeisiau Fideo"
 
 #. Video Channel
-#: src/pref_window.cpp:1433
+#: src/pref_window.cpp:1440
 msgid "Channel:"
 msgstr "Sianel:"
 
-#: src/pref_window.cpp:1435
+#: src/pref_window.cpp:1442
 msgid "Size:"
 msgstr "Maint:"
 
-#: src/pref_window.cpp:1437
+#: src/pref_window.cpp:1444
 msgid "Format:"
 msgstr "Fformat:"
 
-#: src/pref_window.cpp:1440
+#: src/pref_window.cpp:1447
 msgid "Image:"
 msgstr "Llun:"
 
-#: src/pref_window.cpp:1454
+#: src/pref_window.cpp:1461
 msgid "Click here to refresh the devices list."
 msgstr "Cliciwch yma i adfywio y rhestr ddyfeisiau."
 
-#: src/pref_window.cpp:1494
+#: src/pref_window.cpp:1488
 msgid "Available Audio Codecs"
 msgstr "Codecau Sain sydd ar Gael"
 
-#: src/pref_window.cpp:1551
-msgid "Info"
-msgstr "Gwybodaeth"
-
-#: src/pref_window.cpp:1563
-msgid "Bandwidth"
-msgstr "Ystod"
-
-#: src/pref_window.cpp:1615
+#: src/pref_window.cpp:1503
 msgid "Audio Codecs Settings"
 msgstr "Gosodiadau Codecau Sain"
 
 #. Translators: the full sentence is Automatically adjust jitter buffer
 #. between X and Y ms
-#: src/pref_window.cpp:1619
+#: src/pref_window.cpp:1507
 msgid "Automatically adjust _jitter buffer between"
 msgstr "Addasu'r byffer _siglo yn ymysgogol rhwng"
 
-#: src/pref_window.cpp:1619
+#: src/pref_window.cpp:1507
 msgid "and"
 msgstr "a"
 
-#: src/pref_window.cpp:1619
+#: src/pref_window.cpp:1507
 msgid "ms"
 msgstr "meil"
 
-#: src/pref_window.cpp:1619
+#: src/pref_window.cpp:1507
 msgid "The minimum jitter buffer size for audio reception (in ms)."
-msgstr ""
-"Maint lleiaf y byffer siglo ar gyfer dderbyn sain (mewn milfedau o eiliadau)"
+msgstr "Maint lleiaf y byffer siglo ar gyfer dderbyn sain (mewn milfedau o eiliadau)"
 
-#: src/pref_window.cpp:1619
+#: src/pref_window.cpp:1507
 msgid "The maximum jitter buffer size for audio reception (in ms)."
 msgstr "Maint uchaf y byffer siglo am dderbyn sain (mewn milfedau o eiliadau)"
 
-#: src/pref_window.cpp:1621
+#: src/pref_window.cpp:1509
 msgid "Enable silence _detection"
 msgstr "Galluogi _darganfod distawrwydd"
 
-#: src/pref_window.cpp:1621
+#: src/pref_window.cpp:1509
 msgid "If enabled, use silence detection with the GSM and G.711 codecs."
 msgstr "Wedi'i alluogi, ceisio darganfod distawrwydd efo'r codecs GSM a G.711."
 
-#: src/pref_window.cpp:1639 src/pref_window.cpp:1727
+#: src/pref_window.cpp:1527 src/pref_window.cpp:1716
 msgid "General Settings"
 msgstr "Gosodiadau Cyffredinol"
 
 #. Add fields
-#: src/pref_window.cpp:1643
+#: src/pref_window.cpp:1531
 msgid "Enable video _transmission"
 msgstr "Galluogi trosglwyddo _fideo"
 
-#: src/pref_window.cpp:1643
+#: src/pref_window.cpp:1531
 msgid "If enabled, video is transmitted during a call."
 msgstr "Wedi'i alluogi, trosglwyddir fideo yn ystod galwad."
 
-#: src/pref_window.cpp:1645
+#: src/pref_window.cpp:1533
 msgid "Enable video _reception"
 msgstr "Galluogi derbyn _sain"
 
-#: src/pref_window.cpp:1645
+#: src/pref_window.cpp:1533
 msgid "If enabled, allows video to be received during a call."
-msgstr ""
-"Wedi'i alluogi, mae'n caniatau i fideo gael ei dderbyn yn ystod yr alwad."
+msgstr "Wedi'i alluogi, mae'n caniatau i fideo gael ei dderbyn yn ystod yr alwad."
 
-#: src/pref_window.cpp:1650
+#: src/pref_window.cpp:1538
 msgid "Bandwidth Control"
 msgstr "Rheoli Ystod"
 
 #. Translators: the full sentence is Maximum video bandwidth of X kB/s
-#: src/pref_window.cpp:1653
+#: src/pref_window.cpp:1541
 msgid "Maximum video _bandwidth of"
 msgstr "Ystod _fideo uchaf o"
 
-#: src/pref_window.cpp:1653
+#: src/pref_window.cpp:1541
 msgid ""
 "The maximum video bandwidth in kbytes/s. The video quality and the number of "
 "transmitted frames per second will be dynamically adjusted above their "
@@ -3693,118 +3437,111 @@ msgstr ""
 "lleiafswm yn ystod galwadau, er mwyn ceisio lleihau yr ystod i'r gwerth "
 "penodol."
 
-#: src/pref_window.cpp:1653
+#: src/pref_window.cpp:1541
 msgid "kB/s"
 msgstr "KB/eil"
 
-#: src/pref_window.cpp:1659
+#: src/pref_window.cpp:1547
 msgid "Advanced Quality Settings"
 msgstr "Gosodiadau Ansawdd Uwch"
 
 #. Translators: the full sentence is Keep a minimum video quality of X %
-#: src/pref_window.cpp:1662
-msgid "Keep a minimum video _quality of"
-msgstr "Cadw _ansawdd fideo lleiaf o"
+#: src/pref_window.cpp:1550
+msgid "Frame Rate"
+msgstr "Cyfradd Ffrâm"
 
-#: src/pref_window.cpp:1662
-msgid ""
-"The minimum transmitted video quality to keep when trying to minimize the "
-"used bandwidth:  choose 100% on a LAN for the best quality, 1% being the "
-"worst quality"
-msgstr ""
-"Yr ansawdd lleiaf o'r fideo a drosglwyddir i'w gadw wrth geisio lleihau yr "
-"ystod a ddefnyddir: dewiswch 100% ar LAN am yr ansawdd gorau; 1% yw'r "
-"ansawdd gwaethaf"
+#: src/pref_window.cpp:1550
+msgid "Picture Quality"
+msgstr "Ansawdd Llun"
 
-#: src/pref_window.cpp:1662
-msgid "%"
-msgstr "%"
-
-#. Translators: the full sentence is Transmit at least X frames per second
-#: src/pref_window.cpp:1665
-msgid "Transmit at least"
-msgstr "Trosglwyddo o leiaf"
-
-#: src/pref_window.cpp:1665
-msgid "_frames per second"
-msgstr "_ffrâm bob eiliad"
+#: src/pref_window.cpp:1550
+msgid "Choose if you want to favour speed or quality for the transmitted video."
+msgstr "Dewiswch os ydych chi eisiau ffafrio cyflymder neu ansawdd ar gyfer y llun fideo trosglwyddedig."
 
 #. Translators: the full sentence is Transmit X background blocks with each
 #. frame
-#: src/pref_window.cpp:1669
+#: src/pref_window.cpp:1554
 msgid "Transmit"
 msgstr "Trosglwyddo"
 
-#: src/pref_window.cpp:1669
+#: src/pref_window.cpp:1554
+msgid ""
+"Choose the number of blocks (that have not changed) transmitted with each "
+"frame. These blocks fill in the background."
+msgstr ""
+"Dewiswch y nifer o flociau (sydd heb newid) i drosglwyddo gyda pob ffrâm. "
+"Mae'r blociau hyn yn llenwi'r cefndir."
+
+#: src/pref_window.cpp:1554
 msgid "background _blocks with each frame"
 msgstr "_blociau cefndir gyda phob ffram"
 
-#: src/pref_window.cpp:1721
+#: src/pref_window.cpp:1710
 msgid "General"
 msgstr "Cyffredinol"
 
-#: src/pref_window.cpp:1722
+#: src/pref_window.cpp:1711
 msgid "Personal Data"
 msgstr "Data Personol"
 
-#: src/pref_window.cpp:1732
+#: src/pref_window.cpp:1721
 msgid "Directory Settings"
 msgstr "Gosodiadau Cyfeiriaduron"
 
-#: src/pref_window.cpp:1740
+#: src/pref_window.cpp:1729
 msgid "NAT Settings"
 msgstr "Gosodiadau NAT"
 
-#: src/pref_window.cpp:1745
+#: src/pref_window.cpp:1734
 msgid "Sound Events"
 msgstr "Digwyddiadau Sain"
 
-#: src/pref_window.cpp:1749
+#: src/pref_window.cpp:1738
 msgid "H.323 Settings"
 msgstr "Gosodiadau H.323"
 
-#: src/pref_window.cpp:1751
+#: src/pref_window.cpp:1740
 msgid "Advanced Settings"
 msgstr "Gosodiadau Uwch"
 
-#: src/pref_window.cpp:1760
+#: src/pref_window.cpp:1749
 msgid "Gatekeeper Settings"
 msgstr "Gosodiadau Gatekeeper"
 
-#: src/pref_window.cpp:1765
+#: src/pref_window.cpp:1754
 msgid "Gateway / Proxy Settings"
 msgstr "Gosodiadau Porth / Dirprwy"
 
-#: src/pref_window.cpp:1769
+#: src/pref_window.cpp:1758
 msgid "Codecs"
 msgstr "Codecau"
 
-#: src/pref_window.cpp:1771
+#: src/pref_window.cpp:1760
 msgid "Audio Codecs"
 msgstr "Codecau Sain"
 
-#: src/pref_window.cpp:1775
+#: src/pref_window.cpp:1764
 msgid "Video Codecs"
 msgstr "Codecau Fideo"
 
-#: src/pref_window.cpp:1779
+#: src/pref_window.cpp:1768
 msgid "Devices"
 msgstr "Dyfeisiau"
 
-#: src/sound_handling.cpp:330
+#: src/sound_handling.cpp:322
 msgid "Opening device for playing"
 msgstr "Yn agor y ddyfais er mwyn chwarae"
 
-#: src/sound_handling.cpp:332
+#: src/sound_handling.cpp:324
 msgid "Opening device for recording"
 msgstr "Yn agor y ddyfais er mwyn recordio"
 
-#: src/sound_handling.cpp:344 src/sound_handling.cpp:346
-#: src/videograbber.cpp:686
+#: src/sound_handling.cpp:336 src/sound_handling.cpp:338
+#: src/videograbber.cpp:697
 msgid "Failed to open the device"
 msgstr "Methu agor y ddyfais"
 
-#: src/sound_handling.cpp:344
+#: src/sound_handling.cpp:336
 #, c-format
 msgid ""
 "Impossible to open the selected audio device (%s) for recording. Please "
@@ -3813,7 +3550,7 @@ msgstr ""
 "Amhosib agor y ddyfais sain benodol (%s) er mwyn recordio. Gwiriwch eich "
 "gosodiad sain, y caniatadau, a bod y ddyfais ddim yn brysur."
 
-#: src/sound_handling.cpp:346
+#: src/sound_handling.cpp:338
 #, c-format
 msgid ""
 "Impossible to open the selected audio device (%s) for playing. Please check "
@@ -3822,11 +3559,11 @@ msgstr ""
 "Amhosib agor y ddyfais sain benodol (%s) er mwyn chwarae. Gwiriwch eich "
 "gosodiad sain, y caniatadau, a bod y ddyfais ddim yn brysur."
 
-#: src/sound_handling.cpp:385 src/sound_handling.cpp:461
+#: src/sound_handling.cpp:377 src/sound_handling.cpp:453
 msgid "Cannot use the audio device"
 msgstr "Methu defnyddio'r ddyfais sain"
 
-#: src/sound_handling.cpp:385
+#: src/sound_handling.cpp:377
 #, c-format
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
@@ -3835,15 +3572,15 @@ msgstr ""
 "Agorwyd y ddyfais sain benodol (%s) yn llwyddiannus, ond mae'n amhosibl "
 "darllen data o'r ddyfais yma. Gwiriwch eich gosodiad sain."
 
-#: src/sound_handling.cpp:394
+#: src/sound_handling.cpp:386
 msgid "Recording your voice"
 msgstr "Recordio eich llais"
 
-#: src/sound_handling.cpp:436
+#: src/sound_handling.cpp:428
 msgid "Recording and playing back"
 msgstr "Recordio a chwarae yn ôl"
 
-#: src/sound_handling.cpp:461
+#: src/sound_handling.cpp:453
 #, c-format
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
@@ -3852,7 +3589,7 @@ msgstr ""
 "Agorwyd y ddyfais sain benodol (%s) yn llwyddiannus, ond mae'n amhosibl "
 "ysgrifennu data i'r ddyfais yma. Gwiriwch eich gosodiad sain."
 
-#: src/sound_handling.cpp:588
+#: src/sound_handling.cpp:577
 #, c-format
 msgid ""
 "GnomeMeeting is now recording from %s and playing back to %s. Please say \"1 "
@@ -3863,7 +3600,7 @@ msgstr ""
 "\"1 2 3\" i mewn i'ch meicroffôn, a dylech glywed eich hun yn ôl yn y "
 "seinyddion wedisaib o 4 eiliad. "
 
-#: src/toolbar.cpp:168
+#: src/toolbar.cpp:165
 msgid ""
 "Enter an URL to call on the left, and click on this button to connect to the "
 "given URL"
@@ -3871,23 +3608,23 @@ msgstr ""
 "Rhowch LAU i'w alw ar y chwith, a chlicwich y botwm hwn er mwyn cysylltu â'r "
 "LAU"
 
-#: src/toolbar.cpp:214
+#: src/toolbar.cpp:211
 msgid "Open text chat"
 msgstr "Agor sgwrs destun"
 
-#: src/toolbar.cpp:225
+#: src/toolbar.cpp:222
 msgid "Open control panel"
 msgstr "Agor y panel rheoli"
 
-#: src/toolbar.cpp:237
+#: src/toolbar.cpp:234
 msgid "Open address book"
 msgstr "Agor y llyfr cyfeiriadau"
 
-#: src/toolbar.cpp:261
+#: src/toolbar.cpp:258
 msgid "Display images from your camera device"
 msgstr "Dangos delweddau o'ch dyfais gamera"
 
-#: src/toolbar.cpp:283
+#: src/toolbar.cpp:280
 msgid ""
 "Audio transmission status. During a call, click here to suspend or resume "
 "the audio transmission."
@@ -3895,7 +3632,7 @@ msgstr ""
 "Cyflwr trosglwyddo sain. Yn ystod galwad, cliciwch yma i seibio neu "
 "ailddechrau'r trosglwyddiad sain."
 
-#: src/toolbar.cpp:303
+#: src/toolbar.cpp:300
 msgid ""
 "Video transmission status. During a call, click here to suspend or resume "
 "the video transmission."
@@ -3903,43 +3640,11 @@ msgstr ""
 "Cyflwr trosglwyddo fideo. Yn ystod galwad, cliciwch yma i seibio neu "
 "ailddechrau'r trosglwyddiad fideo."
 
-#: src/tools.cpp:474
-msgid "Received Calls"
-msgstr "Galwadau Derbynedig"
-
-#: src/tools.cpp:474
-msgid "Placed Calls"
-msgstr "Galwadau Osodwyd"
-
-#: src/tools.cpp:474
-msgid "Unanswered Calls"
-msgstr "Galwadau Heb eu Hateb"
-
-#: src/tools.cpp:531
-msgid "Date"
-msgstr "Dyddiad"
-
-#: src/tools.cpp:539
-msgid "Remote User"
-msgstr "Defnyddiwr Pell"
-
-#: src/tools.cpp:557
-msgid "Call Duration"
-msgstr "Hyd yr Alwad"
-
-#: src/tools.cpp:567
-msgid "Call End Reason"
-msgstr "Rheswm Diweddu'r Alwad"
-
-#: src/tools.cpp:576
-msgid "Software"
-msgstr "Meddalwedd"
-
-#: src/tools.cpp:680 src/tools.cpp:694
+#: src/tools.cpp:175 src/tools.cpp:189
 msgid "PC-To-Phone Settings"
 msgstr "Gosodiannau CP-i-Ffôn"
 
-#: src/tools.cpp:683
+#: src/tools.cpp:178
 msgid ""
 "You can make calls to regular phones and cell numbers worldwide using "
 "GnomeMeeting and the MicroTelco service from Quicknet Technologies. To "
@@ -3953,27 +3658,27 @@ msgstr ""
 "ac wedyn galluogi cofrestru i'r gwasanaeth MicroTelco. Ymwelwch â safle gwe "
 "GnomeMeeting am fwy o wybodaeth."
 
-#: src/tools.cpp:696
+#: src/tools.cpp:191
 msgid "Account _number:"
 msgstr "Rhif _cyfrif:"
 
-#: src/tools.cpp:696
+#: src/tools.cpp:191
 msgid "Use your MicroTelco account number"
 msgstr "Defnyddio eich rhif cyfrif MicroTelco"
 
-#: src/tools.cpp:699
+#: src/tools.cpp:194
 msgid "_Pin:"
 msgstr "_Rhif Pin:"
 
-#: src/tools.cpp:699
+#: src/tools.cpp:194
 msgid "Use your MicroTelco PIN"
 msgstr "Defnyddio eich rhif PIN MicroTelco"
 
-#: src/tools.cpp:703
+#: src/tools.cpp:198
 msgid "Use PC-To-Phone service"
 msgstr "Defnyddio gwasanaeth CP-i-Ffôn"
 
-#: src/tools.cpp:708
+#: src/tools.cpp:203
 msgid ""
 "Click on one of the following links to get more information about your "
 "existing MicroTelco account, or to create a new account."
@@ -3981,23 +3686,19 @@ msgstr ""
 "Cliciwch ar un o'r cysylltion isod i gael mwy o wybodaeth am eich cyfrif "
 "cyfredol MicroTelco, neu i greu cyfrif newydd."
 
-#: src/tools.cpp:712
+#: src/tools.cpp:207
 msgid "Get an account"
 msgstr "Cael cyfrif"
 
-#: src/tools.cpp:714
+#: src/tools.cpp:209
 msgid "Buy a card"
 msgstr "Prynu cerdyn"
 
-#: src/tools.cpp:719
+#: src/tools.cpp:214
 msgid "Consult my account details"
 msgstr "Gweld manylion fy nghyfrif"
 
-#. Start building the GMObject and associate the structure
-#. * to the object so that it is deleted when the object is
-#. * destroyed
-#.
-#: src/tray.cpp:185
+#: src/tray.cpp:193
 msgid "GnomeMeeting Tray Icon"
 msgstr "Eicon Cafn GnomeMeeting"
 
@@ -4011,17 +3712,16 @@ msgstr ""
 "defnyddiwr, neu mi oedd yn brysur pan dderbyniodd y cais i drosglwyddo'r "
 "galwad."
 
-#: src/urlhandler.cpp:289
+#: src/urlhandler.cpp:306
 #, c-format
 msgid "No contact with speed dial %s# found, will call number %s instead"
-msgstr ""
-"Ni chanfuwyd cyswllt gyda chôd deialu brys %s#, yn galw rhif %s yn lle."
+msgstr "Ni chanfuwyd cyswllt gyda chôd deialu brys %s#, yn galw rhif %s yn lle."
 
-#: src/urlhandler.cpp:304
+#: src/urlhandler.cpp:323
 msgid "Invalid URL handler"
 msgstr "Trinydd URL annilys"
 
-#: src/urlhandler.cpp:304
+#: src/urlhandler.cpp:323
 msgid ""
 "Please specify a valid URL handler. Currently both h323: and callto: are "
 "supported."
@@ -4029,33 +3729,33 @@ msgstr ""
 "Os gwelwch yn dda, penodwch drinydd URL dilys. Ar hyn o bryd, cynhelir h323: "
 "a callto:."
 
-#: src/urlhandler.cpp:324
+#: src/urlhandler.cpp:343
 #, c-format
 msgid "Calling %s"
 msgstr "Yn galw %s"
 
-#: src/urlhandler.cpp:328
+#: src/urlhandler.cpp:347
 #, c-format
 msgid "Transferring call to %s"
 msgstr "Trosglwyddo'r alwad i %s"
 
-#: src/videograbber.cpp:317
+#: src/videograbber.cpp:320
 #, c-format
 msgid "Opening video device %s with plugin %s"
 msgstr "Yn agor y ddyfais fideo %s gyda'r ategyn %s"
 
-#: src/videograbber.cpp:342
+#: src/videograbber.cpp:348
 #, c-format
 msgid "Successfully opened video device %s, channel %d"
 msgstr "Wedi agor dyfais fideo %s, sianel %d yn llwyddiannus"
 
-#: src/videograbber.cpp:351
+#: src/videograbber.cpp:359
 #, c-format
 msgid "Error while opening video device %s"
 msgstr "Gwall wrth agor y ddyfais fideo %s"
 
 #. Translators: Do not translate MovingLogo and Picture
-#: src/videograbber.cpp:355
+#: src/videograbber.cpp:363
 msgid ""
 "A moving GnomeMeeting logo will be transmitted during calls. Notice that you "
 "can always transmit a given image or the moving GnomeMeeting logo by "
@@ -4067,11 +3767,11 @@ msgstr ""
 "symudolGnomeMeeting gan ddewis \"Llun\" fel ategyn fideo a \"MovingLogo\" "
 "neu \"StaticPicture\" fel dyfais."
 
-#: src/videograbber.cpp:356
+#: src/videograbber.cpp:365
 msgid "Couldn't open the video device"
 msgstr "Methu agor y ddyfais fideo"
 
-#: src/videograbber.cpp:360
+#: src/videograbber.cpp:369
 msgid ""
 "There was an error while opening the device. Please check your permissions "
 "and make sure that the appropriate driver is loaded."
@@ -4079,15 +3779,15 @@ msgstr ""
 "Roedd gwall wrth agor y ddyfais. Gwiriwch eich caniatadau, a sicrhewch bod y "
 "gyrrydd addas wedi'i lwytho."
 
-#: src/videograbber.cpp:364 src/videograbber.cpp:664
+#: src/videograbber.cpp:373 src/videograbber.cpp:675
 msgid "Your video driver doesn't support the requested video format."
 msgstr "Nid yw eich gyrrydd fideo yn cynnal y fformat fideo penodol."
 
-#: src/videograbber.cpp:368
+#: src/videograbber.cpp:377
 msgid "Could not open the chosen channel."
 msgstr "Methu agor y sianel benodol."
 
-#: src/videograbber.cpp:372
+#: src/videograbber.cpp:381
 msgid ""
 "Your driver doesn't seem to support any of the colour formats supported by "
 "GnomeMeeting.\n"
@@ -4099,23 +3799,23 @@ msgstr ""
 " Gwiriwch eich dogfenniaeth gyrrydd cnewllyn er mwyn penderfynu pa balet a "
 "gynhelir."
 
-#: src/videograbber.cpp:376
+#: src/videograbber.cpp:385
 msgid "Error while setting the frame rate."
 msgstr "Gwall wrth osod cyfradd y fframiau."
 
-#: src/videograbber.cpp:380
+#: src/videograbber.cpp:389
 msgid "Error while setting the frame size."
 msgstr "Gwall wrth osod maint y fframiau."
 
-#: src/videograbber.cpp:419
+#: src/videograbber.cpp:429
 msgid "Opened the video device using the \"Picture\" video plugin"
 msgstr "Agorwyd y ddyfais fideo gan ddefnyddio'r ategyn fideo \"Llun\""
 
-#: src/videograbber.cpp:565
+#: src/videograbber.cpp:575
 msgid "Picture"
 msgstr "Llun"
 
-#: src/videograbber.cpp:577
+#: src/videograbber.cpp:587
 #, c-format
 msgid ""
 "GnomeMeeting is now testing the %s video device. If you experience machine "
@@ -4124,39 +3824,447 @@ msgstr ""
 "Mae GnomeMeeting yn awr yn profi'r ddyfais fideo %s. Os dewch ar draws "
 "chwalfa, gyrrwch adroddiad nam i awdur y gyrrydd fideo."
 
-#: src/videograbber.cpp:638
+#: src/videograbber.cpp:649
 #, c-format
 msgid "Test %d done"
 msgstr "Prawf %d wedi gorffen"
 
-#: src/videograbber.cpp:640
+#: src/videograbber.cpp:651
 #, c-format
 msgid "Test %d failed"
 msgstr "Prawf %d wedi methu"
 
-#: src/videograbber.cpp:659
+#: src/videograbber.cpp:670
 #, c-format
 msgid "Error while opening %s."
 msgstr "Gwall wrth agor %s."
 
-#: src/videograbber.cpp:668
+#: src/videograbber.cpp:679
 msgid "Could not open the chosen channel with the chosen video format."
 msgstr "Methu agor y sianel benodol gyda'r fformat fideo penodol."
 
-#: src/videograbber.cpp:672
-msgid ""
-"Your driver doesn't support any of the color formats tried by GnomeMeeting"
+#: src/videograbber.cpp:683
+msgid "Your driver doesn't support any of the color formats tried by GnomeMeeting"
 msgstr ""
 "Nid yw eich gyrrydd yn cynnal unrhyw un o'r fformatau lliw geisiwyd gan "
 "GnomeMeeting."
 
-#: src/videograbber.cpp:676
+#: src/videograbber.cpp:687
 msgid "Error with the frame rate."
 msgstr "Gwall gyda chyfradd y fframiau."
 
-#: src/videograbber.cpp:680
+#: src/videograbber.cpp:691
 msgid "Error with the frame size."
 msgstr "Gwall gyda maint y fframiau."
+
+#: src/calls_history_window.cpp:648
+msgid "Received Calls"
+msgstr "Galwadau Derbynedig"
+
+#: src/calls_history_window.cpp:648
+msgid "Placed Calls"
+msgstr "Galwadau Osodwyd"
+
+#: src/calls_history_window.cpp:648
+msgid "Unanswered Calls"
+msgstr "Galwadau Heb eu Hateb"
+
+#: src/calls_history_window.cpp:706
+msgid "Date"
+msgstr "Dyddiad"
+
+#: src/calls_history_window.cpp:714
+msgid "Remote User"
+msgstr "Defnyddiwr Pell"
+
+#: src/calls_history_window.cpp:723
+msgid "Call Duration"
+msgstr "Hyd yr Alwad"
+
+#: src/calls_history_window.cpp:733
+msgid "Call End Reason"
+msgstr "Rheswm Diweddu'r Alwad"
+
+#~ msgid "Minimum transmitted FPS"
+#~ msgstr "Isafswm FYE (FPS) i'w trosglwyddo"
+
+#~ msgid ""
+#~ "The minimum number of video frames to transmit each second when trying to "
+#~ "minimize the bandwidth"
+#~ msgstr ""
+#~ "Y nifer lleiaf o fframiau fideo i'w trosglwyddo bob eiliad wrth geisio "
+#~ "lleihau yr ystod"
+
+#~ msgid ""
+#~ "iLBC-13k3 (internet Low Bitrate Codec) is a free speech codec suitable "
+#~ "for robust voice communication over IP. The codec is designed for narrow "
+#~ "band speech and results in a payload bit rate of 13.33 kbit/s with an "
+#~ "encoding frame length of 30 ms. The iLBC codec enables graceful speech "
+#~ "quality degradation in the case of lost frames, which occurs in "
+#~ "connection with lost or delayed IP packets."
+#~ msgstr ""
+#~ "Codec lleferydd rhydd yw iLBC-13k3 (internet Low Bitrate Codec) sy'n "
+#~ "addas ar gyfer cyfathrebu llais dibynnol dros IP. Llunir y codec ar gyfer "
+#~ "lleferydd band cul, a'r canlyniad yw cyflymder did o 13.33 kdid/eiliad "
+#~ "gyda hyd ffrâm godio o 30 milfed rhan o eiliad. Mae'r codec iLBC yn peri "
+#~ "i ansawdd y llais ostwng yn naturiol os gollir fframau, all ddigwydd os "
+#~ "yw pecynnau IP yn mynd ar goll neu'n cyrraedd yn hwyr."
+
+#~ msgid "Excellent"
+#~ msgstr "Ardderchog"
+
+#~ msgid "13.33 Kbps"
+#~ msgstr "13.33 Kdye"
+
+#~ msgid ""
+#~ "iLBC-15k2 (internet Low Bitrate Codec) is a free speech codec suitable "
+#~ "for robust voice communication over IP. The codec is designed for narrow "
+#~ "band speech and results in a payload bitrate of 15.20 kbps with an "
+#~ "encoding length of 20 ms. The iLBC codec enables graceful speech quality "
+#~ "degradation in the case of lost frames, which occurs in connection with "
+#~ "lost or delayed IP packets."
+#~ msgstr ""
+#~ "Codec lleferydd rhydd yw iLBC-15k2 (internet Low Bitrate Codec) sy'n "
+#~ "addas ar gyfer cyfathrebu llais dibynnol dros IP. Llunir y codec ar gyfer "
+#~ "lleferydd band cul, a'r canlyniad yw cyflymder did o 15.20 kdid/eiliad "
+#~ "gyda hyd ffrâm godio o 20 milfed rhan o eiliad. Mae'r codec iLBC yn peri "
+#~ "i ansawdd y llais ostwng yn naturiol os gollir fframau, all ddigwydd os "
+#~ "yw pecynnau IP yn mynd ar goll neu'n cyrraedd yn hwyr."
+
+#~ msgid "15.2 Kbps"
+#~ msgstr "15.2 Kdye"
+
+#~ msgid ""
+#~ "Speex is an Open Source/Free Software patent-free audio compression "
+#~ "format designed for speech. The Speex Project aims to lower the barrier "
+#~ "of entry for voice applications by providing a free alternative to "
+#~ "expensive proprietary speech codecs. Moreover, Speex is well-adapted to "
+#~ "Internet applications and provides useful features that are not present "
+#~ "in most other codecs. Finally, Speex is part of the GNU Project and is "
+#~ "available under the Xiph.org variant of the BSD license. SpeexNarrow-15k "
+#~ "is based on CELP and is designed to compress voice at a payload bitrate "
+#~ "of 15 kbps."
+#~ msgstr ""
+#~ "Fformat Côd Agored/Meddalwedd Rhydd ar gyfer cywasgu sain yw Speex, "
+#~ "ddyfeisiwyd ar gyfer lleferydd. Bwriad prosiect Speex yw hwyluso "
+#~ "datblygiad rhaglenni llais gan gynnig dewis rhydd a rhad sy'n wahanol i "
+#~ "godecau lleferydd masnachol costus. Yn ogystal, mae Speex wedi ei "
+#~ "addasu'n dda ar gyfer rhaglenni Internet, ac mae'n cynnig nodweddion "
+#~ "defnyddiol nad ydynt yn bresennol yn y rhan fwyaf o godecau eraill. Yn "
+#~ "olaf, mae Speex yn rhan o'r prosiect GNU ac ar gael dan amrywiad Xiph.org "
+#~ "o'r drwydded BSD. Mae SpeexNarrow-15k yn seiliedig ar CELP, ac wedi'i "
+#~ "ddyfeisio gyda'r bwriad o gywasgu lleferydd ar gyflymder did terfynol o "
+#~ "15Kdye."
+
+#~ msgid "15 Kbps"
+#~ msgstr "15 Kdye"
+
+#~ msgid ""
+#~ "Speex is an Open Source/Free Software patent-free audio compression "
+#~ "format designed for speech. The Speex Project aims to lower the barrier "
+#~ "of entry for voice applications by providing a free alternative to "
+#~ "expensive proprietary speech codecs. Moreover, Speex is well-adapted to "
+#~ "Internet applications and provides useful features that are not present "
+#~ "in most other codecs. Finally, Speex is part of the GNU Project and is "
+#~ "available under the Xiph.org variant of the BSD license. SpeexNarrow-8k "
+#~ "is based on CELP and is designed to compress voice at a payload bitrate "
+#~ "of 8 kbps."
+#~ msgstr ""
+#~ "Fformat Côd Agored/Meddalwedd Rhydd ar gyfer cywasgu sain yw Speex, "
+#~ "ddyfeisiwyd ar gyfer lleferydd. Bwriad prosiect Speex yw hwyluso "
+#~ "datblygiad rhaglenni llais gan gynnig dewis rhydd a rhad sy'n wahanol i "
+#~ "godecau lleferydd masnachol costus. Yn ogystal, mae Speex wedi ei "
+#~ "addasu'n dda ar gyfer rhaglenni Internet, ac mae'n cynnig nodweddion "
+#~ "defnyddiol nad ydynt yn bresennol yn y rhan fwyaf o godecau eraill. Yn "
+#~ "olaf, mae Speex yn rhan o'r prosiect GNU ac ar gael dan amrywiad Xiph.org "
+#~ "o'r drwydded BSD. Mae SpeexNarrow-8k yn seiliedig ar CELP, ac wedi'i "
+#~ "ddyfeisio gyda'r bwriad o gywasgu lleferydd ar gyflymder did terfynol o "
+#~ "8Kdye."
+
+#~ msgid "Good"
+#~ msgstr "Da"
+
+#~ msgid "8 Kbps"
+#~ msgstr "8 Kdye"
+
+#~ msgid ""
+#~ "MS-GSM is the Microsoft version of GSM 06.10. GSM 06.10 is a standardized "
+#~ "lossy speech compression employed by most European wireless telephones. "
+#~ "It uses RPE/LTP (residual pulse excitation/long term prediction) coding "
+#~ "to compress frames of 160 13-bit samples with a frame rate of 50 Hz into "
+#~ "260 bits.  Microsoft's GSM 06.10 codec is not compatible with the "
+#~ "standard frame format, they use 65-byte-frames (2 x 32 1/2) rather than "
+#~ "rounding to 33, and they number the bits in their bytes from the other "
+#~ "end."
+#~ msgstr ""
+#~ "MS-GSM yw fersiwn Microsoft o GSM 06.10. Modd safonol unffordd i gywasgu "
+#~ "lleferydd yw GSM 06.10, ddefnyddir gan y rhan fwyaf o ffonau symudol yn "
+#~ "Ewrop. Mae'n defnyddio RPE/LTP (Residual Pulse Excitation/ Long Term "
+#~ "Prediction) er mwyn cywasgu fframau o 160 sampl 13-did yr un, gydag "
+#~ "amledd ffrâm o 50 Hz, i mewn i 260 did. Nid yw codec GSM 06.10 Microsoft "
+#~ "yn gyfunol â'r fformat ffrâm safonol; maen nhw'n defnyddio fframau o 65-"
+#~ "beit (2 x 32 1/2) yn hytrach na rowndio i 33, a maent yn rhifo'r didau yn "
+#~ "eu beitiau y tu chwith."
+
+#~ msgid "13 Kbps"
+#~ msgstr "13 Kdye"
+
+#~ msgid ""
+#~ "G.711 is the international standard for encoding telephone audio on 64 "
+#~ "kbps channel. It is a pulse code modulation (PCM) scheme operating at 8 "
+#~ "kHz sample rate, with 8 bits per sample, fully meeting ITU-T "
+#~ "recommendations. This standard has two forms, A-Law and u-Law. A-Law "
+#~ "G.711 PCM encoder converts 13 bit linear PCM samples into 8 bit "
+#~ "compressed PCM (logarithmic form) samples, and the decoder does the "
+#~ "conversion vice versa."
+#~ msgstr ""
+#~ "G.711 yw'r safon rhyngwladol ar gyfer codio sain ffôn ar sianel 64 Kdye. "
+#~ "Mae'n safon PCM (Pulse Code Modulation) gydag amledd sampl o 8 kHz, gyda "
+#~ "8 did y sampl, sy'n llwyr gyrraedd argymhellion yr ITU-T. Mae iddo ddwy "
+#~ "ffurf, A-Law a u-Law. Mae'r codydd A-Law yn trosi samplau llinol 13-did "
+#~ "PCM i mewn i samplau 8-did PCM (ar ffurf logarithmig) wedi eu cywasgu, ac "
+#~ "mae'r dadgodydd yn trosi am yn ôl."
+
+#~ msgid "64 Kbps"
+#~ msgstr "64 Kdye"
+
+#~ msgid ""
+#~ "G.711 is the international standard for encoding telephone audio on 64 "
+#~ "kbps channel. It is a pulse code modulation (PCM) scheme operating at 8 "
+#~ "kHz sample rate, with 8 bits per sample, fully meeting ITU-T "
+#~ "recommendations. This standard has two forms, A-Law and u-Law. u-Law "
+#~ "G.711 PCM encoder converts 14 bit linear PCM samples into 8 bit "
+#~ "compressed PCM (logarithmic form) samples, and the decoder does the "
+#~ "conversion vice versa."
+#~ msgstr ""
+#~ "G.711 yw'r safon rhyngwladol ar gyfer codio sain ffôn ar sianel 64 Kdye. "
+#~ "Mae'n safon PCM (Pulse Code Modulation) gydag amledd sampl o 8 kHz, gyda "
+#~ "8 did y sampl, sy'n llwyr gyrraedd argymhellion yr ITU-T. Mae iddo ddwy "
+#~ "ffurf, A-Law a u-Law. Mae'r codydd u-Law yn trosi samplau llinol 14-did "
+#~ "PCM i mewn i samplau 8-did PCM (ar ffurf logarithmig) wedi eu cywasgu, ac "
+#~ "mae'r dadgodydd yn trosi am yn ôl."
+
+#~ msgid ""
+#~ "GSM 06.10 is a standardized lossy speech compression employed by first "
+#~ "generation of digital mobile phones in Europe. It uses RPE/LTP (residual "
+#~ "pulse excitation/long term prediction) coding to compress frames of 20 "
+#~ "ms, achieving a bitrate of 13kbps."
+#~ msgstr ""
+#~ "Modd safonol unffordd i gywasgu lleferydd yw GSM 06.10, ddefnyddir gan y "
+#~ "genhedlaeth gyntaf o ffonau symudol digidol o fewn Ewrop.Mae'n defnyddio "
+#~ "RPE/LTP (Residual Pulse Excitation/Long Term Prediction) er mwyn cywasgu "
+#~ "fframau o 20 milfed eiliad, gan gyrraedd cyflymder did o 13 kdye."
+
+#~ msgid "16.5 Kbps"
+#~ msgstr "16.5 Kdye"
+
+#~ msgid ""
+#~ "G.726 conforms to ITU-T G.726 recommendation that specifies speech "
+#~ "compression and decompression at rates of 16, 24, 32 and 40 Kbps based on "
+#~ "Adaptive Differential Pulse Code Modulation (ADPCM)."
+#~ msgstr ""
+#~ "Mae G.726 yn gyfunol ag argymhelliad G.726 yr ITU-T, sy'n penodi cywasgu "
+#~ "a datgywasgu lleferydd ar gyflymderau o 16, 24, 32 a 40 kdye yn seiliedig "
+#~ "ar ADPCM (Adaptive Differential Pulse Code Modulation)."
+
+#~ msgid "32 Kbps"
+#~ msgstr "32 Kdye"
+
+#~ msgid ""
+#~ "G.723.1 conforms to ITU-T G.723.1 recommendation. It was designed for "
+#~ "videoconferencing / telephony over standard phone lines, and is optimized "
+#~ "for realtime encode and decode. That codec is only available in "
+#~ "GnomeMeeting when using Quicknet cards due to patents restrictions."
+#~ msgstr ""
+#~ "Mae G.723.1 yn gyfunol ag argymhelliad G.723.1 yr ITU-T. Fe'i luniwyd ar "
+#~ "gyfer cynhadledda fideo/teleffoni dros linellau ffôn cyffredinol, ac mae "
+#~ "wedi'i optimeiddio ar gyfer codio a dadgodio mewn iawn amser. Oherwydd "
+#~ "rhwystrau patent, dim ond tra'n defnyddio cerdyn Quicknet y mae'r codec "
+#~ "hwn ar gael yn GnomeMeeting."
+
+#~ msgid "6.3 or 5.7 Kbps"
+#~ msgstr "6.3 neu 5.7 Kdye"
+
+#~ msgid "Friends"
+#~ msgstr "Ffrindiau"
+
+#~ msgid "Work"
+#~ msgstr "Gwaith"
+
+#~ msgid "Family"
+#~ msgstr "Teulu"
+
+#~ msgid "Cannot contact the user directory"
+#~ msgstr "Methu cysylltu â'r cyfeiriadur defnyddwyr"
+
+#~ msgid "Failed to contact LDAP server %s:%d"
+#~ msgstr "Methu cysylltu â'r gweinydd LDAP %s:%d"
+
+#~ msgid "Failed to set time limit on LDAP operations"
+#~ msgstr "Methu gosod terfyn amser ar weithredoedd LDAP"
+
+#~ msgid "Failed to contact to LDAP server %s: %s"
+#~ msgstr "Methu cysylltu â'r gweinydd LDAP %s: %s"
+
+#~ msgid "Fetching online users list from %s"
+#~ msgstr "Nôl rhestr o ddefnyddwyr ar-lein oddi wrth %s"
+
+#~ msgid "Could not fetch online users list"
+#~ msgstr "Methu nôl rhestr o ddefnyddwyr sydd ar-lein"
+
+#~ msgid "Connection to %s lost"
+#~ msgstr "Cysylltiad â %s wedi'i golli"
+
+#~ msgid "Search completed: %d user(s) listed on a total of %d user(s) from %s"
+#~ msgstr ""
+#~ "Cwblhawyd y chwiliad: %d defnyddiwr wedi eu rhestru ar gyfanswm o %d "
+#~ "defnyddiwr o %s"
+
+#~ msgid "Search completed: %d user(s) found on %s"
+#~ msgstr "Chwilio ar ben: canfuwyd %d defnyddiwr ar %s"
+
+#~ msgid "Groups:"
+#~ msgstr "Grwpiau:"
+
+#~ msgid "Invalid user name or URL"
+#~ msgstr "Enw ddefnyddiwr neu URL annilys"
+
+#~ msgid ""
+#~ "Please provide a valid name and URL for the contact you want to add to "
+#~ "the address book."
+#~ msgstr ""
+#~ "Rhowch enw ac URL dilys ar gyfer y cyswllt yr ydych eisiau ei ychwanegu "
+#~ "i'r llyfr cyfeiriadau."
+
+#~ msgid "Invalid group"
+#~ msgstr "Grŵp annilys"
+
+#~ msgid "You have to select a group to which you want to add your contact."
+#~ msgstr ""
+#~ "Rhaid i chi ddewis grŵp yr ydych eisiau ychwanegu eich cyswllt iddo."
+
+#~ msgid "Invalid speed dial"
+#~ msgstr "Deialu brys annilys"
+
+#~ msgid "Invalid URL"
+#~ msgstr "URL annilys"
+
+#~ msgid ""
+#~ "Another contact with the same URL already exists in the address book."
+#~ msgstr ""
+#~ "Mae cyswllt arall gyda'r un URL mewn bod eisioes yn y llyfr cyfeiriadau."
+
+#~ msgid "Are you sure you want to remove %s [%s] from this group?"
+#~ msgstr "Ydych yn siwr eich bod am ddileu'r gweinydd %s[%s] o'r grŵp?"
+
+#~ msgid "Add %s to Address Book"
+#~ msgstr "Ychwanegu %s i'r llyfr cyfeiriadau"
+
+#~ msgid "_Tranfer Call to Contact"
+#~ msgstr "_Trosglwyddo'r Alwad i'r Cyswllt"
+
+#~ msgid "Add a New Server"
+#~ msgstr "Ychwanegu Gweinydd Newydd"
+
+#~ msgid "Enter the server name:"
+#~ msgstr "Rhowch enw'r gweinydd:"
+
+#~ msgid ""
+#~ "Sorry but there is already a server with the same name in the address "
+#~ "book."
+#~ msgstr ""
+#~ "Mae'n ddrwg gennym, ond mae gweinydd gyda'r un enw mewn bod eisioes yn y "
+#~ "llyfr cyfeiriadau."
+
+#~ msgid "Add a New Group"
+#~ msgstr "Ychwanegu Grŵp Newydd"
+
+#~ msgid "Enter the group name:"
+#~ msgstr "Rhowch enw'r grŵp:"
+
+#~ msgid ""
+#~ "Sorry but there is already a group with the same name in the address book."
+#~ msgstr ""
+#~ "Mae'n ddrwg gennym, ond mae grŵp arall gyda'r un enw mewn bod eisioes yn "
+#~ "y llyfr cyfeiriadau."
+
+#~ msgid "Invalid server or group name"
+#~ msgstr "Enw grŵp neu weinydd annilys"
+
+#~ msgid "Please enter a new name for server %s:"
+#~ msgstr "Rhowch enw newydd ar gyfer gweinydd %s os gwelwch yn dda:"
+
+#~ msgid "Please enter a new name for group %s:"
+#~ msgstr "Rhowch enw newydd ar gyfer grŵp %s:"
+
+#~ msgid "New Group"
+#~ msgstr "Grŵp Newydd"
+
+#~ msgid "_Find"
+#~ msgstr "_Canfod"
+
+#~ msgid "_Rename"
+#~ msgstr "_Ailenwi"
+
+#~ msgid "New Contact"
+#~ msgstr "Cyswllt Newydd"
+
+#~ msgid "Delete"
+#~ msgstr "Dileu"
+
+#~ msgid "New _Server"
+#~ msgstr "G_weinydd Newydd"
+
+#~ msgid "New _Group"
+#~ msgstr "_Grŵp Newydd"
+
+#~ msgid "V"
+#~ msgstr "Fid"
+
+#~ msgid "IP"
+#~ msgstr "IP"
+
+#~ msgid "First name contains"
+#~ msgstr "Enw cyntaf yn cynnwys"
+
+#~ msgid "Servers"
+#~ msgstr "Gweinyddion"
+
+#~ msgid "Groups"
+#~ msgstr "Grwpiau"
+
+#~ msgid "_About GnomeMeeting"
+#~ msgstr "_Ynglŷn â GnomeMeeting"
+
+#~ msgid "Codec Information"
+#~ msgstr "Gwybodaeth Codec"
+
+#~ msgid "NAT/PAT Router Support"
+#~ msgstr "Cynnal Llwybrydd NAT/PAT"
+
+#~ msgid "Info"
+#~ msgstr "Gwybodaeth"
+
+#~ msgid "Keep a minimum video _quality of"
+#~ msgstr "Cadw _ansawdd fideo lleiaf o"
+
+#~ msgid ""
+#~ "The minimum transmitted video quality to keep when trying to minimize the "
+#~ "used bandwidth:  choose 100% on a LAN for the best quality, 1% being the "
+#~ "worst quality"
+#~ msgstr ""
+#~ "Yr ansawdd lleiaf o'r fideo a drosglwyddir i'w gadw wrth geisio lleihau "
+#~ "yr ystod a ddefnyddir: dewiswch 100% ar LAN am yr ansawdd gorau; 1% yw'r "
+#~ "ansawdd gwaethaf"
+
+#~ msgid "%"
+#~ msgstr "%"
+
+#~ msgid "Transmit at least"
+#~ msgstr "Trosglwyddo o leiaf"
+
+#~ msgid "_frames per second"
+#~ msgstr "_ffrâm bob eiliad"
 
 #~ msgid "Local video window height"
 #~ msgstr "Taldra ffenestr fideo lleol"
@@ -4364,9 +4472,6 @@ msgstr "Gwall gyda maint y fframiau."
 #~ "\n"
 #~ "Ni hysbysir unrhyw wybodaeth os nad ydych yn gadael iddi gael ei gyhoeddi "
 #~ "ar gyfeiriadur o ddefnyddwyr GnomeMeeting ar-lein."
-
-#~ msgid "First _name:"
-#~ msgstr "_Enw cyntaf"
 
 #~ msgid "Callto URL"
 #~ msgstr "URL galw-i"
@@ -4651,3 +4756,4 @@ msgstr "Gwall gyda maint y fframiau."
 
 #~ msgid "Browse..."
 #~ msgstr "Pori..."
+
