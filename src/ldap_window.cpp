@@ -1378,7 +1378,7 @@ contact_section_changed_cb (GtkTreeSelection *selection,
 
   if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
 
-    gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 
+    gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
 			COLUMN_NOTEBOOK_PAGE, &page_num, -1);
     
     /* Selectes the good notebook page for the contact section */
@@ -2003,7 +2003,7 @@ gnomemeeting_init_ldap_window ()
   GtkWidget *menubar = NULL;
   GtkWidget *scroll = NULL;
   GdkPixbuf *icon = NULL;
-  
+
   GtkCellRenderer *cell = NULL;
   GtkTreeSelection *selection = NULL;
   GtkTreeViewColumn *column = NULL;
@@ -2152,7 +2152,7 @@ gnomemeeting_init_ldap_window ()
 
   /* a vbox to put the frames and the user list */
   vbox = gtk_vbox_new (FALSE, 0);
-  gtk_paned_add2 (GTK_PANED (hpaned), vbox);
+  gtk_paned_add2 (GTK_PANED (hpaned), vbox);  
 
   /* We will put a GtkNotebook that will contain the contacts list */
   lw->notebook = gtk_notebook_new ();
@@ -2220,13 +2220,17 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
 {
   GtkWidget *page = NULL;
   GtkWidget *scroll = NULL;
+  GtkWidget *frame = NULL;
   GtkWidget *hbox = NULL;
   GtkWidget *vbox = NULL;
   GtkWidget *handle = NULL;
   GtkWidget *menu = NULL;
   GtkWidget *menu_item = NULL;
   GtkWidget *refresh_button = NULL;
-    
+
+  PangoAttrList *attrs = NULL; 
+  PangoAttribute *attr = NULL; 
+
   GConfClient *client = NULL;
   
   GtkListStore *users_list_store = NULL;
@@ -2276,8 +2280,7 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
     users_list_store = 
       gtk_list_store_new (NUM_COLUMNS_GROUPS, G_TYPE_STRING, G_TYPE_STRING,
 			  G_TYPE_STRING);
-
-
+			  
   vbox = gtk_vbox_new (FALSE, 0);
   scroll = gtk_scrolled_window_new (NULL, NULL);
 
@@ -2432,10 +2435,34 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
     gtk_tree_view_append_column (GTK_TREE_VIEW (lwp->tree_view), column);
   }
 
+
+  /* Copied from the prefs window, please use the same logic */
+  lwp->section_name = gtk_label_new (text_label);
+  frame = gtk_frame_new (NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
+  gtk_container_set_border_width (GTK_CONTAINER (frame), 4);
+  gtk_misc_set_alignment (GTK_MISC (lwp->section_name), 0.0, 0.5);
+  gtk_container_add (GTK_CONTAINER (frame), lwp->section_name);
+  gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
+  attrs = pango_attr_list_new ();
+  attr = pango_attr_scale_new (PANGO_SCALE_LARGE);
+  attr->start_index = 0;
+  attr->end_index = G_MAXUINT; 
+  pango_attr_list_insert (attrs, attr); 
+  attr = pango_attr_weight_new (PANGO_WEIGHT_HEAVY);
+  attr->start_index = 0;
+  attr->end_index = G_MAXUINT;
+  pango_attr_list_insert (attrs, attr);
+  gtk_label_set_attributes (GTK_LABEL (lwp->section_name), attrs);
+  pango_attr_list_unref (attrs);
+
+
+  /* Add the tree view*/
   gtk_container_add (GTK_CONTAINER (scroll), lwp->tree_view);
   gtk_container_set_border_width (GTK_CONTAINER (lwp->tree_view), 0);
   gtk_box_pack_start (GTK_BOX (vbox), scroll, TRUE, TRUE, 0);
 
+  
   if (type == CONTACTS_SERVERS) {
 
     hbox = gtk_hbox_new (FALSE, 0);

@@ -215,6 +215,7 @@ struct _GmLdapWindow
 
 struct _GmLdapWindowPage
 {
+  GtkWidget *section_name;
   GtkWidget *tree_view;
   GtkWidget *statusbar;
   GtkWidget *option_menu;

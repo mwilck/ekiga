@@ -981,10 +981,8 @@ void gnomemeeting_dialpad_event (const char *key)
 	&& !strcmp (button_text, "*")) 
       button_text = g_strdup (".");
 
-    new_url = GMURL ().GetDefaultURL () + PString (button_text);
+    new_url = url + PString (button_text);
 
-    cout << "FIX ME: TO TEST" << endl << flush;
-    
     if (!strcmp (".", button_text)) 
       g_free (button_text);
 
