@@ -1908,5 +1908,9 @@ gnomemeeting_gconf_upgrade ()
   if (version < (MAJOR_VERSION * 100 + MINOR_VERSION)) {
 
     gnomemeeting_message_dialog (GTK_WINDOW (gm), _("Welcome to GnomeMeeting 1.00!"), _("Congratulations, you have just successfully launched GnomeMeeting 1.00 for the first time.\nGnomeMeeting is the leading VoIP, videoconferencing and telephony software for Unix.\n\nThanks to all of you who have helped us along the road to our golden 1.00 release!\n\nThe GnomeMeeting Team."));
+  
+    rename_contact_section ("Friends", _("Friends"), TRUE);
+    rename_contact_section ("Work", _("Work"), TRUE);
+    rename_contact_section ("Family", _("Family"), TRUE);
   }
 }

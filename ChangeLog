@@ -1,3 +1,18 @@
+2004-02-09 Kilian Krause <kk@verfaction.de>
+
+	Last-minute patch provided by Damien Sandras  <dsandras@seconix.com>:
+	
+	* gnomemeeting.schemas.in.in: Added 2 keys to remember position and size
+	for the druid window.
+	* druid.cpp, menu.cpp: Fixed bug where the
+	druid was not displayed anymore. Remember position and size for the
+	druid window.
+	* config.cpp: Rename the groups in translated group names when upgrading
+	from 0.98.
+	* pref_window.cpp: Fixed typo.
+	* ldap_window.h, ldap_window.cpp: Made function to rename a contact
+	section public.
+	
 2004-02-08 Damien Sandras  <dsandras@seconix.com>
 
 	* src/config.cpp: Added welcome text for 1.00.

@@ -175,10 +175,6 @@ static void add_contact_section (const char *,
 static void delete_contact_section (const char *,
 				    gboolean);
 
-static void rename_contact_section (const char *,
-				    const char *,
-				    gboolean);
-
 static gboolean get_selected_contact_info (gchar ** = NULL,
 					   gchar ** = NULL,
 					   gchar ** = NULL,
@@ -2312,113 +2308,6 @@ delete_contact_from_group (const char *contact_url,
   g_free (contact_section);
 }
 
-		      
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Rename the contact section (group or server) given as
- *                 parameter under its non-escaped form into the other
- *                 parameter.
- * PRE          :  /
- */
-static void
-rename_contact_section (const char *contact_section_old,
-			const char *contact_section_new,
-			gboolean is_group)
-{
-  GSList *contacts_sections = NULL;
-  GSList *contacts_sections_iter = NULL;
-  GSList *old_list = NULL;
-  
-  gchar *old_name = NULL;
-  gchar *new_name = NULL;
-  gchar *new_name_down = NULL;
-  gchar *old_gconf_key = NULL;
-  gchar *new_gconf_key = NULL;
-  gchar *gconf_key = NULL;
-
-  int pos = 0;
-  
-  GConfClient *client = NULL;
-
-  if (!contact_section_old || !contact_section_new)
-    return;
-  
-  client = gconf_client_get_default ();
-
-  for (int i = 0 ; i < 2 ; i++) {
-
-    if (i == 1)
-      gconf_key = g_strdup (CONTACTS_KEY "ldap_servers_list");
-    else
-      gconf_key = g_strdup (CONTACTS_KEY "groups_list");
-    
-    contacts_sections =
-      gconf_client_get_list (client, gconf_key, GCONF_VALUE_STRING, NULL);
-    contacts_sections_iter = contacts_sections;
-
-    old_name = escape_contact_section (contact_section_old);
-    old_gconf_key = g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, old_name);
-
-    new_name = escape_contact_section (contact_section_new, FALSE);
-    new_name_down = g_utf8_strdown (new_name, -1);
-    new_gconf_key = g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY,
-				     new_name_down);
-    
-
-    while (contacts_sections_iter && contacts_sections_iter->data) {
-
-      if ((!strcasecmp ((char *) contacts_sections_iter->data, old_name)
-	  || !strcasecmp ((char *) contacts_sections_iter->data,
-			  contact_section_old))
-	  && (is_group == (i == 0))) {
-
-	contacts_sections =
-	  g_slist_remove_link (contacts_sections, contacts_sections_iter);
-	g_slist_free_1 (contacts_sections_iter);
-
-	contacts_sections =
-	  g_slist_insert (contacts_sections, g_strdup (new_name), pos);
-
-	/* If it was a group, copy the old group content to the new one
-	   and unset the old key */
-	if (i == 0) {
-	  
-	  old_list =
-	    gconf_client_get_list (client, old_gconf_key,
-				   GCONF_VALUE_STRING, NULL);
-	
-	  gconf_client_set_list (client, new_gconf_key,
-				 GCONF_VALUE_STRING, old_list, NULL);
-
-	  gconf_client_remove_dir (client, "/apps/gnomemeeting", 0);
-	  gconf_client_unset (client, old_gconf_key, NULL);
-	  gconf_client_add_dir (client, "/apps/gnomemeeting",
-				GCONF_CLIENT_PRELOAD_RECURSIVE, 0);
-
-	  g_slist_free (old_list);
-	}
-	
-	contacts_sections_iter = contacts_sections;
-      }
-
-      contacts_sections_iter = g_slist_next (contacts_sections_iter);
-      pos++;
-    }    
-
-    gconf_client_set_list (client, gconf_key, GCONF_VALUE_STRING,
-			   contacts_sections, NULL);
-
-    g_slist_free (contacts_sections);
-    g_slist_free (contacts_sections_iter);
-
-    g_free (new_gconf_key);
-    g_free (old_gconf_key);
-    g_free (new_name);
-    g_free (new_name_down);
-    g_free (old_name);    
-    g_free (gconf_key);
-  }
-}
-
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Updates the given pointers so that they point to the
@@ -2697,7 +2586,17 @@ gnomemeeting_ldap_window_new (GmLdapWindow *lw)
       {"text/plain", GTK_TARGET_SAME_APP, 0}
     };
 
-  
+  /* Hack to make sure that they are translated in the addressbook
+   * now that unfortunately all people are using the english version
+   */
+  gchar *a = NULL;
+  a = g_strdup (_("Friends"));
+  g_free (a);
+  a = g_strdup (_("Family"));
+  g_free (a);
+  a = g_strdup (_("Work"));
+  g_free (a);
+
   client = gconf_client_get_default ();
 
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
@@ -3837,4 +3736,105 @@ escape_contact_section (const char *contact_section, BOOL no_case)
   g_free (contact_section_no_case);
 
   return contact_section_escaped;
+}
+
+
+void
+rename_contact_section (const char *contact_section_old,
+			const char *contact_section_new,
+			gboolean is_group)
+{
+  GSList *contacts_sections = NULL;
+  GSList *contacts_sections_iter = NULL;
+  GSList *old_list = NULL;
+  
+  gchar *old_name = NULL;
+  gchar *new_name = NULL;
+  gchar *new_name_down = NULL;
+  gchar *old_gconf_key = NULL;
+  gchar *new_gconf_key = NULL;
+  gchar *gconf_key = NULL;
+
+  int pos = 0;
+  
+  GConfClient *client = NULL;
+
+  if (!contact_section_old || !contact_section_new)
+    return;
+  
+  client = gconf_client_get_default ();
+
+  for (int i = 0 ; i < 2 ; i++) {
+
+    if (i == 1)
+      gconf_key = g_strdup (CONTACTS_KEY "ldap_servers_list");
+    else
+      gconf_key = g_strdup (CONTACTS_KEY "groups_list");
+    
+    contacts_sections =
+      gconf_client_get_list (client, gconf_key, GCONF_VALUE_STRING, NULL);
+    contacts_sections_iter = contacts_sections;
+
+    old_name = escape_contact_section (contact_section_old);
+    old_gconf_key = g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, old_name);
+
+    new_name = escape_contact_section (contact_section_new, FALSE);
+    new_name_down = g_utf8_strdown (new_name, -1);
+    new_gconf_key = g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY,
+				     new_name_down);
+    
+
+    while (contacts_sections_iter && contacts_sections_iter->data) {
+
+      if ((!strcasecmp ((char *) contacts_sections_iter->data, old_name)
+	  || !strcasecmp ((char *) contacts_sections_iter->data,
+			  contact_section_old))
+	  && (is_group == (i == 0))) {
+
+	contacts_sections =
+	  g_slist_remove_link (contacts_sections, contacts_sections_iter);
+	g_slist_free_1 (contacts_sections_iter);
+
+	contacts_sections =
+	  g_slist_insert (contacts_sections, g_strdup (new_name), pos);
+
+	/* If it was a group, copy the old group content to the new one
+	   and unset the old key */
+	if (i == 0) {
+	  
+	  old_list =
+	    gconf_client_get_list (client, old_gconf_key,
+				   GCONF_VALUE_STRING, NULL);
+	
+	  gconf_client_set_list (client, new_gconf_key,
+				 GCONF_VALUE_STRING, old_list, NULL);
+
+	  gconf_client_remove_dir (client, "/apps/gnomemeeting", 0);
+	  gconf_client_unset (client, old_gconf_key, NULL);
+	  gconf_client_add_dir (client, "/apps/gnomemeeting",
+				GCONF_CLIENT_PRELOAD_RECURSIVE, 0);
+
+	  g_slist_free (old_list);
+	}
+	
+	contacts_sections_iter = contacts_sections;
+      }
+
+      contacts_sections_iter = g_slist_next (contacts_sections_iter);
+      pos++;
+    }    
+
+    gconf_client_set_list (client, gconf_key, GCONF_VALUE_STRING,
+			   contacts_sections, NULL);
+
+    g_slist_free (contacts_sections);
+    g_slist_free (contacts_sections_iter);
+
+    g_free (new_gconf_key);
+    g_free (old_gconf_key);
+    g_free (new_name);
+    g_free (new_name_down);
+    g_free (old_name);    
+    g_free (gconf_key);
+  }
 }

@@ -187,4 +187,15 @@ void contact_activated_cb (GtkTreeView *,
 			   GtkTreePath *,
 			   GtkTreeViewColumn *,
 			   gpointer);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Rename the contact section (group or server) given as
+ *                 parameter under its non-escaped form into the other
+ *                 parameter.
+ * PRE          :  Valid old contact section name, new contact section name.
+ */
+void rename_contact_section (const char *,
+                             const char *,
+                             gboolean);
 #endif

@@ -175,7 +175,7 @@ gnomemeeting_druid_cancel (GtkWidget *w, gpointer data)
   dw = GnomeMeeting::Process ()->GetDruidWindow ();
   
   gnome_druid_set_page (dw->druid, GNOME_DRUID_PAGE (dw->page_edge));
-  gtk_widget_hide (gw->druid_window);
+  gnomemeeting_window_hide (gw->druid_window);
   gnomemeeting_window_show (gm);
 }
 
@@ -313,7 +313,7 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
   
   
   /* Hide the druid and show GnomeMeeting */
-  gtk_widget_hide_all (GTK_WIDGET (gw->druid_window));
+  gnomemeeting_window_hide (GTK_WIDGET (gw->druid_window));
   gnome_druid_set_page (dw->druid, GNOME_DRUID_PAGE (dw->page_edge));
   gnomemeeting_window_show (gm);
 
@@ -1243,6 +1243,9 @@ gnomemeeting_druid_window_new (GmDruidWindow *dw)
   GnomeDruidPageEdge *page_final = NULL;
   
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  g_object_set_data_full (G_OBJECT (window), "window_name",
+			  g_strdup ("druid_window"), g_free); 
+  
   gtk_window_set_title (GTK_WINDOW (window), 
 			_("First Time Configuration Druid"));
   gtk_window_set_position (GTK_WINDOW (window), GTK_WIN_POS_CENTER);

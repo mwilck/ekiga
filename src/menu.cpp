@@ -337,7 +337,7 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
       GTK_MENU_ENTRY("configuration_druid", _("Configuration Druid"),
 		     _("Run the configuration druid"),
 		     NULL, 0, 
-		     GTK_SIGNAL_FUNC (gtk_widget_show_all),
+		     GTK_SIGNAL_FUNC (show_window_cb),
 		     (gpointer) gw->druid_window, TRUE),
 #else
       GTK_MENU_ENTRY("configuration_druid", _("Configuration Druid"),

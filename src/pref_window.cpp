@@ -1027,7 +1027,7 @@ gnomemeeting_init_pref_window_call_options (GtkWidget *window,
   gnome_prefs_toggle_new (subsection, _("Automatically _clear calls after 30 seconds of inactivity"), CALL_OPTIONS_KEY "clear_inactive_calls", _("If enabled, calls for which no audio and video has been received in the last 30 seconds are automatically cleared"), 0);  
 
   /* Translators: the full sentence is Reject or forward
-     unanswered incoming calls after X seconds */
+     unanswered incoming calls after X s (seconds) */
   gnome_prefs_spin_new (subsection, _("Reject or forward unanswered incoming calls after "), CALL_OPTIONS_KEY "no_answer_timeout", _("Automatically reject or forward incoming calls if no answer is given after the specified amount of time (in seconds)"), 10.0, 299.0, 1.0, 1, _("seconds"), true);
 }
 
@@ -1650,8 +1650,8 @@ gnomemeeting_init_pref_window_video_codecs (GtkWidget *window,
   subsection = gnome_prefs_subsection_new (window, container,
 					   _("Bandwidth Control"), 1, 1);
 
-  /* Translators: the full sentence is Maximum video bandwidth of X KB/s */
-  gnome_prefs_spin_new (subsection, _("Maximum video _bandwidth of"), VIDEO_CODECS_KEY "maximum_video_bandwidth", _("The maximum video bandwidth in kbytes/s. The video quality and the number of transmitted frames per second will be dynamically adjusted above their minimum during calls to try to minimize the bandwidth to the given value."), 2.0, 100.0, 1.0, 0, _("KB/s"), true);
+  /* Translators: the full sentence is Maximum video bandwidth of X kB/s */
+  gnome_prefs_spin_new (subsection, _("Maximum video _bandwidth of"), VIDEO_CODECS_KEY "maximum_video_bandwidth", _("The maximum video bandwidth in kbytes/s. The video quality and the number of transmitted frames per second will be dynamically adjusted above their minimum during calls to try to minimize the bandwidth to the given value."), 2.0, 100.0, 1.0, 0, _("kB/s"), true);
   
 
   /* Advanced quality settings */
