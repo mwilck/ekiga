@@ -342,6 +342,8 @@ void GMH323Connection::OnUserInputString(const PString & value)
 {
   PString val;
   PString remote = GetRemotePartyName ();
+  GConfClient *client = gconf_client_get_default ();
+
   /* The remote party name has to be converted to UTF-8, but not
      the text */
   gchar *utf8_remote = NULL;
@@ -376,7 +378,8 @@ void GMH323Connection::OnUserInputString(const PString & value)
   g_free (utf8_remote);
   
   if (!GTK_WIDGET_VISIBLE (gw->chat_window))
-    gtk_widget_show_all (gw->chat_window);
+    gconf_client_set_bool (client, "/apps/gnomemeeting/view/show_chat_window",
+			   true, NULL);
 
   gnomemeeting_threads_leave ();
 }
