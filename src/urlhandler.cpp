@@ -334,17 +334,6 @@ void GMURLHandler::Main ()
   endpoint = GnomeMeeting::Process ()->Endpoint ();
 
 
-  /* Answer the current call in a separate thread if we are called
-   * and return 
-   */
-  if (endpoint->GetCallingState () == GMEndPoint::Called) {
-
-    endpoint->AcceptCurrentIncomingCall ();
-
-    return;
-  }
-
-
   /* We are not called to answer a call, but to do a call, or to 
    * transfer a call, check if the URL to call is empty or not.
    */
