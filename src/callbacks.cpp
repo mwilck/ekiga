@@ -117,7 +117,7 @@ about_callback (GtkWidget *widget,
       "Damien Sandras <dsandras@seconix.com>",
       "",
       N_("Code contributors:"),
-      "Benjamin Leviant <belevian@gmail.com>"
+      "Benjamin Leviant <belevian@gmail.com>",
       "Kenneth Rohde Christiansen <kenneth@gnu.org>",
       "Julien Puydt <julien.puydt@laposte.net>",
       "Miguel Rodríguez Pérez <migrax@terra.es>",

@@ -741,15 +741,16 @@ GMEndPoint::OnIncomingConnection (OpalConnection &connection,
   switch (reason) {
 
   case 1:
-    connection.ClearCall (OpalConnection::EndedByLocalBusy);
-    res = TRUE;
+    connection.ClearCall ();
+    res = FALSE;
     short_reason = g_strdup (_("Rejecting incoming call"));
     long_reason = 
       g_strdup_printf (_("Rejecting incoming call from %s"), utf8_name);
     break;
     
   case 2:
-    res = connection.ForwardCall (extra);
+    connection.ForwardCall (extra);
+    res = FALSE;
     short_reason = g_strdup (_("Forwarding incoming call"));
     long_reason = 
       g_strdup_printf (_("Forwarding incoming call from %s to %s"), 
@@ -1095,9 +1096,9 @@ GMEndPoint::OnReleased (OpalConnection & connection)
   gm_main_window_flash_message (main_window, msg_reason);
   gnomemeeting_threads_leave ();
   
-  if (dispatcher)
-    g_signal_emit_by_name (dispatcher, "call-end", 
-			   (const gchar *) connection.GetToken ());
+  //if (dispatcher)
+    //g_signal_emit_by_name (dispatcher, "call-end", 
+//			   (const gchar *) connection.GetToken ());
 
   g_free (utf8_app);
   g_free (utf8_name);
