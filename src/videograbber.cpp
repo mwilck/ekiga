@@ -121,9 +121,9 @@ GMVideoGrabber::Main ()
       video_channel->Read (video_buffer, height * width * 3);
       video_channel->Write (video_buffer, height * width * 3);    
     }
-    else
-      Current()->Sleep (50);
     var_mutex.Signal ();
+
+    Current()->Sleep (20);
   }
 
   VGClose ();
