@@ -5,13 +5,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting 0.99.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-01-27 20:21+0900\n"
-"PO-Revision-Date: 2004-01-28 03:21+0900\n"
+"POT-Creation-Date: 2004-02-07 20:29+0900\n"
+"PO-Revision-Date: 2004-02-07 20:30+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: GNOME Korea <gnome-kr-hackers@lists.kldp.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #. Add the window icon and title
 #: gnomemeeting.desktop.in.h:1 src/main_window.cpp:1154
@@ -62,7 +63,9 @@ msgstr "호출이 끝날 때 자동으로 텍스트 채팅 내용을 지웁니�
 msgid ""
 "Automatically reject or forward incoming calls if no answer is given after "
 "the specified amount of time (in seconds)."
-msgstr "지정한 만큼의 시간(초)이 지날 때까지 응답을 하지 않으면 자동으로 거부하거나 전달합니다."
+msgstr ""
+"지정한 만큼의 시간(초)이 지날 때까지 응답을 하지 않으면 자동으로 거부하거나 "
+"전달합니다."
 
 #: gnomemeeting.schemas.in.in.h:10
 msgid ""
@@ -83,7 +86,9 @@ msgstr "조종판의 섹션을 바꿉니다 (4는 조종판을 끕니다)"
 msgid ""
 "Choose the number of blocks (that have not changed) transmitted with each "
 "frame. These blocks fill in the background."
-msgstr "각 프레임 별로 보낼 블럭 개수(바뀌지 않는)를 선택하십시오. 이 블럭은 바탕에 채워집니다."
+msgstr ""
+"각 프레임 별로 보낼 블럭 개수(바뀌지 않는)를 선택하십시오. 이 블럭은 바탕에 "
+"채워집니다."
 
 #: gnomemeeting.schemas.in.in.h:14
 msgid "Clear inactive calls"
@@ -177,7 +182,9 @@ msgstr "사용자 디렉토리에 자기 설명 넣기."
 msgid ""
 "Enter a valid URL to connect to a web application that outputs the public IP "
 "of your host."
-msgstr "이 호스트의 공인 IP 주소를 알려주는 웹 애플리케이션에 연결할 URL을 입력합니다."
+msgstr ""
+"이 호스트의 공인 IP 주소를 알려주는 웹 애플리케이션에 연결할 URL을 입력합니"
+"다."
 
 #: gnomemeeting.schemas.in.in.h:34 src/pref_window.cpp:1300
 msgid ""
@@ -257,7 +264,9 @@ msgstr "게이트웨이/프록시 호스트"
 msgid ""
 "If enabled, GnomeMeeting will start hidden provided that the notification "
 "area is present in the GNOME panel."
-msgstr "사용하면, 그놈 미팅은 숨겨진 상태로 시작합니다. (그놈 패널에 알림 영역이 있을 경우)."
+msgstr ""
+"사용하면, 그놈 미팅은 숨겨진 상태로 시작합니다. (그놈 패널에 알림 영역이 있"
+"을 경우)."
 
 #: gnomemeeting.schemas.in.in.h:52
 msgid ""
@@ -493,13 +502,17 @@ msgstr ""
 msgid ""
 "Select the transmitted video size: Small (QCIF 176x144) or Large (CIF "
 "352x288)."
-msgstr "보낼 비디오의 크기를 선택합니다: Small (QCIF 176x144) 혹은 Large (CIF 352x288)."
+msgstr ""
+"보낼 비디오의 크기를 선택합니다: Small (QCIF 176x144) 혹은 Large (CIF "
+"352x288)."
 
 #: gnomemeeting.schemas.in.in.h:104 src/pref_window.cpp:1429
 msgid ""
 "Select the video input device to use. If an error occurs when using this "
 "device a test picture will be transmitted."
-msgstr "사용할 비디오 입력 장치를 선택합니다. 이 장치를 사용할 때 오류가 발생하면 테스트 그림을 보냅니다."
+msgstr ""
+"사용할 비디오 입력 장치를 선택합니다. 이 장치를 사용할 때 오류가 발생하면 테"
+"스트 그림을 보냅니다."
 
 #: gnomemeeting.schemas.in.in.h:105
 msgid "Show a status bar at the bottom of the main window"
@@ -570,11 +583,12 @@ msgstr ""
 "음향 반향 제거 단계: 끄기, 낮게, 중간, 높게, 자동 게인 조정. 자동 게인 조정"
 "은 볼륨을 최상의 음질로 맞춥니다."
 
-#: gnomemeeting.schemas.in.in.h:121 src/pref_window.cpp:1245 src/tools.cpp:568
+#: gnomemeeting.schemas.in.in.h:121 src/pref_window.cpp:1245
 msgid ""
 "The Gatekeeper alias to use when registering (string, or E164 ID if only "
 "0123456789#)."
-msgstr "등록할 때 사용할 게이트키퍼 별명 (문자열, 혹은 0123456789#일 경우 E164 ID)."
+msgstr ""
+"등록할 때 사용할 게이트키퍼 별명 (문자열, 혹은 0123456789#일 경우 E164 ID)."
 
 #: gnomemeeting.schemas.in.in.h:122 src/pref_window.cpp:1243
 msgid "The Gatekeeper host to register with."
@@ -584,7 +598,7 @@ msgstr "등록할 게이트키퍼 호스트."
 msgid "The Gatekeeper identifier to register with."
 msgstr "등록할 게이트키퍼 ID."
 
-#: gnomemeeting.schemas.in.in.h:124 src/pref_window.cpp:1248 src/tools.cpp:571
+#: gnomemeeting.schemas.in.in.h:124 src/pref_window.cpp:1248
 msgid ""
 "The Gatekeeper password to use for H.235 authentication to the Gatekeeper."
 msgstr "H.235 인증에 사용할 게이트키퍼 열쇠글."
@@ -593,7 +607,9 @@ msgstr "H.235 인증에 사용할 게이트키퍼 열쇠글."
 msgid ""
 "The Gateway host is the host to use to do H.323 calls through a gateway that "
 "will relay calls."
-msgstr "게이트웨이 호스트는 H.323 호출을 릴레이해 주는 게이트웨이를 통해 H.323 호출을 할 때 사용할 호스트입니다."
+msgstr ""
+"게이트웨이 호스트는 H.323 호출을 릴레이해 주는 게이트웨이를 통해 H.323 호출"
+"을 할 때 사용할 호스트입니다."
 
 #: gnomemeeting.schemas.in.in.h:126 src/pref_window.cpp:1340
 msgid ""
@@ -608,15 +624,19 @@ msgstr "통화중 사운드"
 msgid ""
 "The chosen sound will be played at the end of calls or calling somebody who "
 "is busy, if enabled."
-msgstr "선택한 사운드는 호출이 끝날 때 혹은 다른 용무중인 사용자에게 호출할 때 플레이 됩니다 (사운드를 사용하는 경우)."
+msgstr ""
+"선택한 사운드는 호출이 끝날 때 혹은 다른 용무중인 사용자에게 호출할 때 플레"
+"이 됩니다 (사운드를 사용하는 경우)."
 
 #: gnomemeeting.schemas.in.in.h:129
 msgid "The chosen sound will be played on incoming calls, if enabled."
-msgstr "선택한 사운드는 호출이 들어올 때 플레이 됩니다 (사운드를 사용하는 경우)."
+msgstr ""
+"선택한 사운드는 호출이 들어올 때 플레이 됩니다 (사운드를 사용하는 경우)."
 
 #: gnomemeeting.schemas.in.in.h:130
 msgid "The chosen sound will be played when calling somebody, if enabled."
-msgstr "선택한 사운드는 누군가를 호출할 때 플레이 됩니다 (사운드를 사용하는 경우)."
+msgstr ""
+"선택한 사운드는 누군가를 호출할 때 플레이 됩니다 (사운드를 사용하는 경우)."
 
 #: gnomemeeting.schemas.in.in.h:131
 msgid "The default video view"
@@ -656,7 +676,9 @@ msgid ""
 "The image to transmit if \"Picture\" is selected as video plugin or if the "
 "opening of the device fails. Leave blank to use the default GnomeMeeting "
 "logo."
-msgstr "비디오 플러그인으로 \"Picture\"가 선택되거나 장치 열기가 실패했을 때 보낼 그림. 기본 그놈 미팅 로고를 보내려면 빈 상태로 남겨 두십시오."
+msgstr ""
+"비디오 플러그인으로 \"Picture\"가 선택되거나 장치 열기가 실패했을 때 보낼 그"
+"림. 기본 그놈 미팅 로고를 보내려면 빈 상태로 남겨 두십시오."
 
 #: gnomemeeting.schemas.in.in.h:139 src/pref_window.cpp:937
 msgid "The image width for fullscreen."
@@ -806,7 +828,9 @@ msgstr "원격 비디오 창의 크기"
 msgid ""
 "The sound that will be played at the end of calls or when calling somebody "
 "who is busy, if enabled."
-msgstr "이 사운드는 호출이 끝날 때 혹은 다른 용무중인 사용자에게 호출할 때 플레이 됩니다 (사운드를 사용하는 경우)."
+msgstr ""
+"이 사운드는 호출이 끝날 때 혹은 다른 용무중인 사용자에게 호출할 때 플레이 됩"
+"니다 (사운드를 사용하는 경우)."
 
 #: gnomemeeting.schemas.in.in.h:163
 msgid "The sound that will be played on incoming calls, if enabled."
@@ -971,7 +995,7 @@ msgstr "비디오 미리 보기"
 msgid "Video size"
 msgstr "비디오 크기"
 
-#: lib/dialog.c:192
+#: lib/dialog.c:193
 msgid "Do not show this dialog again"
 msgstr "이 대화 상자를 다시 표시하지 안 함"
 
@@ -1025,7 +1049,7 @@ msgstr "비디오 전송: 다시 시작"
 
 #: src/callbacks.cpp:383
 msgid "Code Contributors:"
-msgstr "코드 공헌자:"
+msgstr "도와주신 분들:"
 
 #: src/callbacks.cpp:393
 msgid "Artwork:"
@@ -1039,7 +1063,7 @@ msgstr "공헌자:"
 #. * seperate names with \n
 #: src/callbacks.cpp:430
 msgid "translator_credits"
-msgstr "Changwoo Ryu <cwryu@debian.org>, 2003"
+msgstr "류창우 <cwryu@debian.org>"
 
 #. Translators: Please test to see if your translation
 #. * looks OK and fits within the box
@@ -1475,7 +1499,7 @@ msgstr ""
 "\n"
 "전달을 하지 않습니다."
 
-#: src/config.cpp:1602
+#: src/config.cpp:1615
 msgid ""
 "An error has happened in the configuration backend.\n"
 "Maybe some of your settings won't be saved."
@@ -1506,12 +1530,16 @@ msgstr "수신 목적으로 열었던 %s 코덱을 닫았습니다"
 #: src/connection.cpp:202
 #, c-format
 msgid "Failure opening %s for transmission, will try with next common codec"
-msgstr "송신 목적으로 %s을(를) 여는 데 실패했습니다. 다음 공통 코덱으로 다시 시도합니다"
+msgstr ""
+"송신 목적으로 %s을(를) 여는 데 실패했습니다. 다음 공통 코덱으로 다시 시도합니"
+"다"
 
 #: src/connection.cpp:203
 #, c-format
 msgid "Failure opening %s for reception, will try with next common codec"
-msgstr "수신 목적으로 %s을(를) 여는 데 실패했습니다. 다음 공통 코덱으로 다시 시도합니다"
+msgstr ""
+"수신 목적으로 %s을(를) 여는 데 실패했습니다. 다음 공통 코덱으로 다시 시도합니"
+"다"
 
 #: src/connection.cpp:318 src/connection.cpp:319 src/urlhandler.cpp:77
 #: src/urlhandler.cpp:78
@@ -1526,7 +1554,7 @@ msgstr ""
 "다."
 
 #: src/druid.cpp:265 src/druid.cpp:655 src/druid.cpp:672 src/druid.cpp:710
-#: src/endpoint.cpp:1661 src/gnomemeeting.cpp:320 src/gnomemeeting.cpp:322
+#: src/endpoint.cpp:1677 src/gnomemeeting.cpp:320 src/gnomemeeting.cpp:322
 #: src/gnomemeeting.cpp:324 src/sound_handling.cpp:568
 #: src/sound_handling.cpp:569 src/videograbber.cpp:297
 #: src/videograbber.cpp:552
@@ -1799,7 +1827,7 @@ msgstr "%s에서 온 호출을 받는 중입니다 (채팅 가능)"
 msgid "Call rejected"
 msgstr "호출을 거부했습니다"
 
-#: src/endpoint.cpp:811 src/endpoint.cpp:1172 src/endpoint.cpp:2116
+#: src/endpoint.cpp:811 src/endpoint.cpp:1186 src/endpoint.cpp:2132
 msgid "Call forwarded"
 msgstr "호출을 전달했습니다"
 
@@ -1821,96 +1849,96 @@ msgstr "호출을 %s에 전달하는 데 오류가 발생했습니다"
 msgid "There was an error when forwarding the call to the given host."
 msgstr "호출을 주어진 호스트로 전달하는 데 오류가 발생했습니다."
 
-#: src/endpoint.cpp:948
+#: src/endpoint.cpp:954
 msgid "Connected"
 msgstr "연결되었습니다"
 
-#: src/endpoint.cpp:949
+#: src/endpoint.cpp:955
 #, c-format
 msgid "Connected with %s using %s"
 msgstr "%2$s을(를) 사용해 %1$s에 연결"
 
-#: src/endpoint.cpp:1136
+#: src/endpoint.cpp:1150
 msgid "Local user cleared the call"
 msgstr "로컬 사용자가 호출을 끝냈습니다"
 
-#: src/endpoint.cpp:1139
+#: src/endpoint.cpp:1153
 msgid "Remote user cleared the call"
 msgstr "원격 사용자가 호출을 끝냈습니다"
 
-#: src/endpoint.cpp:1142
+#: src/endpoint.cpp:1156
 msgid "Remote user did not accept the call"
 msgstr "원격 사용자가 호출을 받지 않았습니다"
 
-#: src/endpoint.cpp:1145 src/endpoint.cpp:1148
+#: src/endpoint.cpp:1159 src/endpoint.cpp:1162
 msgid "Local user did not accept the call"
 msgstr "로컬 사용자가 호출을 받지 않았습니다"
 
-#: src/endpoint.cpp:1151
+#: src/endpoint.cpp:1165
 msgid "The Gatekeeper cleared the call"
 msgstr "게이트키퍼가 호출을 끝냈습니다"
 
-#: src/endpoint.cpp:1154
+#: src/endpoint.cpp:1168
 msgid "Call not answered in the required time"
 msgstr "제한시간 내에 호출에 응답하지 않았습니다"
 
-#: src/endpoint.cpp:1157
+#: src/endpoint.cpp:1171
 msgid "Remote user has stopped calling"
 msgstr "원격 사용자가 호출을 멈췄습니다"
 
-#: src/endpoint.cpp:1160
+#: src/endpoint.cpp:1174
 msgid "Abnormal call termination"
 msgstr "비정상적인 호출 종료"
 
-#: src/endpoint.cpp:1163
+#: src/endpoint.cpp:1177
 msgid "Could not connect to remote host"
 msgstr "원격 호스트에 연결할 수 없습니다"
 
-#: src/endpoint.cpp:1166
+#: src/endpoint.cpp:1180
 msgid "Insufficient bandwidth"
 msgstr "대역폭이 부족합니다"
 
-#: src/endpoint.cpp:1169
+#: src/endpoint.cpp:1183
 msgid "No common codec"
 msgstr "공통의 코덱이 없습니다"
 
-#: src/endpoint.cpp:1175
+#: src/endpoint.cpp:1189
 msgid "Security check Failed"
 msgstr "보안 검사가 실패했습니다"
 
-#: src/endpoint.cpp:1178
+#: src/endpoint.cpp:1192
 msgid "Local user is busy"
 msgstr "로컬 사용자가 다른 용무 중입니다"
 
-#: src/endpoint.cpp:1181
+#: src/endpoint.cpp:1195
 msgid "Remote user is busy"
 msgstr "원격 사용자가 다른 용무 중입니다"
 
-#: src/endpoint.cpp:1184 src/endpoint.cpp:1187
+#: src/endpoint.cpp:1198 src/endpoint.cpp:1201
 msgid "Congested link to remote party"
 msgstr "원격 상대의 연결이 정체상태입니다"
 
-#: src/endpoint.cpp:1190 src/endpoint.cpp:1193
+#: src/endpoint.cpp:1204 src/endpoint.cpp:1207
 msgid "Remote user is unreachable"
 msgstr "원격 사용자에 도달할 수 없습니다"
 
-#: src/endpoint.cpp:1196
+#: src/endpoint.cpp:1210
 msgid "Remote host is offline"
 msgstr "원격 호스트가 연결되어 있지 않습니다"
 
-#: src/endpoint.cpp:1199
+#: src/endpoint.cpp:1213
 msgid "Temporary failure"
 msgstr "일시적으로 실패"
 
-#: src/endpoint.cpp:1202 src/urlhandler.cpp:373 src/urlhandler.cpp:379
+#: src/endpoint.cpp:1216 src/urlhandler.cpp:373 src/urlhandler.cpp:379
 msgid "User not found"
 msgstr "사용자를 찾을 수 없습니다"
 
-#: src/endpoint.cpp:1206
+#: src/endpoint.cpp:1220
 msgid "Call completed"
 msgstr "호출을 마쳤습니다"
 
-#: src/endpoint.cpp:1296 src/main_window.cpp:1241
+#: src/endpoint.cpp:1310 src/main_window.cpp:1241
 msgid ""
 "Lost packets:\n"
 "Late packets:\n"
@@ -1922,11 +1950,11 @@ msgstr ""
 "왕복 지연 시간:\n"
 "지터 버퍼:"
 
-#: src/endpoint.cpp:1518
+#: src/endpoint.cpp:1534
 msgid "Error while starting the listener"
 msgstr "연결 받음을 수행하는 데 오류가 발생했습니다"
 
-#: src/endpoint.cpp:1518
+#: src/endpoint.cpp:1534
 msgid ""
 "You will not be able to receive incoming calls. Please check that no other "
 "program is already running on the port used by GnomeMeeting."
@@ -1934,25 +1962,25 @@ msgstr ""
 "들어온 호출을 받을 수 없ㅅ브니다. 그놈 미팅이 사용할 포트를 다른 프로그램이 "
 "사용하고 있지 않은지 확인하십시오."
 
-#: src/endpoint.cpp:1647
+#: src/endpoint.cpp:1663
 msgid "Attaching lid hardware to codec"
 msgstr "lid 하드웨어를 코덱에 붙임"
 
-#: src/endpoint.cpp:1681
+#: src/endpoint.cpp:1697
 #, c-format
 msgid "Opened %s for recording with plugin %s"
 msgstr "녹음 목적으로 %s을(를) 열었습니다 (%s 플러그인)"
 
-#: src/endpoint.cpp:1682
+#: src/endpoint.cpp:1698
 #, c-format
 msgid "Opened %s for playing with plugin %s"
 msgstr "재생 목적으로 %s을(를) 열었습니다 (%s 플러그인)"
 
-#: src/endpoint.cpp:1715
+#: src/endpoint.cpp:1731
 msgid "Could not open audio channel for audio transmission"
 msgstr "오디오 송신에 쓸 오디오 채널을 열지 못했습니다"
 
-#: src/endpoint.cpp:1715
+#: src/endpoint.cpp:1731
 msgid ""
 "An error occured while trying to record from the soundcard for the audio "
 "transmission. Please check that your soundcard is not busy and that your "
@@ -1963,11 +1991,11 @@ msgstr ""
 "용중이 아니고 드라이버가 양방향 동시 전송을 지원하는 지 확인하십시오.\n"
 "오디오 보내기를 하지 않습니다."
 
-#: src/endpoint.cpp:1720
+#: src/endpoint.cpp:1736
 msgid "Could not open audio channel for audio reception"
 msgstr "오디오를 받는 데 쓸 오디오 채널을 열 수 없습니다"
 
-#: src/endpoint.cpp:1720
+#: src/endpoint.cpp:1736
 msgid ""
 "An error occured while trying to play audio to the soundcard for the audio "
 "reception. Please check that your soundcard is not busy and that your driver "
@@ -1978,12 +2006,12 @@ msgstr ""
 "사용중이 아니고 드라이버가 양방향 동시 전송을 지원하는 지 확인하십시오.\n"
 "오디오 받기를 하지 않습니다."
 
-#: src/endpoint.cpp:1949
+#: src/endpoint.cpp:1965
 #, c-format
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 
-#: src/endpoint.cpp:1991
+#: src/endpoint.cpp:2007
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -1996,7 +2024,7 @@ msgstr ""
 "왕복 지연 시간: %d ms\n"
 "지터 버퍼: %d ms"
 
-#: src/endpoint.cpp:2113
+#: src/endpoint.cpp:2129
 #, c-format
 msgid "Forwarding Call to %s (No Answer)"
 msgstr "%s(으)로 호출 전달 (응답 없음)"
@@ -2080,7 +2108,7 @@ msgid "Refusing Incoming call"
 msgstr "들어온 호출을 거부"
 
 #. GM is started
-#: src/gnomemeeting.cpp:487
+#: src/gnomemeeting.cpp:488
 #, c-format
 msgid "Started GnomeMeeting V%d.%d for %s\n"
 msgstr "그놈 미팅 V%d.%d 시작, 사용자 %s\n"
@@ -2418,7 +2446,7 @@ msgstr "V"
 msgid "Name"
 msgstr "이름"
 
-#: src/ldap_window.cpp:3106 src/ldap_window.cpp:3154 src/tools.cpp:446
+#: src/ldap_window.cpp:3106 src/ldap_window.cpp:3154 src/tools.cpp:548
 msgid "URL"
 msgstr "URL"
 
@@ -2858,7 +2886,7 @@ msgstr "주소록(_B)"
 msgid "Open the address book"
 msgstr "주소록을 엽니다"
 
-#: src/menu.cpp:481 src/tools.cpp:633
+#: src/menu.cpp:481 src/tools.cpp:762
 msgid "General History"
 msgstr "일반 히스토리"
 
@@ -2866,7 +2894,7 @@ msgstr "일반 히스토리"
 msgid "View the operations history"
 msgstr "동작 히스토리를 봅니다"
 
-#: src/menu.cpp:486 src/menu.cpp:655 src/tools.cpp:393
+#: src/menu.cpp:486 src/menu.cpp:655 src/tools.cpp:491
 msgid "Calls History"
 msgstr "호출 히스토리"
 
@@ -3207,11 +3235,11 @@ msgstr "게이트키퍼 ID(_I):"
 msgid "Gatekeeper _host:"
 msgstr "게이트키퍼 호스트(_H):"
 
-#: src/pref_window.cpp:1245 src/tools.cpp:568
+#: src/pref_window.cpp:1245
 msgid "Gatekeeper _alias:"
 msgstr "게이트키퍼 별명(_A):"
 
-#: src/pref_window.cpp:1248 src/tools.cpp:571
+#: src/pref_window.cpp:1248
 msgid "Gatekeeper _password:"
 msgstr "게이트키퍼 열쇠글(_P):"
 
@@ -3641,43 +3669,43 @@ msgstr ""
 "비디오 송신 상태. 호출 도중에 여기를 클릭하면, 비디오 송신을 일시 정지하거나 "
 "다시 시작합니다."
 
-#: src/tools.cpp:376
+#: src/tools.cpp:474
 msgid "Received Calls"
 msgstr "받은 호출"
 
-#: src/tools.cpp:376
+#: src/tools.cpp:474
 msgid "Placed Calls"
 msgstr "대기중인 호출"
 
-#: src/tools.cpp:376
+#: src/tools.cpp:474
 msgid "Unanswered Calls"
 msgstr "대답하지 않은 호출"
 
-#: src/tools.cpp:429
+#: src/tools.cpp:531
 msgid "Date"
 msgstr "날짜"
 
-#: src/tools.cpp:437
+#: src/tools.cpp:539
 msgid "Remote User"
 msgstr "원격 사용자"
 
-#: src/tools.cpp:455
+#: src/tools.cpp:557
 msgid "Call Duration"
 msgstr "호출 시간"
 
-#: src/tools.cpp:465
+#: src/tools.cpp:567
 msgid "Call End Reason"
 msgstr "호출 끝난 이유"
 
-#: src/tools.cpp:474
+#: src/tools.cpp:576
 msgid "Software"
 msgstr "소프트웨어"
 
-#: src/tools.cpp:552 src/tools.cpp:566
+#: src/tools.cpp:681 src/tools.cpp:695
 msgid "PC-To-Phone Settings"
 msgstr "PC에서 전화로 설정"
 
-#: src/tools.cpp:555
+#: src/tools.cpp:684
 msgid ""
 "You can make calls to regular phones and cell numbers worldwide using "
 "GnomeMeeting and the MicroTelco service from Quicknet Technologies. To "
@@ -3690,11 +3718,27 @@ msgstr ""
 "호와 PIN을 아래에 입력해야 합니다. 그 다음에 MicroTelco 서비스에 등록해야 합"
 "니다. 자세한 정보는 그놈 미팅 웹사이트를 참고하십시오."
 
-#: src/tools.cpp:575
+#: src/tools.cpp:697
+msgid "Account _number:"
+msgstr "계정 번호(_N):"
+
+#: src/tools.cpp:697
+msgid "Use your MicroTelco account number."
+msgstr "MicroTelco 계정 번호를 사용하십시오."
+
+#: src/tools.cpp:700
+msgid "_Pin:"
+msgstr "PIN(_P):"
+
+#: src/tools.cpp:700
+msgid "Use your MicroTelco PIN."
+msgstr "MicroTelco PIN을 사용하십시오."
+
+#: src/tools.cpp:704
 msgid "Use PC-To-Phone service"
 msgstr "PC에서 전화로 서비스"
 
-#: src/tools.cpp:580
+#: src/tools.cpp:709
 msgid ""
 "Click on one of the following links to get more information about your "
 "existing MicroTelco account, or to create a new account."
@@ -3702,19 +3746,23 @@ msgstr ""
 "이미 만들어 놓은 MicroTelco 계정에 대한 정보를 얻거나, 새 계정을 만드려면 다"
 "음 바로가기 중에서 하나를 클릭하십시오."
 
-#: src/tools.cpp:584
+#: src/tools.cpp:713
 msgid "Get an account"
 msgstr "계정 만들기"
 
-#: src/tools.cpp:586
+#: src/tools.cpp:715
 msgid "Buy a card"
 msgstr "카드 구입"
 
-#: src/tools.cpp:591
+#: src/tools.cpp:720
 msgid "Consult my account details"
 msgstr "내 계정 정보 자세히 보기"
 
-#: src/tray.cpp:182
+#. Start building the GMObject and associate the structure
+#. * to the object so that it is deleted when the object is
+#. * destroyed
+#.
+#: src/tray.cpp:185
 msgid "GnomeMeeting Tray Icon"
 msgstr "그놈 미팅 트레이 아이콘"
 
