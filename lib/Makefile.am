@@ -1,9 +1,10 @@
-SUBDIRS =						\
-	widgets						\
-	xdap						
+if DISABLE_GNOME
+SUBDIRS = widgets xdap about druid
+else
+SUBDIRS = widgets xdap
+endif
 
 noinst_LTLIBRARIES = libgnomemeeting.la
-
 
 libgnomemeeting_la_SOURCES =				\
 	dialog.c					\
@@ -28,14 +29,11 @@ libgnomemeeting_la_SOURCES =				\
 	eggtrayicon.h					\
 	eggtrayicon.c
 
-
 if DISABLE_GNOME
 libgnomemeeting_la_SOURCES += gm_conf-glib.c
-SUBDIRS += about druid
 else
 libgnomemeeting_la_SOURCES += gm_conf-gconf.c
 endif
-
 
 INCLUDES =						\
 	-DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \

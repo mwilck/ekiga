@@ -454,6 +454,8 @@ Makefile
 src/gnomemeeting-config-tool
 gnomemeeting.schemas.in
 lib/Makefile
+lib/about/Makefile
+lib/druid/Makefile
 lib/widgets/Makefile
 lib/xdap/Makefile
 po/Makefile.in
@@ -461,20 +463,9 @@ man/Makefile
 src/Makefile
 pixmaps/Makefile
 sounds/Makefile
-xdap_data/Makefile)
-
-if test x"${disable_gnome}" = xyes; then
-AC_OUTPUT(
-lib/druid/Makefile
-lib/about/Makefile)
-fi
-
-if test x"${disable_gnome}" = xno ; then
-AC_OUTPUT(
+xdap_data/Makefile
 help/Makefile
 help/C/Makefile)
-fi
-
 
 dnl ###########################################################################
 dnl Summary
