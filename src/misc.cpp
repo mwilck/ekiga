@@ -21,10 +21,9 @@
  *                         misc.cpp  -  description
  *                         ------------------------
  *   begin                : Thu Nov 22 2001
- *   copyright            : (C) 2000-2001 by Damien Sandras
- *                          and De Michele Cristiano  
+ *   copyright            : (C) 2000-2002 by Damien Sandras
  *   description          : This file contains miscellaneous functions.
- *   email                : dsandras@seconix.comi, demichel@na.infn.it
+ *   Additional Code      : De Michele Cristiano  
  *
  */
 
@@ -48,7 +47,6 @@ extern GtkWidget *gm;
 
 /* The functions */
 void gnomemeeting_threads_enter () {
-
 
   if (PThread::Current ()->GetThreadName () != "gnomemeeting") {
     
@@ -393,3 +391,55 @@ gnomemeeting_add_contact_entry(GM_window_widgets* gw, int max_contacts)
 
 }
 
+static void popup_toggle_changed (GtkCheckButton *but, gpointer data)
+{
+  if (GTK_TOGGLE_BUTTON (but)->active) 
+    gtk_object_set_data (GTK_OBJECT (data), "widget_data", (gpointer) "1");
+  else
+    gtk_object_set_data (GTK_OBJECT (data), "widget_data", (gpointer) "0");
+}
+
+
+void gnomemeeting_warning_popup (GtkWidget *w, gchar *m)
+{
+  gchar *msg = NULL;
+  gchar *widget_data = NULL;
+  GtkWidget *msg_box = NULL;
+  GtkWidget *toggle_button = NULL;
+  int ret = 0;
+
+  msg = g_strdup (m);
+     
+  widget_data = (gchar *) gtk_object_get_data (GTK_OBJECT (w), "widget_data");
+
+  toggle_button = 
+    gtk_check_button_new_with_label (_("Do not show this dialog again"));
+  
+  gtk_signal_connect (GTK_OBJECT (toggle_button), "toggled",
+		      GTK_SIGNAL_FUNC (popup_toggle_changed),
+		      w);
+		 
+  /* If it is the first time that we are called OR if data is != 0 */
+  if (!gtk_object_get_data (GTK_OBJECT (w), "widget_data")||
+      (strcmp ((gchar *) gtk_object_get_data (GTK_OBJECT (w), "widget_data"), "0"))) {
+
+    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle_button), TRUE);
+    gtk_object_set_data (GTK_OBJECT (w), "widget_data", (gpointer) "1");
+  }
+
+  
+  if ((widget_data == NULL)||(!strcmp ((gchar *) gtk_object_get_data (GTK_OBJECT (w), "widget_data"), "0"))) {
+
+    msg_box = gnome_message_box_new (msg, GNOME_MESSAGE_BOX_WARNING, 
+				   "OK", NULL);
+
+    gtk_container_add (GTK_CONTAINER (GNOME_DIALOG (msg_box)->vbox), 
+		       toggle_button);
+    
+    gtk_widget_show_all (msg_box);
+  }
+  else
+    gtk_widget_destroy (GTK_WIDGET (toggle_button));
+
+  g_free (msg);
+}

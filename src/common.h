@@ -25,7 +25,6 @@
 #include <ptlib.h>
 
 
-
 #define GM_CIF_WIDTH   352
 #define GM_CIF_HEIGHT  288
 #define GM_QCIF_WIDTH  176
@@ -124,8 +123,11 @@ struct _GM_pref_window_widgets
   GtkWidget *incoming_call_sound;
   GtkWidget *opt1, *opt2;
   GtkAdjustment *tr_vq_spin_adj;
+  GtkWidget *tr_vq;
+  GtkWidget *tr_ub;
   GtkWidget *bps_frame;
   GtkAdjustment *tr_ub_spin_adj;
+  GtkWidget *re_vq;
   GtkAdjustment *re_vq_spin_adj;
   GtkAdjustment *tr_fps_spin_adj;
   GtkWidget *tr_fps;
@@ -135,7 +137,9 @@ struct _GM_pref_window_widgets
   GtkWidget *g711_sd;
   GtkWidget *gsm_sd;
   GtkAdjustment *jitter_buffer_spin_adj;
+  GtkWidget *jitter_buffer;
   GtkAdjustment *video_bandwidth_spin_adj;
+  GtkWidget *video_bandwidth;
   GtkWidget *vb;
   GtkWidget *fps;
   GtkWidget *firstname, *entry_port;
@@ -154,9 +158,7 @@ struct _GM_pref_window_widgets
   GtkWidget *ldap;
   GtkWidget *gk;
   GtkWidget *gk_host;
-  GtkWidget *gk_host_label;
   GtkWidget *gk_id;
-  GtkWidget *gk_id_label;
   GtkWidget *audio_player;
   GtkWidget *audio_recorder;
   GtkWidget *audio_player_mixer;

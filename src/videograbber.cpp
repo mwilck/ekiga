@@ -107,6 +107,8 @@ GMVideoGrabber::~GMVideoGrabber ()
 
 void GMVideoGrabber::Main ()
 {
+  gnomemeeting_init_gconf (client);
+ 
   /* Take the mutex, it will be released at the end of the method
      because at the end of the method, the class can be deleted. */
   quit_mutex.Wait ();

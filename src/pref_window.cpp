@@ -899,11 +899,6 @@ static void gnomemeeting_init_pref_window_codecs_settings (GtkWidget *notebook)
 {
   GtkWidget *frame, *label;
   GtkWidget *general_frame;
-
-  GtkWidget *re_vq;
-  GtkWidget *tr_vq;
-  GtkWidget *tr_ub;
-  GtkWidget *video_bandwidth;
   GtkWidget *item;
   GtkWidget *audio_codecs_notebook;
   GtkWidget *video_codecs_notebook;
@@ -1213,9 +1208,9 @@ static void gnomemeeting_init_pref_window_codecs_settings (GtkWidget *notebook)
   pw->tr_vq_spin_adj = (GtkAdjustment *) 
     gtk_adjustment_new(gconf_client_get_int (client, "/apps/gnomemeeting/video_settings/tr_vq", 0), 1.0, 100.0, 1.0, 5.0, 1.0);
 
-  tr_vq = gtk_spin_button_new (pw->tr_vq_spin_adj, 1.0, 0);
+  pw->tr_vq = gtk_spin_button_new (pw->tr_vq_spin_adj, 1.0, 0);
 
-  gtk_table_attach (GTK_TABLE (table), tr_vq, 1, 2, 0, 1,
+  gtk_table_attach (GTK_TABLE (table), pw->tr_vq, 1, 2, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);			
@@ -1236,7 +1231,7 @@ static void gnomemeeting_init_pref_window_codecs_settings (GtkWidget *notebook)
 		      (gpointer) "/apps/gnomemeeting/video_settings/tr_vq");	
 
   tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, tr_vq,
+  gtk_tooltips_set_tip (tip, pw->tr_vq,
 			_("Here you can choose the transmitted video quality:  choose 100% on a LAN for the best quality, 1% being the worst quality"), NULL);
 
 
@@ -1253,9 +1248,9 @@ static void gnomemeeting_init_pref_window_codecs_settings (GtkWidget *notebook)
   pw->tr_ub_spin_adj = (GtkAdjustment *) 
     gtk_adjustment_new(gconf_client_get_int (client, "/apps/gnomemeeting/video_settings/tr_ub", 0), 2.0, 99.0, 1.0, 5.0, 1.0);
 
-  tr_ub = gtk_spin_button_new (pw->tr_ub_spin_adj, 2.0, 0);
+  pw->tr_ub = gtk_spin_button_new (pw->tr_ub_spin_adj, 2.0, 0);
   
-  gtk_table_attach (GTK_TABLE (table), tr_ub, 1, 2, 2, 3,
+  gtk_table_attach (GTK_TABLE (table), pw->tr_ub, 1, 2, 2, 3,
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);			
@@ -1266,7 +1261,7 @@ static void gnomemeeting_init_pref_window_codecs_settings (GtkWidget *notebook)
 		      (gpointer) "/apps/gnomemeeting/video_settings/tr_ub");
 
   tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, tr_ub,
+  gtk_tooltips_set_tip (tip, pw->tr_ub,
 			_("Here you can choose the number of blocks (that haven't changed) transmitted with each frame. These blocks fill in the background."), NULL);
 
 
@@ -1283,13 +1278,13 @@ static void gnomemeeting_init_pref_window_codecs_settings (GtkWidget *notebook)
   pw->re_vq_spin_adj = (GtkAdjustment *) 
     gtk_adjustment_new(gconf_client_get_int (client, "/apps/gnomemeeting/video_settings/re_vq", 0), 1.0, 100.0, 1.0, 5.0, 1.0);
 
-  re_vq = gtk_spin_button_new (pw->re_vq_spin_adj, 1.0, 0);
+  pw->re_vq = gtk_spin_button_new (pw->re_vq_spin_adj, 1.0, 0);
 
 
-  gtk_table_attach (GTK_TABLE (table), re_vq, 1, 2, 1, 2,
+  gtk_table_attach (GTK_TABLE (table), pw->re_vq, 1, 2, 1, 2,
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);			
+		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);		   
 
   /* xgettext:no-c-format */
   label = gtk_label_new (_("%"));
@@ -1299,7 +1294,7 @@ static void gnomemeeting_init_pref_window_codecs_settings (GtkWidget *notebook)
   gtk_table_attach (GTK_TABLE (table), label, 2, 3, 1, 2,
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);			
+		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);		    
 
   /* Connect the signal that updates the gconf cache */
   gtk_signal_connect (GTK_OBJECT (pw->re_vq_spin_adj), "value-changed",
@@ -1307,7 +1302,7 @@ static void gnomemeeting_init_pref_window_codecs_settings (GtkWidget *notebook)
 		      (gpointer) "/apps/gnomemeeting/video_settings/re_vq");
 
   tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, re_vq,
+  gtk_tooltips_set_tip (tip, pw->re_vq,
 			_("The video quality hint to request to the remote"), NULL);
 
 
@@ -1330,10 +1325,10 @@ static void gnomemeeting_init_pref_window_codecs_settings (GtkWidget *notebook)
   pw->video_bandwidth_spin_adj = 
     (GtkAdjustment *) gtk_adjustment_new(gconf_client_get_int (client, "/apps/gnomemeeting/video_settings/video_bandwidth", NULL), 2.0, 100.0, 1.0, 1.0, 1.0);
 
-  video_bandwidth = 
+  pw->video_bandwidth = 
     gtk_spin_button_new (pw->video_bandwidth_spin_adj, 8.0, 0);
   
-  gtk_table_attach (GTK_TABLE (table), video_bandwidth, 4, 5, 0, 1,
+  gtk_table_attach (GTK_TABLE (table), pw->video_bandwidth, 4, 5, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);			
@@ -1354,7 +1349,7 @@ static void gnomemeeting_init_pref_window_codecs_settings (GtkWidget *notebook)
 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);			
  
   tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, video_bandwidth,
+  gtk_tooltips_set_tip (tip, pw->video_bandwidth,
 			_("Here you can choose the maximum bandwidth that can be used by the H.261 video codec (in kbytes/s)"), NULL);
 
   tip = gtk_tooltips_new ();

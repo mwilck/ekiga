@@ -144,4 +144,6 @@ gnomemeeting_history_combo_box_new (GM_window_widgets* gw);
 
 extern void 
 gnomemeeting_add_contact_entry(GM_window_widgets *gw, int max_contacts);
+
+void gnomemeeting_warning_popup (GtkWidget *, gchar *);
 #endif

@@ -546,7 +546,7 @@ void gnomemeeting_init (GM_window_widgets *gw,
   if (gw->splash_win)
     gtk_widget_destroy (gw->splash_win);
 
-  gnomemeeting_init_gconf (client);
+  //gnomemeeting_init_gconf (client);
 
   /* if the user tries to close the window : delete_event */
   gtk_signal_connect (GTK_OBJECT (gm), "delete_event",

@@ -75,7 +75,7 @@ gint gnome_idle_timer (void)
     gtk_main_iteration(); 
   gdk_threads_leave ();
 
-  usleep (100);
+  usleep (500);
   return TRUE;
 }
 
@@ -84,9 +84,12 @@ gint AppbarUpdate (GtkWidget *statusbar)
 {
   long minutes, seconds;
 
+  gdk_threads_enter ();
+/*
   if (MyApp->Endpoint ()) {
 
-      if (MyApp->Endpoint ()->GetCurrentConnection ()) {
+      if ((MyApp->Endpoint ()->GetCurrentConnection ()) 
+	  &&(MyApp->Endpoint ()->GetCallingState () == 2)) {
 
 	PTimeInterval t =
 	  PTime () - MyApp->Endpoint ()->GetCurrentConnection ()
@@ -106,8 +109,16 @@ gint AppbarUpdate (GtkWidget *statusbar)
 	  g_free (msg);
 	}
       }
-  }
-  
+  }*/
+
+      gchar *msg = g_strdup (_("sdfdsf"));
+
+      GtkWidget *msg_box = gnome_message_box_new (msg, GNOME_MESSAGE_BOX_ERROR, 
+						  "OK", NULL);
+    //  gtk_widget_show (msg_box);
+
+      g_free (msg);
+  gdk_threads_leave ();
   return TRUE;
 }
 
@@ -263,7 +274,6 @@ void GnomeMeeting::Main ()
 int main (int argc, char ** argv, char ** envp)
 {
   PProcess::PreInitialise (argc, argv, envp);
-  gconf_init (argc, argv, 0);
 
   /* The different structures needed by most of the classes and functions */
   GM_window_widgets *gw = NULL;
@@ -297,8 +307,9 @@ int main (int argc, char ** argv, char ** envp)
   lw->ldap_servers_list = NULL;
 
 
-  /* Threads + Locale Init */
+  /* Threads + Locale Init + Gconf */
   g_thread_init(NULL);
+  gconf_init (argc, argv, 0);
 
   textdomain (PACKAGE);
   bindtextdomain (PACKAGE, GNOMELOCALEDIR);
@@ -310,10 +321,10 @@ int main (int argc, char ** argv, char ** envp)
 
   /* Quick hack to make the GUI refresh even on high load from the other
      threads */
-  gtk_idle_add ((GtkFunction) gnome_idle_timer, gw);
+ //  gtk_idle_add ((GtkFunction) gnome_idle_timer, gw);
 
-  gtk_timeout_add (1000, (GtkFunction) AppbarUpdate, 
-		   gw->statusbar);
+  gtk_timeout_add (100, (GtkFunction) AppbarUpdate, 
+ 		   gw->statusbar);
 
 
   /* The GTK loop */

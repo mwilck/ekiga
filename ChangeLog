@@ -1,12 +1,29 @@
-2002-01-10  Miguel Rodríguez Pérez  <migrax@terra.es>
+2002-01-13  Damien Sandras  <dsandras@seconix.com>
 
-	* gnomemeeting.schema: Replaced the default ILS server
+	* src/config.cpp: Added g_idle_add functions in notifiers to be able
+	to call the real thing between gdk_threads_enter and gdk_threads_leave.
+	Current gconf's design doesn't permit that. This situation is only while
+	we are waiting for Gnome 2. (Thanks to Owen Taylor and Havoc Pennington
+	for the help in the debug)
 
-2002-01-10  Miguel Rodríguez Pérez  <migrax@terra.es>
+	* src/pref_window.cpp: Added some widgets into common.h to be able to
+	refresh them if gconftool is used.
 
-	* src/pref_window.cpp (gnomemeeting_init_pref_window_devices): 
-	If video grabber stored in gconf doesn't work update the value
-	from any autodetected device.
+	* src/common.h: Added some widgets for adjustments (see above).
+
+	* src/videograbber.cpp: Improved the use of the GDK Lock.
+
+	* src/main_window.cpp: Some More Gconf Port.
+
+	* src/gnomemeeting.cpp: Removed the idle : is it needed or not? Fixed
+	a bug in AppbarUpdate.
+	
+2002-01-08  Miguel Rodríguez Pérez  <migrax@terra.es>
+
+	* src/pref_window.cpp (gnomemeeting_init_pref_window_interface)
+	gnomemeeting.schema
+	src/main_window.cpp (gnomemeeting_init)
+	src/config.cpp (gnomemeeting_init_gconf): Gconfied show_splash
 
 2002-01-09  Miguel Rodríguez Pérez  <migrax@terra.es>
 

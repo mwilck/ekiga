@@ -8,7 +8,7 @@ EXTRA_DIST = $(DESKTOP_IN_FILES) $(DESKTOP_FILES) pixmaps/  intltool-extract.in 
 Applicationsdir = $(datadir)/gnome/apps/Internet
 Applications_DATA = $(DESKTOP_FILES)
 
-SCHEMAS_DIR = $(sysconfdir)/gconf/schemas
+SCHEMAS_DIR = `gnome-config --sysconfdir`/gconf/schemas
 SCHEMAS_FILE = gnomemeeting.schema
 
 schemasdir = $(SCHEMAS_DIR)
