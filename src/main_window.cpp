@@ -304,22 +304,6 @@ gint AppbarUpdate (gpointer data)
 
 	gtk_widget_queue_draw_area (gw->stats_drawing_area, 0, 0, GTK_WIDGET (gw->stats_drawing_area)->allocation.width, GTK_WIDGET (gw->stats_drawing_area)->allocation.height);
 
-	if (rtp->re_video_bytes + rtp->re_audio_bytes == 0
-	    && t.GetSeconds () == 11) {
-	  
-	  GMH323EndPoint *endpoint = NULL;
-	  gchar *err = NULL;
-
-	  endpoint = MyApp->Endpoint ();
-
-	  err = g_strdup (_("No data received in 10 seconds, clearing call"));
-	  gnomemeeting_log_insert (gw->history_text_view, err);
-	  gnomemeeting_log_insert (gw->calls_history_text_view, err);
-	  g_free (err);
-
-	  endpoint->ClearCall (endpoint->GetCurrentCallToken (),
-			       H323Connection::EndedByTransportFail);
-	}
       }     
   
       g_free (msg);
