@@ -69,6 +69,10 @@
 #include "../pixmaps/contrast.xpm"
 #include "../pixmaps/color.xpm"
 
+#ifdef __FreeBSD__
+#include <libintl.h>
+#endif
+
 #define ACT_IID "OAFIID:GNOME_gnomemeeting_Factory"
 
 #define GENERAL_KEY         "/apps/gnomemeeting/general/"

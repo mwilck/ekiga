@@ -180,7 +180,7 @@ gnomemeeting_get_mixer_name (char *mixer, char **name)
 {
 
 #ifdef __FreeBSD__
-  strcpy (name,"/dev/mixer");
+  strcpy (*name,"/dev/mixer");
 #else
 
   int mixerfd, res;
@@ -204,7 +204,6 @@ gnomemeeting_get_mixer_name (char *mixer, char **name)
 void 
 gnomemeeting_sound_daemons_suspend (void)
 {
-  GmWindow *window = gnomemeeting_get_main_window (gm);
   int esd_client = 0;
   
   /* Put ESD into standby mode */
@@ -220,7 +219,6 @@ gnomemeeting_sound_daemons_suspend (void)
 void 
 gnomemeeting_sound_daemons_resume (void)
 {
-  GmWindow *window = gnomemeeting_get_main_window (gm);
   int esd_client = 0;
 
   /* Put ESD into normal mode */
