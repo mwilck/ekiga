@@ -1243,10 +1243,14 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
                                      const PString & clearedCallToken)
 {
   gchar *msg_reason = NULL;
-  PString remote_party_name;
+
+  PString remote_name;
   PString remote_app;
   PString remote_ip;
-  PINDEX index;
+
+  gchar *utf8_name = NULL;
+  gchar *utf8_app = NULL;
+
   PTimeInterval t;
   BOOL auto_clear_text_chat = FALSE;
   BOOL dnd = FALSE;
@@ -1259,24 +1263,23 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   ch_access_mutex.Signal ();
 
   /* Get information about the remote user */
-  cout << "FIX ME" << endl << flush;
-  remote_party_name = connection.GetRemotePartyName ();
-  index = remote_party_name.Find ('[');
-  if (index != P_MAX_INDEX) {
-    
-    remote_ip = remote_party_name.Mid (index);
-    remote_party_name = remote_party_name.Left (index);
-  }
+  remote_name = connection.GetRemotePartyName ();
   remote_app = connection.GetRemoteApplication ();
+  utf8_app = gnomemeeting_get_utf8 (gnomemeeting_pstring_cut (remote_app));
+  utf8_name = gnomemeeting_get_utf8 (gnomemeeting_pstring_cut (remote_name));
 
   if (connection.GetConnectionStartTime ().IsValid ())
     t = PTime () - connection.GetConnectionStartTime();
 
   gnomemeeting_threads_enter ();
   if (t.GetSeconds () == 0 && connection.HadAnsweredCall ())
-    gnomemeeting_calls_history_window_add_call (2, remote_party_name, remote_ip, 0, remote_app);
+    gnomemeeting_calls_history_window_add_call (2, utf8_name, remote_ip, 0, utf8_app);
   else 
-    gnomemeeting_calls_history_window_add_call (connection.HadAnsweredCall () ? 0 : 1, remote_party_name, remote_ip, t.AsString (2), remote_app);
+    gnomemeeting_calls_history_window_add_call (connection.HadAnsweredCall () ? 0 : 1, utf8_name, remote_ip, t.AsString (2), utf8_app);
+
+  g_free (utf8_app);
+  g_free (utf8_name);
+
   gnomemeeting_threads_leave ();
 
   /* Get GConf settings */

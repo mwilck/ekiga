@@ -1411,7 +1411,7 @@ contact_section_changed_cb (GtkTreeSelection *selection,
 					page_num);
       lwp = gnomemeeting_get_ldap_window_page (page);
 	
-      if (lwp->tree_view) {
+      if (lwp && lwp->tree_view) {
 	  
 	lselection =
 	  gtk_tree_view_get_selection (GTK_TREE_VIEW (lwp->tree_view));
@@ -1732,41 +1732,43 @@ refresh_server_content_cb (GtkWidget *w,
 
   lwp = gnomemeeting_get_ldap_window_page (page);
 
-  search_entry_text =
-    (gchar *) gtk_entry_get_text (GTK_ENTRY (lwp->search_entry));
+  if (lwp) {
 
-  if (search_entry_text && strcmp (search_entry_text, "")) {
+    search_entry_text =
+      (gchar *) gtk_entry_get_text (GTK_ENTRY (lwp->search_entry));
 
-    option_menu_option =
-      gtk_option_menu_get_history (GTK_OPTION_MENU (lwp->option_menu));
+    if (search_entry_text && strcmp (search_entry_text, "")) {
+
+      option_menu_option =
+	gtk_option_menu_get_history (GTK_OPTION_MENU (lwp->option_menu));
 	      
-    switch (option_menu_option)
-      {
-      case 0:
-	filter = NULL;
-	break;
+      switch (option_menu_option)
+	{
+	case 0:
+	  filter = NULL;
+	  break;
 
-      case 1:
-	filter =
-	  g_strdup_printf ("(givenname=%%%s%%)", search_entry_text);
-	break;
+	case 1:
+	  filter =
+	    g_strdup_printf ("(givenname=%%%s%%)", search_entry_text);
+	  break;
 		  
-      case 2:
-	filter =
-	  g_strdup_printf ("(surname=%%%s%%)", search_entry_text);
-	break;
+	case 2:
+	  filter =
+	    g_strdup_printf ("(surname=%%%s%%)", search_entry_text);
+	  break;
 		  
-      case 3:
-	filter =
-	  g_strdup_printf ("(rfc822mailbox=%%%s%%)",
-			   search_entry_text);
-	break;
-      };
-  }
-	    
+	case 3:
+	  filter =
+	    g_strdup_printf ("(rfc822mailbox=%%%s%%)",
+			     search_entry_text);
+	  break;
+	};
+    }
+  }	    
 
   /* Check if there is already a search running */
-  if (!lwp->ils_browser && page_num != -1) 
+  if (lwp && !lwp->ils_browser && page_num != -1) 
     lwp->ils_browser =
       new GMILSBrowser (lwp, lwp->contact_section_name, filter);
 
@@ -2265,8 +2267,10 @@ gnomemeeting_ldap_window_new (GmLdapWindow *lw)
 GmLdapWindowPage *
 gnomemeeting_get_ldap_window_page (GtkWidget *page)
 {
-  GmLdapWindowPage *lwp =
-    (GmLdapWindowPage *) g_object_get_data (G_OBJECT (page), "lwp");
+  GmLdapWindowPage *lwp = NULL;
+
+  if (page)
+    lwp = (GmLdapWindowPage *) g_object_get_data (G_OBJECT (page), "lwp");
 
   return lwp;
 }
@@ -2361,7 +2365,7 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
 
     current_lwp = gnomemeeting_get_ldap_window_page (page);
 
-    if (current_lwp->contact_section_name && text_label
+    if (current_lwp && current_lwp->contact_section_name && text_label
 	&& !strcasecmp (current_lwp->contact_section_name, text_label))
       return cpt;
 
@@ -2849,12 +2853,13 @@ gnomemeeting_addressbook_sections_populate ()
   g_free (markup);
 
 
-  /* Expand servers and groups */
+  /* Expand servers and groups, and selects the first one */
   path = gtk_tree_path_new_from_string ("0:0");
   gtk_tree_view_expand_all (GTK_TREE_VIEW (lw->tree_view));
   gtk_tree_view_set_cursor (GTK_TREE_VIEW (lw->tree_view), path,
 			    NULL, false);
   gtk_tree_path_free (path);
+  gtk_notebook_set_current_page (GTK_NOTEBOOK (lw->notebook), 0);
   
 
   /* Update sensitivity */

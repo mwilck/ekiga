@@ -835,8 +835,11 @@ GMILSBrowser::~GMILSBrowser ()
   if (search_filter)
     g_free (search_filter);
 
-  lwp->ils_browser = NULL;
-  lwp->search_quit_mutex.Signal ();
+  if (lwp) {
+
+    lwp->ils_browser = NULL;
+    lwp->search_quit_mutex.Signal ();
+  }
 }
 
 
@@ -885,6 +888,9 @@ void GMILSBrowser::Main ()
   time_limit.tv_sec = 10;
   time_limit.tv_usec = 0;
   bool no_error = TRUE;
+
+  if (!lwp)
+    return;
 
   lwp->search_quit_mutex.Wait ();
 
