@@ -1,5 +1,10 @@
 2002-04-27  Miguel Rodríguez Pérez  <migrax@terra.es>
 
+	* src/videograbber.cpp (VGOpen): s/SetVideoDeviceParams/SetVideoChannelFormat to make
+	gm compile with recent versions of pwlib.
+
+2002-04-27  Miguel Rodríguez Pérez  <migrax@terra.es>
+
 	* src/pref_window.cpp (string_option_menu_changed): Fix a crash
 	when no widget is selected.
 
