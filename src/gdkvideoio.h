@@ -56,13 +56,6 @@ class GDKVideoOutputDevice : public PVideoOutputDeviceRGB
 
   public:
 
-  /* DESCRIPTION  :  The constructor.
-   * BEHAVIOR     :  Setup parameters.
-   * PRE          :  GmWindow is a valid pointer to a valid
-   *                 GmWindow structure.
-   */
-  GDKVideoOutputDevice (GmWindow *);
-    
     
   /* DESCRIPTION  :  The constructor.
    * BEHAVIOR     :  Setups the parameters, 
@@ -162,7 +155,8 @@ class GDKVideoOutputDevice : public PVideoOutputDeviceRGB
 
   enum {REMOTE, LOCAL};
 
+  static int devices_nbr;
+  
   GmWindow *gw;
 };
-
 #endif

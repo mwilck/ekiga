@@ -57,29 +57,42 @@
 extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;
 
+int GDKVideoOutputDevice::devices_nbr = 0;
+
 
 /* The Methods */
-GDKVideoOutputDevice::GDKVideoOutputDevice(GmWindow *w)
-{
-  gw = w;
-
-  /* Used to distinguish between input and output device. */
-  device_id = REMOTE; 
-
-  
-#ifdef HAS_SDL
-  screen = NULL;
-  overlay = NULL;
-#endif
-}
-
-
 GDKVideoOutputDevice::GDKVideoOutputDevice(int idno, GmWindow *w)
 {
   gw = w;
 
   /* Used to distinguish between input and output device. */
   device_id = idno; 
+  devices_nbr++;
+
+    
+  /* Update the View and the popup menus */
+  gnomemeeting_threads_enter ();
+  for (int i = 0 ; i < 2 ; i++) {
+
+    gtk_menu_section_set_sensitive (i==0?gw->main_menu:gw->video_popup_menu,
+				    "zoom_in", TRUE);
+  
+    if (devices_nbr >= 2) {
+    
+      gtk_menu_section_set_sensitive (i==0?gw->main_menu:gw->video_popup_menu,
+				      "local_video", TRUE);
+    }
+    else {
+      
+      gtk_menu_section_set_sensitive (i==0?gw->main_menu:gw->video_popup_menu,
+				      "local_video", FALSE);
+      gtk_menu_set_sensitive (i==0?gw->main_menu:gw->video_popup_menu,
+			      (device_id==LOCAL)?"local_video":"remote_video",
+			      TRUE);
+    }
+  }
+  gnomemeeting_threads_leave ();
+
   
 #ifdef HAS_SDL
   screen = NULL;
@@ -106,10 +119,44 @@ GDKVideoOutputDevice::~GDKVideoOutputDevice()
   }
 #endif
 
+  devices_nbr--;
+  
+  /* Update the View and the popup menus */
+  gnomemeeting_threads_enter ();
+  for (int i = 0 ; i < 2 ; i++) {
+
+    if (devices_nbr <= 0) {
+      
+      gtk_menu_section_set_sensitive (i==0?gw->main_menu:gw->video_popup_menu,
+				      "zoom_in", FALSE);
+      gtk_menu_section_set_sensitive (i==0?gw->main_menu:gw->video_popup_menu,
+				      "local_video", FALSE);
+    }
+    else {
+
+      gtk_menu_section_set_sensitive (i==0?gw->main_menu:gw->video_popup_menu,
+				      "local_video", FALSE);
+
+      if (device_id == REMOTE) {
+      
+	gtk_menu_set_sensitive (i==0?gw->main_menu:gw->video_popup_menu,
+				"local_video", TRUE);
+	gtk_radio_menu_select_with_id (i==0?gw->main_menu:gw->video_popup_menu,
+				       "local_video", LOCAL_VIDEO);
+      }
+      else {
+
+	gtk_menu_set_sensitive (i==0?gw->main_menu:gw->video_popup_menu,
+				"remote_video", TRUE);
+	gtk_radio_menu_select_with_id (i==0?gw->main_menu:gw->video_popup_menu,
+				       "local_video", REMOTE_VIDEO);
+      }
+    }
+  }
+  gnomemeeting_threads_leave ();
 
   /* Hide the 2 popup windows */
   gnomemeeting_threads_enter ();
-
   gtk_widget_hide_all (GTK_WIDGET (gw->local_video_window));
   gtk_widget_hide_all (GTK_WIDGET (gw->remote_video_window));
   gnomemeeting_threads_leave ();
@@ -188,7 +235,7 @@ BOOL GDKVideoOutputDevice::Redraw ()
 			    "/apps/gnomemeeting/video_display/video_view", 
 			    NULL);
 
-    if (MyApp->Endpoint ()->GetVideoChannelsNumber () <= 1)
+    if (devices_nbr <= 1)
       if (device_id == REMOTE)
 	display = REMOTE_VIDEO;
       else if (device_id == LOCAL)

@@ -67,7 +67,8 @@ GMH323Connection::GMH323Connection (GMH323EndPoint & ep,
   gnomemeeting_threads_enter ();
   gw = MyApp->GetMainWindow ();
 
-  opened_channels = 0;
+  opened_audio_channels = 0;
+  opened_video_channels = 0;
 
   min_jitter = 
     gconf_client_get_int (gconf_client_get_default (), 
@@ -82,140 +83,74 @@ GMH323Connection::GMH323Connection (GMH323EndPoint & ep,
 }
 
 
-void GMH323Connection::OnClosedLogicalChannel(H323Channel & channel)
+void
+GMH323Connection::OnClosedLogicalChannel(const H323Channel &channel)
 {
-  opened_channels--;
-  H323Connection::OnClosedLogicalChannel (channel);
+  OnLogicalChannel ((H323Channel *) &channel, TRUE);
 }
 
 
-BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
+BOOL
+GMH323Connection::OnStartLogicalChannel (H323Channel &channel)
 {
-  GConfClient *client = NULL;
-  PString name;
-  gchar *msg = NULL;
-  int sd = 0;
-  int re_vq = 2;
-  int re_vq_ = 2;
+  return OnLogicalChannel ((H323Channel *) &channel, FALSE);
+}
 
-  if (opened_channels + 1 > 4)
-    return FALSE;
 
-  if (!H323Connection::OnStartLogicalChannel (channel))
-    return FALSE;
-
-  H323AudioCodec *codec = (H323AudioCodec *) channel.GetCodec ();
-
-  gnomemeeting_threads_enter ();
-  client = gconf_client_get_default ();
-  gnomemeeting_log_insert (gw->history_text_view,
-			   _("Started New Logical Channel..."));
-  gnomemeeting_threads_leave ();
-
-  switch (channel.GetDirection ()) {
-    
-  case H323Channel::IsTransmitter :
-    name = channel.GetCapability().GetFormatName();
-    msg = g_strdup_printf (_("Sending %s"), (const char *) name);
-
-    gnomemeeting_threads_enter ();
-    gnomemeeting_log_insert (gw->history_text_view, msg);
-   
-    g_free (msg);
-    
-    sd = 
-      gconf_client_get_bool (client, "/apps/gnomemeeting/audio_settings/sd", 
-			     NULL);
-    gnomemeeting_threads_leave ();
-    	
-    codec->SetSilenceDetectionMode(!sd ?
-				   H323AudioCodec::NoSilenceDetection :
-				   H323AudioCodec::AdaptiveSilenceDetection);
-
-    if ((strcmp (name, "H.261-CIF"))&&(strcmp (name, "H.261-QCIF"))) {
-
-      if (sd)
-	msg = g_strdup_printf (_("Enabled silence detection for %s"), 
-			       (const char *) name);
-      else
-	msg = g_strdup_printf (_("Disabled silence detection for %s"), 
-			       (const char *) name);
-      
-      gnomemeeting_threads_enter ();
-      gnomemeeting_log_insert (gw->history_text_view, msg);
-      gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_chan_button),
-				TRUE);
-      gnomemeeting_threads_leave ();
-    
-      g_free (msg);
-    }
-
-    break;
+BOOL
+GMH323Connection::OnLogicalChannel (H323Channel *channel,
+				    BOOL is_closing)
+{
+  PString codec_name;
+  BOOL is_encoding = FALSE;
+  BOOL is_video = FALSE;
   
-  case H323Channel::IsReceiver :
-    name = channel.GetCapability().GetFormatName();
-    msg = g_strdup_printf (_("Receiving %s"), 
-			   (const char *) name);
+  gchar *msg = NULL;
+  
+  if (!is_closing) {
     
-    gnomemeeting_threads_enter ();
-    gnomemeeting_log_insert (gw->history_text_view, msg);
-    gnomemeeting_threads_leave ();
-    
-    g_free (msg);
-    
-    break;
-    
-  default :
-    break;
+    if (!H323Connection::OnStartLogicalChannel (*channel))
+      return FALSE;
   }
+  else 
+    H323Connection::OnClosedLogicalChannel (*channel);
+
+  is_video = (channel->GetCodec ()->IsDescendant (H323VideoCodec::Class ()));
+  is_encoding = (channel->GetDirection () == H323Channel::IsTransmitter);
+  codec_name = channel->GetCapability ().GetFormatName ();
+
+  if (is_video)
+    is_closing?opened_video_channels--:opened_video_channels++;
+  else
+    is_closing?opened_audio_channels--:opened_audio_channels++;
+  
+  if (opened_audio_channels > 2 || opened_video_channels > 2
+      || opened_audio_channels < 0 || opened_video_channels < 0)
+    return FALSE;
 
 
-  /* Compute the received video quality */
+  /* Do not optimize, easier for translators */
+  if (is_encoding)
+    if (!is_closing)
+      msg = g_strdup_printf (_("Started transmission of %s"),
+			     (const char *) codec_name);
+    else
+      msg = g_strdup_printf (_("Stopped transmission of %s"),
+			     (const char *) codec_name);
+  else
+    if (!is_closing)
+      msg = g_strdup_printf (_("Started reception of %s"),
+			     (const char *) codec_name);
+    else
+      msg = g_strdup_printf (_("Stopped reception of %s"),
+			     (const char *) codec_name);
+  
   gnomemeeting_threads_enter ();
-  re_vq_ = gconf_client_get_int (GCONF_CLIENT (client), 
-				 "/apps/gnomemeeting/video_settings/re_vq", 
-				 NULL);
+  gnomemeeting_log_insert (gw->history_text_view, msg);
   gnomemeeting_threads_leave ();
-  re_vq = 32 - (int) ((double) re_vq_ / 100 * 31);
+  
+  g_free (msg);
     
-  if (channel.GetDirection() == H323Channel::IsReceiver) {
-      
-    if (channel.GetCodec ()->IsDescendant(H323VideoCodec::Class()) 
-	&& (re_vq >= 0)) {
-	
-      msg = 
-	g_strdup_printf (_("Requesting remote to send video quality: %d%%"), 
-			 re_vq_);
-	
-      gnomemeeting_threads_enter ();
-      gnomemeeting_log_insert (gw->history_text_view, msg);
-      gnomemeeting_threads_leave ();
-      
-      g_free (msg);
-      
-      /* kludge to wait for channel to ACK to be sent */
-      PThread::Current()->Sleep(2000);
-      
-      H323ControlPDU pdu;
-      H245_CommandMessage & command = 
-	pdu.Build(H245_CommandMessage::e_miscellaneousCommand);
-      
-      H245_MiscellaneousCommand & miscCommand = command;
-      miscCommand.m_logicalChannelNumber = (unsigned) channel.GetNumber();
-      miscCommand.m_type.SetTag (H245_MiscellaneousCommand_type
-				 ::e_videoTemporalSpatialTradeOff);
-      PASN_Integer & value = miscCommand.m_type;
-      value = re_vq;
-      WriteControlPDU(pdu);
-      
-      gnomemeeting_threads_enter ();
-      gnomemeeting_log_insert (gw->history_text_view, _("Request ok"));
-      gnomemeeting_threads_leave ();
-    }  
-  }
-
-  opened_channels++;
-
   return TRUE;
 }
 
@@ -337,3 +272,23 @@ GMH323Connection::HandleCallTransferFailure (const int returnError)
   gnomemeeting_log_insert (gw->history_text_view, _("Call transfer failed"));
   gnomemeeting_threads_leave ();
 }
+
+
+BOOL
+GMH323Connection::OnRequestModeChange (const H245_RequestMode & pdu,
+				       H245_RequestModeAck & ack,
+				       H245_RequestModeReject & reject,
+				       PINDEX & mode)
+{
+  H323Channel *channel = NULL;
+
+  channel =
+    this->FindChannel (RTP_Session::DefaultAudioSessionID,
+					  FALSE);
+
+  channel->GetCodec ()->GetRawDataChannel ()->Close ();
+
+
+  return  H323Connection::OnRequestModeChange (pdu, ack, reject, mode);
+}
+  

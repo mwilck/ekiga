@@ -183,9 +183,6 @@ GMH323EndPoint::GMH323EndPoint ()
   docklet_timeout = 0;
   sound_timeout = 0;
 
-  opened_audio_channels = 0;
-  opened_video_channels = 0;
-
 
   /* Use IPv6 address family by default if available. */
 #ifdef P_HAS_IPV6
@@ -239,6 +236,13 @@ GMH323EndPoint::GMH323EndPoint ()
   transmitted_video_device = NULL;
   audio_tester = NULL;
 
+  autoStartTransmitVideo =
+    gconf_client_get_bool (client, 
+			   VIDEO_SETTINGS_KEY "enable_video_transmission", 0);
+  autoStartReceiveVideo =
+    gconf_client_get_bool (client, 
+			   VIDEO_SETTINGS_KEY "enable_video_reception", 0);
+      
   SetNoMediaTimeout (PTimeInterval (0, 15, 0));
   ILSTimer.SetNotifier (PCREATE_NOTIFIER(OnILSTimeout));
   ils_registered = false;
@@ -466,58 +470,18 @@ GMH323EndPoint::SetupTransfer (const PString & token,
 void 
 GMH323EndPoint::AddVideoCapabilities (int video_size)
 {
-  BOOL enable_video_transmission = FALSE;
-  BOOL enable_video_reception = TRUE;
+  /* Add video capabilities */
+  if (video_size == 1) {
 
-  /* Enable video transmission / reception */
-  gnomemeeting_threads_enter ();
-  enable_video_transmission = 
-    gconf_client_get_bool (client, 
-			   VIDEO_SETTINGS_KEY "enable_video_transmission", 0);
-  enable_video_reception = 
-    gconf_client_get_bool (client, 
-			   VIDEO_SETTINGS_KEY "enable_video_reception", 0);
-  gnomemeeting_threads_leave ();
-
-  /* Capabilities we can send and receive */
-  if (enable_video_reception) {
-    
-    /* Add video capabilities */
-    if (video_size == 1) {
-
-      /* CIF Capability in first position */
-      SetCapability (0, 1, new H323_H261Capability (0, 2, FALSE, FALSE, 6217));
-      SetCapability (0, 1, new H323_H261Capability (4, 0, FALSE, FALSE, 6217));
-    }
-    else {
-
-      SetCapability (0, 1, new H323_H261Capability (4, 0, FALSE, FALSE, 6217)); 
-      SetCapability (0, 1, new H323_H261Capability (0, 2, FALSE, FALSE, 6217));
-    }
+    /* CIF Capability in first position */
+    SetCapability (0, 1, new H323_H261Capability (0, 2, FALSE, FALSE, 6217));
+    SetCapability (0, 1, new H323_H261Capability (4, 0, FALSE, FALSE, 6217));
   }
   else {
 
-    if (enable_video_transmission) {
-      
-      /* Capabilities we can send (if enabled), but not receive */
-      /* Add video capabilities */
-      if (video_size == 1) {
-
-	/* CIF Capability in first position */
-	AddCapability (new H323_H261Capability (0, 2, FALSE, FALSE, 6217));
-	AddCapability (new H323_H261Capability (4, 0, FALSE, FALSE, 6217));  
-      }
-      else {
-
-	AddCapability (new H323_H261Capability (4, 0, FALSE, FALSE, 6217)); 
-	AddCapability (new H323_H261Capability (0, 2, FALSE, FALSE, 6217));  
-      }
-    }
+    SetCapability (0, 1, new H323_H261Capability (4, 0, FALSE, FALSE, 6217)); 
+    SetCapability (0, 1, new H323_H261Capability (0, 2, FALSE, FALSE, 6217));
   }
-
-
-  /* Enable video transmission */
-  autoStartTransmitVideo = enable_video_transmission;
 }
 
 
@@ -851,13 +815,6 @@ H323Connection *
 GMH323EndPoint::CreateConnection (unsigned callReference)
 {
   return new GMH323Connection (*this, callReference);
-}
-
-
-int
-GMH323EndPoint::GetVideoChannelsNumber (void)
-{
-  return opened_video_channels;
 }
 
 
@@ -1455,9 +1412,6 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
     return;
   }
   
-  opened_video_channels = 0;
-  opened_audio_channels = 0;
-
   gnomemeeting_threads_enter ();
 
   switch (connection.GetCallEndReason ()) {
@@ -1590,11 +1544,6 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
       gnomemeeting_threads_enter ();
       gnomemeeting_init_main_window_logo (gw->main_video_image);
-      gtk_menu_section_set_sensitive (gw->main_menu, "local_video", FALSE);
-      gtk_menu_section_set_sensitive (gw->main_menu, "zoom_in", FALSE);
-      gtk_menu_section_set_sensitive (gw->video_popup_menu, "local_video",
-				      FALSE);
-      gtk_menu_section_set_sensitive (gw->video_popup_menu, "zoom_in", FALSE);
       gnomemeeting_threads_leave ();
     }
   }
@@ -1648,8 +1597,6 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   gnomemeeting_addressbook_update_menu_sensitivity ();
   connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 0);
 
-  gtk_radio_menu_select_with_id (gw->main_menu, "local_video", 0);
-  gtk_radio_menu_select_with_id (gw->video_popup_menu, "local_video", 0);
 
   /* Disable / enable buttons and controls */
   if (!preview)
@@ -1808,16 +1755,20 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
 				  H323AudioCodec &codec)
 {
   unsigned int vol_rec = 0, vol_play = 0;
+  bool sd = FALSE;
   BOOL no_error = TRUE;
-
-  if (opened_audio_channels >= 2)
-    return FALSE;
 
   /* Wait that the primary call has terminated (in case of transfer)
      before opening the channels for the second call */
   TransferCallWait ();
 
   gnomemeeting_threads_enter ();
+
+  sd = gconf_client_get_bool (client, AUDIO_SETTINGS_KEY "sd", NULL);
+  codec.SetSilenceDetectionMode (!sd ?
+				 H323AudioCodec::NoSilenceDetection :
+				 H323AudioCodec::AdaptiveSilenceDetection);
+
 
   /* If needed , delete the timers */
   if (docklet_timeout != 0) {
@@ -1875,8 +1826,6 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
      gchar *audio_manager = NULL;
      PString device_name;
 
-     codec.SetSilenceDetectionMode (GetSilenceDetectionMode ());
-
      gnomemeeting_threads_enter ();
      audio_manager =
        gconf_client_get_string (client, DEVICES_KEY "audio_manager", 0);
@@ -1931,6 +1880,8 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
 
   /* Make the audio controls sensitive */
   gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_settings_frame), TRUE);
+  if (isEncoding)
+    gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_chan_button), TRUE);
   gnomemeeting_threads_leave ();
 
 
@@ -1944,9 +1895,6 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
       gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Could not open audio channel for audio reception"), _("An error occured while trying to play audio to the soundcard for the audio reception. Please check that your soundcard is not busy and that your driver supports full-duplex.\nThe audio reception has been disabled."));
     gnomemeeting_threads_leave ();
   }
-  else 
-    opened_audio_channels++;
-
 
   return no_error;
 }
@@ -2319,63 +2267,21 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
   PVideoChannel *channel = NULL;
   GMVideoGrabber *vg = NULL;
 
-  bool vid_tr = FALSE;
   bool result = FALSE;
 
   /* Wait that the primary call has terminated (in case of transfer)
      before opening the channels for the second call */
   TransferCallWait ();
 
-  if (opened_video_channels >= 2)
-    return FALSE;
-
-  opened_video_channels++;
-  
-  /* Get the gconf config */
-  gnomemeeting_threads_enter ();
-  vid_tr = 
-    gconf_client_get_bool (client, 
-			   VIDEO_SETTINGS_KEY "enable_video_transmission", 
-			   NULL);
-
-  /* Update the View and the popup menus */
-  for (int i = 0 ; i < 2 ; i++) {
-
-    gtk_menu_section_set_sensitive (i==0?gw->main_menu:gw->video_popup_menu,
-				    "zoom_in", TRUE);
-  
-    if (opened_video_channels >= 2) {
-    
-      gtk_menu_section_set_sensitive (i==0?gw->main_menu:gw->video_popup_menu,
-				      "local_video", TRUE);
-    }
-    else {
-      
-      gtk_menu_section_set_sensitive (i==0?gw->main_menu:gw->video_popup_menu,
-				      "local_video", FALSE);
-      gtk_menu_set_sensitive (i==0?gw->main_menu:gw->video_popup_menu,
-			      isEncoding ? "local_video":"remote_video", TRUE);
-    }
-  }
-  gnomemeeting_threads_leave ();
-
   
   /* If it is possible to transmit and
      if the user enabled transmission and
      if OpenVideoDevice is called for the encoding */
-  if (vid_tr && isEncoding) {
+  if (isEncoding) {
 
-    vg = GetVideoGrabber ();
-    if (!vg) {
-
-      CreateVideoGrabber (FALSE, TRUE); /* Do not grab and
-					   start synchronously */
-    }
-    else {
-      
-      vg->StopGrabbing ();
-      vg->Unlock ();
-    }
+    RemoveVideoGrabber ();
+    CreateVideoGrabber (FALSE, TRUE); /* Do not grab and
+					 start synchronously */
     
     /* Here, the grabber should be opened */
     vg = GetVideoGrabber ();
@@ -2389,7 +2295,6 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
     gnomemeeting_threads_enter ();
     gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button), TRUE);
     gnomemeeting_threads_leave ();
-
 
     if (channel)
       result = codec.AttachChannel (channel, FALSE);

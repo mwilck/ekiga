@@ -341,14 +341,6 @@ class GMH323EndPoint : public H323EndPoint
 
 
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Return the number of video channels in use.
-   *                 0 if there is no one, or if we are not in a call.
-   * PRE          :  /
-   */
-  int GetVideoChannelsNumber (void);
-
-
-  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Set the current call token.
    * PRE          :  A valid PString for a call token.
    */
@@ -401,7 +393,8 @@ class GMH323EndPoint : public H323EndPoint
   PString GetSoundChannelManager () {return soundChannelManager;}
   BOOL SetDeviceVolume (unsigned int, unsigned int);
   BOOL GetDeviceVolume (unsigned int &, unsigned int &);
-
+  void SetAutoStartTransmitVideo (BOOL a) {autoStartTransmitVideo = a;}
+  void SetAutoStartReceiveVideo (BOOL a) {autoStartReceiveVideo = a;}
 
 #ifdef HAS_IXJ
   /* DESCRIPTION  :  /
@@ -502,9 +495,6 @@ class GMH323EndPoint : public H323EndPoint
   PMutex at_access_mutex;
   
   PIntCondMutex *vg_int_cond_mutex;
-
-  int opened_audio_channels;
-  int opened_video_channels;
 
 #ifdef HAS_IXJ
   GMLid *lid;

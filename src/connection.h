@@ -71,7 +71,7 @@ class GMH323Connection : public H323Connection
    * BEHAVIOR     :  Close the channel.
    * PRE          :  /
    */
-  virtual void OnClosedLogicalChannel (H323Channel &);
+  virtual void OnClosedLogicalChannel (const H323Channel &);
 
 
   /* DESCRIPTION  :  This callback is called to give the opportunity
@@ -111,9 +111,19 @@ class GMH323Connection : public H323Connection
    */
   virtual BOOL OnReceivedFacility(const H323SignalPDU &);
 
-  protected:
-    GmWindow *gw;
-    int opened_channels; 
+  virtual BOOL OnRequestModeChange (const H245_RequestMode &,
+				    H245_RequestModeAck &,
+				    H245_RequestModeReject &,
+				    PINDEX &);
+  
+ protected:
+
+  BOOL OnLogicalChannel (H323Channel *, BOOL);
+  
+  GmWindow *gw;
+  
+  int opened_video_channels;
+  int opened_audio_channels;  
 };
 
 

@@ -125,7 +125,7 @@ static void microtelco_enabled_nt (GConfClient *, guint, GConfEntry *,
 				   gpointer);
 #endif
 static void ht_fs_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
-static void enable_vid_tr_changed_nt (GConfClient *, guint, GConfEntry *, 
+static void enable_video_transmission_changed_nt (GConfClient *, guint, GConfEntry *, 
 				      gpointer);
 static void silence_detection_changed_nt (GConfClient *, guint, 
 					  GConfEntry *, gpointer);
@@ -512,24 +512,70 @@ static void ht_fs_changed_nt (GConfClient *client, guint cid,
 
 
 /* DESCRIPTION  :  This notifier is called when the gconf database data
- *                 associated with the enable_video_transmission key changes or
- *                 enable_video_reception.
+ *                 associated with the enable_video_transmission key changes.
  * BEHAVIOR     :  It updates the endpoint, and updates the registering on ILS.
+ *                 If the user is in a call, the video channel will be started
+ *                 and stopped on-the-fly.
  * PRE          :  /
  */
-static void enable_vid_tr_changed_nt (GConfClient *client, guint cid, 
-				      GConfEntry *entry, gpointer data)
+static void
+enable_video_transmission_changed_nt (GConfClient *client,
+				      guint cid, 
+				      GConfEntry *entry,
+				      gpointer data)
 {
-  GMH323EndPoint *endpoint = MyApp->Endpoint ();
-
+  GmWindow *gw = NULL;
+  
+  GMH323EndPoint *endpoint = NULL;
+  H323Connection *connection = NULL;
+  H323Capability *capability = NULL;
+  H323Channel *channel = NULL;
+  
+  H323Capabilities local_capabilities;
+  
   if (entry->value->type == GCONF_VALUE_BOOL) {
+
+    endpoint = MyApp->Endpoint ();
+    endpoint->SetAutoStartTransmitVideo (gconf_value_get_bool (entry->value));
+    
+    connection =
+      endpoint->FindConnectionWithLock (endpoint->GetCurrentCallToken ());
+
+    if (connection) {
+
+      if (gconf_value_get_bool (entry->value)) {
+	
+	local_capabilities = connection->GetLocalCapabilities ();
+      
+	capability = local_capabilities.FindCapability ("H.261-QCIF");
+	gw = MyApp->GetMainWindow ();
+      
+	if (!connection->OpenLogicalChannel (*capability,
+					     capability->GetDefaultSessionID(),
+					     H323Channel::IsTransmitter)) {
+
+	  gdk_threads_enter ();
+	  gnomemeeting_log_insert (gw->history_text_view,
+				   _("Failed to start video transmission"));
+	  gdk_threads_leave ();
+	}
+      }
+      else {
+
+	channel =
+	  connection->FindChannel (RTP_Session::DefaultVideoSessionID, FALSE);
+	if (channel) {
+	  
+	  connection->CloseLogicalChannelNumber (channel->GetNumber ());
+	}
+      }
+
+      connection->Unlock ();
+    }
 
     gdk_threads_enter ();
     if (gconf_client_get_bool (client, LDAP_KEY "register", 0))
       endpoint->ILSRegister ();
-
-    if (MyApp->Endpoint ()->GetCallingState () == 0)
-      MyApp->Endpoint ()->UpdateConfig ();
     gdk_threads_leave ();
   }
 }
@@ -1757,12 +1803,11 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/enable_video_reception", applicability_check_nt, pw->vid_re, 0, 0);	     
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/enable_video_reception", toggle_changed_nt, pw->vid_re, 0, 0);	     
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/enable_video_reception", network_settings_changed_nt, 0, 0, 0);	     
-  gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/enable_video_reception", enable_vid_tr_changed_nt, 0, 0, 0);	     
+  gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/enable_video_reception", enable_video_transmission_changed_nt, 0, 0, 0);	     
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/enable_video_transmission", applicability_check_nt, pw->vid_tr, 0, 0);	     
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/enable_video_transmission", toggle_changed_nt, pw->vid_tr, 0, 0);	     
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/enable_video_transmission", network_settings_changed_nt, 0, 0, 0);	     
-  gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/enable_video_transmission", enable_vid_tr_changed_nt, 0, 0, 0);	     
+  gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/enable_video_transmission", enable_video_transmission_changed_nt, 0, 0, 0);	     
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/maximum_video_bandwidth", maximum_video_bandwidth_changed_nt, pw->maximum_video_bandwidth, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/maximum_video_bandwidth", adjustment_changed_nt, pw->maximum_video_bandwidth, 0, 0);

@@ -44,7 +44,6 @@
 #include "vfakeio.h"
 #include "misc.h"
 
-#include "gtk_menu_extensions.h"
 #include "dialog.h"
 
 
@@ -542,13 +541,6 @@ void GMVideoGrabber::VGOpen (void)
       gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), true);
       gnomemeeting_threads_leave ();
     }
-
-
-    /* Enable zoom and fullscreen settings in the view and in the popup menu */
-    gnomemeeting_threads_enter ();
-    gtk_menu_section_set_sensitive (gw->main_menu, "zoom_in", TRUE);
-    gtk_menu_section_set_sensitive (gw->video_popup_menu, "zoom_in", TRUE);
-    gnomemeeting_threads_leave ();
   }  
 }
   
@@ -603,13 +595,6 @@ void GMVideoGrabber::VGClose ()
     gnomemeeting_threads_leave ();
     
     
-    /* Disable the zoom and fullscreen options */
-    gnomemeeting_threads_enter ();
-    gtk_menu_section_set_sensitive (gw->main_menu, "zoom_in", FALSE);
-    gtk_menu_section_set_sensitive (gw->video_popup_menu, "zoom_in", FALSE);
-    gnomemeeting_threads_leave ();
-
-
     /* Initialisation */
     grabber = NULL;
     var_mutex.Wait ();

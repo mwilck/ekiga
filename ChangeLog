@@ -1,3 +1,20 @@
+2003-10-06 Damien Sandras  <dsandras@seconix.com>
+
+	* src/config.cpp: Modified notifiers to permit to start and stop 
+	video transmission on-the-fly during calls.
+	
+	* src/connection.cpp, src/connection.h, src/endpoint.cpp, 
+	src/endpoint.h: Code cleanups. Limit the number	of opened audio and 
+	video channels at the connection level instead of the endpoint.
+	Reset the video grabber with each call. Added support
+	for autoStartTransmitVideo and autoStartReceiveVideo. Display a
+	message in the history when a logical channel is closed.
+	
+	* src/gdkvideoio.cpp, src/gdkvideoio.h,	src/videograbber.cpp:
+	Do not update the video menus in the videograbber or in the
+	endpoint but directly in the classes displaying received or transmitted
+	video.
+	
 2003-10-04 Damien Sandras  <dsandras@seconix.com>
 
 	* configure.in: Incremented SCHEMA_AGE.
