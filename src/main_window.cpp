@@ -2801,9 +2801,9 @@ gm_main_window_urls_history_update (GtkWidget *main_window)
 
       entry = NULL;
 
-      if (c->fullname)
-	entry = g_strdup_printf ("%s [%s]", 
-				 c->url, 
+      if (c->fullname && strcmp (c->fullname, ""))
+	entry = g_strdup_printf ("%s [%s]",
+				 c-> url, 
 				 c->fullname);
       else
 	entry = g_strdup (c->url);
