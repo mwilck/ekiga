@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
-"POT-Creation-Date: 2003-04-27 11:09+0200\n"
-"PO-Revision-Date: 2003-04-27 11:10+0200\n"
+"POT-Creation-Date: 2003-05-05 10:24+0200\n"
+"PO-Revision-Date: 2003-05-05 10:26+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -85,7 +85,7 @@ msgstr "Färgformat"
 msgid "Color Format for the video palette"
 msgstr "Färgformat föt videopaletten"
 
-#: gnomemeeting.schemas.in.in.h:14 src/ldap_window.cpp:1756
+#: gnomemeeting.schemas.in.in.h:14 src/ldap_window.cpp:2088
 msgid "Comment"
 msgstr "Kommentar"
 
@@ -335,7 +335,7 @@ msgstr "Höjd på lokalt videopopupfönster"
 msgid "Local Video Popup Width"
 msgstr "Bredd på lokalt videopopupfönster"
 
-#: gnomemeeting.schemas.in.in.h:63 src/ldap_window.cpp:1767
+#: gnomemeeting.schemas.in.in.h:63 src/ldap_window.cpp:2099
 msgid "Location"
 msgstr "Plats"
 
@@ -766,7 +766,7 @@ msgstr "Typ av kapabiliteter för användarindata"
 msgid "User directory"
 msgstr "Användarkatalog"
 
-#: gnomemeeting.schemas.in.in.h:142 src/ldap_window.cpp:1789
+#: gnomemeeting.schemas.in.in.h:142 src/ldap_window.cpp:2121
 msgid "Version"
 msgstr "Version"
 
@@ -1003,19 +1003,19 @@ msgid ""
 msgstr ""
 "  --fix-permissions      fixa rättigheter på GConf-lagret (kör som root)"
 
-#: src/config.cpp:408
+#: src/config.cpp:410
 msgid "Changing this setting will only affect new calls"
 msgstr "Att ändra denna inställning kommer endast att påverka nya samtal"
 
-#: src/config.cpp:590
+#: src/config.cpp:592
 msgid "Disabled Silence Detection"
 msgstr "Inaktiverade tystnadsdetektering"
 
-#: src/config.cpp:596
+#: src/config.cpp:598
 msgid "Enabled Silence Detection"
 msgstr "Aktiverade tystnadsdetektering"
 
-#: src/config.cpp:1391
+#: src/config.cpp:1410
 msgid ""
 "You need to specify an host to forward calls to!\n"
 "Disabling forwarding."
@@ -1167,7 +1167,7 @@ msgid "_Surname:"
 msgstr "_Efternamn:"
 
 #. The callto url
-#: src/druid.cpp:660 src/ldap_window.cpp:1828
+#: src/druid.cpp:660 src/ldap_window.cpp:2160
 msgid "Callto URL"
 msgstr "Callto-URL"
 
@@ -1382,204 +1382,203 @@ msgstr "Konfigurationen klar - sida %d/%d"
 msgid "Forwarding Call to %s (No Answer)"
 msgstr "Vidarebefordrar samtal till %s (inget svar)"
 
-#: src/endpoint.cpp:120 src/endpoint.cpp:1352
+#: src/endpoint.cpp:120 src/endpoint.cpp:1354
 msgid "Call forwarded"
 msgstr "Samtal vidarebefordrat"
 
 #. GM is started
-#: src/endpoint.cpp:215
+#: src/endpoint.cpp:216
 #, c-format
 msgid "Started GnomeMeeting V%d.%d for %s\n"
 msgstr "Startade GnomeMeeting v%d.%d för %s\n"
 
 #. Player is always a correct sound device, thanks to
 #. gnomemeeting_add_string_option_menu
-#: src/endpoint.cpp:301
+#: src/endpoint.cpp:302
 #, c-format
 msgid "Set Audio player device to %s"
 msgstr "Ställde in ljudspelarenhet till %s"
 
-#: src/endpoint.cpp:312
+#: src/endpoint.cpp:313
 #, c-format
 msgid "Set Audio recorder device to %s"
 msgstr "Ställde in ljudinspelningsenhet till %s"
 
-#: src/endpoint.cpp:329
+#: src/endpoint.cpp:330
 msgid "Enabling H.245 Tunnelling"
 msgstr "Aktiverar H.245-tunnling"
 
-#: src/endpoint.cpp:330
+#: src/endpoint.cpp:331
 msgid "Disabling H.245 Tunnelling"
 msgstr "Inaktiverar H.245-tunnling"
 
-#: src/endpoint.cpp:340
+#: src/endpoint.cpp:341
 msgid "Enabling Fast Start"
 msgstr "Aktiverar snabbstart"
 
-#: src/endpoint.cpp:341
+#: src/endpoint.cpp:342
 msgid "Disabling Fast Start"
 msgstr "Inaktiverar snabbstart"
 
-#: src/endpoint.cpp:835
+#: src/endpoint.cpp:836
 #, c-format
 msgid "Forwarding Call to %s"
 msgstr "Vidarebefordrar samtal till %s"
 
-#: src/endpoint.cpp:848
+#: src/endpoint.cpp:849
 #, c-format
 msgid "Error forwarding call to %s"
 msgstr "Fel vid vidarebefordrande av samtal till %s"
 
 #. Update the history and status bar
-#: src/endpoint.cpp:923
+#: src/endpoint.cpp:924
 #, c-format
 msgid "Call from %s using %s"
 msgstr "Samtal från %s med %s"
 
-#: src/endpoint.cpp:938
+#: src/endpoint.cpp:939
 #, c-format
 msgid "Forwarding Call from %s to %s (Forward All Calls)"
 msgstr "Vidarebefordrar samtal från %s till %s (vidarebefordrar alla samtal)"
 
-#: src/endpoint.cpp:946
+#: src/endpoint.cpp:947
 #, c-format
 msgid "Auto Rejecting Incoming Call from %s (Do Not Disturb)"
 msgstr "Avvisar automatiskt inkommande samtal från %s (Stör inte)"
 
-#: src/endpoint.cpp:958
+#: src/endpoint.cpp:959
 #, c-format
 msgid "Forwarding Call from %s to %s (Busy)"
 msgstr "Vidarbefordrar samtal från %s till %s (upptagen)"
 
 #. there is no forwarding, so reject the call
-#: src/endpoint.cpp:967
+#: src/endpoint.cpp:968
 #, c-format
 msgid "Auto Rejecting Incoming Call from %s (Busy)"
 msgstr "Avvisar automatiskt inkommande samtal från %s (upptagen)"
 
-#: src/endpoint.cpp:991
+#: src/endpoint.cpp:992
 msgid "Auto Rejected"
 msgstr "Automatiskt avvisad"
 
-#: src/endpoint.cpp:1000
+#: src/endpoint.cpp:1001
 msgid "Call Forwarded"
 msgstr "Samtal vidarebefordrat"
 
-#: src/endpoint.cpp:1165
+#: src/endpoint.cpp:1166
 #, c-format
 msgid "Connected with %s using %s"
 msgstr "Ansluten till %s med %s"
 
-#: src/endpoint.cpp:1167
+#: src/endpoint.cpp:1168
 msgid "Connected"
 msgstr "Ansluten"
 
-#: src/endpoint.cpp:1170
+#: src/endpoint.cpp:1171
 msgid "Fast start disabled"
 msgstr "Snabbstart inaktiverad"
 
-#: src/endpoint.cpp:1171
+#: src/endpoint.cpp:1172
 msgid "Fast start enabled"
 msgstr "Snabbstart aktiverad"
 
-#: src/endpoint.cpp:1174
+#: src/endpoint.cpp:1175
 msgid "H.245 Tunnelling disabled"
 msgstr "H.245-tunnling inaktiverad"
 
-#: src/endpoint.cpp:1175
+#: src/endpoint.cpp:1176
 msgid "H.245 Tunnelling enabled"
 msgstr "H.245-tunnling aktiverad"
 
-#. Translators: the "s" is for "seconds"
-#: src/endpoint.cpp:1285
+#: src/endpoint.cpp:1287
 msgid "s"
 msgstr "s"
 
-#: src/endpoint.cpp:1316
+#: src/endpoint.cpp:1318
 msgid "Local user cleared the call"
 msgstr "Lokala användaren har nollställt samtalet"
 
-#: src/endpoint.cpp:1319
+#: src/endpoint.cpp:1321
 msgid "Remote user cleared the call"
 msgstr "Fjärranvändaren har nollställt samtalet"
 
-#: src/endpoint.cpp:1322 src/endpoint.cpp:1325
+#: src/endpoint.cpp:1324 src/endpoint.cpp:1327
 msgid "Remote user did not accept the call"
 msgstr "Fjärranvändaren accepterade inte anropet"
 
-#: src/endpoint.cpp:1328
+#: src/endpoint.cpp:1330
 msgid "Local user did not accept the call"
 msgstr "Lokala användaren accepterade inte anropet"
 
-#: src/endpoint.cpp:1331
+#: src/endpoint.cpp:1333
 msgid "The Gatekeeper cleared the call"
 msgstr "Portvakten har nollställt samtalet"
 
-#: src/endpoint.cpp:1334
+#: src/endpoint.cpp:1336
 msgid "Call not answered in the required time"
 msgstr "Anropet besvarades inte inom den tid som krävs"
 
-#: src/endpoint.cpp:1337
+#: src/endpoint.cpp:1339
 msgid "Remote user has stopped calling"
 msgstr "Fjärranvändaren har slutat ringa"
 
-#: src/endpoint.cpp:1340
+#: src/endpoint.cpp:1342
 msgid "Abnormal call termination"
 msgstr "Onormal samtalsavslutning"
 
-#: src/endpoint.cpp:1343
+#: src/endpoint.cpp:1345
 msgid "Could not connect to remote host"
 msgstr "Kunde inte ansluta till fjärrvärden"
 
-#: src/endpoint.cpp:1346
+#: src/endpoint.cpp:1348
 msgid "Insufficient bandwidth"
 msgstr "Otillräcklig bandbredd"
 
-#: src/endpoint.cpp:1349
+#: src/endpoint.cpp:1351
 msgid "No common codec"
 msgstr "Ingen gemensam videokomprimeringsmetod"
 
-#: src/endpoint.cpp:1355
+#: src/endpoint.cpp:1357
 msgid "Security check Failed"
 msgstr "Säkerhetskontroll misslyckades"
 
-#: src/endpoint.cpp:1358
+#: src/endpoint.cpp:1360
 msgid "Local user is busy"
 msgstr "Lokala användaren är upptagen"
 
-#: src/endpoint.cpp:1361
+#: src/endpoint.cpp:1363
 msgid "Remote user is busy"
 msgstr "Fjärranvändaren är upptagen"
 
-#: src/endpoint.cpp:1364 src/endpoint.cpp:1367
+#: src/endpoint.cpp:1366 src/endpoint.cpp:1369
 msgid "Congested link to remote party"
 msgstr "Överbelastad länk till fjärrparten"
 
-#: src/endpoint.cpp:1370
+#: src/endpoint.cpp:1372
 msgid "Remote user is unreachable"
 msgstr "Fjärranvändaren är onåbar"
 
-#: src/endpoint.cpp:1373
+#: src/endpoint.cpp:1375
 msgid "Remote user is not running GnomeMeeting"
 msgstr "Fjärranvändaren kör inte GnomeMeeting"
 
-#: src/endpoint.cpp:1376
+#: src/endpoint.cpp:1378
 msgid "Remote host is offline"
 msgstr "Fjärrvärden är inte ansluten"
 
-#: src/endpoint.cpp:1379
+#: src/endpoint.cpp:1381
 msgid "Temporary failure"
 msgstr "Tillfälligt fel"
 
-#: src/endpoint.cpp:1382 src/urlhandler.cpp:181
+#: src/endpoint.cpp:1384 src/urlhandler.cpp:181
 msgid "User not found"
 msgstr "Användaren kunde inte hittas"
 
-#: src/endpoint.cpp:1386
+#: src/endpoint.cpp:1388
 msgid "Call completed"
 msgstr "Samtalet färdigt"
 
-#: src/endpoint.cpp:1485 src/main_window.cpp:1722
+#: src/endpoint.cpp:1487 src/main_window.cpp:1722
 msgid ""
 "Lost packets:\n"
 "Late packets:\n"
@@ -1591,11 +1590,11 @@ msgstr ""
 "Fördröjning för runda:\n"
 "Jitterbuffert:"
 
-#: src/endpoint.cpp:1656
+#: src/endpoint.cpp:1658
 msgid "Attaching lid hardware to codec"
 msgstr "Fäster bländarhårdvara vid komprimeringsmetoden"
 
-#: src/endpoint.cpp:1669
+#: src/endpoint.cpp:1671
 msgid ""
 "Could not open audio channel for audio transmission (soundcard busy?).\n"
 "Disabling audio transmission."
@@ -1603,7 +1602,7 @@ msgstr ""
 "Kunde inte öppna ljudkanal för ljudöverföring (ljudkortet upptaget?).\n"
 "Inaktiverar ljudöverföring."
 
-#: src/endpoint.cpp:1671
+#: src/endpoint.cpp:1673
 msgid ""
 "Could not open audio channel for audio reception (soundcard busy?).\n"
 "Disabling audio reception."
@@ -1754,129 +1753,179 @@ msgid "Failed to contact %s."
 msgstr "Misslyckades med att kontakta %s."
 
 #. Create the dialog to easily modify the info of a specific contact
-#: src/ldap_window.cpp:420
+#: src/ldap_window.cpp:459
 msgid "Edit the contact information"
 msgstr "Redigera kontaktinformationen"
 
-#: src/ldap_window.cpp:429
-msgid "Name:"
-msgstr "Namn:"
+#: src/ldap_window.cpp:472
+msgid "<b>Name:</b>"
+msgstr "<b>Namn:</b>"
 
-#: src/ldap_window.cpp:442
-msgid "callto URL:"
-msgstr "callto-URL:"
+#: src/ldap_window.cpp:488
+msgid "<b>URL:</b>"
+msgstr "<b>URL:</b>"
 
-#: src/ldap_window.cpp:506
-msgid ""
-"Another user already exists with the same callto:// entry, please delete it "
-"first."
-msgstr ""
-"En annan användare finns redan med samma callto://-post, ta bort denna först."
+#: src/ldap_window.cpp:509
+msgid "<b>Groups:</b>"
+msgstr "<b>Grupper:</b>"
 
-#: src/ldap_window.cpp:604
+# callto verkar konstigt
+#: src/ldap_window.cpp:580
+msgid "Please provide a valid name and callto for the user"
+msgstr "Ange ett giltigt namn och callto för användaren"
+
+# callto verkar konstigt
+#. User already in the
+#. selected group
+#: src/ldap_window.cpp:648
+#, c-format
+msgid "Another user with the callto %s already exists in group %s."
+msgstr "En annan användare med callto %s finns redan i grupp %s."
+
+#: src/ldap_window.cpp:659
+msgid "You have to select a group to which you want to add your contact"
+msgstr "Du måste välja en grupp som du vill lägga till din kontakt i"
+
+#: src/ldap_window.cpp:758
 msgid "Add a new server"
 msgstr "Lägg till en ny server"
 
-#: src/ldap_window.cpp:605
+#: src/ldap_window.cpp:759
 msgid "Enter the server name:"
 msgstr "Ange namnet på servern:"
 
-#: src/ldap_window.cpp:610
+#: src/ldap_window.cpp:764
 msgid "Add a new group"
 msgstr "Lägg till en ny grupp"
 
-#: src/ldap_window.cpp:611
+#: src/ldap_window.cpp:765
 msgid "Enter the group name:"
 msgstr "Ange namnet på gruppen:"
 
-#: src/ldap_window.cpp:1217
+#: src/ldap_window.cpp:1450
 msgid "New server"
 msgstr "Ny server"
 
-#: src/ldap_window.cpp:1226
+#: src/ldap_window.cpp:1459
 msgid "New group"
 msgstr "Ny grupp"
 
-#: src/ldap_window.cpp:1235
+#: src/ldap_window.cpp:1468
 msgid "_Refresh"
 msgstr "_Uppdatera"
 
-#: src/ldap_window.cpp:1240 src/ldap_window.cpp:1254
+#: src/ldap_window.cpp:1473 src/ldap_window.cpp:1487
 msgid "Delete"
 msgstr "Ta bort"
 
-#: src/ldap_window.cpp:1249
+#: src/ldap_window.cpp:1482
 msgid "New contact"
 msgstr "Ny kontakt"
 
-#: src/ldap_window.cpp:1365
+#: src/ldap_window.cpp:1598
 msgid "Call this user"
 msgstr "Ring upp denna användare"
 
-#: src/ldap_window.cpp:1375
+#: src/ldap_window.cpp:1608
 msgid "Edit this user information"
 msgstr "Redigera denna användarinformation"
 
-#: src/ldap_window.cpp:1382
+#: src/ldap_window.cpp:1615
 msgid "Delete this user"
 msgstr "Ta bort denna användare"
 
-#: src/ldap_window.cpp:1393
+#: src/ldap_window.cpp:1626
 msgid "Add to group"
 msgstr "Lägg till i grupp"
 
-#: src/ldap_window.cpp:1492
+#: src/ldap_window.cpp:1727
 msgid "GnomeMeeting Addressbook"
 msgstr "GnomeMeeting-adressbok"
 
-#: src/ldap_window.cpp:1522
-msgid "Contacts"
-msgstr "Kontakter"
+#: src/ldap_window.cpp:1743 src/pref_window.cpp:1557
+msgid "Section"
+msgstr "Sektion"
 
-#: src/ldap_window.cpp:1541
+#: src/ldap_window.cpp:1745
+msgid "New _server"
+msgstr "Ny _server"
+
+#: src/ldap_window.cpp:1750
+msgid "New _group"
+msgstr "Ny _grupp"
+
+#: src/ldap_window.cpp:1757
+msgid "_Delete section"
+msgstr "_Ta bort sektion"
+
+#: src/ldap_window.cpp:1763
+msgid "Close"
+msgstr "Stäng"
+
+#: src/ldap_window.cpp:1769
+msgid "C_ontact"
+msgstr "K_ontakt"
+
+#: src/ldap_window.cpp:1771
+msgid "New _contact"
+msgstr "Ny _kontakt"
+
+#: src/ldap_window.cpp:1776
+msgid "Add _contact to address book"
+msgstr "Lägg till _kontakt till adressboken"
+
+#: src/ldap_window.cpp:1781
+msgid "Contact _properties"
+msgstr "Kontakt_egenskaper"
+
+#: src/ldap_window.cpp:1787
+msgid "_Delete contact"
+msgstr "_Ta bort kontakt"
+
+#: src/ldap_window.cpp:1850
 msgid "Servers"
 msgstr "Servrar"
 
-#: src/ldap_window.cpp:1571
+#: src/ldap_window.cpp:1891
 msgid "Groups"
 msgstr "Grupper"
 
 #. Translators: This is "S" as in "Status"
-#: src/ldap_window.cpp:1713
+#: src/ldap_window.cpp:2045
 msgid "S"
 msgstr "S"
 
 #. Translators: This is "A" as in "Audio"
-#: src/ldap_window.cpp:1723 src/pref_window.cpp:1211
+#: src/ldap_window.cpp:2055 src/pref_window.cpp:1211
 msgid "A"
 msgstr "L"
 
 #. Translators: This is "V" as in "Video"
-#: src/ldap_window.cpp:1733
+#: src/ldap_window.cpp:2065
 msgid "V"
 msgstr "V"
 
-#: src/ldap_window.cpp:1742 src/ldap_window.cpp:1815 src/pref_window.cpp:1225
+#: src/ldap_window.cpp:2074 src/ldap_window.cpp:2147 src/pref_window.cpp:1225
 msgid "Name"
 msgstr "Namn"
 
-#: src/ldap_window.cpp:1777
+#: src/ldap_window.cpp:2109
 msgid "Callto"
 msgstr "Callto"
 
-#: src/ldap_window.cpp:1800 src/tools.cpp:163
+#: src/ldap_window.cpp:2132 src/tools.cpp:163
 msgid "IP"
 msgstr "IP"
 
-#: src/ldap_window.cpp:1862
+#: src/ldap_window.cpp:2194
 msgid "First name contains"
 msgstr "Förnamn innehåller"
 
-#: src/ldap_window.cpp:1866
+#: src/ldap_window.cpp:2198
 msgid "Last name contains"
 msgstr "Efternamn innehåller"
 
-#: src/ldap_window.cpp:1870
+#: src/ldap_window.cpp:2202
 msgid "E-mail contains"
 msgstr "E-postadress innehåller"
 
@@ -2740,10 +2789,6 @@ msgstr "Videokomprimeringsmetoder"
 msgid "Devices"
 msgstr "Enheter"
 
-#: src/pref_window.cpp:1557
-msgid "Section"
-msgstr "Sektion"
-
 #: src/sound_handling.cpp:411
 #, c-format
 msgid ""
@@ -2969,6 +3014,55 @@ msgstr "Din drivrutin stöder inte YUV420P-färgformatet"
 #: src/videograbber.cpp:738
 msgid "Tests OK!"
 msgstr "Testen OK!"
+
+#~ msgid "URL:"
+#~ msgstr "URL:"
+
+#~ msgid "URL"
+#~ msgstr "URL"
+
+#~ msgid "Groups:"
+#~ msgstr "Grupper:"
+
+#~ msgid "Please provide a valid name and callto for the user."
+#~ msgstr "Ange ett giltigt namn och callto för användaren."
+
+#~ msgid "You have to select a group to which you want to add your contact."
+#~ msgstr "Du måste välja en grupp som du vill lägga till din kontakt i."
+
+#~ msgid "Delete section"
+#~ msgstr "Ta bort sektion"
+
+#~ msgid "_Close"
+#~ msgstr "S_täng"
+
+#~ msgid "Contact"
+#~ msgstr "Kontakt"
+
+#~ msgid "Add contact to address book"
+#~ msgstr "Lägg till kontakt till adressboken"
+
+#~ msgid "Contact _Properties"
+#~ msgstr "Kontakt_egenskaper"
+
+#~ msgid "Contact Properties"
+#~ msgstr "Kontaktegenskaper"
+
+#~ msgid "Delete contact"
+#~ msgstr "Ta bort kontakt"
+
+#~ msgid "Name:"
+#~ msgstr "Namn:"
+
+#~ msgid "callto URL:"
+#~ msgstr "callto-URL:"
+
+#~ msgid ""
+#~ "Another user already exists with the same callto:// entry, please delete "
+#~ "it first."
+#~ msgstr ""
+#~ "En annan användare finns redan med samma callto://-post, ta bort denna "
+#~ "först."
 
 #~ msgid "Call duration: %.2ld:%.2ld:%.2ld"
 #~ msgstr "Anslutningsvaraktighet: %.2ld.%.2ld.%.2ld"
@@ -3570,9 +3664,6 @@ msgstr "Testen OK!"
 
 #~ msgid "Audio Settings"
 #~ msgstr "Ljudinställningar"
-
-#~ msgid "Delete user"
-#~ msgstr "Ta bort användare"
 
 #~ msgid "New Server"
 #~ msgstr "Ny server"
