@@ -1,3 +1,13 @@
+2002-03-29  Miguel Rodríguez Pérez  <migrax@terra.es>
+
+	* src/docklet.cpp (docklet_toggle_callback) 
+	(gnomemeeting_build_docklet): Use gtk_image, instead of gtk_pixmap
+	(gnomemeeting_docklet_set_content): Dito.
+	Some cleaning and undeprecating trivial stuff also.
+
+	* src/common.h (struct _GM_window_widgets): The position of the
+	main window is window manager's job, not ours
+
 2002-03-28  Damien Sandras  <dsandras@seconix.com>	
 
 	* src/menu.cpp: Ported to Gnome2.

@@ -21,13 +21,19 @@
  *                         docklet.cpp  -  description
  *                         ---------------------------
  *   begin                : Wed Oct 3 2001
- *   copyright            : (C) 2000-2001 by Miguel Rodríguez
+ *   copyright            : (C) 2000-2002 by Miguel Rodríguez
  *   description          : This file contains all functions needed for
  *                          Gnome Panel docklet.
  *   email                : migrax@terra.es (all the new code)
  *                          dsandras@seconix.com (old applet code).
  *
  */
+#undef GTK_ENABLE_BROKEN
+#define G_DISABLE_DEPRECATED                                    
+#define GDK_DISABLE_DEPRECATED
+#define GTK_DISABLE_DEPRECATED
+#define GDK_PIXBUF_DISABLE_DEPRECATED
+#define GNOME_DISABLE_DEPRECATED
 
 #include "../config.h"
 
@@ -46,7 +52,6 @@
 #include "../pixmaps/globe2-22.xpm" 
 #include "../pixmaps/connect_16.xpm"
 #include "../pixmaps/disconnect_16.xpm"
-
 
 /* Declarations */
 
@@ -92,16 +97,10 @@ void docklet_popup_menu_disconnect_callback (GtkWidget *, gpointer)
  */
 void docklet_toggle_callback (GtkWidget *, gpointer)
 {
-  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
-  
   if (GTK_WIDGET_VISIBLE (GTK_WIDGET (gm))) {
-
-    gdk_window_get_root_origin (GTK_WIDGET (gm)->window, &gw->x, &gw->y);
     gtk_widget_hide (gm);
   }
   else {
-    
-    gtk_widget_set_uposition (GTK_WIDGET (gm), gw->x, gw->y);
     gtk_widget_show (gm);
   }
 }
@@ -206,15 +205,12 @@ void gnomemeeting_setup_docklet_properties (GdkWindow *window)
  */
 static void gnomemeeting_build_docklet (GtkWindow *docklet)
 {
-  GdkPixmap *pixmap;
-  GdkBitmap *mask;
   GtkWidget *image;
   GdkPixbuf *pixbuf;
 
   pixbuf =  gdk_pixbuf_new_from_xpm_data (globe_22_xpm);
-  gdk_pixbuf_render_pixmap_and_mask (pixbuf, &pixmap, &mask, 127);
-
-  image = gtk_pixmap_new(pixmap, mask);
+  image = gtk_image_new_from_pixbuf (pixbuf);
+  g_object_unref (pixbuf);
 
   GTK_WIDGET_SET_FLAGS(image, GTK_NO_WINDOW);
   image->requisition.width = 22;
@@ -226,15 +222,15 @@ static void gnomemeeting_build_docklet (GtkWindow *docklet)
 			 gtk_widget_get_events (eventbox)
 			 | GDK_BUTTON_PRESS_MASK | GDK_EXPOSURE_MASK);
   
-  gtk_signal_connect (GTK_OBJECT (eventbox), "button_press_event",
-		      GTK_SIGNAL_FUNC (docklet_clicked), NULL);
+  g_signal_connect (G_OBJECT (eventbox), "button_press_event",
+		    G_CALLBACK (docklet_clicked), NULL);
   
   gtk_widget_show (eventbox);
   
   /* add the status to the plug */
-  gtk_object_set_data (GTK_OBJECT (docklet), "pixmapg", image);
+  g_object_set_data (G_OBJECT (docklet), "pixmapg", image);
   gtk_container_add (GTK_CONTAINER (eventbox), image);
-  gtk_container_add(GTK_CONTAINER(docklet), eventbox);
+  gtk_container_add (GTK_CONTAINER(docklet), eventbox);
   
   gtk_widget_show (image);
   
@@ -253,10 +249,10 @@ GtkWidget *gnomemeeting_init_docklet ()
   GtkWindow *docklet;
   GConfClient *client = gconf_client_get_default ();
 
-  docklet = (GtkWindow *)gtk_window_new(GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_title(GTK_WINDOW(docklet), "gnomemeeting_status_plugin");
-  gtk_window_set_wmclass(GTK_WINDOW(docklet), "GM_StatusDocklet", "gnomemeeting");
-  gtk_widget_set_usize(GTK_WIDGET(docklet), 22, 22);
+  docklet = GTK_WINDOW (gtk_window_new(GTK_WINDOW_TOPLEVEL));
+  gtk_window_set_title (GTK_WINDOW(docklet), "gnomemeeting_status_plugin");
+  gtk_window_set_wmclass (GTK_WINDOW(docklet), "GM_StatusDocklet", "gnomemeeting");
+  gtk_widget_set_size_request (GTK_WIDGET(docklet), 22, 22);
 
   gtk_widget_realize (GTK_WIDGET(docklet));
 
@@ -278,7 +274,7 @@ GtkWidget *gnomemeeting_init_docklet ()
  */
 void gnomemeeting_docklet_set_content (GtkWidget *docklet, int choice)
 {
-  GtkWidget *pixmap = NULL;
+  GtkImage *image = NULL;
   GdkPixmap *Pixmap;
   GdkBitmap *mask;
   GdkPixbuf *pixbuf;
@@ -287,34 +283,33 @@ void gnomemeeting_docklet_set_content (GtkWidget *docklet, int choice)
      if choice = 1, set the globe2 as content */
   if (choice == 0)  {
 
-    pixmap = (GtkWidget*) 
-      gtk_object_get_data (GTK_OBJECT (docklet), "pixmapm");
+    image = GTK_IMAGE (g_object_get_data (G_OBJECT (docklet), "pixmapm"));
   
     /* if the world was not already the pixmap */
-    if (pixmap != NULL)	{
+    if (image != NULL)	{
 
-      pixbuf =  gdk_pixbuf_new_from_xpm_data (globe_22_xpm);
-      gdk_pixbuf_render_pixmap_and_mask (pixbuf, &Pixmap, &mask, 127);
-      
-      gtk_pixmap_set (GTK_PIXMAP (pixmap), Pixmap, mask);
-      gtk_object_remove_data (GTK_OBJECT (docklet), "pixmapm");
-      gtk_object_set_data (GTK_OBJECT (docklet), "pixmapg", pixmap);
+      pixbuf = gdk_pixbuf_new_from_xpm_data (globe_22_xpm);
+      gtk_image_set_from_pixbuf (image, pixbuf);
+      g_object_unref (pixbuf);
+
+      g_object_set_data (G_OBJECT (docklet), "pixmapm", NULL);
+      g_object_set_data (G_OBJECT (docklet), "pixmapg", image);
     }
   }
 
   if (choice == 1) {
 
-    pixmap = (GtkWidget*) gtk_object_get_data (GTK_OBJECT (docklet),
-					       "pixmapg");
+    image = GTK_IMAGE (g_object_get_data (G_OBJECT (docklet),
+					  "pixmapg"));
     
-    if (pixmap != NULL)	{
+    if (image != NULL)	{
 
       pixbuf =  gdk_pixbuf_new_from_xpm_data (globe2_22_xpm);
-      gdk_pixbuf_render_pixmap_and_mask (pixbuf, &Pixmap, &mask, 127);
-      
-      gtk_pixmap_set (GTK_PIXMAP (pixmap), Pixmap, mask);
-      gtk_object_remove_data (GTK_OBJECT (docklet), "pixmapg");
-      gtk_object_set_data (GTK_OBJECT (docklet), "pixmapm", pixmap);
+      gtk_image_set_from_pixbuf (image, pixbuf);
+      g_object_unref (pixbuf);
+
+      g_object_set_data (G_OBJECT (docklet), "pixmapg", NULL);
+      g_object_set_data (G_OBJECT (docklet), "pixmapm", image);
     }
   }
 }
@@ -353,7 +348,7 @@ gint gnomemeeting_docklet_flash (GtkWidget *docklet)
   /* we can't call gnomemeeting_threads_enter as idles and timers
      are executed in the main thread */
   gdk_threads_enter ();
-  object = (GtkWidget *) gtk_object_get_data (GTK_OBJECT (docklet), "pixmapg");
+  object = GTK_WIDGET (g_object_get_data (G_OBJECT (docklet), "pixmapg"));
   gdk_threads_leave ();
   
   gdk_threads_enter ();
