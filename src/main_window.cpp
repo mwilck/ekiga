@@ -68,7 +68,7 @@
 #include "../pixmaps/contrast.xpm"
 #include "../pixmaps/color.xpm"
 
-#define ACT_IID "OAFIID:GnomeMeeting_Factory"
+#define ACT_IID "OAFIID:GNOME_gnomemeeting_Factory"
 
 
 /* Declarations */
@@ -192,6 +192,7 @@ gint AppbarUpdate (gpointer data)
 	   tr_audio_speed, re_audio_speed,
 	   tr_video_speed, re_video_speed);
 	
+
 	if (t.GetSeconds () > 3) {
 
 	  gnome_appbar_clear_stack (GNOME_APPBAR (gw->statusbar));
@@ -279,7 +280,6 @@ gnomemeeting_register_as_factory (void)
   result = 
     bonobo_activation_active_server_register (per_display_iid, 
 					      BONOBO_OBJREF (listener));
-
 
   if (result != Bonobo_ACTIVATION_REG_SUCCESS)
     bonobo_object_unref (BONOBO_OBJECT (listener));
@@ -513,12 +513,16 @@ gnomemeeting_window_appbar_update (gpointer data)
 {
   GtkWidget *statusbar = (GtkWidget *) data;
   
+  gdk_threads_enter ();
+
   GtkProgressBar *progress = 
     gnome_appbar_get_progress (GNOME_APPBAR (statusbar));
 
   if (GTK_WIDGET_VISIBLE (GTK_WIDGET (progress)))
     gtk_progress_bar_pulse (GTK_PROGRESS_BAR (progress));
-   
+
+  gdk_threads_leave ();
+
   return 1;
 }
 
@@ -896,7 +900,7 @@ void gnomemeeting_init_main_window ()
   gw->statusbar = gnome_appbar_new (TRUE, TRUE, 
 				    GNOME_PREFERENCES_NEVER);	
   gtk_widget_hide (GTK_WIDGET (gnome_appbar_get_progress (GNOME_APPBAR (gw->statusbar))));
-  gtk_widget_set_size_request (GTK_WIDGET (gnome_appbar_get_progress (GNOME_APPBAR (gw->statusbar))), 40, -1);
+  gtk_widget_set_size_request (GTK_WIDGET (gnome_appbar_get_progress (GNOME_APPBAR (gw->statusbar))), 35, -1);
   gnome_app_set_statusbar (GNOME_APP (gm), gw->statusbar);
 
   if (gconf_client_get_bool (client, 
@@ -1262,7 +1266,7 @@ int main (int argc, char ** argv, char ** envp)
 
   /* Quick hack to make the GUI refresh even on high load from the other
      threads */
-  gtk_timeout_add (1000, (GtkFunction) AppbarUpdate, 
+  gtk_timeout_add (500, (GtkFunction) AppbarUpdate, 
   		   rtp);
   /* gtk_timeout_add (10000, (GtkFunction) StressTest, 
      NULL);

@@ -47,6 +47,8 @@ extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;	
 
 static void row_activated (GtkTreeView *, GtkTreePath *, GtkTreeViewColumn *);
+static void ldap_notebook_clicked (GtkDialog *,  GtkNotebookPage *, 
+				   gint, gpointer);
 static void ldap_window_clicked (GtkDialog *, int, gpointer);
 static void search_entry_modified (GtkWidget *, gpointer);
 static void search_entry_activated (GtkEntry *, gpointer);
@@ -102,6 +104,32 @@ void row_activated (GtkTreeView *tree_view, GtkTreePath *path,
       
     connect_cb (NULL, NULL);
   }
+}
+
+
+/* DESCRIPTION  :  This callback is called when the user clicks
+ *                 to show a new notebook page.
+ * BEHAVIOR     :  Changes the page and update the ils combo entry.
+ * PRE          :  gpointer is a valid pointer to a GmLdapWindow.
+ */
+void ldap_notebook_clicked (GtkDialog *widget,  GtkNotebookPage *p,
+			    gint page_num, gpointer data)
+{
+  GmLdapWindow *lw = (GmLdapWindow *) data;
+  GtkWidget *label = NULL;
+  GtkWidget *page = NULL;
+  gchar *text_label = NULL;
+
+  page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook),
+				    page_num);
+
+  label = gtk_notebook_get_tab_label (GTK_NOTEBOOK (lw->notebook), 
+				      GTK_WIDGET (page));
+  label = (GtkWidget *) g_object_get_data (G_OBJECT (label), "label");
+
+  text_label = (gchar *) gtk_label_get_text (GTK_LABEL (label));
+  gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (lw->ils_server_combo)->entry),
+		      text_label);
 }
 
 
@@ -428,8 +456,10 @@ void gnomemeeting_init_ldap_window ()
   /* ILS directories combo box */
   lw->ils_server_combo = 
     gnomemeeting_history_combo_box_new ("/apps/gnomemeeting/history/ldap_servers");
-  gtk_combo_disable_activate (GTK_COMBO(lw->ils_server_combo));
-  stored_contacts = gconf_client_get_string (client, "/apps/gnomemeeting/history/ldap_servers", 0);
+//  gtk_combo_disable_activate (GTK_COMBO(lw->ils_server_combo));
+  stored_contacts = 
+    gconf_client_get_string (client, 
+			     "/apps/gnomemeeting/history/ldap_servers", 0);
   servers = g_strsplit (stored_contacts ? (stored_contacts) : (""), "|", 0);
 
   gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (lw->ils_server_combo)->entry),
@@ -524,19 +554,22 @@ void gnomemeeting_init_ldap_window ()
 		    G_CALLBACK (refresh_button_clicked),
 		    (gpointer) lw);
 
-  g_signal_connect (G_OBJECT(lw->search_entry), "changed",
+  g_signal_connect (G_OBJECT (lw->search_entry), "changed",
 		    G_CALLBACK (search_entry_modified), (gpointer) lw);
 
-  g_signal_connect (G_OBJECT(lw->refresh_button), "clicked",
+  g_signal_connect (G_OBJECT (lw->refresh_button), "clicked",
 		    G_CALLBACK (refresh_button_clicked), (gpointer) lw);
 
-  g_signal_connect (G_OBJECT(button), "clicked",
+  g_signal_connect (G_OBJECT (button), "clicked",
 		    G_CALLBACK (search_entry_activated), (gpointer) lw);
 
-  g_signal_connect (G_OBJECT(lw->search_entry), "activate",
+  g_signal_connect (G_OBJECT (lw->search_entry), "activate",
 		    G_CALLBACK (search_entry_activated), (gpointer) lw);
 
-  g_signal_connect (G_OBJECT(gw->ldap_window), "delete_event",
+  g_signal_connect (G_OBJECT (lw->notebook), "switch-page",
+		    G_CALLBACK (ldap_notebook_clicked), (gpointer) lw);
+
+  g_signal_connect (G_OBJECT (gw->ldap_window), "delete_event",
 		    G_CALLBACK (ldap_window_clicked), (gpointer) gw);
 
   g_signal_connect (G_OBJECT (gw->ldap_window), "destroy",

@@ -224,9 +224,10 @@ static void menu_toggle_changed_nt (GConfClient *client, guint cid,
     GtkWidget *e = GTK_WIDGET (data);
 
     /* We set the new value for the widget */
-    GTK_CHECK_MENU_ITEM (e)->active = (bool) gconf_value_get_bool (entry->value);
+    GTK_CHECK_MENU_ITEM (e)->active = 
+      (bool) gconf_value_get_bool (entry->value);
     gtk_widget_queue_draw (GTK_WIDGET (e));
-    
+
     gdk_threads_leave (); 
   }
 }
@@ -1195,12 +1196,15 @@ void gnomemeeting_init_gconf (GConfClient *client)
 {
   GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);
   GmWindow *gw = gnomemeeting_get_main_window (gm);
-  GnomeUIInfo *view_menu = (GnomeUIInfo *) g_object_get_data (G_OBJECT (gm), 
-							      "view_menu_uiinfo");
-  GnomeUIInfo *notebook_view_uiinfo = (GnomeUIInfo *) g_object_get_data (G_OBJECT (gm), 
-								"notebook_view_uiinfo");
-  GnomeUIInfo *call_menu = (GnomeUIInfo *) g_object_get_data (G_OBJECT (gm), 
-							      "call_menu_uiinfo");
+  GnomeUIInfo *view_menu = 
+    (GnomeUIInfo *) g_object_get_data (G_OBJECT (gm), 
+				       "view_menu_uiinfo");
+  GnomeUIInfo *notebook_view_uiinfo = 
+    (GnomeUIInfo *) g_object_get_data (G_OBJECT (gm), 
+				       "notebook_view_uiinfo");
+  GnomeUIInfo *call_menu = 
+    (GnomeUIInfo *) g_object_get_data (G_OBJECT (gm), 
+				       "call_menu_uiinfo");
 
   /* There are in general 2 notifiers to attach to each widget :
      - the notifier that will update the widget itself to the new key
@@ -1244,7 +1248,7 @@ void gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_docklet", view_widget_changed_nt, gw->docklet, 0, 0);
 
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_chat_window", menu_toggle_changed_nt, view_menu [3].widget, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_chat_window", menu_toggle_changed_nt, view_menu [1].widget, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_chat_window", view_widget_changed_nt, gw->chat_window, 0, 0);
 
 

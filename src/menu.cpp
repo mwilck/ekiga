@@ -310,7 +310,7 @@ void gnomemeeting_init_menu ()
       { 
 	GNOME_APP_UI_ITEM, N_("Zoom In"), N_("Zoom In"),
 	(void *) double_zoom_callback, NULL, NULL,
-	GNOME_APP_PIXMAP_STOCK, GTK_STOCK_ZOOM_OUT,
+	GNOME_APP_PIXMAP_STOCK, GTK_STOCK_ZOOM_IN,
 	'+', GDK_CONTROL_MASK, NULL 
       },
       { 
