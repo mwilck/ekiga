@@ -69,6 +69,10 @@ static void file_selector_clicked (GtkFileSelection *, gpointer);
 static void gnomemeeting_init_pref_window_general (GtkWidget *);
 static void gnomemeeting_init_pref_window_interface (GtkWidget *);
 static void gnomemeeting_init_pref_window_directories (GtkWidget *);
+static void gnomemeeting_init_pref_window_call_forwarding (GtkWidget *);
+static void gnomemeeting_init_pref_window_h323_advanced (GtkWidget *);
+static void gnomemeeting_init_pref_window_gatekeeper (GtkWidget *);
+static void gnomemeeting_init_pref_window_nat (GtkWidget *);
 static void gnomemeeting_init_pref_window_video_devices (GtkWidget *);
 static void gnomemeeting_init_pref_window_audio_devices (GtkWidget *);
 static void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *);
@@ -852,12 +856,6 @@ void gnomemeeting_init_pref_window_directories (GtkWidget *notebook)
 {                                                                              
   GtkWidget *vbox = NULL;                                                      
   GtkWidget *table = NULL;                                                     
-  GtkWidget *button = NULL;
-  gchar *options [] = {_("Do not register"), 
-		       _("Gatekeeper host"), 
-		       _("Gatekeeper ID"), 
-		       _("Automatically discover"), 
-		       NULL};
                                                                                
   /* Get the data */                                                           
   GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);              
@@ -884,9 +882,114 @@ void gnomemeeting_init_pref_window_directories (GtkWidget *notebook)
     gnomemeeting_table_add_toggle (table, _("Show my details to other registered users"),
 				   LDAP_KEY "visible",
 				   _("If enabled, your details are shown to people browsing the user directory. If disabled, you are not visible to users browsing the user directory, but they can still use the callto URL to call you."), 2, 0);
+}                                                                              
+
+
+/* BEHAVIOR     :  It builds the notebook page for call forwarding,
+ *                 it adds it to the notebook.                                
+ * PRE          :  The notebook.                                               
+ */                                                                            
+void gnomemeeting_init_pref_window_call_forwarding (GtkWidget *notebook)
+{                                                                              
+  GtkWidget *vbox = NULL;
+  GtkWidget *table = NULL;
+
+  
+  /* Get the data */                        
+  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);
+
+  
+  /* Packing widgets */
+  vbox = gtk_vbox_new (FALSE, 4);
+  gtk_notebook_append_page (GTK_NOTEBOOK(notebook), vbox, NULL);
+  table = gnomemeeting_vbox_add_table (vbox, _("Call Forwarding"),
+				       3, 2);
+
+
+  /* Add all the fields */                                                     
+  pw->forward_host = 
+    gnomemeeting_table_add_entry (table, _("Forward calls to host:"), "/apps/gnomemeeting/call_forwarding/forward_host", _("The host where calls should be forwarded to in the cases selected above."), 0);
+
+  pw->always_forward =
+    gnomemeeting_table_add_toggle (table, _("Always forward calls to the given host"), "/apps/gnomemeeting/call_forwarding/always_forward", _("If enabled, all incoming calls will be forwarded to the host that is specified in the field below."), 1, 0);
+
+  pw->no_answer_forward =
+    gnomemeeting_table_add_toggle (table, _("Forward calls to the given host if no answer"), "/apps/gnomemeeting/call_forwarding/no_answer_forward", _("If enabled, all incoming calls will be forwarded to the host that is specified in the field below if you do not answer the call."), 2, 0);
+
+  pw->busy_forward =
+    gnomemeeting_table_add_toggle (table, _("Forward calls to the given host if busy"), "/apps/gnomemeeting/call_forwarding/busy_forward", _("If enabled, all incoming calls will be forwarded to the host that is specified in the field below if you already are in a call or if you are in Do Not Disturb mode."), 3, 0);
+}
+
+
+/* BEHAVIOR     :  It builds the notebook page for H.323 advanced settings
+ *                 and add it to the notebook.
+ * PRE          :  The notebook.
+ */
+void gnomemeeting_init_pref_window_h323_advanced (GtkWidget *notebook)
+{
+  GtkWidget *vbox = NULL;
+  GtkWidget *table = NULL;
+
+  gchar *capabilities [] = {_("All"),
+			    _("None"),
+			    _("rfc2833"),
+			    _("Signal"),
+			    _("String"),
+			    NULL};
+                                                                               
+  /* Get the data */                                                           
+  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);
   
 
+  /* Packing widget */
+  vbox = gtk_vbox_new (FALSE, 4);
+  table = gnomemeeting_vbox_add_table (vbox,
+				       _("H.323 V2 Settings"),
+				       2, 1);
+
+  /* The toggles */                                                            
+  pw->ht =
+    gnomemeeting_table_add_toggle (table, _("Enable H.245 tunnelling"), "/apps/gnomemeeting/general/h245_tunneling", _("This enables H.245 Tunnelling mode. In H.245 Tunnelling mode H.245 messages are encapsulated into the the H.225 channel (port 1720). This saves one TCP connection during calls. H.245 Tunnelling was introduced in H.323v2 and Netmeeting does not support it. Using both Fast Start and H.245 Tunnelling can crash some versions of Netmeeting."), 0, 0);
+
+  pw->fs =
+    gnomemeeting_table_add_toggle (table, _("Enable 'Fast Start'"), "/apps/gnomemeeting/general/fast_start", _("Connection will be established in Fast Start mode. Fast Start is a new way to start calls faster that was introduced in H.323v2. It is not supported by Netmeeting and using both Fast Start and H.245 Tunnelling can crash some versions of Netmeeting."), 1, 0);
+
+  
+  /* Packing widget */                                                         
+  table = gnomemeeting_vbox_add_table (vbox, 
+				       _("User Input Capabilities"),
+				       1, 1);
+  
+  pw->uic =
+    gnomemeeting_table_add_int_option_menu (table, _("User Input Capabilities type:"), capabilities, GENERAL_KEY "user_input_capability", _("This permits to set the mode for User Input Capabilities. The values can be \"All\", \"None\", \"rfc2833\", \"Signal\" or \"String\" (default is \"All\"). Choosing other values than \"All\", \"String\" or \"rfc2833\" disables the Text Chat."), 0);
+  
+  gtk_notebook_append_page (GTK_NOTEBOOK(notebook), vbox, NULL);
+}                               
+
+
+/* BEHAVIOR     :  It builds the notebook page for the gatekeeper
+ *                 and add it to the notebook.
+ * PRE          :  The notebook.
+ */
+void gnomemeeting_init_pref_window_gatekeeper (GtkWidget *notebook)
+{
+  GtkWidget *vbox = NULL;
+  GtkWidget *table = NULL;
+
+  GtkWidget *button = NULL;
+  gchar *options [] = {_("Do not register"), 
+		       _("Gatekeeper host"), 
+		       _("Gatekeeper ID"), 
+		       _("Automatically discover"), 
+		       NULL};
+
+  
+  /* Get the data */
+  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);
+
+  
   /* Add fields for the gatekeeper */
+  vbox = gtk_vbox_new (FALSE, 4);
   table = gnomemeeting_vbox_add_table (vbox, _("Gatekeeper"), 5, 3);
 
   pw->gk_id = 
@@ -907,75 +1010,29 @@ void gnomemeeting_init_pref_window_directories (GtkWidget *notebook)
 
   button =
     gnomemeeting_pref_window_add_update_button (table, GTK_SIGNAL_FUNC (gatekeeper_update_button_clicked), _("Click here to update your Gatekeeper settings."), 5, 2);
-}                                                                              
+
+  gtk_notebook_append_page (GTK_NOTEBOOK(notebook), vbox, NULL);
+}
 
 
-/* BEHAVIOR     :  It builds the notebook page for H.323 advanced settings and        
- *                 add it to the notebook.                                     
- * PRE          :  The notebook.                                               
- */                                                                            
-void gnomemeeting_init_pref_window_h323_advanced (GtkWidget *notebook)               
-{                                                                              
+/* BEHAVIOR     :  It builds the notebook page for NAT support
+ *                 and add it to the notebook.
+ * PRE          :  The notebook.
+ */
+void gnomemeeting_init_pref_window_nat (GtkWidget *notebook)
+{
   GtkWidget *vbox = NULL;
   GtkWidget *table = NULL;
 
-  gchar *capabilities [] = {_("All"),
-			    _("None"),
-			    _("rfc2833"),
-			    _("Signal"),
-			    _("String"),
-			    NULL};
-                                                                               
-  /* Get the data */                                                           
-  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);              
-                                                                               
-                                                                               
-  /* Packing widgets */                                                        
-  vbox = gtk_vbox_new (FALSE, 4);
-  table = gnomemeeting_vbox_add_table (vbox, _("H.323 Call Forwarding"),
-                                              4, 2);                           
 
-                                                                               
-  /* Add all the fields */                                                     
-  pw->forward_host = 
-    gnomemeeting_table_add_entry (table, _("Forward calls to host:"), "/apps/gnomemeeting/call_forwarding/forward_host", _("The host where calls should be forwarded to in the cases selected above."), 3);
-
-  pw->always_forward =
-    gnomemeeting_table_add_toggle (table, _("Always forward calls to the given host"), "/apps/gnomemeeting/call_forwarding/always_forward", _("If enabled, all incoming calls will be forwarded to the host that is specified in the field below."), 0, 0);
-
-  pw->no_answer_forward =
-    gnomemeeting_table_add_toggle (table, _("Forward calls to the given host if no answer"), "/apps/gnomemeeting/call_forwarding/no_answer_forward", _("If enabled, all incoming calls will be forwarded to the host that is specified in the field below if you do not answer the call."), 1, 0);
-
-  pw->busy_forward =
-    gnomemeeting_table_add_toggle (table, _("Forward calls to the given host if busy"), "/apps/gnomemeeting/call_forwarding/busy_forward", _("If enabled, all incoming calls will be forwarded to the host that is specified in the field below if you already are in a call or if you are in Do Not Disturb mode."), 2, 0);
-
-
-  /* Packing widget */                                                         
-  table = gnomemeeting_vbox_add_table (vbox, 
-				       _("H.323 V2 Settings"),
-				       2, 1);                           
-
-                                                                               
-  /* The toggles */                                                            
-  pw->ht = 
-    gnomemeeting_table_add_toggle (table, _("Enable H.245 tunnelling"), "/apps/gnomemeeting/general/h245_tunneling", _("This enables H.245 Tunnelling mode. In H.245 Tunnelling mode H.245 messages are encapsulated into the the H.225 channel (port 1720). This saves one TCP connection during calls. H.245 Tunnelling was introduced in H.323v2 and Netmeeting does not support it. Using both Fast Start and H.245 Tunnelling can crash some versions of Netmeeting."), 0, 0);
-                                                                               
-  pw->fs = 
-    gnomemeeting_table_add_toggle (table, _("Enable 'Fast Start'"), "/apps/gnomemeeting/general/fast_start", _("Connection will be established in Fast Start mode. Fast Start is a new way to start calls faster that was introduced in H.323v2. It is not supported by Netmeeting and using both Fast Start and H.245 Tunnelling can crash some versions of Netmeeting."), 1, 0);
-
-
-  /* Packing widget */                                                         
-  table = gnomemeeting_vbox_add_table (vbox, 
-				       _("User Input Capabilities"),
-				       1, 1);
-  
-  pw->uic =
-    gnomemeeting_table_add_int_option_menu (table, _("User Input Capabilities type:"), capabilities, GENERAL_KEY "user_input_capability", _("This permits to set the mode for User Input Capabilities. The values can be \"All\", \"None\", \"rfc2833\", \"Signal\" or \"String\" (default is \"All\"). Choosing other values than \"All\", \"String\" or \"rfc2833\" disables the Text Chat."), 0);
+  /* Get the data */
+  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);
 
   /* IP translation */
+  vbox = gtk_vbox_new (FALSE, 4);
   table = gnomemeeting_vbox_add_table (vbox, 
-					      _("NAT/PAT Router Support"),
-                                              2, 1);     
+				       _("NAT/PAT Router Support"),
+				       2, 1);
 
   pw->ip_translation = 
     gnomemeeting_table_add_toggle (table, _("Enable IP translation"), "/apps/gnomemeeting/general/ip_translation", _("This enables IP translation. IP translation is useful if GnomeMeeting is running behind a NAT/PAT router. You have to put the public IP of the router in the field below. If you are registered to ils.seconix.com, GnomeMeeting will automatically fetch the public IP using the ILS service. If your router natively supports H.323, you can disable this."), 1, 0);
@@ -984,7 +1041,7 @@ void gnomemeeting_init_pref_window_h323_advanced (GtkWidget *notebook)
     gnomemeeting_table_add_entry (table, _("Public IP of the NAT/PAT router:"), "/apps/gnomemeeting/general/public_ip", _("Enter the public IP of your NAT/PAT router if you want to use IP translation. If you are registered to ils.seconix.com, GnomeMeeting will automatically fetch the public IP using the ILS service."), 2);
 
   gtk_notebook_append_page (GTK_NOTEBOOK(notebook), vbox, NULL);
-}                                                                              
+}
 
 
 /* BEHAVIOR     :  It builds the notebook page for the audio devices 
@@ -1514,9 +1571,31 @@ void gnomemeeting_init_pref_window ()
 
   gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
   gtk_tree_store_set (GTK_TREE_STORE (model),
-		      &child_iter, 0, _("H.323 Advanced"), 1, 4, -1);
+		      &child_iter, 0, _("Call Forwarding"), 1, 4, -1);
+  gnomemeeting_init_pref_window_call_forwarding (notebook);
+
+
+  /* H.323 Settings */
+  gtk_tree_store_append (GTK_TREE_STORE (model), &iter, NULL);
+  gtk_tree_store_set (GTK_TREE_STORE (model),
+		      &iter, 0, _("H.323 Settings"), 1, 0, -1);
+  
+  gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
+  gtk_tree_store_set (GTK_TREE_STORE (model),
+		      &child_iter, 0, _("Advanced Settings"), 1, 5, -1);
   gnomemeeting_init_pref_window_h323_advanced (notebook);          
- 
+
+  gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
+  gtk_tree_store_set (GTK_TREE_STORE (model),
+		      &child_iter, 0, _("Gatekeeper Settings"), 1, 6, -1);
+  gnomemeeting_init_pref_window_gatekeeper (notebook);          
+
+  gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
+  gtk_tree_store_set (GTK_TREE_STORE (model),
+		      &child_iter, 0, _("NAT Settings"), 1, 7, -1);
+  gnomemeeting_init_pref_window_nat (notebook);          
+
+  
   /* Another section */
   gtk_tree_store_append (GTK_TREE_STORE (model), &iter, NULL);
   gtk_tree_store_set (GTK_TREE_STORE (model),
@@ -1524,13 +1603,13 @@ void gnomemeeting_init_pref_window ()
 
   gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
   gtk_tree_store_set (GTK_TREE_STORE (model),
-		      &child_iter, 0, _("Audio Codecs"), 1, 5, -1);
+		      &child_iter, 0, _("Audio Codecs"), 1, 8, -1);
   gnomemeeting_init_pref_window_audio_codecs (notebook);
 
 
   gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
   gtk_tree_store_set (GTK_TREE_STORE (model),
-		      &child_iter, 0, _("Video Codecs"), 1, 6, -1);
+		      &child_iter, 0, _("Video Codecs"), 1, 9, -1);
   gnomemeeting_init_pref_window_video_codecs (notebook);
 
 
@@ -1541,12 +1620,12 @@ void gnomemeeting_init_pref_window ()
 
   gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
   gtk_tree_store_set (GTK_TREE_STORE (model),
-		      &child_iter, 0, _("Audio Devices"), 1, 7, -1);
+		      &child_iter, 0, _("Audio Devices"), 1, 10, -1);
   gnomemeeting_init_pref_window_audio_devices (notebook);
 
   gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
   gtk_tree_store_set (GTK_TREE_STORE (model),
-		      &child_iter, 0, _("Video Devices"), 1, 8, -1);
+		      &child_iter, 0, _("Video Devices"), 1, 11, -1);
   gnomemeeting_init_pref_window_video_devices (notebook);
 
 
