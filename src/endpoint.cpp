@@ -1018,6 +1018,9 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 
   /* Update the GUI */
   gnomemeeting_threads_enter ();
+  
+  if (connection.HadAnsweredCall ())
+    gm_main_window_set_call_url (main_window, GMURL ().GetDefaultURL ());
 
   gm_main_window_flash_message (main_window, _("Connected"));
   gm_history_window_insert (history_window,
