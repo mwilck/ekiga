@@ -117,7 +117,8 @@ microtelco_consult_cb (GtkWidget *widget,
   account = gm_conf_get_string (H323_GATEKEEPER_KEY "alias");
   pin = gm_conf_get_string (H323_GATEKEEPER_KEY "password");
 
-  g_return_if_fail (account != NULL && pin != NULL);
+  if (account == NULL || pin == NULL)
+    return; /* no account configured yet */
   
   buffer =
     g_strdup_printf ("<HTML><HEAD><TITLE>MicroTelco Auto-Post</TITLE></HEAD>"

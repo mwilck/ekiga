@@ -42,7 +42,7 @@ enum {
   RECEIVED_CALL,
   PLACED_CALL,
   MISSED_CALL,
-  MAX_VALUE_CALL // hackish... sorry... just keep it last
+  MAX_VALUE_CALL
 };
 
 typedef struct _GmCallsHistory GmCallsHistory;
