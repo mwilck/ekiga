@@ -80,8 +80,9 @@ static void chat_entry_activate (GtkEditable *w, gpointer data)
 	s = PString (gtk_entry_get_text (GTK_ENTRY (w)));
 	connection->SendUserInput ("MSG"+s);
 
-	utf8_local = g_convert (local, strlen ((const char*) local),
-				 "UTF-8", "ISO-8859-1", 0, 0, 0);
+	utf8_local = g_convert ((gchar *) (const unsigned char *) (local), 
+				strlen ((const char*) (const unsigned char *) (local)),
+				"UTF-8", "UCS-2", 0, 0, 0);
 	gnomemeeting_text_chat_insert (utf8_local, s, 0);
 	g_free (utf8_local);
                 

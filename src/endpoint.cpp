@@ -1051,10 +1051,12 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 
 
   /* Convert the remote party name and app to UTF-8 */
-  utf8_name = g_convert ((const char *) name, strlen ((const char *) name),
-			 "UTF-8", "ISO-8859-1", NULL, NULL, NULL);
-  utf8_app = g_convert ((const char *) app, strlen ((const char *) app),
-			"UTF-8", "ISO-8859-1", NULL, NULL, NULL);
+  utf8_name = g_convert ((gchar *) (const unsigned char *) (name), 
+			 strlen ((const char *)(const unsigned char *) (name)),
+			 "UTF-8", "UCS-2", NULL, NULL, NULL);
+  utf8_app = g_convert ((gchar *) (const unsigned char *) (app), 
+			strlen ((const char *)(const unsigned char *) (app)),
+			"UTF-8", "UCS-2", NULL, NULL, NULL);
 
 
   if (forward_host_gconf)
@@ -1237,9 +1239,11 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 
 
   /* Convert remote app and remote name */
-  utf8_app = g_convert ((const char *) app, strlen ((const char *) app),
+  utf8_app = g_convert ((gchar *) (const unsigned char *) (app), 
+			strlen ((const char *) (const unsigned char *) (app)),
 			"UTF-8", "ISO-8859-1", NULL, NULL, NULL);
-  utf8_name = g_convert ((const char *) name, strlen ((const char *) name),
+  utf8_name = g_convert ((gchar *) (const unsigned char *) (name), 
+			 strlen ((const char *) (const unsigned char *) (name)),
 			 "UTF-8", "ISO-8859-1", NULL, NULL, NULL);
 
 

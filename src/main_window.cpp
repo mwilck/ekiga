@@ -1105,11 +1105,15 @@ gnomemeeting_init (GmWindow *gw,
     /* It is the first alias for the gatekeeper */
     if (local_name != NULL) {
 
-      gchar *iso_8859_1_local_name = NULL;
-      iso_8859_1_local_name = g_convert (local_name, strlen (local_name),
-					 "ISO-8859-1", "UTF-8", 0, 0, 0);
-      endpoint->SetLocalUserName (iso_8859_1_local_name);
-      g_free (iso_8859_1_local_name);
+      gunichar *ucs_2_local_name = NULL;
+      ucs_2_local_name = (gunichar *)
+	g_convert (local_name, strlen (local_name), "UCS-2", "UTF-8", 0, 0, 0);
+      PString lname = PString ((const WORD *) ucs_2_local_name);
+      
+      if (!lname.IsEmpty ())
+	endpoint->SetLocalUserName (lname);
+      
+      g_free ((gunichar *) ucs_2_local_name);
     }
     else
       local_name = 
