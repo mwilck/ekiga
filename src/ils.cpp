@@ -187,6 +187,7 @@ void GMILSClient::Main ()
 				"/apps/gnomemeeting/ldap/register", 
 				NULL))) {
 
+	has_to_unregister = 1;
 	has_to_register = 1;
 	starttime = PTime ();
       }
