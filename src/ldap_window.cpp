@@ -1007,6 +1007,9 @@ contact_clicked_cb (GtkWidget *w,
   gchar *contact_section = NULL;
   gchar *msg = NULL;
 
+  int calling_state = 0;
+  GMH323EndPoint *ep = NULL;
+
   gboolean is_group = false;
   gboolean already_member = false;
 
@@ -1040,6 +1043,11 @@ contact_clicked_cb (GtkWidget *w,
 	   NULL, 0, MENU_ENTRY, 
 	   GTK_SIGNAL_FUNC (call_user_cb), data, NULL};
 
+	MenuEntry transfer =
+	  {_("_Tranfer Call to Contact"), NULL,
+	   NULL, 0, MENU_ENTRY, 
+	   GTK_SIGNAL_FUNC (call_user_cb), data, NULL};
+
 	MenuEntry add =
 	  {msg, NULL,
 	   GTK_STOCK_ADD, 0, MENU_ENTRY,
@@ -1064,8 +1072,14 @@ contact_clicked_cb (GtkWidget *w,
 	MenuEntry endt =
 	  {NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL};
 
-	server_contact_menu [0] = call;
-	    
+	ep = MyApp->Endpoint ();
+	calling_state = ep->GetCallingState ();
+
+	if (calling_state == 2)
+	  server_contact_menu [0] = transfer;
+	else 
+	  server_contact_menu [0] = call;
+
 	if (!already_member) {
 
 	  server_contact_menu [1] = sep;

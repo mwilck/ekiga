@@ -83,7 +83,7 @@
 #define CONTACTS_KEY        "/apps/gnomemeeting/contacts/"
 #define CONTACTS_GROUPS_KEY "/apps/gnomemeeting/contacts/groups/"
 #define HISTORY_KEY         "/apps/gnomemeeting/history/"
-
+#define CALL_FORWARDING_KEY "/apps/gnomemeeting/call_forwarding/"
 
 #define GM_CIF_WIDTH   352
 #define GM_CIF_HEIGHT  288

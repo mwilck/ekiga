@@ -1,5 +1,21 @@
 2003-06-09 Damien Sandras  <dsandras@seconix.com>
 
+	* src/callbacks.cpp: Fixed transfer_call_cb buttons.
+	
+	* src/common.h: Added GCONF KEY.
+	
+	* src/ldap_window.cpp: Added Transfer Call to right-click menu
+	on a contact when you are in a call.
+
+	* src/main_window.cpp: Made the GCONF error dialog appear above
+	the GM window.
+	
+	* src/menu.cpp: Fixed transfer_call_cb parameter.
+	
+	* src/urlhandler.cpp: Do transfer calls to invalid URLs.
+	
+2003-06-09 Damien Sandras  <dsandras@seconix.com>
+
 	* configure.in: Fixed LDAP detection test. Incremented SCHEMA_AGE.
 	
 	* gnomemeeting.schemas.in.in: Added a new key to enable auto clear

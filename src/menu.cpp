@@ -533,7 +533,7 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
       {_("_Transfer Call"), _("Transfer the current call"),
        NULL, 0, MENU_ENTRY, 
        GTK_SIGNAL_FUNC (transfer_call_cb),
-       (gpointer) gw, NULL},
+       NULL, NULL},
 
       {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
 

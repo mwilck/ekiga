@@ -83,7 +83,7 @@ transfer_call_cb (GtkWidget* widget,
   if (!data)
     gconf_forward_value =
       gconf_client_get_string (GCONF_CLIENT (client),
-			       "/apps/gnomemeeting/call_forwarding/forward_host",
+			       CALL_FORWARDING_KEY "forward_host",
 			       NULL);
   else
     gconf_forward_value = g_strdup ((gchar *) data);
@@ -94,7 +94,7 @@ transfer_call_cb (GtkWidget* widget,
   b1 = gtk_dialog_add_button (GTK_DIALOG (transfer_call_popup),
 			      GTK_STOCK_CANCEL, 0);
   b2 = gtk_dialog_add_button (GTK_DIALOG (transfer_call_popup),
-			      GTK_STOCK_GO_FORWARD, 1);
+			      _("_Transfer Call"), 1);
   
   label = gtk_label_new (_("Forward call to:"));
   hbox = gtk_hbox_new (0, 0);
@@ -106,7 +106,8 @@ transfer_call_cb (GtkWidget* widget,
   entry = gtk_entry_new ();
   gtk_entry_set_text (GTK_ENTRY (entry),
 		      (gconf_forward_value ?
-		       gconf_forward_value : (const char *) url.GetDefaultURL ()));
+		       gconf_forward_value : 
+		       (const char *) url.GetDefaultURL ()));
   g_free (gconf_forward_value);
   gconf_forward_value = NULL;
 

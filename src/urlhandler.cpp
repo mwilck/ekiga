@@ -232,7 +232,7 @@ void GMURLHandler::Main ()
   if (!url.IsEmpty ()) {
 
     call_address = url.GetValidURL ();
-    cout << call_address << " " << url.IsSupported () << endl << flush;
+
     if (!url.IsSupported ()) {
 
       gnomemeeting_threads_enter ();
@@ -255,14 +255,19 @@ void GMURLHandler::Main ()
 
     gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
     gnomemeeting_call_menu_connect_set_sensitive (1, TRUE);
-    if (!transfer_call)
-      msg = g_strdup_printf (_("Calling %s"), 
-			     (const char *) call_address);
-    else
-      msg = g_strdup_printf (_("Transferring call to %s"), 
-			     (const char *) call_address);
+
+    if (!call_address.IsEmpty ()) {
+
+      if (!transfer_call)
+	msg = g_strdup_printf (_("Calling %s"), 
+			       (const char *) call_address);
+      else
+	msg = g_strdup_printf (_("Transferring call to %s"), 
+			       (const char *) call_address);
     gnomemeeting_log_insert (gw->history_text_view, msg);
     gnomemeeting_statusbar_push (gw->statusbar, msg);
+    }
+
     connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 1);
     g_free (msg);		
     gnomemeeting_threads_leave ();
@@ -275,8 +280,9 @@ void GMURLHandler::Main ()
       endpoint->MakeCallLocked (call_address, current_call_token);
     }
     else
-      endpoint->TransferCall (endpoint->GetCurrentCallToken (),
-			      url.GetValidURL ());
+      if (!url.IsEmpty ())
+	endpoint->TransferCall (endpoint->GetCurrentCallToken (),
+				url.GetValidURL ());
   }
   else
     gnomemeeting_statusbar_flash (gw->statusbar,
