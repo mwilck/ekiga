@@ -204,7 +204,7 @@ void GMILSClient::Unregister ()
 BOOL GMILSClient::Register (BOOL reg)
 {
   LDAPMessage *res=NULL;
-  LDAPMod *mods [16];
+  LDAPMod *mods [17];
 
   char *firstname_value [2];
   char *surname_value [2];
@@ -214,6 +214,7 @@ BOOL GMILSClient::Register (BOOL reg)
   char *ilsa32833566_value [2];
   char *ilsa32964638_value [2];
   char *ilsa26214430_value [2];
+  char *ilsa26279966_value [2];
   char *sipaddress_value [2];
   char *sport_value [2];
   char *sappid_value [2];
@@ -393,7 +394,15 @@ BOOL GMILSClient::Register (BOOL reg)
     mods [14]->mod_type = g_strdup ("sflags");
     mods [14]->mod_values = sflags_value;
 
-    mods [15] = NULL;
+    /* ilsa */
+    mods [15] = new (LDAPMod);
+    ilsa26279966_value [0] = g_strdup ("21504");
+    ilsa26279966_value [1] = NULL;
+    mods [15]->mod_op = LDAP_MOD_ADD | LDAP_MOD_REPLACE;
+    mods [15]->mod_type = g_strdup ("ilsa26279966");
+    mods [15]->mod_values = ilsa26279966_value;
+
+    mods [16] = NULL;
 
 
     dn = g_strdup_printf ("c=-,o=Gnome,cn=%s,objectclass=rtperson", mail);
@@ -448,10 +457,12 @@ BOOL GMILSClient::Register (BOOL reg)
 	
 	if (reg) {
 	  msg = g_strdup_printf (_("Sucessfully registered to ILS directory %s, port %s"), ldap_server, ldap_port);
+	  gnome_appbar_push (GNOME_APPBAR (gw->statusbar), _("Succesfully registered to ILS server");
 	  starttime = PTime ();
 	}
 	else {
 	  msg = g_strdup_printf (_("Sucessfully unregistered from ILS directory %s, port %s"), ldap_server, ldap_port);
+	  gnome_appbar_push (GNOME_APPBAR (gw->statusbar), _("Succesfully unregistered from ILS server");
 	}
 	
 	gnomemeeting_log_insert (msg);
@@ -466,13 +477,14 @@ BOOL GMILSClient::Register (BOOL reg)
     g_free (ilsa32833566_value [0]);
     g_free (ilsa32964638_value [0]);
     g_free (ilsa26214430_value [0]);
+    g_free (ilsa26279966_value [0]);
     g_free (objectclass_value [0]);
     g_free (sport_value [0]);
     g_free (sappid_value [0]);
     g_free (protid_value [0]);
     g_free (dn);
     
-    for (int i = 0 ; i < 15 ; i++) {
+    for (int i = 0 ; i < 16 ; i++) {
       g_free (mods [i]->mod_type);
       delete (mods [i]);
     }

@@ -440,7 +440,7 @@ void GMVideoGrabber::VGOpen (void)
 	(_("Successfully opened video device %s, channel %d"), 
 	 video_device, video_channel);
       gnomemeeting_log_insert (msg);
-      gnome_appbar_push (GNOME_APPBAR (gw->statusbar), _("Done"));
+      gnome_appbar_push (GNOME_APPBAR (gw->statusbar), _("Video Device Opened"));
       g_free (msg);
       gnomemeeting_threads_leave ();
     }
@@ -449,7 +449,9 @@ void GMVideoGrabber::VGOpen (void)
       gnomemeeting_threads_enter ();
       msg = g_strdup_printf 
 	(_("Error while opening video device %s, channel %d.\nA test image will be transmitted."), video_device, video_channel);
-    
+      gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
+			 _("Can't open the Video Device"));
+
       switch (error_code)	{
 	
       case 0:
@@ -479,7 +481,9 @@ void GMVideoGrabber::VGOpen (void)
 	break;
       }
 
-      gnomemeeting_log_insert (msg);
+      GtkWidget *msg_box = gnome_message_box_new (msg, GNOME_MESSAGE_BOX_ERROR, 
+						  GNOME_STOCK_BUTTON_OK, NULL);
+      gtk_widget_show (msg_box);
       g_free (msg);
       gnomemeeting_threads_leave ();
 

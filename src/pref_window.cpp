@@ -599,7 +599,7 @@ static void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
     
   /* BUTTONS */						
   /* Add */
-  button = gnomemeeting_button (_("Add"), 
+  button = gnomemeeting_button (_("Enable"), 
 		       gnome_stock_new_with_icon (GNOME_STOCK_BUTTON_APPLY));  
 
   gtk_table_attach (GTK_TABLE (table), button, 0, 1, 1, 2,
@@ -617,7 +617,7 @@ static void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
   
 
   /* Del */
-  button = gnomemeeting_button (_("Delete"), 
+  button = gnomemeeting_button (_("Disable"), 
 		       gnome_stock_new_with_icon (GNOME_STOCK_BUTTON_CANCEL));  
 
   gtk_table_attach (GTK_TABLE (table), button, 1, 2, 1, 2,
@@ -2055,8 +2055,6 @@ static void gnomemeeting_init_pref_window_directories (GtkWidget *notebook)
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->directory_update_button,
 			_("Click here to try your new settings and update the gatekeeper server you are registered to"), NULL);
-
-  gtk_widget_set_sensitive (GTK_WIDGET (pw->gatekeeper_update_button), FALSE);
 
 
   /* The End */									

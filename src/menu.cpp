@@ -154,7 +154,7 @@ void gnomemeeting_init_menu ()
 	(void *) view_menu_toggles_changed, 
 	(gpointer) "/apps/gnomemeeting/view/notebook_info", NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
-	NULL, GDK_CONTROL_MASK, NULL
+	'H', GDK_CONTROL_MASK, NULL
       },
       {
 	GNOME_APP_UI_ITEM,
@@ -162,7 +162,7 @@ void gnomemeeting_init_menu ()
 	(void *) view_menu_toggles_changed, 
 	(gpointer) "/apps/gnomemeeting/view/notebook_info", NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
-	NULL, GDK_CONTROL_MASK, NULL
+	'A', GDK_CONTROL_MASK, NULL
       },
       {
 	GNOME_APP_UI_ITEM,
@@ -170,7 +170,7 @@ void gnomemeeting_init_menu ()
 	(void *) view_menu_toggles_changed, 
 	(gpointer) "/apps/gnomemeeting/view/notebook_info", NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
-	NULL, GDK_CONTROL_MASK, NULL
+	'V', GDK_CONTROL_MASK, NULL
       },
       GNOMEUIINFO_END
     };
@@ -188,27 +188,27 @@ void gnomemeeting_init_menu ()
       GNOMEUIINFO_SEPARATOR,
       {
 	GNOME_APP_UI_TOGGLEITEM,
-	N_("_Control Panel"), N_("View/Hide the Control Panel"),
+	N_("Control _Panel"), N_("View/Hide the Control Panel"),
 	(void *) menu_toggle_changed, 
 	(gpointer) "/apps/gnomemeeting/view/show_control_panel",
 	NULL, GNOME_APP_PIXMAP_NONE, NULL,
-	NULL, GDK_CONTROL_MASK, NULL
+	'P', GDK_CONTROL_MASK, NULL
       },
       {
 	GNOME_APP_UI_TOGGLEITEM,
-	N_("Cha_t Window"), N_("View/Hide the Chat Window"),
+	N_("_Chat Window"), N_("View/Hide the Chat Window"),
 	(void *) menu_toggle_changed, 
 	(gpointer) "/apps/gnomemeeting/view/show_chat_window",
 	NULL, GNOME_APP_PIXMAP_NONE, NULL,
-	NULL, GDK_CONTROL_MASK, NULL
+	'C', GDK_CONTROL_MASK, NULL
       },
       {
 	GNOME_APP_UI_TOGGLEITEM,
-	N_("_Status Bar"), N_("View/Hide the Status Bar"),
+	N_("S_tatus Bar"), N_("View/Hide the Status Bar"),
 	(void *) menu_toggle_changed, 
 	(gpointer) "/apps/gnomemeeting/view/show_status_bar",
 	NULL, GNOME_APP_PIXMAP_NONE, NULL,
-	NULL, GDK_CONTROL_MASK, NULL
+	'T', GDK_CONTROL_MASK, NULL
       },
       {
 	GNOME_APP_UI_TOGGLEITEM,
@@ -216,7 +216,7 @@ void gnomemeeting_init_menu ()
 	(void *) menu_toggle_changed, 
 	(gpointer) "/apps/gnomemeeting/view/show_docklet",
 	NULL, GNOME_APP_PIXMAP_NONE, NULL,
-	NULL, GDK_CONTROL_MASK, NULL
+	'D', GDK_CONTROL_MASK, NULL
       },
       GNOMEUIINFO_END
     };  

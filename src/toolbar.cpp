@@ -206,12 +206,12 @@ void gnomemeeting_init_toolbar ()
 					GTK_TOOLBAR_ICONS);
   hbox = gtk_hbox_new (FALSE, 2);
 
+  gtk_box_pack_start (GTK_BOX (hbox), gw->combo, TRUE, TRUE, 1);
+  gtk_box_pack_start (GTK_BOX (hbox), toolbar, FALSE, FALSE, 1);
+
   gnome_app_add_docked (GNOME_APP (gm), hbox, "main_toolbar",
 			GNOME_DOCK_ITEM_BEH_EXCLUSIVE,
 			GNOME_DOCK_TOP, 1, 0, 0);
-
-  gtk_box_pack_start (GTK_BOX (hbox), gw->combo, TRUE, TRUE, 1);
-  gtk_box_pack_start (GTK_BOX (hbox), toolbar, FALSE, FALSE, 1);
 
   gtk_container_set_border_width (GTK_CONTAINER (toolbar), 2);
 

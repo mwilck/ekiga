@@ -116,9 +116,6 @@ static gboolean silence_detection_changed (gpointer);
 static void silence_detection_changed_nt (GConfClient *, guint, 
 					    GConfEntry *, gpointer);
 
-static void gnomemeeting_update_pref_window_sensitivity (void);
-
-
 
 static gboolean gatekeeper_option_menu_changed (gpointer data)
 {
@@ -1367,8 +1364,6 @@ static gboolean register_changed (gpointer data)
 
   /* Update the widgets */  
   GTK_TOGGLE_BUTTON (pw->ldap)->active = (bool) data;
-  gtk_widget_set_sensitive (GTK_WIDGET (pw->directory_update_button), 
-			    (bool) data);
 
   /* We check that all the needed information is available
      to update the LDAP directory */
@@ -1676,8 +1671,6 @@ void gnomemeeting_init_gconf (GConfClient *client)
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/history/ldap_servers", history_changed_nt, lw->ils_server_combo, 0, 0);
 #endif 
-
-  gnomemeeting_update_pref_window_sensitivity ();
 }
 
 
@@ -1691,12 +1684,6 @@ void entry_changed (GtkEditable  *e, gpointer data)
                            key,
                            gtk_entry_get_text (GTK_ENTRY (e)),
                            NULL);
-
-  gnomemeeting_update_pref_window_sensitivity ();
-  
-  if ((GTK_WIDGET (e) == pw->gk_host) || 
-      (GTK_WIDGET (e) == pw->gk_id))
-    gtk_widget_set_sensitive (GTK_WIDGET (pw->gatekeeper_update_button), TRUE);
 }
 
 
@@ -1738,66 +1725,3 @@ void option_menu_changed (GtkWidget *menu, gpointer data)
   gconf_client_set_int (GCONF_CLIENT (client),
 			key, item_index, NULL);
 }
-
-
-/* DESCRIPTION  :  /                                                          
- * BEHAVIOR     :  It updates the sensitivity of the pw->ldap toggle following
- *                 if all recquired values are present or not.
- * PRE          :  data is the gconf key                                      
- */
-static void gnomemeeting_update_pref_window_sensitivity ()
-{
-  gchar *gconf_string = NULL;
-  BOOL no_error = TRUE;
-
-  /* Get interesting data */
-  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
-  GConfClient *client = gconf_client_get_default ();
-
-  /* Checks if the server name is ok */
-  gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
-                                           "/apps/gnomemeeting/ldap/ldap_server", NULL);
-
-  if ((gconf_string == NULL) || (!strcmp (gconf_string, "")))
-    no_error = FALSE;
-
-  g_free (gconf_string);
-
-  /* Check if there is a first name */
-  gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
-                                           "/apps/gnomemeeting/personal_data/firstname", NULL);
-
-  if ((gconf_string == NULL) || (!strcmp (gconf_string, "")))
-    no_error = FALSE;
-
-  g_free (gconf_string);
-
-  /* Check if there is a mail */
-  gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
-                                           "/apps/gnomemeeting/personal_data/mail", NULL);
-
-  if ((gconf_string == NULL) || (!strcmp (gconf_string, "")))
-    no_error = FALSE;
-
-  g_free (gconf_string);
-
-  if (no_error) {
-
-    gtk_widget_set_sensitive (GTK_WIDGET (pw->ldap), TRUE);
-    /* Make the update button sensitive only if the register button is 
-       sensitive too */
-    if (gconf_client_get_bool (GCONF_CLIENT (client),
-                               "/apps/gnomemeeting/ldap/register", 0))
-      gtk_widget_set_sensitive (GTK_WIDGET (pw->directory_update_button), 
-				TRUE);
-    else
-      gtk_widget_set_sensitive (GTK_WIDGET (pw->directory_update_button), 
-				FALSE);
-  }
-  else {
-
-    gtk_widget_set_sensitive (GTK_WIDGET (pw->ldap), FALSE);
-    gtk_widget_set_sensitive (GTK_WIDGET (pw->directory_update_button), FALSE);
-  }
-}
-
