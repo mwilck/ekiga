@@ -1,16 +1,17 @@
 # Commentaar:
 # 
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: gnomemeeting 0.96.1\n"
+"Project-Id-Version: gnomemeeting gnome 2.3 cvs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-08-26 12:40+0200\n"
-"PO-Revision-Date: 2003-06-22 11:12+0100\n"
+"POT-Creation-Date: 2003-09-06 12:15+0200\n"
+"PO-Revision-Date: 2003-09-06 19:56+0200\n"
 "Last-Translator: Huib Kleinhout <huib@stack.nl>\n"
 "Language-Team: Dutch <nl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Transfer-Encoding: 8bit"
 
 #. Add the window icon and title
 #: gnomemeeting.desktop.in.h:1 src/main_window.cpp:1274
@@ -1763,32 +1764,32 @@ msgstr ""
 "geen mededelingengebied in uw paneel gevonden dus GnomeMeeting kan niet "
 "verborgen starten."
 
-#: src/gnomemeeting.cpp:182
+#: src/gnomemeeting.cpp:193
 msgid "Answering incoming call"
 msgstr "Beantwoorden binnenkomend gesprek"
 
-#: src/gnomemeeting.cpp:253
+#: src/gnomemeeting.cpp:264
 msgid "Trying to stop calling"
 msgstr "Bezig met proberen de oproep te stoppen"
 
-#: src/gnomemeeting.cpp:266
+#: src/gnomemeeting.cpp:277
 msgid "Stopping current call"
 msgstr "Bezig met de huidige oproep te stoppen"
 
-#: src/gnomemeeting.cpp:278
+#: src/gnomemeeting.cpp:289
 msgid "Refusing Incoming call"
 msgstr "Bezig met binnenkomende oproep te weigeren"
 
 #. no error if Picture is choosen as video device
-#: src/gnomemeeting.cpp:309 src/videograbber.cpp:366 src/videograbber.cpp:683
+#: src/gnomemeeting.cpp:320 src/videograbber.cpp:366 src/videograbber.cpp:683
 msgid "Picture"
 msgstr "Afbeelding"
 
-#: src/gnomemeeting.cpp:417
+#: src/gnomemeeting.cpp:428
 msgid "Error while starting the listener"
 msgstr "Fout tijdens het starten van de luistermodule"
 
-#: src/gnomemeeting.cpp:417
+#: src/gnomemeeting.cpp:428
 msgid ""
 "You will not be able to receive incoming calls. Please check that no other "
 "program is already running on the port used by GnomeMeeting."
@@ -1797,7 +1798,7 @@ msgstr ""
 "ander programma al draait op de poort die gebruikt wordt door GnomeMeeting."
 
 #. GM is started
-#: src/gnomemeeting.cpp:494
+#: src/gnomemeeting.cpp:505
 #, c-format
 msgid "Started GnomeMeeting V%d.%d for %s\n"
 msgstr "GnomeMeeting V%d.%d opgestart voor %s\n"
@@ -2346,7 +2347,6 @@ msgid "C_all"
 msgstr "_Oproepen"
 
 #: src/menu.cpp:434
-#, fuzzy
 msgid "C_onnect"
 msgstr "_Verbinden"
 
@@ -2760,9 +2760,8 @@ msgid "Enable _registering"
 msgstr "_Aanmelden inschakelen"
 
 #: src/pref_window.cpp:861
-#, fuzzy
 msgid "_Publish my details in the users directory"
-msgstr "_Sta anderen in de lijst toe mijn gegevens te bekijken"
+msgstr "_Publiceer mijn gegevens in de gebruikerslijst"
 
 #: src/pref_window.cpp:883 src/pref_window.cpp:1523
 msgid "Call Forwarding"
@@ -2981,7 +2980,7 @@ msgstr "Videobeeld:"
 #. The file selector button
 #: src/pref_window.cpp:1147
 msgid "Choose a picture"
-msgstr ""
+msgstr "Een afbeelding kiezen"
 
 #: src/pref_window.cpp:1193
 msgid "Available Audio Codecs"
@@ -3133,11 +3132,11 @@ msgstr "Apparaten"
 msgid "Section"
 msgstr "Sectie"
 
-#: src/sound_handling.cpp:414
+#: src/sound_handling.cpp:416
 msgid "Failed to open the device"
 msgstr "Het apparaat kan niet geopend worden"
 
-#: src/sound_handling.cpp:414
+#: src/sound_handling.cpp:416
 #, c-format
 msgid ""
 "Impossible to open the selected audio device (%s) for playing. Please check "
@@ -3147,11 +3146,11 @@ msgstr ""
 "te openen. Controleer uw audioinstellingen, de rechten en of het apparaat "
 "niet bezet is."
 
-#: src/sound_handling.cpp:426
+#: src/sound_handling.cpp:428
 msgid "Failed to open the audio device"
 msgstr "Het audioapparaat kan niet geopend worden"
 
-#: src/sound_handling.cpp:426
+#: src/sound_handling.cpp:428
 #, c-format
 msgid ""
 "Impossible to open the selected audio device (%s) for recording. Please "
@@ -3161,11 +3160,11 @@ msgstr ""
 "openen. Controleer uw audioinstellingen, de rechten en of het apparaat niet "
 "bezet is."
 
-#: src/sound_handling.cpp:445 src/sound_handling.cpp:454
+#: src/sound_handling.cpp:447 src/sound_handling.cpp:456
 msgid "Cannot use the audio device"
 msgstr "Het audioapparaat kan niet geopend worden"
 
-#: src/sound_handling.cpp:445
+#: src/sound_handling.cpp:447
 #, c-format
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
@@ -3174,7 +3173,7 @@ msgstr ""
 "Het geselecteerde audioapparaat (%s) is correct geopend maar het is niet "
 "mogelijk om gegevens uit te lezen. Controleer uw audioinstellingen."
 
-#: src/sound_handling.cpp:454
+#: src/sound_handling.cpp:456
 #, c-format
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
@@ -3184,7 +3183,7 @@ msgstr ""
 "mogelijk om er gegevens naar weg te schrijven. Controleer uw "
 "audioinstellingen."
 
-#: src/sound_handling.cpp:471
+#: src/sound_handling.cpp:473
 #, c-format
 msgid ""
 "GnomeMeeting is now recording from %s and playing back to %s. Please say \"1 "
@@ -3199,7 +3198,7 @@ msgstr ""
 "\n"
 "Bezig met opnemen... In de microfoon praten a.u.b."
 
-#: src/sound_handling.cpp:500
+#: src/sound_handling.cpp:502
 msgid ""
 "GnomeMeeting is now playing what it is recording with a 5 seconds delay. If "
 "you don't hear yourself with the delay, you will have to fix your audio "
@@ -3221,21 +3220,20 @@ msgid ""
 "Enter an URL to call on the left, and click on this button to connect to the "
 "given URL."
 msgstr ""
+"Voer links hiernaast een URL in en klik vervolgens op deze knop om "
+"verbinding te maken met die URL."
 
 #: src/toolbar.cpp:225
-#, fuzzy
 msgid "Open text chat."
 msgstr "Tekstchat openen."
 
 #: src/toolbar.cpp:236
-#, fuzzy
 msgid "Open control panel"
-msgstr "Het controlepaneel openen"
+msgstr "Controlepaneel openen"
 
 #: src/toolbar.cpp:248
-#, fuzzy
 msgid "Open address book"
-msgstr "Het adresboek openen"
+msgstr "Adresboek openen"
 
 #: src/toolbar.cpp:278
 msgid "Display images from your camera device."
