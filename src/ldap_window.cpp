@@ -29,6 +29,8 @@
  */
 
 
+#include "../config.h"
+
 #include "ldap_window.h"
 #include "ils.h"
 #include "config.h"

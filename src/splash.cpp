@@ -29,6 +29,9 @@
  */
 
 
+#include "../config.h"
+
+
 #include "splash.h"
 
 
