@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-01-30 04:01+0100\n"
-"PO-Revision-Date: 2004-01-30 12:26+0100\n"
+"POT-Creation-Date: 2004-02-02 15:14+0100\n"
+"PO-Revision-Date: 2004-02-02 19:44+0100\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -68,7 +68,7 @@ msgstr "Automaticky vymazat textový chat na konci hovoru"
 msgid ""
 "Automatically reject or forward incoming calls if no answer is given after "
 "the specified amount of time (in seconds)."
-msgstr "Automaticky odmítat nebo přesměrovávat příchozí hovoru, pokud nejsou zodpovězeny v určené době (v sekundách)."
+msgstr "Automaticky odmítat nebo přesměrovávat příchozí hovory, pokud nejsou zodpovězeny v určené době (v sekundách)."
 
 #: gnomemeeting.schemas.in.in.h:10
 msgid ""
@@ -187,7 +187,9 @@ msgstr "Zde můžete vložit komentář o sobě pro adresář uživatelů."
 msgid ""
 "Enter a valid URL to connect to a web application that outputs the public IP "
 "of your host."
-msgstr "Zadejte platné URL pro připojení k WWW aplikaci, která vypíše veřejnou IP vašeho počítače."
+msgstr ""
+"Zadejte platné URL pro připojení k WWW aplikaci, která vypíše veřejnou IP "
+"vašeho počítače."
 
 #: gnomemeeting.schemas.in.in.h:34 src/pref_window.cpp:1300
 msgid ""
@@ -591,7 +593,7 @@ msgstr ""
 "automatická kompenzace. Vybrání automatické kompenzace moduluje hlasitost "
 "pro nejlepší kvalitu."
 
-#: gnomemeeting.schemas.in.in.h:121 src/pref_window.cpp:1245 src/tools.cpp:568
+#: gnomemeeting.schemas.in.in.h:121 src/pref_window.cpp:1245
 msgid ""
 "The Gatekeeper alias to use when registering (string, or E164 ID if only "
 "0123456789#)."
@@ -607,7 +609,7 @@ msgstr "Název počítače, na němž se lze zaregistrovat u Gatekeeperu."
 msgid "The Gatekeeper identifier to register with."
 msgstr "Identifikace Gatekeeperu kterou registrujete."
 
-#: gnomemeeting.schemas.in.in.h:124 src/pref_window.cpp:1248 src/tools.cpp:571
+#: gnomemeeting.schemas.in.in.h:124 src/pref_window.cpp:1248
 msgid ""
 "The Gatekeeper password to use for H.235 authentication to the Gatekeeper."
 msgstr "Heslo Gatekeeper použité při ověření H.235 u Gatekeeperu."
@@ -1022,7 +1024,7 @@ msgstr "Náhled videa"
 msgid "Video size"
 msgstr "Velikost videa"
 
-#: lib/dialog.c:192
+#: lib/dialog.c:193
 msgid "Do not show this dialog again"
 msgstr "Příště tento dialog nezobrazovat"
 
@@ -2485,7 +2487,7 @@ msgstr "V"
 msgid "Name"
 msgstr "Jméno"
 
-#: src/ldap_window.cpp:3106 src/ldap_window.cpp:3154 src/tools.cpp:446
+#: src/ldap_window.cpp:3106 src/ldap_window.cpp:3154 src/tools.cpp:548
 msgid "URL"
 msgstr "URL"
 
@@ -2928,7 +2930,7 @@ msgstr "_Adresář"
 msgid "Open the address book"
 msgstr "Otevřít adresář"
 
-#: src/menu.cpp:481 src/tools.cpp:633
+#: src/menu.cpp:481 src/tools.cpp:762
 msgid "General History"
 msgstr "Obecná historie"
 
@@ -2936,7 +2938,7 @@ msgstr "Obecná historie"
 msgid "View the operations history"
 msgstr "Zobrazit historii událostí"
 
-#: src/menu.cpp:486 src/menu.cpp:655 src/tools.cpp:393
+#: src/menu.cpp:486 src/menu.cpp:655 src/tools.cpp:491
 msgid "Calls History"
 msgstr "Historie hovorů"
 
@@ -3280,11 +3282,11 @@ msgstr "Gatekeeper _ID:"
 msgid "Gatekeeper _host:"
 msgstr "Gatekeeper _počítač:"
 
-#: src/pref_window.cpp:1245 src/tools.cpp:568
+#: src/pref_window.cpp:1245
 msgid "Gatekeeper _alias:"
 msgstr "Gatekeeper _alias:"
 
-#: src/pref_window.cpp:1248 src/tools.cpp:571
+#: src/pref_window.cpp:1248
 msgid "Gatekeeper _password:"
 msgstr "Gatekeeper _heslo:"
 
@@ -3716,43 +3718,43 @@ msgstr ""
 "Stav přenosu videa. Během hovoru přenos videa pozastavíte nebo obnovíte "
 "kliknutím sem."
 
-#: src/tools.cpp:376
+#: src/tools.cpp:474
 msgid "Received Calls"
 msgstr "Přijaté hovory"
 
-#: src/tools.cpp:376
+#: src/tools.cpp:474
 msgid "Placed Calls"
 msgstr "Odchozí hovory"
 
-#: src/tools.cpp:376
+#: src/tools.cpp:474
 msgid "Unanswered Calls"
 msgstr "Nezodpovězené hovory"
 
-#: src/tools.cpp:429
+#: src/tools.cpp:531
 msgid "Date"
 msgstr "Datum"
 
-#: src/tools.cpp:437
+#: src/tools.cpp:539
 msgid "Remote User"
 msgstr "Vzdálený uživatel"
 
-#: src/tools.cpp:455
+#: src/tools.cpp:557
 msgid "Call Duration"
 msgstr "Délka hovoru"
 
-#: src/tools.cpp:465
+#: src/tools.cpp:567
 msgid "Call End Reason"
 msgstr "Důvod ukončení hovoru"
 
-#: src/tools.cpp:474
+#: src/tools.cpp:576
 msgid "Software"
 msgstr "Software"
 
-#: src/tools.cpp:552 src/tools.cpp:566
+#: src/tools.cpp:681 src/tools.cpp:695
 msgid "PC-To-Phone Settings"
 msgstr "Nastavení PC-To-Phone"
 
-#: src/tools.cpp:555
+#: src/tools.cpp:684
 msgid ""
 "You can make calls to regular phones and cell numbers worldwide using "
 "GnomeMeeting and the MicroTelco service from Quicknet Technologies. To "
@@ -3766,11 +3768,27 @@ msgstr ""
 "MicroTelco a PIN a povolit registraci ke službě MicroTelco. Pro více "
 "informací prosím navštivte WWW stránky GnomeMeeting."
 
-#: src/tools.cpp:575
+#: src/tools.cpp:697
+msgid "Account _number:"
+msgstr "_Číslo účtu:"
+
+#: src/tools.cpp:697
+msgid "Use your MicroTelco account number."
+msgstr "Použijte své číslo účtu MicroTelco."
+
+#: src/tools.cpp:700
+msgid "_Pin:"
+msgstr "_Pin:"
+
+#: src/tools.cpp:700
+msgid "Use your MicroTelco PIN."
+msgstr "Použijte svůj PIN MicroTelco."
+
+#: src/tools.cpp:704
 msgid "Use PC-To-Phone service"
 msgstr "Používat službu PC-To-Phone"
 
-#: src/tools.cpp:580
+#: src/tools.cpp:709
 msgid ""
 "Click on one of the following links to get more information about your "
 "existing MicroTelco account, or to create a new account."
@@ -3778,15 +3796,15 @@ msgstr ""
 "Klikněte na jeden z následujících odkazů, chcete-li získat více informací o "
 "svém existujícím účtu MicroTelco, nebo chcete-li vytvořit nový účet."
 
-#: src/tools.cpp:584
+#: src/tools.cpp:713
 msgid "Get an account"
 msgstr "Získat účet"
 
-#: src/tools.cpp:586
+#: src/tools.cpp:715
 msgid "Buy a card"
 msgstr "Koupit kartu"
 
-#: src/tools.cpp:591
+#: src/tools.cpp:720
 msgid "Consult my account details"
 msgstr "Zobrazit podrobnosti o mém účtu"
 
@@ -3946,12 +3964,6 @@ msgstr "Chyba s frekvencí rámců."
 #: src/videograbber.cpp:668
 msgid "Error with the frame size."
 msgstr "Chyba ve velikosti obrazu."
-
-#~ msgid "Position on the screen of the general history window"
-#~ msgstr "Umístění okna obecné historie na obrazovce"
-
-#~ msgid "Size of the general history window"
-#~ msgstr "Velikost okna obecné historie"
 
 #~ msgid "Calls Clearing"
 #~ msgstr "Ukončování hovorů"
@@ -4214,9 +4226,6 @@ msgstr "Chyba ve velikosti obrazu."
 
 #~ msgid "PC-To-Phone Setup - page %d/%d"
 #~ msgstr "Nastavení PC-To-Phone - strana %d/%d"
-
-#~ msgid "Account number:"
-#~ msgstr "Číslo účtu:"
 
 #~ msgid "Password:"
 #~ msgstr "Heslo:"
