@@ -1913,7 +1913,8 @@ gnomemeeting_gconf_upgrade ()
     rename_contact_section ("Work", _("Work"), TRUE);
     rename_contact_section ("Family", _("Family"), TRUE);
 
-    gconf_set_int (GENERAL_KEY "version",
-                   (MAJOR_VERSION*100+MINOR_VERSION*10+BUILD_NUMBER));
+    version = MAJOR_VERSION*100+MINOR_VERSION*10+BUILD_NUMBER;
+    
+    gconf_set_int (GENERAL_KEY "version", version);
   }
 }

@@ -452,7 +452,7 @@ void GnomeMeeting::BuildGUI ()
 
 #ifndef DISABLE_GNOME
  if (gconf_client_get_int (client, GENERAL_KEY "version", NULL) 
-      < 100 * MAJOR_VERSION + MINOR_VERSION) {
+      < 100 * MAJOR_VERSION + 10 * MINOR_VERSION + BUILD_NUMBER) {
 
    gtk_widget_show_all (GTK_WIDGET (gw->druid_window));
   }
@@ -471,8 +471,6 @@ void GnomeMeeting::BuildGUI ()
   }
 #endif
 
- gconf_client_set_int (client, GENERAL_KEY "version", 
-		       100 * MAJOR_VERSION + MINOR_VERSION, NULL);
  
   /* Destroy the splash */
  if (gw->splash_win) {
@@ -483,8 +481,9 @@ void GnomeMeeting::BuildGUI ()
 
   
   /* GM is started */
-  gnomemeeting_log_insert (_("Started GnomeMeeting V%d.%d for %s\n"), 
-			   MAJOR_VERSION, MINOR_VERSION, g_get_user_name ());
+  gnomemeeting_log_insert (_("Started GnomeMeeting V%d.%d.%d for %s\n"), 
+			   MAJOR_VERSION, MINOR_VERSION, BUILD_NUMBER,
+                           g_get_user_name ());
 }
 
 
