@@ -22,5 +22,5 @@ install-schemas: gnomemeeting.schema
 
 install-data-local: install-schemas
 
-%: %.in Makefile
+gnomemeeting-config-tool: gnomemeeting-config-tool.in Makefile
 	sed -e "s:@GNOMEMEETING_SYSCONFDIR@:$(sysconfdir):;" < $< > $@
