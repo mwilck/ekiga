@@ -5,66 +5,55 @@ SYSCONFDIR=@sysconfdir@
 TEXTDOMAIN=gnomemeeting
 export TEXTDOMAIN
 
+# NB.: Avoid !\n in the translatable strings!
+
 clean () {
 
-    if ps hu -C gnomemeeting | grep -v gnomemeeting-config-tool | grep $USER &>/dev/null 2>&1; then gettext "Sorry, this script won't work while GnomeMeeting is running"; echo
+    if ps hu -C gnomemeeting | grep -v gnomemeeting-config-tool | grep $USER &>/dev/null 2>&1; 
+	then gettext "Sorry, this script won't work while GnomeMeeting is running"; echo
 
     else
 
+	echo
+	gettext "  WARNING!!!"; echo
+	echo    "  ---------------------------------------------------------------"
+	printf "`gettext "  This script will delete all user GnomeMeeting configuration\n  including preferences that may be important! \n  GConf daemon will be shutted down, so make sure you have no apps\n  depending on it running\n\n  Do you really want to do this?\n\n  If so, say \"YES\"\n\n"`";
+
+	read WARNINGANSWER
+	
+	echo
+	
+	if [ -n "$WARNINGANSWER" ] && [ "$WARNINGANSWER" = "YES" ]; then
+	    
+	    gettext "Removing $HOME/.gconf/apps/gnomemeeting"; echo
+	    rm -rf $HOME/.gconf/apps/gnomemeeting
+	    
+	    gettext "Shutting down GConf daemon"; echo
+	    gconftool-2 --shutdown
+	    
+	    gettext "...Done."; echo
+	    
+	else
+	    gettext "Leaving configuration alone."; echo
 	    echo
-	    gettext "     WARNING!!!"; echo
-	    echo    "     ---------------------------------------------------------------"
-	    gettext "     This script will delete all user GnomeMeeting configuration"; echo
-	    gettext "     including preferences that may be important!"; echo
-	    gettext "     GConf daemon will be shutted down, so make sure you have no apps"; echo
-	    gettext "     depending on it running"; echo
-	    echo
-	    gettext "     Do you really want to do this?"; echo
-	    echo
-	    gettext "     If so, say \"YES\""; echo
-	    echo
-
-	    read WARNINGANSWER
-
-	    echo
-
-	    if [ -n "$WARNINGANSWER" ] && [ "$WARNINGANSWER" = "YES" ]; then
-
-		    gettext "Removing $HOME/.gconf/apps/gnomemeeting"; echo
-		    rm -rf $HOME/.gconf/apps/gnomemeeting
-
-		    gettext "Shutting down GConf daemon"; echo
-		    gconftool-2 --shutdown
-
-		    gettext "...Done."; echo
-
-	    else
-		    gettext "Leaving configuration alone."; echo
-		    echo
-		    gettext "Have a nice day."; echo
-
-	    fi
-
-	    echo
-
+	    gettext "Have a nice day."; echo
+	    
 	fi
+	
+	echo
+	
+    fi
 }
 
 shutdownwarning () {
-	    echo
-	    gettext "     WARNING!!!"; echo
-	    echo    "     ---------------------------------------------------------------"
-	    gettext "     GConf daemon will be shutted down, so make sure you have no apps"; echo
-	    gettext "     depending on it running"; echo
-	    echo
-	    gettext "     Do you really want to do this?"; echo
-	    echo
-	    gettext "     If so, say \"YES\""; echo
-	    echo
+    echo
+    gettext "  WARNING!!!"; echo
+    echo    "  ---------------------------------------------------------------"
+    printf "`gettext "  GConf daemon will be shutted down, so make sure you have no apps\n  depending on it running\n\n  Do you really want to do this?\n\n  If so, say \"YES\"\n\n"`";
 }
 
 cleanschemas () {
-shutdownwarning;
+    shutdownwarning;
 
     read WARNINGANSWER
 
@@ -121,10 +110,7 @@ pkginstallschemas ()
 installfailure ()
 {
     echo
-    gettext  "CRITICAL ERROR -- Schema installation is failed."; echo
-    gettext  "Most probably you have gconf daemon running as root."; echo
-    echo
-    gettext  "Run \"gnomemeeting-config-tool --install-schemas\" as root"; echo
+    printf "`gettext "CRITICAL ERROR -- Schema installation is failed.\nMost probably you have gconf daemon running as root.\n\nRun \"gnomemeeting-config-tool --install-schemas\" as root/n"`";
 
     exit 1
 }
