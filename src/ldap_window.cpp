@@ -3146,7 +3146,8 @@ static gboolean
 is_group_member_of_addressbook (const char *group)
 {
   gboolean result = false;
-  
+
+  gchar *group_name = NULL;
   GSList *groups = NULL;
   GSList *groups_iter = NULL;
   
@@ -3163,11 +3164,15 @@ is_group_member_of_addressbook (const char *group)
   groups_iter = groups;
   
   while (groups_iter && groups_iter->data && !result) {
+
+    group_name =
+      gconf_unescape_key ((char *) groups_iter->data, -1);
     
-    if (!strcasecmp (group, (char *) groups_iter->data))
+    if (group_name && !strcasecmp (group, group_name))
       result = true;
 
     groups_iter = g_slist_next (groups_iter);
+    g_free (group_name);
   }
 
   g_slist_free (groups);
