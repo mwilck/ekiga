@@ -1,3 +1,20 @@
+2003-11-17 Damien Sandras  <dsandras@seconix.com>
+
+	* configure.in: Incremented SCHEMA_AGE.
+	
+	* gnomemeeting.schemas.in.in: Moved QUICKNET settings in the
+	AUDIO_DEVICES settings.
+	
+	* src/common.h, src/config.cpp, src/lid.cpp: See above.
+
+	* src/config.cpp: enable_microtelco_changed_nt : Do not
+	update the widgets when triggered as they are temporarily
+	removed.
+	
+	* src/druid.cpp: Display the right callto at the end of the setup.
+	Set the correct email in the gconf settings even though the user
+	chose not to register to ILS.
+	
 2003-11-16 Damien Sandras  <dsandras@seconix.com>
 
 	* configure.in, gnomemeeting.schemas.in.in, src/common.h,

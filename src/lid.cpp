@@ -114,9 +114,9 @@ void GMLid::Open ()
   if (!lid) {
 
     gnomemeeting_threads_enter ();
-    lid_device = gconf_get_string (QUICKNET_DEVICES_KEY "input_device");
-    lid_country = gconf_get_string (QUICKNET_DEVICES_KEY "country_code");
-    lid_aec = gconf_get_int (QUICKNET_DEVICES_KEY "echo_cancellation_level");
+    lid_device = gconf_get_string (AUDIO_DEVICES_KEY "input_device");
+    lid_country = gconf_get_string (AUDIO_DEVICES_KEY "lid_country_code");
+    lid_aec = gconf_get_int (AUDIO_DEVICES_KEY "lid_echo_cancellation_level");
     gnomemeeting_threads_leave ();
 
     if (lid_device == NULL)

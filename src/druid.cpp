@@ -227,10 +227,11 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
   if (couple && couple [1])
     gconf_set_string (PERSONAL_DATA_KEY "lastname", couple [1]);
 
+  gconf_set_string (PERSONAL_DATA_KEY "mail", mail);
+  
   if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (dw->use_callto))
       && mail) {
 
-    gconf_set_string (PERSONAL_DATA_KEY "mail", mail);
     if (!gconf_get_bool (LDAP_KEY "register"))
       gconf_set_bool (LDAP_KEY "register", TRUE);
     else
@@ -513,6 +514,7 @@ gnomemeeting_druid_page_prepare (GnomeDruidPage *page,
   gchar *video_recorder = NULL;
   gchar *video_manager = NULL;
   gchar *audio_manager = NULL;
+  gchar *callto_url = NULL;
   BOOL ils_register = FALSE;
   
   int kind_of_net = 0;
@@ -682,10 +684,13 @@ gnomemeeting_druid_page_prepare (GnomeDruidPage *page,
     gnomemeeting_druid_get_data (name, mail, connection_type, audio_manager,
 				 player, recorder, video_manager,
 				 video_recorder);
-
-    text = g_strdup_printf (_("You have now finished the GnomeMeeting configuration. All the settings can be changed in the GnomeMeeting preferences. Enjoy!\n\n\nConfiguration Summary:\n\nUsername:  %s\nConnection type:  %s\nAudio manager: %s\nAudio player:  %s\nAudio recorder:  %s\nVideo Manager: %s\nVideo player: %s\nMy Callto URL: %s\n"), name, connection_type, audio_manager, player, recorder, video_manager, video_recorder, !gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (dw->use_callto)) ? mail : _("None"));
+    callto_url = g_strdup_printf ("callto:ils.seconix.com/%s",
+				  mail ? mail : "");
+    
+    text = g_strdup_printf (_("You have now finished the GnomeMeeting configuration. All the settings can be changed in the GnomeMeeting preferences. Enjoy!\n\n\nConfiguration Summary:\n\nUsername:  %s\nConnection type:  %s\nAudio manager: %s\nAudio player:  %s\nAudio recorder:  %s\nVideo Manager: %s\nVideo player: %s\nMy Callto URL: %s\n"), name, connection_type, audio_manager, player, recorder, video_manager, video_recorder, !gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (dw->use_callto)) ? callto_url : _("None"));
     gnome_druid_page_edge_set_text (GNOME_DRUID_PAGE_EDGE (page), text);
 
+    g_free (callto_url);
     g_free (text);
   }
 }

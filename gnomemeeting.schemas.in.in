@@ -112,20 +112,9 @@
 	<long>The image to transmit if "Picture" is selected for the video device or if the opening of the device fails. Leave blank to use the default GnomeMeeting logo.</long>
       </locale>
     </schema>
-    <schema>
-      <key>/schemas/apps/gnomemeeting/devices/quicknet/input_device</key>
-      <applyto>/apps/gnomemeeting/devices/quicknet/input_device</applyto>
-      <owner>GnomeMeeting</owner>
-      <type>string</type>
-      <default>/dev/phone0</default>
-      <locale name="C">
-	<short>Quicknet input device</short>
-	<long>Select the Quicknet input device to use.</long>
-      </locale>
-    </schema>
     <schema>	
-      <key>/schemas/apps/gnomemeeting/devices/quicknet/echo_cancellation_level</key>
-      <applyto>/apps/gnomemeeting/devices/quicknet/echo_cancellation_level</applyto>
+      <key>/schemas/apps/gnomemeeting/devices/audio/lid_echo_cancellation_level</key>
+      <applyto>/apps/gnomemeeting/devices/audio/lid_echo_cancellation_level</applyto>
       <owner>GnomeMeeting</owner>
       <type>int</type>
       <default>2</default>
@@ -135,8 +124,8 @@
       </locale>
     </schema>
     <schema>	
-      <key>/schemas/apps/gnomemeeting/devices/quicknet/country_code</key>
-      <applyto>/apps/gnomemeeting/devices/quicknet/country_code</applyto>
+      <key>/schemas/apps/gnomemeeting/devices/audio/lid_country_code</key>
+      <applyto>/apps/gnomemeeting/devices/audio/lid_country_code</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default>BE</default>

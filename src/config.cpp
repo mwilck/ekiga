@@ -327,15 +327,15 @@ static void microtelco_enabled_nt (GConfClient *client, guint cid,
     if (gconf_value_get_bool (entry->value)) {
 
       gtk_widget_show (gtk_menu_get_widget (gw->main_menu, "microtelco"));
-      GTK_TOGGLE_BUTTON (dw->enable_microtelco)->active = true;
+      // GTK_TOGGLE_BUTTON (dw->enable_microtelco)->active = true;
     }
     else {
       
       gtk_widget_hide (gtk_menu_get_widget (gw->main_menu, "microtelco"));
-      GTK_TOGGLE_BUTTON (dw->enable_microtelco)->active = false;
+      //GTK_TOGGLE_BUTTON (dw->enable_microtelco)->active = false;
     }
     
-    gtk_widget_queue_draw (GTK_WIDGET (dw->enable_microtelco));
+    //gtk_widget_queue_draw (GTK_WIDGET (dw->enable_microtelco));
     gdk_threads_leave ();
   }
 }
@@ -1663,9 +1663,9 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
 			   gw->preview_button, 0, 0);
 
 #ifdef HAS_IXJ
-  gconf_client_notify_add (client, QUICKNET_DEVICES_KEY "country_code", lid_country_changed_nt, NULL, 0, 0);
+  gconf_client_notify_add (client, AUDIO_DEVICES_KEY "lid_country_code", lid_country_changed_nt, NULL, 0, 0);
 
-  gconf_client_notify_add (client, QUICKNET_DEVICES_KEY "echo_cancellation_level", lid_aec_changed_nt, NULL, 0, 0);
+  gconf_client_notify_add (client, AUDIO_DEVICES_KEY "lid_echo_cancellation_level", lid_aec_changed_nt, NULL, 0, 0);
 #endif
 
 

@@ -76,7 +76,6 @@
 
 #define AUDIO_DEVICES_KEY "/apps/gnomemeeting/devices/audio/"
 #define VIDEO_DEVICES_KEY "/apps/gnomemeeting/devices/video/"
-#define QUICKNET_DEVICES_KEY "/apps/gnomemeeting/devices/quicknet/"
 
 #define PERSONAL_DATA_KEY   "/apps/gnomemeeting/personal_data/"
 #define LDAP_KEY            "/apps/gnomemeeting/ldap/"
