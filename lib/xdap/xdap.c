@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "../../config.h"
 
 #include "xdap.h"
 
@@ -156,7 +157,12 @@ parseonly (char *filename, xmlEntityPtr (*getent) (void *, const xmlChar *),
 	   xmlEntityPtr (**oldgetent) (void *, const xmlChar *), int noerr)
 {
   xmlDocPtr xp;
+
+#if HAVE_XMLSAXHANDLER
+  xmlSAXHandler sax;
+#else
   xmlSAXHandlerV1 sax;
+#endif
 
   memset (&sax, 0, sizeof sax);
   sax = xmlDefaultSAXHandler;	/* Copy original handler */

@@ -58,7 +58,7 @@ AM_GCONF_SOURCE_2
 dnl ###########################################################################
 dnl   PKG_CONFIG
 dnl ###########################################################################
-PKG_CHECK_MODULES(GNOMEMEETING, gtk+-2.0 >= 2.0.6 esound >= 0.2.28 gconf-2.0 >= 1.2.1 libxml-2.0 >= 2.6.0 libgnome-2.0 >= 2.0.0 libgnomeui-2.0 >= 2.0.0)
+PKG_CHECK_MODULES(GNOMEMEETING, gtk+-2.0 >= 2.0.6 esound >= 0.2.28 gconf-2.0 >= 1.2.1 libxml-2.0 >= 2.5.0 libgnome-2.0 >= 2.0.0 libgnomeui-2.0 >= 2.0.0)
 
 
 dnl ###########################################################################
@@ -344,6 +344,14 @@ dnl ########################################################################
 AC_CHECK_LIB(xml2, xmlFreeDoc)
 AC_CHECK_FUNCS(xmlRegisterNodeDefault)
 
+dnl ########################################################################   
+dnl  libxml path is in GNOMEMEETING_CFLAGS due to pkg-config
+dnl ########################################################################   
+
+CPPFLAGS_save="$CPPFLAGS"
+CPPFLAGS="$CPPFLAGS $GNOMEMEETING_CFLAGS"
+AC_CHECK_TYPES(xmlSAXHandler,,, [#include <libxml/SAX.h>])
+CPPFLAGS="$CPPFLAGS_save"
 
 GNOMEMEETING_INCLUDES="$PTLIB_CFLAGS $LDAP_INCLUDES $OPENH323_CFLAGS $H323_CFLAGS $GNOMEMEETING_CFLAGS $SDL_CFLAGS $ARTSC_CFLAGS"
 GNOMEMEETING_LDADD="$GNOMEMEETING_LIBS  $PTLIB_LDFLAGS $OPENH323_LDFLAGS $LDAP_LIBS $SDL_LDFLAGS $ARTSC_LDFLAGS $H323_LIBS"
