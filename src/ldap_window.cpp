@@ -808,11 +808,13 @@ contact_clicked_cb (GtkWidget *w,
 	
 	menu = gtk_menu_new ();
 
-	static MenuEntry server_contact_menu [] =
+	MenuEntry server_contact_menu [] =
 	  {
 	    {_("C_all Contact"), NULL,
 	     NULL, 0, MENU_ENTRY, 
 	     GTK_SIGNAL_FUNC (call_user_cb), data, NULL},
+
+	    {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
 	    
 	    {msg, NULL,
 	     GTK_STOCK_ADD, 0, MENU_ENTRY,
@@ -823,11 +825,13 @@ contact_clicked_cb (GtkWidget *w,
 	  };
       
       
-	static MenuEntry group_contact_menu [] =
+	MenuEntry group_contact_menu [] =
 	  {
 	    {_("Contact _Properties"), NULL,
-	     NULL, 0, MENU_ENTRY, 
-	     GTK_SIGNAL_FUNC (edit_contact_cb), GINT_TO_POINTER (1), NULL},
+	     GTK_STOCK_PROPERTIES, 0, MENU_ENTRY, 
+	     GTK_SIGNAL_FUNC (edit_contact_cb), GINT_TO_POINTER (0), NULL},
+
+	    {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
 	    
 	    {_("Delete"), NULL,
 	     GTK_STOCK_DELETE, 0, MENU_ENTRY,
