@@ -1,4 +1,4 @@
-e
+
 /* GnomeMeeting -- A Video-Conferencing application
  * Copyright (C) 2000-2001 Damien Sandras
  *
