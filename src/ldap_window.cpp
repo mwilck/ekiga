@@ -36,6 +36,8 @@
 #include "gnomemeeting.h"
 #include "menu.h"
 
+#include "dialog.h"
+
 #ifndef DISABLE_GNOME
 #include <gnome.h>
 #endif
@@ -351,10 +353,11 @@ add_contact_to_group_cb (GtkWidget *widget,
 
 
 /* DESCRIPTION  :  This callback is called when the user choose to edit the
- *                 info of a contact from a group.
+ *                 info of a contact from a group or to add a group.
  * BEHAVIOR     :  Opens a popup, and save the modified info by modifying the
  *                 gconf key when the user clicks on "ok".
- * PRE          :  /
+ * PRE          :  If data = 1, then we add the user, no need to see 
+ *                 if something is selected and needs to be edited.
  */
 void
 edit_contact_cb (GtkWidget *widget,
@@ -393,12 +396,23 @@ edit_contact_cb (GtkWidget *widget,
 			     &contact_section, &contact_name,
 			     &contact_callto);
 
+
+  /* If we edit the user in the group */
+  if (GPOINTER_TO_INT (data) != 1) {
+    
+    /* Store the old callto to be able to delete the user later */
+    old_contact_callto = g_strdup (contact_callto);
+  }
+  else {
+
+    /* If we add a new user, we forget what is selected */
+    contact_name = NULL;
+    contact_callto = NULL;
+  }
+
   gconf_key =
     g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, contact_section);
-      
-  /* Store the old callto to be able to delete the user later */
-  old_contact_callto = g_strdup (contact_callto);
-    
+          
   /* Create the dialog to easily modify the info of a specific contact */
   dialog = gtk_dialog_new_with_buttons (_("Edit the contact information"), 
 					GTK_WINDOW (gw->ldap_window),
@@ -475,9 +489,22 @@ edit_contact_cb (GtkWidget *widget,
     else
       group_content =
 	g_slist_append (group_content, (gpointer) contact_info);
-      
-    gconf_client_set_list (client, gconf_key, GCONF_VALUE_STRING,
-			   group_content, NULL);
+
+    contact_callto = (char *) gtk_entry_get_text (GTK_ENTRY (callto_entry));
+
+    /* We do not add the user to the group if the callto is already 
+       present in that group except if we are editing and if the user
+       didn't change the callto during the edit
+       (contact_callto == old_contact_callto).
+    */
+    if (is_contact_member_of_group (contact_callto, contact_section)
+	&& !(GPOINTER_TO_INT (data) == 0 
+	     && !strcmp (contact_callto, old_contact_callto)))
+      gnomemeeting_error_dialog (GTK_WINDOW (gw->ldap_window), _("Another user already exists with the same callto:// entry, please delete it first."));
+    else
+      gconf_client_set_list (client, gconf_key, GCONF_VALUE_STRING,
+			     group_content, NULL);
+
       
     g_free (contact_info);
     g_slist_free (group_content);
@@ -1156,6 +1183,7 @@ contact_section_event_after_cb (GtkWidget *w,
   GtkTreeIter iter;
 
   gchar *path_string = NULL;
+  gchar *group_name = NULL;
   int page_num = -1;
   
   tree_view = GTK_TREE_VIEW (w);
@@ -1173,7 +1201,7 @@ contact_section_event_after_cb (GtkWidget *w,
       model = gtk_tree_view_get_model (GTK_TREE_VIEW (tree_view));
       if (gtk_tree_selection_get_selected (selection, &model, &iter)) 
 	gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 
-			    1, &page_num, -1);
+			    0, &group_name, 1, &page_num, -1);
 
       if (e->button == 3 && 
 	  gtk_tree_selection_path_is_selected (selection, path)) {
@@ -1219,7 +1247,7 @@ contact_section_event_after_cb (GtkWidget *w,
 	    {_("New contact"), NULL,
 	     NULL, 0, MENU_ENTRY, 
 	     GTK_SIGNAL_FUNC (edit_contact_cb), 
-	     NULL, NULL},
+	     GINT_TO_POINTER (1), NULL},
 	    {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
 	    {_("Delete"), NULL,
 	     GTK_STOCK_DELETE, 0, MENU_ENTRY, 
@@ -1231,7 +1259,8 @@ contact_section_event_after_cb (GtkWidget *w,
 	/* Build the appropriate popup menu */
 	if (gtk_tree_path_get_depth (path) >= 2)
 	  if (gtk_tree_path_get_indices (path) [0] == 0)
-	    gnomemeeting_build_menu (menu, delete_refresh_contact_section_menu, NULL);
+	    gnomemeeting_build_menu (menu, delete_refresh_contact_section_menu,
+				     NULL);
 	  else
 	    gnomemeeting_build_menu (menu,
 				     delete_group_new_contact_section_menu,
