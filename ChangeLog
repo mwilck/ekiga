@@ -1,3 +1,8 @@
+2003-06-27 Damien Sandras  <dsandras@seconix.com>
+
+	* src/config.cpp: Higher granularity for gdk_threads_enter/leave to
+	prevent possible deadlocks.
+	
 2003-06-25 Damien Sandras  <dsandras@seconix.com>
 
 	* src/ils.cpp: Do not retry when contacting the ILS server fails.

@@ -1057,10 +1057,9 @@ static void video_device_setting_changed_nt (GConfClient *client, guint cid,
 
   if ((entry->value->type == GCONF_VALUE_STRING) ||
       (entry->value->type == GCONF_VALUE_INT)) {
-  
-    gdk_threads_enter ();
 
-    /* We reset the video device */
+    
+    /* We reset the video device, no need to gdk_threads_enter here */
     ep = MyApp->Endpoint ();
     
     if (ep && ep->GetCallingState () == 0) {
@@ -1073,8 +1072,6 @@ static void video_device_setting_changed_nt (GConfClient *client, guint cid,
 	vg->Unlock ();
       }
     }
-  
-    gdk_threads_leave ();
   }
 }
 
