@@ -2330,6 +2330,7 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
                                   BOOL isEncoding, 
                                   H323VideoCodec & codec)
 {
+  PVideoChannel *channel = NULL;
   GMVideoGrabber *vg = NULL;
 
   bool vid_tr = FALSE;
@@ -2357,20 +2358,25 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
   if (vid_tr && isEncoding) {
 
     vg = GetVideoGrabber ();
-    if (!vg) 
+    if (!vg) {
+
       CreateVideoGrabber (FALSE, TRUE); /* Do not grab and
 					   start synchronously */
+    }
     else {
       
       vg->StopGrabbing ();
       vg->Unlock ();
     }
     
-    /* Here, the grabber is opened */
+    /* Here, the grabber should be opened */
     vg = GetVideoGrabber ();
-    PVideoChannel *channel = vg->GetVideoChannel ();
-    transmitted_video_device = vg->GetEncodingDevice ();
-    vg->Unlock ();
+    if (vg) {
+
+      channel = vg->GetVideoChannel ();
+      transmitted_video_device = vg->GetEncodingDevice ();
+      vg->Unlock ();
+    }
     opened_video_channels++;
 
     /* Updates the view menu */
@@ -2402,7 +2408,7 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
     /* If we only receive */
     if (!isEncoding) {
        
-      PVideoChannel *channel = new PVideoChannel;
+      channel = new PVideoChannel;
       received_video_device = new GDKVideoOutputDevice (isEncoding, gw);
       received_video_device->SetColourFormatConverter ("YUV420P");      
       opened_video_channels++;

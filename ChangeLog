@@ -1,5 +1,10 @@
 2003-09-24 Damien Sandras  <dsandras@seconix.com>
 
+	* src/endpoint.cpp: Fixed possible bug if video grabber is closed
+	right after it is open.
+	
+2003-09-24 Damien Sandras  <dsandras@seconix.com>
+
 	* src/videograbber.cpp: Fixed deadlock that could happen in very
 	special conditions, thanks to Snark for finding this bug.
 	
