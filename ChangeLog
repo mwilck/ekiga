@@ -1,5 +1,14 @@
 2002-03-02  Damien Sandras  <dsandras@seconix.com>	
 
+	* gnomemeeting.schema.in: Added an option to change the listen port for
+	incoming connections.
+
+	* src/endpoint.cpp: Added support for another port than 1720.
+
+	* src/callbacks.cpp: Fixed bugs about closing an incoming call.
+	
+2002-03-02  Damien Sandras  <dsandras@seconix.com>	
+
 	* FAQ: Updated
 
 	* configure.in: Changed version to 0.85

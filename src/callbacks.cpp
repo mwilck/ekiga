@@ -92,16 +92,13 @@ void connect_cb (GtkWidget *widget, gpointer data)
 
 void disconnect_cb (GtkWidget *widget, gpointer data)
 {	
-  if (MyApp->Endpoint ()->GetCallingState () != 0) {
-
-    GMH323Connection *connection = 
-      (GMH323Connection *) MyApp->Endpoint ()->GetCurrentConnection ();
+  GMH323Connection *connection = 
+    (GMH323Connection *) MyApp->Endpoint ()->GetCurrentConnection ();
 	
-    if (connection != NULL)
-      connection->UnPauseChannels ();
-
-    MyApp->Disconnect ();
-  }
+  if (connection != NULL)
+    connection->UnPauseChannels ();
+  
+  MyApp->Disconnect ();
 }
 
 
@@ -122,6 +119,9 @@ void about_callback (GtkWidget *widget, gpointer data)
          'Perez'. */
       N_("Miguel Rodriguez Perez <migrax@terra.es>"),
       "Roger Hardiman <roger@freebsd.org>",
+      "Fabrice Alphonso <fabrice.alphonso@wanadoo.fr>",
+      "Alp Toker <alp@atoker.com>",
+      "Paul <paul666@mailandnews.com>",
       "",
       N_("I18n Maintainer:"),
       "Christian Rose <menthos@gnu.org>",
@@ -133,9 +133,10 @@ void about_callback (GtkWidget *widget, gpointer data)
     };
 	
   authors [2] = gettext (authors [2]);
-  authors [9] = gettext (authors [9]);
-  authors [11] = gettext (authors [11]);
+  authors [6] = gettext (authors [6]);
   authors [12] = gettext (authors [12]);
+  authors [14] = gettext (authors [14]);
+  authors [15] = gettext (authors [15]);
 
   abox = gnome_about_new (PACKAGE,
 			  VERSION,

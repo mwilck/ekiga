@@ -276,6 +276,17 @@
       </locale>
     </schema>
     <schema>
+      <key>/schemas/apps/gnomemeeting/general/listen_port</key>
+      <applyto>/apps/gnomemeeting/general/listen_port</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>int</type>
+      <default>1720</default>
+      <locale name="C">
+	<short>Listen Port</short>
+	<long>The port to listen to for incoming connections. GnomeMeeting needs to be restarted for the new value to take effect</long>
+      </locale>
+    </schema>
+    <schema>
       <key>/schemas/apps/gnomemeeting/general/h245_tunneling</key>
       <applyto>/apps/gnomemeeting/general/h245_tunneling</applyto>
       <owner>GnomeMeeting</owner>

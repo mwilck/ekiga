@@ -405,9 +405,11 @@ gchar *GMH323EndPoint::GetCurrentIP ()
 
 BOOL GMH323EndPoint::StartListener ()
 {
+  int listen_port = gconf_client_get_int (client, "/apps/gnomemeeting/general/listen_port", NULL);
+
   /* Start the listener thread for incoming calls */
   listener = new H323ListenerTCP (*this, INADDR_ANY, 
-				  1720);
+				  listen_port);
 
   /* Succesfull ? */
   if (!H323EndPoint::StartListener (listener)) {
