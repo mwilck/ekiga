@@ -42,7 +42,8 @@
  */
 void gnomemeeting_init (GmWindow *, GmPrefWindow *, 
 			GmLdapWindow *, GmRtpData *, 
-			GmTextChat *, int, char **, char **);
+			GmTextChat *, GmCommandLineOptions *, int, 
+			char **, char **);
 
 
 /* DESCRIPTION  :  /

@@ -1,3 +1,10 @@
+2002-06-16  Damien Sandras  <dsandras@seconix.com>
+
+	* src/common.h: Added arguments structure.
+
+	* src/main_window.cpp: Improved POPT support, and now GM can be started
+	with an URL, even if another GM is not running. Various fixes.
+	
 2002-06-16  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* src/druid.cpp: Fix a typo.
@@ -11,7 +18,8 @@
 2002-06-16  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* src/Makefile.am: 
-	* src/main_window.cpp (gnomemeeting_init): Fix bugs in previous commits.
+	* src/main_window.cpp (gnomemeeting_init): Fix bugs in previous 
+	commits.
 
 2002-06-14  Miguel Rodríguez Pérez  <miguel@det.uvigo.es>
 

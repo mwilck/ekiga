@@ -54,7 +54,7 @@ typedef struct _GmPrefWindow GmPrefWindow;
 typedef struct _GmLdapWindow GmLdapWindow;
 typedef struct _GmTextChat GmTextChat;
 typedef struct _GmRtpData GmRtpData;
-
+typedef struct _GmCommandLineOptions GmCommandLineOptions;
 
 struct _GmTextChat
 {
@@ -189,6 +189,15 @@ struct _GmPrefWindow
   GtkWidget *busy_forward;
   GtkWidget *no_answer_forward;
 };
+
+
+struct _GmCommandLineOptions
+{
+  int debug_level;
+  gchar *url;
+  int daemon;
+};
+
 
 #endif 
 /* _COMMON_H */

@@ -384,7 +384,7 @@ main_notebook_page_changed (GtkNotebook *notebook, GtkNotebookPage *page,
  * DESCRIPTION  :  This callback is called when the user changes the
  *                 audio settings sliders in the main notebook.
  * BEHAVIOR     :  Update the volume.
-² * PRE          :  gpointer is a valid pointer to GmPrefWindow
+ * PRE          :  gpointer is a valid pointer to GmPrefWindow
  **/
 void 
 audio_volume_changed (GtkAdjustment *adjustment, gpointer data)
@@ -533,6 +533,7 @@ gnomemeeting_init (GmWindow *gw,
                    GmLdapWindow *lw, 
                    GmRtpData *rtp,
 		   GmTextChat *chat,
+		   GmCommandLineOptions *clo,
                    int argc, char ** argv, char ** envp)
 {
   GMH323EndPoint *endpoint = NULL;
@@ -541,23 +542,18 @@ gnomemeeting_init (GmWindow *gw,
   gchar *alias = NULL;
   bool show_splash;
   GConfClient *client;
-  int debug = 0;
   int esd_client = 0;
 
   /* Cope with command line options */
   static struct poptOption arguments[] =
     {
-      {"debug", 'd', POPT_ARG_NONE, &debug, 
-       0, N_("Prints debug messages in the console"), NULL},
-      {"callto", 'c', POPT_ARG_STRING, NULL,
+      {"debug", 'd', POPT_ARG_INT, &clo->debug_level, 
+       1, N_("Prints debug messages in the console (level between 1 and 6"), 
+       NULL},
+      {"callto", 'c', POPT_ARG_STRING, &clo->url,
        1, N_("Makes GnomeMeeting call the given callto:// URL"), NULL},
       {NULL, '\0', 0, NULL, 0, NULL, NULL}
     };
-
-  for (int i = 0; i < argc; i++) {
-    if (!strcmp (argv [i], "-d") || !strcmp (argv [i], "--debug"))
-      debug = 1;
-  } 
 
 
   /* Gnome Initialisation */
@@ -571,7 +567,7 @@ gnomemeeting_init (GmWindow *gw,
 
   gm = gnome_app_new ("gnomemeeting", _("GnomeMeeting"));
 
-  
+
   /* The factory */
   if (gnomemeeting_invoke_factory (argc, argv)) {
 
@@ -595,7 +591,7 @@ gnomemeeting_init (GmWindow *gw,
    if (gconf_test != SCHEMA_AGE) {
 
      int reply = 0;
-     gchar *msg = g_strdup_printf (_("GnomeMeeting got %d for the GConf key \"/apps/gnomemeeting/gconf_test\", but %d was expected.\n\nThat key represents the revision number of GnomeMeeting default settings. If it is not correct, it means that your GConf schemas have not been correctly installed or the that permissions are not correct.\n\nPlease check the FAQ (http://www.gnomemeeting.org/faq.php), the throubleshoot section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org).\n\nUsing 'gnomemeeting-config-tool' could help you fix these problem."), gconf_test, SCHEMA_AGE);
+     gchar *msg = g_strdup_printf (_("GnomeMeeting got %d for the GConf key \"/apps/gnomemeeting/gconf_test\", but %d was expected.\n\nThat key represents the revision number of GnomeMeeting default settings. If it is not correct, it means that your GConf schemas have not been correctly installed or the that permissions are not correct.\n\nPlease check the FAQ (http://www.gnomemeeting.org/faq.php), the throubleshoot section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org).\n\nUsing 'gnomemeeting-config-tool' could help you fix this problem."), gconf_test, SCHEMA_AGE);
 
      GtkWidget *dialog = 
        gtk_message_dialog_new (GTK_WINDOW (gm),
@@ -668,8 +664,8 @@ gnomemeeting_init (GmWindow *gw,
   static GnomeMeeting instance;
   endpoint = MyApp->Endpoint ();
 
-  if (debug)
-    PTrace::Initialise (3);
+  if (clo->debug_level != 0)
+    PTrace::Initialise (clo->debug_level);
 
  
   /* Start the video preview */
@@ -799,6 +795,15 @@ gnomemeeting_init (GmWindow *gw,
   /* The gtk_widget_show (gm) will show the toolbar, hide it if needed */
   if (!gconf_client_get_bool (client, "/apps/gnomemeeting/view/left_toolbar", 0)) 
     gtk_widget_hide (GTK_WIDGET (gnome_app_get_dock_item_by_name(GNOME_APP (gm), "left_toolbar")));
+
+
+  /* Call the given host if needed */
+  if (clo->url) {
+
+     gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), 
+			 clo->url);
+     connect_cb (NULL, NULL);
+  }
 }
 
 
@@ -1210,6 +1215,7 @@ int main (int argc, char ** argv, char ** envp)
   GmPrefWindow *pw = NULL;
   GmTextChat *chat = NULL;
   GmRtpData *rtp = NULL;
+  GmCommandLineOptions *clo = NULL;
 
 
   /* Init the GmWindow */
@@ -1243,6 +1249,13 @@ int main (int argc, char ** argv, char ** envp)
   chat = new (GmTextChat);
 
 
+  /* Init the CommandLineOptions structure */
+  clo = new (GmCommandLineOptions);
+  clo->debug_level = 0;
+  clo->url = NULL;
+  clo->daemon = 0;
+
+
   /* Threads + Locale Init + Gconf */
   g_thread_init (NULL);
   gdk_threads_init ();
@@ -1255,7 +1268,7 @@ int main (int argc, char ** argv, char ** envp)
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 
   /* GnomeMeeting main initialisation */
-  gnomemeeting_init (gw, pw, lw, rtp, chat, argc, argv, envp);
+  gnomemeeting_init (gw, pw, lw, rtp, chat, clo, argc, argv, envp);
 
   /* Set a default gconf error handler */
   gconf_client_set_error_handling (gconf_client_get_default (),
