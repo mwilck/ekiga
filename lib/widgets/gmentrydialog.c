@@ -124,7 +124,7 @@ gm_entry_dialog_new (const char *label,
 
   gtk_dialog_add_buttons (GTK_DIALOG (ed),
 			  GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
-			  button_label, GTK_RESPONSE_ACCEPT);
+			  button_label, GTK_RESPONSE_ACCEPT, NULL);
 
   gtk_window_set_modal (GTK_WINDOW (ed), TRUE);
   
