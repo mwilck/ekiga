@@ -1,5 +1,26 @@
 2002-06-20  Kenneth Rohde Christiansen  <kenneth@gnu.org>
 
+	* lib/dialog.h: Added comments.
+	* lib/widgets/history-combo.h: Added comments.
+
+2002-06-20  Kenneth Rohde Christiansen  <kenneth@gnu.org>
+
+	* src/gnomemeeting.cpp (Connect): Fixed a crash as
+	we don't want to start a connection on just "callto://"
+	We need to call to someone.
+
+	Also changed the GConf key for history.
+
+2002-06-20  Kenneth Rohde Christiansen  <kenneth@gnu.org>	
+
+	* src/toolbar.cpp (gnomemeeting_init_toolbar): 
+	Fixed some wrong use of the new history widget.
+
+	* lib/widget/history-combo.c|h: Added new function
+	gm_history_combo_update (GmHistoryCombo *combo);
+
+2002-06-20  Kenneth Rohde Christiansen  <kenneth@gnu.org>	
+
         * src/config.cpp: I also forgot to commit this file :/
 
 2002-06-19  Kenneth Rohde Christiansen  <kenneth@gnu.org>

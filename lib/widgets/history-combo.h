@@ -60,6 +60,15 @@ typedef struct
 } GmHistoryComboClass;
 
 GType gm_history_combo_get_type (void);
+
+/**
+ * gm_history_combo_new:
+ *
+ * @key is the GConf key where you want to store
+ * the history.
+ *
+ * Creates a new combo box with history.
+ **/
 GtkWidget *gm_history_combo_new (const char *key);
 
 /**
@@ -73,7 +82,12 @@ GtkWidget *gm_history_combo_new (const char *key);
 void gm_history_combo_add_entry (GmHistoryCombo *combo, 
                                  const char *key,
                                  const char *new_entry);
-
+/**
+ * gm_history_combo_update:
+ *
+ * Updates the history list. If the GM_HISTORY_NUM key
+ * has been changed it will not max show this number.
+ **/
 void gm_history_combo_update (GmHistoryCombo *combo);
 
 G_END_DECLS
