@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GnomeMeeting 0.99.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-10-23 02:49+0200\n"
-"PO-Revision-Date: 2003-10-25 14:57+0300\n"
+"POT-Creation-Date: 2003-11-10 20:18+0200\n"
+"PO-Revision-Date: 2003-11-10 20:20+0200\n"
 "Last-Translator: Tomas Kuliavas <tokul@users.sourceforge.net>\n"
 "Language-Team: Lithuanian <komp_lt@konferencijos.lt>\n"
 "MIME-Version: 1.0\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit"
 
 #. Add the window icon and title
-#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:1274
+#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:1188
 msgid "GnomeMeeting"
 msgstr "GnomeMeeting"
 
@@ -36,43 +36,35 @@ msgid "Always forward calls to the given host"
 msgstr "Visada permesti kvietimus į nurodytą kompiuterį"
 
 #: gnomemeeting.schemas.in.in.h:3
-msgid "Audio player"
-msgstr "Audio grotuvas"
+msgid "Audio manager"
+msgstr "Audio tvarkyklė"
 
 #: gnomemeeting.schemas.in.in.h:4
-msgid "Audio player mixer"
-msgstr "Audio grotuvo garso kontrolė"
+msgid "Audio player"
+msgstr "Audio grotuvas"
 
 #: gnomemeeting.schemas.in.in.h:5
 msgid "Audio recorder"
 msgstr "Audio įrašymo programa"
 
 #: gnomemeeting.schemas.in.in.h:6
-msgid "Audio recorder mixer"
-msgstr "Audio įrašymo garso kontrolė"
-
-#: gnomemeeting.schemas.in.in.h:7
 msgid "Automatic echo cancellation"
 msgstr "Automatinis aido slopinimas"
 
-#: gnomemeeting.schemas.in.in.h:8 src/menu.cpp:911
-msgid "Automatically answer calls"
-msgstr "Automatiškai atsakyti į kvietimus"
-
-#: gnomemeeting.schemas.in.in.h:9 src/pref_window.cpp:829
+#: gnomemeeting.schemas.in.in.h:7 src/pref_window.cpp:727
 msgid "Automatically clear the text chat at the end of calls"
 msgstr "Automatiškai išvalyti pokalbių tekstus pasibaigus pokalbiui"
 
-#: gnomemeeting.schemas.in.in.h:10
+#: gnomemeeting.schemas.in.in.h:8
 msgid "Change the control panel section"
 msgstr "Keisti valdymo centro sekciją"
 
-#: gnomemeeting.schemas.in.in.h:11
+#: gnomemeeting.schemas.in.in.h:9
 msgid ""
 "Change the control panel section (4 means that the control panel is off)"
 msgstr "Keisti valdymo centro sekcija (4 reiškia, kad ji bus atjungta)"
 
-#: gnomemeeting.schemas.in.in.h:12 src/pref_window.cpp:1391
+#: gnomemeeting.schemas.in.in.h:10 src/pref_window.cpp:1251
 msgid ""
 "Choose the number of blocks (that have not changed) transmitted with each "
 "frame. These blocks fill in the background."
@@ -80,19 +72,11 @@ msgstr ""
 "Pasirinkite nepakitusių blokų kiekį, kuris bus perduodamas kartu su "
 "kiekvienu kadru. Šie blokai sudarys foną."
 
-#: gnomemeeting.schemas.in.in.h:13
-msgid "Color Format"
-msgstr "Spalvų formatas"
-
-#: gnomemeeting.schemas.in.in.h:14
-msgid "Color Format for the video palette"
-msgstr "Video paletės spalvų formatas"
-
-#: gnomemeeting.schemas.in.in.h:15 src/ldap_window.cpp:2572
+#: gnomemeeting.schemas.in.in.h:11 src/ldap_window.cpp:2943
 msgid "Comment"
 msgstr "Pastaba"
 
-#: gnomemeeting.schemas.in.in.h:16 src/pref_window.cpp:936
+#: gnomemeeting.schemas.in.in.h:12 src/pref_window.cpp:820
 msgid ""
 "Connection will be established in Fast Start mode. Fast Start is a new way "
 "to start calls faster that was introduced in H.323v2. It is not supported by "
@@ -105,39 +89,39 @@ msgstr ""
 "programos, o Greito Starto ir H.245 tunelių naudojimas gali sutrikdyti "
 "dalies NetMeeting versijų darbą."
 
-#: gnomemeeting.schemas.in.in.h:17
+#: gnomemeeting.schemas.in.in.h:13
 msgid "Country code"
 msgstr "Šalies kodas"
 
-#: gnomemeeting.schemas.in.in.h:18
+#: gnomemeeting.schemas.in.in.h:14
 msgid "Display a popup window when receiving a call"
 msgstr "Atėjus pokalbio kvietimui parodyti kvietimo langą"
 
-#: gnomemeeting.schemas.in.in.h:19 src/menu.cpp:446
-msgid "Do not disturb"
-msgstr "Netrukdyti"
-
-#: gnomemeeting.schemas.in.in.h:20
+#: gnomemeeting.schemas.in.in.h:15
 msgid "E-mail address"
 msgstr "El.pašto adresas"
 
-#: gnomemeeting.schemas.in.in.h:21
+#: gnomemeeting.schemas.in.in.h:16
 msgid "Enable 'Fast Start'"
 msgstr "Naudoti 'Greitą Startą'"
 
-#: gnomemeeting.schemas.in.in.h:22
+#: gnomemeeting.schemas.in.in.h:17
 msgid "Enable H.245 tunnelling"
 msgstr "Naudoti H.245 tunelius"
 
-#: gnomemeeting.schemas.in.in.h:23
+#: gnomemeeting.schemas.in.in.h:18
+msgid "Enable IP checking"
+msgstr "Naudoti IP tikrinimą"
+
+#: gnomemeeting.schemas.in.in.h:19
 msgid "Enable IP translation"
 msgstr "Naudoti IP konversiją"
 
-#: gnomemeeting.schemas.in.in.h:24
+#: gnomemeeting.schemas.in.in.h:20
 msgid "Enable bilinear filtering on displayed video"
 msgstr "Išvedant video naudoti bilinear filtrus"
 
-#: gnomemeeting.schemas.in.in.h:25 src/pref_window.cpp:824
+#: gnomemeeting.schemas.in.in.h:21
 msgid ""
 "Enable or disable bilinear interpolation when rendering video images (this "
 "has no effect in fullscreen mode)."
@@ -145,27 +129,27 @@ msgstr ""
 "Įjungia arba išjungia bilinear interpoliaciją, kai programa generuoja video "
 "vaizdus (neveikia pilnaekraniame režime)"
 
-#: gnomemeeting.schemas.in.in.h:26
+#: gnomemeeting.schemas.in.in.h:22
 msgid "Enable registering"
 msgstr "Įjungti registraciją"
 
-#: gnomemeeting.schemas.in.in.h:27
+#: gnomemeeting.schemas.in.in.h:23
 msgid "Enable silence detection"
 msgstr "Įjungti tylos atpažinimą"
 
-#: gnomemeeting.schemas.in.in.h:28
+#: gnomemeeting.schemas.in.in.h:24
 msgid "Enable video reception"
 msgstr "Įjungti video priėmimą"
 
-#: gnomemeeting.schemas.in.in.h:29
+#: gnomemeeting.schemas.in.in.h:25
 msgid "Enable video transmission"
 msgstr "Įjungti video perdavimą"
 
-#: gnomemeeting.schemas.in.in.h:30 src/pref_window.cpp:747
+#: gnomemeeting.schemas.in.in.h:26
 msgid "Enter a comment about yourself for the user directory."
 msgstr "Įveskite pastabas apie save, kurios bus išvedamos vartotojų kataloge."
 
-#: gnomemeeting.schemas.in.in.h:31 src/pref_window.cpp:1022
+#: gnomemeeting.schemas.in.in.h:27 src/pref_window.cpp:890
 msgid ""
 "Enter the public IP of your NAT/PAT router if you want to use IP "
 "translation. If you are registered to ils.seconix.com, GnomeMeeting will "
@@ -175,66 +159,66 @@ msgstr ""
 "IP konversiją. Jei jūs užsiregistruosite ils.seconix.com, GnomeMeeting "
 "automatiškai gaus jūsų išorinį adresą per ILS."
 
-#: gnomemeeting.schemas.in.in.h:32 src/pref_window.cpp:742
+#: gnomemeeting.schemas.in.in.h:28 src/pref_window.cpp:666
 msgid "Enter your e-mail address."
 msgstr "Įveskite savo el.pašto adresą."
 
-#: gnomemeeting.schemas.in.in.h:33 src/pref_window.cpp:732
+#: gnomemeeting.schemas.in.in.h:29 src/pref_window.cpp:652
 msgid "Enter your first name."
 msgstr "Įveskite savo vardą."
 
-#: gnomemeeting.schemas.in.in.h:34 src/pref_window.cpp:737
+#: gnomemeeting.schemas.in.in.h:30 src/pref_window.cpp:659
 msgid "Enter your last name."
 msgstr "Įveskite savo pavardę."
 
-#: gnomemeeting.schemas.in.in.h:35 src/pref_window.cpp:752
+#: gnomemeeting.schemas.in.in.h:31
 msgid "Enter your location (country or city) for the user directory."
 msgstr ""
 "Įveskite jūsų gyvenamąją vietą (šalį ar miestą), kuri bus rodoma vartotojų "
 "kataloge."
 
-#: gnomemeeting.schemas.in.in.h:36
+#: gnomemeeting.schemas.in.in.h:32
 msgid "First name"
 msgstr "Vardas"
 
-#: gnomemeeting.schemas.in.in.h:37
+#: gnomemeeting.schemas.in.in.h:33
 msgid "Forward calls to host"
 msgstr "Permesti kvietimus į kitą kompiuterį"
 
-#: gnomemeeting.schemas.in.in.h:38
+#: gnomemeeting.schemas.in.in.h:34
 msgid "Forward calls to the given host if busy"
 msgstr ""
 "Permesti kvietimus į nurodytą kompiuterį, jei esamas kompiuteris užimtas"
 
-#: gnomemeeting.schemas.in.in.h:39
+#: gnomemeeting.schemas.in.in.h:35
 msgid "Forward calls to the given host if no answer"
 msgstr "Permesti kvietimus į nurodytą kompiuterį, jei niekas neatsako"
 
-#: gnomemeeting.schemas.in.in.h:40
+#: gnomemeeting.schemas.in.in.h:36
 msgid "Fullscreen height"
 msgstr "Pilnaekranio vaizdo aukštis"
 
-#: gnomemeeting.schemas.in.in.h:41
+#: gnomemeeting.schemas.in.in.h:37
 msgid "Fullscreen width"
 msgstr "Pilnaekranio vaizdo plotis"
 
-#: gnomemeeting.schemas.in.in.h:42 src/pref_window.cpp:963
+#: gnomemeeting.schemas.in.in.h:38 src/pref_window.cpp:846
 msgid "Gatekeeper ID"
 msgstr "GateKeeper ID"
 
-#: gnomemeeting.schemas.in.in.h:43
+#: gnomemeeting.schemas.in.in.h:39
 msgid "Gatekeeper alias"
 msgstr "GateKeeper trumpas vardas"
 
-#: gnomemeeting.schemas.in.in.h:44 src/pref_window.cpp:962
+#: gnomemeeting.schemas.in.in.h:40 src/pref_window.cpp:845
 msgid "Gatekeeper host"
 msgstr "GateKeeper adresas"
 
-#: gnomemeeting.schemas.in.in.h:45
+#: gnomemeeting.schemas.in.in.h:41
 msgid "Gatekeeper password"
 msgstr "GateKeeper slaptažodis"
 
-#: gnomemeeting.schemas.in.in.h:46
+#: gnomemeeting.schemas.in.in.h:42
 msgid ""
 "If enabled, GnomeMeeting will play a sound when receiving an incoming call "
 "(the sound to play is chosen in the Gnome Control Center)."
@@ -242,17 +226,17 @@ msgstr ""
 "Įjungus GnomeMeeting įšleis garsus, kai gaus pokalbio kvietimą (garsai "
 "pasirenkami Gnome Valdymo centre)."
 
-#: gnomemeeting.schemas.in.in.h:47 src/pref_window.cpp:788
+#: gnomemeeting.schemas.in.in.h:43
 msgid ""
 "If enabled, GnomeMeeting will start hidden. The docklet must be enabled."
 msgstr "Įjungus GnomeMeeting pasileis pasislėpęs. Docket turi būti įjungtas."
 
-#: gnomemeeting.schemas.in.in.h:48 src/pref_window.cpp:802
+#: gnomemeeting.schemas.in.in.h:44
 msgid ""
 "If enabled, a popup window will be displayed when receiving an incoming call."
 msgstr "Įjungus kvietimo langas bus išvedamas gavus pokalbio kvietimą."
 
-#: gnomemeeting.schemas.in.in.h:49 src/pref_window.cpp:901
+#: gnomemeeting.schemas.in.in.h:45
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you already are in a call or if you are in "
@@ -261,7 +245,7 @@ msgstr ""
 "Įjungus visi ateinantys pokalbių kvietimai bus permesti į žemiau esančiame "
 "lauke nurodytą kompiuterį, jei Jūs esate \"Netrukdyti\" režime."
 
-#: gnomemeeting.schemas.in.in.h:50 src/pref_window.cpp:898
+#: gnomemeeting.schemas.in.in.h:46
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you do not answer the call."
@@ -269,7 +253,7 @@ msgstr ""
 "Įjungus visi ateinantys pokalbių kvietimai bus permesti į žemiau esančiame "
 "lauke nurodytą kompiuterį, jei Jūs neatsakysite į kvietimą."
 
-#: gnomemeeting.schemas.in.in.h:51 src/pref_window.cpp:895
+#: gnomemeeting.schemas.in.in.h:47
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below."
@@ -277,47 +261,37 @@ msgstr ""
 "Įjungus opciją, visi ateinantys pokalbių kvietimai bus permetami į žemiau "
 "esančiame lauke nurodytą kompiuterį."
 
-#: gnomemeeting.schemas.in.in.h:52 src/pref_window.cpp:1365
+#: gnomemeeting.schemas.in.in.h:48 src/pref_window.cpp:1227
 msgid "If enabled, allows video to be received during a call."
 msgstr "Įjungus opciją, pokalbio metu bus galima priimti video."
 
-#: gnomemeeting.schemas.in.in.h:53 src/pref_window.cpp:796
-msgid "If enabled, incoming calls will be automatically answered."
-msgstr ""
-"Įjungus opciją, bus atomatiškai atsakomą į visus ateinančius pokalbių "
-"kvietimus."
-
-#: gnomemeeting.schemas.in.in.h:54 src/pref_window.cpp:799
-msgid "If enabled, incoming calls will be automatically refused."
-msgstr "Įjungus opciją, visi pokalbių kvietimai bus automatiškai atmetami."
-
-#: gnomemeeting.schemas.in.in.h:55 src/pref_window.cpp:858
+#: gnomemeeting.schemas.in.in.h:49 src/pref_window.cpp:751
 msgid "If enabled, register with the selected user directory."
 msgstr ""
 "Įjungus opciją, Jūs būsite užregistruotas pasirinktame vartotojų kataloge."
 
-#: gnomemeeting.schemas.in.in.h:56 src/pref_window.cpp:785
+#: gnomemeeting.schemas.in.in.h:50 src/pref_window.cpp:706
 msgid ""
 "If enabled, the splash screen will be displayed when GnomeMeeting starts."
 msgstr "Įjungus opciją, paleidžiant GnomeMeeting matysite pristatymo langą."
 
-#: gnomemeeting.schemas.in.in.h:57 src/pref_window.cpp:829
+#: gnomemeeting.schemas.in.in.h:51 src/pref_window.cpp:727
 msgid ""
 "If enabled, the text chat will automatically be cleared at the end of calls."
 msgstr ""
 "Įjungus opciją, tekstinis pokalbio laukas bus automatiškai išvalytas "
 "pasibaigus pokalbiui."
 
-#: gnomemeeting.schemas.in.in.h:58 src/pref_window.cpp:1335
+#: gnomemeeting.schemas.in.in.h:52 src/pref_window.cpp:1202
 msgid "If enabled, use silence detection with the GSM and G.711 codecs."
 msgstr ""
 "Įjungus opciją, sistema naudos tylos atpažinimą su GSM ir G.711 kodekais."
 
-#: gnomemeeting.schemas.in.in.h:59 src/pref_window.cpp:1362
+#: gnomemeeting.schemas.in.in.h:53 src/pref_window.cpp:1224
 msgid "If enabled, video is transmitted during a call."
 msgstr "Įjungus opciją, pokalbio metu bus perduodamas video vaizdas."
 
-#: gnomemeeting.schemas.in.in.h:60 src/pref_window.cpp:861
+#: gnomemeeting.schemas.in.in.h:54 src/pref_window.cpp:753
 msgid ""
 "If enabled, your details are shown to people browsing the user directory. If "
 "disabled, you are not visible to users browsing the user directory, but they "
@@ -327,129 +301,129 @@ msgstr ""
 "katalogą. Atjungus ją, vartotojų kataloge Jūsų nesimatys bet kiti vartotojai "
 "vis dar galės Jums paskambinti per katalogo kvietimo adresą."
 
-#: gnomemeeting.schemas.in.in.h:61
+#: gnomemeeting.schemas.in.in.h:55
+msgid "Incoming call mode"
+msgstr "Skambučio laukimo režimas"
+
+#: gnomemeeting.schemas.in.in.h:56
 msgid "Kind of network selected in the druid"
 msgstr "Pasirinktas tinklinio ryšio tipas"
 
-#: gnomemeeting.schemas.in.in.h:62
+#: gnomemeeting.schemas.in.in.h:57
 msgid "Last name"
 msgstr "Pavardė"
 
-#: gnomemeeting.schemas.in.in.h:63
+#: gnomemeeting.schemas.in.in.h:58
 msgid "Listen Port"
 msgstr "Klausymo jungtis"
 
-#: gnomemeeting.schemas.in.in.h:64
+#: gnomemeeting.schemas.in.in.h:59
 msgid "Local video window height"
 msgstr "Vietinio video lango aukštis"
 
-#: gnomemeeting.schemas.in.in.h:65
+#: gnomemeeting.schemas.in.in.h:60
 msgid "Local video window width"
 msgstr "Vietinio video lango plotis"
 
-#: gnomemeeting.schemas.in.in.h:66 src/ldap_window.cpp:2585
+#: gnomemeeting.schemas.in.in.h:61 src/ldap_window.cpp:2956
 msgid "Location"
 msgstr "Vieta"
 
-#: gnomemeeting.schemas.in.in.h:67
+#: gnomemeeting.schemas.in.in.h:62
 msgid "Maximum jitter buffer"
 msgstr "Maksimalus sklaidos buferis"
 
-#: gnomemeeting.schemas.in.in.h:68
+#: gnomemeeting.schemas.in.in.h:63
 msgid "Maximum video bandwidth"
 msgstr "Maksimalus video srauto greitis"
 
-#: gnomemeeting.schemas.in.in.h:69
+#: gnomemeeting.schemas.in.in.h:64
 msgid "Minimum jitter buffer"
 msgstr "Minimalus sklaidos buferis"
 
-#: gnomemeeting.schemas.in.in.h:70
+#: gnomemeeting.schemas.in.in.h:65
 msgid "Minimum transmitted FPS"
 msgstr "Minimalus perduodamų per sekundę kadrų skaičius"
 
-#: gnomemeeting.schemas.in.in.h:71
+#: gnomemeeting.schemas.in.in.h:66
 msgid "Minimum transmitted video quality"
 msgstr "Minimali perduodamo vaizdo kokybė"
 
-#: gnomemeeting.schemas.in.in.h:72
+#: gnomemeeting.schemas.in.in.h:67
 msgid "Number of entries to store in history boxes"
 msgstr "Atmintyje saugomas buvusių kvietimų skaičius"
 
-#: gnomemeeting.schemas.in.in.h:73
+#: gnomemeeting.schemas.in.in.h:68
 msgid "Number of frames for G.711"
 msgstr "Kadrų skaičius G.711 protokole"
 
-#: gnomemeeting.schemas.in.in.h:74
+#: gnomemeeting.schemas.in.in.h:69
 msgid "Number of frames for GSM"
 msgstr "Kadrų skaičius GSM protokole"
 
-#: gnomemeeting.schemas.in.in.h:75
+#: gnomemeeting.schemas.in.in.h:70
 msgid "Number of frames transmitted in each packet for the G.711 codec."
 msgstr ""
 "Kadrų skaičius, kuris bus perduodamas su kiekvienu paketu naudojant G.711 "
 "kodeką."
 
-#: gnomemeeting.schemas.in.in.h:76
+#: gnomemeeting.schemas.in.in.h:71
 msgid "Number of frames transmitted in each packet for the GSM codec."
 msgstr ""
 "Kadrų skaičius, kuris bus perduodamas su kiekvienu paketu naudojant GSM "
 "kodeką."
 
-#: gnomemeeting.schemas.in.in.h:77
+#: gnomemeeting.schemas.in.in.h:72 src/pref_window.cpp:721
+msgid "Place windows displaying video above other windows during calls."
+msgstr "Skambučių metu video langus rodyti aukščiau kitų langų."
+
+#: gnomemeeting.schemas.in.in.h:73
 msgid "Play a sound on incoming calls"
 msgstr "Leisti garsus atėjus pokalbio kvietimui"
 
-#: gnomemeeting.schemas.in.in.h:78
+#: gnomemeeting.schemas.in.in.h:74
 msgid "Public IP of the NAT/PAT router"
 msgstr "Išorinis NAT/PAT maršrutizatoriaus adresas"
 
-#: gnomemeeting.schemas.in.in.h:79
+#: gnomemeeting.schemas.in.in.h:75
 msgid "Received Video Quality Hint"
 msgstr "Gaunamos video kokybės aprašas"
 
-#: gnomemeeting.schemas.in.in.h:80
+#: gnomemeeting.schemas.in.in.h:76
 msgid "Registering method"
 msgstr "Registracijos metodas"
 
-#: gnomemeeting.schemas.in.in.h:81 src/pref_window.cpp:990
+#: gnomemeeting.schemas.in.in.h:77 src/pref_window.cpp:865
 msgid "Registering method to use"
 msgstr "Naudojamas registracijos metodas"
 
-#: gnomemeeting.schemas.in.in.h:82
+#: gnomemeeting.schemas.in.in.h:78
 msgid "Remote video window height"
 msgstr "Nutolusio video lango aukštis"
 
-#: gnomemeeting.schemas.in.in.h:83
+#: gnomemeeting.schemas.in.in.h:79
 msgid "Remote video window width"
 msgstr "Nutolusio video lango plotis"
 
-#: gnomemeeting.schemas.in.in.h:84
+#: gnomemeeting.schemas.in.in.h:80
 msgid "Revision of the schema file"
 msgstr "Schemos failo versija"
 
-#: gnomemeeting.schemas.in.in.h:85 src/druid.cpp:792 src/pref_window.cpp:1060
+#: gnomemeeting.schemas.in.in.h:81 src/pref_window.cpp:940
 msgid "Select the audio player device to use."
 msgstr "Pasirinkti įrenginį naudojamą audio grotuvo."
 
-#: gnomemeeting.schemas.in.in.h:86 src/druid.cpp:799 src/pref_window.cpp:1067
+#: gnomemeeting.schemas.in.in.h:82 src/pref_window.cpp:946
 msgid "Select the audio recorder device to use."
 msgstr "Pasirinkti įrenginį naudojamą audio įrašymo."
 
-#: gnomemeeting.schemas.in.in.h:87 src/pref_window.cpp:1140
+#: gnomemeeting.schemas.in.in.h:83 src/pref_window.cpp:1024
 msgid ""
 "Select the format for video cameras. (Does not apply to most USB cameras)."
 msgstr ""
 "Pasirinkti video kamerų formatą. (Nustatymas negalioja daugumai USB kamerų)."
 
-#: gnomemeeting.schemas.in.in.h:88 src/druid.cpp:795 src/pref_window.cpp:1063
-msgid "Select the mixer to use to change the volume of the audio player."
-msgstr "Pasirinkite kontrolerį, naudojamą reguliuoti audio grotuvo garso lygį."
-
-#: gnomemeeting.schemas.in.in.h:89 src/druid.cpp:802 src/pref_window.cpp:1070
-msgid "Select the mixer to use to change the volume of the audio recorder."
-msgstr "Pasirinkite kontrolerį, naudojamą reguliuoti audio įrašymo garso lygį."
-
-#: gnomemeeting.schemas.in.in.h:90 src/pref_window.cpp:1137
+#: gnomemeeting.schemas.in.in.h:84 src/pref_window.cpp:1022
 msgid ""
 "Select the transmitted video size: Small (QCIF 176x144) or Large (CIF "
 "352x288)."
@@ -457,7 +431,7 @@ msgstr ""
 "Pasirinkite perduodamo video vaizdo dydį: mažas (QCIF 176x144) ar didelis "
 "(CIF 352x288)."
 
-#: gnomemeeting.schemas.in.in.h:91 src/pref_window.cpp:1130
+#: gnomemeeting.schemas.in.in.h:85 src/pref_window.cpp:1016
 msgid ""
 "Select the video device to use. Using an invalid video device or \"Picture\" "
 "for video transmission will transmit a test picture."
@@ -465,51 +439,51 @@ msgstr ""
 "Pasirinkite naudojamą video įrenginį. Pasirinkus netinkamą įrenginį arba "
 "\"Paveikslas\" opciją, vietoj video bus perduodamas bandomasis paveikslėlis."
 
-#: gnomemeeting.schemas.in.in.h:92
+#: gnomemeeting.schemas.in.in.h:86
 msgid "Show a status bar at the bottom of the main window"
 msgstr "Rodyti būklės eilutę pagrindinio lango apačioje"
 
-#: gnomemeeting.schemas.in.in.h:93
+#: gnomemeeting.schemas.in.in.h:87
 msgid "Show chat window"
 msgstr "Rodyti pokalbių langą"
 
-#: gnomemeeting.schemas.in.in.h:94
+#: gnomemeeting.schemas.in.in.h:88
 msgid "Show my details to other registered users"
 msgstr "Pateikti informaciją kitiems registruotiems vartotojams"
 
-#: gnomemeeting.schemas.in.in.h:95
+#: gnomemeeting.schemas.in.in.h:89
 msgid "Show splash screen"
 msgstr "Rodyti pristatymo langą"
 
-#: gnomemeeting.schemas.in.in.h:96
+#: gnomemeeting.schemas.in.in.h:90
 msgid "Show status bar"
 msgstr "Rodyti būklės eilutę"
 
-#: gnomemeeting.schemas.in.in.h:97
+#: gnomemeeting.schemas.in.in.h:91
 msgid "Show the chat window in the main window"
 msgstr "Rodyti pokalbių langą pagrindiniame lange"
 
-#: gnomemeeting.schemas.in.in.h:98
+#: gnomemeeting.schemas.in.in.h:92
 msgid "Start hidden"
 msgstr "Pasileisti pasislėpus"
 
-#: gnomemeeting.schemas.in.in.h:99 src/menu.cpp:616 src/menu.cpp:860
+#: gnomemeeting.schemas.in.in.h:93 src/menu.cpp:481 src/menu.cpp:612
 msgid "Switch to fullscreen"
 msgstr "Pilnaekranis vaizdas"
 
-#: gnomemeeting.schemas.in.in.h:100
+#: gnomemeeting.schemas.in.in.h:94
 msgid "Switch to fullscreen for images displayed in the main GUI."
 msgstr "Persijungti į vaizdų išvedimą pilnaekraniame režime."
 
-#: gnomemeeting.schemas.in.in.h:101
+#: gnomemeeting.schemas.in.in.h:95
 msgid "TCP Port Range"
 msgstr "TCP jungčių regionas"
 
-#: gnomemeeting.schemas.in.in.h:102
+#: gnomemeeting.schemas.in.in.h:96
 msgid "The Audio Codecs List"
 msgstr "Audio kodekų sąrašas"
 
-#: gnomemeeting.schemas.in.in.h:103 src/pref_window.cpp:1078
+#: gnomemeeting.schemas.in.in.h:97 src/pref_window.cpp:954
 msgid ""
 "The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic "
 "Gain Compensation. Choosing Automatic Gain Compensation modulates the volume "
@@ -519,7 +493,7 @@ msgstr ""
 "Automatinis reguliavimas. Pasirinkus automatinį reguliavimą sistema derina "
 "garso lygį siekdama išgauti geriausią kokybę."
 
-#: gnomemeeting.schemas.in.in.h:104 src/pref_window.cpp:983
+#: gnomemeeting.schemas.in.in.h:98 src/pref_window.cpp:859
 msgid ""
 "The Gatekeeper alias to use when registering (string, or E164 ID if only "
 "0123456789#)."
@@ -527,28 +501,34 @@ msgstr ""
 "Trumpas GateKeeper vardas naudojamas registruojantis (simbolių seka arba "
 "E164 ID, jei priimtini tik 0123456789# simboliai)."
 
-#: gnomemeeting.schemas.in.in.h:105 src/pref_window.cpp:980
+#: gnomemeeting.schemas.in.in.h:99 src/pref_window.cpp:857
 msgid "The Gatekeeper host to register with."
 msgstr "Naudojamo GateKeeper serverio adresas."
 
-#: gnomemeeting.schemas.in.in.h:106 src/pref_window.cpp:977
+#: gnomemeeting.schemas.in.in.h:100 src/pref_window.cpp:855
 msgid "The Gatekeeper identifier to register with."
 msgstr "Registruojantis naudojama GateKeeper identifikacija."
 
-#: gnomemeeting.schemas.in.in.h:107 src/pref_window.cpp:986
+#: gnomemeeting.schemas.in.in.h:101 src/pref_window.cpp:862
 msgid ""
 "The Gatekeeper password to use for H.235 authentication to the Gatekeeper."
 msgstr "Esant H.235 autentifikacijai naudojamas GateKeeper slaptažodis."
 
-#: gnomemeeting.schemas.in.in.h:108
+#: gnomemeeting.schemas.in.in.h:102
 msgid "The Video Quality to request to the remote"
 msgstr "Video kokybė, kurią siekiama gauti iš nutolusio pašnekovo"
 
-#: gnomemeeting.schemas.in.in.h:109
+#: gnomemeeting.schemas.in.in.h:103 src/pref_window.cpp:927
+msgid ""
+"The audio manager that will be used to detect the devices and manage them."
+msgstr ""
+"Garso tvarkyklė, kuri bus naudojama atpažinti įrenginius ir juos valdyti."
+
+#: gnomemeeting.schemas.in.in.h:104
 msgid "The default video view"
 msgstr "Įprastas video režimas"
 
-#: gnomemeeting.schemas.in.in.h:110
+#: gnomemeeting.schemas.in.in.h:105
 msgid ""
 "The default video view (0: Local, 1: Remote, 2: Both incrusted, 3: Both with "
 "local video in a separate window, 4: Both)"
@@ -556,26 +536,26 @@ msgstr ""
 "Įprastas video režimas (0: Nuosavas, 1: Nutolęs, 2: Abu įrėminti, 3: Abu su "
 "nuosavu video atskirame lange, 4: Abu)"
 
-#: gnomemeeting.schemas.in.in.h:111
+#: gnomemeeting.schemas.in.in.h:106
 msgid "The height of the local video window"
 msgstr "Nuosavo video lango aukštis"
 
-#: gnomemeeting.schemas.in.in.h:112
+#: gnomemeeting.schemas.in.in.h:107
 msgid "The height of the remote video window"
 msgstr "Nutolusio video lango aukštis"
 
-#: gnomemeeting.schemas.in.in.h:113 src/pref_window.cpp:888
+#: gnomemeeting.schemas.in.in.h:108 src/pref_window.cpp:775
 msgid ""
 "The host where calls should be forwarded to in the cases selected above."
 msgstr ""
 "Kompiuteris, į kurį turi būti persiųsti kvietimai įvyksiantys aukščiau "
 "pasirinktais atvejais."
 
-#: gnomemeeting.schemas.in.in.h:114 src/pref_window.cpp:819
+#: gnomemeeting.schemas.in.in.h:109 src/pref_window.cpp:718
 msgid "The image height for fullscreen."
 msgstr "Atvaizdo dydis pilnaekraniame režime."
 
-#: gnomemeeting.schemas.in.in.h:115 src/pref_window.cpp:1143
+#: gnomemeeting.schemas.in.in.h:110 src/pref_window.cpp:1027
 msgid ""
 "The image to transmit if \"Picture\" is selected for the video device or if "
 "the opening of the device fails. Leave blank to use the default GnomeMeeting "
@@ -585,23 +565,23 @@ msgstr ""
 "\"Atvaizdas\" arba jei nepavyksta atidaryti video įrenginio. Nenurodžius bus "
 "siunčiamas GnomeMeeting logotipas."
 
-#: gnomemeeting.schemas.in.in.h:116 src/pref_window.cpp:818
+#: gnomemeeting.schemas.in.in.h:111 src/pref_window.cpp:718
 msgid "The image width for fullscreen."
 msgstr "Atvaizdo plotis pilnaekraniame režime."
 
-#: gnomemeeting.schemas.in.in.h:117
+#: gnomemeeting.schemas.in.in.h:112
 msgid "The list of called URLs"
 msgstr "Panaudotų adresų sąrašas"
 
-#: gnomemeeting.schemas.in.in.h:118
+#: gnomemeeting.schemas.in.in.h:113
 msgid "The list of groups"
 msgstr "Grupių sąrašas"
 
-#: gnomemeeting.schemas.in.in.h:119 src/pref_window.cpp:1331
+#: gnomemeeting.schemas.in.in.h:114 src/pref_window.cpp:1200
 msgid "The maximum jitter buffer size for audio reception (in ms)."
 msgstr "Leistinas audio signalo priėmimo buferio dydis (milisekundėmis)."
 
-#: gnomemeeting.schemas.in.in.h:120 src/pref_window.cpp:1373
+#: gnomemeeting.schemas.in.in.h:115 src/pref_window.cpp:1235
 msgid ""
 "The maximum video bandwidth in kbytes/s. The video quality and the number of "
 "transmitted frames per second will be dynamically adjusted above their "
@@ -612,11 +592,11 @@ msgstr ""
 "minimalios vertės pokalbių metu siekiant sumažinti naudojamą srautą iki "
 "nurodytos vertės."
 
-#: gnomemeeting.schemas.in.in.h:121 src/pref_window.cpp:1330
+#: gnomemeeting.schemas.in.in.h:116 src/pref_window.cpp:1200
 msgid "The minimum jitter buffer size for audio reception (in ms)."
 msgstr "Mažiausias audio signalo priėmimo buferio dydis (milisekundėmis)"
 
-#: gnomemeeting.schemas.in.in.h:122 src/pref_window.cpp:1386
+#: gnomemeeting.schemas.in.in.h:117 src/pref_window.cpp:1247
 msgid ""
 "The minimum number of video frames to transmit each second when trying to "
 "minimize the bandwidth."
@@ -624,7 +604,7 @@ msgstr ""
 "Mažiausias kadrų per sekundę skaičius, kurį būtina išsaugoti mažinant "
 "panaudojamą srautą."
 
-#: gnomemeeting.schemas.in.in.h:124
+#: gnomemeeting.schemas.in.in.h:119
 #, no-c-format
 msgid ""
 "The minimum transmitted video quality to keep when trying to minimize the "
@@ -635,7 +615,7 @@ msgstr ""
 "panaudojamą srautą: pasirinkite 100% norėdami vietiniame tinkle išsaugoti "
 "geriausią kokybę, 1% nustato prasčiausios kokybės signalą."
 
-#: gnomemeeting.schemas.in.in.h:125
+#: gnomemeeting.schemas.in.in.h:120
 msgid ""
 "The port to listen to for incoming connections. GnomeMeeting needs to be "
 "restarted for the new value to take effect."
@@ -644,7 +624,7 @@ msgstr ""
 "turės būti sustabdytas ir paleistas iš naujo, kad įsigaliotų pakeista "
 "reikšmė."
 
-#: gnomemeeting.schemas.in.in.h:126
+#: gnomemeeting.schemas.in.in.h:121
 msgid ""
 "The prefix that will be used to save pictures of the conversation. That "
 "prefix is followed by the snapshot number."
@@ -652,7 +632,7 @@ msgstr ""
 "Priešdėlis, kuris bus naudojamas išsaugant pokalbio atvaizdus. Saugant prie "
 "jo bus pridėtas atvaizdo numeris."
 
-#: gnomemeeting.schemas.in.in.h:127
+#: gnomemeeting.schemas.in.in.h:122
 msgid ""
 "The range of TCP ports beside the listen_port that GnomeMeeting will use for "
 "the H.245 channel. You can change the TCP port range if you are using IP "
@@ -669,7 +649,7 @@ msgstr ""
 "reikšmės. Ši adresų sritis negalioja jei abu pokalbio dalyviai naudoja H.245 "
 "tunelius."
 
-#: gnomemeeting.schemas.in.in.h:128
+#: gnomemeeting.schemas.in.in.h:123
 msgid ""
 "The range of UDP ports that GnomeMeeting will use for RTP (audio and video "
 "communication channels). You can change the UDP port range if you are using "
@@ -684,7 +664,7 @@ msgstr ""
 "GnomeMeeting turi būti sustabdytas ir paleistas iš naujo, kad įsigaliotų "
 "pakeistos reikšmės."
 
-#: gnomemeeting.schemas.in.in.h:129
+#: gnomemeeting.schemas.in.in.h:124
 msgid ""
 "The range of UDP ports that GnomeMeeting will use when registering to "
 "gatekeepers. You can change the UDP port range if you are using IP "
@@ -700,38 +680,54 @@ msgstr ""
 "turi būti sustabdytas ir paleistas iš naujo, kad įsigaliotų pakeistos "
 "reikšmės. Nustatymas negalioja, jei Jūs nenaudojate tarpinių serverių."
 
-#: gnomemeeting.schemas.in.in.h:130
+#: gnomemeeting.schemas.in.in.h:125
 msgid "The save prefix"
 msgstr "Išsaugojimo priešdėlis"
 
-#: gnomemeeting.schemas.in.in.h:131 src/pref_window.cpp:1081
+#: gnomemeeting.schemas.in.in.h:126 src/pref_window.cpp:957
 msgid ""
 "The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)."
 msgstr "Jūsų dviejų raidžių šalies kodas (pvz.: LT, UK, FR, DE, ...)."
 
-#: gnomemeeting.schemas.in.in.h:132 src/pref_window.cpp:855
+#: gnomemeeting.schemas.in.in.h:127 src/pref_window.cpp:749
 msgid "The user directory server to register with."
 msgstr "Naudojamas vartotojų registravimo serveris."
 
-#: gnomemeeting.schemas.in.in.h:133 src/pref_window.cpp:1134
+#: gnomemeeting.schemas.in.in.h:128 src/pref_window.cpp:1020
 msgid ""
 "The video channel number to use (to select camera, tv or other sources)."
 msgstr ""
 "Naudojamas video kanalo numeris (pasirinkite kamera, tv ar kitą šaltinį)."
 
-#: gnomemeeting.schemas.in.in.h:134
+#: gnomemeeting.schemas.in.in.h:129 src/pref_window.cpp:1005
+msgid ""
+"The video manager that will be used to detect the devices and manage them."
+msgstr ""
+"Vaizdo tvarkyklė, kuri bus naudojama atpažinti įrenginius ir juos valdyti."
+
+#: gnomemeeting.schemas.in.in.h:130
+msgid ""
+"The way to react to incoming calls: 0 displays a popup, 1 automatically "
+"answers the call, 2 automatically rejects the call and 3 forwards the call "
+"to the given URL, if any."
+msgstr ""
+"Kaip reaguoti į sulauktus skambučius: 0 rodyti užklausimo langą, 1 "
+"automatiškai atsakyti, 2 automatiškai atmesti skambutį ar 3 permesti "
+"skambutį nurodytu adresu, jei toks yra."
+
+#: gnomemeeting.schemas.in.in.h:131
 msgid "The width of the local video window"
 msgstr "Vietinio video lango plotis"
 
-#: gnomemeeting.schemas.in.in.h:135
+#: gnomemeeting.schemas.in.in.h:132
 msgid "The width of the remote video window"
 msgstr "Nutolusio video lango plotis"
 
-#: gnomemeeting.schemas.in.in.h:136
+#: gnomemeeting.schemas.in.in.h:133
 msgid "The zoom value"
 msgstr "Mastelis"
 
-#: gnomemeeting.schemas.in.in.h:137
+#: gnomemeeting.schemas.in.in.h:134
 msgid ""
 "The zoom value to apply to images displayed in the main GUI (can be 0.50, "
 "1.00, or 2.00)."
@@ -739,7 +735,7 @@ msgstr ""
 "Mastelis naudojamas išvedant piešinius pagrindiniame lange (gali būti 0.50, "
 "1.00 arba 2.00)."
 
-#: gnomemeeting.schemas.in.in.h:138 src/pref_window.cpp:933
+#: gnomemeeting.schemas.in.in.h:135 src/pref_window.cpp:817
 msgid ""
 "This enables H.245 Tunnelling mode. In H.245 Tunnelling mode H.245 messages "
 "are encapsulated into the the H.225 channel (port 1720). This saves one TCP "
@@ -753,7 +749,20 @@ msgstr ""
 "specifikacijoje ir NetMeeting jų nepalaiko. Įjungti greito starto ir H.245 "
 "tunelių režimai gali sutrikdyti dalies NetMeeting versijų darbą."
 
-#: gnomemeeting.schemas.in.in.h:139 src/pref_window.cpp:1019
+#: gnomemeeting.schemas.in.in.h:136
+msgid ""
+"This enables IP checking from dyndns.org and fills the IP in the public IP "
+"of the NAT/PAT gateway field of GnomeMeeting. The returned IP is only used "
+"when IP Translation is enabled. If you disable IP checking, you will have to "
+"manually enter the IP of your gateway in the GnomeMeeting preferences."
+msgstr ""
+"Šis nustatymas įjungia adreso tikrinimą tarp dyndns.org ir užpildo išorinį "
+"NAT/PAT maršrutizatoriaus, kuriuo naudojasi GnomeMeeting vartotojas, adresą "
+"automatiškai. Turimas adresas perduodamas tik esant įjungtai IP konversijai. "
+"Jei Jūs atjungsite adreso tikrinimą, Jūs turėsite rankiniu būdu įvesti Jūsų "
+"maršrutizatoriaus adresą GnomeMeeting nustatymuose."
+
+#: gnomemeeting.schemas.in.in.h:137 src/pref_window.cpp:888
 msgid ""
 "This enables IP translation. IP translation is useful if GnomeMeeting is "
 "running behind a NAT/PAT router. You have to put the public IP of the router "
@@ -768,7 +777,7 @@ msgstr ""
 "GnomeMeeting pats gaus išorinį adresą naudodamasis ILS serveriu. Jei Jūsų "
 "maršrutizatorius palaiko H.323 protokolą, Jūs galite atjungti šį nustatymą."
 
-#: gnomemeeting.schemas.in.in.h:140
+#: gnomemeeting.schemas.in.in.h:138
 msgid ""
 "This permits to set the mode for User Input Capabilities. The values can be "
 "\"All\" (0), \"None\" (1), \"rfc2833\" (2), \"Signal\" (3) or \"String\" (4) "
@@ -780,53 +789,65 @@ msgstr ""
 "\" (4) (pagal nutylėjimą veikia \"Viskas\"). Nepasirinkus \"Viskas\", \"Seka"
 "\" arba \"rfc2833\", bus atjungi tekstiniai pokalbiai."
 
-#: gnomemeeting.schemas.in.in.h:141
+#: gnomemeeting.schemas.in.in.h:139
 msgid "Transmitted background blocks"
 msgstr "Perduodami fono blokai"
 
-#: gnomemeeting.schemas.in.in.h:142
+#: gnomemeeting.schemas.in.in.h:140
 msgid "UDP Port Range"
 msgstr "UDP prievadų sritis"
 
-#: gnomemeeting.schemas.in.in.h:143
+#: gnomemeeting.schemas.in.in.h:141
 msgid "User Input Capabilities type"
 msgstr "Vartotojo Įvedimo Galimybių tipas"
 
-#: gnomemeeting.schemas.in.in.h:144
+#: gnomemeeting.schemas.in.in.h:142
 msgid "User directory"
 msgstr "Vartotojų katalogas"
 
-#: gnomemeeting.schemas.in.in.h:145 src/ldap_window.cpp:2609
+#: gnomemeeting.schemas.in.in.h:143 src/ldap_window.cpp:2980
 msgid "Version"
 msgstr "Versija"
 
-#: gnomemeeting.schemas.in.in.h:146
+#: gnomemeeting.schemas.in.in.h:144
 msgid "Video Preview"
 msgstr "Video peržiūra"
 
-#: gnomemeeting.schemas.in.in.h:147
+#: gnomemeeting.schemas.in.in.h:145
 msgid "Video channel"
 msgstr "Video kanalas"
 
-#: gnomemeeting.schemas.in.in.h:148
+#: gnomemeeting.schemas.in.in.h:146
 msgid "Video device"
 msgstr "Video įrenginys"
 
-#: gnomemeeting.schemas.in.in.h:149
+#: gnomemeeting.schemas.in.in.h:147
 msgid "Video format"
 msgstr "Video formatas"
 
-#: gnomemeeting.schemas.in.in.h:150
+#: gnomemeeting.schemas.in.in.h:148
 msgid "Video image"
 msgstr "Video atvaizdas"
 
-#: gnomemeeting.schemas.in.in.h:151
+#: gnomemeeting.schemas.in.in.h:149
+msgid "Video manager"
+msgstr "Video tvarkyklė"
+
+#: gnomemeeting.schemas.in.in.h:150
 msgid "Video size"
 msgstr "Video dydis"
 
 #: lib/dialog.c:182
 msgid "Do not show this dialog again"
 msgstr "Nerodyti šio dialogo kitą kartą"
+
+#: lib/gtk-text-buffer-extentions.c:489
+msgid "Open Link"
+msgstr "Atverti Adresą"
+
+#: lib/gtk-text-buffer-extentions.c:496
+msgid "Copy Link Address"
+msgstr "Nukopijuoti Adresą"
 
 #: sounds/gnomemeeting.soundlist.in.h:1
 msgid "Incoming Call"
@@ -836,43 +857,43 @@ msgstr "Sulaukta skambučio"
 msgid "gnomemeeting"
 msgstr "gnomemeeting"
 
-#: src/callbacks.cpp:87
+#: src/callbacks.cpp:82
 msgid "_Retrieve Call"
 msgstr "P_riimti skambutį"
 
-#: src/callbacks.cpp:100 src/menu.cpp:458
+#: src/callbacks.cpp:95 src/menu.cpp:313
 msgid "_Hold Call"
 msgstr "_Sulaikyti skambutį"
 
-#: src/callbacks.cpp:141 src/ldap_window.cpp:708
+#: src/callbacks.cpp:138 src/ldap_window.cpp:701
 msgid "Edit the contact information"
 msgstr "Pataisyti kontaktinę informaciją"
 
-#: src/callbacks.cpp:144 src/menu.cpp:463
+#: src/callbacks.cpp:141 src/menu.cpp:316
 msgid "_Transfer Call"
 msgstr "Persiųs_ti skambutį"
 
-#: src/callbacks.cpp:165
+#: src/callbacks.cpp:162
 msgid "Forward call to:"
 msgstr "Persiųsti skambutį į:"
 
-#: src/callbacks.cpp:260 src/menu.cpp:470
+#: src/callbacks.cpp:258 src/menu.cpp:323
 msgid "Suspend _Audio"
 msgstr "Nutildyti g_arsą"
 
-#: src/callbacks.cpp:261
+#: src/callbacks.cpp:259
 msgid "Resume _Audio"
 msgstr "Atstatyti g_arsą"
 
-#: src/callbacks.cpp:262
+#: src/callbacks.cpp:260
 msgid "Audio transmission: suspended"
 msgstr "Garso perdavimas: sustabdytas"
 
-#: src/callbacks.cpp:263
+#: src/callbacks.cpp:261
 msgid "Audio transmission: resumed"
 msgstr "Garso perdavimas: atstatytas"
 
-#: src/callbacks.cpp:272 src/menu.cpp:475
+#: src/callbacks.cpp:272 src/menu.cpp:328
 msgid "Suspend _Video"
 msgstr "Sustabdyti _vaizdą"
 
@@ -888,31 +909,31 @@ msgstr "Vaizdo perdavimas: sustabdytas"
 msgid "Video transmission: resumed"
 msgstr "Vaizdo perdavimas: atstatytas"
 
-#: src/callbacks.cpp:381
+#: src/callbacks.cpp:397
 msgid "Code Contributors:"
 msgstr "Programavimo pagalbininkai:"
 
-#: src/callbacks.cpp:389
+#: src/callbacks.cpp:405
 msgid "Artwork:"
 msgstr "Grafika:"
 
-#: src/callbacks.cpp:392
+#: src/callbacks.cpp:408
 msgid "Contributors:"
 msgstr "Pagalbininkai:"
 
-#: src/callbacks.cpp:418
+#: src/callbacks.cpp:434
 msgid "Internationalisation Maintainer:"
 msgstr "Vertimų tvarkytojas:"
 
 #. Translators: Please write translator credits here, and
 #. * seperate names with \n
-#: src/callbacks.cpp:436
+#: src/callbacks.cpp:452
 msgid "translator_credits"
 msgstr "Tomas Kuliavas <tokul@users.sourceforge.net>"
 
 #. Translators: Please test to see if your translation
 #. * looks OK and fits within the box
-#: src/callbacks.cpp:447
+#: src/callbacks.cpp:463
 msgid ""
 "GnomeMeeting is a full-featured H.323\n"
 "video conferencing application."
@@ -920,9 +941,215 @@ msgstr ""
 "GnomeMeeting yra pilnavertė H.323\n"
 "vaizdo konferencijų programa."
 
-#: src/chat_window.cpp:205
+#: src/chat_window.cpp:220
 msgid "Send Message:"
 msgstr "Išsiųsti žinutę:"
+
+#: src/codec_info.h:53
+msgid ""
+"iLBC-13k3 (internet Low Bitrate Codec) is a free speech codec suitable for "
+"robust voice communication over IP. The codec is designed for narrow band "
+"speech and results in a payload bit rate of 13.33 kbit/s with an encoding "
+"frame length of 30 ms. The iLBC codec enables graceful speech quality "
+"degradation in the case of lost frames, which occurs in connection with lost "
+"or delayed IP packets."
+msgstr ""
+"iLBC-13k3 (internet Low Bitrate Codec) yra laisvai platinamas kalbos "
+"kodekas, skirtas balso perdavimui kompiuteriniu tinklu. Kodekas buvo "
+"sukurtas siekiant sumažinti srauto panaudimą ties 13.33 Kbps apkrovimu su 30 "
+"ms kodavimo trukme. The iLBC kodekas leidžia sumažinti garso kokybės "
+"suprastėjimą perduodamų duomenų kadrų praradimo metu, kas kartais atsitinka "
+"su uždelstais arba prarastais IP paketais."
+
+#: src/codec_info.h:53 src/codec_info.h:55 src/codec_info.h:57
+#: src/codec_info.h:63 src/codec_info.h:65 src/codec_info.h:69
+#: src/codec_info.h:71
+msgid "Excellent"
+msgstr "Puikiai"
+
+#: src/codec_info.h:53
+msgid "13.33 Kbps"
+msgstr "13.33 Kbps"
+
+#: src/codec_info.h:55
+msgid ""
+"iLBC-15k2 (internet Low Bitrate Codec) is a free speech codec suitable for "
+"robust voice communication over IP. The codec is designed for narrow band "
+"speech and results in a payload bitrate of 15.20 kbps with an encoding "
+"length of 20 ms. The iLBC codec enables graceful speech quality degradation "
+"in the case of lost frames, which occurs in connection with lost or delayed "
+"IP packets."
+msgstr ""
+"iLBC-15k2 (internet Low Bitrate Codec) yra laisvai platinamas kalbos "
+"kodekas, skirtas balso perdavimui kompiuteriniu tinklu. Kodekas buvo "
+"sukurtas siekiant sumažinti srauto panaudimą ties 15.20 Kbps apkrovimu su 20 "
+"ms kodavimo trukme. The iLBC kodekas leidžia sumažinti garso kokybės "
+"suprastėjimą perduodamų duomenų kadrų praradimo metu, kas kartais atsitinka "
+"su uždelstais arba prarastais IP paketais."
+
+#: src/codec_info.h:55
+msgid "15.2 Kbps"
+msgstr "15.2 Kbps"
+
+#: src/codec_info.h:57
+msgid ""
+"Speex is an Open Source/Free Software patent-free audio compression format "
+"designed for speech. The Speex Project aims to lower the barrier of entry "
+"for voice applications by providing a free alternative to expensive "
+"proprietary speech codecs. Moreover, Speex is well-adapted to Internet "
+"applications and provides useful features that are not present in most other "
+"codecs. Finally, Speex is part of the GNU Project and is available under the "
+"Xiph.org variant of the BSD license. SpeexNarrow-15k is based on CELP and is "
+"designed to compress voice at a payload bitrate of 15 kbps."
+msgstr ""
+"Speex yra Atviro Kodo/Laisva Programinė Įranga naudojanti laisvą nuo patentų "
+"garso suspaudimo formatą skirtą kalbos perdavimui. Speex Projektas siekia "
+"sumažinti audio konferencinių programų įėjimo į rinką kaštus, suteikdamas "
+"alternatyvą brangiems patentuotiems kalbos kodekams. Be to Speex yra gerai "
+"priderintas prie darbo Internete ir suteikia papildomas naudingas funkcijas, "
+"kurių neturi dauguma kitų kodekų. Be viso to Speex yra GNU Projekto dalis ir "
+"yra platinamas Xiph.org su BSD licenzijos variacija. SpeexNarrow-15k remiasi "
+"CELP funkcijomis ir yra skirtas suspausti balsa iki 15 Kbps tankio."
+
+#: src/codec_info.h:57
+msgid "15 Kbps"
+msgstr "15 Kbps"
+
+#: src/codec_info.h:59
+msgid ""
+"Speex is an Open Source/Free Software patent-free audio compression format "
+"designed for speech. The Speex Project aims to lower the barrier of entry "
+"for voice applications by providing a free alternative to expensive "
+"proprietary speech codecs. Moreover, Speex is well-adapted to Internet "
+"applications and provides useful features that are not present in most other "
+"codecs. Finally, Speex is part of the GNU Project and is available under the "
+"Xiph.org variant of the BSD license. SpeexNarrow-8k is based on CELP and is "
+"designed to compress voice at a payload bitrate of 8 kbps."
+msgstr ""
+"Speex yra Atviro Kodo/Laisva Programinė Įranga naudojanti laisvą nuo patentų "
+"garso suspaudimo formatą skirtą kalbos perdavimui. Speex Projektas siekia "
+"sumažinti audio konferencinių programų įėjimo į rinką kaštus, suteikdamas "
+"alternatyvą brangiems patentuotiems kalbos kodekams. Be to Speex yra gerai "
+"priderintas prie darbo Internete ir suteikia papildomas naudingas funkcijas, "
+"kurių neturi dauguma kitų kodekų. Be viso to Speex yra GNU Projekto dalis ir "
+"yra platinamas Xiph.org su BSD licenzijos variacija. SpeexNarrow-8k remiasi "
+"CELP funkcijomis ir yra skirtas suspausti balsa iki 8 Kbps tankio."
+
+#: src/codec_info.h:59 src/codec_info.h:61 src/codec_info.h:67
+msgid "Good"
+msgstr "Geras"
+
+#: src/codec_info.h:59
+msgid "8 Kbps"
+msgstr "8 Kbps"
+
+#: src/codec_info.h:61
+msgid ""
+"MS-GSM is the Microsoft version of GSM 06.10. GSM 06.10 is a standardized "
+"lossy speech compression employed by most European wireless telephones. It "
+"uses RPE/LTP (residual pulse excitation/long term prediction) coding to "
+"compress frames of 160 13-bit samples with a frame rate of 50 Hz into 260 "
+"bits.  Microsoft's GSM 06.10 codec is not compatible with the standard frame "
+"format, they use 65-byte-frames (2 x 32 1/2) rather than rounding to 33, and "
+"they number the bits in their bytes from the other end."
+msgstr ""
+"MS-GSM yra Microsoft naudojama GSM 06.10 formato versija. GSM 06.10 yra "
+"standartizuotas slankus kalbos suspaudimo formatas, naudojamas daugumoje "
+"europietiškų bevielių telefonų. Jis naudoja RPE/LTP (residual pulse "
+"excitation/long term prediction) koduotes, siekdamas suspausti kadrus iš 160 "
+"13-bitų pavyzdžių su 50 Hz kadrų dažniu į 260 bitų srautą. Microsoft GSM "
+"06.10 kodekas yra nesuderinamas su standartiniu kadrų formatu, yra naudojami "
+"65-baitų-kadrai (2 x 32 1/2) vietoj įprastų 33, bei yra taikoma kita bitų "
+"rūšiavimo perduodamuose baituose tvarka."
+
+#: src/codec_info.h:61
+msgid "13 Kbps"
+msgstr "13 Kbps"
+
+#: src/codec_info.h:63
+msgid ""
+"G.711 is the international standard for encoding telephone audio on 64 kbps "
+"channel. It is a pulse code modulation (PCM) scheme operating at 8 kHz "
+"sample rate, with 8 bits per sample, fully meeting ITU-T recommendations. "
+"This standard has two forms, A-Law and u-Law. A-Law G.711 PCM encoder "
+"converts 13 bit linear PCM samples into 8 bit compressed PCM (logarithmic "
+"form) samples, and the decoder does the conversion vice versa."
+msgstr ""
+"G.711 yra tarptautinis audio telefonijos kodavimo standartas, skirtas 64 "
+"Kbps kanalui. Jis naudoja pulsinio kodo moduliavimo (PCM) schemas, "
+"veikiančias 8 kHz dažniu su 8 duomenų bitais viename pakete, taip "
+"atitikdamas ITU-T rekomendacijas. Standartas turi dvi formas, A-Law and u-"
+"Law. A-Law G.711 PCM kodekas verčia 13 bitų linijinius PCM kadrus į 8 bitų "
+"suspaustus PCM (logaritmine forma) paketus, o dekoderis vykdo atvirkštinį "
+"procesą."
+
+#: src/codec_info.h:63 src/codec_info.h:65
+msgid "64 Kbps"
+msgstr "64 Kbps"
+
+#: src/codec_info.h:65
+msgid ""
+"G.711 is the international standard for encoding telephone audio on 64 kbps "
+"channel. It is a pulse code modulation (PCM) scheme operating at 8 kHz "
+"sample rate, with 8 bits per sample, fully meeting ITU-T recommendations. "
+"This standard has two forms, A-Law and u-Law. u-Law G.711 PCM encoder "
+"converts 14 bit linear PCM samples into 8 bit compressed PCM (logarithmic "
+"form) samples, and the decoder does the conversion vice versa."
+msgstr ""
+"G.711 yra tarptautinis audio telefonijos kodavimo standartas, skirtas 64 "
+"Kbps kanalui. Jis naudoja pulsinio kodo moduliavimo (PCM) schemas, "
+"veikiančias 8 kHz dažniu, su 8 duomenų bitais viename pakete, taip "
+"atitikdamas ITU-T rekomendacijas. Standartas turi dvi formas, A-Law and u-"
+"Law. u-Law G.711 PCM kodekas verčia 14 bitų linijinius PCM kadrus į 8 bitų "
+"suspaustus PCM (logaritmine forma) paketus, o dekoderis vykdo atvirkštinį "
+"procesą."
+
+#: src/codec_info.h:67
+msgid ""
+"GSM 06.10 is a standardized lossy speech compression employed by most "
+"European wireless telephones. It uses RPE/LTP (residual pulse excitation/"
+"long term prediction) coding to compress frames of 160 13-bit samples with a "
+"frame rate of 50 Hz into 260 bits."
+msgstr ""
+"GSM 06.10 yra standartizuotas slankus kalbos suspaudimo formatas naudojamas "
+"daugumoje europietiškų bevielių telefonų. Jis naudoja RPE/LTP (residual "
+"pulse excitation/long term prediction) koduotes, siekdamas suspausti kadrus "
+"iš 160 13-bitų pavyzdžių su 50 Hz kadrų dažniu į 260 bitų srautą."
+
+#: src/codec_info.h:67
+msgid "16.5 Kbps"
+msgstr "16.5 Kbps"
+
+#: src/codec_info.h:69
+msgid ""
+"G.726 conforms to ITU-T G.726 recommendation that specifies speech "
+"compression and decompression at rates of 16, 24, 32 and 40 Kbps based on "
+"Adaptive Differential Pulse Code Modulation (ADPCM)."
+msgstr ""
+"G.726 atitinka ITU-T G.726 rekomendacijas, kurios aprašo kalbos užkodavimą "
+"ir atkodavimą 16, 24, 32 ir 40 Kbps dažniais, remiantis Adaptive "
+"Differential Pulse Code Modulation (ADPCM) technologijomis."
+
+#: src/codec_info.h:69
+msgid "32 Kbps"
+msgstr "32 Kbps"
+
+#: src/codec_info.h:71
+msgid ""
+"G.723.1 conforms to ITU-T G.723.1 recommendation. It was designed for video "
+"conferencing / telephony over standard phone lines, and is optimized for "
+"realtime encode and decode. That codec is only available in GnomeMeeting "
+"when using Quicknet cards due to patents restrictions."
+msgstr ""
+"G.723.1 atitinkaTU-T G.723.1 rekomendacijas. Protokolas yra skirtas video "
+"konferencijoms / telefonijai naudojant įprastas telefono linijas ir yra "
+"optimizuotas užkodavimui ir atkodavimui realiame laike. Dėl patentinių "
+"apribojimų GnomeMeeting naudoja šį kodeką tik tada, kai jungiamasi "
+"naudojantis Quicknet kortomis."
+
+#: src/codec_info.h:71
+msgid "6.3 or 5.7 Kbps"
+msgstr "6.3 arba 5.7 Kbps"
 
 #: src/config-tool-i18n.h:1
 msgid "YES"
@@ -1051,11 +1278,11 @@ msgstr ""
 "  --fix-permissions      pataiso GConf duomenų bazės priejimo teises (gali "
 "paleisti administratorius)"
 
-#: src/config.cpp:409
+#: src/config.cpp:268 src/config.cpp:491
 msgid "Changing this setting will only affect new calls"
 msgstr "Šis nustatymas galioja tik naujiems skambučiams"
 
-#: src/config.cpp:409
+#: src/config.cpp:268 src/config.cpp:491
 msgid ""
 "You have changed a setting that doesn't permit to GnomeMeeting to apply the "
 "new change to the current call. Your new setting will only take effect for "
@@ -1064,23 +1291,67 @@ msgstr ""
 "Jūs pakeitėte nustatymą, kurio GnomeMeeting negali pritaikyti dabar esančiam "
 "pokalbiui. Šis nustatymas įsigalios tik nuo kito skambučio."
 
-#: src/config.cpp:591
+#: src/config.cpp:369
+msgid "H.245 Tunneling disabled"
+msgstr "H.245 Tuneliai nenaudojami"
+
+#: src/config.cpp:370
+msgid "H.245 Tunneling enabled"
+msgstr "H.245 tuneliai - įjungti"
+
+#: src/config.cpp:400
+msgid "Fast Start disabled"
+msgstr "Greitas Paleidimas atjungtas"
+
+#: src/config.cpp:401
+msgid "Fast Start enabled"
+msgstr "Greitas Paleidimas įjungtas"
+
+#: src/config.cpp:551
 msgid "Disabled Silence Detection"
 msgstr "Atjungti tylos atpažinimą"
 
-#: src/config.cpp:597
+#: src/config.cpp:557
 msgid "Enabled Silence Detection"
 msgstr "Įjungti tylos atpažinimą"
 
-#: src/config.cpp:1259
+#. Disable the druid button if no device is found
+#: src/config.cpp:900 src/druid.cpp:620 src/druid.cpp:634
+#: src/endpoint.cpp:1641 src/gnomemeeting.cpp:349 src/gnomemeeting.cpp:351
+#: src/sound_handling.cpp:459 src/sound_handling.cpp:460
+#: src/videograbber.cpp:615
+msgid "No device found"
+msgstr "Nerastas joks įrenginys"
+
+#: src/config.cpp:1065
+msgid "Failed to restart the video channel"
+msgstr "Nepavyko perkrauti video kanalo"
+
+#: src/config.cpp:1065
 msgid ""
-"You need to specify an host to forward calls to!\n"
+"You have changed a video device related setting during a call. That requires "
+"to restart the video transmission channel, but it failed."
+msgstr ""
+"Jūs pakeitėte video įrenginio nustatymus pokalbio metu. Norint jiems "
+"įsigalioti būtinas video perdavimo kanalo perkrovimas, tačiau tai nepavyko."
+
+#: src/config.cpp:1275
+msgid "Forward URL not specified"
+msgstr "Nenurodytas permetimo adresas"
+
+#: src/config.cpp:1276
+msgid ""
+"You need to specify an URL where to forward calls in the call forwarding "
+"section of the preferences!\n"
+"\n"
 "Disabling forwarding."
 msgstr ""
-"Jūs turite nurodyti kompiuterį, į kurį reikia permesti skambučius!\n"
+"Jūs turite programos skambučių permetimo nustatymuose nurodyti kompiuterį, į "
+"kurį reikia permesti skambučius!\n"
+"\n"
 "Skambučių permetimas atjungtas."
 
-#: src/config.cpp:1459
+#: src/config.cpp:1522
 msgid ""
 "An error has happened in the configuration backend.\n"
 "Maybe some of your settings won't be saved."
@@ -1088,76 +1359,64 @@ msgstr ""
 "Įvyko klaida dirbant su nustatymų posisteme.\n"
 "Gali būti, kad dalis nustatymų nebus išsaugoti."
 
-#: src/connection.cpp:112
-msgid "Started New Logical Channel..."
-msgstr "Pradėtas naujas loginis kanalas..."
-
-#: src/connection.cpp:119
+#: src/connection.cpp:156
 #, c-format
-msgid "Sending %s"
-msgstr "Siunčiama %s"
+msgid "Started transmission of %s"
+msgstr "Pradėtas %s perdavimas"
 
-#: src/connection.cpp:138
+#: src/connection.cpp:159
 #, c-format
-msgid "Enabled silence detection for %s"
-msgstr "Įjungtas tylos atpažinimas tarp %s"
+msgid "Stopped transmission of %s"
+msgstr "Sustabdytas %s perdavimas"
 
-#: src/connection.cpp:141
+#: src/connection.cpp:163
 #, c-format
-msgid "Disabled silence detection for %s"
-msgstr "Atjungtas tylos atpažinimas tarp %s"
+msgid "Started reception of %s"
+msgstr "Pradėtas %s priėmimas"
 
-#: src/connection.cpp:157
+#: src/connection.cpp:166
 #, c-format
-msgid "Receiving %s"
-msgstr "Gaunama %s"
+msgid "Stopped reception of %s"
+msgstr "Sustabdytas %s priėmimas"
 
-#: src/connection.cpp:187
-#, c-format
-msgid "Requesting remote to send video quality: %d%%"
-msgstr "Nustatoma nutolusio video kokybė: %d%%"
-
-#: src/connection.cpp:212
-msgid "Request ok"
-msgstr "Nustatyta sėkmingai"
-
-#: src/connection.cpp:244 src/connection.cpp:246
-msgid "Auto Answering Incoming Call"
-msgstr "Automatiškai atsakoma į skambutį"
-
-#: src/connection.cpp:337 src/connection.cpp:338 src/urlhandler.cpp:76
+#: src/connection.cpp:286 src/connection.cpp:287 src/urlhandler.cpp:76
 #: src/urlhandler.cpp:77
 msgid "Call transfer failed"
 msgstr "Nepavyko persiųsti skambučio"
 
-#: src/connection.cpp:337
+#: src/connection.cpp:286
 msgid ""
 "The remote user tried to transfer your call to another user, but it failed."
 msgstr ""
 "Nutolęs vartotojas bandė persiųsti Jūsų skambutį kitam asmeniui, bet įvyko "
 "kažkokia klaida."
 
-#: src/druid.cpp:517 src/druid.cpp:699
-msgid "56K modem"
-msgstr "56K modemas"
+#: src/druid.cpp:522
+msgid "56k Modem"
+msgstr "56K Modemas"
 
-#: src/druid.cpp:521 src/druid.cpp:703
+#: src/druid.cpp:523
 msgid "ISDN"
 msgstr "ISDN linija"
 
-#: src/druid.cpp:525
+#: src/druid.cpp:524
 msgid "xDSL/Cable"
 msgstr "xDSL/skirtinė linija"
 
-#: src/druid.cpp:529 src/druid.cpp:711
+#: src/druid.cpp:525
 msgid "T1/LAN"
 msgstr "T1/vietinis tinklas"
 
-#: src/druid.cpp:533 src/druid.cpp:715
-msgid "Other"
-msgstr "Kita"
+#: src/druid.cpp:526
+msgid "Keep current settings"
+msgstr "Išsaugoti esamus nustatymus"
 
-#: src/druid.cpp:566
+#: src/druid.cpp:672 src/gnomemeeting.cpp:369 src/videograbber.cpp:338
+#: src/videograbber.cpp:616
+msgid "Picture"
+msgstr "Atvaizdas"
+
+#: src/druid.cpp:687
 #, c-format
 msgid ""
 "You have now finished the GnomeMeeting configuration. All the settings can "
@@ -1166,13 +1425,14 @@ msgid ""
 "\n"
 "Configuration Summary:\n"
 "\n"
-"Username:  %s %s\n"
+"Username:  %s\n"
 "Connection type:  %s\n"
+"Audio manager: %s\n"
 "Audio player:  %s\n"
 "Audio recorder:  %s\n"
+"Video Manager: %s\n"
 "Video player: %s\n"
 "My Callto URL: %s\n"
-"PC-To-Phone calls: %s"
 msgstr ""
 "Jūs pabaigėte GnomeMeeting derinimą. Visi nustatymai gali būti pakeisti "
 "naudojant GnomeMeeting nustatymų meniu. Sėkmės!\n"
@@ -1180,253 +1440,180 @@ msgstr ""
 "\n"
 "Nustatymų apibendrinimas:\n"
 "\n"
-"Vartotojo vardas:  %s %s\n"
+"Vartotojo vardas:  %s\n"
 "Jungties tipas:  %s\n"
+"Audio tvarkyklė: %s\n"
 "Audio išvedimo įrenginys:  %s\n"
 "Audio įvedimo įrenginys:  %s\n"
+"Video tvarkyklė: %s\n"
 "Video išvedimo įrenginys: %s\n"
 "Jūsų iškvietimo adresas: %s\n"
-"PC-To-Phone skambučiai: %s"
 
-#: src/druid.cpp:566
-msgid "Enabled"
-msgstr "Įjungta"
+#: src/druid.cpp:687 src/pref_window.cpp:801
+msgid "None"
+msgstr "Nieko"
 
-#: src/druid.cpp:566
-msgid "Disabled"
-msgstr "Išjungta"
-
-#: src/druid.cpp:600
+#: src/druid.cpp:715
 #, c-format
 msgid "Personal Information - page %d/%d"
 msgstr "Asmeninė informacija - puslapis %d iš %d"
 
-#: src/druid.cpp:609
-msgid ""
-"Please enter your first name and surname, they will be used when connecting "
-"to other audio/video conferencing software.\n"
-"\n"
-"Your e-mail address is used to provide you with a callto address that your "
-"friends can use to call you without knowing your IP address.\n"
-"\n"
-"No information is made public unless you allow it to be published on the "
-"directory of online GnomeMeeting users."
-msgstr ""
-"Įveskite savo vardą ir pavardę. Jie bus naudojami, kai prisijungiama prie "
-"kitų audio/vaizdo konferencinių programų.\n"
-"\n"
-"Jūsų elektroninio pašto adresas naudojamas suteikti Jums tokį iškvietimo "
-"adresą, kurį Jūsų draugai gali naudoti nežinodami Jūsų IP adreso.\n"
-"\n"
-"Jokia iš pateiktos informacijos nėra skelbiama viešai, nebent Jūs pats "
-"leisite ją patalpinti aktyvių GnomeMeeting vartotojų kataloge."
-
 #. The user fields
-#: src/druid.cpp:613 src/pref_window.cpp:728
-msgid "Personal Information"
-msgstr "Asmeninė informacija"
+#: src/druid.cpp:728
+msgid "Please enter your firstname and your surname:"
+msgstr "Prašau įvesti savo vardą ir pavardę:"
 
-#: src/druid.cpp:616
-msgid "First _name:"
-msgstr "_Vardas:"
-
-#: src/druid.cpp:622
-msgid "_Surname:"
-msgstr "_Pavardė:"
-
-#. The callto url
-#: src/druid.cpp:630
-msgid "Callto URL"
-msgstr "Iškvietimo adresas"
-
-#: src/druid.cpp:633 src/pref_window.cpp:742
-msgid "E-_mail address:"
-msgstr "E-_pašto adresas:"
-
-#. The ILS registering
-#: src/druid.cpp:640
-msgid "Directory of Online GnomeMeeting Users"
-msgstr "Aktyvių GnomeMeeting vartotojų katalogas"
-
-#: src/druid.cpp:642
-msgid "Publish my information on the directory of online GnomeMeeting users"
-msgstr "Skelbti mano informacija tarp aktyvių GnomeMeeting vartotojų katalogo"
-
-#: src/druid.cpp:683
-#, c-format
-msgid "Network Connection - page %d/%d"
-msgstr "Tinklo jungtis - puslapis %d iš %d"
-
-#: src/druid.cpp:694
+#: src/druid.cpp:736
 msgid ""
-"Please select your network connection type. This is used to set default "
-"video settings for your bandwidth. It is possible to change these defaults "
-"later."
+"Your firstname and surname will be used when connecting to other VoIP and "
+"videoconferencing software."
 msgstr ""
-"Pasirinkite savo tinklo jungties tipą. Nustatymas bus naudojamas derinant "
-"standartinius video signalo perdavimo nustatymus. Vėliau galima tuos "
-"nustatymus pakeisti."
+"Jūsų vardas ir pavardė bus naudojami jungiantis prie kitų VoIP ir video "
+"konferencinių programų."
 
-#. Connection type
-#: src/druid.cpp:698
-msgid "Connection Type"
-msgstr "Jungties tipas"
+#: src/druid.cpp:779
+#, c-format
+msgid "Callto URL - page %d/%d"
+msgstr "Skambinimo Adresas - puslapis %d iš %d"
 
-#: src/druid.cpp:707
-msgid "DSL/Cable"
-msgstr "DSL/skirtinė linija"
+#: src/druid.cpp:790
+msgid "Please enter your e-mail address:"
+msgstr "Įveskite savo el.pašto adresą:"
 
-#: src/druid.cpp:775
+#: src/druid.cpp:798
+msgid ""
+"Your e-mail address is used when registering to the GnomeMeeting users "
+"directory. It is used to create a callto address permitting your contacts to "
+"easily call you wherever you are."
+msgstr ""
+"Jūsų elektroninio pašto adresas bus naudojamas registruojantis GnomeMeeting "
+"vartotojų kataloge. Jis yra skirtas sukurti iškvietimo adresą, kuris leistų "
+"su Jumis susisiekti nepriklausomai nuo Jūsų buvimo vietos."
+
+#: src/druid.cpp:807
+msgid ""
+"I don't want to register to the GnomeMeeting users directory and get a "
+"callto address"
+msgstr ""
+"Aš nenorių užsiregistruoti GnomeMeeting vartotojų kataloge ir turėti "
+"iškvietimo adresą"
+
+#: src/druid.cpp:857
+#, c-format
+msgid "Connection Type - page %d/%d"
+msgstr "Jungties Tipas - puslapis %d iš %d"
+
+#. The connection type
+#: src/druid.cpp:869
+msgid "Please choose your connection type:"
+msgstr "Pasirinkite Jūsų jungties tipą:"
+
+#: src/druid.cpp:877
+msgid ""
+"The connection type will permit determining the best quality settings that "
+"GnomeMeeting will use during calls. You can later change the settings "
+"individually in the preferences window."
+msgstr ""
+"Jungties tipo nustatymas leidžia GnomeMeeting teisingiau parinkti perdavimo "
+"kokybės nustatymus naudojamus pokalbių metų. Jūs vėliau galite nustatymus "
+"pakeisti programus nustatymų lange."
+
+#: src/druid.cpp:916
+#, c-format
+msgid "Audio Manager - page %d/%d"
+msgstr "Audio Valdymas - puslapis %d iš %d"
+
+#: src/druid.cpp:929
+msgid "Please choose your audio manager:"
+msgstr "Pasirinkite Jūsų garso tvarkyklę:"
+
+#: src/druid.cpp:937
+msgid ""
+"The audio manager is the plugin that will manage your audio devices, ALSA is "
+"probably the best choice when available."
+msgstr ""
+"Garso tvarkyklė yra priedas, kuris valdys Jūsų garso įrenginius. ALSA turėtų "
+"būti vienas iš geriausių pasirinkimų, jei Jūsų sistema ją palaiko."
+
+#: src/druid.cpp:979
 #, c-format
 msgid "Audio Devices - page %d/%d"
 msgstr "Audio įrenginiai - puslapis %d iš %d"
 
-#: src/druid.cpp:785
-msgid ""
-"Please choose the audio devices to use during the GnomeMeeting session. You "
-"can also choose to use a Quicknet device instead of the soundcard, but the "
-"\"Test Audio\" button will only work for soundcards. Notice that some "
-"webcams models have an internal microphone that can be used with "
-"GnomeMeeting."
-msgstr ""
-"Pasirinkite audio įrenginius, kurie bus naudojami GnomeMeeting sesijų metu. "
-"Jūs gali vietoj garso plokštės pasirinkti ir Quicknet įrenginį, bet garso "
-"tikrinimo mygtukas veiks tik su garso kortomis. Atkreipkite dėmesį į tai, "
-"kad dalis tinklinių kamerų turi vidinį mikrofoną, kuris gali būti naudojamas "
-"GnomeMeeting."
-
 #. The Audio devices
-#: src/druid.cpp:789 src/pref_window.cpp:1055 src/pref_window.cpp:1572
-msgid "Audio Devices"
-msgstr "Audio įrenginiai"
+#: src/druid.cpp:991
+msgid "Please choose the audio output device:"
+msgstr "Pasirinkite garso išvedimo įrenginį:"
 
-#: src/druid.cpp:792
-msgid "Audio player:"
-msgstr "Audio išvedimo įrenginys:"
+#: src/druid.cpp:999
+msgid ""
+"The audio output device is the device managed by the audio manager that will "
+"be used to play audio."
+msgstr ""
+"Audio išvedimo įrenginys yra įrenginys, kurį garso tvarkyklė naudos "
+"išvesdama garsą į garsiakalbius."
 
-#: src/druid.cpp:795
-msgid "Audio player mixer:"
-msgstr "Audio išvedimo valdiklis:"
+#: src/druid.cpp:1009
+msgid "Please choose the audio input device:"
+msgstr "Pasirinkite garso įvedimo įrenginį:"
 
-#: src/druid.cpp:799
-msgid "Audio recorder:"
-msgstr "Audio įrašymo įrenginys:"
+#: src/druid.cpp:1017
+msgid ""
+"The audio input device is the device managed by the audio manager that will "
+"be used to record your voice."
+msgstr ""
+"Audio įvedimo įrenginys yra įrenginys, kurį garso tvarkyklė naudos įrašydama "
+"Jūsų balsą."
 
-#: src/druid.cpp:802
-msgid "Audio recorder mixer:"
-msgstr "Audio įrašymo valdiklis:"
+#: src/druid.cpp:1030 src/druid.cpp:1170
+msgid "Test those settings"
+msgstr "Patikrinti šiuos nustatymus"
 
-#. Test button
-#: src/druid.cpp:806
-msgid "Click here to test your audio devices:"
-msgstr "Paspauskite čia, kad patikrinti jūsų audio įrenginius:"
+#: src/druid.cpp:1076
+#, c-format
+msgid "Video Manager - page %d/%d"
+msgstr "Video Valdymas - puslapis %d iš %d"
 
-#: src/druid.cpp:808
-msgid "Test Audio"
-msgstr "Patikrinti garsą"
+#: src/druid.cpp:1089
+msgid "Please choose your video manager:"
+msgstr "Pasirinkite Jūsų vaizdo tvarkyklę:"
 
-#: src/druid.cpp:851
+#: src/druid.cpp:1097
+msgid ""
+"The video manager is the plugin that will manage your video devices, "
+"Video4Linux is the most common choice if you own a webcam."
+msgstr ""
+"Video tvarkyklė yra priedas, kuris valdys Jūsų video įrenginius. Video4Linux "
+"yra vienas iš dažniausiai naudojamų variantų, jei Jūs turi tinklinę kamerą."
+
+#: src/druid.cpp:1138
 #, c-format
 msgid "Video Devices - page %d/%d"
 msgstr "Video įrengimai - puslapis %d iš %d"
 
-#: src/druid.cpp:861
+#. The Video devices
+#: src/druid.cpp:1150
+msgid "Please choose the video input device:"
+msgstr "Pasirinkite Jūsų video įvedimo įrenginį:"
+
+#: src/druid.cpp:1158
 msgid ""
-"Please choose the video device to use during the GnomeMeeting session. Click "
-"on the \"Test Video\" button to check if your setup is correct and if your "
-"driver is supported by GnomeMeeting. You can only test the correctness of "
-"your driver if the selected device is not already in use."
+"The video input device is the device managed by the video manager that will "
+"be used to capture video."
 msgstr ""
-"Pasirinkite video įrenginį naudojamą GnomeMeeting sesijų metu. Paspauskite "
-"\"Patikrinti vaizdą\" mygtuką, norėdami įsitikinti savo nustatymų "
-"tvarkingumu. Testas pavyks tik tuo atveju jei nustatytas įrenginys nėra "
-"naudojamas."
+"Video įvedimo įrenginys yra įrenginys, kuri video tvarkyklė naudos video "
+"signalo priėmimui."
 
-#. The Video device
-#: src/druid.cpp:865 src/pref_window.cpp:1126 src/pref_window.cpp:1577
-msgid "Video Devices"
-msgstr "Video įrenginiai"
-
-#: src/druid.cpp:868 src/pref_window.cpp:1130
-msgid "Video device:"
-msgstr "Video įrenginis:"
-
-#: src/druid.cpp:868
-msgid ""
-"Enter the video device to use. Using an invalid video device for video "
-"transmission will transmit a test picture."
-msgstr ""
-"Įveskite naudotina video įrenginį. Nurodžius klaidingą įrenginį sistema "
-"perdavinės tik bandomąjį piešinį."
-
-#. Test button
-#: src/druid.cpp:872
-msgid "Test Video"
-msgstr "Patikrinti vaizdą"
-
-#: src/druid.cpp:916
-#, c-format
-msgid "PC-To-Phone Setup - page %d/%d"
-msgstr "PC-To-Phone nustatymai - puslapis %d iš %d"
-
-#: src/druid.cpp:926
-msgid ""
-"You can make calls to regular phones and cell numbers worldwide using "
-"GnomeMeeting and the MicroTelco service from Quicknet Technologies. To "
-"enable this you need to enter your MicroTelco Account number and PIN below, "
-"then enable registering to the MicroTelco service. Please visit the "
-"GnomeMeeting website for more information."
-msgstr ""
-"Jūs galite vykdyti skambučius į paprastus bei mobilius telefonus visame "
-"pasaulyje naudodamiesi GnomeMeeting ir MicroTelco paslauga, teikiama "
-"Quicknet Technologies kompanijos. Norėdami ja pasinaudoti Jūs turėsite "
-"įvesti Jūsų MicroTelco sąskatos numerį ir kodą, bei įjungti registravimasi "
-"MicroTelco serveryje. Apsilankykite GnomeMeeting internetinėje svetainėje "
-"norėdami gauti daugiau informacijos."
-
-#: src/druid.cpp:931
-msgid "PC-To-Phone Setup"
-msgstr "PC-To-Phone nustatymai"
-
-#: src/druid.cpp:934
-msgid "Account number:"
-msgstr "Sąskaitos numeris:"
-
-#: src/druid.cpp:937
-msgid "Password:"
-msgstr "Slaptažodis:"
-
-#: src/druid.cpp:944
-msgid "Register to the MicroTelco service"
-msgstr "Užregistuoti MicroTelco paslaugą"
-
-#: src/druid.cpp:962
-msgid ""
-"Click on one of the following links to get more information about your "
-"existing MicroTelco account, or to create a new account."
-msgstr ""
-"Pasirinkite vieną iš žemiau esančių nuorodų tam, kad gauti daugiau "
-"informacijos apie turimą MicroTelco sąskaitaą arba kad sukurti naują "
-"sąskaitą."
-
-#: src/druid.cpp:966
-msgid "Get an account"
-msgstr "Įsigyti sąskaitą"
-
-#: src/druid.cpp:968
-msgid "Buy a card"
-msgstr "Nusipirkti kortelę"
-
-#: src/druid.cpp:998
+#: src/druid.cpp:1202
 msgid "First Time Configuration Druid"
 msgstr "Pirmo karto reguliavimo pagalbininkas"
 
-#: src/druid.cpp:1005
+#: src/druid.cpp:1209
 #, c-format
 msgid "Configuration Druid - page %d/%d"
 msgstr "Reguliavimo pagalbininkas - puslapis %d iš %d"
 
-#: src/druid.cpp:1008
+#: src/druid.cpp:1212
 msgid ""
 "This is the GnomeMeeting general configuration druid. The following steps "
 "will set up GnomeMeeting by asking a few simple questions.\n"
@@ -1440,193 +1627,158 @@ msgstr ""
 "Praėję šiuos žingsnius Jūs bet kada galite pakeisti nustatymus naudodamiesi "
 "programos nustatymų meniu."
 
-#: src/druid.cpp:1047
+#: src/druid.cpp:1252
 #, c-format
 msgid "Configuration complete - page %d/%d"
 msgstr "Reguliaviamas baigtas - puslapis %d iš %d"
 
-#: src/endpoint.cpp:117
-#, c-format
-msgid "Forwarding Call to %s (No Answer)"
-msgstr "Persiunčiame skambuti į  %s (Jokio atsako)"
-
-#: src/endpoint.cpp:121 src/endpoint.cpp:1468
-msgid "Call forwarded"
-msgstr "Skambutis persiųstas"
-
-#. Player is always a correct sound device, thanks to
-#. gnomemeeting_add_string_option_menu
-#: src/endpoint.cpp:314
-#, c-format
-msgid "Set Audio player device to %s"
-msgstr "Nustatyti garso išvedimo įrenginį į %s"
-
-#: src/endpoint.cpp:325
-#, c-format
-msgid "Set Audio recorder device to %s"
-msgstr "Nustatyti garso įvedimo įrenginį į %s"
-
-#: src/endpoint.cpp:342
-msgid "Enabling H.245 Tunnelling"
-msgstr "Įjungiami H.245 tuneliai"
-
-#: src/endpoint.cpp:343
-msgid "Disabling H.245 Tunnelling"
-msgstr "Išjungiami H.245 tuneliai"
-
-#: src/endpoint.cpp:353
-msgid "Enabling Fast Start"
-msgstr "Įjungiamas greitas paleidimas"
-
-#: src/endpoint.cpp:354
-msgid "Disabling Fast Start"
-msgstr "Atjungimas greitas paleidimas"
-
 #. Update the history and status bar
-#: src/endpoint.cpp:945
+#: src/endpoint.cpp:731
 #, c-format
-msgid "Call from %s using %s"
-msgstr "Skambutis nuo %s naudojant %s"
+msgid "Call from %s"
+msgstr "Skambutis nuo %s"
 
-#: src/endpoint.cpp:960
+#: src/endpoint.cpp:743
 #, c-format
 msgid "Forwarding call from %s to %s (Forward all calls)"
 msgstr "Nukreiptas skambutis nuo %s į %s (Nukreipti visus skambučius)"
 
-#: src/endpoint.cpp:968
+#. there is no forwarding, so reject the call
+#: src/endpoint.cpp:750 src/endpoint.cpp:779
 #, c-format
-msgid "Auto rejecting incoming call from %s (Do not disturb)"
-msgstr "Automatiškai atmestas ateinantis skambutis nuo %s (Netrukdyti)"
+msgid "Rejecting call from %s (Busy)"
+msgstr "Atmestas skambutis nuo %s (Užimtas)"
 
-#: src/endpoint.cpp:980
+#: src/endpoint.cpp:758
+#, c-format
+msgid "Accepting call from %s (Free For Chat)"
+msgstr "Priimamas skambutis iš %s (Laisvas Pokalbiui)"
+
+#: src/endpoint.cpp:770
 #, c-format
 msgid "Forwarding call from %s to %s (Busy)"
 msgstr "Nukreipiamas skambutis nuo %s į %s (Užimtas)"
 
-#. there is no forwarding, so reject the call
-#: src/endpoint.cpp:989
-#, c-format
-msgid "Auto rejecting incoming call from %s (Busy)"
-msgstr "Automatiškai atmestas skambutis nuo %s (Užimtas)"
+#: src/endpoint.cpp:804
+msgid "Call rejected"
+msgstr "Skambutis atmestas"
 
-#: src/endpoint.cpp:1013
-msgid "Auto Rejected"
-msgstr "Skambutis automatiškai atmestas"
-
-#: src/endpoint.cpp:1022
-msgid "Call Forwarded"
+#: src/endpoint.cpp:813 src/endpoint.cpp:1175 src/endpoint.cpp:2177
+msgid "Call forwarded"
 msgstr "Skambutis persiųstas"
 
-#: src/endpoint.cpp:1226
+#: src/endpoint.cpp:822
+msgid "Call automatically answered"
+msgstr "Automatiškai atsakyta į skambutį"
+
+#: src/endpoint.cpp:890
+#, c-format
+msgid "Forwarding call to %s"
+msgstr "Skambutis persiunčiamas į %s"
+
+#: src/endpoint.cpp:901
+#, c-format
+msgid "Error while forwarding call to %s"
+msgstr "Įvyko klaida peradresuojant skambutį į %s"
+
+#: src/endpoint.cpp:904
+msgid "There was an error when forwarding the call to the given host."
+msgstr "Įvyko klaida permetant skambutį į nurodytą kompiuterį"
+
+#: src/endpoint.cpp:957
 #, c-format
 msgid "Connected with %s using %s"
 msgstr "Susijungta su %s naudojant %s"
 
-#: src/endpoint.cpp:1228
+#: src/endpoint.cpp:959
 msgid "Connected"
 msgstr "Susijungta"
 
-#: src/endpoint.cpp:1231
-msgid "Fast start disabled"
-msgstr "Greitas paleidimas atjungtas"
-
-#: src/endpoint.cpp:1232
-msgid "Fast start enabled"
-msgstr "Greitas paleidimas įjungtas"
-
-#: src/endpoint.cpp:1235
-msgid "H.245 Tunnelling disabled"
-msgstr "H.245 tuneliai nenaudojami"
-
-#: src/endpoint.cpp:1236
-msgid "H.245 Tunnelling enabled"
-msgstr "H.245 tuneliai naudojami"
-
-#: src/endpoint.cpp:1432
+#: src/endpoint.cpp:1139
 msgid "Local user cleared the call"
 msgstr "Vietinis vartotojas nutraukė pokalbį"
 
-#: src/endpoint.cpp:1435
+#: src/endpoint.cpp:1142
 msgid "Remote user cleared the call"
 msgstr "Nutolęs vartotojas nutraukė pokalbį"
 
-#: src/endpoint.cpp:1438 src/endpoint.cpp:1441
+#: src/endpoint.cpp:1145 src/endpoint.cpp:1148
 msgid "Remote user did not accept the call"
 msgstr "Nutolęs vartotojas atsisakė priimti pokalbį"
 
-#: src/endpoint.cpp:1444
+#: src/endpoint.cpp:1151
 msgid "Local user did not accept the call"
 msgstr "Vietinis vartotojas atsisakė priimti pokalbį"
 
-#: src/endpoint.cpp:1447
+#: src/endpoint.cpp:1154
 msgid "The Gatekeeper cleared the call"
 msgstr "Tarpinis serveris nutraukė pokalbį"
 
-#: src/endpoint.cpp:1450
+#: src/endpoint.cpp:1157
 msgid "Call not answered in the required time"
 msgstr "Skambutis buvo neatsakytas per reikiamą laiką"
 
-#: src/endpoint.cpp:1453
+#: src/endpoint.cpp:1160
 msgid "Remote user has stopped calling"
 msgstr "Nutolęs vartotojas liovėsi skambinti"
 
-#: src/endpoint.cpp:1456
+#: src/endpoint.cpp:1163
 msgid "Abnormal call termination"
 msgstr "Nenormalus skambučio nutraukimas"
 
-#: src/endpoint.cpp:1459
+#: src/endpoint.cpp:1166
 msgid "Could not connect to remote host"
 msgstr "Nepavyko prisijungti prie nutolusio kompiuterio"
 
-#: src/endpoint.cpp:1462
+#: src/endpoint.cpp:1169
 msgid "Insufficient bandwidth"
 msgstr "Nepakanka turimos ryšio linijos"
 
-#: src/endpoint.cpp:1465
+#: src/endpoint.cpp:1172
 msgid "No common codec"
 msgstr "Nerastas bendras kodekas"
 
-#: src/endpoint.cpp:1471
+#: src/endpoint.cpp:1178
 msgid "Security check Failed"
 msgstr "Nepavyko saugumo testas"
 
-#: src/endpoint.cpp:1474
+#: src/endpoint.cpp:1181
 msgid "Local user is busy"
 msgstr "Vietinis vartotojas užsiėmęs"
 
-#: src/endpoint.cpp:1477
+#: src/endpoint.cpp:1184
 msgid "Remote user is busy"
 msgstr "Nutolęs vartotojas užsiėmęs"
 
-#: src/endpoint.cpp:1480 src/endpoint.cpp:1483
+#: src/endpoint.cpp:1187 src/endpoint.cpp:1190
 msgid "Congested link to remote party"
 msgstr "Perkrauta linija iki nutolusio vartotojo"
 
-#: src/endpoint.cpp:1486
+#: src/endpoint.cpp:1193
 msgid "Remote user is unreachable"
 msgstr "Nutolęs vartotojas nepasiekimas"
 
-#: src/endpoint.cpp:1489
+#: src/endpoint.cpp:1196
 msgid "Remote user is not running GnomeMeeting"
 msgstr "Nutolęs vartotojas nepaleido tinkamos konferencinės programos"
 
-#: src/endpoint.cpp:1492
+#: src/endpoint.cpp:1199
 msgid "Remote host is offline"
 msgstr "Nutolęs kompiuteris neturi ryšio"
 
-#: src/endpoint.cpp:1495
+#: src/endpoint.cpp:1202
 msgid "Temporary failure"
 msgstr "Laikina klaida"
 
-#: src/endpoint.cpp:1498 src/urlhandler.cpp:366
+#: src/endpoint.cpp:1205 src/urlhandler.cpp:384 src/urlhandler.cpp:390
 msgid "User not found"
 msgstr "Vartotojas nerastas"
 
-#: src/endpoint.cpp:1502
+#: src/endpoint.cpp:1209
 msgid "Call completed"
 msgstr "Skambutis baigtas"
 
-#: src/endpoint.cpp:1594 src/main_window.cpp:1364
+#: src/endpoint.cpp:1283 src/main_window.cpp:1275
 msgid ""
 "Lost packets:\n"
 "Late packets:\n"
@@ -1638,15 +1790,27 @@ msgstr ""
 "Susisiekimo uždelsimas:\n"
 "Audio buferis:"
 
-#: src/endpoint.cpp:1773
+#: src/endpoint.cpp:1495
+msgid "Error while starting the listener"
+msgstr "Įvyko klaida paleidžiant besiklausančią programą"
+
+#: src/endpoint.cpp:1495
+msgid ""
+"You will not be able to receive incoming calls. Please check that no other "
+"program is already running on the port used by GnomeMeeting."
+msgstr ""
+"Jūs negalėsite priimti ateinančių skambučių. Įsitikinkite, kad kita programa "
+"nenaudoja prievadų skirtų GnomeMeeting."
+
+#: src/endpoint.cpp:1616
 msgid "Attaching lid hardware to codec"
 msgstr "Įrenginys (lid) susiejamas su kodeku"
 
-#: src/endpoint.cpp:1788
+#: src/endpoint.cpp:1686
 msgid "Could not open audio channel for audio transmission"
 msgstr "Nepavyko atidaryti audio kanalo tam, kad perduoti garso duomenis"
 
-#: src/endpoint.cpp:1788
+#: src/endpoint.cpp:1686
 msgid ""
 "An error occured while trying to record from the soundcard for the audio "
 "transmission. Please check that your soundcard is not busy and that your "
@@ -1658,11 +1822,11 @@ msgstr ""
 "dirbti pilno duplekso režimu.\n"
 "Audio perdavimas atjungtas."
 
-#: src/endpoint.cpp:1790
+#: src/endpoint.cpp:1688
 msgid "Could not open audio channel for audio reception"
 msgstr "Nepavyko atidaryti audio kanalo tam, kad gauti garso duomenis"
 
-#: src/endpoint.cpp:1790
+#: src/endpoint.cpp:1688
 msgid ""
 "An error occured while trying to play audio to the soundcard for the audio "
 "reception. Please check that your soundcard is not busy and that your driver "
@@ -1674,512 +1838,17 @@ msgstr ""
 "dirbti pilno duplekso režimu.\n"
 "Audio gavimas atjungtas."
 
-#: src/gatekeeper.cpp:137
+#: src/endpoint.cpp:1731 src/endpoint.cpp:1793
 #, c-format
-msgid "Unregistered from gatekeeper %s"
-msgstr "Atsijungta nuo tarpinio serverio %s"
+msgid "Set Audio player device to %s"
+msgstr "Nustatyti garso išvedimo įrenginį į %s"
 
-#: src/gatekeeper.cpp:151
-msgid "Invalid gatekeeper hostname"
-msgstr "Klaidingas tarpinio serverio vardas"
-
-#: src/gatekeeper.cpp:151
-msgid ""
-"Please provide a hostname to use for the gatekeeper.\n"
-"Disabling registering."
-msgstr ""
-"Nurodykite tarpinio serverio adresą.\n"
-"Atjungta registracija tarpiniame serveryje."
-
-#: src/gatekeeper.cpp:159
-msgid "Invalid gatekeeper ID"
-msgstr "Klaidingas tarpinio serverio ID"
-
-#: src/gatekeeper.cpp:159
-msgid ""
-"Please provide a valid ID for the gatekeeper.\n"
-"Disabling registering."
-msgstr ""
-"Nurodykite teisingą tarpinio serverio ID.\n"
-"Atjungta registracija tarpiniame serveryje."
-
-#: src/gatekeeper.cpp:206
-msgid ""
-"Another user already exists with the same alias, please use another alias."
-msgstr "Vartotojas tokiu vardu jau yra. Naudokite kitą vardą."
-
-#: src/gatekeeper.cpp:209
-msgid ""
-"You are not allowed to register to the gatekeeper. Please check your login, "
-"password and firewall."
-msgstr ""
-"Jūs negalite registruoti nurodytame tarpiniame serveryje. Patikrinkite savo "
-"vardą, slaptažodį ir ugniasienės nustatymus."
-
-#: src/gatekeeper.cpp:212
-msgid "There was a transport error."
-msgstr "Įvyko srauto klaida."
-
-#: src/gatekeeper.cpp:215 src/gatekeeper.cpp:220
-msgid "No gatekeeper corresponding to your options has been found."
-msgstr "Nerastas tarpinis serveris nurodytas Jūsų nustatymuose."
-
-#: src/gatekeeper.cpp:222
-msgid "Error while registering with gatekeeper"
-msgstr "Įvyko klaida registruojantis tarpiniame serveryje"
-
-#: src/gatekeeper.cpp:240
-#, c-format
-msgid "Gatekeeper set to %s"
-msgstr "Tarpinis serveris nustatytas į %s"
-
-#: src/gnomemeeting.cpp:86
-msgid "Notification area not detected"
-msgstr "Perspėjimų sritis nerasta"
-
-#: src/gnomemeeting.cpp:86
-msgid ""
-"You have chosen to start GnomeMeeting hidden, however the notification area "
-"is not present in your panel, GnomeMeeting can thus not start hidden."
-msgstr ""
-"Jūs norėjote paleisti GnomeMeeting paslėptą, tačiau skydelyje buvo nerasta "
-"perspėjimų sritis. GnomeMeeting negali būti paleistas paslėptame režime."
-
-#: src/gnomemeeting.cpp:193
-msgid "Answering incoming call"
-msgstr "Atsakoma į ateinantį skambutį"
-
-#: src/gnomemeeting.cpp:264
-msgid "Trying to stop calling"
-msgstr "Bandoma sustabdyti skambutį"
-
-#: src/gnomemeeting.cpp:277
-msgid "Stopping current call"
-msgstr "Sustabdomas esamas skambutis"
-
-#: src/gnomemeeting.cpp:289
-msgid "Refusing Incoming call"
-msgstr "Atsisakoma priimti skambutį"
-
-#. no error if Picture is choosen as video device
-#: src/gnomemeeting.cpp:320 src/videograbber.cpp:366 src/videograbber.cpp:683
-msgid "Picture"
-msgstr "Atvaizdas"
-
-#: src/gnomemeeting.cpp:428
-msgid "Error while starting the listener"
-msgstr "Įvyko klaida paleidžiant besiklausančią programą"
-
-#: src/gnomemeeting.cpp:428
-msgid ""
-"You will not be able to receive incoming calls. Please check that no other "
-"program is already running on the port used by GnomeMeeting."
-msgstr ""
-"Jūs negalėsite priimti ateinančių skambučių. Įsitikinkite, kad kita programa "
-"nenaudoja prievadų skirtų GnomeMeeting."
-
-#. GM is started
-#: src/gnomemeeting.cpp:505
-#, c-format
-msgid "Started GnomeMeeting V%d.%d for %s\n"
-msgstr "Paleistas GnomeMeeting V%d.%d skitas %s\n"
-
-#: src/ils.cpp:119
-msgid "Parse error"
-msgstr "Apdorojimo klaida"
-
-#: src/ils.cpp:119
-#, c-format
-msgid ""
-"There was an error while processing the registering to the user directory: %"
-"d %s."
-msgstr "Įvyko klaida registruojantis vartotojų kataloge: %d %s."
-
-#. No need to display that for unregistering
-#: src/ils.cpp:233
-msgid "Invalid parameters"
-msgstr "Klaidingi nustatymai"
-
-#: src/ils.cpp:233
-msgid ""
-"Please provide your first name and e-mail in the Personal Data section in "
-"order to be able to register to the user directory."
-msgstr ""
-"Tam kad galėtumėte registruotis kataloge, Jūs turite nurodyti savo vardą ir "
-"elektroninio pašto adresą tarp asmeninių nustatymų."
-
-#: src/ils.cpp:268
-msgid "Invalid user directory"
-msgstr "Klaidingas vartotojų katalogas"
-
-#: src/ils.cpp:268
-msgid "Operation impossible since there is no user directory specified."
-msgstr "Operacija neįmanoma, kadangi nenurodytas vartotojų katalogas."
-
-#: src/ils.cpp:334 src/ils.cpp:921
-#, c-format
-msgid "Contacting %s..."
-msgstr "Susisiekiama su %s..."
-
-#: src/ils.cpp:347
-msgid "Failed to parse XML file"
-msgstr "Nepavyko apdoroti XML bylos"
-
-#: src/ils.cpp:347
-msgid ""
-"There was an error while parsing the XML file. Please make sure that it is "
-"correctly installed in your system."
-msgstr ""
-"Įvyko klaida apdorojant XML bylą. Įsitikinkite, kad ji tvarkingai įdiegta "
-"Jūsų sistemoje."
-
-#: src/ils.cpp:358
-msgid "Bad information"
-msgstr "Netinkama informacija"
-
-#: src/ils.cpp:358
-#, c-format
-msgid "Bad ldap information from XML file: %s."
-msgstr "Netinkama ldap informacija saugoma XML byloje: %s."
-
-#: src/ils.cpp:367 src/ils.cpp:377 src/ils.cpp:386
-msgid "Cannot contact the user directory"
-msgstr "Nepavyko susisiekti su vartotojų katalogu"
-
-#: src/ils.cpp:367
-#, c-format
-msgid "Failed to contact the user directory %s:%d."
-msgstr "Nepavyko susisiekti su vartotojų katalogu %s:%d."
-
-#: src/ils.cpp:377
-msgid "Failed to set a time limit on operations."
-msgstr "Operacijoms nepavyko nustatyti laiko ribų."
-
-#: src/ils.cpp:386
-#, c-format
-msgid "Failed to bind to user directory: %s."
-msgstr "Nepavyko prisijungti prie vartotojų katalogo: %s."
-
-#: src/ils.cpp:417
-#, c-format
-msgid "Successfully registered to %s."
-msgstr "Sėkmingai užsiregistruota tarp %s."
-
-#: src/ils.cpp:453
-#, c-format
-msgid "Updated information on %s."
-msgstr "Atnaujinta informacija esanti tarp %s."
-
-#: src/ils.cpp:463
-#, c-format
-msgid "Successfully unregistered from %s."
-msgstr "Sėkmingai išsiregistruota iš %s."
-
-#: src/ils.cpp:495
-#, c-format
-msgid "Error while registering to %s."
-msgstr "Įvyko klaida registruojantis tarp %s."
-
-#: src/ils.cpp:498
-#, c-format
-msgid "Error while unregistering from %s."
-msgstr "Įvyko klaida išsiregistruojant iš %s."
-
-#: src/ils.cpp:929
-#, c-format
-msgid "Failed to contact LDAP server %s:%d."
-msgstr "Nepavyko susisiekti su LDAP serveriu %s:%d."
-
-#: src/ils.cpp:942
-msgid "Failed to set time limit on LDAP operations."
-msgstr "Nepavyko nustatyti LDAP operacijų laiko apribojimų."
-
-#: src/ils.cpp:952
-#, c-format
-msgid "Failed to contact to LDAP server %s: %s."
-msgstr "Nepavyko susisiekti su LDAP serveriu %s: %s."
-
-#: src/ils.cpp:962
-#, c-format
-msgid "Fetching online users list from %s."
-msgstr "Iš %s gaunamas aktyvių vartotojų sąrašas."
-
-#: src/ils.cpp:981
-#, c-format
-msgid "Connection to %s lost..."
-msgstr "Nutrūko jungtis iki %s ..."
-
-#: src/ils.cpp:984
-msgid "Could not fetch online users list."
-msgstr "Nepavyko gauti aktyvių vartotojų sąrašo."
-
-#: src/ils.cpp:1210
-#, c-format
-msgid "Search completed: %d user(s) listed on a total of %d user(s) from %s."
-msgstr ""
-"Paieška baigta: išvesta %d vartotojas(ai) iš %d vartotojų, esančių tarp "
-"serverio %s."
-
-#: src/ils.cpp:1215
-#, c-format
-msgid "Search completed: %d user(s) found on %s."
-msgstr "Paieška baigta: rasta %d vartotojas(ų) tarp %s."
-
-#: src/ldap_window.cpp:725
-msgid "Name:"
-msgstr "Vardas:"
-
-#: src/ldap_window.cpp:745
-msgid "URL:"
-msgstr "Adresas:"
-
-#: src/ldap_window.cpp:772
-msgid "Speed Dial:"
-msgstr "Greitas numeris:"
-
-#: src/ldap_window.cpp:796
-msgid "Groups:"
-msgstr "Grupės:"
-
-#: src/ldap_window.cpp:912
-msgid "Invalid user name or URL"
-msgstr "Klaidingas vartotojo vardas arba adresas"
-
-#: src/ldap_window.cpp:912
-msgid ""
-"Please provide a valid name and URL for the contact you want to add to the "
-"address book."
-msgstr ""
-"Prašau pateikti tinkamą vardą ir adresą, kuriuos norite įtraukti į adresų "
-"knygą."
-
-#: src/ldap_window.cpp:920
-msgid "Invalid group"
-msgstr "Klaidinga grupė"
-
-#: src/ldap_window.cpp:920
-msgid "You have to select a group to which you want to add your contact."
-msgstr ""
-"Jūs turite pasirinkti grupę, kuriai reikia priskirti įvedamą kontaktinį "
-"adresą."
-
-#: src/ldap_window.cpp:934
-msgid "Invalid speed dial"
-msgstr "Klaidingas greitasis numeris"
-
-#: src/ldap_window.cpp:934
-msgid ""
-"Another contact with the same speed dial already exists in the address book."
-msgstr "Kitas kontaktas su tokiu pat greitu numeriu jau yra adresų knygoje."
-
-#: src/ldap_window.cpp:946
-msgid "Invalid URL"
-msgstr "Klaidingas adresas"
-
-#: src/ldap_window.cpp:946
-msgid "Another contact with the same URL already exists in the address book."
-msgstr "Kitas kontaktas su tokiu pat adresu jau yra adresų knygoje."
-
-#: src/ldap_window.cpp:1073
-#, c-format
-msgid "Add %s to Address Book"
-msgstr "Įtraukti %s į adresų knygą"
-
-#: src/ldap_window.cpp:1093 src/ldap_window.cpp:2258
-msgid "C_all Contact"
-msgstr "Sk_ambinti Adresatui"
-
-#: src/ldap_window.cpp:1098 src/ldap_window.cpp:2262
-msgid "_Tranfer Call to Contact"
-msgstr "_Perkelti Skambutį Adresatui"
-
-#: src/ldap_window.cpp:1109 src/ldap_window.cpp:2280
-msgid "Contact _Properties"
-msgstr "Adresato _Duomenys"
-
-#: src/ldap_window.cpp:1115 src/ldap_window.cpp:2244
-msgid "_Delete"
-msgstr "_Trinti"
-
-#: src/ldap_window.cpp:1220
-msgid "Add a new server"
-msgstr "Pridėti naują serverį"
-
-#: src/ldap_window.cpp:1221
-msgid "Enter the server name:"
-msgstr "Įveskite serverio vardą:"
-
-#: src/ldap_window.cpp:1222
-msgid ""
-"Sorry but there is already a server with the same name in the address book."
-msgstr "Atsiprašau, bet adresų knygoje jau yra serveris, turintis tokį vardą."
-
-#: src/ldap_window.cpp:1227
-msgid "Add a new group"
-msgstr "Pridėti naują grupę"
-
-#: src/ldap_window.cpp:1228
-msgid "Enter the group name:"
-msgstr "Įveskite grupės vardą:"
-
-#: src/ldap_window.cpp:1229
-msgid ""
-"Sorry but there is already a group with the same name in the address book."
-msgstr "Atsiprašau, bet adresų knygoje jau yra grupė, turinti tokį vardą."
-
-#: src/ldap_window.cpp:1264
-msgid "Invalid server or group name"
-msgstr "Klaidingas serverio arba grupės vardas"
-
-#: src/ldap_window.cpp:1350
-#, c-format
-msgid "Are you sure you want to delete server %s?"
-msgstr "Ar tikrai norite ištrinti serverį %s?"
-
-#: src/ldap_window.cpp:1356
-#, c-format
-msgid "Are you sure you want to delete group %s and all its contacts?"
-msgstr ""
-"Ar jūs tikrai norite ištrinti grupę %s ir visus joje esančius kontaktus?"
-
-#: src/ldap_window.cpp:1539
-msgid "New server"
-msgstr "Naujas serveris"
-
-#: src/ldap_window.cpp:1548
-msgid "New group"
-msgstr "Nauja grupė"
-
-#: src/ldap_window.cpp:1557
-msgid "_Find"
-msgstr "_Rasti"
-
-#: src/ldap_window.cpp:1562 src/ldap_window.cpp:1576
-msgid "Delete"
-msgstr "Trinti"
-
-#: src/ldap_window.cpp:1571
-msgid "New contact"
-msgstr "Naujas kontaktas"
-
-#: src/ldap_window.cpp:2212
-msgid "GnomeMeeting Address Book"
-msgstr "GnomeMeeting adresų knyga"
-
-#: src/ldap_window.cpp:2230
-msgid "_File"
-msgstr "_Byla"
-
-#: src/ldap_window.cpp:2232
-msgid "New _Server"
-msgstr "Naujas _Serveris"
-
-#: src/ldap_window.cpp:2237
-msgid "New _Group"
-msgstr "Nauja _Grupė"
-
-#: src/ldap_window.cpp:2250
-msgid "_Close"
-msgstr "_Uždaryti"
-
-#: src/ldap_window.cpp:2256
-msgid "C_ontact"
-msgstr "_Adresas"
-
-#: src/ldap_window.cpp:2268
-msgid "New _Contact"
-msgstr "Naujas _Adresas"
-
-#: src/ldap_window.cpp:2273
-msgid "Add Contact to _Address Book"
-msgstr "Įtraukti Kontaktą į _Adresų Knygą"
-
-#. Translators: This is "S" as in "Status"
-#: src/ldap_window.cpp:2530
-msgid "S"
-msgstr "B"
-
-#. Translators: This is "A" as in "Audio"
-#: src/ldap_window.cpp:2540 src/pref_window.cpp:1218
-msgid "A"
-msgstr "G"
-
-#. Translators: This is "V" as in "Video"
-#: src/ldap_window.cpp:2550
-msgid "V"
-msgstr "V"
-
-#: src/ldap_window.cpp:2559 src/ldap_window.cpp:2633 src/pref_window.cpp:1232
-msgid "Name"
-msgstr "Vardas"
-
-#: src/ldap_window.cpp:2597 src/ldap_window.cpp:2645 src/tools.cpp:248
-msgid "URL"
-msgstr "Adresas"
-
-#: src/ldap_window.cpp:2620
-msgid "IP"
-msgstr "IP"
-
-#: src/ldap_window.cpp:2658
-msgid "Speed Dial"
-msgstr "Greitas numeris"
-
-#: src/ldap_window.cpp:2711
-msgid "Find all contacts"
-msgstr "Rodyti visus kontaktus"
-
-#: src/ldap_window.cpp:2716
-msgid "First name contains"
-msgstr "Varde yra"
-
-#: src/ldap_window.cpp:2720
-msgid "Last name contains"
-msgstr "Pavardėje yra"
-
-#: src/ldap_window.cpp:2724
-msgid "E-mail contains"
-msgstr "El.pašte yra"
-
-#: src/ldap_window.cpp:2909
-msgid "Servers"
-msgstr "Serveriai"
-
-#: src/ldap_window.cpp:2955
-msgid "Groups"
-msgstr "Grupės"
-
-#: src/lid.cpp:132
-#, c-format
-msgid "Using Quicknet device %s"
-msgstr "Naudojamas Quicknet įrenginys %s"
-
-#: src/lid.cpp:174
-msgid "Error while opening the Quicknet device."
-msgstr "Įvyko klaida atidarant Quicknet įrenginį."
-
-#: src/lid.cpp:174
-msgid ""
-"Please check that your driver is correctly installed and that the device is "
-"working correctly."
-msgstr ""
-"Įsitikinkite kad Jūsų tvarkyklė tvarkingai įdiegta ir kad įrenginys dirba "
-"tvarkingai."
-
-#: src/lid.cpp:279 src/lid.cpp:280
-msgid "Phone is off hook"
-msgstr "Ragelis pakeltas"
-
-#: src/lid.cpp:309 src/lid.cpp:310
-msgid "Phone is on hook"
-msgstr "Ragelis padėtas"
-
-#: src/main_window.cpp:255
+#: src/endpoint.cpp:2010
 #, c-format
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 
-#: src/main_window.cpp:292
+#: src/endpoint.cpp:2052
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2192,24 +1861,516 @@ msgstr ""
 "Susisiekimo uždelsimas: %d ms\n"
 "Audio buferis: %d ms"
 
-#: src/main_window.cpp:486
+#: src/endpoint.cpp:2173
+#, c-format
+msgid "Forwarding Call to %s (No Answer)"
+msgstr "Persiunčiame skambuti į  %s (Jokio atsako)"
+
+#: src/gatekeeper.cpp:134
+#, c-format
+msgid "Unregistered from gatekeeper %s"
+msgstr "Atsijungta nuo tarpinio serverio %s"
+
+#: src/gatekeeper.cpp:148
+msgid "Invalid gatekeeper hostname"
+msgstr "Klaidingas tarpinio serverio vardas"
+
+#: src/gatekeeper.cpp:148
+msgid ""
+"Please provide a hostname to use for the gatekeeper.\n"
+"Disabling registering."
+msgstr ""
+"Nurodykite tarpinio serverio adresą.\n"
+"Atjungta registracija tarpiniame serveryje."
+
+#: src/gatekeeper.cpp:156
+msgid "Invalid gatekeeper ID"
+msgstr "Klaidingas tarpinio serverio ID"
+
+#: src/gatekeeper.cpp:156
+msgid ""
+"Please provide a valid ID for the gatekeeper.\n"
+"Disabling registering."
+msgstr ""
+"Nurodykite teisingą tarpinio serverio ID.\n"
+"Atjungta registracija tarpiniame serveryje."
+
+#: src/gatekeeper.cpp:203
+msgid ""
+"Another user already exists with the same alias, please use another alias."
+msgstr "Vartotojas tokiu vardu jau yra. Naudokite kitą vardą."
+
+#: src/gatekeeper.cpp:206
+msgid ""
+"You are not allowed to register to the gatekeeper. Please check your login, "
+"password and firewall."
+msgstr ""
+"Jūs negalite registruoti nurodytame tarpiniame serveryje. Patikrinkite savo "
+"vardą, slaptažodį ir ugniasienės nustatymus."
+
+#: src/gatekeeper.cpp:209
+msgid "There was a transport error."
+msgstr "Įvyko srauto klaida."
+
+#: src/gatekeeper.cpp:212 src/gatekeeper.cpp:217
+msgid "No gatekeeper corresponding to your options has been found."
+msgstr "Nerastas tarpinis serveris nurodytas Jūsų nustatymuose."
+
+#: src/gatekeeper.cpp:219
+msgid "Error while registering with gatekeeper"
+msgstr "Įvyko klaida registruojantis tarpiniame serveryje"
+
+#: src/gatekeeper.cpp:237
+#, c-format
+msgid "Gatekeeper set to %s"
+msgstr "Tarpinis serveris nustatytas į %s"
+
+#: src/gnomemeeting.cpp:85
+msgid "Notification area not detected"
+msgstr "Perspėjimų sritis nerasta"
+
+#: src/gnomemeeting.cpp:85
+msgid ""
+"You have chosen to start GnomeMeeting hidden, however the notification area "
+"is not present in your panel, GnomeMeeting can thus not start hidden."
+msgstr ""
+"Jūs norėjote paleisti GnomeMeeting paslėptą, tačiau skydelyje buvo nerasta "
+"perspėjimų sritis. GnomeMeeting negali būti paleistas paslėptame režime."
+
+#: src/gnomemeeting.cpp:186
+msgid "Answering incoming call"
+msgstr "Atsakoma į ateinantį skambutį"
+
+#: src/gnomemeeting.cpp:249
+msgid "Trying to stop calling"
+msgstr "Bandoma sustabdyti skambutį"
+
+#: src/gnomemeeting.cpp:261
+msgid "Stopping current call"
+msgstr "Sustabdomas esamas skambutis"
+
+#: src/gnomemeeting.cpp:272
+msgid "Refusing Incoming call"
+msgstr "Atsisakoma priimti skambutį"
+
+#. GM is started
+#: src/gnomemeeting.cpp:522
+#, c-format
+msgid "Started GnomeMeeting V%d.%d for %s\n"
+msgstr "Paleistas GnomeMeeting V%d.%d skitas %s\n"
+
+#: src/ils.cpp:110
+msgid "Invalid parameters"
+msgstr "Klaidingi nustatymai"
+
+#: src/ils.cpp:110
+msgid ""
+"Please provide your first name and e-mail in the Personal Data section in "
+"order to be able to register to the user directory."
+msgstr ""
+"Tam kad galėtumėte registruotis kataloge, Jūs turite nurodyti savo vardą ir "
+"elektroninio pašto adresą tarp asmeninių nustatymų."
+
+#: src/ils.cpp:145
+msgid "Invalid user directory"
+msgstr "Klaidingas vartotojų katalogas"
+
+#: src/ils.cpp:145
+msgid "Operation impossible since there is no user directory specified."
+msgstr "Operacija neįmanoma, kadangi nenurodytas vartotojų katalogas."
+
+#: src/ils.cpp:226
+msgid "Failed to parse XML file"
+msgstr "Nepavyko apdoroti XML bylos"
+
+#: src/ils.cpp:226
+msgid ""
+"There was an error while parsing the XML file. Please make sure that it is "
+"correctly installed in your system."
+msgstr ""
+"Įvyko klaida apdorojant XML bylą. Įsitikinkite, kad ji tvarkingai įdiegta "
+"Jūsų sistemoje."
+
+#: src/ils.cpp:237
+msgid "Bad information"
+msgstr "Netinkama informacija"
+
+#: src/ils.cpp:237
+#, c-format
+msgid "Bad ldap information from XML file: %s."
+msgstr "Netinkama ldap informacija saugoma XML byloje: %s."
+
+#: src/ils.cpp:246
+msgid "Cannot contact the users directory"
+msgstr "Nepavyko susisiekti su vartotojų katalogu"
+
+#: src/ils.cpp:246
+#, c-format
+msgid ""
+"Failed to contact the users directory %s:%d. The directory is probably "
+"currently overloaded, try again later."
+msgstr ""
+"Nepavyko susisiekti su vartotojų katalogu %s:%d. Katalogas šiuo metu "
+"greičiausiai yra per daug apkrautas, bandykite vėliau."
+
+#: src/ils.cpp:256 src/ils.cpp:265
+msgid "Cannot contact the user directory"
+msgstr "Nepavyko susisiekti su vartotojų katalogu"
+
+#: src/ils.cpp:256
+msgid "Failed to set a time limit on operations."
+msgstr "Operacijoms nepavyko nustatyti laiko ribų."
+
+#: src/ils.cpp:265
+#, c-format
+msgid "Failed to bind to user directory: %s."
+msgstr "Nepavyko prisijungti prie vartotojų katalogo: %s."
+
+#: src/ils.cpp:289
+#, c-format
+msgid "Updated information on the users directory %s."
+msgstr "Atnaujinta informacija esanti tarp vartotojų katalogo %s."
+
+#: src/ils.cpp:293
+#, c-format
+msgid "Unregistered from the users directory %s."
+msgstr "Išsiregistruota iš vartotojų katalogo %s"
+
+#: src/ils.cpp:315
+#, c-format
+msgid "Error while registering to %s."
+msgstr "Įvyko klaida registruojantis tarp %s."
+
+#: src/ils.cpp:674
+#, c-format
+msgid "Failed to contact LDAP server %s:%d."
+msgstr "Nepavyko susisiekti su LDAP serveriu %s:%d."
+
+#: src/ils.cpp:687
+msgid "Failed to set time limit on LDAP operations."
+msgstr "Nepavyko nustatyti LDAP operacijų laiko apribojimų."
+
+#: src/ils.cpp:697
+#, c-format
+msgid "Failed to contact to LDAP server %s: %s."
+msgstr "Nepavyko susisiekti su LDAP serveriu %s: %s."
+
+#: src/ils.cpp:707
+#, c-format
+msgid "Fetching online users list from %s."
+msgstr "Iš %s gaunamas aktyvių vartotojų sąrašas."
+
+#: src/ils.cpp:725
+msgid "Could not fetch online users list."
+msgstr "Nepavyko gauti aktyvių vartotojų sąrašo."
+
+#: src/ils.cpp:741
+#, c-format
+msgid "Connection to %s lost..."
+msgstr "Nutrūko jungtis iki %s ..."
+
+#: src/ils.cpp:958
+#, c-format
+msgid "Search completed: %d user(s) listed on a total of %d user(s) from %s."
+msgstr ""
+"Paieška baigta: išvesta %d vartotojas(ai) iš %d vartotojų, esančių tarp "
+"serverio %s."
+
+#: src/ils.cpp:963
+#, c-format
+msgid "Search completed: %d user(s) found on %s."
+msgstr "Paieška baigta: rasta %d vartotojas(ų) tarp %s."
+
+#: src/ldap_window.cpp:718
+msgid "Name:"
+msgstr "Vardas:"
+
+#: src/ldap_window.cpp:738
+msgid "URL:"
+msgstr "Adresas:"
+
+#: src/ldap_window.cpp:765
+msgid "Speed Dial:"
+msgstr "Greitas numeris:"
+
+#: src/ldap_window.cpp:789
+msgid "Groups:"
+msgstr "Grupės:"
+
+#: src/ldap_window.cpp:906
+msgid "Invalid user name or URL"
+msgstr "Klaidingas vartotojo vardas arba adresas"
+
+#: src/ldap_window.cpp:906
+msgid ""
+"Please provide a valid name and URL for the contact you want to add to the "
+"address book."
+msgstr ""
+"Prašau pateikti tinkamą vardą ir adresą, kuriuos norite įtraukti į adresų "
+"knygą."
+
+#: src/ldap_window.cpp:914
+msgid "Invalid group"
+msgstr "Klaidinga grupė"
+
+#: src/ldap_window.cpp:914
+msgid "You have to select a group to which you want to add your contact."
+msgstr ""
+"Jūs turite pasirinkti grupę, kuriai reikia priskirti įvedamą kontaktinį "
+"adresą."
+
+#: src/ldap_window.cpp:928
+msgid "Invalid speed dial"
+msgstr "Klaidingas greitasis numeris"
+
+#: src/ldap_window.cpp:928
+msgid ""
+"Another contact with the same speed dial already exists in the address book."
+msgstr "Kitas kontaktas su tokiu pat greitu numeriu jau yra adresų knygoje."
+
+#: src/ldap_window.cpp:940
+msgid "Invalid URL"
+msgstr "Klaidingas adresas"
+
+#: src/ldap_window.cpp:940
+msgid "Another contact with the same URL already exists in the address book."
+msgstr "Kitas kontaktas su tokiu pat adresu jau yra adresų knygoje."
+
+#: src/ldap_window.cpp:977
+#, c-format
+msgid "Are you sure you want to remove %s [%s] from group %s?"
+msgstr "Ar tikrai norite pašalinti %s [%s] iš grupės %s?"
+
+#: src/ldap_window.cpp:1083
+#, c-format
+msgid "Add %s to Address Book"
+msgstr "Įtraukti %s į adresų knygą"
+
+#: src/ldap_window.cpp:1109 src/ldap_window.cpp:2627
+msgid "C_all Contact"
+msgstr "Sk_ambinti Adresatui"
+
+#: src/ldap_window.cpp:1115 src/ldap_window.cpp:2630
+msgid "_Tranfer Call to Contact"
+msgstr "_Perkelti Skambutį Adresatui"
+
+#: src/ldap_window.cpp:1127 src/ldap_window.cpp:2647
+msgid "Contact _Properties"
+msgstr "Adresato _Duomenys"
+
+#: src/ldap_window.cpp:1133
+msgid "Copy URL to the clipboard"
+msgstr "Nukopijuoti adresą į atmintinę"
+
+#: src/ldap_window.cpp:1139 src/ldap_window.cpp:1584 src/ldap_window.cpp:2609
+msgid "_Delete"
+msgstr "_Trinti"
+
+#: src/ldap_window.cpp:1241
+msgid "Add a new server"
+msgstr "Pridėti naują serverį"
+
+#: src/ldap_window.cpp:1242
+msgid "Enter the server name:"
+msgstr "Įveskite serverio vardą:"
+
+#: src/ldap_window.cpp:1243 src/ldap_window.cpp:1356
+msgid ""
+"Sorry but there is already a server with the same name in the address book."
+msgstr "Atsiprašau, bet adresų knygoje jau yra serveris, turintis tokį vardą."
+
+#: src/ldap_window.cpp:1247
+msgid "Add a new group"
+msgstr "Pridėti naują grupę"
+
+#: src/ldap_window.cpp:1248
+msgid "Enter the group name:"
+msgstr "Įveskite grupės vardą:"
+
+#: src/ldap_window.cpp:1249 src/ldap_window.cpp:1367
+msgid ""
+"Sorry but there is already a group with the same name in the address book."
+msgstr "Atsiprašau, bet adresų knygoje jau yra grupė, turinti tokį vardą."
+
+#: src/ldap_window.cpp:1283 src/ldap_window.cpp:1416
+msgid "Invalid server or group name"
+msgstr "Klaidingas serverio arba grupės vardas"
+
+#: src/ldap_window.cpp:1352
+#, c-format
+msgid "Please enter a new name for server %s:"
+msgstr "Prašau įvesti naują vardą, priskirtiną serveriui %s:"
+
+#: src/ldap_window.cpp:1354
+#, c-format
+msgid "Are you sure you want to delete server %s?"
+msgstr "Ar tikrai norite ištrinti serverį %s?"
+
+#: src/ldap_window.cpp:1363
+#, c-format
+msgid "Please enter a new name for group %s:"
+msgstr "Prašau įvesti naują vardą, priskirtiną grupei %s:"
+
+#: src/ldap_window.cpp:1365
+#, c-format
+msgid "Are you sure you want to delete group %s and all its contacts?"
+msgstr ""
+"Ar jūs tikrai norite ištrinti grupę %s ir visus joje esančius kontaktus?"
+
+#: src/ldap_window.cpp:1552
+msgid "New server"
+msgstr "Naujas serveris"
+
+#: src/ldap_window.cpp:1562
+msgid "New group"
+msgstr "Nauja grupė"
+
+#: src/ldap_window.cpp:1572
+msgid "_Find"
+msgstr "_Rasti"
+
+#: src/ldap_window.cpp:1579 src/ldap_window.cpp:1601 src/ldap_window.cpp:2613
+msgid "_Rename"
+msgstr "_Pervadinti"
+
+#: src/ldap_window.cpp:1594
+msgid "New contact"
+msgstr "Naujas kontaktas"
+
+#: src/ldap_window.cpp:1606
+msgid "Delete"
+msgstr "Trinti"
+
+#: src/ldap_window.cpp:2578
+msgid "GnomeMeeting Address Book"
+msgstr "GnomeMeeting adresų knyga"
+
+#: src/ldap_window.cpp:2596
+msgid "_File"
+msgstr "_Byla"
+
+#: src/ldap_window.cpp:2598
+msgid "New _Server"
+msgstr "Naujas _Serveris"
+
+#: src/ldap_window.cpp:2602
+msgid "New _Group"
+msgstr "Nauja _Grupė"
+
+#: src/ldap_window.cpp:2620 src/menu.cpp:343
+msgid "_Close"
+msgstr "_Uždaryti"
+
+#: src/ldap_window.cpp:2625
+msgid "C_ontact"
+msgstr "_Adresas"
+
+#: src/ldap_window.cpp:2636
+msgid "New _Contact"
+msgstr "Naujas _Adresas"
+
+#: src/ldap_window.cpp:2640
+msgid "Add Contact to _Address Book"
+msgstr "Įtraukti Kontaktą į _Adresų Knygą"
+
+#. Translators: This is "S" as in "Status"
+#: src/ldap_window.cpp:2901
+msgid "S"
+msgstr "B"
+
+#. Translators: This is "A" as in "Audio"
+#: src/ldap_window.cpp:2911 src/pref_window.cpp:1108
+msgid "A"
+msgstr "G"
+
+#. Translators: This is "V" as in "Video"
+#: src/ldap_window.cpp:2921
+msgid "V"
+msgstr "V"
+
+#: src/ldap_window.cpp:2930 src/ldap_window.cpp:3004 src/pref_window.cpp:1122
+msgid "Name"
+msgstr "Vardas"
+
+#: src/ldap_window.cpp:2968 src/ldap_window.cpp:3016 src/tools.cpp:255
+msgid "URL"
+msgstr "Adresas"
+
+#: src/ldap_window.cpp:2991
+msgid "IP"
+msgstr "IP"
+
+#: src/ldap_window.cpp:3029
+msgid "Speed Dial"
+msgstr "Greitas numeris"
+
+#: src/ldap_window.cpp:3082
+msgid "Find all contacts"
+msgstr "Rodyti visus kontaktus"
+
+#: src/ldap_window.cpp:3087
+msgid "First name contains"
+msgstr "Varde yra"
+
+#: src/ldap_window.cpp:3091
+msgid "Last name contains"
+msgstr "Pavardėje yra"
+
+#: src/ldap_window.cpp:3095
+msgid "E-mail contains"
+msgstr "El.pašte yra"
+
+#: src/ldap_window.cpp:3281
+msgid "Servers"
+msgstr "Serveriai"
+
+#: src/ldap_window.cpp:3327
+msgid "Groups"
+msgstr "Grupės"
+
+#: src/lid.cpp:131
+#, c-format
+msgid "Using Quicknet device %s"
+msgstr "Naudojamas Quicknet įrenginys %s"
+
+#: src/lid.cpp:173
+msgid "Error while opening the Quicknet device."
+msgstr "Įvyko klaida atidarant Quicknet įrenginį."
+
+#: src/lid.cpp:173
+msgid ""
+"Please check that your driver is correctly installed and that the device is "
+"working correctly."
+msgstr ""
+"Įsitikinkite kad Jūsų tvarkyklė tvarkingai įdiegta ir kad įrenginys dirba "
+"tvarkingai."
+
+#: src/lid.cpp:252 src/lid.cpp:253
+msgid "Phone is off hook"
+msgstr "Ragelis pakeltas"
+
+#: src/lid.cpp:282 src/lid.cpp:283
+msgid "Phone is on hook"
+msgstr "Ragelis padėtas"
+
+#: src/main_window.cpp:337
 #, c-format
 msgid "Total: %.2f MB"
 msgstr "Viso: %.2f MB"
 
-#: src/main_window.cpp:605
+#: src/main_window.cpp:461
 msgid "Cannot run GnomeMeeting"
 msgstr "Negalima paleisti GnomeMeeting"
 
-#: src/main_window.cpp:605
+#: src/main_window.cpp:461
 msgid ""
-"GnomeMeeting is already running, if you want it to call a given callto URL, "
-"please use \"gnomemeeting -c URL\"."
+"GnomeMeeting is already running, if you want it to call a given callto or "
+"h323 URL, please use \"gnomemeeting -c URL\"."
 msgstr ""
 "GnomeMeeting jau paleistas, jei Jūs norite paskambinti nurodytam adresui, "
 "naudokite komandą \"gnomemeeting -c adresas\"."
 
-#: src/main_window.cpp:657
+#: src/main_window.cpp:514
 msgid ""
 "It appears that you do not have gnomemeeting.server installed in a valid "
 "location. Factory mode disabled.\n"
@@ -2217,7 +2378,7 @@ msgstr ""
 "Panašu, kad gnomemeeting serveris nėra įdiegtas tinkamoje vietoje. Gamyklos "
 "režimas atjungtas.\n"
 
-#: src/main_window.cpp:661
+#: src/main_window.cpp:518
 msgid ""
 "Error registering GnomeMeeting with the activation service; factory mode "
 "disabled.\n"
@@ -2225,82 +2386,88 @@ msgstr ""
 "Įvyko klaida registruojant GnomeMeeting aktyvavimo tarnyboje; gamyklos "
 "režimas atjungtas.\n"
 
-#: src/main_window.cpp:701
+#: src/main_window.cpp:558
 msgid "Failed to retrieve gnomemeeting server from activation server\n"
 msgstr ""
 "Nepavyko gauti informacijos apie gnomemeeting programą iš aktyvavimo "
 "serverio\n"
 
-#: src/main_window.cpp:1196 src/menu.cpp:566 src/menu.cpp:815
+#: src/main_window.cpp:1142 src/menu.cpp:433 src/menu.cpp:564
 msgid "Local Video"
 msgstr "Vietinis vaizdas"
 
-#: src/main_window.cpp:1202 src/menu.cpp:572 src/menu.cpp:820
+#: src/main_window.cpp:1148 src/menu.cpp:439 src/menu.cpp:570
 msgid "Remote Video"
 msgstr "Nutolęs vaizdas"
 
-#: src/main_window.cpp:1369 src/menu.cpp:526
+#: src/main_window.cpp:1280 src/menu.cpp:394
 msgid "Statistics"
 msgstr "Statistika"
 
-#: src/main_window.cpp:1430
+#: src/main_window.cpp:1341
 msgid "Dialpad"
 msgstr "Rinkiklis"
 
-#: src/main_window.cpp:1484
+#: src/main_window.cpp:1395
 msgid "Adjust brightness"
 msgstr "Keisti ryškumą"
 
-#: src/main_window.cpp:1506
+#: src/main_window.cpp:1417
 msgid "Adjust whiteness"
 msgstr "Keisti baltumą"
 
-#: src/main_window.cpp:1528
+#: src/main_window.cpp:1439
 msgid "Adjust color"
 msgstr "Keisti spalvas"
 
-#: src/main_window.cpp:1550
+#: src/main_window.cpp:1461
 msgid "Adjust contrast"
 msgstr "Keisti kontrastą"
 
-#: src/main_window.cpp:1558
+#: src/main_window.cpp:1469
 msgid "Video"
 msgstr "Vaizdas"
 
-#: src/main_window.cpp:1638
+#: src/main_window.cpp:1545
 msgid "Audio"
 msgstr "Garsas"
 
-#: src/main_window.cpp:1685
+#: src/main_window.cpp:1594
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Išveda testavimo pranešimus terminale (lygis tap 1 ir 6)"
 
-#: src/main_window.cpp:1688
+#: src/main_window.cpp:1597
 msgid "Makes GnomeMeeting call the given URL"
 msgstr "Vykdo konferencinį skambutį nurodytu adresu"
 
-#: src/main_window.cpp:1734
-msgid "No usable audio devices detected"
+#: src/main_window.cpp:1647
+msgid "No usable audio manager detected"
+msgstr "Nerasta tinkamų garso tvarkyklių"
+
+#: src/main_window.cpp:1647
+msgid ""
+"GnomeMeeting didn't find any usable sound manager. Make sure that your "
+"installation is correct."
+msgstr ""
+"GnomeMeeting nepavyko rasti tinkamos garso tvarkyklės. Įsitikinkite, kad "
+"Jūsų įdiegta sistema yra tvarkinga."
+
+#: src/main_window.cpp:1649
+msgid "No usable audio device detected"
 msgstr "Nerasta tinkamų audio įrenginių"
 
-#: src/main_window.cpp:1734
+#: src/main_window.cpp:1649
 msgid ""
-"GnomeMeeting didn't find any usable sound devices. You need to install and "
-"setup a soundcard or a Quicknet card in order to be able to use "
-"GnomeMeeting. Please check your driver settings and permissions."
+"GnomeMeeting didn't find any usable sound device. Make sure that your "
+"installation is correct."
 msgstr ""
-"GnomeMeeting nepavyko rasti tinkamų garso įrengimų. Norėdami naudotis "
-"GnomeMeeting, Jūs turite įdiegti ir nustatyti garso arba QuickNet plokštę. "
-"Patikrinkite savo garso valdyklių nustatymus ir priėjimo teises."
+"GnomeMeeting nepavyko rasti tinkamo garso įrenginio. Įsitikinkite, kad Jūsų "
+"įdiegta sistema yra tvarkinga."
 
-#: src/main_window.cpp:1754
-msgid "Gconf key error"
-msgstr "GConf rakto klaida"
-
-#: src/main_window.cpp:1754
+#: src/main_window.cpp:1670
+#, c-format
 msgid ""
-"GnomeMeeting got an invalid value for the GConf key \"/apps/gnomemeeting/"
-"gconf_test_age\".\n"
+"GnomeMeeting got an invalid value for the GConf key %s.\n"
 "\n"
 "It probably means that your GConf schemas have not been correctly installed "
 "or the that permissions are not correct.\n"
@@ -2310,8 +2477,7 @@ msgid ""
 "gconf/) or the mailing list archives for more information (http://mail.gnome."
 "org) about this problem."
 msgstr ""
-"GnomeMeeting aptiko netinkamą GConf rakto \"/apps/gnomemeeting/gconf_test_age"
-"\" reikšmę.\n"
+"GnomeMeeting aptiko netinkamą GConf rakto reikšmę %s.\n"
 "\n"
 "Tai greičiausiai reiškia, kad Jūsų GConf schemos nebuvo teisingai įdiegtos "
 "arba yra netinkamos priėjimo teisės.\n"
@@ -2321,347 +2487,365 @@ msgstr ""
 "susirašinėjimo sąrašų archyvus ieškodami detalesnės informacijos (http://"
 "mail.gnome.org) apie šią problemą."
 
-#: src/menu.cpp:432
+#: src/main_window.cpp:1673
+msgid "Gconf key error"
+msgstr "GConf rakto klaida"
+
+#: src/menu.cpp:272
 msgid "C_all"
 msgstr "Sk_ambinti"
 
-#: src/menu.cpp:434
+#: src/menu.cpp:274
 msgid "C_onnect"
 msgstr "_Prisijungti"
 
-#: src/menu.cpp:434 src/menu.cpp:894
+#: src/menu.cpp:274 src/menu.cpp:642
 msgid "Create a new connection"
 msgstr "Sukurti naują jungtį"
 
-#: src/menu.cpp:439 src/menu.cpp:899
+#: src/menu.cpp:277 src/menu.cpp:645
 msgid "_Disconnect"
 msgstr "_Atsijungti"
 
-#: src/menu.cpp:439 src/menu.cpp:899
+#: src/menu.cpp:278 src/menu.cpp:646
 msgid "Close the current connection"
 msgstr "Uždaryti esamą jungtį"
 
-#: src/menu.cpp:446 src/menu.cpp:906
-msgid "Do _Not Disturb"
-msgstr "_Netrukdyti"
+#: src/menu.cpp:284 src/menu.cpp:652
+msgid "_Available"
+msgstr "L_aisvas"
 
-#: src/menu.cpp:451 src/menu.cpp:911
-msgid "Aut_o Answer"
-msgstr "Aut_omatinis Atsakymas"
+#: src/menu.cpp:285 src/menu.cpp:653
+msgid "Display a popup to accept the call"
+msgstr "Pokalbio priėmimui parodyti iššokantį langą"
 
-#: src/menu.cpp:451
-msgid "Auto answer incoming call"
-msgstr "Automatiškai atsakyti į ateinančius skambučius"
+#: src/menu.cpp:290 src/menu.cpp:658
+msgid "Free for Cha_t"
+msgstr "Laisvas _Pokalbiui"
 
-#: src/menu.cpp:458
+#: src/menu.cpp:291 src/menu.cpp:659
+msgid "Auto answer calls"
+msgstr "Automatiškai atsakyti į kvietimus"
+
+#: src/menu.cpp:296 src/menu.cpp:664
+msgid "_Busy"
+msgstr "_Užimtas"
+
+#: src/menu.cpp:296 src/menu.cpp:664
+msgid "Reject calls"
+msgstr "Atmesti skambučius"
+
+#: src/menu.cpp:301 src/menu.cpp:669
+msgid "_Forward"
+msgstr "_Persiųsti"
+
+#: src/menu.cpp:301 src/menu.cpp:669
+msgid "Forward calls"
+msgstr "Persiųsti skambučius"
+
+#: src/menu.cpp:309
+msgid "Speed dials"
+msgstr "Greiti rinkimai"
+
+#: src/menu.cpp:313
 msgid "Hold the current call"
 msgstr "Sustabdyti esamą skambutį"
 
-#: src/menu.cpp:463
+#: src/menu.cpp:317
 msgid "Transfer the current call"
 msgstr "Permesti esamą skambutį"
 
-#: src/menu.cpp:470
+#: src/menu.cpp:324
 msgid "Suspend or resume the audio transmission"
 msgstr "Sustabdyti/atstatyti garso perdavimą"
 
-#: src/menu.cpp:475
+#: src/menu.cpp:329
 msgid "Suspend or resume the video transmission"
 msgstr "Sustabdyti/atstatyti vaizdo perdavimą"
 
-#: src/menu.cpp:482
+#: src/menu.cpp:336
 msgid "_Save Current Picture"
 msgstr "_Saugoti Esamą Atvaizdą"
 
-#: src/menu.cpp:482
+#: src/menu.cpp:337
 msgid "Save a snapshot of the current video"
 msgstr "Išsaugo dabartinio vaizdo kopiją"
 
-#: src/menu.cpp:488 src/menu.cpp:951
+#: src/menu.cpp:343
+msgid "Close the GnomeMeeting window"
+msgstr "Uždaryti GnomeMeeting langą"
+
+#: src/menu.cpp:350 src/menu.cpp:715
 msgid "_Quit"
 msgstr "_Baigti"
 
-#: src/menu.cpp:488 src/menu.cpp:951
+#: src/menu.cpp:350 src/menu.cpp:715
 msgid "Quit GnomeMeeting"
 msgstr "Įšeiti iš GnomeMeeting"
 
-#: src/menu.cpp:491
+#: src/menu.cpp:354
 msgid "_Edit"
 msgstr "_Taisyti"
 
-#: src/menu.cpp:494 src/menu.cpp:499
+#: src/menu.cpp:357 src/menu.cpp:363
 msgid "Configuration Druid"
 msgstr "Nustatymų pagalbininkas"
 
-#: src/menu.cpp:494 src/menu.cpp:499
+#: src/menu.cpp:358 src/menu.cpp:364
 msgid "Run the configuration druid"
 msgstr "Paleisti nustatymų pagalbininką"
 
-#: src/menu.cpp:506 src/menu.cpp:932
+#: src/menu.cpp:371 src/menu.cpp:693
 msgid "_Preferences..."
 msgstr "_Nustatymai..."
 
-#: src/menu.cpp:506 src/menu.cpp:932
+#: src/menu.cpp:372 src/menu.cpp:694
 msgid "Change your preferences"
 msgstr "Pakeisti programos nustatymus"
 
-#: src/menu.cpp:511
+#: src/menu.cpp:377
 msgid "_View"
 msgstr "_Peržiūra"
 
-#. Text Chat
-#: src/menu.cpp:513 src/pref_window.cpp:827
+#: src/menu.cpp:379 src/pref_window.cpp:725
 msgid "Text Chat"
 msgstr "Tekstinis langas"
 
-#: src/menu.cpp:513
+#: src/menu.cpp:380
 msgid "View/Hide the text chat window"
 msgstr "Rodyti arba slėpti tekstinių pokalbių langą"
 
-#: src/menu.cpp:518
+#: src/menu.cpp:385
 msgid "Status Bar"
 msgstr "Būsenos juosta"
 
-#: src/menu.cpp:518
+#: src/menu.cpp:386
 msgid "View/Hide the status bar"
 msgstr "Rodyti/Slėpti būsenos juostą"
 
-#: src/menu.cpp:524
+#: src/menu.cpp:392
 msgid "Control Panel"
 msgstr "Valdymo skydelis"
 
-#: src/menu.cpp:527
+#: src/menu.cpp:395
 msgid "View audio/video transmission and reception statistics"
 msgstr "Peržiūrėti garso/vaizdo perdavimo ir gavimo statistiką"
 
-#: src/menu.cpp:533
+#: src/menu.cpp:400
 msgid "_Dialpad"
 msgstr "_Rinkiklis"
 
-#: src/menu.cpp:533
+#: src/menu.cpp:400
 msgid "View the dialpad"
 msgstr "Paleisti greitų numerių rinkiklį"
 
-#: src/menu.cpp:539
+#: src/menu.cpp:405
 msgid "_Audio Settings"
 msgstr "_Audio Nustatymai"
 
-#: src/menu.cpp:539
+#: src/menu.cpp:406
 msgid "View audio settings"
 msgstr "Peržiūrėti garso nustatymus"
 
-#: src/menu.cpp:545
+#: src/menu.cpp:411
 msgid "_Video Settings"
 msgstr "_Video Nustatymai"
 
-#: src/menu.cpp:545
+#: src/menu.cpp:412
 msgid "View video settings"
 msgstr "Peržiūrėti vaizdo nustatymus"
 
-#: src/menu.cpp:551 src/pref_window.cpp:1039
+#: src/menu.cpp:417 src/pref_window.cpp:909
 msgid "Off"
 msgstr "Išjungta"
 
-#: src/menu.cpp:551
+#: src/menu.cpp:417
 msgid "Hide the control panel"
 msgstr "Paslėpti valdymo skydelį"
 
-#: src/menu.cpp:559
+#: src/menu.cpp:425
 msgid "_Clear text chat"
 msgstr "Iš_valyti tekstinį langą"
 
-#: src/menu.cpp:559
+#: src/menu.cpp:426
 msgid "Clear the text chat"
 msgstr "Išvalo tekstinių pokalbių langą"
 
-#: src/menu.cpp:566
+#: src/menu.cpp:434 src/menu.cpp:565
 msgid "Local video image"
 msgstr "Vietinio vaizdo atvaizdas"
 
-#: src/menu.cpp:572
+#: src/menu.cpp:440 src/menu.cpp:571
 msgid "Remote video image"
 msgstr "Nutolusio vaizdo atvaizdas"
 
-#: src/menu.cpp:578 src/menu.cpp:825
+#: src/menu.cpp:445 src/menu.cpp:576
 msgid "Both (Local Video Incrusted)"
 msgstr "Abu (vietinis vaizdas įrėmintas)"
 
-#: src/menu.cpp:578 src/menu.cpp:584 src/menu.cpp:591
+#: src/menu.cpp:446 src/menu.cpp:453 src/menu.cpp:460 src/menu.cpp:577
+#: src/menu.cpp:584 src/menu.cpp:591
 msgid "Both video images"
 msgstr "Abu atvaizdai"
 
-#: src/menu.cpp:584 src/menu.cpp:830
+#: src/menu.cpp:452 src/menu.cpp:583
 msgid "Both (Local Video in New Window)"
 msgstr "Abu (vietinis vaizdas naujame lange)"
 
-#: src/menu.cpp:590
+#: src/menu.cpp:459 src/menu.cpp:590
 msgid "Both (Both in New Windows)"
 msgstr "Abu (Abu vaizdai naujuose languose)"
 
-#: src/menu.cpp:599 src/menu.cpp:843
+#: src/menu.cpp:468 src/menu.cpp:599
 msgid "Zoom In"
 msgstr "Didinti"
 
-#: src/menu.cpp:599
+#: src/menu.cpp:468 src/menu.cpp:599
 msgid "Zoom in"
 msgstr "Didinti"
 
-#: src/menu.cpp:604 src/menu.cpp:848
+#: src/menu.cpp:472 src/menu.cpp:603
 msgid "Zoom Out"
 msgstr "Mažinti"
 
-#: src/menu.cpp:604
+#: src/menu.cpp:472 src/menu.cpp:603
 msgid "Zoom out"
 msgstr "Mažinti"
 
-#: src/menu.cpp:609 src/menu.cpp:853
+#: src/menu.cpp:476 src/menu.cpp:607
 msgid "Normal Size"
 msgstr "Normalus Dydis"
 
-#: src/menu.cpp:609
+#: src/menu.cpp:476 src/menu.cpp:607
 msgid "Normal size"
 msgstr "Normalus dydis"
 
-#: src/menu.cpp:616 src/menu.cpp:860
+#: src/menu.cpp:481 src/menu.cpp:612
 msgid "Fullscreen"
 msgstr "Pilnas ekranas"
 
-#: src/menu.cpp:621
+#: src/menu.cpp:486
 msgid "_Tools"
 msgstr "_Įrankiai"
 
-#: src/menu.cpp:623 src/menu.cpp:918
+#: src/menu.cpp:488 src/menu.cpp:677
 msgid "Address _Book"
 msgstr "Adresų _Knyga"
 
-#: src/menu.cpp:623 src/menu.cpp:918
+#: src/menu.cpp:489 src/menu.cpp:678
 msgid "Open the address book"
 msgstr "Atverti adresų knygą"
 
-#: src/menu.cpp:630 src/tools.cpp:329
+#: src/menu.cpp:496 src/tools.cpp:345
 msgid "General History"
 msgstr "Bendra Atmintinė"
 
-#: src/menu.cpp:630
+#: src/menu.cpp:497
 msgid "View the operations history"
 msgstr "Peržiūrėti vykdytų veiksmų atmintinę"
 
-#: src/menu.cpp:635 src/menu.cpp:925 src/tools.cpp:200
+#: src/menu.cpp:501 src/menu.cpp:685 src/tools.cpp:201
 msgid "Calls History"
 msgstr "Skambučių atmintinė"
 
-#: src/menu.cpp:635 src/menu.cpp:925
+#: src/menu.cpp:502 src/menu.cpp:686
 msgid "View the calls history"
 msgstr "Apžiūrėti ankstesnius skambučių įrašus"
 
-#: src/menu.cpp:642
+#: src/menu.cpp:507
 msgid "Consult MicroTelco Account"
 msgstr "Patikrinti MicroTelco Sąskaitą"
 
-#: src/menu.cpp:642
+#: src/menu.cpp:508
 msgid "View the details of your account"
 msgstr "Peržiūrėti savo sąskaitos duomenis"
 
-#: src/menu.cpp:647
+#: src/menu.cpp:512
 msgid "_Help"
 msgstr "_Pagalba"
 
-#: src/menu.cpp:650 src/menu.cpp:655 src/menu.cpp:940 src/menu.cpp:945
+#: src/menu.cpp:515 src/menu.cpp:521 src/menu.cpp:702 src/menu.cpp:708
 msgid "_About GnomeMeeting"
 msgstr "_Apie GnomeMeeting"
 
-#: src/menu.cpp:650 src/menu.cpp:655 src/menu.cpp:940 src/menu.cpp:945
+#: src/menu.cpp:516 src/menu.cpp:522 src/menu.cpp:703 src/menu.cpp:709
 msgid "View information about GnomeMeeting"
 msgstr "Parodyti informaciją apie GnomeMeeting"
 
-#: src/menu.cpp:815
-msgid "Local Video Image"
-msgstr "Vietinis vaizdas"
-
-#: src/menu.cpp:820
-msgid "Remote Video Image"
-msgstr "Nutolęs vaizdas"
-
-#: src/menu.cpp:825 src/menu.cpp:830 src/menu.cpp:836
-msgid "Both Video Images"
-msgstr "Abu vaizdai"
-
-#: src/menu.cpp:835
-msgid "Both (Local and Remote Video in New Windows)"
-msgstr "Abu (vietinis ir nutolęs vaizdai nepriklausomuose languose)"
-
-#: src/menu.cpp:894
+#: src/menu.cpp:642
 msgid "_Connect"
 msgstr "_Prisijungti"
 
-#: src/menu.cpp:906
-msgid "Do not disturb (reject incoming calls)"
-msgstr "Netrukdyti (atmesti ateinančius skambučius)"
-
 #: src/misc.cpp:175
-#, c-format
-msgid "Error: %s\n"
-msgstr "Klaida: %s\n"
+msgid "Generic error"
+msgstr "Bendrinė klaida"
 
-#: src/misc.cpp:219
-#, c-format
-msgid ""
-"Call from %s\n"
-"using %s"
-msgstr ""
-"Skambutis nuo %s\n"
-"su programa %s"
-
-#: src/misc.cpp:227
+#: src/misc.cpp:223
 msgid "Reject"
 msgstr "Atmesti"
 
-#: src/misc.cpp:229
+#: src/misc.cpp:225
 msgid "Accept"
 msgstr "Priimti"
 
-#: src/pref_window.cpp:410
+#: src/misc.cpp:232
+msgid "Incoming call from"
+msgstr "Sulaukta skambučio"
+
+#: src/misc.cpp:245
+msgid "Remote URL:"
+msgstr "Nutolęs adresas:"
+
+#: src/misc.cpp:257
+msgid "Remote Application:"
+msgstr "Nutolusi Programa:"
+
+#: src/pref_window.cpp:328
+msgid "Codec Information"
+msgstr "Kodekų Informacija"
+
+#: src/pref_window.cpp:367
 msgid "Please choose the video image"
 msgstr "Pasirinkite video dydį"
 
-#: src/pref_window.cpp:444
-msgid "Okay"
-msgstr "Gerai"
+#: src/pref_window.cpp:646
+msgid "Personal Information"
+msgstr "Asmeninė informacija"
 
-#: src/pref_window.cpp:449 src/pref_window.cpp:464 src/pref_window.cpp:469
-msgid "Excellent"
-msgstr "Puikiai"
-
-#: src/pref_window.cpp:454 src/pref_window.cpp:459 src/pref_window.cpp:474
-#: src/pref_window.cpp:479
-msgid "Good Quality"
-msgstr "Gera kokybė"
-
-#: src/pref_window.cpp:484
-msgid "Excellent Quality"
-msgstr "Puiki kokybė"
-
-#: src/pref_window.cpp:732
+#: src/pref_window.cpp:650
 msgid "_First name:"
 msgstr "_Vardas:"
 
-#: src/pref_window.cpp:737
+#: src/pref_window.cpp:657
 msgid "Sur_name:"
 msgstr "_Pavardė:"
 
-#: src/pref_window.cpp:747
+#: src/pref_window.cpp:664
+msgid "E-_mail address:"
+msgstr "E-_pašto adresas:"
+
+#: src/pref_window.cpp:671
 msgid "_Comment:"
 msgstr "_Pastabos:"
 
-#: src/pref_window.cpp:752
+#: src/pref_window.cpp:673
+msgid "Enter a comment about yourself."
+msgstr "Įveskite pastabas apie save."
+
+#: src/pref_window.cpp:678
 msgid "_Location:"
 msgstr "_Vieta:"
 
-#: src/pref_window.cpp:758 src/pref_window.cpp:993
+#: src/pref_window.cpp:680
+msgid "Enter your country or city."
+msgstr "Įveskite jūsų šalį ar miestą."
+
+#. Add the update button
+#: src/pref_window.cpp:686 src/pref_window.cpp:868
 msgid "_Apply"
 msgstr "_Išsaugoti"
 
-#: src/pref_window.cpp:758
+#: src/pref_window.cpp:686
 msgid ""
 "Click here to update the user directory you are registered to with the new "
 "First Name, Last Name, E-Mail, Comment and Location or to update your alias "
@@ -2670,135 +2854,149 @@ msgstr ""
 "Paspauskite čia norėdami atnaujinti savo asmeninius duomenis vartotojų "
 "kataloge arba pakeisti kreipinį tarpiniame serveryje"
 
-#: src/pref_window.cpp:782
+#: src/pref_window.cpp:704
 msgid "GnomeMeeting GUI"
 msgstr "GnomeMeeting sąsaja"
 
-#: src/pref_window.cpp:785
+#: src/pref_window.cpp:706
 msgid "_Show splash screen"
 msgstr "_Rodyti prisistatantį langą"
 
-#: src/pref_window.cpp:788
+#: src/pref_window.cpp:708
 msgid "Start _hidden"
 msgstr "Paleisti _paslėptą"
 
-#. Packing widget
-#: src/pref_window.cpp:792
-msgid "Behavior"
-msgstr "Elgsena"
+#: src/pref_window.cpp:708
+msgid ""
+"If enabled, GnomeMeeting will start hidden. The notification area must be "
+"present in the panel."
+msgstr ""
+"Jeigu įjungta, GnomeMeeting pasileis pasislėpęs. Skydelyje turi būti "
+"įspėjimų vieta."
 
-#: src/pref_window.cpp:796
-msgid "_Automatically answer calls"
-msgstr "_Automatiškai atsakyti į skambučius"
-
-#: src/pref_window.cpp:799
-msgid "Do _not disturb"
-msgstr "_Netrukdyti"
-
-#: src/pref_window.cpp:802
-msgid "Display a po_pup window when receiving a call"
-msgstr "Sulaukus skambučio rodyti iššokantį _langą"
-
-#. Packing widget
-#: src/pref_window.cpp:806
+#: src/pref_window.cpp:713
 msgid "Video Display"
 msgstr "Vaizdo išvedimas"
 
 #. Translators: the full sentence is Use a fullscreen size
 #. of X by Y pixels
-#: src/pref_window.cpp:811
+#: src/pref_window.cpp:718
 msgid "Use a fullscreen size of"
 msgstr "Naudoti pilnaekranį vaizdą iš"
 
-#: src/pref_window.cpp:813
+#: src/pref_window.cpp:718
 msgid "by"
 msgstr "per"
 
-#: src/pref_window.cpp:815
+#: src/pref_window.cpp:718
 msgid "pixels"
 msgstr "pikselių"
 
-#: src/pref_window.cpp:824
-msgid "Enable bilinear _filtering on displayed video"
-msgstr "Išvedant video naudoti bilinear _filtrus"
+#: src/pref_window.cpp:721
+msgid "Place windows displaying video _above other windows"
+msgstr "Talpinti video langus _virš kitų langų"
 
-#: src/pref_window.cpp:850
+#: src/pref_window.cpp:745
 msgid "User Directory"
 msgstr "Vartotojų Katalogas"
 
-#: src/pref_window.cpp:855
+#. Add all the fields
+#: src/pref_window.cpp:749
 msgid "User directory:"
 msgstr "Vartotojų katalogas:"
 
-#: src/pref_window.cpp:858
+#: src/pref_window.cpp:751
 msgid "Enable _registering"
 msgstr "Naudoti _registraciją"
 
-#: src/pref_window.cpp:861
-msgid "_Publish my details in the users directory"
-msgstr "_Skelbti mano duomenis vartotojų kataloge"
+#: src/pref_window.cpp:753
+msgid "_Publish my details in the users directory when registering"
+msgstr "_Skelbti mano duomenis vartotojų kataloge registravimosi metu"
 
-#: src/pref_window.cpp:883 src/pref_window.cpp:1523
+#: src/pref_window.cpp:770 src/pref_window.cpp:1314
 msgid "Call Forwarding"
 msgstr "Skambučių Nukreipimas"
 
-#: src/pref_window.cpp:888
+#: src/pref_window.cpp:775
 msgid "Forward calls to _host:"
 msgstr "Perkelti skambučius į _kompiuterį:"
 
-#: src/pref_window.cpp:895
+#: src/pref_window.cpp:780
 msgid "_Always forward calls to the given host"
 msgstr "_Visada perkelti skambučius į nurodytą kompiuterį"
 
-#: src/pref_window.cpp:898
+#: src/pref_window.cpp:780
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the field above."
+msgstr ""
+"Įjungus nuostatą, visi ateinantys skambučiai bus persiunčiami į aukščiau "
+"esančiame lauke nurodytą kompiuterį."
+
+#: src/pref_window.cpp:782
 msgid "Forward calls to the given host if _no answer"
 msgstr "Perkelti skambučius į nurodyta kompiuterį, jei _neatsakoma"
 
-#: src/pref_window.cpp:901
+#: src/pref_window.cpp:782
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the field above if you do not answer the call."
+msgstr ""
+"Jeigu įjungta, tuo atveju kai tu neatsakysi į skambučius visi "
+"ateinantysskambučiai bus persiųsti į kompiuterį kuris yra nurodytas aukščiau "
+"esančiame laukelyje."
+
+#: src/pref_window.cpp:784
 msgid "Forward calls to the given host if _busy"
 msgstr "Perkelti skambučius į nurodytą kompiuterį, jei _užimta"
 
-#: src/pref_window.cpp:915
+#: src/pref_window.cpp:784
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the field above if you already are in a call or if you are in "
+"Do Not Disturb mode."
+msgstr ""
+"Jeigu įjungta, visi įeinantys skambučiai bus persiųsti į kompiuterį nurodytą "
+"aukščiau esančiame laukelyje, jeigu jūs jau esate skambutyje arba "
+"\"Netrukdyti\" rėžime."
+
+#: src/pref_window.cpp:800
 msgid "All"
 msgstr "Viskas"
 
-#: src/pref_window.cpp:916
-msgid "None"
-msgstr "Nieko"
-
-#: src/pref_window.cpp:917
+#: src/pref_window.cpp:802
 msgid "rfc2833"
 msgstr "rfc2833"
 
-#: src/pref_window.cpp:918
+#: src/pref_window.cpp:803
 msgid "Signal"
 msgstr "Signalas"
 
-#: src/pref_window.cpp:919
+#: src/pref_window.cpp:804
 msgid "String"
 msgstr "Seka"
 
-#: src/pref_window.cpp:929
+#: src/pref_window.cpp:813
 msgid "H.323 Version 2 Settings"
 msgstr "H.323 antros versijos nustatymai"
 
-#: src/pref_window.cpp:933
+#: src/pref_window.cpp:817
 msgid "Enable H.245 _tunnelling"
 msgstr "Naudoti H.245 _tunelius"
 
-#: src/pref_window.cpp:936
+#: src/pref_window.cpp:820
 msgid "Enable fast _start procedure"
 msgstr "Naudoti greito _starto režimą"
 
-#: src/pref_window.cpp:941
+#: src/pref_window.cpp:826
 msgid "User Input Capabilities"
 msgstr "Vartotojo Įvedimo Galimybės"
 
-#: src/pref_window.cpp:944
-msgid "User Input Capabilities _type:"
-msgstr "Vartotojo Įvedimo Galimybiu _tipas:"
+#: src/pref_window.cpp:829
+msgid "T_ype:"
+msgstr "T_ipas:"
 
-#: src/pref_window.cpp:944
+#: src/pref_window.cpp:829
 msgid ""
 "This permits to set the mode for User Input Capabilities. The values can be "
 "\"All\", \"None\", \"rfc2833\", \"Signal\" or \"String\" (default is \"All"
@@ -2810,220 +3008,243 @@ msgstr ""
 "\" (4) (pagal nutylėjimą veikia \"Viskas\"). Nepasirinkus \"Viskas\", \"Seka"
 "\" arba \"rfc2833\", bus atjungi tekstiniai pokalbiai"
 
-#: src/pref_window.cpp:961
+#: src/pref_window.cpp:844
 msgid "Do not register"
 msgstr "Nesiregistruoti"
 
-#: src/pref_window.cpp:964
+#: src/pref_window.cpp:847
 msgid "Automatically discover"
 msgstr "Automatiškai atpažinti"
 
-#: src/pref_window.cpp:974
+#: src/pref_window.cpp:853
 msgid "Gatekeeper"
 msgstr "Tarpinis serveris"
 
-#: src/pref_window.cpp:977
+#: src/pref_window.cpp:855
 msgid "Gatekeeper _ID:"
 msgstr "Tarpinio serverio _ID:"
 
-#: src/pref_window.cpp:980
+#: src/pref_window.cpp:857
 msgid "Gatekeeper _host:"
 msgstr "Tarpinio serverio _vardas:"
 
-#: src/pref_window.cpp:983
+#: src/pref_window.cpp:859
 msgid "Gatekeeper _alias:"
 msgstr "T_arpinio serverio trumpas vardas:"
 
-#: src/pref_window.cpp:986
+#: src/pref_window.cpp:862
 msgid "Gatekeeper _password:"
 msgstr "Tarpinio serverio sla_ptažodis:"
 
-#: src/pref_window.cpp:990
+#: src/pref_window.cpp:865
 msgid "Registering method:"
 msgstr "Registravimosi metodas:"
 
-#: src/pref_window.cpp:993
+#: src/pref_window.cpp:868
 msgid "Click here to update your Gatekeeper settings."
 msgstr "Paspauskite čia, kad atnaujinti tarpinio serverio nustatymus."
 
-#: src/pref_window.cpp:1016
+#: src/pref_window.cpp:886
 msgid "NAT/PAT Router Support"
 msgstr "NAT/PAT maršturizatoriaus palaikymas"
 
-#: src/pref_window.cpp:1019
+#: src/pref_window.cpp:888
 msgid "Enable IP _translation"
 msgstr "Naudo_ti adresų perrrašymą"
 
-#: src/pref_window.cpp:1022
+#: src/pref_window.cpp:890
 msgid "Public _IP of the NAT/PAT router:"
 msgstr "_Išorinis maršrutizatoriaus IP adresas:"
 
-#: src/pref_window.cpp:1040
+#: src/pref_window.cpp:910
 msgid "Low"
 msgstr "Žemas"
 
-#: src/pref_window.cpp:1041
+#: src/pref_window.cpp:911
 msgid "Medium"
 msgstr "Vidutinis"
 
-#: src/pref_window.cpp:1042
+#: src/pref_window.cpp:912
 msgid "High"
 msgstr "Aukštas"
 
-#: src/pref_window.cpp:1043
+#: src/pref_window.cpp:913
 msgid "AGC"
 msgstr "AGC"
 
-#: src/pref_window.cpp:1060
+#: src/pref_window.cpp:923
+msgid "Audio Manager"
+msgstr "Audio tvarkyklė"
+
+#: src/pref_window.cpp:927
+msgid "Audio manager:"
+msgstr "Audio tvarkyklė:"
+
+#: src/pref_window.cpp:934 src/pref_window.cpp:1341
+msgid "Audio Devices"
+msgstr "Audio įrenginiai"
+
+#: src/pref_window.cpp:940
 msgid "Playing device:"
 msgstr "Išvedimo įrenginys:"
 
-#: src/pref_window.cpp:1063
-msgid "Playing mixer:"
-msgstr "Išvedimo valdiklis:"
-
-#: src/pref_window.cpp:1067
+#: src/pref_window.cpp:946
 msgid "Recording device:"
 msgstr "Įrašymo įrenginys:"
 
-#: src/pref_window.cpp:1070
-msgid "Recording mixer:"
-msgstr "Įrašymo valdiklis:"
-
-#. The Quicknet devices related options
-#: src/pref_window.cpp:1075
+#: src/pref_window.cpp:952
 msgid "Quicknet Device"
 msgstr "Quicknet įrenginys"
 
-#: src/pref_window.cpp:1078
+#: src/pref_window.cpp:954
 msgid "Echo _cancellation:"
 msgstr "Aido _slopinimas:"
 
-#: src/pref_window.cpp:1081
+#: src/pref_window.cpp:957
 msgid "Country _code:"
 msgstr "Šalies _kodas"
 
 #. That button will refresh the devices list
-#: src/pref_window.cpp:1088 src/pref_window.cpp:1159
+#: src/pref_window.cpp:964 src/pref_window.cpp:1043
 msgid "_Detect devices"
 msgstr "_Aptikti įrenginius"
 
-#: src/pref_window.cpp:1088 src/pref_window.cpp:1159
+#: src/pref_window.cpp:964 src/pref_window.cpp:1043
 msgid "Click here to refresh the devices list."
 msgstr "Spragtelėkite čia, kad atnaujinti įrenginių sąrašą."
 
-#: src/pref_window.cpp:1105
+#: src/pref_window.cpp:985
 msgid "Small"
 msgstr "Mažas"
 
-#: src/pref_window.cpp:1106
+#: src/pref_window.cpp:986
 msgid "Large"
 msgstr "Didelis"
 
-#: src/pref_window.cpp:1108
+#: src/pref_window.cpp:988
 msgid "PAL (Europe)"
 msgstr "PAL (Europos)"
 
-#: src/pref_window.cpp:1109
+#: src/pref_window.cpp:989
 msgid "NTSC (America)"
 msgstr "NTSC (Amerikos)"
 
-#: src/pref_window.cpp:1110
+#: src/pref_window.cpp:990
 msgid "SECAM (France)"
 msgstr "SECAM (Prancūzijos)"
 
-#: src/pref_window.cpp:1111
+#: src/pref_window.cpp:991
 msgid "Auto"
 msgstr "Automatinis"
 
-#: src/pref_window.cpp:1134
+#: src/pref_window.cpp:1002
+msgid "Video Manager"
+msgstr "Video Tvarkyklė"
+
+#: src/pref_window.cpp:1005
+msgid "Video manager:"
+msgstr "Video tvarkyklė:"
+
+#: src/pref_window.cpp:1011 src/pref_window.cpp:1344
+msgid "Video Devices"
+msgstr "Video įrenginiai"
+
+#: src/pref_window.cpp:1016
+msgid "Video device:"
+msgstr "Video įrenginis:"
+
+#. Video Channel
+#: src/pref_window.cpp:1020
 msgid "Video channel:"
 msgstr "Video kanalas:"
 
-#: src/pref_window.cpp:1137
+#: src/pref_window.cpp:1022
 msgid "Video size:"
 msgstr "Video dydis:"
 
-#: src/pref_window.cpp:1140
+#: src/pref_window.cpp:1024
 msgid "Video format:"
 msgstr "Video formatas:"
 
-#: src/pref_window.cpp:1143
+#: src/pref_window.cpp:1027
 msgid "Video image:"
 msgstr "Video atvaizdas:"
 
 #. The file selector button
-#: src/pref_window.cpp:1147
+#: src/pref_window.cpp:1031
 msgid "Choose a picture"
 msgstr "Pasirinkti piešinį"
 
-#: src/pref_window.cpp:1193
+#: src/pref_window.cpp:1076
 msgid "Available Audio Codecs"
 msgstr "Turimi audio kodekai"
 
-#: src/pref_window.cpp:1243
+#: src/pref_window.cpp:1133
 msgid "Info"
 msgstr "Info"
 
-#: src/pref_window.cpp:1255
+#: src/pref_window.cpp:1145
 msgid "Bandwidth"
 msgstr "Srautas"
 
-#. Here we add the audio codecs options
-#: src/pref_window.cpp:1318
+#: src/pref_window.cpp:1196
 msgid "Audio Codecs Settings"
 msgstr "Audio kodekų nustatymai"
 
-#: src/pref_window.cpp:1323
+#. Translators: the full sentence is Automatically adjust jitter buffer
+#. between X and Y ms
+#: src/pref_window.cpp:1200
 msgid "Automatically adjust _jitter buffer between"
 msgstr "Automatiškai reguliuoti audio bu_ferį tarp"
 
-#: src/pref_window.cpp:1325
+#: src/pref_window.cpp:1200
 msgid "and"
 msgstr "ir"
 
-#: src/pref_window.cpp:1327
+#: src/pref_window.cpp:1200
 msgid "ms"
 msgstr "ms"
 
-#: src/pref_window.cpp:1335
+#: src/pref_window.cpp:1202
 msgid "Enable silence _detection"
 msgstr "Naudoti tylos _atpažinimą"
 
-#: src/pref_window.cpp:1357 src/pref_window.cpp:1513
+#: src/pref_window.cpp:1220 src/pref_window.cpp:1307
 msgid "General Settings"
 msgstr "Bendri nustatymai"
 
-#: src/pref_window.cpp:1362
+#. Add fields
+#: src/pref_window.cpp:1224
 msgid "Enable video _transmission"
 msgstr "Perduo_ti vaizdą"
 
-#: src/pref_window.cpp:1365
+#: src/pref_window.cpp:1227
 msgid "Enable video _reception"
 msgstr "P_riimti vaizdą"
 
-#. H.261 Settings
-#: src/pref_window.cpp:1369
+#: src/pref_window.cpp:1232
 msgid "Bandwidth Control"
 msgstr "Srauto kontrolė"
 
-#: src/pref_window.cpp:1373
+#. Translators: the full sentence is Maximum video bandwidth of X KB/s
+#: src/pref_window.cpp:1235
 msgid "Maximum video _bandwidth of"
 msgstr "Didžiausias video _srautas yra"
 
-#: src/pref_window.cpp:1373
+#: src/pref_window.cpp:1235
 msgid "KB/s"
 msgstr "KB/s"
 
-#: src/pref_window.cpp:1377
+#: src/pref_window.cpp:1241
 msgid "Advanced Quality Settings"
 msgstr "Specialūs Kokybos Nustatymai"
 
-#: src/pref_window.cpp:1382
+#. Translators: the full sentence is Keep a minimum video quality of X %
+#: src/pref_window.cpp:1244
 msgid "Keep a minimum video _quality of"
 msgstr "Mažiausiai leistina video _kokybė yra"
 
-#: src/pref_window.cpp:1382
+#: src/pref_window.cpp:1244
 msgid ""
 "The minimum transmitted video quality to keep when trying to minimize the "
 "used bandwidth:  choose 100% on a LAN for the best quality, 1% being the "
@@ -3033,96 +3254,87 @@ msgstr ""
 "panaudojamą srautą: pasirinkite 100% norėdami vietiniame tinkle išsaugoti "
 "geriausią kokybę, 1% nustato prasčiausios kokybės signalą."
 
-#: src/pref_window.cpp:1382
+#: src/pref_window.cpp:1244
 msgid "%"
 msgstr "%"
 
-#: src/pref_window.cpp:1386
+#. Translators: the full sentence is Transmit at least X frames per second
+#: src/pref_window.cpp:1247
 msgid "Transmit at least"
 msgstr "Perduoti bent"
 
-#: src/pref_window.cpp:1386
+#: src/pref_window.cpp:1247
 msgid "_frames per second"
 msgstr "_kadrus per sekundę"
 
-#: src/pref_window.cpp:1391
+#. Translators: the full sentence is Transmit X background blocks with each
+#. frame
+#: src/pref_window.cpp:1251
 msgid "Transmit"
 msgstr "Perduoti"
 
-#: src/pref_window.cpp:1391
+#: src/pref_window.cpp:1251
 msgid "background _blocks with each frame"
 msgstr "fono _blokų kartu su kiekvienu kadru"
 
-#: src/pref_window.cpp:1432
-msgid "GnomeMeeting Settings"
-msgstr "GnomeMeeting Nustatymai"
-
-#: src/pref_window.cpp:1504
+#: src/pref_window.cpp:1302
 msgid "General"
 msgstr "Bendri nustatymai"
 
-#: src/pref_window.cpp:1508
+#: src/pref_window.cpp:1303
 msgid "Personal Data"
 msgstr "Asmeniai duomenys"
 
-#: src/pref_window.cpp:1518
+#: src/pref_window.cpp:1311
 msgid "Directory Settings"
 msgstr "Katalogo Nustatymai"
 
-#: src/pref_window.cpp:1530
+#: src/pref_window.cpp:1318
 msgid "H.323 Settings"
 msgstr "H.323 Nustatymai"
 
-#: src/pref_window.cpp:1534
+#: src/pref_window.cpp:1320
 msgid "Advanced Settings"
 msgstr "Specialūs Nustatymai"
 
-#: src/pref_window.cpp:1539
+#: src/pref_window.cpp:1324
 msgid "Gatekeeper Settings"
 msgstr "Tarpinio Serverio Nustatymai"
 
-#: src/pref_window.cpp:1544
+#: src/pref_window.cpp:1327
 msgid "NAT Settings"
 msgstr "NAT Nustatymai"
 
-#: src/pref_window.cpp:1551
+#: src/pref_window.cpp:1331
 msgid "Codecs"
 msgstr "Kodekai"
 
-#: src/pref_window.cpp:1555
+#: src/pref_window.cpp:1333
 msgid "Audio Codecs"
 msgstr "Audio Kodekai"
 
-#: src/pref_window.cpp:1561
+#: src/pref_window.cpp:1336
 msgid "Video Codecs"
 msgstr "Video Kodekai"
 
-#: src/pref_window.cpp:1568
+#: src/pref_window.cpp:1340
 msgid "Devices"
 msgstr "Įrenginiai"
 
-#: src/pref_window.cpp:1583
-msgid "Section"
-msgstr "Sekcija"
+#: src/sound_handling.cpp:291
+msgid "Opening device for playing"
+msgstr "Atidaromas įrenginys išvedimui"
 
-#: src/sound_handling.cpp:416
+#: src/sound_handling.cpp:293
+msgid "Opening device for recording"
+msgstr "Atidaromas įrenginys įrašymui"
+
+#: src/sound_handling.cpp:304 src/sound_handling.cpp:306
+#: src/videograbber.cpp:738
 msgid "Failed to open the device"
 msgstr "Nepavyko atidaryti įrenginio"
 
-#: src/sound_handling.cpp:416
-#, c-format
-msgid ""
-"Impossible to open the selected audio device (%s) for playing. Please check "
-"your audio setup, the permissions and that the device is not busy."
-msgstr ""
-"Nepavyko išvesti garso į pasirinktą audio įrenginį (%s). Patikrinkite "
-"programos garso nustatymus, priėjimo teises ir ar įrenginys nėra užimtas."
-
-#: src/sound_handling.cpp:428
-msgid "Failed to open the audio device"
-msgstr "Nepavyko atidaryti audio įrenginio"
-
-#: src/sound_handling.cpp:428
+#: src/sound_handling.cpp:304
 #, c-format
 msgid ""
 "Impossible to open the selected audio device (%s) for recording. Please "
@@ -3132,11 +3344,20 @@ msgstr ""
 "programos garso nustatymus, priėjimo prie įrenginio teises ir ar įrenginys "
 "nėra užimtas."
 
-#: src/sound_handling.cpp:447 src/sound_handling.cpp:456
+#: src/sound_handling.cpp:306
+#, c-format
+msgid ""
+"Impossible to open the selected audio device (%s) for playing. Please check "
+"your audio setup, the permissions and that the device is not busy."
+msgstr ""
+"Nepavyko išvesti garso į pasirinktą audio įrenginį (%s). Patikrinkite "
+"programos garso nustatymus, priėjimo teises ir ar įrenginys nėra užimtas."
+
+#: src/sound_handling.cpp:322 src/sound_handling.cpp:378
 msgid "Cannot use the audio device"
 msgstr "Neišeina panaudoti audio įrenginio"
 
-#: src/sound_handling.cpp:447
+#: src/sound_handling.cpp:322
 #, c-format
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
@@ -3145,7 +3366,15 @@ msgstr ""
 "Pasirinktas garso įrenginys (%s) buvo sėkmingai atidarytas, tačiau iš "
 "įrenginio nepavyko gauti jokių duomenų. Patikrinkite savo garso nustatymus."
 
-#: src/sound_handling.cpp:456
+#: src/sound_handling.cpp:331
+msgid "Recording your voice"
+msgstr "Įrašomas Jūsų balsas"
+
+#: src/sound_handling.cpp:357
+msgid "Recording and playing back"
+msgstr "Įrašoma ir išvedama vienu metu"
+
+#: src/sound_handling.cpp:378
 #, c-format
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
@@ -3154,38 +3383,18 @@ msgstr ""
 "Pasirinktas garso įrenginys (%s) buvo sėkmingai atidarytas, tačiau į jį "
 "nepavyko įrašyti jokių duomenų. Patikrinkite savo garso nustatymus."
 
-#: src/sound_handling.cpp:473
+#: src/sound_handling.cpp:476
 #, c-format
 msgid ""
 "GnomeMeeting is now recording from %s and playing back to %s. Please say \"1 "
-"2 3\" in your microphone, you should hear yourself back into the speakers in "
-"5 seconds.\n"
-"\n"
-"Recording... Please talk."
+"2 3\" in your microphone, you should hear yourself back into the speakers "
+"with a 4 seconds delay."
 msgstr ""
 "GnomeMeeting šiuo metu įrašinėja iš %s ir išveda garsą į %s. Jei Jūs "
-"pradėsite kalbėti į mikrofoną, po 5 sekundžių Jūs turėtumėte save išgirsti "
-"garsiakalbiuose.\n"
-"\n"
-"Įrašoma... Galite kalbėti."
+"pradėsite kalbėti į mikrofoną, po 4 sekundžių Jūs turėtumėte save išgirsti "
+"garsiakalbiuose."
 
-#: src/sound_handling.cpp:502
-msgid ""
-"GnomeMeeting is now playing what it is recording with a 5 seconds delay. If "
-"you don't hear yourself with the delay, you will have to fix your audio "
-"setup and probably install a full-duplex driver before calling other "
-"GnomeMeeting users.\n"
-"\n"
-"Recording and playing... Please talk."
-msgstr ""
-"GnomeMeeting šiuo metu groja tai kas buvo įrašyta prieš 5 sekundes. Jei Jūs "
-"negirdite to ką pasakėte prieš kurį laiką, Jūs turite patikrinti savo garso "
-"nustatymus ir įdiegti garso tvarkyklę su pilno duplekso palaikymu prieš "
-"pradėdami skambinti kitiems GnomeMeeting vartotojams.\n"
-"\n"
-"Įrašoma ir grojama... Galite kalbėti."
-
-#: src/toolbar.cpp:178
+#: src/toolbar.cpp:177
 msgid ""
 "Enter an URL to call on the left, and click on this button to connect to the "
 "given URL."
@@ -3193,23 +3402,23 @@ msgstr ""
 "Kairėje įveskite adresą, kuriuo reikia skambinti  ir pasirinkite šį mygtuką "
 "kad susijungti su nurodytu adresu."
 
-#: src/toolbar.cpp:225
+#: src/toolbar.cpp:224
 msgid "Open text chat."
 msgstr "Atidaryti tekstinių pokalbių langą"
 
-#: src/toolbar.cpp:236
+#: src/toolbar.cpp:235
 msgid "Open control panel"
 msgstr "Atidaryti valdymo skydelį"
 
-#: src/toolbar.cpp:248
+#: src/toolbar.cpp:247
 msgid "Open address book"
 msgstr "Atidaryti adresų knygą"
 
-#: src/toolbar.cpp:278
+#: src/toolbar.cpp:271
 msgid "Display images from your camera device."
 msgstr "Rodyti vaizdus iš video įrenginio."
 
-#: src/toolbar.cpp:300
+#: src/toolbar.cpp:293
 msgid ""
 "Audio transmission status. During a call, click here to suspend or resume "
 "the audio transmission."
@@ -3217,7 +3426,7 @@ msgstr ""
 "Garso perdavimo būklė. Skambučio metu paspauskite čia, kad sustabdyti ar "
 "atnaujinti garso perdavimą."
 
-#: src/toolbar.cpp:320
+#: src/toolbar.cpp:313
 msgid ""
 "Video transmission status. During a call, click here to suspend or resume "
 "the video transmission."
@@ -3225,35 +3434,39 @@ msgstr ""
 "Vaizdo perdavimo būklė. Skambučio metu, paspauskite čia, kad sustabdyti ar "
 "atnaujinti vaizdo perdavimą."
 
-#: src/tools.cpp:186
-msgid "Received calls"
-msgstr "Gauti skambučiai"
+#: src/tools.cpp:187
+msgid "Received Calls"
+msgstr "Gauti Skambučiai"
 
-#: src/tools.cpp:186
-msgid "Given calls"
-msgstr "Vykdyti skambučiai"
+#: src/tools.cpp:187
+msgid "Placed Calls"
+msgstr "Įvykdyti skambučiai"
 
-#: src/tools.cpp:186
-msgid "Unanswered calls"
-msgstr "Neatsakyti skambučiai"
+#: src/tools.cpp:187
+msgid "Unanswered Calls"
+msgstr "Neatsakyti Skambučiai"
 
-#: src/tools.cpp:231
+#: src/tools.cpp:238
 msgid "Date"
 msgstr "Data"
 
-#: src/tools.cpp:239
-msgid "Remote user"
-msgstr "Nutolęs vartotojas"
+#: src/tools.cpp:246
+msgid "Remote User"
+msgstr "Nutolęs Vartotojas"
 
-#: src/tools.cpp:258
-msgid "Call duration"
-msgstr "Skambučio trukmė"
+#: src/tools.cpp:264
+msgid "Call Duration"
+msgstr "Skambučio Trukmė"
 
-#: src/tools.cpp:269
+#: src/tools.cpp:274
+msgid "Call End Reason"
+msgstr "Skambučio nutraukimo priežastis"
+
+#: src/tools.cpp:283
 msgid "Software"
 msgstr "Programa"
 
-#: src/tray.cpp:190
+#: src/tray.cpp:189
 msgid "GnomeMeeting Tray Icon"
 msgstr "GnomeMeeting skydelio ženklas"
 
@@ -3265,18 +3478,18 @@ msgstr ""
 "Nepavyko perkelti skambučio. Vartotojas buvo arba nepasiekiamas arba "
 "paprasčiausiai užsiėmes, kai sulaukė perkelto skambučio."
 
-#: src/urlhandler.cpp:268
+#: src/urlhandler.cpp:286
 #, c-format
 msgid "No contact with speed dial %s# found, will call number %s instead"
 msgstr ""
 "Greitu numeriu %s# nerastas joks adresas, bus bandoma susisiekti su numeriu %"
 "s"
 
-#: src/urlhandler.cpp:286
+#: src/urlhandler.cpp:304
 msgid "Invalid URL handler"
 msgstr "Klaidingas adresas"
 
-#: src/urlhandler.cpp:286
+#: src/urlhandler.cpp:304
 msgid ""
 "Please specify a valid URL handler. Currently both h323: and callto: are "
 "supported."
@@ -3284,35 +3497,31 @@ msgstr ""
 "Nurodykite tinkamą adreso rodyklę. Šiuo metu palaikoma tiek h323:, tiek "
 "callto:."
 
-#: src/urlhandler.cpp:314
+#: src/urlhandler.cpp:337
 #, c-format
 msgid "Calling %s"
 msgstr "Skambinama %s"
 
-#: src/urlhandler.cpp:318
+#: src/urlhandler.cpp:341
 #, c-format
 msgid "Transferring call to %s"
 msgstr "Skambutis nukreiptas į %s"
 
-#: src/videograbber.cpp:331 src/videograbber.cpp:332
+#: src/videograbber.cpp:302
 msgid "Opening Video device"
 msgstr "Atidaromas video įrenginys"
 
-#: src/videograbber.cpp:396
+#: src/videograbber.cpp:375
 #, c-format
 msgid "Successfully opened video device %s, channel %d"
 msgstr "Sėkmingai atidarytas video įrenginio %s kanalas %d"
 
-#: src/videograbber.cpp:399
-msgid "Video Device Opened"
-msgstr "Video įrenginys atidarytas"
-
-#: src/videograbber.cpp:412
+#: src/videograbber.cpp:390
 #, c-format
 msgid "Error while opening video device %s"
 msgstr "Įvyko klaida atidarant video įrenginį %s"
 
-#: src/videograbber.cpp:414
+#: src/videograbber.cpp:392
 msgid ""
 "The chosen Video Image will be transmitted during calls. If you didn't "
 "choose any image, then the default GnomeMeeting logo will be transmitted. "
@@ -3324,11 +3533,11 @@ msgstr ""
 "galite perdavinėti pasirinktą piešinį arba GnomeMeeting logotipą vietoj "
 "video įrenginio pasirinkdami \"Atvaizdas\"."
 
-#: src/videograbber.cpp:415
+#: src/videograbber.cpp:393
 msgid "Can't open the Video Device"
 msgstr "Nepavyko atidaryti video įrenginio"
 
-#: src/videograbber.cpp:420
+#: src/videograbber.cpp:398
 msgid ""
 "There was an error while opening the device. Please check your permissions "
 "and make sure that the appropriate driver is loaded."
@@ -3336,128 +3545,69 @@ msgstr ""
 "Įvyko klaida atidarant įrenginį. Patikrinkite įrenginio priėjimo teises ir "
 "įsitikinkite, kad atitinkama tvarkyklė yra paleista."
 
-#: src/videograbber.cpp:425 src/videograbber.cpp:727
+#: src/videograbber.cpp:403 src/videograbber.cpp:716
 msgid "Your video driver doesn't support the requested video format."
 msgstr "Jūsų video tvarkyklė nepalaiko pasirinko video formato."
 
-#: src/videograbber.cpp:429 src/videograbber.cpp:731
+#: src/videograbber.cpp:407 src/videograbber.cpp:720
 msgid "Could not open the chosen channel with the chosen video format."
 msgstr "Nepavyko atidaryti nurodyto video kanalo pasirinktame video formate."
 
-#: src/videograbber.cpp:433
+#: src/videograbber.cpp:411
 msgid ""
 "Your driver doesn't seem to support any of the colour formats supported by "
 "GnomeMeeting.\n"
 " Please check your kernel driver documentation in order to determine which "
-"Palette is supported. Set it as GnomeMeeting default with:\n"
-" gconftool --set \"/apps/gnomemeeting/devices/color_format\" YOURPALETTE --"
-"type string"
+"Palette is supported."
 msgstr ""
 "Jūsų tvarkyklė nepalaiko nei vieno GnomeMeeting priimtino spalvų formato.\n"
 "Patikrinkite savo branduolio tvarkyklės aprašymus siekdami nustatyti "
-"priimtiną spalvų paletę. Nustatykite tą paletę GnomeMeeting standartine su "
-"komanda:\n"
-"gconftool --set \"/apps/gnomemeeting/devices/color_format\" JŪSŲPALETĖ --"
-"type string"
+"priimtiną spalvų paletę."
 
-#: src/videograbber.cpp:437
+#: src/videograbber.cpp:415
 msgid "Error while setting the frame rate."
 msgstr "Nepavyko nustatyti kardų skaičiaus."
 
-#: src/videograbber.cpp:441
+#: src/videograbber.cpp:419
 msgid "Error while setting the frame size."
 msgstr "Nepavyko nustatyti kadrų dydžio."
 
-#: src/videograbber.cpp:574
-msgid "Video Device Closed"
-msgstr "Video įrenginys uždarytas"
+#: src/videograbber.cpp:628
+#, c-format
+msgid ""
+"GnomeMeeting is now testing the %s video device. If you experience machine "
+"crashes, then report a bug to the video driver author."
+msgstr ""
+"GnomeMeeting šiuo metu tikrina video įrenginį %s. Jei Jūsų kompiuterio "
+"darbas sutrinka, praneškite apie klaidą video tvarkyklės autoriui."
 
-#: src/videograbber.cpp:706
+#: src/videograbber.cpp:690
 #, c-format
 msgid "Test %d done"
 msgstr "Testas %d baigtas"
 
-#: src/videograbber.cpp:723
+#: src/videograbber.cpp:692
+#, c-format
+msgid "Test %d failed"
+msgstr "Testas %d nepavyko"
+
+#: src/videograbber.cpp:711
 #, c-format
 msgid "Error while opening %s."
 msgstr "Įvyko klaida atidarant %s."
 
-#: src/videograbber.cpp:735
-msgid "Your driver doesn't support the YUV420P color format"
-msgstr "Jūsų tvarkykė nepalaiko YUV420P spalvų formato"
+#: src/videograbber.cpp:724
+msgid ""
+"Your driver doesn't support any of the color formats tried by GnomeMeeting"
+msgstr ""
+"Jūsų tvarkyklė nepalaiko nei vieno iš spalvų formatų, kuriuos patikrino "
+"GnomeMeeting"
 
-#: src/videograbber.cpp:739
+#: src/videograbber.cpp:728
 msgid "Error with the frame rate."
 msgstr "Nepriimtinas kadrų skaičius"
 
-#: src/videograbber.cpp:743
+#: src/videograbber.cpp:732
 msgid "Error with the frame size."
 msgstr "Nepriimtinas kadro dydis."
-
-#: src/videograbber.cpp:748
-msgid "Tests OK!"
-msgstr "Testai įvykdyti tvarkingai!"
-
-msgid "Audio manager"
-msgstr "Audio tvarkyklė"
-
-msgid "Enable IP checking"
-msgstr "Naudoti IP tikrinimą"
-
-msgid "H.245 Tunneling enabled"
-msgstr "H.245 tuneliai - įjungti"
-
-msgid "Started transmission of %s"
-msgstr "Pradėtas %s perdavimas"
-
-msgid "Audio Manager"
-msgstr "Audio tvarkyklė"
-
-msgid "Audio manager:"
-msgstr "Audio tvarkyklė:"
-
-msgid "Forwarding call to %s"
-msgstr "Skambutis persiunčiamas į %s"
-
-msgid "Display a popup to accept the call"
-msgstr "Pokalbio priėmimui parodyti iššokantį langą"
-
-msgid "Forward calls"
-msgstr "Persiųsti skambučius"
-
-msgid "Enter a comment about yourself."
-msgstr "Įveskite pastabas apie save."
-
-msgid "Enter your country or city."
-msgstr "Įveskite jūsų šalį ar miestą."
-
-msgid ""
-"If enabled, GnomeMeeting will start hidden. The notification area must be "
-"present in the panel."
-msgstr "Jeigu įjungta, GnomeMeeting pasileis pasislėpęs. Skydelyje turi būti įspėjimų "
-"vieta."
-
-msgid ""
-"If enabled, all incoming calls will be forwarded to the host that is "
-"specified in the field above."
-msgstr ""
-"Įjungus nuostatą, visi ateinantys skambučiai bus persiunčiami į aukščiau "
-"esančiame lauke nurodytą kompiuterį."
-
-msgid ""
-"If enabled, all incoming calls will be forwarded to the host that is "
-"specified in the field above if you do not answer the call."
-msgstr ""
-"Jeigu įjungta, tuo atveju kai tu neatsakysi į skambučius visi ateinantys"
-"skambučiai bus persiųsti į kompiuterį kuris yra nurodytas aukščiau"
-" esančiame laukelyje."
-
-msgid ""
-"If enabled, all incoming calls will be forwarded to the host that is "
-"specified in the field above if you already are in a call or if you are in "
-"Do Not Disturb mode."
-msgstr ""
-"Jeigu įjungta, visi įeinantys skambučiai bus persiųsti į kompiuterį nurodytą "
-"aukščiau esančiame laukelyje, jeigu jūs jau esate skambutyje arba "
-"\"Netrukdyti\" rėžime."
 
