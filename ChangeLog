@@ -1,16 +1,23 @@
+2001-10-29  Christian Rose  <menthos@menthos.com>
+
+	* src/ldap.cpp: Changed some comments to C-style to work around some
+	problems with older gettexts.
+
 2001-10-28  Damien Sandras  <dsandras@seconix.com>
 
 	* src/config.cpp: Added support for Jitter Buffer, and Video Bandwidth
 	limitation.
-	* src/endpoint.cpp: Fixed bug, Added support for Video Bandwidth limitation.
-	* src/ils.cpp, src/ils.h, src/ldap.cpp: Added a right click menu to call 
-	the selected user. Finished history support. Fixed crash bug when browsing
-	a non-existent server.
+	* src/endpoint.cpp: Fixed bug, Added support for Video Bandwidth
+	limitation.
+	* src/ils.cpp, src/ils.h, src/ldap.cpp: Added a right click menu to
+	call the selected user. Finished history support. Fixed crash bug when
+	browsing a non-existent server.
 	* src/main.cpp: Fixed a bug.
-	* src/preferences.cpp: Completely reorganised the preferences. Fixed design bugs.
+	* src/preferences.cpp: Completely reorganised the preferences. Fixed
+	design bugs.
 	* src/menu.cpp: Added the popup menu for ils.
-	* src/connection.cpp: Added a function that returns the current Transmitting
-	Audio Channel.
+	* src/connection.cpp: Added a function that returns the current
+	Transmitting Audio Channel.
 	
 2001-10-28  Damien Sandras  <dsandras@seconix.com>
 
@@ -33,26 +40,28 @@
 	
 2001-10-22  Damien Sandras  <dsandras@seconix.com>
 
-	* src/endpoint.cpp: Fixed a small bug for pure audio calls (the video grabber, 
-	not opened, was closed).
+	* src/endpoint.cpp: Fixed a small bug for pure audio calls (the video
+	grabber, not opened, was closed).
 	
 2001-10-22  Damien Sandras  <dsandras@seconix.com>
 
-	* common.h, config.cpp, preferences.cpp: Added support for a video_preview button
-	located in the preferences window (has the same effect and purpose than
-	the button in the quick bar).
+	* common.h, config.cpp, preferences.cpp: Added support for a
+	video_preview button located in the preferences window (has the same
+	effect and purpose than the button in the quick bar).
 	* ldap.cpp, ldap_h.h, main.cpp: Removed memory leak.
 	* main_interface.cpp: Fixes to remove the memory leak. Fixed bug about
 	the video and audio channel on the quick bar.
-	* endpoint.cpp: Improved video preview support : if the video device is opened
-	it will stay opened during the communication and after; if the video device is
-	close, it will be opened only for the communication.
+	* endpoint.cpp: Improved video preview support : if the video device
+	is opened it will stay opened during the communication and after; if
+	the video device is close, it will be opened only for the
+	communication.
 	
 2001-10-21  Damien Sandras  <dsandras@seconix.com>
 
-	* common.h, ldap.cpp, ils.cpp: Completed multiple ILS directories support.
-	* callbacks.cpp: Added a string so that the translator can put his name
-	in the about box.
+	* common.h, ldap.cpp, ils.cpp: Completed multiple ILS directories
+	support.
+	* callbacks.cpp: Added a string so that the translator can put his
+	name in the about box.
 	* pixmaps/gnomemeeting-logo.png: Set the version to 0.12.
 	
 2001-10-21  Damien Sandras  <dsandras@seconix.com>
@@ -83,7 +92,8 @@
 
 2001-10-13  Damien Sandras  <dsandras@seconix.com>
 
-	* configure.in: Replaced -lgdk_pixbuf by gnome-config --libs gdk_pixbuf.
+	* configure.in: Replaced -lgdk_pixbuf by gnome-config --libs
+	gdk_pixbuf.
 	
 2001-10-13  Miguel Rodríguez Pérez  <migrax@terra.es>
 
@@ -92,35 +102,37 @@
 	* configure.in: Added check for gdk-pixbuf.
 	* pixmaps/globe2-22.xpm: Added const.
 	* pixmaps/globe-22.xpm: Added const.
-	* src/docklet.cpp (GM_build_docklet): Replaced use of imlib with gdk_pixbuf.
+	* src/docklet.cpp (GM_build_docklet): Replaced use of imlib with
+	gdk_pixbuf.
 
 2001-10-09  Damien Sandras  <dsandras@seconix.com>
 
 	* src/doclet.cpp, src/docklet.h: Moved a #include <> from .cpp to .h
-	* pixmaps/globe-22.xpm, pixmaps/globe2-22.xpm: Added these new icons for
-	the docklet.
+	* pixmaps/globe-22.xpm, pixmaps/globe2-22.xpm: Added these new icons
+	for the docklet.
 	
 2001-10-09  Miguel Rodríguez Pérez  <migras@atlas.uvigo.es>
 
-	* src/main_interface.cpp: Initialize CORBA, this is need for the docklet,
-	and lots of little changes for the docklet.
+	* src/main_interface.cpp: Initialize CORBA, this is need for the
+	docklet, and lots of little changes for the docklet.
 	* src/main.h: Don't include applet-widget.h anymore
-	* src/main.cpp (main): Don't initialize the applet, we don't have any ;)
+	* src/main.cpp (main): Don't initialize the applet, we don't have
+	any ;)
 	* src/endpoint.h: 
 	* src/endpoint.cpp:  Lots of little changes to adapt the code to the
 	docklet
-	* src/common.h (struct _GM_window_widgets): Now we keep a pointer to the
-	docklet, not to the applet
-	* src/cleaner.cpp (Main): Removed some logic that is not needed now with
-	the docklet
-	* src/callbacks.cpp (gtk_main_quit_callback): Removed some logic to handle
-	the applet
+	* src/common.h (struct _GM_window_widgets): Now we keep a pointer to
+	the docklet, not to the applet
+	* src/cleaner.cpp (Main): Removed some logic that is not needed now
+	with the docklet
+	* src/callbacks.cpp (gtk_main_quit_callback): Removed some logic to
+	handle the applet
 	* src/Makefile.am: Remove applet.* in favour of docklet.*
 
 2001-10-07  Damien Sandras  <dsandras@seconix.com>
 
-	* src/ils.cpp: Added test to not g_free NULL values, fixed memory leak by
-	adding the ldap_value_free function in the class.
+	* src/ils.cpp: Added test to not g_free NULL values, fixed memory leak
+	by adding the ldap_value_free function in the class.
 
 2001-10-06  Kjartan Maraas  <kmaraas@gnome.org>
 
@@ -145,23 +157,26 @@
 	videograbber.h files.
 	* src/videograbber.cpp, src/videograbber.h: Added those 2 files that 
 	are the old webcam files.
-	* src/videograbber.cpp: Removed the GM_cam function. Added comments to the 
-	class methods.
+	* src/videograbber.cpp: Removed the GM_cam function. Added comments to
+	the class methods.
 	* src/preferences.cpp: Replaced the video_test button by a video
 	preview button that disables/enable the preview mode.
 
 2001-10-02  Damien Sandras  <dsandras@seconix.com>
 
 	* src/webcam.cpp: Added missing #include "../config.h" for translators.
-	Added support for a reset() method that resets the VideoGrabber with other values.
-	* src/config.cpp: Added support for the reset method, you can now change the video
-	device in the preferences while the video preview mode is on. It will simply change
-	the device and display images from the new device.
+	Added support for a reset() method that resets the VideoGrabber with
+	other values.
+	* src/config.cpp: Added support for the reset method, you can now
+	change the video device in the preferences while the video preview
+	mode is on. It will simply change the device and display images from
+	the new device.
 	* src/main_interface.cpp: Changed some initialisation messages.
-	* src/callbacks.cpp: Video preview is no more disabled when calling the preferences
-	window as it is now possible to change video options on the fly.
-	* ChangeLog: Updated it because previous commits were made while the ChangeLog was not
-	saved.
+	* src/callbacks.cpp: Video preview is no more disabled when calling
+	the preferences window as it is now possible to change video options
+	on the fly.
+	* ChangeLog: Updated it because previous commits were made while the
+	ChangeLog was not saved.
 	
 2001-10-02  Christian Rose  <menthos@menthos.com>
 

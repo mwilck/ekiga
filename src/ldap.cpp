@@ -168,10 +168,10 @@ void refresh_button_clicked (GtkButton *button, gpointer data)
 
   found = 0;
 
-  // if we are not already browsing
+  /* if we are not already browsing */
   if (lw->thread_count == 1)
     {
-      // browse all the notebook pages
+      /* browse all the notebook pages */
       while ((page = 
 	      gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook),
 						       page_num)) != NULL)
@@ -182,7 +182,7 @@ void refresh_button_clicked (GtkButton *button, gpointer data)
 	  ldap_server = gtk_entry_get_text 
 	    (GTK_ENTRY (GTK_COMBO (lw->ils_server_combo)->entry));
 
-	  // if there is a page with the current ils server, that's ok
+	  /* if there is a page with the current ils server, that's ok */
 	  if (!g_strcasecmp (text_label, ldap_server))
 	    {
 	      found = 1;
@@ -196,7 +196,7 @@ void refresh_button_clicked (GtkButton *button, gpointer data)
 	{
 	  GM_ldap_init_notebook (lw, page_num, ldap_server);
 
-	  // if it was the first "No directory" page, remove it
+	  /* if it was the first "No directory" page, remove it */
 	  if ((page_num == 1)&&(!g_strcasecmp (_("No directory"), text_label)))
 	    gtk_widget_hide (gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook),
 							0));
@@ -218,8 +218,8 @@ void refresh_button_clicked (GtkButton *button, gpointer data)
 void apply_filter_button_clicked (GtkButton *button, gpointer data)
 {
   GM_ldap_window_widgets *lw = (GM_ldap_window_widgets *) data;
-  // should not be freed : entry is a pointer to the text part of an entry
-  // and text is a pointer to the text part of a clist
+  /* should not be freed : entry is a pointer to the text part of an entry
+     and text is a pointer to the text part of a clist */
   gchar *entry = NULL, *text = NULL;
   GtkWidget *active_item;
 
@@ -302,7 +302,7 @@ void GM_ldap_init (GM_window_widgets *gw, GM_ldap_window_widgets *lw, options *o
   frame = gtk_frame_new (_("ILS directories to browse"));
   gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
 
-  // Put a table in that first frame
+  /* Put a table in that first frame */
   table = gtk_table_new (1, 3, FALSE);
   gtk_container_add (GTK_CONTAINER (frame), table);
   gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
