@@ -238,7 +238,7 @@ void GMLid::Main ()
   gnomemeeting_threads_leave ();
 
 
-  while (lid != NULL && lid->IsOpen() && !stop)
+  while (lid && lid->IsOpen() && !stop)
   {
     endpoint = MyApp->Endpoint ();
 
@@ -248,7 +248,7 @@ void GMLid::Main ()
     now = PTime ();
 
     char c = lid->ReadDTMF (0);
-    if (c && c != '\0') {
+    if (c) {
 
       gnomemeeting_threads_enter ();
       gnomemeeting_dialpad_event (PString (c));

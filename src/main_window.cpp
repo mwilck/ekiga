@@ -168,7 +168,9 @@ gint AppbarUpdate (gpointer data)
   GmRtpData *rtp = (GmRtpData *) data; 
   GmWindow *gw = NULL;
   
-
+  int lost_packets = 0;
+  int late_packets = 0;
+  
   if (MyApp->Endpoint ()) {
     
     PString current_call_token = MyApp->Endpoint ()->GetCurrentCallToken ();
@@ -208,7 +210,7 @@ gint AppbarUpdate (gpointer data)
       video_session = 
 	connection->GetSession(RTP_Session::DefaultVideoSessionID);
 	  
-      if (audio_session != NULL) {
+      if (audio_session) {
 
 	/* Compute the current transmitted audio speed */
 	if ((rtp->tr_audio_bytes == 0) && (rtp->tr_audio_pos == 0))
@@ -216,7 +218,7 @@ gint AppbarUpdate (gpointer data)
 	  rtp->tr_audio_bytes = audio_session->GetOctetsSent();
 	rtp->tr_audio_speed [rtp->tr_audio_pos] = 
 	  (float) (audio_session->GetOctetsSent()
-		   - rtp->tr_audio_bytes)/1024;
+		   - rtp->tr_audio_bytes)/ 1024;
 	rtp->tr_audio_bytes = 
 	  audio_session->GetOctetsSent();	
 
@@ -229,7 +231,7 @@ gint AppbarUpdate (gpointer data)
 	  rtp->re_audio_bytes = audio_session->GetOctetsReceived();
 	rtp->re_audio_speed [rtp->re_audio_pos] = 
 	  (float) (audio_session->GetOctetsReceived()
-		   - rtp->re_audio_bytes)/1024;
+		   - rtp->re_audio_bytes)/ 1024;
 	rtp->re_audio_bytes = 
 	  audio_session->GetOctetsReceived();
 
@@ -237,7 +239,7 @@ gint AppbarUpdate (gpointer data)
 	if (rtp->re_audio_pos >= 50) rtp->re_audio_pos = 0;
       }
 
-      if (video_session != NULL) {
+      if (video_session) {
 
 	/* Compute the current transmitted video speed */
 	if ((rtp->tr_video_bytes == 0) && (rtp->tr_video_pos == 0)) 
@@ -245,7 +247,7 @@ gint AppbarUpdate (gpointer data)
 	  rtp->tr_video_bytes = video_session->GetOctetsSent();
 	rtp->tr_video_speed [rtp->tr_video_pos] = 
 	  (float) (video_session->GetOctetsSent()
-		   - rtp->tr_video_bytes)/1024;
+		   - rtp->tr_video_bytes)/ 1024;
 	rtp->tr_video_bytes = 
 	  video_session->GetOctetsSent();
 
@@ -258,7 +260,7 @@ gint AppbarUpdate (gpointer data)
 	  rtp->re_video_bytes = video_session->GetOctetsReceived();
 	rtp->re_video_speed [rtp->re_video_pos] = 
 	  (float) (video_session->GetOctetsReceived()
-		   - rtp->re_video_bytes)/1024;
+		   - rtp->re_video_bytes)/ 1024;
 	rtp->re_video_bytes = 
 	  video_session->GetOctetsReceived();
 
@@ -277,8 +279,6 @@ gint AppbarUpdate (gpointer data)
 	 rtp->tr_video_speed [rtp->tr_video_pos - 1], 
 	 rtp->re_video_speed [rtp->re_video_pos - 1]);
 	
-      int lost_packets = 0;
-      int late_packets = 0;
 
       if (audio_session) {
 	  
@@ -364,6 +364,11 @@ stats_drawing_area_exposed (GtkWidget *drawing_area, gpointer data)
   int allocation_height = GTK_WIDGET (drawing_area)->allocation.height;
   float height_step = allocation_height;
 
+  float max_tr_video = 1;
+  float max_tr_audio = 1;
+  float max_re_video = 1;
+  float max_re_audio = 1;
+
   if (!gc)
     gc = gdk_gc_new (gw->stats_drawing_area->window);
 
@@ -412,10 +417,6 @@ stats_drawing_area_exposed (GtkWidget *drawing_area, gpointer data)
   gdk_draw_segments (GDK_DRAWABLE (drawing_area->window), gc, s, cpt);
   gdk_window_set_background (drawing_area->window, &gw->colors [0]);
 
-  float max_tr_video = 1;
-  float max_tr_audio = 1;
-  float max_re_video = 1;
-  float max_re_audio = 1;
 
   /* Compute the height_step */
   if (MyApp->Endpoint ()->GetCallingState () == 2) {
@@ -517,7 +518,7 @@ stats_drawing_area_exposed (GtkWidget *drawing_area, gpointer data)
       g_strdup_printf (_("Total: %.2f Mb"),
 		       (float) (rtp->tr_video_bytes+rtp->tr_audio_bytes
 		       +rtp->re_video_bytes+rtp->re_audio_bytes)
-		       / 1024 / 1024);
+		       / (1024/1024));
     pango_layout_set_text (pango_layout, pango_text, strlen (pango_text));
     gdk_draw_layout_with_colors (GDK_DRAWABLE (drawing_area->window),
 				 gc, 5, 2,
@@ -614,7 +615,7 @@ gnomemeeting_new_event (BonoboListener    *listener,
   }
 
   
-  for (i = 0; i < argc; i++) {
+  for (i = 1; i < argc; i++) {
     if (!strcmp (argv [i], "-c") || !strcmp (argv [i], "--callto")) 
       break;
   } 
@@ -830,7 +831,7 @@ brightness_changed (GtkAdjustment *adjustment, gpointer data)
   brightness =  (int) (GTK_ADJUSTMENT (gw->adj_brightness)->value);
 
   if (video_grabber)
-    video_grabber->SetBrightness (brightness * 256);
+    video_grabber->SetBrightness (brightness << 8);
 }
 
 
@@ -851,7 +852,7 @@ whiteness_changed (GtkAdjustment *adjustment, gpointer data)
   whiteness =  (int) (GTK_ADJUSTMENT (gw->adj_whiteness)->value);
 
   if (video_grabber)
-    video_grabber->SetWhiteness (whiteness * 256);
+    video_grabber->SetWhiteness (whiteness << 8);
 }
 
 
@@ -872,7 +873,7 @@ colour_changed (GtkAdjustment *adjustment, gpointer data)
   colour =  (int) (GTK_ADJUSTMENT (gw->adj_colour)->value);
 
   if (video_grabber)
-    video_grabber->SetColour (colour * 256);
+    video_grabber->SetColour (colour << 8);
 }
 
 
@@ -893,7 +894,7 @@ contrast_changed (GtkAdjustment *adjustment, gpointer data)
   contrast =  (int) (GTK_ADJUSTMENT (gw->adj_contrast)->value);
 
   if (video_grabber)
-    video_grabber->SetContrast (contrast * 256);
+    video_grabber->SetContrast (contrast << 8);
 }
 
 
@@ -1033,7 +1034,7 @@ void gnomemeeting_dialpad_event (const char *key)
             
 	H323Connection *connection = endpoint->GetCurrentConnection ();
             
-	if (connection != NULL) {
+	if (connection) {
 
 	  connection->SendUserInput (dtmf);
 	}
@@ -1260,7 +1261,7 @@ gnomemeeting_init (GmWindow *gw,
     gconf_client_get_string (client, 
 			     "/desktop/gnome/url-handlers/callto/command", 0);
 					       
-  if (gconf_url == NULL) {
+  if (gconf_url) {
     
     gconf_client_set_string (client,
 			     "/desktop/gnome/url-handlers/callto/command", 

@@ -37,8 +37,8 @@
  */
 
 
-#ifndef _LDAP_H_H_
-#define _LDAP_H_H_
+#ifndef _LDAP_WINDOW_H_
+#define _LDAP_WINDOW_H_
 
 #include "common.h"
 

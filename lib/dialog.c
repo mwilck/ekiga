@@ -168,7 +168,7 @@ gnomemeeting_warning_dialog_on_widget (GtkWindow *parent,
   vsnprintf (buffer, 1024, format, args);
   
   dialog = gtk_message_dialog_new (parent, 
-                                   GTK_DIALOG_DESTROY_WITH_PARENT,
+                                   GTK_DIALOG_MODAL,
                                    GTK_MESSAGE_WARNING,
                                    GTK_BUTTONS_OK,
                                    buffer);
@@ -207,7 +207,7 @@ gnomemeeting_dialog (GtkWindow *parent,
   
   vsnprintf (buffer, 1024, format, args);
   dialog = gtk_message_dialog_new (parent, 
-                                   GTK_DIALOG_DESTROY_WITH_PARENT,
+                                   GTK_DIALOG_MODAL,
                                    type,
                                    GTK_BUTTONS_OK,
                                    buffer);

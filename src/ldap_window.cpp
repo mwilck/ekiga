@@ -394,20 +394,6 @@ edit_contact_cb (GtkWidget *widget,
 {
   GConfClient *client = NULL;
 
-  GtkWidget *table = NULL;
-  GtkWidget *frame = NULL;
-  GtkWidget *dialog = NULL;
-  GtkWidget *label = NULL;
-  GtkWidget *name_entry = NULL;
-  GtkWidget *callto_entry = NULL;
-  GtkWidget *speed_dial_entry = NULL;
-
-  GtkListStore *list_store = NULL;
-  GtkCellRenderer *renderer = NULL;
-  GtkWidget *tree_view = NULL;
-  GtkTreeViewColumn *column = NULL;
-  GtkTreeIter iter;
-  
   gchar *contact_name = NULL;
   gchar *contact_speed_dial = NULL;
   gchar *contact_callto = NULL;
@@ -417,23 +403,41 @@ edit_contact_cb (GtkWidget *widget,
   gchar *contact_section = NULL;
   gchar *group_name = NULL;
   gchar *label_text = NULL;
-
+    
   PString other_speed_dial;
+
+  GtkWidget *dialog = NULL;
+  GtkWidget *table = NULL;
+  GtkWidget *label = NULL;
+  GtkWidget *name_entry = NULL;
+  GtkWidget *callto_entry = NULL;
+  GtkWidget *speed_dial_entry = NULL;
+  GtkWidget *frame = NULL;
+
+  GtkListStore *list_store = NULL;
+  GtkWidget *tree_view = NULL;
+  GtkCellRenderer *renderer = NULL;
+  GtkTreeViewColumn *column = NULL;
+  GtkTreeIter iter;
+
+  GSList *groups_list = NULL;
+  GSList *groups_list_iter = NULL;
   
-  gboolean selected = false;
   gboolean is_group = false;
+  gboolean selected = false;
+  gboolean valid_answer = false;
   int result = 0;
   int groups_nbr = 0;
   
-  GSList *groups_list = NULL;
   GSList *group_content = NULL;
   GSList *group_content_iter = NULL;
 
   GmLdapWindow *lw = NULL;
   GmWindow *gw = NULL;
-  
+    
   lw = gnomemeeting_get_ldap_window (gm);
   gw = gnomemeeting_get_main_window (gm);
+  
   client = gconf_client_get_default ();
 
 
@@ -459,11 +463,11 @@ edit_contact_cb (GtkWidget *widget,
     contact_speed_dial = NULL;
   }
 
-          
+  
   /* Create the dialog to easily modify the info of a specific contact */
   dialog = gtk_dialog_new_with_buttons (_("Edit the contact information"), 
 					GTK_WINDOW (gw->ldap_window),
-					GTK_DIALOG_DESTROY_WITH_PARENT,
+					GTK_DIALOG_MODAL,
 					GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
 					GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
 					NULL);
@@ -571,140 +575,163 @@ edit_contact_cb (GtkWidget *widget,
   groups_list =
     gconf_client_get_list (client, CONTACTS_KEY "groups_list",
 			   GCONF_VALUE_STRING, NULL);
+  groups_list_iter = groups_list;
   
-  while (groups_list) {
+  while (groups_list_iter) {
     
-    if (groups_list->data) {
+    if (groups_list_iter->data) {
 
 	gtk_list_store_append (list_store, &iter);
 	gtk_list_store_set (list_store, &iter,
 			    0, (is_group
 			    && old_contact_callto
-			    && is_contact_member_of_group (old_contact_callto, (char *) groups_list->data)
+			    && is_contact_member_of_group (old_contact_callto, (char *) groups_list_iter->data)
 			    && GPOINTER_TO_INT (data) != 1),
-			    1, groups_list->data, -1);
+			    1, groups_list_iter->data, -1);
     }
 
-    groups_list = g_slist_next (groups_list);
+    groups_list_iter = g_slist_next (groups_list_iter);
   }
-  
+  g_slist_free (groups_list);
+
   
   /* Pack the gtk entries and the list store in the window */
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), table,
 		      FALSE, FALSE, GNOMEMEETING_PAD_SMALL);
   gtk_widget_show_all (dialog);
     
-  result = gtk_dialog_run (GTK_DIALOG (dialog));
-    
-  switch (result) {
-      
-  case GTK_RESPONSE_ACCEPT:
 
-    /* If there is no name or an empty callto, display an error message
-       and exit */
-    if (!strcmp (gtk_entry_get_text (GTK_ENTRY (name_entry)), "")
-	|| !strcmp (gtk_entry_get_text (GTK_ENTRY (callto_entry)), "")
-	|| !strcmp (gtk_entry_get_text (GTK_ENTRY (callto_entry)), "callto://")){
-      gnomemeeting_error_dialog (GTK_WINDOW (gw->ldap_window), _("Please provide a valid name and callto for the contact."));
-      break;
-    }
-	
+  while (!valid_answer) {
     
-    contact_info =
-      g_strdup_printf ("%s|%s|%s",
-		       gtk_entry_get_text (GTK_ENTRY (name_entry)),
-		       gtk_entry_get_text (GTK_ENTRY (callto_entry)),
-    		       gtk_entry_get_text (GTK_ENTRY (speed_dial_entry)));
+    result = gtk_dialog_run (GTK_DIALOG (dialog));
+    
+    switch (result) {
+      
+    case GTK_RESPONSE_ACCEPT:
+
+      /* If there is no name or an empty callto, display an error message
+	 and exit */
+      if (!strcmp (gtk_entry_get_text (GTK_ENTRY (name_entry)), "")
+	  || !strcmp (gtk_entry_get_text (GTK_ENTRY (callto_entry)), "")
+	  || !strcmp (gtk_entry_get_text (GTK_ENTRY (callto_entry)), "callto://")){
+	gnomemeeting_error_dialog (GTK_WINDOW (dialog), _("Please provide a valid name and callto for the contact."));
+	valid_answer = false;
+      }
+      else {
+	
+	contact_info =
+	  g_strdup_printf ("%s|%s|%s",
+			   gtk_entry_get_text (GTK_ENTRY (name_entry)),
+			   gtk_entry_get_text (GTK_ENTRY (callto_entry)),
+			   gtk_entry_get_text (GTK_ENTRY (speed_dial_entry)));
           
-    contact_callto = (char *) gtk_entry_get_text (GTK_ENTRY (callto_entry));
+	contact_callto = (char *) gtk_entry_get_text (GTK_ENTRY (callto_entry));
 
-    /* Determine the groups where we want to add the contact */
-    if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (list_store), &iter)) {
+	/* Determine the groups where we want to add the contact */
+	if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (list_store), &iter)) {
       
-      do {
+	  do {
 	
-	gtk_tree_model_get (GTK_TREE_MODEL (list_store), &iter,
-			    0, &selected, 1, &group_name, -1);
+	    gtk_tree_model_get (GTK_TREE_MODEL (list_store), &iter,
+				0, &selected, 1, &group_name, -1);
 	  
-	if (group_name) {
+	    if (group_name) {
 	    
-	  gconf_key =
-	    g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, group_name);
+	      gconf_key =
+		g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, group_name);
 
-	  group_content =
-	    gconf_client_get_list (client, gconf_key,
-				   GCONF_VALUE_STRING, NULL);
-      
-	  /* Once we find the contact corresponding to the old saved callto
-	     (if we are editing an existing user and not adding a new one),
-	     we delete him and insert the new one at the same position;
-	     if the group is not selected for that user, we delete him from
-	     the group.
-	  */
-	  if (old_contact_callto) {
-	    
-	    group_content_iter =
-	      find_contact_in_group_content (old_contact_callto,
-					     group_content);
-
-	    /* Only reinsert the contact if the group is selected for him,
-	       otherwise, only delete him from the group */
-	    if (selected)
 	      group_content =
-		g_slist_insert (group_content, (gpointer) contact_info,
-				g_slist_position (group_content,
-						  group_content_iter));
-
-	    group_content = g_slist_remove_link (group_content,
-						 group_content_iter);
-	  }
-	  else
-	    group_content =
-	      g_slist_append (group_content, (gpointer) contact_info);
-
-	  /* If we are adding a new user for a selected group and that he
-	     already belongs to that group, then display a warning */
-	  if (GPOINTER_TO_INT (data) == 1 && selected
-	      && is_contact_member_of_group (contact_callto, group_name)) {
+		gconf_client_get_list (client, gconf_key,
+				       GCONF_VALUE_STRING, NULL);
+      
+	      /* Once we find the contact corresponding to the old saved callto
+		 (if we are editing an existing user and not adding a new one),
+		 we delete him and insert the new one at the same position;
+		 if the group is not selected for that user, we delete him from
+		 the group.
+	      */
+	      if (old_contact_callto) {
 	    
-	    gnomemeeting_error_dialog (GTK_WINDOW (gw->ldap_window), _("Another contact with the callto %s already exists in group %s."), contact_callto, group_name);
-	  }
-	  else {
+		group_content_iter =
+		  find_contact_in_group_content (old_contact_callto,
+						 group_content);
 
-	    other_speed_dial =
-	      gnomemeeting_addressbook_get_speed_dial_url (gtk_entry_get_text (GTK_ENTRY (speed_dial_entry)));
+		/* Only reinsert the contact if the group is selected for him,
+		   otherwise, only delete him from the group */
+		if (selected)
+		  group_content =
+		    g_slist_insert (group_content, (gpointer) contact_info,
+				    g_slist_position (group_content,
+						      group_content_iter));
+
+		group_content = g_slist_remove_link (group_content,
+						     group_content_iter);
+	      }
+	      else
+		group_content =
+		  g_slist_append (group_content, (gpointer) contact_info);
+
+	      /* If we are adding a new user for a selected group and that he
+		 already belongs to that group, then display a warning */
+	      if (GPOINTER_TO_INT (data) == 1 && selected
+		  && is_contact_member_of_group (contact_callto, group_name)) {
 	    
-	    if (!other_speed_dial.IsEmpty () 
-		&& other_speed_dial != PString (contact_callto)) {
+		gnomemeeting_error_dialog (GTK_WINDOW (dialog), _("Another contact with the callto %s already exists in group %s."), contact_callto, group_name);
+	      }
+	      else {
+
+		other_speed_dial =
+		  gnomemeeting_addressbook_get_speed_dial_url (gtk_entry_get_text (GTK_ENTRY (speed_dial_entry)));
+	    
+		if (!other_speed_dial.IsEmpty () 
+		    && other_speed_dial != PString (contact_callto)) {
+
+		  if (selected) {
+		
+		    gnomemeeting_error_dialog (GTK_WINDOW (dialog), _("Another contact with the same speed dial already exists."));
+		    valid_answer = false;
+		  }
+		}
+		else
+		  if ((GPOINTER_TO_INT (data) == 1 && selected)
+		      || (GPOINTER_TO_INT (data) == 0)) {
+		
+		    gconf_client_set_list (client, gconf_key, GCONF_VALUE_STRING,
+					   group_content, NULL);
+		    valid_answer = true;
+		  }
+	      }	  
 
 	      if (selected)
-		gnomemeeting_error_dialog (GTK_WINDOW (gw->ldap_window), _("Another contact with the same speed dial already exists."));
+		groups_nbr++;
+	      g_free (gconf_key);
 	    }
-	    else
-	      if ((GPOINTER_TO_INT (data) == 1 && selected)
-		  || (GPOINTER_TO_INT (data) == 0))
-		gconf_client_set_list (client, gconf_key, GCONF_VALUE_STRING,
-				       group_content, NULL);
-	  }	  
-	  groups_nbr++;
-	}
 	
-      } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (list_store), &iter));
+	
+	  } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (list_store), &iter));
+
+	  /* If the user had selected no groups, we display a warning */
+	  if (!groups_nbr) {
+
+	    gnomemeeting_error_dialog (GTK_WINDOW (dialog),
+				       _("You have to select a group to which you want to add your contact."));
+	  }
+	}
+	g_free (contact_info);
+	g_slist_free (group_content);
+      }
+      break;
 
 
-      /* If the user had selected no groups, we display a warning */
-      if (!groups_nbr)
-	gnomemeeting_error_dialog (GTK_WINDOW (gw->ldap_window),
-				   _("You have to select a group to which you want to add your contact"));
-      
+    case GTK_RESPONSE_REJECT:
+      valid_answer = true;
+      break;
+
     }
-    g_free (contact_info);
-    g_slist_free (group_content);
-    
-    break;
+
+    groups_nbr = 0;
   }
-    
-  g_free (gconf_key);
+  
   g_free (old_contact_callto);
     
   if (dialog)
