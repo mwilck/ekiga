@@ -322,25 +322,19 @@ control_panel_section_changed_nt (gpointer id,
                                   GmConfEntry *entry, 
                                   gpointer data)
 {
-  GmWindow *gw = NULL;
-    
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
+  gint section = 0;
 
   g_return_if_fail (data != NULL);
   
   if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
 
+    section = gm_conf_entry_get_int (entry);
+    
     gdk_threads_enter ();
-    if (gm_conf_entry_get_int (entry) == GM_MAIN_NOTEBOOK_HIDDEN)
-      gtk_widget_hide_all (gw->main_notebook);
-    else {
-
-      gtk_widget_show_all (gw->main_notebook);
-      gtk_notebook_set_current_page (GTK_NOTEBOOK (gw->main_notebook),
-				     gm_conf_entry_get_int (entry));
-    }
-    gm_main_window_control_panel_section_menu_update (GTK_WIDGET (data),
-						      gm_conf_entry_get_int (entry));
+    gm_main_window_select_control_panel_section (GTK_WIDGET (data), 
+						 section);
+    gm_main_window_control_panel_section_menu_update (GTK_WIDGET (data), 
+						      section);
     gdk_threads_leave ();
   }
 }

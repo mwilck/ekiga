@@ -1717,6 +1717,27 @@ gm_main_window_get_video_sliders_values (GtkWidget *main_window,
 }
 
 
+void gm_main_window_select_control_panel_section (GtkWidget *main_window,
+						  int section)
+{
+  GmWindow *mw = NULL;
+  
+  g_return_if_fail (main_window != NULL);
+  
+  mw = gm_mw_get_mw (main_window);
+
+  g_return_if_fail (mw != NULL);
+
+  if (section == GM_MAIN_NOTEBOOK_HIDDEN)
+    gtk_widget_hide_all (mw->main_notebook);
+  else {
+
+    gtk_widget_show_all (mw->main_notebook);
+    gtk_notebook_set_current_page (GTK_NOTEBOOK (mw->main_notebook), section);
+  }
+}
+
+
 void 
 gm_main_window_control_panel_section_menu_update (GtkWidget *main_window,
 						  int section)
@@ -1729,6 +1750,8 @@ gm_main_window_control_panel_section_menu_update (GtkWidget *main_window,
   
   mw = gm_mw_get_mw (main_window);
 
+  g_return_if_fail (mw != NULL);
+  
   menu = gtk_menu_get_widget (mw->main_menu, "statistics");
   
   gtk_radio_menu_select_with_widget (GTK_WIDGET (menu), section);

@@ -157,6 +157,13 @@ void gm_main_window_get_volume_sliders_values (GtkWidget *,
 
 
 /* DESCRIPTION  :  /
+ * BEHAVIOR     :  Select the correct control panel section.
+ * PRE          :  The main window GMObject and a valid section.
+ */
+void gm_main_window_select_control_panel_section (GtkWidget *,
+						  int);
+
+/* DESCRIPTION  :  /
  * BEHAVIOR     :  Update the control panel section menu in the view menu 
  * 		   given the main window GMObject..
  * PRE          :  The main window GMObject and a valid section.
