@@ -1,4 +1,4 @@
-AC_INIT(gnomemeeting, 0.96.0, http://bugzilla.gnome.org/enter_bug.cgi?product=gnomemeeting)
+AC_INIT(gnomemeeting, 0.96.1, http://bugzilla.gnome.org/enter_bug.cgi?product=gnomemeeting)
 AC_CANONICAL_TARGET
 AC_PREREQ(2.53)
 AC_CONFIG_SRCDIR(src/gnomemeeting.cpp)
@@ -17,6 +17,7 @@ AC_PROG_CXX
 AC_ISC_POSIX
 AC_HEADER_STDC
 
+AC_CHECK_DECLS(strcasecmp)
 
 dnl ###########################################################################
 dnl   Versioning
@@ -25,7 +26,7 @@ dnl ###########################################################################
 MAJOR_VERSION=0
 MINOR_VERSION=96
 BUILD_TYPE=ReleaseCode
-BUILD_NUMBER=0
+BUILD_NUMBER=1
 
 AC_DEFINE_UNQUOTED(MAJOR_VERSION, $MAJOR_VERSION,[fix])
 AC_DEFINE_UNQUOTED(MINOR_VERSION, $MINOR_VERSION,[fix])
@@ -319,6 +320,8 @@ else
         AC_MSG_ERROR([You need OpenSSL to enjoy GnomeMeeting])
 fi
 
+
+
 dnl ###########################################################################
 dnl LDAP Checks                                                                
 dnl ###########################################################################
@@ -404,7 +407,7 @@ if test -e "/usr/include/netinet6/in6.h" -a "${gm_platform}" != "linux"; then
 fi
 
 
-GNOMEMEETING_INCLUDES="$PTLIB_CFLAGS $OPENH323_CFLAGS $H323_CFLAGS $GNOMEMEETING_CFLAGS $LDAP_INCLUDES $OPENSSL_CFLAGS $SDL_CFLAGS $ARTSC_CFLAGS"
+GNOMEMEETING_INCLUDES="$PTLIB_CFLAGS $LDAP_INCLUDES $OPENH323_CFLAGS $H323_CFLAGS $GNOMEMEETING_CFLAGS $OPENSSL_CFLAGS $SDL_CFLAGS $ARTSC_CFLAGS"
 GNOMEMEETING_LDADD="$PTLIB_LDFLAGS $OPENH323_LDFLAGS $OPENSSL_LDFLAGS $GNOMEMEETING_LIBS $LDAP_LIBS $SDL_LDFLAGS $ARTSC_LDFLAGS $H323_LIBS"
 CFLAGS=""
 

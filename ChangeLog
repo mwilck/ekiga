@@ -1,3 +1,20 @@
+2003-02-24 Damien Sandras  <dsandras@seconix.com>
+
+	* configure.in: Incremented version to 0.96.1. Fixed includes order.
+	Fixed strcasecmp problem.
+
+	* lib/xdap/xdap.h: Fixed strcasecmp problem.
+	
+	* src/endpoint.cpp: Misc Quicknet changes for automatic Speakerphone
+	mode.
+
+	* src/gnomemeeting.cpp: Same.
+
+	* src/lid.cpp: Same.
+
+	* src/urlhandler.cpp, src/urlhandler.h: AnswerCallNow is now called
+	in the URL Handler if no callto is given.
+	
 2003-02-23 Damien Sandras  <dsandras@seconix.com>
 
 	* src/endpoint.cpp, src/gnomemeeting.cpp: Fixed auto Speakerphone mode.

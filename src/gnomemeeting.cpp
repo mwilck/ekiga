@@ -89,7 +89,7 @@ GnomeMeeting::Connect()
   PString call_address;
   PString current_call_token;
   H323Connection *connection = NULL;
-
+    
   /* We need a connection to use AnsweringCall */
   current_call_token = endpoint->GetCurrentCallToken ();
   connection = endpoint->GetCurrentConnection ();
@@ -104,13 +104,13 @@ GnomeMeeting::Connect()
   /* If connection, then answer it */
   if (connection != NULL) {
 
-    connection->AnsweringCall (H323Connection::AnswerCallNow);
-    
     gnomemeeting_threads_enter ();
     gnomemeeting_log_insert (gw->history_text_view,
 			     _("Answering incoming call"));
     connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 1);
     gnomemeeting_threads_leave ();
+
+    url_handler = new GMURLHandler ();
   }
   else 
   {
@@ -143,12 +143,14 @@ GnomeMeeting::Connect()
       OpalLineInterfaceDevice *lid = NULL;
       GMLid *lid_thread = NULL;
       lid_thread = endpoint->GetLidThread ();
+
+      lid_thread = endpoint->GetLidThread ();
       if (lid_thread)
 	lid = lid_thread->GetLidDevice ();
       if (lid) {
 
 	lid->PlayTone (0, OpalLineInterfaceDevice::RingTone);
-	lid->EnableAudio (0, FALSE);
+	lid->RingLine (0, 0);
       }
 #endif
     }

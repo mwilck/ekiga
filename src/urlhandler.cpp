@@ -22,7 +22,8 @@
  *                         -------------------------------
  *   begin                : Sat Jun 8 2002
  *   copyright            : (C) 2000-2002 by Damien Sandras
- *   description          : Multithreaded class to call a given URL.
+ *   description          : Multithreaded class to call a given URL or to
+ *                          answer a call.
  *   email                : dsandras@seconix.com
  *
  */
@@ -57,7 +58,20 @@ GMURLHandler::GMURLHandler (PString c)
 {
   gw = gnomemeeting_get_main_window (gm);
   url = c;
- 
+
+  answer_call = FALSE;
+  
+  this->Resume ();
+}
+
+
+GMURLHandler::GMURLHandler ()
+  :PThread (1000, AutoDeleteThread)
+{
+  gw = gnomemeeting_get_main_window (gm);
+
+  answer_call = TRUE;
+  
   this->Resume ();
 }
 
@@ -97,6 +111,17 @@ void GMURLHandler::Main ()
 
   endpoint = MyApp->Endpoint ();
 
+
+  if (answer_call && endpoint) {
+
+    con = endpoint->GetCurrentConnection ();
+
+    if (con)
+      con->AnsweringCall (H323Connection::AnswerCallNow);
+
+    return;
+  }
+  
   
   /* We first remove the callto: part if any */
   tmp_url = url.ToLower ();

@@ -22,7 +22,8 @@
  *                         ------------------------------
  *   begin                : Sat Jun 8 2002
  *   copyright            : (C) 2000-2002 by Damien Sandras
- *   description          : Multithreaded class to call a given URL.
+ *   description          : Multithreaded class to call a given URL,
+ *                          or to answer a call.
  *   email                : dsandras@seconix.com
  *
  */
@@ -44,12 +45,21 @@ class GMURLHandler : public PThread
 public:
 
   /* DESCRIPTION  :  The constructor.
-   * BEHAVIOR     :  Initialise the parameters.
+   * BEHAVIOR     :  Initialise the parameters. GM will call the given URL
+   *                 after having parsed it.
    * PRE          :  The URL.
    */
   GMURLHandler (PString);
 
 
+  /* DESCRIPTION  :  The constructor.
+   * BEHAVIOR     :  Initialise the parameters. GM will answer the incoming
+   *                 call (if any).
+   * PRE          :  /
+   */
+  GMURLHandler ();
+
+  
   /* DESCRIPTION  :  The destructor.
    * BEHAVIOR     :  /
    * PRE          :  /
@@ -69,6 +79,7 @@ protected:
 
   GmWindow *gw;
   PString url;
+  BOOL answer_call;
   PMutex quit_mutex;
 };
 #endif

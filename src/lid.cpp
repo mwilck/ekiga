@@ -290,6 +290,8 @@ void GMLid::Main ()
       gnomemeeting_log_insert (gw->history_text_view, _("Phone is on hook"));
       gnomemeeting_statusbar_flash (gw->statusbar, _("Phone is on hook"));
 
+      lid->RingLine (0, 0);
+      
       /* Remove the current called number */
       gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), 
 			  "callto://");

@@ -34,7 +34,7 @@ struct edata {
 };
 
 /* somehow not declared in string.h */
-#ifndef HAVE_STRCASECMP
+#if !HAVE_DECL_STRCASECMP
 int strcasecmp (const char *s1, const char *s2);
 #endif
 

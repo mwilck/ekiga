@@ -1297,8 +1297,9 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
     /* If we have a LID, make sure it is no longer ringing */
     if (lid && lid->IsOpen()) {
 
-      lid->StopTone(0);
-      lid->SetRemoveDTMF(0, TRUE);
+      lid->RingLine (0, 0);
+      lid->StopTone (0);
+      lid->SetRemoveDTMF (0, TRUE);
     }
   }
 #endif
@@ -1539,10 +1540,11 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
     lid = lid_thread->GetLidDevice ();
     
     if (lid) {
-           
-      lid->PlayTone (0, OpalLineInterfaceDevice::BusyTone);
-      lid->RingLine (0, 0);
+
+      lid->StopTone (0);
       lid->EnableAudio (0, TRUE);
+      lid->RingLine (0, 0);
+      lid->PlayTone (0, OpalLineInterfaceDevice::BusyTone);
     }
   }
 #endif
@@ -1704,11 +1706,14 @@ GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
   
   /* If we are using a hardware LID, connect the audio stream to the LID */
   if (lid && lid->IsOpen()) {
-          
+
+    lid->StopTone (0);
+    
     if (!codec.AttachChannel (new OpalLineChannel (*lid,
 						   OpalIxJDevice::POTSLine, codec))) {
       return FALSE;
     }
+
     lid->EnableAudio (0, FALSE);
 
     gnomemeeting_threads_enter ();
