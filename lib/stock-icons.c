@@ -60,7 +60,8 @@ gnomemeeting_stock_icons_init (void)
 		{ GM_STOCK_AUDIO_MUTE,    gm_audio_mute_stock_data },
 		{ GM_STOCK_VOLUME,        gm_volume_stock_data },
 		{ GM_STOCK_MICROPHONE,    gm_microphone_stock_data },
-                { GM_STOCK_SPEAKER_PHONE, gm_speaker_phone_stock_data }
+                { GM_STOCK_SPEAKER_PHONE, gm_speaker_phone_stock_data },
+		{ GM_STOCK_QUICKCAM,      gm_quickcam_stock_data }
 	};
 
 	factory = gtk_icon_factory_new ();

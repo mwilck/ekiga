@@ -1,3 +1,16 @@
+2002-06-20  Miguel RodrŽíguez PŽérez  <migrax@terra.es>
+
+	* src/toolbar.cpp (gnomemeeting_init_toolbar): 
+	* lib/stock-icons.c (gnomemeeting_stock_icons_init): 
+	* lib/stock-icons.h (GM_STOCK_QUICKCAM): 
+	* pixmaps/Makefile.am (IMAGES): New stock for the
+	quickcam image on the left toolbar
+	(inlines.h): Make it depend also in Makefile.am
+
+	* src/toolbar.cpp (gnomemeeting_init_toolbar) 
+	(connect_button_update_pixmap): Use GTK_ICON_SIZE_LARGE_TOOLBAR
+	and not  GTK_ICON_SIZE_SMALL_TOOLBAR for connect and disconnect icons.
+
 2002-06-20  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* gnomemeeting.schemas.in.in: Use right ldap default server

@@ -255,7 +255,7 @@ void gnomemeeting_init_toolbar ()
   gw->connect_button = gtk_toggle_button_new ();
   
   image = gtk_image_new_from_stock (GM_STOCK_DISCONNECT, 
-                                    GTK_ICON_SIZE_SMALL_TOOLBAR);
+                                    GTK_ICON_SIZE_LARGE_TOOLBAR);
 
   gtk_container_add (GTK_CONTAINER (gw->connect_button), GTK_WIDGET (image));
   g_object_set_data (G_OBJECT (gw->connect_button), "image", image);
@@ -356,11 +356,10 @@ void gnomemeeting_init_toolbar ()
   /* Video Channel Button */
   gw->video_chan_button = gtk_toggle_button_new ();
 
-  pixbuf = gdk_pixbuf_new_from_xpm_data ((const char **) quickcam_xpm);
-  image = gtk_image_new_from_pixbuf (pixbuf);
+  image = gtk_image_new_from_stock (GM_STOCK_QUICKCAM,
+				    GTK_ICON_SIZE_SMALL_TOOLBAR);
   gtk_container_add (GTK_CONTAINER (gw->video_chan_button), 
 		     GTK_WIDGET (image));
-  g_object_unref (pixbuf);
 
   gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button), FALSE);
 
@@ -405,7 +404,7 @@ void connect_button_update_pixmap (GtkToggleButton *button, int pressed)
       {
         gtk_image_set_from_stock (GTK_IMAGE (image),
                                   GM_STOCK_CONNECT, 
-                                  GTK_ICON_SIZE_SMALL_TOOLBAR);
+                                  GTK_ICON_SIZE_LARGE_TOOLBAR);
         
         /* Block the signal */
         g_signal_handlers_block_by_func (G_OBJECT (button), 
@@ -419,7 +418,7 @@ void connect_button_update_pixmap (GtkToggleButton *button, int pressed)
         
         gtk_image_set_from_stock (GTK_IMAGE (image),
                                   GM_STOCK_DISCONNECT, 
-                                  GTK_ICON_SIZE_SMALL_TOOLBAR);
+                                  GTK_ICON_SIZE_LARGE_TOOLBAR);
         
         g_signal_handlers_block_by_func (G_OBJECT (button), 
                                          (void *) connect_button_clicked, 

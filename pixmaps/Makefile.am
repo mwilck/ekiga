@@ -27,9 +27,10 @@ IMAGES= \
 	gm_microphone_stock_data microphone.png \
 	gm_video_preview_stock_data video-preview.png \
 	gm_audio_mute_stock_data audio-mute.png \
-	gm_speaker_phone_stock_data speaker-phone.png
+	gm_speaker_phone_stock_data speaker-phone.png \
+	gm_quickcam_stock_data quickcam.xpm
 
 noinst_DATA = inlines.h
 
-inlines.h: $(IMAGE_FILES)
+inlines.h: $(IMAGE_FILES) Makefile.am
 	gdk-pixbuf-csource --raw --build-list $(IMAGES) > inlines.h

@@ -38,6 +38,7 @@ G_BEGIN_DECLS
 #define GM_STOCK_VOLUME        "gm_volume_stock"
 #define GM_STOCK_MICROPHONE    "gm_microphone_stock"
 #define GM_STOCK_SPEAKER_PHONE "gm_speaker_phone_stock"
+#define GM_STOCK_QUICKCAM      "gm_quickcam_stock"
 
 void gnomemeeting_stock_icons_init (void);
 
