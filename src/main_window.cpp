@@ -1305,15 +1305,22 @@ pause_current_call_channel_cb (GtkWidget *widget,
 
   main_window = gm; 
 
-  if (!current_call_token.IsEmpty ()
+  if (current_call_token.IsEmpty ()
+      && (GPOINTER_TO_INT (data) == 1)
       && endpoint->GetCallingState () == GMH323EndPoint::Standby) {
 
     gdk_threads_leave ();
     vg = endpoint->GetVideoGrabber ();
-    if (vg && vg->IsGrabbing ())
+    if (vg && vg->IsGrabbing ()) {
+      
       vg->StopGrabbing ();
-    else
+      gm_main_window_set_channel_pause (main_window, TRUE, TRUE);
+    }
+    else {
+      
       vg->StartGrabbing ();
+      gm_main_window_set_channel_pause (main_window, FALSE, TRUE);
+    }
     gdk_threads_enter ();
   }
   else {
