@@ -1,3 +1,14 @@
+2004-08-31  Julien Puydt  <jpuydt@free.fr>
+
+	* lib/gm_events.h, lib/gm_events.c: New files, providing new signals
+	for GObject, and an event dispatcher so the endpoint can emit them.
+	* lib/gm_events_marshalers.list: New file, providing the marshalers for
+	the previous files.
+	* lib/Makefile.am: Handle building the previous files.
+	* src/main_window.cpp: Make the new signals available.
+	* src/endpoint.h, src/endpoint.cpp: Add in the dispatcher, the api to
+	register to it, and emit the new signals.
+
 2004-08-31  Damien Sandras  <dsandras@gnome.org>
 
 	* src/sound_handling.cpp: Fixed #151499.

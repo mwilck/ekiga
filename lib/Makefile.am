@@ -29,7 +29,11 @@ libgnomemeeting_la_SOURCES =				\
 	eggtrayicon.h					\
 	eggtrayicon.c					\
 	stats_drawing_area.h				\
-	stats_drawing_area.c
+	stats_drawing_area.c				\
+	gm_events.h					\
+	gm_events.c					\
+	gm_events_marshalers.h				\
+	gm_events_marshalers.c
 
 if DISABLE_GNOME
 libgnomemeeting_la_SOURCES += gm_conf-glib.c
@@ -51,3 +55,11 @@ libgnomemeeting_la_LIBADD = widgets/libgmwidgets.la xdap/libxdap.la contacts/lib
 if DISABLE_GNOME
 libgnomemeeting_la_LIBADD += about/libabout.la druid/libdruid.la
 endif
+
+gm_events_marshalers.h: gm_events_marshalers.list
+	glib-genmarshal --prefix=gm_event --header $^ > $@
+
+gm_events_marshalers.c: gm_events_marshalers.list
+	glib-genmarshal --prefix=gm_event --body $^ > $@
+
+gm_events.c: gm_events_marshalers.h

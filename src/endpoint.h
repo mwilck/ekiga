@@ -567,6 +567,12 @@ class GMH323EndPoint : public H323EndPoint
   BOOL SetCallVideoPause (PString callToken, 
 			  BOOL state);
   
+  /* DESCRIPTION  : /
+   * BEHAVIOR     : Adds the observer to the list of GObject interested in
+   *                the endpoint's signals.
+   * PRE          : Non-empty GObject
+   */
+  void AddObserver (GObject *observer);
 
  protected:
 
@@ -710,6 +716,8 @@ class GMH323EndPoint : public H323EndPoint
   GMILSClient *ils_client;
   PThread *audio_tester;
 
+  /* the dispatcher for the various signals */
+  GObject *dispatcher;
 
   /* Various mutexes to ensure thread safeness around internal
      variables */

@@ -57,6 +57,7 @@
 #include <gtk_menu_extensions.h>
 #include <stats_drawing_area.h>
 #include <widgets/history-combo.h>
+#include <gm_events.h>
 
 
 #include "../pixmaps/text_logo.xpm"
@@ -2587,7 +2588,8 @@ int main (int argc, char ** argv, char ** envp)
   xmlInitParser ();
 
   gm_conf_init (argc, argv);
-
+  
+  gm_events_init ();
   
   /* Upgrade the preferences */
   gnomemeeting_conf_upgrade ();
