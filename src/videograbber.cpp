@@ -523,7 +523,6 @@ GMVideoTester::GMVideoTester (gchar *m,
 			      gchar *r)
   :PThread (1000, AutoDeleteThread)
 {
-#ifndef DISABLE_GNOME
   if (m)
     video_manager = PString (m);
   if (r)
@@ -534,21 +533,17 @@ GMVideoTester::GMVideoTester (gchar *m,
   
   this->Resume ();
   thread_sync_point.Wait ();
-#endif
 }
 
 
 GMVideoTester::~GMVideoTester ()
 {
-#ifndef DISABLE_GNOME
  PWaitAndSignal m(quit_mutex);
-#endif
 }
 
 
 void GMVideoTester::Main ()
 {
-#ifndef DISABLE_GNOME
   GtkWidget *druid_window = NULL;
 
   PVideoInputDevice *grabber = NULL;
@@ -703,5 +698,4 @@ void GMVideoTester::Main ()
   if (test_dialog)
     gtk_widget_destroy (test_dialog);
   gdk_threads_leave ();
-#endif
 }

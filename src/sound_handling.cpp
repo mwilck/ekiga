@@ -69,13 +69,10 @@
 #include <ptclib/pwavfile.h>
 #include <cmath>
 
-#ifndef DISABLE_GNOME
 static void dialog_response_cb (GtkWidget *, gint, gpointer);
-#endif
 
 
 /* The GTK callbacks */
-#ifndef DISABLE_GNOME
 static void dialog_response_cb (GtkWidget *w, 
 				gint, 
 				gpointer data)
@@ -87,7 +84,6 @@ static void dialog_response_cb (GtkWidget *w,
 
   gtk_widget_hide (w);
 }
-#endif
 
 
 /* The functions */
@@ -523,7 +519,6 @@ GMAudioRP::GetAverageSignalLevel (const short *buffer, int size)
 				gchar *r)
   :PThread (1000, NoAutoDeleteThread)
 {
-#ifndef DISABLE_GNOME
   stop = FALSE;
 
   test_dialog = NULL;
@@ -535,7 +530,6 @@ GMAudioRP::GetAverageSignalLevel (const short *buffer, int size)
     audio_player = PString (p);
   if (r)
     audio_recorder = PString (r);
-#endif
   
   this->Resume ();
   thread_sync_point.Wait ();
@@ -544,16 +538,13 @@ GMAudioRP::GetAverageSignalLevel (const short *buffer, int size)
 
 GMAudioTester::~GMAudioTester ()
 {
-#ifndef DISABLE_GNOME
   stop = 1;
   PWaitAndSignal m(quit_mutex);
-#endif
 }
 
 
 void GMAudioTester::Main ()
 {
-#ifndef DISABLE_GNOME
   GtkWidget *druid_window = NULL;
   
   GMAudioRP *player = NULL;
@@ -638,5 +629,4 @@ void GMAudioTester::Main ()
   gnomemeeting_sound_daemons_resume ();
   
   free (buffer_ring);
-#endif
 }
