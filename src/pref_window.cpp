@@ -1185,7 +1185,7 @@ static void gnomemeeting_init_pref_window_codecs_settings (GtkWidget *notebook,
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);			
 
   tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, gsm_frames,
+  gtk_tooltips_set_tip (tip, g711_frames,
 			_("The number of frames in each transmitted G.711 packet"), NULL);
 
 
@@ -1203,7 +1203,7 @@ static void gnomemeeting_init_pref_window_codecs_settings (GtkWidget *notebook,
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);			
 
   tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, gsm_frames,
+  gtk_tooltips_set_tip (tip, pw->g711_sd,
 			_("Enable silence detection for the G.711 based codecs"), NULL);
 
 
