@@ -1,5 +1,10 @@
 2002-03-03  Damien Sandras  <dsandras@seconix.com>	
 
+	* src/videograbber.cpp: Added mutexes around vars that can be modified
+	from several threads for arch's where = is not atomic.
+	
+2002-03-03  Damien Sandras  <dsandras@seconix.com>	
+
 	* src/endpoint.cpp: Removed unuseful SetCurrentDisplay.
 
 	* src/gdkvideoio.cpp: Added mutex to protect the display_config
