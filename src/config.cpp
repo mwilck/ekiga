@@ -844,7 +844,7 @@ static void audio_device_changed_nt (GConfClient *client, guint cid,
       gnomemeeting_codecs_list_build (pw->codecs_list_store);
       
       gtk_widget_set_sensitive (GTK_WIDGET (dw->audio_test_button), false);
-      gtk_widget_show_all (GTK_WIDGET (gw->speaker_phone_button));
+      //      gtk_widget_show_all (GTK_WIDGET (gw->speaker_phone_button));
     }
     else {
 
@@ -871,7 +871,7 @@ static void audio_device_changed_nt (GConfClient *client, guint cid,
 	gnomemeeting_codecs_list_build (pw->codecs_list_store);
 	
 	gtk_widget_set_sensitive (GTK_WIDGET (dw->audio_test_button), true);
-	gtk_widget_hide_all (GTK_WIDGET (gw->speaker_phone_button));
+	//gtk_widget_hide_all (GTK_WIDGET (gw->speaker_phone_button));
       }
     }
     
@@ -1514,23 +1514,20 @@ void gnomemeeting_init_gconf (GConfClient *client)
   /* gnomemeeting_init_pref_window_directories */
   gconf_client_notify_add (client, "/apps/gnomemeeting/ldap/ldap_server",
 			   entry_changed_nt, pw->ldap_server, 0, 0);
-
   gconf_client_notify_add (client, "/apps/gnomemeeting/ldap/register",
 			   register_changed_nt, pw->ldap, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/ldap/register",
 			   toggle_changed_nt, pw->ldap, 0, 0);
-
   gconf_client_notify_add (client, "/apps/gnomemeeting/ldap/visible",
 			   toggle_changed_nt, pw->ldap_visible, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/ldap/visible",
 			   ldap_visible_changed_nt, pw->ldap_visible, 0, 0);
-
   gconf_client_notify_add (client, "/apps/gnomemeeting/gatekeeper/gk_host",
 			   entry_changed_nt, pw->gk_host, 0, 0);
-
   gconf_client_notify_add (client, "/apps/gnomemeeting/gatekeeper/gk_id",
 			   entry_changed_nt, pw->gk_id, 0, 0);
-
+  gconf_client_notify_add (client, "/apps/gnomemeeting/gatekeeper/gk_password",
+			   entry_changed_nt, pw->gk_password, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/gatekeeper/registering_method", int_option_menu_changed_nt, pw->gk, 0, 0);
 
 

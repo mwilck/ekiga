@@ -396,8 +396,8 @@ GtkWidget *gnomemeeting_init_left_toolbar (void)
     gconf_client_get_string (client, DEVICES_KEY "audio_recorder", NULL);
   if (device)
     dev = PString (device);
-  if (dev.Find ("phone") != P_MAX_INDEX) 
-    gtk_widget_show_all (GTK_WIDGET (gw->speaker_phone_button));
+  //  if (dev.Find ("phone") != P_MAX_INDEX) 
+  // gtk_widget_show_all (GTK_WIDGET (gw->speaker_phone_button));
   g_free (device);
 #endif
 
