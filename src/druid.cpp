@@ -50,6 +50,8 @@
 
 
 /* Declarations */
+static gint kind_of_net_hack (gpointer);
+
 static void audio_test_button_clicked (GtkWidget *,
 				       gpointer);
 
@@ -89,6 +91,15 @@ extern GtkWidget *gm;
 
 
 /* GTK Callbacks */
+static gint
+kind_of_net_hack (gpointer data)
+{
+  gconf_set_int (GENERAL_KEY "kind_of_net", GPOINTER_TO_INT (data));
+
+  return FALSE;
+}
+
+
 static void
 audio_test_button_clicked (GtkWidget *w,
 			   gpointer data)
@@ -278,8 +289,10 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
     gconf_set_bool (VIDEO_SETTINGS_KEY "enable_video_transmission", TRUE);
     gconf_set_bool (VIDEO_SETTINGS_KEY "enable_video_reception", TRUE);
   }  
-  gconf_set_int (GENERAL_KEY "kind_of_net", item_index);
 
+  g_timeout_add (2000, (GtkFunction) kind_of_net_hack,
+		 GINT_TO_POINTER (item_index));
+  
 
   /* Hide the druid and show GnomeMeeting */
   gtk_widget_hide_all (GTK_WIDGET (gw->druid_window));
