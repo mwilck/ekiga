@@ -62,7 +62,6 @@ struct _options
   int bps; // Max bps
   int dnd;
   char *audio_codecs [5] [2]; // [0] = name; [1] = value
-  int sd; // TO BE REMOVED
   int g711_sd;
   int gsm_sd;
   int g711_frames;
@@ -235,9 +234,6 @@ struct _GM_pref_window_widgets
   /* The audio codecs Settings */
   // The available codecs clist
   GtkWidget *clist_avail;
-  // The silence detection widget
-  GtkWidget *sd;
-
   
   /* LDAP Settings */
   // LDAP server

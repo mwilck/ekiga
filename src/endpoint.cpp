@@ -689,16 +689,18 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
      else close the grabber */
   GMVideoGrabber *vg = (GMVideoGrabber *) video_grabber;
 
-  if (opts->vid_tr)
+  if (opts->video_preview) {
+    gdk_threads_enter ();
+    vg->Start ();
+    gdk_threads_leave ();
+  }
+  else
     {
-      if (opts->video_preview) {
-	gdk_threads_enter ();
-	vg->Start ();
-	gdk_threads_leave ();
-      }
-      else
-	if (vg->IsOpened ())
-	  vg->Close ();
+      if (vg->IsOpened ())
+	vg->Close ();
+      gdk_threads_enter ();
+      GM_init_main_interface_logo (gw);
+      gdk_threads_leave ();
     }
 }
 
@@ -757,13 +759,13 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 				       BOOL isEncoding, 
 				       H323VideoCodec & codec)
 {
+  GMVideoGrabber *vg = (GMVideoGrabber *) video_grabber;
+
   /* If it is possible to transmit and
      if the user enabled transmission and
      if OpenVideoDevice is called for the encoding */
  if ((opts->vid_tr) && (isEncoding)) 
    {
-     GMVideoGrabber *vg = (GMVideoGrabber *) video_grabber;
-
      if (!vg->IsOpened ())
 	 vg->Open ();
 
@@ -782,19 +784,19 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 
      GnomeUIInfo *display_uiinfo = (GnomeUIInfo *) object;
         
-     GTK_CHECK_MENU_ITEM (display_uiinfo [0].widget)->active = FALSE;
-     GTK_CHECK_MENU_ITEM (display_uiinfo [1].widget)->active = TRUE;
+     GTK_CHECK_MENU_ITEM (display_uiinfo [0].widget)->active = TRUE;
+     GTK_CHECK_MENU_ITEM (display_uiinfo [1].widget)->active = FALSE;
      GTK_CHECK_MENU_ITEM (display_uiinfo [2].widget)->active = FALSE;
    
      gdk_threads_leave ();
 
+ 
      /* Codecs Settings */
      if (opts->vb != 0)
-       //    codec.SetAverageBitRate (1024 * opts->video_bandwidth * 8);
-       cout << "SetAverage FAILED: FIX ME" << endl << flush;
+       codec.SetAverageBitRate (1024 * opts->video_bandwidth * 8);
      else
        {
-//	 codec.SetAverageBitRate (0); // Disable
+	 codec.SetAverageBitRate (0); // Disable
 	 codec.SetTxQualityLevel (opts->tr_vq);
 	 codec.SetBackgroundFill (opts->tr_ub);   
        }
@@ -805,7 +807,7 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 
      GTK_TOGGLE_BUTTON (gw->video_chan_button)->active = TRUE;
      gdk_threads_leave ();
-     
+
      return codec.AttachChannel (channel, FALSE); // do not close the channel at the end
    }
  else
@@ -818,8 +820,24 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 	 received_video_device = new GDKVideoOutputDevice (isEncoding, gw);
 	  
 	 channel->AttachVideoPlayer (received_video_device);
+
+	 /* Stop to grab */
+	 if (vg->IsOpened ())
+	   vg->Stop ();
 	 
 	 gdk_threads_enter ();
+	 SetCurrentDisplay (0);
+	 
+	 GtkWidget *object = (GtkWidget *) 
+	   gtk_object_get_data (GTK_OBJECT (gm),
+				"display_uiinfo");
+	 
+	 GnomeUIInfo *display_uiinfo = (GnomeUIInfo *) object;
+	 
+	 GTK_CHECK_MENU_ITEM (display_uiinfo [0].widget)->active = FALSE;
+	 GTK_CHECK_MENU_ITEM (display_uiinfo [1].widget)->active = TRUE;
+	 GTK_CHECK_MENU_ITEM (display_uiinfo [2].widget)->active = FALSE;
+	 
 	 SetCurrentDisplay (1); 
  	 gdk_threads_leave ();
 

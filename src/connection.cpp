@@ -95,7 +95,7 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
       gdk_threads_leave ();
       
       g_free (msg);
-      
+
       if ((name == "MS-GSM{sw}")||(name == "GSM-06.10{sw}"))
 	{
 	  sd = opts->gsm_sd;

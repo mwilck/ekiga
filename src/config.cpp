@@ -334,17 +334,6 @@ gboolean check_config_from_struct (GM_pref_window_widgets *pw)
 	}    
     }
 
-
-  // Change video settings if vid_tr is enables
-  if (pw->vid_tr_changed)
-    {
-      GMVideoGrabber *vg = (GMVideoGrabber *) MyApp->Endpoint ()->GetVideoGrabber ();
-      vg->Reset ();
-
-      pw->vid_tr_changed = 0;
-    }
-
-
   // Check Gatekeeper Settings
   if (pw->gk_changed)
     {

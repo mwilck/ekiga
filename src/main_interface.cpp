@@ -279,17 +279,29 @@ void GM_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
   gtk_window_set_policy (GTK_WINDOW (gm), FALSE, FALSE, TRUE);
 
   // Startup Process
+  gw->docklet = GM_docklet_init ();
+
+  // Init the splash screen
+  gw->splash_win = GM_splash_init ();
+
+  /* Search for devices */
+  // Initialise the devices
+  if (opts->show_splash)
+    GM_splash_advance_progress (gw->splash_win, 
+				_("Detecting available audio and video devices"), 0.15);
+
+  gw->audio_player_devices = 
+    PSoundChannel::GetDeviceNames (PSoundChannel::Player);
+  gw->audio_recorder_devices = 
+    PSoundChannel::GetDeviceNames (PSoundChannel::Recorder);
+  gw->video_devices = PVideoInputDevice::GetInputDeviceNames ();
+
   // Main interface creation
   if (opts->show_splash)
     {
-      // Init the splash screen
-      gw->splash_win = GM_splash_init ();
-
       GM_splash_advance_progress (gw->splash_win, 
-				  _("Building main interface"), 0.15);
+				  _("Building main interface"), 0.30);
     }
-
-  gw->docklet = GM_docklet_init ();
 
   /* Build the interface */
   GM_main_interface_init (gw, opts);
@@ -310,12 +322,12 @@ void GM_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
 
   if (opts->show_splash)
     GM_splash_advance_progress (gw->splash_win, _("Adding Audio Capabilities"), 
-				0.30);
+				0.45);
   endpoint->AddAudioCapabilities ();
 
   if (opts->show_splash)
     GM_splash_advance_progress (gw->splash_win, _("Adding Video Capabilities"), 
-				0.45);
+				0.60);
   endpoint->AddVideoCapabilities (opts->video_size);
 
   if (opts->ldap)
@@ -323,7 +335,7 @@ void GM_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
       if (opts->show_splash)
         GM_splash_advance_progress (gw->splash_win, 
 				    _("Registering to ILS directory"), 
-				    0.60);
+				    0.70);
       GMILSClient *gm_ils_client = (GMILSClient *) endpoint->GetILSClient ();
       gm_ils_client->Register ();
     }
@@ -333,7 +345,7 @@ void GM_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
   if (opts->show_splash)
     GM_splash_advance_progress (gw->splash_win, 
 				_("Starting the listener thread"), 
-				0.70);
+				0.80);
 
   if (!endpoint->StartListener ())
     {
@@ -349,22 +361,12 @@ void GM_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
       if (opts->show_splash)
         GM_splash_advance_progress (gw->splash_win, 
 				    _("Registering to the Gatekeeper"), 
-				    0.80);
+				    0.90);
 
       endpoint->GatekeeperRegister ();
     }
 
   
-  // Initialise the devices
-  if (opts->show_splash)
-    GM_splash_advance_progress (gw->splash_win, 
-				_("Detecting available audio and video devices"), 0.90);
-  
-  /* Search for devices */
-  gw->audio_player_devices = PSoundChannel::GetDeviceNames (PSoundChannel::Player);
-  gw->audio_recorder_devices = PSoundChannel::GetDeviceNames (PSoundChannel::Recorder);
-  gw->video_devices = PVideoInputDevice::GetInputDeviceNames ();
-
   /* Set recording source and set micro to record */
   MyApp->Endpoint()->SetSoundChannelPlayDevice(opts->audio_player);
   MyApp->Endpoint()->SetSoundChannelRecordDevice(opts->audio_recorder);

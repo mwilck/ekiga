@@ -1093,6 +1093,10 @@ static void init_pref_codecs_settings (GtkWidget *notebook,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);		
 
+  gtk_signal_connect (GTK_OBJECT (GTK_OPTION_MENU (pw->opt1)->menu), 
+		      "deactivate",
+ 		      GTK_SIGNAL_FUNC (video_transmission_option_changed_callback), (gpointer) pw);
+
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->opt1,
 			_("Here you can choose the transmitted video size"), NULL);
@@ -1118,6 +1122,10 @@ static void init_pref_codecs_settings (GtkWidget *notebook,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);		
 
+  gtk_signal_connect (GTK_OBJECT (GTK_OPTION_MENU (pw->opt2)->menu), 
+		      "deactivate",
+ 		      GTK_SIGNAL_FUNC (video_transmission_option_changed_callback), (gpointer) pw);
+    
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->opt2,
 			_("Here you can choose the transmitted video format"), NULL);
@@ -1473,8 +1481,7 @@ static void init_pref_advanced (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   GtkTooltips *tip;
 
-  GtkWidget *bps;
-		
+
   vbox = gtk_vbox_new (FALSE, GNOME_PAD_SMALL);
 
   general_frame = gtk_frame_new (NULL);
@@ -1529,40 +1536,6 @@ static void init_pref_advanced (GtkWidget *notebook, GM_pref_window_widgets *pw,
   gtk_tooltips_set_tip (tip, pw->fs,
 			_("Connection will be established in Fast Start mode"), NULL);
 
-
-  /* Max Used Bandwidth spin button */					
-  label = gtk_label_new (_("Maximum Bandwidth:"));
-  gtk_table_attach (GTK_TABLE (table), label, 2, 3, 0, 1,
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);	
-  
-  pw->bps_spin_adj = (GtkAdjustment *) gtk_adjustment_new (opts->bps, 
-							   1000.0, 40000.0, 
-							   1.0, 100.0, 1.0);
-  bps = gtk_spin_button_new (pw->bps_spin_adj, 100.0, 0);
-  
-  gtk_table_attach (GTK_TABLE (table), bps, 3, 4, 0, 1,
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);	
-
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, bps,
-			_("The maximum bandwidth that should be used for the communication"), NULL);
-
-
-  /* Silence Detection */ 
-  pw->sd = gtk_check_button_new_with_label (_("Enable Silence Detection"));
-  gtk_table_attach (GTK_TABLE (table), pw->sd, 2, 4, 1, 2,
-		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
-		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
-		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->sd), (opts->sd == 1));
-
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, pw->sd,
-			_("Enable or disable silence detection.  If silence detection is enabled, silences will not be transmitted over the Internet."), NULL);
 
   /* The End */
   label = gtk_label_new (_("Advanced Settings"));
@@ -1705,6 +1678,8 @@ static void init_pref_gatekeeper (GtkWidget *notebook,
   GtkWidget *menu;
   GtkWidget *item;
 
+  GtkWidget *bps;
+
   GtkTooltips *tip;
 
   vbox = gtk_vbox_new (FALSE, GNOME_PAD_SMALL);
@@ -1726,7 +1701,7 @@ static void init_pref_gatekeeper (GtkWidget *notebook,
   gtk_container_add (GTK_CONTAINER (frame), label);
 
   /* Gatekeeper settings */
-  frame = gtk_frame_new (_("Gatekeeper Settings"));
+  frame = gtk_frame_new (_("Gatekeeper Registering Method"));
   gtk_box_pack_start (GTK_BOX (vbox), frame, 
 		      FALSE, FALSE, 0);
 
@@ -1814,6 +1789,41 @@ static void init_pref_gatekeeper (GtkWidget *notebook,
   gtk_tooltips_set_tip (tip, pw->gk,
 			_("Registering method to use"), NULL);
 
+
+  /* Gatekeeper settings */
+  frame = gtk_frame_new (_("Gatekeeper Registering Method"));
+  gtk_box_pack_start (GTK_BOX (vbox), frame, 
+		      FALSE, FALSE, 0);
+
+
+  /* Put a table in the first frame */
+  table = gtk_table_new (1, 4, TRUE);
+  gtk_container_add (GTK_CONTAINER (frame), table);
+  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
+
+
+  /* Max Used Bandwidth spin button */					
+  label = gtk_label_new (_("Maximum Bandwidth:"));
+  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1,
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);	
+  
+  pw->bps_spin_adj = (GtkAdjustment *) gtk_adjustment_new (opts->bps, 
+							   1000.0, 40000.0, 
+							   1.0, 100.0, 1.0);
+  bps = gtk_spin_button_new (pw->bps_spin_adj, 100.0, 0);
+  
+  gtk_table_attach (GTK_TABLE (table), bps, 1, 2, 0, 1,
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);	
+
+  tip = gtk_tooltips_new ();
+  gtk_tooltips_set_tip (tip, bps,
+			_("The maximum bandwidth that should be used for the communication, that bandwidth limitation will be transmitted to the gatekeeper."), NULL);
+
+
   /* The End */									
   label = gtk_label_new (_("Gatekeeper Settings"));
 
@@ -1886,7 +1896,8 @@ static void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
   for (int i = pw->gw->audio_player_devices.GetSize () - 1 ; i >= 0; i--) {
     if (pw->gw->audio_player_devices [i] != PString (opts->audio_player)) {
       audio_player_devices_list = g_list_prepend 
-	(audio_player_devices_list, g_strdup (pw->gw->audio_player_devices [i]));
+	(audio_player_devices_list, 
+	 g_strdup (pw->gw->audio_player_devices [i]));
     }  
   }
 
@@ -2006,7 +2017,7 @@ static void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
  		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
  		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
  		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
-  
+
    for (int i = pw->gw->video_devices.GetSize () - 1; i >= 0; i--) {
      if (pw->gw->video_devices [i] != PString (opts->video_device))
        video_devices_list = 
@@ -2014,7 +2025,8 @@ static void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
 			 g_strdup (pw->gw->video_devices [i]));
    }
    
-   video_devices_list = g_list_prepend (video_devices_list, opts->video_device);
+   video_devices_list = g_list_prepend (video_devices_list, 
+					opts->video_device);
    gtk_combo_set_popdown_strings (GTK_COMBO (pw->video_device), 
 				  video_devices_list);
    
@@ -2191,6 +2203,7 @@ static void apply_options (options *opts, GM_pref_window_widgets *pw)
 
   /* ILS is enabled and an option has changed : register */
   if ((opts->ldap) && (pw->ldap_changed)) {
+
     /* We register to the new ILS directory */
     GMILSClient *ils_client = (GMILSClient *) endpoint->GetILSClient ();
     
@@ -2215,7 +2228,8 @@ static void apply_options (options *opts, GM_pref_window_widgets *pw)
     
     /* We set the new mixer in the object as data, because me do not want
        to keep it in memory */
-    gtk_object_remove_data (GTK_OBJECT (pw->gw->adj_play), "audio_player_mixer");
+    gtk_object_remove_data (GTK_OBJECT (pw->gw->adj_play), 
+			    "audio_player_mixer");
     gtk_object_set_data (GTK_OBJECT (pw->gw->adj_play), "audio_player_mixer", 
 			 g_strdup (opts->audio_player_mixer));
 
@@ -2255,10 +2269,18 @@ static void apply_options (options *opts, GM_pref_window_widgets *pw)
   }
 
 
-  if (pw->vid_tr_changed) {
-    /* kept for future changements in GM. */
-    pw->vid_tr_changed = 0;
-  }
+  /* Change video settings if vid_tr is enables */
+  if (pw->vid_tr_changed)
+    {
+      GMVideoGrabber *vg = (GMVideoGrabber *) 
+	MyApp->Endpoint ()->GetVideoGrabber ();
+
+      vg->Reset ();
+
+      /* Video Size has changed */
+      pw->capabilities_changed = 1;
+      pw->vid_tr_changed = 0;
+    }
 
 
   /* Unregister from the Gatekeeper, if any, and if

@@ -129,6 +129,7 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
 
   gdk_threads_leave ();
 
+
   /* Need to redefine screen size ? */
   if (((gw->drawing_area->allocation.width != zoomed_width) || 
       (gw->drawing_area->allocation.height != zoomed_height)) &&
