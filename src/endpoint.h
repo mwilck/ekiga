@@ -228,7 +228,15 @@ class GMH323EndPoint : public H323EndPoint
    */
   gchar *GetCurrentIP (void);
 
-  
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Translate to packets to the IP of the gateway.
+   * PRE          :  /
+   */
+  virtual void TranslateTCPAddress(PIPSocket::Address &localAddr,
+				   const PIPSocket::Address &remoteAddr);
+
+
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Return the current connection or 
    *                 NULL if there is no one.

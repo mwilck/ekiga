@@ -301,6 +301,39 @@
       </locale>
     </schema>
     <schema>
+      <key>/schemas/apps/gnomemeeting/general/listen_port</key>
+      <applyto>/apps/gnomemeeting/general/listen_port</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>int</type>
+      <default>1720</default>
+      <locale name="C">
+	<short>Listen Port</short>
+	<long>The port to listen to for incoming connections. GnomeMeeting needs to be restarted for the new value to take effect.</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/general/tcp_port_range</key>
+      <applyto>/apps/gnomemeeting/general/tcp_port_range</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default>30000:30010</default>
+      <locale name="C">
+	<short>TCP Port Range</short>
+	<long>The range of TCP ports beside the listen_port that GnomeMeeting will use for incoming connections.  You can change the TCP port range if you are using IP translation and if you need to have several GnomeMeeting running behind your NAT/PAT router. GnomeMeeting needs to be restarted for the new values to take effect.</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/general/udp_port_range</key>
+      <applyto>/apps/gnomemeeting/general/udp_port_range</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default>5000:5003</default>
+      <locale name="C">
+	<short>UDP Port Range</short>
+	<long>The range of UDP ports that GnomeMeeting will use for incoming connections. You can change the UDP port range if you are using IP translation and if you need to have several GnomeMeeting running behind your NAT/PAT router. GnomeMeeting needs to be restarted for the new values to take effect.</long>
+      </locale>
+    </schema>
+    <schema>
       <key>/schemas/apps/gnomemeeting/general/h245_tunneling</key>
       <applyto>/apps/gnomemeeting/general/h245_tunneling</applyto>
       <owner>GnomeMeeting</owner>
@@ -320,6 +353,28 @@
       <locale name="C">
 	<short>Fast Start</short>
 	<long>If enabled, calls will be established in Fast Start mode.</long>
+      </locale>
+    </schema>
+   <schema>
+      <key>/schemas/apps/gnomemeeting/general/ip_translation</key>
+      <applyto>/apps/gnomemeeting/general/ip_translation</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>bool</type>
+      <default>false</default>
+      <locale name="C">
+	<short>IP Translation</short>
+	<long>This enables IP translation. IP translation is useful if GnomeMeeting is running behind a NAT/PAT router. You have to put the public IP of the router in the field below. If you are registered to ils.seconix.com, GnomeMeeting will automatically fetch the public IP using the ILS service. If your router natively supports H.323, you can disable this.</long>
+      </locale>
+    </schema>
+   <schema>
+      <key>/schemas/apps/gnomemeeting/general/public_ip</key>
+      <applyto>/apps/gnomemeeting/general/public_ip</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default></default>
+      <locale name="C">
+	<short>Public IP</short>
+	<long>You can put here the public IP of your NAT/PAT router if you want to use IP translation.  If you are registered to ils.seconix.com, GnomeMeeting will automatically fetch the public IP using the ILS service.</long>
       </locale>
     </schema>
     <schema>

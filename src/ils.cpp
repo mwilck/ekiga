@@ -424,11 +424,42 @@ BOOL GMILSClient::Register (int reg)
       xmlFree (who);
       xmlFree (cred);
 
+      ldap_unbind_s (ldap);
+
       if ((reg == 1) || (reg == 2)) {
 
-	if (reg == 1)
+	if (reg == 1) {
+
 	  msg = g_strdup_printf (_("Successfully registered to %s."), 
 				 ldap_server);
+
+	  /* if we registered to ILS, let's update the IP from ILS 
+	     to the gateway IP of the translation */
+	  
+	  gchar *ip = NULL;
+	  gchar *mail =  
+	    gconf_client_get_string (GCONF_CLIENT (client), 
+				     "/apps/gnomemeeting/personal_data/mail", 
+				     NULL);
+	  if ((mail)&&(strcmp (mail, ""))
+	      &&(!strcmp (ldap_server, "ils.seconix.com")))
+	    ip = Search (ldap_server, "389", mail);
+
+	  if (ip) {
+
+	    PString IP = PString (ip);
+	    PINDEX prt = IP.Find (':');
+	    
+	    if (prt != P_MAX_INDEX)
+	      IP = IP.Left (prt);
+	    
+	    if (PIPSocket::Address (IP) != PIPSocket::Address ("0.0.0.0"))
+	      gconf_client_set_string (client, "/apps/gnomemeeting/general/public_ip", (const char *) IP, NULL);
+	    
+	    g_free (ip);
+	    g_free (mail);
+	  }
+	}
 	else
 	  msg = g_strdup_printf (_("Updated information on %s."), 
 				 ldap_server);
@@ -450,9 +481,7 @@ BOOL GMILSClient::Register (int reg)
       gnomemeeting_statusbar_flash (gm, msg);
       gnomemeeting_log_insert (gw->history_text_view, msg);
       g_free (msg);
-      gnomemeeting_threads_leave ();
-      
-      ldap_unbind_s (ldap);
+      gnomemeeting_threads_leave ();      
     }  
   }
   else
@@ -501,6 +530,7 @@ gchar *GMILSClient::Search (gchar *ldap_server, gchar *ldap_port, gchar *mail)
   int port = 1720;
   struct timeval t = {10, 0};
 
+  bool no_error = TRUE;
   gchar *ip = NULL;
   gchar *cn = NULL;
 
@@ -520,63 +550,72 @@ gchar *GMILSClient::Search (gchar *ldap_server, gchar *ldap_port, gchar *mail)
   }
 
 
-  /* Opens the connection to the ILS directory */
-  ldap_search_connection = ldap_open (ldap_server, atoi (ldap_port));
-
-
-  if ((ldap_search_connection == NULL) || 
-      (rc_search_connection = 
-       ldap_bind_s (ldap_search_connection, NULL, NULL, LDAP_AUTH_SIMPLE ) 
-      != LDAP_SUCCESS)) {
-    
-    return NULL;
-  }
-  
-
-  cn = g_strdup_printf ("(&(cn=%s))", mail);
-  rc_search_connection = 
-    ldap_search_st (ldap_search_connection, "objectClass=RTPerson", 
-		    LDAP_SCOPE_BASE,
-		    cn, attrs, 0, &t, &res); 
-  g_free (cn);
-
-  if (rc_search_connection != 0)
-    return ip;
-
-  /* We only take the first entry */
-  e = ldap_first_entry (ldap_search_connection, res); 
-  if (e) {
-
-    ldv = ldap_get_values (ldap_search_connection, e, "sipaddress");
-
-    if (ldv != NULL) {
-
-      nmip = strtoul (ldv [0], NULL, 10);
-      ldap_value_free (ldv);
-    }
-
-    ldv = ldap_get_values (ldap_search_connection, e, "sport");
-
-    if (ldv != NULL) {
+  /* must be able to reach ldap server */
+  if (!(ldap_search_connection = ldap_init (ldap_server, atoi (ldap_port)))) {
       
-      port = atoi (ldv [0]);
-      ldap_value_free (ldv);
+    no_error = FALSE;
+  }
+  /* Timeout */
+  else if (ldap_set_option (ldap_search_connection, LDAP_OPT_NETWORK_TIMEOUT, 
+			    &t)
+	   != LDAP_OPT_SUCCESS) {
+     
+    no_error = FALSE;  
+  }
+  /* must be able to bind to ldap server */
+  else if ((rc_search_connection 
+	    = ldap_bind_s (ldap_search_connection, NULL, NULL, 
+			   LDAP_AUTH_SIMPLE))) {
+        
+    no_error = FALSE;
+  }
+  /* all successful */
+  else {
+    
+    cn = g_strdup_printf ("(&(cn=%s))", mail);
+    rc_search_connection = 
+      ldap_search_st (ldap_search_connection, "objectClass=RTPerson", 
+		      LDAP_SCOPE_BASE,
+		      cn, attrs, 0, &t, &res); 
+    g_free (cn);
+    
+    if (rc_search_connection != 0)
+      return ip;
+    
+    /* We only take the first entry */
+    e = ldap_first_entry (ldap_search_connection, res); 
+    if (e) {
+      
+      ldv = ldap_get_values (ldap_search_connection, e, "sipaddress");
+      
+      if (ldv != NULL) {
+	
+	nmip = strtoul (ldv [0], NULL, 10);
+	ldap_value_free (ldv);
+      }
+
+      ldv = ldap_get_values (ldap_search_connection, e, "sport");
+
+      if (ldv != NULL) {
+	
+	port = atoi (ldv [0]);
+	ldap_value_free (ldv);
+      }
     }
+    
+    part1 = (int) (nmip/(256*256*256));
+    part2 = (int) ((nmip - part1 * (256 * 256 * 256)) / (256 * 256));
+    part3 = (int) ((nmip - part1 * (256 * 256 * 256) - part2 * (256 * 256)) 
+		   / 256);
+    part4 = (int) ((nmip - part1 * (256 * 256 * 256) - part2 * (256 * 256) 
+		    - part3 * 256));
+    
+    ip = g_strdup_printf ("%d.%d.%d.%d:%d", part4, part3, part2, part1, port);
+    
+    ldap_msgfree (res);
+    ldap_unbind (ldap_search_connection);
   }
 
-
-
-  part1 = (int) (nmip/(256*256*256));
-  part2 = (int) ((nmip - part1 * (256 * 256 * 256)) / (256 * 256));
-  part3 = (int) ((nmip - part1 * (256 * 256 * 256) - part2 * (256 * 256)) 
-		 / 256);
-  part4 = (int) ((nmip - part1 * (256 * 256 * 256) - part2 * (256 * 256) 
-		  - part3 * 256));
-  
-  ip = g_strdup_printf ("%d.%d.%d.%d:%d", part4, part3, part2, part1, port);
-
-  ldap_msgfree (res);
-  ldap_unbind (ldap_search_connection);
 
   rc_search_connection = -1;
   ldap_search_connection = NULL;

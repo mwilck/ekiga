@@ -1249,6 +1249,8 @@ void gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/fast_start", applicability_check_nt, pw->fs, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/fast_start", ht_fs_changed_nt, pw->fs, 0, 0);
 
+  gconf_client_notify_add (client, "/apps/gnomemeeting/general/ip_translation", toggle_changed_nt, pw->ip_translation, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/general/public_ip", entry_changed_nt, pw->public_ip, 0, 0);
 
   /* gnomemeeting_init_pref_window_directories */
   gconf_client_notify_add (client, "/apps/gnomemeeting/ldap/ldap_server",

@@ -1410,10 +1410,23 @@ void gnomemeeting_init_pref_window_h323_advanced (GtkWidget *notebook)
 
                                                                                
   /* The toggles */                                                            
-  pw->ht = gnomemeeting_pref_window_add_toggle (table, _("Enable H.245 Tunnelling"), "/apps/gnomemeeting/general/h245_tunneling", _("This enables H.245 Tunnelling mode. In H.245 Tunnelling mode H.245 messages are encapsulated into the the H.225 channel (port 1720). This permits sparing one random TCP port during calls. H.245 Tunnelling was introduced in H.323v2 and Netmeeting doesn't support it. Using both Fast Start and H.245 Tunnelling can crash some versions of Netmeeting."), 0, 0);
+  pw->ht = 
+    gnomemeeting_pref_window_add_toggle (table, _("Enable H.245 Tunnelling"), "/apps/gnomemeeting/general/h245_tunneling", _("This enables H.245 Tunnelling mode. In H.245 Tunnelling mode H.245 messages are encapsulated into the the H.225 channel (port 1720). This permits sparing one random TCP port during calls. H.245 Tunnelling was introduced in H.323v2 and Netmeeting doesn't support it. Using both Fast Start and H.245 Tunnelling can crash some versions of Netmeeting."), 0, 0);
                                                                                
-  pw->fs = gnomemeeting_pref_window_add_toggle (table, _("Enable Fast Start"), "/apps/gnomemeeting/general/fast_start", _("Connection will be established in Fast Start mode. Fast Start is a new way to start calls faster that was introduced in H.323v2. It is not supported by Netmeeting and using both Fast Start and H.245 Tunnelling can crash some versions of Netmeeting."), 1, 0);
+  pw->fs = 
+    gnomemeeting_pref_window_add_toggle (table, _("Enable Fast Start"), "/apps/gnomemeeting/general/fast_start", _("Connection will be established in Fast Start mode. Fast Start is a new way to start calls faster that was introduced in H.323v2. It is not supported by Netmeeting and using both Fast Start and H.245 Tunnelling can crash some versions of Netmeeting."), 1, 0);
 
+
+  /* IP translation */
+  table = gnomemeeting_pref_window_add_table (vbox, 
+					      _("NAT/PAT Router Support"),
+                                              2, 1);     
+
+  pw->ip_translation = 
+    gnomemeeting_pref_window_add_toggle (table, _("Enable IP Translation"), "/apps/gnomemeeting/general/ip_translation", _("This enables IP translation. IP translation is useful if GnomeMeeting is running behind a NAT/PAT router. You have to put the public IP of the router in the field below. If you are registered to ils.seconix.com, GnomeMeeting will automatically fetch the public IP using the ILS service. If your router natively supports H.323, you can disable this."), 1, 0);
+
+  pw->public_ip = 
+    gnomemeeting_pref_window_add_entry (table, _("Public IP of the NAT/PAT router:"), "/apps/gnomemeeting/general/public_ip", _("You can put here the public IP of your NAT/PAT router if you want to use IP translation.  If you are registered to ils.seconix.com, GnomeMeeting will automatically fetch the public IP using the ILS service."), 2);
 
   gtk_notebook_append_page (GTK_NOTEBOOK(notebook), vbox, NULL);
 }                                                                              

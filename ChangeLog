@@ -1,3 +1,24 @@
+2002-10-11 Damien Sandras  <dsandras@seconix.com>
+
+	* configure.in: Incremented age of schema.
+
+	* gnomemeeting.schemas.in.in: Added support for ip translation, public
+	ip, rtp port range, tcp port range.
+
+	* src/common.h: Added widgets for ip translation.
+
+	* src/config.cpp: See above.
+
+	* src/endpoint.cpp: Added callback that checks if IP translation has
+	to be done during calls. Fixed message.
+
+	* src/ils.cpp: When registering to ILS, update the public IP
+	from the server if ils.seconix.com is used.
+
+	* src/main_window.cpp: Changed Initialise.
+
+	* src/pref_window.cpp: Added options for IP translation.
+	
 2002-10-09  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* src/gdkvideoio.cpp (Redraw):  Added test in gdkvideoio.cpp in

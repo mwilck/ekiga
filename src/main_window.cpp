@@ -1074,11 +1074,11 @@ gnomemeeting_init (GmWindow *gw,
   static GnomeMeeting instance;
   endpoint = MyApp->Endpoint ();
   gnomemeeting_sound_daemons_resume ();
-
-
+ 
+  /* Launch the GnomeMeeting H.323 part */
   if (clo->debug_level != 0)
     PTrace::Initialise (clo->debug_level);
- 
+
   /* Start the video preview */
   if (gconf_client_get_bool (client, DEVICE_KEY "video_preview", NULL)) {
     GMVideoGrabber *vg = NULL;

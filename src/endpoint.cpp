@@ -144,6 +144,10 @@ static gint IncomingCallTimeout (gpointer data)
 GMH323EndPoint::GMH323EndPoint ()
 {
   gchar *msg = NULL;
+  gchar *udp_port_range = NULL;
+  gchar *tcp_port_range = NULL;
+  gchar **udp_couple = NULL;
+  gchar **tcp_couple = NULL;
 
   gw = gnomemeeting_get_main_window (gm);
   lw = gnomemeeting_get_ldap_window (gm);
@@ -177,10 +181,38 @@ GMH323EndPoint::GMH323EndPoint ()
   /* The gconf client */
   client = gconf_client_get_default ();
 
-  clearCallOnRoundTripFail = FALSE;
+  udp_port_range = 
+    gconf_client_get_string (client, 
+			     "/apps/gnomemeeting/general/udp_port_range", 
+			     NULL);
+  tcp_port_range = 
+    gconf_client_get_string (client, 
+			     "/apps/gnomemeeting/general/tcp_port_range", 
+			     NULL);
+  
+  if (udp_port_range)
+    udp_couple = g_strsplit (udp_port_range, ":", 0);
+  if (tcp_port_range)
+    tcp_couple = g_strsplit (tcp_port_range, ":", 0);
 
-  SetRtpIpPorts (5000, 5003);
-  SetTCPPorts (30000, 30010);
+  
+
+  clearCallOnRoundTripFail = TRUE;
+  
+  if (tcp_couple [0] && tcp_couple [1]) {
+
+    SetTCPPorts (atoi (tcp_couple [0]), atoi (tcp_couple [1]));
+  }
+
+  if (udp_couple [0] && udp_couple [1]) {
+
+    SetRtpIpPorts (atoi (udp_couple [0]), atoi (udp_couple [1]));
+  }
+
+  g_free (tcp_port_range);
+  g_free (udp_port_range);
+  g_strfreev (tcp_couple);
+  g_strfreev (udp_couple);
 
   SetRtpIpTypeofService (IPTOS_LOWDELAY|IPTOS_PREC_PRIORITY);
   soundChannelBuffers = 4;
@@ -707,6 +739,35 @@ GMH323EndPoint::GetCurrentIP ()
   ip = g_strdup ((const char *) ip_addr.AsString ());
 
   return ip;
+}
+
+
+void 
+GMH323EndPoint::TranslateTCPAddress(PIPSocket::Address &localAddr, 
+				    const PIPSocket::Address &remoteAddr)
+{
+  PIPSocket::Address addr;
+
+  /* If enabled */
+  if (gconf_client_get_bool (client, "/apps/gnomemeeting/general/ip_translation", NULL)) {
+
+    if ( !((remoteAddr.Byte1() == 192) && (remoteAddr.Byte2() == 168))
+	 
+	 && !((remoteAddr.Byte1() == 172) 
+	      && ((remoteAddr.Byte2() >= 16)&&(remoteAddr.Byte2()<=31)))
+	 
+	 && !(remoteAddr.Byte1() == 10)) {
+
+      gchar *ip = gconf_client_get_string (client, "/apps/gnomemeeting/general/public_ip", NULL);
+      if (ip)
+	addr = PIPSocket::Address(ip);
+
+      if (addr != PIPSocket::Address ("0.0.0.0"))
+	localAddr = addr;
+    }
+  }
+
+  return;
 }
 
 
@@ -1340,7 +1401,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
     break;
 
   case H323Connection::EndedByNoAnswer :
-    msg = g_strdup (_("Remote party did not answer your call in the required time"));
+    msg = g_strdup (_("The call was not answered in the required time"));
     break;
     
   case H323Connection::EndedByTransportFail :

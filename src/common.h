@@ -195,7 +195,9 @@ struct _GmPrefWindow
   GtkWidget    *no_answer_forward;
   GtkWidget    *fullscreen_width;
   GtkWidget    *fullscreen_height;
-  GtkWidget *bilinear_filtering;
+  GtkWidget    *bilinear_filtering;
+  GtkWidget    *ip_translation;
+  GtkWidget    *public_ip;
 };
 
 
