@@ -99,8 +99,7 @@ static void refresh_devices (GtkWidget *widget, gpointer data)
   pw = gnomemeeting_get_pref_window (gm);
   
   /* The player */
-  gw->audio_player_devices =
-    PSoundChannel::GetDeviceNames (PSoundChannel::Player);
+  gw->audio_player_devices = gnomemeeting_get_audio_player_devices ();
   
   gnomemeeting_update_pstring_option_menu (pw->audio_player,
 					   gw->audio_player_devices,
@@ -115,8 +114,7 @@ static void refresh_devices (GtkWidget *widget, gpointer data)
   
   
   /* The recorder */
-  gw->audio_recorder_devices =
-    PSoundChannel::GetDeviceNames (PSoundChannel::Recorder);
+  gw->audio_recorder_devices = gnomemeeting_get_audio_recorder_devices ();
 
   gnomemeeting_update_pstring_option_menu (pw->audio_recorder,
 					   gw->audio_recorder_devices,
@@ -128,6 +126,7 @@ static void refresh_devices (GtkWidget *widget, gpointer data)
 
   /* The Video player */
   gw->video_devices = PVideoInputDevice::GetInputDeviceNames ();
+  gw->video_devices += PString (_("Picture"));
   gnomemeeting_update_pstring_option_menu (pw->video_device,
 					   gw->video_devices,
 					   DEVICES_KEY "video_recorder");

@@ -1218,10 +1218,8 @@ gnomemeeting_init (GmWindow *gw,
   gnomemeeting_init_calls_history_window ();
   
   /* Launch the GnomeMeeting H.323 part */
-  gw->audio_player_devices = 
-    PSoundChannel::GetDeviceNames (PSoundChannel::Player);
-  gw->audio_recorder_devices = 
-    PSoundChannel::GetDeviceNames (PSoundChannel::Recorder);
+  gw->audio_player_devices = gnomemeeting_get_audio_player_devices ();
+  gw->audio_recorder_devices = gnomemeeting_get_audio_recorder_devices ();
   gw->video_devices = PVideoInputDevice::GetInputDeviceNames ();
   gw->audio_mixers = gnomemeeting_get_mixers ();
   

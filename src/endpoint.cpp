@@ -680,7 +680,7 @@ void
 GMH323EndPoint::StartAudioTester ()
 {
   if (!audio_tester)
-    audio_tester = new GMAudioTester (this, GTK_WINDOW (gm));
+    audio_tester = new GMAudioTester (this);
 }
 
 

@@ -301,13 +301,15 @@ static void
 gnomemeeting_druid_toggle_changed (GtkToggleButton *button, gpointer data)
 {
   GmDruidWindow *dw = NULL;
+  GmWindow *gw = NULL;
 
   dw = gnomemeeting_get_druid_window (gm);
+  gw = gnomemeeting_get_main_window (gm);
 
   gnomemeeting_druid_user_page_check (dw->druid);
 
   if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (button)))
-    gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (gm), GTK_WIDGET (button), _("You chose to NOT use the GnomeMeeting ILS directory. Other users will not be able to contact you if you don't register to a directory service."));
+    gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (gw->druid_window), GTK_WIDGET (button), _("You chose to NOT use the GnomeMeeting ILS directory. Other users will not be able to contact you if you don't register to a directory service."));
 }
 
 
@@ -746,15 +748,10 @@ gnomemeeting_init_druid_audio_devices_page (GnomeDruid *druid, int p, int t)
   GtkWidget *vbox = NULL;
   GtkWidget *table = NULL;
   GtkWidget *label = NULL;
-  GtkWidget *audio_recorder = NULL;
-  GtkWidget *audio_player = NULL;
 
   GmDruidWindow *dw = gnomemeeting_get_druid_window (gm);
   
   gchar *title = NULL;
-  gchar *audio_player_devices_list [20];
-  gchar *audio_recorder_devices_list [20];
-  int i = 0;
 
   GnomeDruidPageStandard *page_standard = NULL;
 
@@ -776,55 +773,31 @@ gnomemeeting_init_druid_audio_devices_page (GnomeDruid *druid, int p, int t)
   gnomemeeting_druid_add_graphical_label (vbox, GM_STOCK_DRUID_AUDIO, _("Please choose the audio devices to use during the GnomeMeeting session. You can also choose to use a Quicknet device instead of the soundcard in the preferences. Some webcams models have an internal microphone that can be used with GnomeMeeting."));
 
 
-  /* The Audio player */
-  table = gnomemeeting_vbox_add_table (vbox, _("Audio Devices"), 3, 3);
-  i = gw->audio_player_devices.GetSize () - 1;
-  if (i >= 20) i = 19;
+  /* The Audio devices */
+  table = gnomemeeting_vbox_add_table (vbox, _("Audio Devices"), 4, 3);
 
-  for (int j = i ; j >= 0; j--) 
-    if (strcmp (gw->audio_player_devices [j], "loopback"))
-      audio_player_devices_list [j] = g_strdup (gw->audio_player_devices [j]);
-    else
-      audio_player_devices_list [j] = NULL;
+  dw->audio_player = 
+    gnomemeeting_table_add_pstring_option_menu (table, _("Audio Player:"), gw->audio_player_devices, DEVICES_KEY "audio_player", _("Enter the audio player device to use."), 0);
 
+  dw->audio_player_mixer = 
+    gnomemeeting_table_add_pstring_option_menu (table, _("Audio player mixer:"), gw->audio_mixers, DEVICES_KEY "audio_player_mixer", _("The mixer to use to change the volume of the audio player."), 1);
   
-  audio_player_devices_list [i+1] = NULL;
+  /* The recorder */
+  dw->audio_recorder = 
+    gnomemeeting_table_add_pstring_option_menu (table, _("Audio Recorder:"), gw->audio_recorder_devices, "/apps/gnomemeeting/devices/audio_recorder", _("Enter the audio recorder device to use."), 2);
+
+  dw->audio_recorder_mixer = 
+    gnomemeeting_table_add_pstring_option_menu (table, _("Audio recorder mixer:"), gw->audio_mixers, DEVICES_KEY "audio_recorder_mixer", _("The mixer to use to change the volume of the audio recorder."), 3);
   
-  audio_player = 
-    gnomemeeting_table_add_string_option_menu (table, _("Player:"), audio_player_devices_list, DEVICES_KEY "audio_player", _("Enter the audio player device to use."), 0);
-
-  for (int j = i ; j >= 0; j--) 
-    g_free (audio_player_devices_list [j]);
-
-
-  /* The audio recorder */
-  i = gw->audio_recorder_devices.GetSize () - 1;
-  if (i >= 20) i = 19;
-
-  for (int j = i ; j >= 0; j--) 
-    if (strcmp (gw->audio_recorder_devices [j], "loopback"))
-      audio_recorder_devices_list [j] = 
-	g_strdup (gw->audio_recorder_devices [j]);
-    else
-      audio_recorder_devices_list [j] = NULL;
-  
-  audio_recorder_devices_list [i + 1] = NULL;
-
-  audio_recorder = 
-    gnomemeeting_table_add_string_option_menu (table, _("Recorder:"), audio_recorder_devices_list, DEVICES_KEY "audio_recorder", _("Enter the audio recorder device to use."), 1);
-  
-  for (int j = i ; j >= 0; j--) 
-    g_free (audio_recorder_devices_list [j]);
-
 
   /* Test button */
   label = gtk_label_new (_("Click here to test your audio devices:"));
 
   dw->audio_test_button = gtk_toggle_button_new_with_label (_("Test Audio"));
-  gtk_table_attach (GTK_TABLE (table), dw->audio_test_button, 2, 3, 2, 3,
+  gtk_table_attach (GTK_TABLE (table), dw->audio_test_button, 2, 3, 3, 4,
 		    (GtkAttachOptions) NULL,
 		    (GtkAttachOptions) NULL,
-		    0, 0);
+		    20, 0);
   g_signal_connect (G_OBJECT (dw->audio_test_button), "clicked",
 		    GTK_SIGNAL_FUNC (audio_test_button_clicked),
 		    (gpointer) druid);

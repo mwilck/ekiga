@@ -164,6 +164,46 @@ void gnomemeeting_set_mixer_volume (char *mixer, int source, int vol)
 }
 
 
+PStringArray gnomemeeting_get_audio_player_devices ()
+{
+  PStringArray devices;
+  PStringArray d;
+  int cpt = 0;
+  
+  devices = PSoundChannel::GetDeviceNames (PSoundChannel::Player);
+
+  while (cpt < devices.GetSize ()) {
+
+    if (strcmp (devices [cpt], "loopback"))
+      d.AppendString (devices [cpt]);
+
+    cpt++;
+  }
+
+  return d;
+}
+
+
+PStringArray gnomemeeting_get_audio_recorder_devices ()
+{
+  PStringArray devices;
+  PStringArray d;
+  int cpt = 0;
+  
+  devices = PSoundChannel::GetDeviceNames (PSoundChannel::Recorder);
+
+  while (cpt < devices.GetSize ()) {
+
+    if (strcmp (devices [cpt], "loopback"))
+      d.AppendString (devices [cpt]);
+
+    cpt++;
+  }
+  
+  return d;
+}
+
+
 PStringArray gnomemeeting_get_mixers ()
 {
   int mixerfd = -1;
@@ -230,12 +270,11 @@ gnomemeeting_sound_play_ringtone (GtkWidget *widget)
 
 
 /* The Audio tester class */
-GMAudioTester::GMAudioTester (GMH323EndPoint *e, GtkWindow *w)
+GMAudioTester::GMAudioTester (GMH323EndPoint *e)
   :PThread (1000, AutoDeleteThread)
 {
   ep = e;
   stop = FALSE;
-  window = w;
   
   gnomemeeting_sound_daemons_suspend ();
   gnomemeeting_threads_enter ();
@@ -267,27 +306,35 @@ GMAudioTester::~GMAudioTester ()
 
 void GMAudioTester::Main ()
 {
+  GConfClient *client = NULL;
+  
   char *buffer_play = (char *) malloc (8 * 1024);
   char *buffer_record = (char *) malloc (8 * 1024);
   char *buffer_ring = (char *) malloc (8 * 5 * 1024);
-
+  char *mixer = NULL;
   int buffer_play_pos = 0;
   int buffer_rec_pos = 0;
-  
   int clock = 0;
-  
+
   BOOL displayed = FALSE;
 
+  client = gconf_client_get_default ();
+  
   memset (buffer_ring, 0, sizeof (buffer_ring));
   memset (buffer_play, 0, sizeof (buffer_play));
   memset (buffer_record, 0, sizeof (buffer_record));
 
+  mixer =
+    gconf_client_get_string (client, DEVICES_KEY "audio_recorder_mixer", NULL);
+  gnomemeeting_set_mixer_volume (mixer, SOURCE_MIC, 100);
+  g_free (mixer);
+  
   /* We try to open the 2 selected devices */
   if (!player->Open (ep->GetSoundChannelPlayDevice (), PSoundChannel::Player,
 		     1, 8000, 16)) {
 
     gdk_threads_enter ();
-    gnomemeeting_error_dialog (GTK_WINDOW (window), _("Impossible to open the selected audio device (%s) for playing. Please check your audio setup."), (const char *) ep->GetSoundChannelPlayDevice ());
+    gnomemeeting_error_dialog (GTK_WINDOW (gw->druid_window), _("Impossible to open the selected audio device (%s) for playing. Please check your audio setup."), (const char *) ep->GetSoundChannelPlayDevice ());
     gdk_threads_leave ();
 
     stop = TRUE;
@@ -299,7 +346,7 @@ void GMAudioTester::Main ()
 		       1, 8000, 16)) {
 
     gdk_threads_enter ();
-    gnomemeeting_error_dialog (GTK_WINDOW (window), _("Impossible to open the selected audio device (%s) for recording. Please check your audio setup."), (const char *) ep->GetSoundChannelRecordDevice ());
+    gnomemeeting_error_dialog (GTK_WINDOW (gw->druid_window), _("Impossible to open the selected audio device (%s) for recording. Please check your audio setup."), (const char *) ep->GetSoundChannelRecordDevice ());
     gdk_threads_leave ();
 
     stop = TRUE;
@@ -313,7 +360,7 @@ void GMAudioTester::Main ()
     if (!recorder->Read ((void *) buffer_record, 8 * 1024)) {
       
       gdk_threads_enter ();
-      gnomemeeting_error_dialog (GTK_WINDOW (window), _("The selected audio device (%s) was successfully opened but it is impossible to read data from this device. Please check your audio setup."), (const char*) ep->GetSoundChannelRecordDevice ());
+      gnomemeeting_error_dialog (GTK_WINDOW (gw->druid_window), _("The selected audio device (%s) was successfully opened but it is impossible to read data from this device. Please check your audio setup."), (const char*) ep->GetSoundChannelRecordDevice ());
       gdk_threads_leave ();
 
       stop = TRUE;
@@ -322,7 +369,7 @@ void GMAudioTester::Main ()
 	     && !player->Write ((void *) buffer_play, 8 * 1024)) {
 
       gdk_threads_enter ();
-      gnomemeeting_error_dialog (GTK_WINDOW (window), _("The selected audio device (%s) was successfully opened but it is impossible to write data to this device. Please check your audio setup."), (const char*) ep->GetSoundChannelPlayDevice ());
+      gnomemeeting_error_dialog (GTK_WINDOW (gw->druid_window), _("The selected audio device (%s) was successfully opened but it is impossible to write data to this device. Please check your audio setup."), (const char*) ep->GetSoundChannelPlayDevice ());
       gdk_threads_leave ();
 
       stop = TRUE;
@@ -332,7 +379,7 @@ void GMAudioTester::Main ()
       if (!displayed) {
 
 	gdk_threads_enter ();
-	gnomemeeting_message_dialog (GTK_WINDOW (window), _("GnomeMeeting is now recording from %s and playing back to %s. Please say \"1 2 3\" in your microphone, you should hear yourself back into the speakers with a 5 seconds delay.\n\nIf you don't hear yourself at all, or if you hear yourself instantly in the speakers and not with a 5 seconds delay, it means that you audio setup is incorrect and probably not full-duplex. Please fix it before using GnomeMeeting or others won't hear you.\n\nYou can use the sliders in the control panel to adjust the volume of the speakers and of the microphone."), (const char*) ep->GetSoundChannelRecordDevice (), (const char*) ep->GetSoundChannelPlayDevice ());
+	gnomemeeting_message_dialog (GTK_WINDOW (gw->druid_window), _("GnomeMeeting is now recording from %s and playing back to %s. Please say \"1 2 3\" in your microphone, you should hear yourself back into the speakers with a 5 seconds delay.\n\nIf you don't hear yourself at all, or if you hear yourself instantly in the speakers and not with a 5 seconds delay, it means that you audio setup is incorrect and probably not full-duplex. Please fix it before using GnomeMeeting or others won't hear you.\n\nYou can use the sliders in the control panel to adjust the volume of the speakers and of the microphone."), (const char*) ep->GetSoundChannelRecordDevice (), (const char*) ep->GetSoundChannelPlayDevice ());
 
 	gdk_threads_leave ();
       }

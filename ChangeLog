@@ -1,5 +1,27 @@
 2003-01-01 Damien Sandras  <dsandras@seconix.com>
 
+	* src/common.h: Added widgets to the druid for the mixers and player
+	and recorder.
+	
+	* src/config.cpp: Added notifiers to update the druid window when
+	the mixers and/or the dsps keys are modified.
+	
+	* src/druid.cpp: Added mixers in the druid.
+	
+	* src/endpoint.cpp: Updated the call to the GMAudioTester to
+	respect the new API.
+	
+	* src/main_window.cpp: Make use of the new GM functions to detect
+	the player and recorder.
+	
+	* src/pref_window.cpp: Same as above.
+	
+	* src/sound_handling.cpp, src/sound_handling.h: Updated the API
+	of GMAudioTester and added functions for the auto-detection
+	of audio recorder and player.
+	
+2003-01-01 Damien Sandras  <dsandras@seconix.com>
+
 	* gnomemeeting.desktop.in: Added StartupNotify=true for Gnome 2.2.
 	
 2003-01-01 Damien Sandras  <dsandras@seconix.com>

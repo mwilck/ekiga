@@ -1326,6 +1326,7 @@ lid_country_changed_nt (GConfClient *client, guint, GConfEntry *entry,
 /* The functions  */
 void gnomemeeting_init_gconf (GConfClient *client)
 {
+  GmDruidWindow *dw = gnomemeeting_get_druid_window (gm);
   GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);
   GmWindow *gw = gnomemeeting_get_main_window (gm);
   MenuEntry *gnomemeeting_menu = gnomemeeting_get_menu (gm);
@@ -1439,17 +1440,21 @@ void gnomemeeting_init_gconf (GConfClient *client)
 
   /* gnomemeeting_init_pref_window_devices */
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_player", string_option_menu_changed_nt, pw->audio_player, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_player", string_option_menu_changed_nt, dw->audio_player, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_player", audio_device_changed_nt, pw->audio_player, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_player", applicability_check_nt, pw->audio_player, 0, 0);
   
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_player_mixer", string_option_menu_changed_nt, pw->audio_player_mixer, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_player_mixer", string_option_menu_changed_nt, dw->audio_player_mixer, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_player_mixer", audio_mixer_changed_nt, GINT_TO_POINTER (SOURCE_AUDIO), 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_recorder", string_option_menu_changed_nt, pw->audio_recorder, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_recorder", string_option_menu_changed_nt, dw->audio_recorder, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_recorder", audio_device_changed_nt, pw->audio_recorder, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_recorder", applicability_check_nt, pw->audio_recorder, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_recorder_mixer", string_option_menu_changed_nt, pw->audio_recorder_mixer, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_recorder_mixer", string_option_menu_changed_nt, dw->audio_recorder_mixer, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_recorder_mixer", audio_mixer_changed_nt, GINT_TO_POINTER (SOURCE_MIC), 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_recorder", string_option_menu_changed_nt, pw->video_device, 0, 0);			   

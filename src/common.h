@@ -196,6 +196,10 @@ struct _GmDruidWindow
   GtkWidget *enable_microtelco;
   GtkWidget *kind_of_net;
   GtkWidget *progress;
+  GtkWidget *audio_player;
+  GtkWidget *audio_player_mixer;
+  GtkWidget *audio_recorder;
+  GtkWidget *audio_recorder_mixer;
   
   GnomeDruidPageEdge *page_edge;
 };
