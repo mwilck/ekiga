@@ -343,7 +343,7 @@ static void speed_dial_menu_item_selected_cb (GtkWidget *,
 /* DESCRIPTION  :  This callback is called when the user changes the URL
  * 		   in the URL bar.
  * BEHAVIOR     :  It udpates the tooltip with the new URL.
- * PRE          :  data is a valid pointer to the main window GMObject.
+ * PRE          :  A valid pointer to the main window GMObject. 
  */
 static void url_changed_cb (GtkEditable *, 
 			    gpointer);
@@ -351,13 +351,21 @@ static void url_changed_cb (GtkEditable *,
 
 /* DESCRIPTION  :  This callback is called when the user selects a match in the
  * 		   possible URLs list.
- * BEHAVIOR     :  It udpates the URL bar.
+ * BEHAVIOR     :  It udpates the URL bar and calls it.
  * PRE          :  /
  */
 static gboolean url_selected_cb (GtkEntryCompletion *,
 				 GtkTreeModel *,
 				 GtkTreeIter *,
 				 gpointer);
+
+/* DESCRIPTION  :  This callback is called when the user clicks on enter
+ * 		   with a non-empty URL bar.
+ * BEHAVIOR     :  It calls the URL.
+ * PRE          :  /
+ */
+static void url_activated_cb (GtkWidget *, 
+			      gpointer);
 
 
 /* DESCRIPTION  :  This callback is called to compare urls and see if they
@@ -551,6 +559,8 @@ gm_mw_init_toolbars (GtkWidget *main_window)
   gm_main_window_urls_history_update (main_window);
   g_signal_connect (G_OBJECT (mw->combo), "changed", 
 		    GTK_SIGNAL_FUNC (url_changed_cb), (gpointer) main_window);
+  g_signal_connect (G_OBJECT (mw->combo), "activate", 
+		    GTK_SIGNAL_FUNC (url_activated_cb), NULL);
   g_signal_connect (G_OBJECT (completion), "match-selected", 
 		    GTK_SIGNAL_FUNC (url_selected_cb), NULL);
 
@@ -1735,15 +1745,13 @@ url_changed_cb (GtkEditable  *e,
 		gpointer data)
 {
   GmWindow *mw = NULL;
-
+  
   const char *tip_text = NULL;
   
   g_return_if_fail (data != NULL);
-  mw = gm_mw_get_mw (GTK_WIDGET (data)); 
+  mw = gm_mw_get_mw (GTK_WIDGET (data));
 
-  g_return_if_fail (mw != NULL);
-  
-  tip_text = gtk_entry_get_text (GTK_ENTRY (mw->combo));
+  tip_text = gtk_entry_get_text (GTK_ENTRY (e));
 
   gtk_tooltips_set_tip (mw->tips, GTK_WIDGET (mw->combo), tip_text, NULL);
 }
@@ -1755,17 +1763,27 @@ url_selected_cb (GtkEntryCompletion *completion,
 		 GtkTreeIter *iter,
 		 gpointer data)
 {
-  GtkWidget *entry = NULL;
-
   gchar *url = NULL;
   
-  entry = gtk_entry_completion_get_entry (completion);
   gtk_tree_model_get (GTK_TREE_MODEL (model), iter, 1, &url, -1);
-  gtk_entry_set_text (GTK_ENTRY (entry), url);
+
+  GnomeMeeting::Process ()->Connect (url);
 
   g_free (url);
 
   return TRUE;
+}
+
+
+static void 
+url_activated_cb (GtkWidget *w,
+		  gpointer data)
+{
+  const char *url = NULL;
+  
+  url = gtk_entry_get_text (GTK_ENTRY (w));
+  
+  GnomeMeeting::Process ()->Connect (url);
 }
 
 
