@@ -1259,8 +1259,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   if (not_current) 
     return;
 
-  cout << "iciiii" << endl << flush;
-  
+
   /* Stop the Timers */
   NoAnswerTimer.Stop ();
   CallPendingTimer.Stop (); 

@@ -66,6 +66,7 @@
 #endif
 
 #include <ptclib/pwavfile.h>
+#include <cmath>
 
 
 static void dialog_response_cb (GtkWidget *, gint, gpointer);
