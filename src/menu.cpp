@@ -469,14 +469,13 @@ void gnomemeeting_init_menu ()
   GTK_CHECK_MENU_ITEM (call_menu_uiinfo [3].widget)->active =
     gconf_client_get_bool (client, "/apps/gnomemeeting/general/do_not_disturb", 0);
   GTK_CHECK_MENU_ITEM (call_menu_uiinfo [4].widget)->active =
-    gconf_client_get_bool (client, "/apps/gnomemeeting/general/auto_answer", 0);
+    gconf_client_get_bool (client, "/apps/gnomemeeting/general/auto_answer", 
+			   0);
+
 
   /* Disable disconnect */
   gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [1].widget), FALSE);
 
-
-  gnomemeeting_video_submenu_set_sensitive (FALSE);
-  gnomemeeting_zoom_submenu_set_sensitive (FALSE);
 
   /* Pause is unsensitive when not in a call */
   gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [6].widget), FALSE);
@@ -488,10 +487,15 @@ void gnomemeeting_zoom_submenu_set_sensitive (gboolean b)
 {
   GnomeUIInfo *view_menu_uiinfo = 
     (GnomeUIInfo *) g_object_get_data (G_OBJECT(gm), "view_menu_uiinfo");
+  GnomeUIInfo *popup_menu_uiinfo = 
+    (GnomeUIInfo *) g_object_get_data (G_OBJECT(gm), "popup_menu_uiinfo");
 
   gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [8].widget), b);
   gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [9].widget), b);
   gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [10].widget), b);
+  gtk_widget_set_sensitive (GTK_WIDGET (popup_menu_uiinfo [2].widget), b);
+  gtk_widget_set_sensitive (GTK_WIDGET (popup_menu_uiinfo [3].widget), b);
+  gtk_widget_set_sensitive (GTK_WIDGET (popup_menu_uiinfo [4].widget), b);
 }
 
 
@@ -515,4 +519,57 @@ void gnomemeeting_video_submenu_select (int j)
     GTK_CHECK_MENU_ITEM (video_view_menu_uiinfo [i].widget)->active = (i == j);
     gtk_widget_queue_draw (GTK_WIDGET (video_view_menu_uiinfo [i].widget)); 
   }
+}
+
+
+void gnomemeeting_popup_menu_init (GtkWidget *widget)
+{
+  GtkWidget *popup_menu_widget;
+
+  /* Get the data */
+  GmWindow *gw = gnomemeeting_get_main_window (gm);
+  GnomeUIInfo *video_view_menu_uiinfo = (GnomeUIInfo *)
+    g_object_get_data (G_OBJECT(gm), "video_view_menu_uiinfo");
+
+
+  static GnomeUIInfo popup_menu_uiinfo [] =
+    {
+      {
+	GNOME_APP_UI_RADIOITEMS,
+	NULL, NULL,
+	video_view_menu_uiinfo, NULL, NULL,
+	GNOME_APP_PIXMAP_NONE, NULL,
+	0, GDK_CONTROL_MASK, NULL
+      },
+      GNOMEUIINFO_SEPARATOR,
+      { 
+	GNOME_APP_UI_ITEM, N_("Zoom In"), N_("Zoom In"),
+	(void *) double_zoom_callback, NULL, NULL,
+	GNOME_APP_PIXMAP_STOCK, GTK_STOCK_ZOOM_IN,
+	'+', GDK_CONTROL_MASK, NULL 
+      },
+      { 
+	GNOME_APP_UI_ITEM, N_("Zoom Out"), N_("Zoom Out"),
+	(void *) half_zoom_callback, NULL, NULL,
+	GNOME_APP_PIXMAP_STOCK, GTK_STOCK_ZOOM_OUT,
+	'-', GDK_CONTROL_MASK, NULL 
+      },
+      { 
+	GNOME_APP_UI_ITEM, N_("Normal Size"), N_("Normal Size"),
+	(void *) normal_zoom_callback, NULL, NULL,
+       	GNOME_APP_PIXMAP_STOCK, GTK_STOCK_ZOOM_100,
+	'=', GDK_CONTROL_MASK, NULL 
+      },
+      GNOMEUIINFO_END
+    };
+
+
+  /* Create a popup menu to attach it to the drawing area */
+  popup_menu_widget = gnome_popup_menu_new (popup_menu_uiinfo);
+
+  gnome_popup_menu_attach (popup_menu_widget, GTK_WIDGET (widget),
+			   gw);
+
+  g_object_set_data (G_OBJECT (gm), "popup_menu_uiinfo", 
+		     popup_menu_uiinfo);
 }

@@ -46,23 +46,28 @@ void gnomemeeting_init_menu ();
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Changes sensitivity in the zoom section.
+ * BEHAVIOR     :  Changes sensitivity in the zoom section of the view menu
+ *                 and of the popup menu.
  * PRE          :  /
  */
 void gnomemeeting_zoom_submenu_set_sensitive (gboolean);
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Changes sensitivity in the video section.
+ * BEHAVIOR     :  Changes sensitivity in the video section of the view menu
+ *                 and of the popup menu.
  * PRE          :  /
  */
 void gnomemeeting_video_submenu_set_sensitive (gboolean);
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Select radio item i in the video section.
+ * BEHAVIOR     :  Select radio item i in the video section of the view menu
+ *                 and of the popup menu.
  * PRE          :  0 <= i < 2
  */
 void gnomemeeting_video_submenu_select (int);
 
+
+void gnomemeeting_popup_menu_init (GtkWidget *);
 #endif

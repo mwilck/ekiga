@@ -1,5 +1,22 @@
 2002-06-20  Damien Sandras  <dsandras@seconix.com>
 
+	* lib/widgets/history-combo.c: Updated Copyright Notice.
+
+	* lib/widgets/history-combo.h: Same.
+
+	* src/pref_window.cpp: Same.
+
+	* src/menu.cpp, src/menu.h: Added right-click menu to choose the 
+	video window to display (Local/Remote/Both), and the zoom. The
+	video window to display is common with the view menu, but not the
+	zoom part. Update functions that change sensitivity of the view menu
+	so that they also update the sensitivity of the new popup menu (for
+	the zoom as the other part is common to both).
+
+	* src/main_window.cpp: Makes use of the new popup menu.
+	
+2002-06-20  Damien Sandras  <dsandras@seconix.com>
+
 	* lib/dialog.c: Fixed old bug in the dialog with "Do not show again"
 	toggle that was introduced when the data associated to the widget
 	was converted from (gchar *) to int. That prevents to see if there

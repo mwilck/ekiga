@@ -1,5 +1,7 @@
-/*  history-combo-box
- *  Copyright (C) 2002 Kenneth Christiansen <kenneth@gnu.org>
+/*  history-combo.c
+ *
+ *  GnomeMeeting -- A Video-Conferencing application
+ *  Copyright (C) 2000-2002 Damien Sandras
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,9 +17,22 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  *
- * Authors: Damien Sandras <dsandras@seconix.com>
- *          Kenneth Christiansen <kenneth@gnu.org>
+ *
+ *  Authors: Damien Sandras <dsandras@seconix.com>
+ *           Kenneth Christiansen <kenneth@gnu.org>
+ *           Miguel Rodríguez <migrax@terra.es>
+ *           De Michele Cristiano
  */
+
+/*
+ *                         history-combo.c -  description
+ *                         ------------------------------
+ *   begin                : Mon Jun 17 2002 (original: Thu Nov 22 2001)
+ *   copyright            : (C) 2000-2002 by Damien Sandras
+ *   description          : This file contains all the functions needed to
+ *                          create a new history combo box GObject.
+ */
+
 
 #include "history-combo.h"
 

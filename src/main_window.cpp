@@ -775,6 +775,12 @@ gnomemeeting_init (GmWindow *gw,
   gnomemeeting_init_main_window_logo ();
 
 
+  /* Add the popup menu and change all menus sensitivity */
+  gnomemeeting_popup_menu_init (gw->video_image);
+  gnomemeeting_video_submenu_set_sensitive (FALSE);
+  gnomemeeting_zoom_submenu_set_sensitive (FALSE);
+
+
   /* The gtk_widget_show (gm) will show the toolbar, hide it if needed */
   if (!gconf_client_get_bool (client, VIEW_KEY "left_toolbar", 0)) 
     gtk_widget_hide (GTK_WIDGET (gnome_app_get_dock_item_by_name(GNOME_APP (gm), "left_toolbar")));
