@@ -978,14 +978,15 @@ delete_contact_from_group_cb (GtkWidget *widget,
 
     contact_section_no_case = g_utf8_strdown (contact_section, -1);
     contact_section_escaped =
-      gconf_escape_key (contact_section_no_case, -1);
+      gconf_escape_key (contact_section_no_case, 
+			strlen (contact_section_no_case));
     gconf_key =
       g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, contact_section_escaped);
     g_free (contact_section_no_case);
 
     group_content =
       gconf_client_get_list (client, gconf_key, GCONF_VALUE_STRING, NULL);
-    
+
     group_content_iter =
       find_contact_in_group_content (contact_url, group_content);
     
@@ -2430,7 +2431,7 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
 
   
   GmLdapWindowPage *lwp = new (GmLdapWindowPage);
-  lwp->contact_section_name = g_utf8_strdown (section, -1);
+  lwp->contact_section_name = g_utf8_strdown (text_label, -1);
   lwp->ils_browser = NULL;
   lwp->search_entry = NULL;
   lwp->option_menu = NULL;
