@@ -83,7 +83,7 @@ static gint tray_icon_destroyed (GObject *tray, gpointer accel)
   GObject *new_tray = gnomemeeting_init_tray (GTK_ACCEL_GROUP (accel));
 
   if (gconf_client_get_bool 
-      (client, "/apps/gnomemeeting/general/do_not_disturb", 0)) 
+      (client, GENERAL_KEY "do_not_disturb", 0)) 
     gnomemeeting_tray_set_content (new_tray, 2);
 
   

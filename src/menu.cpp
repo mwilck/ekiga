@@ -839,7 +839,11 @@ gnomemeeting_popup_menu_init (GtkWidget *widget, GtkAccelGroup *accel)
 			 GDK_KEY_PRESS_MASK);
 }
 
-
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Creates a video menu which will popup, and attach it
+ *                 to the given widget.
+ * PRE          :  The widget to attach the menu to, and the accelgroup.
+ */
 void 
 gnomemeeting_popup_menu_tray_init (GtkWidget *widget, GtkAccelGroup *accel)
 {
@@ -866,12 +870,31 @@ gnomemeeting_popup_menu_tray_init (GtkWidget *widget, GtkAccelGroup *accel)
       {_("Do _Not Disturb"), _("Do Not Disturb"),
        NULL, 'n', MENU_ENTRY_TOGGLE, 
        GTK_SIGNAL_FUNC (menu_toggle_changed),
-       (gpointer) "/apps/gnomemeeting/general/do_not_disturb", NULL},
+       (gpointer) GENERAL_KEY "do_not_disturb", NULL},
 
       {_("Aut_o Answer"), _("Auto Answer"),
        NULL, 'o', MENU_ENTRY_TOGGLE, 
        GTK_SIGNAL_FUNC (menu_toggle_changed),
-       (gpointer) "/apps/gnomemeeting/general/auto_answer", NULL},
+       (gpointer) GENERAL_KEY "auto_answer", NULL},
+
+      {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
+
+      {_("_Preferences..."), _("Change your preferences"),
+       GTK_STOCK_PREFERENCES, 'P', MENU_ENTRY, 
+       GTK_SIGNAL_FUNC (gnomemeeting_component_view),
+       (gpointer) gw->pref_window, NULL},
+
+      {_("XDAP Browser"), _("XDAP browser"),
+       NULL, 0, MENU_ENTRY, 
+       GTK_SIGNAL_FUNC (gnomemeeting_component_view),
+       (gpointer) gw->ldap_window, NULL},
+
+      {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
+
+      {_("_Quit"), _("Quit GnomeMeeting"),
+       GTK_STOCK_QUIT, 'Q', MENU_ENTRY, 
+       GTK_SIGNAL_FUNC (quit_callback),
+       (gpointer) gw, NULL},
 
       {NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL}
     };

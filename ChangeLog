@@ -1,3 +1,15 @@
+2003-01-07  Miguel Rodríguez Pérez  <migrax@terra.es>
+
+	* src/main_window.cpp (gnomemeeting_init): Delay the tray
+	initialization till all dependencies are ready.
+
+	* src/menu.cpp (gnomemeeting_popup_menu_tray_init): Add some more
+	entries to the popup menu.
+	Use GENERAL_KEY.
+
+	* src/tray.cpp (tray_icon_destroyed): Use GENERAL_KEY instead of
+	hardcoding the path.
+
 2003-01-07 Damien Sandras  <dsandras@seconix.com>
 
 	* gnomemeeting.schemas.in.in: Fixed locale bug due to misplaced
@@ -649,7 +661,7 @@
 	in the tree.
 
 	* src/toolbar.cpp: Enable/disable audio frame.
-	
+
 2002-12-07  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* gnomemeeting.schemas.in.in: Improve the start_docked description.

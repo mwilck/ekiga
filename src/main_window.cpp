@@ -1204,13 +1204,6 @@ gnomemeeting_init (GmWindow *gw,
   gtk_window_add_accel_group (GTK_WINDOW (gm), accel);
 
 
-  /* Init the tray icon */
-  gw->docklet = GTK_WIDGET (gnomemeeting_init_tray (accel));
-  if (gconf_client_get_bool 
-      (client, "/apps/gnomemeeting/general/do_not_disturb", 0)) 
-    gnomemeeting_tray_set_content (G_OBJECT (gw->docklet), 2);
-
-
   /* Init the splash screen */
   gw->splash_win = e_splash_new ();
   g_signal_connect (G_OBJECT (gw->splash_win), "delete_event",
@@ -1242,6 +1235,13 @@ gnomemeeting_init (GmWindow *gw,
   gnomemeeting_init_pref_window ();  
   gnomemeeting_init_ldap_window ();
   gnomemeeting_init_druid ();
+  /* Init the tray icon. This has to be done after the prefs 
+     and xdap window are set up */
+  gw->docklet = GTK_WIDGET (gnomemeeting_init_tray (accel));
+  if (gconf_client_get_bool 
+      (client, "/apps/gnomemeeting/general/do_not_disturb", 0)) 
+    gnomemeeting_tray_set_content (G_OBJECT (gw->docklet), 2);
+
   gnomemeeting_init_main_window (accel);
 
   static GnomeMeeting instance;
