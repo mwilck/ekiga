@@ -1,3 +1,52 @@
+2002-12-31 Damien Sandras  <dsandras@seconix.com>
+
+	* configure.in: Incremented SCHEMA_AGE.
+	
+	* gnomemeeting.schemas.in.in: Added keys for audio player and audio
+	recorder mixers.
+	
+	* src/common.h: Removed unused widgets.
+	
+	* src/config.cpp: Added notifiers when mixer devices change. Removed
+	notifiers on video test button.
+	
+	* src/endpoint.cpp, src/endpoint.h: 
+	Removed functions that set and returns volume using PWLib and 
+	the dsp's.
+		
+	* src/ils.cpp: Fixes. Merged the Firstname and Lastname in one unique
+	column "Name". Do not display the email anymore but the callto URL.
+	
+	* src/ldap_window.cpp, .h: Merged the Firstname and Lastname in one 
+	unique column "Name". Do not display the email anymore but the callto 
+	URL.
+	Added drag-and-drop support between ILS and the groups and between
+	ILS/groups and the main GM window. Cleaned code.
+	
+	* src/lid.cpp: Opening the Quicknet device now updates the sliders
+	in the audio part of the control panel. Closing it updates them
+	too with the choosen volumes.
+	
+	* src/main_window.cpp: Added drag-and-drop support from the 
+	addressbook. Updated the sliders modification callback to
+	be able to update the mixers volumes but also the Quicknet card
+	volume if it is used.
+	
+	* src/misc.cpp, .h: Added function to build and update a GtkOptionMenu
+	from a PStringArray.
+		
+	* src/pref_window.cpp: Added mixers back in the GUI.
+	
+	* src/sound_handling.cpp, .h: Added function to auto-detect the mixers.
+	Added functions to get and set the volumes from the mixers. The
+	GMAudioTester now waits 5 seconds before playing back.
+		
+	* src/toolbar.cpp: Removed audio_test_button and video_test_button.
+	
+	* src/urlhandler.cpp: Same.
+	
+	* src/videograbber.cpp: Same.
+	
 2002-12-27 Damien Sandras  <dsandras@seconix.com>
 
 	* configure.in: Incremented SCHEMA_AGE.

@@ -676,100 +676,6 @@ GMH323EndPoint::StartListener ()
 }
 
 
-int 
-GMH323EndPoint::GetRecorderVolume ()
-{
-  unsigned int vol = 0;
-  
-#ifdef HAS_IXJ
-  GMLid *ld = NULL;
-  ld = GetLidThread ();
-
-  if (ld)
-    ld->GetLidDevice ()->GetRecordVolume (0, vol);
-  else
-#endif
-  if (audio_tester) 
-    return ((GM_AUDIO_TESTER (audio_tester))->GetRecorderVolume ());
-  else if (recorder_channel) 
-    recorder_channel->GetVolume (vol);
-
-  return vol;
-}
-
-
-BOOL 
-GMH323EndPoint::SetRecorderVolume (int vol)
-{
-#ifdef HAS_IXJ
-  GMLid *ld = NULL;
-  ld = GetLidThread ();
-
-  if (ld)
-    ld->GetLidDevice ()->SetRecordVolume (0, vol);
-  else
-#endif
-  if (audio_tester) {
-
-    return ((GM_AUDIO_TESTER (audio_tester))->SetRecorderVolume (vol));
-  }
-  else if (recorder_channel) {
-
-    recorder_channel->SetVolume (vol);
-    return TRUE;
-  }
-  
-  return FALSE;
-}
-
-
-int 
-GMH323EndPoint::GetPlayerVolume ()
-{
-  unsigned int vol = 0;
-
-#ifdef HAS_IXJ
-  GMLid *ld = NULL;
-  ld = GetLidThread ();
-
-  if (ld)
-    ld->GetLidDevice ()->GetPlayVolume (0, vol);
-  else
-#endif
-  if (audio_tester) 
-    return ((GM_AUDIO_TESTER (audio_tester))->GetPlayerVolume ());
-  else if (player_channel) 
-    player_channel->GetVolume (vol);
-
-  return vol;
-}
-
-
-BOOL 
-GMH323EndPoint::SetPlayerVolume (int vol)
-{
-#ifdef HAS_IXJ
-  GMLid *ld = NULL;
-  ld = GetLidThread ();
-
-  if (ld)
-    ld->GetLidDevice ()->SetPlayVolume (0, vol);
-  else
-#endif
-  if (audio_tester) {
-
-    return ((GM_AUDIO_TESTER (audio_tester))->SetPlayerVolume (vol));
-  }
-  else if (player_channel) {
-
-    player_channel->SetVolume (vol);
-    return TRUE;
-  }
-
-  return FALSE;
-}
-
-
 void 
 GMH323EndPoint::StartAudioTester ()
 {
@@ -1213,7 +1119,6 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 
     gnomemeeting_threads_enter ();
     gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
-    gtk_widget_set_sensitive (GTK_WIDGET (gw->video_test_button), FALSE);
     gnomemeeting_threads_leave ();
   }
 	
@@ -1385,11 +1290,6 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   /* Always wait to return from this function before quitting */
   quit_mutex.Wait ();
-
-  gnomemeeting_threads_enter ();
-  gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_settings_frame), FALSE);
-  gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_test_button), TRUE);
-  gnomemeeting_threads_leave ();
 
   var_access_mutex.Wait ();
   player_channel = NULL;
@@ -1629,7 +1529,6 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_chan_button), FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button), FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), TRUE);
-  gtk_widget_set_sensitive (GTK_WIDGET (gw->video_test_button), TRUE);
 
   GTK_TOGGLE_BUTTON (gw->audio_chan_button)->active = FALSE;
   GTK_TOGGLE_BUTTON (gw->video_chan_button)->active = FALSE;
@@ -1783,27 +1682,6 @@ GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
     return FALSE;
   }
 
-  if (isEncoding) {
-
-    recorder_channel = (PSoundChannel *) codec.GetRawDataChannel ();
-    gnomemeeting_threads_enter ();
-    gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_rec), 
-			      GetRecorderVolume ());
-    gnomemeeting_threads_leave ();
-  }
-  else {
-
-    player_channel = (PSoundChannel *) codec.GetRawDataChannel ();
-    gnomemeeting_threads_enter ();
-    gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_play), 
-			      GetPlayerVolume ());
-    gnomemeeting_threads_leave ();
-  }
-
-  gnomemeeting_threads_enter ();
-  gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_settings_frame), TRUE);
-  gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_test_button), FALSE);
-  gnomemeeting_threads_leave ();
 
   return TRUE;
 }

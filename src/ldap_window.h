@@ -48,9 +48,9 @@ enum {
   COLUMN_ILS_AUDIO,
   COLUMN_ILS_VIDEO,
   COLUMN_ILS_NAME,
-  COLUMN_ILS_CALLTO,
-  COLUMN_ILS_LOCATION,
   COLUMN_ILS_COMMENT,
+  COLUMN_ILS_LOCATION,
+  COLUMN_ILS_CALLTO,
   COLUMN_ILS_VERSION,
   COLUMN_ILS_IP,
   COLUMN_ILS_COLOR,
@@ -62,7 +62,6 @@ enum {
 
   COLUMN_NAME,
   COLUMN_CALLTO,
-  COLUMN_NETMASK,
   NUM_COLUMNS_GROUPS
 };
 
@@ -75,6 +74,7 @@ enum {
  */
 void gnomemeeting_init_ldap_window ();
 
+
 /* DESCRIPTION  :  / 
  * BEHAVIOR     :  Build the notebook inside the LDAP window if the server
  *                 name was not already present. Returns its page number
@@ -84,8 +84,12 @@ void gnomemeeting_init_ldap_window ();
  */
 int gnomemeeting_init_ldap_window_notebook (gchar *, int);
 
-void
-gnomemeeting_addressbook_group_populate (GtkListStore *list_store,
-					 char *group_name);
+
+/* DESCRIPTION  :  / 
+ * BEHAVIOR     :  Fills in the GtkListStore with the members of the group
+ *                 given as parameter.
+ * PRE          :  /
+ */
+void gnomemeeting_addressbook_group_populate (GtkListStore *, char *);
 
 #endif

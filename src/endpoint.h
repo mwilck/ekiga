@@ -228,39 +228,7 @@ class GMH323EndPoint : public H323EndPoint
    */
   virtual void TranslateTCPAddress(PIPSocket::Address &,
 				   const PIPSocket::Address &);
-
   
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Sets the volume for the recording channel. Returns FALSE
-   *                 if it fails. The volume is set for the GMAudioTester 
-   *                 channels if there is one running.
-   * PRE          :  0 <= int <= 100
-   */
-  BOOL SetRecorderVolume (int);
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Get the volume for the recording channel if any.
-   * PRE          :  /
-   */
-  int GetRecorderVolume ();
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Sets the volume for the playing channel. Returns FALSE
-   *                 if it fails. The volume is set for the GMAudioTester 
-   *                 channels if there is one running.
-   * PRE          :  0 <= int <= 100
-   */
-  BOOL SetPlayerVolume (int);
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Get the volume for the playing channel if any.
-   * PRE          :  /
-   */
-  int GetPlayerVolume ();
-
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Starts an audio tester that will play any recorded

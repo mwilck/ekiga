@@ -162,6 +162,15 @@ gnomemeeting_table_add_int_option_menu (GtkWidget *, gchar *, gchar **,
 GtkWidget *
 gnomemeeting_table_add_string_option_menu (GtkWidget *, gchar *, gchar **,
 					   gchar *, gchar *, int);
+GtkWidget *
+gnomemeeting_table_add_pstring_option_menu (GtkWidget *, gchar *, PStringArray,
+					    gchar *, gchar *, int);
+
+void
+gnomemeeting_update_pstring_option_menu (GtkWidget *,
+					 PStringArray,
+					 gchar *);
+
 
 GtkWidget *
 gnomemeeting_vbox_add_table (GtkWidget *, gchar *, int, int);

@@ -905,7 +905,7 @@ void GMILSBrowser::Main ()
 					    cj))) {
     
     text_label = 
-      (gchar *) g_object_get_data (G_OBJECT (page), "server_name");
+      (gchar *) g_object_get_data (G_OBJECT (page), "contact_section");
     if (!(strcasecmp (text_label, ldap_server))) {
       
       page_exists = 1;
@@ -984,6 +984,7 @@ void GMILSBrowser::Main ()
     else
       filter = g_strdup ("(&(cn=%))");
 
+    
     rc = ldap_search_s (ldap_connection, "objectClass=RTPerson", 
 			LDAP_SCOPE_BASE,
 			filter,	attrs, 0, &res); 
@@ -1148,7 +1149,7 @@ void GMILSBrowser::Main ()
 	    (xdap_users_tree_view, 
 	     GM_STOCK_STATUS_OCCUPIED,
 	     GTK_ICON_SIZE_MENU, NULL);
-	  color = g_strdup ("darkgray");
+	  color = g_strdup ("darkred");
         }
         
 	gnomemeeting_threads_leave ();
@@ -1168,7 +1169,7 @@ void GMILSBrowser::Main ()
 	      
 	      /* If valid UTF-8, ok */
 	      if (g_utf8_validate (datas [j + 2], -1, NULL))
-		 utf8_data [j] = g_strdup (datas [j+2]);
+		utf8_data [j] = g_strdup (datas [j+2]);
 	      else
 		utf8_data [j] = 
 		  gnomemeeting_from_iso88591_to_utf8 (PString (datas [j+2]));

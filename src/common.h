@@ -159,8 +159,6 @@ struct _GmWindow
   GtkWidget *incoming_call_popup;
   GtkWidget *stats_label;
   GtkWidget *stats_drawing_area;
-  GtkWidget *audio_test_button;
-  GtkWidget *video_test_button;
 
 #ifndef DISABLE_GNOME
   GnomeDruid *druid;
@@ -174,6 +172,7 @@ struct _GmWindow
   PStringArray video_devices;
   PStringArray audio_recorder_devices;
   PStringArray audio_player_devices;
+  PStringArray audio_mixers;
 };
 
 

@@ -646,11 +646,11 @@ gnomemeeting_table_add_int_option_menu (GtkWidget *table,
 
 GtkWidget *
 gnomemeeting_table_add_string_option_menu (GtkWidget *table,       
-						 gchar *label_txt, 
-						 gchar **options,
-						 gchar *gconf_key,       
-						 gchar *tooltip,         
-						 int row)       
+					   gchar *label_txt, 
+					   gchar **options,
+					   gchar *gconf_key,       
+					   gchar *tooltip,         
+					   int row)       
 {
   GtkWidget *item = NULL;
   GtkWidget *label = NULL;                                                     
@@ -727,6 +727,150 @@ gnomemeeting_table_add_string_option_menu (GtkWidget *table,
   g_free (gconf_string); 
 
   return option_menu;
+}
+
+
+GtkWidget *
+gnomemeeting_table_add_pstring_option_menu (GtkWidget *table,       
+					    gchar *label_txt, 
+					    PStringArray options,
+					    gchar *gconf_key,       
+					    gchar *tooltip,         
+					    int row)       
+{
+  GtkWidget *item = NULL;
+  GtkWidget *label = NULL;                                                     
+  GtkWidget *option_menu = NULL;
+  GtkWidget *menu = NULL;
+  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);  
+  gchar *gconf_string = NULL;
+  int history = -1;
+
+  int cpt = 0;                                                   
+
+  GConfClient *client = NULL;                                                  
+                                                                               
+  client = gconf_client_get_default ();                                        
+
+
+  label = gtk_label_new (label_txt);                                           
+
+  gtk_table_attach (GTK_TABLE (table), label, 0, 1, row, row+1,                
+                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
+                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
+                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);           
+                                                                               
+  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);                         
+  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_RIGHT);                
+
+
+  menu = gtk_menu_new ();
+  option_menu = gtk_option_menu_new ();
+
+  gconf_string = gconf_client_get_string (client, gconf_key, NULL);
+
+  while (cpt < options.GetSize ()) {
+
+    if (gconf_string != NULL)
+      if (!strcmp (gconf_string, options [cpt]))
+	history = cpt;
+
+    item = gtk_menu_item_new_with_label (options [cpt]);
+    gtk_widget_show (item);
+    gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+    cpt++;
+  }
+
+  if (history == -1) {
+
+    if (!options [0].IsEmpty ())
+      gconf_client_set_string (client, gconf_key, options [0], NULL);
+    history = 0;
+  }
+
+  gtk_option_menu_set_menu (GTK_OPTION_MENU (option_menu), menu);
+  gtk_option_menu_set_history (GTK_OPTION_MENU (option_menu), 
+ 			       history);
+
+
+  gtk_table_attach (GTK_TABLE (table), option_menu, 1, 2, row, row+1,         
+                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
+                    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
+                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);           
+                                                                               
+                           
+  gtk_tooltips_set_tip (pw->tips, option_menu, tooltip, NULL);
+
+
+  /* We set the key as data to be able to get the data in order to block       
+     the signal in the gconf notifier */                             
+  g_object_set_data (G_OBJECT (option_menu), "gconf_key", (void *) gconf_key);
+                                                                               
+  g_signal_connect (G_OBJECT (GTK_OPTION_MENU (option_menu)->menu), 
+		    "deactivate", G_CALLBACK (string_option_menu_changed),
+  		    (gpointer) gconf_key);                                   
+
+  g_free (gconf_string); 
+
+  return option_menu;
+}
+
+
+void
+gnomemeeting_update_pstring_option_menu (GtkWidget *option_menu,
+					 PStringArray options,
+					 gchar *gconf_key)
+{
+  GtkWidget *menu = NULL;
+  GtkWidget *item = NULL;
+
+  gchar *gconf_string = NULL;
+  
+  int history = -1;
+
+  int cpt = 0;                                                   
+
+  GConfClient *client = NULL;                                                  
+                                                                               
+  client = gconf_client_get_default ();
+  gconf_string = gconf_client_get_string (client, gconf_key, NULL);
+					  
+  history = options.GetValuesIndex (PString (gconf_string));
+
+  gtk_option_menu_remove_menu (GTK_OPTION_MENU (option_menu));
+  menu = gtk_menu_new ();
+
+  cpt = 0;
+  while (cpt < options.GetSize ()) {
+
+    item = gtk_menu_item_new_with_label (options [cpt]);
+    gtk_widget_show (item);
+    gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+
+    cpt++;
+  }
+
+  if (history == P_MAX_INDEX) {
+    
+    history = 0;
+
+    if (!options [0].IsEmpty ())
+      gconf_client_set_string (client, gconf_key, options [0], NULL);
+  }
+
+  gtk_option_menu_set_menu (GTK_OPTION_MENU (option_menu), menu);
+  gtk_option_menu_set_history (GTK_OPTION_MENU (option_menu), history);
+
+  
+  /* We set the key as data to be able to get the data in order to block       
+     the signal in the gconf notifier */                             
+  g_object_set_data (G_OBJECT (option_menu), "gconf_key", (void *) gconf_key);
+                                                                               
+  g_signal_connect (G_OBJECT (GTK_OPTION_MENU (option_menu)->menu), 
+		    "deactivate", G_CALLBACK (string_option_menu_changed),
+  		    (gpointer) gconf_key);                                   
+
+  g_free (gconf_string); 
 }
 
 

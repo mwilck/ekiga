@@ -118,6 +118,94 @@ gnomemeeting_mixers_mic_select (void)
 }
 
 
+int gnomemeeting_get_mixer_volume (char *mixer, int source)
+{
+  int vol = 0;
+  int mixerfd = -1;
+  
+  if (!mixer)
+    return 0;
+
+  mixerfd = open (mixer, O_RDWR);
+
+  if (mixerfd == -1)
+    return 0;
+
+  if (source == SOURCE_AUDIO)
+    ioctl (mixerfd, MIXER_READ (SOUND_MIXER_READ_VOLUME), &vol);
+
+  if (source == SOURCE_MIC)
+    ioctl (mixerfd, MIXER_READ (SOUND_MIXER_MIC), &vol);
+
+  close (mixerfd);
+  return vol;
+}
+
+
+void gnomemeeting_set_mixer_volume (char *mixer, int source, int vol)
+{
+  int mixerfd = -1;
+  
+  if (!mixer)
+    return;
+
+  mixerfd = open (mixer, O_RDWR);
+
+  if (mixerfd == -1)
+    return;
+
+  if (source == SOURCE_AUDIO)
+    ioctl (mixerfd, MIXER_WRITE (SOUND_MIXER_VOLUME), &vol);
+
+  if (source == SOURCE_MIC)
+    ioctl (mixerfd, MIXER_WRITE (SOUND_MIXER_MIC), &vol);
+  
+  close (mixerfd);
+}
+
+
+PStringArray gnomemeeting_get_mixers ()
+{
+  int mixerfd = -1;
+  int cpt = -1;
+  int i = 0;
+  
+  PStringArray mixers;
+
+  PString mixer_name;
+  PString mixer;
+
+  while (i < 2) {
+
+    if (i == 0)
+      mixer_name = PString ("/dev/sound/mixer");
+    else
+      mixer_name = PString ("/dev/mixer");
+    
+    mixer = mixer_name;
+
+    for (cpt = -1 ; cpt < 10 ; cpt++) {
+
+      if (cpt != -1)
+	mixer = mixer_name + PString (cpt);
+
+      mixerfd = open (mixer, O_RDWR);
+
+      if (!(mixerfd == -1)) {
+
+	mixers += mixer;
+
+	close (mixerfd);
+      }
+    }
+
+    i++;
+  }
+
+  return mixers;
+}
+
+
 gint 
 gnomemeeting_sound_play_ringtone (GtkWidget *widget)
 {
@@ -179,10 +267,20 @@ GMAudioTester::~GMAudioTester ()
 
 void GMAudioTester::Main ()
 {
-  void *buffer = malloc (8 * 1024);
+  char *buffer_play = (char *) malloc (8 * 1024);
+  char *buffer_record = (char *) malloc (8 * 1024);
+  char *buffer_ring = (char *) malloc (8 * 5 * 1024);
+
+  int buffer_play_pos = 0;
+  int buffer_rec_pos = 0;
+  
+  int clock = 0;
+  
   BOOL displayed = FALSE;
 
-  memset (buffer, 0, sizeof (buffer));
+  memset (buffer_ring, 0, sizeof (buffer_ring));
+  memset (buffer_play, 0, sizeof (buffer_play));
+  memset (buffer_record, 0, sizeof (buffer_record));
 
   /* We try to open the 2 selected devices */
   if (!player->Open (ep->GetSoundChannelPlayDevice (), PSoundChannel::Player,
@@ -194,13 +292,7 @@ void GMAudioTester::Main ()
 
     stop = TRUE;
   }
-  else {
-    
-    gdk_threads_enter ();
-    gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_play), 
-			      GetPlayerVolume ());
-    gdk_threads_leave ();
-  }
+
 
   if (!recorder->Open (ep->GetSoundChannelRecordDevice (), 
 		       PSoundChannel::Recorder,
@@ -212,22 +304,13 @@ void GMAudioTester::Main ()
 
     stop = TRUE;
   }
-  else {
-    
-    gdk_threads_enter ();
-    gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_rec), 
-			      GetRecorderVolume ());
-    gdk_threads_leave ();
-  }
-
-
 
   quit_mutex.Wait ();
 
   while (!stop) {
  
     
-    if (!recorder->Read (buffer, 8 * 1024)) {
+    if (!recorder->Read ((void *) buffer_record, 8 * 1024)) {
       
       gdk_threads_enter ();
       gnomemeeting_error_dialog (GTK_WINDOW (window), _("The selected audio device (%s) was successfully opened but it is impossible to read data from this device. Please check your audio setup."), (const char*) ep->GetSoundChannelRecordDevice ());
@@ -235,12 +318,13 @@ void GMAudioTester::Main ()
 
       stop = TRUE;
     }
-    else if (!player->Write (buffer, 8 * 1024)) {
+    else if (clock > 5
+	     && !player->Write ((void *) buffer_play, 8 * 1024)) {
 
       gdk_threads_enter ();
       gnomemeeting_error_dialog (GTK_WINDOW (window), _("The selected audio device (%s) was successfully opened but it is impossible to write data to this device. Please check your audio setup."), (const char*) ep->GetSoundChannelPlayDevice ());
       gdk_threads_leave ();
-      
+
       stop = TRUE;
     }
     else {
@@ -248,70 +332,35 @@ void GMAudioTester::Main ()
       if (!displayed) {
 
 	gdk_threads_enter ();
-	gnomemeeting_message_dialog (GTK_WINDOW (window), _("GnomeMeeting is now recording from %s and playing back to %s. Please speak in your microphone, you should hear yourself back into the speakers. Please make sure that what you hear is not the electronic feedback but your real recorded voice. If you don't hear yourself speaking, please fix your audio setup before using GnomeMeeting or others won't hear you. You can use the sliders in the control panel to adjust the volume of the speakers and of the microphone."), (const char*) ep->GetSoundChannelRecordDevice (), (const char*) ep->GetSoundChannelPlayDevice ());
+	gnomemeeting_message_dialog (GTK_WINDOW (window), _("GnomeMeeting is now recording from %s and playing back to %s. Please say \"1 2 3\" in your microphone, you should hear yourself back into the speakers with a 5 seconds delay.\n\nIf you don't hear yourself at all, or if you hear yourself instantly in the speakers and not with a 5 seconds delay, it means that you audio setup is incorrect and probably not full-duplex. Please fix it before using GnomeMeeting or others won't hear you.\n\nYou can use the sliders in the control panel to adjust the volume of the speakers and of the microphone."), (const char*) ep->GetSoundChannelRecordDevice (), (const char*) ep->GetSoundChannelPlayDevice ());
 
-	gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_settings_frame), TRUE);
 	gdk_threads_leave ();
       }
 
       displayed = TRUE;
     }
 
-    memset (buffer, 0, 8 * 1024);
+    if (clock >= 5)
+      buffer_play_pos += 8 * 1024;
+
+    if (buffer_play_pos >= 8 * 5 * 1024)
+      buffer_play_pos = 0;
+    if (buffer_rec_pos >= 8 * 5 * 1024)
+      buffer_rec_pos = 0;
+
+    memcpy (&buffer_ring [buffer_rec_pos], buffer_record, 8 * 1024);
+    memcpy (buffer_play, &buffer_ring [buffer_play_pos], 8 * 1024);
+    buffer_rec_pos += 8 * 1024;
+
+    clock++;
   }
   
 
-  gdk_threads_enter ();
-  gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_settings_frame), FALSE);
-  gdk_threads_leave ();  
-
+  free (buffer_ring);
+  free (buffer_record);
+  free (buffer_play);
+  
   quit_mutex.Signal ();
-}
-
-
-int GMAudioTester::GetPlayerVolume ()
-{
-  unsigned int vol = 0;
-
-  if (player)
-    player->GetVolume (vol);
-
-  return vol;
-}
-
-
-BOOL GMAudioTester::SetPlayerVolume (int vol)
-{
-  if (player) {
-
-    player->SetVolume (vol);
-    return TRUE;
-  }
-
-  return FALSE;
-}
-
-
-int GMAudioTester::GetRecorderVolume ()
-{
-  unsigned int vol = 0;
-
-  if (recorder)
-    recorder->GetVolume (vol);
-
-  return vol;
-}
-
-
-BOOL GMAudioTester::SetRecorderVolume (int vol)
-{
-  if (recorder) {
-
-    recorder->SetVolume (vol);
-    return TRUE;
-  }
-  
-  return FALSE;
 }
 
 

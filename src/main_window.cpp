@@ -104,7 +104,6 @@ static Bonobo_RegistrationResult gnomemeeting_register_as_factory (void);
 static void main_notebook_page_changed (GtkNotebook *, GtkNotebookPage *,
 					gint, gpointer);
 static void audio_volume_changed       (GtkAdjustment *, gpointer);
-static void audio_test_button_clicked  (GtkToggleButton *, gpointer);
 static void brightness_changed         (GtkAdjustment *, gpointer);
 static void whiteness_changed          (GtkAdjustment *, gpointer);
 static void colour_changed             (GtkAdjustment *, gpointer);
@@ -507,6 +506,46 @@ stats_drawing_area_exposed (GtkWidget *drawing_area, gpointer data)
 }
 
 
+/* DESCRIPTION  :  This callback is called when the user has released the drag.
+ * BEHAVIOR     :  Calls the user corresponding to the drag data.
+ * PRE          :  /
+ */
+void
+dnd_drag_data_received_cb (GtkWidget *widget,
+			   GdkDragContext *context,
+			   int x,
+			   int y,
+			   GtkSelectionData *selection_data,
+			   guint info,
+			   guint time,
+			   gpointer data)
+{
+  GmWindow *gw = NULL;
+  gchar **data_split = NULL;
+
+
+  gw = gnomemeeting_get_main_window (gm);
+  
+  if (selection_data && selection_data->data) {
+
+    data_split = g_strsplit ((char *) selection_data->data, "|", 0);
+
+    if (data_split && data_split [1]) {
+
+      if (MyApp->Endpoint ()->GetCallingState () == 0) {
+      
+	/* this function will store a copy of text */
+	gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry),
+			    PString (data_split [1]));
+	
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->connect_button),
+				      true);
+      }
+    }
+  } 
+}
+
+
 /* Factory stuff */
 
 #ifndef DISABLE_GNOME
@@ -680,36 +719,53 @@ main_notebook_page_changed (GtkNotebook *notebook, GtkNotebookPage *page,
 /**
  * DESCRIPTION  :  This callback is called when the user changes the
  *                 audio settings sliders in the main notebook.
- * BEHAVIOR     :  Update the volume.
- * PRE          :  gpointer is a valid pointer to GmPrefWindow
+ * BEHAVIOR     :  Update the volume of the choosen mixers or of the lid.
+ * PRE          :  data = AUDIO_VOLUME or AUDIO_MIC
  **/
 void 
 audio_volume_changed (GtkAdjustment *adjustment, gpointer data)
 {
-  int vol_play, vol_rec;
+  int vol_play = 0, vol_rec = 0;
+  gchar *mixer = NULL;
+  GMH323EndPoint *endpoint = MyApp->Endpoint ();
+  GMLid *lid = NULL;
+  OpalLineInterfaceDevice *ld = NULL;
 
-  GmWindow *gw = GM_WINDOW (data);
+  lid = endpoint->GetLidThread ();
   
-  vol_play =  (int) (GTK_ADJUSTMENT (gw->adj_play)->value) * 257;
-  vol_rec =  (int) (GTK_ADJUSTMENT (gw->adj_rec)->value) * 257;
+  if (lid)
+   ld = lid->GetLidDevice ();
+  
+  GConfClient *client = gconf_client_get_default ();
+  GmWindow *gw = gnomemeeting_get_main_window (gm);
 
-  MyApp->Endpoint ()->SetPlayerVolume (vol_play);
-  MyApp->Endpoint ()->SetRecorderVolume (vol_rec);
-}
+  vol_play =  (int) (GTK_ADJUSTMENT (gw->adj_play)->value);
+  vol_rec =  (int) (GTK_ADJUSTMENT (gw->adj_rec)->value);
+  
+  if (ld) {
 
-
-void
-audio_test_button_clicked (GtkToggleButton *b, gpointer data)
-{
-  if (gtk_toggle_button_get_active (b)) {
-
-    MyApp->Endpoint ()->StartAudioTester ();
+    ld->SetRecordVolume (0, vol_rec);
+    ld->SetPlayVolume (0, vol_play);
   }
   else {
 
-    MyApp->Endpoint ()->StopAudioTester ();
-  }   
+    mixer =
+      gconf_client_get_string (client, DEVICES_KEY "audio_player_mixer",
+			       NULL);
+
+    gnomemeeting_set_mixer_volume (mixer, SOURCE_AUDIO,
+				   ((vol_play<<8)|vol_play));
+    g_free (mixer);
+
+    mixer =
+      gconf_client_get_string (client, DEVICES_KEY "audio_recorder_mixer",
+			       NULL);
+  
+    gnomemeeting_set_mixer_volume (mixer, SOURCE_MIC, ((vol_rec<<8)|vol_rec));
+    g_free (mixer);
+  }
 }
+
 
 
 /**
@@ -962,6 +1018,12 @@ gnomemeeting_init (GmWindow *gw,
   GConfClient *client = NULL;
   GtkAccelGroup *accel = NULL;
 
+  static GtkTargetEntry dnd_targets [] =
+  {
+    {"text/plain", GTK_TARGET_SAME_APP, 0}
+  };
+
+  
   /* Prevents ESD to spawn */
   setenv ("ESD_NO_SPAWN", "1", 1);
 
@@ -1150,7 +1212,8 @@ gnomemeeting_init (GmWindow *gw,
   gw->audio_recorder_devices = 
     PSoundChannel::GetDeviceNames (PSoundChannel::Recorder);
   gw->video_devices = PVideoInputDevice::GetInputDeviceNames ();
-
+  gw->audio_mixers = gnomemeeting_get_mixers ();
+  
   static GnomeMeeting instance;
   endpoint = MyApp->Endpoint ();
 
@@ -1200,17 +1263,6 @@ gnomemeeting_init (GmWindow *gw,
   gnomemeeting_init_gconf (client);
 
 
-  /* Register to the Gatekeeper */
-  int method = gconf_client_get_int (GCONF_CLIENT (client), 
-                                     GATEKEEPER_KEY "registering_method", 0);
-
-  /* We do that through the notifier */
-  if (method)
-    gconf_client_set_int (GCONF_CLIENT (client),
-			  GATEKEEPER_KEY "registering_method",
-			  method, 0);
-
-
   /* Init the druid */
 #ifdef DISABLE_GNOME
 gconf_client_set_int (client, GENERAL_KEY "version", 
@@ -1254,6 +1306,15 @@ gconf_client_set_int (client, GENERAL_KEY "version",
   gnomemeeting_zoom_submenu_set_sensitive (FALSE);
   gnomemeeting_fullscreen_option_set_sensitive (FALSE);
 
+
+  /* Init the Drag and drop features */
+  gtk_drag_dest_set (GTK_WIDGET (gm), GTK_DEST_DEFAULT_ALL,
+		     dnd_targets, 1,
+		     GDK_ACTION_COPY);
+
+  g_signal_connect (G_OBJECT (gm), "drag_data_received",
+		    G_CALLBACK (dnd_drag_data_received_cb), 0);
+  
 
   /* Call the given host if needed */
   if (clo->url) {
@@ -1637,7 +1698,6 @@ void gnomemeeting_init_main_window_video_settings ()
 {
   GtkWidget *label;
   
-  GtkWidget *main_table;
   GtkWidget *table;
 
   GtkWidget *pixmap;
@@ -1646,13 +1706,10 @@ void gnomemeeting_init_main_window_video_settings ()
     *hscale_contrast, *hscale_whiteness;
 
   int brightness = 0, colour = 0, contrast = 0, whiteness = 0;
-  GConfClient *client = gconf_client_get_default ();
-
+  
   GmWindow *gw = gnomemeeting_get_main_window (gm);
 
-  /* The main_table to put the frame and the preview button */
-  main_table = gtk_table_new (2, 4, FALSE);
-
+  
   /* Webcam Control Frame */		
   gw->video_settings_frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (gw->video_settings_frame), 
@@ -1768,44 +1825,12 @@ void gnomemeeting_init_main_window_video_settings ()
 		    G_CALLBACK (contrast_changed), (gpointer) gw);
   
 
-  /* Audio Preview */
-  gw->video_test_button = 
-    gtk_toggle_button_new_with_label (_("Video Test"));
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->video_test_button), 
-				gconf_client_get_bool (client, "/apps/gnomemeeting/devices/video_preview", NULL));
-
-  /* We set the key as data to be able to get the data in order to block       
-     the signal in the gconf notifier */                             
-  g_object_set_data (G_OBJECT (gw->video_test_button), "gconf_key", 
-		     (void *) "/apps/gnomemeeting/devices/video_preview");
-
-  g_signal_connect (G_OBJECT (gw->video_test_button), "clicked",
-		    G_CALLBACK (toggle_changed), 
-		    (gpointer) "/apps/gnomemeeting/devices/video_preview");
-
-  gtk_tooltips_set_tip (gw->tips, gw->video_test_button,
-			_("Click here to begin to display images from your camera device and be able to change the settings."), NULL);
-
-
-  /* Pack things in the table */
-  gtk_table_attach (GTK_TABLE (main_table), gw->video_settings_frame, 
-		    0, 4, 0, 1,
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    0, 0);
-  gtk_table_attach (GTK_TABLE (main_table), gw->video_test_button,
-		    3, 4, 1, 2,
-		    (GtkAttachOptions) (NULL),
-		    (GtkAttachOptions) (NULL),
-		    5, 5);
-
-  
   gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame), FALSE);
 
   label = gtk_label_new (_("Video"));  
 
   gtk_notebook_append_page (GTK_NOTEBOOK(gw->main_notebook), 
-			    main_table, label);
+			    gw->video_settings_frame, label);
 }
 
 
@@ -1819,13 +1844,12 @@ void gnomemeeting_init_main_window_audio_settings ()
   GtkWidget *label;
   GtkWidget *hscale_play, *hscale_rec;
   GtkWidget *audio_table;
-  GtkWidget *main_table;
 
+  char *mixer = NULL;
+  int vol = 0;
+
+  GConfClient *client = gconf_client_get_default ();
   GmWindow *gw = gnomemeeting_get_main_window (gm);
-
-
-  /* The main table that will contain the audio test button and the frame */
-  main_table = gtk_table_new (2, 4, FALSE);
 
   gw->audio_settings_frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (gw->audio_settings_frame), 
@@ -1843,7 +1867,12 @@ void gnomemeeting_init_main_window_audio_settings ()
 		    (GtkAttachOptions) NULL,
 		    0, 0);
 
-  gw->adj_play = gtk_adjustment_new (0.0, 0.0, 100.0, 1.0, 5.0, 1.0);
+  mixer =
+    gconf_client_get_string (client, DEVICES_KEY "audio_player_mixer", NULL);
+  vol = gnomemeeting_get_mixer_volume (mixer, SOURCE_AUDIO);
+  g_free (mixer);
+  
+  gw->adj_play = gtk_adjustment_new ((vol&255), 0.0, 100.0, 1.0, 5.0, 1.0);
   hscale_play = gtk_hscale_new (GTK_ADJUSTMENT (gw->adj_play));
   gtk_scale_set_value_pos (GTK_SCALE (hscale_play),GTK_POS_RIGHT); 
   gtk_scale_set_draw_value (GTK_SCALE (hscale_play), TRUE);
@@ -1862,7 +1891,12 @@ void gnomemeeting_init_main_window_audio_settings ()
 		    (GtkAttachOptions) NULL,
 		    0, 0);
 
-  gw->adj_rec = gtk_adjustment_new (0.0 / 257, 0.0, 100.0, 1.0, 5.0, 1.0);
+  mixer =
+    gconf_client_get_string (client, DEVICES_KEY "audio_recorder_mixer", NULL);
+  vol = gnomemeeting_get_mixer_volume (mixer, SOURCE_MIC);
+  g_free (mixer);
+  
+  gw->adj_rec = gtk_adjustment_new ((vol&255), 0.0, 100.0, 1.0, 5.0, 1.0);
   hscale_rec = gtk_hscale_new (GTK_ADJUSTMENT (gw->adj_rec));
   gtk_scale_set_value_pos (GTK_SCALE (hscale_rec),GTK_POS_RIGHT); 
   gtk_scale_set_draw_value (GTK_SCALE (hscale_rec), TRUE);
@@ -1873,38 +1907,16 @@ void gnomemeeting_init_main_window_audio_settings ()
 		    0, 0);
 
   g_signal_connect (G_OBJECT (gw->adj_play), "value-changed",
-		    G_CALLBACK (audio_volume_changed), (gpointer) gw);
+		    G_CALLBACK (audio_volume_changed), NULL);
 
   g_signal_connect (G_OBJECT (gw->adj_rec), "value-changed",
-		    G_CALLBACK (audio_volume_changed), (gpointer) gw);
+		    G_CALLBACK (audio_volume_changed), NULL);
 
-
-  /* Audio Preview */
-  gw->audio_test_button = 
-    gtk_toggle_button_new_with_label (_("Audio Test"));
-
-
-  /* Pack things in the table */
-  gtk_table_attach (GTK_TABLE (main_table), gw->audio_settings_frame, 
-		    0, 4, 0, 1,
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    0, 0);
-  gtk_table_attach (GTK_TABLE (main_table), gw->audio_test_button,
-		    3, 4, 1, 2,
-		    (GtkAttachOptions) (NULL),
-		    (GtkAttachOptions) (NULL),
-		    5, 5);
-
-  g_signal_connect (G_OBJECT (gw->audio_test_button), "clicked",
-		    G_CALLBACK (audio_test_button_clicked), (gpointer) gw);
-
-
-  gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_settings_frame), FALSE);
-
+		    
   label = gtk_label_new (_("Audio"));
 
-  gtk_notebook_append_page (GTK_NOTEBOOK (gw->main_notebook), main_table, 
+  gtk_notebook_append_page (GTK_NOTEBOOK (gw->main_notebook),
+			    gw->audio_settings_frame, 
 			    label);
 }
 

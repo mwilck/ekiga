@@ -38,6 +38,7 @@
 #include "common.h"
 #include "ils.h"
 #include "misc.h"
+#include "sound_handling.h"
 
 #include <gconf/gconf-client.h>
 #ifndef DISABLE_GNOME
@@ -93,139 +94,43 @@ static void refresh_devices (GtkWidget *widget, gpointer data)
 {
   GmPrefWindow *pw = NULL;
   GmWindow *gw = NULL;
-  char *gconf_string = NULL;
-  GConfClient *client = NULL;
-  GtkWidget *item = NULL;
-  GtkWidget *menu = NULL;
-  int i = 0;
-  int index = 0;
-  int cpt = 0;
 
   gw = gnomemeeting_get_main_window (gm);
   pw = gnomemeeting_get_pref_window (gm);
-  client = gconf_client_get_default ();
-
+  
   /* The player */
-  gconf_string =  
-    gconf_client_get_string (GCONF_CLIENT (client), 
-			     "/apps/gnomemeeting/devices/audio_player", 
-			     NULL);
-
   gw->audio_player_devices =
     PSoundChannel::GetDeviceNames (PSoundChannel::Player);
+  
+  gnomemeeting_update_pstring_option_menu (pw->audio_player,
+					   gw->audio_player_devices,
+					   DEVICES_KEY "audio_player");
 
-  i = gw->audio_player_devices.GetSize ();
-  index = gw->audio_player_devices.GetValuesIndex(PString (gconf_string));
+  gw->audio_mixers =
+    gnomemeeting_get_mixers ();
 
-  gtk_option_menu_remove_menu (GTK_OPTION_MENU (pw->audio_player));
-  menu = gtk_menu_new ();
-
-  cpt = 0;
-  while (cpt < i) {
-
-    gchar *string = g_strdup (gw->audio_player_devices [cpt]);
-
-    if (strcmp (string, "loopback")) {
-
-      item = gtk_menu_item_new_with_label (string);
-      gtk_widget_show (item);
-      gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
-    }
-
-    cpt++;
-    g_free (string);
-  }
-
-  if (index == P_MAX_INDEX)
-    index = 0;
-
-  gtk_option_menu_set_menu (GTK_OPTION_MENU (pw->audio_player), menu);
-  gtk_option_menu_set_history (GTK_OPTION_MENU (pw->audio_player), index);
-
-  g_signal_connect (G_OBJECT (GTK_OPTION_MENU (pw->audio_player)->menu), 
-		    "deactivate", G_CALLBACK (string_option_menu_changed),
-  		    (gpointer) "/apps/gnomemeeting/devices/audio_player");    
-
-
+  gnomemeeting_update_pstring_option_menu (pw->audio_player_mixer,
+					   gw->audio_mixers,
+					   DEVICES_KEY "audio_player_mixer");
+  
+  
   /* The recorder */
-  gconf_string =  
-    gconf_client_get_string (GCONF_CLIENT (client), 
-			     "/apps/gnomemeeting/devices/audio_recorder", 
-			     NULL);
-
   gw->audio_recorder_devices =
     PSoundChannel::GetDeviceNames (PSoundChannel::Recorder);
 
-  i = gw->audio_recorder_devices.GetSize ();
-  index = gw->audio_recorder_devices.GetValuesIndex(PString (gconf_string));
+  gnomemeeting_update_pstring_option_menu (pw->audio_recorder,
+					   gw->audio_recorder_devices,
+					   DEVICES_KEY "audio_recorder");
 
-  gtk_option_menu_remove_menu (GTK_OPTION_MENU (pw->audio_recorder));
-  menu = gtk_menu_new ();
-
-  cpt = 0;
-  while (cpt < i) {
-
-    gchar *string = g_strdup (gw->audio_recorder_devices [cpt]);
-
-    if (strcmp (string, "loopback")) {
-
-      item = gtk_menu_item_new_with_label (string);
-      gtk_widget_show (item);
-      gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
-    }
-
-    g_free (string);
-    cpt++;
-  }
-
-  if (index == P_MAX_INDEX)
-    index = 0;
-
-  gtk_option_menu_set_menu (GTK_OPTION_MENU (pw->audio_recorder), menu);
-  gtk_option_menu_set_history (GTK_OPTION_MENU (pw->audio_recorder), index);
-
-  g_signal_connect (G_OBJECT (GTK_OPTION_MENU (pw->audio_recorder)->menu), 
-		    "deactivate", G_CALLBACK (string_option_menu_changed),
-  		    (gpointer) "/apps/gnomemeeting/devices/audio_recorder");
-
+  gnomemeeting_update_pstring_option_menu (pw->audio_recorder_mixer,
+					   gw->audio_mixers,
+					   DEVICES_KEY "audio_recorder_mixer");
 
   /* The Video player */
-  gconf_string =  
-    gconf_client_get_string (GCONF_CLIENT (client), 
-			     "/apps/gnomemeeting/devices/video_recorder", 
-			     NULL);
-
   gw->video_devices = PVideoInputDevice::GetInputDeviceNames ();
-
-  i = gw->video_devices.GetSize ();
-  index = gw->video_devices.GetValuesIndex(PString (gconf_string));
-
-  gtk_option_menu_remove_menu (GTK_OPTION_MENU (pw->video_device));
-  menu = gtk_menu_new ();
-
-  cpt = 0;
-  while (cpt < i) {
-
-    gchar *string = g_strdup (gw->video_devices [cpt]);
-    item = gtk_menu_item_new_with_label (string);
-    gtk_widget_show (item);
-    gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
-    g_free (string);
-    cpt++;
-  }
-  item = gtk_menu_item_new_with_label (_("Picture"));
-  gtk_widget_show (item);
-  gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
-
-  if (index == P_MAX_INDEX)
-    index = 0;
-
-  gtk_option_menu_set_menu (GTK_OPTION_MENU (pw->video_device), menu);
-  gtk_option_menu_set_history (GTK_OPTION_MENU (pw->video_device), index);
-
-  g_signal_connect (G_OBJECT (GTK_OPTION_MENU (pw->video_device)->menu), 
-		    "deactivate", G_CALLBACK (string_option_menu_changed),
-  		    (gpointer) "/apps/gnomemeeting/devices/video_recorder");
+  gnomemeeting_update_pstring_option_menu (pw->video_device,
+					   gw->video_devices,
+					   DEVICES_KEY "video_recorder");
 }
 
 
@@ -1010,8 +915,6 @@ static void gnomemeeting_init_pref_window_audio_devices (GtkWidget *notebook)
   GtkWidget *button = NULL;
   GtkWidget *table2 = NULL;
 
-  int i = 0;
-
   gchar *aec [] = {_("Off"),
 		   _("Low"),
 		   _("Medium"),
@@ -1019,9 +922,6 @@ static void gnomemeeting_init_pref_window_audio_devices (GtkWidget *notebook)
 		   _("AGC"),
 		   NULL};
 
-  gchar *audio_player_devices_list [20];
-  gchar *audio_recorder_devices_list [20];
-                
 
   /* Get the data */                                             
   GmWindow *gw = gnomemeeting_get_main_window (gm);              
@@ -1037,43 +937,18 @@ static void gnomemeeting_init_pref_window_audio_devices (GtkWidget *notebook)
                                                                                
   /* Add all the fields */                 
   /* The player */
-  i = gw->audio_player_devices.GetSize () - 1;
-  if (i >= 20) i = 19;
-
-  for (int j = i ; j >= 0; j--) 
-    if (strcmp (gw->audio_player_devices [j], "loopback"))
-      audio_player_devices_list [j] = g_strdup (gw->audio_player_devices [j]);
-    else
-      audio_player_devices_list [j] = NULL;
-
-  
-  audio_player_devices_list [i+1] = NULL;
-
   pw->audio_player = 
-    gnomemeeting_table_add_string_option_menu (table, _("Audio Player:"), audio_player_devices_list, "/apps/gnomemeeting/devices/audio_player", _("Enter the audio player device to use."), 0);
+    gnomemeeting_table_add_pstring_option_menu (table, _("Audio Player:"), gw->audio_player_devices, DEVICES_KEY "audio_player", _("Enter the audio player device to use."), 0);
 
-  for (int j = i ; j >= 0; j--) 
-    g_free (audio_player_devices_list [j]);
-
+  pw->audio_player_mixer = 
+    gnomemeeting_table_add_pstring_option_menu (table, _("Audio player mixer:"), gw->audio_mixers, DEVICES_KEY "audio_player_mixer", _("The mixer to use to change the volume of the audio player."), 1);
   
   /* The recorder */
-  i = gw->audio_recorder_devices.GetSize () - 1;
-  if (i >= 20) i = 19;
-
-  for (int j = i ; j >= 0; j--) 
-    if (strcmp (gw->audio_recorder_devices [j], "loopback"))
-      audio_recorder_devices_list [j] = 
-	g_strdup (gw->audio_recorder_devices [j]);
-    else
-      audio_recorder_devices_list [j] = NULL;
-  
-  audio_recorder_devices_list [i + 1] = NULL;
-
   pw->audio_recorder = 
-    gnomemeeting_table_add_string_option_menu (table, _("Audio Recorder:"), audio_recorder_devices_list, "/apps/gnomemeeting/devices/audio_recorder", _("Enter the audio recorder device to use."), 2);
+    gnomemeeting_table_add_pstring_option_menu (table, _("Audio Recorder:"), gw->audio_recorder_devices, "/apps/gnomemeeting/devices/audio_recorder", _("Enter the audio recorder device to use."), 2);
 
-  for (int j = i ; j >= 0; j--) 
-    g_free (audio_recorder_devices_list [j]);
+  pw->audio_recorder_mixer = 
+    gnomemeeting_table_add_pstring_option_menu (table, _("Audio recorder mixer:"), gw->audio_mixers, DEVICES_KEY "audio_recorder_mixer", _("The mixer to use to change the volume of the audio recorder."), 4);
 
 
 #ifdef HAS_IXJ
@@ -1113,14 +988,12 @@ static void gnomemeeting_init_pref_window_audio_devices (GtkWidget *notebook)
 static void gnomemeeting_init_pref_window_video_devices (GtkWidget *notebook)
 {
   GConfClient *client = NULL;
-  gchar *gconf_string = NULL;
   GtkWidget *vbox = NULL;                                                      
   GtkWidget *table = NULL; 
 
   GtkWidget *button = NULL;
   GtkWidget *table2 = NULL;
 
-  int i = 0;
   gchar *video_size [] = {_("Small"), 
 			  _("Large"), 
 			  NULL};
@@ -1130,8 +1003,6 @@ static void gnomemeeting_init_pref_window_video_devices (GtkWidget *notebook)
 			    _("auto"), 
 			    NULL};
 
-  gchar *video_devices_list [20];
-                
 
   /* Get the data */                                             
   GmWindow *gw = gnomemeeting_get_main_window (gm);              
@@ -1148,24 +1019,10 @@ static void gnomemeeting_init_pref_window_video_devices (GtkWidget *notebook)
   table = gnomemeeting_vbox_add_table (vbox, _("Video Devices"), 6, 3);
 
   /* The video device */
-  gconf_string =  gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/video_recorder", NULL);
-
-  i = gw->video_devices.GetSize () - 1;
-  if (i >= 20) i = 19;
-
-  for (int j = i ; j >= 0; j--) 
-    video_devices_list [j] = 
-      g_strdup (gw->video_devices [j]);
-  video_devices_list [i + 1] = g_strdup (_("Picture"));
-  video_devices_list [i + 2] = NULL;
+  gw->video_devices += (_("Picture"));
 
   pw->video_device = 
-    gnomemeeting_table_add_string_option_menu (table, _("Video Device:"), video_devices_list, "/apps/gnomemeeting/devices/video_recorder", _("Enter the video device to use. Using an invalid video device for video transmission will transmit a test picture."), 1);
-
-  for (int j = i + 1 ; j >= 0; j--) 
-    g_free (video_devices_list [j]);
-  g_free (gconf_string);
-
+    gnomemeeting_table_add_pstring_option_menu (table, _("Video Device:"), gw->video_devices, "/apps/gnomemeeting/devices/video_recorder", _("Enter the video device to use. Using an invalid video device for video transmission will transmit a test picture."), 1);
 
   /* Video Channel */
   pw->video_channel =

@@ -532,6 +532,28 @@
       </locale>
     </schema>
     <schema>
+      <key>/schemas/apps/gnomemeeting/devices/audio_player_mixer</key>
+      <applyto>/apps/gnomemeeting/devices/audio_player_mixer</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default>/dev/mixer</default>
+      <locale name="C">
+	<short>Audio player mixer</short>
+	<long>The mixer to use to change the volume of the audio player.</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/devices/audio_recorder_mixer</key>
+      <applyto>/apps/gnomemeeting/devices/audio_recorder_mixer</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default>/dev/mixer</default>
+      <locale name="C">
+	<short>Audio recorder mixer</short>
+	<long>The mixer to use to change the volume of the audio recorder.</long>
+      </locale>
+    </schema>
+    <schema>
       <key>/schemas/apps/gnomemeeting/devices/audio_player</key>
       <applyto>/apps/gnomemeeting/devices/audio_player</applyto>
       <owner>GnomeMeeting</owner>

@@ -36,6 +36,7 @@
 #include "common.h"
 #include "main_window.h"
 #include "dialog.h"
+#include "sound_handling.h"
 
 #ifndef DISABLE_GNOME
 #include <gnome.h>
@@ -162,8 +163,34 @@ void GMLid::Stop ()
 
 void GMLid::Close ()
 {
+  GConfClient *client = NULL;
+  GmWindow *gw = NULL;
+  gchar *mixer = NULL;
+  int vol = 0;
+  
   if (lid)
     lid->Close ();
+
+  client = gconf_client_get_default ();
+
+  /* Restore the normal mixers settings */
+  gnomemeeting_threads_enter ();
+  gw = gnomemeeting_get_main_window (gm);
+
+  mixer =
+    gconf_client_get_string (client, DEVICES_KEY "audio_player_mixer", NULL);
+  vol = gnomemeeting_get_mixer_volume (mixer, SOURCE_AUDIO);
+  g_free (mixer);
+  GTK_ADJUSTMENT (gw->adj_play)->value = (int) (vol & 255);
+  
+  mixer =
+    gconf_client_get_string (client, DEVICES_KEY "audio_recorder_mixer", NULL);
+  vol = gnomemeeting_get_mixer_volume (mixer, SOURCE_MIC);
+  g_free (mixer);
+  GTK_ADJUSTMENT (gw->adj_rec)->value = (int) (vol & 255);
+  gtk_widget_queue_draw (GTK_WIDGET (gw->audio_settings_frame));
+
+  gnomemeeting_threads_leave ();
 }
 
 
@@ -171,10 +198,14 @@ void GMLid::Main ()
 {
   BOOL OffHook, lastOffHook;
   BOOL do_not_connect = TRUE;
+
   GMH323EndPoint *endpoint = NULL;
   GmWindow *gw = NULL;
+
   PTime now, last_key_press;
+
   int calling_state = 0;
+  unsigned int vol = 0;
 
   quit_mutex.Wait ();
 
@@ -183,6 +214,13 @@ void GMLid::Main ()
 
   gnomemeeting_threads_enter ();
   gw = gnomemeeting_get_main_window (gm);
+
+  /* Update the mixers if the lid is used */
+  lid->GetPlayVolume (0, vol);
+  GTK_ADJUSTMENT (gw->adj_play)->value = (int) (vol);
+  lid->GetRecordVolume (0, vol);
+  GTK_ADJUSTMENT (gw->adj_rec)->value = (int) (vol);
+  gtk_widget_queue_draw (GTK_WIDGET (gw->audio_settings_frame));
   gnomemeeting_threads_leave ();
 
   /* OffHook can take a few cycles to settle, so on the first pass */

@@ -79,6 +79,8 @@ static void do_not_disturb_changed_nt (GConfClient*, guint,
 				       GConfEntry *, gpointer);
 static void forward_toggle_changed_nt (GConfClient*, guint, GConfEntry *, 
 				       gpointer);
+static void audio_mixer_changed_nt (GConfClient *, guint, GConfEntry *, 
+				    gpointer);
 static void audio_device_changed_nt (GConfClient *, guint, GConfEntry *, 
 				     gpointer);
 static void video_device_setting_changed_nt (GConfClient *, guint, 
@@ -749,6 +751,49 @@ static void video_size_changed_nt (GConfClient *client, guint cid,
 
 
 /* DESCRIPTION  :  This notifier is called when the gconf database data
+ *                 associated with the audio mixer changes.
+ * BEHAVIOR     :  It updates the sliders if a quicknet card is not used.
+ * PRE          :  data = SOURCE_AUDIO or SOURCE_MIC
+ */
+static void
+audio_mixer_changed_nt (GConfClient *client,
+			guint cid, 
+			GConfEntry *entry,
+			gpointer data)
+{
+  int vol = 0;
+  char *mixer = NULL;
+  GmWindow *gw = NULL;
+  GMH323EndPoint *endpoint = MyApp->Endpoint ();
+  GMLid *lid = NULL;
+
+  if (entry->value->type == GCONF_VALUE_STRING) {
+
+    lid = endpoint->GetLidThread ();
+
+    if (!lid) {
+
+      gdk_threads_enter ();
+
+      gw = gnomemeeting_get_main_window (gm);
+      mixer = (char *) gconf_value_get_string (entry->value);
+
+      vol = gnomemeeting_get_mixer_volume (mixer, GPOINTER_TO_INT (data));
+
+      if (GPOINTER_TO_INT (data) == SOURCE_AUDIO)
+	gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_play),
+				  (int) (vol & 255));
+      else 
+	gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_rec),
+				  (int) (vol & 255));
+
+      gdk_threads_leave ();
+    }
+  }
+}
+
+
+/* DESCRIPTION  :  This notifier is called when the gconf database data
  *                 associated with the audio devices changes.
  * BEHAVIOR     :  It updates the endpoint and displays
  *                 a message in the history. If the device is not valid,
@@ -917,7 +962,7 @@ contacts_list_group_content_changed_nt (GConfClient *client, guint cid,
   const char *gconf_key = NULL;
   gchar **group_split = NULL;
   gchar *group_name = NULL;
-  gchar *server_name = NULL;
+  gchar *contact_section = NULL;
 
   GtkListStore *list_store = NULL;
   
@@ -948,10 +993,10 @@ contacts_list_group_content_changed_nt (GConfClient *client, guint cid,
 		gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook),
 					   cpt)) ){
 
-	  server_name = 
-	    (gchar *) g_object_get_data (G_OBJECT (page), "server_name");
+	  contact_section = 
+	    (gchar *) g_object_get_data (G_OBJECT (page), "contact_section");
 
-	  if (server_name && !strcmp (server_name, group_name)) 
+	  if (contact_section && !strcmp (contact_section, group_name)) 
 	    break;
 
 	  cpt++;
@@ -1032,14 +1077,14 @@ static void contacts_list_changed_nt (GConfClient *client, guint cid,
     /* Clean the notebook from pages that disappeared from the list */
     while ((page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), 
 					      cpt))){
-      gchar *server_name2 =  
-	(gchar *) g_object_get_data (G_OBJECT (page), "server_name");
+      gchar *contact_section2 =  
+	(gchar *) g_object_get_data (G_OBJECT (page), "contact_section");
 
       contacts_list_iter = contacts_list;
       found = false;
-      while (server_name2 && contacts_list_iter) {
+      while (contact_section2 && contacts_list_iter) {
 
-	if (!strcmp (server_name2, (char *) contacts_list_iter->data)) {
+	if (!strcmp (contact_section2, (char *) contacts_list_iter->data)) {
 	 
 	  found = true;
 	  break;
@@ -1064,17 +1109,17 @@ static void contacts_list_changed_nt (GConfClient *client, guint cid,
     /* Add all servers to the notebook if they are not already present */
     while (contacts_list_iter) {
 
-      const char *server_name = (const char *) contacts_list_iter->data;
+      const char *contact_section = (const char *) contacts_list_iter->data;
  
       /* This will only add a page to the notebook if there was no page
        * for the given server name */
       page_num = 
-	gnomemeeting_init_ldap_window_notebook ((gchar *) server_name,
+	gnomemeeting_init_ldap_window_notebook ((gchar *) contact_section,
 						GPOINTER_TO_INT (data));
     
       gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
       gtk_tree_store_set (GTK_TREE_STORE (model), &child_iter, 0, 
-			  server_name, 1, server_name, 2, page_num, -1);
+			  contact_section, 1, page_num, -1);
       contacts_list_iter = contacts_list_iter->next;
 
       cpt++;
@@ -1396,10 +1441,16 @@ void gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_player", string_option_menu_changed_nt, pw->audio_player, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_player", audio_device_changed_nt, pw->audio_player, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_player", applicability_check_nt, pw->audio_player, 0, 0);
+  
+  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_player_mixer", string_option_menu_changed_nt, pw->audio_player_mixer, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_player_mixer", audio_mixer_changed_nt, GINT_TO_POINTER (SOURCE_AUDIO), 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_recorder", string_option_menu_changed_nt, pw->audio_recorder, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_recorder", audio_device_changed_nt, pw->audio_recorder, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_recorder", applicability_check_nt, pw->audio_recorder, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_recorder_mixer", string_option_menu_changed_nt, pw->audio_recorder_mixer, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_recorder_mixer", audio_mixer_changed_nt, GINT_TO_POINTER (SOURCE_MIC), 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_recorder", string_option_menu_changed_nt, pw->video_device, 0, 0);			   
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_recorder", video_device_setting_changed_nt, pw->video_device, 0, 0);			   
@@ -1424,7 +1475,6 @@ void gnomemeeting_init_gconf (GConfClient *client)
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_preview", toggle_changed_nt, gw->preview_button, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_preview", video_preview_changed_nt, gw->preview_button, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_preview", toggle_changed_nt, gw->video_test_button, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_preview", applicability_check_nt, gw->preview_button, 0, 0);
 
 #ifdef HAS_IXJ

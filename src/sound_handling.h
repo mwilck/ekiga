@@ -89,8 +89,10 @@ void gnomemeeting_sound_daemons_resume ();
 int gnomemeeting_sound_play_ringtone (GtkWidget *widget);
 
 void gnomemeeting_mixers_mic_select (void);
-
-
+PStringArray gnomemeeting_get_mixers (void);
+int gnomemeeting_get_mixer_volume (char *mixer, int source);
+void gnomemeeting_set_mixer_volume (char *mixer, int source, int vol);
+     
 class GMAudioTester : public PThread
 {
   PCLASSINFO(GMAudioTester, PThread);
@@ -110,18 +112,6 @@ public:
    * PRE          :  /
    */
   ~GMAudioTester ();
-
-
-  BOOL SetPlayerVolume (int);
-
-
-  int GetPlayerVolume ();
-
-
-  BOOL SetRecorderVolume (int);
-
-
-  int GetRecorderVolume ();
 
 
   void Main ();
