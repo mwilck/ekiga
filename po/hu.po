@@ -3,22 +3,23 @@
 # This file is distributed under the same license as the gnomemeeting package.
 # Andras Timar <timar@gnome.hu>, 2002, 2003.
 # Laszlo Dvornik <dvornik@gnome.hu>, 2004.
+# Gabor Kelemen <kelemeng@gnome.hu>, 2004.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-18 11:54+0200\n"
-"PO-Revision-Date: 2004-08-18 14:15+0200\n"
-"Last-Translator: Laszlo Dvornik <dvornik@gnome.hu>\n"
+"POT-Creation-Date: 2004-09-05 19:53+0200\n"
+"PO-Revision-Date: 2004-09-05 21:54+0200\n"
+"Last-Translator: Gabor Kelemen <kelemeng@gnome.hu>\n"
 "Language-Team: Hungarian <gnome@gnome.hu>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #. Add the window icon and title
-#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:1508
-#: src/main_window.cpp:1717
+#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:2374
+#: src/main_window.cpp:2560
 msgid "GnomeMeeting"
 msgstr "GnomeMeeting"
 
@@ -44,15 +45,15 @@ msgstr "Mindig továbbítsa a hívást a megadott állomásnak"
 
 #: gnomemeeting.schemas.in.in.h:4
 msgid "Audio input device"
-msgstr "Audio bemeneti eszköz"
+msgstr "Hangbemeneti eszköz"
 
 #: gnomemeeting.schemas.in.in.h:5
 msgid "Audio output device"
-msgstr "Audio kimeneti eszköz"
+msgstr "Hangkimeneti eszköz"
 
 #: gnomemeeting.schemas.in.in.h:6
 msgid "Audio plugin"
-msgstr "Audio bővítmény"
+msgstr "Hangbővítmény"
 
 #: gnomemeeting.schemas.in.in.h:7
 msgid "Automatic echo cancellation"
@@ -94,12 +95,14 @@ msgid ""
 "Choose the number of blocks (that have not changed) transmitted with each "
 "frame. These blocks fill in the background"
 msgstr ""
+"Válassza ki az egyes képkockákkal átvitt (változatlan) blokkok számát. Ezek "
+"a blokkok a háttérben lesznek kitöltve"
 
 #: gnomemeeting.schemas.in.in.h:14
 msgid "Clear inactive calls"
 msgstr "Inaktív hívások törlése"
 
-#: gnomemeeting.schemas.in.in.h:15 src/addressbook_window.cpp:857
+#: gnomemeeting.schemas.in.in.h:15 src/addressbook_window.cpp:860
 msgid "Comment"
 msgstr "Megjegyzés"
 
@@ -110,6 +113,10 @@ msgid ""
 "Netmeeting and using both Fast Start and H.245 Tunnelling can crash some "
 "versions of Netmeeting"
 msgstr ""
+"A kapcsolatot gyors indítás módban hozza létre. A gyors indítás a hívások "
+"indításának egy gyorsabb módja, mint amit a H.323v2 bevezetett. A Netmeeting "
+"nem támogatja. A gyors indítás és a H.245 alagutazás együttes használata "
+"összeomlaszthatja a Netmeeting egyes verzióit"
 
 #: gnomemeeting.schemas.in.in.h:17
 msgid "Country code"
@@ -149,7 +156,7 @@ msgstr "STUN-támogatás engedélyezése"
 
 #: gnomemeeting.schemas.in.in.h:26
 msgid "Enable bilinear filtering on displayed video"
-msgstr "Bilineáris szűrő engedélyezése a megjelenített videón"
+msgstr "Bilineáris szűrő engedélyezése a megjelenített videon"
 
 #: gnomemeeting.schemas.in.in.h:27
 msgid "Enable early H.245"
@@ -188,6 +195,8 @@ msgid ""
 "Enter a valid URL to connect to a web application that outputs the public IP "
 "of your host"
 msgstr ""
+"Adja meg egy webes alkalmazás érvényes URL-jét, amely kimenetként megadja az "
+"Ön gépének nyilvános Ip-címét"
 
 #: gnomemeeting.schemas.in.in.h:35
 msgid ""
@@ -195,6 +204,10 @@ msgid ""
 "translation. If you are registered to ils.seconix.com, GnomeMeeting will "
 "automatically fetch the public IP using the ILS service"
 msgstr ""
+"Adja meg a NAT/PAT útválasztó nyilvános IP címét, ha szeretné az IP "
+"fordítást használni. Ha regisztrálva van az ils.seconix.com-nál, a "
+"GnomeMeeting automatikusan letölti a nyilvános IP-t az ILS szolgáltatás "
+"használatával"
 
 #: gnomemeeting.schemas.in.in.h:36 src/pref_window.cpp:654
 msgid "Enter your e-mail address"
@@ -239,23 +252,23 @@ msgstr "Teljes képernyő szélessége"
 
 #: gnomemeeting.schemas.in.in.h:46 src/pref_window.cpp:983
 msgid "Gatekeeper ID"
-msgstr "Gatekeeper azonosító"
+msgstr "Forgalomirányító azonosítója"
 
 #: gnomemeeting.schemas.in.in.h:47
 msgid "Gatekeeper alias"
-msgstr "Gatekeeper-álnév"
+msgstr "Forgalomirányító-álnév"
 
 #: gnomemeeting.schemas.in.in.h:48
 msgid "Gatekeeper alias as primary alias"
-msgstr "Gatekeeper-álnév elsődleges álnévként"
+msgstr "Forgalomirányító-álnév elsődleges álnévként"
 
 #: gnomemeeting.schemas.in.in.h:49 src/pref_window.cpp:982
 msgid "Gatekeeper host"
-msgstr "Gatekeeper gép"
+msgstr "Forgalomirányító gép"
 
 #: gnomemeeting.schemas.in.in.h:50
 msgid "Gatekeeper password"
-msgstr "Gatekeeper-jelszó"
+msgstr "Forgalomirányító jelszó"
 
 #: gnomemeeting.schemas.in.in.h:51
 msgid "Gateway/proxy host"
@@ -266,6 +279,8 @@ msgid ""
 "If enabled, GnomeMeeting will start hidden provided that the notification "
 "area is present in the GNOME panel"
 msgstr ""
+"Ha engedélyezi, a GnomeMeeting rejtve fog elindulni, ha az értesítési "
+"terület kisalkalmazás fut a GNOME panelen"
 
 #: gnomemeeting.schemas.in.in.h:53
 msgid ""
@@ -286,6 +301,8 @@ msgid ""
 "specified in the field below if you already are in a call or if you are in "
 "Do Not Disturb mode"
 msgstr ""
+"Ha engedélyezi, minden bejövő hívás a lejjebb megadott kiszolgálóra lesz "
+"továbbítva, ha már folyamatban van egy hívás vagy Ne zavarjanak módban van"
 
 #: gnomemeeting.schemas.in.in.h:56
 msgid ""
@@ -304,6 +321,8 @@ msgid ""
 "If enabled, calls for which no audio and video has been received in the last "
 "30 seconds are automatically cleared"
 msgstr ""
+"Ha engedélyezi, azok a hívások, melyekhez nem érkezett hang és kép az elmúlt "
+"30 másodpercben, automatikusan törölve lesznek"
 
 #: gnomemeeting.schemas.in.in.h:59
 msgid "If enabled, register with the selected user directory"
@@ -326,10 +345,11 @@ msgstr ""
 #: gnomemeeting.schemas.in.in.h:62
 msgid "If enabled, use silence detection with the GSM and G.711 codecs"
 msgstr ""
+"Ezzel engedélyezheti a csendérzékelés használatát a GSM és G.711 kodekeknél"
 
 #: gnomemeeting.schemas.in.in.h:63
 msgid "If enabled, video is transmitted during a call"
-msgstr ""
+msgstr "Ezzel engedélyezi a video hívás közben való átvitelét"
 
 #: gnomemeeting.schemas.in.in.h:64
 msgid ""
@@ -337,6 +357,10 @@ msgid ""
 "disabled, you are not visible to users browsing the user directory, but they "
 "can still use the callto URL to call you"
 msgstr ""
+"Ha engedélyezi, részletes információk jelennek meg Önről a felhasználók "
+"könyvtárát böngészők előtt. Ha kikapcsolja, a felhasználók könyvtárát "
+"böngésző emberek nem fogják Önt látni, de felhívhatják Önt a callto URL "
+"használatával"
 
 #: gnomemeeting.schemas.in.in.h:65
 msgid "Incoming call mode"
@@ -358,7 +382,7 @@ msgstr "Figyelőport"
 msgid "Local video window size"
 msgstr "Helyi videoablak mérete"
 
-#: gnomemeeting.schemas.in.in.h:70 src/addressbook_window.cpp:894
+#: gnomemeeting.schemas.in.in.h:70 src/addressbook_window.cpp:897
 msgid "Location"
 msgstr "Hely"
 
@@ -368,7 +392,7 @@ msgstr "Maximális jitter puffer"
 
 #: gnomemeeting.schemas.in.in.h:72
 msgid "Maximum video bandwidth"
-msgstr "Maximális videosávszélesség"
+msgstr "Maximális video sávszélesség"
 
 #: gnomemeeting.schemas.in.in.h:73
 msgid "Minimum jitter buffer"
@@ -384,7 +408,7 @@ msgstr "Elmulasztott hívások naplója"
 
 #: gnomemeeting.schemas.in.in.h:76
 msgid "No answer timeout"
-msgstr ""
+msgstr "Nincs válaszidő-túllépés"
 
 #: gnomemeeting.schemas.in.in.h:77
 msgid "Number of frames for G.711"
@@ -432,7 +456,7 @@ msgstr "A helyi videoablak pozíciója"
 
 #: gnomemeeting.schemas.in.in.h:88
 msgid "Position on the screen of the PC-To-Phone window"
-msgstr ""
+msgstr "A PC->telefon ablak pozíciója a képernyőn"
 
 #: gnomemeeting.schemas.in.in.h:89
 msgid "Position on the screen of the address book window"
@@ -448,7 +472,7 @@ msgstr "A varázslóablak pozíciója a képernyőn"
 
 #: gnomemeeting.schemas.in.in.h:92
 msgid "Position on the screen of the log window"
-msgstr ""
+msgstr "A naplóablak pozíciója a képernyőn"
 
 #: gnomemeeting.schemas.in.in.h:93
 msgid "Position on the screen of the main window"
@@ -460,7 +484,7 @@ msgstr "A beállítások ablak pozíciója a képernyőn"
 
 #: gnomemeeting.schemas.in.in.h:95
 msgid "Public IP of the NAT/PAT router"
-msgstr "A NAT/PAT router nyilvános IP címe"
+msgstr "A NAT/PAT útválasztó nyilvános IP címe"
 
 #: gnomemeeting.schemas.in.in.h:96
 msgid "Received calls history"
@@ -484,21 +508,22 @@ msgstr "A sémafájl verziószáma"
 
 #: gnomemeeting.schemas.in.in.h:101 src/pref_window.cpp:1110
 msgid "Select the audio input device to use"
-msgstr "Válassza ki a használni kívánt audio bemeneti eszközt"
+msgstr "Válassza ki a használni kívánt hangbemeneti eszközt"
 
 #: gnomemeeting.schemas.in.in.h:102 src/pref_window.cpp:1103
 msgid "Select the audio output device to use"
-msgstr "Válassza ki a használni kívánt audio kimeneti eszközt"
+msgstr "Válassza ki a használni kívánt hangkimeneti eszközt"
 
 #: gnomemeeting.schemas.in.in.h:103 src/pref_window.cpp:933
 msgid "Select the audio output device to use for sound events"
-msgstr "Válassza ki a hangeseményekhez használni kívánt audio kimeneti eszközt"
+msgstr "Válassza ki a hangeseményekhez használni kívánt hangkimeneti eszközt"
 
 #: gnomemeeting.schemas.in.in.h:104 src/pref_window.cpp:1187
 msgid ""
 "Select the format for video cameras (does not apply to most USB cameras)"
 msgstr ""
-"Válassza ki a videokamera formátumát (nem érvényes a legtöbb USB kamerára)"
+"Válassza ki a formátumot a videokamerákra (nem érvényes a legtöbb USB "
+"kamerára)"
 
 #: gnomemeeting.schemas.in.in.h:105 src/pref_window.cpp:1185
 msgid ""
@@ -513,6 +538,8 @@ msgid ""
 "Select the video input device to use. If an error occurs when using this "
 "device a test picture will be transmitted."
 msgstr ""
+"Válassza ki a használandó video bemeneti eszközt. Ha hiba lép fel ezen "
+"eszköz használata közben, egy tesztkép kerül átvitelre."
 
 #: gnomemeeting.schemas.in.in.h:107
 msgid "Show a status bar at the bottom of the main window"
@@ -540,7 +567,7 @@ msgstr "Csevegőablak megjelenítése a főablakban"
 
 #: gnomemeeting.schemas.in.in.h:113
 msgid "Size of the PC-To-Phone window"
-msgstr ""
+msgstr "A PC->telefon ablak mérete"
 
 #: gnomemeeting.schemas.in.in.h:114
 msgid "Size of the address book window"
@@ -556,7 +583,7 @@ msgstr "A varázslóablak mérete"
 
 #: gnomemeeting.schemas.in.in.h:117
 msgid "Size of the log window"
-msgstr ""
+msgstr "A naplóablak mérete"
 
 #: gnomemeeting.schemas.in.in.h:118
 msgid "Size of the preferences window"
@@ -566,7 +593,7 @@ msgstr "A beállítások ablak mérete"
 msgid "Start hidden"
 msgstr "Indítás rejtve"
 
-#: gnomemeeting.schemas.in.in.h:120 src/menu.cpp:470 src/menu.cpp:597
+#: gnomemeeting.schemas.in.in.h:120 src/main_window.cpp:865
 msgid "Switch to fullscreen"
 msgstr "Átkapcsolás teljes képernyőre"
 
@@ -585,7 +612,7 @@ msgid ""
 "for best quality."
 msgstr ""
 "Az automatikus visszhangeltörlés szintje: Ki, Alacsony, Közepes, Magas, "
-"Automatikus erősítéskompenzáció. Az Automatikus erősítéskompenzáció "
+"Automatikus erősítéskompenzáció (AGC). Az Automatikus erősítéskompenzáció "
 "választása alakítja a hangot a lehető legjobb minőségűre."
 
 #: gnomemeeting.schemas.in.in.h:124 src/pref_window.cpp:996
@@ -593,25 +620,28 @@ msgid ""
 "The Gatekeeper alias to use when registering (string, or E164 ID if only "
 "0123456789#)"
 msgstr ""
+"A forgalomirányító álnév regisztráció közben (szöveg vagy E164 azonosító, "
+"csak 0123456789# karakterek)"
 
 #: gnomemeeting.schemas.in.in.h:125 src/pref_window.cpp:994
 msgid "The Gatekeeper host to register with"
-msgstr "A gatekeeper gép, amelynél regisztrálja magát"
+msgstr "A forgalomirányító gép, amelynél regisztrálja magát"
 
 #: gnomemeeting.schemas.in.in.h:126 src/pref_window.cpp:992
 msgid "The Gatekeeper identifier to register with"
-msgstr "A gatekeeper azonosító, amelynél regisztrálja magát"
+msgstr "A forgalomirányító azonosító, amelynél regisztrálja magát"
 
 #: gnomemeeting.schemas.in.in.h:127 src/pref_window.cpp:999
 msgid ""
 "The Gatekeeper password to use for H.235 authentication to the Gatekeeper"
-msgstr "A gatekeeper-jelszó, amelyet a H.235 hitelesítéskor kell használni"
+msgstr ""
+"A forgalomirányító-jelszó, amelyet a H.235 azonosításkor kell használni"
 
 #: gnomemeeting.schemas.in.in.h:128 src/pref_window.cpp:1021
 msgid ""
 "The Gateway host is the host to use to do H.323 calls through a gateway that "
 "will relay calls"
-msgstr ""
+msgstr "A H.323 hívásokat továbbító átjáróként használt gép"
 
 #: gnomemeeting.schemas.in.in.h:129
 msgid "The STUN Server"
@@ -622,29 +652,36 @@ msgid ""
 "The STUN server to use for STUN Support. STUN is a technic that permits to "
 "go through some types of NAT gateways."
 msgstr ""
+"Az STUN támogatáshoz használt STUN kiszolgáló. A STUN technika lehetővé "
+"teszi bizonyos típusú NAT átjárókon az áthaladást."
 
 #: gnomemeeting.schemas.in.in.h:131
 msgid ""
 "The audio plugin that will be used to detect the devices and manage them"
-msgstr ""
+msgstr "Az eszközök felismeréséhez és kezeléséhez használandó hangbővítmény"
 
 #: gnomemeeting.schemas.in.in.h:132
 msgid "The busy tone sound"
-msgstr ""
+msgstr "A \"foglalt\" hang"
 
 #: gnomemeeting.schemas.in.in.h:133
 msgid ""
 "The chosen sound will be played at the end of calls or calling somebody who "
 "is busy, if enabled"
 msgstr ""
+"Ha engedélyezve van, a hívások végén vagy foglalt jelzéskor a kiválasztott "
+"hang kerül lejátszásra"
 
 #: gnomemeeting.schemas.in.in.h:134
 msgid "The chosen sound will be played on incoming calls, if enabled"
 msgstr ""
+"Ha engedélyezve van, a kiválasztott hang kerül lejátszásra a bejövő "
+"hívásoknál"
 
 #: gnomemeeting.schemas.in.in.h:135
 msgid "The chosen sound will be played when calling somebody, if enabled"
 msgstr ""
+"Ha engedélyezve van, a kiválasztott hang kerül lejátszásra, ha felhív valakit"
 
 #: gnomemeeting.schemas.in.in.h:136
 msgid "The default video view"
@@ -655,6 +692,8 @@ msgid ""
 "The default video view (0: Local, 1: Remote, 2: Both incrusted, 3: Both with "
 "local video in a separate window, 4: Both)"
 msgstr ""
+"Az alapértelmezett videonézet (0: helyi, 1: távoli, 2: mindkettő "
+"kicsinyítve, 3: mindkettő, helyi videó külön ablakban, 4: mindkettő)"
 
 #: gnomemeeting.schemas.in.in.h:138
 msgid "The history of the last 100 missed calls"
@@ -671,6 +710,8 @@ msgstr "A legutóbbi 100 fogadott hívás naplója"
 #: gnomemeeting.schemas.in.in.h:141 src/pref_window.cpp:752
 msgid "The host where calls should be forwarded to in the cases selected above"
 msgstr ""
+"A fent kiválasztott esetekben erre a kiszolgálóra lesznek a hívások "
+"továbbítva"
 
 #: gnomemeeting.schemas.in.in.h:142
 msgid "The image height for fullscreen"
@@ -682,6 +723,9 @@ msgid ""
 "opening of the device fails. Leave blank to use the default GnomeMeeting "
 "logo."
 msgstr ""
+"Az átvivendő kép ha a \"Kép\" videobővítmény van kiválasztva vagy ha az "
+"eszköz megnyitása nem sikerül. Hagyja üresen az alapértelmezett GnomeMeeting "
+"logó kiválasztásához."
 
 #: gnomemeeting.schemas.in.in.h:144
 msgid "The image width for fullscreen"
@@ -709,6 +753,10 @@ msgid ""
 "transmitted frames per second will be dynamically adjusted above their "
 "minimum during calls to try to minimize the bandwidth to the given value"
 msgstr ""
+"A videosávszélesség felső határa Kb/s-ban. A videominőség és a "
+"másodpercenként átvitt képkockák száma hívás közben dinamikusan lesz "
+"beállítva a minimális értékük felett, így próbálva a sávszélességet a "
+"megadott értékre csökkenteni"
 
 #: gnomemeeting.schemas.in.in.h:150
 msgid "The minimum jitter buffer size for audio reception (in ms)"
@@ -721,12 +769,17 @@ msgid ""
 "used bandwidth: choose 100% on a LAN for the best quality, 1% being the "
 "worst quality"
 msgstr ""
+"A minimálisan megtartandó videominőség átvitelkor, ha a sávszélesség "
+"minimalizálandó: válasszon 100%-ot helyi hálózatnál a legjobb minőséghez, 1%-"
+"ot a legrosszabbhoz"
 
 #: gnomemeeting.schemas.in.in.h:153 src/pref_window.cpp:1120
 msgid ""
 "The output device type is the type of device connected to your Quicknet "
 "card. It can be either a POTS (Plain Old Telephone System) or a headset."
 msgstr ""
+"A Quicknet kártyához csatlakoztatott eszköz típusa. Ez vagy egy hagyományos "
+"telefon (POTS), vagy headset lehet."
 
 #: gnomemeeting.schemas.in.in.h:154
 msgid ""
@@ -761,6 +814,13 @@ msgid ""
 "take effect. This port range has no effect if both participants to the "
 "conference are using H.245 Tunneling."
 msgstr ""
+"A listen_port mellett használandó TCP portok tartománya, amit a GnomeMeeting "
+"a H.245 csatornához fog használni. Szükség lehet a TCP porttartomány "
+"megváltoztatására, ha IP fordítást használ és több GnomeMeeting egyidejű "
+"futtatására van szükség egy NAT/PAT útválasztó mögött. A GnomeMeeting-et "
+"újra kell indítani az új értékek életbeléptetéséhez. Ennek a "
+"porttartománynak nincs hatása, ha a videokonferencia mindkét résztvevője "
+"H.245 alagutazást használ."
 
 #: gnomemeeting.schemas.in.in.h:159
 msgid ""
@@ -770,6 +830,11 @@ msgid ""
 "your NAT/PAT router. GnomeMeeting needs to be restarted for the new values "
 "to take effect."
 msgstr ""
+"A GnomeMeeting által RTP-hez (hang és képátviteli csatornákhoz) használt UTP "
+"portok tartománya. Szükség lehet az UDP porttartomány megváltoztatására, ha "
+"IP fordítást használ és több GnomeMeeting egyidejű futtatására van szükség "
+"egy NAT/PAT útválasztó mögött. A GnomeMeeting-et újra kell indítani az új "
+"értékek életbeléptetéséhez."
 
 #: gnomemeeting.schemas.in.in.h:160
 msgid ""
@@ -780,6 +845,12 @@ msgid ""
 "take effect. This port range has no effect if you are not registering to a "
 "gatekeeper."
 msgstr ""
+"A GnomeMeeting által forgalomirányítókon való regisztrációhoz használt UTP "
+"portok tartománya. Szükség lehet az UDP porttartomány megváltoztatására, ha "
+"IP fordítást használ és több GnomeMeeting egyidejű futtatására van szükség "
+"egy NAT/PAT útválasztó mögött. A GnomeMeeting-et újra kell indítani az új "
+"értékek életbeléptetéséhez. Ennek a porttartománynak nincs hatása, ha nem "
+"regisztrál forgalomirányítón."
 
 #: gnomemeeting.schemas.in.in.h:161 src/pref_window.cpp:1004
 msgid "The registering method to use"
@@ -787,7 +858,7 @@ msgstr "A használandó regisztrációs mód"
 
 #: gnomemeeting.schemas.in.in.h:162
 msgid "The ring tone sound"
-msgstr ""
+msgstr "A csengőhang"
 
 #: gnomemeeting.schemas.in.in.h:163
 msgid "The save prefix"
@@ -806,14 +877,16 @@ msgid ""
 "The sound that will be played at the end of calls or when calling somebody "
 "who is busy, if enabled"
 msgstr ""
+"Ha engedélyezve van, a hívások végén vagy foglalt jelzéskor ez a hang kerül "
+"lejátszásra"
 
 #: gnomemeeting.schemas.in.in.h:167
 msgid "The sound that will be played on incoming calls, if enabled"
-msgstr ""
+msgstr "Ha engedélyezve van, ez a hang kerül lejátszásra a bejövő hívásoknál"
 
 #: gnomemeeting.schemas.in.in.h:168
 msgid "The sound that will be played when calling somebody, if enabled"
-msgstr ""
+msgstr "Ha engedélyezve van, ez a hang kerül lejátszásra, ha felhív valakit"
 
 #: gnomemeeting.schemas.in.in.h:169
 msgid "The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)"
@@ -832,7 +905,7 @@ msgstr ""
 #: gnomemeeting.schemas.in.in.h:172 src/pref_window.cpp:1167
 msgid ""
 "The video plugin that will be used to detect the devices and manage them"
-msgstr ""
+msgstr "A videoeszközök felismerésére és kezelésére használt videobővítmény"
 
 #: gnomemeeting.schemas.in.in.h:173
 msgid ""
@@ -840,16 +913,21 @@ msgid ""
 "answers the call, 2 automatically rejects the call and 3 forwards the call "
 "to the given URL, if any"
 msgstr ""
+"A bejövő hívásokra való reagálás módja: 0 - felbukkanó ablak megjelenítése, "
+"1 - automatikus válasz, 2 - a hívás automatikus visszautasítása, 3 - a hívás "
+"továbbítása a megadott URL-re (ha van)"
 
 #: gnomemeeting.schemas.in.in.h:174
 msgid "The zoom value"
-msgstr "A nagyítási érték"
+msgstr "A nagyítási arány"
 
 #: gnomemeeting.schemas.in.in.h:175
 msgid ""
 "The zoom value to apply to images displayed in the main GUI (can be 0.50, "
 "1.00, or 2.00)"
 msgstr ""
+"A főablakban megjelenített képek nagyítási aránya (lehetséges értékek: 0.50, "
+"1.00, vagy 2.00)"
 
 #: gnomemeeting.schemas.in.in.h:176
 msgid ""
@@ -859,10 +937,15 @@ msgid ""
 "Netmeeting does not support it. Using both Fast Start and H.245 Tunnelling "
 "can crash some versions of Netmeeting."
 msgstr ""
+"Ez engedélyezi a H.245-alagutazás módot. Ebben a módban a H.245 üzenetek a "
+"H.225 csatornába (1720-as port) lesznek beágyazva. Ez felszabadít egy TCP "
+"kapcsolatot hívások közben. A H.245 alagutazást a H.323v2 vezette be és a "
+"Netmeeting nem támogatja. A gyors indítás és a H.245 alagutazás együttes "
+"használata összeomlaszthatja a Netmeeting egyes verzióit."
 
 #: gnomemeeting.schemas.in.in.h:177 src/pref_window.cpp:960
 msgid "This enables H.245 early in the setup"
-msgstr ""
+msgstr "A H.245 korai engedélyezése a beállításban"
 
 #: gnomemeeting.schemas.in.in.h:178
 msgid ""
@@ -871,6 +954,11 @@ msgid ""
 "when IP Translation is enabled. If you disable IP checking, you will have to "
 "manually enter the IP of your gateway in the GnomeMeeting preferences"
 msgstr ""
+"Ez engedélyezi az IP ellenőrzést a seconix.com-ról és kitölti a GnomeMeeting "
+"NAT/PAT átjárójának nyilvános IP cím mezőjét. A kapott IP csak az IP "
+"fordítás engedélyezésekor lesz felhasználva. Ha nem engedélyezi az IP "
+"ellenőrzést, az átjáró IP címét kézzel kell megadnia a GnomeMeeting "
+"tulajdonságainál"
 
 #: gnomemeeting.schemas.in.in.h:179
 msgid ""
@@ -880,12 +968,20 @@ msgid ""
 "will automatically fetch the public IP using the ILS service. If your router "
 "natively supports H.323, you can disable this"
 msgstr ""
+"Ez engedélyezi az IP fordítást. Ez olyankor hasznos, ha a GnomeMeeting egy "
+"NAT/PAT útválasztó mögött fut. Az alábbi mezőbe az útválasztó nyilvános IP-"
+"jét kell beírnia. HA Ön regisztrálva van az ils.seconix.com-nál, a "
+"GnomeMeeting automatikusan lekéri a nyilvános IP-t az ILS szolgáltatás "
+"segítségével. Ha az útválasztó alapértelmezetten támogatja a H.323-at, ezt "
+"kikapcsolhatja"
 
 #: gnomemeeting.schemas.in.in.h:180 src/pref_window.cpp:1051
 msgid ""
 "This enables STUN Support. STUN is a technic that permits to go through some "
 "types of NAT gateways."
 msgstr ""
+"Ez engedélyezi a STUN támogatást. A STUN technika lehetővé teszi bizonyos "
+"típusú NAT átjárókon az áthaladást."
 
 #: gnomemeeting.schemas.in.in.h:181
 msgid ""
@@ -894,6 +990,11 @@ msgid ""
 "(default is \"All\"). Choosing other values than \"All\", \"String\" or "
 "\"rfc2833\" disables the Text Chat"
 msgstr ""
+"Ezzel beállíthatja a DMTF küldési módot. A lehetséges értékek: \"All\" (Mind "
+"- 0), \"None\" (Nincs - 1) \"rfc2833\"(2), \"Signal\" (Jel - 3) vagy \"String"
+"\" (Karakterlánc - 4) (Az alapértelmezett a \"Mind\"). Az \"All\", \"String"
+"\" vagy \"rfc2833\" -tól különböző érték választása kikapcsolja a szöveges "
+"csevegést."
 
 #: gnomemeeting.schemas.in.in.h:182
 msgid "Transmitted background blocks"
@@ -917,6 +1018,10 @@ msgid ""
 "registering with a gatekeeper. This may be required if your gatekeeper can "
 "only perform authentication using the first alias in the list"
 msgstr ""
+"Használja ezt az opciót hogy biztosan a fenti álnév legyen használva a "
+"forgalomirányítón való regisztrációkor. Ez olyankor lehet szükséges, ha az "
+"Ön által használt forgalomirányító csak a lista első álnevének használatával "
+"képes azonosítást végezni"
 
 #: gnomemeeting.schemas.in.in.h:187
 msgid "User directory"
@@ -975,38 +1080,6 @@ msgstr "Fordította"
 msgid "C_redits"
 msgstr "_Köszönet"
 
-#: lib/about/gnome-about.c:377
-msgid "Program name"
-msgstr "Programnév"
-
-#: lib/about/gnome-about.c:378
-msgid "The name of the program"
-msgstr "A program neve"
-
-#: lib/about/gnome-about.c:385
-msgid "Program version"
-msgstr "Programverzió"
-
-#: lib/about/gnome-about.c:386
-msgid "The version of the program"
-msgstr "A program verziószáma"
-
-#: lib/about/gnome-about.c:392
-msgid "Copyright string"
-msgstr "Copyright szöveg"
-
-#: lib/about/gnome-about.c:393
-msgid "Copyright information for the program"
-msgstr "Copyright-információ a programról"
-
-#: lib/about/gnome-about.c:400
-msgid "Comments string"
-msgstr "Megjegyzések"
-
-#: lib/about/gnome-about.c:401
-msgid "Comments about the program"
-msgstr "Megjegyzések a programról"
-
 #: lib/about/gnome-about.c:407
 msgid "Authors"
 msgstr "Szerzők"
@@ -1015,22 +1088,6 @@ msgstr "Szerzők"
 msgid "List of authors of the programs"
 msgstr "A program szerzőinek listája"
 
-#: lib/about/gnome-about.c:410
-msgid "Author entry"
-msgstr "Szerző bejegyzés"
-
-#: lib/about/gnome-about.c:411
-msgid "A single author entry"
-msgstr "Egy szerző a sok közül"
-
-#: lib/about/gnome-about.c:418
-msgid "Documenters"
-msgstr "Dokumentáció írói"
-
-#: lib/about/gnome-about.c:419
-msgid "List of people documenting the program"
-msgstr "A program dokumentációját író emberek listája"
-
 #: lib/about/gnome-about.c:421
 msgid "Documenter entry"
 msgstr "Doksiíró bejegyzés"
@@ -1038,23 +1095,6 @@ msgstr "Doksiíró bejegyzés"
 #: lib/about/gnome-about.c:422
 msgid "A single documenter entry"
 msgstr "Egy doksiíró a sok közül"
-
-#: lib/about/gnome-about.c:430
-msgid "Translator credits"
-msgstr "Fordítók"
-
-#: lib/about/gnome-about.c:431
-msgid ""
-"Credits to the translators. This string should be marked as translatable"
-msgstr "A fordítók listája. Ez a karakterlánc fordítandó"
-
-#: lib/about/gnome-about.c:438 lib/druid/gnome-druid-page-standard.c:135
-msgid "Logo"
-msgstr "Logó"
-
-#: lib/about/gnome-about.c:439
-msgid "A logo for the about box"
-msgstr "Logó a névjegyablakban"
 
 #: lib/about/gnome-about.c:518
 #, c-format
@@ -1071,7 +1111,11 @@ msgstr "Cím"
 
 #: lib/druid/gnome-druid-page-standard.c:128
 msgid "Title of the druid"
-msgstr "A varázslóablak cím"
+msgstr "A varázslóablak címe"
+
+#: lib/druid/gnome-druid-page-standard.c:135
+msgid "Logo"
+msgstr "Logó"
 
 #: lib/druid/gnome-druid-page-standard.c:136
 msgid "Logo image"
@@ -1091,7 +1135,7 @@ msgstr "Cím színe"
 
 #: lib/druid/gnome-druid-page-standard.c:152
 msgid "Foreground color of the title"
-msgstr "A cím előtérszíne"
+msgstr "A cím színe"
 
 #: lib/druid/gnome-druid-page-standard.c:159
 msgid "Title Foreground Color"
@@ -1099,7 +1143,7 @@ msgstr "Cím színe (GdkColor)"
 
 #: lib/druid/gnome-druid-page-standard.c:160
 msgid "Foreground color of the title as a GdkColor"
-msgstr "A cím színe, mint GdkColor"
+msgstr "Az cím színe, mint GdkColor"
 
 #: lib/druid/gnome-druid-page-standard.c:167
 msgid "Title Foreground color set"
@@ -1175,313 +1219,307 @@ msgstr ""
 "Hiba történt a beállításokat kezelő háttérprogramban.\n"
 "Bizonyos beállításai elveszhetnek."
 
-#: src/addressbook_window.cpp:657
-msgid "Contact collision"
-msgstr "Kapcsolat ütközés"
+#: lib/stats_drawing_area.c:362
+#, c-format
+msgid "Total: %.2f MB"
+msgstr "Összesen: %.2f MB"
 
-#: src/addressbook_window.cpp:659
+#: src/addressbook_window.cpp:660
+msgid "Contact collision"
+msgstr "Kapcsolatütközés"
+
+#: src/addressbook_window.cpp:662
 #, c-format
 msgid ""
 "Another contact with the same speed dial already exists in your address "
 "book:\n"
 "\n"
-"<b>Contact Name</b>: %s\n"
-"<b>Contact URL</b>: %s\n"
-"<b>Contact Speed Dial</b>: %s\n"
+"<b>Name</b>: %s\n"
+"<b>URL</b>: %s\n"
+"<b>Speed Dial</b>: %s\n"
 msgstr ""
 "A címjegyzékben már van egy másik kapcsolat ugyanezzel a gyorstárcsázással:\n"
 "\n"
-"<b>Kapcsolat neve</b>: %s\n"
-"<b>Kapcsolat URL-je</b>: %s\n"
-"<b>Kapcsolat gyorstárcsázása</b>: %s\n"
+"<b>Név</b>: %s\n"
+"<b>URL</b>: %s\n"
+"<b>Gyorstárcsázás</b>: %s\n"
 
-#: src/addressbook_window.cpp:659 src/addressbook_window.cpp:661
+#: src/addressbook_window.cpp:662 src/addressbook_window.cpp:664
 #: src/druid.cpp:1762 src/pref_window.cpp:945
 msgid "None"
 msgstr "Nincs"
 
-#: src/addressbook_window.cpp:661
+#: src/addressbook_window.cpp:664
 #, c-format
 msgid ""
 "Another contact with similar information already exists in your address "
 "book:\n"
 "\n"
-"<b>Contact Name</b>: %s\n"
-"<b>Contact URL</b>: %s\n"
-"<b>Contact Speed Dial</b>: %s\n"
+"<b>Name</b>: %s\n"
+"<b>URL</b>: %s\n"
+"<b>Speed Dial</b>: %s\n"
 "\n"
 "Do you still want to add the contact?"
 msgstr ""
 "A címjegyzékben már van egy másik kapcsolat hasonló adatokkal:\n"
 "\n"
-"<b>Kapcsolat neve</b>: %s\n"
-"<b>Kapcsolat URL-je</b>: %s\n"
-"<b>Kapcsolat gyorstárcsázása</b>: %s\n"
+"<b>Név</b>: %s\n"
+"<b>URL</b>: %s\n"
+"<b>Gyorstárcsázás</b>: %s\n"
 "\n"
 "Mégis hozzáadja a kapcsolatot?"
 
 #. Translators: This is "S" as in "Status"
-#: src/addressbook_window.cpp:821
+#: src/addressbook_window.cpp:824
 msgid "S"
 msgstr "Á"
 
-#: src/addressbook_window.cpp:832 src/pref_window.cpp:500
+#: src/addressbook_window.cpp:835 src/pref_window.cpp:500
 msgid "Name"
 msgstr "Név"
 
-#: src/addressbook_window.cpp:844
+#: src/addressbook_window.cpp:847
 msgid "URL"
 msgstr "URL"
 
-#: src/addressbook_window.cpp:870 src/calls_history_window.cpp:702
+#: src/addressbook_window.cpp:873 src/calls_history_window.cpp:702
 msgid "Software"
 msgstr "Szoftver"
 
-#: src/addressbook_window.cpp:883
+#: src/addressbook_window.cpp:886
 msgid "E-Mail"
 msgstr "E-mail"
 
-#: src/addressbook_window.cpp:907
+#: src/addressbook_window.cpp:910
 msgid "Categories"
 msgstr "Kategóriák"
 
-#: src/addressbook_window.cpp:920
+#: src/addressbook_window.cpp:923
 msgid "Speed Dial"
 msgstr "Gyorstárcsázás"
 
-#: src/addressbook_window.cpp:1251 src/addressbook_window.cpp:1281
-#: src/addressbook_window.cpp:1914 src/calls_history_window.cpp:236
+#: src/addressbook_window.cpp:1254 src/addressbook_window.cpp:1284
+#: src/addressbook_window.cpp:1924 src/calls_history_window.cpp:236
 msgid "C_all Contact"
 msgstr "Kapcsolat _hívása"
 
-#: src/addressbook_window.cpp:1256 src/addressbook_window.cpp:1286
+#: src/addressbook_window.cpp:1259 src/addressbook_window.cpp:1289
 msgid "_Copy URL to clipboard"
 msgstr "URL _másolása a vágólapra"
 
-#: src/addressbook_window.cpp:1263 src/addressbook_window.cpp:1900
+#: src/addressbook_window.cpp:1266 src/addressbook_window.cpp:1910
 msgid "_Properties"
 msgstr "_Tulajdonságok"
 
-#: src/addressbook_window.cpp:1270 src/addressbook_window.cpp:1895
+#: src/addressbook_window.cpp:1273 src/addressbook_window.cpp:1905
 msgid "_Delete"
 msgstr "_Törlés"
 
-#: src/addressbook_window.cpp:1293 src/addressbook_window.cpp:1924
+#: src/addressbook_window.cpp:1296 src/addressbook_window.cpp:1934
 #: src/calls_history_window.cpp:243
 msgid "Add Contact to _Address Book"
 msgstr "Kapcsolat hozzáadása a _címjegyzékhez"
 
-#: src/addressbook_window.cpp:1859
+#: src/addressbook_window.cpp:1869
 msgid "Address Book"
 msgstr "Címjegyzék"
 
-#: src/addressbook_window.cpp:1886
+#: src/addressbook_window.cpp:1896
 msgid "_File"
 msgstr "_Fájl"
 
-#: src/addressbook_window.cpp:1888
+#: src/addressbook_window.cpp:1898
 msgid "New _Address Book"
 msgstr "Új _címjegyzék"
 
-#: src/addressbook_window.cpp:1907 src/menu.cpp:339
+#: src/addressbook_window.cpp:1917 src/main_window.cpp:734
 msgid "_Close"
 msgstr "_Bezárás"
 
-#: src/addressbook_window.cpp:1912
+#: src/addressbook_window.cpp:1922
 msgid "C_ontact"
 msgstr "K_apcsolatok"
 
-#: src/addressbook_window.cpp:1920
+#: src/addressbook_window.cpp:1930
 msgid "New _Contact"
 msgstr "Új _kapcsolat"
 
-#: src/addressbook_window.cpp:1997
+#: src/addressbook_window.cpp:2007
 msgid "On LDAP servers"
 msgstr "LDAP-kiszolgálókon"
 
 #. Init the address book
-#: src/addressbook_window.cpp:2005 src/gnomemeeting.cpp:437
+#: src/addressbook_window.cpp:2015 src/gnomemeeting.cpp:431
 msgid "On This Computer"
 msgstr "Ezen a számítógépen"
 
-#: src/addressbook_window.cpp:2036
+#: src/addressbook_window.cpp:2046
 msgid "Find all contacts"
 msgstr "Az összes kapcsolat megkeresése"
 
-#: src/addressbook_window.cpp:2041
+#: src/addressbook_window.cpp:2051
 msgid "Name contains"
 msgstr "A név tartalmazza"
 
-#: src/addressbook_window.cpp:2045
+#: src/addressbook_window.cpp:2055
 msgid "URL contains"
 msgstr "Az URL tartalmazza"
 
-#: src/addressbook_window.cpp:2049
+#: src/addressbook_window.cpp:2059
 msgid "Belongs to category"
-msgstr ""
+msgstr "A kategóriához tartozik"
 
-#: src/addressbook_window.cpp:2171
+#: src/addressbook_window.cpp:2186
 msgid "Edit the Contact Information"
 msgstr "Kapcsolat adatainak szerkesztése"
 
-#: src/addressbook_window.cpp:2192 src/addressbook_window.cpp:2576
+#: src/addressbook_window.cpp:2207 src/addressbook_window.cpp:2624
 msgid "Name:"
 msgstr "Név:"
 
-#: src/addressbook_window.cpp:2212
+#: src/addressbook_window.cpp:2227
 msgid "URL:"
 msgstr "URL:"
 
-#: src/addressbook_window.cpp:2232
+#: src/addressbook_window.cpp:2247
 msgid "Email:"
 msgstr "E-mail:"
 
-#: src/addressbook_window.cpp:2253
+#: src/addressbook_window.cpp:2268
 msgid "Speed Dial:"
 msgstr "Gyorstárcsázás:"
 
-#: src/addressbook_window.cpp:2275
+#: src/addressbook_window.cpp:2290
 msgid "Categories:"
 msgstr "Kategóriák:"
 
-#: src/addressbook_window.cpp:2300
+#: src/addressbook_window.cpp:2315
 msgid "Local Addressbook:"
 msgstr "Helyi címjegyzék:"
 
-#: src/addressbook_window.cpp:2451
+#: src/addressbook_window.cpp:2486
 #, c-format
 msgid "Are you sure you want to delete %s from %s?"
 msgstr "Biztos törli a(z) %s-t innen: %s?"
 
-#: src/addressbook_window.cpp:2559
+#: src/addressbook_window.cpp:2607
 msgid "Add an address book"
 msgstr "Címjegyzék hozzáadása"
 
-#: src/addressbook_window.cpp:2597
+#: src/addressbook_window.cpp:2645
 msgid "Type:"
 msgstr "Típus:"
 
-#: src/addressbook_window.cpp:2604
+#: src/addressbook_window.cpp:2652
 msgid "Local"
 msgstr "Helyi"
 
-#: src/addressbook_window.cpp:2609
+#: src/addressbook_window.cpp:2657
 msgid "Remote LDAP"
 msgstr "Távoli LDAP"
 
-#: src/addressbook_window.cpp:2614
+#: src/addressbook_window.cpp:2662
 msgid "Remote ILS"
 msgstr "Távoli ILS"
 
-#: src/addressbook_window.cpp:2646
+#: src/addressbook_window.cpp:2694
 msgid "Search Scope:"
 msgstr "Keresési tartomány:"
 
-#: src/addressbook_window.cpp:2653
+#: src/addressbook_window.cpp:2701
 msgid "Subtree"
-msgstr ""
+msgstr "Alfa"
 
-#: src/addressbook_window.cpp:2658
+#: src/addressbook_window.cpp:2706
 msgid "One Level"
-msgstr ""
+msgstr "Egy szint"
 
-#: src/addressbook_window.cpp:2688
+#: src/addressbook_window.cpp:2736
 msgid "Hostname:"
 msgstr "Gépnév:"
 
-#: src/addressbook_window.cpp:2709
+#: src/addressbook_window.cpp:2757
 msgid "Port:"
 msgstr "Port:"
 
-#: src/addressbook_window.cpp:2732
+#: src/addressbook_window.cpp:2780
 msgid "Base DN:"
-msgstr ""
+msgstr "Alap DN:"
 
-#: src/addressbook_window.cpp:2753
+#: src/addressbook_window.cpp:2801
 msgid "Search Attribute:"
-msgstr ""
+msgstr "Keresendő tulajdonság:"
 
-#: src/addressbook_window.cpp:2851
+#: src/addressbook_window.cpp:2905
 #, c-format
 msgid "Are you sure you want to delete %s and all its contacts?"
 msgstr "Biztos törli a(z) %s-t és a benne levő valamennyi kapcsolatot?"
 
-#: src/callbacks.cpp:86
-msgid "_Retrieve Call"
-msgstr "Hívás _visszavétele"
+#: src/bonobo_component.cpp:121
+msgid "Cannot run GnomeMeeting"
+msgstr "A GnomeMeeting nem futtatható"
 
-#: src/callbacks.cpp:99 src/menu.cpp:309
-msgid "_Hold Call"
-msgstr "Hívás_tartás"
+#: src/bonobo_component.cpp:121
+msgid ""
+"GnomeMeeting is already running, if you want it to call a given callto or "
+"h323 URL, please use \"gnomemeeting -c URL\"."
+msgstr ""
+"A GnomeMeeting már fut, ha egy adott callto vagy h323 URL-t szeretne hívni, "
+"kérem használja a \"gnomemeeting -c URL\" parancsot."
 
-#: src/callbacks.cpp:131
-msgid "Transfer call to:"
-msgstr "Hívás átadása ide:"
+#: src/bonobo_component.cpp:174
+msgid ""
+"It appears that you do not have gnomemeeting.server installed in a valid "
+"location. Factory mode disabled.\n"
+msgstr ""
+"Úgy tűnik, nincs telepítve egy érvényes helyre a gnomemeeting.server. A "
+"factory mód letiltva.\n"
 
-#: src/callbacks.cpp:132
-msgid "Transfer"
-msgstr "Hívásátadás"
+#: src/bonobo_component.cpp:178
+msgid ""
+"Error registering GnomeMeeting with the activation service; factory mode "
+"disabled.\n"
+msgstr ""
+"Hiba a GnomeMeeting-nek az aktiválási szolgáltatásnál való "
+"regisztrációjánál; a factory mód letiltva.\n"
 
-#: src/callbacks.cpp:241 src/menu.cpp:319
-msgid "Suspend _Audio"
-msgstr "_Hang felfüggesztése"
+#: src/bonobo_component.cpp:218
+msgid "Failed to retrieve gnomemeeting server from activation server\n"
+msgstr ""
+"A gnomemeeting kiszolgáló letöltése sikertelen az aktivációs kiszolgálótól\n"
 
-#: src/callbacks.cpp:242
-msgid "Resume _Audio"
-msgstr "_Hang vissza"
-
-#: src/callbacks.cpp:243
-msgid "Audio transmission: suspended"
-msgstr "Hangátvitel: felfüggesztve"
-
-#: src/callbacks.cpp:244
-msgid "Audio transmission: resumed"
-msgstr "Hangátvitel: folytatva"
-
-#: src/callbacks.cpp:255 src/menu.cpp:324
-msgid "Suspend _Video"
-msgstr "_Video felfüggesztése"
-
-#: src/callbacks.cpp:256
-msgid "Resume _Video"
-msgstr "_Video vissza"
-
-#: src/callbacks.cpp:257
-msgid "Video transmission: suspended"
-msgstr "Videoátvitel: felfüggesztve"
-
-#: src/callbacks.cpp:258
-msgid "Video transmission: resumed"
-msgstr "Videoátvitel: folytatva"
-
-#: src/callbacks.cpp:403
+#: src/callbacks.cpp:136
 msgid "Code contributors:"
 msgstr "Hozzájárultak a kódhoz:"
 
-#: src/callbacks.cpp:415
+#: src/callbacks.cpp:148
 msgid "Artwork:"
 msgstr "Grafika:"
 
-#: src/callbacks.cpp:419
+#: src/callbacks.cpp:152
 msgid "Contributors:"
 msgstr "Hozzájárultak:"
 
 #. Translators: Please write translator credits here, and
 #. * seperate names with \n
-#: src/callbacks.cpp:455
+#: src/callbacks.cpp:188
 msgid "translator_credits"
 msgstr ""
 "Dvornik László <dvornik@gnome.hu>\n"
+"Kelemen Gábor <kelemeng@gnome.hu>\n"
 "Tímár András <timar@gnome.hu>"
 
 #. Translators: Please test to see if your translation
 #. * looks OK and fits within the box
-#: src/callbacks.cpp:466
+#: src/callbacks.cpp:199
 msgid ""
 "GnomeMeeting is full-featured H.323 compatible videoconferencing, VoIP and "
 "IP-Telephony application that allows you to make audio and video calls to "
 "remote users with H.323 hardware or software."
 msgstr ""
+"A GnomeMeeting egy teljes értékű H.323 kompatibilis videokonferencia,VoIP és "
+"IP-telefon alkalmazás, amely lehetővé teszi kép- és hanghívások átvitelét "
+"távoli felhasználókhoz H.323 hardver vagy szoftver segítségével."
 
 #: src/calls_history_window.cpp:611
 msgid "Received Calls"
@@ -1495,7 +1533,7 @@ msgstr "Hívástartások"
 msgid "Unanswered Calls"
 msgstr "Nem fogadott hívások"
 
-#: src/calls_history_window.cpp:623 src/menu.cpp:490 src/menu.cpp:675
+#: src/calls_history_window.cpp:623 src/main_window.cpp:885 src/tray.cpp:296
 msgid "Calls History"
 msgstr "Hívások"
 
@@ -1516,38 +1554,38 @@ msgid "Call End Reason"
 msgstr "Hívás befejezésének oka"
 
 #. shouldn't happen...
-#: src/chat_window.cpp:251
+#: src/chat_window.cpp:255
 #, c-format
 msgid "---- Call begins at %s\n"
 msgstr "---- Hívás kezdete: %s\n"
 
 #. prepare the message to be displayed
-#: src/chat_window.cpp:286
+#: src/chat_window.cpp:290
 #, c-format
 msgid "---- Call ends at %s\n"
 msgstr "---- Hívás vége: %s\n"
 
-#: src/chat_window.cpp:423
+#: src/chat_window.cpp:427
 msgid "Open URI"
 msgstr "URI megnyitása"
 
-#: src/chat_window.cpp:426 src/chat_window.cpp:442
+#: src/chat_window.cpp:430 src/chat_window.cpp:446
 msgid "Copy Link Location"
 msgstr "Hivatkozás helyének másolása"
 
-#: src/chat_window.cpp:438
+#: src/chat_window.cpp:442
 msgid "Connect to"
 msgstr "Kapcsolódás"
 
-#: src/chat_window.cpp:440
+#: src/chat_window.cpp:444
 msgid "Add to Address Book"
 msgstr "Hozzáadás a címjegyzékhez"
 
-#: src/chat_window.cpp:460
+#: src/chat_window.cpp:464
 msgid "Copy Equation"
-msgstr ""
+msgstr "Egyenlet másolása"
 
-#: src/chat_window.cpp:475
+#: src/chat_window.cpp:479
 msgid "Send message:"
 msgstr "Üzenet küldése:"
 
@@ -1678,63 +1716,65 @@ msgstr ""
 "  --fix-permissions      a GConf adatbázis jogainak javítása (root-ként "
 "futtassa)"
 
-#: src/config.cpp:306 src/config.cpp:557
+#: src/config.cpp:313 src/config.cpp:553
 msgid "Changing this setting will only affect new calls"
 msgstr ""
 "Ennek a beállításnak a megváltoztatása csak egy új hívásnál lép érvénybe"
 
-#: src/config.cpp:307 src/config.cpp:558
+#: src/config.cpp:314 src/config.cpp:554
 msgid ""
 "You have changed a setting that doesn't permit to GnomeMeeting to apply the "
 "new change to the current call. Your new setting will only take effect for "
 "the next call."
 msgstr ""
+"Megváltoztatott egy beállítást, amit a GnomeMeeting nem tud alkalmazni a "
+"jelenlegi hívásra. Az új beállítás csak a következő hívásnál lép életbe."
 
-#: src/config.cpp:371
+#: src/config.cpp:367
 msgid "H.245 Tunneling disabled"
 msgstr "H.245 alagutazás letiltva"
 
-#: src/config.cpp:372
+#: src/config.cpp:368
 msgid "H.245 Tunneling enabled"
 msgstr "H.245 alagutazás engedélyezve"
 
-#: src/config.cpp:403
+#: src/config.cpp:399
 msgid "Early H.245 disabled"
 msgstr "Korai H.245 letiltva"
 
-#: src/config.cpp:404
+#: src/config.cpp:400
 msgid "Early H.245 enabled"
 msgstr "Korai H.245 engedélyezve"
 
-#: src/config.cpp:435
+#: src/config.cpp:431
 msgid "Fast Start disabled"
 msgstr "Gyors indítás tiltva"
 
-#: src/config.cpp:436
+#: src/config.cpp:432
 msgid "Fast Start enabled"
 msgstr "Gyors indítás engedélyezve"
 
-#: src/config.cpp:468
+#: src/config.cpp:464
 msgid "No gateway or proxy specified"
 msgstr "Nincs átjáró vagy proxy megadva"
 
-#: src/config.cpp:468
+#: src/config.cpp:464
 msgid "You need to specify a host to use as gateway or proxy."
 msgstr "Meg kell adnia egy átjáróként vagy proxyként használandó gépet."
 
-#: src/config.cpp:619
+#: src/config.cpp:615
 msgid "Disabled silence detection"
 msgstr "Csendérzékelés letiltva"
 
-#: src/config.cpp:625
+#: src/config.cpp:621
 msgid "Enabled silence detection"
 msgstr "Csendérzékelés engedélyezve"
 
-#: src/config.cpp:1172
+#: src/config.cpp:1168
 msgid "Forward URL not specified"
-msgstr ""
+msgstr "Továbbítási URL nincs megadva"
 
-#: src/config.cpp:1173
+#: src/config.cpp:1169
 msgid ""
 "You need to specify an URL where to forward calls in the call forwarding "
 "section of the preferences!\n"
@@ -1746,50 +1786,55 @@ msgstr ""
 "\n"
 "Továbbítás letiltva."
 
-#: src/config.cpp:1230
+#: src/config.cpp:1226
 msgid "STUN Server error"
 msgstr "STUN-kiszolgálóhiba"
 
-#: src/config.cpp:1230
+#: src/config.cpp:1226
 msgid "You have to specify a valid STUN server in order to use STUN support"
 msgstr ""
+"Meg kell adnia egy érvényes STUN kiszolgálót a STUN támogatás használatához"
 
-#: src/connection.cpp:161
+#: src/connection.cpp:160
 #, c-format
 msgid "Opened codec %s for transmission"
-msgstr "%s kodek megnyitva a továbbításhoz"
+msgstr "%s kodek megnyitva átvitelhez"
 
-#: src/connection.cpp:164
+#: src/connection.cpp:163
 #, c-format
 msgid "Closed codec %s which was opened for transmission"
-msgstr ""
+msgstr "%s kodek bezárva, amely meg volt nyitva átvitelre"
 
-#: src/connection.cpp:168
+#: src/connection.cpp:167
 #, c-format
 msgid "Opened codec %s for reception"
 msgstr "%s kodek megnyitva a fogadáshoz"
 
-#: src/connection.cpp:171
+#: src/connection.cpp:170
 #, c-format
 msgid "Closed codec %s which was opened for reception"
-msgstr ""
+msgstr "%s kodek bezárva, amely meg volt nyitva fogadásra"
 
-#: src/connection.cpp:212
+#: src/connection.cpp:210
 #, c-format
 msgid "Failure opening %s for transmission, will try with next common codec"
 msgstr ""
+"Hiba %s átvitelre való megnyitása közben, megpróbálom a következő általános "
+"kodeket"
 
-#: src/connection.cpp:213
+#: src/connection.cpp:211
 #, c-format
 msgid "Failure opening %s for reception, will try with next common codec"
 msgstr ""
+"Hiba %s fogadásra való megnyitása közben, megpróbálom a következő általános "
+"kodeket"
 
-#: src/connection.cpp:327 src/connection.cpp:328 src/urlhandler.cpp:79
-#: src/urlhandler.cpp:80
+#: src/connection.cpp:331 src/connection.cpp:332 src/urlhandler.cpp:78
+#: src/urlhandler.cpp:79
 msgid "Call transfer failed"
 msgstr "Hívásátadás sikertelen"
 
-#: src/connection.cpp:327
+#: src/connection.cpp:331
 msgid ""
 "The remote user tried to transfer your call to another user, but it failed."
 msgstr ""
@@ -1804,11 +1849,16 @@ msgid ""
 "Once you have completed these steps, you can always change them later by "
 "selecting Preferences in the Edit menu."
 msgstr ""
+"Ez a GnomeMeeting általános beállításvarázslója. A következő lépésekben "
+"beállíthatja a GnomeMeeting-et néhány egyszerű kérdés megválaszolásával.\n"
+"\n"
+"Miután befejeződött a varázsló, a beállításokat később bármikor "
+"megváltoztathatja a Szerkesztés menü Beállítások pontjával."
 
 #: src/druid.cpp:590
 #, c-format
 msgid "Configuration Druid - page 1/%d"
-msgstr "Beállítóvarázsló - 1/%d oldal"
+msgstr "Beállításvarázsló - 1/%d oldal"
 
 #: src/druid.cpp:632
 #, c-format
@@ -1818,13 +1868,15 @@ msgstr "Személyes adatok - %d/%d oldal"
 #. The user fields
 #: src/druid.cpp:645
 msgid "Please enter your first name and your surname:"
-msgstr "Adja meg a kereszt- és a vezetéknevét:"
+msgstr "Adja meg a vezeték- és utónevét:"
 
 #: src/druid.cpp:653
 msgid ""
 "Your first name and surname will be used when connecting to other VoIP and "
 "videoconferencing software."
 msgstr ""
+"A neve más VoIP és videokonferencia-szoftverekhez való kapcsolódáskor lesz "
+"felhasználva."
 
 #: src/druid.cpp:698
 #, c-format
@@ -1841,6 +1893,9 @@ msgid ""
 "directory. It is used to create a callto address permitting your contacts to "
 "easily call you wherever you are."
 msgstr ""
+"Az e-mail címe a GnomeMeeting felhasználók könyvtárába való regisztrációkor "
+"lesz használva. Ez egy callto cím létrehozásához szükséges, amelynek "
+"segítségével ismerősei könnyen felhívhatják, bárhol is van."
 
 #: src/druid.cpp:726
 msgid ""
@@ -1866,6 +1921,9 @@ msgid ""
 "GnomeMeeting will use during calls. You can later change the settings "
 "individually in the preferences window."
 msgstr ""
+"A kapcsolat típusának megadása lehetővé teszi a GnomeMeeting által hívások "
+"közben használható legjobb minőségi beállítás meghatározását. Ezt a "
+"beállítást később megváltoztathatja a Tulajdonságok párbeszédablakban."
 
 #: src/druid.cpp:832
 #, c-format
@@ -1882,6 +1940,8 @@ msgid ""
 "The audio manager is the plugin that will manage your audio devices, ALSA is "
 "probably the best choice when available."
 msgstr ""
+"A hangkezelő az a bővítmény, amely a hangeszközöket fogja kezelni. Az ALSA "
+"valószínűleg a legjobb választás, ha rendelkezésre áll."
 
 #: src/druid.cpp:891
 #, c-format
@@ -1891,23 +1951,27 @@ msgstr "Hangeszközök - %d/%d oldal"
 #. The Audio devices
 #: src/druid.cpp:903
 msgid "Please choose the audio output device:"
-msgstr "Válassza ki az audio kimeneti eszközt:"
+msgstr "Válassza ki a hangkimeneti eszközt:"
 
 #: src/druid.cpp:911
 msgid ""
 "The audio output device is the device managed by the audio manager that will "
 "be used to play audio."
 msgstr ""
+"A hangkimeneti eszköz a hangkezelő által kezelendő, hanglejátszásra használt "
+"eszköz."
 
 #: src/druid.cpp:921
 msgid "Please choose the audio input device:"
-msgstr "Válassza ki az audio bemeneti eszközt:"
+msgstr "Válassza ki a hangbemeneti eszközt:"
 
 #: src/druid.cpp:929
 msgid ""
 "The audio input device is the device managed by the audio manager that will "
 "be used to record your voice."
 msgstr ""
+"A hangbemeneti eszköz a hangkezelő által kezelendő, az Ön hangjának "
+"felvételére használt eszköz."
 
 #: src/druid.cpp:942 src/druid.cpp:1076
 msgid "Test Settings"
@@ -1928,6 +1992,8 @@ msgid ""
 "The video manager is the plugin that will manage your video devices, "
 "Video4Linux is the most common choice if you own a webcam."
 msgstr ""
+"A videokezelő az a bővítmény, amely a videoeszközöket fogja kezelni. A "
+"Video4Linux megfelelő választás a legtöbb webkamerához."
 
 #: src/druid.cpp:1044
 #, c-format
@@ -1944,6 +2010,8 @@ msgid ""
 "The video input device is the device managed by the video manager that will "
 "be used to capture video."
 msgstr ""
+"A video bemeneti eszköz a videokezelő által kezelendő, felvételek "
+"készítésére használt eszköz."
 
 #: src/druid.cpp:1112
 #, c-format
@@ -1951,10 +2019,10 @@ msgid "Configuration complete - page %d/%d"
 msgstr "Beállítás kész - %d/%d oldal"
 
 #: src/druid.cpp:1344 src/druid.cpp:1612 src/druid.cpp:1629 src/druid.cpp:1697
-#: src/endpoint.cpp:1681 src/gnomemeeting.cpp:307 src/gnomemeeting.cpp:309
-#: src/gnomemeeting.cpp:311 src/sound_handling.cpp:566
-#: src/sound_handling.cpp:567 src/videograbber.cpp:317
-#: src/videograbber.cpp:580
+#: src/endpoint.cpp:1726 src/gnomemeeting.cpp:294 src/gnomemeeting.cpp:296
+#: src/gnomemeeting.cpp:298 src/sound_handling.cpp:570
+#: src/sound_handling.cpp:571 src/videograbber.cpp:316
+#: src/videograbber.cpp:579
 msgid "No device found"
 msgstr "Eszköz nem található"
 
@@ -1974,6 +2042,13 @@ msgid ""
 "\n"
 "The GnomeMeeting Team."
 msgstr ""
+"Gratulálunk, sikeresen elindította a GnomeMeeting 1.00-t az első "
+"alkalommal.\n"
+"A GnomeMeeting a vezető VoIP, videokonferencia- és telefonszoftver Unixra.\n"
+"\n"
+"Köszönet mindazoknak, akik segítettek az 1.00 verzióhoz vezető úton!\n"
+"\n"
+"A GnomeMeeting csapat"
 
 #: src/druid.cpp:1481
 msgid "56k Modem"
@@ -2013,154 +2088,168 @@ msgid ""
 "Video input: %s\n"
 "Callto URL: %s\n"
 msgstr ""
+"A GnomeMeeting beállítása befejeződött. A beállításokat megváltoztathatja a "
+"GnomeMeeting beállításainál.\n"
+"\n"
+"\n"
+"Beállítások összegzése:\n"
+"\n"
+"Felhasználónév: %s\n"
+"Kapcsolat típusa: %s\n"
+"Hangkezelő: %s\n"
+"Hanglejátszó: %s\n"
+"Hangfelvevő: %s\n"
+"Video kezelő: %s\n"
+"Videobemenet: %s\n"
+"Callto URL: %s\n"
 
 #: src/druid.cpp:1782
 msgid "First Time Configuration Druid"
-msgstr "Az első alkalommal lefutó beállítóvarázsló"
+msgstr "Az első alkalommal lefutó beállításvarázsló"
 
 #. Update the log and status bar
-#: src/endpoint.cpp:704
+#: src/endpoint.cpp:725
 #, c-format
 msgid "Call from %s"
 msgstr "Hívás innen: %s"
 
-#: src/endpoint.cpp:716
+#: src/endpoint.cpp:737
 #, c-format
 msgid "Forwarding call from %s to %s (Forward all calls)"
 msgstr "Hívástovábbítás innen: %s (ide: %s , minden hívás továbbítása)"
 
 #. there is no forwarding, so reject the call
-#: src/endpoint.cpp:723 src/endpoint.cpp:744
+#: src/endpoint.cpp:744 src/endpoint.cpp:765
 #, c-format
 msgid "Rejecting call from %s (Busy)"
 msgstr "Elutasított hívás innen: %s (foglalt)"
 
-#: src/endpoint.cpp:735
+#: src/endpoint.cpp:756
 #, c-format
 msgid "Forwarding call from %s to %s (Busy)"
 msgstr "Hívástovábbítás innen: %s (ide: %s , foglalt)"
 
-#: src/endpoint.cpp:753
+#: src/endpoint.cpp:774
 #, c-format
 msgid "Accepting call from %s (Free For Chat)"
-msgstr ""
+msgstr "Hívás fogadása a következőtől: %s (Ráér dumálni)"
 
-#: src/endpoint.cpp:778
+#: src/endpoint.cpp:799
 msgid "Call rejected"
 msgstr "Hívás elutasítva"
 
-#: src/endpoint.cpp:787 src/endpoint.cpp:1175 src/endpoint.cpp:2129
+#: src/endpoint.cpp:808 src/endpoint.cpp:1212 src/endpoint.cpp:2160
 msgid "Call forwarded"
 msgstr "Hívás továbbítva"
 
-#: src/endpoint.cpp:799
+#: src/endpoint.cpp:820
 msgid "Call automatically answered"
-msgstr "Hívás automatikusan fogadva"
+msgstr "Hívás automatikusan megválaszolva"
 
-#: src/endpoint.cpp:874
+#: src/endpoint.cpp:899
 #, c-format
 msgid "Forwarding call to %s"
 msgstr "Hívás továbbítása ide: %s"
 
-#: src/endpoint.cpp:885
+#: src/endpoint.cpp:910
 #, c-format
 msgid "Error while forwarding call to %s"
 msgstr "Hiba a hívás továbbításakor ide: %s"
 
-#: src/endpoint.cpp:888
+#: src/endpoint.cpp:913
 msgid "There was an error when forwarding the call to the given host."
 msgstr "Hiba történt a hívás megadott géphez történő továbbításakor."
 
-#: src/endpoint.cpp:944
+#: src/endpoint.cpp:975
 msgid "Connected"
 msgstr "Kapcsolódva"
 
-#: src/endpoint.cpp:946
+#: src/endpoint.cpp:977
 #, c-format
 msgid "Connected with %s using %s"
 msgstr "Csatlakozva ide: %s, %s használatával"
 
-#: src/endpoint.cpp:1139
+#: src/endpoint.cpp:1176
 msgid "Local user cleared the call"
 msgstr "A helyi felhasználó törölte a hívást"
 
-#: src/endpoint.cpp:1142
+#: src/endpoint.cpp:1179
 msgid "Remote user cleared the call"
 msgstr "A távoli felhasználó törölte a hívást"
 
-#: src/endpoint.cpp:1145
+#: src/endpoint.cpp:1182
 msgid "Remote user did not accept the call"
 msgstr "A távoli felhasználó nem fogadta a hívást"
 
-#: src/endpoint.cpp:1148 src/endpoint.cpp:1151
+#: src/endpoint.cpp:1185 src/endpoint.cpp:1188
 msgid "Local user did not accept the call"
 msgstr "A helyi felhasználó nem fogadta a hívást"
 
-#: src/endpoint.cpp:1154
+#: src/endpoint.cpp:1191
 msgid "The Gatekeeper cleared the call"
-msgstr "A gatekeeper törölte a hívást"
+msgstr "A forgalomirányító törölte a hívást"
 
-#: src/endpoint.cpp:1157
+#: src/endpoint.cpp:1194
 msgid "Call not answered in the required time"
 msgstr "A hívásra nem válaszoltak a megadott időn belül"
 
-#: src/endpoint.cpp:1160
+#: src/endpoint.cpp:1197
 msgid "Remote user has stopped calling"
 msgstr "A távoli felhasználó abbahagyta a hívást"
 
-#: src/endpoint.cpp:1163
+#: src/endpoint.cpp:1200
 msgid "Abnormal call termination"
 msgstr "A hívás abnormálisan ért véget "
 
-#: src/endpoint.cpp:1166
+#: src/endpoint.cpp:1203
 msgid "Could not connect to remote host"
 msgstr "Nem lehet kapcsolódni a távoli géphez"
 
-#: src/endpoint.cpp:1169
+#: src/endpoint.cpp:1206
 msgid "Insufficient bandwidth"
 msgstr "Elégtelen sávszélesség"
 
-#: src/endpoint.cpp:1172
+#: src/endpoint.cpp:1209
 msgid "No common codec"
 msgstr "Nincs közös kodek"
 
-#: src/endpoint.cpp:1178
+#: src/endpoint.cpp:1215
 msgid "Security check Failed"
 msgstr "Biztonsági ellenőrzés sikertelen"
 
-#: src/endpoint.cpp:1181
+#: src/endpoint.cpp:1218
 msgid "Local user is busy"
 msgstr "A helyi felhasználó foglalt"
 
-#: src/endpoint.cpp:1184
+#: src/endpoint.cpp:1221
 msgid "Remote user is busy"
 msgstr "A túloldali fél foglalt"
 
-#: src/endpoint.cpp:1187 src/endpoint.cpp:1190
+#: src/endpoint.cpp:1224 src/endpoint.cpp:1227
 msgid "Congested link to remote party"
 msgstr "A túloldali félhez vezető út túlzsúfolt"
 
-#: src/endpoint.cpp:1193 src/endpoint.cpp:1196
+#: src/endpoint.cpp:1230 src/endpoint.cpp:1233
 msgid "Remote user is unreachable"
 msgstr "A túloldali fél nem érhető el"
 
-#: src/endpoint.cpp:1199
+#: src/endpoint.cpp:1236
 msgid "Remote host is offline"
-msgstr "A túloldali gép offline van"
+msgstr "A túloldali gép nincs a hálózatban"
 
-#: src/endpoint.cpp:1202
+#: src/endpoint.cpp:1239
 msgid "Temporary failure"
-msgstr "Ideiglenesen fennálló hiba"
+msgstr "Átmeneti hiba"
 
-#: src/endpoint.cpp:1205 src/urlhandler.cpp:401 src/urlhandler.cpp:408
+#: src/endpoint.cpp:1242 src/urlhandler.cpp:404 src/urlhandler.cpp:411
 msgid "User not found"
 msgstr "Nem található a felhasználó"
 
-#: src/endpoint.cpp:1209
+#: src/endpoint.cpp:1246
 msgid "Call completed"
 msgstr "Hívás befejezve"
 
-#: src/endpoint.cpp:1304 src/main_window.cpp:914
+#: src/endpoint.cpp:1346 src/main_window.cpp:976
 msgid ""
 "Lost packets:\n"
 "Late packets:\n"
@@ -2172,60 +2261,70 @@ msgstr ""
 "Oda-vissza késleltetés:\n"
 "Jitter puffer:"
 
-#: src/endpoint.cpp:1526
+#: src/endpoint.cpp:1571
 msgid "Error while starting the listener"
 msgstr "Hiba a figyelő indítása közben"
 
-#: src/endpoint.cpp:1526
+#: src/endpoint.cpp:1571
 msgid ""
 "You will not be able to receive incoming calls. Please check that no other "
 "program is already running on the port used by GnomeMeeting."
 msgstr ""
+"Nem lesz képes bejövő hívásokat fogadni. Kérem ellenőrizze, hogy nem fut-e "
+"más program a GnomeMeeting által használt porton."
 
-#: src/endpoint.cpp:1667
+#: src/endpoint.cpp:1712
 msgid "Attaching lid hardware to codec"
-msgstr ""
+msgstr "lid-hardver kodekhez kapcsolása"
 
-#: src/endpoint.cpp:1701
+#: src/endpoint.cpp:1746
 #, c-format
 msgid "Opened %s for recording with plugin %s"
-msgstr ""
+msgstr "%s megnyitva felvételhez a(z) %s bővítménnyel"
 
-#: src/endpoint.cpp:1702
+#: src/endpoint.cpp:1747
 #, c-format
 msgid "Opened %s for playing with plugin %s"
-msgstr ""
+msgstr "%s megnyitva lejátszáshoz a(z) %s bővítménnyel"
 
-#: src/endpoint.cpp:1738
+#: src/endpoint.cpp:1783
 msgid "Could not open audio channel for audio transmission"
-msgstr "Nem lehet megnyitni az audio csatornát a hangátvitelhez"
+msgstr "Nem lehet megnyitni a hangcsatornát a hangátvitelhez"
 
-#: src/endpoint.cpp:1738
+#: src/endpoint.cpp:1783
 msgid ""
 "An error occured while trying to record from the soundcard for the audio "
 "transmission. Please check that your soundcard is not busy and that your "
 "driver supports full-duplex.\n"
 "The audio transmission has been disabled."
 msgstr ""
+"Hiba lépett fel az átvitelhez a hangkártyáról való felvétel közben. Kérem "
+"ellenőrizze, hogy a hangkártyája nem foglalt-e és a vezérlőprogram támogatja "
+"a full-duplex módot.\n"
+"A hangátvitel ki lett kapcsolva."
 
-#: src/endpoint.cpp:1743
+#: src/endpoint.cpp:1788
 msgid "Could not open audio channel for audio reception"
-msgstr ""
+msgstr "Nem lehet hangcsatornát nyitni a hang fogadásához"
 
-#: src/endpoint.cpp:1743
+#: src/endpoint.cpp:1788
 msgid ""
 "An error occured while trying to play audio to the soundcard for the audio "
 "reception. Please check that your soundcard is not busy and that your driver "
 "supports full-duplex.\n"
 "The audio reception has been disabled."
 msgstr ""
+"Hiba lépett fel hanglejátszás közben a hang fogadásakor. Kérem ellenőrizze, "
+"hogy a hangkártyája nem foglalt-e és a vezérlőprogram támogatja a full-"
+"duplex módot.\n"
+"A hangfogadás ki lett kapcsolva."
 
-#: src/endpoint.cpp:1955
+#: src/endpoint.cpp:1981
 #, c-format
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 
-#: src/endpoint.cpp:1997
+#: src/endpoint.cpp:2021
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2233,299 +2332,639 @@ msgid ""
 "Round-trip delay: %d ms\n"
 "Jitter buffer: %d ms"
 msgstr ""
+"Elveszett csomagok: %.1f %%\n"
+"Elkésett csomagok: %.1f %%\n"
+"Oda-vissza késleltetés: %d ms\n"
+"Jitter puffer: %d ms"
 
-#: src/endpoint.cpp:2126
+#: src/endpoint.cpp:2157
 #, c-format
 msgid "Forwarding Call to %s (No Answer)"
 msgstr "Hívás továbbítása: %s (nincs válasz)"
 
-#: src/gatekeeper.cpp:135
+#: src/gatekeeper.cpp:136
 #, c-format
 msgid "Unregistered from gatekeeper %s"
-msgstr ""
+msgstr "Kijelentkezés %s forgalomirányítóról"
 
-#: src/gatekeeper.cpp:150
+#: src/gatekeeper.cpp:151
 msgid "Invalid gatekeeper hostname"
-msgstr "Érvénytelen átjáró gépnév"
+msgstr "Érvénytelen forgalomirányító gépnév"
 
-#: src/gatekeeper.cpp:150
+#: src/gatekeeper.cpp:151
 msgid "Please provide a hostname to use for the gatekeeper."
-msgstr ""
+msgstr "Kérem adjon meg egy gépnevet a forgalomirányítóhoz."
 
-#: src/gatekeeper.cpp:158
+#: src/gatekeeper.cpp:159
 msgid "Invalid gatekeeper ID"
-msgstr "Érvénytelen átjáró azonosító"
+msgstr "Érvénytelen forgalomirányító azonosító"
 
-#: src/gatekeeper.cpp:158
+#: src/gatekeeper.cpp:159
 msgid "Please provide a valid ID for the gatekeeper."
-msgstr ""
+msgstr "Kérem adjon meg egy érvényes azonosítót a forgalomirányítóhoz."
 
-#: src/gatekeeper.cpp:205
+#: src/gatekeeper.cpp:206
 msgid ""
 "Another user already exists with the same alias, please use another alias."
 msgstr ""
+"Már létezik egy felhasználó ezzel az álnévvel, kérem használjon más álnevet."
 
-#: src/gatekeeper.cpp:208
+#: src/gatekeeper.cpp:209
 msgid ""
 "You are not allowed to register to the gatekeeper. Please check your login, "
 "password and firewall."
 msgstr ""
+"Nincs jogosultsága regisztrálni a forgalomirányítón. Kérem ellenőrizze a "
+"felhasználónevét, jelszavát és tűzfalát."
 
-#: src/gatekeeper.cpp:211
+#: src/gatekeeper.cpp:212
 msgid "There was a transport error."
 msgstr "Átviteli hiba történt."
 
-#: src/gatekeeper.cpp:214 src/gatekeeper.cpp:219
+#: src/gatekeeper.cpp:215 src/gatekeeper.cpp:220
 msgid "No gatekeeper corresponding to your options has been found."
-msgstr ""
+msgstr "Nem található a beállításoknak megfelelő forgalomirányító."
 
-#: src/gatekeeper.cpp:221
+#: src/gatekeeper.cpp:222
 msgid "Error while registering with gatekeeper"
-msgstr "Hiba a gatekeeperrel történő regisztráció közben"
+msgstr "Hiba a forgalomirányítóval történő regisztráció közben"
 
-#: src/gatekeeper.cpp:236
+#: src/gatekeeper.cpp:237
 #, c-format
 msgid "Gatekeeper set to %s"
-msgstr "A gatekeeper mostantól: %s"
+msgstr "A forgalomirányító mostantól: %s"
 
-#: src/gnomemeeting.cpp:89
+#: src/gnomemeeting.cpp:87
 msgid "Notification area not detected"
-msgstr "Nem érzékelhető az eseményjelző terület"
+msgstr "Nem érzékelhető az értesítési terület"
 
-#: src/gnomemeeting.cpp:89
+#: src/gnomemeeting.cpp:87
 msgid ""
 "You have chosen to start GnomeMeeting hidden, however the notification area "
 "is not present in your panel, GnomeMeeting can thus not start hidden."
 msgstr ""
-"A GnomeMeeting-et rejtve akarta elindítani, de a paneljén nincs eseményjelző "
+"A GnomeMeeting-et rejtve akarta elindítani, de a paneljén nincs értesítési "
 "terület. Emiatt a GnomeMeeting rejtett indítása nem lehetséges."
 
-#: src/gnomemeeting.cpp:166
+#: src/gnomemeeting.cpp:158
 msgid "Answering incoming call"
 msgstr "Válasz a bejövő hívásra"
 
-#: src/gnomemeeting.cpp:216
+#: src/gnomemeeting.cpp:207
 msgid "Trying to stop calling"
 msgstr "Hívás abbahagyása"
 
-#: src/gnomemeeting.cpp:227
+#: src/gnomemeeting.cpp:218
 msgid "Stopping current call"
 msgstr "Jelenlegi hívás abbahagyása"
 
-#: src/gnomemeeting.cpp:237
+#: src/gnomemeeting.cpp:226
 msgid "Refusing Incoming call"
 msgstr "Bejövő hívás visszautasítása"
 
-#: src/gnomemeeting.cpp:437
+#: src/gnomemeeting.cpp:431
 msgid "Personal"
 msgstr "Személyes"
 
-#: src/gnomemeeting.cpp:495
+#: src/gnomemeeting.cpp:488
 #, c-format
 msgid "Started GnomeMeeting V%d.%d.%d for %s\n"
 msgstr "A GnomeMeeting V%d.%d.%d for %s elindult\n"
 
-#: src/ils.cpp:100
+#: src/ils.cpp:101
 msgid "Invalid parameters"
 msgstr "Érvénytelen paraméterek"
 
-#: src/ils.cpp:100
+#: src/ils.cpp:101
 msgid ""
 "Please provide your first name and e-mail in the Personal Data section in "
 "order to be able to register to the users directory."
 msgstr ""
+"Kérem adja meg utónevét és e-mail címét a Személyes adatok részben, hogy "
+"regisztrálhasson a felhasználók könyvtárába."
 
-#: src/ils.cpp:134
+#: src/ils.cpp:135
 msgid "Invalid users directory"
 msgstr "Érvénytelen a felhasználók könyvtára"
 
-#: src/ils.cpp:134
+#: src/ils.cpp:135
 msgid "Operation impossible since there is no users directory specified."
-msgstr ""
+msgstr "A művelet lehetetlen, mivel nincs megadva a felhasználók könyvtára."
 
-#: src/ils.cpp:218
+#: src/ils.cpp:220
 msgid "Failed to parse XML file"
 msgstr "Az XML-fájl feldolgozása sikertelen"
 
-#: src/ils.cpp:218
+#: src/ils.cpp:220
 msgid ""
 "There was an error while parsing the XML file. Please make sure that it is "
 "correctly installed in your system."
 msgstr ""
+"Hiba történt az XML fájl feldolgozása során. Kérem győződjön meg, hogy "
+"megfelelően van telepítve a rendszerén."
 
-#: src/ils.cpp:229
+#: src/ils.cpp:231
 msgid "Bad information"
 msgstr "Rossz adatok"
 
-#: src/ils.cpp:229
+#: src/ils.cpp:231
 #, c-format
 msgid "Bad LDAP information from XML file: %s."
 msgstr "Hibás LDAP-adatok az XML-fájlból: %s."
 
-#: src/ils.cpp:238 src/ils.cpp:248 src/ils.cpp:257
+#: src/ils.cpp:240 src/ils.cpp:250 src/ils.cpp:259
 msgid "Cannot contact the users directory"
 msgstr "Nem lehet kapcsolatba lépni a felhasználók könyvtáraival"
 
-#: src/ils.cpp:238
+#: src/ils.cpp:240
 #, c-format
 msgid ""
 "Failed to contact the users directory %s:%d. The directory is probably "
 "currently overloaded, please try again later."
 msgstr ""
+"Nem sikerült kapcsolatba lépni %s felhasználók könyvtárával: %d. A könyvtár "
+"valószínűleg túl van terhelve, kérem próbálja újra később."
 
-#: src/ils.cpp:248
+#: src/ils.cpp:250
 msgid "Failed to set a time limit on operations."
-msgstr ""
+msgstr "Nem sikerült időkorlátot beállítani a műveletekhez."
 
-#: src/ils.cpp:257
+#: src/ils.cpp:259
 #, c-format
 msgid "Failed to bind to users directory: %s."
-msgstr ""
+msgstr "Nem sikerült kapcsolódni a felhasználók könyvtárához: %s."
 
-#: src/ils.cpp:281
+#: src/ils.cpp:283
 #, c-format
 msgid "Updated information on the users directory %s."
-msgstr ""
+msgstr "Az információk a felhasználók %s könyvtárában frissítve lettek."
 
-#: src/ils.cpp:285
+#: src/ils.cpp:287
 #, c-format
 msgid "Unregistered from the users directory %s."
-msgstr ""
+msgstr "Regisztráció a felhasználók %s könyvtárában megszüntetve."
 
-#: src/ils.cpp:307
+#: src/ils.cpp:309
 #, c-format
 msgid "Error while registering to %s"
 msgstr "Hiba a regisztráció közben: %s"
 
-#: src/lid.cpp:138
+#: src/lid.cpp:140
 #, c-format
 msgid "Opened Quicknet device %s"
 msgstr "%s Quicknet eszköz megnyitva"
 
-#: src/lid.cpp:161
+#: src/lid.cpp:163
 msgid "Error while opening the Quicknet device."
 msgstr "Hiba a Quicknet-eszköz megnyitása közben."
 
-#: src/lid.cpp:161
+#: src/lid.cpp:163
 msgid ""
 "Please check that your driver is correctly installed and that the device is "
 "working correctly."
 msgstr ""
-"Ellenőrizd, hogy az illesztőprogram megfelelően van-e telepítve, és az "
+"Ellenőrizze, hogy az illesztőprogram megfelelően van-e telepítve, és az "
 "eszköz megfelelően működik-e."
 
-#: src/lid.cpp:192
+#: src/lid.cpp:194
 #, c-format
 msgid "Closed Quicknet device %s"
 msgstr "%s Quicknet eszköz bezárva"
 
-#: src/lid.cpp:284 src/lid.cpp:285
+#: src/lid.cpp:293 src/lid.cpp:294
 msgid "Phone is off hook"
 msgstr "A telefon fel van véve"
 
-#: src/lid.cpp:320 src/lid.cpp:321
+#: src/lid.cpp:329 src/lid.cpp:330
 msgid "Phone is on hook"
 msgstr "A telefon le van rakva"
 
-#: src/log_window.cpp:117 src/menu.cpp:485
+#: src/log_window.cpp:117 src/main_window.cpp:880
 msgid "General History"
 msgstr "Általános előzmények"
 
-#: src/main_window.cpp:597
-#, c-format
-msgid "Total: %.2f MB"
-msgstr "Összesen: %.2f MB"
-
-#: src/main_window.cpp:681
-msgid "Cannot run GnomeMeeting"
-msgstr "A GnomeMeeting nem futtatható"
-
-#: src/main_window.cpp:681
+#: src/main_window.cpp:467
 msgid ""
-"GnomeMeeting is already running, if you want it to call a given callto or "
-"h323 URL, please use \"gnomemeeting -c URL\"."
+"Enter an URL to call on the left, and click on this button to connect to the "
+"given URL"
 msgstr ""
+"Adja meg a felhívandó URL-t a bal oldalon, majd kattintson erre a gombra a "
+"megadott URL-hez való kapcsolódáshoz"
+
+#: src/main_window.cpp:507
+msgid "Open text chat"
+msgstr "Szöveges csevegőablak megnyitása"
+
+#: src/main_window.cpp:518
+msgid "Open control panel"
+msgstr "Vezérlőpult megnyitása"
+
+#: src/main_window.cpp:530
+msgid "Open address book"
+msgstr "Címjegyzék megnyitása"
+
+#: src/main_window.cpp:554
+msgid "Display images from your camera device"
+msgstr "Képek megjelenítése a kamerából"
+
+#: src/main_window.cpp:577
+msgid ""
+"Audio transmission status. During a call, click here to suspend or resume "
+"the audio transmission."
+msgstr ""
+"Hangátvitel állapota. Hívás közben kattintson ide a hangátvitel "
+"felfüggesztéséhez/folytatásához."
+
+#: src/main_window.cpp:598
+msgid ""
+"Video transmission status. During a call, click here to suspend or resume "
+"the video transmission."
+msgstr ""
+"Videoátvitel állapota. Hívás közben kattintson ide a hangátvitel "
+"felfüggesztéséhez/folytatásához."
+
+#: src/main_window.cpp:661
+msgid "C_all"
+msgstr "_Hívás"
+
+#: src/main_window.cpp:663
+msgid "C_onnect"
+msgstr "Kapcs_olódás"
+
+#: src/main_window.cpp:663 src/tray.cpp:253
+msgid "Create a new connection"
+msgstr "Új kapcsolat létrehozása"
+
+#: src/main_window.cpp:666 src/tray.cpp:256
+msgid "_Disconnect"
+msgstr "_Szétkapcsolás"
+
+#: src/main_window.cpp:667 src/tray.cpp:257
+msgid "Close the current connection"
+msgstr "A kapcsolat bezárása"
+
+#: src/main_window.cpp:673 src/tray.cpp:263
+msgid "_Available"
+msgstr "_Elérhető"
+
+#: src/main_window.cpp:674 src/tray.cpp:264
+msgid "Display a popup to accept the call"
+msgstr "Felbukkanó ablak megjelenítése a hívás fogadásához"
+
+#: src/main_window.cpp:679 src/tray.cpp:269
+msgid "Free for Cha_t"
+msgstr "_Ráér dumálni"
+
+#: src/main_window.cpp:680 src/tray.cpp:270
+msgid "Auto answer calls"
+msgstr "Hívások automatikus megválaszolása"
+
+#: src/main_window.cpp:685 src/tray.cpp:275
+msgid "_Busy"
+msgstr "Fo_glalt"
+
+#: src/main_window.cpp:685 src/tray.cpp:275
+msgid "Reject calls"
+msgstr "Elutasított hívások"
+
+#: src/main_window.cpp:690 src/tray.cpp:280
+msgid "_Forward"
+msgstr "_Továbbítás"
+
+#: src/main_window.cpp:690 src/tray.cpp:280
+msgid "Forward calls"
+msgstr "Hívások továbbítása"
+
+#: src/main_window.cpp:698
+msgid "Speed dials"
+msgstr "Gyorstárcsázások"
+
+#: src/main_window.cpp:702 src/main_window.cpp:1414
+msgid "_Hold Call"
+msgstr "Hívás_tartás"
+
+#: src/main_window.cpp:702
+msgid "Hold the current call"
+msgstr "Jelenlegi hívás tartása"
+
+#: src/main_window.cpp:706
+msgid "_Transfer Call"
+msgstr "_Hívásátadás"
+
+#: src/main_window.cpp:707
+msgid "Transfer the current call"
+msgstr "Jelenlegi hívás átadása"
+
+#: src/main_window.cpp:714 src/main_window.cpp:1448
+msgid "Suspend _Audio"
+msgstr "_Hang felfüggesztése"
+
+#: src/main_window.cpp:715
+msgid "Suspend or resume the audio transmission"
+msgstr "Hangátvitel felfüggesztése vagy újraindítása"
+
+#: src/main_window.cpp:719 src/main_window.cpp:1450
+msgid "Suspend _Video"
+msgstr "_Video felfüggesztése"
+
+#: src/main_window.cpp:720
+msgid "Suspend or resume the video transmission"
+msgstr "Videoátvitel felfüggesztése vagy újraindítása"
+
+#: src/main_window.cpp:727
+msgid "_Save Current Picture"
+msgstr "_Jelenlegi kép mentése"
+
+#: src/main_window.cpp:728
+msgid "Save a snapshot of the current video"
+msgstr "Pillanatkép mentése a jelenlegi videoról"
 
 #: src/main_window.cpp:734
-msgid ""
-"It appears that you do not have gnomemeeting.server installed in a valid "
-"location. Factory mode disabled.\n"
-msgstr ""
+msgid "Close the GnomeMeeting window"
+msgstr "A GnomeMeeting ablak bezárása"
 
-#: src/main_window.cpp:738
-msgid ""
-"Error registering GnomeMeeting with the activation service; factory mode "
-"disabled.\n"
-msgstr ""
+#: src/main_window.cpp:741 src/tray.cpp:318
+msgid "_Quit"
+msgstr "_Kilépés"
 
-#: src/main_window.cpp:778
-msgid "Failed to retrieve gnomemeeting server from activation server\n"
-msgstr ""
+#: src/main_window.cpp:741 src/tray.cpp:319
+msgid "Quit GnomeMeeting"
+msgstr "Kilépés a GnomeMeeting-ből"
 
-#: src/main_window.cpp:919 src/menu.cpp:383
+#: src/main_window.cpp:745
+msgid "_Edit"
+msgstr "S_zerkesztés"
+
+#: src/main_window.cpp:747
+msgid "Configuration Druid"
+msgstr "Beállításvarázsló"
+
+#: src/main_window.cpp:748
+msgid "Run the configuration druid"
+msgstr "A beállításvarázsló futtatása"
+
+#: src/main_window.cpp:755 src/tray.cpp:304
+msgid "_Preferences"
+msgstr "_Beállítások"
+
+#: src/main_window.cpp:756 src/tray.cpp:305
+msgid "Change your preferences"
+msgstr "Beállítások megváltoztatása"
+
+#: src/main_window.cpp:761
+msgid "_View"
+msgstr "_Nézet"
+
+#: src/main_window.cpp:763 src/pref_window.cpp:711
+msgid "Text Chat"
+msgstr "Szöveges csevegés"
+
+#: src/main_window.cpp:764
+msgid "View/Hide the text chat window"
+msgstr "Szöveges csevegőablak megjelenítése/elrejtése"
+
+#: src/main_window.cpp:769
+msgid "Status Bar"
+msgstr "Állapotsor"
+
+#: src/main_window.cpp:770
+msgid "View/Hide the status bar"
+msgstr "Állapotsor megjelenítése/elrejtése"
+
+#: src/main_window.cpp:776
+msgid "Control Panel"
+msgstr "Vezérlőpult"
+
+#: src/main_window.cpp:778 src/main_window.cpp:981
 msgid "Statistics"
 msgstr "Statisztika"
 
-#: src/main_window.cpp:974
-msgid "Dialpad"
-msgstr "Tárcsázókészülék"
+#: src/main_window.cpp:779
+msgid "View audio/video transmission and reception statistics"
+msgstr "Hang/Kép átviteli és fogadási statisztikák megjelenítése"
 
-#: src/main_window.cpp:1030
-msgid "Adjust brightness"
-msgstr "Fényesség beállítása"
+#: src/main_window.cpp:784
+msgid "_Dialpad"
+msgstr "_Tárcsázókészülék"
 
-#: src/main_window.cpp:1053
-msgid "Adjust whiteness"
-msgstr "Fehéregyensúly beállítása"
+#: src/main_window.cpp:784
+msgid "View the dialpad"
+msgstr "A tárcsázókészülék megjelenítése"
 
-#: src/main_window.cpp:1076
-msgid "Adjust color"
-msgstr "Színek beállítása"
+#: src/main_window.cpp:789
+msgid "_Audio Settings"
+msgstr "_Hangbeállítások"
 
-#: src/main_window.cpp:1099
-msgid "Adjust contrast"
-msgstr "Kontraszt beállítása"
+#: src/main_window.cpp:790
+msgid "View audio settings"
+msgstr "Hangbeállítások megjelenítése"
 
-#: src/main_window.cpp:1107
-msgid "Video"
-msgstr "Video"
+#: src/main_window.cpp:795
+msgid "_Video Settings"
+msgstr "_Videobeállítások"
 
-#: src/main_window.cpp:1185
-msgid "Audio"
-msgstr "Hang"
+#: src/main_window.cpp:796
+msgid "View video settings"
+msgstr "Videobeállítások megjelenítése"
 
-#: src/main_window.cpp:1289
-#, c-format
-msgid "Sent dtmf %c"
-msgstr ""
+#: src/main_window.cpp:801 src/pref_window.cpp:1069
+msgid "Off"
+msgstr "Ki"
 
-#: src/main_window.cpp:1672 src/menu.cpp:422 src/menu.cpp:549
+#: src/main_window.cpp:801
+msgid "Hide the control panel"
+msgstr "Vezérlőpult elrejtése"
+
+#: src/main_window.cpp:809
+msgid "_Clear Text Chat"
+msgstr "Szöveges csevegés _törlése"
+
+#: src/main_window.cpp:810
+msgid "Clear the text chat"
+msgstr "Szöveges csevegés törlése"
+
+#: src/main_window.cpp:817 src/main_window.cpp:2514
 msgid "Local Video"
 msgstr "Helyi video"
 
-#: src/main_window.cpp:1676 src/menu.cpp:428 src/menu.cpp:555
+#: src/main_window.cpp:818
+msgid "Local video image"
+msgstr "Helyi videokép"
+
+#: src/main_window.cpp:823 src/main_window.cpp:2518
 msgid "Remote Video"
 msgstr "Túloldali video"
 
-#: src/main_window.cpp:1802
+#: src/main_window.cpp:824
+msgid "Remote video image"
+msgstr "Túloldali videokép"
+
+#: src/main_window.cpp:829
+msgid "Both (Local Video Incrusted)"
+msgstr "Mindkettő (helyi video kicsinyítve)"
+
+#: src/main_window.cpp:830 src/main_window.cpp:837 src/main_window.cpp:844
+msgid "Both video images"
+msgstr "Mindkét videokép"
+
+#: src/main_window.cpp:836
+msgid "Both (Local Video in New Window)"
+msgstr "Mindkettő (helyi video új ablakban)"
+
+#: src/main_window.cpp:843
+msgid "Both (Both in New Windows)"
+msgstr "Mindkettő (mindkettő új ablakban)"
+
+#: src/main_window.cpp:852
+msgid "Zoom In"
+msgstr "Nagyítás"
+
+#: src/main_window.cpp:852
+msgid "Zoom in"
+msgstr "Nagyítás"
+
+#: src/main_window.cpp:856
+msgid "Zoom Out"
+msgstr "Kicsinyítés"
+
+#: src/main_window.cpp:856
+msgid "Zoom out"
+msgstr "Kicsinyítés"
+
+#: src/main_window.cpp:860
+msgid "Normal Size"
+msgstr "Normál méret"
+
+#: src/main_window.cpp:860
+msgid "Normal size"
+msgstr "Normál méret"
+
+#: src/main_window.cpp:865
+msgid "Fullscreen"
+msgstr "Teljes képernyő"
+
+#: src/main_window.cpp:870
+msgid "_Tools"
+msgstr "_Eszközök"
+
+#: src/main_window.cpp:872 src/tray.cpp:288
+msgid "Address _Book"
+msgstr "_Címjegyzék"
+
+#: src/main_window.cpp:873 src/tray.cpp:289
+msgid "Open the address book"
+msgstr "Címjegyzék megnyitása"
+
+#: src/main_window.cpp:881
+msgid "View the operations history"
+msgstr "A műveletek előzményeinek megtekintése"
+
+#: src/main_window.cpp:886 src/tray.cpp:297
+msgid "View the calls history"
+msgstr "Hívásnapló megtekintése"
+
+#: src/main_window.cpp:894 src/main_window.cpp:900
+msgid "PC-To-Phone Account"
+msgstr "PC->telefon felhasználói fiók"
+
+#: src/main_window.cpp:895 src/main_window.cpp:901
+msgid "Manage your PC-To-Phone account"
+msgstr "Az Ön PC->telefon felhasználói fiókjának kezelése"
+
+#: src/main_window.cpp:906
+msgid "_Help"
+msgstr "_Súgó"
+
+#: src/main_window.cpp:909 src/main_window.cpp:914
+msgid "_Contents"
+msgstr "_Tartalom"
+
+#: src/main_window.cpp:910 src/main_window.cpp:915
+msgid "Get help by reading the GnomeMeeting manual"
+msgstr "A GnomeMeeting kézikönyvének megtekintése"
+
+#: src/main_window.cpp:920
+msgid "_About"
+msgstr "_Névjegy"
+
+#: src/main_window.cpp:921 src/tray.cpp:313
+msgid "View information about GnomeMeeting"
+msgstr "A GnomeMeeting adatainak megtekintése"
+
+#: src/main_window.cpp:1036
+msgid "Dialpad"
+msgstr "Tárcsázókészülék"
+
+#: src/main_window.cpp:1092
+msgid "Adjust brightness"
+msgstr "Fényesség beállítása"
+
+#: src/main_window.cpp:1115
+msgid "Adjust whiteness"
+msgstr "Fehéregyensúly beállítása"
+
+#: src/main_window.cpp:1138
+msgid "Adjust color"
+msgstr "Színek beállítása"
+
+#: src/main_window.cpp:1161
+msgid "Adjust contrast"
+msgstr "Kontraszt beállítása"
+
+#: src/main_window.cpp:1169
+msgid "Video"
+msgstr "Video"
+
+#: src/main_window.cpp:1247
+msgid "Audio"
+msgstr "Hang"
+
+#: src/main_window.cpp:1351
+#, c-format
+msgid "Sent dtmf %c"
+msgstr "Elküldött DMTF %c"
+
+#: src/main_window.cpp:1398
+msgid "_Retrieve Call"
+msgstr "Hívás _visszavétele"
+
+#: src/main_window.cpp:1452
+msgid "Resume _Audio"
+msgstr "_Hang vissza"
+
+#: src/main_window.cpp:1454
+msgid "Resume _Video"
+msgstr "_Video vissza"
+
+#: src/main_window.cpp:1832
+msgid "Transfer call to:"
+msgstr "Hívás átadása ide:"
+
+#: src/main_window.cpp:1833
+msgid "Transfer"
+msgstr "Hívásátadás"
+
+#: src/main_window.cpp:2727
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Hibakövető üzenetek nyomtatása a konzolra (1-es és 6-os szint között)"
 
-#: src/main_window.cpp:1805
+#: src/main_window.cpp:2730
 msgid "Makes GnomeMeeting call the given URL"
-msgstr ""
+msgstr "A GnomeMeeting felhívja a megadott URL-t"
 
-#: src/main_window.cpp:1840
-msgid "No usable audio manager detected"
-msgstr ""
+#: src/main_window.cpp:2765
+msgid "No usable audio plugin detected"
+msgstr "Nem találtam használható hangbővítményt"
 
-#: src/main_window.cpp:1840
+#: src/main_window.cpp:2765
 msgid ""
-"GnomeMeeting didn't find any usable sound manager. Make sure that your "
+"GnomeMeeting didn't find any usable audio plugin. Make sure that your "
 "installation is correct."
 msgstr ""
+"A GnomeMeeting nem talált egyetlen használható hangbővítményt sem. Győződjön "
+"meg, hogy a telepítés megfelelő."
 
-#: src/main_window.cpp:1860
+#: src/main_window.cpp:2785
 #, c-format
 msgid ""
 "GnomeMeeting got an invalid value for the GConf key %s.\n"
@@ -2538,303 +2977,19 @@ msgid ""
 "gconf/) or the mailing list archives for more information (http://mail.gnome."
 "org) about this problem."
 msgstr ""
+"A GnomeMeeting érvénytelen értéket kapott %s GConf kulcshoz.\n"
+"\n"
+"Ez valószínűleg azt jelenti, hogy a GConf sémák nincsenek megfelelően "
+"telepítve, vagy a jogosultságai nem megfelelőek.\n"
+"\n"
+"Kérem ellenőrizze a GYIK-et (http://www.gnomemeeting.org/faq.php), a GConf "
+"webhely hibaelhárítás szakaszát (http://www.gnome.org/projects/gconf/) vagy "
+"a levelezőlisták archívumait (http://mail.gnome.org) ezzel a problémával "
+"kapcsolatban."
 
-#: src/main_window.cpp:1863
+#: src/main_window.cpp:2788
 msgid "Gconf key error"
 msgstr "Gconf-kulcs hiba"
-
-#: src/menu.cpp:268
-msgid "C_all"
-msgstr "_Hívás"
-
-#: src/menu.cpp:270
-msgid "C_onnect"
-msgstr "Kapcs_olódás"
-
-#: src/menu.cpp:270 src/menu.cpp:632
-msgid "Create a new connection"
-msgstr "Új kapcsolat létrehozása"
-
-#: src/menu.cpp:273 src/menu.cpp:635
-msgid "_Disconnect"
-msgstr "_Szétkapcsolás"
-
-#: src/menu.cpp:274 src/menu.cpp:636
-msgid "Close the current connection"
-msgstr "A kapcsolat bezárása"
-
-#: src/menu.cpp:280 src/menu.cpp:642
-msgid "_Available"
-msgstr ""
-
-#: src/menu.cpp:281 src/menu.cpp:643
-msgid "Display a popup to accept the call"
-msgstr "Felbukkanó ablak megjelenítése a hívás fogadásához"
-
-#: src/menu.cpp:286 src/menu.cpp:648
-msgid "Free for Cha_t"
-msgstr ""
-
-#: src/menu.cpp:287 src/menu.cpp:649
-msgid "Auto answer calls"
-msgstr "Hívások automatikus megválaszolása"
-
-#: src/menu.cpp:292 src/menu.cpp:654
-msgid "_Busy"
-msgstr "Fo_glalt"
-
-#: src/menu.cpp:292 src/menu.cpp:654
-msgid "Reject calls"
-msgstr "Elutasított hívások"
-
-#: src/menu.cpp:297 src/menu.cpp:659
-msgid "_Forward"
-msgstr "_Továbbítás"
-
-#: src/menu.cpp:297 src/menu.cpp:659
-msgid "Forward calls"
-msgstr "Hívások továbbítása"
-
-#: src/menu.cpp:305
-msgid "Speed dials"
-msgstr "Gyorstárcsázások"
-
-#: src/menu.cpp:309
-msgid "Hold the current call"
-msgstr "Jelenlegi hívás tartása"
-
-#: src/menu.cpp:312
-msgid "_Transfer Call"
-msgstr "_Hívásátadás"
-
-#: src/menu.cpp:313
-msgid "Transfer the current call"
-msgstr "Jelenlegi hívás átadása"
-
-#: src/menu.cpp:320
-msgid "Suspend or resume the audio transmission"
-msgstr "Hangátvitel felfüggesztése vagy újraindítása"
-
-#: src/menu.cpp:325
-msgid "Suspend or resume the video transmission"
-msgstr "Videoátvitel felfüggesztése vagy újraindítása"
-
-#: src/menu.cpp:332
-msgid "_Save Current Picture"
-msgstr "_Jelenlegi kép mentése"
-
-#: src/menu.cpp:333
-msgid "Save a snapshot of the current video"
-msgstr "Pillanatkép mentése a jelenlegi videoról"
-
-#: src/menu.cpp:339
-msgid "Close the GnomeMeeting window"
-msgstr "A GnomeMeeting ablak bezárása"
-
-#: src/menu.cpp:346 src/menu.cpp:697
-msgid "_Quit"
-msgstr "_Kilépés"
-
-#: src/menu.cpp:346 src/menu.cpp:698
-msgid "Quit GnomeMeeting"
-msgstr "Kilépés a GnomeMeeting-ből"
-
-#: src/menu.cpp:350
-msgid "_Edit"
-msgstr "S_zerkesztés"
-
-#: src/menu.cpp:352
-msgid "Configuration Druid"
-msgstr "Beállítóvarázsló"
-
-#: src/menu.cpp:353
-msgid "Run the configuration druid"
-msgstr "A beállítóvarázsló futtatása"
-
-#: src/menu.cpp:360 src/menu.cpp:683
-msgid "_Preferences"
-msgstr "_Beállítások"
-
-#: src/menu.cpp:361 src/menu.cpp:684
-msgid "Change your preferences"
-msgstr "Beállítások megváltoztatása"
-
-#: src/menu.cpp:366
-msgid "_View"
-msgstr "_Nézet"
-
-#: src/menu.cpp:368 src/pref_window.cpp:711
-msgid "Text Chat"
-msgstr "Szöveges csevegés"
-
-#: src/menu.cpp:369
-msgid "View/Hide the text chat window"
-msgstr "Szöveges csevegőablak megjelenítése/elrejtése"
-
-#: src/menu.cpp:374
-msgid "Status Bar"
-msgstr "Állapotsor"
-
-#: src/menu.cpp:375
-msgid "View/Hide the status bar"
-msgstr "Állapotsor megjelenítése/elrejtése"
-
-#: src/menu.cpp:381
-msgid "Control Panel"
-msgstr "Vezérlőpult"
-
-#: src/menu.cpp:384
-msgid "View audio/video transmission and reception statistics"
-msgstr ""
-
-#: src/menu.cpp:389
-msgid "_Dialpad"
-msgstr ""
-
-#: src/menu.cpp:389
-msgid "View the dialpad"
-msgstr ""
-
-#: src/menu.cpp:394
-msgid "_Audio Settings"
-msgstr "_Hangbeállítások"
-
-#: src/menu.cpp:395
-msgid "View audio settings"
-msgstr "Hangbeállítások megtekintése"
-
-#: src/menu.cpp:400
-msgid "_Video Settings"
-msgstr "_Videobeállítások"
-
-#: src/menu.cpp:401
-msgid "View video settings"
-msgstr "Videobeállítások megtekintése"
-
-#: src/menu.cpp:406 src/pref_window.cpp:1069
-msgid "Off"
-msgstr "Ki"
-
-#: src/menu.cpp:406
-msgid "Hide the control panel"
-msgstr "Vezérlőpult elrejtése"
-
-#: src/menu.cpp:414
-msgid "_Clear Text Chat"
-msgstr "Szöveges csevegés _törlése"
-
-#: src/menu.cpp:415
-msgid "Clear the text chat"
-msgstr "Szöveges csevegés törlése"
-
-#: src/menu.cpp:423 src/menu.cpp:550
-msgid "Local video image"
-msgstr "Helyi videokép"
-
-#: src/menu.cpp:429 src/menu.cpp:556
-msgid "Remote video image"
-msgstr "Túloldali videokép"
-
-#: src/menu.cpp:434 src/menu.cpp:561
-msgid "Both (Local Video Incrusted)"
-msgstr ""
-
-#: src/menu.cpp:435 src/menu.cpp:442 src/menu.cpp:449 src/menu.cpp:562
-#: src/menu.cpp:569 src/menu.cpp:576
-msgid "Both video images"
-msgstr "Mindkét videokép"
-
-#: src/menu.cpp:441 src/menu.cpp:568
-msgid "Both (Local Video in New Window)"
-msgstr ""
-
-#: src/menu.cpp:448 src/menu.cpp:575
-msgid "Both (Both in New Windows)"
-msgstr "Mindkettő (mindkettő új ablakban)"
-
-#: src/menu.cpp:457 src/menu.cpp:584
-msgid "Zoom In"
-msgstr "Nagyítás"
-
-#: src/menu.cpp:457 src/menu.cpp:584
-msgid "Zoom in"
-msgstr "Nagyítás"
-
-#: src/menu.cpp:461 src/menu.cpp:588
-msgid "Zoom Out"
-msgstr "Kicsinyítés"
-
-#: src/menu.cpp:461 src/menu.cpp:588
-msgid "Zoom out"
-msgstr "Kicsinyítés"
-
-#: src/menu.cpp:465 src/menu.cpp:592
-msgid "Normal Size"
-msgstr "Normál méret"
-
-#: src/menu.cpp:465 src/menu.cpp:592
-msgid "Normal size"
-msgstr "Normál méret"
-
-#: src/menu.cpp:470 src/menu.cpp:597
-msgid "Fullscreen"
-msgstr "Teljes képernyő"
-
-#: src/menu.cpp:475
-msgid "_Tools"
-msgstr "_Eszközök"
-
-#: src/menu.cpp:477 src/menu.cpp:667
-msgid "Address _Book"
-msgstr "_Címjegyzék"
-
-#: src/menu.cpp:478 src/menu.cpp:668
-msgid "Open the address book"
-msgstr "Címjegyzék megnyitása"
-
-#: src/menu.cpp:486
-msgid "View the operations history"
-msgstr "A műveletek előzményeinek megtekintése"
-
-#: src/menu.cpp:491 src/menu.cpp:676
-msgid "View the calls history"
-msgstr "Hívásnapló megtekintése"
-
-#: src/menu.cpp:499 src/menu.cpp:505
-msgid "PC-To-Phone Account"
-msgstr "PC->telefon fiók"
-
-#: src/menu.cpp:500 src/menu.cpp:506
-msgid "Manage your PC-To-Phone account"
-msgstr ""
-
-#: src/menu.cpp:511
-msgid "_Help"
-msgstr "_Súgó"
-
-#: src/menu.cpp:514 src/menu.cpp:519
-msgid "_Contents"
-msgstr "_Tartalom"
-
-#: src/menu.cpp:515 src/menu.cpp:520
-msgid "Get help by reading the GnomeMeeting manual"
-msgstr ""
-
-#: src/menu.cpp:525
-msgid "_About"
-msgstr "_Névjegy"
-
-#: src/menu.cpp:526 src/menu.cpp:692
-msgid "View information about GnomeMeeting"
-msgstr "A GnomeMeeting adatainak megtekintése"
-
-#: src/menu.cpp:632
-msgid "_Connect"
-msgstr "Kapcs_olódás"
-
-#: src/menu.cpp:691
-msgid "_About..."
-msgstr "_Névjegy..."
 
 #: src/misc.cpp:112
 msgid "Generic error"
@@ -2915,6 +3070,9 @@ msgid ""
 "First Name, Last Name, E-Mail, Comment and Location or to update your alias "
 "on the Gatekeeper"
 msgstr ""
+"Kattintson ide a felhasználók könyvtárának információinak az új vezeték- és "
+"utónév, e-mail cím, megjegyzés és hely adatokkal való frissítéséhez vagy a "
+"forgalomirányítón használt álnév frissítéséhez"
 
 #: src/pref_window.cpp:688
 msgid "GnomeMeeting GUI"
@@ -2936,7 +3094,7 @@ msgstr "Videomegjelenítő"
 #. of X by Y pixels
 #: src/pref_window.cpp:704
 msgid "Use a fullscreen size of"
-msgstr ""
+msgstr "Teljes képernyős méret:"
 
 #: src/pref_window.cpp:704
 msgid "by"
@@ -2956,7 +3114,7 @@ msgstr "A kép magassága teljes képernyőnél."
 
 #: src/pref_window.cpp:707
 msgid "Place windows displaying video _above other windows"
-msgstr ""
+msgstr "A videoablak megjelenítése más ablakok _fölött"
 
 #: src/pref_window.cpp:726
 msgid "Users Directory"
@@ -2969,20 +3127,22 @@ msgstr "Felhasználók könyvtára:"
 
 #: src/pref_window.cpp:730
 msgid "The users directory server to register with"
-msgstr ""
+msgstr "Regisztráció a következő felhasználók könyvtára kiszolgálón:"
 
 #: src/pref_window.cpp:732
 msgid "Enable _registering"
-msgstr "_Regisztrálás engedélyezése"
+msgstr "_Regisztráció engedélyezése"
 
 #: src/pref_window.cpp:732
 msgid "If enabled, register with the selected users directory"
 msgstr ""
-"Ha engedélyezve van, akkor a kijelölt felhasználók könyvtárával regisztrál"
+"Ha engedélyezve van, akkor a kijelölt felhasználók könyvtárában regisztrál"
 
 #: src/pref_window.cpp:734
 msgid "_Publish my details in the users directory when registering"
 msgstr ""
+"Mutasson rólam _részletes információkat a felhasználók könyvtárában való "
+"regisztrációkor"
 
 #: src/pref_window.cpp:734
 msgid ""
@@ -2990,6 +3150,10 @@ msgid ""
 "If disabled, you are not visible to users browsing the users directory, but "
 "they can still use the callto URL to call you."
 msgstr ""
+"Ha engedélyezi, részletes információk jelennek meg Önről a felhasználók "
+"könyvtárát böngészők előtt. Ha kikapcsolja, a felhasználók könyvtárát "
+"böngésző emberek nem fogják Önt látni, de felhívhatják Önt a callto URL "
+"használatával."
 
 #: src/pref_window.cpp:747 src/pref_window.cpp:1897
 msgid "Call Forwarding"
@@ -3008,6 +3172,8 @@ msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field above"
 msgstr ""
+"Ha engedélyezi, minden bejövő hívás a fentebb megadott kiszolgálóra lesz "
+"továbbítva"
 
 #: src/pref_window.cpp:759
 msgid "Forward calls to the given host if _no answer"
@@ -3018,6 +3184,8 @@ msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field above if you do not answer the call"
 msgstr ""
+"Ha engedélyezi, minden bejövő hívás a fentebb megadott kiszolgálóra lesz "
+"továbbítva, ha nem válaszol a hívásra"
 
 #: src/pref_window.cpp:761
 msgid "Forward calls to the given host if _busy"
@@ -3029,10 +3197,12 @@ msgid ""
 "specified in the field above if you already are in a call or if you are in "
 "Do Not Disturb mode"
 msgstr ""
+"Ha engedélyezi, minden bejövő hívás a fentebb megadott kiszolgálóra lesz "
+"továbbítva, ha már folyamatban van egy hívás vagy Ne zavarjanak módban van"
 
 #: src/pref_window.cpp:773 src/pref_window.cpp:1878
 msgid "Call Options"
-msgstr "Hívás beállításai"
+msgstr "Hívásbeállítások"
 
 #. Add all the fields
 #: src/pref_window.cpp:777
@@ -3043,11 +3213,11 @@ msgstr "Hívások automatikus _törlése 30 másodperc inaktivitás után"
 #. unanswered incoming calls after X s (seconds)
 #: src/pref_window.cpp:781
 msgid "Reject or forward unanswered incoming calls after "
-msgstr ""
+msgstr "Megválaszolatlan bejövő hívások visszautasítása vagy továbbítása "
 
 #: src/pref_window.cpp:781
 msgid "seconds"
-msgstr "másodperc"
+msgstr "másodperc után"
 
 #: src/pref_window.cpp:813
 msgid "GnomeMeeting Sound Events"
@@ -3075,7 +3245,7 @@ msgstr "Kimeneti eszköz:"
 
 #: src/pref_window.cpp:944
 msgid "All"
-msgstr "Minden"
+msgstr "Mind"
 
 #: src/pref_window.cpp:946
 msgid "rfc2833"
@@ -3106,10 +3276,15 @@ msgid ""
 "Netmeeting does not support it. Using both Fast Start and H.245 Tunneling "
 "can crash some versions of Netmeeting."
 msgstr ""
+"Ez engedélyezi a H.245-alagutazás módot. Ebben a módban a H.245 üzenetek a "
+"H.225 csatornába (1720-as port) lesznek beágyazva. Ez felszabadít egy TCP "
+"kapcsolatot hívások közben. A H.245 alagutazást a H.323v2 vezette be és a "
+"Netmeeting nem támogatja. A gyors indítás és a H.245 alagutazás együttes "
+"használata összeomlaszthatja a Netmeeting egyes verzióit."
 
 #: src/pref_window.cpp:960
 msgid "Enable _early H.245"
-msgstr ""
+msgstr "_Korai H.245 engedélyezése"
 
 #: src/pref_window.cpp:962
 msgid "Enable fast _start procedure"
@@ -3122,6 +3297,10 @@ msgid ""
 "Netmeeting and using both Fast Start and H.245 Tunneling can crash some "
 "versions of Netmeeting."
 msgstr ""
+"A kapcsolatot gyors indítás módban hozza létre. A gyors indítás a hívások "
+"indításának egy gyorsabb módja, mint amit a H.323v2 bevezetett. A Netmeeting "
+"nem támogatja. A gyors indítás és a H.245 alagutazás együttes használata "
+"összeomlaszthatja a Netmeeting egyes verzióit."
 
 #: src/pref_window.cpp:968
 msgid "DTMF Sending"
@@ -3129,7 +3308,7 @@ msgstr "DTMF-küldés"
 
 #: src/pref_window.cpp:970
 msgid "_Send DTMF as:"
-msgstr ""
+msgstr "DMTF _küldése mint:"
 
 #: src/pref_window.cpp:970
 msgid ""
@@ -3138,6 +3317,11 @@ msgid ""
 "Choosing other values than \"All\", \"String\" or \"rfc2833\" disables the "
 "Text Chat."
 msgstr ""
+"Ezzel beállítja a DMTF küldési módot. A lehetséges értékek: \"All\" (Mind), "
+"\"None\" (Nincs) \"rfc2833\", \"Signal\" (Jel) vagy \"String"
+"\" (Karakterlánc) (Az alapértelmezett a \"Mind\"). A \"Mind\", \"Karakterlánc"
+"\" vagy \"rfc2833\" -tól különböző érték választása kikapcsolja a szöveges "
+"csevegést."
 
 #: src/pref_window.cpp:981
 msgid "Do not register"
@@ -3149,27 +3333,28 @@ msgstr "Automatikus felfedezés"
 
 #: src/pref_window.cpp:990
 msgid "Gatekeeper"
-msgstr "Gatekeeper"
+msgstr "Forgalomirányító"
 
 #: src/pref_window.cpp:992
 msgid "Gatekeeper _ID:"
-msgstr "Gatekeeper _azonosító:"
+msgstr "Forgalomirányító _azonosító:"
 
 #: src/pref_window.cpp:994
 msgid "Gatekeeper _host:"
-msgstr "Gatekeeper _gép:"
+msgstr "Forgalomirányító _gép:"
 
 #: src/pref_window.cpp:996
 msgid "Gatekeeper _alias:"
-msgstr "Gatekeeper-_álnév:"
+msgstr "Forgalomirányító-á_lnév:"
 
 #: src/pref_window.cpp:999
 msgid "Gatekeeper _password:"
-msgstr "Gatekeeper-_jelszó:"
+msgstr "Forgalomirányító _jelszó:"
 
 #: src/pref_window.cpp:1002
 msgid "Register this alias as the primary alias with the gatekeeper"
 msgstr ""
+"Ezen álnév elsődleges álnévként való regisztrációja a forgalomirányítónál"
 
 #: src/pref_window.cpp:1002
 msgid ""
@@ -3177,6 +3362,10 @@ msgid ""
 "registering with a gatekeeper. This may be required if your gatekeeper can "
 "only perform authentication using the first alias in the list."
 msgstr ""
+"Használja ezt az opciót hogy biztosan a fenti álnév legyen használva a "
+"forgalomirányítón való regisztrációkor. Ez olyankor lehet szükséges, ha az "
+"Ön által használt forgalomirányító csak a lista első álnevének használatával "
+"képes azonosítást végezni."
 
 #: src/pref_window.cpp:1004
 msgid "Registering method:"
@@ -3184,7 +3373,7 @@ msgstr "Regisztráció módja:"
 
 #: src/pref_window.cpp:1006
 msgid "Click here to update your Gatekeeper settings"
-msgstr "Kattintson ide a gatekeeper beállításainak frissítéséhez"
+msgstr "Kattintson ide a forgalomirányító beállításainak frissítéséhez"
 
 #: src/pref_window.cpp:1019
 msgid "Gateway/Proxy"
@@ -3214,6 +3403,12 @@ msgid ""
 "will automatically fetch the public IP using the ILS service. If your router "
 "natively supports H.323, you can disable this."
 msgstr ""
+"Ez engedélyezi az IP fordítást. Ez olyankor hasznos, ha a GnomeMeeting egy "
+"NAT/PAT útválasztó mögött fut. Az alábbi mezőbe az útválasztó nyilvános IP-"
+"jét kell beírnia. HA Ön regisztrálva van az ils.seconix.com-nál, a "
+"GnomeMeeting automatikusan lekéri a nyilvános IP-t az ILS szolgáltatás "
+"segítségével. Ha az útválasztó alapértelmezetten támogatja a H.323-at, ezt "
+"kikapcsolhatja."
 
 #: src/pref_window.cpp:1041
 msgid "Enable _automatic IP checking"
@@ -3226,6 +3421,11 @@ msgid ""
 "when IP Translation is enabled. If you disable IP checking, you will have to "
 "manually enter the IP of your gateway in the GnomeMeeting preferences."
 msgstr ""
+"Ez engedélyezi az IP ellenőrzést a seconix.com-ról és kitölti a GnomeMeeting "
+"NAT/PAT átjárójának nyilvános IP cím mezőjét. A kapott IP csak az IP "
+"fordítás engedélyezésekor lesz felhasználva. Ha nem engedélyezi az IP "
+"ellenőrzést, az átjáró IP címét kézzel kell megadnia a GnomeMeeting "
+"tulajdonságainál."
 
 #: src/pref_window.cpp:1043
 msgid "Public _IP of the NAT/PAT router:"
@@ -3237,6 +3437,10 @@ msgid ""
 "translation. If you are registered to ils.seconix.com, GnomeMeeting will "
 "automatically fetch the public IP using the ILS service."
 msgstr ""
+"Adja meg a NAT/PAT útválasztó nyilvános IP címét, ha szeretné az IP "
+"fordítást használni. Ha regisztrálva van az ils.seconix.com-nál, a "
+"GnomeMeeting automatikusan letölti a nyilvános IP-t az ILS szolgáltatás "
+"használatával."
 
 #: src/pref_window.cpp:1049
 msgid "STUN Support"
@@ -3268,24 +3472,24 @@ msgstr "AGC"
 
 #: src/pref_window.cpp:1076
 msgid "POTS"
-msgstr ""
+msgstr "POTS"
 
 #: src/pref_window.cpp:1077
 msgid "Headset"
-msgstr ""
+msgstr "Headset"
 
 #: src/pref_window.cpp:1085
 msgid "Audio Plugin"
-msgstr "Audio bővítmény"
+msgstr "Hangbővítmény"
 
 #: src/pref_window.cpp:1090
 msgid "Audio plugin:"
-msgstr "Audio bővítmény:"
+msgstr "Hangbővítmény:"
 
 #: src/pref_window.cpp:1090
 msgid ""
 "The audio plugin that will be used to detect the devices and manage them."
-msgstr "Az eszközök felismeréséhez és kezeléséhez használandó audio bővítmény."
+msgstr "Az eszközök felismeréséhez és kezeléséhez használandó hangbővítmény."
 
 #: src/pref_window.cpp:1096 src/pref_window.cpp:1922
 msgid "Audio Devices"
@@ -3419,6 +3623,7 @@ msgstr "_Csendérzékelés engedélyezése"
 #: src/pref_window.cpp:1248
 msgid "If enabled, use silence detection with the GSM and G.711 codecs."
 msgstr ""
+"Ezzel engedélyezheti a csendérzékelés használatát a GSM és G.711 kodekeknél."
 
 #: src/pref_window.cpp:1260 src/pref_window.cpp:1869
 msgid "General Settings"
@@ -3431,7 +3636,7 @@ msgstr "_Videoátvitel engedélyezése"
 
 #: src/pref_window.cpp:1264
 msgid "If enabled, video is transmitted during a call."
-msgstr ""
+msgstr "Ezzel engedélyezi a video hívás közben való átvitelét."
 
 #: src/pref_window.cpp:1266
 msgid "Enable video _reception"
@@ -3439,7 +3644,7 @@ msgstr "_Videofogadás engedélyezése"
 
 #: src/pref_window.cpp:1266
 msgid "If enabled, allows video to be received during a call."
-msgstr ""
+msgstr "Ezzel engedélyezi a video hívás közben való fogadását."
 
 #: src/pref_window.cpp:1271
 msgid "Bandwidth Control"
@@ -3456,6 +3661,10 @@ msgid ""
 "transmitted frames per second will be dynamically adjusted above their "
 "minimum during calls to try to minimize the bandwidth to the given value."
 msgstr ""
+"A videosávszélesség felső határa Kb/s-ban. A videominőség és a "
+"másodpercenként átvitt képkockák száma hívás közben dinamikusan lesz "
+"beállítva a minimális értékük felett, így próbálva a sávszélességet a "
+"megadott értékre csökkenteni."
 
 #: src/pref_window.cpp:1274
 msgid "kB/s"
@@ -3468,7 +3677,7 @@ msgstr "Haladó minőségi beállítások"
 #. Translators: the full sentence is Keep a minimum video quality of X %
 #: src/pref_window.cpp:1283
 msgid "Frame Rate"
-msgstr ""
+msgstr "képkockaráta"
 
 #: src/pref_window.cpp:1283
 msgid "Picture Quality"
@@ -3477,23 +3686,25 @@ msgstr "Képminőség"
 #: src/pref_window.cpp:1283
 msgid ""
 "Choose if you want to favour speed or quality for the transmitted video."
-msgstr ""
+msgstr "Válassza ki, hogy az átvitt video sebessége vagy minősége a fontosabb."
 
 #. Translators: the full sentence is Transmit X background blocks with each
 #. frame
 #: src/pref_window.cpp:1287
 msgid "Transmit"
-msgstr "Átvitel"
+msgstr "Vigyen át"
 
 #: src/pref_window.cpp:1287
 msgid ""
 "Choose the number of blocks (that have not changed) transmitted with each "
 "frame. These blocks fill in the background."
 msgstr ""
+"Válassza ki az egyes képkockákkal átvitt (változatlan) blokkok számát. Ezek "
+"a blokkok a háttérben lesznek kitöltve."
 
 #: src/pref_window.cpp:1287
 msgid "background _blocks with each frame"
-msgstr ""
+msgstr "háttérblokkot _minden képkockával"
 
 #: src/pref_window.cpp:1458 src/pref_window.cpp:1486
 msgid "Choose a Picture"
@@ -3529,7 +3740,7 @@ msgstr "Haladó beállítások"
 
 #: src/pref_window.cpp:1902
 msgid "Gatekeeper Settings"
-msgstr "Gatekeeper beállításai"
+msgstr "Forgalomirányító beállítások"
 
 #: src/pref_window.cpp:1907
 msgid "Gateway / Proxy Settings"
@@ -3551,100 +3762,79 @@ msgstr "Videokodekek"
 msgid "Devices"
 msgstr "Eszközök"
 
-#: src/sound_handling.cpp:326
+#: src/sound_handling.cpp:330
 msgid "Opening device for playing"
 msgstr "Eszköz megnyitása lejátszáshoz"
 
-#: src/sound_handling.cpp:328
+#: src/sound_handling.cpp:332
 msgid "Opening device for recording"
 msgstr "Eszköz megnyitása felvételhez"
 
-#: src/sound_handling.cpp:340 src/sound_handling.cpp:342
-#: src/videograbber.cpp:703
+#: src/sound_handling.cpp:344 src/sound_handling.cpp:346
+#: src/videograbber.cpp:702
 msgid "Failed to open the device"
 msgstr "Eszköz megnyitása sikertelen"
 
-#: src/sound_handling.cpp:340
+#: src/sound_handling.cpp:344
 #, c-format
 msgid ""
 "Impossible to open the selected audio device (%s) for recording. Please "
 "check your audio setup, the permissions and that the device is not busy."
 msgstr ""
+"A kiválasztott hangeszköz (%s) megnyitása felvételre lehetetlen. Kérem "
+"ellenőrizze a hangbeállításait, a jogosultságokat és hogy az eszköz nem "
+"foglalt-e."
 
-#: src/sound_handling.cpp:342
+#: src/sound_handling.cpp:346
 #, c-format
 msgid ""
 "Impossible to open the selected audio device (%s) for playing. Please check "
 "your audio setup, the permissions and that the device is not busy."
 msgstr ""
+"A kiválasztott hangeszköz (%s) megnyitása lejátszásra lehetetlen. Kérem "
+"ellenőrizze a hangbeállításait, a jogosultságokat és hogy az eszköz nem "
+"foglalt-e."
 
-#: src/sound_handling.cpp:381 src/sound_handling.cpp:457
+#: src/sound_handling.cpp:385 src/sound_handling.cpp:461
 msgid "Cannot use the audio device"
-msgstr "Nem lehet használni az audio eszközt"
+msgstr "Nem lehet használni a hangeszközt"
 
-#: src/sound_handling.cpp:381
+#: src/sound_handling.cpp:385
 #, c-format
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
 "to read data from this device. Please check your audio setup."
 msgstr ""
+"A kiválasztott hangeszköz (%s) megnyitása sikerült, de lehetetlen adatot "
+"olvasni az eszközből. Kérem ellenőrizze a hangbeállításait."
 
-#: src/sound_handling.cpp:390
+#: src/sound_handling.cpp:394
 msgid "Recording your voice"
-msgstr "Az ön hangjának felvétele"
+msgstr "Az Ön hangjának felvétele"
 
-#: src/sound_handling.cpp:432
+#: src/sound_handling.cpp:436
 msgid "Recording and playing back"
-msgstr "Felvevés és visszajátszás"
+msgstr "Felvétel és visszajátszás"
 
-#: src/sound_handling.cpp:457
+#: src/sound_handling.cpp:461
 #, c-format
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
 "to write data to this device. Please check your audio setup."
 msgstr ""
+"A kiválasztott hangeszköz (%s) megnyitása sikerült, de lehetetlen adatot "
+"írni az eszközre. Kérem ellenőrizze a hangbeállításait."
 
-#: src/sound_handling.cpp:585
+#: src/sound_handling.cpp:589
 #, c-format
 msgid ""
 "GnomeMeeting is now recording from %s and playing back to %s. Please say \"1 "
 "2 3\" in your microphone, you should hear yourself back into the speakers "
 "with a 4 seconds delay."
 msgstr ""
-
-#: src/toolbar.cpp:164
-msgid ""
-"Enter an URL to call on the left, and click on this button to connect to the "
-"given URL"
-msgstr ""
-
-#: src/toolbar.cpp:212
-msgid "Open text chat"
-msgstr "Szöveges csevegőablak megnyitása"
-
-#: src/toolbar.cpp:223
-msgid "Open control panel"
-msgstr "Vezérlőpult megnyitása"
-
-#: src/toolbar.cpp:235
-msgid "Open address book"
-msgstr "Címjegyzék megnyitása"
-
-#: src/toolbar.cpp:259
-msgid "Display images from your camera device"
-msgstr ""
-
-#: src/toolbar.cpp:281
-msgid ""
-"Audio transmission status. During a call, click here to suspend or resume "
-"the audio transmission."
-msgstr ""
-
-#: src/toolbar.cpp:301
-msgid ""
-"Video transmission status. During a call, click here to suspend or resume "
-"the video transmission."
-msgstr ""
+"A GnomeMeeting most felvesz a(z) %s eszközről és lejátssza a felvételt %s "
+"eszközre. Kérem mondja a mikrofonba: \"1, 2, 3\", ezt 4 másodperc késéssel "
+"hallania kell a hangszóróból."
 
 #: src/tools.cpp:175 src/tools.cpp:189
 msgid "PC-To-Phone Settings"
@@ -3658,14 +3848,20 @@ msgid ""
 "then enable registering to the MicroTelco service. Please visit the "
 "GnomeMeeting website for more information."
 msgstr ""
+"A GnomeMeeting és a Quicknet Technologies MicroTelco szolgáltatása "
+"segítségével hívásokat kezdeményezhet hagyományos és mobil telefonokra "
+"világszerte. Ennek bekapcsolásához adja meg a MicroTelco felhasználói "
+"fiókszámát és PIN kódját, ezután engedélyezze a regisztrációt a MicroTelco "
+"szolgáltatásra. Kérem látogassa meg a GnomeMeeting weboldalát további "
+"információkért."
 
 #: src/tools.cpp:191
 msgid "Account _number:"
-msgstr "Fiókszá_m:"
+msgstr "Felhasználói fiókszá_m:"
 
 #: src/tools.cpp:191
 msgid "Use your MicroTelco account number"
-msgstr ""
+msgstr "MicroTelco felhasználói fiók használata"
 
 #: src/tools.cpp:194
 msgid "_Pin:"
@@ -3673,7 +3869,7 @@ msgstr "_Pin:"
 
 #: src/tools.cpp:194
 msgid "Use your MicroTelco PIN"
-msgstr ""
+msgstr "A MicroTelco PIN használata"
 
 #: src/tools.cpp:198
 msgid "Use PC-To-Phone service"
@@ -3684,10 +3880,12 @@ msgid ""
 "Click on one of the following links to get more information about your "
 "existing MicroTelco account, or to create a new account."
 msgstr ""
+"Kattintson a következő hivatkozások egyikére bővebb információkért a már "
+"létező MicroTelco felhasználói fiókjáról, vagy hozzon létre újat."
 
 #: src/tools.cpp:207
 msgid "Get an account"
-msgstr "Fiók igénylése"
+msgstr "Felhasználói fiók igénylése"
 
 #: src/tools.cpp:209
 msgid "Buy a card"
@@ -3695,147 +3893,171 @@ msgstr "Kártyavétel"
 
 #: src/tools.cpp:214
 msgid "Consult my account details"
-msgstr ""
+msgstr "Felhasználói fiókom részletei"
 
-#: src/tray.cpp:196
+#: src/tray.cpp:239
 msgid "GnomeMeeting Tray Icon"
 msgstr "GnomeMeeting tálcaikon"
 
-#: src/urlhandler.cpp:79
+#: src/tray.cpp:253
+msgid "_Connect"
+msgstr "Kapcs_olódás"
+
+#: src/tray.cpp:312
+msgid "_About..."
+msgstr "_Névjegy..."
+
+#: src/urlhandler.cpp:78
 msgid ""
 "The call transfer failed, the user was either unreachable, or simply busy "
 "when he received the call transfer request."
 msgstr ""
+"A hívásátvitel sikertelen, a felhasználó vagy elérhetetlen vagy egyszerűen "
+"foglalt volt a hívásátvitel-kérés időpontjában."
 
-#: src/urlhandler.cpp:315
+#: src/urlhandler.cpp:318
 #, c-format
 msgid "No contact with speed dial %s# found, will call number %s instead"
-msgstr ""
+msgstr "%s# gyorstárcsázással nincs kapcsolat, helyette a(z) %s számot hívom"
 
-#: src/urlhandler.cpp:332
+#: src/urlhandler.cpp:335
 msgid "Invalid URL handler"
 msgstr "Érvénytelen URL-kezelő"
 
-#: src/urlhandler.cpp:332
+#: src/urlhandler.cpp:335
 msgid ""
 "Please specify a valid URL handler. Currently both h323: and callto: are "
 "supported."
 msgstr ""
+"Kérem adjon meg egy érvényes URL kezelőt. Jelenleg mind a h323:, mind a "
+"callto: támogatott."
 
-#: src/urlhandler.cpp:352
+#: src/urlhandler.cpp:355
 #, c-format
 msgid "Calling %s"
 msgstr "%s hívása"
 
-#: src/urlhandler.cpp:356
+#: src/urlhandler.cpp:359
 #, c-format
 msgid "Transferring call to %s"
 msgstr "Hívás átadása ide: %s"
 
-#: src/videograbber.cpp:326
+#: src/videograbber.cpp:325
 #, c-format
 msgid "Opening video device %s with plugin %s"
 msgstr "%s videoeszköz megnyitása %s bővítménnyel"
 
-#: src/videograbber.cpp:354
+#: src/videograbber.cpp:353
 #, c-format
 msgid "Successfully opened video device %s, channel %d"
 msgstr "%s videoeszköz %d. csatornája sikeresen megnyitva"
 
-#: src/videograbber.cpp:365
+#: src/videograbber.cpp:364
 #, c-format
 msgid "Error while opening video device %s"
-msgstr "Hiba a(z) %s videoeszköz megnyitás közben"
+msgstr "Hiba a(z) %s videoeszköz megnyitása közben"
 
 #. Translators: Do not translate MovingLogo and Picture
-#: src/videograbber.cpp:369
+#: src/videograbber.cpp:368
 msgid ""
 "A moving GnomeMeeting logo will be transmitted during calls. Notice that you "
 "can always transmit a given image or the moving GnomeMeeting logo by "
 "choosing \"Picture\" as video plugin and \"MovingLogo\" or \"StaticPicture\" "
 "as device."
 msgstr ""
+"Hívások közben a mozgó GnomeMeeting logó lesz átvíve. Ne feledje, hogy "
+"bármikor átvihet egy adott képet vagy a mozgó GnomeMeeting logót, ha "
+"videobővítményként a \"Kép\"-et, eszközként a \"MovingLogo\"-t vagy a "
+"\"StaticPicture\"-t választja."
 
-#: src/videograbber.cpp:371
+#: src/videograbber.cpp:370
 msgid "Couldn't open the video device"
 msgstr "Nem lehet megnyitni a videoeszközt"
 
-#: src/videograbber.cpp:375
+#: src/videograbber.cpp:374
 msgid ""
 "There was an error while opening the device. Please check your permissions "
 "and make sure that the appropriate driver is loaded."
 msgstr ""
+"Hiba lépett fel az eszköz megnyitása közben. Kérem ellenőrizze a "
+"jogosultságait és győződjön meg, hogy a megfelelő vezérlő be van töltve."
 
-#: src/videograbber.cpp:379 src/videograbber.cpp:681
+#: src/videograbber.cpp:378 src/videograbber.cpp:680
 msgid "Your video driver doesn't support the requested video format."
 msgstr "A videomeghajtója nem támogatja a kért videoformátumot."
 
-#: src/videograbber.cpp:383
+#: src/videograbber.cpp:382
 msgid "Could not open the chosen channel."
 msgstr "Nem lehet megnyitni a kiválasztott csatornát."
 
-#: src/videograbber.cpp:387
+#: src/videograbber.cpp:386
 msgid ""
 "Your driver doesn't seem to support any of the colour formats supported by "
 "GnomeMeeting.\n"
 " Please check your kernel driver documentation in order to determine which "
 "Palette is supported."
 msgstr ""
+"Úgy tűnik, a videovezérlője nem támogatja a GnomeMeeting által támogatott "
+"színformátumok egyikét sem.\n"
+"Kérem ellenőrizze a kernele dokumentációját a támogatott paletták "
+"meghatározásához."
 
-#: src/videograbber.cpp:391
+#: src/videograbber.cpp:390
 msgid "Error while setting the frame rate."
 msgstr "Hiba a képkockaráta beállítása közben."
 
-#: src/videograbber.cpp:395
+#: src/videograbber.cpp:394
 msgid "Error while setting the frame size."
 msgstr "Hiba a képkockaméret beállítása közben."
 
-#: src/videograbber.cpp:435
+#: src/videograbber.cpp:434
 msgid "Opened the video device using the \"Picture\" video plugin"
-msgstr ""
+msgstr "Videoeszköz megnyitva a \"Kép\" videobővítmény használatával"
 
-#: src/videograbber.cpp:581
+#: src/videograbber.cpp:580
 msgid "Picture"
 msgstr "Kép"
 
-#: src/videograbber.cpp:593
+#: src/videograbber.cpp:592
 #, c-format
 msgid ""
 "GnomeMeeting is now testing the %s video device. If you experience machine "
 "crashes, then report a bug to the video driver author."
 msgstr ""
+"A GnomeMeeting most teszteli a(z) %s videoeszközt. Ha eközben lefagy a gép, "
+"jelentse a hibát a videovezérlő szerzőjének."
 
-#: src/videograbber.cpp:655
+#: src/videograbber.cpp:654
 #, c-format
 msgid "Test %d done"
 msgstr "%d teszt kész"
 
-#: src/videograbber.cpp:657
+#: src/videograbber.cpp:656
 #, c-format
 msgid "Test %d failed"
 msgstr "%d teszt sikertelen"
 
-#: src/videograbber.cpp:676
+#: src/videograbber.cpp:675
 #, c-format
 msgid "Error while opening %s."
 msgstr "Hiba a(z) %s megnyitása közben."
 
-#: src/videograbber.cpp:685
+#: src/videograbber.cpp:684
 msgid "Could not open the chosen channel with the chosen video format."
 msgstr ""
 "Nem lehet megnyitni a kiválasztott csatornát a kiválasztott videoformátummal."
 
-#: src/videograbber.cpp:689
+#: src/videograbber.cpp:688
 msgid ""
 "Your driver doesn't support any of the color formats tried by GnomeMeeting"
 msgstr ""
 "A meghajtója nem támogatja a GnomeMeeting által próbált egyik színformátumot "
 "sem"
 
-#: src/videograbber.cpp:693
+#: src/videograbber.cpp:692
 msgid "Error with the frame rate."
 msgstr "Hibás képkockaráta."
 
-#: src/videograbber.cpp:697
+#: src/videograbber.cpp:696
 msgid "Error with the frame size."
 msgstr "Hibás képkockaméret."
