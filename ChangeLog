@@ -1,3 +1,15 @@
+2004-02-30 Damien Sandras  <dsandras@seconix.com>
+
+	* NEWS: Updated with news.
+	
+	* configure.in: Incremented to 1.0.1.
+
+	* src/chat_window.cpp: Added patch from Julien Puydt permitting
+	to copy to the GTK buffer and to the X buffer.
+	
+	* src/endpoint.cpp: Make sure LPC10 is never enabled or it could
+	be used in some cases.
+	
 2004-02-29  Miguel Rodríguez Pérez  <miguel@det.uvigo.es>
 
 	* Makefile.am (DESKTOP_FILES): 
@@ -11,6 +23,8 @@
 2004-02-24 Damien Sandras  <dsandras@seconix.com>
 
 	* src/main_window.cpp: Debug output now presents date and time.
+
+V_1_00 TAG
 	
 2004-02-24 Damien Sandras  <dsandras@seconix.com>
 

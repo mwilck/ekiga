@@ -444,8 +444,6 @@ GMH323EndPoint::AddAudioCapabilities ()
     g72616_capa = 
       new H323_G726_Capability (*this, H323_G726_Capability::e_32k);
     SetCapability (0, 0, g72616_capa);
-
-    SetCapability(0, 0, new H323_LPC10Capability (*this));
   }
   
   

@@ -78,9 +78,12 @@ open_uri_callback (const gchar *uri)
 static void
 copy_uri_callback (const gchar *uri)
 {
-  if (uri)
+  if (uri) {
     gtk_clipboard_set_text (gtk_clipboard_get (GDK_SELECTION_PRIMARY),
 			    uri, -1);
+    gtk_clipboard_set_text (gtk_clipboard_get (GDK_SELECTION_CLIPBOARD),
+			    uri, -1);
+  }
 }
 
 
