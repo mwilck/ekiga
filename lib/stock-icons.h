@@ -42,6 +42,10 @@ G_BEGIN_DECLS
 #define GM_STOCK_STATUS_AVAILABLE "gm_status_available_stock"
 #define GM_STOCK_STATUS_OCCUPIED  "gm_status_busy_stock"
 #define GM_STOCK_STATUS_RINGING   "gm_status_ringing_stock"
+#define GM_STOCK_DRUID_AUDIO      "gm_druid_audio_stock"
+#define GM_STOCK_DRUID_VIDEO      "gm_druid_video_stock"
+#define GM_STOCK_DRUID_PERSONAL   "gm_druid_personal_stock"
+#define GM_STOCK_DRUID_CONNECTION "gm_druid_connection_stock"
 
 
 void gnomemeeting_stock_icons_init (void);

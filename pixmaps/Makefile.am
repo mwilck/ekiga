@@ -32,7 +32,11 @@ IMAGES= \
 	gm_video_mute_stock_data video-mute.png \
 	gm_status_available_stock_data status-available-16.png \
 	gm_status_ringing_stock_data status-ringing-16.png \
-	gm_status_occupied_stock_data status-occupied-16.png 
+	gm_status_occupied_stock_data status-occupied-16.png \
+	gm_druid_audio_stock_data druid_audio.png \
+	gm_druid_video_stock_data druid_video.png \
+	gm_druid_personal_stock_data druid_personal.png \
+	gm_druid_connection_stock_data druid_connection.png
 
 EMOTICONS= \
 	gm_emoticon_face1 emoticon-face1.png \
