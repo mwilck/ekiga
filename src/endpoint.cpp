@@ -95,9 +95,6 @@ GMH323EndPoint::GMH323EndPoint (GM_window_widgets *w,
   listener = NULL;
   grabber = NULL;
 
-  GnomeUIInfo *display_uiinfo = (GnomeUIInfo *)
-      gtk_object_get_data (GTK_OBJECT (gw->main_notebook), "display_uiinfo");
-
   // Start the ILSClient PThread, do not register to it
   ils_client = new GMILSClient (gw, lw, opts);
   video_grabber = new GMVideoGrabber (gw, opts);
@@ -677,6 +674,15 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   SetCurrentDisplay (0);
 
+  GtkWidget *object = (GtkWidget *) gtk_object_get_data (GTK_OBJECT (gm),
+							 "display_uiinfo");
+
+  GnomeUIInfo *display_uiinfo = (GnomeUIInfo *) object;
+  
+  GTK_CHECK_MENU_ITEM (display_uiinfo [0].widget)->active = TRUE;
+  GTK_CHECK_MENU_ITEM (display_uiinfo [1].widget)->active = FALSE;
+  GTK_CHECK_MENU_ITEM (display_uiinfo [2].widget)->active = FALSE;
+  
   gdk_threads_leave ();
 
   /* Start to grab with Video Grabber if video preview
@@ -698,19 +704,7 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
 
 void GMH323EndPoint::SetCurrentDisplay (int choice)
-{
-  /* we could be called when gw is no more valid */
-  if (GTK_IS_OBJECT (gw->drawing_area)) {
-
-  
-    if (display_uiinfo != NULL) {
-      
-      GTK_CHECK_MENU_ITEM (display_uiinfo [0].widget)->active = (choice == 0);
-      GTK_CHECK_MENU_ITEM (display_uiinfo [1].widget)->active = (choice == 1);
-      GTK_CHECK_MENU_ITEM (display_uiinfo [2].widget)->active = (choice == 2);
-    }
-  }
-
+{ 
   display_config = choice;
   if (transmitted_video_device != NULL)
     transmitted_video_device->SetCurrentDisplay (choice);
@@ -782,6 +776,16 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 
      gdk_threads_enter ();
      SetCurrentDisplay (0);
+
+     GtkWidget *object = (GtkWidget *) gtk_object_get_data (GTK_OBJECT (gm),
+							    "display_uiinfo");
+
+     GnomeUIInfo *display_uiinfo = (GnomeUIInfo *) object;
+        
+     GTK_CHECK_MENU_ITEM (display_uiinfo [0].widget)->active = FALSE;
+     GTK_CHECK_MENU_ITEM (display_uiinfo [1].widget)->active = TRUE;
+     GTK_CHECK_MENU_ITEM (display_uiinfo [2].widget)->active = FALSE;
+   
      gdk_threads_leave ();
 
      /* Codecs Settings */

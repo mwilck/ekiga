@@ -1,5 +1,12 @@
 2001-11-10  Damien Sandras  <dsandras@seconix.com>
 
+	* endpoint.cpp: The default in the popup is changed at the opening
+	of the video connection (Remote) and at the end of the connection
+	(Remote). That fixes a segfault.
+	* menu.cpp: Some small changes in the design of the functions.
+	
+2001-11-10  Damien Sandras  <dsandras@seconix.com>
+
 	* gdkvideoio.*: Added support for a zoom for webcam images. Added
 	support for gdk_pixbuf.
 	* menu.cpp: Changed the popup menu to a toggled popup menu.

@@ -22,6 +22,8 @@
 
 #include "../config.h"
 
+extern GtkWidget *gm;
+
 static void half_zoom_callback (GtkWidget *, gpointer);
 static void normal_zoom_callback (GtkWidget *, gpointer);
 static void double_zoom_callback (GtkWidget *, gpointer);
@@ -259,7 +261,7 @@ void GM_popup_menu_init (GtkWidget *widget, GM_window_widgets *gw)
   GTK_CHECK_MENU_ITEM (zoom_uiinfo [1].widget)->active = TRUE;
   GTK_CHECK_MENU_ITEM (zoom_uiinfo [2].widget)->active = FALSE;
 
-  gtk_object_set_data (GTK_OBJECT (gw->main_notebook), "display_uiinfo", 
+  gtk_object_set_data (GTK_OBJECT (gm), "display_uiinfo", 
 		       display_uiinfo);
 }
 
