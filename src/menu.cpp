@@ -204,7 +204,7 @@ void gnomemeeting_init_menu ()
       },
       {
 	GNOME_APP_UI_TOGGLEITEM,
-	N_("S_tatus Bar"), N_("View/Hide the Status Bar"),
+	N_("_Status Bar"), N_("View/Hide the Status Bar"),
 	(void *) menu_toggle_changed, 
 	(gpointer) "/apps/gnomemeeting/view/show_status_bar",
 	NULL, GNOME_APP_PIXMAP_NONE, NULL,
@@ -253,14 +253,14 @@ void gnomemeeting_init_menu ()
       GNOMEUIINFO_SEPARATOR,
       {
 	GNOME_APP_UI_ITEM,
-	N_("A_udio Mute"), N_("Mute the audio transmission"),
+	N_("_Audio Mute"), N_("Mute the audio transmission"),
 	(void *) pause_audio_callback, gw, NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	'u', GDK_CONTROL_MASK, NULL
       },
       {
 	GNOME_APP_UI_ITEM,
-	N_("V_ideo Mute"), N_("Mute the video transmission"),
+	N_("_Video Mute"), N_("Mute the video transmission"),
 	(void *) pause_video_callback, gw, NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	'i', GDK_CONTROL_MASK, NULL
@@ -273,7 +273,7 @@ void gnomemeeting_init_menu ()
     {
       {
 	GNOME_APP_UI_ITEM,
-	N_("_About"), N_("About GnomeMeeting"),
+	N_("_About GnomeMeeting"), N_("View information about GnomeMeeting"),
 	(void *)about_callback, NULL, NULL,
 	GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_ABOUT,
 	'A', GDK_CONTROL_MASK, NULL
