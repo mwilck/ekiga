@@ -537,6 +537,10 @@ edit_contact_cb (GtkWidget *widget,
 
   get_selected_contact_info (&contact_section, &contact_name, &contact_url, &contact_speed_dial, NULL);
 
+  // perhaps the contact is already known?
+  if(contact_speed_dial == NULL)
+    get_contact_info_from_url (GMURL (contact_url), NULL, &contact_speed_dial);
+	
   gnomemeeting_addressbook_edit_contact_dialog (contact_section, contact_name, contact_url, contact_speed_dial);
   
   g_free (contact_section);
