@@ -1,0 +1,4012 @@
+# translation of gnomemeeting.po to Arabic
+# This file is distributed under the same license as the PACKAGE package.
+# Copyright (C) 2003 THE PACKAGE'S COPYRIGHT HOLDER.
+# Ossama Khayat <okhayat@yahoo.com>, 2003.
+# Ossama M. Khayat <okhayat@yahoo.com>, 2003.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gnomemeeting.ar\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-12-08 23:26+0100\n"
+"PO-Revision-Date: 2003-12-20 15:40+0100\n"
+"Last-Translator: Ossama Khayat <okhayat@yahoo.com>\n"
+"Language-Team: Arabic <support@arabeyes.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit"
+
+#. Add the window icon and title
+#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:1169
+msgid "GnomeMeeting"
+msgstr "جينوم ميتنج"
+
+#: gnomemeeting.desktop.in.h:2
+msgid "Talk to people over the internet"
+msgstr "تحدث مع العالم عبر الإنترنت"
+
+#: gnomemeeting.desktop.in.h:3
+msgid "Video Conferencing"
+msgstr "اللقاءات المرئية"
+
+#: gnomemeeting.schemas.in.in.h:1
+msgid "1: 56Kbps, 2: ISDN, 3:DSL, 4: LAN, 5: Custom"
+msgstr "1: 56Kbps, 2: ISDN, 3:DSL, 4: شبكة محلية, 5: مخصّص"
+
+#: gnomemeeting.schemas.in.in.h:2
+msgid "Always forward calls to the given host"
+msgstr "حوّل الإتصالات دائما إلى المستضيف المحدد"
+
+#: gnomemeeting.schemas.in.in.h:3
+#, fuzzy
+msgid "Audio input device"
+msgstr "أجهزة الصوت"
+
+#: gnomemeeting.schemas.in.in.h:4
+#, fuzzy
+msgid "Audio output device"
+msgstr "أجهزة الصوت"
+
+#: gnomemeeting.schemas.in.in.h:5
+#, fuzzy
+msgid "Audio plugin"
+msgstr "لاعب الصوت"
+
+#: gnomemeeting.schemas.in.in.h:6
+msgid "Automatic echo cancellation"
+msgstr "إلغاء صدى تلقائي"
+
+#: gnomemeeting.schemas.in.in.h:7 src/pref_window.cpp:952
+msgid "Automatically clear the text chat at the end of calls"
+msgstr "امسح نص الدردشة مباشرة عند الانتهاء من الاتصال"
+
+#: gnomemeeting.schemas.in.in.h:8
+msgid "Change the control panel section"
+msgstr "غيّر قسم لوحة التحكم"
+
+#: gnomemeeting.schemas.in.in.h:9
+msgid ""
+"Change the control panel section (4 means that the control panel is off)"
+msgstr "غيّر قسم لوحة التحكم (4 تعني أن لوحة التحكم معطلة)"
+
+#: gnomemeeting.schemas.in.in.h:10 src/pref_window.cpp:1617
+msgid ""
+"Choose the number of blocks (that have not changed) transmitted with each "
+"frame. These blocks fill in the background."
+msgstr ""
+"حدد عدد الأجزاء (التي لم تتغير) التي يتم إرسالها مع كل إطار. تملىء هذه "
+"الأجزاء الخلفية."
+
+#: gnomemeeting.schemas.in.in.h:11 src/ldap_window.cpp:2984
+msgid "Comment"
+msgstr "ملاحظة"
+
+#: gnomemeeting.schemas.in.in.h:12 src/pref_window.cpp:1186
+msgid ""
+"Connection will be established in Fast Start mode. Fast Start is a new way "
+"to start calls faster that was introduced in H.323v2. It is not supported by "
+"Netmeeting and using both Fast Start and H.245 Tunnelling can crash some "
+"versions of Netmeeting."
+msgstr ""
+"سوف يتم إنشاء الاتصال بوضع البدء السريع. البدء السريع هو طريقة جديدة لبدء "
+"المكالمات بشكل أسرع تم تقديمها في الإصدار الثاني من بروتوكول H.323v2. إنها "
+"ليست مدعومة من قبل نت ميتنج، كما أن استخدام كلاً من البدء السريع "
+"والـTunnelling لبروتوكول H.245 يمكن أن يحطم بعض النسخ من نت ميتنج."
+
+#: gnomemeeting.schemas.in.in.h:13
+msgid "Country code"
+msgstr "رقم رمز الدولة"
+
+#: gnomemeeting.schemas.in.in.h:14
+msgid "Display a popup window when receiving a call"
+msgstr "أظهر نافذة منبثقة عن استلام مكالمة"
+
+#: gnomemeeting.schemas.in.in.h:15
+msgid "E-mail address"
+msgstr "عنوان البريد الالكتروني"
+
+#: gnomemeeting.schemas.in.in.h:16
+msgid "Enable 'Fast Start'"
+msgstr "مكّن 'التشغيل السريع'"
+
+#: gnomemeeting.schemas.in.in.h:17
+msgid "Enable H.245 tunnelling"
+msgstr "مكّن H.245 tunnelling"
+
+#: gnomemeeting.schemas.in.in.h:18
+#, fuzzy
+msgid "Enable IP checking"
+msgstr "مكّن ترجمة IP"
+
+#: gnomemeeting.schemas.in.in.h:19
+msgid "Enable IP translation"
+msgstr "مكّن ترجمة IP"
+
+#: gnomemeeting.schemas.in.in.h:20
+msgid "Enable bilinear filtering on displayed video"
+msgstr "مكّن الفلترة الثنائية الخط على الفيديو المعروض"
+
+#: gnomemeeting.schemas.in.in.h:21
+msgid ""
+"Enable or disable bilinear interpolation when rendering video images (this "
+"has no effect in fullscreen mode)."
+msgstr ""
+"مكّن أو عطّل الزيادة الثنائية الخط عند رسم صور الفيديو (ليس لهذا تأثير في وضع "
+"ملء الشاشة)."
+
+#: gnomemeeting.schemas.in.in.h:22
+msgid "Enable registering"
+msgstr "مكّن التسجيل"
+
+#: gnomemeeting.schemas.in.in.h:23
+msgid "Enable silence detection"
+msgstr "مكّن التحقق من الصمت"
+
+#: gnomemeeting.schemas.in.in.h:24
+msgid "Enable video reception"
+msgstr "مكّن استقبال الفيديو"
+
+#: gnomemeeting.schemas.in.in.h:25
+msgid "Enable video transmission"
+msgstr "مكّن بثّ الفيديو"
+
+#: gnomemeeting.schemas.in.in.h:26
+msgid "Enter a comment about yourself for the user directory."
+msgstr "أدخل تعليقاً عن نفسك في دليل المستخدمين."
+
+#: gnomemeeting.schemas.in.in.h:27 src/pref_window.cpp:1257
+msgid ""
+"Enter the public IP of your NAT/PAT router if you want to use IP "
+"translation. If you are registered to ils.seconix.com, GnomeMeeting will "
+"automatically fetch the public IP using the ILS service."
+msgstr ""
+"أدخل عنوان IP العام لموجّه NAT/PAT إن أردت استخدام ترجمة IP. إذا كنت مسجلاً "
+"بـils.seconix.com، سوف يقوم جينوم ميتنج بالحصول على عنوان IP العام تلقائياً "
+"باستخدام خدمة ILS."
+
+#: gnomemeeting.schemas.in.in.h:28 src/pref_window.cpp:891
+msgid "Enter your e-mail address."
+msgstr "أدخل عنوان بريدك الالكتروني"
+
+#: gnomemeeting.schemas.in.in.h:29 src/pref_window.cpp:877
+msgid "Enter your first name."
+msgstr "أدخل اسمك الأول"
+
+#: gnomemeeting.schemas.in.in.h:30
+msgid "Enter your last name."
+msgstr "ادخل اسمك الأخير"
+
+#: gnomemeeting.schemas.in.in.h:31
+msgid "Enter your location (country or city) for the user directory."
+msgstr "أدخل موقعك (الدولة أو المدينة) لدليل المستخدمين."
+
+#: gnomemeeting.schemas.in.in.h:32
+msgid "First name"
+msgstr "الاسم الأول"
+
+#: gnomemeeting.schemas.in.in.h:33
+msgid "Forward calls to host"
+msgstr "حوّل الاتصالات إلى المضيف"
+
+#: gnomemeeting.schemas.in.in.h:34
+msgid "Forward calls to the given host if busy"
+msgstr "حوّل الاتصالات إلى المضيف المحدد إن كنت مشغولاً"
+
+#: gnomemeeting.schemas.in.in.h:35
+msgid "Forward calls to the given host if no answer"
+msgstr "حوّل المكالمات إلى المضيف المحدد إن لم يكن هناك إجابة"
+
+#: gnomemeeting.schemas.in.in.h:36
+msgid "Fullscreen height"
+msgstr "ارتفاع ملء الشاشة"
+
+#: gnomemeeting.schemas.in.in.h:37
+msgid "Fullscreen width"
+msgstr "عرض ملء الشاشة"
+
+#: gnomemeeting.schemas.in.in.h:38 src/pref_window.cpp:1212
+msgid "Gatekeeper ID"
+msgstr "Gatekeeper ID"
+
+#: gnomemeeting.schemas.in.in.h:39
+msgid "Gatekeeper alias"
+msgstr "الإسم البديل لـGatekeeper"
+
+#: gnomemeeting.schemas.in.in.h:40
+#, fuzzy
+msgid "Gatekeeper alias as primary alias"
+msgstr "الإسم البديل لـGatekeeper"
+
+#: gnomemeeting.schemas.in.in.h:41 src/pref_window.cpp:1211
+msgid "Gatekeeper host"
+msgstr "مضيف Gatekeeper"
+
+#: gnomemeeting.schemas.in.in.h:42
+msgid "Gatekeeper password"
+msgstr "كلمة سرّ Gatekeeper"
+
+#: gnomemeeting.schemas.in.in.h:43 src/pref_window.cpp:933
+#, fuzzy
+msgid ""
+"If enabled, GnomeMeeting will start hidden provided that the notification "
+"area is present in the GNOME panel."
+msgstr "إن كان محدداً، سوف يبدأ جينوم ميتنج خفياً. يجب تمكين docklet."
+
+#: gnomemeeting.schemas.in.in.h:44
+msgid ""
+"If enabled, a popup window will be displayed when receiving an incoming call."
+msgstr "إن كان محدداً، سوف تظهر نافذة منبثقة عند استلام مكالمة واردة."
+
+#: gnomemeeting.schemas.in.in.h:45
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the field below if you already are in a call or if you are in "
+"Do Not Disturb mode."
+msgstr ""
+"إن كان محدداً، سوف تحول كل المكالمات إلى المضيف المحدد في المربع أدناه إن كنت "
+"تجري مكالمة أو كنت في وضع لاتزعجني."
+
+#: gnomemeeting.schemas.in.in.h:46
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the field below if you do not answer the call."
+msgstr ""
+"إن كان محدداً، سوف تحول كل المكالمات الواردة إلى المضيف المحدد في المربع "
+"أدناه إن لم يجب المكالمة."
+
+#: gnomemeeting.schemas.in.in.h:47
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the field below."
+msgstr "إن كان محدداً، سوف تحول كل المكالمات إلى المضيف المحدد في المربع أدناه."
+
+#: gnomemeeting.schemas.in.in.h:48 src/pref_window.cpp:1593
+msgid "If enabled, allows video to be received during a call."
+msgstr "إن كان محدداً، سيسمح باستقبال الفيديو خلال المكالمة."
+
+#: gnomemeeting.schemas.in.in.h:49 src/pref_window.cpp:976
+msgid "If enabled, register with the selected user directory."
+msgstr "إن كان محدداً، سجّل مع دليل المستخدمين المحدد."
+
+#: gnomemeeting.schemas.in.in.h:50 src/pref_window.cpp:931
+msgid ""
+"If enabled, the splash screen will be displayed when GnomeMeeting starts."
+msgstr "إن كان محدداً، سوف تظهر شاشة البدء عند تشغيل جينوم ميتنج."
+
+#: gnomemeeting.schemas.in.in.h:51 src/pref_window.cpp:952
+msgid ""
+"If enabled, the text chat will automatically be cleared at the end of calls."
+msgstr "إن كان محدداً، سيتم مسح نص الدردشة تلقائياً بنهاية المكالمات."
+
+#: gnomemeeting.schemas.in.in.h:52 src/pref_window.cpp:1568
+msgid "If enabled, use silence detection with the GSM and G.711 codecs."
+msgstr ",إن كان محدداً، استخدم التحقق من الصمت مع GSM وG.711."
+
+#: gnomemeeting.schemas.in.in.h:53 src/pref_window.cpp:1590
+msgid "If enabled, video is transmitted during a call."
+msgstr "إن كان محدداً، يتم بث الفيديو خلال المكالمة."
+
+#: gnomemeeting.schemas.in.in.h:54 src/pref_window.cpp:978
+msgid ""
+"If enabled, your details are shown to people browsing the user directory. If "
+"disabled, you are not visible to users browsing the user directory, but they "
+"can still use the callto URL to call you."
+msgstr ""
+"إن كان محدداً، ستظهر معلوماتك للأشخاص المستعرضين لدليل المستخدمين. إن كان "
+"معطّلاً، فلن تظهر لمستعرضي دليل المستخدين، إلا أنهم لن يزالوا يستطيعون استخدام "
+"عنوان الاتصال callto URL للاتصال بك."
+
+#: gnomemeeting.schemas.in.in.h:55
+#, fuzzy
+msgid "Incoming call mode"
+msgstr "مكالمة واردة"
+
+#: gnomemeeting.schemas.in.in.h:56
+msgid "Kind of network selected in the druid"
+msgstr "نوع الشبكة المحددة باستخدام المساعد"
+
+#: gnomemeeting.schemas.in.in.h:57
+msgid "Last name"
+msgstr "الاسم الأخير"
+
+#: gnomemeeting.schemas.in.in.h:58
+msgid "Listen Port"
+msgstr "بوابة الاستماع"
+
+#: gnomemeeting.schemas.in.in.h:59
+msgid "Local video window height"
+msgstr "ارتفاع نافذة الفيديو المحلية"
+
+#: gnomemeeting.schemas.in.in.h:60
+msgid "Local video window width"
+msgstr "عرض نافذة الفيديو المحلية"
+
+#: gnomemeeting.schemas.in.in.h:61 src/ldap_window.cpp:2997
+msgid "Location"
+msgstr "الموقع"
+
+#: gnomemeeting.schemas.in.in.h:62
+msgid "Maximum jitter buffer"
+msgstr "أقصى حد لتخزين للتأخير"
+
+#: gnomemeeting.schemas.in.in.h:63
+msgid "Maximum video bandwidth"
+msgstr "عرض الموجة الأقصى للفيديو"
+
+#: gnomemeeting.schemas.in.in.h:64
+msgid "Minimum jitter buffer"
+msgstr "أدنى حد لتخزين للتأخير"
+
+#: gnomemeeting.schemas.in.in.h:65
+msgid "Minimum transmitted FPS"
+msgstr "أقل بث إطار/ثانية"
+
+#: gnomemeeting.schemas.in.in.h:66
+msgid "Minimum transmitted video quality"
+msgstr "أقل جودة بث فيديو"
+
+#: gnomemeeting.schemas.in.in.h:67
+msgid "Number of entries to store in history boxes"
+msgstr "عدد المدخلات لتخزينها في مربعات الاستخدام"
+
+#: gnomemeeting.schemas.in.in.h:68
+msgid "Number of frames for G.711"
+msgstr "عدد الإطارات لـG.711"
+
+#: gnomemeeting.schemas.in.in.h:69
+msgid "Number of frames for GSM"
+msgstr "عدد الإطارات لـGSM"
+
+#: gnomemeeting.schemas.in.in.h:70
+msgid "Number of frames transmitted in each packet for the G.711 codec."
+msgstr "عدد الإطارات المبثوثة في كل باكت لكودك G.711."
+
+#: gnomemeeting.schemas.in.in.h:71
+msgid "Number of frames transmitted in each packet for the GSM codec."
+msgstr "عدد الإطارات المبثوثة في كل باكت لكودك GSM."
+
+#: gnomemeeting.schemas.in.in.h:72 src/pref_window.cpp:946
+msgid "Place windows displaying video above other windows during calls."
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:73
+msgid "Play or not the busy tone sound"
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:74
+#, fuzzy
+msgid "Play or not the incoming call sound"
+msgstr "إلعب صوتاً عند استلام المكالمات الواردة"
+
+#: gnomemeeting.schemas.in.in.h:75
+msgid "Play or not the ring tone sound"
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:76
+msgid "Position on the screen of the address book window"
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:77
+msgid "Position on the screen of the calls history window"
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:78
+msgid "Position on the screen of the general history window"
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:79
+#, fuzzy
+msgid "Position on the screen of the main window"
+msgstr "أظهر نافذة الدردشة في النافذة الرئيسية"
+
+#: gnomemeeting.schemas.in.in.h:80
+msgid "Position on the screen of the preferences window"
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:81
+msgid "Public IP of the NAT/PAT router"
+msgstr "عنوان IP العام لموجّه NAT/PAT"
+
+#: gnomemeeting.schemas.in.in.h:82
+msgid "Received Video Quality Hint"
+msgstr "علامة جودة الفيديو المستلم"
+
+#: gnomemeeting.schemas.in.in.h:83
+msgid "Registering method"
+msgstr "طريقة التسجيل"
+
+#: gnomemeeting.schemas.in.in.h:84 src/pref_window.cpp:1233
+msgid "Registering method to use"
+msgstr "طريقة التسجيل المطلوب استخدامها"
+
+#: gnomemeeting.schemas.in.in.h:85
+msgid "Remote video window height"
+msgstr "إرتفاع نافذة الفيديو البعيد"
+
+#: gnomemeeting.schemas.in.in.h:86
+msgid "Remote video window width"
+msgstr "عرض نافذة الفيديو البعيد"
+
+#: gnomemeeting.schemas.in.in.h:87
+msgid "Revision of the schema file"
+msgstr "إصدار ملف الإعدادت المسبقة"
+
+#: gnomemeeting.schemas.in.in.h:88 src/pref_window.cpp:1311
+#, fuzzy
+msgid "Select the audio input device to use."
+msgstr "إختر جهاز لاعب الصوت لاستخدامه."
+
+#: gnomemeeting.schemas.in.in.h:89 src/pref_window.cpp:1305
+#, fuzzy
+msgid "Select the audio output device to use."
+msgstr "إختر جهاز لاعب الصوت لاستخدامه."
+
+#: gnomemeeting.schemas.in.in.h:90 src/pref_window.cpp:1390
+msgid ""
+"Select the format for video cameras. (Does not apply to most USB cameras)."
+msgstr "اختر التنسيق لكاميرات الفيديو. (لا ينطبق على معظم كاميرات USB)."
+
+#: gnomemeeting.schemas.in.in.h:91 src/pref_window.cpp:1388
+msgid ""
+"Select the transmitted video size: Small (QCIF 176x144) or Large (CIF "
+"352x288)."
+msgstr "إختر حجم الفيديو المبثوث: صغير (QCIF 176×144) أو كبير (CIF 352×288)."
+
+#: gnomemeeting.schemas.in.in.h:92
+#, fuzzy
+msgid ""
+"Select the video input device to use. Using an invalid video device or "
+"\"Picture\" for video transmission will transmit a test picture."
+msgstr ""
+"حدد جهاز الفيديو لاستخدامه. استخدام جهاز فيديو غير صالح أو \"صورة\" لبث "
+"الفيديو سوف يستبدل بصورة اختبار."
+
+#: gnomemeeting.schemas.in.in.h:93
+msgid "Show a status bar at the bottom of the main window"
+msgstr "أظهر سطر الحالة في أسفل النافذة الرئيسية"
+
+#: gnomemeeting.schemas.in.in.h:94
+msgid "Show chat window"
+msgstr "أظهر نافذة الدردشة"
+
+#: gnomemeeting.schemas.in.in.h:95
+msgid "Show my details to other registered users"
+msgstr "أظهر تفاصيل بياناتي للمستخدمين المسجلين الآخرين"
+
+#: gnomemeeting.schemas.in.in.h:96
+msgid "Show splash screen"
+msgstr "أظهر شاشة البدء"
+
+#: gnomemeeting.schemas.in.in.h:97
+msgid "Show status bar"
+msgstr "أظهر سطر الحالة"
+
+#: gnomemeeting.schemas.in.in.h:98
+msgid "Show the chat window in the main window"
+msgstr "أظهر نافذة الدردشة في النافذة الرئيسية"
+
+#: gnomemeeting.schemas.in.in.h:99
+#, fuzzy
+msgid "Size of the address book window"
+msgstr "إفتح دفتر العناوين"
+
+#: gnomemeeting.schemas.in.in.h:100
+#, fuzzy
+msgid "Size of the calls history window"
+msgstr "إعرض تاريخ المكالمات"
+
+#: gnomemeeting.schemas.in.in.h:101
+#, fuzzy
+msgid "Size of the general history window"
+msgstr "عرض نافذة الفيديو المحلية"
+
+#: gnomemeeting.schemas.in.in.h:102
+#, fuzzy
+msgid "Size of the preferences window"
+msgstr "عرض نافذة الفيديو البعيدة"
+
+#: gnomemeeting.schemas.in.in.h:103
+msgid "Start hidden"
+msgstr "إبدأ مخفياً"
+
+#: gnomemeeting.schemas.in.in.h:104 src/menu.cpp:518 src/menu.cpp:634
+msgid "Switch to fullscreen"
+msgstr "بدّل إلى ملء الشاشة"
+
+#: gnomemeeting.schemas.in.in.h:105
+msgid "Switch to fullscreen for images displayed in the main GUI."
+msgstr "بدّل إلى ملء الشاشة للصور الظاهرة في واجهة المستخدم الرئيسية."
+
+#: gnomemeeting.schemas.in.in.h:106
+msgid "TCP Port Range"
+msgstr "مدى بوابات TCP"
+
+#: gnomemeeting.schemas.in.in.h:107
+msgid "The Audio Codecs List"
+msgstr "لائحة كودكات الصوت"
+
+#: gnomemeeting.schemas.in.in.h:108
+msgid ""
+"The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic "
+"Gain Compensation. Choosing Automatic Gain Compensation modulates the volume "
+"for best quality."
+msgstr ""
+"مستوى إلغاء الصدى التلقائي: غير فعال، منخفض، متوسط، عالي، تعويض الاكتساب "
+"التلقائي. اختيار الأخير يعدل الصوت لأفضل جودة."
+
+#: gnomemeeting.schemas.in.in.h:109 src/pref_window.cpp:1225
+msgid ""
+"The Gatekeeper alias to use when registering (string, or E164 ID if only "
+"0123456789#)."
+msgstr ""
+"الإسم البديل للـGatekeeper لاستخدامه عند التسجيل (نص أو رقم E164 إن كان فقط "
+"#0123456789)."
+
+#: gnomemeeting.schemas.in.in.h:110 src/pref_window.cpp:1223
+msgid "The Gatekeeper host to register with."
+msgstr "مضيف الـGatekeeper للتسجيل معه."
+
+#: gnomemeeting.schemas.in.in.h:111 src/pref_window.cpp:1221
+msgid "The Gatekeeper identifier to register with."
+msgstr "معرف الـGatekeeper للتسجيل معه."
+
+#: gnomemeeting.schemas.in.in.h:112 src/pref_window.cpp:1228
+msgid ""
+"The Gatekeeper password to use for H.235 authentication to the Gatekeeper."
+msgstr "كلمة سر Gatekeeper لاستخدامها مع تخويل H.235 من خلال Gatekeeper."
+
+#: gnomemeeting.schemas.in.in.h:113
+msgid "The Video Quality to request to the remote"
+msgstr "جودة الفيديو لطلبها من الجهاز البعيد"
+
+#: gnomemeeting.schemas.in.in.h:114 src/pref_window.cpp:1293
+msgid ""
+"The audio plugin that will be used to detect the devices and manage them."
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:115
+msgid "The busy tone sound"
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:116
+msgid ""
+"The chosen sound will be played at the end of calls or calling somebody who "
+"is busy, if enabled."
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:117
+msgid "The chosen sound will be played on incoming calls, if enabled."
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:118
+msgid "The chosen sound will be played when calling somebody, if enabled."
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:119
+msgid "The default video view"
+msgstr "عرض الفيديو الافتراضي"
+
+#: gnomemeeting.schemas.in.in.h:120
+msgid ""
+"The default video view (0: Local, 1: Remote, 2: Both incrusted, 3: Both with "
+"local video in a separate window, 4: Both)"
+msgstr ""
+"عرض الفيديو الافتراضي (0: محلي، 1: بعيد، 2: كلاهما مدمجين، 3: كلاهما مع عرض "
+"الفيديو المحلي في نافذة منفصل، 4: كلاهما)"
+
+#: gnomemeeting.schemas.in.in.h:121
+msgid "The height of the local video window"
+msgstr "ارتفاع نافذة الفيديو المحلية"
+
+#: gnomemeeting.schemas.in.in.h:122
+msgid "The height of the remote video window"
+msgstr "ارتفاع نافذة الفيديو البعيدة"
+
+#: gnomemeeting.schemas.in.in.h:123 src/pref_window.cpp:1000
+msgid ""
+"The host where calls should be forwarded to in the cases selected above."
+msgstr "المضيف الذي تحوّل إليه المكالمات في الحالات المحددة أعلاه."
+
+#: gnomemeeting.schemas.in.in.h:124 src/pref_window.cpp:943
+msgid "The image height for fullscreen."
+msgstr "ارتفاع الصورة لوضع ملء الشاشة."
+
+#: gnomemeeting.schemas.in.in.h:125 src/pref_window.cpp:1393
+msgid ""
+"The image to transmit if \"Picture\" is selected for the video device or if "
+"the opening of the device fails. Leave blank to use the default GnomeMeeting "
+"logo."
+msgstr ""
+"الصورة لبثها إن كانت \"الصورة\" محددة كجهاز فيديو أو إن أخفق استخدام الجهاز. "
+"اتركه فارغاً لاستخدام شعار جينوم ميتنج الافتراضي."
+
+#: gnomemeeting.schemas.in.in.h:126 src/pref_window.cpp:943
+msgid "The image width for fullscreen."
+msgstr "عرض الصورة لوضع ملء الشاشة."
+
+#: gnomemeeting.schemas.in.in.h:127
+#, fuzzy
+msgid "The incoming call sound"
+msgstr "جاري الردّ على المكالمة الواردة"
+
+#: gnomemeeting.schemas.in.in.h:128
+msgid "The list of called URLs"
+msgstr "لائحة العنواوين المطلوبة"
+
+#: gnomemeeting.schemas.in.in.h:129
+msgid "The list of groups"
+msgstr "لائحة المجموعات"
+
+#: gnomemeeting.schemas.in.in.h:130 src/pref_window.cpp:1566
+msgid "The maximum jitter buffer size for audio reception (in ms)."
+msgstr "أقصى حد لحجم التخزين المؤقت لاستقبال الصوت (بالملي ثانية)"
+
+#: gnomemeeting.schemas.in.in.h:131 src/pref_window.cpp:1601
+msgid ""
+"The maximum video bandwidth in kbytes/s. The video quality and the number of "
+"transmitted frames per second will be dynamically adjusted above their "
+"minimum during calls to try to minimize the bandwidth to the given value."
+msgstr ""
+"أقصى عرض موجة للفيديو بالكيلوبايت/ثانية. جودة الفيديو وعدد الإطارات المبثوثة "
+"في كل ثانية سوف يتم تعديلها ديناميكياً بحيث تصبح أقل ما يمكن خلال المكالمة، "
+"بمحاولة لتقليص عرض الموجة المستخدم للقيمة المعطاة."
+
+#: gnomemeeting.schemas.in.in.h:132 src/pref_window.cpp:1566
+msgid "The minimum jitter buffer size for audio reception (in ms)."
+msgstr "أدنى حد لحجم التخزين المؤقت لاستقبال الصوت (بالملي ثانية)"
+
+#: gnomemeeting.schemas.in.in.h:133 src/pref_window.cpp:1613
+msgid ""
+"The minimum number of video frames to transmit each second when trying to "
+"minimize the bandwidth."
+msgstr ""
+"أدنى عدد من إطارات الفيديو لبثّه في كل ثانية عند محاولة تقليص عرض الموجة."
+
+#: gnomemeeting.schemas.in.in.h:135
+#, no-c-format
+msgid ""
+"The minimum transmitted video quality to keep when trying to minimize the "
+"used bandwidth: choose 100% on a LAN for the best quality, 1% being the "
+"worst quality."
+msgstr ""
+"أقل جودة فيديو مبثوثة للإبقاء عليها عند محاولة تقليص عرض الموجة المستخدم: "
+"اختر 100% عند استخدام شبكة محلية لأفضل جودة، حيث أن 1% هي أسوأ جودة."
+
+#: gnomemeeting.schemas.in.in.h:136
+msgid ""
+"The port to listen to for incoming connections. GnomeMeeting needs to be "
+"restarted for the new value to take effect."
+msgstr ""
+"رقم البوابة لاستخدامها للمكالمات الواردة. يجب إعادة تشغيل جينوم ميتنج كي "
+"تصبح القيمة الجديدة فعالة."
+
+#: gnomemeeting.schemas.in.in.h:137
+msgid ""
+"The prefix that will be used to save pictures of the conversation. That "
+"prefix is followed by the snapshot number."
+msgstr ""
+"إسم البادئة التي سوف تستخدم عند حفظ الصور خلال المحادثة. تلحق تلك البادئة "
+"برقم الصورة."
+
+#: gnomemeeting.schemas.in.in.h:138
+msgid ""
+"The range of TCP ports beside the listen_port that GnomeMeeting will use for "
+"the H.245 channel. You can change the TCP port range if you are using IP "
+"translation and if you need to have several GnomeMeeting running behind your "
+"NAT/PAT router. GnomeMeeting needs to be restarted for the new values to "
+"take effect. This port range has no effect if both participants to the "
+"conference are using H.245 Tunneling."
+msgstr ""
+"مدى منافذ TCP بالإضافة إلى منافذ الاستماع التي سيستخدمها جينوم ميتنج لقناة "
+"H.245. يمكنك تغيير مدى منافذ TCP إن كنت تستخدم ترجمة IP وإذا كنت تحتاج إلى "
+"تشغيل أكثر من جينوم ميتنج خلف موجّه NAT/PAT. يجب إعادة تشغيل جينوم ميتنج كي "
+"يتم تفعيل القيم الجديدة. مدى منافذ TCP هذا ليس له أي تأثير إن كانت المشتركان "
+"في المؤتمر يستخدمان H.245 Tunnelling."
+
+#: gnomemeeting.schemas.in.in.h:139
+msgid ""
+"The range of UDP ports that GnomeMeeting will use for RTP (audio and video "
+"communication channels). You can change the UDP port range if you are using "
+"IP translation and if you need to have several GnomeMeeting running behind "
+"your NAT/PAT router. GnomeMeeting needs to be restarted for the new values "
+"to take effect."
+msgstr ""
+"مدى منافذ UDP التي سوف يستخدمها جينوم ميتنج لبروتوكول RTP (قنوات اتصال صوت "
+"وفيديو). يمكنك تغيير منفذ UDP إن كنت تستخدم ترجمة IP وإذا كنت تحتاج إلى "
+"تشغيل أكثر من جينوم ميتنج خلف موجه NAT/PAT. يجب إعادة تشغيل جينوم ميتنج حتى "
+"يتم تفعيل القيم الجديدة."
+
+#: gnomemeeting.schemas.in.in.h:140
+msgid ""
+"The range of UDP ports that GnomeMeeting will use when registering to "
+"gatekeepers. You can change the UDP port range if you are using IP "
+"translation and if you need to have several GnomeMeeting running behind your "
+"NAT/PAT router. GnomeMeeting needs to be restarted for the new values to "
+"take effect. This port range has no effect if you are not registering to a "
+"gatekeeper."
+msgstr ""
+"مدى منافذ UDP التي سوف يستخدمها جينوم ميتنج عند التسجيل مع خادمات "
+"Gatekeeper. يمكنك تغيير مدى منافذ UDP إن كنت تستخدم ترجمة IP وإذا كنت تحتاج "
+"إلى تشغيل أكثر من جينوم ميتنج خلف موجه NAT/PAT. يجب إعادة تشغيل جينوم ميتنج "
+"حتى يتم تفعيل القيم الجديدة. مدى المنافذ هذا ليس له أي تأثير إن لم تقم "
+"بالتسجيل مع Gatekeeper."
+
+#: gnomemeeting.schemas.in.in.h:141
+msgid "The ring tone sound"
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:142
+msgid "The save prefix"
+msgstr "بادئة إسم الحفظ"
+
+#: gnomemeeting.schemas.in.in.h:143
+msgid ""
+"The sound that will be played at the end of calls or when calling somebody "
+"who is busy, if enabled."
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:144
+msgid "The sound that will be played on incoming calls, if enabled."
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:145
+msgid "The sound that will be played when calling somebody, if enabled."
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:146
+msgid ""
+"The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)."
+msgstr "رمز بلدك ذو الحرفين (مثلاً، BE، UK، FR، DE، ..إلخ)."
+
+#: gnomemeeting.schemas.in.in.h:147 src/pref_window.cpp:974
+msgid "The user directory server to register with."
+msgstr "خادم دليل المستخدمين للتسجيل معه."
+
+#: gnomemeeting.schemas.in.in.h:148 src/pref_window.cpp:1386
+msgid ""
+"The video channel number to use (to select camera, tv or other sources)."
+msgstr ""
+"رقم قناة الفيديو لاستخدامها (لتختار الكاميرا، التلفزيون أو مصادر أخرى)."
+
+#: gnomemeeting.schemas.in.in.h:149 src/pref_window.cpp:1371
+msgid ""
+"The video plugin that will be used to detect the devices and manage them."
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:150
+msgid ""
+"The way to react to incoming calls: 0 displays a popup, 1 automatically "
+"answers the call, 2 automatically rejects the call and 3 forwards the call "
+"to the given URL, if any."
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:151
+msgid "The width of the local video window"
+msgstr "عرض نافذة الفيديو المحلية"
+
+#: gnomemeeting.schemas.in.in.h:152
+msgid "The width of the remote video window"
+msgstr "عرض نافذة الفيديو البعيدة"
+
+#: gnomemeeting.schemas.in.in.h:153
+msgid "The zoom value"
+msgstr "قيمة التحجيم"
+
+#: gnomemeeting.schemas.in.in.h:154
+msgid ""
+"The zoom value to apply to images displayed in the main GUI (can be 0.50, "
+"1.00, or 2.00)."
+msgstr ""
+"قيمة التحجيم لتطبيقها على الصور المعروضة في واجهة المستخدم الرئيسية (يمكن أن "
+"تكون 0.50 أو 100، أو 200)."
+
+#: gnomemeeting.schemas.in.in.h:155 src/pref_window.cpp:1183
+msgid ""
+"This enables H.245 Tunnelling mode. In H.245 Tunnelling mode H.245 messages "
+"are encapsulated into the the H.225 channel (port 1720). This saves one TCP "
+"connection during calls. H.245 Tunnelling was introduced in H.323v2 and "
+"Netmeeting does not support it. Using both Fast Start and H.245 Tunnelling "
+"can crash some versions of Netmeeting."
+msgstr ""
+"يمكن هذا وضع H.245 Tunnelling. في هذا الوضع يتم تضمين الرسائل في قناة H.225 "
+"(المنفذ 1720). يبقي هذا اتصال TCP واحد خلال المكالمات. قدمت تقنية H.245 "
+"Tunnelling في H323v2 ولا يدعم جينوم ميتنج هذه التقنية. استخدام البدء السريع "
+"مع H.245 Tunnelling قد يحطم بعد إصدارات جينوم ميتنج."
+
+#: gnomemeeting.schemas.in.in.h:156
+msgid ""
+"This enables IP checking from dyndns.org and fills the IP in the public IP "
+"of the NAT/PAT gateway field of GnomeMeeting. The returned IP is only used "
+"when IP Translation is enabled. If you disable IP checking, you will have to "
+"manually enter the IP of your gateway in the GnomeMeeting preferences."
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:157 src/pref_window.cpp:1255
+msgid ""
+"This enables IP translation. IP translation is useful if GnomeMeeting is "
+"running behind a NAT/PAT router. You have to put the public IP of the router "
+"in the field below. If you are registered to ils.seconix.com, GnomeMeeting "
+"will automatically fetch the public IP using the ILS service. If your router "
+"natively supports H.323, you can disable this."
+msgstr ""
+"يفعّل هذا ترجمة IP. ترجمة IP مفيدة إذا كانت جينوم ميتنج يعمل خلف موجّه NAT/"
+"PAT. يجب عليك أن تحدد عنوان IP العامّ للموجّه في المربع أدناه. إذا كنت مسجلاً "
+"إلى ils.seconix.com، فسيقوم جينوم ميتنج بالحصول على عنوان IP العامّ تلقائياً "
+"باستخدام خدمة ILS. إن كانت الموجّه يدعم هذا ضمناً، يمكنك تعطيله."
+
+#: gnomemeeting.schemas.in.in.h:158
+msgid ""
+"This permits to set the mode for User Input Capabilities. The values can be "
+"\"All\" (0), \"None\" (1), \"rfc2833\" (2), \"Signal\" (3) or \"String\" (4) "
+"(default is \"All\"). Choosing other values than \"All\", \"String\" or "
+"\"rfc2833\" disables the Text Chat."
+msgstr ""
+"يمكن هذا من تحديد الوضع لقدرات إدخال المستخدم. ممكن أن تكون القيم \"الكل"
+"\" (0)، \"لا شيء\" (1), \"rfc2833\" (2), \"إشارة\" (3) or \"نص\" (4) "
+"(المفترض هو \"الكل\"). اختيار قيم أخرى غير \"الكل\", \"نص\" أو \"rfc2833\" "
+"يعطل عمل الدردشة النصيّة."
+
+#: gnomemeeting.schemas.in.in.h:159
+msgid "Transmitted background blocks"
+msgstr "أجزاء الخلفية المبثوثة"
+
+#: gnomemeeting.schemas.in.in.h:160
+msgid "UDP Port Range"
+msgstr "مدى أرقام بوابات UDP"
+
+#: gnomemeeting.schemas.in.in.h:161 src/pref_window.cpp:1231
+msgid ""
+"Use this option to ensure the above alias is used as the primary alias when "
+"registering with a gatekeeper. This may be required if your gatekeeper can "
+"only perform authentication using the first alias in the list."
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:162
+msgid "User Input Capabilities type"
+msgstr "نوع قدرات الإدخال للمستخدم"
+
+#: gnomemeeting.schemas.in.in.h:163
+msgid "User directory"
+msgstr "دليل المستخدمين"
+
+#: gnomemeeting.schemas.in.in.h:164 src/ldap_window.cpp:3021
+msgid "Version"
+msgstr "إصدار"
+
+#: gnomemeeting.schemas.in.in.h:165
+msgid "Video channel"
+msgstr "قناة الفيديو"
+
+#: gnomemeeting.schemas.in.in.h:166
+msgid "Video format"
+msgstr "تنسيق الفيديو"
+
+#: gnomemeeting.schemas.in.in.h:167
+msgid "Video image"
+msgstr "صورة الفيديو"
+
+#: gnomemeeting.schemas.in.in.h:168
+#, fuzzy
+msgid "Video input device"
+msgstr "جهاز الفيديو"
+
+#: gnomemeeting.schemas.in.in.h:169
+#, fuzzy
+msgid "Video plugin"
+msgstr "عرض الفيديو"
+
+#: gnomemeeting.schemas.in.in.h:170
+#, fuzzy
+msgid "Video preview"
+msgstr "استعراض الفيديو"
+
+#: gnomemeeting.schemas.in.in.h:171
+msgid "Video size"
+msgstr "حجم الفيديو"
+
+#: lib/dialog.c:182
+msgid "Do not show this dialog again"
+msgstr "لا تظهر هذا الحوار مجدداً"
+
+#: lib/gtk-text-buffer-extentions.c:489
+msgid "Open Link"
+msgstr ""
+
+#: lib/gtk-text-buffer-extentions.c:496
+msgid "Copy Link Address"
+msgstr ""
+
+#: src/callbacks.cpp:84
+msgid "_Retrieve Call"
+msgstr "إ_ستلم المكالمة"
+
+#: src/callbacks.cpp:97 src/menu.cpp:350
+msgid "_Hold Call"
+msgstr "_علّق المكالمة"
+
+#: src/callbacks.cpp:140 src/ldap_window.cpp:734
+msgid "Edit the contact information"
+msgstr "عدّل معلومات الاتصال"
+
+#: src/callbacks.cpp:143 src/menu.cpp:353
+msgid "_Transfer Call"
+msgstr "_حوّل المكالمة"
+
+#: src/callbacks.cpp:164
+msgid "Forward call to:"
+msgstr "حوّل المكالمة إلى:"
+
+#: src/callbacks.cpp:260 src/menu.cpp:360
+msgid "Suspend _Audio"
+msgstr "علّق ال_صوت"
+
+#: src/callbacks.cpp:261
+msgid "Resume _Audio"
+msgstr "استرج_ع الصوت"
+
+#: src/callbacks.cpp:262
+msgid "Audio transmission: suspended"
+msgstr "بث الصوت: معلّق"
+
+#: src/callbacks.cpp:263
+msgid "Audio transmission: resumed"
+msgstr "بث الصوت: مسترجع"
+
+#: src/callbacks.cpp:274 src/menu.cpp:365
+msgid "Suspend _Video"
+msgstr "علّق ال_فيديو"
+
+#: src/callbacks.cpp:275
+msgid "Resume _Video"
+msgstr "استرجع الفيديو"
+
+#: src/callbacks.cpp:276
+msgid "Video transmission: suspended"
+msgstr "بث الفيديو: معلّق"
+
+#: src/callbacks.cpp:277
+msgid "Video transmission: resumed"
+msgstr "بث الفيديو: مسترجع"
+
+#: src/callbacks.cpp:407
+msgid "Code Contributors:"
+msgstr "متطوعو الشيفرة البرمجية:"
+
+#: src/callbacks.cpp:415
+msgid "Artwork:"
+msgstr "العمل الفني:"
+
+#: src/callbacks.cpp:418
+msgid "Contributors:"
+msgstr "المتطوعون:"
+
+#: src/callbacks.cpp:444
+msgid "Internationalisation Maintainer:"
+msgstr "مشرف التدويل:"
+
+#. Translators: Please write translator credits here, and
+#. * seperate names with \n
+#: src/callbacks.cpp:462
+msgid "translator_credits"
+msgstr "تحت إشراف عرب آيز (http://www.arabeyes.org):"
+""
+"أسامة خياط، لبنان <okhayat@yahoo.com>"
+"عرفات·المديني،·تونس <lumina@silverpen.de>"
+
+#. Translators: Please test to see if your translation
+#. * looks OK and fits within the box
+#: src/callbacks.cpp:473
+msgid ""
+"GnomeMeeting is a full-featured H.323\n"
+"video conferencing application."
+msgstr ""
+"جينوم ميتنج تطبيق كثير المزايا\n"
+"لعقد المؤتمرات عبر بروتوكول H.323."
+
+#: src/chat_window.cpp:220
+msgid "Send Message:"
+msgstr "أرسل رسالة:"
+
+#: src/codec_info.h:53
+msgid ""
+"iLBC-13k3 (internet Low Bitrate Codec) is a free speech codec suitable for "
+"robust voice communication over IP. The codec is designed for narrow band "
+"speech and results in a payload bit rate of 13.33 kbit/s with an encoding "
+"frame length of 30 ms. The iLBC codec enables graceful speech quality "
+"degradation in the case of lost frames, which occurs in connection with lost "
+"or delayed IP packets."
+msgstr ""
+
+#: src/codec_info.h:53 src/codec_info.h:55 src/codec_info.h:57
+#: src/codec_info.h:63 src/codec_info.h:65 src/codec_info.h:69
+#: src/codec_info.h:71
+msgid "Excellent"
+msgstr "ممتاز"
+
+#: src/codec_info.h:53
+msgid "13.33 Kbps"
+msgstr ""
+
+#: src/codec_info.h:55
+msgid ""
+"iLBC-15k2 (internet Low Bitrate Codec) is a free speech codec suitable for "
+"robust voice communication over IP. The codec is designed for narrow band "
+"speech and results in a payload bitrate of 15.20 kbps with an encoding "
+"length of 20 ms. The iLBC codec enables graceful speech quality degradation "
+"in the case of lost frames, which occurs in connection with lost or delayed "
+"IP packets."
+msgstr ""
+
+#: src/codec_info.h:55
+msgid "15.2 Kbps"
+msgstr ""
+
+#: src/codec_info.h:57
+msgid ""
+"Speex is an Open Source/Free Software patent-free audio compression format "
+"designed for speech. The Speex Project aims to lower the barrier of entry "
+"for voice applications by providing a free alternative to expensive "
+"proprietary speech codecs. Moreover, Speex is well-adapted to Internet "
+"applications and provides useful features that are not present in most other "
+"codecs. Finally, Speex is part of the GNU Project and is available under the "
+"Xiph.org variant of the BSD license. SpeexNarrow-15k is based on CELP and is "
+"designed to compress voice at a payload bitrate of 15 kbps."
+msgstr ""
+
+#: src/codec_info.h:57
+msgid "15 Kbps"
+msgstr ""
+
+#: src/codec_info.h:59
+msgid ""
+"Speex is an Open Source/Free Software patent-free audio compression format "
+"designed for speech. The Speex Project aims to lower the barrier of entry "
+"for voice applications by providing a free alternative to expensive "
+"proprietary speech codecs. Moreover, Speex is well-adapted to Internet "
+"applications and provides useful features that are not present in most other "
+"codecs. Finally, Speex is part of the GNU Project and is available under the "
+"Xiph.org variant of the BSD license. SpeexNarrow-8k is based on CELP and is "
+"designed to compress voice at a payload bitrate of 8 kbps."
+msgstr ""
+
+#: src/codec_info.h:59 src/codec_info.h:61 src/codec_info.h:67
+msgid "Good"
+msgstr ""
+
+#: src/codec_info.h:59
+msgid "8 Kbps"
+msgstr ""
+
+#: src/codec_info.h:61
+msgid ""
+"MS-GSM is the Microsoft version of GSM 06.10. GSM 06.10 is a standardized "
+"lossy speech compression employed by most European wireless telephones. It "
+"uses RPE/LTP (residual pulse excitation/long term prediction) coding to "
+"compress frames of 160 13-bit samples with a frame rate of 50 Hz into 260 "
+"bits.  Microsoft's GSM 06.10 codec is not compatible with the standard frame "
+"format, they use 65-byte-frames (2 x 32 1/2) rather than rounding to 33, and "
+"they number the bits in their bytes from the other end."
+msgstr ""
+
+#: src/codec_info.h:61
+msgid "13 Kbps"
+msgstr ""
+
+#: src/codec_info.h:63
+msgid ""
+"G.711 is the international standard for encoding telephone audio on 64 kbps "
+"channel. It is a pulse code modulation (PCM) scheme operating at 8 kHz "
+"sample rate, with 8 bits per sample, fully meeting ITU-T recommendations. "
+"This standard has two forms, A-Law and u-Law. A-Law G.711 PCM encoder "
+"converts 13 bit linear PCM samples into 8 bit compressed PCM (logarithmic "
+"form) samples, and the decoder does the conversion vice versa."
+msgstr ""
+
+#: src/codec_info.h:63 src/codec_info.h:65
+msgid "64 Kbps"
+msgstr ""
+
+#: src/codec_info.h:65
+msgid ""
+"G.711 is the international standard for encoding telephone audio on 64 kbps "
+"channel. It is a pulse code modulation (PCM) scheme operating at 8 kHz "
+"sample rate, with 8 bits per sample, fully meeting ITU-T recommendations. "
+"This standard has two forms, A-Law and u-Law. u-Law G.711 PCM encoder "
+"converts 14 bit linear PCM samples into 8 bit compressed PCM (logarithmic "
+"form) samples, and the decoder does the conversion vice versa."
+msgstr ""
+
+#: src/codec_info.h:67
+msgid ""
+"GSM 06.10 is a standardized lossy speech compression employed by most "
+"European wireless telephones. It uses RPE/LTP (residual pulse excitation/"
+"long term prediction) coding to compress frames of 160 13-bit samples with a "
+"frame rate of 50 Hz into 260 bits."
+msgstr ""
+
+#: src/codec_info.h:67
+msgid "16.5 Kbps"
+msgstr ""
+
+#: src/codec_info.h:69
+msgid ""
+"G.726 conforms to ITU-T G.726 recommendation that specifies speech "
+"compression and decompression at rates of 16, 24, 32 and 40 Kbps based on "
+"Adaptive Differential Pulse Code Modulation (ADPCM)."
+msgstr ""
+
+#: src/codec_info.h:69
+msgid "32 Kbps"
+msgstr ""
+
+#: src/codec_info.h:71
+msgid ""
+"G.723.1 conforms to ITU-T G.723.1 recommendation. It was designed for video "
+"conferencing / telephony over standard phone lines, and is optimized for "
+"realtime encode and decode. That codec is only available in GnomeMeeting "
+"when using Quicknet cards due to patents restrictions."
+msgstr ""
+
+#: src/codec_info.h:71
+msgid "6.3 or 5.7 Kbps"
+msgstr ""
+
+#: src/config-tool-i18n.h:1
+msgid "YES"
+msgstr "نعم"
+
+#: src/config-tool-i18n.h:2
+msgid "Sorry, this script won't work while GnomeMeeting is running"
+msgstr "عذراً، لن تعمل هذه الشيفرة البرمجية بينما يعمل جينوم ميتنج"
+
+#: src/config-tool-i18n.h:3
+msgid "  WARNING!!!"
+msgstr "  تحذير!!!"
+
+#: src/config-tool-i18n.h:4
+msgid ""
+"  This script will delete all user GnomeMeeting configuration,\n"
+"  including preferences that may be important! \n"
+"  The GConf daemon will be shut down, so make sure you have no\n"
+"  applications depending on it running.\n"
+"\n"
+"  Do you really want to do this?\n"
+"\n"
+"  If so, say \"YES\".\n"
+"\n"
+msgstr ""
+"  سوف تحذف هذه الشيفرة البرجمية كل إعدادات مستخدم جينوم ميتنج،\n"
+"  بما في ذلك التفضيلات التي قد تكون مهمة!\n"
+"  سوف يوقف خادم GConf، لذا تأكد من أنه\n"
+"  لا توجد أي برامج تعتمد عليه تعمل الآن.\n"
+"\n"
+"  هل تريد حقاً القيام بذلك؟\n"
+"\n"
+"  إذا كان كذلك، قل \"نعم\".\n"
+"\n"
+
+#: src/config-tool-i18n.h:5
+msgid "Removing $HOME/.gconf/apps/gnomemeeting"
+msgstr "جاري إزالة $HOME/.gconf/apps/gnomemeeting"
+
+#: src/config-tool-i18n.h:6 src/config-tool-i18n.h:11
+#: src/config-tool-i18n.h:13
+msgid "Shutting down GConf daemon"
+msgstr "جاري إيقاف خادم GConf"
+
+#: src/config-tool-i18n.h:7
+msgid "...Done."
+msgstr "...تمّ"
+
+#: src/config-tool-i18n.h:8
+msgid "Leaving configuration alone."
+msgstr "ترك ملف الإعداد."
+
+#: src/config-tool-i18n.h:9
+msgid "Have a nice day."
+msgstr "يوماً سعيداً."
+
+#: src/config-tool-i18n.h:10
+msgid ""
+"  The GConf daemon will be shut down, so make sure you have no\n"
+"  applications depending on it running.\n"
+"\n"
+"  Do you really want to do this?\n"
+"\n"
+"  If so, say \"YES\".\n"
+"\n"
+msgstr ""
+"  سوف يوقف خادم GConf، لذا تأكد من أنه\n"
+"  لا توجد أي برامج تعتمد عليه تعمل الآن.\n"
+"\n"
+"  هل تريد حقاً القيام بذلك؟\n"
+"\n"
+"  إذا كان كذلك، قل \"نعم\".\n"
+"\n"
+
+#: src/config-tool-i18n.h:12
+msgid "Removing schemas"
+msgstr "إزالة الإعداد المسبقة"
+
+#: src/config-tool-i18n.h:14
+msgid "Installing schemas"
+msgstr "تثبيت الإعدادات المسبقة"
+
+#: src/config-tool-i18n.h:15
+msgid ""
+"CRITICAL ERROR -- Schema installation failed.\n"
+"Most probably you have the GConf daemon running as root.\n"
+"\n"
+"Run \"gnomemeeting-config-tool --install-schemas\" as root.\n"
+msgstr ""
+"خطأ حرج: أخفق تثبيت الإعداد المسبق.\n"
+"الأرجح أن خادم GConf يعمل كمستخدم جذري.\n"
+"\n"
+"نفذ \"gnomemeeting_config_tool --install-schemas\" كمستخدم جذري.\n"
+
+#: src/config-tool-i18n.h:16
+msgid "Usage:  gnomemeeting-config-tool OPTION"
+msgstr "Usage:  gnomemeeting-config-tool OPTION"
+
+#: src/config-tool-i18n.h:17
+msgid "Fixes problems with the GnomeMeeting settings"
+msgstr "يصلح المشاكل بإعدادات جينوم ميتنج"
+
+#: src/config-tool-i18n.h:18
+msgid "  --clean                remove all user settings"
+msgstr "  --clean                remove all user settings"
+
+#: src/config-tool-i18n.h:19
+msgid ""
+"  --install-schemas      install schemas with default settings (run as root)"
+msgstr ""
+"  --install-schemas      install schemas with default settings (run as root)"
+
+#: src/config-tool-i18n.h:20
+msgid ""
+"  --clean-schemas        remove schemas with default settings (run as root)"
+msgstr ""
+"  --clean-schemas        remove schemas with default settings (run as root)"
+
+#: src/config-tool-i18n.h:21
+msgid ""
+"  --fix-permissions      fix permissions of GConf repository (run as root)"
+msgstr ""
+"  --fix-permissions      fix permissions of GConf repository (run as root)"
+
+#: src/config.cpp:274 src/config.cpp:497
+msgid "Changing this setting will only affect new calls"
+msgstr "تغيير هذا سوف يؤثر على المكالمات الجديدة فقط"
+
+#: src/config.cpp:274 src/config.cpp:497
+msgid ""
+"You have changed a setting that doesn't permit to GnomeMeeting to apply the "
+"new change to the current call. Your new setting will only take effect for "
+"the next call."
+msgstr ""
+"لقد عدلت على إعداد لا يسمح لجينوم ميتنج بتطبيق التغيير الجديد على المكالمة "
+"الحالية. سوف يؤثر إعدادك الجديد على المكالمة التالية فقط."
+
+#: src/config.cpp:375
+#, fuzzy
+msgid "H.245 Tunneling disabled"
+msgstr "تم تعطيل H.245 Tunnelling"
+
+#: src/config.cpp:376
+#, fuzzy
+msgid "H.245 Tunneling enabled"
+msgstr "تم تفعيل H.245 Tunnelling"
+
+#: src/config.cpp:406
+#, fuzzy
+msgid "Fast Start disabled"
+msgstr "تم تعطيل البدء السريع"
+
+#: src/config.cpp:407
+#, fuzzy
+msgid "Fast Start enabled"
+msgstr "تم تفعيل البدء السريع"
+
+#: src/config.cpp:557
+msgid "Disabled Silence Detection"
+msgstr "عطّل التحقق من الصمت"
+
+#: src/config.cpp:563
+msgid "Enabled Silence Detection"
+msgstr "مكّن التحقق من الصمت"
+
+#: src/config.cpp:1046
+#, fuzzy
+msgid "Failed to restart the video channel"
+msgstr "أخفق فتح الجهاز"
+
+#: src/config.cpp:1046
+msgid ""
+"You have changed a video device related setting during a call. That requires "
+"to restart the video transmission channel, but it failed."
+msgstr ""
+
+#: src/config.cpp:1292
+msgid "Forward URL not specified"
+msgstr ""
+
+#: src/config.cpp:1293
+#, fuzzy
+msgid ""
+"You need to specify an URL where to forward calls in the call forwarding "
+"section of the preferences!\n"
+"\n"
+"Disabling forwarding."
+msgstr ""
+"عليك أن تحدد مضيفاً تحوّل المكالمات إليه!\n"
+"جاري تعطيل التحويل"
+
+#: src/config.cpp:1539
+msgid ""
+"An error has happened in the configuration backend.\n"
+"Maybe some of your settings won't be saved."
+msgstr ""
+"حدث خطأ في الإعداد.\n"
+"ربما أن بعض إعداداتك لن يتم حفظها."
+
+#: src/connection.cpp:162
+#, fuzzy, c-format
+msgid "Started transmission of %s"
+msgstr "مكّن بثّ الفيديو"
+
+#: src/connection.cpp:165
+#, fuzzy, c-format
+msgid "Stopped transmission of %s"
+msgstr "بث الصوت: مسترجع"
+
+#: src/connection.cpp:169
+#, fuzzy, c-format
+msgid "Started reception of %s"
+msgstr "تم تشغيل جينوم ميتنج الإصدار %d.%d لـ%s\n"
+
+#: src/connection.cpp:172
+#, c-format
+msgid "Stopped reception of %s"
+msgstr ""
+
+#: src/connection.cpp:296 src/connection.cpp:297 src/urlhandler.cpp:76
+#: src/urlhandler.cpp:77
+msgid "Call transfer failed"
+msgstr "أخفق تحويل المكالمة"
+
+#: src/connection.cpp:296
+msgid ""
+"The remote user tried to transfer your call to another user, but it failed."
+msgstr "حاول المستخدم البعيد تحويل مكالمتك لمستخدم آخر، إلا أنه أخفق."
+
+#: src/druid.cpp:265 src/druid.cpp:646 src/druid.cpp:660 src/druid.cpp:695
+#: src/endpoint.cpp:1644 src/gnomemeeting.cpp:328 src/gnomemeeting.cpp:330
+#: src/gnomemeeting.cpp:332 src/sound_handling.cpp:462
+#: src/sound_handling.cpp:463 src/videograbber.cpp:273
+#: src/videograbber.cpp:544
+msgid "No device found"
+msgstr ""
+
+#: src/druid.cpp:544
+#, fuzzy
+msgid "56k Modem"
+msgstr "مودم 56K"
+
+#: src/druid.cpp:545
+msgid "ISDN"
+msgstr "ISDN"
+
+#: src/druid.cpp:546
+msgid "xDSL/Cable"
+msgstr "xDSL/Cable"
+
+#: src/druid.cpp:547
+msgid "T1/LAN"
+msgstr "T1/شبكة محلية"
+
+#: src/druid.cpp:548
+#, fuzzy
+msgid "Keep current settings"
+msgstr "أغلق الاتصال الحالي"
+
+#: src/druid.cpp:717
+#, fuzzy, c-format
+msgid ""
+"You have now finished the GnomeMeeting configuration. All the settings can "
+"be changed in the GnomeMeeting preferences. Enjoy!\n"
+"\n"
+"\n"
+"Configuration Summary:\n"
+"\n"
+"Username:  %s\n"
+"Connection type:  %s\n"
+"Audio manager: %s\n"
+"Audio player:  %s\n"
+"Audio recorder:  %s\n"
+"Video Manager: %s\n"
+"Video player: %s\n"
+"My Callto URL: %s\n"
+msgstr ""
+"لقد انتهيت الآن من إعداد جينوم ميتنج. يمكن تعديل كل الإعدادات من تفضيلات "
+"جينوم ميتنج. تمتع!\n"
+"\n"
+"\n"
+"ملخص الإعداد:\n"
+"\n"
+"إسم المستخدم:  %s %s\n"
+"نوع الإتصال:  %s\n"
+"لاعب الأصوات:  %s\n"
+"مسجل الأصوات:  %s\n"
+"لاعب الفيديو:  %s\n"
+"عنوان مكالمتي:  %s\n"
+"مكالمات الجهاز إلى الهاتف:  %s"
+
+#: src/druid.cpp:717 src/pref_window.cpp:1167
+msgid "None"
+msgstr "لا شيء"
+
+#: src/druid.cpp:746
+#, c-format
+msgid "Personal Information - page %d/%d"
+msgstr "المعلومات الشخصية - الصفحة %d/%d"
+
+#. The user fields
+#: src/druid.cpp:759
+msgid "Please enter your firstname and your surname:"
+msgstr ""
+
+#: src/druid.cpp:767
+msgid ""
+"Your firstname and surname will be used when connecting to other VoIP and "
+"videoconferencing software."
+msgstr ""
+
+#: src/druid.cpp:810
+#, fuzzy, c-format
+msgid "Callto URL - page %d/%d"
+msgstr "مساعد الإعداد - الصفحة %d/%d"
+
+#: src/druid.cpp:821
+#, fuzzy
+msgid "Please enter your e-mail address:"
+msgstr "أدخل عنوان بريدك الالكتروني"
+
+#: src/druid.cpp:829
+msgid ""
+"Your e-mail address is used when registering to the GnomeMeeting users "
+"directory. It is used to create a callto address permitting your contacts to "
+"easily call you wherever you are."
+msgstr ""
+
+#: src/druid.cpp:838
+msgid ""
+"I don't want to register to the GnomeMeeting users directory and get a "
+"callto address"
+msgstr ""
+
+#: src/druid.cpp:888
+#, fuzzy, c-format
+msgid "Connection Type - page %d/%d"
+msgstr "الاتصال الشبكي - الصفحة %d/%d"
+
+#. The connection type
+#: src/druid.cpp:900
+#, fuzzy
+msgid "Please choose your connection type:"
+msgstr "أغلق الاتصال الحالي"
+
+#: src/druid.cpp:908
+msgid ""
+"The connection type will permit determining the best quality settings that "
+"GnomeMeeting will use during calls. You can later change the settings "
+"individually in the preferences window."
+msgstr ""
+
+#: src/druid.cpp:947
+#, fuzzy, c-format
+msgid "Audio Manager - page %d/%d"
+msgstr "أجهزة الصوت - الصفحة %d/%d"
+
+#. The Audio devices
+#: src/druid.cpp:959
+#, fuzzy
+msgid "Please choose your audio manager:"
+msgstr "رجاءً اختر صورة الفيديو"
+
+#: src/druid.cpp:967
+msgid ""
+"The audio manager is the plugin that will manage your audio devices, ALSA is "
+"probably the best choice when available."
+msgstr ""
+
+#: src/druid.cpp:1008
+#, c-format
+msgid "Audio Devices - page %d/%d"
+msgstr "أجهزة الصوت - الصفحة %d/%d"
+
+#. The Audio devices
+#: src/druid.cpp:1020
+#, fuzzy
+msgid "Please choose the audio output device:"
+msgstr "رجاءً اختر صورة الفيديو"
+
+#: src/druid.cpp:1028
+msgid ""
+"The audio output device is the device managed by the audio manager that will "
+"be used to play audio."
+msgstr ""
+
+#: src/druid.cpp:1038
+#, fuzzy
+msgid "Please choose the audio input device:"
+msgstr "رجاءً اختر صورة الفيديو"
+
+#: src/druid.cpp:1046
+msgid ""
+"The audio input device is the device managed by the audio manager that will "
+"be used to record your voice."
+msgstr ""
+
+#: src/druid.cpp:1059 src/druid.cpp:1197
+#, fuzzy
+msgid "Test those settings"
+msgstr "إعرض إعدادات الصوت"
+
+#: src/druid.cpp:1105
+#, fuzzy, c-format
+msgid "Video Manager - page %d/%d"
+msgstr "أجهزة الفيديو - الصفحة %d/%d"
+
+#. The Audio devices
+#: src/druid.cpp:1117
+#, fuzzy
+msgid "Please choose your video manager:"
+msgstr "رجاءً اختر صورة الفيديو"
+
+#: src/druid.cpp:1125
+msgid ""
+"The video manager is the plugin that will manage your video devices, "
+"Video4Linux is the most common choice if you own a webcam."
+msgstr ""
+
+#: src/druid.cpp:1165
+#, c-format
+msgid "Video Devices - page %d/%d"
+msgstr "أجهزة الفيديو - الصفحة %d/%d"
+
+#. The Video devices
+#: src/druid.cpp:1177
+#, fuzzy
+msgid "Please choose the video input device:"
+msgstr "رجاءً اختر صورة الفيديو"
+
+#: src/druid.cpp:1185
+msgid ""
+"The video input device is the device managed by the video manager that will "
+"be used to capture video."
+msgstr ""
+
+#: src/druid.cpp:1229
+msgid "First Time Configuration Druid"
+msgstr "مساعد الإعداد لأول مرة"
+
+#: src/druid.cpp:1236
+#, c-format
+msgid "Configuration Druid - page %d/%d"
+msgstr "مساعد الإعداد - الصفحة %d/%d"
+
+#: src/druid.cpp:1239
+msgid ""
+"This is the GnomeMeeting general configuration druid. The following steps "
+"will set up GnomeMeeting by asking a few simple questions.\n"
+"\n"
+"Once you have completed these steps, you can always change them later by "
+"selecting Preferences in the Edit menu."
+msgstr ""
+"أهلاً بك في مساعد الإعدادت العامة لجينوم ميتنج. الخطوات التالية ستقوم بإعداد "
+"جينوم ميتنج بسؤالك بعض الأسئلة.\n"
+"\n"
+"عند إكمالك هذه الخطوات، يمكنك دائماً تغيير هذه الإعدادات لاحقاً باختيار "
+"تفضيلات من قائمة تحرير."
+
+#: src/druid.cpp:1279
+#, c-format
+msgid "Configuration complete - page %d/%d"
+msgstr "اكتمل الإعداد - الصفحة %d/%d"
+
+#. Update the history and status bar
+#: src/endpoint.cpp:707
+#, fuzzy, c-format
+msgid "Call from %s"
+msgstr "إتصل من %s باستخدام %s"
+
+#: src/endpoint.cpp:719
+#, c-format
+msgid "Forwarding call from %s to %s (Forward all calls)"
+msgstr "جاري تحويل المكالمة من %s إلى %s (حوّل كل المكالمات)"
+
+#. there is no forwarding, so reject the call
+#: src/endpoint.cpp:726 src/endpoint.cpp:747
+#, fuzzy, c-format
+msgid "Rejecting call from %s (Busy)"
+msgstr "رفض جميع المكالمات الواردة من %s تلقائياً (مشغول)"
+
+#: src/endpoint.cpp:738
+#, c-format
+msgid "Forwarding call from %s to %s (Busy)"
+msgstr "جاري تحويل المكالمة من %s إلى %s (مشغول)"
+
+#: src/endpoint.cpp:756
+#, c-format
+msgid "Accepting call from %s (Free For Chat)"
+msgstr ""
+
+#: src/endpoint.cpp:780
+#, fuzzy
+msgid "Call rejected"
+msgstr "إنتهت المكالمة"
+
+#: src/endpoint.cpp:789 src/endpoint.cpp:1153 src/endpoint.cpp:2082
+msgid "Call forwarded"
+msgstr "تم تحويل المكالمة"
+
+#: src/endpoint.cpp:798
+#, fuzzy
+msgid "Call automatically answered"
+msgstr "أجب المكالمات تلقائياً"
+
+#: src/endpoint.cpp:866
+#, fuzzy, c-format
+msgid "Forwarding call to %s"
+msgstr "حوّل المكالمة إلى:"
+
+#: src/endpoint.cpp:877
+#, fuzzy, c-format
+msgid "Error while forwarding call to %s"
+msgstr "خطأ خلال التسجيل في %s."
+
+#: src/endpoint.cpp:880
+#, fuzzy
+msgid "There was an error when forwarding the call to the given host."
+msgstr "حوّل الإتصالات دائما إلى المستضيف المحدد"
+
+#: src/endpoint.cpp:933
+#, c-format
+msgid "Connected with %s using %s"
+msgstr "تم الاتصال مع %s باستخدام %s"
+
+#: src/endpoint.cpp:935
+msgid "Connected"
+msgstr "متصل"
+
+#: src/endpoint.cpp:1117
+msgid "Local user cleared the call"
+msgstr "قطع المستخدم المحلي المكالمة"
+
+#: src/endpoint.cpp:1120
+msgid "Remote user cleared the call"
+msgstr "قطع المستخدم البعيد المكالمة"
+
+#: src/endpoint.cpp:1123
+msgid "Remote user did not accept the call"
+msgstr "لم يقبل المستخدم البعيد المكالمة"
+
+#: src/endpoint.cpp:1126 src/endpoint.cpp:1129
+msgid "Local user did not accept the call"
+msgstr "لم يقبل المستخدم المحلي المكالمة"
+
+#: src/endpoint.cpp:1132
+msgid "The Gatekeeper cleared the call"
+msgstr "قام الـGatekeeper بقطع الاتصال"
+
+#: src/endpoint.cpp:1135
+msgid "Call not answered in the required time"
+msgstr "لم يتم الرد على المكالمة في الوقت المطلوب"
+
+#: src/endpoint.cpp:1138
+msgid "Remote user has stopped calling"
+msgstr "توقف المُتّصل عن الاتصال"
+
+#: src/endpoint.cpp:1141
+msgid "Abnormal call termination"
+msgstr "قطع غير متوقع للاتصال"
+
+#: src/endpoint.cpp:1144
+msgid "Could not connect to remote host"
+msgstr "لم يمكن الاتصال بالمضيف البعيد"
+
+#: src/endpoint.cpp:1147
+msgid "Insufficient bandwidth"
+msgstr "عرض الموجة غير كافي"
+
+#: src/endpoint.cpp:1150
+msgid "No common codec"
+msgstr "لايوجد كودك مشترك"
+
+#: src/endpoint.cpp:1156
+msgid "Security check Failed"
+msgstr "أخفق التحقق من الأمن"
+
+#: src/endpoint.cpp:1159
+msgid "Local user is busy"
+msgstr "المستخدم المحلي مشغول"
+
+#: src/endpoint.cpp:1162
+msgid "Remote user is busy"
+msgstr "المستخدم البعيد مشغول"
+
+#: src/endpoint.cpp:1165 src/endpoint.cpp:1168
+msgid "Congested link to remote party"
+msgstr "الوصلة إلى المشترك البعيد مزحمة"
+
+#: src/endpoint.cpp:1171
+msgid "Remote user is unreachable"
+msgstr "غير ممكن الوصل إلى المستخدم البعيد"
+
+#: src/endpoint.cpp:1174
+msgid "Remote user is not running GnomeMeeting"
+msgstr "المستخدم البعيد لا يستخدم جينوم ميتنج"
+
+#: src/endpoint.cpp:1177
+msgid "Remote host is offline"
+msgstr "المستخدم البعيد ليس على الخط"
+
+#: src/endpoint.cpp:1180
+msgid "Temporary failure"
+msgstr "إخفاق مؤقت"
+
+#: src/endpoint.cpp:1183 src/urlhandler.cpp:380 src/urlhandler.cpp:386
+msgid "User not found"
+msgstr "لم يوجد المستخدم"
+
+#: src/endpoint.cpp:1187
+msgid "Call completed"
+msgstr "إنتهت المكالمة"
+
+#: src/endpoint.cpp:1281 src/main_window.cpp:1256
+msgid ""
+"Lost packets:\n"
+"Late packets:\n"
+"Round-trip delay:\n"
+"Jitter buffer:"
+msgstr ""
+"الحزمات الضائعة:\n"
+"الحزمات المتأخرة:\n"
+"تأخير الرحلة:\n"
+"حجم تخزين التأخير:"
+
+#: src/endpoint.cpp:1498
+msgid "Error while starting the listener"
+msgstr "خطأ خلال تشغيل المستمع"
+
+#: src/endpoint.cpp:1498
+msgid ""
+"You will not be able to receive incoming calls. Please check that no other "
+"program is already running on the port used by GnomeMeeting."
+msgstr ""
+"لن تستطيع استقبال المكالمات الواردة. رجاءً تحقق من عدم استخدام أي برنامج آخر "
+"للمنفذ الذي يستخدمه جينوم ميتنج."
+
+#: src/endpoint.cpp:1628
+msgid "Attaching lid hardware to codec"
+msgstr "ربط عتاد lid إلى الكودك"
+
+#. Translators : the full sentence is "Opening %s for playing with
+#. plugin %s" or "Opening %s for recording with plugin"
+#: src/endpoint.cpp:1660
+#, c-format
+msgid "Opened %s for %s with plugin %s"
+msgstr ""
+
+#: src/endpoint.cpp:1662
+#, fuzzy
+msgid "recording"
+msgstr "مازج التسجيل:"
+
+#: src/endpoint.cpp:1662
+msgid "playing"
+msgstr ""
+
+#: src/endpoint.cpp:1696
+msgid "Could not open audio channel for audio transmission"
+msgstr "لم يمكن فتح قناة الصوت لبثّ الصوت"
+
+#: src/endpoint.cpp:1696
+msgid ""
+"An error occured while trying to record from the soundcard for the audio "
+"transmission. Please check that your soundcard is not busy and that your "
+"driver supports full-duplex.\n"
+"The audio transmission has been disabled."
+msgstr ""
+"حدث خطأ خلال محاولة التسجيل من بطاقة الصوت للبث الصوتي. رجاءً تحقق أن بطاقتك "
+"ليست مشغولة وأن التعريف المستخدم يدعم الازدواج الكامل.\n"
+"تم تعطيل البث الصوتي."
+
+#: src/endpoint.cpp:1698
+msgid "Could not open audio channel for audio reception"
+msgstr "لم يمكن فتح قناة الصوت للاستقبال الصوتي"
+
+#: src/endpoint.cpp:1698
+msgid ""
+"An error occured while trying to play audio to the soundcard for the audio "
+"reception. Please check that your soundcard is not busy and that your driver "
+"supports full-duplex.\n"
+"The audio reception has been disabled."
+msgstr ""
+"حدث خطأ خلال محاولة العرض من بطاقة الصوت للاستقبال الصوتي. رجاءً تحقق أن "
+"بطاقتك ليست مشغولة وأن التعريف المستخدم يدعم الازدواج الكامل.\n"
+"تم تعطيل الاستقبال الصوتي."
+
+#: src/endpoint.cpp:1915
+#, c-format
+msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
+msgstr "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
+
+#: src/endpoint.cpp:1957
+#, c-format
+msgid ""
+"Lost packets: %.1f %%\n"
+"Late packets: %.1f %%\n"
+"Round-trip delay: %d ms\n"
+"Jitter buffer: %d ms"
+msgstr ""
+"الحزمات المفقودة: %.1f %%\n"
+"الحزمات المتأخرة: %.1f %%\n"
+"تأخير الذهاب والإياب: %d  ملي ثانية\n"
+"حجم تخزين التأخير: %d ملي ثانية"
+
+#: src/endpoint.cpp:2078
+#, c-format
+msgid "Forwarding Call to %s (No Answer)"
+msgstr "جاري تحويل المكالمة إلى %s (لا يوجد رد)"
+
+#: src/gatekeeper.cpp:127
+#, c-format
+msgid "Unregistered from gatekeeper %s"
+msgstr "ألغي التسجيل من gatekeeper %s"
+
+#: src/gatekeeper.cpp:141
+msgid "Invalid gatekeeper hostname"
+msgstr "إسم مستضيف gatekeeper غير صالح"
+
+#: src/gatekeeper.cpp:141
+msgid ""
+"Please provide a hostname to use for the gatekeeper.\n"
+"Disabling registering."
+msgstr ""
+"رجاءً حدد إسم المضيف لاستخدامه لـgatekeeper.\n"
+"تم تعطيل التسجيل."
+
+#: src/gatekeeper.cpp:149
+msgid "Invalid gatekeeper ID"
+msgstr "إسم معرف gatekeeper غير صالح"
+
+#: src/gatekeeper.cpp:149
+msgid ""
+"Please provide a valid ID for the gatekeeper.\n"
+"Disabling registering."
+msgstr ""
+"رجاء قم بإدخال رقم هوية صالح للـgatekeeper.\n"
+"تعطيل التسجيل."
+
+#: src/gatekeeper.cpp:196
+msgid ""
+"Another user already exists with the same alias, please use another alias."
+msgstr "يوجد مستخدم آخر بنفس الإسم، رجاءً استخدم اسماً آخر."
+
+#: src/gatekeeper.cpp:199
+msgid ""
+"You are not allowed to register to the gatekeeper. Please check your login, "
+"password and firewall."
+msgstr ""
+"لا يسمح لك بالتسجيل مع gatekeeper. الرجاء التأكد من اسم المستخدم، وكلمة السر "
+"والجدار الناري."
+
+#: src/gatekeeper.cpp:202
+msgid "There was a transport error."
+msgstr "كان هناك خطأ في النقل"
+
+#: src/gatekeeper.cpp:205 src/gatekeeper.cpp:210
+msgid "No gatekeeper corresponding to your options has been found."
+msgstr "لم يمكن إيجاد gatekeeper متطابق مع إعداداتك."
+
+#: src/gatekeeper.cpp:212
+msgid "Error while registering with gatekeeper"
+msgstr "خطأ خلال التسجيل مع gatekeeper"
+
+#: src/gatekeeper.cpp:228
+#, c-format
+msgid "Gatekeeper set to %s"
+msgstr "حدّد الـgatekeeper بـ%s"
+
+#: src/gnomemeeting.cpp:86
+msgid "Notification area not detected"
+msgstr "لم يعثر على منطقة التنبيه"
+
+#: src/gnomemeeting.cpp:86
+msgid ""
+"You have chosen to start GnomeMeeting hidden, however the notification area "
+"is not present in your panel, GnomeMeeting can thus not start hidden."
+msgstr ""
+"لقد اخترت أن يتم تشغيل جينوم ميتنج مخفياً، على الرغم من ذلك فإن منطقة التنبيه "
+"غير موجودة في panel، لذى لن يستطيع جينوم ميتنج أن يعمل مخفياً."
+
+#: src/gnomemeeting.cpp:187
+msgid "Answering incoming call"
+msgstr "جاري الردّ على المكالمة الواردة"
+
+#: src/gnomemeeting.cpp:250
+msgid "Trying to stop calling"
+msgstr "جاري محاولة إيقاف الاتصال"
+
+#: src/gnomemeeting.cpp:262
+msgid "Stopping current call"
+msgstr "جاري إيقاف المكالمة الحالية"
+
+#: src/gnomemeeting.cpp:273
+msgid "Refusing Incoming call"
+msgstr "جاري رفض المكالمة الواردة"
+
+#. GM is started
+#: src/gnomemeeting.cpp:495
+#, c-format
+msgid "Started GnomeMeeting V%d.%d for %s\n"
+msgstr "تم تشغيل جينوم ميتنج الإصدار %d.%d لـ%s\n"
+
+#: src/ils.cpp:110
+msgid "Invalid parameters"
+msgstr "باراميترات غير صالحة"
+
+#: src/ils.cpp:110
+msgid ""
+"Please provide your first name and e-mail in the Personal Data section in "
+"order to be able to register to the user directory."
+msgstr ""
+"رجاءً اكتب إسمك الأول وبريدك الإلكتروني في قسم البيانات الشخصية حتى تتمكن من "
+"التسجيل في دليل المستخدمين."
+
+#: src/ils.cpp:145
+msgid "Invalid user directory"
+msgstr "دليل مستخدمين غير صالح"
+
+#: src/ils.cpp:145
+msgid "Operation impossible since there is no user directory specified."
+msgstr "العملية مستحيلة حيث أنه لم يتم تحديد دليل المستخدمين."
+
+#: src/ils.cpp:226
+msgid "Failed to parse XML file"
+msgstr "خطأ في إعراب ملف XML"
+
+#: src/ils.cpp:226
+msgid ""
+"There was an error while parsing the XML file. Please make sure that it is "
+"correctly installed in your system."
+msgstr ""
+"كان هناك خطأ في إعراب ملف XML. رجاءً تحقق من أنه مثبت بشكل صحيح على نظامك."
+
+#: src/ils.cpp:237
+msgid "Bad information"
+msgstr "بيانات سيّئة"
+
+#: src/ils.cpp:237
+#, c-format
+msgid "Bad ldap information from XML file: %s."
+msgstr "معلومات ldap سيئة من ملف XML: %s."
+
+#: src/ils.cpp:246
+#, fuzzy
+msgid "Cannot contact the users directory"
+msgstr "لم يمكن الاتصال بدليل المستخدمين"
+
+#: src/ils.cpp:246
+#, c-format
+msgid ""
+"Failed to contact the users directory %s:%d. The directory is probably "
+"currently overloaded, try again later."
+msgstr ""
+
+#: src/ils.cpp:256 src/ils.cpp:265
+msgid "Cannot contact the user directory"
+msgstr "لم يمكن الاتصال بدليل المستخدمين"
+
+#: src/ils.cpp:256
+msgid "Failed to set a time limit on operations."
+msgstr "أخفق تعيين حدّ زمني لعمليات."
+
+#: src/ils.cpp:265
+#, c-format
+msgid "Failed to bind to user directory: %s."
+msgstr "أخفق الربط بدليل المستخدمين: %s."
+
+#: src/ils.cpp:289
+#, fuzzy, c-format
+msgid "Updated information on the users directory %s."
+msgstr "تم تحديث المعلومات إلى %s."
+
+#: src/ils.cpp:293
+#, fuzzy, c-format
+msgid "Unregistered from the users directory %s."
+msgstr "ألغي التسجيل من gatekeeper %s"
+
+#: src/ils.cpp:315
+#, c-format
+msgid "Error while registering to %s."
+msgstr "خطأ خلال التسجيل في %s."
+
+#: src/ils.cpp:674
+#, c-format
+msgid "Failed to contact LDAP server %s:%d."
+msgstr "أخفق الاتصال بخادم LDAP %s: %d."
+
+#: src/ils.cpp:687
+msgid "Failed to set time limit on LDAP operations."
+msgstr "أخفق تعيين حدّ زمني لعمليات LDAP."
+
+#: src/ils.cpp:697
+#, c-format
+msgid "Failed to contact to LDAP server %s: %s."
+msgstr "أخفق الاتصال بخادم LDAP %s: %s."
+
+#: src/ils.cpp:707
+#, c-format
+msgid "Fetching online users list from %s."
+msgstr "جلب قائمة المستخدمين المتصلين من %s."
+
+#: src/ils.cpp:725
+msgid "Could not fetch online users list."
+msgstr "لم يمكن جلب قائمة المستخدمين المتصلين."
+
+#: src/ils.cpp:741
+#, c-format
+msgid "Connection to %s lost..."
+msgstr "فقد الاتصال مع %s..."
+
+#: src/ils.cpp:958
+#, c-format
+msgid "Search completed: %d user(s) listed on a total of %d user(s) from %s."
+msgstr "انتهى البحث: سرد %d مستخدم من أصل %d مستخدم من %s."
+
+#: src/ils.cpp:963
+#, c-format
+msgid "Search completed: %d user(s) found on %s."
+msgstr "انتهى البحث: %d مستخدم وجد في %s."
+
+#: src/ldap_window.cpp:751
+msgid "Name:"
+msgstr "الاسم:"
+
+#: src/ldap_window.cpp:771
+msgid "URL:"
+msgstr "عنوان:"
+
+#: src/ldap_window.cpp:798
+msgid "Speed Dial:"
+msgstr "الاتصال السريع:"
+
+#: src/ldap_window.cpp:822
+msgid "Groups:"
+msgstr "المجموعات:"
+
+#: src/ldap_window.cpp:939
+msgid "Invalid user name or URL"
+msgstr "اسم مستخدم أو عنوان غير صالح"
+
+#: src/ldap_window.cpp:939
+msgid ""
+"Please provide a valid name and URL for the contact you want to add to the "
+"address book."
+msgstr ""
+"رجاءً حدد اسماً صالحا وعنواناً للمكالم الذي تريد إضافته إلى دفتر العناوين."
+
+#: src/ldap_window.cpp:947
+msgid "Invalid group"
+msgstr "مجموعة غير صالحة"
+
+#: src/ldap_window.cpp:947
+msgid "You have to select a group to which you want to add your contact."
+msgstr "يجب أن تختار المجموعة التي تريد أن تضيف مكالمك إليها."
+
+#: src/ldap_window.cpp:961
+msgid "Invalid speed dial"
+msgstr "اتصال سريع غير صالح"
+
+#: src/ldap_window.cpp:961
+msgid ""
+"Another contact with the same speed dial already exists in the address book."
+msgstr "مكالم آخر له نفس الاتصال السريع موجود مسبقاً في دفتر العناوين."
+
+#: src/ldap_window.cpp:973
+msgid "Invalid URL"
+msgstr "عنوان غير صالح"
+
+#: src/ldap_window.cpp:973
+msgid "Another contact with the same URL already exists in the address book."
+msgstr "مكالم آخر له نفس العنوان موجود مسبقاً في دفتر العناوين."
+
+#: src/ldap_window.cpp:1010
+#, fuzzy, c-format
+msgid "Are you sure you want to remove %s [%s] from this group?"
+msgstr "هل أنت متأكد من أنك تريد حذف الخادم %s؟"
+
+#: src/ldap_window.cpp:1116
+#, c-format
+msgid "Add %s to Address Book"
+msgstr "أضف %s إلى دفتر العناوين"
+
+#: src/ldap_window.cpp:1142 src/ldap_window.cpp:2663
+msgid "C_all Contact"
+msgstr "إ_تّصل بمكالم"
+
+#: src/ldap_window.cpp:1148 src/ldap_window.cpp:2666
+msgid "_Tranfer Call to Contact"
+msgstr "ح_وّل المكالمة إلى مكالم"
+
+#: src/ldap_window.cpp:1160 src/ldap_window.cpp:2683
+msgid "Contact _Properties"
+msgstr "خصائ_ص المكالم"
+
+#: src/ldap_window.cpp:1166
+msgid "Copy URL to the clipboard"
+msgstr ""
+
+#: src/ldap_window.cpp:1172 src/ldap_window.cpp:1617 src/ldap_window.cpp:2645
+msgid "_Delete"
+msgstr "إح_ذف"
+
+#: src/ldap_window.cpp:1274
+msgid "Add a new server"
+msgstr "أضف خادماً جديداً"
+
+#: src/ldap_window.cpp:1275
+msgid "Enter the server name:"
+msgstr "أدخل اسم الخادم:"
+
+#: src/ldap_window.cpp:1276 src/ldap_window.cpp:1389
+msgid ""
+"Sorry but there is already a server with the same name in the address book."
+msgstr "عذراً ولكن هناك خادم موجود مسبقاً في دفتر العناوين له نفس الإسم."
+
+#: src/ldap_window.cpp:1280
+msgid "Add a new group"
+msgstr "أضف مجموعة جديدة"
+
+#: src/ldap_window.cpp:1281
+msgid "Enter the group name:"
+msgstr "أدخل اسم المجموعة:"
+
+#: src/ldap_window.cpp:1282 src/ldap_window.cpp:1400
+msgid ""
+"Sorry but there is already a group with the same name in the address book."
+msgstr "عذراً ولكن هناك مجموعة موجودة مسبقاً في دفتر العناوين لها نفس الإسم."
+
+#: src/ldap_window.cpp:1316 src/ldap_window.cpp:1449
+msgid "Invalid server or group name"
+msgstr "إسم خادم أو مجموعة غير صالح"
+
+#: src/ldap_window.cpp:1385
+#, c-format
+msgid "Please enter a new name for server %s:"
+msgstr ""
+
+#: src/ldap_window.cpp:1387
+#, c-format
+msgid "Are you sure you want to delete server %s?"
+msgstr "هل أنت متأكد من أنك تريد حذف الخادم %s؟"
+
+#: src/ldap_window.cpp:1396
+#, c-format
+msgid "Please enter a new name for group %s:"
+msgstr ""
+
+#: src/ldap_window.cpp:1398
+#, c-format
+msgid "Are you sure you want to delete group %s and all its contacts?"
+msgstr "هل أنت متأكد من أنك تريد حذف المجموعة %s وكل مكالميها؟"
+
+#: src/ldap_window.cpp:1585
+msgid "New server"
+msgstr "خادم جديد"
+
+#: src/ldap_window.cpp:1595
+msgid "New group"
+msgstr "مجموعة جديدة"
+
+#: src/ldap_window.cpp:1605
+msgid "_Find"
+msgstr "_إبحث"
+
+#: src/ldap_window.cpp:1612 src/ldap_window.cpp:1634 src/ldap_window.cpp:2649
+#, fuzzy
+msgid "_Rename"
+msgstr "ال_لقب:"
+
+#: src/ldap_window.cpp:1627
+msgid "New contact"
+msgstr "مكالم جديد"
+
+#: src/ldap_window.cpp:1639
+msgid "Delete"
+msgstr "إ_حذف"
+
+#: src/ldap_window.cpp:2614
+msgid "GnomeMeeting Address Book"
+msgstr "دفتر عناوين جينوم ميتنج"
+
+#: src/ldap_window.cpp:2632
+msgid "_File"
+msgstr "_ملف"
+
+#: src/ldap_window.cpp:2634
+msgid "New _Server"
+msgstr "_خادم جديد"
+
+#: src/ldap_window.cpp:2638
+msgid "New _Group"
+msgstr "م_جموعة جديدة"
+
+#: src/ldap_window.cpp:2656 src/menu.cpp:380
+msgid "_Close"
+msgstr "أ_غلق"
+
+#: src/ldap_window.cpp:2661
+msgid "C_ontact"
+msgstr "_مكالم"
+
+#: src/ldap_window.cpp:2672
+msgid "New _Contact"
+msgstr "م_كالم جديد"
+
+#: src/ldap_window.cpp:2676
+msgid "Add Contact to _Address Book"
+msgstr "أضف المكالم إلى دفتر العناوين"
+
+#. Translators: This is "S" as in "Status"
+#: src/ldap_window.cpp:2942
+msgid "S"
+msgstr "S"
+
+#. Translators: This is "A" as in "Audio"
+#: src/ldap_window.cpp:2952 src/pref_window.cpp:1078 src/pref_window.cpp:1474
+msgid "A"
+msgstr "A"
+
+#. Translators: This is "V" as in "Video"
+#: src/ldap_window.cpp:2962
+msgid "V"
+msgstr "V"
+
+#: src/ldap_window.cpp:2971 src/ldap_window.cpp:3045 src/pref_window.cpp:1488
+msgid "Name"
+msgstr "الإسم"
+
+#: src/ldap_window.cpp:3009 src/ldap_window.cpp:3057 src/tools.cpp:256
+msgid "URL"
+msgstr "موقع"
+
+#: src/ldap_window.cpp:3032
+msgid "IP"
+msgstr "عنوان IP"
+
+#: src/ldap_window.cpp:3070
+msgid "Speed Dial"
+msgstr "الاتصال السريع"
+
+#: src/ldap_window.cpp:3123
+msgid "Find all contacts"
+msgstr "جِد كل المتصلين"
+
+#: src/ldap_window.cpp:3128
+msgid "First name contains"
+msgstr "الاسم الاول يحتوي"
+
+#: src/ldap_window.cpp:3132
+msgid "Last name contains"
+msgstr "الاسم الأخير يحتوي"
+
+#: src/ldap_window.cpp:3136
+msgid "E-mail contains"
+msgstr "البريد الالكتروني يحتوي"
+
+#: src/ldap_window.cpp:3322
+msgid "Servers"
+msgstr "الخادمات"
+
+#: src/ldap_window.cpp:3368
+msgid "Groups"
+msgstr "المجموعات"
+
+#: src/lid.cpp:129
+#, c-format
+msgid "Using Quicknet device %s"
+msgstr "استخدام جهاز كيوكنت %s"
+
+#: src/lid.cpp:171
+msgid "Error while opening the Quicknet device."
+msgstr "خطأ خلال فتح جهاز كيوكنت."
+
+#: src/lid.cpp:171
+msgid ""
+"Please check that your driver is correctly installed and that the device is "
+"working correctly."
+msgstr "رجاءً تحقق من أن التعريف مثبت بشكل صحيح وأن الجهاز يعمل بشكل صحيح."
+
+#: src/lid.cpp:250 src/lid.cpp:251
+msgid "Phone is off hook"
+msgstr "سماعة الهاتف مرفوعة"
+
+#: src/lid.cpp:280 src/lid.cpp:281
+msgid "Phone is on hook"
+msgstr "سماعة الهاتف مقفلة"
+
+#: src/main_window.cpp:333
+#, c-format
+msgid "Total: %.2f MB"
+msgstr "المجموع: %.2f ميغابايت"
+
+#: src/main_window.cpp:457
+msgid "Cannot run GnomeMeeting"
+msgstr "لا يمكن تشغيل جينوم ميتنج"
+
+#: src/main_window.cpp:457
+#, fuzzy
+msgid ""
+"GnomeMeeting is already running, if you want it to call a given callto or "
+"h323 URL, please use \"gnomemeeting -c URL\"."
+msgstr ""
+"جينوم ميتنج يعمل مسبقاً، إذا أرته أن يتصل بعنوان ما، رجاءً استخدم الأمر "
+"\"gnomemeeting -c URL\"."
+
+#: src/main_window.cpp:510
+msgid ""
+"It appears that you do not have gnomemeeting.server installed in a valid "
+"location. Factory mode disabled.\n"
+msgstr "يبدو أن خادم جينوم غير مثبت لديك في موقع صالح. تم تعطيل وضع المصنع.\n"
+
+#: src/main_window.cpp:514
+msgid ""
+"Error registering GnomeMeeting with the activation service; factory mode "
+"disabled.\n"
+msgstr "خطأ في تسجيل جينوم ميتنج مع خدمة التفعيل. تم تعطيل وضع المصنع.\n"
+
+#: src/main_window.cpp:554
+msgid "Failed to retrieve gnomemeeting server from activation server\n"
+msgstr "أخفق استرداد خادم جينوم ميتنج من خادم التفعيل.\n"
+
+#: src/main_window.cpp:1123 src/menu.cpp:470 src/menu.cpp:586
+msgid "Local Video"
+msgstr "الفيديو المحلّي"
+
+#: src/main_window.cpp:1129 src/menu.cpp:476 src/menu.cpp:592
+msgid "Remote Video"
+msgstr "الفيديو البعيد"
+
+#: src/main_window.cpp:1261 src/menu.cpp:431
+msgid "Statistics"
+msgstr "الإحصائيات"
+
+#: src/main_window.cpp:1322
+msgid "Dialpad"
+msgstr "لوح الاتصال"
+
+#: src/main_window.cpp:1376
+msgid "Adjust brightness"
+msgstr "إضبط الإنارة"
+
+#: src/main_window.cpp:1398
+msgid "Adjust whiteness"
+msgstr "إضبط البياض"
+
+#: src/main_window.cpp:1420
+msgid "Adjust color"
+msgstr "إضبط الألوان"
+
+#: src/main_window.cpp:1442
+msgid "Adjust contrast"
+msgstr "إضبط التباين"
+
+#: src/main_window.cpp:1450
+msgid "Video"
+msgstr "الفيديو"
+
+#: src/main_window.cpp:1526
+msgid "Audio"
+msgstr "الصوت"
+
+#: src/main_window.cpp:1576
+msgid "Prints debug messages in the console (level between 1 and 6)"
+msgstr "يرسل رسائل الأخطاء إلى سطر الأوامر (المستوى بين الأول إلى السادس)"
+
+#: src/main_window.cpp:1579
+msgid "Makes GnomeMeeting call the given URL"
+msgstr "يجعل جينوم ميتنج يتصل بالعنوان المعطى"
+
+#: src/main_window.cpp:1633
+#, fuzzy
+msgid "No usable audio manager detected"
+msgstr "لم يتم العثور على أجهزة قابلة للاستخدام"
+
+#: src/main_window.cpp:1633
+msgid ""
+"GnomeMeeting didn't find any usable sound manager. Make sure that your "
+"installation is correct."
+msgstr ""
+
+#: src/main_window.cpp:1653
+#, fuzzy, c-format
+msgid ""
+"GnomeMeeting got an invalid value for the GConf key %s.\n"
+"\n"
+"It probably means that your GConf schemas have not been correctly installed "
+"or the that permissions are not correct.\n"
+"\n"
+"Please check the FAQ (http://www.gnomemeeting.org/faq.php), the "
+"throubleshoot section of the GConf site (http://www.gnome.org/projects/"
+"gconf/) or the mailing list archives for more information (http://mail.gnome."
+"org) about this problem."
+msgstr ""
+"حصل جينوم ميتنج على قيمة غير صالح لمفتاح GConf key \"/apps/gnomemeeting/"
+"gconf_test_age\".\n"
+"\n"
+"هذا يعني على الأرجح أن GConf schemas لم يتم تثبيتها بشكل صحيح أو أن "
+"الصلاحيات ليست صحيحة.\n"
+"\n"
+"رجاءً تحقق من الأسئلة المتكررة )http://www.gnomemeeting.org/faq.php)، قسم "
+"إزالة المشاكل لموقع GConf site (http://www.gnome.org/projects/gconf/( أو "
+"أرشيف القائمة البريدية لمعلومات أكثر )http://mail.gnome.org( حول هذه المشكلة."
+
+#: src/main_window.cpp:1656
+msgid "Gconf key error"
+msgstr "خطأ في مفتاح Gconf"
+
+#: src/menu.cpp:309
+msgid "C_all"
+msgstr "أ_جر مكالمة"
+
+#: src/menu.cpp:311
+msgid "C_onnect"
+msgstr "إ_تصل"
+
+#: src/menu.cpp:311 src/menu.cpp:664
+msgid "Create a new connection"
+msgstr "أنشئ اتصالاً جديداً"
+
+#: src/menu.cpp:314 src/menu.cpp:667
+msgid "_Disconnect"
+msgstr "إ_قطع الاتصال"
+
+#: src/menu.cpp:315 src/menu.cpp:668
+msgid "Close the current connection"
+msgstr "أغلق الاتصال الحالي"
+
+#: src/menu.cpp:321 src/menu.cpp:674
+msgid "_Available"
+msgstr ""
+
+#: src/menu.cpp:322 src/menu.cpp:675
+#, fuzzy
+msgid "Display a popup to accept the call"
+msgstr "أظهر نافذة منبثقة عن استلام مكالمة"
+
+#: src/menu.cpp:327 src/menu.cpp:680
+msgid "Free for Cha_t"
+msgstr ""
+
+#: src/menu.cpp:328 src/menu.cpp:681
+#, fuzzy
+msgid "Auto answer calls"
+msgstr "أجب المكالمات تلقائياً"
+
+#: src/menu.cpp:333 src/menu.cpp:686
+msgid "_Busy"
+msgstr ""
+
+#: src/menu.cpp:333 src/menu.cpp:686
+#, fuzzy
+msgid "Reject calls"
+msgstr "المكالمات المستلمة"
+
+#: src/menu.cpp:338 src/menu.cpp:691
+#, fuzzy
+msgid "_Forward"
+msgstr "تم تحويل المكالمة"
+
+#: src/menu.cpp:338 src/menu.cpp:691
+#, fuzzy
+msgid "Forward calls"
+msgstr "حوّل المكالمة إلى:"
+
+#: src/menu.cpp:346
+#, fuzzy
+msgid "Speed dials"
+msgstr "الاتصال السريع"
+
+#: src/menu.cpp:350
+msgid "Hold the current call"
+msgstr "علّق المكالمة الحالية"
+
+#: src/menu.cpp:354
+msgid "Transfer the current call"
+msgstr "حوّل المكالمة الحالية"
+
+#: src/menu.cpp:361
+msgid "Suspend or resume the audio transmission"
+msgstr "علّق أو تابع البثّ الصوتي"
+
+#: src/menu.cpp:366
+msgid "Suspend or resume the video transmission"
+msgstr "علّق أو تابع البث المرئي"
+
+#: src/menu.cpp:373
+msgid "_Save Current Picture"
+msgstr "إ_حفظ الصورة الحالية"
+
+#: src/menu.cpp:374
+msgid "Save a snapshot of the current video"
+msgstr "إحفظ صورة من الفيديو الحالي"
+
+#: src/menu.cpp:380
+#, fuzzy
+msgid "Close the GnomeMeeting window"
+msgstr "_حول جينوم ميتنج"
+
+#: src/menu.cpp:387 src/menu.cpp:737
+msgid "_Quit"
+msgstr "إ_خرج"
+
+#: src/menu.cpp:387 src/menu.cpp:737
+msgid "Quit GnomeMeeting"
+msgstr "أخرج من جينوم ميتنج"
+
+#: src/menu.cpp:391
+msgid "_Edit"
+msgstr "ح_رّر"
+
+#: src/menu.cpp:394 src/menu.cpp:400
+msgid "Configuration Druid"
+msgstr "مساعد الإعداد"
+
+#: src/menu.cpp:395 src/menu.cpp:401
+msgid "Run the configuration druid"
+msgstr "شغّل مساعد الإعداد"
+
+#: src/menu.cpp:408 src/menu.cpp:715
+msgid "_Preferences..."
+msgstr "الت_فضيلات..."
+
+#: src/menu.cpp:409 src/menu.cpp:716
+msgid "Change your preferences"
+msgstr "غيّر تفضيلاتك"
+
+#: src/menu.cpp:414
+msgid "_View"
+msgstr "إ_عرض"
+
+#: src/menu.cpp:416 src/pref_window.cpp:950
+msgid "Text Chat"
+msgstr "الدردشة الكتابية"
+
+#: src/menu.cpp:417
+msgid "View/Hide the text chat window"
+msgstr "إعرض/أخف نافذة المحادثة الكتابية"
+
+#: src/menu.cpp:422
+msgid "Status Bar"
+msgstr "شريط الحالة"
+
+#: src/menu.cpp:423
+msgid "View/Hide the status bar"
+msgstr "إعرض/أخف شريط الحالة"
+
+#: src/menu.cpp:429
+msgid "Control Panel"
+msgstr "لوحة التحكم"
+
+#: src/menu.cpp:432
+msgid "View audio/video transmission and reception statistics"
+msgstr "إعرض إحصائيات البث والاستقبال المرئي والمسموع."
+
+#: src/menu.cpp:437
+msgid "_Dialpad"
+msgstr "_لوح الاتصال"
+
+#: src/menu.cpp:437
+msgid "View the dialpad"
+msgstr "إعرض لوح الاتصال"
+
+#: src/menu.cpp:442
+msgid "_Audio Settings"
+msgstr "إع_دادات الصوت"
+
+#: src/menu.cpp:443
+msgid "View audio settings"
+msgstr "إعرض إعدادات الصوت"
+
+#: src/menu.cpp:448
+msgid "_Video Settings"
+msgstr "إعدادت ال_فيديو"
+
+#: src/menu.cpp:449
+msgid "View video settings"
+msgstr "إعرض إعدادات الفيديو"
+
+#: src/menu.cpp:454 src/pref_window.cpp:1276
+msgid "Off"
+msgstr "مطفئ"
+
+#: src/menu.cpp:454
+msgid "Hide the control panel"
+msgstr "أخف لوحة التحكم"
+
+#: src/menu.cpp:462
+msgid "_Clear text chat"
+msgstr "إم_سح نص المحادثة"
+
+#: src/menu.cpp:463
+msgid "Clear the text chat"
+msgstr "إمسح نص المحادثة"
+
+#: src/menu.cpp:471 src/menu.cpp:587
+msgid "Local video image"
+msgstr "صورة الفيديو المحلي"
+
+#: src/menu.cpp:477 src/menu.cpp:593
+msgid "Remote video image"
+msgstr "صورة الفيديو البعيد"
+
+#: src/menu.cpp:482 src/menu.cpp:598
+msgid "Both (Local Video Incrusted)"
+msgstr "كلاهما (الفيديو المحلي مغطى)"
+
+#: src/menu.cpp:483 src/menu.cpp:490 src/menu.cpp:497 src/menu.cpp:599
+#: src/menu.cpp:606 src/menu.cpp:613
+msgid "Both video images"
+msgstr "كلتا صورتي الفيديو"
+
+#: src/menu.cpp:489 src/menu.cpp:605
+msgid "Both (Local Video in New Window)"
+msgstr "كلاهما (الفيديو المحليّ في نافذة جديدة)"
+
+#: src/menu.cpp:496 src/menu.cpp:612
+msgid "Both (Both in New Windows)"
+msgstr "كلاهما (كلاهما في نوافذ جديدة)"
+
+#: src/menu.cpp:505 src/menu.cpp:621
+msgid "Zoom In"
+msgstr "تكبير"
+
+#: src/menu.cpp:505 src/menu.cpp:621
+msgid "Zoom in"
+msgstr "تكبير"
+
+#: src/menu.cpp:509 src/menu.cpp:625
+msgid "Zoom Out"
+msgstr "تصغير"
+
+#: src/menu.cpp:509 src/menu.cpp:625
+msgid "Zoom out"
+msgstr "تصغير"
+
+#: src/menu.cpp:513 src/menu.cpp:629
+msgid "Normal Size"
+msgstr "الحجم الطبيعي"
+
+#: src/menu.cpp:513 src/menu.cpp:629
+msgid "Normal size"
+msgstr "الحجم الطبيعي"
+
+#: src/menu.cpp:518 src/menu.cpp:634
+msgid "Fullscreen"
+msgstr "ملئ الشاشة"
+
+#: src/menu.cpp:523
+msgid "_Tools"
+msgstr "أد_وات"
+
+#: src/menu.cpp:525 src/menu.cpp:699
+msgid "Address _Book"
+msgstr "دفتر الع_ناوين"
+
+#: src/menu.cpp:526 src/menu.cpp:700
+msgid "Open the address book"
+msgstr "إفتح دفتر العناوين"
+
+#: src/menu.cpp:533 src/tools.cpp:350
+msgid "General History"
+msgstr "التاريخ العام"
+
+#: src/menu.cpp:534
+msgid "View the operations history"
+msgstr "إعرض تاريخ العمليات"
+
+#: src/menu.cpp:538 src/menu.cpp:707 src/tools.cpp:203
+msgid "Calls History"
+msgstr "تاريخ المكالمات"
+
+#: src/menu.cpp:539 src/menu.cpp:708
+msgid "View the calls history"
+msgstr "إعرض تاريخ المكالمات"
+
+#: src/menu.cpp:544
+msgid "Consult MicroTelco Account"
+msgstr "استشر حساب ميكروتلكو"
+
+#: src/menu.cpp:545
+msgid "View the details of your account"
+msgstr "إعرض تفاصيل حسابك"
+
+#: src/menu.cpp:549
+msgid "_Help"
+msgstr "_مساعدة"
+
+#: src/menu.cpp:552 src/menu.cpp:558 src/menu.cpp:724 src/menu.cpp:730
+msgid "_About GnomeMeeting"
+msgstr "_حول جينوم ميتنج"
+
+#: src/menu.cpp:553 src/menu.cpp:559 src/menu.cpp:725 src/menu.cpp:731
+msgid "View information about GnomeMeeting"
+msgstr "إعرض معلومات حول جينوم ميتنج"
+
+#: src/menu.cpp:664
+msgid "_Connect"
+msgstr "إ_تّصل"
+
+#: src/misc.cpp:177
+#, fuzzy
+msgid "Generic error"
+msgstr "خطأ في مفتاح Gconf"
+
+#: src/misc.cpp:225
+msgid "Reject"
+msgstr "ارفض"
+
+#: src/misc.cpp:227
+msgid "Accept"
+msgstr "اقبل"
+
+#: src/misc.cpp:234
+#, fuzzy
+msgid "Incoming call from"
+msgstr "مكالمة واردة"
+
+#: src/misc.cpp:247
+#, fuzzy
+msgid "Remote URL:"
+msgstr "المستخدم البعيد"
+
+#: src/misc.cpp:259
+msgid "Remote Application:"
+msgstr ""
+
+#: src/pref_window.cpp:358
+#, fuzzy
+msgid "Codec Information"
+msgstr "بيانات سيّئة"
+
+#: src/pref_window.cpp:396
+msgid "Please choose the video image"
+msgstr "رجاءً اختر صورة الفيديو"
+
+#: src/pref_window.cpp:697
+#, fuzzy
+msgid "Play sound on incoming calls"
+msgstr "إلعب صوتاً عند استلام المكالمات الواردة"
+
+#: src/pref_window.cpp:706
+#, fuzzy
+msgid "Play ring tone"
+msgstr "مازج العرض:"
+
+#: src/pref_window.cpp:715
+msgid "Play busy tone"
+msgstr ""
+
+#: src/pref_window.cpp:871
+msgid "Personal Information"
+msgstr "المعلومات الشخصية"
+
+#: src/pref_window.cpp:875
+msgid "_First name:"
+msgstr "الاسم الأ_ول:"
+
+#: src/pref_window.cpp:882
+msgid "Sur_name:"
+msgstr "الاسم الأ_خير:"
+
+#: src/pref_window.cpp:884
+#, fuzzy
+msgid "Enter your surname."
+msgstr "ادخل اسمك الأخير"
+
+#: src/pref_window.cpp:889
+msgid "E-_mail address:"
+msgstr "عنواوين ال_بريد الالكتروني:"
+
+#: src/pref_window.cpp:896
+msgid "_Comment:"
+msgstr "_تعليق:"
+
+#: src/pref_window.cpp:898
+#, fuzzy
+msgid "Enter a comment about yourself."
+msgstr "أدخل تعليقاً عن نفسك في دليل المستخدمين."
+
+#: src/pref_window.cpp:903
+msgid "_Location:"
+msgstr "ال_موقع:"
+
+#: src/pref_window.cpp:905
+#, fuzzy
+msgid "Enter your country or city."
+msgstr "أدخل موقعك (الدولة أو المدينة) لدليل المستخدمين."
+
+#. Add the update button
+#: src/pref_window.cpp:911 src/pref_window.cpp:1235
+msgid "_Apply"
+msgstr "_طبّق"
+
+#: src/pref_window.cpp:911
+msgid ""
+"Click here to update the user directory you are registered to with the new "
+"First Name, Last Name, E-Mail, Comment and Location or to update your alias "
+"on the Gatekeeper."
+msgstr ""
+"اضغط هنا لتحدّث دليل المستخدم الذي أنت مسجل فيه بالاسم الأول، والأخير، "
+"والبريد الالكتروني، والتعليق والموقع أو لتحديث اسمك البديل على الـGatekeeper."
+
+#: src/pref_window.cpp:929
+msgid "GnomeMeeting GUI"
+msgstr "واجهة جينوم ميتنج الرسومية"
+
+#: src/pref_window.cpp:931
+msgid "_Show splash screen"
+msgstr "أ_ظهر شاشة البدء"
+
+#: src/pref_window.cpp:933
+msgid "Start _hidden"
+msgstr "إبدء م_خفياً"
+
+#: src/pref_window.cpp:938
+msgid "Video Display"
+msgstr "عرض الفيديو"
+
+#. Translators: the full sentence is Use a fullscreen size
+#. of X by Y pixels
+#: src/pref_window.cpp:943
+msgid "Use a fullscreen size of"
+msgstr "استخدم ملء شاشة بحجم"
+
+#: src/pref_window.cpp:943
+msgid "by"
+msgstr "بواسطة"
+
+#: src/pref_window.cpp:943
+msgid "pixels"
+msgstr "بكسل"
+
+#: src/pref_window.cpp:946
+msgid "Place windows displaying video _above other windows"
+msgstr ""
+
+#: src/pref_window.cpp:970
+msgid "User Directory"
+msgstr "دليل المستخدم"
+
+#. Add all the fields
+#: src/pref_window.cpp:974
+msgid "User directory:"
+msgstr "دليل المستخدم:"
+
+#: src/pref_window.cpp:976
+msgid "Enable _registering"
+msgstr "مكّن ال_تّسجيل"
+
+#: src/pref_window.cpp:978
+#, fuzzy
+msgid "_Publish my details in the users directory when registering"
+msgstr "ان_شر تفاصيل بياناتي في دليل المستخدم"
+
+#: src/pref_window.cpp:995 src/pref_window.cpp:1688
+msgid "Call Forwarding"
+msgstr "تحويل المكالمات"
+
+#: src/pref_window.cpp:1000
+msgid "Forward calls to _host:"
+msgstr "حوّل المكالمات إلى ال_مضيف:"
+
+#: src/pref_window.cpp:1005
+msgid "_Always forward calls to the given host"
+msgstr "حوّل المكالمات _دائماً إلى المضيف المحدد"
+
+#: src/pref_window.cpp:1005
+#, fuzzy
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the field above."
+msgstr "إن كان محدداً، سوف تحول كل المكالمات إلى المضيف المحدد في المربع أدناه."
+
+#: src/pref_window.cpp:1007
+msgid "Forward calls to the given host if _no answer"
+msgstr "حوّل المكالمات إلى المضيف المحدد إن ل_م يكن هناك ردّ"
+
+#: src/pref_window.cpp:1007
+#, fuzzy
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the field above if you do not answer the call."
+msgstr ""
+"إن كان محدداً، سوف تحول كل المكالمات الواردة إلى المضيف المحدد في المربع "
+"أدناه إن لم يجب المكالمة."
+
+#: src/pref_window.cpp:1009
+msgid "Forward calls to the given host if _busy"
+msgstr "حوّل المكالمات إلى المضيف المحدد إن كنت م_شغولاً"
+
+#: src/pref_window.cpp:1009
+#, fuzzy
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the field above if you already are in a call or if you are in "
+"Do Not Disturb mode."
+msgstr ""
+"إن كان محدداً، سوف تحول كل المكالمات إلى المضيف المحدد في المربع أدناه إن كنت "
+"تجري مكالمة أو كنت في وضع لاتزعجني."
+
+#: src/pref_window.cpp:1041
+#, fuzzy
+msgid "GnomeMeeting Sound Events"
+msgstr "إعدادات جينوم ميتنج"
+
+#: src/pref_window.cpp:1090 src/pref_window.cpp:1099 src/pref_window.cpp:1108
+msgid "Event"
+msgstr ""
+
+#: src/pref_window.cpp:1119
+#, fuzzy
+msgid "Sound to play:"
+msgstr "لاعب الصوت:"
+
+#: src/pref_window.cpp:1125
+msgid "Choose a file to play"
+msgstr ""
+
+#: src/pref_window.cpp:1132
+msgid "Play"
+msgstr ""
+
+#: src/pref_window.cpp:1166
+msgid "All"
+msgstr "الكلّ"
+
+#: src/pref_window.cpp:1168
+msgid "rfc2833"
+msgstr "rfc2833"
+
+#: src/pref_window.cpp:1169
+msgid "Signal"
+msgstr "الإشارة"
+
+#: src/pref_window.cpp:1170
+msgid "String"
+msgstr "نصّ"
+
+#: src/pref_window.cpp:1179
+msgid "H.323 Version 2 Settings"
+msgstr "إعداد H.323 الإصدار الثاني"
+
+#: src/pref_window.cpp:1183
+msgid "Enable H.245 _tunnelling"
+msgstr "مكّن H.245 _tunnelling"
+
+#: src/pref_window.cpp:1186
+msgid "Enable fast _start procedure"
+msgstr "مكّن إجراء الت_شغيل السريع"
+
+#: src/pref_window.cpp:1192
+msgid "User Input Capabilities"
+msgstr "قدرات إدخال المستخدم"
+
+#: src/pref_window.cpp:1195
+msgid "T_ype:"
+msgstr ""
+
+#: src/pref_window.cpp:1195
+msgid ""
+"This permits to set the mode for User Input Capabilities. The values can be "
+"\"All\", \"None\", \"rfc2833\", \"Signal\" or \"String\" (default is \"All"
+"\"). Choosing other values than \"All\", \"String\" or \"rfc2833\" disables "
+"the Text Chat."
+msgstr ""
+"يسمح هذا بتحديد وضع قدرات إدخال المستخدم. يمكن أن تكون القيم \"ALL\"، \"None،"
+"\"، \"rfc2833\"، \"Signal\"، أو \"String\" (القيمة الافتراضية هي \"All\"). "
+"اختيار أي قيمة غير \"All\"، \"String\"، أو \"rfc2833\"، تعطّل الدردشة النصيّة."
+
+#: src/pref_window.cpp:1210
+msgid "Do not register"
+msgstr "لا تقم بالتسجيل"
+
+#: src/pref_window.cpp:1213
+msgid "Automatically discover"
+msgstr "استكشف تلقائياً"
+
+#: src/pref_window.cpp:1219
+msgid "Gatekeeper"
+msgstr "Gatekeeper"
+
+#: src/pref_window.cpp:1221
+msgid "Gatekeeper _ID:"
+msgstr "_هويّة Gatekeeper:"
+
+#: src/pref_window.cpp:1223
+msgid "Gatekeeper _host:"
+msgstr "_مضيف Gatekeeper:"
+
+#: src/pref_window.cpp:1225
+msgid "Gatekeeper _alias:"
+msgstr "إسم Gatekeeper ال_بديل:"
+
+#: src/pref_window.cpp:1228
+msgid "Gatekeeper _password:"
+msgstr "كلمة _سر Gatekeeper:"
+
+#: src/pref_window.cpp:1231
+msgid "Register this alias as the primary alias with the gatekeeper"
+msgstr ""
+
+#: src/pref_window.cpp:1233
+msgid "Registering method:"
+msgstr "طريقة التسجيل:"
+
+#: src/pref_window.cpp:1235
+msgid "Click here to update your Gatekeeper settings."
+msgstr "اضغط هنا لتحديث إعدادات Gatekeeper."
+
+#: src/pref_window.cpp:1253
+msgid "NAT/PAT Router Support"
+msgstr "دعم موجّه NAT/PAT"
+
+#: src/pref_window.cpp:1255
+msgid "Enable IP _translation"
+msgstr "مكّن _ترجمة IP"
+
+#: src/pref_window.cpp:1257
+msgid "Public _IP of the NAT/PAT router:"
+msgstr "عنوان _IP العام لموجّه NAT/PAT:"
+
+#: src/pref_window.cpp:1277
+msgid "Low"
+msgstr "منخفض"
+
+#: src/pref_window.cpp:1278
+msgid "Medium"
+msgstr "متوسط"
+
+#: src/pref_window.cpp:1279
+msgid "High"
+msgstr "مرتفع"
+
+#: src/pref_window.cpp:1280
+msgid "AGC"
+msgstr "تحكّم مستوى تلقائي"
+
+#: src/pref_window.cpp:1289
+msgid "Audio Plugin"
+msgstr ""
+
+#: src/pref_window.cpp:1293
+#, fuzzy
+msgid "Audio plugin:"
+msgstr "لاعب الصوت:"
+
+#: src/pref_window.cpp:1299 src/pref_window.cpp:1719
+msgid "Audio Devices"
+msgstr "أجهزة الصوت"
+
+#: src/pref_window.cpp:1305
+#, fuzzy
+msgid "Output device:"
+msgstr "إ_كتشف الأجهزة:"
+
+#: src/pref_window.cpp:1311 src/pref_window.cpp:1382
+#, fuzzy
+msgid "Input device:"
+msgstr "جهاز العرض:"
+
+#. That button will refresh the devices list
+#: src/pref_window.cpp:1331 src/pref_window.cpp:1409
+msgid "_Detect devices"
+msgstr "إ_كتشف الأجهزة:"
+
+#: src/pref_window.cpp:1331 src/pref_window.cpp:1409
+msgid "Click here to refresh the devices list."
+msgstr "اضغط هنا لتحديث قائمة الأجهزة"
+
+#: src/pref_window.cpp:1352
+msgid "Small"
+msgstr "صغير"
+
+#: src/pref_window.cpp:1353
+msgid "Large"
+msgstr "كبير"
+
+#: src/pref_window.cpp:1355
+msgid "PAL (Europe)"
+msgstr "بال (أوروبا)"
+
+#: src/pref_window.cpp:1356
+msgid "NTSC (America)"
+msgstr "إن تي إس سي (أمريكا)"
+
+#: src/pref_window.cpp:1357
+msgid "SECAM (France)"
+msgstr "سيكام (فرنسا)"
+
+#: src/pref_window.cpp:1358
+msgid "Auto"
+msgstr "تلقائي"
+
+#: src/pref_window.cpp:1368
+#, fuzzy
+msgid "Video Plugin"
+msgstr "استعراض الفيديو"
+
+#: src/pref_window.cpp:1371
+#, fuzzy
+msgid "Video plugin:"
+msgstr "حجم الفيديو:"
+
+#: src/pref_window.cpp:1377 src/pref_window.cpp:1723
+msgid "Video Devices"
+msgstr "أجهزة الفيديو"
+
+#: src/pref_window.cpp:1382
+msgid ""
+"Select the video device to use. Using an invalid video device or \"Picture\" "
+"for video transmission will transmit a test picture."
+msgstr ""
+"حدد جهاز الفيديو لاستخدامه. استخدام جهاز فيديو غير صالح أو \"صورة\" لبث "
+"الفيديو سوف يستبدل بصورة اختبار."
+
+#. Video Channel
+#: src/pref_window.cpp:1386
+#, fuzzy
+msgid "Channel:"
+msgstr "قناة الفيديو:"
+
+#: src/pref_window.cpp:1388
+msgid "Size:"
+msgstr ""
+
+#: src/pref_window.cpp:1390
+#, fuzzy
+msgid "Format:"
+msgstr "تنسيق اللون"
+
+#: src/pref_window.cpp:1393
+msgid "Image:"
+msgstr ""
+
+#. The file selector button
+#: src/pref_window.cpp:1397
+msgid "Choose a picture"
+msgstr "إختر صورة"
+
+#: src/pref_window.cpp:1442
+msgid "Available Audio Codecs"
+msgstr "كودكات الصوت المتوفرة"
+
+#: src/pref_window.cpp:1499
+msgid "Info"
+msgstr "المعلومات"
+
+#: src/pref_window.cpp:1511
+msgid "Bandwidth"
+msgstr "عرض الموجة"
+
+#: src/pref_window.cpp:1562
+msgid "Audio Codecs Settings"
+msgstr "إعدادات كودكات الصوت"
+
+#. Translators: the full sentence is Automatically adjust jitter buffer
+#. between X and Y ms
+#: src/pref_window.cpp:1566
+msgid "Automatically adjust _jitter buffer between"
+msgstr "عدّل حجم تخزين التأخير تلقائياً بين"
+
+#: src/pref_window.cpp:1566
+msgid "and"
+msgstr "و"
+
+#: src/pref_window.cpp:1566
+msgid "ms"
+msgstr ""
+
+#: src/pref_window.cpp:1568
+msgid "Enable silence _detection"
+msgstr "مكّن ال_تحقق من الصمت"
+
+#: src/pref_window.cpp:1586 src/pref_window.cpp:1674
+msgid "General Settings"
+msgstr "الإعدادات العامّة"
+
+#. Add fields
+#: src/pref_window.cpp:1590
+msgid "Enable video _transmission"
+msgstr ""
+
+#: src/pref_window.cpp:1593
+msgid "Enable video _reception"
+msgstr "مكّن ا_ستقبال الفيديو"
+
+#: src/pref_window.cpp:1598
+msgid "Bandwidth Control"
+msgstr "التحكم بعرض الموجة"
+
+#. Translators: the full sentence is Maximum video bandwidth of X KB/s
+#: src/pref_window.cpp:1601
+msgid "Maximum video _bandwidth of"
+msgstr "حدّ أقصى ل_عرض الموجة"
+
+#: src/pref_window.cpp:1601
+msgid "KB/s"
+msgstr "كيلوبايت/ثانية"
+
+#: src/pref_window.cpp:1607
+msgid "Advanced Quality Settings"
+msgstr "إعدادات الجودة المتقدمة"
+
+#. Translators: the full sentence is Keep a minimum video quality of X %
+#: src/pref_window.cpp:1610
+msgid "Keep a minimum video _quality of"
+msgstr "أبق جودة _فيديو على الأقل"
+
+#: src/pref_window.cpp:1610
+msgid ""
+"The minimum transmitted video quality to keep when trying to minimize the "
+"used bandwidth:  choose 100% on a LAN for the best quality, 1% being the "
+"worst quality."
+msgstr ""
+"أقل جودة للفيديو المبثوث لإبقائه عند محاولة تقليل عرض الموجة المستخدم: اختر "
+"100% على الشبكة المحلية لأفضل جودة، حيث أن 1% هي أسوأ جودة."
+
+#: src/pref_window.cpp:1610
+msgid "%"
+msgstr "%"
+
+#. Translators: the full sentence is Transmit at least X frames per second
+#: src/pref_window.cpp:1613
+msgid "Transmit at least"
+msgstr "بثّ على الأقل"
+
+#: src/pref_window.cpp:1613
+msgid "_frames per second"
+msgstr "إ_طارات في الثانية"
+
+#. Translators: the full sentence is Transmit X background blocks with each
+#. frame
+#: src/pref_window.cpp:1617
+msgid "Transmit"
+msgstr "بثّ"
+
+#: src/pref_window.cpp:1617
+msgid "background _blocks with each frame"
+msgstr ""
+
+#: src/pref_window.cpp:1668
+msgid "General"
+msgstr "عامّ"
+
+#: src/pref_window.cpp:1669
+msgid "Personal Data"
+msgstr "البيانات الشخصية"
+
+#: src/pref_window.cpp:1679
+msgid "Directory Settings"
+msgstr "إعدادات الدليل"
+
+#: src/pref_window.cpp:1684
+msgid "Sound Events"
+msgstr ""
+
+#: src/pref_window.cpp:1693
+msgid "H.323 Settings"
+msgstr "إعدادات H.323"
+
+#: src/pref_window.cpp:1695
+msgid "Advanced Settings"
+msgstr "إعدادات متقدمة"
+
+#: src/pref_window.cpp:1700
+msgid "Gatekeeper Settings"
+msgstr "إعدادات Gatekeeper"
+
+#: src/pref_window.cpp:1704
+msgid "NAT Settings"
+msgstr "إعدادت NAT"
+
+#: src/pref_window.cpp:1708
+msgid "Codecs"
+msgstr "كوديكات"
+
+#: src/pref_window.cpp:1710
+msgid "Audio Codecs"
+msgstr "كوديكات الصوت"
+
+#: src/pref_window.cpp:1714
+msgid "Video Codecs"
+msgstr "كوديكات الفيديو"
+
+#: src/pref_window.cpp:1718
+msgid "Devices"
+msgstr "الأجهزة"
+
+#: src/sound_handling.cpp:296
+#, fuzzy
+msgid "Opening device for playing"
+msgstr "قيد فتح جهاز الفيديو"
+
+#: src/sound_handling.cpp:298
+msgid "Opening device for recording"
+msgstr ""
+
+#: src/sound_handling.cpp:309 src/sound_handling.cpp:311
+#: src/videograbber.cpp:666
+msgid "Failed to open the device"
+msgstr "أخفق فتح الجهاز"
+
+#: src/sound_handling.cpp:309
+#, c-format
+msgid ""
+"Impossible to open the selected audio device (%s) for recording. Please "
+"check your audio setup, the permissions and that the device is not busy."
+msgstr ""
+"يستحيل فتح جهاز الصوت المحدد (%s) للتسجيل. رجاءً تحقق من إعداد الصوت، "
+"والصلاحيات وأن ذلك الجهاز غير مشغول."
+
+#: src/sound_handling.cpp:311
+#, c-format
+msgid ""
+"Impossible to open the selected audio device (%s) for playing. Please check "
+"your audio setup, the permissions and that the device is not busy."
+msgstr ""
+"تم فتح جهاز الصوت المحدد (%s) بنجاح إلا أنه من المستحيل كتابة البيانات إلى "
+"هذا الجهاز. رجاءً تحقق من إعداد الصوت."
+
+#: src/sound_handling.cpp:327 src/sound_handling.cpp:383
+msgid "Cannot use the audio device"
+msgstr "لا يمكن استخدام جهاز الصوت"
+
+#: src/sound_handling.cpp:327
+#, c-format
+msgid ""
+"The selected audio device (%s) was successfully opened but it is impossible "
+"to read data from this device. Please check your audio setup."
+msgstr ""
+"تم فتح جهاز الصوت المحدد (%s) بنجاح إلا أنه من المستحيل قراءة البيانات إلى "
+"هذا الجهاز. رجاءً تحقق من إعداد الصوت."
+
+#: src/sound_handling.cpp:336
+#, fuzzy
+msgid "Recording your voice"
+msgstr "جهاز التسجيل:"
+
+#: src/sound_handling.cpp:362
+#, fuzzy
+msgid "Recording and playing back"
+msgstr "جهاز التسجيل:"
+
+#: src/sound_handling.cpp:383
+#, c-format
+msgid ""
+"The selected audio device (%s) was successfully opened but it is impossible "
+"to write data to this device. Please check your audio setup."
+msgstr ""
+"تم فتح جهاز الصوت المحدد (%s) بنجاح إلا أنه من المستحيل كتابة البيانات إلى "
+"هذا الجهاز. رجاءً تحقق من إعداد الصوت."
+
+#: src/sound_handling.cpp:479
+#, fuzzy, c-format
+msgid ""
+"GnomeMeeting is now recording from %s and playing back to %s. Please say \"1 "
+"2 3\" in your microphone, you should hear yourself back into the speakers "
+"with a 4 seconds delay."
+msgstr ""
+"يقوم جينوم ميتنج الآن بالتسجيل من %s والعرض مجدداً إلى %s. رجاءً قل \"1 2 3\" "
+"بميكروفونك، ويجب أن تسمع نفسك مجدداً من خلال السماعات خلال خمس ثواني.\n"
+"\n"
+"جاري التسجيل... رجاءً تكلم."
+
+#: src/toolbar.cpp:177
+msgid ""
+"Enter an URL to call on the left, and click on this button to connect to the "
+"given URL."
+msgstr "أدخل العنوان على جهة اليسار لمكالمته، واضغط على هذا الزر للإتصال به."
+
+#: src/toolbar.cpp:223
+msgid "Open text chat."
+msgstr "إفتح الدردشة النصية."
+
+#: src/toolbar.cpp:234
+msgid "Open control panel"
+msgstr "إفتح لوحة التحكم"
+
+#: src/toolbar.cpp:246
+msgid "Open address book"
+msgstr "إفتح دفتر العناوين"
+
+#: src/toolbar.cpp:270
+msgid "Display images from your camera device."
+msgstr "أظهر الصور من جهاز كاميرتك."
+
+#: src/toolbar.cpp:292
+msgid ""
+"Audio transmission status. During a call, click here to suspend or resume "
+"the audio transmission."
+msgstr "وضْع بث الصوت. خلال المكالمة، إضغط هنا لتوقف أو تكمل بثّ الفيديو."
+
+#: src/toolbar.cpp:312
+msgid ""
+"Video transmission status. During a call, click here to suspend or resume "
+"the video transmission."
+msgstr "وضْع بث الفيديو. خلال المكالمة، إضغط هنا لتوقف أو تكمل بثّ الفيديو."
+
+#: src/tools.cpp:187
+#, fuzzy
+msgid "Received Calls"
+msgstr "المكالمات المستلمة"
+
+#: src/tools.cpp:187
+#, fuzzy
+msgid "Placed Calls"
+msgstr "_علّق المكالمة"
+
+#: src/tools.cpp:187
+#, fuzzy
+msgid "Unanswered Calls"
+msgstr "مكالمات لم يرد عليها"
+
+#: src/tools.cpp:239
+msgid "Date"
+msgstr "التاريخ"
+
+#: src/tools.cpp:247
+#, fuzzy
+msgid "Remote User"
+msgstr "المستخدم البعيد"
+
+#: src/tools.cpp:265
+#, fuzzy
+msgid "Call Duration"
+msgstr "مدة المكالمة"
+
+#: src/tools.cpp:275
+#, fuzzy
+msgid "Call End Reason"
+msgstr "مدة المكالمة"
+
+#: src/tools.cpp:284
+msgid "Software"
+msgstr "البرنامج"
+
+#: src/tray.cpp:182
+msgid "GnomeMeeting Tray Icon"
+msgstr "أيقونة tray جينوم ميتنج"
+
+#: src/urlhandler.cpp:76
+msgid ""
+"The call transfer failed, the user was either unreachable, or simply busy "
+"when he received the call transfer request."
+msgstr ""
+"أخفق تحويل المكالمة، حيث لم يمكن الوصول للمستخدم أو أنه كان مشغولاً عند تلقّي "
+"طلب تحويل المكالمة."
+
+#: src/urlhandler.cpp:284
+#, c-format
+msgid "No contact with speed dial %s# found, will call number %s instead"
+msgstr ""
+"لم يتم العثور على اسم متصل له اتصال سريع %s#، سوف أتصل بالرقم %s بدلاً من ذلك."
+
+#: src/urlhandler.cpp:302
+msgid "Invalid URL handler"
+msgstr "handler عنوان غير صالح"
+
+#: src/urlhandler.cpp:302
+msgid ""
+"Please specify a valid URL handler. Currently both h323: and callto: are "
+"supported."
+msgstr "رجاء حدد handler موقع صالح. حالياً هناك دعم لكل من h323: و callto:."
+
+#: src/urlhandler.cpp:334
+#, c-format
+msgid "Calling %s"
+msgstr "جاري الاتصال بـ%s"
+
+#: src/urlhandler.cpp:338
+#, c-format
+msgid "Transferring call to %s"
+msgstr "جاري نقل المكالمة إلى %s"
+
+#: src/videograbber.cpp:279
+#, fuzzy, c-format
+msgid "Opening video device %s with driver %s"
+msgstr "قيد فتح جهاز الفيديو"
+
+#: src/videograbber.cpp:315
+#, c-format
+msgid "Successfully opened video device %s, channel %d"
+msgstr "تم فتح جهاز الفيديو %s، القناة %d بنجاح"
+
+#: src/videograbber.cpp:328
+#, c-format
+msgid "Error while opening video device %s"
+msgstr "حدث خطأ خلال فتح جهاز الفيديو %s"
+
+#. Translators: Do not translate MovingLogo and StaticPicture
+#: src/videograbber.cpp:332
+#, fuzzy
+msgid ""
+"A moving GnomeMeeting logo will be transmitted during calls. Notice that you "
+"can always transmit a given image or the moving GnomeMeeting logo by "
+"choosing \"Picture\" as video plugin and \"MovingLogo\" or \"StaticPicture\" "
+"as device."
+msgstr ""
+"الصورة الفيديوية المختارة سيتم بثها خلال المكالمات. إن لم تختر أية صورة، "
+"فسيتم بث شعار جينوم ميتنج الافتراضي. لاحظ أنه يمكنك دائماً بثّ صورة معينة أو "
+"شعار جينوم ميتنج باختيار \"صورة\" كجهاز فيديو."
+
+#: src/videograbber.cpp:334 src/videograbber.cpp:336
+#, fuzzy
+msgid "Couldn't open the video device"
+msgstr "لم يمكن فتح جهاز الفيديو"
+
+#: src/videograbber.cpp:340
+msgid ""
+"There was an error while opening the device. Please check your permissions "
+"and make sure that the appropriate driver is loaded."
+msgstr ""
+"حدث خطأ خلال فتح الجهاز. رجاءً تأكد من صلاحياتك وتأكد من تحميل برنامج التعريف "
+"المناسب."
+
+#: src/videograbber.cpp:345 src/videograbber.cpp:644
+msgid "Your video driver doesn't support the requested video format."
+msgstr "برنامج تعريف الفيديو لا يدعم تنسيق الفيديو المطلوب."
+
+#: src/videograbber.cpp:349 src/videograbber.cpp:648
+msgid "Could not open the chosen channel with the chosen video format."
+msgstr "لم يمكن فتح القناة المحددة باستخدام تنسيق الفيديو المحدد."
+
+#: src/videograbber.cpp:353
+#, fuzzy
+msgid ""
+"Your driver doesn't seem to support any of the colour formats supported by "
+"GnomeMeeting.\n"
+" Please check your kernel driver documentation in order to determine which "
+"Palette is supported."
+msgstr ""
+"يبدو أن برنامج التعريف لا يدعم أي من تنسيقات الألوان التي يدعمها جينوم "
+"ميتنج.\n"
+"رجاءً تحقق من توثيق برنامج تعريف النواة حتى تقرر أي مجموعة ألوان يدعمها. "
+"حددها كمجموعة افتراضية لجينوم ميتنج باستخدام:\n"
+" gconftool --set \"/apps/gnomemeeting/devices/color_format\" YOURPALETTE --"
+"type string"
+
+#: src/videograbber.cpp:357
+msgid "Error while setting the frame rate."
+msgstr "حدث خطأ خلال تحديد معدل الإطارات."
+
+#: src/videograbber.cpp:361
+msgid "Error while setting the frame size."
+msgstr "حدث خطأ خلال تحديد حجم الإطار."
+
+#: src/videograbber.cpp:398
+#, fuzzy
+msgid "Successfully opened video device with the \"Picture\" video plugin"
+msgstr "تم فتح جهاز الفيديو %s، القناة %d بنجاح"
+
+#: src/videograbber.cpp:545
+msgid "Picture"
+msgstr "الصورة"
+
+#: src/videograbber.cpp:557
+#, c-format
+msgid ""
+"GnomeMeeting is now testing the %s video device. If you experience machine "
+"crashes, then report a bug to the video driver author."
+msgstr ""
+
+#: src/videograbber.cpp:618
+#, c-format
+msgid "Test %d done"
+msgstr "تم الاختبار %d"
+
+#: src/videograbber.cpp:620
+#, fuzzy, c-format
+msgid "Test %d failed"
+msgstr "تم الاختبار %d"
+
+#: src/videograbber.cpp:639
+#, c-format
+msgid "Error while opening %s."
+msgstr "حدث خطأ خلال فتح %s."
+
+#: src/videograbber.cpp:652
+#, fuzzy
+msgid ""
+"Your driver doesn't support any of the color formats tried by GnomeMeeting"
+msgstr "برنامج التعريف لا يدعم تنسيق اللون YUV420P"
+
+#: src/videograbber.cpp:656
+msgid "Error with the frame rate."
+msgstr "خطأ في معدل الإطارات."
+
+#: src/videograbber.cpp:660
+msgid "Error with the frame size."
+msgstr "خطأ في حجم الإطار."
+
+#~ msgid "Audio player mixer"
+#~ msgstr "مازج لاعب الصوت"
+
+#~ msgid "Audio recorder"
+#~ msgstr "مسجّل الصوت"
+
+#~ msgid "Audio recorder mixer"
+#~ msgstr "مازج تسجيل الصوت"
+
+#~ msgid "Color Format for the video palette"
+#~ msgstr "تنسيق اللون لمجموعة ألوان الفيديو"
+
+#~ msgid "Do not disturb"
+#~ msgstr "لا تزعجني"
+
+#~ msgid ""
+#~ "If enabled, GnomeMeeting will play a sound when receiving an incoming "
+#~ "call (the sound to play is chosen in the Gnome Control Center)."
+#~ msgstr ""
+#~ "إن كان محدداً، سيقوم جنوم ميتنج بلعب صوت عند استقبال مكالمة واردة (الصوت "
+#~ "المطلوب يحدد من خلال مركز تحكم جينوم)."
+
+#~ msgid "If enabled, incoming calls will be automatically answered."
+#~ msgstr "إن كان محدداً، سيتم إجابة المكالمات الواردة تلقائياً."
+
+#~ msgid "If enabled, incoming calls will be automatically refused."
+#~ msgstr "إن كان محدداً، سيتم رفض المكالمات الواردة تلقائياً."
+
+#~ msgid "Select the audio recorder device to use."
+#~ msgstr "إختر جهاز تسجيل الصوت لاستخدامه."
+
+#~ msgid "Select the mixer to use to change the volume of the audio player."
+#~ msgstr "إختر المازج لاستخدامه بتغيير مستوى الصوت للاعب الأصوات."
+
+#~ msgid "Select the mixer to use to change the volume of the audio recorder."
+#~ msgstr "إختر المازج لاستخدامه بتغيير مستوى الصوت لمسجل الصوت."
+
+#~ msgid "gnomemeeting"
+#~ msgstr "جينوم ميتنج"
+
+#~ msgid "Started New Logical Channel..."
+#~ msgstr "تم بدء قناة منطقية جديدة..."
+
+#~ msgid "Sending %s"
+#~ msgstr "جاري إرسال %s"
+
+#~ msgid "Enabled silence detection for %s"
+#~ msgstr "تم تمكين التحقق من الصمت لـ%s"
+
+#~ msgid "Disabled silence detection for %s"
+#~ msgstr "تم تعطيل التحقق من الصمت لـ%s"
+
+#~ msgid "Receiving %s"
+#~ msgstr "جاري استلام %s"
+
+#~ msgid "Requesting remote to send video quality: %d%%"
+#~ msgstr "جاري طلب إرسال جودة فيديو من جهاز بعيد: %d%%"
+
+#~ msgid "Request ok"
+#~ msgstr "تم الطلب"
+
+#~ msgid "Auto Answering Incoming Call"
+#~ msgstr "استقبال المكالمات الواردة تلقائياً"
+
+#~ msgid "Other"
+#~ msgstr "آخر"
+
+#~ msgid "Enabled"
+#~ msgstr "مُمكّن"
+
+#~ msgid "Disabled"
+#~ msgstr "معطّل"
+
+#~ msgid ""
+#~ "Please enter your first name and surname, they will be used when "
+#~ "connecting to other audio/video conferencing software.\n"
+#~ "\n"
+#~ "Your e-mail address is used to provide you with a callto address that "
+#~ "your friends can use to call you without knowing your IP address.\n"
+#~ "\n"
+#~ "No information is made public unless you allow it to be published on the "
+#~ "directory of online GnomeMeeting users."
+#~ msgstr ""
+#~ "رجاءً أدخل اسمك الأول ولقبك، حيث سيتم استخدامهما عند الاتصال بأي برنامج "
+#~ "عقد مؤتمرات صوتية أو مرئية.\n"
+#~ "\n"
+#~ "عنوان بريدك الإلكتروني سيستخدم لتزويدك بعنوان مكالمة والذي يستطيع أصدقائك "
+#~ "استخدامه للاتصال بك دون معرفة عنوان IP الخاص بك.\n"
+#~ "\n"
+#~ "لا بيانات ستكون متوفرة للعامّة إلا إن سمحت بذلك لنشرها في دليل مستخدمي "
+#~ "جينوم ميتنج المتصلين."
+
+#~ msgid "First _name:"
+#~ msgstr "الإسم الأ_ول:"
+
+#~ msgid "Callto URL"
+#~ msgstr "عنوان مكالمتي"
+
+#~ msgid "Directory of Online GnomeMeeting Users"
+#~ msgstr "دليل مستخدمي جينوم ميتنج المتصلين"
+
+#~ msgid "Publish my information on the directory of online GnomeMeeting users"
+#~ msgstr "إنشر معلوماتي على دليل مستخدمي جينوم ميتنج المتصلين"
+
+#~ msgid ""
+#~ "Please select your network connection type. This is used to set default "
+#~ "video settings for your bandwidth. It is possible to change these "
+#~ "defaults later."
+#~ msgstr ""
+#~ "رجاءً اختر نوع اتصالك الشبكي. يستخدم هذا لتحديد إعدادات الفيديو الافتراضية "
+#~ "لعرض الموْجة. من الممكن تغيير هذه الإعدادات لاحقاً."
+
+#~ msgid "Connection Type"
+#~ msgstr "نوع الاتصال"
+
+#~ msgid "DSL/Cable"
+#~ msgstr "DSL/Cable"
+
+#~ msgid ""
+#~ "Please choose the audio devices to use during the GnomeMeeting session. "
+#~ "You can also choose to use a Quicknet device instead of the soundcard, "
+#~ "but the \"Test Audio\" button will only work for soundcards. Notice that "
+#~ "some webcams models have an internal microphone that can be used with "
+#~ "GnomeMeeting."
+#~ msgstr ""
+#~ "رجاءً اختر أجهزة الصوت لاستخدامها خلال جلسة جينوم ميتنج. يمكنك  أيضاً "
+#~ "اختيار استخدام جهاز Quicknet بدلاً من بطاقة الصوت، لكن زرّ \"اختبر الصوت\" "
+#~ "سوف لن يعمل مع بطاقات الصوت. لاحظ أن بعض كامرات الإنترنت بها ميكروفون "
+#~ "داخلي يمكن استخدامه مع جينوم ميتنج."
+
+#~ msgid "Audio player mixer:"
+#~ msgstr "مازج لاعب الصوت:"
+
+#~ msgid "Audio recorder:"
+#~ msgstr "مسجل الصوت:"
+
+#~ msgid "Audio recorder mixer:"
+#~ msgstr "مازج مسجل الصوت:"
+
+#~ msgid "Click here to test your audio devices:"
+#~ msgstr "إضغط هنا لاختبار أجهزتك الصوتية:"
+
+#~ msgid "Test Audio"
+#~ msgstr "اختبر الصوت"
+
+#~ msgid ""
+#~ "Please choose the video device to use during the GnomeMeeting session. "
+#~ "Click on the \"Test Video\" button to check if your setup is correct and "
+#~ "if your driver is supported by GnomeMeeting. You can only test the "
+#~ "correctness of your driver if the selected device is not already in use."
+#~ msgstr ""
+#~ "رجاءً اختر جهاز الفيديو لاستخدامه خلال جلسة جينوم ميتنج. إضغط على زرّ "
+#~ "\"اختبر الفيديو\" للتأكد من صحة إعدادك وإن كان التعريف مدعوماً من قبل "
+#~ "جينوم ميتنج. يمكنك اختبار صحة تعريفك فقط إن لم الجهاز قيد الاستخدام."
+
+#~ msgid "Video device:"
+#~ msgstr "جهاز الفيديو:"
+
+#~ msgid ""
+#~ "Enter the video device to use. Using an invalid video device for video "
+#~ "transmission will transmit a test picture."
+#~ msgstr ""
+#~ "أدخل اسم جهاز الفيديو لاستخدامه. استخدام جهاز غير صالح لبث الفيديو سوف "
+#~ "يقوم ببث صورة تجريبية."
+
+#~ msgid "Test Video"
+#~ msgstr "اختر الفيديو"
+
+#~ msgid "PC-To-Phone Setup - page %d/%d"
+#~ msgstr "إعداد جهاز إلى هاتف - الصفحة %d/%d"
+
+#~ msgid ""
+#~ "You can make calls to regular phones and cell numbers worldwide using "
+#~ "GnomeMeeting and the MicroTelco service from Quicknet Technologies. To "
+#~ "enable this you need to enter your MicroTelco Account number and PIN "
+#~ "below, then enable registering to the MicroTelco service. Please visit "
+#~ "the GnomeMeeting website for more information."
+#~ msgstr ""
+#~ "يمكنك القيام بالمكالمات إلى الهواتف العادية والخليوية حول العالم باستخدام "
+#~ "جينوم ميتنج وخدمة ميكروتلكو من كيوكنت تكنولوجيز. لتتمكن من هذا يجب عليك "
+#~ "أن تدخل رقم حسابك لميكروتلكو والرقم السري أدناه ثم تمكين التسجيل في خدمة "
+#~ "ميكروتلكو. رجاءً قم بزيارة موقع جينوم ميتنج للمزيد من المعلومات."
+
+#~ msgid "PC-To-Phone Setup"
+#~ msgstr "إعداد إتصال الكمبيوتر إلى الهاتف"
+
+#~ msgid "Account number:"
+#~ msgstr "رقم الحساب"
+
+#~ msgid "Password:"
+#~ msgstr "كلمة السر:"
+
+#~ msgid "Register to the MicroTelco service"
+#~ msgstr "سجّل في خدمة ميكروتلكو"
+
+#~ msgid ""
+#~ "Click on one of the following links to get more information about your "
+#~ "existing MicroTelco account, or to create a new account."
+#~ msgstr ""
+#~ "إضغط أحد الروابط التالية لتحصل على مزيد من المعلومات حول حساب ميكروتلكو "
+#~ "الموجود, أو أنشئ حساباً جديداً."
+
+#~ msgid "Get an account"
+#~ msgstr "إحصل على حساب"
+
+#~ msgid "Buy a card"
+#~ msgstr "إشتر بطاقة"
+
+#~ msgid "Set Audio player device to %s"
+#~ msgstr "حدد جهاز لاعب الصوت %s"
+
+#~ msgid "Set Audio recorder device to %s"
+#~ msgstr "حدد جهاز تسجيل الصوت %s"
+
+#~ msgid "Enabling H.245 Tunnelling"
+#~ msgstr "تمكين H.245 Tunnelling"
+
+#~ msgid "Disabling H.245 Tunnelling"
+#~ msgstr "تعطيل H.245 Tunnelling"
+
+#~ msgid "Enabling Fast Start"
+#~ msgstr "مكّن البدء السريع"
+
+#~ msgid "Disabling Fast Start"
+#~ msgstr "عطّل البدء السريع"
+
+#~ msgid "Auto rejecting incoming call from %s (Do not disturb)"
+#~ msgstr "رفض جميع المكالمات الواردة من %s تلقائياً (لا تزعجني)"
+
+#~ msgid "Auto Rejected"
+#~ msgstr "مرفوض تلقائياً"
+
+#~ msgid "Parse error"
+#~ msgstr "خطأ في الإعراب"
+
+#~ msgid ""
+#~ "There was an error while processing the registering to the user "
+#~ "directory: %d %s."
+#~ msgstr "كان هناك خطأ خلال القيام بالتسجيل في دليل المستخدمين: %d %s"
+
+#~ msgid "Contacting %s..."
+#~ msgstr "الإتّصال.بـ%s..."
+
+#~ msgid "Failed to contact the user directory %s:%d."
+#~ msgstr "أخفق الاتصال بدليل المستخدمين %s:%d."
+
+#~ msgid "Successfully registered to %s."
+#~ msgstr "تم التسجيل في %s بنجاح."
+
+#~ msgid "Successfully unregistered from %s."
+#~ msgstr "تم إلغاء التسجيل من %s."
+
+#~ msgid "Error while unregistering from %s."
+#~ msgstr "خطأ في إلغاء التسجيل من %s."
+
+#~ msgid ""
+#~ "GnomeMeeting didn't find any usable sound devices. You need to install "
+#~ "and setup a soundcard or a Quicknet card in order to be able to use "
+#~ "GnomeMeeting. Please check your driver settings and permissions."
+#~ msgstr ""
+#~ "لم يجد جينوم ميتنج أية أجهزة قابلة للاستخدام. يجب عليك تثبيت وإعداد بطاقة "
+#~ "الصوت أو بطاقة كويكنت حتى تستطيع استخدام جينوم ميتنج. رجاءً تحقق من "
+#~ "إعدادات برنامج التعريف والصلاحيات."
+
+#~ msgid "Do _Not Disturb"
+#~ msgstr "لا _تزعجني"
+
+#~ msgid "Aut_o Answer"
+#~ msgstr "إ_جابة تلقائية"
+
+#~ msgid "Auto answer incoming call"
+#~ msgstr "أجب المكالمة الواردة تلقائياً"
+
+#~ msgid "Local Video Image"
+#~ msgstr "صورة الفيديو المحلي"
+
+#~ msgid "Remote Video Image"
+#~ msgstr "صورة الفيديو البعيد"
+
+#~ msgid "Both Video Images"
+#~ msgstr "كلا صور الفيديو"
+
+#~ msgid "Both (Local and Remote Video in New Windows)"
+#~ msgstr "كلاهما (الفيديو المحليّ والبعيد في نوافذ جديدة)"
+
+#~ msgid "Do not disturb (reject incoming calls)"
+#~ msgstr "لا تزعجني (ارفض المكالمات الواردة)"
+
+#~ msgid "Error: %s\n"
+#~ msgstr "خطأ: %s\n"
+
+#~ msgid ""
+#~ "Call from %s\n"
+#~ "using %s"
+#~ msgstr ""
+#~ "اتصل من %s\n"
+#~ "باستخدام %s"
+
+#~ msgid "Okay"
+#~ msgstr "موافق"
+
+#~ msgid "Good Quality"
+#~ msgstr "جودة جيدة"
+
+#~ msgid "Excellent Quality"
+#~ msgstr "جودة ممتازة"
+
+#~ msgid "Behavior"
+#~ msgstr "السّلوك"
+
+#~ msgid "_Automatically answer calls"
+#~ msgstr "أجب المكالمات _تلقائيّاً"
+
+#~ msgid "Do _not disturb"
+#~ msgstr "لا ت_زعجني"
+
+#~ msgid "Display a po_pup window when receiving a call"
+#~ msgstr "أظهر نافذة _منبثقة عند استلام مكالمة"
+
+#~ msgid "Enable bilinear _filtering on displayed video"
+#~ msgstr "مكّن ال_فلترة الإزدواجية على الفيديو المعروض"
+
+#~ msgid "User Input Capabilities _type:"
+#~ msgstr "نو_ع قدرات إدخال المستخدم:"
+
+#~ msgid "Quicknet Device"
+#~ msgstr "جهاز كيوكنت"
+
+#~ msgid "Echo _cancellation:"
+#~ msgstr "إل_غاء الصدى:"
+
+#~ msgid "Country _code:"
+#~ msgstr "_مفتاح الدولة:"
+
+#~ msgid "Video format:"
+#~ msgstr "تنسيق الفيديو:"
+
+#~ msgid "Video image:"
+#~ msgstr "صورة الفيديو:"
+
+#~ msgid "Section"
+#~ msgstr "قسم"
+
+#~ msgid "Failed to open the audio device"
+#~ msgstr "أخفق فتح جهاز الصوت"
+
+#~ msgid ""
+#~ "GnomeMeeting is now playing what it is recording with a 5 seconds delay. "
+#~ "If you don't hear yourself with the delay, you will have to fix your "
+#~ "audio setup and probably install a full-duplex driver before calling "
+#~ "other GnomeMeeting users.\n"
+#~ "\n"
+#~ "Recording and playing... Please talk."
+#~ msgstr ""
+#~ "يقوم جينوم ميتنج الآن بعرض ما يسجله بتأخير خمس ثواني. إن لم تسمع نفسك مع "
+#~ "التأخير، يجب عليك أن تصلح إعداد الصوت وعلى الأرجح أن تثبّت برنامج تعريف ذي "
+#~ "ازدواج كامل قبل مكالمة مستخدمي جينوم ميتنج الآخرين.\n"
+#~ "\n"
+#~ "جاري التسجيل والعرض... رجاءً تكلم."
+
+#~ msgid "Video Device Opened"
+#~ msgstr "تم فتح جهاز الفيديو"
+
+#~ msgid "Video Device Closed"
+#~ msgstr "تم إغلاق جهاز الفيديو"
+
+#~ msgid "Tests OK!"
+#~ msgstr "تمت الاختبارات بنجاح!"
