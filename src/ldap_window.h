@@ -65,6 +65,7 @@ enum {
 
   COLUMN_NAME,
   COLUMN_CALLTO,
+  COLUMN_SPEED_DIAL,
   NUM_COLUMNS_GROUPS
 };
 
@@ -107,4 +108,5 @@ int gnomemeeting_init_ldap_window_notebook (gchar *, int);
  */
 void gnomemeeting_addressbook_group_populate (GtkListStore *, char *);
 
+PString gnomemeeting_addressbook_get_speed_dial_url (PString);
 #endif

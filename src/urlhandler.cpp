@@ -43,6 +43,7 @@
 #include "urlhandler.h"
 #include "gnomemeeting.h"
 #include "misc.h"
+#include "ldap_window.h"
 #include "toolbar.h"
 #include "menu.h"
 
@@ -87,7 +88,6 @@ GMURLHandler::~GMURLHandler ()
 void GMURLHandler::Main ()
 {
   PString call_address;
-  PINDEX callto;
   PString tmp_url;
   PString mail;
   PString current_call_token;
@@ -117,16 +117,24 @@ void GMURLHandler::Main ()
   }
   
   
-  /* We first remove the callto: part if any */
-  tmp_url = url.ToLower ();
-  callto = tmp_url.FindLast ("//");
-  if (callto != P_MAX_INDEX)
-    url = url.Mid (callto + 2, P_MAX_INDEX);
+  /* If it is a speed dial (# at the end of the URL), then we use it */
+  url.Replace ("callto://", "");
+  if (url.Find ('#') == url.GetLength () - 1)
+    call_address =
+      gnomemeeting_addressbook_get_speed_dial_url (url.Left (url.GetLength () -1));
+  else
+    call_address = url;
 
-  call_address = "callto:" + url;
+  
+  /* We replace callto:// by callto:, if nothing is replaced, we add callto: */
+  call_address.Replace ("callto://", "callto:");
+  if (call_address.Find ("callto:") == P_MAX_INDEX)
+    call_address = PString ("callto:") + call_address;
 
+  
   /* We have a callto URL of the form : ils_server(:port)/mail */
-  if (url.Find ('/') != P_MAX_INDEX && url.Find ("type") == P_MAX_INDEX) 
+  if (call_address.Find ('/') != P_MAX_INDEX
+      && call_address.Find ("type") == P_MAX_INDEX) 
     call_address = call_address + "+type=directory";
     
 
