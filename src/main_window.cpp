@@ -54,10 +54,8 @@
 #include "gmentrydialog.h"
 #include "stock-icons.h"
 #include "gm_conf.h"
-
-#ifdef ENABLE_EDS
 #include "contacts/gm_contacts.h"
-#endif
+
 
 #ifndef DISABLE_GNOME
 #include <libgnomeui/gnome-window-icon.h>

@@ -38,18 +38,15 @@
 #include "common.h"
 
 #include "calls_history_window.h"
-
 #include "callbacks.h"
 #include "gnomemeeting.h"
 #include "misc.h"
 
-#ifdef ENABLE_EDS
 #include "contacts/gm_contacts.h"
-#endif
-
 #include "gm_conf.h"
 #include "gnome_prefs_window.h"
 #include "stock-icons.h"
+
 
 /* internal representation */
 struct _GmCallsHistory
