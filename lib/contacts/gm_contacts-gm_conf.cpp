@@ -95,6 +95,7 @@ gnomemeeting_local_addressbook_get_contacts (GmAddressbook *,
 					     gboolean,
 					     gchar *,
 					     gchar *,
+					     gchar *,
 					     gchar *)
 {
   return NULL;

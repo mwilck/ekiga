@@ -239,7 +239,7 @@ static void gm_aw_update_menu_sensitivity (GtkWidget *,
 
 /* DESCRIPTION  : / 
  * BEHAVIOR     : Returns the GtkNotebook page containing the content of the
- * 		  given GmAddressbook.
+ * 		  given GmAddressbook or -1 if no such page.
  * PRE          : The given GtkWidget pointer must point to the address book
  * 		  GMObject. The second argument must point to a valid 
  * 		  GmAddressbook. Both should be non-NULL.
@@ -1099,8 +1099,8 @@ gm_aw_get_notebook_page (GtkWidget *addressbook_window,
   int p = 0;
 
 
-  g_return_val_if_fail (addressbook_window != NULL, 0);
-  g_return_val_if_fail (addressbook != NULL, 0);
+  g_return_val_if_fail (addressbook_window != NULL, -1);
+  g_return_val_if_fail (addressbook != NULL, -1);
 
   aw = gm_aw_get_aw (addressbook_window);
 

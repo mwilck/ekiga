@@ -68,7 +68,7 @@ gnomemeeting_addressbook_get_local_source_group (ESourceList **source_list)
 
   gchar *uri = NULL;
   
-  e_book_get_default_addressbook (&ebook, NULL);
+  ebook = e_book_new_default_addressbook (NULL);
 
 
   /* Get the list of possible sources */
@@ -210,7 +210,7 @@ gnomemeeting_get_local_addressbooks ()
   gchar *uri = NULL;
   gchar *aid = NULL;
 
-  e_book_get_default_addressbook (&ebook, NULL);
+  ebook = e_book_new_default_addressbook (NULL);
 
   if (e_book_get_addressbooks (&source_list, NULL)) {
 
@@ -284,142 +284,142 @@ gnomemeeting_local_addressbook_get_contacts (GmAddressbook *addbook,
   GList *x = NULL;
 
   gint cpt = 0;
-  
-  ebook = e_book_new ();
 
   if (addbook) 
     addressbooks = g_slist_append (addressbooks, (gpointer) addbook);
   else
     addressbooks = gnomemeeting_get_local_addressbooks ();
 
+
+  /* Build the filter */ 
+  if (fullname && strcmp (fullname, "")) 
+    queries [cpt++] = 
+      e_book_query_field_test (E_CONTACT_FULL_NAME,
+			       partial_match?
+			       E_BOOK_QUERY_CONTAINS
+			       :
+			       E_BOOK_QUERY_IS,
+			       fullname);
+
+  if (url && strcmp (url, "")) 
+    queries [cpt++] = 
+      e_book_query_field_test (E_CONTACT_VIDEO_URL,
+			       partial_match?
+			       E_BOOK_QUERY_CONTAINS
+			       :
+			       E_BOOK_QUERY_IS,
+			       url);
+  if (categorie && strcmp (categorie, ""))
+    queries [cpt++] = 
+      e_book_query_field_test (E_CONTACT_CATEGORIES,
+			       partial_match?
+			       E_BOOK_QUERY_CONTAINS
+			       :
+			       E_BOOK_QUERY_IS,
+			       categorie);
+
+  if (cpt == 0)
+    queries [cpt++] = e_book_query_field_exists (E_CONTACT_UID);
+
+  query = e_book_query_or (cpt, queries, TRUE);
+
   addressbooks_iter = addressbooks;
   while (addressbooks_iter) {
 
     addressbook = GM_ADDRESSBOOK (addressbooks_iter->data);
-    if (e_book_load_uri (ebook, addressbook->url, FALSE, NULL)) {
+    if ((ebook = e_book_new_from_uri (addressbook->url, NULL))) {
 
-      /* Build the filter */ 
-      if (fullname && strcmp (fullname, "")) 
-	queries [cpt++] = 
-	  e_book_query_field_test (E_CONTACT_FULL_NAME,
-				   partial_match?
-				   E_BOOK_QUERY_CONTAINS
-				   :
-				   E_BOOK_QUERY_IS,
-				   fullname);
+      if (e_book_open (ebook, TRUE, NULL)) {
+	
+	/* Get the contacts for that fitler */
+	if (e_book_get_contacts (ebook, query, &list, NULL)) {
 
-      if (url && strcmp (url, "")) 
-	queries [cpt++] = 
-	  e_book_query_field_test (E_CONTACT_VIDEO_URL,
-				   partial_match?
-				   E_BOOK_QUERY_CONTAINS
-				   :
-				   E_BOOK_QUERY_IS,
-				   url);
-      if (categorie && strcmp (categorie, ""))
-	queries [cpt++] = 
-	  e_book_query_field_test (E_CONTACT_CATEGORIES,
-				   partial_match?
-				   E_BOOK_QUERY_CONTAINS
-				   :
-				   E_BOOK_QUERY_IS,
-				   categorie);
+	  l = list;
+	  while (l) {
 
-      if (cpt == 0)
-	queries [cpt++] = e_book_query_field_exists (E_CONTACT_UID);
+	    contact = gm_contact_new ();
 
-      query = e_book_query_or (cpt, queries, TRUE);
+	    contact->uid =  
+	      g_strdup ((const gchar *) e_contact_get_const (E_CONTACT (l->data), 
+							     E_CONTACT_UID));
+	    contact->fullname =  
+	      g_strdup ((const gchar *) e_contact_get_const (E_CONTACT (l->data), 
+							     E_CONTACT_FULL_NAME));
+	    contact->url =  
+	      g_strdup ((const gchar *) e_contact_get_const (E_CONTACT (l->data), 
+							     E_CONTACT_VIDEO_URL));
+	    contact->categories =  
+	      g_strdup ((const gchar *) e_contact_get_const (E_CONTACT (l->data), 
+							     E_CONTACT_CATEGORIES));      
 
-      /* Get the contacts for that fitler */
-      if (e_book_get_contacts (ebook, query, &list, NULL)) {
+	    attr_list = e_contact_get_attributes (E_CONTACT (l->data),
+						  E_CONTACT_PHONE_TELEX);
+	    attr_list_iter = attr_list;
+	    while (attr_list_iter && !contact->speeddial) {
 
-	l = list;
-	while (l) {
+	      attr_param_list = e_vcard_attribute_get_params ((EVCardAttribute *) attr_list_iter->data);
+	      attr_param_list_iter = attr_param_list;
+	      while (attr_param_list_iter && !contact->speeddial) {
 
-	  contact = gm_contact_new ();
+		param_values = e_vcard_attribute_param_get_values ((EVCardAttributeParam *) attr_param_list_iter->data);
+		param_values_iter = param_values;
 
-	  contact->uid =  
-	    g_strdup ((const gchar *) e_contact_get_const (E_CONTACT (l->data), 
-							   E_CONTACT_UID));
-	  contact->fullname =  
-	    g_strdup ((const gchar *) e_contact_get_const (E_CONTACT (l->data), 
-							   E_CONTACT_FULL_NAME));
-	  contact->url =  
-	    g_strdup ((const gchar *) e_contact_get_const (E_CONTACT (l->data), 
-							   E_CONTACT_VIDEO_URL));
-	  contact->categories =  
-	    g_strdup ((const gchar *) e_contact_get_const (E_CONTACT (l->data), 
-							   E_CONTACT_CATEGORIES));      
-
-	  attr_list = e_contact_get_attributes (E_CONTACT (l->data),
-						E_CONTACT_PHONE_TELEX);
-	  attr_list_iter = attr_list;
-	  while (attr_list_iter && !contact->speeddial) {
-
-	    attr_param_list = e_vcard_attribute_get_params ((EVCardAttribute *) attr_list_iter->data);
-	    attr_param_list_iter = attr_param_list;
-	    while (attr_param_list_iter && !contact->speeddial) {
-
-	      param_values = e_vcard_attribute_param_get_values ((EVCardAttributeParam *) attr_param_list_iter->data);
-	      param_values_iter = param_values;
-
-	      while (param_values_iter && !contact->speeddial) {
+		while (param_values_iter && !contact->speeddial) {
 
 
-		if (param_values_iter->data 
-		    && !strcmp ((char *) param_values_iter->data, "X-GNOMEMEETING-SPEEDDIAL")) {
+		  if (param_values_iter->data 
+		      && !strcmp ((char *) param_values_iter->data, "X-GNOMEMEETING-SPEEDDIAL")) {
 
-		  x = e_vcard_attribute_get_values ((EVCardAttribute *) attr_list_iter->data);
+		    x = e_vcard_attribute_get_values ((EVCardAttribute *) attr_list_iter->data);
 
-		  if (x && x->data) 
-		    contact->speeddial = g_strdup ((char *) x->data);
+		    if (x && x->data) 
+		      contact->speeddial = g_strdup ((char *) x->data);
+		  }
+
+		  param_values_iter = g_list_next (param_values_iter);
 		}
 
-		param_values_iter = g_list_next (param_values_iter);
+		g_list_foreach (param_values, (GFunc) g_free, NULL);
+		g_list_free (param_values);
+
+		attr_param_list_iter = g_list_next (attr_param_list_iter);
 	      }
 
-	      g_list_foreach (param_values, (GFunc) g_free, NULL);
-	      g_list_free (param_values);
 
-	      attr_param_list_iter = g_list_next (attr_param_list_iter);
+	      g_list_free (attr_param_list);
+
+	      attr_list_iter = g_list_next (attr_list_iter);
 	    }
 
+	    g_list_free (attr_list);
 
-	    g_list_free (attr_param_list);
 
-	    attr_list_iter = g_list_next (attr_list_iter);
+	    /* If it is a search on a speed dial, then we only add
+	     * the contact to the list if it has the correct speed dial
+	     */
+	    if ((speeddial 
+		 && ((contact->speeddial && strcmp (speeddial, "") && 
+		      !strcmp (speeddial, contact->speeddial)) 
+		     || (!strcmp (speeddial, "*") && contact->speeddial
+			 && strcmp (contact->speeddial, "")))
+		 || !speeddial))
+	      contacts = g_slist_append (contacts, (gpointer) contact);
+
+	    l = g_list_next (l);
 	  }
 
-	  g_list_free (attr_list);
 
-
-	  /* If it is a search on a speed dial, then we only add
-	   * the contact to the list if it has the correct speed dial
-	   */
-	  if ((speeddial 
-	       && ((contact->speeddial && strcmp (speeddial, "") && 
-		   !strcmp (speeddial, contact->speeddial)) 
-		   || (!strcmp (speeddial, "*") && contact->speeddial
-		       && strcmp (contact->speeddial, "")))
-	      || !speeddial))
-	    contacts = g_slist_append (contacts, (gpointer) contact);
-
-	  l = g_list_next (l);
+	  g_list_foreach (list, (GFunc) g_object_unref, NULL);
+	  g_list_free (list);
 	}
-
-
-	g_list_foreach (list, (GFunc) g_object_unref, NULL);
-	g_list_free (list);
       }
-
-
-      e_book_query_unref (query);
     }
-
+    
     addressbooks_iter = g_slist_next (addressbooks_iter);
-
   }
   
+  
+  e_book_query_unref (query);
 
   if (!addbook) {
     
@@ -498,34 +498,34 @@ gnomemeeting_local_addressbook_add_contact (GmAddressbook *addressbook,
   g_return_val_if_fail (ctact != NULL, FALSE);
   g_return_val_if_fail (addressbook != NULL, FALSE);
 
+  if ((ebook = e_book_new_from_uri (addressbook->url, NULL))) {
 
-  ebook = e_book_new ();
+    if (e_book_open (ebook, TRUE, NULL)) {
 
-  if (e_book_load_uri (ebook, addressbook->url, FALSE, NULL)) {
+      contact = e_contact_new ();
 
-    contact = e_contact_new ();
+      if (ctact->uid)
+	e_contact_set (contact, E_CONTACT_UID, ctact->uid);
+      if (ctact->fullname)
+	e_contact_set (contact, E_CONTACT_FULL_NAME, ctact->fullname);
+      if (ctact->url)
+	e_contact_set (contact, E_CONTACT_VIDEO_URL, ctact->url);
+      if (ctact->categories)
+	e_contact_set (contact, E_CONTACT_CATEGORIES, ctact->categories);
+      if (ctact->speeddial) {
 
-    if (ctact->uid)
-      e_contact_set (contact, E_CONTACT_UID, ctact->uid);
-    if (ctact->fullname)
-      e_contact_set (contact, E_CONTACT_FULL_NAME, ctact->fullname);
-    if (ctact->url)
-      e_contact_set (contact, E_CONTACT_VIDEO_URL, ctact->url);
-    if (ctact->categories)
-      e_contact_set (contact, E_CONTACT_CATEGORIES, ctact->categories);
-    if (ctact->speeddial) {
+	attr = e_vcard_attribute_new (NULL, "TEL");
+	e_vcard_attribute_add_param_with_value (attr, 
+						e_vcard_attribute_param_new ("TYPE"),
+						"X-GNOMEMEETING-SPEEDDIAL");
+	e_vcard_attribute_add_value (attr, ctact->speeddial);
 
-      attr = e_vcard_attribute_new (NULL, "TEL");
-      e_vcard_attribute_add_param_with_value (attr, 
-                                              e_vcard_attribute_param_new ("TYPE"),
-                                              "X-GNOMEMEETING-SPEEDDIAL");
-      e_vcard_attribute_add_value (attr, ctact->speeddial);
+	e_vcard_add_attribute (E_VCARD (contact), attr);
+      }
 
-      e_vcard_add_attribute (E_VCARD (contact), attr);
+      if (e_book_add_contact (ebook, contact, NULL))
+	return TRUE;
     }
-
-    if (e_book_add_contact (ebook, contact, NULL))
-      return TRUE;
   }
 
   return FALSE;
@@ -546,15 +546,16 @@ gnomemeeting_local_addressbook_delete_contact (GmAddressbook *addressbook,
   g_return_val_if_fail (addressbook != NULL, FALSE);
 
 
-  ebook = e_book_new ();
+  if ((ebook = e_book_new_from_uri (addressbook->url, NULL))) {
 
-  if (e_book_load_uri (ebook, addressbook->url, FALSE, NULL)) {
+    if (e_book_open (ebook, TRUE, NULL)) {
 
-    if (contact->uid) {
+      if (contact->uid) {
 
-      l = g_list_append (l, (gpointer) contact->uid);
-      e_book_remove_contacts (ebook, l, NULL);
-      g_list_free (l);
+	l = g_list_append (l, (gpointer) contact->uid);
+	e_book_remove_contacts (ebook, l, NULL);
+	g_list_free (l);
+      }
     }
   }
 
@@ -576,34 +577,36 @@ gnomemeeting_local_addressbook_modify_contact (GmAddressbook *addressbook,
   g_return_val_if_fail (addressbook != NULL, FALSE);
 
 
-  ebook = e_book_new ();
+  if ((ebook = e_book_new_from_uri (addressbook->url, NULL))) {
 
-  if (e_book_load_uri (ebook, addressbook->url, FALSE, NULL)) {
+      if (e_book_open (ebook, TRUE, NULL)) {
 
-    contact = e_contact_new ();
+	contact = e_contact_new ();
 
-    if (ctact->uid) 
-      e_contact_set (contact, E_CONTACT_UID, ctact->uid);
-    if (ctact->fullname)
-      e_contact_set (contact, E_CONTACT_FULL_NAME, ctact->fullname);
-    if (ctact->url)
-      e_contact_set (contact, E_CONTACT_VIDEO_URL, ctact->url);
-    if (ctact->categories)
-      e_contact_set (contact, E_CONTACT_CATEGORIES, ctact->categories);
-    if (ctact->speeddial) {
+	if (ctact->uid) 
+	  e_contact_set (contact, E_CONTACT_UID, ctact->uid);
+	if (ctact->fullname)
+	  e_contact_set (contact, E_CONTACT_FULL_NAME, ctact->fullname);
+	if (ctact->url)
+	  e_contact_set (contact, E_CONTACT_VIDEO_URL, ctact->url);
+	if (ctact->categories)
+	  e_contact_set (contact, E_CONTACT_CATEGORIES, ctact->categories);
+	if (ctact->speeddial) {
 
-      attr = e_vcard_attribute_new (NULL, "TEL");
-      e_vcard_attribute_add_param_with_value (attr, 
-                                              e_vcard_attribute_param_new ("TYPE"),
-                                              "X-GNOMEMEETING-SPEEDDIAL");
-      e_vcard_attribute_add_value (attr, ctact->speeddial);
+	  attr = e_vcard_attribute_new (NULL, "TEL");
+	  e_vcard_attribute_add_param_with_value (attr, 
+						  e_vcard_attribute_param_new ("TYPE"),
+						  "X-GNOMEMEETING-SPEEDDIAL");
+	  e_vcard_attribute_add_value (attr, ctact->speeddial);
 
-      e_vcard_add_attribute (E_VCARD (contact), attr);
-    }
+	  e_vcard_add_attribute (E_VCARD (contact), attr);
+	}
 
-    if (e_book_commit_contact (ebook, contact, NULL))
-      return TRUE;
+	if (e_book_commit_contact (ebook, contact, NULL))
+	  return TRUE;
+      }
   }
+  
   return FALSE;
 }
 

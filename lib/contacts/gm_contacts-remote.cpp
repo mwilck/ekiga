@@ -183,8 +183,8 @@ gnomemeeting_remote_addressbook_get_contacts (GmAddressbook *addressbook,
     is_ils = TRUE;
   
   if (!ldap.Open (hostname, atoi (port)))
-    cout << "Failed" << endl << flush;
- 
+    return NULL;
+
 
   if (ldap.Search (context, 
 		   (is_ils) 
