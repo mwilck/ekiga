@@ -62,7 +62,6 @@
 #include <bonobo/bonobo-listener.h>
 #include <gdk/gdkx.h>
 #include <gconf/gconf-client.h>
-#include <esd.h>
 
 
 #include "../pixmaps/brightness.xpm"
@@ -1039,8 +1038,7 @@ gnomemeeting_init (GmWindow *gw,
   
 
   /* Search for devices */
-  esd_client = esd_open_sound (NULL);
-  esd_standby (esd_client);
+  gnomemeeting_sound_daemons_suspend ();
   gw->audio_player_devices = 
     PSoundChannel::GetDeviceNames (PSoundChannel::Player);
 
@@ -1048,8 +1046,7 @@ gnomemeeting_init (GmWindow *gw,
     PSoundChannel::GetDeviceNames (PSoundChannel::Recorder);
 
   gw->video_devices = PVideoInputDevice::GetInputDeviceNames ();
-  esd_resume (esd_client);
-  esd_close (esd_client);
+  gnomemeeting_sound_daemons_resume ();
 
 
   /* Build the interface */
