@@ -66,6 +66,64 @@ extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;
 
 
+/* The Timer */
+static gint IncomingCallTimeout (gpointer data) {
+
+  GM_window_widgets *gw = NULL;
+  H323Connection *connection = NULL;
+  gchar *msg = NULL;
+  gchar *forward_host_gconf = NULL;
+  PString forward_host;
+  gboolean no_answer_forward = FALSE;
+  GConfClient *client = NULL;
+
+  client = gconf_client_get_default ();
+
+  gdk_threads_enter ();
+
+  no_answer_forward = gconf_client_get_bool (client, "/apps/gnomemeeting/call_forwarding/no_answer_forward", 0);
+  forward_host_gconf = gconf_client_get_string (client, "/apps/gnomemeeting/call_forwarding/forward_host", 0);
+
+  if (forward_host_gconf)
+    forward_host = PString (forward_host_gconf);
+  else
+    forward_host = PString ("");
+
+
+  gw = gnomemeeting_get_main_window (gm);
+
+  if (gw->incoming_call_popup)
+    gtk_widget_destroy (gw->incoming_call_popup);
+
+  gw->incoming_call_popup = NULL;
+
+
+  /* If forward host specified */
+  if ((!forward_host.IsEmpty ())&&(no_answer_forward)) {
+
+    connection = MyApp->Endpoint ()->GetCurrentConnection ();
+    if (connection) {
+
+      connection->ForwardCall (PString ((const char *) forward_host));
+      msg = g_strdup_printf (_("Forwarding Call to %s (No Answer)"), 
+			     (const char*) forward_host);
+      gnome_appbar_push (GNOME_APPBAR (gw->statusbar), msg);
+      gnomemeeting_log_insert (msg);
+
+      g_free (msg);
+    }
+  }
+  else
+    MyApp->Disconnect ();
+
+  g_free (forward_host_gconf);
+
+  gdk_threads_leave ();
+
+  return FALSE;
+}
+
+
 /* The class */
 GMH323EndPoint::GMH323EndPoint ()
 {
@@ -602,16 +660,60 @@ void GMH323EndPoint::GatekeeperRegister ()
 }
 
 
+BOOL GMH323EndPoint::OnConnectionForwarded (H323Connection &,
+					    const PString &forward_party,
+                                            const H323SignalPDU &)
+{  
+  gchar *msg = NULL;
+
+  if (MakeCall (forward_party, current_call_token)) {
+
+    gnomemeeting_threads_enter ();
+    msg = g_strdup_printf (_("Forwarding Call to %s"), 
+			   (const char*) forward_party);
+    gnome_appbar_push (GNOME_APPBAR (gw->statusbar), msg);
+    gnomemeeting_log_insert (msg);
+    gnomemeeting_threads_leave ();
+
+    g_free (msg);
+
+    return TRUE;
+  }
+  else {
+
+    msg = g_strdup_printf (_("Error forwarding call to %s"), 
+			   (const char*) forward_party);
+    
+    gnomemeeting_threads_enter ();
+    gnomemeeting_warning_popup (NULL, msg);
+    gnomemeeting_threads_leave ();
+
+    g_free (msg);
+
+    return FALSE;
+  }
+
+  return FALSE;
+}
+
+
 BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection, 
 				     const H323SignalPDU &, H323SignalPDU &)
 {
   char *msg = NULL;
   PString name = connection.GetRemotePartyName ();
-  const char * remotePartyName = (const char *) name;  
+  PString forward_host;
+
+  gchar *forward_host_gconf = NULL;
+  gboolean always_forward = FALSE;
+  gboolean busy_forward = FALSE;
+ 
+  int no_answer_timeout = 0;
+
   GtkWidget *b1 = NULL, *b2 = NULL;
   /* only a pointer => destroyed with the PString */
 
-  msg = g_strdup_printf (_("Call from %s"), remotePartyName);
+  msg = g_strdup_printf (_("Call from %s"), (const char*) name);
 
   gnomemeeting_threads_enter ();
   gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
@@ -620,17 +722,72 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   gnomemeeting_log_insert (msg);
   gnomemeeting_threads_leave ();
 
+
+  /* Check the forward host if any */
+  forward_host_gconf = gconf_client_get_string (client, "/apps/gnomemeeting/call_forwarding/forward_host", 0);
+  always_forward = gconf_client_get_bool (client, "/apps/gnomemeeting/call_forwarding/always_forward", 0);
+  busy_forward = gconf_client_get_bool (client, "/apps/gnomemeeting/call_forwarding/busy_forward", 0);
+ 
+
+  if (forward_host_gconf)
+    forward_host = PString (forward_host_gconf);
+  else
+    forward_host = PString ("");
+
+  /* if we have enabled call forwarding for all calls, do the forward */
+  if ((!forward_host.IsEmpty())&&(always_forward)) {
+
+    gnomemeeting_threads_enter ();
+    msg = 
+      g_strdup_printf (_("Forwarding Call from %s to %s (Forward All Calls)"),
+		       (const char *) name, (const char *) forward_host);
+    gnome_appbar_push (GNOME_APPBAR (gw->statusbar), msg);
+    gnomemeeting_log_insert (msg);
+    gnomemeeting_threads_leave ();
+
+    g_free (forward_host_gconf);
+    g_free (msg);
+
+    return !connection.ForwardCall (forward_host);
+  }
+
+
   /* if we are already in a call */
   if (!(GetCurrentCallToken ().IsEmpty ())||(GetCallingState () != 0)) {
 
-    gnomemeeting_threads_enter ();
-    gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-		       _("Auto Rejecting Incoming Call: Line is busy"));
-    gnomemeeting_log_insert (_("Auto Rejecting Incoming Call: Line is busy"));
-    gnomemeeting_threads_leave ();
+    /* if we have enabled forward when busy, do the forward */
+    if ((!forward_host.IsEmpty())&&(busy_forward)) {
 
-    connection.ClearCall(H323Connection::EndedByLocalBusy);   
-    return FALSE;
+      gnomemeeting_threads_enter ();
+      msg = g_strdup_printf (_("Forwarding Call from %s to %s (Busy)"),
+			     (const char *) name, (const char *) forward_host);
+      gnome_appbar_push (GNOME_APPBAR (gw->statusbar), msg);
+      gnomemeeting_log_insert (msg);
+      gnomemeeting_threads_leave ();
+
+      g_free (forward_host_gconf);
+      g_free (msg);
+
+      return !connection.ForwardCall (forward_host);
+    } 
+    else {
+
+      /* there is no forwarding, so reject the call */
+      gnomemeeting_threads_enter ();
+      msg = g_strdup_printf (_("Auto Rejecting Incoming Call from %s (Busy)"),
+			     (const char *) name);
+      gnome_appbar_push (GNOME_APPBAR (gw->statusbar), msg);
+      gnomemeeting_log_insert (msg);
+      g_free (msg);
+
+      gnomemeeting_threads_leave ();
+
+      connection.ClearCall(H323Connection::EndedByLocalBusy);   
+
+      g_free (forward_host_gconf);
+
+      return FALSE;
+    }
   }
   
    
@@ -645,13 +802,15 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
     (connection.GetCallToken ());
   current_connection->Unlock ();
   
-  gnomemeeting_threads_enter ();
 
+  /* The timers */
+  gnomemeeting_threads_enter ();
   if ((docklet_timeout == 0)) {
 
-    docklet_timeout = gtk_timeout_add (1000, 
-				       (GtkFunction) gnomemeeting_docklet_flash, 
-				       gw->docklet);
+    docklet_timeout = 
+      gtk_timeout_add (1000, 
+		       (GtkFunction) gnomemeeting_docklet_flash, 
+		       gw->docklet);
   }
 
   if ((sound_timeout == 0) && (gconf_client_get_bool (client, "/apps/gnomemeeting/general/incoming_call_sound", 0))) {
@@ -659,6 +818,13 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
     sound_timeout = gtk_timeout_add (1000, 
 				     (GtkFunction) PlaySound,
 				     gw->docklet);
+  }
+
+  if (no_answer_timeout == 0) {
+
+    no_answer_timeout = gtk_timeout_add (15000, 
+					 (GtkFunction) IncomingCallTimeout,
+					 NULL);
   }
   gnomemeeting_threads_leave ();
 
@@ -706,6 +872,9 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 
 
   SetCurrentCallToken (connection.GetCallToken());
+
+  g_free (forward_host_gconf);
+
   return TRUE;
 }
 

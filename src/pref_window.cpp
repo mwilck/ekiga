@@ -1162,7 +1162,7 @@ void gnomemeeting_init_pref_window_h323_advanced (GtkWidget *notebook)
                                                                                
   /* Add all the fields */                                                     
   pw->forward_host = 
-    gnomemeeting_pref_window_add_entry (table, _("Forward calls to host:"), "/apps/gnomemeeting/call_forwarding/host", _("Enter here the host where calls should be forwarded in the cases selected below"), 3);
+    gnomemeeting_pref_window_add_entry (table, _("Forward calls to host:"), "/apps/gnomemeeting/call_forwarding/forward_host", _("Enter here the host where calls should be forwarded in the cases selected below"), 3);
 
   pw->always_forward =
     gnomemeeting_pref_window_add_toggle (table, _("Always forward calls to the given host"), "/apps/gnomemeeting/call_forwarding/always_forward", _("If enabled, all incoming calls will always be forwarded to the host that is specified in the field below."), 0, 0);

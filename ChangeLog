@@ -1,3 +1,22 @@
+2002-05-14  Damien Sandras  <dsandras@seconix.com>
+
+	* src/config.cpp: Fixed bug for the Call Forwarding gconf part.
+
+	* src/endpoint.cpp: Added support for Call Forwarding on no answer,
+	on busy and always. Added function to add a message in the history and
+	status bar when the call to the remote is forwarded.
+
+	* src/endpoint.h: Added function to add a message in the history and
+	status bar when the call to the remote is forwarded.
+	
+	* src/misc.cpp: Added possibility to call gnomemeeting_warning_popup
+	without the toggle "Do not show this dialog again".
+	
+	* src/misc.h: Changed spec.
+	
+	* src/pref_window.cpp: Fixed bug, the forwarding host was not saved
+	in the right key.
+	
 2002-05-13  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* src/druid.cpp (gnomemeeting_druid_quit) 
@@ -8,8 +27,8 @@
 
 	* gnomemeeting.schema.in: Default to fast start enabled.
 
-	* src/config.cpp: Cleaned the code and fixed bug: H.245 Tunneling and Fast
-	Start can now change.
+	* src/config.cpp: Cleaned the code and fixed bug: H.245 Tunneling 
+	and Fast Start can now change.
 
 	* src/connection.cpp: Checks the number of opened channels.
 

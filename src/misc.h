@@ -128,7 +128,15 @@ gnomemeeting_history_combo_box_new (const gchar *key);
 void 
 gnomemeeting_history_combo_box_add_entry (GtkCombo *, const gchar *, const gchar *);
 
+
+/* DESCRIPTION   :  /
+ * BEHAVIOR      : Creates a warning popup with a message. If widget is 
+ *                 different of NULL, the user can choose to see or not
+ *                 see anymore the dialog for that widget.
+ * PRE           : /
+ */
 void gnomemeeting_warning_popup (GtkWidget *, gchar *);
+
 
 /* DESCRIPTION   :  /
  * BEHAVIOR      : Frees data in a double linked list

@@ -434,21 +434,29 @@ void gnomemeeting_warning_popup (GtkWidget *w, gchar *m)
 
   msg = g_strdup (m);
      
-  widget_data = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (w), 
-						    "widget_data"));
+  if (w)
+    widget_data = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (w), 
+						      "widget_data"));
+  else
+    widget_data = 0;
 
-  toggle_button = 
-    gtk_check_button_new_with_label (_("Do not show this dialog again"));
+  if (w) {
 
-  g_signal_connect (G_OBJECT (toggle_button), "toggled",
-		    G_CALLBACK (popup_toggle_changed),
-		    w);
+    toggle_button = 
+      gtk_check_button_new_with_label (_("Do not show this dialog again"));
+
+    g_signal_connect (G_OBJECT (toggle_button), "toggled",
+		      G_CALLBACK (popup_toggle_changed),
+		      w);
+  }
 		 
   /* If it is the first time that we are called OR if data is != 0 */
-  if (GPOINTER_TO_INT (g_object_get_data (G_OBJECT (w), "widget_data")) == 0) {
-    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle_button), TRUE);
-    g_object_set_data (G_OBJECT (w), "widget_data", GINT_TO_POINTER (1));
-  }
+  if (w)
+    if (GPOINTER_TO_INT (g_object_get_data (G_OBJECT (w), "widget_data"))==0) {
+
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle_button), TRUE);
+      g_object_set_data (G_OBJECT (w), "widget_data", GINT_TO_POINTER (1));
+    }
 
   
   if (widget_data == 0) {
@@ -464,15 +472,17 @@ void gnomemeeting_warning_popup (GtkWidget *w, gchar *m)
 			      GTK_OBJECT (msg_box));
     
     gtk_widget_show (msg_box);
+
     
-    
-    gtk_container_add (GTK_CONTAINER (GTK_DIALOG (msg_box)->vbox), 
-		       toggle_button);
+    if (w)
+      gtk_container_add (GTK_CONTAINER (GTK_DIALOG (msg_box)->vbox), 
+			 toggle_button);
     
     gtk_widget_show_all (msg_box);
   }
   else
-    gtk_widget_destroy (GTK_WIDGET (toggle_button));
+    if (w)
+      gtk_widget_destroy (GTK_WIDGET (toggle_button));
 
   g_free (msg);
 }
