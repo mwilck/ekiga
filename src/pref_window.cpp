@@ -1868,12 +1868,22 @@ account_toggled_cb (GtkCellRendererToggle *cell,
   GmPreferencesWindow *pw = NULL;
   GmAccount *account = NULL;
 
+  GtkTreePath *path = NULL;
+  GtkTreeSelection *selection = NULL;
+
   GtkWidget *prefs_window = NULL;
 
   prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
   ep = GnomeMeeting::Process ()->Endpoint ();
   
   pw = gm_pw_get_pw (prefs_window);
+
+
+  /* Make sure the toggled row is selected */
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (pw->accounts_list));
+  path = gtk_tree_path_new_from_string (path_str);
+  gtk_tree_selection_select_path (selection, path);
+  gtk_tree_path_free (path);
 
   /* Update the config */
   account = gm_pw_get_selected_account (prefs_window);
