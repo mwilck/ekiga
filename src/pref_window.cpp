@@ -124,11 +124,16 @@ static void refresh_devices (GtkWidget *widget, gpointer data)
   while (cpt < i) {
 
     gchar *string = g_strdup (gw->audio_player_devices [cpt]);
-    item = gtk_menu_item_new_with_label (string);
-    gtk_widget_show (item);
-    gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
-    g_free (string);
+
+    if (strcmp (string, "loopback")) {
+
+      item = gtk_menu_item_new_with_label (string);
+      gtk_widget_show (item);
+      gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+    }
+
     cpt++;
+    g_free (string);
   }
 
   if (index == P_MAX_INDEX)
@@ -161,9 +166,14 @@ static void refresh_devices (GtkWidget *widget, gpointer data)
   while (cpt < i) {
 
     gchar *string = g_strdup (gw->audio_recorder_devices [cpt]);
-    item = gtk_menu_item_new_with_label (string);
-    gtk_widget_show (item);
-    gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+
+    if (strcmp (string, "loopback")) {
+
+      item = gtk_menu_item_new_with_label (string);
+      gtk_widget_show (item);
+      gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+    }
+
     g_free (string);
     cpt++;
   }
@@ -1503,7 +1513,10 @@ static void gnomemeeting_init_pref_window_audio_devices (GtkWidget *notebook)
   if (i >= 20) i = 19;
 
   for (int j = i ; j >= 0; j--) 
-    audio_player_devices_list [j] = g_strdup (gw->audio_player_devices [j]);
+    if (strcmp (gw->audio_player_devices [j], "loopback"))
+      audio_player_devices_list [j] = g_strdup (gw->audio_player_devices [j]);
+    else
+      audio_player_devices_list [j] = NULL;
 
   
   audio_player_devices_list [i+1] = NULL;
@@ -1527,8 +1540,11 @@ static void gnomemeeting_init_pref_window_audio_devices (GtkWidget *notebook)
   if (i >= 20) i = 19;
 
   for (int j = i ; j >= 0; j--) 
-    audio_recorder_devices_list [j] = 
-      g_strdup (gw->audio_recorder_devices [j]);
+    if (strcmp (gw->audio_recorder_devices [j], "loopback"))
+      audio_recorder_devices_list [j] = 
+	g_strdup (gw->audio_recorder_devices [j]);
+    else
+      audio_recorder_devices_list [j] = NULL;
   
   audio_recorder_devices_list [i + 1] = NULL;
 
