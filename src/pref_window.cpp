@@ -1189,9 +1189,9 @@ void gnomemeeting_init_pref_window_h323_advanced (GtkWidget *notebook)
 
                                                                                
   /* The toggles */                                                            
-  pw->ht = gnomemeeting_pref_window_add_toggle (table, _("Enable H.245 Tunneling"), "/apps/gnomemeeting/general/h245_tunneling", _("This enables H.245 Tunnelling mode. In H.245 Tunneling moden H.245 messages are encapsulated into the the H.225 channel (port 1720), it permits to spare one random TCP port during calls. H.245 Tunneling was introduced in H.323v2 and Netmeeting doesn't support it.Using both Fast Start and H.245 Tunneling can crash some versions of Netmeeting."), 0, 0);
+  pw->ht = gnomemeeting_pref_window_add_toggle (table, _("Enable H.245 Tunnelling"), "/apps/gnomemeeting/general/h245_tunneling", _("This enables H.245 Tunnelling mode. In H.245 Tunnelling mode H.245 messages are encapsulated into the the H.225 channel (port 1720). This permits sparing one random TCP port during calls. H.245 Tunnelling was introduced in H.323v2 and Netmeeting doesn't support it. Using both Fast Start and H.245 Tunnelling can crash some versions of Netmeeting."), 0, 0);
                                                                                
-  pw->fs = gnomemeeting_pref_window_add_toggle (table, _("Enable Fast Start"), "/apps/gnomemeeting/general/fast_start", _("Connection will be established in Fast Start mode. Fast Start is a new way to start calls faster that was introduced in H.323v2. It is not supported by Netmeeting and using both Fast Start and H.245 Tunneling can crash some versions of Netmeeting."), 1, 0);
+  pw->fs = gnomemeeting_pref_window_add_toggle (table, _("Enable Fast Start"), "/apps/gnomemeeting/general/fast_start", _("Connection will be established in Fast Start mode. Fast Start is a new way to start calls faster that was introduced in H.323v2. It is not supported by Netmeeting and using both Fast Start and H.245 Tunnelling can crash some versions of Netmeeting."), 1, 0);
 
 
   gtk_notebook_append_page (GTK_NOTEBOOK(notebook), vbox, NULL);
@@ -1299,7 +1299,7 @@ static void gnomemeeting_init_pref_window_devices (GtkWidget *notebook)
   video_devices_list [i+1] = NULL;
 
   pw->video_device = 
-    gnomemeeting_pref_window_add_string_option_menu (table, _("Video Device:"), video_devices_list, "/apps/gnomemeeting/devices/video_recorder", _("Enter the video device to use, using a wrong video device for video transmission will transmit a test picture."), 1);
+    gnomemeeting_pref_window_add_string_option_menu (table, _("Video Device:"), video_devices_list, "/apps/gnomemeeting/devices/video_recorder", _("Enter the video device to use. Using an invalid video device for video transmission will transmit a test picture."), 1);
 
   for (int j = i ; j >= 0; j--) 
     g_free (video_devices_list [j]);
@@ -1498,7 +1498,7 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
   pw->sd = 
     gnomemeeting_pref_window_add_toggle (table, _("Enable Silence Detection"),       
  				       "/apps/gnomemeeting/audio_settings/sd",
-					_("Enable or not the silence detection for the GSM and G.711 codecs."), 4, 0);
+					_("Enable/disable the silence detection for the GSM and G.711 codecs."), 4, 0);
 }
                                                                                
 

@@ -282,13 +282,13 @@ void GMH323EndPoint::UpdateConfig ()
     
     
     /**/
-    /* Update the H.245 Tunneling and Fast Start Settings if needed */
+    /* Update the H.245 Tunnelling and Fast Start Settings if needed */
     if (disableH245Tunneling != !gconf_client_get_bool (client, "/apps/gnomemeeting/general/h245_tunneling", 0)) {
 
       if (!disableH245Tunneling)
-	text = g_strdup (_("Disabling H.245 Tunneling"));
+	text = g_strdup (_("Disabling H.245 Tunnelling"));
       else
-	text = g_strdup (_("Enabling H.245 Tunneling"));
+	text = g_strdup (_("Enabling H.245 Tunnelling"));
 
       gnomemeeting_log_insert (text);
       g_free (text);

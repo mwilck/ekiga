@@ -4,12 +4,11 @@
 #
 # $Id$
 #
-# Buggiga meddelanden är markerade med "Knepigt"
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
-"POT-Creation-Date: 2002-05-18 20:00+0200\n"
-"PO-Revision-Date: 2002-05-18 20:00+0200\n"
+"POT-Creation-Date: 2002-05-19 13:21+0200\n"
+"PO-Revision-Date: 2002-05-19 13:21+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -112,35 +111,37 @@ msgstr "  VARNING!!!"
 
 #: src/config-tool-i18n.h:4
 msgid ""
-"  This script will delete all user GnomeMeeting configuration\n"
+"  This script will delete all user GnomeMeeting configuration,\n"
 "  including preferences that may be important! \n"
-"  GConf daemon will be shutted down, so make sure you have no apps\n"
-"  depending on it running\n"
+"  The GConf daemon will be shut down, so make sure you have no\n"
+"  applications depending on it running.\n"
 "\n"
 "  Do you really want to do this?\n"
 "\n"
-"  If so, say \"YES\"\n"
+"  If so, say \"YES\".\n"
 "\n"
 msgstr ""
 "  Detta skript kommer att ta bort all användarkonfiguration av \n"
-"  GnomeMeeting inklusive inställningar som kan vara viktiga!\n"
-"  GConf-demonen kommer att stängas ner, så försäkra dig om att du inte   har "
-"några program som kräver det körandes\n"
-"  som beror på det körandes\n"
+"  GnomeMeeting, inklusive inställningar som kan vara viktiga!\n"
+"  GConf-demonen kommer att stängas ner, så försäkra dig om att du\n"
+"  inte har några program som kräver det körandes.\n"
+"\n"
 "  Vill du verkligen göra detta?\n"
-"  Om ja, svara \"JA\"\n"
+"\n"
+"  Om ja, svara \"JA\".\n"
 
 #: src/config-tool-i18n.h:5
 msgid "Removing $HOME/.gconf/apps/gnomemeeting"
 msgstr "Tar bort $HOME/.gconf/apps/gnomemeeting"
 
-#: src/config-tool-i18n.h:6 src/config-tool-i18n.h:13
+#: src/config-tool-i18n.h:6 src/config-tool-i18n.h:11
+#: src/config-tool-i18n.h:13
 msgid "Shutting down GConf daemon"
 msgstr "Stänger ner GConf-demonen"
 
 #: src/config-tool-i18n.h:7
 msgid "...Done."
-msgstr "...Klar"
+msgstr "...Klar."
 
 #: src/config-tool-i18n.h:8
 msgid "Leaving configuration alone."
@@ -152,24 +153,20 @@ msgstr "Ha en trevlig dag."
 
 #: src/config-tool-i18n.h:10
 msgid ""
-"  GConf daemon will be shut down, so make sure you have no apps\n"
-"  depending on it running\n"
+"  The GConf daemon will be shut down, so make sure you have no\n"
+"  applications depending on it running.\n"
 "\n"
 "  Do you really want to do this?\n"
 "\n"
-"  If so, say \"YES\"\n"
+"  If so, say \"YES\".\n"
 "\n"
 msgstr ""
-"  GConf-demonen kommer att stängas ner, så försäkra dig om att du inte\n"
-"  har några program som beror på det körandes\n"
+"  GConf-demonen kommer att stängas ner, så försäkra dig om att du\n"
+"  inte har några program som beror på det körandes.\n"
 "\n"
 "  Vill du verkligen göra detta?\n"
 "\n"
-"  Om ja, svara \"JA\"\n"
-
-#: src/config-tool-i18n.h:11
-msgid "Shutting down gconf daemon"
-msgstr "Stänger ner gconf-demonen"
+"  Om ja, svara \"JA\".\n"
 
 #: src/config-tool-i18n.h:12
 msgid "Removing schemas"
@@ -179,18 +176,17 @@ msgstr "Tar bort scheman"
 msgid "Installing schemas"
 msgstr "Installerar scheman"
 
-# Knepigt
 #: src/config-tool-i18n.h:15
 msgid ""
-"CRITICAL ERROR -- Schema installation is failed.\n"
-"Most probably you have gconf daemon running as root.\n"
+"CRITICAL ERROR -- Schema installation failed.\n"
+"Most probably you have the GConf daemon running as root.\n"
 "\n"
-"Run \"gnomemeeting-config-tool --install-schemas\" as root\n"
+"Run \"gnomemeeting-config-tool --install-schemas\" as root.\n"
 msgstr ""
 "ALLVARLIGT FEL -- Installation av schema misslyckades.\n"
-"Troligtvis har du gconf-demonen körandes som root.\n"
+"Troligtvis har du GConf-demonen körandes som root.\n"
 "\n"
-"Kör \"gnomemeeting-config-tool --install-schemas\" som root\n"
+"Kör \"gnomemeeting-config-tool --install-schemas\" som root.\n"
 
 #: src/config-tool-i18n.h:16
 msgid "Usage:  gnomemeeting-config-tool OPTION"
@@ -204,18 +200,16 @@ msgstr "Fixar problem med GnomeMeeting-inställningarna"
 msgid "  --clean                remove all user settings"
 msgstr "  --clean                ta bort alla användarinställningar"
 
-# Knepigt
 #: src/config-tool-i18n.h:19
 msgid ""
-"  --install-schemas      install schemas with settings defaults (run as root)"
+"  --install-schemas      install schemas with default settings (run as root)"
 msgstr ""
 "  --install-schemas      installera scheman med standardinställningar (kör "
 "som root)"
 
-# Knepigt
 #: src/config-tool-i18n.h:20
 msgid ""
-"  --clean-schemas        remove schemas with settings defaults (run as root)"
+"  --clean-schemas        remove schemas with default settings (run as root)"
 msgstr ""
 "  --clean-schemas        ta bort scheman med standardinställningar (kör som "
 "root)"
@@ -498,11 +492,11 @@ msgid "Set Audio recorder device to %s"
 msgstr "Ställde in ljudinspelningsenhet till %s"
 
 #: src/endpoint.cpp:289
-msgid "Disabling H.245 Tunneling"
+msgid "Disabling H.245 Tunnelling"
 msgstr "Inaktiverar H.245-tunnling"
 
 #: src/endpoint.cpp:291
-msgid "Enabling H.245 Tunneling"
+msgid "Enabling H.245 Tunnelling"
 msgstr "Aktiverar H.245-tunnling"
 
 #: src/endpoint.cpp:305
@@ -1357,20 +1351,19 @@ msgstr "H.323 V2-inställningar"
 
 #. The toggles
 #: src/pref_window.cpp:1192
-msgid "Enable H.245 Tunneling"
+msgid "Enable H.245 Tunnelling"
 msgstr "Aktivera H.245-tunnling"
 
-# Knepigt
 #: src/pref_window.cpp:1192
 msgid ""
-"This enables H.245 Tunnelling mode. In H.245 Tunneling moden H.245 messages "
-"are encapsulated into the the H.225 channel (port 1720), it permits to spare "
-"one random TCP port during calls. H.245 Tunneling was introduced in H.323v2 "
-"and Netmeeting doesn't support it.Using both Fast Start and H.245 Tunneling "
-"can crash some versions of Netmeeting."
+"This enables H.245 Tunnelling mode. In H.245 Tunnelling mode H.245 messages "
+"are encapsulated into the the H.225 channel (port 1720). This permits "
+"sparing one random TCP port during calls. H.245 Tunnelling was introduced in "
+"H.323v2 and Netmeeting doesn't support it. Using both Fast Start and H.245 "
+"Tunnelling can crash some versions of Netmeeting."
 msgstr ""
 "Detta aktiverar H.245-tunnlingsläge. I H.245-tunnlingsläge kapslas H.245-"
-"meddelanden in i H.225-kanalen (port 1720) vilket möjliggör att en "
+"meddelanden in i H.225-kanalen (port 1720). Detta möjliggör att en "
 "slumpmässig TCP-port sparas under samtal. H.245-tunnling introducerades i "
 "H.323v2 och Netmeeting stöder inte det. Att använda både snabbstart och "
 "H.245-tunnling kan krascha en del versioner av Netmeeting."
@@ -1383,7 +1376,7 @@ msgstr "Använd snabbstart"
 msgid ""
 "Connection will be established in Fast Start mode. Fast Start is a new way "
 "to start calls faster that was introduced in H.323v2. It is not supported by "
-"Netmeeting and using both Fast Start and H.245 Tunneling can crash some "
+"Netmeeting and using both Fast Start and H.245 Tunnelling can crash some "
 "versions of Netmeeting."
 msgstr ""
 "Anslutning kommer att etableras i snabbstartläge. Snabbstart är en ny metod "
@@ -1465,14 +1458,13 @@ msgstr "Videoenheter"
 msgid "Video Device:"
 msgstr "Videoenhet:"
 
-# Knepigt
 #: src/pref_window.cpp:1302
 msgid ""
-"Enter the video device to use, using a wrong video device for video "
+"Enter the video device to use. Using an invalid video device for video "
 "transmission will transmit a test picture."
 msgstr ""
 "Ange den videoenhet som ska användas. Att använda en felaktig videoenhet för "
-"videoöverföring kommer att skicka en testbild."
+"videoöverföring kommer att göra att en testbild skickas."
 
 #: src/pref_window.cpp:1311
 msgid "Video Channel:"
@@ -1559,9 +1551,8 @@ msgstr "Antalet ramar i varje skickat G.711-paket."
 msgid "Enable Silence Detection"
 msgstr "Aktivera tystnadsdetektering"
 
-# Knepigt
 #: src/pref_window.cpp:1501
-msgid "Enable or not the silence detection for the GSM and G.711 codecs."
+msgid "Enable/disable the silence detection for the GSM and G.711 codecs."
 msgstr ""
 "Aktivera/inaktivera tystnadsdetektering för GSM- och G.711-"
 "komprimeringsmetoderna."
@@ -1781,6 +1772,9 @@ msgstr "Fel med ramhastigheten."
 #: src/videograbber.cpp:650
 msgid "Video Device Closed"
 msgstr "Videoenhet stängd"
+
+#~ msgid "Shutting down gconf daemon"
+#~ msgstr "Stänger ner gconf-demonen"
 
 #~ msgid "Connection Type - Page 3/4"
 #~ msgstr "Anslutningstyp - Sida 3/4"
