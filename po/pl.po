@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-01-14 16:02+0100\n"
+"POT-Creation-Date: 2004-01-16 14:29+0100\n"
 "PO-Revision-Date: 2003-09-15 23:32+0100\n"
 "Last-Translator: Gnome PL Team <translators@gnome.pl>\n"
 "Language-Team: Polish <translation-team-pl@lists.sourceforge.net>\n"
@@ -90,7 +90,7 @@ msgstr ""
 msgid "Clear inactive calls"
 msgstr "Czyszczenie nieaktywnych połączeń"
 
-#: gnomemeeting.schemas.in.in.h:13 src/ldap_window.cpp:3066
+#: gnomemeeting.schemas.in.in.h:13 src/ldap_window.cpp:3076
 msgid "Comment"
 msgstr "Komentarz"
 
@@ -364,7 +364,7 @@ msgstr "Port Nasłuchu"
 msgid "Local video window size"
 msgstr "Rozmiar okna z lokalnym obrazem wideo"
 
-#: gnomemeeting.schemas.in.in.h:66 src/ldap_window.cpp:3079
+#: gnomemeeting.schemas.in.in.h:66 src/ldap_window.cpp:3089
 msgid "Location"
 msgstr "Lokalizacja"
 
@@ -509,13 +509,13 @@ msgstr ""
 "Wybór rozmiaru przesyłanego obrazu: mały (QCIF 176x144) lub duży (CIF "
 "352x288)."
 
-#: gnomemeeting.schemas.in.in.h:100
+#: gnomemeeting.schemas.in.in.h:100 src/pref_window.cpp:1425
 msgid ""
-"Select the video input device to use. Using an invalid video device or "
-"\"Picture\" for video transmission will transmit a test picture."
+"Select the video input device to use. If an error occurs when using this "
+"device a test picture will be transmitted."
 msgstr ""
-"Wybór wejściowego urządzenia wideo. Użycie niepoprawnego urządzenia lub "
-"\"Obraz\" dla przesyłu wideo spowoduje wysłanie obrazu testowego."
+"Wybór wejściowego urządzenia wideo. Jeżeli wystąpi błąd podczas użycia tego "
+"urządzenia, zostanie wysłany obraz testowy."
 
 #: gnomemeeting.schemas.in.in.h:101
 msgid "Show a status bar at the bottom of the main window"
@@ -681,13 +681,13 @@ msgstr "Wysokość obrazu w trybie pełnoekranowym."
 
 #: gnomemeeting.schemas.in.in.h:134 src/pref_window.cpp:1436
 msgid ""
-"The image to transmit if \"Picture\" is selected for the video device or if "
-"the opening of the device fails. Leave blank to use the default GnomeMeeting "
+"The image to transmit if \"Picture\" is selected as video plugin or if the "
+"opening of the device fails. Leave blank to use the default GnomeMeeting "
 "logo."
 msgstr ""
-"Obraz, który zostanie przesłany gdy używanym urządzeniem wideo jest \"Obraz"
-"\" lub gdy nie powiedzie się próba dostępu do urządzenia. Brak wyboru "
-"oznacza użycie domyślnego logo programu GnomeMeeting."
+"Obraz, który zostanie przesłany gdy wtyczką wideo jest \"Obraz\" lub gdy nie "
+"powiedzie się próba dostępu do urządzenia. Brak wyboru oznacza użycie "
+"domyślnego logo programu GnomeMeeting."
 
 #: gnomemeeting.schemas.in.in.h:135 src/pref_window.cpp:937
 msgid "The image width for fullscreen."
@@ -989,7 +989,7 @@ msgstr ""
 msgid "User directory"
 msgstr "Katalog użytkowników"
 
-#: gnomemeeting.schemas.in.in.h:179 src/ldap_window.cpp:3103
+#: gnomemeeting.schemas.in.in.h:179 src/ldap_window.cpp:3113
 msgid "Version"
 msgstr "Wersja"
 
@@ -1099,32 +1099,36 @@ msgid ""
 "IP-Telephony application that allows you to make audio and video calls to "
 "remote users with H.323 hardware or software."
 msgstr ""
+"GnomeMeeting jest pełnowartościowym programem kompatybilnym z protokołem "
+"wideokonferncji H.323, VoIP oraz telefonią internetową, umożliwiając "
+"wykonywanie połączeń dźwiękowych i wideo do uzytkowników z oprogramowaniem "
+"lub sprzętem zgodnym z H.323."
 
-#: src/chat_window.cpp:302
-msgid "Open URI"
-msgstr ""
-
-#: src/chat_window.cpp:305 src/chat_window.cpp:321
-#, fuzzy
-msgid "Copy Link Location"
-msgstr "Lokalizacja"
-
-#: src/chat_window.cpp:317
-#, fuzzy
-msgid "Connect to"
-msgstr "_Połącz"
-
-#: src/chat_window.cpp:319
-#, fuzzy
-msgid "Add to Address Book"
-msgstr "Dodaj %s do książki adresowej"
-
-#: src/chat_window.cpp:339
-#, fuzzy
-msgid "Copy equation"
-msgstr "Czas trwania połączenia"
-
+# FIXME - sprawdzić formę
 #: src/chat_window.cpp:354
+msgid "Open URI"
+msgstr "Otwarcie adresu URI"
+
+# FIXME - sprawdzić formę
+#: src/chat_window.cpp:357 src/chat_window.cpp:373
+msgid "Copy Link Location"
+msgstr "Kopiowanie odnośnika położenia"
+
+# FIXME - sprawdzić formę
+#: src/chat_window.cpp:369
+msgid "Connect to"
+msgstr "Połącz z"
+
+#: src/chat_window.cpp:371
+msgid "Add to Address Book"
+msgstr "Dodanie do książki adresowej"
+
+# FXIXME - co to jest?
+#: src/chat_window.cpp:391
+msgid "Copy equation"
+msgstr "Kopiowanie bilansu"
+
+#: src/chat_window.cpp:406
 msgid "Send Message:"
 msgstr "Wyślij wiadomość:"
 
@@ -1137,6 +1141,12 @@ msgid ""
 "degradation in the case of lost frames, which occurs in connection with lost "
 "or delayed IP packets."
 msgstr ""
+"iLBC-13k3 jest wolnodostępnym kodekiem mowy przeznaczonym do sprawnej "
+"komunikacji głosowej poprzez IP. Kodek został zaprojektowany dla "
+"wąskopasmowych połączeń, dzięki czemu obciążenie łacza wynosi 13,33 kbit/s z "
+"30 ms długością ramki kodującej. Kodek iLBC doskonale radzi sobie z "
+"obniżeniem jakości dźwięku w przypadku zgubionych ramek, co ma miejsce przy "
+"łączach z gubionymi lub opóźnionymi pakietami IP."
 
 #: src/codec_info.h:53 src/codec_info.h:55 src/codec_info.h:57
 #: src/codec_info.h:63 src/codec_info.h:65 src/codec_info.h:69
@@ -1146,7 +1156,7 @@ msgstr "Doskonały"
 
 #: src/codec_info.h:53
 msgid "13.33 Kbps"
-msgstr ""
+msgstr "13,33 Kb/s"
 
 #: src/codec_info.h:55
 msgid ""
@@ -1157,10 +1167,16 @@ msgid ""
 "in the case of lost frames, which occurs in connection with lost or delayed "
 "IP packets."
 msgstr ""
+"iLBC-15k2 jest wolnodostępnym kodekiem mowy przeznaczonym do sprawnej "
+"komunikacji głosowej poprzez IP. Kodek został zaprojektowany dla "
+"wąskopasmowych połączeń, dzięki czemu obciążenie łacza wynosi 15,20 kbit/s z "
+"20 ms długością ramki kodującej. Kodek iLBC doskonale radzi sobie z "
+"obniżeniem jakości dźwięku w przypadku zgubionych ramek, co ma miejsce przy "
+"łączach z gubionymi lub opóźnionymi pakietami IP."
 
 #: src/codec_info.h:55
 msgid "15.2 Kbps"
-msgstr ""
+msgstr "15.2 Kb/s"
 
 #: src/codec_info.h:57
 msgid ""
@@ -1176,7 +1192,7 @@ msgstr ""
 
 #: src/codec_info.h:57
 msgid "15 Kbps"
-msgstr ""
+msgstr "15 Kb/s"
 
 #: src/codec_info.h:59
 msgid ""
@@ -1192,11 +1208,11 @@ msgstr ""
 
 #: src/codec_info.h:59 src/codec_info.h:61 src/codec_info.h:67
 msgid "Good"
-msgstr ""
+msgstr "Dobry"
 
 #: src/codec_info.h:59
 msgid "8 Kbps"
-msgstr ""
+msgstr "8 Kb/s"
 
 #: src/codec_info.h:61
 msgid ""
@@ -1211,7 +1227,7 @@ msgstr ""
 
 #: src/codec_info.h:61
 msgid "13 Kbps"
-msgstr ""
+msgstr "13 Kb/s"
 
 #: src/codec_info.h:63
 msgid ""
@@ -1225,7 +1241,7 @@ msgstr ""
 
 #: src/codec_info.h:63 src/codec_info.h:65
 msgid "64 Kbps"
-msgstr ""
+msgstr "64 Kb/s"
 
 #: src/codec_info.h:65
 msgid ""
@@ -1247,7 +1263,7 @@ msgstr ""
 
 #: src/codec_info.h:67
 msgid "16.5 Kbps"
-msgstr ""
+msgstr "16,5 Kb/s"
 
 #: src/codec_info.h:69
 msgid ""
@@ -1258,7 +1274,7 @@ msgstr ""
 
 #: src/codec_info.h:69
 msgid "32 Kbps"
-msgstr ""
+msgstr "32 Kb/s"
 
 #: src/codec_info.h:71
 msgid ""
@@ -1270,7 +1286,7 @@ msgstr ""
 
 #: src/codec_info.h:71
 msgid "6.3 or 5.7 Kbps"
-msgstr ""
+msgstr "6,3 lub 5,7 Kb/s"
 
 #: src/config-tool-i18n.h:1
 msgid "YES"
@@ -1411,45 +1427,36 @@ msgstr ""
 "połączenia. Nowe ustawienie odniesie skutek przy następnym połączeniu."
 
 #: src/config.cpp:365
-#, fuzzy
 msgid "H.245 Tunneling disabled"
 msgstr "Tunelowanie H.245 wyłączone"
 
 #: src/config.cpp:366
-#, fuzzy
 msgid "H.245 Tunneling enabled"
 msgstr "Tunelowanie H.245 włączone"
 
 #: src/config.cpp:396
-#, fuzzy
 msgid "Early H.245 disabled"
-msgstr "Tunelowanie H.245 wyłączone"
+msgstr "Tunelowanie wczesnego H.245 wyłączone"
 
 #: src/config.cpp:397
-#, fuzzy
 msgid "Early H.245 enabled"
-msgstr "Tunelowanie H.245 włączone"
+msgstr "Tunelowanie wczesnego H.245 włączone"
 
 #: src/config.cpp:427
-#, fuzzy
 msgid "Fast Start disabled"
 msgstr "Szybkie uruchamianie wyłączone"
 
 #: src/config.cpp:428
-#, fuzzy
 msgid "Fast Start enabled"
 msgstr "Szybkie uruchamianie włączone"
 
 #: src/config.cpp:460
 msgid "No gateway or proxy specified"
-msgstr ""
+msgstr "Nie podano bramki lub pośrednika"
 
 #: src/config.cpp:460
-#, fuzzy
 msgid "You need to specify an host to use as gateway or proxy."
-msgstr ""
-"Należy podać komputer, do którego zostaną przekierowane wywołania!\n"
-"Wyłączono przekierowanie."
+msgstr "Należy podać komputer który będzie bramką lub pośrednikiem."
 
 #: src/config.cpp:614
 msgid "Disabled Silence Detection"
@@ -1460,9 +1467,8 @@ msgid "Enabled Silence Detection"
 msgstr "Włączone wykrywanie ciszy"
 
 #: src/config.cpp:1064
-#, fuzzy
 msgid "Failed to restart the video channel"
-msgstr "Nie można otworzyć urządzenia"
+msgstr "Nie można ponownie uruchomić kanału wideo"
 
 #: src/config.cpp:1064
 msgid ""
@@ -1472,17 +1478,18 @@ msgstr ""
 
 #: src/config.cpp:1330
 msgid "Forward URL not specified"
-msgstr ""
+msgstr "Nie podano adresu URL przekazania"
 
 #: src/config.cpp:1331
-#, fuzzy
 msgid ""
 "You need to specify an URL where to forward calls in the call forwarding "
 "section of the preferences!\n"
 "\n"
 "Disabling forwarding."
 msgstr ""
-"Należy podać komputer, do którego zostaną przekierowane wywołania!\n"
+"Należy podać adres URL w ustawieniach w sekcji przekazywanie wywołań, gdzie "
+"zostaną przekierowane wywołania!\n"
+"\n"
 "Wyłączono przekierowanie."
 
 #: src/config.cpp:1607
@@ -1494,39 +1501,37 @@ msgstr ""
 "Część ustawień może zostać utracona."
 
 #: src/connection.cpp:154
-#, fuzzy, c-format
+#, c-format
 msgid "Opened codec %s for transmission"
-msgstr "Transmisja obrazu"
+msgstr "Otwarto kodek %s dla transmisji obrazu"
 
 #: src/connection.cpp:157
-#, fuzzy, c-format
+#, c-format
 msgid "Closed codec %s which was opened for transmission"
-msgstr "Nie można otworzyć kanału dźwiękowego dla transmisji dźwięku"
+msgstr "Zamknięto kodek %s, otwarty dla transmisji"
 
 #: src/connection.cpp:161
-#, fuzzy, c-format
+#, c-format
 msgid "Opened codec %s for reception"
-msgstr "Odbieranie obrazu"
+msgstr "Otwarto kodek %s dla odbioru"
 
 #: src/connection.cpp:164
 #, c-format
 msgid "Closed codec %s which was opened for reception"
-msgstr ""
+msgstr "Zamknięto kodek %s, otwarty dla odbioru"
 
 #: src/connection.cpp:201
 #, c-format
 msgid "Failure opening %s for %s, will try with next common codec"
-msgstr ""
+msgstr "Nie powiodło się otwarcie %s dla %s, próba otwarcia następnego kodeka"
 
 #: src/connection.cpp:204
-#, fuzzy
 msgid "transmission"
-msgstr "Transmisja obrazu"
+msgstr "transmisja"
 
 #: src/connection.cpp:204
-#, fuzzy
 msgid "reception"
-msgstr "Sekcja"
+msgstr "odbieranie"
 
 #: src/connection.cpp:324 src/connection.cpp:325 src/urlhandler.cpp:77
 #: src/urlhandler.cpp:78
@@ -1541,17 +1546,16 @@ msgstr ""
 "operacja nie powiodła się."
 
 #: src/druid.cpp:265 src/druid.cpp:655 src/druid.cpp:672 src/druid.cpp:710
-#: src/endpoint.cpp:1662 src/gnomemeeting.cpp:324 src/gnomemeeting.cpp:326
+#: src/endpoint.cpp:1664 src/gnomemeeting.cpp:324 src/gnomemeeting.cpp:326
 #: src/gnomemeeting.cpp:328 src/sound_handling.cpp:568
 #: src/sound_handling.cpp:569 src/videograbber.cpp:296
 #: src/videograbber.cpp:552
 msgid "No device found"
-msgstr ""
+msgstr "Nie znaleziono urządzeń"
 
 #: src/druid.cpp:549
-#, fuzzy
 msgid "56k Modem"
-msgstr "Modem 56Kb/s"
+msgstr "Modem 56k"
 
 #: src/druid.cpp:550
 msgid "ISDN"
@@ -1566,12 +1570,11 @@ msgid "T1/LAN"
 msgstr "T1/LAN"
 
 #: src/druid.cpp:553
-#, fuzzy
 msgid "Keep current settings"
-msgstr "Zamknięcie bieżącego połączenia"
+msgstr "Zachowanie bieżących ustawień"
 
 #: src/druid.cpp:735
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "You have now finished the GnomeMeeting configuration. All the settings can "
 "be changed in the GnomeMeeting preferences. Enjoy!\n"
@@ -1593,13 +1596,15 @@ msgstr ""
 "\n"
 "\n"
 "Podsumowanie konfiguracji:\n"
-"Nazwa użytkownika: %s %s\n"
+"\n"
+"Nazwa użytkownika: %s\n"
 "Rodzaj połączenia: %s\n"
+"Menedżer dźwięku: %s\n"
 "Odtwarzacz dźwięku: %s\n"
 "Rejestrator dźwięku: %s\n"
+"Menedżer obrazu: %s\n"
 "Odtwarzacz wideo: %s\n"
 "Adres URL wywołania: %s\n"
-"Wywołania komputer-telefon: %s"
 
 #: src/druid.cpp:735 src/pref_window.cpp:1184
 msgid "None"
@@ -1613,23 +1618,24 @@ msgstr "Informacje osobiste - strona %d/%d"
 #. The user fields
 #: src/druid.cpp:777
 msgid "Please enter your firstname and your surname:"
-msgstr ""
+msgstr "Podaj swoje imię i nazwisko:"
 
 #: src/druid.cpp:785
 msgid ""
 "Your firstname and surname will be used when connecting to other VoIP and "
 "videoconferencing software."
 msgstr ""
+"Twoje imię i nazwisko będą używane podczas połączeń do innego oprogramowania "
+"VoIP i wideokonferencji."
 
 #: src/druid.cpp:828
-#, fuzzy, c-format
+#, c-format
 msgid "Callto URL - page %d/%d"
-msgstr "Druid konfiguracji - strona %d/%d"
+msgstr "Adres URL wywołania - strona %d/%d"
 
 #: src/druid.cpp:839
-#, fuzzy
 msgid "Please enter your e-mail address:"
-msgstr "Podaj adres e-mail."
+msgstr "Podaj adres e-mail:"
 
 #: src/druid.cpp:847
 msgid ""
@@ -1637,23 +1643,27 @@ msgid ""
 "directory. It is used to create a callto address permitting your contacts to "
 "easily call you wherever you are."
 msgstr ""
+"Adres e-mail jest używany podczas rejestracji w katalogu użytkowników "
+"GnomeMeeting.Potrzebny jest on do utworzenia adresu wywołania, pozwalającego "
+"na łatwe skontaktowanie się z użytkownikiem niezależnie gdzie się znajduje."
 
 #: src/druid.cpp:856
 msgid ""
 "I don't want to register to the GnomeMeeting users directory and get a "
 "callto address"
 msgstr ""
+"Nie chcę się rejestrować w katalogu użytkowników GnomeMeeting i otrzymać "
+"adres wywołania"
 
 #: src/druid.cpp:906
-#, fuzzy, c-format
+#, c-format
 msgid "Connection Type - page %d/%d"
-msgstr "Połączenie sieciowe - strona %d/%d"
+msgstr "Rodzaj połączenia - strona %d/%d"
 
 #. The connection type
 #: src/druid.cpp:918
-#, fuzzy
 msgid "Please choose your connection type:"
-msgstr "Zamknięcie bieżącego połączenia"
+msgstr "Wybierz rodzaj swojego połączenia:"
 
 #: src/druid.cpp:926
 msgid ""
@@ -1661,23 +1671,27 @@ msgid ""
 "GnomeMeeting will use during calls. You can later change the settings "
 "individually in the preferences window."
 msgstr ""
+"Rodzaj połączenia pozwoli dobrać optymalne ustawienia, które będą używane "
+"podczas połączeń programu GnomeMeeting. Ustawienia te można potem "
+"indywidualnie dopasować w oknie konfiguracji."
 
 #: src/druid.cpp:965
-#, fuzzy, c-format
+#, c-format
 msgid "Audio Manager - page %d/%d"
-msgstr "Urządzenia dźwiękowe - strona %d/%d"
+msgstr "Menedżer dźwięku - strona %d/%d"
 
 #. The Audio devices
 #: src/druid.cpp:977
-#, fuzzy
 msgid "Please choose your audio manager:"
-msgstr "Wybór obrazu zastępującego wizję"
+msgstr "Wybierz menedżera dźwięku:"
 
 #: src/druid.cpp:985
 msgid ""
 "The audio manager is the plugin that will manage your audio devices, ALSA is "
 "probably the best choice when available."
 msgstr ""
+"Menedżer dźwięku jest wtyczką zarządzającą urządzeniami dźwiękowymi, "
+"prawdopodobnie najlepszym wyborem jest ALSA, kiedy jest dostępna."
 
 #: src/druid.cpp:1026
 #, c-format
@@ -1686,36 +1700,37 @@ msgstr "Urządzenia dźwiękowe - strona %d/%d"
 
 #. The Audio devices
 #: src/druid.cpp:1038
-#, fuzzy
 msgid "Please choose the audio output device:"
-msgstr "Wybór obrazu zastępującego wizję"
+msgstr "Wybierz wyjściowe urządzenie dźwiękowe:"
 
 #: src/druid.cpp:1046
 msgid ""
 "The audio output device is the device managed by the audio manager that will "
 "be used to play audio."
 msgstr ""
+"Wyjściowe urządzenie dźwiękowe jest urządzeniem używanym do odtwarzania "
+"dźwięku, zarządzanym przez menedżera dźwięku."
 
 #: src/druid.cpp:1056
-#, fuzzy
 msgid "Please choose the audio input device:"
-msgstr "Wybór obrazu zastępującego wizję"
+msgstr "Wybierz wejściowe urządzenie dźwiękowe:"
 
 #: src/druid.cpp:1064
 msgid ""
 "The audio input device is the device managed by the audio manager that will "
 "be used to record your voice."
 msgstr ""
+"Wejściowe urządzenie dźwiękowe jest urządzeniem używanym do zapisu głosu, "
+"zarządzanym przez menedżera dźwięku."
 
 #: src/druid.cpp:1077 src/druid.cpp:1215
-#, fuzzy
 msgid "Test those settings"
-msgstr "Wyświetlenie ustawień obrazu"
+msgstr "Test obecnych ustawień"
 
 #: src/druid.cpp:1123
-#, fuzzy, c-format
+#, c-format
 msgid "Video Manager - page %d/%d"
-msgstr "Urządzenia wideo - strona %d/%d"
+msgstr "Menedżer obrazu - strona %d/%d"
 
 #. The Audio devices
 #: src/druid.cpp:1135
@@ -1727,6 +1742,8 @@ msgid ""
 "The video manager is the plugin that will manage your video devices, "
 "Video4Linux is the most common choice if you own a webcam."
 msgstr ""
+"Menedżer obrazu jest wtyczką zarządzającą urządzeniami wideo, jeżeli "
+"posiadasz kamerę internetewą, to najczęstszym wyborem jest Video4Linux."
 
 #: src/druid.cpp:1183
 #, c-format
@@ -1807,7 +1824,7 @@ msgstr "Akceptowanie wywołania od %s (chętny to pogawędki)"
 msgid "Call rejected"
 msgstr "Połączenie odrzucone"
 
-#: src/endpoint.cpp:807 src/endpoint.cpp:1170 src/endpoint.cpp:2119
+#: src/endpoint.cpp:807 src/endpoint.cpp:1171 src/endpoint.cpp:2121
 msgid "Call forwarded"
 msgstr "Połączenie przekazane"
 
@@ -1838,87 +1855,87 @@ msgstr "Połączono z %s przy użyciu %s"
 msgid "Connected"
 msgstr "Połączono"
 
-#: src/endpoint.cpp:1134
+#: src/endpoint.cpp:1135
 msgid "Local user cleared the call"
 msgstr "Lokalny użytkownik przerwał połączenie"
 
-#: src/endpoint.cpp:1137
+#: src/endpoint.cpp:1138
 msgid "Remote user cleared the call"
 msgstr "Zdalny użytkownik przerwał połączenie"
 
-#: src/endpoint.cpp:1140
+#: src/endpoint.cpp:1141
 msgid "Remote user did not accept the call"
 msgstr "Zdalny użytkownik nie zaakceptował połączenia"
 
-#: src/endpoint.cpp:1143 src/endpoint.cpp:1146
+#: src/endpoint.cpp:1144 src/endpoint.cpp:1147
 msgid "Local user did not accept the call"
 msgstr "Lokalny użytkownik nie zaakceptował połączenia"
 
-#: src/endpoint.cpp:1149
+#: src/endpoint.cpp:1150
 msgid "The Gatekeeper cleared the call"
 msgstr "Komputer bramki przerwał połączenie"
 
-#: src/endpoint.cpp:1152
+#: src/endpoint.cpp:1153
 msgid "Call not answered in the required time"
 msgstr "Wywołanie nie zostało odebrane w wymaganym czasie"
 
-#: src/endpoint.cpp:1155
+#: src/endpoint.cpp:1156
 msgid "Remote user has stopped calling"
 msgstr "Zdalny użytkownik zaprzestał wywołania"
 
-#: src/endpoint.cpp:1158
+#: src/endpoint.cpp:1159
 msgid "Abnormal call termination"
 msgstr "Nieprawidłowe zakończenie połączenia"
 
-#: src/endpoint.cpp:1161
+#: src/endpoint.cpp:1162
 msgid "Could not connect to remote host"
 msgstr "Nie można połączyć się ze zdalnym komputerem"
 
-#: src/endpoint.cpp:1164
+#: src/endpoint.cpp:1165
 msgid "Insufficient bandwidth"
 msgstr "Niewystarczające pasmo"
 
-#: src/endpoint.cpp:1167
+#: src/endpoint.cpp:1168
 msgid "No common codec"
 msgstr "Brak wspólnego kodeka"
 
-#: src/endpoint.cpp:1173
+#: src/endpoint.cpp:1174
 msgid "Security check Failed"
 msgstr "Sprawdzenie bezpieczeństwa nie powiodło się"
 
-#: src/endpoint.cpp:1176
+#: src/endpoint.cpp:1177
 msgid "Local user is busy"
 msgstr "Lokalny użytkownik jest zajęty"
 
-#: src/endpoint.cpp:1179
+#: src/endpoint.cpp:1180
 msgid "Remote user is busy"
 msgstr "Zdalny użytkownik jest zajęty"
 
-#: src/endpoint.cpp:1182 src/endpoint.cpp:1185
+#: src/endpoint.cpp:1183 src/endpoint.cpp:1186
 msgid "Congested link to remote party"
 msgstr "Przeciążone łącze do zdalnego użytkownika"
 
-#: src/endpoint.cpp:1188 src/endpoint.cpp:1191
+#: src/endpoint.cpp:1189 src/endpoint.cpp:1192
 msgid "Remote user is unreachable"
 msgstr "Zdalny użytkownik jest nieosiąglany"
 
-#: src/endpoint.cpp:1194
+#: src/endpoint.cpp:1195
 msgid "Remote host is offline"
 msgstr "Zdalny komputer jest odłączony"
 
-#: src/endpoint.cpp:1197
+#: src/endpoint.cpp:1198
 msgid "Temporary failure"
 msgstr "Przejściowe uszkodzenie"
 
-#: src/endpoint.cpp:1200 src/urlhandler.cpp:375 src/urlhandler.cpp:381
+#: src/endpoint.cpp:1201 src/urlhandler.cpp:375 src/urlhandler.cpp:381
 msgid "User not found"
 msgstr "Nie odnaleziono użytkownika"
 
-#: src/endpoint.cpp:1204
+#: src/endpoint.cpp:1205
 msgid "Call completed"
 msgstr "Połączenie zakończone"
 
-#: src/endpoint.cpp:1293 src/main_window.cpp:1241
+#: src/endpoint.cpp:1295 src/main_window.cpp:1241
 msgid ""
 "Lost packets:\n"
 "Late packets:\n"
@@ -1930,11 +1947,11 @@ msgstr ""
 "łączne opóźnienie:\n"
 "bufor synchronizacji:"
 
-#: src/endpoint.cpp:1515
+#: src/endpoint.cpp:1517
 msgid "Error while starting the listener"
 msgstr "Błąd podczas uruchamiania nasłuchu"
 
-#: src/endpoint.cpp:1515
+#: src/endpoint.cpp:1517
 msgid ""
 "You will not be able to receive incoming calls. Please check that no other "
 "program is already running on the port used by GnomeMeeting."
@@ -1943,30 +1960,30 @@ msgstr ""
 "program, używający tego samego portu co GnomeMeeting."
 
 # lid - powinno być LID - Line Interfeace Device
-#: src/endpoint.cpp:1646
+#: src/endpoint.cpp:1648
 msgid "Attaching lid hardware to codec"
 msgstr "Przydzielenie urządzenia komunikacyjnego do kodeka"
 
 #. Translators : the full sentence is "Opening %s for playing with
 #. plugin %s" or "Opening %s for recording with plugin"
-#: src/endpoint.cpp:1679
+#: src/endpoint.cpp:1681
 #, c-format
 msgid "Opened %s for %s with plugin %s"
 msgstr "Otwarto %s do %s z wtyczką %s"
 
-#: src/endpoint.cpp:1681
+#: src/endpoint.cpp:1683
 msgid "recording"
 msgstr "rejestrowania"
 
-#: src/endpoint.cpp:1681
+#: src/endpoint.cpp:1683
 msgid "playing"
 msgstr "odtwarzania"
 
-#: src/endpoint.cpp:1718
+#: src/endpoint.cpp:1720
 msgid "Could not open audio channel for audio transmission"
 msgstr "Nie można otworzyć kanału dźwiękowego dla transmisji dźwięku"
 
-#: src/endpoint.cpp:1718
+#: src/endpoint.cpp:1720
 msgid ""
 "An error occured while trying to record from the soundcard for the audio "
 "transmission. Please check that your soundcard is not busy and that your "
@@ -1978,11 +1995,11 @@ msgstr ""
 "dwukierunkowy.\n"
 "Transmisja dźwięku została wyłączona."
 
-#: src/endpoint.cpp:1723
+#: src/endpoint.cpp:1725
 msgid "Could not open audio channel for audio reception"
 msgstr "Nie można otworzyć kanału dźwiękowego dla odbioru dźwięku"
 
-#: src/endpoint.cpp:1723
+#: src/endpoint.cpp:1725
 msgid ""
 "An error occured while trying to play audio to the soundcard for the audio "
 "reception. Please check that your soundcard is not busy and that your driver "
@@ -1993,12 +2010,12 @@ msgstr ""
 "dźwiękowa nie jest używana oraz czy sterownik do niej jest dwukierunkowy.\n"
 "Odbiór dźwięku został wyłączony."
 
-#: src/endpoint.cpp:1952
+#: src/endpoint.cpp:1954
 #, c-format
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 
-#: src/endpoint.cpp:1994
+#: src/endpoint.cpp:1996
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2011,7 +2028,7 @@ msgstr ""
 "Łączne opóźnienie: %d ms\n"
 "Bufor synchronizacji: %d ms"
 
-#: src/endpoint.cpp:2115
+#: src/endpoint.cpp:2117
 #, c-format
 msgid "Forwarding Call to %s (No Answer)"
 msgstr "Przekazywanie połączenia do %s (brak odpowiedzi)"
@@ -2225,251 +2242,251 @@ msgstr ""
 msgid "Search completed: %d user(s) found on %s."
 msgstr "Wyszukiwanie zakończone: odnaleziono %d użytkowników na %s."
 
-#: src/ldap_window.cpp:735
+#: src/ldap_window.cpp:745
 msgid "Edit the contact information"
 msgstr "Modyfikacja danych kontaktu"
 
-#: src/ldap_window.cpp:752
+#: src/ldap_window.cpp:762
 msgid "Name:"
 msgstr "Nazwa:"
 
-#: src/ldap_window.cpp:772
+#: src/ldap_window.cpp:782
 msgid "URL:"
 msgstr "URL:"
 
-#: src/ldap_window.cpp:799
+#: src/ldap_window.cpp:809
 msgid "Speed Dial:"
 msgstr "Szybkie wybieranie:"
 
-#: src/ldap_window.cpp:823
+#: src/ldap_window.cpp:833
 msgid "Groups:"
 msgstr "Grupy:"
 
-#: src/ldap_window.cpp:937
+#: src/ldap_window.cpp:947
 msgid "Invalid user name or URL"
 msgstr "Nieprawidłowa nazwa użytkownika lub URL"
 
-#: src/ldap_window.cpp:937
+#: src/ldap_window.cpp:947
 msgid ""
 "Please provide a valid name and URL for the contact you want to add to the "
 "address book."
 msgstr "Podaj nazwę i adres URL kontaktu dodawanego do książki adresowej."
 
-#: src/ldap_window.cpp:945
+#: src/ldap_window.cpp:955
 msgid "Invalid group"
 msgstr "Niepoprawna grupa"
 
-#: src/ldap_window.cpp:945
+#: src/ldap_window.cpp:955
 msgid "You have to select a group to which you want to add your contact."
 msgstr "Należy podać nazwę grupy, do której zostanie dodany kontakt."
 
-#: src/ldap_window.cpp:959
+#: src/ldap_window.cpp:969
 msgid "Invalid speed dial"
 msgstr "Niepoprawna wartość szybkiego wybierania"
 
-#: src/ldap_window.cpp:959
+#: src/ldap_window.cpp:969
 msgid ""
 "Another contact with the same speed dial already exists in the address book."
 msgstr ""
 "Istnieje już kontakt z taką samą wartością pola szybkiego wybierania w "
 "książce adresowej."
 
-#: src/ldap_window.cpp:971
+#: src/ldap_window.cpp:981
 msgid "Invalid URL"
 msgstr "Niepoprawny adres URL"
 
-#: src/ldap_window.cpp:971
+#: src/ldap_window.cpp:981
 msgid "Another contact with the same URL already exists in the address book."
 msgstr "Kontakt z takim samym adresem URL już istnieje w książce adresowej."
 
-#: src/ldap_window.cpp:1008
+#: src/ldap_window.cpp:1018
 #, c-format
 msgid "Are you sure you want to remove %s [%s] from this group?"
 msgstr "Czy na pewno chcesz usunąć %s [%s] z tej grupy?"
 
-#: src/ldap_window.cpp:1114
+#: src/ldap_window.cpp:1124
 #, c-format
 msgid "Add %s to Address Book"
 msgstr "Dodaj %s do książki adresowej"
 
-#: src/ldap_window.cpp:1140 src/ldap_window.cpp:2745
+#: src/ldap_window.cpp:1150 src/ldap_window.cpp:2755
 msgid "C_all Contact"
 msgstr "_Wywołanie kontaktu"
 
-#: src/ldap_window.cpp:1146 src/ldap_window.cpp:2748
+#: src/ldap_window.cpp:1156 src/ldap_window.cpp:2758
 msgid "_Tranfer Call to Contact"
 msgstr "_Przekazanie połączenia do kontaktu"
 
-#: src/ldap_window.cpp:1158 src/ldap_window.cpp:2765
+#: src/ldap_window.cpp:1168 src/ldap_window.cpp:2775
 msgid "Contact _Properties"
 msgstr "Właściwości _kontaktu"
 
-#: src/ldap_window.cpp:1164
+#: src/ldap_window.cpp:1174
 msgid "Copy URL to the clipboard"
-msgstr ""
+msgstr "Kopiowanie adresu URL do schowka"
 
-#: src/ldap_window.cpp:1170 src/ldap_window.cpp:1615 src/ldap_window.cpp:2727
+#: src/ldap_window.cpp:1180 src/ldap_window.cpp:1625 src/ldap_window.cpp:2737
 msgid "_Delete"
 msgstr "_Usuń"
 
-#: src/ldap_window.cpp:1272
+#: src/ldap_window.cpp:1282
 msgid "Add a new server"
 msgstr "Dodanie nowego serwera"
 
-#: src/ldap_window.cpp:1273
+#: src/ldap_window.cpp:1283
 msgid "Enter the server name:"
 msgstr "Nazwa serwera:"
 
-#: src/ldap_window.cpp:1274 src/ldap_window.cpp:1387
+#: src/ldap_window.cpp:1284 src/ldap_window.cpp:1397
 msgid ""
 "Sorry but there is already a server with the same name in the address book."
 msgstr "Serwer o takiej samej nazwie już istnieje w książce adresowej."
 
-#: src/ldap_window.cpp:1278
+#: src/ldap_window.cpp:1288
 msgid "Add a new group"
 msgstr "Dodanie nowej grupy"
 
-#: src/ldap_window.cpp:1279
+#: src/ldap_window.cpp:1289
 msgid "Enter the group name:"
 msgstr "Nazwa grupy:"
 
-#: src/ldap_window.cpp:1280 src/ldap_window.cpp:1398
+#: src/ldap_window.cpp:1290 src/ldap_window.cpp:1408
 msgid ""
 "Sorry but there is already a group with the same name in the address book."
 msgstr "Grupa o takiej samej nazwie już istnieje w książce adresowej."
 
-#: src/ldap_window.cpp:1314 src/ldap_window.cpp:1447
+#: src/ldap_window.cpp:1324 src/ldap_window.cpp:1457
 msgid "Invalid server or group name"
 msgstr "Niepoprawny serwer lub nazwa grupy"
 
-#: src/ldap_window.cpp:1383
+#: src/ldap_window.cpp:1393
 #, c-format
 msgid "Please enter a new name for server %s:"
 msgstr "Wprowadź nową nazwę serwera %s:"
 
-#: src/ldap_window.cpp:1385
+#: src/ldap_window.cpp:1395
 #, c-format
 msgid "Are you sure you want to delete server %s?"
 msgstr "Czy na pewno chcesz usunąć serwer %s?"
 
-#: src/ldap_window.cpp:1394
+#: src/ldap_window.cpp:1404
 #, c-format
 msgid "Please enter a new name for group %s:"
 msgstr "Wprowadź nową nazwę grupy %s:"
 
-#: src/ldap_window.cpp:1396
+#: src/ldap_window.cpp:1406
 #, c-format
 msgid "Are you sure you want to delete group %s and all its contacts?"
 msgstr "Czy na pewno chcesz usunąć grupę %s wraz z całą zawartością?"
 
-#: src/ldap_window.cpp:1583
+#: src/ldap_window.cpp:1593
 msgid "New server"
 msgstr "Nowy serwer"
 
-#: src/ldap_window.cpp:1593
+#: src/ldap_window.cpp:1603
 msgid "New group"
 msgstr "Nowa grupa"
 
-#: src/ldap_window.cpp:1603
+#: src/ldap_window.cpp:1613
 msgid "_Find"
 msgstr "_Znajdź"
 
-#: src/ldap_window.cpp:1610 src/ldap_window.cpp:1632 src/ldap_window.cpp:2731
+#: src/ldap_window.cpp:1620 src/ldap_window.cpp:1642 src/ldap_window.cpp:2741
 msgid "_Rename"
 msgstr "Z_mień nazwę"
 
-#: src/ldap_window.cpp:1625
+#: src/ldap_window.cpp:1635
 msgid "New contact"
 msgstr "Nowy kontakt"
 
-#: src/ldap_window.cpp:1637
+#: src/ldap_window.cpp:1647
 msgid "Delete"
 msgstr "Usuń"
 
-#: src/ldap_window.cpp:2696
+#: src/ldap_window.cpp:2706
 msgid "GnomeMeeting Address Book"
 msgstr "Książka adresowa programu GnomeMeeting"
 
-#: src/ldap_window.cpp:2714
+#: src/ldap_window.cpp:2724
 msgid "_File"
 msgstr "_Plik"
 
-#: src/ldap_window.cpp:2716
+#: src/ldap_window.cpp:2726
 msgid "New _Server"
 msgstr "Nowy _serwer"
 
-#: src/ldap_window.cpp:2720
+#: src/ldap_window.cpp:2730
 msgid "New _Group"
 msgstr "N_owa grupa"
 
-#: src/ldap_window.cpp:2738 src/menu.cpp:328
+#: src/ldap_window.cpp:2748 src/menu.cpp:328
 msgid "_Close"
 msgstr "_Zamknij"
 
-#: src/ldap_window.cpp:2743
+#: src/ldap_window.cpp:2753
 msgid "C_ontact"
 msgstr "_Kontakty"
 
-#: src/ldap_window.cpp:2754
+#: src/ldap_window.cpp:2764
 msgid "New _Contact"
 msgstr "_Nowy kontakt"
 
-#: src/ldap_window.cpp:2758
+#: src/ldap_window.cpp:2768
 msgid "Add Contact to _Address Book"
 msgstr "_Dodaj kontakt do książki adresowej"
 
 #. Translators: This is "S" as in "Status"
-#: src/ldap_window.cpp:3024
+#: src/ldap_window.cpp:3034
 msgid "S"
 msgstr "S"
 
 #. Translators: This is "A" as in "Audio"
-#: src/ldap_window.cpp:3034 src/pref_window.cpp:1095 src/pref_window.cpp:1522
+#: src/ldap_window.cpp:3044 src/pref_window.cpp:1095 src/pref_window.cpp:1522
 msgid "A"
 msgstr "A"
 
 #. Translators: This is "V" as in "Video"
-#: src/ldap_window.cpp:3044
+#: src/ldap_window.cpp:3054
 msgid "V"
 msgstr "W"
 
-#: src/ldap_window.cpp:3053 src/ldap_window.cpp:3127 src/pref_window.cpp:1536
+#: src/ldap_window.cpp:3063 src/ldap_window.cpp:3137 src/pref_window.cpp:1536
 msgid "Name"
 msgstr "Nazwa"
 
-#: src/ldap_window.cpp:3091 src/ldap_window.cpp:3139 src/tools.cpp:430
+#: src/ldap_window.cpp:3101 src/ldap_window.cpp:3149 src/tools.cpp:430
 msgid "URL"
 msgstr "URL"
 
-#: src/ldap_window.cpp:3114
+#: src/ldap_window.cpp:3124
 msgid "IP"
 msgstr "IP"
 
-#: src/ldap_window.cpp:3152
+#: src/ldap_window.cpp:3162
 msgid "Speed Dial"
 msgstr "Szybkie wybieranie"
 
-#: src/ldap_window.cpp:3205
+#: src/ldap_window.cpp:3215
 msgid "Find all contacts"
 msgstr "Wyszukanie wszystkich kontaktów"
 
-#: src/ldap_window.cpp:3210
+#: src/ldap_window.cpp:3220
 msgid "First name contains"
 msgstr "Imię zawiera"
 
-#: src/ldap_window.cpp:3214
+#: src/ldap_window.cpp:3224
 msgid "Last name contains"
 msgstr "Nazwisko zawiera"
 
-#: src/ldap_window.cpp:3218
+#: src/ldap_window.cpp:3228
 msgid "E-mail contains"
 msgstr "Adres e-mail zawiera"
 
-#: src/ldap_window.cpp:3404
+#: src/ldap_window.cpp:3414
 msgid "Servers"
 msgstr "Serwery"
 
-#: src/ldap_window.cpp:3450
+#: src/ldap_window.cpp:3460
 msgid "Groups"
 msgstr "Grupy"
 
@@ -2513,13 +2530,12 @@ msgid "Cannot run GnomeMeeting"
 msgstr "Nie można uruchomić GnomeMeeting"
 
 #: src/main_window.cpp:459
-#, fuzzy
 msgid ""
 "GnomeMeeting is already running, if you want it to call a given callto or "
 "h323 URL, please use \"gnomemeeting -c URL\"."
 msgstr ""
 "Program GnomeMeeting jest już uruchomiony, jeżeli chcesz połączyć się z "
-"adresem URL wywołania, użyj: \"gnomemeeting -c URL\"."
+"adresem URL wywołania h323, użyj: \"gnomemeeting -c URL\"."
 
 # dziwnie to wygląda, ale nic innego mi się tu nie nasuwa z tym Factory mode
 #: src/main_window.cpp:512
@@ -2599,16 +2615,18 @@ msgstr "Powoduje wywołanie przez GnomeMeeting podanego URL-a"
 
 #: src/main_window.cpp:1611
 msgid "No usable audio manager detected"
-msgstr "Nie wykryto używalnego menedżera dźwiękowego"
+msgstr "Nie wykryto użytecznego menedżera dźwiękowego"
 
 #: src/main_window.cpp:1611
 msgid ""
 "GnomeMeeting didn't find any usable sound manager. Make sure that your "
 "installation is correct."
 msgstr ""
+"Program GnomeMeeting nie odnalazł żadnego użytecznego menedżera dźwięku. "
+"Upewnij się, czy program jest poprawnie zainstalowany."
 
 #: src/main_window.cpp:1631
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "GnomeMeeting got an invalid value for the GConf key %s.\n"
 "\n"
@@ -2620,8 +2638,7 @@ msgid ""
 "gconf/) or the mailing list archives for more information (http://mail.gnome."
 "org) about this problem."
 msgstr ""
-"GnomeMeeting otrzymał niepoprawną watość klucza GConf \"/apps/gnomemeeting/"
-"gconf_test_age\".\n"
+"GnomeMeeting otrzymał niepoprawną watość klucza GConf %s.\n"
 "\n"
 "Oznacza to prawdopodobnie niepoprawną instalację schematu lub błędne "
 "uprawnienia.\n"
@@ -3395,14 +3412,6 @@ msgstr "Wtyczka wideo:"
 #: src/pref_window.cpp:1420 src/pref_window.cpp:1779
 msgid "Video Devices"
 msgstr "Urządzenia wideo"
-
-#: src/pref_window.cpp:1425
-msgid ""
-"Select the video device to use. Using an invalid video device or \"Picture\" "
-"for video transmission will transmit a test picture."
-msgstr ""
-"Wybór urządzenia wideo. Użycie niepoprawnego urządzenia lub napisu \"Obraz\" "
-"dla przesyłu wideo spowoduje wysłanie obrazu testowego."
 
 #. Video Channel
 #: src/pref_window.cpp:1429
