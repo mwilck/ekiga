@@ -115,6 +115,7 @@ gnomemeeting_remote_addressbook_get_contacts (GmAddressbook *addressbook,
   PStringList attrs;
   PStringArray arr, arr2;
   PString entry;
+  PString purl;
 
   char prefix [256] = "";
   char hostname [256] = "";
@@ -147,6 +148,8 @@ gnomemeeting_remote_addressbook_get_contacts (GmAddressbook *addressbook,
   attrs += "l";
   attrs += "localityname";
   attrs += "ilsa26214430";
+  if (addressbook->call_attribute)
+    attrs += addressbook->call_attribute;
 
   entry = addressbook->url;
   entry.Replace (":", " ", TRUE);
@@ -192,17 +195,10 @@ gnomemeeting_remote_addressbook_get_contacts (GmAddressbook *addressbook,
       contact = gm_contact_new ();
       
       if (ldap.GetSearchResult (context, "rfc822mailbox", arr)
-	  || ldap.GetSearchResult (context, "mail", arr)) {
-	
+	  || ldap.GetSearchResult (context, "mail", arr)) 
 	contact->email = g_strdup ((const char *) arr [0]);
-	contact->url = g_strdup_printf ("callto://ils.seconix.com/%s", 
-					contact->email);
-      }
-      else {
-	
+      else
 	contact->email = g_strdup ("");
-	contact->url = g_strdup ("");
-      }
       
       if (ldap.GetSearchResult (context, "givenname", arr))
 	firstname = g_strdup ((const char *) arr [0]);
@@ -236,7 +232,25 @@ gnomemeeting_remote_addressbook_get_contacts (GmAddressbook *addressbook,
 	contact->state = atoi ((const char *) arr [0]);
       else
 	contact->state = 0;
+
+      if (addressbook->call_attribute
+	  && ldap.GetSearchResult (context, addressbook->call_attribute, arr)) {
+	
+	/* Some clever guessing */
+	if (is_ils && !strcasecmp (addressbook->call_attribute, "rfc822Mailbox"))
+	  purl = PString ("callto:") + PString (hostname)
+	    + PString ("/") + PString ((const char *) arr [0]);
+	else {
 	  
+	  purl = PString ("h323:") + PString ((const char *) arr [0]);
+	  purl.Replace ("+", "");
+	  purl.Replace ("-", "");
+	  purl.Replace (" ", "");
+	}
+      
+	contact->url = g_strdup ((const char *) purl);
+      }
+      
       list = g_slist_append (list, (gpointer) contact);
 
       g_free (surname);
