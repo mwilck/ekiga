@@ -48,6 +48,7 @@
 extern GnomeMeeting *MyApp;
 extern GtkWidget *gm;
 
+
 /* Static functions */
 static void connect_button_clicked (GtkToggleButton *w, gpointer data)
 {
@@ -94,6 +95,22 @@ static void connect_button_clicked (GtkToggleButton *w, gpointer data)
 }
 
 
+/* DESCRIPTION  :  This callback is called when the user toggles the 
+ *                 corresponding component in the toolbar. (See menu_toggle_changed)
+ * BEHAVIOR     :  Updates the gconf cache.
+ * PRE          :  data is the key.
+ */
+static void toolbar_toggle_changed (GtkWidget *widget, gpointer data)
+{
+  GConfClient *client = gconf_client_get_default ();
+  bool shown = gconf_client_get_bool (client, (gchar *) data, NULL);
+
+  gconf_client_set_bool (client,
+			 (gchar *) data,
+			 !shown, NULL);
+}
+
+
 /* The functions */
 
 void gnomemeeting_init_toolbar ()
@@ -108,7 +125,6 @@ void gnomemeeting_init_toolbar ()
   GConfClient *client = gconf_client_get_default ();
 
   GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
-  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
   
   static GnomeUIInfo main_toolbar [] =
     {
@@ -121,22 +137,24 @@ void gnomemeeting_init_toolbar ()
       {
 	GNOME_APP_UI_ITEM,
 	N_("ILS Directory"), N_("Find friends on ILS"),
-	(void *)ldap_callback, gw, NULL,
+	(void *) gnomemeeting_component_view, gw->ldap_window, NULL,
 	GNOME_APP_PIXMAP_DATA, ils_xpm,
 	NULL, GDK_CONTROL_MASK, NULL
 	},
         {
 	GNOME_APP_UI_ITEM,
 	N_("Chat"), N_("Make a text chat with your friend"),
-	(void *)chat_callback, gw, NULL,
-	GNOME_APP_PIXMAP_DATA, gnome_chat_xpm,
+	(void *) toolbar_toggle_changed, 
+	(gpointer) "/apps/gnomemeeting/view/show_chat_window",
+	NULL, GNOME_APP_PIXMAP_DATA, gnome_chat_xpm,
 	NULL, GDK_CONTROL_MASK, NULL
 	},
 	{
 	GNOME_APP_UI_ITEM,
-	N_("Settings"), N_("Change Your Preferences"),
-	(void *)pref_callback, pw, NULL,
-	GNOME_APP_PIXMAP_DATA, settings_xpm,
+	N_("Control Panel"), N_("Display the control panel"),
+	(void *) toolbar_toggle_changed, 
+	(gpointer) "/apps/gnomemeeting/view/show_control_panel",
+	NULL, GNOME_APP_PIXMAP_DATA, settings_xpm,
 	NULL, GDK_CONTROL_MASK, NULL
 	},
 	GNOMEUIINFO_SEPARATOR,

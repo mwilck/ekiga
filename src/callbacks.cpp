@@ -82,45 +82,12 @@ void pause_video_callback (GtkWidget *widget, gpointer data)
 }
 
 
-void pref_callback (GtkWidget *widget, gpointer data)
+void gnomemeeting_component_view (GtkWidget *w, gpointer data)
 {
-  GM_pref_window_widgets *pw = (GM_pref_window_widgets *) data;
- 
-  if (!GTK_WIDGET_VISIBLE (pw->gw->pref_window)) {
-
-      gtk_widget_show_all (pw->gw->pref_window);
-      
-      /* update the preview button status in the pref window,
-         this function will call the appropriate callback if needed */
-      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->video_preview),
-				    gtk_toggle_button_get_active 
-				    (GTK_TOGGLE_BUTTON 
-				     (pw->gw->preview_button)));
-  }
+  if (!GTK_WIDGET_VISIBLE (GTK_WIDGET (data))) 
+    gtk_widget_show_all (GTK_WIDGET (data));
   else
-    gtk_widget_hide_all (pw->gw->pref_window);
-}
-
-
-void ldap_callback (GtkButton *button, gpointer data)
-{
-  GM_window_widgets *gw = (GM_window_widgets *) data;
-  
-  if (!GTK_WIDGET_VISIBLE (gw->ldap_window))
-    gtk_widget_show_all (gw->ldap_window);
-  else
-    gtk_widget_hide_all (gw->ldap_window);
-}
-
-
-void chat_callback (GtkButton *button, gpointer data)
-{
-  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
-  
-  if (!GTK_WIDGET_VISIBLE (gw->chat_window))
-    gtk_widget_show_all (gw->chat_window);
-  else
-    gtk_widget_hide (gw->chat_window);
+    gtk_widget_hide_all (GTK_WIDGET (data));
 }
 
 
@@ -130,8 +97,9 @@ void connect_cb (GtkWidget *widget, gpointer data)
 
   if (MyApp->Endpoint ()->GetCallingState () == 0) {
 
+    GTK_TOGGLE_BUTTON (gw->connect_button)->active = TRUE;
+    gtk_widget_draw (gw->connect_button, NULL);
     MyApp->Connect ();
-    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->connect_button), TRUE);
   }
 }
 
@@ -146,8 +114,10 @@ void disconnect_cb (GtkWidget *widget, gpointer data)
   if (connection != NULL)
     connection->UnPauseChannels ();
 
+  GTK_TOGGLE_BUTTON (gw->connect_button)->active = FALSE;
+  gtk_widget_draw (gw->connect_button, NULL);
+
   MyApp->Disconnect();
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->connect_button), FALSE);
 }
 
 

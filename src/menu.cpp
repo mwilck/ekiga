@@ -208,6 +208,14 @@ void gnomemeeting_init_menu ()
       },
       {
 	GNOME_APP_UI_TOGGLEITEM,
+	N_("Cha_t Window"), N_("View/Hide the Chat Window"),
+	(void *) menu_toggle_changed, 
+	(gpointer) "/apps/gnomemeeting/view/show_chat_window",
+	NULL, GNOME_APP_PIXMAP_NONE, NULL,
+	NULL, GDK_CONTROL_MASK, NULL
+      },
+      {
+	GNOME_APP_UI_TOGGLEITEM,
 	N_("_Status Bar"), N_("View/Hide the Status Bar"),
 	(void *) menu_toggle_changed, 
 	(gpointer) "/apps/gnomemeeting/view/show_status_bar",
@@ -230,7 +238,7 @@ void gnomemeeting_init_menu ()
       {
 	GNOME_APP_UI_ITEM,
 	N_("_Settings"), N_("Change Your Preferences"),
-	(void *) pref_callback, pw, NULL,
+	(void *) gnomemeeting_component_view, gw->pref_window, NULL,
 	GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_PREF,
 	's', GDK_CONTROL_MASK, NULL
       },
@@ -277,9 +285,12 @@ void gnomemeeting_init_menu ()
     gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_control_panel", 0);
 
   GTK_CHECK_MENU_ITEM (view_menu_uiinfo [3].widget)->active = 
+    gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_chat_window", 0);
+
+  GTK_CHECK_MENU_ITEM (view_menu_uiinfo [4].widget)->active = 
     gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_status_bar", 0);
 
-  GTK_CHECK_MENU_ITEM (view_menu_uiinfo [4].widget)->active =
+  GTK_CHECK_MENU_ITEM (view_menu_uiinfo [5].widget)->active =
     gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_docklet", 0);
 
 

@@ -549,6 +549,10 @@ void gnomemeeting_init_main_window ()
  		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
  		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
  		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
+ if (gconf_client_get_bool 
+      (client, "/apps/gnomemeeting/view/show_chat_window", 0))
+    gtk_widget_show_all (GTK_WIDGET (gw->chat_window));
+
 
   /* The remote name */
   gw->remote_name = gtk_entry_new ();

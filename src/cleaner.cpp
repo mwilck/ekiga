@@ -88,10 +88,8 @@ void GMThreadsCleaner::Main ()
     /* if OpenH323 doesn't disconnect, we force the exit */
     if (counter > 50) {
 
-      gdk_threads_enter ();
       cout << "Warning: We have forced the exit" << endl << flush;
       gtk_main_quit ();      
-      gdk_threads_leave ();
     }
 
     Current ()->Sleep (100);

@@ -652,8 +652,27 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook)
   
 
   /* Show / hide splash screen at startup */
+  pw->show_chat_window = gtk_check_button_new_with_label (_("Show Chat Window"));
+  gtk_table_attach (GTK_TABLE (table), pw->show_chat_window, 1, 2, 0, 1,
+		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);	
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->show_chat_window), 
+				gconf_client_get_bool (client, "/apps/gnomemeeting/"
+						       "view/show_chat_window",
+						       0));
+
+  tip = gtk_tooltips_new ();
+  gtk_tooltips_set_tip (tip, pw->show_chat_window,
+			_("If enabled, the chat window will be displayed at startup time"), NULL);
+  gtk_signal_connect (GTK_OBJECT (pw->show_chat_window), "toggled",
+		      GTK_SIGNAL_FUNC (toggle_changed),
+		      (gpointer) "/apps/gnomemeeting/view/show_chat_window");
+
+
+  /* Show / hide splash screen at startup */
   pw->show_splash = gtk_check_button_new_with_label (_("Show Splash Screen"));
-  gtk_table_attach (GTK_TABLE (table), pw->show_splash, 1, 2, 0, 1,
+  gtk_table_attach (GTK_TABLE (table), pw->show_splash, 1, 2, 1, 2,
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);	

@@ -1154,13 +1154,13 @@ static gboolean view_widget_changed (gpointer data)
     
     /* Update the menu,
        we are called only if the value has changed */
-    GTK_CHECK_MENU_ITEM (view_menu_uiinfo [3].widget)->active = 
+    GTK_CHECK_MENU_ITEM (view_menu_uiinfo [4].widget)->active = 
       !GTK_WIDGET_VISIBLE (gw->statusbar);
 
     GTK_TOGGLE_BUTTON (pw->show_statusbar)->active = 
       !GTK_WIDGET_VISIBLE (gw->statusbar);
 
-    gtk_widget_draw (view_menu_uiinfo [3].widget, NULL);
+    gtk_widget_draw (view_menu_uiinfo [4].widget, NULL);
     gtk_widget_draw (pw->show_statusbar, NULL);
 
     if (!GTK_WIDGET_VISIBLE (gw->statusbar))
@@ -1174,19 +1174,39 @@ static gboolean view_widget_changed (gpointer data)
     
     /* Update the menu,
        we are called only if the value has changed */
-    GTK_CHECK_MENU_ITEM (view_menu_uiinfo [4].widget)->active = 
+    GTK_CHECK_MENU_ITEM (view_menu_uiinfo [5].widget)->active = 
       !GTK_WIDGET_VISIBLE (gw->docklet);
 
     GTK_TOGGLE_BUTTON (pw->show_docklet)->active =
       !GTK_WIDGET_VISIBLE (gw->docklet);
 
     gtk_widget_draw (pw->show_docklet, NULL);
-    gtk_widget_draw (view_menu_uiinfo [4].widget, NULL);
+    gtk_widget_draw (view_menu_uiinfo [5].widget, NULL);
 
     if (!GTK_WIDGET_VISIBLE (gw->docklet))
       gtk_widget_show (gw->docklet);
     else
       gtk_widget_hide (gw->docklet);
+  }
+
+
+  if (data == pw->show_chat_window) {
+    
+    /* Update the menu,
+       we are called only if the value has changed */
+    GTK_CHECK_MENU_ITEM (view_menu_uiinfo [3].widget)->active = 
+      !GTK_WIDGET_VISIBLE (gw->chat_window);
+
+    GTK_TOGGLE_BUTTON (pw->show_chat_window)->active =
+      !GTK_WIDGET_VISIBLE (gw->chat_window);
+
+    gtk_widget_draw (pw->show_chat_window, NULL);
+    gtk_widget_draw (view_menu_uiinfo [3].widget, NULL);
+
+    if (!GTK_WIDGET_VISIBLE (gw->chat_window))
+      gtk_widget_show_all (gw->chat_window);
+    else
+      gtk_widget_hide_all (gw->chat_window);
   }
 
   gdk_threads_leave ();
@@ -1508,6 +1528,8 @@ void gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_status_bar", view_widget_changed_nt, pw->show_statusbar, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_docklet", view_widget_changed_nt, pw->show_docklet, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_chat_window", view_widget_changed_nt, pw->show_chat_window, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/view/notebook_info", notebook_info_changed_nt, NULL, 0, 0);
 

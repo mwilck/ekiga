@@ -46,6 +46,7 @@
 #include "misc.h"
 
 #include <gconf/gconf-client.h>
+#include <esd.h>
 
 #define new PNEW
 
@@ -603,7 +604,8 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 
   gnomemeeting_docklet_set_content (gw->docklet, 0);
 
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->connect_button), TRUE);
+  GTK_TOGGLE_BUTTON (gw->connect_button)->active = TRUE;
+  gtk_widget_draw (gw->connect_button, NULL);
 
   gnomemeeting_threads_leave ();
 
@@ -724,7 +726,8 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   SetCurrentConnection (NULL);
   SetCallingState (0);
 
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->connect_button), FALSE);
+  GTK_TOGGLE_BUTTON (gw->connect_button)->active = FALSE;
+  gtk_widget_draw (gw->connect_button, NULL);
 
   /* Remove the timers if needed and clear the docklet */
   if (docklet_timeout != 0)
@@ -803,6 +806,7 @@ BOOL GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
 				      unsigned bufferSize,
 				      H323AudioCodec & codec)
 {
+  int esd_client = 0;
   gnomemeeting_threads_enter ();
 
   /* If needed , delete the timers */
@@ -818,6 +822,12 @@ BOOL GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
   gnomemeeting_docklet_set_content (gw->docklet, 0);
 
   gnomemeeting_threads_leave ();
+
+  
+  /* Put esd into standby mode */
+  esd_client = esd_open_sound (NULL);
+  esd_standby (esd_client);
+  esd_close (esd_client);
 
   if (H323EndPoint::OpenAudioChannel(connection, isEncoding, 
 				     bufferSize, codec))

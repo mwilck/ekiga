@@ -109,6 +109,7 @@ struct _GM_ldap_window_widgets
 struct _GM_pref_window_widgets
 {
   GtkWidget *show_splash;
+  GtkWidget *show_chat_window;
   GtkWidget *show_statusbar;
   GtkWidget *show_notebook;
   GtkWidget *incoming_call_popup;

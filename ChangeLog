@@ -1,3 +1,30 @@
+2002-02-06  Damien Sandras  <dsandras@seconix.com>
+
+	* src/callbacks.cpp: Removed ldap_callback, pref_callback, and replaced
+	by component_view. This function only display popup windows (only prefs
+	and ldap). Use gconf for the GUI internal components.
+
+	* src/chat_window.cpp: Removed the show_all.
+	
+	* src/cleaner.cpp: Always exits properly.
+	
+	* src/common.h: Added widget to show/hide the chat window.
+	
+	* src/config.cpp: Added gconf support for the view menu and the toolbar
+	about the chat_window.
+	
+	* src/endpoint.cpp: Cleanly put esd into standby when opening the audio 
+	channel.
+	
+	* src/main_window.cpp: Shows or not the chat window following the prefs.
+	
+	* src/menu.cpp: Added the chat window into the view menu.
+	
+	* src/pref_window.cpp: Added a pref for the chat window.
+	
+	* src/toolbar.cpp: Changed some callbacks (see aboved) and connected
+	the control panel and the chat window buttons to the gconf settings.
+
 2002-02-06  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* src/config.cpp (notebook_info_changed): Prevent the interface get

@@ -50,22 +50,6 @@ void pause_audio_callback (GtkWidget *, gpointer);
 void pause_video_callback (GtkWidget *, gpointer);
 
 
-/* DESCRIPTION  :  This callback is called when the user chooses to open
- *                 the ILS window.
- * BEHAVIOR     :  If the ILS window is not already open, open it.
- * PRE          :  gpointer is a valid pointer to a valid GM_window_widgets.
- */
-void ldap_callback (GtkButton *, gpointer);
-
-
-/* DESCRIPTION  :  This callback is called when the user chooses to open
- *                 the Chat window.
- * BEHAVIOR     :  If the Chat window is not already open, open it.
- * PRE          :  gpointer is a valid pointer to a valid GM_window_widgets.
- */
-void chat_callback (GtkButton *, gpointer);
-
-
 /* DESCRIPTION  :  This callback is called when the user choose to hide
  *                 or show the main window.
  * BEHAVIOR     :  Hide or show the main window.
@@ -99,11 +83,11 @@ void disconnect_cb (GtkWidget *, gpointer);
 
 
 /* DESCRIPTION  :  This callback is called when the user chooses to open
- *                 the preferences window.
- * BEHAVIOR     :  If the preferenced window is not already open, open it.
- * PRE          :  gpointer is a valid pointer to a valid GM_window_widgets
+ *                 or close some component.
+ * BEHAVIOR     :  Shows or hide it.
+ * PRE          :  gpointer is a valid pointer to the widget.
  */
-void pref_callback (GtkWidget *, gpointer);
+void gnomemeeting_component_view (GtkWidget *, gpointer);
 
 
 /* DESCRIPTION  :  This callback is called when the user chooses to quit.

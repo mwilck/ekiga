@@ -134,8 +134,6 @@ void gnomemeeting_init_chat_window ()
 		    (GtkAttachOptions) (NULL),
 		    0, 0);
 
-  gtk_widget_show_all (GTK_WIDGET (gw->chat_window));
-
   gtk_signal_connect (GTK_OBJECT (entry), "activate",
 		      GTK_SIGNAL_FUNC (chat_entry_activate), gw->chat_text);
 
