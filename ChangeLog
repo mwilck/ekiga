@@ -1,3 +1,13 @@
+2004-12-02  Damien Sandras  <dsandras@gnome.org>
+
+	* Makefile.am: Fixed EXTRA_DIST to contain the list of marshallers.
+
+	* lib/contacts/Makefile.am: Fixed it so that make dist contains
+	gm_contacts-zeroconf.h.
+
+	* src/tools.cpp: Do not first "alias as primary alias" when
+	registering to the PC 2 Phone gk.
+
 2004-11-26  Damien Sandras  <dsandras@gnome.org>
 
 	* src/urlhandler.cpp: Do not add the gateway IP in the URL if it is

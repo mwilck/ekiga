@@ -22,7 +22,7 @@ libgmcontacts_la_SOURCES += gm_contacts-eds.cpp
 endif
 
 if HAS_HOWL
-libgmcontacts_la_SOURCES += gm_contacts-zeroconf.cpp
+libgmcontacts_la_SOURCES += gm_contacts-zeroconf.cpp gm_contacts-zeroconf.h
 endif
 
 INCLUDES =						\

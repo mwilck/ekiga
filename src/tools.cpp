@@ -82,7 +82,6 @@ pc2phone_window_response_cb (GtkWidget *w,
       gm_conf_set_bool (H323_ADVANCED_KEY "enable_early_h245", TRUE);
       gm_conf_set_string (H323_GATEKEEPER_KEY "host", "gk.ast.diamondcard.us");
       gm_conf_set_int (H323_GATEKEEPER_KEY "registering_method", 1);
-      gm_conf_set_bool (H323_GATEKEEPER_KEY "register_alias_as_primary", TRUE);
     }
     else
       gm_conf_set_int (H323_GATEKEEPER_KEY "registering_method", 0);
