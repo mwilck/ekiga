@@ -49,6 +49,11 @@
 // PRE          :
 gint gnome_idle_timer (void);
 
+// DESCRIPTION  :  This Timer is called evry second.
+// BEHAVIOR     :  Elapsed time since the beginning of the connection is displayed.
+// PRE          :
+gint AppbarUpdate (GtkWidget *);
+
 /******************************************************************************/
 
 

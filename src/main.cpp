@@ -27,7 +27,6 @@
 #include "toolbar.h"
 #include "config.h"
 
-
 #define new PNEW
 
 
@@ -45,14 +44,37 @@ GnomeMeeting *MyApp;
 /* GTK Callbacks                                                              */
 /******************************************************************************/
 
-gint gnome_idle_timer ()
+gint gnome_idle_timer (void)
 {
   gdk_threads_enter ();
   while (gtk_events_pending())
-    gtk_main_iteration();
+    gtk_main_iteration(); 
   gdk_threads_leave ();
   
-  usleep (50);
+  usleep (100);
+  return TRUE;
+}
+
+
+gint AppbarUpdate (GtkWidget *statusbar)
+{
+  if (MyApp->Endpoint ()) 
+    {
+      if (MyApp->Endpoint ()->Connection ())
+	{
+	  PTimeInterval t =
+	    PTime () - MyApp->Endpoint ()->Connection ()
+	    ->GetConnectionStartTime();
+	  
+	  gchar *msg = g_strdup_printf ("%.2ld:%.2ld:%.2ld", t.GetHours (), 
+					t.GetMinutes (), t.GetSeconds ());
+	  if (t.GetSeconds () > 2)
+	    gnome_appbar_push (GNOME_APPBAR (statusbar), msg);
+	  
+	  g_free (msg);
+	}
+    }
+
   return TRUE;
 }
 
@@ -252,7 +274,10 @@ int main (int argc, char ** argv, char ** envp)
 
   GM_init (gw, opts, argc, argv, envp);
 
-  gtk_idle_add ((GtkFunction) gnome_idle_timer, NULL);
+  gtk_idle_add ((GtkFunction) gnome_idle_timer, gw);
+
+  gtk_timeout_add (1000, (GtkFunction) AppbarUpdate, 
+		   gw->statusbar);
 
   if (opts->applet)
     applet_widget_gtk_main ();

@@ -116,13 +116,7 @@ COMPILATION QUESTIONS :
 	* make opt (from the directory where you extracted pwlib)
 	* do the following :
 
-	localhost:/opt/pwlib/lib# cp libpt_linux_x86_r.so.1.1.37 /usr/local/lib
-	localhost:/opt/pwlib/lib# ln -s /usr/local/lib/libpt_linux_x86_r.so.1.1.37 
-	/usr/local/lib/libpt_linux_x86_r.so
-	localhost:/opt/pwlib/lib# ln -s /usr/local/lib/libpt_linux_x86_r.so.1.1.37 
-	/usr/local/lib/libpt_linux_x86_r.so.1
-	localhost:/opt/pwlib/lib# ln -s /usr/local/lib/libpt_linux_x86_r.so.1.1.37 
-	/usr/local/lib/libpt_linux_x86_r.so.1.1
+	localhost:/opt/pwlib/lib# cp -d *so* /usr/local/lib
 	localhost:/opt/pwlib/lib# ln -s /usr/local/lib/libpt_linux_x86_r.so.1.1.37 
 	/usr/local/lib/libpt.so
 
@@ -138,13 +132,7 @@ COMPILATION QUESTIONS :
 	* make opt (from the directory where you extracted openh323)
 	* do the following :
 
-	localhost:/opt/pwlib/lib# cp libh323_linux_x86_r.so.1.6.1 /usr/local/lib
-	localhost:/opt/pwlib/lib# ln -s /usr/local/lib/libh323_linux_x86_r.so.1.6.1 
-	/usr/local/lib/libh323_linux_x86_r.so
-	localhost:/opt/pwlib/lib# ln -s /usr/local/lib/libh323_linux_x86_r.so.1.6.1 
-	/usr/local/lib/libh323_linux_x86_r.so.1
-	localhost:/opt/pwlib/lib# ln -s /usr/local/lib/libh323_linux_x86_r.so.1.6.1 
-	/usr/local/lib/libh323_linux_x86_r.so.1.6
+	localhost:/opt/pwlib/lib# cp -d *so* /usr/local/lib
 	localhost:/opt/pwlib/lib# ln -s /usr/local/lib/libh323_linux_x86_r.so.1.6.1 
 	/usr/local/lib/liboh323.so
 
@@ -168,11 +156,11 @@ COMPILATION QUESTIONS :
 	* run the ./configure script that supports several parameters :
 
 	--prefix=/usr  to install it in /usr
-	--with-pt-includes= specifies the location of PTlib headers (for example,
+	--with-ptlib-includes= specifies the location of PTlib headers (for example,
 	/opt/pwlib/include/ptlib if you extracted PWlib in /opt, default is /usr/include/ptlib)
-	--with-pt-libs= specifies the location of the PTlib libraries
-	--with-h323-includes= specifies the location of OpenH323 headers
-	--with-h323-libs= specifies the location of the OpenH323 libraries
+	--with-ptlib-libs= specifies the location of the PTlib libraries
+	--with-openh323-includes= specifies the location of OpenH323 headers
+	--with-openh323-libs= specifies the location of the OpenH323 libraries
 
 	* make
 	* make install

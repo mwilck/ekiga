@@ -31,23 +31,23 @@ dnl ************************************************
 dnl PTLib
 dnl Adapted from openh323 check in gnnomemeeting ;-)
 dnl ************************************************
-AC_ARG_WITH(pt-includes, [  --with-pt-includes=PFX   Location of PTLib includes.],  
-	with_pt_includes="$withval", with_pt_includes="/usr/include/ptlib")
+AC_ARG_WITH(ptlib-includes, [  --with-ptlib-includes=PFX   Location of PTLib includes.],  
+	with_ptlib_includes="$withval", with_ptlib_includes="/usr/include/ptlib")
 have_ptlib_includes="no"
-if test "x${with_pt_includes}" != "xno"; then
+if test "x${with_ptlib_includes}" != "xno"; then
 	CPPFLAGS_save="$CPPFLAGS"
 	
 	AC_MSG_CHECKING(for PTLib includes)
 	AC_MSG_RESULT()
 	
-	CPPFLAGS="$CPPFLAGS -I${with_pt_includes}/unix -I${with_pt_includes}"
-	AC_CHECK_HEADER(pstring.h, [ pt_includes="yes" ])
+	CPPFLAGS="$CPPFLAGS -I${with_ptlib_includes}/unix -I${with_ptlib_includes}"
+	AC_CHECK_HEADER(pstring.h, [ ptlib_includes="yes" ])
 	CPPFLAGS="$CPPFLAGS_save"
 	
-	if test "x${pt_includes}" != "xno" -a "x${pt_includes}" != "x"; then
-		have_pt_includes="yes"
-		PTLIB_CFLAGS="-I${with_pt_includes}/unix -I${with_pt_includes}/.. -I${with_pt_includes}/../ptclib"
-		PTLIB_INCLUDE_DIR="${with_pt_includes}"
+	if test "x${ptlib_includes}" != "xno" -a "x${ptlib_includes}" != "x"; then
+		have_ptlib_includes="yes"
+		PTLIB_CFLAGS="-I${with_ptlib_includes}/unix -I${with_ptlib_includes}/.. -I${with_ptlib_includes}/../ptclib"
+		PTLIB_INCLUDE_DIR="${with_ptlib_includes}"
 	else
 		AC_MSG_ERROR([You need PTLib's header files to build GnomeMeeting])
 	fi
@@ -55,14 +55,14 @@ else
 	AC_MSG_ERROR([You need PTLib's header files to build GnomeMeeting])
 fi
 
-AC_ARG_WITH(pt-libs, [  --with-pt-libs=PFX       Location of PTLib libs.],
-	with_pt_libs="$withval", with_pt_libs="/usr/lib")
-if test "x${with_pt_libs}" != "xno" -a "x${have_pt_includes}" != "xno"; then
-	AC_CHECK_FILE(${with_pt_libs}/libpt.so, pt_libs="yes", pt_libs="no")
+AC_ARG_WITH(ptlib-libs, [  --with-ptlib-libs=PFX       Location of PTLib libs.],
+	with_ptlib_libs="$withval", with_ptlib_libs="/usr/lib")
+if test "x${with_ptlib_libs}" != "xno" -a "x${have_ptlib_includes}" != "xno"; then
+	AC_CHECK_FILE(${with_ptlib_libs}/libpt.so, ptlib_libs="yes", ptlib_libs="no")
 	
-	if test "x${pt_libs}" != "xno"; then
-		PTLIB_LDFLAGS="-L${with_pt_libs} ${H323_LIBS}"
-		PTLIB_LIBS_DIR="${with_pt_libs}"
+	if test "x${ptlib_libs}" != "xno"; then
+		PTLIB_LDFLAGS="-L${with_ptlib_libs} ${H323_LIBS}"
+		PTLIB_LIBS_DIR="${with_ptlib_libs}"
 	else
 		AC_MSG_ERROR([You need PTLib to enjoy GnomeMeeting])
 	fi
@@ -79,7 +79,7 @@ dnl ***************************************
 AC_ARG_WITH(openh323-includes, [  --with-openh323-includes=PFX   Location of OpenH323 includes.],  
 	with_openh_includes="$withval", with_openh_includes="/usr/include/oh323")
 have_openh323_includes="no"
-if test "x${with_openh_includes}" != "xno" -a "x${have_pt_includes}" != "xno"; then
+if test "x${with_openh_includes}" != "xno" -a "x${have_ptlib_includes}" != "xno"; then
 	CPPFLAGS_save="$CPPFLAGS"
 	
 	AC_MSG_CHECKING(for OpenH323 includes)
