@@ -367,8 +367,140 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/ports/listen_port</key>
-      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/ports/listen_port</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/sip/listen_port</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/sip/listen_port</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>int</type>
+      <default>5060</default>
+      <locale name="C">
+	<short>Listen port</short>
+	<long>The port to listen to for incoming connections. GnomeMeeting needs to be restarted for the new value to take effect.</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/sip/registrar_host</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/sip/registrar_host</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default></default>
+      <locale name="C">
+	<short>Registrar host</short>
+	<long>The registrar host to register with</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/sip/registrar_password</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/sip/registrar_password</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default></default>
+      <locale name="C">
+	<short>Registrar password</short>
+	<long>The password to use to authenticate with the registrar</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/sip/registrar_registration_timeout</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/sip/registrar_registration_timeout</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>int</type>
+      <default>60</default>
+      <locale name="C">
+	<short>Registration timeout</short>
+	<long>The time after which GnomeMeeting will renew its registration with the registrar</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/sip/registrar_registering_method</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/sip/registrar_registering_method</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>int</type>
+      <default>0</default>
+      <locale name="C">
+	<short>Registering method</short>
+	<long>The registering method to use</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/sip/registrar_login</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/sip/registrar_login</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default></default>
+      <locale name="C">
+	<short>Registrar login</short>
+	<long>The registrar authentication user name</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/sip/registrar_realm</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/sip/registrar_realm</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default></default>
+      <locale name="C">
+	<short>Registrar realm/domain</short>
+	<long>The realm/domain to use for the registration with the SIP registrar</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/sip/outbound_proxy_host</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/sip/outbound_proxy_host</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default></default>
+      <locale name="C">
+	<short>Outbound Proxy</short>
+	<long>The SIP Outbound Proxy to use for outgoing calls</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/sip/outbound_proxy_login</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/sip/outbound_proxy_login</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default></default>
+      <locale name="C">
+	<short>Outbound Proxy Login</short>
+	<long>The SIP Outbound Proxy login to use for outgoing calls (if any)</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/sip/outbound_proxy_password</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/sip/outbound_proxy_password</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default></default>
+      <locale name="C">
+	<short>Outbound Proxy Password</short>
+	<long>The SIP Outbound Proxy password to use for outgoing calls (if any)</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/sip/default_proxy</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/sip/default_proxy</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default></default>
+      <locale name="C">
+	<short>Default SIP Proxy</short>
+	<long>The default proxy is the SIP proxy to use by default to make outgoing calls</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/sip/forward_host</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/sip/forward_host</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default>sip:</default>
+      <locale name="C">
+	<short>Forward calls to host</short>
+	<long>The host where calls should be forwarded if call forwarding is enabled</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/listen_port</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/listen_port</applyto>
       <owner>GnomeMeeting</owner>
       <type>int</type>
       <default>1720</default>
@@ -378,8 +510,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/ports/tcp_port_range</key>
-      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/ports/tcp_port_range</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/ports/tcp_port_range</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/ports/tcp_port_range</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default>30000:30010</default>
@@ -389,8 +521,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/ports/rtp_port_range</key>
-      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/ports/rtp_port_range</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/ports/rtp_port_range</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/ports/rtp_port_range</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default>5000:5016</default>
@@ -400,8 +532,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/ports/udp_port_range</key>
-      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/ports/udp_port_range</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/ports/udp_port_range</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/ports/udp_port_range</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default>5020:5023</default>
@@ -528,7 +660,7 @@
       <default>h323:</default>
       <locale name="C">
 	<short>Forward calls to host</short>
-	<long>The host where calls should be forwarded to in the cases selected above</long>
+	<long>The host where calls should be forwarded if call forwarding is enabled</long>
       </locale>
     </schema>
     <schema>

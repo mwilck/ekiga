@@ -41,6 +41,8 @@
  * Remote users can be either LDAP or ILS or ZeroConf users
  */
 
+#include "../../config.h"
+
 #include <string.h>
 #include <lib/gm_conf.h>
 
@@ -111,7 +113,7 @@ gnomemeeting_remote_addressbook_add (GmAddressbook *addressbook)
   gchar *entry = NULL;
   
   list = 
-    gm_conf_get_string_list ("/apps/gnomemeeting/contacts/remote_addressbooks_list");
+    gm_conf_get_string_list ("/apps/" PACKAGE_NAME "/contacts/remote_addressbooks_list");
 
   entry = g_strdup_printf ("%s|%s|%s|%s", 
 			   addressbook->aid, 
@@ -120,7 +122,7 @@ gnomemeeting_remote_addressbook_add (GmAddressbook *addressbook)
 			   addressbook->call_attribute);
 
   list = g_slist_append (list, (gpointer) entry);
-  gm_conf_set_string_list ("/apps/gnomemeeting/contacts/remote_addressbooks_list", 
+  gm_conf_set_string_list ("/apps/" PACKAGE_NAME "/contacts/remote_addressbooks_list", 
 			   list);
 
   g_slist_foreach (list, (GFunc) g_free, NULL);
@@ -141,7 +143,7 @@ gnomemeeting_remote_addressbook_delete (GmAddressbook *addressbook)
   gboolean found = FALSE;
   
   list = 
-    gm_conf_get_string_list ("/apps/gnomemeeting/contacts/remote_addressbooks_list");
+    gm_conf_get_string_list ("/apps/" PACKAGE_NAME "/contacts/remote_addressbooks_list");
 
   entry = 
     g_strdup_printf ("%s|%s|%s|%s", 
@@ -169,7 +171,7 @@ gnomemeeting_remote_addressbook_delete (GmAddressbook *addressbook)
     g_free (l->data);
     g_slist_free_1 (l);
 
-    gm_conf_set_string_list ("/apps/gnomemeeting/contacts/remote_addressbooks_list", 
+    gm_conf_set_string_list ("/apps/" PACKAGE_NAME "/contacts/remote_addressbooks_list", 
 			     list);
   }
 
@@ -194,7 +196,7 @@ gnomemeeting_remote_addressbook_modify (GmAddressbook *addressbook)
   gboolean found = FALSE;
   
   list = 
-    gm_conf_get_string_list ("/apps/gnomemeeting/contacts/remote_addressbooks_list");
+    gm_conf_get_string_list ("/apps/" PACKAGE_NAME "/contacts/remote_addressbooks_list");
 
   entry = 
     g_strdup_printf ("%s|%s|%s|%s", 
@@ -228,7 +230,7 @@ gnomemeeting_remote_addressbook_modify (GmAddressbook *addressbook)
     g_slist_free_1 (l);
 
 
-    gm_conf_set_string_list ("/apps/gnomemeeting/contacts/remote_addressbooks_list", 
+    gm_conf_set_string_list ("/apps/" PACKAGE_NAME "/contacts/remote_addressbooks_list", 
 			     list);
   }
 
