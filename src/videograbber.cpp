@@ -364,14 +364,14 @@ void GMVideoGrabber::VGOpen (void)
       if (!grabber->Open (video_device, FALSE))
 	error_code = 0;
       else
+	if (!grabber->SetFrameSizeConverter (width, height, FALSE))
+	  error_code = 5;
+      else
 	if (!grabber->SetVideoFormat(video_format))
 	  error_code = 2;
       else
         if (!grabber->SetChannel(video_channel))
           error_code = 2;
-      else
-	if (!grabber->SetFrameSizeConverter (width, height, FALSE))
-	   error_code = 5;
       else
 	if (!grabber->SetColourFormatConverter ("YUV420P"))
 	  error_code = 3;
@@ -675,17 +675,17 @@ void GMVideoTester::Main ()
       if (!grabber->Open (video_device, FALSE))
 	error_code = 0;
       else
-	if (!grabber->SetVideoChannelFormat (0,  PVideoDevice::Auto))
-	  error_code = 2;
-      else
-	if (!grabber->SetFrameRate (10))
-	  error_code = 4;
-      else
 	if (!grabber->SetFrameSizeConverter (width, height, FALSE))
 	  error_code = 5;
       else
+	if (!grabber->SetVideoChannelFormat (0,  PVideoDevice::Auto))
+	  error_code = 2;
+      else
 	if (!grabber->SetColourFormatConverter ("YUV420P"))
 	  error_code = 3;
+      else
+	if (!grabber->SetFrameRate (10))
+	  error_code = 4;
       else
 	grabber->Close ();
 

@@ -960,61 +960,71 @@ contact_clicked_cb (GtkWidget *w,
 	
 	menu = gtk_menu_new ();
 
-	MenuEntry server_contact_menu_not_member [] =
-	  {
-	    {_("C_all Contact"), NULL,
-	     NULL, 0, MENU_ENTRY, 
-	     GTK_SIGNAL_FUNC (call_user_cb), data, NULL},
+       	MenuEntry server_contact_menu [5];
 
-	    {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
-	    
-	    {msg, NULL,
-	     GTK_STOCK_ADD, 0, MENU_ENTRY,
-	     GTK_SIGNAL_FUNC (edit_contact_cb),
-	     GINT_TO_POINTER (0), NULL},
-	    
-	    {NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL}
-	  };
+	MenuEntry call =
+	  {_("C_all Contact"), NULL,
+	   NULL, 0, MENU_ENTRY, 
+	   GTK_SIGNAL_FUNC (call_user_cb), data, NULL};
 
+	MenuEntry add =
+	  {msg, NULL,
+	   GTK_STOCK_ADD, 0, MENU_ENTRY,
+	   GTK_SIGNAL_FUNC (edit_contact_cb),
+	   GINT_TO_POINTER (0), NULL};
+	
+	MenuEntry props =
+	  {_("Contact _Properties"), NULL,
+	   GTK_STOCK_PROPERTIES, 0, MENU_ENTRY,
+	   GTK_SIGNAL_FUNC (edit_contact_cb),
+	   GINT_TO_POINTER (0), NULL};
+	
+	MenuEntry del =
+	  {_("_Delete"), NULL,
+	   GTK_STOCK_DELETE, 0, MENU_ENTRY,
+	   GTK_SIGNAL_FUNC (delete_cb),
+	   NULL, NULL};
 
-	MenuEntry server_contact_menu_member [] =
-	  {
-	    {_("C_all Contact"), NULL,
-	     NULL, 0, MENU_ENTRY, 
-	     GTK_SIGNAL_FUNC (call_user_cb), data, NULL},
+	MenuEntry sep =
+	  {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL};
 
-	    {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
-	    
-	    {_("Contact _Properties"), NULL,
-	     GTK_STOCK_PROPERTIES, 0, MENU_ENTRY,
-	     GTK_SIGNAL_FUNC (edit_contact_cb),
-	     GINT_TO_POINTER (0), NULL},
-	    
-	    {NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL}
-	  };
-      
-      
-	MenuEntry group_contact_menu [] =
-	  {
-	    {_("Contact _Properties"), NULL,
-	     GTK_STOCK_PROPERTIES, 0, MENU_ENTRY, 
-	     GTK_SIGNAL_FUNC (edit_contact_cb), GINT_TO_POINTER (0), NULL},
+	MenuEntry endt =
+	  {NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL};
 
-	    {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
+	server_contact_menu [0] = call;
 	    
-	    {_("Delete"), NULL,
-	     GTK_STOCK_DELETE, 0, MENU_ENTRY,
-	     GTK_SIGNAL_FUNC (delete_contact_from_group_cb),
-	     NULL, NULL},
-	    
-	    {NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL}
-	  };
+	if (!already_member) {
+
+	  server_contact_menu [1] = sep;
+	  server_contact_menu [2] = add;
+	  server_contact_menu [3] = endt;
+	}
+	else {
+
+	  if (!is_group) {
+
+	    server_contact_menu [1] = sep;
+	    server_contact_menu [2]= props;
+	    server_contact_menu [3] = endt;
+	  }
+	  else {
+
+	    server_contact_menu [1]= props;
+	    server_contact_menu [2] = sep;
+	    server_contact_menu [3] = del;
+	    server_contact_menu [4] = endt;
+	  }
+	}
+
+	MenuEntry group_contact_menu [4];
+
+	group_contact_menu [0] = props;
+	group_contact_menu [1] = sep;
+	group_contact_menu [2] = del;
+	group_contact_menu [3] = endt;
 	
 	if (GPOINTER_TO_INT (data) == CONTACTS_SERVERS)
-	  if (!already_member)
-	    gnomemeeting_build_menu (menu, server_contact_menu_not_member, 0);
-	  else
-	    gnomemeeting_build_menu (menu, server_contact_menu_member, 0);
+	  gnomemeeting_build_menu (menu, server_contact_menu, 0);
 	else
 	  gnomemeeting_build_menu (menu, group_contact_menu, NULL);
 	
