@@ -101,16 +101,62 @@ static GmAddressbookWindow *gnomemeeting_aw_get_aw (GtkWidget *);
 static GmAddressbookWindowPage *gnomemeeting_aw_get_awp (GtkWidget *);
 static GmContact *get_selected_contact (GtkWidget *);
 static GmAddressbook *get_selected_addressbook (GtkWidget *);
+static void gnomemeeting_aw_add_addressbook (GtkWidget *, GmAddressbook *);
 static void gnomemeeting_aw_update_addressbook (GtkWidget *, GmAddressbook *);
 
 
 static void
-edit_contact_dialog_run (GmAddressbook *addressbook,
-                         GmContact *contact)
+delete_contact_dialog_run (GmAddressbook *addressbook,
+                           GmContact *contact,
+                           GtkWidget *parent_window)
 {
   GtkWidget *dialog = NULL;
-  
   GtkWidget *addressbook_window = NULL;
+  
+  gchar *confirm_msg = NULL;
+  
+  g_return_if_fail (addressbook != NULL);
+  g_return_if_fail (contact != NULL);
+
+  addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
+
+  confirm_msg = g_strdup_printf (_("Are you sure you want to delete %s from %s?"),
+                                 contact->fullname, addressbook->name);
+  dialog =
+    gtk_message_dialog_new (GTK_WINDOW (parent_window),
+                            GTK_DIALOG_MODAL, GTK_MESSAGE_QUESTION,
+                            GTK_BUTTONS_YES_NO, confirm_msg);
+  g_free (confirm_msg);
+  
+  gtk_dialog_set_default_response (GTK_DIALOG (dialog),
+				   GTK_RESPONSE_YES);
+  
+  gtk_widget_show_all (dialog);
+  
+
+  /* Now run the dialg */
+  switch (gtk_dialog_run (GTK_DIALOG (dialog))) {
+
+  case GTK_RESPONSE_YES:
+
+    gnomemeeting_addressbook_delete_contact (addressbook, contact);
+    gnomemeeting_aw_update_addressbook (addressbook_window, addressbook);
+
+    break;
+  }
+
+  gtk_widget_destroy (dialog);
+}
+
+
+static void
+edit_contact_dialog_run (GmAddressbook *addressbook,
+                         GmContact *contact,
+                         GtkWidget *parent_window)
+{
+  GmContact *new_contact = NULL;
+  
+  GtkWidget *dialog = NULL;
   
   GtkWidget *fullname_entry = NULL;
   GtkWidget *url_entry = NULL;
@@ -119,17 +165,22 @@ edit_contact_dialog_run (GmAddressbook *addressbook,
   GtkWidget *table = NULL;
   GtkWidget *label = NULL;
 
+  GtkWidget *addressbook_window = NULL;
+
   gchar *label_text = NULL;
   gint result = 0;
 
+  g_return_if_fail (addressbook != NULL);
   
+
   addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
 
   
-  /* Create the dialog to easily modify the info of a specific contact */
+  /* Create the dialog to easily modify the info 
+   * of a specific contact */
   dialog =
     gtk_dialog_new_with_buttons (_("Edit the Contact Information"), 
-                                 GTK_WINDOW (addressbook_window),
+                                 GTK_WINDOW (parent_window),
 				 GTK_DIALOG_MODAL,
 				 GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
 				 GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
@@ -239,11 +290,33 @@ edit_contact_dialog_run (GmAddressbook *addressbook,
 
   case GTK_RESPONSE_ACCEPT:
 
-    g_free (contact->fullname);
-    contact->fullname = g_strdup (gtk_entry_get_text (GTK_ENTRY (fullname_entry)));
+    g_warning ("Create function here to copy a GmContact");
+    new_contact = gm_contact_new ();
+    new_contact->fullname = 
+      g_strdup (gtk_entry_get_text (GTK_ENTRY (fullname_entry)));
+    new_contact->speeddial = 
+      g_strdup (gtk_entry_get_text (GTK_ENTRY (speeddial_entry)));
+    new_contact->categories = 
+      g_strdup (gtk_entry_get_text (GTK_ENTRY (categories_entry)));
+    new_contact->url = 
+      g_strdup (gtk_entry_get_text (GTK_ENTRY (url_entry)));
+    
+    /* We were editing an existing contact */
+    if (contact) {
+      
+      /* We keep the old UID */
+      new_contact->uid = g_strdup (contact->uid);
 
-    gnomemeeting_addressbook_modify_contact (addressbook, contact);
+      gnomemeeting_addressbook_modify_contact (addressbook, new_contact);
+    }
+    else {
+
+      gnomemeeting_addressbook_add_contact (addressbook, new_contact);
+    }
+    
     gnomemeeting_aw_update_addressbook (addressbook_window, addressbook);
+
+    gm_contact_delete (new_contact);
 
     break;
 
@@ -256,6 +329,29 @@ edit_contact_dialog_run (GmAddressbook *addressbook,
 }
 
 
+
+static void
+delete_contact_cb (GtkWidget *w,
+                   gpointer data)
+{
+  GmContact *contact = NULL;
+  GmAddressbook *abook = NULL;
+
+  
+  GtkWidget *addressbook = NULL;
+  
+  addressbook = GnomeMeeting::Process ()->GetAddressbookWindow ();
+  
+  contact = get_selected_contact (addressbook);
+  abook = get_selected_addressbook (addressbook);
+  
+  delete_contact_dialog_run (abook, contact, addressbook);
+  
+  gm_contact_delete (contact);  
+}
+
+
+/* PRE: 1=edit, 0=add */
 static void
 edit_contact_cb (GtkWidget *w,
                  gpointer data)
@@ -267,10 +363,12 @@ edit_contact_cb (GtkWidget *w,
 
   addressbook = GnomeMeeting::Process ()->GetAddressbookWindow ();
 
-  contact = get_selected_contact (addressbook);
+  /* Only take care of what's selected if we are editing an existing contact */
+  if (GPOINTER_TO_INT (data) == 1) 
+    contact = get_selected_contact (addressbook);
   abook = get_selected_addressbook (addressbook);
   
-  edit_contact_dialog_run (abook, contact);
+  edit_contact_dialog_run (abook, contact, addressbook);
 
 
   gm_contact_delete (contact);
@@ -406,48 +504,6 @@ gnomemeeting_aw_get_awp (GtkWidget *p)
 }
 
 
-static void
-gnomemeeting_aw_add_tree_view_section (GtkWidget *addressbook_window, 
-                                       GmAddressbook *addressbook,
-                                       int pos)
-{
-  GmAddressbookWindow *aw = NULL;
-
-  GdkPixbuf *contact_icon = NULL;
-
-  GtkTreeModel *model = NULL;
-  GtkTreeIter iter, child_iter;
-  
-  g_return_if_fail (addressbook_window != NULL);
-  g_return_if_fail (addressbook != NULL);
-
-  aw = gnomemeeting_aw_get_aw (addressbook_window);
-
-  contact_icon = 
-    gtk_widget_render_icon (aw->aw_tree_view, 
-                            GM_STOCK_LOCAL_CONTACT,
-			    GTK_ICON_SIZE_MENU, NULL);
-  
-  model = gtk_tree_view_get_model (GTK_TREE_VIEW (aw->aw_tree_view));
-  
-
-  if (gtk_tree_model_get_iter_from_string (GTK_TREE_MODEL (model), &iter, "1")) {
-
-   gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
-   gtk_tree_store_set (GTK_TREE_STORE (model),
-                       &child_iter, 
-                       COLUMN_PIXBUF, contact_icon,
-                       COLUMN_NAME, addressbook->name,
-                       COLUMN_NOTEBOOK_PAGE, pos, 
-                       COLUMN_PIXBUF_VISIBLE, TRUE,
-                       COLUMN_WEIGHT, PANGO_WEIGHT_NORMAL, 
-                       COLUMN_UID, addressbook->uid, -1);
-  }
-  
-  gtk_tree_view_expand_all (GTK_TREE_VIEW (aw->aw_tree_view));
-}
-
-
 static gint
 gnomemeeting_aw_get_notebook_page (GtkWidget *addressbook_window,
                                    GmAddressbook *addressbook)
@@ -491,9 +547,8 @@ gnomemeeting_aw_get_notebook_page (GtkWidget *addressbook_window,
 
 
 static void
-gnomemeeting_aw_add_notebook_page (GtkWidget *addressbook_window,
-                                   GmAddressbook *addressbook,
-                                   int pos)
+gnomemeeting_aw_add_addressbook (GtkWidget *addressbook_window,
+                                 GmAddressbook *addressbook)
 {
   GmAddressbookWindow *aw = NULL;
   GmAddressbookWindowPage *awp = NULL;
@@ -502,14 +557,56 @@ gnomemeeting_aw_add_notebook_page (GtkWidget *addressbook_window,
   GtkWidget *vbox = NULL;
   GtkWidget *scroll = NULL;
 
+  GdkPixbuf *contact_icon = NULL;
+
   GtkTreeViewColumn *column = NULL;
   GtkListStore *list_store = NULL;
   GtkCellRenderer *renderer = NULL;
 
-  aw = gnomemeeting_aw_get_aw (addressbook_window);
-  awp = new GmAddressbookWindowPage ();
+  GtkTreeModel *aw_tree_model = NULL;
+  GtkTreeIter iter, child_iter;
+
+  int pos = 0;
+  
+  g_return_if_fail (addressbook_window != NULL);
+  g_return_if_fail (addressbook != NULL);
   
 
+  /* Get the Data */
+  aw = gnomemeeting_aw_get_aw (addressbook_window);
+  awp = new GmAddressbookWindowPage ();
+
+
+  /* Add the given address book in the aw_tree_view GtkTreeView listing
+   * all address books */
+  contact_icon = 
+    gtk_widget_render_icon (aw->aw_tree_view, 
+                            GM_STOCK_LOCAL_CONTACT,
+			    GTK_ICON_SIZE_MENU, NULL);
+  
+  aw_tree_model = gtk_tree_view_get_model (GTK_TREE_VIEW (aw->aw_tree_view));
+  pos = gtk_notebook_get_n_pages (GTK_NOTEBOOK (aw->aw_notebook));
+  
+
+  if (gtk_tree_model_get_iter_from_string (GTK_TREE_MODEL (aw_tree_model), 
+                                           &iter, "1")) {
+
+   gtk_tree_store_append (GTK_TREE_STORE (aw_tree_model), &child_iter, &iter);
+   gtk_tree_store_set (GTK_TREE_STORE (aw_tree_model),
+                       &child_iter, 
+                       COLUMN_PIXBUF, contact_icon,
+                       COLUMN_NAME, addressbook->name,
+                       COLUMN_NOTEBOOK_PAGE, pos, 
+                       COLUMN_PIXBUF_VISIBLE, TRUE,
+                       COLUMN_WEIGHT, PANGO_WEIGHT_NORMAL, 
+                       COLUMN_UID, addressbook->uid, -1);
+  }
+  
+  gtk_tree_view_expand_all (GTK_TREE_VIEW (aw->aw_tree_view));
+
+
+  /* Add the given address book in the aw_notebook GtkNotebook containing
+   * the content of all address books */
   list_store = 
       gtk_list_store_new (NUM_COLUMNS_GROUPS, 
                           G_TYPE_STRING, 
@@ -757,7 +854,7 @@ gnomemeeting_addressbook_window_new ()
 
       GTK_MENU_ENTRY("delete", _("_Delete"), NULL,
 		     GTK_STOCK_DELETE, 'd', 
-		     NULL, NULL, FALSE),
+		     GTK_SIGNAL_FUNC (delete_contact_cb), NULL, TRUE),
 
       GTK_MENU_ENTRY("rename", _("_Rename"), NULL,
 		     NULL, 0,
@@ -785,7 +882,7 @@ gnomemeeting_addressbook_window_new ()
       GTK_MENU_ENTRY("new_contact", _("New _Contact"), NULL,
 		     GTK_STOCK_NEW, 'n', 
 		     GTK_SIGNAL_FUNC (edit_contact_cb), 
-		     NULL, TRUE),
+		     GINT_TO_POINTER (0), TRUE),
       GTK_MENU_ENTRY("add", _("Add Contact to _Address Book"), NULL,
 		     GTK_STOCK_ADD, 0,
 		     NULL, 
@@ -795,12 +892,13 @@ gnomemeeting_addressbook_window_new ()
 
       GTK_MENU_ENTRY("properties", _("Contact _Properties"), NULL,
 		     GTK_STOCK_PROPERTIES, 0, 
-		     NULL, 
-		     NULL, FALSE),
+		     GTK_SIGNAL_FUNC (edit_contact_cb), 
+		     GINT_TO_POINTER (1), TRUE),
 
       GTK_MENU_END
     };
 
+  g_warning ("Last only true if selected");
   gtk_build_menu (menubar, addressbook_menu, accel, NULL);
   
   gtk_box_pack_start (GTK_BOX (main_vbox), menubar, FALSE, FALSE, 0);
@@ -977,10 +1075,7 @@ gnomemeeting_addressbook_window_new ()
   l = addressbooks;
   while (l) {
 
-    g_warning ("Change in gnomemeeting_aw_add_addressbook ");
-
-    gnomemeeting_aw_add_tree_view_section (window, GM_ADDRESSBOOK (l->data), p);
-    gnomemeeting_aw_add_notebook_page (window, GM_ADDRESSBOOK (l->data), p);
+    gnomemeeting_aw_add_addressbook (window, GM_ADDRESSBOOK (l->data));
 
     p++;
     l = g_slist_next (l);
