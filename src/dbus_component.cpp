@@ -542,7 +542,6 @@ handle_connect_to_message (DBusConnection *connection,
 			     DBUS_TYPE_INVALID)) {
 
     GnomeMeeting::Process ()->Connect (address);
-    g_free (address);
   }
 }
 
