@@ -35,6 +35,7 @@
 #include <gconf/gconf-client.h>
 
 #include "main_window.h"
+#include "misc.h"
 
 
 /* Declarations */
@@ -79,9 +80,10 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
   if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (b)))
     gconf_client_set_bool (client, "/apps/gnomemeeting/ldap/register", 
 			   1, NULL);
-  else
+  else 
     gconf_client_set_bool (client, "/apps/gnomemeeting/ldap/register", 
 			   0, NULL);
+
 
   gconf_client_set_int (client, "/apps/gnomemeeting/general/version", 92, 0);
 
@@ -195,6 +197,9 @@ static void
 gnomemeeting_druid_toggle_changed (GtkToggleButton *b, gpointer data)
 {
   gnomemeeting_druid_user_page_check (druid);
+
+  gnomemeeting_warning_popup (GTK_WIDGET (b), _("You chose to NOT use the GnomeMeeting ILS directory. Other users will not be able to contact you if you don't register to a directory service."));
+
 }
 
 
@@ -478,7 +483,7 @@ static void gnomemeeting_init_druid_connection_type_page (GnomeDruid *druid)
 						 _("T1/LAN"));
   gtk_box_pack_start (GTK_BOX (box), radio4, TRUE, TRUE, 0);
   g_signal_connect (G_OBJECT (radio4), "toggled",
-		    G_CALLBACK (gnomemeeting_druid_toggle_changed), 
+		    G_CALLBACK (gnomemeeting_druid_radio_changed), 
 		    (gpointer) "4");
 
   /* Defaults to the defaults for dialup users */
