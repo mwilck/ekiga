@@ -175,9 +175,8 @@ struct _GmWindow
 
 struct _GmLdapWindow
 {
-  GtkWidget *search_entry;
-  GtkWidget *ils_server_combo;
   GtkWidget *notebook;
+  GtkWidget *tree_view;
   GtkWidget *option_menu;
 };
 

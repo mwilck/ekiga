@@ -87,6 +87,8 @@ static void enable_fps_changed_nt (GConfClient *, guint, GConfEntry *,
 				   gpointer);
 static void audio_codecs_list_changed_nt (GConfClient *, guint, GConfEntry *, 
 					  gpointer);
+static void contacts_servers_list_changed_nt (GConfClient *, guint,
+					      GConfEntry *, gpointer);
 static void view_widget_changed_nt (GConfClient *, guint, GConfEntry *, 
 				    gpointer);
 static void audio_codec_setting_changed_nt (GConfClient *, guint, 
@@ -904,6 +906,30 @@ static void audio_codecs_list_changed_nt (GConfClient *client, guint cid,
 }
 
 
+/* DESCRIPTION  :  This callback is called when something changes in the 
+ * 		   servers contacts list. 
+ * BEHAVIOR     :  It updates the tree_view widget and the notebook pages.
+ * PRE          :  /
+ */
+static void contacts_servers_list_changed_nt (GConfClient *client, guint cid,
+					      GConfEntry *e, gpointer data)
+{ 
+  GmLdapWindow *lw = NULL;
+  
+  if (e->value->type == GCONF_VALUE_LIST) {
+   
+    gdk_threads_enter ();
+
+    lw = gnomemeeting_get_ldap_window (gm);
+
+    cout << "ici" << endl << flush;
+    
+    gdk_threads_leave ();
+
+  }
+}
+
+
 /* DESCRIPTION  :  This callback is called when the a forward gconf value 
  *                 changes.
  * BEHAVIOR     :  It checks that there is a forwarding host specified, if
@@ -1311,6 +1337,11 @@ void gnomemeeting_init_gconf (GConfClient *client)
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/tr_ub", tr_ub_changed_nt, pw->tr_ub, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/tr_ub", adjustment_changed_nt, pw->tr_ub, 0, 0);
+
+
+  /* LDAP Window */
+  gconf_client_notify_add (client, CONTACTS_SERVERS_KEY "ldap_servers_list",
+			   contacts_servers_list_changed_nt, NULL, 0, 0);	     
 }
 
 

@@ -143,6 +143,7 @@ gint ldap_window_clicked (GtkWidget *widget, GdkEvent *ev, gpointer data)
 static void
 tree_selection_changed_cb (GtkTreeSelection *selection, gpointer data)
 {
+  char *name = NULL;
   int page_num = -1;
   GtkTreeIter iter;
   GtkTreeModel *model = NULL;
@@ -163,7 +164,9 @@ tree_selection_changed_cb (GtkTreeSelection *selection, gpointer data)
       if (gtk_tree_path_get_depth (path) >= 2) {
 
 	if (gtk_tree_path_get_indices (path) [0] == 0)
-	  page_num = gtk_tree_path_get_indices (path) [1];
+	  gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 0, &name,
+			      1, &name, 2, &page_num, -1);
+
 	if (page_num != - 1) 
 	  gtk_notebook_set_current_page (GTK_NOTEBOOK (lw->notebook), 
 					 page_num);
@@ -210,22 +213,24 @@ void contacts_tree_view_row_activated_cb (GtkTreeView *tree_view,
 
       if (gtk_tree_path_get_depth (path) >= 2) {
 
-	if (gtk_tree_path_get_indices (path) [0] == 0)
-	  page_num = gtk_tree_path_get_indices (path) [1];
+	if (gtk_tree_path_get_indices (path) [0] == 0) {
+      
+	  /* Get the server name */
+	  gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 0, &name, 
+			      1, &name, 2, &page_num, -1);
+	}
       }
     }
 
     if (page_num != - 1) {
     
       gtk_notebook_set_current_page (GTK_NOTEBOOK (lw->notebook), page_num);
-      page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), page_num);
+      page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), 
+					page_num);
  
       xdap_users_list_store = 
 	GTK_LIST_STORE (g_object_get_data (G_OBJECT (page), "list_store"));
       gtk_list_store_clear (xdap_users_list_store);
-
-      /* Get the server name */
-      gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 0, &name, -1);
 
       /* Check if there is already a search running */
       ils_browser = (GMILSBrowser *) g_object_get_data (G_OBJECT (page), 
@@ -313,7 +318,6 @@ contacts_tree_view_event_after_callback (GtkWidget *w, GdkEventButton *e,
 
 
 /* The functions */
-
 void gnomemeeting_init_ldap_window ()
 {
   GtkWidget *hbox = NULL;
@@ -323,7 +327,6 @@ void gnomemeeting_init_ldap_window ()
 
   GtkCellRenderer *cell = NULL;
   GtkTreeSelection *selection = NULL;
-  GtkWidget *tree_view = NULL;
   GtkTreeViewColumn *column = NULL;
   GtkTreeStore *model = NULL;
   GtkTreeIter iter;
@@ -367,19 +370,20 @@ void gnomemeeting_init_ldap_window ()
   frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
   gtk_box_pack_start (GTK_BOX (hbox), frame, FALSE, FALSE, 0);
-  model = gtk_tree_store_new (1, G_TYPE_STRING);
-  tree_view = gtk_tree_view_new ();
-  gtk_tree_view_set_model (GTK_TREE_VIEW (tree_view), GTK_TREE_MODEL (model));
-  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view));
-  gtk_container_add (GTK_CONTAINER (frame), tree_view);
-  gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (tree_view), FALSE);
+  model = gtk_tree_store_new (3, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_INT);
+  lw->tree_view = gtk_tree_view_new ();
+  gtk_tree_view_set_model (GTK_TREE_VIEW (lw->tree_view), 
+			   GTK_TREE_MODEL (model));
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (lw->tree_view));
+  gtk_container_add (GTK_CONTAINER (frame), lw->tree_view);
+  gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (lw->tree_view), FALSE);
 
   gtk_tree_selection_set_mode (GTK_TREE_SELECTION (selection),
 			       GTK_SELECTION_BROWSE);
 
   gtk_tree_store_append (GTK_TREE_STORE (model), &iter, NULL);
   gtk_tree_store_set (GTK_TREE_STORE (model),
-		      &iter, 0, _("Servers"), -1);
+		      &iter, 0, _("Servers"), 1, _("Servers"), 2, 0, -1);
 
   ldap_servers_list =
     gconf_client_get_list (client, CONTACTS_SERVERS_KEY "ldap_servers_list",
@@ -389,7 +393,7 @@ void gnomemeeting_init_ldap_window ()
   cell = gtk_cell_renderer_text_new ();
   column = gtk_tree_view_column_new_with_attributes (_("Contacts"),
 						     cell, "text", 0, NULL);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view),
+  gtk_tree_view_append_column (GTK_TREE_VIEW (lw->tree_view),
 			       GTK_TREE_VIEW_COLUMN (column));
 
 
@@ -415,7 +419,9 @@ void gnomemeeting_init_ldap_window ()
     gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
     gtk_tree_store_set (GTK_TREE_STORE (model),
 			&child_iter, 
-			0, ldap_servers_list_iter->data, -1);
+			0, ldap_servers_list_iter->data, 
+			1, ldap_servers_list_iter->data, 
+			2, cpt, -1);
 
     gnomemeeting_init_ldap_window_notebook (cpt, (char *)
 					   ldap_servers_list_iter->data);
@@ -424,12 +430,12 @@ void gnomemeeting_init_ldap_window ()
   }
   g_slist_free (ldap_servers_list);
 
-  gtk_tree_view_expand_all (GTK_TREE_VIEW (tree_view));
+  gtk_tree_view_expand_all (GTK_TREE_VIEW (lw->tree_view));
   g_signal_connect (G_OBJECT (selection), "changed",
 		    G_CALLBACK (tree_selection_changed_cb), NULL);
-  g_signal_connect (G_OBJECT (tree_view), "row_activated",
+  g_signal_connect (G_OBJECT (lw->tree_view), "row_activated",
 		    G_CALLBACK (contacts_tree_view_row_activated_cb), NULL);  
-  g_signal_connect_object (G_OBJECT (tree_view), "event-after",
+  g_signal_connect_object (G_OBJECT (lw->tree_view), "event-after",
 			   G_CALLBACK (contacts_tree_view_event_after_callback), NULL, (enum GConnectFlags) 0);
 
   /* The toolbar */
