@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-11-03 21:12+0100\n"
-"PO-Revision-Date: 2003-11-03 21:22+0100\n"
+"POT-Creation-Date: 2003-11-05 13:17+0100\n"
+"PO-Revision-Date: 2003-11-05 13:27+0100\n"
 "Last-Translator: Дејан Матијевић <dejan@ns.sympatico.ca>\n"
 "Language-Team: Serbian (sr) <serbiangnome-lista@nongnu.org>\n"
 "MIME-Version: 1.0\n"
@@ -1306,10 +1306,10 @@ msgid "Enabled Silence Detection"
 msgstr "Омогући проналажење тишине"
 
 #. Disable the druid button if no device is found
-#: src/config.cpp:897 src/druid.cpp:587 src/druid.cpp:601
+#: src/config.cpp:897 src/druid.cpp:596 src/druid.cpp:610
 #: src/endpoint.cpp:1638 src/gnomemeeting.cpp:349 src/gnomemeeting.cpp:351
-#: src/sound_handling.cpp:464 src/sound_handling.cpp:465
-#: src/videograbber.cpp:619
+#: src/sound_handling.cpp:459 src/sound_handling.cpp:460
+#: src/videograbber.cpp:615
 msgid "No device found"
 msgstr "Нисам нашао уређај"
 
@@ -1381,28 +1381,28 @@ msgstr ""
 "Даљински корисник је покашао да пребаци ваш позив до другог корисника, али "
 "није успео."
 
-#: src/druid.cpp:547
+#: src/druid.cpp:502
 msgid "56k Modem"
 msgstr "56k модем"
 
-#: src/druid.cpp:548
+#: src/druid.cpp:503
 msgid "ISDN"
 msgstr "ISDN"
 
-#: src/druid.cpp:549
+#: src/druid.cpp:504
 msgid "xDSL/Cable"
 msgstr "xDSL/Кабл"
 
-#: src/druid.cpp:550
+#: src/druid.cpp:505
 msgid "T1/LAN"
 msgstr "T1/LAN"
 
-#: src/druid.cpp:551
+#: src/druid.cpp:506
 msgid "Keep current settings"
 msgstr "Задржи текућа подешавања"
 
 #: src/druid.cpp:648 src/gnomemeeting.cpp:369 src/videograbber.cpp:338
-#: src/videograbber.cpp:620
+#: src/videograbber.cpp:616
 msgid "Picture"
 msgstr "Слика"
 
@@ -1424,7 +1424,8 @@ msgid ""
 "Video player: %s\n"
 "My Callto URL: %s\n"
 msgstr ""
-"Завршили сте подешавање Гном састанка.  Сва подешавања се могу променити у поставкама Гном састанка.  Уживајте!\n"
+"Завршили сте подешавање Гном састанка.  Сва подешавања се могу променити у "
+"поставкама Гном састанка.  Уживајте!\n"
 "\n"
 "\n"
 "Преглед подешавања:\n"
@@ -1456,7 +1457,9 @@ msgstr "Унесите ваше име и презиме:"
 msgid ""
 "Your firstname and surname will be used when connecting to other VoIP and "
 "videoconferencing software."
-msgstr "Ваше име и презиме ће се користити при повезивању са осталим VoIP и конференцијским програмима."
+msgstr ""
+"Ваше име и презиме ће се користити при повезивању са осталим VoIP и "
+"конференцијским програмима."
 
 #: src/druid.cpp:755
 #, c-format
@@ -1472,13 +1475,18 @@ msgid ""
 "Your e-mail address is used when registering to the GnomeMeeting users "
 "directory. It is used to create a callto address permitting your contacts to "
 "easily call you wherever you are."
-msgstr "Адреса ваше е-поште се користи при пријављивању у именик корисника Гном састанка. Користи се за образовање позивних адреса које вам дозвољавају да вас ваши познаници лако позову где год да сте."
+msgstr ""
+"Адреса ваше е-поште се користи при пријављивању у именик корисника Гном "
+"састанка. Користи се за образовање позивних адреса које вам дозвољавају да "
+"вас ваши познаници лако позову где год да сте."
 
 #: src/druid.cpp:783
 msgid ""
 "I don't want to register to the GnomeMeeting users directory and get a "
 "callto address"
-msgstr "Не желим да се пријавим у именик корисника Гном састанка и да добијем позивну адресу"
+msgstr ""
+"Не желим да се пријавим у именик корисника Гном састанка и да добијем "
+"позивну адресу"
 
 #: src/druid.cpp:833
 #, c-format
@@ -1490,97 +1498,109 @@ msgstr "Врста везе — страна %d/%d"
 msgid "Please choose your connection type:"
 msgstr "Изаберите врсту ваше везе:"
 
-# bug: label?
 #: src/druid.cpp:853
-msgid "The lable."
-msgstr "Ознака"
+msgid ""
+"The connection type will permit determining the best quality settings that "
+"GnomeMeeting will use during calls. You can later change the settings "
+"individually in the preferences window."
+msgstr "Врста везе дозвољава одређивање подешавања са најбољим квалитетом које ће Гном састанак користити за позиве. Накнадно можете изменити појединачна подешавања међу поставкама."
 
-#: src/druid.cpp:897
+#: src/druid.cpp:892
 #, c-format
 msgid "Audio Manager - page %d/%d"
 msgstr "Управљање звуком — страна %d/%d"
 
-#: src/druid.cpp:910
+#: src/druid.cpp:905
 msgid "Please choose your audio manager:"
 msgstr "Изаберите управљач вашим звуком:"
 
-#: src/druid.cpp:918
+#: src/druid.cpp:913
 msgid ""
 "The audio manager is the plugin that will manage your audio devices, ALSA is "
 "probably the best choice when available."
-msgstr "Управљач звуком је додатак који барата вашим звучним уређајима, АЛСА је сигурно најбоље решење ако је доступна."
+msgstr ""
+"Управљач звуком је додатак који барата вашим звучним уређајима, АЛСА је "
+"сигурно најбоље решење ако је доступна."
 
-#: src/druid.cpp:964
+#: src/druid.cpp:955
 #, c-format
 msgid "Audio Devices - page %d/%d"
 msgstr "Звучни уређај - страна %d/%d"
 
 #. The Audio devices
-#: src/druid.cpp:976
+#: src/druid.cpp:967
 msgid "Please choose the audio output device:"
 msgstr "Изаберите излазни уређај за звук:"
 
-#: src/druid.cpp:984
+#: src/druid.cpp:975
 msgid ""
 "The audio output device is the device managed by the audio manager that will "
 "be used to play audio."
-msgstr "Излазни уређај за звук је уређај којим барата управљач звуком, а који се користи за пуштање звука."
+msgstr ""
+"Излазни уређај за звук је уређај којим барата управљач звуком, а који се "
+"користи за пуштање звука."
 
-#: src/druid.cpp:994
+#: src/druid.cpp:985
 msgid "Please choose the audio input device:"
 msgstr "Изаберите улазни уређај за звук:"
 
-#: src/druid.cpp:1002
+#: src/druid.cpp:993
 msgid ""
 "The audio input device is the device managed by the audio manager that will "
 "be used to record your voice."
-msgstr "Улазни уређај за звук је уређај којим барата управљач звуком, а који се користи за снимање вашег гласа."
+msgstr ""
+"Улазни уређај за звук је уређај којим барата управљач звуком, а који се "
+"користи за снимање вашег гласа."
 
-#: src/druid.cpp:1015 src/druid.cpp:1160
+#: src/druid.cpp:1006 src/druid.cpp:1146
 msgid "Test those settings"
 msgstr "Испробајте ова подешавања"
 
-#: src/druid.cpp:1061
+#: src/druid.cpp:1052
 #, c-format
 msgid "Video Manager - page %d/%d"
 msgstr "Управљање видеом — страна %d/%d"
 
-#: src/druid.cpp:1074
+#: src/druid.cpp:1065
 msgid "Please choose your video manager:"
 msgstr "Изаберите управљача вашим видеом:"
 
-#: src/druid.cpp:1082
+#: src/druid.cpp:1073
 msgid ""
 "The video manager is the plugin that will manage your video devices, "
 "Video4Linux is the most common choice if you own a webcam."
-msgstr "Управљач видеом је додатак који барата вашим видео уређајима, Видео4Линукс је најчешћи избор уколико имате веб камеру."
+msgstr ""
+"Управљач видеом је додатак који барата вашим видео уређајима, Видео4Линукс "
+"је најчешћи избор уколико имате веб камеру."
 
-#: src/druid.cpp:1128
+#: src/druid.cpp:1114
 #, c-format
 msgid "Video Devices - page %d/%d"
 msgstr "Видео уређаји — страна %d/%d"
 
 #. The Video devices
-#: src/druid.cpp:1140
+#: src/druid.cpp:1126
 msgid "Please choose the video input device:"
 msgstr "Изаберите улазни уређај за видео:"
 
-#: src/druid.cpp:1148
+#: src/druid.cpp:1134
 msgid ""
 "The video input device is the device managed by the video manager that will "
 "be used to capture video."
-msgstr "Улазни уређај за видео је уређај којим барата управљач видеом, а који се користи за снимање видеа."
+msgstr ""
+"Улазни уређај за видео је уређај којим барата управљач видеом, а који се "
+"користи за снимање видеа."
 
-#: src/druid.cpp:1192
+#: src/druid.cpp:1178
 msgid "First Time Configuration Druid"
 msgstr "Конфигурација Друида први пут"
 
-#: src/druid.cpp:1199
+#: src/druid.cpp:1185
 #, c-format
 msgid "Configuration Druid - page %d/%d"
 msgstr "Конфигурација Друида - страна %d/%d"
 
-#: src/druid.cpp:1202
+#: src/druid.cpp:1188
 msgid ""
 "This is the GnomeMeeting general configuration druid. The following steps "
 "will set up GnomeMeeting by asking a few simple questions.\n"
@@ -1594,7 +1614,7 @@ msgstr ""
 "Једном када завршите ове кораке, касније увек можете да их промените "
 "одабирањем карактеристика у уреди менију."
 
-#: src/druid.cpp:1242
+#: src/druid.cpp:1228
 #, c-format
 msgid "Configuration complete - page %d/%d"
 msgstr "Конфигурација компетна - страна %d/%d"
@@ -3293,7 +3313,7 @@ msgid "Opening device for recording"
 msgstr "Отвара уређај ради снимања"
 
 #: src/sound_handling.cpp:304 src/sound_handling.cpp:306
-#: src/videograbber.cpp:743
+#: src/videograbber.cpp:738
 msgid "Failed to open the device"
 msgstr "Не може да отвори уређај"
 
@@ -3345,7 +3365,7 @@ msgstr ""
 "Одређен звучни уређај (%s) је успешно отворен али је немогуће снимати "
 "податке на овај уређај.  Проверите ваша звучна подешавања."
 
-#: src/sound_handling.cpp:481
+#: src/sound_handling.cpp:476
 #, c-format
 msgid ""
 "GnomeMeeting is now recording from %s and playing back to %s. Please say \"1 "
@@ -3503,11 +3523,11 @@ msgstr ""
 "Догодила се грешка приликом отварања уређаја.  Проверите овлашћења и уверите "
 "се да је одговарајући драјвер натоварен."
 
-#: src/videograbber.cpp:403 src/videograbber.cpp:720
+#: src/videograbber.cpp:403 src/videograbber.cpp:716
 msgid "Your video driver doesn't support the requested video format."
 msgstr "Ваш видео драјвер неподржава захтевани видео формат."
 
-#: src/videograbber.cpp:407 src/videograbber.cpp:724
+#: src/videograbber.cpp:407 src/videograbber.cpp:720
 msgid "Could not open the chosen channel with the chosen video format."
 msgstr "Неможе да отвори изабрани канал са изабраним видео форматом."
 
@@ -3531,37 +3551,48 @@ msgstr "Грешка приликом подешавања брзине окви
 msgid "Error while setting the frame size."
 msgstr "Грешка приликом подешавања величине оквира."
 
-#: src/videograbber.cpp:634
+#: src/videograbber.cpp:628
 #, c-format
 msgid ""
 "GnomeMeeting is now testing the %s video device. If you experience machine "
 "crashes, then report a bug to the video driver author."
-msgstr "Гном састанак сада испробава видео уређај %s. Уколико машина заглави, онда пријавите грешку аутору драјвера за видео."
+msgstr ""
+"Гном састанак сада испробава видео уређај %s. Уколико машина заглави, онда "
+"пријавите грешку аутору драјвера за видео."
 
-#: src/videograbber.cpp:696
+#: src/videograbber.cpp:690
 #, c-format
 msgid "Test %d done"
-msgstr "Тест %d готов"
+msgstr "Готов %d. тест"
 
-#: src/videograbber.cpp:715
+#: src/videograbber.cpp:692
+#, c-format
+msgid "Test %d failed"
+msgstr "Неуспешан %d. тест"
+
+#: src/videograbber.cpp:711
 #, c-format
 msgid "Error while opening %s."
 msgstr "Грешка код отварања %s."
 
-#: src/videograbber.cpp:728
+#: src/videograbber.cpp:724
 msgid ""
 "Your driver doesn't support any of the color formats tried by GnomeMeeting"
 msgstr ""
 "Ваш драјвер не подржава ниједан од формата боја које је покушао да користи "
 "Гном Састанак"
 
-#: src/videograbber.cpp:732
+#: src/videograbber.cpp:728
 msgid "Error with the frame rate."
 msgstr "Грешка са бројем оквира у секунди."
 
-#: src/videograbber.cpp:736
+#: src/videograbber.cpp:732
 msgid "Error with the frame size."
 msgstr "Грешка са величином оквира."
+
+# bug: label?
+#~ msgid "The lable."
+#~ msgstr "Ознака"
 
 #~ msgid "Other"
 #~ msgstr "Друго"
