@@ -164,17 +164,20 @@ void GMILSClient::Main ()
     /* The most important operation is to unregister */
     if (has_to_unregister == 1) {
      
-      Register (0);
+      if (registered)
+	Register (0);
     }
 
     if (has_to_register == 1) {
 
-      Register (1);
+      if (!registered)
+	Register (1);
     }
 
     if (has_to_modify == 1) {
 
-      Register (2);
+      if (registered)
+	Register (2);
     }
 
 

@@ -78,12 +78,12 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
   window = GTK_WINDOW (g_object_get_data (G_OBJECT (druid), "window"));
   b = GTK_TOGGLE_BUTTON (g_object_get_data (G_OBJECT (druid), "toggle"));
 
-  if (!gtk_toggle_button_get_active (b))
-    gconf_client_set_bool (client, "/apps/gnomemeeting/ldap/register", 
-			   true, NULL);
-  else 
+  if (gtk_toggle_button_get_active (b))
     gconf_client_set_bool (client, "/apps/gnomemeeting/ldap/register", 
 			   false, NULL);
+  else 
+    gconf_client_set_bool (client, "/apps/gnomemeeting/ldap/register", 
+			   true, NULL);
 
   gconf_client_set_int (client, "/apps/gnomemeeting/general/version", 
 			MAJOR_VERSION * 100 + MINOR_VERSION, 0);
@@ -204,7 +204,8 @@ gnomemeeting_druid_toggle_changed (GtkToggleButton *button, gpointer data)
 {
   gnomemeeting_druid_user_page_check (druid);
 
-  gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (gm), GTK_WIDGET (button), _("You chose to NOT use the GnomeMeeting ILS directory. Other users will not be able to contact you if you don't register to a directory service."));
+  if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (button)))
+    gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (gm), GTK_WIDGET (button), _("You chose to NOT use the GnomeMeeting ILS directory. Other users will not be able to contact you if you don't register to a directory service."));
 }
 
 
