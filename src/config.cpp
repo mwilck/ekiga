@@ -532,18 +532,22 @@ static void ht_fs_changed_nt (GConfClient *client, guint cid,
 
 /* DESCRIPTION  :  This notifier is called when the gconf database data
  *                 associated with the enable_video_transmission key changes.
- * BEHAVIOR     :  It updates the endpoint.
+ * BEHAVIOR     :  It updates the endpoint, and updates the registering on ILS.
  * PRE          :  /
  */
 static void enable_vid_tr_changed_nt (GConfClient *client, guint cid, 
 				      GConfEntry *entry, gpointer data)
 {
+  GMH323EndPoint *endpoint = MyApp->Endpoint ();
+  GMILSClient *ils_client = (GMILSClient *) endpoint->GetILSClient ();
+
   if (entry->value->type == GCONF_VALUE_BOOL) {
 
-    gdk_threads_enter ();
+    if (gconf_client_get_bool (client, "/apps/gnomemeeting/ldap/register", 0))
+      ils_client->Modify ();
 
+    gdk_threads_enter ();
     MyApp->Endpoint ()->UpdateConfig ();
-    
     gdk_threads_leave ();
   }
 }

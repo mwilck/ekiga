@@ -426,8 +426,13 @@ BOOL GMILSClient::Register (int reg)
 
       if ((reg == 1) || (reg == 2)) {
 
-	msg = g_strdup_printf (_("Successfully registered to %s."), 
-			       ldap_server);
+	if (reg == 1)
+	  msg = g_strdup_printf (_("Successfully registered to %s."), 
+				 ldap_server);
+	else
+	  msg = g_strdup_printf (_("Updated information on %s."), 
+				 ldap_server);
+	
 	has_to_register = 0;
 	has_to_modify = 0;
 	registered = 1;
@@ -469,6 +474,7 @@ BOOL GMILSClient::Register (int reg)
     
     gnomemeeting_log_insert (gw->history_text_view, msg);
     gnomemeeting_statusbar_flash (gm, msg);
+    gnomemeeting_error_dialog (GTK_WINDOW (gm), msg);
     g_free (msg);
 
     gnomemeeting_threads_leave ();
@@ -586,19 +592,15 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
   xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
 
   gchar *firstname = NULL;
-  gchar *iso_firstname = NULL;
   gchar *surname = NULL;
-  gchar *iso_surname = NULL;
   gchar *mail = NULL;
-  gchar *iso_mail = NULL;
   gchar *comment = NULL;
-  gchar *iso_comment = NULL;
   gchar *location = NULL;
-  gchar *iso_location = NULL;
   gchar *version = NULL;
   gchar *busy = NULL;
   gchar *ip = NULL;
   gchar *port = NULL;
+  gchar *ilsa32964638 = NULL;
 
   unsigned long int sip = 0;
 
@@ -609,36 +611,26 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
     gconf_client_get_string (GCONF_CLIENT (client),
 			     "/apps/gnomemeeting/personal_data/firstname", 
 			     NULL);
-  iso_firstname = g_convert (firstname, strlen (firstname),
-			     "ISO-8859-1", "UTF8", 0, 0, 0);
 
   surname =  
     gconf_client_get_string (GCONF_CLIENT (client),
 			     "/apps/gnomemeeting/personal_data/lastname", 
 			     NULL);
-  iso_surname = g_convert (surname, strlen (surname),
-			   "ISO-8859-1", "UTF8", 0, 0, 0);
 
   mail =  
     gconf_client_get_string (GCONF_CLIENT (client),
 			     "/apps/gnomemeeting/personal_data/mail", 
 			     NULL);
-  iso_mail = g_convert (mail, strlen (mail),
-			"ISO-8859-1", "UTF8", 0, 0, 0);
 
   comment =  
     gconf_client_get_string (GCONF_CLIENT (client),
 			     "/apps/gnomemeeting/personal_data/comment", 
 			     NULL);
-  iso_comment = g_convert (comment, strlen (comment),
-			   "ISO-8859-1", "UTF8", 0, 0, 0);
 
   location =  
     gconf_client_get_string (GCONF_CLIENT (client),
 			     "/apps/gnomemeeting/personal_data/location", 
 			     NULL);
-  iso_location = g_convert (location, strlen (location),
-			    "ISO-8859-1", "UTF8", 0, 0, 0);
 
   port = 
     g_strdup_printf ("%d", 
@@ -658,15 +650,20 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
   else
     busy = g_strdup ("0");
 
+  if (gconf_client_get_bool (client, "/apps/gnomemeeting/video_settings/enable_video_transmission", NULL))
+    ilsa32964638 = g_strdup ("1");
+  else
+    ilsa32964638 = g_strdup ("0");
+
   ip = MyApp->Endpoint ()->GetCurrentIP ();
   sip = inet_addr (ip);
   g_free (ip);
   ip = g_strdup_printf ("%lu", sip);
 
   if (!strcmp ((char *) name, "comment"))
-    entval = xmlStrdup (BAD_CAST iso_comment);
+    entval = xmlStrdup (BAD_CAST comment);
   else if (!strcmp ((char *) name, "location"))
-    entval = xmlStrdup (BAD_CAST iso_location);
+    entval = xmlStrdup (BAD_CAST location);
   else if (!strcmp ((char *) name, "org"))
     entval = xmlStrdup (BAD_CAST "Gnome");
   else if (!strcmp ((char *) name, "country"))
@@ -677,16 +674,18 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
     entval = xmlStrdup (BAD_CAST "ils.seconix.com");
   else if (!strcmp ((char *) name, "ilsa26214430"))
     entval = xmlStrdup (BAD_CAST busy);
+ else if (!strcmp ((char *) name, "ilsa32964638"))
+    entval = xmlStrdup (BAD_CAST ilsa32964638);
   else if (!strcmp ((char *) name, "port"))
     entval = xmlStrdup (BAD_CAST port);
   else if (!strcmp ((char *) name, "decip"))
     entval = xmlStrdup (BAD_CAST "1234567890");
   else if (!strcmp ((char *) name, "email"))
-    entval = xmlStrdup (BAD_CAST iso_mail);
+    entval = xmlStrdup (BAD_CAST mail);
   else if (!strcmp ((char *) name, "givenname"))
-    entval = xmlStrdup (BAD_CAST iso_firstname);
+    entval = xmlStrdup (BAD_CAST firstname);
   else if (!strcmp ((char *) name, "surname"))
-    entval = xmlStrdup (BAD_CAST iso_surname);
+    entval = xmlStrdup (BAD_CAST surname);
   else if (!strcmp ((char *) name, "sappid"))
     entval = xmlStrdup (BAD_CAST "GnomeMeeting");
   else if (!strcmp ((char *) name, "ilsa26279966"))
@@ -719,15 +718,11 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
   g_free (mail);
   g_free (comment);
   g_free (location);
-  g_free (iso_firstname);
-  g_free (iso_surname);
-  g_free (iso_mail);
-  g_free (iso_comment);
-  g_free (iso_location);
   g_free (version);
   g_free (busy);
   g_free (ip);
   g_free (port);
+  g_free (ilsa32964638);
 
   return entity;
 }
