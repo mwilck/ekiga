@@ -8,7 +8,7 @@ PKG_NAME="gnomemeeting"
 
 (test -f $srcdir/configure.in \
   && test -d $srcdir/src \
-  && test -f $srcdir/src/main.h) || {
+  && test -f $srcdir/src/gnomemeeting.h) || {
     echo -n "**Error**: Directory "\`$srcdir\'" does not look like the"
     echo " top-level gnomemeeting directory"
     exit 1
