@@ -43,6 +43,7 @@
 #include "h323endpoint.h"
 #include "sipendpoint.h"
 
+#include "accounts.h"
 #include "urlhandler.h"
 #include "ils.h"
 #include "gnomemeeting.h"
@@ -83,6 +84,7 @@ GMEndPoint::GMEndPoint ()
   zcp = NULL;
 #endif
   ils_client = NULL;
+
   gk = NULL;
   sc = NULL;
 
@@ -97,6 +99,8 @@ GMEndPoint::GMEndPoint ()
   audio_reception_popup = NULL;
   audio_transmission_popup = NULL;
   
+  manager = NULL;
+
   ILSTimer.SetNotifier (PCREATE_NOTIFIER (OnILSTimeout));
   ils_registered = false;
 
@@ -152,6 +156,11 @@ GMEndPoint::~GMEndPoint ()
     delete (zcp);
   zcp_access_mutex.Signal ();
 #endif
+
+  manager_access_mutex.Wait ();
+  if (manager)
+    delete (manager);
+  manager_access_mutex.Signal ();
 }
 
 
@@ -161,9 +170,9 @@ GMEndPoint::SetUpCall (const PString & call_addr,
 {
   BOOL result = FALSE;
   
-  PWaitAndSignal m(lca_access_mutex);
-  
+  lca_access_mutex.Wait();
   called_address = call_addr;
+  lca_access_mutex.Signal();
   
   result = OpalManager::SetUpCall ("pc:*", call_addr, call_token);
 
@@ -302,27 +311,27 @@ GMEndPoint::AddVideoCapabilities ()
     if (autoStartTransmitVideo && !autoStartReceiveVideo) {
       
     */  /* CIF Capability in first position */
-     /* AddCapability (new H323_H261Capability (0, 4, FALSE, FALSE, 6217));
-      AddCapability (new H323_H261Capability (2, 0, FALSE, FALSE, 6217));
+     /* AddCapability (new H323_H261Capability (0, 1, FALSE, FALSE, 6217));
+      AddCapability (new H323_H261Capability (1, 0, FALSE, FALSE, 6217));
     }
     else {
 
       *//* CIF Capability in first position */
-     /* SetCapability (0, 1, new H323_H261Capability (0, 4, FALSE, FALSE, 6217));
-      SetCapability (0, 1, new H323_H261Capability (2, 0, FALSE, FALSE, 6217));
+     /* SetCapability (0, 1, new H323_H261Capability (0, 1, FALSE, FALSE, 6217));
+      SetCapability (0, 1, new H323_H261Capability (1, 0, FALSE, FALSE, 6217));
     }
   }
   else {
 
     if (autoStartTransmitVideo && !autoStartReceiveVideo) {
       
-      AddCapability (new H323_H261Capability (2, 0, FALSE, FALSE, 6217)); 
-      AddCapability (new H323_H261Capability (0, 4, FALSE, FALSE, 6217));
+      AddCapability (new H323_H261Capability (1, 0, FALSE, FALSE, 6217)); 
+      AddCapability (new H323_H261Capability (0, 1, FALSE, FALSE, 6217));
     }
     else {
 
-      SetCapability (0, 1, new H323_H261Capability (2, 0, FALSE, FALSE, 6217)); 
-      SetCapability (0, 1, new H323_H261Capability (0, 4, FALSE, FALSE, 6217));
+      SetCapability (0, 1, new H323_H261Capability (1, 0, FALSE, FALSE, 6217)); 
+      SetCapability (0, 1, new H323_H261Capability (0, 1, FALSE, FALSE, 6217));
     }
   }
 }
@@ -564,6 +573,17 @@ GMEndPoint::ILSRegister (void)
 {
   /* Force the Update */
   ILSTimer.RunContinuous (PTimeInterval (5));
+}
+
+
+void
+GMEndPoint::Register (GmAccount *account)
+{
+  PWaitAndSignal m(manager_access_mutex);
+
+  if (manager)
+    delete manager;
+  manager = new GMAccountsManager (account);
 }
 
 
@@ -1131,23 +1151,10 @@ GMEndPoint::OnReleased (OpalConnection & connection)
   /* we reset the no-data detection */
   RTPTimer.Stop ();
   stats.Reset ();
-
-
-  /* Update the various parts of the GUI */
-  gnomemeeting_threads_enter ();
-  gm_main_window_set_stay_on_top (main_window, FALSE);
-  gm_main_window_update_calling_state (main_window, GMEndPoint::Standby);
-  gm_tray_update_calling_state (tray, GMEndPoint::Standby);
-  gm_tray_update (tray, GMEndPoint::Standby, icm, forward_on_busy);
-  gnomemeeting_threads_leave ();
   
   gnomemeeting_sound_daemons_resume ();
 
   
-  /* Update internal state */
-  SetCallingState (GMEndPoint::Standby);
-
-
   /* No need to do all that if we are simply receiving an incoming call
      that was rejected because of DND */
   if (GetCallingState () != GMEndPoint::Called
@@ -1169,6 +1176,17 @@ GMEndPoint::OnReleased (OpalConnection & connection)
   
   PTRACE (3, "GMEndPoint\t Will release the current H.323/SIP connection");
   OpalManager::OnReleased (connection);
+
+  /* Update internal state */
+  SetCallingState (GMEndPoint::Standby);
+
+  /* Update the various parts of the GUI */
+  gnomemeeting_threads_enter ();
+  gm_main_window_set_stay_on_top (main_window, FALSE);
+  gm_main_window_update_calling_state (main_window, GMEndPoint::Standby);
+  gm_tray_update_calling_state (tray, GMEndPoint::Standby);
+  gm_tray_update (tray, GMEndPoint::Standby, icm, forward_on_busy);
+  gnomemeeting_threads_leave ();
 }
 
 
@@ -1354,8 +1372,6 @@ GMEndPoint::Init ()
 
   OpalSilenceDetector::Params sd;
   
-  gchar *stun_server = NULL;
-  
   int min_jitter = 20;
   int max_jitter = 500;
   
@@ -1368,7 +1384,6 @@ GMEndPoint::Init ()
 
   /* GmConf cache */
   gnomemeeting_threads_enter ();
-  stun_server = gm_conf_get_string (NAT_KEY "stun_server");
   ils_registering = gm_conf_get_bool (LDAP_KEY "enable_registering");
   stun_support = gm_conf_get_bool (NAT_KEY "enable_stun_support");
   min_jitter = gm_conf_get_int (AUDIO_CODECS_KEY "minimum_jitter_buffer");
@@ -1451,6 +1466,7 @@ GMEndPoint::Init ()
     SetSTUNServer ();
 
   
+  /* FIXME: not clean */
 #ifdef HAS_HOWL
   zcp_access_mutex.Wait ();
   zcp = new GMZeroconfPublisher ();
@@ -1459,15 +1475,8 @@ GMEndPoint::Init ()
 #endif
 
   
-#ifdef HAS_HOWL
-  zcp_access_mutex.Wait ();
-  zcp = new GMZeroconfPublisher ();
-  ZeroconfUpdate ();
-  zcp_access_mutex.Signal ();
-#endif
-
-
-  g_free (stun_server);
+  /* Register the various accounts */
+  Register ();
 }
 
 

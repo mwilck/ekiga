@@ -53,6 +53,8 @@
 #endif
 
 
+#include "accounts.h"
+
 #include "gdkvideoio.h"
 #include "videograbber.h"
 #include "stunclient.h"
@@ -449,6 +451,13 @@ class GMEndPoint : public OpalManager
    * PRE          :  /
    */
   void ILSRegister ();
+
+  
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Register (or unregister) all accounts or the one provided.
+   * PRE          :  /
+   */
+  void Register (GmAccount * = NULL);
 
 
   /* DESCRIPTION  :  /
@@ -860,6 +869,7 @@ class GMEndPoint : public OpalManager
 
 
   /* The various components of the endpoint */
+  GMAccountsManager *manager;
   GMVideoGrabber *video_grabber;
   GMH323Gatekeeper *gk;
   GMStunClient *sc;
@@ -881,6 +891,7 @@ class GMEndPoint : public OpalManager
   PMutex mwi_access_mutex;
   PMutex rc_access_mutex;
   PMutex stats_access_mutex;
+  PMutex manager_access_mutex;
 
   
 #ifdef HAS_HOWL
