@@ -195,7 +195,7 @@ static gboolean gm_aw_check_contact_collision (GmContact *,
 
 /* DESCRIPTION  : / 
  * BEHAVIOR     : Adds the given GmAddressbook to the address book window
- * 		  GMObject.
+ * 		  GMObject and updates it if it is a local address book.
  * PRE          : The given GtkWidget pointer must point to the address book
  * 		  GMObject. Non-NULL pointer to a GmAddressbook.
  */
@@ -1000,6 +1000,8 @@ gm_aw_delete_addressbook (GtkWidget *addressbook_window,
 {
   GmAddressbookWindow *aw = NULL;
 
+  GtkTreeSelection *selection = NULL;
+  GtkTreePath *path = NULL;
   GtkTreeModel *model = NULL;
   GtkTreeIter iter;
 
@@ -1038,6 +1040,16 @@ gm_aw_delete_addressbook (GtkWidget *addressbook_window,
 
       } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (model), &iter));
     }
+  }
+
+  
+  gtk_tree_view_expand_all (GTK_TREE_VIEW (aw->aw_tree_view));
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (aw->aw_tree_view));
+  if (!gtk_tree_selection_get_selected (selection, NULL, NULL)) {
+    
+    path = gtk_tree_path_new_from_string (gnomemeeting_addressbook_is_local (addressbook)?"1:0":"0:0");
+    gtk_tree_selection_select_path (selection, path);
+    gtk_tree_path_free (path);
   }
 }
 
