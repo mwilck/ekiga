@@ -976,7 +976,7 @@ gnomemeeting_init (GmWindow *gw,
 
     GSList *list = NULL;
 
-    list = g_slist_append (list, (void *) "Speex-8.4k=1");
+    list = g_slist_append (list, (void *) "Speex-8k=1");
     list = g_slist_append (list, (void *) "MS-GSM=1");
     list = g_slist_append (list, (void *) "Speex-15k=1");
     list = g_slist_append (list, (void *) "GSM-06.10=1");
