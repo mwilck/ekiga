@@ -3,7 +3,7 @@
 # Damien Sandras <dsandras@acm.org>, 2001.
 # Pablo Saratxaga <pablo@mandrakesoft.com>, 2001.
 # P`tit Lu <ptitlu@ptitlu.org>, 2001.
-# maintainer: Fabrice Alphonso <fabrice.alphonso@wanadoo.fr>, 2002.
+# maintainer: Fabrice Alphonso <fabrice.alphonso@wanadoo.fr>, 2002, 2003.
 # Christophe Merlet (RedFox) <christophe@merlet.net>, 2002.
 #
 # NOTE: selon les normes de typographie française les caractères : ! ?
@@ -16,8 +16,8 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: GnomeMeeting 0.92.1\n"
-"POT-Creation-Date: 2002-10-15 11:33+0200\n"
+"Project-Id-Version: GnomeMeeting 0.96.0\n"
+"POT-Creation-Date: 2003-01-21 16:12+0100\n"
 "PO-Revision-Date: 2002-05-25 21:16+0200\n"
 "Last-Translator: Christophe Merlet (RedFox) <christophe@merlet.net>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:916 src/main_window.cpp:920
+#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:1086
 msgid "GnomeMeeting"
 msgstr "GnomeMeeting"
 
@@ -39,37 +39,36 @@ msgstr "Vidéoconférence"
 
 #: gnomemeeting.schemas.in.in.h:1
 msgid "1: 56Kbps, 2: ISDN, 3:DSL, 4: LAN, 5: Custom"
-msgstr "1 : 56Kbps, 2 : Numéris, 3 : DSL, 4 : LAN, 5 : Personalisé"
+msgstr "1 : 56Kbps, 2 : RNIS, 3 : DSL, 4 : LAN, 5 : Personalisé"
 
-#: gnomemeeting.schemas.in.in.h:2
-msgid "A comment that will be listed in LDAP directories"
-msgstr "Un commentaire qui va être affiché dans les annuaires LDAP"
-
-#: gnomemeeting.schemas.in.in.h:3 src/pref_window.cpp:1412
+#: gnomemeeting.schemas.in.in.h:2 src/pref_window.cpp:970
 msgid "Always forward calls to the given host"
 msgstr "Toujours transférer les appels vers l'hôte donné"
 
-#: gnomemeeting.schemas.in.in.h:4
+#: gnomemeeting.schemas.in.in.h:3
 msgid "Audio player"
 msgstr "Lecteur audio"
 
-#: gnomemeeting.schemas.in.in.h:5
-msgid "Audio player Mixer"
+#: gnomemeeting.schemas.in.in.h:4
+msgid "Audio player mixer"
 msgstr "Mixeur du lecteur audio"
 
-#: gnomemeeting.schemas.in.in.h:6
+#: gnomemeeting.schemas.in.in.h:5
 msgid "Audio recorder"
 msgstr "Enregistreur audio"
 
-#. The toggles
-#: gnomemeeting.schemas.in.in.h:7 src/menu.cpp:466 src/pref_window.cpp:1292
-#: src/tray.cpp:191
-msgid "Auto Answer"
-msgstr "Décrocher automatiquement"
+#: gnomemeeting.schemas.in.in.h:6
+msgid "Audio recorder mixer"
+msgstr "Mixeur de l'enregistreur audio"
 
-#: gnomemeeting.schemas.in.in.h:8
-msgid "Automatic Echo Cancellation"
+#: gnomemeeting.schemas.in.in.h:7
+msgid "Automatic echo cancellation"
 msgstr "Suppression automatique de l'écho"
+
+#. The toggles
+#: gnomemeeting.schemas.in.in.h:8 src/menu.cpp:874 src/pref_window.cpp:835
+msgid "Automatically answer calls"
+msgstr "Répondre automatiquement aux appels"
 
 #: gnomemeeting.schemas.in.in.h:9
 msgid "Change the control panel section"
@@ -77,393 +76,483 @@ msgstr "Changer l'onglet du panneau de contrôle"
 
 #: gnomemeeting.schemas.in.in.h:10
 msgid ""
-"Change the control panel section (3 means that the control panel is off)"
+"Change the control panel section (4 means that the control panel is off)"
 msgstr ""
-"Changer l'onglet du panneau de contrôle (3 signifie que le panneau de "
+"Changer l'onglet du panneau de contrôle (4 signifie que le panneau de "
 "contrôle est fermé)"
 
-#: gnomemeeting.schemas.in.in.h:11
+#: gnomemeeting.schemas.in.in.h:11 src/pref_window.cpp:1405
+msgid ""
+"Choose the number of blocks (that have not changed) transmitted with each "
+"frame. These blocks fill in the background."
+msgstr ""
+"Choisissez le nombre de blocs (n'ayant pas été modifiés) qui doivent être "
+"transmis dans chaque image.  Ces blocs remplissent le fond."
+
+#: gnomemeeting.schemas.in.in.h:12
 msgid "Color Format"
 msgstr "Format couleur"
 
-#: gnomemeeting.schemas.in.in.h:12
+#: gnomemeeting.schemas.in.in.h:13
 msgid "Color Format for the video palette"
 msgstr "Format couleur de la palette vidéo"
 
-#: gnomemeeting.schemas.in.in.h:13 src/ldap_window.cpp:611
+#: gnomemeeting.schemas.in.in.h:14 src/ldap_window.cpp:1725
 msgid "Comment"
 msgstr "Commentaire"
 
-#: gnomemeeting.schemas.in.in.h:14
+#: gnomemeeting.schemas.in.in.h:15 src/pref_window.cpp:990
+msgid ""
+"Connection will be established in Fast Start mode. Fast Start is a new way "
+"to start calls faster that was introduced in H.323v2. It is not supported by "
+"Netmeeting and using both Fast Start and H.245 Tunnelling can crash some "
+"versions of Netmeeting."
+msgstr ""
+"La connexion sera établie en mode de démarrage rapide. Le démarrage rapide "
+"est une nouvelle manière de démarrer les appels plus rapidement qui a été "
+"introduite dans H.323v2.  Il n'est pas supporté par Netmeeting et utiliser à "
+"la fois le Démarrage Rapide et le Tunnelling H.245 peut faire planter "
+"quelques versions de Netmeeting."
+
+#: gnomemeeting.schemas.in.in.h:16
 msgid "Country code"
 msgstr "Code pays"
 
-#: gnomemeeting.schemas.in.in.h:15
-msgid "Display a popup window every time you receive a call"
-msgstr "Afficher une fenêtre popup à chaque appel reçu"
-
-#: gnomemeeting.schemas.in.in.h:16
+#: gnomemeeting.schemas.in.in.h:17 src/menu.cpp:439 src/pref_window.cpp:837
 msgid "Do not disturb"
 msgstr "Ne pas déranger"
 
-#: gnomemeeting.schemas.in.in.h:17
-msgid "E-Mail address"
-msgstr "E-mail"
-
 #: gnomemeeting.schemas.in.in.h:18
-msgid "Enable FPS"
-msgstr "Activer la limitation FPS"
+msgid "E-mail address"
+msgstr "Adresse E-mail"
 
-#: gnomemeeting.schemas.in.in.h:19
-msgid "Enable Silence Detection for G.711 and GSM"
-msgstr "Activer de la détection du silence pour les codecs G.711 et GSM"
+#: gnomemeeting.schemas.in.in.h:19 src/pref_window.cpp:990
+msgid "Enable 'Fast Start'"
+msgstr "Activer le \"Démarrage Rapide\""
 
-#: gnomemeeting.schemas.in.in.h:20 src/pref_window.cpp:1884
-msgid "Enable Video Transmission"
-msgstr "Activer la transmission vidéo"
+#: gnomemeeting.schemas.in.in.h:20 src/pref_window.cpp:987
+msgid "Enable H.245 tunnelling"
+msgstr "Activer le Tunnelling H.245"
 
-#: gnomemeeting.schemas.in.in.h:21
-msgid "Enable or disable bilinear filtering"
-msgstr "Activer ou désactiver le filtrage bilinéaire"
+#: gnomemeeting.schemas.in.in.h:21 src/pref_window.cpp:1007
+msgid "Enable IP translation"
+msgstr "Activer la traduction d'IP"
 
-#: gnomemeeting.schemas.in.in.h:22 src/pref_window.cpp:1319
+#: gnomemeeting.schemas.in.in.h:22 src/pref_window.cpp:861
+msgid "Enable bilinear filtering on displayed video"
+msgstr "Permettre le filtrage bilinéaire sur l'image affichée"
+
+#: gnomemeeting.schemas.in.in.h:23 src/pref_window.cpp:861
 msgid ""
-"Enable or disable bilinear interpolation when rendering video images (it has "
-"no effect on fullscreen)."
+"Enable or disable bilinear interpolation when rendering video images (this "
+"has no effect in fullscreen mode)."
 msgstr ""
 "Activer ou désactiver l'interpolation bilinéaire à l'affichage des images "
-"(aucun effet sur l'image plein écran)"
+"(aucun effet sur l'image plein écran)."
 
-#: gnomemeeting.schemas.in.in.h:23
-msgid "Enable registering to the LDAP server"
-msgstr "Permettre l'enregistrement sur un serveur LDAP"
+#: gnomemeeting.schemas.in.in.h:24 src/pref_window.cpp:905
+msgid "Enable registering"
+msgstr "Permettre l'enregistrement"
 
-#: gnomemeeting.schemas.in.in.h:24
-msgid "Enable the limit on the number of frames per second"
-msgstr "Activer la limitation du nombre d'images par seconde"
+#: gnomemeeting.schemas.in.in.h:25 src/pref_window.cpp:1338
+msgid "Enable silence detection"
+msgstr "Activer la détection du silence"
 
-#: gnomemeeting.schemas.in.in.h:25
-msgid "Enable the video transmission for calls"
-msgstr "Activer la transmission vidéo pendant les appels"
+#: gnomemeeting.schemas.in.in.h:26 src/pref_window.cpp:1375
+msgid "Enable video reception"
+msgstr "Activer la réception vidéo"
 
-#: gnomemeeting.schemas.in.in.h:26
-msgid "Fast Start"
-msgstr "Démarrage rapide"
+#: gnomemeeting.schemas.in.in.h:27 src/pref_window.cpp:1372
+msgid "Enable video transmission"
+msgstr "Activer la transmission vidéo"
 
-#: gnomemeeting.schemas.in.in.h:27 src/ldap_window.cpp:563
-msgid "First Name"
+#: gnomemeeting.schemas.in.in.h:28 src/pref_window.cpp:790
+msgid "Enter a comment about yourself for the user directory."
+msgstr ""
+"Saisissez un commentaire vous concernant pour les annuaires d'utilisateurs."
+
+#: gnomemeeting.schemas.in.in.h:29 src/pref_window.cpp:1010
+msgid ""
+"Enter the public IP of your NAT/PAT router if you want to use IP "
+"translation. If you are registered to ils.seconix.com, GnomeMeeting will "
+"automatically fetch the public IP using the ILS service."
+msgstr ""
+"Saissisez dans ce champ l'adresse IP publique de votre routeur NAT/PAT si "
+"vous voulez utiliser la traduction d'adresse IP. Si vous êtes  enregistré "
+"sur le serveur ils.seconix.com, GnomeMeeting utilisera automatiquement "
+"l'adresse retournée par le serveur ILS."
+
+#: gnomemeeting.schemas.in.in.h:30 src/pref_window.cpp:788
+msgid "Enter your e-mail address."
+msgstr "Saisissez votre adresse e-mail."
+
+#: gnomemeeting.schemas.in.in.h:31 src/pref_window.cpp:782
+msgid "Enter your first name."
+msgstr "Saisissez votre prénom."
+
+#: gnomemeeting.schemas.in.in.h:32 src/pref_window.cpp:786
+msgid "Enter your last name."
+msgstr "Saisissez votre nom."
+
+#: gnomemeeting.schemas.in.in.h:33 src/pref_window.cpp:792
+msgid "Enter your location (country or city) for the user directory."
+msgstr ""
+"Saissisez Votre emplacement géographique (pays ou ville) pour l'annuaire "
+"d'utilisateurs."
+
+#: gnomemeeting.schemas.in.in.h:34
+msgid "First name"
 msgstr "Prénom"
 
-#: gnomemeeting.schemas.in.in.h:28 src/pref_window.cpp:1418
+#: gnomemeeting.schemas.in.in.h:35
+msgid "Forward calls to host"
+msgstr "Transférer les appels vers l'hôte"
+
+#: gnomemeeting.schemas.in.in.h:36 src/pref_window.cpp:976
 msgid "Forward calls to the given host if busy"
 msgstr "Transférer les appels vers l'hôte donné si occupé"
 
-#: gnomemeeting.schemas.in.in.h:29 src/pref_window.cpp:1415
+#: gnomemeeting.schemas.in.in.h:37 src/pref_window.cpp:973
 msgid "Forward calls to the given host if no answer"
 msgstr "Transférer les appels vers l'hôte donné si pas de réponse"
 
-#: gnomemeeting.schemas.in.in.h:30
-msgid "Forward calls to this host"
-msgstr "Transférer les appels vers cet hôte"
-
-#: gnomemeeting.schemas.in.in.h:31
-msgid "Fullscreen Height"
+#: gnomemeeting.schemas.in.in.h:38
+msgid "Fullscreen height"
 msgstr "Hauteur plein écran"
 
-#: gnomemeeting.schemas.in.in.h:32
-msgid "Fullscreen Width"
+#: gnomemeeting.schemas.in.in.h:39
+msgid "Fullscreen width"
 msgstr "Largeur plein écran"
 
-#: gnomemeeting.schemas.in.in.h:33
-msgid "H.245 Tunnelling"
-msgstr "Tunnelling H.245"
+#: gnomemeeting.schemas.in.in.h:40 src/pref_window.cpp:884
+msgid "Gatekeeper ID"
+msgstr "ID Gatekeeper"
 
-#: gnomemeeting.schemas.in.in.h:34 src/pref_window.cpp:1906
+#: gnomemeeting.schemas.in.in.h:41
+msgid "Gatekeeper alias"
+msgstr "Alias sur le Gatekeeper"
+
+#: gnomemeeting.schemas.in.in.h:42 src/pref_window.cpp:883
+msgid "Gatekeeper host"
+msgstr "Hôte Gatekeeper"
+
+#: gnomemeeting.schemas.in.in.h:43
+msgid "Gatekeeper password"
+msgstr "Mot de passe sur le Gatekeeper"
+
+#: gnomemeeting.schemas.in.in.h:44 src/pref_window.cpp:869
 msgid ""
-"Here you can choose the number of blocks (that haven't changed) transmitted "
-"with each frame. These blocks fill in the background."
+"If enabled, GnomeMeeting will play a sound when receiving an incoming call "
+"(the sound to play is chosen in the Gnome Control Center)."
 msgstr ""
-"Ici vous pouvez choisir le nombre de blocs (n'ayant pas été modifiés) qui "
-"doivent être transmis dans chaque image.  Ces blocs remplissent le fond."
+"Si activé, GnomeMeeting jouera un son à la réception d'un appel entrant (le "
+"son à jouer est choisi dans le Centre de contrôle de GNOME)."
 
-#: gnomemeeting.schemas.in.in.h:35
-msgid "IP Translation"
-msgstr "Traduction d'IP"
-
-#: gnomemeeting.schemas.in.in.h:36 src/pref_window.cpp:1556
+#: gnomemeeting.schemas.in.in.h:45 src/pref_window.cpp:827
 msgid ""
-"If enabled, GnomeMeeting will use the Quicknet device instead of the regular "
-"soundcard during calls."
+"If enabled, GnomeMeeting will start hidden. The docklet must be enabled."
+msgstr "Si activé, GnomeMeeting démarrera caché. La docklet doit être activée."
+
+#: gnomemeeting.schemas.in.in.h:46 src/pref_window.cpp:839
+msgid "If enabled, a popup will be displayed when receiving an incoming call."
+msgstr "Si activé, une fenêtre popup sera affichée à la réception d'un appel."
+
+#: gnomemeeting.schemas.in.in.h:47 src/pref_window.cpp:976
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the field below if you already are in a call or if you are in "
+"Do Not Disturb mode."
 msgstr ""
-"Si activé, GnomeMeeting utilisera le périphérique Quicknet au lieu du "
-"périphérique audio habituel pendant l'appel."
+"Si activé, tous les appels entrant seront transférés vers l'hôte spécifié "
+"dans le champs ci-dessous si vous êtes déjà en appel ou si vous avez activé "
+"le mode *Ne Pas Déranger*."
 
-#: gnomemeeting.schemas.in.in.h:37
-msgid "If enabled, a sound is played on incoming calls."
-msgstr "Si activé, un son sera joué à la réception d'un appel."
+#: gnomemeeting.schemas.in.in.h:48 src/pref_window.cpp:973
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the field below if you do not answer the call."
+msgstr ""
+"Si activé, tous les appels entrant seront transférés vers l'hôte spécifié "
+"dans le champs ci-dessous si vous ne répondez pas à l'appel."
 
-#: gnomemeeting.schemas.in.in.h:38
-msgid "If enabled, calls will be established in Fast Start mode."
-msgstr "Si activé, GnomeMeeting activera le mode Démarrage Rapide."
+#: gnomemeeting.schemas.in.in.h:49 src/pref_window.cpp:970
+msgid ""
+"If enabled, all incoming calls will be forwarded to the host that is "
+"specified in the field below."
+msgstr ""
+"Si activé, tous les appels entrant seront transférés vers l'hôte spécifié "
+"dans le champs ci-dessous."
 
-#: gnomemeeting.schemas.in.in.h:39
-msgid "If enabled, calls will be established with H.245 Tunnelling."
-msgstr "Si activé, GnomeMeeting activera le Tunnelling H.245."
+#: gnomemeeting.schemas.in.in.h:50 src/pref_window.cpp:1375
+msgid "If enabled, allows video to be received during a call."
+msgstr "Si activé, la réception vidéo sera autorisée lors d'un appel."
 
-#: gnomemeeting.schemas.in.in.h:40 src/pref_window.cpp:1292
+#: gnomemeeting.schemas.in.in.h:51 src/pref_window.cpp:835
 msgid "If enabled, incoming calls will be automatically answered."
 msgstr "Si activé, GnomeMeeting répondra automatiquement aux appels entrants."
 
-#: gnomemeeting.schemas.in.in.h:41 src/pref_window.cpp:1294
+#: gnomemeeting.schemas.in.in.h:52 src/pref_window.cpp:837
 msgid "If enabled, incoming calls will be automatically refused."
 msgstr "Si activé, GnomeMeeting refusera automatiquement tout appel entrant."
 
-#: gnomemeeting.schemas.in.in.h:42
-msgid "Image"
-msgstr "Image"
+#: gnomemeeting.schemas.in.in.h:53 src/pref_window.cpp:907
+msgid "If enabled, register with the selected user directory."
+msgstr ""
+"Si activé, cela permet de s'enregistrer auprès de l'annuaire d'utilisateurs "
+"choisi"
 
-#: gnomemeeting.schemas.in.in.h:43
-msgid "Incoming Call Sound"
-msgstr "Son de l'appel entrant"
+#: gnomemeeting.schemas.in.in.h:54 src/pref_window.cpp:825
+msgid ""
+"If enabled, the splash screen will be displayed when GnomeMeeting starts."
+msgstr ""
+"Si activé, un écran de démarrage sera affiché au lancement de l'application."
 
-#: gnomemeeting.schemas.in.in.h:44
-msgid "Jitter buffer"
-msgstr "Délai de bufférisation"
+#: gnomemeeting.schemas.in.in.h:55 src/pref_window.cpp:1340
+msgid "If enabled, use silence detection with the GSM and G.711 codecs."
+msgstr ""
+"Si activé, la détection du silence sera activée pour les codecs GSM et G.711."
 
-#: gnomemeeting.schemas.in.in.h:45
-msgid "Jitter buffer for audio reception in ms"
-msgstr "Le délai de bufferisation pour les appels audio (en ms)"
+#: gnomemeeting.schemas.in.in.h:56 src/pref_window.cpp:1372
+msgid "If enabled, video is transmitted during a call."
+msgstr "Si activé, la vidéo sera transmise au cours de l'appel."
 
-#: gnomemeeting.schemas.in.in.h:46
+#: gnomemeeting.schemas.in.in.h:57 src/pref_window.cpp:912
+msgid ""
+"If enabled, your details are shown to people browsing the user directory. If "
+"disabled, you are not visible to users browsing the user directory, but they "
+"can still use the callto URL to call you."
+msgstr ""
+"Si activé, vos informations personnelles seront affichées aux personnes "
+"parcourant l'annuaires des utilisateurs. Si désactivé, vous ne serez pas "
+"visibles des utilisateurs parcourant l'annuaire des utilisateurs, mais ils "
+"pourront toujours vous appeler en utilisant l'URL callto."
+
+#: gnomemeeting.schemas.in.in.h:58
 msgid "Kind of network selected in the druid"
 msgstr "Type de réseau sélectionné dans l'assistant"
 
-#: gnomemeeting.schemas.in.in.h:47
-msgid "LDAP Server"
-msgstr "Serveur LDAP"
-
-#: gnomemeeting.schemas.in.in.h:48 src/ldap_window.cpp:575
-msgid "Last Name"
+#: gnomemeeting.schemas.in.in.h:59
+msgid "Last name"
 msgstr "Nom"
 
-#: gnomemeeting.schemas.in.in.h:49
-msgid "Limitation on the number of transmitted frames grabbed by the grabber"
-msgstr ""
-"Limitation du nombre d'images transmises capturées par le périphérique vidéo"
-
-#: gnomemeeting.schemas.in.in.h:50
+#: gnomemeeting.schemas.in.in.h:60
 msgid "Listen Port"
 msgstr "Port d'écoute"
 
-#: gnomemeeting.schemas.in.in.h:51
+#: gnomemeeting.schemas.in.in.h:61
 msgid "Local Video Popup Height"
 msgstr "Hauteur de la popup (image vidéo locale)"
 
-#: gnomemeeting.schemas.in.in.h:52
+#: gnomemeeting.schemas.in.in.h:62
 msgid "Local Video Popup Width"
 msgstr "Longueur de la popup (image vidéo locale)"
 
-#: gnomemeeting.schemas.in.in.h:53 src/ldap_window.cpp:599
+#: gnomemeeting.schemas.in.in.h:63 src/ldap_window.cpp:1736
 msgid "Location"
 msgstr "Emplacement"
 
-#: gnomemeeting.schemas.in.in.h:54
-msgid "Number of background blocks transmitted at a time"
-msgstr "Nombre de blocs d'arrière plan transmis à chaque fois"
+#: gnomemeeting.schemas.in.in.h:64
+msgid "Maximum jitter buffer"
+msgstr "Délai maximal de bufférisation"
 
-#: gnomemeeting.schemas.in.in.h:55
+#: gnomemeeting.schemas.in.in.h:65
+msgid "Maximum video bandwidth"
+msgstr "Bande passante vidéo maximale"
+
+#: gnomemeeting.schemas.in.in.h:66
+msgid "Minimum jitter buffer"
+msgstr "Délai minimal de bufférisation"
+
+#: gnomemeeting.schemas.in.in.h:67
+msgid "Minimum transmitted FPS"
+msgstr "FPS mainimale transmise"
+
+#: gnomemeeting.schemas.in.in.h:68
+msgid "Minimum transmitted video quality"
+msgstr "Qualité minimale de la vidéo transmise"
+
+#: gnomemeeting.schemas.in.in.h:69
 msgid "Number of entries to store in history boxes"
 msgstr "Nombre d'entrées à archiver dans l'historique"
 
-#: gnomemeeting.schemas.in.in.h:56
+#: gnomemeeting.schemas.in.in.h:70
 msgid "Number of frames for G.711"
 msgstr "Nombre de frames G.711"
 
-#: gnomemeeting.schemas.in.in.h:57
+#: gnomemeeting.schemas.in.in.h:71
 msgid "Number of frames for GSM"
 msgstr "Nombre de frames GSM"
 
-#: gnomemeeting.schemas.in.in.h:58
-msgid "Number of frames transmitted in each packet for the G.711 codec"
-msgstr "Nombre de frames transmis dans chaque paquet pour le codec G.711"
+#: gnomemeeting.schemas.in.in.h:72
+msgid "Number of frames transmitted in each packet for the G.711 codec."
+msgstr "Nombre de frames transmises dans chaque paquet pour le codec G.711."
 
-#: gnomemeeting.schemas.in.in.h:59
-msgid "Number of frames transmitted in each packet for the GSM codec"
-msgstr "Nombre de frames transmis dans chaque paquet pour le codec GSM"
+#: gnomemeeting.schemas.in.in.h:73
+msgid "Number of frames transmitted in each packet for the GSM codec."
+msgstr "Nombre de frames transmises dans chaque paquet pour le codec GSM."
 
-#: gnomemeeting.schemas.in.in.h:60
-msgid "Popup on incoming calls"
+#. The toggles
+#: gnomemeeting.schemas.in.in.h:74 src/pref_window.cpp:869
+msgid "Play a sound on incoming calls"
+msgstr "Jouer un son lors des appels entrants"
+
+#: gnomemeeting.schemas.in.in.h:75 src/pref_window.cpp:839
+msgid "Popup window when receiving a call"
 msgstr "Fenêtre popup lors des appels entrants"
 
-#: gnomemeeting.schemas.in.in.h:61
-msgid "Public IP"
-msgstr "Adresse IP publique"
+#: gnomemeeting.schemas.in.in.h:76
+msgid "Public IP of the NAT/PAT router"
+msgstr "Adresse IP publique du routeur NAT/PAT"
 
-#. The Quicknet devices related options
-#: gnomemeeting.schemas.in.in.h:62 src/pref_window.cpp:1546
-msgid "Quicknet Device"
-msgstr "Périphérique Quicknet"
-
-#: gnomemeeting.schemas.in.in.h:63
+#: gnomemeeting.schemas.in.in.h:77
 msgid "Received Video Quality Hint"
 msgstr "Qualité de la réception vidéo"
 
-#: gnomemeeting.schemas.in.in.h:64
-msgid "Register"
-msgstr "Enregistrement"
+#: gnomemeeting.schemas.in.in.h:78
+msgid "Registering method"
+msgstr "Méthode d'enregistrement"
 
-#: gnomemeeting.schemas.in.in.h:65
+#: gnomemeeting.schemas.in.in.h:79 src/pref_window.cpp:932
+msgid "Registering method to use"
+msgstr "Méthode d'enregistrement à utiliser"
+
+#: gnomemeeting.schemas.in.in.h:80
 msgid "Remote Video Popup Height"
 msgstr "Hauteur de la popup (image vidéo distante)"
 
-#: gnomemeeting.schemas.in.in.h:66
+#: gnomemeeting.schemas.in.in.h:81
 msgid "Remote Video Popup Width"
 msgstr "Longueur de la popup (image vidéo distante)"
 
-#: gnomemeeting.schemas.in.in.h:67
+#: gnomemeeting.schemas.in.in.h:82
 msgid "Revision of the schema file"
 msgstr "Révision du fichier schéma"
 
-#: gnomemeeting.schemas.in.in.h:68
-msgid "Show a docklet in the gnome-panel or KDE systray"
+#: gnomemeeting.schemas.in.in.h:83 src/druid.cpp:809 src/pref_window.cpp:1052
+msgid "Select the audio player device to use."
+msgstr "Choisissez le périphérique de lecture audio à utiliser."
+
+#: gnomemeeting.schemas.in.in.h:84 src/druid.cpp:816 src/pref_window.cpp:1059
+msgid "Select the audio recorder device to use."
+msgstr "Choisissez le périphérique d'enregistrement audio à utiliser."
+
+#: gnomemeeting.schemas.in.in.h:85 src/pref_window.cpp:1146
+msgid ""
+"Select the format for video cameras. (Does not apply to most USB cameras)."
 msgstr ""
-"Afficher une docklet dans le tableau de bord Gnome ou la barre d'application "
-"KDE"
+"Sélectionez le format pour la caméra vidéo. (Ne s'applique pas pour la plupart des caméras USB)."
 
-#: gnomemeeting.schemas.in.in.h:69
-msgid "Show a nice window every time GnomeMeeting starts"
-msgstr "Afficher une jolie fenêtre à chaque démarrage de GnomeMeeting"
+#: gnomemeeting.schemas.in.in.h:86 src/druid.cpp:812 src/pref_window.cpp:1055
+msgid "Select the mixer to use to change the volume of the audio player."
+msgstr "Sélectionnez le mixeur audio à utiliser pour paramètrer le volume du lecteur audio."
 
-#: gnomemeeting.schemas.in.in.h:70
+#: gnomemeeting.schemas.in.in.h:87 src/druid.cpp:819 src/pref_window.cpp:1062
+msgid "Select the mixer to use to change the volume of the audio recorder."
+msgstr ""
+"Sélectionnez le mixeur audio à utiliser pour paramètrer le volume de l'enregistreur "
+"audio."
+
+#: gnomemeeting.schemas.in.in.h:88 src/pref_window.cpp:1143
+msgid ""
+"Select the transmitted video size: Small (QCIF 176x144) or Large (CIF "
+"352x288)."
+msgstr ""
+"Sélectionnez la taille de la vidéo transmise : Petite (QCIF 176x144) ou Grande (CIF 352x288)."
+
+#: gnomemeeting.schemas.in.in.h:89 src/pref_window.cpp:1133
+msgid ""
+"Select the video device to use. Using an invalid video device or \"Picture\" "
+"for video transmission will transmit a test picture."
+msgstr ""
+"Sélectionnez le périphérique vidéo à utiliser. Le choix d'un mauvais "
+"périphérique vidéo ou \"Image\" permettra toutefois l'envoi d'une image de test."
+
+#: gnomemeeting.schemas.in.in.h:90
 msgid "Show a status bar at the bottom of the main window"
 msgstr "Afficher une barre d'état en dessous de la fenêtre principale"
 
-#: gnomemeeting.schemas.in.in.h:71
+#: gnomemeeting.schemas.in.in.h:91
 msgid "Show chat window"
 msgstr "Afficher la fenêtre de dialogue"
 
-#: gnomemeeting.schemas.in.in.h:72
-msgid "Show docklet"
-msgstr "Afficher la docklet"
+#: gnomemeeting.schemas.in.in.h:92 src/pref_window.cpp:910
+msgid "Show my details to other registered users"
+msgstr "Afficher mes informations personnelles aux autres utilisateurs enregistrés"
 
-#: gnomemeeting.schemas.in.in.h:73
-msgid "Show left toolbar"
-msgstr "Afficher la barre d'outils"
-
-#: gnomemeeting.schemas.in.in.h:74
-msgid "Show only the docklet window at startup"
-msgstr "Afficher seulement la docklet au démarrage"
-
-#: gnomemeeting.schemas.in.in.h:75
-msgid "Show splash screen at startup"
+#: gnomemeeting.schemas.in.in.h:93 src/pref_window.cpp:825
+msgid "Show splash screen"
 msgstr "Afficher l'écran de démarrage"
 
-#: gnomemeeting.schemas.in.in.h:76
+#: gnomemeeting.schemas.in.in.h:94
 msgid "Show status bar"
 msgstr "Afficher la barre d'état"
 
-#: gnomemeeting.schemas.in.in.h:77
+#: gnomemeeting.schemas.in.in.h:95
 msgid "Show the chat window in the main window"
 msgstr "Afficher la fenêtre de dialogue dans la fenêtre principale"
 
-#: gnomemeeting.schemas.in.in.h:78
-msgid "Show the left toolbar on the left of the main window"
-msgstr "Afficher la barre d'outils sur la gauche de la fenêtre principale"
+#: gnomemeeting.schemas.in.in.h:96 src/pref_window.cpp:827
+msgid "Start hidden"
+msgstr "Démarrer caché"
 
-#: gnomemeeting.schemas.in.in.h:79
+#: gnomemeeting.schemas.in.in.h:97 src/menu.cpp:583 src/menu.cpp:819
+msgid "Switch to fullscreen"
+msgstr "Basculler l'image en plein écran."
+
+#: gnomemeeting.schemas.in.in.h:98
+msgid "Switch to fullscreen for images displayed in the main GUI."
+msgstr "Basculer les images affichées dans la fenêtre principale en plein écran."
+
+#: gnomemeeting.schemas.in.in.h:99
 msgid "TCP Port Range"
-msgstr " Plage de ports TCP"
+msgstr "Plage de ports TCP"
 
-#: gnomemeeting.schemas.in.in.h:80
+#: gnomemeeting.schemas.in.in.h:100
 msgid "The Audio Codecs List"
 msgstr "Liste des codecs audio"
 
-#: gnomemeeting.schemas.in.in.h:81 src/pref_window.cpp:1550
+#: gnomemeeting.schemas.in.in.h:101 src/pref_window.cpp:1071
 msgid ""
 "The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic "
 "Gain Compensation. Choosing Automatic Gain Compensation modulates the volume "
 "for best quality."
 msgstr ""
 "Niveau de la suppression automatique de l'écho : Inactif, Bas, Moyen, Elevé, "
-"Compensation automatique du Gain. Choisir Compensation Automatique du Gain "
+"Compensation Automatique du Gain(CAG). Choisir Compensation Automatique du Gain "
 "module le volume pour une meilleure qualité."
 
-#: gnomemeeting.schemas.in.in.h:82
-msgid "The E-Mail address that will be listed in the directories"
-msgstr "E-mail qui apparaîtra dans les annuaires"
-
-#: gnomemeeting.schemas.in.in.h:83
-msgid "The Gatekeeper password"
-msgstr "Mot de passe du Gatekeeper"
-
-#: gnomemeeting.schemas.in.in.h:84 src/pref_window.cpp:1377
+#: gnomemeeting.schemas.in.in.h:102 src/pref_window.cpp:925
 msgid ""
-"The Gatekeeper password to use for H.235 authentication to the Gateleeper."
+"The Gatekeeper alias to use when registering (string, or E164 ID if only "
+"0123456789#)."
+msgstr ""
+"Alias à utiliser pour s'enregistrer auprès du Gatekeeper (chaine de "
+"caractères, ou E164 ID si uniquement constitué de 0123456789#)."
+
+#: gnomemeeting.schemas.in.in.h:103 src/pref_window.cpp:922
+msgid "The Gatekeeper host to register with."
+msgstr "Hôte Gatekeeper auquel s'enregistrer."
+
+#: gnomemeeting.schemas.in.in.h:104 src/pref_window.cpp:919
+msgid "The Gatekeeper identifier to register with."
+msgstr "Identifiant du Gatekeeper auquel s'enregistrer."
+
+#: gnomemeeting.schemas.in.in.h:105 src/pref_window.cpp:928
+msgid ""
+"The Gatekeeper password to use for H.235 authentication to the Gatekeeper."
 msgstr ""
 "Mot de passe à utiliser pour s'autentifier au Gatekeeper par le protocole "
 "H.235."
 
-#: gnomemeeting.schemas.in.in.h:85
-msgid "The Gatekeeper to register to"
-msgstr "Hôte Gatekeeper auquel s'enregistrer"
-
-#: gnomemeeting.schemas.in.in.h:86
-msgid "The ID of the Gatekeeper to register to"
-msgstr "ID de l'hôte Gatekeeper auquel s'enregistrer"
-
-#: gnomemeeting.schemas.in.in.h:87
-msgid "The LDAP Server to register to"
-msgstr "L'annuaire LDAP auquel s'enregistrer"
-
-#: gnomemeeting.schemas.in.in.h:88
-msgid "The Location that will be published in the LDAP directories"
-msgstr "Emplacement géographique qui apparaîtra dans les annuaires LDAP"
-
-#: gnomemeeting.schemas.in.in.h:89
-msgid "The Method to use to register to the Gatekeeper"
-msgstr "Méthode à utiliser pour s'enregistrer à un hôte Gatekeeper"
-
-#: gnomemeeting.schemas.in.in.h:90
-msgid "The Quicknet Device to use during calls."
-msgstr "Périphérique Quicknet à utiliser pendant les appels."
-
-#: gnomemeeting.schemas.in.in.h:91
-msgid "The Video Channel"
-msgstr "Canal vidéo"
-
-#: gnomemeeting.schemas.in.in.h:92
-msgid "The Video Device to use for recording"
-msgstr "Périphérique vidéo d'enregistrement"
-
-#: gnomemeeting.schemas.in.in.h:93
-msgid "The Video Format: PAL, NTSC, SECAM, Auto"
-msgstr "Format vidéo : PAL, NTSC, SECAM, Auto"
-
-#: gnomemeeting.schemas.in.in.h:94
+#: gnomemeeting.schemas.in.in.h:106
 msgid "The Video Quality to request to the remote"
 msgstr "Qualité vidéo à demander à l'hôte distant"
 
-#: gnomemeeting.schemas.in.in.h:95
-msgid "The Video Size: QCIF (0) or CIF (1)"
-msgstr "Taille de la vidéo transmise : QCIF (0) ou CIF (1)"
-
-#: gnomemeeting.schemas.in.in.h:96
-msgid "The alias to use when registering"
-msgstr "Alias à utiliser à l'enregistrement"
-
-#: gnomemeeting.schemas.in.in.h:97
-msgid ""
-"The alias to use when registering. People will use this alias when calling "
-"you."
-msgstr ""
-"Alias à utiliser à l'enregistrement. Les gens utiliseront cet alias pour "
-"vous appeler."
-
-#: gnomemeeting.schemas.in.in.h:98
+#: gnomemeeting.schemas.in.in.h:107
 msgid "The default video view"
 msgstr "Image vidéo par défaut"
 
-#: gnomemeeting.schemas.in.in.h:99
+#: gnomemeeting.schemas.in.in.h:108
 msgid ""
 "The default video view (0: Local, 1: Remote, 2: Both incrusted, 3: Both with "
 "local in popup, 4: Both)"
@@ -472,66 +561,84 @@ msgstr ""
 "incrutées, 3: Les deux avec la vidéo locale dans une fenêtre séparée, 4: Les "
 "deux)"
 
-#: gnomemeeting.schemas.in.in.h:100
-msgid "The device to use to play audio"
-msgstr "Périphérique audio à utiliser en lecture"
-
-#: gnomemeeting.schemas.in.in.h:101
-msgid "The device to use to record audio"
-msgstr "Périphérique audio à utiliser en enregistrement"
-
-#: gnomemeeting.schemas.in.in.h:102
+#: gnomemeeting.schemas.in.in.h:109
 msgid "The height of the local video popup"
 msgstr "Hauteur de la popup de la vidéo locale"
 
-#: gnomemeeting.schemas.in.in.h:103
-msgid ""
-"The height of the picture displayed when being in fullscreen (using SDL)"
-msgstr "Hauteur de l'image affichée en plein écran (utilisation de SDL)"
-
-#: gnomemeeting.schemas.in.in.h:104
+#: gnomemeeting.schemas.in.in.h:110
 msgid "The height of the remote video popup"
 msgstr "Hauteur de la popup de la vidéo distante"
 
-#: gnomemeeting.schemas.in.in.h:105
-msgid "The host to forward calls to"
-msgstr "Hôte vers lequel transmettre les appels"
-
-#: gnomemeeting.schemas.in.in.h:106
-msgid "The hostname of the Gatekeeper to register to"
-msgstr "Nom de l'hôte Gatekeeper auquel s'enregistrer"
-
-#: gnomemeeting.schemas.in.in.h:107 src/pref_window.cpp:1650
+#: gnomemeeting.schemas.in.in.h:111 src/pref_window.cpp:967
 msgid ""
-"The image to transmit if the Picture device is selected as video device or "
-"if the opening of the device fails (none specified = default GnomeMeeting "
-"logo)."
+"The host where calls should be forwarded to in the cases selected above."
+msgstr ""
+"L'hôte vers lequel seront transférés les appels dans les "
+"cas suivants"
+
+#: gnomemeeting.schemas.in.in.h:112 src/pref_window.cpp:856
+msgid "The image height for fullscreen."
+msgstr "Hauteur de l'image en plein écran."
+
+#: gnomemeeting.schemas.in.in.h:113 src/pref_window.cpp:1150
+msgid ""
+"The image to transmit if \"Picture\" is selected for the video device or if "
+"the opening of the device fails. Leave blank to use the default GnomeMeeting "
+"logo."
 msgstr ""
 "Image à transmettre si \"Image \" est sélectionné comme périphérique vidéo "
-"ou si l'ouverture du périphérique vidéo échoue ( si rien n'est sélectionné, "
-"le logo GnomeMeeting sera envoyé par défaut)."
+"ou si l'ouverture du périphérique vidéo échoue. Ne rien sélectionner pour "
+"pour envoyer le logo GnomeMeeting par défaut)."
 
-#: gnomemeeting.schemas.in.in.h:108
-msgid "The list of ILS servers"
-msgstr "Liste des annuaires ILS"
+#: gnomemeeting.schemas.in.in.h:114 src/pref_window.cpp:850
+msgid "The image width for fullscreen."
+msgstr "Largeur de l'image en plein écran."
 
-#: gnomemeeting.schemas.in.in.h:109
+#: gnomemeeting.schemas.in.in.h:115
 msgid "The list of called URLs"
 msgstr "Liste des URLs appelées"
 
-#: gnomemeeting.schemas.in.in.h:110
-msgid "The list of used ILS servers"
-msgstr "Liste des annuaires ILS utilisés"
+#: gnomemeeting.schemas.in.in.h:116
+msgid "The list of groups"
+msgstr "Liste des groupes"
 
-#: gnomemeeting.schemas.in.in.h:111
-msgid "The mixer to use for the device that is used to play audio"
-msgstr "Le mixeur audio à utiliser comme périphérique de lecture audio."
+#: gnomemeeting.schemas.in.in.h:117 src/pref_window.cpp:1346
+msgid "The maximum jitter buffer size for audio reception (in ms)."
+msgstr "Le délai maximal de bufférisation pour la réception audio (en ms)."
 
-#: gnomemeeting.schemas.in.in.h:112
-msgid "The mixer to use for the device that is used to record audio"
-msgstr "Le mixeur audio à utiliser comme périphérique d'enregistrement audio."
+#: gnomemeeting.schemas.in.in.h:118 src/pref_window.cpp:1384
+msgid ""
+"The maximum video bandwidth in kbytes/s. The video quality and the number of "
+"transmitted frames per second will be dynamically adjusted above their "
+"minimum during calls to try to minimize the bandwidth to the given value."
+msgstr ""
+"Bande passante vidéo maximale en kbytes/s. La qualité vidéo et le nombre d'images "
+"transmises par seconde seront ajustés dynamiquement autour de leur minima au cours "
+"de l'appel pour maintenir la bande passante à la valeur donnée."
 
-#: gnomemeeting.schemas.in.in.h:113
+#: gnomemeeting.schemas.in.in.h:119 src/pref_window.cpp:1343
+msgid "The minimum jitter buffer size for audio reception (in ms)."
+msgstr "Le délai minimal de bufferisation pour la réception audio (en ms)."
+
+#: gnomemeeting.schemas.in.in.h:120 src/pref_window.cpp:1399
+msgid ""
+"The minimum number of video frames to transmit each second when trying to "
+"minimize the bandwidth."
+msgstr "Nombre d'images vidéo transmises par seconde lors de la minimisation "
+"de la bande passante."
+
+#: gnomemeeting.schemas.in.in.h:122
+#, no-c-format
+msgid ""
+"The minimum transmitted video quality to keep when trying to minimize the "
+"used bandwidth: choose 100% on a LAN for the best quality, 1% being the "
+"worst quality."
+msgstr ""
+"Qualité minimale de la transmission vidéo lors de la minimisation de la bande "
+"passante utilisée :  choisissez 100% sur un LAN pour une qualité optimale, "
+"1% étant la pire qualité possible."
+
+#: gnomemeeting.schemas.in.in.h:123
 msgid ""
 "The port to listen to for incoming connections. GnomeMeeting needs to be "
 "restarted for the new value to take effect."
@@ -539,7 +646,7 @@ msgstr ""
 "Port d'écoute des appels entrants. GnomeMeeting doit être redémarrer pour "
 "que la nouvelle valeur soit prise en compte."
 
-#: gnomemeeting.schemas.in.in.h:114
+#: gnomemeeting.schemas.in.in.h:124
 msgid ""
 "The prefix that will be used to save pictures of the conversation. That "
 "prefix is followed by the snapshot number."
@@ -547,7 +654,7 @@ msgstr ""
 "Préfixe utilisé pour l'enregistrement des image de la conversation. Ce "
 "préfixe est suivi du numéro de l'image."
 
-#: gnomemeeting.schemas.in.in.h:115
+#: gnomemeeting.schemas.in.in.h:125
 msgid ""
 "The range of TCP ports beside the listen_port that GnomeMeeting will use for "
 "incoming connections. You can change the TCP port range if you are using IP "
@@ -561,7 +668,7 @@ msgstr ""
 "GnomeMeeting derrière votre routeur NAT/PAT. GnomeMeeting devra être relancé "
 "pour que les modifications soient effectives."
 
-#: gnomemeeting.schemas.in.in.h:116
+#: gnomemeeting.schemas.in.in.h:126
 msgid ""
 "The range of UDP ports that GnomeMeeting will use for incoming connections. "
 "You can change the UDP port range if you are using IP translation and if you "
@@ -574,37 +681,63 @@ msgstr ""
 "routeur NAT/PAT. GnomeMeeting devra être relancé pour que les modifications "
 "soient effectives."
 
-#: gnomemeeting.schemas.in.in.h:117
+#: gnomemeeting.schemas.in.in.h:127
 msgid "The save prefix"
 msgstr "Nom d'enregistrement"
 
-#: gnomemeeting.schemas.in.in.h:118
-msgid "The transmitted video quality hint"
-msgstr "Qualité de la vidéo transmise"
-
-#: gnomemeeting.schemas.in.in.h:119 src/pref_window.cpp:1553
+#: gnomemeeting.schemas.in.in.h:128 src/pref_window.cpp:1074
 msgid ""
 "The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)."
 msgstr ""
 "Code pays à deux lettres de votre pays (par ex. : FR, BE, UK, DE, ...)."
 
-#: gnomemeeting.schemas.in.in.h:120
-msgid "The user's first name that will be used in the directories"
-msgstr "Nom de l'utilisateur qui apparaîtra dans les annuaires"
+#: gnomemeeting.schemas.in.in.h:129 src/pref_window.cpp:902
+msgid "The user directory server to register with."
+msgstr "L'annuaire des utilisateurs auquel s'enregistrer."
 
-#: gnomemeeting.schemas.in.in.h:121
+#: gnomemeeting.schemas.in.in.h:130 src/pref_window.cpp:1139
+msgid ""
+"The video channel number to use (to select camera, tv or other sources)."
+msgstr ""
+"Le numéro du canal vidéo à utiliser ( pour sélectionner une webcam "
+", une TV, ou d'autres sources)."
+
+#: gnomemeeting.schemas.in.in.h:131
 msgid "The width of the local video popup"
 msgstr "Longueur de la popup de la vidéo locale"
 
-#: gnomemeeting.schemas.in.in.h:122
-msgid "The width of the picture displayed when being in fullscreen (using SDL)"
-msgstr "Largeur de l'image affichée en plein écran (utilisation de SDL)"
-
-#: gnomemeeting.schemas.in.in.h:123
+#: gnomemeeting.schemas.in.in.h:132
 msgid "The width of the remote video popup"
 msgstr "Longueur de la popup de la vidéo distante"
 
-#: gnomemeeting.schemas.in.in.h:124 src/pref_window.cpp:1441
+#: gnomemeeting.schemas.in.in.h:133
+msgid "The zoom value"
+msgstr "Valeur du zoom"
+
+#: gnomemeeting.schemas.in.in.h:134
+msgid ""
+"The zoom value to apply to images displayed in the main GUI (can be 0.50, "
+"1.00, or 2.00)."
+msgstr ""
+"La valeur du zoom a appliquer aux images affichées dans la fenêtre principale "
+"(peut-être 0.50, 1.00, ou 2.00)."
+
+#: gnomemeeting.schemas.in.in.h:135 src/pref_window.cpp:987
+msgid ""
+"This enables H.245 Tunnelling mode. In H.245 Tunnelling mode H.245 messages "
+"are encapsulated into the the H.225 channel (port 1720). This saves one TCP "
+"connection during calls. H.245 Tunnelling was introduced in H.323v2 and "
+"Netmeeting does not support it. Using both Fast Start and H.245 Tunnelling "
+"can crash some versions of Netmeeting."
+msgstr ""
+"Ceci active le mode de Tunnelling H.245. Dans le mode de Tunnelling H.245 "
+"les messages sont encapsulés dans le canal H.225 (port 1720). Ceci permet de "
+"supprimer l'utilisation d'un port TCP aléatoire durand les appels. Le Tunnelling H.245 a été "
+"introduit dans H.323v2 et Netmeeting ne le supporte pas. Utiliser à la fois "
+"le Démarrage Rapide et le Tunnelling H.245 peut faire planter quelques "
+"versions de Netmeeting."
+
+#: gnomemeeting.schemas.in.in.h:136 src/pref_window.cpp:1007
 msgid ""
 "This enables IP translation. IP translation is useful if GnomeMeeting is "
 "running behind a NAT/PAT router. You have to put the public IP of the router "
@@ -619,69 +752,67 @@ msgstr ""
 "le serveur ILS. Si votre routeur supporte le protocole H323 nativement, vous "
 "pouvez désactiver cette option."
 
-#: gnomemeeting.schemas.in.in.h:125
-msgid "This need the show_docklet option set to true to have effect"
+#: gnomemeeting.schemas.in.in.h:137
+msgid ""
+"This permits to set the mode for User Input Capabilities. The values can be "
+"\"All\" (0), \"None\" (1), \"rfc2833\" (2), \"Signal\" (3) or \"String\" (4) "
+"(default is \"All\"). Choosing other values than \"All\", \"String\" or "
+"\"rfc2833\" disables the Text Chat."
 msgstr ""
-"Cette option nécessite que l'option show_docklet soit active pour être "
-"utilisable"
+"Ceci permet de choisir les méthodes de saisie utilisateur. Les valeurs "
+"peuvent être \"Chaine de caractères\", \"Signal\", \"rfc2833\", \"Aucune\" ou \"Toutes\" "
+"(par défaut c'est \"Toutes\"). Choisir une autre valeur que \"Toutes\", "
+"\"Chaine de caractères\", ou \"rfc2833\" désactive le dialogue texte."
 
-#: gnomemeeting.schemas.in.in.h:126
-msgid "Transmitted frames per second"
-msgstr "Nombre d'images transmises par seconde"
+#: gnomemeeting.schemas.in.in.h:138
+msgid "Transmitted background blocks"
+msgstr "Blocs d'arrière plan transmis"
 
-#: gnomemeeting.schemas.in.in.h:127
+#: gnomemeeting.schemas.in.in.h:139
 msgid "UDP Port Range"
 msgstr "Plage de ports UDP"
 
-#: gnomemeeting.schemas.in.in.h:128
-msgid "Use Quicknet Device"
-msgstr "Utilisation du périphérique Quicknet"
+#: gnomemeeting.schemas.in.in.h:140
+msgid "User Input Capabilities type"
+msgstr "Type des méthodes de saisie utilisateur"
 
-#: gnomemeeting.schemas.in.in.h:129 src/ldap_window.cpp:623
+#: gnomemeeting.schemas.in.in.h:141
+msgid "User directory"
+msgstr "Annuaire d'utilisateurs"
+
+#: gnomemeeting.schemas.in.in.h:142 src/ldap_window.cpp:1758
 msgid "Version"
 msgstr "Version"
 
-#: gnomemeeting.schemas.in.in.h:130
-msgid "Video Channel"
-msgstr "Canal vidéo"
-
-#: gnomemeeting.schemas.in.in.h:131
-msgid "Video Device"
-msgstr "Périphérique vidéo"
-
-#: gnomemeeting.schemas.in.in.h:132
-msgid "Video Format"
-msgstr "Format vidéo"
-
-#: gnomemeeting.schemas.in.in.h:133 src/pref_window.cpp:1654
+#: gnomemeeting.schemas.in.in.h:143
 msgid "Video Preview"
 msgstr "Prévue vidéo"
 
-#: gnomemeeting.schemas.in.in.h:134
-msgid "Video Quality"
-msgstr "Qualité de la vidéo"
+#: gnomemeeting.schemas.in.in.h:144
+msgid "Video channel"
+msgstr "Canal vidéo"
 
-#: gnomemeeting.schemas.in.in.h:135
-msgid "Video Size"
+#: gnomemeeting.schemas.in.in.h:145
+msgid "Video device"
+msgstr "Périphérique vidéo"
+
+#: gnomemeeting.schemas.in.in.h:146
+msgid "Video format"
+msgstr "Format vidéo"
+
+#: gnomemeeting.schemas.in.in.h:147
+msgid "Video image"
+msgstr "Image vidéo"
+
+#: gnomemeeting.schemas.in.in.h:148
+msgid "Video size"
 msgstr "Taille de l'image vidéo"
 
-#: gnomemeeting.schemas.in.in.h:136
-msgid ""
-"You can put here the public IP of your NAT/PAT router if you want to use IP "
-"translation. If you are registered to ils.seconix.com, GnomeMeeting will "
-"automatically fetch the public IP using the ILS service."
-msgstr ""
-"Vous pouvez entrer dans ce champ l'adresse IP publique de votre routeur NAT/"
-"PAT si vous voulez utiliser la traduction d'adresse IP. Si vous êtes  "
-"enregistré sur le serveur ils.seconix.com, GnomeMeeting utilisera "
-"automatiquement l'adresse retournée par le serveur ILS."
-
-#: lib/dialog.c:131
+#: lib/dialog.c:148
 msgid "Do not show this dialog again"
 msgstr "Ne plus afficher cette fenêtre"
 
-#. The toggles
-#: sounds/gnomemeeting.soundlist.in.h:1 src/pref_window.cpp:1327
+#: sounds/gnomemeeting.soundlist.in.h:1
 msgid "Incoming Call"
 msgstr "Appel entrant"
 
@@ -689,21 +820,21 @@ msgstr "Appel entrant"
 msgid "gnomemeeting"
 msgstr "GnomeMeeting"
 
-#: src/callbacks.cpp:122
+#: src/callbacks.cpp:128
 msgid "Code Contributors:"
 msgstr "Contributeurs au code :"
 
-#: src/callbacks.cpp:128
+#: src/callbacks.cpp:134
 msgid "Contributors:"
 msgstr "Contributeurs :"
 
-#: src/callbacks.cpp:149
+#: src/callbacks.cpp:155
 msgid "Internationalisation Maintainer:"
 msgstr "Mainteneur de la localisation :"
 
 #. Translators: Please write translator credits here, and
 #. * seperate names with \n
-#: src/callbacks.cpp:166
+#: src/callbacks.cpp:172
 msgid "translator_credits"
 msgstr ""
 "Damien Sandras <dsandras@seconix.com>\n"
@@ -711,7 +842,7 @@ msgstr ""
 
 #. Translators: Please test to see if your translation
 #. * looks OK and fits within the box
-#: src/callbacks.cpp:178
+#: src/callbacks.cpp:183
 msgid ""
 "GnomeMeeting is a full-featured H.323\n"
 "video conferencing application."
@@ -719,7 +850,7 @@ msgstr ""
 "GnomeMeeting est une application de vidéo-conférence\n"
 "entièrement compatible H.323."
 
-#: src/callbacks.cpp:216
+#: src/callbacks.cpp:225
 msgid ""
 "An error has happened in the configuration backend.\n"
 "Maybe some of your settings won't be saved."
@@ -727,27 +858,13 @@ msgstr ""
 "Une erreur est apparue à la sauvegarde de la configuration.\n"
 "Certains de vos paramètres ne seront peut-être pas sauvés."
 
-#: src/chat_window.cpp:148 src/menu.cpp:355
-msgid "Text Chat"
-msgstr "Fenêtre de dialogue"
-
-#: src/chat_window.cpp:194
+#: src/chat_window.cpp:199
 msgid "Send Message:"
 msgstr "Message à envoyer :"
 
-#: src/cleaner.cpp:79
+#: src/cleaner.cpp:82
 msgid "Quit in progress..."
 msgstr "Sortie en cours..."
-
-#: src/cleaner.cpp:93
-msgid ""
-"Warning! GnomeMeeting can't disconnect from the remote party due to a bug in "
-"OpenH323.\n"
-"Forcing the exit in 3 seconds!\n"
-msgstr ""
-"Attention ! GnomeMeeting ne peut pas se déconnecter de l'hôte distant à "
-"cause d'un bug dans la librairie OpenH323.\n"
-"Sortie forcée dans 3 secondes !\n"
 
 #: src/config-tool-i18n.h:1
 msgid "YES"
@@ -879,32 +996,19 @@ msgstr ""
 "  --fix-permissions      fixe les permissions du dépot GConf (à exécuter en "
 "tant que root)"
 
-#. Set recording source and set micro to record
-#. Translators: This is shown in the history.
-#: src/config.cpp:411
-#, c-format
-msgid "Set Audio Mixer for player to %s"
-msgstr "Définit %s comme mixeur audio de lecture"
-
-#. Translators: This is shown in the history.
-#: src/config.cpp:417
-#, c-format
-msgid "Set Audio Mixer for recorder to %s"
-msgstr "Définit %s comme mixeur audio d'enregistrement"
-
-#: src/config.cpp:446
+#: src/config.cpp:403
 msgid "Changing this setting will only affect new calls"
 msgstr "Ce changement ne s'appliquera qu'aux prochains appels."
 
-#: src/config.cpp:559
+#: src/config.cpp:556
 msgid "Disabled Silence Detection"
 msgstr "Détection du silence désactivée"
 
-#: src/config.cpp:565
+#: src/config.cpp:562
 msgid "Enabled Silence Detection"
 msgstr "Détection du silence activée"
 
-#: src/config.cpp:966
+#: src/config.cpp:1238
 msgid ""
 "You need to specify an host to forward calls to!\n"
 "Disabling forwarding."
@@ -913,68 +1017,60 @@ msgstr ""
 "appels !\n"
 "Transfert d'appel désactivé."
 
-#: src/connection.cpp:93
+#: src/connection.cpp:109
 msgid "Started New Logical Channel..."
 msgstr "Démarre un nouveau canal logique..."
 
-#: src/connection.cpp:100
+#: src/connection.cpp:116
 #, c-format
 msgid "Sending %s"
 msgstr "Envoie %s"
 
-#: src/connection.cpp:119
+#: src/connection.cpp:135
 #, c-format
 msgid "Enabled silence detection for %s"
 msgstr "Détection du silence activée pour %s"
 
-#: src/connection.cpp:122
+#: src/connection.cpp:138
 #, c-format
 msgid "Disabled silence detection for %s"
 msgstr "Détection du silence désactivée pour %s"
 
-#: src/connection.cpp:138
+#: src/connection.cpp:154
 #, c-format
 msgid "Receiving %s"
 msgstr "Reçoit %s"
 
-#: src/connection.cpp:166
+#: src/connection.cpp:182
 #, c-format
 msgid "Requesting remote to send video quality: %d%%"
 msgstr "Demande au correspondant d'envoyer la qualité vidéo : %d%%"
 
-#: src/connection.cpp:191
+#: src/connection.cpp:207
 msgid "Request ok"
 msgstr "Requête ok"
 
-#: src/connection.cpp:222 src/connection.cpp:224
+#: src/connection.cpp:238 src/connection.cpp:240
 msgid "Audio Channel:  Sending"
 msgstr "Canal audio : Envoi en cours"
 
-#: src/connection.cpp:231 src/connection.cpp:233
+#: src/connection.cpp:247 src/connection.cpp:249
 msgid "Audio Channel:  Paused"
 msgstr "Canal audio : En pause"
 
-#: src/connection.cpp:255 src/connection.cpp:257
+#: src/connection.cpp:271 src/connection.cpp:273
 msgid "Video Channel:  Sending"
 msgstr "Canal vidéo : Envoi en cours"
 
-#: src/connection.cpp:263 src/connection.cpp:265
+#: src/connection.cpp:279 src/connection.cpp:281
 msgid "Video Channel:  Paused"
 msgstr "Canal vidéo : En pause"
-
-#: src/connection.cpp:314 src/connection.cpp:316
-msgid "Auto Rejecting Incoming Call"
-msgstr "Rejet automatique de l'appel entrant"
-
-#: src/connection.cpp:317 src/endpoint.cpp:1128
-msgid "Auto Rejected"
-msgstr "Refusé automatiquement"
 
 #: src/connection.cpp:329 src/connection.cpp:331
 msgid "Auto Answering Incoming Call"
 msgstr "Réponse automatique à l'appel entrant"
 
-#: src/druid.cpp:207
+#: src/druid.cpp:336
 msgid ""
 "You chose to NOT use the GnomeMeeting ILS directory. Other users will not be "
 "able to contact you if you don't register to a directory service."
@@ -983,308 +1079,510 @@ msgstr ""
 "GnomeMeeting. Les autres utilisateurs n'auront pas la possibilité de vous "
 "contacter si vous ne vous enregistrez pas à un service d'annuaire."
 
-#: src/druid.cpp:382
-msgid "Personal Data - Page 2/4"
-msgstr "Informations personnelles - Page 2/4"
-
-#: src/druid.cpp:390
-msgid ""
-"Please enter information about yourself. This information will be used when "
-"connecting to remote H.323 software, and to register in the directory of "
-"GnomeMeeting users. The directory is used to register users when they are "
-"using GnomeMeeting so that you can call them, and they can call you."
-msgstr ""
-"Veuillez saisir les informations vous concernant. Ces informations seront "
-"utilisées lors de la connexion à d'autres clients H.323, et lors de "
-"l'enregistrement à un service d'annuaire GnomeMeeting. Le service d'annuaire "
-"est utilisé pour enregistrer les utilisateurs de GnomeMeeting et leur "
-"permettre de s'appeler mutuellement plus facilement."
-
-#: src/druid.cpp:398 src/pref_window.cpp:1240
-msgid "First Name:"
-msgstr "Prénom :"
-
-#: src/druid.cpp:401 src/pref_window.cpp:1243
-msgid "Last Name:"
-msgstr "Nom :"
-
-#: src/druid.cpp:403 src/pref_window.cpp:1245
-msgid "E-mail Address:"
-msgstr "E-mail :"
-
-#: src/druid.cpp:405 src/pref_window.cpp:1247
-msgid "Comment:"
-msgstr "Commentaire :"
-
-#: src/druid.cpp:407 src/pref_window.cpp:1249
-msgid "Location:"
-msgstr "Emplacement :"
-
-#: src/druid.cpp:410
-msgid "Do not register me to the GnomeMeeting ILS directory"
-msgstr "Ne pas m'enregistrer auprès de l'annuaire ILS"
-
-#: src/druid.cpp:455
-msgid "Connection Type - Page 3/4"
-msgstr "Type de connexion - Page 3/4"
-
-#: src/druid.cpp:465
-msgid ""
-"Please enter your connection type. This setting is used to set default "
-"settings following your bandwidth. It will set good global settings but it "
-"is however possible to tweak and change some of them to obtain a better "
-"result in each particular case."
-msgstr ""
-"Veuillez choisir le type de connexion dont vous disposez. Ce paramètre est "
-"utilisé pour régler des paramètres par défaut suivant votre bande passante. "
-"Cela va configurer des paramètres généraux mias ilsera toutefois possible "
-"d'afiner les réglages au cas par cas pour obtenir de meilleurs résultats."
-
-#: src/druid.cpp:473
+#: src/druid.cpp:536 src/druid.cpp:718
 msgid "56K modem"
-msgstr "modem 56K"
+msgstr "Modem 56K"
 
-#: src/druid.cpp:481
+#: src/druid.cpp:540 src/druid.cpp:722
 msgid "ISDN"
-msgstr "Numéris"
+msgstr "RNIS"
 
-#: src/druid.cpp:489
-msgid "DSL/Cable"
+#: src/druid.cpp:544
+msgid "xDSL/Cable"
 msgstr "xDSL/Cable"
 
-#: src/druid.cpp:497
+#: src/druid.cpp:548 src/druid.cpp:730
 msgid "T1/LAN"
 msgstr "T1/Réseau"
 
-#: src/druid.cpp:505
-msgid "Custom"
-msgstr "Personnalisée..."
+#: src/druid.cpp:552 src/druid.cpp:734
+msgid "Other"
+msgstr "Autre"
 
-#: src/druid.cpp:556
+#: src/druid.cpp:585
+#, c-format
+msgid ""
+"You have now finished the GnomeMeeting configuration. All the settings can "
+"be changed in the GnomeMeeting preferences. Enjoy!\n"
+"\n"
+"\n"
+"Configuration Summary:\n"
+"\n"
+"Username:  %s %s\n"
+"Connection type:  %s\n"
+"Audio player:  %s\n"
+"Audio recorder:  %s\n"
+"Video player: %s\n"
+"My Callto URL: %s\n"
+"PC-To-Phone calls: %s"
+msgstr ""
+"Vous venez de finir de configurer GnomeMeeting. Tous les réglages peuvent "
+"être modifiés dans les préférences de GnomeMeeting. Maintenant appreciez !\n"
+"\n"
+"\n"
+"Résumé de la configuration :\n"
+"Nom d'utilisateur : %s %s\n"
+"Type de connexion : %s\n"
+"Lecteur audio : %s\n"
+"Enregistreur audio : %s\n"
+"Lecteur vidéo : %s\n"
+"Mon URL callto : %s\n"
+"Appels PC-To-Phone : %s"
+
+#: src/druid.cpp:585
+msgid "Enabled"
+msgstr "Activé"
+
+#: src/druid.cpp:585
+msgid "Disabled"
+msgstr "Désactivé"
+
+#: src/druid.cpp:619
+#, c-format
+msgid "Personal Information - page %d/%d"
+msgstr "Informations personnelles - page %d/%d"
+
+#: src/druid.cpp:628
+msgid ""
+"Please enter your first name and surname, they will be used when connecting "
+"to other audio/video conferencing software.\n"
+"\n"
+"Your e-mail address is used to provide you with a callto address that your "
+"friends can use to call you without knowing your IP address.\n"
+"\n"
+"No information is made public unless you allow it to be published on the "
+"directory of online GnomeMeeting users."
+msgstr ""
+"Veuillez saisir vos nom et prénom, ils seront utilisés lors de la connexion "
+"à d'autres logiciels d'audio/vidéoconférence.\n"
+"\n"
+"Votre adresse E-mail est utilisée pour construire une adresse callto que "
+"vos amis peuvent utiliser pour vous appeler sans avoir à connaître votre "
+"adresse IP.\n"
+"\n"
+"Aucune information n'est publiée sur l'annuaire des utilisateurs de "
+"GnomeMeeting connectés sans que vous ne l'ayez autorisé."
+
+#. The user fields
+#: src/druid.cpp:632 src/pref_window.cpp:776
+msgid "Personal Information"
+msgstr "Informations personnelles"
+
+#: src/druid.cpp:635
+msgid "First _name:"
+msgstr "Pré_nom :"
+
+#: src/druid.cpp:641
+msgid "_Surname:"
+msgstr "Nom :"
+
+#. The callto url
+#: src/druid.cpp:649 src/ldap_window.cpp:1797
+msgid "Callto URL"
+msgstr "URL Callto"
+
+#: src/druid.cpp:652
+msgid "E-_mail address:"
+msgstr "Adresse E-_mail :"
+
+#. The ILS registering
+#: src/druid.cpp:659
+msgid "Directory of Online GnomeMeeting Users"
+msgstr "Annuaire des utilisateurs en ligne de GnomeMeeting"
+
+#: src/druid.cpp:661
+msgid "Publish my information on the directory of online GnomeMeeting users"
+msgstr ""
+"Publier mes informations personelles sur l'annuaire des utilisateurs "
+"en ligne de GnomeMeeting."
+
+#: src/druid.cpp:702
+#, c-format
+msgid "Network Connection - page %d/%d"
+msgstr "Connexion réseau - Page %d/%d"
+
+#: src/druid.cpp:713
+msgid ""
+"Please select your network connection type. This is used to set default "
+"video settings for your bandwidth. It is possible to change these defaults "
+"later."
+msgstr ""
+"Veuillez choisir le type de connexion dont vous disposez. Ce paramètre est "
+"utilisé pour régler des paramètres vidéos par défaut suivant votre bande passante. "
+"Il sera toutefois possible de changer les réglages plus tard."
+
+#. Connection type
+#: src/druid.cpp:717
+msgid "Connection Type"
+msgstr "Type de connexion"
+
+#: src/druid.cpp:726
+msgid "DSL/Cable"
+msgstr "xDSL/Cable"
+
+#: src/druid.cpp:792
+#, c-format
+msgid "Audio Devices - page %d/%d"
+msgstr "Périphériques audio - page %d/%d"
+
+#: src/druid.cpp:802
+msgid ""
+"Please choose the audio devices to use during the GnomeMeeting session. You "
+"can also choose to use a Quicknet device instead of the soundcard, but the "
+"\"Test Audio\" button will only work for soundcards. Notice that some "
+"webcams models have an internal microphone that can be used with "
+"GnomeMeeting."
+msgstr ""
+"Veuillez choisir le périphérique audio à utiliser lors de l'utilisation de "
+"GnomeMeeting. Vous pouvez aussi choisir d'utiliser une carte Quicknet au lieu "
+"de votre carte son, mais le bouton \"Test Audio\" ne va fonctionner que pour "
+"les cartes sons. Notez que certains modèles de webcam disposent d'un microphone "
+"interne qui peut être utilisé avec GnomeMeeting."
+
+#. The Audio devices
+#: src/druid.cpp:806 src/pref_window.cpp:1046 src/pref_window.cpp:1570
+msgid "Audio Devices"
+msgstr "Périphériques audio"
+
+#: src/druid.cpp:809 src/pref_window.cpp:1052
+msgid "Audio player:"
+msgstr "Lecteur audio :"
+
+#: src/druid.cpp:812 src/pref_window.cpp:1055
+msgid "Audio player mixer:"
+msgstr "Mixeur du lecteur audio :"
+
+#: src/druid.cpp:816 src/pref_window.cpp:1059
+msgid "Audio recorder:"
+msgstr "Enregistreur audio :"
+
+#: src/druid.cpp:819 src/pref_window.cpp:1062
+msgid "Audio recorder mixer:"
+msgstr "Mixeur de l'enregistreur audio :"
+
+#. Test button
+#: src/druid.cpp:823
+msgid "Click here to test your audio devices:"
+msgstr "Cliquez ici pour tester vos périphériques audio :"
+
+#: src/druid.cpp:825
+msgid "Test Audio"
+msgstr "Test Audio"
+
+#: src/druid.cpp:861
+#, c-format
+msgid "Video Devices - page %d/%d"
+msgstr "Périphériques vidéo - page %d/%d"
+
+#: src/druid.cpp:871
+msgid ""
+"Please choose the video device to use during the GnomeMeeting session. Click "
+"on the \"Test Video\" button to check if your setup is correct and if your "
+"driver is supported by GnomeMeeting. You can only test the correctness of "
+"your driver if the selected device is not already in use."
+msgstr ""
+"Veuillez choisir le périphérique vidéo à utiliser lors de l'utilisation "
+"de Gnomemeeting. Clickez sur le bouton \"Test Vidéo\" pour tester si votre "
+"configuration est correcte et si votre pilote est supporté par GnomeMeeting. "
+"Vous ne pouvez tester votre pilote que si le périphérique sélectioné "
+"n'est pas déjà en cours d'utilisation."
+
+#. The Video device
+#: src/druid.cpp:875 src/pref_window.cpp:1127 src/pref_window.cpp:1575
+msgid "Video Devices"
+msgstr "Périphériques vidéo"
+
+#: src/druid.cpp:878 src/pref_window.cpp:1133
+msgid "Video device:"
+msgstr "Périphérique vidéo :"
+
+#: src/druid.cpp:878
+msgid ""
+"Enter the video device to use. Using an invalid video device for video "
+"transmission will transmit a test picture."
+msgstr ""
+"Choisissez le périphérique vidéo à utiliser, le choix d'un mauvais "
+"périphérique vidéo permettra toutefois l'envoi d'une image de test."
+
+#. Test button
+#: src/druid.cpp:882
+msgid "Test Video"
+msgstr "Test Vidéo"
+
+#: src/druid.cpp:927
+#, c-format
+msgid "PC-To-Phone Setup - page %d/%d"
+msgstr "Configuration PC-To-Phone - page %d/%d"
+
+#: src/druid.cpp:937
+msgid ""
+"You can make calls to regular phones and cell numbers worldwide using "
+"GnomeMeeting and the MicroTelco service from Quicknet Technologies. To "
+"enable this you need to enter your MicroTelco Account number and PIN below, "
+"then enable registering to the MicroTelco service. Please visit the "
+"GnomeMeeting website for more information."
+msgstr ""
+"Vous pouvez passer des appels à des téléphones normaux et mobiles à travers "
+"le monde en utilisant GnomeMeeting et le service MicroTelco de Quicknet "
+"Technologies. Pour activer ceci vous devez saisir votre numéro de compte "
+"MicroTelco et le code PIN ci dessous, puis activer l'enregistrement au service "
+"MicroTelco. Visitez le site web de GnomeMeeting pour plus d'informations."
+
+#: src/druid.cpp:942
+msgid "PC-To-Phone Setup"
+msgstr "Configuration PC-To-Phone"
+
+#: src/druid.cpp:945
+msgid "Account number:"
+msgstr "Numéro de compte :"
+
+#: src/druid.cpp:948
+msgid "Password:"
+msgstr "Mot de passe :"
+
+#: src/druid.cpp:956
+msgid "Register to the MicroTelco service"
+msgstr "S'enregistrer au service MicroTelco"
+
+#: src/druid.cpp:968
+msgid ""
+"Click on one of the following links to get more information about your "
+"existing MicroTelco account, or to create a new account."
+msgstr ""
+"Cliquez sur l'un des liens suivant pour avoir plus d'informations sur votre "
+"compte MicroTelco existant, ou pour créer un nouveau compte."
+
+#: src/druid.cpp:972
+msgid "Get an account"
+msgstr "Créer un compte"
+
+#: src/druid.cpp:974
+msgid "Buy a card"
+msgstr "Acheter une carte"
+
+#: src/druid.cpp:1008
 msgid "First Time Configuration Druid"
-msgstr "Aide à la configuration à la première utilisation"
+msgstr "Assistant de première configuration"
 
-#: src/druid.cpp:566
-msgid "GnomeMeeting Configuration Assistant - Page 1/4"
-msgstr "Assistant de configuration de GnomeMeeting - Page 1/4"
+#: src/druid.cpp:1015
+#, c-format
+msgid "Configuration Druid - page %d/%d"
+msgstr "Assitant de configuration - page %d/%d"
 
-#: src/druid.cpp:569
+#: src/druid.cpp:1018
 msgid ""
-"Welcome to the GnomeMeeting general configuration druid. The following steps "
-"will set up GnomeMeeting by asking a few simple questions. Once you have "
-"completed these steps, you can always change them later in the preferences. "
+"This is the GnomeMeeting general configuration druid. The following steps "
+"will set up GnomeMeeting by asking a few simple questions.\n"
+"\n"
+"Once you have completed these steps, you can always change them later by "
+"selecting Preferences in the Edit menu. "
 msgstr ""
-"Bienvenue dans l'Aide à la configuration pour une première utilisation. Les "
-"étapes suivantes vont vous aider a configurer GnomeMeeting en vous posant "
-"quelques questions simples. Une fois que vous aurez effectué cette "
-"configuration pas à pas, il vous sera possible de changer les paramètres "
-"dans les préférences."
+"Bienvenue dans l'Assistant de première configuration de GnomeMeeting. Les "
+"étapes suivantes vont vous aider à configurer GnomeMeeting en vous posant "
+"quelques questions simples.\n\nUne fois que vous aurez effectué cette "
+"configuration pas à pas, il vous sera toujours possible de changer les paramètres "
+"en choisissant Préférences dans le menu Édition."
 
-#: src/druid.cpp:575
-msgid ""
-"You have successfully set up GnomeMeeting. Enjoy!\n"
-"   -- The GnomeMeeting development team"
-msgstr ""
-"Vous venez de configurer GnomeMeeting avec succès. Maintenant amusez-vous "
-"bien !\n"
-"                 -- L'équipe de développement de GnomeMeeting --"
+#: src/druid.cpp:1057
+#, c-format
+msgid "Configuration complete - page %d/%d"
+msgstr "Configuration terminée - page %d/%d"
 
-#: src/druid.cpp:605
-msgid "Done! - Page 4/4"
-msgstr "Fini ! - Page 4/4"
-
-#: src/endpoint.cpp:119
+#: src/endpoint.cpp:120
 #, c-format
 msgid "Forwarding Call to %s (No Answer)"
 msgstr "Tranfert d'appel vers %s (Pas de réponse)"
 
-#: src/endpoint.cpp:124 src/endpoint.cpp:985 src/endpoint.cpp:1086
-#: src/endpoint.cpp:1110
+#: src/endpoint.cpp:124 src/endpoint.cpp:126 src/endpoint.cpp:946
 msgid "Call forwarded"
 msgstr "Appel transferé"
 
 #. GM is started
-#: src/endpoint.cpp:231
+#: src/endpoint.cpp:221
 #, c-format
 msgid "Started GnomeMeeting V%d.%d for %s\n"
 msgstr "GnomeMeeting V%d.%d démarré pour %s\n"
 
-#: src/endpoint.cpp:318 src/endpoint.cpp:324
+#. Player is always a correct sound device, thanks to
+#. gnomemeeting_add_string_option_menu
+#: src/endpoint.cpp:319
 #, c-format
 msgid "Set Audio player device to %s"
 msgstr "Définit %s comme périphérique audio de lecture"
 
-#. Translators: This is shown in the history.
-#: src/endpoint.cpp:341 src/endpoint.cpp:351
+#: src/endpoint.cpp:330
 #, c-format
 msgid "Set Audio recorder device to %s"
 msgstr "Définit %s comme périphérique audio d'enregistrement"
 
-#: src/endpoint.cpp:368
-msgid "Disabling H.245 Tunnelling"
-msgstr "Désactivation du Tunnelling H.245"
-
-#: src/endpoint.cpp:370
+#: src/endpoint.cpp:347
 msgid "Enabling H.245 Tunnelling"
 msgstr "Activation du Tunnelling H.245"
 
-#: src/endpoint.cpp:384
-msgid "Disabling Fast Start"
-msgstr "Désactivation du démarrage rapide"
+#: src/endpoint.cpp:348
+msgid "Disabling H.245 Tunnelling"
+msgstr "Désactivation du Tunnelling H.245"
 
-#: src/endpoint.cpp:386
+#: src/endpoint.cpp:358
 msgid "Enabling Fast Start"
 msgstr "Activation du démarrage rapide"
 
-#: src/endpoint.cpp:413
-#, c-format
-msgid "Using Quicknet device %s"
-msgstr "Utilisation du périphérique Quicknet %s"
+#: src/endpoint.cpp:359
+msgid "Disabling Fast Start"
+msgstr "Désactivation du démarrage rapide"
 
-#: src/endpoint.cpp:480
-msgid "Error while opening the Quicknet device. Disabling Quicknet device."
-msgstr ""
-"Erreur lors de l'ouverture du périphérique Quicknet. Utilisation du "
-"périphérique Quicknet désactivée."
-
-#: src/endpoint.cpp:981
+#: src/endpoint.cpp:942
 #, c-format
 msgid "Forwarding Call to %s"
 msgstr "Transfert de l'appel vers %s"
 
-#: src/endpoint.cpp:994
+#: src/endpoint.cpp:955
 #, c-format
 msgid "Error forwarding call to %s"
 msgstr "Erreur durant le transfert de l'appel vers %s"
 
 #. Update the history and status bar
-#: src/endpoint.cpp:1063
+#: src/endpoint.cpp:1025
 #, c-format
 msgid "Call from %s using %s"
 msgstr "Appel de %s qui utilise %s"
 
-#: src/endpoint.cpp:1082
+#: src/endpoint.cpp:1041
 #, c-format
 msgid "Forwarding Call from %s to %s (Forward All Calls)"
 msgstr "Transfert d'appel de %s vers %s (Transfert de tous les appels)"
 
-#: src/endpoint.cpp:1104
+#: src/endpoint.cpp:1049
+#, c-format
+msgid "Auto Rejecting Incoming Call from %s (Do Not Disturb)"
+msgstr "Rejet automatique de l'appel entrant de %s (Ne pas déranger)"
+
+#: src/endpoint.cpp:1061
 #, c-format
 msgid "Forwarding Call from %s to %s (Busy)"
 msgstr "Transfert de l'appel de %s vers %s (Occupé)"
 
-#: src/endpoint.cpp:1123
+#. there is no forwarding, so reject the call
+#: src/endpoint.cpp:1070
 #, c-format
 msgid "Auto Rejecting Incoming Call from %s (Busy)"
 msgstr "Rejet automatique de l'appel entrant de %s (Occupé)"
 
-#. Connected
-#: src/endpoint.cpp:1264
+#: src/endpoint.cpp:1094 src/endpoint.cpp:1096
+msgid "Auto Rejected"
+msgstr "Refusé automatiquement"
+
+#: src/endpoint.cpp:1105 src/endpoint.cpp:1107
+msgid "Call Forwarded"
+msgstr "Appel transferé"
+
+#: src/endpoint.cpp:1257
 #, c-format
 msgid "Connected with %s using %s"
 msgstr "Connecté avec %s qui utilise %s"
 
-#: src/endpoint.cpp:1270
+#: src/endpoint.cpp:1259
 msgid "Connected"
 msgstr "Connecté"
 
-#: src/endpoint.cpp:1273
-msgid "Fast start enabled"
-msgstr "Démarrage rapide activé"
-
-#: src/endpoint.cpp:1275
+#: src/endpoint.cpp:1262
 msgid "Fast start disabled"
 msgstr "Démarrage rapide désactivé"
 
-#: src/endpoint.cpp:1279
-msgid "H.245 Tunnelling enabled"
-msgstr "Tunnelling H245 activé"
+#: src/endpoint.cpp:1263
+msgid "Fast start enabled"
+msgstr "Démarrage rapide activé"
 
-#: src/endpoint.cpp:1282
+#: src/endpoint.cpp:1266
 msgid "H.245 Tunnelling disabled"
 msgstr "Tunnelling H245 désactivé"
 
-#: src/endpoint.cpp:1384
+#: src/endpoint.cpp:1267
+msgid "H.245 Tunnelling enabled"
+msgstr "Tunnelling H245 activé"
+
+#: src/endpoint.cpp:1382
 msgid "Remote party has cleared the call"
 msgstr "Le correspondant a raccroché"
 
-#: src/endpoint.cpp:1388
+#: src/endpoint.cpp:1386
 msgid "Remote party has stopped calling"
 msgstr "Le correspondant a stoppé l'appel"
 
-#: src/endpoint.cpp:1392 src/endpoint.cpp:1416
+#: src/endpoint.cpp:1390 src/endpoint.cpp:1414
 msgid "Remote party did not accept your call"
 msgstr "Le correspondant n'a pas accepté votre appel"
 
-#: src/endpoint.cpp:1396
+#: src/endpoint.cpp:1394
 msgid "Remote party was busy"
 msgstr "Le correspondant était occupé"
 
-#: src/endpoint.cpp:1400
+#: src/endpoint.cpp:1398
 msgid "Congested link to remote party"
 msgstr "La ligne de votre correspondant est en dérangement"
 
-#: src/endpoint.cpp:1404
+#: src/endpoint.cpp:1402
 msgid "The call was not answered in the required time"
 msgstr "Il n'a pas été répondu à votre appel dans le temps imparti"
 
-#: src/endpoint.cpp:1408
+#: src/endpoint.cpp:1406
 msgid "This call ended abnormally"
 msgstr "Cet appel s'est terminé de façon anormale"
 
-#: src/endpoint.cpp:1412
+#: src/endpoint.cpp:1410
 msgid "Could not find common codec with remote party"
 msgstr "Pas de codec commun avec votre correspondant"
 
-#: src/endpoint.cpp:1420
+#: src/endpoint.cpp:1418
 msgid "Refused incoming call"
 msgstr "Refus de l'appel entrant"
 
-#: src/endpoint.cpp:1424 src/urlhandler.cpp:176 src/urlhandler.cpp:177
+#: src/endpoint.cpp:1422
 msgid "User not found"
 msgstr "Utilisateur non trouvé"
 
-#: src/endpoint.cpp:1428
+#: src/endpoint.cpp:1426
 msgid "Call ended: insufficient bandwidth"
 msgstr "Appel terminé : bande passante insuffisante"
 
-#: src/endpoint.cpp:1432
+#: src/endpoint.cpp:1430
 msgid "Remote party could not be reached"
 msgstr "Le correspondant n'a pu être atteint"
 
-#: src/endpoint.cpp:1436
+#: src/endpoint.cpp:1434
 msgid "Remote party is offline"
 msgstr "Le correspondant n'est pas connecté"
 
-#: src/endpoint.cpp:1440
+#: src/endpoint.cpp:1438
 msgid "Transport Error calling"
 msgstr "Erreur de transport lors de l'appel"
 
-#: src/endpoint.cpp:1444
+#: src/endpoint.cpp:1442
 msgid "Call completed"
 msgstr "Appel terminé"
 
-#: src/endpoint.cpp:1455
+#: src/endpoint.cpp:1452
 #, c-format
 msgid "Call duration: %.2ld:%.2ld:%.2ld"
 msgstr "Durée de l'appel: %.2ld:%.2ld:%.2ld"
 
-#. The second one with some labels
-#: src/endpoint.cpp:1549 src/main_window.cpp:1416
+#: src/endpoint.cpp:1556
 msgid ""
 "Sent/Received:\n"
 "Lost/Late Packets:\n"
-"Round trip delay:"
+"Round trip delay:\n"
+"Jitter Buffer:"
 msgstr ""
 "Envoyés/Reçus :\n"
 "Paquets perdus/retardés :\n"
-"Latence réseau :"
+"Latence réseau :\n"
+"Délai de buffér. :"
 
-#: src/endpoint.cpp:1668
+#: src/endpoint.cpp:1714
 msgid "Attaching lid hardware to codec"
 msgstr "Attachement du périphérique Quicknet au codec"
 
-#: src/endpoint.cpp:1688
+#: src/endpoint.cpp:1727
 msgid ""
 "Could not open audio channel for audio transmission (soundcard busy?).\n"
 "Disabling audio transmission."
@@ -1293,7 +1591,7 @@ msgstr ""
 "utilisée?).\n"
 "Tranmission audio désactivée."
 
-#: src/endpoint.cpp:1690
+#: src/endpoint.cpp:1729
 msgid ""
 "Could not open audio channel for audio reception (soundcard busy?).\n"
 "Disabling audio reception."
@@ -1302,7 +1600,7 @@ msgstr ""
 "utilisée?).\n"
 "Réception audio désactivée."
 
-#: src/gatekeeper.cpp:122
+#: src/gatekeeper.cpp:126
 msgid ""
 "Please provide a hostname to use for the gatekeeper.\n"
 "Disabling registering."
@@ -1310,17 +1608,17 @@ msgstr ""
 "Veuillez fournir un nom d'hôte pour le Gatekeeper à utiliser.\n"
 "Annulation de l'enregistrement."
 
-#: src/gatekeeper.cpp:140 src/gatekeeper.cpp:208 src/gatekeeper.cpp:249
+#: src/gatekeeper.cpp:143 src/gatekeeper.cpp:213 src/gatekeeper.cpp:253
 #, c-format
 msgid "Gatekeeper set to %s"
 msgstr "Gatekeeper parametré à %s"
 
-#: src/gatekeeper.cpp:153
+#: src/gatekeeper.cpp:156
 #, c-format
 msgid "Error while registering with Gatekeeper at %s."
 msgstr "Erreur lors de l'enregistrement auprès du Gatekeeper %s."
 
-#: src/gatekeeper.cpp:191
+#: src/gatekeeper.cpp:196
 msgid ""
 "Please provide a valid ID for the gatekeeper.\n"
 "Disabling registering."
@@ -1328,19 +1626,19 @@ msgstr ""
 "Veuillez fournir une ID valide pour le Gatekeeper.\n"
 "Annulation de l'enregistrement."
 
-#: src/gatekeeper.cpp:221
+#: src/gatekeeper.cpp:226
 msgid "Error while registering with Gatekeeper."
 msgstr "Erreur lors de l'enregistrement auprès du Gatekeeper."
 
-#: src/gatekeeper.cpp:268
+#: src/gatekeeper.cpp:272
 msgid "No gatekeeper found"
 msgstr "Aucun Gatekeeper trouvé"
 
-#: src/gnomemeeting.cpp:115
+#: src/gnomemeeting.cpp:111
 msgid "Answering incoming call"
 msgstr "Réponse à l'appel entrant"
 
-#: src/gnomemeeting.cpp:195 src/toolbar.cpp:122
+#: src/gnomemeeting.cpp:195 src/toolbar.cpp:131
 msgid "Trying to stop calling"
 msgstr "Essaye de stopper l'appel"
 
@@ -1352,194 +1650,274 @@ msgstr "Stoppe l'appel en cours"
 msgid "Refusing Incoming call"
 msgstr "Refus de l'appel entrant"
 
-#: src/ils.cpp:115
+#: src/ils.cpp:123
 #, c-format
 msgid "Parse error: %d %s."
 msgstr "erreur de parcours : %d %s."
 
 #. No need to display that for unregistering
-#: src/ils.cpp:249
+#: src/ils.cpp:248
 msgid ""
-"Please provide your first name, last name, comment, e-mail and location "
-"details in the Personal Data section in order to be able to register to the "
-"XDAP server."
+"Please provide your first name, last name, and e-mail in the Personal Data "
+"section in order to be able to register to the XDAP server."
 msgstr ""
-"Veuillez fournir votre prénom, nom, commmentaire, e-mail et emplacement "
-"géographique dans les Informations Personnelles pour pouvoir vous "
-"enregistrer sur le serveur XDAP !"
+"Veuillez fournir votre prénom, nom, et adresse e-mail "
+"dans les Informations Personnelles pour pouvoir vous "
+"enregistrer sur le serveur XDAP."
 
-#: src/ils.cpp:285
+#: src/ils.cpp:280
 msgid "Operation impossible since there is no XDAP server specified."
 msgstr ""
 "Opération impossible à effectuer tant qu'aucun serveur XDAP n'est spécifié."
 
-#: src/ils.cpp:350 src/ils.cpp:857
+#: src/ils.cpp:346 src/ils.cpp:900
 #, c-format
 msgid "Contacting %s..."
 msgstr "Contacte %s..."
 
-#: src/ils.cpp:363
+#: src/ils.cpp:360
 msgid "Failed to parse XML file."
 msgstr "Erreur dans le parcours du fichier XML."
 
-#: src/ils.cpp:375
+#: src/ils.cpp:372
 #, c-format
 msgid "Bad ldap information from XML file: %s."
 msgstr "Mauvaise information LDAP dans le fichier XML: %s."
 
-#: src/ils.cpp:386 src/ils.cpp:870
+#: src/ils.cpp:383 src/ils.cpp:942
 #, c-format
 msgid "Failed to open ldap server %s:%d."
 msgstr "Echec à l'ouverture du serveur LDAP %s : %d."
 
-#: src/ils.cpp:398 src/ils.cpp:883
+#: src/ils.cpp:395 src/ils.cpp:955
 msgid "Failed to set time limit on ldap operations."
 msgstr ""
 "Echec à l'établissement de la limite de temps pour les opérations LDAP. "
 
-#: src/ils.cpp:408
+#: src/ils.cpp:405
 #, c-format
 msgid "Failed to bind to ldap server: %s."
 msgstr "Echec de la connexion au serveur LDAP : %s."
 
-#: src/ils.cpp:434
+#: src/ils.cpp:436
 #, c-format
 msgid "Successfully registered to %s."
 msgstr "Enregistré avec succès auprès de %s."
 
-#: src/ils.cpp:465
+#: src/ils.cpp:467
 #, c-format
 msgid "Updated information on %s."
 msgstr "Informations mises à jour auprès de %s."
 
-#: src/ils.cpp:475
+#: src/ils.cpp:477
 #, c-format
 msgid "Successfully unregistered from %s."
 msgstr "Désenregistré avec succès de %s."
 
-#: src/ils.cpp:499
+#: src/ils.cpp:501
 #, c-format
 msgid "Error while registering to %s."
 msgstr "Erreur lors de l'enregistrement auprès de %s."
 
-#: src/ils.cpp:502
+#: src/ils.cpp:504
 #, c-format
 msgid "Error while unregistering from %s."
 msgstr "Erreur lors du désenregistrement de %s."
 
-#: src/ils.cpp:894
+#: src/ils.cpp:966
 #, c-format
 msgid "Failed to bind to ldap server %s: %s."
 msgstr "Echec de la connexion au serveur %s : %s."
 
-#: src/ils.cpp:904
+#: src/ils.cpp:976
 #, c-format
 msgid "Fetching user information from %s."
 msgstr "Récupération des informations des utilisateurs auprès de %s."
 
-#: src/ils.cpp:1171
+#: src/ils.cpp:1239
+#, c-format
+msgid "Search completed: %d user(s) listed on a total of %d user(s) from %s."
+msgstr "Recherche terminée : %d utilisateur(s) trouvé(s) sur un total de %d utilisateur(s) sur %s."
+
+#: src/ils.cpp:1244
 #, c-format
 msgid "Search completed: %d user(s) found on %s."
 msgstr "Recherche terminée : %d utilisateur(s) trouvé(s) sur %s."
 
-#: src/ils.cpp:1188
+#: src/ils.cpp:1262
 #, c-format
 msgid "Failed to contact %s."
 msgstr "Impossible de contacter %s."
 
-#. if it was the first "No directory" page, destroy it
-#: src/ldap_window.cpp:228 src/ldap_window.cpp:453
-msgid "No directory"
-msgstr "Pas d'annuaire"
+#. Create the dialog to easily modify the info of a specific contact
+#: src/ldap_window.cpp:403
+msgid "Edit the contact information"
+msgstr "Editer les informations du contact"
 
-#: src/ldap_window.cpp:352
-msgid "XDAP Server Browser"
-msgstr "Navigateur de serveurs XDAP"
+#: src/ldap_window.cpp:412
+msgid "Name:"
+msgstr "Nom :"
 
-#. Find button
-#: src/ldap_window.cpp:375
-msgid "Find users on"
-msgstr "Trouver des utilisateurs sur"
+#: src/ldap_window.cpp:425
+msgid "callto URL:"
+msgstr "URL callto :"
 
-#. Text label
-#. Translators: Please keep the 2* 2 spaces
-#: src/ldap_window.cpp:393
-msgid "  whose  "
-msgstr " dont "
+#: src/ldap_window.cpp:575
+msgid "Add a new server"
+msgstr "Ajouter un nouveau serveur"
 
-#: src/ldap_window.cpp:401
-msgid "first name contains"
-msgstr "le prénom contient"
+#: src/ldap_window.cpp:576
+msgid "Enter the server name:"
+msgstr "Saisissez le nom du serveur :"
 
-#: src/ldap_window.cpp:405
-msgid "last name contains"
-msgstr "le nom contient"
+#: src/ldap_window.cpp:581
+msgid "Add a new group"
+msgstr "Ajouter un nouveau groupe"
 
-#: src/ldap_window.cpp:409
-msgid "e-mail contains"
-msgstr "l'e-mail contient"
+#: src/ldap_window.cpp:582
+msgid "Enter the group name:"
+msgstr "Saisissez le nom du groupe :"
 
-#. Ldap users list
-#: src/ldap_window.cpp:442
-msgid "ILS Users List"
-msgstr "Liste des utilisateurs ILS"
+#: src/ldap_window.cpp:1187
+msgid "New server"
+msgstr "Nouveau serveur"
+
+#: src/ldap_window.cpp:1196
+msgid "New group"
+msgstr "Nouveau groupe"
+
+#: src/ldap_window.cpp:1205
+msgid "_Refresh"
+msgstr "_Rafraîchir"
+
+#: src/ldap_window.cpp:1210 src/ldap_window.cpp:1224
+msgid "Delete"
+msgstr "Effacer"
+
+#: src/ldap_window.cpp:1219
+msgid "New contact"
+msgstr "Nouveau contact"
+
+#: src/ldap_window.cpp:1334
+msgid "Call this user"
+msgstr "Appeler cet utilisateur"
+
+#: src/ldap_window.cpp:1344
+msgid "Edit this user information"
+msgstr "Editer les informations de cet utilisateur"
+
+#: src/ldap_window.cpp:1351
+msgid "Delete this user"
+msgstr "Effacer cet utilisateur"
+
+#: src/ldap_window.cpp:1362
+msgid "Add to group"
+msgstr "Ajouter au groupe"
+
+#: src/ldap_window.cpp:1461
+msgid "GnomeMeeting Addressbook"
+msgstr "Carnet d'adresses GnomeMeeting"
+
+#: src/ldap_window.cpp:1491
+msgid "Contacts"
+msgstr "Contacts"
+
+#: src/ldap_window.cpp:1510
+msgid "Servers"
+msgstr "Serveurs"
+
+#: src/ldap_window.cpp:1540
+msgid "Groups"
+msgstr "Groupes"
 
 #. Translators: This is "S" as in "Status"
-#: src/ldap_window.cpp:534
+#: src/ldap_window.cpp:1682
 msgid "S"
 msgstr "S"
 
 #. Translators: This is "A" as in "Audio"
-#: src/ldap_window.cpp:544 src/pref_window.cpp:1737
+#: src/ldap_window.cpp:1692 src/pref_window.cpp:1235
 msgid "A"
 msgstr "A"
 
 #. Translators: This is "V" as in "Video"
-#: src/ldap_window.cpp:554
+#: src/ldap_window.cpp:1702
 msgid "V"
 msgstr "V"
 
-#: src/ldap_window.cpp:587
-msgid "E-Mail"
-msgstr "E-mail"
+#: src/ldap_window.cpp:1711 src/ldap_window.cpp:1784 src/pref_window.cpp:1249
+msgid "Name"
+msgstr "Nom"
 
-#: src/ldap_window.cpp:636
+#: src/ldap_window.cpp:1746
+msgid "Callto"
+msgstr "Callto"
+
+#: src/ldap_window.cpp:1769
 msgid "IP"
 msgstr "IP"
 
-#: src/main_window.cpp:251
+#: src/ldap_window.cpp:1831
+msgid "First name contains"
+msgstr "Le prénom contient"
+
+#: src/ldap_window.cpp:1835
+msgid "Last name contains"
+msgstr "Le nom contient"
+
+#: src/ldap_window.cpp:1839
+msgid "E-mail contains"
+msgstr "L'E-mail contient"
+
+#: src/lid.cpp:104
+#, c-format
+msgid "Using Quicknet device %s"
+msgstr "Utilisation du périphérique Quicknet %s"
+
+#: src/lid.cpp:144
+msgid "Error while opening the Quicknet device."
+msgstr "Erreur lors de l'ouverture du périphérique Quicknet."
+
+#: src/lid.cpp:256 src/lid.cpp:257
+msgid "Phone is off hook"
+msgstr "Le téléphone est décroché"
+
+#: src/lid.cpp:285 src/lid.cpp:286
+msgid "Phone is on hook"
+msgstr "Le téléphone est raccroché"
+
+#: src/main_window.cpp:272
 #, c-format
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 
-#: src/main_window.cpp:288
+#: src/main_window.cpp:300
 #, c-format
 msgid ""
-"Sent/Received: %.3f Mb/%.3f Mb\n"
-"Lost/Late Packets: %d/%d\n"
-"Round trip delay: %d ms"
+"Lost packets: %d\n"
+"Late packets: %d\n"
+"Round-trip delay: %d ms\n"
+"Jitter buffer: %d ms"
 msgstr ""
-"Envoyés/reçus : %.3f Mb/%.3f Mb\n"
-"Paquets perdus/retardés : %d/%d\n"
-"Latence réseau : %d ms"
+"Paquets perdus : %d\n"
+"Paquets retardés : %d\n"
+"Latence réseau: %d\n"
+"Délai de buffér. : %d ms"
 
-#: src/main_window.cpp:442
-msgid "Tr. Aud."
-msgstr "Tr. aud."
+#: src/main_window.cpp:495
+#, c-format
+msgid "Total: %.2f Mb"
+msgstr "Total : %.2f Mb"
 
-#: src/main_window.cpp:469
-msgid "Re. Aud."
-msgstr "Réc. aud."
+#: src/main_window.cpp:614
+msgid ""
+"GnomeMeeting is already running, if you want it to call a given callto URL, "
+"please use \"gnomemeeting -c URL.\""
+msgstr ""
+"GnomeMeeting est déjà en cours d'exécution, si vous voulez appeler une "
+"URL callto://, veuillez utiliser la commande \"gnomemeeting -c URL\"."
 
-#: src/main_window.cpp:496
-msgid "Tr. Vid."
-msgstr "Tr. vid."
-
-#: src/main_window.cpp:523
-msgid "Re. Vid."
-msgstr "Réc. vid."
-
-#: src/main_window.cpp:665
+#: src/main_window.cpp:666
 msgid ""
 "It appears that you do not have gnomemeeting.server installed in a valid "
 "location. Factory mode disabled.\n"
@@ -1547,32 +1925,32 @@ msgstr ""
 "Il semblerait que le fichier gnomemeeting.server ne soit pas installé dans "
 "un emplacement valide. Le mode Factory est désactivé.\n"
 
-#: src/main_window.cpp:669
+#: src/main_window.cpp:670
 msgid ""
-"Error registering gnomemeeting with the activation service; factory mode "
+"Error registering GnomeMeeting with the activation service; factory mode "
 "disabled.\n"
 msgstr ""
-"Erreur à l'enregistrement de gnomemeeting aux services d'activation ; le "
+"Erreur à l'enregistrement de GnomeMeeting aux services d'activation ; le "
 "mode Factory sera désactivé.\n"
 
-#: src/main_window.cpp:709
+#: src/main_window.cpp:710
 msgid "Failed to retrieve gnomemeeting server from activation server\n"
 msgstr ""
 "Impossible de récupérer le serveur gnomemeeting à partir du serveur "
 "d'activation.\n"
 
-#: src/main_window.cpp:903
+#: src/main_window.cpp:1064
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Affiche les messages de débogage dans la console (niveau entre 1 et 6)"
 
-#: src/main_window.cpp:906
+#: src/main_window.cpp:1067
 msgid "Makes GnomeMeeting call the given callto:// URL"
 msgstr "GnomeMeeting appelle l'URL callto:// donnée"
 
 #. We can't use gnomemeeting_error_dialog here, cause we need the
 #. dialog_run and dialog_run can't be used in gnomemeeting_error_dialog
 #. because it doesn't work in threads
-#: src/main_window.cpp:949
+#: src/main_window.cpp:1123
 #, c-format
 msgid ""
 "GnomeMeeting got %d for the GConf key \"/apps/gnomemeeting/gconf_test_age\", "
@@ -1602,21 +1980,23 @@ msgstr ""
 "mail.gnome.org) pour plus d'informations.\n"
 "Utiliser 'gnomemeeting-config-tool' peut vous aider à résoudre ce problème."
 
-#: src/main_window.cpp:993
+#. We can't use gnomemeeting_error_dialog here, cause we need the
+#. dialog_run and dialog_run can't be used in gnomemeeting_error_dialog
+#. because it doesn't work in threads
+#: src/main_window.cpp:1156
 msgid ""
-"GnomeMeeting just set the new Speex audio codec as default. Speex is a high "
-"quality, GPL audio codec introduced in GnomeMeeting 0.94."
+"GnomeMeeting can't be used without audio devices. Please install a soundcard "
+"or a Quicknet card."
 msgstr ""
-"GnomeMeeting vient d'installer le nouveau codec audio Speex comme codec par "
-"défaut. Speex est un codec audio GPL de haute qualité incorporé dans "
-"GnomemMeeting 0.94."
+"GnomeMeeting ne peut fonctionner sans périphérique audio. Veuillez installer "
+"une carte son ou une carte Quicknet."
 
-#: src/main_window.cpp:1015
+#: src/main_window.cpp:1226
 msgid ""
 "GnomeMeeting just installed an URL handler for callto:// URLs. callto URLs "
 "are an easy way to call people on the internet using GnomeMeeting. They are "
-"now available to all Gnome programs able to cope with URLs. You can for "
-"example create an URL launcher on the Gnome panel of the form \"callto://ils."
+"now available to all GNOME programs able to cope with URLs. You can for "
+"example create an URL launcher on the GNOME panel of the form \"callto://ils."
 "seconix.com/me@foo.com\" to call the person registered on the ILS server ils."
 "seconix.com with the me@foo.com e-mail address."
 msgstr ""
@@ -1628,7 +2008,7 @@ msgstr ""
 "com/moi@foo.com\" pour appeler la personne enregistrée sur le serveur ILS "
 "ils.seconix.com avec l'adresse e-mail moi@foo.com."
 
-#: src/main_window.cpp:1150
+#: src/main_window.cpp:1317
 msgid ""
 "Could not start the listener thread. You will not be able to receive "
 "incoming calls."
@@ -1636,294 +2016,316 @@ msgstr ""
 "GnomeMeeting n'a pu se mettre en écoute, il vous sera impossible de recevoir "
 "des appels."
 
-#: src/main_window.cpp:1316 src/menu.cpp:292 src/menu.cpp:688
+#: src/main_window.cpp:1540 src/menu.cpp:533 src/menu.cpp:774
 msgid "Local Video"
 msgstr "Vidéo locale"
 
-#: src/main_window.cpp:1326 src/menu.cpp:299 src/menu.cpp:695
+#: src/main_window.cpp:1546 src/menu.cpp:539 src/menu.cpp:779
 msgid "Remote Video"
 msgstr "Vidéo distante"
 
-#: src/main_window.cpp:1390 src/main_window.cpp:1420 src/menu.cpp:253
+#: src/main_window.cpp:1675
+msgid ""
+"Lost packets:\n"
+"Late packets:\n"
+"Round-trip delay:\n"
+"Jitter buffer:"
+msgstr ""
+"Envoyés/Reçus :\n"
+"Paquets perdus/retardés :\n"
+"Latence réseau :\n"
+"Délai de buffér. :"
+
+#: src/main_window.cpp:1679 src/menu.cpp:500
 msgid "Statistics"
 msgstr "Statistiques"
 
-#. Webcam Control Frame
-#: src/main_window.cpp:1448
-msgid "Video Settings"
-msgstr "Paramètres vidéo"
+#: src/main_window.cpp:1745
+msgid "Dialpad"
+msgstr "Numéroteur"
 
-#: src/main_window.cpp:1479
+#: src/main_window.cpp:1804
 msgid "Adjust brightness"
 msgstr "Ajuste la luminosité"
 
-#: src/main_window.cpp:1505
+#: src/main_window.cpp:1830
 msgid "Adjust whiteness"
 msgstr "Ajuste la balance des blancs"
 
-#: src/main_window.cpp:1531
+#: src/main_window.cpp:1856
 msgid "Adjust color"
 msgstr "Ajuste la couleur"
 
-#: src/main_window.cpp:1557
+#: src/main_window.cpp:1882
 msgid "Adjust contrast"
 msgstr "Ajuste le contraste"
 
-#: src/main_window.cpp:1564
+#: src/main_window.cpp:1890
 msgid "Video"
 msgstr "Vidéo"
 
-#: src/main_window.cpp:1591
-msgid "Audio Settings"
-msgstr "Paramètres audio"
-
-#: src/main_window.cpp:1646
+#: src/main_window.cpp:1976
 msgid "Audio"
 msgstr "Audio"
 
-#: src/menu.cpp:232
-msgid "_Save"
-msgstr "_Enregistrer"
-
-#: src/menu.cpp:232
-msgid "Save A Snapshot of the Current Video"
-msgstr "Enregistre une capture de la vidéo en cours"
-
-#: src/menu.cpp:240
-msgid "_Quit"
-msgstr "_Quitter"
-
-#: src/menu.cpp:240
-msgid "Quit GnomeMeeting"
-msgstr "Quitte GnomeMeeting"
-
-#: src/menu.cpp:254
-msgid "View Audio/Video transmission and reception statistics"
-msgstr "Voir les statistiques de transmission et réception audio/vidéo"
-
-#: src/menu.cpp:262
-msgid "_Audio Settings"
-msgstr "Paramètres _audio"
-
-#: src/menu.cpp:262
-msgid "View Audio Settings"
-msgstr "Affiche les paramètres audio"
-
-#: src/menu.cpp:270
-msgid "_Video Settings"
-msgstr "Paramètres _vidéo"
-
-#: src/menu.cpp:270
-msgid "View Video Settings"
-msgstr "Affiche les paramètres vidéo"
-
-#: src/menu.cpp:278 src/pref_window.cpp:1466
-msgid "Off"
-msgstr "Fermé"
-
-#: src/menu.cpp:278
-msgid "Hide the control panel"
-msgstr "Afficher/cacher le panneau de contrôle"
-
-#: src/menu.cpp:292 src/menu.cpp:688
-msgid "Local Video Image"
-msgstr "Image vidéo locale"
-
-#: src/menu.cpp:299 src/menu.cpp:695
-msgid "Remote Video Image"
-msgstr "Image vidéo distante"
-
-#: src/menu.cpp:306 src/menu.cpp:702
-msgid "Both (Local Video Incrusted)"
-msgstr "Les deux (Vidéo locale incrutée)"
-
-#: src/menu.cpp:306 src/menu.cpp:313 src/menu.cpp:321 src/menu.cpp:702
-#: src/menu.cpp:709 src/menu.cpp:717
-msgid "Both Video Images"
-msgstr "Les deux images vidéo"
-
-#: src/menu.cpp:313 src/menu.cpp:709
-msgid "Both (Local Video in New Window)"
-msgstr "Les deux (Vidéo locale dans une fenêtre séparée)"
-
-#: src/menu.cpp:320 src/menu.cpp:716
-msgid "Both (Local and Remote Video in New Windows)"
-msgstr "Vidéos locale et distante dans des fenêtres séparées"
-
-#: src/menu.cpp:347
-msgid "Toolbar"
-msgstr "Barre d'outils"
-
-#: src/menu.cpp:347
-msgid "View/Hide the Toolbar"
-msgstr "Affiche/cache la barre d'outils"
-
-#: src/menu.cpp:355
-msgid "View/Hide the Text Chat Window"
-msgstr "Affiche/cache la fenêtre de dialogue"
-
-#: src/menu.cpp:361 src/toolbar.cpp:218
-msgid "Control Panel"
-msgstr "Panneau de contrôle"
-
-#: src/menu.cpp:364
-msgid "Status Bar"
-msgstr "Barre d'état"
-
-#: src/menu.cpp:364
-msgid "View/Hide the Status Bar"
-msgstr "Affiche/cache la barre d'état"
-
-#: src/menu.cpp:372
-msgid "Tray Icon"
-msgstr "Docklet"
-
-#: src/menu.cpp:372
-msgid "View/Hide the Tray Icon"
-msgstr "Affiche/cache la Docklet"
-
-#: src/menu.cpp:388 src/menu.cpp:737
-msgid "Zoom In"
-msgstr "Zoom avant"
-
-#: src/menu.cpp:394 src/menu.cpp:743
-msgid "Zoom Out"
-msgstr "Zoom arrière"
-
-#: src/menu.cpp:400 src/menu.cpp:749
-msgid "Normal Size"
-msgstr "Taille normale"
-
-#: src/menu.cpp:408 src/menu.cpp:757
-msgid "Toggle Fullscreen"
-msgstr "Affiche/cache le plein écran"
-
-#: src/menu.cpp:422
-msgid "Configuration Assistant"
-msgstr "Assistant de configuration"
-
-#: src/menu.cpp:422
-msgid "Start The Configuration Assistant"
-msgstr "Démarre l'assistant de configuration"
-
-#: src/menu.cpp:430
-msgid "_Preferences..."
-msgstr "_Préférences..."
-
-#: src/menu.cpp:430
-msgid "Change Your Preferences"
-msgstr "Modifie vos préférences"
-
-#: src/menu.cpp:443
-msgid "_Connect"
-msgstr "_Connexion"
-
-#: src/menu.cpp:443 src/tray.cpp:167
-msgid "Create A New Connection"
-msgstr "Établit une nouvelle connexion"
-
-#: src/menu.cpp:450
-msgid "_Disconnect"
-msgstr "_Déconnexion"
-
-#: src/menu.cpp:450 src/tray.cpp:174
-msgid "Close The Current Connection"
-msgstr "Ferme la connexion en cours"
-
-#: src/menu.cpp:458
-msgid "Do _Not Disturb"
-msgstr "_Ne pas déranger"
-
-#: src/menu.cpp:458 src/pref_window.cpp:1294 src/tray.cpp:183
-msgid "Do Not Disturb"
-msgstr "Ne pas déranger"
-
-#: src/menu.cpp:466
-msgid "Aut_o Answer"
-msgstr "Décrocher aut_omatiquement"
-
-#: src/menu.cpp:475
-msgid "_Audio Mute"
-msgstr "Pause _audio"
-
-#: src/menu.cpp:475
-msgid "Mute the audio transmission"
-msgstr "Met la transmission audio en pause"
-
-#: src/menu.cpp:482
-msgid "_Video Mute"
-msgstr "Pause _vidéo"
-
-#: src/menu.cpp:482
-msgid "Mute the video transmission"
-msgstr "Met la transmission vidéo en pause"
-
-#: src/menu.cpp:494
-msgid "XDAP Browser"
-msgstr "Navigateur de serveurs XDAP"
-
-#: src/menu.cpp:502
-msgid "Generic History"
-msgstr "Historique général"
-
-#: src/menu.cpp:502
-msgid "View the operations history"
-msgstr "Affiche l'historique des opérations"
-
-#: src/menu.cpp:509 src/tools.cpp:56 src/tools.cpp:62
-msgid "Calls History"
-msgstr "Historique des appels"
-
-#: src/menu.cpp:509
-msgid "View the calls history"
-msgstr "Affiche l'historique des appels"
-
-#: src/menu.cpp:522
-msgid "_About GnomeMeeting"
-msgstr "A propos de GnomeMeeting"
-
-#: src/menu.cpp:522
-msgid "View information about GnomeMeeting"
-msgstr "Affiche les informations concernant GnomeMeeting"
-
-#: src/menu.cpp:533
-msgid "_File"
-msgstr "_Fichier"
-
-#: src/menu.cpp:534
-msgid "_Edit"
-msgstr "_Édition"
-
-#: src/menu.cpp:535
-msgid "_View"
-msgstr "_Vue"
-
-#: src/menu.cpp:536
+#: src/menu.cpp:425
 msgid "C_all"
 msgstr "_Appel"
 
-#: src/menu.cpp:537
+#: src/menu.cpp:427 src/menu.cpp:857
+msgid "_Connect"
+msgstr "_Connexion"
+
+#: src/menu.cpp:427 src/menu.cpp:857
+msgid "Create a new connection"
+msgstr "Établir une nouvelle connexion"
+
+#: src/menu.cpp:432 src/menu.cpp:862
+msgid "_Disconnect"
+msgstr "_Déconnexion"
+
+#: src/menu.cpp:432 src/menu.cpp:862
+msgid "Close the current connection"
+msgstr "Ferme la connexion en cours"
+
+#: src/menu.cpp:439 src/menu.cpp:869
+msgid "Do _Not Disturb"
+msgstr "_Ne pas déranger"
+
+#: src/menu.cpp:444 src/menu.cpp:874
+msgid "Aut_o Answer"
+msgstr "Décrocher aut_omatiquement"
+
+#: src/menu.cpp:444
+msgid "Auto answer incoming call"
+msgstr "Réponse automatique à l'appel entrant"
+
+#: src/menu.cpp:451
+msgid "_Audio Mute"
+msgstr "Pause _audio"
+
+#: src/menu.cpp:451
+msgid "Mute the audio transmission"
+msgstr "Suspend la transmission audio"
+
+#: src/menu.cpp:456
+msgid "_Video Mute"
+msgstr "Pause _vidéo"
+
+#: src/menu.cpp:456
+msgid "Mute the video transmission"
+msgstr "Suspend la transmission vidéo"
+
+#: src/menu.cpp:463
+msgid "_Save Current Picture"
+msgstr "_Sauver l'image actuelle"
+
+#: src/menu.cpp:463
+msgid "Save a snapshot of the current video"
+msgstr "Enregistre une capture de la vidéo en cours"
+
+#: src/menu.cpp:469 src/menu.cpp:907
+msgid "_Quit"
+msgstr "_Quitter"
+
+#: src/menu.cpp:469 src/menu.cpp:907
+msgid "Quit GnomeMeeting"
+msgstr "Quitter GnomeMeeting"
+
+#: src/menu.cpp:472
+msgid "_Edit"
+msgstr "_Édition"
+
+#: src/menu.cpp:474
+msgid "Configuration Druid"
+msgstr "Assistant de configuration"
+
+#: src/menu.cpp:474
+msgid "Rerun the configuration druid"
+msgstr "Relancer l'Assistant de configuration"
+
+#: src/menu.cpp:481 src/menu.cpp:888
+msgid "_Preferences..."
+msgstr "_Préférences..."
+
+#: src/menu.cpp:481 src/menu.cpp:888
+msgid "Change your preferences"
+msgstr "Modifier vos préférences"
+
+#: src/menu.cpp:486
+msgid "_View"
+msgstr "_Vue"
+
+#: src/menu.cpp:488
+msgid "Text Chat"
+msgstr "Dialogue textuel"
+
+#: src/menu.cpp:488
+msgid "View/Hide the text chat window"
+msgstr "Afficher/cacher la fenêtre de dialogue"
+
+#: src/menu.cpp:493
+msgid "Status Bar"
+msgstr "Barre d'état"
+
+#: src/menu.cpp:493
+msgid "View/Hide the status bar"
+msgstr "Afficher/cacher la barre d'état"
+
+#: src/menu.cpp:498
+msgid "Control Panel"
+msgstr "Panneau de contrôle"
+
+#: src/menu.cpp:501
+msgid "View audio/video transmission and reception statistics"
+msgstr "Afficher les statistiques de transmission et réception audio/vidéo"
+
+#: src/menu.cpp:507
+msgid "_Dialpad"
+msgstr "Numéroteur"
+
+#: src/menu.cpp:507
+msgid "View the dialpad"
+msgstr "Afficher le numéroteur"
+
+#: src/menu.cpp:513
+msgid "_Audio Settings"
+msgstr "Paramètres _audio"
+
+#: src/menu.cpp:513
+msgid "View audio settings"
+msgstr "Afficher les paramètres audio"
+
+#: src/menu.cpp:519
+msgid "_Video Settings"
+msgstr "Paramètres _vidéo"
+
+#: src/menu.cpp:519
+msgid "View video settings"
+msgstr "Afficher les paramètres vidéo"
+
+#: src/menu.cpp:525 src/pref_window.cpp:1029
+msgid "Off"
+msgstr "Fermé"
+
+#: src/menu.cpp:525
+msgid "Hide the control panel"
+msgstr "Afficher/cacher le panneau de contrôle"
+
+#: src/menu.cpp:533
+msgid "Local video image"
+msgstr "Image vidéo locale"
+
+#: src/menu.cpp:539
+msgid "Remote video image"
+msgstr "Image vidéo distante"
+
+#: src/menu.cpp:545 src/menu.cpp:784
+msgid "Both (Local Video Incrusted)"
+msgstr "Les deux (Vidéo locale incrutée)"
+
+#: src/menu.cpp:545 src/menu.cpp:551 src/menu.cpp:558
+msgid "Both video images"
+msgstr "Les deux images vidéo"
+
+#: src/menu.cpp:551 src/menu.cpp:789
+msgid "Both (Local Video in New Window)"
+msgstr "Les deux (Vidéo locale dans une fenêtre séparée)"
+
+#: src/menu.cpp:557
+msgid "Both (Both in New Windows)"
+msgstr "Les deux (les deux dans des fenêtres séparées)"
+
+#: src/menu.cpp:566 src/menu.cpp:802
+msgid "Zoom In"
+msgstr "Zoom avant"
+
+#: src/menu.cpp:571 src/menu.cpp:807
+msgid "Zoom Out"
+msgstr "Zoom arrière"
+
+#: src/menu.cpp:576 src/menu.cpp:812
+msgid "Normal Size"
+msgstr "Taille normale"
+
+#: src/menu.cpp:583 src/menu.cpp:819
+msgid "Fullscreen"
+msgstr "Plein écran"
+
+#: src/menu.cpp:588
 msgid "_Tools"
 msgstr "Ou_tils"
 
-#: src/menu.cpp:538
+#: src/menu.cpp:590 src/menu.cpp:881
+msgid "Address _Book"
+msgstr "Carnet d'adresse"
+
+#: src/menu.cpp:590 src/menu.cpp:881
+msgid "Open the address book"
+msgstr "Ouvrir le carnet d'adresses"
+
+#: src/menu.cpp:597
+msgid "Generic History"
+msgstr "Historique général"
+
+#: src/menu.cpp:597
+msgid "View the operations history"
+msgstr "Affiche l'historique des opérations"
+
+#: src/menu.cpp:602 src/tools.cpp:63 src/tools.cpp:69
+msgid "Calls History"
+msgstr "Historique des appels"
+
+#: src/menu.cpp:602
+msgid "View the calls history"
+msgstr "Affiche l'historique des appels"
+
+#: src/menu.cpp:609
+msgid "Consult MicroTelco Account"
+msgstr "Consulter votre compte MicroTelco"
+
+#: src/menu.cpp:609
+msgid "View the details of your account"
+msgstr "Voir les détails de votre compte"
+
+#: src/menu.cpp:614
 msgid "_Help"
 msgstr "_Aide"
 
-#: src/misc.cpp:211
+#: src/menu.cpp:617 src/menu.cpp:622 src/menu.cpp:896 src/menu.cpp:901
+msgid "_About GnomeMeeting"
+msgstr "A propos de GnomeMeeting"
+
+#: src/menu.cpp:617 src/menu.cpp:622 src/menu.cpp:896 src/menu.cpp:901
+msgid "View information about GnomeMeeting"
+msgstr "Affiche les informations concernant GnomeMeeting"
+
+#: src/menu.cpp:774
+msgid "Local Video Image"
+msgstr "Image vidéo locale"
+
+#: src/menu.cpp:779
+msgid "Remote Video Image"
+msgstr "Image vidéo distante"
+
+#: src/menu.cpp:784 src/menu.cpp:789 src/menu.cpp:795
+msgid "Both Video Images"
+msgstr "Les deux images vidéo"
+
+#: src/menu.cpp:794
+msgid "Both (Local and Remote Video in New Windows)"
+msgstr "Vidéos locale et distante dans des fenêtres séparées"
+
+#: src/menu.cpp:869
+msgid "Do not disturb (reject incoming calls)"
+msgstr "Ne pas déranger (rejeter les appels entrants)"
+
+#: src/misc.cpp:206
 #, c-format
 msgid "Error: %s\n"
 msgstr "Erreur : %s\n"
 
-#: src/misc.cpp:214
-msgid "GnomeMeeting Error"
-msgstr "Erreur GnomeMeeting"
-
-#: src/misc.cpp:217
-msgid "Ignore"
-msgstr "Ignorer"
-
-#: src/misc.cpp:257
+#: src/misc.cpp:230
 #, c-format
 msgid ""
 "Call from %s\n"
@@ -1932,742 +2334,534 @@ msgstr ""
 "Appel de %s\n"
 "qui utilise %s"
 
-#: src/misc.cpp:263 src/tray.cpp:167
+#: src/misc.cpp:236
 msgid "Connect"
 msgstr "Connexion"
 
-#: src/misc.cpp:265 src/tray.cpp:174
+#: src/misc.cpp:238
 msgid "Disconnect"
 msgstr "Déconnexion"
 
-#. no error if Picture is choosen as video device
-#: src/pref_window.cpp:217 src/pref_window.cpp:1624 src/videograbber.cpp:482
+#. The video device
+#: src/pref_window.cpp:151 src/pref_window.cpp:1130 src/videograbber.cpp:479
+#: src/videograbber.cpp:773
 msgid "Picture"
 msgstr "Image"
 
-#: src/pref_window.cpp:539
+#: src/pref_window.cpp:446
 msgid "Please choose the video image"
 msgstr "Veuillez choisir une image"
 
-#: src/pref_window.cpp:659
+#: src/pref_window.cpp:495
 msgid "Okay"
 msgstr "Pas trop mal"
 
-#: src/pref_window.cpp:665 src/pref_window.cpp:681 src/pref_window.cpp:686
+#: src/pref_window.cpp:501 src/pref_window.cpp:517 src/pref_window.cpp:522
 msgid "Excellent"
 msgstr "Excellent"
 
-#: src/pref_window.cpp:670 src/pref_window.cpp:676 src/pref_window.cpp:691
-#: src/pref_window.cpp:696 src/pref_window.cpp:701
+#: src/pref_window.cpp:506 src/pref_window.cpp:512 src/pref_window.cpp:527
+#: src/pref_window.cpp:532
 msgid "Good Quality"
 msgstr "Bonne qualité"
 
-#: src/pref_window.cpp:1234
-msgid "Personal Information"
-msgstr "Informations personnelles"
+#: src/pref_window.cpp:537
+msgid "Excellent Quality"
+msgstr "Excellente qualité"
 
-#: src/pref_window.cpp:1240
-msgid "Enter your first name."
-msgstr "Saisissez votre prénom."
+#: src/pref_window.cpp:782
+msgid "First name:"
+msgstr "Prénom :"
 
-#: src/pref_window.cpp:1243
-msgid "Enter your last name."
-msgstr "Saisissez votre nom."
+#: src/pref_window.cpp:786
+msgid "Surname:"
+msgstr "Nom :"
 
-#: src/pref_window.cpp:1245
-msgid "Enter your e-mail address."
-msgstr "Saisissez votre e-mail."
+#: src/pref_window.cpp:788
+msgid "E-mail address:"
+msgstr "Adresse E-mail :"
 
-#: src/pref_window.cpp:1247
-msgid "Here you can fill in a comment about yourself for ILS directories."
-msgstr ""
-"Ici, vous pouvez saisir un commentaire vous concernant pour les annuaires "
-"ILS."
+#: src/pref_window.cpp:790
+msgid "Comment:"
+msgstr "Commentaire :"
 
-#: src/pref_window.cpp:1249
-msgid "Where do you call from?"
-msgstr "D'où appelez-vous ?"
+#: src/pref_window.cpp:792
+msgid "Location:"
+msgstr "Emplacement :"
 
-#: src/pref_window.cpp:1254
+#: src/pref_window.cpp:797
 msgid ""
-"Click here to update the LDAP server you are registered to with the new "
+"Click here to update the user directory you are registered to with the new "
 "First Name, Last Name, E-Mail, Comment and Location or to update your alias "
 "on the Gatekeeper."
 msgstr ""
-"Cliquez ici pour mettre à jour le serveur LDAP auprès duquel vous êtes "
+"Cliquez ici pour mettre à jour l'annuaire d'utilisateurs auprès duquel vous êtes "
 "enregistré(e) avec les nouvelles données ou pour mettre à jour votre alias "
 "auprès du Gatekeeper."
 
-#: src/pref_window.cpp:1280
+#: src/pref_window.cpp:823
 msgid "GnomeMeeting GUI"
 msgstr "Interface graphique GnomeMeeting"
 
-#: src/pref_window.cpp:1282
-msgid "Show Splash Screen"
-msgstr "Afficher l'écran de démarrage"
-
-#: src/pref_window.cpp:1282
-msgid "If enabled, the splash screen will be displayed at startup time."
-msgstr ""
-"Si activé, un écran de démarrage sera affiché au lancement de l'application."
-
-#: src/pref_window.cpp:1284
-msgid "Start Hidden"
-msgstr "Démarrer caché"
-
-#: src/pref_window.cpp:1284
-msgid ""
-"If enabled, GnomeMeeting will start hidden. The docklet must be enabled."
-msgstr "Si activé, GnomeMeeting démarrera caché. La docklet doit être activée."
-
 #. Packing widget
-#: src/pref_window.cpp:1288
+#: src/pref_window.cpp:831
 msgid "Behavior"
 msgstr "Comportement"
 
-#: src/pref_window.cpp:1296
-msgid "Popup window"
-msgstr "Fenêtre popup"
-
-#: src/pref_window.cpp:1296
-msgid "If enabled, a popup will be displayed when receiving an incoming call"
-msgstr "Si activé, une fenêtre popup sera affichée à la réception d'un appel"
-
 #. Packing widget
-#: src/pref_window.cpp:1301
+#: src/pref_window.cpp:844
 msgid "Video Display"
 msgstr "Affichage vidéo"
 
-#: src/pref_window.cpp:1306
-msgid "Fullscreen Width:"
+#: src/pref_window.cpp:848
+msgid "Fullscreen width:"
 msgstr "Largeur du plein écran :"
 
-#: src/pref_window.cpp:1308
-msgid "The image width for fullscreeen."
-msgstr "Largeur de l'image en plein écran."
-
-#: src/pref_window.cpp:1312
-msgid "Fullscreen Height:"
+#: src/pref_window.cpp:854
+msgid "Fullscreen height:"
 msgstr "Hauteur du plein écran :"
 
-#: src/pref_window.cpp:1314
-msgid "The image height for fullscreeen."
-msgstr "Hauteur de l'image en plein écran."
-
-#: src/pref_window.cpp:1319
-msgid "Enable bilinear filtering"
-msgstr "Permettre le filtrage bilinéaire"
-
 #. Packing widget
-#: src/pref_window.cpp:1323
+#: src/pref_window.cpp:865
 msgid "Sound"
 msgstr "Son"
 
-#: src/pref_window.cpp:1327
-msgid ""
-"If enabled, GnomeMeeting will play a sound when receiving an incoming call "
-"(the sound to play is chosen in the Gnome Control Center)."
-msgstr ""
-"Si activé, GnomeMeeting jouera un son à la réception d'un appel entrant (le "
-"son à jouer est choisi dans le Centre de contrôle de GNOME)."
-
-#: src/pref_window.cpp:1340
+#: src/pref_window.cpp:882
 msgid "Do not register"
 msgstr "Ne pas s'enregistrer"
 
-#: src/pref_window.cpp:1341
-msgid "Gatekeeper host"
-msgstr "Hôte Gatekeeper"
-
-#: src/pref_window.cpp:1342
-msgid "Gatekeeper ID"
-msgstr "ID Gatekeeper"
-
-#: src/pref_window.cpp:1343
-msgid "Automatic Discover"
+#: src/pref_window.cpp:885
+msgid "Automatically discover"
 msgstr "Trouver automatiquement"
 
-#: src/pref_window.cpp:1353
-msgid "XDAP Directory"
-msgstr "Annuaire XDAP"
+#: src/pref_window.cpp:895
+msgid "User Directory"
+msgstr "Annuaire d'utilisateurs"
 
-#: src/pref_window.cpp:1358
-msgid "XDAP Directory:"
-msgstr "Annuaire XDAP :"
-
-#: src/pref_window.cpp:1358
-msgid "The XDAP server to register to."
-msgstr "L'annuaire XDAP auquel s'enregistrer."
-
-#: src/pref_window.cpp:1361
-msgid "Enable Registering"
-msgstr "Permettre l'enregistrement"
-
-#: src/pref_window.cpp:1361
-msgid "If enabled, permit to register to the selected LDAP directory"
-msgstr ""
-"Si activé, cela permet de s'enregistrer auprès de l'annuaire LDAP choisi"
+#: src/pref_window.cpp:900
+msgid "User directory:"
+msgstr "Annuaire d'utilisateurs :"
 
 #. Add fields for the gatekeeper
-#: src/pref_window.cpp:1365
+#: src/pref_window.cpp:916
 msgid "Gatekeeper"
 msgstr "Gatekeeper"
 
-#: src/pref_window.cpp:1368
+#: src/pref_window.cpp:919
 msgid "Gatekeeper ID:"
 msgstr "ID Gatekeeper :"
 
-#: src/pref_window.cpp:1368
-msgid "The Gatekeeper identifier to register to."
-msgstr "Identifiant du Gatekeeper auquel s'enregistrer."
-
-#: src/pref_window.cpp:1371
+#: src/pref_window.cpp:922
 msgid "Gatekeeper host:"
 msgstr "Hôte Gatekeeper :"
 
-#: src/pref_window.cpp:1371
-msgid "The Gatekeeper host to register to."
-msgstr "Hôte Gatekeeper auquel s'enregistrer."
-
-#: src/pref_window.cpp:1374
+#: src/pref_window.cpp:925
 msgid "Gatekeeper alias: "
 msgstr "Alias sur le Gatekeeper :"
 
-#: src/pref_window.cpp:1374
-msgid ""
-"The Gatekeeper Alias to use when registering (string, or E164 ID if only "
-"0123456789#)."
-msgstr ""
-"Alias à utiliser pour s'enregistrer auprès du Gatekeeper (chaine de "
-"caractères, ou E164 ID si uniquement constitué de 0123456789#)."
-
-#: src/pref_window.cpp:1377
+#: src/pref_window.cpp:928
 msgid "Gatekeeper password:"
 msgstr "Mot de passe du Gatekeeper :"
 
-#: src/pref_window.cpp:1381
+#: src/pref_window.cpp:932
 msgid "Registering method:"
 msgstr "Méthode d'enregistrement :"
 
-#: src/pref_window.cpp:1381
-msgid "Registering method to use"
-msgstr "Méthode d'enregistrement à utiliser"
-
-#: src/pref_window.cpp:1384
+#: src/pref_window.cpp:935
 msgid "Click here to update your Gatekeeper settings."
 msgstr "Cliquez ici pour mettre à jour les réglages du Gatekeeper."
 
-#: src/pref_window.cpp:1403
+#: src/pref_window.cpp:948
+msgid "All"
+msgstr "Toutes"
+
+#: src/pref_window.cpp:949
+msgid "None"
+msgstr "Aucune"
+
+#: src/pref_window.cpp:950
+msgid "rfc2833"
+msgstr "rfc2833"
+
+#: src/pref_window.cpp:951
+msgid "Signal"
+msgstr "Signal"
+
+#: src/pref_window.cpp:952
+msgid "String"
+msgstr "Chaine de caractères"
+
+#: src/pref_window.cpp:961
 msgid "H.323 Call Forwarding"
 msgstr "Transfert d'appel H.323"
 
-#: src/pref_window.cpp:1409
+#: src/pref_window.cpp:967
 msgid "Forward calls to host:"
 msgstr "Transférer les appels vers l'hôte :"
 
-#: src/pref_window.cpp:1409
-msgid ""
-"Enter here the host where calls should be forwarded in the cases selected "
-"above"
-msgstr ""
-"Saisissez le nom de l'hôte vers lequel seront transférés les appels dans les "
-"cas suivants"
-
-#: src/pref_window.cpp:1412
-msgid ""
-"If enabled, all incoming calls will always be forwarded to the host that is "
-"specified in the field below."
-msgstr ""
-"Si activé, tous les appels entrant seront transférés vers l'hôte spécifié "
-"dans le champs ci-dessous."
-
-#: src/pref_window.cpp:1415
-msgid ""
-"If enabled, all incoming calls will be forwarded to the host that is "
-"specified in the field below if you don't answer the call."
-msgstr ""
-"Si activé, tous les appels entrant seront transférés vers l'hôte spécifié "
-"dans le champs ci-dessous si vous ne répondez pas à l'appel."
-
-#: src/pref_window.cpp:1418
-msgid ""
-"If enabled, all incoming calls will be forwarded to the host that is "
-"specified in the field below if you already are in a call or if you are in "
-"Do Not Disturb mode."
-msgstr ""
-"Si activé, tous les appels entrant seront transférés vers l'hôte spécifié "
-"dans le champs ci-dessous si vous êtes déjà en appel ou si vous avez activé "
-"le mode *Ne Pas Déranger*."
-
-#: src/pref_window.cpp:1423
+#: src/pref_window.cpp:981
 msgid "H.323 V2 Settings"
 msgstr "Paramètres H.323 V2"
 
-#: src/pref_window.cpp:1429
-msgid "Enable H.245 Tunnelling"
-msgstr "Activer le Tunnelling H.245"
+#: src/pref_window.cpp:995
+msgid "User Input Capabilities"
+msgstr "Méthodes de saisie utilisateur"
 
-#: src/pref_window.cpp:1429
+#: src/pref_window.cpp:999
+msgid "User Input Capabilities type:"
+msgstr "Type de méthodes de saisie utilisateur :"
+
+#: src/pref_window.cpp:999
 msgid ""
-"This enables H.245 Tunnelling mode. In H.245 Tunnelling mode H.245 messages "
-"are encapsulated into the the H.225 channel (port 1720). This permits "
-"sparing one random TCP port during calls. H.245 Tunnelling was introduced in "
-"H.323v2 and Netmeeting doesn't support it. Using both Fast Start and H.245 "
-"Tunnelling can crash some versions of Netmeeting."
+"This permits to set the mode for User Input Capabilities. The values can be "
+"\"All\", \"None\", \"rfc2833\", \"Signal\" or \"String\" (default is \"All"
+"\"). Choosing other values than \"All\", \"String\" or \"rfc2833\" disables "
+"the Text Chat."
 msgstr ""
-"Ceci active le mode de Tunnelling H.245. Dans le mode de Tunnelling H.245 "
-"les messages sont encapsulés dans le canal H.225 (port 1720), ceci permet de "
-"partager un port TCP aléatoire durand les appels. Le Tunnelling H.245 a été "
-"introduit dans H.323v2 et Netmeeting ne le supporte pas. Utiliser à la fois "
-"le Démarrage Rapide et le Tunnelling H.245 peut faire planter quelques "
-"versions de Netmeeting."
-
-#: src/pref_window.cpp:1432
-msgid "Enable Fast Start"
-msgstr "Activer le démarrage rapide"
-
-#: src/pref_window.cpp:1432
-msgid ""
-"Connection will be established in Fast Start mode. Fast Start is a new way "
-"to start calls faster that was introduced in H.323v2. It is not supported by "
-"Netmeeting and using both Fast Start and H.245 Tunnelling can crash some "
-"versions of Netmeeting."
-msgstr ""
-"La connexion sera étable en mode de démarrage rapide. Le démarrage rapide "
-"est une nouvelle manière de démarrer les appels plus rapidement qui a été "
-"introduite dans H.323v2.  Il n'est pas supporté par Netmeeting et utiliser à "
-"la fois le Démarrage Rapide et le Tunnelling H.245 peut faire planter "
-"quelques versions de Netmeeting."
-
-#: src/pref_window.cpp:1437
+"Ceci permet de choisir les méthodes de saisie utilisateur. Les valeurs "
+"peuvent être \"Chaine de caractères\", \"Signal\", \"rfc2833\", \"Aucune\" ou \"Toutes\" "
+"(par défaut c'est \"Toutes\"). Choisir une autre valeur que \"Toutes\", "
+"\"Chaine de caractères\", ou \"rfc2833\" désactive le dialogue texte."
+#: src/pref_window.cpp:1003
 msgid "NAT/PAT Router Support"
 msgstr "Support des routeurs NAT/PAT"
 
-#: src/pref_window.cpp:1441
-msgid "Enable IP Translation"
-msgstr "Activer la traduction d'IP"
-
-#: src/pref_window.cpp:1444
+#: src/pref_window.cpp:1010
 msgid "Public IP of the NAT/PAT router:"
 msgstr "Adresse publique du routeur NAT/PAT :"
 
-#: src/pref_window.cpp:1444
-msgid ""
-"You can put here the public IP of your NAT/PAT router if you want to use IP "
-"translation.  If you are registered to ils.seconix.com, GnomeMeeting will "
-"automatically fetch the public IP using the ILS service."
-msgstr ""
-"Vous pouvez entrer ici l'adresse publique de votre routeur NAT/PAT si vous "
-"voulez utiliser la traduction d'IP. Si vous êtes enregistré sur le serveur "
-"ils.seconix.com, GnomeMeeting utilisera automatiquement l'adresse publique "
-"fournie par le service ILS."
-
-#: src/pref_window.cpp:1467
+#: src/pref_window.cpp:1030
 msgid "Low"
 msgstr "Bas"
 
-#: src/pref_window.cpp:1468
+#: src/pref_window.cpp:1031
 msgid "Medium"
 msgstr "Moyen"
 
-#: src/pref_window.cpp:1469
+#: src/pref_window.cpp:1032
 msgid "High"
 msgstr "Elevé"
 
-#: src/pref_window.cpp:1470
-msgid "Automatic Gain Compensation"
-msgstr "Compensation Automatique du Gain"
+#: src/pref_window.cpp:1033
+msgid "AGC"
+msgstr "CAG"
 
-#: src/pref_window.cpp:1486 src/pref_window.cpp:2073
-msgid "Audio Devices"
-msgstr "Périphériques audio"
+#. The Quicknet devices related options
+#: src/pref_window.cpp:1067
+msgid "Quicknet Device"
+msgstr "Périphérique Quicknet"
 
-#: src/pref_window.cpp:1506
-msgid "Audio Player:"
-msgstr "Lecteur audio :"
-
-#: src/pref_window.cpp:1506
-msgid "Enter the audio player device to use."
-msgstr "Choisissez le lecteur audio à utiliser."
-
-#: src/pref_window.cpp:1514
-msgid "Player Mixer:"
-msgstr "Mixeur de lecture :"
-
-#: src/pref_window.cpp:1514
-msgid "The audio mixer to use to setup the volume of the audio player device."
-msgstr "Le mixeur audio à utiliser pour paramètrer le volume du lecteur audio."
-
-#: src/pref_window.cpp:1533
-msgid "Audio Recorder:"
-msgstr "Enregistreur audio :"
-
-#: src/pref_window.cpp:1533
-msgid "Enter the audio recorder device to use."
-msgstr "Choisissez l'enregistreur audio à utiliser."
-
-#: src/pref_window.cpp:1541
-msgid "Recorder Mixer:"
-msgstr "Mixeur d'enregistrement :"
-
-#: src/pref_window.cpp:1541
-msgid ""
-"The audio mixer to use to setup the volume of the audio recorder device."
-msgstr ""
-"Le mixeur audio à utiliser pour paramètrers le volume de l'enregistreur "
-"audio."
-
-#: src/pref_window.cpp:1550
-msgid "Automatic Echo Cancellation:"
+#: src/pref_window.cpp:1071
+msgid "Automatic echo cancellation:"
 msgstr "Suppression automatique de l'écho :"
 
-#: src/pref_window.cpp:1553
-msgid "Country Code:"
-msgstr "Code Pays :"
+#: src/pref_window.cpp:1074
+msgid "Country code:"
+msgstr "Code pays :"
 
-#: src/pref_window.cpp:1556
-msgid "Use the Quicknet Device"
-msgstr "Utiliser le périphérique Quicknet"
-
-#: src/pref_window.cpp:1589
+#: src/pref_window.cpp:1105
 msgid "Small"
 msgstr "Petite"
 
-#: src/pref_window.cpp:1590
+#: src/pref_window.cpp:1106
 msgid "Large"
 msgstr "Grande"
 
-#: src/pref_window.cpp:1592
-msgid "PAL"
-msgstr "PAL"
+#: src/pref_window.cpp:1108
+msgid "PAL (Europe)"
+msgstr "PAL (Europe)"
 
-#: src/pref_window.cpp:1593
-msgid "NTSC"
-msgstr "NTSC"
+#: src/pref_window.cpp:1109
+msgid "NTSC (America)"
+msgstr "NTSC (Amérique)"
 
-#: src/pref_window.cpp:1594
-msgid "SECAM"
-msgstr "SECAM"
+#: src/pref_window.cpp:1110
+msgid "SECAM (France)"
+msgstr "SECAM (France)"
 
-#: src/pref_window.cpp:1595
-msgid "auto"
+#: src/pref_window.cpp:1111
+msgid "Auto"
 msgstr "Auto"
 
-#. The video devices related options
-#: src/pref_window.cpp:1613 src/pref_window.cpp:2078
-msgid "Video Devices"
-msgstr "Périphériques vidéo"
-
-#: src/pref_window.cpp:1628
-msgid "Video Device:"
-msgstr "Périphérique vidéo :"
-
-#: src/pref_window.cpp:1628
-msgid ""
-"Enter the video device to use. Using an invalid video device for video "
-"transmission will transmit a test picture."
-msgstr ""
-"Choisissez le périphérique vidéo à utiliser, le choix d'un mauvais "
-"périphérique vidéo permettra toutefois l'envoi d'une image de test."
-
-#: src/pref_window.cpp:1637
-msgid "Video Channel:"
+#: src/pref_window.cpp:1137
+msgid "Video channel:"
 msgstr "Canal vidéo :"
 
-#: src/pref_window.cpp:1639
-msgid "The video channel number to use (camera, tv, ...)."
-msgstr "Le numéro du canal vidéo à utiliser (webcam, tv, ...)."
-
-#: src/pref_window.cpp:1643
-msgid "Video Size:"
+#: src/pref_window.cpp:1143
+msgid "Video size:"
 msgstr "Taille de l'image :"
 
-#: src/pref_window.cpp:1643
-msgid "Choose the transmitted video size: QCIF (small) or CIF (large)."
-msgstr ""
-"Choisissez la taille de la vidéo transmise : QCIF (petite) ou CIF (large)."
-
-#: src/pref_window.cpp:1646
-msgid "Video Format:"
+#: src/pref_window.cpp:1146
+msgid "Video format:"
 msgstr "Format vidéo :"
 
-#: src/pref_window.cpp:1646
-msgid "Here you can choose the transmitted video format."
-msgstr "Ici, vous pouvez choisir le format vidéo transmis."
-
-#: src/pref_window.cpp:1650
-msgid "Video Image:"
-msgstr "Image vidéo"
-
-#: src/pref_window.cpp:1654
-msgid ""
-"If enabled, the video preview mode will be set activated and you will be "
-"able to see yourself without being in a call."
-msgstr ""
-"Si activé, le mode prévue est actif au lancement de l'application et vous "
-"devez pouvoir vous voir sans être en appel."
+#: src/pref_window.cpp:1150
+msgid "Video image:"
+msgstr "Image vidéo :"
 
 #. The file selector button
-#: src/pref_window.cpp:1658
-msgid "Browse"
-msgstr "Parcourir"
+#: src/pref_window.cpp:1154
+msgid "Browse..."
+msgstr "Parcourir..."
 
-#: src/pref_window.cpp:1712
+#: src/pref_window.cpp:1209
 msgid "Available Audio Codecs"
 msgstr "Codecs audio disponibles"
 
-#: src/pref_window.cpp:1749
-msgid "Name"
-msgstr "Nom"
-
-#: src/pref_window.cpp:1757
+#: src/pref_window.cpp:1260
 msgid "Info"
 msgstr "Info"
 
-#: src/pref_window.cpp:1765
+#: src/pref_window.cpp:1272
 msgid "Bandwidth"
 msgstr "Bande passante"
 
 #. Here we add the audio codecs options
-#: src/pref_window.cpp:1825
+#: src/pref_window.cpp:1335
 msgid "Audio Codecs Settings"
 msgstr "Paramètres des codecs audio"
 
-#: src/pref_window.cpp:1829
-msgid "Jitter Buffer:"
-msgstr "Délai de bufférisation :"
+#: src/pref_window.cpp:1343
+msgid "Minimum jitter buffer:"
+msgstr "Délai minimal de bufférisation :"
 
-#: src/pref_window.cpp:1831
-msgid "The jitter buffer delay to buffer audio calls (in ms)."
-msgstr "Le délai de bufferisation pour les appels audio (en ms)."
+#: src/pref_window.cpp:1346
+msgid "Maximum jitter buffer:"
+msgstr "Délai maximal de bufférisation :"
 
-#: src/pref_window.cpp:1835
-msgid "GSM Frames per packet:"
-msgstr "Frames GSM par paquet :"
-
-#: src/pref_window.cpp:1837
-msgid "The number of frames in each transmitted GSM packet."
-msgstr "Nombre de frames dans chaque paquet GSM transmis."
-
-#: src/pref_window.cpp:1841
-msgid "G.711 Frames per packet:"
-msgstr "Frames G.711 par paquet :"
-
-#: src/pref_window.cpp:1843
-msgid "The number of frames in each transmitted G.711 packet."
-msgstr "Le nombre de frames dans chaque paquet G.711 transmis."
-
-#: src/pref_window.cpp:1847
-msgid "Enable Silence Detection"
-msgstr "Activer la détection du silence"
-
-#: src/pref_window.cpp:1849
-msgid "Enable/disable the silence detection for the GSM and G.711 codecs."
-msgstr ""
-"Permettre ou non la détection du silence pour les codecs basés GSM et G.711."
-
-#: src/pref_window.cpp:1870 src/pref_window.cpp:2035
+#: src/pref_window.cpp:1367 src/pref_window.cpp:1533
 msgid "General Settings"
 msgstr "Paramètres généraux"
 
-#: src/pref_window.cpp:1875
-msgid "Maximum Transmitted FPS:"
-msgstr "FPS maximale transmise :"
-
-#: src/pref_window.cpp:1877
-msgid "The number of video frames transmitted each second."
-msgstr "Nombre d'images vidéo transmises par seconde."
-
-#: src/pref_window.cpp:1881
-msgid "Enable FPS Limitation"
-msgstr "Permettre la limitation de FPS"
-
-#: src/pref_window.cpp:1881
-msgid "Enable/disable the limit on the transmitted FPS."
-msgstr "Activer/désactiver la limitation de FPS transmise."
-
-#: src/pref_window.cpp:1884
-msgid "Enable/disable the video transmission."
-msgstr "Activer/désactiver la transmission vidéo."
-
 #. H.261 Settings
-#: src/pref_window.cpp:1888
-msgid "H.261 Settings"
-msgstr "Paramètres du codec H.261"
+#: src/pref_window.cpp:1379
+msgid "Bandwidth Control"
+msgstr "Contrôle de bande passante"
 
-#: src/pref_window.cpp:1892
-msgid "Transmitted Video Quality:"
-msgstr "Qualité de la transmission vidéo :"
+#: src/pref_window.cpp:1382
+msgid "Maximum video bandwidth:"
+msgstr "Bande passante vidéo maximale :"
 
-#: src/pref_window.cpp:1894
+#: src/pref_window.cpp:1388
+msgid "Advanced Quality Settings"
+msgstr "Paramètres avancés de qualité"
+
+#: src/pref_window.cpp:1391
+msgid "Minimum transmitted video quality:"
+msgstr "Qualité minimale de la transmission vidéo :"
+
+#: src/pref_window.cpp:1393
 msgid ""
-"The transmitted video quality:  choose 100% on a LAN for the best quality, "
-"1% being the worst quality."
+"The minimum transmitted video quality to keep when trying to minimize the "
+"used bandwidth:  choose 100% on a LAN for the best quality, 1% being the "
+"worst quality."
 msgstr ""
-"Qualité de la transmission vidéo :  choisissez 100% sur un LAN pour une "
+"Qualité minimale de la transmission vidéo lors de la minimisation de la "
+"bande passante utilisée :  choisissez 100% sur un LAN pour une "
 "qualité optimale, 1% étant la pire qualité possible."
 
-#: src/pref_window.cpp:1898
-msgid "Received Video Quality:"
-msgstr "Qualité de la réception vidéo :"
+#: src/pref_window.cpp:1397
+msgid "Minimum transmitted FPS:"
+msgstr "FPS minimale transmise :"
 
-#: src/pref_window.cpp:1900
-msgid ""
-"The received video quality:  choose 100% on a LAN for the best quality, 1% "
-"being the worst quality."
-msgstr ""
-"Qualité de la réception vidéo :  choisissez 100% sur un LAN pour une qualité "
-"optimale, 1% étant la pire qualité possible."
-
-#: src/pref_window.cpp:1904
-msgid "Transmitted Background Blocks:"
+#: src/pref_window.cpp:1403
+msgid "Transmitted background blocks:"
 msgstr "Blocs d'arrière plan transmis :"
 
-#: src/pref_window.cpp:1951
+#: src/pref_window.cpp:1451
 msgid "GnomeMeeting Settings"
 msgstr "Paramètres GnomeMeeting"
 
-#: src/pref_window.cpp:2026
+#: src/pref_window.cpp:1524
 msgid "General"
 msgstr "Général"
 
-#: src/pref_window.cpp:2030
+#: src/pref_window.cpp:1528
 msgid "Personal Data"
 msgstr "Informations personnelles"
 
-#: src/pref_window.cpp:2040
-msgid "H.323 Advanced"
-msgstr "Paramètres avancés H.323"
-
-#: src/pref_window.cpp:2045
+#: src/pref_window.cpp:1538
 msgid "Directory Settings"
 msgstr "Paramètres d'annuaires"
 
-#: src/pref_window.cpp:2052
+#: src/pref_window.cpp:1543
+msgid "H.323 Advanced"
+msgstr "Paramètres avancés H.323"
+
+#: src/pref_window.cpp:1549
 msgid "Codecs"
 msgstr "Codecs"
 
-#: src/pref_window.cpp:2056
+#: src/pref_window.cpp:1553
 msgid "Audio Codecs"
 msgstr "Codecs audio"
 
-#: src/pref_window.cpp:2062
+#: src/pref_window.cpp:1559
 msgid "Video Codecs"
 msgstr "Codecs vidéo"
 
-#: src/pref_window.cpp:2069
+#: src/pref_window.cpp:1566
 msgid "Devices"
 msgstr "Périphériques"
 
-#: src/pref_window.cpp:2084
+#: src/pref_window.cpp:1581
 msgid "Section"
 msgstr "Paramètres"
 
-#: src/toolbar.cpp:86
-msgid "Speakerphone enabled"
-msgstr "Haut-parleur du périphérique Quicknet activé"
+#: src/sound_handling.cpp:372
+#, c-format
+msgid ""
+"Impossible to open the selected audio device (%s) for playing. Please check "
+"your audio setup."
+msgstr ""
+"Impossible d'ouvrir le périphérique audio sélectionné (%s) pour la lecture. "
+"Veuillez vérifier vos réglages."
 
-#: src/toolbar.cpp:98
-msgid "Speakerphone disabled"
-msgstr "Haut-parleur du périphérique Quicknet désactivé"
+#: src/sound_handling.cpp:384
+#, c-format
+msgid ""
+"Impossible to open the selected audio device (%s) for recording. Please "
+"check your audio setup."
+msgstr ""
+"Impossible d'ouvrir le périphérique audio sélectionné (%s) pour l'enregistrement. "
+"Veuillez vérifier vos réglages."
 
-#: src/toolbar.cpp:200
-msgid "ILS Directory"
-msgstr "Annuaire ILS"
+#: src/sound_handling.cpp:398
+#, c-format
+msgid ""
+"The selected audio device (%s) was successfully opened but it is impossible "
+"to read data from this device. Please check your audio setup."
+msgstr ""
+"Le périphérique audio sélectionné (%s) a été ouvert avec succès mais il est "
+"impossible de lire des données à partir de ce périphérique. Veuillez "
+"vérifier votre configuration audio."
 
-#: src/toolbar.cpp:201
-msgid "Find friends on ILS"
+#: src/sound_handling.cpp:407
+#, c-format
+msgid ""
+"The selected audio device (%s) was successfully opened but it is impossible "
+"to write data to this device. Please check your audio setup."
+msgstr ""
+"Le périphérique audio sélectionné (%s) a été ouvert avec succès mais il est "
+"impossible d'écrire des données sur ce périphérique. Veuillez "
+"vérifier votre configuration audio."
+
+#: src/sound_handling.cpp:424
+#, c-format
+msgid ""
+"GnomeMeeting is now recording from %s and playing back to %s. Please say \"1 "
+"2 3\" in your microphone, you should hear yourself back into the speakers in "
+"5 seconds.\n"
+"\n"
+"Recording... Please talk."
+msgstr ""
+"GnomeMeeting est en train d'enregistrer depuis %s et de jouer en retour avec %s. "
+"Veuillez dire \"1 2 3\" dans votre microphone, vous devriez vous entendre dans les "
+"haut-parleurs 5 secondes après.\n"
+"\n"
+"Enregistrement... Veuillez parler."
+
+#: src/sound_handling.cpp:453
+msgid ""
+"GnomeMeeting is now playing what it is recording with a 5 seconds delay. If "
+"you don't hear yourself with the delay, you will have to fix your audio "
+"setup and probably install a full-duplex driver before calling other "
+"GnomeMeeting users.\n"
+"\n"
+"Recording and playing... Please talk."
+msgstr ""
+"GnomeMeeting est maintenant en train de diffuser ce qui est enregistré avec "
+"un retard de 5 secondes. Si vous ne vous entendez pas avec ce retard, vous "
+"devez reconfigurer votre système audio et certainement installer un pilote "
+" audio Full-Duplex avant d'essayer d'appeler d'autres utilisateurs de "
+"GnomeMeeting.\n"
+"\n"
+"Enregistrement et lecture... Veuillez parler."
+
+#: src/toolbar.cpp:95
+msgid "Speaker phone enabled"
+msgstr "Haut-parleur activé"
+
+#: src/toolbar.cpp:107
+msgid "Speaker phone disabled"
+msgstr "Haut-parleur désactivé"
+
+#: src/toolbar.cpp:266
+msgid "Find friends on the ILS directory service"
 msgstr "Trouver des contacts sur un annuaire ILS"
 
-#: src/toolbar.cpp:209
-msgid "Chat"
-msgstr "Fenêtre de Chat"
-
-#: src/toolbar.cpp:210
+#: src/toolbar.cpp:279
 msgid "Make a text chat with your friend"
-msgstr "Dialogue par écrit avec votre ami"
+msgstr "Dialoguer par écrit avec votre ami"
 
-#: src/toolbar.cpp:219
+#: src/toolbar.cpp:290
 msgid "Display the control panel"
 msgstr "Afficher/cacher le panneau de contrôle"
 
-#: src/toolbar.cpp:311
-msgid "Click here to begin to display images from your camera device."
+#: src/toolbar.cpp:322
+msgid "Click here to begin displaying images from your camera device."
 msgstr ""
-"Cliquez ici pour commencer à afficher les images du périphérique vidéo de "
-"capture."
+"Cliquez ici pour commencer à afficher les images de votre caméra."
 
-#: src/toolbar.cpp:333
+#: src/toolbar.cpp:344
 msgid "Click here to activate the speaker phone device of your Quicknet card."
 msgstr "Cliquez pour activer le haut-parleur du périphérique Quicknet."
 
-#: src/toolbar.cpp:356
+#: src/toolbar.cpp:367
 msgid ""
-"Audio Transmission Status. During a call, click here to pause the audio "
+"Audio transmission status. During a call, click here to pause the audio "
 "transmission."
 msgstr ""
-"État de la transmission audio. Pendant l'appel, cliquez ici pour mettre en "
-"pause la transmission audio."
+"État de la transmission audio. Pendant l'appel, cliquez ici pour suspendre "
+"la transmission audio."
 
-#: src/toolbar.cpp:376
+#: src/toolbar.cpp:387
 msgid ""
-"Video Transmission Status. During a call, click here to pause the video "
+"Video transmission status. During a call, click here to pause the video "
 "transmission."
 msgstr ""
-"État de la transmission vidéo. Pendant l'appel, cliquez ici pour mettre en "
-"pause la transmission vidéo."
+"État de la transmission vidéo. Pendant l'appel, cliquez ici pour suspendre "
+"la transmission vidéo."
 
-#: src/tools.cpp:102 src/tools.cpp:108
+#: src/tools.cpp:119 src/tools.cpp:125
 msgid "General History"
 msgstr "Historique général"
 
-#: src/tray.cpp:183
-msgid "Do Not Accept Calls"
-msgstr "Ne pas accepter d'appel"
-
-#: src/tray.cpp:191
-msgid "Automatically Answer Calls"
-msgstr "Répondre automatiquement aux appels"
-
-#: src/tray.cpp:200
-msgid "Show Main Window"
-msgstr "Afficher/cacher la fenêtre principale"
-
-#: src/tray.cpp:200
-msgid "Show The Main Window"
-msgstr "Afficher/cacher la fenêtre principale"
-
-#: src/tray.cpp:277
+#: src/tray.cpp:166
 msgid "GnomeMeeting Tray Icon"
 msgstr "Docklet GnomeMeeting"
 
-#: src/urlhandler.cpp:128
+#: src/urlhandler.cpp:127
 msgid "Searching for user"
 msgstr "Recherche de l'utilisateur"
 
-#: src/urlhandler.cpp:152 src/urlhandler.cpp:154
+#: src/urlhandler.cpp:151 src/urlhandler.cpp:153
 msgid "Error while connecting to ILS directory"
 msgstr "Erreur lors de la connexion à l'annuaire ILS"
 
-#: src/urlhandler.cpp:224
+#: src/urlhandler.cpp:174 src/urlhandler.cpp:175
+msgid "User is offline"
+msgstr "Le correspondant n'est pas connecté"
+
+#: src/urlhandler.cpp:232
 #, c-format
 msgid "Calling %s"
 msgstr "Appelle %s"
 
-#: src/videograbber.cpp:460 src/videograbber.cpp:461
+#: src/videograbber.cpp:457 src/videograbber.cpp:458
 msgid "Opening Video device"
 msgstr "Ouverture du périphérique vidéo"
 
-#: src/videograbber.cpp:509
+#: src/videograbber.cpp:506
 #, c-format
 msgid "Successfully opened video device %s, channel %d"
 msgstr "Ouverture avec succès du périphérique vidéo %s, canal %d"
 
-#: src/videograbber.cpp:512
+#: src/videograbber.cpp:509
 msgid "Video Device Opened"
 msgstr "Périphérique vidéo ouvert"
 
-#: src/videograbber.cpp:525
+#: src/videograbber.cpp:522
 #, c-format
 msgid ""
 "Error while opening video device %s, channel %d.\n"
@@ -2683,23 +2877,23 @@ msgstr ""
 "Gnomemeeting tout le temps en  choisissant \"Image\" comme périphérique "
 "vidéo."
 
-#: src/videograbber.cpp:526
+#: src/videograbber.cpp:523
 msgid "Can't open the Video Device"
 msgstr "Ne peut ouvrir le périphérique vidéo"
 
-#: src/videograbber.cpp:531
+#: src/videograbber.cpp:528
 msgid "Error while opening the device."
 msgstr "Erreur lors de l'ouverture du périphérique."
 
-#: src/videograbber.cpp:536
+#: src/videograbber.cpp:533 src/videograbber.cpp:817
 msgid "Your video driver doesn't support the requested video format."
 msgstr "Votre pilote vidéo ne supporte pas le format vidéo demandé."
 
-#: src/videograbber.cpp:540
+#: src/videograbber.cpp:537 src/videograbber.cpp:821
 msgid "Could not open the chosen channel with the chosen video format."
 msgstr "Ne peut ouvrir le canal choisi avec le format video choisi."
 
-#: src/videograbber.cpp:544
+#: src/videograbber.cpp:541
 #, c-format
 msgid ""
 "Your driver doesn't support the %s format.\n"
@@ -2715,14 +2909,33 @@ msgstr ""
 "gconftool --set \"/apps/gnomemeeting/devices/color_format\" VOTREPALETTE --"
 "type string"
 
-#: src/videograbber.cpp:548
+#: src/videograbber.cpp:545 src/videograbber.cpp:829
 msgid "Error with the frame rate."
 msgstr "Erreur avec le nombre de frames transmis par seconde."
 
-#: src/videograbber.cpp:552
+#: src/videograbber.cpp:549 src/videograbber.cpp:833
 msgid "Error with the frame size."
 msgstr "Erreur avec la taille de capture choisie."
 
-#: src/videograbber.cpp:680
+#: src/videograbber.cpp:678
 msgid "Video Device Closed"
 msgstr "Périphérique vidéo fermé"
+
+#: src/videograbber.cpp:796
+#, c-format
+msgid "Test %d done"
+msgstr "Test %d réussi"
+
+#: src/videograbber.cpp:813
+#, c-format
+msgid "Error while opening %s."
+msgstr "Erreur à de l'ouverture de %s."
+
+#: src/videograbber.cpp:825
+msgid "Your driver doesn't support the YUV420P color format"
+msgstr "Votre pilote vidéo ne supporte pas le format de couleur YUV420P"
+
+#: src/videograbber.cpp:838
+msgid "Tests OK!"
+msgstr "Test réussi !"
+
