@@ -2377,7 +2377,8 @@ gm_main_window_update_video (GtkWidget *main_window,
 	gdk_pixbuf_scale_simple (lsrc_pic, 
 				 (int) (lf_width * lzoom),
 				 (int) (lf_height * lzoom),
-				 GDK_INTERP_NEAREST);
+				 bilinear_filtering?
+				 GDK_INTERP_BILINEAR:GDK_INTERP_NEAREST);
     else
       zlsrc_pic = gdk_pixbuf_copy (lsrc_pic);
 
@@ -2395,7 +2396,8 @@ gm_main_window_update_video (GtkWidget *main_window,
 	gdk_pixbuf_scale_simple (rsrc_pic, 
 				 (int) (rf_width * rzoom),
 				 (int) (rf_height * rzoom),
-				 GDK_INTERP_NEAREST);
+				 bilinear_filtering?
+				 GDK_INTERP_BILINEAR:GDK_INTERP_NEAREST);
     else
       zrsrc_pic = gdk_pixbuf_copy (rsrc_pic);
 
