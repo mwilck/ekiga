@@ -28,8 +28,9 @@
  *                         gtk-text-buffer-extensions.c  -  description
  *                         --------------------------------------------
  *   begin                : Tue May 13 2003
- *   copyright            : (C) 2003 by Miguel Rodríguez
- *                                      and StÃ©phane Wirtel
+ *   copyright            : (C) 2003 by Miguel Rodríguez,
+ *                                      StÃ©phane Wirtel
+ *                                      and Kenneth Christiansen
  *   description          : This file contains the smiles detection code.
  *
  */
@@ -41,7 +42,7 @@
 #include "../pixmaps/inline_emoticons.h"
 
 /**
- * struct smile_detect_
+ * struct smile_detect
  * @code : the code of the symbol
  * @data : the representation of the symbol
  * @n_children : number of children
@@ -49,7 +50,7 @@
  **/
 typedef struct smile_detect_ {
   char code;  // The code of the symbol
-  const guint8 *data;
+  GdkPixbuf *data;
   int n_children;
   struct smile_detect_ **children;
 } smile_detect;
@@ -114,7 +115,7 @@ locate_code (char code,
 static void 
 add_smile (smile_detect *root,
 	   const char *pattern, 
-	   const guint8 *data)
+	   GdkPixbuf *data)
 {
   int i;
   smile_detect *iter = root;
@@ -128,6 +129,7 @@ add_smile (smile_detect *root,
   }
 
   iter->data = data;
+  g_object_ref (G_OBJECT (data));
 }
 
 /*
@@ -139,48 +141,65 @@ smiley_tree_init (smile_detect *root)
   struct _table_smiley
   {
     const char *symbol;
-    const guint8 *data;
+    GdkPixbuf **data;
   };
   
+  GdkPixbuf *pixbufs[11];
+
   const struct _table_smiley table_smiley [] = 
     {
-      {":)",gm_emoticon_face1},
-      {"8)", gm_emoticon_face2},
-      {"8-)", gm_emoticon_face2},
-      {";)", gm_emoticon_face3},
-      {";-)", gm_emoticon_face3},
-      {":(", gm_emoticon_face4},
-      {":-(", gm_emoticon_face4},
-      {":0", gm_emoticon_face5},
-      {":o", gm_emoticon_face5},
-      {":-0", gm_emoticon_face5},
-      {":-o", gm_emoticon_face5},
-      {":-D", gm_emoticon_face6},
-      {":D", gm_emoticon_face6},
-      {":-)", gm_emoticon_face7},
-      {":|", gm_emoticon_face8},
-      {":-|", gm_emoticon_face8},
-      {":-/", gm_emoticon_face9},
-      {":/", gm_emoticon_face9},
-      {":-P", gm_emoticon_face10},
-      {":-p", gm_emoticon_face10},
-      {":P", gm_emoticon_face10},
-      {":p", gm_emoticon_face10},
-      {":'(", gm_emoticon_face11},
-      /*      {";D", gm_emoticon_face12},
-	      {";-D", gm_emoticon_face12},
-	      {";d", gm_emoticon_face12},
-	      {";-d", gm_emoticon_face12},
-	      {";-o", gm_emoticon_face13},
-	      {";-O", gm_emoticon_face13},
-	      {";o", gm_emoticon_face13},
-	      {";O", gm_emoticon_face13},*/
+      {":)", &pixbufs[0]},
+      {"8)", &pixbufs[1]},
+      {"8-)", &pixbufs[1]},
+      {";)", &pixbufs[2]},
+      {";-)", &pixbufs[2]},
+      {":(", &pixbufs[3]},
+      {":-(", &pixbufs[3]},
+      {":0", &pixbufs[4]},
+      {":o", &pixbufs[4]},
+      {":-0", &pixbufs[4]},
+      {":-o", &pixbufs[4]},
+      {":-D", &pixbufs[5]},
+      {":D", &pixbufs[5]},
+      {":-)", &pixbufs[6]},
+      {":|", &pixbufs[7]},
+      {":-|", &pixbufs[7]},
+      {":-/", &pixbufs[8]},
+      {":/", &pixbufs[8]},
+      {":-P", &pixbufs[9]},
+      {":-p", &pixbufs[9]},
+      {":P", &pixbufs[9]},
+      {":p", &pixbufs[9]},
+      {":'(", &pixbufs[10]},
+      /*      {";D", 12},
+	      {";-D", 12},
+	      {";d", 12},
+	      {";-d", 12},
+	      {";-o", 13},
+	      {";-O", 13},
+	      {";o", 13},
+	      {";O", 13},*/
       NULL
     };
   const struct _table_smiley *tmp;
  
-  for (tmp = table_smiley; tmp->symbol && tmp->data; tmp++)
-    add_smile (root, tmp->symbol, tmp->data);
+  pixbufs[0] = gdk_pixbuf_new_from_inline (-1, gm_emoticon_face1, FALSE, NULL);
+  pixbufs[1] = gdk_pixbuf_new_from_inline (-1, gm_emoticon_face2, FALSE, NULL);
+  pixbufs[2] = gdk_pixbuf_new_from_inline (-1, gm_emoticon_face3, FALSE, NULL);
+  pixbufs[3] = gdk_pixbuf_new_from_inline (-1, gm_emoticon_face4, FALSE, NULL);
+  pixbufs[4] = gdk_pixbuf_new_from_inline (-1, gm_emoticon_face5, FALSE, NULL);
+  pixbufs[5] = gdk_pixbuf_new_from_inline (-1, gm_emoticon_face6, FALSE, NULL);
+  pixbufs[6] = gdk_pixbuf_new_from_inline (-1, gm_emoticon_face7, FALSE, NULL);
+  pixbufs[7] = gdk_pixbuf_new_from_inline (-1, gm_emoticon_face8, FALSE, NULL);
+  pixbufs[8] = gdk_pixbuf_new_from_inline (-1, gm_emoticon_face9, FALSE, NULL);
+  pixbufs[9] = gdk_pixbuf_new_from_inline (-1, gm_emoticon_face10, 
+					   FALSE, NULL);
+  pixbufs[10] = gdk_pixbuf_new_from_inline (-1, gm_emoticon_face11, 
+					    FALSE, NULL);
+
+  for (tmp = table_smiley; tmp->symbol && tmp->data; tmp++) {
+    add_smile (root, tmp->symbol, *(tmp->data));
+  }
 }
 
 /**
@@ -190,7 +209,7 @@ smiley_tree_init (smile_detect *root)
  * @s_len : 
  * Search a smiley in the tree, if it does not exist, this function returns NULL
  **/
-static const guint8 *
+static GdkPixbuf *
 lookup_smile (const smile_detect *root,
 	      const char *input, 
 	      int *s_len)
@@ -219,7 +238,7 @@ lookup_smile (const smile_detect *root,
  * BUGS: If one symbol is a prefix of another symbol, the prefix symbol is 
  * always returned.
  */
-static const guint8 *
+static GdkPixbuf *
 search_symbol (const smile_detect *root, 
 	       const char *input, 
 	       int *ini, 
@@ -231,7 +250,7 @@ search_symbol (const smile_detect *root,
   for (i = 0; i < len; i++) {
     int s_len;
 
-    const guint8 *smile = lookup_smile (root, input + i, &s_len);
+    GdkPixbuf *smile = lookup_smile (root, input + i, &s_len);
     if (smile != NULL) {
       *ini = i;
       *end = i + s_len;
@@ -268,16 +287,14 @@ gtk_text_buffer_insert_with_emoticons (GtkTextBuffer *buf,
   for (i = buffer; *i != '\0'; ) {
       int ini, end;
 
-      const guint8 *tmp = search_symbol (&root, i, &ini, &end);
-      if (tmp == NULL) 	{
+      GdkPixbuf *emoticon = search_symbol (&root, i, &ini, &end);
+      if (emoticon == NULL) 	{
 	gtk_text_buffer_insert (buf, bufiter, i, -1);
       }
       else {
 	i[ini] = '\0';
 	gtk_text_buffer_insert (buf, bufiter, i, -1);
-	emoticon = gdk_pixbuf_new_from_inline (-1, tmp, FALSE, NULL);
 	gtk_text_buffer_insert_pixbuf (buf, bufiter, emoticon);
-	g_object_unref (G_OBJECT (emoticon));
       }
       i += end;
   }

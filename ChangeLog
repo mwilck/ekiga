@@ -1,5 +1,11 @@
 2003-05-13  Miguel Rodríguez Pérez  <migrax@terra.es>
 
+	* lib/gtk-text-buffer-extentions.c: Do not create and destroy the
+	emoticons everytime they are used, but keep them one for later
+	use.
+
+2003-05-13  Miguel Rodríguez Pérez  <migrax@terra.es>
+
 	* lib/gtk-text-buffer-extentions.c: New code for smiles
 	detection. (Thanks go to Stéphane for adapting it).
 
