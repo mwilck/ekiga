@@ -276,7 +276,7 @@ fi
 dnl ###########################################################################
 dnl LDAP Checks                                                                
 dnl ###########################################################################
-AC_ARG_WITH(openldap-includes, [  --with-openldap-includes=PFX   Location of OpenLDAP includes.], with_openldap_includes="$withval", with_openldap_includes="/usr/include")
+AC_ARG_WITH(openldap-includes, [  --with-openldap-includes=PFX   Location of OpenLDAP includes.], with_openldap_includes="$withval")
                                                                                
 have_openldap_includes="no"                                                    
                                                                                
@@ -285,7 +285,9 @@ if test "x${with_openldap_includes}" != "xno" ; then
         AC_MSG_CHECKING(for OpenLDAP includes)                                 
         AC_MSG_RESULT()                                                        
                                                                                
-        CPPFLAGS="$CPPFLAGS -I${with_openldap_includes}"                       
+	if test "x${with_openldap_includes}" != "x" ; then                           
+		CPPFLAGS="$CPPFLAGS -I${with_openldap_includes}"                       
+	fi
                                                                                
         AC_CHECK_HEADER(ldap.h, [ openldap_includes="yes" ])                   
                                                                                
@@ -293,7 +295,9 @@ if test "x${with_openldap_includes}" != "xno" ; then
 
         if test "x${openldap_includes}" != "xno" -a "x${openldap_includes}" != "x"; then
                 have_openldap_includes="yes"                                   
-                LDAP_INCLUDES="-I${with_openldap_includes}"                    
+		if test "x${with_openldap_includes}" != "x" ; then                           
+                	LDAP_INCLUDES="-I${with_openldap_includes}"                    
+		fi
         else                                                                   
                 AC_MSG_ERROR([You need OpenLDAP's header files to build GnomeMeeting])
         fi                                                                     
