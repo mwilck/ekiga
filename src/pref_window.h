@@ -63,6 +63,14 @@ gnomemeeting_pref_window_new (GmPrefWindow *);
 
 
 /* DESCRIPTION  :  / 
+ * BEHAVIOR     :  Add the sound events to the tree view. 
+ * PRE          :  /
+ */
+void
+gnomemeeting_prefs_window_sound_events_list_build (GtkTreeView *); 
+
+
+/* DESCRIPTION  :  / 
  * BEHAVIOR     :  Add the codecs to the codecs list. 
  * PRE          :  /
  */

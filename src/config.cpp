@@ -115,6 +115,12 @@ static void video_device_setting_changed_nt (GConfClient *,
 
 static void video_preview_changed_nt (GConfClient *, guint, GConfEntry *, 
 				      gpointer);
+
+static void sound_events_list_changed_nt (GConfClient *,
+					  guint,
+					  GConfEntry *, 
+					  gpointer);
+
 static void audio_codecs_list_changed_nt (GConfClient *, guint, GConfEntry *, 
 					  gpointer);
 static void contacts_sections_list_group_content_changed_nt (GConfClient *,
@@ -1072,6 +1078,31 @@ static void video_preview_changed_nt (GConfClient *client, guint cid,
 }
 
 
+/* DESCRIPTION  :  This callback is called when something changes in the sound
+ *                 events list.
+ * BEHAVIOR     :  It updates the events list widget.
+ * PRE          :  /
+ */
+static void
+sound_events_list_changed_nt (GConfClient *client,
+			      guint cid, 
+			      GConfEntry *entry,
+			      gpointer data)
+{ 
+  GmPrefWindow *pw = NULL;
+
+  pw = GnomeMeeting::Process ()->GetPrefWindow ();
+
+  if (entry->value->type == GCONF_VALUE_STRING
+      || entry->value->type == GCONF_VALUE_BOOL) {
+   
+    gdk_threads_enter ();
+    gnomemeeting_prefs_window_sound_events_list_build (GTK_TREE_VIEW (pw->sound_events_list));
+    gdk_threads_leave ();
+  }
+}
+
+
 /* DESCRIPTION  :  This callback is called when something changes in the audio
  *                 codecs clist.
  * BEHAVIOR     :  It updates the codecs list widget.
@@ -1668,7 +1699,36 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, AUDIO_DEVICES_KEY "lid_echo_cancellation_level", lid_aec_changed_nt, NULL, 0, 0);
 #endif
 
+  
+  /* gnomemeeting_pref_window_sound_events */
+  gconf_client_notify_add (client,
+			   SOUND_EVENTS_KEY "enable_incoming_call_sound",
+			   sound_events_list_changed_nt,
+			   NULL, NULL, NULL);
+  gconf_client_notify_add (client,
+			   SOUND_EVENTS_KEY "incoming_call_sound",
+			   sound_events_list_changed_nt,
+			   NULL, NULL, NULL);
 
+  gconf_client_notify_add (client,
+			   SOUND_EVENTS_KEY "enable_dial_tone_sound",
+			   sound_events_list_changed_nt,
+			   NULL, NULL, NULL);
+  gconf_client_notify_add (client,
+			   SOUND_EVENTS_KEY "dial_tone_sound",
+			   sound_events_list_changed_nt,
+			   NULL, NULL, NULL);
+  
+  gconf_client_notify_add (client,
+			   SOUND_EVENTS_KEY "enable_busy_tone_sound",
+			   sound_events_list_changed_nt,
+			   NULL, NULL, NULL);
+  gconf_client_notify_add (client,
+			   SOUND_EVENTS_KEY "busy_tone_sound",
+			   sound_events_list_changed_nt,
+			   NULL, NULL, NULL);
+
+ 
   /* gnomemeeting_pref_window_audio_codecs */
   gconf_client_notify_add (client, AUDIO_CODECS_KEY "codecs_list", audio_codecs_list_changed_nt, pw->codecs_list_store, 0, 0);	     
   gconf_client_notify_add (client, AUDIO_CODECS_KEY "codecs_list", 

@@ -84,6 +84,15 @@ static GtkWidget *gnomemeeting_pref_window_add_update_button (GtkWidget *,
 							      GtkSignalFunc,
 							      gchar *,
 							      gfloat);
+static void sound_event_changed_cb (GtkEntry *,
+				    gpointer);
+
+static void sound_event_clicked_cb (GtkTreeSelection *,
+				    gpointer);
+
+static void sound_event_toggled_cb (GtkCellRendererToggle *,
+				    gchar *, 
+				    gpointer);
 
 static void codecs_list_fixed_toggled (GtkCellRendererToggle *,
 				       gchar *, 
@@ -103,6 +112,9 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *,
 
 static void gnomemeeting_init_pref_window_directories (GtkWidget *,
 						       GtkWidget *);
+
+static void gnomemeeting_init_pref_window_sound_events (GtkWidget *,
+							GtkWidget *);
 
 static void gnomemeeting_init_pref_window_call_forwarding (GtkWidget *,
 							   GtkWidget *);
@@ -436,8 +448,138 @@ gnomemeeting_codecs_list_add (GtkTreeIter iter, GtkListStore *store,
 }
 
 
+/* DESCRIPTION  :  This callback is called when the user changes
+ *                 the sound file in the GtkEntry widget.
+ * BEHAVIOR     :  It udpates the GConf key corresponding the currently
+ *                 selected sound event and updates it to the new value
+ *                 if required.
+ * PRE          :  /
+ */
 static void
-codecs_list_fixed_toggled (GtkCellRendererToggle *cell, gchar *path_str, gpointer data)
+sound_event_changed_cb (GtkEntry *entry,
+			gpointer data)
+{
+  GtkTreeModel *model = NULL;
+  GtkTreeSelection *selection = NULL;
+  GtkTreeIter iter;
+
+  const char *entry_text = NULL;
+  gchar *gconf_key = NULL;
+  gchar *sound_event = NULL;
+  
+  GmPrefWindow *pw = NULL;
+
+  pw = GnomeMeeting::Process ()->GetPrefWindow ();
+
+  selection =
+    gtk_tree_view_get_selection (GTK_TREE_VIEW (pw->sound_events_list));
+  if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
+    
+    gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
+			2, &gconf_key, -1);
+    
+    if (gconf_key) { 
+
+      entry_text = gtk_entry_get_text (GTK_ENTRY (entry));
+      sound_event = gconf_get_string (gconf_key);
+      
+      if (!sound_event || strcmp (entry_text, sound_event))
+	gconf_set_string (gconf_key, (gchar *) entry_text);
+
+      g_free (gconf_key);
+      g_free (sound_event);
+    }
+  } 
+}
+
+
+/* DESCRIPTION  :  This callback is called when the user clicks
+ *                 on a sound event in the list.
+ * BEHAVIOR     :  It udpates the GtkEntry to the GConf value for the key
+ *                 corresponding to the currently selected sound event.
+ *                 The sound_event_changed_cb is blocked to prevent it to
+ *                 be triggered when the GtkEntry is udpated with the new
+ *                 value.
+ * PRE          :  /
+ */
+static void
+sound_event_clicked_cb (GtkTreeSelection *selection,
+			gpointer data)
+{
+  GtkTreeModel *model = NULL;
+  GtkTreeIter iter;
+
+  gchar *gconf_key = NULL;
+  gchar *sound_event = NULL;
+  
+  if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
+    
+    gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
+			2, &gconf_key, -1);
+    
+    if (gconf_key) { 
+
+      sound_event = gconf_get_string (gconf_key);
+      g_signal_handlers_block_matched (G_OBJECT (data),
+				       G_SIGNAL_MATCH_FUNC,
+				       0, 0, NULL,
+				       (gpointer) sound_event_changed_cb,
+				       NULL);
+      if (sound_event)
+	gtk_entry_set_text (GTK_ENTRY (data), sound_event);
+      g_signal_handlers_unblock_matched (G_OBJECT (data),
+					 G_SIGNAL_MATCH_FUNC,
+					 0, 0, NULL,
+					 (gpointer) sound_event_changed_cb,
+					 NULL);
+      
+      g_free (gconf_key);
+      g_free (sound_event);
+    }
+  }
+}
+
+
+/* DESCRIPTION  :  This callback is called when the user clicks
+ *                 on a sound event in the list and change the toggle.
+ * BEHAVIOR     :  It udpates the GConf key associated with the currently
+ *                 selected sound event so that it reflects the state of the
+ *                 sound event (enabled or disabled).
+ * PRE          :  /
+ */
+static void
+sound_event_toggled_cb (GtkCellRendererToggle *cell,
+			gchar *path_str,
+			gpointer data)
+{
+  GtkTreeModel *model = NULL;
+  GtkTreePath *path = NULL;
+  GtkTreeIter iter;
+
+  gchar *gconf_key = NULL;
+  
+  BOOL fixed = FALSE;
+
+  
+  model = (GtkTreeModel *) data;
+  path = gtk_tree_path_new_from_string (path_str);
+
+  gtk_tree_model_get_iter (model, &iter, path);
+  gtk_tree_model_get (model, &iter, 0, &fixed, 3, &gconf_key, -1);
+
+  fixed ^= 1;
+
+  gconf_set_bool (gconf_key, fixed);
+  
+  g_free (gconf_key);
+  gtk_tree_path_free (path);
+}
+
+
+static void
+codecs_list_fixed_toggled (GtkCellRendererToggle *cell,
+			   gchar *path_str,
+			   gpointer data)
 {
   GtkTreeModel *model = (GtkTreeModel *) data;
   GtkTreePath *path = gtk_tree_path_new_from_string (path_str);
@@ -519,7 +661,62 @@ codecs_list_fixed_toggled (GtkCellRendererToggle *cell, gchar *path_str, gpointe
 
 
 /* Misc functions */
-void gnomemeeting_codecs_list_build (GtkListStore *codecs_list_store) 
+void
+gnomemeeting_prefs_window_sound_events_list_build (GtkTreeView *tree_view)
+{
+  GtkTreeSelection *selection = NULL;
+  GtkTreePath *path = NULL;
+  GtkTreeModel *model = NULL;
+  GtkTreeIter iter, selected_iter;
+
+  BOOL enabled = FALSE;
+
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view));
+  
+  if (gtk_tree_selection_get_selected (selection, &model, &selected_iter))
+    path = gtk_tree_model_get_path (model, &selected_iter);
+
+  gtk_list_store_clear (GTK_LIST_STORE (model));
+  
+  /* Sound on incoming calls */
+  enabled = gconf_get_bool (SOUND_EVENTS_KEY "enable_incoming_call_sound");
+  gtk_list_store_append (GTK_LIST_STORE (model), &iter);
+  gtk_list_store_set (GTK_LIST_STORE (model), &iter,
+		      0, enabled,
+		      1, _("Play sound on incoming calls"),
+		      2, SOUND_EVENTS_KEY "incoming_call_sound",
+		      3, SOUND_EVENTS_KEY "enable_incoming_call_sound",
+		      -1);
+
+  enabled = gconf_get_bool (SOUND_EVENTS_KEY "enable_dial_tone_sound");
+  gtk_list_store_append (GTK_LIST_STORE (model), &iter);
+  gtk_list_store_set (GTK_LIST_STORE (model), &iter,
+		      0, enabled,
+		      1, _("Play dial tone"),
+		      2, SOUND_EVENTS_KEY "dial_tone_sound",
+		      3, SOUND_EVENTS_KEY "enable_dial_tone_sound",
+		      -1);
+
+  enabled = gconf_get_bool (SOUND_EVENTS_KEY "enable_busy_tone_sound");
+  gtk_list_store_append (GTK_LIST_STORE (model), &iter);
+  gtk_list_store_set (GTK_LIST_STORE (model), &iter,
+		      0, enabled,
+		      1, _("Play busy tone"),
+		      2, SOUND_EVENTS_KEY "busy_tone_sound",
+		      3, SOUND_EVENTS_KEY "enable_busy_tone_sound",
+		      -1);
+
+  if (!path)
+    path = gtk_tree_path_new_from_string ("0");
+
+  gtk_tree_view_set_cursor (GTK_TREE_VIEW (tree_view),
+			    path, NULL, false);
+  gtk_tree_path_free (path);
+}
+
+
+void
+gnomemeeting_codecs_list_build (GtkListStore *codecs_list_store) 
 {
   GtkTreeView *tree_view = NULL;
   GtkTreeSelection *selection = NULL;
@@ -802,6 +999,136 @@ gnomemeeting_init_pref_window_call_forwarding (GtkWidget *window,
 }
 
 
+/* BEHAVIOR     :  It builds the container for gnomemeeting sound events
+ *                 and returns it.
+ * PRE          :  /                                             
+ */                                                                            
+static void
+gnomemeeting_init_pref_window_sound_events (GtkWidget *window,
+					    GtkWidget *container)
+{
+  GtkWidget *label = NULL;
+  GtkWidget *entry = NULL;
+  GtkWidget *button = NULL;
+  GtkWidget *hbox = NULL;
+  GtkWidget *frame = NULL;
+  GtkWidget *vbox = NULL;
+  GtkWidget *subsection = NULL;
+
+  GtkListStore *list_store = NULL;
+  GtkTreeSelection *selection = NULL;
+  GtkTreeViewColumn *column = NULL;
+
+  GtkCellRenderer *renderer = NULL;
+
+  GmPrefWindow *pw = NULL;
+
+
+  pw = GnomeMeeting::Process ()->GetPrefWindow ();
+  
+  subsection = gnome_prefs_subsection_new (window, container,
+					   _("GnomeMeeting Sound Events"), 
+					   1, 1);
+  
+  vbox = gtk_vbox_new (FALSE, 0);
+  gtk_table_attach (GTK_TABLE (subsection), vbox, 0, 1, 0, 1,
+                    (GtkAttachOptions) (GTK_SHRINK), 
+		    (GtkAttachOptions) (GTK_SHRINK),
+                    0, 0);
+  
+  /* The 3rd column will be invisible and contain the GConf key containing
+     the file to play. The 4th one contains the key determining if the
+     sound event is enabled or not. */
+  list_store =
+    gtk_list_store_new (4,
+			G_TYPE_BOOLEAN,
+			G_TYPE_STRING,
+			G_TYPE_STRING,
+			G_TYPE_STRING);
+
+  pw->sound_events_list =
+    gtk_tree_view_new_with_model (GTK_TREE_MODEL (list_store));
+  gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (pw->sound_events_list), TRUE);
+
+  selection =
+    gtk_tree_view_get_selection (GTK_TREE_VIEW (pw->sound_events_list));
+
+  frame = gtk_frame_new (NULL);
+  gtk_container_set_border_width (GTK_CONTAINER (frame), 
+				  2 * GNOMEMEETING_PAD_SMALL);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
+  gtk_container_add (GTK_CONTAINER (frame), pw->sound_events_list);
+  gtk_container_set_border_width (GTK_CONTAINER (pw->sound_events_list), 0);
+  gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
+
+
+  /* Set all Colums */
+  renderer = gtk_cell_renderer_toggle_new ();
+  column = gtk_tree_view_column_new_with_attributes (_("A"),
+						     renderer,
+						     "active", 
+						     0,
+						     NULL);
+  gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 25);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (pw->sound_events_list), column);
+  g_signal_connect (G_OBJECT (renderer), "toggled",
+		    G_CALLBACK (sound_event_toggled_cb), 
+		    GTK_TREE_MODEL (list_store));
+  
+  renderer = gtk_cell_renderer_text_new ();
+  column = gtk_tree_view_column_new_with_attributes (_("Event"),
+						     renderer,
+						     "text", 
+						     1,
+						     NULL);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (pw->sound_events_list), column);
+  gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 325);
+
+  renderer = gtk_cell_renderer_text_new ();
+  column = gtk_tree_view_column_new_with_attributes (_("Event"),
+						     renderer,
+						     "text", 
+						     2,
+						     NULL);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (pw->sound_events_list), column);
+  gtk_tree_view_column_set_visible (GTK_TREE_VIEW_COLUMN (column), FALSE);
+
+  renderer = gtk_cell_renderer_text_new ();
+  column = gtk_tree_view_column_new_with_attributes (_("Event"),
+						     renderer,
+						     "text", 
+						     3,
+						     NULL);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (pw->sound_events_list), column);
+  gtk_tree_view_column_set_visible (GTK_TREE_VIEW_COLUMN (column), FALSE);
+
+  hbox = gtk_hbox_new (0, FALSE);
+  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 2);
+  
+  label = gtk_label_new (_("Sound to play:"));
+  gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 2);
+  
+  entry = gtk_entry_new ();
+  gtk_box_pack_start (GTK_BOX (hbox), entry, FALSE, FALSE, 2);
+  
+  button = gtk_button_new_with_label (_("Choose a file to play"));
+  gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 2);
+
+  g_signal_connect (G_OBJECT (selection), "changed",
+		    G_CALLBACK (sound_event_clicked_cb),
+		    (gpointer) entry);
+
+  g_signal_connect (G_OBJECT (entry), "changed",
+		    G_CALLBACK (sound_event_changed_cb),
+		    (gpointer) entry);
+
+  
+  /* Place it after the signals so that we can make sure they are run if
+     required */
+  gnomemeeting_prefs_window_sound_events_list_build (GTK_TREE_VIEW (pw->sound_events_list));
+}
+
+
 /* BEHAVIOR     :  It builds the container for the H.323 advanced settings
  *                 and returns it.
  * PRE          :  /
@@ -918,7 +1245,7 @@ gnomemeeting_init_pref_window_audio_devices (GtkWidget *window,
   GmWindow *gw = NULL;
   GmPrefWindow *pw = NULL;
   
-  GtkWidget *entry = NULL;
+  GtkWidget *entry = NULL;  
   GtkWidget *subsection = NULL;
 
   gchar **array = NULL;
@@ -1323,6 +1650,10 @@ gnomemeeting_pref_window_new (GmPrefWindow *pw)
   container = gnome_prefs_window_subsection_new (window,
 						 _("Directory Settings"));
   gnomemeeting_init_pref_window_directories (window, container);
+
+  container = gnome_prefs_window_subsection_new (window,
+						 _("Sound Events"));
+  gnomemeeting_init_pref_window_sound_events (window, container);
 
   container = gnome_prefs_window_subsection_new (window, _("Call Forwarding"));
   gnomemeeting_init_pref_window_call_forwarding (window, container);

@@ -67,6 +67,7 @@
 #include <ptclib/http.h>
 #include <ptclib/html.h>
 #include <ptclib/pwavfile.h>
+#include <ptclib/pstun.h>
 
 
 #define new PNEW
@@ -105,7 +106,6 @@ GMH323EndPoint::GMH323EndPoint ()
     PIPSocket::SetDefaultIpAddressFamilyV6();
 #endif
   
-
   received_video_device = NULL;
   transmitted_video_device = NULL;
   audio_tester = NULL;
@@ -844,7 +844,7 @@ GMH323EndPoint::OnConnectionForwarded (H323Connection &,
   PString call_token;
 
   call_token = GetCurrentCallToken ();
-
+  
   if (MakeCall (forward_party, call_token)) {
 
     gnomemeeting_threads_enter ();
@@ -2060,17 +2060,17 @@ void
 GMH323EndPoint::OnCallPending (PTimer &,
 			       INT) 
 {
-  /*
   GmWindow *gw = NULL;
   PSoundChannel *channel = NULL;
   
   BOOL is_ringing = FALSE;
 
+  gchar *sound_file = NULL;
   gchar *device = NULL;
   gchar *plugin = NULL;
 
   PSound sound;
-  PWAVFile wav ("/home/damien/gnomemeeting.wav");
+  PString psound_file;
   
   plugin = gconf_get_string (AUDIO_DEVICES_KEY "plugin");
   device = gconf_get_string (AUDIO_DEVICES_KEY "output_device");
@@ -2082,31 +2082,45 @@ GMH323EndPoint::OnCallPending (PTimer &,
   is_ringing = gnomemeeting_tray_is_ringing (gw->docklet);
   gdk_threads_leave ();
 
-  if (is_ringing && wav.IsValid ()) {
+  
+  if (gconf_get_bool (SOUND_EVENTS_KEY "enable_incoming_call_sound")) {
 
-    channel =
-      PSoundChannel::CreateOpenedChannel (plugin, device,
-					  PSoundChannel::Player, 
-					  wav.GetChannels (),
-					  wav.GetSampleRate (),
-					  wav.GetSampleSize ());
+    sound_file = gconf_get_string (SOUND_EVENTS_KEY "incoming_call_sound");
+    psound_file = PString (sound_file);
+
+    if (psound_file.Find ("/") == P_MAX_INDEX)
+      psound_file = "/usr/share/sounds/gnomemeeting/" + psound_file;
+
+    PWAVFile wav (psound_file);
+
+    if (is_ringing && wav.IsValid ()) {
+
+      channel =
+	PSoundChannel::CreateOpenedChannel (plugin, device,
+					    PSoundChannel::Player, 
+					    wav.GetChannels (),
+					    wav.GetSampleRate (),
+					    wav.GetSampleSize ());
     
 
-    if (channel) {
+      if (channel) {
 
-      PBYTEArray buffer;
-      buffer.SetSize (wav.GetDataLength ());
-      wav.Read (buffer.GetPointer (), wav.GetDataLength ());
+	PBYTEArray buffer;
+	buffer.SetSize (wav.GetDataLength ());
+	wav.Read (buffer.GetPointer (), wav.GetDataLength ());
       
-      sound = buffer;
-      channel->PlaySound (sound);
-      channel->Close ();
+	sound = buffer;
+	channel->PlaySound (sound);
+	channel->Close ();
     
-      delete (channel);
+	delete (channel);
+      }
     }
+
+    g_free (sound_file);
   }
+  
   g_free (device);
-  */
 }
 
 

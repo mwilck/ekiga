@@ -1,3 +1,26 @@
+2003-11-30 Damien Sandras  <dsandras@seconix.com>
+
+	* configure.in: Incremented SCHEMA_AGE.
+
+	* gnomemeeting.schemas.in.in: Added support to enable, disable
+	and change sounds associated to the dial tone, busy tone and incoming
+	call ring.
+	
+	* sounds/Makefile.am: Do not install anymore gnomemeeting.soundlist.
+
+	* sounds/gnomemeeting.wav: Updated file to more pleasant ring 
+	(following jonita).
+	
+	* src/common.h, src/config.cpp, src/endpoint.cpp, src/pref_window.cpp,
+	src/pref_window.h: Added support to enable, disable and change
+	dial tone, busy tone and incoming call ring.
+
+	* src/videograbber.cpp: No error when trying to open the device when
+	no device is found, use the Picture plugin instead.
+
+	* src/endpoint.cpp: Added preliminary support for the incoming call
+	sound.
+	
 2003-11-25 Damien Sandras  <dsandras@seconix.com>
 
 	* src/endpoint.cpp: Commented out what should never have been 

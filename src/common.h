@@ -74,6 +74,7 @@
 #define VIEW_KEY            "/apps/gnomemeeting/view/"
 #define VIDEO_DISPLAY_KEY   "/apps/gnomemeeting/video_display/"
 
+#define SOUND_EVENTS_KEY  "/apps/gnomemeeting/general/sound_events/"
 #define AUDIO_DEVICES_KEY "/apps/gnomemeeting/devices/audio/"
 #define VIDEO_DEVICES_KEY "/apps/gnomemeeting/devices/video/"
 
@@ -304,6 +305,7 @@ struct _GmCallsHistoryWindow
 struct _GmPrefWindow
 {
   GtkListStore *codecs_list_store;
+  GtkWidget *sound_events_list;
   GtkWidget *audio_player;
   GtkWidget *audio_recorder;
   GtkWidget *video_device;

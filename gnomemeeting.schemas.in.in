@@ -356,6 +356,83 @@
       </locale>
     </schema>
     <schema>
+      <key>/schemas/apps/gnomemeeting/general/sound_events/incoming_call_sound</key>
+      <applyto>/apps/gnomemeeting/general/sound_events/incoming_call_sound</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default>gnomemeeting.wav</default>
+      <locale name="C">
+	<short>The incoming call sound</short>
+	<long>The sound that will be played on incoming calls, if enabled.</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/general/sound_events/enable_incoming_call_sound</key>
+      <applyto>/apps/gnomemeeting/general/sound_events/enable_incoming_call_sound</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>bool</type>
+      <default>true</default>
+      <locale name="C">
+	<short>Play or not the incoming call sound</short>
+	<long>The chosen sound will be played on incoming calls, if enabled.</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/general/sound_events/incoming_call_sound</key>
+      <applyto>/apps/gnomemeeting/general/sound_events/incoming_call_sound</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default>gnomemeeting.wav</default>
+      <locale name="C">
+	<short>The incoming call sound</short>
+	<long>The sound that will be played on incoming calls, if enabled.</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/general/sound_events/enable_dial_tone_sound</key>
+      <applyto>/apps/gnomemeeting/general/sound_events/enable_dial_tone_sound</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>bool</type>
+      <default>true</default>
+      <locale name="C">
+	<short>Play or not the dial tone sound</short>
+	<long>The chosen sound will be played when calling somebody, if enabled.</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/general/sound_events/dial_tone_sound</key>
+      <applyto>/apps/gnomemeeting/general/sound_events/dial_tone_sound</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default>dialtone.wav</default>
+      <locale name="C">
+	<short>The dial tone sound</short>
+	<long>The sound that will be played when calling somebody, if enabled.</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/general/sound_events/enable_busy_tone_sound</key>
+      <applyto>/apps/gnomemeeting/general/sound_events/enable_busy_tone_sound</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>bool</type>
+      <default>true</default>
+      <locale name="C">
+	<short>Play or not the busy tone sound</short>
+	<long>The chosen sound will be played at the end of calls or calling somebody who is busy, if enabled.</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/general/sound_events/busy_tone_sound</key>
+      <applyto>/apps/gnomemeeting/general/sound_events/busy_tone_sound</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default>busytone.wav</default>
+      <locale name="C">
+	<short>The busy tone sound</short>
+	<long>The sound that will be played at the end of calls or when calling somebody who is busy, if enabled.</long>
+      </locale>
+    </schema>
+    <schema>
       <key>/schemas/apps/gnomemeeting/general/save_prefix</key>
       <applyto>/apps/gnomemeeting/general/save_prefix</applyto>
       <owner>GnomeMeeting</owner>
