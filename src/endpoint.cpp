@@ -502,7 +502,9 @@ GMH323EndPoint::AddAudioCapabilities ()
   H323_G726_Capability * g72616_capa = NULL; 
   H323_GSM0610Capability *gsm2_capa = NULL; 
 
-
+  PStringArray to_remove;
+  PStringArray to_reorder;
+  
   /* Read GConf settings */ 
   codecs_data = 
     gconf_client_get_list (client, AUDIO_CODECS_KEY "codecs_list", 
@@ -523,14 +525,12 @@ GMH323EndPoint::AddAudioCapabilities ()
 
     if (lid && lid->IsOpen ()) {
 
-      H323_LIDCapability::AddAllCapabilities (*lid, capabilities, 0, 0);
-
-      /* If the LID can do PCM16 we can use the software codecs like GSM too */
+      /* If the LID can do PCM16 we can use the software
+	 codecs like GSM too */
       use_pcm16_codecs = 
 	lid->GetMediaFormats ().GetValuesIndex (OpalMediaFormat(OPAL_PCM16)) 
-	!= P_MAX_INDEX;    
+	!= P_MAX_INDEX;
 
-      /* If the LID can do PCM16, we remove the G.711 hw codec for now */
       if (use_pcm16_codecs)
 	capabilities.Remove ("G.711");
     }
@@ -538,6 +538,48 @@ GMH323EndPoint::AddAudioCapabilities ()
 #endif
 
 
+  if (use_pcm16_codecs && codecs_data) {
+
+#ifdef SPEEX_CODEC
+    SetCapability (0, 0, new SpeexNarrow5AudioCapability ());
+    SetCapability (0, 0, new SpeexNarrow3AudioCapability ());
+#endif
+
+    SetCapability (0, 0, gsm_capa = new MicrosoftGSMAudioCapability);
+    gsm_capa->SetTxFramesInPacket (gsm_frames);
+
+    g711_capa = new H323_G711Capability (H323_G711Capability::muLaw);
+    SetCapability (0, 0, g711_capa);
+    g711_capa->SetTxFramesInPacket (g711_frames);
+
+    g711_capa = new H323_G711Capability (H323_G711Capability::ALaw);
+    SetCapability (0, 0, g711_capa);
+    g711_capa->SetTxFramesInPacket (g711_frames);
+
+    SetCapability (0, 0, gsm2_capa = new H323_GSM0610Capability);	
+    gsm2_capa->SetTxFramesInPacket (gsm_frames);
+
+    g72616_capa = 
+      new H323_G726_Capability (*this, H323_G726_Capability::e_32k);
+    SetCapability (0, 0, g72616_capa);
+
+    SetCapability(0, 0, new H323_LPC10Capability (*this));
+  }
+
+  
+#ifdef HAS_IXJ
+  if (GetLidThread ()) {
+
+    OpalLineInterfaceDevice *lid = NULL;
+
+    lid = lid_thread->GetLidDevice ();
+
+    if (lid && lid->IsOpen ())
+      H323_LIDCapability::AddAllCapabilities (*lid, capabilities, 0, 0);
+  }
+#endif
+  
+  
   /* Let's go */
   while (use_pcm16_codecs && codecs_data) {
     
@@ -545,53 +587,19 @@ GMH323EndPoint::AddAudioCapabilities ()
 
     if (couple [0] && couple [1] != NULL) {
 
-      if (!strcmp (couple [1], "1")) {
-
-#ifdef SPEEX_CODEC
-	if (!strcmp (couple [0], "Speex-15k")) 
-	    SetCapability (0, 0, new SpeexNarrow5AudioCapability ());
-	else if (!strcmp (couple [0], "Speex-8k")) 
-	  SetCapability (0, 0, new SpeexNarrow3AudioCapability ());
-	else	 
-#endif
-	if (!strcmp (couple [0], "MS-GSM")) {
-	  
-	  SetCapability (0, 0, gsm_capa = new MicrosoftGSMAudioCapability);
-	  gsm_capa->SetTxFramesInPacket (gsm_frames);
-	}
-	else if (!strcmp (couple [0], "G.711-uLaw-64k")) {
-
-	  g711_capa = new H323_G711Capability (H323_G711Capability::muLaw);
-	  SetCapability (0, 0, g711_capa);
-	  g711_capa->SetTxFramesInPacket (g711_frames);
-	}
-	else if (!strcmp (couple [0], "G.711-ALaw-64k")) {
-
-	  g711_capa = new H323_G711Capability (H323_G711Capability::ALaw);
-	  SetCapability (0, 0, g711_capa);
-	  g711_capa->SetTxFramesInPacket (g711_frames);
-	}
-	else if (!strcmp (couple [0], "GSM-06.10")) {
-      
-	  SetCapability (0, 0, gsm2_capa = new H323_GSM0610Capability);	
-	  gsm2_capa->SetTxFramesInPacket (gsm_frames);
-	}
-	else if (!strcmp (couple [0], "G.726-32k")) {
-
-	  g72616_capa = 
-	    new H323_G726_Capability (*this, H323_G726_Capability::e_32k);
-	  SetCapability (0, 0, g72616_capa);
-	}
-	else if (!strcmp (couple [0], "LPC10")) {
-
-	  SetCapability(0, 0, new H323_LPC10Capability (*this));
-	}
-      }	
+      if (!strcmp (couple [1], "0")) 
+	to_remove.AppendString (couple [0]);
+      else
+	to_reorder.AppendString (couple [0]);
     }
 
     g_strfreev (couple);
     codecs_data = codecs_data->next;
   }
+
+
+  capabilities.Remove (to_remove);
+  capabilities.Reorder (to_reorder);
 
   g_slist_free (codecs_data);
 }

@@ -90,7 +90,10 @@ void GMThreadsCleaner::Main ()
 			 H323Connection::EndedByLocalUser);
 
   gtk_widget_hide_all (gm);
-  gtk_widget_hide_all (gw->docklet);
+  gtk_widget_hide_all (gw->pref_window);
+  gtk_widget_hide_all (gw->ldap_window);
+  gtk_widget_hide_all (gw->calls_history_window);
+  gtk_widget_hide_all (gw->history_window);
   gnomemeeting_threads_leave ();
 
   while (endpoint->GetCallingState ())

@@ -1146,14 +1146,15 @@ gnomemeeting_init (GmWindow *gw,
 
     GSList *list = NULL;
 
-    list = g_slist_append (list, (void *) "Speex-8k=1");
+    list = g_slist_append (list, (void *) "SpeexNarrow-8k=1");
     list = g_slist_append (list, (void *) "MS-GSM=1");
-    list = g_slist_append (list, (void *) "Speex-15k=1");
+    list = g_slist_append (list, (void *) "SpeexNarrow-15k=1");
     list = g_slist_append (list, (void *) "GSM-06.10=1");
     list = g_slist_append (list, (void *) "G.726-32k=1");
     list = g_slist_append (list, (void *) "G.711-uLaw-64k=1");
     list = g_slist_append (list, (void *) "G.711-ALaw-64k=1");
-    list = g_slist_append (list, (void *) "LPC10=1");
+    list = g_slist_append (list, (void *) "LPC-10=1");
+    list = g_slist_append (list, (void *) "G.723.1=0");
     gconf_client_set_list (GCONF_CLIENT (client),
 			   "/apps/gnomemeeting/audio_codecs/codecs_list", 
 			   GCONF_VALUE_STRING, list, NULL);

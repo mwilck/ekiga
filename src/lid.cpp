@@ -140,9 +140,8 @@ void GMLid::Open ()
     }
     else {
       
-      gconf_client_set_bool (client, DEVICES_KEY "lid", 0, 0);
       gnomemeeting_threads_enter ();
-      gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (gm), gw->speaker_phone_button, _("Error while opening the Quicknet device. Disabling Quicknet device."));
+      gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (gm), gw->speaker_phone_button, _("Error while opening the Quicknet device."));
       gnomemeeting_threads_leave ();
     }
   }

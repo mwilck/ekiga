@@ -57,7 +57,8 @@ static void personal_data_update_button_clicked (GtkWidget *, gpointer);
 static void gatekeeper_update_button_clicked (GtkWidget *, gpointer);
 static void codecs_list_button_clicked_callback (GtkWidget *, gpointer);
 static void gnomemeeting_codecs_list_add (GtkTreeIter, GtkListStore *, 
-					  const gchar *, bool);
+					  const gchar *, bool, bool,
+					  gchar *);
 
 static void codecs_list_fixed_toggled (GtkCellRendererToggle *, gchar *, 
 				       gpointer);
@@ -80,6 +81,8 @@ enum {
   COLUMN_NAME,
   COLUMN_INFO,
   COLUMN_BANDWIDTH,
+  COLUMN_SELECTABLE,
+  COLUMN_COLOR,
   COLUMN_NUMBER
 };
 
@@ -450,7 +453,8 @@ notebook_toggle_changed (GtkCheckButton *but, gpointer data)
 
 static void 
 gnomemeeting_codecs_list_add (GtkTreeIter iter, GtkListStore *store, 
-			      const gchar *codec_name, bool enabled)
+			      const gchar *codec_name, bool enabled,
+			      bool possible, gchar *color)
 {
   gchar *data [3];
 
@@ -458,46 +462,51 @@ gnomemeeting_codecs_list_add (GtkTreeIter iter, GtkListStore *store,
   data [1] = NULL;
   data [2] = NULL;
 
-  if (!strcmp (codec_name, "LPC10")) {
+  if (!strcmp (codec_name, "LPC-10")) {
     data [1] = g_strdup (_("Okay"));
     data [2] = g_strdup ("3.46 kbits");
   }
 
 #ifdef SPEEX_CODEC
-  if (!strcmp (codec_name, "Speex-15k")) {
+  if (!strcmp (codec_name, "SpeexNarrow-15k")) {
     data [1] = g_strdup (_("Excellent"));
-    data [2] = g_strdup ("15 kbits");
+    data [2] = g_strdup ("15 Kbps");
   }
 
-  if (!strcmp (codec_name, "Speex-8k")) {
+  if (!strcmp (codec_name, "SpeexNarrow-8k")) {
     data [1] = g_strdup (_("Good Quality"));
-    data [2] = g_strdup ("8 kbits");
+    data [2] = g_strdup ("8 Kbps");
   }
 #endif
 
   if (!strcmp (codec_name, "MS-GSM")) {
     data [1] = g_strdup (_("Good Quality"));
-    data [2] = g_strdup ("13 kbits");
+    data [2] = g_strdup ("13 Kbps");
   }
 
   if (!strcmp (codec_name, "G.711-ALaw-64k")) {
     data [1] = g_strdup (_("Excellent"));
-    data [2] = g_strdup ("64 kbits");
+    data [2] = g_strdup ("64 Kbps");
   }
 
   if (!strcmp (codec_name, "G.711-uLaw-64k")) {
     data [1] = g_strdup (_("Excellent"));
-    data [2] = g_strdup ("64 kbits");
+    data [2] = g_strdup ("64 Kbps");
   }
 
   if (!strcmp (codec_name, "GSM-06.10")) {
     data [1] = g_strdup (_("Good Quality"));
-    data [2] = g_strdup ("16.5 kbits");
+    data [2] = g_strdup ("16.5 Kbps");
   }
 
   if (!strcmp (codec_name, "G.726-32k")) {
     data [1] = g_strdup (_("Good Quality"));
-    data [2] = g_strdup ("32 kbits");
+    data [2] = g_strdup ("32 Kbps");
+  }
+
+  if (!strcmp (codec_name, "G.723.1")) {
+    data [1] = g_strdup (_("Excellent Quality"));
+    data [2] = g_strdup ("6.3 Kbps");
   }
 
   if (data [1] && data [2]) {
@@ -508,6 +517,8 @@ gnomemeeting_codecs_list_add (GtkTreeIter iter, GtkListStore *store,
 			COLUMN_NAME, data [0],
 			COLUMN_INFO, data [1],
 			COLUMN_BANDWIDTH, data [2],
+			COLUMN_SELECTABLE, possible,
+			COLUMN_COLOR, color,
 			-1);
   }
 
@@ -608,9 +619,13 @@ void gnomemeeting_codecs_list_build (GtkListStore *codecs_list_store)
   GtkTreeIter list_iter;
   int selected_row = 0;
   int current_row = 0;
-  gchar *cselect_row;
+  gchar *cselect_row = NULL;
   gchar *selected_codec = NULL;
-
+  gchar *quicknet = NULL;
+    
+  PString dev;
+  PString codec;
+    
   GSList *codecs_data = NULL;
   GConfClient *client = gconf_client_get_default ();
 
@@ -619,8 +634,9 @@ void gnomemeeting_codecs_list_build (GtkListStore *codecs_list_store)
 			   "/apps/gnomemeeting/audio_codecs/codecs_list", 
 			   GCONF_VALUE_STRING, NULL);
 
-  selected_codec = (gchar *) g_object_get_data (G_OBJECT (codecs_list_store), 
-						"selected_codec");
+  selected_codec =
+    (gchar *) g_object_get_data (G_OBJECT (codecs_list_store), 
+				 "selected_codec");
 
   gtk_list_store_clear (GTK_LIST_STORE (codecs_list_store));
 
@@ -629,10 +645,33 @@ void gnomemeeting_codecs_list_build (GtkListStore *codecs_list_store)
 
     gchar **couple = g_strsplit ((gchar *) codecs_data->data, "=", 0);
 
-    if ((couple [0]) && (couple [1]))
-      gnomemeeting_codecs_list_add (list_iter, codecs_list_store, 
-				    couple [0], atoi (couple [1]));     
+    if ((couple [0]) && (couple [1])) {
 
+      quicknet =
+	gconf_client_get_string (client, DEVICES_KEY "audio_player", NULL);
+
+      codec = PString (couple [0]);
+      if (quicknet)
+	dev = PString (quicknet);
+      
+      if (codec.Find ("G.723.1") != P_MAX_INDEX &&
+	  dev.Find ("phone") == P_MAX_INDEX) {
+	
+	gnomemeeting_codecs_list_add (list_iter, codecs_list_store, 
+				      couple [0], 0, false, "darkgray");
+
+      }
+      else {
+
+	gnomemeeting_codecs_list_add (list_iter, codecs_list_store, 
+				      couple [0], atoi (couple [1]),
+				      true, "black");
+      }
+      
+      g_free (quicknet);
+    }
+
+    
     if ((selected_codec) && (!strcmp (selected_codec, couple [0]))) 
       selected_row = current_row;
 
@@ -644,11 +683,13 @@ void gnomemeeting_codecs_list_build (GtkListStore *codecs_list_store)
       
   cselect_row = g_strdup_printf("%d", selected_row);
   tree_path = gtk_tree_path_new_from_string (cselect_row);
-  tree_view = GTK_TREE_VIEW (g_object_get_data (G_OBJECT (codecs_list_store), 
-						"tree_view"));
+  tree_view =
+    GTK_TREE_VIEW (g_object_get_data (G_OBJECT (codecs_list_store), 
+				      "tree_view"));
   selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view));
   
-  gtk_tree_selection_select_path (GTK_TREE_SELECTION (selection), tree_path);
+  gtk_tree_selection_select_path (GTK_TREE_SELECTION (selection),
+				  tree_path);
   
   g_free (cselect_row);
   g_slist_free (codecs_data);
@@ -1092,14 +1133,15 @@ static void gnomemeeting_init_pref_window_video_devices (GtkWidget *notebook)
 }
 
 
-/* BEHAVIOR     :  It builds the notebook page for audio codecs settings and  
- *                 add it to the notebook.                                     
- * PRE          :  The notebook.                                               
- */                                                                            
-void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)         
-{                                                                              
-  GtkWidget *vbox = NULL;                                                      
-  GtkWidget *table = NULL;                                                     
+/* BEHAVIOR     :  It builds the notebook page for audio codecs settings and
+ *                 add it to the notebook.
+ * PRE          :  The notebook.   
+ */
+void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
+{
+  GtkWidget *vbox = NULL;
+  GtkWidget *table = NULL;
+  
   GtkWidget *button1 = NULL;
   GtkWidget *button2 = NULL;
   GtkWidget *frame = NULL;
@@ -1113,11 +1155,11 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
   GtkCellRenderer *renderer;                        
                                                        
 
-  /* Get the data */                                                           
+  /* Get the data */
   GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);
 
 
-  /* Packing widgets */                                                        
+  /* Packing widgets */
   vbox =  gtk_vbox_new (FALSE, 4);
   gtk_notebook_append_page (GTK_NOTEBOOK(notebook), vbox, NULL);  
   table = gnomemeeting_vbox_add_table (vbox, 
@@ -1128,6 +1170,8 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
 					      G_TYPE_BOOLEAN,
 					      G_TYPE_STRING,
 					      G_TYPE_STRING,
+					      G_TYPE_STRING,
+					      G_TYPE_BOOLEAN,
 					      G_TYPE_STRING);
 
   tree_view = 
@@ -1150,6 +1194,8 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
 						     "active", 
 						     COLUMN_ACTIVE,
 						     NULL);
+  gtk_tree_view_column_add_attribute (column, renderer, "activatable", 
+				      COLUMN_SELECTABLE);
   gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 25);
   gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
   g_signal_connect (G_OBJECT (renderer), "toggled",
@@ -1163,6 +1209,9 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
 						     COLUMN_NAME,
 						     NULL);
   gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+  gtk_tree_view_column_add_attribute (column, renderer, "foreground", 
+				      COLUMN_COLOR);
+  g_object_set (G_OBJECT (renderer), "weight", "bold", NULL);
 
   renderer = gtk_cell_renderer_text_new ();
   column = gtk_tree_view_column_new_with_attributes (_("Info"),
@@ -1171,6 +1220,10 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
 						     COLUMN_INFO,
 						     NULL);
   gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+  gtk_tree_view_column_add_attribute (column, renderer, "foreground", 
+				      COLUMN_COLOR);
+  g_object_set (G_OBJECT (renderer), "style", PANGO_STYLE_ITALIC, NULL);
+
 
   renderer = gtk_cell_renderer_text_new ();
   column = gtk_tree_view_column_new_with_attributes (_("Bandwidth"),
@@ -1179,15 +1232,18 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
 						     COLUMN_BANDWIDTH,
 						     NULL);
   gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+  gtk_tree_view_column_add_attribute (column, renderer, "foreground", 
+				      COLUMN_COLOR);
 
-  g_object_set_data (G_OBJECT (pw->codecs_list_store), "tree_view", (gpointer) tree_view);
+  g_object_set_data (G_OBJECT (pw->codecs_list_store), "tree_view",
+		     (gpointer) tree_view);
 
 
   /* Here we add the codec buts in the order they are in the config file */
   gtk_table_attach (GTK_TABLE (table),  frame, 0, 1, 0, 8,        
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
-                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);           
+                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
 
   gnomemeeting_codecs_list_build (pw->codecs_list_store);
 
@@ -1195,7 +1251,7 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
   gtk_table_attach (GTK_TABLE (table),  button1, 1, 2, 3, 4,        
                     (GtkAttachOptions) NULL,                           
                     (GtkAttachOptions) NULL,        
-                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);           
+                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
   g_object_set_data (G_OBJECT (button1), "operation", (gpointer) "up");
   gtk_widget_size_request (GTK_WIDGET (button1), &size_request1);
   gtk_container_set_border_width (GTK_CONTAINER (button1), 

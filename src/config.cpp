@@ -841,6 +841,7 @@ static void audio_device_changed_nt (GConfClient *client, guint cid,
 				     GConfEntry *entry, gpointer data)
 {
   GmDruidWindow *dw = NULL;
+  GmPrefWindow *pw = NULL;
   
   PString dev, dev1, dev2;
   gchar *player = NULL;
@@ -850,6 +851,7 @@ static void audio_device_changed_nt (GConfClient *client, guint cid,
 
     gdk_threads_enter ();
     dw = gnomemeeting_get_druid_window (gm);
+    pw = gnomemeeting_get_pref_window (gm);
     
     dev = PString (gconf_value_get_string (entry->value));
 
@@ -862,6 +864,8 @@ static void audio_device_changed_nt (GConfClient *client, guint cid,
       gconf_client_set_string (client, DEVICES_KEY "audio_player",
 			       (const char *) dev, NULL);
 
+      gnomemeeting_codecs_list_build (pw->codecs_list_store);
+      
       gtk_widget_set_sensitive (GTK_WIDGET (dw->audio_test_button), false);
     }
     else {
@@ -870,10 +874,11 @@ static void audio_device_changed_nt (GConfClient *client, guint cid,
 	 and that the other device value is a quicknet device, we change
 	 it, because Quicknet can't be used for one device and not for
 	 the other */
-      player = gconf_client_get_string (client, DEVICES_KEY "audio_player",
-					NULL);
-      recorder = gconf_client_get_string (client, DEVICES_KEY "audio_recorder",
-					  NULL);
+      player =
+	gconf_client_get_string (client, DEVICES_KEY "audio_player", NULL);
+      recorder =
+	gconf_client_get_string (client, DEVICES_KEY "audio_recorder",
+				 NULL);
       dev1 = PString (player);
       dev2 = PString (recorder);
       
@@ -884,13 +889,16 @@ static void audio_device_changed_nt (GConfClient *client, guint cid,
 			       (const char *) dev, NULL);
 	gconf_client_set_string (client, DEVICES_KEY "audio_player",
 				 (const char *) dev, NULL);
+
+	gnomemeeting_codecs_list_build (pw->codecs_list_store);
+	
 	gtk_widget_set_sensitive (GTK_WIDGET (dw->audio_test_button), true);
       }
     }
     
     if (MyApp->Endpoint ()->GetCallingState () == 0)
       /* Update the configuration in order to update 
-	 the local user name for calls */
+	 the capabilities for calls */
       MyApp->Endpoint ()->UpdateConfig ();
 
     gdk_threads_leave ();

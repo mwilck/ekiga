@@ -1,5 +1,30 @@
 2003-01-07 Damien Sandras  <dsandras@seconix.com>
 
+	* configure.in: Incremented SCHEMA_AGE.
+
+	* gnomemeeting.schemas.in.in: Added G.723.1 to the list.
+	
+	* src/cleaner.cpp: Hide all windows before exiting.
+
+	* src/common.h: Incremented the number of codecs (G.723.1 added
+	in the list for Quicknet owners).
+
+	* src/config.cpp: Make sure the codecs list is rebuilt when the
+	device changes from Quicknet to soundcard or from soundcard to
+	Quicknet to disable G.723.1 if needed.
+
+	* src/endpoint.cpp: Change the AddAudioCapabilities method so that
+	it is able to reorder codecs.
+
+	* src/lid.cpp: Changed message when fails to open the device.
+
+	* src/main_window.cpp: Added G.723 to the list.
+
+	* src/pref_window.cpp: Make G.723 selectable only when quicknet is
+	activated.
+	
+2003-01-07 Damien Sandras  <dsandras@seconix.com>
+
 	* src/menu.h: Added #define for important menu items that can be
 	unsensitivised.
 	

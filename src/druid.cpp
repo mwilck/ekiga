@@ -387,12 +387,12 @@ gnomemeeting_druid_radio_changed (GtkToggleButton *b, gpointer data)
   /* DSL / CABLE */
   if (selection == 3) {
     
-    gconf_client_set_int (client, VIDEO_SETTINGS_KEY "tr_fps", 9, NULL);
-    gconf_client_set_int (client, VIDEO_SETTINGS_KEY "tr_vq", 25, NULL);
+    gconf_client_set_int (client, VIDEO_SETTINGS_KEY "tr_fps", 6, NULL);
+    gconf_client_set_int (client, VIDEO_SETTINGS_KEY "tr_vq", 40, NULL);
     gconf_client_set_int (client, VIDEO_SETTINGS_KEY "re_vq", 70, NULL);
     gconf_client_set_int (client, 
 			  VIDEO_SETTINGS_KEY "maximum_video_bandwidth", 
-			  4, NULL);
+			  6, NULL);
     gconf_client_set_bool (client, 
 			   VIDEO_SETTINGS_KEY "enable_video_transmission", 
 			   1, NULL);
