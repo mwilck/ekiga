@@ -349,8 +349,8 @@ void GMH323EndPoint::UpdateConfig ()
       gnomemeeting_threads_enter ();
       gnomemeeting_log_insert (gw->history_text_view, 
 			       h245_tunneling?
-			       _("Enabling H.245 Tunnelling"):
-			       _("Disabling H.245 Tunnelling"));
+			       (gchar *)_("Enabling H.245 Tunnelling"):
+			       (gchar *)_("Disabling H.245 Tunnelling"));
       gnomemeeting_threads_leave ();
       disableH245Tunneling = !h245_tunneling;
     }
@@ -360,8 +360,8 @@ void GMH323EndPoint::UpdateConfig ()
       gnomemeeting_threads_enter ();
       gnomemeeting_log_insert (gw->history_text_view, 
 			       fast_start?
-			       _("Enabling Fast Start"):
-			       _("Disabling Fast Start"));
+			       (gchar *)_("Enabling Fast Start"):
+			       (gchar *)_("Disabling Fast Start"));
       disableFastStart = !fast_start;
       gnomemeeting_threads_leave ();
     }
@@ -1227,12 +1227,12 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   gnomemeeting_statusbar_push (gw->statusbar, _("Connected"));
   gnomemeeting_log_insert (gw->history_text_view, 
 			   disableFastStart ?
-			   _("Fast start disabled") :
-			   _("Fast start enabled"));
+			   (gchar *)_("Fast start disabled"):
+			   (gchar *)_("Fast start enabled"));
   gnomemeeting_log_insert (gw->history_text_view,
 			   disableH245Tunneling ?
-			   _("H.245 Tunnelling disabled") :
-			   _("H.245 Tunnelling enabled"));
+			   (gchar *)_("H.245 Tunnelling disabled"):
+			   (gchar *)_("H.245 Tunnelling enabled"));
   gnomemeeting_log_insert (gw->history_text_view, msg);
   gnomemeeting_log_insert (gw->calls_history_text_view, msg);
 
