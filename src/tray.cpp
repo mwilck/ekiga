@@ -97,7 +97,7 @@ void tray_popup_menu_show_callback (GtkWidget *menu_item, gpointer)
     gtk_widget_show (gm);
   }
 
-  GTK_CHECK_MENU_ITEM (menu_item)->active = visible;
+  GTK_CHECK_MENU_ITEM (menu_item)->active = !visible;
   gtk_widget_queue_draw (GTK_WIDGET (menu_item));
 }
 
@@ -180,7 +180,7 @@ void gnomemeeting_init_tray_popup_menu (GtkWidget *widget)
       GNOMEUIINFO_SEPARATOR,
       {
 	GNOME_APP_UI_TOGGLEITEM,
-	N_("Do not Disturb"), N_("Do Not Accept Calls"),
+	N_("Do Not Disturb"), N_("Do Not Accept Calls"),
 	(void *)tray_popup_menu_dnd_callback,
 	NULL, NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
@@ -222,7 +222,7 @@ void gnomemeeting_init_tray_popup_menu (GtkWidget *widget)
 			   "/apps/gnomemeeting/general/auto_answer", 0);
   GTK_CHECK_MENU_ITEM (popup_menu[6].widget)->active =
     !gconf_client_get_bool (client,
-			   "/apps/gnomemeeting/view/start_docked", 0);
+			    "/apps/gnomemeeting/view/start_docked", 0);
 
   gtk_widget_queue_draw (GTK_WIDGET (popup_menu[3].widget));
   gtk_widget_queue_draw (GTK_WIDGET (popup_menu[4].widget));
