@@ -28,11 +28,12 @@
  *
  */
 
-// #define G_DISABLE_DEPRECATED					
-// #define GDK_DISABLE_DEPRECATED
-// #define GTK_DISABLE_DEPRECATED
-// #define GDK_PIXBUF_DISABLE_DEPRECATED
-// #define GNOME_DISABLE_DEPRECATED	
+#undef GTK_ENABLE_BROKEN
+#define G_DISABLE_DEPRECATED					
+#define GDK_DISABLE_DEPRECATED
+#define GTK_DISABLE_DEPRECATED
+#define GDK_PIXBUF_DISABLE_DEPRECATED
+#define GNOME_DISABLE_DEPRECATED	
 
 #include "../config.h"
 
@@ -65,6 +66,7 @@ extern GtkWidget *gm;
 #define	g_signal_handlers_unblock_by_func(instance, func, data) \
     g_signal_handlers_unblock_matched ((instance), (GSignalMatchType) (G_SIGNAL_MATCH_FUNC | G_SIGNAL_MATCH_DATA), \
 				       0, 0, NULL, (func), (data))
+
 
 
 /* Static functions */
@@ -128,7 +130,7 @@ void connect_button_update_pixmap (GtkToggleButton *w, int pressed)
       gtk_image_set_from_pixbuf (GTK_IMAGE (image), GDK_PIXBUF (pixbuf));
       gtk_widget_queue_draw (GTK_WIDGET (image));
 
-      gdk_pixbuf_unref (pixbuf);
+      g_object_unref (pixbuf);
     }
     else {
 
@@ -202,6 +204,12 @@ void gnomemeeting_init_toolbar ()
     };
 
 
+  /* Both toolbars */
+
+  /* The main horizontal toolbar */
+  GtkWidget *toolbar = gtk_toolbar_new ();
+
+
   /* Combo */
   gw->combo = gnomemeeting_history_combo_box_new("/apps/gnomemeeting/"
  						 "history/called_hosts");
@@ -213,27 +221,21 @@ void gnomemeeting_init_toolbar ()
   		    G_CALLBACK (connect_cb), NULL);
 
 
-  /* Both toolbars */
-  GtkWidget *toolbar = gtk_toolbar_new ();
-
   hbox = gtk_hbox_new (FALSE, 2);
 
   gtk_box_pack_start (GTK_BOX (hbox), gw->combo, TRUE, TRUE, 1);
   gtk_box_pack_start (GTK_BOX (hbox), toolbar, FALSE, FALSE, 1);
-
-  gnome_app_add_docked (GNOME_APP (gm), hbox, "main_toolbar",
-  			BONOBO_DOCK_ITEM_BEH_EXCLUSIVE,
-  			BONOBO_DOCK_TOP, 1, 0, 0);
-
+ 
   gtk_container_set_border_width (GTK_CONTAINER (toolbar), 2);
 
+  /* The connect button */
   gw->connect_button = gtk_toggle_button_new ();
   
   pixbuf = 
     gdk_pixbuf_new_from_xpm_data ((const char **) disconnect_xpm);
   image = gtk_image_new_from_pixbuf (pixbuf);
   gtk_container_add (GTK_CONTAINER (gw->connect_button), GTK_WIDGET (image));
-  gdk_pixbuf_unref (pixbuf);
+  g_object_unref (pixbuf);
   g_object_set_data (G_OBJECT (gw->connect_button), "image", image);
 
   gtk_widget_set_size_request (GTK_WIDGET (gw->connect_button), 28, 28);
@@ -245,6 +247,12 @@ void gnomemeeting_init_toolbar ()
                     G_CALLBACK (connect_button_clicked), 
 		    gw->connect_button);
 
+  gnome_app_add_docked (GNOME_APP (gm), hbox, "main_toolbar",
+  			BONOBO_DOCK_ITEM_BEH_EXCLUSIVE,
+  			BONOBO_DOCK_TOP, 1, 0, 0);
+
+
+  /* The vertical toolbar on the left */
   GtkWidget *toolbar2 = gtk_toolbar_new ();
 
   gnome_app_fill_toolbar(GTK_TOOLBAR (toolbar2), left_toolbar, NULL);
@@ -260,7 +268,7 @@ void gnomemeeting_init_toolbar ()
     gdk_pixbuf_new_from_xpm_data ((const char **) eye_xpm);
   image = gtk_image_new_from_pixbuf (pixbuf);
   gtk_container_add (GTK_CONTAINER (gw->preview_button), GTK_WIDGET (image));
-  gdk_pixbuf_unref (pixbuf);
+  g_object_unref (pixbuf);
 
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->preview_button), gconf_client_get_bool (client, "/apps/gnomemeeting/devices/video_preview", NULL));
 
@@ -284,7 +292,7 @@ void gnomemeeting_init_toolbar ()
   image = gtk_image_new_from_pixbuf (pixbuf);
   gtk_container_add (GTK_CONTAINER (gw->audio_chan_button), 
 		     GTK_WIDGET (image));
-  gdk_pixbuf_unref (pixbuf);
+  g_object_unref (pixbuf);
 
   gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_chan_button), FALSE);
 
@@ -307,7 +315,7 @@ void gnomemeeting_init_toolbar ()
   image = gtk_image_new_from_pixbuf (pixbuf);
   gtk_container_add (GTK_CONTAINER (gw->video_chan_button), 
 		     GTK_WIDGET (image));
-  gdk_pixbuf_unref (pixbuf);
+  g_object_unref (pixbuf);
 
   gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button), FALSE);
 

@@ -29,6 +29,13 @@
  *
  */
 
+#undef GTK_ENABLE_BROKEN
+#define G_DISABLE_DEPRECATED					
+#define GDK_DISABLE_DEPRECATED
+#define GTK_DISABLE_DEPRECATED
+#define GDK_PIXBUF_DISABLE_DEPRECATED
+#define GNOME_DISABLE_DEPRECATED	
+
 #include "../config.h"
 
 #include "ldap_window.h"
@@ -77,7 +84,7 @@ void ldap_window_clicked (GtkDialog *widget, int button, gpointer data)
 /* DESCRIPTION  :  This callback is called when the user has modified
  *                 the search entry field.
  * BEHAVIOR     :  Select the first entry of the XDAP users list.
- * PRE          :  gpointer is a valid pointer to a GM_ldap_window_widgets.
+ * PRE          :  /
  */
 void search_entry_modified (GtkWidget *widget, gpointer data)
 {
@@ -174,9 +181,9 @@ void refresh_button_clicked (GtkButton *button, gpointer data)
 
     if (!found) {
 
-      cout << "1" << endl << flush;
+
       gnomemeeting_init_ldap_window_notebook (page_num, ldap_server);
-            cout << "1" << endl << flush;
+
       /* if it was the first "No directory" page, destroy it */
       if ((page_num == 1)&&(!strcasecmp (_("No directory"), text_label))) 
 	gtk_notebook_remove_page (GTK_NOTEBOOK (lw->notebook), 0);
@@ -200,7 +207,8 @@ void refresh_button_clicked (GtkButton *button, gpointer data)
 
 /* DESCRIPTION  :  This callback is called when the user types enter in the 
  *                 search entry.
- * BEHAVIOR     :  make an incremental search on the entry content.
+ * BEHAVIOR     :  make an incremental search on the entry content, 
+ *                 if it is not empty.
  * PRE          :  gpointer is a valid pointer to a GM_ldap_window_widgets.
  */
 void search_entry_activated (GtkEntry *e, gpointer data)
@@ -215,11 +223,20 @@ void search_entry_activated (GtkEntry *e, gpointer data)
   GtkTreeSelection *selection = NULL;
   GtkTreeView *tree_view = NULL;
   GtkTreeIter tree_iter;
+  GtkTreeIter t; /* Just to test */
   GtkTreePath *path = NULL;
 
   int current_page;
   int col = 0;
   bool not_last = 1;
+
+
+  /* What to search for */
+  entry = (gchar *) gtk_entry_get_text (GTK_ENTRY (lw->search_entry));
+  
+  if ((entry == NULL) || (!strcmp (entry, "")))
+    return;
+
 
   /* Determine the column to search */
   active_item = gtk_menu_get_active (GTK_MENU (GTK_OPTION_MENU 
@@ -242,31 +259,28 @@ void search_entry_activated (GtkEntry *e, gpointer data)
   tree_view =
     GTK_TREE_VIEW (g_object_get_data (G_OBJECT (page), "tree_view"));
 
+  /* The XDAP users list is empty */
+  if (!gtk_tree_model_get_iter_first (GTK_TREE_MODEL (xdap_users_list), &t))
+    return;
+
   selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view));
 
 
   /* Sets the iter to the selected row, if any */
-  gtk_tree_selection_get_selected (GTK_TREE_SELECTION (selection), NULL,
-				   &tree_iter);
-  
-  /* If nothing was selected by the user, the iter will not be set,
-     select the first one */
-  if (!gtk_tree_selection_iter_is_selected (GTK_TREE_SELECTION (selection),
-					    &tree_iter)) {
+  if (gtk_tree_selection_get_selected (GTK_TREE_SELECTION (selection), 0, 0))
 
-    GtkTreePath *root;
-
-    root = gtk_tree_path_new_root ();
-    gtk_tree_selection_select_path (GTK_TREE_SELECTION (selection), 
-				    root); 
     gtk_tree_selection_get_selected (GTK_TREE_SELECTION (selection), NULL,
 				     &tree_iter);
-    gtk_tree_path_free (root);
+  else {
+
+    /* If nothing was selected by the user, the iter will not be set,
+       select the first one */
+    not_last = gtk_tree_model_get_iter_first (GTK_TREE_MODEL (xdap_users_list),
+					      &tree_iter);
+    gtk_tree_selection_select_iter (GTK_TREE_SELECTION (selection), 
+				    &tree_iter); 
   }
 
- 
-  /* What to search for */
-  entry = (gchar *) gtk_entry_get_text (GTK_ENTRY (lw->search_entry));
 
   while ((not_last) && (entry != NULL)) {
 
@@ -315,12 +329,11 @@ static void ldap_page_close_button_clicked (GtkWidget *button, gpointer data)
 
 void gnomemeeting_init_ldap_window ()
 {
-  GtkWidget *table, *entry_table;
+  GtkWidget *button, *image;
   GtkWidget *vbox;
   GtkWidget *frame;
-  GdkPixbuf *refresh_pixbuf;
   GdkPixbuf *xdap_pixbuf;
-  GtkWidget *who_pixmap;
+  GtkWidget *refresh_image;
   GtkWidget *menu;
   GtkWidget *menu_item;
 
@@ -331,13 +344,11 @@ void gnomemeeting_init_ldap_window ()
   lw->thread_count = 0;
   lw->gw = gw;
 
-  refresh_pixbuf = 
-    gdk_pixbuf_new_from_xpm_data ((const gchar **) ldap_refresh_xpm); 
   xdap_pixbuf = 
     gdk_pixbuf_new_from_xpm_data ((const gchar **) xdap_directory_xpm); 
 
-  who_pixmap =  gtk_image_new_from_pixbuf (refresh_pixbuf);
-  gdk_pixbuf_unref (refresh_pixbuf);
+  refresh_image =  gtk_image_new_from_stock (GTK_STOCK_REFRESH, 
+					  GTK_ICON_SIZE_SMALL_TOOLBAR);
 
   lw->gw->ldap_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_title (GTK_WINDOW (lw->gw->ldap_window), 
@@ -346,47 +357,51 @@ void gnomemeeting_init_ldap_window ()
   gtk_window_set_position (GTK_WINDOW (lw->gw->ldap_window), 
 			   GTK_WIN_POS_CENTER);
   gtk_window_set_default_size (GTK_WINDOW (lw->gw->ldap_window), 650, 350);
-  gdk_pixbuf_unref (xdap_pixbuf);
+  g_object_unref (G_OBJECT (xdap_pixbuf));
 
-  /* a vbox to put the frames and the user list */
+  /* a vbox to put the frames, the toolbar and the user list */
   vbox = gtk_vbox_new (FALSE, GNOME_PAD_SMALL);
   gtk_container_add (GTK_CONTAINER (lw->gw->ldap_window), vbox);
 
+  /* The toolbar */
+  GtkWidget *handle = gtk_handle_box_new ();
+  GtkWidget *toolbar = gtk_toolbar_new ();
+  gtk_toolbar_set_style (GTK_TOOLBAR (toolbar), GTK_TOOLBAR_BOTH_HORIZ);
+  gtk_box_pack_start (GTK_BOX (vbox), handle, FALSE, FALSE, 0);  
+  gtk_container_add (GTK_CONTAINER (handle), toolbar);
+  gtk_container_set_border_width (GTK_CONTAINER (handle), 0);
+  gtk_container_set_border_width (GTK_CONTAINER (toolbar), 0);
+
   /* ILS directories combo box */
-  frame = gtk_frame_new (_("ILS directories to browse"));
-  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
-
-  /* Put a table in that first frame */
-  table = gtk_table_new (1, 3, FALSE);
-  gtk_container_add (GTK_CONTAINER (frame), table);
-  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
-
-  GtkWidget *label = gtk_label_new (_("ILS directory:"));
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1,
-		    (GtkAttachOptions) (GTK_FILL),
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
-
   lw->ils_server_combo = gtk_combo_new ();
   lw->ils_server_combo = gnomemeeting_history_combo_box_new ("/apps/gnomemeeting/"
 							     "history/ldap_servers");
   gtk_combo_disable_activate (GTK_COMBO(lw->ils_server_combo));
-  gtk_table_attach (GTK_TABLE (table), lw->ils_server_combo, 1, 2, 0, 1,
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
 
-  lw->refresh_button = gnomemeeting_button (_("Refresh"), who_pixmap);
+  gtk_toolbar_append_widget (GTK_TOOLBAR (toolbar), 
+			     GTK_WIDGET (lw->ils_server_combo),
+			     NULL, NULL);
 
-  gtk_table_attach (GTK_TABLE (table), lw->refresh_button, 2, 3, 0, 1,
-		    (GtkAttachOptions) NULL, 
-		    (GtkAttachOptions) NULL,
-		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
+  image = gtk_image_new_from_stock (GTK_STOCK_REFRESH, 
+				    GTK_ICON_SIZE_SMALL_TOOLBAR);
+				    
+  lw->refresh_button = gnomemeeting_button (_("Refresh"), image);
+  gtk_button_set_relief (GTK_BUTTON (lw->refresh_button), GTK_RELIEF_NONE);
+  gtk_toolbar_append_widget (GTK_TOOLBAR (toolbar), 
+			     GTK_WIDGET (lw->refresh_button),
+			     NULL, NULL);
 
-  gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
+  gtk_toolbar_append_space (GTK_TOOLBAR (toolbar));
 
-  /* Search filter entry */
-  entry_table = gtk_table_new (2, 10, FALSE);
+  image = gtk_image_new_from_stock (GTK_STOCK_FIND, 
+				    GTK_ICON_SIZE_SMALL_TOOLBAR);
+				    
+  button = gnomemeeting_button (_("Find"), image);
+  gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
+  gtk_toolbar_append_widget (GTK_TOOLBAR (toolbar), 
+			     GTK_WIDGET (button),
+			     NULL, NULL);
+
 
   /* option menu */
   menu = gtk_menu_new ();
@@ -408,18 +423,19 @@ void gnomemeeting_init_ldap_window ()
   gtk_option_menu_set_history (GTK_OPTION_MENU (lw->option_menu),
 			       1);
 
-  gtk_table_attach (GTK_TABLE (entry_table), lw->option_menu, 1, 4, 0, 2,
-		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
-		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
-		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
+  gtk_toolbar_append_widget (GTK_TOOLBAR (toolbar), 
+			     GTK_WIDGET (lw->option_menu),
+			     NULL, NULL);
+
+  gtk_widget_show_all (GTK_WIDGET (toolbar));
+
 
   /* entry */
   lw->search_entry = gtk_entry_new ();
 
-  gtk_table_attach (GTK_TABLE (entry_table), lw->search_entry, 4, 8, 0, 2,
-		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 
-		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
-		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
+  gtk_toolbar_append_widget (GTK_TOOLBAR (toolbar), 
+			     GTK_WIDGET (lw->search_entry),
+			     NULL, NULL);
 
 
   /* Ldap users list */
@@ -436,11 +452,6 @@ void gnomemeeting_init_ldap_window ()
 
   gnomemeeting_init_ldap_window_notebook (0, _("No directory"));
 
-  /* Put the search filter frame at the end */
-  frame = gtk_frame_new (_("Search Filter"));
-  gtk_container_add (GTK_CONTAINER (frame), entry_table);
-  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
-  gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
 
   /* Status Bar */
   lw->statusbar = gnome_appbar_new (TRUE, TRUE, GNOME_PREFERENCES_NEVER);
@@ -453,12 +464,14 @@ void gnomemeeting_init_ldap_window ()
 		    G_CALLBACK (refresh_button_clicked),
 		    (gpointer) lw);
 
-  g_signal_connect (G_OBJECT (lw->refresh_button), "pressed",
-		    G_CALLBACK (refresh_button_clicked), 
-		    (gpointer) lw);
-
   g_signal_connect (G_OBJECT(lw->search_entry), "changed",
 		    G_CALLBACK (search_entry_modified), (gpointer) lw);
+
+  g_signal_connect (G_OBJECT(lw->refresh_button), "clicked",
+		    G_CALLBACK (refresh_button_clicked), (gpointer) lw);
+
+  g_signal_connect (G_OBJECT(button), "clicked",
+		    G_CALLBACK (search_entry_activated), (gpointer) lw);
 
   g_signal_connect (G_OBJECT(lw->search_entry), "activate",
 		    G_CALLBACK (search_entry_activated), (gpointer) lw);
@@ -617,7 +630,7 @@ void gnomemeeting_init_ldap_window_notebook (int page_num, gchar *text_label)
   gtk_button_set_relief (GTK_BUTTON (close_button), GTK_RELIEF_NONE);
   close_cross = gdk_pixbuf_new_from_xpm_data (small_close_xpm);
   close_image = gtk_image_new_from_pixbuf (close_cross);
-  gdk_pixbuf_unref (close_cross);
+  g_object_unref (G_OBJECT (close_cross));
   gtk_container_add (GTK_CONTAINER (close_button), 
 		     GTK_WIDGET (close_image));
   gtk_widget_show_all (close_button);

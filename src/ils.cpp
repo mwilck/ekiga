@@ -26,7 +26,7 @@
  *   email                : dsandras@seconix.com
  *
  */
-
+	
 
 #include <sys/time.h>
 
@@ -514,7 +514,8 @@ void GMILSClient::ils_browse ()
   char *attrs [] = { "surname", "givenname", "comment", "location", 
 		     "rfc822mailbox", "sipaddress", "ilsa32833566", 
 		     "ilsa32964638", "ilsa26279966", "sappid", NULL };
-  
+  char **ldv;
+
   LDAPMessage *res = NULL, *e = NULL;
 
   int rc = 0;
@@ -678,44 +679,49 @@ void GMILSClient::ils_browse ()
     for (e = ldap_first_entry(ldap_connection, res); 
 	 e != NULL; e = ldap_next_entry(ldap_connection, e)) {
       
-      if (ldap_get_values (ldap_connection, e, "surname") != NULL) {
+      
+      ldv = ldap_get_values (ldap_connection, e, "surname");
+      if (ldv != NULL) {
 	
 	datas [3] = 
-	  g_strdup (ldap_get_values (ldap_connection, e, "surname") [0]);
-	ldap_value_free (ldap_get_values (ldap_connection, e, "surname"));
+	  g_strdup (ldv [0]);
+	ldap_value_free (ldv);
       }
       
-      if (ldap_get_values(ldap_connection, e, "givenname") != NULL) {
+      ldv = ldap_get_values(ldap_connection, e, "givenname");
+      if (ldv != NULL) {
 	
-	datas [2] = g_strdup (ldap_get_values 
-			      (ldap_connection, e, "givenname") [0]);
-	ldap_value_free (ldap_get_values (ldap_connection, e, "givenname"));
+	datas [2] = g_strdup (ldv [0]);
+	ldap_value_free (ldv);
       }
       
-      if (ldap_get_values(ldap_connection, e, "location") != NULL) {
+      ldv = ldap_get_values(ldap_connection, e, "location");
+      if (ldv != NULL) {
 	
-	datas [5] = g_strdup (ldap_get_values 
-			      (ldap_connection, e, "location") [0]);
-	ldap_value_free (ldap_get_values (ldap_connection, e, "location"));
+	datas [5] = g_strdup (ldv [0]);
+	ldap_value_free (ldv);
       }
       
-      if (ldap_get_values(ldap_connection, e, "comment") != NULL)	{
+      ldv = ldap_get_values(ldap_connection, e, "comment");
+      if (ldv != NULL)	{
 	
 	datas [6] = 
-	  g_strdup (ldap_get_values (ldap_connection, e, "comment") [0]);
-	ldap_value_free (ldap_get_values (ldap_connection, e, "comment"));
+	  g_strdup (ldv [0]);
+	ldap_value_free (ldv);
       }
 
-      if (ldap_get_values(ldap_connection, e, "sappid") != NULL)	{
+      ldv = ldap_get_values(ldap_connection, e, "sappid");
+      if (ldv != NULL)	{
 
 	datas [7]  =
-	  g_strdup (ldap_get_values (ldap_connection, e, "sappid") [0]);
-	ldap_value_free (ldap_get_values (ldap_connection, e, "sappid"));
+	  g_strdup (ldv [0]);
+	ldap_value_free (ldv);
       }
 
-      if (ldap_get_values(ldap_connection, e, "ilsa26279966") != NULL)	{
+      ldv = ldap_get_values(ldap_connection, e, "ilsa26279966");
+      if (ldv != NULL)	{
 	gchar *value =
-	  g_strdup (ldap_get_values (ldap_connection, e, "ilsa26279966") [0]);
+	  g_strdup (ldv [0]);
 	
 	int v,a,b,c;
 	v = atoi (value); 
@@ -729,21 +735,21 @@ void GMILSClient::ils_browse ()
 	else
 	  datas [7] = g_strdup_printf ("%d.%d.%d", a, b, c); 
 
-	ldap_value_free (ldap_get_values (ldap_connection, e, "ilsa26279966"));
+	ldap_value_free (ldv);
       }
 
-      if (ldap_get_values(ldap_connection, e, "rfc822mailbox") != NULL) {
+      ldv = ldap_get_values(ldap_connection, e, "rfc822mailbox");
+      if (ldv != NULL) {
 	
-	datas [4] = g_strdup (ldap_get_values 
-			      (ldap_connection, e, "rfc822mailbox") [0]);
-	ldap_value_free (ldap_get_values (ldap_connection, e, "rfc822mailbox"));
+	datas [4] = g_strdup (ldv [0]);
+	ldap_value_free (ldv);
       }
       
-      if (ldap_get_values(ldap_connection, e, "sipaddress") != NULL) {
+      ldv = ldap_get_values(ldap_connection, e, "sipaddress");
+      if (ldv != NULL) {
 	
-	nmip = strtoul (ldap_get_values(ldap_connection, e, "sipaddress") [0], 
-			NULL, 10);
-	ldap_value_free (ldap_get_values (ldap_connection, e, "sipaddress"));
+	nmip = strtoul (ldv [0], NULL, 10);
+	ldap_value_free (ldv);
       }
       
       part1 = (int) (nmip/(256*256*256));
@@ -760,20 +766,22 @@ void GMILSClient::ils_browse ()
       
 
       /* Video Capable ? */
-      if (ldap_get_values(ldap_connection, e, "ilsa32964638") != NULL) {
+      ldv = ldap_get_values(ldap_connection, e, "ilsa32964638");
+      if (ldv != NULL) {
 	
  	video = 
-	  (bool)atoi (ldap_get_values(ldap_connection, e, "ilsa32964638") [0]);
- 	ldap_value_free (ldap_get_values (ldap_connection, e, "ilsa32964638"));
+	  (bool)atoi (ldv [0]);
+ 	ldap_value_free (ldv);
       }
       
 
       /* Audio Capable ? */
-      if (ldap_get_values(ldap_connection, e, "ilsa32833566") != NULL) {
+      ldv = ldap_get_values(ldap_connection, e, "ilsa32833566");
+      if (ldv != NULL) {
 	
  	audio = 
-	  (bool)atoi (ldap_get_values(ldap_connection, e, "ilsa32833566") [0]);
- 	ldap_value_free (ldap_get_values (ldap_connection, e, "ilsa32833566"));
+	  (bool)atoi (ldv [0]);
+ 	ldap_value_free (ldv);
       }
       
 
@@ -796,8 +804,8 @@ void GMILSClient::ils_browse ()
 			    COLUMN_FIRSTNAME, utf8_data [0],
  			    COLUMN_LASTNAME, utf8_data [1],
  			    COLUMN_EMAIL, utf8_data [2],
- 			    COLUMN_COMMENT, utf8_data [3],
- 			    COLUMN_LOCATION, utf8_data [4],
+			    COLUMN_LOCATION, utf8_data [3],
+ 			    COLUMN_COMMENT, utf8_data [4],
  			    COLUMN_VERSION, utf8_data [5],
  			    COLUMN_IP, utf8_data [6],
 			    -1);
@@ -819,7 +827,6 @@ void GMILSClient::ils_browse ()
     } /* end of for */
   }
 
-  /* Make the progress bar in activity mode go faster */
   ldap_msgfree (res);
   ldap_unbind (ldap_connection);
 

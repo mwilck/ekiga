@@ -27,6 +27,13 @@
  *
  */
 
+#undef GTK_ENABLE_BROKEN
+#define G_DISABLE_DEPRECATED					
+#define GDK_DISABLE_DEPRECATED
+#define GTK_DISABLE_DEPRECATED
+#define GDK_PIXBUF_DISABLE_DEPRECATED
+#define GNOME_DISABLE_DEPRECATED	
+
 #include <sys/time.h>
 
 #include "../config.h"
@@ -162,8 +169,8 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
        (size_request.height != zoomed_height)) &&
       (device_id == !display)) {
 
-     gtk_widget_set_usize (GTK_WIDGET (gw->video_frame),
-			   zoomed_width + GM_FRAME_SIZE, zoomed_height);
+     gtk_widget_set_size_request (GTK_WIDGET (gw->video_frame),
+				  zoomed_width + GM_FRAME_SIZE, zoomed_height);
   }
 
   gnomemeeting_threads_leave ();
@@ -206,7 +213,7 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
       gtk_image_set_from_pixbuf (GTK_IMAGE (gw->video_image), GDK_PIXBUF (local_pic));
       gtk_widget_queue_draw (GTK_WIDGET (gw->video_image));
       
-      gdk_pixbuf_unref (local_pic);
+      g_object_unref (G_OBJECT (local_pic));
 
       gnomemeeting_threads_leave ();
     }
@@ -226,11 +233,11 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
 
   gnomemeeting_threads_enter ();
 
-  gdk_pixbuf_unref (src_pic);
+  g_object_unref (G_OBJECT (src_pic));
 
   if (unref == 1) {
 
-    gdk_pixbuf_unref (zoomed_pic);
+    g_object_unref (G_OBJECT (zoomed_pic));
   }
 
   gnomemeeting_threads_leave ();
