@@ -1,3 +1,30 @@
+2002-12-20 Damien Sandras  <dsandras@seconix.com>
+
+	* src/common.h: Removed unused widgets.
+
+	* src/config.cpp: Changed notifiers so that changing the FPS limit
+	and the videoquality change the lower limit.
+
+	* src/druid.cpp: Removed enable_fps as it is now implicit. No need
+	to explode the bandwidth.
+
+	* src/endpoint.cpp: Added video bandwidth limitation, based on
+	dynamic quality and dynamic FPS adjustment above a given limit.
+	GM will try to reach the given bandwidth while not going below
+	the given quality and FPS limits.
+	
+	* src/gnomemeeting.h: Removed unneeded #include.
+
+	* src/misc.cpp: Fixed frame style.
+
+	* src/pref_window.cpp: Changed descriptions for FPS and quality
+	as they are now lowest limits.
+
+	* src/tray.cpp: Removed unneeded #include.
+
+	* src/videograbber.cpp, src/videograbber.h: Do not limit the FPS.
+	It will be done automatically during calls.
+	
 2002-12-20  Christian Rose  <menthos@menthos.com>
 
 	* configure.in: Added "ca" to ALL_LINGUAS.

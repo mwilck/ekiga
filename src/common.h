@@ -193,7 +193,6 @@ struct _GmPrefWindow
   GtkWidget    *tr_vq;
   GtkWidget    *tr_ub;
   GtkWidget    *bps_frame;
-  GtkWidget    *re_vq;
   GtkWidget    *tr_fps;
   GtkWidget    *vid_tr;
   GtkWidget    *sd;
@@ -201,7 +200,6 @@ struct _GmPrefWindow
   GtkWidget    *max_jitter_buffer;
   GtkWidget    *video_bandwidth;
   GtkWidget    *vb;
-  GtkWidget    *fps;
   GtkWidget    *firstname, *entry_port;
   GtkWidget    *surname;
   GtkWidget    *mail;

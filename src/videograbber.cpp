@@ -87,7 +87,6 @@ GMVideoGrabber::GMVideoGrabber ()
   video_channel = 0;
   video_size = 0;
   video_format = PVideoDevice::Auto;
-  tr_fps = 0;
   UpdateConfig ();
 
   /* Start the thread */
@@ -234,12 +233,6 @@ void GMVideoGrabber::UpdateConfig ()
 
   video_size =  gconf_client_get_int (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/video_size", NULL);
 
-
-  /* The number of Transmitted FPS must be equal to 0 to disable */
-  if (!gconf_client_get_bool (client, "/apps/gnomemeeting/video_settings/enable_fps", NULL))
-    tr_fps = 0;
-  else
-    tr_fps = gconf_client_get_int (client, "/apps/gnomemeeting/video_settings/tr_fps", NULL);
 
   switch (gconf_client_get_int (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/video_format", NULL)) {
     
@@ -500,7 +493,7 @@ void GMVideoGrabber::VGOpen (void)
 	if (!grabber->SetColourFormatConverter ("YUV420P"))
 	  error_code = 3;
       else
-	if (!grabber->SetFrameRate (tr_fps))
+	if (!grabber->SetFrameRate (30))
 	  error_code = 4;
       else
 	if (!grabber->SetFrameSizeConverter (width, height, FALSE))

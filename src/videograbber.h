@@ -244,7 +244,6 @@ class GMVideoGrabber : public PThread
   gchar *color_format;
   int video_channel;
   int video_size;
-  int tr_fps;
   PVideoDevice::VideoFormat video_format;
 
   PMutex quit_mutex;     /* Mutex to quit safely, after the Main method 

@@ -737,7 +737,6 @@ gnomemeeting_vbox_add_table (GtkWidget *vbox,
   GtkWidget *table;                                                            
                                                                                
   frame = gtk_frame_new (frame_name);                                          
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
 
   gtk_box_pack_start (GTK_BOX (vbox), frame,                                   
                       FALSE, FALSE, 0);                                        

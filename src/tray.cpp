@@ -33,7 +33,6 @@
 
 #include "tray.h"
 #include "eggtrayicon.h"
-#include "gnomemeeting.h"
 #include "menu.h"
 #include "callbacks.h"
 #include "misc.h"
@@ -49,7 +48,6 @@
 /* Declarations */
 
 extern GtkWidget *gm;
-extern GnomeMeeting *MyApp;	
 
 static gint tray_clicked_callback (GtkWidget *, GdkEventButton *, gpointer);
 static gint tray_icon_embedded (GObject *, gpointer);

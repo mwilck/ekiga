@@ -83,8 +83,6 @@ static void video_device_setting_changed_nt (GConfClient *, guint,
 					     GConfEntry *, gpointer);
 static void video_preview_changed_nt (GConfClient *, guint, GConfEntry *, 
 				      gpointer);
-static void enable_fps_changed_nt (GConfClient *, guint, GConfEntry *, 
-				   gpointer);
 static void audio_codecs_list_changed_nt (GConfClient *, guint, GConfEntry *, 
 					  gpointer);
 static void contacts_servers_list_changed_nt (GConfClient *, guint,
@@ -548,27 +546,30 @@ static void audio_codec_setting_changed_nt (GConfClient *client, guint i,
 }
 
 
-/* DESCRIPTION  :  This callback is called to update the fps limitation.
+/* DESCRIPTION  :  This callback is called to update the min fps limitation.
  * BEHAVIOR     :  Update it.
  * PRE          :  /
  */
 static void fps_limit_changed_nt (GConfClient *client, guint cid, 
 				  GConfEntry *entry, gpointer data)
 {
-  GMVideoGrabber *vg = NULL;
+  H323VideoCodec *vc = NULL;
+  int fps = 30;
+  double frame_time = 0.0;
 
   if (entry->value->type == GCONF_VALUE_INT) {
 
     gdk_threads_enter ();
   
-    /* We update the current frame rate */
-    vg = GM_VIDEO_GRABBER (MyApp->Endpoint ()->GetVideoGrabberThread ());
+    /* We update the minimum fps limit */
+    vc = MyApp->Endpoint ()->GetCurrentVideoCodec ();
   
-    if ((vg != NULL)
-	&&(gconf_client_get_bool (client, 
-				  "/apps/gnomemeeting/video_settings/enable_fps",
-				  NULL)))
-      vg->SetFrameRate (gconf_value_get_int (entry->value));
+    fps = gconf_value_get_int (entry->value);
+    frame_time = (unsigned) (1000.0 / fps);
+    frame_time = PMAX (33, PMIN(1000000, frame_time));
+
+    if (vc != NULL)
+      vc->SetTargetFrameTimeMs (frame_time);
 
     gdk_threads_leave ();
   }
@@ -596,7 +597,7 @@ static void tr_vq_changed_nt (GConfClient *client, guint cid,
     vq = 32 - (int) ((double) (int) gconf_value_get_int (entry->value) / 100 * 31);
   
     if (vc != NULL)
-      vc->SetTxQualityLevel (vq);
+      vc->SetTxMinQuality (vq);
   
     gdk_threads_leave ();
   }
@@ -835,39 +836,6 @@ static void video_preview_changed_nt (GConfClient *client, guint cid,
       }
     }
  
-    gdk_threads_leave ();
-  }
-}
-
-
-/* DESCRIPTION  :  his callback is called when a specific key of
- *                 the gconf database associated with that toggle changes.
- * BEHAVIOR     :  It does SetFrameRate to 0 to disable it.
- * PRE          :  /
- */
-static void enable_fps_changed_nt (GConfClient *client, guint cid, 
-				   GConfEntry *entry, gpointer data)
-{
-  GMVideoGrabber *vg = NULL;
-
-  if (entry->value->type == GCONF_VALUE_BOOL) {
-
-    gdk_threads_enter ();
-  
-    /* Update the value */
-    vg = GM_VIDEO_GRABBER (MyApp->Endpoint ()->GetVideoGrabberThread ());
-  
-    if (vg) {
-    
-      /* Disable or enable tr fps limit */
-      if (!gconf_value_get_bool (entry->value)) 
-	vg->SetFrameRate (0);
-      else
-	vg->SetFrameRate (gconf_client_get_int (client, 
-						"/apps/gnomemeeting/video_settings/tr_fps", 
-						NULL));
-    }
-
     gdk_threads_leave ();
   }
 }
@@ -1312,10 +1280,6 @@ void gnomemeeting_init_gconf (GConfClient *client)
 
 
   /* gnomemeeting_pref_window_video_codecs */
-  gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/enable_fps", enable_fps_changed_nt, pw->fps, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/enable_fps", toggle_changed_nt, pw->fps, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/enable_fps", network_settings_changed_nt, 0, 0, 0);
-
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/tr_fps", fps_limit_changed_nt, pw->tr_fps, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/tr_fps", adjustment_changed_nt, pw->tr_fps, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/tr_fps", network_settings_changed_nt, 0, 0, 0);

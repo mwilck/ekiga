@@ -31,7 +31,6 @@
 #define _GNOMEMEETING_H_
 
 #include <ptlib.h>
-#include <gsmcodec.h>
 #include <h323.h>
 
 #include "common.h"

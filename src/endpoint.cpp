@@ -1221,6 +1221,8 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   BOOL reg = FALSE;
   int vq = 0;
   int bf = 0;
+  int tr_fps = 0;
+  double frame_time = 0.0;
 
 
   /* Remote Name and application */
@@ -1231,6 +1233,7 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   /* Get the gconf settings */
   vq = gconf_client_get_int (client, VIDEO_SETTINGS_KEY "tr_vq", NULL);
   bf = gconf_client_get_int (client, VIDEO_SETTINGS_KEY "tr_ub", NULL);
+  tr_fps = gconf_client_get_int (client, VIDEO_SETTINGS_KEY "tr_fps", NULL);
   reg = gconf_client_get_bool (client, LDAP_KEY "register", NULL);
 
   /* Remove the progress timeout */
@@ -1246,11 +1249,19 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   
   /* Set Video Codecs Settings */
   vq = 32 - (int) ((double) vq / 100 * 31);
+  frame_time = (unsigned) (1000.0/tr_fps);
+  frame_time = PMAX (33, PMIN(1000000, frame_time));
   video_codec = GetCurrentVideoCodec ();
   if (video_codec) {
 
-    video_codec->SetTxQualityLevel (vq);
+    video_codec->SetTxMinQuality (vq);
+    video_codec->SetTxMaxQuality (1);
     video_codec->SetBackgroundFill (bf);   
+    video_codec->SetMaxBitRate (300000);
+    video_codec->SetTargetFrameTimeMs (frame_time);
+    video_codec->SetVideoMode (H323VideoCodec::DynamicVideoQuality | 
+			       H323VideoCodec::AdaptivePacketDelay |
+			       video_codec->GetVideoMode());
   }
 
 
@@ -1816,14 +1827,12 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 	gnomemeeting_video_submenu_set_sensitive (TRUE, LOCAL_VIDEO, FALSE);
 
 
-     /* Default Codecs Settings */
-     codec.SetTxQualityLevel (-1);
-     codec.SetAverageBitRate (0); // Disable
-
      gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button),
 			       TRUE);
      
      gnomemeeting_threads_leave ();
+     
+     codec.SetMaxBitRate (300000);
 
      bool result = codec.AttachChannel (channel, FALSE); 
 

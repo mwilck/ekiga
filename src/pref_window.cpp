@@ -1401,37 +1401,27 @@ void gnomemeeting_init_pref_window_video_codecs (GtkWidget *notebook)
   vbox =  gtk_vbox_new (FALSE, 4);
   gtk_notebook_append_page (GTK_NOTEBOOK(notebook), vbox, NULL);  
   table = gnomemeeting_vbox_add_table (vbox, _("General Settings"),
-                                              3, 1);                           
+                                              1, 1);                           
 
   /* Add fields */
-  pw->tr_fps =
-    gnomemeeting_table_add_spin (table, _("Maximum Transmitted FPS:"),       
- 				       "/apps/gnomemeeting/video_settings/tr_fps",
-				       _("The number of video frames transmitted each second."),
- 				       1.0, 30.0, 1.0, 1);
-
-  pw->fps = 
-    gnomemeeting_table_add_toggle (table, _("Enable FPS Limitation"), "/apps/gnomemeeting/video_settings/enable_fps", _("Enable/disable the limit on the transmitted FPS."), 0, 0);
-
   pw->vid_tr = 
     gnomemeeting_table_add_toggle (table, _("Enable Video Transmission"), "/apps/gnomemeeting/video_settings/enable_video_transmission", _("Enable/disable the video transmission."), 2, 0);
 
 
   /* H.261 Settings */
-  table = gnomemeeting_vbox_add_table (vbox, _("H.261 Settings"),
-                                              3, 1);                           
+  table = gnomemeeting_vbox_add_table (vbox, _("H.261 Settings"), 3, 1);       
 
   pw->tr_vq =
-    gnomemeeting_table_add_spin (table, _("Transmitted Video Quality:"),       
+    gnomemeeting_table_add_spin (table, _("Minimum Transmitted Video Quality:"),       
  				       "/apps/gnomemeeting/video_settings/tr_vq",
-				       _("The transmitted video quality:  choose 100% on a LAN for the best quality, 1% being the worst quality."),
+				       _("The minimum transmitted video qualityto keep when trying to minimize the used bandwidth:  choose 100% on a LAN for the best quality, 1% being the worst quality."),
  				       1.0, 100.0, 1.0, 0);
 
-  pw->re_vq =
-    gnomemeeting_table_add_spin (table, _("Received Video Quality:"),       
- 				       "/apps/gnomemeeting/video_settings/re_vq",
-				       _("The received video quality:  choose 100% on a LAN for the best quality, 1% being the worst quality."),
- 				       1.0, 100.0, 1.0, 1);
+  pw->tr_fps =
+    gnomemeeting_table_add_spin (table, _("Minimum Transmitted FPS:"),       
+ 				       "/apps/gnomemeeting/video_settings/tr_fps",
+				       _("The minimum number of video frames to transmit each second when trying to minimize the bandwidth."),
+ 				       1.0, 30.0, 1.0, 1);
 
   pw->tr_ub =
     gnomemeeting_table_add_spin (table, _("Transmitted Background Blocks:"),       

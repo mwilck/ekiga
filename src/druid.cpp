@@ -396,7 +396,6 @@ gnomemeeting_druid_radio_changed (GtkToggleButton *b, gpointer data)
     gconf_client_set_int (client, VIDEO_SETTINGS_KEY "tr_fps", 1, NULL);
     gconf_client_set_int (client, VIDEO_SETTINGS_KEY "tr_vq", 10, NULL);
     gconf_client_set_int (client, VIDEO_SETTINGS_KEY "re_vq", 10, NULL);
-    gconf_client_set_bool (client, VIDEO_SETTINGS_KEY "enable_fps", 0, NULL);
     gconf_client_set_bool (client, 
 			   VIDEO_SETTINGS_KEY "enable_video_transmission", 
 			   0, NULL);
@@ -408,7 +407,6 @@ gnomemeeting_druid_radio_changed (GtkToggleButton *b, gpointer data)
     gconf_client_set_int (client, VIDEO_SETTINGS_KEY "tr_fps", 1, NULL);
     gconf_client_set_int (client, VIDEO_SETTINGS_KEY "tr_vq", 30, NULL);
     gconf_client_set_int (client, VIDEO_SETTINGS_KEY "re_vq", 30, NULL);
-    gconf_client_set_bool (client, VIDEO_SETTINGS_KEY "enable_fps", 1, NULL);
     gconf_client_set_bool (client, 
 			   VIDEO_SETTINGS_KEY "enable_video_transmission", 
 			   1, NULL);
@@ -420,7 +418,6 @@ gnomemeeting_druid_radio_changed (GtkToggleButton *b, gpointer data)
     gconf_client_set_int (client, VIDEO_SETTINGS_KEY "tr_fps", 6, NULL);
     gconf_client_set_int (client, VIDEO_SETTINGS_KEY "tr_vq", 70, NULL);
     gconf_client_set_int (client, VIDEO_SETTINGS_KEY "re_vq", 70, NULL);
-    gconf_client_set_bool (client, VIDEO_SETTINGS_KEY "enable_fps", 1, NULL);
     gconf_client_set_bool (client, 
 			   VIDEO_SETTINGS_KEY "enable_video_transmission", 
 			   1, NULL);
@@ -432,7 +429,6 @@ gnomemeeting_druid_radio_changed (GtkToggleButton *b, gpointer data)
     gconf_client_set_int (client, VIDEO_SETTINGS_KEY "tr_fps", 30, NULL);
     gconf_client_set_int (client, VIDEO_SETTINGS_KEY "tr_vq", 100, NULL);
     gconf_client_set_int (client, VIDEO_SETTINGS_KEY "re_vq", 100, NULL);
-    gconf_client_set_bool (client, VIDEO_SETTINGS_KEY "enable_fps", 0, NULL);
     gconf_client_set_bool (client, 
 			   VIDEO_SETTINGS_KEY "enable_video_transmission", 
 			   1, NULL);
