@@ -1,5 +1,36 @@
 2003-04-08 Damien Sandras  <dsandras@seconix.com>
 
+	* lib/win32/*: Fixed headers to add copyright to Tuan for his
+	code.
+
+2003-04-08 Damien Sandras  <dsandras@seconix.com>
+
+	* lib/dialog.c, lib/widgets/history-combo.c, 
+	lib/widgets/history-combo.h:
+	Fixes for an hypothetical win32 port.
+
+	* lib/win32/gconf-simu.cpp, lib/win32/gconf-simu.h: Added code from
+	Tuan to emulate GConf's behavior.
+
+	* lib/xdap/xdap.c, src/callbacks.cpp, src/callbacks.h,
+	src/chat_window.cpp, src/chat_window.h, src/common.cpp, src/common.h,
+	src/config.cpp, src/config.h, src/connection.cpp, src/connection.h,
+	src/druid.cpp, src/druid.h, src/endpoint.cpp, src/endpoint.h,
+	src/gatekeeper.cpp, src/gatekeeper.h, src/gdkvideoio.cpp,
+	src/gdkvideoio.h, src/gnomemeeting.cpp, src/gnomemeeting.h, 
+	src/ils.cpp,
+	src/ils.h, src/ldap_window.cpp, src/ldap_window.h, src/lid.cpp,
+	src/lid.h, src/main_window.cpp, src/main_window.h, src/menu.cpp,
+	src/menu.h, src/misc.cpp, src/misc.h, src/pref_window.cpp,
+	src/pref_window.h, src/sound_handling.cpp, src/sound_handling.h,
+	src/toolbar.cpp, src/toolbar.h, src/tools.cpp, src/tools.h,
+	src/tray.cpp, src/tray.h, src/urlhandler.cpp, src/urlhandler.h,
+	src/vfakeio.cpp, src/vfakeio.h, src/videograbber.cpp,
+	src/videograbber.h, win32/README.WIN32, win32/gnomemeeting.dsw:
+	Fixes for an hypothetical win32 port. Fixed copyright headers.
+	
+2003-04-08 Damien Sandras  <dsandras@seconix.com>
+
 	* lib/xdap/xdap.c: Removed boring warning until it gets fixed.
 	
 	* src/gnomemeeting.cpp, src/toolbar.cpp, src/urlhandler.cpp: Added 
