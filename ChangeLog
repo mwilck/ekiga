@@ -1,5 +1,20 @@
 2002-11-28 Damien Sandras  <dsandras@seconix.com>
 
+	* src/ils.cpp: Added an ulgy hack in the callto resolver and in the 
+	prefs window for buggy ILS servers with buggy Netmeeting clients.
+	The attribute "sport" should store the port used by the H.323 client,
+	but Netmeeting sometimes registers the T.120 port instead of the H.323
+	port, which prevents GnomeMeeting to call them as GnomeMeeting is 
+	able to use different ports than 1720. 
+
+	It seems that Netmeeting registers a random port but is ignoring ports
+	in ILS and always calls port 1720 whatever the port that was 
+	registered. Some ILS servers even ignore the registered port and always
+	call to port 1720. GnomeMeeting is now always using 1720 for 
+	Netmeeting.
+	
+2002-11-28 Damien Sandras  <dsandras@seconix.com>
+
 	* src/gnomemeeting-config-tool.in: Added patch from Stefan Bruëns 
 	<lurch@gmx.li>. That fixes the following problems:
 	

@@ -537,8 +537,9 @@ BOOL GMILSClient::Register (int reg)
 
 gchar *GMILSClient::Search (gchar *ldap_server, gchar *ldap_port, gchar *mail)
 {
-  char *attrs [] = { "rfc822mailbox", "sipaddress", "sport", NULL };
+  char *attrs [] = { "rfc822mailbox", "sappid", "sipaddress", "sport", NULL };
   char **ldv = NULL;
+ 
   unsigned long int nmip = 0;
   int part1;
   int part2;
@@ -550,6 +551,7 @@ gchar *GMILSClient::Search (gchar *ldap_server, gchar *ldap_port, gchar *mail)
   bool no_error = TRUE;
   gchar *ip = NULL;
   gchar *cn = NULL;
+  gchar *app = NULL;
 
   LDAPMessage *res = NULL, *e = NULL;
 
@@ -604,20 +606,37 @@ gchar *GMILSClient::Search (gchar *ldap_server, gchar *ldap_port, gchar *mail)
     if (e) {
       
       ldv = ldap_get_values (ldap_search_connection, e, "sipaddress");
-      
       if ((ldv != NULL)&&(ldv [0] != NULL)) {
 	
 	nmip = strtoul (ldv [0], NULL, 10);
 	ldap_value_free (ldv);
       }
 
-      ldv = ldap_get_values (ldap_search_connection, e, "sport");
 
+      ldv = ldap_get_values (ldap_search_connection, e, "sappid");
+      if ((ldv != NULL)&&(ldv [0] != NULL)) {
+	
+	app = g_strdup (ldv [0]);
+	ldap_value_free (ldv);
+      }
+
+
+      ldv = ldap_get_values (ldap_search_connection, e, "sport");
       if ((ldv != NULL)&&(ldv [0] != NULL)) {
 	
 	port = atoi (ldv [0]);
+	
+	/* Ugly hack because Netmeeting sucks, it registers
+	   random ports to ILS, but it only supports 1720 */
+	if (app&&!strcmp (app, "ms-netmeeting")&&port == 1503) {
+
+	  port = 1720;
+	  g_free (app);
+	}
+
 	ldap_value_free (ldv);
       }
+
     }
     
     part1 = (int) (nmip/(256*256*256));
@@ -1028,6 +1047,21 @@ void GMILSBrowser::Main ()
 	    g_strdup (ldv [0]);
 	  ldap_value_free (ldv);
 	}
+
+
+	ldv = ldap_get_values(ldap_connection, e, "sport");
+	if ((ldv != NULL)&&(ldv [0] != NULL)) {
+
+	  port = atoi (ldv [0]);	
+
+	  /* Ugly hack because Netmeeting sucks, it registers
+	     random ports to ILS, but it only supports 1720 */
+	  if (datas [7]&&!strcmp (datas [7], "ms-netmeeting")&&port == 1503)
+	    port = 1720;
+
+	  ldap_value_free (ldv);
+	}
+
 	
 	ldv = ldap_get_values(ldap_connection, e, "ilsa26279966");
 	if ((ldv != NULL)&&(ldv [0] != NULL)) {
@@ -1057,12 +1091,6 @@ void GMILSBrowser::Main ()
 	  ldap_value_free (ldv);
 	}
 
-	ldv = ldap_get_values(ldap_connection, e, "sport");
-	if ((ldv != NULL)&&(ldv [0] != NULL)) {
-	
-	  port = atoi (ldv [0]);
-	  ldap_value_free (ldv);
-	}
 	
 	ldv = ldap_get_values(ldap_connection, e, "sipaddress");
 	if ((ldv != NULL)&&(ldv [0] != NULL)) {
