@@ -167,10 +167,9 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
   gw = gnomemeeting_get_main_window (gm);
   dw = gnomemeeting_get_druid_window (gm);
 
-  if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (dw->ils_register)))
-    gconf_client_set_bool (client, LDAP_KEY "register", false, NULL);
-  else 
-    gconf_client_set_bool (client, LDAP_KEY "register", true, NULL);
+  /* Always register to make the callto available,the user can choose
+     to be visible or not */
+  gconf_client_set_bool (client, LDAP_KEY "register", true, NULL);
 
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (dw->audio_test_button),
 				FALSE);
@@ -232,7 +231,7 @@ gnomemeeting_druid_destroy (GtkWidget *w, GdkEventAny *ev, gpointer data)
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Checks if the "Next" button of the "Personal Information"
  *                 druid page can be sensitive or not. It will if all fields
- *                 are ok, or if registering is disabled.
+ *                 are ok.
  * PRE          :  /
  */
 static void 
@@ -269,21 +268,7 @@ gnomemeeting_druid_user_page_check (GnomeDruid *druid)
     error = TRUE;
   g_free (gconf_string);
 
-  gconf_string = 
-    gconf_client_get_string (client, PERSONAL_DATA_KEY "comment", NULL);
-  if ((gconf_string == NULL)||(!strcmp (gconf_string, "")))
-    error = TRUE;
-  g_free (gconf_string);
-
-  gconf_string = 
-    gconf_client_get_string (client, PERSONAL_DATA_KEY "location", NULL);
-  if ((gconf_string == NULL)||(!strcmp (gconf_string, "")))
-    error = TRUE;
-  g_free (gconf_string);
-
-
-  if ((!error)||
-      (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (dw->ils_register))))
+  if (!error)
     gnome_druid_set_buttons_sensitive (druid, TRUE, TRUE, TRUE, FALSE);
   else
     gnome_druid_set_buttons_sensitive (druid, TRUE, FALSE, TRUE, FALSE);
@@ -455,7 +440,7 @@ gnomemeeting_druid_page_prepare (GnomeDruidPage *page, GnomeDruid *druid,
     kind_of_net =
       gconf_client_get_int (client, GENERAL_KEY "kind_of_net", NULL);
 
-    while (group) {
+    while (kind_of_net && group) {
 
       GTK_TOGGLE_BUTTON (group->data)->active =
 	(kind_of_net == 6 - cpt);
@@ -483,7 +468,8 @@ gnomemeeting_druid_final_page_prepare (GnomeDruid *druid)
   gchar *video_recorder = NULL;
   gchar *firstname = NULL;
   gchar *lastname = NULL;
-  BOOL reg = TRUE;
+  gchar *mail = NULL;
+  gchar *callto = NULL;
   int cpt = 1;
   
   GSList *group = NULL;
@@ -530,6 +516,8 @@ gnomemeeting_druid_final_page_prepare (GnomeDruid *druid)
     gconf_client_get_string (client, PERSONAL_DATA_KEY "firstname", NULL);
   lastname =
     gconf_client_get_string (client, PERSONAL_DATA_KEY "lastname", NULL);
+  mail =
+    gconf_client_get_string (client, PERSONAL_DATA_KEY "mail", NULL);
   audio_player =
     gconf_client_get_string (client, DEVICES_KEY "audio_player", NULL);
   audio_recorder =
@@ -548,10 +536,9 @@ gnomemeeting_druid_final_page_prepare (GnomeDruid *druid)
   if (!video_recorder)
     video_recorder = g_strdup ("");
 	
-  reg = 
-    !gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (dw->ils_register));
-
-  text = g_strdup_printf ("You have now finished the GnomeMeeting configuration. All the settings can be changed in the GnomeMeeting preferences. Enjoy!\n\n\nConfiguration Summary:\n\nUsername:  %s %s\nConnection Type:  %s\nAudio Player:  %s\nAudio Recorder:  %s\nVideo Player: %s\nRegistering to GnomeMeeting ILS directory:  %s", firstname, lastname, kind_of_net_name, audio_player, audio_recorder, video_recorder, reg?"Enabled":"Disabled");
+  callto = g_strdup_printf ("callto://ils.seconix.com/%s", mail);
+  
+  text = g_strdup_printf ("You have now finished the GnomeMeeting configuration. All the settings can be changed in the GnomeMeeting preferences. Enjoy!\n\n\nConfiguration Summary:\n\nUsername:  %s %s\nConnection Type:  %s\nAudio Player:  %s\nAudio Recorder:  %s\nVideo Player: %s\nMy Callto URL: %s", firstname, lastname, kind_of_net_name, audio_player, audio_recorder, video_recorder, callto);
   gnome_druid_page_edge_set_text (page_final, text);
     
   g_free (text);
@@ -560,6 +547,8 @@ gnomemeeting_druid_final_page_prepare (GnomeDruid *druid)
   g_free (audio_player);
   g_free (audio_recorder);
   g_free (video_recorder);
+  g_free (callto);
+  g_free (mail);
 }
 
 
@@ -592,49 +581,44 @@ gnomemeeting_init_druid_user_page (GnomeDruid *druid, int p, int t)
   
   /* Packing widgets */
   vbox = gtk_vbox_new (FALSE, 2);
-  gnomemeeting_druid_add_graphical_label (vbox, GM_STOCK_DRUID_PERSONAL, _("Please enter information about yourself. This information will be used when connecting to other audio/video conferencing software, and to register to the Internet Locator Service directory of online GnomeMeeting users, an easy way to find your friends. You can even add some comments to personalize your registration, and precise your geographical location in the Location field."));
+  gnomemeeting_druid_add_graphical_label (vbox, GM_STOCK_DRUID_PERSONAL, _("Please enter your first name and last name, they will be used when connecting to other audio/video conferencing software.\n\nYour e-mail address is used to provide you a callto address that your friends can use to call you easily whatever your IP address is.\n\nNo information is made public except if you choose to be published on the directory of online GnomeMeeting users."));
 					  
-  table = gnomemeeting_vbox_add_table (vbox, _("Personal Information"), 6, 2);
-
 
   /* The user fields */
+  table = gnomemeeting_vbox_add_table (vbox, _("Personal Information"), 2, 2);
+  
   entry = 
     gnomemeeting_table_add_entry (table, _("First _name:"), 
 				  PERSONAL_DATA_KEY "firstname", NULL, 0);
+  g_signal_connect (G_OBJECT (entry), "changed",
+		    G_CALLBACK (gnomemeeting_druid_entry_changed), NULL);
 
   entry = 
     gnomemeeting_table_add_entry (table, _("_Last name:"), 
 				  PERSONAL_DATA_KEY "lastname", NULL, 1);
+  g_signal_connect (G_OBJECT (entry), "changed",
+		    G_CALLBACK (gnomemeeting_druid_entry_changed), NULL);
 
+
+  
+  /* The callto url */
+  table = gnomemeeting_vbox_add_table (vbox, _("Callto URL"), 1, 2);
+  
   entry = 
     gnomemeeting_table_add_entry (table, _("E-_mail address:"), 
 				  PERSONAL_DATA_KEY "mail", NULL, 2);
-
-  entry = 
-    gnomemeeting_table_add_entry (table, _("_Comment:"), 
-				  PERSONAL_DATA_KEY "comment", NULL, 3);
-
-  entry = 
-    gnomemeeting_table_add_entry (table, _("_Geographical location:"), 
-				  PERSONAL_DATA_KEY "location", NULL, 4);
-
   g_signal_connect (G_OBJECT (entry), "changed",
-		    G_CALLBACK (gnomemeeting_druid_entry_changed), 
-		    NULL);
+		    G_CALLBACK (gnomemeeting_druid_entry_changed), NULL);
+
+
+  /* The ILS registering */
+  table = gnomemeeting_vbox_add_table (vbox, _("Directory of Online GnomeMeeting Users"), 1, 2);
+  dw->ils_register =
+    gnomemeeting_table_add_toggle (table, _("Publish my information on the directory of online GnomeMeeting users"), 
+				  LDAP_KEY "visible", NULL, 2, 0);
+    
+
   
-
-  /* The register toggle */
-  dw->ils_register = gtk_check_button_new_with_label (_("Do not register me to the GnomeMeeting users directory"));   
-  gtk_table_attach (GTK_TABLE (table), dw->ils_register, 0, 2, 5, 6,
-		    (GtkAttachOptions) NULL, 
-		    (GtkAttachOptions) NULL,
-		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
-
-  g_signal_connect (G_OBJECT (dw->ils_register), "toggled",
-		    G_CALLBACK (gnomemeeting_druid_toggle_changed), 
-		    NULL);
-
-
   g_signal_connect_after (G_OBJECT (page_standard), "prepare",
 			  G_CALLBACK (gnomemeeting_druid_page_prepare), 
 			  (gpointer) "1");

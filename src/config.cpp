@@ -75,6 +75,8 @@ static void tr_ub_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static void jitter_buffer_changed_nt (GConfClient*, guint, GConfEntry *, 
 				      gpointer);
 static void register_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
+static void ldap_visible_changed_nt (GConfClient*, guint, 
+				     GConfEntry *, gpointer);
 static void do_not_disturb_changed_nt (GConfClient*, guint, 
 				       GConfEntry *, gpointer);
 static void forward_toggle_changed_nt (GConfClient*, guint, GConfEntry *, 
@@ -1208,6 +1210,26 @@ static void register_changed_nt (GConfClient *client, guint cid,
 }
 
 
+/* DESCRIPTION  :  This callback is called when the ldap_visible
+ *                 gconf value changes.
+ * BEHAVIOR     :  Simply issued a modify request if we are regitered to an ILS
+ *                 directory.
+ * PRE          :  /
+ */
+static void ldap_visible_changed_nt (GConfClient *client, guint cid, 
+				     GConfEntry *entry, gpointer data)
+{
+  GMH323EndPoint *endpoint = MyApp->Endpoint ();
+  GMILSClient *ils_client = GM_ILS_CLIENT (endpoint->GetILSClientThread ());
+
+  if (entry->value->type == GCONF_VALUE_BOOL) {
+
+    if (gconf_client_get_bool (client, "/apps/gnomemeeting/ldap/register", 0))
+      ils_client->Modify ();
+  }
+}
+
+
 /* DESCRIPTION  :  This callback is called when the "do_not_disturb" 
  *                 gconf value changes.
  * BEHAVIOR     :  Simply issued a modify request if we are regitered to an ILS
@@ -1428,6 +1450,11 @@ void gnomemeeting_init_gconf (GConfClient *client)
 			   register_changed_nt, pw->ldap, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/ldap/register",
 			   toggle_changed_nt, pw->ldap, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/ldap/visible",
+			   toggle_changed_nt, pw->ldap_visible, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/ldap/visible",
+			   ldap_visible_changed_nt, pw->ldap_visible, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/gatekeeper/gk_host",
 			   entry_changed_nt, pw->gk_host, 0, 0);

@@ -1,3 +1,26 @@
+2003-01-04 Damien Sandras  <dsandras@seconix.com>
+
+	* configure.in: Incremented SCHEMA_AGE.
+
+	* gnomemeeting.schemas.in.in: Added ldap_visible key to permit
+	to users to register to ILS and be invisible but still callable
+	using the callto:// address.
+
+	* src/common.h: Added ldap_visible widget.
+
+	* src/config.cpp: Added notifiers for the new LDAP_KEY/visible.
+
+	* src/druid.cpp: Changed the personal data user page. The user has
+	now to enter a first name, a last name, and an e-mail address. He
+	automatically gets a valid callto address, but he can choose to be
+	visible or not in the online directory of users.
+
+	* src/ils.cpp: Added support for the new ilsa attribute.
+
+	* src/pref_window.cpp: Add a pref for visibility.
+	
+	* xdap_data/ils_nm_mod.xml, xdap_data/ils_nm_reg.xml: See src/ils.cpp.
+	
 2003-01-03  Christian Rose  <menthos@menthos.com>
 
 	* src/menu.cpp: Uncapitalized some statusbar messages.

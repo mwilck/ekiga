@@ -216,8 +216,6 @@ BOOL GMILSClient::CheckFieldsConfig ()
   gchar *firstname = NULL;
   gchar *surname = NULL;
   gchar *mail = NULL;
-  gchar *comment = NULL;
-  gchar *location = NULL;
   bool registering = TRUE;
   bool no_error = TRUE;
 
@@ -233,14 +231,6 @@ BOOL GMILSClient::CheckFieldsConfig ()
     gconf_client_get_string (GCONF_CLIENT (client),
 			     "/apps/gnomemeeting/personal_data/mail", 
 			     NULL);
-  comment =  
-    gconf_client_get_string (GCONF_CLIENT (client),
-			     "/apps/gnomemeeting/personal_data/comment", 
-			     NULL);
-  location =  
-    gconf_client_get_string (GCONF_CLIENT (client),
-			     "/apps/gnomemeeting/personal_data/location", 
-			     NULL);
   
   registering =
     gconf_client_get_bool (GCONF_CLIENT (client),
@@ -252,12 +242,10 @@ BOOL GMILSClient::CheckFieldsConfig ()
 
     if ((firstname == NULL) || (!strcmp (firstname, ""))
 	|| (surname == NULL) || (!strcmp (surname, ""))
-	|| (comment == NULL) || (!strcmp (comment, ""))
-	|| (location == NULL) || (!strcmp (location, ""))
 	|| (mail == NULL) || (!strcmp (mail, ""))) {
       
       /* No need to display that for unregistering */
-      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Please provide your first name, last name, comment, e-mail and location details in the Personal Data section in order to be able to register to the XDAP server."));
+      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Please provide your first name, last name, and e-mail in the Personal Data section in order to be able to register to the XDAP server."));
       
       no_error = FALSE;
     }
@@ -270,8 +258,6 @@ BOOL GMILSClient::CheckFieldsConfig ()
   g_free (firstname);
   g_free (surname);
   g_free (mail);
-  g_free (comment);
-  g_free (location);			       
       
   return no_error;
 }
@@ -678,7 +664,8 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
   gchar *ip = NULL;
   gchar *port = NULL;
   gchar *ilsa32964638 = NULL;
-
+  gchar *ilsa39321630 = NULL;
+  
   unsigned long int sip = 0;
 
   GConfClient *client = gconf_client_get_default ();
@@ -703,11 +690,15 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
     gconf_client_get_string (GCONF_CLIENT (client),
 			     "/apps/gnomemeeting/personal_data/comment", 
 			     NULL);
+  if (!comment || !strcmp (comment, ""))
+    comment = g_strdup (" ");
 
   location =  
     gconf_client_get_string (GCONF_CLIENT (client),
 			     "/apps/gnomemeeting/personal_data/location", 
 			     NULL);
+  if (!location || !strcmp (location, ""))
+    location = g_strdup (" ");
 
   port = 
     g_strdup_printf ("%d", 
@@ -727,6 +718,11 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
   else
     busy = g_strdup ("0");
 
+  if (gconf_client_get_bool (client, LDAP_KEY "visible", NULL))
+    ilsa39321630 = g_strdup ("1");
+  else
+    ilsa39321630 = g_strdup ("8");
+  
   if (gconf_client_get_bool (client, "/apps/gnomemeeting/video_settings/enable_video_transmission", NULL))
     ilsa32964638 = g_strdup ("1");
   else
@@ -765,6 +761,8 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
     entval = xmlStrdup (BAD_CAST surname);
   else if (!strcmp ((char *) name, "sappid"))
     entval = xmlStrdup (BAD_CAST "GnomeMeeting");
+  else if (!strcmp ((char *) name, "ilsa39321630"))
+      entval = xmlStrdup (BAD_CAST ilsa39321630);
   else if (!strcmp ((char *) name, "ilsa26279966"))
     entval = xmlStrdup (BAD_CAST version);
   else
@@ -806,7 +804,8 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
   g_free (ip);
   g_free (port);
   g_free (ilsa32964638);
-
+  g_free (ilsa39321630);
+  
   return entity;
 }
 

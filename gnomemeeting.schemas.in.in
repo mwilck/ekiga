@@ -224,6 +224,17 @@
       </locale>
     </schema>
     <schema>
+      <key>/schemas/apps/gnomemeeting/ldap/visible</key>
+      <applyto>/apps/gnomemeeting/ldap/visible</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>bool</type>
+      <default>true</default>
+      <locale name="C">
+	<short>Show user on ILS</short>
+	<long>If enabled, the user will be shown online on the ILS directory every time he is using GnomeMeeting. If disabled, the user will never be shown online, but the callto address will still work.</long>
+      </locale>
+    </schema>
+    <schema>
       <key>/schemas/apps/gnomemeeting/general/auto_answer</key>
       <applyto>/apps/gnomemeeting/general/auto_answer</applyto>
       <owner>GnomeMeeting</owner>

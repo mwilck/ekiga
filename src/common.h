@@ -238,6 +238,7 @@ struct _GmPrefWindow
   GtkWidget    *dnd;
   GtkWidget    *ldap_server;
   GtkWidget    *ldap_port;
+  GtkWidget    *ldap_visible;
   GtkWidget    *ldap;
   GtkWidget    *gk;
   GtkWidget    *gk_host;

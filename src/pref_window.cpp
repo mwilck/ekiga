@@ -197,8 +197,7 @@ static void personal_data_update_button_clicked (GtkWidget *widget,
   /* 1 */
   /* if registering is enabled for LDAP,
      modify the values */
-  if (gconf_client_get_bool (GCONF_CLIENT (client), 
-			     "/apps/gnomemeeting/ldap/register", 0)) {
+  if (gconf_client_get_bool (GCONF_CLIENT (client), LDAP_KEY "register", 0)) {
 
     GMILSClient *ils_client = 
       (GMILSClient *) MyApp->Endpoint ()->GetILSClientThread ();
@@ -824,15 +823,24 @@ void gnomemeeting_init_pref_window_directories (GtkWidget *notebook)
   vbox = gtk_vbox_new (FALSE, 4);
   gtk_notebook_append_page (GTK_NOTEBOOK(notebook), vbox, NULL);    
   table = gnomemeeting_vbox_add_table (vbox, _("XDAP Directory"),
-                                              2, 1);                           
+                                              3, 1);                           
                                                                                
   /* Add all the fields */                                                     
   pw->ldap_server = 
-    gnomemeeting_table_add_entry (table, _("XDAP Directory:"), "/apps/gnomemeeting/ldap/ldap_server", _("The XDAP server to register to."), 0);
+    gnomemeeting_table_add_entry (table, _("XDAP Directory:"),
+				  LDAP_KEY "ldap_server",
+				  _("The XDAP server to register to."), 0);
 
   pw->ldap =
-    gnomemeeting_table_add_toggle (table, _("Enable Registering"), "/apps/gnomemeeting/ldap/register", _("If enabled, permit to register to the selected LDAP directory"), 1, 0);
+    gnomemeeting_table_add_toggle (table, _("Enable Registering"),
+				   LDAP_KEY "register",
+				   _("If enabled, permit to register to the selected LDAP directory"), 1, 0);
 
+  pw->ldap_visible =
+    gnomemeeting_table_add_toggle (table, _("Show my info to other registered users"),
+				   LDAP_KEY "visible",
+				   _("If enabled, your registering information is shown to people browsing the ILS server. If disabled, you are not visible to users browsing the ILS directory, but they can still use the callto URL to call you."), 2, 0);
+  
 
   /* Add fields for the gatekeeper */
   table = gnomemeeting_vbox_add_table (vbox, _("Gatekeeper"), 5, 3);
