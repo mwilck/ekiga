@@ -288,7 +288,6 @@ gnomemeeting_calls_history_window_add_call (int i,
 {
   PString time;
 
-  gchar *call_time = NULL;
   gchar *gconf_key = NULL;
   gchar *call_data = NULL;
   
@@ -296,7 +295,6 @@ gnomemeeting_calls_history_window_add_call (int i,
   GSList *tmp = NULL;
   
   time = PTime ().AsString ("www dd MMM, hh:mm:ss");
-  call_time = gnomemeeting_from_iso88591_to_utf8 (time);
   
   switch (i) {
 
@@ -317,7 +315,7 @@ gnomemeeting_calls_history_window_add_call (int i,
   
   call_data =
     g_strdup_printf ("%s|%s|%s|%s|%s|%s",
-		     call_time ? call_time : "",
+		     (const char *) time ? (const char *) time : "",
 		     remote_user ? remote_user : "",
 		     ip ? ip : "",
 		     duration ? duration : "",

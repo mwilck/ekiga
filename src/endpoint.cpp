@@ -1216,13 +1216,13 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
     if (connection.HadAnsweredCall ())
       gnomemeeting_calls_history_window_add_call (RECEIVED_CALL, utf8_name,
 						  utf8_url,
-						  t.AsString (2),
+						  t.AsString (0),
 						  msg_reason,
 						  utf8_app);
     else
       gnomemeeting_calls_history_window_add_call (PLACED_CALL, utf8_name,
 						  GetLastCallAddress (),
-						  t.AsString (2),
+						  t.AsString (0),
 						  msg_reason,
 						  utf8_app);
 

@@ -1,3 +1,12 @@
+2004-01-22 Damien Sandras  <dsandras@seconix.com>
+
+	* gnomemeeting.schemas.in.in: Made the calls history window bigger.
+	
+	* src/endpoint.cpp, src/tools.cpp: Removed unneeded and buggy 
+	conversion to UTF-8 for the date in the history (thanks to 
+	Johnny Strom), and removed the decimals in the length of calls
+	(reported by Hakon Gunsen).
+	
 2004-01-22 Kilian Krause <kk@verfaction.de>
 
 	* src/chat_window.cpp, src/common.h: removes unneeded begin/end call
