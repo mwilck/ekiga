@@ -42,6 +42,25 @@
 
 #include "common.h"
 
+class GMURL
+{
+
+ public:
+
+  GMURL ();
+  GMURL (PString);
+  GMURL (const GMURL &);
+  BOOL IsEmpty ();
+  BOOL IsSupported ();
+  PString GetType ();
+  PString GetValidURL ();
+
+ private:
+  PString url;
+  PString type;
+  BOOL is_supported;
+};
+
 
 class GMURLHandler : public PThread
 {
@@ -84,7 +103,7 @@ public:
 protected:
 
   GmWindow *gw;
-  PString url;
+  GMURL url;
   BOOL answer_call;
   PMutex quit_mutex;
 };

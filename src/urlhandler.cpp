@@ -53,12 +53,91 @@ extern GnomeMeeting *MyApp;
 extern GtkWidget *gm;
 
 
+GMURL::GMURL ()
+{
+  is_supported = false;
+}
+
+
+GMURL::GMURL (PString c)
+{
+  url = c;
+
+  url.Replace ("//", "");
+  
+  if (url.Find ('#') == url.GetLength () - 1) {
+
+    url.Replace ("callto:", "");
+    url.Replace ("h323:", "");
+    type = PString ("shortcut");
+    is_supported = true;
+  }
+  else if (url.Find ("callto:") != P_MAX_INDEX) {
+
+    url.Replace ("callto:", "");
+    type = PString ("callto");
+    is_supported = true;
+  }
+  else if (url.Find ("h323:") != P_MAX_INDEX) {
+
+    url.Replace ("h323:", "");
+    type = PString ("h323");
+    is_supported = true;
+  }
+  else
+    is_supported = false;
+}
+
+
+GMURL::GMURL (const GMURL & u)
+{
+  is_supported = u.is_supported;
+  type = u.type;
+  url = u.url;
+}
+
+
+BOOL GMURL::IsEmpty ()
+{
+  return url.IsEmpty ();
+}
+
+
+BOOL GMURL::IsSupported ()
+{
+  return is_supported;
+}
+
+
+PString GMURL::GetType ()
+{
+  return type;
+}
+
+
+PString GMURL::GetValidURL ()
+{
+  PString valid_url;
+
+  if (type == "shortcut")
+    valid_url = url.Left (url.GetLength () -1);
+  else if (type == "callto"
+      && url.Find ('/') != P_MAX_INDEX
+      && url.Find ("type") == P_MAX_INDEX) 
+    valid_url = "callto:" + url + "+type=directory";
+  else if (is_supported)
+    valid_url = type + ":" + url;
+    
+  return valid_url;
+}
+
+
 /* The class */
 GMURLHandler::GMURLHandler (PString c)
   :PThread (1000, AutoDeleteThread)
 {
   gw = gnomemeeting_get_main_window (gm);
-  url = c;
+  url = GMURL (c);
 
   answer_call = FALSE;
   
@@ -87,14 +166,16 @@ GMURLHandler::~GMURLHandler ()
 
 void GMURLHandler::Main ()
 {
-  PString call_address;
-  PString tmp_url;
-  PString mail;
-  PString current_call_token;
-  gchar *msg = NULL;
   GmWindow *gw = NULL;
+
+  PString call_address;
+  PString current_call_token;
+
+  gchar *msg = NULL;
+  
   GMH323EndPoint *endpoint = NULL;
   H323Connection *con = NULL;
+
   GConfClient *client = NULL;
 
   PWaitAndSignal m(quit_mutex);
@@ -117,31 +198,26 @@ void GMURLHandler::Main ()
   }
   
   
-  /* If it is a speed dial (# at the end of the URL), then we use it */
-  url.Replace ("callto://", "");
-  if (url.Find ('#') == url.GetLength () - 1) {
+  /* If it is a shortcut (# at the end of the URL), then we use it */
+  if (url.GetType () == "shortcut") {
 
-    gchar *curl =       gnomemeeting_addressbook_get_url_from_speed_dial
-      (url.Left (url.GetLength () -1));
+    gchar *curl =
+      gnomemeeting_addressbook_get_url_from_speed_dial (url.GetValidURL ());
+
     if (curl)
       call_address = PString (curl);
   }
   else
-    call_address = url;
+    call_address = url.GetValidURL ();
+  
+  if (!url.IsSupported ()) {
+
+    gnomemeeting_threads_enter ();
+    gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Please specify a valid URL handler. Currently both h323: and callto: are supported."));
+    gnomemeeting_threads_leave ();
+  }
 
   
-  /* We replace callto:// by callto:, if nothing is replaced, we add callto: */
-  call_address.Replace ("callto://", "callto:");
-  if (call_address.Find ("callto:") == P_MAX_INDEX)
-    call_address = PString ("callto:") + call_address;
-
-  
-  /* We have a callto URL of the form : ils_server(:port)/mail */
-  if (call_address.Find ('/') != P_MAX_INDEX
-      && call_address.Find ("type") == P_MAX_INDEX) 
-    call_address = call_address + "+type=directory";
-    
-
   /* If the user is using MicroTelco, but G.723.1 is not available for
      a reason or another, we add the MicroTelco prefix if the URL seems
      to be a phone number */
