@@ -56,6 +56,9 @@
 #include "lib/gtk_menu_extensions.h"
 
 
+#include <gdk/gdkkeysyms.h>
+
+
 /* Declarations */
 
 typedef struct _GmTray {
