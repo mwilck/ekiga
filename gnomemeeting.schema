@@ -264,5 +264,16 @@
 	<long>The mixer to use for the device that is used to record audio</long>
       </locale>
     </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/audio_settings/jitter_buffer</key>
+      <applyto>/apps/gnomemeeting/audio_settings/jitter_buffer</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>int</type>
+      <default>50</default>
+      <locale name="C">
+	<short>Jitter buffer</short>
+	<long>Jitter buffer for audio reception in ms</long>
+      </locale>
+    </schema>
   </schemalist>
 </gconfschemafile>

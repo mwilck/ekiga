@@ -1227,8 +1227,10 @@ static void gnomemeeting_init_pref_window_codecs_settings (GtkWidget *notebook,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);			
 
+  int jitter_buffer_value = gconf_client_get_int (client, 
+						  "/apps/gnomemeeting/audio_settings/jitter_buffer", NULL);
   pw->jitter_buffer_spin_adj = (GtkAdjustment *) 
-    gtk_adjustment_new(opts->jitter_buffer, 
+    gtk_adjustment_new(jitter_buffer_value, 
 		       20.0, 5000.0, 
 		       1.0, 1.0, 1.0);
 
@@ -1239,6 +1241,11 @@ static void gnomemeeting_init_pref_window_codecs_settings (GtkWidget *notebook,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);			
 	
+  /* Connect the signal that updates the gconf cache */
+  gtk_signal_connect (GTK_OBJECT (pw->jitter_buffer_spin_adj), "value-changed",
+		      GTK_SIGNAL_FUNC (adjustment_changed), 
+		      (gpointer) "/apps/gnomemeeting/audio_settings/jitter_buffer");
+
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, jitter_buffer,
 			_("The jitter buffer delay to buffer audio calls (in ms)"), NULL);
@@ -1714,8 +1721,7 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook,
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
 
   gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
-					   "/apps/gnomemeeting/personnal_data/firstname",
-					   NULL);
+					   "/apps/gnomemeeting/personnal_data/firstname", NULL);
   if (gconf_string != NULL)
     gtk_entry_set_text (GTK_ENTRY (pw->firstname), gconf_string); 
   g_free (gconf_string);
@@ -1724,13 +1730,18 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook,
   gtk_tooltips_set_tip (tip, pw->firstname,
 			_("Enter your first name"), NULL);
 
+  /* We set the key as data to be able to get the data in order to block 
+     the signal in the gconf notifier */
+  gtk_object_set_data (GTK_OBJECT (pw->firstname), "gconf_key",
+		       (void *) "/app/gnomemeeting/personnal_data/firstname");
   gtk_signal_connect (GTK_OBJECT (pw->firstname), "changed",
 		      GTK_SIGNAL_FUNC (entry_changed), 
-		      (gpointer) "/apps/gnomemeeting/personnal_data/firstname");
+		      (gpointer) gtk_object_get_data (GTK_OBJECT (pw->firstname),
+						      "gconf_key"));
 
 
   /* Surname entry (LDAP) */
-  label = gtk_label_new (_("Last name:"));
+  label = gtk_label_new (_("Last Name:"));
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 1, 2,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -1743,8 +1754,7 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook,
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
 
   gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
-					   "/apps/gnomemeeting/personnal_data/lastname",
-					   NULL);
+					   "/apps/gnomemeeting/personnal_data/lastname",  NULL);
   if (gconf_string != NULL)
     gtk_entry_set_text (GTK_ENTRY (pw->surname), gconf_string); 
   g_free (gconf_string);
@@ -1753,9 +1763,14 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook,
   gtk_tooltips_set_tip (tip, pw->surname,
 			_("Enter your last name"), NULL);
 
+  /* We set the key as data to be able to get the data in order to block 
+     the signal in the gconf notifier */
+  gtk_object_set_data (GTK_OBJECT (pw->surname), "gconf_key",
+		       (void *) "/app/gnomemeeting/personnal_data/lastname");
   gtk_signal_connect (GTK_OBJECT (pw->surname), "changed",
 		      GTK_SIGNAL_FUNC (entry_changed), 
-		      (gpointer) "/apps/gnomemeeting/personnal_data/lastname");
+		      (gpointer) gtk_object_get_data (GTK_OBJECT (pw->surname),
+						      "gconf_key"));
 
 
   /* E-mail (LDAP) */
@@ -1772,8 +1787,7 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook,
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
 
   gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
-					   "/apps/gnomemeeting/personnal_data/mail",
-					   NULL);
+					   "/apps/gnomemeeting/personnal_data/mail", NULL);
   if (gconf_string != NULL)
     gtk_entry_set_text (GTK_ENTRY (pw->mail), gconf_string); 
   g_free (gconf_string);
@@ -1782,9 +1796,14 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook,
   gtk_tooltips_set_tip (tip, pw->mail,
 			_("Enter your e-mail address"), NULL);
 
+  /* We set the key as data to be able to get the data in order to block 
+     the signal in the gconf notifier */
+  gtk_object_set_data (GTK_OBJECT (pw->mail), "gconf_key",
+		       (void *) "/app/gnomemeeting/personnal_data/mail");
   gtk_signal_connect (GTK_OBJECT (pw->mail), "changed",
 		      GTK_SIGNAL_FUNC (entry_changed), 
-		      (gpointer) "/apps/gnomemeeting/personnal_data/mail");
+		      (gpointer) gtk_object_get_data (GTK_OBJECT (pw->mail),
+						      "gconf_key"));
 
 
   /* Comment (LDAP) */
@@ -1801,8 +1820,7 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook,
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
 
   gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
-					   "/apps/gnomemeeting/personnal_data/comment",
-					   NULL);
+					   "/apps/gnomemeeting/personnal_data/comment", NULL);
   if (gconf_string != NULL)
     gtk_entry_set_text (GTK_ENTRY (pw->comment), gconf_string); 
   g_free (gconf_string);
@@ -1811,9 +1829,15 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook,
   gtk_tooltips_set_tip (tip, pw->comment,
 			_("Here you can fill in a comment about yourself for ILS directories"), NULL);
 
+  /* We set the key as data to be able to get the data in order to block 
+     the signal in the gconf notifier */
+  gtk_object_set_data (GTK_OBJECT (pw->comment), "gconf_key",
+		       (void *) "/app/gnomemeeting/personnal_data/comment");
   gtk_signal_connect (GTK_OBJECT (pw->comment), "changed",
 		      GTK_SIGNAL_FUNC (entry_changed), 
-		      (gpointer) "/apps/gnomemeeting/personnal_data/comment");
+		      (gpointer) gtk_object_get_data (GTK_OBJECT (pw->comment),
+						      "gconf_key"));
+
 
   /* Location */
   label = gtk_label_new (_("Location:"));
@@ -1829,8 +1853,7 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook,
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
 
   gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
-					   "/apps/gnomemeeting/personnal_data/location",
-					   NULL);
+					   "/apps/gnomemeeting/personnal_data/location", NULL);
   if (gconf_string != NULL)
     gtk_entry_set_text (GTK_ENTRY (pw->location), gconf_string); 
   g_free (gconf_string);
@@ -1839,9 +1862,14 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook,
   gtk_tooltips_set_tip (tip, pw->location,
 			_("Where do you call from?"), NULL);
 
+  /* We set the key as data to be able to get the data in order to block 
+     the signal in the gconf notifier */
+  gtk_object_set_data (GTK_OBJECT (pw->location), "gconf_key",
+		       (void *) "/app/gnomemeeting/personnal_data/location");
   gtk_signal_connect (GTK_OBJECT (pw->location), "changed",
 		      GTK_SIGNAL_FUNC (entry_changed), 
-		      (gpointer) "/apps/gnomemeeting/personnal_data/location");
+		      (gpointer) gtk_object_get_data (GTK_OBJECT (pw->location),
+						      "gconf_key"));
 
 
   /* Try button */
@@ -2208,14 +2236,16 @@ static void gnomemeeting_init_pref_window_devices (GtkWidget *notebook,
 
   if (default_present)
     gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (pw->audio_player)->entry),
-			gconf_string);
-    
+			gconf_string);    
   g_free (gconf_string);
+
+  gtk_object_set_data (GTK_OBJECT (pw->audio_player), "gconf_key",
+		       (void *) "/app/gnomemeeting/devices/audio_player");
 
   gtk_signal_connect (GTK_OBJECT (GTK_COMBO (pw->audio_player)->entry), 
 		      "changed",
 		      GTK_SIGNAL_FUNC (entry_changed), 
-		      (gpointer) "/apps/gnomemeeting/devices/audio_player");
+		      (gpointer) gtk_object_get_data (GTK_OBJECT (pw->audio_player), "gconf_key"));
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, GTK_COMBO (pw->audio_player)->entry, 
@@ -2258,13 +2288,15 @@ static void gnomemeeting_init_pref_window_devices (GtkWidget *notebook,
   if (default_present)
     gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (pw->audio_recorder)->entry),
 			gconf_string);
-    
   g_free (gconf_string);
+
+  gtk_object_set_data (GTK_OBJECT (pw->audio_recorder), "gconf_key",
+		       (void *) "/app/gnomemeeting/devices/audio_recorder");
 
   gtk_signal_connect (GTK_OBJECT (GTK_COMBO (pw->audio_recorder)->entry), 
 		      "changed",
 		      GTK_SIGNAL_FUNC (entry_changed), 
-		      (gpointer) "/apps/gnomemeeting/devices/audio_recorder");
+		      (gpointer) gtk_object_get_data (GTK_OBJECT (pw->audio_recorder), "gconf_key"));
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, GTK_COMBO (pw->audio_recorder)->entry, 
@@ -2285,21 +2317,20 @@ static void gnomemeeting_init_pref_window_devices (GtkWidget *notebook,
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
 
   gconf_string =  gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/audio_player_mixer", NULL);
-
   if (gconf_string != NULL)
     gtk_entry_set_text (GTK_ENTRY (pw->audio_player_mixer), 
 			gconf_string);
-
   g_free (gconf_string);
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->audio_player_mixer,
 			_("The audio mixer to use for player settings"), NULL);
 
-  gtk_signal_connect (GTK_OBJECT (pw->audio_player_mixer), 
-		      "changed",
+  gtk_object_set_data (GTK_OBJECT (pw->audio_player_mixer), "gconf_key",
+		       (void *) "/app/gnomemeeting/devices/audio_player_mixer");
+  gtk_signal_connect (GTK_OBJECT (pw->audio_player_mixer), "changed",
 		      GTK_SIGNAL_FUNC (entry_changed), 
-		      (gpointer) "/apps/gnomemeeting/devices/audio_player_mixer");
+		      (gpointer) gtk_object_get_data (GTK_OBJECT (pw->audio_player_mixer), "gconf_key"));
 
 
   label = gtk_label_new (_("Recorder Mixer:"));
@@ -2315,7 +2346,6 @@ static void gnomemeeting_init_pref_window_devices (GtkWidget *notebook,
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
 
   gconf_string =  gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/audio_recorder_mixer", NULL);
-
   if (gconf_string != NULL)
     gtk_entry_set_text (GTK_ENTRY (pw->audio_recorder_mixer), 
 			gconf_string);
@@ -2326,10 +2356,11 @@ static void gnomemeeting_init_pref_window_devices (GtkWidget *notebook,
   gtk_tooltips_set_tip (tip, pw->audio_recorder_mixer,
 			_("The audio mixer to use for recorder settings"), NULL);
 
-  gtk_signal_connect (GTK_OBJECT (pw->audio_recorder_mixer), 
-		      "changed",
+  gtk_object_set_data (GTK_OBJECT (pw->audio_recorder_mixer), "gconf_key",
+		       (void *) "/app/gnomemeeting/devices/audio_recorder_mixer");
+  gtk_signal_connect (GTK_OBJECT (pw->audio_recorder_mixer), "changed",
 		      GTK_SIGNAL_FUNC (entry_changed), 
-		      (gpointer) "/apps/gnomemeeting/devices/audio_recorder_mixer");
+		      (gpointer) gtk_object_get_data (GTK_OBJECT (pw->audio_recorder_mixer), "gconf_key"));
 
 
   /* Video device */

@@ -73,7 +73,7 @@ int gnomemeeting_volume_get (char *mixer, int source, int *volume)
 
   close (mixerfd);
 
-  return 0;
+  return mixerfd;
 }
 
 

@@ -54,7 +54,8 @@ int gnomemeeting_volume_set (char *, int, int *);
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Get the volume for the given source of the given mixer
+ * BEHAVIOR     :  Get the volume for the given source of the given mixer, returns
+ *                 -1 if error.
  * PRE          :  First param = mixer, Second = source (0 : audio,
  *                 1 :mic), Third, the volume
  */

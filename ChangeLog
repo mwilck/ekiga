@@ -1,3 +1,16 @@
+2001-12-23  Damien Sandras  <dsandras@seconix.com>
+
+	* Merry christmas :-)
+	* src/config.cpp: Made changes to be able to use gconftool --set
+	for all the LDAP fields, for the audio mixers and for the audio
+	recording and playing devices. Added error detection for wrong
+	values that could be set using gconftool (impossible to have
+	wrong values with the UI).
+	* src/pref_window.cpp, src/config.cpp: Added gconf support and
+	on the fly change for the jitter_buffer (needs my openh323 patch).
+	* src/audio.cpp, src/audio.h: gnomemeeting_volume_get returns -1 if
+	error.
+	
 2001-12-24  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* src/Makefile.am (gnomemeeting_SOURCES): Just a typo

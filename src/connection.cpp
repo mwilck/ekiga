@@ -39,6 +39,8 @@
 #include "common.h"
 #include "misc.h"
 
+#include <gconf/gconf-client.h>
+
 #define new PNEW
 
 
@@ -64,7 +66,7 @@ GMH323Connection::GMH323Connection (GMH323EndPoint & ep,
   transmitted_video = NULL;
   opened_channels = 0;
 
-  SetMaxAudioDelayJitter (opts->jitter_buffer);
+  SetMaxAudioDelayJitter (gconf_client_get_int (gconf_client_get_default (), "/apps/gnomemeeting/audio_settings/jitter_buffer", NULL));
 }
 
 

@@ -48,9 +48,12 @@ static void toggle_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static void entry_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static void tr_vq_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static void tr_ub_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
+static void jitter_buffer_changed_nt (GConfClient*, guint, GConfEntry *, 
+				      gpointer);
 static void register_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static void audio_mixer_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
-static void audio_device_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
+static void audio_device_changed_nt (GConfClient *, guint, GConfEntry *, 
+				     gpointer);
 static void gnomemeeting_update_pref_window_sensitivity (void);
 
 
@@ -129,6 +132,32 @@ static void tr_ub_changed_nt (GConfClient *client, guint cid,
 }
 
 
+/* DESCRIPTION  :  This callback is called when the jitter buffer needs to be 
+ *                 changed.
+ * BEHAVIOR     :  It updates the widget and the value.
+ * PRE          :  /
+ */
+static void jitter_buffer_changed_nt (GConfClient *client, guint cid, 
+				      GConfEntry *entry, gpointer data)
+{
+  GM_pref_window_widgets *pw = (GM_pref_window_widgets *) data;
+  H323Connection *connection = NULL;
+
+  if (entry->value->type == GCONF_VALUE_INT) {
+   
+    /* We set the new value for tr_fps_spin_adj */
+    GTK_ADJUSTMENT (pw->tr_ub_spin_adj)->value = 
+      gconf_value_get_int (entry->value);
+
+    /* We update the current value */
+    connection = MyApp->Endpoint ()->GetCurrentConnection ();
+    
+    if (connection != NULL)
+      connection->SetMaxAudioDelayJitter (gconf_value_get_int (entry->value));
+  }
+}
+
+
 /* DESCRIPTION  :  Generic notifiers for entries.
  *                 This callback is called when a specific key of
  *                 the gconf database associated with a toggle changes.
@@ -165,13 +194,13 @@ static void entry_changed_nt (GConfClient *client, guint cid,
   if (entry->value->type == GCONF_VALUE_STRING) {
    
     /* We set the new value for the widget */
-    /*gtk_signal_handler_block_by_func (GTK_OBJECT (e),
+    gtk_signal_handler_block_by_func (GTK_OBJECT (e),
 				      GTK_SIGNAL_FUNC (entry_changed), 
-				      (gpointer) "/apps/gnomemeeting/personnal_data/firstname"); */
-    cout << "Lumi says: Please fix me" << endl << flush;
-    /*gtk_signal_handler_unblock_by_func (GTK_OBJECT (e),
+				      (gpointer) gtk_object_get_data (GTK_OBJECT (e), "gconf_key")); 
+    gtk_entry_set_text (GTK_ENTRY (e), gconf_value_get_string (entry->value));
+    gtk_signal_handler_unblock_by_func (GTK_OBJECT (e),
 					GTK_SIGNAL_FUNC (entry_changed), 
-					(gpointer) "/apps/gnomemeeting/personnal_data/firstname");*/
+					(gpointer) gtk_object_get_data (GTK_OBJECT (e), "gconf_key")); 
   
   }
 }
@@ -179,7 +208,10 @@ static void entry_changed_nt (GConfClient *client, guint cid,
 
 /* DESCRIPTION  :  This notifier is called when the gconf database data
  *                 associated with the mixers changes.
- * BEHAVIOR     :  It updates the widget, updates the sliders.
+ * BEHAVIOR     :  It updates the widget, updates the sliders, if the user
+ *                 erroneously used gconftool to put a wrong value in the entry
+ *                 a popup will be displayed and the widget updated to the wrong
+ *                 value, but there will be no other action.
  * PRE          :  /
  */
 static void audio_mixer_changed_nt (GConfClient *client, guint cid, 
@@ -193,60 +225,68 @@ static void audio_mixer_changed_nt (GConfClient *client, guint cid,
   gchar *player_mixer = NULL, *recorder_mixer = NULL;
   gchar *text = NULL;
 
-  /* We need to test if the string entry can be valid */ 
-  if ((entry->value->type == GCONF_VALUE_STRING)
-      && ((!strcmp (gconf_value_get_string (entry->value), "/dev/mixer"))
-      || (!strcmp (gconf_value_get_string (entry->value), "/dev/mixer3"))
-      || (!strcmp (gconf_value_get_string (entry->value), "/dev/mixer2"))
-      || (!strcmp (gconf_value_get_string (entry->value), "/dev/mixer1"))
-      || (!strcmp (gconf_value_get_string (entry->value), "/dev/mixer0")))) {
-   
-
-    /* First we check if the device is in the combo list and
-       add it as default in the pref window if he is present */
-    /* FIX ME
-      gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (pw->audio_player)->entry),
-                        gconf_value_get_string (entry->value));
-    */
-
-    player_mixer = gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_player_mixer", NULL);
-    recorder_mixer = gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_recorder_mixer", NULL);
-
-    player = gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_player", NULL);
-    recorder = gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_recorder", NULL);
-
-
-    /* Get the volumes for the mixers */
-    gnomemeeting_volume_get (player_mixer, 0, &vol_play);
-    gnomemeeting_volume_get (recorder_mixer, 1, &vol_rec);
-
-    gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_play),
-                              vol_play / 257);
-    gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_rec),
-                              vol_rec / 257);
-
-    /* Set recording source and set micro to record */
-    //    MyApp->Endpoint()->SetSoundChannelPlayDevice (player);
-    //MyApp->Endpoint()->SetSoundChannelRecordDevice (recorder);
-
-    /* Translators: This is shown in the history. */
-    text = g_strdup_printf (_("Set Audio Mixer for player to %s"),
-                            player_mixer);
-    gnomemeeting_log_insert (text);
-    g_free (text);
-
-    /* Translators: This is shown in the history. */
-    text = g_strdup_printf (_("Set Audio Mixer for recorder to %s"),
-                            recorder_mixer);
-    gnomemeeting_log_insert (text);
-    g_free (text);
-
-    gnomemeeting_set_recording_source (recorder_mixer, 0);
+  if (entry->value->type == GCONF_VALUE_STRING) {
   
-    g_free (player);
-    g_free (recorder);
-    g_free (player_mixer);
-    g_free (recorder_mixer);
+    /* Update the GUI */
+    gtk_signal_handler_block_by_func (GTK_OBJECT (e),
+				      GTK_SIGNAL_FUNC (entry_changed), 
+				      (gpointer) gtk_object_get_data (GTK_OBJECT (e), "gconf_key")); 
+    gtk_entry_set_text (GTK_ENTRY (e), gconf_value_get_string (entry->value));
+    gtk_signal_handler_unblock_by_func (GTK_OBJECT (e),
+					GTK_SIGNAL_FUNC (entry_changed), 
+					(gpointer) gtk_object_get_data (GTK_OBJECT (e), "gconf_key")); 
+    
+    /* We need to test if the string entry can be valid */ 
+    if ((!strcmp (gconf_value_get_string (entry->value), "/dev/mixer"))
+	|| (!strcmp (gconf_value_get_string (entry->value), "/dev/mixer3"))
+	|| (!strcmp (gconf_value_get_string (entry->value), "/dev/mixer2"))
+	|| (!strcmp (gconf_value_get_string (entry->value), "/dev/mixer1"))
+	|| (!strcmp (gconf_value_get_string (entry->value), "/dev/mixer0"))) {
+      
+      player_mixer = gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_player_mixer", NULL);
+      recorder_mixer = gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_recorder_mixer", NULL);
+
+      player = gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_player", NULL);
+      recorder = gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_recorder", NULL);
+
+      /* Get the volumes for the mixers */
+      gnomemeeting_volume_get (player_mixer, 0, &vol_play);
+      gnomemeeting_volume_get (recorder_mixer, 1, &vol_rec);
+
+      gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_play),
+				vol_play / 257);
+      gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_rec),
+				vol_rec / 257);
+
+      /* Set recording source and set micro to record */
+      /* Translators: This is shown in the history. */
+      text = g_strdup_printf (_("Set Audio Mixer for player to %s"),
+			      player_mixer);
+      gnomemeeting_log_insert (text);
+      g_free (text);
+      
+      /* Translators: This is shown in the history. */
+      text = g_strdup_printf (_("Set Audio Mixer for recorder to %s"),
+			      recorder_mixer);
+      gnomemeeting_log_insert (text);
+      g_free (text);
+      
+      gnomemeeting_set_recording_source (recorder_mixer, 0);
+      
+      g_free (player);
+      g_free (recorder);
+      g_free (player_mixer);
+      g_free (recorder_mixer);
+    }
+    else {
+      
+      gchar *msg = g_strdup_printf (_("%s doesn't seem to be a valid mixer, please fix this!"), gconf_value_get_string (entry->value));
+      GtkWidget *msg_box = gnome_message_box_new (msg, GNOME_MESSAGE_BOX_ERROR, 
+						  "OK", NULL);
+      gtk_widget_show (msg_box);
+
+      g_free (msg);
+    }
   }
 }
 
@@ -254,7 +294,9 @@ static void audio_mixer_changed_nt (GConfClient *client, guint cid,
 /* DESCRIPTION  :  This notifier is called when the gconf database data
  *                 associated with the audio devices changes.
  * BEHAVIOR     :  It updates the widget, updates the endpoint and displays
- *                 a message in the history.
+ *                 a message in the history. If the device is not valid,
+ *                 i.e. the user erroneously used gconftool, a message is
+ *                 displayed, and the entry is updated, but no other action.
  * PRE          :  /
  */
 static void audio_device_changed_nt (GConfClient *client, guint cid, 
@@ -262,31 +304,59 @@ static void audio_device_changed_nt (GConfClient *client, guint cid,
 {
   gchar *text;
   gchar *player = NULL, *recorder = NULL;
-  
+  GtkWidget *e = GTK_WIDGET (data);
+
   if (entry->value->type = GCONF_VALUE_STRING) {
 
-    player = gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_player", NULL);
-    recorder = gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_recorder", NULL);
+    /* Update the GUI */
+    gtk_signal_handler_block_by_func (GTK_OBJECT (GTK_COMBO (e)->entry),
+				      GTK_SIGNAL_FUNC (entry_changed), 
+				      (gpointer) gtk_object_get_data (GTK_OBJECT (e), "gconf_key")); 
+    gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (e)->entry), 
+			gconf_value_get_string (entry->value));
+    gtk_signal_handler_unblock_by_func (GTK_OBJECT (GTK_COMBO (e)->entry),
+					GTK_SIGNAL_FUNC (entry_changed), 
+					(gpointer) gtk_object_get_data (GTK_OBJECT (e), "gconf_key")); 
+    
+    if ((!strcmp ("/dev/dsp", gconf_value_get_string (entry->value))) 
+	||(!strcmp ("/dev/dsp0", gconf_value_get_string (entry->value))) 
+	||(!strcmp ("/dev/dsp1", gconf_value_get_string (entry->value))) 
+	||(!strcmp ("/dev/dsp2", gconf_value_get_string (entry->value))) 
+	||(!strcmp ("/dev/dsp3", gconf_value_get_string (entry->value))) 
+	||(!strcmp ("loopback", gconf_value_get_string (entry->value)))) {
 
-    /* Set recording source and set micro to record */
-    if (player != NULL)
-      MyApp->Endpoint()->SetSoundChannelPlayDevice (player);
-    if (recorder != NULL)
-      MyApp->Endpoint()->SetSoundChannelRecordDevice (recorder);
+      player = gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_player", NULL);
+      recorder = gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_recorder", NULL);
+      
+      /* Set recording source and set micro to record */
+      if (player != NULL)
+	MyApp->Endpoint()->SetSoundChannelPlayDevice (player);
+      if (recorder != NULL)
+	MyApp->Endpoint()->SetSoundChannelRecordDevice (recorder);
+      
+      /* Translators: This is shown in the history. */
+      text = g_strdup_printf (_("Set Audio Player to %s"),
+			      player);
+      gnomemeeting_log_insert (text);
+      g_free (text);
+      
+      /* Translators: This is shown in the history. */
+      text = g_strdup_printf (_("Set Audio Recorder to %s"),
+			      recorder);
+      gnomemeeting_log_insert (text);
+      g_free (text);
+      g_free (player);
+      g_free (recorder);
+    }
+    else {
 
-    /* Translators: This is shown in the history. */
-    text = g_strdup_printf (_("Set Audio Player to %s"),
-                            player);
-    gnomemeeting_log_insert (text);
-    g_free (text);
-
-    /* Translators: This is shown in the history. */
-    text = g_strdup_printf (_("Set Audio Recorder to %s"),
-                            recorder);
-    gnomemeeting_log_insert (text);
-    g_free (text);
-    g_free (player);
-    g_free (recorder);
+      gchar *msg = g_strdup_printf (_("%s doesn't seem to be a valid device, please fix this!"), gconf_value_get_string (entry->value));
+      GtkWidget *msg_box = gnome_message_box_new (msg, GNOME_MESSAGE_BOX_ERROR, 
+						  "OK", NULL);
+      gtk_widget_show (msg_box);
+      
+      g_free (msg);
+    }
   }
 }
 
@@ -403,6 +473,8 @@ void gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/tr_vq",
 			   tr_vq_changed_nt, pw, 0, 0);
 
+  gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/jitter_buffer", jitter_buffer_changed_nt, pw, 0, 0);
+
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/tr_ub",
 			   tr_ub_changed_nt, pw, 0, 0);
 
@@ -415,7 +487,7 @@ void gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, "/apps/gnomemeeting/personnal_data/mail",
 			   entry_changed_nt, pw->mail, 0, 0);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/personnal_data/surname",
+  gconf_client_notify_add (client, "/apps/gnomemeeting/personnal_data/lastname",
 			   entry_changed_nt, pw->surname, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/personnal_data/location",
