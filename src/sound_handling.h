@@ -45,6 +45,7 @@
 #else
 #include <machine/soundcard.h>
 #endif
+#endif
 
 #include <sys/ioctl.h>
 #include <unistd.h>
