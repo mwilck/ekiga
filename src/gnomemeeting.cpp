@@ -359,9 +359,8 @@ int main (int argc, char ** argv, char ** envp)
 
   gtk_timeout_add (1000, (GtkFunction) AppbarUpdate, 
  		   rtp);
-
 //   gtk_timeout_add (10000, (GtkFunction) StressTest, 
-//     		   NULL);
+//      		   NULL);
 
   /* The GTK loop */
   gtk_main ();

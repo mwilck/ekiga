@@ -1,3 +1,20 @@
+2002-03-04  Damien Sandras  <dsandras@seconix.com>	
+
+	* src/config.cpp: The control panel is shown when you change the 
+	corresponding option in the view menu.
+
+	* src/endpoint.cpp: Added mutexes to protect variables changes. Cleaned some
+	code.
+
+	* src/gatekeeper.cpp: Do not modify the button when gatekeeper has changed.
+
+	* src/gnomemeeting.cpp: /
+
+	* src/menu.cpp: Fixed the view menu stuff to only update the gconf setting
+	for the menu_item that becomes active and not the one that becomes inactive.
+
+	* src/videograbber.cpp: Optimized mutexes usage.
+	
 2002-03-03  Damien Sandras  <dsandras@seconix.com>	
 
 	* src/videograbber.cpp: Added mutexes around vars that can be modified

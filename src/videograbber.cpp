@@ -428,7 +428,6 @@ void GMVideoGrabber::VGOpen (void)
 
   device_mutex.Wait ();
 
-
   var_mutex.Wait ();
   opened = is_opened;
   var_mutex.Signal ();

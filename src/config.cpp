@@ -1481,38 +1481,41 @@ static void register_changed_nt (GConfClient *client, guint cid,
 /* Is able to update the widgets */
 static gboolean notebook_info_changed (gpointer data)
 {
- gdk_threads_enter ();
- 
- GnomeUIInfo *notebook_view_uiinfo =
-   (GnomeUIInfo *) gtk_object_get_data (GTK_OBJECT (gm), 
-					"notebook_view_uiinfo");
- GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
- 
- int current_page = (int) data;
+  int current_page = (int) data;
 
- if (current_page < 0 || current_page > 2) {
-   gdk_threads_leave ();
-   return FALSE;
- }
+  gdk_threads_enter ();
 
- gtk_signal_handler_block_by_data (GTK_OBJECT (gw->main_notebook), 
-				   gw->main_notebook);
- gtk_notebook_set_page (GTK_NOTEBOOK (gw->main_notebook),
-			current_page);
- gtk_signal_handler_unblock_by_data (GTK_OBJECT (gw->main_notebook),
-				     gw->main_notebook);
+  GnomeUIInfo *notebook_view_uiinfo =
+    (GnomeUIInfo *) gtk_object_get_data (GTK_OBJECT (gm), 
+					 "notebook_view_uiinfo");
+  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
 
+  if (!GTK_WIDGET_VISIBLE (gw->main_notebook))
+    gconf_client_set_bool (gconf_client_get_default (), "/apps/gnomemeeting/view/show_control_panel", 1, NULL);
+  
+  if (current_page < 0 || current_page > 2) {
+    gdk_threads_leave ();
+    return FALSE;
+  }
 
- for (int i = 0; i < 3; i++) {
+  gtk_signal_handler_block_by_data (GTK_OBJECT (gw->main_notebook), 
+				    gw->main_notebook);
+  gtk_notebook_set_page (GTK_NOTEBOOK (gw->main_notebook),
+			 current_page);
+  gtk_signal_handler_unblock_by_data (GTK_OBJECT (gw->main_notebook),
+				      gw->main_notebook);
+  
+  for (int i = 0; i < 3; i++) {
+    
+    GTK_CHECK_MENU_ITEM (notebook_view_uiinfo[i].widget)->active =
+      (current_page == i);
+    gtk_widget_draw (GTK_WIDGET (GTK_CHECK_MENU_ITEM (notebook_view_uiinfo[i].widget)), NULL);
 
-   GTK_CHECK_MENU_ITEM (notebook_view_uiinfo[i].widget)->active =
-     (current_page == i);
-   gtk_widget_draw (GTK_WIDGET (GTK_CHECK_MENU_ITEM (notebook_view_uiinfo[i].widget)), NULL);
- }
-
- gdk_threads_leave ();
- 
- return FALSE;
+  }
+  
+  gdk_threads_leave ();
+  
+  return FALSE;
 }
 
 

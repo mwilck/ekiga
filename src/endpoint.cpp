@@ -234,13 +234,21 @@ void GMH323EndPoint::RemoveAllCapabilities ()
 
 void GMH323EndPoint::SetCallingState (int i)
 {
+  var_mutex.Wait ();
   calling_state = i;
+  var_mutex.Signal ();
 }
 
 
 int GMH323EndPoint::GetCallingState (void)
 {
-  return calling_state;
+  int cstate;
+
+  var_mutex.Wait ();
+  cstate = calling_state;
+  var_mutex.Signal ();
+
+  return cstate;
 }
 
 
@@ -432,7 +440,13 @@ H323Connection *GMH323EndPoint::CreateConnection (unsigned callReference)
 
 H323Connection *GMH323EndPoint::GetCurrentConnection ()
 {
-  return current_connection;
+  H323Connection *con;
+
+  var_mutex.Wait ();
+  con = current_connection;
+  var_mutex.Signal ();
+
+  return con;
 }
 
 
@@ -522,13 +536,21 @@ void GMH323EndPoint::SetCurrentConnection (H323Connection *c)
 
 void GMH323EndPoint::SetCurrentCallToken (PString s)
 {
+  var_mutex.Wait ();
   current_call_token = s;
+  var_mutex.Signal ();
 }
 
 
 PString GMH323EndPoint::GetCurrentCallToken ()
 {
-  return current_call_token;
+  PString c;
+
+  var_mutex.Wait ();
+  c = current_call_token;
+  var_mutex.Signal ();
+
+  return c;
 }
 
 
@@ -562,7 +584,13 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   gnomemeeting_threads_leave ();
 
   /* if we are already in a call */
-  if (!(GetCurrentCallToken ().IsEmpty ())) {
+  if (!(GetCurrentCallToken ().IsEmpty ())||(GetCallingState () != 0)) {
+
+    gnomemeeting_threads_enter ();
+    gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
+		       _("Auto Rejecting Incoming Call: Line is busy"));
+    gnomemeeting_log_insert (_("Auto Rejecting Incoming Call: Line is busy"));
+    gnomemeeting_threads_leave ();
 
     connection.ClearCall(H323Connection::EndedByLocalBusy);   
     return FALSE;
@@ -693,7 +721,7 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   
   gnomemeeting_threads_leave ();
 
-  calling_state = 2;
+  SetCallingState (2);
 
   g_free (msg);
 }
@@ -731,6 +759,16 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 		       _("Remote party did not accept your call"));
     break;
 
+  case H323Connection::EndedByRemoteBusy :
+    gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
+		       _("Remote party was busy"));
+    break;
+
+  case H323Connection::EndedByRemoteCongestion :
+    gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
+		       _("Congested link to remote party"));
+    break;
+
   case H323Connection::EndedByNoAnswer :
     gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
 		       _("Remote party did not answer your call"));
@@ -765,31 +803,22 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
     gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
 		       _("Call ended: insufficient bandwidth"));
     break;
-    
-  case H323Connection::EndedByConnectFail :
-    switch (connection.GetSignallingChannel ()->GetErrorNumber ()) {
 
-    case ENETUNREACH :
-      gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-			 _("Remote party could not be reached"));
-      break;
-      
-    case ETIMEDOUT :
-      gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-			 _("Remote party is not online"));
-      break;
-      
-    case ECONNREFUSED :
-      gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-			 _("No phone running for remote party"));
-      break;
-      
-    default :
-      gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-			 _("Transport error calling"));
-    }
+  case H323Connection::EndedByUnreachable :
+    gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
+		       _("Remote party could not be reached"));
     break;
-    
+
+  case H323Connection::EndedByHostOffline :
+    gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
+		       _("Remote partt is offline"));
+    break;
+
+  case H323Connection::EndedByConnectFail :
+    gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
+		       _("Transport Error calling"));
+    break;
+
   default :
     gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
 		       _("Call completed"));
@@ -805,6 +834,20 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   if (exit == 1) 
     return;
 
+  /* Reset the Video Grabber, if preview, else close it */
+  GMVideoGrabber *vg = (GMVideoGrabber *) video_grabber;
+
+  if (gconf_client_get_bool (client, "/apps/gnomemeeting/devices/video_preview", 0)) {
+
+    vg->Close (TRUE);
+    vg->Open (TRUE, TRUE); /* Grab and do a synchronous opening in this thread */
+  }
+  else {
+    
+    if (vg->IsOpened ())
+      vg->Close ();
+  }
+  
   gnomemeeting_threads_enter ();
   gtk_entry_set_text (GTK_ENTRY (gw->remote_name), "");
   gtk_editable_delete_text (GTK_EDITABLE (gw->chat_text),
@@ -858,20 +901,7 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   /* Try to update the config if some settings were changed during the call */
   UpdateConfig ();
-    
-
-  /* Reset the Video Grabber, if preview, else close it */
-  GMVideoGrabber *vg = (GMVideoGrabber *) video_grabber;
-
-  if (gconf_client_get_bool (client, "/apps/gnomemeeting/devices/video_preview", 0))
-    vg->Reset ();
-  else {
-
-    if (vg->IsOpened ())
-      vg->Close ();
-  }
-
-  
+   
   /* Put esd into normal mode */
   esd_client = esd_open_sound (NULL);
   esd_resume (esd_client);
@@ -945,15 +975,14 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
      if OpenVideoDevice is called for the encoding */
   if ((gconf_client_get_bool (client, "/apps/gnomemeeting/video_settings/enable_video_transmission", 0))&&(isEncoding)) {
 
-     /* Quick hack cause it seems that the video preview can give problems */
      if (vg->IsOpened ())
-       vg->Close (TRUE);
-
+       vg->Stop ();
+     
      if (!vg->IsOpened ())
        vg->Open (FALSE, TRUE); /* Do not grab, synchronous opening */
-
+     
      gnomemeeting_threads_enter ();
-
+     
      /* Here, the grabber is opened */
      PVideoChannel *channel = vg->GetVideoChannel ();
      transmitted_video_device = vg->GetEncodingDevice ();

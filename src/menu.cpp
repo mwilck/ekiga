@@ -101,10 +101,13 @@ static void view_menu_toggles_changed (GtkWidget *widget, gpointer data)
     (GnomeUIInfo *) gtk_object_get_data (GTK_OBJECT (gm),
                                          "notebook_view_uiinfo");
 
-  for (int i = 0; i < 3; i++) {
+  /* Only do something when a new CHECK_MENU_ITEM becomes active,
+     not when it becomes inactive */
+  if (GTK_CHECK_MENU_ITEM (widget)->active) {
 
-    if (GTK_CHECK_MENU_ITEM (notebook_view_uiinfo[i].widget)->active)
-      gconf_client_set_int (client, (gchar *) data, i, NULL);
+    for (int i = 0; i < 3; i++) 
+      if (GTK_CHECK_MENU_ITEM (notebook_view_uiinfo[i].widget)->active) 
+	gconf_client_set_int (client, (gchar *) data, i, NULL);
   }
 }
 

@@ -139,10 +139,6 @@ void GMH323Gatekeeper::Main ()
     }
 
     g_free (gconf_string);
-
-    gnomemeeting_threads_enter ();
-    gtk_widget_set_sensitive (GTK_WIDGET (pw->gatekeeper_update_button), FALSE);
-    gnomemeeting_threads_leave ();
   }
   
 
@@ -188,10 +184,6 @@ void GMH323Gatekeeper::Main ()
       
       g_free (msg);
     }
-
-    gnomemeeting_threads_enter ();
-    gtk_widget_set_sensitive (GTK_WIDGET (pw->gatekeeper_update_button), FALSE);
-    gnomemeeting_threads_leave ();
   }
   
 
@@ -220,9 +212,5 @@ void GMH323Gatekeeper::Main ()
       gtk_widget_show (msg_box);
       gnomemeeting_threads_leave ();
     }
-
-    gnomemeeting_threads_enter ();
-    gtk_widget_set_sensitive (GTK_WIDGET (pw->gatekeeper_update_button), FALSE);
-    gnomemeeting_threads_leave ();
   }
 }

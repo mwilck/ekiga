@@ -328,6 +328,8 @@ class GMH323EndPoint : public H323EndPoint
   PThread *ils_client;
   PThread *video_grabber;
   GConfClient *client;
+
+  PMutex var_mutex;
 };
 
 #endif
