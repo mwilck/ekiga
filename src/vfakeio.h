@@ -182,10 +182,9 @@ class GMH323FakeVideoInputDevice : public PVideoInputDevice
   
   
   PBYTEArray data;
-  GdkPixbuf *data_pix;
-  GdkPixbuf *logo_pix;
-  gchar *video_image;
-  bool picture;
+  GdkPixbuf *orig_pix;
+  GdkPixbuf *cached_pix;
+  bool moving;
   int rgb_increment;
   int pos;
   int increment;

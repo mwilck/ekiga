@@ -44,69 +44,84 @@
 #include <ptlib/vconvert.h>
 
 #include "misc.h"
+#include "gconf_widgets_extensions.h"
 
 #include "../pixmaps/text_logo.xpm"
 
 
 GMH323FakeVideoInputDevice::GMH323FakeVideoInputDevice ()
 {
-  data_pix = NULL;
-  logo_pix = NULL;
-
-  //  if (image)
-  //video_image = g_strdup (image);
-  //else
-  video_image = NULL;
-
+  orig_pix = NULL;
+  cached_pix = NULL;
+	
   pos = 0;
   increment = 1;
 
-  picture = false;
-  
-  gnomemeeting_threads_enter ();
-
-  logo_pix = 
-    gdk_pixbuf_new_from_xpm_data ((const char **) text_logo_xpm);
-
-  gnomemeeting_threads_leave ();
+  moving = false;
 }
 
 
 GMH323FakeVideoInputDevice::~GMH323FakeVideoInputDevice ()
 {
-  gnomemeeting_threads_enter ();
-
-  if (data_pix)
-    g_object_unref (G_OBJECT (data_pix));
-
-  if (logo_pix)
-    g_object_unref (G_OBJECT (logo_pix));
-
-  gnomemeeting_threads_leave ();
-
-  g_free (video_image);
+  Close ();
 }
 
 
 
 BOOL
-GMH323FakeVideoInputDevice::Open (const PString &,
+GMH323FakeVideoInputDevice::Open (const PString &name,
 				  BOOL start_immediate)
 {
-  return TRUE;
+  gchar *image_name = NULL;
+    
+  if (IsOpen ())
+    return FALSE;
+  
+  if (name == "MovingLogo") {
+  
+    moving = true;
+    orig_pix = gdk_pixbuf_new_from_xpm_data ((const char **) text_logo_xpm);
+    
+    return TRUE;
+  }
+
+  /* from there on, we're in the static picture case! */
+  moving = false;
+  
+  image_name = gconf_get_string (VIDEO_DEVICES_KEY "image");
+  orig_pix =  gdk_pixbuf_new_from_file (image_name, NULL);
+  g_free (image_name);
+
+  if (orig_pix) 
+    return TRUE;
+
+  return FALSE;
 }
 
 
 BOOL
 GMH323FakeVideoInputDevice::IsOpen ()
 {
-  return TRUE;
+  if (orig_pix) 
+    return TRUE;
+  
+  return FALSE;
 }
 
 
 BOOL
 GMH323FakeVideoInputDevice::Close ()
 {
+  gnomemeeting_threads_enter ();
+  if (orig_pix != NULL)
+    g_object_unref (G_OBJECT (orig_pix));
+  if (cached_pix != NULL)
+    g_object_unref (G_OBJECT (cached_pix));
+  gnomemeeting_threads_leave ();
+  
+  orig_pix = NULL;
+  cached_pix = NULL;
+  
   return TRUE;
 }
 
@@ -184,61 +199,56 @@ GMH323FakeVideoInputDevice::GetFrameData (BYTE *a, PINDEX *i)
 
 BOOL GMH323FakeVideoInputDevice::GetFrameDataNoDelay (BYTE *frame, PINDEX *i)
 {
-  GdkPixbuf *data_pix_tmp = NULL;
-
   guchar *data = NULL;
 
   unsigned width = 0;
   unsigned height = 0;
 
+  int orig_width = 0;
+  int orig_height = 0;
+  
   GetFrameSize (width, height);
 
   gnomemeeting_threads_enter ();
-  if ((video_image)&&(!data_pix)) {
+  
+  if (!cached_pix) {
+    
+    cached_pix = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8,
+                                 width, height);
+    gdk_pixbuf_fill (cached_pix, 0x000000FF); /* Opaque black */
 
-    data_pix_tmp =  gdk_pixbuf_new_from_file (video_image, NULL);
-
-    if (data_pix_tmp) {
-
-      data_pix = gdk_pixbuf_scale_simple (data_pix_tmp, 
-					  width, height, 
-					  GDK_INTERP_NEAREST);
-
-      g_object_unref (data_pix_tmp);
-
-      if (data_pix)
-	picture = true;
+    if (!moving) { // create the ever-displayed picture
+ 
+      orig_width = gdk_pixbuf_get_width (orig_pix);
+      orig_height = gdk_pixbuf_get_height (orig_pix);
+      
+      gdk_pixbuf_copy_area (orig_pix, 0, 0, orig_width, orig_height,
+			    cached_pix, 
+                            (width - orig_width) / 2, 
+                            (height - orig_height) / 2);
     }
   }
-  
-  if (!data_pix) {
+   
+  if (moving) {  // recompute the cache pix
+    
+    orig_width = gdk_pixbuf_get_width (orig_pix);
+    orig_height = gdk_pixbuf_get_height (orig_pix);
 
-    data_pix = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8, 
-			       width, height);
-    picture = false;
-  }
-  
-  if (!picture) {
-
-    gdk_pixbuf_fill (data_pix, 0x000000FF); /* Opaque black */
-    gdk_pixbuf_copy_area (logo_pix, 0, 0, 176, 60, 
-			  data_pix, (width - 176) / 2, pos);
+    gdk_pixbuf_fill (cached_pix, 0x000000FF); /* Opaque black */
+    gdk_pixbuf_copy_area (orig_pix, 0, 0, orig_width, orig_height, 
+			  cached_pix, (width - orig_width) / 2, pos);
 
     pos = pos + increment;
 
-    if ((int) pos > (int) height - 60 - 10) increment = -1;
+    if ((int) pos > (int) height - orig_height - 10) increment = -1;
     if (pos < 10) increment = +1;
   }
-  
-  data = gdk_pixbuf_get_pixels (data_pix);
-  rgb_increment = gdk_pixbuf_get_n_channels (data_pix);
+
+  data = gdk_pixbuf_get_pixels (cached_pix);
+  rgb_increment = gdk_pixbuf_get_n_channels (cached_pix);
 
   if (converter)
     converter->Convert (data, frame);
-
-  //  RGBtoYUV420PSameSize (data, frame, rgb_increment, FALSE, 
-  //		width, height);
-  
 
   gnomemeeting_threads_leave ();
 
@@ -336,5 +346,3 @@ GMH323FakeVideoInputDevice::GetFrameSizeLimits (unsigned & minWidth,
 
   return TRUE;
 }
-
-
