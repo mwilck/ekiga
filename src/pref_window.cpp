@@ -59,7 +59,7 @@
 
 
 
-struct _GmPreferencesWindow
+typedef struct _GmPreferencesWindow
 {
   GtkWidget *audio_codecs_list;
   GtkWidget *accounts_list;
@@ -69,14 +69,24 @@ struct _GmPreferencesWindow
   GtkWidget *sound_events_output;
   GtkWidget *audio_recorder;
   GtkWidget *video_device;
-};
-
-
-typedef struct _GmPreferencesWindow GmPreferencesWindow;
-
+} GmPreferencesWindow;
 
 #define GM_PREFERENCES_WINDOW(x) (GmPreferencesWindow *) (x)
 
+
+typedef struct GmAccountsWindow_ {
+
+  GtkWidget *account_entry;
+  GtkWidget *protocol_option_menu;
+  GtkWidget *host_label;
+  GtkWidget *host_entry;
+  GtkWidget *username_entry;
+  GtkWidget *password_entry;
+  GtkWidget *domain_label;
+  GtkWidget *domain_entry;
+} GmAccountsWindow;
+
+#define GM_ACCOUNTS_WINDOW(x) (GmAccountsWindow *) (x)
 
 
 /* Declarations */
@@ -365,6 +375,15 @@ static void edit_account_cb (GtkWidget *button,
  */
 static void delete_account_cb (GtkWidget *button, 
 			       gpointer data);
+
+
+/* DESCRIPTION  :  This callback is called when the user changes the protocol
+ * 		   in the account dialog.
+ * BEHAVIOR     :  Updates the content and labels.
+ * PRE          :  data is a valid pointer to a valid GmAccountWindow.
+ */
+static void account_dialog_protocol_changed_cb (GtkWidget *menu,
+						gpointer data);
 
 
 /* DESCRIPTION  :  This callback is called when the user clicks
@@ -707,11 +726,8 @@ gm_pw_edit_account_dialog_run (GtkWidget *prefs_window,
   GtkWidget *table = NULL;
   GtkWidget *label = NULL;
 
-  GtkWidget *account_entry = NULL;
-  GtkWidget *host_entry = NULL;
-  GtkWidget *username_entry = NULL;
-  GtkWidget *password_entry = NULL;
-  GtkWidget *domain_entry = NULL;
+  GtkWidget *menu = NULL;
+  GtkWidget *item = NULL;
 
   PRegularExpression regex ("^[a-z0-9][a-z0-9. ]*$", 
 			    PRegularExpression::IgnoreCase);
@@ -722,14 +738,19 @@ gm_pw_edit_account_dialog_run (GtkWidget *prefs_window,
   PString password;
   PString account_name;
 
+  gint protocol = 0;
+
   gboolean valid = FALSE;
   gboolean is_editing = FALSE;
   
-  pw = gm_pw_get_pw (prefs_window);
+  GmAccountsWindow *aw = NULL;
   
+  pw = gm_pw_get_pw (prefs_window);
+
   is_editing = (account != NULL);
 
   /**/
+  aw = new GmAccountsWindow ();
   dialog =
     gtk_dialog_new_with_buttons (_("Edit the Account Information"), 
 				 GTK_WINDOW (NULL),
@@ -742,9 +763,9 @@ gm_pw_edit_account_dialog_run (GtkWidget *prefs_window,
   gtk_window_set_transient_for (GTK_WINDOW (dialog), 
 				GTK_WINDOW (parent_window));
 
-  table = gtk_table_new (5, 2, FALSE);
-  gtk_table_set_row_spacings (GTK_TABLE (table), 6);
-  gtk_table_set_col_spacings (GTK_TABLE (table), 12);
+  table = gtk_table_new (6, 2, FALSE);
+  gtk_table_set_row_spacings (GTK_TABLE (table), 3);
+  gtk_table_set_col_spacings (GTK_TABLE (table), 6);
   gtk_container_set_border_width (GTK_CONTAINER (table), 12);
   gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), table);
 
@@ -752,52 +773,85 @@ gm_pw_edit_account_dialog_run (GtkWidget *prefs_window,
   /* Account Name */
   label = gtk_label_new (_("Account Name:"));
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  account_entry = gtk_entry_new ();
+  aw->account_entry = gtk_entry_new ();
   gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 0, 1); 
-  gtk_table_attach_defaults (GTK_TABLE (table), account_entry, 1, 2, 0, 1); 
-  gtk_entry_set_activates_default (GTK_ENTRY (account_entry), TRUE);
+  gtk_table_attach_defaults (GTK_TABLE (table), aw->account_entry, 1, 2, 0, 1); 
+  gtk_entry_set_activates_default (GTK_ENTRY (aw->account_entry), TRUE);
   if (account && account->account_name)
-    gtk_entry_set_text (GTK_ENTRY (account_entry), account->account_name);
+    gtk_entry_set_text (GTK_ENTRY (aw->account_entry), account->account_name);
 
+  /* Protocol */
+  if (!is_editing) {
+
+    label = gtk_label_new (_("Protocol:"));
+    gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+    menu = gtk_menu_new ();
+    aw->protocol_option_menu = gtk_option_menu_new ();
+    gtk_label_set_mnemonic_widget (GTK_LABEL (label), aw->protocol_option_menu);
+    item = gtk_menu_item_new_with_label ("SIP");
+    gtk_widget_show (item);
+    gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+    item = gtk_menu_item_new_with_label ("H.323");
+    gtk_widget_show (item);
+    gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+    gtk_option_menu_set_menu (GTK_OPTION_MENU (aw->protocol_option_menu), menu);
+    gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 1, 2); 
+    gtk_table_attach_defaults (GTK_TABLE (table), aw->protocol_option_menu, 
+			       1, 2, 1, 2); 
+    
+    g_signal_connect (GTK_OPTION_MENU (aw->protocol_option_menu)->menu,
+		      "deactivate", 
+		      G_CALLBACK (account_dialog_protocol_changed_cb),
+		      (gpointer) aw);
+  }
+  
   /* Host */
-  label = gtk_label_new (_("Registrar:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  host_entry = gtk_entry_new ();
-  gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 1, 2); 
-  gtk_table_attach_defaults (GTK_TABLE (table), host_entry, 1, 2, 1, 2); 
-  gtk_entry_set_activates_default (GTK_ENTRY (host_entry), TRUE);
+  if (!account || !strcmp (account->protocol_name, "SIP"))
+    aw->host_label = gtk_label_new (_("Registrar:"));
+  else
+    aw->host_label = gtk_label_new (_("Gatekeeper:"));
+  gtk_misc_set_alignment (GTK_MISC (aw->host_label), 0.0, 0.5);
+  aw->host_entry = gtk_entry_new ();
+  gtk_table_attach_defaults (GTK_TABLE (table), aw->host_label, 0, 1, 2, 3); 
+  gtk_table_attach_defaults (GTK_TABLE (table), aw->host_entry, 1, 2, 2, 3); 
+  gtk_entry_set_activates_default (GTK_ENTRY (aw->host_entry), TRUE);
   if (account && account->host)
-    gtk_entry_set_text (GTK_ENTRY (host_entry), account->host);
+    gtk_entry_set_text (GTK_ENTRY (aw->host_entry), account->host);
 
   /* Realm/Domain */
-  label = gtk_label_new (_("Realm/Domain:"));
+  if (!account || !strcmp (account->protocol_name, "SIP"))
+    aw->domain_label = gtk_label_new (_("Realm/Domain:"));
+  else
+    aw->domain_label = gtk_label_new (_("Gatekeeper ID:"));
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  domain_entry = gtk_entry_new ();
-  gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 2, 3); 
-  gtk_table_attach_defaults (GTK_TABLE (table), domain_entry, 1, 2, 2, 3); 
-  gtk_entry_set_activates_default (GTK_ENTRY (domain_entry), TRUE);
+  aw->domain_entry = gtk_entry_new ();
+  gtk_table_attach_defaults (GTK_TABLE (table), aw->domain_label, 0, 1, 3, 4); 
+  gtk_table_attach_defaults (GTK_TABLE (table), aw->domain_entry, 1, 2, 3, 4); 
+  gtk_entry_set_activates_default (GTK_ENTRY (aw->domain_entry), TRUE);
   if (account && account->domain)
-    gtk_entry_set_text (GTK_ENTRY (domain_entry), account->domain);
+    gtk_entry_set_text (GTK_ENTRY (aw->domain_entry), account->domain);
   
   /* User Name */
   label = gtk_label_new (_("User Name:"));
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  username_entry = gtk_entry_new ();
-  gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 3, 4); 
-  gtk_table_attach_defaults (GTK_TABLE (table), username_entry, 1, 2, 3, 4); 
-  gtk_entry_set_activates_default (GTK_ENTRY (username_entry), TRUE);
+  aw->username_entry = gtk_entry_new ();
+  gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 4, 5); 
+  gtk_table_attach_defaults (GTK_TABLE (table), aw->username_entry, 
+			     1, 2, 4, 5); 
+  gtk_entry_set_activates_default (GTK_ENTRY (aw->username_entry), TRUE);
   if (account && account->login)
-    gtk_entry_set_text (GTK_ENTRY (username_entry), account->login);
+    gtk_entry_set_text (GTK_ENTRY (aw->username_entry), account->login);
   
   /* Password */
   label = gtk_label_new (_("Password:"));
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  password_entry = gtk_entry_new ();
-  gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 4, 5); 
-  gtk_table_attach_defaults (GTK_TABLE (table), password_entry, 1, 2, 4, 5); 
-  gtk_entry_set_activates_default (GTK_ENTRY (password_entry), TRUE);
+  aw->password_entry = gtk_entry_new ();
+  gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 5, 6); 
+  gtk_table_attach_defaults (GTK_TABLE (table), aw->password_entry, 
+			     1, 2, 5, 6); 
+  gtk_entry_set_activates_default (GTK_ENTRY (aw->password_entry), TRUE);
   if (account && account->password)
-    gtk_entry_set_text (GTK_ENTRY (password_entry), account->password);
+    gtk_entry_set_text (GTK_ENTRY (aw->password_entry), account->password);
   
 
   gtk_widget_show_all (dialog);
@@ -807,17 +861,22 @@ gm_pw_edit_account_dialog_run (GtkWidget *prefs_window,
 
     case GTK_RESPONSE_ACCEPT:
 
-      username = gtk_entry_get_text (GTK_ENTRY (username_entry));
-      account_name = gtk_entry_get_text (GTK_ENTRY (account_entry));
-      host = gtk_entry_get_text (GTK_ENTRY (host_entry));
-      password = gtk_entry_get_text (GTK_ENTRY (password_entry));
-      domain = gtk_entry_get_text (GTK_ENTRY (domain_entry));
+      username = gtk_entry_get_text (GTK_ENTRY (aw->username_entry));
+      account_name = gtk_entry_get_text (GTK_ENTRY (aw->account_entry));
+      host = gtk_entry_get_text (GTK_ENTRY (aw->host_entry));
+      password = gtk_entry_get_text (GTK_ENTRY (aw->password_entry));
+      domain = gtk_entry_get_text (GTK_ENTRY (aw->domain_entry));
+      if (aw->protocol_option_menu)
+	protocol = gtk_option_menu_get_history (GTK_OPTION_MENU (aw->protocol_option_menu));
 
       /* Check at least an account name, registrar, 
        * and username are provided */
-      valid = (username.FindRegEx (regex) != P_MAX_INDEX
-	       && account_name.FindRegEx (regex) != P_MAX_INDEX
-	       && host.FindRegEx (regex) != P_MAX_INDEX);
+      if (protocol == 0) // SIP
+	valid = (username.FindRegEx (regex) != P_MAX_INDEX
+		 && account_name.FindRegEx (regex) != P_MAX_INDEX
+		 && host.FindRegEx (regex) != P_MAX_INDEX);
+      else // H.323
+	valid = (account_name.FindRegEx (regex) != P_MAX_INDEX);
 
       if (valid) {
 
@@ -832,7 +891,7 @@ gm_pw_edit_account_dialog_run (GtkWidget *prefs_window,
 	g_free (account->domain);
 	
 	account->account_name = g_strdup (account_name);
-	account->protocol_name = g_strdup ("SIP");
+	account->protocol_name = g_strdup ((protocol == 0) ? "SIP" : "H.323");
 	account->host = g_strdup (host);
 	account->domain = g_strdup (domain);
 	account->login = g_strdup (username);
@@ -854,6 +913,7 @@ gm_pw_edit_account_dialog_run (GtkWidget *prefs_window,
     }
   }
 
+  delete ((GmAccountsWindow *) aw);
   gtk_widget_destroy (dialog);
 }
 
@@ -1899,7 +1959,7 @@ edit_account_cb (GtkWidget *button,
   gm_pw_edit_account_dialog_run (GTK_WIDGET (prefs_window), 
 				 account, 
 				 GTK_WIDGET (prefs_window));
-  gnomemeeting_account_delete (account);
+  gm_account_delete (account);
 }
 
 
@@ -1917,7 +1977,32 @@ delete_account_cb (GtkWidget *button,
     gm_pw_delete_account_dialog_run (GTK_WIDGET (prefs_window), 
 				     account, 
 				     GTK_WIDGET (prefs_window));
-  gnomemeeting_account_delete (account);
+  gm_account_delete (account);
+}
+
+
+static void
+account_dialog_protocol_changed_cb (GtkWidget *menu,
+				    gpointer data)
+{
+  GmAccountsWindow *aw = NULL;
+
+  g_return_if_fail (data != NULL);
+  
+  aw = GM_ACCOUNTS_WINDOW (data);
+  
+  switch (gtk_option_menu_get_history (GTK_OPTION_MENU (aw->protocol_option_menu)))
+    {
+    case 0:
+      gtk_label_set_text (GTK_LABEL (aw->host_label), _("Registrar:"));
+      gtk_label_set_text (GTK_LABEL (aw->domain_label), _("Realm/Domain:"));
+      break;
+
+    case 1:
+      gtk_label_set_text (GTK_LABEL (aw->host_label), _("Gatekeeper:"));
+      gtk_label_set_text (GTK_LABEL (aw->domain_label), _("Gatekeeper ID:"));
+      break;
+    };
 }
 
 
@@ -2040,8 +2125,7 @@ gatekeeper_update_cb (GtkWidget *widget,
   gdk_threads_leave ();
 
   /* Register the current Endpoint to the Gatekeeper */
-  h323EP->GatekeeperRegister ();
-
+//FIXME Get rid of this
   gdk_threads_enter ();
 }
 
