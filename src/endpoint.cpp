@@ -164,6 +164,7 @@ void GMH323EndPoint::AddVideoCapabilities (int video_size)
 void GMH323EndPoint::AddAudioCapabilities ()
 {
   char *key, *value;
+  gchar *msg;
   void *iterator;
   
   GM_log_insert (gw->log_text, _("Reinitialize the capabilities"));
@@ -174,31 +175,57 @@ void GMH323EndPoint::AddAudioCapabilities ()
     {
       if ((!strcmp (key, "MS-GSM")) && (!strcmp (value, "1")))
 	{
-	  SetCapability (0, 0, new MicrosoftGSMAudioCapability);
-	  GM_log_insert (gw->log_text, _("Added MS-GSM capability"));
+	  MicrosoftGSMAudioCapability* gsm_capa; 
+	  
+	  SetCapability (0, 0, gsm_capa = new MicrosoftGSMAudioCapability);
+	  msg = g_strdup_printf (_("Added MS-GSM capability with %d frames transmitted with each packet"), opts->gsm_frames);
+	  GM_log_insert (gw->log_text, msg);
+
+	  gsm_capa->SetTxFramesInPacket (opts->gsm_frames);
+
+	  g_free (msg);
 	}
 
       if ((!strcmp (key, "G.711-uLaw-64k"))&&(!strcmp (value, "1")))
 	{
-	  SetCapability (0, 0, new H323_G711Capability 
+	  H323_G711Capability *g711_capa; 
+	  
+	  SetCapability (0, 0, g711_capa = new H323_G711Capability 
 			 (H323_G711Capability::muLaw));
-	  GM_log_insert (gw->log_text, 
-				_("Added G.711-uLaw capability"));
+	  msg = g_strdup_printf (_("Added G.711-uLaw capability with %d frames transmitted with each packet"), opts->g711_frames);
+	  GM_log_insert (gw->log_text, msg);
+
+	  g711_capa->SetTxFramesInPacket (opts->g711_frames);
+	  
+	  g_free (msg);
 	}
 
       if ((!strcmp (key, "G.711-ALaw-64k"))&&(!strcmp (value, "1")))
 	{
-	  SetCapability (0, 0, new H323_G711Capability 
+
+	  H323_G711Capability *g711_capa; 
+	  
+	  SetCapability (0, 0, g711_capa = new H323_G711Capability 
 			 (H323_G711Capability::ALaw));
-	  GM_log_insert (gw->log_text, 
-				_("Added G.711-ALaw capability"));
+	  msg = g_strdup_printf (_("Added G.711-ALaw capability with %d frames transmitted with each packet"), opts->g711_frames);
+	  GM_log_insert (gw->log_text, msg);
+
+	  g711_capa->SetTxFramesInPacket (opts->g711_frames);
+	  
+	  g_free (msg);
 	}
 
       if ((!strcmp (key, "GSM-06.10"))&&(!strcmp (value, "1")))
 	{
-	  SetCapability (0, 0, new H323_GSM0610Capability);	
-	  GM_log_insert (gw->log_text, 
-				_("Added GSM-06.10 capability"));
+	  H323_GSM0610Capability * gsm_capa; 
+	  
+	  SetCapability (0, 0, gsm_capa = new H323_GSM0610Capability);	
+	  msg = g_strdup_printf (_("Added GSM-06.10 capability with %d frames transmitted with each packet"), opts->gsm_frames);
+	  GM_log_insert (gw->log_text, msg);
+
+	  gsm_capa->SetTxFramesInPacket (opts->gsm_frames);
+
+	  g_free (msg);
 	}
 
       if ((!strcmp (key, "LPC10"))&&(!strcmp (value, "1")))

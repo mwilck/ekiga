@@ -289,6 +289,8 @@ struct _GM_pref_window_widgets
   int gk_changed;
   // user has changed the capabilities order, or added/deleted capabilities
   int capabilities_changed;
+
+  int audio_codecs_changed;
 };
 /******************************************************************************/
 

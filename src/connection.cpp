@@ -36,7 +36,8 @@ extern GnomeMeeting *MyApp;
 /******************************************************************************/
 
 // Need to add destructor that will g_free the gchar *
-GMH323Connection::GMH323Connection (GMH323EndPoint & ep, unsigned callReference,
+GMH323Connection::GMH323Connection (GMH323EndPoint & ep, 
+				    unsigned callReference,
 				    GM_window_widgets *w, options *o)
   :H323Connection(ep, callReference, 1, !o->ht)
 {

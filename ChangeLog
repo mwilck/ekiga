@@ -1,5 +1,22 @@
 2001-11-18  Damien Sandras  <dsandras@seconix.com>
 
+	* src/common.h: Added widgets to support g711 and gsm frames in 
+	transmitted packets.
+	* src/config.cpp: Added support for g711 and gsm frames in 
+	transmitted packets. Added support for the new release, defaults
+	will be set for new options if you run from an old config file.
+	* src/connection.cpp: Added support for jitter buffer.
+	* src/endpoint.cpp: Added support for g711 and gsm frames count
+	in the capabilities.
+	* src/main.cpp: Added support for a new flag.
+	* src/main_interface.cpp: A dialog box is displayed the first time 
+	that you run GnomeMeeting 0.12. 
+	* src/preferences.cpp: Added callbacks that are called and set the
+	new flag when a frames related option is changed. Those new settings
+	are applied.
+
+2001-11-18  Damien Sandras  <dsandras@seconix.com>
+
 	* config.cpp: Added support for show_docklet in the menu.
 	* ils.cpp: The notebook page is destroyed if the user could not
 	be contacted.

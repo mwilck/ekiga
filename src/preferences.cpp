@@ -66,6 +66,7 @@ static void fps_limit_option_changed_callback (GtkToggleButton *,
 					       gpointer);
 static void gatekeeper_option_changed (GtkWidget *, gpointer);
 static void gatekeeper_option_type_changed_callback (GtkWidget *, gpointer);
+static void audio_codecs_option_changed_callback (GtkAdjustment *, gpointer);
 
 static void init_pref_general (GtkWidget *, GM_pref_window_widgets *,
 			       int, options *);
@@ -415,6 +416,20 @@ static void gatekeeper_option_type_changed_callback (GtkWidget *w, gpointer data
   pw->gk_changed = 1;
 }
 
+
+/* DESCRIPTION  :  This callback is called when the user changes any
+ *                 audio codec related option that needs to reinit
+ *                 the capablities.
+ * BEHAVIOR     :  It enables/disables other conflicting settings.
+ * PRE          :  gpointer is a valid pointer to a GM_pref_window_widgets.
+ */
+static void audio_codecs_option_changed_callback (GtkAdjustment *w, 
+						 gpointer data)
+{
+  GM_pref_window_widgets *pw = (GM_pref_window_widgets *) data;
+
+  pw->audio_codecs_changed = 1;
+}
 
 /* The functions */
 
@@ -1096,7 +1111,7 @@ static void init_pref_codecs_settings (GtkWidget *notebook,
 
   pw->gsm_frames_spin_adj = (GtkAdjustment *) 
     gtk_adjustment_new(opts->gsm_frames, 
-		       1.0, 20.0, 
+		       1.0, 7.0, 
 		       1.0, 1.0, 1.0);
 
   gsm_frames = gtk_spin_button_new (pw->gsm_frames_spin_adj, 1.0, 0);
@@ -1105,6 +1120,11 @@ static void init_pref_codecs_settings (GtkWidget *notebook,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);			
+
+  /* if it changes, we have to reinit the capabilities */
+  gtk_signal_connect (GTK_OBJECT (pw->gsm_frames_spin_adj), "value-changed",
+		      GTK_SIGNAL_FUNC (audio_codecs_option_changed_callback), 
+		      (gpointer) pw);
 
   pw->gsm_sd = gtk_check_button_new_with_label (_("Silence Detection"));
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->gsm_sd),
@@ -1130,7 +1150,7 @@ static void init_pref_codecs_settings (GtkWidget *notebook,
 
   pw->g711_frames_spin_adj = (GtkAdjustment *) 
     gtk_adjustment_new(opts->g711_frames, 
-		       1.0, 40.0, 
+		       11.0, 240.0, 
 		       1.0, 1.0, 1.0);
 
   g711_frames = gtk_spin_button_new (pw->g711_frames_spin_adj, 1.0, 0);
@@ -1139,6 +1159,11 @@ static void init_pref_codecs_settings (GtkWidget *notebook,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);			
+
+  /* If it changes, we have to reinit the capabilities */
+  gtk_signal_connect (GTK_OBJECT (pw->gsm_frames_spin_adj), "value-changed",
+		      GTK_SIGNAL_FUNC (audio_codecs_option_changed_callback), 
+		      (gpointer) pw);
 
   pw->g711_sd = gtk_check_button_new_with_label (_("Silence Detection"));
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->g711_sd),
@@ -2451,6 +2476,14 @@ static void apply_options (options *opts, GM_pref_window_widgets *pw)
     MyApp->Endpoint ()->AddVideoCapabilities (opts->video_size);
     
     pw->capabilities_changed = 0;
+  }
+
+  /* Reinitialise the audio codecs capabilities */
+  if (pw->audio_codecs_changed) {
+    MyApp->Endpoint ()->RemoveAllCapabilities ();
+    MyApp->Endpoint ()->AddAudioCapabilities ();
+
+    pw->audio_codecs_changed = 0;
   }
 
   if (opts->video_preview) {

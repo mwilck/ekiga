@@ -22,6 +22,8 @@
 #include "videograbber.h"
 #include "main.h"
 
+#include "../config.h"
+
 #include <iostream.h> // 
 
 extern GtkWidget *gm;
@@ -60,7 +62,7 @@ void store_config (options *opts)
 			opts->show_statusbar);
   gnome_config_set_int ("GeneralSettings/show_quickbar", 
 			opts->show_quickbar);
- gnome_config_set_int ("GeneralSettings/show_docklet", 
+  gnome_config_set_int ("GeneralSettings/show_docklet", 
 			opts->show_docklet);
   gnome_config_set_int ("GeneralSettings/incoming_call_sound", 
 			opts->incoming_call_sound);
@@ -85,11 +87,14 @@ void store_config (options *opts)
   gnome_config_set_int ("AdvancedSettings/enable_h245_tunneling", opts->ht); 
   gnome_config_set_int ("AdvancedSettings/max_bps", opts->bps);
   gnome_config_set_int ("AdvancedSettings/jitter_buffer", opts->jitter_buffer);
+  gnome_config_set_int ("AdvancedSettings/g711_frames", opts->g711_frames);
+  gnome_config_set_int ("AdvancedSettings/gsm_frames", opts->gsm_frames);
 
   gnome_config_set_int ("LDAPSettings/ldap", opts->ldap);
   gnome_config_set_string ("LDAPSettings/ldap_server", opts->ldap_server);
   gnome_config_set_string ("LDAPSettings/ldap_port", opts->ldap_port);
-  gnome_config_set_string ("LDAPSettings/ldap_servers_list", opts->ldap_servers_list);
+  gnome_config_set_string ("LDAPSettings/ldap_servers_list", 
+			   opts->ldap_servers_list);
 
   gnome_config_set_int ("GKSettings/gk", opts->gk);
   gnome_config_set_string ("GKSettings/gk_host", opts->gk_host);
@@ -177,6 +182,10 @@ void read_config (options *opts)
     gnome_config_get_int ("AdvancedSettings/gsm_silence_detection");
   opts->jitter_buffer = 
     gnome_config_get_int ("AdvancedSettings/jitter_buffer");
+  opts->g711_frames = 
+    gnome_config_get_int ("AdvancedSettings/g711_frames");
+  opts->gsm_frames = 
+    gnome_config_get_int ("AdvancedSettings/gsm_frames");
 
   opts->ldap = gnome_config_get_int ("LDAPSettings/ldap");
   opts->ldap_server = gnome_config_get_string ("LDAPSettings/ldap_server");
@@ -461,6 +470,8 @@ options * read_config_from_struct (GM_pref_window_widgets *pw)
   opts->re_vq = (int) pw->re_vq_spin_adj->value; // Received Video Quality
   opts->video_bandwidth = (int) pw->video_bandwidth_spin_adj->value;
   opts->jitter_buffer = (int) pw->jitter_buffer_spin_adj->value;
+  opts->g711_frames = (int) pw->g711_frames_spin_adj->value;
+  opts->gsm_frames = (int) pw->gsm_frames_spin_adj->value;
 
   opts->vid_tr = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->vid_tr));
   opts->vb = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->vb));
@@ -483,7 +494,8 @@ options * read_config_from_struct (GM_pref_window_widgets *pw)
     (GTK_ENTRY (GTK_COMBO (pw->audio_player)->entry));
   opts->audio_recorder = gtk_entry_get_text 
     (GTK_ENTRY (GTK_COMBO (pw->audio_recorder)->entry));
-  opts->audio_player_mixer = gtk_entry_get_text (GTK_ENTRY (pw->audio_player_mixer));
+  opts->audio_player_mixer = 
+    gtk_entry_get_text (GTK_ENTRY (pw->audio_player_mixer));
   opts->audio_recorder_mixer = 
     gtk_entry_get_text (GTK_ENTRY (pw->audio_recorder_mixer));
   opts->video_device = gtk_entry_get_text 
@@ -536,11 +548,43 @@ int config_first_time (void)
   gnome_config_push_prefix ("gnomemeeting/");
 
   int res = gnome_config_get_int ("UserSettings/notfirst");
+  int version = gnome_config_get_int ("UserSettings/version");
+
+  if (res == 0)
+    init_config ();
+
+  if (version < 12) { 
+       
+    gnome_config_set_int ("UserSettings/version", 12);
+
+    gnome_config_set_int ("VideoSettings/transmitted_video_quality", 5);
+    gnome_config_set_int ("VideoSettings/tr_fps", 15);
+    gnome_config_set_int ("VideoSettings/fps", 0);
+    gnome_config_set_int ("VideoSettings/vb", 0);
+
+    gnome_config_set_int ("GeneralSettings/show_docklet", 1);
+    gnome_config_set_int ("GeneralSettings/enable_popup", 1);
+    
+    gnome_config_set_int ("AdvancedSettings/enable_h245_tunneling", 1);
+    
+    gnome_config_set_int ("AdvancedSettings/gsm_silence_detection", 1);
+    gnome_config_set_int ("AdvancedSettings/g711_silence_detection", 1);
+    gnome_config_set_int ("AdvancedSettings/jitter_buffer", 50);
+    gnome_config_set_int ("AdvancedSettings/gsm_frames", 4);
+    gnome_config_set_int ("AdvancedSettings/g711_frames", 30);
+    
+    gnome_config_set_string ("LDAPSettings/ldap_servers_list", 
+			     "ils.advalvas.be:ils.pi.be:ils.netmeetinghq.com:");
+
+    gnome_config_set_int ("GKSettings/gk", 0);
+    gnome_config_set_string ("GKSettings/gk_host", "");
+    gnome_config_set_string ("GKSettings/gk_id", "");      
+  }
 
   gnome_config_sync();
   gnome_config_pop_prefix ();
 
-  return (!res);
+  return (version);
 }
 
 
@@ -584,11 +628,14 @@ void init_config (void)
   gnome_config_set_int ("AdvancedSettings/gsm_silence_detection", 1);
   gnome_config_set_int ("AdvancedSettings/g711_silence_detection", 1);
   gnome_config_set_int ("AdvancedSettings/jitter_buffer", 50);
+  gnome_config_set_int ("AdvancedSettings/gsm_frames", 4);
+  gnome_config_set_int ("AdvancedSettings/g711_frames", 30);
 
   gnome_config_set_int ("LDAPSettings/ldap", 0);
   gnome_config_set_string ("LDAPSettings/ldap_server", "");
   gnome_config_set_string ("LDAPSettings/ldap_port", "389");
-  gnome_config_set_string ("LDAPSettings/ldap_servers_list", "ils.advalvas.be:ils.pi.be:ils.netmeetinghq.com:");
+  gnome_config_set_string ("LDAPSettings/ldap_servers_list", 
+			   "ils.advalvas.be:ils.pi.be:ils.netmeetinghq.com:");
 
   gnome_config_set_int ("GKSettings/gk", 0);
   gnome_config_set_string ("GKSettings/gk_host", "");

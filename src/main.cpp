@@ -268,6 +268,7 @@ int main (int argc, char ** argv, char ** envp)
   pw->audio_mixer_changed = 0;
   pw->gk_changed = 0;
   pw->capabilities_changed = 0;
+  pw->audio_codecs_changed = 0;
 
   // Init the GM_ldap_window_widgets structure
   lw = new (GM_ldap_window_widgets);

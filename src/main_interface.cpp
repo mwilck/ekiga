@@ -246,9 +246,10 @@ void GM_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
   GMH323EndPoint *endpoint = NULL;
   gchar *text = NULL;
   int debug = 0;
-  
-  if (config_first_time ())
-    init_config ();
+  int version = 0;
+
+  /* Is it the first time that you run GM, or an outdated version ? */
+  version = config_first_time ();
 
   read_config (opts);
 
@@ -418,6 +419,13 @@ void GM_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
 
   if (gw->splash_win)
     gtk_widget_destroy (gw->splash_win);
+
+  if (version < 12) {
+    
+    GtkWidget *msg_box = gnome_message_box_new (_("Welcome to the new 0.12 release of GnomeMeeting.\nDefault settings for the new options\nhave been stored in the configuration."), GNOME_MESSAGE_BOX_INFO, "OK", NULL);
+    
+    gtk_widget_show (msg_box);
+  }
 
   /* if the user tries to close the window : delete_event */
   gtk_signal_connect (GTK_OBJECT (gm), "delete_event",
