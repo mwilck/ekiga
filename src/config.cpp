@@ -928,8 +928,8 @@ audio_mixer_changed_nt (GConfClient *client,
   int vol = 0;
   char *mixer = NULL;
   GmWindow *gw = NULL;
-#ifdef HAS_IXJ
   GMH323EndPoint *endpoint = MyApp->Endpoint ();
+#ifdef HAS_IXJ
   GMLid *lid = NULL;
 #endif
   
