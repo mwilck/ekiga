@@ -790,16 +790,15 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
    
      gdk_threads_leave ();
 
- 
      /* Codecs Settings */
      if (opts->vb != 0)
        codec.SetAverageBitRate (1024 * opts->video_bandwidth * 8);
-     else
-       {
-	 codec.SetAverageBitRate (0); // Disable
-	 codec.SetTxQualityLevel (opts->tr_vq);
-	 codec.SetBackgroundFill (opts->tr_ub);   
-       }
+     else {
+
+       codec.SetAverageBitRate (0); // Disable
+       codec.SetTxQualityLevel (opts->tr_vq);
+       codec.SetBackgroundFill (opts->tr_ub);   
+     }
 
      gdk_threads_enter ();
      gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button),

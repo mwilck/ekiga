@@ -1,3 +1,14 @@
+2001-11-12  Damien Sandras  <dsandras@seconix.com>
+
+	* common.h: Added some widgets to the structures.
+	* src/config.cpp: Added support to limit the transmitted FPS.
+	* src/preferences.cpp: Added support to limit the transmitted FPS.
+	Made some widgets disabled following the gatekeeper registering method
+	or following the transmitted FPS is limited or not.
+	* src/videograbber.cpp: Added support to limit the transmitted FPS.
+	* src/ils.cpp: Fixed a bug that made register again every 10 seconds
+	to the ILS directory.
+	
 2001-11-12  Christian Rose  <menthos@menthos.com>
 
 	* src/preferences.cpp: Changed three messages.

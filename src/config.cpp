@@ -48,7 +48,8 @@ void store_config (options *opts)
   gnome_config_set_int ("VideoSettings/transmitted_update_blocks", 
 			opts->tr_ub);
   gnome_config_set_int ("VideoSettings/video_transmission", opts->vid_tr);
-//  gnome_config_set_int ("VideoSettings/transmitted_fps", opts->tr_fps);
+  gnome_config_set_int ("VideoSettings/tr_fps", opts->tr_fps);
+  gnome_config_set_int ("VideoSettings/fps", opts->fps);
   gnome_config_set_int ("VideoSettings/video_bandwidth", 
 			opts->video_bandwidth);
   gnome_config_set_int ("VideoSettings/vb", opts->vb);
@@ -137,7 +138,8 @@ void read_config (options *opts)
   opts->video_size = gnome_config_get_int ("VideoSettings/video_size");
   opts->video_format = gnome_config_get_int ("VideoSettings/video_format");
   opts->tr_vq = gnome_config_get_int ("VideoSettings/transmitted_video_quality");
-//  opts->tr_fps = gnome_config_get_int ("VideoSettings/transmitted_fps");
+  opts->tr_fps = gnome_config_get_int ("VideoSettings/tr_fps");
+  opts->fps = gnome_config_get_int ("VideoSettings/fps");
   opts->re_vq = gnome_config_get_int ("VideoSettings/received_video_quality");
   opts->tr_ub = gnome_config_get_int ("VideoSettings/transmitted_update_blocks");
   opts->vid_tr = gnome_config_get_int ("VideoSettings/video_transmission");
@@ -449,7 +451,7 @@ options * read_config_from_struct (GM_pref_window_widgets *pw)
   opts->video_format = item_index;
       
   opts->tr_vq = (int) pw->tr_vq_spin_adj->value; // Transmitted Video Quality
-//  opts->tr_fps = (int) pw->tr_fps_spin_adj->value; // Transmitted FPS
+  opts->tr_fps = (int) pw->tr_fps_spin_adj->value; // Transmitted FPS
   opts->tr_ub = (int) pw->tr_ub_spin_adj->value; // Number of Updated Blocks
   opts->re_vq = (int) pw->re_vq_spin_adj->value; // Received Video Quality
   opts->video_bandwidth = (int) pw->video_bandwidth_spin_adj->value;
@@ -457,6 +459,7 @@ options * read_config_from_struct (GM_pref_window_widgets *pw)
 
   opts->vid_tr = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->vid_tr));
   opts->vb = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->vb));
+  opts->fps = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->fps));
 
   
   /* Audio codecs clist */
@@ -541,7 +544,8 @@ void init_config (void)
   gnome_config_set_int ("VideoSettings/video_size", 0);
   gnome_config_set_int ("VideoSettings/video_format", 2);
   gnome_config_set_int ("VideoSettings/transmitted_video_quality", 3);
-//  gnome_config_set_int ("VideoSettings/transmitted_fps", 15);
+  gnome_config_set_int ("VideoSettings/tr_fps", 15);
+  gnome_config_set_int ("VideoSettings/fps", 1);
   gnome_config_set_int ("VideoSettings/received_video_quality", 3);
   gnome_config_set_int ("VideoSettings/transmitted_update_blocks", 2);
   gnome_config_set_int ("VideoSettings/video_transmission", 0);
@@ -567,7 +571,7 @@ void init_config (void)
   gnome_config_set_int ("GeneralSettings/video_preview", 0);
 
   gnome_config_set_int ("AdvancedSettings/enable_fast_start", 0);
-  gnome_config_set_int ("AdvancedSettings/enable_h245_tunneling", 0); 	
+  gnome_config_set_int ("AdvancedSettings/enable_h245_tunneling", 1); 	
   gnome_config_set_int ("AdvancedSettings/max_bps", 20000);
   gnome_config_set_int ("AdvancedSettings/gsm_silence_detection", 1);
   gnome_config_set_int ("AdvancedSettings/g711_silence_detection", 1);

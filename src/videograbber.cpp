@@ -238,6 +238,13 @@ void GMVideoGrabber::VGOpen (void)
 {
   gchar *msg = NULL;
   int error_code = -1;  // No error
+  int tr_fps;
+
+  /* The number of Transmitted FPS must be equal to 0 to disable */
+  if (opts->fps == 0)
+    tr_fps = 0;
+  else
+    tr_fps = opts->tr_fps;
 
   // Disable the video preview button while opening
   gdk_threads_enter ();
@@ -268,7 +275,7 @@ void GMVideoGrabber::VGOpen (void)
   if (!grabber->SetColourFormatConverter ("YUV420P"))
     error_code = 3;
   else
-  if (!grabber->SetFrameRate (15))
+  if (!grabber->SetFrameRate (tr_fps))
    error_code = 4;
   else
   if (!grabber->SetFrameSizeConverter (height, width, FALSE))

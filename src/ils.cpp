@@ -108,8 +108,10 @@ void GMILSClient::Main ()
 
     /* if there is more than 20 minutes that we are registered,
        we refresh the entry */
-    if (t.GetSeconds () > 1200)
-      has_to_register = 1;
+    if ((t.GetSeconds () > 1200) && (opts->ldap)) {
+	has_to_register = 1;
+	starttime = PTime ();
+      }
 
     Current ()->Sleep (500);
   }

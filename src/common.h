@@ -74,6 +74,7 @@ struct _options
   char *ldap_servers_list;
   char *ldap_port;
   int gk;
+  int fps;
   char *gk_host;
   char *gk_id;
   int notfirst;
@@ -188,12 +189,15 @@ struct _GM_pref_window_widgets
   GtkWidget *tr_vq;
   GtkWidget *tr_ub;
   GtkWidget *video_bandwidth;
+  GtkWidget *bps_frame;
   // Number of Updated Blocks / Frame
   GtkAdjustment *tr_ub_spin_adj;
   // Received Video Quality
   GtkAdjustment *re_vq_spin_adj;
   // Transmitted FPS
   GtkAdjustment *tr_fps_spin_adj;
+  GtkWidget *tr_fps_label;
+  GtkWidget *tr_fps;
   // Enable / disable video transmission
   GtkWidget *vid_tr;
   GtkAdjustment *g711_frames_spin_adj;
@@ -204,6 +208,7 @@ struct _GM_pref_window_widgets
   GtkAdjustment *video_bandwidth_spin_adj;
   GtkWidget *video_bandwidth_label;
   GtkWidget *vb;
+  GtkWidget *fps;
 
   /* General Settings */
   // User name, and listener port
@@ -248,8 +253,10 @@ struct _GM_pref_window_widgets
   GtkWidget *gk;
   // Gatekeeper host
   GtkWidget *gk_host;
+  GtkWidget *gk_host_label;
   // Gatekeeper ID 
   GtkWidget *gk_id;
+  GtkWidget *gk_id_label;
 
   /* Device Settings */
   // The audio player device

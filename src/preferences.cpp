@@ -61,7 +61,10 @@ static void video_transmission_option_changed_callback (GtkToggleButton *,
 							gpointer);
 static void video_bandwidth_limit_option_changed_callback (GtkToggleButton *, 
 							   gpointer);
+static void fps_limit_option_changed_callback (GtkToggleButton *, 
+					       gpointer);
 static void gatekeeper_option_changed (GtkWidget *, gpointer);
+static void gatekeeper_option_type_changed_callback (GtkWidget *, gpointer);
 
 static void init_pref_general (GtkWidget *, GM_pref_window_widgets *,
 			       int, options *);
@@ -288,7 +291,8 @@ static void video_transmission_option_changed_callback (GtkToggleButton *button,
 
 /* DESCRIPTION  :  This callback is called when the user changes
  *                 any gatekeeper option.
- * BEHAVIOR     :  It sets a flag.
+ * BEHAVIOR     :  It sets a flag and changes the state of some widgets
+ *                 following the registering method.
  * PRE          :  gpointer is a valid pointer to a GM_pref_window_widgets.
  */
 static void gatekeeper_option_changed_callback (GtkWidget *widget, 
@@ -327,6 +331,87 @@ static void video_bandwidth_limit_option_changed_callback (GtkToggleButton *butt
     gtk_widget_set_sensitive (GTK_WIDGET (pw->video_bandwidth), FALSE);
     gtk_widget_set_sensitive (GTK_WIDGET (pw->video_bandwidth_label), FALSE);
   }
+}
+
+
+/* DESCRIPTION  :  This callback is called when the user enables or disables
+ *                 the fps limitation.
+ * BEHAVIOR     :  It enables/disables other conflicting settings.
+ * PRE          :  gpointer is a valid pointer to a GM_pref_window_widgets.
+ */
+static void fps_limit_option_changed_callback (GtkToggleButton *button, gpointer data)
+{
+  GM_pref_window_widgets *pw = (GM_pref_window_widgets *) data;
+
+  int fps = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->fps));
+
+  if (fps) {
+
+    gtk_widget_set_sensitive (GTK_WIDGET (pw->tr_fps_label), TRUE);
+    gtk_widget_set_sensitive (GTK_WIDGET (pw->tr_fps), TRUE);
+  }
+  else {
+
+    gtk_widget_set_sensitive (GTK_WIDGET (pw->tr_fps_label), FALSE);
+    gtk_widget_set_sensitive (GTK_WIDGET (pw->tr_fps), FALSE);
+  }
+
+  pw->vid_tr_changed = 1;
+}
+
+
+/* DESCRIPTION  :  This callback is called when the user changes the gk
+ *                 discover type.
+ * BEHAVIOR     :  It enables/disables other conflicting settings.
+ * PRE          :  gpointer is a valid pointer to a GM_pref_window_widgets.
+ */
+static void gatekeeper_option_type_changed_callback (GtkWidget *w, gpointer data)
+{
+  GM_pref_window_widgets *pw = (GM_pref_window_widgets *) data;
+
+  GtkWidget *active_item;
+  gint item_index;
+
+  active_item = gtk_menu_get_active (GTK_MENU 
+				     (GTK_OPTION_MENU (pw->gk)->menu));
+  item_index = g_list_index (GTK_MENU_SHELL 
+			     (GTK_OPTION_MENU (pw->gk)->menu)->children, 
+			      active_item);
+  
+  if (item_index == 0) {
+  
+    gtk_widget_set_sensitive (GTK_WIDGET (pw->bps_frame), FALSE);
+  }
+  else {
+
+    gtk_widget_set_sensitive (GTK_WIDGET (pw->bps_frame), TRUE);
+  }
+
+  if ((item_index == 0) || (item_index == 3)) {
+
+      gtk_widget_set_sensitive (GTK_WIDGET (pw->gk_host), FALSE);
+      gtk_widget_set_sensitive (GTK_WIDGET (pw->gk_host_label), FALSE);
+      gtk_widget_set_sensitive (GTK_WIDGET (pw->gk_id), FALSE);
+      gtk_widget_set_sensitive (GTK_WIDGET (pw->gk_id_label), FALSE);
+  }
+
+  if (item_index == 1) {
+    
+      gtk_widget_set_sensitive (GTK_WIDGET (pw->gk_host), TRUE);
+      gtk_widget_set_sensitive (GTK_WIDGET (pw->gk_host_label), TRUE);
+      gtk_widget_set_sensitive (GTK_WIDGET (pw->gk_id), FALSE);
+      gtk_widget_set_sensitive (GTK_WIDGET (pw->gk_id_label), FALSE);
+  }
+
+  if (item_index == 2) {
+    
+      gtk_widget_set_sensitive (GTK_WIDGET (pw->gk_host), FALSE);
+      gtk_widget_set_sensitive (GTK_WIDGET (pw->gk_host_label), FALSE);
+      gtk_widget_set_sensitive (GTK_WIDGET (pw->gk_id), TRUE);
+      gtk_widget_set_sensitive (GTK_WIDGET (pw->gk_id_label), TRUE);
+  }
+
+  pw->gk_changed = 1;
 }
 
 
@@ -581,7 +666,7 @@ static void init_pref_audio_codecs (GtkWidget *notebook,
   gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
     
   
-  /* Create the Available Audio Codecs Clist */		 			
+  /* Create the Available Audio Codecs Clist */	
   pw->clist_avail = gtk_clist_new_with_titles(4, clist_titles);
 
   gtk_clist_set_row_height (GTK_CLIST (pw->clist_avail), 18);
@@ -912,7 +997,6 @@ static void init_pref_codecs_settings (GtkWidget *notebook,
   GtkWidget *menu1;  /* For the Transmitted Video Size */
   GtkWidget *menu2;  /* For the Transmitted Video Format */
   GtkWidget *re_vq;
-  GtkWidget *tr_fps;		
   GtkWidget *item;
   GtkWidget *audio_codecs_notebook;
   GtkWidget *video_codecs_notebook;
@@ -962,7 +1046,7 @@ static void init_pref_codecs_settings (GtkWidget *notebook,
   /* General Settings */
   table = gtk_table_new (2, 4, TRUE);
 
-  label = gtk_label_new (_("Jitter Buffer Delay"));
+  label = gtk_label_new (_("Jitter Buffer Delay:"));
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -1086,7 +1170,7 @@ static void init_pref_codecs_settings (GtkWidget *notebook,
   item = gtk_menu_item_new_with_label (_("Large"));
   gtk_menu_append (GTK_MENU (menu1), item);
   gtk_option_menu_set_menu (GTK_OPTION_MENU (pw->opt1), menu1);
-  gtk_option_menu_set_history (GTK_OPTION_MENU (pw->opt1), opts->video_size);	
+  gtk_option_menu_set_history (GTK_OPTION_MENU (pw->opt1), opts->video_size);
 
   gtk_table_attach (GTK_TABLE (table), pw->opt1, 1, 2, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -1130,6 +1214,45 @@ static void init_pref_codecs_settings (GtkWidget *notebook,
   gtk_tooltips_set_tip (tip, pw->opt2,
 			_("Here you can choose the transmitted video format"), NULL);
 
+
+  /* Transmitted Frames per Second */
+  pw->tr_fps_label = gtk_label_new (_("Transmitted FPS:"));
+  gtk_table_attach (GTK_TABLE (table), pw->tr_fps_label, 2, 3, 1, 2,
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);			
+
+  pw->tr_fps_spin_adj = (GtkAdjustment *) 
+    gtk_adjustment_new(opts->tr_fps, 
+		       1.0, 40.0, 
+		       1.0, 1.0, 1.0);
+
+  pw->tr_fps = gtk_spin_button_new (pw->tr_fps_spin_adj, 1.0, 0);
+  
+  gtk_table_attach (GTK_TABLE (table), pw->tr_fps, 3, 4, 1, 2,
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);	
+
+  tip = gtk_tooltips_new ();
+  gtk_tooltips_set_tip (tip, pw->tr_fps,
+			_("Here you can set a limit to the number of frames that will be transmitted each second. This limit is set on the Video Grabber."), NULL);
+
+  /* Enable Transmitted FPS Limitation */
+  pw->fps = 
+    gtk_check_button_new_with_label (_("Transmitted FPS Limit"));
+
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->fps), 
+				(opts->fps == 1));
+
+  gtk_table_attach (GTK_TABLE (table), pw->fps, 2, 4, 2, 3,
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);		
+
+  gtk_signal_connect (GTK_OBJECT (pw->fps), "toggled",
+		      GTK_SIGNAL_FUNC (fps_limit_option_changed_callback), (gpointer) pw);
+  
   /* Enable Video Transmission */
   pw->vid_tr = 
     gtk_check_button_new_with_label (_("Video Transmission"));
@@ -1166,8 +1289,8 @@ static void init_pref_codecs_settings (GtkWidget *notebook,
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);			
   
   pw->tr_vq_spin_adj = (GtkAdjustment *) gtk_adjustment_new(opts->tr_vq, 
-							1.0, 31.0, 
-							1.0, 1.0, 1.0);
+							    1.0, 31.0, 
+							    1.0, 1.0, 1.0);
   pw->tr_vq = gtk_spin_button_new (pw->tr_vq_spin_adj, 1.0, 0);
   
   gtk_table_attach (GTK_TABLE (table), pw->tr_vq, 1, 2, 0, 1,
@@ -1712,8 +1835,8 @@ static void init_pref_gatekeeper (GtkWidget *notebook,
   gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
 
   /* Gatekeeper ID */
-  label = gtk_label_new (_("Gatekeeper ID:"));
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 1, 2,
+  pw->gk_id_label = gtk_label_new (_("Gatekeeper ID:"));
+  gtk_table_attach (GTK_TABLE (table), pw->gk_id_label, 0, 1, 1, 2,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
@@ -1734,8 +1857,8 @@ static void init_pref_gatekeeper (GtkWidget *notebook,
 
 
   /* Gatekeeper Host */
-  label = gtk_label_new (_("Gatekeeper host:"));
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1,
+  pw->gk_host_label = gtk_label_new (_("Gatekeeper host:"));
+  gtk_table_attach (GTK_TABLE (table), pw->gk_host_label, 0, 1, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
@@ -1782,7 +1905,7 @@ static void init_pref_gatekeeper (GtkWidget *notebook,
 
   gtk_signal_connect (GTK_OBJECT (GTK_OPTION_MENU (pw->gk)->menu), 
 		      "deactivate",
-		      GTK_SIGNAL_FUNC (gatekeeper_option_changed_callback), 
+		      GTK_SIGNAL_FUNC (gatekeeper_option_type_changed_callback), 
 		      (gpointer) pw);
 
   tip = gtk_tooltips_new ();
@@ -1791,15 +1914,16 @@ static void init_pref_gatekeeper (GtkWidget *notebook,
 
 
   /* Gatekeeper settings */
-  frame = gtk_frame_new (_("Gatekeeper Registering Method"));
-  gtk_box_pack_start (GTK_BOX (vbox), frame, 
+  pw->bps_frame = gtk_frame_new (_("Gatekeeper Bandwidth"));
+  gtk_box_pack_start (GTK_BOX (vbox), pw->bps_frame, 
 		      FALSE, FALSE, 0);
 
 
   /* Put a table in the first frame */
   table = gtk_table_new (1, 4, TRUE);
-  gtk_container_add (GTK_CONTAINER (frame), table);
-  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
+  gtk_container_add (GTK_CONTAINER (pw->bps_frame), table);
+  gtk_container_set_border_width (GTK_CONTAINER (pw->bps_frame), 
+				  GNOME_PAD_SMALL);
 
 
   /* Max Used Bandwidth spin button */					
@@ -1824,7 +1948,9 @@ static void init_pref_gatekeeper (GtkWidget *notebook,
 			_("The maximum bandwidth that should be used for the communication. This bandwidth limitation will be transmitted to the gatekeeper."), NULL);
 
 
-  /* The End */									
+  gatekeeper_option_type_changed_callback (NULL, pw);
+
+  /* The End */					      			
   label = gtk_label_new (_("Gatekeeper Settings"));
 
   gtk_notebook_append_page (GTK_NOTEBOOK(notebook), general_frame, label);
