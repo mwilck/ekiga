@@ -226,7 +226,9 @@ GnomeMeeting::DetectDevices ()
   if (fake_idx != P_MAX_INDEX)
     video_managers.RemoveAt (fake_idx);
   
+#ifdef HAX_IXJ
   audio_managers += PString ("Quicknet");
+#endif
 
   PTRACE (1, "Detected audio plugins: " << setfill (',') << audio_managers
 	  << setfill (' '));
