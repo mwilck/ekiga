@@ -50,8 +50,26 @@ class GMPCSSEndPoint : public OpalPCSSEndPoint
 public:
   GMPCSSEndPoint (GMEndPoint &);
 
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Accept the current incoming call.
+   * PRE          :  /
+   */
   void AcceptCurrentIncomingCall ();
+  
+
+  /* DESCRIPTION  :  This callback is called when there is an 
+   * 		     incoming PCSS connection. This only happens
+   * 		     when the SIP/H.323 connection is not rejected
+   * 		     or forwarded.
+   * BEHAVIOR     :  Auto-Answer the call or not. Call the OnIncomingConnection
+   * 		     function of the GMEndPoint, and triggers the appropriate
+   * 		     timeouts (no answer, ringing). Display a popup if
+   * 		     required.
+   * PRE          :  /
+   */
   virtual void OnShowIncoming (const OpalPCSSConnection &);
+
   virtual BOOL OnShowOutgoing (const OpalPCSSConnection &);
   virtual PString OnGetDestination (const OpalPCSSConnection &);  
 

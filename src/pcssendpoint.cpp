@@ -79,44 +79,20 @@ void GMPCSSEndPoint::AcceptCurrentIncomingCall ()
 void GMPCSSEndPoint::OnShowIncoming (const OpalPCSSConnection & connection)
 {
   GtkWidget *main_window = NULL;
-  GtkWidget *history_window = NULL;
   GtkWidget *tray = NULL;
   
-  char *msg = NULL;
-  
-  PString gateway;
-  PString forward_host;
-
   int no_answer_timeout = 45;
-  gchar *utf8_name = NULL;
-  gchar *utf8_app = NULL;
-  gchar *utf8_url = NULL;
-  
-  gchar *forward_host_conf = NULL;
-  gchar *gateway_conf = NULL;
 
   IncomingCallMode icm = AVAILABLE;
   
-  BOOL busy_forward = FALSE;
-  BOOL show_popup = FALSE;
-  BOOL do_forward = FALSE;
-  BOOL do_reject = FALSE;
-  BOOL do_answer = FALSE;
-  
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   tray = GnomeMeeting::Process ()->GetTray ();
 
 
   /* Check the config keys */
   gnomemeeting_threads_enter ();
-  forward_host_conf = gm_conf_get_string (CALL_FORWARDING_KEY "forward_host");
-  busy_forward = gm_conf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
-  icm =
-    (IncomingCallMode) gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
-  show_popup = gm_conf_get_bool (USER_INTERFACE_KEY "show_popup");
+  icm = (IncomingCallMode) gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
   no_answer_timeout = gm_conf_get_int (CALL_OPTIONS_KEY "no_answer_timeout");
-  gateway_conf = gm_conf_get_string (H323_KEY "default_gateway");
   gnomemeeting_threads_leave ();
 
 
@@ -125,130 +101,14 @@ void GMPCSSEndPoint::OnShowIncoming (const OpalPCSSConnection & connection)
   endpoint.SetCurrentCallToken (connection.GetCall ().GetToken ());
 
 
-  if (forward_host_conf)
-    forward_host = PString (GMURL (forward_host_conf).GetValidURL ());
-  else
-    forward_host = PString ("");
-    
-  gateway = PString (gateway_conf);
-
-  
-  /* Get remote Name and application */
-  endpoint.GetRemoteConnectionInfo ((OpalConnection &) connection,
-				    utf8_name, 
-				    utf8_app,
-				    utf8_url); 
-
-  
-  /* Update the log and status bar */
-  msg = g_strdup_printf (_("Call from %s"), (const char *) utf8_name);
-  gnomemeeting_threads_enter ();
-  gm_main_window_flash_message (main_window, msg);
-  gm_history_window_insert (history_window, msg);
-  gnomemeeting_threads_leave ();
-  g_free (msg);
-
-
-  /* Check what action to take */
-  if (!GMURL(forward_host).IsEmpty() && icm == FORWARD) {
-
-    msg = 
-      g_strdup_printf (_("Forwarding call from %s to %s (Forward all calls)"),
-		       (const char *) utf8_name, (const char *) forward_host);
-    //FIXME
-    //do_forward = TRUE;
-  }
-  else if (icm == DO_NOT_DISTURB) {
-
-    msg =
-      g_strdup_printf (_("Rejecting call from %s (Do Not Disturb)"),
-		       (const char *) utf8_name);
-    
-    do_reject = TRUE;
-  }
-  /* if we are already in a call: forward or reject */
-  else if (endpoint.GetCallingState () != GMEndPoint::Standby) {
-
-    /* if we have enabled forward when busy, do the forward */
-    if (!forward_host.IsEmpty() && busy_forward) {
-
-      msg = 
-	g_strdup_printf (_("Forwarding call from %s to %s (Busy)"),
-			 (const char *) utf8_name, 
-			 (const char *) forward_host);
-
-      //FIXME
-     // do_forward = TRUE;
-    } 
-    else {
-
-      /* there is no forwarding, so reject the call */
-      msg = g_strdup_printf (_("Rejecting call from %s (Busy)"),
-			     (const char *) utf8_name);
-     
-      do_reject = TRUE;
-    }
-  }
-  else if (icm == AUTO_ANSWER) {
-
-    msg =
-      g_strdup_printf (_("Accepting call from %s (Auto Answer)"),
-		       (const char *) utf8_name);
-    
-    do_answer = TRUE;
-  }
-
-
-  /* Take that action */
-  if (do_reject || do_forward || do_answer) {
-
-    /* Add the full message in the log */
-    gnomemeeting_threads_enter ();
-    gm_history_window_insert (history_window, msg);
-    gnomemeeting_threads_leave ();
-
-    /* Free things, we will return */
-    g_free (gateway_conf);
-    g_free (forward_host_conf);
-    g_free (utf8_name);
-    g_free (utf8_app);
-    g_free (msg);
-
-    if (do_reject) {
-      
-      gnomemeeting_threads_enter ();
-      gm_main_window_flash_message (main_window, _("Call rejected"));
-      gnomemeeting_threads_leave ();
-
-      /* Rejects the current call */
-      ClearCall (connection.GetCall ().GetToken (), 
-		 OpalConnection::EndedByLocalBusy); 
-    }
-    else if (do_forward) {
-
-      gnomemeeting_threads_enter ();
-      gm_main_window_flash_message (main_window, _("Call forwarded"));
-      gnomemeeting_threads_leave ();
-
-      if (!gateway.IsEmpty ()
-	  && forward_host.Find (gateway) == P_MAX_INDEX) 	
-        forward_host = forward_host + "@" + gateway;
-
-      //FIXME connection.ForwardCall (forward_host);
-    }
-    else if (do_answer) {
-
-      gnomemeeting_threads_enter ();
-      gm_main_window_flash_message (main_window,
-				    _("Call automatically answered"));
-      gnomemeeting_threads_leave ();
-
-      AcceptIncomingConnection (connection.GetToken ());
-    }
-
+  /* Auto-Answer this call */
+  if (icm == AUTO_ANSWER) {
+   
+    endpoint.OnIncomingConnection ((OpalConnection &) connection, 
+				   4, PString ());
     return;
   }
-   
+
 
   /* If we are here, the call doesn't need to be rejected, forwarded
      or automatically answered */
@@ -257,33 +117,14 @@ void GMPCSSEndPoint::OnShowIncoming (const OpalPCSSConnection & connection)
   gm_main_window_update_calling_state (main_window, GMEndPoint::Called);
   gnomemeeting_threads_leave ();
 
-    
+
   /* The timers */
   NoAnswerTimer.SetInterval (0, PMAX (no_answer_timeout, 10));
   CallPendingTimer.RunContinuous (PTimeInterval (5));
 
-  
+
   /* If no forward or reject, update the internal state */
   endpoint.SetCallingState (GMEndPoint::Called);
-
-
-  /* Incoming Call Popup, if needed */
-  if (show_popup) {
-    
-    gnomemeeting_threads_enter ();
-    gm_main_window_incoming_call_dialog_show (main_window,
-					      utf8_name, 
-					      utf8_app, 
-					      utf8_url);
-    gnomemeeting_threads_leave ();
-  }
-  
-
-  g_free (gateway_conf);
-  g_free (forward_host_conf);
-  g_free (utf8_name);
-  g_free (utf8_app);
-  g_free (utf8_url);
 }
 
 
@@ -319,7 +160,6 @@ GMPCSSEndPoint::CreateSoundChannel (const OpalPCSSConnection & connection,
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
-
 
   /* Stop the OnNoAnswerTimers */
   NoAnswerTimer.Stop ();
@@ -512,6 +352,7 @@ GMPCSSEndPoint::SetDeviceVolume (unsigned int play_vol,
 
       if (stream) {
 
+	
 	channel = (PSoundChannel *) stream->GetChannel ();
 	channel->SetVolume (record_vol);
       }
