@@ -5,13 +5,15 @@
 # José Carlos García Sogo <jsogo@arrakis.es>, 2001.
 # Miguel Rodríguez Pérez <migrax@terra.es>, 2002.
 # Jacobo Tarrío Barreiro <jtarrio@trasno.net>, 2002.
+# Raul Jover Baison <cain@akrata.org>, 2003.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: GnomeMeeting 0.96.0\n"
-"POT-Creation-Date: 2003-01-21 11:19+0100\n"
-"PO-Revision-Date: 2003-01-21 22:18+0100\n"
+"POT-Creation-Date: 2003-01-23 15:38+0100\n"
+"PO-Revision-Date: 2003-01-31 22:18+0100\n"
 "Last-Translator: Raul Jover <cain@akrata.org>\n"
+"Language-Team: Spanish <migrax@terra.es>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1552,12 +1554,12 @@ msgstr "Llamada concluida"
 msgid "Call duration: %.2ld:%.2ld:%.2ld"
 msgstr "Duración de la llamada: %.2ld:%.2ld:%.2ld"
 
-#: src/endpoint.cpp:1556
+#: src/endpoint.cpp:1556 src/main_window.cpp:1671
 msgid ""
-"Sent/Received:\n"
-"Lost/Late Packets:\n"
-"Round trip delay:\n"
-"Jitter Buffer:"
+"Lost packets:\n"
+"Late packets:\n"
+"Round-trip delay:\n"
+"Jitter buffer:"
 msgstr ""
 "Enviado/Recibido:\n"
 "Paquetes Perdidos/Retrasados:\n"
@@ -1753,7 +1755,7 @@ msgstr "Añadir un nuevo servidor"
 
 #: src/ldap_window.cpp:576
 msgid "Enter the server name:"
-msgstr "Introduzca sus apellidos"
+msgstr "Introduzca el nombre del servidor:"
 
 #: src/ldap_window.cpp:581
 msgid "Add a new group"
@@ -1761,7 +1763,7 @@ msgstr "Añadir un nuevo grupo"
 
 #: src/ldap_window.cpp:582
 msgid "Enter the group name:"
-msgstr "Introduzca sus apellidos"
+msgstr "Introduzca el nombre del grupo:"
 
 #: src/ldap_window.cpp:1187
 msgid "New server"
@@ -2002,54 +2004,43 @@ msgstr ""
 "GnomeMeeting no ha podido iniciar el thread de escucha. No será capaz de "
 "recibir llamadas entrantes."
 
-#: src/main_window.cpp:1540 src/menu.cpp:533 src/menu.cpp:774
+#: src/main_window.cpp:1536 src/menu.cpp:533 src/menu.cpp:774
 msgid "Local Video"
 msgstr "Imagen local"
 
-#: src/main_window.cpp:1546 src/menu.cpp:539 src/menu.cpp:779
+#: src/main_window.cpp:1542 src/menu.cpp:539 src/menu.cpp:779
 msgid "Remote Video"
 msgstr "Imagen remota"
 
-#: src/main_window.cpp:1675
-msgid ""
-"Lost packets:\n"
-"Late packets:\n"
-"Round-trip delay:\n"
-"Jitter buffer:"
-msgstr ""
-"Enviado/Recibido:\n"
-"Paquetes Perdidos/Retrasados:\n"
-"Tiempo de ida y vuelta:"
-
-#: src/main_window.cpp:1679 src/menu.cpp:500
+#: src/main_window.cpp:1675 src/menu.cpp:500
 msgid "Statistics"
 msgstr "Estadísticas"
 
-#: src/main_window.cpp:1745
+#: src/main_window.cpp:1741
 msgid "Dialpad"
 msgstr "Teclado"
 
-#: src/main_window.cpp:1804
+#: src/main_window.cpp:1800
 msgid "Adjust brightness"
 msgstr "Ajuste del brillo"
 
-#: src/main_window.cpp:1830
+#: src/main_window.cpp:1826
 msgid "Adjust whiteness"
 msgstr "Ajuste de blancos"
 
-#: src/main_window.cpp:1856
+#: src/main_window.cpp:1852
 msgid "Adjust color"
 msgstr "Ajuste del color"
 
-#: src/main_window.cpp:1882
+#: src/main_window.cpp:1878
 msgid "Adjust contrast"
 msgstr "Ajuste del contraste"
 
-#: src/main_window.cpp:1890
+#: src/main_window.cpp:1886
 msgid "Video"
 msgstr "Vídeo:"
 
-#: src/main_window.cpp:1976
+#: src/main_window.cpp:1972
 msgid "Audio"
 msgstr "Audio"
 
@@ -2257,7 +2248,7 @@ msgstr "_Herramientas"
 msgid "Address _Book"
 msgstr "Li_breta de direcciones"
 
-#: src/menu.cpp:590 src/menu.cpp:881
+#: src/menu.cpp:590 src/menu.cpp:881 src/toolbar.cpp:266
 msgid "Open the address book"
 msgstr "Abrir la libreta de direcciones"
 
@@ -2781,10 +2772,6 @@ msgstr "Manos libres activado"
 msgid "Speaker phone disabled"
 msgstr "Manos libres desactivado"
 
-#: src/toolbar.cpp:266
-msgid "Find friends on the ILS directory service"
-msgstr "Buscar amigos en ILS"
-
 #: src/toolbar.cpp:279
 msgid "Make a text chat with your friend"
 msgstr "Realizar una charla en modo texto con su amigo"
@@ -2824,7 +2811,7 @@ msgstr ""
 msgid "General History"
 msgstr "Historial General"
 
-#: src/tray.cpp:166
+#: src/tray.cpp:176
 msgid "GnomeMeeting Tray Icon"
 msgstr "Icono de la Bandeja de GnomeMeeting"
 
@@ -2934,6 +2921,19 @@ msgstr "Su controlador de vídeo no soporta el formato de vídeo solicitado."
 #: src/videograbber.cpp:838
 msgid "Tests OK!"
 msgstr "¡Comprobaciones correctas!"
+
+#~ msgid ""
+#~ "Sent/Received:\n"
+#~ "Lost/Late Packets:\n"
+#~ "Round trip delay:\n"
+#~ "Jitter Buffer:"
+#~ msgstr ""
+#~ "Enviado/Recibido:\n"
+#~ "Paquetes Perdidos/Retrasados:\n"
+#~ "Tiempo de ida y vuelta:"
+
+#~ msgid "Find friends on the ILS directory service"
+#~ msgstr "Buscar amigos en ILS"
 
 #~ msgid ""
 #~ "\"If enabled, GnomeMeeting will play a sound when receiving an incoming "
@@ -3378,6 +3378,9 @@ msgstr "¡Comprobaciones correctas!"
 #~ msgstr ""
 #~ "Aquí puede elegir la calidad de transmisión de vídeo:  elija 100% en una "
 #~ "LAN para una calidad óptima, y 1% para la peor calidad"
+
+#~ msgid "Family"
+#~ msgstr "Familia"
 
 #~ msgid "Chat"
 #~ msgstr "Charla"
