@@ -473,8 +473,7 @@ gnomemeeting_codecs_list_add (GtkTreeIter iter, GtkListStore *store,
   PString codec_quality;
   PString codec_bitrate;
 
-  if (!codec_name || !store || !color)
-    return;
+  g_return_if_fail (codec_name != NULL && store != NULL && color != NULL);
 
   codec = GMH323CodecInfo (codec_name);
   codec_quality = codec.GetCodecQuality ();

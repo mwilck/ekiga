@@ -1,5 +1,11 @@
 2004-04-17 Julien Puydt <julien.puydt@laposte.net>
 
+	* src/callbacks.cpp, src/druid.cpp, src/ils.cpp, src/ldap_window.cpp,
+	src/menu.cpp, src/misc.cpp, src/pref_window.cpp, src/tools.cpp,
+	src/tray.cpp: changed some if () return; to g_return_if_fail();
+
+2004-04-17 Julien Puydt <julien.puydt@laposte.net>
+
 	* src/calls_history_window.*: moved the internal representation
 	from the .h to the .cpp.
 

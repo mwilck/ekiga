@@ -620,8 +620,7 @@ void GMILSBrowser::Main ()
   time_limit.tv_usec = 0;
   bool no_error = TRUE;
 
-  if (!lwp)
-    return;
+  g_return_if_fail (lwp != NULL);
 
   lwp->search_quit_mutex.Wait ();
 

@@ -445,8 +445,7 @@ option_menu_update (GtkWidget *option_menu,
 
   cpt = 0;
 
-  if (!options)
-    return;
+  g_return_if_fail (options != NULL);
 
   gtk_option_menu_remove_menu (GTK_OPTION_MENU (option_menu));
   menu = gtk_menu_new ();

@@ -221,8 +221,7 @@ gnomemeeting_tray_update (GtkWidget *tray_icon,
   
   gt = (GmTray *) g_object_get_data (G_OBJECT (tray_icon), "GMObject");
 
-  if (!gt)
-    return;
+  g_return_if_fail (gt != NULL);
   
   if (calling_state == GMH323EndPoint::Standby) {
 
@@ -277,8 +276,7 @@ gnomemeeting_tray_ring (GtkWidget *tray)
 
   gt = (GmTray *) g_object_get_data (G_OBJECT (tray), "GMObject");
 
-  if (!gt)
-    return;
+  g_return_if_fail (gt != NULL);
 
   if (gt->ringing) {
 

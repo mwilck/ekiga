@@ -159,8 +159,6 @@ PAssertFunc (const char *file, int line,
   g_idle_add (assert_error_msg, (gpointer) msg);
 
   inAssert = FALSE;
-
-  return;
 }
 #endif
 
@@ -459,13 +457,11 @@ gnomemeeting_window_show (GtkWidget *w)
   gchar *position = NULL;
   gchar **couple = NULL;
   
-  if (!w)
-    return;
+  g_return_if_fail (w != NULL);
   
   window_name = (char *) g_object_get_data (G_OBJECT (w), "window_name");
 
-  if (!window_name)
-    return;
+  g_return_if_fail (window_name != NULL);
   
   conf_key_position =
     g_strdup_printf ("%s%s/position", USER_INTERFACE_KEY, window_name);
@@ -531,13 +527,11 @@ gnomemeeting_window_hide (GtkWidget *w)
   gchar *size = NULL;
   gchar *position = NULL;
   
-  if (!w)
-    return;
+  g_return_if_fail (w != NULL);
   
   window_name = (char *) g_object_get_data (G_OBJECT (w), "window_name");
 
-  if (!window_name)
-    return;
+  g_return_if_fail (window_name != NULL);
  
   conf_key_position =
     g_strdup_printf ("%s%s/position", USER_INTERFACE_KEY, window_name);

@@ -1009,8 +1009,7 @@ copy_url_to_clipboard_cb (GtkWidget *w,
 {
   GtkClipboard *cb = NULL;
 
-  if (!data)
-    return;
+  g_return_if_fail (data != NULL);
   
   cb = gtk_clipboard_get (GDK_NONE);
   gtk_clipboard_set_text (cb, (char *) data, -1);
@@ -2011,8 +2010,7 @@ add_contact_section (const char *c_section,
   
   GSList *contacts_sections = NULL;
 
-  if (!c_section)
-    return;
+  g_return_if_fail (c_section != NULL);
 
   contact_section = escape_contact_section (c_section, FALSE);
 
@@ -2053,8 +2051,7 @@ delete_contact_section (const char *c_section,
   gchar *unset_group_conf_key = NULL;
   gchar *conf_key = NULL;
 
-  if (!c_section)
-    return;
+  g_return_if_fail (c_section != NULL);
   
   contact_section = escape_contact_section (c_section);
   
@@ -2128,8 +2125,7 @@ add_contact_to_group (const char *contact_name,
   GSList *group_content = NULL;
   GSList *group_content_iter = NULL;
   
-  if (!contact_url)
-    return;
+  g_return_if_fail (contact_url != NULL);
   
   contact_info =
     g_strdup_printf ("%s|%s|%s",
@@ -2198,8 +2194,7 @@ delete_contact_from_group (const char *contact_url,
   gchar *contact_section = NULL;
   gchar *conf_key = NULL;
 
-  if (!contact_url || !c_section)
-    return;
+  g_return_if_fail (contact_url != NULL && c_section != NULL);
 
   contact_section = escape_contact_section (c_section);
   conf_key =

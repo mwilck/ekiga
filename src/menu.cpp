@@ -163,8 +163,7 @@ speed_dial_menu_item_selected (GtkWidget *w,
   gw = GnomeMeeting::Process ()->GetMainWindow ();
   ep = GnomeMeeting::Process ()->Endpoint ();
   
-  if (!data)
-    return;
+  g_return_if_fail (data != NULL);
 
   url = g_strdup_printf ("%s#", (gchar *) data);
   gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry),
