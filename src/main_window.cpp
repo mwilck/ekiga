@@ -421,7 +421,7 @@ void gnomemeeting_init (GM_window_widgets *gw,
   endpoint = MyApp->Endpoint ();
   
   if (debug)
-    PTrace::Initialise (4);
+    PTrace::Initialise (3);
   
   if (show_splash) {
     e_splash_set_icon_highlight (E_SPLASH (gw->splash_win), icon_index++, true);

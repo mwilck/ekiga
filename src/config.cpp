@@ -1179,7 +1179,6 @@ static void notebook_info_changed_nt (GConfClient *client, guint,
 /* The functions  */
 void gnomemeeting_init_gconf (GConfClient *client)
 {
-  cout << PThread::Current ()->GetThreadName () << endl << flush;
   GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/tr_fps",

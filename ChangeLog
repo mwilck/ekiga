@@ -1,5 +1,18 @@
 2002-01-13  Damien Sandras  <dsandras@seconix.com>
 
+	* src/config.cpp: Removed unuseful cout.
+
+	* src/common.h: Added rpt_data structure.
+
+	* src/endpoint.cpp: Small bug fixes.
+
+	* src/gnomemeeting.cpp: Added transmitted and received audio and
+	video speeds to the appbar. Close ESD on startup.
+
+	* src/main_window.cpp: Small bug fixes.
+	
+2002-01-13  Damien Sandras  <dsandras@seconix.com>
+
 	* src/config.cpp: Added g_idle_add functions in notifiers to be able
 	to call the real thing between gdk_threads_enter and gdk_threads_leave.
 	Current gconf's design doesn't permit that. This situation is only while

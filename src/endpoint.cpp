@@ -83,6 +83,7 @@ GMH323EndPoint::GMH323EndPoint ()
   /* The gconf client */
   client = gconf_client_get_default ();
 
+  clearCallOnRoundTripFail = TRUE;
   disableFastStart = 1;
   disableH245Tunneling = 
     !gconf_client_get_bool (client, 

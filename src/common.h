@@ -38,6 +38,15 @@
 typedef struct _GM_window_widgets GM_window_widgets;
 typedef struct _GM_pref_window_widgets GM_pref_window_widgets;
 typedef struct _GM_ldap_window_widgets GM_ldap_window_widgets;
+typedef struct _GM_rtp_data GM_rtp_data;
+
+struct _GM_rtp_data
+{
+  int tr_audio_bytes;
+  int tr_video_bytes;
+  int re_audio_bytes;
+  int re_video_bytes;
+};
 
 
 struct _GM_window_widgets
