@@ -211,7 +211,7 @@ gboolean check_config_from_struct (GM_pref_window_widgets *pw)
       // Checks if the server name is ok
       if (!strcmp (gtk_entry_get_text (GTK_ENTRY (pw->ldap_server)), ""))
 	{
-	  msg_box = gnome_message_box_new (_("Sorry, no ldap server specified  !"), 
+	  msg_box = gnome_message_box_new (_("Sorry, no ldap server specified!"), 
 					   GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
 	  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->ldap), FALSE);
 	  no_error = FALSE;
@@ -221,7 +221,7 @@ gboolean check_config_from_struct (GM_pref_window_widgets *pw)
 	  || atoi (gtk_entry_get_text (GTK_ENTRY (pw->ldap_port))) < 1
 	  || atoi (gtk_entry_get_text (GTK_ENTRY (pw->ldap_port))) > 2000)
 	{
-	  msg_box = gnome_message_box_new (_("Sorry, invalid ldap server port  !"), 
+	  msg_box = gnome_message_box_new (_("Sorry, invalid ldap server port!"), 
 					   GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
 	  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->ldap), FALSE);
 	  no_error = FALSE;
@@ -229,7 +229,7 @@ gboolean check_config_from_struct (GM_pref_window_widgets *pw)
 
       if (!strcmp (gtk_entry_get_text (GTK_ENTRY (pw->firstname)), ""))
 	{
-	  msg_box = gnome_message_box_new (_("Please provide a valid first name  !"), 
+	  msg_box = gnome_message_box_new (_("Please provide your first name!"), 
 					   GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
 	  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->ldap), FALSE);
 	  no_error = FALSE;
@@ -237,7 +237,7 @@ gboolean check_config_from_struct (GM_pref_window_widgets *pw)
 
       if (!strcmp (gtk_entry_get_text (GTK_ENTRY (pw->mail)), ""))
 	{
-	  msg_box = gnome_message_box_new (_("Please provide a valid e-mail  !"), 
+	  msg_box = gnome_message_box_new (_("Please provide a valid e-mail!"), 
 					   GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
 	  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->ldap), FALSE);
 	  no_error = FALSE;
@@ -268,7 +268,7 @@ gboolean check_config_from_struct (GM_pref_window_widgets *pw)
 	  if (!GM_cam (gtk_entry_get_text (GTK_ENTRY (pw->video_device)),
 		       (int) pw->video_channel_spin_adj->value))
 	    
-	    msg_box = gnome_message_box_new (_("It is impossible to open the selected video device, but the video transmission is enabled. \nGnomeMeeting will transmit a test image to the remote endpoint during communications."), 
+	    msg_box = gnome_message_box_new (_("It is impossible to open the selected video device, but the video transmission is enabled.\nGnomeMeeting will transmit a test image to the remote party during communications."), 
 					     GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
 	}
     }

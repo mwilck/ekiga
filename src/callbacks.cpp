@@ -121,7 +121,7 @@ void about_callback (GtkWidget *widget, gpointer data)
     {
       "Damien Sandras <dsandras@seconix.com>",
       "",
-      N_("Contributors  :"),
+      N_("Contributors:"),
       "Alex Larsson <alexl@redhat.com>",
       "Roger Hardiman <roger@freebsd.org>",
       NULL
@@ -131,9 +131,11 @@ void about_callback (GtkWidget *widget, gpointer data)
 	
   abox = gnome_about_new (PACKAGE,
 			  VERSION,
-			  _("(c) 2000-2001 by Damien Sandras"),
+			  /* Translators: Please change the (C) to a real copyright
+			     character if your character set allows it. */
+			  _("(C) 2000, 2001 Damien Sandras"),
 			  authors,
-			  _("GnomeMeeting is an H.323 compliant program for gnome\nThis program is not supported by Microsoft(c)."),
+			  _("GnomeMeeting is an H.323 compliant program for GNOME.\nThis program is not supported by Microsoft(C)."),
 			  "/usr/share/pixmaps/gnomemeeting-logo.png");
 	
   gtk_widget_show (abox);
