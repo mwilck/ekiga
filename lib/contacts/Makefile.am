@@ -5,7 +5,11 @@ libgmcontacts_la_SOURCES = \
 			gm_contacts.cpp \
 			gm_contacts-remote.h \
 			gm_contacts-remote.cpp \
-			gm_contacts-local.h
+			gm_contacts-local.h \
+			gm_contacts-convert.h \
+			gm_contacts-convert.c \
+			e-vcard.h \
+			e-vcard.c
 
 if DISABLE_GNOME
 libgmcontacts_la_SOURCES += gm_contacts-gm_conf.cpp
