@@ -1,5 +1,14 @@
 2004-02-08 Damien Sandras  <dsandras@seconix.com>
 
+	* src/callbacks.cpp, src/callbacks.h: Added wrapper to call
+	gnomemeeting_window_hide on delete_event.
+	
+	* src/ldap_window.cpp, src/main_window.cpp, src/misc.cpp,
+	src/pref_window.cpp, src/tools.cpp: Use the above one. Should
+	fix the bug reported by Johnny Ström today.
+	
+2004-02-08 Damien Sandras  <dsandras@seconix.com>
+
 	* src/vfakeio.cpp, src/vfakeio.h: Applied patch from
 	Julien Puydt.
 	

@@ -46,6 +46,7 @@
 #include "misc.h"
 #include "urlhandler.h"
 #include "codec_info.h"
+#include "callbacks.h"
 #include "lid.h"
 
 #include "dialog.h"
@@ -1792,8 +1793,7 @@ gnomemeeting_pref_window_new (GmPrefWindow *pw)
 
   g_signal_connect_swapped (GTK_OBJECT (window), 
 			    "delete-event", 
-			    G_CALLBACK (gnomemeeting_window_hide),
-			    (gpointer) window);
+			    G_CALLBACK (delete_window_cb), NULL);
 
   return window;
 }

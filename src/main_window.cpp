@@ -769,7 +769,7 @@ gm_quit_callback (GtkWidget *widget, GdkEvent *event,
   if (!b)
     quit_callback (NULL, data);
   else 
-    gtk_widget_hide (GTK_WIDGET (gm));
+    gnomemeeting_window_hide (GTK_WIDGET (gm));
 
   return (TRUE);
 }  

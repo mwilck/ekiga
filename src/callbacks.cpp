@@ -326,6 +326,17 @@ void pause_channel_callback (GtkWidget *widget, gpointer data)
 }
 
 
+gboolean
+delete_window_cb (GtkWidget *w,
+                  GdkEvent *ev,
+                  gpointer data)
+{
+  gnomemeeting_window_hide (GTK_WIDGET (w));
+
+  return TRUE;
+}
+
+
 void
 show_window_cb (GtkWidget *w,
 		gpointer data)

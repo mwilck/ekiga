@@ -113,6 +113,15 @@ void quit_callback (GtkWidget *,
 		    gpointer);
 
 
+/* DESCRIPTION  :  Simple wrapper that will call gnomemeeting_hide_window.
+ * BEHAVIOR     :  Calls gnomemeeting_window_hide.
+ * PRE          :  /
+ */
+gboolean delete_window_cb (GtkWidget *,
+                           GdkEvent *,
+                           gpointer);
+
+
 /* DESCRIPTION  :  Simple wrapper that will call gnomemeeting_show_window.
  * BEHAVIOR     :  Calls gnomemeeting_window_show.
  * PRE          :  The gpointer is a valid pointer to the GtkWindow that needs
