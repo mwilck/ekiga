@@ -1266,7 +1266,15 @@ static void init_pref_codecs_settings (GtkWidget *notebook,
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);		
 
   gtk_signal_connect (GTK_OBJECT (pw->fps), "toggled",
-		      GTK_SIGNAL_FUNC (fps_limit_option_changed_callback), (gpointer) pw);
+		      GTK_SIGNAL_FUNC (fps_limit_option_changed_callback), 
+		      (gpointer) pw);
+
+  tip = gtk_tooltips_new ();
+  gtk_tooltips_set_tip (tip, pw->tr_fps,
+			_("Here you can enable or disable the limit on the number of transmitted frames per second."), NULL);
+
+  /* Init the buttons */
+  fps_limit_option_changed_callback (GTK_TOGGLE_BUTTON (pw->fps), pw);
   
   /* Enable Video Transmission */
   pw->vid_tr = 

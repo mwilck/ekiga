@@ -51,7 +51,7 @@ void GMThreadsCleaner::Main ()
     MyApp->Endpoint ()->GetVideoGrabber ();
 
   gdk_threads_enter ();
-  disconnect_cb (NULL, NULL);
+  disconnect_cb (NULL, gw);
   gnome_appbar_push (GNOME_APPBAR (gw->statusbar), _("Quit in progress..."));
   GM_log_insert (gw->log_text, _("Quit in progress..."));
   gdk_threads_leave ();
