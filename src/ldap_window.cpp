@@ -931,7 +931,7 @@ delete_contact_from_group_cb (GtkWidget *widget,
     
     group_content = g_slist_remove_link (group_content,
 					 group_content_iter);
-	
+    
     gconf_client_set_list (client, gconf_key, GCONF_VALUE_STRING,
 			   group_content, NULL);
     
@@ -2178,7 +2178,7 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
 
   
   GmLdapWindowPage *lwp = new (GmLdapWindowPage);
-  lwp->contact_section_name = g_utf8_strdown (text_label, -1);
+  lwp->contact_section_name = g_strdup (text_label);
   lwp->ils_browser = NULL;
   lwp->search_entry = NULL;
   lwp->option_menu = NULL;
