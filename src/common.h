@@ -78,6 +78,7 @@
 #define NAT_KEY "/apps/gnomemeeting/general/nat/"
 #define H323_ADVANCED_KEY "/apps/gnomemeeting/protocols/h323/advanced/"
 #define H323_GATEKEEPER_KEY "/apps/gnomemeeting/protocols/h323/gatekeeper/"
+#define H323_GATEWAY_KEY "/apps/gnomemeeting/protocols/h323/gateway/"
 #define PORTS_KEY "/apps/gnomemeeting/protocols/h323/ports/"
 #define CALL_FORWARDING_KEY "/apps/gnomemeeting/protocols/h323/call_forwarding/"
 #define LDAP_KEY "/apps/gnomemeeting/protocols/ldap/"

@@ -151,6 +151,7 @@ GMH323EndPoint::MakeCallLocked (const PString & call_addr,
   H323Connection *con = NULL;
   
   called_address = call_addr;
+  
   con = H323EndPoint::MakeCallLocked (call_addr, call_token);
 
 #ifdef HAS_IXJ

@@ -158,6 +158,11 @@ static void fast_start_changed_nt (GConfClient *,
 				   GConfEntry *,
 				   gpointer);
 
+static void use_gateway_changed_nt (GConfClient *,
+				    guint, 
+				    GConfEntry *,
+				    gpointer);
+
 static void enable_video_transmission_changed_nt (GConfClient *, 
 						  guint, 
 						  GConfEntry *, 
@@ -421,6 +426,42 @@ fast_start_changed_nt (GConfClient *client,
 			     ep->IsFastStartDisabled ()?
 			     _("Fast Start disabled"):
 			     _("Fast Start enabled"));
+    gdk_threads_leave ();
+  }
+}
+
+
+/* DESCRIPTION  :  This notifier is called when the gconf database data
+ *                 associated with the use_gateway changes.
+ * BEHAVIOR     :  It checks if the key can be enabled or not following
+ *                 if a gateway has been specified or not.
+ * PRE          :  /
+ */
+static void
+use_gateway_changed_nt (GConfClient *client,
+			guint cid, 
+			GConfEntry *entry,
+			gpointer data)
+{
+  GmWindow *gw = NULL;
+  PString gateway;
+  gchar *gateway_string;
+
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
+  
+  if (entry->value->type == GCONF_VALUE_BOOL) {
+
+    gdk_threads_enter ();
+    gateway_string = gconf_get_string (H323_GATEWAY_KEY "host");
+    gateway = gateway_string;
+
+    if (gateway.IsEmpty () && gconf_value_get_bool (entry->value)) {
+      
+      gnomemeeting_warning_dialog (GTK_WINDOW (gw->pref_window), _("No gateway or proxy specified"), _("You need to specify an host to use as gateway or proxy."));
+      gconf_set_bool (H323_GATEWAY_KEY "use_gateway", FALSE);
+    }
+
+    g_free (gateway_string);
     gdk_threads_leave ();
   }
 }
@@ -1668,6 +1709,17 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, H323_ADVANCED_KEY "dtmf_sending",
 			   applicability_check_nt, NULL, 0, 0);
 
+  
+  /* gnomemeeting_init_pref_window_gateway */
+  gconf_client_notify_add (client, H323_GATEWAY_KEY "host",
+			   applicability_check_nt, NULL, 0, 0);
+  
+  gconf_client_notify_add (client, H323_GATEWAY_KEY "use_gateway",
+			   applicability_check_nt, NULL, 0, 0);
+  gconf_client_notify_add (client, H323_GATEWAY_KEY "use_gateway",
+			   use_gateway_changed_nt, NULL, 0, 0);
+
+    
   /* gnomemeeting_init_pref_window_directories */
   gconf_client_notify_add (client, LDAP_KEY "enable_registering",
 			   register_changed_nt, NULL, 0, 0);

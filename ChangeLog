@@ -1,3 +1,22 @@
+2004-01-11 Damien Sandras  <dsandras@seconix.com>
+
+	* NEWS: Updated with latest CVS News.
+	
+	* configure.in: Incremented SCHEMA_AGE. Incremented UNSTABLE version
+	to 0.99.2 as most features are now in the code.
+	
+	* gnomemeeting.schemas.in.in: Added keys to support Gateways (or
+	proxies) like Asterisk.
+
+	* lib/gconf_widgets_extensions.c, lib/gconf_widgets_extensions.h,
+	lib/gnome_prefs_window.c: Do not change the GConf key after each
+	key stroke, but only when the focus changes as suggested by
+	the HIG.
+
+	* src/common.h, src/config.cpp, src/endpoint.cpp, src/pref_window.cpp,
+	src/urlhandler.cpp: Added support for calls through a gateway or a 
+	proxy.
+	
 2004-01-09  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* lib/gtk-text-buffer-addon.c (gtk_text_buffer_insert_with_regex):

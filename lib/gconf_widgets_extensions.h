@@ -57,14 +57,15 @@ G_BEGIN_DECLS
  */
 
 
-/* DESCRIPTION  :  This function is called when an entry changes.
+/* DESCRIPTION  :  This function is called when the focus of an entry changes.
  * BEHAVIOR     :  Updates the key given as parameter to the new value of the
  *                 entry.  
  * PRE          :  Non-Null data corresponding to the string gconf key
  *                 to modify.
  */
-void entry_changed (GtkEditable *,
-		    gpointer);
+gboolean entry_changed (GtkWidget *,
+			GdkEventFocus *,
+			gpointer);
 
 
 /* DESCRIPTION  :  Generic notifiers for entries.

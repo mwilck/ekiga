@@ -166,7 +166,7 @@ gnome_prefs_entry_new (GtkWidget *table,
 
   g_free (gconf_string);
 
-  g_signal_connect_after (G_OBJECT (entry), "changed",
+  g_signal_connect_after (G_OBJECT (entry), "focus-out-event",
 			  G_CALLBACK (entry_changed), gconf_key);
   
   gconf_client_notify_add (client, gconf_key, entry_changed_nt,

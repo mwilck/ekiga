@@ -129,6 +129,9 @@ static void gnomemeeting_init_pref_window_h323_advanced (GtkWidget *,
 static void gnomemeeting_init_pref_window_gatekeeper (GtkWidget *,
 						      GtkWidget *);
 
+static void gnomemeeting_init_pref_window_gateway (GtkWidget *,
+						   GtkWidget *);
+
 static void gnomemeeting_init_pref_window_nat (GtkWidget *,
 					       GtkWidget *);
 
@@ -1249,6 +1252,27 @@ gnomemeeting_init_pref_window_gatekeeper (GtkWidget *window,
 }
 
 
+/* BEHAVIOR     :  It builds the container for the gateway/proxy settings
+ *                 and returns it.
+ * PRE          :  /
+ */
+static void
+gnomemeeting_init_pref_window_gateway (GtkWidget *window,
+				       GtkWidget *container)
+{
+  GtkWidget *subsection = NULL;
+
+
+  /* Add fields for the gatekeeper */
+  subsection = gnome_prefs_subsection_new (window, container,
+					   _("Gateway/Proxy"), 2, 2);
+
+  gnome_prefs_entry_new (subsection, _("Gateway / Proxy host:"), H323_GATEWAY_KEY "host", _("The Gateway host is the host to use to do H.323 calls through a gateway that will relay calls."), 1, false);
+
+  gnome_prefs_toggle_new (subsection, _("Use gateway or proxy"), H323_GATEWAY_KEY "use_gateway", _("Use or not the specified gateway to do calls."), 2);
+}
+
+
 /* BEHAVIOR     :  It builds the container for NAT support
  *                 and returns it.
  * PRE          :  /
@@ -1731,7 +1755,12 @@ gnomemeeting_pref_window_new (GmPrefWindow *pw)
 						 _("Gatekeeper Settings"));
   gnomemeeting_init_pref_window_gatekeeper (window, container);          
   gtk_widget_show_all (GTK_WIDGET (container));
-    
+
+  container = gnome_prefs_window_subsection_new (window,
+						 _("Gateway / Proxy Settings"));
+  gnomemeeting_init_pref_window_gateway (window, container);          
+  gtk_widget_show_all (GTK_WIDGET (container));
+
   gnome_prefs_window_section_new (window, _("Codecs"));
 
   container = gnome_prefs_window_subsection_new (window, _("Audio Codecs"));

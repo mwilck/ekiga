@@ -51,6 +51,7 @@
 
 #include "dialog.h"
 #include "gtk_menu_extensions.h"
+#include "gconf_widgets_extensions.h"
 
 /* Declarations */
 extern GtkWidget *gm;
@@ -230,9 +231,13 @@ GMURLHandler::~GMURLHandler ()
 void GMURLHandler::Main ()
 {
   GmWindow *gw = NULL;
+
+  BOOL use_gateway = FALSE;
   
+  PString gateway;
   PString call_address;
   PString current_call_token;
+
   GMURL old_url;
   
   gchar *msg = NULL;
@@ -240,15 +245,14 @@ void GMURLHandler::Main ()
   GMH323EndPoint *endpoint = NULL;
   H323Connection *con = NULL;
 
-  GConfClient *client = NULL;
-
   PWaitAndSignal m(quit_mutex);
   
   gnomemeeting_threads_enter ();
-  client = gconf_client_get_default ();
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
+  use_gateway = gconf_get_bool (H323_GATEWAY_KEY "use_gateway");
+  gateway = gconf_get_string (H323_GATEWAY_KEY "host");
   gnomemeeting_threads_leave ();
-  
+
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
   endpoint = GnomeMeeting::Process ()->Endpoint ();
 
 
@@ -335,6 +339,9 @@ void GMURLHandler::Main ()
     /* Connect to the URL */
     if (!transfer_call) {
 
+      if (use_gateway && !gateway.IsEmpty ()) 	
+	call_address = call_address + "@" + gateway;
+      cout << call_address << endl << flush;
       con = 
 	endpoint->MakeCallLocked (call_address, current_call_token);
     }

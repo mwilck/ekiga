@@ -48,8 +48,9 @@
  */
 
 
-void
-entry_changed (GtkEditable  *e,
+gboolean
+entry_changed (GtkWidget  *w,
+	       GdkEventFocus *ev,
 	       gpointer data)
 {
   GConfClient *client = NULL; 
@@ -59,18 +60,19 @@ entry_changed (GtkEditable  *e,
   client = gconf_client_get_default ();
   key = (gchar *) data;
 
-
   current_value = gconf_client_get_string (GCONF_CLIENT (client), key, NULL);
 
   if (!current_value 
-      || strcmp (current_value, gtk_entry_get_text (GTK_ENTRY (e)))) {
+      || strcmp (current_value, gtk_entry_get_text (GTK_ENTRY (w)))) {
 
     gconf_client_set_string (GCONF_CLIENT (client),
 			     key,
-			     gtk_entry_get_text (GTK_ENTRY (e)),
+			     gtk_entry_get_text (GTK_ENTRY (w)),
 			     NULL);
   }
   g_free (current_value);
+
+  return FALSE;
 }
 
 
