@@ -182,6 +182,9 @@ GMH323EndPoint::OnRTPStatistics (const H323Connection & connection,
 BOOL 
 GMH323EndPoint::OnIncomingConnection (OpalConnection &connection)
 {
+  PSafePtr<OpalConnection> con = NULL;
+  PSafePtr<OpalCall> call = NULL;
+  
   gchar *forward_host = NULL;
 
   gboolean busy_forward = FALSE;
@@ -200,8 +203,13 @@ GMH323EndPoint::OnIncomingConnection (OpalConnection &connection)
   always_forward = gm_conf_get_bool (CALL_FORWARDING_KEY "always_forward");
   gnomemeeting_threads_leave ();
   
-
-  if (forward_host && always_forward)
+  
+  call = endpoint.FindCallWithLock (endpoint.GetCurrentCallToken());
+  if (call)
+    con = endpoint.GetConnection (call, TRUE);
+  if (con && con->GetIdentifier () == connection.GetIdentifier()) 
+    reason = 1;
+  else if (forward_host && always_forward)
     reason = 2; // Forward
   /* We are in a call */
   else if (endpoint.GetCallingState () != GMEndPoint::Standby) {
