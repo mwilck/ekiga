@@ -1413,15 +1413,6 @@ GMH323EndPoint::SetUserNameAndAlias ()
 
 
 void
-GMH323EndPoint::SetRegistrationTimeToLive (int ttl)
-{
-  PTimeInterval t (0, PMIN (PMAX (60, ttl), 300));
-
-  registrationTimeToLive = t;
-}
-
-
-void
 GMH323EndPoint::SetPorts ()
 {
   gchar *rtp_port_range = NULL;
@@ -1502,10 +1493,6 @@ GMH323EndPoint::Init ()
   SetUserNameAndAlias ();
 
 
-  /* Set the gatekeeper TTL */
-  SetRegistrationTimeToLive (gconf_get_int (GATEKEEPER_KEY "time_to_live"));
-
-  
   /* Register to gatekeeper */
   if (gconf_get_int (GATEKEEPER_KEY "registering_method"))
     GatekeeperRegister ();

@@ -61,7 +61,6 @@ GMH323Gatekeeper::GMH323Gatekeeper ()
   /* Query the gconf database for options */
   gnomemeeting_threads_enter ();
   registering_method = gconf_get_int (GATEKEEPER_KEY "registering_method");
-  ttl = gconf_get_int (GATEKEEPER_KEY "time_to_live");
   
   /* Gatekeeper password */
   gconf_string = gconf_get_string (GATEKEEPER_KEY "gk_password");
@@ -159,8 +158,6 @@ void GMH323Gatekeeper::Main ()
     if (!gk_password.IsEmpty ())
       endpoint->SetGatekeeperPassword (gk_password);
 
-    /* Set the Time-To-Live */
-    endpoint->SetRegistrationTimeToLive (ttl);
     
     /* Registers to the gk */
     if (registering_method == 3) {

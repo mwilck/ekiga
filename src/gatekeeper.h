@@ -77,7 +77,6 @@ public:
 protected:
 
   int registering_method;
-  int ttl;
   
   PString gk_host;
   PString gk_password;

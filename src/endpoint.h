@@ -411,13 +411,6 @@ class GMH323EndPoint : public H323EndPoint
    */
   void SetUserNameAndAlias ();
 
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Set the registration TTL for the gatekeeper.
-   * PRE          :  int between 60 and 300 seconds.
-   */
-  void SetRegistrationTimeToLive (int);
-  
     
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Update the RTP, TCP, UDP ports from the GConf database.
