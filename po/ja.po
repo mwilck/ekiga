@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-11-24 17:40+0900\n"
-"PO-Revision-Date: 2004-11-24 17:40+0900\n"
+"POT-Creation-Date: 2004-11-27 12:20+0900\n"
+"PO-Revision-Date: 2004-11-27 12:01+0900\n"
 "Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
@@ -99,7 +99,7 @@ msgstr ""
 msgid "Clear inactive calls"
 msgstr "アクティブではない会話をクリアする"
 
-#: gnomemeeting.schemas.in.in.h:15 src/addressbook_window.cpp:988
+#: gnomemeeting.schemas.in.in.h:15 src/addressbook_window.cpp:974
 msgid "Comment"
 msgstr "コメント"
 
@@ -1160,13 +1160,13 @@ msgstr "状態"
 msgid "Name"
 msgstr "氏名"
 
-#: src/addressbook_window.cpp:974
-msgid "URL"
-msgstr "URL"
-
-#: src/addressbook_window.cpp:1002 src/calls_history_window.cpp:737
+#: src/addressbook_window.cpp:988 src/calls_history_window.cpp:737
 msgid "Software"
 msgstr "ソフトウェア"
+
+#: src/addressbook_window.cpp:1002
+msgid "URL"
+msgstr "URL"
 
 #: src/addressbook_window.cpp:1016
 msgid "E-Mail"
@@ -1447,7 +1447,7 @@ msgstr "発信"
 
 #: src/calls_history_window.cpp:646
 msgid "Missed Calls"
-msgstr "未応答の着信数"
+msgstr "未応答の着信"
 
 #: src/calls_history_window.cpp:658 src/main_window.cpp:1151 src/tray.cpp:302
 msgid "Calls History"
@@ -1754,8 +1754,7 @@ msgstr ""
 "これは GnomeMeeting 設定ドルイドです。次のページから、いくつかの簡単な質問に"
 "答えながら GnomeMeeting を設定していきます。\n"
 "\n"
-"これらの設定が完了した後で、メニュー [編集] - [設定] で変更することができま"
-"す。"
+"これらの設定が完了した後、メニュー [編集] - [設定] で変更することもできます。"
 
 #: src/druid.cpp:613
 #, c-format
@@ -1845,7 +1844,8 @@ msgid ""
 "router to be able to do calls with GnomeMeeting."
 msgstr ""
 "NAT の種類の検出では、GnomeMeeting を使って呼び出せるように、お使いの NAT "
-"ルータを設定をお手伝いします。"
+"ルータを設定をお手伝いします。\n"
+"(お使いの環境によって、少々時間がかかります。)"
 
 #: src/druid.cpp:915
 #, c-format
@@ -2041,7 +2041,7 @@ msgstr "%s からの着信に応答中です (自動応答)"
 msgid "Call rejected"
 msgstr "着信拒否しました"
 
-#: src/endpoint.cpp:909 src/endpoint.cpp:1308 src/endpoint.cpp:2253
+#: src/endpoint.cpp:909 src/endpoint.cpp:1308 src/endpoint.cpp:2255
 msgid "Call forwarded"
 msgstr "着信を転送しました"
 
@@ -2222,7 +2222,7 @@ msgstr ""
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "%.2ld:%.2ld:%.2ld  音:%.2f/%.2f   映:%.2f/%.2f"
 
-#: src/endpoint.cpp:2250
+#: src/endpoint.cpp:2252
 #, c-format
 msgid "Forwarding Call to %s (No Answer)"
 msgstr "着信を %s へフォワード中です (応答なし)"
@@ -3565,7 +3565,7 @@ msgstr "画像の品質"
 #: src/pref_window.cpp:1291
 msgid ""
 "Choose if you want to favour speed or quality for the transmitted video."
-msgstr "速度を優先するか、転送するビデオの品質を優先するか選択して下さい"
+msgstr "速度を優先するか、転送するビデオの品質を優先するか調整して下さい"
 
 #. Translators: the full sentence is Transmit X background blocks with each
 #. frame
@@ -3840,7 +3840,7 @@ msgstr "NAT の検出が成功しました"
 
 #: src/stunclient.cpp:207
 msgid "The type of NAT was successfully detected"
-msgstr "NAT の種類を検出が完了しました"
+msgstr "お使いの NAT の種類を検出しました"
 
 #: src/stunclient.cpp:232
 #, c-format
