@@ -1,3 +1,23 @@
+2005-04-04  Damien Sandras  <dsandras@gnome.org>
+
+	* src/endpoint.cpp: Adapted to new API. Fixed Auto-Answer of incoming
+	calls. Added back support to pause audio and video channels, to put
+	calls on hold and to transfer calls. (Requires a patch that is not in
+	OPAL CVS yet).
+
+	* src/h323endpoint.cpp, src/h323endpoint.h, src/sipendpoint.cpp,
+	src/sipendpoint.h: Fixed Auto-Answer and Do Not Disturb.
+
+	* src/pcssendpoint.cpp, src/pcssendpoint.h: Removed unuseful code and
+	reorganised handling of incoming calls.
+
+	* src/pref_window.cpp: Force the presence of a realm for 
+	SIP authentication.
+
+	* src/urlhandler.cpp: Added back call transfer.
+
+	* src/main_window.cpp: Removed video support for now.
+
 2005-03-25  Damien Sandras  <dsandras@gnome.org>
 
 	* src/main_window.cpp, src/videograbber.cpp: Do not update
