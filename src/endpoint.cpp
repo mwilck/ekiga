@@ -859,10 +859,10 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   if (show_popup) {
     
     gnomemeeting_threads_enter ();
-    gm_main_window_incoming_call_dialog_run (main_window,
-					     utf8_name, 
-					     utf8_app, 
-					     utf8_url);
+    gm_main_window_incoming_call_dialog_show (main_window,
+					      utf8_name, 
+					      utf8_app, 
+					      utf8_url);
     gnomemeeting_threads_leave ();
   }
   

@@ -185,14 +185,15 @@ void gm_main_window_transfer_dialog_run (GtkWidget *,
 
 
 /* DESCRIPTION   :  /
- * BEHAVIOR      : Creates a new incoming call popup and run it as modal dialog.
+ * BEHAVIOR      : Creates a new incoming call popup and show it 
+ * 		   as modal dialog.
  * PRE           : The main window GMObject.
  * 		   The name and the app in UTF-8 char * and the remote URL
  */
-void gm_main_window_incoming_call_dialog_run (GtkWidget *,
-					      gchar *,
-					      gchar *,
-					      gchar *);
+void gm_main_window_incoming_call_dialog_show (GtkWidget *,
+					       gchar *,
+					       gchar *,
+					       gchar *);
 
 
 /* DESCRIPTION  :  /

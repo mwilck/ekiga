@@ -341,6 +341,17 @@ static void toolbar_connect_button_clicked_cb (GtkToggleButton *,
 static int statusbar_clear_msg_cb (gpointer);
 
 
+/* DESCRIPTION  :  This callback is called on delete event for the incoming
+ * 		   call dialog.
+ * BEHAVIOR     :  Disconnects and set the pointer to NULL, the destroy signal
+ * 		   will destroy the dialog by itself.
+ * PRE          :  A valid main window GMObject.
+ */
+static gboolean delete_incoming_call_dialog_cb (GtkWidget *,
+						GdkEvent *,
+						gpointer);
+
+
 /* Implementation */
 static void
 gm_mw_destroy (gpointer mw)
@@ -1733,6 +1744,27 @@ statusbar_clear_msg_cb (gpointer data)
 }
 
 
+gboolean
+delete_incoming_call_dialog_cb (GtkWidget *w,
+				GdkEvent *ev,
+				gpointer data)
+{
+  GmWindow *mw = NULL;
+
+  g_return_val_if_fail (data != NULL, TRUE);
+
+  mw = gm_mw_get_mw (GTK_WIDGET (data));
+
+  g_return_val_if_fail (GTK_WIDGET (data), TRUE);
+
+  mw->incoming_call_popup = NULL;
+
+  GnomeMeeting::Process ()->Disconnect ();
+  
+  return FALSE;
+}
+
+
 /* Public functions */
 void 
 gm_main_window_update_logo (GtkWidget *main_window)
@@ -1986,6 +2018,7 @@ gm_main_window_update_sensitivity (//GtkWidget *main_window,
       gtk_menu_section_set_sensitive (mw->main_menu, "hold_call", FALSE);
       gtk_widget_set_sensitive (GTK_WIDGET (mw->preview_button), TRUE);
       gm_mw_update_connect_button (main_window, FALSE);
+      
       break;
 
 
@@ -1995,6 +2028,7 @@ gm_main_window_update_sensitivity (//GtkWidget *main_window,
       gtk_menu_set_sensitive (mw->main_menu, "disconnect", TRUE);
       gtk_widget_set_sensitive (GTK_WIDGET (mw->preview_button), FALSE);
       gm_mw_update_connect_button (main_window, TRUE);
+      
       break;
 
 
@@ -2005,6 +2039,7 @@ gm_main_window_update_sensitivity (//GtkWidget *main_window,
       gtk_menu_section_set_sensitive (mw->main_menu, "hold_call", TRUE);
       gtk_widget_set_sensitive (GTK_WIDGET (mw->preview_button), FALSE);
       gm_mw_update_connect_button (main_window, TRUE);
+      
       break;
 
 
@@ -2012,6 +2047,7 @@ gm_main_window_update_sensitivity (//GtkWidget *main_window,
 
       gtk_menu_set_sensitive (mw->main_menu, "disconnect", TRUE);
       gm_mw_update_connect_button (main_window, FALSE);
+      
       break;
     }
 }
@@ -2359,10 +2395,10 @@ gm_main_window_transfer_dialog_run (GtkWidget *main_window,
 
 
 void 
-gm_main_window_incoming_call_dialog_run (GtkWidget *main_window,
-					 gchar *utf8_name, 
-					 gchar *utf8_app,
-					 gchar *utf8_url)
+gm_main_window_incoming_call_dialog_show (GtkWidget *main_window,
+					  gchar *utf8_name, 
+					  gchar *utf8_app,
+					  gchar *utf8_url)
 {
   GmWindow *mw = NULL;
   
@@ -2370,8 +2406,6 @@ gm_main_window_incoming_call_dialog_run (GtkWidget *main_window,
   GtkWidget *vbox = NULL;
   GtkWidget *b1 = NULL;
   GtkWidget *b2 = NULL;
-
-  gint answer;
 
   gchar *msg = NULL;
 
@@ -2430,26 +2464,18 @@ gm_main_window_incoming_call_dialog_run (GtkWidget *main_window,
   gtk_window_set_transient_for (GTK_WINDOW (mw->incoming_call_popup),
 				GTK_WINDOW (main_window));
 
-  gtk_widget_show_all (vbox);
   
-  answer = gtk_dialog_run (GTK_DIALOG (mw->incoming_call_popup));
-  switch (answer) {
-
-  case GTK_RESPONSE_ACCEPT:
-
-    GnomeMeeting::Process ()->Connect ();
-    break;
-
-  case GTK_RESPONSE_REJECT:
-
-    GnomeMeeting::Process ()->Disconnect ();
-    break;
-  }
-
+  g_signal_connect (G_OBJECT (b1), "clicked",
+		    GTK_SIGNAL_FUNC (connect_cb), main_window);
+  g_signal_connect (G_OBJECT (b2), "clicked",
+		    GTK_SIGNAL_FUNC (disconnect_cb), NULL);
+  g_signal_connect (G_OBJECT (mw->incoming_call_popup), "delete-event",
+		    GTK_SIGNAL_FUNC (delete_incoming_call_dialog_cb), 
+		    main_window);
   
-  gtk_widget_destroy (mw->incoming_call_popup);
-  mw->incoming_call_popup = NULL;
+  gtk_widget_show_all (mw->incoming_call_popup);
 }
+
 
 GtkWidget *
 gm_main_window_new (GmWindow *mw)
