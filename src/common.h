@@ -106,7 +106,7 @@ struct _GmWindow
   GtkWidget *speaker_phone_button;
   GtkWidget *incoming_call_popup;
 
-  int video_grabber_thread_count;
+  int progress_timeout;
   int cleaner_thread_count;
   PStringArray video_devices;
   PStringArray audio_recorder_devices;

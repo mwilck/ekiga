@@ -51,4 +51,10 @@ void gnomemeeting_init (GM_window_widgets *, GM_pref_window_widgets *,
 			GmTextChat *, int, char **, char **);
 
 
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Gives a pulse to the progressbar of the main window.
+ * PRE          :  The progressbar as parameter.
+ */
+int gnomemeeting_window_appbar_update (gpointer); 
+
 #endif

@@ -265,10 +265,15 @@ static void personal_data_update_button_clicked (GtkWidget *widget,
   /* 1 */
   /* if registering is enabled for LDAP,
      trigger the register notifier */
-  if (gconf_client_get_bool (GCONF_CLIENT (client), "/apps/gnomemeeting/ldap/register", 0))
+  if (gconf_client_get_bool (GCONF_CLIENT (client), "/apps/gnomemeeting/ldap/register", 0)) {
+
+    gconf_client_set_bool (GCONF_CLIENT (client),
+			  "/apps/gnomemeeting/ldap/register",
+			  0, 0);
     gconf_client_set_bool (GCONF_CLIENT (client),
 			  "/apps/gnomemeeting/ldap/register",
 			  1, 0);
+  }
 
   /* 2 */
   /* Set the local User name */
@@ -317,10 +322,15 @@ static void personal_data_update_button_clicked (GtkWidget *widget,
   int method = gconf_client_get_int (GCONF_CLIENT (client), "/apps/gnomemeeting/gatekeeper/registering_method", 0);
 
   /* We do that through the notifier */
-  if (method)
+  if (method) {
+
+    gconf_client_set_int (GCONF_CLIENT (client),
+			  "/apps/gnomemeeting/gatekeeper/registering_method",
+			  0, 0);
     gconf_client_set_int (GCONF_CLIENT (client),
 			  "/apps/gnomemeeting/gatekeeper/registering_method",
 			  method, 0);
+  }
 }
 
 

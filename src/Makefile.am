@@ -47,7 +47,9 @@ gnomemeeting_SOURCES =		\
 	chat_window.cpp		\
 	chat_window.h		\
 	druid.cpp		\
-	druid.h
+	druid.h			\
+	urlhandler.cpp		\
+	urlhandler.h
 
 
 gnomemeeting_LDADD =  @GNOMEMEETING_LDADD@

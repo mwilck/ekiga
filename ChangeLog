@@ -1,3 +1,43 @@
+2002-06-09  Damien Sandras  <dsandras@seconix.com>
+
+	* src/main_window.h: Added function to update the new progressbar
+	that moves when we are calling somebody.
+	
+	* src/common.h: Added ID of progressbar timeout.
+
+	* src/endpoint.cpp: Remove the timeout on the progressbar when the
+	call starts or is refused.
+
+	* src/gnomemeeting.cpp: Adapted the code to make use of the new URL
+	handler. Added timeout to update the progressbar when calling. 
+	Clear the statusbar on disconnect and on connect.
+
+	* src/gnomemeeting.h: Added pointer to the URL Handler to the class.
+
+	* src/ils.cpp: Added function that searches after an e-mail on 
+	an ILS server and returns the IP if the e-mail is registered to the
+	ILS directory.
+
+	* src/ils.h: Added function that searches after an e-mail on 
+	an ILS server and returns the IP if the e-mail is registered to the
+	ILS directory.
+
+	* src/main_window.cpp: Added function to update the new progressbar
+	that moves when we are calling somebody.
+
+	* src/urlhandler.cpp: Added multithreaded class that will made
+	the search on the ILS directory, and call the user if he is found.
+
+	* src/urlhandler.h: Added multithreaded class that will made
+	the search on the ILS directory, and call the user if he is found.
+
+	* src/Makefile.am: Added urlhandler.cpp, urlhandler.h
+	
+	* gnomemeeting.schema.in.in: Default is now to show the superb chat
+	window ;P
+
+	* NEWS: Updated.
+	
 2002-06-07  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* src/pref_window.cpp (codecs_list_button_clicked_callback) 

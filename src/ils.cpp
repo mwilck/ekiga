@@ -50,7 +50,8 @@ int gnomemeeting_ldap_window_appbar_update (gpointer data)
 {
   GtkWidget *statusbar = (GtkWidget *) data;
   
-  GtkProgressBar *progress = gnome_appbar_get_progress (GNOME_APPBAR (statusbar));
+  GtkProgressBar *progress = 
+    gnome_appbar_get_progress (GNOME_APPBAR (statusbar));
 
   gtk_progress_bar_pulse (GTK_PROGRESS_BAR (progress));
    
@@ -81,6 +82,9 @@ GMILSClient::GMILSClient ()
   mail = NULL;
   comment = NULL;
   location = NULL;
+
+  ldap_search_connection = NULL;
+  rc_search_connection = -1;
 
   UpdateConfig ();
   Resume ();
@@ -540,43 +544,53 @@ gchar *GMILSClient::Search (gchar *ldap_server, gchar *ldap_port, gchar *mail)
   int part2;
   int part3;
   int part4;
+  struct timeval t = {10, 0};
 
   gchar *ip = NULL;
   gchar *cn = NULL;
 
   LDAPMessage *res = NULL, *e = NULL;
 
-  int rc = 0;
 
   if (((!strcmp (ldap_server, ""))&&(ldap_server)) 
       ||((!strcmp (ldap_port, ""))&&(ldap_port)) 
       ||((!strcmp (mail, ""))&&(mail)))
     return NULL;
  
-  
+
+  if ((ldap_search_connection != NULL)||(rc_search_connection != -1)) {
+    
+    ldap_abandon (ldap_search_connection, rc_search_connection);
+	
+  }
+
   /* Opens the connection to the ILS directory */
-  ldap_connection = ldap_open (ldap_server, atoi (ldap_port));
+  ldap_search_connection = ldap_open (ldap_server, atoi (ldap_port));
 
 
-  if ((ldap_connection == NULL) || 
-      (ldap_bind_s (ldap_connection, NULL, NULL, LDAP_AUTH_SIMPLE ) 
+  if ((ldap_search_connection == NULL) || 
+      (rc_search_connection = 
+       ldap_bind_s (ldap_search_connection, NULL, NULL, LDAP_AUTH_SIMPLE ) 
       != LDAP_SUCCESS)) {
-
+    
     return NULL;
   }
   
 
   cn = g_strdup_printf ("(&(cn=%s))", mail);
-  rc = ldap_search_s (ldap_connection, "objectClass=RTPerson", 
-		      LDAP_SCOPE_BASE,
-		      cn, attrs, 0, &res); 
+  rc_search_connection = 
+    ldap_search_st (ldap_search_connection, "objectClass=RTPerson", 
+		    LDAP_SCOPE_BASE,
+		    cn, attrs, 0, &t, &res); 
   g_free (cn);
 
-      
+  if (rc_search_connection != 0)
+    return ip;
+
   /* We only take the first entry */
-  e = ldap_first_entry (ldap_connection, res); 
+  e = ldap_first_entry (ldap_search_connection, res); 
   if (e)
-    ldv = ldap_get_values (ldap_connection, e, "sipaddress");
+    ldv = ldap_get_values (ldap_search_connection, e, "sipaddress");
 
   if (ldv != NULL) {
 
@@ -594,7 +608,10 @@ gchar *GMILSClient::Search (gchar *ldap_server, gchar *ldap_port, gchar *mail)
   ip = g_strdup_printf ("%d.%d.%d.%d", part4, part3, part2, part1);
 
   ldap_msgfree (res);
-  ldap_unbind (ldap_connection);
+  ldap_unbind (ldap_search_connection);
+
+  rc_search_connection = -1;
+  ldap_search_connection = NULL;
 
   return ip;
 }

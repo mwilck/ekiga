@@ -490,6 +490,19 @@ gm_quit_callback (GtkWidget *widget, GdkEvent *event,
 
 
 /* The functions */
+int
+gnomemeeting_window_appbar_update (gpointer data) 
+{
+  GtkWidget *statusbar = (GtkWidget *) data;
+  
+  GtkProgressBar *progress = 
+    gnome_appbar_get_progress (GNOME_APPBAR (statusbar));
+
+  gtk_progress_bar_pulse (GTK_PROGRESS_BAR (progress));
+   
+  return 1;
+}
+
 
 void 
 gnomemeeting_init (GmWindow *gw, 
@@ -859,10 +872,12 @@ void gnomemeeting_init_main_window ()
 
 
   /* The statusbar */
-  gw->statusbar = gnome_appbar_new (FALSE, TRUE, GNOME_PREFERENCES_NEVER);	
+  gw->statusbar = gnome_appbar_new (TRUE, TRUE, 
+				    GNOME_PREFERENCES_NEVER);	
   gnome_app_set_statusbar (GNOME_APP (gm), gw->statusbar);
 
-  if (gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_status_bar", 0))
+  if (gconf_client_get_bool (client, 
+			     "/apps/gnomemeeting/view/show_status_bar", 0))
     gtk_widget_show (GTK_WIDGET (gw->statusbar));
   else
     gtk_widget_hide (GTK_WIDGET (gw->statusbar));
@@ -1176,7 +1191,7 @@ int main (int argc, char ** argv, char ** envp)
   gw->pref_window = NULL;
   gw->ldap_window = NULL;
   gw->incoming_call_popup = NULL;
-  gw->video_grabber_thread_count = 0;
+  gw->progress_timeout = 0;
   gw->cleaner_thread_count = 0;
   gw->zoom = 1;
 

@@ -16,8 +16,8 @@ schemasdir = $(GCONF_SCHEMA_FILE_DIR)
 schemas_DATA = $(SCHEMAS_FILE)
 
 install-schemas: gnomemeeting.schemas
-	GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) gconftool --makefile-install-rule $(SCHEMAS_FILE)
-	gconftool --shutdown
+	GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) gconftool-2 --makefile-install-rule $(SCHEMAS_FILE)
+	gconftool-2 --shutdown
 
 install-data-local: install-schemas
 

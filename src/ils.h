@@ -77,6 +77,8 @@ protected:
 
   PTime starttime;
   LDAP *ldap_connection;
+  LDAP *ldap_search_connection;
+  int rc_search_connection;
   PMutex quit_mutex;
 
   /* The options that will be updated from the gconf cache */

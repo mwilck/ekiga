@@ -18,17 +18,17 @@
  */
 
 /*
- *                         main.h  -  description
- *                         ----------------------
+ *                         gnomemeeting.h  -  description
+ *                         ------------------------------
  *   begin                : Sat Dec 23 2000
- *   copyright            : (C) 2000-2001 by Damien Sandras
+ *   copyright            : (C) 2000-2002 by Damien Sandras
  *   description          : This file contains the main class
  *   email                : dsandras@seconix.com
  *
  */
 
-#ifndef _MAIN_H_
-#define _MAIN_H_
+#ifndef _GNOMEMEETING_H_
+#define _GNOMEMEETING_H_
 
 #include <ptlib.h>
 #include <gsmcodec.h>
@@ -98,6 +98,7 @@ class GnomeMeeting : public PProcess
  private:
 
   GMH323EndPoint *endpoint;
+  PThread *url_handler;
 
   GM_window_widgets *gw;
   GM_ldap_window_widgets *lw;

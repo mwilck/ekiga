@@ -38,7 +38,7 @@
 #include "config.h"
 #include "misc.h"
 #include "ils.h"
-
+#include "urlhandler.h"
 
 #include <esd.h>
 #include <gconf/gconf-client.h>
@@ -58,6 +58,8 @@ GnomeMeeting::GnomeMeeting ()
 {
   /* no endpoint for the moment */
   endpoint = NULL;
+
+  url_handler = NULL;
 
   gw = gnomemeeting_get_main_window (gm);
   lw = gnomemeeting_get_ldap_window (gm);
@@ -81,13 +83,14 @@ void GnomeMeeting::Connect()
 {
   PString call_address;
   PString current_call_token;
-  H323Connection *connection;
+  H323Connection *connection = NULL;
   
   /* We need a connection to use AnsweringCall */
   current_call_token = endpoint->GetCurrentCallToken ();
   connection = endpoint->GetCurrentConnection ();
-
+  
   gnomemeeting_threads_enter ();
+  gnome_appbar_clear_stack (GNOME_APPBAR (gw->statusbar));
   call_address = (PString) gtk_entry_get_text 
     (GTK_ENTRY (GTK_WIDGET(GTK_COMBO(gw->combo)->entry)));
   gnomemeeting_threads_leave ();
@@ -117,24 +120,24 @@ void GnomeMeeting::Connect()
 			call_address);
     /* 20 = max number of contacts to store on HD, put here the value */
     /* got from preferences if any*/
-    gnomemeeting_history_combo_box_add_entry (GTK_COMBO (gw->combo),
-	 				      "/apps/gnomemeeting/history/called_hosts",
-		 			      gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry)));
+    gnomemeeting_history_combo_box_add_entry (GTK_COMBO (gw->combo), "/apps/gnomemeeting/history/called_hosts", gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry)));
     gnomemeeting_threads_leave ();
 
 
     /* if we call somebody */
     if (!call_address.IsEmpty ()) {
-
-      call_number++;
-      gchar *msg = NULL;
+      
       H323Connection *con = NULL;
+      call_number++;
       GMILSClient *ils_client = (GMILSClient *) endpoint->GetILSClient ();
 
-      con = endpoint->MakeCallLocked (call_address, current_call_token);
-      endpoint->SetCurrentConnection (con);
-      endpoint->SetCurrentCallToken (current_call_token);
-      endpoint->SetCallingState (1);
+      url_handler = new GMURLHandler (call_address);
+
+      gnomemeeting_threads_enter ();
+      gw->progress_timeout =
+	gtk_timeout_add (50, gnomemeeting_window_appbar_update, 
+			 gw->statusbar);
+      gnomemeeting_threads_leave ();
 
 #ifdef HAS_IXJ
       OpalLineInterfaceDevice *lid = NULL;
@@ -143,25 +146,6 @@ void GnomeMeeting::Connect()
 	lid->PlayTone (0, OpalLineInterfaceDevice::RingTone);
 #endif
 
-      con->Unlock ();
-
-      gnomemeeting_threads_enter ();
-      gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
-
-      /* Enable disconnect: we must be able to stop calling */
-      GnomeUIInfo *call_menu_uiinfo =
-	(GnomeUIInfo *) g_object_get_data (G_OBJECT (gm), "call_menu_uiinfo");
-      gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [1].widget), 
-				TRUE);
-
-      msg = g_strdup_printf (_("Call %d: calling %s"), 
-			     call_number,
-			     (const char *) call_address);
-      gnomemeeting_log_insert (msg);
-      gnome_appbar_push (GNOME_APPBAR (gw->statusbar), msg);
-      connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 1);
-      g_free (msg);		
-      gnomemeeting_threads_leave ();		 
     }
     else  /* We untoggle the connect button in the case it was toggled */
       {
@@ -182,6 +166,20 @@ void GnomeMeeting::Disconnect ()
   H323Connection *connection = endpoint->GetCurrentConnection ();
   PString current_call_token = endpoint->GetCurrentCallToken ();
 
+
+  /* Update the button */
+  gnomemeeting_threads_enter ();
+  connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 0);
+
+  if (gw->progress_timeout) {
+
+    gtk_timeout_remove (gw->progress_timeout);
+    gw->progress_timeout = 0;
+  }
+  gnome_appbar_clear_stack (GNOME_APPBAR (gw->statusbar));
+  gnomemeeting_threads_leave ();
+
+
   if (!current_call_token.IsEmpty ()) {
 
     /* if we are trying to call somebody */
@@ -189,10 +187,8 @@ void GnomeMeeting::Disconnect ()
 
       gnomemeeting_threads_enter ();
       gnomemeeting_log_insert (_("Trying to stop calling"));
-      connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 0);
       gnomemeeting_threads_leave ();
 
-      /* End of Call */
       endpoint->ClearCall (current_call_token);
     }
     else {

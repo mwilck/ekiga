@@ -1099,6 +1099,11 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 
   gnomemeeting_threads_enter ();
 
+  if (gw->progress_timeout) {
+
+    gtk_timeout_remove (gw->progress_timeout);
+    gw->progress_timeout = 0;
+  }
   
   /* Set Video Codecs Settings */
   vq = 32 - (int) ((double) gconf_client_get_int (client, "/apps/gnomemeeting/video_settings/tr_vq", NULL) / 100 * 31);
@@ -1291,6 +1296,13 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   }
   
   gnomemeeting_log_insert (_("Call completed"));
+
+  if (gw->progress_timeout) {
+
+    gtk_timeout_remove (gw->progress_timeout);
+    gw->progress_timeout = 0;
+  }
+
   gnomemeeting_threads_leave ();
 
   
@@ -1362,6 +1374,7 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   /* Disable disconnect, and the mute functions in the call menu */
   GnomeUIInfo *call_menu_uiinfo =
     (GnomeUIInfo *) g_object_get_data (G_OBJECT (gm), "call_menu_uiinfo");
+  gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [0].widget), TRUE);
   gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [1].widget), FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [6].widget), FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [7].widget), FALSE);
