@@ -7,15 +7,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
-"POT-Creation-Date: 2003-05-30 12:20+0200\n"
-"PO-Revision-Date: 2003-05-30 12:20+0200\n"
+"POT-Creation-Date: 2003-05-31 11:35+0200\n"
+"PO-Revision-Date: 2003-05-31 11:36+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:1086
+#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:1084
 msgid "GnomeMeeting"
 msgstr "GnomeMeeting"
 
@@ -85,7 +85,7 @@ msgstr "Färgformat"
 msgid "Color Format for the video palette"
 msgstr "Färgformat föt videopaletten"
 
-#: gnomemeeting.schemas.in.in.h:14 src/ldap_window.cpp:2341
+#: gnomemeeting.schemas.in.in.h:14 src/ldap_window.cpp:2344
 msgid "Comment"
 msgstr "Kommentar"
 
@@ -335,7 +335,7 @@ msgstr "Höjd på lokalt videopopupfönster"
 msgid "Local Video Popup Width"
 msgstr "Bredd på lokalt videopopupfönster"
 
-#: gnomemeeting.schemas.in.in.h:63 src/ldap_window.cpp:2352
+#: gnomemeeting.schemas.in.in.h:63 src/ldap_window.cpp:2355
 msgid "Location"
 msgstr "Plats"
 
@@ -766,7 +766,7 @@ msgstr "Typ av kapabiliteter för användarindata"
 msgid "User directory"
 msgstr "Användarkatalog"
 
-#: gnomemeeting.schemas.in.in.h:142 src/ldap_window.cpp:2374
+#: gnomemeeting.schemas.in.in.h:142 src/ldap_window.cpp:2377
 msgid "Version"
 msgstr "Version"
 
@@ -1171,7 +1171,7 @@ msgid "_Surname:"
 msgstr "_Efternamn:"
 
 #. The callto url
-#: src/druid.cpp:660 src/ldap_window.cpp:2412
+#: src/druid.cpp:660
 msgid "Callto URL"
 msgstr "Callto-URL"
 
@@ -1574,7 +1574,7 @@ msgstr "Fjärrvärden är inte ansluten"
 msgid "Temporary failure"
 msgstr "Tillfälligt fel"
 
-#: src/endpoint.cpp:1384 src/urlhandler.cpp:288
+#: src/endpoint.cpp:1384 src/urlhandler.cpp:298
 msgid "User not found"
 msgstr "Användaren kunde inte hittas"
 
@@ -1582,7 +1582,7 @@ msgstr "Användaren kunde inte hittas"
 msgid "Call completed"
 msgstr "Samtalet färdigt"
 
-#: src/endpoint.cpp:1487 src/main_window.cpp:1761
+#: src/endpoint.cpp:1487 src/main_window.cpp:1759
 msgid ""
 "Lost packets:\n"
 "Late packets:\n"
@@ -1801,8 +1801,8 @@ msgid "URL:"
 msgstr "URL:"
 
 #: src/ldap_window.cpp:730
-msgid "Call shortcut:"
-msgstr "Samtalsgenväg:"
+msgid "Speed Dial:"
+msgstr "Snabbknapp:"
 
 #: src/ldap_window.cpp:754
 msgid "Groups:"
@@ -1822,8 +1822,8 @@ msgstr "Du måste välja en grupp som du vill lägga till din kontakt i."
 
 #: src/ldap_window.cpp:887
 msgid ""
-"Another contact with the same shortcut already exists in the address book."
-msgstr "En annan kontakt med samma genväg finns redan i adressboken."
+"Another contact with the same speed_dial already exists in the address book."
+msgstr "En annan kontakt med samma snabbknapp finns redan i adressboken."
 
 #: src/ldap_window.cpp:899
 msgid "Another contact with the same URL already exists in the address book."
@@ -1935,53 +1935,53 @@ msgid "Add Contact to _Address Book"
 msgstr "Lägg till kontakt till _adressboken"
 
 #. Translators: This is "S" as in "Status"
-#: src/ldap_window.cpp:2299
+#: src/ldap_window.cpp:2302
 msgid "S"
 msgstr "S"
 
 #. Translators: This is "A" as in "Audio"
-#: src/ldap_window.cpp:2309 src/pref_window.cpp:1209
+#: src/ldap_window.cpp:2312 src/pref_window.cpp:1209
 msgid "A"
 msgstr "L"
 
 #. Translators: This is "V" as in "Video"
-#: src/ldap_window.cpp:2319
+#: src/ldap_window.cpp:2322
 msgid "V"
 msgstr "V"
 
-#: src/ldap_window.cpp:2328 src/ldap_window.cpp:2400 src/pref_window.cpp:1223
+#: src/ldap_window.cpp:2331 src/ldap_window.cpp:2403 src/pref_window.cpp:1223
 msgid "Name"
 msgstr "Namn"
 
-#: src/ldap_window.cpp:2362
-msgid "Callto"
-msgstr "Callto"
+#: src/ldap_window.cpp:2365 src/ldap_window.cpp:2415
+msgid "URL"
+msgstr "URL"
 
-#: src/ldap_window.cpp:2385 src/tools.cpp:166
+#: src/ldap_window.cpp:2388 src/tools.cpp:166
 msgid "IP"
 msgstr "IP"
 
-#: src/ldap_window.cpp:2425
+#: src/ldap_window.cpp:2428
 msgid "Speed Dial"
-msgstr "Snabbtangent"
+msgstr "Snabbknapp"
 
-#: src/ldap_window.cpp:2453
+#: src/ldap_window.cpp:2480
 msgid "First name contains"
 msgstr "Förnamn innehåller"
 
-#: src/ldap_window.cpp:2457
+#: src/ldap_window.cpp:2484
 msgid "Last name contains"
 msgstr "Efternamn innehåller"
 
-#: src/ldap_window.cpp:2461
+#: src/ldap_window.cpp:2488
 msgid "E-mail contains"
 msgstr "E-postadress innehåller"
 
-#: src/ldap_window.cpp:2624
+#: src/ldap_window.cpp:2651
 msgid "Servers"
 msgstr "Servrar"
 
-#: src/ldap_window.cpp:2666
+#: src/ldap_window.cpp:2693
 msgid "Groups"
 msgstr "Grupper"
 
@@ -2062,18 +2062,18 @@ msgid "Failed to retrieve gnomemeeting server from activation server\n"
 msgstr ""
 "Misslyckades med att hämta gnomemeeting-server från aktiveringsserver\n"
 
-#: src/main_window.cpp:1060
+#: src/main_window.cpp:1058
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Skriver ut felsökningsmeddelanden på konsollen (nivå mellan 1 och 6)"
 
-#: src/main_window.cpp:1063
+#: src/main_window.cpp:1061
 msgid "Makes GnomeMeeting call the given given URL"
 msgstr "Gör så att GnomeMeeting ringer den angivna URL:en"
 
 #. We can't use gnomemeeting_error_dialog here, cause we need the
 #. dialog_run and dialog_run can't be used in gnomemeeting_error_dialog
 #. because it doesn't work in threads
-#: src/main_window.cpp:1126
+#: src/main_window.cpp:1124
 #, c-format
 msgid ""
 "GnomeMeeting got %d for the GConf key \"/apps/gnomemeeting/gconf_test_age\", "
@@ -2107,7 +2107,7 @@ msgstr ""
 #. We can't use gnomemeeting_error_dialog here, cause we need the
 #. dialog_run and dialog_run can't be used in gnomemeeting_error_dialog
 #. because it doesn't work in threads
-#: src/main_window.cpp:1167
+#: src/main_window.cpp:1165
 msgid ""
 "GnomeMeeting can't be used without audio devices. Please install a soundcard "
 "or a Quicknet card."
@@ -2115,7 +2115,7 @@ msgstr ""
 "GnomeMeeting kan inte användas utan ljudenheter. Installera ett ljudkort "
 "eller ett Quicknet-kort."
 
-#: src/main_window.cpp:1405
+#: src/main_window.cpp:1403
 msgid ""
 "Could not start the listener thread. You will not be able to receive "
 "incoming calls."
@@ -2123,43 +2123,43 @@ msgstr ""
 "Kunde inte starta lyssnartråden. Du kommer inte att kunna ta emot inkommande "
 "samtal."
 
-#: src/main_window.cpp:1626 src/menu.cpp:707 src/menu.cpp:953
+#: src/main_window.cpp:1624 src/menu.cpp:707 src/menu.cpp:953
 msgid "Local Video"
 msgstr "Lokal video"
 
-#: src/main_window.cpp:1632 src/menu.cpp:713 src/menu.cpp:958
+#: src/main_window.cpp:1630 src/menu.cpp:713 src/menu.cpp:958
 msgid "Remote Video"
 msgstr "Fjärrvideo"
 
-#: src/main_window.cpp:1765 src/menu.cpp:674
+#: src/main_window.cpp:1763 src/menu.cpp:674
 msgid "Statistics"
 msgstr "Statistik"
 
-#: src/main_window.cpp:1831
+#: src/main_window.cpp:1829
 msgid "Dialpad"
 msgstr "Knappsats"
 
-#: src/main_window.cpp:1888
+#: src/main_window.cpp:1886
 msgid "Adjust brightness"
 msgstr "Justera ljusstyrka"
 
-#: src/main_window.cpp:1914
+#: src/main_window.cpp:1912
 msgid "Adjust whiteness"
 msgstr "Justera vithet"
 
-#: src/main_window.cpp:1940
+#: src/main_window.cpp:1938
 msgid "Adjust color"
 msgstr "Justera färg"
 
-#: src/main_window.cpp:1966
+#: src/main_window.cpp:1964
 msgid "Adjust contrast"
 msgstr "Justera kontrast"
 
-#: src/main_window.cpp:1974
+#: src/main_window.cpp:1972
 msgid "Video"
 msgstr "Video"
 
-#: src/main_window.cpp:2064
+#: src/main_window.cpp:2062
 msgid "Audio"
 msgstr "Ljud"
 
@@ -2975,21 +2975,21 @@ msgstr "Allmän historik"
 msgid "GnomeMeeting Tray Icon"
 msgstr "GnomeMeeting-lådikon"
 
-#: src/urlhandler.cpp:233
+#: src/urlhandler.cpp:237
 msgid ""
 "Please specify a valid URL handler. Currently both h323: and callto: are "
 "supported."
 msgstr ""
 "Ange en giltig URL-hanterare. För tillfället stöds både h323: och callto:."
 
-#: src/urlhandler.cpp:252
+#: src/urlhandler.cpp:256
 #, c-format
 msgid "Calling %s"
 msgstr "Ringer upp %s"
 
-#: src/urlhandler.cpp:291
-msgid "No contact with that shortcut found"
-msgstr "Ingen kontakt med denna genväg hittades"
+#: src/urlhandler.cpp:271
+msgid "No contact with that speed dial found"
+msgstr "Ingen kontakt med denna snabbknapp hittades"
 
 #: src/videograbber.cpp:324 src/videograbber.cpp:325
 msgid "Opening Video device"
@@ -3080,6 +3080,21 @@ msgstr "Din drivrutin stöder inte YUV420P-färgformatet"
 #: src/videograbber.cpp:738
 msgid "Tests OK!"
 msgstr "Testen OK!"
+
+#~ msgid ""
+#~ "Another contact with the same speed dial already exists in the address "
+#~ "book."
+#~ msgstr "En annan kontakt med samma snabbknapp finns redan i adressboken."
+
+#~ msgid "Call shortcut:"
+#~ msgstr "Samtalsgenväg:"
+
+#~ msgid ""
+#~ "Another contact with the same shortcut already exists in the address book."
+#~ msgstr "En annan kontakt med samma genväg finns redan i adressboken."
+
+#~ msgid "Callto"
+#~ msgstr "Callto"
 
 #~ msgid "Failed to contact %s."
 #~ msgstr "Misslyckades med att kontakta %s."
@@ -3179,9 +3194,6 @@ msgstr "Testen OK!"
 
 #~ msgid "_Delete contact"
 #~ msgstr "_Ta bort kontakt"
-
-#~ msgid "URL"
-#~ msgstr "URL"
 
 #~ msgid "Delete section"
 #~ msgstr "Ta bort sektion"
