@@ -391,16 +391,6 @@ GtkWidget *gnomemeeting_init_left_toolbar (void)
 
   gtk_widget_show_all (GTK_WIDGET (gw->preview_button));
 
-#ifdef HAS_IXJ
-  device =
-    gconf_client_get_string (client, DEVICES_KEY "audio_recorder", NULL);
-  if (device)
-    dev = PString (device);
-  //  if (dev.Find ("phone") != P_MAX_INDEX) 
-  // gtk_widget_show_all (GTK_WIDGET (gw->speaker_phone_button));
-  g_free (device);
-#endif
-
   gtk_widget_show_all (GTK_WIDGET (gw->audio_chan_button));
   gtk_widget_show_all (GTK_WIDGET (gw->video_chan_button));
 

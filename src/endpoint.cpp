@@ -1541,10 +1541,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
     lid = lid_thread->GetLidDevice ();
     
     if (lid) {
-      
-      if (GTK_TOGGLE_BUTTON (gw->speaker_phone_button)->active)
-	lid->EnableAudio (0, FALSE);
-      
+           
       lid->PlayTone (0, OpalLineInterfaceDevice::BusyTone);
       lid->RingLine (0, 0);
     }
@@ -1713,6 +1710,7 @@ GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
 						   OpalIxJDevice::POTSLine, codec))) {
       return FALSE;
     }
+    lid->EnableAudio (0, FALSE);
 
     gnomemeeting_threads_enter ();
     gchar *msg = g_strdup_printf (_("Attaching lid hardware to codec"));
@@ -1795,7 +1793,7 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 			       TRUE);
      
      gnomemeeting_threads_leave ();
-     
+
      bool result = codec.AttachChannel (channel, FALSE); 
 
      return result;

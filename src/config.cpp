@@ -925,10 +925,12 @@ static void lid_device_changed_nt (GConfClient *client, guint cid,
 				   FALSE);
     }
 
+    /*
     if (gconf_value_get_bool (entry->value))
       gtk_widget_show_all (gw->speaker_phone_button);
     else
       gtk_widget_hide_all (gw->speaker_phone_button);
+    */
 
     gdk_threads_leave ();
   }

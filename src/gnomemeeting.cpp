@@ -145,8 +145,11 @@ GnomeMeeting::Connect()
       lid_thread = endpoint->GetLidThread ();
       if (lid_thread)
 	lid = lid_thread->GetLidDevice ();
-      if (lid)
+      if (lid) {
+	
+	lid->EnableAudio (0, FALSE);
 	lid->PlayTone (0, OpalLineInterfaceDevice::RingTone);
+      }
 #endif
     }
     else  /* We untoggle the connect button in the case it was toggled */

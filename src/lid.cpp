@@ -137,10 +137,11 @@ void GMLid::Open ()
       }
 
       lid->StopTone (0);
+      lid->SetLineToLineDirect (0, 1, FALSE);
       lid->EnableAudio(0, TRUE); 
 
       gnomemeeting_threads_enter ();
-      gtk_widget_show_all (gw->speaker_phone_button);
+      //      gtk_widget_show_all (gw->speaker_phone_button);
       gnomemeeting_threads_leave ();
     }
     else {
@@ -270,6 +271,7 @@ void GMLid::Main ()
       if (calling_state == 0) { /* not connected */
 
         lid->PlayTone (0, OpalLineInterfaceDevice::DialTone);
+	lid->EnableAudio (0, TRUE);
 
 	gnomemeeting_threads_enter ();
 	url = gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry)); 
