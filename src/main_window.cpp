@@ -104,7 +104,7 @@ static void view_widget_changed_callback (GConfClient* client,
 {
   if (entry->value->type == GCONF_VALUE_BOOL)
     if (gconf_value_get_bool (entry->value))
-      gtk_widget_show (GTK_WIDGET (user_data));
+      gtk_widget_show_all (GTK_WIDGET (user_data));
     else
       gtk_widget_hide (GTK_WIDGET (user_data));
 }
