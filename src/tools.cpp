@@ -197,10 +197,11 @@ gnomemeeting_calls_history_window_new (GmCallsHistoryWindow *chw)
   
   window = gtk_dialog_new ();
   gtk_dialog_add_button (GTK_DIALOG (window), GTK_STOCK_CLOSE, 0);
-
+  g_object_set_data_full (G_OBJECT (window), "window_name",
+			  g_strdup ("calls_history_window"), g_free);
+  
   gtk_window_set_title (GTK_WINDOW (window), _("Calls History"));
   gtk_window_set_position (GTK_WINDOW (window), GTK_WIN_POS_CENTER);
-  gtk_window_set_default_size (GTK_WINDOW (window), 330, 225);
   icon = gtk_widget_render_icon (GTK_WIDGET (window),
 				 GM_STOCK_CALLS_HISTORY,
 				 GTK_ICON_SIZE_MENU, NULL);
@@ -313,12 +314,14 @@ gnomemeeting_calls_history_window_new (GmCallsHistoryWindow *chw)
   chw->given_calls_list_store = list_store [1];
   chw->missed_calls_list_store = list_store [2];
 
-  g_signal_connect (G_OBJECT (window), "delete_event",
-		    G_CALLBACK (gtk_widget_hide_on_delete), NULL);
-
   g_signal_connect_swapped (GTK_OBJECT (window), 
 			    "response", 
-			    G_CALLBACK (gtk_widget_hide_all),
+			    G_CALLBACK (gnomemeeting_window_hide),
+			    (gpointer) window);
+
+  g_signal_connect_swapped (GTK_OBJECT (window), 
+			    "delete-event", 
+			    G_CALLBACK (gtk_widget_hide_on_delete),
 			    (gpointer) window);
 
   gtk_widget_show_all (GTK_WIDGET (GTK_DIALOG (window)->vbox));
@@ -341,11 +344,12 @@ GtkWidget *gnomemeeting_history_window_new ()
      gw here */
   window = gtk_dialog_new ();
   gtk_dialog_add_button (GTK_DIALOG (window), GTK_STOCK_CLOSE, 0);
-
+  g_object_set_data_full (G_OBJECT (window), "window_name",
+			  g_strdup ("general_history_window"), g_free);
+  
   gtk_window_set_title (GTK_WINDOW (window), _("General History"));
   gtk_window_set_position (GTK_WINDOW (window), GTK_WIN_POS_CENTER);
-  gtk_window_set_default_size (GTK_WINDOW (window), 330, 225);
-
+  
   gw->history_text_view = gtk_text_view_new ();
   gtk_text_view_set_editable (GTK_TEXT_VIEW (gw->history_text_view), 
 			      FALSE);
@@ -373,15 +377,17 @@ GtkWidget *gnomemeeting_history_window_new ()
   gtk_container_add (GTK_CONTAINER (scr), gw->history_text_view);
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG (window)->vbox), scr,
 		      TRUE, TRUE, 0);
- 
-  g_signal_connect (G_OBJECT (window), "delete_event",
-		    G_CALLBACK (gtk_widget_hide_on_delete), NULL);
-
+  
   g_signal_connect_swapped (GTK_OBJECT (window), 
 			    "response", 
-			    G_CALLBACK (gtk_widget_hide_all),
+			    G_CALLBACK (gnomemeeting_window_hide),
 			    (gpointer) window);
 
+  g_signal_connect_swapped (GTK_OBJECT (window), 
+			    "delete-event", 
+			    G_CALLBACK (gtk_widget_hide_on_delete),
+			    (gpointer) window);
+  
   gtk_widget_show_all (GTK_WIDGET (GTK_DIALOG (window)->vbox));
   
   return window;

@@ -84,7 +84,7 @@ gnomemeeting_tray_hack (gpointer data)
   if (!gnomemeeting_tray_is_visible (gw->docklet)) {
 
     gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Notification area not detected"), _("You have chosen to start GnomeMeeting hidden, however the notification area is not present in your panel, GnomeMeeting can thus not start hidden."));
-    gtk_widget_show (gm);
+    gnomemeeting_window_show (gm);
   }
   
   gdk_threads_leave ();
@@ -302,10 +302,10 @@ GnomeMeeting::DetectDevices ()
   gchar *video_plugin = NULL;
 
   PINDEX fake_idx;
-  
+
   audio_plugin = gconf_get_string (AUDIO_DEVICES_KEY "plugin");
   video_plugin = gconf_get_string (VIDEO_DEVICES_KEY "plugin");
-
+ 
   if (!audio_plugin || !video_plugin)
     return FALSE;
 
@@ -469,12 +469,10 @@ void GnomeMeeting::BuildGUI ()
 #endif
     /* Show the main window */
 #ifndef WIN32
-    if (!gconf_client_get_bool (GCONF_CLIENT (client),
-				VIEW_KEY "start_docked", 0)) {
+    if (!gconf_get_bool (USER_INTERFACE_KEY "start_hidden")) 
 #endif
-      gtk_widget_show (GTK_WIDGET (gm));
+      gnomemeeting_window_show (gm);
 #ifndef WIN32
-    }
     else
       gtk_timeout_add (15000, (GtkFunction) gnomemeeting_tray_hack, NULL);
 #endif

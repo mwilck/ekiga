@@ -1,3 +1,41 @@
+2003-12-08 Damien Sandras  <dsandras@seconix.com>
+
+	* NEWS: Updated with latest features and old forgotten features.
+	
+	* configure.in: Incremented SCHEMA_AGE.
+	
+	* gnomemeeting.schemas.in.in: Moved keys in the PERSONAL_DATA section
+	to the GENERAL/PERSONAL_DATA section. Added USER_INTERFACE section
+	containing keys related to the user interface and to the current
+	state of its windows.
+	
+	* lib/gnome_prefs_window.c, lib/gnome_prefs_window.h: Cleanups.
+	
+	* sounds/busytone.wav, sounds/gnomemeeting.wav, sounds/ringtone.wav:
+	Lowered volume a bit.
+
+	* sounds/gnomemeeting.soundlist.in: Removed.
+	
+	* src/Makefile.am, src/sound_handling.cpp: Added support 
+	for GNOMEMEETING_SOUNDS allowing to install GnomeMeeting in 
+	a different prefix.
+
+	* src/callbacks.cpp, src/callbacks.h: Added wrapper to call 
+	gnomemeeting_window_show.
+	
+	* src/common.h: Updated GConf keys.
+
+	* src/misc.cpp, src/misc.h: Added gnomemeeting_window_show and 
+	gnomemeeting_window_hide to show / hide gnomemeeting windows with
+	specific names and to save/restore their position and sizes.
+
+	* src/druid.cpp, src/gnomemeeting.cpp, src/ldap_window.cpp,
+	src/main_window.cpp, src/menu.cpp, src/pref_window.cpp,
+	src/toolbar.cpp, src/tools.cpp, src/tray.cpp: Use the above
+	functions.
+		
+	* src/vfakeio.cpp: Cleanups.
+	
 2003-12-04 Damien Sandras  <dsandras@seconix.com>
 
 	* NEWS: Updated with latest features.

@@ -6,8 +6,9 @@ Main GUI :
 * Improved the incoming call dialog so that it displays the remote URL (either the IP or the remote party number or the remote alias).
 * Added a speed dials submenu in the Call menu. All users for which you are adding a speed dial in the addressbook will be listed there, that gives a fast and easy way to call your friend or to transfer any existing call to them.
 * Do not display DTMF's in the URL bar during calls.
+* Improved the incoming calls dialog
 
-Addressbook :
+Address book :
 
 * Allow to rename groups and servers.
 * Allow to have a group name identical to a server name while keeping them distinct and vice-versa.
@@ -15,11 +16,17 @@ Addressbook :
 * Automatically enable the current group in the groups list when adding a new contact.
 * Added a menu entry to the right-click menu to copy the URL of the currently selected contact to the clipboard. 
 
+Preferences window :
+
+* Rewrote the preferences window code.
+* Added info dialog for codecs.
+
 Calls history:
 
 * Added call end reason for calls
 
 Audio :
+
 * Added support for plugins (Julien Puydt, Craig Southeren).
 
 Video :
@@ -35,13 +42,20 @@ Configuration Assistant :
 * Automatically disable video transmission when there is no video device for the selected plugin
 * The settings are now only applied when the user clicks on "Finish"
 * Better default settings for DSL and cable users
+* Rewrote the Audio Tester for better performance
 
 H.323:
 
 * Added a way to force the gatekeeper alias to be registered as primary alias with the gatekeeper
 * Added iLBC code support.
+* Added possibility to start/stop the video channel on-the-fly during calls.
 
 Misc :
 
 * Rewrote the preferences management code
 * Added plugin-managed sound events for incoming calls (incoming call ring) and outgoing calls (ring tone and busy tone).
+* All windows sizes and positions are remembered between sessions.
+* Do not use ILS anymore to get the public IP when a NAT gateway is used, that allows people to have the service even if they don't register to ILS.
+* Added possibility to keep video on windows on top of others.
+* New notion of status : Available, Free For Chat, Busy, Forward
+* Better GConf keys structure.

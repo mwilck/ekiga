@@ -46,6 +46,8 @@
 #include "misc.h"
 #include "urlhandler.h"
 
+#include "gconf_widgets_extensions.h"
+
 
 /* Declarations */
 extern GtkWidget *gm;
@@ -53,8 +55,8 @@ extern GtkWidget *gm;
 
 /* The callbacks */
 void 
-hold_call_cb (GtkWidget *widget,
-	      gpointer data)
+hold_call_cb(GtkWidget *widget,
+	     gpointer data)
 {
   GtkWidget *child = NULL;
 
@@ -348,6 +350,14 @@ void pause_channel_callback (GtkWidget *widget, gpointer data)
 }
 
 
+void
+show_window_cb (GtkWidget *w,
+		gpointer data)
+{
+  gnomemeeting_window_show (GTK_WIDGET (data));
+}
+
+
 void gnomemeeting_component_view (GtkWidget *w, gpointer data)
 {
   if (!GTK_WIDGET_VISIBLE (GTK_WIDGET (data))) 
@@ -491,9 +501,11 @@ void quit_callback (GtkWidget *widget, gpointer data)
   ep->ClearAllCalls (H323Connection::EndedByLocalUser, TRUE);
   gdk_threads_enter ();
   
-  gtk_widget_hide (gm);
+  gnomemeeting_window_hide (gm);
+  gnomemeeting_window_hide (gw->history_window);
+  gnomemeeting_window_hide (gw->calls_history_window);
+  gnomemeeting_window_hide (gw->ldap_window);
   gtk_widget_hide (gw->docklet);
-  gtk_widget_hide (gw->ldap_window);
   gtk_widget_hide (gw->pref_window);
 
   gtk_main_quit ();

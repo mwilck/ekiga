@@ -212,7 +212,9 @@ GtkWidget *gnome_prefs_subsection_new (GtkWidget *,
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Creates a new prefs window. The parameter is a filename
- *                 corresponding to the logo displayed by default.
+ *                 corresponding to the logo displayed by default. Returns
+ *                 the created window which still has to be connected to the
+ *                 signals.
  * PRE          :  /
  */
 GtkWidget *gnome_prefs_window_new (gchar *);

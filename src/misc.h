@@ -149,4 +149,34 @@ gchar *gnomemeeting_get_utf8 (PString);
 void
 gdk_window_set_always_on_top (GdkWindow *window, 
 			      gboolean enable);
+
+
+/* DESCRIPTION  :  This callback is called when a window of gnomemeeting
+ *                 (addressbook, prefs, ...) has to be shown.
+ * BEHAVIOR     :  Restore its size (if applicable) and position from the GConf
+ *                 database. The window is given as gpointer.
+ *                 The category can be addressbook, main_window, prefs_window,
+ *                 or anything under the
+ *                 /apps/gnomemeeting/general/user_interface/ key and is given
+ *                 by g_object_get_data (G_OBJECT, "window_name"). The window
+ *                 object is pointed by the GtkWidget *.
+ * PRE          :  /
+ */
+void gnomemeeting_window_show (GtkWidget *);
+
+
+/* DESCRIPTION  :  This callback is called when a window of gnomemeeting
+ *                 (addressbook, prefs, ...) has to be hidden.
+ * BEHAVIOR     :  Saves its size (if applicable) and position in the GConf
+ *                 database. The window is given as gpointer.
+ *                 The category can be addressbook, main_window, prefs_window,
+ *                 or anything under the
+ *                 /apps/gnomemeeting/general/user_interface/ key and is given
+ *                 by g_object_get_data (G_OBJECT, "window_name"). The window
+ *                 object is pointed by the GtkWidget *.
+ * PRE          :  /
+ */
+void gnomemeeting_window_hide (GtkWidget *);
+
+
 #endif

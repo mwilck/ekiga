@@ -223,8 +223,8 @@
       </locale>
     </schema>
     <schema>	
-      <key>/schemas/apps/gnomemeeting/personal_data/firstname</key>
-      <applyto>/apps/gnomemeeting/personal_data/firstname</applyto>
+      <key>/schemas/apps/gnomemeeting/general/personnal_data/firstname</key>
+      <applyto>/apps/gnomemeeting/general/personnal_data/firstname</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default></default>
@@ -234,8 +234,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/personal_data/lastname</key>
-      <applyto>/apps/gnomemeeting/personal_data/lastname</applyto>
+      <key>/schemas/apps/gnomemeeting/general/personnal_data/lastname</key>
+      <applyto>/apps/gnomemeeting/general/personnal_data/lastname</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default></default>
@@ -245,8 +245,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/personal_data/comment</key>
-      <applyto>/apps/gnomemeeting/personal_data/comment</applyto>
+      <key>/schemas/apps/gnomemeeting/general/personnal_data/comment</key>
+      <applyto>/apps/gnomemeeting/general/personnal_data/comment</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default></default>
@@ -256,8 +256,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/personal_data/location</key>
-      <applyto>/apps/gnomemeeting/personal_data/location</applyto>
+      <key>/schemas/apps/gnomemeeting/general/personnal_data/location</key>
+      <applyto>/apps/gnomemeeting/general/personnal_data/location</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default></default>
@@ -267,8 +267,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/personal_data/mail</key>
-      <applyto>/apps/gnomemeeting/personal_data/mail</applyto>
+      <key>/schemas/apps/gnomemeeting/general/personnal_data/mail</key>
+      <applyto>/apps/gnomemeeting/general/personnal_data/mail</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default></default>
@@ -597,15 +597,114 @@
 	<long>Enter the public IP of your NAT/PAT router if you want to use IP translation. If you are registered to ils.seconix.com, GnomeMeeting will automatically fetch the public IP using the ILS service.</long>
       </locale>
     </schema>
-    <schema>
-      <key>/schemas/apps/gnomemeeting/general/incoming_call_sound</key>
-      <applyto>/apps/gnomemeeting/general/incoming_call_sound</applyto>
+    <schema>	
+      <key>/schemas/apps/gnomemeeting/general/user_interface/start_hidden</key>
+      <applyto>/apps/gnomemeeting/general/user_interface/start_hidden</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
-      <default>true</default>
+      <default>false</default>
       <locale name="C">
-	<short>Play a sound on incoming calls</short>
-	<long>If enabled, GnomeMeeting will play a sound when receiving an incoming call (the sound to play is chosen in the Gnome Control Center).</long>
+	<short>Start hidden</short>
+	<long>If enabled, GnomeMeeting will start hidden provided that the notification area is present in the GNOME panel.</long>
+      </locale>
+    </schema>
+    <schema>	
+      <key>/schemas/apps/gnomemeeting/general/user_interface/main_window/position</key>
+      <applyto>/apps/gnomemeeting/general/user_interface/main_window/position</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default>0,0</default>
+      <locale name="C">
+	<short>Position on the screen of the main window</short>
+	<long>Position on the screen of the main window</long>
+      </locale>
+    </schema>
+    <schema>	
+      <key>/schemas/apps/gnomemeeting/general/user_interface/general_history_window/position</key>
+      <applyto>/apps/gnomemeeting/general/user_interface/general_history_window/position</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default>0,0</default>
+      <locale name="C">
+	<short>Position on the screen of the general history window</short>
+	<long>Position on the screen of the general history window</long>
+      </locale>
+    </schema>
+    <schema>	
+      <key>/schemas/apps/gnomemeeting/general/user_interface/general_history_window/size</key>
+      <applyto>/apps/gnomemeeting/general/user_interface/general_history_window/size</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default>330,225</default>
+      <locale name="C">
+	<short>Size of the general history window</short>
+	<long>Size of the general history window</long>
+      </locale>
+    </schema>
+    <schema>	
+      <key>/schemas/apps/gnomemeeting/general/user_interface/calls_history_window/position</key>
+      <applyto>/apps/gnomemeeting/general/user_interface/calls_history_window/position</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default>0,0</default>
+      <locale name="C">
+	<short>Position on the screen of the calls history window</short>
+	<long>Position on the screen of the calls history window</long>
+      </locale>
+    </schema>
+    <schema>	
+      <key>/schemas/apps/gnomemeeting/general/user_interface/calls_history_window/size</key>
+      <applyto>/apps/gnomemeeting/general/user_interface/calls_history_window/size</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default>330,225</default>
+      <locale name="C">
+	<short>Size of the calls history window</short>
+	<long>Size of the calls history window</long>
+      </locale>
+    </schema>
+    <schema>	
+      <key>/schemas/apps/gnomemeeting/general/user_interface/address_book_window/position</key>
+      <applyto>/apps/gnomemeeting/general/user_interface/address_book_window/position</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default>0,0</default>
+      <locale name="C">
+	<short>Position on the screen of the address book window</short>
+	<long>Position on the screen of the address book window</long>
+      </locale>
+    </schema>
+    <schema>	
+      <key>/schemas/apps/gnomemeeting/general/user_interface/address_book_window/size</key>
+      <applyto>/apps/gnomemeeting/general/user_interface/address_book_window/size</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default>770,470</default>
+      <locale name="C">
+	<short>Size of the address book window</short>
+	<long>Size of the address book window</long>
+      </locale>
+    </schema>
+    <schema>	
+      <key>/schemas/apps/gnomemeeting/general/user_interface/preferences_window/position</key>
+      <applyto>/apps/gnomemeeting/general/user_interface/preferences_window/position</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default>0,0</default>
+      <locale name="C">
+	<short>Position on the screen of the preferences window</short>
+	<long>Position on the screen of the preferences window</long>
+      </locale>
+    </schema>
+    <schema>	
+      <key>/schemas/apps/gnomemeeting/general/user_interface/preferences_window/size</key>
+      <applyto>/apps/gnomemeeting/general/user_interface/preferences_window/size</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default>-1,-1</default>
+      <locale name="C">
+	<short>Size of the preferences window</short>
+	<long>Size of the preferences window</long>
       </locale>
     </schema>
     <schema>	
@@ -894,17 +993,6 @@
       <locale name="C">
 	<short>Gatekeeper alias as primary alias</short>
 	<long>Use this option to ensure the above alias is used as the primary alias when registering with a gatekeeper. This may be required if your gatekeeper can only perform authentication using the first alias in the list.</long>
-      </locale>
-    </schema>
-    <schema>
-      <key>/schemas/apps/gnomemeeting/view/start_docked</key>
-      <applyto>/apps/gnomemeeting/view/start_docked</applyto>
-      <owner>GnomeMeeting</owner>
-      <type>bool</type>
-      <default>false</default>
-      <locale name="C">
-	<short>Start hidden</short>
-	<long>If enabled, GnomeMeeting will start hidden. The docklet must be enabled.</long>
       </locale>
     </schema>
     <schema>

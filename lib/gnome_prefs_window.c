@@ -176,6 +176,8 @@ gnome_prefs_entry_new (GtkWidget *table,
   if (gpw && tooltip)
     gtk_tooltips_set_tip (gpw->tips, entry, tooltip, NULL);
 
+  gtk_widget_show_all (table);
+  
   return entry;
 }                                                                              
                                                                                
@@ -220,6 +222,8 @@ gnome_prefs_toggle_new (GtkWidget *table,
   
   gconf_client_notify_add (client, gconf_key, toggle_changed_nt,
 			   (gpointer) toggle, 0, 0);
+
+  gtk_widget_show_all (table);
   
   return toggle;
 }                                                                              
@@ -302,6 +306,8 @@ gnome_prefs_spin_new (GtkWidget *table,
 
   gconf_client_notify_add (client, gconf_key, adjustment_changed_nt,
 			   (gpointer) spin_button, 0, 0);
+
+  gtk_widget_show_all (table);
   
   return spin_button;
 }
@@ -460,6 +466,8 @@ gnome_prefs_int_option_menu_new (GtkWidget *table,
   gconf_client_notify_add (client, gconf_key, int_option_menu_changed_nt,
 			   (gpointer) option_menu, 0, 0);
 
+  gtk_widget_show_all (table);
+  
   return option_menu;
 }                                                                              
 
@@ -546,6 +554,8 @@ gnome_prefs_string_option_menu_new (GtkWidget *table,
   
   g_free (gconf_string); 
 
+  gtk_widget_show_all (table);
+  
   return option_menu;
 }
 
@@ -662,6 +672,7 @@ gnome_prefs_subsection_new (GtkWidget *window,
   if (gpw)
     g_object_set_data (G_OBJECT (table), "gpw", gpw);
 
+  gtk_widget_show_all (table);
   
   return table;
 }                                                                              
@@ -693,20 +704,13 @@ gnome_prefs_window_new (gchar *logo_name)
 
   /* Build the window */
   window = gtk_dialog_new ();
+
   gpw = (GnomePrefsWindow *) g_malloc (sizeof (GnomePrefsWindow));
   gpw->last_page = 1;
   
   g_object_set_data_full (G_OBJECT (window), "gpw", (gpointer) gpw, g_free);
   
   gtk_dialog_add_button (GTK_DIALOG (window), GTK_STOCK_CLOSE, 0);
-
-  g_signal_connect (G_OBJECT (window), "delete_event",
-		    G_CALLBACK (gtk_widget_hide_on_delete), NULL);
-
-  g_signal_connect_swapped (GTK_OBJECT (window), 
-			    "response", 
-			    G_CALLBACK (gtk_widget_hide_all),
-			    (gpointer) window);
 
   
   /* The sections */
@@ -860,5 +864,7 @@ gnome_prefs_window_subsection_new (GtkWidget *window,
   gtk_notebook_append_page (GTK_NOTEBOOK (gpw->notebook),
 			    container, NULL);
 
+  gtk_widget_show_all (container);
+  
   return container;
 }

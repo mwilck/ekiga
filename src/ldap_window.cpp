@@ -43,6 +43,7 @@
 #include "ils.h"
 #include "menu.h"
 #include "callbacks.h"
+#include "misc.h"
 #include "dialog.h"
 #include "stock-icons.h"
 
@@ -2606,6 +2607,9 @@ gnomemeeting_ldap_window_new (GmLdapWindow *lw)
   icon = gtk_widget_render_icon (GTK_WIDGET (window),
 				 GM_STOCK_ADDRESSBOOK_16,
 				 GTK_ICON_SIZE_MENU, NULL);
+  g_object_set_data_full (G_OBJECT (window), "window_name",
+			  g_strdup ("address_book_window"), g_free);
+  
   gtk_window_set_title (GTK_WINDOW (window), 
 			_("GnomeMeeting Address Book"));
   gtk_window_set_icon (GTK_WINDOW (window), icon);
@@ -2772,8 +2776,13 @@ gnomemeeting_ldap_window_new (GmLdapWindow *lw)
 			   NULL, (GConnectFlags) 0);
 
   /* Hide but do not delete the ldap window */
-  g_signal_connect (G_OBJECT (window), "delete_event",
-		    G_CALLBACK (gtk_widget_hide_on_delete), NULL);
+  g_signal_connect_swapped (G_OBJECT (window), "delete_event",
+			    G_CALLBACK (gnomemeeting_window_hide),
+			    (gpointer) window);
+  
+  g_signal_connect_swapped (G_OBJECT (window), "delete_event",
+			    G_CALLBACK (gtk_widget_hide_on_delete),
+			    (gpointer) window);
 
   gtk_widget_show_all (GTK_WIDGET (vbox));
   

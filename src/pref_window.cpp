@@ -930,7 +930,7 @@ gnomemeeting_init_pref_window_interface (GtkWidget *window,
 
   gnome_prefs_toggle_new (subsection, _("_Show splash screen"), VIEW_KEY "show_splash", _("If enabled, the splash screen will be displayed when GnomeMeeting starts."), 0);
 
-  gnome_prefs_toggle_new (subsection, _("Start _hidden"), VIEW_KEY "start_docked", _("If enabled, GnomeMeeting will start hidden. The notification area must be present in the panel."), 1);
+  gnome_prefs_toggle_new (subsection, _("Start _hidden"), USER_INTERFACE_KEY "start_hidden", _("If enabled, GnomeMeeting will start hidden provided that the notification area is present in the GNOME panel."), 1);
 
   
   /* Packing widget */
@@ -1662,55 +1662,78 @@ gnomemeeting_pref_window_new (GmPrefWindow *pw)
   
   window = 
     gnome_prefs_window_new (GNOMEMEETING_IMAGES "/gnomemeeting-logo.png");
+  g_object_set_data_full (G_OBJECT (window), "window_name",
+			  g_strdup ("preferences_window"), g_free);
   
   gnome_prefs_window_section_new (window, _("General"));
   container = gnome_prefs_window_subsection_new (window, _("Personal Data"));
   gnomemeeting_init_pref_window_general (window, container);
-
+  gtk_widget_show_all (GTK_WIDGET (container));
+		       
   container = gnome_prefs_window_subsection_new (window,
 						 _("General Settings"));
   gnomemeeting_init_pref_window_interface (window, container);
+  gtk_widget_show_all (GTK_WIDGET (container));
   
   container = gnome_prefs_window_subsection_new (window,
 						 _("Directory Settings"));
   gnomemeeting_init_pref_window_directories (window, container);
-
+  gtk_widget_show_all (GTK_WIDGET (container));
+  
   container = gnome_prefs_window_subsection_new (window,
 						 _("Sound Events"));
   gnomemeeting_init_pref_window_sound_events (window, container);
-
+  gtk_widget_show_all (GTK_WIDGET (container));
+  
   container = gnome_prefs_window_subsection_new (window, _("Call Forwarding"));
   gnomemeeting_init_pref_window_call_forwarding (window, container);
+  gtk_widget_show_all (GTK_WIDGET (container));
   
 
   gnome_prefs_window_section_new (window, _("H.323 Settings"));
   container = gnome_prefs_window_subsection_new (window,
 						 _("Advanced Settings"));
   gnomemeeting_init_pref_window_h323_advanced (window, container);          
-
+  gtk_widget_show_all (GTK_WIDGET (container));
+  
   container = gnome_prefs_window_subsection_new (window,
 						 _("Gatekeeper Settings"));
   gnomemeeting_init_pref_window_gatekeeper (window, container);          
-
+  gtk_widget_show_all (GTK_WIDGET (container));
+  
   container = gnome_prefs_window_subsection_new (window, _("NAT Settings"));
   gnomemeeting_init_pref_window_nat (window, container);
-
+  gtk_widget_show_all (GTK_WIDGET (container));
   
   gnome_prefs_window_section_new (window, _("Codecs"));
 
   container = gnome_prefs_window_subsection_new (window, _("Audio Codecs"));
   gnomemeeting_init_pref_window_audio_codecs (window, container);
-
+  gtk_widget_show_all (GTK_WIDGET (container));
+  
   container = gnome_prefs_window_subsection_new (window, _("Video Codecs"));
   gnomemeeting_init_pref_window_video_codecs (window, container);
-
+  gtk_widget_show_all (GTK_WIDGET (container));
 
   gnome_prefs_window_section_new (window, _("Devices"));
   container = gnome_prefs_window_subsection_new (window, _("Audio Devices"));
   gnomemeeting_init_pref_window_audio_devices (window, container);
-
+  gtk_widget_show_all (GTK_WIDGET (container));
+  
   container = gnome_prefs_window_subsection_new (window, _("Video Devices"));
   gnomemeeting_init_pref_window_video_devices (window, container);
+  gtk_widget_show_all (GTK_WIDGET (container));
+
+  /* That's an usual GtkWindow, connect it to the signals */
+  g_signal_connect_swapped (GTK_OBJECT (window), 
+			    "response", 
+			    G_CALLBACK (gnomemeeting_window_hide),
+			    (gpointer) window);
+
+  g_signal_connect_swapped (GTK_OBJECT (window), 
+			    "delete-event", 
+			    G_CALLBACK (gtk_widget_hide_on_delete),
+			    (gpointer) window);
 
   return window;
 }

@@ -53,6 +53,7 @@
 #include "tray.h"
 #include "dialog.h"
 #include "stock-icons.h"
+#include "gconf_widgets_extensions.h"
 
 
 #ifndef DISABLE_GNOME
@@ -142,7 +143,6 @@ gint StressTest (gpointer data)
 static void
 video_window_shown_cb (GtkWidget *w, gpointer data)
 {
-  GConfClient *client = NULL;
   GMH323EndPoint *endpoint = NULL;
 
   endpoint = GnomeMeeting::Process ()->Endpoint ();
@@ -150,8 +150,6 @@ video_window_shown_cb (GtkWidget *w, gpointer data)
   if (endpoint && gconf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top")
       && endpoint->GetCallingState () == GMH323EndPoint::Connected)
     gdk_window_set_always_on_top (GDK_WINDOW (w->window), TRUE);
-
-  
 }
 
 
@@ -1596,10 +1594,12 @@ int main (int argc, char ** argv, char ** envp)
 #else
   gm = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 #endif
+  g_object_set_data_full (G_OBJECT (gm), "window_name",
+			  g_strdup ("main_window"), g_free);
   
   g_signal_connect (G_OBJECT (gm), "show", 
 		    GTK_SIGNAL_FUNC (video_window_shown_cb), NULL);
-
+  
   gdk_threads_enter ();
   gconf_init (argc, argv, 0);
 
@@ -1614,8 +1614,11 @@ int main (int argc, char ** argv, char ** envp)
   if (gnomemeeting_invoke_factory (argc, argv))
     exit (1);
 #endif
-  
 
+  
+  gnomemeeting_warning_dialog (NULL, "WARNING!", "You are using a CVS version of GnomeMeeting, use it at your own risk!");
+
+  
   /* Upgrade the preferences */
   gnomemeeting_gconf_upgrade ();
 

@@ -64,6 +64,9 @@ static void zoom_changed_callback (GtkWidget *,
 static void fullscreen_changed_callback (GtkWidget *,
 					 gpointer);
 
+static void speed_dial_menu_item_selected (GtkWidget *,
+					   gpointer);
+
 
 /* Those 2 callbacks update a gconf key when 
    a menu item is toggled */
@@ -73,8 +76,6 @@ static void radio_menu_changed (GtkWidget *,
 static void toggle_menu_changed (GtkWidget *, 
 				 gpointer);
 
-static void speed_dial_menu_item_selected (GtkWidget *,
-					   gpointer);
 
 
 /* GTK Callbacks */
@@ -185,6 +186,39 @@ fullscreen_changed_callback (GtkWidget *widget,
 }
 
 
+/* DESCRIPTION  :  This callback is called when the user toggles an 
+ *                 item in the speed dials menu.
+ * BEHAVIOR     :  Calls the given speed dial.
+ * PRE          :  data is the speed dial as a gchar *
+ */
+static void
+speed_dial_menu_item_selected (GtkWidget *w,
+			       gpointer data)
+{
+  GmWindow *gw = NULL;
+  GMH323EndPoint *ep = NULL;
+  
+  gchar *url = NULL;
+    
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
+  ep = GnomeMeeting::Process ()->Endpoint ();
+  
+  if (!data)
+    return;
+
+  url = g_strdup_printf ("%s#", (gchar *) data);
+  gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry),
+		      (gchar *) url);
+    
+  if (ep->GetCallingState () == GMH323EndPoint::Connected)
+    transfer_call_cb (NULL, (gpointer) url);
+  else
+    connect_cb (NULL, NULL);
+
+  g_free (url);
+}
+
+
 /* DESCRIPTION  :  This callback is called when the user 
  *                 selects a different option in a radio menu.
  * BEHAVIOR     :  Sets the gconf key.
@@ -238,39 +272,6 @@ toggle_menu_changed (GtkWidget *widget, gpointer data)
 }
 
 
-/* DESCRIPTION  :  This callback is called when the user toggles an 
- *                 item in the speed dials menu.
- * BEHAVIOR     :  Calls the given speed dial.
- * PRE          :  data is the speed dial as a gchar *
- */
-static void
-speed_dial_menu_item_selected (GtkWidget *w,
-			       gpointer data)
-{
-  GmWindow *gw = NULL;
-  GMH323EndPoint *ep = NULL;
-  
-  gchar *url = NULL;
-    
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
-  ep = GnomeMeeting::Process ()->Endpoint ();
-  
-  if (!data)
-    return;
-
-  url = g_strdup_printf ("%s#", (gchar *) data);
-  gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry),
-		      (gchar *) url);
-    
-  if (ep->GetCallingState () == GMH323EndPoint::Connected)
-    transfer_call_cb (NULL, (gpointer) url);
-  else
-    connect_cb (NULL, NULL);
-
-  g_free (url);
-}
-
-
 /* The functions */
 GtkWidget *
 gnomemeeting_init_menu (GtkAccelGroup *accel)
@@ -309,11 +310,11 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 
       GTK_MENU_ENTRY("connect", _("C_onnect"), _("Create a new connection"), 
 		     GM_STOCK_CONNECT_16, 'o',
-		     GTK_SIGNAL_FUNC (connect_cb), gw, TRUE),
+		     GTK_SIGNAL_FUNC (connect_cb), NULL, TRUE),
       GTK_MENU_ENTRY("disconnect", _("_Disconnect"),
 		     _("Close the current connection"), 
 		     GM_STOCK_DISCONNECT_16, 'd',
-		     GTK_SIGNAL_FUNC (disconnect_cb), gw, FALSE),
+		     GTK_SIGNAL_FUNC (disconnect_cb), NULL, FALSE),
 
       GTK_MENU_SEPARATOR,
 
@@ -407,7 +408,7 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
       GTK_MENU_ENTRY("preferences", _("_Preferences..."),
 		     _("Change your preferences"), 
 		     GTK_STOCK_PREFERENCES, 'P',
-		     GTK_SIGNAL_FUNC (gnomemeeting_component_view),
+		     GTK_SIGNAL_FUNC (show_window_cb),
 		     (gpointer) gw->pref_window, TRUE),
 
       GTK_MENU_NEW(_("_View")),
@@ -524,7 +525,7 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
       GTK_MENU_ENTRY("address_book", _("Address _Book"),
 		     _("Open the address book"),
 		     GM_STOCK_ADDRESSBOOK_16, 0,
-		     GTK_SIGNAL_FUNC (gnomemeeting_component_view),
+		     GTK_SIGNAL_FUNC (show_window_cb),
 		     (gpointer) gw->ldap_window, TRUE),
 
       GTK_MENU_SEPARATOR,
@@ -532,12 +533,12 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
       GTK_MENU_ENTRY("general_history", _("General History"),
 		     _("View the operations history"),
 		     NULL, 0, 
-		     GTK_SIGNAL_FUNC (gnomemeeting_component_view),
+		     GTK_SIGNAL_FUNC (show_window_cb),
 		     (gpointer) gw->history_window, TRUE),
       GTK_MENU_ENTRY("calls_history", _("Calls History"),
 		     _("View the calls history"),
 		     GM_STOCK_CALLS_HISTORY, 'h',
-		     GTK_SIGNAL_FUNC (gnomemeeting_component_view),
+		     GTK_SIGNAL_FUNC (show_window_cb),
 		     (gpointer) gw->calls_history_window, TRUE),
 
       GTK_MENU_ENTRY("microtelco", _("Consult MicroTelco Account"),

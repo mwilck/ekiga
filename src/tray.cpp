@@ -46,6 +46,7 @@
 #include "eggtrayicon.h"
 #include "menu.h"
 #include "callbacks.h"
+#include "misc.h"
 #include "stock-icons.h"
 
 
@@ -63,19 +64,11 @@ static void gnomemeeting_build_tray (GtkContainer *);
 
 /* DESCRIPTION  :  This callback is called when the tray appears on the panel
  * BEHAVIOR     :  Store the info in the object
- * PRE          :  
+ * PRE          :  /
  */
 static gint tray_icon_embedded (GtkWidget *tray_icon, gpointer)
 {
-  static bool first_time = true;
-
-  if (first_time) {
-    GConfClient *client = gconf_client_get_default ();
-    if (gconf_client_get_bool (client, VIEW_KEY "start_docked", 0)) {
-      gtk_widget_hide (gm);
-    }
-    first_time = false;
-  }
+  cout << "FIX ME?" << endl << flush;
   g_object_set_data (G_OBJECT (tray_icon), "embedded", GINT_TO_POINTER (1));
 
   return true;
@@ -96,10 +89,11 @@ static gint tray_icon_destroyed (GtkWidget *tray, gpointer data)
   g_warning ("FIX ME: update tray icon");
   
   GnomeMeeting::Process ()->GetMainWindow ()->docklet = GTK_WIDGET (new_tray);
-  gtk_widget_show (gm);
+  gnomemeeting_window_show (gm);
 
   return true;
 }
+
 
 /* DESCRIPTION  :  This callback is called when the user double clicks on the 
  *                 tray event-box.
@@ -107,31 +101,30 @@ static gint tray_icon_destroyed (GtkWidget *tray, gpointer data)
  * PRE          :  data != NULL.
  */
 static gint
-tray_clicked_callback (GtkWidget *widget, GdkEventButton *event, gpointer data)
+tray_clicked_callback (GtkWidget *w,
+		       GdkEventButton *event,
+		       gpointer data)
 {
-  GdkEventButton *event_button = NULL;
+  GtkWidget *widget = NULL;
   GmWindow *gw = NULL;
-   
+
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
+  
   if (event->type == GDK_BUTTON_PRESS) {
 
-    event_button = (GdkEventButton *) event;
-    if (event_button->button == 1) {
-
-      if (GTK_WIDGET_VISIBLE (gm))
-	gtk_widget_hide (gm);
-      else
-	gtk_widget_show (gm);
+    if (event->button == 1)
+      widget = gm;
+    else if (event->button == 2)
+      widget = gw->ldap_window;
+    else
+      return FALSE;
       
-      return TRUE;
-    }
-    else if (event_button->button == 2) {
+    if (!GTK_WIDGET_VISIBLE (widget))
+      gnomemeeting_window_show (widget);
+    else
+      gnomemeeting_window_hide (widget);
 
-      gw = GnomeMeeting::Process ()->GetMainWindow ();
-
-      gnomemeeting_component_view (NULL, (gpointer) gw->ldap_window);
-
-      return TRUE;
-    }
+    return TRUE;
   }
   
   return FALSE;

@@ -246,7 +246,7 @@ GtkWidget *gnomemeeting_init_left_toolbar (void)
 			   _("Open address book"),
 			   NULL,
 			   image,
-			   GTK_SIGNAL_FUNC (gnomemeeting_component_view),
+			   GTK_SIGNAL_FUNC (show_window_cb),
 			   (gpointer) gw->ldap_window); 
 
   gtk_toolbar_set_style (GTK_TOOLBAR (left_toolbar), GTK_TOOLBAR_ICONS);

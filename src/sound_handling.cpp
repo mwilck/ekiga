@@ -202,7 +202,7 @@ void GMSoundEvent::Main ()
     psound_file = PString (sound_file);    
     
     if (psound_file.Find ("/") == P_MAX_INDEX)
-      psound_file = "/usr/share/sounds/gnomemeeting/" + psound_file;
+      psound_file = GNOMEMEETING_SOUNDS + psound_file;
     
     PWAVFile wav (psound_file, PFile::ReadOnly);
  

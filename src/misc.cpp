@@ -43,7 +43,9 @@
 #include "gnomemeeting.h"
 #include "callbacks.h"
 #include "config.h"
+
 #include "dialog.h"
+#include "gconf_widgets_extensions.h"
 
 #include "../pixmaps/text_logo.xpm"
 
@@ -470,4 +472,126 @@ gdk_window_set_always_on_top (GdkWindow *window,
 {
   gdk_wmspec_change_state (enable, window, 
 			   gdk_atom_intern ("_NET_WM_STATE_ABOVE", FALSE), 0);
+}
+
+
+void
+gnomemeeting_window_show (GtkWidget *w)
+{
+  int x = 0;
+  int y = 0;
+
+  gchar *window_name = NULL;
+  gchar *gconf_key_size = NULL;
+  gchar *gconf_key_position = NULL;
+  gchar *size = NULL;
+  gchar *position = NULL;
+  gchar **couple = NULL;
+  
+  if (!w)
+    return;
+  
+  window_name = (char *) g_object_get_data (G_OBJECT (w), "window_name");
+
+  if (!window_name)
+    return;
+  
+  gconf_key_position =
+    g_strdup_printf ("%s%s/position", USER_INTERFACE_KEY, window_name);
+  gconf_key_size =
+    g_strdup_printf ("%s%s/size", USER_INTERFACE_KEY, window_name);  
+
+  if (!GTK_WIDGET_VISIBLE (w)) {
+    
+    position = gconf_get_string (gconf_key_position);
+    if (position)
+      couple = g_strsplit (position, ",", 0);
+
+    if (couple && couple [0])
+      x = atoi (couple [0]);
+    if (couple && couple [1])
+      y = atoi (couple [1]);
+
+    if (x != 0 && y != 0)
+      gtk_window_move (GTK_WINDOW (w), x, y);
+
+    g_strfreev (couple);
+    g_free (position);
+
+
+    if (gtk_window_get_resizable (GTK_WINDOW (w))) {
+
+      size = gconf_get_string (gconf_key_size);
+      if (size)
+	couple = g_strsplit (size, ",", 0);
+
+      if (couple && couple [0])
+	x = atoi (couple [0]);
+      if (couple && couple [1])
+	y = atoi (couple [1]);
+
+      if (x > 0 && y > 0)
+	gtk_window_resize (GTK_WINDOW (w), x, y);
+
+      g_strfreev (couple);
+      g_free (size);
+    }
+
+    gtk_widget_show (w);
+  }
+  
+  g_free (gconf_key_position);
+  g_free (gconf_key_size);
+}
+
+
+void
+gnomemeeting_window_hide (GtkWidget *w)
+{
+  int x = 0;
+  int y = 0;
+
+  gchar *window_name = NULL;
+  gchar *gconf_key_size = NULL;
+  gchar *gconf_key_position = NULL;
+  gchar *size = NULL;
+  gchar *position = NULL;
+  
+  if (!w)
+    return;
+  
+  window_name = (char *) g_object_get_data (G_OBJECT (w), "window_name");
+
+  if (!window_name)
+    return;
+  
+  gconf_key_position =
+    g_strdup_printf ("%s%s/position", USER_INTERFACE_KEY, window_name);
+  gconf_key_size =
+    g_strdup_printf ("%s%s/size", USER_INTERFACE_KEY, window_name);
+
+  
+  /* If the window is visible, save its position and hide the window */
+  if (GTK_WIDGET_VISIBLE (w)) {
+    
+    gtk_window_get_position (GTK_WINDOW (w), &x, &y);
+    position = g_strdup_printf ("%d,%d", x, y);
+    gconf_set_string (gconf_key_position, position);
+    g_free (position);
+
+    if (gtk_window_get_resizable (GTK_WINDOW (w))) {
+
+      gtk_window_get_size (GTK_WINDOW (w), &x, &y);
+      size = g_strdup_printf ("%d,%d", x, y);
+      gconf_set_string (gconf_key_size, size);
+      g_free (size);
+    }
+
+	
+    gtk_widget_hide (w);
+  }
+    
+  
+  g_free (gconf_key_position);
+  g_free (gconf_key_size);
 }

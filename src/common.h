@@ -74,11 +74,12 @@
 #define VIEW_KEY            "/apps/gnomemeeting/view/"
 #define VIDEO_DISPLAY_KEY   "/apps/gnomemeeting/video_display/"
 
+#define USER_INTERFACE_KEY "/apps/gnomemeeting/general/user_interface/"
 #define SOUND_EVENTS_KEY  "/apps/gnomemeeting/general/sound_events/"
 #define AUDIO_DEVICES_KEY "/apps/gnomemeeting/devices/audio/"
 #define VIDEO_DEVICES_KEY "/apps/gnomemeeting/devices/video/"
+#define PERSONAL_DATA_KEY   "/apps/gnomemeeting/general/personal_data/"
 
-#define PERSONAL_DATA_KEY   "/apps/gnomemeeting/personal_data/"
 #define LDAP_KEY            "/apps/gnomemeeting/ldap/"
 #define GATEKEEPER_KEY      "/apps/gnomemeeting/gatekeeper/"
 #define SERVICES_KEY        "/apps/gnomemeeting/services/"

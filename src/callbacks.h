@@ -48,9 +48,8 @@
  * BEHAVIOR     :  Hold the current call.
  * PRE          :  /
  */
-void
-hold_call_cb (GtkWidget *,
-	      gpointer);
+void hold_call_cb (GtkWidget *,
+		   gpointer);
 
 
 /* DESCRIPTION  :  This callback is called when the user chooses to forward
@@ -58,17 +57,16 @@ hold_call_cb (GtkWidget *,
  * BEHAVIOR     :  Forward the current call.
  * PRE          :  /
  */
-void
-transfer_call_cb (GtkWidget *,
-		  gpointer);
+void transfer_call_cb (GtkWidget *,
+		       gpointer);
+
 
 /* DESCRIPTION  :  This callback is called when the user chooses to save.
  * BEHAVIOR     :  Saves the picture in the current video stream in a file.
  * PRE          :  /
  */
-void
-save_callback (GtkWidget *,
-	       gpointer);
+void save_callback (GtkWidget *,
+		    gpointer);
 
 
 /* DESCRIPTION  :  This callback is called when the user chooses to pause
@@ -76,9 +74,8 @@ save_callback (GtkWidget *,
  * BEHAVIOR     :  Pause the audio or video channel transmission.
  * PRE          :  gpointer = 0 (audio) or 1 (video)
  */
-void
-pause_channel_callback (GtkWidget *,
-			gpointer);
+void pause_channel_callback (GtkWidget *,
+			     gpointer);
 
 
 /* DESCRIPTION  :  This callback is called when the user chooses to open
@@ -86,9 +83,8 @@ pause_channel_callback (GtkWidget *,
  * BEHAVIOR     :  Open the about window.
  * PRE          :  /
  */
-void
-about_callback (GtkWidget *,
-		gpointer);
+void about_callback (GtkWidget *,
+		     gpointer);
 
 
 /* DESCRIPTION  :  This callback is called when the user choose to establish
@@ -96,9 +92,8 @@ about_callback (GtkWidget *,
  * BEHAVIOR     :  Call the remote endpoint or accept the incoming call.
  * PRE          :  /
  */
-void
-connect_cb (GtkWidget *,
-	    gpointer);
+void connect_cb (GtkWidget *,
+		 gpointer);
 
 
 /* DESCRIPTION  :  This callback is called when the user choose to stop
@@ -106,9 +101,8 @@ connect_cb (GtkWidget *,
  * BEHAVIOR     :  Do not accept the incoming call or stops the current call.
  * PRE          :  /
  */
-void
-disconnect_cb (GtkWidget *,
-	       gpointer);
+void disconnect_cb (GtkWidget *,
+		    gpointer);
 
 
 /* DESCRIPTION  :  This callback is called when the user chooses to open
@@ -116,25 +110,31 @@ disconnect_cb (GtkWidget *,
  * BEHAVIOR     :  Shows or hide it.
  * PRE          :  gpointer is a valid pointer to the widget.
  */
-void
-gnomemeeting_component_view (GtkWidget *,
-			     gpointer);
+void gnomemeeting_component_view (GtkWidget *,
+				  gpointer);
 
 
 /* DESCRIPTION  :  This callback is called when the user chooses to quit.
  * BEHAVIOR     :  Quit.
  * PRE          :  /
  */
-void
-quit_callback (GtkWidget *,
-	       gpointer);
+void quit_callback (GtkWidget *,
+		    gpointer);
+
+
+/* DESCRIPTION  :  Simple wrapper that will call gnomemeeting_show_window.
+ * BEHAVIOR     :  Calls gnomemeeting_window_show.
+ * PRE          :  The gpointer is a valid pointer to the GtkWindow that needs
+ *                 to be shown with the correct size and position.
+ */
+void show_window_cb (GtkWidget *,
+		     gpointer);
 
 
 /* DESCRIPTION  :  Quit callback.
  * BEHAVIOR     :  Disconnects, then simply call gtk_main_quit.
  * PRE          :  /
  */
-void
-gtk_main_quit_callback (int,
-			gpointer);
+void gtk_main_quit_callback (int,
+			     gpointer);
 #endif

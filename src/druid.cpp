@@ -44,6 +44,7 @@
 #include "sound_handling.h"
 #include "ils.h"
 #include "misc.h"
+#include "callbacks.h"
 
 #include "dialog.h"
 #include "stock-icons.h"
@@ -175,7 +176,7 @@ gnomemeeting_druid_cancel (GtkWidget *w, gpointer data)
   
   gnome_druid_set_page (dw->druid, GNOME_DRUID_PAGE (dw->page_edge));
   gtk_widget_hide (gw->druid_window);
-  gtk_widget_show (gm);
+  gnomemeeting_window_show (gm);
 }
 
 
@@ -311,7 +312,7 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
   /* Hide the druid and show GnomeMeeting */
   gtk_widget_hide_all (GTK_WIDGET (gw->druid_window));
   gnome_druid_set_page (dw->druid, GNOME_DRUID_PAGE (dw->page_edge));
-  gtk_widget_show (gm);
+  gnomemeeting_window_show (gm);
 
 
   /* Will be done through GConf if the manager changes, but not
