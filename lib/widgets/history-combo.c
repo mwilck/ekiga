@@ -123,6 +123,7 @@ gm_history_combo_init (GmHistoryCombo *combo)
   combo->contact_list = NULL;
 }
 
+
 static void
 gm_history_combo_construct (GmHistoryCombo *combo)
 {
@@ -149,6 +150,7 @@ gm_history_combo_construct (GmHistoryCombo *combo)
   gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (combo)->entry), ""); 
 }
 
+
 static void
 gm_history_combo_finalize (GObject *object)
 {
@@ -174,6 +176,7 @@ gm_history_combo_finalize (GObject *object)
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
+
 static void
 gm_history_combo_set_property (GObject *object,
                                guint prop_id,
@@ -195,6 +198,7 @@ gm_history_combo_set_property (GObject *object,
   }
 }
 
+
 static void 
 gm_history_combo_get_property (GObject *object,
                                guint prop_id,
@@ -215,6 +219,7 @@ gm_history_combo_get_property (GObject *object,
   }
 }
 
+
 GtkWidget *
 gm_history_combo_new (const char *key)
 {
@@ -226,6 +231,7 @@ gm_history_combo_new (const char *key)
   
   return GTK_WIDGET (combo);
 }
+
 
 GSList *
 g_slist_from_glist (GList *list)
@@ -245,6 +251,7 @@ g_slist_from_glist (GList *list)
       return NULL;
 }
 
+
 GList *
 g_list_from_gslist (GSList *list)
 {
@@ -262,6 +269,7 @@ g_list_from_gslist (GSList *list)
   else
     return NULL;
 }
+
 
 /**
  * gm_history_combo_add_entry:
@@ -331,6 +339,7 @@ gm_history_combo_add_entry (GmHistoryCombo *combo,
   if (found == TRUE)
     g_free (entry_content);
 }
+
 
 void 
 gm_history_combo_update (GmHistoryCombo *combo)

@@ -150,8 +150,9 @@ void ldap_window_clicked (GtkDialog *widget, int button, gpointer data)
 {
   GmWindow *gw = (GmWindow *) data;
 
-  if (GTK_WIDGET_VISIBLE (gw->ldap_window))
-    gtk_widget_hide_all (gw->ldap_window);
+  if (gw->ldap_window)
+    if (GTK_WIDGET_VISIBLE (gw->ldap_window))
+      gtk_widget_hide_all (gw->ldap_window);
 }
 
 

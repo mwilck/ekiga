@@ -1,3 +1,4 @@
+
 /*  toolbar.cpp - This file contains all the functions needed to
  *                create the toolbar.
  *
@@ -58,12 +59,12 @@ static void toolbar_cp_button_changed    (GtkWidget *, gpointer);
 /* Static functions */
 static void url_combo_changed (GtkEditable  *e, gpointer data)
 {
-  GtkTooltips *tip = NULL;
+  GmWindow *gw = gnomemeeting_get_main_window (gm);
+
   gchar *tip_text = (gchar *)
     gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (data)->entry));
 
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, GTK_WIDGET (GTK_COMBO (data)->entry), 
+  gtk_tooltips_set_tip (gw->tips, GTK_WIDGET (GTK_COMBO (data)->entry), 
 			tip_text, NULL);
 }
 
@@ -180,7 +181,6 @@ static void toolbar_button_changed (GtkWidget *widget, gpointer data)
 
 void gnomemeeting_init_toolbar ()
 {
-  GtkTooltips *tip;
   GtkWidget *hbox;
   GtkWidget *image;
   GtkWidget *left_toolbar;
@@ -233,8 +233,8 @@ void gnomemeeting_init_toolbar ()
 
   gtk_combo_set_use_arrows_always (GTK_COMBO(gw->combo), TRUE);
   gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), "callto://");
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, GTK_WIDGET (GTK_COMBO (gw->combo)->entry), 
+
+  gtk_tooltips_set_tip (gw->tips, GTK_WIDGET (GTK_COMBO (gw->combo)->entry), 
 			"callto://", NULL);
 
   gtk_combo_disable_activate (GTK_COMBO (gw->combo));
@@ -302,8 +302,7 @@ void gnomemeeting_init_toolbar ()
 		    G_CALLBACK (toolbar_toggle_changed), 
 		    (gpointer) "/apps/gnomemeeting/devices/video_preview");
 
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, gw->preview_button,
+  gtk_tooltips_set_tip (gw->tips, gw->preview_button,
 			_("Click here to begin to display images from your camera device."),
 			NULL);
 
@@ -325,8 +324,7 @@ void gnomemeeting_init_toolbar ()
 		    G_CALLBACK (speaker_phone_toggle_changed), 
 		    NULL);
 
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, gw->speaker_phone_button,
+  gtk_tooltips_set_tip (gw->tips, gw->speaker_phone_button,
 			_("Click here to activate the speaker phone device of your Quicknet card."), NULL);
 
 
@@ -349,8 +347,7 @@ void gnomemeeting_init_toolbar ()
   g_signal_connect (G_OBJECT (gw->audio_chan_button), "clicked",
 		    G_CALLBACK (pause_audio_callback), gw);
 
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, gw->audio_chan_button,
+  gtk_tooltips_set_tip (gw->tips, gw->audio_chan_button,
 			_("Audio Transmission Status. During a call, click here to pause the audio transmission."), NULL);
 
   gtk_toolbar_append_widget (GTK_TOOLBAR (left_toolbar), 
@@ -370,8 +367,7 @@ void gnomemeeting_init_toolbar ()
   g_signal_connect (G_OBJECT (gw->video_chan_button), "clicked",
 		    G_CALLBACK (pause_video_callback), gw);
 
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, gw->video_chan_button,
+  gtk_tooltips_set_tip (gw->tips, gw->video_chan_button,
 			_("Video Transmission Status. During a call, click here to pause the video transmission."), NULL);
 
   gtk_toolbar_append_widget (GTK_TOOLBAR (left_toolbar), 

@@ -962,6 +962,10 @@ gnomemeeting_init (GmWindow *gw,
   }
 
 
+  /* Create the global tooltips */
+  gw->tips = gtk_tooltips_new ();
+
+
 #ifdef SPEEX_CODEC
   /* New Speex Audio codec in 0.94 */
   if (gconf_client_get_int (client, GENERAL_KEY "version", NULL) < 94) {
@@ -994,6 +998,7 @@ gnomemeeting_init (GmWindow *gw,
 
     gnomemeeting_message_dialog (GTK_WINDOW (gm), _("GnomeMeeting just installed an URL handler for callto:// URLs. callto URLs are an easy way to call people on the internet using GnomeMeeting. They are now available to all Gnome programs able to cope with URLs. You can for example create an URL launcher on the Gnome panel of the form \"callto://ils.seconix.com/me@foo.com\" to call the person registered on the ILS server ils.seconix.com with the me@foo.com e-mail address."));
   }
+  g_free (gconf_url);
 
 
   /* We store all the pointers to the structure as data of gm */
@@ -1067,11 +1072,11 @@ gnomemeeting_init (GmWindow *gw,
   firstname = gconf_client_get_string (client, PERSONAL_KEY "firstname", 0);
   lastname  = gconf_client_get_string (client, PERSONAL_KEY "lastname", 0);
   
-  if ((firstname) && (lastname)) 
+  if ((firstname) && (lastname) && (strcmp (firstname, ""))) 
   { 
-    gchar *local_name = g_strdup ("");
-    local_name = g_strconcat (local_name, firstname, " ", lastname, NULL);
-    
+    gchar *local_name = NULL;
+    local_name = g_strconcat (firstname, " ", lastname, NULL);
+
     /* It is the first alias for the gatekeeper */
     if (local_name != NULL) {
 
@@ -1081,6 +1086,13 @@ gnomemeeting_init (GmWindow *gw,
       endpoint->SetLocalUserName (iso_8859_1_local_name);
       g_free (iso_8859_1_local_name);
     }
+    else
+      local_name = 
+	g_strdup ((const char *) MyApp->Endpoint ()->GetLocalUserName ());
+
+    g_free (firstname);
+    g_free (lastname);
+    g_free (local_name);
   }
 
   alias = gconf_client_get_string (client, GATEKEEPER_KEY "gk_alias", 0);
@@ -1092,6 +1104,7 @@ gnomemeeting_init (GmWindow *gw,
     if (!Alias.IsEmpty ())
       endpoint->AddAliasName (Alias);
   }
+  g_free (alias);
 
   
   /* The LDAP part, if needed */
@@ -1411,8 +1424,6 @@ void gnomemeeting_init_main_window_video_settings ()
 
   int brightness = 0, colour = 0, contrast = 0, whiteness = 0;
   
-  GtkTooltips *tip;
-
   GmWindow *gw = gnomemeeting_get_main_window (gm);
 
   /* Webcam Control Frame */		
@@ -1446,8 +1457,7 @@ void gnomemeeting_init_main_window_video_settings ()
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, 0);
 
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, hscale_brightness,
+  gtk_tooltips_set_tip (gw->tips, hscale_brightness,
 			_("Adjust brightness"), NULL);
 
   g_signal_connect (G_OBJECT (gw->adj_brightness), "value-changed",
@@ -1473,8 +1483,7 @@ void gnomemeeting_init_main_window_video_settings ()
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, 0);
 
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, hscale_whiteness,
+  gtk_tooltips_set_tip (gw->tips, hscale_whiteness,
 			_("Adjust whiteness"), NULL);
 
   g_signal_connect (G_OBJECT (gw->adj_whiteness), "value-changed",
@@ -1500,8 +1509,7 @@ void gnomemeeting_init_main_window_video_settings ()
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, 0);
 
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, hscale_colour,
+  gtk_tooltips_set_tip (gw->tips, hscale_colour,
 			_("Adjust color"), NULL);
 
   g_signal_connect (G_OBJECT (gw->adj_colour), "value-changed",
@@ -1527,8 +1535,7 @@ void gnomemeeting_init_main_window_video_settings ()
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, 0);
 
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, hscale_contrast,
+  gtk_tooltips_set_tip (gw->tips, hscale_contrast,
 			_("Adjust contrast"), NULL);
 
   g_signal_connect (G_OBJECT (gw->adj_contrast), "value-changed",
@@ -1711,6 +1718,11 @@ int main (int argc, char ** argv, char ** envp)
 
   /* The GTK loop */
   gtk_main ();
+
+  /* Hide the gm widget and deletes them */
+  gtk_widget_hide (GTK_WIDGET (gm));
+  gtk_widget_destroy (GTK_WIDGET (gm));
+
   gdk_threads_leave ();
 
   delete (gw);

@@ -228,7 +228,8 @@ static void pref_window_clicked_callback (GtkDialog *widget, int button,
 
   case 0:
   
-    gtk_widget_hide (GTK_WIDGET (widget));
+    if (widget)
+      gtk_widget_hide (GTK_WIDGET (widget));
     
     break;
   }
@@ -284,16 +285,17 @@ static void personal_data_update_button_clicked (GtkWidget *widget,
     gconf_client_get_string (client, 
 			     "/apps/gnomemeeting/personal_data/lastname", 0);
 
-  if ((firstname) && (lastname)) {
+  if ((firstname) && (lastname) && (strcmp (firstname, ""))) {
     
-    local_name = g_strdup ("");
-    local_name = g_strconcat (local_name, firstname, " ", lastname, NULL);
+    local_name = g_strconcat (firstname, " ", lastname, NULL);
   }
   else 
-    local_name = g_strdup ((const char *) MyApp->Endpoint ()->GetLocalUserName ());
+    local_name = 
+      g_strdup ((const char *) MyApp->Endpoint ()->GetLocalUserName ());
   
-  alias_ = gconf_client_get_string (client, 
-				      "/apps/gnomemeeting/gatekeeper/gk_alias", 0);
+  alias_ = 
+    gconf_client_get_string (client, 
+			     "/apps/gnomemeeting/gatekeeper/gk_alias", 0);
   if (alias_ != NULL)
     alias = PString (alias_);
   
@@ -330,6 +332,11 @@ static void personal_data_update_button_clicked (GtkWidget *widget,
 			  "/apps/gnomemeeting/gatekeeper/registering_method",
 			  method, 0);
   }
+
+  g_free (alias_);
+  g_free (firstname);
+  g_free (lastname);
+  g_free (local_name);
 }
 
 
@@ -760,9 +767,10 @@ void gnomemeeting_codecs_list_build (GtkListStore *codecs_list_store,
       
 	selected_row = i;
       }
-    }
 
-    g_strfreev (couple);
+      g_free (couple [0]);
+      g_free (couple [1]);
+    }
   }
 
   /* This algo needs to be improved */
@@ -842,11 +850,11 @@ gnomemeeting_pref_window_add_entry (GtkWidget *table,
 {                                                                              
   GtkWidget *entry = NULL;                                                     
   GtkWidget *label = NULL;                                                     
-  GtkTooltips *tip = NULL;                                                     
   gchar *gconf_string = NULL;                                                  
   GConfClient *client = NULL;                                                  
-                                                                               
-  client = gconf_client_get_default ();                                        
+  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);
+                                                                          
+  client = gconf_client_get_default ();
                                                                                
 
   label = gtk_label_new (label_txt);                                           
@@ -884,10 +892,8 @@ gnomemeeting_pref_window_add_entry (GtkWidget *table,
 		    (gpointer) g_object_get_data (G_OBJECT (entry),
 						  "gconf_key"));
 
+  gtk_tooltips_set_tip (pw->tips, entry, tooltip, NULL);
 
-  tip = gtk_tooltips_new ();                                                   
-  gtk_tooltips_set_tip (tip, entry, tooltip, NULL);                            
-                                                                               
   return entry;                                                                
 }                                                                              
                                                                                
@@ -900,9 +906,7 @@ gnomemeeting_pref_window_add_toggle (GtkWidget *table,
 				     int row, int col)       
 {
   GtkWidget *toggle = NULL;  
-  GtkTooltips *tip = NULL;                                                     
-                                                                               
-                                                                               
+  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);
   GConfClient *client = NULL;                                                  
                                                                                
   client = gconf_client_get_default ();                                        
@@ -918,9 +922,8 @@ gnomemeeting_pref_window_add_toggle (GtkWidget *table,
 				gconf_client_get_bool (client, 
 						       gconf_key, NULL));
 
-                                                                               
-  tip = gtk_tooltips_new ();                                                   
-  gtk_tooltips_set_tip (tip, toggle, tooltip, NULL);                           
+                                                                                                                           
+  gtk_tooltips_set_tip (pw->tips, toggle, tooltip, NULL);                           
 
   /* We set the key as data to be able to get the data in order to block       
      the signal in the gconf notifier */                             
@@ -943,7 +946,7 @@ gnomemeeting_pref_window_add_spin (GtkWidget *table,
   GtkAdjustment *adj = NULL;
   GtkWidget *label = NULL;
   GtkWidget *spin_button = NULL;
-  GtkTooltips *tip = NULL;                                                     
+  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);                              
                                                                                
                                                                                
   GConfClient *client = NULL;                                                  
@@ -978,8 +981,7 @@ gnomemeeting_pref_window_add_spin (GtkWidget *table,
 			    gconf_client_get_int (client, gconf_key, NULL));
 
                                                                                
-  tip = gtk_tooltips_new ();                                                   
-  gtk_tooltips_set_tip (tip, spin_button, tooltip, NULL);                           
+  gtk_tooltips_set_tip (pw->tips, spin_button, tooltip, NULL);     
 
   /* We set the key as data to be able to get the data in order to block       
      the signal in the gconf notifier */                             
@@ -1004,7 +1006,8 @@ gnomemeeting_pref_window_add_int_option_menu (GtkWidget *table,
   GtkWidget *label = NULL;                                                     
   GtkWidget *option_menu = NULL;
   GtkWidget *menu = NULL;
-  GtkTooltips *tip = NULL;                                                     
+  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);
+
   int cpt = 0;                                                   
 
   GConfClient *client = NULL;                                                  
@@ -1044,8 +1047,7 @@ gnomemeeting_pref_window_add_int_option_menu (GtkWidget *table,
                     GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);           
                                                                                
                                                                                
-  tip = gtk_tooltips_new ();                                                   
-  gtk_tooltips_set_tip (tip, option_menu, tooltip, NULL);                           
+  gtk_tooltips_set_tip (pw->tips, option_menu, tooltip, NULL);     
 
   /* We set the key as data to be able to get the data in order to block       
      the signal in the gconf notifier */                             
@@ -1071,7 +1073,7 @@ gnomemeeting_pref_window_add_string_option_menu (GtkWidget *table,
   GtkWidget *label = NULL;                                                     
   GtkWidget *option_menu = NULL;
   GtkWidget *menu = NULL;
-  GtkTooltips *tip = NULL;        
+  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);  
   gchar *gconf_string = NULL;
   int history = 0;
 
@@ -1119,9 +1121,9 @@ gnomemeeting_pref_window_add_string_option_menu (GtkWidget *table,
                     (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
                     GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);           
                                                                                
-                                                                               
-  tip = gtk_tooltips_new ();                                                   
-  gtk_tooltips_set_tip (tip, option_menu, tooltip, NULL);                  
+                           
+  gtk_tooltips_set_tip (pw->tips, option_menu, tooltip, NULL);
+
 
   /* We set the key as data to be able to get the data in order to block       
      the signal in the gconf notifier */                             
@@ -1130,7 +1132,9 @@ gnomemeeting_pref_window_add_string_option_menu (GtkWidget *table,
   g_signal_connect (G_OBJECT (GTK_OPTION_MENU (option_menu)->menu), 
 		    "deactivate", G_CALLBACK (string_option_menu_changed),
   		    (gpointer) gconf_key);                                   
-                                                                               
+
+  g_free (gconf_string); 
+
   return option_menu;
 }
 
@@ -1141,7 +1145,6 @@ gnomemeeting_pref_window_add_update_button (GtkWidget *table,
 					    gchar *tooltip,  
 					    int row, int col)
 {
-  GtkTooltips *tip = NULL;
   GtkWidget *button = NULL;                                                    
 
   GmPrefWindow *pw = NULL;                                           
@@ -1159,9 +1162,10 @@ gnomemeeting_pref_window_add_update_button (GtkWidget *table,
   g_signal_connect (G_OBJECT (button), "clicked",                          
 		    G_CALLBACK (func), (gpointer) pw);
 
-  tip = gtk_tooltips_new ();                                                   
-  gtk_tooltips_set_tip (tip, button, tooltip, NULL);                           
-                                                                               
+  
+  gtk_tooltips_set_tip (pw->tips, button, tooltip, NULL);
+
+                                                
   return button;                                                               
 }                                                                              
                                                                                
@@ -1869,6 +1873,8 @@ void gnomemeeting_init_pref_window ()
   gtk_container_set_border_width (GTK_CONTAINER (hbox), 6);
   gtk_container_add (GTK_CONTAINER (dialog_vbox), hbox);
 
+  pw->tips = gtk_tooltips_new ();
+
 
   /* Build the TreeView on the left */
   frame = gtk_frame_new (NULL);
@@ -1984,7 +1990,6 @@ void gnomemeeting_init_pref_window ()
   gtk_tree_store_set (GTK_TREE_STORE (model),
 		      &child_iter, 0, _("Video Devices"), 1, 8, -1);
   gnomemeeting_init_pref_window_video_devices (notebook);
-
 
 
   cell = gtk_cell_renderer_text_new ();

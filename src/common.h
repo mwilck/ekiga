@@ -88,6 +88,7 @@ struct _GmRtpData
 
 struct _GmWindow
 {
+  GtkTooltips *tips;
   GtkObject *adj_play, *adj_rec;
   GtkObject *adj_whiteness;
   GtkObject *adj_brightness;
@@ -141,6 +142,7 @@ struct _GmLdapWindow
 
 struct _GmPrefWindow
 {
+  GtkTooltips *tips;
   GtkWidget *show_splash;
   GtkWidget *start_hidden;
   GtkWidget *incoming_call_popup;

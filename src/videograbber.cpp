@@ -115,6 +115,9 @@ GMVideoGrabber::~GMVideoGrabber ()
   gnomemeeting_init_main_window_logo ();
 
   gnomemeeting_threads_leave ();
+
+  g_free (video_device);
+  g_free (color_format);
 }
 
 
