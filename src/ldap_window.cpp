@@ -633,6 +633,7 @@ addressbook_edit_contact_dialog_new (const char *contact_name,
   GmWindow *gw = NULL;
   GmEditContactDialog *edit_dialog = NULL;
   
+  GtkWidget *scroll = NULL;
   GtkWidget *frame = NULL;
   GtkWidget *table = NULL;
   GtkWidget *label = NULL;
@@ -776,7 +777,12 @@ addressbook_edit_contact_dialog_new (const char *contact_name,
   column = gtk_tree_view_column_new_with_attributes ("", renderer,
 						     "text", 1, NULL);
   gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
-  gtk_container_add (GTK_CONTAINER (frame), tree_view);
+
+  scroll = gtk_scrolled_window_new (NULL, NULL);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scroll), 
+				  GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+  gtk_container_add (GTK_CONTAINER (scroll), tree_view);
+  gtk_container_add (GTK_CONTAINER (frame), scroll);
 
   gtk_table_attach (GTK_TABLE (table), frame, 1, 2, 3, 4, 
 		    (GtkAttachOptions) (GTK_FILL),
@@ -981,7 +987,7 @@ contact_clicked_cb (GtkWidget *w,
   lw = gnomemeeting_get_ldap_window (gm);
   client = gconf_client_get_default ();
 
-  if (e->type == GDK_BUTTON_PRESS) {
+  if (e->type == GDK_BUTTON_PRESS || e->type == GDK_KEY_PRESS) {
 
     if (get_selected_contact_info (&contact_section, &contact_name,
 				   &contact_url, NULL, &is_group)) {
@@ -995,7 +1001,7 @@ contact_clicked_cb (GtkWidget *w,
       update_menu_sensitivity (is_group, false, !already_member);
       msg = g_strdup_printf (_("Add %s to Address Book"), contact_name);
 			       
-      child = GTK_BIN (lw->addressbook_menu [9].widget)->child;
+      child = GTK_BIN (lw->addressbook_menu [11].widget)->child;
       gtk_label_set_text (GTK_LABEL (child), msg);
 			  
       if (e->button == 3) {
@@ -1374,10 +1380,10 @@ contact_section_clicked_cb (GtkWidget *w,
 
   if (e->window != gtk_tree_view_get_bin_window (tree_view)) 
     return FALSE;
-    
+
   lw = gnomemeeting_get_ldap_window (gm);
-  
-  if (e->type == GDK_BUTTON_PRESS) {
+
+  if (e->type == GDK_BUTTON_PRESS || e->type == GDK_EXPOSE) {
 
     if (gtk_tree_view_get_path_at_pos (tree_view, (int) e->x, (int) e->y,
 				       &path, NULL, NULL, NULL)) {
@@ -1416,7 +1422,7 @@ contact_section_clicked_cb (GtkWidget *w,
 
       
       /* If it is a right-click, then popup a menu */
-      if (e->button == 3 && 
+      if (e->type == GDK_BUTTON_PRESS && e->button == 3 && 
 	  gtk_tree_selection_path_is_selected (selection, path)) {
 	
 	menu = gtk_menu_new ();
@@ -1537,7 +1543,12 @@ static void
 call_user_cb (GtkWidget *w,
 	      gpointer data)
 {
-  contact_activated_cb (NULL, NULL, NULL, data);
+  gboolean is_group = false;
+
+  get_selected_contact_info (NULL, NULL, NULL, NULL, &is_group);
+  contact_activated_cb (NULL, NULL, NULL, 
+			is_group ? GINT_TO_POINTER (CONTACTS_GROUPS)
+			: GINT_TO_POINTER (CONTACTS_SERVERS));
 }
 
 
@@ -1911,7 +1922,6 @@ update_menu_sensitivity (gboolean is_group,
   
   lw = gnomemeeting_get_ldap_window (gm);
 
-    
   if (is_group || is_section) {
       
     gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[4].widget),
@@ -1925,25 +1935,31 @@ update_menu_sensitivity (gboolean is_group,
   
   if (is_group || !is_new) {
     
-    gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[9].widget),
-			      FALSE);
+    gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[8].widget),
+			      TRUE);
     gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[11].widget),
+			      FALSE);
+    gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[13].widget),
 			      TRUE);
   }
   else {
     
-    gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[9].widget),
+    gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[8].widget),
 			      TRUE);
     gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[11].widget),
+			      TRUE);
+    gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[13].widget),
 			      FALSE);
   }
 
   
   if (is_section) {
 
-    gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[9].widget),
+    gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[8].widget),
 			      FALSE);
     gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[11].widget),
+			      FALSE);
+    gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[13].widget),
 			      FALSE);
   }
 }
@@ -2025,13 +2041,19 @@ gnomemeeting_init_ldap_window ()
 
       {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
 
-      {_("Close"), NULL,
+      {_("_Close"), NULL,
        GTK_STOCK_CLOSE, 'w', MENU_ENTRY, 
        GTK_SIGNAL_FUNC (gnomemeeting_component_view),
        (gpointer) gw->ldap_window,
        NULL},
 
       {_("C_ontact"), NULL, NULL, 0, MENU_NEW, NULL, NULL, NULL},
+
+      {_("C_all Contact"), NULL,
+       NULL, 0, MENU_ENTRY, 
+       GTK_SIGNAL_FUNC (call_user_cb), NULL, NULL},
+
+      {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
 
       {_("New _Contact"), NULL,
        GTK_STOCK_NEW, 'n', MENU_ENTRY, 
@@ -2479,7 +2501,7 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
 		    G_CALLBACK (contact_activated_cb), NULL);
 
   /* Right-click on a contact */
-  g_signal_connect (G_OBJECT (lwp->tree_view), "event-after",
+  g_signal_connect (G_OBJECT (lwp->tree_view), "event_after",
 		    G_CALLBACK (contact_clicked_cb), NULL);
 
   return page_num;
@@ -2660,10 +2682,7 @@ gnomemeeting_addressbook_sections_populate ()
   
 
   /* Update sensitivity */
-  gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[9].widget),
-			    FALSE);
-  gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[11].widget),
-			    FALSE);
+  update_menu_sensitivity (false, true, false);
 }
 
 
