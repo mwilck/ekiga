@@ -35,12 +35,9 @@
 #include "common.h"
 #include "misc.h"
 #include "druid.h"
+#include "stock-icons.h"
 
 #include <gconf/gconf-client.h>
-
-#include "../pixmaps/connect_16.xpm"
-#include "../pixmaps/disconnect_16.xpm"
-
 
 /* Declarations */
 
@@ -466,14 +463,14 @@ void gnomemeeting_init_menu ()
 	GNOME_APP_UI_ITEM,
 	N_("_Connect"), N_("Create A New Connection"),
 	(void *) connect_cb, gw, NULL,
-	GNOME_APP_PIXMAP_DATA, connect_16_xpm,
+	GNOME_APP_PIXMAP_STOCK, GM_STOCK_CONNECT,
 	'c', GDK_CONTROL_MASK, NULL
       },
       {
 	GNOME_APP_UI_ITEM,
 	N_("_Disconnect"), N_("Close The Current Connection"),
 	(void *) disconnect_cb, gw, NULL,
-	GNOME_APP_PIXMAP_DATA, disconnect_16_xpm,
+	GNOME_APP_PIXMAP_STOCK, GM_STOCK_DISCONNECT,
 	'd', GDK_CONTROL_MASK, NULL
       },
       GNOMEUIINFO_SEPARATOR,

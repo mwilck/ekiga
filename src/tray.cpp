@@ -41,9 +41,6 @@
 #include <gconf/gconf-client.h>
 
 #include "stock-icons.h"
-/* FIXME: are these two still used? */
-#include "../pixmaps/connect_16.xpm"
-#include "../pixmaps/disconnect_16.xpm"
 
 /* Declarations */
 
@@ -132,7 +129,7 @@ void gnomemeeting_init_tray_popup_menu (GtkWidget *widget)
 	GNOME_APP_UI_ITEM,
 	N_("Connect"), N_("Create A New Connection"),
 	(void *)tray_popup_menu_connect_callback, GINT_TO_POINTER(0), NULL,
-	GNOME_APP_PIXMAP_DATA, connect_16_xpm,
+	GNOME_APP_PIXMAP_STOCK, GM_STOCK_CONNECT,
 	0, GDK_CONTROL_MASK, NULL
       },
       {
@@ -140,7 +137,7 @@ void gnomemeeting_init_tray_popup_menu (GtkWidget *widget)
 	N_("Disconnect"), N_("Close The Current Connection"),
 	(void *)tray_popup_menu_disconnect_callback, GINT_TO_POINTER(1), 
 	NULL,
-	GNOME_APP_PIXMAP_DATA, disconnect_16_xpm,
+	GNOME_APP_PIXMAP_STOCK, GM_STOCK_DISCONNECT,
 	0, GDK_CONTROL_MASK, NULL
       },
       {
