@@ -49,6 +49,7 @@
 #include "menu.h"
 #include "callbacks.h"
 #include "sound_handling.h"
+
 #include "tray.h"
 #include "dialog.h"
 #include "stock-icons.h"
@@ -105,7 +106,7 @@ static gint gm_quit_callback (GtkWidget *, GdkEvent *, gpointer);
 static void gnomemeeting_init_main_window_video_settings ();
 static void gnomemeeting_init_main_window_audio_settings ();
 static void gnomemeeting_init_main_window_stats ();
-static void gnomemeeting_init_main_window_dialpad ();
+static void gnomemeeting_init_main_window_dialpad (GtkAccelGroup *);
 
 
 /* For stress testing */
@@ -836,10 +837,10 @@ void gnomemeeting_dialpad_event (const char *key)
     dtmf = PString (button_text);
     
     /* Replace the * by a . */
-    if (endpoint && endpoint->GetCallingState () == GMH323EndPoint::Standby
-	&& !strcmp (button_text, "*")) {
-      
+    if (!strcmp (button_text, "*")) 
       button_text = g_strdup (".");
+
+    if (endpoint && endpoint->GetCallingState () == GMH323EndPoint::Standby) {
 
       new_url = url + PString (button_text);
 
@@ -1080,7 +1081,7 @@ gnomemeeting_main_window_new (GmWindow *gw)
   gtk_notebook_set_scrollable (GTK_NOTEBOOK (gw->main_notebook), TRUE);
 
   gnomemeeting_init_main_window_stats ();
-  gnomemeeting_init_main_window_dialpad ();
+  gnomemeeting_init_main_window_dialpad (accel);
   gnomemeeting_init_main_window_audio_settings ();
   gnomemeeting_init_main_window_video_settings ();
 
@@ -1291,7 +1292,7 @@ void gnomemeeting_init_main_window_stats ()
  * BEHAVIOR     :  Builds the dialpad part of the main window.
  * PRE          :  /
  **/
-void gnomemeeting_init_main_window_dialpad ()
+void gnomemeeting_init_main_window_dialpad (GtkAccelGroup *accel)
 {
   GtkWidget *label = NULL;
   GtkWidget *table = NULL;
@@ -1334,6 +1335,11 @@ void gnomemeeting_init_main_window_dialpad ()
 			(GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 			1, 1);
 
+      /*      gtk_widget_add_accelerator (button, "clicked",
+				  accel, GDK_1,
+				  (GdkModifierType) 0,
+				  GTK_ACCEL_VISIBLE);
+      */
       g_signal_connect (G_OBJECT (button), "clicked",
 			GTK_SIGNAL_FUNC (dialpad_button_clicked), NULL);
 
@@ -1559,6 +1565,7 @@ int main (int argc, char ** argv, char ** envp)
   PProcess::PreInitialise (argc, argv, envp);
 
   GtkWidget *dialog = NULL;
+  
   GmWindow *gw = NULL;
 
   gchar *url = NULL;
@@ -1615,10 +1622,10 @@ int main (int argc, char ** argv, char ** envp)
 #else
   gm = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 #endif
-
+  
   g_signal_connect (G_OBJECT (gm), "show", 
 		    GTK_SIGNAL_FUNC (video_window_shown_cb), NULL);
-  
+
   gdk_threads_enter ();
   gconf_init (argc, argv, 0);
 

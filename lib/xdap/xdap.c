@@ -156,7 +156,7 @@ parseonly (char *filename, xmlEntityPtr (*getent) (void *, const xmlChar *),
 	   xmlEntityPtr (**oldgetent) (void *, const xmlChar *), int noerr)
 {
   xmlDocPtr xp;
-  xmlSAXHandler sax;
+  xmlSAXHandlerV1 sax;
 
   memset (&sax, 0, sizeof sax);
   sax = xmlDefaultSAXHandler;	/* Copy original handler */
