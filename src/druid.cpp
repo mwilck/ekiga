@@ -170,9 +170,9 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
 
   /* Always register to make the callto available,the user can choose
      to be visible or not */
-  gconf_client_set_bool (client, LDAP_KEY "register", true, NULL);
-  (GM_ILS_CLIENT (MyApp->Endpoint ()->GetILSClientThread ()))->Modify ();
-
+  //  gconf_client_set_bool (client, LDAP_KEY "register", true, NULL);
+  //(GM_ILS_CLIENT (MyApp->Endpoint ()->GetILSClientThread ()))->Modify ();
+    cout << "FIX ME" << endl << flush;
 
   /* Fix the toggles */
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (dw->audio_test_button),
