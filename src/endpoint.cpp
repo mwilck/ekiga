@@ -1256,6 +1256,7 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 void GMH323EndPoint::OnConnectionCleared (H323Connection & connection, 
 					  const PString & clearedCallToken)
 {
+  GMVideoGrabber *vg = (GMVideoGrabber *) video_grabber;
   gchar *msg = NULL;
   PTimeInterval t;
   GtkTextIter start_iter, end_iter;
@@ -1392,7 +1393,6 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
       ((GMILSClient *) (ils_client))->Modify ();
   
     /* Reset the Video Grabber, if preview, else close it */
-    GMVideoGrabber *vg = (GMVideoGrabber *) video_grabber;
     if (gconf_client_get_bool (client, 
 			       "/apps/gnomemeeting/devices/video_preview", 0)) {
 
@@ -1414,6 +1414,11 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
       gnomemeeting_threads_leave ();
     }
   }
+
+
+  /* Display grabbed images */
+  vg->Start ();
+
 
   /* Play Busy Tone */
 #ifdef HAS_IXJ
