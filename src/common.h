@@ -115,7 +115,7 @@ struct _GM_window_widgets
 
 struct _GM_ldap_window_widgets
 {
-  GtkWidget *ldap_users_clist;
+  GtkWidget *ldap_users_clist [25];
   GtkWidget *statusbar;
   GtkWidget *search_entry;
   GtkWidget *ils_server_combo;
@@ -125,15 +125,15 @@ struct _GM_ldap_window_widgets
   // the last selected row and column
   int last_selected_row;
   int last_selected_col;
+
+  // the current page
+  int notebook_page;
   
   // the sorted column number
   int sorted_column;
 
   // ascending or descending
   int sorted_order;
-
-  // Searhc Thread ID
-  pthread_t fetch_results_thread;
 
   int thread_count;
 

@@ -114,15 +114,43 @@ void refresh_button_clicked (GtkButton *button, gpointer data)
   GMH323EndPoint *endpoint = MyApp->Endpoint ();
   GMILSClient *ils_client = (GMILSClient *) endpoint->get_ils_client ();
 
+  GtkWidget *page;
+  GtkWidget *label;
+
+  int page_num = 0;
+  gchar *text_label, *ldap_server;
+
   lw->thread_count++;
 
+  // if we are not already browsing
   if (lw->thread_count == 1)
     {
-      gtk_clist_freeze (GTK_CLIST (lw->ldap_users_clist));
-      gtk_clist_clear (GTK_CLIST (lw->ldap_users_clist));
-      gtk_clist_thaw (GTK_CLIST (lw->ldap_users_clist));
+//      gtk_clist_freeze (GTK_CLIST (lw->ldap_users_clist));
+ //     gtk_clist_clear (GTK_CLIST (lw->ldap_users_clist));
+  //    gtk_clist_thaw (GTK_CLIST (lw->ldap_users_clist));
 
-//      gtk_notebook_set_
+      // browse all the notebook pages
+      while ((page = 
+	      gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook),
+						       page_num)) != NULL)
+	{
+	  label = gtk_notebook_get_tab_label (GTK_NOTEBOOK (lw->notebook), 
+					      page);
+	  gtk_label_get (GTK_LABEL (label), &text_label);
+	  ldap_server = gtk_entry_get_text 
+	    (GTK_ENTRY (GTK_COMBO (lw->ils_server_combo)->entry));
+
+	  // if there is no page with the current ils server, create one
+	  if (g_strcasecmp (text_label, ldap_server))
+	    {
+	      cout << "ici" << endl << flush;
+	      lw->notebook_page = page_num;
+	      GM_ldap_init_notebook (lw, ldap_server);
+	    }
+
+	  page_num++;
+	  //      gtk_notebook_set_
+	}
 
       ils_client->ils_browse (lw);
     }   
@@ -387,27 +415,29 @@ void GM_ldap_init_notebook (GM_ldap_window_widgets *lw, gchar *text_label)
 				  GTK_POLICY_AUTOMATIC,
 				  GTK_POLICY_AUTOMATIC);
 
-  lw->ldap_users_clist = gtk_clist_new_with_titles (8, clist_titles);
+  lw->ldap_users_clist [lw->notebook_page] = gtk_clist_new_with_titles (8, clist_titles);
 
-  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist), 0, TRUE);
-  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist), 1, TRUE);
-  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist), 2, TRUE);
-  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist), 3, TRUE);
-  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist), 4, TRUE);
-  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist), 5, TRUE);
-  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist), 6, TRUE);
-  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist), 7, TRUE);
-  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist), 8, TRUE);
+  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist [lw->notebook_page]), 0, TRUE);
+  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist [lw->notebook_page]), 1, TRUE);
+  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist [lw->notebook_page]), 2, TRUE);
+  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist [lw->notebook_page]), 3, TRUE);
+  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist [lw->notebook_page]), 4, TRUE);
+  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist [lw->notebook_page]), 5, TRUE);
+  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist [lw->notebook_page]), 6, TRUE);
+  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist [lw->notebook_page]), 7, TRUE);
+  gtk_clist_set_column_auto_resize (GTK_CLIST (lw->ldap_users_clist [lw->notebook_page]), 8, TRUE);
 
-  gtk_clist_set_shadow_type (GTK_CLIST (lw->ldap_users_clist), GTK_SHADOW_IN);
+  gtk_clist_set_shadow_type (GTK_CLIST (lw->ldap_users_clist [lw->notebook_page]), GTK_SHADOW_IN);
 
-  gtk_widget_set_usize (GTK_WIDGET (lw->ldap_users_clist), 450, 200);
+  gtk_widget_set_usize (GTK_WIDGET (lw->ldap_users_clist [lw->notebook_page]), 450, 200);
   
-  gtk_container_add (GTK_CONTAINER (scroll), lw->ldap_users_clist);
-  gtk_container_set_border_width (GTK_CONTAINER (lw->ldap_users_clist),
+  gtk_container_add (GTK_CONTAINER (scroll), lw->ldap_users_clist [lw->notebook_page]);
+  gtk_container_set_border_width (GTK_CONTAINER (lw->ldap_users_clist [lw->notebook_page]),
 				  GNOME_PAD_SMALL);
 
   label = gtk_label_new (text_label);
 
-  gtk_notebook_append_page (GTK_NOTEBOOK(lw->notebook), scroll, label);
+  cout << "la" << endl << flush;
+  gtk_notebook_append_page (GTK_NOTEBOOK (lw->notebook), scroll, label);
+  cout << "la" << endl << flush;
 }

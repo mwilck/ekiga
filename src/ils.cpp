@@ -506,7 +506,7 @@ void GMILSClient::ils_browse ()
   gnome_appbar_push (GNOME_APPBAR (lw->statusbar), 
 		     _("Search completed!"));
 
-  gtk_clist_freeze (GTK_CLIST (lw->ldap_users_clist));
+  gtk_clist_freeze (GTK_CLIST (lw->ldap_users_clist [lw->notebook_page]));
 
   for(e = ldap_first_entry(ldap_connection, res); 
       e != NULL; e = ldap_next_entry(ldap_connection, e)) 
@@ -566,7 +566,7 @@ void GMILSClient::ils_browse ()
 
       // Check if the window is still present or not
       if (lw)
-	gtk_clist_append (GTK_CLIST (lw->ldap_users_clist), (gchar **) datas);
+	gtk_clist_append (GTK_CLIST (lw->ldap_users_clist [lw->notebook_page]), (gchar **) datas);
           
       /* Video Capable ? */
       if (ldap_get_values(ldap_connection, e, "ilsa32964638") != NULL)
@@ -578,8 +578,8 @@ void GMILSClient::ils_browse ()
       if (nmip == 1)
 	{
 	  if (lw)
-	    gtk_clist_set_pixmap (GTK_CLIST (lw->ldap_users_clist), 
-				  GTK_CLIST (lw->ldap_users_clist)->rows - 1, 1, 
+	    gtk_clist_set_pixmap (GTK_CLIST (lw->ldap_users_clist [lw->notebook_page]), 
+				  GTK_CLIST (lw->ldap_users_clist [lw->notebook_page])->rows - 1, 1, 
 				  quickcam, quickcam_mask);
 	}
 
@@ -593,8 +593,8 @@ void GMILSClient::ils_browse ()
       if (nmip == 1)
 	{
 	  if (lw)
-	    gtk_clist_set_pixmap (GTK_CLIST (lw->ldap_users_clist), 
-				  GTK_CLIST (lw->ldap_users_clist)->rows - 1, 0, 
+	    gtk_clist_set_pixmap (GTK_CLIST (lw->ldap_users_clist [lw->notebook_page]), 
+				  GTK_CLIST (lw->ldap_users_clist [lw->notebook_page])->rows - 1, 0, 
 				  sound, sound_mask);
 	}
 
@@ -607,7 +607,7 @@ void GMILSClient::ils_browse ()
 	}
     } // end of for
 
-  gtk_clist_thaw (GTK_CLIST (lw->ldap_users_clist));
+  gtk_clist_thaw (GTK_CLIST (lw->ldap_users_clist [lw->notebook_page]));
 
   /* Make the progress bar in activity mode go faster */
   gtk_progress_bar_set_activity_step (GTK_PROGRESS_BAR (progress), 5);
