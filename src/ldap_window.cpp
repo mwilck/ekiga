@@ -213,6 +213,9 @@ dnd_drag_motion_cb (GtkWidget *tree_view,
 		    guint time,
 		    gpointer data)		     
 {
+  GtkWidget *src_widget = NULL;
+  GtkTreeModel *src_model = NULL;
+  GtkTreeSelection *src_selection = NULL;
   GtkTreeModel *model = NULL;
   GtkTreePath *path = NULL;
 
@@ -220,16 +223,37 @@ dnd_drag_motion_cb (GtkWidget *tree_view,
   gchar *contact_url = NULL;
 
   GmLdapWindow *lw = NULL;
+  GmCallsHistoryWindow *chw = NULL;
   
   GValue value =  {0, };
   GtkTreeIter iter;
 
   lw = MyApp->GetLdapWindow ();
+  chw = MyApp->GetCallsHistoryWindow ();
+  
+  src_widget = gtk_drag_get_source_widget (context);
+  src_model = gtk_tree_view_get_model (GTK_TREE_VIEW (src_widget));
 
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (tree_view));
 
+  /* The source can be either the addressbook OR the calls history */
+  if (src_model == GTK_TREE_MODEL (chw->given_calls_list_store)
+      || src_model == GTK_TREE_MODEL (chw->received_calls_list_store)
+      || src_model == GTK_TREE_MODEL (chw->missed_calls_list_store)) {
+
+    src_selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (src_widget));
+
+    if (gtk_tree_selection_get_selected (src_selection, &src_model, &iter))
+      gtk_tree_model_get (GTK_TREE_MODEL (src_model), &iter,
+			  2, &contact_url, -1);
+  }
+  else
+    get_selected_contact_info (NULL, NULL, &contact_url, NULL, NULL);
+
+
   /* Get the url field of the contact info from the source GtkTreeView */
-  if (get_selected_contact_info (NULL, NULL, &contact_url, NULL, NULL)) {
+  if (contact_url) {
+
     
     /* See if the path in the destination GtkTreeView corresponds to a valid
        row (ie a group row, and a row corresponding to a group the user

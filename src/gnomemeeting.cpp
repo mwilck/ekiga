@@ -84,7 +84,7 @@ gnomemeeting_tray_hack (gpointer data)
   if (!gnomemeeting_tray_is_visible (gw->docklet)) {
 
     gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Notification area not detected"), _("You have chosen to start GnomeMeeting hidden, however the notification area is not present in your panel, GnomeMeeting can thus not start hidden."));
-    gtk_widget_show_all (gm);
+    gtk_widget_show (gm);
   }
   
   gdk_threads_leave ();
