@@ -504,8 +504,7 @@ edit_contact_cb (GtkWidget *widget,
     else
       gconf_client_set_list (client, gconf_key, GCONF_VALUE_STRING,
 			     group_content, NULL);
-
-      
+         
     g_free (contact_info);
     g_slist_free (group_content);
       
@@ -1978,58 +1977,42 @@ gnomemeeting_addressbook_group_populate (GtkListStore *list_store,
 {
   GtkTreeIter list_iter;
   
-  GSList *groups_list = NULL;
   GSList *group_content = NULL;
 
   char **contact_info = NULL;
+  gchar *gconf_key = NULL;
 
   GConfClient *client = NULL;
 
   client = gconf_client_get_default ();
   
-  groups_list = 
-    gconf_client_get_list (client, CONTACTS_KEY "groups_list",
-			   GCONF_VALUE_STRING, NULL);
-
   gtk_list_store_clear (GTK_LIST_STORE (list_store));
-  
-  while (groups_list) {
 
-    if (groups_list->data && group_name
-	&& !strcmp ((char *) group_name, (char *) groups_list->data)) {
+  gconf_key =
+    g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, (char *) group_name);
 
-      gchar *gconf_key =
-	g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY,
-			 (char *) groups_list->data);
+  group_content =
+    gconf_client_get_list (client, gconf_key, GCONF_VALUE_STRING, NULL);
 
-      group_content =
-	gconf_client_get_list (client, gconf_key, GCONF_VALUE_STRING, NULL);
+  while (group_content) {
 
-      while (group_content) {
+    gtk_list_store_append (list_store, &list_iter);
 
-	gtk_list_store_append (list_store, &list_iter);
+    contact_info =
+      g_strsplit ((char *) group_content->data, "|", 0);
 
-	contact_info =
-	  g_strsplit ((char *) group_content->data, "|", 0);
-
-	if (contact_info [0])
-	  gtk_list_store_set (list_store, &list_iter,
-			      COLUMN_NAME, contact_info [0], -1);
-	if (contact_info [1])
-	  gtk_list_store_set (list_store, &list_iter,
-			      COLUMN_CALLTO, contact_info [1], -1);
-
-	g_strfreev (contact_info);
-	group_content = g_slist_next (group_content);
-      }
-
-      g_free (gconf_key);
-      g_slist_free (group_content);
-    }
-
-    groups_list = g_slist_next (groups_list);
+    if (contact_info [0])
+      gtk_list_store_set (list_store, &list_iter,
+			  COLUMN_NAME, contact_info [0], -1);
+    if (contact_info [1])
+      gtk_list_store_set (list_store, &list_iter,
+			  COLUMN_CALLTO, contact_info [1], -1);
+    
+    g_strfreev (contact_info);
+    group_content = g_slist_next (group_content);
   }
 
-  g_slist_free (groups_list);
+  g_free (gconf_key);
+  g_slist_free (group_content);
 }
 					      

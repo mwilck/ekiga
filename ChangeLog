@@ -1,5 +1,11 @@
 2003-01-29 Damien Sandras  <dsandras@seconix.com>
 
+	* src/ldap_window.cpp: Simplified the function that populates
+	the addressbook so that when 2 groups with the same name exist
+	it doesn't add users twice.
+	
+2003-01-29 Damien Sandras  <dsandras@seconix.com>
+
 	* src/ldap_window.cpp: Prevent to add an user if somebody with
 	the same callto already exists in the same group. 
 	Prevents to edit an user if you change his callto and try to 
