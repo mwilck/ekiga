@@ -1,5 +1,12 @@
 2002-11-06 Damien Sandras  <dsandras@seconix.com>
 
+	* configure.in: Changed the version of openh323 as AC_DEFINE_UNQUOTED.
+
+	* src/main_window.cpp: Added check to make sure that GM is running
+	with the version of OpenH323 it was compiled for.
+	
+2002-11-06 Damien Sandras  <dsandras@seconix.com>
+
 	* configure.in: Adds the version of openh323 as define. That will
 	permit to check if GnomeMeeting is running with the libraries it
 	was compiled for.

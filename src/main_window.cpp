@@ -900,6 +900,22 @@ gnomemeeting_init (GmWindow *gw,
   setenv ("ESD_NO_SPAWN", "1", 1);
 
 
+  /* Check OpenH323 version */
+  gchar *version = 
+    g_strdup_printf ("%d.%d.%d", MAJOR_OPENH323, 
+		     MINOR_OPENH323, BUILD_OPENH323);
+  PString v = PString (version);
+  g_free (version);
+  if (OpalGetVersion () != v) {
+  
+    cout << "Sorry, GnomeMeeting was compiled with OpenH323 version " 
+	 << v << " but you are trying to run it with version "
+	 << OpalGetVersion () << "..." << endl << "Exiting..." 
+	 << endl << flush;
+    exit (-1);
+  }
+
+
   /* Cope with command line options */
   static struct poptOption arguments[] =
     {
