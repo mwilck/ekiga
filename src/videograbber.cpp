@@ -523,15 +523,12 @@ void GMVideoGrabber::VGOpen (void)
     /* Setup the video settings */
     GetParameters (&whiteness, &brightness, &colour, &contrast);
     gnomemeeting_threads_enter ();
-    gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_brightness),
-			      brightness);
-    gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_whiteness),
-			      whiteness);
-    gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_colour),
-			      colour);
-    gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_contrast),
-			      contrast);
-    
+    GTK_ADJUSTMENT (gw->adj_brightness)->value = brightness;
+    GTK_ADJUSTMENT (gw->adj_whiteness)->value = whiteness;
+    GTK_ADJUSTMENT (gw->adj_colour)->value = colour;
+    GTK_ADJUSTMENT (gw->adj_contrast)->value = contrast;
+    gtk_widget_queue_draw (GTK_WIDGET (gw->video_settings_frame));
+
     /* Enable the video settings frame */
     gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame),
 			      TRUE);
