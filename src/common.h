@@ -121,8 +121,6 @@ struct _GmLdapWindow
   GtkWidget *refresh_button;
   
   int thread_count;
-
-  GList *ldap_servers_list;
 };
 
 

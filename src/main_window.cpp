@@ -1,4 +1,3 @@
-
 /*
  * GnomeMeeting -- A Video-Conferencing application
  *
@@ -1212,7 +1211,6 @@ int main (int argc, char ** argv, char ** envp)
 
   /* Init the GmLdapWindow structure */
   lw = new (GmLdapWindow);
-  lw->ldap_servers_list = NULL;
 
 
   /* Init the RTP stats structure */

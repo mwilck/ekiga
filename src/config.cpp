@@ -1400,11 +1400,10 @@ void gnomemeeting_init_gconf (GConfClient *client)
 
   /**/
 #if 0
-  gconf_client_notify_add (client, "/apps/gnomemeeting/history/called_hosts", history_changed_nt, 
+  gconf_client_notify_add (client, "/apps/gnomemeeting/history/called_urls_list", history_changed_nt, 
 			   gw->combo, 0, 0);
   
-  gconf_client_notify_add (client, "/apps/gnomemeeting/history/ldap_servers", history_changed_nt, 
-			   lw->ils_server_combo, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/history/ldap_servers_list", history_changed_nt, lw->ils_server_combo, 0, 0);
 #endif
 }
 

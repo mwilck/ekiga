@@ -227,7 +227,7 @@ void gnomemeeting_init_toolbar ()
 
   /* Combo */
   gw->combo = gm_history_combo_new ("/apps/gnomemeeting/"
-                                    "history/called_hosts");
+                                    "history/called_urls_list");
 
   gtk_combo_set_use_arrows_always (GTK_COMBO(gw->combo), TRUE);
   gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), "callto://");
