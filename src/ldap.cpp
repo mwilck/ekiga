@@ -17,7 +17,7 @@
  *                                                                         *
  ***************************************************************************/
 
-// MEMORY : OK except openldap that doesn't free :-(
+/* MEMORY : OK except openldap that doesn't free :-( */
 
 #include "../config.h"
 
@@ -247,7 +247,12 @@ void GM_ldap_init (GM_window_widgets *gw)
   lw->gw = gw;
 
   gchar * clist_titles [] = 
-    {N_("A"), N_("V"), N_("First Name"), N_("Surname"), N_("E-mail"), 
+    {
+     /* Translators: This is as in "Audio". */
+     N_("A"),
+     /* Translators: This is as in "Video". */
+     N_("V"),
+     N_("First Name"), N_("Last name"), N_("E-mail"), 
      N_("Location"), N_("Comment"), N_("IP")};
 
   who_pixmap =  gnome_pixmap_new_from_xpm_d ((char **) ldap_refresh_xpm);
@@ -275,7 +280,7 @@ void GM_ldap_init (GM_window_widgets *gw)
   menu_item = gtk_menu_item_new_with_label (_("First Name"));
   gtk_menu_append (GTK_MENU (menu), menu_item);
 
-  menu_item = gtk_menu_item_new_with_label (_("Surname"));
+  menu_item = gtk_menu_item_new_with_label (_("Last name"));
   gtk_menu_append (GTK_MENU (menu), menu_item);
 
   menu_item = gtk_menu_item_new_with_label (_("E-mail"));
@@ -446,7 +451,7 @@ void * GM_ldap_populate_ldap_users_clist (void *lwi)
     {
       gdk_threads_enter ();
       gnome_appbar_push (GNOME_APPBAR (lw->statusbar), 
-			 _(" Please provide an ILS directory in Settings"));
+			 _("Please provide an ILS directory in Settings"));
       gdk_threads_leave ();
       return (0);
     }
@@ -463,7 +468,7 @@ void * GM_ldap_populate_ldap_users_clist (void *lwi)
 					(gchar **) sound_xpm); 
 
   gnome_appbar_push (GNOME_APPBAR (lw->statusbar), 
-		     _(" Connecting to ILS directory... Please Wait."));
+		     _("Connecting to ILS directory... Please Wait."));
 
   gdk_threads_leave ();
 
@@ -473,7 +478,7 @@ void * GM_ldap_populate_ldap_users_clist (void *lwi)
     {
       gdk_threads_enter ();
       gnome_appbar_push (GNOME_APPBAR (lw->statusbar), 
-			 _(" Error while connecting to ILS directory"));
+			 _("Error while connecting to ILS directory"));
       gdk_threads_leave ();
 
       return (0);
@@ -484,7 +489,7 @@ void * GM_ldap_populate_ldap_users_clist (void *lwi)
     {
       gdk_threads_enter ();
       gnome_appbar_push (GNOME_APPBAR (lw->statusbar), 
-			 _(" Error while connecting to ILS directory"));
+			 _("Error while connecting to ILS directory"));
       gdk_threads_leave ();
 
       return (0);
@@ -493,7 +498,7 @@ void * GM_ldap_populate_ldap_users_clist (void *lwi)
 
   gdk_threads_enter ();        
   gnome_appbar_push (GNOME_APPBAR (lw->statusbar), 
-		     _(" Searching for users... Please Wait."));
+		     _("Searching for users... Please Wait."));
   gdk_threads_leave ();
 
   rc = ldap_search_s (ldap_connection, "objectClass=RTPerson", 
@@ -507,7 +512,7 @@ void * GM_ldap_populate_ldap_users_clist (void *lwi)
 
   gdk_threads_enter ();
   gnome_appbar_push (GNOME_APPBAR (lw->statusbar), 
-		     _(" Search completed !"));
+		     _("Search completed!"));
 
 
   for(e = ldap_first_entry(ldap_connection, res); 

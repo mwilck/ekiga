@@ -386,7 +386,7 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   const char * remotePartyName = (const char *)name;  
   // only a pointer => destroyed with the PString
 
-  strncpy ((char *) msg, _("Call from : "), 200);
+  strncpy ((char *) msg, _("Call from: "), 200);
   strcat ((char *) msg, (char *) remotePartyName);
   
 
@@ -465,9 +465,9 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
     GM_log_insert (gw->log_text, _("Fast start disabled"));
 
   if (opts->ht == 1)    
-    GM_log_insert (gw->log_text, _("H245 Tunnelling enabled"));
+    GM_log_insert (gw->log_text, _("H.245 Tunnelling enabled"));
   else
-    GM_log_insert (gw->log_text, _("H245 Tunnelling disabled"));
+    GM_log_insert (gw->log_text, _("H.245 Tunnelling disabled"));
 
   GM_log_insert (gw->log_text, msg);
 
@@ -557,7 +557,7 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
     case H323Connection::EndedByNoBandwidth :
       gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-			 _("Call ended : insufficient bandwidth"));
+			 _("Call ended: insufficient bandwidth"));
       break;
 
     case H323Connection::EndedByConnectFail :

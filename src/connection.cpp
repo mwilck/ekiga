@@ -162,17 +162,17 @@ void GMH323Connection::PauseChannel (int chan_num)
 	    {
 	      transmitted_audio->SetPause (FALSE);
 	      GM_log_insert (gw->log_text, 
-				    _("Audio Channel  :  Sending"));
+				    _("Audio Channel:  Sending"));
 	      gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-				 _("Audio Channel  :  Sending"));
+				 _("Audio Channel:  Sending"));
 	    }
 	  else
 	    {
 	      transmitted_audio->SetPause (TRUE);
 	      GM_log_insert (gw->log_text, 
-				    _("Audio Channel  :  Paused"));
+				    _("Audio Channel:  Paused"));
 	      gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-				 _("Audio Channel  :  Paused"));
+				 _("Audio Channel:  Paused"));
 	    }
 	}
     }
@@ -184,17 +184,17 @@ void GMH323Connection::PauseChannel (int chan_num)
 	    {
 	      transmitted_video->SetPause (FALSE);
 	      GM_log_insert (gw->log_text, 
-				    _("Video Channel  :  Sending"));
+				    _("Video Channel:  Sending"));
 	      gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-				 _("Video Channel  :  Sending"));
+				 _("Video Channel:  Sending"));
 	    }
 	  else
 	    {
 	      transmitted_video->SetPause (TRUE);
 	      GM_log_insert (gw->log_text, 
-				    _("Video Channel  :  Paused"));
+				    _("Video Channel:  Paused"));
 	      gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-				 _("Video Channel  :  Paused"));
+				 _("Video Channel:  Paused"));
 	    }
 	}
     }

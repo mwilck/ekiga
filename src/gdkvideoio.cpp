@@ -43,7 +43,7 @@ GDKVideoOutputDevice::GDKVideoOutputDevice(GM_window_widgets *w)
   transmitted_frame_number = 0;
   received_frame_number = 0;
 
-  device_id = 0;	//Used to distinguish between input and output device.
+  device_id = 0; /* Used to distinguish between input and output device. */
 
   gettimeofday(&start, NULL);
 
@@ -56,15 +56,15 @@ GDKVideoOutputDevice::GDKVideoOutputDevice(int idno, GM_window_widgets *w)
  transmitted_frame_number = 0;
  received_frame_number = 0;
 
- device_id = idno; //Used to distinguish between input and output device.
+ device_id = idno; /* Used to distinguish between input and output device. */
 
  gettimeofday(&start, NULL);
 
- // If we don't transmit, then display is the remote image by default
+ /* If we don't transmit, then display is the remote image by default. */
  if (idno == 0)
    display_config = 1;
  
- // If we transmit, then display is the local image by default
+ /* If we transmit, then display is the local image by default. */
  if (idno == 1)
    display_config = 0;
 
@@ -209,13 +209,13 @@ BOOL GDKVideoOutputDevice::Redraw(const void * frame)
     {
       strcpy (statusbar_msg, "");
 
-      strcpy (statusbar_msg, _("Transmitted FPS : "));
+      strcpy (statusbar_msg, _("Transmitted FPS: "));
       sprintf (tmp, "%d", transmitted_frame_number);
       strcat (statusbar_msg, tmp);
 
       strcat (statusbar_msg, "  ");
 
-      strcat (statusbar_msg, _("Received FPS : "));
+      strcat (statusbar_msg, _("Received FPS: "));
       sprintf (tmp, "%d", received_frame_number);
       strcat (statusbar_msg, tmp);
 

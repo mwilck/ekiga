@@ -132,12 +132,12 @@ GtkWidget *GM_applet_init (int argc, char **argv)
 
   applet_widget_register_callback (APPLET_WIDGET (applet),
 				   "connect",
-				   _("connect"),
+				   _("Connect"),
 				   applet_connect, NULL);
 
   applet_widget_register_callback (APPLET_WIDGET (applet),
 				   "disconnect",
-				   _("disconnect"),
+				   _("Disconnect"),
 				   applet_disconnect, NULL);
 
   applet_widget_register_callback (APPLET_WIDGET (applet),

@@ -169,7 +169,7 @@ void GM_main_interface_init (GM_window_widgets *gw, options *opts)
 
 
   // The remote IP field
-  frame = gtk_frame_new(_("Remote IP to contact"));
+  frame = gtk_frame_new(_("Remote host to contact"));
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
 
   gtk_widget_set_usize (GTK_WIDGET (frame), 246, 52);
@@ -183,7 +183,7 @@ void GM_main_interface_init (GM_window_widgets *gw, options *opts)
   gtk_container_add (GTK_CONTAINER (frame), table_in);
 
   gtk_table_attach (GTK_TABLE (table_in), 
-		    GTK_WIDGET (gtk_label_new ("IP :")), 0, 2, 0, 4,
+		    GTK_WIDGET (gtk_label_new (_("Host:"))), 0, 2, 0, 4,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    0, 0);
@@ -434,7 +434,7 @@ void GM_init_main_interface_video_settings (GtkWidget *notebook,
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, hscale_colour,
-			_("Adjust colour"), NULL);
+			_("Adjust color"), NULL);
 
   gtk_signal_connect (GTK_OBJECT (gw->adj_colour), "value-changed",
 		      GTK_SIGNAL_FUNC (colour_changed), (gpointer) gw);

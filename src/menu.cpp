@@ -61,28 +61,28 @@ void GM_menu_init (GtkWidget *gapp, GM_window_widgets *gw)
     {
       {
 	GNOME_APP_UI_ITEM,
-	N_("Remote User Info"), N_("View Remote User Info"),
+	N_("_Remote User Info"), N_("View Remote User Info"),
 	(void *)view_remote_user_info_callback, gw, NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	NULL, GDK_CONTROL_MASK, NULL
       },
       {
 	GNOME_APP_UI_ITEM,
-	N_("History"), N_("View the log"),
+	N_("_History"), N_("View the log"),
 	(void *)view_log_callback, gw, NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	NULL, GDK_CONTROL_MASK, NULL
       },
       {
 	GNOME_APP_UI_ITEM,
-	N_("Audio Settings"), N_("View Audio Settings"),
+	N_("_Audio Settings"), N_("View Audio Settings"),
 	(void *)view_audio_settings_callback, gw, NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	NULL, GDK_CONTROL_MASK, NULL
       },
       {
 	GNOME_APP_UI_ITEM,
-	N_("Video Settings"), N_("View Video Settings"),
+	N_("_Video Settings"), N_("View Video Settings"),
 	(void *)view_video_settings_callback, gw, NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	NULL, GDK_CONTROL_MASK, NULL
@@ -90,7 +90,7 @@ void GM_menu_init (GtkWidget *gapp, GM_window_widgets *gw)
       GNOMEUIINFO_SEPARATOR,
       {
 	GNOME_APP_UI_ITEM,
-	N_("Status _Bar"), N_("View / hide the Status Bar"),
+	N_("_Status Bar"), N_("View / hide the Status Bar"),
 	(void *)view_statusbar_callback, gw, NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	NULL, GDK_CONTROL_MASK, NULL
@@ -110,7 +110,7 @@ void GM_menu_init (GtkWidget *gapp, GM_window_widgets *gw)
     {
       {
 	GNOME_APP_UI_ITEM,
-	N_("_Settings"), N_("Change You Preferences"),
+	N_("_Settings"), N_("Change Your Preferences"),
 	(void *)pref_callback, gw, NULL,
 	GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_MENU_PREF,
 	's', GDK_CONTROL_MASK, NULL
@@ -123,14 +123,14 @@ static GnomeUIInfo pause_menu [] =
     {
       {
 	GNOME_APP_UI_ITEM,
-	N_("Audio Transmission"), N_("Pause the Audio Transmission"),
+	N_("_Audio Transmission"), N_("Pause the Audio Transmission"),
 	(void *)pause_audio_callback, NULL, NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	0, GDK_CONTROL_MASK, NULL
       },
       {
 	GNOME_APP_UI_ITEM,
-	N_("Video Transmission"), N_("Pause the Video Transmission"),
+	N_("_Video Transmission"), N_("Pause the Video Transmission"),
 	(void *)pause_video_callback, NULL, NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	0, GDK_CONTROL_MASK, NULL
@@ -154,11 +154,11 @@ static GnomeUIInfo pause_menu [] =
   
   static GnomeUIInfo main_menu [] =
     {
-      GNOMEUIINFO_SUBTREE (N_("File"), file_menu),
-      GNOMEUIINFO_SUBTREE (N_("View"), view_menu),
-      GNOMEUIINFO_SUBTREE (N_("Settings"), settings_menu),
-      GNOMEUIINFO_SUBTREE (N_("Pause"), pause_menu),
-      GNOMEUIINFO_SUBTREE (N_("Help"), help_menu),
+      GNOMEUIINFO_SUBTREE (N_("_File"), file_menu),
+      GNOMEUIINFO_SUBTREE (N_("_View"), view_menu),
+      GNOMEUIINFO_SUBTREE (N_("_Settings"), settings_menu),
+      GNOMEUIINFO_SUBTREE (N_("_Pause"), pause_menu),
+      GNOMEUIINFO_SUBTREE (N_("_Help"), help_menu),
       GNOMEUIINFO_END
     };
 

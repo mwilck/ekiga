@@ -70,7 +70,7 @@ void pref_window_clicked (GnomeDialog *widget, int button, gpointer data)
 	  apply_options (opts, (GM_pref_window_widgets *) data);
 	}
 
-      delete (opts); // opts' content is destroyed with the widgets
+      delete (opts); /* opts' content is destroyed with the widgets */
       break;
 
       /* the user clicks on cancel => only destroy */
@@ -230,21 +230,21 @@ void GMPreferences (int calling_state, GM_window_widgets *gw)
 
   GtkWidget *frame;
 
-  // The ctree on the left and its corresponding clist
+  /* The ctree on the left and its corresponding clist */
   GtkWidget *ctree;
   GtkCList *clist;
 
-  // The ctree's nodes
+  /* The ctree's nodes */
   GtkCTreeNode *node, *node2, *node3;
 
-  // The notebook on the right
+  /* The notebook on the right */
   GtkWidget *notebook;
 
-  // The hbox where to pack the widgets
+  /* The hbox where to pack the widgets */
   GtkWidget *hbox;
   GtkWidget *dialog_vbox;
 
-  // The widgets structure
+  /* The widgets structure */
   GM_pref_window_widgets *pw = NULL;
   pw = new (GM_pref_window_widgets); 
   pw->gw = gw;
@@ -477,7 +477,7 @@ void init_pref_audio_codecs (GtkWidget *notebook, GM_pref_window_widgets *pw,
     
   /* BUTTONS */						
   /* Add */
-  button = add_button (_("Add"), 
+  button = add_button (_("_Add"), 
 		       gnome_stock_new_with_icon (GNOME_STOCK_BUTTON_APPLY));  
   gtk_widget_set_usize (GTK_WIDGET (button), 40, 25);
   gtk_table_attach (GTK_TABLE (table), button, 0, 1, 1, 2,
@@ -495,7 +495,7 @@ void init_pref_audio_codecs (GtkWidget *notebook, GM_pref_window_widgets *pw,
   
 
   /* Del */
-  button = add_button (_("Del"), 
+  button = add_button (_("_Delete"), 
 		       gnome_stock_new_with_icon (GNOME_STOCK_BUTTON_CANCEL));  
   gtk_widget_set_usize (GTK_WIDGET (button), 40, 25);
   gtk_table_attach (GTK_TABLE (table), button, 1, 2, 1, 2,
@@ -513,7 +513,7 @@ void init_pref_audio_codecs (GtkWidget *notebook, GM_pref_window_widgets *pw,
   
 
   /* Up */
-  button = add_button (_("Up"), 
+  button = add_button (_("_Up"), 
 		       gnome_stock_new_with_icon (GNOME_STOCK_MENU_UP)); 
   gtk_widget_set_usize (GTK_WIDGET (button), 40, 25);
   gtk_table_attach (GTK_TABLE (table), button, 2, 3, 1, 2,
@@ -531,7 +531,7 @@ void init_pref_audio_codecs (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
 		
   /* Down */
-  button = add_button (_("Down"), 
+  button = add_button (_("D_own"), 
 		       gnome_stock_new_with_icon (GNOME_STOCK_MENU_DOWN)); 
   gtk_widget_set_usize (GTK_WIDGET (button), 40, 25);
   gtk_table_attach (GTK_TABLE (table), button, 3, 4, 1, 2,
@@ -598,7 +598,7 @@ void init_pref_interface (GtkWidget *notebook, GM_pref_window_widgets *pw,
   
 
   /* Show / hide splash screen at startup */
-  pw->show_splash = gtk_check_button_new_with_label (_("Show Splash Screen"));
+  pw->show_splash = gtk_check_button_new_with_label (_("Show S_plash Screen"));
   gtk_table_attach (GTK_TABLE (table), pw->show_splash, 2, 4, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -612,7 +612,7 @@ void init_pref_interface (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
 
   /* Show / hide the notebook at startup */
-  pw->show_notebook = gtk_check_button_new_with_label (_("Show Notebook"));
+  pw->show_notebook = gtk_check_button_new_with_label (_("Show _Notebook"));
   gtk_table_attach (GTK_TABLE (table), pw->show_notebook, 0, 2, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -626,7 +626,7 @@ void init_pref_interface (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
 
   /* Show / hide the statusbar at startup */
-  pw->show_statusbar = gtk_check_button_new_with_label (_("Show Status Bar"));
+  pw->show_statusbar = gtk_check_button_new_with_label (_("Show _Status Bar"));
   gtk_table_attach (GTK_TABLE (table), pw->show_statusbar, 0, 2, 1, 2,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -652,7 +652,7 @@ void init_pref_interface (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
 
   /* Auto Answer toggle button */						
-  pw->aa = gtk_check_button_new_with_label (_("Auto Answer"));
+  pw->aa = gtk_check_button_new_with_label (_("_Auto Answer"));
   gtk_table_attach (GTK_TABLE (table), pw->aa, 0, 2, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -665,7 +665,7 @@ void init_pref_interface (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   
   /* DND toggle button */
-  pw->dnd = gtk_check_button_new_with_label (_("Do Not Disturb"));
+  pw->dnd = gtk_check_button_new_with_label (_("_Do Not Disturb"));
   gtk_table_attach (GTK_TABLE (table), pw->dnd, 0, 2, 1, 2,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -691,7 +691,7 @@ void init_pref_interface (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
 
   /* Auto Answer toggle button */						
-  pw->incoming_call_sound = gtk_check_button_new_with_label (_("Incoming Call"));
+  pw->incoming_call_sound = gtk_check_button_new_with_label (_("_Incoming Call"));
   gtk_table_attach (GTK_TABLE (table), pw->incoming_call_sound, 0, 2, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -701,7 +701,7 @@ void init_pref_interface (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->incoming_call_sound,
-			_("If enabled, GnomeMeeting will play a sound when receiving an incoming call (the sound to play is choosen in the Gnome Control Center"), NULL);
+			_("If enabled, GnomeMeeting will play a sound when receiving an incoming call (the sound to play is choosen in the Gnome Control Center)"), NULL);
 
 
 
@@ -750,7 +750,7 @@ void init_pref_video_codecs (GtkWidget *notebook, GM_pref_window_widgets *pw,
   gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_BIG);
   
   /* Video Size Option Menu */
-  label = gtk_label_new (_("Video Size  :"));
+  label = gtk_label_new (_("Video Size:"));
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -776,7 +776,7 @@ void init_pref_video_codecs (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   
   /* Video Format Option Menu */
-  label = gtk_label_new (_("Video Format  :"));
+  label = gtk_label_new (_("Video Format:"));
   gtk_table_attach (GTK_TABLE (table), label, 2, 3, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -802,7 +802,7 @@ void init_pref_video_codecs (GtkWidget *notebook, GM_pref_window_widgets *pw,
  
   
   /* Transmitted Video Quality */
-  label = gtk_label_new (_("Video Quality  :"));
+  label = gtk_label_new (_("Video Quality:"));
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 1, 2,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -820,11 +820,11 @@ void init_pref_video_codecs (GtkWidget *notebook, GM_pref_window_widgets *pw,
 										
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, tr_vq,
-			_("Here you can choose the transmitted video quality  :  choose 1 on a LAN for the best quality, 31 being the worst quality"), NULL);
+			_("Here you can choose the transmitted video quality:  choose 1 on a LAN for the best quality, 31 being the worst quality"), NULL);
 
 
   /* Updated blocks / frame */
-  label = gtk_label_new (_("Updated blocks :"));
+  label = gtk_label_new (_("Updated blocks:"));
   gtk_table_attach (GTK_TABLE (table), label, 2, 3, 1, 2,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -846,7 +846,7 @@ void init_pref_video_codecs (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
 
   /* Transmitted FPS */
-  label = gtk_label_new (_("Transmitted FPS  :"));
+  label = gtk_label_new (_("Transmitted FPS:"));
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 2, 3,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -875,7 +875,7 @@ void init_pref_video_codecs (GtkWidget *notebook, GM_pref_window_widgets *pw,
 		      FALSE, FALSE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_BIG);
   
-  pw->vid_tr = gtk_check_button_new_with_label (_("Enable Video Transmission"));
+  pw->vid_tr = gtk_check_button_new_with_label (_("_Enable Video Transmission"));
   gtk_container_add (GTK_CONTAINER (frame), pw->vid_tr);
   gtk_container_set_border_width (GTK_CONTAINER (pw->vid_tr), GNOME_PAD_SMALL);	 
 
@@ -887,7 +887,7 @@ void init_pref_video_codecs (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->vid_tr,
-			_("Here you can choose to enable or not video transmission"), NULL);
+			_("Here you can choose to enable or disable video transmission"), NULL);
 
 
   label = gtk_label_new (_("Video Codecs"));
@@ -930,7 +930,7 @@ void init_pref_general (GtkWidget *notebook, GM_pref_window_widgets *pw,
   
   
   /* User Name entry */
-  label = gtk_label_new (_("First Name  :"));
+  label = gtk_label_new (_("First Name:"));
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -953,7 +953,7 @@ void init_pref_general (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
 
   /* Surname entry (LDAP) */
-  label = gtk_label_new (_("Surname  :"));
+  label = gtk_label_new (_("Last name:"));
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 1, 2,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -969,14 +969,14 @@ void init_pref_general (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->surname,
-			_("Simply enter your surname."), NULL);
+			_("Simply enter your last name."), NULL);
 
   gtk_signal_connect (GTK_OBJECT (pw->surname), "changed",
 		      GTK_SIGNAL_FUNC (ldap_option_changed), (gpointer) pw);
 
 
   /* E-mail (LDAP) */
-  label = gtk_label_new (_("E-mail address  :"));
+  label = gtk_label_new (_("E-mail address:"));
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 2, 3,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -992,14 +992,14 @@ void init_pref_general (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->mail,
-			_("Simply enter your e-mail address"), NULL);
+			_("Simply enter your e-mail address."), NULL);
 
   gtk_signal_connect (GTK_OBJECT (pw->mail), "changed",
 		      GTK_SIGNAL_FUNC (ldap_option_changed), (gpointer) pw);
 
 
   /* Comment (LDAP) */
-  label = gtk_label_new (_("Comment  :"));
+  label = gtk_label_new (_("Comment:"));
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 4, 5,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -1022,7 +1022,7 @@ void init_pref_general (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
 
   /* Location */
-  label = gtk_label_new (_("Location  :"));
+  label = gtk_label_new (_("Location:"));
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 5, 6,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -1038,14 +1038,14 @@ void init_pref_general (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->location,
-			_("Where do you call from  ?"), NULL);
+			_("Where do you call from?"), NULL);
 
   gtk_signal_connect (GTK_OBJECT (pw->location), "changed",
 		      GTK_SIGNAL_FUNC (ldap_option_changed), (gpointer) pw);
 
 
   /* Port Entry */
-  label = gtk_label_new (_("Listen Port  :"));
+  label = gtk_label_new (_("Listen Port:"));
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 6, 7,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -1107,7 +1107,7 @@ void init_pref_advanced (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
 
   /* H245 Tunnelling button */				
-  pw->ht = gtk_check_button_new_with_label (_("Enable H.245 Tunnelling"));
+  pw->ht = gtk_check_button_new_with_label (_("Enable _H.245 Tunnelling"));
   gtk_table_attach (GTK_TABLE (table), pw->ht, 0, 2, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -1120,7 +1120,7 @@ void init_pref_advanced (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
 
   /* Fast Start button */							
-  pw->fs = gtk_check_button_new_with_label (_("Enable Fast Start"));
+  pw->fs = gtk_check_button_new_with_label (_("Enable _Fast Start"));
   gtk_table_attach (GTK_TABLE (table), pw->fs, 0, 2, 1, 2,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -1133,7 +1133,7 @@ void init_pref_advanced (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
 
   /* Max Used Bandwidth spin button */					
-  label = gtk_label_new (_("Max. Bandwidth :"));
+  label = gtk_label_new (_("Maximum Bandwidth:"));
   gtk_table_attach (GTK_TABLE (table), label, 2, 3, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -1155,7 +1155,7 @@ void init_pref_advanced (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
 
   /* Silence Detection */ 
-  pw->sd = gtk_check_button_new_with_label (_("Enable Silence Detection"));
+  pw->sd = gtk_check_button_new_with_label (_("Enable _Silence Detection"));
   gtk_table_attach (GTK_TABLE (table), pw->sd, 2, 4, 1, 2,
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
@@ -1164,7 +1164,7 @@ void init_pref_advanced (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->sd,
-			_("Enable or not silence detection.  If silence detection is enabled, silences will not be transmitted over the internet."), NULL);
+			_("Enable or disable silence detection.  If silence detection is enabled, silences will not be transmitted over the Internet."), NULL);
 
 
   /**** Received Video Settings Frame ****/
@@ -1180,7 +1180,7 @@ void init_pref_advanced (GtkWidget *notebook, GM_pref_window_widgets *pw,
   gtk_container_add (GTK_CONTAINER (frame), table);
   gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_BIG);
 		
-  label = gtk_label_new (_("Video Quality  :"));
+  label = gtk_label_new (_("Video Quality:"));
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -1198,7 +1198,7 @@ void init_pref_advanced (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, re_vq,
-			_("The video quality to request to the remote endpoint"), NULL);
+			_("The video quality to request from the remote party"), NULL);
 
 
   /* The End */
@@ -1243,7 +1243,7 @@ void init_pref_ldap (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
 
   /* ILS server */
-  label = gtk_label_new (_("ILS Directory  :"));
+  label = gtk_label_new (_("ILS Directory:"));
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -1258,14 +1258,14 @@ void init_pref_ldap (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->ldap_server,
-			_("The ILS directory to connect to..."), NULL);
+			_("The ILS directory to connect to"), NULL);
 
   gtk_signal_connect (GTK_OBJECT (pw->ldap_server), "changed",
 		      GTK_SIGNAL_FUNC (ldap_option_changed), (gpointer) pw);
 
 
   /* ILS port */
-  label = gtk_label_new (_("ILS Port  :"));
+  label = gtk_label_new (_("ILS Port:"));
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 1, 2,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -1280,14 +1280,14 @@ void init_pref_ldap (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->ldap_port,
-			_("The corresponding port : 389 is the standard port"), NULL);
+			_("The corresponding port: 389 is the standard port"), NULL);
 
   gtk_signal_connect (GTK_OBJECT (pw->ldap_port), "changed",
 		      GTK_SIGNAL_FUNC (ldap_option_changed), (gpointer) pw);
 
 
   /* Use ILS */ 
-  pw->ldap = gtk_check_button_new_with_label (_("Register to ILS directory"));
+  pw->ldap = gtk_check_button_new_with_label (_("_Register to ILS directory"));
   gtk_table_attach (GTK_TABLE (table), pw->ldap, 2, 4, 1, 2,
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
@@ -1345,7 +1345,7 @@ void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
 
   /* Audio Device */
-  label = gtk_label_new (_("Audio Device :"));
+  label = gtk_label_new (_("Audio Device:"));
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -1365,7 +1365,7 @@ void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
 
   /* Audio Mixer */
-  label = gtk_label_new (_("Audio Mixer :"));
+  label = gtk_label_new (_("Audio Mixer:"));
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 1, 2,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -1402,7 +1402,7 @@ void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
 
   /* Video Device */
-  label = gtk_label_new (_("Video Device :"));
+  label = gtk_label_new (_("Video Device:"));
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -1426,7 +1426,7 @@ void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
 
   /* Video channel spin button */					
-  label = gtk_label_new (_("Video Channel :"));
+  label = gtk_label_new (_("Video Channel:"));
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 1, 2,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -1453,7 +1453,7 @@ void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
 
   /* Device test button */
-  test_button = gtk_button_new_with_label (_("Video Test"));
+  test_button = gtk_button_new_with_label (_("Video _Test"));
 
   gtk_table_attach (GTK_TABLE (table), test_button, 3, 4, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
