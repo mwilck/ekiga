@@ -218,6 +218,7 @@ void pause_channel_callback (GtkWidget *widget, gpointer data)
   H323Connection *connection = NULL;
   H323Channel *channel = NULL;
   GMH323EndPoint *endpoint = NULL;
+  GMVideoGrabber *vg = NULL;
   PString current_call_token;
 
   GtkToggleButton *b = NULL;
@@ -227,12 +228,14 @@ void pause_channel_callback (GtkWidget *widget, gpointer data)
   gchar *menu_resume_msg = NULL;
   gchar *history_suspend_msg = NULL;
   gchar *history_resume_msg = NULL;
+
+  gdk_threads_leave ();
   
   endpoint = MyApp->Endpoint ();
   current_call_token = endpoint->GetCurrentCallToken ();
 
   gw = MyApp->GetMainWindow ();
-  
+
   if (!current_call_token.IsEmpty ())
     connection =
       endpoint->FindConnectionWithLock (current_call_token);
@@ -248,7 +251,7 @@ void pause_channel_callback (GtkWidget *widget, gpointer data)
       channel = 
 	connection->FindChannel (RTP_Session::DefaultVideoSessionID, 
 				 FALSE);
-
+    
     if (channel) {
 
       if (GPOINTER_TO_INT (data) == 0) {
@@ -258,10 +261,12 @@ void pause_channel_callback (GtkWidget *widget, gpointer data)
 	history_suspend_msg = g_strdup (_("Audio transmission: suspended"));
 	history_resume_msg = g_strdup (_("Audio transmission: resumed"));
 
+	gdk_threads_enter ();
 	b = GTK_TOGGLE_BUTTON (gw->audio_chan_button);
 	
 	child =
 	  GTK_BIN (gtk_menu_get_widget (gw->main_menu, "suspend_audio"))->child;
+	gdk_threads_leave ();
       }
       else {
 	
@@ -270,14 +275,17 @@ void pause_channel_callback (GtkWidget *widget, gpointer data)
 	history_suspend_msg = g_strdup (_("Video transmission: suspended"));
 	history_resume_msg = g_strdup (_("Video transmission: resumed"));
 
+	gdk_threads_enter ();
 	b = GTK_TOGGLE_BUTTON (gw->video_chan_button);
 	
 	child =
 	  GTK_BIN (gtk_menu_get_widget (gw->main_menu, "suspend_video"))->child;
+	gdk_threads_leave ();
       }
     
       if (channel->IsPaused ()) {
 
+	gdk_threads_enter ();
 	if (GTK_IS_LABEL (child)) 
 	  gtk_label_set_text_with_mnemonic (GTK_LABEL (child),
 					    menu_suspend_msg);
@@ -295,9 +303,11 @@ void pause_channel_callback (GtkWidget *widget, gpointer data)
 					   GINT_TO_POINTER (0));
 
 	channel->SetPause (FALSE);
+	gdk_threads_leave ();
       }
       else {
 
+	gdk_threads_enter ();
 	if (GTK_IS_LABEL (child)) 
 	  gtk_label_set_text_with_mnemonic (GTK_LABEL (child),
 					    menu_resume_msg);
@@ -315,6 +325,7 @@ void pause_channel_callback (GtkWidget *widget, gpointer data)
 					   GINT_TO_POINTER (1));
 	
 	channel->SetPause (TRUE);
+	gdk_threads_leave ();
       }
     }
 
@@ -325,6 +336,16 @@ void pause_channel_callback (GtkWidget *widget, gpointer data)
     
     connection->Unlock ();
   }
+  else {
+
+    vg = endpoint->GetVideoGrabber ();
+    if (vg && vg->IsGrabbing ())
+      vg->StopGrabbing ();
+    else
+      vg->StartGrabbing ();
+  }
+  
+  gdk_threads_enter ();
 }
 
 

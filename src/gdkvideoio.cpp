@@ -67,8 +67,9 @@ GDKVideoOutputDevice::GDKVideoOutputDevice(int idno, GmWindow *w)
 
   /* Used to distinguish between input and output device. */
   device_id = idno; 
-  devices_nbr++;
 
+  devices_nbr++;
+  
 #ifdef HAS_SDL
   screen = NULL;
   overlay = NULL;
@@ -95,13 +96,7 @@ GDKVideoOutputDevice::~GDKVideoOutputDevice()
 #endif
 
   devices_nbr--;
-
-  /* Update the View and the popup menus */
-  gnomemeeting_threads_enter ();
-  if (devices_nbr <= 0)
-    gnomemeeting_init_main_window_logo (gw->main_video_image);
-  gnomemeeting_threads_leave ();
-
+  
   /* Hide the 2 popup windows */
   gnomemeeting_threads_enter ();
   gtk_widget_hide_all (GTK_WIDGET (gw->local_video_window));

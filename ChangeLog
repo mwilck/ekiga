@@ -1,3 +1,20 @@
+2003-10-25 Damien Sandras  <dsandras@seconix.com>
+
+	* src/callbacks.cpp: Made "Pause Video" active when there is no call
+	and make it suspend the video capture.
+	
+	* src/connection.cpp: Display the logo when there are no video
+	channels anymore.
+	
+	* src/endpoint.cpp, src/endpoint.h: Prevent the video channel and
+	audio channel to be opened if they already are opened. Fixes
+	bug discovered by Iason when Fast Start is not used.
+	
+	* src/gdkvideoio.cpp: Do not display the logo here anymore.
+	
+	* src/videograbber.cpp, src/videograbber.h: Added IsGrabbing function
+	to determine if the grabber is currently reading from the device.
+	
 2003-10-24 Damien Sandras  <dsandras@seconix.com>
 
 	* src/connection.cpp, src/endpoint.cpp: Make sure not too

@@ -84,7 +84,14 @@ class GMVideoGrabber : public PThread
    */
   void StopGrabbing (void);
 
+  
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns TRUE if we are grabbing.
+   * PRE          :  /
+   */
+  BOOL IsGrabbing (void);
 
+  
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns the GDKVideoOutputDevice used to display
    *                 the camera images.

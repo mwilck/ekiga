@@ -104,7 +104,12 @@ GMH323EndPoint::GMH323EndPoint ()
   docklet_timeout = 0;
   sound_timeout = 0;
 
+  is_transmitting_video = FALSE;
+  is_receiving_video = FALSE;
+  is_transmitting_audio = FALSE;
+  is_receiving_audio = FALSE;
 
+  
   /* Use IPv6 address family by default if available. */
 #ifdef P_HAS_IPV6
   if (PIPSocket::IsIpAddressFamilyV6Supported())
@@ -1463,7 +1468,11 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   }
 
 
-
+  is_transmitting_video = FALSE;
+  is_receiving_video = FALSE;
+  is_transmitting_audio = FALSE;
+  is_receiving_audio = FALSE;
+  
 
   /* No Audio reception or transmission */
   gnomemeeting_menu_update_sensitivity (0);
@@ -1612,16 +1621,15 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
 				  unsigned bufferSize,
 				  H323AudioCodec &codec)
 {
-  H323Channel *chan = NULL;
   unsigned int vol_rec = 0, vol_play = 0;
   bool sd = FALSE;
   BOOL no_error = TRUE;
 
-  chan = connection.FindChannel (RTP_Session::DefaultAudioSessionID,
-				 isEncoding);
-  if (chan)
+  if ((isEncoding && is_transmitting_audio)
+      || (!isEncoding && is_receiving_audio))
     return FALSE;
 
+  
   /* Wait that the primary call has terminated (in case of transfer)
      before opening the channels for the second call */
   TransferCallWait ();
@@ -1755,6 +1763,8 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
       gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Could not open audio channel for audio reception"), _("An error occured while trying to play audio to the soundcard for the audio reception. Please check that your soundcard is not busy and that your driver supports full-duplex.\nThe audio reception has been disabled."));
     gnomemeeting_threads_leave ();
   }
+  else
+    isEncoding ? is_transmitting_audio = TRUE : is_receiving_audio = TRUE;
     
   return no_error;
 }
@@ -2302,15 +2312,14 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
                                   H323VideoCodec & codec)
 {
   PVideoChannel *channel = NULL;
-  H323Channel *chan = NULL;
   GMVideoGrabber *vg = NULL;
 
   BOOL result = FALSE;
 
-  chan = connection.FindChannel (RTP_Session::DefaultVideoSessionID,
-				 isEncoding);
-  if (chan)
+  if ((isEncoding && is_transmitting_video)
+      || (!isEncoding && is_receiving_video))
     return FALSE;
+  
 
   /* Wait that the primary call has terminated (in case of transfer)
      before opening the channels for the second call */
@@ -2341,6 +2350,9 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
     if (channel)
       result = codec.AttachChannel (channel, TRUE);
 
+    if (result)
+      is_transmitting_video = TRUE;
+    
     return result;
   }
   else {
@@ -2368,7 +2380,10 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 
       if (channel)
 	result = codec.AttachChannel (channel);
-      
+
+      if (result)
+	is_receiving_video = TRUE;
+	  
       return result;
     }
     else

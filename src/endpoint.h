@@ -509,6 +509,11 @@ class GMH323EndPoint : public H323EndPoint
 #ifdef HAS_IXJ
   GMLid *lid;
 #endif
+
+  BOOL is_transmitting_video;
+  BOOL is_receiving_video;
+  BOOL is_transmitting_audio;
+  BOOL is_receiving_audio;
 };
 
 #endif

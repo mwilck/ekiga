@@ -212,6 +212,18 @@ void GMVideoGrabber::StopGrabbing (void)
 }
 
 
+BOOL GMVideoGrabber::IsGrabbing (void)
+{
+  BOOL isg = FALSE;
+
+  var_mutex.Wait ();
+  isg = is_grabbing;
+  var_mutex.Signal ();
+
+  return isg;
+}
+
+
 GDKVideoOutputDevice *GMVideoGrabber::GetEncodingDevice (void)
 {
   return encoding_device;
@@ -519,8 +531,11 @@ void GMVideoGrabber::VGClose ()
     gtk_widget_set_sensitive (GTK_WIDGET (dw->video_test_button), TRUE);
 #endif
 
-    if (MyApp->Endpoint ()->GetCallingState () == 0)
+    if (MyApp->Endpoint ()->GetCallingState () == 0) {
+      
       gnomemeeting_menu_update_sensitivity (TRUE, FALSE, FALSE);
+      gnomemeeting_init_main_window_logo (gw->main_video_image);
+    }
     
     /* Disable the video settings frame */
     gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame),
