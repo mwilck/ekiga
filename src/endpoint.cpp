@@ -214,11 +214,6 @@ GMH323EndPoint::GMH323EndPoint ()
   recorder_channel = NULL;
   audio_tester = NULL;
 
-
-  /* We can add these capabilities here as they will exist
-     the whole life of the EP */
-  H323_UserInputCapability::AddAllCapabilities(capabilities, 0, P_MAX_INDEX);
-
   /* Update general configuration */
   UpdateConfig ();
 
@@ -388,6 +383,7 @@ void GMH323EndPoint::UpdateConfig ()
     RemoveAllCapabilities ();
     AddAudioCapabilities ();
     AddVideoCapabilities (video_size);
+    AddUserInputCapabilities ();
     gnomemeeting_threads_leave ();
   }
 
@@ -486,6 +482,36 @@ GMH323EndPoint::AddVideoCapabilities (int video_size)
 
   /* Enable video transmission */
   autoStartTransmitVideo = enable_video_transmission;
+}
+
+
+void
+GMH323EndPoint::AddUserInputCapabilities ()
+{
+  PString cap;
+  gchar *gconf_string = NULL;
+
+  gconf_string =
+    gconf_client_get_string (client, GENERAL_KEY "user_input_capabilities", 0);
+
+  if (gconf_string) {
+
+    cap = PString (gconf_string);
+    
+    if (cap == "Signal")
+      capabilities.SetCapability (0, P_MAX_INDEX, new H323_UserInputCapability(H323_UserInputCapability::SignalToneH245));
+    else if (cap == "rfc2833")
+      capabilities.SetCapability(0, P_MAX_INDEX, new H323_UserInputCapability(H323_UserInputCapability::SignalToneRFC2833));
+    else if (cap == "String") {
+      
+      PINDEX num = capabilities.SetCapability(0, P_MAX_INDEX, new H323_UserInputCapability(H323_UserInputCapability::HookFlashH245));
+      capabilities.SetCapability(0, num+1, new H323_UserInputCapability(H323_UserInputCapability::BasicString));
+      
+    } else if (cap != "None")
+      AddAllUserInputCapabilities(0, P_MAX_INDEX);
+  }
+
+  g_free (gconf_string);
 }
 
 

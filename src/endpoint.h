@@ -188,6 +188,15 @@ class GMH323EndPoint : public H323EndPoint
 
 
   /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Adds the User Input capabilities following the
+   *                 configuration options. Can set: None, All, rfc2833,
+   *                 String, Signal.
+   * PRE          :  /
+   */
+  void AddUserInputCapabilities ();
+
+  
+  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Saves the currently displayed picture in a file.
    * PRE          :  / 
    */

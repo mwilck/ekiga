@@ -98,8 +98,8 @@ static void contacts_list_changed_nt (GConfClient *, guint, GConfEntry *,
 				      gpointer);
 static void view_widget_changed_nt (GConfClient *, guint, GConfEntry *, 
 				    gpointer);
-static void audio_codec_setting_changed_nt (GConfClient *, guint, 
-					    GConfEntry *, gpointer);
+static void capabilities_changed_nt (GConfClient *, guint, 
+				     GConfEntry *, gpointer);
 static void microtelco_enabled_nt (GConfClient *, guint, GConfEntry *,
 				   gpointer);
 static void ht_fs_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
@@ -484,7 +484,8 @@ static void ht_fs_changed_nt (GConfClient *client, guint cid,
 
     gdk_threads_enter ();
 
-    MyApp->Endpoint ()->UpdateConfig ();
+    if (MyApp->Endpoint ()->GetCallingState () == 0)
+      MyApp->Endpoint ()->UpdateConfig ();
     
     gdk_threads_leave ();
   }
@@ -508,7 +509,8 @@ static void enable_vid_tr_changed_nt (GConfClient *client, guint cid,
       (GM_ILS_CLIENT (endpoint->GetILSClientThread ()))->Modify ();
 
     gdk_threads_enter ();
-    MyApp->Endpoint ()->UpdateConfig ();
+    if (MyApp->Endpoint ()->GetCallingState () == 0)
+      MyApp->Endpoint ()->UpdateConfig ();
     gdk_threads_leave ();
   }
 }
@@ -564,25 +566,20 @@ static void silence_detection_changed_nt (GConfClient *client, guint cid,
 }
 
 
-/* DESCRIPTION  :  This callback is called to update one audio codec related 
- *                 setting (# frames, but not silence detection)
- * BEHAVIOR     :  Update it, but display a popup if in a call.
+/* DESCRIPTION  :  This callback is called to update capabilities.
+ * BEHAVIOR     :  Updates it.
  * PRE          :  /
  */
-static void audio_codec_setting_changed_nt (GConfClient *client, guint i, 
-					    GConfEntry *entry, gpointer data)
+static void capabilities_changed_nt (GConfClient *client, guint i, 
+				     GConfEntry *entry, gpointer data)
 {
-  int video_size = 0;
-
   if (entry->value->type == GCONF_VALUE_INT) {
    
     gdk_threads_enter ();
 
     /* We update the capabilities */
-    MyApp->Endpoint ()->RemoveAllCapabilities ();
-    MyApp->Endpoint ()->AddAudioCapabilities ();
-    video_size = gconf_client_get_int (client, "/apps/gnomemeeting/devices/video_size", 0);
-    MyApp->Endpoint ()->AddVideoCapabilities (video_size);
+    if (MyApp->Endpoint ()->GetCallingState () == 0)
+      MyApp->Endpoint ()->UpdateConfig ();
 
     gdk_threads_leave ();
   }
@@ -757,29 +754,6 @@ static void jitter_buffer_changed_nt (GConfClient *client, guint cid,
     if (session != NULL)                                                       
       session->SetJitterBufferSize ((int) min_val * 8, (int) max_val * 8); 
 
-    gdk_threads_leave ();
-  }
-}
-
-
-/* DESCRIPTION  :  This notifier is called when the video size is changed.
- * BEHAVIOR     :  Updates the capabilities.
- * PRE          :  /
- */
-static void video_size_changed_nt (GConfClient *client, guint cid, 
-				   GConfEntry *entry, gpointer data)
-{
-  if (entry->value->type == GCONF_VALUE_INT) {
-
-    gdk_threads_enter ();
-
-    /* We update the Endpoint */
-    MyApp->Endpoint ()->RemoveAllCapabilities ();
-    MyApp->Endpoint ()->AddAudioCapabilities ();
-    
-    MyApp->Endpoint ()
-      ->AddVideoCapabilities (gconf_value_get_int (entry->value));
-    
     gdk_threads_leave ();
   }
 }
@@ -1020,7 +994,6 @@ static void audio_codecs_list_changed_nt (GConfClient *client, guint cid,
 					  GConfEntry *entry, gpointer data)
 { 
   GmPrefWindow *pw = NULL;
-  int video_size = 0;
   
   if (entry->value->type == GCONF_VALUE_LIST) {
    
@@ -1032,10 +1005,8 @@ static void audio_codecs_list_changed_nt (GConfClient *client, guint cid,
     gnomemeeting_codecs_list_build (pw->codecs_list_store);
     
     /* We update the capabilities */
-    MyApp->Endpoint ()->RemoveAllCapabilities ();
-    MyApp->Endpoint ()->AddAudioCapabilities ();
-    video_size = gconf_client_get_int (client, "/apps/gnomemeeting/devices/video_size", 0);
-    MyApp->Endpoint ()->AddVideoCapabilities (video_size);
+    if (MyApp->Endpoint ()->GetCallingState () == 0)
+      MyApp->Endpoint ()->UpdateConfig ();
     
     gdk_threads_leave ();
 
@@ -1443,7 +1414,7 @@ void gnomemeeting_init_gconf (GConfClient *client)
   /* There are in general 2 notifiers to attach to each widget :
      - the notifier that will update the widget itself to the new key
      - the notifier to take an appropriate action */
-
+  
   /* gnomemeeting_init_pref_window_general */
   gconf_client_notify_add (client, "/apps/gnomemeeting/gatekeeper/gk_alias",
 			   entry_changed_nt, pw->gk_alias, 0, 0);
@@ -1525,6 +1496,13 @@ void gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/fast_start", applicability_check_nt, pw->fs, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/fast_start", ht_fs_changed_nt, pw->fs, 0, 0);
 
+  gconf_client_notify_add (client, GENERAL_KEY "user_input_capability",
+			   capabilities_changed_nt, NULL, 0, 0);
+  gconf_client_notify_add (client, GENERAL_KEY "user_input_capability",
+			   applicability_check_nt, pw->uic, 0, 0);
+  gconf_client_notify_add (client, GENERAL_KEY "user_input_capability",
+			   string_option_menu_changed_nt, pw->uic, 0, 0);
+
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/ip_translation", toggle_changed_nt, pw->ip_translation, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/public_ip", entry_changed_nt, pw->public_ip, 0, 0);
 
@@ -1580,7 +1558,7 @@ void gnomemeeting_init_gconf (GConfClient *client)
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_size", int_option_menu_changed_nt, pw->opt1, 0, 0);			   
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_size", video_device_setting_changed_nt, pw->opt1, 0, 0);			   
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_size", video_size_changed_nt, pw->opt1, 0, 0);			   
+  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_size", capabilities_changed_nt, pw->opt1, 0, 0);			   
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_size", applicability_check_nt, pw->opt1, 0, 0);			   
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_format", int_option_menu_changed_nt, pw->opt2, 0, 0);			   
@@ -1622,9 +1600,9 @@ void gnomemeeting_init_gconf (GConfClient *client)
 			   0, 0);
 
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/gsm_frames", audio_codec_setting_changed_nt, NULL, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/gsm_frames", capabilities_changed_nt, NULL, 0, 0);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/g711_frames", audio_codec_setting_changed_nt, NULL, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/g711_frames", capabilities_changed_nt, NULL, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/sd", silence_detection_changed_nt, pw->sd, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/sd", toggle_changed_nt, pw->sd, 0, 0);

@@ -365,8 +365,19 @@
 	<short>IP Translation</short>
 	<long>This enables IP translation. IP translation is useful if GnomeMeeting is running behind a NAT/PAT router. You have to put the public IP of the router in the field below. If you are registered to ils.seconix.com, GnomeMeeting will automatically fetch the public IP using the ILS service. If your router natively supports H.323, you can disable this.</long>
       </locale>
-    </schema>
+   </schema>
    <schema>
+      <key>/schemas/apps/gnomemeeting/general/user_input_capability</key>
+      <applyto>/apps/gnomemeeting/general/user_input_capability</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default>All</default>
+      <locale name="C">
+	<short>User Input Capabiliy</short>
+	<long>This permits to set the mode for User Input Capabilities. The values can be "String", "Signal", "rfc2833", "None" or "All" (default is All). Choosing other values than "All" and "String" disable the Text Chat.</long>
+      </locale>
+    </schema>
+    <schema>
       <key>/schemas/apps/gnomemeeting/general/public_ip</key>
       <applyto>/apps/gnomemeeting/general/public_ip</applyto>
       <owner>GnomeMeeting</owner>

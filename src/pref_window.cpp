@@ -914,8 +914,15 @@ void gnomemeeting_init_pref_window_directories (GtkWidget *notebook)
  */                                                                            
 void gnomemeeting_init_pref_window_h323_advanced (GtkWidget *notebook)               
 {                                                                              
-  GtkWidget *vbox = NULL;                                                      
-  GtkWidget *table = NULL;                                                     
+  GtkWidget *vbox = NULL;
+  GtkWidget *table = NULL;
+  PStringArray capabilities;
+
+  capabilities.AppendString ("None");
+  capabilities.AppendString ("All");
+  capabilities.AppendString ("rfc2833");
+  capabilities.AppendString ("Signal");
+  capabilities.AppendString ("String");
                                                                                
   /* Get the data */                                                           
   GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);              
@@ -943,8 +950,8 @@ void gnomemeeting_init_pref_window_h323_advanced (GtkWidget *notebook)
 
   /* Packing widget */                                                         
   table = gnomemeeting_vbox_add_table (vbox, 
-					      _("H.323 V2 Settings"),
-                                              2, 1);                           
+				       _("H.323 V2 Settings"),
+				       2, 1);                           
 
                                                                                
   /* The toggles */                                                            
@@ -954,6 +961,14 @@ void gnomemeeting_init_pref_window_h323_advanced (GtkWidget *notebook)
   pw->fs = 
     gnomemeeting_table_add_toggle (table, _("Enable Fast Start"), "/apps/gnomemeeting/general/fast_start", _("Connection will be established in Fast Start mode. Fast Start is a new way to start calls faster that was introduced in H.323v2. It is not supported by Netmeeting and using both Fast Start and H.245 Tunnelling can crash some versions of Netmeeting."), 1, 0);
 
+
+  /* Packing widget */                                                         
+  table = gnomemeeting_vbox_add_table (vbox, 
+				       _("User Input Capabilities"),
+				       1, 1);
+  
+  pw->uic =
+    gnomemeeting_table_add_pstring_option_menu (table, _("Capabilities:"), capabilities, GENERAL_KEY "user_input_capability", _("This permits to set the mode for User Input Capabilities. The values can be \"String\", \"Signal\", \"rfc2833\", \"None\" or \"All\" (default is All). Choosing other values than \"All\" and \"String\" disable the Text Chat."), 0);
 
   /* IP translation */
   table = gnomemeeting_vbox_add_table (vbox, 

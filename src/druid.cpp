@@ -205,13 +205,11 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
 
     gconf_string = 
       gconf_client_get_string (client, GATEKEEPER_KEY "gk_alias" , NULL);
-    
-    if (gconf_string)
-      gk_name = g_strdup_printf ("%s.cce.microtelco.com", gconf_string);
       
-    if (gk_name) {
+    if (gconf_string) {
 
-      gconf_client_set_string (client, GATEKEEPER_KEY "gk_host", gk_name, 0);
+      gconf_client_set_string (client, GATEKEEPER_KEY "gk_host",
+			       "gk.microtelco.com", 0);
       gconf_client_set_int (client, GATEKEEPER_KEY "registering_method", 1, 0);
       gconf_client_set_bool (client, SERVICES_KEY "microtelco", true, 0);
 
@@ -957,8 +955,6 @@ gnomemeeting_init_druid_ixj_device_page (GnomeDruid *druid, int p, int t)
   entry = 
     gnomemeeting_table_add_entry (table, _("Account Number:"), 
 				  GATEKEEPER_KEY "gk_alias", NULL, 0);
-  gtk_entry_set_max_length (GTK_ENTRY (entry), 12);
-
   entry = 
     gnomemeeting_table_add_entry (table, _("Password:"), 
 				  GATEKEEPER_KEY "gk_password", NULL, 1);

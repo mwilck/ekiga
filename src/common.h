@@ -235,6 +235,7 @@ struct _GmPrefWindow
   GtkWidget    *comment;
   GtkWidget    *ht;
   GtkWidget    *fs;
+  GtkWidget    *uic;
   GtkWidget    *aa;
   GtkWidget    *dnd;
   GtkWidget    *ldap_server;
