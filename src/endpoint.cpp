@@ -206,8 +206,6 @@ GMH323EndPoint::GMH323EndPoint ()
   g_strfreev (tcp_couple);
   g_strfreev (udp_couple);
 
-  clearCallOnRoundTripFail = TRUE;  
-
   received_video_device = NULL;
   transmitted_video_device = NULL;
   player_channel = NULL;
