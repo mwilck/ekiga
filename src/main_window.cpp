@@ -1031,7 +1031,8 @@ gnomemeeting_init (GmWindow *gw,
   gnomemeeting_init_main_window (accel);
 
   gnomemeeting_sound_daemons_resume ();
- 
+  gnomemeeting_mixers_mic_select ();
+
   if (clo->debug_level != 0)
     PTrace::Initialise (clo->debug_level);
 

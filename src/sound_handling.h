@@ -88,6 +88,7 @@ void gnomemeeting_sound_daemons_resume ();
  */
 int gnomemeeting_sound_play_ringtone (GtkWidget *widget);
 
+void gnomemeeting_mixers_mic_select (void);
 
 
 class GMAudioTester : public PThread

@@ -87,6 +87,32 @@ gnomemeeting_sound_daemons_resume (void)
 }
 
 
+void 
+gnomemeeting_mixers_mic_select (void)
+{
+  int rcsrc = 0;
+  int mixerfd = -1;                                                            
+  int cpt = 0;
+                                                                             
+  PString mixer = PString ("/dev/mixer1");
+
+
+  mixerfd = open (mixer, O_RDWR);
+  /*
+  if (mixerfd == -1)
+    break;
+  */                                                                           
+                                                                               
+  if (ioctl (mixerfd, SOUND_MIXER_READ_RECSRC, &rcsrc) == -1)
+    rcsrc = 0;
+
+  rcsrc |= SOUND_MASK_MIC;                         
+  ioctl (mixerfd, SOUND_MIXER_WRITE_RECSRC, &rcsrc);
+  
+  close (mixerfd);
+}
+
+
 gint 
 gnomemeeting_sound_play_ringtone (GtkWidget *widget)
 {
