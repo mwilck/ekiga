@@ -488,17 +488,18 @@ void quit_callback (GtkWidget *widget, gpointer data)
   
   gw = GnomeMeeting::Process ()->GetMainWindow ();
   ep = GnomeMeeting::Process ()->Endpoint ();
-
-  gdk_threads_leave ();
-  ep->ClearAllCalls (H323Connection::EndedByLocalUser, TRUE);
-  gdk_threads_enter ();
   
   gnomemeeting_window_hide (gm);
   gnomemeeting_window_hide (gw->history_window);
   gnomemeeting_window_hide (gw->calls_history_window);
   gnomemeeting_window_hide (gw->ldap_window);
+  gnomemeeting_window_hide (gw->pref_window);
+  
+  gdk_threads_leave ();
+  ep->ClearAllCalls (H323Connection::EndedByLocalUser, TRUE);
+  gdk_threads_enter ();
+
   gtk_widget_hide (gw->docklet);
-  gtk_widget_hide (gw->pref_window);
 
   gtk_main_quit ();
 }  
