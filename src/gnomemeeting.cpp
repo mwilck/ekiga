@@ -135,8 +135,9 @@ void GnomeMeeting::Connect()
 
       gnomemeeting_threads_enter ();
       gw->progress_timeout =
-	gtk_timeout_add (50, gnomemeeting_window_appbar_update, 
+	gtk_timeout_add (20, gnomemeeting_window_appbar_update, 
 			 gw->statusbar);
+      gtk_widget_show (GTK_WIDGET (gnome_appbar_get_progress (GNOME_APPBAR(gw->statusbar))));
       gnomemeeting_threads_leave ();
 
 #ifdef HAS_IXJ
@@ -169,14 +170,17 @@ void GnomeMeeting::Disconnect ()
 
   /* Update the button */
   gnomemeeting_threads_enter ();
+
   connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 0);
 
   if (gw->progress_timeout) {
 
     gtk_timeout_remove (gw->progress_timeout);
     gw->progress_timeout = 0;
+    gtk_widget_hide (GTK_WIDGET (gnome_appbar_get_progress (GNOME_APPBAR (gw->statusbar))));
   }
   gnome_appbar_clear_stack (GNOME_APPBAR (gw->statusbar));
+
   gnomemeeting_threads_leave ();
 
 

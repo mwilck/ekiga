@@ -36,12 +36,6 @@
 #include "common.h"
 
 
-/* COMMON NOTICE : GmWindow, GmLdapWindow and options 
-                   pointers must be valid,
-                   options must have been read before calling these 
-		   functions */
-
-
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Initialise gnomemeeting and builds the windows.
  * PRE          :  /

@@ -1103,6 +1103,7 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 
     gtk_timeout_remove (gw->progress_timeout);
     gw->progress_timeout = 0;
+    gtk_widget_hide (GTK_WIDGET (gnome_appbar_get_progress (GNOME_APPBAR (gw->statusbar))));
   }
   
   /* Set Video Codecs Settings */
@@ -1301,6 +1302,7 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
     gtk_timeout_remove (gw->progress_timeout);
     gw->progress_timeout = 0;
+    gtk_widget_hide (GTK_WIDGET (gnome_appbar_get_progress (GNOME_APPBAR (gw->statusbar))));
   }
 
   gnomemeeting_threads_leave ();

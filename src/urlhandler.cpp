@@ -124,6 +124,10 @@ void GMURLHandler::Main ()
     ils_server = url.Left (slash);
     PINDEX p = url.Find (':');
 
+    gnomemeeting_threads_enter ();
+    gnome_appbar_push (GNOME_APPBAR (gw->statusbar),
+		       _("Searching for user"));
+    gnomemeeting_threads_leave ();
     /* There is a port */
     if (p != P_MAX_INDEX) {
     

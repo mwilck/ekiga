@@ -68,11 +68,19 @@
 #include "../pixmaps/contrast.xpm"
 #include "../pixmaps/color.xpm"
 
+#define ACT_IID "OAFIID:GnomeMeeting_Factory"
+
 
 /* Declarations */
 
 extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;	
+
+static gboolean gnomemeeting_invoke_factory (int, char **);
+static void gnomemeeting_new_event (BonoboListener *, const char *, 
+				    const CORBA_any *, CORBA_Environment *,
+				    gpointer);
+static Bonobo_RegistrationResult gnomemeeting_register_as_factory (void);
 
 static void main_notebook_page_changed (GtkNotebook *, GtkNotebookPage *,
 					gint, gpointer);
@@ -90,28 +98,29 @@ static void gnomemeeting_init_main_window_log  ();
 
 
 /* For stress testing */
-// int i = 0;
+/* int i = 0; */
 
 /* GTK Callbacks */
-// gint StressTest (gpointer data)
-// {
-//   gdk_threads_enter ();
+/* gint StressTest (gpointer data)
+ {
+   gdk_threads_enter ();
 
 
-//   GmWindow *gw = gnomemeeting_get_main_window (gm);
+   GmWindow *gw = gnomemeeting_get_main_window (gm);
 
-//   if (!GTK_TOGGLE_BUTTON (gw->connect_button)->active) {
+   if (!GTK_TOGGLE_BUTTON (gw->connect_button)->active) {
 
-//     i++;
-//     cout << "Call " << i << endl << flush;
-//   }
+     i++;
+     cout << "Call " << i << endl << flush;
+   }
 
-//   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->connect_button), 
-// 				!GTK_TOGGLE_BUTTON (gw->connect_button)->active);
+   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->connect_button), 
+ 				!GTK_TOGGLE_BUTTON (gw->connect_button)->active);
 
-//   gdk_threads_leave ();
-//   return TRUE;
-// }
+   gdk_threads_leave ();
+   return TRUE;
+}
+*/
 
 
 gint AppbarUpdate (gpointer data)
@@ -203,8 +212,10 @@ gint AppbarUpdate (gpointer data)
 /* Factory stuff */
 
 
-/*
- * Invoked remotely to instantiate GnomeMeeting with the given URL.
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Invoked remotely to instantiate GnomeMeeting 
+ *                 with the given URL.
+ * PRE          :  /
  */
 static void
 gnomemeeting_new_event (BonoboListener    *listener,
@@ -248,8 +259,10 @@ gnomemeeting_new_event (BonoboListener    *listener,
 }
 
 
-#define ACT_IID "OAFIID:GnomeMeeting_Factory"
-
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Registers GnomeMeeting as a factory.
+ * PRE          :  Returns the registration result.
+ */
 static Bonobo_RegistrationResult
 gnomemeeting_register_as_factory (void)
 {
@@ -277,6 +290,11 @@ gnomemeeting_register_as_factory (void)
 }
 
 
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Invoke the factory.
+ * PRE          :  Registers the new factory, or use the already registered 
+ *                 factory, or displays an error in the terminal.
+ */
 static gboolean
 gnomemeeting_invoke_factory (int argc, char **argv)
 {
@@ -498,7 +516,8 @@ gnomemeeting_window_appbar_update (gpointer data)
   GtkProgressBar *progress = 
     gnome_appbar_get_progress (GNOME_APPBAR (statusbar));
 
-  gtk_progress_bar_pulse (GTK_PROGRESS_BAR (progress));
+  if (GTK_WIDGET_VISIBLE (GTK_WIDGET (progress)))
+    gtk_progress_bar_pulse (GTK_PROGRESS_BAR (progress));
    
   return 1;
 }
@@ -524,9 +543,11 @@ gnomemeeting_init (GmWindow *gw,
   /* Cope with command line options */
   static struct poptOption arguments[] =
     {
-      {"debug", 'd', POPT_ARG_NONE, 
-       0, 0, N_("Prints debug messages in the console"), NULL},
-      {NULL, 0, 0, NULL, 0, NULL, NULL}
+      {"debug", 'd', POPT_ARG_NONE, &debug, 
+       0, N_("Prints debug messages in the console"), NULL},
+      {"callto", 'c', POPT_ARG_STRING, NULL,
+       1, N_("Makes GnomeMeeting call the given callto:// URL"), NULL},
+      {NULL, '\0', 0, NULL, 0, NULL, NULL}
     };
 
   for (int i = 0; i < argc; i++) {
@@ -874,6 +895,8 @@ void gnomemeeting_init_main_window ()
   /* The statusbar */
   gw->statusbar = gnome_appbar_new (TRUE, TRUE, 
 				    GNOME_PREFERENCES_NEVER);	
+  gtk_widget_hide (GTK_WIDGET (gnome_appbar_get_progress (GNOME_APPBAR (gw->statusbar))));
+  gtk_widget_set_size_request (GTK_WIDGET (gnome_appbar_get_progress (GNOME_APPBAR (gw->statusbar))), 40, -1);
   gnome_app_set_statusbar (GNOME_APP (gm), gw->statusbar);
 
   if (gconf_client_get_bool (client, 
