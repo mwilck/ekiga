@@ -90,8 +90,10 @@ static void gm_druid_finish_cb (GnomeDruidPage *, GtkWidget *, gpointer);
 static void gm_druid_delete_event_cb (GtkWidget *, 
 				      GdkEventAny *, gpointer);
 
-static void gm_druid_check_personal_data (GmDruidWindow *);
-static void gm_druid_changed_cb (GtkWidget *, gpointer);
+static void gm_druid_check_name (GmDruidWindow *);
+static void gm_druid_check_callto (GmDruidWindow *);
+static void gm_druid_name_changed_cb (GtkWidget *, gpointer);
+static void gm_druid_email_changed_cb (GtkWidget *, gpointer);
 static void gm_druid_ils_register_toggle_cb (GtkToggleButton *b, gpointer data);
 static void gm_druid_option_menu_update (GtkWidget *option_menu, gchar **options,
 					 gchar *default_value);
@@ -398,66 +400,85 @@ gm_druid_delete_event_cb (GtkWidget *w, GdkEventAny *ev, gpointer data)
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Checks if the "Next" button of the "Personal Information"
- *                 druid page can be sensitive or not. It will if all fields
- *                 are ok.
- * PRE          :  The druid and the page number.
+ *                 druid page can be sensitive or not. It will if the name
+ *                 field is ok.
+ * PRE          :  The druid window.
  */
 static void 
-gm_druid_check_personal_data (GmDruidWindow *dw)
+gm_druid_check_name (GmDruidWindow *dw)
 {
-  GnomeDruid *druid = NULL;
-  PString mail;
+  GnomeDruid *druid = dw->druid;
   gchar ** couple = NULL;
 
-  BOOL error = TRUE;
-
-  druid = dw -> druid;
-
-      
   couple = g_strsplit (gtk_entry_get_text (GTK_ENTRY (dw->name)), " ", 2);
   
-  /* for page 2 */
   if (couple && couple [0] && couple [1]
       && !PString (couple [0]).Trim ().IsEmpty ()
       && !PString (couple [1]).Trim ().IsEmpty ()) 
-    error = FALSE;
-
-  /* for page 3 */
-  if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (dw->use_callto)))
-    error = FALSE;
-  else {
-    
-    mail = PString (gtk_entry_get_text (GTK_ENTRY (dw->mail)));
-    if (!mail.IsEmpty () && mail.Find ("@") != P_MAX_INDEX)
-      error = FALSE;
-  }
-  
-  
-  if (!error)
     gnome_druid_set_buttons_sensitive (druid, TRUE, TRUE, TRUE, FALSE);
   else
     gnome_druid_set_buttons_sensitive (druid, TRUE, FALSE, TRUE, FALSE);
 }
 
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Checks if the "Next" button of the "Callto URL"
+ *                 druid page can be sensitive or not. It will if the email
+ *                 field is ok, or if registering is disabled.
+ * PRE          :  The druid window.
+ */
+static void 
+gm_druid_check_callto (GmDruidWindow *dw)
+{
+  GnomeDruid *druid = dw->druid;
+  PString mail;
+  BOOL correct = FALSE;
+
+  if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (dw->use_callto)))
+    correct = TRUE;
+  else {    
+    mail = PString (gtk_entry_get_text (GTK_ENTRY (dw->mail)));
+    if (!mail.IsEmpty () && mail.Find ("@") != P_MAX_INDEX)
+      correct = TRUE;
+  }
+   
+  if (correct)
+    gnome_druid_set_buttons_sensitive (druid, TRUE, TRUE, TRUE, FALSE);
+  else
+    gnome_druid_set_buttons_sensitive (druid, TRUE, FALSE, TRUE, FALSE);
+}
 
 /* DESCRIPTION  :  Called when the user changes an info in the Personal
  *                 Information page.
  * BEHAVIOR     :  Checks if the "Next" button of the "Personal Information"
- *                 druid page can be sensitive or not. It will if all fields
- *                 are ok, or if registering is disabled. (Calls the above
- *                 function).
+ *                 druid page can be sensitive or not. It will if the name
+ *                 field is ok.
  * PRE          :  /
  */
 static void
-gm_druid_changed_cb (GtkWidget *w, gpointer data)
+gm_druid_name_changed_cb (GtkWidget *w, gpointer data)
 {
   GmDruidWindow *dw = NULL;
 
   dw = (GmDruidWindow *)data;
 
-  gm_druid_check_personal_data (dw);
+  gm_druid_check_name (dw);
 }
 
+/* DESCRIPTION  :  Called when the user changes an info in the Callto URL page.
+ * BEHAVIOR     :  Checks if the "Next" button of the "Callto URL"
+ *                 druid page can be sensitive or not. It will if email field
+ *                 is ok, or if registering is disabled.
+ * PRE          :  /
+ */
+static void
+gm_druid_email_changed_cb (GtkWidget *w, gpointer data)
+{
+  GmDruidWindow *dw = NULL;
+
+  dw = (GmDruidWindow *)data;
+
+  gm_druid_check_callto (dw);
+}
 
 /* DESCRIPTION  :  Called when the user changes the registering toggle.
  * BEHAVIOR     :  Checks if the "Next" button of the "Personal Information"
@@ -473,7 +494,7 @@ gm_druid_ils_register_toggle_cb (GtkToggleButton *b, gpointer data)
 
   dw = (GmDruidWindow *)data;
 
-  gm_druid_check_personal_data (dw);
+  gm_druid_check_callto (dw);
 }
 
 
@@ -575,7 +596,8 @@ gm_druid_prepare_welcome_page_cb (GnomeDruidPage *page,
 
 static void
 gm_druid_prepare_personal_data_page_cb (GnomeDruidPage *page,
-					GnomeDruid *druid, gpointer data)
+					GnomeDruid *druid, 
+					gpointer data)
 {
   GmWindow *gw = NULL;
   GmDruidWindow *dw = NULL;
@@ -635,7 +657,7 @@ gm_druid_prepare_personal_data_page_cb (GnomeDruidPage *page,
   
   GTK_TOGGLE_BUTTON (dw->use_callto)->active = !ils_register;
   
-  gm_druid_check_personal_data (dw);
+  gm_druid_check_name (dw);
   
   g_free (video_manager);
   g_free (audio_manager);    
@@ -653,7 +675,7 @@ gm_druid_prepare_callto_page_cb (GnomeDruidPage *page, GnomeDruid *druid,
 
   dw = (GmDruidWindow *)data;
 
-  gm_druid_check_personal_data (dw);
+  gm_druid_check_callto (dw);
 }
 
 static void
@@ -918,7 +940,7 @@ gm_druid_init_personal_data_page (GmDruidWindow *dw, int p, int t)
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, TRUE, 0);
 
   g_signal_connect (G_OBJECT (dw->name), "changed",
-		    G_CALLBACK (gm_druid_changed_cb), dw);
+		    G_CALLBACK (gm_druid_name_changed_cb), dw);
 
   g_signal_connect_after (G_OBJECT (page), "prepare",
 			  G_CALLBACK (gm_druid_prepare_personal_data_page_cb), 
@@ -984,7 +1006,7 @@ gm_druid_init_callto_page (GmDruidWindow *dw, int p, int t)
   gtk_box_pack_start (GTK_BOX (vbox), align, TRUE, TRUE, 0);
 
   g_signal_connect (G_OBJECT (dw->mail), "changed",
-		    G_CALLBACK (gm_druid_changed_cb), dw);
+		    G_CALLBACK (gm_druid_email_changed_cb), dw);
 
   g_signal_connect (G_OBJECT (dw->use_callto), "toggled",
 		    G_CALLBACK (gm_druid_ils_register_toggle_cb), dw);
