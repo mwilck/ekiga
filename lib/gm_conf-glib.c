@@ -41,21 +41,48 @@
 
 #define SYSTEM_CONF SYSCONFDIR "/gnomemeeting/gnomemeeting.schemas"
 
+/* the following implementation of the gnomemeeting configuration system is
+ * based on glib, to be more portable, and is hoped to make a port to unsane
+ * systems easier.
+ *
+ * It features a simple xml-parser, to be able to load the gconf schema as
+ * default configuration.
+ *
+ * It is organised in several layers, to be easier to study&improve:
+ * - functions to manipulate individual entries;
+ * - functions to manipulate the configuration database;
+ * - functions to manipulate notifiers (set them, fire them, propagate them,
+ * destroy them, ...);
+ * - the implementation of gm_conf.h's api.
+ */
+
 
 /* the data types used in this file */
 
+/* this is the main structure, in which all known entries are stored
+ * we just store them as a list, with a boolean to know if we should trigger
+ * the notifiers or not
+ */
 typedef struct _DataBase
 {
   gboolean is_watched;
   GData *entries;
 } DataBase;
 
+/* for that implementation, a notifier is the function to call, together with
+ * the associated user data
+ */
 typedef struct _Notifier
 {
   GmConfNotifier func;
   gpointer data;  
 } Notifier;
 
+/* that implementation uses the GM_CONF_OTHER type of entry (the one that is
+ * free to use for the specific implementation) to store "redirections", which
+ * is the scheme that is used to make notifications propagate to parents in the
+ * namespace 
+ */
 struct _GmConfEntry
 {
   gchar *key;
@@ -71,7 +98,19 @@ struct _GmConfEntry
   GSList *notifiers;
 };
 
-/* those last data types are just for the loading of the gconf schema */
+/* those last data types are just for the loading of the gconf schema:
+ * it uses the simple xml parsing code in glib to extract the needed
+ * informations, and store it in the more crude way used here ; that has the
+ * nice advantage that updating the gconf schema is enough to update the
+ * no-gnome configuration system too!
+ */
+/* as the name says, those are the states of the parser ; let me just say:
+ * 1) generally, the parser is in state KEY/TYPE/VALUE when it is expecting
+ * a key/type/value ;
+ * 2) the START state doesn't bear its name well: it is in fact used as the
+ * base state of the parser, ie the one it is in at startup and when it's not
+ * waiting for something.
+ */
 typedef enum {
   START,
   KEY,
@@ -86,7 +125,9 @@ typedef struct _SchParser
   GmConfEntry *entry;
 } SchParser;
 
-/* data manipulation functions */
+/* the following functions are used to make data manipulation easier
+ * (and also give more readable code)
+ */
 static GSList *string_list_deep_copy (const GSList *);
 static void string_list_deep_destroy (GSList *);
 
