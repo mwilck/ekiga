@@ -817,11 +817,11 @@ static void init_pref_interface (GtkWidget *notebook,
 
   
   /* In this frame we put a vbox*/
-  frame = gtk_frame_new (_("GnomeMeeting Preferences"));
+  frame = gtk_frame_new (_("GnomeMeeting GUI"));
   gtk_box_pack_start (GTK_BOX (vbox), frame, 
 		      FALSE, FALSE, 0);
 
-  table = gtk_table_new (2, 2, TRUE);
+  table = gtk_table_new (3, 2, TRUE);
   gtk_container_add (GTK_CONTAINER (frame), table);
   gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
   
@@ -883,6 +883,20 @@ static void init_pref_interface (GtkWidget *notebook,
 			_("If enabled, the quick access bar is displayed"), 
 			NULL);
 
+  /* Show / hide the docklet */
+  pw->show_docklet = 
+    gtk_check_button_new_with_label (_("Show Docklet"));
+  gtk_table_attach (GTK_TABLE (table), pw->show_docklet, 0, 1, 2, 3,
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);	
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->show_docklet), 
+				opts->show_docklet);
+
+  tip = gtk_tooltips_new ();
+  gtk_tooltips_set_tip (tip, pw->show_statusbar,
+			_("If enabled, there is support for a docklet in the Gnome or KDE panel"), 
+			NULL);
 
   /* Behavior */
   frame = gtk_frame_new (_("Behavior"));

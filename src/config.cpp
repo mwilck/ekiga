@@ -60,6 +60,8 @@ void store_config (options *opts)
 			opts->show_statusbar);
   gnome_config_set_int ("GeneralSettings/show_quickbar", 
 			opts->show_quickbar);
+ gnome_config_set_int ("GeneralSettings/show_docklet", 
+			opts->show_docklet);
   gnome_config_set_int ("GeneralSettings/incoming_call_sound", 
 			opts->incoming_call_sound);
   gnome_config_set_int ("GeneralSettings/dnd", opts->dnd);
@@ -147,6 +149,7 @@ void read_config (options *opts)
   opts->vb = gnome_config_get_int ("VideoSettings/vb");
 
   opts->show_splash = gnome_config_get_int ("GeneralSettings/show_splash");
+  opts->show_docklet = gnome_config_get_int ("GeneralSettings/show_docklet");
   opts->show_notebook = gnome_config_get_int ("GeneralSettings/show_notebook");
   opts->show_statusbar = gnome_config_get_int ("GeneralSettings/show_statusbar");
   opts->show_quickbar = gnome_config_get_int ("GeneralSettings/show_quickbar");
@@ -399,6 +402,8 @@ options * read_config_from_struct (GM_pref_window_widgets *pw)
     (GTK_TOGGLE_BUTTON (pw->show_statusbar));
   opts->show_quickbar = gtk_toggle_button_get_active 
     (GTK_TOGGLE_BUTTON (pw->show_quickbar));
+  opts->show_docklet = gtk_toggle_button_get_active 
+    (GTK_TOGGLE_BUTTON (pw->show_docklet));
   opts->incoming_call_sound = gtk_toggle_button_get_active 
     (GTK_TOGGLE_BUTTON (pw->incoming_call_sound));
 
@@ -564,6 +569,7 @@ void init_config (void)
   gnome_config_set_int ("GeneralSettings/show_notebook", 1);
   gnome_config_set_int ("GeneralSettings/show_statusbar", 1);
   gnome_config_set_int ("GeneralSettings/show_quickbar", 1);
+  gnome_config_set_int ("GeneralSettings/show_docklet", 0);
   gnome_config_set_int ("GeneralSettings/incoming_call_sound", 1);
   gnome_config_set_int ("GeneralSettings/enable_auto_answer", 0);
   gnome_config_set_int ("GeneralSettings/dnd", 0);

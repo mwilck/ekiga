@@ -91,6 +91,7 @@ struct _options
   int video_channel; 
   int video_bandwidth;
   int vb;
+  int show_docklet;
 };
 
 
@@ -271,6 +272,7 @@ struct _GM_pref_window_widgets
   // The video channel to use
   GtkAdjustment *video_channel_spin_adj;
 
+  GtkWidget *show_docklet;
   /* Miscellaneous */
   // contains the row selected by the user
   int row_avail;
