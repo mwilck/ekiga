@@ -90,7 +90,6 @@ GnomeMeeting::~GnomeMeeting()
 {
   PWaitAndSignal m(var_mutex);
 
-  RemoveVideoGrabber (true);
   delete (endpoint);
 }
 

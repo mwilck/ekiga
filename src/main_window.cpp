@@ -1936,6 +1936,7 @@ int main (int argc, char ** argv, char ** envp)
 
   /* Not the right place for this but it is a hack for openh323 */
   MyApp->Endpoint ()->ClearAllCalls (H323Connection::EndedByLocalUser, true);
+  MyApp->RemoveVideoGrabber (true);
   gnomemeeting_ldap_window_destroy_notebook_pages ();
   gtk_widget_destroy (gw->ldap_window);
   gtk_widget_destroy (gw->pref_window);
