@@ -940,13 +940,15 @@ video_device_setting_changed_nt (GConfClient *client,
 
     ep->AddAllCapabilities ();
     
-    if (ep && ep->GetCallingState () == 0
-	&& gconf_get_bool (DEVICES_KEY "video_preview")) {
+    if (ep && ep->GetCallingState () == 0) {
+      
+      if (gconf_get_bool (DEVICES_KEY "video_preview")) {
     
-      ep->RemoveVideoGrabber ();
-      ep->CreateVideoGrabber ();
+	ep->RemoveVideoGrabber ();
+	ep->CreateVideoGrabber ();
+      }
     }
-    else {
+    else if (ep->GetCallingState () == 2) {
 
       gdk_threads_enter ();
       if (gconf_get_int (DEVICES_KEY "video_size") == 0)
