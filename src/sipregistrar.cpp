@@ -133,7 +133,7 @@ void GMSIPRegistrar::Main ()
   
   if (registering_method == 0) {
     
-    sipEP->Unregister (FALSE);
+    sipEP->Unregister ();
   }
   /* Check if we have all the needed information, if so we register */
   else if (registering_method == 1) {
