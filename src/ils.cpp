@@ -748,7 +748,11 @@ void GMILSClient::ils_browse ()
 	c=(v-a*16777216-b*65536);
 	g_free (value);
 
-	datas [7] = g_strdup_printf ("%s %d.%d.%d", datas [7], a, b, c); 
+	if (datas [7] != NULL)
+	  datas [7] = g_strdup_printf ("%s %d.%d.%d", datas [7], a, b, c); 
+	else
+	  datas [7] = g_strdup_printf ("%d.%d.%d", a, b, c); 
+
 	ldap_value_free (ldap_get_values (ldap_connection, e, "ilsa26279966"));
       }
 
