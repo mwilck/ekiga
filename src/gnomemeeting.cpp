@@ -113,6 +113,11 @@ GnomeMeeting::GnomeMeeting ()
   chw = new GmCallsHistoryWindow ();
   rtp = new GmRtpData ();
 
+  memset ((void *) rtp, 0, sizeof (struct _GmRtpData));
+  gw->progress_timeout = 0;
+  gw->ldap_window = gw->pref_window = gw->calls_history_window =
+    gw->druid_window = gw->splash_win = gw->incoming_call_popup = NULL;
+							     
   call_number = 0;
 
   MyApp = (this);
