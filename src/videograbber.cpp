@@ -39,6 +39,8 @@
 #include "dialog.h"
 #include "misc.h"
 #include "menu.h"
+#include "vfakeio.h"
+
 
 #include <sys/time.h>
 #include <gconf/gconf-client.h>
@@ -436,6 +438,7 @@ void GMVideoGrabber::SetChannel (int cnum)
 void GMVideoGrabber::VGOpen (void)
 {
   gchar *msg = NULL;
+  gchar *video_image = NULL;
   int error_code = -1;  // No error
   int opened;
 
@@ -472,21 +475,29 @@ void GMVideoGrabber::VGOpen (void)
     
     grabber->SetPreferredColourFormat (color_format);
 
-    if (!grabber->Open (video_device, FALSE))
-      error_code = 0;
-    else
-      if (!grabber->SetVideoChannelFormat (video_channel, video_format))
-	error_code = 2;
-    else
-      if (!grabber->SetColourFormatConverter ("YUV420P"))
-	error_code = 3;
-    else
-      if (!grabber->SetFrameRate (tr_fps))
-	error_code = 4;
-    else
-      if (!grabber->SetFrameSizeConverter (height, width, FALSE))
-	error_code = 5;
-    
+    /* no error if Picture is choosen as video device */
+    if (!strcmp (video_device, _("Picture")))
+      error_code = -2;
+
+    if (error_code != -2) {
+
+      if (!grabber->Open (video_device, FALSE))
+	error_code = 0;
+      else
+	if (!grabber->SetVideoChannelFormat (video_channel, video_format))
+          error_code = 2;
+      else
+	if (!grabber->SetColourFormatConverter ("YUV420P"))
+	  error_code = 3;
+      else
+	if (!grabber->SetFrameRate (tr_fps))
+	  error_code = 4;
+      else
+	if (!grabber->SetFrameSizeConverter (height, width, FALSE))
+	   error_code = 5;
+    }
+
+
     /* If no error */
     if (error_code == -1) {
 
@@ -501,52 +512,64 @@ void GMVideoGrabber::VGOpen (void)
     }
     else {
     
-      gnomemeeting_threads_enter ();
-      msg = g_strdup_printf 
-	(_("Error while opening video device %s, channel %d.\nA test image will be transmitted."), video_device, video_channel);
-      gnomemeeting_statusbar_flash (gm, _("Can't open the Video Device"));
+      /* If we want to open the fake device for a real error, and not because
+	 the user chose the Picture device */
 
-      switch (error_code)	{
+      if (error_code != -2) {
+
+	gnomemeeting_threads_enter ();
+	msg = g_strdup_printf 
+	  (_("Error while opening video device %s, channel %d.\nThe chosen Video Image will be transmitted during calls."), video_device, video_channel);
+	gnomemeeting_statusbar_flash (gm, _("Can't open the Video Device"));
 	
-      case 0:
-	msg = g_strconcat (msg, "\n", _("Error while opening the device."), 
-			   NULL);
-	break;
-      
-      case 1:
-	msg = g_strconcat (msg, "\n", _("Your video driver doesn't support the requested video format."), NULL);
-	break;
+	switch (error_code)	{
+	  
+	case 0:
+	  msg = g_strconcat (msg, "\n", _("Error while opening the device."), 
+			     NULL);
+	  break;
+	  
+	case 1:
+	  msg = g_strconcat (msg, "\n", _("Your video driver doesn't support the requested video format."), NULL);
+	  break;
 
-      case 2:
-	msg = g_strconcat (msg, "\n", _("Could not open the chosen channel with the chosen video format."), NULL);
-	break;
+	case 2:
+	  msg = g_strconcat (msg, "\n", _("Could not open the chosen channel with the chosen video format."), NULL);
+	  break;
       
-      case 3:
-	msg = g_strconcat (msg, "\n", g_strdup_printf(_("Your driver doesn't support the %s format.\n Please check your kernel driver documentation in order to determine which Palette is supported. Set it as GnomeMeeting default with:\n gconftool --set \"/apps/gnomemeeting/devices/color_format\" YOURPALETTE --type string"), color_format), NULL);
-	break;
+	case 3:
+	  msg = g_strconcat (msg, "\n", g_strdup_printf(_("Your driver doesn't support the %s format.\n Please check your kernel driver documentation in order to determine which Palette is supported. Set it as GnomeMeeting default with:\n gconftool --set \"/apps/gnomemeeting/devices/color_format\" YOURPALETTE --type string"), color_format), NULL);
+	  break;
       
-      case 4:
-	msg = g_strconcat (msg, "\n", _("Error with the frame rate."), NULL);
-	break;
+	case 4:
+	  msg = g_strconcat (msg, "\n", _("Error with the frame rate."), NULL);
+	  break;
 
-      case 5:
-	msg = g_strconcat (msg, "\n", _("Error with the frame size."), NULL);
-	break;
+	case 5:
+	  msg = g_strconcat (msg, "\n", _("Error with the frame size."), NULL);
+	  break;
+	}
+
+	gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (gm), gw->preview_button, msg);
+	g_free (msg);
+
+	gnomemeeting_threads_leave ();
       }
 
-      gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (gm), gw->preview_button, msg);
-      g_free (msg);
-      gnomemeeting_threads_leave ();
-
-      /* delete the failed grabber and open the fake grabber */
+      /* delete the failed grabber and open the fake grabber, either
+       because there was an error, either because the user chose to do so */
       delete grabber;
       
-      grabber = new PFakeVideoInputDevice();
+      video_image = gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/video_image", NULL);
+
+      grabber = new GMH323FakeVideoInputDevice (video_image);
       grabber->SetColourFormatConverter ("YUV420P");
       grabber->SetVideoFormat (PVideoDevice::PAL);
       grabber->SetChannel (1);    
-      grabber->SetFrameRate (30);
-      grabber->SetFrameSize (height, width);
+      grabber->SetFrameRate (1);
+      grabber->SetFrameSize (176, 144);
+
+      g_free (video_image);
     }
 
     grabber->Start ();

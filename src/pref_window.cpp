@@ -201,6 +201,9 @@ static void refresh_devices (GtkWidget *widget, gpointer data)
     g_free (string);
     cpt++;
   }
+  item = gtk_menu_item_new_with_label (_("Picture"));
+  gtk_widget_show (item);
+  gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
 
   if (index == P_MAX_INDEX)
     index = 0;
@@ -1511,18 +1514,18 @@ static void gnomemeeting_init_pref_window_video_devices (GtkWidget *notebook)
 
 
   /* The video devices related options */
-  table = gnomemeeting_pref_window_add_table (vbox, _("Video Devices"), 5, 2);
+  table = gnomemeeting_pref_window_add_table (vbox, _("Video Devices"), 6, 2);
 
   /* The video device */
   gconf_string =  gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/video_recorder", NULL);
 
-  i = gw->video_devices.GetSize () - 1;
+  i = gw->video_devices.GetSize ();
   if (i >= 20) i = 19;
 
   for (int j = i ; j >= 0; j--) 
     video_devices_list [j] = 
       g_strdup (gw->video_devices [j]);
-  
+  video_devices_list [i] = g_strdup (_("Picture"));
   video_devices_list [i+1] = NULL;
 
   pw->video_device = 
@@ -1546,8 +1549,13 @@ static void gnomemeeting_init_pref_window_video_devices (GtkWidget *notebook)
   pw->opt2 =
     gnomemeeting_pref_window_add_int_option_menu (table, _("Video Format:"), video_format, "/apps/gnomemeeting/devices/video_format", _("Here you can choose the transmitted video format."), 4);
 
+
+  pw->video_image =
+    gnomemeeting_pref_window_add_entry (table, _("Video Image:"), "/apps/gnomemeeting/devices/video_image", _("The image to transmit if the Picture device is selected as video device or if the opening of the device fails (none specified = default GnomeMeeting logo)."), 5);
+
+
   pw->video_preview =
-    gnomemeeting_pref_window_add_toggle (table, _("Video Preview"), "/apps/gnomemeeting/devices/video_preview", _("If enabled, the video preview mode will be set activated and you will be able to see yourself without being in a call."), 5, 0);
+    gnomemeeting_pref_window_add_toggle (table, _("Video Preview"), "/apps/gnomemeeting/devices/video_preview", _("If enabled, the video preview mode will be set activated and you will be able to see yourself without being in a call."), 6, 0);
 
   /* That button will refresh the devices list */
   button = gtk_button_new_from_stock (GTK_STOCK_REFRESH);

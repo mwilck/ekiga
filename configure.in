@@ -1,4 +1,4 @@
-AC_INIT(GnomeMeeting, 0.93.0, http://bugzilla.gnome.org/enter_bug.cgi?product=gnomemeeting)
+AC_INIT(GnomeMeeting, 0.94.0, http://bugzilla.gnome.org/enter_bug.cgi?product=gnomemeeting)
 AC_PREREQ(2.50)
 AC_CONFIG_SRCDIR(src/gnomemeeting.cpp)
 AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
@@ -22,7 +22,7 @@ dnl   Versioning
 dnl #############################################################################
 
 MAJOR_VERSION=0
-MINOR_VERSION=93
+MINOR_VERSION=94
 BUILD_TYPE=ReleaseCode
 BUILD_NUMBER=0
 
@@ -35,7 +35,7 @@ AC_DEFINE_UNQUOTED(BUILD_NUMBER, $BUILD_NUMBER)
 dnl #############################################################################
 dnl   This is to check correct gconf installation
 dnl #############################################################################
-SCHEMA_AGE=3
+SCHEMA_AGE=4
 dnl increment this number if you add anything to the schema file
 AC_SUBST(SCHEMA_AGE)
 
@@ -117,7 +117,7 @@ if test "x${with_ptlib_includes}" != "xno"; then
 	AC_MSG_RESULT()
 	
 	CPPFLAGS="$CPPFLAGS -I${with_ptlib_includes}/unix -I${with_ptlib_includes}"
-	AC_CHECK_HEADER(pstring.h, [ ptlib_includes="yes" ])
+	AC_CHECK_HEADER(pstring.h, [ ptlib_includes="yes" ],,-)
 	CPPFLAGS="$CPPFLAGS_save"
 	
 	if test "x${ptlib_includes}" != "xno" -a "x${ptlib_includes}" != "x"; then
@@ -161,7 +161,7 @@ if test "x${with_openh_includes}" != "xno" -a "x${have_ptlib_includes}" != "xno"
 	AC_MSG_RESULT()
 	
 	CPPFLAGS="$CPPFLAGS -I$PTLIB_CFLAGS -I${with_openh_includes}"
-	AC_CHECK_HEADER(h225.h, [ openh323_includes="yes" ])
+	AC_CHECK_HEADER(h225.h, [ openh323_includes="yes" ],,-)
 	CPPFLAGS="$CPPFLAGS_save"
 	
 	if test "x${openh323_includes}" != "xno" -a "x${openh323_includes}" != "x"; then

@@ -61,7 +61,9 @@ gnomemeeting_SOURCES =		\
 	druid.cpp		\
 	druid.h			\
 	urlhandler.cpp		\
-	urlhandler.h		
+	urlhandler.h		\
+	vfakeio.cpp		\
+	vfakeio.h
 
 
 gnomemeeting_LDADD = \

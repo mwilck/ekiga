@@ -166,6 +166,7 @@ struct _GmPrefWindow
   GtkWidget *audio_recorder_mixer;
   GtkWidget *video_device; 
   GtkWidget *video_channel;
+  GtkWidget *video_image;
   GtkWidget *lid_device;
   GtkWidget *lid_aec;
   GtkWidget *lid_country;

@@ -1,3 +1,33 @@
+2002-07-30  Damien Sandras  <dsandras@seconix.com>
+
+	Coding again, yes!
+	* configure.in: Changed things to speed up checks with GCC 3.1. 
+	Incremented version number and SCHEMA_AGE.
+
+	* gnomemeeting.schemas.in.in: Added video_image gconf key to add
+	the possibility to transmit a given picture (or the logo) to the remote
+	if the opening of the video device fails or if the user chooses 
+	Picture as video device.
+
+	* src/vfakeio.cpp: Added this file with its header. This adds a new
+	videograbber that adds the possibility to transmit a given picture 
+	(or the logo) to the remote if the opening of the video device fails 
+	or if the user chooses Picture as video device.
+
+	* src/Makefile.am: Added vfakeio.*.
+	
+	* src/common.h: Added an entry for the Video Image.
+	
+	* src/config.cpp: Added video_image gconf key to add
+	the possibility to transmit a given picture (or the logo) to the remote
+	if the opening of the video device fails or if the user chooses 
+	Picture as video device.
+	
+	* src/pref_window.cpp: Added an entry for the Video Image, and an 
+	option for the Picture video menu.
+
+	* src/videograbber.cpp: Added support for the "Picture" grabber.
+
 2002-07-24  Miguel Rodríguez Pérez  <miguel@det.uvigo.es>
 
 	* gnomemeeting.desktop.in: Improve the comment and add a generic
