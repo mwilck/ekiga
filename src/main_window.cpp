@@ -587,28 +587,48 @@ gnomemeeting_init (GmWindow *gw,
     exit (1);
   }
 
-    /* Some little gconf stuff */  
-    client = gconf_client_get_default ();
-    gconf_client_add_dir (client, "/apps/gnomemeeting",
-                          GCONF_CLIENT_PRELOAD_RECURSIVE, 0);
-    int gconf_test = -1;
 
-    gconf_test = gconf_client_get_int (client, GENERAL_KEY "gconf_test_age", 
-				       NULL);
+  /* Some little gconf stuff */  
+  client = gconf_client_get_default ();
+  gconf_client_add_dir (client, "/apps/gnomemeeting",
+			GCONF_CLIENT_PRELOAD_RECURSIVE, 0);
+  int gconf_test = -1;
+  
+  gconf_test = gconf_client_get_int (client, GENERAL_KEY "gconf_test_age", 
+				     NULL);
+  
+  if (gconf_test != SCHEMA_AGE)  {
 
-    if (gconf_test != SCHEMA_AGE) 
-    {
-        int reply = 0;
+    gnomemeeting_error_dialog (GTK_WINDOW (gm), _("GnomeMeeting got %d for the GConf key \"/apps/gnomemeeting/gconf_test_age\", but %d was expected.\n\nThat key represents the revision GnomeMeeting default settings. If it is not correct, it means that your GConf schemas have not been correctly installed or the that permissions are not correct.\n\nPlease check the FAQ (http://www.gnomemeeting.org/faq.php), the throubleshoot section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org).\n\nUsing 'gnomemeeting-config-tool' could help you fix these problem."), gconf_test, SCHEMA_AGE);
 
-        gnomemeeting_error_dialog (GTK_WINDOW (gm), _("GnomeMeeting got %d for the GConf key \"/apps/gnomemeeting/gconf_test_age\", but %d was expected.\n\nThat key represents the revision GnomeMeeting default settings. If it is not correct, it means that your GConf schemas have not been correctly installed or the that permissions are not correct.\n\nPlease check the FAQ (http://www.gnomemeeting.org/faq.php), the throubleshoot section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org).\n\nUsing 'gnomemeeting-config-tool' could help you fix these problem."), gconf_test, SCHEMA_AGE);
+    delete (gw);
+    delete (lw);
+    delete (pw);
+    delete (rtp);
+    delete (chat);
+    exit (-1);
+  }
 
-        delete (gw);
-        delete (lw);
-        delete (pw);
-        delete (rtp);
-        delete (chat);
-        exit (-1);
-    }
+  
+  /* Install the URL Handler */
+  gchar *gconf_url = 
+    gconf_client_get_string (client, 
+			     "/desktop/gnome/url-handlers/callto/command", 0);
+					       
+  if (gconf_url == NULL) {
+    
+    gconf_client_set_string (client,
+			     "/desktop/gnome/url-handlers/callto/command", 
+			     "gnomemeeting -c \"%s\"", NULL);
+    gconf_client_set_bool (client,
+			   "/desktop/gnome/url-handlers/callto/need-terminal", 
+			   false, NULL);
+    gconf_client_set_bool (client,
+			   "/desktop/gnome/url-handlers/callto/enabled", 
+			   true, NULL);
+
+    gnomemeeting_warning_dialog (GTK_WINDOW (gm), _("GnomeMeeting just installed an URL handler for callto:// URLs. callto URLs are an easy way to call people on the internet using GnomeMeeting. They are now available to all Gnome programs able to cope with URLs. You can for example create an URL launcher on the Gnome panel of the form \"callto://ils.seconix.com/me@foo.com\" to call the person registered on the ILS server ils.seconix.com with the me@foo.com e-mail address."));
+  }
 
 
   /* We store all the pointers to the structure as data of gm */

@@ -188,10 +188,12 @@ GMH323EndPoint::~GMH323EndPoint ()
      threads here, but in the Cleaner thread that is
      called when the user chooses to quit... */
 
+#ifdef HAS_IXJ  
   if (lid) {
  
     lid->Close();
   }
+#endif
 }
 
 
@@ -1005,11 +1007,13 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
      only if no aa or dnd */
   if ((!aa) && (!dnd)) {
 
+#ifdef HAS_IXJ
     /* If we have a LID, make it ring */
     if ((lid != NULL) && (lid->IsOpen())) {
       
       lid->RingLine (OpalIxJDevice::POTSLine, 0x33);
     }
+#endif
 
 
     /* The timers */
@@ -1158,10 +1162,12 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   sound_timeout = 0;
 
 
+#ifdef HAS_IXJ
   /* If we have a LID, make sure it is no longer ringing */
   if ((lid != NULL) && (lid->IsOpen())) {
     lid->RingLine (OpalIxJDevice::POTSLine, 0);
   }
+#endif
 
 
   gnomemeeting_docklet_set_content (gw->docklet, 0);
@@ -1587,24 +1593,18 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 }
 
 
+#ifdef HAS_IXJ
 PThread *GMH323EndPoint::GetLidThread (void)
 {
-#ifdef HAS_IXJ
   return lid_thread;
-#else
-  return NULL;
-#endif
 }
 
 
 OpalLineInterfaceDevice *GMH323EndPoint::GetLidDevice ()
 {
-#ifdef HAS_IXJ
   return lid;
-#else
-  return NULL;
-#endif
 }
+#endif
 
 
 #ifdef HAS_IXJ

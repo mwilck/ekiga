@@ -1237,8 +1237,28 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook)
   pw->dnd = gnomemeeting_pref_window_add_toggle (table, _("Do Not Disturb"), "/apps/gnomemeeting/general/do_not_disturb", _("If enabled, incoming calls will be automatically refused."), 0, 0);
                                                                                
   pw->incoming_call_popup = gnomemeeting_pref_window_add_toggle (table, _("Popup window"), "/apps/gnomemeeting/view/show_popup", _("If enabled, a popup will be displayed when receiving an incoming call"), 2, 0);
-                                                                                
+
+
+#ifdef HAS_SDL
+  /* Packing widget */                                                         
+  table = gnomemeeting_pref_window_add_table (vbox, _("Fullscreen"), 2, 1);   
                                                                                
+                                                                               
+  /* The toggles */
+  pw->fullscreen_width =
+    gnomemeeting_pref_window_add_spin (table, _("Fullscreen Width:"),       
+				       "/apps/gnomemeeting/general/fullscreen_width",
+				       _("The image width for fullscreeen."),
+				       0.0, 640.0, 10.0, 0);
+
+  pw->fullscreen_height =
+    gnomemeeting_pref_window_add_spin (table, _("Fullscreen Height:"),       
+				       "/apps/gnomemeeting/general/fullscreen_height",
+				       _("The image height for fullscreeen."),
+				       0.0, 480.0, 10.0, 1);
+#endif
+
+
   /* Packing widget */                                                         
   table = gnomemeeting_pref_window_add_table (vbox, _("Sound"),                
                                               1, 1);                           
@@ -1539,7 +1559,6 @@ static void gnomemeeting_init_pref_window_video_devices (GtkWidget *notebook)
 
   pw->video_preview =
     gnomemeeting_pref_window_add_toggle (table, _("Video Preview"), "/apps/gnomemeeting/devices/video_preview", _("If enabled, the video preview mode will be set activated and you will be able to see yourself without being in a call."), 5, 0);
-
 
   /* That button will refresh the devices list */
   button = gtk_button_new_from_stock (GTK_STOCK_REFRESH);

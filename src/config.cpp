@@ -92,10 +92,13 @@ static void silence_detection_changed_nt (GConfClient *, guint,
 					  GConfEntry *, gpointer);
 static void network_settings_changed_nt (GConfClient *, guint, 
 					 GConfEntry *, gpointer);
+#ifdef HAS_IXJ
+static void lid_device_changed_nt (GConfClient *, guint, GConfEntry *, 
+				   gpointer);
 static void lid_aec_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
 static void lid_country_changed_nt (GConfClient *, guint, GConfEntry *, 
 				    gpointer);
-
+#endif
 
 
 /* 
@@ -757,6 +760,7 @@ static void audio_device_changed_nt (GConfClient *client, guint cid,
 }
 
 
+#ifdef HAS_IXJ
 /* DESCRIPTION  :  This notifier is called when the gconf database data
  *                 associated with the lid device changes.
  * BEHAVIOR     :  It updates the endpoint and displays
@@ -787,6 +791,7 @@ static void lid_device_changed_nt (GConfClient *client, guint cid,
     gdk_threads_leave ();
   }
 }
+#endif
 
 
 /* DESCRIPTION  :  This callback is called when the video device changes in
@@ -1086,6 +1091,7 @@ static void network_settings_changed_nt (GConfClient *client, guint,
 }
 
 
+#ifdef HAS_IXJ
 /* DESCRIPTION    : This is called when any setting related to the 
  *                  lid AEC changes.
  * BEHAVIOR       : Updates it.
@@ -1144,6 +1150,7 @@ lid_country_changed_nt (GConfClient *client, guint, GConfEntry *entry,
       lid->SetCountryCodeName (gconf_value_get_string (entry->value));
   }
 }
+#endif
 
 
 /* The functions  */
@@ -1216,6 +1223,11 @@ void gnomemeeting_init_gconf (GConfClient *client)
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/do_not_disturb", toggle_changed_nt, pw->dnd, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/do_not_disturb", menu_toggle_changed_nt, call_menu [3].widget, 0, 0);
+
+#ifdef HAS_SDL
+  gconf_client_notify_add (client, "/apps/gnomemeeting/general/fullscreen_width", adjustment_changed_nt, pw->fullscreen_width, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/general/fullscreen_height", adjustment_changed_nt, pw->fullscreen_height, 0, 0);
+#endif
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/incoming_call_sound", toggle_changed_nt, pw->incoming_call_sound, 0, 0);
 
@@ -1297,6 +1309,7 @@ void gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_recorder_mixer", entry_changed_nt, pw->audio_recorder_mixer, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_recorder_mixer", audio_mixer_changed_nt, pw->audio_recorder_mixer, 0, 0);
 
+#ifdef HAS_IXJ
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/lid_country", entry_changed_nt, pw->lid_country, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/lid_country", lid_country_changed_nt, pw->lid_country, 0, 0);
 
@@ -1306,6 +1319,7 @@ void gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/lid", toggle_changed_nt, pw->lid, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/lid", lid_device_changed_nt, pw->lid_country, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/lid", applicability_check_nt, pw->lid_country, 0, 0);
+#endif
 
 
   /* gnomemeeting_pref_window_audio_codecs */

@@ -73,6 +73,7 @@ void row_activated (GtkTreeView *tree_view, GtkTreePath *path,
   GtkListStore *xdap_users_list = NULL;
   GtkTreeSelection *selection = NULL;
   GtkWidget *page = NULL;
+  PString url;
 
   GtkTreeIter tree_iter;
 
@@ -102,8 +103,10 @@ void row_activated (GtkTreeView *tree_view, GtkTreePath *path,
      to the history, and call that user       */
   if (MyApp->Endpoint ()->GetCallingState () == 0) {
 
+    url = "callto://" + PString (text);
+
     /* this function will store a copy of text */
-    gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), text);
+    gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), url);
       
     connect_cb (NULL, NULL);
   }

@@ -180,9 +180,9 @@ dnl *********************************************************************
 CPPFLAGS_save="$CPPFLAGS"
 	
 CPPFLAGS="$CPPFLAGS -I /usr/include/linux -I /usr/include/sys -I /usr/local/include/sys"
-AC_CHECK_HEADER(telephony.h, have_ixj="true", have_ixj="false")
+AC_CHECK_HEADER(telephony.h, HAS_IXJ="enabled", HAS_IXJ="disabled")
 
-if test "$have_ixj" = "true"; then
+if test "x${HAS_IXJ}" == "xenabled"; then
 	H323_CFLAGS="$H323_CFLAGS -DHAS_IXJ"
 fi
 
@@ -199,6 +199,13 @@ AM_PATH_SDL($SDL_VERSION,
 	    AC_MSG_WARN([*** SDL version $SDL_VERSION not found!. Fullscreen mode will be disabled]))
 SDL_CFLAGS="$SDL_CFLAGS $SDL_HAS_SDL" 
 SDL_LDFLAGS="$LIBS $SDL_LIBS"
+
+if test "x${SDL_HAS_SDL}" == "x-DHAS_SDL" ; then
+	HAS_SDL="enabled"
+else  
+	HAS_SDL="disabled"
+fi
+
 
 dnl ***************************************
 dnl OpenSSL
@@ -358,6 +365,10 @@ echo " OpenH323 Libraries Directory is  :  $OPENH323_LIBS_DIR"
 echo "      PTLIB Include Directory is  :  $PTLIB_INCLUDE_DIR"
 echo "    PTLIB Libraries Directory is  :  $PTLIB_LIBS_DIR"
 echo "               LDAP Directory is  :  $LDAP_DIR"
+echo ""
+echo "                Quicknet support  :  $HAS_IXJ"
+echo "   SDL (with fullscreen) support  :  $HAS_SDL"
+echo ""
 echo "                         OS Type  :  $OSTYPE"
 echo "                    Machine Type  :  $MACHTYPE"
 echo ""

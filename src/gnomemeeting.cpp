@@ -126,8 +126,8 @@ GnomeMeeting::Connect()
 				gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry)));
     gnomemeeting_threads_leave ();
 
-    /* if we call somebody */
-    if (!call_address.IsEmpty () && !(strcmp (call_address, "callto://") == 0)) 
+    /* if we call somebody, and if the URL is not empty */
+    if ((!call_address.IsEmpty ()) && (call_address.ToLower () != "callto://"))
     {
       H323Connection *con = NULL;
       call_number++;

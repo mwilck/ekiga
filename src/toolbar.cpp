@@ -35,7 +35,6 @@
 #include "misc.h" 
 #include "stock-icons.h"
 #include "history-combo.h"
-#include "../pixmaps/quickcam.xpm"
 
 
 /* Declarations */
@@ -43,8 +42,13 @@
 extern GnomeMeeting *MyApp;
 extern GtkWidget *gm;
 
+
 static void url_combo_changed            (GtkEditable  *, gpointer);
+
+#ifdef HAS_IXJ
 static void speaker_phone_toggle_changed (GtkToggleButton *, gpointer);
+#endif
+
 static void connect_button_clicked       (GtkToggleButton *, gpointer);
 static void toolbar_toggle_changed       (GtkWidget *, gpointer);
 static void toolbar_button_changed       (GtkWidget *, gpointer);
@@ -64,9 +68,9 @@ static void url_combo_changed (GtkEditable  *e, gpointer data)
 }
 
 
+#ifdef HAS_IXJ
 static void speaker_phone_toggle_changed (GtkToggleButton *w, gpointer data)
 {
-#ifdef HAS_IXJ
   OpalLineInterfaceDevice *lid = NULL;
 
   lid = MyApp->Endpoint ()->GetLidDevice ();
@@ -91,8 +95,8 @@ static void speaker_phone_toggle_changed (GtkToggleButton *w, gpointer data)
       lid->StopTone (0);
     }
   }
-#endif
 }
+#endif
 
 
 /* DESCRIPTION  :  This callback is called when the user toggles the 
@@ -309,6 +313,7 @@ void gnomemeeting_init_toolbar ()
 			     gw->preview_button, NULL, NULL);
 
 
+#ifdef HAS_IXJ
   /* Quicknet LID button speakerphone */
   gw->speaker_phone_button = gtk_toggle_button_new ();
 
@@ -329,6 +334,7 @@ void gnomemeeting_init_toolbar ()
 
   gtk_toolbar_append_widget (GTK_TOOLBAR (left_toolbar), 
 			     gw->speaker_phone_button, NULL, NULL);
+#endif
 
 
   /* Audio Channel Button */
@@ -379,7 +385,11 @@ void gnomemeeting_init_toolbar ()
   gtk_widget_show (GTK_WIDGET (gw->combo));
   gtk_widget_show_all (GTK_WIDGET (gw->connect_button));
   gtk_widget_show_all (GTK_WIDGET (gw->preview_button));
+
+#ifdef HAS_IXJ
   gtk_widget_show_all (GTK_WIDGET (gw->speaker_phone_button));
+#endif
+
   gtk_widget_show_all (GTK_WIDGET (gw->audio_chan_button));
   gtk_widget_show_all (GTK_WIDGET (gw->video_chan_button));
 

@@ -1,3 +1,33 @@
+2002-07-02  Damien Sandras  <dsandras@seconix.com>
+
+	* src/common.h: Removed unused widgets, added 2 widgets for fullscreen.
+
+	* src/config.cpp: Added notifiers when the fullscreen width and height
+	are modified.
+
+	* src/endpoint.cpp: Added #ifdef's to permit to compile without 
+	Quicknet support.
+	
+	* src/endpoint.h: Added #ifdef's to permit to compile without Quicknet
+	support.
+	
+	* src/gdkvideoio.cpp: The fullscreen uses now the width and height for
+	the image that were specified in the prefs.
+
+	* src/gnomemeeting.cpp: Added check for "callto://" before calling.
+
+	* src/ldap_window.cpp: Added callto:// before the IP of the called 
+	person.
+
+	* src/main_window.cpp: Added URL handler testing. If not present,
+	an URL handler is setup for gnome_url_show.
+
+	* src/pref_window.cpp: Added #ifdef's to permit to compile without 
+	Quicknet support. Added fullscreen width and height to the options.
+
+	* src/toolbar.cpp: Added #ifdef's to permit to compile without Quicknet
+	support.
+
 2002-06-30  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* configure.in: Make SDL support optional at copile time. Anyway

@@ -125,6 +125,7 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
   GnomeUIInfo *video_view_menu_uiinfo = NULL;
   GtkRequisition size_request;
   PMutex both_mutex;
+  GConfClient *client = NULL;
 
   int unref = 1; /* unreference zoomed_pic */
 
@@ -147,6 +148,7 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
   static int fs_device = 0;
 #endif
 
+  client = gconf_client_get_default ();
 
   /* Take the mutexes before the redraw */
   redraw_mutex.Wait ();
@@ -320,12 +322,7 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
     /* Go fullscreen */
     if (has_to_switch_fs) {
       
-      if (frameWidth * gw->zoom < 640)
 	screen = SDL_SetVideoMode (640, 480, 0, 
-				   SDL_SWSURFACE | SDL_HWSURFACE | 
-				   SDL_ANYFORMAT);
-      else
-	screen = SDL_SetVideoMode (800, 600, 0, 
 				   SDL_SWSURFACE | SDL_HWSURFACE | 
 				   SDL_ANYFORMAT);
       
@@ -342,7 +339,19 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
     overlay->pixels [0] = base;
     overlay->pixels [1] = base + (frameWidth * frameHeight);
     overlay->pixels [2] = base + (frameWidth * frameHeight * 5/4);
-  
+
+    if (has_to_fs) {
+
+      zoomed_width = 
+	gconf_client_get_int (client, 
+			      "/apps/gnomemeeting/general/fullscreen_width", 
+			      NULL);
+      zoomed_height = 
+	gconf_client_get_int (client, 
+			      "/apps/gnomemeeting/general/fullscreen_height", 
+			      NULL);
+    }
+
     dest.x = (int) (screen->w - zoomed_width) / 2;
     dest.y = (int) (screen->h - zoomed_height) / 2;
     dest.w = zoomed_width;

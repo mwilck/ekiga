@@ -327,6 +327,7 @@ class GMH323EndPoint : public H323EndPoint
   PThread* GetILSClient ();
 
 
+#ifdef HAS_IXJ
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Return the current Lid Thread.
    * PRE          :  /
@@ -339,6 +340,7 @@ class GMH323EndPoint : public H323EndPoint
    * PRE          :  /
    */
   OpalLineInterfaceDevice *GetLidDevice ();
+#endif
 
 
  protected:

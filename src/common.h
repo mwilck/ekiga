@@ -132,19 +132,14 @@ struct _GmPrefWindow
   GtkWidget *video_preview;
   GtkWidget *incoming_call_sound;
   GtkWidget *opt1, *opt2;
-  GtkAdjustment *tr_vq_spin_adj;
   GtkWidget *tr_vq;
   GtkWidget *tr_ub;
   GtkWidget *bps_frame;
-  GtkAdjustment *tr_ub_spin_adj;
   GtkWidget *re_vq;
-  GtkAdjustment *re_vq_spin_adj;
-  GtkAdjustment *tr_fps_spin_adj;
   GtkWidget *tr_fps;
   GtkWidget *vid_tr;
   GtkWidget *sd;
   GtkWidget *jitter_buffer;
-  GtkAdjustment *video_bandwidth_spin_adj;
   GtkWidget *video_bandwidth;
   GtkWidget *vb;
   GtkWidget *fps;
@@ -155,7 +150,6 @@ struct _GmPrefWindow
   GtkWidget *comment;
   GtkWidget *ht;
   GtkWidget *fs;
-  GtkAdjustment *bps_spin_adj;
   GtkWidget *aa;
   GtkWidget *dnd;
   GtkListStore *codecs_list_store;
@@ -186,6 +180,8 @@ struct _GmPrefWindow
   GtkWidget *always_forward;
   GtkWidget *busy_forward;
   GtkWidget *no_answer_forward;
+  GtkWidget *fullscreen_width;
+  GtkWidget *fullscreen_height;
 };
 
 
