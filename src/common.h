@@ -99,6 +99,7 @@ struct _GmWindow
   GtkObject *adj_contrast;
   GtkWidget *docklet;
   GtkWidget *video_settings_frame;
+  GtkWidget *audio_settings_frame;
   GtkWidget *statusbar;
   GtkWidget *progressbar;
   GtkWidget *remote_name;
@@ -126,6 +127,8 @@ struct _GmWindow
   GtkWidget *incoming_call_popup;
   GtkWidget *stats_label;
   GtkWidget *stats_drawing_area;
+  GtkWidget *audio_test_button;
+  GtkWidget *video_test_button;
   GdkColor colors [6];
 
   int          progress_timeout;
@@ -156,7 +159,6 @@ struct _GmPrefWindow
   GtkWidget    *show_splash;
   GtkWidget    *start_hidden;
   GtkWidget    *incoming_call_popup;
-  GtkWidget    *video_preview;
   GtkWidget    *incoming_call_sound;
   GtkWidget    *opt1, *opt2;
   GtkWidget    *tr_vq;

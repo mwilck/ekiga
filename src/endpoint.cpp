@@ -1221,6 +1221,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 
   gnomemeeting_threads_enter ();
   gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
+  gtk_widget_set_sensitive (GTK_WIDGET (gw->video_test_button), FALSE);
   gnomemeeting_threads_leave ();
 
 
@@ -1604,6 +1605,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_chan_button), FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button), FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), TRUE);
+  gtk_widget_set_sensitive (GTK_WIDGET (gw->video_test_button), TRUE);
 
   GTK_TOGGLE_BUTTON (gw->audio_chan_button)->active = FALSE;
   GTK_TOGGLE_BUTTON (gw->video_chan_button)->active = FALSE;

@@ -1236,10 +1236,6 @@ static void gnomemeeting_init_pref_window_video_devices (GtkWidget *notebook)
     gnomemeeting_table_add_entry (table, _("Video Image:"), "/apps/gnomemeeting/devices/video_image", _("The image to transmit if the Picture device is selected as video device or if the opening of the device fails (none specified = default GnomeMeeting logo)."), 5);
 
 
-  pw->video_preview =
-    gnomemeeting_table_add_toggle (table, _("Video Preview"), "/apps/gnomemeeting/devices/video_preview", _("If enabled, the video preview mode will be set activated and you will be able to see yourself without being in a call."), 6, 0);
-
-
   /* The file selector button */
   button = gtk_button_new_with_label (_("Browse"));
   gtk_table_attach (GTK_TABLE (table), button, 2, 3, 5, 6,         

@@ -1266,10 +1266,10 @@ void gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_image", video_device_setting_changed_nt, pw->video_image, 0, 0);			   
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_image", applicability_check_nt, pw->video_image, 0, 0);		
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_preview", video_preview_changed_nt, pw->video_preview, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_preview", toggle_changed_nt, gw->preview_button, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_preview", toggle_changed_nt, pw->video_preview, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_preview", applicability_check_nt, pw->video_preview, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_preview", video_preview_changed_nt, gw->preview_button, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_preview", toggle_changed_nt, gw->video_test_button, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_preview", applicability_check_nt, gw->preview_button, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_player_mixer", entry_changed_nt, pw->audio_player_mixer, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_player_mixer", audio_mixer_changed_nt, pw->audio_player_mixer, 0, 0);

@@ -1472,7 +1472,6 @@ void gnomemeeting_init_main_window_video_settings ()
   
   GtkWidget *main_table;
   GtkWidget *table;
-  GtkWidget *button;
 
   GtkWidget *pixmap;
   GdkPixbuf *pixbuf;
@@ -1602,16 +1601,22 @@ void gnomemeeting_init_main_window_video_settings ()
   
 
   /* Audio Preview */
-  button = gtk_toggle_button_new_with_label (_("Video Preview"));
+  gw->video_test_button = 
+    gtk_toggle_button_new_with_label (_("Video Test"));
+
+  /* We set the key as data to be able to get the data in order to block       
+     the signal in the gconf notifier */                             
+  g_object_set_data (G_OBJECT (gw->video_test_button), "gconf_key", 
+		     (void *) "/apps/gnomemeeting/devices/video_preview");
 
 
-  /* Pack things in the vbox */
+  /* Pack things in the table */
   gtk_table_attach (GTK_TABLE (main_table), gw->video_settings_frame, 
 		    0, 4, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    0, 0);
-  gtk_table_attach (GTK_TABLE (main_table), button,
+  gtk_table_attach (GTK_TABLE (main_table), gw->video_test_button,
 		    3, 4, 1, 2,
 		    (GtkAttachOptions) (NULL),
 		    (GtkAttachOptions) (NULL),
@@ -1624,7 +1629,6 @@ void gnomemeeting_init_main_window_video_settings ()
 
   gtk_notebook_append_page (GTK_NOTEBOOK(gw->main_notebook), 
 			    main_table, label);
-
 }
 
 
@@ -1638,20 +1642,24 @@ void gnomemeeting_init_main_window_audio_settings ()
   GtkWidget *label;
   GtkWidget *hscale_play, *hscale_rec;
   GtkWidget *audio_table;
+  GtkWidget *main_table;
 
   int vol = 0;
 
-  GtkWidget *frame;
   GConfClient *client = gconf_client_get_default ();
 
   GmWindow *gw = gnomemeeting_get_main_window (gm);
 
-  frame = gtk_frame_new (_("Audio Settings"));
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_ETCHED_OUT);
+
+  /* The main table that will contain the audio test button and the frame */
+  main_table = gtk_table_new (2, 4, FALSE);
+
+  gw->audio_settings_frame = gtk_frame_new (_("Audio Settings"));
+  gtk_frame_set_shadow_type (GTK_FRAME (gw->audio_settings_frame), GTK_SHADOW_ETCHED_OUT);
 
   audio_table = gtk_table_new (4, 4, TRUE);
-  gtk_container_add (GTK_CONTAINER (frame), audio_table);
-  gtk_container_set_border_width (GTK_CONTAINER (frame), 0);
+  gtk_container_add (GTK_CONTAINER (gw->audio_settings_frame), audio_table);
+  gtk_container_set_border_width (GTK_CONTAINER (gw->audio_settings_frame), 0);
 
   gtk_table_attach (GTK_TABLE (audio_table), 
                     gtk_image_new_from_stock (GM_STOCK_VOLUME, GTK_ICON_SIZE_SMALL_TOOLBAR), 
@@ -1701,10 +1709,30 @@ void gnomemeeting_init_main_window_audio_settings ()
   g_signal_connect (G_OBJECT (gw->adj_rec), "value-changed",
 		    G_CALLBACK (audio_volume_changed), (gpointer) gw);
 
-  
+
+  /* Audio Preview */
+  gw->audio_test_button = 
+    gtk_toggle_button_new_with_label (_("Audio Test"));
+
+
+  /* Pack things in the table */
+  gtk_table_attach (GTK_TABLE (main_table), gw->audio_settings_frame, 
+		    0, 4, 0, 1,
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    0, 0);
+  gtk_table_attach (GTK_TABLE (main_table), gw->audio_test_button,
+		    3, 4, 1, 2,
+		    (GtkAttachOptions) (NULL),
+		    (GtkAttachOptions) (NULL),
+		    5, 5);
+
+  gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_settings_frame), FALSE);
+
   label = gtk_label_new (_("Audio"));
 
-  gtk_notebook_append_page (GTK_NOTEBOOK (gw->main_notebook), frame, label);
+  gtk_notebook_append_page (GTK_NOTEBOOK (gw->main_notebook), main_table, 
+			    label);
 }
 
 

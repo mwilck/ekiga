@@ -214,6 +214,7 @@ void GMURLHandler::Main ()
   
   gnomemeeting_threads_enter ();
   gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
+  gtk_widget_set_sensitive (GTK_WIDGET (gw->video_test_button), FALSE);
 
 
   /* Enable disconnect: we must be able to stop calling */
