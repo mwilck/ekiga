@@ -128,8 +128,8 @@ dnl -D_DEBUG -DPMEMORY_CHECK=1 -DPTRACING -g
     ;;
 
   darwin* )
-    H323_CFLAGS="-DSPEEX_CODEC -DP_MACOSX -DP_SSL -DP_PTHREADS  $ARCH_H323_CFLAGS -O2 -Wall -DNO_LONG_DOUBLE -DPHAS_TEMPLATES -DHAS_ESD"
-    H323_LIBS="-lh323_Darwin_ppc_r_s -lpt_Darwin_ppc_r_s -lssl -lcrypto"
+    H323_CFLAGS="-DSPEEX_CODEC -DP_MACOSX -DP_SSL -DP_PTHREADS  $ARCH_H323_CFLAGS -O2 -Wall -DNO_LONG_DOUBLE -DPHAS_TEMPLATES -DHAS_ESD -DSTATIC_LIBS_USED -multiply_defined suppress"
+    H323_LIBS="-multiply_defined suppress -lh323_Darwin_ppc_r_s -lpt_Darwin_ppc_r_s -lssl -lcrypto -lX11"
     LIBPT_FILE="libpt_Darwin_ppc_r_s.a"
     LIBOPENH323_FILE="libh323_Darwin_ppc_r_s.a"
     HAS_SPEEX="enabled"
@@ -296,6 +296,10 @@ msg_openssl="no"
 
 if test "x${with_openssl_libs}" != "xno" -a "x${have_openssl_includes}" != "xno"; then
         AC_CHECK_FILE(${with_openssl_libs}/libssl.so, openssl_libs="yes", openssl_libs="no")
+        if test "x${openssl_libs}" != "xno"; then 
+                AC_CHECK_FILE(${with_openssl_libs}/libssl.a, openssl_libs="yes", openssl_libs="no")
+        fi
+
         if test "x${openssl_libs}" != "xno"; then
                 msg_openssl="yes"
                 OPENSSL_LDFLAGS="-L${with_openssl_libs} ${SSL_LIBS}"
@@ -343,6 +347,9 @@ msg_openldap="no"
                                                                                
 if test "x${with_openldap_libs}" != "xno" -a "x${have_openldap_includes}" != "xno"; then
         AC_CHECK_FILE(${with_openldap_libs}/libldap.so, openldap_libs="yes", openldap_libs="no")
+        if test "x${openldap_libs}" = "xno"; then
+                AC_CHECK_FILE(${with_openldap_libs}/libldap.a, openldap_libs="yes", openldap_libs="no")
+        fi
 
         if test "x${openldap_libs}" != "xno"; then                             
                 msg_openldap="yes"                                             
