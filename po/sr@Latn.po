@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: gnomemeeting\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2003-10-15 22:44+0200\n"
-"PO-Revision-Date: 2003-10-15 22:50+0200\n"
+"PO-Revision-Date: 2003-10-17 15:47+0200\n"
 "Last-Translator: Dejan Matijević <dejan@ns.sympatico.ca>\n"
 "Language-Team: Serbian (sr) <serbiangnome-lista@nongnu.org>\n"
 "MIME-Version: 1.0\n"
@@ -936,7 +936,7 @@ msgid ""
 "frame length of 30 ms. The iLBC codec enables graceful speech quality "
 "degradation in the case of lost frames, which occurs in connection with lost "
 "or delayed IP packets."
-msgstr ""
+msgstr "iLBC-13k3 (internet Low Bitrate Codec) je slobodno govorno kodiranje prilagođeno dobroj glasovnoj vezi preko IP-a. Kodiranje je izrađeno za uzak opseg govora i rezultuje u veličini od 13,33 kbit/s sa dužinom kodiranog kadra od 30 ms. iLBC kodiranje omogućava dobrovoljno sniženje kvaliteta govora u slučaju izgubljenih kadrova, što se dešava pri prekidu veze ili kod izgubljenih IP paketa."
 
 #: src/codec_info.h:53 src/codec_info.h:55 src/codec_info.h:57
 #: src/codec_info.h:63 src/codec_info.h:65 src/codec_info.h:69
@@ -956,7 +956,7 @@ msgid ""
 "length of 20 ms. The iLBC codec enables graceful speech quality degradation "
 "in the case of lost frames, which occurs in connection with lost or delayed "
 "IP packets."
-msgstr ""
+msgstr "iLBC-15k2 (internet Low Bitrate Codec) je slobodno govorno kodiranje prilagođeno dobroj glasovnoj vezi preko IP-a. Kodiranje je izrađeno za uzak opseg govora i rezultuje u veličini od 15,20 kbit/s sa dužinom kodiranog kadra od 20 ms. iLBC kodiranje omogućava dobrovoljno sniženje kvaliteta govora u slučaju izgubljenih kadrova, što se dešava pri prekidu veze ili kod izgubljenih IP paketa."
 
 #: src/codec_info.h:55
 msgid "15.2 Kbps"
@@ -972,7 +972,7 @@ msgid ""
 "codecs. Finally, Speex is part of the GNU Project and is available under the "
 "Xiph.org variant of the BSD license. SpeexNarrow-15k is based on CELP and is "
 "designed to compress voice at a payload bitrate of 15 kbps."
-msgstr ""
+msgstr "Speex je sažimanje zvuka otvorenog koda i slobodan softver, bez upotrebe patenata, sačinjen za glas. Speex projekat teži manjem pragu za ulaz u glasovne programe obezbeđivanjem besplatne alternative vlasničkim govornim kodiranjima. Dalje, Speex je dobro prilagođen Internet programima i obezbeđuje korisne mogućnosti koje nisu prisutne u mnogim drugim kodiranjima. Konačno, Speex je deo projekta GNU i dostupan je pod Xiph.org varijantom BSD licence. SpeexNarrow-15k se zasniva na CELP-u i izrađen je radi sažimanja glasa na veličinu od 15 kb/s."
 
 #: src/codec_info.h:57
 msgid "15 Kbps"
@@ -988,7 +988,7 @@ msgid ""
 "codecs. Finally, Speex is part of the GNU Project and is available under the "
 "Xiph.org variant of the BSD license. SpeexNarrow-8k is based on CELP and is "
 "designed to compress voice at a payload bitrate of 8 kbps."
-msgstr ""
+msgstr "Speex je sažimanje zvuka otvorenog koda i slobodan softver, bez upotrebe patenata, sačinjen za glas. Speex projekat teži manjem pragu za ulaz u glasovne programe obezbeđivanjem besplatne alternative vlasničkim govornim kodiranjima. Dalje, Speex je dobro prilagođen Internet programima i obezbeđuje korisne mogućnosti koje nisu prisutne u mnogim drugim kodiranjima. Konačno, Speex je deo projekta GNU i dostupan je pod Xiph.org varijantom BSD licence. SpeexNarrow-8k se zasniva na CELP-u i izrađen je radi sažimanja glasa na veličinu od 8 kbit/s."
 
 #: src/codec_info.h:59 src/codec_info.h:61 src/codec_info.h:67
 msgid "Good"
@@ -1007,7 +1007,7 @@ msgid ""
 "bits.  Microsoft's GSM 06.10 codec is not compatible with the standard frame "
 "format, they use 65-byte-frames (2 x 32 1/2) rather than rounding to 33, and "
 "they number the bits in their bytes from the other end."
-msgstr ""
+msgstr "MS-GSM je Mikrosoftovo izdanje GSM-a 06.10. GSM 06.10 je standardizovan neočuvajuće sažimanje koje koristi većina evropskih mobilnih telefona. Koristi RPE/LTP (residual pulse excitation/long term prediction) kodiranje za sažimanje kadrova od 160 13-bitnih uzoraka sa učestalošću kadrova od 50 Hz u 260 bita.  Mikrosoftovo GSM 06.10 kodiranje nije saglasno sa standardnim oblikom kadra, oni koriste 65-bajtne kadrove (2 x 32 1/2) umesto zaokrugljivanja na 33, i oni označajavu bitove u njihovim bajtovima sa drugog kraja."
 
 #: src/codec_info.h:61
 msgid "13 Kbps"
@@ -1021,7 +1021,7 @@ msgid ""
 "This standard has two forms, A-Law and µ-Law. A-Law G.711 PCM encoder "
 "converts 13 bit linear PCM samples into 8 bit compressed PCM (logarithmic "
 "form) samples, and the decoder does the conversion vice versa."
-msgstr ""
+msgstr "G.711 je međunarodni standard za kodiranje telefonskog zvuka preko 64 kbit/s kanala. To je modulacija pulsnog koda (PCM) šema koja radi na učestalosti uzorka od 8 kHz, sa 8 bitova po uzorku, u potpunosti ispunjavajući preporuke ITU-T-a. Ovaj standard ima dva oblika, A-zakon i µ-zakon. A-zakon G.711 PCM kodiranje pretvara 13-bitne linearne PCM uzorke u 8-bitne sažete PCM (logaritamski oblik) uzorke, a dekodiranje se obavlja obrnutim postupkom."
 
 #: src/codec_info.h:63 src/codec_info.h:65
 msgid "64 Kbps"
@@ -1035,7 +1035,7 @@ msgid ""
 "This standard has two forms, A-Law and µ-Law. µ-Law G.711 PCM encoder "
 "converts 14 bit linear PCM samples into 8 bit compressed PCM (logarithmic "
 "form) samples, and the decoder does the conversion vice versa."
-msgstr ""
+msgstr "G.711 je međunarodni standard za kodiranje telefonskog zvuka preko 64 kbit/s kanala. To je modulacija pulsnog koda (PCM) šema koja radi na učestalosti uzorka od 8 kHz, sa 8 bitova po uzorku, u potpunosti ispunjavajući preporuke ITU-T-a. Ovaj standard ima dva oblika, A-zakon i µ-zakon. µ-zakon G.711 PCM kodiranje pretvara 14-bitne linearne PCM uzorke u 8-bitne sažete PCM (logaritamski oblik) uzorke, a dekodiranje se obavlja obrnutim postupkom."
 
 #: src/codec_info.h:67
 msgid ""
@@ -1043,7 +1043,7 @@ msgid ""
 "European wireless telephones. It uses RPE/LTP (residual pulse excitation/"
 "long term prediction) coding to compress frames of 160 13-bit samples with a "
 "frame rate of 50 Hz into 260 bits."
-msgstr ""
+msgstr "GSM 06.10 je standardizovan neočuvajuće sažimanje koje koristi većina evropskih mobilnih telefona. Koristi RPE/LTP (residual pulse excitation/long term prediction) kodiranje za sažimanje kadrova od 160 13-bitnih uzoraka sa učestalošću kadrova od 50 Hz u 260 bita."
 
 #: src/codec_info.h:67
 msgid "16.5 Kbps"
@@ -1054,7 +1054,7 @@ msgid ""
 "G.726 conforms to ITU-T G.726 recommendation that specifies speech "
 "compression and decompression at rates of 16, 24, 32 and 40 Kbps based on "
 "Adaptive Differential Pulse Code Modulation (ADPCM)."
-msgstr ""
+msgstr "G.726 prati preporuku ITU-T G.726 koja određuje sažimanje i izvlačenje glasa pri veličini od 16, 24, 32 i 40 Kbit/s zasnovano na prilagodljivoj diferencijskoj modulaciji pulsnog koda (ADPCM)."
 
 #: src/codec_info.h:69
 msgid "32 Kbps"
@@ -1066,7 +1066,7 @@ msgid ""
 "conferencing / telephony over standard phone lines, and is optimized for "
 "realtime encode and decode. That codec is only available in GnomeMeeting "
 "when using Quicknet cards due to patents restrictions."
-msgstr ""
+msgstr "G.723.1 prati preporuku ITU-T G.723.1. Izrađen je za video razgovore/telefoniju preko običnih telefonskih linija, i prilagođen je kodiranju i dekodiranju u realnom vremenu. Kodiranje je dostupno u Gnom sastanku jedino kada se koriste Quicknet kartice zbog patentnih ograničenja."
 
 #: src/codec_info.h:71
 msgid "6.3 or 5.7 Kbps"
