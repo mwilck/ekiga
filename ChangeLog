@@ -1,3 +1,18 @@
+2002-05-08  Miguel Rodríguez Pérez  <migrax@terra.es>
+
+	* src/config.cpp (network_settings_changed_nt): Added
+	(gnomemeeting_init_gconf): Call it
+	(history_changed_nt): Uncomment
+
+	* src/druid.cpp (gnomemeeting_druid_radio_changed) 
+	(gnomemeeting_init_druid_connection_type_page): Added code to show
+	a "Custom" entry.
+
+	* gnomemeeting.schema.in: Added new key
+
+	* src/druid.cpp (gnomemeeting_druid_quit): Use MAJOR_VERSION macro
+	instead of hardcoding 92.
+
 2002-05-07  Damien Sandras  <dsandras@seconix.com>
 
 	* src/misc.cpp: Fixed unuseful warning when receiving an incoming

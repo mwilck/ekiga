@@ -78,6 +78,8 @@ static void view_widget_changed_nt (GConfClient *, guint, GConfEntry *, gpointer
 static void audio_codec_setting_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
 static void silence_detection_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
 
+static void network_settings_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
+
 
 /* 
  * Generic notifiers that update specific widgets when a gconf key changes
@@ -973,7 +975,6 @@ static void register_changed_nt (GConfClient *client, guint cid,
 }
 
 
-#if 0 /* Uncomment when we are under Gnome2 */
 /* DESCRIPTION  :  This callback is called when something toggles the
  *                 corresponding option in gconf.
  * BEHAVIOR     :  Updated the combo strings
@@ -1013,8 +1014,17 @@ static void history_changed_nt (GConfClient *client, guint, GConfEntry *entry,
   g_free (contacts);
   g_free (old_entry);
 }
-#endif
 
+/* DESCRIPTION    : This is called when any setting related to the druid network speep selecion
+ *                  changes.
+ * BEHAVIOR       : Just writes an entry in the gconf database registering that fact
+ * PRE            : None
+ */
+static void network_settings_changed_nt (GConfClient *client, guint, GConfEntry *, gpointer)
+{
+  gconf_client_set_bool (client, "/apps/gnomemeeting/general/net_is_custom",
+			 true, NULL);
+}
 
 /* The functions  */
 void gnomemeeting_init_gconf (GConfClient *client)
@@ -1148,6 +1158,8 @@ void gnomemeeting_init_gconf (GConfClient *client)
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/jitter_buffer", jitter_buffer_changed_nt, pw->jitter_buffer, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/jitter_buffer", adjustment_changed_nt, pw->jitter_buffer, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/jitter_buffer", network_settings_changed_nt, 0, 0, 0);
+
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/gsm_frames", audio_codec_setting_changed_nt, pw->gsm_frames, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/gsm_frames", applicability_check_nt, pw->gsm_frames, 0, 0);
@@ -1164,29 +1176,34 @@ void gnomemeeting_init_gconf (GConfClient *client)
   /* gnomemeeting_pref_window_video_codecs */
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/enable_fps", enable_fps_changed_nt, pw->fps, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/enable_fps", toggle_changed_nt, pw->fps, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/enable_fps", network_settings_changed_nt, 0, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/tr_fps", fps_limit_changed_nt, pw->tr_fps, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/tr_fps", adjustment_changed_nt, pw->tr_fps, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/tr_fps", network_settings_changed_nt, 0, 0, 0);
+
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/enable_video_transmission", applicability_check_nt, pw->vid_tr, 0, 0);	     
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/enable_video_transmission", toggle_changed_nt, pw->vid_tr, 0, 0);	     
+  gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/enable_video_transmission", network_settings_changed_nt, 0, 0, 0);	     
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/tr_vq", tr_vq_changed_nt, pw->tr_vq, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/tr_vq", adjustment_changed_nt, pw->tr_vq, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/tr_vq", network_settings_changed_nt, 0, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/re_vq", adjustment_changed_nt, pw->re_vq, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/re_vq", applicability_check_nt, pw->re_vq, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/re_vq", network_settings_changed_nt, 0, 0, 0);
+
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/tr_ub", tr_ub_changed_nt, pw->tr_ub, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/tr_ub", adjustment_changed_nt, pw->tr_ub, 0, 0);
 
   /**/
 
-#if 0 /* FIXME: Uncomment when we are under GNOME2*/
   gconf_client_notify_add (client, "/apps/gnomemeeting/history/called_hosts", history_changed_nt, gw->combo, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/history/ldap_servers", history_changed_nt, lw->ils_server_combo, 0, 0);
-#endif 
 }
 
 

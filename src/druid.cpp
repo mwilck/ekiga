@@ -68,24 +68,23 @@ extern GtkWidget *gm;
 static void 
 gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
 {
-  GtkWidget *window = NULL;
+  GtkWindow *window = NULL;
   GConfClient *client = NULL;
-  GtkWidget *b = NULL;
+  GtkToggleButton *b = NULL; 
 
   client = gconf_client_get_default ();
 
-  window = (GtkWidget *) g_object_get_data (G_OBJECT (druid), "window");
-  b = (GtkWidget *) g_object_get_data (G_OBJECT (druid), "toggle");
+  window = GTK_WINDOW (g_object_get_data (G_OBJECT (druid), "window"));
+  b = GTK_TOGGLE_BUTTON (g_object_get_data (G_OBJECT (druid), "toggle"));
 
-  if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (b)))
+  if (!gtk_toggle_button_get_active (b))
     gconf_client_set_bool (client, "/apps/gnomemeeting/ldap/register", 
-			   1, NULL);
+			   true, NULL);
   else 
     gconf_client_set_bool (client, "/apps/gnomemeeting/ldap/register", 
-			   0, NULL);
+			   false, NULL);
 
-
-  gconf_client_set_int (client, "/apps/gnomemeeting/general/version", 92, 0);
+  gconf_client_set_int (client, "/apps/gnomemeeting/general/version", MAJOR_VERSION, 0);
 
   gtk_widget_destroy (GTK_WIDGET (window));
   gtk_widget_show (gm);
@@ -290,6 +289,10 @@ gnomemeeting_druid_radio_changed (GtkToggleButton *b, gpointer data)
     gconf_client_set_bool (client, 
 			   "/apps/gnomemeeting/video_settings/enable_video_transmission", 1, NULL);
   }
+
+  /* Custom */
+  gconf_client_set_bool (client, "/apps/gnomemeeting/general/net_is_custom",
+			 selection == 5, NULL);
 }
 
 
@@ -428,6 +431,7 @@ static void gnomemeeting_init_druid_connection_type_page (GnomeDruid *druid)
   GtkWidget *radio2 = NULL;
   GtkWidget *radio3 = NULL;
   GtkWidget *radio4 = NULL;
+  GtkWidget *radio5 = NULL;
   GdkPixbuf *logo = NULL;
   GConfClient *client = NULL;
 
@@ -486,6 +490,17 @@ static void gnomemeeting_init_druid_connection_type_page (GnomeDruid *druid)
   g_signal_connect (G_OBJECT (radio4), "toggled",
 		    G_CALLBACK (gnomemeeting_druid_radio_changed), 
 		    GINT_TO_POINTER (4));
+
+  radio5= 
+    gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (radio1), 
+						 _("Custom"));
+  gtk_box_pack_start (GTK_BOX (box), radio5, TRUE, TRUE, 0);
+  g_signal_connect (G_OBJECT (radio5), "toggled",
+		    G_CALLBACK (gnomemeeting_druid_radio_changed), 
+		    GINT_TO_POINTER (5));
+
+  if (gconf_client_get_bool (client, "/apps/gnomemeeting/general/net_is_custom", NULL))
+    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (radio5), true);
 
   /* Defaults to the defaults for dialup users */
   gconf_client_set_int (client, "/apps/gnomemeeting/video_settings/tr_fps",

@@ -582,5 +582,16 @@
 	<long>Here you can choose the number of blocks (that haven't changed) transmitted with each frame. These blocks fill in the background</long>
       </locale>
     </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/general/net_is_custom</key>
+      <applyto>/apps/gnomemeeting/general/net_is_custom</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>bool</type>
+      <default>false</default>
+      <locale name="C">
+	<short>Kind of network selected in the druid</short>
+	<long>Enable this if you setup call parameters by hand</long>
+      </locale>
+    </schema>
   </schemalist>
 </gconfschemafile>
