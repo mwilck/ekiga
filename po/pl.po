@@ -9,8 +9,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
-"POT-Creation-Date: 2002-10-06 01:17+0200\n"
-"PO-Revision-Date: 2002-10-06 01:18+0200\n"
+"POT-Creation-Date: 2002-10-07 11:33+0200\n"
+"PO-Revision-Date: 2002-10-07 11:47+0200\n"
 "Last-Translator: GNOME PL Team <translators@gnome.pl>\n"
 "Language-Team: Polish <pl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -114,7 +114,7 @@ msgstr "Transmisja obrazu"
 
 #: gnomemeeting.schemas.in.in.h:1
 msgid "Enable or disable bilinear filtering"
-msgstr ""
+msgstr "Przełącza opcję filtrowania dwuliniowego"
 
 #: gnomemeeting.schemas.in.in.h:1 src/pref_window.cpp:1
 msgid ""
@@ -244,11 +244,11 @@ msgstr "Port Nasłuchu"
 
 #: gnomemeeting.schemas.in.in.h:1
 msgid "Local Video Popup Height"
-msgstr ""
+msgstr "Wysokość okna z lokalnym obrazem"
 
 #: gnomemeeting.schemas.in.in.h:1
 msgid "Local Video Popup Width"
-msgstr ""
+msgstr "Szerokość okna z lokalnym obrazem"
 
 #: gnomemeeting.schemas.in.in.h:1 src/ldap_window.cpp:1
 msgid "Location"
@@ -297,11 +297,11 @@ msgstr "Rejestracja"
 
 #: gnomemeeting.schemas.in.in.h:1
 msgid "Remote Video Popup Height"
-msgstr ""
+msgstr "Wysokość okna ze zdalnym obrazem"
 
 #: gnomemeeting.schemas.in.in.h:1
 msgid "Remote Video Popup Width"
-msgstr ""
+msgstr "Szerokość okna ze zdalnym obrazem"
 
 #: gnomemeeting.schemas.in.in.h:1
 msgid "Revision of the schema file"
@@ -428,7 +428,7 @@ msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:1
 msgid "The default video view"
-msgstr ""
+msgstr "Domyślny widok obrazu"
 
 #: gnomemeeting.schemas.in.in.h:1
 msgid ""
@@ -446,7 +446,7 @@ msgstr "Urządzenie używane do rejestrowania dźwięku"
 
 #: gnomemeeting.schemas.in.in.h:1
 msgid "The height of the local video popup"
-msgstr ""
+msgstr "Wysokość okna z lokalnym obrazem"
 
 #: gnomemeeting.schemas.in.in.h:1
 msgid ""
@@ -455,7 +455,7 @@ msgstr "Wysokość wyświetlanego obrazu w trybie pełnoekranowym (używa SDL)"
 
 #: gnomemeeting.schemas.in.in.h:1
 msgid "The height of the remote video popup"
-msgstr ""
+msgstr "Wysokość okna ze zdalnym obrazem"
 
 #: gnomemeeting.schemas.in.in.h:1
 msgid "The host to forward calls to"
@@ -530,7 +530,7 @@ msgstr "Imię które zostanie opublikowane w katalogu"
 
 #: gnomemeeting.schemas.in.in.h:1
 msgid "The width of the local video popup"
-msgstr ""
+msgstr "Szerokość okna z lokalnym obrazem"
 
 #: gnomemeeting.schemas.in.in.h:1
 msgid "The width of the picture displayed when being in fullscreen (using SDL)"
@@ -538,7 +538,7 @@ msgstr "Szerokość wyświetlanego obrazu w trybie pełnoekranowym (używa SDL)"
 
 #: gnomemeeting.schemas.in.in.h:1
 msgid "The width of the remote video popup"
-msgstr ""
+msgstr "Szerokość okna ze zdalnym obrazem"
 
 #: gnomemeeting.schemas.in.in.h:1
 msgid "This need the show_docklet option set to true to have effect"
@@ -582,7 +582,7 @@ msgstr "Rozmiar obrazu"
 
 #: lib/dialog.c:1
 msgid "Do not show this dialog again"
-msgstr ""
+msgstr "Bez wyświetlania tego okna w przyszłości"
 
 #. The toggles
 #: sounds/gnomemeeting.soundlist.in.h:1 src/pref_window.cpp:1
@@ -1290,6 +1290,11 @@ msgstr "Pomyślnie zarejestrowano do %s."
 
 #: src/ils.cpp:1
 #, c-format
+msgid "Updated information on %s."
+msgstr "Odświeżono informacje na %s."
+
+#: src/ils.cpp:1
+#, c-format
 msgid "Successfully unregistered from %s."
 msgstr "Pomyślnie wyrejestrowano z %s."
 
@@ -1333,28 +1338,26 @@ msgid "XDAP Server Browser"
 msgstr "Przeglądarka serwera XDAP"
 
 #: src/ldap_window.cpp:1
-msgid "Refresh"
-msgstr "Odśwież"
+msgid "Find users on"
+msgstr "Znajdź użytkowników na"
+
+#. Text label
+#. Translators: Please keep the 2* 2 spaces
+#: src/ldap_window.cpp:1
+msgid "  whose  "
+msgstr "  których  "
 
 #: src/ldap_window.cpp:1
-msgid "Find"
-msgstr "Znajdź"
+msgid "first name contains"
+msgstr "imię zawiera"
 
 #: src/ldap_window.cpp:1
-msgid "first name"
-msgstr "imię"
+msgid "last name contains"
+msgstr "nazwisko zawiera"
 
 #: src/ldap_window.cpp:1
-msgid "last name"
-msgstr "nazwisko"
-
-#: src/ldap_window.cpp:1
-msgid "e-mail"
-msgstr "e-mail"
-
-#: src/ldap_window.cpp:1
-msgid "location"
-msgstr "lokalizacja"
+msgid "e-mail contains"
+msgstr "e-mail zawiera"
 
 #. Ldap users list
 #: src/ldap_window.cpp:1
@@ -1435,10 +1438,11 @@ msgstr ""
 #: src/main_window.cpp:1
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr ""
+"Powoduje wypisywanie komunikatów o przebiegu na konsolę (poziom od 1 do 6)"
 
 #: src/main_window.cpp:1
 msgid "Makes GnomeMeeting call the given callto:// URL"
-msgstr ""
+msgstr "Powoduje wywołanie przez program podanego URL-a w postaci callto://"
 
 #. We can't use gnomemeeting_error_dialog here, cause we need the
 #. dialog_run and dialog_run can't be used in gnomemeeting_error_dialog
@@ -1929,7 +1933,7 @@ msgstr ""
 
 #: src/pref_window.cpp:1
 msgid "Do not register"
-msgstr ""
+msgstr "Bez rejestrowania"
 
 #: src/pref_window.cpp:1
 msgid "Gatekeeper host"
@@ -2090,6 +2094,8 @@ msgstr "Mikser odtwarzacza dźwięku:"
 #: src/pref_window.cpp:1
 msgid "The audio mixer to use to setup the volume of the audio player device."
 msgstr ""
+"Mikser dźwiękowy, służący do ustawienia głośności urządzenia odtwarzającego "
+"dźwięk."
 
 #: src/pref_window.cpp:1
 msgid "Audio Recorder:"
@@ -2107,6 +2113,8 @@ msgstr "Mikser rejestratora dźwięku:"
 msgid ""
 "The audio mixer to use to setup the volume of the audio recorder device."
 msgstr ""
+"Mikser dźwiękowy, służący do ustawienia głośności urządzenia rejestrującego "
+"dźwięk."
 
 #: src/pref_window.cpp:1
 msgid "Automatic Echo Cancellation:"
@@ -2291,6 +2299,8 @@ msgid ""
 "The transmitted video quality:  choose 100% on a LAN for the best quality, "
 "1% being the worst quality."
 msgstr ""
+"Jakość wysyłanego obrazu: 100% oznacza najlepszą jakość (wybór dla sieci "
+"lokalnej), a 1% - najgorszą."
 
 #: src/pref_window.cpp:1
 msgid "Received Video Quality:"
@@ -2301,6 +2311,8 @@ msgid ""
 "The received video quality:  choose 100% on a LAN for the best quality, 1% "
 "being the worst quality."
 msgstr ""
+"Jakość odbieranego obrazu: 100% oznacza najlepszą jakość (wybór dla sieci "
+"lokalnej), a 1% - najgorszą."
 
 #: src/pref_window.cpp:1
 msgid "Transmitted Background Blocks:"
@@ -2344,15 +2356,15 @@ msgstr "Urządzenia"
 
 #: src/pref_window.cpp:1
 msgid "Section"
-msgstr ""
+msgstr "Sekcja"
 
 #: src/toolbar.cpp:1
 msgid "Speakerphone enabled"
-msgstr ""
+msgstr "Słuchawki włączone"
 
 #: src/toolbar.cpp:1
 msgid "Speakerphone disabled"
-msgstr ""
+msgstr "Słuchawki wyłączone"
 
 #: src/toolbar.cpp:1
 msgid "ILS Directory"
@@ -2380,19 +2392,23 @@ msgstr "Przełącza wyświetlanie obrazu z kamery podłączonej do komputera"
 
 #: src/toolbar.cpp:1
 msgid "Click here to activate the speaker phone device of your Quicknet card."
-msgstr ""
+msgstr "Kliknij tutaj, aby włączyć urządzenie słuchawek karty Quicknet."
 
 #: src/toolbar.cpp:1
 msgid ""
 "Audio Transmission Status. During a call, click here to pause the audio "
 "transmission."
 msgstr ""
+"Stan przesyłu dźwięku. Podczas połączenia kliknij tutaj, aby wstrzymać "
+"przesyłanie dźwięku."
 
 #: src/toolbar.cpp:1
 msgid ""
 "Video Transmission Status. During a call, click here to pause the video "
 "transmission."
 msgstr ""
+"Stan przesyłu obrazu. Podczas połączenia kliknij tutaj, aby wstrzymać "
+"przesyłanie obrazu."
 
 #: src/tools.cpp:1 src/tools.cpp:1
 msgid "General History"
@@ -2503,6 +2519,18 @@ msgstr "Błąd związany z rozmiarem ramki."
 msgid "Video Device Closed"
 msgstr "Urządzenie wideo zostało zamknięte"
 
+#~ msgid "Refresh"
+#~ msgstr "Odśwież"
+
+#~ msgid "Find"
+#~ msgstr "Znajdź"
+
+#~ msgid "e-mail"
+#~ msgstr "e-mail"
+
+#~ msgid "location"
+#~ msgstr "lokalizacja"
+
 #~ msgid "Failed to suspend ESD"
 #~ msgstr "Nie można uśpić ESD"
 
@@ -2511,9 +2539,6 @@ msgstr "Urządzenie wideo zostało zamknięte"
 
 #~ msgid "Fullscreen"
 #~ msgstr "Pełny ekran"
-
-#~ msgid "Copyright ÂŠ 2000, 2002 Damien Sandras"
-#~ msgstr "Copyright (C) 2000, 2002 Damien Sandras"
 
 #~ msgid "Call from %s"
 #~ msgstr "Połączenie z %s"
