@@ -870,19 +870,22 @@ gm_aw_add_addressbook (GtkWidget *addressbook_window,
   aw = gm_aw_get_aw (addressbook_window);
   awp = new GmAddressbookWindowPage ();
 
+  if (gnomemeeting_addressbook_is_local (addressbook))
+    is_local = TRUE;
 
+  
   /* Add the given address book in the aw_tree_view GtkTreeView listing
    * all address books */
   contact_icon = 
     gtk_widget_render_icon (aw->aw_tree_view, 
-			    GM_STOCK_LOCAL_CONTACT,
+			    is_local?
+			    GM_STOCK_LOCAL_CONTACT
+			    :
+			    GM_STOCK_REMOTE_CONTACT,
 			    GTK_ICON_SIZE_MENU, NULL);
 
   aw_tree_model = gtk_tree_view_get_model (GTK_TREE_VIEW (aw->aw_tree_view));
   pos = gtk_notebook_get_n_pages (GTK_NOTEBOOK (aw->aw_notebook));
-
-  if (gnomemeeting_addressbook_is_local (addressbook))
-    is_local = TRUE;
 
   if (gtk_tree_model_get_iter_from_string (GTK_TREE_MODEL (aw_tree_model), 
 					   &iter, is_local ? "1" : "0")) {

@@ -1871,14 +1871,23 @@ gm_druid_window_new ()
 {
   GtkWidget *window = NULL;
   GmDruidWindow *dw = NULL;
+
+  GdkPixbuf *pixbuf = NULL;
+
   
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   g_object_set_data_full (G_OBJECT (window), "window_name",
 			  g_strdup ("druid_window"), g_free); 
   
+  pixbuf = 
+    gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES
+			      "gnomemeeting-logo-icon.png", NULL);
+  gtk_window_set_icon (GTK_WINDOW (window), pixbuf);
   gtk_window_set_title (GTK_WINDOW (window), 
 			_("First Time Configuration Druid"));
   gtk_window_set_position (GTK_WINDOW (window), GTK_WIN_POS_CENTER);
+  g_object_unref (pixbuf);
+
 
   dw = new GmDruidWindow;
   dw->stun_client = NULL;

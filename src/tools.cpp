@@ -153,6 +153,8 @@ gm_pc2phone_window_new ()
   GtkWidget *vbox = NULL;
   GtkWidget *subsection = NULL;
 
+  GdkPixbuf *pixbuf = NULL;
+
   gchar *txt = NULL;
   gchar *gatekeeper = NULL;
   gint method = 0;
@@ -169,6 +171,12 @@ gm_pc2phone_window_new ()
   
   gtk_window_set_title (GTK_WINDOW (window), _("PC-To-Phone Settings"));
   gtk_window_set_position (GTK_WINDOW (window), GTK_WIN_POS_CENTER);
+  pixbuf = 
+    gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES
+			      "gnomemeeting-logo-icon.png", NULL);
+  gtk_window_set_icon (GTK_WINDOW (window), pixbuf);
+  g_object_unref (pixbuf);
+
 
   label = gtk_label_new (_("You can make calls to regular phones and cell numbers worldwide using GnomeMeeting. To enable this, you need to register an account using the URL below, then enter your Account number and PIN, and finally enable registering to the GnomeMeeting PC-To-Phone service.\n\nPlease make sure you are using the URL below to get your account otherwise the service will not work."));
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);

@@ -1871,6 +1871,7 @@ gm_prefs_window_new ()
 {
   GmPreferencesWindow *pw = NULL;
   
+  GdkPixbuf *pixbuf = NULL;
   GtkWidget *window = NULL;
   GtkWidget *container = NULL;
   
@@ -1879,7 +1880,12 @@ gm_prefs_window_new ()
     gnome_prefs_window_new (GNOMEMEETING_IMAGES "gnomemeeting-logo.png");
   g_object_set_data_full (G_OBJECT (window), "window_name",
 			  g_strdup ("preferences_window"), g_free);
-  gtk_window_set_title (GTK_WINDOW (window), "");
+  gtk_window_set_title (GTK_WINDOW (window), _("GnomeMeeting Preferences"));
+  pixbuf = gtk_widget_render_icon (GTK_WIDGET (window),
+				   GTK_STOCK_PREFERENCES,
+				   GTK_ICON_SIZE_MENU, NULL);
+  gtk_window_set_icon (GTK_WINDOW (window), pixbuf);
+  g_object_unref (pixbuf);
 
   
   /* The GMObject data */
