@@ -1,3 +1,16 @@
+2004-06-07  Damien Sandras  <dsandras@gnome.org>
+
+	* lib/contacts/gm_contacts-eds.cpp, 
+	lib/contacts/gm_contacts-gm_conf.cpp,
+	lib/contacts/gm_contacts-local.h, lib/contacts/gm_contacts-remote.cpp,
+	lib/contacts/gm_contacts-remote.h, lib/contacts/gm_contacts.cpp,
+	lib/contacts/gm_contacts.h, src/addressbook_window.cpp, src/menu.cpp,
+	src/urlhandler.cpp: API change to
+	gnomemeeting_addressbook_get_contacts to allow partial and total
+	matches on search criterias. Added function to check if a collision is
+	not created when adding a new contact or editing an existing one,
+	whatever the source for the contact is.
+
 2004-06-06  Damien Sandras  <dsandras@gnome.org>
 
 	* src/addressbook_window.cpp: Minor cleanups.

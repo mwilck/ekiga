@@ -10,6 +10,7 @@
 
 GSList *
 gnomemeeting_addressbook_get_contacts (GmAddressbook *addressbook,
+				       gboolean partial_match,
 				       gchar *fullname,
 				       gchar *url,
 				       gchar *categorie,
@@ -17,12 +18,14 @@ gnomemeeting_addressbook_get_contacts (GmAddressbook *addressbook,
 {
   if (addressbook && !gnomemeeting_addressbook_is_local (addressbook))  
     return gnomemeeting_remote_addressbook_get_contacts (addressbook,
+							 partial_match,
 							 fullname,
 							 url,
 							 categorie,
 							 speeddial);
   else
     return gnomemeeting_local_addressbook_get_contacts (addressbook,
+							partial_match,
 							fullname,
 							url, 
 							categorie,

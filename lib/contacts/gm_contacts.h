@@ -145,10 +145,18 @@ GSList *gnomemeeting_get_remote_addressbooks ();
  *                speed dial is ignored on remote address books. If not 
  *                GmAddressbook is given, then the search is done on all
  *                local address books. Searching for speed dial "*" will return
- *                all contacts with a speed dial.
+ *                all contacts with a speed dial. If you specify a full name 
+ *                and an url, all contacts with the specified full name OR url
+ *                will be returned. If you specify a full name, an url and a
+ *                speed dial, all contacts with that full name OR that url
+ *                and the given speed dial will be returned. If the boolean
+ *                is set to TRUE, the search will check for partial matches 
+ *                except for the speed dial where an exact match is always
+ *                queried.
  * PRE          : Only one filter at a time.
  */
 GSList *gnomemeeting_addressbook_get_contacts (GmAddressbook *,
+					       gboolean,
                                                gchar *,
                                                gchar *,
                                                gchar *,

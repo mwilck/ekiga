@@ -705,7 +705,7 @@ gnomemeeting_speed_dials_menu_update (GtkWidget *menubar)
 
   gchar *ml = NULL;  
 
-  glist = gnomemeeting_addressbook_get_contacts (NULL, NULL, NULL, NULL, "*"); 
+  glist = gnomemeeting_addressbook_get_contacts (NULL, FALSE, NULL, NULL, NULL, "*"); 
   menu = gtk_menu_get_widget (menubar, "speed_dials");
 
   while ((old_glist_iter = GTK_MENU_SHELL (menu)->children)) 

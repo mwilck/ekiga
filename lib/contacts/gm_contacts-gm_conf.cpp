@@ -92,6 +92,7 @@ gnomemeeting_get_local_addressbooks ()
 
 GSList *
 gnomemeeting_local_addressbook_get_contacts (GmAddressbook *,
+					     gboolean,
 					     gchar *,
 					     gchar *,
 					     gchar *)

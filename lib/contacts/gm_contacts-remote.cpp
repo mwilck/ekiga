@@ -110,6 +110,7 @@ gnomemeeting_get_remote_addressbooks ()
 
 GSList *
 gnomemeeting_remote_addressbook_get_contacts (GmAddressbook *addressbook,
+					      gboolean partial_match,
 					      gchar *fullname,
 					      gchar *url,
 					      gchar *categorie,

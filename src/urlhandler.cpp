@@ -284,6 +284,7 @@ void GMURLHandler::Main ()
     GSList *l = NULL;
 
     l = gnomemeeting_addressbook_get_contacts (NULL, 
+					       FALSE,
 					       NULL,
 					       NULL,
 					       NULL,

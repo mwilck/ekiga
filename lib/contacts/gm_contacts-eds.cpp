@@ -255,6 +255,7 @@ gnomemeeting_get_local_addressbooks ()
 
 GSList *
 gnomemeeting_local_addressbook_get_contacts (GmAddressbook *addbook,
+					     gboolean partial_match,
 					     gchar *fullname,
 					     gchar *url,
 					     gchar *categorie,
@@ -262,6 +263,7 @@ gnomemeeting_local_addressbook_get_contacts (GmAddressbook *addbook,
 {
   EBook *ebook = NULL;
   EBookQuery *query = NULL;
+  EBookQuery *queries [4];
   EVCardAttribute *attr = NULL;
 
   GmContact *contact = NULL;
@@ -281,6 +283,8 @@ gnomemeeting_local_addressbook_get_contacts (GmAddressbook *addbook,
   GList *param_values_iter = NULL;
   GList *x = NULL;
 
+  gint cpt = 0;
+  
   ebook = e_book_new ();
 
   if (addbook) 
@@ -295,20 +299,36 @@ gnomemeeting_local_addressbook_get_contacts (GmAddressbook *addbook,
     if (e_book_load_uri (ebook, addressbook->url, FALSE, NULL)) {
 
       /* Build the filter */ 
-      if (fullname && strcmp (fullname, ""))
-	query = e_book_query_field_test (E_CONTACT_FULL_NAME,
-					 E_BOOK_QUERY_CONTAINS,
-					 fullname);
-      else if (url && strcmp (url, ""))
-	query = e_book_query_field_test (E_CONTACT_VIDEO_URL,
-					 E_BOOK_QUERY_CONTAINS,
-					 url);
-      else if (categorie && strcmp (categorie, ""))
-	query = e_book_query_field_test (E_CONTACT_CATEGORIES,
-					 E_BOOK_QUERY_IS,
-					 categorie);
-      else
-	query = e_book_query_field_exists (E_CONTACT_UID);
+      if (fullname && strcmp (fullname, "")) 
+	queries [cpt++] = 
+	  e_book_query_field_test (E_CONTACT_FULL_NAME,
+				   partial_match?
+				   E_BOOK_QUERY_CONTAINS
+				   :
+				   E_BOOK_QUERY_IS,
+				   fullname);
+
+      if (url && strcmp (url, "")) 
+	queries [cpt++] = 
+	  e_book_query_field_test (E_CONTACT_VIDEO_URL,
+				   partial_match?
+				   E_BOOK_QUERY_CONTAINS
+				   :
+				   E_BOOK_QUERY_IS,
+				   url);
+      if (categorie && strcmp (categorie, ""))
+	queries [cpt++] = 
+	  e_book_query_field_test (E_CONTACT_CATEGORIES,
+				   partial_match?
+				   E_BOOK_QUERY_CONTAINS
+				   :
+				   E_BOOK_QUERY_IS,
+				   categorie);
+
+      if (cpt == 0)
+	queries [cpt++] = e_book_query_field_exists (E_CONTACT_UID);
+
+      query = e_book_query_or (cpt, queries, TRUE);
 
       /* Get the contacts for that fitler */
       if (e_book_get_contacts (ebook, query, &list, NULL)) {
@@ -377,11 +397,11 @@ gnomemeeting_local_addressbook_get_contacts (GmAddressbook *addbook,
 	   * the contact to the list if it has the correct speed dial
 	   */
 	  if ((speeddial 
-	       && ((contact->speeddial && 
+	       && ((contact->speeddial && strcmp (speeddial, "") && 
 		   !strcmp (speeddial, contact->speeddial)) 
 		   || (!strcmp (speeddial, "*") && contact->speeddial
-		       && strcmp (contact->speeddial, ""))))
-	      || !speeddial)
+		       && strcmp (contact->speeddial, "")))
+	      || !speeddial))
 	    contacts = g_slist_append (contacts, (gpointer) contact);
 
 	  l = g_list_next (l);
