@@ -162,10 +162,11 @@ class GMILSBrowser : public PThread
   
   /* DESCRIPTION  :  The constructor.
    * BEHAVIOR     :  Initialise the parameters.
-   * PRE          :  The LDAP Server to browse (non-empty string).
+   * PRE          :  The structure of widgets for that page.
+   *                 The LDAP Server to browse (non-empty string).
    *                 The search filter, can be NULL (no filter).
    */
-  GMILSBrowser (gchar *, gchar * = NULL);
+  GMILSBrowser (GmLdapWindowPage *, gchar *, gchar * = NULL);
 
 
   /* DESCRIPTION  :  The destructor.
@@ -184,12 +185,9 @@ class GMILSBrowser : public PThread
    */
   void Main ();
 
-  
-  GtkWidget *page;
   GmLdapWindow *lw;
-  LDAP *ldap_connection;
+  GmLdapWindowPage *lwp;
   gchar *ldap_server;
   gchar *search_filter;
-  int rc;
 };
 #endif

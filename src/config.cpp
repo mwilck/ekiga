@@ -1197,6 +1197,7 @@ contacts_sections_list_group_content_changed_nt (GConfClient *client,
   GtkWidget *page = NULL;
 
   GmLdapWindow *lw = NULL;
+  GmLdapWindowPage *lwp = NULL;
   
   if (e->value->type == GCONF_VALUE_LIST) {
   
@@ -1219,22 +1220,18 @@ contacts_sections_list_group_content_changed_nt (GConfClient *client,
 		gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook),
 					   cpt)) ){
 
-	  contact_section = 
-	    (gchar *) g_object_get_data (G_OBJECT (page), "contact_section");
+	  lwp = gnomemeeting_get_ldap_window_page (page);
 
-	  if (contact_section && !strcmp (contact_section, group_name)) 
+	  if (lwp && lwp->contact_section_name
+	      && !strcmp (lwp->contact_section_name, group_name)) 
 	    break;
 
 	  cpt++;
 	}
 
-	if (page) {
-
-	  list_store =
-	    GTK_LIST_STORE (g_object_get_data (G_OBJECT (page), "list_store"));
-
-	  gnomemeeting_addressbook_group_populate (list_store, group_name);
-	}
+	if (lwp) 
+	  gnomemeeting_addressbook_group_populate (lwp->users_list_store,
+						   group_name);
 	
 	g_free (group_name);
       }

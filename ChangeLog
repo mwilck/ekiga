@@ -1,3 +1,35 @@
+2003-05-18 Damien Sandras  <dsandras@seconix.com>
+
+	* configure.in: Reintroduced missing -g in compilation flags.
+	
+	* src/common.cpp, src/common.h: Added a new structure containing
+	pointers to the different widgets contained in the notebook pages 
+	of the addressbook.
+
+	* src/ldap_window.cpp: Fixed bug preventing to add contacts
+	with empty speed dials, when editing a selected contact, and removing
+	it from all groups, a popup is displayed and the user is not anymore
+	deleted from all groups. The search entry is resized when the 
+	window is resized too. Added a new function to rebuild the contacts
+	sections tree view when the gconf key changes to move that code
+	out of config.cpp. Added a function to free memory associated
+	with the structure newly introduced in common.h when the
+	notebook pages are destroyed.
+	
+	* src/config.cpp: See above.
+	
+	* src/ils.cpp, src/ils.h: Added a mutex taken and released by the
+	GmILSBrowser when starting/ending the refresh. That mutex is part
+	of the new structure introduced in common.h, and should be taken
+	before exiting to ensure the exit is not done during a refresh.
+
+	* src/main_window.cpp: Before exiting the previous mutex is taken so
+	that GM waits until all refreshes in the Address Book are terminated
+	before exiting completely. gtk_widget_destroy is also explicitely 
+	called on the different GM parts.
+	
+	* src/pref_window.cpp: Small code cleanup.
+	
 2003-05-16 Damien Sandras  <dsandras@seconix.com>
 
 	* src/common.h, src/endpoint.cpp, src/main_window.cpp,

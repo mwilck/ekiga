@@ -63,6 +63,9 @@
 #define vsnprintf _vsnprintf
 #endif
 
+#include "menu.h"
+
+
 #define GENERAL_KEY         "/apps/gnomemeeting/general/"
 #define VIEW_KEY            "/apps/gnomemeeting/view/"
 #define DEVICES_KEY         "/apps/gnomemeeting/devices/"
@@ -109,12 +112,11 @@
 #endif
 #endif
 
-#include "menu.h"
-
 
 typedef struct _GmWindow GmWindow;
 typedef struct _GmPrefWindow GmPrefWindow;
 typedef struct _GmLdapWindow GmLdapWindow;
+typedef struct _GmLdapWindowPage GmLdapWindowPage;
 typedef struct _GmTextChat GmTextChat;
 typedef struct _GmDruidWindow GmDruidWindow;
 typedef struct _GmCallsHistoryWindow GmCallsHistoryWindow;
@@ -208,6 +210,22 @@ struct _GmLdapWindow
   GtkWidget *notebook;
   GtkWidget *tree_view;
   GtkWidget *option_menu;
+};
+
+
+struct _GmLdapWindowPage
+{
+  GtkListStore *users_list_store;
+  GtkWidget *tree_view;
+  GtkWidget *statusbar;
+  GtkWidget *option_menu;
+  GtkWidget *search_entry;
+
+  PThread *ils_browser;
+  PMutex search_quit_mutex;
+  
+  gchar *contact_section_name;
+  gint page_type;
 };
 
 
@@ -337,6 +355,14 @@ GmPrefWindow *gnomemeeting_get_pref_window (GtkWidget *);
  *                 window.
  */
 GmLdapWindow *gnomemeeting_get_ldap_window (GtkWidget *);
+
+
+/* DESCRIPTION  :  / 
+ * BEHAVIOR     :  Returns the structure of widgets of the ldap window page.
+ * PRE          :  The GtkWidget must be a pointer to a page of the addressbook
+ *                 notebook.
+ */
+GmLdapWindowPage *gnomemeeting_get_ldap_window_page (GtkWidget *);
 
 
 /* DESCRIPTION  :  / 

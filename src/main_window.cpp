@@ -2056,38 +2056,18 @@ int main (int argc, char ** argv, char ** envp)
   GmCommandLineOptions *clo = NULL;
 
 
-  /* Init the GmWindow */
-  gw = new (GmWindow);
-  gw->pref_window = NULL;
-  gw->ldap_window = NULL;
-  gw->incoming_call_popup = NULL;
-#ifndef DISABLE_GNOME
-  gw->druid_window = NULL;
-#endif
-  gw->progress_timeout = 0;
-
-
   /* Init the different structures */
-  pw = new (GmPrefWindow); 
+  gw = new (GmWindow);
+  pw = new (GmPrefWindow);
   lw = new (GmLdapWindow);
   dw = new (GmDruidWindow);
+  chat = new (GmTextChat);
   chw = new (GmCallsHistoryWindow);
   rtp = new (GmRtpData);
-  rtp->tr_audio_bytes = 0;
-  rtp->re_audio_bytes = 0;
-  rtp->re_video_bytes = 0;
-  rtp->tr_video_bytes = 0;
-  rtp->tr_audio_pos = 0;
-  rtp->tr_video_pos = 0;
-  rtp->re_audio_pos = 0;
-  rtp->re_video_pos = 0;
-  chat = new (GmTextChat);
+  memset (rtp, 0, sizeof (GmRtpData));
   clo = new (GmCommandLineOptions);
-  clo->debug_level = 0;
-  clo->url = NULL;
-  clo->daemon = 0;
-
-
+  memset (clo, 0, sizeof (GmCommandLineOptions));
+  
   /* Threads + Locale Init + Gconf */
   g_thread_init (NULL);
   gdk_threads_init ();
@@ -2126,10 +2106,23 @@ int main (int argc, char ** argv, char ** envp)
 #ifdef DISABLE_GCONF
   gconf_save_content_to_file ();
 #endif
+
   
+  GtkWidget *page = NULL;
+  int i = 0;
+  while ((page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), i))) {
+    GmLdapWindowPage *lwp = (GmLdapWindowPage *) g_object_get_data (G_OBJECT (page), "lwp");
+    if (lwp)
+      lwp->search_quit_mutex.Wait ();
+
+    i++;
+  }
+
+  cout << "FIX ME" << endl << flush;
   MyApp->Endpoint ()->ClearAllCalls (H323Connection::EndedByLocalUser, true);
+  gtk_widget_destroy (gw->ldap_window);
   delete (MyApp);
-  
+
   delete (gw);
   delete (lw);
   delete (dw);

@@ -77,13 +77,13 @@ static void gnomemeeting_init_pref_window_video_codecs (GtkWidget *);
 
 enum {
   
-  COLUMN_ACTIVE,
-  COLUMN_NAME,
-  COLUMN_INFO,
-  COLUMN_BANDWIDTH,
-  COLUMN_SELECTABLE,
-  COLUMN_COLOR,
-  COLUMN_NUMBER
+  COLUMN_CODEC_ACTIVE,
+  COLUMN_CODEC_NAME,
+  COLUMN_CODEC_INFO,
+  COLUMN_CODEC_BANDWIDTH,
+  COLUMN_CODEC_SELECTABLE,
+  COLUMN_CODEC_COLOR,
+  COLUMN_CODEC_NUMBER
 };
 
 
@@ -272,7 +272,7 @@ static void codecs_list_button_clicked_callback (GtkWidget *widget,
   gtk_tree_selection_get_selected (GTK_TREE_SELECTION (selection), NULL,
 				   &iter);
   gtk_tree_model_get (GTK_TREE_MODEL (data), &iter,
-		      COLUMN_NAME, &selected_codec_name, -1);
+		      COLUMN_CODEC_NAME, &selected_codec_name, -1);
 
 
   /* We set the selected codec name as data of the list store, to select 
@@ -516,12 +516,12 @@ gnomemeeting_codecs_list_add (GtkTreeIter iter, GtkListStore *store,
  
     gtk_list_store_append (store, &iter);
     gtk_list_store_set (store, &iter,
-			COLUMN_ACTIVE, enabled,
-			COLUMN_NAME, data [0],
-			COLUMN_INFO, data [1],
-			COLUMN_BANDWIDTH, data [2],
-			COLUMN_SELECTABLE, possible,
-			COLUMN_COLOR, color,
+			COLUMN_CODEC_ACTIVE, enabled,
+			COLUMN_CODEC_NAME, data [0],
+			COLUMN_CODEC_INFO, data [1],
+			COLUMN_CODEC_BANDWIDTH, data [2],
+			COLUMN_CODEC_SELECTABLE, possible,
+			COLUMN_CODEC_COLOR, color,
 			-1);
   }
 
@@ -549,8 +549,8 @@ codecs_list_fixed_toggled (GtkCellRendererToggle *cell, gchar *path_str, gpointe
 
   /* get toggled iter */
   gtk_tree_model_get_iter (model, &iter, path);
-  gtk_tree_model_get (model, &iter, COLUMN_ACTIVE, &fixed, -1);
-  gtk_tree_model_get (model, &iter, COLUMN_NAME, &selected_codec_name, -1);
+  gtk_tree_model_get (model, &iter, COLUMN_CODEC_ACTIVE, &fixed, -1);
+  gtk_tree_model_get (model, &iter, COLUMN_CODEC_NAME, &selected_codec_name, -1);
   fixed ^= 1;
   gtk_tree_path_free (path);
 
@@ -1183,7 +1183,7 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
 				       _("Available Audio Codecs"), 
 				       8, 2);
 
-  pw->codecs_list_store = gtk_list_store_new (COLUMN_NUMBER,
+  pw->codecs_list_store = gtk_list_store_new (COLUMN_CODEC_NUMBER,
 					      G_TYPE_BOOLEAN,
 					      G_TYPE_STRING,
 					      G_TYPE_STRING,
@@ -1209,10 +1209,10 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
   column = gtk_tree_view_column_new_with_attributes (_("A"),
 						     renderer,
 						     "active", 
-						     COLUMN_ACTIVE,
+						     COLUMN_CODEC_ACTIVE,
 						     NULL);
   gtk_tree_view_column_add_attribute (column, renderer, "activatable", 
-				      COLUMN_SELECTABLE);
+				      COLUMN_CODEC_SELECTABLE);
   gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 25);
   gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
   g_signal_connect (G_OBJECT (renderer), "toggled",
@@ -1223,22 +1223,22 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
   column = gtk_tree_view_column_new_with_attributes (_("Name"),
 						     renderer,
 						     "text", 
-						     COLUMN_NAME,
+						     COLUMN_CODEC_NAME,
 						     NULL);
   gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
   gtk_tree_view_column_add_attribute (column, renderer, "foreground", 
-				      COLUMN_COLOR);
+				      COLUMN_CODEC_COLOR);
   g_object_set (G_OBJECT (renderer), "weight", "bold", NULL);
 
   renderer = gtk_cell_renderer_text_new ();
   column = gtk_tree_view_column_new_with_attributes (_("Info"),
 						     renderer,
 						     "text", 
-						     COLUMN_INFO,
+						     COLUMN_CODEC_INFO,
 						     NULL);
   gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
   gtk_tree_view_column_add_attribute (column, renderer, "foreground", 
-				      COLUMN_COLOR);
+				      COLUMN_CODEC_COLOR);
   g_object_set (G_OBJECT (renderer), "style", PANGO_STYLE_ITALIC, NULL);
 
 
@@ -1246,11 +1246,11 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
   column = gtk_tree_view_column_new_with_attributes (_("Bandwidth"),
 						     renderer,
 						     "text", 
-						     COLUMN_BANDWIDTH,
+						     COLUMN_CODEC_BANDWIDTH,
 						     NULL);
   gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
   gtk_tree_view_column_add_attribute (column, renderer, "foreground", 
-				      COLUMN_COLOR);
+				      COLUMN_CODEC_COLOR);
 
   g_object_set_data (G_OBJECT (pw->codecs_list_store), "tree_view",
 		     (gpointer) tree_view);

@@ -66,6 +66,16 @@ gnomemeeting_get_ldap_window (GtkWidget *gm)
 }
 
 
+GmLdapWindowPage *
+gnomemeeting_get_ldap_window_page (GtkWidget *page)
+{
+  GmLdapWindowPage *lwp =
+    (GmLdapWindowPage *) g_object_get_data (G_OBJECT (page), "lwp");
+
+  return lwp;
+}
+
+
 GmDruidWindow *
 gnomemeeting_get_druid_window (GtkWidget *gm)
 {
