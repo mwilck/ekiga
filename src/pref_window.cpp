@@ -217,15 +217,16 @@ static void codecs_list_button_clicked_callback (GtkWidget *widget,
   gtk_tree_model_get (GTK_TREE_MODEL (data), &iter,
 		      COLUMN_NAME, &selected_codec_name, -1);
 
-  /* We set the selected codec name as data of the list store, to select it again
-     once the codecs list has been rebuilt */
+  /* We set the selected codec name as data of the list store, to select 
+     it again once the codecs list has been rebuilt */
   g_object_set_data (G_OBJECT (data), "selected_codec", 
-		     (gpointer) selected_codec_name); /* the gchar * must not be freed,
-							 it points to the internal
-							 element of the list_store */
+		     (gpointer) selected_codec_name); 
+  /* the gchar * must not be freed,
+     it points to the internal
+     element of the list_store */
 			  
-  /* Read all codecs, build the gconf data for the key, after having set the selected codec
-     one row above its current plance */
+  /* Read all codecs, build the gconf data for the key, after having 
+     set the selected codec one row above its current plance */
   codecs_data = gconf_client_get_string (client, 
 					 "/apps/gnomemeeting/audio_codecs/list", NULL);
 
@@ -657,6 +658,8 @@ gnomemeeting_pref_window_add_table (GtkWidget *vbox,
   gtk_container_add (GTK_CONTAINER (frame), table);                            
   gtk_container_set_border_width (GTK_CONTAINER (frame), 
 				  GNOMEMEETING_PAD_SMALL * 2);
+  gtk_container_set_border_width (GTK_CONTAINER (table), 
+				  GNOMEMEETING_PAD_SMALL * 3);
                                                                                
   gtk_table_set_row_spacings (GTK_TABLE (table), GNOMEMEETING_PAD_SMALL);      
   gtk_table_set_col_spacings (GTK_TABLE (table), GNOMEMEETING_PAD_SMALL);      
@@ -1209,7 +1212,7 @@ static void gnomemeeting_init_pref_window_devices (GtkWidget *notebook)
 
   
   pw->audio_player_mixer =
-    gnomemeeting_pref_window_add_entry (table, _("Audio Player Mixer:"), "/apps/gnomemeeting/devices/audio_player_mixer", _("The audio mixer to use to setup the volume of the audio player device."), 1);
+    gnomemeeting_pref_window_add_entry (table, _("Player Mixer:"), "/apps/gnomemeeting/devices/audio_player_mixer", _("The audio mixer to use to setup the volume of the audio player device."), 1);
 
 
   /* The recorder */
@@ -1233,7 +1236,7 @@ static void gnomemeeting_init_pref_window_devices (GtkWidget *notebook)
 
 
   pw->audio_recorder_mixer =
-    gnomemeeting_pref_window_add_entry (table, _("Audio Player Recorder:"), "/apps/gnomemeeting/devices/audio_recorder_mixer", _("The audio mixer to use to setup the volume of the audio recorder device."), 3);
+    gnomemeeting_pref_window_add_entry (table, _("Recorder Mixer:"), "/apps/gnomemeeting/devices/audio_recorder_mixer", _("The audio mixer to use to setup the volume of the audio recorder device."), 3);
 
   /* The video devices related options */
   table = gnomemeeting_pref_window_add_table (vbox, _("Video Devices"), 5, 2);
@@ -1291,7 +1294,7 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
 
   gchar *codecs_data = NULL;
 
-  int width = 70;
+  int width = 80;
   GtkRequisition size_request1, size_request2;
 
   /* For the GTK TreeView */
@@ -1309,7 +1312,9 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
   /* Packing widgets */                                                        
   vbox =  gtk_vbox_new (FALSE, 4);
   gtk_notebook_append_page (GTK_NOTEBOOK(notebook), vbox, NULL);  
-  table = gnomemeeting_pref_window_add_table (vbox, _("Available Audio Codecs"), 2, 2);
+  table = gnomemeeting_pref_window_add_table (vbox, 
+					      _("Available Audio Codecs"), 
+					      8, 2);
 
   pw->codecs_list_store = gtk_list_store_new (COLUMN_NUMBER,
 					      G_TYPE_BOOLEAN,
@@ -1374,16 +1379,16 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
   codecs_data = gconf_client_get_string (client, 
 					 "/apps/gnomemeeting/audio_codecs/list", NULL);
 
-  gtk_table_attach (GTK_TABLE (table),  frame, 0, 1, 0, 2,        
-                    (GtkAttachOptions) (GTK_EXPAND),                           
-                    (GtkAttachOptions) (GTK_EXPAND),                           
+  gtk_table_attach (GTK_TABLE (table),  frame, 0, 1, 0, 8,        
+                    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
+                    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);           
 
   gnomemeeting_codecs_list_build (pw->codecs_list_store, codecs_data);
 
 
   button1 = gtk_button_new_from_stock (GTK_STOCK_GO_UP);
-  gtk_table_attach (GTK_TABLE (table),  button1, 1, 2, 0, 1,        
+  gtk_table_attach (GTK_TABLE (table),  button1, 1, 2, 3, 4,        
                     (GtkAttachOptions) NULL,                           
                     (GtkAttachOptions) NULL,        
                     GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);           
@@ -1397,7 +1402,7 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
 		    GTK_TREE_MODEL (pw->codecs_list_store));
 
   button2 = gtk_button_new_from_stock (GTK_STOCK_GO_DOWN);
-  gtk_table_attach (GTK_TABLE (table),  button2, 1, 2, 1, 2,        
+  gtk_table_attach (GTK_TABLE (table),  button2, 1, 2, 4, 5,        
                     (GtkAttachOptions) NULL,                           
                     (GtkAttachOptions) NULL,
                     GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);  
@@ -1410,10 +1415,12 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
 		    GTK_TREE_MODEL (pw->codecs_list_store));
   
   /* Set the buttons to the same one (the largest needed one) */
-  if (size_request1.width >= size_request2.width)
+  if ( (size_request1.width >= size_request2.width) &&
+       (size_request1.width >= width) )
     width = size_request1.width;
   else
-    width = size_request2.width;
+    if (size_request2.width >= width)
+      width = size_request2.width;
 
   gtk_widget_set_size_request (GTK_WIDGET (button1), width, 30);
   gtk_widget_set_size_request (GTK_WIDGET (button2), width, 30);

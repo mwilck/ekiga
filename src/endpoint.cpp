@@ -64,6 +64,7 @@ GMH323EndPoint::GMH323EndPoint ()
 {
   gw = gnomemeeting_get_main_window (gm);
   lw = gnomemeeting_get_ldap_window (gm);
+  chat = gnomemeeting_get_chat_window (gm);
 
   SetCurrentConnection (NULL);
   SetCallingState (0);
@@ -887,11 +888,11 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   gtk_entry_set_text (GTK_ENTRY (gw->remote_name), "");
   
   /* We empty the text chat buffer */ 
-  gtk_text_buffer_get_start_iter (gw->chat->text_buffer, &start_iter);
-  gtk_text_buffer_get_end_iter (gw->chat->text_buffer, &end_iter);
+  gtk_text_buffer_get_start_iter (chat->text_buffer, &start_iter);
+  gtk_text_buffer_get_end_iter (chat->text_buffer, &end_iter);
 
-  gtk_text_buffer_delete (gw->chat->text_buffer, &start_iter, &end_iter);
-  gw->chat->buffer_is_empty = TRUE;
+  gtk_text_buffer_delete (chat->text_buffer, &start_iter, &end_iter);
+  chat->buffer_is_empty = TRUE;
 
   SetCurrentConnection (NULL);
   SetCallingState (0);

@@ -311,6 +311,7 @@ int main (int argc, char ** argv, char ** envp)
   GM_window_widgets *gw = NULL;
   GM_ldap_window_widgets *lw = NULL;
   GM_pref_window_widgets *pw = NULL;
+  GmTextChat *chat = NULL;
   GM_rtp_data *rtp = NULL;
 
 
@@ -348,6 +349,10 @@ int main (int argc, char ** argv, char ** envp)
   rtp->tr_audio_bytes = 0;
 
 
+  /* Init the TextChat structure */
+  chat = new (GmTextChat);
+
+
   /* Threads + Locale Init + Gconf */
   g_thread_init (NULL);
   gdk_threads_init ();
@@ -360,7 +365,7 @@ int main (int argc, char ** argv, char ** envp)
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 
   /* GnomeMeeting main initialisation */
-  gnomemeeting_init (gw, pw, lw, rtp, argc, argv, envp);
+  gnomemeeting_init (gw, pw, lw, rtp, chat, argc, argv, envp);
   /* Set a default gconf error handler */
   gconf_client_set_error_handling (gconf_client_get_default (),
 				   GCONF_CLIENT_HANDLE_UNRETURNED);
@@ -382,6 +387,7 @@ int main (int argc, char ** argv, char ** envp)
   delete (lw);
   delete (pw);
   delete (rtp);
+  delete (chat); 
 
   return 0;
 }

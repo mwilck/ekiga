@@ -320,8 +320,8 @@ void GMH323Connection::OnUserInputString(const PString & value)
   
   gnomemeeting_text_chat_insert (remote, val, 1);
 
-  if (!GTK_WIDGET_VISIBLE (gw->chat->window))
-    gtk_widget_show_all (gw->chat->window);
+  if (!GTK_WIDGET_VISIBLE (gw->chat_window))
+    gtk_widget_show_all (gw->chat_window);
 
   gnomemeeting_threads_leave ();
 }

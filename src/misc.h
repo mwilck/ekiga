@@ -88,6 +88,14 @@ GM_pref_window_widgets *gnomemeeting_get_pref_window (GtkWidget *);
 GM_ldap_window_widgets *gnomemeeting_get_ldap_window (GtkWidget *);
 
 
+/* DESCRIPTION  :  / 
+ * BEHAVIOR     :  Returns the structure of widgets of the chat window.
+ * PRE          :  The GtkWidget must be a pointer to the Main gnomeMeeting 
+ *                 window.
+ */
+GmTextChat *gnomemeeting_get_chat_window (GtkWidget *);
+
+
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Add some texts to the log part of the main window.
  * PRE          :  /

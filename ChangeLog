@@ -1,5 +1,34 @@
 2002-05-09  Damien Sandras  <dsandras@seconix.com>
 
+	* src/common.h:	Removed Window from GmTextChat, components widget of 
+	the main window should be in GmWindow.
+	
+	* src/chat_window.cpp: Adapted to the new common.h.
+	
+	* src/config.cpp: Adapted to the new common.h.
+	
+	* src/connection.cpp: Adapted to the new common.h.
+	
+	* src/endpoint.cpp: Adapted to the new common.h. Added call to the
+	new function gnomemeeting_get_chat_window.
+	
+	* src/endpoint.h: Added internal pointer to GmTextChat.
+	
+	* src/gnomemeeting.cpp: Fixed Chat window memory leaks.
+	
+	* src/main_window.cpp: Added GmTextChat as data of GM.
+	
+	* src/misc.cpp: Added new function gnomemeeting_get_chat_window
+	that returns a pointer to the GmTextChat structure which contains
+	all widgets and data needed by TextChat.
+	
+	* src/misc.h: See Above.
+	
+	* src/pref_window.cpp: Improved layout for Codecs list and "Up", "Down"
+	buttons.
+	
+2002-05-09  Damien Sandras  <dsandras@seconix.com>
+
 	* src/pref_window.cpp: Made a tighter layout.
 
 	* src/config.cpp: Commented out recently uncommented code to allow

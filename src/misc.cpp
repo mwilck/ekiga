@@ -151,6 +151,15 @@ GM_ldap_window_widgets *gnomemeeting_get_ldap_window (GtkWidget *gm)
 }
 
 
+GmTextChat *gnomemeeting_get_chat_window (GtkWidget *gm)
+{
+  GmTextChat *chat = (GmTextChat *) 
+    g_object_get_data (G_OBJECT (gm), "chat");
+
+  return chat;
+}
+
+
 void gnomemeeting_log_insert (gchar *text)
 {
   GtkTextIter start, end;
@@ -359,6 +368,7 @@ static void passert_response_cb (GtkDialog *dialog, int response, gpointer)
     exit (-1);
 }
 
+
 static gint passert_close_cb (GtkDialog *dialog, gpointer inAssert)
 {
   bool *assert = static_cast<bool *> (inAssert);
@@ -367,6 +377,7 @@ static gint passert_close_cb (GtkDialog *dialog, gpointer inAssert)
 
   return 0; /* FIXME: What I'm supossed to return here? */
 }
+
 
 /* This function overrides from a pwlib function */
 void PAssertFunc (const char * file, int line, const char * msg)

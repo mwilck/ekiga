@@ -331,6 +331,7 @@ class GMH323EndPoint : public H323EndPoint
   GDKVideoOutputDevice *received_video_device; 
   GM_window_widgets *gw; 
   GM_ldap_window_widgets *lw;
+  GmTextChat *chat;
 
   PThread *ils_client;
   PThread *video_grabber;

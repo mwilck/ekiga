@@ -50,10 +50,9 @@ typedef struct _GmTextChat GmTextChat;
 
 struct _GmTextChat
 {
-    GtkWidget     *window;
-    GtkWidget     *text_view;
-    GtkTextBuffer *text_buffer;
-    gboolean       buffer_is_empty;
+  GtkWidget     *text_view;
+  GtkTextBuffer *text_buffer;
+  gboolean       buffer_is_empty;
 };
 
 struct _GmRtpData
@@ -85,7 +84,7 @@ struct _GmWindow
   GtkWidget *video_frame;
   GtkWidget *pref_window;
   GtkWidget *ldap_window;
-  GmTextChat *chat;
+  GtkWidget *chat_window;
   GtkWidget *preview_button;
   GtkWidget *connect_button;
   GtkWidget *video_chan_button;

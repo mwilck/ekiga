@@ -242,6 +242,7 @@ gnomemeeting_init (GmWindow *gw,
                    GM_pref_window_widgets *pw,
                    GM_ldap_window_widgets *lw, 
                    GM_rtp_data *rtp,
+		   GmTextChat *chat,
                    int argc, char ** argv, char ** envp)
 {
   GMH323EndPoint *endpoint = NULL;
@@ -302,6 +303,7 @@ gnomemeeting_init (GmWindow *gw,
      delete (lw);
      delete (pw);
      delete (rtp);
+     delete (chat);
      exit (-1);
    }
    g_free (gconf_test);
@@ -310,6 +312,7 @@ gnomemeeting_init (GmWindow *gw,
   g_object_set_data (G_OBJECT (gm), "gw", gw);
   g_object_set_data (G_OBJECT (gm), "lw", lw);
   g_object_set_data (G_OBJECT (gm), "pw", pw);
+  g_object_set_data (G_OBJECT (gm), "chat", chat);
 
   /* Startup Process */
   gw->docklet = gnomemeeting_init_docklet ();
@@ -552,14 +555,14 @@ void gnomemeeting_init_main_window ()
 
   /* The Chat Window */
   gnomemeeting_init_text_chat_window ();
-  gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (gw->chat->window), 
+  gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (gw->chat_window), 
  		    2, 4, 0, 3,
  		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
  		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
  		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
   if (gconf_client_get_bool 
       (client, "/apps/gnomemeeting/view/show_chat_window", 0))
-          gtk_widget_show_all (GTK_WIDGET (gw->chat->window));
+          gtk_widget_show_all (GTK_WIDGET (gw->chat_window));
 
 
   /* The remote name */
