@@ -112,20 +112,24 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
     codec->SetSilenceDetectionMode(!sd ?
 				   H323AudioCodec::NoSilenceDetection :
 				   H323AudioCodec::AdaptiveSilenceDetection);
-    if (sd)
-      msg = g_strdup_printf (_("Enabled silence detection for %s"), 
-			     (const char *) name);
-    else
-      msg = g_strdup_printf (_("Disabled silence detection for %s"), 
-			     (const char *) name);
+
+    if ((strcmp (name, "H.261-CIF"))&&(strcmp (name, "H.261-QCIF"))) {
+
+      if (sd)
+	msg = g_strdup_printf (_("Enabled silence detection for %s"), 
+			       (const char *) name);
+      else
+	msg = g_strdup_printf (_("Disabled silence detection for %s"), 
+			       (const char *) name);
       
-    gnomemeeting_threads_enter ();
-    gnomemeeting_log_insert (gw->history_text_view, msg);
-    gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_chan_button),
-			      TRUE);
-    gnomemeeting_threads_leave ();
+      gnomemeeting_threads_enter ();
+      gnomemeeting_log_insert (gw->history_text_view, msg);
+      gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_chan_button),
+				TRUE);
+      gnomemeeting_threads_leave ();
     
-    g_free (msg);
+      g_free (msg);
+    }
 
     break;
   

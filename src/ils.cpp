@@ -1055,7 +1055,7 @@ void GMILSBrowser::Main ()
 	    (xdap_users_tree_view, 
 	     GM_STOCK_STATUS_OCCUPIED,
 	     GTK_ICON_SIZE_MENU, NULL);
-	  color = g_strdup ("darkgrey");
+	  color = g_strdup ("brown");
         }
         
 	gnomemeeting_threads_leave ();

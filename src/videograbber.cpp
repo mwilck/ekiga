@@ -467,13 +467,13 @@ void GMVideoGrabber::VGOpen (void)
 
     if (video_size == 0) { 
       
-      height = GM_QCIF_WIDTH; 
-      width = GM_QCIF_HEIGHT; 
+      height = GM_QCIF_HEIGHT; 
+      width = GM_QCIF_WIDTH; 
     }
     else { 
       
-      height = GM_CIF_WIDTH; 
-      width = GM_CIF_HEIGHT; 
+      height = GM_CIF_HEIGHT; 
+      width = GM_CIF_WIDTH; 
     }
     
     grabber->SetPreferredColourFormat (color_format);
@@ -496,7 +496,7 @@ void GMVideoGrabber::VGOpen (void)
 	if (!grabber->SetFrameRate (tr_fps))
 	  error_code = 4;
       else
-	if (!grabber->SetFrameSizeConverter (height, width, FALSE))
+	if (!grabber->SetFrameSizeConverter (width, height, FALSE))
 	   error_code = 5;
     }
 
@@ -570,7 +570,7 @@ void GMVideoGrabber::VGOpen (void)
       grabber->SetVideoFormat (PVideoDevice::PAL);
       grabber->SetChannel (1);    
       grabber->SetFrameRate (6);
-      grabber->SetFrameSize (176, 144);
+      grabber->SetFrameSizeConverter (width, height, FALSE);
 
       g_free (video_image);
     }
@@ -586,7 +586,8 @@ void GMVideoGrabber::VGOpen (void)
     is_opened = 1;
     var_mutex.Signal ();
   
-    encoding_device->SetFrameSize (height, width);  
+    /* If error */
+    encoding_device->SetFrameSize (width, height);  
 
     /* Setup the video settings */
     GetParameters (&whiteness, &brightness, &colour, &contrast);

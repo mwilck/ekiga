@@ -71,6 +71,7 @@ class GMH323FakeVideoInputDevice : public PFakeVideoInputDevice
   BYTE *data;
   GdkPixbuf *data_pix;
   GdkPixbuf *logo_pix;
+  gchar *video_image;
   bool picture;
   int rgb_increment;
   int pos;
