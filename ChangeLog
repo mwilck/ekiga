@@ -1,3 +1,8 @@
+2001-10-07  Damien Sandras  <dsandras@seconix.com>
+
+	* src/ils.cpp: Added test to not g_free NULL values, fixed memory leak by
+	adding the ldap_value_free function in the class.
+
 2001-10-06  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* configure.in: Added "no" to ALL_LINGUAS.

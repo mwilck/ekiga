@@ -469,26 +469,44 @@ void GMILSClient::ils_browse ()
       e != NULL; e = ldap_next_entry(ldap_connection, e)) 
     {
       if (ldap_get_values (ldap_connection, e, "surname") != NULL)
-	datas [3] = g_strdup (ldap_get_values (ldap_connection, e, "surname") [0]);
-      
+	{
+	  datas [3] = g_strdup (ldap_get_values (ldap_connection, e, "surname") [0]);
+	  ldap_value_free (ldap_get_values (ldap_connection, e, "surname"));
+	}
+
       if (ldap_get_values(ldap_connection, e, "givenname") != NULL)
-	datas [2] = g_strdup (ldap_get_values 
-			      (ldap_connection, e, "givenname") [0]);
+	{
+	  datas [2] = g_strdup (ldap_get_values 
+				(ldap_connection, e, "givenname") [0]);
+	  ldap_value_free (ldap_get_values (ldap_connection, e, "givenname"));
+	}
       
       if (ldap_get_values(ldap_connection, e, "location") != NULL)
-	datas [5] = g_strdup (ldap_get_values 
-			      (ldap_connection, e, "location") [0]);
+	{
+	  datas [5] = g_strdup (ldap_get_values 
+				(ldap_connection, e, "location") [0]);
+	  ldap_value_free (ldap_get_values (ldap_connection, e, "location"));
+	}
       
       if (ldap_get_values(ldap_connection, e, "comment") != NULL)
-	datas [6] = g_strdup (ldap_get_values (ldap_connection, e, "comment") [0]);
+	{
+	  datas [6] = g_strdup (ldap_get_values (ldap_connection, e, "comment") [0]);
+	  ldap_value_free (ldap_get_values (ldap_connection, e, "comment"));
+	}
 
       if (ldap_get_values(ldap_connection, e, "rfc822mailbox") != NULL)
-	datas [4] = g_strdup (ldap_get_values 
-			      (ldap_connection, e, "rfc822mailbox") [0]);
+	{
+	  datas [4] = g_strdup (ldap_get_values 
+				(ldap_connection, e, "rfc822mailbox") [0]);
+	  ldap_value_free (ldap_get_values (ldap_connection, e, "rfc822mailbox"));
+	}
 
       if (ldap_get_values(ldap_connection, e, "sipaddress") != NULL)
-	nmip = strtoul (ldap_get_values(ldap_connection, e, "sipaddress") [0], 
-			NULL, 10);
+	{
+	  nmip = strtoul (ldap_get_values(ldap_connection, e, "sipaddress") [0], 
+			  NULL, 10);
+	  ldap_value_free (ldap_get_values (ldap_connection, e, "sipaddress"));
+	}
       
       part1 = (int) (nmip/(256*256*256));
       part2 = (int) ((nmip - part1 * (256 * 256 * 256)) / (256 * 256));
@@ -509,7 +527,10 @@ void GMILSClient::ils_browse ()
     
       /* Video Capable ? */
       if (ldap_get_values(ldap_connection, e, "ilsa32964638") != NULL)
-	nmip = atoi (ldap_get_values(ldap_connection, e, "ilsa32964638") [0]);
+	{
+	  nmip = atoi (ldap_get_values(ldap_connection, e, "ilsa32964638") [0]);
+	  ldap_value_free (ldap_get_values (ldap_connection, e, "ilsa32964638"));
+	}
       
       if (nmip == 1)
 	{
@@ -521,7 +542,10 @@ void GMILSClient::ils_browse ()
 
       /* Audio Capable ? */
       if (ldap_get_values(ldap_connection, e, "ilsa32833566") != NULL)
-	nmip = atoi (ldap_get_values(ldap_connection, e, "ilsa32833566") [0]);
+	{
+	  nmip = atoi (ldap_get_values(ldap_connection, e, "ilsa32833566") [0]);
+	  ldap_value_free (ldap_get_values (ldap_connection, e, "ilsa32833566"));
+	}
       
       if (nmip == 1)
 	{
@@ -531,9 +555,13 @@ void GMILSClient::ils_browse ()
 				  sound, sound_mask);
 	}
 
-      for (int j = 0 ; j < 7 ; j++)
-	g_free (datas [j]);
-
+      for (int j = 2 ; j <= 7 ; j++)
+	{
+	  if (datas [j] != NULL)
+	    g_free (datas [j]);
+	  
+	  datas [j] = NULL;
+	}
     } // end of for
   
   gdk_threads_leave ();
