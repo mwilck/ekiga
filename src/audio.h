@@ -21,7 +21,13 @@
 #define _AUDIO_H_
 
 
+#ifdef __linux__
 #include <linux/soundcard.h>
+#endif
+#ifdef __FreeBSD__
+#include <machine/soundcard.h>
+#endif
+
 
 
 #include <sys/ioctl.h>

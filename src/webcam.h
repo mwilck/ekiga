@@ -23,7 +23,12 @@
 #include <fcntl.h>
 #include <unistd.h>
 
+#ifdef __linux__
 #include <linux/videodev.h>
+#endif
+#ifdef __FreeBSD__
+#include <machine/ioctl_meteor.h>
+#endif
 
 #include <sys/ioctl.h>
 #include <gtk/gtk.h>
