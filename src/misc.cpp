@@ -41,6 +41,7 @@
 #include "pref_window.h"
 #include "callbacks.h"
 #include "misc.h"
+#include "dialog.h"
 
 #include "../pixmaps/text_logo.xpm"
 
@@ -184,20 +185,12 @@ void gnomemeeting_init_main_window_logo (GtkWidget *image)
 }
 
 
-/* Helper functions por the PAssert dialog */
-static void 
-passert_close_cb (GtkDialog *dialog, gpointer data)
-{
-  _exit (1);
-}
-
-
 /* This function overrides from a pwlib function */
 void 
-PAssertFunc (const char * file, int line, const char * msg)
+PAssertFunc (const char *file, int line, 
+	     const char *className, const char *msg)
 {
   static bool inAssert;
-  gchar *mesg = NULL;
 
   if (inAssert)
     return;
@@ -205,29 +198,8 @@ PAssertFunc (const char * file, int line, const char * msg)
   inAssert = true;
 
   gnomemeeting_threads_enter ();
-  mesg = g_strdup_printf (_("Error: %s\n"), msg);
-
-  GtkWidget *dialog = 
-    gtk_dialog_new_with_buttons (_("GnomeMeeting Error"),
-				 GTK_WINDOW (gm),
-				 GTK_DIALOG_MODAL,
-				 _("Ignore"), 0,
-				 NULL);
-
-  GtkWidget *label = gtk_label_new (mesg);
-  
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), label, TRUE, TRUE, 0);
-  
-  gtk_widget_show_all (dialog);
-  gnomemeeting_threads_leave ();
-
-  gnomemeeting_threads_enter ();
-
-  g_signal_connect_swapped (GTK_OBJECT (dialog),
-			    "response",
-			    G_CALLBACK (gtk_widget_destroy),
-			    GTK_OBJECT (dialog));  
-
+  gnomemeeting_error_dialog (GTK_WINDOW (gm), 
+			     _("Error: %s\n"), msg);
   gnomemeeting_threads_leave ();
 
   inAssert = FALSE;
@@ -343,62 +315,6 @@ GtkWidget *gnomemeeting_video_window_new (gchar *title, GtkWidget *&image,
 }
 
 
-PString gnomemeeting_from_utf8_to_ucs2 (gchar *utf8_string)
-{
-  gunichar *ucs_2_string = NULL;
-  PString s;
-  gsize len = 0;
-  gsize len2 = 0;
-
-  if (!utf8_string)
-    return (s);
-
-  ucs_2_string = (gunichar *)
-    g_convert (utf8_string, strlen (utf8_string), "UCS-2", "UTF-8", 
-	       &len, &len2, 0);
-
-  PASN_BMPString bmp_string = 
-    PASN_BMPString (PWORDArray ((const WORD *) ucs_2_string, 
-				(int) len2));
-      
-  s = bmp_string.GetValue ();
-
-  return s;
-}
-
-
-gchar *gnomemeeting_from_ucs2_to_utf8 (PString ucs_2_string)
-{
-  PWORDArray arr = 
-    (const PWORDArray) (PASN_BMPString (ucs_2_string));
-  gsize len = 0;
-  gsize len2 = 0;
-  
-  if (ucs_2_string.IsEmpty ())
-    return NULL;
-
-  gchar *utf_8_string =
-    g_convert ((const char *) arr.GetPointer (), 
-	       arr.GetSize (), 
-	       "UTF-8", "UCS-2", &len, &len2, 0);
-
-  return utf_8_string;
-}
-
-
-gchar *gnomemeeting_from_iso88591_to_utf8 (PString iso_string)
-{
-  if (iso_string.IsEmpty ())
-    return NULL;
-
-  gchar *utf_8_string =
-    g_convert ((const char *) iso_string.GetPointer (), 
-	       iso_string.GetSize (), "UTF-8", "ISO-8859-1", 0, 0, 0);
-
-  return utf_8_string;
-}
-
-
 PString gnomemeeting_pstring_cut (PString s)
 {
   PString s2 = s;
@@ -417,4 +333,17 @@ PString gnomemeeting_pstring_cut (PString s)
     s2 = s2.Left (bracket);     
 
   return s2;
+}
+
+
+gchar *gnomemeeting_from_iso88591_to_utf8 (PString iso_string)
+{
+  if (iso_string.IsEmpty ())
+    return NULL;
+
+  gchar *utf_8_string =
+    g_convert ((const char *) iso_string.GetPointer (),
+               iso_string.GetSize (), "UTF-8", "ISO-8859-1", 0, 0, 0);
+  
+  return utf_8_string;
 }

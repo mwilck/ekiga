@@ -113,36 +113,18 @@ gnomemeeting_video_window_new (gchar *, GtkWidget *&, int, int);
 
 
 /* DESCRIPTION   :  /
- * BEHAVIOR      : Takes an UTF-8 encoded string, and returns an UCS-2 encoded
- *                 PString.
- * PRE           : An UTF-8 encoded string.
- */
-PString
-gnomemeeting_from_utf8_to_ucs2 (gchar *);
-
-
-/* DESCRIPTION   :  /
- * BEHAVIOR      : Takes an UCS-2 encoded PString, and returns an UTF-8 encoded
- *                 string.
- * PRE           : An UCS-2 encoded PString.
- */
-gchar *
-gnomemeeting_from_ucs2_to_utf8 (PString);
-
-
-/* DESCRIPTION   :  /
- * BEHAVIOR      : Takes an ISO-8859-1 encoded PString, and returns an UTF-8 
- *                 encoded string.
- * PRE           : An ISO-8859-1 encoded PString.
- */
-gchar *
-gnomemeeting_from_iso88591_to_utf8 (PString);
-
-
-/* DESCRIPTION   :  /
  * BEHAVIOR      : Takes a PString and returns the Left part before a [ or a (.
  * PRE           : An non-empty PString.
  */
 PString 
 gnomemeeting_pstring_cut (PString);
+
+
+/* DESCRIPTION   :  /
+ * BEHAVIOR      : Takes an ISO-8859-1 encoded PString, and returns an UTF-8
+ *                 encoded string.
+ * PRE           : An ISO-8859-1 encoded PString.
+ */
+gchar *
+gnomemeeting_from_iso88591_to_utf8 (PString);
 #endif

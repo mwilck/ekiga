@@ -64,8 +64,6 @@ GMThreadsCleaner::~GMThreadsCleaner ()
 
 void GMThreadsCleaner::Main ()
 {
-  int counter = 0;
-
   GMILSClient *ils_client = (GMILSClient *) 
     MyApp->Endpoint ()->GetILSClient();
 
@@ -78,30 +76,11 @@ void GMThreadsCleaner::Main ()
 
   gnome_appbar_push (GNOME_APPBAR (gw->statusbar), _("Quit in progress..."));
 
-
   /* Synchronous End of Call */
-  endpoint->ClearAllCalls (H323Connection::EndedByLocalUser, FALSE);
+  endpoint->ClearCall (endpoint->GetCurrentCallToken (), 
+		       H323Connection::EndedByLocalUser);
 
   gnomemeeting_threads_leave ();
-
-  while (MyApp->Endpoint ()->GetCallingState () != 0) {
-   
-    /* if OpenH323 doesn't disconnect, we force the exit */
-    if (counter > 50000) {
-      
-      gdk_threads_enter ();
-      gnomemeeting_warning_dialog (GTK_WINDOW (gm), _("Warning! GnomeMeeting can't disconnect from the remote party due to a bug in OpenH323.\nForcing the exit in 3 seconds!\n"));
-      gdk_threads_leave ();
-      PThread::Current()->Sleep (3000);
-
-      system ("killall -9 gnomemeeting");
-
-      break;
-    }
-
-    Current ()->Sleep (100);
-    counter++;  
-  }
 
   delete (ils_client);
   delete (video_grabber);

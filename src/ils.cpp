@@ -729,7 +729,7 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
   else if (!strcmp ((char *) name, "port"))
     entval = xmlStrdup (BAD_CAST port);
   else if (!strcmp ((char *) name, "decip"))
-    entval = xmlStrdup (BAD_CAST "1234567890");
+    entval = xmlStrdup (BAD_CAST ip);
   else if (!strcmp ((char *) name, "email"))
     entval = xmlStrdup (BAD_CAST mail);
   else if (!strcmp ((char *) name, "givenname"))

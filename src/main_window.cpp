@@ -1056,36 +1056,34 @@ gnomemeeting_init (GmWindow *gw,
       gtk_main_iteration ();
   }
   
-
   /* Search for devices */
   gnomemeeting_sound_daemons_suspend ();
-  gw->audio_player_devices = 
-    PSoundChannel::GetDeviceNames (PSoundChannel::Player);
-
-  gw->audio_recorder_devices = 
-    PSoundChannel::GetDeviceNames (PSoundChannel::Recorder);
-
-  gw->video_devices = PVideoInputDevice::GetInputDeviceNames ();
-
 
   /* Build the interface */
   gnomemeeting_init_history_window ();
   gnomemeeting_init_calls_history_window ();
   gnomemeeting_init_main_window ();
   gnomemeeting_init_ldap_window ();
-  gnomemeeting_init_pref_window ();  
-  gnomemeeting_init_menu ();
-  gnomemeeting_init_toolbar ();
-
 
   /* Launch the GnomeMeeting H.323 part */
   static GnomeMeeting instance;
   endpoint = MyApp->Endpoint ();
+
+  gw->audio_player_devices = 
+    PSoundChannel::GetDeviceNames (PSoundChannel::Player);
+  gw->audio_recorder_devices = 
+    PSoundChannel::GetDeviceNames (PSoundChannel::Recorder);
+  gw->video_devices = PVideoInputDevice::GetInputDeviceNames ();
+
+  gnomemeeting_init_pref_window ();  
+  gnomemeeting_init_menu ();
+  gnomemeeting_init_toolbar ();
+
   gnomemeeting_sound_daemons_resume ();
  
-  /* Launch the GnomeMeeting H.323 part */
   if (clo->debug_level != 0)
     PTrace::Initialise (clo->debug_level);
+
 
   /* Start the video preview */
   if (gconf_client_get_bool (client, DEVICE_KEY "video_preview", NULL)) {
@@ -1109,7 +1107,7 @@ gnomemeeting_init (GmWindow *gw,
     /* It is the first alias for the gatekeeper */
     if (local_name != NULL) {
 
-      endpoint->SetLocalUserName (gnomemeeting_from_utf8_to_ucs2 (local_name));
+      endpoint->SetLocalUserName (local_name);
     }
 
     g_free (firstname);

@@ -1055,12 +1055,16 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   name = gnomemeeting_pstring_cut (name);
   app = gnomemeeting_pstring_cut (app);
 
-  utf8_app = gnomemeeting_from_iso88591_to_utf8 (app);
-
-  if (g_strrstr (utf8_app, "gnomemeeting") == NULL) 
-    utf8_name = gnomemeeting_from_iso88591_to_utf8 (name);
+  if (g_utf8_validate ((gchar *) (const unsigned char*) app, -1, NULL))
+    utf8_app = g_strdup ((char *) (const char *) (app));
   else
-    utf8_name = gnomemeeting_from_ucs2_to_utf8 (name);
+    utf8_app = gnomemeeting_from_iso88591_to_utf8 (app);
+
+  if (g_utf8_validate ((gchar *) (const unsigned char*) name, -1, NULL))
+    utf8_name = g_strdup ((char *) (const char *) (name));
+  else
+    utf8_name = gnomemeeting_from_iso88591_to_utf8 (name);
+
 
   if (forward_host_gconf)
     forward_host = PString (forward_host_gconf);
@@ -1245,15 +1249,19 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 
 
   /* Convert remote app and remote name */
-  app = gnomemeeting_pstring_cut (app);
   name = gnomemeeting_pstring_cut (name);
+  app = gnomemeeting_pstring_cut (app);
 
-  utf8_app = gnomemeeting_from_iso88591_to_utf8 (app);
-
-  if (g_strrstr (utf8_app, "gnomemeeting") == NULL) 
-    utf8_name = gnomemeeting_from_iso88591_to_utf8 (name);
+  if (g_utf8_validate ((gchar *) (const unsigned char*) app, -1, NULL))
+    utf8_app = g_strdup ((char *) (const char *) (app));
   else
-    utf8_name = gnomemeeting_from_ucs2_to_utf8 (name);
+    utf8_app = gnomemeeting_from_iso88591_to_utf8 (app);
+
+  if (g_utf8_validate ((gchar *) (const unsigned char*) name, -1, NULL))
+    utf8_name = g_strdup ((char *) (const char *) (name));
+  else
+    utf8_name = gnomemeeting_from_iso88591_to_utf8 (name);
+
 
   gnomemeeting_threads_enter ();
 

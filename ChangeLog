@@ -1,3 +1,24 @@
+2002-11-01 Damien Sandras  <dsandras@seconix.com>
+
+	* src/chat_window.cpp: Fixed conversion to UTF-8.
+
+	* src/cleaner.cpp: Changed the way GM exits.
+
+	* src/connection.cpp: Fixed conversion to UTF-8.
+
+	* src/endpoint.cpp: Fixed conversion to UTF-8.
+
+	* src/ils.cpp: Fixed bad IP when GM registers to ILS.
+
+	* src/main_window.cpp: Changed startup sequence.
+
+	* src/misc.cpp: Adapated PAssertFunc to the new API.
+	Added again conversion from ISO-8859-1 to UTF-8.
+	
+	* src/misc.h: Added again conversion from ISO-8859-1 to UTF-8.
+
+	* src/pref_window.cpp: Fixed conversion to UTF-8.
+	
 2002-10-30 Damien Sandras  <dsandras@seconix.com>
 
 	* configure.in: Get back to 0.94.2.
