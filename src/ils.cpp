@@ -881,7 +881,9 @@ void GMILSBrowser::Main ()
   gchar *msg = NULL;
   gchar *color = NULL;
   gchar *filter = NULL;
-
+  gchar *name = NULL;
+  gchar *callto = NULL;
+  
   GtkWidget *statusbar = NULL;
   GtkListStore *xdap_users_list_store = NULL;
   GtkWidget *xdap_users_tree_view = NULL;
@@ -1146,16 +1148,17 @@ void GMILSBrowser::Main ()
 	    (xdap_users_tree_view, 
 	     GM_STOCK_STATUS_OCCUPIED,
 	     GTK_ICON_SIZE_MENU, NULL);
-	  color = g_strdup ("brown");
+	  color = g_strdup ("darkgray");
         }
         
 	gnomemeeting_threads_leave ();
 
-
+				
 	/* Check if the window is still present or not */
 	if (lw) {
 	  
 	  gchar *utf8_data [7] = {NULL, NULL, NULL, NULL, NULL, NULL, NULL};
+
 	  
 	  for (int j = 0 ; j < 7 ; j++) {
 	    
@@ -1171,22 +1174,27 @@ void GMILSBrowser::Main ()
 		  gnomemeeting_from_iso88591_to_utf8 (PString (datas [j+2]));
 	    }
 	  }
+
+	  /* The user name and callto */
+	  name = g_strdup_printf ("%s %s", utf8_data [0], utf8_data [1]);
+	  callto = g_strdup_printf ("callto://%s/%s",
+				    ldap_server, utf8_data [2]);
+
 	  gnomemeeting_threads_enter ();
 
 	  gtk_list_store_append (xdap_users_list_store, &list_iter);
 
 	  gtk_list_store_set (xdap_users_list_store, &list_iter,
-			      COLUMN_STATUS, status_icon,
-			      COLUMN_AUDIO, audio,
-			      COLUMN_VIDEO, video,
-			      COLUMN_FIRSTNAME, utf8_data [0],
-			      COLUMN_LASTNAME, utf8_data [1],
-			      COLUMN_EMAIL, utf8_data [2],
-			      COLUMN_LOCATION, utf8_data [3],
-			      COLUMN_COMMENT, utf8_data [4],
-			      COLUMN_VERSION, utf8_data [5],
-			      COLUMN_IP, utf8_data [6],
-			      COLUMN_COLOR, color,
+			      COLUMN_ILS_STATUS, status_icon,
+			      COLUMN_ILS_AUDIO, audio,
+			      COLUMN_ILS_VIDEO, video,
+			      COLUMN_ILS_NAME, name,
+			      COLUMN_ILS_CALLTO, callto,
+			      COLUMN_ILS_LOCATION, utf8_data [3],
+			      COLUMN_ILS_COMMENT, utf8_data [4],
+			      COLUMN_ILS_VERSION, utf8_data [5],
+			      COLUMN_ILS_IP, utf8_data [6],
+			      COLUMN_ILS_COLOR, color,
 			      -1);
           
 	  gnomemeeting_threads_leave ();
@@ -1199,6 +1207,8 @@ void GMILSBrowser::Main ()
 
 	g_object_unref (status_icon);
 	g_free (color);
+	g_free (name);
+	g_free (callto);
 
 	for (int j = 2 ; j <= 8 ; j++) {
 	  

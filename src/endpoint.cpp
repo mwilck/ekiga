@@ -254,6 +254,9 @@ GMH323EndPoint::~GMH323EndPoint ()
   var_access_mutex.Signal ();
 #endif
 
+  if (listener)
+    RemoveListener (listener);
+  
   quit_mutex.Signal ();
 }
 

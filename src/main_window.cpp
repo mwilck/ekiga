@@ -1478,7 +1478,7 @@ void gnomemeeting_init_main_window (GtkAccelGroup *accel)
     gtk_widget_hide (GTK_WIDGET (gw->statusbar));
 
   
-  gtk_widget_set_size_request (GTK_WIDGET (gw->main_notebook), 230, -1);
+  gtk_widget_set_size_request (GTK_WIDGET (gw->main_notebook), 210, -1);
   gtk_widget_set_size_request (GTK_WIDGET (gm), -1, -1);
 
   g_signal_connect_after (G_OBJECT (gw->main_notebook), "switch-page",
@@ -1500,9 +1500,8 @@ void gnomemeeting_init_main_window_stats ()
 
   GmWindow *gw = gnomemeeting_get_main_window (gm);
 
-  frame = gtk_frame_new (_("Statistics"));
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_ETCHED_OUT);
-
+  frame = gtk_frame_new (NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_ETCHED_IN);
   
   /* The first frame with statistics display */
   frame2 = gtk_frame_new (NULL);
@@ -1581,8 +1580,8 @@ void gnomemeeting_init_main_window_dialpad ()
 
   GmWindow *gw = gnomemeeting_get_main_window (gm);
 
-  frame = gtk_frame_new (_("Dialpad"));
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_ETCHED_OUT);
+  frame = gtk_frame_new (NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_ETCHED_IN);
 
   table = gtk_table_new (4, 3, TRUE);
   gtk_container_add (GTK_CONTAINER (frame), table);
@@ -1655,9 +1654,9 @@ void gnomemeeting_init_main_window_video_settings ()
   main_table = gtk_table_new (2, 4, FALSE);
 
   /* Webcam Control Frame */		
-  gw->video_settings_frame = gtk_frame_new (_("Video Settings"));
+  gw->video_settings_frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (gw->video_settings_frame), 
-			     GTK_SHADOW_ETCHED_OUT);
+			     GTK_SHADOW_ETCHED_IN);
 
   /* Put a table in the first frame */
   table = gtk_table_new (4, 4, FALSE);
@@ -1828,9 +1827,9 @@ void gnomemeeting_init_main_window_audio_settings ()
   /* The main table that will contain the audio test button and the frame */
   main_table = gtk_table_new (2, 4, FALSE);
 
-  gw->audio_settings_frame = gtk_frame_new (_("Audio Settings"));
+  gw->audio_settings_frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (gw->audio_settings_frame), 
-			     GTK_SHADOW_ETCHED_OUT);
+			     GTK_SHADOW_ETCHED_IN);
 
   audio_table = gtk_table_new (4, 4, TRUE);
   gtk_container_add (GTK_CONTAINER (gw->audio_settings_frame), audio_table);

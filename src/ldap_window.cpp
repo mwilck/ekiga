@@ -70,8 +70,7 @@ add_contact_to_group_callback (GtkWidget *widget, gpointer data)
   GmLdapWindow *lw = NULL;
 
   gchar *gconf_key = NULL;
-  gchar *contact_firstname = NULL;
-  gchar *contact_lastname = NULL;
+  gchar *contact_name = NULL;
   gchar *contact_netmask = NULL;
   gchar *server_name = NULL;
   gchar *contact_callto = NULL;
@@ -116,26 +115,20 @@ add_contact_to_group_callback (GtkWidget *widget, gpointer data)
 	if (page_type == CONTACTS_SERVERS) {
 	    
 	  gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 
-			      3, &contact_firstname, 
-			      4, &contact_lastname, 
-			      5, &contact_callto,
+			      COLUMN_ILS_NAME, &contact_name, 
+			      COLUMN_ILS_CALLTO, &contact_callto,
 			      -1);
-	  contact_info = 
-	    g_strdup_printf ("%s %s|callto://%s/%s|None", 
-			     contact_firstname, contact_lastname,
-			     server_name, contact_callto);
 	}
 	else {
 
 	  gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 
-			      0, &contact_firstname, 
-			      1, &contact_callto,
+			      COLUMN_NAME, &contact_name, 
+			      COLUMN_CALLTO, &contact_callto,
 			      -1);
-	  
-	  contact_info = 
-	    g_strdup_printf ("%s|%s|None", contact_firstname,
-			     contact_callto);
 	}
+	
+	contact_info = 
+	  g_strdup_printf ("%s|%s|None", contact_name, contact_callto);
 
 	/* Update the gconf key */
 	group_list = g_slist_append (group_list, contact_info);
@@ -147,6 +140,186 @@ add_contact_to_group_callback (GtkWidget *widget, gpointer data)
 
     g_slist_free (group_list);
     g_free (gconf_key);
+  }
+}
+
+
+static void
+edit_contact_callback (GtkWidget *widget, gpointer data)
+{
+  int page_num = 0;
+
+  GtkTreeView *tree_view = NULL;
+  GtkTreeModel *model = NULL;
+  GtkTreeSelection *selection = NULL;
+  GtkTreeIter iter;
+
+  GConfClient *client = NULL;
+
+  GtkWidget *table = NULL;
+  GtkWidget *page = NULL;
+  GtkWidget *dialog = NULL;
+  GtkWidget *label = NULL;
+  GtkWidget *name_entry = NULL;
+  GtkWidget *callto_entry = NULL;
+  GtkWidget *netmask_entry = NULL;
+  
+  gchar *contact_name = NULL;
+  gchar *contact_callto = NULL;
+  gchar *contact_netmask = NULL;
+  gchar *gconf_key = NULL;
+  gchar *contact_info = NULL;
+  gchar *old_contact_info = NULL;
+  gchar *group_name = NULL;
+
+  int result = 0;
+  
+  GSList *group_content = NULL;
+  GSList *group_content_iter = NULL;
+  
+  GmLdapWindow *lw = NULL;
+  GmWindow *gw = NULL;
+  
+  lw = gnomemeeting_get_ldap_window (gm);
+  gw = gnomemeeting_get_main_window (gm);
+  client = gconf_client_get_default ();
+  
+  page_num = gtk_notebook_get_current_page (GTK_NOTEBOOK (lw->notebook));
+  page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), page_num);
+  
+  if (page) {
+  
+    tree_view = 
+      GTK_TREE_VIEW (g_object_get_data (G_OBJECT (page), "tree_view"));
+    group_name =
+      (gchar *) g_object_get_data (G_OBJECT (page), "server_name");
+
+    gconf_key =
+      g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, group_name);
+    
+    selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view));
+
+    if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
+
+      gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 
+			  0, &contact_name, 
+			  1, &contact_callto,
+			  2, &contact_netmask,
+			  -1);
+      old_contact_info =
+	g_strdup_printf ("%s|%s|%s", contact_name, contact_callto,
+			 contact_netmask);
+    }
+
+
+    /* Create the dialog to easily modify the info of a specific contact */
+    dialog = gtk_dialog_new_with_buttons (_("Edit the contact information"), 
+					  GTK_WINDOW (gw->ldap_window),
+					  GTK_DIALOG_DESTROY_WITH_PARENT,
+					  GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
+					  GTK_STOCK_CANCEL,
+					  GTK_RESPONSE_REJECT,
+					  NULL);
+    
+    table = gtk_table_new (3, 2, FALSE);
+    label = gtk_label_new (_("Name:"));
+    name_entry = gtk_entry_new ();
+    if (contact_name)
+      gtk_entry_set_text (GTK_ENTRY (name_entry), contact_name);
+    gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1, 
+		      (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+		      (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+		      GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+    gtk_table_attach (GTK_TABLE (table), name_entry, 1, 2, 0, 1, 
+		      (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+		      (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+		      GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+    
+    label = gtk_label_new (_("callto URL:"));
+    callto_entry = gtk_entry_new ();
+    if (contact_callto)
+      gtk_entry_set_text (GTK_ENTRY (callto_entry), contact_callto);
+    else
+      gtk_entry_set_text (GTK_ENTRY (callto_entry), "callto://");
+    gtk_table_attach (GTK_TABLE (table), label, 0, 1, 1, 2, 
+		      (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+		      (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+		      GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+    gtk_table_attach (GTK_TABLE (table), callto_entry, 1, 2, 1, 2, 
+		      (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+		      (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+		      GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+    
+    
+    label = gtk_label_new (_("Netmask:"));
+    netmask_entry = gtk_entry_new ();
+    if (contact_netmask)
+      gtk_entry_set_text (GTK_ENTRY (netmask_entry), contact_netmask);
+    gtk_table_attach (GTK_TABLE (table), label, 0, 1, 2, 3, 
+		      (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+		      (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+		      GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+    gtk_table_attach (GTK_TABLE (table), netmask_entry, 1, 2, 2, 3, 
+		      (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+		      (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+		      GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+
+    gtk_box_pack_start (GTK_BOX (GTK_DIALOG(dialog)->vbox), table,
+			FALSE, FALSE, 4);
+    
+    gtk_widget_show_all (dialog);
+    
+    result = gtk_dialog_run (GTK_DIALOG (dialog));
+    
+    switch (result) {
+	
+    case GTK_RESPONSE_ACCEPT:
+	
+      contact_info =
+	g_strdup_printf ("%s|%s|%s",
+			 gtk_entry_get_text (GTK_ENTRY (name_entry)),
+			 gtk_entry_get_text (GTK_ENTRY (callto_entry)),
+			 gtk_entry_get_text (GTK_ENTRY (netmask_entry)));
+      group_content =
+	gconf_client_get_list (client, gconf_key, GCONF_VALUE_STRING, NULL);
+
+      if (old_contact_info) {
+	
+	group_content_iter = group_content;
+	while (group_content_iter) {
+	  
+	  if (group_content_iter->data
+	      && !strcmp ((char *) group_content_iter->data, old_contact_info))
+	    break;
+	
+	  group_content_iter = g_slist_next (group_content_iter);
+	}
+	
+	group_content =
+	  g_slist_insert (group_content, (gpointer) contact_info,
+			  g_slist_position (group_content,
+					    group_content_iter));
+      
+	group_content = g_slist_remove_link (group_content,
+					     group_content_iter);
+      }
+      else
+	group_content =
+	  g_slist_append (group_content, (gpointer) contact_info);
+      
+      gconf_client_set_list (client, gconf_key, GCONF_VALUE_STRING,
+			     group_content, NULL);
+      
+      g_free (contact_info);
+      g_slist_free (group_content);
+      
+      break;
+    }
+      
+    g_free (gconf_key);
+
+    if (dialog)
+      gtk_widget_destroy (dialog);
   }
 }
 
@@ -220,9 +393,8 @@ delete_contact_from_group_callback (GtkWidget *widget, gpointer data)
 	group_content = g_slist_remove_link (group_content,
 					     group_content_iter);
 	
-	if (group_content)
-	  gconf_client_set_list (client, gconf_key, GCONF_VALUE_STRING,
-				 group_content, NULL);
+	gconf_client_set_list (client, gconf_key, GCONF_VALUE_STRING,
+			       group_content, NULL);
 	
 	g_free (contact_info);
 	g_slist_free (group_content);
@@ -422,7 +594,7 @@ row_activated (GtkTreeView *tree, GtkTreePath *path,
   if (GPOINTER_TO_INT (data) == CONTACTS_SERVERS) {
     
     gtk_tree_model_get (GTK_TREE_MODEL (xdap_users_list), &tree_iter,
-			COLUMN_IP, &text, -1);
+			COLUMN_ILS_CALLTO, &text, -1);
     url = "callto://" + PString (text);
   }
   else {
@@ -578,6 +750,55 @@ void contacts_tree_view_row_activated_cb (GtkTreeView *tree_view,
 }
 
 
+static bool
+is_user_member_of_group (gchar *contact_callto, gchar *group_name)
+{
+  GSList *group_content = NULL;
+
+  bool found = false;
+  gchar *gconf_key = NULL;
+  gchar **contact_info = NULL;
+
+  GConfClient *client = NULL;
+
+
+  if (!contact_callto || !group_name)
+    return false;
+  
+  gconf_key =
+    g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, group_name);
+
+  client = gconf_client_get_default ();
+  
+  group_content =
+    gconf_client_get_list (client, gconf_key, GCONF_VALUE_STRING, NULL);
+
+  while (group_content && !found) {
+
+    if (group_content->data) {
+      
+      contact_info = g_strsplit ((gchar *) group_content->data, "|", 0);
+
+      if (contact_info && contact_info [COLUMN_CALLTO])
+	if (!strcmp (contact_info [COLUMN_CALLTO], contact_callto)) {
+	  
+	  found = true;
+	  break;
+	}
+      g_strfreev (contact_info);
+    }
+
+    group_content = g_slist_next (group_content);
+  }
+
+  group_content = g_slist_nth (group_content, 0);
+  
+  g_slist_free (group_content);
+  g_free (gconf_key);
+
+  return found;
+}
+
 
 static gint
 contacts_tree_view_event_after_callback (GtkWidget *w, GdkEventButton *e,
@@ -637,10 +858,26 @@ contacts_tree_view_event_after_callback (GtkWidget *w, GdkEventButton *e,
 	    {NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL},
 	  };
 	
+	MenuEntry delete_group_new_contact_menu [] =
+	  {
+	    {_("New contact"), NULL,
+	     NULL, 0, MENU_ENTRY, 
+	     GTK_SIGNAL_FUNC (edit_contact_callback), 
+	     NULL, NULL},
+	    {_("Delete"), NULL,
+	     GTK_STOCK_DELETE, 0, MENU_ENTRY, 
+	     GTK_SIGNAL_FUNC (delete_contact_callback), 
+	     (gpointer) path_string, NULL},
+	    {NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL},
+	  };
 
 	/* Build the appropriate popup menu */
 	if (gtk_tree_path_get_depth (path) >= 2)
-	  gnomemeeting_build_menu (menu, delete_contact_menu, NULL);
+	  if (gtk_tree_path_get_indices (path) [0] == 0)
+	    gnomemeeting_build_menu (menu, delete_contact_menu, NULL);
+	  else
+	    gnomemeeting_build_menu (menu, delete_group_new_contact_menu,
+				     NULL);
 	else
 	  if (gtk_tree_path_get_indices (path) [0] == 0) 
 	    gnomemeeting_build_menu (menu, new_server_menu, NULL);
@@ -669,15 +906,20 @@ static gint
 contact_info_row_clicked (GtkWidget *w, GdkEventButton *e, gpointer data)
 {
   GtkWidget *menu = NULL;
+
   GtkTreeSelection *selection = NULL;
   GtkTreeView *tree_view = NULL;
+  GtkTreeModel *model = NULL;
   GtkTreePath *path = NULL;
-
+  GtkTreeIter iter;
+  
   GConfClient *client = NULL;
+
   GSList *contacts_list = NULL;
   GSList *contacts_list_iter = NULL;
   GSList *last = NULL;
 
+  gchar *contact_callto = NULL;
   int cpt = 0, i = 0, index = 0;
 
   tree_view = GTK_TREE_VIEW (w);
@@ -693,7 +935,17 @@ contact_info_row_clicked (GtkWidget *w, GdkEventButton *e, gpointer data)
 				       &path, NULL, NULL, NULL)) {
 
       selection = gtk_tree_view_get_selection (tree_view);
+      model = gtk_tree_view_get_model (GTK_TREE_VIEW (tree_view));
 
+      gtk_tree_model_get_iter (GTK_TREE_MODEL (model), &iter, path);
+
+      if (GPOINTER_TO_INT (data) == CONTACTS_GROUPS)
+	gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
+			    COLUMN_CALLTO, &contact_callto, -1);
+      else
+	gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
+			    COLUMN_ILS_CALLTO, &contact_callto, -1);
+      
       if (e->button == 3 && 
 	  gtk_tree_selection_path_is_selected (selection, path)) {
 	
@@ -708,11 +960,8 @@ contact_info_row_clicked (GtkWidget *w, GdkEventButton *e, gpointer data)
 	  last = g_slist_last (contacts_list);
 	  i = g_slist_position (contacts_list, last);
 
-	  if (GPOINTER_TO_INT (data) == CONTACTS_SERVERS)
-	    i = i + 4; /* There are i+1 elements + Contact + Add to group */
-	  else if (GPOINTER_TO_INT (data) == CONTACTS_GROUPS)
-	    i = i + 5; /* Same as above, but we need to be able to
-			  remove the user too */
+	  i = i + 5; /* There are maximum : i+1 elements + Contact
+			+ Add to group + Remove user */
 
 	  MenuEntry user_menu [i];
 
@@ -726,14 +975,22 @@ contact_info_row_clicked (GtkWidget *w, GdkEventButton *e, gpointer data)
 	  
 	  if (GPOINTER_TO_INT (data) == CONTACTS_GROUPS) {
 	    
+	    MenuEntry edit_entry =
+	      {_("Edit this user information"), NULL,
+	       NULL, 0, MENU_ENTRY,
+	       GTK_SIGNAL_FUNC (edit_contact_callback),
+	       NULL, NULL};
+	    user_menu [cpt] = edit_entry;
+
 	    MenuEntry delete_entry =
 	      {_("Delete this user"), NULL,
 	       GTK_STOCK_DELETE, 0, MENU_ENTRY,
 	       GTK_SIGNAL_FUNC (delete_contact_from_group_callback),
 	       NULL, NULL};
-	    user_menu [cpt] = delete_entry;
-	    cpt = 2;
-	    index = 3;
+	    user_menu [cpt + 1] = delete_entry;
+	    
+	    cpt = 3;
+	    index = 4;
 	  }
 
 	  MenuEntry group_entry =
@@ -746,22 +1003,29 @@ contact_info_row_clicked (GtkWidget *w, GdkEventButton *e, gpointer data)
 	  contacts_list_iter = contacts_list;
 	  while (contacts_list_iter) {
 
-	    MenuEntry entry =
-	      {(char *) contacts_list_iter->data, NULL,
-	       NULL, 0, MENU_ENTRY, 
-	       GTK_SIGNAL_FUNC (add_contact_to_group_callback), 
-	       //GINT_TO_POINTER (cpt - index), NULL};
-	       (char *) contacts_list_iter->data, NULL};
+	    /* An user is uniquely identified by his callto URL,
+	       we will check if the user already belongs to the group or
+	       not to only propose to add him to the groups he doesn't
+	       belong to */
+	    if (!is_user_member_of_group (contact_callto,
+					  (gchar *) contacts_list_iter->data)){
+	    
+	      MenuEntry entry =
+		{(char *) contacts_list_iter->data, NULL,
+		 NULL, 0, MENU_ENTRY, 
+		 GTK_SIGNAL_FUNC (add_contact_to_group_callback), 
+		 (char *) contacts_list_iter->data, NULL};
 
-	    user_menu [cpt] =  entry;
+	      user_menu [cpt] =  entry;
+	      cpt++;
+	    }
 	    
 	    contacts_list_iter = contacts_list_iter->next;
-	    cpt++;
 	  }
 	  
 	  MenuEntry end_menu = 
 	    {NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL};
-	  user_menu [i-1] = end_menu;
+	  user_menu [cpt] = end_menu;
 
 	  gnomemeeting_build_menu (menu, user_menu, NULL);
 	
@@ -1087,7 +1351,7 @@ int gnomemeeting_init_ldap_window_notebook (gchar *text_label, int type)
       gtk_list_store_new (NUM_COLUMNS_SERVERS, GDK_TYPE_PIXBUF, G_TYPE_BOOLEAN,
 			  G_TYPE_BOOLEAN, G_TYPE_STRING, G_TYPE_STRING,
 			  G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING,
-			  G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
+			  G_TYPE_STRING, G_TYPE_STRING);
   else
     xdap_users_list_store = 
       gtk_list_store_new (NUM_COLUMNS_GROUPS, G_TYPE_STRING, G_TYPE_STRING,
@@ -1105,7 +1369,7 @@ int gnomemeeting_init_ldap_window_notebook (gchar *text_label, int type)
     gtk_tree_view_new_with_model (GTK_TREE_MODEL (xdap_users_list_store));
   gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (tree_view), TRUE);
   gtk_tree_view_set_search_column (GTK_TREE_VIEW (tree_view),
-				   COLUMN_FIRSTNAME);
+				   COLUMN_ILS_NAME);
 
   /* Set all Colums */
   if (type == CONTACTS_SERVERS) {
@@ -1115,7 +1379,7 @@ int gnomemeeting_init_ldap_window_notebook (gchar *text_label, int type)
     column = gtk_tree_view_column_new_with_attributes (_("S"),
 						       renderer,
 						       "pixbuf", 
-						       COLUMN_STATUS,
+						       COLUMN_ILS_STATUS,
 						       NULL);
     gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 25);
     gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
@@ -1125,7 +1389,7 @@ int gnomemeeting_init_ldap_window_notebook (gchar *text_label, int type)
     column = gtk_tree_view_column_new_with_attributes (_("A"),
 						       renderer,
 						       "active", 
-						       COLUMN_AUDIO,
+						       COLUMN_ILS_AUDIO,
 						       NULL);
     gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 25);
     gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
@@ -1135,56 +1399,46 @@ int gnomemeeting_init_ldap_window_notebook (gchar *text_label, int type)
     column = gtk_tree_view_column_new_with_attributes (_("V"),
 						       renderer,
 						       "active", 
-						       COLUMN_VIDEO,
+						       COLUMN_ILS_VIDEO,
 						       NULL);
     gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 25);
     gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
 
     renderer = gtk_cell_renderer_text_new ();
-    column = gtk_tree_view_column_new_with_attributes (_("First Name"),
+    column = gtk_tree_view_column_new_with_attributes (_("Name"),
 						       renderer,
 						       "text", 
-						       COLUMN_FIRSTNAME,
+						       COLUMN_ILS_NAME,
 						       NULL);
-    gtk_tree_view_column_set_sort_column_id (column, COLUMN_FIRSTNAME);
+    gtk_tree_view_column_set_sort_column_id (column, COLUMN_ILS_NAME);
     gtk_tree_view_column_add_attribute (column, renderer, "foreground", 
-					COLUMN_COLOR);
+					COLUMN_ILS_COLOR);
     gtk_tree_view_column_set_resizable (column, true);
     gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+    g_object_set (G_OBJECT (renderer), "weight", "bold",
+		  "style", PANGO_STYLE_ITALIC, NULL);
 
     renderer = gtk_cell_renderer_text_new ();
-    column = gtk_tree_view_column_new_with_attributes (_("Last Name"),
+    column = gtk_tree_view_column_new_with_attributes (_("Callto"),
 						       renderer,
 						       "text", 
-						       COLUMN_LASTNAME,
+						       COLUMN_ILS_CALLTO,
 						       NULL);
-    gtk_tree_view_column_set_sort_column_id (column, COLUMN_LASTNAME);
-    gtk_tree_view_column_add_attribute (column, renderer, "foreground", 
-					COLUMN_COLOR);
+    gtk_tree_view_column_set_sort_column_id (column, COLUMN_ILS_CALLTO);
     gtk_tree_view_column_set_resizable (column, true);
     gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
-
-    renderer = gtk_cell_renderer_text_new ();
-    column = gtk_tree_view_column_new_with_attributes (_("E-Mail"),
-						       renderer,
-						       "text", 
-						       COLUMN_EMAIL,
-						       NULL);
-    gtk_tree_view_column_set_sort_column_id (column, COLUMN_EMAIL);
-    gtk_tree_view_column_add_attribute (column, renderer, "foreground", 
-					COLUMN_COLOR);
-    gtk_tree_view_column_set_resizable (column, true);
-    gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+    g_object_set (G_OBJECT (renderer), "foreground", "blue",
+		  "underline", TRUE, NULL);
 
     renderer = gtk_cell_renderer_text_new ();
     column = gtk_tree_view_column_new_with_attributes (_("Location"),
 						       renderer,
 						       "text", 
-						       COLUMN_LOCATION,
+						       COLUMN_ILS_LOCATION,
 						       NULL);
-    gtk_tree_view_column_set_sort_column_id (column, COLUMN_LOCATION);
+    gtk_tree_view_column_set_sort_column_id (column, COLUMN_ILS_LOCATION);
     gtk_tree_view_column_add_attribute (column, renderer, "foreground", 
-					COLUMN_COLOR);
+					COLUMN_ILS_COLOR);
     gtk_tree_view_column_set_resizable (column, true);
     gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
 
@@ -1192,11 +1446,11 @@ int gnomemeeting_init_ldap_window_notebook (gchar *text_label, int type)
     column = gtk_tree_view_column_new_with_attributes (_("Comment"),
 						       renderer,
 						       "text", 
-						       COLUMN_COMMENT,
+						       COLUMN_ILS_COMMENT,
 						       NULL);
-    gtk_tree_view_column_set_sort_column_id (column, COLUMN_COMMENT);
+    gtk_tree_view_column_set_sort_column_id (column, COLUMN_ILS_COMMENT);
     gtk_tree_view_column_add_attribute (column, renderer, "foreground", 
-					COLUMN_COLOR);
+					COLUMN_ILS_COLOR);
     gtk_tree_view_column_set_resizable (column, true);
     gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
 
@@ -1204,26 +1458,29 @@ int gnomemeeting_init_ldap_window_notebook (gchar *text_label, int type)
     column = gtk_tree_view_column_new_with_attributes (_("Version"),
 						       renderer,
 						       "text", 
-						       COLUMN_VERSION,
+						       COLUMN_ILS_VERSION,
 						       NULL);
-    gtk_tree_view_column_set_sort_column_id (column, COLUMN_VERSION);
+    gtk_tree_view_column_set_sort_column_id (column, COLUMN_ILS_VERSION);
     gtk_tree_view_column_add_attribute (column, renderer, "foreground", 
-					COLUMN_COLOR);
+					COLUMN_ILS_COLOR);
     gtk_tree_view_column_set_resizable (column, true);
     gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
-
+    g_object_set (G_OBJECT (renderer), "style", PANGO_STYLE_ITALIC, NULL);
 
     renderer = gtk_cell_renderer_text_new ();
     column = gtk_tree_view_column_new_with_attributes (_("IP"),
 						       renderer,
 						       "text", 
-						       COLUMN_IP,
+						       COLUMN_ILS_IP,
 						       NULL);
-    gtk_tree_view_column_set_sort_column_id (column, COLUMN_IP);
+    gtk_tree_view_column_set_sort_column_id (column, COLUMN_ILS_IP);
     gtk_tree_view_column_add_attribute (column, renderer, "foreground", 
-					COLUMN_COLOR);
+					COLUMN_ILS_COLOR);
     gtk_tree_view_column_set_resizable (column, true);
     gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+    g_object_set (G_OBJECT (renderer), "style", PANGO_STYLE_ITALIC,
+		  "foreground", "darkgray", NULL);
+
   }
   else {
 
@@ -1259,7 +1516,7 @@ int gnomemeeting_init_ldap_window_notebook (gchar *text_label, int type)
 						       "text", 
 						       COLUMN_NETMASK,
 						       NULL);
-    gtk_tree_view_column_set_sort_column_id (column, COLUMN_EMAIL);
+    gtk_tree_view_column_set_sort_column_id (column, COLUMN_NETMASK);
     gtk_tree_view_column_set_resizable (column, true);
     gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
   }

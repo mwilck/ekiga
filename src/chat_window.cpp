@@ -148,7 +148,9 @@ GtkWidget *gnomemeeting_text_chat_init ()
   /* Get the structs from the application */
   GmTextChat *chat = gnomemeeting_get_chat_window (gm);
 
-  chat_window = gtk_frame_new (_("Text Chat"));
+  chat_window = gtk_frame_new (NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (chat_window), GTK_SHADOW_NONE);
+  gtk_container_set_border_width (GTK_CONTAINER (chat_window), 7);
   table = gtk_table_new (1, 3, FALSE);
 
   gtk_container_set_border_width (GTK_CONTAINER (table), 
@@ -159,7 +161,7 @@ GtkWidget *gnomemeeting_text_chat_init ()
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scr),
 				  GTK_POLICY_AUTOMATIC,
 				  GTK_POLICY_ALWAYS);
-  gtk_widget_set_size_request (GTK_WIDGET (scr), 245, -1);
+  gtk_widget_set_size_request (GTK_WIDGET (scr), 245, 133);
 
   chat->text_view = gtk_text_view_new ();
   gtk_text_view_set_editable (GTK_TEXT_VIEW (chat->text_view), FALSE);
@@ -195,7 +197,7 @@ GtkWidget *gnomemeeting_text_chat_init ()
 		    0, 0);
 
   label = gtk_label_new (_("Send Message:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
+  gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
   gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
   gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (label), 
 		    0, 1, 1, 2,

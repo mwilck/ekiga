@@ -440,7 +440,7 @@ gnomemeeting_table_add_entry (GtkWidget *table,
   client = gconf_client_get_default ();
                                                                                
 
-  label = gtk_label_new (label_txt);                                           
+  label = gtk_label_new_with_mnemonic (label_txt);                                           
 
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, row, row+1,                
                     (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
@@ -452,6 +452,8 @@ gnomemeeting_table_add_entry (GtkWidget *table,
 
                                                                                
   entry = gtk_entry_new ();                                                    
+  gtk_label_set_mnemonic_widget ( GTK_LABEL(label), entry);
+
   gtk_table_attach (GTK_TABLE (table), entry, 1, 2, row, row+1,                
                     (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
                     (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                

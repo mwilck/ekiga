@@ -1,4 +1,33 @@
-2002-12-25 Damien Sandras  <dsandras@seconix.com>
+2002-12-27 Damien Sandras  <dsandras@seconix.com>
+
+	* configure.in: Incremented SCHEMA_AGE.
+	
+	* gnomemeeting.schemas.in.in: Fixed control_panel section to 4
+	(off by default).
+	
+	* pixmaps/gnomemeeting-logo.png: Made the logo smaller and added
+	2003.
+	
+	* src/chat_window.cpp: Removed frame (Thanks Fabrice Alphonso 
+	<fabrice@alphonso.dyndns.org>).
+	
+	* src/druid.cpp: Improved texts, added mnmemonics, removed frames,
+	italic. (Thanks Fabrice Alphonso <fabrice@alphonso.dyndns.org>)
+	
+	* src/endpoint.cpp: Remove Listener before exiting.
+	
+	* src/ils.cpp: Merged First name and Last name in unique Name field.
+	Added callto:// field.
+	
+	* src/ldap_window.cpp: Finished addressbook and fixed bugs.
+	
+	* src/main_window.cpp: Removed unuseful frame text. (Thanks Fabrice
+	Alphonso).
+	
+	* src/misc.cpp: Added mnemonic support in labels from GtkTextEntry
+	(Thanks Fabrice Alphonso).
+	
+2002-12-26 Damien Sandras  <dsandras@seconix.com>
 
 	* src/config.cpp: Added notifier called when a group content is 
 	modified to update the addressbook accordingly.
