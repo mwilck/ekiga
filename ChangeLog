@@ -1,5 +1,28 @@
 2002-11-04 Damien Sandras  <dsandras@seconix.com>
 
+	* configure.in: Upgraded to version 0.95.0.
+	
+	* gnomemeeting.schemas.in.in: Added gconf key so that the default zoom
+	and fullscreen switching are remembered (put yourself in auto-answer,
+	choose video_display to remove, and enable fullscreen switching, 
+	that's great ;).
+
+	* src/common.h: Removed unused variables as gconf keys are now used for
+	fullscreen and zoom.
+
+	* src/config.cpp: Change due to the added Fullscreen option.
+
+	* src/gdkvideoio.cpp: Use the gconf keys for fullscreen and zoom.
+
+	* src/main_window.cpp: Do not init removed variables.
+
+	* src/menu.cpp, src/menu.h: Cleaned the API, removed unused headers.
+	Make use of the gconf keys. Added "Switch to fullscreen" option. This
+	option is now always present, but it is sensitive only if SDL support
+	was compiled in. That way users know what features they are missing.
+	
+2002-11-04 Damien Sandras  <dsandras@seconix.com>
+
 	* src/config.cpp, src/connection.cpp, src/endpoint.cpp, 
 	src/gdkvideoio.cpp, src/main_window.cpp, src/menu.cpp,
 	src/menu.h, src/misc.cpp, src/misc.h, src/urlhandler.cpp:

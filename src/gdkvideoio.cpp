@@ -70,8 +70,6 @@ GDKVideoOutputDevice::GDKVideoOutputDevice(GmWindow *w)
 #ifdef HAS_SDL
   screen = NULL;
   overlay = NULL;
-
-  gw->fullscreen = 0;
 #endif
 }
 
@@ -89,8 +87,6 @@ GDKVideoOutputDevice::GDKVideoOutputDevice(int idno, GmWindow *w)
 #ifdef HAS_SDL
   screen = NULL;
   overlay = NULL;
-
-  gw->fullscreen = 0;
 #endif
 }
 
@@ -111,8 +107,6 @@ GDKVideoOutputDevice::~GDKVideoOutputDevice()
     overlay = NULL;
     SDL_Quit ();
   }
-
-  gw->fullscreen = 0;
 #endif
 
   /* Hide the 2 popup windows */
@@ -146,8 +140,10 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
   /* Common to the 2 instances of gdkvideoio */
   static GdkPixbuf *local_pic = NULL;
   static gboolean logo_displayed = false;
+  static double zoom = 1.0;
 
 #ifdef HAS_SDL
+  static gboolean fullscreen = false;
   static gboolean has_to_fs = false;
   static gboolean has_to_switch_fs = false;
   static gboolean old_fullscreen = false;
@@ -160,6 +156,23 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
   /* Take the mutexes before the redraw */
   redraw_mutex.Wait ();
 
+
+  /* Updates the zoom value */
+  zoom = 
+    gconf_client_get_float (client, 
+			    "/apps/gnomemeeting/video_display/zoom_factor", 
+			    NULL);
+  if (zoom != 0.5 && zoom != 1 && zoom != 2)
+    zoom = 1.0;
+
+#ifdef HAS_SDL 
+  fullscreen =
+    gconf_client_get_bool (client, 
+			  "/apps/gnomemeeting/video_display/fullscreen", 0);
+#endif
+
+
+  /* Let's go for the GTK stuff */
   gnomemeeting_threads_enter ();
   
   /* What do we display: what gconf tells us except if we are not in 
@@ -220,8 +233,8 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
   else {
 
     logo_displayed = false;
-    zoomed_width = (int) (frameWidth * gw->zoom);
-    zoomed_height = (int) (frameHeight * gw->zoom);
+    zoomed_width = (int) (frameWidth * zoom);
+    zoomed_height = (int) (frameHeight * zoom);
 
     image = gw->main_video_image;
 
@@ -263,7 +276,7 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
 
   /* If we are in fullscreen, but that the option is not to be in
      fullscreen, delete the fullscreen SDL window */
-  if ((screen) && (!gw->fullscreen)) {
+  if ((screen) && (!fullscreen)) {
     
     SDL_FreeSurface (screen);
     if (overlay)
@@ -275,7 +288,7 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
   else
     /* If fullscreen is selected but that we are not in fullscreen, 
        call SDL init */
-    if ((gw->fullscreen) && (!screen))
+    if ((fullscreen) && (!screen))
       SDL_Init (SDL_INIT_VIDEO);
 
   sdl_mutex.Signal ();
@@ -354,13 +367,13 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
   /* Need to go full screen or to close the SDL window ? */
   gnomemeeting_threads_enter ();
   sdl_mutex.Wait ();
-  has_to_fs = gw->fullscreen;
+  has_to_fs = fullscreen;
 
   /* Need to toggle fullscreen */
-  if (old_fullscreen == !gw->fullscreen) {
+  if (old_fullscreen == !fullscreen) {
 
     has_to_switch_fs = true;
-    old_fullscreen = gw->fullscreen;
+    old_fullscreen = fullscreen;
   }
 
   SDL_Event event;
@@ -376,16 +389,11 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
 	    (event.key.keysym.sym == SDLK_f)) {
 
 	  has_to_fs = !has_to_fs;
-	  gw->fullscreen = has_to_fs;
+	  fullscreen = has_to_fs;
 	  has_to_switch_fs = true;
+	  gconf_client_set_bool (client, 
+				 "/apps/gnomemeeting/video_display/fullscreen", fullscreen, 0);
 	}
-
-	if (event.key.keysym.sym == SDLK_PLUS) {
-	
-	  if (gw->zoom * 2 <= 2)
-	    gw->zoom = gw->zoom * 2;
-	}
-
       }
 
     }

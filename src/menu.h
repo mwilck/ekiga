@@ -1,7 +1,6 @@
 
-
 /* GnomeMeeting -- A Video-Conferencing application
- * Copyright (C) 2000-2001 Damien Sandras
+ * Copyright (C) 2000-2002 Damien Sandras
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,10 +19,10 @@
 
 /*
  *                         menu.h  -  description
- *                            -------------------
+ *                         ----------------------
  *   begin                : Tue Dec 23 2000
- *   copyright            : (C) 2000-2001 by Damien Sandras
- *   description          :  Functions to create the menus.
+ *   copyright            : (C) 2000-2002 by Damien Sandras
+ *   description          : Functions to create the menus.
  *   email                : dsandras@seconix.com
  *
  */
@@ -32,7 +31,7 @@
 #define _MENU_H_
 
 #include <gtk/gtkwidget.h>
-#include "common.h"
+
 
 struct _MenuEntry {
     
@@ -87,14 +86,13 @@ void gnomemeeting_init_menu (GtkAccelGroup *);
 void gnomemeeting_zoom_submenu_set_sensitive (gboolean);
 
 
-#ifdef HAS_SDL
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Changes sensitivity of the full screen option of 
- *                 the view menu and of the popup menu. 
+ *                 the view menu and of the popup menu. It can only be
+ *                 enabled if SDL support has been compiled in.
  * PRE          :  /
  */
 void gnomemeeting_fullscreen_option_set_sensitive (gboolean);
-#endif
 
 
 /* DESCRIPTION  :  /
@@ -117,6 +115,28 @@ void gnomemeeting_video_submenu_select (int);
 
 
 /* DESCRIPTION  :  /
+ * BEHAVIOR     :  Creates a video menu which will popup, and attach it
+ *                 to the given widget.
+ * PRE          :  The widget to attach the menu to, and the accelgroup.
+ */
+void gnomemeeting_popup_menu_init (GtkWidget *, GtkAccelGroup *);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Enable/disable sensitivity (bool) of connect/disconnect.
+ * PRE          :  true/false, 0 (connect) <= int <= 1 (disconnect)
+ */
+void gnomemeeting_call_menu_connect_set_sensitive (int, bool);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Enable/disable sensitivity (bool) of pause audio/video.
+ * PRE          :  true/false
+ */
+void gnomemeeting_call_menu_pause_set_sensitive (bool);
+
+
+/* DESCRIPTION  :  /
  * BEHAVIOR     :  Returns a pointer to the main menu.
  * PRE          :  Valid pointer to gm.
  */
@@ -129,21 +149,4 @@ MenuEntry *gnomemeeting_get_menu (GtkWidget *);
  * PRE          :  Valid pointer to gm.
  */
 MenuEntry *gnomemeeting_get_video_menu (GtkWidget *);
-
-
-void gnomemeeting_popup_menu_init (GtkWidget *, GtkAccelGroup *);
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Enable/disable sensitivity (bool) of connect/disconnect.
- * PRE          :  true/false, 0 (connect) <= int < 1 (disconnect)
- */
-void gnomemeeting_call_menu_connect_set_sensitive (int, bool);
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Enable/disable sensitivity (bool) of pause.
- * PRE          :  true/false
- */
-void gnomemeeting_call_menu_pause_set_sensitive (bool);
 #endif

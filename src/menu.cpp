@@ -1,6 +1,6 @@
 
 /* GnomeMeeting -- A Video-Conferencing application
- * Copyright (C) 2000-2001 Damien Sandras
+ * Copyright (C) 2000-2002 Damien Sandras
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,11 +18,11 @@
  */
 
 /*
- *                         menu.cpp  -  description
- *                            -------------------
+ *                         menu.cpp  -  description  <--> OK
+ *                         ------------------------
  *   begin                : Tue Dec 23 2000
  *   copyright            : (C) 2000-2002 by Damien Sandras
- *   description          :  Functions to create the menus.
+ *   description          : Functions to create the menus.
  *   email                : dsandras@seconix.com
  *
  */
@@ -32,28 +32,25 @@
 #include "callbacks.h"
 #include "menu.h"
 #include "gnomemeeting.h"
-#include "common.h"
 #include "misc.h"
 #include "druid.h"
 #include "stock-icons.h"
 
+#include <gtk/gtkwidget.h>
 #include <gconf/gconf-client.h>
 
-/* Declarations */
 
+/* Declarations */
 extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;
 
+
+/* Static functions */
 static gint popup_menu_callback (GtkWidget *, GdkEventButton *, gpointer);
 static void menu_item_selected (GtkWidget *, gpointer);
 static void gnomemeeting_init_druid_callback (GtkWidget *, gpointer);
-static void half_zoom_callback (GtkWidget *, gpointer);
-static void normal_zoom_callback (GtkWidget *, gpointer);
-static void double_zoom_callback (GtkWidget *, gpointer);
-
-#ifdef HAS_SDL
-static void toggle_fullscreen_callback (GtkWidget *, gpointer);
-#endif
+static void zoom_changed_callback (GtkWidget *, gpointer);
+static void fullscreen_changed_callback (GtkWidget *, gpointer);
 
 static void video_view_changed_callback (GtkWidget *, gpointer);
 static void view_menu_toggles_changed (GtkWidget *, gpointer);
@@ -61,6 +58,12 @@ static void menu_toggle_changed (GtkWidget *, gpointer);
 
 
 /* GTK Callbacks */
+
+/* DESCRIPTION  :  This callback is called when the user clicks on an 
+ *                 event-box.
+ * BEHAVIOR     :  Displays the menu given as data if it was a right click.
+ * PRE          :  data != NULL.
+ */
 static gint
 popup_menu_callback (GtkWidget *widget, GdkEventButton *event, gpointer data)
 {
@@ -90,7 +93,8 @@ popup_menu_callback (GtkWidget *widget, GdkEventButton *event, gpointer data)
  * PRE          :  If data is NULL, clears the statusbar, else displays data
  *                 as message in the statusbar.
  */
-static void menu_item_selected (GtkWidget *w, gpointer data)
+static void 
+menu_item_selected (GtkWidget *w, gpointer data)
 {
   gnomemeeting_statusbar_push (gm, (char *) data);
 }
@@ -100,70 +104,70 @@ static void menu_item_selected (GtkWidget *w, gpointer data)
  *                 Edit menu.
  * BEHAVIOR     :  Builds the druid.
  * PRE          :  gpointer is a valid pointer to a char* containing "menu"
- *                 to indicate that we are called from the menu.
+ *                 to indicate if we are called from the menu.
  */
-static void gnomemeeting_init_druid_callback (GtkWidget *w, gpointer data)
+static void 
+gnomemeeting_init_druid_callback (GtkWidget *w, gpointer data)
 {
   gnomemeeting_init_druid (data);
 }
 
 
-/* DESCRIPTION  :  This callback is called when the user chooses 1:2 as zoom
- *                 factor in the popup menu.
- * BEHAVIOR     :  Sets the zoom to 0.5. That zoom will be read in 
- *                 GDKVideoOutputDEvice.
+/* DESCRIPTION  :  This callback is called when the user changes the zoom
+ *                 factor in the menu.
+ * BEHAVIOR     :  Sets zoom to 1:2 if data == 0, 1:1 if data == 1, 
+ *                 2:1 if data == 2. (Updates the gconf key).
  * PRE          :  /
  */
-static void half_zoom_callback (GtkWidget *widget, gpointer data)
+static void 
+zoom_changed_callback (GtkWidget *widget, gpointer data)
 {
-  GmWindow *gw = gnomemeeting_get_main_window (gm);
+  GConfClient *client = gconf_client_get_default ();
+  
+  double zoom = 
+    gconf_client_get_float (client, 
+			    "/apps/gnomemeeting/video_display/zoom_factor", 
+			    NULL);
 
-  if (gw->zoom / 2 >= 0.5)
-    gw->zoom = gw->zoom / 2;
+  switch (GPOINTER_TO_INT (data)) {
+
+  case 0:
+    if (zoom > 0.5)
+      zoom = zoom / 2.0;
+    break;
+
+  case 1:
+    zoom = 1.0;
+    break;
+
+  case 2:
+    if (zoom < 2.00)
+      zoom = zoom * 2.0;
+  }
+
+  gconf_client_set_float (client, 
+			  "/apps/gnomemeeting/video_display/zoom_factor", 
+			  zoom, 0);
 }
 
 
-/* DESCRIPTION  :  This callback is called when the user chooses 1:2 as zoom
- *                 factor in the popup menu.
- * BEHAVIOR     :  Sets the zoom to 1. That zoom will be read in 
- *                 GDKVideoOutputDEvice.
- * PRE          :  gpointer is a valid pointer to a GmWindow structure.
- */
-static void normal_zoom_callback (GtkWidget *widget, gpointer data)
-{
-  GmWindow *gw = gnomemeeting_get_main_window (gm);
-
-  gw->zoom = 1;
-}
-
-
-/* DESCRIPTION  :  This callback is called when the user chooses 1:2 as zoom
- *                 factor in the popup menu.
- * BEHAVIOR     :  Sets the zoom to 2.00. That zoom will be read in 
- *                 GDKVideoOutputDEvice.
- * PRE          :  gpointer is a valid pointer to a GmWindow structure.
- */
-static void double_zoom_callback (GtkWidget *widget, gpointer data)
-{
-  GmWindow *gw = gnomemeeting_get_main_window (gm);
-
-  if (gw->zoom * 2 <= 2)
-    gw->zoom = gw->zoom * 2;
-}
-
-
-#ifdef HAS_SDL
 /* DESCRIPTION  :  This callback is called when the user toggles fullscreen
  *                 factor in the popup menu.
  * BEHAVIOR     :  Toggles fullscreen.
  * PRE          :  gpointer is a valid pointer to a GmWindow structure.
  */
-static void toggle_fullscreen_callback (GtkWidget *widget, gpointer data)
+static void 
+fullscreen_changed_callback (GtkWidget *widget, gpointer data)
 {
-  GmWindow *gw = gnomemeeting_get_main_window (gm);
-  gw->fullscreen = !gw->fullscreen;
+  GConfClient *client = gconf_client_get_default ();
+  gboolean fs = false;
+  
+  fs = 
+    gconf_client_get_bool (client, 
+			   "/apps/gnomemeeting/video_display/fullscreen", 0);
+  gconf_client_set_bool (client, "/apps/gnomemeeting/video_display/fullscreen",
+			 !fs, NULL);
 }
-#endif
 
 
 /* DESCRIPTION  :  This callback is called when the user changes the current
@@ -173,7 +177,8 @@ static void toggle_fullscreen_callback (GtkWidget *widget, gpointer data)
  *                 video view is used.
  * PRE          :  gpointer is a valid pointer to a GmWindow structure.
  */
-static void video_view_changed_callback (GtkWidget *widget, gpointer data)
+static void 
+video_view_changed_callback (GtkWidget *widget, gpointer data)
 {
   int view_number = 4;
   int i = 0;
@@ -223,7 +228,8 @@ static void video_view_changed_callback (GtkWidget *widget, gpointer data)
  * BEHAVIOR     :  Sets the gconf key.
  * PRE          :  data is the gconf key.
  */
-static void view_menu_toggles_changed (GtkWidget *widget, gpointer data)
+static void 
+view_menu_toggles_changed (GtkWidget *widget, gpointer data)
 {
   GConfClient *client = gconf_client_get_default ();
   int active = 0;
@@ -249,7 +255,8 @@ static void view_menu_toggles_changed (GtkWidget *widget, gpointer data)
  * BEHAVIOR     :  Updates the gconf cache.
  * PRE          :  data is the key.
  */
-static void menu_toggle_changed (GtkWidget *widget, gpointer data)
+static void 
+menu_toggle_changed (GtkWidget *widget, gpointer data)
 {
   GConfClient *client = gconf_client_get_default ();
 
@@ -260,6 +267,12 @@ static void menu_toggle_changed (GtkWidget *widget, gpointer data)
 
 
 /* The functions */
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Builds a menu given a first menu, a structure and an
+ *                 AccelGroup.
+ * PRE          :  Valid parameters.
+ */
 static void 
 gnomemeeting_build_menu (GtkWidget *menubar, MenuEntry *gnomemeeting_menu,
 			 GtkAccelGroup *accel)
@@ -362,7 +375,8 @@ gnomemeeting_build_menu (GtkWidget *menubar, MenuEntry *gnomemeeting_menu,
 }
 
 
-void gnomemeeting_init_menu (GtkAccelGroup *accel)
+void 
+gnomemeeting_init_menu (GtkAccelGroup *accel)
 {
   /* Get the data */
   GmWindow *gw = gnomemeeting_get_main_window (gm);
@@ -484,17 +498,24 @@ void gnomemeeting_init_menu (GtkAccelGroup *accel)
 
       {_("Zoom In"), _("Zoom In"), 
        GTK_STOCK_ZOOM_IN, '+', MENU_ENTRY, 
-       GTK_SIGNAL_FUNC (double_zoom_callback),
-       NULL, NULL},
+       GTK_SIGNAL_FUNC (zoom_changed_callback),
+       GINT_TO_POINTER (2), NULL},
 
       {_("Zoom Out"), _("Zoom Out"), 
        GTK_STOCK_ZOOM_OUT, '-', MENU_ENTRY, 
-       GTK_SIGNAL_FUNC (half_zoom_callback),
-       NULL, NULL},
+       GTK_SIGNAL_FUNC (zoom_changed_callback),
+       GINT_TO_POINTER (0), NULL},
 
       {_("Normal Size"), _("Normal Size"), 
        GTK_STOCK_ZOOM_100, '=', MENU_ENTRY, 
-       GTK_SIGNAL_FUNC (normal_zoom_callback),
+       GTK_SIGNAL_FUNC (zoom_changed_callback),
+       GINT_TO_POINTER (1), NULL},
+
+      {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
+
+      {_("Fullscreen"), _("Switch to fullscreen"), 
+       GTK_STOCK_ZOOM_IN, 'f', MENU_ENTRY, 
+       GTK_SIGNAL_FUNC (fullscreen_changed_callback),
        NULL, NULL},
 
       {_("C_all"), NULL, NULL, 0, MENU_NEW, NULL, NULL, NULL},
@@ -598,9 +619,9 @@ void gnomemeeting_init_menu (GtkAccelGroup *accel)
   }
   
   
-  GTK_CHECK_MENU_ITEM (gnomemeeting_menu [32].widget)->active =
+  GTK_CHECK_MENU_ITEM (gnomemeeting_menu [34].widget)->active =
     gconf_client_get_bool (client, "/apps/gnomemeeting/general/do_not_disturb", 0);
-  GTK_CHECK_MENU_ITEM (gnomemeeting_menu [33].widget)->active =
+  GTK_CHECK_MENU_ITEM (gnomemeeting_menu [35].widget)->active =
     gconf_client_get_bool (client, "/apps/gnomemeeting/general/auto_answer", 
   		   0);
   
@@ -612,7 +633,8 @@ void gnomemeeting_init_menu (GtkAccelGroup *accel)
 }
 
 
-void gnomemeeting_zoom_submenu_set_sensitive (gboolean b)
+void 
+gnomemeeting_zoom_submenu_set_sensitive (gboolean b)
 {
   MenuEntry *gnomemeeting_menu = gnomemeeting_get_menu (gm);
   MenuEntry *video_menu = gnomemeeting_get_video_menu (gm);
@@ -625,17 +647,30 @@ void gnomemeeting_zoom_submenu_set_sensitive (gboolean b)
 }
 
 
-#ifdef HAS_SDL
-void gnomemeeting_fullscreen_option_set_sensitive (gboolean b)
+void 
+gnomemeeting_fullscreen_option_set_sensitive (gboolean b)
 {
   MenuEntry *gnomemeeting_menu = gnomemeeting_get_menu (gm);
+  MenuEntry *video_menu = gnomemeeting_get_video_menu (gm);
 
-  gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [29].widget), b);
-}
+
+  if (b == FALSE) {
+
+    gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [29].widget), b);
+    gtk_widget_set_sensitive (GTK_WIDGET (video_menu [10].widget), b);
+  }
+#ifdef HAS_SDL
+  else {
+
+    gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [29].widget), b);
+    gtk_widget_set_sensitive (GTK_WIDGET (video_menu [10].widget), b);
+  }
 #endif
+}
 
 
-void gnomemeeting_video_submenu_set_sensitive (gboolean b, int j, gboolean both)
+void 
+gnomemeeting_video_submenu_set_sensitive (gboolean b, int j, gboolean both)
 {
   int cpt = j;
   int limit = BOTH;
@@ -659,7 +694,8 @@ void gnomemeeting_video_submenu_set_sensitive (gboolean b, int j, gboolean both)
 }
 
 
-void gnomemeeting_video_submenu_select (int j)
+void 
+gnomemeeting_video_submenu_select (int j)
 {
   int view_number = 4;
 
@@ -679,27 +715,8 @@ void gnomemeeting_video_submenu_select (int j)
 }
 
 
-MenuEntry *
-gnomemeeting_get_menu (GtkWidget *widget)
-{
-  MenuEntry *m =
-    (MenuEntry *) g_object_get_data (G_OBJECT (widget), "gnomemeeting_menu");
-
-  return m;
-}
-
-
-MenuEntry *
-gnomemeeting_get_video_menu (GtkWidget *widget)
-{
-  MenuEntry *m =
-    (MenuEntry *) g_object_get_data (G_OBJECT (widget), "video_menu");
-
-  return m;
-}
-
-
-void gnomemeeting_popup_menu_init (GtkWidget *widget, GtkAccelGroup *accel)
+void 
+gnomemeeting_popup_menu_init (GtkWidget *widget, GtkAccelGroup *accel)
 {
   GtkWidget *popup_menu_widget = NULL;
   popup_menu_widget = gtk_menu_new ();
@@ -736,20 +753,27 @@ void gnomemeeting_popup_menu_init (GtkWidget *widget, GtkAccelGroup *accel)
 
       {_("Zoom In"), _("Zoom In"), 
        GTK_STOCK_ZOOM_IN, '+', MENU_ENTRY, 
-       GTK_SIGNAL_FUNC (double_zoom_callback),
-       NULL, NULL},
+       GTK_SIGNAL_FUNC (zoom_changed_callback),
+       GINT_TO_POINTER (2), NULL},
 
       {_("Zoom Out"), _("Zoom Out"), 
        GTK_STOCK_ZOOM_OUT, '-', MENU_ENTRY, 
-       GTK_SIGNAL_FUNC (half_zoom_callback),
-       NULL, NULL},
+       GTK_SIGNAL_FUNC (zoom_changed_callback),
+       GINT_TO_POINTER (0), NULL},
 
       {_("Normal Size"), _("Normal Size"), 
        GTK_STOCK_ZOOM_100, '=', MENU_ENTRY, 
-       GTK_SIGNAL_FUNC (normal_zoom_callback),
+       GTK_SIGNAL_FUNC (zoom_changed_callback),
+       GINT_TO_POINTER (1), NULL},
+
+      {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
+
+      {_("Fullscreen"), _("Switch to fullscreen"), 
+       GTK_STOCK_ZOOM_IN, 'f', MENU_ENTRY, 
+       GTK_SIGNAL_FUNC (fullscreen_changed_callback),
        NULL, NULL},
 
-      {NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL},
+      {NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL}
     };
 
   gnomemeeting_build_menu (popup_menu_widget, video_menu, accel);
@@ -772,7 +796,7 @@ gnomemeeting_call_menu_connect_set_sensitive (int i, bool b)
 {
   MenuEntry *gnomemeeting_menu = gnomemeeting_get_menu (gm);
 
-  gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [29+i].widget), b);
+  gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [31+i].widget), b);
 }
 
 
@@ -781,6 +805,28 @@ gnomemeeting_call_menu_pause_set_sensitive (bool b)
 {
   MenuEntry *gnomemeeting_menu = gnomemeeting_get_menu (gm);
 
-  gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [35].widget), b);
-  gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [36].widget), b);
+  gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [37].widget), b);
+  gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [38].widget), b);
 }
+
+
+MenuEntry *
+gnomemeeting_get_menu (GtkWidget *widget)
+{
+  MenuEntry *m =
+    (MenuEntry *) g_object_get_data (G_OBJECT (widget), "gnomemeeting_menu");
+
+  return m;
+}
+
+
+MenuEntry *
+gnomemeeting_get_video_menu (GtkWidget *widget)
+{
+  MenuEntry *m =
+    (MenuEntry *) g_object_get_data (G_OBJECT (widget), "video_menu");
+
+  return m;
+}
+
+

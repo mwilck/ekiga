@@ -1675,7 +1675,6 @@ int main (int argc, char ** argv, char ** envp)
   gw->incoming_call_popup = NULL;
   gw->progress_timeout = 0;
   gw->cleaner_thread_count = 0;
-  gw->zoom = 1;
 
 
   /* Init the GmPrefWindow structure */

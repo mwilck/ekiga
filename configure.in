@@ -1,4 +1,4 @@
-AC_INIT(gnomemeeting, 0.94.2, http://bugzilla.gnome.org/enter_bug.cgi?product=gnomemeeting)
+AC_INIT(gnomemeeting, 0.95.0, http://bugzilla.gnome.org/enter_bug.cgi?product=gnomemeeting)
 AC_CANONICAL_TARGET
 AC_PREREQ(2.53)
 AC_CONFIG_SRCDIR(src/gnomemeeting.cpp)
@@ -36,7 +36,7 @@ AC_DEFINE_UNQUOTED(BUILD_NUMBER, $BUILD_NUMBER,[fix])
 dnl ###########################################################################
 dnl   This is to check correct gconf installation
 dnl ###########################################################################
-SCHEMA_AGE=12
+SCHEMA_AGE=13
 dnl increment this number if you add anything to the schema file
 AC_SUBST(SCHEMA_AGE)
 

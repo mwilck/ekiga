@@ -117,9 +117,6 @@ struct _GmWindow
   PStringArray video_devices;
   PStringArray audio_recorder_devices;
   PStringArray audio_player_devices;
-
-  double       zoom;
-  gboolean     fullscreen;
 };
 
 

@@ -389,6 +389,28 @@
       </locale>
     </schema>
     <schema>	
+      <key>/schemas/apps/gnomemeeting/video_display/fullscreen</key>
+      <applyto>/apps/gnomemeeting/video_display/fullscreen</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>bool</type>
+      <default>false</default>
+      <locale name="C">
+	<short>Switch to fullscreen</short>
+	<long>Switch to fullscreen for images displayed in the main GUI.</long>
+      </locale>
+    </schema>
+    <schema>	
+      <key>/schemas/apps/gnomemeeting/video_display/zoom_factor</key>
+      <applyto>/apps/gnomemeeting/video_display/zoom_factor</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>float</type>
+      <default>1.0</default>
+      <locale name="C">
+	<short>The zoom value</short>
+	<long>The zoom value to apply to images displayed in the main GUI (can be 0.50, 1.00, or 2.00).</long>
+      </locale>
+    </schema>
+    <schema>	
       <key>/schemas/apps/gnomemeeting/video_display/bilinear_filtering</key>
       <applyto>/apps/gnomemeeting/video_display/bilinear_filtering</applyto>
       <owner>GnomeMeeting</owner>
