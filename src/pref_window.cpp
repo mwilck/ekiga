@@ -574,6 +574,18 @@ gnomemeeting_codecs_list_add (GtkTreeIter iter, GtkListStore *store,
     data [2] = g_strdup ("3.46 kb");
   }
 
+#ifdef SPEEX_CODEC
+  if (!strcmp (codec_name, "Speex-5.9k")) {
+    data [1] = g_strdup (_("Okay"));
+    data [2] = g_strdup ("5.9 kb");
+  }
+
+  if (!strcmp (codec_name, "Speex-8.4k")) {
+    data [1] = g_strdup (_("Good Quality"));
+    data [2] = g_strdup ("8.4 kb");
+  }
+#endif
+
   if (!strcmp (codec_name, "MS-GSM")) {
     data [1] = g_strdup (_("Good Quality"));
     data [2] = g_strdup ("13 kbits");
@@ -709,6 +721,10 @@ void gnomemeeting_codecs_list_build (GtkListStore *codecs_list_store,
   gchar *cselect_row;
 
   static const gchar * const available_codecs[] = {
+#ifdef SPEEX_CODEC
+    "Speex-5.9k",
+    "Speex-8.4k",
+#endif
     "GSM-06.10",
     "MS-GSM",
     "G.726-32k",

@@ -43,7 +43,11 @@
 #define GM_QSIF_HEIGHT 120
 #define GM_FRAME_SIZE  10
 
+#ifdef SPEEX_CODEC
+#define GM_AUDIO_CODECS_NUMBER 9
+#else
 #define GM_AUDIO_CODECS_NUMBER 7
+#endif
 
 #define GM_WINDOW(x) (GmWindow *)(x)
 

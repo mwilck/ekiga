@@ -595,7 +595,19 @@ gnomemeeting_init (GmWindow *gw,
   
   if (gconf_test != SCHEMA_AGE)  {
 
-    gnomemeeting_error_dialog (GTK_WINDOW (gm), _("GnomeMeeting got %d for the GConf key \"/apps/gnomemeeting/gconf_test_age\", but %d was expected.\n\nThat key represents the revision GnomeMeeting default settings. If it is not correct, it means that your GConf schemas have not been correctly installed or the that permissions are not correct.\n\nPlease check the FAQ (http://www.gnomemeeting.org/faq.php), the throubleshoot section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org).\n\nUsing 'gnomemeeting-config-tool' could help you fix these problem."), gconf_test, SCHEMA_AGE);
+    /* We can't use gnomemeeting_error_dialog here, cause we need the
+       dialog_run and dialog_run can't be used in gnomemeeting_error_dialog
+       because it doesn't work in threads */
+    gchar *buffer = g_strdup_printf (_("GnomeMeeting got %d for the GConf key \"/apps/gnomemeeting/gconf_test_age\", but %d was expected.\n\nThat key represents the revision GnomeMeeting default settings. If it is not correct, it means that your GConf schemas have not been correctly installed or the that permissions are not correct.\n\nPlease check the FAQ (http://www.gnomemeeting.org/faq.php), the throubleshoot section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org).\n\nUsing 'gnomemeeting-config-tool' could help you fix these problem."), gconf_test, SCHEMA_AGE);
+    GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (gm),  
+						GTK_DIALOG_DESTROY_WITH_PARENT,
+						GTK_MESSAGE_ERROR,
+						GTK_BUTTONS_OK,
+						buffer);
+
+    gtk_dialog_run (GTK_DIALOG (dialog));
+
+    g_free (buffer);
 
     delete (gw);
     delete (lw);
@@ -604,6 +616,19 @@ gnomemeeting_init (GmWindow *gw,
     delete (chat);
     exit (-1);
   }
+
+
+#ifdef SPEEX_CODEC
+  /* New Speex Audio codec in 0.94 */
+  if (gconf_client_get_int (client, GENERAL_KEY "version", NULL) < 94) {
+
+      gconf_client_set_string (GCONF_CLIENT (client),
+			     "/apps/gnomemeeting/audio_codecs/list",
+			     "Speex-5.9k=1:Speex-8.4k=1:GSM-06.10=1:MS-GSM=1:G.726-32k=1:G.711-uLaw-64k=1:G.711-ALaw-64k=1:LPC10=1", 0);
+
+      gnomemeeting_message_dialog (GTK_WINDOW (gm), _("GnomeMeeting just set the new Speex audio codec as default. Speex is a high quality, GPL audio codec introduced in GnomeMeeting 0.94."));
+  }
+#endif
 
   
   /* Install the URL Handler */
@@ -682,7 +707,6 @@ gnomemeeting_init (GmWindow *gw,
 
   if (clo->debug_level != 0)
     PTrace::Initialise (clo->debug_level);
-
  
   /* Start the video preview */
   if (gconf_client_get_bool (client, DEVICE_KEY "video_preview", NULL)) {

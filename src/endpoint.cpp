@@ -54,6 +54,9 @@
 #include <videoio.h>
 #include <gnome.h>
 #include <lpc10codec.h>
+#ifdef SPEEX_CODEC
+#include <speexcodec.h>
+#endif
 
 
 #define new PNEW
@@ -571,6 +574,21 @@ void GMH323EndPoint::AddAudioCapabilities ()
     gchar **couple = g_strsplit (codecs [i], "=", 0);
 
     if ((couple [0] != NULL)&&(couple [1] != NULL)) {
+
+
+#ifdef SPEEX_CODEC
+      if ((!strcmp (couple [0], "Speex-5.9k")) && (!strcmp (couple [1], "1"))) {
+      
+	SetCapability (0, 0, new SpeexNarrow2AudioCapability ());
+	codecs_count++;  
+      }
+
+      if ((!strcmp (couple [0], "Speex-8.4k")) && (!strcmp (couple [1], "1"))) {
+      
+	SetCapability (0, 0, new SpeexNarrow3AudioCapability ());
+	codecs_count++;  
+      }
+#endif
 
       if ((!strcmp (couple [0], "MS-GSM")) && (!strcmp (couple [1], "1"))) {
       

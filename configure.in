@@ -35,7 +35,7 @@ AC_DEFINE_UNQUOTED(BUILD_NUMBER, $BUILD_NUMBER)
 dnl ###########################################################################
 dnl   This is to check correct gconf installation
 dnl ###########################################################################
-SCHEMA_AGE=4
+SCHEMA_AGE=5
 dnl increment this number if you add anything to the schema file
 AC_SUBST(SCHEMA_AGE)
 
@@ -212,6 +212,22 @@ CPPFLAGS="$CPPFLAGS_save"
 
 
 dnl ###########################################################################
+dnl Check if there is Speex codec support
+dnl ###########################################################################
+CPPFLAGS_save="$CPPFLAGS"
+	
+CPPFLAGS="$CPPFLAGS -I /usr/include/linux -I /usr/local/include/sys"
+AC_CHECK_HEADER(speex.h, HAS_SPEEX="enabled", HAS_SPEEX="disabled",-)
+
+if test "x${HAS_SPEEX}" == "xenabled"; then
+	H323_CFLAGS="$H323_CFLAGS -DSPEEX_CODEC"
+	H323_LIBS="$H323_LIBS -lspeex"	
+fi
+
+CPPFLAGS="$CPPFLAGS_save"
+
+
+dnl ###########################################################################
 dnl   Check for SDL
 dnl ###########################################################################
 SDL_VERSION=1.1.3
@@ -226,43 +242,6 @@ if test "x${SDL_HAS_SDL}" == "x-DHAS_SDL" ; then
 	HAS_SDL="enabled"
 else  
 	HAS_SDL="disabled"
-fi
-
-
-dnl ###########################################################################
-dnl Activate support for automatic arts suspension
-dnl ###########################################################################
-AC_PATH_PROG(ARTSCCONFIG, artsc-config)
-AC_CACHE_CHECK([for aRts Sound server],
-        ac_cv_c_artsserver,
-        if test x$ARTSCCONFIG = x -o x$ARTSCCONFIG = x'"$ARTSCCONFIG"';
-        then
-            ac_cv_c_artsserver=no
-        else
-            ARTSC_CFLAGS=`$ARTSCCONFIG --cflags`
-            ARTSC_LIBS=`$ARTSCCONFIG --libs`
-            ac_cv_c_artsserver=no
-            save_CFLAGS="$CFLAGS"
-            CFLAGS="$CFLAGS $ARTSC_CFLAGS"
-            AC_TRY_COMPILE([
-             #include <artsc.h>
-            ],[
-             arts_stream_t stream;
-            ],[
-            ac_cv_c_artsserver=yes
-            ])
-            CFLAGS="$save_CFLAGS"
-        fi)
-
-if test "$ac_cv_c_artsserver" = "yes"
-then
-    AC_SUBST(ARTSLIBS, $ARTSC_LIBS)
-    AC_SUBST(ARTSINCL, $ARTSC_CFLAGS)
-
-    AC_DEFINE(HAVE_ARTS, 1, [Define if you have ARTS sound server])
-    HAS_ARTS="enabled"
-else
-    HAS_ARTS="disabled"
 fi
 
 
@@ -430,8 +409,8 @@ echo "    PTLIB Libraries Directory is  :  $PTLIB_LIBS_DIR"
 echo "               LDAP Directory is  :  $LDAP_DIR"
 echo ""
 echo "                Quicknet support  :  $HAS_IXJ"
-echo "   SDL (with fullscreen) support  :  $HAS_SDL"
-echo "            ARTS suspend support  :  $HAS_ARTS"
+echo "          SDL Fullscreen support  :  $HAS_SDL"
+echo "           Speex GPL audio codec  :  $HAS_SPEEX"
 echo ""
 echo "                         OS Type  :  $OSTYPE"
 echo "                    Machine Type  :  $MACHTYPE"
