@@ -204,7 +204,7 @@ void gnomemeeting_init_main_window_logo ()
 
 gint PlaySound (GtkWidget *widget)
 {
-  GtkWidget *object = NULL;
+  void *object = NULL;
 
   if (widget != NULL) {
 
@@ -212,8 +212,7 @@ gint PlaySound (GtkWidget *widget)
        We can't call gnomemeeting_threads_enter as idles and timers
        are executed in the main thread */
     gdk_threads_enter ();
-    object = GTK_WIDGET (g_object_get_data (G_OBJECT (widget),
-						"pixmapg"));
+    object = g_object_get_data (G_OBJECT (widget), "pixmapg");
     gdk_threads_leave ();
   }
 
