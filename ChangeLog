@@ -1,3 +1,10 @@
+2004-04-26  Miguel Rodríguez Pérez  <migrax@terra.es>
+
+	* src/vfakeio.cpp (loader_area_updated_cb, async_close_cb, Open) 
+	(Close, GetFrameDataNoDelay): 
+	* src/vfakeio.h (class GMH323FakeVideoInputDevice): Add a mutex to
+	avoid accessing the pixbufs from two threads at the same time.
+
 2004-04-26  Damien Sandras  <dsandras@gnome.org>
 
 	* configure.in: Made EDS compilation optional. Request newer versions

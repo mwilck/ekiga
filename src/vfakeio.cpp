@@ -90,6 +90,8 @@ void GMH323FakeVideoInputDevice::loader_area_updated_cb (GdkPixbufLoader *loader
 {
   GMH323FakeVideoInputDevice *thisc = static_cast<GMH323FakeVideoInputDevice *> (thisclass);
 
+  PWaitAndSignal m(thisc->pixbuf_mutex);
+
   if (thisc->orig_pix)
     g_object_unref (G_OBJECT (thisc->orig_pix));
   if (thisc->cached_pix != NULL) {
@@ -107,6 +109,8 @@ void GMH323FakeVideoInputDevice::async_close_cb (GnomeVFSAsyncHandle *fp,
 {
   GMH323FakeVideoInputDevice *thisc = static_cast<GMH323FakeVideoInputDevice *> (thisclass);
 
+  PWaitAndSignal m(thisc->pixbuf_mutex);
+
   if (thisc->loader_pix != NULL) {
     gdk_pixbuf_loader_close (thisc->loader_pix, NULL);
     g_object_unref (G_OBJECT (thisc->loader_pix));
@@ -123,7 +127,6 @@ void GMH323FakeVideoInputDevice::async_read_cb (GnomeVFSAsyncHandle *fp,
 {
   GMH323FakeVideoInputDevice *thisc = static_cast<GMH323FakeVideoInputDevice *> (thisclass);
   
-
   if (result != GNOME_VFS_OK && result != GNOME_VFS_ERROR_EOF) {
     gnome_vfs_async_close (fp, async_close_cb, thisclass);
     return;
@@ -199,6 +202,8 @@ GMH323FakeVideoInputDevice::Open (const PString &name,
   g_signal_connect (G_OBJECT (loader_pix), "area-updated",
 		    G_CALLBACK (loader_area_updated_cb), this);
 
+  PWaitAndSignal m(pixbuf_mutex);
+
   if (orig_pix != NULL) {
     g_object_unref (G_OBJECT (orig_pix));
     orig_pix = NULL;
@@ -241,6 +246,8 @@ GMH323FakeVideoInputDevice::Close ()
     loader_pix = NULL;
   }
 #endif
+  PWaitAndSignal m(pixbuf_mutex);
+
   if (orig_pix != NULL) {
     g_object_unref (G_OBJECT (orig_pix));
     orig_pix = NULL;
@@ -338,6 +345,8 @@ BOOL GMH323FakeVideoInputDevice::GetFrameDataNoDelay (BYTE *frame, PINDEX *i)
   int orig_height = 0;
   
   GetFrameSize (width, height);
+
+  PWaitAndSignal m(pixbuf_mutex);
 
   if (orig_pix == NULL)
     return FALSE;

@@ -52,6 +52,9 @@ class GMH323FakeVideoInputDevice : public PVideoInputDevice
 {
   PCLASSINFO(GMH323FakeVideoInputDevice, PVideoInputDevice);
 
+  PMutex pixbuf_mutex;      /* To protect the pixbufs that are read and written
+			    from various threads */
+
   GdkPixbuf *cached_pix;
   GdkPixbuf *orig_pix;
 
