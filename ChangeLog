@@ -1,5 +1,12 @@
 2002-12-07 Damien Sandras  <dsandras@seconix.com>
 
+	* src/endpoint.cpp: Changed the destructor: Added mutexes.
+
+	* src/ils.cpp: Unregistering is made in the Main () when exiting
+	and not anymore in the destructor.
+
+2002-12-07 Damien Sandras  <dsandras@seconix.com>
+
 	* src/endpoint.cpp: Changed Set/Get volume functions to get/set the
 	lid volume.
 

@@ -155,11 +155,6 @@ GMILSClient::~GMILSClient ()
   running = 0;
 
   quit_mutex.Wait ();
-
-  /* After the thread has stopped,
-     we unregister if we were registered */
-  if (registered == 1)
-    Register (0);
 }
 
 
@@ -205,6 +200,12 @@ void GMILSClient::Main ()
 
     Current ()->Sleep (500);
   }
+
+  /* After the thread has stopped,
+     we unregister if we were registered */
+  if (registered == 1)
+    Register (0);
+
 
   quit_mutex.Signal ();
 }
