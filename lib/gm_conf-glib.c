@@ -103,7 +103,7 @@ struct _GmConfEntry
   GSList *notifiers;
 };
 
-/* those last data types are just for the loading of the gconf schema:
+/* those data types are just for the loading of the gconf schema:
  * it uses the simple xml parsing code in glib to extract the needed
  * informations, and store it in the more crude way used here ; that has the
  * nice advantage that updating the gconf schema is enough to update the
@@ -129,6 +129,15 @@ typedef struct _SchParser
   DataBase *db;
   GmConfEntry *entry;
 } SchParser;
+
+/* this little structure is needed to get enough data through the
+ * iterator when destroying a full namespace
+ */
+typedef struct _NamespcWrapper 
+{
+  GData **datalist;
+  const gchar *namespc;
+} NamespcWrapper;
 
 /* the following functions are used to make data manipulation easier
  * (and also give more readable code)
@@ -217,7 +226,10 @@ static void database_save_entry (GQuark quark, gpointer data,
 				 gpointer user_data);
 static gboolean database_save_file (DataBase *, const gchar *);
 static void database_add_entry (DataBase *, GmConfEntry *);
-static void database_remove_entry_from_key (DataBase *, const gchar *);
+static void database_remove_namespace_in_datalist (GQuark key_id,
+						   gpointer data,
+						   gpointer user_data);
+static void database_remove_namespace (DataBase *, const gchar *);
 static GmConfEntry *database_get_entry_for_key (DataBase *, const gchar *);
 static GmConfEntry *database_get_entry_for_key_create (DataBase *, 
 						       const gchar *);
@@ -928,12 +940,40 @@ database_add_entry (DataBase *db, GmConfEntry *entry)
 }
 
 static void 
-database_remove_entry_from_key (DataBase *db, const gchar *key)
+database_remove_namespace_in_datalist (GQuark key_id,
+				       gpointer data,
+				       gpointer user_data)
 {
-  g_return_if_fail (db != NULL);
-  g_return_if_fail (key != NULL);
+  GmConfEntry *entry = NULL;
+  NamespcWrapper *wrapper = NULL;
+  const gchar *key = NULL;
+  
+  g_return_if_fail (data != NULL);
+  g_return_if_fail (user_data != NULL);
 
-  g_datalist_remove_data (&db->entries, key);
+  entry = (GmConfEntry *)data;
+  wrapper = (NamespcWrapper *)user_data;
+  key = entry_get_key (entry);
+
+  if (g_str_has_prefix (key, wrapper->namespc))
+    g_datalist_remove_data (wrapper->datalist, key);
+
+}
+
+static void 
+database_remove_namespace (DataBase *db, const gchar *namespc)
+{
+  NamespcWrapper *wrapper = NULL;
+  
+  g_return_if_fail (db != NULL);
+  g_return_if_fail (namespc != NULL);
+
+  wrapper = g_new (NamespcWrapper, 1);
+  wrapper->datalist = &db->entries;
+  wrapper->namespc = namespc;
+  g_datalist_foreach (&db->entries, 
+		      database_remove_namespace_in_datalist, wrapper);
+  g_free (wrapper);
 }
 
 static GmConfEntry *
@@ -1315,8 +1355,7 @@ gm_conf_destroy (const gchar *namespac)
 
   g_return_if_fail (namespac != NULL);
 
-  /* FIXME: destroys just an entry, not the whole namespace */
-  database_remove_entry_from_key (db, namespac);
+  database_remove_namespace (db, namespac);
 }
 
 gboolean 

@@ -80,8 +80,6 @@
 #define LDAP_KEY "/apps/gnomemeeting/protocols/ldap/"
 #define AUDIO_CODECS_KEY "/apps/gnomemeeting/codecs/audio/"
 #define VIDEO_CODECS_KEY  "/apps/gnomemeeting/codecs/video/"
-#define CONTACTS_KEY        "/apps/gnomemeeting/contacts/"
-#define CONTACTS_GROUPS_KEY "/apps/gnomemeeting/contacts/groups/"
 
 #define GM_CIF_WIDTH   352
 #define GM_CIF_HEIGHT  288
