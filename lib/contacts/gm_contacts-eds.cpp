@@ -377,7 +377,7 @@ gnomemeeting_local_addressbook_get_contacts (GmAddressbook *addbook,
   GList *l = NULL;
 
   gint cpt = 0;
-
+  
   if (addbook) 
     addressbooks = g_slist_append (addressbooks, (gpointer) addbook);
   else
@@ -411,7 +411,7 @@ gnomemeeting_local_addressbook_get_contacts (GmAddressbook *addbook,
 			       categorie);
 
   if (cpt == 0)
-    queries [cpt++] = e_book_query_field_exists (E_CONTACT_UID);
+    queries [cpt++] = e_book_query_field_exists (E_CONTACT_FULL_NAME);
 
   query = e_book_query_or (cpt, queries, TRUE);
 
