@@ -217,7 +217,6 @@ dnd_drag_motion_cb (GtkWidget *tree_view,
   GtkTreePath *path = NULL;
 
   gchar *group_name = NULL;
-  gchar *escaped_group_name = NULL;
   gchar *contact_name = NULL;
   gchar *contact_section = NULL;
   gchar *contact_url = NULL;
@@ -248,8 +247,6 @@ dnd_drag_motion_cb (GtkWidget *tree_view,
 	gtk_tree_model_get_value (model, &iter, 
 				  COLUMN_CONTACT_SECTION_NAME, &value);
 	group_name = g_utf8_strdown (g_value_get_string (&value), -1);
-	escaped_group_name =
-	  gconf_escape_key (group_name, strlen (group_name));
 	g_value_unset (&value);
 
 	/* If the user doesn't belong to the selected group and if
@@ -257,8 +254,7 @@ dnd_drag_motion_cb (GtkWidget *tree_view,
 	if (gtk_tree_path_get_depth (path) >= 2 &&
 	    gtk_tree_path_get_indices (path) [0] >= 1 
 	    && group_name && contact_url &&
-	    !is_contact_member_of_group (GMURL (contact_url),
-					 escaped_group_name)) {
+	    !is_contact_member_of_group (GMURL (contact_url), group_name)) {
     
 	  gtk_tree_view_set_drag_dest_row (GTK_TREE_VIEW (tree_view),
 					   path,
@@ -268,8 +264,6 @@ dnd_drag_motion_cb (GtkWidget *tree_view,
 	g_free (group_name);
 	gtk_tree_path_free (path);
 	gdk_drag_status (context, GDK_ACTION_COPY, time);
-
-	g_free (escaped_group_name);
       }
     } 
   }
@@ -337,7 +331,6 @@ dnd_drag_data_received_cb (GtkWidget *tree_view,
 	group_name = g_utf8_strdown (g_value_get_string (&value), -1);
 	escaped_group_name =
 	  gconf_escape_key (group_name, strlen (group_name));
-	g_free (group_name);
 	g_value_unset (&value);
 
 	if (group_name && selection_data && selection_data->data) {
@@ -346,7 +339,7 @@ dnd_drag_data_received_cb (GtkWidget *tree_view,
 
 	  if (contact_info [1] &&
 	      !is_contact_member_of_group (GMURL (contact_info [1]),
-					   escaped_group_name)) {
+					   group_name)) {
 
 	    gconf_key = 
 	      g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, 
@@ -368,7 +361,8 @@ dnd_drag_data_received_cb (GtkWidget *tree_view,
 
 	  g_strfreev (contact_info);
 	}
-
+	
+	g_free (group_name);
 	g_free (escaped_group_name);
       }
     }
@@ -845,12 +839,12 @@ addressbook_edit_contact_dialog_new (const char *contact_name,
     if (groups_list_iter->data) {
 
       group_name =
-	gconf_unescape_key ((char *) groups_list_iter->data,
-			    strlen ((char *) groups_list_iter->data));
+	gconf_unescape_key ((char *) groups_list_iter->data, -1);
+
       selected =
 	(contact_url
-	 && is_contact_member_of_group (GMURL (contact_url),
-					(char *) groups_list_iter->data));
+	 && is_contact_member_of_group (GMURL (contact_url), group_name));
+
       
       gtk_list_store_append (edit_dialog->groups_list_store, &iter);
       gtk_list_store_set (edit_dialog->groups_list_store, &iter,
@@ -1245,8 +1239,7 @@ new_contact_section_cb (GtkWidget *widget,
 				     dialog_error_text);
 	else {
 
-	  gconf_key2 = gconf_escape_key ((const char *) entry_text,
-					 strlen (entry_text));
+	  gconf_key2 = gconf_escape_key ((const char *) entry_text, -1);
 
 	  contacts_list =
 	    gconf_client_get_list (client, gconf_key,
@@ -1817,7 +1810,8 @@ refresh_server_content_cb (GtkWidget *w,
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Returns true if contact_url corresponds to a contact
  *                 of group group_name.
- * PRE          :  /
+ * PRE          :  The group name is the non-escaped form, but in valid UTF-8
+ *                 lower case (use g_utf8_strdown before passing the args).
  */
 static gboolean
 is_contact_member_of_group (GMURL contact_url,
@@ -1829,6 +1823,7 @@ is_contact_member_of_group (GMURL contact_url,
   bool found = false;
   gchar *gconf_key = NULL;
   gchar *group_name = NULL;
+  gchar *escaped_group_name = NULL;
   gchar **contact_info = NULL;
 
   GConfClient *client = NULL;
@@ -1838,8 +1833,11 @@ is_contact_member_of_group (GMURL contact_url,
     return false;
   
   group_name = g_utf8_strdown (g_name, -1);
+  if (group_name)
+    escaped_group_name =
+      gconf_escape_key (group_name, -1);
   gconf_key =
-    g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, group_name);
+    g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, escaped_group_name);
 
   client = gconf_client_get_default ();
   
@@ -1868,6 +1866,7 @@ is_contact_member_of_group (GMURL contact_url,
   g_slist_free (group_content);
   g_free (gconf_key);
   g_free (group_name);
+  g_free (escaped_group_name);
 
   return found;
 }
@@ -3139,7 +3138,7 @@ is_contact_member_of_addressbook (GMURL url)
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Returns true if the group given as parameter already
  *                 is member of the addressbook.
- * PRE          :  /
+ * PRE          :  The group name is in the non-excaped form.
  *
  */
 static gboolean
