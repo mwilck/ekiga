@@ -78,6 +78,10 @@
 
 #include <libxml/parser.h>
 
+#ifdef HAS_SDL
+#include <SDL.h>
+#endif
+
 
 #define GM_MAIN_WINDOW(x) (GmWindow *) (x)
 
@@ -123,6 +127,10 @@ struct _GmWindow
   GtkWidget *transfer_call_popup;
   GtkWidget *stats_label;
   GtkWidget *stats_drawing_area;
+
+#ifdef HAS_SDL
+  SDL_Surface *screen;
+#endif
 };
 
 
@@ -229,12 +237,42 @@ static void gm_mw_push_message (GtkWidget *main_window,
  * PRE           : The title of the window, the drawing area and the window
  *                 name that will be used by gnomemeeting_window_show/hide.
  */
-GtkWidget *
-gm_mw_video_window_new (GtkWidget *,
-			gboolean,
-			gchar *,
-			GtkWidget *&,
-			gchar *);
+GtkWidget *gm_mw_video_window_new (GtkWidget *,
+				   gboolean,
+				   gchar *,
+				   GtkWidget *&,
+				   gchar *);
+
+
+#ifdef HAS_SDL
+/* DESCRIPTION   : /
+ * BEHAVIOR      : Creates a video window.
+ * PRE           : /
+ */
+void gm_mw_init_fullscreen_video_window (GtkWidget *);
+
+
+/* DESCRIPTION   : /
+ * BEHAVIOR      : Toggle the fullscreen state of the main window.
+ * PRE           : /
+ */
+void gm_mw_toggle_fullscreen (GtkWidget *);
+	
+
+/* DESCRIPTION   : /
+ * BEHAVIOR      : Return TRUE if the Esc key is pressed.
+ * PRE           : /
+ */
+gboolean gm_mw_poll_fullscreen_video_window (GtkWidget *);
+	
+
+/* DESCRIPTION   : /
+ * BEHAVIOR      : Creates a video window.
+ * PRE           : /
+ */
+void gm_mw_destroy_fullscreen_video_window (GtkWidget *);
+
+#endif
 
 
 /* Callbacks */
@@ -371,6 +409,7 @@ static void zoom_normal_changed_cb (GtkWidget *,
 				    gpointer);
 
 
+#ifdef HAS_SDL
 /* DESCRIPTION  :  This callback is called when the user toggles fullscreen
  *                 factor in the popup menu.
  * BEHAVIOR     :  Toggles the fullscreen configuration key. 
@@ -378,6 +417,7 @@ static void zoom_normal_changed_cb (GtkWidget *,
  */
 static void fullscreen_changed_cb (GtkWidget *,
 				   gpointer);
+#endif
 
 
 /* DESCRIPTION  :  This callback is called when the user toggles an 
@@ -506,8 +546,10 @@ static gboolean delete_incoming_call_dialog_cb (GtkWidget *,
 
 /* Implementation */
 static void
-gm_mw_destroy (gpointer mw)
+gm_mw_destroy (gpointer m)
 {
+  GmWindow *mw = GM_WINDOW (m);
+  
   g_return_if_fail (mw != NULL);
 
   delete ((GmWindow *) mw);
@@ -1073,7 +1115,7 @@ gm_mw_init_menu (GtkWidget *main_window)
       GTK_MENU_ENTRY("fullscreen", _("Fullscreen"), _("Switch to fullscreen"), 
 		     GTK_STOCK_ZOOM_IN, 'f', 
 		     GTK_SIGNAL_FUNC (fullscreen_changed_cb),
-		     NULL, FALSE),
+		     (gpointer) main_window, FALSE),
 
       GTK_MENU_NEW(_("_Tools")),
       
@@ -1575,7 +1617,7 @@ gm_mw_video_window_new (GtkWidget *main_window,
       GTK_MENU_ENTRY("fullscreen", _("Fullscreen"), _("Switch to fullscreen"), 
 		     GTK_STOCK_ZOOM_IN, 'f', 
 		     GTK_SIGNAL_FUNC (fullscreen_changed_cb),
-		     NULL, TRUE),
+		     (gpointer) main_window, TRUE),
 
       GTK_MENU_END
   };
@@ -1598,7 +1640,7 @@ gm_mw_video_window_new (GtkWidget *main_window,
       GTK_MENU_ENTRY("fullscreen", _("Fullscreen"), _("Switch to fullscreen"), 
 		     GTK_STOCK_ZOOM_IN, 'f', 
 		     GTK_SIGNAL_FUNC (fullscreen_changed_cb),
-		     NULL, TRUE),
+		     (gpointer) main_window, TRUE),
 
       GTK_MENU_END
   };
@@ -1613,6 +1655,82 @@ gm_mw_video_window_new (GtkWidget *main_window,
 
   return window;
 }
+
+
+#ifdef HAS_SDL
+void
+gm_mw_init_fullscreen_video_window (GtkWidget *main_window)
+{
+  GmWindow *mw = NULL;
+
+  g_return_if_fail (main_window != NULL);
+
+  mw = gm_mw_get_mw (main_window);
+
+  g_return_if_fail (mw != NULL);
+
+  mw->screen = SDL_GetVideoSurface ();
+  if (!mw->screen) {
+
+    SDL_Init (SDL_INIT_VIDEO);
+    mw->screen = SDL_SetVideoMode (640, 480, 0, 
+				   SDL_SWSURFACE | SDL_HWSURFACE | 
+				   SDL_ANYFORMAT);
+    SDL_WM_ToggleFullScreen (mw->screen);
+    SDL_ShowCursor (SDL_DISABLE);
+  }
+}
+
+
+gboolean
+gm_mw_poll_fullscreen_video_window (GtkWidget *main_window)
+{
+  SDL_Event event;
+
+  
+  while (SDL_PollEvent (&event)) {
+
+    if (event.type == SDL_KEYDOWN) {
+
+      /* Exit Full Screen */
+      if ((event.key.keysym.sym == SDLK_ESCAPE) ||
+	  (event.key.keysym.sym == SDLK_f)) {
+
+	return TRUE;
+      }
+    }
+  }
+
+  return FALSE;
+}
+
+
+void
+gm_mw_toggle_fullscreen (GtkWidget *main_window)
+{
+  if (gm_conf_get_float (VIDEO_DISPLAY_KEY "zoom_factor") == -1.0)
+    gm_conf_set_float (VIDEO_DISPLAY_KEY "zoom_factor", 1.0);
+  else
+    gm_conf_set_float (VIDEO_DISPLAY_KEY "zoom_factor", -1.0);
+}
+
+
+void
+gm_mw_destroy_fullscreen_video_window (GtkWidget *main_window)
+{
+  GmWindow *mw = NULL;
+
+  g_return_if_fail (main_window != NULL);
+
+  mw = gm_mw_get_mw (main_window);
+
+  g_return_if_fail (mw != NULL);
+
+  SDL_Quit ();
+  mw->screen = NULL;
+  
+}
+#endif
 
 
 /* GTK callbacks */
@@ -1983,12 +2101,14 @@ zoom_normal_changed_cb (GtkWidget *widget,
 }
 
 
+#ifdef HAS_SDL
 static void 
 fullscreen_changed_cb (GtkWidget *widget,
 		       gpointer data)
 {
-  gm_conf_set_float (VIDEO_DISPLAY_KEY "zoom_factor", -1.0);
+  gm_mw_toggle_fullscreen (GTK_WIDGET (data));
 }
+#endif
 
 
 static void
@@ -2333,6 +2453,15 @@ gm_main_window_update_video (GtkWidget *main_window,
   GdkPixbuf *rsrc_pic = NULL;
   GdkPixbuf *zrsrc_pic = NULL;
 
+#ifdef HAS_SDL
+  Uint32 rmask, gmask, bmask, amask = 0;
+  SDL_Surface *lsurface = NULL;
+  SDL_Surface *rsurface = NULL;
+  SDL_Surface *lblit_conf = NULL;
+  SDL_Surface *rblit_conf = NULL;
+  SDL_Rect dest;
+#endif
+  
   g_return_if_fail (main_window != NULL);
 
   mw = gm_mw_get_mw (main_window);
@@ -2340,6 +2469,11 @@ gm_main_window_update_video (GtkWidget *main_window,
   /* Update the display selection in the main and in the video popup menus */
   gtk_radio_menu_select_with_id (mw->main_menu, "local_video", display_type);
 
+
+#ifdef HAS_SDL
+  if (display_type != FULLSCREEN)
+      gm_mw_destroy_fullscreen_video_window (main_window);
+#endif
 
   /* Select and show the correct windows */
   if (display_type == BOTH) { /* display == BOTH */
@@ -2352,6 +2486,14 @@ gm_main_window_update_video (GtkWidget *main_window,
     if (!GTK_WIDGET_VISIBLE (mw->remote_video_window))
       gnomemeeting_window_show (GTK_WIDGET (mw->remote_video_window));
   }
+#ifdef HAS_SDL
+  else if (display_type == FULLSCREEN) {
+
+    gm_mw_init_fullscreen_video_window (main_window);
+    if (gm_mw_poll_fullscreen_video_window (main_window)) 
+      gm_mw_toggle_fullscreen (main_window);
+  }
+#endif
   else {
 
     /* display_type != BOTH && display_type != BOTH_LOCAL */
@@ -2474,6 +2616,72 @@ gm_main_window_update_video (GtkWidget *main_window,
       g_object_unref (zrsrc_pic);
       g_object_unref (zlsrc_pic);
     }
+    break;
+    
+#ifdef HAS_SDL
+  case FULLSCREEN:
+
+    if (zlsrc_pic && zrsrc_pic) {
+
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+      rmask = 0xff000000;
+      gmask = 0x00ff0000;
+      bmask = 0x0000ff00;
+      amask = 0x000000ff;
+#else
+      rmask = 0x000000ff;
+      gmask = 0x0000ff00;
+      bmask = 0x00ff0000;
+      amask = 0xff000000;
+#endif
+
+      rsurface =
+	SDL_CreateRGBSurfaceFrom ((void *) gdk_pixbuf_get_pixels (zrsrc_pic),
+				  (int) (rf_width * rzoom),
+				  (int) (rf_height * rzoom),
+				  24,
+				  (int) (rf_width * rzoom * 3), 
+				  rmask, gmask, bmask, amask);
+
+      rblit_conf = SDL_DisplayFormat (rsurface);
+
+      dest.x = (int) (mw->screen->w - (int) (rf_width * rzoom) - (int) (lf_width * lzoom) - 50) / 2;
+      dest.y = (int) (mw->screen->h - (int) (rf_height * rzoom)) / 2;
+      dest.w = (int) (rf_width * rzoom);
+      dest.h = (int) (rf_height * rzoom);
+
+      SDL_BlitSurface (rblit_conf, NULL, mw->screen, &dest);
+      
+      lsurface =
+	SDL_CreateRGBSurfaceFrom ((void *) gdk_pixbuf_get_pixels (zlsrc_pic),
+				  (int) (lf_width * lzoom),
+				  (int) (lf_height * lzoom),
+				  24,
+				  (int) (lf_width * lzoom * 3), 
+				  rmask, gmask, bmask, amask);
+
+      lblit_conf = SDL_DisplayFormat (lsurface);
+
+      dest.x = 640 - (int) (lf_width * lzoom);
+      dest.y = 480 - (int) (lf_height * lzoom);
+      dest.w = (int) (lf_width * lzoom);
+      dest.h = (int) (lf_height * lzoom);
+
+      SDL_BlitSurface (lblit_conf, NULL, mw->screen, &dest);
+
+      SDL_UpdateRect (mw->screen, 0, 0, 640, 480);
+
+      SDL_FreeSurface (lsurface);
+      SDL_FreeSurface (lblit_conf);
+      
+      SDL_FreeSurface (rsurface);
+      SDL_FreeSurface (rblit_conf);
+
+      g_object_unref (zrsrc_pic);
+      g_object_unref (zlsrc_pic);
+    }
+    break;
+#endif
   } 
 }
 
@@ -2748,7 +2956,13 @@ gm_main_window_update_calling_state (GtkWidget *main_window,
 	gtk_dialog_response (GTK_DIALOG (mw->transfer_call_popup),
 			     GTK_RESPONSE_REJECT);
   
-
+      
+      /* Delete the full screen window */
+#ifdef HAS_SDL
+      gm_mw_destroy_fullscreen_video_window (main_window);
+#endif
+      
+      
       /* Hide the local and remove video windows */
       gnomemeeting_window_hide (mw->remote_video_window);
       gnomemeeting_window_hide (mw->local_video_window);
@@ -3431,6 +3645,9 @@ gm_main_window_new ()
   /* The GMObject data */
   mw = new GmWindow ();
   mw->incoming_call_popup = mw->transfer_call_popup = NULL;
+#ifdef HAS_SDL
+  mw->screen = NULL;
+#endif
   g_object_set_data_full (G_OBJECT (window), "GMObject", 
 			  mw, (GDestroyNotify) gm_mw_destroy);
 

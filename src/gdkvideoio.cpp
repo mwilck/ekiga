@@ -49,7 +49,6 @@
 
 #include <ptlib/vconvert.h>
 
-
 PBYTEArray GDKVideoOutputDevice::lframeStore;
 PBYTEArray GDKVideoOutputDevice::rframeStore;
 
@@ -64,6 +63,24 @@ GDKVideoOutputDevice::GDKVideoOutputDevice(int idno)
 { 
   /* Used to distinguish between input and output device. */
   device_id = idno; 
+
+  start_in_fullscreen = FALSE;
+
+  gnomemeeting_threads_enter ();
+  /* Change the zoom value following we have to start in fullscreen
+   * or not */
+  start_in_fullscreen = 
+    gm_conf_get_bool (VIDEO_DISPLAY_KEY "start_in_fullscreen");
+  if (!start_in_fullscreen) {
+
+    if (gm_conf_get_float (VIDEO_DISPLAY_KEY "zoom_factor") == -1.0)
+      gm_conf_set_float (VIDEO_DISPLAY_KEY "zoom_factor", 1.00);
+  } 
+  else {
+
+    gm_conf_set_float (VIDEO_DISPLAY_KEY "zoom_factor", -1.0);
+  }
+  gnomemeeting_threads_leave ();
 }
 
 
@@ -81,8 +98,8 @@ BOOL GDKVideoOutputDevice::Redraw ()
   GtkWidget *main_window = NULL;
   
   GMH323EndPoint *ep = NULL;
-  
 
+  double zoom = 1.0;
   double rzoom = 1.0;
   double lzoom = 1.0;
   int display = LOCAL_VIDEO;
@@ -103,6 +120,7 @@ BOOL GDKVideoOutputDevice::Redraw ()
   bilinear_filtering = 
     gm_conf_get_bool (VIDEO_DISPLAY_KEY "enable_bilinear_filtering");
   display = gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view");
+  zoom = gm_conf_get_float (VIDEO_DISPLAY_KEY "zoom_factor");
   gnomemeeting_threads_leave ();
 
   
@@ -129,21 +147,37 @@ BOOL GDKVideoOutputDevice::Redraw ()
 
   /* Display with the rigth zoom */
   gnomemeeting_threads_enter ();
-  if (display == REMOTE_VIDEO || display == LOCAL_VIDEO)
-    rzoom = lzoom = gm_conf_get_float (VIDEO_DISPLAY_KEY "zoom_factor");
+  if (zoom == -1.0) {
   
-  if (display == BOTH) {
+    display = FULLSCREEN;
+  }
+  if (display == REMOTE_VIDEO || display == LOCAL_VIDEO) {
+    
+    rzoom = lzoom = zoom;
+  }
+  else if (display == BOTH) {
     
     lzoom = gm_conf_get_float (VIDEO_DISPLAY_KEY "local_zoom_factor");
     rzoom = gm_conf_get_float (VIDEO_DISPLAY_KEY "remote_zoom_factor");
   }
+  else if (display == FULLSCREEN) {
+  
+    if (lf_width > 0)
+      lzoom = (GM_QCIF_WIDTH / (double) lf_width);
+    else
+      lzoom = 1.0;
+
+    if (rf_width > 0)
+      rzoom = (GM_CIF_WIDTH / (double) rf_width);
+    else
+      rzoom = 1.0;
+  }
+  else if (display == BOTH_INCRUSTED) {
     
-  if (display == BOTH_INCRUSTED) {
-    
-    rzoom = gm_conf_get_float (VIDEO_DISPLAY_KEY "zoom_factor");
+    rzoom = zoom;
     lzoom = (rf_height / 3.00) / lf_height * rzoom;
   }
-
+  
   gm_main_window_update_video (main_window,
 			       (const guchar *) lframeStore,
 			       lf_width, lf_height, lzoom,
@@ -180,6 +214,9 @@ BOOL GDKVideoOutputDevice::SetFrameData (unsigned x,
 					 BOOL endFrame)
 {
   if (x+width > frameWidth || y+height > frameHeight)
+    return FALSE;
+
+  if (frameWidth <= 0 || frameHeight <= 0)
     return FALSE;
 
   if (!endFrame)

@@ -42,12 +42,6 @@
 
 #include "common.h"
 
-#ifdef HAS_SDL
-#include <SDL.h>
-#endif
-
-
-
 
 class GDKVideoOutputDevice : public PVideoOutputDevice
 {
@@ -155,6 +149,7 @@ class GDKVideoOutputDevice : public PVideoOutputDevice
   static int rf_width;
   static int rf_height;
   
+  BOOL start_in_fullscreen;
 
   enum {REMOTE, LOCAL};
 };

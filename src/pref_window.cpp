@@ -704,16 +704,10 @@ gm_pw_init_interface_page (GtkWidget *prefs_window,
   /* Packing widget */
   subsection =
     gnome_prefs_subsection_new (prefs_window, container, 
-				_("Video Display"), 2, 1);
+				_("Video Display"), 1, 1);
   
+  gnome_prefs_toggle_new (subsection, _("Place windows displaying video _above other windows"), VIDEO_DISPLAY_KEY "stay_on_top", _("Place windows displaying video above other windows during calls"), 0);
 
-#ifdef HAS_SDL
-  /* Translators: the full sentence is Use a fullscreen size 
-     of X by Y pixels */
-  gnome_prefs_range_new (subsection, _("Use a fullscreen size of"), NULL, _("by"), NULL, _("pixels"), VIDEO_DISPLAY_KEY "fullscreen_width", VIDEO_DISPLAY_KEY "fullscreen_height", _("The image width for fullscreen."), _("The image height for fullscreen."), 10.0, 10.0, 640.0, 480.0, 10.0, 0);
-#endif
-  
-  gnome_prefs_toggle_new (subsection, _("Place windows displaying video _above other windows"), VIDEO_DISPLAY_KEY "stay_on_top", _("Place windows displaying video above other windows during calls"), 2);
 
   /* Text Chat */
   subsection =

@@ -1,3 +1,19 @@
+2004-10-11  Damien Sandras  <dsandras@gnome.org>
+
+	* NEWS: Updated with CVS news.
+	
+	* configure.in: Incremented SCHEMA_AGE.
+
+	* gnomemeeting.schemas.in.in: Removed key allowing to set the
+	Fullscreen image width and height.
+
+	* src/common.h, src/gdkvideoio.cpp, src/gdkvideoio.h, 
+	src/main_window.cpp: Added fullscreen back.
+	
+	* src/endpoint.cpp: Fixed CIF mode thanks to Guilhem Tardy.
+
+	* src/pref_window.cpp: Removed now unuseful preference.
+
 2004-10-09  Damien Sandras  <dsandras@gnome.org>
 
 	* src/main_window.cpp: Added back bilinear filtering when zooming.

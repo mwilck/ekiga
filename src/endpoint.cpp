@@ -350,13 +350,13 @@ GMH323EndPoint::AddVideoCapabilities ()
   if (video_size == 1) {
 
     /* CIF Capability in first position */
-    SetCapability (0, 1, new H323_H261Capability (4, 0, FALSE, FALSE, 6217));
-    SetCapability (0, 1, new H323_H261Capability (0, 2, FALSE, FALSE, 6217));
+    SetCapability (0, 1, new H323_H261Capability (0, 4, FALSE, FALSE, 6217));
+    SetCapability (0, 1, new H323_H261Capability (2, 0, FALSE, FALSE, 6217));
   }
   else {
 
-    SetCapability (0, 1, new H323_H261Capability (4, 0, FALSE, FALSE, 6217)); 
-    SetCapability (0, 1, new H323_H261Capability (0, 2, FALSE, FALSE, 6217));
+    SetCapability (0, 1, new H323_H261Capability (2, 0, FALSE, FALSE, 6217)); 
+    SetCapability (0, 1, new H323_H261Capability (0, 4, FALSE, FALSE, 6217));
   }
 }
 
