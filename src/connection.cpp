@@ -186,9 +186,13 @@ GMH323Connection::OnAnswerCall (const PString & caller,
 				const H323SignalPDU &,
 				H323SignalPDU &)
 {
-  IncomingCallMode icm = AVAILABLE;
+  IncomingCallMode icm;
+  GMH323EndPoint *ep = NULL;
 
-  GnomeMeeting::Process () -> Endpoint () -> SetCurrentCallToken (GetCallToken());
+  icm = AVAILABLE;
+  ep = GnomeMeeting::Process ()->Endpoint ();
+
+  ep->SetCurrentCallToken (GetCallToken());
 
   gnomemeeting_threads_enter ();  
   icm = (IncomingCallMode)
@@ -197,7 +201,7 @@ GMH323Connection::OnAnswerCall (const PString & caller,
 
   if (icm == FREE_FOR_CHAT) 
     return AnswerCallNow; 
-
+  
   return AnswerCallPending;
 }
 

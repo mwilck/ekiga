@@ -73,6 +73,9 @@ static void radio_menu_changed (GtkWidget *,
 static void toggle_menu_changed (GtkWidget *, 
 				 gpointer);
 
+static void speed_dial_menu_item_selected (GtkWidget *,
+					   gpointer);
+
 
 /* GTK Callbacks */
 static void
@@ -232,6 +235,39 @@ toggle_menu_changed (GtkWidget *widget, gpointer data)
   gconf_client_set_bool (client,
 			 (gchar *) data,
 			 GTK_CHECK_MENU_ITEM (widget)->active, NULL);
+}
+
+
+/* DESCRIPTION  :  This callback is called when the user toggles an 
+ *                 item in the speed dials menu.
+ * BEHAVIOR     :  Calls the given speed dial.
+ * PRE          :  data is the speed dial as a gchar *
+ */
+static void
+speed_dial_menu_item_selected (GtkWidget *w,
+			       gpointer data)
+{
+  GmWindow *gw = NULL;
+  GMH323EndPoint *ep = NULL;
+  
+  gchar *url = NULL;
+    
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
+  ep = GnomeMeeting::Process ()->Endpoint ();
+  
+  if (!data)
+    return;
+
+  url = g_strdup_printf ("%s#", (gchar *) data);
+  gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry),
+		      (gchar *) url);
+    
+  if (ep->GetCallingState () == GMH323EndPoint::Connected)
+    transfer_call_cb (NULL, (gpointer) url);
+  else
+    connect_cb (NULL, NULL);
+
+  g_free (url);
 }
 
 
@@ -529,28 +565,13 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
     };
 
   gtk_build_menu (menubar, gnomemeeting_menu, accel, gw->statusbar);
+  gnomemeeting_speed_dials_menu_update (menubar);
   gtk_widget_show_all (GTK_WIDGET (menubar));
-
-  gnomemeeting_addressbook_get_speed_dials ();
+  
   if (!gconf_client_get_bool (client, SERVICES_KEY "enable_microtelco", NULL))
     gtk_widget_hide (gtk_menu_get_widget (menubar, "microtelco"));
     
   return menubar;
-}
-
-
-/* A deplacer dans gtk_mlenu */
-static void
-gnomemeeting_speed_dials_menu_update ()
-{
-  GmWindow *gw = NULL;
-  GtkWidget *menu = NULL;
-
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
-
-  menu = gtk_menu_get_widget (gw->main_menu, "speed_dials");
-
-  
 }
 
 
@@ -724,6 +745,55 @@ gnomemeeting_tray_init_menu (GtkWidget *widget)
   popup_menu_widget = gtk_build_popup_menu (widget, tray_menu, NULL);
 
   return popup_menu_widget;
+}
+
+
+void
+gnomemeeting_speed_dials_menu_update (GtkWidget *menubar)
+{
+  GtkWidget *item = NULL;
+  GtkWidget *menu = NULL;
+  
+  GSList *glist = NULL;
+  GList *old_glist_iter = NULL;
+  
+  gchar *ml = NULL;  
+  gchar **couple = NULL;
+
+  glist = gnomemeeting_addressbook_get_speed_dials ();
+  menu = gtk_menu_get_widget (menubar, "speed_dials");
+
+  while ((old_glist_iter = GTK_MENU_SHELL (menu)->children)) 
+    gtk_container_remove (GTK_CONTAINER (menu),
+			  GTK_WIDGET (old_glist_iter->data));
+
+  
+  while (glist && glist->data) {
+
+    couple = g_strsplit ((gchar *) glist->data, "|", 0);
+
+    if (couple [0] && couple [1]) {
+      
+      ml = g_strdup_printf ("<b>%s#</b>   <i>%s</i>", couple [1], couple [0]);
+      item = gtk_menu_item_new_with_label (ml);
+      gtk_label_set_markup (GTK_LABEL (gtk_bin_get_child (GTK_BIN (item))),
+			    ml);
+      gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+      gtk_widget_show (item);
+
+      g_signal_connect_data (G_OBJECT (item), "activate",
+			     GTK_SIGNAL_FUNC (speed_dial_menu_item_selected),
+			     (gpointer) g_strdup (couple [1]),
+			     (GClosureNotify) g_free, (GConnectFlags) 0);
+    }
+    
+    glist = g_slist_next (glist);
+
+    g_free (ml);
+    g_strfreev (couple);
+  }
+  
+  g_slist_free (glist);
 }
 
 

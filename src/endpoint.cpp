@@ -752,14 +752,6 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
     
     do_reject = TRUE;
   }
-  else if (icm == FREE_FOR_CHAT) {
-
-    msg =
-      g_strdup_printf (_("Accepting call from %s (Free For Chat)"),
-		       (const char *) utf8_name);
-    
-    do_answer = TRUE;
-  }
   /* if we are already in a call: forward or reject */
   else if (GetCallingState () != GMH323EndPoint::Standby) {
 
@@ -781,6 +773,14 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
      
       do_reject = TRUE;
     }
+  }
+  else if (icm == FREE_FOR_CHAT) {
+
+    msg =
+      g_strdup_printf (_("Accepting call from %s (Free For Chat)"),
+		       (const char *) utf8_name);
+    
+    do_answer = TRUE;
   }
 
 

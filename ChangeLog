@@ -1,3 +1,30 @@
+2003-11-11 Damien Sandras  <dsandras@seconix.com>
+
+	* src/config.cpp: Rebuild the speed dials menu in the call menu
+	when the groups list or when a group content is modified in the
+	GConf keys.
+	
+	* src/connection.cpp: Code cleanups.
+	
+	* src/endpoint.cpp: Fixed HEAD bug reported by Johnny Strom, GM
+	freezing when calling itself while being in Auto Answer.
+	
+	* src/ldap_window.cpp: Fixed gnomemeeting_get_speed_dials_list.
+	
+	* src/menu.cpp, src/menu.h: Added the function that rebuilds
+	the speed dials menu when required. Calling a speed dial from
+	that menu will result in a new call or in a call transfer if you
+	already are in a call.
+	
+2003-11-09 Damien Sandras  <dsandras@seconix.com>
+
+	* lib/gtk_menu_extensions.h: Support for ID in SUBMENUs.
+
+	* src/ldap_window.cpp, src/ldap_window.h: Added function to
+	get a GSList of all contacts with a speed dial.
+
+	* src/menu.cpp: Call the above function.
+	
 2003-11-09 Damien Sandras  <dsandras@seconix.com>
 
 	* src/config.cpp: Only display the warning dialog announcing that

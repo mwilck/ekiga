@@ -191,6 +191,9 @@ static void notebook_page_destroy (gpointer data);
 
 static void edit_dialog_destroy (gpointer data);
 
+static gint speed_dials_compare (gconstpointer,
+				 gconstpointer);
+
 
 /* COMMON NOTICE
  *
@@ -653,6 +656,35 @@ edit_dialog_destroy (gpointer data)
     g_free (edit_dialog->old_contact_url);
     delete (edit_dialog);
   }
+}
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Compares 2 entries following their speed dials. An entry
+ *                 is "Username" + "|" + "Speed Dial". It will permit to sort
+ *                 a slist following their speed dials.
+ * PRE          :  /
+ */
+static gint
+speed_dials_compare (gconstpointer ent1,
+		     gconstpointer ent2)
+{
+  gint result = 0;
+  gchar **couple1 = NULL;
+  gchar **couple2 = NULL;
+
+  if (ent1)
+    couple1 = g_strsplit ((gchar *) ent1, "|", 0);
+  if (ent2)
+    couple2 = g_strsplit ((gchar *) ent2, "|", 0);
+
+  if (couple1 [1] && couple2 [1])
+    result = strcmp (couple1 [1], couple2 [1]);
+
+  g_strfreev (couple1);
+  g_strfreev (couple2);
+  
+  return result;
 }
 
 
@@ -3460,6 +3492,9 @@ gnomemeeting_addressbook_get_speed_dials ()
   gchar *group_name = NULL;
   gchar *speed_dial_info = NULL;
   char **contact_info = NULL;
+  char **rcontact_info = NULL;
+
+  BOOL found = FALSE;
   
   GSList *group_content = NULL;
   GSList *group_content_iter = NULL;
@@ -3467,6 +3502,7 @@ gnomemeeting_addressbook_get_speed_dials ()
   GSList *groups_iter = NULL;
 
   GSList *result = NULL;
+  GSList *result_iter = NULL;
 
   GConfClient *client = NULL;
 
@@ -3500,7 +3536,35 @@ gnomemeeting_addressbook_get_speed_dials ()
 
 	speed_dial_info = 
 	  g_strdup_printf ("%s|%s", contact_info [0], contact_info [2]);
-	result = g_slist_append (result, (gpointer) speed_dial_info);
+
+	result_iter = result;
+
+	if (result_iter) {
+
+	  while (result_iter && result_iter->data && !found) {
+
+	    rcontact_info =
+	      g_strsplit ((char *) result_iter->data, "|", 0);
+
+	    if (rcontact_info [1] &&
+		!strcmp (contact_info [2], rcontact_info [1]))
+	      found = TRUE;
+
+	    result_iter = g_slist_next (result_iter);
+	    g_strfreev (rcontact_info);
+	  }
+	}
+
+	if (!found) 
+	  result =
+	    g_slist_insert_sorted (result,
+				   g_strdup (speed_dial_info),
+				   (GCompareFunc) (speed_dials_compare));
+				   
+
+	found = FALSE;
+	
+	g_free (speed_dial_info);
       }
 
       g_strfreev (contact_info);
@@ -3515,6 +3579,8 @@ gnomemeeting_addressbook_get_speed_dials ()
   }
 
   g_slist_free (groups);
+
+  result = g_slist_nth (result, 0);
 
   return result;
 }

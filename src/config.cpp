@@ -1139,7 +1139,8 @@ contacts_sections_list_group_content_changed_nt (GConfClient *client,
 
   GtkWidget *page = NULL;
   GtkListStore *list_store = NULL;
-  
+
+  GmWindow *gw = NULL;
   GmLdapWindow *lw = NULL;
   GmLdapWindowPage *lwp = NULL;
   
@@ -1148,6 +1149,7 @@ contacts_sections_list_group_content_changed_nt (GConfClient *client,
     gdk_threads_enter ();
 
     lw = GnomeMeeting::Process ()->GetLdapWindow ();
+    gw = GnomeMeeting::Process ()->GetMainWindow ();
     
     gconf_key = gconf_entry_get_key (e);
 
@@ -1189,7 +1191,10 @@ contacts_sections_list_group_content_changed_nt (GConfClient *client,
 
       g_strfreev (group_split);
     }
-    
+
+    /* Update the speed dials menu */
+    gnomemeeting_speed_dials_menu_update (gw->main_menu);
+
     gdk_threads_leave ();
   }  
 }
@@ -1197,16 +1202,22 @@ contacts_sections_list_group_content_changed_nt (GConfClient *client,
   
 /* DESCRIPTION  :  This callback is called when something changes in the 
  * 		   servers or groups contacts list. 
- * BEHAVIOR     :  It updates the tree_view widget and the notebook pages.
+ * BEHAVIOR     :  It updates the tree_view widget and the notebook pages,
+ *                 but also the speed dials menu.
  * PRE          :  data is the page type (CONTACTS_SERVERS or CONTACTS_GROUPS)
  */
 static void contacts_sections_list_changed_nt (GConfClient *client, guint cid,
 					       GConfEntry *e, gpointer data)
 { 
+  GmWindow *gw = NULL;
+
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
+  
   if (e->value->type == GCONF_VALUE_LIST) {
   
     gdk_threads_enter ();
     gnomemeeting_addressbook_sections_populate ();
+    gnomemeeting_speed_dials_menu_update (gw->main_menu);
     gdk_threads_leave ();
   }
 }

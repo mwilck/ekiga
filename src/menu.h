@@ -78,6 +78,14 @@ GtkWidget *gnomemeeting_tray_init_menu (GtkWidget *);
 
 
 /* DESCRIPTION  :  /
+ * BEHAVIOR     :  Update the speed dials menu in the call menu given the
+ *                 main menu.
+ * PRE          :  /
+ */
+void gnomemeeting_speed_dials_menu_update (GtkWidget *);
+
+     
+/* DESCRIPTION  :  /
  * BEHAVIOR     :  Updates the main menu items that depend on the current
  *                 calling state of the endpoint.
  * PRE          :  A valid GMH323EndPoint calling state.
