@@ -34,7 +34,6 @@
 #include <iostream>
 #include <gtk/gtk.h>
 #include <glib.h>
-#include <sys/socket.h>
 #include <ptlib.h>
 #include <ldap.h>
 

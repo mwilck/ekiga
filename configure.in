@@ -57,7 +57,7 @@ dnl ###########################################################################
 dnl --disable-gnome
 dnl ###########################################################################
 AC_ARG_ENABLE(gnome, [  --disable-gnome       Disable GNOME features.], disable_gnome="$enable_val", disable_gnome="no")
-if test "x${disable_gnome}" == "xno"; then
+if test "x${disable_gnome}" = "xno"; then
 HAS_GNOME="enabled"
 else
 HAS_GNOME="disabled"
@@ -67,7 +67,7 @@ fi
 dnl ###########################################################################
 dnl   PKG_CONFIG
 dnl ###########################################################################
-if test "x${HAS_GNOME}" == "xenabled"; then
+if test "x${HAS_GNOME}" = "xenabled"; then
 PKG_CHECK_MODULES(GNOMEMEETING, libgnomeui-2.0 >= 1.112.0 linc >= 0.5.0 libbonobo-2.0 >= 2.0.0 esound >= 0.2.28 gconf-2.0 >= 1.2.1)
 else
 PKG_CHECK_MODULES(GNOMEMEETING, gtk+-2.0 >= 2.0.6 esound >= 0.2.28 gconf-2.0 >= 1.2.1 libxml-2.0 >= 2.4.23)
@@ -118,7 +118,7 @@ dnl -D_DEBUG -DPMEMORY_CHECK=1 -DPTRACING -g
     ;;
 
   FreeBSD* | freebsd* )
-    H323_CFLAGS="-DSPEEX_CODEC -DP_FREEBSD=400001 -DP_SSL -DP_PTHREADS  $ARCH_H323_CFLAGS -O2 -Wall -DPHAS_TEMPLATES"
+    H323_CFLAGS="-DSPEEX_CODEC -DP_FREEBSD=400001 -DP_SSL -DP_PTHREADS  $ARCH_H323_CFLAGS -O2 -Wall -DPHAS_TEMPLATES -DSTATIC_LIBS_USED"
     H323_LIBS="-lh323_FreeBSD_x86_r_s -lpt_FreeBSD_x86_r_s -pthread -lssl -lcrypto"
     LIBPT_FILE="libpt_FreeBSD_x86_r_s.a"
     LIBOPENH323_FILE="libh323_FreeBSD_x86_r_s.a"

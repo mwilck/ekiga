@@ -1,5 +1,13 @@
 2002-12-09 Damien Sandras  <dsandras@seconix.com>
 
+	* configure.in: Changed == to = for FreeBSD compatibility (roger).
+
+	* src/ils.h: Removed unuseful include.
+
+	* src/misc.cpp: Do not compile PAssertFunc with static libs.
+	
+2002-12-09 Damien Sandras  <dsandras@seconix.com>
+
 	* src/main_window.cpp: Fixed the compilation with --disable-gnome.
 
 	* src/videograbber.cpp: Fixed the compilation with --disable-gnome.

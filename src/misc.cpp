@@ -190,6 +190,7 @@ void gnomemeeting_init_main_window_logo (GtkWidget *image)
 
 
 /* This function overrides from a pwlib function */
+#ifdef STATIC_LIBS_USED
 void 
 PAssertFunc (const char *file, int line, 
 	     const char *className, const char *msg)
@@ -210,6 +211,7 @@ PAssertFunc (const char *file, int line,
 
   return;
 }
+#endif
 
 
 GtkWidget * 
