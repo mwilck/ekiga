@@ -589,13 +589,13 @@ gnomemeeting_init (GmWindow *gw,
   gconf_client_add_dir (client, "/apps/gnomemeeting",
 			GCONF_CLIENT_PRELOAD_RECURSIVE,
 			0);
-  gchar *gconf_test = NULL;
-  gconf_test = gconf_client_get_string (client, "/apps/gnomemeeting/general/gconf_test", NULL);
+  int gconf_test = -1;
+  gconf_test = gconf_client_get_int (client, "/apps/gnomemeeting/general/gconf_test", NULL);
 
-   if (gconf_test == NULL || strcmp (gconf_test, BUILD_ID)) {
+   if (gconf_test != SCHEMA_AGE) {
 
      int reply = 0;
-     gchar *msg = g_strdup_printf (_("GnomeMeeting got %s for the GConf key \"/apps/gnomemeeting/gconf_test\", but %s was expected.\n\nThat key represents the build date of GnomeMeeting. If it is not correct, it means that your GConf schemas have not been correctly installed or the that permissions are not correct.\n\nPlease check the FAQ (http://www.gnomemeeting.org/faq.php), the throubleshoot section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org).\n\nUsing 'gnomemeeting-config-tool' could help you fix these problem."), gconf_test, BUILD_ID);
+     gchar *msg = g_strdup_printf (_("GnomeMeeting got %d for the GConf key \"/apps/gnomemeeting/gconf_test\", but %d was expected.\n\nThat key represents the revision number of GnomeMeeting default settings. If it is not correct, it means that your GConf schemas have not been correctly installed or the that permissions are not correct.\n\nPlease check the FAQ (http://www.gnomemeeting.org/faq.php), the throubleshoot section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org).\n\nUsing 'gnomemeeting-config-tool' could help you fix these problem."), gconf_test, SCHEMA_AGE);
 
      GtkWidget *dialog = 
        gtk_message_dialog_new (GTK_WINDOW (gm),

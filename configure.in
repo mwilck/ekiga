@@ -35,8 +35,9 @@ AC_DEFINE_UNQUOTED(BUILD_NUMBER, $BUILD_NUMBER)
 dnl #############################################################################
 dnl   This is to check correct gconf installation
 dnl #############################################################################
-BUILD_ID=`date --iso-8601=seconds`
-AC_SUBST(BUILD_ID)
+SCHEMA_AGE=1
+dnl increment this number if you add anything to the schema file
+AC_SUBST(SCHEMA_AGE)
 
 
 dnl #############################################################################

@@ -1,3 +1,5 @@
+<!-- Remeber to increment SCHEMA_AGE in configure.in if you add any new
+     schema to this file -->
 <gconfschemafile>
   <schemalist>
     <schema>
@@ -279,11 +281,11 @@
       <key>/schemas/apps/gnomemeeting/general/gconf_test</key>
       <applyto>/apps/gnomemeeting/general/gconf_test</applyto>
       <owner>GnomeMeeting</owner>
-      <type>string</type>
-      <default>@BUILD_ID@</default>
+      <type>int</type>
+      <default>@SCHEMA_AGE@</default>
       <locale name="C">
-	<short>Fake Setting</short>
-	<long>Fake Setting</long>
+	<short>Revision of the schema file</short>
+	<long>Revision of the schema file</long>
       </locale>
     </schema>
     <schema>
