@@ -78,7 +78,8 @@ struct _GmWindow
   GtkWidget *remote_name;
   GtkWidget *splash_win;
   GtkWidget *combo;
-  GtkTextBuffer *log_text;
+  GtkTextBuffer *history;
+  GtkWidget *history_view;
   GtkWidget *main_notebook;
   GtkWidget *video_image;
   GtkWidget *video_frame;

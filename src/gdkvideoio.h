@@ -75,21 +75,12 @@ class GDKVideoOutputDevice : public H323VideoDevice
   ~GDKVideoOutputDevice ();
 
 
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Changes current buffer to display.
-   * PRE          :  * 0 (local) or 1 (remote) or 2 (both)
-   *                 Must be protected if called from threads.
-   */
-  void SetCurrentDisplay (int);
-
-
   /* Same as in H323VideoDevice.
    */
   virtual BOOL Redraw(const void * frame);
 
-  PMutex redraw_mutex;
 
-  protected:
+ protected:
 
   /* Same as in H323VideoDevice */
   BOOL WriteLineSegment(int x, int y, unsigned len, const BYTE * data);
@@ -100,7 +91,7 @@ class GDKVideoOutputDevice : public H323VideoDevice
 
   PBYTEArray buffer; /* The RGB24 buffer; contains the images */
   int display_config; /* Current display : local or remote or both */
-  PMutex display_config_mutex;
+  PMutex redraw_mutex;
     
   GM_window_widgets *gw;
 };

@@ -66,22 +66,6 @@ GDKVideoOutputDevice::GDKVideoOutputDevice(int idno, GM_window_widgets *w)
  /* Used to distinguish between input and output device. */
  device_id = idno; 
 
- /* If we don't transmit, then display is the remote image by default. */
- if (idno == 0) {
-
-   display_config_mutex.Wait ();
-   display_config = 1;
-   display_config_mutex.Signal ();
- }
- 
- /* If we transmit, then display is the local image by default. */
- if (idno == 1) {
-
-   display_config_mutex.Wait ();
-   display_config = 0;
-   display_config_mutex.Signal ();
- }
-
  gw = w;
 }
 
@@ -93,17 +77,12 @@ GDKVideoOutputDevice::~GDKVideoOutputDevice()
 }
 
 
-void GDKVideoOutputDevice::SetCurrentDisplay (int choice)
-{
-  display_config = choice;
-}
-
-
 BOOL GDKVideoOutputDevice::Redraw (const void * frame)
 {
   GdkPixbuf *src_pic = NULL;
   GdkPixbuf *tmp = NULL;
   GdkPixbuf *zoomed_pic = NULL;
+  GnomeUIInfo *video_view_menu_uiinfo = NULL;
   GtkRequisition size_request;
 
   int unref = 1; /* unreference zoomed_pic */
@@ -116,12 +95,18 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
   int display = 0;
 
 
-  display = display_config;
-
   /* Take the mutexes before the redraw */
   redraw_mutex.Wait ();
 
   gnomemeeting_threads_enter ();
+
+  video_view_menu_uiinfo = (GnomeUIInfo *) 
+    g_object_get_data (G_OBJECT(gm), "video_view_menu_uiinfo");
+
+  if (GTK_CHECK_MENU_ITEM (video_view_menu_uiinfo [0].widget)->active)
+    display = 0;
+  else
+    display = 1;
 
   if (buffer.GetSize () != frameWidth * frameHeight * 3)
     buffer.SetSize(frameWidth * frameHeight * 3);

@@ -589,6 +589,7 @@ void gnomemeeting_init_main_window ()
     gtk_widget_hide (GTK_WIDGET (gw->statusbar));
 
   
+  gtk_widget_set_size_request (GTK_WIDGET (gw->main_notebook), 230, 170);
   gtk_widget_set_size_request (GTK_WIDGET (gm), -1, -1);
 
   g_signal_connect_after (G_OBJECT (gw->main_notebook), "switch-page",
@@ -603,7 +604,6 @@ void gnomemeeting_init_main_window ()
  **/
 void gnomemeeting_init_main_window_log ()
 {
-  GtkWidget *view;
   GtkWidget *frame;
   GtkWidget *label;
   GtkWidget *scr;
@@ -613,11 +613,14 @@ void gnomemeeting_init_main_window_log ()
   frame = gtk_frame_new (_("History Log"));
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_ETCHED_OUT);
 
-  view = gtk_text_view_new ();
-  gtk_text_view_set_editable (GTK_TEXT_VIEW (view), FALSE);
+  gw->history_view = gtk_text_view_new ();
+  gtk_text_view_set_editable (GTK_TEXT_VIEW (gw->history_view), FALSE);
 
-  gw->log_text = gtk_text_view_get_buffer (GTK_TEXT_VIEW (view));
-  
+  gw->history = gtk_text_view_get_buffer (GTK_TEXT_VIEW (gw->history_view));
+  gtk_text_view_set_editable (GTK_TEXT_VIEW (gw->history_view), FALSE);
+  gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (gw->history_view),
+			       GTK_WRAP_WORD);
+
   scr = gtk_scrolled_window_new (NULL, NULL);
   gtk_container_add (GTK_CONTAINER (frame), scr);
   gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
@@ -627,7 +630,7 @@ void gnomemeeting_init_main_window_log ()
 				  GTK_POLICY_AUTOMATIC,
 				  GTK_POLICY_ALWAYS);
 
-  gtk_container_add (GTK_CONTAINER (scr), view);    
+  gtk_container_add (GTK_CONTAINER (scr), gw->history_view);    
 
   label = gtk_label_new (_("History"));
 

@@ -163,7 +163,8 @@ GmTextChat *gnomemeeting_get_chat_window (GtkWidget *gm)
 void gnomemeeting_log_insert (gchar *text)
 {
   GtkTextIter start, end;
-  
+  GtkTextMark *mark;
+
   time_t *timeptr;
   char *time_str;
 
@@ -173,15 +174,25 @@ void gnomemeeting_log_insert (gchar *text)
   GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
 
   time (timeptr);
-  strftime(time_str, 20, "%H:%M:%S :  ", localtime (timeptr));
+  strftime(time_str, 20, "%H:%M:%S ", localtime (timeptr));
 
-  gtk_text_buffer_get_bounds (GTK_TEXT_BUFFER (gw->log_text), &start, &end);
-  gtk_text_buffer_insert (GTK_TEXT_BUFFER (gw->log_text), &end, time_str, -1);
-  gtk_text_buffer_get_bounds (GTK_TEXT_BUFFER (gw->log_text), &start, &end);
-  gtk_text_buffer_insert (GTK_TEXT_BUFFER (gw->log_text), &end, text, -1);
-  gtk_text_buffer_get_bounds (GTK_TEXT_BUFFER (gw->log_text), &start, &end);
-  gtk_text_buffer_insert (GTK_TEXT_BUFFER (gw->log_text), &end, "\n", -1);
+  gtk_text_buffer_get_bounds (GTK_TEXT_BUFFER (gw->history), 
+			      &start, &end);
+  gtk_text_buffer_insert (GTK_TEXT_BUFFER (gw->history), 
+			  &end, time_str, -1);
+  gtk_text_buffer_get_bounds (GTK_TEXT_BUFFER (gw->history), 
+			      &start, &end);
+  gtk_text_buffer_insert (GTK_TEXT_BUFFER (gw->history), &end, text, -1);
+  gtk_text_buffer_get_bounds (GTK_TEXT_BUFFER (gw->history), 
+			      &start, &end);
+  gtk_text_buffer_insert (GTK_TEXT_BUFFER (gw->history), &end, "\n", -1);
 
+  mark = gtk_text_buffer_create_mark (GTK_TEXT_BUFFER (gw->history), 
+				      "current-position", &end, FALSE);
+
+  gtk_text_view_scroll_to_mark (GTK_TEXT_VIEW (gw->history_view), mark, 
+				0.0, FALSE, 0,0);
+  
   free (time_str);
   delete (timeptr);
 }
@@ -394,14 +405,14 @@ void PAssertFunc (const char * file, int line, const char * msg)
   cout << "Assertion Error:" << msg << " " << file << " " << line << endl << flush;
 
   gnomemeeting_threads_enter ();
-  mesg = g_strdup_printf (_("Error: %s \nYou can choose to ignore and continue, or to close GnomeMeeting."), msg, NULL);
+  mesg = g_strdup_printf (_("Error\nYou can choose to ignore and continue, or to close GnomeMeeting."));
 
   GtkWidget *dialog = 
     gtk_message_dialog_new (GTK_WINDOW (gm),
 			    GTK_DIALOG_MODAL,
 			    GTK_MESSAGE_ERROR,
 			    GTK_BUTTONS_CLOSE,
-			    msg, 0);
+			    mesg, 0);
   gtk_dialog_add_buttons (GTK_DIALOG (dialog), 
 			  _("Continue"), 10);
 

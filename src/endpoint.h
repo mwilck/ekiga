@@ -189,16 +189,6 @@ class GMH323EndPoint : public H323EndPoint
    */
   void AddVideoCapabilities (int);
 
-  
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Change the webcam image to be displayed in the GUI :
-   *                   O : local image
-   *                   1 : remote image
-   *                   2 : both images
-   * PRE          :  / 
-   */
-  void SetCurrentDisplay (int);
-
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Saves the current displayed picture in a file.

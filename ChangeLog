@@ -1,3 +1,29 @@
+2002-05-14  Damien Sandras  <dsandras@seconix.com>
+
+	* src/callbacks.cpp: Removed unuseful callbacks about the remote/local
+	menu.
+
+	* src/common.h: Added GtkTextView pointer for the history and rename
+	the former log_text in history.
+
+	* src/config.cpp: Fixed last bugs, added notifier that checks if forwarding
+	settings can be applied.
+
+	* src/connection.cpp: Removed use of SetCurrentDisplay (not needed anymore).
+
+	* src/endpoint.cpp: Removed use of SetCurrentDisplay (not needed anymore).
+	Changed place where the vq is set.
+	
+	* src/gdkvideoio.cpp: Removed use of SetCurrentDisplay (not needed anymore).
+
+	* src/main_window.cpp: Changed the size of the main_notebook.
+
+	* src/menu.cpp: Removed calls to unuseful old callbacks.
+
+	* src/misc.cpp: Fixed bug in the PAssertFunction.
+
+	* src/pref_window.cpp: Removed cout.
+	
 2002-05-14  Kenneth Rohde Christiansen  <kenneth@gnu.org>
 
 	* Makefile.am: Added a new rule
@@ -6,7 +32,7 @@
 	* po/POTFILES.in: Added the header file.
 	
 
-2002-05-15  Damien Sandras  <dsandras@seconix.com>
+2002-05-14  Damien Sandras  <dsandras@seconix.com>
 
 	* src/config.cpp: Fixed bugs that prevented to change some settings
 	in real time.

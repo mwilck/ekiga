@@ -104,30 +104,6 @@ void quit_callback (GtkWidget *, gpointer);
 void gtk_main_quit_callback (int, gpointer);
 
 
-/* DESCRIPTION  :  This callback is called when the user chooses to display
- *                 the local webcam image.
- * BEHAVIOR     :  Set default to local.
- * PRE          :  /
- */
-void popup_menu_local_callback (GtkWidget *, gpointer);
-
-
-/* DESCRIPTION  :  This callback is called when the user chooses to display
- *                 the remote webcam image
- * BEHAVIOR     :  Set default to remote.
- * PRE          :  /
- */
-void popup_menu_remote_callback (GtkWidget *, gpointer);
-
-
-/* DESCRIPTION  :  This callback is called when the user chooses to display
- *                 the both webcam images.
- * BEHAVIOR     :  Set default to both.
- * PRE          :  /
- */
-void popup_menu_both_callback (GtkWidget *, gpointer);
-
-
 /* DESCRIPTION  :  This callback is called when a gconf error happens
  * BEHAVIOR     :  Pop-up a message-box
  * PRE          :  /

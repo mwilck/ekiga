@@ -100,11 +100,8 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
     name = channel.GetCapability().GetFormatName();
     msg = g_strdup_printf (_("Sending %s"), (const char *) name);
 
-    if ((name == "H.261-CIF") || (name == "H.261-QCIF")) {
-
+    if ((name == "H.261-CIF") || (name == "H.261-QCIF")) 
       transmitted_video = &channel;
-      MyApp->Endpoint ()->SetCurrentDisplay (1);
-    }
     else
       transmitted_audio = &channel;
 

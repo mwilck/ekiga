@@ -68,6 +68,7 @@ static void tr_vq_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static void tr_ub_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static void jitter_buffer_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static void register_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
+static void forward_toggle_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static void audio_device_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
 static void video_device_setting_changed_nt (GConfClient *, guint, GConfEntry *, 
 					     gpointer);
@@ -874,6 +875,54 @@ static void audio_codecs_list_changed_nt (GConfClient *client, guint cid,
 }
 
 
+/* DESCRIPTION  :  This callback is called when the a forward gconf value 
+ *                 changes.
+ * BEHAVIOR     :  It checks that there is a forwarding host specified, if
+ *                 not, disable forwarding and displays a popup.
+ * PRE          :  /
+ */
+static void forward_toggle_changed_nt (GConfClient *client, guint cid, 
+				       GConfEntry *entry, gpointer data)
+{
+  GmWindow *gw = NULL;
+  gchar *gconf_string = NULL;
+  GtkWidget *msg_box = NULL;
+
+
+  if ((entry->value->type == GCONF_VALUE_BOOL)&&
+      (gconf_value_get_bool (entry->value))) {
+ 
+    gdk_threads_enter ();
+
+    gw = gnomemeeting_get_main_window (gm);
+
+    /* Checks if the forward host name is ok */
+    gconf_string =  gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/call_forwarding/forward_host", NULL);
+      
+    if ((gconf_string == NULL) || (!strcmp (gconf_string, ""))) {
+	
+      msg_box = 
+	gtk_message_dialog_new (GTK_WINDOW (gw->pref_window),
+				GTK_DIALOG_MODAL,
+				GTK_MESSAGE_ERROR,
+				GTK_BUTTONS_CLOSE,
+				_("You need to specify an host to forward calls to!\nDisabling forwarding."));
+      
+      gtk_widget_show (msg_box);
+      g_signal_connect_swapped (GTK_OBJECT (msg_box), "response",
+				G_CALLBACK (gtk_widget_destroy),
+				GTK_OBJECT (msg_box));
+      
+      gconf_client_set_bool (client, gconf_entry_get_key (entry), 0, NULL);   
+    }
+
+    g_free (gconf_string);
+
+    gdk_threads_leave ();
+  }
+}
+
+
 /* DESCRIPTION  :  This callback is called when the "register" gconf value 
  *                 changes.
  *                 The "register" value can change if the user plays with 
@@ -976,6 +1025,7 @@ static void register_changed_nt (GConfClient *client, guint cid,
   }
 }
 
+
 #if 0
 /* DESCRIPTION  :  This callback is called when something toggles the
  *                 corresponding option in gconf.
@@ -1018,16 +1068,20 @@ static void register_changed_nt (GConfClient *client, guint cid,
 }
 #endif
 
-/* DESCRIPTION    : This is called when any setting related to the druid network speep selecion
- *                  changes.
- * BEHAVIOR       : Just writes an entry in the gconf database registering that fact
+
+/* DESCRIPTION    : This is called when any setting related to the druid 
+ *                  network speep selecion changes.
+ * BEHAVIOR       : Just writes an entry in the gconf database registering 
+ *                  that fact.
  * PRE            : None
  */
-static void network_settings_changed_nt (GConfClient *client, guint, GConfEntry *, gpointer)
+static void network_settings_changed_nt (GConfClient *client, guint, 
+					 GConfEntry *, gpointer)
 {
   gconf_client_set_int (client, "/apps/gnomemeeting/general/kind_of_net",
 			5, NULL);
 }
+
 
 /* The functions  */
 void gnomemeeting_init_gconf (GConfClient *client)
@@ -1102,7 +1156,15 @@ void gnomemeeting_init_gconf (GConfClient *client)
 
   /* gnomemeeting_init_pref_window_h323_advanced */
   gconf_client_notify_add (client, "/apps/gnomemeeting/call_forwarding/always_forward", toggle_changed_nt, pw->always_forward, 0, 0);
-  
+  gconf_client_notify_add (client, "/apps/gnomemeeting/call_forwarding/always_forward", forward_toggle_changed_nt, pw->always_forward, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/call_forwarding/busy_forward", toggle_changed_nt, pw->busy_forward, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/call_forwarding/busy_forward", forward_toggle_changed_nt, pw->busy_forward, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/call_forwarding/no_answer_forward", toggle_changed_nt, pw->no_answer_forward, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/call_forwarding/no_answer_forward", forward_toggle_changed_nt, pw->no_answer_forward, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/call_forwarding/forward_host", entry_changed_nt, pw->forward_host, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/h245_tunneling", toggle_changed_nt, pw->ht, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/h245_tunneling", applicability_check_nt, pw->ht, 0, 0);

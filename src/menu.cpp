@@ -228,14 +228,14 @@ void gnomemeeting_init_menu ()
       {
 	GNOME_APP_UI_ITEM,
 	N_("Local Video"), N_("Local Video Image"),
-	(void *) popup_menu_local_callback, NULL, NULL,
+	(void *) NULL, NULL, NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	0, GDK_CONTROL_MASK, NULL
       },
       {
 	GNOME_APP_UI_ITEM,
 	N_("Remote Video"), N_("Remote Video Image"),
-	(void *) popup_menu_remote_callback, NULL, NULL,
+	(void *) NULL, NULL, NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	0, GDK_CONTROL_MASK, NULL
       },

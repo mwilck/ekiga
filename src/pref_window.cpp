@@ -1172,7 +1172,6 @@ void gnomemeeting_init_pref_window_h323_advanced (GtkWidget *notebook)
 
   pw->busy_forward =
     gnomemeeting_pref_window_add_toggle (table, _("Forward calls to the given host if busy"), "/apps/gnomemeeting/call_forwarding/busy_forward", _("If enabled, all incoming calls will be forwarded to the host that is specified in the field below if you already are in a call or if you are in Do Not Disturb mode."), 2, 0);
-  cout << "FIX ME; Call forwarding + Call forwarding in DND mode" << endl << flush;
 
 
   /* Packing widget */                                                         

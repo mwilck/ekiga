@@ -1171,18 +1171,6 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 }
 
 
-void GMH323EndPoint::SetCurrentDisplay (int choice)
-{ 
-  display_config = choice;
-
-  if (transmitted_video_device != NULL)
-    transmitted_video_device->SetCurrentDisplay (choice);
-
-  if (received_video_device != NULL)		
-    received_video_device->SetCurrentDisplay (choice);
-}
-
-
 void GMH323EndPoint::SavePicture (void)
 { 
   GdkPixbuf *pic = gtk_image_get_pixbuf (GTK_IMAGE (gw->video_image));
@@ -1278,11 +1266,8 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
      PVideoChannel *channel = vg->GetVideoChannel ();
      transmitted_video_device = vg->GetEncodingDevice ();
 
-
      /* Updates the view menu */
      gnomemeeting_zoom_submenu_set_sensitive (TRUE);
-     gnomemeeting_video_submenu_select (0);
-
 
      /* Default Codecs Settings */
      codec.SetAverageBitRate (0); // Disable
@@ -1323,7 +1308,6 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
       gnomemeeting_video_submenu_set_sensitive (TRUE);
       gnomemeeting_video_submenu_select (1);
       
-      //      SetCurrentDisplay (1); 
       gnomemeeting_threads_leave ();
       
       bool result = codec.AttachChannel (channel);

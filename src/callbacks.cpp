@@ -202,27 +202,6 @@ void quit_callback (GtkWidget *widget, gpointer data)
 }  
 
 
-void popup_menu_local_callback (GtkWidget *widget, gpointer data)
-{
-  GMH323EndPoint *endpoint = MyApp->Endpoint ();
-  endpoint->SetCurrentDisplay (0);
-}
-
-
-void popup_menu_remote_callback (GtkWidget *widget, gpointer data)
-{
-  GMH323EndPoint *endpoint = MyApp->Endpoint ();
-  endpoint->SetCurrentDisplay (1);
-}
-
-
-void popup_menu_both_callback (GtkWidget *widget, gpointer data)
-{
-  GMH323EndPoint *endpoint = MyApp->Endpoint ();
-  endpoint->SetCurrentDisplay (2);
-}
-
-
 /* DESCRIPTION  :  This callback is called when a gconf error happens
  * BEHAVIOR     :  Pop-up a message-box
  * PRE          :  /
