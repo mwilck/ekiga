@@ -65,7 +65,7 @@ static void tr_ub_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static gboolean jitter_buffer_changed (gpointer);
 static void jitter_buffer_changed_nt (GConfClient*, guint, GConfEntry *, 
 				      gpointer);
-static void option_menu_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
+static gboolean register_changed (gpointer);
 static void register_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static void audio_mixer_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
 static void audio_device_changed_nt (GConfClient *, guint, GConfEntry *, 
@@ -77,18 +77,22 @@ static void video_channel_changed_nt (GConfClient *, guint, GConfEntry *,
 static gboolean video_option_menu_changed (gpointer);
 static void video_option_menu_changed_nt (GConfClient *, guint, GConfEntry *, 
 					  gpointer);
+static gboolean video_preview_changed (gpointer);
 static void video_preview_changed_nt (GConfClient *, guint, GConfEntry *, 
 				      gpointer);
 static void enable_fps_changed_nt (GConfClient *, guint, GConfEntry *, 
 				   gpointer);
 static void enable_vb_changed_nt (GConfClient *, guint, GConfEntry *, 
 				  gpointer);
+static gboolean enable_vid_tr_changed (gpointer);
 static void enable_vid_tr_changed_nt (GConfClient *, guint, GConfEntry *, 
 				      gpointer);
 static void audio_codecs_list_changed_nt (GConfClient *, guint, GConfEntry *, 
 					  gpointer);
+static gboolean view_widget_changed (gpointer);
 static void view_widget_changed_nt (GConfClient *, guint, GConfEntry *, 
 				    gpointer);
+static gboolean notebook_info_changed (gpointer);
 static void notebook_info_changed_nt (GConfClient *, guint, GConfEntry *, 
 				      gpointer);
 static void gnomemeeting_update_pref_window_sensitivity (void);
@@ -758,6 +762,52 @@ static void video_channel_changed_nt (GConfClient *client, guint cid,
 }
 
 
+static gboolean video_preview_changed (gpointer data)
+{
+  gdk_threads_enter ();
+
+  GMVideoGrabber *vg = NULL;
+  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
+  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+     
+  /* We set the new value for the widget */
+  GTK_TOGGLE_BUTTON (pw->video_preview)->active = (bool) data;
+  GTK_TOGGLE_BUTTON (gw->preview_button)->active = (bool) data;
+
+  gtk_widget_draw (GTK_WIDGET (pw->video_preview), NULL);
+  gtk_widget_draw (GTK_WIDGET (gw->preview_button), NULL);
+    
+  /* We reset the video device */
+  if (MyApp->Endpoint ()->GetCallingState () == 0) {
+    
+    vg = MyApp->Endpoint ()->GetVideoGrabber ();
+    
+    if ((bool) data) {
+
+      if (!vg->IsOpened ())
+	vg->Open (TRUE);
+    }
+    else {
+      
+      if (vg->IsOpened ())
+	vg->Close ();
+    }
+  }
+  else {
+    
+    gchar *msg = g_strdup (_("Preview can't be changed during calls. Changes will take effect after this call."));
+    GtkWidget *msg_box = gnome_message_box_new (msg, GNOME_MESSAGE_BOX_WARNING, 
+						"OK", NULL);
+    gtk_widget_show (msg_box);
+    
+    g_free (msg);
+  }
+ 
+  gdk_threads_leave ();
+  return FALSE;
+}
+
+
 /* DESCRIPTION  :  This callback is called when the video channel changes in
  *                 the gconf database.
  * BEHAVIOR     :  It updates the widgets and enables preview, if not in a call,
@@ -767,48 +817,11 @@ static void video_channel_changed_nt (GConfClient *client, guint cid,
 static void video_preview_changed_nt (GConfClient *client, guint cid, 
 				      GConfEntry *entry, gpointer data)
 {
-  gdk_threads_enter ();
-  GMVideoGrabber *vg = NULL;
-  GM_pref_window_widgets *pw = (GM_pref_window_widgets *) data;
-  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
-  
   if (entry->value->type == GCONF_VALUE_BOOL) {
    
-    /* We set the new value for the widget */
-    GTK_TOGGLE_BUTTON (pw->video_preview)->active = 
-      gconf_value_get_bool (entry->value);
-    GTK_TOGGLE_BUTTON (gw->preview_button)->active = 
-      gconf_value_get_bool (entry->value);
-    gtk_widget_draw (GTK_WIDGET (pw->video_preview), NULL);
-    gtk_widget_draw (GTK_WIDGET (gw->preview_button), NULL);
-    
-    /* We reset the video device */
-    if (MyApp->Endpoint ()->GetCallingState () == 0) {
-     
-      vg = MyApp->Endpoint ()->GetVideoGrabber ();
-     
-      if (gconf_value_get_bool (entry->value)) {
-
-	if (!vg->IsOpened ())
-	  vg->Open (TRUE);
-      }
-      else {
-
-	if (vg->IsOpened ())
-	  vg->Close ();
-      }
-    }
-    else {
-
-      gchar *msg = g_strdup (_("Preview can't be changed during calls. Changes will take effect after this call."));
-      GtkWidget *msg_box = gnome_message_box_new (msg, GNOME_MESSAGE_BOX_WARNING, 
-						  "OK", NULL);
-      gtk_widget_show (msg_box);
-
-      g_free (msg);
-    }
+    g_idle_add (video_preview_changed, 
+		(gpointer) gconf_value_get_bool (entry->value));
   }
-  gdk_threads_leave ();
 }
 
 
@@ -878,6 +891,34 @@ static void enable_vb_changed_nt (GConfClient *client, guint cid,
 }
 
 
+/* Able to update widgets */
+static gboolean enable_vid_tr_changed (gpointer data)
+{
+  gdk_threads_enter ();
+
+  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
+
+  /* We set the new value for the widget */
+  GTK_TOGGLE_BUTTON (pw->vid_tr)->active = (bool) data;
+  gtk_widget_draw (GTK_WIDGET (pw->vid_tr), NULL);
+    
+  /* We reset the video device */
+  if (MyApp->Endpoint ()->GetCallingState () == 2) {
+     
+    gchar *msg = g_strdup (_("Video transmission can't be changed during calls. Changes will take effect after this call."));
+    GtkWidget *msg_box = gnome_message_box_new (msg, GNOME_MESSAGE_BOX_WARNING, 
+						"OK", NULL);
+    gtk_widget_show (msg_box);
+    
+    g_free (msg);
+  }
+  
+  gdk_threads_leave ();
+
+  return FALSE;
+}
+
+
 /* DESCRIPTION  :  This callback is called when the video transmission toggle 
  *                 changes in the gconf database.
  * BEHAVIOR     :  It updates the widgets and enables vid tr, if not in a call,
@@ -889,21 +930,8 @@ static void enable_vid_tr_changed_nt (GConfClient *client, guint cid,
 {  
   if (entry->value->type == GCONF_VALUE_BOOL) {
    
-    /* We set the new value for the widget */
-    GTK_TOGGLE_BUTTON (data)->active = 
-      gconf_value_get_bool (entry->value);
-    gtk_widget_draw (GTK_WIDGET (data), NULL);
-    
-    /* We reset the video device */
-    if (MyApp->Endpoint ()->GetCallingState () == 2) {
-     
-      gchar *msg = g_strdup (_("Video transmission can't be changed during calls. Changes will take effect after this call."));
-      GtkWidget *msg_box = gnome_message_box_new (msg, GNOME_MESSAGE_BOX_WARNING, 
-						  "OK", NULL);
-      gtk_widget_show (msg_box);
-
-      g_free (msg);
-    }
+    g_idle_add (enable_vid_tr_changed, 
+		(gpointer) gconf_value_get_bool (entry->value));
   }
 }
 
@@ -944,8 +972,109 @@ static void audio_codecs_list_changed_nt (GConfClient *client, guint cid,
 }
 
 
+/* Not able to change all widgets */
+static gboolean view_widget_changed (gpointer data)
+{
+  gdk_threads_enter ();
+  
+  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
+  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+
+  GnomeUIInfo *view_menu_uiinfo =
+    (GnomeUIInfo *) gtk_object_get_data (GTK_OBJECT (gm), "view_menu_uiinfo");
+   
+  /* We set the new value for the widget */
+  /* We are Unable to do it before Gnome 2 :-(
+  GTK_TOGGLE_BUTTON (data)->active = 
+    gconf_value_get_bool (entry->value);
+  gtk_widget_draw (GTK_WIDGET (data), NULL);
+  */
+
+  /* We show or hide the corresponding widget */
+  if (data == pw->show_notebook) {
+
+    /* Update the menu, 
+       we are called only if the value has changed */
+    GTK_CHECK_MENU_ITEM (view_menu_uiinfo [2].widget)->active = 
+      !GTK_WIDGET_VISIBLE (gw->main_notebook);
+
+    GTK_TOGGLE_BUTTON (pw->show_notebook)->active =
+      !GTK_WIDGET_VISIBLE (gw->main_notebook);
+
+    gtk_widget_draw (view_menu_uiinfo [2].widget, NULL);
+    gtk_widget_draw (pw->show_notebook, NULL);
+
+    if (!GTK_WIDGET_VISIBLE (gw->main_notebook))
+      gtk_widget_show_all (gw->main_notebook);
+    else
+      gtk_widget_hide (gw->main_notebook);
+  }
+  
+  if (data == pw->show_statusbar) {
+    
+    /* Update the menu,
+       we are called only if the value has changed */
+    GTK_CHECK_MENU_ITEM (view_menu_uiinfo [3].widget)->active = 
+      !GTK_WIDGET_VISIBLE (gw->statusbar);
+
+    GTK_TOGGLE_BUTTON (pw->show_statusbar)->active = 
+      !GTK_WIDGET_VISIBLE (gw->statusbar);
+
+    gtk_widget_draw (view_menu_uiinfo [3].widget, NULL);
+    gtk_widget_draw (pw->show_statusbar, NULL);
+
+    if (!GTK_WIDGET_VISIBLE (gw->statusbar))
+      gtk_widget_show_all (gw->statusbar);
+    else
+      gtk_widget_hide (gw->statusbar);
+  }
+
+  if (data == pw->show_quickbar) {
+
+    /* Update the menu,
+       we are called only if the value has changed */
+    GTK_CHECK_MENU_ITEM (view_menu_uiinfo [4].widget)->active = 
+      !GTK_WIDGET_VISIBLE (gw->quickbar_frame);
+
+    GTK_TOGGLE_BUTTON (pw->show_quickbar)->active =
+      !GTK_WIDGET_VISIBLE (gw->quickbar_frame);
+    
+    gtk_widget_draw (pw->show_quickbar, NULL);
+    gtk_widget_draw (view_menu_uiinfo [4].widget, NULL);
+
+    if (!GTK_WIDGET_VISIBLE (gw->quickbar_frame))
+      gtk_widget_show_all (gw->quickbar_frame);
+    else
+      gtk_widget_hide_all (gw->quickbar_frame);
+  }
+
+  if (data == pw->show_docklet) {
+    
+    /* Update the menu,
+       we are called only if the value has changed */
+    GTK_CHECK_MENU_ITEM (view_menu_uiinfo [5].widget)->active = 
+      !GTK_WIDGET_VISIBLE (gw->docklet);
+
+    GTK_TOGGLE_BUTTON (pw->show_docklet)->active =
+      !GTK_WIDGET_VISIBLE (gw->docklet);
+
+    gtk_widget_draw (pw->show_docklet, NULL);
+    gtk_widget_draw (view_menu_uiinfo [5].widget, NULL);
+
+    if (!GTK_WIDGET_VISIBLE (gw->docklet))
+      gtk_widget_show (gw->docklet);
+    else
+      gtk_widget_hide (gw->docklet);
+  }
+
+  gdk_threads_leave ();
+
+  return FALSE;
+}
+
+
 /* DESCRIPTION  :  This callback is called when something changes in the view
- *                 directory.
+ *                 directory (either from the menu, either from the prefs).
  * BEHAVIOR     :  It updates the widget, menu and shows/hides the 
  *                 corresponding widget.
  * PRE          :  /
@@ -953,73 +1082,100 @@ static void audio_codecs_list_changed_nt (GConfClient *client, guint cid,
 static void view_widget_changed_nt (GConfClient *client, guint cid, 
 				    GConfEntry *entry, gpointer data)
 {
-  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
-  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
-
-  GnomeUIInfo *view_menu_uiinfo =
-    (GnomeUIInfo *) gtk_object_get_data (GTK_OBJECT (gm), "view_menu_uiinfo");
-
   if (entry->value->type == GCONF_VALUE_BOOL) {
    
-    /* We set the new value for the widget */
-     GTK_TOGGLE_BUTTON (data)->active = 
-      gconf_value_get_bool (entry->value);
-    gtk_widget_draw (GTK_WIDGET (data), NULL);
-  
-    /* We show or hide the corresponding widget */
-    if (data == pw->show_notebook) {
-
-      /* Update the menu */
-      GTK_CHECK_MENU_ITEM (view_menu_uiinfo [2].widget)->active = 
-	gconf_value_get_bool (entry->value);
-      gtk_widget_draw (view_menu_uiinfo [2].widget, NULL);
-
-      if (gconf_value_get_bool (entry->value))
-	gtk_widget_show (gw->main_notebook);
-      else
-	gtk_widget_hide (gw->main_notebook);
-    }
-
-    if (data == pw->show_statusbar) {
-
-      /* Update the menu */
-      GTK_CHECK_MENU_ITEM (view_menu_uiinfo [3].widget)->active = 
-	gconf_value_get_bool (entry->value);
-      gtk_widget_draw (view_menu_uiinfo [3].widget, NULL);
-
-      if (gconf_value_get_bool (entry->value))
-	gtk_widget_show (gw->statusbar);
-      else
-	gtk_widget_hide (gw->statusbar);
-    }
-
-    if (data == pw->show_quickbar) {
-
-      /* Update the menu */
-      GTK_CHECK_MENU_ITEM (view_menu_uiinfo [4].widget)->active = 
-	gconf_value_get_bool (entry->value);
-      gtk_widget_draw (view_menu_uiinfo [4].widget, NULL);
-
-      if (gconf_value_get_bool (entry->value))
-	gtk_widget_show_all (gw->quickbar_frame);
-      else
-	gtk_widget_hide_all (gw->quickbar_frame);
-    }
-
-    if (data == pw->show_docklet) {
-
-      /* Update the menu */
-      GTK_CHECK_MENU_ITEM (view_menu_uiinfo [5].widget)->active = 
-	gconf_value_get_bool (entry->value);
-      gtk_widget_draw (view_menu_uiinfo [5].widget, NULL);
-
-      if (gconf_value_get_bool (entry->value))
-	gtk_widget_show (gw->docklet);
-      else
-	gtk_widget_hide (gw->docklet);
-    }
-
+    g_idle_add (view_widget_changed, data);
   }
+}
+
+
+/* Able to update widgets */
+static gboolean register_changed (gpointer data)
+{
+  BOOL no_error = TRUE;
+  gchar *gconf_string;
+  GtkWidget *msg_box;
+  GMH323EndPoint *endpoint = MyApp->Endpoint ();
+  GConfClient *client = gconf_client_get_default ();
+
+  gdk_threads_enter ();
+  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
+
+  /* Update the widgets */  
+  GTK_TOGGLE_BUTTON (pw->ldap)->active = (bool) data;
+  gtk_widget_set_sensitive (GTK_WIDGET (pw->directory_update_button), 
+			    (bool) data);
+
+  /* We check that all the needed information is available
+     to update the LDAP directory */
+  if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->ldap))) {
+    
+    /* Checks if the server name is ok */
+    gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
+					     "/apps/gnomemeeting/ldap/ldap_server", 
+					     NULL);
+
+    if ((gconf_string == NULL) || (!strcmp (gconf_string, ""))) {
+
+      msg_box = gnome_message_box_new (_("Not registering because there is no LDAP server specified!"), GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
+      no_error = FALSE;
+    }
+    g_free (gconf_string);
+
+
+    /* Check if there is a first name */
+    gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
+					     "/apps/gnomemeeting/personal_data/firstname", NULL);
+
+    if ((gconf_string == NULL) || (!strcmp (gconf_string, ""))) {
+      
+      msg_box = gnome_message_box_new (_("Not Registering: Please provide your first name!"), GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
+      no_error = FALSE;
+    }
+    g_free (gconf_string);
+
+
+    /* Check if there is a mail */
+    gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
+					     "/apps/gnomemeeting/personal_data/mail", NULL);
+
+    if ((gconf_string == NULL) || (!strcmp (gconf_string, ""))) {
+      
+      msg_box = gnome_message_box_new (_("Not Registering: Please provide a valid e-mail!"), GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
+      no_error = FALSE;
+    }
+    g_free (gconf_string);
+    
+
+    /* Display the popup in case of error, and update the widget, and 
+       the gconf value for the register field */
+    if (no_error == FALSE) {
+      
+      gtk_widget_show (msg_box);
+    }
+  }
+
+
+  if (no_error) {
+    
+    int registering = gconf_client_get_bool (GCONF_CLIENT (client),
+					     "/apps/gnomemeeting/ldap/register", 
+					     NULL);
+    GMILSClient *ils_client = (GMILSClient *) endpoint->GetILSClient ();
+      
+    if (registering) {
+      
+      ils_client->Register ();
+    }
+    else {
+      
+      ils_client->Unregister ();
+    }
+  }
+
+  gdk_threads_leave ();
+
+  return FALSE;
 }
 
 
@@ -1035,92 +1191,54 @@ static void view_widget_changed_nt (GConfClient *client, guint cid,
 static void register_changed_nt (GConfClient *client, guint cid, 
 				 GConfEntry *entry, gpointer data)
 {
-  GM_pref_window_widgets *pw = (GM_pref_window_widgets *) data;
-  BOOL no_error = TRUE;
-  gchar *gconf_string;
-  GtkWidget *msg_box;
-  GMH323EndPoint *endpoint = MyApp->Endpoint ();
-
-
   if (entry->value->type == GCONF_VALUE_BOOL) {
-    
-    /* Update the widgets */
-    GTK_TOGGLE_BUTTON (pw->ldap)->active = gconf_value_get_bool (entry->value);
-    gtk_widget_set_sensitive (GTK_WIDGET (pw->directory_update_button), 
-			      gconf_value_get_bool (entry->value));
 
-    /* We check that all the needed information is available
-       to update the LDAP directory */
-    if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->ldap))) {
-
-      /* Checks if the server name is ok */
-      gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
-					       "/apps/gnomemeeting/ldap/ldap_server", 
-					       NULL);
-
-      if ((gconf_string == NULL) || (!strcmp (gconf_string, ""))) {
-
-	msg_box = gnome_message_box_new (_("Not registering because there is no LDAP server specified!"), 
-					 GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
-	no_error = FALSE;
-      }
-      g_free (gconf_string);
-
-
-      /* Check if there is a first name */
-      gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
-					       "/apps/gnomemeeting/personal_data/firstname", 
-					       NULL);
-
-      if ((gconf_string == NULL) || (!strcmp (gconf_string, ""))) {
-
-	msg_box = gnome_message_box_new (_("Not Registering: Please provide your first name!"), 
-					 GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
-	no_error = FALSE;
-      }
-      g_free (gconf_string);
-
-
-      /* Check if there is a mail */
-      gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
-					       "/apps/gnomemeeting/personal_data/mail", 
-					       NULL);
-
-      if ((gconf_string == NULL) || (!strcmp (gconf_string, ""))) {
-      
-	msg_box = gnome_message_box_new (_("Not Registering: Please provide a valid e-mail!"), 
-					 GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
-	no_error = FALSE;
-      }
-      g_free (gconf_string);
-    
-
-      /* Display the popup in case of error, and update the widget, and 
-	 the gconf value for the register field */
-      if (no_error == FALSE) {
-
-	gtk_widget_show (msg_box);
-      }
-    }
-
-
-    if (no_error) {
-      
-      int registering = gconf_client_get_bool (GCONF_CLIENT (client),
-					       "/apps/gnomemeeting/ldap/register", 
-					       NULL);
-      GMILSClient *ils_client = (GMILSClient *) endpoint->GetILSClient ();
-      
-      if (registering) {
-      
-	ils_client->Register ();
-      }
-      else {
-	
-	ils_client->Unregister ();
-      }
-    }
+    g_idle_add (register_changed, (gpointer) gconf_value_get_bool (entry->value));
+		
   }
+}
+
+
+/* Is able to update the widgets */
+static gboolean notebook_info_changed (gpointer data)
+{
+ gdk_threads_enter ();
+ 
+ GnomeUIInfo *notebook_view_uiinfo =
+   (GnomeUIInfo *) gtk_object_get_data (GTK_OBJECT (gm), 
+					"notebook_view_uiinfo");
+ GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+ 
+ int current_page = (int) data;
+
+ if (current_page < 0 || current_page > 3)
+   return FALSE;
+
+ gtk_signal_handler_block_by_data (GTK_OBJECT (gw->main_notebook), 
+				   gw->main_notebook);
+ gtk_notebook_set_page (GTK_NOTEBOOK (gw->main_notebook),
+			current_page);
+ gtk_signal_handler_unblock_by_data (GTK_OBJECT (gw->main_notebook),
+				     gw->main_notebook);
+
+ gtk_widget_set_sensitive (GTK_WIDGET (gw->left_arrow), true);
+ gtk_widget_set_sensitive (GTK_WIDGET (gw->right_arrow), true);
+ 
+ if (current_page == 0)
+   gtk_widget_set_sensitive (GTK_WIDGET (gw->left_arrow), false);
+ else if (current_page == 3) 
+   gtk_widget_set_sensitive (GTK_WIDGET (gw->right_arrow), false);
+
+ for (int i = 0; i < 4; i++) {
+
+   GTK_CHECK_MENU_ITEM (notebook_view_uiinfo[i].widget)->active =
+     (current_page == i);
+   gtk_widget_draw (GTK_WIDGET (GTK_CHECK_MENU_ITEM (notebook_view_uiinfo[i].widget)), NULL);
+ }
+
+ gdk_threads_leave ();
+ 
+ return FALSE;
 }
 
 
@@ -1134,44 +1252,10 @@ static void notebook_info_changed_nt (GConfClient *client, guint,
 				      GConfEntry *entry, 
 				      gpointer user_data)
 {
-
- gdk_threads_enter ();
- g_print("I have the lock!!\n");
- gdk_threads_leave ();
- 
- GnomeUIInfo *notebook_view_uiinfo =
-    (GnomeUIInfo *) gtk_object_get_data (GTK_OBJECT (gm), 
-					 "notebook_view_uiinfo");
-  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
- 
-
   if (entry->value->type == GCONF_VALUE_INT) {
 
-    int current_page = gconf_value_get_int (entry->value);
-    if (current_page < 0 || current_page > 3)
-      return;
-
-    gtk_signal_handler_block_by_data (GTK_OBJECT (gw->main_notebook), 
-			      gw->main_notebook);
-    gtk_notebook_set_page (GTK_NOTEBOOK (gw->main_notebook),
-			   current_page);
-    gtk_signal_handler_unblock_by_data (GTK_OBJECT (gw->main_notebook),
-				gw->main_notebook);
-
-    gtk_widget_set_sensitive (GTK_WIDGET (gw->left_arrow), true);
-    gtk_widget_set_sensitive (GTK_WIDGET (gw->right_arrow), true);
-
-    if (current_page == 0)
-      gtk_widget_set_sensitive (GTK_WIDGET (gw->left_arrow), false);
-    else if (current_page == 3) 
-      gtk_widget_set_sensitive (GTK_WIDGET (gw->right_arrow), false);
-
-    for (int i = 0; i < 4; i++) {
-
-      GTK_CHECK_MENU_ITEM (notebook_view_uiinfo[i].widget)->active =
-	(current_page == i);
-      gtk_widget_draw (GTK_WIDGET (GTK_CHECK_MENU_ITEM (notebook_view_uiinfo[i].widget)), NULL);
-    }
+    g_idle_add (notebook_info_changed, 
+		(gpointer) gconf_value_get_int (entry->value));
   }
 }
 
