@@ -659,9 +659,9 @@ gm_aw_check_contact_collision (GmContact *new_contact,
 
       primary_text = g_strdup_printf ("<span weight=\"bold\" size=\"larger\">%s</span>", _("Contact collision"));
       if (cpt == 0)
-	secondary_text = g_strdup_printf (_("Another contact with the same speed dial already exists in your address book:\n\n<b>Contact Name</b>: %s\n<b>Contact URL</b>: %s\n<b>Contact Speed Dial</b>: %s\n"), ctct->fullname?ctct->fullname:_("None"), ctct->url?ctct->url:_("None"), ctct->speeddial?ctct->speeddial:_("None"));
+	secondary_text = g_strdup_printf (_("Another contact with the same speed dial already exists in your address book:\n\n<b>Name</b>: %s\n<b>URL</b>: %s\n<b>Speed Dial</b>: %s\n"), ctct->fullname?ctct->fullname:_("None"), ctct->url?ctct->url:_("None"), ctct->speeddial?ctct->speeddial:_("None"));
       else
-	secondary_text = g_strdup_printf (_("Another contact with similar information already exists in your address book:\n\n<b>Contact Name</b>: %s\n<b>Contact URL</b>: %s\n<b>Contact Speed Dial</b>: %s\n\nDo you still want to add the contact?"), ctct->fullname?ctct->fullname:_("None"), ctct->url?ctct->url:_("None"), ctct->speeddial?ctct->speeddial:_("None"));
+	secondary_text = g_strdup_printf (_("Another contact with similar information already exists in your address book:\n\n<b>Name</b>: %s\n<b>URL</b>: %s\n<b>Speed Dial</b>: %s\n\nDo you still want to add the contact?"), ctct->fullname?ctct->fullname:_("None"), ctct->url?ctct->url:_("None"), ctct->speeddial?ctct->speeddial:_("None"));
 
 
       dialog_text =
