@@ -19,11 +19,11 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: GnomeMeeting 1.0.1\n"
+"Project-Id-Version: GnomeMeeting 1.1.99\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-11-22 09:35+0100\n"
-"PO-Revision-Date: 2004-03-07 18:30+0100\n"
-"Last-Translator: Fabrice Alphonso <fabrice@alphonso.dyndns.org>\n"
+"POT-Creation-Date: 2004-12-01 23:20+0100\n"
+"PO-Revision-Date: 2004-12-01 22:07+0100\n"
+"Last-Translator: Christophe Merlet (RedFox) <redfox@redfoxcenter.org>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -115,7 +115,7 @@ msgstr ""
 msgid "Clear inactive calls"
 msgstr "Supprimer les appels inactifs"
 
-#: gnomemeeting.schemas.in.in.h:15 src/addressbook_window.cpp:988
+#: gnomemeeting.schemas.in.in.h:15 src/addressbook_window.cpp:974
 msgid "Comment"
 msgstr "Commentaire"
 
@@ -367,7 +367,7 @@ msgid ""
 "can still use the callto URL to call you"
 msgstr ""
 "Si activé, vos informations personnelles seront affichées aux personnes "
-"parcourant l'annuaires des utilisateurs. Si désactivé, vous ne serez pas "
+"parcourant l'annuaire des utilisateurs. Si désactivé, vous ne serez pas "
 "visibles des utilisateurs parcourant l'annuaire des utilisateurs, mais ils "
 "pourront toujours vous appeler en utilisant l'URL callto"
 
@@ -539,7 +539,7 @@ msgstr ""
 msgid ""
 "Select the format for video cameras (does not apply to most USB cameras)"
 msgstr ""
-"Sélectionez le format pour la caméra vidéo (ne s'applique pas pour la "
+"Sélectionnez le format pour la caméra vidéo (ne s'applique pas pour la "
 "plupart des caméras USB)"
 
 #: gnomemeeting.schemas.in.in.h:104 src/pref_window.cpp:1193
@@ -647,7 +647,7 @@ msgstr "Identifiant du Gatekeeper auquel s'enregistrer"
 msgid ""
 "The Gatekeeper password to use for H.235 authentication to the Gatekeeper"
 msgstr ""
-"Mot de passe à utiliser pour s'autentifier au Gatekeeper par le protocole "
+"Mot de passe à utiliser pour s'authentifier au Gatekeeper par le protocole "
 "H.235"
 
 #: gnomemeeting.schemas.in.in.h:125 src/pref_window.cpp:1027
@@ -705,9 +705,9 @@ msgid ""
 "The default video view (0: Local, 1: Remote, 2: Both incrusted, 3: Both with "
 "local video in a separate window, 4: Both)"
 msgstr ""
-"Image vidéo sélectionée par défaut (0: Locale, 1: Distante, 2: Les deux "
-"incrutées, 3: Les deux avec la vidéo locale dans une fenêtre séparée, 4: Les "
-"deux)"
+"Image vidéo sélectionnée par défaut (0: Locale, 1: Distante, 2: Les deux "
+"incrustées, 3: Les deux avec la vidéo locale dans une fenêtre séparée, 4: "
+"Les deux)"
 
 #: gnomemeeting.schemas.in.in.h:135
 msgid "The history of the last 100 missed calls"
@@ -755,7 +755,7 @@ msgid ""
 "transmitted frames per second will be dynamically adjusted above their "
 "minimum during calls to try to minimize the bandwidth to the given value"
 msgstr ""
-"Bande passante vidéo maximale en kbytes/s. La qualité vidéo et le nombre "
+"Bande passante vidéo maximale en koctet/s. La qualité vidéo et le nombre "
 "d'images transmises par seconde seront ajustés dynamiquement autour de leur "
 "minima au cours de l'appel pour maintenir la bande passante à la valeur "
 "donnée"
@@ -781,7 +781,7 @@ msgid ""
 "card. It can be either a POTS (Plain Old Telephone System) or a headset."
 msgstr ""
 "Le type de périphérique de sortie est le type du périphérique qui est "
-"connécté à votre carte Quicknet. C'est soit un combiné téléhonique ou un "
+"connecté à votre carte Quicknet. C'est soit un combiné téléphonique ou un "
 "casque."
 
 #: gnomemeeting.schemas.in.in.h:148
@@ -848,10 +848,10 @@ msgid ""
 "gatekeeper."
 msgstr ""
 "La plage de ports UDP que GnomeMeeting va utiliser pour l'enregistrement à "
-"un gateleeper.  Vous pouvez changer la plage des ports UDP si vous utilisez "
+"un gatekeeper.  Vous pouvez changer la plage des ports UDP si vous utilisez "
 "la traduction d'IP et si vous avez besoin de lancer plusieurs GnomeMeeting "
 "derrière votre routeur NAT/PAT. GnomeMeeting devra être relancé pour que les "
-"modifications soient effectives. Cette plage de port n'aura auncun effet si "
+"modifications soient effectives. Cette plage de port n'aura aucun effet si "
 "vous ne vous connectez à aucun gatekeeper."
 
 #: gnomemeeting.schemas.in.in.h:155 src/pref_window.cpp:1010
@@ -899,8 +899,8 @@ msgid ""
 "The time after which GnomeMeeting will renew its registration with the "
 "gatekeeper"
 msgstr ""
-"Durée après laquelle GnomeMeeting va renouveller son enregistrement auprès "
-"du Gatekeeper"
+"Durée après laquelle GnomeMeeting va renouveler son enregistrement auprès du "
+"Gatekeeper"
 
 #: gnomemeeting.schemas.in.in.h:165
 msgid "The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)"
@@ -1147,7 +1147,7 @@ msgstr ""
 #: lib/stats_drawing_area.c:362
 #, c-format
 msgid "Total: %.2f MB"
-msgstr "Total : %.2f MB"
+msgstr "Total : %.2f Mo"
 
 #: lib/contacts/gm_contacts-zeroconf.cpp:309
 msgid "Contacts Near Me"
@@ -1209,13 +1209,13 @@ msgstr "S"
 msgid "Name"
 msgstr "Nom"
 
-#: src/addressbook_window.cpp:974
-msgid "URL"
-msgstr "URL"
-
-#: src/addressbook_window.cpp:1002 src/calls_history_window.cpp:737
+#: src/addressbook_window.cpp:988 src/calls_history_window.cpp:737
 msgid "Software"
 msgstr "Logiciel"
+
+#: src/addressbook_window.cpp:1002
+msgid "URL"
+msgstr "URL"
 
 #: src/addressbook_window.cpp:1016
 msgid "E-Mail"
@@ -1248,7 +1248,7 @@ msgstr "_Appeler ce contact"
 
 #: src/addressbook_window.cpp:1479 src/addressbook_window.cpp:1509
 msgid "_Copy URL to clipboard"
-msgstr "Copier l'adresse dans le presse-papier"
+msgstr "_Copier l'adresse dans le presse-papiers"
 
 #: src/addressbook_window.cpp:1486 src/addressbook_window.cpp:1544
 #: src/addressbook_window.cpp:2262
@@ -1272,12 +1272,14 @@ msgstr ""
 "Erreur lors de la récupération de la liste des utilisateurs auprès de %s"
 
 #: src/addressbook_window.cpp:1780
+#, c-format
 msgid "Found %d user in %s"
 msgid_plural "Found %d users in %s"
 msgstr[0] "%d utilisateur trouvé sur %s"
 msgstr[1] "%d utilisateurs trouvés sur %s"
 
 #: src/addressbook_window.cpp:1784
+#, c-format
 msgid "Found %d user in %s for a total of %d users"
 msgid_plural "Found %d users in %s for a total of %d users"
 msgstr[0] "%d utilisateur trouvé sur %s sur un total de %d utilisateurs"
@@ -1293,7 +1295,7 @@ msgstr "_Fichier"
 
 #: src/addressbook_window.cpp:2250
 msgid "New _Address Book"
-msgstr "Nouveau carnet d'adresses"
+msgstr "Nouveau _carnet d'adresses"
 
 #: src/addressbook_window.cpp:2269 src/main_window.cpp:1007
 msgid "_Close"
@@ -1825,7 +1827,7 @@ msgstr ""
 #: src/druid.cpp:613
 #, c-format
 msgid "Configuration Druid - page 1/%d"
-msgstr "Assitant de configuration - page 1/%d"
+msgstr "Assistant de configuration - page 1/%d"
 
 #: src/druid.cpp:655
 #, c-format
@@ -1862,7 +1864,7 @@ msgid ""
 msgstr ""
 "Votre adresse électronique est utilisée lors de l'enregistrement dans "
 "l'annuaire des utilisateurs de GnomeMeeting. Elle est utilisée pour créer "
-"une adresse d'appel permettant ainsi à vos contacts de vous appeller où que "
+"une adresse d'appel permettant ainsi à vos contacts de vous appeler où que "
 "vous soyez."
 
 #: src/druid.cpp:749
@@ -1894,7 +1896,7 @@ msgstr ""
 #: src/druid.cpp:856
 #, c-format
 msgid "NAT Type - page %d/%d"
-msgstr "type de NAT - Page %d/%d"
+msgstr "Type de NAT - Page %d/%d"
 
 #: src/druid.cpp:866
 msgid "Click here to detect your NAT Type:"
@@ -2106,7 +2108,7 @@ msgstr "Acceptation de l'appel de %s (Réponse automatique)"
 msgid "Call rejected"
 msgstr "Appel rejeté"
 
-#: src/endpoint.cpp:909 src/endpoint.cpp:1308 src/endpoint.cpp:2253
+#: src/endpoint.cpp:909 src/endpoint.cpp:1308 src/endpoint.cpp:2255
 msgid "Call forwarded"
 msgstr "Appel redirigé"
 
@@ -2168,7 +2170,7 @@ msgstr "Le correspondant distant a stoppé l'appel"
 
 #: src/endpoint.cpp:1296
 msgid "Abnormal call termination"
-msgstr "FIn anormale de l'appel"
+msgstr "Fin anormale de l'appel"
 
 #: src/endpoint.cpp:1299
 msgid "Could not connect to remote host"
@@ -2210,7 +2212,7 @@ msgstr "Le correspondant distant n'est pas connecté"
 msgid "Temporary failure"
 msgstr "Dérangement temporaire"
 
-#: src/endpoint.cpp:1338 src/urlhandler.cpp:464 src/urlhandler.cpp:469
+#: src/endpoint.cpp:1338 src/urlhandler.cpp:466 src/urlhandler.cpp:471
 msgid "User not found"
 msgstr "Utilisateur non trouvé"
 
@@ -2219,6 +2221,7 @@ msgid "Call completed"
 msgstr "Appel terminé"
 
 #: src/endpoint.cpp:1365
+#, c-format
 msgid "Missed %d call"
 msgid_plural "Missed %d calls"
 msgstr[0] "%d appel manqué"
@@ -2287,7 +2290,7 @@ msgstr ""
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 
-#: src/endpoint.cpp:2250
+#: src/endpoint.cpp:2252
 #, c-format
 msgid "Forwarding Call to %s (No Answer)"
 msgstr "Redirection d'appel vers %s (Pas de réponse)"
@@ -2319,11 +2322,12 @@ msgstr "Erreur d'enregistrement sur le Gatekeeper: alias déjà existant"
 
 #: src/gatekeeper.cpp:203
 msgid "Gatekeeper registration failed: bad login/password"
-msgstr "Erreur d'enregistrement sur le Gatekeeper : Mauvais login/mot de passe"
+msgstr ""
+"Erreur d'enregistrement sur le Gatekeeper : Mauvais identifiant/mot de passe"
 
 #: src/gatekeeper.cpp:206
 msgid "Gatekeeper registration failed: transport error"
-msgstr "Errur d'enregistrement sur le Gatekeeper : erreur de transort"
+msgstr "Erreur d'enregistrement sur le Gatekeeper : erreur de transport"
 
 #: src/gatekeeper.cpp:209 src/gatekeeper.cpp:214
 msgid "Gatekeeper registration failed"
@@ -3091,7 +3095,7 @@ msgid ""
 "they can still use the callto URL to call you."
 msgstr ""
 "Si activé, vos informations personnelles seront affichées aux personnes "
-"parcourant l'annuaires des utilisateurs. Si désactivé, vous ne serez pas "
+"parcourant l'annuaire des utilisateurs. Si désactivé, vous ne serez pas "
 "visibles des utilisateurs parcourant l'annuaire des utilisateurs, mais ils "
 "pourront toujours vous appeler en utilisant l'URL callto."
 
@@ -3318,8 +3322,8 @@ msgid ""
 "only perform authentication using the first alias in the list."
 msgstr ""
 "Utiliser cette option pour être sur que l'alias ci-dessus est utilisé en "
-"tant qu'alias primare sur le GateKeeper. Cela peut-être nécessaire si votre "
-"GateKeeper n'autentifie qu'avec le premier alias de la liste."
+"tant qu'alias primaire sur le GateKeeper. Cela peut-être nécessaire si votre "
+"GateKeeper n'authentifie qu'avec le premier alias de la liste."
 
 #: src/pref_window.cpp:1010
 msgid "Registering method:"
@@ -3378,7 +3382,7 @@ msgstr ""
 "Ceci active la vérification d'IP depuis seconix.com et complète l'IP dans le "
 "champ IP publique de la passerelle NAT/PAT de GnomeMeeting. L'IP retournée "
 "n'est utilisée que lorsque la traduction d'IP est activée. Si vous "
-"désactivez la vérification d'IP, vous evrez entrer manuellement l'IP de "
+"désactivez la vérification d'IP, vous devrez saisir manuellement l'IP de "
 "votre passerelle dans les préférences GnomeMeeting."
 
 #: src/pref_window.cpp:1049
@@ -3625,14 +3629,14 @@ msgid ""
 "transmitted frames per second will be dynamically adjusted above their "
 "minimum during calls to try to minimize the bandwidth to the given value."
 msgstr ""
-"Bande passante vidéo maximale en kbytes/s. La qualité vidéo et le nombre "
+"Bande passante vidéo maximale en koctet/s. La qualité vidéo et le nombre "
 "d'images transmises par seconde seront ajustés dynamiquement autour de leur "
 "minima au cours de l'appel pour maintenir la bande passante à la valeur "
 "donnée."
 
 #: src/pref_window.cpp:1282
 msgid "kB/s"
-msgstr "kB/s"
+msgstr "ko/s"
 
 #: src/pref_window.cpp:1288
 msgid "Advanced Quality Settings"
@@ -3866,7 +3870,7 @@ msgid ""
 msgstr ""
 "Résultat du test STUN : %s.\n"
 "\n"
-"GnomeMeeting n'ap pas été capable de déterminer le type de NAT que vous "
+"GnomeMeeting n'a pas été capable de déterminer le type de NAT que vous "
 "utilisez. La méthode la plus appropriée, si votre routeur ne supporte pas le "
 "protocole H323 nativement, est d'activer la redirection de ports vers votre "
 "ordinateur interne et d'utiliser la traduction d'IP si vous vous trouvez "
@@ -3881,7 +3885,7 @@ msgid ""
 "Your system does not need any specific configuration as long as you do not "
 "have a local firewall blocking the ports required by GnomeMeeting."
 msgstr ""
-"Résultatdu test STUN : %s.\n"
+"Résultat du test STUN : %s.\n"
 "\n"
 "Votre système ne nécessite aucune configuration spécifique du moment que "
 "vous n'utilisez pas un parefeu local qui bloque les ports requis par "
@@ -3898,7 +3902,7 @@ msgid ""
 "your forwarding rules."
 msgstr ""
 "GnomeMeeting a détecté un NAT symétrique. La méthode la plus appropriée, si "
-"votre routeur ne suporte pas le protocole H323 nativement, est de rediriger "
+"votre routeur ne supporte pas le protocole H323 nativement, est de rediriger "
 "les ports requis vers votre ordinateur interne afin de transformer votre NAT "
 "symétrique en Cone NAT. Relancer ce test après avoir effectué la redirection "
 "de ports, devrait détecter un Cone NAT et permettre à GnomeMeeting de "
