@@ -1,5 +1,17 @@
 2003-06-09 Damien Sandras  <dsandras@seconix.com>
 
+	* src/callbacks.cpp: Fixed default button for call transfer popup.
+	
+	* src/endpoint.cpp, src/endpoint.h: Don't use the same mutexes 
+	for all internal variables. Added a method that waits that a call
+	has been transfered before returning.
+	
+	* src/menu.cpp: Fixed warning.
+	
+	* src/pref_window.cpp: Removed duplicate "Picture" entry.
+	
+2003-06-09 Damien Sandras  <dsandras@seconix.com>
+
 	* src/callbacks.cpp: Improved the dialog in the transfer call
 	popup.
 

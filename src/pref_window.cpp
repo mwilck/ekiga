@@ -1122,8 +1122,6 @@ gnomemeeting_init_pref_window_video_devices (GtkWidget *notebook)
   table = gnomemeeting_vbox_add_table (vbox, _("Video Devices"), 6, 4);
 
   /* The video device */
-  gw->video_devices += (_("Picture"));
-
   pw->video_device =
     gnomemeeting_table_add_pstring_option_menu (table, _("Video device:"), gw->video_devices, DEVICES_KEY "video_recorder", _("Select the video device to use. Using an invalid video device or \"Picture\" for video transmission will transmit a test picture."), 0);
 

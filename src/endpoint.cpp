@@ -378,9 +378,9 @@ GMH323EndPoint::RemoveAllCapabilities ()
 void 
 GMH323EndPoint::SetCallingState (int i)
 {
-  var_access_mutex.Wait ();
+  cs_access_mutex.Wait ();
   calling_state = i;
-  var_access_mutex.Signal ();
+  cs_access_mutex.Signal ();
 }
 
 
@@ -389,9 +389,9 @@ GMH323EndPoint::GetCallingState (void)
 {
   int cstate;
 
-  var_access_mutex.Wait ();
+  cs_access_mutex.Wait ();
   cstate = calling_state;
-  var_access_mutex.Signal ();
+  cs_access_mutex.Signal ();
 
   return cstate;
 }
@@ -399,17 +399,18 @@ GMH323EndPoint::GetCallingState (void)
 
 H323Connection * 
 GMH323EndPoint::SetupTransfer (const PString & token,
-			       const PString & callIdentity,
-			       const PString & remoteParty,
-			       PString & newToken,
+			       const PString & call_identity,
+			       const PString & remote_party,
+			       PString & new_token,
 			       void *)
 {
   H323Connection *conn = NULL;
 
   conn =
-    H323EndPoint::SetupTransfer (token, callIdentity, remoteParty, newToken);
+    H323EndPoint::SetupTransfer (token, call_identity,
+				 remote_party, new_token);
 
-  transfer_call_token = newToken;
+  SetTransferCallToken (new_token);
   
   return conn;
 }
@@ -751,9 +752,9 @@ GMH323EndPoint::GetCurrentConnection ()
 {
   H323Connection *con = NULL;
 
-  var_access_mutex.Wait ();
+  cc_access_mutex.Wait ();
   con = current_connection;
-  var_access_mutex.Signal ();
+  cc_access_mutex.Signal ();
 
   return con;
 }
@@ -771,9 +772,9 @@ GMH323EndPoint::GetILSClientThread (void)
 {
   PThread *ils = NULL;
 
-  var_access_mutex.Wait ();
+  ils_access_mutex.Wait ();
   ils = ils_client;
-  var_access_mutex.Signal ();
+  ils_access_mutex.Signal ();
 
   return ils;
 }
@@ -782,18 +783,18 @@ GMH323EndPoint::GetILSClientThread (void)
 void 
 GMH323EndPoint::SetCurrentConnection (H323Connection *c)
 {
-  var_access_mutex.Wait ();
+  cc_access_mutex.Wait ();
   current_connection = c;
-  var_access_mutex.Signal ();
+  cc_access_mutex.Signal ();
 }
 
 
 void 
 GMH323EndPoint::SetCurrentCallToken (PString s)
 {
-  var_access_mutex.Wait ();
+  ct_access_mutex.Wait ();
   current_call_token = s;
-  var_access_mutex.Signal ();
+  ct_access_mutex.Signal ();
 }
 
 
@@ -802,9 +803,9 @@ GMH323EndPoint::GetCurrentCallToken ()
 {
   PString c;
 
-  var_access_mutex.Wait ();
+  ct_access_mutex.Wait ();
   c = current_call_token;
-  var_access_mutex.Signal ();
+  ct_access_mutex.Signal ();
 
   return c;
 }
@@ -1217,25 +1218,24 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   }
 #endif
 
+  /* Update internal state */
+  SetCurrentCallToken (token);
+  SetCurrentConnection (FindConnectionWithoutLocks (token));
+  SetCallingState (2);
+
   gnomemeeting_threads_enter ();
   gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
   connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 1);
   gnomemeeting_addressbook_update_menu_sensitivity ();
   gnomemeeting_call_menu_connect_set_sensitive (0, FALSE);
+  gnomemeeting_call_menu_connect_set_sensitive (1, TRUE);
   gnomemeeting_call_menu_functions_set_sensitive (TRUE);
   gnomemeeting_tray_set_content (gw->docklet, 2);
   gnomemeeting_threads_leave ();
 
-
   /* Update ILS if needed */
   if (reg)
     (GM_ILS_CLIENT (GetILSClientThread ()))->Modify ();
-
-
-  /* Update internal state */
-  SetCurrentCallToken (token);
-  SetCurrentConnection (FindConnectionWithoutLocks (token));
-  SetCallingState (2);
 
   g_free (msg);
   g_free (utf8_name);
@@ -1259,10 +1259,10 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   BOOL preview = FALSE;
   int i = 0;
   
-  var_access_mutex.Wait ();
+  ch_access_mutex.Wait ();
   player_channel = NULL;
   recorder_channel = NULL;
-  var_access_mutex.Signal ();
+  ch_access_mutex.Signal ();
 
   /* Get information about the remote user */
   cout << "FIX ME" << endl << flush;
@@ -1297,10 +1297,10 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
      not another call, ok, else do nothing */
   if (GetCurrentCallToken () == clearedCallToken) {
 
-    if (!transfer_call_token.IsEmpty ()) {
+    if (!GetTransferCallToken ().IsEmpty ()) {
 
-      SetCurrentCallToken (transfer_call_token);
-      transfer_call_token = PString ();
+      SetCurrentCallToken (GetTransferCallToken ());
+      SetTransferCallToken (PString ());
     }
     else
       SetCurrentCallToken (PString ());
@@ -1618,6 +1618,10 @@ GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
                                  unsigned bufferSize,
                                  H323AudioCodec & codec)
 {
+  /* Wait that the primary call has terminated (in case of transfer)
+     before opening the channels for the second call */
+  TransferCallWait ();
+
   gnomemeeting_threads_enter ();
 
   /* If needed , delete the timers */
@@ -1691,7 +1695,12 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 {
   BOOL vid_tr = FALSE;
   GMVideoGrabber *video_grabber = NULL;
-  
+
+  /* Wait that the primary call has terminated (in case of transfer)
+     before opening the channels for the second call */
+  TransferCallWait ();
+
+ 
   if (opened_video_channels >= 2)
     return FALSE;
 
@@ -1722,11 +1731,11 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
      gnomemeeting_threads_enter ();
      
      /* Here, the grabber is opened */
-     var_access_mutex.Wait ();
+     ch_access_mutex.Wait ();
      PVideoChannel *channel = video_grabber->GetVideoChannel ();
      transmitted_video_device = video_grabber->GetEncodingDevice ();
      opened_video_channels++;
-     var_access_mutex.Signal ();
+     ch_access_mutex.Signal ();
 
      /* Updates the view menu */
      gnomemeeting_zoom_submenu_set_sensitive (TRUE);
@@ -1755,13 +1764,13 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
     /* If we only receive */
     if (!isEncoding) {
        
-      var_access_mutex.Wait ();
+      ch_access_mutex.Wait ();
       PVideoChannel *channel = new PVideoChannel;
       received_video_device = new GDKVideoOutputDevice (isEncoding, gw);
       received_video_device->SetColourFormatConverter ("YUV420P");
       
       opened_video_channels++;
-      var_access_mutex.Signal ();
+      ch_access_mutex.Signal ();
 
       channel->AttachVideoPlayer (received_video_device);
 
@@ -1802,13 +1811,41 @@ GMH323EndPoint::GetLidThread (void)
 {
   GMLid *l = NULL;
 
-  var_access_mutex.Wait ();
+  lt_access_mutex.Wait ();
   l = lid_thread;
-  var_access_mutex.Signal ();
+  lt_access_mutex.Signal ();
 
   return l;
 }
 #endif
 
 
+void 
+GMH323EndPoint::SetTransferCallToken (PString s)
+{
+  tct_access_mutex.Wait ();
+  transfer_call_token = s;
+  tct_access_mutex.Signal ();
+}
 
+
+PString 
+GMH323EndPoint::GetTransferCallToken ()
+{
+  PString c;
+
+  tct_access_mutex.Wait ();
+  c = transfer_call_token;
+  tct_access_mutex.Signal ();
+
+  return c;
+}
+
+
+void
+GMH323EndPoint::TransferCallWait ()
+{
+
+  while (!GetTransferCallToken ().IsEmpty ())
+    PThread::Current ()->Sleep (100);
+}

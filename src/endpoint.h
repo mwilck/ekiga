@@ -356,6 +356,29 @@ class GMH323EndPoint : public H323EndPoint
 
 
  protected:
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Set the current transfer call token.
+   * PRE          :  A valid PString for a call token.
+   */
+  void SetTransferCallToken (PString);
+
+  
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Return the current transfer call token (empty if
+   *                 no call is in progress).
+   * PRE          :  /
+   */
+  PString GetTransferCallToken (void);
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns when the primary call of a transfer is terminated.
+   * PRE          :  /
+   */
+  void TransferCallWait ();
+
+
   
   PString current_call_token;
   PString transfer_call_token;
@@ -382,7 +405,16 @@ class GMH323EndPoint : public H323EndPoint
   PThread *ils_client;
   PThread *audio_tester;
 
-  PMutex var_access_mutex;
+  /* Mutexes for the different variables to make
+     sure there is not 2 threads accessing them
+     at the same time */
+  PMutex ils_access_mutex;
+  PMutex cc_access_mutex;
+  PMutex ch_access_mutex;
+  PMutex cs_access_mutex;
+  PMutex ct_access_mutex;
+  PMutex tct_access_mutex;
+  PMutex lt_access_mutex;
 
   int opened_audio_channels;
   int opened_video_channels;

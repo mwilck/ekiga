@@ -1072,7 +1072,6 @@ gnomemeeting_call_menu_connect_set_sensitive (int i, bool b)
 void
 gnomemeeting_call_menu_functions_set_sensitive (bool b)
 {
-  GmLdapWindow *lw = MyApp->GetLdapWindow ();
   MenuEntry *gnomemeeting_menu = gnomemeeting_get_menu (gm);
   
   gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [AUDIO_PAUSE_CALL_MENU_INDICE].widget), b);
