@@ -168,7 +168,7 @@ LDAP_LIBS="-lldap -llber -lresolv"
 
 
 AC_ARG_WITH(ldap, [  --with-ldap=PFX       Location of ldap.],
-	with_ldap="$withval", with_ldap="/usr/lib")
+	with_ldap="$withval", with_ldap="/usr")
 msg_ldap="no"
 if test "x${with_ldap}" != "xno" -a "x${have_ldap}" != "xno"; then
 	AC_CHECK_FILE(${with_ldap}/lib/libldap.so, ldap="yes", ldap="no")
