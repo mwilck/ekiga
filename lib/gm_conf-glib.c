@@ -305,11 +305,20 @@ string_from_list (const GSList *val)
 {
   gchar *result = NULL;
   GString *buffer = NULL;
+  gchar *str = NULL;
+  int i = 0;
   const GSList *ptr = NULL;
 
   buffer = g_string_new (NULL);
   for (ptr = val; ptr != NULL; ptr = ptr->next) {
-    g_string_append (buffer, (const gchar *)ptr->data);
+    str = (gchar *)ptr->data;
+    for (i = 0; str[i] != 0; i++) {
+      if (str[i] == ',')
+	g_string_append (buffer, "\\,");
+      else
+	g_string_append_c (buffer, str[i]);
+    }
+
     if (ptr->next != NULL)
       g_string_append_c (buffer, ',');
   }
@@ -368,19 +377,50 @@ list_from_string (const gchar *str)
   gchar *txt = NULL;
   gchar **tmp_list = NULL;
   gchar **txt_list = NULL;
+  GString *item = NULL;
+  gboolean must_concat = FALSE;
 
   g_return_val_if_fail (str != NULL, NULL);
+  g_return_val_if_fail (str[0] == '[', NULL);
+  g_return_val_if_fail (str[strlen (str) - 1] == ']', NULL);
 
   txt = g_strdup (str + 1); /* get the '[' out of the way */
   txt[strlen (txt) - 1] = 0; /* get the ']' out of the way */
-  if (txt[0] == 0)
-    return result;
+
+  if (txt[0] == 0) { /* handle the empty list */
+    g_free (txt);
+    return NULL;
+  }
+
   txt_list = g_strsplit (txt, ",", 0);
   g_free (txt);
-  for (tmp_list = txt_list; *tmp_list != NULL; tmp_list++)
-    result = g_slist_append (result, g_strdup (*tmp_list));
-  g_free (txt_list);
+  for (tmp_list = txt_list; *tmp_list != NULL; tmp_list++) {
+    if (item == NULL)
+      item = g_string_new (NULL);
+    if ((*tmp_list)[strlen (*tmp_list) - 1] == '\\') {
+      g_string_append_len (item, *tmp_list, strlen (*tmp_list) - 1);
+      must_concat = TRUE;
+    }
+    else {
+      g_string_append (item, *tmp_list);
+      must_concat = FALSE;
+    }
+    
+    if (must_concat == FALSE) {
+      result = g_slist_append (result, item->str);
+      g_string_free (item, FALSE);
+      item = NULL;
+    }
+  }
+  g_strfreev (txt_list);
 
+  if (must_concat == TRUE) { /* bad: shouldn't happen */
+    /* try not to lose data... */
+    result = g_slist_append (result, item->str);
+    g_string_free (item, FALSE);
+    item = NULL;
+  }
+  
   return result;
 }
 
