@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-08 02:49+0200\n"
+"POT-Creation-Date: 2004-11-07 20:39+0100\n"
 "PO-Revision-Date: 2004-03-21 23:33+0800\n"
 "Last-Translator: jan2xue <75jan@163.com>\n"
 "Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
@@ -198,11 +198,11 @@ msgstr "输入您的电子邮件地址"
 
 #: gnomemeeting.schemas.in.in.h:36 src/pref_window.cpp:871
 msgid "Enter your first name"
-msgstr "输入您的姓"
+msgstr "输入您的名"
 
 #: gnomemeeting.schemas.in.in.h:37
 msgid "Enter your last name"
-msgstr "输入您的名"
+msgstr "输入您的姓"
 
 #: gnomemeeting.schemas.in.in.h:38
 msgid "Enter your location (country or city) for the user directory"
@@ -210,7 +210,7 @@ msgstr "输入您的位置(国家或城市)，此信息将会出现在用户目�
 
 #: gnomemeeting.schemas.in.in.h:39
 msgid "First name"
-msgstr "姓"
+msgstr "名"
 
 #: gnomemeeting.schemas.in.in.h:40
 msgid "Forward calls to host"
@@ -1134,10 +1134,11 @@ msgid ""
 "designed to compress voice at a payload bitrate of 15 kbps."
 msgstr ""
 "Speex 是一个采用开放(非专利保护的)的语音压缩格式的为语音应用所设计的开源/自由"
-"软件。Speex 项目的目标是通过提供一个众多昂贵专有语音解码器之外的自由选择来降低语"
-"音应用的门槛。除此之外，Speex 非常适合 Internet 环境下的应用，它提供了大多数解码"
-"器没有的功能和特性。最重要的是，Speex 是 GNU 项目的一部分，在 Xiph.org (BSD 许可的"
-"一个变种)许可下发布。SpeexNarrow-15k 基于 CELP 设计，声音压缩在 15kbps。"
+"软件。Speex 项目的目标是通过提供一个众多昂贵专有语音解码器之外的自由选择来降"
+"低语音应用的门槛。除此之外，Speex 非常适合 Internet 环境下的应用，它提供了大"
+"多数解码器没有的功能和特性。最重要的是，Speex 是 GNU 项目的一部分，在 Xiph."
+"org (BSD 许可的一个变种)许可下发布。SpeexNarrow-15k 基于 CELP 设计，声音压缩"
+"在 15kbps。"
 
 #: src/codec_info.h:57
 msgid "15 Kbps"
@@ -1155,10 +1156,11 @@ msgid ""
 "designed to compress voice at a payload bitrate of 8 kbps."
 msgstr ""
 "Speex 是一个采用开放(非专利保护的)的语音压缩格式的为语音应用所设计的开源/自由"
-"软件。Speex 项目的目标是通过提供一个众多昂贵专有语音解码器之外的自由选择来降低语"
-"音应用的门槛。除此之外，Speex 非常适合 Internet 环境下的应用，它提供了大多数解码"
-"器没有的功能和特性。最重要的是，Speex 是 GNU 项目的一部分，在 Xiph.org (BSD 许可的"
-"一个变种)许可下发布。SpeexNarrow-8k 基于 CELP 设计，声音压缩在 8kbps。"
+"软件。Speex 项目的目标是通过提供一个众多昂贵专有语音解码器之外的自由选择来降"
+"低语音应用的门槛。除此之外，Speex 非常适合 Internet 环境下的应用，它提供了大"
+"多数解码器没有的功能和特性。最重要的是，Speex 是 GNU 项目的一部分，在 Xiph."
+"org (BSD 许可的一个变种)许可下发布。SpeexNarrow-8k 基于 CELP 设计，声音压缩"
+"在 8kbps。"
 
 #: src/codec_info.h:59 src/codec_info.h:61 src/codec_info.h:67
 msgid "Good"
@@ -1178,10 +1180,10 @@ msgid ""
 "format, they use 65-byte-frames (2 x 32 1/2) rather than rounding to 33, and "
 "they number the bits in their bytes from the other end."
 msgstr ""
-"MS-GSM 是微软的 GSM 06.10 版本。GSM 06.10 是大多数欧洲无线电话所采用的语音压缩标"
-"准，它使用RPE/LTP编码压缩13位采样的160个50Hz的帧到260位编码，达到13kbps的速"
-"率。微软的GSM 06.10编码与标准的帧格式不兼容，它使用65字节帧(2 x 32 1/2)而不是"
-"舍入到33。"
+"MS-GSM 是微软的 GSM 06.10 版本。GSM 06.10 是大多数欧洲无线电话所采用的语音压"
+"缩标准，它使用RPE/LTP编码压缩13位采样的160个50Hz的帧到260位编码，达到13kbps的"
+"速率。微软的GSM 06.10编码与标准的帧格式不兼容，它使用65字节帧(2 x 32 1/2)而不"
+"是舍入到33。"
 
 #: src/codec_info.h:61
 msgid "13 Kbps"
@@ -1197,9 +1199,9 @@ msgid ""
 "form) samples, and the decoder does the conversion vice versa."
 msgstr ""
 "G.711是64kbps电话语音编码的国际标准。它是以8kHz为采样频率的PCM编码。每个采样"
-"使用8位，完全符合ITU-T的推荐标准。这个标准有两种格式，A-Law和u-Law，A-"
-"Law G.711 PCM编码器转换13位线性PCM采样到8位压缩PCM(log对数形式)采样，解码器进"
-"行逆变换。"
+"使用8位，完全符合ITU-T的推荐标准。这个标准有两种格式，A-Law和u-Law，A-Law "
+"G.711 PCM编码器转换13位线性PCM采样到8位压缩PCM(log对数形式)采样，解码器进行逆"
+"变换。"
 
 #: src/codec_info.h:63 src/codec_info.h:65
 msgid "64 Kbps"
@@ -1651,8 +1653,8 @@ msgid ""
 "GnomeMeeting will use during calls. You can later change the settings "
 "individually in the preferences window."
 msgstr ""
-"连接类型允许检测在 GnomeMeeting 呼叫中可使用的最好质量，你可以随后在首选项窗口"
-"中单独改变设置。"
+"连接类型允许检测在 GnomeMeeting 呼叫中可使用的最好质量，你可以随后在首选项窗"
+"口中单独改变设置。"
 
 #: src/druid.cpp:978
 #, c-format
@@ -2424,12 +2426,12 @@ msgstr "查找全部联系人"
 
 #: src/ldap_window.cpp:3060
 msgid "First name contains"
-msgstr "姓包含"
+msgstr "名包含"
 
 # src/ldap_window.cpp:530
 #: src/ldap_window.cpp:3064
 msgid "Last name contains"
-msgstr "名包含"
+msgstr "姓包含"
 
 #: src/ldap_window.cpp:3068
 msgid "E-mail contains"
@@ -2932,15 +2934,15 @@ msgstr "个人信息"
 
 #: src/pref_window.cpp:869
 msgid "_First name:"
-msgstr "姓(_F)："
+msgstr "名(_F)："
 
 #: src/pref_window.cpp:876
 msgid "Sur_name:"
-msgstr "名(_N)："
+msgstr "姓(_N)："
 
 #: src/pref_window.cpp:878
 msgid "Enter your surname"
-msgstr "输入您的名"
+msgstr "输入您的姓"
 
 #: src/pref_window.cpp:883
 msgid "E-_mail address:"
@@ -2973,7 +2975,7 @@ msgid ""
 "First Name, Last Name, E-Mail, Comment and Location or to update your alias "
 "on the Gatekeeper"
 msgstr ""
-"点选此处以更新您所注册的目录服务器上的姓、名字、电子邮件、备注、地址讯息或者"
+"点选此处以更新您所注册的目录服务器上的姓、名、电子邮件、备注、地址讯息或者"
 "更新您在关守上的别名。"
 
 #: src/pref_window.cpp:923
