@@ -391,6 +391,8 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
   xmlChar *encentval;
   xmlParserCtxtPtr ctxt = (xmlParserCtxtPtr) ctx;
 
+  PString pip;
+  
   gchar *firstname = NULL;
   gchar *surname = NULL;
   gchar *mail = NULL;
@@ -481,9 +483,8 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
     ilsa32964638 = g_strdup ("0");
   gnomemeeting_threads_leave ();
 
-  ip = MyApp->Endpoint ()->GetCurrentIP ();
-  sip = inet_addr (ip);
-  g_free (ip);
+  pip = MyApp->Endpoint ()->GetCurrentIP ();
+  sip = inet_addr ((const char *) pip);
   ip = g_strdup_printf ("%lu", sip);
 
   if (!strcmp ((char *) name, "comment"))

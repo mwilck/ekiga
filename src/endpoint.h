@@ -321,7 +321,7 @@ class GMH323EndPoint : public H323EndPoint
    *                 even if the endpoint is listening on many interfaces
    * PRE          :  /
    */
-  gchar *GetCurrentIP (void);
+  PString GetCurrentIP (void);
 
 
   /* DESCRIPTION  :  /

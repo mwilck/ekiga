@@ -412,7 +412,7 @@ gconf_set_int (gchar *key,
   GConfClient *client = NULL;
  
   if (!key)
-    return NULL;
+    return;
 
   client = gconf_client_get_default ();
 
@@ -420,7 +420,7 @@ gconf_set_int (gchar *key,
 }
 
 
-gboolean
+int
 gconf_get_int (gchar *key)
 {
   GConfClient *client = NULL;
@@ -431,4 +431,33 @@ gconf_get_int (gchar *key)
   client = gconf_client_get_default ();
 
   return gconf_client_get_int (client, key, NULL);
+}
+
+
+void
+gconf_set_string_list (gchar *key,
+		       GSList *l)
+{
+  GConfClient *client = NULL;
+ 
+  if (!key)
+    return;
+
+  client = gconf_client_get_default ();
+
+  gconf_client_set_list (client, key, GCONF_VALUE_STRING, l, NULL);
+}
+
+
+GSList *
+gconf_get_string_list (gchar *key)
+{
+  GConfClient *client = NULL;
+ 
+  if (!key)
+    return 0;
+
+  client = gconf_client_get_default ();
+
+  return gconf_client_get_list (client, key, GCONF_VALUE_STRING, NULL);
 }

@@ -216,6 +216,21 @@ void gconf_set_int (gchar *,
  * BEHAVIOR     :  Returns the value for the given GConf key.
  * PRE          :  /
  */
-gboolean gconf_get_int (gchar *);
+int gconf_get_int (gchar *);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Update the given GConf key to the given value.
+ * PRE          :  /
+ */
+void gconf_set_string_list (gchar *,
+			    GSList *);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Returns the value for the given GConf key.
+ * PRE          :  /
+ */
+GSList *gconf_get_string_list (gchar *);
 
 G_END_DECLS

@@ -116,12 +116,9 @@ GMH323EndPoint::GMH323EndPoint ()
     PIPSocket::SetDefaultIpAddressFamilyV6();
 #endif
   
-  rtp_port_range = 
-    gconf_client_get_string (client, PORTS_KEY "rtp_port_range", NULL);
-  udp_port_range = 
-    gconf_client_get_string (client, PORTS_KEY "udp_port_range", NULL);
-  tcp_port_range = 
-    gconf_client_get_string (client, PORTS_KEY "tcp_port_range", NULL);
+  rtp_port_range = gconf_get_string (PORTS_KEY "rtp_port_range");
+  udp_port_range = gconf_get_string (PORTS_KEY "udp_port_range");
+  tcp_port_range = gconf_get_string (PORTS_KEY "tcp_port_range");
 
   if (rtp_port_range)
     rtp_couple = g_strsplit (rtp_port_range, ":", 0);
@@ -163,11 +160,9 @@ GMH323EndPoint::GMH323EndPoint ()
   audio_tester = NULL;
   
   autoStartTransmitVideo =
-    gconf_client_get_bool (client, 
-			   VIDEO_SETTINGS_KEY "enable_video_transmission", 0);
+    gconf_get_bool (VIDEO_SETTINGS_KEY "enable_video_transmission");
   autoStartReceiveVideo =
-    gconf_client_get_bool (client, 
-			   VIDEO_SETTINGS_KEY "enable_video_reception", 0);
+    gconf_get_bool (VIDEO_SETTINGS_KEY "enable_video_reception");
 
   disableH245Tunneling = !gconf_get_bool (GENERAL_KEY "h245_tunneling");
   disableFastStart = !gconf_get_bool (GENERAL_KEY "fast_start");
@@ -212,8 +207,10 @@ GMH323EndPoint::~GMH323EndPoint ()
 
 
 H323Connection *
-GMH323EndPoint::MakeCallLocked (const PString &call_addr, PString &call_token)
+GMH323EndPoint::MakeCallLocked (const PString & call_addr,
+				PString & call_token)
 {
+  cout << "GetLastCalledAddress" << endl << flush;
   called_address = call_addr;
 
   return H323EndPoint::MakeCallLocked (call_addr, call_token);
@@ -331,22 +328,18 @@ GMH323EndPoint::AddAllCapabilities ()
 void 
 GMH323EndPoint::SetCallingState (unsigned i)
 {
-  cs_access_mutex.Wait ();
+  PWaitAndSignal m(cs_access_mutex);
+  
   calling_state = i;
-  cs_access_mutex.Signal ();
 }
 
 
 unsigned 
 GMH323EndPoint::GetCallingState (void)
 {
-  unsigned cstate;
+  PWaitAndSignal m(cs_access_mutex);
 
-  cs_access_mutex.Wait ();
-  cstate = calling_state;
-  cs_access_mutex.Signal ();
-
-  return cstate;
+  return calling_state;
 }
 
 
@@ -357,15 +350,17 @@ GMH323EndPoint::SetupTransfer (const PString & token,
 			       PString & new_token,
 			       void *)
 {
-  H323Connection *conn = NULL;
+  H323Connection *con = NULL;
 
-  conn =
-    H323EndPoint::SetupTransfer (token, call_identity,
-				 remote_party, new_token);
+  con = 
+    H323EndPoint::SetupTransfer (token,
+				 call_identity,
+				 remote_party,
+				 new_token);
 
   SetTransferCallToken (new_token);
   
-  return conn;
+  return con;
 }
 
 
@@ -375,8 +370,7 @@ GMH323EndPoint::AddVideoCapabilities ()
   int video_size = 0;
 
   gnomemeeting_threads_enter ();
-  video_size =
-    gconf_client_get_int (client, DEVICES_KEY "video_size", 0);
+  video_size = gconf_get_int (DEVICES_KEY "video_size");
   gnomemeeting_threads_leave ();
 
   /* Add video capabilities */
@@ -400,8 +394,7 @@ GMH323EndPoint::AddUserInputCapabilities ()
   int cap = 0;
 
   gnomemeeting_threads_enter ();
-  cap =
-    gconf_client_get_int (client, GENERAL_KEY "user_input_capability", 0);
+  cap = gconf_get_int (GENERAL_KEY "user_input_capability");
   gnomemeeting_threads_leave ();
     
   if (cap == 3)
@@ -421,7 +414,7 @@ GMH323EndPoint::AddUserInputCapabilities ()
 void 
 GMH323EndPoint::AddAudioCapabilities ()
 {
-  gchar **couple;
+  gchar **couple = NULL;
   GSList *codecs_data = NULL;
   BOOL use_pcm16_codecs = TRUE;
   int g711_frames = 0;
@@ -436,13 +429,9 @@ GMH323EndPoint::AddAudioCapabilities ()
   
   /* Read GConf settings */ 
   gnomemeeting_threads_enter ();
-  codecs_data = 
-    gconf_client_get_list (client, AUDIO_CODECS_KEY "codecs_list", 
-			   GCONF_VALUE_STRING, NULL);
-  g711_frames = 
-    gconf_client_get_int (client, AUDIO_SETTINGS_KEY "g711_frames", NULL);
-  gsm_frames = 
-    gconf_client_get_int (client, AUDIO_SETTINGS_KEY "gsm_frames", NULL);
+  codecs_data = gconf_get_string_list (AUDIO_CODECS_KEY "codecs_list");
+  g711_frames = gconf_get_int (AUDIO_SETTINGS_KEY "g711_frames");
+  gsm_frames = gconf_get_int (AUDIO_SETTINGS_KEY "gsm_frames");
   gnomemeeting_threads_leave ();
 
   
@@ -517,7 +506,7 @@ GMH323EndPoint::AddAudioCapabilities ()
     
     couple = g_strsplit ((gchar *) codecs_data->data, "=", 0);
 
-    if (couple [0] && couple [1] != NULL) {
+    if (couple && couple [0] && couple [1] != NULL) {
 
       if (!strcmp (couple [1], "0")) 
 	to_remove.AppendString (couple [0]);
@@ -536,80 +525,61 @@ GMH323EndPoint::AddAudioCapabilities ()
 }
 
 
-char *
+PString
 GMH323EndPoint::GetCurrentIP ()
 {
   PIPSocket::InterfaceTable interfaces;
   PIPSocket::Address ip_addr;
 
-  gchar *ip = NULL;
 
-  if (!PIPSocket::GetInterfaceTable (interfaces)) 
-
+  if (!PIPSocket::GetInterfaceTable (interfaces))
     PIPSocket::GetHostAddress (ip_addr);
   else {
 
-    for (unsigned int i = 0; i < (unsigned int) (interfaces.GetSize()); i++) {
+    for (int i = 0; i < interfaces.GetSize(); i++) {
 
-      ip_addr = interfaces[i].GetAddress();
+      ip_addr = interfaces [i].GetAddress();
 
       if (ip_addr != 0  && 
 	  ip_addr != PIPSocket::Address()) /* Ignore 127.0.0.1 */
 	
-	break;  	      
+	return ip_addr.AsString ();
     }
   }
-
-  ip = g_strdup ((const char *) ip_addr.AsString ());
-
-  return ip;
 }
 
 
 void 
-GMH323EndPoint::TranslateTCPAddress(PIPSocket::Address &localAddr, 
-				    const PIPSocket::Address &remoteAddr)
+GMH323EndPoint::TranslateTCPAddress(PIPSocket::Address &local_address, 
+				    const PIPSocket::Address &remote_address)
 {
   PIPSocket::Address addr;
   BOOL ip_translation = FALSE;
   gchar *ip = NULL;
 
   gnomemeeting_threads_enter ();
-  ip_translation = 
-    gconf_client_get_bool (client, NAT_KEY "ip_translation", NULL);
+  ip_translation = gconf_get_bool (NAT_KEY "ip_translation");
   gnomemeeting_threads_leave ();
 
   if (ip_translation) {
 
     /* Ignore Ip translation for local networks and for IPv6 */
-    if ( !((remoteAddr.Byte1() == 192) && (remoteAddr.Byte2() == 168))
-
-	 && !((remoteAddr.Byte1() == 127)
-	      &&(remoteAddr.Byte2()== 0)
-	      &&(remoteAddr.Byte3()==0)
-	      &&(remoteAddr.Byte4()==1))
-	         
-	 && !((remoteAddr.Byte1() == 172) 
-	      && ((remoteAddr.Byte2() >= 16)&&(remoteAddr.Byte2()<=31)))
-	 
-	 && !(remoteAddr.Byte1() == 10)
-
+    if ( !IsLocalAddress (remote_address)
 #ifdef P_HAS_IPV6
-	 && (remoteAddr.GetVersion () != 6 || remoteAddr.IsV4Mapped ())
+	 && (remote_address.GetVersion () != 6 || remote_address.IsV4Mapped ())
 #endif
 	 ) {
 
       gnomemeeting_threads_enter ();
-      ip = 
-	gconf_client_get_string (client, NAT_KEY "public_ip", NULL);
+      ip = gconf_get_string (NAT_KEY "public_ip");
       gnomemeeting_threads_leave ();
 
       if (ip) {
 
-	addr = PIPSocket::Address(ip);
+	addr = PIPSocket::Address (ip);
 
 	if (addr != PIPSocket::Address ("0.0.0.0"))
-	  localAddr = addr;
+	  local_address = addr;
       }
 
       g_free (ip);
@@ -624,12 +594,11 @@ GMH323EndPoint::StartListener ()
   int listen_port = 1720;
 
 
-  listen_port = 
-    gconf_client_get_int (client, PORTS_KEY "listen_port", NULL);
+  listen_port = gconf_get_int (PORTS_KEY "listen_port");
 
   /* Start the listener thread for incoming calls */
   listener =
-    new H323ListenerTCP (*this, PIPSocket::GetDefaultIpAny(), listen_port);
+    new H323ListenerTCP (*this, PIPSocket::GetDefaultIpAny (), listen_port);
    
 
   /* unsuccesfull */
@@ -723,9 +692,9 @@ GMH323EndPoint::CreateGatekeeper(H323Transport * transport)
 
 
 H323Connection *
-GMH323EndPoint::CreateConnection (unsigned callReference)
+GMH323EndPoint::CreateConnection (unsigned call_reference)
 {
-  return new GMH323Connection (*this, callReference);
+  return new GMH323Connection (*this, call_reference);
 }
 
 
@@ -740,22 +709,18 @@ GMH323EndPoint::ILSRegister (void)
 void 
 GMH323EndPoint::SetCurrentCallToken (PString s)
 {
-  ct_access_mutex.Wait ();
+  PWaitAndSignal m(ct_access_mutex);
+
   current_call_token = s;
-  ct_access_mutex.Signal ();
 }
 
 
 PString 
 GMH323EndPoint::GetCurrentCallToken ()
 {
-  PString c;
+  PWaitAndSignal m(ct_access_mutex);
 
-  ct_access_mutex.Wait ();
-  c = current_call_token;
-  ct_access_mutex.Signal ();
-
-  return c;
+  return current_call_token;
 }
 
 
