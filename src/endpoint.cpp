@@ -1553,7 +1553,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   gtk_entry_set_text (GTK_ENTRY (gw->remote_name), "");
 
   gtk_widget_queue_draw_area (gw->stats_drawing_area, 0, 0, GTK_WIDGET (gw->stats_drawing_area)->allocation.width, GTK_WIDGET (gw->stats_drawing_area)->allocation.height);
-  gtk_label_set_text (GTK_LABEL (gw->stats_label), _("Sent/Received:\nLost/Late Packets:\nRound trip delay:\nJitter Buffer:"));
+  gtk_label_set_text (GTK_LABEL (gw->stats_label), _("Lost packets:\nLate packets:\nRound-trip delay:\nJitter buffer:"));
 
   
   /* We empty the text chat buffer */ 
