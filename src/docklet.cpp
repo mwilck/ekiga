@@ -42,6 +42,8 @@
 
 #include "../pixmaps/globe-22.xpm"
 #include "../pixmaps/globe2-22.xpm" 
+#include "../pixmaps/connect_16.xpm"
+#include "../pixmaps/disconnect_16.xpm"
 
 
 /* Declarations */
@@ -130,22 +132,22 @@ void gnomemeeting_init_docklet_popup_menu (GtkWidget *widget)
     {
       {
 	GNOME_APP_UI_ITEM,
-	N_("Connect"), N_("Connect call"),
+	N_("Connect"), N_("Create A New Connection"),
 	(void *)docklet_popup_menu_connect_callback, GINT_TO_POINTER(0), NULL,
-	GNOME_APP_PIXMAP_NONE, NULL,
+	GNOME_APP_PIXMAP_DATA, connect_16_xpm,
 	0, GDK_CONTROL_MASK, NULL
       },
       {
 	GNOME_APP_UI_ITEM,
-	N_("Disconnect"), N_("Drop call"),
+	N_("Disconnect"), N_("Close The Current Connection"),
 	(void *)docklet_popup_menu_disconnect_callback, GINT_TO_POINTER(1), 
 	NULL,
-	GNOME_APP_PIXMAP_NONE, NULL,
+	GNOME_APP_PIXMAP_DATA, disconnect_16_xpm,
 	0, GDK_CONTROL_MASK, NULL
       },
       {
 	GNOME_APP_UI_ITEM,
-	N_("Show/hide main window"), N_("Show/hide the main window"),
+	N_("Show/Hide Main Window"), N_("Show/hide The Main Window"),
 	(void *)docklet_toggle_callback, GINT_TO_POINTER(2), NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	0, GDK_CONTROL_MASK, NULL
