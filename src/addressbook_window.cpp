@@ -471,6 +471,7 @@ gm_aw_get_selected_contact (GtkWidget *addressbook)
     gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 
 			COLUMN_FULLNAME, &contact->fullname, 
 			COLUMN_SPEED_DIAL, &contact->speeddial,
+			COLUMN_EMAIL, &contact->email,
 			COLUMN_CATEGORIES, &contact->categories,
 			COLUMN_UURL, &contact->url,
 			COLUMN_UUID, &contact->uid,
@@ -1960,6 +1961,7 @@ gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
 
   GtkWidget *fullname_entry = NULL;
   GtkWidget *url_entry = NULL;
+  GtkWidget *email_entry = NULL;
   GtkWidget *categories_entry = NULL;
   GtkWidget *speeddial_entry = NULL;
   GtkWidget *table = NULL;
@@ -1997,7 +1999,7 @@ gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
   gtk_dialog_set_default_response (GTK_DIALOG (dialog),
 				   GTK_RESPONSE_ACCEPT);
 
-  table = gtk_table_new (5, 2, FALSE);
+  table = gtk_table_new (6, 2, FALSE);
   gtk_table_set_row_spacings (GTK_TABLE (table), 3 * GNOMEMEETING_PAD_SMALL);
   gtk_table_set_col_spacings (GTK_TABLE (table), 3 * GNOMEMEETING_PAD_SMALL);
 
@@ -2046,6 +2048,27 @@ gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
   gtk_entry_set_activates_default (GTK_ENTRY (url_entry), TRUE);
 
+  /* The email entry */
+  label = gtk_label_new (NULL);
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  label_text = g_strdup_printf ("<b>%s</b>", _("Email:"));
+  gtk_label_set_markup (GTK_LABEL (label), label_text);
+  g_free (label_text);
+
+  email_entry = gtk_entry_new ();
+  if (contact && contact->email)
+    gtk_entry_set_text (GTK_ENTRY (email_entry), contact->email);
+  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 2, 3, 
+		    (GtkAttachOptions) (GTK_FILL),
+		    (GtkAttachOptions) (GTK_FILL),
+		    3 * GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+  gtk_table_attach (GTK_TABLE (table), email_entry, 1, 2, 2, 3, 
+		    (GtkAttachOptions) (GTK_FILL),
+		    (GtkAttachOptions) (GTK_FILL),
+		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+  gtk_entry_set_activates_default (GTK_ENTRY (email_entry), TRUE);
+
+
   /* The Speed Dial */
   label = gtk_label_new (NULL);
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
@@ -2057,12 +2080,12 @@ gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
   if (contact && contact->speeddial)
     gtk_entry_set_text (GTK_ENTRY (speeddial_entry),
 			contact->speeddial);
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 2, 3, 
+  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 3, 4, 
 		    (GtkAttachOptions) (GTK_FILL),
 		    (GtkAttachOptions) (GTK_FILL),
 		    3 * GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
   gtk_table_attach (GTK_TABLE (table), speeddial_entry,
-		    1, 2, 2, 3, 
+		    1, 2, 3, 4, 
 		    (GtkAttachOptions) (GTK_FILL),
 		    (GtkAttachOptions) (GTK_FILL),
 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
@@ -2079,12 +2102,12 @@ gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
   if (contact && contact->categories)
     gtk_entry_set_text (GTK_ENTRY (categories_entry),
 			contact->categories);
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 3, 4, 
+  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 4, 5, 
 		    (GtkAttachOptions) (GTK_FILL),
 		    (GtkAttachOptions) (GTK_FILL),
 		    3 * GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
   gtk_table_attach (GTK_TABLE (table), categories_entry,
-		    1, 2, 3, 4, 
+		    1, 2, 4, 5, 
 		    (GtkAttachOptions) (GTK_FILL),
 		    (GtkAttachOptions) (GTK_FILL),
 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
@@ -2127,12 +2150,12 @@ gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
     gtk_option_menu_set_history (GTK_OPTION_MENU (option_menu), 
 				 current_menu_index);
 
-    gtk_table_attach (GTK_TABLE (table), label, 0, 1, 4, 5, 
+    gtk_table_attach (GTK_TABLE (table), label, 0, 1, 5, 6, 
 		      (GtkAttachOptions) (GTK_FILL),
 		      (GtkAttachOptions) (GTK_FILL),
 		      3 * GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
     gtk_table_attach (GTK_TABLE (table), option_menu,
-		      1, 2, 4, 5, 
+		      1, 2, 5, 6, 
 		      (GtkAttachOptions) (GTK_FILL),
 		      (GtkAttachOptions) (GTK_FILL),
 		      GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
@@ -2163,6 +2186,8 @@ gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
 	g_strdup (gtk_entry_get_text (GTK_ENTRY (categories_entry)));
       new_contact->url = 
 	g_strdup (gtk_entry_get_text (GTK_ENTRY (url_entry)));
+      new_contact->email =
+	g_strdup (gtk_entry_get_text (GTK_ENTRY (email_entry)));
 
       /* We were editing an existing contact */
       if (edit_existing_contact) {

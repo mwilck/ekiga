@@ -351,6 +351,9 @@ gnomemeeting_local_addressbook_get_contacts (GmAddressbook *addbook,
 	    contact->url =  
 	      g_strdup ((const gchar *) e_contact_get_const (E_CONTACT (l->data), 
 							     E_CONTACT_VIDEO_URL));
+	    contact->email =  
+	      g_strdup ((const gchar *) e_contact_get_const (E_CONTACT (l->data), 
+							     E_CONTACT_EMAIL_1));
 	    contact->categories =  
 	      g_strdup ((const gchar *) e_contact_get_const (E_CONTACT (l->data), 
 							     E_CONTACT_CATEGORIES));      
@@ -542,6 +545,8 @@ gnomemeeting_local_addressbook_add_contact (GmAddressbook *addressbook,
 	e_contact_set (contact, E_CONTACT_FULL_NAME, ctact->fullname);
       if (ctact->url)
 	e_contact_set (contact, E_CONTACT_VIDEO_URL, ctact->url);
+      if (ctact->email)
+	e_contact_set (contact, E_CONTACT_EMAIL_1, ctact->email);
       if (ctact->categories)
 	e_contact_set (contact, E_CONTACT_CATEGORIES, ctact->categories);
       if (ctact->speeddial) {
@@ -626,6 +631,8 @@ gnomemeeting_local_addressbook_modify_contact (GmAddressbook *addressbook,
 	  e_contact_set (contact, E_CONTACT_FULL_NAME, ctact->fullname);
 	if (ctact->url)
 	  e_contact_set (contact, E_CONTACT_VIDEO_URL, ctact->url);
+	if (ctact->email)
+	  e_contact_set (contact, E_CONTACT_EMAIL_1, ctact->email);
 	if (ctact->categories)
 	  e_contact_set (contact, E_CONTACT_CATEGORIES, ctact->categories);
 	if (ctact->speeddial) {

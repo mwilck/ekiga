@@ -1,5 +1,16 @@
 2004-07-14  Julien Puydt  <jpuydt@free.fr>
 
+	* lib/contacts/gm_contacts-eds.cpp
+	(gnomemeeting_local_addressbook_get_contacts)
+	(gnomemeeting_local_addressbook_add_contact)
+	(gnomemeeting_local_addressbook_modify_contact): Added the code to
+	store and retrieve the email address of the contacts too.
+	* src/addressbook_window.cpp (gm_aw_get_selected_contact)
+	(gm_addressbook_window_edit_contact_dialog_run): Added the code to
+	move around the email address of the contacts too.
+
+2004-07-14  Julien Puydt  <jpuydt@free.fr>
+
 	* src/addressbook_window.h, src/addressbook_window.cpp
 	(gm_addressbook_window_edit_contact_dialog_run): Renamed the variable
 	edit_local_contact to the more accurate edit_existing_contact,
