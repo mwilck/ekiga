@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
-"POT-Creation-Date: 2002-05-28 14:08+0200\n"
-"PO-Revision-Date: 2002-05-28 15:36+0100\n"
+"POT-Creation-Date: 2002-06-08 12:48+0200\n"
+"PO-Revision-Date: 2002-06-08 12:51+0200\n"
 "Last-Translator: Stefan Brüns <lurchi@kawo1.rwth-aachen.de>\n"
 "Language-Team:  <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -15,7 +15,7 @@ msgstr ""
 "X-Generator: KBabel 0.9.6\n"
 
 #: gnomemeeting.desktop.in.h:1 sounds/GnomeMeeting.soundlist.in.h:1
-#: src/main_window.cpp:275 src/main_window.cpp:279
+#: src/main_window.cpp:530 src/main_window.cpp:534
 msgid "GnomeMeeting"
 msgstr "GnomeMeeting"
 
@@ -1005,114 +1005,114 @@ msgstr "Anruf wird zu %s weitergeleitet"
 msgid "Error forwarding call to %s"
 msgstr "Fehler beim Weiterleiten zu %s"
 
-#: src/endpoint.cpp:926
+#: src/endpoint.cpp:936
 #, c-format
 msgid "Forwarding Call from %s to %s (Forward All Calls)"
 msgstr "Anruf wird von %s zu %s weitergeleitet (Weiterleitung aller Anrufe)"
 
-#: src/endpoint.cpp:947
+#: src/endpoint.cpp:957
 #, c-format
 msgid "Forwarding Call from %s to %s (Busy)"
 msgstr "Anruf wird von %s zu %s weitergeleitet (Besetzt)"
 
-#: src/endpoint.cpp:964
+#: src/endpoint.cpp:974
 #, c-format
 msgid "Auto Rejecting Incoming Call from %s (Busy)"
 msgstr "Eingehender Anruf von %s wurde automatisch abgelehnt (Besetzt)"
 
 #. Update the history and status bar
-#: src/endpoint.cpp:1029
+#: src/endpoint.cpp:1044
 #, c-format
 msgid "Call from %s"
 msgstr "Anruf von %s"
 
 #. Connected
-#: src/endpoint.cpp:1107
+#: src/endpoint.cpp:1116
 #, c-format
 msgid "Connected with %s using %s"
 msgstr "Verbunden mit %s, %s wird verwendet"
 
-#: src/endpoint.cpp:1113
+#: src/endpoint.cpp:1122
 msgid "Connected"
 msgstr "Verbunden"
 
-#: src/endpoint.cpp:1116
+#: src/endpoint.cpp:1125
 msgid "Fast start enabled"
 msgstr "Schnelles Starten aktiviert"
 
-#: src/endpoint.cpp:1118
+#: src/endpoint.cpp:1127
 msgid "Fast start disabled"
 msgstr "Schnelles Starten deaktiviert"
 
-#: src/endpoint.cpp:1121
+#: src/endpoint.cpp:1130
 msgid "H.245 Tunnelling enabled"
 msgstr "H.245-Tunnel aktiviert"
 
-#: src/endpoint.cpp:1123
+#: src/endpoint.cpp:1132
 msgid "H.245 Tunnelling disabled"
 msgstr "H.245-Tunnel deaktiviert"
 
-#: src/endpoint.cpp:1204
+#: src/endpoint.cpp:1215
 msgid "Remote party has cleared the call"
 msgstr "Gegenseite hat Verbindung beendet"
 
-#: src/endpoint.cpp:1209
+#: src/endpoint.cpp:1220
 msgid "Remote party has stopped calling"
 msgstr "Gegenseite ruft nicht mehr an"
 
-#: src/endpoint.cpp:1214 src/endpoint.cpp:1244
+#: src/endpoint.cpp:1225 src/endpoint.cpp:1255
 msgid "Remote party did not accept your call"
 msgstr "Gegenseite hat Verbindungsaufbau abgelehnt"
 
-#: src/endpoint.cpp:1219
+#: src/endpoint.cpp:1230
 msgid "Remote party was busy"
 msgstr "Gegenseite war besetzt"
 
-#: src/endpoint.cpp:1224
+#: src/endpoint.cpp:1235
 msgid "Congested link to remote party"
 msgstr "Verbindung zur Gegenseite ausgelastet"
 
-#: src/endpoint.cpp:1229
+#: src/endpoint.cpp:1240
 msgid "Remote party did not answer your call"
 msgstr "Gegenseite hat Anruf nicht entgegengenommen"
 
-#: src/endpoint.cpp:1234
+#: src/endpoint.cpp:1245
 msgid "This call ended abnormally"
 msgstr "Verbindung wurde unerwartet beendet"
 
-#: src/endpoint.cpp:1239
+#: src/endpoint.cpp:1250
 msgid "Could not find common codec with remote party"
 msgstr "Gemeinsamer Codec mit Gegenseite konnte nicht gefunden werden"
 
-#: src/endpoint.cpp:1249
+#: src/endpoint.cpp:1260
 msgid "Refused incoming call"
 msgstr "Eingehender Anruf wurde abgelehnt"
 
-#: src/endpoint.cpp:1254
+#: src/endpoint.cpp:1265
 msgid "User not found"
 msgstr "Benutzer nicht gefunden"
 
-#: src/endpoint.cpp:1259
+#: src/endpoint.cpp:1270
 msgid "Call ended: insufficient bandwidth"
 msgstr "Verbindungsaufbau beendet, Bandbreite nicht ausreichend"
 
-#: src/endpoint.cpp:1264
+#: src/endpoint.cpp:1275
 msgid "Remote party could not be reached"
 msgstr "Gegenseite konnte nicht erreicht werden"
 
-#: src/endpoint.cpp:1269
+#: src/endpoint.cpp:1280
 msgid "Remote party is offline"
 msgstr "Gegenseite ist offline"
 
-#: src/endpoint.cpp:1274
+#: src/endpoint.cpp:1285
 msgid "Transport Error calling"
 msgstr "Fehler bei Verbindungsaufbau"
 
-#: src/endpoint.cpp:1279 src/endpoint.cpp:1282
+#: src/endpoint.cpp:1290 src/endpoint.cpp:1293
 msgid "Call completed"
 msgstr "Verbindung beendet"
 
-#: src/endpoint.cpp:1455
+#: src/endpoint.cpp:1469
 msgid "Attaching lid hardware to codec"
 msgstr "lid-Hardware wird zu Codecs hinzugefügt"
 
@@ -1150,77 +1150,72 @@ msgstr "Fehler beim Anmelden am Gatekeeper."
 msgid "No gatekeeper found"
 msgstr "Keinen Gatekeeper gefunden"
 
-#: src/gnomemeeting.cpp:137
-#, c-format
-msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
-msgstr "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
-
-#: src/gnomemeeting.cpp:212
+#: src/gnomemeeting.cpp:109
 msgid "Answering incoming call"
 msgstr "Ankommenden Anruf wird entgegengenommen"
 
-#: src/gnomemeeting.cpp:253
+#: src/gnomemeeting.cpp:157
 #, c-format
 msgid "Call %d: calling %s"
 msgstr "Anruf Nr. %d: %s wird angerufen"
 
-#: src/gnomemeeting.cpp:280 src/toolbar.cpp:104
+#: src/gnomemeeting.cpp:191 src/toolbar.cpp:104
 msgid "Trying to stop calling"
 msgstr "Es wird versucht, Verbindungsaufbau zu beenden"
 
-#: src/gnomemeeting.cpp:292
+#: src/gnomemeeting.cpp:205
 msgid "Stopping current call"
 msgstr "Aktuelle Verbindung wird beendet"
 
-#: src/gnomemeeting.cpp:300
+#: src/gnomemeeting.cpp:216
 msgid "Refusing Incoming call"
 msgstr "Ankommender Anruf wird abgelehnt"
 
-#: src/ils.cpp:235
+#: src/ils.cpp:243
 #, c-format
 msgid "Connecting to ILS directory %s, port %s"
 msgstr "Verbindungsaufbau zu ILS-Verzeichnis %s, Port %s"
 
-#: src/ils.cpp:253 src/ils.cpp:450
+#: src/ils.cpp:261 src/ils.cpp:458
 #, c-format
 msgid "Error while connecting to ILS directory %s, port %s"
 msgstr "Fehler beim Verbinden mit ILS-Verzeichnis %s, Port %s"
 
-#: src/ils.cpp:466
+#: src/ils.cpp:474
 #, c-format
 msgid "Sucessfully registered to ILS directory %s, port %s"
 msgstr "Erfolgreich am ILS-Verzeichnis %s, Port %s angemeldet"
 
-#: src/ils.cpp:467
+#: src/ils.cpp:475
 msgid "Succesfully registered to ILS server"
 msgstr "Erfolgreich am ILS-Verzeichnis angemeldet"
 
-#: src/ils.cpp:471
+#: src/ils.cpp:479
 #, c-format
 msgid "Sucessfully unregistered from ILS directory %s, port %s"
 msgstr "Erfolgreich von ILS-Verzeichnis %s, Port %s abgemeldet"
 
-#: src/ils.cpp:472
+#: src/ils.cpp:480
 msgid "Succesfully unregistered from ILS server"
 msgstr "Erfolgreich vom ILS-Verzeichnis abgemeldet"
 
-#: src/ils.cpp:567
+#: src/ils.cpp:644
 msgid "Please provide an ILS directory in the window"
 msgstr "Bitte ein ILS-Verzeichnis eintragen"
 
-#: src/ils.cpp:585
+#: src/ils.cpp:662
 msgid "Connecting to ILS directory... Please Wait."
 msgstr "Verbindungsaufbau zum ILS-Verzeichnis. Bitte warten ..."
 
-#: src/ils.cpp:602 src/ils.cpp:621
+#: src/ils.cpp:679 src/ils.cpp:698
 msgid "Error while connecting to ILS directory"
 msgstr "Fehler beim Verbindungsaufbau zum ILS-Verzeichnis"
 
-#: src/ils.cpp:645
+#: src/ils.cpp:722
 msgid "Fetching users' information... Please Wait."
 msgstr "Benutzer-Informationen werden geholt. Bitte warten ..."
 
-#: src/ils.cpp:660
+#: src/ils.cpp:737
 msgid "Search completed!"
 msgstr "Suche abgeschlossen!"
 
@@ -1278,11 +1273,32 @@ msgstr "E-Mail"
 msgid "IP"
 msgstr "IP"
 
-#: src/main_window.cpp:261
+#: src/main_window.cpp:181
+#, c-format
+msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
+msgstr "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
+
+#: src/main_window.cpp:292
+msgid ""
+"It appears that you do not have gnomemeeting.server installed in a valid "
+"location. Factory mode disabled.\n"
+msgstr ""
+
+#: src/main_window.cpp:296
+msgid ""
+"Error registering gnomemeeting with the activation service; factory mode "
+"disabled.\n"
+msgstr ""
+
+#: src/main_window.cpp:336
+msgid "Failed to retrieve gnomemeeting server from activation server\n"
+msgstr ""
+
+#: src/main_window.cpp:515
 msgid "Prints debug messages in the console"
 msgstr "Debug-Meldungen in der Konsole ausgeben"
 
-#: src/main_window.cpp:292
+#: src/main_window.cpp:560
 #, c-format
 msgid ""
 "GnomeMeeting got %s for the GConf key \"/apps/gnomemeeting/gconf_test\", but "
@@ -1313,7 +1329,7 @@ msgstr ""
 "Möglicherweise kann dieses Problem mit  dem 'gnomemeeting-config-tool' "
 "behoben werden."
 
-#: src/main_window.cpp:434
+#: src/main_window.cpp:702
 msgid ""
 "Could not start the listener thread. You will not be able to receive "
 "incoming calls."
@@ -1321,44 +1337,44 @@ msgstr ""
 "Listener-Thread konnte nicht gestartet werden. Es können keine Anrufe "
 "entgegengenommen werden."
 
-#: src/main_window.cpp:624
+#: src/main_window.cpp:892
 msgid "History Log"
 msgstr "Verlaufsprotokoll"
 
-#: src/main_window.cpp:646 src/menu.cpp:192
+#: src/main_window.cpp:914 src/menu.cpp:192
 msgid "History"
 msgstr "Verlauf"
 
 #. Webcam Control Frame
-#: src/main_window.cpp:676
+#: src/main_window.cpp:944
 msgid "Video Settings"
 msgstr "Video-Einstellungen"
 
-#: src/main_window.cpp:708
+#: src/main_window.cpp:976
 msgid "Adjust brightness"
 msgstr "Helligkeit einstellen"
 
-#: src/main_window.cpp:735
+#: src/main_window.cpp:1003
 msgid "Adjust whiteness"
 msgstr "Gammawert einstellen"
 
-#: src/main_window.cpp:762
+#: src/main_window.cpp:1030
 msgid "Adjust color"
 msgstr "Farbe einstellen"
 
-#: src/main_window.cpp:789
+#: src/main_window.cpp:1057
 msgid "Adjust contrast"
 msgstr "Kontrast einstellen"
 
-#: src/main_window.cpp:796
+#: src/main_window.cpp:1064
 msgid "Video"
 msgstr "Video"
 
-#: src/main_window.cpp:828
+#: src/main_window.cpp:1096
 msgid "Audio Settings"
 msgstr "Audio-Einstellungen"
 
-#: src/main_window.cpp:883
+#: src/main_window.cpp:1151
 msgid "Audio"
 msgstr "Audio"
 
@@ -2028,7 +2044,7 @@ msgstr "Anzahl der G.711-Rahmen in jedem übertragenen Paket."
 
 #: src/pref_window.cpp:1719
 msgid "Enable Silence Detection"
-msgstr "Sprechpausenerkennung eineschalten"
+msgstr "Sprechpausenerkennung einschalten"
 
 #: src/pref_window.cpp:1721
 msgid "Enable/disable the silence detection for the GSM and G.711 codecs."
