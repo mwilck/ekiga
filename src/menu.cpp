@@ -464,12 +464,6 @@ void gnomemeeting_init_menu ()
   GTK_CHECK_MENU_ITEM (call_menu_uiinfo [4].widget)->active =
     gconf_client_get_bool (client, "/apps/gnomemeeting/general/auto_answer", 0);
 
-  if (GTK_CHECK_MENU_ITEM (call_menu_uiinfo [3].widget)->active)
-    gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [4].widget), FALSE);
-  if (GTK_CHECK_MENU_ITEM (call_menu_uiinfo [4].widget)->active)
-    gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [3].widget), FALSE);
- 
-
   /* Disable disconnect */
   gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [1].widget), FALSE);
 
