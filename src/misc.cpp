@@ -419,7 +419,7 @@ gnomemeeting_history_combo_box_add_entry(GtkCombo *combo, const gchar *key,
       history = temp;
     }
 
-    gconf_client_set_string (client, "/apps/gnomemeeting/history/called_hosts",
+    gconf_client_set_string (client, key,
 			     history, 0);
     g_free (history);
   }   

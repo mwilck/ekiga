@@ -84,7 +84,6 @@ void pause_video_callback (GtkWidget *widget, gpointer data)
 void pref_callback (GtkWidget *widget, gpointer data)
 {
   GM_pref_window_widgets *pw = (GM_pref_window_widgets *) data;
-  int call_state = MyApp->Endpoint ()->GetCallingState ();
  
   if (!GTK_WIDGET_VISIBLE (pw->gw->pref_window)) {
 
@@ -115,8 +114,6 @@ void ldap_callback (GtkButton *button, gpointer data)
 
 void connect_cb (GtkWidget *widget, gpointer data)
 {	
-  GM_window_widgets *gw = (GM_window_widgets *) data;
-
   if (MyApp->Endpoint ()->GetCallingState () == 0)
     MyApp->Connect();
 }
@@ -126,8 +123,6 @@ void disconnect_cb (GtkWidget *widget, gpointer data)
 {	
   GMH323Connection *connection = (GMH323Connection *) 
     MyApp->Endpoint ()->GetCurrentConnection ();
-
-  GM_window_widgets *gw = (GM_window_widgets *) data;
 
   if (connection != NULL)
     connection->UnPauseChannels ();

@@ -59,7 +59,6 @@ static void codecs_clist_row_selected_callback (GtkWidget *, gint, gint,
 						GdkEventButton *, gpointer);
 static void menu_ctree_row_seletected_callback (GtkWidget *, gint, gint, 
 						GdkEventButton *, gpointer);
-static void register_button_clicked (GtkCheckButton *, gpointer);
 
 static void gnomemeeting_init_pref_window_general (GtkWidget *);
 static void gnomemeeting_init_pref_window_interface (GtkWidget *);
@@ -109,7 +108,6 @@ static void personal_data_update_button_clicked (GtkWidget *widget,
 						  gpointer data)
 {
   GConfClient *client = gconf_client_get_default ();
-  GM_pref_window_widgets *pw = (GM_pref_window_widgets *) data;
   
   /* if registering is enabled,
      trigger the register notifier */
@@ -133,7 +131,6 @@ static void codecs_clist_button_clicked_callback (GtkWidget *widget,
 						  gpointer data)
 { 		
   gchar *codec_name = NULL;
-  gchar *codec_data = NULL;
   gchar *gconf_key = 0;
 
   int i = 0;
@@ -453,8 +450,6 @@ static void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
   GtkTooltips *tip;
   gchar *clist_data;
 
-  int cpt = 0;
-   
   gchar * clist_titles [] = {"", N_("Name"), N_("Info"), N_("Bandwidth")};
 
   for (int i = 1 ; i < 4 ; i++)
@@ -905,7 +900,6 @@ static void gnomemeeting_init_pref_window_codecs_settings (GtkWidget *notebook)
 {
   GtkWidget *frame, *label;
   GtkWidget *general_frame;
-  GtkWidget *item;
   GtkWidget *audio_codecs_notebook;
   GtkWidget *video_codecs_notebook;
   GtkWidget *jitter_buffer;
@@ -915,7 +909,6 @@ static void gnomemeeting_init_pref_window_codecs_settings (GtkWidget *notebook)
   GtkTooltips *tip;
 
   GtkWidget *table;
-  GtkWidget *table2;
   GtkWidget *vbox;
 
   /* Get the data */
@@ -1892,7 +1885,6 @@ static void gnomemeeting_init_pref_window_devices (GtkWidget *notebook)
   GtkWidget *vbox;
   GtkWidget *table;
   GtkWidget *label;
-  GtkWidget *pixmap;
   GtkWidget *video_channel;
   GtkWidget *menu1, *menu2;
   GtkWidget *item;

@@ -1,3 +1,40 @@
+2002-01-17  Miguel Rodríguez Pérez  <migrax@terra.es>
+
+	* src/ldap_window.cpp: Don't include sound.xpm amd quickcam.xpm
+
+	* src/gnomemeeting.cpp (Connect): 
+	See below...
+
+	* src/callbacks.cpp (pref_callback): 
+	(disconnect_cb): Removed unused vars
+
+	* src/ldap_window.cpp (refresh_button_clicked): One less warning
+	(refresh_button_clicked): 
+	(gnomemeeting_init_ldap_window_notebook): Removed unused vars
+
+	* src/config.cpp (re_vq_changed): 
+	(audio_mixer_changed_nt): Removed unused vars...
+	Removed unimplemented prototypes
+	
+	* src/pref_window.cpp (personal_data_update_button_clicked):
+	(codecs_clist_button_clicked_callback): 
+	(gnomemeeting_init_pref_window): 
+	(gnomemeeting_init_pref_window_codecs_settings): 
+	(gnomemeeting_init_pref_window_codecs_settings): 
+	(gnomemeeting_init_pref_window_devices): Removed unused variables
+	Removed also some unimplemented prototypes
+
+	* src/menu.cpp: Removed some unimplemented prototypes
+
+	* src/endpoint.cpp (OpenAudioChannel): Removed an unused
+	variable
+
+	* src/gnomemeeting.h (class GnomeMeeting): 
+	* src/gnomemeeting.cpp (AddContactIP): Removed
+
+	* src/misc.cpp (gnomemeeting_history_combo_box_add_entry): 
+	Use the key passed as a parameter, don't harcode it.
+
 2002-01-17  Damien Sandras  <dsandras@seconix.com>
 
 	* src/main_window.cpp: Added code using the devices auto-detection. If

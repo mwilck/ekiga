@@ -47,22 +47,13 @@
 GtkWidget *gm;
 GnomeMeeting *MyApp;	
 
-
+#if 0
 /* DESCRIPTION  :  This Timer is called when Gnome erroneously thinks that
  *                 it has nothing to do.
  * BEHAVIOR     :  It treats signals if needed.
  * PRE          :  /
  */
 static gint gnome_idle_timer (void);
-
-
-/* DESCRIPTION  :  This Timer is called evry second.
- * BEHAVIOR     :  Elapsed time since the beginning of the connection 
- *                 is displayed.
- * PRE          :
- */
-static gint AppbarUpdate (GtkWidget *);
-
 
 /* GTK Callbacks */
 
@@ -78,7 +69,7 @@ gint gnome_idle_timer (void)
   usleep (500);
   return TRUE;
 }
-
+#endif
 
 gint AppbarUpdate (gpointer data)
 {
@@ -182,27 +173,11 @@ GnomeMeeting::~GnomeMeeting()
   endpoint = NULL;
 }
 
-
-void GnomeMeeting::AddContactIP (const char *ip)
-{
-  GtkWidget *li;
-  gtk_entry_set_text (GTK_ENTRY (GTK_WIDGET(GTK_COMBO(gw->combo)->entry)), 
-		      ip);
-  cout << "la " << endl << flush;
-/*
-  gnomemeeting_history_combo_box_add_entry (GTK_COMBO (gw->combo), 
-					    "/apps/gnomemeeting/history/called_hosts",
-					    ip);
-*/
-}
-  
-
 void GnomeMeeting::Connect()
 {
   PString call_address;
   PString current_call_token;
   H323Connection *connection;
-  GtkWidget *li;
   
   /* We need a connection to use AnsweringCall */
   current_call_token = endpoint->GetCurrentCallToken ();
@@ -227,14 +202,14 @@ void GnomeMeeting::Connect()
     gtk_entry_set_text (GTK_ENTRY (GTK_WIDGET(GTK_COMBO(gw->combo)->entry)),
 			call_address);
     /* 20 = max number of contacts to store on HD, put here the value */
-    /* got from preferences if any*//*
+    /* got from preferences if any*/
     gnomemeeting_history_combo_box_add_entry (GTK_COMBO (gw->combo),
-					      "/apps/gnomemeeting/history/called_hosts",
-					      gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry)));
-    */
+	 				      "/apps/gnomemeeting/history/called_hosts",
+		 			      gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry)));
+    
     /* if we call somebody */
     if (!call_address.IsEmpty ()) {
-
+      
       call_number++;
       gchar *msg = NULL;
       endpoint->SetCurrentConnection (endpoint->MakeCall 

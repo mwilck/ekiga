@@ -82,15 +82,8 @@ class GnomeMeeting : public PProcess
    * PRE          :  /
    */
   void Disconnect ();
+
 		
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Add the current IP to the history in the combo.
-   * PRE          :  /
-   */
-  void AddContactIP (const char *);
-
-  
   /* Needed for PProcess */
   void Main();
 

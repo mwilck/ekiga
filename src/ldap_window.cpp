@@ -41,8 +41,6 @@
 #include "menu.h"
 #include "misc.h"
 
-#include "../pixmaps/quickcam.xpm"
-#include "../pixmaps/sound.xpm"
 #include "../pixmaps/ldap_refresh.xpm"
 
 
@@ -169,7 +167,6 @@ void refresh_button_clicked (GtkButton *button, gpointer data)
 
   GtkWidget *page;
   GtkWidget *label;
-  GtkWidget *li;
 
   int page_num = 0;
   int found = 0;
@@ -196,7 +193,7 @@ void refresh_button_clicked (GtkButton *button, gpointer data)
 			0, -1);
 
   /* if the entry is not in the list */
-  while (text = (gchar *) g_list_nth_data (lw->ldap_servers_list, i)) {
+  while ((text = (gchar *) g_list_nth_data (lw->ldap_servers_list, i))) {
 
     /* do not free text, it is not a copy */
     if (!g_strcasecmp (text, entry_content)) {
@@ -517,8 +514,6 @@ void gnomemeeting_init_ldap_window_notebook (int page_num, gchar *text_label)
 {
   GtkWidget *label;
   GtkWidget *scroll;
-  GtkWidget *menu;
-  GtkWidget *menu_item;
 
   GM_ldap_window_widgets *lw = gnomemeeting_get_ldap_window (gm);
   

@@ -52,7 +52,6 @@ static gboolean fps_limit_changed (gpointer);
 static void fps_limit_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static gboolean vb_limit_changed (gpointer);
 static void vb_limit_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
-static gboolean toggle_changed_ (gpointer);
 static void toggle_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static gboolean entry_changed_ (gpointer);
 static void entry_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
@@ -229,7 +228,6 @@ static gboolean re_vq_changed (gpointer data)
   gdk_threads_enter ();
 
   GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
-  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
 
   /* We set the new value for re_vq_spin_adj */
   GTK_ADJUSTMENT (pw->re_vq_spin_adj)->value = (int) data;
@@ -621,7 +619,6 @@ static gboolean audio_mixer_changed (gpointer data)
 static void audio_mixer_changed_nt (GConfClient *client, guint cid, 
 				    GConfEntry *entry, gpointer data)
 {
-  
   if (entry->value->type == GCONF_VALUE_STRING) {
   
     g_idle_add (audio_mixer_changed, 
@@ -1158,7 +1155,7 @@ static gboolean register_changed (gpointer data)
 {
   BOOL no_error = TRUE;
   gchar *gconf_string;
-  GtkWidget *msg_box;
+  GtkWidget *msg_box = NULL;
   GMH323EndPoint *endpoint = MyApp->Endpoint ();
   GConfClient *client = gconf_client_get_default ();
 

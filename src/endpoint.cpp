@@ -819,8 +819,6 @@ BOOL GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
 				      unsigned bufferSize,
 				      H323AudioCodec & codec)
 {
-  GMH323Connection *c= (GMH323Connection *) GetCurrentConnection ();
-
   gnomemeeting_threads_enter ();
 
   /* If needed , delete the timers */

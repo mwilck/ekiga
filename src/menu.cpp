@@ -44,13 +44,6 @@ extern GtkWidget *gm;
 static void half_zoom_callback (GtkWidget *, gpointer);
 static void normal_zoom_callback (GtkWidget *, gpointer);
 static void double_zoom_callback (GtkWidget *, gpointer);
-static void view_remote_user_info_callback (GtkWidget *, gpointer);
-static void view_log_callback (GtkWidget *, gpointer);
-static void view_audio_settings_callback (GtkWidget *, gpointer);
-static void view_video_settings_callback (GtkWidget *, gpointer);
-static void view_docklet_callback (GtkWidget *, gpointer);
-static void notebook_info_changed (GConfClient *, guint, GConfEntry *, 
-				   gpointer);
 
 /* GTK Callbacks */
 
