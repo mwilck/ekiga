@@ -105,17 +105,31 @@ GMURL::GMURL (PString c)
     type = PString ("shortcut");
     is_supported = true;
   }
-  else if (url.Find ("callto:") != P_MAX_INDEX) {
+  else if (url.Find ("callto:") == 0) {
 
     url.Replace ("callto:", "");
     type = PString ("callto");
     is_supported = true;
   }
-  else if (url.Find ("h323:") != P_MAX_INDEX) {
+  else if (url.Find ("h323:") == 0) {
 
     url.Replace ("h323:", "");
     type = PString ("h323");
     is_supported = true;
+  }
+  else if (url.Find ("h323:") == P_MAX_INDEX
+	   && url.Find ("callto:") == P_MAX_INDEX) {
+
+    if (url.Find ("/") != P_MAX_INDEX) {
+      
+      type = PString ("callto");
+      is_supported = true;
+    }
+    else {
+      
+      type = PString ("h323");
+      is_supported = true;
+    }
   }
   else
     is_supported = false;
@@ -264,10 +278,10 @@ void GMURLHandler::Main ()
 
   /* If it is a shortcut (# at the end of the URL), then we use it */
   if (url.GetType () == "shortcut") {
-    
+
     url =
       gnomemeeting_addressbook_get_url_from_speed_dial (url.GetValidURL ());
-    
+
     if (url.IsEmpty ()) {
 
       msg = g_strdup_printf (_("No contact with speed dial %s# found, will call number %s instead"), (const char *) old_url.GetValidURL (), (const char *) (GMURL ().GetDefaultURL () + old_url.GetValidURL ()));
@@ -291,7 +305,13 @@ void GMURLHandler::Main ()
       gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Invalid URL handler"), _("Please specify a valid URL handler. Currently both h323: and callto: are supported."));
       gnomemeeting_threads_leave ();
     }
+    else {
 
+      gnomemeeting_threads_enter ();
+      gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry),
+			  call_address);
+      gnomemeeting_threads_leave ();
+    }
   
     /* If the user is using MicroTelco, but G.723.1 is not available for
        a reason or another, we add the MicroTelco prefix if the URL seems
