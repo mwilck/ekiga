@@ -116,7 +116,9 @@ void gnomemeeting_addressbook_group_populate (GtkListStore *, char *);
 void gnomemeeting_addressbook_sections_populate ();
 
 
-
-
-PString gnomemeeting_addressbook_get_url_from_speed_dial (PString);
+/* DESCRIPTION  :  / 
+ * BEHAVIOR     :  Returns the URL for the given speed dial or NULL if none.
+ * PRE          :  /
+ */
+gchar *gnomemeeting_addressbook_get_url_from_speed_dial (const char *);
 #endif

@@ -1,5 +1,13 @@
 2003-05-24 Damien Sandras  <dsandras@seconix.com>
 
+	* src/ldap_window.cpp, src/ldap_window.h: Adapted the API to not use
+	anymore PString objects in the C functions. Cleaned, documented
+	and fixed code.
+	
+	* src/urlhandler.cpp: Adapted to the new API above.
+	
+2003-05-24 Damien Sandras  <dsandras@seconix.com>
+
 	* src/ldap_window.cpp: Added Rihgt-click delete.
 	
 	* src/videograbber.cpp: Reordered opening sequence.

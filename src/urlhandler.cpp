@@ -119,10 +119,13 @@ void GMURLHandler::Main ()
   
   /* If it is a speed dial (# at the end of the URL), then we use it */
   url.Replace ("callto://", "");
-  if (url.Find ('#') == url.GetLength () - 1) 
-    call_address =
-      gnomemeeting_addressbook_get_url_from_speed_dial
+  if (url.Find ('#') == url.GetLength () - 1) {
+
+    gchar *curl =       gnomemeeting_addressbook_get_url_from_speed_dial
       (url.Left (url.GetLength () -1));
+    if (curl)
+      call_address = PString (curl);
+  }
   else
     call_address = url;
 
