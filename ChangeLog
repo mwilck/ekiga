@@ -1,5 +1,12 @@
 2002-05-10  Damien Sandras  <dsandras@seconix.com>
 
+	* src/druid.cpp: Changed MAJOR_VERSION to MAJOR_VERSION * 100
+	+ MINOR_VERSION, or the druid would be called every time.
+
+	* src/main_window.cpp: Did the same.
+	
+2002-05-10  Damien Sandras  <dsandras@seconix.com>
+
 	* gnomemeeting.schema.in: Added a key for the prefix to use
 	in the the gnome directory to save files.
 

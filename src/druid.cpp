@@ -84,7 +84,7 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
     gconf_client_set_bool (client, "/apps/gnomemeeting/ldap/register", 
 			   false, NULL);
 
-  gconf_client_set_int (client, "/apps/gnomemeeting/general/version", MAJOR_VERSION, 0);
+  gconf_client_set_int (client, "/apps/gnomemeeting/general/version", MAJOR_VERSION * 100 + MINOR_VERSION, 0);
 
   gtk_widget_destroy (GTK_WIDGET (window));
   gtk_widget_show (gm);

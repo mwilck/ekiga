@@ -443,7 +443,8 @@ gnomemeeting_init (GmWindow *gw,
 
   /* Init the druid */
   if (gconf_client_get_int (client, 
-			    "/apps/gnomemeeting/general/version", NULL) < 92)
+			    "/apps/gnomemeeting/general/version", NULL) 
+      < 100 * MAJOR_VERSION + MINOR_VERSION)
 
     gnomemeeting_init_druid ((gpointer) "first");
 
