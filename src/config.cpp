@@ -462,6 +462,12 @@ enable_video_reception_changed_nt (GConfClient *client,
       ep->StopLogicalChannel (RTP_Session::DefaultVideoSessionID,
 			      TRUE);
     }
+    else {
+
+      gdk_threads_enter ();
+      gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (gm), GTK_WIDGET (data), _("Changing this setting will only affect new calls"), _("You have changed a setting that doesn't permit to GnomeMeeting to apply the new change to the current call. Your new setting will only take effect for the next call."));
+      gdk_threads_leave ();
+    }
   }
 }
 
@@ -1616,7 +1622,7 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
 			   network_settings_changed_nt, 0, 0, 0);
 
   gconf_client_notify_add (client, VIDEO_SETTINGS_KEY "enable_video_reception", network_settings_changed_nt, 0, 0, 0);	     
-  gconf_client_notify_add (client, VIDEO_SETTINGS_KEY "enable_video_reception", enable_video_reception_changed_nt, 0, 0, 0);	     
+  gconf_client_notify_add (client, VIDEO_SETTINGS_KEY "enable_video_reception", enable_video_reception_changed_nt, pw->vid_re, 0, 0);	     
 
   gconf_client_notify_add (client, VIDEO_SETTINGS_KEY "enable_video_transmission", network_settings_changed_nt, 0, 0, 0);	     
   gconf_client_notify_add (client, VIDEO_SETTINGS_KEY "enable_video_transmission", enable_video_transmission_changed_nt, 0, 0, 0);	     

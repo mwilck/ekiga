@@ -308,5 +308,6 @@ struct _GmPrefWindow
   GtkWidget *ht;
   GtkWidget *uic;
   GtkWidget *fs;
+  GtkWidget *vid_re;
 };
 #endif /* GM_COMMON_H */

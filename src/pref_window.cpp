@@ -1213,7 +1213,10 @@ gnomemeeting_init_pref_window_video_codecs (GtkWidget *window,
 					    GtkWidget *container)
 {
   GtkWidget *subsection = NULL;
+  GmPrefWindow *pw = NULL;
 
+  pw = MyApp->GetPrefWindow ();
+  
   subsection = gnome_prefs_subsection_new (window, container,
 					   _("General Settings"), 2, 1);
 
@@ -1221,7 +1224,8 @@ gnomemeeting_init_pref_window_video_codecs (GtkWidget *window,
   /* Add fields */
   gnome_prefs_toggle_new (subsection, _("Enable video _transmission"), VIDEO_SETTINGS_KEY "enable_video_transmission", _("If enabled, video is transmitted during a call."), 0);
 
-  gnome_prefs_toggle_new (subsection, _("Enable video _reception"), VIDEO_SETTINGS_KEY "enable_video_reception", _("If enabled, allows video to be received during a call."), 1);
+  pw->vid_re =
+    gnome_prefs_toggle_new (subsection, _("Enable video _reception"), VIDEO_SETTINGS_KEY "enable_video_reception", _("If enabled, allows video to be received during a call."), 1);
 
 
   /* H.261 Settings */
