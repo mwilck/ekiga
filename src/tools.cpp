@@ -224,21 +224,21 @@ gnomemeeting_calls_history_window_populate ()
 
   chw = GnomeMeeting::Process ()->GetCallsHistoryWindow ();
 
-  for (int i = 0 ; i < 3 ; i++) {
+  for (int i = 0 ; i < MAX_VALUE_CALL ; i++) {
     
     switch (i) {
 
-    case 0:
+    case RECEIVED_CALL:
       list_store = chw->received_calls_list_store;
       gconf_key =
 	g_strdup (USER_INTERFACE_KEY "calls_history_window/received_calls_history");
       break;
-    case 1:
+    case PLACED_CALL:
       list_store = chw->given_calls_list_store;
       gconf_key =
 	g_strdup (USER_INTERFACE_KEY "calls_history_window/placed_calls_history");
       break;
-    case 2:
+    case MISSED_CALL:
       list_store = chw->missed_calls_list_store;
       gconf_key =
 	g_strdup (USER_INTERFACE_KEY "calls_history_window/missed_calls_history");
@@ -300,15 +300,15 @@ gnomemeeting_calls_history_window_add_call (int i,
   
   switch (i) {
 
-  case 0:
+  case RECEIVED_CALL:
     gconf_key =
       g_strdup (USER_INTERFACE_KEY "calls_history_window/received_calls_history");
     break;
-  case 1:
+  case PLACED_CALL:
     gconf_key =
       g_strdup (USER_INTERFACE_KEY "calls_history_window/placed_calls_history");
     break;
-  case 2:
+  case MISSED_CALL:
     gconf_key =
       g_strdup (USER_INTERFACE_KEY "calls_history_window/missed_calls_history");
     break;
@@ -387,7 +387,7 @@ gnomemeeting_calls_history_window_new (GmCallsHistoryWindow *chw)
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG (window)->vbox), notebook,
 		      TRUE, TRUE, 0);
 
-  for (int i = 0 ; i < 3 ; i++) {
+  for (int i = 0 ; i < MAX_VALUE_CALL ; i++) {
 
     label = gtk_label_new (N_(label_text [i]));
     scr = gtk_scrolled_window_new (NULL, NULL);

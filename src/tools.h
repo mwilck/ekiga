@@ -42,6 +42,12 @@
 
 #include "common.h"
 
+enum {
+  RECEIVED_CALL,
+  PLACED_CALL,
+  MISSED_CALL,
+  MAX_VALUE_CALL // hackish... sorry... just keep it last
+};
 
 /* The functions  */
 

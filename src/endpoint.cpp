@@ -1210,20 +1210,20 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   gnomemeeting_threads_enter ();
   if (t.GetSeconds () == 0 && connection.HadAnsweredCall ())
-    gnomemeeting_calls_history_window_add_call (2, utf8_name,
+    gnomemeeting_calls_history_window_add_call (MISSED_CALL, utf8_name,
 						utf8_url,
 						"0",
 						msg_reason,
 						utf8_app);
   else
     if (connection.HadAnsweredCall ())
-      gnomemeeting_calls_history_window_add_call (0, utf8_name,
+      gnomemeeting_calls_history_window_add_call (RECEIVED_CALL, utf8_name,
 						  utf8_url,
 						  t.AsString (2),
 						  msg_reason,
 						  utf8_app);
     else
-      gnomemeeting_calls_history_window_add_call (1, utf8_name,
+      gnomemeeting_calls_history_window_add_call (PLACED_CALL, utf8_name,
 						  GetLastCallAddress (),
 						  t.AsString (2),
 						  msg_reason,
