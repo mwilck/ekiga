@@ -165,7 +165,7 @@ void quit_callback (GtkWidget *widget, gpointer data)
 				    false);
     }
 
-  gnome_app_question(GNOME_APP(gm),_("Are you sure you want to quit ?"),
+  gnome_app_question (GNOME_APP(gm), _("Are you sure you want to quit?"),
 		     gtk_main_quit_callback, gw);
 }  
 
