@@ -478,7 +478,7 @@ void init_pref_audio_codecs (GtkWidget *notebook, GM_pref_window_widgets *pw,
     
   /* BUTTONS */						
   /* Add */
-  button = add_button (_("_Add"), 
+  button = add_button (_("Add"), 
 		       gnome_stock_new_with_icon (GNOME_STOCK_BUTTON_APPLY));  
   gtk_widget_set_usize (GTK_WIDGET (button), 40, 25);
   gtk_table_attach (GTK_TABLE (table), button, 0, 1, 1, 2,
@@ -496,7 +496,7 @@ void init_pref_audio_codecs (GtkWidget *notebook, GM_pref_window_widgets *pw,
   
 
   /* Del */
-  button = add_button (_("_Delete"), 
+  button = add_button (_("Delete"), 
 		       gnome_stock_new_with_icon (GNOME_STOCK_BUTTON_CANCEL));  
   gtk_widget_set_usize (GTK_WIDGET (button), 40, 25);
   gtk_table_attach (GTK_TABLE (table), button, 1, 2, 1, 2,
@@ -514,7 +514,7 @@ void init_pref_audio_codecs (GtkWidget *notebook, GM_pref_window_widgets *pw,
   
 
   /* Up */
-  button = add_button (_("_Up"), 
+  button = add_button (_("Up"), 
 		       gnome_stock_new_with_icon (GNOME_STOCK_MENU_UP)); 
   gtk_widget_set_usize (GTK_WIDGET (button), 40, 25);
   gtk_table_attach (GTK_TABLE (table), button, 2, 3, 1, 2,
@@ -532,7 +532,7 @@ void init_pref_audio_codecs (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
 		
   /* Down */
-  button = add_button (_("D_own"), 
+  button = add_button (_("Down"), 
 		       gnome_stock_new_with_icon (GNOME_STOCK_MENU_DOWN)); 
   gtk_widget_set_usize (GTK_WIDGET (button), 40, 25);
   gtk_table_attach (GTK_TABLE (table), button, 3, 4, 1, 2,
@@ -599,7 +599,7 @@ void init_pref_interface (GtkWidget *notebook, GM_pref_window_widgets *pw,
   
 
   /* Show / hide splash screen at startup */
-  pw->show_splash = gtk_check_button_new_with_label (_("Show S_plash Screen"));
+  pw->show_splash = gtk_check_button_new_with_label (_("Show Splash Screen"));
   gtk_table_attach (GTK_TABLE (table), pw->show_splash, 2, 4, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -613,7 +613,7 @@ void init_pref_interface (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
 
   /* Show / hide the notebook at startup */
-  pw->show_notebook = gtk_check_button_new_with_label (_("Show _Notebook"));
+  pw->show_notebook = gtk_check_button_new_with_label (_("Show Notebook"));
   gtk_table_attach (GTK_TABLE (table), pw->show_notebook, 0, 2, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -627,7 +627,7 @@ void init_pref_interface (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
 
   /* Show / hide the statusbar at startup */
-  pw->show_statusbar = gtk_check_button_new_with_label (_("Show _Status Bar"));
+  pw->show_statusbar = gtk_check_button_new_with_label (_("Show Status Bar"));
   gtk_table_attach (GTK_TABLE (table), pw->show_statusbar, 0, 2, 1, 2,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -653,7 +653,7 @@ void init_pref_interface (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
 
   /* Auto Answer toggle button */						
-  pw->aa = gtk_check_button_new_with_label (_("_Auto Answer"));
+  pw->aa = gtk_check_button_new_with_label (_("Auto Answer"));
   gtk_table_attach (GTK_TABLE (table), pw->aa, 0, 2, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -666,7 +666,7 @@ void init_pref_interface (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   
   /* DND toggle button */
-  pw->dnd = gtk_check_button_new_with_label (_("_Do Not Disturb"));
+  pw->dnd = gtk_check_button_new_with_label (_("Do Not Disturb"));
   gtk_table_attach (GTK_TABLE (table), pw->dnd, 0, 2, 1, 2,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -692,7 +692,7 @@ void init_pref_interface (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
 
   /* Auto Answer toggle button */						
-  pw->incoming_call_sound = gtk_check_button_new_with_label (_("_Incoming Call"));
+  pw->incoming_call_sound = gtk_check_button_new_with_label (_("Incoming Call"));
   gtk_table_attach (GTK_TABLE (table), pw->incoming_call_sound, 0, 2, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -876,7 +876,7 @@ void init_pref_video_codecs (GtkWidget *notebook, GM_pref_window_widgets *pw,
 		      FALSE, FALSE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_BIG);
   
-  pw->vid_tr = gtk_check_button_new_with_label (_("_Enable Video Transmission"));
+  pw->vid_tr = gtk_check_button_new_with_label (_("Enable Video Transmission"));
   gtk_container_add (GTK_CONTAINER (frame), pw->vid_tr);
   gtk_container_set_border_width (GTK_CONTAINER (pw->vid_tr), GNOME_PAD_SMALL);	 
 
@@ -1108,7 +1108,7 @@ void init_pref_advanced (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
 
   /* H245 Tunnelling button */				
-  pw->ht = gtk_check_button_new_with_label (_("Enable _H.245 Tunnelling"));
+  pw->ht = gtk_check_button_new_with_label (_("Enable H.245 Tunnelling"));
   gtk_table_attach (GTK_TABLE (table), pw->ht, 0, 2, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -1121,7 +1121,7 @@ void init_pref_advanced (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
 
   /* Fast Start button */							
-  pw->fs = gtk_check_button_new_with_label (_("Enable _Fast Start"));
+  pw->fs = gtk_check_button_new_with_label (_("Enable Fast Start"));
   gtk_table_attach (GTK_TABLE (table), pw->fs, 0, 2, 1, 2,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -1156,7 +1156,7 @@ void init_pref_advanced (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
 
   /* Silence Detection */ 
-  pw->sd = gtk_check_button_new_with_label (_("Enable _Silence Detection"));
+  pw->sd = gtk_check_button_new_with_label (_("Enable Silence Detection"));
   gtk_table_attach (GTK_TABLE (table), pw->sd, 2, 4, 1, 2,
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
@@ -1288,7 +1288,7 @@ void init_pref_ldap (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
 
   /* Use ILS */ 
-  pw->ldap = gtk_check_button_new_with_label (_("_Register to ILS directory"));
+  pw->ldap = gtk_check_button_new_with_label (_("Register to ILS directory"));
   gtk_table_attach (GTK_TABLE (table), pw->ldap, 2, 4, 1, 2,
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
