@@ -38,7 +38,6 @@
 #include "ldap_window.h"
 #include "common.h"
 #include "misc.h"
-#include "cleaner.h"
 
 
 #include <gtk/gtk.h>
@@ -204,13 +203,12 @@ void quit_callback (GtkWidget *widget, gpointer data)
 {
   GmWindow *gw = gnomemeeting_get_main_window (gm);
 
-  gtk_widget_hide_all (gm);
+  gtk_widget_hide (gm);
+  gtk_widget_hide (gw->docklet);
+  gtk_widget_hide (gw->ldap_window);
+  gtk_widget_hide (gw->pref_window);
 
-  if (gw->cleaner_thread_count == 0) {
-
-    GMThreadsCleaner *cleaner = new GMThreadsCleaner ();
-    g_object_set_data (G_OBJECT (gm), "cleaner", cleaner);
-  }
+  gtk_main_quit ();
 }  
 
 

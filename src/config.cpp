@@ -956,7 +956,7 @@ static void video_device_setting_changed_nt (GConfClient *client, guint cid,
     /* We reset the video device */
     if (MyApp->Endpoint ()->GetCallingState () == 0) {
     
-      vg = GM_VIDEO_GRABBER (MyApp->Endpoint ()->GetVideoGrabberThread ());
+      vg = MyApp->GetVideoGrabber ();
 
       if (vg)
 	vg->Reset ();
@@ -977,24 +977,14 @@ static void video_preview_changed_nt (GConfClient *client, guint cid,
   if (entry->value->type == GCONF_VALUE_BOOL) {
    
     gdk_threads_enter ();
-
-    GMVideoGrabber *vg = NULL;
          
     /* We reset the video device */
     if (MyApp->Endpoint ()->GetCallingState () == 0) {
     
-      vg = GM_VIDEO_GRABBER (MyApp->Endpoint ()->GetVideoGrabberThread ());
-    
-      if (gconf_value_get_bool (entry->value)) {
-
-	if (!vg->IsOpened ())
-	  vg->Open (TRUE);
-      }
-      else {
-      
-	if (vg->IsOpened ())
-	  vg->Close ();
-      }
+      if (gconf_value_get_bool (entry->value)) 
+	MyApp->CreateVideoGrabber ();
+      else 
+	MyApp->RemoveVideoGrabber ();
     }
  
     gdk_threads_leave ();

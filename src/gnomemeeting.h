@@ -35,6 +35,7 @@
 
 #include "common.h"
 #include "endpoint.h"
+#include "videograbber.h"
 
 
 /* COMMON NOTICE:  GmWindow is a structure containing pointers
@@ -86,6 +87,11 @@ class GnomeMeeting : public PProcess
   /* Needed for PProcess */
   void Main();
 
+  void CreateVideoGrabber (BOOL = true, BOOL = false);
+  
+  void RemoveVideoGrabber (BOOL = false);
+  GMVideoGrabber *GetVideoGrabber ();
+  
   
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns the current endpoint.
@@ -98,10 +104,13 @@ class GnomeMeeting : public PProcess
 
   GMH323EndPoint *endpoint;
   PThread *url_handler;
-
+  GMVideoGrabber *video_grabber;
+  
   GmWindow *gw;
   GmLdapWindow *lw;
-  
+
+  PMutex var_mutex;
+  PIntCondMutex *vg;
   int call_number; 
 };
 

@@ -351,13 +351,6 @@ class GMH323EndPoint : public H323EndPoint
 
 
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Return the current video grabber device thread.
-   * PRE          :  /
-   */
-  PThread *GetVideoGrabberThread (void);
-
-
-  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Return the current ILS/LDAP client thread.
    * PRE          :  /
    */
@@ -405,11 +398,9 @@ class GMH323EndPoint : public H323EndPoint
   GConfClient *client;
 
   PThread *ils_client;
-  PThread *video_grabber;
   PThread *audio_tester;
 
   PMutex var_access_mutex;
-  PMutex quit_mutex;
 
   int opened_audio_channels;
   int opened_video_channels;

@@ -54,7 +54,7 @@
 #include "druid.h"
 #include "chat_window.h"
 #include "tools.h"
-#include "cleaner.h"
+
 
 #include <ptclib/asner.h>
 
@@ -801,14 +801,14 @@ void
 brightness_changed (GtkAdjustment *adjustment, gpointer data)
 { 
   GmWindow *gw = GM_WINDOW (data);
-  GMVideoGrabber *video_grabber = 
-    GM_VIDEO_GRABBER (MyApp->Endpoint ()->GetVideoGrabberThread ());
+  GMVideoGrabber *video_grabber = MyApp->GetVideoGrabber ();
 
   int brightness;
 
   brightness =  (int) (GTK_ADJUSTMENT (gw->adj_brightness)->value);
 
-  video_grabber->SetBrightness (brightness * 256);
+  if (video_grabber)
+    video_grabber->SetBrightness (brightness * 256);
 }
 
 
@@ -822,14 +822,14 @@ void
 whiteness_changed (GtkAdjustment *adjustment, gpointer data)
 { 
   GmWindow *gw = GM_WINDOW (data);
-  GMVideoGrabber *video_grabber = 
-    GM_VIDEO_GRABBER (MyApp->Endpoint ()->GetVideoGrabberThread ());
-
+  GMVideoGrabber *video_grabber = MyApp->GetVideoGrabber ();
+  
   int whiteness;
 
   whiteness =  (int) (GTK_ADJUSTMENT (gw->adj_whiteness)->value);
 
-  video_grabber->SetWhiteness (whiteness * 256);
+  if (video_grabber)
+    video_grabber->SetWhiteness (whiteness * 256);
 }
 
 
@@ -843,14 +843,14 @@ void
 colour_changed (GtkAdjustment *adjustment, gpointer data)
 { 
   GmWindow *gw = GM_WINDOW (data);
-  GMVideoGrabber *video_grabber = 
-        GM_VIDEO_GRABBER (MyApp->Endpoint ()->GetVideoGrabberThread ());
-
+  GMVideoGrabber *video_grabber = MyApp->GetVideoGrabber ();
+  
   int colour;
 
   colour =  (int) (GTK_ADJUSTMENT (gw->adj_colour)->value);
 
-  video_grabber->SetColour (colour * 256);
+  if (video_grabber)
+    video_grabber->SetColour (colour * 256);
 }
 
 
@@ -864,14 +864,14 @@ void
 contrast_changed (GtkAdjustment *adjustment, gpointer data)
 { 
   GmWindow *gw = GM_WINDOW (data);
-  GMVideoGrabber *video_grabber = 
-    GM_VIDEO_GRABBER (MyApp->Endpoint ()->GetVideoGrabberThread ());
-
+  GMVideoGrabber *video_grabber = MyApp->GetVideoGrabber ();
+  
   int contrast;
 
   contrast =  (int) (GTK_ADJUSTMENT (gw->adj_contrast)->value);
 
-  video_grabber->SetContrast (contrast * 256);
+  if (video_grabber)
+    video_grabber->SetContrast (contrast * 256);
 }
 
 
@@ -1292,7 +1292,8 @@ gnomemeeting_init (GmWindow *gw,
 
   gnomemeeting_init_main_window (accel);
 
-  static GnomeMeeting instance;
+  //  static GnomeMeeting instance;
+  MyApp = new GnomeMeeting ();
   endpoint = MyApp->Endpoint ();
 
   gnomemeeting_sound_daemons_resume ();
@@ -1304,11 +1305,8 @@ gnomemeeting_init (GmWindow *gw,
 
   /* Start the video preview */
   if (gconf_client_get_bool (client, DEVICES_KEY "video_preview", NULL)) {
-    GMVideoGrabber *vg = NULL;
-    vg = GM_VIDEO_GRABBER (MyApp->Endpoint ()->GetVideoGrabberThread ());
-    
-    if (vg)
-      vg->Open (TRUE);
+
+    MyApp->CreateVideoGrabber ();
   }
 
   endpoint->SetUserNameAndAlias ();
@@ -1801,6 +1799,8 @@ void gnomemeeting_init_main_window_video_settings ()
   gw->adj_brightness = gtk_adjustment_new (brightness, 0.0, 
 					   255.0, 1.0, 5.0, 1.0);
   hscale_brightness = gtk_hscale_new (GTK_ADJUSTMENT (gw->adj_brightness));
+  gtk_range_set_update_policy (GTK_RANGE (hscale_brightness),
+			       GTK_UPDATE_DELAYED);
   gtk_scale_set_draw_value (GTK_SCALE (hscale_brightness), TRUE);
   gtk_scale_set_value_pos (GTK_SCALE (hscale_brightness), GTK_POS_RIGHT);
   gtk_table_attach (GTK_TABLE (table), hscale_brightness, 1, 4, 0, 1,
@@ -1827,6 +1827,8 @@ void gnomemeeting_init_main_window_video_settings ()
   gw->adj_whiteness = gtk_adjustment_new (whiteness, 0.0, 
 					  255.0, 1.0, 5.0, 1.0);
   hscale_whiteness = gtk_hscale_new (GTK_ADJUSTMENT (gw->adj_whiteness));
+  gtk_range_set_update_policy (GTK_RANGE (hscale_whiteness),
+			       GTK_UPDATE_DELAYED);
   gtk_scale_set_draw_value (GTK_SCALE (hscale_whiteness), TRUE);
   gtk_scale_set_value_pos (GTK_SCALE (hscale_whiteness), GTK_POS_RIGHT);
   gtk_table_attach (GTK_TABLE (table), hscale_whiteness, 1, 4, 1, 2,
@@ -1853,6 +1855,8 @@ void gnomemeeting_init_main_window_video_settings ()
   gw->adj_colour = gtk_adjustment_new (colour, 0.0, 
 				       255.0, 1.0, 5.0, 1.0);
   hscale_colour = gtk_hscale_new (GTK_ADJUSTMENT (gw->adj_colour));
+  gtk_range_set_update_policy (GTK_RANGE (hscale_colour),
+			       GTK_UPDATE_DELAYED);
   gtk_scale_set_draw_value (GTK_SCALE (hscale_colour), TRUE);
   gtk_scale_set_value_pos (GTK_SCALE (hscale_colour), GTK_POS_RIGHT);
   gtk_table_attach (GTK_TABLE (table), hscale_colour, 1, 4, 2, 3,
@@ -1879,6 +1883,8 @@ void gnomemeeting_init_main_window_video_settings ()
   gw->adj_contrast = gtk_adjustment_new (contrast, 0.0, 
 					 255.0, 1.0, 5.0, 1.0);
   hscale_contrast = gtk_hscale_new (GTK_ADJUSTMENT (gw->adj_contrast));
+  gtk_range_set_update_policy (GTK_RANGE (hscale_contrast),
+			       GTK_UPDATE_DELAYED);
   gtk_scale_set_draw_value (GTK_SCALE (hscale_contrast), TRUE);
   gtk_scale_set_value_pos (GTK_SCALE (hscale_contrast), GTK_POS_RIGHT);
   gtk_table_attach (GTK_TABLE (table), hscale_contrast, 1, 4, 3, 4,
@@ -1942,6 +1948,8 @@ void gnomemeeting_init_main_window_audio_settings ()
   
   gw->adj_play = gtk_adjustment_new ((vol&255), 0.0, 100.0, 1.0, 5.0, 1.0);
   hscale_play = gtk_hscale_new (GTK_ADJUSTMENT (gw->adj_play));
+  gtk_range_set_update_policy (GTK_RANGE (hscale_play),
+			       GTK_UPDATE_DELAYED);
   gtk_scale_set_value_pos (GTK_SCALE (hscale_play),GTK_POS_RIGHT); 
   gtk_scale_set_draw_value (GTK_SCALE (hscale_play), TRUE);
 
@@ -1966,6 +1974,8 @@ void gnomemeeting_init_main_window_audio_settings ()
   
   gw->adj_rec = gtk_adjustment_new ((vol&255), 0.0, 100.0, 1.0, 5.0, 1.0);
   hscale_rec = gtk_hscale_new (GTK_ADJUSTMENT (gw->adj_rec));
+  gtk_range_set_update_policy (GTK_RANGE (hscale_rec),
+			       GTK_UPDATE_DELAYED);
   gtk_scale_set_value_pos (GTK_SCALE (hscale_rec),GTK_POS_RIGHT); 
   gtk_scale_set_draw_value (GTK_SCALE (hscale_rec), TRUE);
 
@@ -2014,7 +2024,6 @@ int main (int argc, char ** argv, char ** envp)
   gw->druid_window = NULL;
 #endif
   gw->progress_timeout = 0;
-  gw->cleaner_thread_count = 0;
 
 
   /* Init the GmPrefWindow structure */
@@ -2063,10 +2072,11 @@ int main (int argc, char ** argv, char ** envp)
   bindtextdomain (GETTEXT_PACKAGE, GNOMELOCALEDIR);
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 
-
+  
+  
   /* GnomeMeeting main initialisation */
   gnomemeeting_init (gw, pw, lw, dw, rtp, chat, clo, argc, argv, envp);
-
+    
   /* Set a default gconf error handler */
   gconf_client_set_error_handling (gconf_client_get_default (),
 				   GCONF_CLIENT_HANDLE_UNRETURNED);
@@ -2085,10 +2095,7 @@ int main (int argc, char ** argv, char ** envp)
   gtk_main ();
   gdk_threads_leave ();
  
-
-  /* Wait for the cleaner thread to AutoDelete */
-  while (gw->cleaner_thread_count)
-    PThread::Current ()->Sleep (100);
+  delete (MyApp);
   
   delete (gw);
   delete (lw);

@@ -169,7 +169,6 @@ struct _GmWindow
   GdkColor colors [6];
 
   int          progress_timeout;
-  int          cleaner_thread_count;
 
   PStringArray video_devices;
   PStringArray audio_recorder_devices;

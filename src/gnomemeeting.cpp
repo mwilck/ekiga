@@ -33,6 +33,7 @@
 #include "endpoint.h"
 #include "callbacks.h"
 #include "gnomemeeting.h"
+#include "videograbber.h"
 #include "main_window.h"
 #include "toolbar.h"
 #include "config.h"
@@ -67,19 +68,25 @@ GnomeMeeting::GnomeMeeting ()
   endpoint = NULL;
 
   url_handler = NULL;
-
+  video_grabber = NULL;
+  
   gw = gnomemeeting_get_main_window (gm);
   lw = gnomemeeting_get_ldap_window (gm);
 
   endpoint = new GMH323EndPoint ();
   MyApp = (this);
 
+  vg = new PIntCondMutex (0, 0);
+  
   call_number = 0;
 }
 
 
 GnomeMeeting::~GnomeMeeting()
 {
+  delete (endpoint);
+
+  RemoveVideoGrabber (true);
 }
 
 
@@ -248,4 +255,35 @@ GMH323EndPoint *GnomeMeeting::Endpoint ()
 void GnomeMeeting::Main ()
 {
   /* Nothing interesting here */
+}
+
+
+void GnomeMeeting::CreateVideoGrabber (BOOL start_grabbing, BOOL synchronous)
+{
+  PWaitAndSignal m(var_mutex);
+  
+  if (!video_grabber)
+    video_grabber =
+      new GMVideoGrabber (vg, start_grabbing, synchronous);
+}
+
+
+void GnomeMeeting::RemoveVideoGrabber (BOOL synchronous)
+{
+  PWaitAndSignal m(var_mutex);
+
+  if (video_grabber) {
+
+    video_grabber->Close ();
+  }      
+  video_grabber = NULL;
+
+  if (synchronous)
+    vg->Wait ();
+}
+
+
+GMVideoGrabber *GnomeMeeting::GetVideoGrabber ()
+{
+  return video_grabber;
 }

@@ -37,8 +37,6 @@ gnomemeeting_SOURCES =		\
 	gatekeeper.h		\
 	ils.cpp			\
 	ils.h			\
-	cleaner.cpp		\
-	cleaner.h		\
 	misc.cpp		\
 	misc.h			\
 	chat_window.cpp		\

@@ -320,12 +320,6 @@ GMH323Connection::OnAnswerCall (const PString & caller,
 
   MyApp -> Endpoint () -> SetCurrentCallToken (GetCallToken());
 
-  GMVideoGrabber *vg = 
-    GM_VIDEO_GRABBER (MyApp->Endpoint ()->GetVideoGrabberThread ());
-  vg->Stop ();
-
-  PThread::Current ()->Sleep (500);
-
   gnomemeeting_threads_enter ();  
   client = gconf_client_get_default ();
   aa = 

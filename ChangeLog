@@ -1,3 +1,39 @@
+2003-03-25 Damien Sandras  <dsandras@seconix.com>
+
+	* src/Makefile.am: Removed cleaner.cpp/.h from the compilation files.
+	
+	* src/callbacks.cpp: Changed the quit callback, the old 
+	GMThreadsCleaner is not needed anymore.
+	
+	* src/common.h: Removed unused mutex and GMThreadsCleaner counter.
+	
+	* src/config.cpp: Modified for the new GMVideoGrabber API.
+	
+	* src/connection.cpp: Modified for the new GMVideoGrabber API. 
+	
+	* src/endpoint.cpp: Modified for the new GMVideoGrabber API.
+	The GMVideoGrabber creation/deletion is now moved 
+	to the Main application. GMVideoGrabber is now an AutoDeleteThread,
+	created and deleted asynchronously. The GMVideoGrabber thread now only
+	exists when needed and when grabbing from the device. 
+	
+	* src/endpoint.h: Same.
+	
+	* src/gnomemeeting.cpp: Same.
+	
+	* src/gnomemeeting.h: Same.
+	
+	* src/main_window.cpp: Only update brightness/whiteness/colorness/
+	contrast/play volume/record volume after the user releases the
+	mouse button. Create the video grabber only if needed.
+	
+	* src/videograbber.cpp: Simplified the API. The GMVideoGrabber is
+	now an AutoDeleteThread. Several instances of the thread can run
+	at the same time, they are protected around mutexes. The Main 
+	application uses a conditional mutex to know if it can exit.
+
+	* src/videograbber.h: Same.
+	
 2003-03-16 Damien Sandras  <dsandras@seconix.com>
 
 	* src/druid.cpp: Do not unregister from the gatekeeper here as it
@@ -8,8 +44,7 @@
 	* src/gatekeeper.cpp: Code cleanups. Made the code shorter,
 	faster and safer.
 	
-	* src/gatekeeper.h: Same.
-	
+	* src/gatekeeper.h: Same.	
 	
 2003-03-10 Damien Sandras  <dsandras@seconix.com>
 
