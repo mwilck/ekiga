@@ -295,14 +295,27 @@ tree_selection_changed_cb (GtkTreeSelection *selection,
 			   gpointer data)
 {
   int page = 0;
+  gchar *name = NULL;
   GtkTreeIter iter;
   GtkWidget *window;
+  GtkWidget *label;
   GtkTreeModel *model;
+  GM_window_widgets *gw = NULL;
+
+  gw = gnomemeeting_get_main_window (gm);
 
   gtk_tree_selection_get_selected (selection, &model, &iter);
   
   gtk_tree_model_get (GTK_TREE_MODEL (model),
 		      &iter, 1, &page, -1);
+  gtk_tree_model_get (GTK_TREE_MODEL (model),
+		      &iter, 0, &name, -1);
+
+  label = 
+    (GtkWidget *) g_object_get_data (G_OBJECT (gw->pref_window), 
+				     "section_label");
+
+  gtk_label_set_text (GTK_LABEL (label), name);
 
   gtk_notebook_set_current_page (GTK_NOTEBOOK (data), page);
 }
@@ -627,43 +640,6 @@ void gnomemeeting_codecs_list_build (GtkListStore *codecs_list_store,
 
 
 static GtkWidget *
-gnomemeeting_pref_window_build_page (GtkWidget *notebook,  
-				     gchar *category_name)   
-{                                                                              
-  GtkWidget *vbox = NULL;
-  GtkWidget *general_frame = NULL, *frame = NULL;                              
-  GtkWidget *label = NULL;                                                     
-                                                                               
-  vbox = gtk_vbox_new (FALSE, GNOMEMEETING_PAD_SMALL);                         
-  
-  general_frame = gtk_frame_new (NULL);                                        
-                                                                               
-  gtk_frame_set_shadow_type (GTK_FRAME (general_frame), GTK_SHADOW_IN);        
-  gtk_container_add (GTK_CONTAINER (general_frame), vbox);
-
-  /* The title of the notebook page */
-  frame = gtk_frame_new (NULL);                                               
-                                                                               
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);               
-                                                                               
-  gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, TRUE, 0);                  
-  label = gtk_label_new (category_name);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_misc_set_padding (GTK_MISC (label), 2, 1);                               
-
-  gtk_container_add (GTK_CONTAINER (frame), label);                            
- 
-                                                                               
-  /* Add the page */             
-  label = gtk_label_new (category_name);
-
-  gtk_notebook_append_page (GTK_NOTEBOOK(notebook), general_frame, label);     
-                                                                               
-  return vbox;                                                                 
-}                                                                              
-                                                                               
-                                                                               
-static GtkWidget *
 gnomemeeting_pref_window_add_table (GtkWidget *vbox,         
 				    gchar *frame_name,       
 				    int rows, int cols)      
@@ -680,7 +656,7 @@ gnomemeeting_pref_window_add_table (GtkWidget *vbox,
                                                                                
   gtk_container_add (GTK_CONTAINER (frame), table);                            
   gtk_container_set_border_width (GTK_CONTAINER (frame), 
-				  GNOMEMEETING_PAD_SMALL);
+				  GNOMEMEETING_PAD_SMALL * 2);
                                                                                
   gtk_table_set_row_spacings (GTK_TABLE (table), GNOMEMEETING_PAD_SMALL);      
   gtk_table_set_col_spacings (GTK_TABLE (table), GNOMEMEETING_PAD_SMALL);      
@@ -1037,7 +1013,7 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook)
                                                                                
                                                                                
   /* Packing widgets */                                                        
-  vbox = gnomemeeting_pref_window_build_page (notebook, _("Personal Data"));   
+  vbox = gtk_vbox_new (FALSE, 4);
   table = gnomemeeting_pref_window_add_table (vbox, _("Personnal Information"),
                                               7, 3);                           
 
@@ -1064,6 +1040,8 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook)
     gnomemeeting_pref_window_add_update_button (table, GTK_SIGNAL_FUNC (personal_data_update_button_clicked), _("Click here to update the LDAP server you are registered to with the new First Name, Last Name, E-Mail, Comment and Location or to update your alias on the Gatekeeper."), 6, 2);
   gtk_container_set_border_width (GTK_CONTAINER (pw->directory_update_button),
 				  GNOMEMEETING_PAD_SMALL*2);
+
+  gtk_notebook_append_page (GTK_NOTEBOOK(notebook), vbox, NULL);
 }                                                                              
                                                                                
 
@@ -1083,8 +1061,8 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook)
                                                                                
                                                                                
   /* Packing widgets */                                                        
-  vbox = gnomemeeting_pref_window_build_page (notebook, _("General Settings"));
-                                                                               
+  vbox = gtk_vbox_new (FALSE, 4);
+  gtk_notebook_append_page (GTK_NOTEBOOK(notebook), vbox, NULL);    
   table = gnomemeeting_pref_window_add_table (vbox,
 					      _("GnomeMeeting GUI"), 2, 2);
 
@@ -1145,7 +1123,8 @@ void gnomemeeting_init_pref_window_directories (GtkWidget *notebook)
                                                                                
                                                                                
   /* Packing widgets for the XDAP directory */                                               
-  vbox = gnomemeeting_pref_window_build_page (notebook, _("Directory Settings"));   
+  vbox = gtk_vbox_new (FALSE, 4);
+  gtk_notebook_append_page (GTK_NOTEBOOK(notebook), vbox, NULL);    
   table = gnomemeeting_pref_window_add_table (vbox, _("XDAP Directory"),
                                               2, 1);                           
                                                                                
@@ -1203,7 +1182,8 @@ static void gnomemeeting_init_pref_window_devices (GtkWidget *notebook)
   client = gconf_client_get_default ();
                                                                                
   /* Packing widgets for the XDAP directory */                                
-  vbox = gnomemeeting_pref_window_build_page (notebook, _("Devices Settings"));   
+  vbox = gtk_vbox_new (FALSE, 4);
+  gtk_notebook_append_page (GTK_NOTEBOOK(notebook), vbox, NULL);    
   table = gnomemeeting_pref_window_add_table (vbox, _("Audio Devices"),
                                               4, 2);                           
                                                                                
@@ -1305,11 +1285,15 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
 {                                                                              
   GtkWidget *vbox = NULL;                                                      
   GtkWidget *table = NULL;                                                     
-  GtkWidget *button = NULL;
+  GtkWidget *button1 = NULL;
+  GtkWidget *button2 = NULL;
   GtkWidget *frame = NULL;
 
   gchar *codecs_data = NULL;
-  
+
+  int width = 70;
+  GtkRequisition size_request1, size_request2;
+
   /* For the GTK TreeView */
   GtkWidget *tree_view;
   GtkTreePath *tree_path;
@@ -1323,7 +1307,8 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
 
 
   /* Packing widgets */                                                        
-  vbox = gnomemeeting_pref_window_build_page (notebook, _("Audio Codecs"));   
+  vbox =  gtk_vbox_new (FALSE, 4);
+  gtk_notebook_append_page (GTK_NOTEBOOK(notebook), vbox, NULL);  
   table = gnomemeeting_pref_window_add_table (vbox, _("Available Audio Codecs"), 2, 2);
 
   pw->codecs_list_store = gtk_list_store_new (COLUMN_NUMBER,
@@ -1397,29 +1382,41 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
   gnomemeeting_codecs_list_build (pw->codecs_list_store, codecs_data);
 
 
-  button = gtk_button_new_from_stock (GTK_STOCK_GO_UP);
-  gtk_table_attach (GTK_TABLE (table),  button, 1, 2, 0, 1,        
+  button1 = gtk_button_new_from_stock (GTK_STOCK_GO_UP);
+  gtk_table_attach (GTK_TABLE (table),  button1, 1, 2, 0, 1,        
                     (GtkAttachOptions) NULL,                           
                     (GtkAttachOptions) NULL,        
                     GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);           
-  g_object_set_data (G_OBJECT (button), "operation", (gpointer) "up");
-  gtk_widget_set_size_request (GTK_WIDGET (button), 70, 30);
-  gtk_container_set_border_width (GTK_CONTAINER (button), GNOMEMEETING_PAD_SMALL);
-  g_signal_connect (G_OBJECT (button), "clicked",
+  g_object_set_data (G_OBJECT (button1), "operation", (gpointer) "up");
+  gtk_widget_size_request (GTK_WIDGET (button1), &size_request1);
+  gtk_container_set_border_width (GTK_CONTAINER (button1), 
+				  GNOMEMEETING_PAD_SMALL);
+
+  g_signal_connect (G_OBJECT (button1), "clicked",
 		    G_CALLBACK (codecs_list_button_clicked_callback), 
 		    GTK_TREE_MODEL (pw->codecs_list_store));
 
-  button = gtk_button_new_from_stock (GTK_STOCK_GO_DOWN);
-  gtk_table_attach (GTK_TABLE (table),  button, 1, 2, 1, 2,        
+  button2 = gtk_button_new_from_stock (GTK_STOCK_GO_DOWN);
+  gtk_table_attach (GTK_TABLE (table),  button2, 1, 2, 1, 2,        
                     (GtkAttachOptions) NULL,                           
                     (GtkAttachOptions) NULL,
                     GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);  
-  g_object_set_data (G_OBJECT (button), "operation", (gpointer) "down");         
-  gtk_widget_set_size_request (GTK_WIDGET (button), 70, 30);
-  gtk_container_set_border_width (GTK_CONTAINER (button), GNOMEMEETING_PAD_SMALL);
-  g_signal_connect (G_OBJECT (button), "clicked",
+  g_object_set_data (G_OBJECT (button2), "operation", (gpointer) "down");
+  gtk_widget_size_request (GTK_WIDGET (button2), &size_request2);
+  gtk_container_set_border_width (GTK_CONTAINER (button2), 
+				  GNOMEMEETING_PAD_SMALL);
+  g_signal_connect (G_OBJECT (button2), "clicked",
 		    G_CALLBACK (codecs_list_button_clicked_callback), 
 		    GTK_TREE_MODEL (pw->codecs_list_store));
+  
+  /* Set the buttons to the same one (the largest needed one) */
+  if (size_request1.width >= size_request2.width)
+    width = size_request1.width;
+  else
+    width = size_request2.width;
+
+  gtk_widget_set_size_request (GTK_WIDGET (button1), width, 30);
+  gtk_widget_set_size_request (GTK_WIDGET (button2), width, 30);
 
   gtk_widget_show_all (frame);
 
@@ -1467,8 +1464,9 @@ void gnomemeeting_init_pref_window_video_codecs (GtkWidget *notebook)
   GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);              
                                                                                
                                                                                
-  /* Packing widgets for the XDAP directory */                                               
-  vbox = gnomemeeting_pref_window_build_page (notebook, _("Video Codecs"));   
+  /* Packing widgets for the XDAP directory */ 
+  vbox =  gtk_vbox_new (FALSE, 4);
+  gtk_notebook_append_page (GTK_NOTEBOOK(notebook), vbox, NULL);  
   table = gnomemeeting_pref_window_add_table (vbox, _("General Settings"),
                                               3, 1);                           
 
@@ -1520,9 +1518,13 @@ void gnomemeeting_init_pref_window ()
   GtkTreeIter iter;
   GtkTreeIter child_iter;
 
-  GtkWidget *event_box, *hpaned;
+  GtkWidget *event_box, *hbox, *vbox;
   GtkWidget *frame;
   GtkWidget *pixmap;
+  GtkWidget *label;
+
+  PangoAttrList     *attrs; 
+  PangoAttribute    *attr; 
 
   /* The notebook on the right */
   GtkWidget *notebook;
@@ -1543,6 +1545,7 @@ void gnomemeeting_init_pref_window ()
 
   gtk_window_set_title (GTK_WINDOW (gw->pref_window), 
 			_("GnomeMeeting Settings"));	
+  gtk_window_set_default_size (GTK_WINDOW (gw->pref_window), 550, 400);
 
 
   /* Construct the window */
@@ -1550,18 +1553,61 @@ void gnomemeeting_init_pref_window ()
 
   dialog_vbox = GTK_DIALOG (gw->pref_window)->vbox;
 
-  hpaned = gtk_hpaned_new ();
-  gtk_box_pack_start (GTK_BOX (dialog_vbox), hpaned, FALSE, FALSE, 0);
+  hbox = gtk_hbox_new (FALSE, 6);
+  gtk_container_set_border_width (GTK_CONTAINER (hbox), 6);
+  gtk_container_add (GTK_CONTAINER (dialog_vbox), hbox);
 
 
   /* Build the TreeView on the left */
+  frame = gtk_frame_new (NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
+  gtk_box_pack_start (GTK_BOX (hbox), frame, FALSE, FALSE, 0);
   model = gtk_tree_store_new (2, G_TYPE_STRING, G_TYPE_INT);
   tree_view = gtk_tree_view_new ();
   gtk_tree_view_set_model (GTK_TREE_VIEW (tree_view), GTK_TREE_MODEL (model));
   selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view));
+  gtk_container_add (GTK_CONTAINER (frame), tree_view);
+  gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (tree_view), FALSE);
 
   gtk_tree_selection_set_mode (GTK_TREE_SELECTION (selection),
 			       GTK_SELECTION_BROWSE);
+
+
+  /* Some design stuff to put the notebook pages in it */
+  frame = gtk_frame_new (NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
+  gtk_box_pack_start (GTK_BOX (hbox), frame, TRUE, TRUE, 0);
+  gtk_widget_show (frame);
+  
+  vbox = gtk_vbox_new (FALSE, 4);
+  gtk_container_add (GTK_CONTAINER (frame), vbox);
+  gtk_widget_show (vbox);
+
+  frame = gtk_frame_new (NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
+  gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, TRUE, 0);
+  gtk_widget_show (frame);
+    
+  hbox = gtk_hbox_new (FALSE, 4);
+  gtk_container_set_border_width (GTK_CONTAINER (hbox), 4);
+  gtk_container_add (GTK_CONTAINER (frame), hbox);
+  gtk_widget_show (hbox);
+    
+  label = gtk_label_new (NULL);
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
+  attrs = pango_attr_list_new ();
+  attr = pango_attr_scale_new (PANGO_SCALE_X_LARGE);
+  attr->start_index = 0;
+  attr->end_index = -1;
+  pango_attr_list_insert (attrs, attr);
+  gtk_label_set_attributes (GTK_LABEL (label), attrs);
+  pango_attr_list_unref (attrs);
+  gtk_widget_show (label);
+
+  gtk_box_pack_start (GTK_BOX (vbox), notebook, FALSE, FALSE, 0);
+
+  g_object_set_data (G_OBJECT (gw->pref_window), "section_label", label);
 
 
   /* All the notebook pages */
@@ -1617,28 +1663,20 @@ void gnomemeeting_init_pref_window ()
 
   gtk_tree_view_expand_all (GTK_TREE_VIEW (tree_view));
 
-
-  gtk_paned_pack1 (GTK_PANED (hpaned), tree_view, TRUE, TRUE);
-  gtk_paned_pack2 (GTK_PANED (hpaned), notebook, TRUE, TRUE);
-
-  gtk_widget_set_size_request (tree_view, 150, -1);
   gtk_widget_set_size_request (notebook, 500, -1);
+
 
   /* Now, add the logo as first page */
   pixmap =  gtk_image_new_from_file 
     (GNOMEMEETING_IMAGES "/gnomemeeting-logo.png");
 
-  frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
-  
   event_box = gtk_event_box_new ();
-  gtk_container_add (GTK_CONTAINER (frame), event_box);
   gtk_container_add (GTK_CONTAINER (event_box), 
 	  	     GTK_WIDGET (pixmap));
 
-  gtk_notebook_prepend_page (GTK_NOTEBOOK (notebook), frame, NULL);
+  gtk_notebook_prepend_page (GTK_NOTEBOOK (notebook), event_box, NULL);
  
-  gtk_notebook_set_scrollable (GTK_NOTEBOOK (notebook), TRUE);
+  gtk_notebook_set_show_border (GTK_NOTEBOOK (notebook), FALSE);
   gtk_notebook_popup_enable (GTK_NOTEBOOK (notebook));
   gtk_notebook_set_show_tabs (GTK_NOTEBOOK (notebook), FALSE);
   gtk_notebook_set_current_page (GTK_NOTEBOOK (notebook), 0);
