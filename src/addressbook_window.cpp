@@ -949,7 +949,6 @@ gm_aw_add_addressbook (GtkWidget *addressbook_window,
 						     NULL);
   gtk_tree_view_column_set_sort_column_id (column, COLUMN_FULLNAME);
   gtk_tree_view_column_set_min_width (GTK_TREE_VIEW_COLUMN (column), 125);
-  gtk_tree_view_column_set_max_width (GTK_TREE_VIEW_COLUMN (column), 250);
   gtk_tree_view_column_set_sizing (GTK_TREE_VIEW_COLUMN (column),
 				   GTK_TREE_VIEW_COLUMN_AUTOSIZE);
   gtk_tree_view_column_set_resizable (GTK_TREE_VIEW_COLUMN (column), true);
