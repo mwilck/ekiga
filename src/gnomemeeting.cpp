@@ -63,7 +63,6 @@
 #include <contacts/gm_contacts.h>
 
 #ifndef WIN32
-#include <esd.h>
 #include <signal.h>
 #endif
 
