@@ -222,7 +222,7 @@ void GMPCSSEndPoint::OnShowIncoming (const OpalPCSSConnection & connection)
 
       /* Rejects the current call */
       ClearCall (connection.GetCall ().GetToken (), 
-		 H323Connection::EndedByLocalBusy); 
+		 OpalConnection::EndedByLocalBusy); 
     }
     else if (do_forward) {
 

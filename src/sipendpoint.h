@@ -113,6 +113,21 @@ class GMSIPEndPoint : public SIPEndPoint
    */
   void OnRTPStatistics (const SIPConnection &,
 			const RTP_Session &) const;
+
+  
+  /* DESCRIPTION  :  Called when the registration is successfull. 
+   * BEHAVIOR     :  Displays a message in the status bar and history. 
+   * PRE          :  /
+   */
+  void OnRegistered ();
+  
+  
+  /* DESCRIPTION  :  Called when the registration fails.
+   * BEHAVIOR     :  Displays a message in the status bar and history. 
+   * PRE          :  /
+   */
+  void OnRegistrationFailed ();
+  
   
  private:
 

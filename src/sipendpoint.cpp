@@ -41,6 +41,8 @@
 #include "sipendpoint.h"
 #include "gnomemeeting.h"
 
+#include "main_window.h"
+#include "log_window.h"
 #include "misc.h"
 
 #include <lib/gm_conf.h>
@@ -84,24 +86,27 @@ GMSIPEndPoint::Init ()
     gm_conf_get_string (SIP_KEY "outbound_proxy_password");
   gnomemeeting_threads_leave ();
 
+
+  /* Timeout */
+  SetPduCleanUpTimeout (PTimeInterval (0, 2));
+
+
   /* Update the User Agent */
   SetUserAgent ("GnomeMeeting " PACKAGE_VERSION);
   
   /* Start the listener */
   if (!StartListener ()) 
     gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Error while starting the listener for the SIP protocol"), _("You will not be able to receive incoming SIP calls. Please check that no other program is already running on the port used by GnomeMeeting."));
-
   
-  /* Register to registrar */
-  if (gm_conf_get_int (SIP_KEY "registrar_registering_method"))
-    RegistrarRegister ();
-  
-
   /* Initialise internal parameters */
   if (outbound_proxy_host && !PString (outbound_proxy_host).IsEmpty ())
     SetProxy (outbound_proxy_host, 
 	      outbound_proxy_login, 
 	      outbound_proxy_password);
+
+  /* Register to registrar */
+  if (gm_conf_get_int (SIP_KEY "registrar_registering_method"))
+    RegistrarRegister ();
 
   g_free (outbound_proxy_host);
   g_free (outbound_proxy_login);
@@ -181,3 +186,60 @@ GMSIPEndPoint::OnRTPStatistics (const SIPConnection & connection,
 			   session);
 }
 
+
+void
+GMSIPEndPoint::OnRegistered ()
+{
+  GtkWidget *history_window = NULL;
+  GtkWidget *main_window = NULL;
+
+  gchar *registrar_host = NULL;
+  gchar *msg = NULL;
+
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
+
+  cout << "ici" << endl << flush;
+  gnomemeeting_threads_enter ();
+  registrar_host = gm_conf_get_string (SIP_KEY "registrar_host");
+  
+  /* Registering is ok */
+  msg =
+    g_strdup_printf (_("Registrar set to %s"), (const char *) registrar_host);
+
+  gm_history_window_insert (history_window, msg);
+  gm_main_window_flash_message (main_window, msg);
+  gnomemeeting_threads_leave ();
+
+  g_free (msg);
+  g_free (registrar_host);
+}
+
+
+void
+GMSIPEndPoint::OnRegistrationFailed ()
+{
+  GtkWidget *history_window = NULL;
+  GtkWidget *main_window = NULL;
+
+  gchar *registrar_host = NULL;
+  gchar *msg = NULL;
+
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
+
+  gnomemeeting_threads_enter ();
+  registrar_host = gm_conf_get_string (SIP_KEY "registrar_host");
+  
+  /* Registering is ok */
+  msg =
+    g_strdup_printf (_("Registration to %s failed"), 
+		     (const char *) registrar_host);
+
+  gm_history_window_insert (history_window, msg);
+  gm_main_window_push_message (main_window, msg);
+  gnomemeeting_threads_leave ();
+
+  g_free (msg);
+  g_free (registrar_host);
+}

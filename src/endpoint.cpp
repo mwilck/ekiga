@@ -2041,11 +2041,18 @@ GMEndPoint::SendTextMessage (PString callToken,
 
   call = FindCallWithLock (callToken);
 
-  if (call != NULL) 
-    connection = GetConnection (call, TRUE);
+  if (call != NULL) {
 
-  if (connection != NULL) 
-    connection->SendUserInputString ("MSG" + message);
+    connection = call->GetConnection (1);
+
+    if (connection != NULL) {
+
+      if (!PIsDescendant (&(*connection), OpalPCSSConnection))
+	connection = call->GetConnection (0);
+
+      connection->OnUserInputString (message);
+    }
+  }
 }
 
 
@@ -2101,11 +2108,18 @@ GMEndPoint::SendDTMF (PString callToken,
 
   call = FindCallWithLock (callToken);
 
-  if (call != NULL)
-    connection = GetConnection (call, TRUE);
-  
-  if (connection != NULL)
-    connection->SendUserInputString (dtmf);
+  if (call != NULL) {
+
+    connection = call->GetConnection (1);
+
+    if (connection != NULL) {
+
+      if (!PIsDescendant (&(*connection), OpalPCSSConnection))
+	connection = call->GetConnection (0);
+
+      connection->OnUserInputString (dtmf);
+    }
+  }
 }
 
 

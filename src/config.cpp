@@ -44,8 +44,11 @@
 #include "../config.h"
 
 #include "config.h"
+
 #include "h323endpoint.h"
+#include "sipendpoint.h"
 #include "endpoint.h"
+
 #include "gnomemeeting.h"
 #include "lid.h"
 #include "pref_window.h"
@@ -166,6 +169,10 @@ static void early_h245_changed_nt (gpointer,
 static void fast_start_changed_nt (gpointer,
 				   GmConfEntry *,
 				   gpointer);
+
+static void outbound_proxy_changed_nt (gpointer,
+				       GmConfEntry *,
+				       gpointer);
 
 static void enable_video_transmission_changed_nt (gpointer, 
 						  GmConfEntry *, 
@@ -367,6 +374,50 @@ fast_start_changed_nt (gpointer id,
 			      _("Fast Start disabled"):
 			      _("Fast Start enabled"));
     gdk_threads_leave ();
+  }
+}
+
+
+/* DESCRIPTION  :  This notifier is called when the config database data
+ *                 associated with the SIP Outbound Proxy changes.
+ * BEHAVIOR     :  It updates the endpoint.
+ * PRE          :  /
+ */
+static void
+outbound_proxy_changed_nt (gpointer id, 
+			   GmConfEntry *entry,
+			   gpointer data)
+{
+  GtkWidget *history_window = NULL;
+  
+  GMEndPoint *ep = NULL;
+  GMSIPEndPoint *sipEP = NULL;
+
+  gchar *outbound_proxy_login = NULL;
+  gchar *outbound_proxy_password = NULL;
+  gchar *outbound_proxy_host = NULL;
+  
+  
+  if (gm_conf_entry_get_type (entry) == GM_CONF_STRING) {
+
+    ep = GnomeMeeting::Process ()->Endpoint ();
+    sipEP = ep->GetSIPEndPoint ();
+    history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
+    
+    gdk_threads_enter ();
+    outbound_proxy_host = gm_conf_get_string (SIP_KEY "outbound_proxy_host");
+    outbound_proxy_login = gm_conf_get_string (SIP_KEY "outbound_proxy_login");
+    outbound_proxy_password = 
+      gm_conf_get_string (SIP_KEY "outbound_proxy_password");
+    gdk_threads_leave ();
+  
+    sipEP->SetProxy (outbound_proxy_host, 
+		     outbound_proxy_login, 
+		     outbound_proxy_password);
+    
+    g_free (outbound_proxy_host);
+    g_free (outbound_proxy_login);
+    g_free (outbound_proxy_password);
   }
 }
 
@@ -709,13 +760,15 @@ jitter_buffer_changed_nt (gpointer id,
     call = ep->FindCallWithLock (ep->GetCurrentCallToken ());
     if (call != NULL) {
 
-      //FIXME
-      connection = call->GetConnection (0);
+      connection = ep->GetConnection (call, TRUE);
 
       if (connection != NULL) {
 
 	session = 
 	  connection->GetSession (OpalMediaFormat::DefaultAudioSessionID);
+
+	if (session != NULL) 
+	  session->SetJitterBufferSize (min_val * 8, max_val * 8); 
       }
     }
   }
@@ -1365,7 +1418,7 @@ gnomemeeting_conf_init ()
 			call_forwarding_changed_nt, prefs_window);
 
 
-  /* Notifiers related to the H323_ADVANCED_KEY */
+  /* Notifiers related to the H323_KEY */
   gm_conf_notifier_add (H323_KEY "enable_h245_tunneling",
 			applicability_check_nt, prefs_window);
   gm_conf_notifier_add (H323_KEY "enable_h245_tunneling",
@@ -1385,13 +1438,31 @@ gnomemeeting_conf_init ()
 			capabilities_changed_nt, NULL);
   gm_conf_notifier_add (H323_KEY "dtmf_sending",
 			applicability_check_nt, prefs_window);
-
   
-  /* Notifiers related to the H323_KEY */
   gm_conf_notifier_add (H323_KEY "default_gateway", 
 			applicability_check_nt, prefs_window);
   
-    
+  
+  /* Notifiers related to the SIP_KEY */
+  gm_conf_notifier_add (SIP_KEY "outbound_proxy_host",
+			applicability_check_nt, prefs_window);
+  gm_conf_notifier_add (SIP_KEY "outbound_proxy_host",
+			outbound_proxy_changed_nt, NULL);
+  
+  gm_conf_notifier_add (SIP_KEY "outbound_proxy_login",
+			applicability_check_nt, prefs_window);
+  gm_conf_notifier_add (SIP_KEY "outbound_proxy_login",
+			outbound_proxy_changed_nt, NULL);
+			
+  gm_conf_notifier_add (SIP_KEY "outbound_proxy_password",
+			applicability_check_nt, prefs_window);
+  gm_conf_notifier_add (SIP_KEY "outbound_proxy_password",
+			outbound_proxy_changed_nt, NULL);
+  
+  gm_conf_notifier_add (SIP_KEY "default_proxy",
+			applicability_check_nt, prefs_window);
+
+  
   /* Notifiers related the LDAP_KEY */
   gm_conf_notifier_add (LDAP_KEY "enable_registering",
 			ils_option_changed_nt, NULL);

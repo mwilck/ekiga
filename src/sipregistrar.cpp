@@ -131,7 +131,7 @@ void GMSIPRegistrar::Main ()
   PWaitAndSignal m(quit_mutex);
   
   
-  sipEP->Unregister (TRUE);
+  sipEP->Unregister (FALSE);
   
   /* Check if we have all the needed information, if so we register */
   if (registering_method == 1) {
@@ -139,7 +139,7 @@ void GMSIPRegistrar::Main ()
     if (registrar_host.IsEmpty ()) {
 
       gnomemeeting_threads_enter ();
-      gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Invalid registrar hostname"), _("Please provide a hostname to use for the gatekeeper."));
+      gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Invalid registrar hostname"), _("Please provide a hostname to use for the registrar."));
       gnomemeeting_threads_leave ();
 
       return;
@@ -147,8 +147,8 @@ void GMSIPRegistrar::Main ()
     else {
 
       if (!sipEP->Register (registrar_host, 
-			     registrar_login, 
-			     registrar_password))
+			    registrar_login, 
+			    registrar_password))
 	no_error = FALSE;
     }
   }
@@ -156,10 +156,10 @@ void GMSIPRegistrar::Main ()
 
   /* There was an error (missing parameter or registration failed)
      or the user chose to not register */
-  if (!no_error) {
-      
+  if (!no_error) {    
     
-    msg = g_strdup (_("Registration to SIP registrar failed"));
+    msg = g_strdup_printf (_("Registration to %s failed"), 
+			   (const char *) registrar_host);
 
     gnomemeeting_threads_enter ();
     gm_main_window_push_message (main_window, msg);
@@ -167,17 +167,4 @@ void GMSIPRegistrar::Main ()
     g_free (msg);
     gnomemeeting_threads_leave ();
   }
-  /* Registering is ok */
-  else if (registering_method != 0) {
-
-    msg =
-      g_strdup_printf (_("Registrar set to %s"), (const char *) registrar_host);
-    
-    gnomemeeting_threads_enter ();
-    gm_history_window_insert (history_window, msg);
-    gm_main_window_flash_message (main_window, msg);
-    gnomemeeting_threads_leave ();
-      
-    g_free (msg);
-  } 
 }
