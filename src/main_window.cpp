@@ -713,7 +713,7 @@ gm_mw_init_toolbars (GtkWidget *main_window)
 			     _("Display images from your camera device"), 
 			     NULL);
 
-  gtk_widget_set_size_request (GTK_WIDGET (mw->preview_button), 24, 24);
+  gtk_widget_set_size_request (GTK_WIDGET (mw->preview_button), 28, 28);
 
   GTK_TOGGLE_BUTTON (mw->preview_button)->active =
     gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview");
@@ -738,7 +738,7 @@ gm_mw_init_toolbars (GtkWidget *main_window)
   gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (item), mw->tips,
 			     _("Audio transmission status. During a call, click here to suspend or resume the audio transmission."), NULL);
 
-  gtk_widget_set_size_request (GTK_WIDGET (mw->audio_chan_button), 24, 24);
+  gtk_widget_set_size_request (GTK_WIDGET (mw->audio_chan_button), 28, 28);
   gtk_widget_set_sensitive (GTK_WIDGET (mw->audio_chan_button), FALSE);
 
   g_signal_connect (G_OBJECT (mw->audio_chan_button), "clicked",
@@ -761,7 +761,7 @@ gm_mw_init_toolbars (GtkWidget *main_window)
   gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (item), mw->tips,
 			     _("Video transmission status. During a call, click here to suspend or resume the video transmission."), NULL);
 
-  gtk_widget_set_size_request (GTK_WIDGET (mw->video_chan_button), 24, 24);
+  gtk_widget_set_size_request (GTK_WIDGET (mw->video_chan_button), 28, 28);
   gtk_widget_set_sensitive (GTK_WIDGET (mw->video_chan_button), FALSE);
 
   g_signal_connect (G_OBJECT (mw->video_chan_button), "clicked",

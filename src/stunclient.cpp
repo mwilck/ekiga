@@ -159,7 +159,7 @@ void GMStunClient::Main ()
     gnomemeeting_threads_enter ();
     gnomemeeting_message_dialog (GTK_WINDOW (druid_window), 
 				 _("NAT detection successfull"),
-				 _("Detected %s using %s.\n\n%s"), 
+				 _("Detected %s using %s.\n\n%s\n\nPlease see the FAQ on http://www.gnomemeeting.org for more information and possibilities."), 
 				 (const char *) nat_type,
 				 (const char *) stun_host,
 				 prefered_method);
