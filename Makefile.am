@@ -4,7 +4,7 @@ SUBDIRS = macros po intl src pixmaps sounds
 
 DESKTOP_IN_FILES=gnomemeeting.desktop.in
 DESKTOP_FILES=$(DESKTOP_IN_FILES:.desktop.in=.desktop)
-EXTRA_DIST = $(DESKTOP_IN_FILES) $(DESKTOP_FILES) pixmaps/
+EXTRA_DIST = $(DESKTOP_IN_FILES) $(DESKTOP_FILES) pixmaps/  xml-i18n-extract.in xml-i18n-merge.in xml-i18n-update.in
 Applicationsdir = $(datadir)/gnome/apps/Internet
 Applications_DATA = $(DESKTOP_FILES)
 
