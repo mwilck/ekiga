@@ -85,6 +85,17 @@ GMILSClient::GMILSClient (options *o)
   has_to_browse = 0;
   registered = 0;
 
+  client = gconf_client_get_default ();
+
+  ldap_server = NULL;
+  ldap_port = g_strdup ("389");
+  firstname = NULL;
+  surname = NULL;
+  mail = NULL;
+  comment = NULL;
+  location = NULL;
+
+  UpdateConfig ();
   Resume ();
 }
 
@@ -109,11 +120,18 @@ void GMILSClient::Main ()
   while (running == 1) {
   
     /* The most important operation is to unregister */
-    if (has_to_unregister == 1)
+    if (has_to_unregister == 1) {
+     
+      /* Unregister the old values */
       Register (FALSE);
+      UpdateConfig ();
+    }
 
-    if (has_to_register == 1)
+    if (has_to_register == 1) {
+
+      UpdateConfig ();
       Register (TRUE);
+    }
 
     if (has_to_browse == 1)
       ils_browse ();
@@ -122,7 +140,8 @@ void GMILSClient::Main ()
 
     /* if there is more than 20 minutes that we are registered,
        we refresh the entry */
-    if ((t.GetSeconds () > 1200) && (opts->ldap)) {
+    if ((t.GetSeconds () > 1200) && 
+	(gconf_client_get_int (GCONF_CLIENT (client), "/apps/gnomemeeting/ldap/register", NULL))) {
 
 	has_to_register = 1;
 	starttime = PTime ();
@@ -132,6 +151,36 @@ void GMILSClient::Main ()
   }
 
   quit_mutex.Signal ();
+}
+
+
+void GMILSClient::UpdateConfig ()
+{
+  g_free (ldap_server);
+  g_free (firstname);
+  g_free (surname);
+  g_free (mail);
+  g_free (comment);
+  g_free (location);
+
+  ldap_server =  gconf_client_get_string (GCONF_CLIENT (client),
+					  "/apps/gnomemeeting/ldap/ldap_server", 
+					  NULL);
+  firstname =  gconf_client_get_string (GCONF_CLIENT (client),
+					"/apps/gnomemeeting/personnal_data/firstname", 
+					NULL);
+  surname =  gconf_client_get_string (GCONF_CLIENT (client),
+				      "/apps/gnomemeeting/personnal_data/lastname", 
+				      NULL);
+  mail =  gconf_client_get_string (GCONF_CLIENT (client),
+				   "/apps/gnomemeeting/personnal_data/mail", 
+				   NULL);
+  comment =  gconf_client_get_string (GCONF_CLIENT (client),
+				      "/apps/gnomemeeting/personnal_data/comment", 
+				      NULL);
+  location =  gconf_client_get_string (GCONF_CLIENT (client),
+				       "/apps/gnomemeeting/personnal_data/location", 
+				       NULL);
 }
 
 
@@ -196,20 +245,20 @@ BOOL GMILSClient::Register (BOOL reg)
 
   gnomemeeting_threads_enter ();
   msg = g_strdup_printf (_("Connecting to ILS directory %s, port %s"), 
-			 opts->ldap_server, opts->ldap_port);
+			 ldap_server, ldap_port);
   gnomemeeting_log_insert (msg);
   g_free (msg);
   gtk_widget_set_sensitive (GTK_WIDGET (lw->refresh_button), FALSE);
   gnomemeeting_threads_leave ();
 
-  ldap_connection = ldap_open (opts->ldap_server, atoi (opts->ldap_port));
+  ldap_connection = ldap_open (ldap_server, atoi (ldap_port));
 
   if ((ldap_connection == NULL) || 
       (ldap_bind_s (ldap_connection, NULL, NULL, LDAP_AUTH_SIMPLE)
        != LDAP_SUCCESS)) {
     gnomemeeting_threads_enter ();
 
-    msg = g_strdup_printf (_("Error while connecting to ILS directory %s, port %s"), opts->ldap_server, opts->ldap_port);
+    msg = g_strdup_printf (_("Error while connecting to ILS directory %s, port %s"), ldap_server, ldap_port);
     msg_box = gnome_message_box_new (msg, GNOME_MESSAGE_BOX_ERROR,
 				     GNOME_STOCK_BUTTON_OK, NULL);
     g_free (msg);
@@ -224,7 +273,7 @@ BOOL GMILSClient::Register (BOOL reg)
   if (!error) {
     /* cn */
     mods [0] = new (LDAPMod);
-    cn_value [0] = g_strdup (opts->mail);
+    cn_value [0] = g_strdup (mail);
     cn_value [1] = NULL;
     mods [0]->mod_op = LDAP_MOD_ADD | LDAP_MOD_REPLACE;
     mods [0]->mod_type = g_strdup ("cn");
@@ -267,7 +316,7 @@ BOOL GMILSClient::Register (BOOL reg)
       
     /* the firstname */
     mods [5] = new (LDAPMod);
-    firstname_value [0] = g_strdup (opts->firstname);
+    firstname_value [0] = g_strdup (firstname);
     firstname_value [1] = NULL;
     mods [5]->mod_op = LDAP_MOD_ADD | LDAP_MOD_REPLACE;
     mods [5]->mod_type = g_strdup ("givenname");
@@ -275,7 +324,7 @@ BOOL GMILSClient::Register (BOOL reg)
   
     /* the surname */
     mods [6] = new (LDAPMod);
-    surname_value [0] = g_strdup (opts->surname);
+    surname_value [0] = g_strdup (surname);
     surname_value [1] = NULL;
     mods [6]->mod_op = LDAP_MOD_ADD | LDAP_MOD_REPLACE;
     mods [6]->mod_type = g_strdup ("surname");
@@ -283,7 +332,7 @@ BOOL GMILSClient::Register (BOOL reg)
   
     /* the mail */
     mods [7] = new (LDAPMod);
-    mail_value [0] = g_strdup (opts->mail);
+    mail_value [0] = g_strdup (mail);
     mail_value [1] = NULL;
     mods [7]->mod_op = LDAP_MOD_ADD | LDAP_MOD_REPLACE;
     mods [7]->mod_type = g_strdup ("rfc822mailbox");
@@ -291,7 +340,7 @@ BOOL GMILSClient::Register (BOOL reg)
 
     /* the comment */
     mods [8] = new (LDAPMod);
-    comment_value [0] = g_strdup (opts->comment);
+    comment_value [0] = g_strdup (comment);
     comment_value [1] = NULL;
     mods [8]->mod_op = LDAP_MOD_ADD | LDAP_MOD_REPLACE;
     mods [8]->mod_type = g_strdup ("comment");
@@ -299,7 +348,7 @@ BOOL GMILSClient::Register (BOOL reg)
     
     /* the location */
     mods [9] = new (LDAPMod);
-    location_value [0] = g_strdup (opts->location);
+    location_value [0] = g_strdup (location);
     location_value [1] = NULL;
     mods [9]->mod_op = LDAP_MOD_ADD | LDAP_MOD_REPLACE;
     mods [9]->mod_type = g_strdup ("location");
@@ -348,7 +397,7 @@ BOOL GMILSClient::Register (BOOL reg)
     mods [15] = NULL;
 
 
-    dn = g_strdup_printf ("c=-,o=Gnome,cn=%s,objectclass=rtperson", opts->mail);
+    dn = g_strdup_printf ("c=-,o=Gnome,cn=%s,objectclass=rtperson", mail);
 
     /* Asynchronously add or remove the entry */
     if (reg) {
@@ -384,7 +433,7 @@ BOOL GMILSClient::Register (BOOL reg)
       if(rc == -1) {
 	gnomemeeting_threads_enter ();
 	
-	msg = g_strdup_printf (_("Error while connecting to ILS directory %s, port %s:\nNo answer from server."), opts->ldap_server, opts->ldap_port);
+	msg = g_strdup_printf (_("Error while connecting to ILS directory %s, port %s:\nNo answer from server."), ldap_server, ldap_port);
 	
 	msg_box = gnome_message_box_new (msg, GNOME_MESSAGE_BOX_ERROR,
 					 GNOME_STOCK_BUTTON_OK, NULL);
@@ -399,11 +448,11 @@ BOOL GMILSClient::Register (BOOL reg)
 	gnomemeeting_threads_enter ();
 	
 	if (reg) {
-	  msg = g_strdup_printf (_("Sucessfully registered to ILS directory %s, port %s"), opts->ldap_server, opts->ldap_port);
+	  msg = g_strdup_printf (_("Sucessfully registered to ILS directory %s, port %s"), ldap_server, ldap_port);
 	  starttime = PTime ();
 	}
 	else {
-	  msg = g_strdup_printf (_("Sucessfully unregistered from ILS directory %s, port %s"), opts->ldap_server, opts->ldap_port);
+	  msg = g_strdup_printf (_("Sucessfully unregistered from ILS directory %s, port %s"), ldap_server, ldap_port);
 	}
 	
 	gnomemeeting_log_insert (msg);

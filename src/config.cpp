@@ -34,6 +34,7 @@
 #include "videograbber.h"
 #include "gnomemeeting.h"
 #include "misc.h"
+#include "ils.h"
 
 #include "../config.h"
 
@@ -45,6 +46,7 @@ extern GnomeMeeting *MyApp;
 static void fps_limit_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static void tr_vq_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static void tr_ub_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
+static void register_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 
 
 /* DESCRIPTION  :  This callback is called to update the fps limitation.
@@ -122,6 +124,109 @@ static void tr_ub_changed_nt (GConfClient *client, guint cid,
 }
 
 
+/* DESCRIPTION  :  This callback is called when the "register" gconf value changes.
+ *                 The "register" value can change if the user plays with the button,
+ *                 or if he clicks on "Update" in Personnal data, or if he uses
+ *                 gconftool.
+ * BEHAVIOR     :  It registers to the LDAP server, IF all recquired fields are
+ *                 available.
+ * PRE          :  /
+ */
+static void register_changed_nt (GConfClient *client, guint cid, 
+				 GConfEntry *entry, gpointer data)
+{
+  GM_pref_window_widgets *pw = (GM_pref_window_widgets *) data;
+  BOOL no_error = TRUE;
+  gchar *gconf_string;
+  GtkWidget *msg_box;
+  GMH323EndPoint *endpoint = MyApp->Endpoint ();
+  GConfChangeSet* revert_cs; /* To revert the changes */
+
+
+  if (entry->value->type == GCONF_VALUE_INT) {
+    
+    /* Update the widgets */
+    GTK_TOGGLE_BUTTON (pw->ldap)->active = gconf_value_get_int (entry->value);
+    gtk_widget_set_sensitive (GTK_WIDGET (pw->directory_update_button), 
+			      gconf_value_get_int (entry->value));
+
+    /* We check that all the needed information is available
+       to update the LDAP directory */
+    if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->ldap))) {
+
+      /* Checks if the server name is ok */
+      gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
+					       "/apps/gnomemeeting/ldap/ldap_server", 
+					       NULL);
+
+      if ((gconf_string == NULL) || (!strcmp (gconf_string, ""))) {
+
+	msg_box = gnome_message_box_new (_("Not registering because there is no LDAP server specified!"), 
+					 GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
+	no_error = FALSE;
+      }
+      g_free (gconf_string);
+
+
+      /* Check if there is a first name */
+      gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
+					       "/apps/gnomemeeting/personnal_data/firstname", 
+					       NULL);
+
+      if ((gconf_string == NULL) || (!strcmp (gconf_string, ""))) {
+
+	msg_box = gnome_message_box_new (_("Not Registering : Please provide your first name!"), 
+					 GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
+	no_error = FALSE;
+      }
+      g_free (gconf_string);
+
+
+      /* Check if there is a mail */
+      gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
+					       "/apps/gnomemeeting/personnal_data/mail", 
+					       NULL);
+
+      if ((gconf_string == NULL) || (!strcmp (gconf_string, ""))) {
+      
+	msg_box = gnome_message_box_new (_("Not Registering : Please provide a valid e-mail!"), 
+					 GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
+	no_error = FALSE;
+      }
+      g_free (gconf_string);
+    
+
+      /* Display the popup in case of error, and update the widget, and 
+	 the gconf value for the register field */
+      if (no_error == FALSE) {
+
+	gtk_widget_show (msg_box);
+      }
+    }
+
+
+    if (no_error) {
+      
+      int registering = gconf_client_get_int (GCONF_CLIENT (client),
+					      "/apps/gnomemeeting/ldap/register", 
+					      NULL);
+      GMILSClient *ils_client = (GMILSClient *) endpoint->GetILSClient ();
+      
+      if (registering) {
+      
+	ils_client->Register ();
+	cout << "REGISTER NEEDED" << endl << flush;
+      }
+      else {
+	
+	ils_client->Unregister ();
+	cout << "UNREGISTER NEEDED" << endl << flush;
+      }
+    }
+  }
+}
+
+
 /* The functions  */
 void gnomemeeting_init_gconf (GConfClient *client)
 {
@@ -136,6 +241,8 @@ void gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/tr_ub",
 			   tr_ub_changed_nt, pw, 0, 0);
 
+  gconf_client_notify_add (client, "/apps/gnomemeeting/ldap/register",
+			   register_changed_nt, pw, 0, 0);
 }
 
 
@@ -259,7 +366,7 @@ void gnomemeeting_read_config (options *opts)
   opts->video_preview = gnome_config_get_int ("GeneralSettings/video_preview");
 
   opts->firstname = gnome_config_get_string ("UserSettings/firstname=");
-  opts->listen_port = gnome_config_get_string ("UserSettings/listen_port=");	
+  opts->listen_port = g_strdup ("");
   opts->surname = gnome_config_get_string ("UserSettings/surname=");
   opts->mail = gnome_config_get_string ("UserSettings/mail=");
   opts->comment = gnome_config_get_string ("UserSettings/comment=");
@@ -383,44 +490,6 @@ gboolean gnomemeeting_check_config_from_struct ()
   gboolean no_error = TRUE;
 
   GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
-
-  /* ILS */
-  if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->ldap))) {
-
-    /* Checks if the server name is ok */
-    if (!strcmp (gtk_entry_get_text (GTK_ENTRY (pw->ldap_server)), ""))	{
-      msg_box = gnome_message_box_new (_("Sorry, no ldap server specified!"), 
-				       GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
-      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->ldap), FALSE);
-      no_error = FALSE;
-    }
-
-    if (!strcmp (gtk_entry_get_text (GTK_ENTRY (pw->ldap_port)), "")
-	|| atoi (gtk_entry_get_text (GTK_ENTRY (pw->ldap_port))) < 1
-	|| atoi (gtk_entry_get_text (GTK_ENTRY (pw->ldap_port))) > 2000) {
-
-      msg_box = gnome_message_box_new (_("Sorry, invalid ldap server port!"), 
-				       GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
-      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->ldap), FALSE);
-      no_error = FALSE;
-    }
-
-    if (!strcmp (gtk_entry_get_text (GTK_ENTRY (pw->firstname)), "")) {
-
-      msg_box = gnome_message_box_new (_("Please provide your first name!"), 
-				       GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
-      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->ldap), FALSE);
-      no_error = FALSE;
-    }
-
-    if (!strcmp (gtk_entry_get_text (GTK_ENTRY (pw->mail)), "")) {
-
-      msg_box = gnome_message_box_new (_("Please provide a valid e-mail!"), 
-				       GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
-      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->ldap), FALSE);
-      no_error = FALSE;
-    }
-  }
 
 
   /* Check Audio Mixer Settings for the Recorder and the Player device. */

@@ -88,5 +88,82 @@
 	<long>The transmitted video quality hint</long>
       </locale>
     </schema>
+    <schema>	
+      <key>/schemas/apps/gnomemeeting/personnal_data/firstname</key>
+      <applyto>/apps/gnomemeeting/personnal_data/firstname</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default> </default>
+      <locale name="C">
+	<short>First Name<short>
+	<long>The user's first name that will be used in the directories</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/personnal_data/lastname</key>
+      <applyto>/apps/gnomemeeting/personnal_data/lastname</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default> </default>
+      <locale name="C">
+	<short>Last Name<short>
+	<long>The user's first name that will be used in the directories</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/personnal_data/comment</key>
+      <applyto>/apps/gnomemeeting/personnal_data/comment</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default> </default>
+      <locale name="C">
+	<short>Comment<short>
+	<long>A comment that will be listed in LDAP directories</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/personnal_data/location</key>
+      <applyto>/apps/gnomemeeting/personnal_data/location</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default> </default>
+      <locale name="C">
+	<short>Location<short>
+	<long>The Location that will be published in the LDAP directories</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/personnal_data/mail</key>
+      <applyto>/apps/gnomemeeting/personnal_data/mail</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default> </default>
+      <locale name="C">
+	<short>E-Mail address<short>
+	<long>The E-Mail address that will be listed in the directories</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/ldap/ldap_server</key>
+      <applyto>/apps/gnomemeeting/ldap/ldap_server</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default>argo.dyndns.org</default>
+      <locale name="C">
+	<short>The LDAP server<short>
+	<long>The LDAP server to register to</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/ldap/register</key>
+      <applyto>/apps/gnomemeeting/ldap/register</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>int</type>
+      <default>0</default>
+      <locale name="C">
+	<short>Register<short>
+	<long>Enables registering to the LDAP server</long>
+      </locale>
+    </schema>
   </schemalist>
 </gconfschemafile>

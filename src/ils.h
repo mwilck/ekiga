@@ -38,6 +38,8 @@
 #include <sys/socket.h>
 #include <ptlib.h>
 
+#include <gconf/gconf-client.h>
+
 #include "common.h"
 
 /* This calls will change in 0.13 */
@@ -59,6 +61,7 @@ public:
 protected:
   BOOL Register (BOOL);
   void ils_browse (void);
+  void UpdateConfig (void);
 
   options *opts;
   GM_window_widgets *gw;
@@ -76,6 +79,17 @@ protected:
   PTime starttime;
   LDAP *ldap_connection;
   PMutex quit_mutex;
+
+  /* The options that will be updated from the gconf cache */
+  gchar *ldap_server;
+  gchar *ldap_port;
+  gchar *firstname;
+  gchar *surname;
+  gchar *mail;
+  gchar *comment;
+  gchar *location;
+
+  GConfClient *client;
 };
 
 #endif

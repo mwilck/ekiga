@@ -52,6 +52,7 @@ extern GnomeMeeting *MyApp;
 
 static void pref_window_clicked_callback (GnomeDialog *, int, gpointer);
 static gint pref_window_destroy_callback (GtkWidget *, gpointer);
+static void personnal_data_update_button_clicked (GtkWidget *, gpointer);
 static void codecs_clist_button_clicked_callback (GtkWidget *, gpointer);
 static void codecs_clist_row_selected_callback (GtkWidget *, gint, gint, 
 						GdkEventButton *, gpointer);
@@ -64,7 +65,10 @@ static void video_transmission_option_changed_callback (GtkToggleButton *,
 static void video_bandwidth_limit_option_changed_callback (GtkToggleButton *, 
 							   gpointer);
 static void adjustment_changed (GtkAdjustment *, gpointer);
+static void entry_changed (GtkEditable  *, gpointer);
+static void toggle_changed (GtkCheckButton *, gpointer);
 static void gatekeeper_option_changed (GtkWidget *, gpointer);
+static void register_button_clicked (GtkCheckButton *, gpointer);
 static void gatekeeper_option_type_changed_callback (GtkWidget *, gpointer);
 static void audio_codecs_option_changed_callback (GtkAdjustment *, gpointer);
 
@@ -86,6 +90,7 @@ static void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *, int,
 							options *);
 static void gnomemeeting_init_pref_window_codecs_settings (GtkWidget *, int, 
 							   options *);
+static void gnomemeeting_update_pref_window_sensitivity (void);
 static void apply_options (options *);
 static void add_codec (GtkWidget *, gchar *, gchar *);
 
@@ -148,6 +153,26 @@ static gint pref_window_destroy_callback (GtkWidget *widget, gpointer data)
 {
   gtk_widget_hide (GTK_WIDGET (widget));
   return (TRUE);
+}
+
+
+/* DESCRIPTION  :  This callback is called when the user clicks
+ *                 on the Update button of the Personnal data Settings.
+ * BEHAVIOR     :  Updates the values
+ * PRE          :  /
+ */
+static void personnal_data_update_button_clicked (GtkWidget *widget, 
+						  gpointer data)
+{
+  GConfClient *client = gconf_client_get_default ();
+  GM_pref_window_widgets *pw = (GM_pref_window_widgets *) data;
+  
+  /* if registering is enabled,
+     trigger the register notifier */
+  if (gconf_client_get_int (GCONF_CLIENT (client), "/apps/gnomemeeting/ldap/register", 0))
+    gconf_client_set_int (GCONF_CLIENT (client),
+			  "/apps/gnomemeeting/ldap/register",
+			  1, 0);
 }
 
 
@@ -336,6 +361,24 @@ static void video_bandwidth_limit_option_changed_callback (GtkToggleButton *butt
   }
 }
 
+/* DESCRIPTION  :  This callback is called when the user changes
+ *                 the entry
+ * BEHAVIOR     :  It updates the gconf cache
+ * PRE          :  data is the gconf key
+ */
+static void entry_changed (GtkEditable  *e, gpointer data)
+{
+  GConfClient *client = gconf_client_get_default ();
+  gchar *key = (gchar *) data;
+ 
+  gconf_client_set_string (GCONF_CLIENT (client),
+			   key,
+			   gtk_entry_get_text (GTK_ENTRY (e)), 
+			   NULL);
+
+  gnomemeeting_update_pref_window_sensitivity ();
+}
+
 
 /* DESCRIPTION  :  This callback is called when the user changes
  *                 the adjustment value
@@ -350,6 +393,23 @@ static void adjustment_changed (GtkAdjustment  *adj, gpointer data)
   gconf_client_set_int (GCONF_CLIENT (client),
 			key,
 			(int) adj->value, NULL);
+}
+
+
+/* DESCRIPTION  :  This callback is called when the user changes
+ *                 the toggle value
+ * BEHAVIOR     :  It updates the gconf cache
+ * PRE          :  /
+ */
+static void toggle_changed (GtkCheckButton  *but, gpointer data)
+{
+  GConfClient *client = gconf_client_get_default ();
+  gchar *key = (gchar *) data;
+
+  gconf_client_set_int (GCONF_CLIENT (client),
+			key,
+			(int) gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (but)), 
+			NULL);
 }
 
 
@@ -371,14 +431,14 @@ static void gatekeeper_option_type_changed_callback (GtkWidget *w, gpointer data
 			     (GTK_OPTION_MENU (pw->gk)->menu)->children, 
 			      active_item);
   
-  if (item_index == 0) {
+ //  if (item_index == 0) {
   
-    gtk_widget_set_sensitive (GTK_WIDGET (pw->bps_frame), FALSE);
-  }
-  else {
+//     gtk_widget_set_sensitive (GTK_WIDGET (pw->bps_frame), FALSE);
+//   }
+//   else {
 
-    gtk_widget_set_sensitive (GTK_WIDGET (pw->bps_frame), TRUE);
-  }
+//     gtk_widget_set_sensitive (GTK_WIDGET (pw->bps_frame), TRUE);
+//   }
 
   if ((item_index == 0) || (item_index == 3)) {
 
@@ -558,7 +618,7 @@ void gnomemeeting_init_pref_window (int calling_state, options *opts)
   g_free (node_txt [0]);
 
 
-  node_txt [0] = g_strdup (_("User Settings"));
+  node_txt [0] = g_strdup (_("Personnal Data"));
   node2 = gtk_ctree_insert_node (GTK_CTREE (ctree), node, 
 				 NULL, node_txt, 0,
 				 NULL, NULL, NULL, NULL,
@@ -640,6 +700,9 @@ void gnomemeeting_init_pref_window (int calling_state, options *opts)
   gtk_signal_connect (GTK_OBJECT (ctree), "select_row",
 		      GTK_SIGNAL_FUNC (menu_ctree_row_seletected_callback), 
 		      notebook);
+
+  /* Update the sensitivity of widgets */
+  gnomemeeting_update_pref_window_sensitivity ();
 
   /* Now, add the logo as first page */
   pixmap = gnome_pixmap_new_from_file 
@@ -1651,10 +1714,13 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook,
   GtkWidget *table;
  
   GtkTooltips *tip;
+  gchar *gconf_string;
 
 
   /* Get the data */
   GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
+  GConfClient *client = gconf_client_get_default ();
+
 
   vbox = gtk_vbox_new (FALSE, GNOME_PAD_SMALL);
 
@@ -1669,7 +1735,7 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook,
   gtk_box_pack_start (GTK_BOX (vbox), frame, 
 		      FALSE, TRUE, 0);
 
-  label = gtk_label_new (_("User Settings"));
+  label = gtk_label_new (_("Personnal Data"));
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_misc_set_padding (GTK_MISC (label), 2, 1);
   gtk_container_add (GTK_CONTAINER (frame), label);
@@ -1698,14 +1764,20 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
 
-  gtk_entry_set_text (GTK_ENTRY (pw->firstname), opts->firstname);
+  gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
+					   "/apps/gnomemeeting/personnal_data/firstname",
+					   NULL);
+  if (gconf_string != NULL)
+    gtk_entry_set_text (GTK_ENTRY (pw->firstname), gconf_string); 
+  g_free (gconf_string);
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->firstname,
 			_("Enter your first name"), NULL);
 
   gtk_signal_connect (GTK_OBJECT (pw->firstname), "changed",
-		      GTK_SIGNAL_FUNC (ldap_option_changed_callback), (gpointer) pw);
+		      GTK_SIGNAL_FUNC (entry_changed), 
+		      (gpointer) "/apps/gnomemeeting/personnal_data/firstname");
 
 
   /* Surname entry (LDAP) */
@@ -1721,14 +1793,20 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
 
-  gtk_entry_set_text (GTK_ENTRY (pw->surname), opts->surname);
+  gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
+					   "/apps/gnomemeeting/personnal_data/lastname",
+					   NULL);
+  if (gconf_string != NULL)
+    gtk_entry_set_text (GTK_ENTRY (pw->surname), gconf_string); 
+  g_free (gconf_string);
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->surname,
 			_("Enter your last name"), NULL);
 
   gtk_signal_connect (GTK_OBJECT (pw->surname), "changed",
-		      GTK_SIGNAL_FUNC (ldap_option_changed_callback), (gpointer) pw);
+		      GTK_SIGNAL_FUNC (entry_changed), 
+		      (gpointer) "/apps/gnomemeeting/personnal_data/lastname");
 
 
   /* E-mail (LDAP) */
@@ -1744,14 +1822,20 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
 
-  gtk_entry_set_text (GTK_ENTRY (pw->mail), opts->mail);
+  gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
+					   "/apps/gnomemeeting/personnal_data/mail",
+					   NULL);
+  if (gconf_string != NULL)
+    gtk_entry_set_text (GTK_ENTRY (pw->mail), gconf_string); 
+  g_free (gconf_string);
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->mail,
 			_("Enter your e-mail address"), NULL);
 
   gtk_signal_connect (GTK_OBJECT (pw->mail), "changed",
-		      GTK_SIGNAL_FUNC (ldap_option_changed_callback), (gpointer) pw);
+		      GTK_SIGNAL_FUNC (entry_changed), 
+		      (gpointer) "/apps/gnomemeeting/personnal_data/mail");
 
 
   /* Comment (LDAP) */
@@ -1767,14 +1851,20 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
 
-  gtk_entry_set_text (GTK_ENTRY (pw->comment), opts->comment);
+  gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
+					   "/apps/gnomemeeting/personnal_data/comment",
+					   NULL);
+  if (gconf_string != NULL)
+    gtk_entry_set_text (GTK_ENTRY (pw->comment), gconf_string); 
+  g_free (gconf_string);
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->comment,
 			_("Here you can fill in a comment about yourself for ILS directories"), NULL);
 
   gtk_signal_connect (GTK_OBJECT (pw->comment), "changed",
-		      GTK_SIGNAL_FUNC (ldap_option_changed_callback), (gpointer) pw);
+		      GTK_SIGNAL_FUNC (entry_changed), 
+		      (gpointer) "/apps/gnomemeeting/personnal_data/comment");
 
   /* Location */
   label = gtk_label_new (_("Location:"));
@@ -1789,29 +1879,39 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
 
-  gtk_entry_set_text (GTK_ENTRY (pw->location), opts->location);
+  gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
+					   "/apps/gnomemeeting/personnal_data/location",
+					   NULL);
+  if (gconf_string != NULL)
+    gtk_entry_set_text (GTK_ENTRY (pw->location), gconf_string); 
+  g_free (gconf_string);
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->location,
 			_("Where do you call from?"), NULL);
 
   gtk_signal_connect (GTK_OBJECT (pw->location), "changed",
-		      GTK_SIGNAL_FUNC (ldap_option_changed_callback), (gpointer) pw);
+		      GTK_SIGNAL_FUNC (entry_changed), 
+		      (gpointer) "/apps/gnomemeeting/personnal_data/location");
 
 
   /* Try button */
   pixmap =  gnome_pixmap_new_from_xpm_d ((char **) tb_jump_to_xpm);
-  GtkWidget *button = gnomemeeting_button (_("Update"), pixmap);
+  pw->directory_update_button = gnomemeeting_button (_("Update"), pixmap);
 
-  gtk_table_attach (GTK_TABLE (table), button, 3, 4, 5, 6,
+  gtk_table_attach (GTK_TABLE (table),  pw->directory_update_button, 3, 4, 5, 6,
 		    (GtkAttachOptions) NULL,
 		    (GtkAttachOptions) NULL,
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
 
-  gtk_widget_set_usize (GTK_WIDGET (button), 80, 25);
+  gtk_widget_set_usize (GTK_WIDGET (pw->directory_update_button), 90, 25);
+
+  gtk_signal_connect (GTK_OBJECT (pw->directory_update_button), "clicked",
+		      GTK_SIGNAL_FUNC (personnal_data_update_button_clicked), 
+		      (gpointer) pw);
 
   tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, button,
+  gtk_tooltips_set_tip (tip, pw->directory_update_button,
 			_("Click here to try your new settings and update the LDAP server you are registered to"), NULL);
 
 
@@ -1840,10 +1940,12 @@ static void gnomemeeting_init_pref_window_directories (GtkWidget *notebook,
   GtkWidget *menu, *item, *bps;
 
   GtkTooltips *tip;
-
+  gchar *gconf_string;
 
   /* Get the data */
   GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
+  GConfClient *client = gconf_client_get_default ();
+
 
   vbox = gtk_vbox_new (FALSE, GNOME_PAD_SMALL);
 
@@ -1887,7 +1989,18 @@ static void gnomemeeting_init_pref_window_directories (GtkWidget *notebook,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
-  gtk_entry_set_text (GTK_ENTRY (pw->ldap_server), opts->ldap_server);
+
+  gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
+					   "/apps/gnomemeeting/ldap/ldap_server",
+					   NULL);
+  if (gconf_string != NULL)
+    gtk_entry_set_text (GTK_ENTRY (pw->ldap_server), gconf_string); 
+
+  g_free (gconf_string);
+
+  gtk_signal_connect (GTK_OBJECT (pw->ldap_server), "changed",
+		      GTK_SIGNAL_FUNC (entry_changed), 
+		      (gpointer) "/apps/gnomemeeting/ldap/ldap_server");
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->ldap_server,
@@ -1916,9 +2029,9 @@ static void gnomemeeting_init_pref_window_directories (GtkWidget *notebook,
   gtk_tooltips_set_tip (tip, pw->ldap_port,
 			_("The corresponding port: 389 is the standard port"), NULL);
 
-  gtk_signal_connect (GTK_OBJECT (pw->ldap_port), "changed",
-		      GTK_SIGNAL_FUNC (ldap_option_changed_callback), 
-		      (gpointer) pw);
+ //  gtk_signal_connect (GTK_OBJECT (pw->ldap_port), "changed",
+// 		      GTK_SIGNAL_FUNC (ldap_option_changed_callback), 
+// 		      (gpointer) pw);
 
 
   /* Use ILS */ 
@@ -1927,11 +2040,13 @@ static void gnomemeeting_init_pref_window_directories (GtkWidget *notebook,
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->ldap), (opts->ldap == 1));
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->ldap), 
+				gconf_client_get_int (GCONF_CLIENT (client),
+						      "/apps/gnomemeeting/ldap/register", NULL));
 
   gtk_signal_connect (GTK_OBJECT (pw->ldap), "toggled",
-		      GTK_SIGNAL_FUNC (ldap_option_changed_callback), 
-		      (gpointer) pw);
+		      GTK_SIGNAL_FUNC (toggle_changed), 
+		      (gpointer) "/apps/gnomemeeting/ldap/register");
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->ldap,
@@ -2309,6 +2424,70 @@ static void gnomemeeting_init_pref_window_devices (GtkWidget *notebook,
 }
 
 
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  It updates the sensitivity of the pw->ldap toggle following if
+ *                 all recquired values are present or not.
+ * PRE          :  data is the gconf key
+ */
+static void gnomemeeting_update_pref_window_sensitivity ()
+{
+  gchar *gconf_string = NULL;
+  BOOL no_error = TRUE;
+
+  /* Get interesting data */
+  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
+  GConfClient *client = gconf_client_get_default ();
+
+  /* Checks if the server name is ok */
+  gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
+					   "/apps/gnomemeeting/ldap/ldap_server", 
+					   NULL);
+  
+  if ((gconf_string == NULL) || (!strcmp (gconf_string, ""))) 
+    no_error = FALSE;
+  
+  g_free (gconf_string);
+  
+  /* Check if there is a first name */
+  gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
+					   "/apps/gnomemeeting/personnal_data/firstname", 
+					   NULL);
+
+  if ((gconf_string == NULL) || (!strcmp (gconf_string, ""))) 
+    no_error = FALSE;
+    
+  g_free (gconf_string);
+  
+  
+  /* Check if there is a mail */
+  gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
+					   "/apps/gnomemeeting/personnal_data/mail", 
+					   NULL);
+
+  if ((gconf_string == NULL) || (!strcmp (gconf_string, ""))) 
+    no_error = FALSE;
+  
+  g_free (gconf_string);
+
+  if (no_error) {
+    
+    gtk_widget_set_sensitive (GTK_WIDGET (pw->ldap), TRUE);
+
+    /* Make the update button sensitive only if the register button is sensitive too */
+    if (gconf_client_get_int (GCONF_CLIENT (client), 
+			      "/apps/gnomemeeting/ldap/register", 0))
+      gtk_widget_set_sensitive (GTK_WIDGET (pw->directory_update_button), TRUE);
+    else
+      gtk_widget_set_sensitive (GTK_WIDGET (pw->directory_update_button), FALSE);
+  }
+  else {
+
+    gtk_widget_set_sensitive (GTK_WIDGET (pw->ldap), FALSE);
+    gtk_widget_set_sensitive (GTK_WIDGET (pw->directory_update_button), FALSE);
+  }
+}
+
+
 /* Miscellaneous functions */
 
 /* DESCRIPTION  :  / 
@@ -2413,27 +2592,7 @@ static void apply_options (options *opts)
      is up to date. */
   endpoint->Reset ();
 
-  /* ILS is enabled and an option has changed : register */
-  if ((opts->ldap) && (pw->ldap_changed)) {
-
-    /* We register to the new ILS directory */
-    GMILSClient *ils_client = (GMILSClient *) endpoint->GetILSClient ();
-    
-    ils_client->Register ();
-    
-    pw->ldap_changed = 0;
-  }
-
-  /* ILS is disabled, and an option has changed : unregister */
-  if ((!opts->ldap) && (pw->ldap_changed)) {
-    /* We unregister to the new ILS directory */
-    GMILSClient *ils_client = (GMILSClient *) endpoint->GetILSClient ();
-    
-    ils_client->Unregister ();
-    
-    pw->ldap_changed = 0;
-  }
-
+ 
   /* Change the audio mixer source */
   if (pw->audio_mixer_changed) {
     gchar *text;

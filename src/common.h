@@ -279,6 +279,7 @@ struct _GM_pref_window_widgets
   GtkAdjustment *video_channel_spin_adj;
 
   GtkWidget *show_docklet;
+  GtkWidget *directory_update_button;
   /* Miscellaneous */
   // contains the row selected by the user
   int row_avail;

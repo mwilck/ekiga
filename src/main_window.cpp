@@ -462,7 +462,7 @@ void gnomemeeting_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
   endpoint->AddVideoCapabilities (opts->video_size);
 
   /* The LDAP part, if needed */
-  if (opts->ldap) {
+  if (gconf_client_get_int (GCONF_CLIENT (client), "/apps/gnomemeeting/ldap/register", NULL)) {
     if (opts->show_splash)
       gnomemeeting_splash_advance_progress (gw->splash_win, 
 				  _("Registering to ILS directory"), 
