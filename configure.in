@@ -92,6 +92,7 @@ case $target_os in
     LIBPT_FILE="libpt.so"
     LIBOPENH323_FILE="libopenh323.so"
     AC_MSG_RESULT([yes])
+    gm_platform="linux"
 
 dnl if debug add this and link to -lh323_linux_x86_d -lpt_linux_x86_d
 dnl -D_DEBUG -DPMEMORY_CHECK=1 -DPTRACING -g
@@ -103,6 +104,7 @@ dnl -D_DEBUG -DPMEMORY_CHECK=1 -DPTRACING -g
     LIBPT_FILE="libpt_FreeBSD_x86_r_s.a"
     LIBOPENH323_FILE="libh323_FreeBSD_x86_r_s.a"
     AC_MSG_RESULT([yes])
+    gm_platform="freebsd"
     ;;
   *)
     AC_MSG_ERROR("Only Linux and FreeBSD are supported. Please contact the author. You can add more OS types.")
@@ -329,7 +331,7 @@ if test "x${with_openldap_libs}" != "xno" -a "x${have_openldap_includes}" != "xn
 
         if test "x${openldap_libs}" != "xno"; then                             
                 msg_openldap="yes"                                             
-                LDAP_LIBS="-L${with_openldap_libs} -lldap -llber -lresolv ${LDAP_LIBS}"
+                LDAP_LIBS="-L${with_openldap_libs} -lldap -llber ${LDAP_LIBS}"
         else                                                                   
                 AC_MSG_ERROR([You need OpenLDAP to enjoy GnomeMeeting])        
         fi                                                                     
@@ -341,7 +343,10 @@ fi
 dnl #########################################################################  
 dnl  Check for LDAP if available.                                              
 dnl ########################################################################   
-AC_CHECK_LIB(resolv, res_gethostbyaddr, [LIBS="-lresolv $LIBS"], AC_MSG_ERROR([*** libresolv not found.]), -lresolv)
+if test ${gm_platform} = "linux" ; then
+	AC_CHECK_LIB(resolv, res_gethostbyaddr, [LIBS="-lresolv $LIBS"], AC_MSG_ERROR([*** libresolv not found.]), -lresolv)
+	LDAP_LIBS="${LDAP_LIBS} -lresolv"
+fi
                                                                                
 LIBS="$LDAP_LIBS $LIBS"                                                        
                                                                                
