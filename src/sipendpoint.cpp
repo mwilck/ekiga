@@ -158,24 +158,14 @@ GMSIPEndPoint::StartListener ()
 void
 GMSIPEndPoint::SetUserNameAndAlias ()
 {
-  gchar *login = NULL;
   PString default_local_name;
   
   default_local_name = endpoint.GetDefaultDisplayName ();
 
-  
-  gnomemeeting_threads_enter ();
-  login = gm_conf_get_string (SIP_KEY "registrar_login");  
-  gnomemeeting_threads_leave ();
-
-
   if (!default_local_name.IsEmpty ()) {
     
-    SetDefaultLocalPartyName (login);
     SetDefaultDisplayName (default_local_name);
   }
-
-  g_free (login);
 }
 
 
