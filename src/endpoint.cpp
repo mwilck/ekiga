@@ -67,7 +67,8 @@ extern GnomeMeeting *MyApp;
 
 
 /* The Timer */
-static gint IncomingCallTimeout (gpointer data) {
+static gint IncomingCallTimeout (gpointer data) 
+{
 
   GM_window_widgets *gw = NULL;
   H323Connection *connection = NULL;
@@ -159,6 +160,7 @@ GMH323EndPoint::GMH323EndPoint ()
   
   received_video_device = NULL;
   transmitted_video_device = NULL;
+  vc = NULL;
 
   /* We can add this capability here as it will remain 
      the whole life of the EP */
@@ -892,14 +894,12 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   const char * remoteApp = (const char *) app;
   char *msg;
   int vq;
-  H323VideoCodec *vc = NULL;
 
 
   gnomemeeting_threads_enter ();
 
   /* Set Video Codecs Settings */
   vq = 32 - (int) ((double) gconf_client_get_int (client, "/apps/gnomemeeting/video_settings/tr_vq", NULL) / 100 * 31);
-  vc = GetCurrentVideoCodec ();
 
   if (vc) {
 
@@ -989,6 +989,7 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   opened_video_channels = 0;
   opened_audio_channels = 0;
+  vc = NULL;
 
   gnomemeeting_threads_enter ();
 
@@ -1259,6 +1260,8 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
      if (!vg->IsOpened ())
        vg->Open (FALSE, TRUE); /* Do not grab, synchronous opening */
      
+     vc = &codec;
+
      gnomemeeting_threads_enter ();
 
      
