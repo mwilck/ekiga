@@ -306,7 +306,7 @@ GnomeMeeting::DetectDevices ()
   gw->video_managers = PVideoInputDevice::GetDriverNames ();
 
   /* Detect the devices */
-  gw->video_devices = PVideoInputDevice::GetDeviceNames (video_plugin);
+  gw->video_devices = PVideoInputDevice::GetDriversDeviceNames (video_plugin);
 
   if (PString ("Quicknet") == audio_plugin) {
 

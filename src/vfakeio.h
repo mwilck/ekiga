@@ -189,6 +189,8 @@ class GMH323FakeVideoInputDevice : public PVideoInputDevice
   int rgb_increment;
   int pos;
   int increment;
+  PStringList GetDeviceNames() const
+  { return GetInputDeviceNames(); }
 };
 
 PCREATE_VIDINPUT_PLUGIN (Picture, GMH323FakeVideoInputDevice);

@@ -703,7 +703,7 @@ gnomemeeting_druid_page_prepare (GnomeDruidPage *page,
 	
     video_recorder = gconf_get_string (VIDEO_DEVICES_KEY "input_device");
     
-    devices = PVideoInputDevice::GetDeviceNames (video_manager);
+    devices = PVideoInputDevice::GetDriversDeviceNames (video_manager);
 
     if (devices.GetSize () == 0) {
 
