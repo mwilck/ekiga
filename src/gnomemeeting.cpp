@@ -108,9 +108,8 @@ GnomeMeeting::GnomeMeeting ()
 
   addressbook_window = NULL;
   
-  gw->splash_win = gw->incoming_call_popup = 
-    gw->transfer_call_popup = gw->audio_transmission_popup = 
-    gw->audio_reception_popup = 
+  gw->incoming_call_popup = 
+    gw->transfer_call_popup = 
     NULL;
 
   GM = this;
@@ -362,6 +361,13 @@ GnomeMeeting::GetHistoryWindow ()
 
 
 GtkWidget *
+GnomeMeeting::GetPC2PhoneWindow ()
+{
+  return pc2phone_window;
+}
+
+
+GtkWidget *
 GnomeMeeting::GetTray ()
 {
   return tray;
@@ -375,6 +381,8 @@ void GnomeMeeting::Main ()
 
 void GnomeMeeting::BuildGUI ()
 {
+  GtkWidget *splash_window = NULL;
+
   bool show_splash = TRUE;
   OpalMediaFormat::List available_capabilities;
 
@@ -384,15 +392,15 @@ void GnomeMeeting::BuildGUI ()
   
   
   /* Init the splash screen */
-  gw->splash_win = e_splash_new ();
-  g_signal_connect (G_OBJECT (gw->splash_win), "delete_event",
-		    G_CALLBACK (gtk_widget_hide_on_delete), 0);
+  splash_window = e_splash_new ();
+  g_signal_connect (G_OBJECT (splash_window), "delete_event",
+		    G_CALLBACK (gtk_widget_hide_on_delete), NULL);
 
   show_splash = gm_conf_get_bool (USER_INTERFACE_KEY "show_splash_screen");
   if (show_splash) 
   {
     /* We show the splash screen */
-    gtk_widget_show_all (gw->splash_win);
+    gtk_widget_show_all (splash_window);
 
     while (gtk_events_pending ())
       gtk_main_iteration ();
@@ -408,8 +416,7 @@ void GnomeMeeting::BuildGUI ()
 
   
   /* Build the GUI */
-  gw->tips = gtk_tooltips_new ();
-  gw->pc_to_phone_window = gnomemeeting_pc_to_phone_window_new ();  
+  pc2phone_window = gm_pc2phone_window_new ();  
   prefs_window = gm_prefs_window_new ();  
   gm_prefs_window_update_audio_codecs_list (prefs_window, 
 					    available_capabilities);
@@ -448,18 +455,18 @@ void GnomeMeeting::BuildGUI ()
 
  
   /* Destroy the splash */
- if (gw->splash_win) {
-   
-   gtk_widget_destroy (gw->splash_win);
-   gw->splash_win = NULL;
- }
+  if (splash_window) { 
 
-  
+    gtk_widget_destroy (splash_window);
+    splash_window = NULL;
+  }
+
+
   /* GM is started */
- gm_history_window_insert (history_window,
-			   _("Started GnomeMeeting V%d.%d.%d for %s\n"), 
-			   MAJOR_VERSION, MINOR_VERSION, BUILD_NUMBER,
-			   g_get_user_name ());
+  gm_history_window_insert (history_window,
+			    _("Started GnomeMeeting V%d.%d.%d for %s\n"), 
+			    MAJOR_VERSION, MINOR_VERSION, BUILD_NUMBER,
+			    g_get_user_name ());
 }
 
 

@@ -637,10 +637,10 @@ gm_mw_init_menu (GtkWidget *main_window)
   GtkWidget *calls_history_window = NULL;
   GtkWidget *history_window = NULL;
   GtkWidget *prefs_window = NULL;
+  GtkWidget *pc2phone_window = NULL;
   
   IncomingCallMode icm = AVAILABLE;
   ControlPanelSection cps = CLOSED;
-  bool show_status_bar = false;
   bool show_chat_window = false;
 
   GSList *glist = NULL;
@@ -654,6 +654,7 @@ gm_mw_init_menu (GtkWidget *main_window)
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
   druid_window = GnomeMeeting::Process ()->GetDruidWindow ();
   prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
+  pc2phone_window = GnomeMeeting::Process ()->GetPC2PhoneWindow ();
 
   mw->main_menu = gtk_menu_bar_new ();
 
@@ -663,8 +664,6 @@ gm_mw_init_menu (GtkWidget *main_window)
     gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode"); 
   cps = (ControlPanelSection)
     gm_conf_get_int (USER_INTERFACE_KEY "main_window/control_panel_section"); 
-  show_status_bar =
-    gm_conf_get_bool (USER_INTERFACE_KEY "main_window/show_status_bar"); 
   show_chat_window =
     gm_conf_get_bool (USER_INTERFACE_KEY "main_window/show_chat_window"); 
 
@@ -779,12 +778,6 @@ gm_mw_init_menu (GtkWidget *main_window)
 			    GTK_SIGNAL_FUNC (toggle_menu_changed_cb),
 			    (gpointer) USER_INTERFACE_KEY "main_window/show_chat_window",
 			    show_chat_window, TRUE),
-      GTK_MENU_TOGGLE_ENTRY("status_bar", _("Status Bar"),
-			    _("View/Hide the status bar"), 
-			    NULL, 0, 
-			    GTK_SIGNAL_FUNC (toggle_menu_changed_cb),
-			    (gpointer) USER_INTERFACE_KEY "main_window/show_status_bar",
-			    show_status_bar, TRUE),
 
       GTK_SUBMENU_NEW("control_panel", _("Control Panel")),
 
@@ -908,7 +901,7 @@ gm_mw_init_menu (GtkWidget *main_window)
 		     _("Manage your PC-To-Phone account"),
 		     NULL, 0, 
 		     GTK_SIGNAL_FUNC (show_window_cb),
-		     (gpointer) mw->pc_to_phone_window, TRUE),
+		     (gpointer) pc2phone_window, TRUE),
 #else
       GTK_MENU_ENTRY("pc-to-phone", _("PC-To-Phone Account"),
 		     _("Manage your PC-To-Phone account"),
@@ -1312,8 +1305,6 @@ pause_current_call_channel_cb (GtkWidget *widget,
 
   main_window = gm; 
 
-  cout << "ici" << endl << flush;
-  
   if (!current_call_token.IsEmpty ()
       && endpoint->GetCallingState () == GMH323EndPoint::Standby) {
 
@@ -2006,21 +1997,9 @@ gm_main_window_update_calling_state (//GtkWidget *main_window,
   
   GtkWidget *main_window = NULL;
   
-  GdkWindow *gm_window = NULL;
-  GdkWindow *local_window = NULL;
-  GdkWindow *remote_window = NULL;
-  
-  BOOL stay_on_top = FALSE;
-  
   mw = GnomeMeeting::Process ()->GetMainWindow ();
   main_window = gm;
-  
-  gm_window = GDK_WINDOW (gm->window);
-  local_window = GDK_WINDOW (mw->local_video_window->window);
-  remote_window = GDK_WINDOW (mw->remote_video_window->window);
 
-  stay_on_top = gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top");
-    
 
   switch (calling_state)
     {
@@ -2035,11 +2014,7 @@ gm_main_window_update_calling_state (//GtkWidget *main_window,
       /* Update the connect button */
       gm_mw_update_connect_button (main_window, FALSE);
       
-      /* Update the stay-on-top attribute */
-      gdk_window_set_always_on_top (GDK_WINDOW (gm_window), FALSE);
-      gdk_window_set_always_on_top (GDK_WINDOW (local_window), FALSE);
-      gdk_window_set_always_on_top (GDK_WINDOW (remote_window), FALSE);
-      
+    
       /* Destroy the incoming call popup */
       if (mw->incoming_call_popup) {
 
@@ -2079,11 +2054,6 @@ gm_main_window_update_calling_state (//GtkWidget *main_window,
 
       /* Update the connect button */
       gm_mw_update_connect_button (main_window, TRUE);
-
-      /* Update the stay-on-top attribute */
-      gdk_window_set_always_on_top (GDK_WINDOW (gm_window), stay_on_top);
-      gdk_window_set_always_on_top (GDK_WINDOW (local_window), stay_on_top);
-      gdk_window_set_always_on_top (GDK_WINDOW (remote_window), stay_on_top);
       
       /* Destroy the incoming call popup */
       if (mw->incoming_call_popup) {
@@ -2297,8 +2267,38 @@ gm_main_window_get_video_sliders_values (GtkWidget *main_window,
 }
 
 
-void gm_main_window_select_control_panel_section (GtkWidget *main_window,
-						  int section)
+void 
+gm_main_window_show_chat_window (GtkWidget *main_window,
+				 gboolean show)
+{
+  GmWindow *mw = NULL;
+  
+  GtkWidget *menu = NULL;
+  GtkWidget *chat_window = NULL;
+  
+  g_return_if_fail (main_window != NULL);
+  
+  mw = gm_mw_get_mw (main_window);
+
+  g_return_if_fail (mw != NULL);
+
+  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
+
+
+  menu = gtk_menu_get_widget (mw->main_menu, "text_chat");
+  
+  if (show) 
+    gtk_widget_show_all (chat_window);
+  else
+    gtk_widget_hide_all (chat_window);
+  
+  gtk_toggle_menu_enable (menu, show);
+}
+
+
+void 
+gm_main_window_show_control_panel_section (GtkWidget *main_window,
+					   int section)
 {
   GmWindow *mw = NULL;
   
@@ -2322,6 +2322,27 @@ void gm_main_window_select_control_panel_section (GtkWidget *main_window,
   menu = gtk_menu_get_widget (mw->main_menu, "statistics");
   
   gtk_radio_menu_select_with_widget (GTK_WIDGET (menu), section);
+}
+
+
+void 
+gm_main_window_set_incoming_call_mode (GtkWidget *main_window,
+				       IncomingCallMode i)
+{
+  GmWindow *mw = NULL;
+  
+  GtkWidget *menu = NULL;
+  
+  g_return_if_fail (main_window != NULL);
+  
+  mw = gm_mw_get_mw (main_window);
+
+  g_return_if_fail (mw != NULL);
+
+  
+  menu = gtk_menu_get_widget (mw->main_menu, "available");
+  
+  gtk_radio_menu_select_with_widget (GTK_WIDGET (menu), i);
 }
 
 
@@ -2568,6 +2589,8 @@ gm_main_window_new (GmWindow *mw)
 			  mw, (GDestroyNotify) gm_mw_destroy);
 
   
+  /* Tooltips and accelerators */
+  mw->tips = gtk_tooltips_new ();
   mw->accel = gtk_accel_group_new ();
   gtk_window_add_accel_group (GTK_WINDOW (window), mw->accel);
 
@@ -2598,6 +2621,7 @@ gm_main_window_new (GmWindow *mw)
   gtk_box_pack_start (GTK_BOX (mw->window_vbox), mw->main_menu,
 		      FALSE, FALSE, 0);
 #endif
+  gtk_widget_show (mw->statusbar);
 
   
   /* Create a table in the main window to attach things like buttons */
@@ -2688,11 +2712,6 @@ gm_main_window_new (GmWindow *mw)
   gtk_statusbar_set_has_resize_grip (GTK_STATUSBAR (mw->statusbar), FALSE);
   gtk_box_pack_start (GTK_BOX (hbox), mw->statusbar, 
 		      TRUE, TRUE, 0);
-
-  if (gm_conf_get_bool (USER_INTERFACE_KEY "main_window/show_status_bar"))
-    gtk_widget_show (GTK_WIDGET (mw->statusbar));
-  else
-    gtk_widget_hide (GTK_WIDGET (mw->statusbar));
   
   
   /* The 2 video window popups */
@@ -2968,6 +2987,34 @@ gm_main_window_get_current_picture (GtkWidget *main_window)
   g_return_val_if_fail (mw != NULL, NULL);
 
   return gtk_image_get_pixbuf (GTK_IMAGE (mw->main_video_image));
+}
+
+
+void 
+gm_main_window_set_stay_on_top (GtkWidget *main_window,
+				gboolean stay_on_top)
+{
+  GmWindow *mw = NULL;
+  
+  GdkWindow *gm_window = NULL;
+  GdkWindow *local_window = NULL;
+  GdkWindow *remote_window = NULL;
+
+  g_return_if_fail (main_window != NULL);
+
+  mw = gm_mw_get_mw (main_window);
+
+  g_return_if_fail (mw != NULL);
+  
+
+  gm_window = GDK_WINDOW (gm->window);
+  local_window = GDK_WINDOW (mw->local_video_window->window);
+  remote_window = GDK_WINDOW (mw->remote_video_window->window);
+
+  /* Update the stay-on-top attribute */
+  gdk_window_set_always_on_top (GDK_WINDOW (gm_window), stay_on_top);
+  gdk_window_set_always_on_top (GDK_WINDOW (local_window), stay_on_top);
+  gdk_window_set_always_on_top (GDK_WINDOW (remote_window), stay_on_top);
 }
 
 

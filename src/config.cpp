@@ -82,6 +82,17 @@ static void control_panel_section_changed_nt (gpointer,
                                               GmConfEntry *, 
                                               gpointer);
 
+
+/* DESCRIPTION  :  This callback is called when the show chat window
+ *                 key changes.
+ * BEHAVIOR     :  Shows/hides it and updates the menu item.
+ * PRE          :  The main window GMObject. 
+ */
+static void show_chat_window_changed_nt (gpointer, 
+					 GmConfEntry *, 
+					 gpointer);
+
+
 static void maximum_video_bandwidth_changed_nt (gpointer, 
                                                 GmConfEntry *, 
                                                 gpointer);
@@ -150,9 +161,6 @@ static void audio_codecs_list_changed_nt (gpointer,
                                           GmConfEntry *, 
 					  gpointer);
 
-static void view_widget_changed_nt (gpointer, 
-                                    GmConfEntry *, 
-				    gpointer);
 
 static void capabilities_changed_nt (gpointer, 
 				     GmConfEntry *, 
@@ -205,85 +213,6 @@ static void lid_output_device_type_changed_nt (gpointer,
 #endif
 
 
-/* DESCRIPTION  :  Generic notifiers for toggles in the menu.
- *                 This callback is called when a specific key of
- *                 the config database associated with a toggle changes, this
- *                 only updates the toggle in the menu.
- * BEHAVIOR     :  It only updates the widget.
- * PRE          :  /
- */
-static void 
-menu_toggle_changed_nt (gpointer id, 
-                        GmConfEntry *entry, 
-                        gpointer data)
-{
-  GtkWidget *e = NULL;
-  
-  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
-   
-    gdk_threads_enter ();
-  
-    e = GTK_WIDGET (data);
-
-    /* We set the new value for the widget */
-    GTK_CHECK_MENU_ITEM (e)->active = gm_conf_entry_get_bool (entry);
-
-    gtk_widget_queue_draw (GTK_WIDGET (e));
-
-    gdk_threads_leave (); 
-  }
-}
-
-
-/* DESCRIPTION  :  Notifiers for radios menu.
- *                 This callback is called when a specific key of
- *                 the config database associated with a radio menu changes, 
- *                 this only updates the radio in the menu.
- * BEHAVIOR     :  It updates the widget.
- * PRE          :  One of the GtkCheckMenuItem of the radio menu.
- */
-static void 
-radio_menu_changed_nt (gpointer id, 
-		       GmConfEntry *entry, 
-		       gpointer data)
-{
-  if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
-   
-    gdk_threads_enter ();
-  
-    gtk_radio_menu_select_with_widget (GTK_WIDGET (data),
-				       gm_conf_entry_get_int (entry));
-    
-    gdk_threads_leave (); 
-  }
-}
-
-/* FIX ME: The 2 previous functions should be moved to gtk_menu_extensions.c */
-
-
-/* DESCRIPTION  :  This callback is called when something changes in the view
- *                 directory.
- * BEHAVIOR     :  It shows/hides the corresponding widget.
- * PRE          :  /
- */
-static void 
-view_widget_changed_nt (gpointer id, 
-                        GmConfEntry *entry, 
-                        gpointer data)
-{
-  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
-
-    gdk_threads_enter ();
-  
-    if (gm_conf_entry_get_bool (entry))
-      gtk_widget_show_all (GTK_WIDGET (data));
-    else
-      gtk_widget_hide_all (GTK_WIDGET (data));
-    
-    gdk_threads_leave ();
-  }
-}
-
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Displays a popup if we are in a call.
@@ -332,8 +261,25 @@ control_panel_section_changed_nt (gpointer id,
     section = gm_conf_entry_get_int (entry);
     
     gdk_threads_enter ();
-    gm_main_window_select_control_panel_section (GTK_WIDGET (data), 
-						 section);
+    gm_main_window_show_control_panel_section (GTK_WIDGET (data), 
+					       section);
+    gdk_threads_leave ();
+  }
+}
+
+
+static void 
+show_chat_window_changed_nt (gpointer id, 
+			     GmConfEntry *entry, 
+			     gpointer data)
+{
+  g_return_if_fail (data != NULL);
+  
+  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
+
+    gdk_threads_enter ();
+    gm_main_window_show_chat_window (GTK_WIDGET (data), 
+				     gm_conf_entry_get_bool (entry));
     gdk_threads_leave ();
   }
 }
@@ -1263,27 +1209,31 @@ ils_option_changed_nt (gpointer id,
 
 /* DESCRIPTION  :  This callback is called when the incoming_call_mode
  *                 config value changes.
- * BEHAVIOR     :  Modifies the tray icon, and the
+ * BEHAVIOR     :  Modifies the tray icon, and the incoming call mode menu, the
  *                 always_forward key following the current mode is FORWARD or
  *                 not.
- * PRE          :  The Tray GMObject.
+ * PRE          :  /
  */
 static void
 incoming_call_mode_changed_nt (gpointer id, 
 			       GmConfEntry *entry,
 			       gpointer data)
 {
+  GtkWidget *main_window = NULL;
+  GtkWidget *tray = NULL;
+  
+  
   GMH323EndPoint::CallingState calling_state = GMH323EndPoint::Standby;
   GMH323EndPoint *ep = NULL;
 
   gboolean forward_on_busy = FALSE;
+  IncomingCallMode i;
 
   ep = GnomeMeeting::Process ()->Endpoint ();
+  main_window = gm;
+  tray = GnomeMeeting::Process ()->GetTray ();
+  
 
-  
-  g_return_if_fail (data != NULL);
-  
-  
   if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
 
     calling_state = ep->GetCallingState ();
@@ -1297,13 +1247,14 @@ incoming_call_mode_changed_nt (gpointer id,
       gm_conf_set_bool (CALL_FORWARDING_KEY "always_forward", FALSE);
    
     forward_on_busy = gm_conf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
-       
-    /* Update the tray icon */
-    gm_tray_update (GTK_WIDGET (data),
-		    calling_state, 
-		    (IncomingCallMode)
-		    gm_conf_entry_get_int (entry), 
-		    forward_on_busy);
+    i = (IncomingCallMode) gm_conf_entry_get_int (entry);
+    
+    
+    /* Update the tray icon and its menu */
+    gm_tray_update (tray, calling_state, i, forward_on_busy);
+
+    /* Update the main window and its menu */
+    gm_main_window_set_incoming_call_mode (main_window, i);
     
     gdk_threads_leave ();
   }
@@ -1320,10 +1271,9 @@ stay_on_top_changed_nt (gpointer id,
                         GmConfEntry *entry, 
                         gpointer data)
 {
-  GmWindow *gw = NULL;
   bool val = false;
     
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
+  g_return_if_fail (data != NULL);
 
   if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
 
@@ -1331,11 +1281,7 @@ stay_on_top_changed_nt (gpointer id,
 
     val = gm_conf_entry_get_bool (entry);
 
-    gdk_window_set_always_on_top (GDK_WINDOW (gm->window), val);
-    gdk_window_set_always_on_top (GDK_WINDOW (gw->local_video_window->window), 
-				  val);
-    gdk_window_set_always_on_top (GDK_WINDOW (gw->remote_video_window->window), 
-				  val);
+    gm_main_window_set_stay_on_top (GTK_WIDGET (data), val);
 
     gdk_threads_leave ();
   }
@@ -1527,18 +1473,8 @@ gnomemeeting_conf_init ()
   gm_conf_notifier_add (USER_INTERFACE_KEY "main_window/control_panel_section",
 			control_panel_section_changed_nt, main_window);
   
-  gm_conf_notifier_add (USER_INTERFACE_KEY "main_window/show_status_bar",
-			menu_toggle_changed_nt,
-			gtk_menu_get_widget (gw->main_menu, "status_bar"));
-  gm_conf_notifier_add (USER_INTERFACE_KEY "main_window/show_status_bar",
-			view_widget_changed_nt, gw->statusbar);
-
   gm_conf_notifier_add (USER_INTERFACE_KEY "main_window/show_chat_window",
-			menu_toggle_changed_nt, 
-			gtk_menu_get_widget (gw->main_menu, "text_chat"));
-
-  gm_conf_notifier_add (USER_INTERFACE_KEY "main_window/show_chat_window",
-			view_widget_changed_nt, chat_window);
+			show_chat_window_changed_nt, main_window);
 
   gm_conf_notifier_add (USER_INTERFACE_KEY "calls_history_window/placed_calls_history", calls_history_changed_nt, NULL);
 
@@ -1549,10 +1485,7 @@ gnomemeeting_conf_init ()
   
   /* Notifiers for the CALL_OPTIONS_KEY keys */
   gm_conf_notifier_add (CALL_OPTIONS_KEY "incoming_call_mode",
-			radio_menu_changed_nt,
-			gtk_menu_get_widget (gw->main_menu, "available"));
-  gm_conf_notifier_add (CALL_OPTIONS_KEY "incoming_call_mode",
-			incoming_call_mode_changed_nt, tray);
+			incoming_call_mode_changed_nt, NULL);
   gm_conf_notifier_add (CALL_OPTIONS_KEY "incoming_call_mode",
 			ils_option_changed_nt, NULL);
  
@@ -1670,13 +1603,11 @@ gnomemeeting_conf_init ()
 
   gm_conf_notifier_add (VIDEO_DEVICES_KEY "enable_preview", 
 			video_preview_changed_nt, NULL);
-  gm_conf_notifier_add (VIDEO_DEVICES_KEY "enable_preview", 
-			toggle_changed_nt,gw->preview_button);
 
   
   /* Notifiers for the VIDEO_DISPLAY_KEY keys */
   gm_conf_notifier_add (VIDEO_DISPLAY_KEY "stay_on_top", 
-			stay_on_top_changed_nt, NULL);
+			stay_on_top_changed_nt, main_window);
 
   
   /* Notifiers for SOUND_EVENTS_KEY keys */

@@ -167,12 +167,28 @@ void gm_main_window_get_volume_sliders_values (GtkWidget *,
 
 
 /* DESCRIPTION  :  /
+ * BEHAVIOR     :  Show / hide the chat window and updates the menu item.
+ * PRE          :  The main window GMObject.
+ */
+void gm_main_window_show_chat_window (GtkWidget *,
+				      gboolean);
+
+
+/* DESCRIPTION  :  /
  * BEHAVIOR     :  Select the correct control panel section in the menus
  * 		   and in the main window.
  * PRE          :  The main window GMObject and a valid section.
  */
-void gm_main_window_select_control_panel_section (GtkWidget *,
-						  int);
+void gm_main_window_show_control_panel_section (GtkWidget *,
+						int);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Select the incoming call mode for the main window.
+ * PRE          :  The main window GMObject and a valid incoming call mode.
+ */
+void gm_main_window_set_incoming_call_mode (GtkWidget *,
+					    IncomingCallMode);
 
 
 /* DESCRIPTION  :  /
@@ -284,8 +300,16 @@ void gm_main_window_update_stats (GtkWidget *,
  * BEHAVIOR      : Returns the currently displayed picture as a pixbuf.
  * PRE           : The main window GMObject.
  */
-GdkPixbuf *
-gm_main_window_get_current_picture (GtkWidget *);
+GdkPixbuf *gm_main_window_get_current_picture (GtkWidget *);
+
+
+/* DESCRIPTION   :  /
+ * BEHAVIOR      : Returns the currently displayed picture as a pixbuf.
+ * PRE           : The main window GMObject.
+ */
+void gm_main_window_set_stay_on_top (GtkWidget *,
+				     gboolean);
+ 
 
 #endif
 

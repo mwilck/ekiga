@@ -331,10 +331,7 @@ GMLid::Main ()
       gnomemeeting_threads_enter ();
       gm_history_window_insert (history_window, _("Phone is on hook"));
       gm_main_window_flash_message (main_window, _("Phone is on hook"));
-  
-      /* Remove the current called number */
-      gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), 
-			  GMURL ().GetDefaultURL ());
+      gm_main_window_set_call_url (main_window, GMURL ().GetDefaultURL ());
       gnomemeeting_threads_leave ();
 
       RingLine (0, 0);

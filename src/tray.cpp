@@ -362,22 +362,22 @@ gm_tray_update (GtkWidget *tray_icon,
 		IncomingCallMode icm,
 		BOOL forward_on_busy)
 {
-  GtkWidget *menu = NULL;
-  
   GmTray *gt = NULL;
+
+  GtkWidget *menu = NULL;
   
   g_return_if_fail (tray_icon != NULL);
   
 
   gt = gm_tray_get_tray (tray_icon);
   g_return_if_fail (gt != NULL);
-
   
-  /* Update the menu with the new icm */
+  
+  /* Update the menu */
   menu = gtk_menu_get_widget (gt->popup_menu, "available");
   gtk_radio_menu_select_with_widget (GTK_WIDGET (menu), icm);
   
-  
+
   /* Update the icon */
   if (calling_state == GMH323EndPoint::Standby) {
 

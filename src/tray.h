@@ -57,7 +57,8 @@ GtkWidget *gm_tray_new ();
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Updates the tray icon following the current calling state, 
- *                 the incoming call mode and forward on busy setting.
+ *                 the incoming call mode and forward on busy setting. Also
+ *                 update the associated menu.
  * PRE          :  A valid current calling state and a valid incoming call mode
  *                 or the tray icon won't be updated at all. A valid tray icon.
  */

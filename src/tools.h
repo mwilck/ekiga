@@ -46,6 +46,6 @@
  * BEHAVIOR     :  Build the PC-To-Phone window and returns it.
  * PRE          :  /
  */
-GtkWidget *gnomemeeting_pc_to_phone_window_new ();
+GtkWidget *gm_pc2phone_window_new ();
 
 #endif

@@ -945,6 +945,7 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   gchar *utf8_local_name = NULL;
   BOOL reg = FALSE;
   BOOL forward_on_busy = FALSE;
+  BOOL stay_on_top = FALSE;
   IncomingCallMode icm = AVAILABLE;
   
 #ifdef HAS_IXJ
@@ -974,6 +975,7 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   icm = 
     (IncomingCallMode) gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
   forward_on_busy = gm_conf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
+  stay_on_top = gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top");
   gnomemeeting_threads_leave ();
   
 
@@ -1010,6 +1012,7 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   gnomemeeting_text_chat_call_start_notification (chat_window);
 
   gm_main_window_set_remote_user_name (main_window, utf8_name);
+  gm_main_window_set_stay_on_top (main_window, stay_on_top);
 
   gm_main_window_update_calling_state (GMH323EndPoint::Connected);
   gm_tray_update_calling_state (tray, GMH323EndPoint::Connected);
@@ -1101,9 +1104,9 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   PTimeInterval t;
 
   BOOL reg = FALSE;
-  BOOL stay_on_top = FALSE;
   BOOL not_current = FALSE;
   BOOL forward_on_busy = FALSE;
+  BOOL stay_on_top = FALSE;
 
   IncomingCallMode icm = AVAILABLE;
 
@@ -1126,10 +1129,9 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   gnomemeeting_threads_enter ();
   reg = gm_conf_get_bool (LDAP_KEY "enable_registering");
   stay_on_top = gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top");
-  icm = (IncomingCallMode)
-    gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
-  forward_on_busy =
-    gm_conf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
+  icm = (IncomingCallMode)gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
+  forward_on_busy = gm_conf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
+  stay_on_top = gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top");
   gnomemeeting_threads_leave ();
 
 
@@ -1321,13 +1323,10 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   
   /* We update the GUI */
+  gm_main_window_set_stay_on_top (main_window, stay_on_top);
   gm_main_window_update_calling_state (GMH323EndPoint::Standby);
-  gm_tray_update_calling_state (tray, 
-				GMH323EndPoint::Standby);
-  gm_tray_update (tray, 
-		  GMH323EndPoint::Standby, 
-		  icm, 
-		  forward_on_busy);
+  gm_tray_update_calling_state (tray, GMH323EndPoint::Standby);
+  gm_tray_update (tray, GMH323EndPoint::Standby, icm, forward_on_busy);
   gnomemeeting_threads_leave ();
   
   gnomemeeting_sound_daemons_resume ();

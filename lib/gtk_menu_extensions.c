@@ -37,14 +37,13 @@
 
 
 #include "gtk_menu_extensions.h"
-#include "gm_conf.h"
 
 #include <gdk/gdkkeysyms.h>
 
 
 /* Notice, this implementation sets the menu item name as data of the menu
-   widget, the statusbar and also the given structure */
-
+ * widget, the statusbar and also the given structure.
+ */
 static void menus_have_icons_changed_nt (gpointer,
 					 GmConfEntry *,
 					 gpointer);
@@ -211,6 +210,52 @@ toggle_menu_changed_cb (GtkWidget *widget,
 
 
 void 
+menu_toggle_changed_nt (gpointer id, 
+                        GmConfEntry *entry, 
+                        gpointer data)
+{
+  GtkWidget *e = NULL;
+  
+  g_return_if_fail (data != NULL);
+  
+
+  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
+   
+    gdk_threads_enter ();
+  
+    e = GTK_WIDGET (data);
+
+    /* We set the new value for the widget */
+    GTK_CHECK_MENU_ITEM (e)->active = gm_conf_entry_get_bool (entry);
+
+    gtk_widget_queue_draw (GTK_WIDGET (e));
+
+    gdk_threads_leave (); 
+  }
+}
+
+
+void
+radio_menu_changed_nt (gpointer id,
+		       GmConfEntry *entry,
+		       gpointer data)
+{
+  g_return_if_fail (data != NULL);
+
+
+  if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
+
+    gdk_threads_enter ();
+
+    gtk_radio_menu_select_with_widget (GTK_WIDGET (data),
+				       gm_conf_entry_get_int (entry));
+
+    gdk_threads_leave ();
+  }
+}
+
+
+void 
 gtk_build_menu (GtkWidget *menubar,
 		MenuEntry *menu,
 		GtkAccelGroup *accel,
@@ -251,9 +296,9 @@ gtk_build_menu (GtkWidget *menubar,
       }
       else if (menu [i].type == MENU_RADIO_ENTRY) {
 
-	if (group == NULL)
+	if (group == NULL) 
 	  group = new_group;
-
+	
 	menu [i].widget = 
 	  gtk_radio_menu_item_new_with_mnemonic (group, 
 						 menu [i].name);
@@ -439,6 +484,16 @@ gtk_menu_get_widget (GtkWidget *menu,
   g_return_val_if_fail (menu != NULL && id != NULL, NULL);
 
   return (GtkWidget *) g_object_get_data (G_OBJECT (menu), id);
+}
+
+
+void
+gtk_toggle_menu_enable (GtkWidget *e, 
+			gboolean show)
+{
+  GTK_CHECK_MENU_ITEM (e)->active = show;
+
+  gtk_widget_queue_draw (GTK_WIDGET (e));
 }
 
 

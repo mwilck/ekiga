@@ -41,6 +41,9 @@
 
 #include <gtk/gtk.h>
 
+#include "gm_conf.h"
+
+
 G_BEGIN_DECLS
 
 /* Possible values for the Menu entries */
@@ -113,6 +116,30 @@ void toggle_menu_changed_cb (GtkWidget *,
 			     gpointer);
 
 
+/* DESCRIPTION  :  Generic notifiers for toggles in the menu.
+ *                 This callback is called when a specific key of
+ *                 the config database associated with a toggle changes, this
+ *                 only updates the toggle in the menu.
+ * BEHAVIOR     :  It only updates the widget.
+ * PRE          :  The toggle menu item.
+ */
+void menu_toggle_changed_nt (gpointer, 
+			     GmConfEntry *, 
+			     gpointer);
+
+
+/* DESCRIPTION  :  Notifiers for radios menu.
+ *                 This callback is called when a specific key of
+ *                 the config database associated with a radio menu changes,
+ *                 this only updates the radio in the menu.
+ * BEHAVIOR     :  It updates the widget.
+ * PRE          :  One of the GtkCheckMenuItem of the radio menu.
+ */
+void radio_menu_changed_nt (gpointer,
+			    GmConfEntry *,
+			    gpointer);
+
+
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Change the sensitivity of a whole Menu section given the
  *                 Menu widget, the identifier of one of the first Menu item
@@ -165,6 +192,14 @@ void gtk_build_menu (GtkWidget *,
 GtkWidget *gtk_build_popup_menu (GtkWidget *,
 				 MenuEntry *,
 				 GtkAccelGroup *);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Update the menu toggle with the new value. 
+ * PRE          :  /
+ */
+void gtk_toggle_menu_enable (GtkWidget *, 
+			     gboolean);
 
 
 /* DESCRIPTION  :  /

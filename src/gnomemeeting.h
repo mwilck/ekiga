@@ -155,6 +155,13 @@ class GnomeMeeting : public PProcess
 
   
   /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns a pointer to the PC-2-Phone window.
+   * PRE          :  /
+   */
+  GtkWidget *GetPC2PhoneWindow ();
+  
+  
+  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns a pointer to the tray.
    * PRE          :  /
    */
@@ -265,6 +272,7 @@ class GnomeMeeting : public PProcess
   GtkWidget *chat_window;
   GtkWidget *druid_window;
   GtkWidget *prefs_window;
+  GtkWidget *pc2phone_window;
   GtkWidget *tray;
 
   static GnomeMeeting *GM;

@@ -163,8 +163,6 @@ struct _GmWindow
   GtkAccelGroup *accel;
 
   GtkWidget *main_menu;
-  GtkWidget *audio_transmission_popup;
-  GtkWidget *audio_reception_popup;
   
 #ifdef DISABLE_GNOME
   GtkWidget *window_vbox;
@@ -173,7 +171,6 @@ struct _GmWindow
 
   GtkWidget *statusbar;
   GtkWidget *remote_name;
-  GtkWidget *splash_win;
   GtkWidget *combo;
   GtkWidget *main_notebook;
   GtkWidget *main_video_image;
@@ -182,7 +179,6 @@ struct _GmWindow
   GtkWidget *remote_video_image;
   GtkWidget *remote_video_window;
   GtkWidget *video_frame;
-  GtkWidget *pc_to_phone_window;
   GtkWidget *preview_button;
   GtkWidget *connect_button;
   GtkWidget *video_chan_button;

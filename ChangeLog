@@ -1,3 +1,19 @@
+2004-09-08  Damien Sandras  <dsandras@gnome.org>
+
+	* configure.in: Incremented SCHEMA_AGE.
+
+	* gnomemeeting.schemas.in.in: Removed key to hide status bar.
+
+	* lib/gtk_menu_extensions.c, lib/gtk_menu_extensions.h: Added menu
+	extensions.
+
+	* src/chat_window.cpp, src/common.h, src/config.cpp, src/endpoint.cpp,
+	src/gnomemeeting.cpp, src/gnomemeeting.h, src/lid.cpp, 
+	src/main_window.cpp, src/main_window.h, src/tools.cpp, src/tools.h,
+	src/tray.cpp, src/tray.h, src/urlhandler.cpp: API Changes, removed
+	references to GmWindow to make it private. Make menu updates from
+	functions on objects where the menus belong to.
+
 2004-09-07  Damien Sandras  <dsandras@gnome.org>
 
 	* src/endpoint.cpp, src/endpoint.h, src/main_window.cpp, 

@@ -48,10 +48,11 @@
 #include "gnome_prefs_window.h"
 
 #ifndef DISABLE_GNOME
-static void pc_to_phone_window_response_cb (GtkWidget *, gint, gpointer);
+static void pc2phone_window_response_cb (GtkWidget *, gint, gpointer);
 
 static void microtelco_consult_cb (GtkWidget *, gpointer);
 #endif
+
 
 /* DESCRIPTION  :  This callback is called when the user validates an answer
  *                 to the PC-To-Phone window.
@@ -61,9 +62,9 @@ static void microtelco_consult_cb (GtkWidget *, gpointer);
  */
 #ifndef DISABLE_GNOME
 static void
-pc_to_phone_window_response_cb (GtkWidget *w,
-				gint response,
-				gpointer data)
+pc2phone_window_response_cb (GtkWidget *w,
+			     gint response,
+			     gpointer data)
 {
   GMH323EndPoint *ep = NULL;
 
@@ -147,8 +148,9 @@ microtelco_consult_cb (GtkWidget *widget,
 }
 #endif
 
+
 GtkWidget *
-gnomemeeting_pc_to_phone_window_new ()
+gm_pc2phone_window_new ()
 {
   GtkWidget *window = NULL;
 #ifndef DISABLE_GNOME
@@ -222,7 +224,7 @@ gnomemeeting_pc_to_phone_window_new ()
 				
   g_signal_connect (GTK_OBJECT (window), 
 		    "response", 
-		    G_CALLBACK (pc_to_phone_window_response_cb),
+		    G_CALLBACK (pc2phone_window_response_cb),
 		    (gpointer) use_service_button);
 
   g_signal_connect (GTK_OBJECT (window), "delete-event", 

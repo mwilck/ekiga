@@ -131,17 +131,14 @@ static void
 connect_uri_callback (const gchar *uri)
 {
   GMH323EndPoint *ep = NULL;
-  GmWindow *gw = NULL;
   
   g_return_if_fail (uri != NULL);
 
   ep =  GnomeMeeting::Process ()->Endpoint ();
 
   if (ep->GetCallingState () == GMH323EndPoint::Standby) {    
-    gw = GnomeMeeting::Process ()->GetMainWindow ();
-    gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), uri);
-    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->connect_button),
-				  true);
+
+    GnomeMeeting::Process ()->Connect (uri);
   }
   else if (ep->GetCallingState () == GMH323EndPoint::Connected)
     gm_main_window_transfer_dialog_run (gm, (gchar *) uri);
@@ -216,7 +213,6 @@ chat_entry_activate (GtkEditable *w,
 
 void gnomemeeting_text_chat_clear (GtkWidget *chat_window)
 {
-  GmWindow *gw = NULL;
   GmTextChat *chat = NULL;
   GtkTextIter start_iter, end_iter;
 
@@ -227,9 +223,6 @@ void gnomemeeting_text_chat_clear (GtkWidget *chat_window)
   gtk_text_buffer_get_end_iter (chat->text_buffer, &end_iter);
 
   gtk_text_buffer_delete (chat->text_buffer, &start_iter, &end_iter);
-
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
-  gtk_menu_set_sensitive (gw->main_menu, "clear_text_chat", FALSE);
 }
 
 void
@@ -311,7 +304,6 @@ gnomemeeting_text_chat_insert (GtkWidget *chat_window, PString name,
   GtkTextIter iter;
   GtkTextMark *mark;
   GmTextChat *chat = NULL;
-  GmWindow *gw = NULL;
 
   g_return_if_fail (chat_window != NULL);
 
@@ -348,9 +340,6 @@ gnomemeeting_text_chat_insert (GtkWidget *chat_window, PString name,
 
   gtk_text_view_scroll_to_mark (GTK_TEXT_VIEW (chat->text_view), mark, 
 				0.0, FALSE, 0,0);
-
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
-  gtk_menu_set_sensitive (gw->main_menu, "clear_text_chat", TRUE);
 }
 
 
