@@ -168,7 +168,9 @@ GMH323EndPoint::GMH323EndPoint ()
   client = gconf_client_get_default ();
 
   clearCallOnRoundTripFail = FALSE;
-  
+  rtpIpPort = rtpIpPortBase = 5000;
+  rtpIpPortMax  = 5003;
+
   received_video_device = NULL;
   transmitted_video_device = NULL;
 
