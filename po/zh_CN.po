@@ -10,14 +10,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-03-20 03:56+0100\n"
-"PO-Revision-Date: 2004-03-21 23:33+0800\n"
+"PO-Revision-Date: 2004-06-03 10:50-0400\n"
 "Last-Translator: jan2xue <75jan@163.com>\n"
 "Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Report-Msgid-Bugs-To: \n"
+"Content-Transfer-Encoding: 8bit"
 
 #. Add the window icon and title
 #: gnomemeeting.desktop.in.h:1 src/main_window.cpp:1179
@@ -273,7 +273,7 @@ msgstr "如果启用，在收到呼叫时显示弹出窗口"
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below"
-msgstr "如果启用，全部拨入的呼叫都被转发到下面指定的主机"
+msgstr "如果启用，全部拨入的呼叫都被转移到下面指定的主机"
 
 #: gnomemeeting.schemas.in.in.h:54
 msgid ""
@@ -281,13 +281,13 @@ msgid ""
 "specified in the field below if you already are in a call or if you are in "
 "Do Not Disturb mode"
 msgstr ""
-"如果启用，您在通话中或处于请勿打扰的模式时全部来电都会被转发到下面指定的主机"
+"如果启用，您在通话中或处于请勿打扰的模式时全部来电都会被转移到下面指定的主机"
 
 #: gnomemeeting.schemas.in.in.h:55
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you do not answer the call"
-msgstr "如果启用，全部您不应答的呼叫都被转发到下面指定的主机"
+msgstr "如果启用，全部您不应答的呼叫都被转移到下面指定的主机"
 
 #: gnomemeeting.schemas.in.in.h:56
 msgid "If enabled, allows video to be received during a call"
@@ -604,7 +604,7 @@ msgstr "用于关守验证的 H.235 密码"
 msgid ""
 "The Gateway host is the host to use to do H.323 calls through a gateway that "
 "will relay calls"
-msgstr "网关主机是一个可以转发一个 H.323 呼叫的主机"
+msgstr "网关主机是一个可以转移一个 H.323 呼叫的主机"
 
 #: gnomemeeting.schemas.in.in.h:128
 msgid ""
@@ -655,7 +655,7 @@ msgstr "最后的 100 个接入的呼叫历史纪录"
 
 #: gnomemeeting.schemas.in.in.h:138 src/pref_window.cpp:994
 msgid "The host where calls should be forwarded to in the cases selected above"
-msgstr "以上情况下将呼叫转发到此主机"
+msgstr "以上情况下将呼叫转移到此主机"
 
 #: gnomemeeting.schemas.in.in.h:139
 msgid "The image height for fullscreen"
@@ -706,7 +706,7 @@ msgstr "接收音频时用的抗抖动缓冲大小(毫秒)"
 msgid ""
 "The minimum number of video frames to transmit each second when trying to "
 "minimize the bandwidth"
-msgstr "试图减少带宽占用时，要保证的每秒传送的视频帧数量的最小值"
+msgstr "试图将带宽占用最小化时，要保证的每秒传送的视频帧数量的最小值"
 
 #: gnomemeeting.schemas.in.in.h:150
 #, no-c-format
@@ -843,7 +843,7 @@ msgid ""
 "to the given URL, if any"
 msgstr ""
 "对来电做出反应的方式：0 显示一个弹出窗口，1 自动应答来电，2 自动拒绝来电，3 "
-"无论哪种情况一律转发来电到指定的 URL。"
+"无论哪种情况一律转移来电到指定的 URL。"
 
 #: gnomemeeting.schemas.in.in.h:172
 msgid "The zoom value"
@@ -982,7 +982,7 @@ msgstr "稍候(_H)"
 
 #: src/callbacks.cpp:128
 msgid "Transfer call to:"
-msgstr "将呼叫转发到："
+msgstr "将呼叫转移到："
 
 #: src/callbacks.cpp:129
 msgid "Transfer"
@@ -1042,8 +1042,8 @@ msgstr ""
 "Chung-Yen Chang <candyz at linux.org.tw>\n"
 "llc <llc@www.linuxfans.org>\n"
 "Funda Wang <fundawang@linux.net.cn>\n"
-"jan2xue <75jan@163.com>\n"
-"Liu Songhe <jackliu9999@263.net>"
+"Liu Songhe <jackliu9999@263.net>\n"
+"jan2xue <75jan@163.com>"
 
 #. Translators: Please test to see if your translation
 #. * looks OK and fits within the box
@@ -1089,9 +1089,9 @@ msgid ""
 "degradation in the case of lost frames, which occurs in connection with lost "
 "or delayed IP packets."
 msgstr ""
-"iLBC-13k3 (互连网低位率编解码器) 是一个适用于稳定的 IP 语音通讯的自由的语音编"
+"iLBC-13k3 (互联网低位率编解码器) 是一个适用于在 IP 网传送语音的自由语音编"
 "解码器。该编解码器是针对窄带宽交谈设计，其结果是有效负载位率 13.33 kbit/s，编"
-"码长度为 30 ms。iLBC 编解码器在丢帧的时候话音质量降低不多，丢帧发生在有丢失或"
+"码长度为 30 毫秒。iLBC 编解码器在丢帧的时候话音质量降低不多，丢帧发生在有丢失或"
 "延迟 IP 数据包的连接上。"
 
 #: src/codec_info.h:53 src/codec_info.h:55 src/codec_info.h:57
@@ -1113,9 +1113,9 @@ msgid ""
 "in the case of lost frames, which occurs in connection with lost or delayed "
 "IP packets."
 msgstr ""
-"iLBC-15k2 (互连网低位率编解码器) 是一个适用于稳定的 IP 语音通讯的自由的语音编"
+"iLBC-15k2 (互连网低位率编解码器) 是一个适用于在 IP 网传送语音的自由语音编"
 "解码器。该编解码器是针对窄带宽交谈设计，其结果是有效负载位率 15.20 kbit/s，编"
-"码长度为 20 ms。iLBC 编解码器在丢帧的时候话音质量降低不多，丢帧发生在有丢失或"
+"码长度为 20 毫秒。iLBC 编解码器在丢帧的时候话音质量降低不多，丢帧发生在有丢失或"
 "延迟 IP 数据包的连接上。"
 
 #: src/codec_info.h:55
@@ -1133,6 +1133,11 @@ msgid ""
 "Xiph.org variant of the BSD license. SpeexNarrow-15k is based on CELP and is "
 "designed to compress voice at a payload bitrate of 15 kbps."
 msgstr ""
+"Speex 是一个采用开放(非专利保护的)的语音压缩格式的为语音应用所设计的开源/自由"
+"软件。Speex 项目的目标是通过提供一个众多昂贵专有语音解码器之外的自由选择来降低语"
+"音应用的门槛。除此之外，Speex 非常适合 Internet 环境下的应用，它提供了大多数解码"
+"器没有的功能和特性。最重要的是，Speex 是 GNU 项目的一部分，在 Xiph.org (BSD 许可的"
+"一个变种)许可下发布。SpeexNarrow-15k 基于 CELP 设计，声音压缩在 15kbps。"
 
 #: src/codec_info.h:57
 msgid "15 Kbps"
@@ -1149,6 +1154,11 @@ msgid ""
 "Xiph.org variant of the BSD license. SpeexNarrow-8k is based on CELP and is "
 "designed to compress voice at a payload bitrate of 8 kbps."
 msgstr ""
+"Speex 是一个采用开放(非专利保护的)的语音压缩格式的为语音应用所设计的开源/自由"
+"软件。Speex 项目的目标是通过提供一个众多昂贵专有语音解码器之外的自由选择来降低语"
+"音应用的门槛。除此之外，Speex 非常适合 Internet 环境下的应用，它提供了大多数解码"
+"器没有的功能和特性。最重要的是，Speex 是 GNU 项目的一部分，在 Xiph.org (BSD 许可的"
+"一个变种)许可下发布。SpeexNarrow-8k 基于 CELP 设计，声音压缩在 8kbps。"
 
 #: src/codec_info.h:59 src/codec_info.h:61 src/codec_info.h:67
 msgid "Good"
@@ -1168,6 +1178,10 @@ msgid ""
 "format, they use 65-byte-frames (2 x 32 1/2) rather than rounding to 33, and "
 "they number the bits in their bytes from the other end."
 msgstr ""
+"MS-GSM 是微软的 GSM 06.10 版本。GSM 06.10 是大多数欧洲无线电话所采用的语音压缩标"
+"准，它使用RPE/LTP编码压缩13位采样的160个50Hz的帧到260位编码，达到13kbps的速"
+"率。微软的GSM 06.10编码与标准的帧格式不兼容，它使用65字节帧(2 x 32 1/2)而不是"
+"舍入到33。"
 
 #: src/codec_info.h:61
 msgid "13 Kbps"
@@ -1182,6 +1196,10 @@ msgid ""
 "converts 13 bit linear PCM samples into 8 bit compressed PCM (logarithmic "
 "form) samples, and the decoder does the conversion vice versa."
 msgstr ""
+"G.711是64kbps电话语音编码的国际标准。它是以8kHz为采样频率的PCM编码。每个采样"
+"使用8位，完全符合ITU-T的推荐标准。这个标准有两种格式，A-Law和u-Law，A-"
+"Law G.711 PCM编码器转换13位线性PCM采样到8位压缩PCM(log对数形式)采样，解码器进"
+"行逆变换。"
 
 #: src/codec_info.h:63 src/codec_info.h:65
 msgid "64 Kbps"
@@ -1196,6 +1214,10 @@ msgid ""
 "converts 14 bit linear PCM samples into 8 bit compressed PCM (logarithmic "
 "form) samples, and the decoder does the conversion vice versa."
 msgstr ""
+"G.711是64kbps电话语音编码的国际标准。它是以8kHz为采样频率的PCM编码。每个采样"
+"使用8位，完全符合ITU-T的推荐标准。这个标准有两种格式，A-Law和u-Law，u-Law "
+"G.711 PCM编码器转换14位线性PCM采样到8位压缩PCM(log对数形式)采样，解码器进行逆"
+"变换。"
 
 #: src/codec_info.h:67
 msgid ""
@@ -1204,6 +1226,8 @@ msgid ""
 "pulse excitation/long term prediction) coding to compress frames of 20 ms, "
 "achieving a bitrate of 13kbps."
 msgstr ""
+"GSM 06.10是欧洲地区第一代数字移动电话所采用的语音压缩标准，它使用RPE/LTP编码"
+"压缩20ms的帧,达到13kbps的速率。"
 
 #: src/codec_info.h:67
 msgid "16.5 Kbps"
@@ -1215,6 +1239,8 @@ msgid ""
 "compression and decompression at rates of 16, 24, 32 and 40 Kbps based on "
 "Adaptive Differential Pulse Code Modulation (ADPCM)."
 msgstr ""
+"G.726遵从ITU-T G.726推荐的语音压缩与解压缩标准，提供基于(ADPCM)的16,24,32和"
+"40kbps的编码。"
 
 #: src/codec_info.h:69
 msgid "32 Kbps"
@@ -1227,10 +1253,13 @@ msgid ""
 "for realtime encode and decode. That codec is only available in GnomeMeeting "
 "when using Quicknet cards due to patents restrictions."
 msgstr ""
+"G.723.1遵从ITU-T G.723.1推荐，它为标准电话线上的视频/电话会议而设计，因此为实"
+"时编码解码进行了优化。由于专利限制，这个编码器只有使用Quicknet卡时才在"
+"GnomeMeeting中可用。"
 
 #: src/codec_info.h:71
 msgid "6.3 or 5.7 Kbps"
-msgstr "6.3 or 5.7 Kbps"
+msgstr "6.3 或 5.7 Kbps"
 
 #: src/config-tool-i18n.h:1
 msgid "YES"
@@ -1422,7 +1451,7 @@ msgid ""
 "An error has happened in the configuration backend.\n"
 "Maybe some of your settings won't be saved."
 msgstr ""
-"后端设置时出错\n"
+"配置后端出错。\n"
 "可能一些设置无法被保存。"
 
 #: src/config.cpp:1911 src/ldap_window.cpp:2540
@@ -1440,12 +1469,12 @@ msgstr "家人"
 #: src/connection.cpp:153
 #, c-format
 msgid "Opened codec %s for transmission"
-msgstr "打开 %s 编解码器用于传输"
+msgstr "已打开 %s 编解码器用于传输"
 
 #: src/connection.cpp:156
 #, c-format
 msgid "Closed codec %s which was opened for transmission"
-msgstr "关闭用于传输的 %s 编解码器"
+msgstr "已关闭用于传输的 %s 编解码器"
 
 #: src/connection.cpp:160
 #, c-format
@@ -1470,12 +1499,12 @@ msgstr "为接收打开 %s 失败，将会尝试下一个公共编解码器"
 #: src/connection.cpp:314 src/connection.cpp:315 src/urlhandler.cpp:77
 #: src/urlhandler.cpp:78
 msgid "Call transfer failed"
-msgstr "呼叫转发失败"
+msgstr "呼叫转移失败"
 
 #: src/connection.cpp:314
 msgid ""
 "The remote user tried to transfer your call to another user, but it failed."
-msgstr "远程用户试图将您的呼叫转发到其它用户，但转发失败。"
+msgstr "远程用户试图将您的呼叫转移到其他用户，但转移失败。"
 
 #: src/druid.cpp:266 src/druid.cpp:668 src/druid.cpp:685 src/druid.cpp:723
 #: src/endpoint.cpp:1700 src/gnomemeeting.cpp:316 src/gnomemeeting.cpp:318
@@ -1622,6 +1651,8 @@ msgid ""
 "GnomeMeeting will use during calls. You can later change the settings "
 "individually in the preferences window."
 msgstr ""
+"联接类型允许检测在GnomeMeeting呼叫中可使用的最好质量，你可以随后在首选项窗口"
+"中单独改变设置。"
 
 #: src/druid.cpp:978
 #, c-format
@@ -2221,7 +2252,7 @@ msgstr "地址簿中已经存在相同 URL 的其它联系人。"
 #: src/ldap_window.cpp:1008
 #, c-format
 msgid "Are you sure you want to remove %s [%s] from this group?"
-msgstr "您确定想要从这个组删除 %s [%s]？"
+msgstr "您确定想要从这个组删除 %s[%s] 吗？"
 
 #: src/ldap_window.cpp:1114
 #, c-format
@@ -2234,7 +2265,7 @@ msgstr "呼叫联系人(_A)"
 
 #: src/ldap_window.cpp:1146 src/ldap_window.cpp:2607
 msgid "_Tranfer Call to Contact"
-msgstr "将呼叫转发到该联系人(_T)"
+msgstr "将呼叫转移到该联系人(_T)"
 
 #: src/ldap_window.cpp:1158 src/ldap_window.cpp:2624
 msgid "Contact _Properties"
@@ -2359,7 +2390,7 @@ msgstr "将联系人添加到地址簿(_A)"
 #. Translators: This is "S" as in "Status"
 #: src/ldap_window.cpp:2874
 msgid "S"
-msgstr "状态"
+msgstr "态"
 
 #. Translators: This is "A" as in "Audio"
 #: src/ldap_window.cpp:2884 src/pref_window.cpp:1099 src/pref_window.cpp:1526
@@ -2627,7 +2658,7 @@ msgstr "传送呼叫(_T)"
 
 #: src/menu.cpp:284
 msgid "Transfer the current call"
-msgstr "转发当前呼叫"
+msgstr "转移当前呼叫"
 
 #: src/menu.cpp:291
 msgid "Suspend or resume the audio transmission"
@@ -3798,7 +3829,7 @@ msgstr "GnomeMeeting 拖盘图标"
 msgid ""
 "The call transfer failed, the user was either unreachable, or simply busy "
 "when he received the call transfer request."
-msgstr "呼叫转发失败，用户不可达，或者只是当收到呼叫转发请求时正占线。"
+msgstr "呼叫转移失败，用户不可达，或者只是当收到呼叫转移请求时正占线。"
 
 #: src/urlhandler.cpp:289
 #, c-format
@@ -3823,7 +3854,7 @@ msgstr "正在呼叫 %s"
 #: src/urlhandler.cpp:328
 #, c-format
 msgid "Transferring call to %s"
-msgstr "正在将呼叫转发到 %s"
+msgstr "正在将呼叫转移到 %s"
 
 #: src/videograbber.cpp:317
 #, c-format
