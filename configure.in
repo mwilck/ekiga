@@ -126,8 +126,19 @@ dnl -D_DEBUG -DPMEMORY_CHECK=1 -DPTRACING -g
     AC_MSG_RESULT([yes])
     gm_platform="freebsd"
     ;;
+
+  darwin* )
+    H323_CFLAGS="-DSPEEX_CODEC -DP_MACOSX -DP_SSL -DP_PTHREADS  $ARCH_H323_CFLAGS -O2 -Wall -DNO_LONG_DOUBLE -DPHAS_TEMPLATES -DHAS_ESD"
+    H323_LIBS="-lh323_Darwin_ppc_r_s -lpt_Darwin_ppc_r_s -lssl -lcrypto"
+    LIBPT_FILE="libpt_Darwin_ppc_r_s.a"
+    LIBOPENH323_FILE="libh323_Darwin_ppc_r_s.a"
+    HAS_SPEEX="enabled"
+    AC_MSG_RESULT([yes])
+    gm_platform="freebsd"
+    ;;
+
   *)
-    AC_MSG_ERROR("Only Linux and FreeBSD are supported. Please contact the author. You can add more OS types.")
+    AC_MSG_ERROR("Only Linux FreeBSD and Mac OS X are supported. Please contact the author. You can add more OS types.")
     ;;
 esac
 
