@@ -318,7 +318,7 @@ BOOL GMILSClient::ils_register (BOOL reg)
 	    {
 	      gdk_threads_enter ();
 	      
-	      msg = g_strdup_printf (_("Error while connecting to ILS directory %s, port %s :\nNo answer from server."), opts->ldap_server, opts->ldap_port);
+	      msg = g_strdup_printf (_("Error while connecting to ILS directory %s, port %s:\nNo answer from server."), opts->ldap_server, opts->ldap_port);
 
 	      msg_box = gnome_message_box_new (msg, GNOME_MESSAGE_BOX_ERROR,
 					       GNOME_STOCK_BUTTON_OK, NULL);
