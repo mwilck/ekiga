@@ -19,6 +19,18 @@ IMAGE_FILES = \
 	status-ringing-16.png	\
 	status-occupied-16.png
 
+EMOTICONS_FILES = \
+	emoticon-face1.png \
+	emoticon-face2.png \
+	emoticon-face3.png \
+	emoticon-face4.png \
+	emoticon-face5.png \
+	emoticon-face6.png \
+	emoticon-face7.png \
+	emoticon-face8.png \
+	emoticon-face9.png \
+	emoticon-face10.png \
+	emoticon-face11.png 
 
 IMAGES= \
 	gm_ils_directory_stock_data ils-directory.png \
@@ -36,7 +48,23 @@ IMAGES= \
 	gm_status_ringing_stock_data status-ringing-16.png \
 	gm_status_occupied_stock_data status-occupied-16.png 
 
-noinst_DATA = inlines.h
+EMOTICONS= \
+	gm_emoticon_face1 emoticon-face1.png \
+	gm_emoticon_face2 emoticon-face2.png \
+	gm_emoticon_face3 emoticon-face3.png \
+	gm_emoticon_face4 emoticon-face4.png \
+	gm_emoticon_face5 emoticon-face5.png \
+	gm_emoticon_face6 emoticon-face6.png \
+	gm_emoticon_face7 emoticon-face7.png \
+	gm_emoticon_face8 emoticon-face8.png \
+	gm_emoticon_face9 emoticon-face9.png \
+	gm_emoticon_face10 emoticon-face10.png \
+	gm_emoticon_face11 emoticon-face11.png 
+
+noinst_DATA = inlines.h inline_emoticons.h
 
 inlines.h: $(IMAGE_FILES) Makefile.am
 	gdk-pixbuf-csource --raw --build-list $(IMAGES) > inlines.h
+
+inline_emoticons.h: $(EMOTICONS_FILES) Makefile.am
+	gdk-pixbuf-csource --raw --build-list $(EMOTICONS) > inline_emoticons.h

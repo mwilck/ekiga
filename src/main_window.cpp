@@ -890,7 +890,7 @@ gnomemeeting_init (GmWindow *gw,
   gchar *alias = NULL;
   bool show_splash;
   GConfClient *client;
-  int esd_client = 0;
+
 
   /* Cope with command line options */
   static struct poptOption arguments[] =
@@ -1037,18 +1037,6 @@ gnomemeeting_init (GmWindow *gw,
   }
   
 
-  /* Search for devices */
-  gnomemeeting_sound_daemons_suspend ();
-  gw->audio_player_devices = 
-    PSoundChannel::GetDeviceNames (PSoundChannel::Player);
-
-  gw->audio_recorder_devices = 
-    PSoundChannel::GetDeviceNames (PSoundChannel::Recorder);
-
-  gw->video_devices = PVideoInputDevice::GetInputDeviceNames ();
-  gnomemeeting_sound_daemons_resume ();
-
-
   /* Build the interface */
   gnomemeeting_init_history_window ();
   gnomemeeting_init_calls_history_window ();
@@ -1058,10 +1046,22 @@ gnomemeeting_init (GmWindow *gw,
   gnomemeeting_init_menu ();
   gnomemeeting_init_toolbar ();
 
- 
+
+  /* Search for devices */
+  gnomemeeting_sound_daemons_suspend ();
+  gw->audio_player_devices = 
+    PSoundChannel::GetDeviceNames (PSoundChannel::Player);
+
+  gw->audio_recorder_devices = 
+    PSoundChannel::GetDeviceNames (PSoundChannel::Recorder);
+
+  gw->video_devices = PVideoInputDevice::GetInputDeviceNames ();
+
   /* Launch the GnomeMeeting H.323 part */
   static GnomeMeeting instance;
   endpoint = MyApp->Endpoint ();
+  gnomemeeting_sound_daemons_resume ();
+
 
   if (clo->debug_level != 0)
     PTrace::Initialise (clo->debug_level);
