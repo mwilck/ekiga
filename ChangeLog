@@ -1,3 +1,11 @@
+2004-03-28  Damien Sandras  <dsandras@seconix.com>
+
+        * configure.in: Do not check for scrollkeeper when --disable-gnome
+        is used. Do not install the help either.
+
+        * Makefile.am: Do not go in the help directory if --disable-gnome
+        is used.
+
 2004-03-27  Damien Sandras  <dsandras@seconix.com>
 
         * Makefile.am: Do not install GConf SCHEMAS if --disable-gnome

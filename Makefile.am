@@ -1,5 +1,12 @@
+### Don't execute make in the help subdirectory if DISABLE_GNOME is set
+if DISABLE_GNOME
+SUBDIRS = man sounds xdap_data pixmaps lib src po 
+else
 SUBDIRS = man sounds xdap_data help pixmaps lib src po 
+endif
 
+
+### Intltool on the desktop and on the schemas files
 @INTLTOOL_DESKTOP_RULE@
 @INTLTOOL_SCHEMAS_RULE@
 
@@ -8,10 +15,15 @@ DESKTOP_FILES=$(DESKTOP_IN_FILES:.desktop.in=.desktop)
 
 SCHEMAS_FILE = gnomemeeting.schemas
 
-EXTRA_DIST = $(DESKTOP_IN_FILES) $(DESKTOP_FILES) intltool-extract.in intltool-merge.in intltool-update.in FAQ $(SCHEMAS_FILE) src/gnomemeeting.server
+
+### Extra dist
+EXTRA_DIST = $(DESKTOP_IN_FILES) $(DESKTOP_FILES) intltool-extract.in intltool-merge.in intltool-update.in FAQ README $(SCHEMAS_FILE) src/gnomemeeting.server
 Applicationsdir = $(datadir)/applications
 Applications_DATA = $(DESKTOP_FILES)
 
+
+### Install the schemas file in /etc if GNOME support is not compiled in,
+### and do not install the schemas at all
 if DISABLE_GNOME
 schemasdir = $(sysconfdir)/gnomemeeting
 schemas_DATA = $(SCHEMAS_FILE)
