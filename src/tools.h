@@ -59,14 +59,14 @@ GtkWidget *gnomemeeting_calls_history_window_new (GmCallsHistoryWindow *);
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Populate the history window.
+ * BEHAVIOR     :  Populate the calls history window.
  * PRE          :  /
  */
 void gnomemeeting_calls_history_window_populate ();
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Add a call to the history window.
+ * BEHAVIOR     :  Add a call to the calls history window.
  * PRE          :  /
  */
 void gnomemeeting_calls_history_window_add_call (int,

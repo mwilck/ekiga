@@ -1222,7 +1222,7 @@ contact_clicked_cb (GtkWidget *w,
 	    }
 	  }
 	}
-	else /* No props and delete if the contact is in the history */
+	else /* No props and delete if the contact is in the calls history */
 	  server_contact_menu [1] = endt;	
 
 	gtk_build_menu (menu, server_contact_menu, NULL, NULL);
@@ -1781,7 +1781,7 @@ call_user_cb (GtkWidget *w,
  *                 a row corresonding to an user.
  * BEHAVIOR     :  Add the user name in the combo box and call him or transfer
  *                 the call to that user.
- * PRE          :  data is the page type or 3 if contact activated from history
+ * PRE          :  data is the page type or 3 if contact activated from calls history
  */
 void 
 contact_activated_cb (GtkTreeView *tree_view,
@@ -1818,7 +1818,7 @@ contact_activated_cb (GtkTreeView *tree_view,
     if (contact_url) {	  
     
       /* if we are waiting for a call, add the IP
-	 to the history, and call that user       */
+	 to the calls history, and call that user       */
       if (GnomeMeeting::Process ()->Endpoint ()->GetCallingState () == GMH323EndPoint::Standby) {
       
 	/* this function will store a copy of text */

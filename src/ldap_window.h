@@ -181,7 +181,7 @@ gint contact_clicked_cb (GtkWidget *,
  *                 a row corresonding to an user.
  * BEHAVIOR     :  Add the user name in the combo box and call him or transfer
  *                 the call to that user.
- * PRE          :  data is the page type or 3 if contact activated from history
+ * PRE          :  data is the page type or 3 if contact activated from calls history
  */
 void contact_activated_cb (GtkTreeView *,
 			   GtkTreePath *,
