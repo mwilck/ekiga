@@ -36,6 +36,7 @@
 #include "ils.h"
 #include "gnomemeeting.h"
 #include "callbacks.h"
+#include "history-combo.h"
 
 #include "../pixmaps/ldap_refresh.xpm"
 #include "../pixmaps/small-close.xpm"
@@ -216,7 +217,7 @@ void refresh_button_clicked (GtkButton *button, gpointer data)
   }
 
   /* Put the current entry in the history of the combo */
-  gnomemeeting_history_combo_box_add_entry (GTK_COMBO (lw->ils_server_combo),
+  gm_history_combo_add_entry (GM_HISTORY_COMBO (lw->ils_server_combo),
 					    "/apps/gnomemeeting/history/ldap_servers",
 					    entry_content);
 
@@ -455,7 +456,7 @@ void gnomemeeting_init_ldap_window ()
 
   /* ILS directories combo box */
   lw->ils_server_combo = 
-    gnomemeeting_history_combo_box_new ("/apps/gnomemeeting/history/ldap_servers");
+    gm_history_combo_new ("/apps/gnomemeeting/history/ldap_servers");
 //  gtk_combo_disable_activate (GTK_COMBO(lw->ils_server_combo));
   stored_contacts = 
     gconf_client_get_string (client, 
