@@ -1300,13 +1300,13 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook)
 #ifdef HAS_SDL  
   pw->fullscreen_width =
     gnomemeeting_pref_window_add_spin (table, _("Fullscreen Width:"),       
-				       "/apps/gnomemeeting/general/fullscreen_width",
+				       "/apps/gnomemeeting/video_display/fullscreen_width",
 				       _("The image width for fullscreeen."),
 				       0.0, 640.0, 10.0, 0);
 
   pw->fullscreen_height =
     gnomemeeting_pref_window_add_spin (table, _("Fullscreen Height:"),       
-				       "/apps/gnomemeeting/general/fullscreen_height",
+				       "/apps/gnomemeeting/video_display/fullscreen_height",
 				       _("The image height for fullscreeen."),
 				       0.0, 480.0, 10.0, 1);
 #endif
