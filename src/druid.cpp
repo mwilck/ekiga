@@ -84,7 +84,13 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
     gconf_client_set_bool (client, "/apps/gnomemeeting/ldap/register", 
 			   false, NULL);
 
-  gconf_client_set_int (client, "/apps/gnomemeeting/general/version", MAJOR_VERSION * 100 + MINOR_VERSION, 0);
+  gconf_client_set_int (client, "/apps/gnomemeeting/general/version", 
+			MAJOR_VERSION * 100 + MINOR_VERSION, 0);
+
+  gconf_client_set_int (client, "/apps/gnomemeeting/general/kind_of_net",
+			GPOINTER_TO_INT (g_object_get_data (G_OBJECT (druid),
+							    "kind_of_net")),
+			NULL);  
 
   gtk_widget_destroy (GTK_WIDGET (window));
   gtk_widget_show (gm);
@@ -291,8 +297,9 @@ gnomemeeting_druid_radio_changed (GtkToggleButton *b, gpointer data)
   }
 
   /* Custom */
-  gconf_client_set_int (client, "/apps/gnomemeeting/general/kind_of_net",
-			selection, NULL);
+  /* We store the selected network in the druid. Storeing right now in gconf doesn't
+     work, as it would be overwritten. We just write it when the user closes the druid */
+  g_object_set_data (G_OBJECT (druid), "kind_of_net", GINT_TO_POINTER (selection));
 }
 
 
