@@ -39,7 +39,6 @@
 #error "Only <contacts/gm_contacts.h> can be included directly."
 #endif
 
-
 #include <gtk/gtk.h>
 #include "gm_contacts.h"
 
@@ -48,49 +47,56 @@
 
 G_BEGIN_DECLS
 
-/* 
- * the various contacts' formats supported by this code
+
+/* this API that takes care about drag'n dropping of contacts */
+
+
+/* the three types of callback functions with this code:
+ * 1) "get contact" is called on the source when a drop occurred,
+ *    to get the GmContact that was dragged ;
+ * 2) "put contact" is called on the target when the drop occurred, it also
+ *    receives the contact information ;
+ * 3) "allow drop" is called on the target during the drag, in response to
+ *    motion events, and allow the target to react accordingly (highlight
+ *    itself, for example) ; it receives the position of the cursor in the
+ *    widget.
+ * All of them also get user data.
  */
+typedef GmContact *(*GmDndGetContact) (GtkWidget *, gpointer);
+typedef void (*GmDndPutContact) (GtkWidget *, GmContact *, 
+				 gint, gint, gpointer);
+typedef gboolean (*GmDndAllowDrop) (GtkWidget *, gint, gint, gpointer);
 
-typedef enum {
-  DND_GMCONTACT,
-  DND_VCARD,
-  DND_NUMBER_OF_TARGETS
-} dnd_type;
 
-static GtkTargetEntry dnd_targets [] =
-  {
-    {"GmContact", GTK_TARGET_SAME_APP, DND_GMCONTACT},
-    {"text/x-vcard", 0, DND_VCARD}
-  };
-
-/*
- * Declaration of the gtk callbacks
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Sets the widget as a source of contact information ;
+ *                the given callback will get the widget as first argument,
+ *                and the gpointer as last argument.
+ * PRE          : Assumes the widget and the callback are non-NULL.
  */
+void gm_contacts_dnd_set_source (GtkWidget *, GmDndGetContact, gpointer);
 
-/* All of them expect a widget with either a "GmDnd-Source" or "GmDndTarget"
- * data attached, containing the user-provided data when the widget was set up
- * as source/target, and a user_data pointer that is the user-defined callback
- * that manages only GmContact* contacts. That means they all check they get
- * non-NULL widget & callbacks. Additionally, those that get the info argument
- * check that it is a valid dnd_type.
- *
- * They are all gtk callbacks that translate the raw contact information to
- * a GmContact* contact information, then call the user-defined callbacks.
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Sets the widget as a target of contact information ;
+ *                the given callback will get the widget as first argument,
+ *                and the gpointer as last argument.
+ * PRE          : Assumes the widget and the callback are non-NULL.
  */
-
-void drag_data_get_cb (GtkWidget *widget, GdkDragContext *context,
-		       GtkSelectionData *data, guint info, guint time,
-		       gpointer user_data);
+void gm_contacts_dnd_set_dest (GtkWidget *, GmDndPutContact, gpointer);
 
 
-void drag_data_received_cb (GtkWidget *widget, GdkDragContext *context,
-			    gint x, gint y, GtkSelectionData *data,
-			    guint info, guint time, gpointer user_data);
-
-
-gboolean drag_motion_cb (GtkWidget *widget, GdkDragContext *context,
-			 int x, int y, guint time, gpointer user_data);
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Sets the widget as a target of contact information ;
+ *                the given callback will get the widget as first argument,
+ *                and the gpointer as last argument. The difference with
+ *                the former is that there's also a callback to probe if the
+ *                cursor really is in a drop zone.
+ * PRE          : Assumes the widget and the callbacks are non-NULL.
+ */
+void gm_contacts_dnd_set_dest_conditional (GtkWidget *, 
+					   GmDndPutContact, GmDndAllowDrop,
+					   gpointer);
 
 
 G_END_DECLS

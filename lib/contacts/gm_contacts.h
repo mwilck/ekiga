@@ -231,58 +231,13 @@ gboolean gnomemeeting_addressbook_modify_contact (GmAddressbook *,
 void gnomemeeting_addressbook_init (gchar *, gchar *);
 
 
-/* the part of the API that takes care about drag'n dropping of contacts */
-/* the three types of callback functions with this code:
- * 1) "get contact" is called on the source when a drop occurred,
- *    to get the GmContact that was dragged ;
- * 2) "put contact" is called on the target when the drop occurred, it also
- *    receives the contact information ;
- * 3) "allow drop" is called on the target during the drag, in response to
- *    motion events, and allow the target to react accordingly (highlight
- *    itself, for example) ; it receives the position of the cursor in the
- *    widget.
- * All of them also get user data.
- */
-typedef GmContact *(*GmDndGetContact) (GtkWidget *, gpointer);
-typedef void (*GmDndPutContact) (GtkWidget *, GmContact *, 
-				 gint, gint, gpointer);
-typedef gboolean (*GmDndAllowDrop) (GtkWidget *, gint, gint, gpointer);
-
-
-/* DESCRIPTION  : /
- * BEHAVIOR     : Sets the widget as a source of contact information ;
- *                the given callback will get the widget as first argument,
- *                and the gpointer as last argument.
- * PRE          : Assumes the widget and the callback are non-NULL.
- */
-void gm_contacts_dnd_set_source (GtkWidget *, GmDndGetContact, gpointer);
-
-
-/* DESCRIPTION  : /
- * BEHAVIOR     : Sets the widget as a target of contact information ;
- *                the given callback will get the widget as first argument,
- *                and the gpointer as last argument.
- * PRE          : Assumes the widget and the callback are non-NULL.
- */
-void gm_contacts_dnd_set_dest (GtkWidget *, GmDndPutContact, gpointer);
-
-
-/* DESCRIPTION  : /
- * BEHAVIOR     : Sets the widget as a target of contact information ;
- *                the given callback will get the widget as first argument,
- *                and the gpointer as last argument. The difference with
- *                the former is that there's also a callback to probe if the
- *                cursor really is in a drop zone.
- * PRE          : Assumes the widget and the callbacks are non-NULL.
- */
-void gm_contacts_dnd_set_dest_conditional (GtkWidget *, 
-					   GmDndPutContact, GmDndAllowDrop,
-					   gpointer);
-
-
-
 G_END_DECLS
 
+
+/* supplementary apis */
+#define _GM_CONTACTS_H_INSIDE__
+#include "gm_contacts-dnd.h"
+#undef _GM_CONTACTS_H_INSIDE__
 
 #endif
 

@@ -39,15 +39,80 @@
 #include "gm_contacts.h"
 #ifndef _GM_CONTACTS_H_INSIDE__
 #define _GM_CONTACTS_H_INSIDE__
-#include "gm_contacts-dnd.h"
 #include "gm_contacts-convert.h"
 #undef _GM_CONTACTS_H_INSIDE__
 #endif
+
+
 /* 
- * Implementation of the gtk callbacks that will do the real work
+ * the various contacts' formats supported by this code
  */
 
-void
+
+typedef enum {
+  DND_GMCONTACT, /* the internal contact format */
+  DND_VCARD, /* the vcard format, based on evolution-data-server's code */
+  DND_NUMBER_OF_TARGETS /* keep it last */
+} dnd_type;
+
+
+static GtkTargetEntry dnd_targets [] =
+  {
+    {"GmContact", GTK_TARGET_SAME_APP, DND_GMCONTACT},
+    {"text/x-vcard", 0, DND_VCARD}
+  };
+
+
+/*
+ * Declaration of the gtk callbacks
+ */
+
+
+/* All of them expect a widget with either a "GmDnd-Source" or "GmDnd-Target"
+ * data attached, containing the user-provided data when the widget was set up
+ * as source/target, and a user_data pointer that is the user-defined callback
+ * that manages only GmContact* contacts.
+ *
+ * That means they all check they get non-NULL widget & callbacks.
+ * Additionally, those that get the info argument check that it is a
+ * valid dnd_type.
+ *
+ * They are all gtk callbacks that translate the raw contact information to
+ * a GmContact* contact information, then call the user-defined callbacks.
+ */
+
+
+static void drag_data_get_cb (GtkWidget *widget, 
+			      GdkDragContext *context,
+			      GtkSelectionData *data, 
+			      guint info,
+			      guint time,
+			      gpointer user_data);
+
+
+static void drag_data_received_cb (GtkWidget *widget,
+				   GdkDragContext *context,
+				   gint x,
+				   gint y, 
+				   GtkSelectionData *data,
+				   guint info,
+				   guint time,
+				   gpointer user_data);
+
+
+static gboolean drag_motion_cb (GtkWidget *widget,
+				GdkDragContext *context,
+				int x, 
+				int y, 
+				guint time, 
+				gpointer user_data);
+
+
+/* 
+ * Implementation of the gtk callbacks
+ */
+
+static void
 drag_data_get_cb (GtkWidget *widget, 
 		  GdkDragContext *context,
                   GtkSelectionData *data, 
@@ -89,7 +154,7 @@ drag_data_get_cb (GtkWidget *widget,
 }
 
 
-void
+static void
 drag_data_received_cb (GtkWidget *widget,
 		       GdkDragContext *context,
                        gint x,
@@ -127,7 +192,7 @@ drag_data_received_cb (GtkWidget *widget,
 }
 
 
-gboolean 
+static gboolean 
 drag_motion_cb (GtkWidget *widget,
 		GdkDragContext *context,
 		int x,
@@ -145,4 +210,63 @@ drag_motion_cb (GtkWidget *widget,
   additional_data = g_object_get_data (G_OBJECT (widget), "GmDnD-Target");
   
   return checker (widget, x, y, additional_data);
+}
+
+
+/* Implementation of the external api */
+
+
+void
+gm_contacts_dnd_set_source (GtkWidget *widget,
+			    GmDndGetContact helper, 
+			    gpointer data)
+{
+  g_return_if_fail (widget != NULL);
+  g_return_if_fail (helper != NULL);
+
+  gtk_drag_source_set (widget, GDK_BUTTON1_MASK,
+                       dnd_targets, DND_NUMBER_OF_TARGETS,
+                       GDK_ACTION_COPY);
+
+  g_signal_connect (G_OBJECT (widget), "drag_data_get",
+                    G_CALLBACK (drag_data_get_cb), (gpointer)helper);
+
+  g_object_set_data (G_OBJECT (widget), "GmDnD-Source", data);
+}
+
+
+void
+gm_contacts_dnd_set_dest (GtkWidget *widget, 
+			  GmDndPutContact helper,
+			  gpointer data)
+{
+  g_return_if_fail (widget != NULL);
+  g_return_if_fail (helper != NULL);
+
+  gtk_drag_dest_set (widget,
+                     GTK_DEST_DEFAULT_ALL,
+                     dnd_targets, DND_NUMBER_OF_TARGETS,
+                     GDK_ACTION_COPY);
+  
+  g_signal_connect (G_OBJECT (widget), "drag_data_received",
+                    G_CALLBACK (drag_data_received_cb), (gpointer)helper);
+
+  g_object_set_data (G_OBJECT (widget), "GmDnD-Target", data);
+}
+
+
+void
+gm_contacts_dnd_set_dest_conditional (GtkWidget *widget, 
+				      GmDndPutContact helper,
+				      GmDndAllowDrop checker,
+				      gpointer data)
+{
+  g_return_if_fail (widget != NULL);
+  g_return_if_fail (helper != NULL);
+  g_return_if_fail (checker != NULL);
+
+  gm_contacts_dnd_set_dest (widget, helper, data);
+
+  g_signal_connect (G_OBJECT (widget), "drag_motion",
+		    G_CALLBACK (drag_motion_cb), (gpointer)checker);
 }
