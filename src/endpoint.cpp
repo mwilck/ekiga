@@ -702,6 +702,8 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
                                 const H323SignalPDU &, H323SignalPDU &)
 {
   char *msg = NULL;
+  
+  PString gateway;
   PString forward_host;
 
   int no_answer_timeout = 45;
@@ -710,14 +712,17 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   gchar *utf8_url = NULL;
   
   gchar *forward_host_gconf = NULL;
+  gchar *gateway_gconf = NULL;
+
   IncomingCallMode icm = AVAILABLE;
+  
   BOOL busy_forward = FALSE;
   BOOL show_popup = FALSE;
-
   BOOL do_forward = FALSE;
   BOOL do_reject = FALSE;
   BOOL do_answer = FALSE;
-
+  BOOL use_gateway = FALSE;
+  
 #ifdef HAS_IXJ
   GMLid *l = NULL;
 #endif    
@@ -730,14 +735,19 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
     (IncomingCallMode) gconf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
   show_popup = gconf_get_bool (USER_INTERFACE_KEY "show_popup");
   no_answer_timeout = gconf_get_int (CALL_OPTIONS_KEY "no_answer_timeout");
+  use_gateway = gconf_get_bool (H323_GATEWAY_KEY "use_gateway");
+  gateway_gconf = gconf_get_string (H323_GATEWAY_KEY "host");
   gnomemeeting_threads_leave ();
+
 
   if (forward_host_gconf)
     forward_host = PString (GMURL (forward_host_gconf).GetValidURL ());
   else
     forward_host = PString ("");
-
     
+  gateway = PString (gateway_gconf);
+
+
   /* Remote Name and application */
   GetRemoteConnectionInfo (connection, utf8_name, utf8_app, utf8_url);
 
@@ -808,6 +818,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
     gnomemeeting_threads_leave ();
 
     /* Free things, we will return */
+    g_free (gateway_gconf);
     g_free (forward_host_gconf);
     g_free (utf8_name);
     g_free (utf8_app);
@@ -827,6 +838,9 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
       gnomemeeting_threads_enter ();
       gnomemeeting_statusbar_push (gw->statusbar, _("Call forwarded"));
       gnomemeeting_threads_leave ();
+
+      if (use_gateway && !gateway.IsEmpty ())
+        forward_host = forward_host + "@" + gateway;
 
       return !connection.ForwardCall (forward_host);
     }
@@ -881,6 +895,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   SetCurrentCallToken (connection.GetCallToken ());
   SetCallingState (GMH323EndPoint::Called);
 
+  g_free (gateway_gconf);
   g_free (forward_host_gconf);
   g_free (utf8_name);
   g_free (utf8_app);

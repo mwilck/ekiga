@@ -47,6 +47,7 @@
 #include "callbacks.h"
 #include "tray.h"
 #include "lid.h"
+#include "sound_handling.h"
 
 #include "dialog.h"
 #include "gmentrydialog.h"
@@ -1558,6 +1559,12 @@ int main (int argc, char ** argv, char ** envp)
        1, N_("Makes GnomeMeeting call the given URL"), NULL},
       {NULL, '\0', 0, NULL, 0, NULL, NULL}
     };
+
+
+  /* Select the Mic as default source for OSS. Will be removed when
+   * ALSA will be everywhere 
+   */
+  gnomemeeting_mixers_mic_select ();
 
 
   /* GnomeMeeting Initialisation */

@@ -334,11 +334,11 @@ void GMURLHandler::Main ()
 
     gnomemeeting_threads_leave ();
   
+    if (use_gateway && !gateway.IsEmpty ()) 	
+      call_address = call_address + "@" + gateway;
+
     /* Connect to the URL */
     if (!transfer_call) {
-
-      if (use_gateway && !gateway.IsEmpty ()) 	
-	call_address = call_address + "@" + gateway;
 
       con = 
 	endpoint->MakeCallLocked (call_address, current_call_token);

@@ -1,5 +1,18 @@
 2004-02-10 Damien Sandras  <dsandras@seconix.com>
 
+	* configure.in: Fixed previous commit.
+
+	* src/endpoint.cpp: Made call forwarding go through the gateway if
+	any gateway is specified.
+	
+	* src/main_window.cpp: Added OSS mic selection code back. Johnny, you
+	must now work on an automated script!
+	
+	* src/urlhandler.cpp: Made call transfer go through the gateway
+	if any gateway is specified in the prefs.
+	
+2004-02-10 Damien Sandras  <dsandras@seconix.com>
+
 	* gnomemeeting.schemas.in.in: Enable Fast Start by default.
 
 	* configure.in: Incremented SCHEMA_AGE.
