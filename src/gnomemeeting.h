@@ -274,6 +274,9 @@ class GnomeMeeting : public PProcess
   GtkWidget *pc2phone_window;
   GtkWidget *tray;
 
+  /* other things */
+  GObject *dbus_component;
+
   static GnomeMeeting *GM;
 };
 

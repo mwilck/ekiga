@@ -36,8 +36,15 @@ install-schemas: gnomemeeting.schemas
 	GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) gconftool-2 --makefile-install-rule $(SCHEMAS_FILE) 2>&1 > /dev/null
 	gconftool-2 --shutdown
 
+install-services: gnomemeeting.service
+	cp gnomemeeting.service $(libdir)/dbus-1.0/services/
+
 if GCONF_SCHEMAS_INSTALL
 install-data-local: install-schemas 
 else
 install-data-local:
+endif
+
+if DBUS_SERVICES_INSTALL
+install-data-local: install-services
 endif

@@ -52,6 +52,9 @@
 #include "log_window.h"
 #include "main_window.h"
 #include "misc.h"
+#ifdef HAS_DBUS
+#include "dbus_component.h"
+#endif
 
 #include "dialog.h"
 #include "e-splash.h"
@@ -137,6 +140,8 @@ GnomeMeeting::~GnomeMeeting()
     gtk_widget_destroy (main_window);
   if (druid_window)
     gtk_widget_destroy (druid_window);
+  if (dbus_component)
+    g_object_unref (dbus_component);
 }
 
 
@@ -416,6 +421,11 @@ void GnomeMeeting::BuildGUI ()
   druid_window = gm_druid_window_new ();
 #ifndef WIN32
   tray = gm_tray_new ();
+#endif
+#ifdef HAS_DBUS
+  dbus_component = dbus_component_new (endpoint);
+#else
+  dbus_component = NULL;
 #endif
   main_window = gm_main_window_new ();
 
