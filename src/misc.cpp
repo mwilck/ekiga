@@ -173,8 +173,8 @@ assert_error_msg (gpointer data)
 {
   /* FIX ME: message */
   gdk_threads_enter ();
-  gnomemeeting_error_dialog (GTK_WINDOW (gm), 
-			     _("Error: %s\n"), (gchar *) data);
+  gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Generic error"),
+			     (gchar *) data);
   gdk_threads_leave ();
 
   return FALSE;

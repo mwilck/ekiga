@@ -1775,13 +1775,16 @@ GMH323EndPoint::OnILSTimeout (PTimer &, INT)
 
 
 BOOL 
-GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
-                                 BOOL isEncoding,
-                                 unsigned bufferSize,
-                                 H323AudioCodec & codec)
+GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
+				  BOOL isEncoding,
+				  unsigned bufferSize,
+				  H323AudioCodec &codec)
 {
   unsigned int vol_rec = 0, vol_play = 0;
   BOOL no_error = TRUE;
+
+  if (opened_audio_channels >= 2)
+    return FALSE;
 
   /* Wait that the primary call has terminated (in case of transfer)
      before opening the channels for the second call */
@@ -1806,7 +1809,6 @@ GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
   /* Suspend the daemons */
   gnomemeeting_sound_daemons_suspend ();
   gnomemeeting_threads_leave ();
-  opened_audio_channels++;
 
 #ifdef HAS_IXJ
   GMLid *l = NULL;
@@ -1860,21 +1862,27 @@ GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
      else
        device_name += GetSoundChannelPlayDevice ();
 
-     sound_channel = 
-       PDeviceManager::GetOpenedSoundDevice (device_name, 
-					     isEncoding? PDeviceManager::Input 
-					     : PDeviceManager::Output, 
-					     1, 8000, 16); 
 
-     if (sound_channel) {
+     if (device_name.Find (_("No device found")) == P_MAX_INDEX) {
 
-       /* Control the channel and attach it to the codec */
-       sound_channel->SetBuffers (bufferSize, soundChannelBuffers);
-       no_error = codec.AttachChannel (sound_channel);
+       sound_channel = 
+	 PDeviceManager::GetOpenedSoundDevice (device_name, 
+					       isEncoding? 
+					       PDeviceManager::Input 
+					       : PDeviceManager::Output, 
+					       1, 8000, 16); 
+
+       if (sound_channel) {
+
+	 /* Control the channel and attach it to the codec */
+	 sound_channel->SetBuffers (bufferSize, soundChannelBuffers);
+	 no_error = codec.AttachChannel (sound_channel);
+       }
+       else
+	 no_error = FALSE; /* No PSoundChannel */
      }
      else
-       no_error = FALSE;
-
+       return FALSE; /* Device was _("No device found"), ignore, no popup */
    }
 #else // not TRY_PLUGINS
   if (!H323EndPoint::OpenAudioChannel (connection,
@@ -1909,8 +1917,10 @@ GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
       gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Could not open audio channel for audio reception"), _("An error occured while trying to play audio to the soundcard for the audio reception. Please check that your soundcard is not busy and that your driver supports full-duplex.\nThe audio reception has been disabled."));
     gnomemeeting_threads_leave ();
   }
+  else 
+    opened_audio_channels++;
 
-  
+
   return no_error;
 }
 

@@ -327,6 +327,11 @@ GnomeMeeting::DetectDevices ()
     PDeviceManager::GetDeviceNames (audio_manager, PDeviceManager::SoundIn);
   gw->audio_player_devices = 
     PDeviceManager::GetDeviceNames (audio_manager, PDeviceManager::SoundOut);
+
+  if (gw->audio_recorder_devices.GetSize () == 0) 
+    gw->audio_recorder_devices += PString (_("No device found"));
+  if (gw->audio_player_devices.GetSize () == 0)
+    gw->audio_player_devices += PString (_("No device found"));
 #endif
 
 #ifdef TRY_PLUGINS

@@ -1,4 +1,16 @@
 2003-08-26 Damien Sandras  <dsandras@seconix.com>
+	
+	* src/endpoint.cpp: Do not display an error popup when the "No
+	device found" special device is opened. Do not even open it.
+	Added opened_audio_channels variable again to limit the number
+	of opened channels to 2.
+	
+	* src/gnomemeeting.cpp: Present "No device found" as possible
+	device when no devices are detected for a given manager.
+	
+	* src/misc.cpp: Fixed error message on Assertions.
+	
+2003-08-26 Damien Sandras  <dsandras@seconix.com>
 
 	* src/ils.cpp: s/free/g_free
 	
