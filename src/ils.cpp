@@ -877,7 +877,7 @@ void GMILSBrowser::Main ()
   gchar *utf8_remote_app = NULL;
   gchar *utf8_callto = NULL;
     
-  int rc = 0;
+  int rc = -1;
   LDAPMessage *res = NULL, *e = NULL;
 
   unsigned int v = 0, a = 0, b = 0, c = 0;
@@ -885,6 +885,7 @@ void GMILSBrowser::Main ()
   unsigned long int nmip = 0;
   int port = 1720;
   int users_nbr = 0;
+  int retry = 0;
 
   gchar *color = NULL;
   gchar *filter = NULL;
@@ -911,300 +912,307 @@ void GMILSBrowser::Main ()
   gw = MyApp->GetMainWindow ();  
   users_list_store =
     GTK_LIST_STORE (gtk_tree_view_get_model (GTK_TREE_VIEW (lwp->tree_view)));
-  gnomemeeting_statusbar_push (lwp->statusbar,
-			       _("Contacting %s..."), ldap_server);
   gnomemeeting_threads_leave ();
 
-  /* must be able to reach ldap server */
-  if (!(ldap_connection = ldap_init (ldap_server, 389))) {
-      
+  do {
+
     gnomemeeting_threads_enter ();
+    gnomemeeting_statusbar_push (lwp->statusbar,
+				 _("Contacting %s..."), ldap_server);
+    gnomemeeting_threads_leave ();
+
+    /* must be able to reach ldap server */
+    if (!(ldap_connection = ldap_init (ldap_server, 389))) {
+      
+      gnomemeeting_threads_enter ();
       gnomemeeting_statusbar_push (lwp->statusbar,
 				   _("Failed to contact LDAP server %s:%d."),
 				   ldap_server, "389");
-    gnomemeeting_threads_leave ();
-
-    no_error = FALSE;
-  }
-  /* Timeout */
-  else if (ldap_set_option (ldap_connection, LDAP_OPT_NETWORK_TIMEOUT, 
-			    &time_limit)
-	   != LDAP_OPT_SUCCESS) {
-     
-    gnomemeeting_threads_enter ();
-    gnomemeeting_statusbar_push (lwp->statusbar,
-				 _("Failed to set time limit on LDAP operations."));
-    gnomemeeting_threads_leave ();
-    
-    no_error = FALSE;  
-  }
-  /* must be able to bind to ldap server */
-  else if ((rc = ldap_bind_s (ldap_connection, NULL, NULL, 
-			      LDAP_AUTH_SIMPLE))) {
-    
-    gnomemeeting_threads_enter ();
-    gnomemeeting_statusbar_push (lwp->statusbar,
-			       _("Failed to contact to LDAP server %s: %s."),
-			       ldap_server, ldap_err2string (rc));
-    gnomemeeting_threads_leave ();
-    
-    no_error = FALSE;
-  }
-  /* all successful */
-  else {
-    
-    gnomemeeting_threads_enter ();        
-    gnomemeeting_statusbar_push (lwp->statusbar,
-				 _("Fetching online users list from %s."),
-				 ldap_server);
-    gnomemeeting_threads_leave ();
-
-    if (search_filter)
-      filter = g_strdup_printf ("(&(cn=%%)%s)", search_filter);
-    else
-      filter = g_strdup ("(&(cn=%))");
-
-    rc =
-      ldap_search_s (ldap_connection, "objectClass=RTPerson", 
-		     LDAP_SCOPE_BASE,
-		     filter, attrs, 0, &res); 
-    g_free (filter);
-
-    gnomemeeting_threads_enter ();
-    if (rc != 0)
-      if (rc == LDAP_SERVER_DOWN) 
-	gnomemeeting_statusbar_push (lwp->statusbar,
-				     _("Connection to %s lost..."),
-				     ldap_server);
-      else
-	gnomemeeting_statusbar_push (lwp->statusbar,
-				     _("Could not fetch online users list."));
-    gnomemeeting_threads_leave ();
-    
-    if (rc == 0 && users_list_store != NULL && res) { 
-
-      gnomemeeting_threads_enter ();
-      gtk_tree_view_set_model (GTK_TREE_VIEW (lwp->tree_view), NULL);
-      gtk_list_store_clear (GTK_LIST_STORE (users_list_store));
       gnomemeeting_threads_leave ();
-	
-      for (e = ldap_first_entry (ldap_connection, res); 
-	   e != NULL;
-	   e = ldap_next_entry (ldap_connection, e)) {
-	
-	users_nbr++;
-
-	char_ldap_data [0] = ldap_get_values(ldap_connection, e, "givenname");
-	char_ldap_data [1] = ldap_get_values (ldap_connection, e, "surname");
-	char_ldap_data [2] = ldap_get_values(ldap_connection, e, "location");
-	char_ldap_data [3] = ldap_get_values(ldap_connection, e, "comment");
-	char_ldap_data [4] = ldap_get_values(ldap_connection, e, "sappid");
-	char_ldap_data [5] =
-	  ldap_get_values(ldap_connection, e, "rfc822mailbox");
-	bool_ldap_data [0] =
-	  ldap_get_values(ldap_connection, e, "ilsa32964638"); /* video */
-	bool_ldap_data [1] =
-	  ldap_get_values(ldap_connection, e, "ilsa32833566"); /* audio */
-	bool_ldap_data [2] =
-	  ldap_get_values(ldap_connection, e, "ilsa26214430"); /* available */
-
-	sport = ldap_get_values(ldap_connection, e, "sport");
-	xstatus = ldap_get_values(ldap_connection, e, "xstatus");
-	ilsa26279966 = ldap_get_values(ldap_connection, e, "ilsa26279966");
-	sipaddress = ldap_get_values(ldap_connection, e, "sipaddress");
-
-
-	/* Free it here because we need to keep the last value to use it
-	   after the for */
-	if (num_users)
-	  g_strfreev (num_users);
-	
-
-	/* char LDAP data, to be converted to UTF-8 if not valid */
-	for (int i = 0 ; i < 6 ; i++) {
-	  
-	  if (char_ldap_data [i] && char_ldap_data [i] [0]) {
-	  
-	    if (!g_utf8_validate (char_ldap_data [i] [0], -1, NULL))
-	      utf8_char_ldap_data [i] =
-		gnomemeeting_from_iso88591_to_utf8 (PString (char_ldap_data [i] [0]));
-	    else
-	      utf8_char_ldap_data [i] =
-		g_strdup (char_ldap_data [i] [0]);
-	    
-	    ldap_value_free (char_ldap_data [i]);
-	    char_ldap_data [i] = NULL;
-	  }
-	}
-
-
-	/* bool LDAP data */
-	for (int i = 0 ; i < 3 ; i++) {
-
-	  if (bool_ldap_data [i] && bool_ldap_data [i] [0]) {
-	    
-	    b_ldap_data [i] = (bool) atoi (bool_ldap_data [i] [0]);
-	    ldap_value_free (bool_ldap_data [i]);
-	    bool_ldap_data [i] = NULL;
-	  }
-	}
-
-
-	/* Number of users: seconix.com specific */
-	if (xstatus && xstatus [0]) {
-
-	  num_users = g_strsplit (xstatus [0], ",", 0);
-	  ldap_value_free (xstatus);
-	  xstatus = NULL;
-	}
-
-
-	/* Remote application port */
-	if (sport && sport [0]) {
-
-	  port = atoi (sport [0]);
-
-	  /* Ignore data port */
-	  if (port == 1503 && sport [1])
-	    port = atoi (sport [1]);
-	  
-	  ldap_value_free (sport);
-	  sport = NULL;
-	}
-
-
-	/* Remote IP */
-	if (sipaddress && sipaddress [0]) {
-
-	  nmip = strtoul (sipaddress [0], NULL, 10);
-	  part1 = (nmip & 0xff000000) >> 24;
-	  part2 = (nmip & 0x00ff0000) >> 16;
-	  part3 = (nmip & 0x0000ff00) >> 8;
-	  part4 = nmip & 0x000000ff;
-
-	  ip =
-	    g_strdup_printf ("%d.%d.%d.%d:%d",
-			     part4, part3, part2, part1, port);
-
-	  ldap_value_free (sipaddress);
-	  sipaddress = NULL;
-	}
-
-
-	/* Remote application name and version */
-	if (ilsa26279966 && ilsa26279966 [0]) {
-	  
-	  v = atoi (ilsa26279966 [0]);
-	  a = (v & 0xff000000) >> 24;
-	  b = (v & 0x00ff0000) >> 16;
-	  c = v & 0x0000ffff;
-
-	  utf8_remote_app =
-	    g_strdup_printf ("%s %d.%d.%d",
-			     utf8_char_ldap_data [4] ?
-			     utf8_char_ldap_data [4] : "",
-			     a, b, c); 
-
-	  ldap_value_free (ilsa26279966);
-	  ilsa26279966 = NULL;
-	}
-	
-
-	/* Status icon */
-	gnomemeeting_threads_enter ();
-	if (!b_ldap_data [2]) {
-
-	  status_icon =
-	    gtk_widget_render_icon (lwp->tree_view, 
-				    GM_STOCK_STATUS_AVAILABLE,
-				    GTK_ICON_SIZE_MENU, NULL);
-	  color = g_strdup ("black");
-	} 
-        else {
-	 
-	  status_icon =
-	    gtk_widget_render_icon (lwp->tree_view, 
-				    GM_STOCK_STATUS_OCCUPIED,
-				    GTK_ICON_SIZE_MENU, NULL);
-	  color = g_strdup ("#8a8a8a");
-        }        
-	gnomemeeting_threads_leave ();
-
-	utf8_username =
-	  g_strdup_printf ("%s %s",
-			   utf8_char_ldap_data [0] ?
-			   utf8_char_ldap_data [0] : "",
-			   utf8_char_ldap_data [1] ?
-			   utf8_char_ldap_data [1] : "");
-	utf8_callto =
-	  g_strdup_printf ("callto:%s/%s",
-			   ldap_server,
-			   utf8_char_ldap_data [5] ?
-			   utf8_char_ldap_data [5] : "");
-
-	gnomemeeting_threads_enter ();
-	gtk_list_store_append (users_list_store, &list_iter);
-	gtk_list_store_set (users_list_store, &list_iter,
-			    COLUMN_ILS_STATUS, status_icon,
-			    COLUMN_ILS_AUDIO, b_ldap_data [1],
-			    COLUMN_ILS_VIDEO, b_ldap_data [0],
-			    COLUMN_ILS_NAME, utf8_username,
-			    COLUMN_ILS_URL, utf8_callto,
-			    COLUMN_ILS_LOCATION, utf8_char_ldap_data [2],
-			    COLUMN_ILS_COMMENT, utf8_char_ldap_data [3],
-			    COLUMN_ILS_VERSION, utf8_remote_app,
-			    COLUMN_ILS_IP, ip ? ip : "",
-			    COLUMN_ILS_COLOR, color,
-			    -1);
-	gnomemeeting_threads_leave ();
-
-
-	/* Free some memory and put the variables in their initial state */
-	for (int i = 0 ; i < 6 ; i++) {
-	  
-	  if (utf8_char_ldap_data [i])
-	    free (utf8_char_ldap_data [i]);
-
-	  utf8_char_ldap_data [i] = NULL;
-	}
-
-	for (int i = 0 ; i < 3 ; i++) {
-
-	  b_ldap_data [i] = false;
-	}
-	
-	g_free (ip);
-	g_free (color);
-	g_free (utf8_username);
-	g_free (utf8_remote_app);
-	g_free (utf8_callto);
-	ip = NULL;
-	color = NULL;
-	utf8_username = NULL;
-	utf8_remote_app = NULL;
-	utf8_callto = NULL;
-
-	gnomemeeting_threads_enter ();
-	g_object_unref (status_icon);
-	gnomemeeting_threads_leave ();
-      } /* end of for */
-
-      gnomemeeting_threads_enter ();
-      gtk_tree_view_set_model (GTK_TREE_VIEW (lwp->tree_view),
-			       GTK_TREE_MODEL (users_list_store));
-
-      if (num_users && num_users [1]) {
-
-	gnomemeeting_statusbar_push (lwp->statusbar, _("Search completed: %d user(s) listed on a total of %d user(s) from %s."), users_nbr, PMAX (atoi (num_users [1]), users_nbr), ldap_server);
-
-	g_strfreev (num_users);
-      }
-      else
-	gnomemeeting_statusbar_push (lwp->statusbar, _("Search completed: %d user(s) found on %s."), users_nbr, ldap_server);
-
-      gnomemeeting_threads_leave ();
+      
+      no_error = FALSE;
     }
+    /* Timeout */
+    else if (ldap_set_option (ldap_connection, LDAP_OPT_NETWORK_TIMEOUT, 
+			      &time_limit)
+	     != LDAP_OPT_SUCCESS) {
+     
+      gnomemeeting_threads_enter ();
+      gnomemeeting_statusbar_push (lwp->statusbar,
+				   _("Failed to set time limit on LDAP operations."));
+      gnomemeeting_threads_leave ();
+    
+      no_error = FALSE;  
+    }
+    /* must be able to bind to ldap server */
+    else if ((rc = ldap_bind_s (ldap_connection, NULL, NULL, 
+				LDAP_AUTH_SIMPLE))) {
+      
+      gnomemeeting_threads_enter ();
+      gnomemeeting_statusbar_push (lwp->statusbar, _("Failed to contact to LDAP server %s: %s."), ldap_server, ldap_err2string (rc));
+      gnomemeeting_threads_leave ();
+    
+      no_error = FALSE;
+    }
+    /* all successful */
+    else {
+    
+      gnomemeeting_threads_enter ();        
+      gnomemeeting_statusbar_push (lwp->statusbar,
+				   _("Fetching online users list from %s."),
+				   ldap_server);
+      gnomemeeting_threads_leave ();
+      
+      if (search_filter)
+	filter = g_strdup_printf ("(&(cn=%%)%s)", search_filter);
+      else
+	filter = g_strdup ("(&(cn=%))");
+
+      rc =
+	ldap_search_s (ldap_connection, "objectClass=RTPerson", 
+		       LDAP_SCOPE_BASE,
+		       filter, attrs, 0, &res); 
+      g_free (filter);
+
+      gnomemeeting_threads_enter ();
+      if (rc != 0)
+	if (rc == LDAP_SERVER_DOWN) 
+	  gnomemeeting_statusbar_push (lwp->statusbar,
+				       _("Connection to %s lost..."),
+				       ldap_server);
+	else
+	  gnomemeeting_statusbar_push (lwp->statusbar, _("Could not fetch online users list."));
+      gnomemeeting_threads_leave ();
+  
+      retry++;
+    }
+  } while ((rc == LDAP_SERVER_DOWN) && (retry <= 5));
+
+
+  if (rc == 0 && users_list_store != NULL && res) { 
+
+    gnomemeeting_threads_enter ();
+    gtk_tree_view_set_model (GTK_TREE_VIEW (lwp->tree_view), NULL);
+    gtk_list_store_clear (GTK_LIST_STORE (users_list_store));
+    gnomemeeting_threads_leave ();
+	
+    for (e = ldap_first_entry (ldap_connection, res); 
+	 e != NULL;
+	 e = ldap_next_entry (ldap_connection, e)) {
+	
+      users_nbr++;
+
+      char_ldap_data [0] = ldap_get_values(ldap_connection, e, "givenname");
+      char_ldap_data [1] = ldap_get_values (ldap_connection, e, "surname");
+      char_ldap_data [2] = ldap_get_values(ldap_connection, e, "location");
+      char_ldap_data [3] = ldap_get_values(ldap_connection, e, "comment");
+      char_ldap_data [4] = ldap_get_values(ldap_connection, e, "sappid");
+      char_ldap_data [5] =
+	ldap_get_values(ldap_connection, e, "rfc822mailbox");
+      bool_ldap_data [0] =
+	ldap_get_values(ldap_connection, e, "ilsa32964638"); /* video */
+      bool_ldap_data [1] =
+	ldap_get_values(ldap_connection, e, "ilsa32833566"); /* audio */
+      bool_ldap_data [2] =
+	ldap_get_values(ldap_connection, e, "ilsa26214430"); /* available */
+
+      sport = ldap_get_values(ldap_connection, e, "sport");
+      xstatus = ldap_get_values(ldap_connection, e, "xstatus");
+      ilsa26279966 = ldap_get_values(ldap_connection, e, "ilsa26279966");
+      sipaddress = ldap_get_values(ldap_connection, e, "sipaddress");
+
+
+      /* Free it here because we need to keep the last value to use it
+	 after the for */
+      if (num_users)
+	g_strfreev (num_users);
+	
+
+      /* char LDAP data, to be converted to UTF-8 if not valid */
+      for (int i = 0 ; i < 6 ; i++) {
+	  
+	if (char_ldap_data [i] && char_ldap_data [i] [0]) {
+	  
+	  if (!g_utf8_validate (char_ldap_data [i] [0], -1, NULL))
+	    utf8_char_ldap_data [i] =
+	      gnomemeeting_from_iso88591_to_utf8 (PString (char_ldap_data [i] [0]));
+	  else
+	    utf8_char_ldap_data [i] =
+	      g_strdup (char_ldap_data [i] [0]);
+	    
+	  ldap_value_free (char_ldap_data [i]);
+	  char_ldap_data [i] = NULL;
+	}
+      }
+
+
+      /* bool LDAP data */
+      for (int i = 0 ; i < 3 ; i++) {
+
+	if (bool_ldap_data [i] && bool_ldap_data [i] [0]) {
+	    
+	  b_ldap_data [i] = (bool) atoi (bool_ldap_data [i] [0]);
+	  ldap_value_free (bool_ldap_data [i]);
+	  bool_ldap_data [i] = NULL;
+	}
+      }
+
+
+      /* Number of users: seconix.com specific */
+      if (xstatus && xstatus [0]) {
+
+	num_users = g_strsplit (xstatus [0], ",", 0);
+	ldap_value_free (xstatus);
+	xstatus = NULL;
+      }
+
+
+      /* Remote application port */
+      if (sport && sport [0]) {
+
+	port = atoi (sport [0]);
+
+	/* Ignore data port */
+	if (port == 1503 && sport [1])
+	  port = atoi (sport [1]);
+	  
+	ldap_value_free (sport);
+	sport = NULL;
+      }
+
+
+      /* Remote IP */
+      if (sipaddress && sipaddress [0]) {
+
+	nmip = strtoul (sipaddress [0], NULL, 10);
+	part1 = (nmip & 0xff000000) >> 24;
+	part2 = (nmip & 0x00ff0000) >> 16;
+	part3 = (nmip & 0x0000ff00) >> 8;
+	part4 = nmip & 0x000000ff;
+
+	ip =
+	  g_strdup_printf ("%d.%d.%d.%d:%d",
+			   part4, part3, part2, part1, port);
+
+	ldap_value_free (sipaddress);
+	sipaddress = NULL;
+      }
+
+
+      /* Remote application name and version */
+      if (ilsa26279966 && ilsa26279966 [0]) {
+	  
+	v = atoi (ilsa26279966 [0]);
+	a = (v & 0xff000000) >> 24;
+	b = (v & 0x00ff0000) >> 16;
+	c = v & 0x0000ffff;
+
+	utf8_remote_app =
+	  g_strdup_printf ("%s %d.%d.%d",
+			   utf8_char_ldap_data [4] ?
+			   utf8_char_ldap_data [4] : "",
+			   a, b, c); 
+
+	ldap_value_free (ilsa26279966);
+	ilsa26279966 = NULL;
+      }
+	
+
+      /* Status icon */
+      gnomemeeting_threads_enter ();
+      if (!b_ldap_data [2]) {
+
+	status_icon =
+	  gtk_widget_render_icon (lwp->tree_view, 
+				  GM_STOCK_STATUS_AVAILABLE,
+				  GTK_ICON_SIZE_MENU, NULL);
+	color = g_strdup ("black");
+      } 
+      else {
+	 
+	status_icon =
+	  gtk_widget_render_icon (lwp->tree_view, 
+				  GM_STOCK_STATUS_OCCUPIED,
+				  GTK_ICON_SIZE_MENU, NULL);
+	color = g_strdup ("#8a8a8a");
+      }        
+      gnomemeeting_threads_leave ();
+
+      utf8_username =
+	g_strdup_printf ("%s %s",
+			 utf8_char_ldap_data [0] ?
+			 utf8_char_ldap_data [0] : "",
+			 utf8_char_ldap_data [1] ?
+			 utf8_char_ldap_data [1] : "");
+      utf8_callto =
+	g_strdup_printf ("callto:%s/%s",
+			 ldap_server,
+			 utf8_char_ldap_data [5] ?
+			 utf8_char_ldap_data [5] : "");
+
+      gnomemeeting_threads_enter ();
+      gtk_list_store_append (users_list_store, &list_iter);
+      gtk_list_store_set (users_list_store, &list_iter,
+			  COLUMN_ILS_STATUS, status_icon,
+			  COLUMN_ILS_AUDIO, b_ldap_data [1],
+			  COLUMN_ILS_VIDEO, b_ldap_data [0],
+			  COLUMN_ILS_NAME, utf8_username,
+			  COLUMN_ILS_URL, utf8_callto,
+			  COLUMN_ILS_LOCATION, utf8_char_ldap_data [2],
+			  COLUMN_ILS_COMMENT, utf8_char_ldap_data [3],
+			  COLUMN_ILS_VERSION, utf8_remote_app,
+			  COLUMN_ILS_IP, ip ? ip : "",
+			  COLUMN_ILS_COLOR, color,
+			  -1);
+      gnomemeeting_threads_leave ();
+
+
+      /* Free some memory and put the variables in their initial state */
+      for (int i = 0 ; i < 6 ; i++) {
+	  
+	if (utf8_char_ldap_data [i])
+	  free (utf8_char_ldap_data [i]);
+
+	utf8_char_ldap_data [i] = NULL;
+      }
+
+      for (int i = 0 ; i < 3 ; i++) {
+
+	b_ldap_data [i] = false;
+      }
+	
+      g_free (ip);
+      g_free (color);
+      g_free (utf8_username);
+      g_free (utf8_remote_app);
+      g_free (utf8_callto);
+      ip = NULL;
+      color = NULL;
+      utf8_username = NULL;
+      utf8_remote_app = NULL;
+      utf8_callto = NULL;
+
+      gnomemeeting_threads_enter ();
+      g_object_unref (status_icon);
+      gnomemeeting_threads_leave ();
+    } /* end of for */
+
+    gnomemeeting_threads_enter ();
+    gtk_tree_view_set_model (GTK_TREE_VIEW (lwp->tree_view),
+			     GTK_TREE_MODEL (users_list_store));
+
+    if (num_users && num_users [1]) {
+
+      gnomemeeting_statusbar_push (lwp->statusbar, _("Search completed: %d user(s) listed on a total of %d user(s) from %s."), users_nbr, PMAX (atoi (num_users [1]), users_nbr), ldap_server);
+
+      g_strfreev (num_users);
+    }
+    else
+      gnomemeeting_statusbar_push (lwp->statusbar, _("Search completed: %d user(s) found on %s."), users_nbr, ldap_server);
+
+    gnomemeeting_threads_leave ();
   }
+
 
   if (no_error) {
 
