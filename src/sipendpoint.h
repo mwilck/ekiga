@@ -111,7 +111,7 @@ class GMSIPEndPoint : public SIPEndPoint
    * 		     window in the main UI.
    * PRE          :  /
    */
-  void OnRTPStatistics (const H323Connection &,
+  void OnRTPStatistics (const SIPConnection &,
 			const RTP_Session &) const;
   
  private:

@@ -675,7 +675,7 @@ void GMEndPoint::GetRemoteConnectionInfo (OpalConnection & connection,
 {
   PINDEX idx;
   
-  PString remote_ip;
+  PString remote_url;
   PString remote_name;
   PString remote_app;
   PString remote_alias;
@@ -698,7 +698,7 @@ void GMEndPoint::GetRemoteConnectionInfo (OpalConnection & connection,
   
 
   /* The remote application */
-  remote_app = "Unknown";
+  remote_app = connection.GetRemoteApplication (); 
   idx = remote_app.Find ("(");
   if (idx != P_MAX_INDEX)
     remote_app = remote_app.Left (idx);
@@ -708,33 +708,11 @@ void GMEndPoint::GetRemoteConnectionInfo (OpalConnection & connection,
   
 
   /* The remote url */
-  //FIXME 
-  /*
-  if (IsRegisteredWithGatekeeper ()) {
-
-    if (!connection.GetRemotePartyNumber ().IsEmpty ())
-      remote_ip = connection.GetRemotePartyNumber ();
-    else if (!remote_alias.IsEmpty ()) 
-      remote_ip = remote_alias;
-  }
-  */
+  remote_url = connection.GetRemotePartyAddress ();
   
-   
-  if (remote_ip.IsEmpty ()) {
-
-    remote_ip = connection.GetRemotePartyAddress ();
-    idx = remote_ip.Find ("$");
-    if (idx != P_MAX_INDEX)
-      remote_ip = remote_ip.Mid (idx + 1);
-    idx = remote_ip.Find (":");
-    if (idx != P_MAX_INDEX)
-      remote_ip = remote_ip.Left (idx);
-  }
-
-  remote_ip = GMURL ().GetDefaultURL () + remote_ip;
   utf8_app = gnomemeeting_get_utf8 (remote_app.Trim ());
   utf8_name = gnomemeeting_get_utf8 (remote_name.Trim ());
-  utf8_url = gnomemeeting_get_utf8 (remote_ip);
+  utf8_url = gnomemeeting_get_utf8 (remote_url);
 }
 
 
@@ -1337,13 +1315,17 @@ GMEndPoint::Init ()
     //gm_conf_get_bool (VIDEO_CODECS_KEY "enable_video_reception");
 
   
+  /* Setup ports */
+  SetPorts ();
+  
+  
   /* H.323 EndPoint */
   h323EP = new GMH323EndPoint (*this);
   h323EP->Init ();
   AddRouteEntry("pc:.*             = h323:<da>");
 	
     
-  /* H.323 EndPoint */
+  /* SIP EndPoint */
   sipEP = new GMSIPEndPoint (*this);
   sipEP->Init ();
   AddRouteEntry("pc:.*             = sip:<da>");
@@ -1366,10 +1348,6 @@ GMEndPoint::Init ()
   else
     sd.m_mode = OpalSilenceDetector::NoSilenceDetection;
   SetSilenceDetectParams (sd);
-  
-
-  /* Setup ports */
-  SetPorts ();
   
   
   /* Update general devices configuration */
@@ -1608,7 +1586,6 @@ GMEndPoint::UpdateRTPStats (PTime start_time,
 
   PWaitAndSignal m(stats_access_mutex);
 
-  
   if (elapsed_seconds > 1) { /* To get more precision */
 
     re_bytes = session.GetOctetsReceived ();
@@ -1769,7 +1746,7 @@ GMEndPoint::OnRTPTimeout (PTimer &,
      (long) (t.GetSeconds () % 60),
      stats.a_tr_bandwidth, stats.a_re_bandwidth, 
      stats.v_tr_bandwidth, stats.v_tr_bandwidth);
-	
+
   
   if (stats.total_packets > 0) {
 

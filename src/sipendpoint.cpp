@@ -83,6 +83,9 @@ GMSIPEndPoint::Init ()
   outbound_proxy_password = 
     gm_conf_get_string (SIP_KEY "outbound_proxy_password");
   gnomemeeting_threads_leave ();
+
+  /* Update the User Agent */
+  SetUserAgent ("GnomeMeeting " PACKAGE_VERSION);
   
   /* Start the listener */
   if (!StartListener ()) 
@@ -171,7 +174,7 @@ GMSIPEndPoint::SetUserNameAndAlias ()
 
 
 void 
-GMSIPEndPoint::OnRTPStatistics (const H323Connection & connection,
+GMSIPEndPoint::OnRTPStatistics (const SIPConnection & connection,
 				 const RTP_Session & session) const
 {
   endpoint.UpdateRTPStats (connection.GetConnectionStartTime (),
