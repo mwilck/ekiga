@@ -777,14 +777,24 @@ contrast_changed (GtkAdjustment *adjustment, gpointer data)
 /**
  * DESCRIPTION  :  This callback is called when the user tries to close
  *                 the application using the window manager.
- * BEHAVIOR     :  Calls the real callback.
+ * BEHAVIOR     :  Calls the real callback if the notification icon is 
+ *                 not shown else hide GM.
  * PRE          :  /
  **/
 static gint 
 gm_quit_callback (GtkWidget *widget, GdkEvent *event, 
 			      gpointer data)
 {
-  quit_callback (NULL, data);
+  GConfClient *client = gconf_client_get_default ();
+  gboolean b = FALSE;
+
+  b = gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_docklet",
+			     NULL);
+
+  if (!b)
+    quit_callback (NULL, data);
+  else 
+    gtk_widget_hide (GTK_WIDGET (gm));
 
   return (TRUE);
 }  
