@@ -1,5 +1,11 @@
 2002-01-15  Miguel Rodríguez Pérez  <migrax@terra.es>
 
+	* src/misc.cpp (gnomemeeting_history_combo_box_add_entry): Removed some
+	debug output
+
+	* src/pref_window.cpp (codecs_clist_button_clicked_callback): 
+	Avoid a leak by complicating the code ;)
+
 	* src/misc.cpp (gnomemeeting_history_combo_box_add_entry): 
 	Adapted to gconf
 	(free_g_list_data): Added

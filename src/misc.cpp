@@ -416,7 +416,7 @@ gnomemeeting_history_combo_box_add_entry(GtkCombo *combo, const gchar *key,
 	g_free (history);
       history = temp;
     }
-    g_print ("history: %s\n", history);
+
     gconf_client_set_string (client, "/apps/gnomemeeting/history/called_hosts",
 			     history, 0);
     g_free (history);

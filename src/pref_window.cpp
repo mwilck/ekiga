@@ -134,7 +134,7 @@ static void codecs_clist_button_clicked_callback (GtkWidget *widget,
 { 		
   gchar *codec_name = NULL;
   gchar *codec_data = NULL;
-  gchar *gconf_key = g_strdup ("");
+  gchar *gconf_key = 0;
 
   int i = 0;
 
@@ -206,10 +206,16 @@ static void codecs_clist_button_clicked_callback (GtkWidget *widget,
 
   /* We have modified the GTK_CLIST, and we will now read it to
      update the gconf string in the gconf cache */
-  while (gtk_clist_get_text  (GTK_CLIST (pw->clist_avail), i, 1, &codec_name)){
-
-    gconf_key = g_strconcat (gconf_key, g_strconcat (codec_name, "=", gtk_clist_get_row_data (GTK_CLIST (pw->clist_avail), i), NULL), ":", NULL);
-
+  while (gtk_clist_get_text  (GTK_CLIST (pw->clist_avail), i, 1, &codec_name)) {
+    gchar *entry = g_strconcat (codec_name, "=", gtk_clist_get_row_data (GTK_CLIST (pw->clist_avail),
+									 i),
+				NULL);
+    gchar *temp = g_strjoin ((gconf_key) ? (":") : (""),
+			     (gconf_key) ? (gconf_key) : (""), entry, NULL);
+    g_free (entry);
+    if (gconf_key)
+      g_free (gconf_key);
+    gconf_key = temp;
     i++;
   }
 
