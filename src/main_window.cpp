@@ -372,10 +372,19 @@ static void url_changed_cb (GtkEditable *,
  * BEHAVIOR     :  It udpates the URL bar and calls it.
  * PRE          :  /
  */
-static gboolean url_selected_cb (GtkEntryCompletion *,
-				 GtkTreeModel *,
-				 GtkTreeIter *,
-				 gpointer);
+static gboolean completion_url_selected_cb (GtkEntryCompletion *,
+					    GtkTreeModel *,
+					    GtkTreeIter *,
+					    gpointer);
+
+/* DESCRIPTION  :  This callback is called when the user selects an url in the
+ * 		   possible URLs list of the combo.
+ * BEHAVIOR     :  Calls it.
+ * PRE          :  /
+ */
+static void combo_url_selected_cb (GtkComboBox *,
+				   gpointer);
+
 
 /* DESCRIPTION  :  This callback is called when the user clicks on enter
  * 		   with a non-empty URL bar.
@@ -589,8 +598,10 @@ gm_mw_init_toolbars (GtkWidget *main_window)
 		    GTK_SIGNAL_FUNC (url_changed_cb), (gpointer) main_window);
   g_signal_connect (G_OBJECT (GTK_BIN (mw->combo)->child), "activate", 
 		    GTK_SIGNAL_FUNC (url_activated_cb), NULL);
+  g_signal_connect (G_OBJECT (mw->combo), "changed", 
+		    GTK_SIGNAL_FUNC (combo_url_selected_cb), NULL);  
   g_signal_connect (G_OBJECT (completion), "match-selected", 
-		    GTK_SIGNAL_FUNC (url_selected_cb), NULL);
+		    GTK_SIGNAL_FUNC (completion_url_selected_cb), NULL);
 
   /* Connect button */
   hbox = gtk_hbox_new (FALSE, 2);
@@ -1836,10 +1847,10 @@ url_changed_cb (GtkEditable  *e,
 
 
 static gboolean
-url_selected_cb (GtkEntryCompletion *completion,
-		 GtkTreeModel *model,
-		 GtkTreeIter *iter,
-		 gpointer data)
+completion_url_selected_cb (GtkEntryCompletion *completion,
+			    GtkTreeModel *model,
+			    GtkTreeIter *iter,
+			    gpointer data)
 {
   gchar *url = NULL;
   
@@ -1850,6 +1861,18 @@ url_selected_cb (GtkEntryCompletion *completion,
   g_free (url);
 
   return TRUE;
+}
+
+
+static void
+combo_url_selected_cb (GtkComboBox *widget,
+		       gpointer data)
+{
+  const char *url = NULL;
+  
+  url = gtk_entry_get_text (GTK_ENTRY (GTK_BIN (widget)->child));
+
+  GnomeMeeting::Process ()->Connect (url);  
 }
 
 
@@ -2901,15 +2924,19 @@ gm_main_window_urls_history_update (GtkWidget *main_window)
 
   
   /* Get the placed calls history */
+  g_signal_handlers_block_by_func (G_OBJECT (mw->combo), (void *) combo_url_selected_cb, NULL);
+  
   c2 = gm_calls_history_get_calls (PLACED_CALL);
   gtk_list_store_clear (GTK_LIST_STORE (gtk_combo_box_get_model (GTK_COMBO_BOX (mw->combo))));
+
   iter = c2;
-  while (iter && cpt < 10) {
+  while (iter) {
     
     c = GM_CONTACT (iter->data);
     if (c->url && strcmp (c->url, "")) {
 
-      gtk_combo_box_prepend_text (GTK_COMBO_BOX (mw->combo), c->url);
+      if (cpt >= g_slist_length (c2) - 10)
+	gtk_combo_box_prepend_text (GTK_COMBO_BOX (mw->combo), c->url);
       cpt++;
     }
     
@@ -2918,6 +2945,8 @@ gm_main_window_urls_history_update (GtkWidget *main_window)
   g_slist_foreach (c2, (GFunc) gm_contact_delete, NULL);
   g_slist_free (c2);
   c2 = NULL;
+  
+  g_signal_handlers_unblock_by_func (G_OBJECT (mw->combo), (void *) combo_url_selected_cb, NULL);
   
 
   /* Get the full address book */
