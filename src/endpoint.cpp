@@ -1654,7 +1654,8 @@ GMEndPoint::OnMediaStream (OpalMediaStream & stream,
 
 void 
 GMEndPoint::UpdateRTPStats (PTime start_time,
-			    const RTP_Session & session)
+			    RTP_Session *audio_session,
+			    RTP_Session *video_session)
 {
   PTimeInterval t;
   PTime now;
@@ -1667,27 +1668,33 @@ GMEndPoint::UpdateRTPStats (PTime start_time,
   t = now - stats.last_tick;
   elapsed_seconds = t.GetSeconds ();
 
-  PWaitAndSignal m(stats_access_mutex);
-
   if (elapsed_seconds > 1) { /* To get more precision */
 
-    re_bytes = session.GetOctetsReceived ();
-    tr_bytes = session.GetOctetsSent ();
+    if (audio_session) {
 
-    if (session.GetSessionID () == OpalMediaFormat::DefaultAudioSessionID) {
+      re_bytes = audio_session->GetOctetsReceived ();
+      tr_bytes = audio_session->GetOctetsSent ();
 
       stats.a_re_bandwidth = (re_bytes - stats.re_a_bytes) 
 	/ (1024.0 * elapsed_seconds);
       stats.a_tr_bandwidth = (tr_bytes - stats.tr_a_bytes) 
 	/ (1024.0 * elapsed_seconds);
 
-      stats.jitter_buffer_size = session.GetJitterBufferSize ();
+      stats.jitter_buffer_size = audio_session->GetJitterBufferSize ();
 
       stats.re_a_bytes = re_bytes;
       stats.tr_a_bytes = tr_bytes;
+      
+      stats.total_packets += audio_session->GetPacketsReceived ();
+      stats.lost_packets += audio_session->GetPacketsLost ();
+      stats.late_packets += audio_session->GetPacketsTooLate ();
+      stats.out_of_order_packets += audio_session->GetPacketsOutOfOrder (); 
     }
-    else if (session.GetSessionID () 
-	     == OpalMediaFormat::DefaultVideoSessionID) {
+
+    if (video_session) {
+      
+      re_bytes = video_session->GetOctetsReceived ();
+      tr_bytes = video_session->GetOctetsSent ();
 
       stats.v_re_bandwidth = (re_bytes - stats.re_v_bytes) 
 	/ (1024.0 * elapsed_seconds);
@@ -1696,12 +1703,12 @@ GMEndPoint::UpdateRTPStats (PTime start_time,
 
       stats.re_v_bytes = re_bytes;
       stats.tr_a_bytes = tr_bytes;
+      
+      stats.total_packets += video_session->GetPacketsReceived ();
+      stats.lost_packets += video_session->GetPacketsLost ();
+      stats.late_packets += video_session->GetPacketsTooLate ();
+      stats.out_of_order_packets += video_session->GetPacketsOutOfOrder ();
     }
-
-    stats.total_packets += session.GetPacketsReceived ();
-    stats.lost_packets += session.GetPacketsLost ();
-    stats.late_packets += session.GetPacketsTooLate ();
-    stats.out_of_order_packets += session.GetPacketsOutOfOrder ();
     
     stats.last_tick = now;
     stats.start_time = start_time;
@@ -1800,6 +1807,10 @@ GMEndPoint::OnRTPTimeout (PTimer &,
   float late_packets_per = 0;
   float out_of_order_packets_per = 0;
   
+  PSafePtr <OpalCall> call = NULL;
+  PSafePtr <OpalConnection> connection = NULL;
+  RTP_Session *audio_session = NULL;
+  RTP_Session *video_session = NULL;
   
   /* If we didn't receive any audio and video data this time,
      then we start the timer */
@@ -1818,7 +1829,24 @@ GMEndPoint::OnRTPTimeout (PTimer &,
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
 
-  PWaitAndSignal m(stats_access_mutex);
+  /* Update the audio and video sessions statistics */
+  call = FindCallWithLock (GetCurrentCallToken ());
+  if (call != NULL) {
+
+    connection = GetConnection (call, TRUE);
+
+    if (connection != NULL) {
+
+      audio_session = 
+	connection->GetSession (OpalMediaFormat::DefaultAudioSessionID);
+      video_session = 
+	connection->GetSession (OpalMediaFormat::DefaultVideoSessionID);
+
+      UpdateRTPStats (connection->GetConnectionStartTime (),
+		      audio_session,
+		      video_session);
+    }
+  }
 
   if (stats.start_time.IsValid ())
     t = PTime () - stats.start_time;

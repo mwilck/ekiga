@@ -155,15 +155,6 @@ GMH323EndPoint::SetUserInputMode ()
 }
 
 
-void 
-GMH323EndPoint::OnRTPStatistics (const H323Connection & connection,
-				 const RTP_Session & session) const
-{
-  endpoint.UpdateRTPStats (connection.GetConnectionStartTime (),
-			   session);
-}
-
-
 BOOL 
 GMH323EndPoint::OnIncomingConnection (OpalConnection &connection)
 {

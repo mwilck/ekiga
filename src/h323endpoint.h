@@ -101,17 +101,6 @@ class GMH323EndPoint : public H323EndPoint
    * PRE          :  /
    */
   void SetUserInputMode ();
-
-  
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Called regularly when new RTP statistics are available.
-   * 		     Updates the main endpoint internal statistics structure
-   * 		     so that it can be used periodically to refresh the stats
-   * 		     window in the main UI.
-   * PRE          :  /
-   */
-  void OnRTPStatistics (const H323Connection &,
-			const RTP_Session &) const;
   
   
   /* DESCRIPTION  :  Called when there is an incoming call.

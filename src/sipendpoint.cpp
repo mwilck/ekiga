@@ -152,15 +152,6 @@ GMSIPEndPoint::SetUserInputMode ()
 }
 
 
-void 
-GMSIPEndPoint::OnRTPStatistics (const SIPConnection & connection,
-				 const RTP_Session & session) const
-{
-  endpoint.UpdateRTPStats (connection.GetConnectionStartTime (),
-			   session);
-}
-
-
 void
 GMSIPEndPoint::OnRegistered (const PString & domain,
 			     const PString & username,

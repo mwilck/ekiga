@@ -676,7 +676,8 @@ class GMEndPoint : public OpalManager
    * PRE          :  /
    */
   void UpdateRTPStats (PTime,
-		       const RTP_Session &);
+		       RTP_Session *,
+		       RTP_Session *);
 
   
   /* DESCRIPTION  :  /
@@ -868,7 +869,6 @@ class GMEndPoint : public OpalManager
   PMutex mc_access_mutex;
   PMutex mwi_access_mutex;
   PMutex rc_access_mutex;
-  PMutex stats_access_mutex;
   PMutex manager_access_mutex;
 
   

@@ -103,17 +103,6 @@ class GMSIPEndPoint : public SIPEndPoint
   void SetUserInputMode ();
   
   
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Called regularly when new RTP statistics are available.
-   * 		     Updates the main endpoint internal statistics structure
-   * 		     so that it can be used periodically to refresh the stats
-   * 		     window in the main UI.
-   * PRE          :  /
-   */
-  void OnRTPStatistics (const SIPConnection &,
-			const RTP_Session &) const;
-
-  
   /* DESCRIPTION  :  Called when the registration is successfull. 
    * BEHAVIOR     :  Displays a message in the status bar and history. 
    * PRE          :  /
