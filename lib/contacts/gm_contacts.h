@@ -40,27 +40,21 @@
 
 G_BEGIN_DECLS
 
-/* A Contact is identified by its full name, url, speed dial, categories and
- * his uid. The UID must be unique.
- * The info GSList is a list ocntaining additional information, each element
- * is a GmContactInfo.
+/* A Contact is identified by his UID. The UID must be unique.
  */
 struct GmContact_ {
 
-  char *uid;
-  char *fullname;
-  char *url;
-  char *speeddial;
-  char *categories;
-
-  GSList *info;
-};
-
-
-struct GmContactInfo_ {
-
-  char *attribute;
-  char *value;
+  char *uid;                    /* Unique UID */
+  char *fullname;               /* User Full Name */
+  char *url;                    /* URL to use when calling the user */
+  char *speeddial;              /* Speed dial for that user */
+  char *categories;             /* Categories the user belongs too, 
+                                   comma separated */
+  char *comment;                /* Comment about the user */
+  char *software;               /* Software he is using */
+  char *email;                  /* E-mail address of the user */
+  int  state;                   /* Status of the user */
+  gboolean video_capable;       /* Endpoint can send video */
 };
 
 
@@ -76,12 +70,10 @@ struct GmAddressbook_ {
 
 
 typedef struct GmContact_ GmContact;
-typedef struct GmContactInfo_ GmContactInfo;
 typedef struct GmAddressbook_ GmAddressbook;
 
 
 #define GM_CONTACT(x)     (GmContact *) (x)
-#define GM_CONTACT_INFO(x)     (GmContactInfo *) (x)
 #define GM_ADDRESSBOOK(x) (GmAddressbook *) (x)
 
 
@@ -200,17 +192,9 @@ gboolean gnomemeeting_addressbook_modify_contact (GmAddressbook *,
 
 
 /* DESCRIPTION  : /
- * BEHAVIOR     : Returns a nice name for the given attribute name, if it
- *                is a well-known attribute. Returns the original attribute
- *                name otherwise.
- * PRE          : / 
- */
-gchar *gnomemeeting_addressbook_get_attribute_name (gchar *);
-
-
-/* DESCRIPTION  : /
- * BEHAVIOR     : Returns the list of attributes supported by the addressbook.
- * PRE          : / 
+ * BEHAVIOR     : Returns the list of available attributes for a remote 
+ *                address book.
+ * PRE          : The address book must be a remote address book.
  */
 GSList *gnomemeeting_addressbook_get_attributes_list (GmAddressbook *);
 

@@ -98,7 +98,7 @@ addressbook_changed_cb (GtkTreeSelection *selection,
 }
 
 
-GmAddressbookWindow *
+static GmAddressbookWindow *
 gnomemeeting_aw_get_aw (GtkWidget *addressbook_window)
 {
   g_return_val_if_fail (addressbook_window != NULL, NULL);
@@ -167,7 +167,6 @@ gnomemeeting_aw_add_notebook_page (GtkWidget *addressbook_window,
 
   GSList *contacts = NULL;
   GSList *l = NULL;
-  
   
   /* The different cell renderers for the local contacts */
   enum {
@@ -286,8 +285,15 @@ gnomemeeting_addressbook_window_new ()
   GtkWidget *window = NULL;
   GtkWidget *hpaned = NULL;
   
-  GtkWidget *vbox = NULL;
+  GtkWidget *main_vbox = NULL;
   GtkWidget *vbox2 = NULL;
+  GtkWidget *hbox = NULL;
+  GtkWidget *search_entry = NULL;
+  GtkWidget *find_button = NULL;
+  GtkWidget *handle = NULL;
+  GtkWidget *menu = NULL;
+  GtkWidget *menu_item = NULL;
+  GtkWidget *statusbar = NULL;
   GtkWidget *frame = NULL;
   GtkWidget *menubar = NULL;
   GtkWidget *scroll = NULL;
@@ -334,10 +340,10 @@ gnomemeeting_addressbook_window_new ()
   gtk_window_add_accel_group (GTK_WINDOW (window), accel);
   
   
-  /* A vbox that will contain the menubar, and also the hbox containing
-     the rest of the window */
-  vbox = gtk_vbox_new (0, FALSE);
-  gtk_container_add (GTK_CONTAINER (window), vbox);
+  /* A vbox that will contain the menubar, the hpaned containing
+     the rest of the window and the statusbar */
+  main_vbox = gtk_vbox_new (0, FALSE);
+  gtk_container_add (GTK_CONTAINER (window), main_vbox);
   menubar = gtk_menu_bar_new ();
  /* 
   static MenuEntry addressbook_menu [] =
@@ -404,15 +410,14 @@ gnomemeeting_addressbook_window_new ()
   gtk_build_menu (menubar, addressbook_menu, accel, NULL);
   lw->main_menu = menubar;
   */
-  gtk_box_pack_start (GTK_BOX (vbox), menubar, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (main_vbox), menubar, FALSE, FALSE, 0);
 
   
-  /* A hpaned to put the tree and the ldap browser */
+  /* A hpaned to put the tree and the LDAP browser */
   hpaned = gtk_hpaned_new ();
   gtk_container_set_border_width (GTK_CONTAINER (hpaned), 6);
-  gtk_box_pack_start (GTK_BOX (vbox), hpaned, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (main_vbox), hpaned, TRUE, TRUE, 0);
   
-
   /* The GtkTreeView that will store the address books list */
   frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
@@ -471,86 +476,78 @@ gnomemeeting_addressbook_window_new ()
 		      COLUMN_WEIGHT, PANGO_WEIGHT_BOLD, -1);
 
   
-  /* a vbox to put the frames and the user list */
+  /* The LDAP browser in the second part of the GtkHPaned */
   vbox2 = gtk_vbox_new (FALSE, 0);
   gtk_paned_add2 (GTK_PANED (hpaned), vbox2);  
-
   
+  /* Each page of the GtkNotebook contains a list of the users */
   aw->aw_notebook = gtk_notebook_new ();
   gtk_container_set_border_width (GTK_CONTAINER (aw->aw_notebook), 0);
   gtk_box_pack_start (GTK_BOX (vbox2), aw->aw_notebook, 
 		      TRUE, TRUE, 0);
 
+  /* The search entry */
+  hbox = gtk_hbox_new (FALSE, 0);
+  handle = gtk_handle_box_new ();
+  gtk_box_pack_start (GTK_BOX (vbox2), handle, FALSE, FALSE, 0);  
+  gtk_container_add (GTK_CONTAINER (handle), hbox);
+  gtk_container_set_border_width (GTK_CONTAINER (handle), 0);
+
+  /* The option menu */
+  menu = gtk_menu_new ();
+
+  menu_item =
+    gtk_menu_item_new_with_label (_("Find all contacts"));
+  gtk_widget_show (menu_item);
+  gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
+
+  menu_item =
+    gtk_menu_item_new_with_label (_("First name contains"));
+  gtk_widget_show (menu_item);
+  gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
+
+  menu_item = gtk_menu_item_new_with_label (_("Last name contains"));
+  gtk_widget_show (menu_item);
+  gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
+
+  menu_item = gtk_menu_item_new_with_label (_("E-mail contains"));
+  gtk_widget_show (menu_item);
+  gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
+
+  GtkWidget *option_menu = gtk_option_menu_new ();
+  gtk_option_menu_set_menu (GTK_OPTION_MENU (option_menu),
+                            menu);
+  gtk_option_menu_set_history (GTK_OPTION_MENU (option_menu),
+                               0);
+  gtk_box_pack_start (GTK_BOX (hbox), option_menu, FALSE, FALSE, 2);
+
+  /* The entry */
+  search_entry = gtk_entry_new ();
+  gtk_box_pack_start (GTK_BOX (hbox), search_entry, TRUE, TRUE, 2);
+  gtk_widget_set_sensitive (GTK_WIDGET (search_entry), FALSE);
+
+  /* The Find button */
+  find_button = gtk_button_new_from_stock (GTK_STOCK_FIND);
+  gtk_box_pack_start (GTK_BOX (hbox), find_button, FALSE, FALSE, 2);
+  gtk_widget_show_all (handle);
 
   
-  GtkWidget * hbox = gtk_hbox_new (FALSE, 0);
+  /* The statusbar */
+  statusbar = gtk_statusbar_new ();
+  gtk_box_pack_start (GTK_BOX (main_vbox), statusbar, FALSE, FALSE, 0);
+  gtk_statusbar_set_has_resize_grip (GTK_STATUSBAR (statusbar), FALSE);
 
-  g_warning ("lol");
-    
-    /* The toolbar */
-  GtkWidget * handle = gtk_handle_box_new ();
-    gtk_box_pack_start (GTK_BOX (vbox2), handle, FALSE, FALSE, 0);  
-    gtk_container_add (GTK_CONTAINER (handle), hbox);
-    gtk_container_set_border_width (GTK_CONTAINER (handle), 0);
-
-    
-    /* option menu */
-    GtkWidget *menu = gtk_menu_new ();
-
-    GtkWidget *menu_item =
-      gtk_menu_item_new_with_label (_("Find all contacts"));
-    gtk_widget_show (menu_item);
-    gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
-
-    menu_item =
-      gtk_menu_item_new_with_label (_("First name contains"));
-    gtk_widget_show (menu_item);
-    gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
-
-    menu_item = gtk_menu_item_new_with_label (_("Last name contains"));
-    gtk_widget_show (menu_item);
-    gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
-
-    menu_item = gtk_menu_item_new_with_label (_("E-mail contains"));
-    gtk_widget_show (menu_item);
-    gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
-
-    GtkWidget *option_menu = gtk_option_menu_new ();
-    gtk_option_menu_set_menu (GTK_OPTION_MENU (option_menu),
-			      menu);
-    gtk_option_menu_set_history (GTK_OPTION_MENU (option_menu),
-				 0);
-    gtk_box_pack_start (GTK_BOX (hbox), option_menu, FALSE, FALSE, 2);
-
-    
-    /* entry */
-    GtkWidget *search_entry = gtk_entry_new ();
-    gtk_box_pack_start (GTK_BOX (hbox), search_entry, TRUE, TRUE, 2);
-    gtk_widget_set_sensitive (GTK_WIDGET (search_entry), FALSE);
-
-    /* The Find button */
-    GtkWidget *find_button = gtk_button_new_from_stock (GTK_STOCK_FIND);
-    gtk_box_pack_start (GTK_BOX (hbox), find_button, FALSE, FALSE, 2);
-    gtk_widget_show_all (handle);
-    
-    /* The statusbar */
-    GtkWidget *statusbar = gtk_statusbar_new ();
-    gtk_box_pack_start (GTK_BOX (vbox), statusbar, FALSE, FALSE, 0);
-    gtk_statusbar_set_has_resize_grip (GTK_STATUSBAR (statusbar), FALSE);
-
-  /* Update all address books contained in the address book window */
-  //gnomemeeting_aw_update_addressbooks (window);
 
   g_signal_connect (G_OBJECT (selection), "changed",
-		    G_CALLBACK (addressbook_changed_cb), 
+                    G_CALLBACK (addressbook_changed_cb), 
                     aw->aw_notebook);
 
-/*
-  gtk_drag_dest_set (GTK_WIDGET (lw->tree_view),
-		     GTK_DEST_DEFAULT_ALL,
-		     dnd_targets, 1,
-		     GDK_ACTION_COPY);
-  g_signal_connect (G_OBJECT (lw->tree_view), "drag_motion",
+  /*
+     gtk_drag_dest_set (GTK_WIDGET (lw->tree_view),
+     GTK_DEST_DEFAULT_ALL,
+     dnd_targets, 1,
+     GDK_ACTION_COPY);
+     g_signal_connect (G_OBJECT (lw->tree_view), "drag_motion",
 		    G_CALLBACK (dnd_drag_motion_cb), 0);
   g_signal_connect (G_OBJECT (lw->tree_view), "drag_data_received",
 		    G_CALLBACK (dnd_drag_data_received_cb), 0);
@@ -580,7 +577,7 @@ gnomemeeting_addressbook_window_new ()
   }
   g_slist_free (l);
 
-  gtk_widget_show_all (GTK_WIDGET (vbox));
+  gtk_widget_show_all (GTK_WIDGET (main_vbox));
   
 
   return window;

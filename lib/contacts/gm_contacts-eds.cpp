@@ -112,11 +112,14 @@ gm_contact_new ()
   contact->categories = NULL;
   contact->url = NULL;
   contact->speeddial = NULL;
+  contact->comment = NULL;
+  contact->software = NULL;
+  contact->email = NULL;
+  contact->state = 0;
+  contact->video_capable = FALSE;
   contact->uid =  
     g_strdup ((const gchar *) e_contact_get_const (E_CONTACT (econtact), 
                                                    E_CONTACT_UID));
-  contact->info = NULL;
-  
   g_object_unref (econtact);
 }
 
@@ -131,8 +134,9 @@ gm_contact_delete (GmContact *contact)
   g_free (contact->url);
   g_free (contact->speeddial);
   g_free (contact->categories);
-
-  g_warning ("Free the list");
+  g_free (contact->comment);
+  g_free (contact->software);
+  g_free (contact->email);
 
   g_free (contact);
 }
@@ -397,12 +401,6 @@ gnomemeeting_addressbook_modify_contact (GmAddressbook *addressbook,
                                          GmContact *ctact)
 {
   return FALSE;
-}
-
-
-gchar *
-gnomemeeting_addressbook_get_attribute_name (gchar *attribute)
-{
 }
 
 
