@@ -1,72 +1,73 @@
+# translation of gnomemeeting.HEAD.hi.po to Hindi
 # translation of gnomemeeting.gnome_2_4.hi.po to Hindi
 # This file is distributed under the same license as the PACKAGE package.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# G Karunakar <karunakar@freedomink.org>, 2003
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER.
+# G Karunakar <karunakar@freedomink.org>, 2003.
+# Ravishankar Shrivastava <raviratlami@yahoo.com>, 2004.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gnomemeeting.gnome_2_4.hi\n"
+"Project-Id-Version: gnomemeeting.HEAD.hi\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-02-20 04:03+0100\n"
-"PO-Revision-Date: 2003-10-28 18:10+0530\n"
-"Last-Translator: G Karunakar <karunakar@freedomink.org>\n"
-"Language-Team: Hindi <indlinux-hindi-gnome@lists.sourceforge.net>\n"
+"POT-Creation-Date: 2004-07-21 18:35+0530\n"
+"PO-Revision-Date: 2004-07-19 20:20+0530\n"
+"Last-Translator: Ravishankar Shrivastava <raviratlami@yahoo.com>\n"
+"Language-Team: Hindi <indlinux-hindi@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.0\n"
 
+#  Add the window icon and title
 #. Add the window icon and title
-#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:1179
+#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:1046
+#: src/main_window.cpp:1255
 msgid "GnomeMeeting"
 msgstr "गनोममीटिंग"
 
 #: gnomemeeting.desktop.in.h:2
 #, fuzzy
 msgid "Talk to people over the Internet"
-msgstr "इंटरनेट पर लोगों से बात करें"
+msgstr "इंटरनेट से नही जुड सका."
 
 #: gnomemeeting.desktop.in.h:3
-#, fuzzy
 msgid "Videoconferencing"
-msgstr "विडियो सम्मेलन"
+msgstr "वीडियो-कॉन्फ्रेंसिंग"
 
 #: gnomemeeting.schemas.in.in.h:1
 msgid "1: 56Kbps, 2: ISDN, 3:DSL, 4: LAN, 5: Custom"
-msgstr "1: 56Kbps, 2: ISDN, 3:DSL, 4: LAN, 5: Custom"
+msgstr "1: 56केबीपीएस, 2: आईएसडीएन, 3:डीएसएल, 4: लैन, 5: अनुकूलित"
 
 #: gnomemeeting.schemas.in.in.h:2
+#, fuzzy
 msgid "Address of public IP detector"
-msgstr ""
+msgstr "आपके प्रॉक्सी सर्वर का आईपी पता या होस्ट नाम."
 
 #: gnomemeeting.schemas.in.in.h:3
+#, fuzzy
 msgid "Always forward calls to the given host"
-msgstr ""
+msgstr "होस्ट %1 पर ड्राइवर संस्थापित करने की तैयारी में"
 
 #: gnomemeeting.schemas.in.in.h:4
-#, fuzzy
 msgid "Audio input device"
-msgstr "ऑडियो उपकरण"
+msgstr "ऑडियो इनपुट उपकरण"
 
 #: gnomemeeting.schemas.in.in.h:5
-#, fuzzy
 msgid "Audio output device"
-msgstr "ऑडियो उपकरण"
+msgstr "ऑडियो आउटपुट उपकरण"
 
 #: gnomemeeting.schemas.in.in.h:6
-#, fuzzy
 msgid "Audio plugin"
-msgstr "ध्वनी प्लेयर"
+msgstr "ऑडियो प्लगइन"
 
 #: gnomemeeting.schemas.in.in.h:7
 msgid "Automatic echo cancellation"
-msgstr ""
+msgstr "स्वचालित इको निरस्तीकरण"
 
-#: gnomemeeting.schemas.in.in.h:8 src/pref_window.cpp:946
+#: gnomemeeting.schemas.in.in.h:8 src/pref_window.cpp:928
 msgid "Automatically clear the text chat at the end of calls"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:9 src/pref_window.cpp:1030
+#: gnomemeeting.schemas.in.in.h:9 src/pref_window.cpp:1012
 msgid ""
 "Automatically reject or forward incoming calls if no answer is given after "
 "the specified amount of time (in seconds)"
@@ -80,14 +81,14 @@ msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:11
 msgid "Change the control panel section"
-msgstr ""
+msgstr "नियंत्रण पटल खंड बदलें"
 
 #: gnomemeeting.schemas.in.in.h:12
 msgid ""
 "Change the control panel section (4 means that the control panel is off)"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:13 src/pref_window.cpp:1669
+#: gnomemeeting.schemas.in.in.h:13
 msgid ""
 "Choose the number of blocks (that have not changed) transmitted with each "
 "frame. These blocks fill in the background"
@@ -95,11 +96,11 @@ msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:14
 msgid "Clear inactive calls"
-msgstr ""
+msgstr "अक्रिय काल्स साफ करें"
 
 # libgnome-desktop/gnome-ditem-edit.c:626
 # libgnome-desktop/gnome-ditem-edit.c:736
-#: gnomemeeting.schemas.in.in.h:15 src/ldap_window.cpp:2916
+#: gnomemeeting.schemas.in.in.h:15 src/addressbook_window.cpp:810
 msgid "Comment"
 msgstr "टिप्पणी"
 
@@ -117,276 +118,276 @@ msgstr "देश कोड"
 
 #: gnomemeeting.schemas.in.in.h:18
 msgid "DTMF sending"
-msgstr ""
+msgstr "डीटीएमएफ़ भेज रहे"
 
 #: gnomemeeting.schemas.in.in.h:19
 msgid "Display a popup window when receiving a call"
-msgstr ""
+msgstr "जब कोई काल प्राप्त किया जा रहा हो तो पॉपअप विंडो दिखाएँ"
 
 #: gnomemeeting.schemas.in.in.h:20
 msgid "E-mail address"
-msgstr "इमेल पता"
+msgstr "ई-मेल पता"
 
 #: gnomemeeting.schemas.in.in.h:21
 msgid "Enable 'Fast Start'"
-msgstr ""
+msgstr "'त्वरित प्रारंभ' सक्षम करें"
 
 #: gnomemeeting.schemas.in.in.h:22
 msgid "Enable H.245 tunnelling"
-msgstr ""
+msgstr "H.245 टनलिंग सक्षम करें"
 
 #: gnomemeeting.schemas.in.in.h:23
 msgid "Enable IP checking"
-msgstr ""
+msgstr "आईपी जाँच सक्षम करें"
 
 #: gnomemeeting.schemas.in.in.h:24
 msgid "Enable IP translation"
-msgstr ""
+msgstr "आईपी अनुवाद सक्षम करें"
 
 #: gnomemeeting.schemas.in.in.h:25
-msgid "Enable bilinear filtering on displayed video"
+msgid "Enable STUN Support"
 msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:26
-msgid "Enable early H.245"
-msgstr ""
+#, fuzzy
+msgid "Enable bilinear filtering on displayed video"
+msgstr "आंसरिंग मशीन प्रारंभ हो तो दिखाया जाने वाला बैनर (&B)"
 
 #: gnomemeeting.schemas.in.in.h:27
+msgid "Enable early H.245"
+msgstr "आरंभिक H.245 सक्षम करें"
+
+#: gnomemeeting.schemas.in.in.h:28
 msgid ""
 "Enable or disable bilinear interpolation when rendering video images (this "
 "has no effect in fullscreen mode)"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:28
-msgid "Enable registering"
-msgstr ""
-
 #: gnomemeeting.schemas.in.in.h:29
-msgid "Enable silence detection"
-msgstr ""
+msgid "Enable registering"
+msgstr "पंजीकरण सक्षम करें"
 
 #: gnomemeeting.schemas.in.in.h:30
-msgid "Enable video reception"
-msgstr ""
+msgid "Enable silence detection"
+msgstr "साइलेंस डिटेक्शन सक्षम करें"
 
 #: gnomemeeting.schemas.in.in.h:31
-msgid "Enable video transmission"
-msgstr ""
+msgid "Enable video reception"
+msgstr "वीडियो रिसेप्शन सक्षम करें"
 
 #: gnomemeeting.schemas.in.in.h:32
+msgid "Enable video transmission"
+msgstr "वीडियो संचारण सक्षम करें"
+
+#: gnomemeeting.schemas.in.in.h:33
 msgid "Enter a comment about yourself for the user directory"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:33
+#: gnomemeeting.schemas.in.in.h:34
 msgid ""
 "Enter a valid URL to connect to a web application that outputs the public IP "
 "of your host"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:34
+#: gnomemeeting.schemas.in.in.h:35
 msgid ""
 "Enter the public IP of your NAT/PAT router if you want to use IP "
 "translation. If you are registered to ils.seconix.com, GnomeMeeting will "
 "automatically fetch the public IP using the ILS service"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:35 src/pref_window.cpp:885
-#, fuzzy
+#: gnomemeeting.schemas.in.in.h:36 src/pref_window.cpp:867
 msgid "Enter your e-mail address"
-msgstr "अपना इमेल पता दें"
+msgstr "कृपया अपना ई-मेल पता भरें"
 
-#: gnomemeeting.schemas.in.in.h:36 src/pref_window.cpp:871
-#, fuzzy
+#: gnomemeeting.schemas.in.in.h:37 src/pref_window.cpp:853
 msgid "Enter your first name"
-msgstr "अपना पहला नाम दें"
-
-#: gnomemeeting.schemas.in.in.h:37
-#, fuzzy
-msgid "Enter your last name"
-msgstr "अपना आखरी नाम दें"
+msgstr "कृपया अपना प्रथम नाम भरें"
 
 #: gnomemeeting.schemas.in.in.h:38
+msgid "Enter your last name"
+msgstr "कृपया अपना अंतिम नाम भरें"
+
+#: gnomemeeting.schemas.in.in.h:39
 msgid "Enter your location (country or city) for the user directory"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:39
-msgid "First name"
-msgstr "पहला नाम"
-
 #: gnomemeeting.schemas.in.in.h:40
-msgid "Forward calls to host"
-msgstr ""
+msgid "First name"
+msgstr "प्रथम नाम"
 
 #: gnomemeeting.schemas.in.in.h:41
-msgid "Forward calls to the given host if busy"
-msgstr ""
+msgid "Forward calls to host"
+msgstr "होस्ट को फ़ॉरवर्ड काल्स"
 
 #: gnomemeeting.schemas.in.in.h:42
+#, fuzzy
+msgid "Forward calls to the given host if busy"
+msgstr "उपर्युक्त फ़ाइल का नया नाम, यदि दिए गए विन्यास के आधार पर नाम बदला जाए"
+
+#: gnomemeeting.schemas.in.in.h:43
 msgid "Forward calls to the given host if no answer"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:43
-msgid "Fullscreen height"
-msgstr "पूर्ण सक्रीन उंचाई"
-
 #: gnomemeeting.schemas.in.in.h:44
+msgid "Fullscreen height"
+msgstr "पूर्णस्क्रीन उँचाई"
+
+#: gnomemeeting.schemas.in.in.h:45
 msgid "Fullscreen width"
-msgstr "पूर्ण सक्रीन चोडाई"
+msgstr "पूर्णस्क्रीन चौड़ाई"
 
-#: gnomemeeting.schemas.in.in.h:45 src/pref_window.cpp:1232
+#: gnomemeeting.schemas.in.in.h:46 src/pref_window.cpp:1214
 msgid "Gatekeeper ID"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:46
-msgid "Gatekeeper alias"
-msgstr ""
+msgstr "गेटकीपर आईडी"
 
 #: gnomemeeting.schemas.in.in.h:47
+msgid "Gatekeeper alias"
+msgstr "गेटकीपर अलियास"
+
+#: gnomemeeting.schemas.in.in.h:48
+#, fuzzy
 msgid "Gatekeeper alias as primary alias"
-msgstr ""
+msgstr "प्राथमिक पृष्ठभूमि रंग की तरह उपयोग करें"
 
-#: gnomemeeting.schemas.in.in.h:48 src/pref_window.cpp:1231
+#: gnomemeeting.schemas.in.in.h:49 src/pref_window.cpp:1213
 msgid "Gatekeeper host"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:49
-msgid "Gatekeeper password"
-msgstr ""
+msgstr "गेटकीपर होस्ट"
 
 #: gnomemeeting.schemas.in.in.h:50
-msgid "Gateway/proxy host"
-msgstr ""
+msgid "Gatekeeper password"
+msgstr "गेटकीपर पासवर्ड"
 
-#: gnomemeeting.schemas.in.in.h:51 src/pref_window.cpp:927
+#: gnomemeeting.schemas.in.in.h:51
+msgid "Gateway/proxy host"
+msgstr "गेटवे/प्रॉक्सी होस्ट"
+
+#: gnomemeeting.schemas.in.in.h:52 src/pref_window.cpp:909
 msgid ""
 "If enabled, GnomeMeeting will start hidden provided that the notification "
 "area is present in the GNOME panel"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:52
+#: gnomemeeting.schemas.in.in.h:53
 msgid ""
 "If enabled, a popup window will be displayed when receiving an incoming call"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:53
+#: gnomemeeting.schemas.in.in.h:54
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:54
+#: gnomemeeting.schemas.in.in.h:55
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you already are in a call or if you are in "
 "Do Not Disturb mode"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:55
+#: gnomemeeting.schemas.in.in.h:56
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you do not answer the call"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:56
+#: gnomemeeting.schemas.in.in.h:57
 msgid "If enabled, allows video to be received during a call"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:57 src/pref_window.cpp:1026
+#: gnomemeeting.schemas.in.in.h:58 src/pref_window.cpp:1008
 msgid ""
 "If enabled, calls for which no audio and video has been received in the last "
 "30 seconds are automatically cleared"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:58 src/pref_window.cpp:970
+#: gnomemeeting.schemas.in.in.h:59
 msgid "If enabled, register with the selected user directory"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:59 src/pref_window.cpp:925
+#: gnomemeeting.schemas.in.in.h:60 src/pref_window.cpp:907
 msgid ""
 "If enabled, the splash screen will be displayed when GnomeMeeting starts"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:60 src/pref_window.cpp:946
+#: gnomemeeting.schemas.in.in.h:61 src/pref_window.cpp:928
 msgid ""
 "If enabled, the text chat will automatically be cleared at the end of calls"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:61
+#: gnomemeeting.schemas.in.in.h:62
 msgid "If enabled, use silence detection with the GSM and G.711 codecs"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:62
-msgid "If enabled, video is transmitted during a call"
-msgstr ""
-
 #: gnomemeeting.schemas.in.in.h:63
+msgid "If enabled, video is transmitted during a call"
+msgstr "यदि यह सक्षम किया जाता है, काल के दौरान वीडियो संचारित किया जाएगा"
+
+#: gnomemeeting.schemas.in.in.h:64
 msgid ""
 "If enabled, your details are shown to people browsing the user directory. If "
 "disabled, you are not visible to users browsing the user directory, but they "
 "can still use the callto URL to call you"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:64
-msgid "Incoming call mode"
-msgstr ""
-
 #: gnomemeeting.schemas.in.in.h:65
-msgid "Kind of network selected in the druid"
-msgstr ""
+msgid "Incoming call mode"
+msgstr "आने वाले कॉल का मोड"
 
 #: gnomemeeting.schemas.in.in.h:66
-msgid "Last name"
-msgstr "आखरी नाम"
+#, fuzzy
+msgid "Kind of network selected in the druid"
+msgstr "चयनित पसंद को नए टैब में खोलें"
 
 #: gnomemeeting.schemas.in.in.h:67
-msgid "Listen port"
-msgstr ""
+msgid "Last name"
+msgstr "अंतिम नाम"
 
 #: gnomemeeting.schemas.in.in.h:68
-#, fuzzy
-msgid "Local video window size"
-msgstr "स्थानीय विडियो विंडो की चोडाइ"
+msgid "Listen port"
+msgstr "सुनने हेतु पोर्ट"
 
-#: gnomemeeting.schemas.in.in.h:69 src/ldap_window.cpp:2929
+#: gnomemeeting.schemas.in.in.h:69
+msgid "Local video window size"
+msgstr "स्थानीय वीडियो विंडो आकार"
+
+#: gnomemeeting.schemas.in.in.h:70 src/addressbook_window.cpp:847
 msgid "Location"
 msgstr "स्थान"
 
-#: gnomemeeting.schemas.in.in.h:70
-msgid "Maximum jitter buffer"
-msgstr ""
-
 #: gnomemeeting.schemas.in.in.h:71
-msgid "Maximum video bandwidth"
-msgstr ""
+msgid "Maximum jitter buffer"
+msgstr "अधिकतम जिटर बफ़र"
 
 #: gnomemeeting.schemas.in.in.h:72
-msgid "Minimum jitter buffer"
-msgstr ""
+msgid "Maximum video bandwidth"
+msgstr "अधिकतम वीडियो बैंडविड्थ"
 
 #: gnomemeeting.schemas.in.in.h:73
-msgid "Minimum transmitted FPS"
-msgstr ""
+msgid "Minimum jitter buffer"
+msgstr "न्यूनतम जिटर बफ़र"
 
 #: gnomemeeting.schemas.in.in.h:74
+#, fuzzy
 msgid "Minimum transmitted video quality"
-msgstr ""
+msgstr "फोटो क्वालिटी इंकजेट कागज"
 
 #: gnomemeeting.schemas.in.in.h:75
-#, fuzzy
 msgid "Missed calls history"
-msgstr "कॉल इतिहास देखें"
+msgstr "छूटे काल्स का इतिहास"
 
 #: gnomemeeting.schemas.in.in.h:76
 msgid "No answer timeout"
-msgstr ""
+msgstr "कोई उत्तर नहीं टाइमआउट"
 
 #: gnomemeeting.schemas.in.in.h:77
 msgid "Number of frames for G.711"
-msgstr ""
+msgstr "जी.711 हेतु फ्रेम्स की संख्या"
 
 #: gnomemeeting.schemas.in.in.h:78
 msgid "Number of frames for GSM"
-msgstr ""
+msgstr "जीएसएम हेतु फ्रेम्स की संख्या"
 
 #: gnomemeeting.schemas.in.in.h:79
 msgid "Number of frames transmitted in each packet for the G.711 codec"
@@ -398,318 +399,316 @@ msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:81
 msgid "Output device type"
-msgstr ""
+msgstr "आउटपुट उपकरण प्रकार"
 
-#: gnomemeeting.schemas.in.in.h:82 src/pref_window.cpp:940
+#: gnomemeeting.schemas.in.in.h:82 src/pref_window.cpp:922
 msgid "Place windows displaying video above other windows during calls"
 msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:83
-#, fuzzy
 msgid "Placed calls history"
-msgstr "कॉल इतिहास देखें"
+msgstr "काल इतिहास रखा"
 
-#: gnomemeeting.schemas.in.in.h:84 src/pref_window.cpp:722
+#: gnomemeeting.schemas.in.in.h:84 src/pref_window.cpp:788
 msgid "Play busy tone"
-msgstr ""
+msgstr "व्यस्त-टोन बजाएँ"
 
-#: gnomemeeting.schemas.in.in.h:85 src/pref_window.cpp:713
+#: gnomemeeting.schemas.in.in.h:85 src/pref_window.cpp:779
 msgid "Play ring tone"
-msgstr ""
+msgstr "रिंगटोन बजाएँ"
 
-#: gnomemeeting.schemas.in.in.h:86 src/pref_window.cpp:704
-#, fuzzy
+#: gnomemeeting.schemas.in.in.h:86 src/pref_window.cpp:770
 msgid "Play sound on incoming calls"
-msgstr "आने वाले कॉल का उत्तर दें"
+msgstr "आने वाले काल पर ध्वनि बजाएँ"
 
 #: gnomemeeting.schemas.in.in.h:87
-#, fuzzy
 msgid "Position of the local video window"
-msgstr "स्थानीय विडियो विंडो की उंचाई"
+msgstr "स्थानीय विडियो विंडो के स्क्रीन पर स्थिति"
 
 #: gnomemeeting.schemas.in.in.h:88
+#, fuzzy
 msgid "Position on the screen of the PC-To-Phone window"
-msgstr ""
+msgstr "स्क्रीन %d जो प्रदर्शक \"%s\" पर है वहां पहले ही विंडो प्रबंधक है\n"
 
 #: gnomemeeting.schemas.in.in.h:89
+#, fuzzy
 msgid "Position on the screen of the address book window"
-msgstr ""
+msgstr "स्क्रीन %d जो प्रदर्शक \"%s\" पर है वहां पहले ही विंडो प्रबंधक है\n"
 
 #: gnomemeeting.schemas.in.in.h:90
+#, fuzzy
 msgid "Position on the screen of the calls history window"
-msgstr ""
+msgstr "स्क्रीन %d जो प्रदर्शक \"%s\" पर है वहां पहले ही विंडो प्रबंधक है\n"
 
 #: gnomemeeting.schemas.in.in.h:91
-#, fuzzy
 msgid "Position on the screen of the druid window"
-msgstr "दूरस्थ विडियो विंडो की उंचाई"
+msgstr "ड्रुइड विंडो के स्क्रीन पर स्थिति"
 
 #: gnomemeeting.schemas.in.in.h:92
 msgid "Position on the screen of the log window"
-msgstr ""
+msgstr "लॉग विंडो के स्क्रीन पर स्थिति"
 
 #: gnomemeeting.schemas.in.in.h:93
 msgid "Position on the screen of the main window"
-msgstr ""
+msgstr "मुख्य विंडो के स्क्रीन पर स्थिति"
 
 #: gnomemeeting.schemas.in.in.h:94
 msgid "Position on the screen of the preferences window"
-msgstr ""
+msgstr "वरीयताएँ विंडो के स्क्रीन पर स्थिति"
 
 #: gnomemeeting.schemas.in.in.h:95
+#, fuzzy
 msgid "Public IP of the NAT/PAT router"
-msgstr ""
+msgstr "सर्वर पर पथ (जैसे कि- /home/kde): (&h)"
 
 #: gnomemeeting.schemas.in.in.h:96
-#, fuzzy
 msgid "Received calls history"
-msgstr "कॉल इतिहास देखें"
+msgstr "प्राप्त काल इतिहास"
 
 #: gnomemeeting.schemas.in.in.h:97
 msgid "Registering method"
-msgstr ""
+msgstr "पंजीकरण विधि"
 
 #: gnomemeeting.schemas.in.in.h:98
-#, fuzzy
 msgid "Remote video window position"
-msgstr "स्थानीय विडियो विंडो की चोडाइ"
+msgstr "रिमोट वीडियो विंडो की स्थिति"
 
 #: gnomemeeting.schemas.in.in.h:99
-#, fuzzy
 msgid "Remote video window size"
-msgstr "दूरस्थ विडियो चित्र"
+msgstr "रिमोट वीडियो विंडो का आकार"
 
 #: gnomemeeting.schemas.in.in.h:100
 msgid "Revision of the schema file"
-msgstr ""
+msgstr "स्कीमा फ़ाइल का रिवीज़न"
 
-#: gnomemeeting.schemas.in.in.h:101 src/pref_window.cpp:1358
+#: gnomemeeting.schemas.in.in.h:101 src/pref_window.cpp:1350
 msgid "Select the audio input device to use"
-msgstr ""
+msgstr "उपयोग हेतु ऑडियो इनपुट उपकरण चुनें"
 
-#: gnomemeeting.schemas.in.in.h:102 src/pref_window.cpp:1352
+#: gnomemeeting.schemas.in.in.h:102 src/pref_window.cpp:1344
 msgid "Select the audio output device to use"
-msgstr ""
+msgstr "उपयोग हेतु ऑडियो आउटपुट उपकरण चुनें"
 
-#: gnomemeeting.schemas.in.in.h:103 src/pref_window.cpp:1437
+#: gnomemeeting.schemas.in.in.h:103 src/pref_window.cpp:1429
 msgid ""
 "Select the format for video cameras (does not apply to most USB cameras)"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:104 src/pref_window.cpp:1435
+#: gnomemeeting.schemas.in.in.h:104 src/pref_window.cpp:1427
 msgid ""
 "Select the transmitted video size: Small (QCIF 176x144) or Large (CIF "
 "352x288)"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:105 src/pref_window.cpp:1429
+#: gnomemeeting.schemas.in.in.h:105 src/pref_window.cpp:1421
 msgid ""
 "Select the video input device to use. If an error occurs when using this "
 "device a test picture will be transmitted."
 msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:106
+#, fuzzy
 msgid "Show a status bar at the bottom of the main window"
-msgstr ""
+msgstr "क्या संपादन विंडोज़ के तल पर स्थिति-पट्टी दिखाई दे."
 
 #: gnomemeeting.schemas.in.in.h:107
 msgid "Show chat window"
-msgstr "वार्तालाप विंडो दिखाएं"
+msgstr "वार्तालाप विंडो दिखाएँ"
 
 #: gnomemeeting.schemas.in.in.h:108
+#, fuzzy
 msgid "Show my details to other registered users"
-msgstr ""
+msgstr "अन्य उपयोगकर्ता का पासवर्ड बदलने हेतु आपको रूट होना होगा."
 
 #: gnomemeeting.schemas.in.in.h:109
-#, fuzzy
 msgid "Show splash screen at startup"
-msgstr "स्प्लैश सक्रीन दिखाएं"
+msgstr "प्रारंभ में स्पलैश स्क्रीन दिखाएँ"
 
 #: gnomemeeting.schemas.in.in.h:110
 msgid "Show status bar"
-msgstr ""
+msgstr "स्थिति पट्टी दिखाएँ"
 
 #: gnomemeeting.schemas.in.in.h:111
 msgid "Show the chat window in the main window"
-msgstr ""
+msgstr "मुख्य विंडो में गपशप विंडो दिखाएँ"
 
 #: gnomemeeting.schemas.in.in.h:112
 msgid "Size of the PC-To-Phone window"
-msgstr ""
+msgstr "पीसी-से-दूरभाष विंडो का आकार"
 
 #: gnomemeeting.schemas.in.in.h:113
-#, fuzzy
 msgid "Size of the address book window"
-msgstr "फिल्टर..."
+msgstr "पता पुस्तिका विंडो का आकार"
 
 #: gnomemeeting.schemas.in.in.h:114
-#, fuzzy
 msgid "Size of the calls history window"
-msgstr "कॉल इतिहास देखें"
+msgstr "काल इतिहास विंडो का आकार"
 
 #: gnomemeeting.schemas.in.in.h:115
-#, fuzzy
 msgid "Size of the druid window"
-msgstr "दूरस्थ विडियो विंडो की उंचाई"
+msgstr "ड्रुइड विंडो का आकार"
 
 #: gnomemeeting.schemas.in.in.h:116
-#, fuzzy
 msgid "Size of the log window"
-msgstr "स्थानीय विडियो विंडो की उंचाई"
+msgstr "लॉग विंडो का आकार"
 
 #: gnomemeeting.schemas.in.in.h:117
 msgid "Size of the preferences window"
-msgstr ""
+msgstr "वरीयताएँ विंडो का आकार"
 
 #: gnomemeeting.schemas.in.in.h:118
 msgid "Start hidden"
-msgstr ""
+msgstr "छुपे रूप में प्रारंभ करें"
 
-#: gnomemeeting.schemas.in.in.h:119 src/menu.cpp:448 src/menu.cpp:576
+#: gnomemeeting.schemas.in.in.h:119 src/menu.cpp:459 src/menu.cpp:586
 msgid "Switch to fullscreen"
-msgstr ""
+msgstr "पूर्ण स्क्रीन में स्विच करें"
 
 #: gnomemeeting.schemas.in.in.h:120
 msgid "TCP port range"
-msgstr ""
+msgstr "टीसीपी पोर्ट सीमा"
 
 #: gnomemeeting.schemas.in.in.h:121
 msgid "The Audio Codecs List"
-msgstr "ध्वनी कोडेक सूची"
+msgstr "ऑडियो कोडेक सूची"
 
-#: gnomemeeting.schemas.in.in.h:122 src/pref_window.cpp:1366
+#: gnomemeeting.schemas.in.in.h:122 src/pref_window.cpp:1358
 msgid ""
 "The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic "
 "Gain Compensation. Choosing Automatic Gain Compensation modulates the volume "
 "for best quality."
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:123 src/pref_window.cpp:1245
+#: gnomemeeting.schemas.in.in.h:123 src/pref_window.cpp:1227
 msgid ""
 "The Gatekeeper alias to use when registering (string, or E164 ID if only "
 "0123456789#)"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:124 src/pref_window.cpp:1243
+#: gnomemeeting.schemas.in.in.h:124 src/pref_window.cpp:1225
+#, fuzzy
 msgid "The Gatekeeper host to register with"
-msgstr ""
+msgstr "डीसीओपी के साथ पंजीकरण नहीं हुआ.\n"
 
-#: gnomemeeting.schemas.in.in.h:125 src/pref_window.cpp:1241
+#: gnomemeeting.schemas.in.in.h:125 src/pref_window.cpp:1223
+#, fuzzy
 msgid "The Gatekeeper identifier to register with"
-msgstr ""
+msgstr "डीसीओपी के साथ पंजीकरण नहीं हुआ.\n"
 
-#: gnomemeeting.schemas.in.in.h:126 src/pref_window.cpp:1248
+#: gnomemeeting.schemas.in.in.h:126 src/pref_window.cpp:1230
+#, fuzzy
 msgid ""
 "The Gatekeeper password to use for H.235 authentication to the Gatekeeper"
-msgstr ""
+msgstr "पासवर्ड जिसका उपयोग आप इस खाता के लिए करना चाहेंगे."
 
-#: gnomemeeting.schemas.in.in.h:127 src/pref_window.cpp:1274
+#: gnomemeeting.schemas.in.in.h:127 src/pref_window.cpp:1256
 msgid ""
 "The Gateway host is the host to use to do H.323 calls through a gateway that "
 "will relay calls"
 msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:128
+msgid "The STUN Server"
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:129 src/pref_window.cpp:1292
+msgid ""
+"The STUN server to use for STUN Support. STUN is a technic that permits to "
+"go through some types of NAT gateways."
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:130
 msgid ""
 "The audio plugin that will be used to detect the devices and manage them"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:129
+#: gnomemeeting.schemas.in.in.h:131
 msgid "The busy tone sound"
-msgstr ""
+msgstr "व्यस्त टोन ध्वनि"
 
-#: gnomemeeting.schemas.in.in.h:130
+#: gnomemeeting.schemas.in.in.h:132
 msgid ""
 "The chosen sound will be played at the end of calls or calling somebody who "
 "is busy, if enabled"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:131
+#: gnomemeeting.schemas.in.in.h:133
 msgid "The chosen sound will be played on incoming calls, if enabled"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:132
+#: gnomemeeting.schemas.in.in.h:134
 msgid "The chosen sound will be played when calling somebody, if enabled"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:133
+#: gnomemeeting.schemas.in.in.h:135
 msgid "The default video view"
-msgstr ""
+msgstr "डिफ़ॉल्ट वीडियो दृश्य"
 
-#: gnomemeeting.schemas.in.in.h:134
+#: gnomemeeting.schemas.in.in.h:136
 msgid ""
 "The default video view (0: Local, 1: Remote, 2: Both incrusted, 3: Both with "
 "local video in a separate window, 4: Both)"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:135
-msgid "The history of the last 100 missed calls"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:136
-msgid "The history of the last 100 placed calls"
-msgstr ""
-
 #: gnomemeeting.schemas.in.in.h:137
-msgid "The history of the last 100 received calls"
-msgstr ""
+msgid "The history of the last 100 missed calls"
+msgstr "पिछले 100 छूटे काल का इतिहास"
 
-#: gnomemeeting.schemas.in.in.h:138 src/pref_window.cpp:994
+#: gnomemeeting.schemas.in.in.h:138
+msgid "The history of the last 100 placed calls"
+msgstr "पिछले 100 किए गए काल का इतिहास"
+
+#: gnomemeeting.schemas.in.in.h:139
+msgid "The history of the last 100 received calls"
+msgstr "पिछले 100 प्राप्त किए काल का इतिहास"
+
+#: gnomemeeting.schemas.in.in.h:140 src/pref_window.cpp:976
 msgid "The host where calls should be forwarded to in the cases selected above"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:139
-#, fuzzy
+#: gnomemeeting.schemas.in.in.h:141
 msgid "The image height for fullscreen"
-msgstr "पूर्णसक्रीन के लिए चित्र उंचाई"
+msgstr "पूर्णस्क्रीन हेतु छवि ऊँचाई"
 
-#: gnomemeeting.schemas.in.in.h:140 src/pref_window.cpp:1440
+#: gnomemeeting.schemas.in.in.h:142 src/pref_window.cpp:1432
 msgid ""
 "The image to transmit if \"Picture\" is selected as video plugin or if the "
 "opening of the device fails. Leave blank to use the default GnomeMeeting "
 "logo."
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:141
-#, fuzzy
-msgid "The image width for fullscreen"
-msgstr "पूर्णसक्रीन के लिए चित्र चोडाई"
-
-#: gnomemeeting.schemas.in.in.h:142
-#, fuzzy
-msgid "The incoming call sound"
-msgstr "आने वाले कॉल का उत्तर दें"
-
 #: gnomemeeting.schemas.in.in.h:143
-msgid "The list of called URLs"
-msgstr ""
+msgid "The image width for fullscreen"
+msgstr "पूर्णस्क्रीन हेतु छवि चौड़ाई"
 
 #: gnomemeeting.schemas.in.in.h:144
+msgid "The incoming call sound"
+msgstr "आने वाले काल की ध्वनि"
+
+#: gnomemeeting.schemas.in.in.h:145
+msgid "The list of called URLs"
+msgstr "काल किए यूआरएल की सूची"
+
+#: gnomemeeting.schemas.in.in.h:146
 msgid "The list of groups"
 msgstr "समूहों की सूची"
 
-#: gnomemeeting.schemas.in.in.h:145
+#: gnomemeeting.schemas.in.in.h:147
 msgid "The maximum jitter buffer size for audio reception (in ms)"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:146
+#: gnomemeeting.schemas.in.in.h:148
 msgid ""
 "The maximum video bandwidth in kbytes/s. The video quality and the number of "
 "transmitted frames per second will be dynamically adjusted above their "
 "minimum during calls to try to minimize the bandwidth to the given value"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:147
+#: gnomemeeting.schemas.in.in.h:149
 msgid "The minimum jitter buffer size for audio reception (in ms)"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:148 src/pref_window.cpp:1665
-msgid ""
-"The minimum number of video frames to transmit each second when trying to "
-"minimize the bandwidth"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:150
+#: gnomemeeting.schemas.in.in.h:151
 #, no-c-format
 msgid ""
 "The minimum transmitted video quality to keep when trying to minimize the "
@@ -717,35 +716,33 @@ msgid ""
 "worst quality"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:151 src/pref_window.cpp:1368
+#: gnomemeeting.schemas.in.in.h:152 src/pref_window.cpp:1360
 msgid ""
 "The output device type is the type of device connected to your Quicknet "
 "card. It can be either a POTS (Plain Old Telephone System) or a headset."
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:152
+#: gnomemeeting.schemas.in.in.h:153
 msgid ""
 "The port to listen to for incoming connections. GnomeMeeting needs to be "
 "restarted for the new value to take effect."
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:153
-#, fuzzy
-msgid "The position of the local video window"
-msgstr "स्थानीय विडियो विंडो की उंचाई"
-
 #: gnomemeeting.schemas.in.in.h:154
-#, fuzzy
-msgid "The position of the remote video window"
-msgstr "दूरस्थ विडियो विंडो की उंचाई"
+msgid "The position of the local video window"
+msgstr "स्थानीय विडियो विंडो की स्थिति"
 
 #: gnomemeeting.schemas.in.in.h:155
+msgid "The position of the remote video window"
+msgstr "रिमोट वीडियो विंडो की स्थिति"
+
+#: gnomemeeting.schemas.in.in.h:156
 msgid ""
 "The prefix that will be used to save pictures of the conversation. That "
 "prefix is followed by the snapshot number."
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:156
+#: gnomemeeting.schemas.in.in.h:157
 msgid ""
 "The range of TCP ports beside the listen_port that GnomeMeeting will use for "
 "the H.245 channel. You can change the TCP port range if you are using IP "
@@ -755,7 +752,7 @@ msgid ""
 "conference are using H.245 Tunneling."
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:157
+#: gnomemeeting.schemas.in.in.h:158
 msgid ""
 "The range of UDP ports that GnomeMeeting will use for RTP (audio and video "
 "communication channels). You can change the UDP port range if you are using "
@@ -764,7 +761,7 @@ msgid ""
 "to take effect."
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:158
+#: gnomemeeting.schemas.in.in.h:159
 msgid ""
 "The range of UDP ports that GnomeMeeting will use when registering to "
 "gatekeepers. You can change the UDP port range if you are using IP "
@@ -774,77 +771,76 @@ msgid ""
 "gatekeeper."
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:159 src/pref_window.cpp:1253
+#: gnomemeeting.schemas.in.in.h:160 src/pref_window.cpp:1235
 msgid "The registering method to use"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:160
-msgid "The ring tone sound"
-msgstr ""
+msgstr "उपयोग हेतु पंजीकरण विधि"
 
 #: gnomemeeting.schemas.in.in.h:161
-msgid "The save prefix"
-msgstr ""
+msgid "The ring tone sound"
+msgstr "रिंग टोन ध्वनि"
 
 #: gnomemeeting.schemas.in.in.h:162
-#, fuzzy
-msgid "The size of the local video window"
-msgstr "स्थानीय विडियो विंडो की उंचाई"
+msgid "The save prefix"
+msgstr "प्रीफ़िक्स सहेजें"
 
 #: gnomemeeting.schemas.in.in.h:163
-#, fuzzy
-msgid "The size of the remote video window"
-msgstr "दूरस्थ विडियो विंडो की उंचाई"
+msgid "The size of the local video window"
+msgstr "स्थानीय वीडियो विंडो का आकार"
 
 #: gnomemeeting.schemas.in.in.h:164
+msgid "The size of the remote video window"
+msgstr "रिमोट वीडियो विंडो का आकार"
+
+#: gnomemeeting.schemas.in.in.h:165
 msgid ""
 "The sound that will be played at the end of calls or when calling somebody "
 "who is busy, if enabled"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:165
+#: gnomemeeting.schemas.in.in.h:166
 msgid "The sound that will be played on incoming calls, if enabled"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:166
+#: gnomemeeting.schemas.in.in.h:167
 msgid "The sound that will be played when calling somebody, if enabled"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:167
+#: gnomemeeting.schemas.in.in.h:168
 msgid "The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:168 src/pref_window.cpp:968
+#: gnomemeeting.schemas.in.in.h:169
+#, fuzzy
 msgid "The user directory server to register with"
-msgstr ""
+msgstr "डिरेक्ट्री जहाँ से .server फ़ाइलें पढ़नी हैं"
 
-#: gnomemeeting.schemas.in.in.h:169 src/pref_window.cpp:1433
+#: gnomemeeting.schemas.in.in.h:170 src/pref_window.cpp:1425
 msgid "The video channel number to use (to select camera, tv or other sources)"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:170 src/pref_window.cpp:1418
+#: gnomemeeting.schemas.in.in.h:171 src/pref_window.cpp:1410
 msgid ""
 "The video plugin that will be used to detect the devices and manage them"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:171
+#: gnomemeeting.schemas.in.in.h:172
 msgid ""
 "The way to react to incoming calls: 0 displays a popup, 1 automatically "
 "answers the call, 2 automatically rejects the call and 3 forwards the call "
 "to the given URL, if any"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:172
-msgid "The zoom value"
-msgstr ""
-
 #: gnomemeeting.schemas.in.in.h:173
+msgid "The zoom value"
+msgstr "ज़ूम मान"
+
+#: gnomemeeting.schemas.in.in.h:174
 msgid ""
 "The zoom value to apply to images displayed in the main GUI (can be 0.50, "
 "1.00, or 2.00)"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:174
+#: gnomemeeting.schemas.in.in.h:175
 msgid ""
 "This enables H.245 Tunnelling mode. In H.245 Tunnelling mode H.245 messages "
 "are encapsulated into the the H.225 channel (port 1720). This saves one TCP "
@@ -853,11 +849,12 @@ msgid ""
 "can crash some versions of Netmeeting."
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:175 src/pref_window.cpp:1205
+#: gnomemeeting.schemas.in.in.h:176 src/pref_window.cpp:1187
+#, fuzzy
 msgid "This enables H.245 early in the setup"
-msgstr ""
+msgstr "यह बक्सा पटल पर बैटरी स्थिति चिह्न सक्षम करता है"
 
-#: gnomemeeting.schemas.in.in.h:176
+#: gnomemeeting.schemas.in.in.h:177
 msgid ""
 "This enables IP checking from seconix.com and fills the IP in the public IP "
 "of the NAT/PAT gateway field of GnomeMeeting. The returned IP is only used "
@@ -865,7 +862,7 @@ msgid ""
 "manually enter the IP of your gateway in the GnomeMeeting preferences"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:177
+#: gnomemeeting.schemas.in.in.h:178
 msgid ""
 "This enables IP translation. IP translation is useful if GnomeMeeting is "
 "running behind a NAT/PAT router. You have to put the public IP of the router "
@@ -874,7 +871,13 @@ msgid ""
 "natively supports H.323, you can disable this"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:178
+#: gnomemeeting.schemas.in.in.h:179 src/pref_window.cpp:1290
+msgid ""
+"This enables STUN Support. STUN is a technic that permits to go through some "
+"types of NAT gateways."
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:180
 msgid ""
 "This permits to set the mode for DTMFs sending. The values can be \"All"
 "\" (0), \"None\" (1), \"rfc2833\" (2), \"Signal\" (3) or \"String\" (4) "
@@ -882,319 +885,190 @@ msgid ""
 "\"rfc2833\" disables the Text Chat"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:179
-msgid "Transmitted background blocks"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:180
-msgid "UDP port range"
-msgstr ""
-
 #: gnomemeeting.schemas.in.in.h:181
-msgid "Use the gateway"
-msgstr ""
+msgid "Transmitted background blocks"
+msgstr "पृष्ठभूमि ब्लॉक्स संचारित"
 
-#: gnomemeeting.schemas.in.in.h:182 src/pref_window.cpp:1276
-msgid "Use the specified gateway to do calls"
-msgstr ""
+#: gnomemeeting.schemas.in.in.h:182
+msgid "UDP port range"
+msgstr "यूडीपी पोर्ट पर सीमा"
 
 #: gnomemeeting.schemas.in.in.h:183
+msgid "Use the gateway"
+msgstr "गेटवे उपयोग करें"
+
+#: gnomemeeting.schemas.in.in.h:184 src/pref_window.cpp:1258
+#, fuzzy
+msgid "Use the specified gateway to do calls"
+msgstr "आपको सीडी प्लेयर का उपयोग करने की अनुमति नहीं है."
+
+#: gnomemeeting.schemas.in.in.h:185
 msgid ""
 "Use this option to ensure the above alias is used as the primary alias when "
 "registering with a gatekeeper. This may be required if your gatekeeper can "
 "only perform authentication using the first alias in the list"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:184
-msgid "User directory"
-msgstr "उपयोगकर्ता डॉयरेक्ट्री"
-
-#: gnomemeeting.schemas.in.in.h:185 src/ldap_window.cpp:2953
-msgid "Version"
-msgstr "संसकरण"
-
 #: gnomemeeting.schemas.in.in.h:186
-msgid "Video channel"
-msgstr "विडियो चैनेल"
+msgid "User directory"
+msgstr "उपयोगकर्ता डिरेक्ट्री"
 
 #: gnomemeeting.schemas.in.in.h:187
-msgid "Video format"
-msgstr "विडियो प्रारूप"
+msgid "Version"
+msgstr "संस्करण"
 
 #: gnomemeeting.schemas.in.in.h:188
-msgid "Video image"
-msgstr "विडियो चित्र"
+msgid "Video channel"
+msgstr "वीडियो चैनल"
 
 #: gnomemeeting.schemas.in.in.h:189
-#, fuzzy
-msgid "Video input device"
-msgstr "विडियो उपकरण"
+msgid "Video format"
+msgstr "वीडियो फ़ॉर्मेट"
 
 #: gnomemeeting.schemas.in.in.h:190
-#, fuzzy
-msgid "Video plugin"
-msgstr "विडियो आकार"
+msgid "Video image"
+msgstr "वीडियो छवि"
 
 #: gnomemeeting.schemas.in.in.h:191
-#, fuzzy
-msgid "Video preview"
-msgstr "विडियो पूर्वदर्शन"
+msgid "Video input device"
+msgstr "वीडियो इनपुट उपकरण"
 
 #: gnomemeeting.schemas.in.in.h:192
-msgid "Video size"
-msgstr "विडियो आकार"
+msgid "Video plugin"
+msgstr "वीडियो प्लगइन"
 
-#: lib/dialog.c:193
+#: gnomemeeting.schemas.in.in.h:193
+msgid "Video preview"
+msgstr "वीडियो पूर्वावलोकन"
+
+#: gnomemeeting.schemas.in.in.h:194
+msgid "Video size"
+msgstr "वीडियो आकार"
+
+#: lib/dialog.c:254
 msgid "Do not show this dialog again"
+msgstr "इस संवाद को फिर कभी नहीं दिखाएँ"
+
+#: lib/gm_conf-gconf.c:155
+msgid ""
+"An error has happened in the configuration backend.\n"
+"Maybe some of your settings won't be saved."
 msgstr ""
 
 #: src/callbacks.cpp:86
 msgid "_Retrieve Call"
-msgstr ""
+msgstr "काल पुनःप्राप्त करें (_R)"
 
-#: src/callbacks.cpp:99 src/menu.cpp:280
+#: src/callbacks.cpp:99 src/menu.cpp:298
 msgid "_Hold Call"
-msgstr ""
+msgstr "काल होल्ड करें (_H)"
 
 #: src/callbacks.cpp:128
 msgid "Transfer call to:"
-msgstr ""
+msgstr "काल इन्हें हस्तांतरित करें:"
 
 #: src/callbacks.cpp:129
 msgid "Transfer"
-msgstr ""
+msgstr "हस्तांतरित करें"
 
-#: src/callbacks.cpp:231 src/menu.cpp:290
+#: src/callbacks.cpp:231 src/menu.cpp:308
 msgid "Suspend _Audio"
-msgstr ""
+msgstr "ऑडियो सस्पेंड करें (_A)"
 
 #: src/callbacks.cpp:232
 msgid "Resume _Audio"
-msgstr ""
+msgstr "ऑडियो पुनः प्रारंभ करें (_A)"
 
 #: src/callbacks.cpp:233
 msgid "Audio transmission: suspended"
-msgstr ""
+msgstr "ऑडियो संचारणः सस्पेंडेड"
 
 #: src/callbacks.cpp:234
 msgid "Audio transmission: resumed"
-msgstr ""
+msgstr "ऑडियो संचारणः पुनः प्रारंभ"
 
-#: src/callbacks.cpp:245 src/menu.cpp:295
+#: src/callbacks.cpp:245 src/menu.cpp:313
 msgid "Suspend _Video"
-msgstr ""
+msgstr "वीडियो सस्पेंड करें (_V)"
 
 #: src/callbacks.cpp:246
 msgid "Resume _Video"
-msgstr ""
+msgstr "वीडियो पुनः प्रारंभ करें (_V)"
 
 #: src/callbacks.cpp:247
 msgid "Video transmission: suspended"
-msgstr ""
+msgstr "वीडियो संचारणः सस्पेंडेड"
 
 #: src/callbacks.cpp:248
 msgid "Video transmission: resumed"
-msgstr ""
+msgstr "वीडियो संचारणः पुनः प्रारंभ"
 
-#: src/callbacks.cpp:383
-#, fuzzy
+#: src/callbacks.cpp:385
 msgid "Code contributors:"
-msgstr "कोड सहयोगकर्ता :"
+msgstr "कोड सहयोगी:"
 
-#: src/callbacks.cpp:393
+#: src/callbacks.cpp:397
 msgid "Artwork:"
 msgstr "कलाकारी:"
 
-#: src/callbacks.cpp:397
+#: src/callbacks.cpp:401
 msgid "Contributors:"
-msgstr "सहयोगकर्ता :"
+msgstr "सहयोगकर्ता:"
 
+#  Translators: Please write translator credits here, and
+#  * seperate names with \n
 #. Translators: Please write translator credits here, and
 #. * seperate names with \n
-#: src/callbacks.cpp:433
+#: src/callbacks.cpp:437
 msgid "translator_credits"
-msgstr "जी करुणाकर <karunakar@freedomink.org>"
+msgstr ""
+"जी करुणाकर <karunakar@freedomink.org>\n"
+"रविशंकर श्रीवास्तव <raviratlami@gmail.com>"
 
 #. Translators: Please test to see if your translation
 #. * looks OK and fits within the box
-#: src/callbacks.cpp:444
+#: src/callbacks.cpp:448
 msgid ""
 "GnomeMeeting is full-featured H.323 compatible videoconferencing, VoIP and "
 "IP-Telephony application that allows you to make audio and video calls to "
 "remote users with H.323 hardware or software."
 msgstr ""
 
-#: src/chat_window.cpp:377
+#. shouldn't happen...
+#: src/chat_window.cpp:249
+#, fuzzy, c-format
+msgid "---- Call begins at %s\n"
+msgstr "दिन आरम्भ होगा"
+
+#. prepare the message to be displayed
+#: src/chat_window.cpp:284
+#, fuzzy, c-format
+msgid "---- Call ends at %s\n"
+msgstr "एटी-एसपीआई रजिस्ट्री"
+
+#: src/chat_window.cpp:421
 msgid "Open URI"
-msgstr ""
+msgstr "यूआरआई खोलें"
 
-#: src/chat_window.cpp:380 src/chat_window.cpp:396
-#, fuzzy
+#: src/chat_window.cpp:424 src/chat_window.cpp:440
 msgid "Copy Link Location"
-msgstr "स्थान"
+msgstr "लिंक स्थान प्रतिलिपि करें"
 
-#: src/chat_window.cpp:392
-#, fuzzy
+#: src/chat_window.cpp:436
 msgid "Connect to"
-msgstr "जुडें (_o)"
+msgstr "से जुड़ें"
 
-#: src/chat_window.cpp:394
-#, fuzzy
+#: src/chat_window.cpp:438
 msgid "Add to Address Book"
-msgstr "%s को पता किताब में जोडें"
+msgstr "पता पुस्तिका में जोड़ें"
 
-#: src/chat_window.cpp:414
+#: src/chat_window.cpp:458
 msgid "Copy Equation"
-msgstr ""
+msgstr "प्रतिलिपि समीकरण"
 
-#: src/chat_window.cpp:429
-#, fuzzy
+#: src/chat_window.cpp:473
 msgid "Send message:"
-msgstr "संदेश भेजें :"
-
-#: src/codec_info.h:53
-msgid ""
-"iLBC-13k3 (internet Low Bitrate Codec) is a free speech codec suitable for "
-"robust voice communication over IP. The codec is designed for narrow band "
-"speech and results in a payload bit rate of 13.33 kbit/s with an encoding "
-"frame length of 30 ms. The iLBC codec enables graceful speech quality "
-"degradation in the case of lost frames, which occurs in connection with lost "
-"or delayed IP packets."
-msgstr ""
-
-#: src/codec_info.h:53 src/codec_info.h:55 src/codec_info.h:57
-#: src/codec_info.h:63 src/codec_info.h:65 src/codec_info.h:69
-#: src/codec_info.h:71
-msgid "Excellent"
-msgstr "उत्तम"
-
-#: src/codec_info.h:53
-msgid "13.33 Kbps"
-msgstr ""
-
-#: src/codec_info.h:55
-msgid ""
-"iLBC-15k2 (internet Low Bitrate Codec) is a free speech codec suitable for "
-"robust voice communication over IP. The codec is designed for narrow band "
-"speech and results in a payload bitrate of 15.20 kbps with an encoding "
-"length of 20 ms. The iLBC codec enables graceful speech quality degradation "
-"in the case of lost frames, which occurs in connection with lost or delayed "
-"IP packets."
-msgstr ""
-
-#: src/codec_info.h:55
-msgid "15.2 Kbps"
-msgstr ""
-
-#: src/codec_info.h:57
-msgid ""
-"Speex is an Open Source/Free Software patent-free audio compression format "
-"designed for speech. The Speex Project aims to lower the barrier of entry "
-"for voice applications by providing a free alternative to expensive "
-"proprietary speech codecs. Moreover, Speex is well-adapted to Internet "
-"applications and provides useful features that are not present in most other "
-"codecs. Finally, Speex is part of the GNU Project and is available under the "
-"Xiph.org variant of the BSD license. SpeexNarrow-15k is based on CELP and is "
-"designed to compress voice at a payload bitrate of 15 kbps."
-msgstr ""
-
-#: src/codec_info.h:57
-msgid "15 Kbps"
-msgstr ""
-
-#: src/codec_info.h:59
-msgid ""
-"Speex is an Open Source/Free Software patent-free audio compression format "
-"designed for speech. The Speex Project aims to lower the barrier of entry "
-"for voice applications by providing a free alternative to expensive "
-"proprietary speech codecs. Moreover, Speex is well-adapted to Internet "
-"applications and provides useful features that are not present in most other "
-"codecs. Finally, Speex is part of the GNU Project and is available under the "
-"Xiph.org variant of the BSD license. SpeexNarrow-8k is based on CELP and is "
-"designed to compress voice at a payload bitrate of 8 kbps."
-msgstr ""
-
-#: src/codec_info.h:59 src/codec_info.h:61 src/codec_info.h:67
-msgid "Good"
-msgstr ""
-
-#: src/codec_info.h:59
-msgid "8 Kbps"
-msgstr ""
-
-#: src/codec_info.h:61
-msgid ""
-"MS-GSM is the Microsoft version of GSM 06.10. GSM 06.10 is a standardized "
-"lossy speech compression employed by most European wireless telephones. It "
-"uses RPE/LTP (residual pulse excitation/long term prediction) coding to "
-"compress frames of 160 13-bit samples with a frame rate of 50 Hz into 260 "
-"bits.  Microsoft's GSM 06.10 codec is not compatible with the standard frame "
-"format, they use 65-byte-frames (2 x 32 1/2) rather than rounding to 33, and "
-"they number the bits in their bytes from the other end."
-msgstr ""
-
-#: src/codec_info.h:61
-msgid "13 Kbps"
-msgstr ""
-
-#: src/codec_info.h:63
-msgid ""
-"G.711 is the international standard for encoding telephone audio on 64 kbps "
-"channel. It is a pulse code modulation (PCM) scheme operating at 8 kHz "
-"sample rate, with 8 bits per sample, fully meeting ITU-T recommendations. "
-"This standard has two forms, A-Law and u-Law. A-Law G.711 PCM encoder "
-"converts 13 bit linear PCM samples into 8 bit compressed PCM (logarithmic "
-"form) samples, and the decoder does the conversion vice versa."
-msgstr ""
-
-#: src/codec_info.h:63 src/codec_info.h:65
-msgid "64 Kbps"
-msgstr ""
-
-#: src/codec_info.h:65
-msgid ""
-"G.711 is the international standard for encoding telephone audio on 64 kbps "
-"channel. It is a pulse code modulation (PCM) scheme operating at 8 kHz "
-"sample rate, with 8 bits per sample, fully meeting ITU-T recommendations. "
-"This standard has two forms, A-Law and u-Law. u-Law G.711 PCM encoder "
-"converts 14 bit linear PCM samples into 8 bit compressed PCM (logarithmic "
-"form) samples, and the decoder does the conversion vice versa."
-msgstr ""
-
-#: src/codec_info.h:67
-msgid ""
-"GSM 06.10 is a standardized lossy speech compression employed by first "
-"generation of digital mobile phones in Europe. It uses RPE/LTP (residual "
-"pulse excitation/long term prediction) coding to compress frames of 20 ms, "
-"achieving a bitrate of 13kbps."
-msgstr ""
-
-#: src/codec_info.h:67
-msgid "16.5 Kbps"
-msgstr ""
-
-#: src/codec_info.h:69
-msgid ""
-"G.726 conforms to ITU-T G.726 recommendation that specifies speech "
-"compression and decompression at rates of 16, 24, 32 and 40 Kbps based on "
-"Adaptive Differential Pulse Code Modulation (ADPCM)."
-msgstr ""
-
-#: src/codec_info.h:69
-msgid "32 Kbps"
-msgstr ""
-
-#: src/codec_info.h:71
-msgid ""
-"G.723.1 conforms to ITU-T G.723.1 recommendation. It was designed for "
-"videoconferencing / telephony over standard phone lines, and is optimized "
-"for realtime encode and decode. That codec is only available in GnomeMeeting "
-"when using Quicknet cards due to patents restrictions."
-msgstr ""
-
-#: src/codec_info.h:71
-msgid "6.3 or 5.7 Kbps"
-msgstr ""
+msgstr "संदेश भेजें:"
 
 #: src/config-tool-i18n.h:1
 msgid "YES"
@@ -1223,24 +1097,24 @@ msgstr ""
 
 #: src/config-tool-i18n.h:5
 msgid "Removing $HOME/.gconf/apps/gnomemeeting"
-msgstr "$HOME/.gconf/apps/gnomemeeting हटा रहें है"
+msgstr "$HOME/.gconf/apps/gnomemeeting मिटा रहे"
 
 #: src/config-tool-i18n.h:6 src/config-tool-i18n.h:11
 #: src/config-tool-i18n.h:13
 msgid "Shutting down GConf daemon"
-msgstr "जीकॉन्फ डीमोन बंद हो रहा है"
+msgstr "जी-कॉन्फ़ डेमन बंद कर रहे"
 
 #: src/config-tool-i18n.h:7
 msgid "...Done."
-msgstr "हो गया ..."
+msgstr "सम्पन्न ..."
 
 #: src/config-tool-i18n.h:8
 msgid "Leaving configuration alone."
-msgstr ""
+msgstr "कॉन्फ़िगरेशन अकेला छोड़ रहे"
 
 #: src/config-tool-i18n.h:9
 msgid "Have a nice day."
-msgstr "आपक दिन शुभ हो"
+msgstr "आपक दिन शुभ हो."
 
 #: src/config-tool-i18n.h:10
 msgid ""
@@ -1255,11 +1129,11 @@ msgstr ""
 
 #: src/config-tool-i18n.h:12
 msgid "Removing schemas"
-msgstr "स्कीमा हटा रहे हैं"
+msgstr "प्रसंग मिटा रहे"
 
 #: src/config-tool-i18n.h:14
 msgid "Installing schemas"
-msgstr "स्कीमा स्थापित कर रहे हैं"
+msgstr "प्रसंग संस्थापित कर रहे"
 
 #: src/config-tool-i18n.h:15
 msgid ""
@@ -1270,16 +1144,18 @@ msgid ""
 msgstr ""
 
 #: src/config-tool-i18n.h:16
+#, fuzzy
 msgid "Usage:  gnomemeeting-config-tool OPTION"
-msgstr ""
+msgstr "यूनिफाइड आउटपुट फार्मेट का उपयोग करें (-u विकल्प) (_u)"
 
 #: src/config-tool-i18n.h:17
+#, fuzzy
 msgid "Fixes problems with the GnomeMeeting settings"
-msgstr ""
+msgstr "Comment=एमएसएन मैसेंजर के साथ गनोम-मीटिंग उपयोग करें"
 
 #: src/config-tool-i18n.h:18
 msgid "  --clean                remove all user settings"
-msgstr ""
+msgstr "  --clean                सभी उपयोगकर्ता विन्यास को मिटाएँ"
 
 #: src/config-tool-i18n.h:19
 msgid ""
@@ -1296,62 +1172,63 @@ msgid ""
 "  --fix-permissions      fix permissions of GConf repository (run as root)"
 msgstr ""
 
-#: src/config.cpp:347 src/config.cpp:592
+#: src/config.cpp:305 src/config.cpp:549
+#, fuzzy
 msgid "Changing this setting will only affect new calls"
-msgstr ""
+msgstr "इस विन्यास के अनुसार नई फ़ाइलों में विस्तार तथा उभार होंगे"
 
-#: src/config.cpp:347 src/config.cpp:592
+#: src/config.cpp:306 src/config.cpp:550
 msgid ""
 "You have changed a setting that doesn't permit to GnomeMeeting to apply the "
 "new change to the current call. Your new setting will only take effect for "
 "the next call."
 msgstr ""
 
-#: src/config.cpp:410
+#: src/config.cpp:368
 msgid "H.245 Tunneling disabled"
-msgstr ""
+msgstr "H.245 टनलिंग अक्षम"
 
-#: src/config.cpp:411
+#: src/config.cpp:369
 msgid "H.245 Tunneling enabled"
-msgstr ""
+msgstr "H.245 टनलिंग सक्षम"
 
-#: src/config.cpp:440
+#: src/config.cpp:398
 msgid "Early H.245 disabled"
-msgstr ""
+msgstr "प्रारंभिक H.245 अक्षम है"
 
-#: src/config.cpp:441
+#: src/config.cpp:399
 msgid "Early H.245 enabled"
-msgstr ""
+msgstr "प्रारंभिक H.245 सक्षम है"
 
-#: src/config.cpp:470
+#: src/config.cpp:428
 msgid "Fast Start disabled"
-msgstr ""
+msgstr "त्वरित प्रारंभ अक्षम"
 
-#: src/config.cpp:471
+#: src/config.cpp:429
 msgid "Fast Start enabled"
-msgstr ""
+msgstr "त्वरित प्रारंभ सक्षम है"
 
-#: src/config.cpp:503
+#: src/config.cpp:460
 msgid "No gateway or proxy specified"
-msgstr ""
+msgstr "कोई गेटवे या प्रॉक्सी निर्दिष्ट नहीं"
 
-#: src/config.cpp:503
+#: src/config.cpp:460
 msgid "You need to specify a host to use as gateway or proxy."
 msgstr ""
 
-#: src/config.cpp:650
+#: src/config.cpp:608
 msgid "Disabled silence detection"
-msgstr ""
+msgstr "साइलेंस डिटेक्शन अक्षम"
 
-#: src/config.cpp:655
+#: src/config.cpp:614
 msgid "Enabled silence detection"
-msgstr ""
+msgstr "साइलेंस डिटेक्शन सक्षम"
 
-#: src/config.cpp:1375
+#: src/config.cpp:1161
 msgid "Forward URL not specified"
-msgstr ""
+msgstr "आगे भेजा गया यूआरएल निर्दिष्ट नहीं है"
 
-#: src/config.cpp:1376
+#: src/config.cpp:1162
 msgid ""
 "You need to specify an URL where to forward calls in the call forwarding "
 "section of the preferences!\n"
@@ -1359,18 +1236,68 @@ msgid ""
 "Disabling forwarding."
 msgstr ""
 
-#: src/config.cpp:1660
-msgid ""
-"An error has happened in the configuration backend.\n"
-"Maybe some of your settings won't be saved."
+#: src/config.cpp:1219
+#, fuzzy
+msgid "STUN Server error"
+msgstr "ज़ेनेरिक त्रुटि"
+
+#: src/config.cpp:1219
+msgid "You have to specify a valid STUN server in order to use STUN support"
 msgstr ""
 
-#: src/config.cpp:1911
-#, fuzzy
-msgid "Welcome to GnomeMeeting 1.00!"
-msgstr "गनोममीटिंग के बारे में (_A)"
+#: src/connection.cpp:154
+#, fuzzy, c-format
+msgid "Opened codec %s for transmission"
+msgstr "'हस्तांतरण सम्पन्न' स्थिति संदेश हेतु समय-चिह्न"
 
-#: src/config.cpp:1911
+#: src/connection.cpp:157
+#, c-format
+msgid "Closed codec %s which was opened for transmission"
+msgstr ""
+
+#: src/connection.cpp:161
+#, fuzzy, c-format
+msgid "Opened codec %s for reception"
+msgstr "फ़ाइल '%1' खोला नहीं जा सकाः %2 लिखने हेतु"
+
+#: src/connection.cpp:164
+#, c-format
+msgid "Closed codec %s which was opened for reception"
+msgstr ""
+
+#: src/connection.cpp:202
+#, c-format
+msgid "Failure opening %s for transmission, will try with next common codec"
+msgstr ""
+
+#: src/connection.cpp:203
+#, c-format
+msgid "Failure opening %s for reception, will try with next common codec"
+msgstr ""
+
+#: src/connection.cpp:316 src/connection.cpp:317 src/urlhandler.cpp:77
+#: src/urlhandler.cpp:78
+msgid "Call transfer failed"
+msgstr "फ़ाइल स्थांतरण असफल"
+
+#: src/connection.cpp:316
+msgid ""
+"The remote user tried to transfer your call to another user, but it failed."
+msgstr ""
+
+#: src/druid.cpp:319 src/druid.cpp:726 src/druid.cpp:743 src/druid.cpp:798
+#: src/endpoint.cpp:1660 src/gnomemeeting.cpp:299 src/gnomemeeting.cpp:301
+#: src/gnomemeeting.cpp:303 src/sound_handling.cpp:558
+#: src/sound_handling.cpp:559 src/videograbber.cpp:311
+#: src/videograbber.cpp:574
+msgid "No device found"
+msgstr "कोई उपकरण नहीं मिला"
+
+#: src/druid.cpp:380
+msgid "Welcome to GnomeMeeting 1.00!"
+msgstr "गनोम-मीटिंग 1.00 में आपका स्वागत है!"
+
+#: src/druid.cpp:380
 msgid ""
 "Congratulations, you have just successfully launched GnomeMeeting 1.00 for "
 "the first time.\n"
@@ -1383,90 +1310,27 @@ msgid ""
 "The GnomeMeeting Team."
 msgstr ""
 
-#: src/config.cpp:1913 src/ldap_window.cpp:2540
-#, fuzzy
-msgid "Friends"
-msgstr "खोजें (_F)"
-
-#: src/config.cpp:1914 src/ldap_window.cpp:2544
-msgid "Work"
-msgstr ""
-
-#: src/config.cpp:1915 src/ldap_window.cpp:2542
-msgid "Family"
-msgstr ""
-
-#: src/connection.cpp:153
-#, c-format
-msgid "Opened codec %s for transmission"
-msgstr ""
-
-#: src/connection.cpp:156
-#, c-format
-msgid "Closed codec %s which was opened for transmission"
-msgstr ""
-
-#: src/connection.cpp:160
-#, c-format
-msgid "Opened codec %s for reception"
-msgstr ""
-
-#: src/connection.cpp:163
-#, c-format
-msgid "Closed codec %s which was opened for reception"
-msgstr ""
-
-#: src/connection.cpp:200
-#, c-format
-msgid "Failure opening %s for transmission, will try with next common codec"
-msgstr ""
-
-#: src/connection.cpp:201
-#, c-format
-msgid "Failure opening %s for reception, will try with next common codec"
-msgstr ""
-
-#: src/connection.cpp:314 src/connection.cpp:315 src/urlhandler.cpp:77
-#: src/urlhandler.cpp:78
-msgid "Call transfer failed"
-msgstr ""
-
-#: src/connection.cpp:314
-msgid ""
-"The remote user tried to transfer your call to another user, but it failed."
-msgstr ""
-
-#: src/druid.cpp:265 src/druid.cpp:655 src/druid.cpp:672 src/druid.cpp:710
-#: src/endpoint.cpp:1702 src/gnomemeeting.cpp:316 src/gnomemeeting.cpp:318
-#: src/gnomemeeting.cpp:320 src/sound_handling.cpp:569
-#: src/sound_handling.cpp:570 src/videograbber.cpp:309
-#: src/videograbber.cpp:564
-msgid "No device found"
-msgstr ""
-
-#: src/druid.cpp:549
-#, fuzzy
+#: src/druid.cpp:614
 msgid "56k Modem"
-msgstr "56K मोडेम"
+msgstr "56K मॉडेम"
 
-#: src/druid.cpp:550
+#: src/druid.cpp:615
 msgid "ISDN"
-msgstr "ISDN"
+msgstr "आईएसडीएन"
 
-#: src/druid.cpp:551
+#: src/druid.cpp:616
 msgid "xDSL/Cable"
-msgstr "xDSL/Cable"
+msgstr "xडीएसएल/केबल"
 
-#: src/druid.cpp:552
+#: src/druid.cpp:617
 msgid "T1/LAN"
-msgstr "T1/LAN"
+msgstr "टी1/लैन"
 
-#: src/druid.cpp:553
-#, fuzzy
+#: src/druid.cpp:618
 msgid "Keep current settings"
-msgstr "विडियो समायोजन देखें"
+msgstr "वर्तमान विन्यास रखे रहें"
 
-#: src/druid.cpp:735
+#: src/druid.cpp:853
 #, c-format
 msgid ""
 "You have now finished the GnomeMeeting configuration. All the settings can "
@@ -1475,170 +1339,22 @@ msgid ""
 "\n"
 "Configuration summary:\n"
 "\n"
-"Username:  %s\n"
-"Connection type:  %s\n"
+"Username: %s\n"
+"Connection type: %s\n"
 "Audio manager: %s\n"
-"Audio player:  %s\n"
-"Audio recorder:  %s\n"
+"Audio player: %s\n"
+"Audio recorder: %s\n"
 "Video manager: %s\n"
-"Video player: %s\n"
+"Video input: %s\n"
 "Callto URL: %s\n"
 msgstr ""
 
-#: src/druid.cpp:735 src/pref_window.cpp:1188
+#: src/druid.cpp:853 src/addressbook_window.cpp:614
+#: src/addressbook_window.cpp:616 src/pref_window.cpp:1170
 msgid "None"
-msgstr "कोई नहीं"
+msgstr "कुछ नहीं"
 
-#: src/druid.cpp:764
-#, c-format
-msgid "Personal Information - page %d/%d"
-msgstr ""
-
-#. The user fields
-#: src/druid.cpp:777
-msgid "Please enter your first name and your surname:"
-msgstr ""
-
-#: src/druid.cpp:785
-msgid ""
-"Your first name and surname will be used when connecting to other VoIP and "
-"videoconferencing software."
-msgstr ""
-
-#: src/druid.cpp:828
-#, fuzzy, c-format
-msgid "Callto URL - page %d/%d"
-msgstr "ऑडियो उपकरण - पन्ना %d/%d"
-
-#: src/druid.cpp:839
-#, fuzzy
-msgid "Please enter your e-mail address:"
-msgstr "अपना इमेल पता दें"
-
-#: src/druid.cpp:847
-msgid ""
-"Your e-mail address is used when registering to the GnomeMeeting users "
-"directory. It is used to create a callto address permitting your contacts to "
-"easily call you wherever you are."
-msgstr ""
-
-#: src/druid.cpp:856
-msgid ""
-"I don't want to register to the GnomeMeeting users directory and get a "
-"callto address"
-msgstr ""
-
-#: src/druid.cpp:906
-#, fuzzy, c-format
-msgid "Connection Type - page %d/%d"
-msgstr "कनेक्शन प्रकार"
-
-#. The connection type
-#: src/druid.cpp:918
-msgid "Please choose your connection type:"
-msgstr ""
-
-#: src/druid.cpp:926
-msgid ""
-"The connection type will permit determining the best quality settings that "
-"GnomeMeeting will use during calls. You can later change the settings "
-"individually in the preferences window."
-msgstr ""
-
-#: src/druid.cpp:965
-#, fuzzy, c-format
-msgid "Audio Manager - page %d/%d"
-msgstr "ऑडियो उपकरण - पन्ना %d/%d"
-
-#. The Audio devices
-#: src/druid.cpp:977
-#, fuzzy
-msgid "Please choose your audio manager:"
-msgstr "कृपया विडियो चित्र चुने"
-
-#: src/druid.cpp:985
-msgid ""
-"The audio manager is the plugin that will manage your audio devices, ALSA is "
-"probably the best choice when available."
-msgstr ""
-
-#: src/druid.cpp:1026
-#, c-format
-msgid "Audio Devices - page %d/%d"
-msgstr "ऑडियो उपकरण - पन्ना %d/%d"
-
-#. The Audio devices
-#: src/druid.cpp:1038
-#, fuzzy
-msgid "Please choose the audio output device:"
-msgstr "कृपया विडियो चित्र चुने"
-
-#: src/druid.cpp:1046
-msgid ""
-"The audio output device is the device managed by the audio manager that will "
-"be used to play audio."
-msgstr ""
-
-#: src/druid.cpp:1056
-#, fuzzy
-msgid "Please choose the audio input device:"
-msgstr "कृपया विडियो चित्र चुने"
-
-#: src/druid.cpp:1064
-msgid ""
-"The audio input device is the device managed by the audio manager that will "
-"be used to record your voice."
-msgstr ""
-
-#: src/druid.cpp:1077 src/druid.cpp:1215
-#, fuzzy
-msgid "Test Settings"
-msgstr "विडियो समायोजन (_V)"
-
-#: src/druid.cpp:1123
-#, fuzzy, c-format
-msgid "Video Manager - page %d/%d"
-msgstr "विडियो उपकरण - पन्ना %d/%d"
-
-#. The Audio devices
-#: src/druid.cpp:1135
-#, fuzzy
-msgid "Please choose your video manager:"
-msgstr "कृपया विडियो चित्र चुने"
-
-#: src/druid.cpp:1143
-msgid ""
-"The video manager is the plugin that will manage your video devices, "
-"Video4Linux is the most common choice if you own a webcam."
-msgstr ""
-
-#: src/druid.cpp:1183
-#, c-format
-msgid "Video Devices - page %d/%d"
-msgstr "विडियो उपकरण - पन्ना %d/%d"
-
-#. The Video devices
-#: src/druid.cpp:1195
-#, fuzzy
-msgid "Please choose the video input device:"
-msgstr "कृपया विडियो चित्र चुने"
-
-#: src/druid.cpp:1203
-msgid ""
-"The video input device is the device managed by the video manager that will "
-"be used to capture video."
-msgstr ""
-
-#: src/druid.cpp:1250
-msgid "First Time Configuration Druid"
-msgstr ""
-
-#: src/druid.cpp:1257
-#, c-format
-msgid "Configuration Druid - page %d/%d"
-msgstr ""
-
-#: src/druid.cpp:1260
+#: src/druid.cpp:872
 msgid ""
 "This is the GnomeMeeting general configuration druid. The following steps "
 "will set up GnomeMeeting by asking a few simple questions.\n"
@@ -1647,157 +1363,304 @@ msgid ""
 "selecting Preferences in the Edit menu."
 msgstr ""
 
-#: src/druid.cpp:1300
-#, c-format
-msgid "Configuration complete - page %d/%d"
-msgstr ""
-
-#. Update the log and status bar
-#: src/endpoint.cpp:750
+#: src/druid.cpp:878
 #, fuzzy, c-format
-msgid "Call from %s"
-msgstr ""
-"%s से कॉल\n"
-"%s का उपयोग करते हुए"
+msgid "Configuration Druid - page 1/%d"
+msgstr "कॉन्फ़िगरेशन ड्रुइड चलाएँ "
 
-#: src/endpoint.cpp:762
-#, c-format
-msgid "Forwarding call from %s to %s (Forward all calls)"
+#: src/druid.cpp:914
+#, fuzzy, c-format
+msgid "Personal Information - page %d/%d"
+msgstr "Edict जानकारी पृष्ठ"
+
+#  The user fields
+#. The user fields
+#: src/druid.cpp:927
+msgid "Please enter your first name and your surname:"
+msgstr "कृपया अपना प्रथम नाम तथा अपना कुल नाम भरें"
+
+#: src/druid.cpp:935
+msgid ""
+"Your first name and surname will be used when connecting to other VoIP and "
+"videoconferencing software."
 msgstr ""
+
+#: src/druid.cpp:974
+#, fuzzy, c-format
+msgid "Callto URL - page %d/%d"
+msgstr "काल-टू यूआरएल हैंडलर"
+
+#: src/druid.cpp:985
+msgid "Please enter your e-mail address:"
+msgstr "कृपया अपना ई-मेल पता भरें:"
+
+#: src/druid.cpp:993
+msgid ""
+"Your e-mail address is used when registering to the GnomeMeeting users "
+"directory. It is used to create a callto address permitting your contacts to "
+"easily call you wherever you are."
+msgstr ""
+
+#: src/druid.cpp:1002
+msgid ""
+"I don't want to register to the GnomeMeeting users directory and get a "
+"callto address"
+msgstr ""
+
+#: src/druid.cpp:1044
+#, fuzzy, c-format
+msgid "Connection Type - page %d/%d"
+msgstr "किसी भी प्रकार का कनेक्शन"
+
+#  The connection type
+#. The connection type
+#: src/druid.cpp:1056
+msgid "Please choose your connection type:"
+msgstr "कृपया अपना कनेक्शन प्रकार चुनें:"
+
+#: src/druid.cpp:1064
+msgid ""
+"The connection type will permit determining the best quality settings that "
+"GnomeMeeting will use during calls. You can later change the settings "
+"individually in the preferences window."
+msgstr ""
+
+#: src/druid.cpp:1096
+#, c-format
+msgid "Audio Manager - page %d/%d"
+msgstr "ऑडियो प्रबंधक - पृष्ठ %d/%d"
+
+#  The Audio devices
+#. The Audio devices
+#: src/druid.cpp:1108
+msgid "Please choose your audio manager:"
+msgstr "कृपया अपना ऑडियो प्रबंधक चुनें:"
+
+#: src/druid.cpp:1116
+msgid ""
+"The audio manager is the plugin that will manage your audio devices, ALSA is "
+"probably the best choice when available."
+msgstr ""
+
+#: src/druid.cpp:1150
+#, c-format
+msgid "Audio Devices - page %d/%d"
+msgstr "ऑडियो उपकरण - पृष्ठ %d/%d"
+
+#  The Audio devices
+#. The Audio devices
+#: src/druid.cpp:1162
+msgid "Please choose the audio output device:"
+msgstr "कृपया ऑडियो आउटपुट उपकरण चुनें:"
+
+#: src/druid.cpp:1170
+msgid ""
+"The audio output device is the device managed by the audio manager that will "
+"be used to play audio."
+msgstr ""
+
+#: src/druid.cpp:1180
+msgid "Please choose the audio input device:"
+msgstr "कृपया ऑडियो इनपुट उपकरण चुनें:"
+
+#: src/druid.cpp:1188
+msgid ""
+"The audio input device is the device managed by the audio manager that will "
+"be used to record your voice."
+msgstr ""
+
+#: src/druid.cpp:1201 src/druid.cpp:1325
+msgid "Test Settings"
+msgstr "जाँच विन्यास"
+
+#: src/druid.cpp:1240
+#, c-format
+msgid "Video Manager - page %d/%d"
+msgstr "वीडियो प्रबंधक - पृष्ठ %d/%d"
+
+#  The Audio devices
+#. The Audio devices
+#: src/druid.cpp:1252
+msgid "Please choose your video manager:"
+msgstr "कृपया अपना वीडियो प्रबंधक चुनें:"
+
+#: src/druid.cpp:1260
+msgid ""
+"The video manager is the plugin that will manage your video devices, "
+"Video4Linux is the most common choice if you own a webcam."
+msgstr ""
+
+#: src/druid.cpp:1293
+#, c-format
+msgid "Video Devices - page %d/%d"
+msgstr "वीडियो उपकरण - पृष्ठ %d/%d"
+
+#  The Video devices
+#. The Video devices
+#: src/druid.cpp:1305
+msgid "Please choose the video input device:"
+msgstr "कृपया वीडियो इनपुट उपकरण चुनें:"
+
+#: src/druid.cpp:1313
+msgid ""
+"The video input device is the device managed by the video manager that will "
+"be used to capture video."
+msgstr ""
+
+#: src/druid.cpp:1352
+#, fuzzy, c-format
+msgid "Configuration complete - page %d/%d"
+msgstr "पृष्ठ हैडर मुद्रित करें"
+
+#: src/druid.cpp:1379
+msgid "First Time Configuration Druid"
+msgstr "पहली बार कॉन्फ़िगरेशन ड्रुइड"
+
+#  Update the log and status bar
+#. Update the log and status bar
+#: src/endpoint.cpp:706
+#, c-format
+msgid "Call from %s"
+msgstr "%s से काल्स"
+
+#: src/endpoint.cpp:718
+#, fuzzy, c-format
+msgid "Forwarding call from %s to %s (Forward all calls)"
+msgstr "क्या आप सुनिश्चित हैं कि आप रद्दी से सभी वस्तुओं को खाली करना चाहते हैं?"
 
 #. there is no forwarding, so reject the call
-#: src/endpoint.cpp:769 src/endpoint.cpp:790
-#, c-format
+#: src/endpoint.cpp:725 src/endpoint.cpp:746
+#, fuzzy, c-format
 msgid "Rejecting call from %s (Busy)"
-msgstr ""
+msgstr "Comment=व्यस्त, कनेक्शन अस्वीकृत"
 
-#: src/endpoint.cpp:781
-#, c-format
+#: src/endpoint.cpp:737
+#, fuzzy, c-format
 msgid "Forwarding call from %s to %s (Busy)"
-msgstr ""
+msgstr "आपकी स्थिति व्यस्त नियत करे."
 
-#: src/endpoint.cpp:799
-#, c-format
+#: src/endpoint.cpp:755
+#, fuzzy, c-format
 msgid "Accepting call from %s (Free For Chat)"
-msgstr ""
+msgstr "संवाद से कार्य हेतु साधन जोड़ें"
 
-#: src/endpoint.cpp:824
-#, fuzzy
+#: src/endpoint.cpp:780
 msgid "Call rejected"
-msgstr "कॉल पूरा हुआ"
+msgstr "अस्वीकारे गए काल"
 
-#: src/endpoint.cpp:833 src/endpoint.cpp:1212 src/endpoint.cpp:2145
+#: src/endpoint.cpp:789 src/endpoint.cpp:1160 src/endpoint.cpp:2102
 msgid "Call forwarded"
-msgstr ""
+msgstr "काल आगे भेजे गए"
 
-#: src/endpoint.cpp:845
+#: src/endpoint.cpp:801
 msgid "Call automatically answered"
-msgstr ""
+msgstr "काल का स्वचालित उत्तर दिया गया"
 
-#: src/endpoint.cpp:915
+#: src/endpoint.cpp:871
 #, c-format
 msgid "Forwarding call to %s"
-msgstr ""
+msgstr "काल %s को हस्तांतरित कर रहे"
 
-#: src/endpoint.cpp:926
-#, c-format
+#: src/endpoint.cpp:882
+#, fuzzy, c-format
 msgid "Error while forwarding call to %s"
-msgstr ""
+msgstr "\"%s\" पर लिंक बनाने के दौरान त्रुटि \"%s\"."
 
-#: src/endpoint.cpp:929
+#: src/endpoint.cpp:885
 msgid "There was an error when forwarding the call to the given host."
 msgstr ""
 
-#: src/endpoint.cpp:980
+#: src/endpoint.cpp:935
 msgid "Connected"
-msgstr ""
+msgstr "कनेक्टेड"
 
-#: src/endpoint.cpp:981
-#, c-format
+#: src/endpoint.cpp:937
+#, fuzzy, c-format
 msgid "Connected with %s using %s"
-msgstr ""
+msgstr "डेस्कटॉप साझा - %1 के साथ कनेक्टेड"
 
-#: src/endpoint.cpp:1176
+#: src/endpoint.cpp:1124
 msgid "Local user cleared the call"
-msgstr ""
+msgstr "स्थानीय उपयोगकर्ता ने काल को रास्ता दे दिया"
 
-#: src/endpoint.cpp:1179
+#: src/endpoint.cpp:1127
 msgid "Remote user cleared the call"
-msgstr ""
+msgstr "रिमोट उपयोगकर्ता ने काल को रास्ता दे दिया"
 
-#: src/endpoint.cpp:1182
+#: src/endpoint.cpp:1130
 msgid "Remote user did not accept the call"
-msgstr ""
+msgstr "रिमोट उपयोगकर्ता काल को स्वीकार नहीं कर रहा"
 
-#: src/endpoint.cpp:1185 src/endpoint.cpp:1188
+#: src/endpoint.cpp:1133 src/endpoint.cpp:1136
 msgid "Local user did not accept the call"
-msgstr ""
+msgstr "स्थानीय उपयोगकर्ता काल को स्वीकार नहीं कर रहा"
 
-#: src/endpoint.cpp:1191
+#: src/endpoint.cpp:1139
 msgid "The Gatekeeper cleared the call"
-msgstr ""
+msgstr "गेटकीपर ने काल को रास्ता दे दिया"
+
+#: src/endpoint.cpp:1142
+msgid "Call not answered in the required time"
+msgstr "काल का वांछित समय पर उत्तर नहीं दिया गया"
+
+#: src/endpoint.cpp:1145
+msgid "Remote user has stopped calling"
+msgstr "रिमोट उपयोगकर्ता ने काल करना बन्द कर दिया"
+
+#: src/endpoint.cpp:1148
+msgid "Abnormal call termination"
+msgstr "असामान्य काल बन्द"
+
+#: src/endpoint.cpp:1151
+msgid "Could not connect to remote host"
+msgstr "रिमोट होस्ट से कनेक्ट नहीं हो पाया"
+
+#: src/endpoint.cpp:1154
+msgid "Insufficient bandwidth"
+msgstr "अपर्याप्त बैंडविड्थ"
+
+#: src/endpoint.cpp:1157
+msgid "No common codec"
+msgstr "कोई कॉमन कोडेक नहीं"
+
+#: src/endpoint.cpp:1163
+msgid "Security check Failed"
+msgstr "सुरक्षा जाँच असफल"
+
+#: src/endpoint.cpp:1166
+msgid "Local user is busy"
+msgstr "स्थानीय उपयोगकर्ता व्यस्त है"
+
+#: src/endpoint.cpp:1169
+msgid "Remote user is busy"
+msgstr "रिमोट उपयोगकर्ता व्यस्त है"
+
+#: src/endpoint.cpp:1172 src/endpoint.cpp:1175
+#, fuzzy
+msgid "Congested link to remote party"
+msgstr "रिमोट फ़ाइलनाम में समय चिह्न जोड़ें"
+
+#: src/endpoint.cpp:1178 src/endpoint.cpp:1181
+msgid "Remote user is unreachable"
+msgstr "रिमोट उपयोगकर्ता पहुँचयोग्य नहीं है"
+
+#: src/endpoint.cpp:1184
+msgid "Remote host is offline"
+msgstr "रिमोट होस्ट ऑफ़लाइन है"
+
+#: src/endpoint.cpp:1187
+msgid "Temporary failure"
+msgstr "अस्थायी असफलता"
+
+#: src/endpoint.cpp:1190 src/urlhandler.cpp:392 src/urlhandler.cpp:399
+msgid "User not found"
+msgstr "उपयोगकर्ता नहीं मिला"
 
 #: src/endpoint.cpp:1194
-msgid "Call not answered in the required time"
-msgstr ""
-
-#: src/endpoint.cpp:1197
-msgid "Remote user has stopped calling"
-msgstr ""
-
-#: src/endpoint.cpp:1200
-msgid "Abnormal call termination"
-msgstr ""
-
-#: src/endpoint.cpp:1203
-msgid "Could not connect to remote host"
-msgstr ""
-
-#: src/endpoint.cpp:1206
-msgid "Insufficient bandwidth"
-msgstr ""
-
-#: src/endpoint.cpp:1209
-msgid "No common codec"
-msgstr ""
-
-#: src/endpoint.cpp:1215
-msgid "Security check Failed"
-msgstr ""
-
-#: src/endpoint.cpp:1218
-msgid "Local user is busy"
-msgstr ""
-
-#: src/endpoint.cpp:1221
-msgid "Remote user is busy"
-msgstr ""
-
-#: src/endpoint.cpp:1224 src/endpoint.cpp:1227
-msgid "Congested link to remote party"
-msgstr ""
-
-#: src/endpoint.cpp:1230 src/endpoint.cpp:1233
-msgid "Remote user is unreachable"
-msgstr ""
-
-#: src/endpoint.cpp:1236
-msgid "Remote host is offline"
-msgstr ""
-
-#: src/endpoint.cpp:1239
-msgid "Temporary failure"
-msgstr ""
-
-#: src/endpoint.cpp:1242 src/urlhandler.cpp:373 src/urlhandler.cpp:379
-msgid "User not found"
-msgstr ""
-
-#: src/endpoint.cpp:1246
 msgid "Call completed"
-msgstr "कॉल पूरा हुआ"
+msgstr "काल सम्पन्न"
 
-#: src/endpoint.cpp:1337 src/main_window.cpp:1266
+#: src/endpoint.cpp:1289 src/main_window.cpp:1346
 msgid ""
 "Lost packets:\n"
 "Late packets:\n"
@@ -1805,35 +1668,37 @@ msgid ""
 "Jitter buffer:"
 msgstr ""
 
-#: src/endpoint.cpp:1561
+#: src/endpoint.cpp:1511
+#, fuzzy
 msgid "Error while starting the listener"
-msgstr ""
+msgstr "प्रारंभ करते समय %s दृश्य में त्रुटि हुई."
 
-#: src/endpoint.cpp:1561
+#: src/endpoint.cpp:1511
 msgid ""
 "You will not be able to receive incoming calls. Please check that no other "
 "program is already running on the port used by GnomeMeeting."
 msgstr ""
 
-#: src/endpoint.cpp:1688
+#: src/endpoint.cpp:1646
+#, fuzzy
 msgid "Attaching lid hardware to codec"
-msgstr ""
+msgstr "जीडीके डिबगिंग ध्वज जिसे नियत करना है"
 
-#: src/endpoint.cpp:1722
-#, c-format
+#: src/endpoint.cpp:1680
+#, fuzzy, c-format
 msgid "Opened %s for recording with plugin %s"
-msgstr ""
+msgstr "जाँच पट्ट हेतु पायथन प्लगइन"
 
-#: src/endpoint.cpp:1723
-#, c-format
+#: src/endpoint.cpp:1681
+#, fuzzy, c-format
 msgid "Opened %s for playing with plugin %s"
-msgstr ""
+msgstr "जाँच पट्ट हेतु पायथन प्लगइन"
 
-#: src/endpoint.cpp:1761
+#: src/endpoint.cpp:1717
 msgid "Could not open audio channel for audio transmission"
 msgstr ""
 
-#: src/endpoint.cpp:1761
+#: src/endpoint.cpp:1717
 msgid ""
 "An error occured while trying to record from the soundcard for the audio "
 "transmission. Please check that your soundcard is not busy and that your "
@@ -1841,11 +1706,12 @@ msgid ""
 "The audio transmission has been disabled."
 msgstr ""
 
-#: src/endpoint.cpp:1766
+#: src/endpoint.cpp:1722
+#, fuzzy
 msgid "Could not open audio channel for audio reception"
-msgstr ""
+msgstr "सत्र फ़ाइल '%s' लिखने हेतु नही खोल पाया: %s\n"
 
-#: src/endpoint.cpp:1766
+#: src/endpoint.cpp:1722
 msgid ""
 "An error occured while trying to play audio to the soundcard for the audio "
 "reception. Please check that your soundcard is not busy and that your driver "
@@ -1853,12 +1719,12 @@ msgid ""
 "The audio reception has been disabled."
 msgstr ""
 
-#: src/endpoint.cpp:1978
+#: src/endpoint.cpp:1934
 #, c-format
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 
-#: src/endpoint.cpp:2020
+#: src/endpoint.cpp:1976
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -1867,31 +1733,32 @@ msgid ""
 "Jitter buffer: %d ms"
 msgstr ""
 
-#: src/endpoint.cpp:2142
-#, c-format
+#: src/endpoint.cpp:2099
+#, fuzzy, c-format
 msgid "Forwarding Call to %s (No Answer)"
-msgstr ""
+msgstr "चलाने हेतु कोई कमांड (ईएक्सीसी) नहीं है"
 
 #: src/gatekeeper.cpp:131
-#, c-format
+#, fuzzy, c-format
 msgid "Unregistered from gatekeeper %s"
-msgstr ""
+msgstr "गेटकीपर ने काल को रास्ता दे दिया"
 
 #: src/gatekeeper.cpp:146
 msgid "Invalid gatekeeper hostname"
-msgstr ""
+msgstr "अवैध गेटकीपर होस्टनाम"
 
 #: src/gatekeeper.cpp:146
+#, fuzzy
 msgid "Please provide a hostname to use for the gatekeeper."
-msgstr ""
+msgstr "इस संदेश को उपयोग करने के लिए आयडेंटिटी सेट करें"
 
 #: src/gatekeeper.cpp:154
 msgid "Invalid gatekeeper ID"
-msgstr ""
+msgstr "अवैध गेटकीपर आईडी"
 
 #: src/gatekeeper.cpp:154
 msgid "Please provide a valid ID for the gatekeeper."
-msgstr ""
+msgstr "गेटकीपर के लिए कृपया एक वैध आईडी दें."
 
 #: src/gatekeeper.cpp:201
 msgid ""
@@ -1906,7 +1773,7 @@ msgstr ""
 
 #: src/gatekeeper.cpp:207
 msgid "There was a transport error."
-msgstr ""
+msgstr "एक हस्तांतरण त्रुटि हुई."
 
 #: src/gatekeeper.cpp:210 src/gatekeeper.cpp:215
 msgid "No gatekeeper corresponding to your options has been found."
@@ -1914,336 +1781,211 @@ msgstr ""
 
 #: src/gatekeeper.cpp:217
 msgid "Error while registering with gatekeeper"
-msgstr ""
+msgstr "गेटकीपर के साथ पंजीकरण के दौरान त्रुटि हुई"
 
 #: src/gatekeeper.cpp:232
-#, c-format
+#, fuzzy, c-format
 msgid "Gatekeeper set to %s"
-msgstr ""
+msgstr "घड़ी को इस पर नियत करें:"
 
-#: src/gnomemeeting.cpp:86
+#: src/gnomemeeting.cpp:90
 msgid "Notification area not detected"
-msgstr ""
+msgstr "नोटिफिकेशन क्षेत्र का पता नहीं चला"
 
-#: src/gnomemeeting.cpp:86
+#: src/gnomemeeting.cpp:90
 msgid ""
 "You have chosen to start GnomeMeeting hidden, however the notification area "
 "is not present in your panel, GnomeMeeting can thus not start hidden."
 msgstr ""
 
-#: src/gnomemeeting.cpp:186
+#: src/gnomemeeting.cpp:168
 msgid "Answering incoming call"
-msgstr "आने वाले कॉल का उत्तर दें"
+msgstr "आने वाले काल का उत्तर दे रहे"
 
-#: src/gnomemeeting.cpp:235
+#: src/gnomemeeting.cpp:218
 msgid "Trying to stop calling"
-msgstr "कॉल करने से रोकें"
+msgstr "काल रोकने की कोशिश कर रहे"
 
-#: src/gnomemeeting.cpp:246
+#: src/gnomemeeting.cpp:229
 msgid "Stopping current call"
-msgstr "वर्तमान कॉल रोकें"
+msgstr "वर्तमान काल रोक रहे"
 
-#: src/gnomemeeting.cpp:256
+#: src/gnomemeeting.cpp:239
 msgid "Refusing Incoming call"
-msgstr ""
+msgstr "आने वाले काल अस्वीकार कर रहे"
 
-#. GM is started
-#: src/gnomemeeting.cpp:482
-#, c-format
+#. Init the address book
+#: src/gnomemeeting.cpp:422 src/addressbook_window.cpp:1821
+msgid "On This Computer"
+msgstr "इस कम्प्यूटर पर"
+
+#: src/gnomemeeting.cpp:422
+#, fuzzy
+msgid "Personal"
+msgstr "व्यक्तिगत डेटा"
+
+#: src/gnomemeeting.cpp:480
+#, fuzzy, c-format
 msgid "Started GnomeMeeting V%d.%d.%d for %s\n"
-msgstr ""
+msgstr "'started' हेतु ध्वनि फ़ाइलनाम:"
 
 # libgnomevfs/gnome-vfs-result.c:39
-#: src/ils.cpp:103
+#: src/ils.cpp:102
 msgid "Invalid parameters"
-msgstr "अवैध पैरामीटर से"
+msgstr "अवैध पैरामीटर्स"
 
-#: src/ils.cpp:103
+#: src/ils.cpp:102
 msgid ""
 "Please provide your first name and e-mail in the Personal Data section in "
-"order to be able to register to the user directory."
+"order to be able to register to the users directory."
 msgstr ""
 
-#: src/ils.cpp:137
-msgid "Invalid user directory"
+#: src/ils.cpp:136
+msgid "Invalid users directory"
+msgstr "अवैध उपयोगकर्ता डिरेक्ट्री"
+
+#: src/ils.cpp:136
+msgid "Operation impossible since there is no users directory specified."
 msgstr ""
 
-#: src/ils.cpp:137
-msgid "Operation impossible since there is no user directory specified."
-msgstr ""
-
-#: src/ils.cpp:216
+#: src/ils.cpp:215
 msgid "Failed to parse XML file"
-msgstr ""
+msgstr "एक्सएमएल फ़ाइल की व्याख्या करने में असफल"
 
-#: src/ils.cpp:216
+#: src/ils.cpp:215
 msgid ""
 "There was an error while parsing the XML file. Please make sure that it is "
 "correctly installed in your system."
 msgstr ""
 
-#: src/ils.cpp:227
+#: src/ils.cpp:226
 msgid "Bad information"
-msgstr "गलत सूचना"
+msgstr "गलत जानकारी"
 
-#: src/ils.cpp:227
-#, c-format
+#: src/ils.cpp:226
+#, fuzzy, c-format
 msgid "Bad LDAP information from XML file: %s."
-msgstr ""
+msgstr "एक्सएमएल फ़ाइल से लोड करने में त्रुटि"
 
-#: src/ils.cpp:236
+#: src/ils.cpp:235 src/ils.cpp:245 src/ils.cpp:254
 msgid "Cannot contact the users directory"
-msgstr ""
+msgstr "उपयोगकर्ता डिरेक्ट्री से सम्पर्क नहीं कर सका"
 
-#: src/ils.cpp:236
+#: src/ils.cpp:235
 #, c-format
 msgid ""
 "Failed to contact the users directory %s:%d. The directory is probably "
 "currently overloaded, please try again later."
 msgstr ""
 
-#: src/ils.cpp:246 src/ils.cpp:255
-msgid "Cannot contact the user directory"
-msgstr ""
-
-#: src/ils.cpp:246
+#: src/ils.cpp:245
+#, fuzzy
 msgid "Failed to set a time limit on operations."
-msgstr ""
+msgstr "स्तर %1 पर. याद रखें आपको इस बार %2 जीवन मिला!"
 
-#: src/ils.cpp:255
-#, c-format
-msgid "Failed to bind to user directory: %s."
-msgstr ""
+#: src/ils.cpp:254
+#, fuzzy, c-format
+msgid "Failed to bind to users directory: %s."
+msgstr "प्रसंग डिरेक्ट्री स्कैन करने में असफल: %s\n"
 
-#: src/ils.cpp:279
-#, c-format
+#: src/ils.cpp:278
+#, fuzzy, c-format
 msgid "Updated information on the users directory %s."
-msgstr ""
+msgstr "इस डिरेक्ट्री को वेब पर साझा करें (&w)"
 
-#: src/ils.cpp:283
+#: src/ils.cpp:282
 #, c-format
 msgid "Unregistered from the users directory %s."
-msgstr ""
+msgstr "उपयोगकर्ता डिरेक्ट्री %s से अपंजीकृत हों."
 
-#: src/ils.cpp:305
-#, fuzzy, c-format
+#: src/ils.cpp:304
+#, c-format
 msgid "Error while registering to %s"
-msgstr "रेजिसटरि सक्षम (_r)"
+msgstr "%s पर पंजीकरण के दौरान त्रुटि"
 
-#: src/ils.cpp:642
+#: src/addressbook_window.cpp:612
+msgid "Contact collision"
+msgstr "सम्पर्क कोलिज़न"
+
+#: src/addressbook_window.cpp:614
 #, c-format
-msgid "Failed to contact LDAP server %s:%d"
-msgstr ""
-
-#: src/ils.cpp:655
-msgid "Failed to set time limit on LDAP operations"
-msgstr ""
-
-#: src/ils.cpp:665
-#, c-format
-msgid "Failed to contact to LDAP server %s: %s"
-msgstr ""
-
-#: src/ils.cpp:675
-#, c-format
-msgid "Fetching online users list from %s"
-msgstr ""
-
-#: src/ils.cpp:693
-msgid "Could not fetch online users list"
-msgstr ""
-
-#: src/ils.cpp:709
-#, fuzzy, c-format
-msgid "Connection to %s lost"
-msgstr "कनेक्शन प्रकार"
-
-#: src/ils.cpp:926
-#, c-format
-msgid "Search completed: %d user(s) listed on a total of %d user(s) from %s"
-msgstr ""
-
-#: src/ils.cpp:931
-#, c-format
-msgid "Search completed: %d user(s) found on %s"
-msgstr ""
-
-#: src/ldap_window.cpp:737
-#, fuzzy
-msgid "Edit the Contact Information"
-msgstr "व्यक्तिगत जानकारी"
-
-#: src/ldap_window.cpp:754
-msgid "Name:"
-msgstr "नाम :"
-
-#: src/ldap_window.cpp:774
-msgid "URL:"
-msgstr "युआरएल :"
-
-#: src/ldap_window.cpp:801
-msgid "Speed Dial:"
-msgstr ""
-
-#: src/ldap_window.cpp:825
-msgid "Groups:"
-msgstr "समूहें :"
-
-#: src/ldap_window.cpp:937
-msgid "Invalid user name or URL"
-msgstr ""
-
-#: src/ldap_window.cpp:937
 msgid ""
-"Please provide a valid name and URL for the contact you want to add to the "
-"address book."
+"Another contact with the same speed dial already exists in your address "
+"book:\n"
+"\n"
+"<b>Contact Name</b>: %s\n"
+"<b>Contact URL</b>: %s\n"
+"<b>Contact Speed Dial</b>: %s\n"
 msgstr ""
 
-#: src/ldap_window.cpp:945
-msgid "Invalid group"
-msgstr "अवैद समूह"
-
-#: src/ldap_window.cpp:945
-msgid "You have to select a group to which you want to add your contact."
-msgstr ""
-
-#: src/ldap_window.cpp:959
-msgid "Invalid speed dial"
-msgstr ""
-
-#: src/ldap_window.cpp:959
+#: src/addressbook_window.cpp:616
+#, c-format
 msgid ""
-"Another contact with the same speed dial already exists in the address book."
+"Another contact with similar information already exists in your address "
+"book:\n"
+"\n"
+"<b>Contact Name</b>: %s\n"
+"<b>Contact URL</b>: %s\n"
+"<b>Contact Speed Dial</b>: %s\n"
+"\n"
+"Do you still want to add the contact?"
 msgstr ""
 
-#: src/ldap_window.cpp:971
-msgid "Invalid URL"
-msgstr "अवैध युआरएल"
+#  Translators: This is "S" as in "Status"
+#. Translators: This is "S" as in "Status"
+#: src/addressbook_window.cpp:774
+msgid "S"
+msgstr "एस"
 
-#: src/ldap_window.cpp:971
-msgid "Another contact with the same URL already exists in the address book."
-msgstr ""
+#: src/addressbook_window.cpp:785 src/pref_window.cpp:445
+msgid "Name"
+msgstr "नाम"
 
-#: src/ldap_window.cpp:1008
-#, c-format
-msgid "Are you sure you want to remove %s [%s] from this group?"
-msgstr ""
+# libgnomeui/gnome-href.c:118
+#: src/addressbook_window.cpp:797
+msgid "URL"
+msgstr "यूआरएल"
 
-#: src/ldap_window.cpp:1114
-#, c-format
-msgid "Add %s to Address Book"
-msgstr "%s को पता किताब में जोडें"
+#: src/addressbook_window.cpp:823
+msgid "Software"
+msgstr "सॉफ्टवेयर"
 
-#: src/ldap_window.cpp:1140 src/ldap_window.cpp:2604
+#: src/addressbook_window.cpp:836
+msgid "E-Mail"
+msgstr "ई-मेल"
+
+#: src/addressbook_window.cpp:860
+msgid "Categories"
+msgstr "श्रेणियाँ"
+
+#: src/addressbook_window.cpp:873
+msgid "Speed Dial"
+msgstr "त्वरित डॉयल"
+
+#: src/addressbook_window.cpp:1204 src/addressbook_window.cpp:1234
+#: src/addressbook_window.cpp:1730
 msgid "C_all Contact"
+msgstr "सम्पर्क को काल करें (_a)"
+
+#: src/addressbook_window.cpp:1209 src/addressbook_window.cpp:1239
+msgid "_Copy URL to clipboard"
 msgstr ""
 
-#: src/ldap_window.cpp:1146 src/ldap_window.cpp:2607
-msgid "_Tranfer Call to Contact"
-msgstr ""
+#: src/addressbook_window.cpp:1216 src/addressbook_window.cpp:1716
+msgid "_Properties"
+msgstr "गुण (_P)"
 
-#: src/ldap_window.cpp:1158 src/ldap_window.cpp:2624
-msgid "Contact _Properties"
-msgstr ""
-
-#: src/ldap_window.cpp:1164
-msgid "Copy URL to the Clipboard"
-msgstr ""
-
-#: src/ldap_window.cpp:1170 src/ldap_window.cpp:1610 src/ldap_window.cpp:2586
+#: src/addressbook_window.cpp:1223 src/addressbook_window.cpp:1711
 msgid "_Delete"
 msgstr "मिटाएँ (_D)"
 
-#: src/ldap_window.cpp:1270
-#, fuzzy
-msgid "Add a New Server"
-msgstr "नया सर्वर जोडें"
+#: src/addressbook_window.cpp:1246 src/addressbook_window.cpp:1740
+msgid "Add Contact to _Address Book"
+msgstr "पता-पुस्तिका में सम्पर्क जोड़ें"
 
-#: src/ldap_window.cpp:1271
-msgid "Enter the server name:"
-msgstr "सर्वर नाम दें :"
-
-#: src/ldap_window.cpp:1272 src/ldap_window.cpp:1382
-msgid ""
-"Sorry but there is already a server with the same name in the address book."
-msgstr ""
-
-#: src/ldap_window.cpp:1276
-#, fuzzy
-msgid "Add a New Group"
-msgstr "नया समूह जोडें"
-
-#: src/ldap_window.cpp:1277
-msgid "Enter the group name:"
-msgstr "समूह नाम दें"
-
-#: src/ldap_window.cpp:1278 src/ldap_window.cpp:1393
-msgid ""
-"Sorry but there is already a group with the same name in the address book."
-msgstr ""
-
-#: src/ldap_window.cpp:1312 src/ldap_window.cpp:1442
-msgid "Invalid server or group name"
-msgstr "अवैध सर्वर या समुह नाम"
-
-#: src/ldap_window.cpp:1378
-#, c-format
-msgid "Please enter a new name for server %s:"
-msgstr ""
-
-#: src/ldap_window.cpp:1380
-#, c-format
-msgid "Are you sure you want to delete server %s?"
-msgstr ""
-
-#: src/ldap_window.cpp:1389
-#, c-format
-msgid "Please enter a new name for group %s:"
-msgstr ""
-
-#: src/ldap_window.cpp:1391
-#, c-format
-msgid "Are you sure you want to delete group %s and all its contacts?"
-msgstr ""
-
-#: src/ldap_window.cpp:1578
-#, fuzzy
-msgid "New Server"
-msgstr "नया सर्वर (_S)"
-
-#: src/ldap_window.cpp:1588
-#, fuzzy
-msgid "New Group"
-msgstr "नया समूह (_G)"
-
-#: src/ldap_window.cpp:1598
-msgid "_Find"
-msgstr "खोजें (_F)"
-
-#: src/ldap_window.cpp:1605 src/ldap_window.cpp:1627 src/ldap_window.cpp:2590
-#, fuzzy
-msgid "_Rename"
-msgstr "कुल नाम (_n):"
-
-#: src/ldap_window.cpp:1620
-msgid "New Contact"
-msgstr ""
-
-# #-#-#-#-#  gnome-session.HEAD.hi.po (gnome-session 2.4)  #-#-#-#-#
-# gnome-session/session-properties-capplet.c:307
-# gnome-session/session-properties-capplet.c:381
-# #-#-#-#-#  gnumeric.HEAD.hi.po (gnumeric HEAD)  #-#-#-#-#
-# #-#-#-#-#  gnome-session.HEAD.hi.po (gnome-session VERSION)  #-#-#-#-#
-# gnome-session/session-properties-capplet.c:307
-# gnome-session/session-properties-capplet.c:381
-#: src/ldap_window.cpp:1632
-msgid "Delete"
-msgstr "मिटाएँ"
-
-#: src/ldap_window.cpp:2555
-#, fuzzy
+#: src/addressbook_window.cpp:1675
 msgid "Address Book"
-msgstr "पता किताब (_B)"
+msgstr "पता पुस्तिका"
 
 # #-#-#-#-#  gnome-control-center.HEAD.hi.po (control center)  #-#-#-#-#
 # #-#-#-#-#  libgnomeui.gnome-2-2.hi.po (libgnomeui HEAD)  #-#-#-#-#
@@ -2256,218 +1998,266 @@ msgstr "पता किताब (_B)"
 # #-#-#-#-#  libgnomeui.HEAD.hi.po (libgnomeui-2.0.hi)  #-#-#-#-#
 # libgnomeui/gnome-app-helper.c:82 libgnomeui/gnome-app-helper.h:513
 # test-gnome/testgnome.xml.h:5
-#: src/ldap_window.cpp:2573
+#: src/addressbook_window.cpp:1702
 msgid "_File"
-msgstr "फाइल (_F)"
+msgstr "फ़ाइल (_F)"
 
-#: src/ldap_window.cpp:2575
-msgid "New _Server"
-msgstr "नया सर्वर (_S)"
-
-#: src/ldap_window.cpp:2579
-msgid "New _Group"
-msgstr "नया समूह (_G)"
+#: src/addressbook_window.cpp:1704
+msgid "New _Address Book"
+msgstr "नया पता पुस्तिका (_A)"
 
 # #-#-#-#-#  gnumeric.HEAD.hi.po (gnumeric HEAD)  #-#-#-#-#
 # #-#-#-#-#  libgnomeui.HEAD.hi.po (libgnomeui HEAD)  #-#-#-#-#
 # libgnomeui/gnome-app-helper.c:142
 # #-#-#-#-#  libgnomeui.HEAD.hi.po (libgnomeui-2.0.hi)  #-#-#-#-#
 # libgnomeui/gnome-app-helper.c:142
-#: src/ldap_window.cpp:2597 src/menu.cpp:310
+#: src/addressbook_window.cpp:1723 src/menu.cpp:328
 msgid "_Close"
 msgstr "बंद करें (_C)"
 
-#: src/ldap_window.cpp:2602
+#: src/addressbook_window.cpp:1728
 msgid "C_ontact"
 msgstr ""
 
-#: src/ldap_window.cpp:2613
+#: src/addressbook_window.cpp:1736
 msgid "New _Contact"
-msgstr ""
+msgstr "नया सम्पर्क... (_C)"
 
-#: src/ldap_window.cpp:2617
-msgid "Add Contact to _Address Book"
-msgstr ""
+#: src/addressbook_window.cpp:1813
+msgid "On LDAP servers"
+msgstr "एलडीएपी सर्वर्स पर"
 
-#. Translators: This is "S" as in "Status"
-#: src/ldap_window.cpp:2874
-msgid "S"
-msgstr "S"
-
-#. Translators: This is "A" as in "Audio"
-#: src/ldap_window.cpp:2884 src/pref_window.cpp:1099 src/pref_window.cpp:1526
-msgid "A"
-msgstr "A"
-
-#. Translators: This is "V" as in "Video"
-#: src/ldap_window.cpp:2894
-msgid "V"
-msgstr "V"
-
-#: src/ldap_window.cpp:2903 src/ldap_window.cpp:2977 src/pref_window.cpp:1540
-msgid "Name"
-msgstr "नाम"
-
-# libgnomeui/gnome-href.c:118
-#: src/ldap_window.cpp:2941 src/ldap_window.cpp:2989 src/tools.cpp:548
-msgid "URL"
-msgstr "यूआरएल (URL)"
-
-#: src/ldap_window.cpp:2964
-msgid "IP"
-msgstr "IP"
-
-#: src/ldap_window.cpp:3002
-msgid "Speed Dial"
-msgstr "त्वरित डॉयल"
-
-#: src/ldap_window.cpp:3055
+#: src/addressbook_window.cpp:1850
 msgid "Find all contacts"
+msgstr "सभी सम्पर्कों को ढूंढें"
+
+#: src/addressbook_window.cpp:1855
+msgid "Name contains"
+msgstr "नाम में है"
+
+#: src/addressbook_window.cpp:1859
+msgid "URL contains"
+msgstr "यूआरएल में है"
+
+#: src/addressbook_window.cpp:1863
+msgid "Belongs to category"
+msgstr "वर्ग से संबंधित है"
+
+#: src/addressbook_window.cpp:1993
+msgid "Edit the Contact Information"
+msgstr "सम्पर्क जानकारी संपादित करें"
+
+#: src/addressbook_window.cpp:2014 src/addressbook_window.cpp:2398
+msgid "Name:"
+msgstr "नाम:"
+
+#: src/addressbook_window.cpp:2034
+msgid "URL:"
+msgstr "यूआरएल:"
+
+#: src/addressbook_window.cpp:2054
+#, fuzzy
+msgid "Email:"
+msgstr "ई-मेल"
+
+#: src/addressbook_window.cpp:2075
+msgid "Speed Dial:"
+msgstr "त्वरित डॉयल:"
+
+#: src/addressbook_window.cpp:2097
+msgid "Categories:"
+msgstr "श्रेणियाँ:"
+
+#: src/addressbook_window.cpp:2122
+msgid "Local Addressbook:"
+msgstr "स्थानीय पता पुस्तिका:"
+
+#: src/addressbook_window.cpp:2273
+#, c-format
+msgid "Are you sure you want to delete %s from %s?"
+msgstr "क्या आप सुनिश्चित हैं कि %s को %s से मिटाना चाहते हैं?"
+
+#: src/addressbook_window.cpp:2381
+msgid "Add an address book"
+msgstr "पता पुस्तिका जोड़ें"
+
+#: src/addressbook_window.cpp:2419
+msgid "Type:"
+msgstr "प्रकारः"
+
+#: src/addressbook_window.cpp:2426
+msgid "Local"
+msgstr "स्थानीय"
+
+#: src/addressbook_window.cpp:2431
+msgid "Remote LDAP"
+msgstr "रिमोट एलडीएपी"
+
+#: src/addressbook_window.cpp:2436
+msgid "Remote ILS"
+msgstr "रिमोट आईएलएस"
+
+#: src/addressbook_window.cpp:2468
+msgid "Search Scope:"
+msgstr "ढूंढने हेतु कार्यक्षेत्र:"
+
+#: src/addressbook_window.cpp:2475
+msgid "Subtree"
 msgstr ""
 
-#: src/ldap_window.cpp:3060
-msgid "First name contains"
-msgstr ""
+#: src/addressbook_window.cpp:2480
+msgid "One Level"
+msgstr "स्तर एक"
 
-#: src/ldap_window.cpp:3064
-msgid "Last name contains"
-msgstr ""
+#: src/addressbook_window.cpp:2510
+msgid "Hostname:"
+msgstr "होस्टनामः"
 
-#: src/ldap_window.cpp:3068
-msgid "E-mail contains"
-msgstr ""
+#: src/addressbook_window.cpp:2531
+msgid "Port:"
+msgstr "पोर्टः"
 
-#: src/ldap_window.cpp:3247
-msgid "Servers"
-msgstr "सर्वरें"
+#: src/addressbook_window.cpp:2554
+msgid "Base DN:"
+msgstr "बेस डीएनः"
 
-#: src/ldap_window.cpp:3290
-msgid "Groups"
-msgstr "समूहें"
+#: src/addressbook_window.cpp:2575
+msgid "Search Attribute:"
+msgstr "ढूंढने हेतु गुण:"
 
-#: src/lid.cpp:134
+#: src/addressbook_window.cpp:2673
+#, c-format
+msgid "Are you sure you want to delete %s and all its contacts?"
+msgstr "क्या आप सुनिश्चित हैं कि आप %s को तथा इसके सभी सम्पर्कों को मिटाना चाहते हैं?"
+
+#: src/lid.cpp:135
 #, c-format
 msgid "Opened Quicknet device %s"
-msgstr ""
+msgstr "क्विकनेट उपकरण %s खोला"
 
-#: src/lid.cpp:157
+#: src/lid.cpp:158
 msgid "Error while opening the Quicknet device."
-msgstr ""
+msgstr "क्विकनेट उपकरण खोलने के दौरान एक त्रुटि हुई."
 
-#: src/lid.cpp:157
+#: src/lid.cpp:158
 msgid ""
 "Please check that your driver is correctly installed and that the device is "
 "working correctly."
 msgstr ""
 
-#: src/lid.cpp:184
+#: src/lid.cpp:186
 #, c-format
 msgid "Closed Quicknet device %s"
-msgstr ""
+msgstr "क्विकनेट उपकरण %s बन्द"
 
-#: src/lid.cpp:272 src/lid.cpp:273
+#: src/lid.cpp:277 src/lid.cpp:278
 msgid "Phone is off hook"
-msgstr ""
+msgstr "दूरभाष हुक से उठाया हुआ है"
 
-#: src/lid.cpp:308 src/lid.cpp:309
+#: src/lid.cpp:313 src/lid.cpp:314
 msgid "Phone is on hook"
-msgstr ""
+msgstr "दूरभाष हुक पर है"
 
-#: src/main_window.cpp:336
+#: src/main_window.cpp:388
 #, c-format
 msgid "Total: %.2f MB"
 msgstr "कुल योग : %.2f एमबी"
 
-#: src/main_window.cpp:460
+#: src/main_window.cpp:472
 msgid "Cannot run GnomeMeeting"
-msgstr "गनोममीटिंग नही चला सके"
+msgstr "गनोममीटिंग नहीं चला सके"
 
-#: src/main_window.cpp:460
+#: src/main_window.cpp:472
 msgid ""
 "GnomeMeeting is already running, if you want it to call a given callto or "
 "h323 URL, please use \"gnomemeeting -c URL\"."
 msgstr ""
 
-#: src/main_window.cpp:513
+#: src/main_window.cpp:525
 msgid ""
 "It appears that you do not have gnomemeeting.server installed in a valid "
 "location. Factory mode disabled.\n"
 msgstr ""
+"प्रतीत होता है कि आपने गनोम-मीटिंग.सर्वर को वैध स्थान पर संस्थापित नहीं किया है. फ़ैक्ट्री "
+"मोड अक्षम\n"
 
-#: src/main_window.cpp:517
+#: src/main_window.cpp:529
 msgid ""
 "Error registering GnomeMeeting with the activation service; factory mode "
 "disabled.\n"
-msgstr ""
+msgstr "सक्रियण सेवा के साथ गनोम-मीटिंग को पंजीकृत करने में त्रुटि, फ़ैक्ट्री मोड अक्षम.\n"
 
-#: src/main_window.cpp:557
+#: src/main_window.cpp:569
+#, fuzzy
 msgid "Failed to retrieve gnomemeeting server from activation server\n"
-msgstr ""
+msgstr "एक्टिवेशन सर्वर से टर्मिनल सर्वर लाने में असफल\n"
 
-#: src/main_window.cpp:864
+#: src/main_window.cpp:876
 #, c-format
 msgid "Sent dtmf %c"
-msgstr ""
+msgstr "डीटीएमएफ़ भेजा %c"
 
-#: src/main_window.cpp:1134 src/menu.cpp:400 src/menu.cpp:528
+#: src/main_window.cpp:1210 src/menu.cpp:411 src/menu.cpp:538
 msgid "Local Video"
-msgstr "स्थानीय विडियो"
+msgstr "स्थानीय वीडियो"
 
-#: src/main_window.cpp:1138 src/menu.cpp:406 src/menu.cpp:534
+#: src/main_window.cpp:1214 src/menu.cpp:417 src/menu.cpp:544
 msgid "Remote Video"
-msgstr "दूरस्थ विडियो"
+msgstr "रिमोट वीडियो"
 
-#: src/main_window.cpp:1271 src/menu.cpp:361
+#: src/main_window.cpp:1351 src/menu.cpp:372
 msgid "Statistics"
-msgstr "आंकडे"
+msgstr "सांख्यिकी"
 
-#: src/main_window.cpp:1327
+#: src/main_window.cpp:1407
 msgid "Dialpad"
 msgstr "डॉयलपैड"
 
-#: src/main_window.cpp:1382
+#: src/main_window.cpp:1462
 msgid "Adjust brightness"
-msgstr ""
+msgstr "चमकीलापन समंजित करें"
 
-#: src/main_window.cpp:1404
+#: src/main_window.cpp:1484
 msgid "Adjust whiteness"
-msgstr ""
+msgstr "श्वेत समंजित करें..."
 
-#: src/main_window.cpp:1426
+#: src/main_window.cpp:1506
 msgid "Adjust color"
-msgstr ""
+msgstr "रंग समंजित करें"
 
-#: src/main_window.cpp:1448
+#: src/main_window.cpp:1528
 msgid "Adjust contrast"
-msgstr ""
+msgstr "कंट्रास्ट समंजित करें"
 
-#: src/main_window.cpp:1456
+#: src/main_window.cpp:1536
 msgid "Video"
 msgstr "वीडियो"
 
-#: src/main_window.cpp:1532
+#: src/main_window.cpp:1614
 msgid "Audio"
-msgstr "ध्वनि"
+msgstr "ऑडियो"
 
-#: src/main_window.cpp:1582
+#: src/main_window.cpp:1677
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr ""
 
-#: src/main_window.cpp:1585
+#: src/main_window.cpp:1680
+#, fuzzy
 msgid "Makes GnomeMeeting call the given URL"
-msgstr ""
+msgstr "kdeeject द्वारा दिए गए यूआरएल को बाहर करें"
 
-#: src/main_window.cpp:1650
+#: src/main_window.cpp:1715
+#, fuzzy
 msgid "No usable audio manager detected"
-msgstr ""
+msgstr "कृपया अपना ऑडियो प्रबंधक चुनें:"
 
-#: src/main_window.cpp:1650
+#: src/main_window.cpp:1715
 msgid ""
 "GnomeMeeting didn't find any usable sound manager. Make sure that your "
 "installation is correct."
 msgstr ""
 
-#: src/main_window.cpp:1670
+#: src/main_window.cpp:1735
 #, c-format
 msgid ""
 "GnomeMeeting got an invalid value for the GConf key %s.\n"
@@ -2481,110 +2271,110 @@ msgid ""
 "org) about this problem."
 msgstr ""
 
-#: src/main_window.cpp:1673
+#: src/main_window.cpp:1738
 msgid "Gconf key error"
-msgstr "जीकॉन्फ कुंजी त्रुटी"
+msgstr "जी-कॉन्फ़ कुंजी त्रुटि"
 
-#: src/menu.cpp:239
+#: src/menu.cpp:257
 msgid "C_all"
-msgstr ""
+msgstr "काल (_a)"
 
-#: src/menu.cpp:241
+#: src/menu.cpp:259
 msgid "C_onnect"
 msgstr "जुडें (_o)"
 
-#: src/menu.cpp:241 src/menu.cpp:603
+#: src/menu.cpp:259 src/menu.cpp:613
 msgid "Create a new connection"
-msgstr ""
+msgstr "नया कनेक्शन बनाएँ"
 
-#: src/menu.cpp:244 src/menu.cpp:606
+#: src/menu.cpp:262 src/menu.cpp:616
 msgid "_Disconnect"
-msgstr "डिस्कनेक्ट (_D)..."
+msgstr "डिस्कनेक्ट (_D)"
 
-#: src/menu.cpp:245 src/menu.cpp:607
+#: src/menu.cpp:263 src/menu.cpp:617
 msgid "Close the current connection"
-msgstr ""
+msgstr "वर्तमान कनेक्शन बन्द करें"
 
-#: src/menu.cpp:251 src/menu.cpp:613
+#: src/menu.cpp:269 src/menu.cpp:623
 msgid "_Available"
-msgstr ""
+msgstr "उपलब्ध: (_A)"
 
-#: src/menu.cpp:252 src/menu.cpp:614
+#: src/menu.cpp:270 src/menu.cpp:624
+#, fuzzy
 msgid "Display a popup to accept the call"
-msgstr ""
+msgstr "सिस्टम काल को गलत आर्गुमेंट"
 
-#: src/menu.cpp:257 src/menu.cpp:619
+#: src/menu.cpp:275 src/menu.cpp:629
 msgid "Free for Cha_t"
-msgstr ""
+msgstr "गपशप हेतु मुफ्त (_t)"
 
-#: src/menu.cpp:258 src/menu.cpp:620
+#: src/menu.cpp:276 src/menu.cpp:630
 msgid "Auto answer calls"
-msgstr ""
+msgstr "काल्स के उत्तर स्वचालित दें"
 
-#: src/menu.cpp:263 src/menu.cpp:625
+#: src/menu.cpp:281 src/menu.cpp:635
 msgid "_Busy"
-msgstr ""
+msgstr "व्यस्त (_B)"
 
-#: src/menu.cpp:263 src/menu.cpp:625
-#, fuzzy
+#: src/menu.cpp:281 src/menu.cpp:635
 msgid "Reject calls"
-msgstr "अस्वीकृत करें"
+msgstr "काल्स अस्वीकारें"
 
-#: src/menu.cpp:268 src/menu.cpp:630
+#: src/menu.cpp:286 src/menu.cpp:640
 msgid "_Forward"
-msgstr ""
+msgstr "आगे (_F)"
 
-#: src/menu.cpp:268 src/menu.cpp:630
+#: src/menu.cpp:286 src/menu.cpp:640
 msgid "Forward calls"
-msgstr ""
+msgstr "आगे भेजे गए काल्स"
 
-#: src/menu.cpp:276
-#, fuzzy
+#: src/menu.cpp:294
 msgid "Speed dials"
 msgstr "त्वरित डॉयल"
 
-#: src/menu.cpp:280
+#: src/menu.cpp:298
 msgid "Hold the current call"
-msgstr ""
+msgstr "वर्तमान कॉल होल्ड करें"
 
-#: src/menu.cpp:283
+#: src/menu.cpp:301
 msgid "_Transfer Call"
-msgstr ""
+msgstr "काल हस्तांतरित करें (_T)"
 
-#: src/menu.cpp:284
+#: src/menu.cpp:302
 msgid "Transfer the current call"
-msgstr ""
+msgstr "वर्तमान कॉल हस्तांतरित करें"
 
-#: src/menu.cpp:291
-msgid "Suspend or resume the audio transmission"
-msgstr ""
-
-#: src/menu.cpp:296
-msgid "Suspend or resume the video transmission"
-msgstr ""
-
-#: src/menu.cpp:303
-msgid "_Save Current Picture"
-msgstr "वर्तमान चित्र संग्रहित करें (_S)"
-
-#: src/menu.cpp:304
-msgid "Save a snapshot of the current video"
-msgstr ""
-
-#: src/menu.cpp:310
+#: src/menu.cpp:309
 #, fuzzy
+msgid "Suspend or resume the audio transmission"
+msgstr "हस्तांतरण असफलः तालाबंद नहीं किया सका %1."
+
+#: src/menu.cpp:314
+#, fuzzy
+msgid "Suspend or resume the video transmission"
+msgstr "हस्तांतरण असफलः तालाबंद नहीं किया सका %1."
+
+#: src/menu.cpp:321
+msgid "_Save Current Picture"
+msgstr "वर्तमान छवि सहेजें (_S)"
+
+#: src/menu.cpp:322
+msgid "Save a snapshot of the current video"
+msgstr "वर्तमान वीडियो का एक स्नेपशॉट इस रूप में सहेजें"
+
+#: src/menu.cpp:328
 msgid "Close the GnomeMeeting window"
-msgstr "गनोममीटिंग के बारे में (_A)"
+msgstr "गनोम-मीटिंग विंडो बन्द करें"
 
 # #-#-#-#-#  libgnomeui.HEAD.hi.po (libgnomeui-2.0.hi)  #-#-#-#-#
 # libgnomeui/gnome-app-helper.c:155
-#: src/menu.cpp:317 src/menu.cpp:676
+#: src/menu.cpp:335 src/menu.cpp:678
 msgid "_Quit"
-msgstr "बाहर जाएं/समाप्त करें (_Q)"
+msgstr "बाहर जाएँ (_Q)"
 
-#: src/menu.cpp:317 src/menu.cpp:676
+#: src/menu.cpp:335 src/menu.cpp:679
 msgid "Quit GnomeMeeting"
-msgstr "गनोममीटिंग समाप्त करें"
+msgstr "गनोममीटिंग से बाहर जाएँ"
 
 # #-#-#-#-#  gnome-control-center.HEAD.hi.po (control center)  #-#-#-#-#
 # #-#-#-#-#  gnome-session.gnome-2-2.hi.po (gnome-session VERSION)  #-#-#-#-#
@@ -2606,26 +2396,25 @@ msgstr "गनोममीटिंग समाप्त करें"
 # libgnomeui/gnome-app-helper.c:84 libgnomeui/gnome-app-helper.h:516
 # #-#-#-#-#  libgnomeui.HEAD.hi.po (libgnomeui-2.0.hi)  #-#-#-#-#
 # libgnomeui/gnome-app-helper.c:84 libgnomeui/gnome-app-helper.h:516
-#: src/menu.cpp:321
+#: src/menu.cpp:339
 msgid "_Edit"
 msgstr "संपादन (_E)"
 
-#: src/menu.cpp:324 src/menu.cpp:330
+#: src/menu.cpp:341
 msgid "Configuration Druid"
-msgstr ""
+msgstr "कॉन्फ़िगरेशन ड्रुइड"
 
-#: src/menu.cpp:325 src/menu.cpp:331
+#: src/menu.cpp:342
 msgid "Run the configuration druid"
-msgstr ""
+msgstr "कॉन्फ़िगरेशन ड्रुइड चलाएँ "
 
-#: src/menu.cpp:338 src/menu.cpp:654
-#, fuzzy
+#: src/menu.cpp:349 src/menu.cpp:664
 msgid "_Preferences"
-msgstr "वरीयताएं(_P)..."
+msgstr "वरीयताएँ (_P)"
 
-#: src/menu.cpp:339 src/menu.cpp:655
+#: src/menu.cpp:350 src/menu.cpp:665
 msgid "Change your preferences"
-msgstr "अपनी वरीयताएं बदलें"
+msgstr "अपनी वरीयताएँ बदलें"
 
 # #-#-#-#-#  gnumeric.HEAD.hi.po (gnumeric HEAD)  #-#-#-#-#
 # #-#-#-#-#  libgnomeui.HEAD.hi.po (libgnomeui HEAD)  #-#-#-#-#
@@ -2635,163 +2424,164 @@ msgstr "अपनी वरीयताएं बदलें"
 # libgnomeui/gnome-app-helper.c:86 libgnomeui/gnome-app-helper.h:519
 # #-#-#-#-#  libgnomeui.HEAD.hi.po (libgnomeui-2.0.hi)  #-#-#-#-#
 # libgnomeui/gnome-app-helper.c:86 libgnomeui/gnome-app-helper.h:519
-#: src/menu.cpp:344
+#: src/menu.cpp:355
 msgid "_View"
-msgstr "देखें (_V)"
+msgstr "दृश्य (_V)"
 
-#: src/menu.cpp:346 src/pref_window.cpp:944
+#: src/menu.cpp:357 src/pref_window.cpp:926
 msgid "Text Chat"
-msgstr "पाठ्य वार्तालाप"
+msgstr "पाठ वार्तालाप"
 
-#: src/menu.cpp:347
+#: src/menu.cpp:358
+#, fuzzy
 msgid "View/Hide the text chat window"
-msgstr ""
+msgstr "Comment=डिफ़ॉल्ट के-ऑप्टी गपशप विंडो"
 
-#: src/menu.cpp:352
+#: src/menu.cpp:363
 msgid "Status Bar"
-msgstr ""
+msgstr "स्थिति पट्टी"
 
-#: src/menu.cpp:353
+#: src/menu.cpp:364
 msgid "View/Hide the status bar"
-msgstr ""
+msgstr "स्थिति पट्टी छुपाएँ/दिखाएँ करें "
 
-#: src/menu.cpp:359
+#: src/menu.cpp:370
 msgid "Control Panel"
 msgstr "कंट्रोल पेनेल"
 
-#: src/menu.cpp:362
+#: src/menu.cpp:373
 msgid "View audio/video transmission and reception statistics"
 msgstr ""
 
-#: src/menu.cpp:367
+#: src/menu.cpp:378
 msgid "_Dialpad"
 msgstr "डॉयलपेड (_D)"
 
-#: src/menu.cpp:367
+#: src/menu.cpp:378
 msgid "View the dialpad"
 msgstr "डॉयलपेड देखें"
 
-#: src/menu.cpp:372
+#: src/menu.cpp:383
 msgid "_Audio Settings"
-msgstr "ध्वनि समायोजन (_A)"
+msgstr "आडियो विन्यास (_A)"
 
-#: src/menu.cpp:373
+#: src/menu.cpp:384
 msgid "View audio settings"
-msgstr "ध्वनि समायोजन देखें"
+msgstr "ध्वनि विन्यास देखें"
 
-#: src/menu.cpp:378
+#: src/menu.cpp:389
 msgid "_Video Settings"
-msgstr "विडियो समायोजन (_V)"
+msgstr "वीडियो विन्यास (_V)"
 
-#: src/menu.cpp:379
+#: src/menu.cpp:390
 msgid "View video settings"
-msgstr "विडियो समायोजन देखें"
+msgstr "वीडियो विन्यास देखें"
 
-#: src/menu.cpp:384 src/pref_window.cpp:1319
+#: src/menu.cpp:395 src/pref_window.cpp:1311
 msgid "Off"
 msgstr "बन्द"
 
-#: src/menu.cpp:384
+#: src/menu.cpp:395
 msgid "Hide the control panel"
-msgstr "कंट्रोल पेनेल छिपाएं"
+msgstr "नियंत्रण फ़लक छुपाएँ"
 
-#: src/menu.cpp:392
-#, fuzzy
+#: src/menu.cpp:403
 msgid "_Clear Text Chat"
-msgstr "पाठ्य वार्तालाप"
+msgstr "पाठ गपशप साफ करें (_C)"
 
-#: src/menu.cpp:393
+#: src/menu.cpp:404
 msgid "Clear the text chat"
-msgstr ""
+msgstr "पाठ गपशप साफ करें"
 
-#: src/menu.cpp:401 src/menu.cpp:529
+#: src/menu.cpp:412 src/menu.cpp:539
 msgid "Local video image"
-msgstr "स्थानीय विडियो चित्र"
+msgstr "स्थानीय विडियो छवि"
 
-#: src/menu.cpp:407 src/menu.cpp:535
+#: src/menu.cpp:418 src/menu.cpp:545
 msgid "Remote video image"
-msgstr "दूरस्थ विडियो चित्र"
+msgstr "रिमोट वीडियो छवि"
 
-#: src/menu.cpp:412 src/menu.cpp:540
+#: src/menu.cpp:423 src/menu.cpp:550
 msgid "Both (Local Video Incrusted)"
-msgstr ""
+msgstr "दोनों (स्थानीय विडियो इनक्रस्टेड)"
 
-#: src/menu.cpp:413 src/menu.cpp:420 src/menu.cpp:427 src/menu.cpp:541
-#: src/menu.cpp:548 src/menu.cpp:555
+#: src/menu.cpp:424 src/menu.cpp:431 src/menu.cpp:438 src/menu.cpp:551
+#: src/menu.cpp:558 src/menu.cpp:565
 msgid "Both video images"
-msgstr "दोनो विडियो चित्र"
+msgstr "दोनो वीडियो छवियाँ"
 
-#: src/menu.cpp:419 src/menu.cpp:547
+#: src/menu.cpp:430 src/menu.cpp:557
 msgid "Both (Local Video in New Window)"
-msgstr "दोनो (स्थानीय विडियो नये विंडो में)"
+msgstr "दोनों (स्थानीय वीडियो नए विंडो में)"
 
-#: src/menu.cpp:426 src/menu.cpp:554
+#: src/menu.cpp:437 src/menu.cpp:564
 msgid "Both (Both in New Windows)"
-msgstr "दोनो (दोनो नये विंडोस में)"
+msgstr "दोनों (दोनों नए विंडोज़ में)"
 
-#: src/menu.cpp:435 src/menu.cpp:563
+#: src/menu.cpp:446 src/menu.cpp:573
 msgid "Zoom In"
-msgstr "बडे रूप मे दिखाएं"
+msgstr "बड़े रूप में दिखाएँ"
 
-#: src/menu.cpp:435 src/menu.cpp:563
+#: src/menu.cpp:446 src/menu.cpp:573
 msgid "Zoom in"
-msgstr "बडे रूप मे दिखाएं"
+msgstr "बडे रूप में दिखाएँ"
 
-#: src/menu.cpp:439 src/menu.cpp:567
+#: src/menu.cpp:450 src/menu.cpp:577
 msgid "Zoom Out"
-msgstr "छोटे रूप मे दिखाएं"
+msgstr "छोटे रूप में दिखाएँ"
 
-#: src/menu.cpp:439 src/menu.cpp:567
+#: src/menu.cpp:450 src/menu.cpp:577
 msgid "Zoom out"
-msgstr "छोटे रूप मे दिखाएं"
+msgstr "छोटे रूप में दिखाएँ"
 
-#: src/menu.cpp:443 src/menu.cpp:571
+#: src/menu.cpp:454 src/menu.cpp:581
 msgid "Normal Size"
 msgstr "सामान्य आकार"
 
-#: src/menu.cpp:443 src/menu.cpp:571
+#: src/menu.cpp:454 src/menu.cpp:581
 msgid "Normal size"
 msgstr "सामान्य आकार"
 
-#: src/menu.cpp:448 src/menu.cpp:576
+#: src/menu.cpp:459 src/menu.cpp:586
 msgid "Fullscreen"
-msgstr "पूरा सक्रीन"
+msgstr "पूर्ण स्क्रीन"
 
-#: src/menu.cpp:453
+#: src/menu.cpp:464
 msgid "_Tools"
 msgstr "उपकरण (_T)"
 
-#: src/menu.cpp:455 src/menu.cpp:638
+#: src/menu.cpp:466 src/menu.cpp:648
 msgid "Address _Book"
-msgstr "पता किताब (_B)"
+msgstr "पता पुस्तिका (_B)"
 
-#: src/menu.cpp:456 src/menu.cpp:639
+#: src/menu.cpp:467 src/menu.cpp:649
 msgid "Open the address book"
-msgstr "फिल्टर..."
+msgstr "पता पुस्तिका खोलें"
 
-#: src/menu.cpp:463 src/tools.cpp:759
+#: src/menu.cpp:474
 msgid "General History"
-msgstr "साधारण इतिहास"
+msgstr "सामान्य इतिहास"
 
-#: src/menu.cpp:464
+#: src/menu.cpp:475
 msgid "View the operations history"
-msgstr ""
+msgstr "ऑपरेशन्स इतिहास देखें"
 
-#: src/menu.cpp:468 src/menu.cpp:646 src/tools.cpp:491
+#: src/menu.cpp:479 src/menu.cpp:656
 msgid "Calls History"
-msgstr "कॉल इतिहास"
+msgstr "काल्स इतिहास"
 
-#: src/menu.cpp:469 src/menu.cpp:647
+#: src/menu.cpp:480 src/menu.cpp:657
 msgid "View the calls history"
-msgstr "कॉल इतिहास देखें"
+msgstr "काल्स इतिहास देखें"
 
-#: src/menu.cpp:476
+#: src/menu.cpp:488 src/menu.cpp:494
 msgid "PC-To-Phone Account"
-msgstr ""
+msgstr "पीसी-से-फोन खाता"
 
-#: src/menu.cpp:477
+#: src/menu.cpp:489 src/menu.cpp:495
+#, fuzzy
 msgid "Manage your PC-To-Phone account"
-msgstr ""
+msgstr "आपका एकाउन्ट खत्म हो चुका है(पासवर्ड बदलने में असफल)"
 
 # #-#-#-#-#  gnome-control-center.HEAD.hi.po (control center)  #-#-#-#-#
 # #-#-#-#-#  gnome-applets.gnome-2-2.hi.po (gnome-applets 2.x)  #-#-#-#-#
@@ -2826,291 +2616,303 @@ msgstr ""
 # #-#-#-#-#  libgnomeui.HEAD.hi.po (libgnomeui-2.0.hi)  #-#-#-#-#
 # libgnomeui/gnome-app-helper.c:96 libgnomeui/gnome-app-helper.h:531
 # test-gnome/testgnome.xml.h:6
-#: src/menu.cpp:482
+#: src/menu.cpp:500
 msgid "_Help"
-msgstr "सहायता (_H)"
+msgstr "मदद (_H)"
 
-#: src/menu.cpp:485 src/menu.cpp:490
-#, fuzzy
+#: src/menu.cpp:503 src/menu.cpp:508
 msgid "_Contents"
-msgstr "जुडें (_C)"
+msgstr "विषय-वस्तु (_C)"
 
-#: src/menu.cpp:486 src/menu.cpp:491
+#: src/menu.cpp:504 src/menu.cpp:509
+#, fuzzy
 msgid "Get help by reading the GnomeMeeting manual"
-msgstr ""
+msgstr "छवियों से मेल खाते शब्दों को ढूंढ कर पढ़ने का अभ्यास"
 
-#: src/menu.cpp:497 src/menu.cpp:503
+#: src/menu.cpp:514
 msgid "_About"
-msgstr ""
+msgstr "के बारे में (_A)"
 
-#: src/menu.cpp:498 src/menu.cpp:504 src/menu.cpp:664 src/menu.cpp:670
+#: src/menu.cpp:515 src/menu.cpp:673
 msgid "View information about GnomeMeeting"
-msgstr ""
+msgstr "गनोम-मीटिंग के बारे में जानकारी देखें"
 
-#: src/menu.cpp:603
+#: src/menu.cpp:613
 msgid "_Connect"
 msgstr "जुडें (_C)"
 
-#: src/menu.cpp:663 src/menu.cpp:669
-msgid "_About GnomeMeeting"
-msgstr "गनोममीटिंग के बारे में (_A)"
+#: src/menu.cpp:672
+msgid "_About..."
+msgstr "के बारे में ...(_A)"
 
-#: src/misc.cpp:140
-#, fuzzy
+#: src/misc.cpp:143
 msgid "Generic error"
-msgstr "जीकॉन्फ कुंजी त्रुटी"
+msgstr "ज़ेनेरिक त्रुटि"
 
-#: src/misc.cpp:186
+#: src/misc.cpp:187
 msgid "Reject"
 msgstr "अस्वीकृत करें"
 
-#: src/misc.cpp:188
+#: src/misc.cpp:189
 msgid "Accept"
-msgstr "ग्रहण करें"
+msgstr "स्वीकारें"
 
-#: src/misc.cpp:195
+#: src/misc.cpp:196
 msgid "Incoming call from"
-msgstr ""
+msgstr "से आने वाले कॉल"
 
-#: src/misc.cpp:208
-#, fuzzy
+#: src/misc.cpp:209
 msgid "Remote URL:"
-msgstr "दूरस्थ विडियो"
+msgstr "रिमोट यूआरएल:"
 
-#: src/misc.cpp:220
+#: src/misc.cpp:221
 msgid "Remote Application:"
-msgstr ""
+msgstr "रिमोट अनुप्रयोगः"
 
-#: src/pref_window.cpp:370
-#, fuzzy
-msgid "Codec Information"
-msgstr "गलत सूचना"
-
-#: src/pref_window.cpp:410
-#, fuzzy
+#: src/pref_window.cpp:314 src/pref_window.cpp:342
 msgid "Choose a Picture"
-msgstr "चित्र"
+msgstr "छवि चुनें"
 
-#: src/pref_window.cpp:865
+#: src/pref_window.cpp:431 src/pref_window.cpp:1081
+msgid "A"
+msgstr "ए"
+
+#: src/pref_window.cpp:456
+msgid "Bandwidth"
+msgstr "बेंडविड्थ"
+
+#: src/pref_window.cpp:847
 msgid "Personal Information"
 msgstr "व्यक्तिगत जानकारी"
 
-#: src/pref_window.cpp:869
+#: src/pref_window.cpp:851
 msgid "_First name:"
-msgstr "पहला नाम (_F):"
+msgstr "प्रथम नाम (_F):"
 
-#: src/pref_window.cpp:876
+#: src/pref_window.cpp:858
 msgid "Sur_name:"
 msgstr "कुल नाम (_n):"
 
-#: src/pref_window.cpp:878
-#, fuzzy
+#: src/pref_window.cpp:860
 msgid "Enter your surname"
-msgstr "अपना आखरी नाम दें"
+msgstr "अपना कुलनाम भरें"
 
-#: src/pref_window.cpp:883
+#: src/pref_window.cpp:865
 msgid "E-_mail address:"
-msgstr ""
+msgstr "ई-मेल पता: (_m)"
 
-#: src/pref_window.cpp:890
+#: src/pref_window.cpp:872
 msgid "_Comment:"
 msgstr "टिप्पणी (_C):"
 
-#: src/pref_window.cpp:892
+#: src/pref_window.cpp:874
 msgid "Enter a comment about yourself"
-msgstr ""
+msgstr "अपने बारे में टिप्पणी प्रविष्ट करें"
 
 # libgnomeprintui/gnome-printer-dialog.c:126
-#: src/pref_window.cpp:897
+#: src/pref_window.cpp:879
 msgid "_Location:"
 msgstr "स्थान (_L):"
 
-#: src/pref_window.cpp:899
+#: src/pref_window.cpp:881
 msgid "Enter your country or city"
-msgstr ""
+msgstr "अपना देश या शहर भरें"
 
+#  Add the update button
 #. Add the update button
-#: src/pref_window.cpp:905 src/pref_window.cpp:1255
+#: src/pref_window.cpp:887 src/pref_window.cpp:1237
 msgid "_Apply"
-msgstr "लागू करें"
+msgstr "लागू करें (_A)"
 
-#: src/pref_window.cpp:905
+#: src/pref_window.cpp:887
 msgid ""
-"Click here to update the user directory you are registered to with the new "
+"Click here to update the users directory you are registered to with the new "
 "First Name, Last Name, E-Mail, Comment and Location or to update your alias "
 "on the Gatekeeper"
 msgstr ""
 
-#: src/pref_window.cpp:923
+#: src/pref_window.cpp:905
 msgid "GnomeMeeting GUI"
-msgstr "गनोममीटिंग जियुआइ"
+msgstr "गनोममीटिंग जीयूआई"
 
-#: src/pref_window.cpp:925
+#: src/pref_window.cpp:907
 msgid "_Show splash screen"
-msgstr "सप्लेश सक्रीन दिखाएं (_S)"
+msgstr "स्प्लैश स्क्रीन दिखाएँ (_S)"
 
-#: src/pref_window.cpp:927
+#: src/pref_window.cpp:909
 msgid "Start _hidden"
-msgstr ""
+msgstr "छुपे रूप में प्रारंभ करें (_h)"
 
-#: src/pref_window.cpp:932
+#: src/pref_window.cpp:914
 msgid "Video Display"
-msgstr ""
+msgstr "वीडियो प्रदर्शक"
 
+#  Translators: the full sentence is Use a fullscreen size
+#  of X by Y pixels
 #. Translators: the full sentence is Use a fullscreen size
 #. of X by Y pixels
-#: src/pref_window.cpp:937
+#: src/pref_window.cpp:919
 msgid "Use a fullscreen size of"
-msgstr ""
+msgstr "इसका पूर्णस्क्रीन आकार उपयोग करें"
 
-#: src/pref_window.cpp:937
+#: src/pref_window.cpp:919
 msgid "by"
 msgstr "द्वारा"
 
-#: src/pref_window.cpp:937
+#: src/pref_window.cpp:919
 msgid "pixels"
-msgstr "पिक्सेल"
+msgstr "पिक्सेल्स"
 
-#: src/pref_window.cpp:937
+#: src/pref_window.cpp:919
 msgid "The image width for fullscreen."
-msgstr "पूर्णसक्रीन के लिए चित्र चोडाई"
+msgstr "पूर्णस्क्रीन हेतु छवि चौड़ाई."
 
-#: src/pref_window.cpp:937
+#: src/pref_window.cpp:919
 msgid "The image height for fullscreen."
-msgstr "पूर्णसक्रीन के लिए चित्र उंचाई"
+msgstr "पूर्णस्क्रीन हेतु छवि उंचाई."
 
-#: src/pref_window.cpp:940
+#: src/pref_window.cpp:922
+#, fuzzy
 msgid "Place windows displaying video _above other windows"
+msgstr "विंडो को अन्य विंडो के ऊपर रखने की कोशिश करें"
+
+#: src/pref_window.cpp:946
+msgid "Users Directory"
+msgstr "उपयोगकर्ता डिरेक्ट्री"
+
+#  Add all the fields
+#. Add all the fields
+#: src/pref_window.cpp:950
+msgid "Users directory:"
+msgstr "उपयोगकर्ता डिरेक्ट्रीः"
+
+#: src/pref_window.cpp:950
+#, fuzzy
+msgid "The users directory server to register with"
+msgstr "डिरेक्ट्री जहाँ से .server फ़ाइलें पढ़नी हैं"
+
+#: src/pref_window.cpp:952
+msgid "Enable _registering"
+msgstr "पंजीकरण सक्षम करें (_r)"
+
+#: src/pref_window.cpp:952
+msgid "If enabled, register with the selected users directory"
 msgstr ""
 
-#: src/pref_window.cpp:964
-msgid "User Directory"
-msgstr "उपयोगकर्ता डॉयरेक्ट्री"
-
-#. Add all the fields
-#: src/pref_window.cpp:968
-msgid "User directory:"
-msgstr "उपयोगकर्ता डॉयरेक्ट्री :"
-
-#: src/pref_window.cpp:970
-msgid "Enable _registering"
-msgstr "रेजिसटरि सक्षम (_r)"
-
-#: src/pref_window.cpp:972
+#: src/pref_window.cpp:954
 msgid "_Publish my details in the users directory when registering"
 msgstr ""
 
-#: src/pref_window.cpp:972
+#: src/pref_window.cpp:954
 msgid ""
-"If enabled, your details are shown to people browsing the user directory. If "
-"disabled, you are not visible to users browsing the user directory, but they "
-"can still use the callto URL to call you."
+"If enabled, your details are shown to people browsing the users directory. "
+"If disabled, you are not visible to users browsing the users directory, but "
+"they can still use the callto URL to call you."
 msgstr ""
 
-#: src/pref_window.cpp:989 src/pref_window.cpp:1754
+#: src/pref_window.cpp:971 src/pref_window.cpp:1726
 msgid "Call Forwarding"
-msgstr ""
+msgstr "काल फ़ॉरवर्डिंग"
 
-#: src/pref_window.cpp:994
+#: src/pref_window.cpp:976
 msgid "Forward calls to _host:"
-msgstr ""
+msgstr "होस्ट को फ़ॉरवर्ड काल्सः (_h)"
 
-#: src/pref_window.cpp:999
+#: src/pref_window.cpp:981
+#, fuzzy
 msgid "_Always forward calls to the given host"
-msgstr ""
+msgstr "होस्ट %1 पर ड्राइवर संस्थापित करने की तैयारी में"
 
-#: src/pref_window.cpp:999
+#: src/pref_window.cpp:981
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field above"
 msgstr ""
 
-#: src/pref_window.cpp:1001
+#: src/pref_window.cpp:983
 msgid "Forward calls to the given host if _no answer"
 msgstr ""
 
-#: src/pref_window.cpp:1001
+#: src/pref_window.cpp:983
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field above if you do not answer the call"
 msgstr ""
 
-#: src/pref_window.cpp:1003
+#: src/pref_window.cpp:985
 msgid "Forward calls to the given host if _busy"
 msgstr ""
 
-#: src/pref_window.cpp:1003
+#: src/pref_window.cpp:985
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field above if you already are in a call or if you are in "
 "Do Not Disturb mode"
 msgstr ""
 
-#: src/pref_window.cpp:1022 src/pref_window.cpp:1735
+#: src/pref_window.cpp:1004 src/pref_window.cpp:1707
 msgid "Call Options"
-msgstr ""
+msgstr "काल विकल्प"
 
 #. Add all the fields
-#: src/pref_window.cpp:1026
+#: src/pref_window.cpp:1008
 msgid "Automatically _clear calls after 30 seconds of inactivity"
 msgstr ""
 
 #. Translators: the full sentence is Reject or forward
 #. unanswered incoming calls after X s (seconds)
-#: src/pref_window.cpp:1030
+#: src/pref_window.cpp:1012
 msgid "Reject or forward unanswered incoming calls after "
 msgstr ""
 
-#: src/pref_window.cpp:1030
+#: src/pref_window.cpp:1012
 msgid "seconds"
-msgstr ""
+msgstr "सेकण्ड्स"
 
-#: src/pref_window.cpp:1062
-#, fuzzy
+#: src/pref_window.cpp:1044
 msgid "GnomeMeeting Sound Events"
-msgstr "गनोममीटिंग"
+msgstr "गनोम-मीटिंग ध्वनि घटनाएँ"
 
-#: src/pref_window.cpp:1111 src/pref_window.cpp:1120 src/pref_window.cpp:1129
+#: src/pref_window.cpp:1093 src/pref_window.cpp:1102 src/pref_window.cpp:1111
 msgid "Event"
-msgstr ""
+msgstr "घटना"
 
-#: src/pref_window.cpp:1140
-#, fuzzy
+#: src/pref_window.cpp:1122
 msgid "Sound to play:"
-msgstr "ध्वनी प्लेयर"
+msgstr "बजाई जाने वाली ध्वनिः"
 
-#: src/pref_window.cpp:1153
+#: src/pref_window.cpp:1135
 msgid "Play"
-msgstr ""
+msgstr "बजाएँ"
 
-#: src/pref_window.cpp:1187
+#: src/pref_window.cpp:1169
 msgid "All"
 msgstr "सभी"
 
-#: src/pref_window.cpp:1189
+#: src/pref_window.cpp:1171
 msgid "rfc2833"
-msgstr "rfc2833"
+msgstr "आरएफ़सी2833"
 
-#: src/pref_window.cpp:1190
+#: src/pref_window.cpp:1172
 msgid "Signal"
 msgstr "संकेत"
 
 # src/gconf-key-editor.c:94
-#: src/pref_window.cpp:1191
+#: src/pref_window.cpp:1173
 msgid "String"
 msgstr "स्ट्रिंग"
 
-#: src/pref_window.cpp:1200
+#: src/pref_window.cpp:1182
 msgid "H.323 Version 2 Settings"
-msgstr ""
+msgstr "H.323 संस्करण 2 विन्यास"
 
+#  The toggles
 #. The toggles
-#: src/pref_window.cpp:1203
-#, fuzzy
+#: src/pref_window.cpp:1185
 msgid "Enable H.245 _tunneling"
-msgstr "रेजिसटरि सक्षम (_r)"
+msgstr "H.245 टनलिंग सक्षम करें ( _t)"
 
-#: src/pref_window.cpp:1203
+#: src/pref_window.cpp:1185
 msgid ""
 "This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
 "are encapsulated into the the H.225 channel (port 1720). This saves one TCP "
@@ -3119,15 +2921,15 @@ msgid ""
 "can crash some versions of Netmeeting."
 msgstr ""
 
-#: src/pref_window.cpp:1205
+#: src/pref_window.cpp:1187
 msgid "Enable _early H.245"
-msgstr ""
+msgstr "प्रारंभिक H.245 सक्षम करें (_e)"
 
-#: src/pref_window.cpp:1207
+#: src/pref_window.cpp:1189
 msgid "Enable fast _start procedure"
-msgstr ""
+msgstr "फास्ट स्टार्ट प्रोसीज़र सक्षम करें (_s)"
 
-#: src/pref_window.cpp:1207
+#: src/pref_window.cpp:1189
 msgid ""
 "Connection will be established in Fast Start mode. Fast Start is a new way "
 "to start calls faster that was introduced in H.323v2. It is not supported by "
@@ -3135,16 +2937,15 @@ msgid ""
 "versions of Netmeeting."
 msgstr ""
 
-#: src/pref_window.cpp:1213
-#, fuzzy
+#: src/pref_window.cpp:1195
 msgid "DTMF Sending"
-msgstr "भेज रहे हैं %s"
+msgstr "डीटीएमएफ़ भेज रहे..."
 
-#: src/pref_window.cpp:1215
+#: src/pref_window.cpp:1197
 msgid "_Send DTMF as:"
-msgstr ""
+msgstr "डीटीएमएफ़ इस रूप में भेजें (_S):"
 
-#: src/pref_window.cpp:1215
+#: src/pref_window.cpp:1197
 msgid ""
 "This permits to set the mode for DTMFs sending. The values can be \"All\", "
 "\"None\", \"rfc2833\", \"Signal\" or \"String\" (default is \"All\"). "
@@ -3152,74 +2953,75 @@ msgid ""
 "Text Chat."
 msgstr ""
 
-#: src/pref_window.cpp:1230
+#: src/pref_window.cpp:1212
 msgid "Do not register"
-msgstr "रेजिसटर नही करें"
+msgstr "पंजीकरण नही करें"
+
+#: src/pref_window.cpp:1215
+msgid "Automatically discover"
+msgstr "स्वचालित पता लगाएँ"
+
+#: src/pref_window.cpp:1221
+msgid "Gatekeeper"
+msgstr "गेटकीपर"
+
+#: src/pref_window.cpp:1223
+msgid "Gatekeeper _ID:"
+msgstr "गेटकीपर आईडीः (_I)"
+
+#: src/pref_window.cpp:1225
+msgid "Gatekeeper _host:"
+msgstr "गेटकीपर होस्टः (_h)"
+
+#: src/pref_window.cpp:1227
+msgid "Gatekeeper _alias:"
+msgstr "गेटकीपर अलियासः (_a)"
+
+#: src/pref_window.cpp:1230
+msgid "Gatekeeper _password:"
+msgstr "गेटकीपर पासवर्डः (_p)"
 
 #: src/pref_window.cpp:1233
-msgid "Automatically discover"
-msgstr ""
-
-#: src/pref_window.cpp:1239
-msgid "Gatekeeper"
-msgstr ""
-
-#: src/pref_window.cpp:1241
-msgid "Gatekeeper _ID:"
-msgstr ""
-
-#: src/pref_window.cpp:1243
-msgid "Gatekeeper _host:"
-msgstr ""
-
-#: src/pref_window.cpp:1245
-msgid "Gatekeeper _alias:"
-msgstr ""
-
-#: src/pref_window.cpp:1248
-msgid "Gatekeeper _password:"
-msgstr ""
-
-#: src/pref_window.cpp:1251
 msgid "Register this alias as the primary alias with the gatekeeper"
 msgstr ""
 
-#: src/pref_window.cpp:1251
+#: src/pref_window.cpp:1233
 msgid ""
 "Use this option to ensure the above alias is used as the primary alias when "
 "registering with a gatekeeper. This may be required if your gatekeeper can "
 "only perform authentication using the first alias in the list."
 msgstr ""
 
-#: src/pref_window.cpp:1253
+#: src/pref_window.cpp:1235
 msgid "Registering method:"
-msgstr ""
+msgstr "पंजीकरण विधि:"
 
-#: src/pref_window.cpp:1255
+#: src/pref_window.cpp:1237
 msgid "Click here to update your Gatekeeper settings"
-msgstr ""
+msgstr "अपने गेटकीपर विन्यास को अद्यतन करने हेतु यहाँ क्लिक करें"
 
-#: src/pref_window.cpp:1272
+#: src/pref_window.cpp:1254
 msgid "Gateway/Proxy"
-msgstr ""
+msgstr "गेटवे/प्रॉक्सी"
 
-#: src/pref_window.cpp:1274
+#: src/pref_window.cpp:1256
 msgid "Gateway / Proxy host:"
-msgstr ""
+msgstr "गेटवे / प्रॉक्सी होस्ट:"
+
+#: src/pref_window.cpp:1258
+msgid "Use gateway or proxy"
+msgstr "गेटवे या प्रॉक्सी उपयोग करें"
 
 #: src/pref_window.cpp:1276
-msgid "Use gateway or proxy"
-msgstr ""
+#, fuzzy
+msgid "IP Translation"
+msgstr "आईपी अनुवाद सक्षम करें"
 
-#: src/pref_window.cpp:1294
-msgid "NAT/PAT Router Support"
-msgstr ""
-
-#: src/pref_window.cpp:1296
+#: src/pref_window.cpp:1278
 msgid "Enable IP _translation"
-msgstr ""
+msgstr "आईपी अनुवाद सक्षम करें (_t)"
 
-#: src/pref_window.cpp:1296
+#: src/pref_window.cpp:1278
 msgid ""
 "This enables IP translation. IP translation is useful if GnomeMeeting is "
 "running behind a NAT/PAT router. You have to put the public IP of the router "
@@ -3228,11 +3030,11 @@ msgid ""
 "natively supports H.323, you can disable this."
 msgstr ""
 
-#: src/pref_window.cpp:1298
+#: src/pref_window.cpp:1280
 msgid "Enable _automatic IP checking"
-msgstr ""
+msgstr "स्वचालित आईपी जाँच सक्षम करें (_a)"
 
-#: src/pref_window.cpp:1298
+#: src/pref_window.cpp:1280
 msgid ""
 "This enables IP checking from seconix.com and fills the IP in the public IP "
 "of the NAT/PAT gateway field of GnomeMeeting. The returned IP is only used "
@@ -3240,401 +3042,393 @@ msgid ""
 "manually enter the IP of your gateway in the GnomeMeeting preferences."
 msgstr ""
 
-#: src/pref_window.cpp:1300
+#: src/pref_window.cpp:1282
 msgid "Public _IP of the NAT/PAT router:"
-msgstr ""
+msgstr "एनएटी/पीएटी रूटर का पब्लिक आईपी: (_I)"
 
-#: src/pref_window.cpp:1300
+#: src/pref_window.cpp:1282
 msgid ""
 "Enter the public IP of your NAT/PAT router if you want to use IP "
 "translation. If you are registered to ils.seconix.com, GnomeMeeting will "
 "automatically fetch the public IP using the ILS service."
 msgstr ""
 
-#: src/pref_window.cpp:1320
+#: src/pref_window.cpp:1288
+msgid "STUN Support"
+msgstr ""
+
+#: src/pref_window.cpp:1290
+msgid "Enable _STUN Support"
+msgstr ""
+
+#: src/pref_window.cpp:1292
+msgid "STUN Se_rver:"
+msgstr ""
+
+#: src/pref_window.cpp:1312
 msgid "Low"
 msgstr "कम"
 
-#: src/pref_window.cpp:1321
+#: src/pref_window.cpp:1313
 msgid "Medium"
 msgstr "मध्यम"
 
-#: src/pref_window.cpp:1322
+#: src/pref_window.cpp:1314
 msgid "High"
 msgstr "ज्यादा"
 
-#: src/pref_window.cpp:1323
+#: src/pref_window.cpp:1315
 msgid "AGC"
-msgstr "AGC"
+msgstr "एजीसी"
 
-#: src/pref_window.cpp:1326
+#: src/pref_window.cpp:1318
 msgid "POTS"
 msgstr ""
 
-#: src/pref_window.cpp:1327
+#: src/pref_window.cpp:1319
 msgid "Headset"
 msgstr ""
 
-#: src/pref_window.cpp:1336
+#: src/pref_window.cpp:1328
 msgid "Audio Plugin"
-msgstr ""
+msgstr "ऑडियो प्लगइन"
 
-#: src/pref_window.cpp:1340
-#, fuzzy
+#: src/pref_window.cpp:1332
 msgid "Audio plugin:"
-msgstr "ध्वनी प्लेयर"
+msgstr "ऑडियो प्लगइनः"
 
-#: src/pref_window.cpp:1340
+#: src/pref_window.cpp:1332
 msgid ""
 "The audio plugin that will be used to detect the devices and manage them."
 msgstr ""
 
-#: src/pref_window.cpp:1346 src/pref_window.cpp:1779
+#: src/pref_window.cpp:1338 src/pref_window.cpp:1751
 msgid "Audio Devices"
 msgstr "ऑडियो उपकरण"
 
-#: src/pref_window.cpp:1352
+#: src/pref_window.cpp:1344
 msgid "Output device:"
-msgstr ""
+msgstr "आउटपुट उपकरण:"
 
-#: src/pref_window.cpp:1358 src/pref_window.cpp:1429
-#, fuzzy
+#: src/pref_window.cpp:1350 src/pref_window.cpp:1421
 msgid "Input device:"
-msgstr "विडियो उपकरण :"
+msgstr "इनपुट उपकरण:"
 
-#: src/pref_window.cpp:1364
+#: src/pref_window.cpp:1356
 msgid "Quicknet Hardware"
-msgstr ""
+msgstr "क्विकनेट हार्डवेयर"
 
-#: src/pref_window.cpp:1366
+#: src/pref_window.cpp:1358
 msgid "Echo _cancellation:"
-msgstr ""
+msgstr "इको रद्दः (_c)"
 
-#: src/pref_window.cpp:1368
+#: src/pref_window.cpp:1360
 msgid "Output device type:"
-msgstr ""
+msgstr "आउटपुट उपकरण प्रकार:"
 
-#: src/pref_window.cpp:1371
+#: src/pref_window.cpp:1363
 msgid "Country _code:"
 msgstr "देश कोड (_c):"
 
-#: src/pref_window.cpp:1371
+#: src/pref_window.cpp:1363
 msgid ""
 "The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)."
 msgstr ""
 
+#  That button will refresh the devices list
 #. That button will refresh the devices list
-#: src/pref_window.cpp:1378 src/pref_window.cpp:1454
+#: src/pref_window.cpp:1370 src/pref_window.cpp:1446
 msgid "_Detect devices"
-msgstr ""
+msgstr "उपकरणों का पता लगाएँ (_D)"
 
-#: src/pref_window.cpp:1378
+#: src/pref_window.cpp:1370
 msgid "Click here to refresh the devices list"
-msgstr ""
+msgstr "उपकरणों की सूची रीफ्रेश करने हेतु यहाँ क्लिक करें."
 
-#: src/pref_window.cpp:1399
+#: src/pref_window.cpp:1391
 msgid "Small"
 msgstr "छोटा"
 
-#: src/pref_window.cpp:1400
+#: src/pref_window.cpp:1392
 msgid "Large"
 msgstr "विशाल"
 
-#: src/pref_window.cpp:1402
+#: src/pref_window.cpp:1394
 msgid "PAL (Europe)"
-msgstr "पेल (युरोप)"
+msgstr "पाल (यूरोप)"
 
-#: src/pref_window.cpp:1403
+#: src/pref_window.cpp:1395
 msgid "NTSC (America)"
 msgstr "एनटीएससी (अमरीका)"
 
-#: src/pref_window.cpp:1404
+#: src/pref_window.cpp:1396
 msgid "SECAM (France)"
 msgstr "सीकैम (फ्रांस)"
 
-#: src/pref_window.cpp:1405
+#: src/pref_window.cpp:1397
 msgid "Auto"
-msgstr ""
+msgstr "स्वचालित"
 
-#: src/pref_window.cpp:1415
-#, fuzzy
+#: src/pref_window.cpp:1407
 msgid "Video Plugin"
-msgstr "विडियो पूर्वदर्शन"
+msgstr "वीडियो प्लगइन"
 
-#: src/pref_window.cpp:1418
-#, fuzzy
+#: src/pref_window.cpp:1410
 msgid "Video plugin:"
-msgstr "विडियो आकार :"
+msgstr "वीडियो प्लगइनः"
 
-#: src/pref_window.cpp:1424 src/pref_window.cpp:1783
+#: src/pref_window.cpp:1416 src/pref_window.cpp:1755
 msgid "Video Devices"
-msgstr "विडियो उपकरणें"
+msgstr "विडियो उपकरण"
 
+#  Video Channel
 #. Video Channel
-#: src/pref_window.cpp:1433
-#, fuzzy
+#: src/pref_window.cpp:1425
 msgid "Channel:"
-msgstr "विडियो चैनेल :"
+msgstr "चैनलः"
 
-#: src/pref_window.cpp:1435
+#: src/pref_window.cpp:1427
 msgid "Size:"
-msgstr ""
+msgstr "आकारः"
 
-#: src/pref_window.cpp:1437
-#, fuzzy
+#: src/pref_window.cpp:1429
 msgid "Format:"
-msgstr "रंग प्रारूप"
+msgstr "फॉर्मेटः"
 
-#: src/pref_window.cpp:1440
+#: src/pref_window.cpp:1432
 msgid "Image:"
-msgstr ""
+msgstr "छविः"
 
-#: src/pref_window.cpp:1454
+#: src/pref_window.cpp:1446
 msgid "Click here to refresh the devices list."
-msgstr ""
+msgstr "उपकरणों की सूची रीफ्रेश करने हेतु यहाँ क्लिक करें."
 
-#: src/pref_window.cpp:1494
+#: src/pref_window.cpp:1473
 msgid "Available Audio Codecs"
-msgstr ""
+msgstr "उपलब्ध ऑडियो कोडेक्स"
 
-#: src/pref_window.cpp:1551
-msgid "Info"
-msgstr "जानकारी"
-
-#: src/pref_window.cpp:1563
-msgid "Bandwidth"
-msgstr "बेंडविड्थ"
-
-#: src/pref_window.cpp:1615
+#: src/pref_window.cpp:1488
 msgid "Audio Codecs Settings"
-msgstr ""
+msgstr "ध्वनि कोडेक विन्यास"
 
+#  Translators: the full sentence is Automatically adjust jitter buffer
+#  between X and Y ms
 #. Translators: the full sentence is Automatically adjust jitter buffer
 #. between X and Y ms
-#: src/pref_window.cpp:1619
+#: src/pref_window.cpp:1492
 msgid "Automatically adjust _jitter buffer between"
-msgstr ""
+msgstr "इनके बीच जिटर बफ़र स्वचालित समंजित करें (_j)"
 
-#: src/pref_window.cpp:1619
+#: src/pref_window.cpp:1492
 msgid "and"
 msgstr "और"
 
-#: src/pref_window.cpp:1619
+#: src/pref_window.cpp:1492
 msgid "ms"
-msgstr ""
+msgstr "मि.से."
 
-#: src/pref_window.cpp:1619
+#: src/pref_window.cpp:1492
 msgid "The minimum jitter buffer size for audio reception (in ms)."
 msgstr ""
 
-#: src/pref_window.cpp:1619
+#: src/pref_window.cpp:1492
 msgid "The maximum jitter buffer size for audio reception (in ms)."
 msgstr ""
 
-#: src/pref_window.cpp:1621
+#: src/pref_window.cpp:1494
 msgid "Enable silence _detection"
-msgstr ""
+msgstr "साइलेंस डिटेक्शन सक्षम करें (_d)"
 
-#: src/pref_window.cpp:1621
+#: src/pref_window.cpp:1494
 msgid "If enabled, use silence detection with the GSM and G.711 codecs."
 msgstr ""
 
-#: src/pref_window.cpp:1639 src/pref_window.cpp:1726
+#: src/pref_window.cpp:1512 src/pref_window.cpp:1698
 msgid "General Settings"
-msgstr ""
+msgstr "सामान्य विन्यास"
 
+#  Add fields
 #. Add fields
-#: src/pref_window.cpp:1643
+#: src/pref_window.cpp:1516
 msgid "Enable video _transmission"
-msgstr ""
+msgstr "वीडियो संचारण सक्षम करें (_t)"
 
-#: src/pref_window.cpp:1643
+#: src/pref_window.cpp:1516
 msgid "If enabled, video is transmitted during a call."
-msgstr ""
+msgstr "यदि यह सक्षम किया जाता है, काल के दौरान वीडियो संचारित की जाएगी."
 
-#: src/pref_window.cpp:1645
+#: src/pref_window.cpp:1518
 msgid "Enable video _reception"
-msgstr ""
+msgstr "वीडियो रिसेप्शन सक्षम करें (_r)"
 
-#: src/pref_window.cpp:1645
+#: src/pref_window.cpp:1518
 msgid "If enabled, allows video to be received during a call."
 msgstr ""
 
-#: src/pref_window.cpp:1650
+#: src/pref_window.cpp:1523
 msgid "Bandwidth Control"
-msgstr ""
+msgstr "बैंडविड्थ नियंत्रक"
 
+#  Translators: the full sentence is Maximum video bandwidth of X kB/s
 #. Translators: the full sentence is Maximum video bandwidth of X kB/s
-#: src/pref_window.cpp:1653
+#: src/pref_window.cpp:1526
 msgid "Maximum video _bandwidth of"
-msgstr ""
+msgstr "इसका अधिकतम वीडियो बैंडविड्थ (_b)"
 
-#: src/pref_window.cpp:1653
+#: src/pref_window.cpp:1526
 msgid ""
 "The maximum video bandwidth in kbytes/s. The video quality and the number of "
 "transmitted frames per second will be dynamically adjusted above their "
 "minimum during calls to try to minimize the bandwidth to the given value."
 msgstr ""
 
-#: src/pref_window.cpp:1653
+#: src/pref_window.cpp:1526
 msgid "kB/s"
-msgstr ""
+msgstr "कि.बा./से. "
 
-#: src/pref_window.cpp:1659
+#: src/pref_window.cpp:1532
 msgid "Advanced Quality Settings"
-msgstr ""
+msgstr "उन्नत विशेषता विन्यास"
 
+#  Translators: the full sentence is Keep a minimum video quality of X %
 #. Translators: the full sentence is Keep a minimum video quality of X %
-#: src/pref_window.cpp:1662
-msgid "Keep a minimum video _quality of"
-msgstr ""
+#: src/pref_window.cpp:1535
+msgid "Frame Rate"
+msgstr "फ्रेम दर"
 
-#: src/pref_window.cpp:1662
+#: src/pref_window.cpp:1535
+msgid "Picture Quality"
+msgstr "छवि विशेषता"
+
+#: src/pref_window.cpp:1535
 msgid ""
-"The minimum transmitted video quality to keep when trying to minimize the "
-"used bandwidth:  choose 100% on a LAN for the best quality, 1% being the "
-"worst quality"
+"Choose if you want to favour speed or quality for the transmitted video."
 msgstr ""
 
-# #-#-#-#-#  epiphany.gnome-2-4.hi.po (epiphany.HEAD.hi)  #-#-#-#-#
-# libgnomeprint/gnome-print-paper.c:51
-# #-#-#-#-#  gnopernicus.HEAD.hi.po (gnopernicus)  #-#-#-#-#
-# libgnomeprint/gnome-print-paper.c:51
-# #-#-#-#-#  gnumeric.HEAD.hi.po (gnumeric HEAD)  #-#-#-#-#
-# libgnomeprint/gnome-print-paper.c:51
-# #-#-#-#-#  libgnomeprint.HEAD.hi.po (libgnomeprint VERSION)  #-#-#-#-#
-# libgnomeprint/gnome-print-paper.c:51
-#: src/pref_window.cpp:1662
-msgid "%"
-msgstr "%"
-
-#. Translators: the full sentence is Transmit at least X frames per second
-#: src/pref_window.cpp:1665
-msgid "Transmit at least"
-msgstr ""
-
-#: src/pref_window.cpp:1665
-msgid "_frames per second"
-msgstr ""
-
+#  Translators: the full sentence is Transmit X background blocks with each
+#  frame
 #. Translators: the full sentence is Transmit X background blocks with each
 #. frame
-#: src/pref_window.cpp:1669
+#: src/pref_window.cpp:1539
 msgid "Transmit"
+msgstr "संचारित"
+
+#: src/pref_window.cpp:1539
+msgid ""
+"Choose the number of blocks (that have not changed) transmitted with each "
+"frame. These blocks fill in the background."
 msgstr ""
 
-#: src/pref_window.cpp:1669
+#: src/pref_window.cpp:1539
 msgid "background _blocks with each frame"
-msgstr ""
+msgstr "प्रत्येक फ्रेम के साथ पृष्ठभूमि ब्लॉक्स (_b)"
 
-#: src/pref_window.cpp:1720
+#: src/pref_window.cpp:1692
 msgid "General"
 msgstr "सामान्य"
 
-#: src/pref_window.cpp:1721
+#: src/pref_window.cpp:1693
 msgid "Personal Data"
-msgstr ""
+msgstr "व्यक्तिगत डेटा"
+
+#: src/pref_window.cpp:1703
+msgid "Directory Settings"
+msgstr "डिरेक्ट्री विन्यास"
+
+#: src/pref_window.cpp:1711
+msgid "NAT Settings"
+msgstr "एनएटी विन्यास"
+
+#: src/pref_window.cpp:1716
+msgid "Sound Events"
+msgstr "ध्वनि घटनाएँ"
+
+#: src/pref_window.cpp:1720
+msgid "H.323 Settings"
+msgstr "H.323 विन्यास"
+
+#: src/pref_window.cpp:1722
+msgid "Advanced Settings"
+msgstr "उन्नत विन्यास"
 
 #: src/pref_window.cpp:1731
-msgid "Directory Settings"
-msgstr ""
+msgid "Gatekeeper Settings"
+msgstr "गेटकीपर विन्यास"
 
-#: src/pref_window.cpp:1739
-msgid "NAT Settings"
-msgstr ""
+#: src/pref_window.cpp:1736
+msgid "Gateway / Proxy Settings"
+msgstr "गेटवे / प्रॉक्सी विन्यास"
 
-#: src/pref_window.cpp:1744
-msgid "Sound Events"
-msgstr ""
+#: src/pref_window.cpp:1740
+msgid "Codecs"
+msgstr "कोडेक्स"
 
-#: src/pref_window.cpp:1748
-msgid "H.323 Settings"
-msgstr ""
+#: src/pref_window.cpp:1742
+msgid "Audio Codecs"
+msgstr "ऑडियो कोडेक्स"
+
+#: src/pref_window.cpp:1746
+msgid "Video Codecs"
+msgstr "वीडियो कोडेक्स"
 
 #: src/pref_window.cpp:1750
-msgid "Advanced Settings"
-msgstr "उन्नत सेटिंग"
-
-#: src/pref_window.cpp:1759
-msgid "Gatekeeper Settings"
-msgstr ""
-
-#: src/pref_window.cpp:1764
-msgid "Gateway / Proxy Settings"
-msgstr ""
-
-#: src/pref_window.cpp:1768
-msgid "Codecs"
-msgstr ""
-
-#: src/pref_window.cpp:1770
-msgid "Audio Codecs"
-msgstr ""
-
-#: src/pref_window.cpp:1774
-msgid "Video Codecs"
-msgstr ""
-
-#: src/pref_window.cpp:1778
 msgid "Devices"
-msgstr ""
+msgstr "उपकरण"
 
-#: src/sound_handling.cpp:330
+#: src/sound_handling.cpp:322
 msgid "Opening device for playing"
-msgstr ""
+msgstr "उपकरण को बजाने हेतु खोल रहे"
 
-#: src/sound_handling.cpp:332
+#: src/sound_handling.cpp:324
 msgid "Opening device for recording"
-msgstr ""
+msgstr "उपकरण को रेकॉर्डिंग हेतु खोल रहे"
 
-#: src/sound_handling.cpp:344 src/sound_handling.cpp:346
-#: src/videograbber.cpp:686
+#: src/sound_handling.cpp:336 src/sound_handling.cpp:338
+#: src/videograbber.cpp:697
 msgid "Failed to open the device"
-msgstr ""
+msgstr "उपकरण को खोलने में असफल"
 
-#: src/sound_handling.cpp:344
+#: src/sound_handling.cpp:336
 #, c-format
 msgid ""
 "Impossible to open the selected audio device (%s) for recording. Please "
 "check your audio setup, the permissions and that the device is not busy."
 msgstr ""
 
-#: src/sound_handling.cpp:346
+#: src/sound_handling.cpp:338
 #, c-format
 msgid ""
 "Impossible to open the selected audio device (%s) for playing. Please check "
 "your audio setup, the permissions and that the device is not busy."
 msgstr ""
 
-#: src/sound_handling.cpp:385 src/sound_handling.cpp:461
+#: src/sound_handling.cpp:377 src/sound_handling.cpp:453
 msgid "Cannot use the audio device"
-msgstr ""
+msgstr "ऑडियो उपकरण उपयोग नहीं कर सकता"
 
-#: src/sound_handling.cpp:385
+#: src/sound_handling.cpp:377
 #, c-format
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
 "to read data from this device. Please check your audio setup."
 msgstr ""
 
-#: src/sound_handling.cpp:394
-#, fuzzy
+#: src/sound_handling.cpp:386
 msgid "Recording your voice"
-msgstr "रिकोर्डिंग उपकरण :"
+msgstr "आपकी आवाज़ रेकॉर्ड कर रहे"
 
-#: src/sound_handling.cpp:436
-#, fuzzy
+#: src/sound_handling.cpp:428
 msgid "Recording and playing back"
-msgstr "रिकोर्डिंग उपकरण :"
+msgstr "रेकॉर्डिंग तथा बजाना"
 
-#: src/sound_handling.cpp:461
+#: src/sound_handling.cpp:453
 #, c-format
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
 "to write data to this device. Please check your audio setup."
 msgstr ""
 
-#: src/sound_handling.cpp:588
+#: src/sound_handling.cpp:577
 #, c-format
 msgid ""
 "GnomeMeeting is now recording from %s and playing back to %s. Please say \"1 "
@@ -3642,84 +3436,45 @@ msgid ""
 "with a 4 seconds delay."
 msgstr ""
 
-#: src/toolbar.cpp:168
+#: src/toolbar.cpp:165
 msgid ""
 "Enter an URL to call on the left, and click on this button to connect to the "
 "given URL"
 msgstr ""
 
-#: src/toolbar.cpp:214
-#, fuzzy
+#: src/toolbar.cpp:211
 msgid "Open text chat"
-msgstr "पाठ्य वार्तालाप"
+msgstr "पाठ गपशप खोलें"
 
-#: src/toolbar.cpp:225
+#: src/toolbar.cpp:222
 msgid "Open control panel"
-msgstr ""
+msgstr "नियंत्रण पटल खोलें"
 
-#: src/toolbar.cpp:237
+#: src/toolbar.cpp:234
 msgid "Open address book"
-msgstr ""
+msgstr "पता पुस्तिका खोलें"
 
-#: src/toolbar.cpp:261
+#: src/toolbar.cpp:258
 msgid "Display images from your camera device"
-msgstr ""
+msgstr "आपके कैमरा उपकरण से छवियाँ दिखाता है"
 
-#: src/toolbar.cpp:283
+#: src/toolbar.cpp:280
 msgid ""
 "Audio transmission status. During a call, click here to suspend or resume "
 "the audio transmission."
 msgstr ""
 
-#: src/toolbar.cpp:303
+#: src/toolbar.cpp:300
 msgid ""
 "Video transmission status. During a call, click here to suspend or resume "
 "the video transmission."
 msgstr ""
 
-#: src/tools.cpp:474
-msgid "Received Calls"
-msgstr ""
-
-#: src/tools.cpp:474
-msgid "Placed Calls"
-msgstr ""
-
-#: src/tools.cpp:474
-msgid "Unanswered Calls"
-msgstr ""
-
-# #-#-#-#-#  gnumeric.HEAD.hi.po (gnumeric HEAD)  #-#-#-#-#
-# #-#-#-#-#  libgnomeui.HEAD.hi.po (libgnomeui HEAD)  #-#-#-#-#
-# libgnomeui/gnome-scores.c:97
-# #-#-#-#-#  libgnomeui.HEAD.hi.po (libgnomeui-2.0.hi)  #-#-#-#-#
-# libgnomeui/gnome-scores.c:97
-#: src/tools.cpp:531
-msgid "Date"
-msgstr "दिनांक"
-
-#: src/tools.cpp:539
-#, fuzzy
-msgid "Remote User"
-msgstr "दूरस्थ विडियो"
-
-#: src/tools.cpp:557
-msgid "Call Duration"
-msgstr ""
-
-#: src/tools.cpp:567
-msgid "Call End Reason"
-msgstr ""
-
-#: src/tools.cpp:576
-msgid "Software"
-msgstr "सॉफटवेयर"
-
-#: src/tools.cpp:680 src/tools.cpp:694
+#: src/tools.cpp:175 src/tools.cpp:189
 msgid "PC-To-Phone Settings"
-msgstr ""
+msgstr "पीसी-से-फ़ोन विन्यास"
 
-#: src/tools.cpp:683
+#: src/tools.cpp:178
 msgid ""
 "You can make calls to regular phones and cell numbers worldwide using "
 "GnomeMeeting and the MicroTelco service from Quicknet Technologies. To "
@@ -3728,53 +3483,47 @@ msgid ""
 "GnomeMeeting website for more information."
 msgstr ""
 
-#: src/tools.cpp:696
-#, fuzzy
+#: src/tools.cpp:191
 msgid "Account _number:"
-msgstr "खाता क्रमांक :"
+msgstr "खाता क्रमांक: (_n)"
 
-#: src/tools.cpp:696
+#: src/tools.cpp:191
 msgid "Use your MicroTelco account number"
-msgstr ""
+msgstr "अपने माइक्रो टेल्को खाता क्रमांक का उपयोग करें"
 
-#: src/tools.cpp:699
-#, fuzzy
+#: src/tools.cpp:194
 msgid "_Pin:"
-msgstr "खोजें (_F)"
+msgstr "पिन (_P):"
 
-#: src/tools.cpp:699
+#: src/tools.cpp:194
 msgid "Use your MicroTelco PIN"
-msgstr ""
+msgstr "अपना माइक्रो-टेल्को पिन उपयोग करें"
 
-#: src/tools.cpp:703
+#: src/tools.cpp:198
 msgid "Use PC-To-Phone service"
-msgstr ""
+msgstr "पीसी-से-दूरभाष सेवा उपयोग करें"
 
-#: src/tools.cpp:708
+#: src/tools.cpp:203
 msgid ""
 "Click on one of the following links to get more information about your "
 "existing MicroTelco account, or to create a new account."
 msgstr ""
 
-#: src/tools.cpp:712
+#: src/tools.cpp:207
 msgid "Get an account"
-msgstr ""
+msgstr "नया खाता प्राप्त करें"
 
-#: src/tools.cpp:714
+#: src/tools.cpp:209
 msgid "Buy a card"
-msgstr ""
+msgstr "कार्ड खरीदें"
 
-#: src/tools.cpp:719
+#: src/tools.cpp:214
 msgid "Consult my account details"
-msgstr ""
+msgstr "मेरे खाते का विवरण परामर्श करें"
 
-#. Start building the GMObject and associate the structure
-#. * to the object so that it is deleted when the object is
-#. * destroyed
-#.
-#: src/tray.cpp:185
+#: src/tray.cpp:193
 msgid "GnomeMeeting Tray Icon"
-msgstr ""
+msgstr "गनोममीटिंग ट्रे चिह्न"
 
 #: src/urlhandler.cpp:77
 msgid ""
@@ -3782,48 +3531,48 @@ msgid ""
 "when he received the call transfer request."
 msgstr ""
 
-#: src/urlhandler.cpp:289
+#: src/urlhandler.cpp:306
 #, c-format
 msgid "No contact with speed dial %s# found, will call number %s instead"
 msgstr ""
 
-#: src/urlhandler.cpp:304
+#: src/urlhandler.cpp:323
 msgid "Invalid URL handler"
-msgstr ""
+msgstr "अवैध यूआरएल हैंडलर"
 
-#: src/urlhandler.cpp:304
+#: src/urlhandler.cpp:323
 msgid ""
 "Please specify a valid URL handler. Currently both h323: and callto: are "
 "supported."
 msgstr ""
 
-#: src/urlhandler.cpp:324
+#: src/urlhandler.cpp:343
 #, c-format
 msgid "Calling %s"
-msgstr ""
+msgstr "कालिंग %s"
 
-#: src/urlhandler.cpp:328
+#: src/urlhandler.cpp:347
 #, c-format
 msgid "Transferring call to %s"
-msgstr ""
+msgstr "%s को काल हस्तांतरित कर रहे"
 
-#: src/videograbber.cpp:317
-#, c-format
+#: src/videograbber.cpp:320
+#, fuzzy, c-format
 msgid "Opening video device %s with plugin %s"
-msgstr ""
+msgstr "कृपया वीडियो इनपुट उपकरण चुनें:"
 
-#: src/videograbber.cpp:342
-#, c-format
+#: src/videograbber.cpp:348
+#, fuzzy, c-format
 msgid "Successfully opened video device %s, channel %d"
-msgstr ""
+msgstr "कृपया वीडियो इनपुट उपकरण चुनें:"
 
-#: src/videograbber.cpp:351
+#: src/videograbber.cpp:359
 #, c-format
 msgid "Error while opening video device %s"
-msgstr ""
+msgstr "वीडियो %s उपकरण खोलने के दौरान एक त्रुटि हुई."
 
 #. Translators: Do not translate MovingLogo and Picture
-#: src/videograbber.cpp:355
+#: src/videograbber.cpp:363
 msgid ""
 "A moving GnomeMeeting logo will be transmitted during calls. Notice that you "
 "can always transmit a given image or the moving GnomeMeeting logo by "
@@ -3831,25 +3580,25 @@ msgid ""
 "as device."
 msgstr ""
 
-#: src/videograbber.cpp:356
+#: src/videograbber.cpp:365
 msgid "Couldn't open the video device"
-msgstr ""
+msgstr "वीडियो उपकरण खोल नहीं सका."
 
-#: src/videograbber.cpp:360
+#: src/videograbber.cpp:369
 msgid ""
 "There was an error while opening the device. Please check your permissions "
 "and make sure that the appropriate driver is loaded."
 msgstr ""
 
-#: src/videograbber.cpp:364 src/videograbber.cpp:664
+#: src/videograbber.cpp:373 src/videograbber.cpp:675
 msgid "Your video driver doesn't support the requested video format."
 msgstr ""
 
-#: src/videograbber.cpp:368
+#: src/videograbber.cpp:377
 msgid "Could not open the chosen channel."
-msgstr ""
+msgstr "चयनित चैनल खोल नहीं सका."
 
-#: src/videograbber.cpp:372
+#: src/videograbber.cpp:381
 msgid ""
 "Your driver doesn't seem to support any of the colour formats supported by "
 "GnomeMeeting.\n"
@@ -3857,57 +3606,64 @@ msgid ""
 "Palette is supported."
 msgstr ""
 
-#: src/videograbber.cpp:376
+#: src/videograbber.cpp:385
+#, fuzzy
 msgid "Error while setting the frame rate."
 msgstr ""
+" (%s) को चलाने की कोशिश में त्रुटि हुई\n"
+" जो (%s) से लिंक्ड है"
 
-#: src/videograbber.cpp:380
+#: src/videograbber.cpp:389
 msgid "Error while setting the frame size."
-msgstr ""
+msgstr "फ्रेम आकार विन्यासित करने में त्रुटि."
 
-#: src/videograbber.cpp:419
+#: src/videograbber.cpp:429
 msgid "Opened the video device using the \"Picture\" video plugin"
-msgstr ""
+msgstr "वीडियो उपकरण खोला गया \"पिक्चर\" वीडियो प्लगइन के उपयोग से"
 
-#: src/videograbber.cpp:565
+#: src/videograbber.cpp:575
 msgid "Picture"
-msgstr "चित्र"
+msgstr "छवि"
 
-#: src/videograbber.cpp:577
+#: src/videograbber.cpp:587
 #, c-format
 msgid ""
 "GnomeMeeting is now testing the %s video device. If you experience machine "
 "crashes, then report a bug to the video driver author."
 msgstr ""
 
-#: src/videograbber.cpp:638
+#: src/videograbber.cpp:649
 #, c-format
 msgid "Test %d done"
-msgstr ""
+msgstr "परीक्षण %d सम्पन्न"
 
-#: src/videograbber.cpp:640
+#: src/videograbber.cpp:651
 #, c-format
 msgid "Test %d failed"
-msgstr ""
+msgstr "परीक्षण %d असफल"
 
-#: src/videograbber.cpp:659
+#: src/videograbber.cpp:670
 #, c-format
 msgid "Error while opening %s."
-msgstr ""
+msgstr "%s को खोलने के दौरान एक त्रुटि हुई."
 
-#: src/videograbber.cpp:668
+#: src/videograbber.cpp:679
+#, fuzzy
 msgid "Could not open the chosen channel with the chosen video format."
-msgstr ""
+msgstr "फ़ाइल \"%s\" खोली नहीं जा सकी क्योंकि इसमें अवैध प्रारूप का डाटा है."
 
-#: src/videograbber.cpp:672
+#: src/videograbber.cpp:683
 msgid ""
 "Your driver doesn't support any of the color formats tried by GnomeMeeting"
 msgstr ""
 
-#: src/videograbber.cpp:676
+#: src/videograbber.cpp:687
 msgid "Error with the frame rate."
-msgstr ""
+msgstr "फ्रेम दर के साथ त्रुटि."
 
-#: src/videograbber.cpp:680
+#: src/videograbber.cpp:691
 msgid "Error with the frame size."
-msgstr ""
+msgstr "फ्रेम आकार के साथ त्रुटि"
+
+#~ msgid "NAT/PAT Router Support"
+#~ msgstr "एनएटी/पीएटी रूटर समर्थन:"
