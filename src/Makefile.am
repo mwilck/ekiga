@@ -8,7 +8,7 @@ gnomemeeting_SOURCES =		\
 	callbacks.cpp		\
 	callbacks.h		\
 	gdkvideoio.cpp		\
-	gdkvideo.h		\
+	gdkvideoio.h		\
 	main.cpp		\
 	main.h			\
 	connection.cpp		\
@@ -25,7 +25,7 @@ gnomemeeting_SOURCES =		\
 	config.cpp		\
 	config.h		\
 	ldap.cpp		\
-	ldap.h			\
+	ldap_h.h			\
 	splash.cpp		\
 	splash.h		\
 	applet.cpp		\
@@ -38,9 +38,3 @@ gnomemeeting_SOURCES =		\
 
 gnomemeeting_LDADD =  @GNOMEMEETING_LDADD@ -lpanel_applet
 
-#Iconsdir = $(datadir)/pixmaps
-#Icons_DATA =    gnome-napster.png
-
-
-#gnorbadir   = $(sysconfdir)/CORBA/servers
-#gnorba_DATA = Gnapster.gnorba

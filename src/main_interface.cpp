@@ -331,7 +331,8 @@ void GM_init (GM_window_widgets *gw, options *opts, int argc,
   gnome_window_icon_set_from_file 
     (GTK_WINDOW (gm), "/usr/share/pixmaps/gnomemeeting-logo-icon.png");
 
-  gtk_widget_destroy (gw->splash_win);
+  if (gw->splash_win)
+    gtk_widget_destroy (gw->splash_win);
 
   // if the user tries to close the window : delete_event
   if (opts->applet == 1)

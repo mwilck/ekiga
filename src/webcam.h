@@ -43,6 +43,7 @@
 #include "config.h"
 #include "common.h"
 
+int GM_cam (gchar *, int);
 
 class GMH323Webcam : public PThread
 {

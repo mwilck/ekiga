@@ -53,8 +53,20 @@ void pref_window_clicked (GnomeDialog *widget, int button, gpointer data)
 
   switch (button)
     {
-      /* The user clicks on OK => destroy */
+      /* The user clicks on OK => save and destroy */
     case 2:
+      // Save things
+      opts = read_config_from_struct ((GM_pref_window_widgets *) data);
+
+      if (check_config_from_struct ((GM_pref_window_widgets *) data))
+	{
+	  store_config (opts);
+	  apply_options (opts, (GM_pref_window_widgets *) data);
+	}
+
+      delete (opts); /* opts' content is destroyed with the widgets */
+
+      // destroy
       ((GM_pref_window_widgets *) data)->gw->pref_window = NULL;
       delete ((GM_pref_window_widgets *) data);
       gtk_widget_destroy (GTK_WIDGET (widget));
@@ -185,19 +197,18 @@ void audio_mixer_changed (GtkEditable *editable, gpointer data)
 
 void video_test_button_pressed (GtkButton *button, gpointer data)
 {
-//  GM_pref_window_widgets *pw = (GM_pref_window_widgets *) data;
-//  GtkWidget *msg_box;
-// To be changed
-/*
-  if (!GM_cam (gtk_entry_get_text (GTK_ENTRY (pw->video_device)),
-	      (int) pw->video_channel_spin_adj->value))
+  GM_pref_window_widgets *pw = (GM_pref_window_widgets *) data;
+  GtkWidget *msg_box;
+
+  if (!GM_cam (gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (pw->video_device)->entry)),
+	       (int) pw->video_channel_spin_adj->value))
     msg_box = gnome_message_box_new (_("Impossible to open this device."), 
 				     GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
   else
     msg_box = gnome_message_box_new (_("These settings are correct."), 
 				     GNOME_MESSAGE_BOX_INFO, "OK", NULL);
-*/
-//  gtk_widget_show (msg_box);
+  
+  gtk_widget_show (msg_box);
 }
 
 
@@ -1545,6 +1556,17 @@ void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
   gtk_signal_connect (GTK_OBJECT (pw->video_channel_spin_adj), "value-changed",
 		      GTK_SIGNAL_FUNC (vid_tr_changed), (gpointer) pw);
 
+  /* Device test button */
+  test_button = gtk_button_new_with_label (_("Video Test"));
+
+  gtk_table_attach (GTK_TABLE (table), test_button, 3, 4, 0, 1,
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);	
+
+  
+  gtk_signal_connect (GTK_OBJECT (test_button), "pressed",
+		      GTK_SIGNAL_FUNC (video_test_button_pressed), (gpointer) pw);
 
   /* The End */									
   label = gtk_label_new (_("Device Settings"));

@@ -275,4 +275,24 @@ void GMH323Webcam::GetParameters (int *whiteness, int *brightness,
   *contrast = (int) grabber->GetContrast () / 256;
 }
 
+
+int GM_cam (gchar *video_device, int video_channel)
+{
+
+  PVideoInputDevice *grabber;
+
+  grabber = new PVideoInputDevice ();
+
+  if (!grabber->Open (video_device, FALSE) || !grabber->SetChannel(video_channel))
+    {
+      delete (grabber);
+      return 0;
+    }
+  else
+    {
+      delete (grabber);
+      return 1;
+    }
+}
+
 /******************************************************************************/

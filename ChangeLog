@@ -1,3 +1,22 @@
+2001-09-12  Miguel Rodríguez Pérez  <migras@atlas.uvigo.es>
+
+	* src/Makefile.am (gnomemeeting_SOURCES): Corrected the name of
+	two header files
+
+	* configure.in: added a call to AM_PROG_XML_I18N_TOOLS
+
+	* Makefile.am (EXTRA_DIST): added some files needed by xml-i18n-tools
+	
+2001-06-12  Damien Sandras  <dsandras@seconix.com>
+
+	* src/main_interface.cpp: Do not try to destroy the splash window
+	if there is not.
+
+	* src/preferences.cpp: Clicking on OK saves the options before 
+	destroying the preferences window. Added again the video test button.
+
+	* src/webcam.cpp: Added a C function to test the video settings.
+	
 2001-06-06  Damien Sandras  <dsandras@seconix.com>
 
 	* configure.in: Replaced with_ptlib by with_pt
