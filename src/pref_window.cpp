@@ -1,4 +1,3 @@
-
 /* GnomeMeeting -- A Video-Conferencing application
  * Copyright (C) 2000-2003 Damien Sandras
  *
@@ -46,6 +45,9 @@
 #include "misc.h"
 #include "urlhandler.h"
 
+#include "dialog.h"
+
+
 /* Declarations */
 
 extern GtkWidget *gm;
@@ -60,6 +62,9 @@ static void gatekeeper_update_button_clicked (GtkWidget *,
 
 static void codecs_list_button_clicked_callback (GtkWidget *,
 						 gpointer);
+
+static void codecs_list_info_button_clicked_callback (GtkWidget *,
+						      gpointer);
 
 static void gnomemeeting_codecs_list_add (GtkTreeIter,
 					  GtkListStore *, 
@@ -269,6 +274,92 @@ static void codecs_list_button_clicked_callback (GtkWidget *widget,
 
   
   g_slist_free (codecs_data);
+}
+
+
+/* DESCRIPTION  :  This callback is called when the user clicks
+ *                 on the info button in the Audio Codecs Settings.
+ * BEHAVIOR     :  Displays an information popup about the codec.
+ * PRE          :  /
+ */
+static void codecs_list_info_button_clicked_callback (GtkWidget *widget, 
+						      gpointer data)
+{ 	
+  gchar *selected_codec_name = NULL;
+  gchar *info = NULL;
+
+  GmWindow *gw = NULL;
+
+  GtkTreeIter iter;
+  GtkTreeView *tree_view = NULL;
+  GtkTreeSelection *selection = NULL;
+
+
+  gw = MyApp->GetMainWindow ();
+
+  /* Get the current selected codec name, there is always one */
+  tree_view = GTK_TREE_VIEW (g_object_get_data (G_OBJECT (data), "tree_view"));
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view));
+  
+  gtk_tree_selection_get_selected (GTK_TREE_SELECTION (selection), NULL,
+				   &iter);
+  gtk_tree_model_get (GTK_TREE_MODEL (data), &iter,
+		      COLUMN_CODEC_NAME, &selected_codec_name, -1);
+
+  if (!strcmp (selected_codec_name, "iLBC-13k3")) {
+
+    info = g_strdup (_("iLBC-13k3 (internet Low Bitrate Codec) is a free speech codec suitable for robust voice communication over IP. The codec is designed for narrow band speech and results in a payload bit rate of 13.33 kbit/s with an encoding frame length of 30 ms. The iLBC codec enables graceful speech quality degradation in the case of lost frames, which occurs in connection with lost or delayed IP packets."));
+  }
+
+  if (!strcmp (selected_codec_name, "iLBC-15k2")) {
+
+    info = g_strdup (_("iLBC-15k2 (internet Low Bitrate Codec) is a free speech codec suitable for robust voice communication over IP. The codec is designed for narrow band speech and results in a payload bitrate of 15.20 kbps with an encoding length of 20 ms. The iLBC codec enables graceful speech quality degradation in the case of lost frames, which occurs in connection with lost or delayed IP packets."));
+  }
+
+  if (!strcmp (selected_codec_name, "SpeexNarrow-15k")) {
+
+    info = g_strdup (_("Speex is an Open Source/Free Software patent-free audio compression format designed for speech. The Speex Project aims to lower the barrier of entry for voice applications by providing a free alternative to expensive proprietary speech codecs. Moreover, Speex is well-adapted to Internet applications and provides useful features that are not present in most other codecs. Finally, Speex is part of the GNU Project and is available under the Xiph.org variant of the BSD license. SpeexNarrow-15k is based on CELP and is designed to compress voice at a payload bitrate of 15 kbps."));
+  }
+
+  if (!strcmp (selected_codec_name, "SpeexNarrow-8k")) {
+
+    info = g_strdup (_("Speex is an Open Source/Free Software patent-free audio compression format designed for speech. The Speex Project aims to lower the barrier of entry for voice applications by providing a free alternative to expensive proprietary speech codecs. Moreover, Speex is well-adapted to Internet applications and provides useful features that are not present in most other codecs. Finally, Speex is part of the GNU Project and is available under the Xiph.org variant of the BSD license. SpeexNarrow-8k is based on CELP and is designed to compress voice at a payload bitrate of 8 kbps."));
+  }
+
+  if (!strcmp (selected_codec_name, "MS-GSM")) {
+
+    info = g_strdup (_("MS-GSM is the Microsoft version of GSM 06.10. GSM 06.10 is a standardized lossy speech compression employed by most European wireless telephones. It uses RPE/LTP (residual pulse excitation/long term prediction) coding to compress frames of 160 13-bit samples with a frame rate of 50 Hz into 260 bits.  Microsoft's GSM 06.10 codec is not compatible with the standard frame format, they use 65-byte-frames (2 x 32 1/2) rather than rounding to 33, and they number the bits in their bytes from the other end."));
+  }
+
+  if (!strcmp (selected_codec_name, "G.711-ALaw-64k")) {
+
+    info = g_strdup (_("G.711 is the international standard for encoding telephone audio on 64 kbps channel. It is a pulse code modulation (PCM) scheme operating at 8 kHz sample rate, with 8 bits per sample, fully meeting ITU-T recommendations. This standard has two forms, A-Law and µ-Law. A-Law G.711 PCM encoder converts 13 bit linear PCM samples into 8 bit compressed PCM (logarithmic form) samples, and the decoder does the conversion vice versa. µ-Law G.711 PCM encoder converts 14 bit linear PCM samples into 8 bit compressed PCM samples."));
+  }
+
+  if (!strcmp (selected_codec_name, "G.711-uLaw-64k")) {
+
+    info = g_strdup (_("G.711 is the international standard for encoding telephone audio on 64 kbps channel. It is a pulse code modulation (PCM) scheme operating at 8 kHz sample rate, with 8 bits per sample, fully meeting ITU-T recommendations. This standard has two forms, A-Law and µ-Law. µ-Law G.711 PCM encoder converts 14 bit linear PCM samples into 8 bit compressed PCM (logarithmic form) samples, and the decoder does the conversion vice versa."));
+  }
+
+  if (!strcmp (selected_codec_name, "GSM-06.10")) {
+
+    info = g_strdup (_("GSM 06.10 is a standardized lossy speech compression employed by most European wireless telephones. It uses RPE/LTP (residual pulse excitation/long term prediction) coding to compress frames of 160 13-bit samples with a frame rate of 50 Hz into 260 bits."));
+  }
+
+  if (!strcmp (selected_codec_name, "G.726-32k")) {
+
+    info = g_strdup (_("G.726 conforms to ITU-T G.726 recommendation that specifies speech compression and decompression at rates of 16, 24, 32 and 40 Kbps based on Adaptive Differential Pulse Code Modulation (ADPCM)."));
+  }
+
+  if (!strcmp (selected_codec_name, "G.723.1")) {
+
+    info = g_strdup (_("G.723.1 conforms to ITU-T G.723.1 recommendation. It was designed for video conferencing / telephony over standard phone lines, and is optimized for realtime encode & decode. That codec is only available in GnomeMeeting when using Quicknet cards due to patents restrictions."));
+  }
+
+  gnomemeeting_message_dialog (GTK_WINDOW (gw->pref_window), 
+			       _("Codec Information"), info);
+
+  g_free (info);
 }
 
 
@@ -1110,15 +1201,13 @@ gnomemeeting_init_pref_window_video_devices (GtkWidget *notebook)
  */
 void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
 {
+  GtkWidget *main_vbox = NULL;
   GtkWidget *vbox = NULL;
+  GtkWidget *hbox = NULL;
   GtkWidget *table = NULL;
   
-  GtkWidget *button1 = NULL;
-  GtkWidget *button2 = NULL;
+  GtkWidget *button = NULL;
   GtkWidget *frame = NULL;
-
-  int width = 80;
-  GtkRequisition size_request1, size_request2;
 
   /* For the GTK TreeView */
   GtkWidget *tree_view;
@@ -1131,10 +1220,16 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
 
 
   /* Packing widgets */
-  vbox =  gtk_vbox_new (FALSE, 4);
-  gtk_notebook_append_page (GTK_NOTEBOOK(notebook), vbox, NULL);  
+  main_vbox =  gtk_vbox_new (FALSE, 4);
+  gtk_notebook_append_page (GTK_NOTEBOOK (notebook), main_vbox, NULL);  
   table =
-    gnomemeeting_vbox_add_table (vbox, _("Available Audio Codecs"), 8, 2);
+    gnomemeeting_vbox_add_table (main_vbox, _("Available Audio Codecs"), 1, 1);
+
+  hbox = gtk_hbox_new (FALSE, 0);
+  gtk_table_attach (GTK_TABLE (table), hbox, 0, 1, 0, 1,
+                    (GtkAttachOptions) (GTK_SHRINK), 
+		    (GtkAttachOptions) (GTK_SHRINK),
+                    0, 0);
 
   pw->codecs_list_store = gtk_list_store_new (COLUMN_CODEC_NUMBER,
 					      G_TYPE_BOOLEAN,
@@ -1155,6 +1250,7 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
   gtk_container_add (GTK_CONTAINER (frame), tree_view);
   gtk_container_set_border_width (GTK_CONTAINER (tree_view), 0);
+  gtk_box_pack_start (GTK_BOX (hbox), frame, FALSE, FALSE, 0);
 
 
   /* Set all Colums */
@@ -1210,56 +1306,44 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
 
 
   /* Here we add the codec but in the order they are in the config file */
-  gtk_table_attach (GTK_TABLE (table), frame, 0, 1, 0, 8,        
-                    (GtkAttachOptions) (NULL),
-                    (GtkAttachOptions) (NULL),
-                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-
   gnomemeeting_codecs_list_build (pw->codecs_list_store);
 
-  button1 = gtk_button_new_from_stock (GTK_STOCK_GO_UP);
-  gtk_table_attach (GTK_TABLE (table),  button1, 1, 2, 3, 4,
-                    (GtkAttachOptions) NULL,                           
-                    (GtkAttachOptions) NULL,        
-                    5 * GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-  g_object_set_data (G_OBJECT (button1), "operation", (gpointer) "up");
-  gtk_widget_size_request (GTK_WIDGET (button1), &size_request1);
-  gtk_container_set_border_width (GTK_CONTAINER (button1), 
-				  GNOMEMEETING_PAD_SMALL);
 
-  g_signal_connect (G_OBJECT (button1), "clicked",
+  /* The buttons */
+  vbox = gtk_vbutton_box_new ();
+  gtk_button_box_set_layout (GTK_BUTTON_BOX (vbox), GTK_BUTTONBOX_END);
+
+  gtk_box_pack_start (GTK_BOX (hbox), vbox, FALSE, FALSE, 0);
+
+  button = gtk_button_new_from_stock (GTK_STOCK_GO_UP);
+  gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
+  g_object_set_data (G_OBJECT (button), "operation", (gpointer) "up");
+
+  g_signal_connect (G_OBJECT (button), "clicked",
 		    G_CALLBACK (codecs_list_button_clicked_callback), 
 		    GTK_TREE_MODEL (pw->codecs_list_store));
 
-  button2 = gtk_button_new_from_stock (GTK_STOCK_GO_DOWN);
-  gtk_table_attach (GTK_TABLE (table),  button2, 1, 2, 4, 5,
-                    (GtkAttachOptions) NULL,                           
-                    (GtkAttachOptions) NULL,
-                    5 * GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);  
-  g_object_set_data (G_OBJECT (button2), "operation", (gpointer) "down");
-  gtk_widget_size_request (GTK_WIDGET (button2), &size_request2);
-  gtk_container_set_border_width (GTK_CONTAINER (button2), 
-				  GNOMEMEETING_PAD_SMALL);
-  g_signal_connect (G_OBJECT (button2), "clicked",
+  button = gtk_button_new_from_stock (GTK_STOCK_GO_DOWN);
+  gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
+  g_object_set_data (G_OBJECT (button), "operation", (gpointer) "down");
+
+  g_signal_connect (G_OBJECT (button), "clicked",
 		    G_CALLBACK (codecs_list_button_clicked_callback), 
+		    GTK_TREE_MODEL (pw->codecs_list_store));
+
+  button = gtk_button_new_from_stock (GTK_STOCK_DIALOG_INFO);
+  gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
+
+  g_signal_connect (G_OBJECT (button), "clicked",
+		    G_CALLBACK (codecs_list_info_button_clicked_callback), 
 		    GTK_TREE_MODEL (pw->codecs_list_store));
   
-  /* Set the buttons to the same one (the largest needed one) */
-  if ( (size_request1.width >= size_request2.width) &&
-       (size_request1.width >= width) )
-    width = size_request1.width;
-  else
-    if (size_request2.width >= width)
-      width = size_request2.width;
-
-  gtk_widget_set_size_request (GTK_WIDGET (button1), width, 30);
-  gtk_widget_set_size_request (GTK_WIDGET (button2), width, 30);
-
   gtk_widget_show_all (frame);
 
 
   /* Here we add the audio codecs options */
-  table = gnomemeeting_vbox_add_table (vbox, _("Audio Codecs Settings"), 2, 1);
+  table = 
+    gnomemeeting_vbox_add_table (main_vbox, _("Audio Codecs Settings"), 2, 1);
 
   /* Translators: the full sentence is Automatically adjust jitter buffer
      between X and Y ms */
