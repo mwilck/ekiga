@@ -98,7 +98,8 @@ void docklet_toggle_callback (GtkWidget *, gpointer)
 /* DESCRIPTION  :  This callback is called when the user clicks
  *                 on the docklet.
  * BEHAVIOR     :  If double clic : hide or show main window.
- * PRE          :  /*/
+ * PRE          :  /
+*/
 void docklet_clicked (GtkWidget *widget, GdkEventButton *event, gpointer data)
 {
   if (event == NULL) 
