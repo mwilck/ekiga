@@ -1,3 +1,18 @@
+2002-12-11 Damien Sandras  <dsandras@seconix.com>
+
+	* configure.in: Incremented schema_age.
+
+	* gnomemeeting.schemas.in.in: Added keys for the future addressbook.
+	Removed old ldap_servers_list key from the history as it is not 
+	needed anymore.
+
+	* src/common.h, src/ils.cpp, src/ldap_window.cpp: Rewrote the LDAP 
+	browser so that it can contain (in the future) local contacts
+	and filters too. Currently you still need to add servers manually
+	in the new gconf key.
+	(/apps/gnomemeeting/contacts/servers/ldap_servers_list)
+
+	
 2002-12-09 Damien Sandras  <dsandras@seconix.com>
 
 	* configure.in: Changed == to = for FreeBSD compatibility (roger).

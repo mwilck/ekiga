@@ -882,9 +882,7 @@ void GMILSBrowser::Main ()
   gchar *color = NULL;
   gchar *filter = NULL;
 
-  GtkWidget *label = NULL;
-  GtkWidget *tab_label = NULL;
-  GtkWidget *close_button = NULL;
+  GtkWidget *statusbar = NULL;
   GtkListStore *xdap_users_list_store = NULL;
   GtkWidget *xdap_users_tree_view = NULL;
   GdkPixbuf *status_icon = NULL;
@@ -900,8 +898,37 @@ void GMILSBrowser::Main ()
   msg = g_strdup_printf (_("Contacting %s..."), ldap_server);
 
   gnomemeeting_threads_enter ();
+  /* Check if the page with the ldap_server we are browsing still exists */
+  while ((page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), 
+					    cj))) {
+    
+    text_label = 
+      (gchar *) g_object_get_data (G_OBJECT (page), "server_name");
+    if (!(strcasecmp (text_label, ldap_server))) {
+      
+      page_exists = 1;
+      break;
+    }
+    
+    cj++;
+  }
+    
+  /* If we found a page, we have the LIST_STORE, if not, we can clean
+     the statusbar */
+  if (page != NULL) {
+    
+    xdap_users_list_store = 
+      GTK_LIST_STORE (g_object_get_data (G_OBJECT (page), "list_store"));
+    xdap_users_tree_view =
+      GTK_WIDGET (g_object_get_data (G_OBJECT (page), "tree_view"));
+    statusbar = 
+      GTK_WIDGET (g_object_get_data (G_OBJECT (page), "statusbar"));
+  }
+  else 
+    return;
+
   gw = gnomemeeting_get_main_window (gm);
-  gnomemeeting_statusbar_push (lw->statusbar, msg);
+  gnomemeeting_statusbar_push (statusbar, msg);
   g_free (msg);
   gnomemeeting_threads_leave ();
 
@@ -946,7 +973,7 @@ void GMILSBrowser::Main ()
     gnomemeeting_threads_enter ();        
     msg = g_strdup_printf (_("Fetching user information from %s."),
 			   ldap_server);
-    gnomemeeting_statusbar_push (lw->statusbar, msg);
+    gnomemeeting_statusbar_push (statusbar, msg);
     gnomemeeting_threads_leave ();
     g_free (msg);
 
@@ -963,48 +990,9 @@ void GMILSBrowser::Main ()
     for (int i = 0 ; i < 9 ; i++)
       datas [i] = NULL;
     
-    gnomemeeting_threads_enter ();
-    /* Check if the page with the ldap_server we are browsing still exists */
-    while ((page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), 
-					      cj))) {
-     
-      tab_label = gtk_notebook_get_tab_label (GTK_NOTEBOOK (lw->notebook), 
-					      page);
-      label = (GtkWidget *) g_object_get_data (G_OBJECT (tab_label), "label");
-      text_label = (gchar *) gtk_label_get_text (GTK_LABEL (label));
-      if (!(strcasecmp (text_label, ldap_server))) {
-	
-	page_exists = 1;
-	break;
-      }
-      
-      cj++;
-    }
-    
-    /* If we found a page, we have the LIST_STORE, if not, we can clean
-       the statusbar */
-    if (page != NULL) {
-
-      xdap_users_list_store = 
-	GTK_LIST_STORE (g_object_get_data (G_OBJECT (page), "list_store"));
-      xdap_users_tree_view =
-	GTK_WIDGET (g_object_get_data (G_OBJECT (page), "tree_view"));
-    }
-    
-    else
-      gnomemeeting_statusbar_push (lw->statusbar, NULL);
-
-    gnomemeeting_threads_leave ();
-
     
     /* Maybe the user closed the tab while we were waiting */
     if ((xdap_users_list_store != NULL) && (page_exists)) { 
-      
-      gnomemeeting_threads_enter ();
-      close_button =
-	GTK_WIDGET (g_object_get_data (G_OBJECT (tab_label), "close_button"));
-      gtk_widget_set_sensitive (close_button, FALSE);
-      gnomemeeting_threads_leave ();
       
       for (e = ldap_first_entry(ldap_connection, res); 
 	   e != NULL; e = ldap_next_entry(ldap_connection, e)) {
@@ -1224,10 +1212,9 @@ void GMILSBrowser::Main ()
 
 
       gnomemeeting_threads_enter ();
-      gtk_widget_set_sensitive (close_button, TRUE);
       msg = g_strdup_printf (_("Search completed: %d user(s) found on %s."),
 			     users_nbr, ldap_server);
-      gnomemeeting_statusbar_push (lw->statusbar, msg); 
+      gnomemeeting_statusbar_push (statusbar, msg); 
       g_free (msg);
       gnomemeeting_threads_leave ();
       
@@ -1243,7 +1230,7 @@ void GMILSBrowser::Main ()
     
     gnomemeeting_threads_enter ();
     msg = g_strdup_printf (_("Failed to contact %s."), ldap_server);
-    gnomemeeting_statusbar_push (lw->statusbar, msg);
+    gnomemeeting_statusbar_push (statusbar, msg);
     g_free (msg);
     gnomemeeting_threads_leave ();
   } 

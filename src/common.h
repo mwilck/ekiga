@@ -47,7 +47,7 @@
 #define AUDIO_CODECS_KEY    "/apps/gnomemeeting/audio_codecs/"
 #define AUDIO_SETTINGS_KEY  "/apps/gnomemeeting/audio_settings/"
 #define DEVICES_KEY         "/apps/gnomemeeting/devices/"
-
+#define CONTACTS_SERVERS_KEY "/apps/gnomemeeting/contacts/servers/"
 
 #define GM_CIF_WIDTH   352
 #define GM_CIF_HEIGHT  288
@@ -175,13 +175,10 @@ struct _GmWindow
 
 struct _GmLdapWindow
 {
-  GtkWidget *statusbar;
   GtkWidget *search_entry;
   GtkWidget *ils_server_combo;
   GtkWidget *notebook;
   GtkWidget *option_menu;
-  
-  int        thread_count;
 };
 
 
