@@ -2044,13 +2044,13 @@ gm_prefs_window_new ()
   gtk_widget_show_all (GTK_WIDGET (container));
 
   container = gnome_prefs_window_subsection_new (window,
-						 _("H.323 Settings"));
-  gm_pw_init_h323_page (window, container);          
-  gtk_widget_show_all (GTK_WIDGET (container));
-  
-  container = gnome_prefs_window_subsection_new (window,
 						 _("SIP Settings"));
   gm_pw_init_sip_page (window, container);          
+  gtk_widget_show_all (GTK_WIDGET (container));
+
+  container = gnome_prefs_window_subsection_new (window,
+						 _("H.323 Settings"));
+  gm_pw_init_h323_page (window, container);          
   gtk_widget_show_all (GTK_WIDGET (container));
 
   gnome_prefs_window_section_new (window, _("Codecs"));
