@@ -2160,6 +2160,11 @@ static void gnomemeeting_init_pref_window_devices (GtkWidget *notebook)
   if (default_present)
     gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (pw->video_device)->entry),
 			gconf_string);
+  else { /* We must fix the default, as the one already set won't work */
+    gconf_client_set_string (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/video_recorder",
+			     gw->video_devices [0], 0);
+  }
+
   g_free (gconf_string);
 
   gtk_combo_set_popdown_strings (GTK_COMBO (pw->video_device), 
