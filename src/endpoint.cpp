@@ -640,7 +640,15 @@ int
 GMH323EndPoint::GetRecorderVolume ()
 {
   unsigned int vol = 0;
+  
+#ifdef HAS_IXJ
+  GMLid *ld = NULL;
+  ld = GetLidThread ();
 
+  if (ld)
+    ld->GetLidDevice ()->GetRecordVolume (0, vol);
+  else
+#endif
   if (audio_tester) 
     return ((GM_AUDIO_TESTER (audio_tester))->GetRecorderVolume ());
   else if (recorder_channel) 
@@ -653,6 +661,14 @@ GMH323EndPoint::GetRecorderVolume ()
 BOOL 
 GMH323EndPoint::SetRecorderVolume (int vol)
 {
+#ifdef HAS_IXJ
+  GMLid *ld = NULL;
+  ld = GetLidThread ();
+
+  if (ld)
+    ld->GetLidDevice ()->SetRecordVolume (0, vol);
+  else
+#endif
   if (audio_tester) {
 
     return ((GM_AUDIO_TESTER (audio_tester))->SetRecorderVolume (vol));
@@ -672,6 +688,14 @@ GMH323EndPoint::GetPlayerVolume ()
 {
   unsigned int vol = 0;
 
+#ifdef HAS_IXJ
+  GMLid *ld = NULL;
+  ld = GetLidThread ();
+
+  if (ld)
+    ld->GetLidDevice ()->GetPlayVolume (0, vol);
+  else
+#endif
   if (audio_tester) 
     return ((GM_AUDIO_TESTER (audio_tester))->GetPlayerVolume ());
   else if (player_channel) 
@@ -684,6 +708,14 @@ GMH323EndPoint::GetPlayerVolume ()
 BOOL 
 GMH323EndPoint::SetPlayerVolume (int vol)
 {
+#ifdef HAS_IXJ
+  GMLid *ld = NULL;
+  ld = GetLidThread ();
+
+  if (ld)
+    ld->GetLidDevice ()->SetPlayVolume (0, vol);
+  else
+#endif
   if (audio_tester) {
 
     return ((GM_AUDIO_TESTER (audio_tester))->SetPlayerVolume (vol));

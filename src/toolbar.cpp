@@ -100,6 +100,14 @@ static void speaker_phone_toggle_changed (GtkToggleButton *w, gpointer data)
 	lid->PlayTone (0, OpalLineInterfaceDevice::RingTone);
 
       lid->EnableAudio(0, FALSE);
+
+      gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_rec), 
+				MyApp->Endpoint ()->GetRecorderVolume ());
+      gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_play), 
+				MyApp->Endpoint ()->GetPlayerVolume ());
+    
+      gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_settings_frame), TRUE);
+
     }
     else {
 
@@ -107,6 +115,8 @@ static void speaker_phone_toggle_changed (GtkToggleButton *w, gpointer data)
 			       _("Speakerphone disabled"));
       lid->EnableAudio(0, TRUE);
       lid->StopTone (0);
+
+      gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_settings_frame), FALSE);
     }
   }
 }

@@ -66,6 +66,8 @@ GMLid::~GMLid ()
 {
   stop = 1;
   Close ();
+  if (lid)
+    delete (lid);
   quit_mutex.Wait ();
 
 
@@ -110,7 +112,7 @@ void GMLid::Open ()
       g_free (msg);
       
       lid->SetLineToLineDirect(0, 1, FALSE);
-      lid->EnableAudio(0, TRUE); /* Enable the POTS Telephone handset */
+      lid->EnableAudio(0, TRUE); 
       
       if (lid_country)
 	lid->SetCountryCodeName(lid_country);

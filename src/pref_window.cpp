@@ -441,20 +441,22 @@ tree_selection_changed_cb (GtkTreeSelection *selection,
 
   gw = gnomemeeting_get_main_window (gm);
 
-  gtk_tree_selection_get_selected (selection, &model, &iter);
-  
-  gtk_tree_model_get (GTK_TREE_MODEL (model),
-		      &iter, 1, &page, -1);
-  gtk_tree_model_get (GTK_TREE_MODEL (model),
-		      &iter, 0, &name, -1);
+  if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
 
-  label = 
-    (GtkWidget *) g_object_get_data (G_OBJECT (gw->pref_window), 
-				     "section_label");
+    gtk_tree_model_get (GTK_TREE_MODEL (model),
+			&iter, 1, &page, -1);
 
-  gtk_label_set_text (GTK_LABEL (label), name);
-
-  gtk_notebook_set_current_page (GTK_NOTEBOOK (data), page);
+    gtk_tree_model_get (GTK_TREE_MODEL (model),
+			&iter, 0, &name, -1);
+    
+    label = 
+      (GtkWidget *) g_object_get_data (G_OBJECT (gw->pref_window), 
+				       "section_label");
+    
+    gtk_label_set_text (GTK_LABEL (label), name);
+    
+    gtk_notebook_set_current_page (GTK_NOTEBOOK (data), page);
+  }
 }
 
 
