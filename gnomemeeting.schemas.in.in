@@ -3,8 +3,8 @@
 <gconfschemafile>
   <schemalist>
     <schema>
-      <key>/schemas/apps/gnomemeeting/devices/audio/plugin</key>
-      <applyto>/apps/gnomemeeting/devices/audio/plugin</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/devices/audio/plugin</key>
+      <applyto>/apps/@PACKAGE_NAME@/devices/audio/plugin</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default>ALSA</default>
@@ -14,8 +14,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/devices/audio/output_device</key>
-      <applyto>/apps/gnomemeeting/devices/audio/output_device</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/devices/audio/output_device</key>
+      <applyto>/apps/@PACKAGE_NAME@/devices/audio/output_device</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default>None</default>
@@ -25,8 +25,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/devices/audio/input_device</key>
-      <applyto>/apps/gnomemeeting/devices/audio/input_device</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/devices/audio/input_device</key>
+      <applyto>/apps/@PACKAGE_NAME@/devices/audio/input_device</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default>None</default>
@@ -36,8 +36,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/devices/video/plugin</key>
-      <applyto>/apps/gnomemeeting/devices/video/plugin</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/devices/video/plugin</key>
+      <applyto>/apps/@PACKAGE_NAME@/devices/video/plugin</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default>V4L</default>
@@ -47,8 +47,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/devices/video/input_device</key>
-      <applyto>/apps/gnomemeeting/devices/video/input_device</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/devices/video/input_device</key>
+      <applyto>/apps/@PACKAGE_NAME@/devices/video/input_device</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default>/dev/video0</default>
@@ -58,8 +58,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/devices/video/size</key>
-      <applyto>/apps/gnomemeeting/devices/video/size</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/devices/video/size</key>
+      <applyto>/apps/@PACKAGE_NAME@/devices/video/size</applyto>
       <owner>GnomeMeeting</owner>
       <type>int</type>
       <default>0</default>
@@ -69,8 +69,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/devices/video/channel</key>
-      <applyto>/apps/gnomemeeting/devices/video/channel</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/devices/video/channel</key>
+      <applyto>/apps/@PACKAGE_NAME@/devices/video/channel</applyto>
       <owner>GnomeMeeting</owner>
       <type>int</type>
       <default>0</default>
@@ -80,8 +80,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/devices/video/format</key>
-      <applyto>/apps/gnomemeeting/devices/video/format</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/devices/video/format</key>
+      <applyto>/apps/@PACKAGE_NAME@/devices/video/format</applyto>
       <owner>GnomeMeeting</owner>
       <type>int</type>
       <default>0</default>
@@ -91,8 +91,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/devices/video/enable_preview</key>
-      <applyto>/apps/gnomemeeting/devices/video/enable_preview</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/devices/video/enable_preview</key>
+      <applyto>/apps/@PACKAGE_NAME@/devices/video/enable_preview</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
       <default>0</default>
@@ -102,8 +102,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/devices/video/image</key>
-      <applyto>/apps/gnomemeeting/devices/video/image</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/devices/video/image</key>
+      <applyto>/apps/@PACKAGE_NAME@/devices/video/image</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default></default>
@@ -113,8 +113,8 @@
       </locale>
     </schema>
     <schema>	
-      <key>/schemas/apps/gnomemeeting/devices/audio/lid_output_device_type</key>
-      <applyto>/apps/gnomemeeting/devices/audio/lid_output_device_type</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/devices/audio/lid_output_device_type</key>
+      <applyto>/apps/@PACKAGE_NAME@/devices/audio/lid_output_device_type</applyto>
       <owner>GnomeMeeting</owner>
       <type>int</type>
       <default>0</default>
@@ -124,8 +124,8 @@
       </locale>
     </schema>
     <schema>	
-      <key>/schemas/apps/gnomemeeting/devices/audio/lid_echo_cancellation_level</key>
-      <applyto>/apps/gnomemeeting/devices/audio/lid_echo_cancellation_level</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/devices/audio/lid_echo_cancellation_level</key>
+      <applyto>/apps/@PACKAGE_NAME@/devices/audio/lid_echo_cancellation_level</applyto>
       <owner>GnomeMeeting</owner>
       <type>int</type>
       <default>2</default>
@@ -135,8 +135,8 @@
       </locale>
     </schema>
     <schema>	
-      <key>/schemas/apps/gnomemeeting/devices/audio/lid_country_code</key>
-      <applyto>/apps/gnomemeeting/devices/audio/lid_country_code</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/devices/audio/lid_country_code</key>
+      <applyto>/apps/@PACKAGE_NAME@/devices/audio/lid_country_code</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default>BE</default>
@@ -146,8 +146,8 @@
       </locale>
     </schema>
     <schema>	
-      <key>/schemas/apps/gnomemeeting/general/personal_data/firstname</key>
-      <applyto>/apps/gnomemeeting/general/personal_data/firstname</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/personal_data/firstname</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/personal_data/firstname</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default></default>
@@ -157,8 +157,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/general/personal_data/lastname</key>
-      <applyto>/apps/gnomemeeting/general/personal_data/lastname</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/personal_data/lastname</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/personal_data/lastname</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default></default>
@@ -168,8 +168,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/general/personal_data/comment</key>
-      <applyto>/apps/gnomemeeting/general/personal_data/comment</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/personal_data/comment</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/personal_data/comment</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default></default>
@@ -179,8 +179,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/general/personal_data/location</key>
-      <applyto>/apps/gnomemeeting/general/personal_data/location</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/personal_data/location</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/personal_data/location</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default></default>
@@ -190,8 +190,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/general/personal_data/mail</key>
-      <applyto>/apps/gnomemeeting/general/personal_data/mail</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/personal_data/mail</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/personal_data/mail</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default></default>
@@ -201,8 +201,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/codecs/audio/list</key>
-      <applyto>/apps/gnomemeeting/codecs/audio/list</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/codecs/audio/list</key>
+      <applyto>/apps/@PACKAGE_NAME@/codecs/audio/list</applyto>
       <owner>GnomeMeeting</owner>
       <type>list</type>
       <list_type>string</list_type>
@@ -213,8 +213,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/codecs/audio/gsm_frames</key>
-      <applyto>/apps/gnomemeeting/codecs/audio/gsm_frames</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/codecs/audio/gsm_frames</key>
+      <applyto>/apps/@PACKAGE_NAME@/codecs/audio/gsm_frames</applyto>
       <owner>GnomeMeeting</owner>
       <type>int</type>
       <default>4</default>
@@ -224,8 +224,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/codecs/audio/g711_frames</key>
-      <applyto>/apps/gnomemeeting/codecs/audio/g711_frames</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/codecs/audio/g711_frames</key>
+      <applyto>/apps/@PACKAGE_NAME@/codecs/audio/g711_frames</applyto>
       <owner>GnomeMeeting</owner>
       <type>int</type>
       <default>30</default>
@@ -235,8 +235,8 @@
       </locale>
     </schema>
     <schema>	
-      <key>/schemas/apps/gnomemeeting/codecs/audio/enable_silence_detection</key>
-      <applyto>/apps/gnomemeeting/codecs/audio/enable_silence_detection</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/codecs/audio/enable_silence_detection</key>
+      <applyto>/apps/@PACKAGE_NAME@/codecs/audio/enable_silence_detection</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
       <default>false</default>
@@ -246,8 +246,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/general/sound_events/output_device</key>
-      <applyto>/apps/gnomemeeting/general/sound_events/output_device</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/sound_events/output_device</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/sound_events/output_device</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default>None</default>
@@ -257,8 +257,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/general/sound_events/incoming_call_sound</key>
-      <applyto>/apps/gnomemeeting/general/sound_events/incoming_call_sound</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/sound_events/incoming_call_sound</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/sound_events/incoming_call_sound</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default>gnomemeeting.wav</default>
@@ -268,8 +268,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/general/sound_events/enable_incoming_call_sound</key>
-      <applyto>/apps/gnomemeeting/general/sound_events/enable_incoming_call_sound</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/sound_events/enable_incoming_call_sound</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/sound_events/enable_incoming_call_sound</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
       <default>true</default>
@@ -279,8 +279,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/general/sound_events/incoming_call_sound</key>
-      <applyto>/apps/gnomemeeting/general/sound_events/incoming_call_sound</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/sound_events/incoming_call_sound</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/sound_events/incoming_call_sound</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default>gnomemeeting.wav</default>
@@ -290,8 +290,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/general/sound_events/enable_ring_tone_sound</key>
-      <applyto>/apps/gnomemeeting/general/sound_events/enable_ring_tone_sound</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/sound_events/enable_ring_tone_sound</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/sound_events/enable_ring_tone_sound</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
       <default>true</default>
@@ -301,8 +301,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/general/sound_events/ring_tone_sound</key>
-      <applyto>/apps/gnomemeeting/general/sound_events/ring_tone_sound</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/sound_events/ring_tone_sound</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/sound_events/ring_tone_sound</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default>ringtone.wav</default>
@@ -312,8 +312,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/general/sound_events/enable_busy_tone_sound</key>
-      <applyto>/apps/gnomemeeting/general/sound_events/enable_busy_tone_sound</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/sound_events/enable_busy_tone_sound</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/sound_events/enable_busy_tone_sound</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
       <default>true</default>
@@ -323,8 +323,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/general/sound_events/busy_tone_sound</key>
-      <applyto>/apps/gnomemeeting/general/sound_events/busy_tone_sound</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/sound_events/busy_tone_sound</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/sound_events/busy_tone_sound</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default>busytone.wav</default>
@@ -334,8 +334,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/general/save_prefix</key>
-      <applyto>/apps/gnomemeeting/general/save_prefix</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/save_prefix</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/save_prefix</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default>gnomemeeting-snap-</default>
@@ -345,8 +345,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/general/version</key>
-      <applyto>/apps/gnomemeeting/general/version</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/version</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/version</applyto>
       <owner>GnomeMeeting</owner>
       <type>int</type>
       <default>9</default>
@@ -356,8 +356,8 @@
       </locale>
     </schema>
     <schema>	
-      <key>/schemas/apps/gnomemeeting/general/gconf_test_age</key>
-      <applyto>/apps/gnomemeeting/general/gconf_test_age</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/gconf_test_age</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/gconf_test_age</applyto>
       <owner>GnomeMeeting</owner>
       <type>int</type>
       <default>@SCHEMA_AGE@</default>
@@ -367,8 +367,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/protocols/h323/ports/listen_port</key>
-      <applyto>/apps/gnomemeeting/protocols/h323/ports/listen_port</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/ports/listen_port</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/ports/listen_port</applyto>
       <owner>GnomeMeeting</owner>
       <type>int</type>
       <default>1720</default>
@@ -378,8 +378,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/protocols/h323/ports/tcp_port_range</key>
-      <applyto>/apps/gnomemeeting/protocols/h323/ports/tcp_port_range</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/ports/tcp_port_range</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/ports/tcp_port_range</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default>30000:30010</default>
@@ -389,8 +389,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/protocols/h323/ports/rtp_port_range</key>
-      <applyto>/apps/gnomemeeting/protocols/h323/ports/rtp_port_range</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/ports/rtp_port_range</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/ports/rtp_port_range</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default>5000:5016</default>
@@ -400,8 +400,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/protocols/h323/ports/udp_port_range</key>
-      <applyto>/apps/gnomemeeting/protocols/h323/ports/udp_port_range</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/ports/udp_port_range</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/ports/udp_port_range</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default>5020:5023</default>
@@ -411,8 +411,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/protocols/h323/advanced/enable_h245_tunneling</key>
-      <applyto>/apps/gnomemeeting/protocols/h323/advanced/enable_h245_tunneling</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/advanced/enable_h245_tunneling</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/advanced/enable_h245_tunneling</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
       <default>true</default>
@@ -422,8 +422,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/protocols/h323/advanced/enable_early_h245</key>
-      <applyto>/apps/gnomemeeting/protocols/h323/advanced/enable_early_h245</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/advanced/enable_early_h245</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/advanced/enable_early_h245</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
       <default>true</default>
@@ -433,8 +433,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/protocols/h323/advanced/enable_fast_start</key>
-      <applyto>/apps/gnomemeeting/protocols/h323/advanced/enable_fast_start</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/advanced/enable_fast_start</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/advanced/enable_fast_start</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
       <default>false</default>
@@ -444,8 +444,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/protocols/h323/advanced/dtmf_sending</key>
-      <applyto>/apps/gnomemeeting/protocols/h323/advanced/dtmf_sending</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/advanced/dtmf_sending</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/advanced/dtmf_sending</applyto>
       <owner>GnomeMeeting</owner>
       <type>int</type>
       <default>0</default>
@@ -455,8 +455,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/protocols/h323/gatekeeper/host</key>
-      <applyto>/apps/gnomemeeting/protocols/h323/gatekeeper/host</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/gatekeeper/host</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/gatekeeper/host</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default></default>
@@ -466,8 +466,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/protocols/h323/gatekeeper/password</key>
-      <applyto>/apps/gnomemeeting/protocols/h323/gatekeeper/password</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/gatekeeper/password</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/gatekeeper/password</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default></default>
@@ -477,8 +477,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/protocols/h323/gatekeeper/id</key>
-      <applyto>/apps/gnomemeeting/protocols/h323/gatekeeper/id</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/gatekeeper/id</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/gatekeeper/id</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default></default>
@@ -488,8 +488,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/protocols/h323/gatekeeper/registration_timeout</key>
-      <applyto>/apps/gnomemeeting/protocols/h323/gatekeeper/registration_timeout</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/gatekeeper/registration_timeout</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/gatekeeper/registration_timeout</applyto>
       <owner>GnomeMeeting</owner>
       <type>int</type>
       <default>60</default>
@@ -499,8 +499,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/protocols/h323/gatekeeper/registering_method</key>
-      <applyto>/apps/gnomemeeting/protocols/h323/gatekeeper/registering_method</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/gatekeeper/registering_method</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/gatekeeper/registering_method</applyto>
       <owner>GnomeMeeting</owner>
       <type>int</type>
       <default>0</default>
@@ -510,8 +510,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/protocols/h323/gatekeeper/alias</key>
-      <applyto>/apps/gnomemeeting/protocols/h323/gatekeeper/alias</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/gatekeeper/alias</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/gatekeeper/alias</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default></default>
@@ -521,8 +521,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/protocols/h323/gateway/host</key>
-      <applyto>/apps/gnomemeeting/protocols/h323/gateway/host</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/gateway/host</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/gateway/host</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default></default>
@@ -532,8 +532,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/protocols/h323/gateway/use_gateway</key>
-      <applyto>/apps/gnomemeeting/protocols/h323/gateway/use_gateway</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/gateway/use_gateway</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/gateway/use_gateway</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
       <default>false</default>
@@ -543,8 +543,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/protocols/h323/call_forwarding/forward_host</key>
-      <applyto>/apps/gnomemeeting/protocols/h323/call_forwarding/forward_host</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/call_forwarding/forward_host</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/call_forwarding/forward_host</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default>h323:</default>
@@ -554,8 +554,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/protocols/h323/call_forwarding/always_forward</key>
-      <applyto>/apps/gnomemeeting/protocols/h323/call_forwarding/always_forward</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/call_forwarding/always_forward</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/call_forwarding/always_forward</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
       <default>false</default>
@@ -565,8 +565,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/protocols/h323/call_forwarding/forward_on_busy</key>
-      <applyto>/apps/gnomemeeting/protocols/h323/call_forwarding/forward_on_busy</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/call_forwarding/forward_on_busy</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/call_forwarding/forward_on_busy</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
       <default>false</default>
@@ -576,8 +576,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/protocols/h323/call_forwarding/forward_on_no_answer</key>
-      <applyto>/apps/gnomemeeting/protocols/h323/call_forwarding/forward_on_no_answer</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/h323/call_forwarding/forward_on_no_answer</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/h323/call_forwarding/forward_on_no_answer</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
       <default>false</default>
@@ -587,8 +587,8 @@
       </locale>
     </schema>
     <schema>		
-      <key>/schemas/apps/gnomemeeting/protocols/ldap/server</key>
-      <applyto>/apps/gnomemeeting/protocols/ldap/server</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/ldap/server</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/ldap/server</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default>ils.seconix.com</default>
@@ -598,8 +598,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/protocols/ldap/enable_registering</key>
-      <applyto>/apps/gnomemeeting/protocols/ldap/enable_registering</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/ldap/enable_registering</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/ldap/enable_registering</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
       <default>false</default>
@@ -609,8 +609,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/protocols/ldap/show_details</key>
-      <applyto>/apps/gnomemeeting/protocols/ldap/show_details</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/ldap/show_details</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/ldap/show_details</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
       <default>true</default>
@@ -620,8 +620,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/general/nat/enable_stun_support</key>
-      <applyto>/apps/gnomemeeting/general/nat/enable_stun_support</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/nat/enable_stun_support</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/nat/enable_stun_support</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
       <default>false</default>
@@ -631,8 +631,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/general/nat/stun_server</key>
-      <applyto>/apps/gnomemeeting/general/nat/stun_server</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/nat/stun_server</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/nat/stun_server</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default>stun.voxgratia.org</default>
@@ -642,8 +642,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/general/nat/enable_ip_translation</key>
-      <applyto>/apps/gnomemeeting/general/nat/enable_ip_translation</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/nat/enable_ip_translation</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/nat/enable_ip_translation</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
       <default>false</default>
@@ -653,8 +653,8 @@
       </locale>
    </schema>
    <schema>
-      <key>/schemas/apps/gnomemeeting/general/nat/enable_ip_checking</key>
-      <applyto>/apps/gnomemeeting/general/nat/enable_ip_checking</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/nat/enable_ip_checking</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/nat/enable_ip_checking</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
       <default>true</default>
@@ -664,8 +664,8 @@
       </locale>
    </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/general/nat/public_ip</key>
-      <applyto>/apps/gnomemeeting/general/nat/public_ip</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/nat/public_ip</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/nat/public_ip</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default></default>
@@ -675,8 +675,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/general/nat/public_ip_detector</key>
-      <applyto>/apps/gnomemeeting/general/nat/public_ip_detector</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/nat/public_ip_detector</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/nat/public_ip_detector</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default>http://213.193.144.104/ip/</default>
@@ -686,8 +686,8 @@
       </locale>
     </schema>
     <schema>	
-      <key>/schemas/apps/gnomemeeting/general/user_interface/start_hidden</key>
-      <applyto>/apps/gnomemeeting/general/user_interface/start_hidden</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/start_hidden</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/start_hidden</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
       <default>false</default>
@@ -697,8 +697,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/general/user_interface/show_splash_screen</key>
-      <applyto>/apps/gnomemeeting/general/user_interface/show_splash_screen</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/show_splash_screen</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/show_splash_screen</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
       <default>false</default>
@@ -708,8 +708,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/general/user_interface/show_popup</key>
-      <applyto>/apps/gnomemeeting/general/user_interface/show_popup</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/show_popup</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/show_popup</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
       <default>true</default>
@@ -719,8 +719,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/general/user_interface/auto_clear_text_chat</key>
-      <applyto>/apps/gnomemeeting/general/user_interface/auto_clear_text_chat</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/auto_clear_text_chat</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/auto_clear_text_chat</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
       <default>false</default>
@@ -730,8 +730,8 @@
       </locale>
     </schema>
     <schema>	
-      <key>/schemas/apps/gnomemeeting/general/user_interface/main_window/position</key>
-      <applyto>/apps/gnomemeeting/general/user_interface/main_window/position</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/main_window/position</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/main_window/position</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default>0,0</default>
@@ -741,8 +741,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/general/user_interface/main_window/show_chat_window</key>
-      <applyto>/apps/gnomemeeting/general/user_interface/main_window/show_chat_window</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/main_window/show_chat_window</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/main_window/show_chat_window</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
       <default>false</default>
@@ -752,8 +752,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/general/user_interface/main_window/control_panel_section</key>
-      <applyto>/apps/gnomemeeting/general/user_interface/main_window/control_panel_section</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/main_window/control_panel_section</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/main_window/control_panel_section</applyto>
       <owner>GnomeMeeting</owner>
       <type>int</type>
       <default>4</default>
@@ -763,8 +763,8 @@
       </locale>
     </schema>
     <schema>	
-      <key>/schemas/apps/gnomemeeting/general/user_interface/log_window/position</key>
-      <applyto>/apps/gnomemeeting/general/user_interface/log_window/position</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/log_window/position</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/log_window/position</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default>0,0</default>
@@ -774,8 +774,8 @@
       </locale>
     </schema>
     <schema>	
-      <key>/schemas/apps/gnomemeeting/general/user_interface/druid_window/size</key>
-      <applyto>/apps/gnomemeeting/general/user_interface/druid_window/size</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/druid_window/size</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/druid_window/size</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default>525,345</default>
@@ -785,8 +785,8 @@
       </locale>
     </schema>
     <schema>	
-      <key>/schemas/apps/gnomemeeting/general/user_interface/druid_window/position</key>
-      <applyto>/apps/gnomemeeting/general/user_interface/druid_window/position</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/druid_window/position</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/druid_window/position</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default>0,0</default>
@@ -796,8 +796,8 @@
       </locale>
     </schema>
 <schema>	
-      <key>/schemas/apps/gnomemeeting/general/user_interface/pc_to_phone_window/size</key>
-      <applyto>/apps/gnomemeeting/general/user_interface/pc_to_phone_window/size</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/pc_to_phone_window/size</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/pc_to_phone_window/size</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default>330,225</default>
@@ -807,8 +807,8 @@
       </locale>
     </schema>
     <schema>	
-      <key>/schemas/apps/gnomemeeting/general/user_interface/pc_to_phone_window/position</key>
-      <applyto>/apps/gnomemeeting/general/user_interface/pc_to_phone_window/position</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/pc_to_phone_window/position</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/pc_to_phone_window/position</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default>0,0</default>
@@ -818,8 +818,8 @@
       </locale>
     </schema>
     <schema>	
-      <key>/schemas/apps/gnomemeeting/general/user_interface/log_window/size</key>
-      <applyto>/apps/gnomemeeting/general/user_interface/log_window/size</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/log_window/size</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/log_window/size</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default>330,225</default>
@@ -829,8 +829,8 @@
       </locale>
     </schema>
     <schema>	
-      <key>/schemas/apps/gnomemeeting/general/user_interface/calls_history_window/position</key>
-      <applyto>/apps/gnomemeeting/general/user_interface/calls_history_window/position</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/calls_history_window/position</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/calls_history_window/position</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default>0,0</default>
@@ -840,8 +840,8 @@
       </locale>
     </schema>
     <schema>	
-      <key>/schemas/apps/gnomemeeting/general/user_interface/calls_history_window/placed_calls_history</key>
-      <applyto>/apps/gnomemeeting/general/user_interface/calls_history_window/placed_calls_history</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/calls_history_window/placed_calls_history</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/calls_history_window/placed_calls_history</applyto>
       <owner>GnomeMeeting</owner>
       <type>list</type>
       <list_type>string</list_type>
@@ -852,8 +852,8 @@
       </locale>
     </schema>
     <schema>	
-      <key>/schemas/apps/gnomemeeting/general/user_interface/calls_history_window/missed_calls_history</key>
-      <applyto>/apps/gnomemeeting/general/user_interface/calls_history_window/missed_calls_history</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/calls_history_window/missed_calls_history</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/calls_history_window/missed_calls_history</applyto>
       <owner>GnomeMeeting</owner>
       <type>list</type>
       <list_type>string</list_type>
@@ -864,8 +864,8 @@
       </locale>
     </schema>
     <schema>	
-      <key>/schemas/apps/gnomemeeting/general/user_interface/calls_history_window/received_calls_history</key>
-      <applyto>/apps/gnomemeeting/general/user_interface/calls_history_window/received_calls_history</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/calls_history_window/received_calls_history</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/calls_history_window/received_calls_history</applyto>
       <owner>GnomeMeeting</owner>
       <type>list</type>
       <list_type>string</list_type>
@@ -876,8 +876,8 @@
       </locale>
     </schema>
     <schema>	
-      <key>/schemas/apps/gnomemeeting/general/user_interface/calls_history_window/size</key>
-      <applyto>/apps/gnomemeeting/general/user_interface/calls_history_window/size</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/calls_history_window/size</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/calls_history_window/size</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default>380,425</default>
@@ -887,8 +887,8 @@
       </locale>
     </schema>
     <schema>	
-      <key>/schemas/apps/gnomemeeting/general/user_interface/address_book_window/position</key>
-      <applyto>/apps/gnomemeeting/general/user_interface/address_book_window/position</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/address_book_window/position</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/address_book_window/position</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default>0,0</default>
@@ -898,8 +898,8 @@
       </locale>
     </schema>
     <schema>	
-      <key>/schemas/apps/gnomemeeting/general/user_interface/address_book_window/size</key>
-      <applyto>/apps/gnomemeeting/general/user_interface/address_book_window/size</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/address_book_window/size</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/address_book_window/size</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default>770,470</default>
@@ -909,8 +909,8 @@
       </locale>
     </schema>
     <schema>	
-      <key>/schemas/apps/gnomemeeting/general/user_interface/preferences_window/position</key>
-      <applyto>/apps/gnomemeeting/general/user_interface/preferences_window/position</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/preferences_window/position</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/preferences_window/position</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default>0,0</default>
@@ -920,8 +920,8 @@
       </locale>
     </schema>
     <schema>	
-      <key>/schemas/apps/gnomemeeting/general/user_interface/preferences_window/size</key>
-      <applyto>/apps/gnomemeeting/general/user_interface/preferences_window/size</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/preferences_window/size</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/preferences_window/size</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default>-1,-1</default>
@@ -931,8 +931,8 @@
       </locale>
     </schema>
     <schema>	
-      <key>/schemas/apps/gnomemeeting/general/user_interface/video_display/start_in_fullscreen</key>
-      <applyto>/apps/gnomemeeting/general/user_interface/video_display/start_in_fullscreen</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/video_display/start_in_fullscreen</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/video_display/start_in_fullscreen</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
       <default>false</default>
@@ -942,8 +942,8 @@
       </locale>
     </schema>
     <schema>	
-      <key>/schemas/apps/gnomemeeting/general/user_interface/video_display/local_zoom_factor</key>
-      <applyto>/apps/gnomemeeting/general/user_interface/video_display/local_zoom_factor</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/video_display/local_zoom_factor</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/video_display/local_zoom_factor</applyto>
       <owner>GnomeMeeting</owner>
       <type>float</type>
       <default>1.0</default>
@@ -953,8 +953,8 @@
       </locale>
     </schema>
     <schema>	
-      <key>/schemas/apps/gnomemeeting/general/user_interface/video_display/remote_zoom_factor</key>
-      <applyto>/apps/gnomemeeting/general/user_interface/video_display/remote_zoom_factor</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/video_display/remote_zoom_factor</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/video_display/remote_zoom_factor</applyto>
       <owner>GnomeMeeting</owner>
       <type>float</type>
       <default>1.0</default>
@@ -964,8 +964,8 @@
       </locale>
     </schema>
     <schema>	
-      <key>/schemas/apps/gnomemeeting/general/user_interface/video_display/zoom_factor</key>
-      <applyto>/apps/gnomemeeting/general/user_interface/video_display/zoom_factor</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/video_display/zoom_factor</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/video_display/zoom_factor</applyto>
       <owner>GnomeMeeting</owner>
       <type>float</type>
       <default>1.0</default>
@@ -975,8 +975,8 @@
       </locale>
     </schema>
     <schema>	
-      <key>/schemas/apps/gnomemeeting/general/user_interface/video_display/enable_bilinear_filtering</key>
-      <applyto>/apps/gnomemeeting/general/user_interface/video_display/enable_bilinear_filtering</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/video_display/enable_bilinear_filtering</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/video_display/enable_bilinear_filtering</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
       <default>false</default>
@@ -986,8 +986,8 @@
       </locale>
     </schema>
     <schema>	
-      <key>/schemas/apps/gnomemeeting/general/user_interface/video_display/stay_on_top</key>
-      <applyto>/apps/gnomemeeting/general/user_interface/video_display/stay_on_top</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/video_display/stay_on_top</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/video_display/stay_on_top</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
       <default>true</default>
@@ -997,8 +997,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/general/user_interface/video_display/video_view</key>
-      <applyto>/apps/gnomemeeting/general/user_interface/video_display/video_view</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/video_display/video_view</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/video_display/video_view</applyto>
       <owner>GnomeMeeting</owner>
       <type>int</type>
       <default>1</default>
@@ -1008,8 +1008,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/general/user_interface/local_video_window/size</key>
-      <applyto>/apps/gnomemeeting/general/user_interface/local_video_window/size</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/local_video_window/size</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/local_video_window/size</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default>176,144</default>
@@ -1019,8 +1019,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/general/user_interface/local_video_window/position</key>
-      <applyto>/apps/gnomemeeting/general/user_interface/local_video_window/position</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/local_video_window/position</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/local_video_window/position</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default>0,0</default>
@@ -1030,8 +1030,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/general/user_interface/remote_video_window/size</key>
-      <applyto>/apps/gnomemeeting/general/user_interface/remote_video_window/size</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/remote_video_window/size</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/remote_video_window/size</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default>176,144</default>
@@ -1041,8 +1041,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/general/user_interface/remote_video_window/position</key>
-      <applyto>/apps/gnomemeeting/general/user_interface/remote_video_window/position</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/remote_video_window/position</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/remote_video_window/position</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default>0,0</default>
@@ -1052,8 +1052,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/codecs/audio/maximum_jitter_buffer</key>
-      <applyto>/apps/gnomemeeting/codecs/audio/maximum_jitter_buffer</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/codecs/audio/maximum_jitter_buffer</key>
+      <applyto>/apps/@PACKAGE_NAME@/codecs/audio/maximum_jitter_buffer</applyto>
       <owner>GnomeMeeting</owner>
       <type>int</type>
       <default>500</default>
@@ -1063,8 +1063,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/codecs/audio/minimum_jitter_buffer</key>
-      <applyto>/apps/gnomemeeting/codecs/audio/minimum_jitter_buffer</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/codecs/audio/minimum_jitter_buffer</key>
+      <applyto>/apps/@PACKAGE_NAME@/codecs/audio/minimum_jitter_buffer</applyto>
       <owner>GnomeMeeting</owner>
       <type>int</type>
       <default>20</default>
@@ -1074,8 +1074,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/codecs/video/enable_video_reception</key>
-      <applyto>/apps/gnomemeeting/codecs/video/enable_video_reception</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/codecs/video/enable_video_reception</key>
+      <applyto>/apps/@PACKAGE_NAME@/codecs/video/enable_video_reception</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
       <default>1</default>
@@ -1085,8 +1085,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/codecs/video/enable_video_transmission</key>
-      <applyto>/apps/gnomemeeting/codecs/video/enable_video_transmission</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/codecs/video/enable_video_transmission</key>
+      <applyto>/apps/@PACKAGE_NAME@/codecs/video/enable_video_transmission</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
       <default>0</default>
@@ -1096,8 +1096,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/codecs/video/maximum_video_bandwidth</key>
-      <applyto>/apps/gnomemeeting/codecs/video/maximum_video_bandwidth</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/codecs/video/maximum_video_bandwidth</key>
+      <applyto>/apps/@PACKAGE_NAME@/codecs/video/maximum_video_bandwidth</applyto>
       <owner>GnomeMeeting</owner>
       <type>int</type>
       <default>6</default>
@@ -1107,8 +1107,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/codecs/video/transmitted_background_blocks</key>
-      <applyto>/apps/gnomemeeting/codecs/video/transmitted_background_blocks</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/codecs/video/transmitted_background_blocks</key>
+      <applyto>/apps/@PACKAGE_NAME@/codecs/video/transmitted_background_blocks</applyto>
       <owner>GnomeMeeting</owner>
       <type>int</type>
       <default>2</default>
@@ -1118,8 +1118,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/codecs/video/transmitted_video_quality</key>
-      <applyto>/apps/gnomemeeting/codecs/video/transmitted_video_quality</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/codecs/video/transmitted_video_quality</key>
+      <applyto>/apps/@PACKAGE_NAME@/codecs/video/transmitted_video_quality</applyto>
       <owner>GnomeMeeting</owner>
       <type>int</type>
       <default>75</default>
@@ -1129,8 +1129,8 @@
       </locale>
     </schema>
     <schema>		
-      <key>/schemas/apps/gnomemeeting/contacts/remote_addressbooks_list</key>
-      <applyto>/apps/gnomemeeting/contacts/remote_addressbooks_list</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/contacts/remote_addressbooks_list</key>
+      <applyto>/apps/@PACKAGE_NAME@/contacts/remote_addressbooks_list</applyto>
       <owner>GnomeMeeting</owner>
       <type>list</type>
       <list_type>string</list_type>
@@ -1141,8 +1141,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/general/kind_of_net</key>
-      <applyto>/apps/gnomemeeting/general/kind_of_net</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/kind_of_net</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/kind_of_net</applyto>
       <owner>GnomeMeeting</owner>
       <type>int</type>
       <default>0</default>
@@ -1152,8 +1152,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/general/call_options/clear_inactive_calls</key>
-      <applyto>/apps/gnomemeeting/general/call_options/clear_inactive_calls</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/call_options/clear_inactive_calls</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/call_options/clear_inactive_calls</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
       <default>true</default>
@@ -1163,8 +1163,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/general/call_options/no_answer_timeout</key>
-      <applyto>/apps/gnomemeeting/general/call_options/no_answer_timeout</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/call_options/no_answer_timeout</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/call_options/no_answer_timeout</applyto>
       <owner>GnomeMeeting</owner>
       <type>int</type>
       <default>45</default>
@@ -1174,8 +1174,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/general/call_options/incoming_call_mode</key>
-      <applyto>/apps/gnomemeeting/general/call_options/incoming_call_mode</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/call_options/incoming_call_mode</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/call_options/incoming_call_mode</applyto>
       <owner>GnomeMeeting</owner>
       <type>int</type>
       <default>0</default>
