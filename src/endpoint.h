@@ -86,13 +86,14 @@ class GMH323EndPoint : public H323EndPoint
 
   
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Updates some of the internal values of the endpoint such 
-   *                 as the local username, the capabilities, the tunneling,
-   *                 the fast start, the audio devices to use, the video 
-   *                 device to use, ...
+   * BEHAVIOR     :  Update the internal audio and video devices for playing
+   *                 and recording following the GConf database content.
+   *                 If a Quicknet card is used, it will be opened, and if
+   *                 a video grabber is used in preview mode, it will also
+   *"                be opened.
    * PRE          :  /
    */
-  void UpdateConfig ();
+  void UpdateDevices ();
 
 
   /* DESCRIPTION  :  /
@@ -395,17 +396,62 @@ class GMH323EndPoint : public H323EndPoint
    */
   void SetUserNameAndAlias ();
 
+  
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Update the RTP, TCP, UDP ports from the GConf database.
+   * PRE          :  /
+   */
+  void SetPorts ();
 
-  /* FIX ME: Comments */
-  BOOL SetSoundChannelPlayDevice(const PString &);
-  BOOL SetSoundChannelRecordDevice(const PString &);
-  BOOL SetSoundChannelManager (const PString &);
-  PString GetSoundChannelManager () {return soundChannelManager;}
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Update the audio device volume (playing then recording). 
+   * PRE          :  /
+   */
   BOOL SetDeviceVolume (unsigned int, unsigned int);
+
+  
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns the audio device volume (playing then recording). 
+   * PRE          :  /
+   */
   BOOL GetDeviceVolume (unsigned int &, unsigned int &);
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  TRUE if the video should automatically be transmitted
+   *                 when a call begins.
+   * PRE          :  /
+   */
   void SetAutoStartTransmitVideo (BOOL a) {autoStartTransmitVideo = a;}
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  TRUE if the video should automatically be received
+   *                 when a call begins.
+   * PRE          :  /
+   */
   void SetAutoStartReceiveVideo (BOOL a) {autoStartReceiveVideo = a;}
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Automatically starts transmitting (BOOL = FALSE) or
+   *                 receiving (BOOL = TRUE) with the given
+   *                 capability, for the given session RTP id and returns
+   *                 TRUE if it was successful. Do that only if there is
+   *                 a connection.
+   * PRE          :  /
+   */
   BOOL StartLogicalChannel (const PString &, unsigned int, BOOL);
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Automatically stop transmitting (BOOL = FALSE) or
+   *                 receiving (BOOL = TRUE) for the given RTP session id
+   *                 and returns TRUE if it was successful.
+   *                 Do that only if there is a connection.
+   * PRE          :  /
+   */
   BOOL StopLogicalChannel (unsigned int, BOOL);
 
 
@@ -464,16 +510,104 @@ class GMH323EndPoint : public H323EndPoint
    */
   void TransferCallWait ();
 
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Init the endpoint internal values and the various
+   *                 components.
+   * PRE          :  /
+   */
+  void Init ();
+
+  
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Set the output audio device to be used during calls.
+   *                 It also udpates the manager.
+   * PRE          :  /
+   */
+  BOOL SetSoundChannelPlayDevice(const PString &);
+
+  
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Set the input audio device to be used during calls.
+   *                 It also updates the manager.
+   * PRE          :  /
+   */
+  BOOL SetSoundChannelRecordDevice(const PString &);
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Set the output audio manager to be used during calls.
+   * PRE          :  /
+   */
+  void SetSoundChannelManager (const PString &);
+
+  
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns the output audio manager to be used during calls.
+   * PRE          :  /
+   */
+  PString GetSoundChannelManager ();
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Set (BOOL = TRUE) or get (BOOL = FALSE) the
+   *                 audio playing and recording volumes for the
+   *                 audio device.
+   * PRE          :  /
+   */
   BOOL DeviceVolume (BOOL, unsigned int &, unsigned int &);
 
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Check if the listening port is accessible from the
+   *                 outside and returns the test result given by seconix.com.
+   * PRE          :  /
+   */
   PString CheckTCPPorts ();
-  
+
+
+  /* DESCRIPTION  :  Notifier called periodically to update details on ILS.
+   * BEHAVIOR     :  Register, unregister the user from ILS or udpate his
+   *                 personal data using the GMILSClient (XDAP).
+   * PRE          :  /
+   */
   PDECLARE_NOTIFIER(PTimer, GMH323EndPoint, OnILSTimeout);
+
+
+  /* DESCRIPTION  :  Notifier called periodically during calls.
+   * BEHAVIOR     :  Refresh the statistics window of the Control Panel
+   *                 if it is currently shown.
+   * PRE          :  /
+   */
   PDECLARE_NOTIFIER(PTimer, GMH323EndPoint, OnRTPTimeout);
+
+
+  /* DESCRIPTION  :  Notifier called periodically to update the gateway IP.
+   * BEHAVIOR     :  Update the gateway IP to use for the IP translation
+   *                 if IP Checking is enabled in the GConf database.
+   * PRE          :  /
+   */
   PDECLARE_NOTIFIER(PTimer, GMH323EndPoint, OnGatewayIPTimeout);
+
+
+  /* DESCRIPTION  :  Notifier called when an incoming call
+   *                 has not been answered after 15 seconds.
+   * BEHAVIOR     :  Reject the call, or forward if forward on no answer is
+   *                 enabled in the GConf database.
+   * PRE          :  /
+   */
   PDECLARE_NOTIFIER(PTimer, GMH323EndPoint, OnNoAnswerTimeout);
+
+
+  /* DESCRIPTION  :  Notifier called after second while waiting for an answer
+   *                 for an incoming call.
+   * BEHAVIOR     :  Display an animation in the docklet and play a ring
+   *                 sound.
+   * PRE          :  /
+   */
   PDECLARE_NOTIFIER(PTimer, GMH323EndPoint, OnCallPending);
 
+  
   PString called_address;
   PString current_call_token;
   PString transfer_call_token;
@@ -503,6 +637,11 @@ class GMH323EndPoint : public H323EndPoint
   GMILSClient *ils_client;
   PThread *audio_tester;
 
+
+  /* Various mutexes to ensure thread safeness around internal
+     variables */
+  PMutex am_access_mutex;
+  PMutex sch_access_mutex;
   PMutex vg_access_mutex;
   PMutex ils_access_mutex;
   PMutex cs_access_mutex;

@@ -259,8 +259,7 @@ gnomemeeting_calls_history_window_new (GmCallsHistoryWindow *chw)
 						       2,
 						       NULL);
     gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
-    g_object_set (G_OBJECT (renderer), "foreground", "blue",
-		  "underline", TRUE, NULL);
+    gtk_tree_view_column_set_visible (column, false);
 
     renderer = gtk_cell_renderer_text_new ();
     column = gtk_tree_view_column_new_with_attributes (_("Call Duration"),

@@ -433,26 +433,7 @@ GnomeMeeting::InitComponents ()
   signal (SIGPIPE, SIG_IGN);
 #endif
   
-
   endpoint = new GMH323EndPoint ();
-
-  /* Start the video preview */
-  if (gconf_client_get_bool (client, DEVICES_KEY "video_preview", NULL))
-    endpoint->CreateVideoGrabber ();
-
-  endpoint->SetUserNameAndAlias ();
-
-  /* Register to gatekeeper */
-  if (gconf_client_get_int (client, GATEKEEPER_KEY "registering_method", 0))
-    endpoint->GatekeeperRegister ();
-
-  /* The LDAP part, if needed */
-  if (gconf_client_get_bool (GCONF_CLIENT (client), LDAP_KEY "register", 0)) 
-    endpoint->ILSRegister ();
-  
-  
-  if (!endpoint->StartListener ()) 
-    gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Error while starting the listener"), _("You will not be able to receive incoming calls. Please check that no other program is already running on the port used by GnomeMeeting."));
 }
 
 

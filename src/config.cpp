@@ -66,7 +66,11 @@ extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;
 
 
-static void applicability_check_nt (GConfClient *, guint, GConfEntry *, gpointer);
+static void applicability_check_nt (GConfClient *,
+				    guint,
+				    GConfEntry *,
+				    gpointer);
+
 static void main_notebook_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static void fps_limit_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static void maximum_video_bandwidth_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
@@ -85,15 +89,24 @@ static void incoming_call_mode_changed_nt (GConfClient*,
 					   GConfEntry *,
 					   gpointer);
 
-static void
-call_forwarding_changed_nt (GConfClient*,
-			    guint,
-			    GConfEntry *, 
-			    gpointer);
+static void call_forwarding_changed_nt (GConfClient*,
+					guint,
+					GConfEntry *, 
+					gpointer);
 
-static void manager_changed_nt (GConfClient *, guint, GConfEntry *, 
+static void manager_changed_nt (GConfClient *,
+				guint,
+				GConfEntry *, 
 				gpointer);
-static void audio_device_changed_nt (GConfClient *, guint, GConfEntry *, 
+
+static void audio_device_changed_nt (GConfClient *,
+				     guint,
+				     GConfEntry *, 
+				     gpointer);
+
+static void video_device_changed_nt (GConfClient *, 
+				     guint, 
+				     GConfEntry *, 
 				     gpointer);
 
 static void video_device_setting_changed_nt (GConfClient *, 
@@ -232,21 +245,30 @@ static void view_widget_changed_nt (GConfClient *client, guint cid,
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Displays a popup if we are in a call.
- * PRE          :  /
+ * PRE          :  data = pointer to the widget for which the popup applies.
  */
-static void applicability_check_nt (GConfClient *client, guint cid, 
-				    GConfEntry *entry, gpointer data)
+static void
+applicability_check_nt (GConfClient *client,
+			guint cid, 
+			GConfEntry *entry,
+			gpointer data)
 {
+  GmWindow *gw = NULL;
+  GMH323EndPoint *ep = NULL;
+  
+  gw = MyApp->GetMainWindow ();
+  ep = MyApp->Endpoint ();
+  
   if ((entry->value->type == GCONF_VALUE_BOOL)
       ||(entry->value->type == GCONF_VALUE_STRING)
       ||(entry->value->type == GCONF_VALUE_INT)) {
-
-    gdk_threads_enter ();
   
-    if (MyApp->Endpoint ()->GetCallingState () != GMH323EndPoint::Standby)
-      gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (gm), GTK_WIDGET (data), _("Changing this setting will only affect new calls"), _("You have changed a setting that doesn't permit to GnomeMeeting to apply the new change to the current call. Your new setting will only take effect for the next call."));
-    
-    gdk_threads_leave ();
+    if (ep->GetCallingState () != GMH323EndPoint::Standby) {
+
+      gdk_threads_enter ();
+      gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (gw->pref_window), GTK_WIDGET (data), _("Changing this setting will only affect new calls"), _("You have changed a setting that doesn't permit to GnomeMeeting to apply the new change to the current call. Your new setting will only take effect for the next call."));
+      gdk_threads_leave ();
+    }
   }
 }
 
@@ -807,15 +829,24 @@ static void jitter_buffer_changed_nt (GConfClient *client, guint cid,
  *                 done after that call.
  * PRE          :  /
  */
-static void manager_changed_nt (GConfClient *client, guint cid, 
-				GConfEntry *entry, gpointer data)
+static void
+manager_changed_nt (GConfClient *client,
+		    guint cid, 
+		    GConfEntry *entry,
+		    gpointer data)
 {
+  GMH323EndPoint *ep = NULL;
+
+  ep = MyApp->Endpoint ();
+  
   if (entry->value->type == GCONF_VALUE_STRING) {
 
-    gdk_threads_enter ();
-    if (MyApp->Endpoint ()->GetCallingState () == GMH323EndPoint::Standby)
-      gnomemeeting_pref_window_refresh_devices_list (NULL, NULL);
-    gdk_threads_leave ();
+    if (ep->GetCallingState () == GMH323EndPoint::Standby) {
+
+      gdk_threads_enter ();
+      ep->UpdateDevices ();
+      gdk_threads_leave (); 
+    }
   }
 }
 
@@ -829,25 +860,36 @@ static void manager_changed_nt (GConfClient *client, guint cid,
  *                 no Quicknet device is used, or it is used for both devices.
  *                 It also disables the druid test buttons for cases where
  *                 a test is not possible (no device found or quicknet).
+ *                 Notice that audio devices can not be changed during a call.
  * PRE          :  /
  */
-static void audio_device_changed_nt (GConfClient *client, guint cid, 
-				     GConfEntry *entry, gpointer data)
+static void
+audio_device_changed_nt (GConfClient *client,
+			 guint cid, 
+			 GConfEntry *entry,
+			 gpointer data)
 {
+  GMH323EndPoint *ep = NULL;
+  
   GmWindow *gw = NULL;
   GmDruidWindow *dw = NULL;
   GmPrefWindow *pw = NULL;
   
   PString dev, dev1, dev2;
+
   gchar *player = NULL;
   gchar *recorder = NULL;
+
+  BOOL use_lid = FALSE;
+  
+  dw = MyApp->GetDruidWindow ();
+  pw = MyApp->GetPrefWindow ();
+  gw = MyApp->GetMainWindow ();
+  ep = MyApp->Endpoint ();
   
   if (entry->value->type == GCONF_VALUE_STRING) {
 
     gdk_threads_enter ();
-    dw = MyApp->GetDruidWindow ();
-    pw = MyApp->GetPrefWindow ();
-    gw = MyApp->GetMainWindow ();
       
     dev = PString (gconf_value_get_string (entry->value));
 
@@ -863,6 +905,8 @@ static void audio_device_changed_nt (GConfClient *client, guint cid,
        we update the other devices too */
     if (dev.Find ("phone") != P_MAX_INDEX) {
 
+      use_lid = TRUE;
+      
       gconf_client_set_string (client, DEVICES_KEY "audio_recorder",
 			       (const char *) dev, NULL);
       gconf_client_set_string (client, DEVICES_KEY "audio_player",
@@ -901,20 +945,60 @@ static void audio_device_changed_nt (GConfClient *client, guint cid,
 #endif
       }
     }
-    
-    if (MyApp->Endpoint ()->GetCallingState () == GMH323EndPoint::Standby)
-      /* Update the configuration in order to update 
-	 the capabilities for calls */
-      MyApp->Endpoint ()->UpdateConfig ();
-
     gdk_threads_leave ();
+
+    /* We reset the capabilities if a Quicknet card is used because they could
+       have changed. */
+    if (use_lid)
+      ep->AddAllCapabilities ();
+    
+    if (ep->GetCallingState () == GMH323EndPoint::Standby) {
+
+      gdk_threads_enter ();
+      ep->UpdateDevices ();
+      gdk_threads_leave ();
+    }
   }
 }
 
 
-/* DESCRIPTION  :  This callback is called when the video device changes in
- *                 the gconf database.
- * BEHAVIOR     :  It resets the video transmission.
+
+/* DESCRIPTION  :  This callback is called when the video device changes
+ *                 in the gconf database.
+ * BEHAVIOR     :  It resets the video device if we are not in a call.
+ *                 Notice that the video device can't be changed during calls,
+ *                 but its settings can be changed.
+ * PRE          :  /
+ */
+static void 
+video_device_changed_nt (GConfClient *client, 
+			 guint cid, 
+			 GConfEntry *entry, 
+			 gpointer data)
+{
+  GMH323EndPoint *ep = NULL;
+
+  ep = MyApp->Endpoint ();
+  
+  if ((entry->value->type == GCONF_VALUE_STRING) ||
+      (entry->value->type == GCONF_VALUE_INT)) {
+
+    if (ep && ep->GetCallingState () == GMH323EndPoint::Standby) {
+
+      gdk_threads_enter ();
+      ep->UpdateDevices ();
+      gdk_threads_leave ();
+    }
+  }
+}
+
+
+/* DESCRIPTION  :  This callback is called when a video device setting changes
+ *                 in the gconf database.
+ * BEHAVIOR     :  It resets the video transmission if any, or resets the
+ *                 video device otherwise. Notice that
+ *                 the video device can't be changed during calls, but its
+ *                 settings can be changed.
  * PRE          :  /
  */
 static void 
@@ -930,21 +1014,19 @@ video_device_setting_changed_nt (GConfClient *client,
 
   GMH323EndPoint *ep = NULL;
 
+  ep = MyApp->Endpoint ();
+
+
   if ((entry->value->type == GCONF_VALUE_STRING) ||
       (entry->value->type == GCONF_VALUE_INT)) {
-    
-    /* We reset the video device, no need to gdk_threads_enter here */
-    ep = MyApp->Endpoint ();
-
+  
     ep->AddAllCapabilities ();
     
     if (ep && ep->GetCallingState () == GMH323EndPoint::Standby) {
-      
-      if (gconf_get_bool (DEVICES_KEY "video_preview")) {
-    
-	ep->RemoveVideoGrabber ();
-	ep->CreateVideoGrabber ();
-      }
+
+      gdk_threads_enter ();
+      ep->UpdateDevices ();
+      gdk_threads_leave ();
     }
     else if (ep->GetCallingState () == GMH323EndPoint::Connected) {
 
@@ -957,7 +1039,7 @@ video_device_setting_changed_nt (GConfClient *client,
 
       if (gconf_get_bool (VIDEO_SETTINGS_KEY "enable_video_transmission")) {
 
-	no_error=
+	no_error =
 	  ep->StopLogicalChannel (RTP_Session::DefaultVideoSessionID,
 				  FALSE);
 
@@ -1536,25 +1618,31 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
 
   /* gnomemeeting_init_pref_window_devices */
 #ifdef TRY_PLUGINS
-  /* Audio Manager */
   gconf_client_notify_add (client, DEVICES_KEY "audio_manager", 
 			   manager_changed_nt, 
 			   NULL, 0, 0);
-  /* Video Manager */
   gconf_client_notify_add (client, DEVICES_KEY "video_manager", 
 			   manager_changed_nt, 
 			   NULL, 0, 0);
 #endif
 
-  gconf_client_notify_add (client, DEVICES_KEY "audio_player", audio_device_changed_nt, pw->audio_player, 0, 0);
-  gconf_client_notify_add (client, DEVICES_KEY "audio_player", applicability_check_nt, pw->audio_player, 0, 0);
+  gconf_client_notify_add (client, DEVICES_KEY "audio_player",
+			   audio_device_changed_nt,
+			   pw->audio_player, 0, 0);
+  gconf_client_notify_add (client, DEVICES_KEY "audio_player",
+			   applicability_check_nt,
+			   pw->audio_player, 0, 0);
   
 
-  gconf_client_notify_add (client, DEVICES_KEY "audio_recorder", audio_device_changed_nt, pw->audio_recorder, 0, 0);
-  gconf_client_notify_add (client, DEVICES_KEY "audio_recorder", applicability_check_nt, pw->audio_recorder, 0, 0);
+  gconf_client_notify_add (client, DEVICES_KEY "audio_recorder",
+			   audio_device_changed_nt,
+			   pw->audio_recorder, 0, 0);
+  gconf_client_notify_add (client, DEVICES_KEY "audio_recorder",
+			   applicability_check_nt,
+			   pw->audio_recorder, 0, 0);
 
   gconf_client_notify_add (client, DEVICES_KEY "video_recorder", 
-			   video_device_setting_changed_nt, 
+			   video_device_changed_nt, 
 			   NULL, NULL, NULL);
 
   gconf_client_notify_add (client, DEVICES_KEY "video_channel", 

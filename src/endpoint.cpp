@@ -78,13 +78,6 @@ extern GnomeMeeting *MyApp;
 /* The class */
 GMH323EndPoint::GMH323EndPoint ()
 {
-  gchar *rtp_port_range = NULL;
-  gchar *udp_port_range = NULL;
-  gchar *tcp_port_range = NULL;
-  gchar **rtp_couple = NULL;
-  gchar **udp_couple = NULL;
-  gchar **tcp_couple = NULL;
-
   /* Get the GTK structures and GConf client */
   gw = MyApp->GetMainWindow ();
   lw = MyApp->GetLdapWindow ();
@@ -112,56 +105,10 @@ GMH323EndPoint::GMH323EndPoint ()
     PIPSocket::SetDefaultIpAddressFamilyV6();
 #endif
   
-  rtp_port_range = gconf_get_string (PORTS_KEY "rtp_port_range");
-  udp_port_range = gconf_get_string (PORTS_KEY "udp_port_range");
-  tcp_port_range = gconf_get_string (PORTS_KEY "tcp_port_range");
-
-  if (rtp_port_range)
-    rtp_couple = g_strsplit (rtp_port_range, ":", 0);
-  if (udp_port_range)
-    udp_couple = g_strsplit (udp_port_range, ":", 0);
-  if (tcp_port_range)
-    tcp_couple = g_strsplit (tcp_port_range, ":", 0);
-  
-  if (tcp_couple && tcp_couple [0] && tcp_couple [1]) {
-
-    SetTCPPorts (atoi (tcp_couple [0]), atoi (tcp_couple [1]));
-    PTRACE (1, "Set TCP port range to " << atoi (tcp_couple [0])
-	    << atoi (tcp_couple [1]));
-  }
-
-  if (rtp_couple && rtp_couple [0] && rtp_couple [1]) {
-
-    SetRtpIpPorts (atoi (rtp_couple [0]), atoi (rtp_couple [1]));
-    PTRACE (1, "Set RTP port range to " << atoi (rtp_couple [0])
-	    << atoi (rtp_couple [1]));
-  }
-
-  if (udp_couple && udp_couple [0] && udp_couple [1]) {
-
-    SetUDPPorts (atoi (udp_couple [0]), atoi (udp_couple [1]));
-    PTRACE (1, "Set UDP port range to " << atoi (udp_couple [0])
-	    << atoi (udp_couple [1]));
-  }
-
-  g_free (tcp_port_range);
-  g_free (udp_port_range);
-  g_free (rtp_port_range);
-  g_strfreev (tcp_couple);
-  g_strfreev (udp_couple);
-  g_strfreev (rtp_couple);
 
   received_video_device = NULL;
   transmitted_video_device = NULL;
   audio_tester = NULL;
-  
-  autoStartTransmitVideo =
-    gconf_get_bool (VIDEO_SETTINGS_KEY "enable_video_transmission");
-  autoStartReceiveVideo =
-    gconf_get_bool (VIDEO_SETTINGS_KEY "enable_video_reception");
-
-  disableH245Tunneling = !gconf_get_bool (GENERAL_KEY "h245_tunneling");
-  disableFastStart = !gconf_get_bool (GENERAL_KEY "fast_start");
   
   SetNoMediaTimeout (PTimeInterval (0, 15, 0));
   ILSTimer.SetNotifier (PCREATE_NOTIFIER (OnILSTimeout));
@@ -173,11 +120,8 @@ GMH323EndPoint::GMH323EndPoint ()
 
   NoAnswerTimer.SetNotifier (PCREATE_NOTIFIER (OnNoAnswerTimeout));
   CallPendingTimer.SetNotifier (PCREATE_NOTIFIER (OnCallPending));
-  
-  AddAllCapabilities ();
-  
-  /* Update general configuration */
-  UpdateConfig ();
+
+  Init ();
 }
 
 
@@ -213,74 +157,86 @@ GMH323EndPoint::MakeCallLocked (const PString & call_addr,
 }
 
 
-void GMH323EndPoint::UpdateConfig ()
+void GMH323EndPoint::UpdateDevices ()
 {
-  /* FIX ME : séparer en plusieurs morceau, virer updateconfig, bouger un 
-     max de choses dans le constructeur. Seuls les devices doivent rester
-     ici */
   gchar *player = NULL;
   gchar *recorder = NULL;
   gchar *manager = NULL;
-
-  int video_size = 0;
 
   BOOL use_lid = FALSE;
 
   GmPrefWindow *pw = NULL;
   GmWindow *gw = NULL;
 
-  gnomemeeting_threads_enter ();
+  BOOL preview = FALSE;
+  
   pw = MyApp->GetPrefWindow ();
   gw = MyApp->GetMainWindow ();
+
 
   /* Get the gconf settings */
   manager = gconf_get_string (DEVICES_KEY "audio_manager");
   player = gconf_get_string (DEVICES_KEY "audio_player");
   recorder = gconf_get_string (DEVICES_KEY "audio_recorder");
-  video_size = gconf_get_int (DEVICES_KEY "video_size");
-  gnomemeeting_threads_leave ();
+  preview = gconf_get_bool (DEVICES_KEY "video_preview");
 
+  if (!manager || !player || !recorder)
+    return;
+  
   gnomemeeting_sound_daemons_suspend ();
 
   /* Do not change these values during calls */
   if (GetCallingState () == GMH323EndPoint::Standby) {
 
+
+    /* Quicknet hardware */
     if (PString (player).Find ("/dev/phone") != P_MAX_INDEX
 	|| PString (recorder).Find ("/dev/phone") != P_MAX_INDEX) {
       
       use_lid = true;
     }
-    
 
-    /* Refreshes the prefs window */
+
+    /* Video preview */
+    if (preview) {
+      gdk_threads_leave ();
+      RemoveVideoGrabber ();
+      CreateVideoGrabber ();
+      gdk_threads_enter ();
+    }
+
+    
+    /* Update the prefs window */
 #ifdef TRY_PLUGINS
-    gnomemeeting_threads_enter ();
-    if (manager && (GetSoundChannelManager () != PString (manager))) 
+    if (manager && (GetSoundChannelManager () != manager)) {
+
+      SetSoundChannelManager (manager);
       gnomemeeting_pref_window_refresh_devices_list (NULL, NULL);
-    gnomemeeting_threads_leave ();
+    }
 #endif
 
 
-    /**/
     /* Set recording source and set micro to record if no LID is used */
     if (!use_lid) {
 
       /* Change that setting only if needed */
-      if (player && (GetSoundChannelPlayDevice () != PString (player))) 
+      if (player && (GetSoundChannelPlayDevice () != player)) 
 	SetSoundChannelPlayDevice (player);
 
       /* Change that setting only if needed */
-      if (recorder && (GetSoundChannelRecordDevice ()!= PString (recorder))) 
+      if (recorder && (GetSoundChannelRecordDevice ()!= recorder)) 
 	SetSoundChannelRecordDevice (recorder);
     }
     
 
 #ifdef HAS_IXJ
     /* Use the quicknet card if needed */
+    gdk_threads_leave ();
     if (use_lid) 
       CreateLid ();
     else
       RemoveLid ();
+    gdk_threads_enter ();
 #endif
   }
 
@@ -311,6 +267,8 @@ GMH323EndPoint::RemoveAllCapabilities ()
 void 
 GMH323EndPoint::AddAllCapabilities ()
 {
+  RemoveAllCapabilities ();
+  
   AddAudioCapabilities ();
   AddVideoCapabilities ();
   AddUserInputCapabilities ();
@@ -361,9 +319,7 @@ GMH323EndPoint::AddVideoCapabilities ()
 {
   int video_size = 0;
 
-  gnomemeeting_threads_enter ();
   video_size = gconf_get_int (DEVICES_KEY "video_size");
-  gnomemeeting_threads_leave ();
 
   /* Add video capabilities */
   if (video_size == 1) {
@@ -385,9 +341,7 @@ GMH323EndPoint::AddUserInputCapabilities ()
 {
   int cap = 0;
 
-  gnomemeeting_threads_enter ();
   cap = gconf_get_int (GENERAL_KEY "user_input_capability");
-  gnomemeeting_threads_leave ();
     
   if (cap == 3)
     capabilities.SetCapability (0, P_MAX_INDEX, new H323_UserInputCapability(H323_UserInputCapability::SignalToneH245));
@@ -420,11 +374,9 @@ GMH323EndPoint::AddAudioCapabilities ()
   PStringArray to_reorder;
   
   /* Read GConf settings */ 
-  gnomemeeting_threads_enter ();
   codecs_data = gconf_get_string_list (AUDIO_CODECS_KEY "codecs_list");
   g711_frames = gconf_get_int (AUDIO_SETTINGS_KEY "g711_frames");
   gsm_frames = gconf_get_int (AUDIO_SETTINGS_KEY "gsm_frames");
-  gnomemeeting_threads_leave ();
 
   
 #ifdef HAS_IXJ
@@ -1143,7 +1095,6 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   BOOL auto_clear_text_chat = FALSE;
   BOOL reg = FALSE;
-  BOOL preview = FALSE;
   BOOL stay_on_top = FALSE;
 
   GmRtpData *rtp = NULL;
@@ -1159,7 +1110,6 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   auto_clear_text_chat = gconf_get_bool (GENERAL_KEY "auto_clear_text_chat");
   reg = gconf_get_bool (LDAP_KEY "register");
   stay_on_top = gconf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top");
-  preview = gconf_get_bool (DEVICES_KEY "video_preview");
   gnomemeeting_threads_leave ();
 
 
@@ -1310,11 +1260,6 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
     /* Update ILS if needed */
     if (reg)
       ILSRegister ();
-
-    /* Reset the Video Grabber, if preview, else close it */
-    RemoveVideoGrabber ();
-    if (preview) 
-      CreateVideoGrabber ();
   }
 
 
@@ -1370,14 +1315,15 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   gnomemeeting_threads_leave ();
 
 
-  /* Try to update the config if some settings were changed 
-     during the call */
-  UpdateConfig ();
-
-
   /* Update internal state */
   SetCallingState (GMH323EndPoint::Standby);
 
+
+  /* Try to update the devices use if some settings were changed 
+     during the call */
+  gnomemeeting_threads_enter ();
+  UpdateDevices ();
+  gnomemeeting_threads_leave ();
   
   g_free (utf8_app);
   g_free (utf8_name);
@@ -1453,6 +1399,100 @@ GMH323EndPoint::SetUserNameAndAlias ()
     AddAliasName (alias);
     g_free (alias);
   }
+}
+
+
+void
+GMH323EndPoint::SetPorts ()
+{
+  gchar *rtp_port_range = NULL;
+  gchar *udp_port_range = NULL;
+  gchar *tcp_port_range = NULL;
+
+  gchar **rtp_couple = NULL;
+  gchar **udp_couple = NULL;
+  gchar **tcp_couple = NULL;
+
+  rtp_port_range = gconf_get_string (PORTS_KEY "rtp_port_range");
+  udp_port_range = gconf_get_string (PORTS_KEY "udp_port_range");
+  tcp_port_range = gconf_get_string (PORTS_KEY "tcp_port_range");
+
+  if (rtp_port_range)
+    rtp_couple = g_strsplit (rtp_port_range, ":", 0);
+  if (udp_port_range)
+    udp_couple = g_strsplit (udp_port_range, ":", 0);
+  if (tcp_port_range)
+    tcp_couple = g_strsplit (tcp_port_range, ":", 0);
+  
+  if (tcp_couple && tcp_couple [0] && tcp_couple [1]) {
+
+    SetTCPPorts (atoi (tcp_couple [0]), atoi (tcp_couple [1]));
+    PTRACE (1, "Set TCP port range to " << atoi (tcp_couple [0])
+	    << atoi (tcp_couple [1]));
+  }
+
+  if (rtp_couple && rtp_couple [0] && rtp_couple [1]) {
+
+    SetRtpIpPorts (atoi (rtp_couple [0]), atoi (rtp_couple [1]));
+    PTRACE (1, "Set RTP port range to " << atoi (rtp_couple [0])
+	    << atoi (rtp_couple [1]));
+  }
+
+  if (udp_couple && udp_couple [0] && udp_couple [1]) {
+
+    SetUDPPorts (atoi (udp_couple [0]), atoi (udp_couple [1]));
+    PTRACE (1, "Set UDP port range to " << atoi (udp_couple [0])
+	    << atoi (udp_couple [1]));
+  }
+
+  g_free (tcp_port_range);
+  g_free (udp_port_range);
+  g_free (rtp_port_range);
+  g_strfreev (tcp_couple);
+  g_strfreev (udp_couple);
+  g_strfreev (rtp_couple);
+}
+
+
+void
+GMH323EndPoint::Init ()
+{
+  /* Update the internal state */
+  autoStartTransmitVideo =
+    gconf_get_bool (VIDEO_SETTINGS_KEY "enable_video_transmission");
+  autoStartReceiveVideo =
+    gconf_get_bool (VIDEO_SETTINGS_KEY "enable_video_reception");
+
+  disableH245Tunneling = !gconf_get_bool (GENERAL_KEY "h245_tunneling");
+  disableFastStart = !gconf_get_bool (GENERAL_KEY "fast_start");
+
+
+  /* Add capabilities */
+  AddAllCapabilities ();
+
+
+  /* Setup ports */
+  SetPorts ();
+
+  
+  /* Update general devices configuration */
+  UpdateDevices ();
+
+  
+  /* Set the User Name and Alias */  
+  SetUserNameAndAlias ();
+  
+  /* Register to gatekeeper */
+  if (gconf_get_int (GATEKEEPER_KEY "registering_method"))
+    GatekeeperRegister ();
+
+  /* The LDAP part, if needed */
+  if (gconf_get_bool (LDAP_KEY "register"))
+    ILSRegister ();
+  
+  
+  if (!StartListener ()) 
+    gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Error while starting the listener"), _("You will not be able to receive incoming calls. Please check that no other program is already running on the port used by GnomeMeeting."));
 }
 
 
@@ -1657,12 +1697,12 @@ GMH323EndPoint::SetSoundChannelPlayDevice(const PString &name)
 {
   gchar *text = NULL;
 
+  PWaitAndSignal m(sch_access_mutex);
+  
 #ifdef TRY_PLUGINS
   gchar *audio_manager = NULL;
 
-  gnomemeeting_threads_enter ();
   audio_manager = gconf_get_string (DEVICES_KEY "audio_manager");
-  gnomemeeting_threads_leave ();
 
   if (gw->audio_player_devices.GetSize () == 0) 
     gw->audio_player_devices = 
@@ -1674,8 +1714,8 @@ GMH323EndPoint::SetSoundChannelPlayDevice(const PString &name)
     g_free (audio_manager);
     return FALSE;
   }
-
-  soundChannelManager = PString (audio_manager);
+  
+  SetSoundChannelManager (PString (audio_manager));
 
   g_free (audio_manager);
 #else
@@ -1687,27 +1727,43 @@ GMH323EndPoint::SetSoundChannelPlayDevice(const PString &name)
 
   text = g_strdup_printf (_("Set Audio player device to %s"), 
 			  (const char *) soundChannelPlayDevice);
-  gnomemeeting_threads_enter ();
   gnomemeeting_log_insert (gw->history_text_view, text);
-  gnomemeeting_threads_leave ();
 
   g_free (text);
 
   return TRUE;   
 }
  
- 
+
+void
+GMH323EndPoint::SetSoundChannelManager (const PString & sm)
+{
+  PWaitAndSignal m(am_access_mutex);
+
+  soundChannelManager = sm;
+}
+
+
+PString
+GMH323EndPoint::GetSoundChannelManager ()
+{
+  PWaitAndSignal m(am_access_mutex);
+
+  return soundChannelManager;
+}
+
+
 BOOL
 GMH323EndPoint::SetSoundChannelRecordDevice (const PString &name)
 {
   gchar *text = NULL;
 
+  PWaitAndSignal m(sch_access_mutex);
+  
 #ifdef TRY_PLUGINS
   gchar *audio_manager = NULL;
 
-  gnomemeeting_threads_enter ();
   audio_manager = gconf_get_string (DEVICES_KEY "audio_manager");
-  gnomemeeting_threads_leave ();
 
   if (gw->audio_recorder_devices.GetSize () == 0) 
     gw->audio_recorder_devices = 
@@ -1721,7 +1777,7 @@ GMH323EndPoint::SetSoundChannelRecordDevice (const PString &name)
     return FALSE;
   }
 
-  soundChannelManager = PString (audio_manager);
+  SetSoundChannelManager (PString (audio_manager));
 
   g_free (audio_manager);
 #else
@@ -1733,9 +1789,7 @@ GMH323EndPoint::SetSoundChannelRecordDevice (const PString &name)
 
   text = g_strdup_printf (_("Set Audio player device to %s"), 
 			  (const char *) soundChannelPlayDevice);
-  gnomemeeting_threads_enter ();
   gnomemeeting_log_insert (gw->history_text_view, text);
-  gnomemeeting_threads_leave ();
 
   g_free (text);
 
@@ -1768,7 +1822,7 @@ GMH323EndPoint::StartLogicalChannel (const PString & capability_name,
   H323Channel *channel = NULL;
   H323Capability *capability = NULL;
   H323Capabilities capabilities;
-  BOOL no_error = TRUE;
+  BOOL no_error = FALSE;
 
   PString mode, current_capa;
 
@@ -2237,7 +2291,7 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 
   
   /* Transmitting */
-  if (is_encoding) {
+  if (is_encoding && autoStartTransmitVideo) {
 
     gnomemeeting_threads_enter ();
     vq = gconf_get_int (VIDEO_SETTINGS_KEY "tr_vq");
@@ -2291,7 +2345,7 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
     
     return result;
   }
-  else {
+  else if (!is_encoding && autoStartReceiveVideo) {
 
     channel = new PVideoChannel;
     received_video_device = new GDKVideoOutputDevice (is_encoding, gw);
