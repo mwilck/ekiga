@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-07-07 04:24+0200\n"
-"PO-Revision-Date: 2004-07-07 13:13+0200\n"
+"POT-Creation-Date: 2004-07-08 04:24+0200\n"
+"PO-Revision-Date: 2004-07-08 19:08+0200\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -640,7 +640,9 @@ msgstr "Server STUN"
 msgid ""
 "The STUN server to use for STUN Support. STUN is a technic that permits to "
 "go through some types of NAT gateways."
-msgstr "Server STUN, který používat pro podporu STUN. STUN je technika, která umožňuje procházet některými typy bran s NAT."
+msgstr ""
+"Server STUN, který používat pro podporu STUN. STUN je technika, která "
+"umožňuje procházet některými typy bran s NAT."
 
 #: gnomemeeting.schemas.in.in.h:130
 msgid ""
@@ -960,7 +962,9 @@ msgstr ""
 msgid ""
 "This enables STUN Support. STUN is a technic that permits to go through some "
 "types of NAT gateways."
-msgstr "Toto povoluje podporu STUN. STUN je technika, která umožňuje procházet některými typy bran s NAT."
+msgstr ""
+"Toto povoluje podporu STUN. STUN je technika, která umožňuje procházet "
+"některými typy bran s NAT."
 
 #: gnomemeeting.schemas.in.in.h:180
 msgid ""
@@ -1290,11 +1294,11 @@ msgid ""
 msgstr ""
 "  --fix-permissions      opravit práva GConf adresáře (spustit jako root)"
 
-#: src/config.cpp:301 src/config.cpp:545
+#: src/config.cpp:305 src/config.cpp:549
 msgid "Changing this setting will only affect new calls"
 msgstr "Změna tohoto nastavení se projeví až při novém hovoru"
 
-#: src/config.cpp:302 src/config.cpp:546
+#: src/config.cpp:306 src/config.cpp:550
 msgid ""
 "You have changed a setting that doesn't permit to GnomeMeeting to apply the "
 "new change to the current call. Your new setting will only take effect for "
@@ -1303,51 +1307,51 @@ msgstr ""
 "Změnili jste nastavení, které GnomeMeeting neumožňuje aplikovat tuto změnu "
 "na aktuální hovor. Vaše nové nastavení se projeví až při dalším volání."
 
-#: src/config.cpp:364
+#: src/config.cpp:368
 msgid "H.245 Tunneling disabled"
 msgstr "Tunelování H.245 zakázáno"
 
-#: src/config.cpp:365
+#: src/config.cpp:369
 msgid "H.245 Tunneling enabled"
 msgstr "Tunelování H.245 povoleno"
 
-#: src/config.cpp:394
+#: src/config.cpp:398
 msgid "Early H.245 disabled"
 msgstr "Časné H.245 zakázáno"
 
-#: src/config.cpp:395
+#: src/config.cpp:399
 msgid "Early H.245 enabled"
 msgstr "Časné H.245 povoleno"
 
-#: src/config.cpp:424
+#: src/config.cpp:428
 msgid "Fast Start disabled"
 msgstr "Rychlý start zakázán"
 
-#: src/config.cpp:425
+#: src/config.cpp:429
 msgid "Fast Start enabled"
 msgstr "Rychlý start povolen"
 
-#: src/config.cpp:456
+#: src/config.cpp:460
 msgid "No gateway or proxy specified"
 msgstr "Neurčena brána nebo proxy"
 
-#: src/config.cpp:456
+#: src/config.cpp:460
 msgid "You need to specify a host to use as gateway or proxy."
 msgstr "Musíte určit počítač, který používat jako bránu nebo proxy."
 
-#: src/config.cpp:604
+#: src/config.cpp:608
 msgid "Disabled silence detection"
 msgstr "Zakázána detekce ticha"
 
-#: src/config.cpp:610
+#: src/config.cpp:614
 msgid "Enabled silence detection"
 msgstr "Povolena detekci ticha"
 
-#: src/config.cpp:1157
+#: src/config.cpp:1161
 msgid "Forward URL not specified"
 msgstr "URL přesměrování neurčeno!"
 
-#: src/config.cpp:1158
+#: src/config.cpp:1162
 msgid ""
 "You need to specify an URL where to forward calls in the call forwarding "
 "section of the preferences!\n"
@@ -1358,6 +1362,14 @@ msgstr ""
 "nastavení!\n"
 "\n"
 "Zakazuji přesměrování."
+
+#: src/config.cpp:1219
+msgid "STUN Server error"
+msgstr "Chyba serveru STUN"
+
+#: src/config.cpp:1219
+msgid "You have to specify a valid STUN server in order to use STUN support"
+msgstr "Pro používání podpory STUN musíte zadat platný server STUN"
 
 #: src/connection.cpp:154
 #, c-format
