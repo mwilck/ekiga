@@ -263,6 +263,10 @@ GMH323EndPoint::~GMH323EndPoint ()
 
   /* The video grabber must be removed */
   delete (vg_int_cond_mutex);
+
+  /* Remove any running audio tester, if any */
+  if (audio_tester)
+    delete (audio_tester);
 }
 
 
@@ -750,8 +754,10 @@ GMH323EndPoint::StartListener ()
 void 
 GMH323EndPoint::StartAudioTester ()
 {
-  if (!audio_tester)
-    audio_tester = new GMAudioTester (this);
+  if (audio_tester)
+    delete (audio_tester);
+
+  audio_tester = new GMAudioTester (this);
 }
 
 
@@ -760,7 +766,7 @@ GMH323EndPoint::StopAudioTester ()
 {
   if (audio_tester) {
    
-    (GM_AUDIO_TESTER (audio_tester))->Stop ();
+    delete (audio_tester);
     audio_tester = NULL;
   }
 }

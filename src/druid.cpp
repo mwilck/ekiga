@@ -79,13 +79,20 @@ static void
 audio_test_button_clicked (GtkWidget *w,
 			   gpointer data)
 {
+  GMH323EndPoint *ep = MyApp->Endpoint ();
+
   if (GTK_TOGGLE_BUTTON (w)->active) {
-    
-    MyApp->Endpoint ()->StartAudioTester ();
+
+    /* Try to prevent a crossed mutex deadlock */
+    gdk_threads_leave ();
+    ep->StartAudioTester ();
+    gdk_threads_enter ();
   }
   else {
 
-    MyApp->Endpoint ()->StopAudioTester ();
+    gdk_threads_leave ();
+    ep->StopAudioTester ();
+    gdk_threads_enter ();
   }
 }
 

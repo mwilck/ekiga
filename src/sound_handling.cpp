@@ -239,9 +239,143 @@ gnomemeeting_sound_play_ringtone (GtkWidget *widget)
 }
 
 
+GMAudioRP::GMAudioRP (GMAudioTester *t, PString dev, BOOL enc)
+  :PThread (1000, NoAutoDeleteThread)
+{
+  is_encoding = enc;
+  tester = t;
+  device = dev;
+  stop = FALSE;
+}
+
+
+GMAudioRP::~GMAudioRP ()
+{
+  stop = TRUE;
+
+  PWaitAndSignal m(quit_mutex);
+}
+
+
+void GMAudioRP::Main ()
+{
+  GConfClient *client = NULL;
+  PSoundChannel *channel = NULL;
+  GmWindow *gw = NULL;
+  gchar *manager = NULL;
+  char *buffer = NULL;
+  int buffer_pos = 0;
+
+  PString device_name;
+
+  PWaitAndSignal m(quit_mutex);
+
+  gw = MyApp->GetMainWindow ();
+  client = gconf_client_get_default ();
+
+#ifndef TRY_PLUGINS
+  channel = new PSoundChannel;
+#endif
+  
+  /* Build the real device name for the plugins system */
+  gdk_threads_enter ();
+
+  manager =
+    gconf_client_get_string (client, DEVICES_KEY "audio_manager", 0);
+  if (manager)
+    device_name = PString (manager) + " " + device;
+  g_free (manager);
+
+  gdk_threads_leave ();
+
+  buffer = (char *) malloc (640);
+  memset (buffer, '0', sizeof (buffer));
+
+
+  /* We try to open the 2 selected devices */
+#ifndef TRY_PLUGINS
+  if (!channel->Open (device, 
+		      is_encoding ? PSoundChannel::Recorder 
+		      : PSoundChannel::Player,
+		      1, 8000, 16)) {
+#else
+    
+  channel = 
+    PDeviceManager::GetOpenedSoundDevice (device_name,
+					  is_encoding ? PDeviceManager::Input 
+					  : PDeviceManager::Output,
+					  1, 8000, 16);
+  if (!channel) {
+#endif
+    gdk_threads_enter ();  
+    if (is_encoding)
+      gnomemeeting_error_dialog (GTK_WINDOW (gw->druid_window), _("Failed to open the device"), _("Impossible to open the selected audio device (%s) for recording. Please check your audio setup, the permissions and that the device is not busy."), (const char *) device);
+    else
+      gnomemeeting_error_dialog (GTK_WINDOW (gw->druid_window), _("Failed to open the device"), _("Impossible to open the selected audio device (%s) for playing. Please check your audio setup, the permissions and that the device is not busy."), (const char *) device);
+    gdk_threads_leave ();  
+  }
+  else {
+
+    channel->SetBuffers (640, 2);
+    
+    while (!stop) {
+
+      if (is_encoding) {
+
+	if (!channel->Read ((void *) buffer, 640)) {
+      
+	  gdk_threads_enter ();  
+	  gnomemeeting_error_dialog (GTK_WINDOW (gw->druid_window), _("Cannot use the audio device"), _("The selected audio device (%s) was successfully opened but it is impossible to read data from this device. Please check your audio setup."), (const char*) device);
+	  gdk_threads_leave ();  
+
+	  stop = TRUE;
+	}
+	else {
+
+	  tester->buffer_ring_access_mutex.Wait ();
+	  memcpy (&tester->buffer_ring [buffer_pos], buffer,  640); 
+	  tester->buffer_ring_access_mutex.Signal ();
+
+	  buffer_pos += 640;
+	}
+      }
+      else {
+
+	tester->buffer_ring_access_mutex.Wait ();
+	memcpy (buffer, &tester->buffer_ring [buffer_pos], 640); 
+	tester->buffer_ring_access_mutex.Signal ();
+	
+	buffer_pos += 640;
+
+	if (!channel->Write ((void *) buffer, 640)) {
+      
+	  gdk_threads_enter ();  
+	  gnomemeeting_error_dialog (GTK_WINDOW (gw->druid_window), _("Cannot use the audio device"), _("The selected audio device (%s) was successfully opened but it is impossible to write data to this device. Please check your audio setup."), (const char*) device);
+	  gdk_threads_leave ();  
+
+	  stop = TRUE;
+	}
+      }
+
+      if (buffer_pos >= 80000)
+	buffer_pos = 0;	
+    }
+  }
+
+
+  if (channel) {
+
+    channel->Close ();
+    delete (channel);
+  }
+
+  free (buffer);
+}
+
+
 /* The Audio tester class */
 GMAudioTester::GMAudioTester (GMH323EndPoint *e)
-  :PThread (1000, AutoDeleteThread)
+  :PThread (1000, NoAutoDeleteThread)
 {
 #ifndef DISABLE_GNOME
   ep = e;
@@ -252,10 +386,6 @@ GMAudioTester::GMAudioTester (GMH323EndPoint *e)
   gw = MyApp->GetMainWindow ();
   gnomemeeting_threads_leave ();
 
-#ifndef TRY_PLUGINS
-  player = new PSoundChannel;
-  recorder = new PSoundChannel;
-#endif
 
 #endif
 
@@ -266,25 +396,11 @@ GMAudioTester::GMAudioTester (GMH323EndPoint *e)
 GMAudioTester::~GMAudioTester ()
 {
 #ifndef DISABLE_GNOME
-  
   stop = 1;
   quit_mutex.Wait ();
 
-  if (player) {
-
-    player->Close ();
-    delete (player);
-  }
-
-  if (recorder) {
-
-    recorder->Close ();
-    delete (recorder);
-  }
-
   gnomemeeting_sound_daemons_resume ();
   quit_mutex.Signal ();
-  
 #endif
 }
 
@@ -292,198 +408,34 @@ GMAudioTester::~GMAudioTester ()
 void GMAudioTester::Main ()
 {
 #ifndef DISABLE_GNOME
-  
-  GConfClient *client = NULL;
-  GmDruidWindow *dw = NULL;
-  
-  GtkWidget *dialog = NULL;
-  GtkWidget *label = NULL;
+  GMAudioRP *player = NULL;
+  GMAudioRP *recorder = NULL;
 
-  gchar *msg = NULL;
-  gchar *manager = NULL;
+  PWaitAndSignal m(quit_mutex);
 
-  char *buffer_ring = (char *) malloc (8000 /*Hz*/ * 5 /*s*/ * 2 /*16bits*/);
-  char *buffer_play = (char *) malloc (640);
-  char *buffer_record = (char *) malloc (640);
-  
-  int buffer_play_pos = 0;
-  int buffer_rec_pos = 0;
-  int clock = 0;
+  buffer_ring = (char *) malloc (8000 /*Hz*/ * 5 /*s*/ * 2 /*16bits*/);
 
-  bool label_displayed = false;
-  bool displayed = false;
-  
-  PString device;
+  memset (buffer_ring, '0', sizeof (buffer_ring));
+
+  player = new GMAudioRP (this, ep->GetSoundChannelPlayDevice (), FALSE);
+  recorder = new GMAudioRP (this, ep->GetSoundChannelRecordDevice (), TRUE);
+
   PTime now;
-  
-  client = gconf_client_get_default ();
 
-  memset (buffer_ring, 0, sizeof (buffer_ring));
-  memset (buffer_play, 0, sizeof (buffer_play));
-  memset (buffer_record, 0, sizeof (buffer_record));
+  recorder->Resume ();
 
-  gnomemeeting_threads_enter ();
-  manager =
-    gconf_client_get_string (client, DEVICES_KEY "audio_manager", 0);
-  if (manager)
-    device = PString (manager) + " ";
-  gnomemeeting_threads_leave ();
-
-
-  /* We try to open the 2 selected devices */
-#ifndef TRY_PLUGINS
-  if (!player->Open (ep->GetSoundChannelPlayDevice (), 
-		     PSoundChannel::Player,
-		     1, 8000, 16)) {
-#else
-    
-  player = 
-    PDeviceManager::GetOpenedSoundDevice (device+
-					  ep->GetSoundChannelPlayDevice (),
-					  PDeviceManager::Output,
-					  1, 8000, 16);
-  if (!player) {
-#endif
-    gdk_threads_enter ();  
-    gnomemeeting_error_dialog (GTK_WINDOW (gw->druid_window), _("Failed to open the device"), _("Impossible to open the selected audio device (%s) for playing. Please check your audio setup, the permissions and that the device is not busy."), (const char *) ep->GetSoundChannelPlayDevice ());
-    gdk_threads_leave ();  
-
-    stop = TRUE;
-  }
-  else
-    player->SetBuffers (640, 2);
-
-#ifndef TRY_PLUGINS
-  if (!recorder->Open (ep->GetSoundChannelRecordDevice (), 
-		       PSoundChannel::Recorder,
-		       1, 8000, 16)) {
-#else
-  recorder = 
-    PDeviceManager::GetOpenedSoundDevice (device
-					  +ep->GetSoundChannelRecordDevice (),
-					  PDeviceManager::Input,
-					  1, 8000, 16);
-  if (!recorder) {                 
-#endif
-
-    gdk_threads_enter ();  
-    gnomemeeting_error_dialog (GTK_WINDOW (gw->druid_window), _("Failed to open the audio device"), _("Impossible to open the selected audio device (%s) for recording. Please check your audio setup, the permissions and that the device is not busy."), (const char *) ep->GetSoundChannelRecordDevice ());
-    gdk_threads_leave ();  
-
-    stop = TRUE;
-  }
-  else
-    recorder->SetBuffers (640, 2);
-
-  quit_mutex.Wait ();
 
   while (!stop) {
- 
-    
-    if (!recorder->Read ((void *) buffer_record, 640)) {
-      
-      gdk_threads_enter ();  
-      gnomemeeting_error_dialog (GTK_WINDOW (gw->druid_window), _("Cannot use the audio device"), _("The selected audio device (%s) was successfully opened but it is impossible to read data from this device. Please check your audio setup."), (const char*) ep->GetSoundChannelRecordDevice ());
-      gdk_threads_leave ();  
 
-      stop = TRUE;
-    }
-    else
-      buffer_rec_pos += 640;
+    if ((PTime () - now).GetSeconds () > 3)
+      player->Resume ();
 
-    if (clock > 62) {
-      
-      if (!player->Write ((void *) buffer_play, 640)) {
-
-	gdk_threads_enter ();  
-	gnomemeeting_error_dialog (GTK_WINDOW (gw->druid_window), _("Cannot use the audio device"), _("The selected audio device (%s) was successfully opened but it is impossible to write data to this device. Please check your audio setup."), (const char*) ep->GetSoundChannelPlayDevice ());
-	gdk_threads_leave ();  
-	
-	stop = TRUE;
-      }
-      else
-	buffer_play_pos += 640;
-    }
-    
-    if (!displayed) {
-
-      gdk_threads_enter ();
-      dialog =
-	gtk_dialog_new_with_buttons ("Audio test running...",
-				     GTK_WINDOW (gw->druid_window),
-				     (enum GtkDialogFlags) (GTK_DIALOG_DESTROY_WITH_PARENT),
-				     GTK_STOCK_OK,
-				     GTK_RESPONSE_ACCEPT,
-				     NULL);
-      msg = g_strdup_printf (_("GnomeMeeting is now recording from %s and playing back to %s. Please say \"1 2 3\" in your microphone, you should hear yourself back into the speakers with a 3 seconds delay.\n\nRecording... Please talk."), (const char*) ep->GetSoundChannelRecordDevice (), (const char*) ep->GetSoundChannelPlayDevice ());
-      label = gtk_label_new (msg);
-      gtk_label_set_line_wrap (GTK_LABEL (label), true);
-      g_free (msg);
-	
-      gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), label,
-			  FALSE, FALSE, 0);
-	
-      g_signal_connect (G_OBJECT (dialog), "response",
-			G_CALLBACK (dialog_response_cb), NULL);
-      gtk_dialog_set_response_sensitive (GTK_DIALOG (dialog),
-					 GTK_RESPONSE_ACCEPT, false);
-      gtk_window_set_transient_for (GTK_WINDOW (dialog),
-				    GTK_WINDOW (gw->druid_window));
-
-      gtk_widget_show_all (dialog);
-      gdk_threads_leave ();
-      
-      displayed = true;
-    }
-    
-    
-    if (clock > 62) {
-      
-      if (label && !label_displayed && clock) {
-
-	gdk_threads_enter ();  
-	gtk_label_set_text (GTK_LABEL (label), _("GnomeMeeting is now playing what it is recording with a 3 seconds delay. If you don't hear yourself with the delay, you will have to fix your audio setup and probably install a full-duplex driver before calling other GnomeMeeting users.\n\nRecording and playing... Please talk."));
-	gtk_dialog_set_response_sensitive (GTK_DIALOG (dialog),
-					   GTK_RESPONSE_ACCEPT, true);
-	gdk_threads_leave ();  
-
-	label_displayed = true;
-      }
-    }
-
-    if (buffer_play_pos > 80000 || buffer_play_pos == 0)
-      buffer_play_pos = 640;
-    if (buffer_rec_pos >  80000 || buffer_rec_pos == 0)
-      buffer_rec_pos = 640;
-
-    memcpy (&buffer_ring [buffer_rec_pos - 640], buffer_record,  640);
-    memcpy (buffer_play, &buffer_ring [buffer_play_pos - 640],  640);
-
-    clock++;
+    PThread::Current ()->Sleep (100);
   }
-
-  gnomemeeting_threads_enter ();
-  dw = MyApp->GetDruidWindow ();
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (dw->audio_test_button),
-				FALSE);
-  gtk_widget_queue_draw (dw->audio_test_button);
-  gnomemeeting_threads_leave ();
+  
+  delete (player);
+  delete (recorder);
 
   free (buffer_ring);
-  free (buffer_record);
-  free (buffer_play);
-  
-  quit_mutex.Signal ();
-  
-#endif
-}
-
-
-void GMAudioTester::Stop ()
-{
-#ifndef DISABLE_GNOME
-  
-  stop = 1;
-
 #endif
 }

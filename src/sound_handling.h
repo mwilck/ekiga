@@ -82,6 +82,7 @@ int gnomemeeting_sound_play_ringtone (GtkWidget *widget);
 
 void gnomemeeting_mixers_mic_select (void);
      
+
 class GMAudioTester : public PThread
 {
   PCLASSINFO(GMAudioTester, PThread);
@@ -105,10 +106,6 @@ public:
 
   void Main ();
 
-
-  void Stop ();
-
-
 protected:
 
   BOOL stop;
@@ -116,8 +113,34 @@ protected:
   PSoundChannel *player;
   PSoundChannel *recorder;
 
-  GmWindow *gw;
+  char *buffer_ring;
+  PMutex buffer_ring_access_mutex;
 
+  GmWindow *gw;
   GMH323EndPoint *ep;
+
+  friend class GMAudioRP;
 };
 #endif
+
+
+class GMAudioRP : public PThread
+{
+  PCLASSINFO(GMAudioRP, PThread);
+
+ public:
+
+  GMAudioRP (GMAudioTester *, PString, BOOL);
+  ~GMAudioRP ();
+
+  void Main ();
+
+ private:
+
+  BOOL is_encoding;
+  GMAudioTester *tester;
+  PString device;
+  PMutex quit_mutex;
+
+  BOOL stop;
+};

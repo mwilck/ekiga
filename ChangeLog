@@ -1,5 +1,20 @@
 2003-09-02 Damien Sandras  <dsandras@seconix.com>
 
+	* src/druid.cpp: Use a new algorithm for the druid test
+	to ensure it is acting like a real full-duplex program.
+	
+	* src/endpoint.cpp: See above. Added gdk_threads_leave in callback
+	to ensure the GDK mutex is unlocked to prevent crossed mutexes 
+	deadlock.
+
+	* src/sound_handling.cpp: See above. GMAudioTester is not anymore
+	an AutoDeleteThread. Added GMAudioRP, for the player and recorder.
+	They write and read to/from a circular buffer.
+	
+	* src/sound_handling.h: See above.
+	
+2003-09-02 Damien Sandras  <dsandras@seconix.com>
+
 	* configure.in: Added sq to ALL_LINGUAS.
 	
 2003-09-02 Damien Sandras  <dsandras@seconix.com>
