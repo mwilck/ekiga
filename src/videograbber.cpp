@@ -511,7 +511,7 @@ void GMVideoGrabber::VGOpen (void)
     encoding_device->SetFrameSize (height, width);  
 
     /* Setup the video settings */
-    //GetParameters (&whiteness, &brightness, &colour, &contrast);
+    GetParameters (&whiteness, &brightness, &colour, &contrast);
     gnomemeeting_threads_enter ();
     gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_brightness),
 			      brightness);
