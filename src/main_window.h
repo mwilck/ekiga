@@ -62,10 +62,12 @@ void gm_main_window_update_video (GtkWidget *,
 				  const guchar *,
 				  int,
 				  int,
+				  double,
+				  const guchar *,
 				  int,
 				  int,
+				  double,
 				  int,
-				  gboolean,
 				  gboolean);
 
 

@@ -147,7 +147,13 @@ class GDKVideoOutputDevice : public PVideoOutputDevice
   int display_config; /* Current display : local or remote or both */
 
   PMutex redraw_mutex;
-  PBYTEArray frameStore;
+
+  static PBYTEArray lframeStore;
+  static PBYTEArray rframeStore;
+  static int lf_width;
+  static int lf_height;
+  static int rf_width;
+  static int rf_height;
   
 
   enum {REMOTE, LOCAL};

@@ -50,6 +50,14 @@
 #include <ptlib/vconvert.h>
 
 
+PBYTEArray GDKVideoOutputDevice::lframeStore;
+PBYTEArray GDKVideoOutputDevice::rframeStore;
+
+int GDKVideoOutputDevice::rf_width;
+int GDKVideoOutputDevice::lf_width;
+int GDKVideoOutputDevice::rf_height;
+int GDKVideoOutputDevice::lf_height;
+
 
 /* The Methods */
 GDKVideoOutputDevice::GDKVideoOutputDevice(int idno)
@@ -62,6 +70,9 @@ GDKVideoOutputDevice::GDKVideoOutputDevice(int idno)
 GDKVideoOutputDevice::~GDKVideoOutputDevice()
 {
   PWaitAndSignal m(redraw_mutex);
+
+  lframeStore.SetSize (0);
+  rframeStore.SetSize (0);
 }
 
 
@@ -71,15 +82,9 @@ BOOL GDKVideoOutputDevice::Redraw ()
   
   GMH323EndPoint *ep = NULL;
   
-  PMutex both_mutex;
 
-
-  gchar *string = NULL;
-  gchar **couple = NULL;
-
-  static double zoom = 1.0;
-  int zoomed_width = 0;
-  int zoomed_height = 0;
+  double rzoom = 1.0;
+  double lzoom = 1.0;
   int display = LOCAL_VIDEO;
 
   gboolean bilinear_filtering = FALSE;
@@ -98,35 +103,9 @@ BOOL GDKVideoOutputDevice::Redraw ()
   bilinear_filtering = 
     gm_conf_get_bool (VIDEO_DISPLAY_KEY "enable_bilinear_filtering");
   display = gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view");
-  zoom = gm_conf_get_float (VIDEO_DISPLAY_KEY "zoom_factor");
-  if (display == BOTH) {
-
-    if (device_id == LOCAL) 
-      string = 
-	gm_conf_get_string (USER_INTERFACE_KEY "local_video_window/size");
-    else
-      string = 
-	gm_conf_get_string (USER_INTERFACE_KEY "remote_video_window/size");
-      
-    if (string)
-      couple = g_strsplit (string, ",", 0);
-
-    if (couple && couple [0])
-      zoomed_width = atoi (couple [0]);
-
-    if (couple && couple [1])
-      zoomed_height = atoi (couple [1]);
-  }
-  else {
-
-    zoomed_width = (int) (frameWidth * zoom);
-    zoomed_height = (int) (frameHeight * zoom);
-  }
   gnomemeeting_threads_leave ();
 
   
-  if (zoom != 0.5 && zoom != 1 && zoom != 2)
-    zoom = 1.0;
 
   /* If we are not in a call, then display the local video. If we
    * are in a call, then display what config tells us, except if
@@ -148,24 +127,32 @@ BOOL GDKVideoOutputDevice::Redraw ()
     display = LOCAL_VIDEO;
 
 
-  if ( (((device_id == REMOTE && display == REMOTE_VIDEO) ||
-	 (device_id == LOCAL && display == LOCAL_VIDEO)) 
-	&& (display != BOTH_INCRUSTED))
-       || (display == BOTH)) { 
-
-    gnomemeeting_threads_enter ();
-    gm_main_window_update_video (main_window,
-				 (const guchar *) frameStore,
-				 frameWidth, frameHeight,
-				 zoomed_width, zoomed_height,
-				 display,
-				 (device_id == REMOTE),
-				 TRUE);
-    gnomemeeting_threads_leave ();
-  }
+  /* Display with the rigth zoom */
+  gnomemeeting_threads_enter ();
+  if (display == REMOTE_VIDEO || display == LOCAL_VIDEO)
+    rzoom = lzoom = gm_conf_get_float (VIDEO_DISPLAY_KEY "zoom_factor");
   
+  if (display == BOTH) {
+    
+    lzoom = gm_conf_get_float (VIDEO_DISPLAY_KEY "local_zoom_factor");
+    rzoom = gm_conf_get_float (VIDEO_DISPLAY_KEY "remote_zoom_factor");
+  }
+    
+  if (display == BOTH_INCRUSTED) {
+    
+    rzoom = gm_conf_get_float (VIDEO_DISPLAY_KEY "zoom_factor");
+    lzoom = (rf_height / 3.00) / lf_height * rzoom;
+  }
+
+  gm_main_window_update_video (main_window,
+			       (const guchar *) lframeStore,
+			       lf_width, lf_height, lzoom,
+			       (const guchar *) rframeStore,
+			       rf_width, rf_height, rzoom,
+			       display, FALSE);
+  gnomemeeting_threads_leave ();
   redraw_mutex.Signal ();
-	
+
   return TRUE;
 }
 
@@ -185,13 +172,12 @@ BOOL GDKVideoOutputDevice::IsOpen ()
 }
 
 
-BOOL GDKVideoOutputDevice::SetFrameData(
-					unsigned x,
-					unsigned y,
-					unsigned width,
-					unsigned height,
-					const BYTE * data,
-					BOOL endFrame)
+BOOL GDKVideoOutputDevice::SetFrameData (unsigned x,
+					 unsigned y,
+					 unsigned width,
+					 unsigned height,
+					 const BYTE * data,
+					 BOOL endFrame)
 {
   if (x+width > frameWidth || y+height > frameHeight)
     return FALSE;
@@ -199,10 +185,24 @@ BOOL GDKVideoOutputDevice::SetFrameData(
   if (!endFrame)
     return FALSE;
 
-  frameStore.SetSize (width * height * 3);
-  
-  if (converter)
-    converter->Convert (data, frameStore.GetPointer ());
+  if (device_id == LOCAL) {
+
+    lframeStore.SetSize (width * height * 3);
+    lf_width = frameWidth;
+    lf_height = frameHeight;
+
+    if (converter)
+      converter->Convert (data, lframeStore.GetPointer ());
+  }
+  else {
+
+    rframeStore.SetSize (width * height * 3);
+    rf_width = frameWidth;
+    rf_height = frameHeight;
+    
+    if (converter)
+      converter->Convert (data, rframeStore.GetPointer ());
+  }
   
   EndFrame ();
   

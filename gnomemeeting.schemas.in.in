@@ -942,6 +942,28 @@
       </locale>
     </schema>
     <schema>	
+      <key>/schemas/apps/gnomemeeting/general/user_interface/video_display/local_zoom_factor</key>
+      <applyto>/apps/gnomemeeting/general/user_interface/video_display/local_zoom_factor</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>float</type>
+      <default>1.0</default>
+      <locale name="C">
+	<short>The local zoom value</short>
+	<long>The zoom value to apply to images displayed in the local video window (can be 0.50, 1.00, or 2.00) for video</long>
+      </locale>
+    </schema>
+    <schema>	
+      <key>/schemas/apps/gnomemeeting/general/user_interface/video_display/remote_zoom_factor</key>
+      <applyto>/apps/gnomemeeting/general/user_interface/video_display/remote_zoom_factor</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>float</type>
+      <default>1.0</default>
+      <locale name="C">
+	<short>The remote zoom value</short>
+	<long>The zoom value to apply to images displayed in the remote video window (can be 0.50, 1.00, or 2.00) for video</long>
+      </locale>
+    </schema>
+    <schema>	
       <key>/schemas/apps/gnomemeeting/general/user_interface/video_display/zoom_factor</key>
       <applyto>/apps/gnomemeeting/general/user_interface/video_display/zoom_factor</applyto>
       <owner>GnomeMeeting</owner>
@@ -949,7 +971,7 @@
       <default>1.0</default>
       <locale name="C">
 	<short>The zoom value</short>
-	<long>The zoom value to apply to images displayed in the main GUI (can be 0.50, 1.00, or 2.00)</long>
+	<long>The zoom value to apply to images displayed in the main GUI (can be 0.50, 1.00, or 2.00) for video</long>
       </locale>
     </schema>
     <schema>	

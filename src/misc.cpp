@@ -136,39 +136,6 @@ PAssertFunc (const char *file, int line,
 #endif
 
 
-GtkWidget *
-gnomemeeting_video_window_new (gchar *title, 
-			       GtkWidget *&image,
-			       gchar *window_name)
-{
-  GtkWidget *vbox = NULL;
-  GtkWidget *window = NULL;
-
-  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_title (GTK_WINDOW (window), title);
-  g_object_set_data_full (G_OBJECT (window), "window_name",
-			  g_strdup (window_name), g_free);
-  
-  vbox = gtk_vbox_new (0, FALSE);
-  image = gtk_image_new ();
-
-  gtk_box_pack_start (GTK_BOX (vbox), image, TRUE, TRUE, 0);
-  gtk_container_set_border_width (GTK_CONTAINER (window), 0);
-
-  gtk_container_add (GTK_CONTAINER (window), vbox);
-  gtk_widget_realize (image);
-
-  gtk_widget_set_size_request (GTK_WIDGET (image), 176, 144);
-  gtk_window_set_resizable (GTK_WINDOW (window), TRUE);
-
-  gtk_widget_show_all (vbox);
-    
-  g_signal_connect (G_OBJECT (window), "delete_event",
-		    G_CALLBACK (gtk_widget_hide_on_delete), 0);
-
-  return window;
-}
-
 
 PString gnomemeeting_pstring_cut (PString s)
 {

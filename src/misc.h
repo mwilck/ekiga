@@ -74,17 +74,6 @@ gnomemeeting_button_new (const char *,
 
 
 /* DESCRIPTION   :  /
- * BEHAVIOR      : Creates a video window.
- * PRE           : The title of the window, the drawing area and the window
- *                 name that will be used by gnomemeeting_window_show/hide.
- */
-GtkWidget *
-gnomemeeting_video_window_new (gchar *,
-			       GtkWidget *&,
-			       gchar *);
-
-
-/* DESCRIPTION   :  /
  * BEHAVIOR      : Takes a PString and returns the Left part before a [ or a (.
  * PRE           : An non-empty PString.
  */

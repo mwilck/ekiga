@@ -1,3 +1,19 @@
+2004-10-09  Damien Sandras  <dsandras@gnome.org>
+
+	* NEWS: Updated with CVS news.
+
+	* configure.in: Incremented SCHEMA_AGE.
+
+	* gnomemeeting.schemas.in.in: Added GConf keys for the remote and
+	local video windows.
+
+	* src/gdkvideoio.cpp, src/gdkvideoio.h, src/main_window.cpp, 
+	src/main_window.h, src/misc.cpp, src/misc.h: Added back
+	Picture-In-Picture mode. Added independant zoom values for the video
+	displayed in the local video popup, remote video popup and main GUI.
+	The local video picture is now always 1/3 of the remote video picture
+	whatever the exchanged pictures sizes are.
+
 2004-10-09 Kilian Krause <kk@verfaction.de>
 
 	* configure.in: Fixed previous commit.

@@ -223,6 +223,20 @@ static void gm_mw_push_message (GtkWidget *main_window,
 				const char *msg, 
 				...);
 
+
+/* DESCRIPTION   :  /
+ * BEHAVIOR      : Creates a video window.
+ * PRE           : The title of the window, the drawing area and the window
+ *                 name that will be used by gnomemeeting_window_show/hide.
+ */
+GtkWidget *
+gm_mw_video_window_new (GtkWidget *,
+			gboolean,
+			gchar *,
+			GtkWidget *&,
+			gchar *);
+
+
 /* Callbacks */
 
 /* DESCRIPTION  :  /
@@ -331,13 +345,30 @@ static void text_chat_clear_cb (GtkWidget *,
 
 
 /* DESCRIPTION  :  This callback is called when the user changes the zoom
- *                 factor in the menu.
- * BEHAVIOR     :  Sets zoom to 1:2 if data == 0, 1:1 if data == 1, 
- *                 2:1 if data == 2. (Updates the config key).
- * PRE          :  /
+ *                 factor in the menu, and chooses to zoom in.
+ * BEHAVIOR     :  zoom *= 2.
+ * PRE          :  The GConf key to update with the new zoom.
  */
-static void zoom_changed_cb (GtkWidget *,
-			     gpointer);
+static void zoom_in_changed_cb (GtkWidget *,
+				gpointer);
+
+
+/* DESCRIPTION  :  This callback is called when the user changes the zoom
+ *                 factor in the menu, and chooses to zoom in.
+ * BEHAVIOR     :  zoom /= 2.
+ * PRE          :  The GConf key to update with the new zoom.
+ */
+static void zoom_out_changed_cb (GtkWidget *,
+				 gpointer);
+
+
+/* DESCRIPTION  :  This callback is called when the user changes the zoom
+ *                 factor in the menu, and chooses to zoom in.
+ * BEHAVIOR     :  zoom = 1.
+ * PRE          :  The GConf key to update with the new zoom.
+ */
+static void zoom_normal_changed_cb (GtkWidget *,
+				    gpointer);
 
 
 /* DESCRIPTION  :  This callback is called when the user toggles fullscreen
@@ -1028,16 +1059,16 @@ gm_mw_init_menu (GtkWidget *main_window)
 
       GTK_MENU_ENTRY("zoom_in", _("Zoom In"), _("Zoom in"), 
 		     GTK_STOCK_ZOOM_IN, '+', 
-		     GTK_SIGNAL_FUNC (zoom_changed_cb),
-		     GINT_TO_POINTER (2), FALSE),
+		     GTK_SIGNAL_FUNC (zoom_in_changed_cb),
+		     (gpointer) VIDEO_DISPLAY_KEY "zoom_factor", FALSE),
       GTK_MENU_ENTRY("zoom_out", _("Zoom Out"), _("Zoom out"), 
 		     GTK_STOCK_ZOOM_OUT, '-', 
-		     GTK_SIGNAL_FUNC (zoom_changed_cb),
-		     GINT_TO_POINTER (0), FALSE),
+		     GTK_SIGNAL_FUNC (zoom_out_changed_cb),
+		     (gpointer) VIDEO_DISPLAY_KEY "zoom_factor", FALSE),
       GTK_MENU_ENTRY("normal_size", _("Normal Size"), _("Normal size"), 
 		     GTK_STOCK_ZOOM_100, '=',
-		     GTK_SIGNAL_FUNC (zoom_changed_cb),
-		     GINT_TO_POINTER (1), FALSE),
+		     GTK_SIGNAL_FUNC (zoom_normal_changed_cb),
+		     (gpointer) VIDEO_DISPLAY_KEY "zoom_factor", FALSE),
 
       GTK_MENU_ENTRY("fullscreen", _("Fullscreen"), _("Switch to fullscreen"), 
 		     GTK_STOCK_ZOOM_IN, 'f', 
@@ -1486,6 +1517,104 @@ gm_mw_push_message (GtkWidget *main_window,
 }
 
 
+GtkWidget *
+gm_mw_video_window_new (GtkWidget *main_window,
+			gboolean is_local,
+			gchar *title, 
+			GtkWidget *&image,
+			gchar *window_name)
+{
+  GmWindow *mw = NULL;
+  
+  GtkWidget *event_box = NULL;
+  GtkWidget *vbox = NULL;
+  GtkWidget *window = NULL;
+
+
+  g_return_val_if_fail (main_window != NULL, NULL);
+  mw = gm_mw_get_mw (main_window);
+  g_return_val_if_fail (mw != NULL, NULL);
+  
+
+  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  gtk_window_set_title (GTK_WINDOW (window), title);
+  g_object_set_data_full (G_OBJECT (window), "window_name",
+			  g_strdup (window_name), g_free);
+  
+  event_box = gtk_event_box_new ();
+  vbox = gtk_vbox_new (0, FALSE);
+  image = gtk_image_new ();
+
+  gtk_box_pack_start (GTK_BOX (vbox), image, TRUE, TRUE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (window), 0);
+
+  gtk_container_add (GTK_CONTAINER (window), event_box);
+  gtk_container_add (GTK_CONTAINER (event_box), vbox);
+  gtk_widget_realize (image);
+
+  gtk_widget_set_size_request (GTK_WIDGET (image), 176, 144);
+  gtk_window_set_resizable (GTK_WINDOW (window), FALSE);
+
+  gtk_widget_show_all (event_box);
+
+  static MenuEntry local_popup_menu [] = {
+    
+      GTK_MENU_ENTRY("zoom_in", _("Zoom In"), _("Zoom in"), 
+		     GTK_STOCK_ZOOM_IN, '+', 
+		     GTK_SIGNAL_FUNC (zoom_in_changed_cb),
+		     (gpointer) VIDEO_DISPLAY_KEY "local_zoom_factor", TRUE),
+      GTK_MENU_ENTRY("zoom_out", _("Zoom Out"), _("Zoom out"), 
+		     GTK_STOCK_ZOOM_OUT, '-', 
+		     GTK_SIGNAL_FUNC (zoom_out_changed_cb),
+		     (gpointer) VIDEO_DISPLAY_KEY "local_zoom_factor", TRUE),
+      GTK_MENU_ENTRY("normal_size", _("Normal Size"), _("Normal size"), 
+		     GTK_STOCK_ZOOM_100, '=',
+		     GTK_SIGNAL_FUNC (zoom_normal_changed_cb),
+		     (gpointer) VIDEO_DISPLAY_KEY "local_zoom_factor", TRUE),
+
+      GTK_MENU_ENTRY("fullscreen", _("Fullscreen"), _("Switch to fullscreen"), 
+		     GTK_STOCK_ZOOM_IN, 'f', 
+		     GTK_SIGNAL_FUNC (fullscreen_changed_cb),
+		     NULL, TRUE),
+
+      GTK_MENU_END
+  };
+  
+  static MenuEntry remote_popup_menu [] = {
+    
+      GTK_MENU_ENTRY("zoom_in", _("Zoom In"), _("Zoom in"), 
+		     GTK_STOCK_ZOOM_IN, '+', 
+		     GTK_SIGNAL_FUNC (zoom_in_changed_cb),
+		     (gpointer) VIDEO_DISPLAY_KEY "remote_zoom_factor", TRUE),
+      GTK_MENU_ENTRY("zoom_out", _("Zoom Out"), _("Zoom out"), 
+		     GTK_STOCK_ZOOM_OUT, '-', 
+		     GTK_SIGNAL_FUNC (zoom_out_changed_cb),
+		     (gpointer) VIDEO_DISPLAY_KEY "remote_zoom_factor", TRUE),
+      GTK_MENU_ENTRY("normal_size", _("Normal Size"), _("Normal size"), 
+		     GTK_STOCK_ZOOM_100, '=',
+		     GTK_SIGNAL_FUNC (zoom_normal_changed_cb),
+		     (gpointer) VIDEO_DISPLAY_KEY "remote_zoom_factor", TRUE),
+
+      GTK_MENU_ENTRY("fullscreen", _("Fullscreen"), _("Switch to fullscreen"), 
+		     GTK_STOCK_ZOOM_IN, 'f', 
+		     GTK_SIGNAL_FUNC (fullscreen_changed_cb),
+		     NULL, TRUE),
+
+      GTK_MENU_END
+  };
+
+  if (is_local)
+    gtk_build_popup_menu (event_box, local_popup_menu, mw->accel);
+  else
+    gtk_build_popup_menu (event_box, remote_popup_menu, mw->accel);
+  
+  g_signal_connect (G_OBJECT (window), "delete_event",
+		    G_CALLBACK (gtk_widget_hide_on_delete), 0);
+
+  return window;
+}
+
+
 /* GTK callbacks */
 
 static void 
@@ -1809,30 +1938,48 @@ text_chat_clear_cb (GtkWidget *widget,
 
 
 static void 
-zoom_changed_cb (GtkWidget *widget,
-		 gpointer data)
+zoom_in_changed_cb (GtkWidget *widget,
+		    gpointer data)
 {
   double zoom = 0.0;
+
+  g_return_if_fail (data != NULL);
+
+  zoom = gm_conf_get_float ((char *) data);
+
+  if (zoom < 2.00)
+    zoom = zoom * 2.0;
+
+  gm_conf_set_float ((char *) data, zoom);
+}
+
+
+static void 
+zoom_out_changed_cb (GtkWidget *widget,
+		     gpointer data)
+{
+  double zoom = 0.0;
+
+  g_return_if_fail (data != NULL);
+
+  zoom = gm_conf_get_float ((char *) data);
+
+  if (zoom > 0.5)
+    zoom = zoom / 2.0;
   
-  zoom = gm_conf_get_float (VIDEO_DISPLAY_KEY "zoom_factor");
+  gm_conf_set_float ((char *) data, zoom);
+}
 
-  switch (GPOINTER_TO_INT (data)) {
 
-  case 0:
-    if (zoom > 0.5)
-      zoom = zoom / 2.0;
-    break;
+static void 
+zoom_normal_changed_cb (GtkWidget *widget,
+			gpointer data)
+{
+  double zoom = 1.0;
 
-  case 1:
-    zoom = 1.0;
-    break;
+  g_return_if_fail (data != NULL);
 
-  case 2:
-    if (zoom < 2.00)
-      zoom = zoom * 2.0;
-  }
-
-  gm_conf_set_float (VIDEO_DISPLAY_KEY "zoom_factor", zoom);
+  gm_conf_set_float ((char *) data, zoom);
 }
 
 
@@ -2168,26 +2315,23 @@ delete_incoming_call_dialog_cb (GtkWidget *w,
 /* Public functions */
 void 
 gm_main_window_update_video (GtkWidget *main_window,
-			     const guchar *buffer,
-			     int frame_width,
-			     int frame_height,
-			     int zoomed_width,
-			     int zoomed_height,
+			     const guchar *lbuffer,
+			     int lf_width,
+			     int lf_height,
+			     double lzoom,
+			     const guchar *rbuffer,
+			     int rf_width,
+			     int rf_height,
+			     double rzoom,
 			     int display_type,
-			     gboolean is_remote,
 			     gboolean bilinear_filtering)
 {
   GmWindow *mw = NULL;
 
-  GtkWidget *frame = NULL;
-  GtkWidget *image = NULL;
-  
-  GdkPixbuf *src_pic = NULL;
-  GdkPixbuf *zoomed_pic = NULL;
-
-  int window_height = 0;
-  int window_width = 0;
-
+  GdkPixbuf *lsrc_pic = NULL;
+  GdkPixbuf *zlsrc_pic = NULL;
+  GdkPixbuf *rsrc_pic = NULL;
+  GdkPixbuf *zrsrc_pic = NULL;
 
   g_return_if_fail (main_window != NULL);
 
@@ -2220,72 +2364,115 @@ gm_main_window_update_video (GtkWidget *main_window,
   }
 
   
-  /* The real size picture */
-  src_pic =  
-    gdk_pixbuf_new_from_data (buffer, GDK_COLORSPACE_RGB, 
-			      FALSE, 8, frame_width, frame_height, 
-			      frame_width * 3, 
-			      NULL, NULL);
-
-
-  /* The zoomed picture */
-  if ((zoomed_width != frame_width)||
-      (zoomed_height != frame_height)) {
-
-    zoomed_pic = 
-      gdk_pixbuf_scale_simple (src_pic, 
-			       zoomed_width, zoomed_height, 
-			       bilinear_filtering
-			       ?GDK_INTERP_BILINEAR:GDK_INTERP_NEAREST);
-  }
-  else 
-    zoomed_pic = gdk_pixbuf_copy (src_pic);
-  
-
-  /* What are we resizing and where are we displaying */
-  if (display_type == LOCAL_VIDEO || display_type == REMOTE_VIDEO) {
-
-    frame = mw->video_frame;
-    image = mw->main_video_image;
-  }
-  else if (display_type == BOTH) {
-
-    if (is_remote) {
-
-      frame = mw->remote_video_window;
-      image = mw->remote_video_image;
-    }
-    else {
-
-      frame = mw->local_video_window;
-      image = mw->local_video_image;
-    }
-
-  }
+  /* The real size picture, if required */
+  if (display_type != REMOTE_VIDEO && lbuffer) {
     
-  /* Need to redefine screen size ? */
-  gtk_widget_get_size_request (GTK_WIDGET (frame), 
-			       &window_width, &window_height);
+    lsrc_pic =  
+      gdk_pixbuf_new_from_data (lbuffer, GDK_COLORSPACE_RGB, 
+				FALSE, 8, lf_width, lf_height, 
+				lf_width * 3, 
+				NULL, NULL);
+    if (lzoom != 1.0)
+      zlsrc_pic = 
+	gdk_pixbuf_scale_simple (lsrc_pic, 
+				 (int) (lf_width * lzoom),
+				 (int) (lf_height * lzoom),
+				 GDK_INTERP_NEAREST);
+    else
+      zlsrc_pic = gdk_pixbuf_copy (lsrc_pic);
 
-  if ((window_width != zoomed_width) 
-      || (window_height != zoomed_height)) {
-
-    gtk_widget_set_size_request (GTK_WIDGET (frame),
-				 zoomed_width, 
-				 zoomed_height);
   }
   
+  if (display_type != LOCAL_VIDEO && rbuffer) {
+   
+    rsrc_pic =  
+      gdk_pixbuf_new_from_data (rbuffer, GDK_COLORSPACE_RGB, 
+				FALSE, 8, rf_width, rf_height, 
+				rf_width * 3, 
+				NULL, NULL);
+    if (rzoom != 1.0)
+      zrsrc_pic = 
+	gdk_pixbuf_scale_simple (rsrc_pic, 
+				 (int) (rf_width * rzoom),
+				 (int) (rf_height * rzoom),
+				 GDK_INTERP_NEAREST);
+    else
+      zrsrc_pic = gdk_pixbuf_copy (rsrc_pic);
 
-  /* Display the image */
-  gtk_image_set_from_pixbuf (GTK_IMAGE (image), 
-			     GDK_PIXBUF (zoomed_pic));
+    g_object_unref (rsrc_pic);
+  }
 
-
-  g_object_unref (zoomed_pic);
-  g_object_unref (src_pic);
   
-  zoomed_pic = NULL;
-  src_pic = NULL;
+  switch (display_type) {
+
+  case LOCAL_VIDEO:
+    if (zlsrc_pic) {
+      
+      gtk_widget_set_size_request (GTK_WIDGET (mw->video_frame),
+				   (int) (lf_width * lzoom),
+				   (int) (lf_height * lzoom));
+      gtk_image_set_from_pixbuf (GTK_IMAGE (mw->main_video_image), 
+				 GDK_PIXBUF (zlsrc_pic));
+      g_object_unref (zlsrc_pic);
+    }
+    break;
+
+  case REMOTE_VIDEO:
+    if (zrsrc_pic) {
+      
+      gtk_widget_set_size_request (GTK_WIDGET (mw->video_frame),
+				   (int) (rf_width * rzoom),
+				   (int) (rf_height * rzoom));
+      gtk_image_set_from_pixbuf (GTK_IMAGE (mw->main_video_image), 
+				 GDK_PIXBUF (zrsrc_pic));
+      g_object_unref (zrsrc_pic);
+    }
+    break;
+
+  case BOTH_INCRUSTED:
+
+    if (zlsrc_pic && zrsrc_pic) {
+
+      gdk_pixbuf_copy_area  (zlsrc_pic, 
+			     0 , 0,
+			     (int) (lf_width * lzoom), 
+			     (int) (lf_height * lzoom),
+			     zrsrc_pic,
+			     (int) (rf_width * rzoom) 
+			     - (int) (lf_width * lzoom), 
+			     (int) (rf_height * rzoom) 
+			     - (int) (lf_height * lzoom));
+
+      gtk_widget_set_size_request (GTK_WIDGET (mw->video_frame),
+				   (int) (rf_width * rzoom),
+				   (int) (rf_height * rzoom));
+
+      gtk_image_set_from_pixbuf (GTK_IMAGE (mw->main_video_image), 
+				 GDK_PIXBUF (zrsrc_pic));
+      g_object_unref (zrsrc_pic);
+      g_object_unref (zlsrc_pic);
+    }
+    break;
+
+  case BOTH:
+
+    if (zlsrc_pic && zrsrc_pic) {
+
+      gtk_widget_set_size_request (GTK_WIDGET (mw->remote_video_window),
+				   (int) (rf_width * rzoom),
+				   (int) (rf_height * rzoom));
+      gtk_widget_set_size_request (GTK_WIDGET (mw->local_video_window),
+				   (int) (lf_width * lzoom),
+				   (int) (lf_height * lzoom));
+      gtk_image_set_from_pixbuf (GTK_IMAGE (mw->remote_video_image), 
+				 GDK_PIXBUF (zrsrc_pic));
+      gtk_image_set_from_pixbuf (GTK_IMAGE (mw->local_video_image), 
+				 GDK_PIXBUF (zlsrc_pic));
+      
+      g_object_unref (zrsrc_pic);
+      g_object_unref (zlsrc_pic);
+    }
+  } 
 }
 
 
@@ -3370,13 +3557,17 @@ gm_main_window_new ()
   
   /* The 2 video window popups */
   mw->local_video_window =
-    gnomemeeting_video_window_new (_("Local Video"),
-				   mw->local_video_image,
-				   "local_video_window");
+    gm_mw_video_window_new (window,
+			    TRUE,
+			    _("Local Video"),
+			    mw->local_video_image,
+			    "local_video_window");
   mw->remote_video_window =
-    gnomemeeting_video_window_new (_("Remote Video"),
-				   mw->remote_video_image,
-				   "remote_video_window");
+    gm_mw_video_window_new (window,
+			    FALSE,
+			    _("Remote Video"),
+			    mw->remote_video_image,
+			    "remote_video_window");
   
   gm_main_window_update_logo (window);
 
