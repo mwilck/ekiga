@@ -573,6 +573,7 @@ gm_mw_init_toolbars (GtkWidget *main_window)
   /* The main horizontal toolbar */
   toolbar = gtk_toolbar_new ();
   gtk_toolbar_set_style (GTK_TOOLBAR (toolbar), GTK_TOOLBAR_ICONS);
+  gtk_toolbar_set_show_arrow (GTK_TOOLBAR (toolbar), FALSE);
 
 
   /* URL bar */
