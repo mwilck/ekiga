@@ -638,8 +638,8 @@ void gnomemeeting_init_main_window ()
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    0, 0);
 
-  cout << "FIX ME: History Combo Box" << endl << flush;
-  gw->combo = gnomemeeting_history_combo_box_new(gw);
+  gw->combo = gnomemeeting_history_combo_box_new("/apps/gnomemeeting/"
+						 "history/called_hosts");
 
   gtk_combo_set_use_arrows_always (GTK_COMBO(gw->combo), TRUE);
 

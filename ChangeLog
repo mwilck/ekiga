@@ -1,3 +1,24 @@
+2002-01-19  Miguel Rodríguez Pérez  <migrax@terra.es>
+
+	* src/misc.cpp (gnomemeeting_history_combo_box_new): One
+	leak less
+	(history_changed_nt): Added
+
+	* src/ldap_window.cpp (refresh_button_clicked): Removed
+	a lot of code, and use gnomemeeting_history funcs
+
+	* gnomemeeting.schema: Added .../history/ldap_servers
+
+	* src/misc.h: 
+	* src/main_window.cpp (gnomemeeting_init_main_window): 
+	Addapt to the new prototype of gnomemeeting_history_combo_box_new
+
+	* src/misc.cpp (gnomemeeting_history_combo_box_new): Don't
+	hardcode the gconf key
+
+	* src/main_window.cpp (gnomemeeting_init_main_window): 
+	Removed an already fixed FIXME	
+
 2002-01-17  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* src/ldap_window.cpp: Don't include sound.xpm amd quickcam.xpm
@@ -33,7 +54,7 @@
 	* src/gnomemeeting.cpp (AddContactIP): Removed
 
 	* src/misc.cpp (gnomemeeting_history_combo_box_add_entry): 
-	Use the key passed as a parameter, don't harcode it.
+	Use the key passed as a parameter, don't hardcode it.
 
 2002-01-17  Damien Sandras  <dsandras@seconix.com>
 

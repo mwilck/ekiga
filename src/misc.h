@@ -141,7 +141,7 @@ void gnomemeeting_enable_disconnect ();
 void gnomemeeting_disable_disconnect ();
 
 extern GtkWidget* 
-gnomemeeting_history_combo_box_new (GM_window_widgets* gw);
+gnomemeeting_history_combo_box_new (const gchar *key);
 
 /* DESCRIPTION   :  /
  * BEHAVIOR      : Add a new entry to the history combo and saves it

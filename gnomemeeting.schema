@@ -428,5 +428,16 @@
 	<long>Number of entries to store in history boxes</long>
       </locale>
     </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/history/ldap_servers</key>
+      <applyto>/apps/gnomemeeting/history/ldap_servers</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default>gm.linux.org.uk</default>
+      <locale name="C">
+	<short>The list of used ILS servers</short>
+	<long>The list of ILS servers</long>
+      </locale>
+    </schema>
   </schemalist>
 </gconfschemafile>
