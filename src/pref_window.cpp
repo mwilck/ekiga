@@ -1155,7 +1155,7 @@ static void gnomemeeting_init_pref_window_codecs_settings (GtkWidget *notebook,
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->gsm_sd,
-			_("Enables the silence detection for the GSM based codecs"), NULL);
+			_("Enable silence detection for the GSM based codecs"), NULL);
 
 
   label = gtk_label_new (_("GSM Codec Settings"));
@@ -1204,7 +1204,7 @@ static void gnomemeeting_init_pref_window_codecs_settings (GtkWidget *notebook,
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, gsm_frames,
-			_("Enables silence detection for the G.711 based codecs"), NULL);
+			_("Enable silence detection for the G.711 based codecs"), NULL);
 
 
   label = gtk_label_new (_("G.711 Codec Settings"));
