@@ -76,6 +76,7 @@ static void enable_fps_changed_nt (GConfClient *, guint, GConfEntry *, gpointer)
 static void audio_codecs_list_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
 static void view_widget_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
 static void audio_codec_setting_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
+static void ht_fs_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
 static void silence_detection_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
 
 static void network_settings_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
@@ -488,6 +489,25 @@ static void main_notebook_changed_nt (GConfClient *client, guint cid,
 }
 
 
+/* DESCRIPTION  :  This notifier is called when the gconf database data
+ *                 associated with the H.245 Tunneling or the Fast Start change.
+ * BEHAVIOR     :  It updates the endpoint.
+ * PRE          :  /
+ */
+static void ht_fs_changed_nt (GConfClient *client, guint cid, 
+			      GConfEntry *entry, gpointer data)
+{
+  if (entry->value->type == GCONF_VALUE_BOOL) {
+
+    gdk_threads_enter ();
+
+    MyApp->Endpoint ()->UpdateConfig ();
+    
+    gdk_threads_leave ();
+  }
+}
+
+
 /* DESCRIPTION  :  This callback is called when a silence detection key of
  *                 the gconf database associated with a toggle changes.
  * BEHAVIOR     :  It only updates the silence detection if we
@@ -707,23 +727,14 @@ static void video_size_changed_nt (GConfClient *client, guint cid,
 static void audio_device_changed_nt (GConfClient *client, guint cid, 
 				     GConfEntry *entry, gpointer data)
 {
-  GM_window_widgets *gw = NULL;
-  GM_pref_window_widgets *pw = NULL;
-
   if (entry->value->type == GCONF_VALUE_STRING) {
 
     gdk_threads_enter ();
   
-    gw = gnomemeeting_get_main_window (gm);
-    pw = gnomemeeting_get_pref_window (gm);
-
     if (MyApp->Endpoint ()->GetCallingState () == 0)
       /* Update the configuration in order to update 
 	 the local user name for calls */
       MyApp->Endpoint ()->UpdateConfig ();
-    else 
-      gnomemeeting_warning_popup (GTK_WIDGET (pw->audio_player),
-				  _("This change will only affect new calls."));
 
     gdk_threads_leave ();
   }
@@ -739,7 +750,6 @@ static void video_device_setting_changed_nt (GConfClient *client, guint cid,
 					     GConfEntry *entry, gpointer data)
 {
   GMVideoGrabber *vg = NULL;
-  GtkWidget *e = GTK_WIDGET (data);
 
   if ((entry->value->type == GCONF_VALUE_STRING) ||
       (entry->value->type == GCONF_VALUE_INT)) {
@@ -754,11 +764,6 @@ static void video_device_setting_changed_nt (GConfClient *client, guint cid,
       if (vg)
 	vg->Reset ();
     }
-    else {
-    
-      gnomemeeting_warning_popup (e, 
-				  _("This change will only affect new calls"));
-    }            
   
     gdk_threads_leave ();
   }
@@ -796,9 +801,6 @@ static void video_preview_changed_nt (GConfClient *client, guint cid,
 	  vg->Close ();
       }
     }
-    else 
-      gnomemeeting_warning_popup (GTK_WIDGET (pw->video_preview),
-				  _("This change will only affect new calls."));
  
     gdk_threads_leave ();
   }
@@ -1097,9 +1099,11 @@ void gnomemeeting_init_gconf (GConfClient *client)
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/h245_tunneling", toggle_changed_nt, pw->ht, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/h245_tunneling", applicability_check_nt, pw->ht, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/general/h245_tunneling", ht_fs_changed_nt, pw->ht, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/fast_start", toggle_changed_nt, pw->fs, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/fast_start", applicability_check_nt, pw->fs, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/general/fast_start", ht_fs_changed_nt, pw->fs, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/incoming_call_sound", toggle_changed_nt, pw->incoming_call_sound, 0, 0);
 
@@ -1126,26 +1130,33 @@ void gnomemeeting_init_gconf (GConfClient *client)
   /* gnomemeeting_init_pref_window_devices */
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_player", string_option_menu_changed_nt, pw->audio_player, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_player", audio_device_changed_nt, pw->audio_player, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_player", applicability_check_nt, pw->audio_player, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_recorder", string_option_menu_changed_nt, pw->audio_recorder, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_recorder", audio_device_changed_nt, pw->audio_recorder, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_recorder", applicability_check_nt, pw->audio_recorder, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_recorder", string_option_menu_changed_nt, pw->video_device, 0, 0);			   
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_recorder", video_device_setting_changed_nt, pw->video_device, 0, 0);			   
+  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_recorder", applicability_check_nt, pw->video_device, 0, 0);			   
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_channel", video_device_setting_changed_nt, pw->video_channel, 0, 0);			   
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_channel", adjustment_changed_nt, pw->video_channel, 0, 0);			   
+  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_channel", applicability_check_nt, pw->video_channel, 0, 0);			   
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_size", int_option_menu_changed_nt, pw->opt1, 0, 0);			   
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_size", video_device_setting_changed_nt, pw->opt1, 0, 0);			   
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_size", video_size_changed_nt, pw->opt1, 0, 0);			   
+  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_size", applicability_check_nt, pw->opt1, 0, 0);			   
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_format", int_option_menu_changed_nt, pw->opt2, 0, 0);			   
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_format", video_device_setting_changed_nt, pw->opt2, 0, 0);			   
+  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_format", applicability_check_nt, pw->opt2, 0, 0);			   
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_preview", video_preview_changed_nt, pw->video_preview, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_preview", toggle_changed_nt, gw->preview_button, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_preview", toggle_changed_nt, pw->video_preview, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_preview", applicability_check_nt, pw->video_preview, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_player_mixer", entry_changed_nt, pw->audio_player_mixer, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_player_mixer", audio_mixer_changed_nt, pw->audio_player_mixer, 0, 0);

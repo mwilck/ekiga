@@ -1,3 +1,16 @@
+2002-05-13  Damien Sandras  <dsandras@seconix.com>
+
+	* gnomemeeting.schema.in: Default to fast start enabled.
+
+	* src/config.cpp: Cleaned the code and fixed bug: H.245 Tunneling and Fast
+	Start can now change.
+
+	* src/connection.cpp: Checks the number of opened channels.
+
+	* src/gdkvideoio.cpp: Removed unuseful mutex that was giving problems.
+
+	* src/gnomemeeting.cpp: /
+	
 2002-05-12  Damien Sandras  <dsandras@seconix.com>
 
 	* gnomemeeting.schema.in: Added gconf keys for call forwarding.

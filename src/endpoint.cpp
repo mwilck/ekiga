@@ -223,10 +223,26 @@ void GMH323EndPoint::UpdateConfig ()
       g_free (text);
     }
 
-    disableFastStart = 1;
     disableH245Tunneling = 
       !gconf_client_get_bool (client, 
 			      "/apps/gnomemeeting/general/h245_tunneling", 0);
+
+
+    if (disableFastStart != !gconf_client_get_bool (client, "/apps/gnomemeeting/general/fast_start", 0)) {
+
+      if (!disableFastStart)
+	text = g_strdup (_("Disabling Fast Start"));
+      else
+	text = g_strdup (_("Enabling Fast Start"));
+
+      gnomemeeting_log_insert (text);
+      g_free (text);
+    }
+
+    disableFastStart = 
+      !gconf_client_get_bool (client, 
+			      "/apps/gnomemeeting/general/fast_start", 0);
+
   }
 
   gnomemeeting_threads_leave ();
@@ -273,24 +289,24 @@ void GMH323EndPoint::AddVideoCapabilities (int video_size)
 
     /* CIF Capability in first position */
     SetCapability(0, 1, 
-		  new H323_H261Capability (0, 2, FALSE, FALSE, 6217));
+		  new H323_H261Capability (0, 4, FALSE, FALSE, 6217));
 
     codecs_count++;
 
     SetCapability(0, 1, 
-		  new H323_H261Capability (4, 0, FALSE, FALSE, 6217));
+		  new H323_H261Capability (2, 0, FALSE, FALSE, 6217));
 
     codecs_count++;
   }
   else {
     
     SetCapability(0, 1, 
-		  new H323_H261Capability (4, 0, FALSE, FALSE, 6217));
+		  new H323_H261Capability (2, 0, FALSE, FALSE, 6217));
     
     codecs_count++;
     
     SetCapability(0, 1, 
-		  new H323_H261Capability (0, 2, FALSE, FALSE, 6217));
+		  new H323_H261Capability (0, 4, FALSE, FALSE, 6217));
 
     codecs_count++;
   }
@@ -1107,7 +1123,7 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
       gnomemeeting_video_submenu_set_sensitive (TRUE);
       gnomemeeting_video_submenu_select (1);
       
-      SetCurrentDisplay (1); 
+      //      SetCurrentDisplay (1); 
       gnomemeeting_threads_leave ();
       
       bool result = codec.AttachChannel (channel);

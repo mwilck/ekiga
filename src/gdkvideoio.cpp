@@ -95,9 +95,7 @@ GDKVideoOutputDevice::~GDKVideoOutputDevice()
 
 void GDKVideoOutputDevice::SetCurrentDisplay (int choice)
 {
-  display_config_mutex.Wait ();
   display_config = choice;
-  display_config_mutex.Signal ();
 }
 
 
@@ -117,9 +115,8 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
 
   int display = 0;
 
-  display_config_mutex.Wait ();
+
   display = display_config;
-  display_config_mutex.Signal ();
 
   /* Take the mutexes before the redraw */
   redraw_mutex.Wait ();

@@ -82,6 +82,9 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
   int re_vq = 2;
   int re_vq_ = 2;
 
+  if (opened_channels + 1 > 4)
+    return FALSE;
+
   if (!H323Connection::OnStartLogicalChannel (channel))
     return FALSE;
 
@@ -97,8 +100,11 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
     name = channel.GetCapability().GetFormatName();
     msg = g_strdup_printf (_("Sending %s"), (const char *) name);
 
-    if ((name == "H.261-CIF") || (name == "H.261-QCIF")) 
+    if ((name == "H.261-CIF") || (name == "H.261-QCIF")) {
+
       transmitted_video = &channel;
+      MyApp->Endpoint ()->SetCurrentDisplay (1);
+    }
     else
       transmitted_audio = &channel;
 
@@ -186,7 +192,7 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
       gnomemeeting_threads_leave ();
     }  
   }
-		
+
   opened_channels++;
 
   return TRUE;
