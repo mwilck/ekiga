@@ -73,6 +73,7 @@ gnomemeeting_get_remote_addressbooks ()
 
     elmt->name = NULL;
     elmt->url = NULL;
+    elmt->call_attribute = NULL;
 
     if (couple) {
 
@@ -84,6 +85,9 @@ gnomemeeting_get_remote_addressbooks ()
 
       if (couple [2])
 	elmt->url = g_strdup (couple [2]);
+      
+      if (couple [3])
+	elmt->call_attribute = g_strdup (couple [3]);
       
       g_strfreev (couple);
     }
@@ -142,6 +146,7 @@ gnomemeeting_remote_addressbook_get_contacts (GmAddressbook *addressbook,
   attrs += "description";
   attrs += "l";
   attrs += "localityname";
+  attrs += "ilsa26214430";
 
   entry = addressbook->url;
   entry.Replace (":", " ", TRUE);
@@ -227,6 +232,11 @@ gnomemeeting_remote_addressbook_get_contacts (GmAddressbook *addressbook,
       else 
 	contact->comment = g_strdup ("");
 
+      if (ldap.GetSearchResult (context, "ilsa26214430", arr))
+	contact->state = atoi ((const char *) arr [0]);
+      else
+	contact->state = 0;
+	  
       list = g_slist_append (list, (gpointer) contact);
 
       g_free (surname);
@@ -250,10 +260,11 @@ gnomemeeting_remote_addressbook_add (GmAddressbook *addressbook)
   list = 
     gm_conf_get_string_list ("/apps/gnomemeeting/contacts/ldap_servers_list");
 
-  entry = g_strdup_printf ("%s|%s|%s", 
+  entry = g_strdup_printf ("%s|%s|%s|%s", 
 			   addressbook->aid, 
 			   addressbook->name, 
-			   addressbook->url);
+			   addressbook->url,
+			   addressbook->call_attribute);
 
   list = g_slist_append (list, (gpointer) entry);
   gm_conf_set_string_list ("/apps/gnomemeeting/contacts/ldap_servers_list", 
@@ -280,13 +291,11 @@ gnomemeeting_remote_addressbook_delete (GmAddressbook *addressbook)
     gm_conf_get_string_list ("/apps/gnomemeeting/contacts/ldap_servers_list");
 
   entry = 
-    g_strdup_printf ("%s|%s|%s", 
+    g_strdup_printf ("%s|%s|%s|%s", 
 		     addressbook->aid, 
 		     addressbook->name, 
-		     addressbook->url);
-
-  printf ("Will delete %s with URL %s\n", 
-	  addressbook->aid, addressbook->url);
+		     addressbook->url,
+		     addressbook->call_attribute);
 
   l = list;
   while (l && !found) {
@@ -335,10 +344,11 @@ gnomemeeting_remote_addressbook_modify (GmAddressbook *addressbook)
     gm_conf_get_string_list ("/apps/gnomemeeting/contacts/ldap_servers_list");
 
   entry = 
-    g_strdup_printf ("%s|%s|%s", 
+    g_strdup_printf ("%s|%s|%s|%s", 
 		     addressbook->aid,
 		     addressbook->name, 
-		     addressbook->url);
+		     addressbook->url,
+		     addressbook->call_attribute);
 
   l = list;
   while (l && !found) {

@@ -73,6 +73,8 @@ struct GmAddressbook_ {
   char *name;                   /* Addressbook Name */
   char *url;                    /* Unique ID. Must be the URL in case
                                    of a remote address book */
+  char *call_attribute;		/* The attribute to use when calling somebody,
+				   only used in case of remote address books */
 };
 
 

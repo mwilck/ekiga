@@ -169,6 +169,7 @@ gm_addressbook_new ()
   addressbook->name = NULL;
   addressbook->url = e_source_get_uri (source); 
   addressbook->aid = g_strdup (e_source_peek_uid (source));
+  addressbook->call_attribute = NULL;
 
   g_object_unref (source);
 
@@ -185,6 +186,7 @@ gm_addressbook_delete (GmAddressbook *addressbook)
   g_free (addressbook->url);
   g_free (addressbook->aid);
   g_free (addressbook->name);
+  g_free (addressbook->call_attribute);
 
   g_free (addressbook);  
 }

@@ -87,6 +87,7 @@ enum {
   COLUMN_WEIGHT,
   COLUMN_URL,
   COLUMN_AID,
+  COLUMN_CALL_ATTRIBUTE,
   NUM_COLUMNS_CONTACTS
 };
 
@@ -306,6 +307,7 @@ get_selected_addressbook (GtkWidget *addressbook)
                         COLUMN_NAME, &abook->name, 
 			COLUMN_URL, &abook->url,
                         COLUMN_AID, &abook->aid,
+			COLUMN_CALL_ATTRIBUTE, &abook->call_attribute,
                         -1); 
   }
     
@@ -680,8 +682,9 @@ gm_addressbook_edit_addressbook_dialog_run (GtkWidget *addressbook_window,
 		    (GtkAttachOptions) (GTK_FILL),
 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
   gtk_entry_set_activates_default (GTK_ENTRY (search_attribute_entry), TRUE);
-  if (addb)
-    gtk_entry_set_text (GTK_ENTRY (search_attribute_entry), "");
+  if (addb && addb->call_attribute)
+    gtk_entry_set_text (GTK_ENTRY (search_attribute_entry), 
+			addb->call_attribute);
   else
     gtk_entry_set_text (GTK_ENTRY (search_attribute_entry), "rfc822mailbox");
   
@@ -705,6 +708,8 @@ gm_addressbook_edit_addressbook_dialog_run (GtkWidget *addressbook_window,
       addc->aid = g_strdup (addb->aid);
     addc->name = 
       g_strdup (gtk_entry_get_text (GTK_ENTRY (addressbook_name_entry)));
+    addc->call_attribute =
+      g_strdup (gtk_entry_get_text (GTK_ENTRY (search_attribute_entry)));
 
     if (gtk_option_menu_get_history (GTK_OPTION_MENU (type_option_menu)) != 0) {
 	
@@ -1047,6 +1052,7 @@ gnomemeeting_aw_add_addressbook (GtkWidget *addressbook_window,
 			COLUMN_WEIGHT, PANGO_WEIGHT_NORMAL, 
 			COLUMN_URL, addressbook->url, 
 			COLUMN_AID, addressbook->aid, 
+			COLUMN_CALL_ATTRIBUTE, addressbook->call_attribute, 
 			-1);
   }
   
@@ -1305,6 +1311,7 @@ gnomemeeting_aw_modify_addressbook (GtkWidget *addressbook_window,
 			    COLUMN_AID, addb->aid,
 			    COLUMN_URL, addb->url,
 			    COLUMN_NAME, addb->name,
+			    COLUMN_CALL_ATTRIBUTE, addb->call_attribute,
 			    COLUMN_NOTEBOOK_PAGE, p,
 			    -1);
 	g_free (test);
@@ -1334,6 +1341,8 @@ gnomemeeting_aw_update_addressbook (GtkWidget *addressbook_window,
 
   GtkTreeModel *model = NULL;
   GtkTreeIter iter;
+
+  GdkPixbuf *status_icon = NULL;
 
   int page_num = -1;
   int opt = -1;
@@ -1397,6 +1406,18 @@ gnomemeeting_aw_update_addressbook (GtkWidget *addressbook_window,
       gtk_list_store_set (GTK_LIST_STORE (model), &iter,
 			  COLUMN_UUID, contact->uid, -1);
 
+     status_icon = 
+       gtk_widget_render_icon (addressbook_window,
+			       contact->state ? 
+			       GM_STOCK_STATUS_BUSY 
+			       :
+			       GM_STOCK_STATUS_AVAILABLE,
+			       GTK_ICON_SIZE_MENU, NULL);
+    gtk_list_store_set (GTK_LIST_STORE (model), &iter,
+			COLUMN_STATUS, status_icon, -1);
+
+    g_object_unref (status_icon);
+    
     l = g_slist_next (l);
   }
 
@@ -1557,6 +1578,7 @@ gm_addressbook_window_new ()
                               G_TYPE_INT, 
                               G_TYPE_BOOLEAN,
 			      G_TYPE_INT,
+			      G_TYPE_STRING,
 			      G_TYPE_STRING,
 			      G_TYPE_STRING); 
 
