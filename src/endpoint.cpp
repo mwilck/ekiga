@@ -2311,12 +2311,10 @@ GMH323EndPoint::OnOutgoingCall (PTimer &,
 
 BOOL 
 GMH323EndPoint::DeviceVolume (PSoundChannel *sound_channel,
-                              BOOL is_encoding,
-                              BOOL set, 
+			      BOOL is_encoding,
+			      BOOL set, 
 			      unsigned int &vol) 
 {
-  H323Connection *con = NULL;
-
 #ifdef HAS_IXJ
   GMLid *l = NULL;
 #endif
@@ -2326,46 +2324,37 @@ GMH323EndPoint::DeviceVolume (PSoundChannel *sound_channel,
 
   call_token = GetCurrentCallToken ();
 
-  con = FindConnectionWithLock (call_token);
-
-  if (con) {
-
 #ifdef HAS_IXJ
-    if (set) {
+  if (set) {
 
-      l = GetLid ();
-      if (l) {
+    l = GetLid ();
+    if (l) {
 
-        l->SetVolume (is_encoding, vol);
-        l->Unlock ();
+      l->SetVolume (is_encoding, vol);
+      l->Unlock ();
 
-        con->Unlock ();
-
-        return TRUE; /* Ignore the sound channel if a LID is used. Hopefully,
-                        OpenH323 will be fixed soon */
-      }
+      return TRUE; /* Ignore the sound channel if a LID is used. Hopefully,
+		      OpenH323 will be fixed soon */
     }
+  }
 #endif
 
 
-    /* TRUE = from_remote = playing */
-    if (sound_channel) {
+  /* TRUE = from_remote = playing */
+  if (sound_channel) {
 
-      if (set) {
+    if (set) {
 
-        err = 
-          sound_channel->SetVolume (vol)
-          && err;
-      }
-      else {
-
-        err = 
-          sound_channel->GetVolume (vol)
-          && err;
-      }
+      err = 
+	sound_channel->SetVolume (vol)
+	&& err;
     }
+    else {
 
-    con->Unlock ();
+      err = 
+	sound_channel->GetVolume (vol)
+	&& err;
+    }
   }
 
   return err;
