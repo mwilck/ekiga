@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
 "POT-Creation-Date: 2002-05-25 22:02+0200\n"
-"PO-Revision-Date: 2002-05-26 12:02GMT\n"
+"PO-Revision-Date: 2002-05-26 18:33GMT\n"
 "Last-Translator: Leon Kanter <leon@blackcatlinux.com>\n"
 "Language-Team:  <gnome-cyr@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -53,7 +53,7 @@ msgstr "Автоматически принимать вызовы"
 
 #: gnomemeeting.schemas.in.in.h:8
 msgid "Automatic Echo Cancellation"
-msgstr ""
+msgstr "Автоматическое подавление эхо"
 
 #: gnomemeeting.schemas.in.in.h:9
 msgid "Change the control panel section"
@@ -205,7 +205,7 @@ msgstr "Фамилия"
 
 #: gnomemeeting.schemas.in.in.h:44
 msgid "Limitation on the number of transmitted frames grabbed by the grabber"
-msgstr ""
+msgstr "Ограничение количеста передаваемых кадров, полученных устройством видеозахвата"
 
 #: gnomemeeting.schemas.in.in.h:45
 msgid "Listen Port"
@@ -310,6 +310,9 @@ msgid ""
 "Gain Compensation. Choosing Automatic Gain Compensation modulates the volume "
 "for best quality."
 msgstr ""
+"Уровень автоматического подавления эха: Выкл, Низкий, Средний, "
+"Автоматическая регулировка уровня. Автоматическая регулировка уровня "
+"изменяет громкость для достижения наилучшего качества."
 
 #: gnomemeeting.schemas.in.in.h:70
 msgid "The E-Mail address that will be listed in the directories"
@@ -486,15 +489,15 @@ msgstr "Входящий вызов"
 
 #: src/callbacks.cpp:126
 msgid "Code Contributors:"
-msgstr ""
+msgstr "Разработчики кода:"
 
 #: src/callbacks.cpp:132
 msgid "Contributors:"
-msgstr ""
+msgstr "Разработчики:"
 
 #: src/callbacks.cpp:149
 msgid "Internationalisation Maintainer:"
-msgstr ""
+msgstr "Координатор интернационализации:"
 
 #. Translators: Please write translator credits here, and
 #. * seperate names with \n
@@ -576,6 +579,15 @@ msgid ""
 "  If so, say \"YES\".\n"
 "\n"
 msgstr ""
+"  Этот скрипт удалит все параметры пользователя GnomeMeeting,\n"
+"  включая такие, которые могут быть важными!\n"
+"  Демон GConf будет остановлен, поэтому убедитесь, что\n"
+"  нет выполняющихся приложений, которые зависят от GConf.\n"
+"\n"
+"  Вы действительно хотите удалить параметры?\n"
+"\n"
+"  Если да, скажите \"YES\".\n"
+"\n"
 
 #: src/config-tool-i18n.h:5
 msgid "Removing $HOME/.gconf/apps/gnomemeeting"
@@ -592,7 +604,7 @@ msgstr "...Готово."
 
 #: src/config-tool-i18n.h:8
 msgid "Leaving configuration alone."
-msgstr ""
+msgstr "Параметры остаются без изменения."
 
 #: src/config-tool-i18n.h:9
 msgid "Have a nice day."
@@ -608,14 +620,21 @@ msgid ""
 "  If so, say \"YES\".\n"
 "\n"
 msgstr ""
+"  Демон GConf будет остановлен, поэтому убедитесь, что\n"
+"  нет выполняющихся приложений, которые зависят от GConf.\n"
+"\n"
+"  Вы действительно хотите остановить GConf?\n"
+"\n"
+"  Если да, скажите \"YES\".\n"
+"\n"
 
 #: src/config-tool-i18n.h:12
 msgid "Removing schemas"
-msgstr ""
+msgstr "Удаляются схемы"
 
 #: src/config-tool-i18n.h:14
 msgid "Installing schemas"
-msgstr ""
+msgstr "Устанавливаются схемы"
 
 #: src/config-tool-i18n.h:15
 msgid ""
@@ -624,6 +643,10 @@ msgid ""
 "\n"
 "Run \"gnomemeeting-config-tool --install-schemas\" as root.\n"
 msgstr ""
+"КРИТИЧЕСКАЯ ОШИБКА -- сбой установки Shema.\n"
+"Скорее всего демон GConf выполняется от root.\n"
+"\n"
+"Выполните \"gnomemeeting-config-tool --install-schemas\" как root.\n"
 
 #: src/config-tool-i18n.h:16
 msgid "Usage:  gnomemeeting-config-tool OPTION"
@@ -1068,7 +1091,7 @@ msgstr "Вызов завершен"
 
 #: src/endpoint.cpp:1450
 msgid "Attaching lid hardware to codec"
-msgstr ""
+msgstr "Оборудование lid подключается к кодеку"
 
 #: src/gatekeeper.cpp:110
 msgid ""
@@ -1253,6 +1276,19 @@ msgid ""
 "\n"
 "Using 'gnomemeeting-config-tool' could help you fix these problem."
 msgstr ""
+"GnomeMeeting получил %s для ключа GConf \"/apps/gnomemeeting/gconf_test\", "
+"но ожидалось %s.\n"
+"\n"
+"Этот ключ представляет дату сборки GnomeMeeting. Если он не верен, "
+"это означает, что схемы GConf были неверно установлены или "
+"они имеют неверные права доступа.\n"
+"\n"
+"Ознакомтесь с FAQ (http://www.gnomemeeting.org/faq.php), разделом "
+"\"Устранение неисправностей\" сайта GConf (http://www.gnome.org/projects/"
+"gconf/) или архивами почтовых рассылок (http://mail.gnome.org) для "
+"получения дополнительной информации.\n"
+"\n"
+"Использование 'gnomemeeting-config-tool' может исправить некоторые из проблем."
 
 #: src/main_window.cpp:434
 msgid ""
@@ -1747,6 +1783,12 @@ msgid ""
 "H.323v2 and Netmeeting doesn't support it. Using both Fast Start and H.245 "
 "Tunnelling can crash some versions of Netmeeting."
 msgstr ""
+"Включает режим туннелирования H.245. В этом режиме сообщения "
+"H.245 инкапсулируются в канал H.225 (порт 1270). Это позволяет "
+"не выделять один произвольный TCP порт при вызовах. Туннелирование"
+"H.245 было представлено в H.323v2. Оно не поддерживается Netmeeting, и одновременное "
+"использование быстрого старта и туннелирования H.245 может привести "
+"к обвалу некоторых версий Netmeeting."
 
 #: src/pref_window.cpp:1329
 msgid "Enable Fast Start"
@@ -1759,6 +1801,11 @@ msgid ""
 "Netmeeting and using both Fast Start and H.245 Tunnelling can crash some "
 "versions of Netmeeting."
 msgstr ""
+"Соединение будет установлено в режиме \"Быстрый Старт\". Это новый "
+"режим быстрой установки соединения, который впервые был представлен "
+"в H.323v2. Он не поддерживается Netmeeting, и одновременное "
+"использование быстрого старта и туннелирования H.245 может привести "
+"к обвалу некоторых версий Netmeeting."
 
 #: src/pref_window.cpp:1354
 msgid "Low"
@@ -1774,7 +1821,7 @@ msgstr "Высокий"
 
 #: src/pref_window.cpp:1357
 msgid "Automatic Gain Compensation"
-msgstr ""
+msgstr "Автоматическая регулировка усиления"
 
 #: src/pref_window.cpp:1373 src/pref_window.cpp:1936
 msgid "Audio Devices"
@@ -1814,7 +1861,7 @@ msgstr "Аудио микшер для регулирования громкос
 
 #: src/pref_window.cpp:1431
 msgid "Automatic Echo Cancellation:"
-msgstr ""
+msgstr "Автоматическое подавление эхо:"
 
 #: src/pref_window.cpp:1434
 msgid "Country Code:"
@@ -1954,7 +2001,7 @@ msgstr "Общие параметры"
 
 #: src/pref_window.cpp:1747
 msgid "Maximum Transmitted FPS:"
-msgstr ""
+msgstr "Ограничение кадров в секунду:"
 
 #: src/pref_window.cpp:1749
 msgid "The number of video frames transmitted each second."
