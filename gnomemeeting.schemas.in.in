@@ -488,6 +488,17 @@
       </locale>
     </schema>
     <schema>
+      <key>/schemas/apps/gnomemeeting/protocols/h323/gatekeeper/registration_timeout</key>
+      <applyto>/apps/gnomemeeting/protocols/h323/gatekeeper/registration_timeout</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>int</type>
+      <default>60</default>
+      <locale name="C">
+	<short>Registration timeout</short>
+	<long>The time after which GnomeMeeting will renew its registration with the gatekeeper</long>
+      </locale>
+    </schema>
+    <schema>
       <key>/schemas/apps/gnomemeeting/protocols/h323/gatekeeper/registering_method</key>
       <applyto>/apps/gnomemeeting/protocols/h323/gatekeeper/registering_method</applyto>
       <owner>GnomeMeeting</owner>

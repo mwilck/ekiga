@@ -403,7 +403,8 @@ class GMH323EndPoint : public H323EndPoint
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Register to (or unregister from) the gatekeeper 
-   *                 given in the options, if any.
+   *                 given in the options, if any. Starts or stop the force
+   *                 renewal timer.
    * PRE          :  /
    */
   void GatekeeperRegister (void);
@@ -692,6 +693,14 @@ class GMH323EndPoint : public H323EndPoint
   PDECLARE_NOTIFIER(PTimer, GMH323EndPoint, OnGatewayIPTimeout);
 
 
+  /* DESCRIPTION  :  Notifier called periodically to update the registration
+   * 		     to the gatekeeper.
+   * BEHAVIOR     :  Register to the GK.
+   * PRE          :  /
+   */
+  PDECLARE_NOTIFIER(PTimer, GMH323EndPoint, OnGatekeeperTimeout);
+
+  
   /* DESCRIPTION  :  Notifier called when an incoming call
    *                 has not been answered after 15 seconds.
    * BEHAVIOR     :  Reject the call, or forward if forward on no answer is
@@ -730,6 +739,7 @@ class GMH323EndPoint : public H323EndPoint
 
   CallingState calling_state; 
 
+  PTimer GatekeeperTimer;
   PTimer ILSTimer;
   PTimer RTPTimer;
   PTimer GatewayIPTimer;

@@ -125,18 +125,18 @@ void GMH323Gatekeeper::Main ()
   PWaitAndSignal m(quit_mutex);
   
   /* Remove the current Gatekeeper */
-  gnomemeeting_threads_enter ();
   gatekeeper = endpoint->GetGatekeeper ();
   if (gatekeeper) {
 
     gk_name = gatekeeper->GetName ();
     msg = g_strdup_printf (_("Unregistered from gatekeeper %s"),
 			   (const char *) gk_name);
+    gnomemeeting_threads_enter ();
     gm_history_window_insert (history_window, msg);
     gm_main_window_flash_message (main_window, msg);
     g_free (msg);
+    gnomemeeting_threads_leave ();
   }
-  gnomemeeting_threads_leave ();
   endpoint->RemoveGatekeeper (0);  
   endpoint->SetUserNameAndAlias (); 
 
@@ -148,7 +148,7 @@ void GMH323Gatekeeper::Main ()
     gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Invalid gatekeeper hostname"), _("Please provide a hostname to use for the gatekeeper."));
     gnomemeeting_threads_leave ();
 
-    no_error = FALSE;
+    return;
   }
   else if (registering_method == 2 && gk_id.IsEmpty ()) {
 
@@ -156,7 +156,7 @@ void GMH323Gatekeeper::Main ()
     gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Invalid gatekeeper ID"), _("Please provide a valid ID for the gatekeeper."));
     gnomemeeting_threads_leave ();
 
-    no_error = FALSE;
+    return;
   }
   else {
 
@@ -187,45 +187,40 @@ void GMH323Gatekeeper::Main ()
   
   /* There was an error (missing parameter or registration failed)
      or the user chose to not register */
-  if (!no_error || registering_method == 0) {
+  if (!no_error) {
       
     /* Registering failed */
-    gnomemeeting_threads_enter ();
+    gatekeeper = endpoint->GetGatekeeper ();
+    if (gatekeeper) {
 
-    if (!no_error) {
+      switch (gatekeeper->GetRegistrationFailReason()) {
 
-      gatekeeper = endpoint->GetGatekeeper ();
-      if (gatekeeper) {
-
-	switch (gatekeeper->GetRegistrationFailReason()) {
-
-	case H323Gatekeeper::DuplicateAlias :
-	  msg = g_strdup (_("Another user already exists with the same alias, please use another alias."));
-	  break;
-	case H323Gatekeeper::SecurityDenied :
-	  msg = g_strdup (_("You are not allowed to register to the gatekeeper. Please check your login, password and firewall."));
-	  break;
-	case H323Gatekeeper::TransportError :
-	  msg = g_strdup (_("There was a transport error."));
-	  break;
-	default :
-	  msg = g_strdup (_("No gatekeeper corresponding to your options has been found."));
-	  break;
-	}
+      case H323Gatekeeper::DuplicateAlias :
+	msg = g_strdup (_("Gatekeeper registration failed: duplicate alias"));
+	break;
+      case H323Gatekeeper::SecurityDenied :
+	msg = 
+	  g_strdup (_("Gatekeeper registration failed: bad login/password"));
+	break;
+      case H323Gatekeeper::TransportError :
+	msg = g_strdup (_("Gatekeeper registration failed: transport error"));
+	break;
+      default :
+	msg = g_strdup (_("Gatekeeper registration failed"));
+	break;
       }
-      else
-	msg = g_strdup (_("No gatekeeper corresponding to your options has been found."));
-
-      gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Error while registering with gatekeeper"), msg);
-      gm_history_window_insert (history_window, msg);
-      g_free (msg);
     }
-    
-    gm_conf_set_int (H323_GATEKEEPER_KEY "registering_method", 0);
+    else
+      msg = g_strdup (_("Gatekeeper registration failed"));
+
+    gnomemeeting_threads_enter ();
+    gm_main_window_push_message (main_window, msg);
+    gm_history_window_insert (history_window, msg);
+    g_free (msg);
     gnomemeeting_threads_leave ();
   }
   /* Registering is ok */
-  else {
+  else if (registering_method != 0) {
 
     gatekeeper = endpoint->GetGatekeeper ();
     if (gatekeeper)

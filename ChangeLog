@@ -1,5 +1,20 @@
 2004-10-19  Damien Sandras  <dsandras@gnome.org>
 
+	* NEWS: Updated with CVS news.
+
+	* configure.in: Incremented version number. Incremented SCHEMA_AGE.
+
+	* gnomemeeting.schemas.in.in: Added key for gatekeeper registration
+	renewal timeout.
+
+	* src/endpoint.cpp, src/endpoint.h, src/gatekeeper.cpp, 
+	src/pref_window.cpp: Added "force registration renewal" timeout for
+	the gatekeeper registration so that users can force the renewing
+	of their registration to the gatekeeper after a given amount of time.
+	Only display popups in extreme cases.
+
+2004-10-19  Damien Sandras  <dsandras@gnome.org>
+
 	* src/endpoint.cpp, src/config.cpp: Use AddCapability when sending,
 	but not receiving for video capabilities. Use SetCapability in all
 	other cases.

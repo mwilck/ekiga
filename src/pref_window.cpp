@@ -990,7 +990,7 @@ gm_pw_init_gatekeeper_page (GtkWidget *prefs_window,
   
   /* Add fields for the gatekeeper */
   subsection = gnome_prefs_subsection_new (prefs_window, container,
-					   _("Gatekeeper"), 4, 3);
+					   _("Gatekeeper"), 7, 3);
 
   gnome_prefs_entry_new (subsection, _("Gatekeeper _ID:"), H323_GATEKEEPER_KEY "id", _("The Gatekeeper identifier to register with"), 1, false);
 
@@ -1001,8 +1001,11 @@ gm_pw_init_gatekeeper_page (GtkWidget *prefs_window,
   entry =
     gnome_prefs_entry_new (subsection, _("Gatekeeper _password:"), H323_GATEKEEPER_KEY "password", _("The Gatekeeper password to use for H.235 authentication to the Gatekeeper"), 4, false);
   gtk_entry_set_visibility (GTK_ENTRY (entry), FALSE);
+  
+  /* Translators: the full sentence is Registration timeout of X minutes */
+  gnome_prefs_spin_new (subsection, _("Registration timeout of"), H323_GATEKEEPER_KEY "registration_timeout", _("The time after which GnomeMeeting will renew its registration with the gatekeeper"), 2.0, 60.0, 1.0, 5, _("minutes"), true);
 
-  gnome_prefs_toggle_new (subsection, _("Register this alias as the primary alias with the gatekeeper"), H323_GATEKEEPER_KEY "register_alias_as_primary", _("Use this option to ensure the above alias is used as the primary alias when registering with a gatekeeper. This may be required if your gatekeeper can only perform authentication using the first alias in the list."), 5);
+  gnome_prefs_toggle_new (subsection, _("Register this alias as the primary alias with the gatekeeper"), H323_GATEKEEPER_KEY "register_alias_as_primary", _("Use this option to ensure the above alias is used as the primary alias when registering with a gatekeeper. This may be required if your gatekeeper can only perform authentication using the first alias in the list."), 6);
   
   gnome_prefs_int_option_menu_new (subsection, _("Registering method:"), options, H323_GATEKEEPER_KEY "registering_method", _("The registering method to use"), 0);
 

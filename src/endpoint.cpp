@@ -94,6 +94,7 @@ GMH323EndPoint::GMH323EndPoint ()
   audio_reception_popup = NULL;
   audio_transmission_popup = NULL;
   
+  GatekeeperTimer.SetNotifier (PCREATE_NOTIFIER (OnGatekeeperTimeout));
   ILSTimer.SetNotifier (PCREATE_NOTIFIER (OnILSTimeout));
   ils_registered = false;
 
@@ -699,10 +700,23 @@ GMH323EndPoint::GetGatekeeper ()
 void 
 GMH323EndPoint::GatekeeperRegister ()
 {
+  int timeout = 0;
+  int registering_method = 0;
+  
+  gnomemeeting_threads_enter ();
+  timeout = gm_conf_get_int (H323_GATEKEEPER_KEY "registration_timeout");
+  registering_method = gm_conf_get_int (H323_GATEKEEPER_KEY "registering_method");
+  gnomemeeting_threads_leave ();
+  
   if (gk)
     delete (gk);
   
   gk = new GMH323Gatekeeper ();
+  
+  if (registering_method != 0)
+    GatekeeperTimer.RunContinuous (PTimeInterval (0, 0, PMAX (2, PMIN (60, timeout))));
+  else
+    GatekeeperTimer.Stop ();
 }
 
 
@@ -2131,6 +2145,14 @@ GMH323EndPoint::OnGatewayIPTimeout (PTimer &,
   }
 
   GatewayIPTimer.RunContinuous (PTimeInterval (0, 0, 15));
+}
+
+
+void 
+GMH323EndPoint::OnGatekeeperTimeout (PTimer &,
+				     INT)
+{
+  GatekeeperRegister ();
 }
 
 
