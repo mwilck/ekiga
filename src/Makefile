@@ -40,10 +40,10 @@ pkgincludedir = $(includedir)/GnomeMeeting
 
 top_builddir = ..
 
-ACLOCAL = /home/bjack/GnomeMeeting/gnomemeeting-0.10/missing aclocal -I macros
-AUTOCONF = /home/bjack/GnomeMeeting/gnomemeeting-0.10/missing autoconf
-AUTOMAKE = /home/bjack/GnomeMeeting/gnomemeeting-0.10/missing automake
-AUTOHEADER = /home/bjack/GnomeMeeting/gnomemeeting-0.10/missing autoheader
+ACLOCAL = aclocal -I macros
+AUTOCONF = autoconf
+AUTOMAKE = automake
+AUTOHEADER = autoheader
 
 INSTALL = /usr/bin/install -c
 INSTALL_PROGRAM = ${INSTALL} $(AM_INSTALL_PROGRAM_FLAGS)
@@ -70,8 +70,8 @@ GENCAT =
 GMOFILES =  fr.gmo es.gmo
 GMSGFMT = /usr/bin/msgfmt
 GNOMEGNORBA_LIBS = -rdynamic -lgnorba -lORBitCosNaming -lORBit -lIIOP -lORBitutil -lgnomeui -lart_lgpl -lgdk_imlib -lSM -lICE -lgtk -lgdk -lgmodule -lXi -lXext -lX11 -lgnome -lgnomesupport -lesd -laudiofile -lm -ldb -lglib -ldl
-GNOMEMEETING_INCLUDES = -I/usr/include/ptlib/unix -I/usr/include/ptlib/.. -I/usr/include/ptlib/../ptclib -I/usr/include -I/usr/include/oh323/ -DP_LINUX -m486 -D_REENTRANT -DP_HAS_SEMAPHORES -DP_PTHREADS -DPBYTE_ORDER=PLITTLE_ENDIAN -DHAS_OSS -O2
-GNOMEMEETING_LDADD = -rdynamic -L/usr/lib -L/usr/X11R6/lib  -rdynamic -lgnorba -lORBitCosNaming -lORBit -lIIOP -lORBitutil -lgnomeui -lart_lgpl -lgdk_imlib -lSM -lICE -lgtk -lgdk -lgmodule -lXi -lXext -lX11 -lgnome -lgnomesupport -lesd -laudiofile -lm -ldb -lglib -ldl  -lldap -llber -lresolv -lh323_linux_x86_r -ldl -lpt_linux_x86_r -lpthread -L/usr/lib -L/usr/X11R6/lib -lgtk -lgdk -rdynamic -lgmodule -lgthread -lglib -lpthread -ldl -lXi -lXext -lX11 -lm
+GNOMEMEETING_INCLUDES = -I/usr/include/ptlib/unix -I/usr/include/ptlib/.. -I/usr/include/ptlib/../ptclib -I/usr/include -I/usr/include/oh323/ -DP_LINUX -D_REENTRANT -DP_HAS_SEMAPHORES -DP_PTHREADS -DPBYTE_ORDER=PLITTLE_ENDIAN -DHAS_OSS -O2 -D_DEBUG -DPMEMORY_CHECK=1 -DPTRACING -Wall -g
+GNOMEMEETING_LDADD = -rdynamic -L/usr/lib -L/usr/X11R6/lib  -rdynamic -lgnorba -lORBitCosNaming -lORBit -lIIOP -lORBitutil -lgnomeui -lart_lgpl -lgdk_imlib -lSM -lICE -lgtk -lgdk -lgmodule -lXi -lXext -lX11 -lgnome -lgnomesupport -lesd -laudiofile -lm -ldb -lglib -ldl  -lldap -llber -lresolv -L/opt/pwlib/lib -L/opt/openh323/lib/ -lh323_linux_x86_d -ldl -lpt_linux_x86_d -lpthread -L/usr/lib -L/usr/X11R6/lib -lgtk -lgdk -rdynamic -lgmodule -lgthread -lglib -lpthread -ldl -lXi -lXext -lX11 -lm
 GNOMEUI_LIBS = -rdynamic -lgnomeui -lart_lgpl -lgdk_imlib -lSM -lICE -lgtk -lgdk -lgmodule -lXi -lXext -lX11 -lgnome -lgnomesupport -lesd -laudiofile -lm -ldb -lglib -ldl
 GNOME_APPLETS_LIBS = 
 GNOME_CAPPLET_LIBS = 
@@ -96,7 +96,7 @@ LD = /usr/bin/ld
 LIBTOOL = $(SHELL) $(top_builddir)/libtool
 LN_S = ln -s
 MAINT = #
-MAKEINFO = /home/bjack/GnomeMeeting/gnomemeeting-0.10/missing makeinfo
+MAKEINFO = /home/bjack/gnomemeeting/missing makeinfo
 MKINSTALLDIRS = ./mkinstalldirs
 NM = /usr/bin/nm -B
 OBJDUMP = @OBJDUMP@
@@ -121,14 +121,14 @@ gnomeconfdir = /usr//etc
 gnomedatadir = /usr//share
 l = 
 
-INCLUDES = -I/usr/include/ptlib/unix -I/usr/include/ptlib/.. -I/usr/include/ptlib/../ptclib -I/usr/include -I/usr/include/oh323/ -DP_LINUX -m486 -D_REENTRANT -DP_HAS_SEMAPHORES -DP_PTHREADS -DPBYTE_ORDER=PLITTLE_ENDIAN -DHAS_OSS -O2 -DGNOMELOCALEDIR=\""$(datadir)/locale"\" -I$(top_srcdir)/src $(GNOME_INCLUDEDIR)
+INCLUDES = -I/usr/include/ptlib/unix -I/usr/include/ptlib/.. -I/usr/include/ptlib/../ptclib -I/usr/include -I/usr/include/oh323/ -DP_LINUX -D_REENTRANT -DP_HAS_SEMAPHORES -DP_PTHREADS -DPBYTE_ORDER=PLITTLE_ENDIAN -DHAS_OSS -O2 -D_DEBUG -DPMEMORY_CHECK=1 -DPTRACING -Wall -g -DGNOMELOCALEDIR=\""$(datadir)/locale"\" -I$(top_srcdir)/src $(GNOME_INCLUDEDIR)
 
 bin_PROGRAMS = gnomemeeting
 
 gnomemeeting_SOURCES =  	callbacks.cpp			callbacks.h			gdkvideoio.cpp			gdkvideo.h			main.cpp			main.h				connection.cpp			connection.h			endpoint.cpp			endpoint.h			menu.cpp			menu.h				toolbar.cpp			toolbar.h			preferences.cpp			preferences.h			webcam.cpp			config.cpp			config.h			ldap.cpp			ldap.h				splash.cpp			splash.h			applet.cpp			applet.h			main_interface.cpp			main_interface.h			audio.cpp					audio.h
 
 
-gnomemeeting_LDADD = -rdynamic -L/usr/lib -L/usr/X11R6/lib  -rdynamic -lgnorba -lORBitCosNaming -lORBit -lIIOP -lORBitutil -lgnomeui -lart_lgpl -lgdk_imlib -lSM -lICE -lgtk -lgdk -lgmodule -lXi -lXext -lX11 -lgnome -lgnomesupport -lesd -laudiofile -lm -ldb -lglib -ldl  -lldap -llber -lresolv -lh323_linux_x86_r -ldl -lpt_linux_x86_r -lpthread -L/usr/lib -L/usr/X11R6/lib -lgtk -lgdk -rdynamic -lgmodule -lgthread -lglib -lpthread -ldl -lXi -lXext -lX11 -lm -lpanel_applet
+gnomemeeting_LDADD = -rdynamic -L/usr/lib -L/usr/X11R6/lib  -rdynamic -lgnorba -lORBitCosNaming -lORBit -lIIOP -lORBitutil -lgnomeui -lart_lgpl -lgdk_imlib -lSM -lICE -lgtk -lgdk -lgmodule -lXi -lXext -lX11 -lgnome -lgnomesupport -lesd -laudiofile -lm -ldb -lglib -ldl  -lldap -llber -lresolv -L/opt/pwlib/lib -L/opt/openh323/lib/ -lh323_linux_x86_d -ldl -lpt_linux_x86_d -lpthread -L/usr/lib -L/usr/X11R6/lib -lgtk -lgdk -rdynamic -lgmodule -lgthread -lglib -lpthread -ldl -lXi -lXext -lX11 -lm -lpanel_applet
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = ../config.h
 CONFIG_CLEAN_FILES = 

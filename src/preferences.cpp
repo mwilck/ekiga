@@ -185,9 +185,10 @@ void audio_mixer_changed (GtkEditable *editable, gpointer data)
 
 void video_test_button_pressed (GtkButton *button, gpointer data)
 {
-  GM_pref_window_widgets *pw = (GM_pref_window_widgets *) data;
-  GtkWidget *msg_box;
+//  GM_pref_window_widgets *pw = (GM_pref_window_widgets *) data;
+//  GtkWidget *msg_box;
 
+/*
   if (!GM_cam (gtk_entry_get_text (GTK_ENTRY (pw->video_device)),
 	      (int) pw->video_channel_spin_adj->value))
     msg_box = gnome_message_box_new (_("Impossible to open this device."), 
@@ -195,8 +196,8 @@ void video_test_button_pressed (GtkButton *button, gpointer data)
   else
     msg_box = gnome_message_box_new (_("These settings are correct."), 
 				     GNOME_MESSAGE_BOX_INFO, "OK", NULL);
-
-  gtk_widget_show (msg_box);
+*/
+//  gtk_widget_show (msg_box);
 }
 
 
@@ -1595,7 +1596,7 @@ void apply_options (options *opts, GM_pref_window_widgets *pw)
 
   endpoint = MyApp->Endpoint ();
 
-  // First we reinitialise the endpoint settings
+  // Reinitialise the endpoint settings
   endpoint->ReInitialise ();
 
   if ((opts->ldap) && (pw->ldap_changed))
@@ -1630,9 +1631,11 @@ void apply_options (options *opts, GM_pref_window_widgets *pw)
       pw->audio_mixer_changed = 0;
     }
 
+
   if (pw->vid_tr_changed)
     {
-      GM_cam_get_params (opts, &whiteness, &brightness, &colour, &contrast);
+      MyApp->Endpoint ()->Webcam ()
+	->GetParameters (&whiteness, &brightness, &colour, &contrast);
 
       gtk_adjustment_set_value (GTK_ADJUSTMENT (pw->gw->adj_brightness),
 				brightness);

@@ -265,11 +265,13 @@ gboolean check_config_from_struct (GM_pref_window_widgets *pw)
     {
       if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->vid_tr)))
 	{
+/*
 	  if (!GM_cam (gtk_entry_get_text (GTK_ENTRY (pw->video_device)),
 		       (int) pw->video_channel_spin_adj->value))
 	    
 	    msg_box = gnome_message_box_new (_("Could not open the selected video device, but video transmission is enabled.\nGnomeMeeting will transmit a test image to the remote party during communications."), 
 					     GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
+*/
 	}
     }
 

@@ -27,7 +27,7 @@
 #include "toolbar.h"
 #include "applet.h"
 #include "config.h"
-#include "webcam.h"
+
 
 #define new PNEW
 
@@ -53,6 +53,7 @@ gint gnome_idle_timer ()
     gtk_main_iteration();
   gdk_threads_leave ();
 
+  
   usleep (50);
   return TRUE;
 }
@@ -86,7 +87,7 @@ GnomeMeeting::GnomeMeeting (GM_window_widgets *s, options *o)
 
 GnomeMeeting::~GnomeMeeting()
 {
-  delete endpoint;
+  delete (endpoint);
   endpoint = NULL;
 }
 
@@ -112,22 +113,16 @@ void GnomeMeeting::Connect()
   current_call_token = endpoint->CallToken ();
   connection = endpoint->FindConnectionWithLock (current_call_token);
 
-
   // If connection, then answer it
   if (connection != NULL)
     {
       enable_disconnect ();
       disable_connect ();
 
-      GM_cam_capture_stop (gw);
-     
-
       connection->AnsweringCall (H323Connection::AnswerCallNow);
       connection->Unlock ();
 
       GM_log_insert (gw->log_text, _("Answering incoming call"));
-      
-
     }
   else
     {
@@ -149,7 +144,6 @@ void GnomeMeeting::Connect()
 	  endpoint->SetCurrentCallToken (current_call_token);
 	  endpoint->SetCallingState (1);
 
-	  GM_cam_capture_stop (gw);
 	  GM_log_insert (gw->log_text, _("Calling..."));
 	  gnome_appbar_push (GNOME_APPBAR (gw->statusbar), _("Calling..."));
 
@@ -237,7 +231,6 @@ int main (int argc, char ** argv, char ** envp)
   textdomain (PACKAGE);
   bindtextdomain (PACKAGE, GNOMELOCALEDIR);
   gw->pixmap = NULL;
-  gw->thread_count = 0;
   gw->applet = NULL;
   gw->pref_window = NULL;
   gw->ldap_window = NULL;
@@ -276,7 +269,7 @@ int main (int argc, char ** argv, char ** envp)
   // Main interface creation
   GM_main_interface_init (gw, opts);
 
-  PTrace::Initialise (0);
+  PTrace::Initialise (6);
 
   gtk_idle_add ((GtkFunction) gnome_idle_timer, NULL);
 

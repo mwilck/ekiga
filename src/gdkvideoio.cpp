@@ -123,7 +123,6 @@ BOOL GDKVideoOutputDevice::Redraw(const void * frame)
   update_rec.height = frameHeight;
 
   buffer.SetSize(frameWidth * frameHeight * 3);
-  
 
   H323VideoDevice::Redraw(frame);
 
@@ -154,7 +153,8 @@ BOOL GDKVideoOutputDevice::Redraw(const void * frame)
     gdk_threads_enter ();
     gdk_draw_rgb_image (gw->pixmap, gw->drawing_area->style->black_gc, 
 			xpos, ypos, 
-			frameWidth, frameHeight, GDK_RGB_DITHER_NORMAL, (guchar *) pic, 
+			frameWidth, frameHeight, GDK_RGB_DITHER_NORMAL, 
+			(guchar *) pic, 
 			frameWidth*3);
     gdk_threads_leave ();
 
@@ -172,7 +172,8 @@ BOOL GDKVideoOutputDevice::Redraw(const void * frame)
 	  gdk_threads_enter ();
 	  gdk_draw_rgb_image (gw->pixmap, gw->drawing_area->style->black_gc, 
 			      xpos, 
-			      ypos, frameWidth, frameHeight, GDK_RGB_DITHER_NORMAL, 
+			      ypos, frameWidth, frameHeight, 
+			      GDK_RGB_DITHER_NORMAL, 
 			      (guchar *) pic, frameWidth*3);
 	  gdk_threads_leave ();
 	}

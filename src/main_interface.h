@@ -69,6 +69,11 @@ void colour_changed (GtkAdjustment *, gpointer);
 void contrast_changed (GtkAdjustment *, gpointer);
 
 
+// DESCRIPTION  :  This callback is called when the user clicks 
+//                 on the preview button
+// BEHAVIOR     :  Displays the webcam images
+// PRE          :  /
+void preview_button_clicked (GtkButton *, gpointer);
 /******************************************************************************/
 /* The functions to build the main window                                     */
 /******************************************************************************/

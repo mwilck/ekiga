@@ -35,6 +35,7 @@
 #include "../pixmaps/whiteness.xpm"
 #include "../pixmaps/contrast.xpm"
 #include "../pixmaps/color.xpm"
+#include "../pixmaps/eye.xpm"
 
 
 /******************************************************************************/
@@ -43,7 +44,6 @@
 
 extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;	
-
 /******************************************************************************/
 
 
@@ -93,9 +93,7 @@ void brightness_changed (GtkAdjustment *adjustment, gpointer data)
 
   brightness =  (int) (GTK_ADJUSTMENT (gw->adj_brightness)->value);
 
-
-  if (GTK_WIDGET_IS_SENSITIVE (GTK_WIDGET (gw->video_settings_frame)))
-    GM_cam_set_brightness (gw, brightness * 256);
+  MyApp->Endpoint ()->Webcam ()->SetBrightness (brightness * 256);
 }
 
 
@@ -107,9 +105,7 @@ void whiteness_changed (GtkAdjustment *adjustment, gpointer data)
 
   whiteness =  (int) (GTK_ADJUSTMENT (gw->adj_whiteness)->value);
 
-
-  if (GTK_WIDGET_IS_SENSITIVE (GTK_WIDGET (gw->video_settings_frame)))
-    GM_cam_set_whiteness (gw, whiteness * 256);
+  MyApp->Endpoint ()->Webcam ()->SetWhiteness (whiteness * 256);
 }
 
 
@@ -121,9 +117,7 @@ void colour_changed (GtkAdjustment *adjustment, gpointer data)
 
   colour =  (int) (GTK_ADJUSTMENT (gw->adj_colour)->value);
 
-
-  if (GTK_WIDGET_IS_SENSITIVE (GTK_WIDGET (gw->video_settings_frame)))
-    GM_cam_set_colour (gw, colour * 256);
+  MyApp->Endpoint ()->Webcam ()->SetColour (colour * 256);
 }
 
 
@@ -135,11 +129,29 @@ void contrast_changed (GtkAdjustment *adjustment, gpointer data)
 
   contrast =  (int) (GTK_ADJUSTMENT (gw->adj_contrast)->value);
 
-
-  if (GTK_WIDGET_IS_SENSITIVE (GTK_WIDGET (gw->video_settings_frame)))
-    GM_cam_set_contrast (gw, contrast * 256);
+  MyApp->Endpoint ()->Webcam ()->SetContrast (contrast * 256);
 }
 
+
+void preview_button_clicked (GtkButton *button, gpointer data)
+{
+  GMH323Webcam *webcam;
+  GM_window_widgets *gw = (GM_window_widgets *) data;
+
+  webcam = MyApp->Endpoint ()->Webcam ();
+
+  if (webcam != NULL)
+    {
+      if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (button)))
+	if (gw->pref_window == NULL)
+	  webcam->Start ();
+	else
+	  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button),
+					FALSE);
+      else
+	webcam->Stop ();
+    }
+}
 /******************************************************************************/
 
 
@@ -151,7 +163,8 @@ void GM_main_interface_init (GM_window_widgets *gw, options *opts)
 { 
   GtkWidget *table, *table_in;	
   GtkWidget *frame;
-
+  GtkWidget *pixmap;
+  int whiteness = 0, brightness = 0, contrast = 0, colour = 0;
 
   // Init the splash screen
   if (opts->show_splash)
@@ -232,10 +245,39 @@ void GM_main_interface_init (GM_window_widgets *gw, options *opts)
 		      (GtkSignalFunc) expose_event, gw);    	
 
   gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (gw->video_frame), 
-		    5, 30, 11, 37,
+		    5, 30, 11, 35,
 		    (GtkAttachOptions) NULL,
 		    (GtkAttachOptions) NULL,
 		    10, 10);
+
+  // The control buttons
+  frame = gtk_frame_new(NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
+
+  gtk_widget_set_usize (GTK_WIDGET (frame), 176, 32);
+  gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (frame), 5, 30, 35, 37,
+		    (GtkAttachOptions) NULL,
+		    (GtkAttachOptions) NULL,
+		    10, 0);
+	
+
+  table_in = gtk_table_new (4, 1, FALSE);
+  gtk_container_add (GTK_CONTAINER (frame), table_in);
+
+  gw->preview_button = gtk_toggle_button_new ();
+
+  pixmap = gnome_pixmap_new_from_xpm_d ((char **) eye_xpm);
+  gtk_container_add (GTK_CONTAINER (gw->preview_button), pixmap);
+
+  gtk_widget_set_usize (GTK_WIDGET (gw->preview_button), 24, 24);
+  gtk_table_attach (GTK_TABLE (table_in), 
+		    gw->preview_button, 0, 1, 0, 1,
+		    (GtkAttachOptions) NULL,
+		    (GtkAttachOptions) NULL,
+		    2, 2);
+
+  gtk_signal_connect (GTK_OBJECT (gw->preview_button), "clicked",
+                      GTK_SIGNAL_FUNC (preview_button_clicked), gw);
 
 
   // The statusbar
@@ -246,10 +288,24 @@ void GM_main_interface_init (GM_window_widgets *gw, options *opts)
   // The menu and toolbar
   GM_menu_init (gm,gw);
   GM_toolbar_init (gm, gw);	  
- 
 
   // Init sockets
   static GnomeMeeting instance (gw, opts);
+  
+  /* Read the values */
+  MyApp->Endpoint ()->Webcam ()
+    ->GetParameters (&whiteness, &brightness, &colour, &contrast);
+
+  /* Set the values */
+  MyApp->Endpoint ()->Webcam ()->SetBrightness (brightness * 256);
+  gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_brightness),
+			    brightness);
+  gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_whiteness),
+			    whiteness);
+  gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_colour),
+			    colour);
+  gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_contrast),
+			    contrast);
 
   if (opts->show_splash)
     {
@@ -361,10 +417,6 @@ void GM_init_main_interface_video_settings (GtkWidget *notebook,
 				  GNOME_PAD_SMALL);
 
 
-  /* Read the values */
-  GM_cam_get_params (opts, &whiteness, &brightness, &colour, &contrast);
-
-
   /* Brightness */
   pixmap =  gnome_pixmap_new_from_xpm_d ((char **) brightness_xpm);
   gtk_table_attach (GTK_TABLE (table), pixmap, 0, 1, 0, 1,
@@ -463,9 +515,6 @@ void GM_init_main_interface_video_settings (GtkWidget *notebook,
 
   gtk_signal_connect (GTK_OBJECT (gw->adj_contrast), "value-changed",
 		      GTK_SIGNAL_FUNC (contrast_changed), (gpointer) gw);
-
-  // disable
-  gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame), FALSE);
 
   label = gtk_label_new (_("Video Settings"));  
 

@@ -21,6 +21,7 @@
 #include <gnome.h>
 #include <ptlib.h>
 
+
 typedef struct _GM_window_widgets GM_window_widgets;
 typedef struct _GM_pref_window_widgets GM_pref_window_widgets;
 typedef struct _GM_ldap_window_widgets GM_ldap_window_widgets;
@@ -72,16 +73,12 @@ struct _options
 struct _GM_window_widgets
 {
   // widgets
-  /* Audio Settings Volume */
   GtkObject *adj_play, *adj_rec;
-  
-  /* Video Settings */
   GtkObject *adj_whiteness;
   GtkObject *adj_brightness;
   GtkObject *adj_colour;
   GtkObject *adj_contrast;
   GtkWidget *video_settings_frame;
-
   GtkWidget *statusbar;
   GtkWidget *applet;
   GtkWidget *splash_win;
@@ -94,13 +91,7 @@ struct _GM_window_widgets
   GtkWidget *video_frame;
   GtkWidget *pref_window;
   GtkWidget *ldap_window;
-  
-  // webcam capture thread
-  pthread_t capture_thread;
-  int thread_count;
-
-  // The video grabber
-  PVideoInputDevice *grabber; 
+  GtkWidget *preview_button;
 };
 
 

@@ -88,6 +88,14 @@ GMH323EndPoint::GMH323EndPoint (GM_window_widgets *w, options *o)
 
   SetCurrentConnection (NULL);
   SetCallingState (0);
+
+  webcam = NULL;
+}
+
+
+GMH323EndPoint::~GMH323EndPoint ()
+{
+  delete (webcam);
 }
 
 
@@ -264,12 +272,26 @@ BOOL GMH323EndPoint::Initialise ()
   if (opts->ldap)
     GM_ldap_register ((char *) ip, gw);
 
+
+  // Run the webcam
+  if (opts->vid_tr == 1)
+    {
+      GM_splash_advance_progress (gw->splash_win, 
+				  _("Opening Video Device"), 
+				  0.55);
+
+      webcam = new (GMH323Webcam) (gw, opts);
+
+      while (webcam->Running () == 0) {}
+    }
+  
+
   // Default codecs
   RemoveAllCapabilities ();
 
   if (opts->show_splash)
     GM_splash_advance_progress (gw->splash_win, _("Adding Audio Capabilities"), 
-				0.60);
+				0.65);
   AddAudioCapabilities ();
 
   if (opts->show_splash)
@@ -279,13 +301,13 @@ BOOL GMH323EndPoint::Initialise ()
 
 	
   //Start the listener thread for incoming calls
-  H323ListenerTCP *listener;
+  H323ListenerTCP *listener = NULL;
+
   if (opts->show_splash)
     GM_splash_advance_progress (gw->splash_win, _("Starting Listener"), 0.90);
 
   listener = new H323ListenerTCP (*this, INADDR_ANY, atoi (opts->listen_port));
 
-	
   if (!StartListener (listener))
     {
       msg_box = gnome_message_box_new (_("Could not start listener."), 
@@ -305,7 +327,7 @@ BOOL GMH323EndPoint::Initialise ()
   SetSoundChannelPlayDevice(opts->audio_device);
   SetSoundChannelRecordDevice(opts->audio_device);
   GM_set_recording_source (opts->audio_mixer, 0); 
-  
+
   received_video_device = NULL;
   transmitted_video_device = NULL;
 
@@ -336,7 +358,10 @@ void GMH323EndPoint::ReInitialise ()
       SetLocalUserName (name);
       free (name);
     }
- 
+
+  delete (webcam);
+  webcam = new (GMH323Webcam) (gw, opts);
+
   // Default codecs
   RemoveAllCapabilities ();
   AddAudioCapabilities ();
@@ -616,10 +641,11 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
 
   gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame), FALSE);
+  gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), TRUE);
 
   enable_disconnect ();
   enable_connect ();
-
+  
   GM_init_main_interface_logo (gw);
   
   gdk_threads_leave ();
@@ -688,81 +714,22 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 				       BOOL isEncoding, 
 				       H323VideoCodec & codec)
 {
-  GtkWidget *msg_box = NULL;
-  int height, width, error = 0;
-
   /* If it is possible to transmit and
      if the user enabled transmission and
      if OpenVideoDevice is called for the encoding */
  if ((opts->vid_tr) && (isEncoding)) 
    {
-     PVideoChannel      * channel = new PVideoChannel;
-    
-     if (opts->video_size == 0)
-       {
-	 height = 176;
-	 width = 144;
-       }
-     else
-       {
-	 height = 352;
-	 width = 288;
-       }
-     
-     transmitted_video_device = new GDKVideoOutputDevice (isEncoding, gw);
-   
-     transmitted_video_device->SetFrameSize (height, width);
-
      codec.SetTxQualityLevel (opts->tr_vq);
      codec.SetBackgroundFill (opts->tr_ub);
-    
-     // Try and open the default grabber. If that fails, open
-     // the Fake grabber
-     gw->grabber = new PVideoInputDevice();
-   
-     if (gw->grabber->Open (opts->video_device, FALSE) &&
-	 gw->grabber->SetVideoFormat 
-       (opts->video_format ? PVideoDevice::NTSC : PVideoDevice::PAL) &&
-         gw->grabber->SetChannel (opts->video_channel) &&
-         gw->grabber->SetFrameRate (opts->tr_fps)  &&
-         gw->grabber->SetFrameSize (height, width)) 
-       {
-	 // Quick hack for Philips Webcams (which should not be needed)
-	 if (!gw->grabber->SetColourFormatConverter ("YUV411P"))
-	     error = !gw->grabber->SetColourFormatConverter ("YUV420P");
-       }
-     else
-       error = 1;
-
-     if (error == 1)
-       {
-
-
-	 msg_box = gnome_message_box_new (_("Could not open the video device."), GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
-  
-	 gtk_widget_show (msg_box);
-
-	 error = 1;
-
-	 // delete the failed grabber and open the fake grabber
-	 delete gw->grabber;
-
-	 gw->grabber = new PFakeVideoInputDevice();
-	 gw->grabber->SetColourFormatConverter ("YUV411P");
-	 gw->grabber->SetVideoFormat (PVideoDevice::PAL);
-	 gw->grabber->SetChannel (100);     //NTSC static image.
-	 gw->grabber->SetFrameRate (10);
-	 gw->grabber->SetFrameSize (height, width);
-       }
-
-
-     gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame), TRUE);
-     gw->grabber->Start ();
      
-     channel->AttachVideoReader (gw->grabber);
-     channel->AttachVideoPlayer (transmitted_video_device);
+     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->preview_button),
+				   FALSE);
+     gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button),
+			       FALSE);
+
+     transmitted_video_device = webcam->Device ();
      
-     return codec.AttachChannel (channel, TRUE);
+     return codec.AttachChannel (webcam->Channel (), FALSE);
    }
  else
    {
@@ -784,4 +751,9 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
  return FALSE;
 }
 
+
+GMH323Webcam *GMH323EndPoint::Webcam (void)
+{
+  return webcam;
+}
 /******************************************************************************/

@@ -26,7 +26,6 @@
 /******************************************************************************/
 /* The GTK callbacks                                                          */
 /******************************************************************************/
-
 // DESCRIPTION  :  This callback is called when the user chooses to pause
 //                 the audio transmission
 // BEHAVIOR     :  Pauses the audio transmission
@@ -84,9 +83,16 @@ void pref_callback (GtkWidget *, gpointer);
 
 
 // DESCRIPTION  :  This callback is called when the user chooses to quit
-// BEHAVIOR     :  Quit 
+// BEHAVIOR     :  Asks the Are you sure to quit question ...
 // PRE          :  /
 void quit_callback (GtkWidget *, gpointer);
+
+
+// DESCRIPTION  :  This callback is called when the clicks on yes or no
+//                 in the Are you sure to quit popup
+// BEHAVIOR     :  Quit  or not
+// PRE          :  /
+void gtk_main_quit_callback (int, gpointer);
 
 
 // DESCRIPTION  :  This callback is called when the user chooses to show / hide

@@ -33,6 +33,7 @@
 #include <pthread.h>
 
 #include "common.h"
+#include "webcam.h"
 #include "gdkvideoio.h"
 
 
@@ -62,6 +63,12 @@ class GMH323EndPoint : public H323EndPoint
   //                 struct containing all the widgets needed to manage
   //                 and update the main GUI, options * is valid too
   GMH323EndPoint (GM_window_widgets *, options *);
+
+
+  // DESCRIPTION  :  The destructor
+  // BEHAVIOR     :  Deletes the GMH323Webcam grabbing device
+  // PRE          :
+  ~GMH323EndPoint ();
 
   
   // COMMON NOTICE :The following virtual functions override from H323EndPoint
@@ -225,6 +232,11 @@ class GMH323EndPoint : public H323EndPoint
   // PRE          :  /
   PString CallToken (void);
 
+
+  // DESCRIPTION  :  /
+  // BEHAVIOR     :  Returns the current webcam grabbing device
+  // PRE          :  /
+  GMH323Webcam *Webcam (void);
   
  protected:
   
@@ -238,7 +250,7 @@ class GMH323EndPoint : public H323EndPoint
   GDKVideoOutputDevice *transmitted_video_device; // GDKVideoOutputDevice : sent
   GDKVideoOutputDevice *received_video_device; // GDKVideoOutputDevice : received
   GM_window_widgets *gw; // main window widgets that need to be updated
-  pthread_t ring_thread; // ring thread, simply
+  GMH323Webcam *webcam;
 };
 
 /******************************************************************************/

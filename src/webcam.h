@@ -39,83 +39,42 @@
 #include <gnome.h>
 #include <ptlib.h>
 
+#include "gdkvideoio.h"
+#include "config.h"
 #include "common.h"
 
-/******************************************************************************/
-/* The functions                                                              */
-/******************************************************************************/
 
-// DESCRIPTION  :  /
-// BEHAVIOR     :  Open the webcam device (if not already opened) and return 1
-//                 if success, 0 otherwise
-// PRE          :  The parameter are : a pointer to a device, and a video channel
-int GM_cam (gchar *, int);
+class GMH323Webcam : public PThread
+{
+  PCLASSINFO(GMH323Webcam, PThread);
 
+ public:
+  GMH323Webcam (GM_window_widgets *, options *);
+  ~GMH323Webcam ();
+  
+  void Main ();
+  void Start ();
+  void Stop ();
+  int Running ();
+  PVideoChannel *Channel ();
+  GDKVideoOutputDevice *Device (void);
+  void Restart (void);
+  void SetColour (int);
+  void SetBrightness (int);
+  void SetWhiteness (int);
+  void SetContrast (int);
+  void GetParameters (int *, int *, int *, int *);
 
-// DESCRIPTION  :  /
-// BEHAVIOR     :  BGR -> RGB conversion
-// PRE          :  A pointer to a BGR buffer of 176x144
-void GM_rgb_swap (void *);
-
-
-// DESCRIPTION  :  /
-// BEHAVIOR     :  Starts to capture in a separate thread from the webcam device
-//                 and displays in the main window
-// PRE          :  The first parameter is the device, the second is a pointer
-//                 to a valid GM_window_widgets
-int GM_cam_capture_start (gchar *, GM_window_widgets *);
-
-
-// DESCRIPTION  :  /
-// BEHAVIOR     :  Stops the capture thread
-// PRE          :  The parameter is a pointer to a valid GM_window_widgets
-int GM_cam_capture_stop (GM_window_widgets *);
-
-
-// DESCRIPTION  :  /
-// BEHAVIOR     :  Starts the capture thread (capture till gw->dev != -1), if
-//                 device not opened, opens it. If no device, do nothing
-// PRE          :  The parameter is a pointer to a valid GM_window_widgets
-void * GM_cam_capture_thread (GM_window_widgets *);
-
-
-// DESCRIPTION  :  /
-// BEHAVIOR     :  Displays webcam info in a text widget (second parameter)
-// PRE          :  The first parameter is a pointer to a valid GM_window_widgets
-//                 and the second one, a valid pointer to a valid text widget
-int GM_cam_info (GM_window_widgets *, GtkWidget *);
-
-
-// DESCRIPTION  :  /
-// BEHAVIOR     :  Sets the colour a values for the webcam driver
-// PRE          :  The first parameter is a pointer to GM_window_widgets
-void GM_cam_set_colour (GM_window_widgets *, int);
-
-
-// DESCRIPTION  :  /
-// BEHAVIOR     :  Sets the contrast a values for the webcam driver
-// PRE          :  The first parameter is a pointer to GM_window_widgets
-void GM_cam_set_contrast (GM_window_widgets *, int);
-
-
-// DESCRIPTION  :  /
-// BEHAVIOR     :  Sets the brightness a values for the webcam driver
-// PRE          :  The first parameter is a pointer to GM_window_widgets
-void GM_cam_set_brightness (GM_window_widgets *, int);
-
-
-// DESCRIPTION  :  /
-// BEHAVIOR     :  Sets the whiteness a values for the webcam driver
-// PRE          :  The first parameter is a pointer to GM_window_widgets
-void GM_cam_set_whiteness (GM_window_widgets *, int);
-
-
-// DESCRIPTION  :  /
-// BEHAVIOR     :  Gets the params values for the webcam driver
-// PRE          :  The first parameter is a pointer to valid options,
-//                 then whiteness, brightness, colour, contrast (between 0 and 1)
-void GM_cam_get_params (options *, int *, int *, int *, int *);
+ protected:
+  GM_window_widgets *gw;
+  options *opts;
+  void *video_buffer;
+  PVideoChannel *channel;
+  PVideoInputDevice *grabber;
+  GDKVideoOutputDevice *encoding_device;
+  int running;
+  int grabbing;
+};
 
 /******************************************************************************/
-
 #endif

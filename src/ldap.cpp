@@ -768,9 +768,10 @@ void *GM_ldap_register (char *ip, GM_window_widgets *gw)
   // Video Capable ?
   mods [12] = new (LDAPMod);
   ilsa32964638_value [0] = (char *) malloc (2);
+/*
   if ( (opts.vid_tr) && (GM_cam (opts.video_device, opts.video_channel)) )
     strcpy (ilsa32964638_value [0], "1");
-  else
+  else*/
     strcpy (ilsa32964638_value [0], "0");
   ilsa32964638_value [1] = NULL;
   mods [12]->mod_op = LDAP_MOD_ADD | LDAP_MOD_REPLACE;

@@ -43,7 +43,7 @@ class GDKVideoOutputDevice : public H323VideoDevice
     // BEHAVIOR     :  Setups the parameters
     // PRE          :  GM_window_widgets is a valid pointer to a valid
     //                 GM_window_widgets
-    GDKVideoOutputDevice(GM_window_widgets *);
+    GDKVideoOutputDevice (GM_window_widgets *);
 
     
     // DESCRIPTION  :  The constructor
@@ -52,7 +52,7 @@ class GDKVideoOutputDevice : public H323VideoDevice
     //                 else default display = remote
     // PRE          :  GM_window_widgets is a valid pointer to a valid
     //                 GM_window_widgets
-    GDKVideoOutputDevice(int, GM_window_widgets *);
+    GDKVideoOutputDevice (int, GM_window_widgets *);
 
 
     // DESCRIPTION  :  /

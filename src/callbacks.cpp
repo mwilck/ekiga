@@ -82,7 +82,14 @@ void pref_callback (GtkWidget *widget, gpointer data)
   int call_state = MyApp->Endpoint ()->CallingState();
 
   if (gw->pref_window == NULL)
-    GMPreferences (call_state, gw);
+    {
+      // First we stop the video preview
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->preview_button),
+				    FALSE);
+      MyApp->Endpoint ()->Webcam ()->Stop ();
+
+      GMPreferences (call_state, gw);
+    }
 }
 
 
@@ -145,19 +152,38 @@ void about_callback (GtkWidget *widget, gpointer data)
 
 void quit_callback (GtkWidget *widget, gpointer data)
 {
+  GMH323Webcam *webcam;  
   GM_window_widgets *gw = (GM_window_widgets *) data;
-  
-  MyApp -> Endpoint () -> ClearAllCalls ();
- 
-  usleep (1000);
 
-  if (gw->applet == NULL)
-    gtk_main_quit ();
-  else
+  MyApp->Endpoint ()->ClearAllCalls ();
+  webcam = MyApp->Endpoint ()->Webcam ();
+
+  if (webcam != NULL)
     {
-      applet_widget_remove (APPLET_WIDGET (gw->applet));
-      applet_widget_gtk_main_quit ();
+      webcam->Stop ();
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->preview_button),
+				    false);
     }
+
+  gnome_app_question(GNOME_APP(gm),_("Are you sure you want to quit ?"),
+		     gtk_main_quit_callback, gw);
+}  
+
+
+void gtk_main_quit_callback (int res, gpointer data)
+{
+   GM_window_widgets *gw = (GM_window_widgets *) data;
+ 
+   if (res == 0)
+     {
+       if (gw->applet == NULL)
+	 gtk_main_quit ();
+       else
+	 {
+	   applet_widget_remove (APPLET_WIDGET (gw->applet));
+	   applet_widget_gtk_main_quit ();
+	 }
+     }
 }
 
 
