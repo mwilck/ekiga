@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting 0.92.1\n"
-"POT-Creation-Date: 2002-07-10 10:14+0200\n"
+"POT-Creation-Date: 2002-07-08 18:15+0200\n"
 "PO-Revision-Date: 2002-07-10 9:10+0800\n"
 "Last-Translator: Chung-Yen Chang <candyz@linux.org.tw>\n"
 "Language-Team: Traditional Chinese <zh-l10n@linux.org.tw>\n"
@@ -390,6 +390,7 @@ msgstr "錄音時使用的裝置"
 msgid ""
 "The height of the picture displayed when being in fullscreen (using SDL)"
 msgstr ""
+"全螢幕時圖形顯示的高度 (使用 SDL)"
 
 #: gnomemeeting.schemas.in.in.h:89
 msgid "The host to forward calls to"
@@ -936,7 +937,7 @@ msgstr "轉發呼叫到 %s (沒有應答)"
 #: src/endpoint.cpp:187
 #, c-format
 msgid "Started GnomeMeeting V%d.%d for %s\n"
-msgstr "已啟動 %s 的 GnomeMeeting 版本%d.%d\n"
+msgstr "已啟動  GnomeMeeting 版本%d.%d for %s\n"
 
 #: src/endpoint.cpp:275 src/endpoint.cpp:281
 #, c-format
@@ -1281,7 +1282,8 @@ msgstr "%.2ld:%.2ld:%.2ld  音訊：%.2f/%.2f   視訊：%.2f/%.2f"
 msgid ""
 "It appears that you do not have gnomemeeting.server installed in a valid "
 "location. Factory mode disabled.\n"
-msgstr "找不到 gnomemeetint，或是安裝在錯誤的路徑，停止內定模式。\n"
+msgstr ""
+"找不到 gnomemeetint，或是安裝在錯誤的路徑，停止內定模式。\n"
 
 #: src/main_window.cpp:321
 msgid ""
@@ -1302,7 +1304,6 @@ msgid "Makes GnomeMeeting call the given callto:// URL"
 msgstr "使用 GnomeMeeting 以 callto://URL 的方式呼叫"
 
 #: src/main_window.cpp:598
-#, c-format
 msgid ""
 "GnomeMeeting got %d for the GConf key \"/apps/gnomemeeting/gconf_test_age\", "
 "but %d was expected.\n"
@@ -1336,10 +1337,10 @@ msgid ""
 "seconix.com/me@foo.com\" to call the person registered on the ILS server ils."
 "seconix.com with the me@foo.com e-mail address."
 msgstr ""
-"GnomeMeeting 安裝了一個 URL 處理方式 callto://URLs。使用 GnomeMeeting URLs 呼"
-"叫網路上的使用者是很容易的事。你可以在 Gnome panel 上建立一個 URL launcher "
-"\"callto://ils.seconix.com/me@foo.com\" 來呼叫有註冊到 ils.seconix.com ILS "
-"server 上的人。"
+"GnomeMeeting 安裝了一個 URL 處理方式 callto://URLs。"
+"使用 GnomeMeeting URLs 呼叫網路上的使用者是很容易的事。你可以在 Gnome panel 上建立一個"
+" URL launcher \"callto://ils.seconix.com/me@foo.com\" 來呼叫有註冊到 ils.seconix.com"
+" ILS server 上的人。"
 
 #: src/main_window.cpp:738
 msgid ""
@@ -2199,10 +2200,9 @@ msgstr "視訊傳送狀態。在呼叫中點選此處可暫停視訊傳送。"
 
 #: src/urlhandler.cpp:128
 msgid "Searching for user"
-msgstr ""
+msgstr "正在尋找使用者"
 
 #: src/urlhandler.cpp:220
-#, c-format
 msgid "Calling %s"
 msgstr "正在呼叫 %s"
 
