@@ -370,8 +370,8 @@ GMPCSSEndPoint::CreateSoundChannel (const OpalPCSSConnection & connection,
 				(const char *) plugin);
       
       gm_main_window_set_volume_sliders_values (main_window, 
-						is_source?-1:play_vol,
-						is_source?record_vol:-1);
+						is_source?-1:(int) play_vol,
+						is_source?(int)record_vol:-1);
       gnomemeeting_threads_leave ();
 
       return sound_channel;
