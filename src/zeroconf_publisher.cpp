@@ -110,8 +110,8 @@ GMZeroconfPublisher::GMZeroconfPublisher()
 
 /* DESCRIPTION  : / 
  * BEHAVIOR     : GMZeroconfPublisher destructor
- *		  -release the discovery zeroconf session
- * PRE          : must be call to finish zeroconf session
+ *		  - release the discovery zeroconf session
+ * PRE          : must be called to finish zeroconf session
  */
 
 GMZeroconfPublisher::~GMZeroconfPublisher()

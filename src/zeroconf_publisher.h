@@ -51,7 +51,7 @@
 
 /* 
  * Redefine some howl struct because of a bug in howl 
- * including config.h that conflish with GM config.h
+ * including config.h that conflicts with GM config.h
  */
 struct _sw_discovery;
 typedef struct _sw_discovery *sw_discovery;
@@ -77,7 +77,7 @@ class GMZeroconfPublisher : public PThread
 
   /* DESCRIPTION  : / 
    * BEHAVIOR     : ZeroconfPublisher destructor
-   *		    -Rrelease the discovery zeroconf session
+   *		    - release the discovery zeroconf session
    * PRE          : /
    */
   ~GMZeroconfPublisher ();
@@ -85,8 +85,8 @@ class GMZeroconfPublisher : public PThread
 
   /* DESCRIPTION  : / 
    * BEHAVIOR     : Return -1 when error occured, 0 else.
-   *		  Start the thread
-   * PRE          : No comment!
+   *		    Start the thread
+   * PRE          : /
    * 		  
    */
   int Start ();
@@ -114,8 +114,8 @@ class GMZeroconfPublisher : public PThread
 
   /* DESCRIPTION  : / 
    * BEHAVIOR     : Return err=SW_OKAY when no error occured.
-   *		  Retrieve user personal data from gconf 
-   *		  to class attributes info.
+   *		    Retrieve user personal data from gmconf 
+   *		    to class attributes info.
    * PRE          : must be call to update personal data
    */
   int GetPersonalData();

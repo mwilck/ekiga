@@ -2,8 +2,8 @@
 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
 "/usr/share/sgml/docbook/dtd/xml/4.1.2/docbookx.dtd" [
 <!ENTITY app "GnomeMeeting">
-<!ENTITY appversion "1.0">
-<!ENTITY manrevision "1.0">
+<!ENTITY appversion "1.2">
+<!ENTITY manrevision "1.2">
 ]>
 <!-- Begin -->
 
@@ -119,7 +119,7 @@ This documentation is for version &appversion; of <application>&app;</applicatio
 	<para><emphasis>Callto URL</emphasis></para>
 
 	<para>
-	The Callto URL; Enter an email address for a callto://address (eg: callto://user@domain.com). If you leave the checkbox unchecked, your personal information will be published on the user 
+	The Callto URL; Enter an email address for a callto://address (eg: callto:ils.seconix.com/user@domain.com). If you leave the checkbox unchecked, your personal information will be published on the user 
 	directory of online Gnomemeeting users and you will be visible to other Gnomemeeting users. If checked then you will not be registered and other users will have to know your IP address to contact you.
 	
 	Please press 'Forward' after having entered all required information to continue.
@@ -144,19 +144,31 @@ This documentation is for version &appversion; of <application>&app;</applicatio
 	your network connect and adjust Gnomemeeting manually with the preferences window (codecs section) later on.
 	</para>	
 
-	<para>
 	<figure>
 	 <graphic fileref="figures/config_d5.png"></graphic>
 	</figure>
-	<emphasis>Audio Manager</emphasis>
+	
+	<para><emphasis>NAT Type</emphasis></para>
 
+	<para>
+	The NAT Type detection page will permit to detect which type of NAT you are using (if any) and help configuring GnomeMeeting appropriately. Clicking on the detection button will bring a popup indicating which type of NAT was detected and describing the most appropriate way to configure GnomeMeeting to allow it to go through that type of NAT. No configuration will be required in most of the cases, but some NAT routers will require the administrator to forward a few TCP and UDP ports to the internal computer running GnomeMeeting. Please refer to the FAQ for configuration examples.	
+	</para>
+	
+	<figure>
+	 <graphic fileref="figures/config_d6.png"></graphic>
+	</figure>
+	
+	<para><emphasis>Audio Manager</emphasis></para>
+
+	<para>
 	The Audio manager manages everything audio. It can be ALSA, OSS or even Quicknet to manage a Quicknet card. The recommended Audio Manager is ALSA. 
 	</para>
 
 
 	<figure>
-         <graphic fileref="figures/config_d6.png"></graphic>
+         <graphic fileref="figures/config_d7.png"></graphic>
         </figure>
+
 	<para><emphasis>Audio Devices</emphasis></para>
 	<para>
 	Gnomemeeting requires audio devices to play and record sound.
@@ -178,7 +190,7 @@ This documentation is for version &appversion; of <application>&app;</applicatio
 	</para>
 
 	<figure>
-	 <graphic fileref="figures/config_d7.png"></graphic>
+	 <graphic fileref="figures/config_d8.png"></graphic>
 	</figure>
 
 	<para><emphasis>Video Manager</emphasis></para>
@@ -189,7 +201,7 @@ This documentation is for version &appversion; of <application>&app;</applicatio
 
 
 	<figure>
-         <graphic fileref="figures/config_d8.png"></graphic>
+         <graphic fileref="figures/config_d9.png"></graphic>
         </figure>
 
 	<para><emphasis>Video Devices</emphasis></para>
@@ -210,7 +222,7 @@ This documentation is for version &appversion; of <application>&app;</applicatio
 
 
 	<figure>
-         <graphic fileref="figures/config_d9.png"></graphic>
+         <graphic fileref="figures/config_d10.png"></graphic>
         </figure>
 	<para><emphasis>Configuration Complete</emphasis></para>
 
@@ -246,7 +258,7 @@ This documentation is for version &appversion; of <application>&app;</applicatio
   <itemizedlist>
         <listitem><para>Call a given host on a port different from the default port which is 1720: <emphasis>h323:seconix.com:1740</emphasis></para></listitem>
         <listitem><para>Call a given user using their respective alias if registered to a gatekeeper: <emphasis>h323:jonita</emphasis></para></listitem>
-        <listitem><para>Call a given phone number if you are registered to a gatekeeper for a PC-To-Phone provider: <emphasis>h323:003210111222</emphasis></para></listitem>
+        <listitem><para>Call a given phone number if you are registered to a gatekeeper for a PC-To-Phone provider, or if that user has an ENUM record associated to an H.323 URL: <emphasis>h323:003210111222</emphasis></para></listitem>
         <listitem><para>Call a given user using their alias through a specific gateway or proxy: <emphasis>h323:jonita@gateway.seconix.com</emphasis></para></listitem>
         <listitem><para>Call an MCU and join a specific room: <emphasis>h323:myfriendsroom@mcu.seconix.com</emphasis></para></listitem>
   </itemizedlist>
@@ -298,7 +310,7 @@ will now resemble a power plug connected to a socket.</para>-->
 
 <para><emphasis>Calling users from the online address book</emphasis></para>
 
-<para>The online address book will permit you to call online users registered to an ILS server. You can bookmark their callto URL using drag-and-drop or the appropriate menus. Notice that if you are already in a call, double-clicking on an user will transfer the call with the remote user to the user you double-clicked in the address book. See Managing contacts with the Address Book for further information.</para>
+<para>The online address book will permit you to call online users registered to an ILS server. You can bookmark their callto URL using drag-and-drop or the appropriate menus. See Managing contacts with the Address Book for further information.</para>
 
 <para><emphasis>Calling users from the offline address book</emphasis></para>
 
@@ -307,6 +319,25 @@ will now resemble a power plug connected to a socket.</para>-->
 <para><emphasis>Calling users from the calls history</emphasis></para>
 <para>The calls history remembers the callto and h323 URLs that have been used when giving or receiving calls. You can call again any user present in your calls history by double-clicking on his entry in the history. Notice that if you are already in a call, double-clicking on an user will transfer the call with the remote user to the user you double-clicked in the calls history.
 </para>
+</sect2>
+
+<sect2 id="gnomemeeting-call-other-users">
+<title>To be Callable by Other Users</title>
+
+<para>There are several ways to get a universally callable address that other clients can use to call you. The most classical ones will be described here.</para>
+
+<para><emphasis>Using an ILS directory</emphasis></para>
+<para>If you are registering to an ILS directory like <emphasis>ils.seconix.com</emphasis>, then other users will be able to call you using an URL like <emphasis>callto:ils.seconix.com/myself@example.com</emphasis> whatever your IP address is.</para>
+
+<para><emphasis>Using a dynamic hostname</emphasis></para>
+<para>You can register to a service providing DNS services for dynamic IP's. That way, your machine will always be associated to the registered hostname and other users will not need to know your IP address to be able to call you.</para>
+
+<para><emphasis>Using a gatekeeper</emphasis></para>
+<para>If your company is running an H.323 gatekeeper on a public IP, it can be configured to accept calls and redirect them to the correct GnomeMeeting client based on the called URL. For example, if a gatekeeper is installed on <emphasis>example.com</emphasis> and user <emphasis>joe</emphasis> is registered to that gatekeeper, then other users will be able to call <emphasis>joe</emphasis> using the following URL: <emphasis>h323:joe@example.com</emphasis>.</para>
+
+<para><emphasis>Using an ENUM record</emphasis></para>
+<para>You can register an ENUM record on <ulink url="http://www.e164.org" type="http">www.e164.org</ulink>. That will permit you to associate your real phone number to any valid H.323 URL, and other users will be able to call you using your real phone number. For example, <emphasis>+3210444555</emphasis> will be associated to <emphasis>h323:myhostname.com</emphasis> and other users will be able to call you using <emphasis>h323:3210444555</emphasis></para>.
+
 </sect2>
 
 
@@ -425,13 +456,16 @@ Select the field you wish to search, enter the search query and press enter.
 
 <para><emphasis>Basics of the Address Book</emphasis></para>
 	<para>
-	To open the Address Book select Tools -> Address Book and the Gnomemeeeting Addressbook window 
+	To open the Address Book select Tools -> Address Book and the GnomeMeeting Addressbook window 
 	should appear. On your left there will be a list dialog showing the Servers you have added to
-	 the list as well as a list of Groups. The defaults are ils.seconix.com for Servers and 
-	Friends/Family/Work for Groups.</para>
+	 the list as well as a list of Groups. The defaults are ils.seconix.com for Servers and the Personal address book.</para>
 
 	<para>
-	To receive a list of users on a certain ILS server right click on the server in question and 
+	GnomeMeeting is able to use several types of address books. The most common address book type is the ILS directory where you can find information about registered users. GnomeMeeting is also able to browse real LDAP directories and use a specific attribute as calling URL. For example, you could have a gatekeeper in your company where all users are registering using their email address. All users would also be listed in the company's LDAP server, and a double-click on a specific user would trigger a call through the gatekeeper using the clicked user's e-mail address. GnomeMeeting is also able to detect other GnomeMeeting users on the LAN using the Rendez-Vous technology popularized by Apple (tm). That supposes you have a local mDNSResponder daemon running on your computer. Finally, GnomeMeeting is able to bookmark contacts in the local address book, shared with the Evolution suite.
+	</para>
+	
+	<para>
+	To receive a list of users on a certain ILS or LDAP server, right click on the server in question and 
 	select 'Refresh'. This will contact the server, eg: ils.seconix.com and fetch its user list.
 	 It will then sort the user list by callto:// URL and you can now begin to contact people by 
 	double clicking on their highlighted field. You can also Drag-N-Drop to call a specific party
@@ -440,10 +474,7 @@ Select the field you wish to search, enter the search query and press enter.
 	<para>
 	If the persons name is in the color 'gray' it means that this person is in Busy mode
 	 or currently already involved in a Gnomemeeting call with another user, the Status field 'S'
-	 will show a phone that is off the hook. The 'A' Audio field and 'V' Video field will let you
-	 know if this person has Audio or Video or Both. Should one field be selected and not the 
-	other then only one of the communication codecs are being supported by this person. For 
-	instance someone might have audio but not a webcam so only the 'A'udio field would be selected.
+	 will show a phone that is off the hook. 
 	</para>
 
 	<para>
