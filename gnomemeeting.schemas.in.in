@@ -367,6 +367,18 @@
       </locale>
     </schema>
     <schema>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/accounts_list</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/accounts_list</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>list</type>
+      <list_type>string</list_type>
+      <default>[]</default>
+      <locale name="C">
+	<short></short>
+	<long>FIXME</long>
+      </locale>
+    </schema>
+    <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/protocols/sip/listen_port</key>
       <applyto>/apps/@PACKAGE_NAME@/protocols/sip/listen_port</applyto>
       <owner>GnomeMeeting</owner>
@@ -378,28 +390,6 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/protocols/sip/registrar_host</key>
-      <applyto>/apps/@PACKAGE_NAME@/protocols/sip/registrar_host</applyto>
-      <owner>GnomeMeeting</owner>
-      <type>string</type>
-      <default></default>
-      <locale name="C">
-	<short>Registrar host</short>
-	<long>The registrar host to register with</long>
-      </locale>
-    </schema>
-    <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/protocols/sip/registrar_password</key>
-      <applyto>/apps/@PACKAGE_NAME@/protocols/sip/registrar_password</applyto>
-      <owner>GnomeMeeting</owner>
-      <type>string</type>
-      <default></default>
-      <locale name="C">
-	<short>Registrar password</short>
-	<long>The password to use to authenticate with the registrar</long>
-      </locale>
-    </schema>
-    <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/protocols/sip/registrar_registration_timeout</key>
       <applyto>/apps/@PACKAGE_NAME@/protocols/sip/registrar_registration_timeout</applyto>
       <owner>GnomeMeeting</owner>
@@ -408,39 +398,6 @@
       <locale name="C">
 	<short>Registration timeout</short>
 	<long>The time after which GnomeMeeting will renew its registration with the registrar</long>
-      </locale>
-    </schema>
-    <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/protocols/sip/registrar_registering_method</key>
-      <applyto>/apps/@PACKAGE_NAME@/protocols/sip/registrar_registering_method</applyto>
-      <owner>GnomeMeeting</owner>
-      <type>int</type>
-      <default>0</default>
-      <locale name="C">
-	<short>Registering method</short>
-	<long>The registering method to use</long>
-      </locale>
-    </schema>
-    <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/protocols/sip/registrar_login</key>
-      <applyto>/apps/@PACKAGE_NAME@/protocols/sip/registrar_login</applyto>
-      <owner>GnomeMeeting</owner>
-      <type>string</type>
-      <default></default>
-      <locale name="C">
-	<short>Registrar login</short>
-	<long>The registrar authentication user name</long>
-      </locale>
-    </schema>
-    <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/protocols/sip/registrar_realm</key>
-      <applyto>/apps/@PACKAGE_NAME@/protocols/sip/registrar_realm</applyto>
-      <owner>GnomeMeeting</owner>
-      <type>string</type>
-      <default></default>
-      <locale name="C">
-	<short>Registrar realm/domain</short>
-	<long>The realm/domain to use for the registration with the SIP registrar</long>
       </locale>
     </schema>
     <schema>
