@@ -79,7 +79,7 @@ HAS_SPEEX="disabled"
 case $target_os in
 
   linux-gnu | linux | Linux)
-    H323_CFLAGS="-DP_LINUX -D_REENTRANT $ARCH_H323_CFLAGS -DHAS_OSS -DNDEBUG -DPHAS_TEMPLATES -DP_USE_PRAGMA -DPTRACING -Wall -O2 -g"
+    H323_CFLAGS="-DP_LINUX -D_REENTRANT $ARCH_H323_CFLAGS -DHAS_OSS -DPHAS_TEMPLATES -DP_USE_PRAGMA -DPTRACING -Wall -O2 -g"
     H323_LIBS="-lopenh323 -ldl -lpt -lpthread"
     LIBPT_FILE="libpt.so"
     LIBOPENH323_FILE="libopenh323.so"
@@ -115,6 +115,22 @@ dnl -D_DEBUG -DPMEMORY_CHECK=1 -DPTRACING -g
     AC_MSG_ERROR("Only Linux FreeBSD and Mac OS X are supported. Please contact the author. You can add more OS types.")
     ;;
 esac
+
+
+dnl ###########################################################################
+dnl Enable debugging support
+dnl ###########################################################################
+AC_ARG_ENABLE(enable_debug,
+        [  --enable-debug        Enable debugging in GnomeMeeting (OpenH323 and PWLib must be compiled with debugging enabled])
+
+AC_MSG_CHECKING(whether debugging must be compiled in)
+if test x"$enable_debug" = xyes ; then
+   H323_CFLAGS="$H323_CFLAGS -D_DEBUG -DPMEMORY_CHECK=1"
+   AC_MSG_RESULT([yes])
+else
+   H323_CFLAGS="$H323_CFLAGS -DNDEBUG"
+   AC_MSG_RESULT([no])
+fi
 
 
 dnl ###########################################################################
