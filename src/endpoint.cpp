@@ -109,6 +109,8 @@ GMH323EndPoint::GMH323EndPoint ()
   NoIncomingMediaTimer.SetNotifier (PCREATE_NOTIFIER (OnNoIncomingMediaTimeout));
   last_audio_octets_received = 0;
   last_video_octets_received = 0;
+  last_audio_octets_transmitted = 0;
+  last_video_octets_transmitted = 0;
 
   NoAnswerTimer.SetNotifier (PCREATE_NOTIFIER (OnNoAnswerTimeout));
   CallPendingTimer.SetNotifier (PCREATE_NOTIFIER (OnCallPending));
@@ -1301,6 +1303,8 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   RTPTimer.Stop ();
   last_audio_octets_received = 0;
   last_video_octets_received = 0;
+  last_audio_octets_transmitted = 0;
+  last_video_octets_transmitted = 0;
 
   /* We update the stats part */  
   gnomemeeting_threads_enter ();
@@ -1864,6 +1868,12 @@ GMH323EndPoint::OnRTPTimeout (PTimer &, INT)
 
   int new_audio_octets_received = 0;
   int new_video_octets_received = 0;
+  int new_audio_octets_transmitted = 0;
+  int new_video_octets_transmitted = 0;
+  float received_audio_speed = 0;
+  float received_video_speed = 0;
+  float transmitted_audio_speed = 0;
+  float transmitted_video_speed = 0;
 
   rtp = GnomeMeeting::Process ()->GetRtpData ();
   gw = GnomeMeeting::Process ()->GetMainWindow ();
@@ -1886,68 +1896,64 @@ GMH323EndPoint::OnRTPTimeout (PTimer &, INT)
     con->GetSession(RTP_Session::DefaultAudioSessionID);	  
   video_session = 
     con->GetSession(RTP_Session::DefaultVideoSessionID);
+
 	  
-
   if (audio_session) {
-
     new_audio_octets_received = audio_session->GetOctetsReceived();
-    /* Compute the current transmitted audio speed */
-    if ((rtp->tr_audio_bytes == 0) && (rtp->tr_audio_pos == 0))
-      /* Default value for the 1st element */
-      rtp->tr_audio_bytes = audio_session->GetOctetsSent();
-    rtp->tr_audio_speed [rtp->tr_audio_pos] = 
-      (float) (audio_session->GetOctetsSent()
-	       - rtp->tr_audio_bytes)/ 1024;
-    rtp->tr_audio_bytes = 
-      audio_session->GetOctetsSent();	
-
-    rtp->tr_audio_pos++;
-    if (rtp->tr_audio_pos >= 50) rtp->tr_audio_pos = 0;
-
-    /* Compute the current received audio speed */
-    if ((rtp->re_audio_bytes == 0) && (rtp->re_audio_pos == 0))
-      /* Default value for the 1st element */
-      rtp->re_audio_bytes = new_audio_octets_received;
-    rtp->re_audio_speed [rtp->re_audio_pos] = 
-      (float) (new_audio_octets_received - rtp->re_audio_bytes)/ 1024;
-    rtp->re_audio_bytes = new_audio_octets_received;
-
-    rtp->re_audio_pos++;
-    if (rtp->re_audio_pos >= 50) rtp->re_audio_pos = 0;
-  }
-  else
+    new_audio_octets_transmitted = audio_session->GetOctetsSent();
+  } else {
     new_audio_octets_received = last_audio_octets_received;
+    new_audio_octets_transmitted = last_audio_octets_transmitted;
+  }
+  received_audio_speed = (float) (new_audio_octets_received
+				  - last_audio_octets_received)/ 1024;
+  transmitted_audio_speed = (float) (new_audio_octets_transmitted
+				     - last_audio_octets_transmitted)/ 1024;
+
 
   if (video_session) {
-
     new_video_octets_received = video_session->GetOctetsReceived();
-    /* Compute the current transmitted video speed */
-    if ((rtp->tr_video_bytes == 0) && (rtp->tr_video_pos == 0)) 
-      /* Default value for the 1st element */
-      rtp->tr_video_bytes = video_session->GetOctetsSent();
-    rtp->tr_video_speed [rtp->tr_video_pos] = 
-      (float) (video_session->GetOctetsSent()
-	       - rtp->tr_video_bytes)/ 1024;
-    rtp->tr_video_bytes = 
-      video_session->GetOctetsSent();
-
-    rtp->tr_video_pos++;
-    if (rtp->tr_video_pos >= 50) rtp->tr_video_pos = 0;
-
-    /* Compute the current received video speed */
-    if ((rtp->re_video_bytes == 0) && (rtp->re_video_pos == 0)) 
-      /* Default value for the 1st element */
-      rtp->re_video_bytes = new_video_octets_received;
-    rtp->re_video_speed [rtp->re_video_pos] = 
-      (float) (new_video_octets_received - rtp->re_video_bytes)/ 1024;
-    rtp->re_video_bytes = new_video_octets_received;
-
-    rtp->re_video_pos++;
-    if (rtp->re_video_pos >= 50) rtp->re_video_pos = 0;
-  }
-  else
+    new_video_octets_transmitted = video_session->GetOctetsSent();
+  } else {
     new_video_octets_received = last_video_octets_received;
+    new_video_octets_transmitted = last_video_octets_transmitted;
+  }
+  received_video_speed = (float) (new_video_octets_received
+				  - last_video_octets_received)/ 1024;
+  transmitted_video_speed = (float) (new_video_octets_transmitted
+				     - last_video_octets_transmitted)/ 1024;
 
+  
+  /* update the rtp structure */
+  if ((rtp->tr_audio_bytes == 0) && (rtp->tr_audio_pos == 0))
+    rtp->tr_audio_bytes = new_audio_octets_transmitted;
+  rtp->tr_audio_speed [rtp->tr_audio_pos] = transmitted_audio_speed;
+  rtp->tr_audio_bytes = new_audio_octets_transmitted;
+  rtp->tr_audio_pos++;
+  if (rtp->tr_audio_pos >= 50) rtp->tr_audio_pos = 0;
+  
+  if ((rtp->re_audio_bytes == 0) && (rtp->re_audio_pos == 0))
+    rtp->re_audio_bytes = new_audio_octets_received;
+  rtp->re_audio_speed [rtp->re_audio_pos] = received_audio_speed;
+  rtp->re_audio_bytes = new_audio_octets_received;  
+  rtp->re_audio_pos++;
+  if (rtp->re_audio_pos >= 50) rtp->re_audio_pos = 0;
+
+  new_video_octets_received = video_session->GetOctetsReceived();
+  if ((rtp->tr_video_bytes == 0) && (rtp->tr_video_pos == 0)) 
+    rtp->tr_video_bytes = new_video_octets_transmitted;
+  rtp->tr_video_speed [rtp->tr_video_pos] = transmitted_video_speed;
+  rtp->tr_video_bytes = new_video_octets_transmitted;
+  rtp->tr_video_pos++;
+  if (rtp->tr_video_pos >= 50) rtp->tr_video_pos = 0;
+
+  if ((rtp->re_video_bytes == 0) && (rtp->re_video_pos == 0)) 
+    rtp->re_video_bytes = new_video_octets_received;
+  rtp->re_video_speed [rtp->re_video_pos] = received_video_speed;
+  rtp->re_video_bytes = new_video_octets_received;
+  rtp->re_video_pos++;
+  if (rtp->re_video_pos >= 50) rtp->re_video_pos = 0;
+  
 
   /* If we didn't receive any audio and video data this time,
      then we start the timer */
@@ -1962,15 +1968,15 @@ GMH323EndPoint::OnRTPTimeout (PTimer &, INT)
   
   last_audio_octets_received = new_audio_octets_received;
   last_video_octets_received = new_video_octets_received;
+  last_audio_octets_transmitted = new_audio_octets_transmitted;
+  last_video_octets_transmitted = new_video_octets_transmitted;
 
   msg = g_strdup_printf 
     (_("%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"), 
      (long) t.GetHours (), (long) (t.GetMinutes () % 60), 
-     (long) (t.GetSeconds () % 60), 
-     rtp->tr_audio_speed [rtp->tr_audio_pos - 1], 
-     rtp->re_audio_speed [rtp->re_audio_pos - 1],
-     rtp->tr_video_speed [rtp->tr_video_pos - 1], 
-     rtp->re_video_speed [rtp->re_video_pos - 1]);
+     (long) (t.GetSeconds () % 60),
+     transmitted_audio_speed, received_audio_speed,
+     transmitted_video_speed, received_video_speed);
 	
 
   if (audio_session) {

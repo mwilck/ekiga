@@ -637,6 +637,8 @@ class GMH323EndPoint : public H323EndPoint
   /* detection of no incoming data */
   int last_audio_octets_received;
   int last_video_octets_received;
+  int last_audio_octets_transmitted;
+  int last_video_octets_transmitted;
   PTimer NoIncomingMediaTimer;
 
 
