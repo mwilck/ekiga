@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-12-16 04:22+0100\n"
-"PO-Revision-Date: 2003-12-16 04:23+0100\n"
+"POT-Creation-Date: 2003-12-21 22:39+0100\n"
+"PO-Revision-Date: 2003-12-21 22:40+0100\n"
 "Last-Translator: Dejan Matijević <dejan@ns.sympatico.ca>\n"
 "Language-Team: Serbian (sr) <serbiangnome-lista@nongnu.org>\n"
 "MIME-Version: 1.0\n"
@@ -953,14 +953,6 @@ msgstr "Veličina videa"
 msgid "Do not show this dialog again"
 msgstr "Nemoj više prikazivati ovu poruku"
 
-#: lib/gtk-text-buffer-extentions.c:489
-msgid "Open Link"
-msgstr "Otvori vezu"
-
-#: lib/gtk-text-buffer-extentions.c:496
-msgid "Copy Link Address"
-msgstr "Umnoži adresu veze"
-
 #: src/callbacks.cpp:84
 msgid "_Retrieve Call"
 msgstr "Povratiti poziv"
@@ -1045,7 +1037,39 @@ msgstr ""
 "Gnom Sastanak je pun dodataka H.323\n"
 "video konferencije program."
 
-#: src/chat_window.cpp:220
+#: src/chat_window.cpp:258
+msgid "Open URI"
+msgstr "Otvori adresu"
+
+#: src/chat_window.cpp:261 src/chat_window.cpp:278
+msgid "Copy Link Location"
+msgstr "Umnoži putanju veze"
+
+#: src/chat_window.cpp:266 src/chat_window.cpp:283
+msgid "Couldn't compile http/ftp regex!"
+msgstr "Ne mogu da prevedem HTTP/FTP regiz!"
+
+#: src/chat_window.cpp:274
+msgid "Connect to"
+msgstr "Poveži se sa"
+
+#: src/chat_window.cpp:276
+msgid "Add to adressbook"
+msgstr "Dodaj u adresar"
+
+#: src/chat_window.cpp:292
+msgid "Couldn't compile smiley regex!"
+msgstr "Ne mogu da prevedem regularni izraz za smeška!"
+
+#: src/chat_window.cpp:300
+msgid "Copy equation"
+msgstr "Umnoži jednačinu"
+
+#: src/chat_window.cpp:303
+msgid "Couldn't compile latex regex!"
+msgstr "Ne mogu da prevedem regularni izraz za LaTeH!"
+
+#: src/chat_window.cpp:316
 msgid "Send Message:"
 msgstr "Slanje poruka:"
 
@@ -1212,7 +1236,11 @@ msgid ""
 "generation of digital mobile phones in Europe. It uses RPE/LTP (residual "
 "pulse excitation/long term prediction) coding to compress frames of 20 ms, "
 "achieving a bitrate of 13kbps."
-msgstr "GSM 06.10 je standardizovano neočuvajuće sažimanje koje koristi većina evropskih mobilnih telefona prve generacije. Koristi RPE/LTP (residual pulse excitation/long term prediction) kodiranje za sažimanje kadrova od 20ms, dostižući količinu podataka od 13kbps."
+msgstr ""
+"GSM 06.10 je standardizovano neočuvajuće sažimanje koje koristi većina "
+"evropskih mobilnih telefona prve generacije. Koristi RPE/LTP (residual pulse "
+"excitation/long term prediction) kodiranje za sažimanje kadrova od 20ms, "
+"dostižući količinu podataka od 13kbps."
 
 #: src/codec_info.h:67
 msgid "16.5 Kbps"
@@ -1494,35 +1522,35 @@ msgstr ""
 "Daljinski korisnik je pokašao da prebaci vaš poziv do drugog korisnika, ali "
 "nije uspeo."
 
-#: src/druid.cpp:265 src/druid.cpp:649 src/druid.cpp:663 src/druid.cpp:698
+#: src/druid.cpp:265 src/druid.cpp:655 src/druid.cpp:672 src/druid.cpp:710
 #: src/endpoint.cpp:1691 src/gnomemeeting.cpp:325 src/gnomemeeting.cpp:327
-#: src/gnomemeeting.cpp:329 src/sound_handling.cpp:462
-#: src/sound_handling.cpp:463 src/videograbber.cpp:273
+#: src/gnomemeeting.cpp:329 src/sound_handling.cpp:523
+#: src/sound_handling.cpp:524 src/videograbber.cpp:273
 #: src/videograbber.cpp:544
 msgid "No device found"
 msgstr "Nisam našao uređaj"
 
-#: src/druid.cpp:547
+#: src/druid.cpp:549
 msgid "56k Modem"
 msgstr "56k modem"
 
-#: src/druid.cpp:548
+#: src/druid.cpp:550
 msgid "ISDN"
 msgstr "ISDN"
 
-#: src/druid.cpp:549
+#: src/druid.cpp:551
 msgid "xDSL/Cable"
 msgstr "xDSL/Kabl"
 
-#: src/druid.cpp:550
+#: src/druid.cpp:552
 msgid "T1/LAN"
 msgstr "T1/LAN"
 
-#: src/druid.cpp:551
+#: src/druid.cpp:553
 msgid "Keep current settings"
 msgstr "Zadrži tekuća podešavanja"
 
-#: src/druid.cpp:720
+#: src/druid.cpp:735
 #, c-format
 msgid ""
 "You have now finished the GnomeMeeting configuration. All the settings can "
@@ -1555,21 +1583,21 @@ msgstr ""
 "Puštanje videa:  %s\n"
 "Moj adresa za poziv:  %s\n"
 
-#: src/druid.cpp:720 src/pref_window.cpp:1194
+#: src/druid.cpp:735 src/pref_window.cpp:1194
 msgid "None"
 msgstr "Ništa"
 
-#: src/druid.cpp:749
+#: src/druid.cpp:764
 #, c-format
 msgid "Personal Information - page %d/%d"
 msgstr "Lični podaci - strana %d/%d"
 
 #. The user fields
-#: src/druid.cpp:762
+#: src/druid.cpp:777
 msgid "Please enter your firstname and your surname:"
 msgstr "Unesite vaše ime i prezime:"
 
-#: src/druid.cpp:770
+#: src/druid.cpp:785
 msgid ""
 "Your firstname and surname will be used when connecting to other VoIP and "
 "videoconferencing software."
@@ -1577,16 +1605,16 @@ msgstr ""
 "Vaše ime i prezime će se koristiti pri povezivanju sa ostalim VoIP i "
 "konferencijskim programima."
 
-#: src/druid.cpp:813
+#: src/druid.cpp:828
 #, c-format
 msgid "Callto URL - page %d/%d"
 msgstr "Adresa za poziv — strana %d/%d"
 
-#: src/druid.cpp:824
+#: src/druid.cpp:839
 msgid "Please enter your e-mail address:"
 msgstr "Unesite adresu vaše e-pošte:"
 
-#: src/druid.cpp:832
+#: src/druid.cpp:847
 msgid ""
 "Your e-mail address is used when registering to the GnomeMeeting users "
 "directory. It is used to create a callto address permitting your contacts to "
@@ -1596,7 +1624,7 @@ msgstr ""
 "sastanka. Koristi se za obrazovanje pozivnih adresa koje vam dozvoljavaju da "
 "vas vaši poznanici lako pozovu gde god da ste."
 
-#: src/druid.cpp:841
+#: src/druid.cpp:856
 msgid ""
 "I don't want to register to the GnomeMeeting users directory and get a "
 "callto address"
@@ -1604,17 +1632,17 @@ msgstr ""
 "Ne želim da se prijavim u imenik korisnika Gnom sastanka i da dobijem "
 "pozivnu adresu"
 
-#: src/druid.cpp:891
+#: src/druid.cpp:906
 #, c-format
 msgid "Connection Type - page %d/%d"
 msgstr "Vrsta veze — strana %d/%d"
 
 #. The connection type
-#: src/druid.cpp:903
+#: src/druid.cpp:918
 msgid "Please choose your connection type:"
 msgstr "Izaberite vrstu vaše veze:"
 
-#: src/druid.cpp:911
+#: src/druid.cpp:926
 msgid ""
 "The connection type will permit determining the best quality settings that "
 "GnomeMeeting will use during calls. You can later change the settings "
@@ -1624,17 +1652,17 @@ msgstr ""
 "Gnom sastanak koristiti za pozive. Naknadno možete izmeniti pojedinačna "
 "podešavanja među postavkama."
 
-#: src/druid.cpp:950
+#: src/druid.cpp:965
 #, c-format
 msgid "Audio Manager - page %d/%d"
 msgstr "Upravljanje zvukom — strana %d/%d"
 
 #. The Audio devices
-#: src/druid.cpp:962
+#: src/druid.cpp:977
 msgid "Please choose your audio manager:"
 msgstr "Izaberite upravljač vašim zvukom:"
 
-#: src/druid.cpp:970
+#: src/druid.cpp:985
 msgid ""
 "The audio manager is the plugin that will manage your audio devices, ALSA is "
 "probably the best choice when available."
@@ -1642,17 +1670,17 @@ msgstr ""
 "Upravljač zvukom je dodatak koji barata vašim zvučnim uređajima, ALSA je "
 "sigurno najbolje rešenje ako je dostupna."
 
-#: src/druid.cpp:1011
+#: src/druid.cpp:1026
 #, c-format
 msgid "Audio Devices - page %d/%d"
 msgstr "Zvučni uređaj - strana %d/%d"
 
 #. The Audio devices
-#: src/druid.cpp:1023
+#: src/druid.cpp:1038
 msgid "Please choose the audio output device:"
 msgstr "Izaberite izlazni uređaj za zvuk:"
 
-#: src/druid.cpp:1031
+#: src/druid.cpp:1046
 msgid ""
 "The audio output device is the device managed by the audio manager that will "
 "be used to play audio."
@@ -1660,11 +1688,11 @@ msgstr ""
 "Izlazni uređaj za zvuk je uređaj kojim barata upravljač zvukom, a koji se "
 "koristi za puštanje zvuka."
 
-#: src/druid.cpp:1041
+#: src/druid.cpp:1056
 msgid "Please choose the audio input device:"
 msgstr "Izaberite ulazni uređaj za zvuk:"
 
-#: src/druid.cpp:1049
+#: src/druid.cpp:1064
 msgid ""
 "The audio input device is the device managed by the audio manager that will "
 "be used to record your voice."
@@ -1672,21 +1700,21 @@ msgstr ""
 "Ulazni uređaj za zvuk je uređaj kojim barata upravljač zvukom, a koji se "
 "koristi za snimanje vašeg glasa."
 
-#: src/druid.cpp:1062 src/druid.cpp:1200
+#: src/druid.cpp:1077 src/druid.cpp:1215
 msgid "Test those settings"
 msgstr "Isprobajte ova podešavanja"
 
-#: src/druid.cpp:1108
+#: src/druid.cpp:1123
 #, c-format
 msgid "Video Manager - page %d/%d"
 msgstr "Upravljanje videom — strana %d/%d"
 
 #. The Audio devices
-#: src/druid.cpp:1120
+#: src/druid.cpp:1135
 msgid "Please choose your video manager:"
 msgstr "Izaberite upravljača vašim videom:"
 
-#: src/druid.cpp:1128
+#: src/druid.cpp:1143
 msgid ""
 "The video manager is the plugin that will manage your video devices, "
 "Video4Linux is the most common choice if you own a webcam."
@@ -1694,17 +1722,17 @@ msgstr ""
 "Upravljač videom je dodatak koji barata vašim video uređajima, Video4Linuks "
 "je najčešći izbor ukoliko imate veb kameru."
 
-#: src/druid.cpp:1168
+#: src/druid.cpp:1183
 #, c-format
 msgid "Video Devices - page %d/%d"
 msgstr "Video uređaji — strana %d/%d"
 
 #. The Video devices
-#: src/druid.cpp:1180
+#: src/druid.cpp:1195
 msgid "Please choose the video input device:"
 msgstr "Izaberite ulazni uređaj za video:"
 
-#: src/druid.cpp:1188
+#: src/druid.cpp:1203
 msgid ""
 "The video input device is the device managed by the video manager that will "
 "be used to capture video."
@@ -1712,16 +1740,16 @@ msgstr ""
 "Ulazni uređaj za video je uređaj kojim barata upravljač videom, a koji se "
 "koristi za snimanje videa."
 
-#: src/druid.cpp:1232
+#: src/druid.cpp:1247
 msgid "First Time Configuration Druid"
 msgstr "Konfiguracija Druida prvi put"
 
-#: src/druid.cpp:1239
+#: src/druid.cpp:1254
 #, c-format
 msgid "Configuration Druid - page %d/%d"
 msgstr "Konfiguracija Druida - strana %d/%d"
 
-#: src/druid.cpp:1242
+#: src/druid.cpp:1257
 msgid ""
 "This is the GnomeMeeting general configuration druid. The following steps "
 "will set up GnomeMeeting by asking a few simple questions.\n"
@@ -1735,7 +1763,7 @@ msgstr ""
 "Jednom kada završite ove korake, kasnije uvek možete da ih promenite "
 "odabiranjem karakteristika u uredi meniju."
 
-#: src/druid.cpp:1282
+#: src/druid.cpp:1297
 #, c-format
 msgid "Configuration complete - page %d/%d"
 msgstr "Konfiguracija kompetna - strana %d/%d"
@@ -2447,16 +2475,16 @@ msgstr "Serveri"
 msgid "Groups"
 msgstr "Grupe"
 
-#: src/lid.cpp:130
+#: src/lid.cpp:129
 #, c-format
 msgid "Using Quicknet device %s"
 msgstr "Korištenje Quicknet uređaja %s"
 
-#: src/lid.cpp:172
+#: src/lid.cpp:171
 msgid "Error while opening the Quicknet device."
 msgstr "Greška pri otvaranju Quicknet uređaja."
 
-#: src/lid.cpp:172
+#: src/lid.cpp:171
 msgid ""
 "Please check that your driver is correctly installed and that the device is "
 "working correctly."
@@ -2464,11 +2492,11 @@ msgstr ""
 "Proverite da li je vaš drajver pravilno instaliran i da li uređaj radi "
 "ispravno."
 
-#: src/lid.cpp:253 src/lid.cpp:254
+#: src/lid.cpp:254 src/lid.cpp:255
 msgid "Phone is off hook"
 msgstr "Telefon iskopčan"
 
-#: src/lid.cpp:286 src/lid.cpp:287
+#: src/lid.cpp:287 src/lid.cpp:288
 msgid "Phone is on hook"
 msgstr "Telefon ukopčan"
 
@@ -3493,20 +3521,20 @@ msgstr "Video kodeksi"
 msgid "Devices"
 msgstr "Uređaji"
 
-#: src/sound_handling.cpp:296
+#: src/sound_handling.cpp:323
 msgid "Opening device for playing"
 msgstr "Otvara uređaj radi puštanja"
 
-#: src/sound_handling.cpp:298
+#: src/sound_handling.cpp:325
 msgid "Opening device for recording"
 msgstr "Otvara uređaj radi snimanja"
 
-#: src/sound_handling.cpp:309 src/sound_handling.cpp:311
+#: src/sound_handling.cpp:337 src/sound_handling.cpp:339
 #: src/videograbber.cpp:666
 msgid "Failed to open the device"
 msgstr "Ne može da otvori uređaj"
 
-#: src/sound_handling.cpp:309
+#: src/sound_handling.cpp:337
 #, c-format
 msgid ""
 "Impossible to open the selected audio device (%s) for recording. Please "
@@ -3515,7 +3543,7 @@ msgstr ""
 "Nemoguće da otvori određen zvučni uređaj (%s) za snimanje.  Proverite vaše "
 "podešavanje zvuka, ovlaštenja i da li je uređaj zauzet."
 
-#: src/sound_handling.cpp:311
+#: src/sound_handling.cpp:339
 #, c-format
 msgid ""
 "Impossible to open the selected audio device (%s) for playing. Please check "
@@ -3524,11 +3552,11 @@ msgstr ""
 "Nemoguće da otvori određen zvučni uređaj (%s) za reprodukciju.  Proverite "
 "vaše podešavanje zvuka, ovlaštenja i da li je uređaj zauzet."
 
-#: src/sound_handling.cpp:327 src/sound_handling.cpp:383
+#: src/sound_handling.cpp:378 src/sound_handling.cpp:438
 msgid "Cannot use the audio device"
 msgstr "Ne može da koristi zvučni uređaj"
 
-#: src/sound_handling.cpp:327
+#: src/sound_handling.cpp:378
 #, c-format
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
@@ -3537,15 +3565,15 @@ msgstr ""
 "Određen zvučni uređaj (%s) je uspešno otvoren ali je nemoguće čitati podatke "
 "sa ovog uređaja.  Proverite vaša zvučna podešavanja."
 
-#: src/sound_handling.cpp:336
+#: src/sound_handling.cpp:387
 msgid "Recording your voice"
 msgstr "Snimanje vašeg glasa"
 
-#: src/sound_handling.cpp:362
+#: src/sound_handling.cpp:413
 msgid "Recording and playing back"
 msgstr "Snimanje i puštanje"
 
-#: src/sound_handling.cpp:383
+#: src/sound_handling.cpp:438
 #, c-format
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
@@ -3554,7 +3582,7 @@ msgstr ""
 "Određen zvučni uređaj (%s) je uspešno otvoren ali je nemoguće snimati "
 "podatke na ovaj uređaj.  Proverite vaša zvučna podešavanja."
 
-#: src/sound_handling.cpp:479
+#: src/sound_handling.cpp:540
 #, c-format
 msgid ""
 "GnomeMeeting is now recording from %s and playing back to %s. Please say \"1 "
@@ -3787,6 +3815,12 @@ msgstr "Greška sa brojem okvira u sekundi."
 #: src/videograbber.cpp:660
 msgid "Error with the frame size."
 msgstr "Greška sa veličinom okvira."
+
+#~ msgid "Open Link"
+#~ msgstr "Otvori vezu"
+
+#~ msgid "Copy Link Address"
+#~ msgstr "Umnoži adresu veze"
 
 #~ msgid ""
 #~ "If enabled, GnomeMeeting will play a sound when receiving an incoming "
