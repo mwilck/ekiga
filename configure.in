@@ -187,7 +187,17 @@ AC_MSG_CHECKING(for OpenLDAP support in PWLIB);
 PWLIB_LDAP_SUPPORT=`cat ${with_pwlib_dir}/include/ptbuildopts.h | grep "#define P_LDAP 1" | cut -f3  -d ' '`
 if test "x${PWLIB_LDAP_SUPPORT}" != "x1"; then
 	AC_MSG_RESULT(no);
-	AC_MSG_ERROR(Sorry but the PWLib version you are using doesn't support LDAP, that is a prerequisite for GnomeMeeting);
+	AC_MSG_ERROR(Sorry but the PWLib version you are using doesn't support LDAP);
+else
+	AC_MSG_RESULT(yes);
+fi
+
+dnl Checking for plugins support in PWLIB
+AC_MSG_CHECKING(for Plugins support in PWLIB);
+PWLIB_PLUGINS_SUPPORT=`cat ${with_pwlib_dir}/include/ptbuildopts.h | grep "#define P_HAS_PLUGINS 1" | cut -f3  -d ' '`
+if test "x${PWLIB_PLUGINS_SUPPORT}" != "x1"; then
+	AC_MSG_RESULT(no);
+	AC_MSG_ERROR(Sorry but the PWLib version you are using doesn't support plugins);
 else
 	AC_MSG_RESULT(yes);
 fi
@@ -233,6 +243,16 @@ OPENH323_VERSION=`cat ${with_openh323_dir}/include/openh323/openh323buildopts.h 
 AC_MSG_RESULT($OPENH323_VERSION)
 if test "x${OPENH323_VERSION}" != "x${OPENH323_REC_VERSION}"; then
 	AC_MSG_ERROR(Sorry but the recommended Openh323 version is ${OPENH323_REC_VERSION});
+fi
+
+dnl Checking for plugins support in PWLIB
+AC_MSG_CHECKING(for Quicknet support in OpenH323);
+OPENH323_IXJ_SUPPORT=`cat ${with_openh323_dir}/include/openh323/openh323buildopts.h | grep "HAS_IXJ 1" | cut -f2  -d ' '`
+if test "x${OPENH323_IXJ_SUPPORT}" != "x1"; then
+	AC_MSG_RESULT(no);
+	AC_MSG_ERROR(Sorry but the OpenH323 version you are using doesn't support Quicknet devices);
+else
+	AC_MSG_RESULT(yes);
 fi
 
 
