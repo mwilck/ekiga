@@ -221,6 +221,14 @@ void gnomemeeting_init_menu ()
 	NULL, GNOME_APP_PIXMAP_NONE, NULL,
 	'D', GDK_CONTROL_MASK, NULL
       },
+      {
+	GNOME_APP_UI_TOGGLEITEM,
+	N_("Left Toolba_r"), N_("View/Hide the left Toolbar"),
+	(void *) menu_toggle_changed, 
+	(gpointer) "/apps/gnomemeeting/view/left_toolbar",
+	NULL, GNOME_APP_PIXMAP_NONE, NULL,
+	'R', GDK_CONTROL_MASK, NULL
+      },
       GNOMEUIINFO_END
     };  
   
@@ -252,6 +260,23 @@ void gnomemeeting_init_menu ()
 	(void *) disconnect_cb, gw, NULL,
 	GNOME_APP_PIXMAP_DATA, disconnect_16_xpm,
 	'd', GDK_CONTROL_MASK, NULL
+      },
+      GNOMEUIINFO_SEPARATOR,
+      {
+	GNOME_APP_UI_TOGGLEITEM,
+	N_("Do _Not Disturb"), N_("Do Not Disturb"),
+	(void *) menu_toggle_changed, 
+	(gpointer) "/apps/gnomemeeting/general/do_not_disturb", NULL,
+	GNOME_APP_PIXMAP_NONE, NULL,
+	'n', GDK_CONTROL_MASK, NULL
+      },
+      {
+	GNOME_APP_UI_TOGGLEITEM,
+	N_("Aut_o Answer"), N_("Auto Answer"),
+	(void *) menu_toggle_changed, 
+	(gpointer) "/apps/gnomemeeting/general/auto_answer", NULL,
+	GNOME_APP_PIXMAP_NONE, NULL,
+	'o', GDK_CONTROL_MASK, NULL
       },
       GNOMEUIINFO_SEPARATOR,
       {
@@ -303,11 +328,14 @@ void gnomemeeting_init_menu ()
 		      notebook_view_uiinfo);
   gtk_object_set_data(GTK_OBJECT(gm), "view_menu_uiinfo", 
 		      view_menu_uiinfo);
+  gtk_object_set_data(GTK_OBJECT(gm), "call_menu_uiinfo", 
+		      call_menu_uiinfo);
 
   gnome_app_create_menus (GNOME_APP (gm), main_menu_uiinfo);
   gnome_app_install_menu_hints (GNOME_APP (gm), main_menu_uiinfo);
 
 
+  /* Update to the initial values */
   GTK_CHECK_MENU_ITEM (view_menu_uiinfo [2].widget)->active = 
     gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_control_panel", 0);
 
@@ -319,6 +347,27 @@ void gnomemeeting_init_menu ()
 
   GTK_CHECK_MENU_ITEM (view_menu_uiinfo [5].widget)->active =
     gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_docklet", 0);
+
+  GTK_CHECK_MENU_ITEM (call_menu_uiinfo [3].widget)->active =
+    gconf_client_get_bool (client, "/apps/gnomemeeting/general/do_not_disturb", 0);
+
+  GTK_CHECK_MENU_ITEM (call_menu_uiinfo [4].widget)->active =
+    gconf_client_get_bool (client, "/apps/gnomemeeting/general/auto_answer", 0);
+
+  if (GTK_CHECK_MENU_ITEM (call_menu_uiinfo [3].widget)->active)
+    gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [4].widget), FALSE);
+
+  if (GTK_CHECK_MENU_ITEM (call_menu_uiinfo [4].widget)->active)
+    gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [3].widget), FALSE);
+
+
+  /* Disable disconnect */
+  gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [1].widget), FALSE);
+
+  
+  /* Pause is unsensitive when not in a call */
+  gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [6].widget), FALSE);
+  gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [7].widget), FALSE);
 
 
   int current_page = gconf_client_get_int (client, "/apps/gnomemeeting/view/notebook_info", 0);

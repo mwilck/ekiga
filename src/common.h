@@ -113,6 +113,7 @@ struct _GM_pref_window_widgets
   GtkWidget *show_chat_window;
   GtkWidget *show_statusbar;
   GtkWidget *show_notebook;
+  GtkWidget *show_left_toolbar;
   GtkWidget *start_hidden;
   GtkWidget *incoming_call_popup;
   GtkWidget *video_preview;

@@ -235,7 +235,7 @@ void gnomemeeting_init_toolbar ()
 		      gw->connect_button);
 
   GtkWidget *toolbar2 = gtk_toolbar_new (GTK_ORIENTATION_VERTICAL,
-					 GTK_TOOLBAR_ICONS);
+				      GTK_TOOLBAR_ICONS);
   gnome_app_fill_toolbar(GTK_TOOLBAR (toolbar2), left_toolbar, NULL);
   gnome_app_add_toolbar (GNOME_APP (gm), GTK_TOOLBAR(toolbar2),
 			 "left_toolbar", GNOME_DOCK_ITEM_BEH_EXCLUSIVE,
@@ -309,10 +309,15 @@ void gnomemeeting_init_toolbar ()
 
 
   gtk_widget_show_all (GTK_WIDGET (hbox));
-  gtk_widget_show (GTK_WIDGET (toolbar2));
+
   gtk_widget_show (GTK_WIDGET (gw->combo));
   gtk_widget_show_all (GTK_WIDGET (gw->connect_button));
   gtk_widget_show_all (GTK_WIDGET (gw->preview_button));
   gtk_widget_show_all (GTK_WIDGET (gw->audio_chan_button));
   gtk_widget_show_all (GTK_WIDGET (gw->video_chan_button));
+
+  if (gconf_client_get_bool (client, "/apps/gnomemeeting/view/left_toolbar", 0)) 
+    gtk_widget_show (GTK_WIDGET (gnome_app_get_dock_item_by_name(GNOME_APP (gm), "left_toolbar")));
+  else
+    gtk_widget_hide (GTK_WIDGET (gnome_app_get_dock_item_by_name(GNOME_APP (gm), "left_toolbar")));
 }

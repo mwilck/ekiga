@@ -596,10 +596,18 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
     return FALSE;
   }
   
+   
+  /* Enable disconnect: we must be able to refuse the incoming call */
+  gnomemeeting_threads_enter ();
+  GnomeUIInfo *call_menu_uiinfo =
+    (GnomeUIInfo *) gtk_object_get_data (GTK_OBJECT (gm), "call_menu_uiinfo");
+  gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [1].widget), TRUE);
+  gnomemeeting_threads_leave ();
+
   current_connection = FindConnectionWithLock
     (connection.GetCallToken ());
   current_connection->Unlock ();
-
+  
   gnomemeeting_threads_enter ();
 
   if ((docklet_timeout == 0)) {
@@ -719,6 +727,14 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 
   connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 1);
   
+
+  /* Enable the mute functions in the call menu */
+  GnomeUIInfo *call_menu_uiinfo =
+    (GnomeUIInfo *) gtk_object_get_data (GTK_OBJECT (gm), "call_menu_uiinfo");
+  gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [6].widget), TRUE);
+  gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [7].widget), TRUE);
+
+
   gnomemeeting_threads_leave ();
 
   SetCallingState (2);
@@ -857,6 +873,15 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   SetCallingState (0);
 
   connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 0);
+
+
+  /* Disable disconnect, and the mute functions in the call menu */
+  GnomeUIInfo *call_menu_uiinfo =
+    (GnomeUIInfo *) gtk_object_get_data (GTK_OBJECT (gm), "call_menu_uiinfo");
+  gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [1].widget), FALSE);
+  gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [6].widget), FALSE);
+  gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [7].widget), FALSE);
+
 
   /* Remove the timers if needed and clear the docklet */
   if (docklet_timeout != 0)

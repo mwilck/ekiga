@@ -352,10 +352,10 @@ void gnomemeeting_init (GM_window_widgets *gw,
   /* Build the interface */
   gnomemeeting_init_main_window ();
   gnomemeeting_init_ldap_window ();
-  gnomemeeting_init_pref_window ();
+  gnomemeeting_init_pref_window ();  
   gnomemeeting_init_menu ();
   gnomemeeting_init_toolbar ();	
-
+  
   
   /* Launch the GnomeMeeting H.323 part */
   static GnomeMeeting instance;
@@ -454,12 +454,17 @@ void gnomemeeting_init (GM_window_widgets *gw,
   if (gw->splash_win)
     gtk_widget_destroy (gw->splash_win);
 
+  /* Start the Gconf notifiers */
   gnomemeeting_init_gconf (client);
 
   /* if the user tries to close the window : delete_event */
   gtk_signal_connect (GTK_OBJECT (gm), "delete_event",
 		      GTK_SIGNAL_FUNC (gm_quit_callback), (gpointer) gw);
 
+
+  /* The gtk_widget_show (gm) will show the toolbar, hide it if needed */
+  if (!gconf_client_get_bool (client, "/apps/gnomemeeting/view/left_toolbar", 0)) 
+    gtk_widget_hide (GTK_WIDGET (gnome_app_get_dock_item_by_name(GNOME_APP (gm), "left_toolbar")));
 }
 
 

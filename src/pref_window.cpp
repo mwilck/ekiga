@@ -720,7 +720,7 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook)
   gtk_box_pack_start (GTK_BOX (vbox), frame, 
 		      FALSE, FALSE, 0);
 
-  table = gtk_table_new (3, 2, FALSE);
+  table = gtk_table_new (4, 2, FALSE);
   gtk_container_add (GTK_CONTAINER (frame), table);
   gtk_container_set_border_width (GTK_CONTAINER (frame), GNOMEMEETING_PAD_SMALL);
   
@@ -742,6 +742,24 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook)
   gtk_signal_connect (GTK_OBJECT (pw->show_chat_window), "toggled",
 		      GTK_SIGNAL_FUNC (toggle_changed),
 		      (gpointer) "/apps/gnomemeeting/view/show_chat_window");
+
+  /* Show / hide left toolbar at startup */
+  pw->show_left_toolbar = gtk_check_button_new_with_label (_("Show Left Toolbar"));
+  gtk_table_attach (GTK_TABLE (table), pw->show_left_toolbar, 0, 1, 3, 4,
+		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);	
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->show_left_toolbar), 
+				gconf_client_get_bool (client, "/apps/gnomemeeting/"
+						       "view/left_toolbar",
+						       0));
+
+  tip = gtk_tooltips_new ();
+  gtk_tooltips_set_tip (tip, pw->show_chat_window,
+			_("If enabled, the left toolbar will be displayed at startup time"), NULL);
+  gtk_signal_connect (GTK_OBJECT (pw->show_left_toolbar), "toggled",
+		      GTK_SIGNAL_FUNC (toggle_changed),
+		      (gpointer) "/apps/gnomemeeting/view/left_toolbar");
 
 
   /* Show / hide splash screen at startup */
@@ -847,13 +865,32 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook)
   gtk_container_add (GTK_CONTAINER (frame), table);
   gtk_container_set_border_width (GTK_CONTAINER (frame), GNOMEMEETING_PAD_SMALL);
 
-
-  /* Auto Answer toggle button */   
-  pw->aa = gtk_check_button_new_with_label (_("Auto Answer"));
-  gtk_table_attach (GTK_TABLE (table), pw->aa, 0, 1, 0, 1,
+  
+  /* DND toggle button */
+  pw->dnd = gtk_check_button_new_with_label (_("Do Not Disturb"));
+  gtk_table_attach (GTK_TABLE (table), pw->dnd, 0, 1, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);	
+
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->dnd), gconf_client_get_bool (client, "/apps/gnomemeeting/general/do_not_disturb", 0));
+
+  gtk_signal_connect (GTK_OBJECT (pw->dnd), "toggled",
+		      GTK_SIGNAL_FUNC (toggle_changed), 
+		      (gpointer) "/apps/gnomemeeting/general/do_not_disturb");
+
+  tip = gtk_tooltips_new ();
+  gtk_tooltips_set_tip (tip, pw->dnd,
+			_("If enabled, incoming calls will be automatically refused"), NULL);
+  
+
+  /* Auto Answer toggle button */   
+  pw->aa = gtk_check_button_new_with_label (_("Auto Answer"));
+  gtk_table_attach (GTK_TABLE (table), pw->aa, 0, 1, 1, 2,
+		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);	
+
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->aa), gconf_client_get_bool (client, "/apps/gnomemeeting/general/auto_answer", 0));
 
   gtk_signal_connect (GTK_OBJECT(pw->aa), "toggled",
@@ -864,23 +901,6 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook)
   gtk_tooltips_set_tip (tip, pw->aa,
 			_("If enabled, incoming calls will be automatically answered"), NULL);
 
-  
-  /* DND toggle button */
-  pw->dnd = gtk_check_button_new_with_label (_("Do Not Disturb"));
-  gtk_table_attach (GTK_TABLE (table), pw->dnd, 0, 1, 1, 2,
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);	
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->dnd), gconf_client_get_bool (client, "/apps/gnomemeeting/general/do_not_disturb", 0));
-
-  gtk_signal_connect (GTK_OBJECT(pw->dnd), "toggled",
-		      GTK_SIGNAL_FUNC (toggle_changed), 
-		      (gpointer) "/apps/gnomemeeting/general/do_not_disturb");
-
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, pw->dnd,
-			_("If enabled, incoming calls will be automatically refused"), NULL);
-  
 
   /* Popup display */
   pw->incoming_call_popup = gtk_check_button_new_with_label (_("Popup window"));

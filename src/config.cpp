@@ -49,6 +49,10 @@
 extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;
 
+
+static gboolean answer_mode_changed (gpointer);
+static void answer_mode_changed_nt (GConfClient*, guint, 
+				    GConfEntry *, gpointer);
 static gboolean gatekeeper_option_menu_changed (gpointer);
 static void gatekeeper_option_menu_changed_nt (GConfClient*, guint, 
 					       GConfEntry *, gpointer);
@@ -115,6 +119,91 @@ static void audio_codec_setting_changed_nt (GConfClient *, guint,
 static gboolean silence_detection_changed (gpointer);
 static void silence_detection_changed_nt (GConfClient *, guint, 
 					    GConfEntry *, gpointer);
+
+
+static gboolean answer_mode_changed (gpointer data)
+{
+  GtkWidget *toggle = GTK_WIDGET (data);
+  GM_pref_window_widgets *pw = NULL;
+  bool current_state = 0;
+  int w = 3;
+  GConfClient *client = gconf_client_get_default ();
+
+  gdk_threads_enter ();
+  
+  GnomeUIInfo *call_menu_uiinfo =
+    (GnomeUIInfo *) gtk_object_get_data (GTK_OBJECT (gm), "call_menu_uiinfo");
+
+  pw = gnomemeeting_get_pref_window (gm);
+
+  /* We set the new value for the widget
+     This value is different from the previous one, or we are not called */
+
+  // We are using gconf1 and we must use an iddle, we have no other choice
+  // than to badly compare with the gconf value to update
+  if (data == pw->dnd) {
+
+    current_state =
+      gconf_client_get_bool (client, 
+			     "/apps/gnomemeeting/general/do_not_disturb", 0);
+    w = 3;
+
+    if (current_state) {
+
+      gtk_widget_set_sensitive (GTK_WIDGET (pw->aa), FALSE);
+      gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [w+1].widget), FALSE);
+    }
+    else {
+
+      gtk_widget_set_sensitive (GTK_WIDGET (pw->aa), TRUE);
+      gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [w+1].widget), TRUE);
+    } 
+  }
+  else {
+
+    current_state =
+      gconf_client_get_bool (client, 
+			     "/apps/gnomemeeting/general/auto_answer", 0);
+    w = 4;
+
+    if (current_state) {
+
+      gtk_widget_set_sensitive (GTK_WIDGET (pw->dnd), FALSE);
+      gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [w-1].widget), FALSE);
+    }
+    else {
+
+      gtk_widget_set_sensitive (GTK_WIDGET (pw->dnd), TRUE);
+      gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [w-1].widget), TRUE);
+    } 
+  }
+
+  GTK_TOGGLE_BUTTON (toggle)->active = current_state;
+  GTK_CHECK_MENU_ITEM (call_menu_uiinfo [w].widget)->active = current_state;
+
+  gtk_widget_draw (GTK_WIDGET (toggle), NULL);
+  gtk_widget_draw (GTK_WIDGET (call_menu_uiinfo [w].widget), NULL);
+
+  gdk_threads_leave ();
+
+  return FALSE;
+}
+
+
+/* DESCRIPTION  :  This callback is called when the answer mode changes.
+ *                 That answer mode can be DND or AA or normal
+ * BEHAVIOR     :  It updates the widgets in the menu and in the preferences window,
+ *                 and unsensitive them if needed.
+ * PRE          :  /
+ */
+static void answer_mode_changed_nt (GConfClient *client, guint cid, 
+				    GConfEntry *entry, gpointer data)
+{
+  if (entry->value->type == GCONF_VALUE_BOOL) {
+    
+    g_idle_add (answer_mode_changed, (gpointer) data);
+  }
+}
 
 
 static gboolean gatekeeper_option_menu_changed (gpointer data)
@@ -514,7 +603,7 @@ static gboolean toggle_changed (gpointer data)
      This value is different from the previous one, or we are not called */
   GTK_TOGGLE_BUTTON (toggle)->active = !GTK_TOGGLE_BUTTON (toggle)->active; 
   gtk_widget_draw (GTK_WIDGET (toggle), NULL);
-
+  
   gdk_threads_leave ();
 
   return FALSE;
@@ -1216,6 +1305,7 @@ static void audio_codecs_list_changed_nt (GConfClient *client, guint cid,
 
 
 /* Not able to change all widgets */
+// FIX ME: Need to be rewritten! Awful!
 static gboolean view_widget_changed (gpointer data)
 {
   gdk_threads_enter ();
@@ -1234,6 +1324,25 @@ static gboolean view_widget_changed (gpointer data)
   */
 
   /* We show or hide the corresponding widget */
+  if (data == pw->show_left_toolbar) {
+
+    /* Update the menu, 
+       we are called only if the value has changed */
+    GTK_CHECK_MENU_ITEM (view_menu_uiinfo [6].widget)->active = 
+      !GTK_WIDGET_VISIBLE (GTK_WIDGET (gnome_app_get_dock_item_by_name(GNOME_APP (gm), "left_toolbar")));
+
+    GTK_TOGGLE_BUTTON (pw->show_left_toolbar)->active =
+      !GTK_WIDGET_VISIBLE (GTK_WIDGET (gnome_app_get_dock_item_by_name(GNOME_APP (gm), "left_toolbar")));
+
+    gtk_widget_draw (view_menu_uiinfo [6].widget, NULL);
+    gtk_widget_draw (pw->show_left_toolbar, NULL);
+
+    if (!GTK_WIDGET_VISIBLE (GTK_WIDGET (gnome_app_get_dock_item_by_name(GNOME_APP (gm), "left_toolbar"))))
+      gtk_widget_show (GTK_WIDGET (gnome_app_get_dock_item_by_name(GNOME_APP (gm), "left_toolbar")));
+    else
+      gtk_widget_hide (GTK_WIDGET (gnome_app_get_dock_item_by_name(GNOME_APP (gm), "left_toolbar")));
+  }
+    
   if (data == pw->show_notebook) {
 
     /* Update the menu, 
@@ -1635,10 +1744,10 @@ void gnomemeeting_init_gconf (GConfClient *client)
 			   entry_changed_nt, pw->comment, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/auto_answer",
-			   toggle_changed_nt, pw->aa, 0, 0);
+			   answer_mode_changed_nt, pw->aa, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/do_not_disturb",
-			   toggle_changed_nt, pw->dnd, 0, 0);
+			   answer_mode_changed_nt, pw->dnd, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/h245_tunneling",
 			   ht_fs_changed_nt, pw->ht, 0, 0);
@@ -1686,6 +1795,8 @@ void gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_docklet", view_widget_changed_nt, pw->show_docklet, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_chat_window", view_widget_changed_nt, pw->show_chat_window, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/view/left_toolbar", view_widget_changed_nt, pw->show_left_toolbar, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/view/notebook_info", notebook_info_changed_nt, NULL, 0, 0);
 

@@ -1,3 +1,25 @@
+2002-03-06  Damien Sandras  <dsandras@seconix.com>	
+
+	* gnomemeeting.schema.in: Added key to show/hide left toolbar.
+
+	* src/common.h: Added toggle to show/hide left toolbar.
+
+	* src/config.cpp: Added function to update widgets when auto answer
+	or DND changes.
+
+	* src/endpoint.cpp: Added function to update widgets when auto answer
+	or DND changes. Added sensitivity changes.
+
+	* src/main_window.cpp: Added support to hide the left toolbar at 
+	startup.
+
+	* src/menu.cpp: Added DND and AA to the menu.
+
+	* src/pref_window.cpp: Added "show left toolbar".
+
+	* src/toolbar.cpp: Added support to hide the left toolbar at startup.
+
+	
 2002-03-05  Damien Sandras  <dsandras@seconix.com>	
 
 	* src/gnomemeeting.cpp: Added lock when initiating the connection to prevent
