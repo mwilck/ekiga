@@ -273,8 +273,9 @@ GnomeMeeting::Disconnect (H323Connection::CallEndReason reason)
       connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 
 				    0);
       gnomemeeting_threads_leave ();
-      
-      endpoint->ClearCall (H323Connection::AnswerCallDenied);
+
+      endpoint->ClearCall (endpoint->GetCurrentCallToken (),
+			   H323Connection::EndedByRefusal);
     }
   }
 }
