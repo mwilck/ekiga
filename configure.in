@@ -162,9 +162,24 @@ if test "x${with_ptlib_includes}" != "xno"; then
 		dnl Checking for PWLib version
 		AC_MSG_CHECKING(for PWLib version);
 		PWLIB_VERSION=`cat ${PTLIB_INCLUDE_DIR}/../ptbuildopts.h | grep VERSION | cut -f2 -d ' ' | sed "s/\"//g"`
-		AC_MSG_RESULT($PWLIB_VERSION)
 		if test "x${PWLIB_VERSION}" != "x${PWLIB_REC_VERSION}"; then
+			if (echo $PWLIB_VERSION|grep undef >/dev/null);then
+			AC_MSG_RESULT([no version])
+			else
+			AC_MSG_RESULT($PWLIB_VERSION)
+			fi
 			AC_MSG_ERROR(Sorry but the recommended PWLib version is ${PWLIB_REC_VERSION});
+		else
+			AC_MSG_RESULT($PWLIB_VERSION)
+		fi
+		dnl Checking for PWLib using OpenLDAP
+		AC_MSG_CHECKING(for PWLib compiled with OpenLDAP support);
+		PWLIB_LDAP=`cat ${PTLIB_INCLUDE_DIR}/../ptbuildopts.h | grep '#define P_LDAP ' | cut -f3 -d ' '`
+		if test "x${PWLIB_LDAP}" != "x1"; then
+			AC_MSG_RESULT([no])
+			AC_MSG_ERROR(Sorry but PWLib needs OpenLDAP support.);
+		else
+			AC_MSG_RESULT([yes])
 		fi
 
 	else
@@ -214,9 +229,15 @@ if test "x${with_openh_includes}" != "xno"; then
 		dnl Checking for the OpenH323 version
 		AC_MSG_CHECKING(for OpenH323 version);
 		OPENH323_VERSION=`cat ${OPENH323_INCLUDE_DIR}/openh323buildopts.h | grep VERSION | cut -f2 -d ' ' | sed "s/\"//g"`
-		AC_MSG_RESULT($OPENH323_VERSION)
 		if test "x${OPENH323_VERSION}" != "x${OPENH323_REC_VERSION}"; then
+			if (echo $OPENH323_VERSION|grep undef >/dev/null);then
+				AC_MSG_RESULT([no version])
+			else
+				AC_MSG_RESULT($OPENH323_VERSION)
+			fi
 			AC_MSG_ERROR(Sorry but the recommended OpenH323 version is ${OPENH323_REC_VERSION});
+		else
+			AC_MSG_RESULT($OPENH323_VERSION)
 		fi
 	else
 		AC_MSG_ERROR([You need OpenH323's header files to build GnomeMeeting])
