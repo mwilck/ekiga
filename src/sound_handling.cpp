@@ -449,6 +449,10 @@ GMAudioTester::~GMAudioTester ()
 #ifndef DISABLE_GNOME
   stop = 1;
   PWaitAndSignal m(quit_mutex);
+
+  gnomemeeting_threads_enter ();
+  gtk_widget_destroy (test_dialog);
+  gnomemeeting_threads_leave ();
 #endif
 }
 
@@ -476,9 +480,7 @@ void GMAudioTester::Main ()
   test_dialog =
     gtk_dialog_new_with_buttons ("Audio test running",
 				 GTK_WINDOW (gw->druid_window),
-				 (enum GtkDialogFlags) 
-				 (GTK_DIALOG_DESTROY_WITH_PARENT
-				  | GTK_DIALOG_MODAL),
+				 (enum GtkDialogFlags) (GTK_DIALOG_MODAL),
 				 GTK_STOCK_OK,
 				 GTK_RESPONSE_ACCEPT,
 				 NULL);
@@ -501,6 +503,9 @@ void GMAudioTester::Main ()
 
   g_signal_connect (G_OBJECT (test_dialog), "response",
 		    G_CALLBACK (dialog_response_cb), NULL);
+  g_signal_connect (G_OBJECT (test_dialog), "response",
+		    G_CALLBACK (gtk_widget_hide_on_delete), NULL);
+
   gtk_window_set_transient_for (GTK_WINDOW (test_dialog),
 				GTK_WINDOW (gw->druid_window));
   gdk_threads_leave ();
