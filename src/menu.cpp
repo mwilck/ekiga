@@ -890,6 +890,18 @@ gnomemeeting_popup_menu_tray_init (GtkWidget *widget, GtkAccelGroup *accel)
 
       {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
 
+#ifndef DISABLE_GNOME
+      {_("_About GnomeMeeting"), _("View information about GnomeMeeting"),
+       GNOME_STOCK_ABOUT, 'a', MENU_ENTRY, 
+       GTK_SIGNAL_FUNC (about_callback),
+       (gpointer) gm, NULL},
+#else
+      {_("_About GnomeMeeting"), _("View information about GnomeMeeting"),
+       NULL, 'a', MENU_ENTRY, 
+       GTK_SIGNAL_FUNC (about_callback),
+       (gpointer) gm, NULL},
+#endif
+
       {_("_Quit"), _("Quit GnomeMeeting"),
        GTK_STOCK_QUIT, 'Q', MENU_ENTRY, 
        GTK_SIGNAL_FUNC (quit_callback),
@@ -911,7 +923,10 @@ gnomemeeting_popup_menu_tray_init (GtkWidget *widget, GtkAccelGroup *accel)
   gtk_widget_add_events (gm, GDK_BUTTON_PRESS_MASK |
 			 GDK_KEY_PRESS_MASK);
 
-  
+#ifdef DISABLE_GNOME
+  gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [9].widget), FALSE);
+#endif
+
   /* Update the menu according to the gconf values */
   GTK_CHECK_MENU_ITEM (tray_menu [3].widget)->active =
     gconf_client_get_bool (client, "/apps/gnomemeeting/general/do_not_disturb", 0);

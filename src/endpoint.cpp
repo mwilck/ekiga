@@ -1314,6 +1314,7 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 
   gnomemeeting_threads_enter ();
   connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 1);
+  gnomemeeting_call_menu_connect_set_sensitive (0, FALSE);
   gnomemeeting_call_menu_pause_set_sensitive (TRUE);
   gnomemeeting_tray_set_content (G_OBJECT (gw->docklet), 2);
   gnomemeeting_threads_leave ();
@@ -1571,6 +1572,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
 
   /* Disable disconnect, and the mute functions in the call menu */
+  gnomemeeting_call_menu_connect_set_sensitive (0, TRUE);
   gnomemeeting_call_menu_connect_set_sensitive (1, FALSE);
   gnomemeeting_call_menu_pause_set_sensitive (FALSE);
   connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 0);
