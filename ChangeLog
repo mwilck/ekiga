@@ -1,3 +1,16 @@
+2004-09-23  Damien Sandras  <dsandras@gnome.org>
+
+	* NEWS: Updated with CVS news.
+
+	* src/addressbook_window.cpp, src/addressbook_window.h, 
+	src/calls_history_window.cpp, src/calls_history_window.h, 
+	src/config.cpp, src/endpoint.cpp, src/gnomemeeting.cpp, 
+	src/main_window.cpp, src/urlhandler.cpp: Updated API for the calls
+	history. Update the urls history for auto-completion when adding
+	a call, clearing the history, adding a contact, modifying a contact
+	information, deleting a contact and deleting an address book. Use
+	GConf as a store backend, not as a config backend.
+
 2004-09-22  Damien Sandras  <dsandras@gnome.org>
 
 	* src/main_window.cpp: Do not display empty names.

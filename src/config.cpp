@@ -50,7 +50,6 @@
 #include "pref_window.h"
 #include "main_window.h"
 #include "log_window.h"
-#include "calls_history_window.h"
 #include "tray.h"
 #include "misc.h"
 #include "tools.h"
@@ -117,10 +116,6 @@ static void ils_option_changed_nt (gpointer,
 static void stay_on_top_changed_nt (gpointer, 
 				    GmConfEntry *, 
                                     gpointer);
-
-static void calls_history_changed_nt (gpointer, 
-				      GmConfEntry *,
-				      gpointer);
 
 static void incoming_call_mode_changed_nt (gpointer, 
 					   GmConfEntry *,
@@ -1290,28 +1285,6 @@ stay_on_top_changed_nt (gpointer id,
 }
 
 
-/* DESCRIPTION  :  This callback is called when one of the calls history
- *                 config value changes.
- * BEHAVIOR     :  Rebuild its content.
- * PRE          :  /
- */
-static void 
-calls_history_changed_nt (gpointer id, 
-                          GmConfEntry *entry,
-                          gpointer data)
-{
-  GtkWidget *calls_history_window = NULL;
-
-  g_return_if_fail (gm_conf_entry_get_type (entry) == GM_CONF_LIST);
-
-  calls_history_window = GnomeMeeting::Process ()->GetCallsHistoryWindow ();
-  
-  gdk_threads_enter ();
-  gnomemeeting_calls_history_window_populate (calls_history_window);
-  gdk_threads_leave ();
-}
-
-
 /* DESCRIPTION    : This is called when any setting related to the druid 
  *                  network speed selecion changes.
  * BEHAVIOR       : Just writes an entry in the config database registering 
@@ -1475,12 +1448,6 @@ gnomemeeting_conf_init ()
   gm_conf_notifier_add (USER_INTERFACE_KEY "main_window/show_chat_window",
 			show_chat_window_changed_nt, main_window);
 
-  gm_conf_notifier_add (USER_INTERFACE_KEY "calls_history_window/placed_calls_history", calls_history_changed_nt, NULL);
-
-  gm_conf_notifier_add (USER_INTERFACE_KEY "calls_history_window/missed_calls_history", calls_history_changed_nt, NULL);
- 
-  gm_conf_notifier_add (USER_INTERFACE_KEY "calls_history_window/received_calls_history", calls_history_changed_nt, NULL);
-  
   
   /* Notifiers for the CALL_OPTIONS_KEY keys */
   gm_conf_notifier_add (CALL_OPTIONS_KEY "incoming_call_mode",

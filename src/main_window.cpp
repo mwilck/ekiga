@@ -548,7 +548,6 @@ gm_mw_init_toolbars (GtkWidget *main_window)
   gtk_entry_completion_set_model (GTK_ENTRY_COMPLETION (completion),
 				  GTK_TREE_MODEL (list_store));
   gtk_entry_completion_set_text_column (GTK_ENTRY_COMPLETION (completion), 2);
-  gtk_entry_completion_set_minimum_key_length (GTK_ENTRY_COMPLETION (completion), 2);
   gtk_entry_set_completion (GTK_ENTRY (mw->combo), completion);
 
   gtk_entry_completion_set_match_func (GTK_ENTRY_COMPLETION (completion),
@@ -1812,6 +1811,9 @@ found_url_cb (GtkEntryCompletion *completion,
   
   list_store = GTK_LIST_STORE (data);
 
+  if (!key || GMURL (key).GetCanonicalURL ().GetLength () < 2)
+    return FALSE;
+
   for (int i = 0 ; (i < 2 && !found) ; i++) {
     
     gtk_tree_model_get (GTK_TREE_MODEL (list_store), iter, i, &val, -1);
@@ -1845,7 +1847,6 @@ found_url_cb (GtkEntryCompletion *completion,
   /* We have found something, but is it the first item ? */
   gtk_tree_model_get (GTK_TREE_MODEL (list_store), iter, 2, &entry, -1);
 
-  
   if (found) {
 
     if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (list_store),
@@ -2781,6 +2782,8 @@ gm_main_window_urls_history_update (GtkWidget *main_window)
   
   completion = gtk_entry_get_completion (GTK_ENTRY (mw->combo));
   list_store = GTK_LIST_STORE (gtk_entry_completion_get_model (GTK_ENTRY_COMPLETION (completion)));
+  gtk_list_store_clear (GTK_LIST_STORE (list_store));
+
   
   c1 = gnomemeeting_addressbook_get_contacts (NULL,
 					      FALSE,
@@ -2789,7 +2792,7 @@ gm_main_window_urls_history_update (GtkWidget *main_window)
 					      NULL,
 					      NULL);
   
-  c2 = gnomemeeting_calls_history_window_get_calls (NULL);
+  c2 = gm_calls_history_get_calls ();
   contacts = g_slist_concat (c1, c2);
 
 

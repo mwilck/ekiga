@@ -409,7 +409,7 @@ void GnomeMeeting::BuildGUI ()
   gm_prefs_window_update_audio_codecs_list (prefs_window, 
 					    available_capabilities);
   
-  calls_history_window = gnomemeeting_calls_history_window_new ();
+  calls_history_window = gm_calls_history_window_new ();
   history_window = gm_history_window_new ();
   addressbook_window = gm_addressbook_window_new ();
   chat_window = gnomemeeting_text_chat_new ();

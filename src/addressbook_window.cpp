@@ -2442,6 +2442,10 @@ gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
 
 	g_slist_foreach (contacts, (GFunc) gm_contact_delete, NULL);
 	g_slist_free (contacts);
+
+	
+	/* Update the urls history */
+	gm_main_window_urls_history_update (main_window);
       }
 
       gm_contact_delete (new_contact);
@@ -2524,6 +2528,10 @@ gm_addressbook_window_delete_contact_dialog_run (GtkWidget *addressbook_window,
 
     g_slist_foreach (contacts, (GFunc) gm_contact_delete, NULL);
     g_slist_free (contacts);
+    
+	
+    /* Update the urls history */
+    gm_main_window_urls_history_update (main_window);
 
     break;
   }
@@ -2934,6 +2942,10 @@ gm_addressbook_window_delete_addressbook_dialog_run (GtkWidget *addressbook_wind
 
       g_slist_foreach (contacts, (GFunc) gm_contact_delete, NULL);
       g_slist_free (contacts);
+
+
+      /* Update the urls history */
+      gm_main_window_urls_history_update (main_window);
     }
     break;
   }

@@ -38,6 +38,7 @@
 #include "common.h"
 
 #include "addressbook_window.h"
+#include "main_window.h"
 #include "calls_history_window.h"
 #include "gnomemeeting.h"
 #include "callbacks.h" 
@@ -92,12 +93,50 @@ static GmCallsHistoryWindow *gm_chw_get_chw (GtkWidget *);
 static GmContact *gm_chw_get_selected_contact (GtkWidget *);
 
 
+/* DESCRIPTION  : / 
+ * BEHAVIOR     : Creates a calls history item menu and returns it.
+ * PRE          : The given GtkWidget pointer must point to the calls history
+ * 		  window GMObject.
+ */
+static GtkWidget *gm_chw_contact_menu_new (GtkWidget *);
+
+
+/* DESCRIPTION  : / 
+ * BEHAVIOR     : Populate the calls history with the stored history.
+ * PRE          : The given GtkWidget pointer must point to the calls history
+ * 		  window GMObject.
+ */
+static void gm_chw_populate (GtkWidget *);
+
+	
+/* Operations on the calls history directly */
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Add a call to the calls history.
+ * PRE          :  /
+ */
+static void gm_calls_history_add_call (int,
+				       const char *,
+				       const char *,
+				       const char *,
+				       const char *,
+				       const char *,
+				       const char *);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Clears the calls history.
+ * PRE          :  /
+ */
+static void gm_calls_history_clear (int);
+
+
 /* Callbacks */
 
 /* DESCRIPTION  :  This callback is called when the user has clicked the clear
  *                 button.
  * BEHAVIOR     :  Clears the corresponding calls list using the config DB.
- * PRE          :  data = the GtkNotebook containing the 3 lists of calls.
+ * PRE          :  data = the calls history window GMObject.
  */
 static void clear_button_clicked_cb (GtkButton *,
 				     gpointer);
@@ -256,6 +295,153 @@ gm_chw_contact_menu_new (GtkWidget *calls_history_window)
 }
 
 
+static void
+gm_chw_populate (GtkWidget *calls_history_window)
+{
+  GmCallsHistoryWindow *chw = NULL;
+  
+  GtkTreeIter iter;
+  GtkListStore *list_store = NULL;
+
+  gchar *conf_key = NULL;
+  gchar **call_data = NULL;
+  
+  GSList *calls_list = NULL;
+
+  chw = gm_chw_get_chw (calls_history_window);
+
+  for (int i = 0 ; i < MAX_VALUE_CALL ; i++) {
+
+    list_store = GTK_LIST_STORE (gtk_tree_view_get_model (GTK_TREE_VIEW (chw->chw_history_tree_view [i])));
+    
+    switch (i) {
+
+    case RECEIVED_CALL:
+      conf_key =
+	g_strdup (USER_INTERFACE_KEY "calls_history_window/received_calls_history");
+      break;
+    case PLACED_CALL:
+      conf_key =
+	g_strdup (USER_INTERFACE_KEY "calls_history_window/placed_calls_history");
+      break;
+    case MISSED_CALL:
+      conf_key =
+	g_strdup (USER_INTERFACE_KEY "calls_history_window/missed_calls_history");
+      break;
+    }
+
+    gtk_list_store_clear (list_store);
+    
+    calls_list = gm_conf_get_string_list (conf_key);
+
+    while (calls_list && calls_list->data) {
+      
+      call_data = g_strsplit ((char *) calls_list->data, "|", 0);
+      
+      if (call_data) {
+	
+	gtk_list_store_append (list_store, &iter);
+	gtk_list_store_set (list_store,
+			    &iter,
+			    0, call_data [0],
+			    1, call_data [1],
+			    2, call_data [2],
+			    3, call_data [3],
+			    4, call_data [4],
+			    5, call_data [5],
+			    -1);
+      }
+      
+      g_strfreev (call_data);
+
+      calls_list = g_slist_next (calls_list);
+    }
+    
+    g_free (conf_key);
+    g_slist_free (calls_list);
+  }
+}
+
+
+static void
+gm_calls_history_add_call (int i,
+			   const char *time,
+			   const char *remote_user,
+			   const char *ip,
+			   const char *duration,
+			   const char *reason,
+			   const char *software)
+{
+  gchar *conf_key = NULL;
+  gchar *call_data = NULL;
+  
+  GSList *calls_list = NULL;
+  GSList *tmp = NULL;
+  
+  
+  switch (i) {
+
+  case RECEIVED_CALL:
+    conf_key =
+      g_strdup (USER_INTERFACE_KEY "calls_history_window/received_calls_history");
+    break;
+  case PLACED_CALL:
+    conf_key =
+      g_strdup (USER_INTERFACE_KEY "calls_history_window/placed_calls_history");
+    break;
+  case MISSED_CALL:
+    conf_key =
+      g_strdup (USER_INTERFACE_KEY "calls_history_window/missed_calls_history");
+    break;
+  }
+
+  
+  call_data =
+    g_strdup_printf ("%s|%s|%s|%s|%s|%s",
+		     (const char *) time ? (const char *) time : "",
+		     remote_user ? remote_user : "",
+		     ip ? ip : "",
+		     duration ? duration : "",
+		     reason ? reason : "",
+		     software ? software : "");
+  
+  calls_list = gm_conf_get_string_list (conf_key);
+  calls_list = g_slist_append (calls_list, (gpointer) call_data);
+
+  while (g_slist_length (calls_list) > 100) {
+
+    tmp = g_slist_nth (calls_list, 0);
+    calls_list = g_slist_remove_link (calls_list, tmp);
+
+    g_slist_free_1 (tmp);
+  }
+  
+  gm_conf_set_string_list (conf_key, calls_list);
+  
+  g_free (conf_key);
+  g_slist_free (calls_list);
+}
+
+
+static void 
+gm_calls_history_clear (int i)
+{
+  /* Clears the configuration */
+  switch (i) {
+
+  case RECEIVED_CALL:
+    gm_conf_set_string_list (USER_INTERFACE_KEY "calls_history_window/received_calls_history", NULL);
+    break;
+  case PLACED_CALL:
+    gm_conf_set_string_list (USER_INTERFACE_KEY "calls_history_window/placed_calls_history", NULL);
+    break;
+  case MISSED_CALL:
+    gm_conf_set_string_list (USER_INTERFACE_KEY "calls_history_window/missed_calls_history", NULL);
+    break;
+  }
+}
+
+
 static GmContact *
 dnd_get_contact (GtkWidget *widget, 
 		 gpointer data)
@@ -281,19 +467,8 @@ clear_button_clicked_cb (GtkButton *b,
 
   g_return_if_fail (chw);
   
-  
-  switch (gtk_notebook_get_current_page (GTK_NOTEBOOK (chw->chw_notebook))) {
-
-  case RECEIVED_CALL:
-    gm_conf_set_string_list (USER_INTERFACE_KEY "calls_history_window/received_calls_history", NULL);
-    break;
-  case PLACED_CALL:
-    gm_conf_set_string_list (USER_INTERFACE_KEY "calls_history_window/placed_calls_history", NULL);
-    break;
-  case MISSED_CALL:
-    gm_conf_set_string_list (USER_INTERFACE_KEY "calls_history_window/missed_calls_history", NULL);
-    break;
-  }
+  gm_calls_history_window_clear (GTK_WIDGET (data),
+				 gtk_notebook_get_current_page (GTK_NOTEBOOK (chw->chw_notebook)));
 }
 
 
@@ -320,7 +495,7 @@ find_button_clicked_cb (GtkButton *b,
   g_return_if_fail (data != NULL);
 
   /* Fill in the window */
-  gnomemeeting_calls_history_window_populate (GTK_WIDGET (data));  
+  gm_chw_populate (GTK_WIDGET (data));  
 
   chw = gm_chw_get_chw (GTK_WIDGET (data));
 
@@ -461,8 +636,100 @@ add_contact_cb (GtkWidget *w,
 
 
 /* The functions */
+void 
+gm_calls_history_window_clear (GtkWidget *calls_history_window,
+			       int i)
+{
+  GmCallsHistoryWindow *chw  = NULL;
+
+  GtkWidget *main_window = NULL;
+  GtkListStore *list_store = NULL;
+  
+  
+  g_return_if_fail (calls_history_window != NULL);
+  
+  chw = gm_chw_get_chw (GTK_WIDGET (calls_history_window));
+
+  g_return_if_fail (chw);
+
+  
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+  
+
+  /* Clear the selected history */
+  list_store = GTK_LIST_STORE (gtk_tree_view_get_model (GTK_TREE_VIEW (chw->chw_history_tree_view [i])));
+  gtk_list_store_clear (list_store);
+
+  
+  /* Clears the configuration */
+  gm_calls_history_clear (i);
+
+
+  /* Update the urls history for the main window */
+  gm_main_window_urls_history_update (main_window);
+}
+
+
+void 
+gm_calls_history_window_add_call (GtkWidget *calls_history_window,
+				  int i,
+				  const char *remote_user,
+				  const char *ip,
+				  const char *duration,
+				  const char *reason,
+				  const char *software)
+{
+  GmCallsHistoryWindow *chw = NULL;
+  
+  GtkTreeIter iter;
+  GtkListStore *list_store = NULL;
+
+  GtkWidget *main_window = NULL;
+  
+  PString time;
+  
+  g_return_if_fail (calls_history_window != NULL);
+  chw = gm_chw_get_chw (calls_history_window);
+  g_return_if_fail (chw != NULL);
+  
+  
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+
+  time = PTime ().AsString ("yyyy/MM/dd hh:mm:ss");
+
+  
+  /* Update the calls history window */
+  list_store = GTK_LIST_STORE (gtk_tree_view_get_model (GTK_TREE_VIEW (chw->chw_history_tree_view [i])));
+
+  gtk_list_store_append (list_store, &iter);
+  gtk_list_store_set (list_store,
+		      &iter,
+		      0, (const char *) time ? (const char *) time : "",
+		      1, remote_user ? remote_user : "",
+		      2, ip ? ip : "",
+		      3, duration ? duration : "",
+		      4, reason ? reason : "",
+		      5, software ? software : "",
+		      -1);
+
+  
+  /* Add it to the configuration */
+  gm_calls_history_add_call (i,
+			     time, 
+			     remote_user, 
+			     ip, 
+			     duration, 
+			     reason, 
+			     software);
+
+  
+  /* Update the urls history for the main window */
+  gm_main_window_urls_history_update (main_window);
+}
+
+
 GSList *
-gnomemeeting_calls_history_window_get_calls (GtkWidget *calls_history_window)
+gm_calls_history_get_calls ()
 {
   GmContact *contact = NULL;
 
@@ -524,139 +791,8 @@ gnomemeeting_calls_history_window_get_calls (GtkWidget *calls_history_window)
 }
 
 
-void
-gnomemeeting_calls_history_window_populate (GtkWidget *calls_history_window)
-{
-  GmCallsHistoryWindow *chw = NULL;
-  
-  GtkTreeIter iter;
-  GtkListStore *list_store = NULL;
-
-  gchar *conf_key = NULL;
-  gchar **call_data = NULL;
-  
-  GSList *calls_list = NULL;
-
-  chw = gm_chw_get_chw (calls_history_window);
-
-  for (int i = 0 ; i < MAX_VALUE_CALL ; i++) {
-
-    list_store = GTK_LIST_STORE (gtk_tree_view_get_model (GTK_TREE_VIEW (chw->chw_history_tree_view [i])));
-    
-    switch (i) {
-
-    case RECEIVED_CALL:
-      conf_key =
-	g_strdup (USER_INTERFACE_KEY "calls_history_window/received_calls_history");
-      break;
-    case PLACED_CALL:
-      conf_key =
-	g_strdup (USER_INTERFACE_KEY "calls_history_window/placed_calls_history");
-      break;
-    case MISSED_CALL:
-      conf_key =
-	g_strdup (USER_INTERFACE_KEY "calls_history_window/missed_calls_history");
-      break;
-    }
-
-    gtk_list_store_clear (list_store);
-    
-    calls_list = gm_conf_get_string_list (conf_key);
-
-    while (calls_list && calls_list->data) {
-      
-      call_data = g_strsplit ((char *) calls_list->data, "|", 0);
-      
-      if (call_data) {
-	
-	gtk_list_store_append (list_store, &iter);
-	gtk_list_store_set (list_store,
-			    &iter,
-			    0, call_data [0],
-			    1, call_data [1],
-			    2, call_data [2],
-			    3, call_data [3],
-			    4, call_data [4],
-			    5, call_data [5],
-			    -1);
-      }
-      
-      g_strfreev (call_data);
-
-      calls_list = g_slist_next (calls_list);
-    }
-    
-    g_free (conf_key);
-    g_slist_free (calls_list);
-  }
-}
-
-
-void
-gnomemeeting_calls_history_window_add_call (GtkWidget *calls_history_window,
-					    int i,
-					    const char *remote_user,
-					    const char *ip,
-					    const char *duration,
-					    const char *reason,
-					    const char *software)
-{
-  PString time;
-
-  gchar *conf_key = NULL;
-  gchar *call_data = NULL;
-  
-  GSList *calls_list = NULL;
-  GSList *tmp = NULL;
-  
-  time = PTime ().AsString ("yyyy/MM/dd hh:mm:ss");
-  
-  switch (i) {
-
-  case RECEIVED_CALL:
-    conf_key =
-      g_strdup (USER_INTERFACE_KEY "calls_history_window/received_calls_history");
-    break;
-  case PLACED_CALL:
-    conf_key =
-      g_strdup (USER_INTERFACE_KEY "calls_history_window/placed_calls_history");
-    break;
-  case MISSED_CALL:
-    conf_key =
-      g_strdup (USER_INTERFACE_KEY "calls_history_window/missed_calls_history");
-    break;
-  }
-
-  
-  call_data =
-    g_strdup_printf ("%s|%s|%s|%s|%s|%s",
-		     (const char *) time ? (const char *) time : "",
-		     remote_user ? remote_user : "",
-		     ip ? ip : "",
-		     duration ? duration : "",
-		     reason ? reason : "",
-		     software ? software : "");
-  
-  calls_list = gm_conf_get_string_list (conf_key);
-  calls_list = g_slist_append (calls_list, (gpointer) call_data);
-
-  while (g_slist_length (calls_list) > 100) {
-
-    tmp = g_slist_nth (calls_list, 0);
-    calls_list = g_slist_remove_link (calls_list, tmp);
-
-    g_slist_free_1 (tmp);
-  }
-  
-  gm_conf_set_string_list (conf_key, calls_list);
-  
-  g_free (conf_key);
-  g_slist_free (calls_list);
-}
-
-
 GtkWidget *
-gnomemeeting_calls_history_window_new ()
+gm_calls_history_window_new ()
 {
   GtkWidget *hbox = NULL;
   GtkWidget *button = NULL;
@@ -829,7 +965,7 @@ gnomemeeting_calls_history_window_new ()
 
   
   /* Fill in the window with old calls */
-  gnomemeeting_calls_history_window_populate (window);
+  gm_chw_populate (window);
 
   
   gtk_widget_show_all (GTK_WIDGET (GTK_DIALOG (window)->vbox));

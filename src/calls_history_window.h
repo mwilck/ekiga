@@ -52,33 +52,36 @@ enum {
  * BEHAVIOR     :  Returns the list of all contacts for all calls. 
  * PRE          :  /
  */
-GSList *gnomemeeting_calls_history_window_get_calls (GtkWidget *);
+GSList *gm_calls_history_get_calls ();
 
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Build the calls history window and returns a pointer to it.
  * PRE          :  /
  */
-GtkWidget *gnomemeeting_calls_history_window_new ();
+GtkWidget *gm_calls_history_window_new ();
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Populate the calls history window.
+ * BEHAVIOR     :  Add a call to the calls history, update the main window
+ * 		   urls history.
  * PRE          :  /
  */
-void gnomemeeting_calls_history_window_populate (GtkWidget *);
+void gm_calls_history_window_add_call (GtkWidget *,
+				       int,
+				       const char *, 
+				       const char *,
+				       const char *,
+				       const char *,
+				       const char *);
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Add a call to the calls history window.
+ * BEHAVIOR     :  Clear the calls history, update the main window urls 
+ * 		   history.
  * PRE          :  /
  */
-void gnomemeeting_calls_history_window_add_call (GtkWidget *,
-						 int,
-						 const char *, 
-						 const char *,
-						 const char *,
-						 const char *,
-						 const char *);
+void gm_calls_history_window_clear (GtkWidget *,
+				    int);
 
 #endif /* _CALLS_HISTORY_WINDOW_H_ */

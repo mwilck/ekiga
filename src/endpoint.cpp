@@ -1236,27 +1236,27 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   gnomemeeting_threads_enter ();
   if (t.GetSeconds () == 0 && connection.HadAnsweredCall ())
-    gnomemeeting_calls_history_window_add_call (calls_history_window,
-						MISSED_CALL, utf8_name,
-						utf8_url,
-						"0",
-						msg_reason,
-						utf8_app);
+    gm_calls_history_window_add_call (calls_history_window,
+				      MISSED_CALL, utf8_name,
+				      utf8_url,
+				      "0",
+				      msg_reason,
+				      utf8_app);
   else
     if (connection.HadAnsweredCall ())
-      gnomemeeting_calls_history_window_add_call (calls_history_window,
-						  RECEIVED_CALL, utf8_name,
-						  utf8_url,
-						  t.AsString (0),
-						  msg_reason,
-						  utf8_app);
+      gm_calls_history_window_add_call (calls_history_window,
+					RECEIVED_CALL, utf8_name,
+					utf8_url,
+					t.AsString (0),
+					msg_reason,
+					utf8_app);
     else
-      gnomemeeting_calls_history_window_add_call (calls_history_window,
-						  PLACED_CALL, utf8_name,
-						  GetLastCallAddress (),
-						  t.AsString (0),
-						  msg_reason,
-						  utf8_app);
+      gm_calls_history_window_add_call (calls_history_window,
+					PLACED_CALL, utf8_name,
+					GetLastCallAddress (),
+					t.AsString (0),
+					msg_reason,
+					utf8_app);
 
 
   gm_history_window_insert (history_window, msg_reason);
