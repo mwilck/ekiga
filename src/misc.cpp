@@ -373,20 +373,9 @@ gnomemeeting_history_combo_box_add_entry (GtkCombo *combo, const gchar *key,
 
 
 /* Helper functions por the PAssert dialog */
-static void passert_response_cb (GtkDialog *dialog, int response, gpointer)
+static void passert_close_cb (GtkDialog *dialog, gpointer data)
 {
-  if (response != 10)
-    exit (-1);
-}
-
-
-static gint passert_close_cb (GtkDialog *dialog, gpointer inAssert)
-{
-  bool *assert = static_cast<bool *> (inAssert);
-  
-  *assert = false;
-
-  return 0; /* FIXME: What I'm supossed to return here? */
+  _exit (1);
 }
 
 
@@ -402,28 +391,35 @@ void PAssertFunc (const char * file, int line, const char * msg)
 
   inAssert = true;
 
-  cout << "Assertion Error:" << msg << " " << file << " " << line << endl << flush;
-
   gnomemeeting_threads_enter ();
-  mesg = g_strdup_printf (_("Error\nYou can choose to ignore and continue, or to close GnomeMeeting."));
+  mesg = g_strdup_printf (_("Error: %s\n"), msg);
 
   GtkWidget *dialog = 
-    gtk_message_dialog_new (GTK_WINDOW (gm),
-			    GTK_DIALOG_MODAL,
-			    GTK_MESSAGE_ERROR,
-			    GTK_BUTTONS_CLOSE,
-			    mesg, 0);
-  gtk_dialog_add_buttons (GTK_DIALOG (dialog), 
-			  _("Continue"), 10);
+    gtk_dialog_new_with_buttons (_("GnomeMeeting Error"),
+				 GTK_WINDOW (gm),
+				 GTK_DIALOG_MODAL,
+				 _("Ignore"), 0,
+				 NULL);
 
-  g_signal_connect (G_OBJECT (dialog), "response",
-		    G_CALLBACK (passert_response_cb), 0);
-  g_signal_connect (G_OBJECT (dialog), "close",
-		    G_CALLBACK (passert_close_cb), &inAssert); 
-
-  gtk_widget_show (dialog);
- 
+  GtkWidget *label = gtk_label_new (mesg);
+  
+  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), label, TRUE, TRUE, 0);
+  
+  gtk_widget_show_all (dialog);
   gnomemeeting_threads_leave ();
+
+  gnomemeeting_threads_enter ();
+
+  g_signal_connect_swapped (GTK_OBJECT (dialog),
+			    "response",
+			    G_CALLBACK (gtk_widget_destroy),
+			    GTK_OBJECT (dialog));  
+
+  gnomemeeting_threads_leave ();
+
+  inAssert = FALSE;
+
+  return;
 }
 
 

@@ -61,12 +61,17 @@ static void toolbar_cp_button_changed (GtkWidget *, gpointer);
  */
 static void connect_button_clicked (GtkToggleButton *w, gpointer data)
 {
-  if (gtk_toggle_button_get_active (w))
-    MyApp->Connect ();
-  else {
 
+  if (gtk_toggle_button_get_active (w))
+    if (MyApp->Endpoint ()->GetCallingState () == 0) 
+      MyApp->Connect ();
+    else {
+      
+      connect_button_update_pixmap (w, 0);
+      gnomemeeting_log_insert (_("Trying to stop calling"));
+    }
+  else
     MyApp->Disconnect ();
-  }
 }
 
 

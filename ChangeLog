@@ -1,7 +1,25 @@
+2002-05-16  Damien Sandras  <dsandras@seconix.com>
+
+	* src/cleaner.cpp: Fixed exit in case of OpenH323 bug. Added a 
+	nice message to the dialog.
+
+	* src/endpoint.cpp: Improved the incoming call popup design.
+	Fixed codecs.
+	
+	* src/main_window.cpp: Code cleanups.
+
+	* src/misc.cpp: Fixed the Assertion Dialog. Default behavior is 
+	to ignore even if it crashes after. Erm. 
+	I could change that if gtk_dialog_run was not apparently buggy 
+	in threads.
+
+	* src/toolbar.cpp: Do not permit to reconnect if it was 
+	already disconnecting.
+
 2002-05-16  Kenneth Rohde Christiansen  <kenneth@gnu.org>
 
         * src/gnomemeeting-config-tool.in: Made i18n work again.
-
+	
 2002-05-16  Damien Sandras  <dsandras@seconix.com>
 
 	* src/gnomemeeting-config-tool.in: Fixed script for Debian (Kenneth)

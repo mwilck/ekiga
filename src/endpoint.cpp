@@ -448,12 +448,12 @@ void GMH323EndPoint::AddAudioCapabilities ()
 	gsm_capa->SetTxFramesInPacket (gsm_frames);
       }
       
-      if ((!strcmp (couple [0], "G.726-24k"))&&(!strcmp (couple [1], "1"))) {
+      if ((!strcmp (couple [0], "G.726-32k"))&&(!strcmp (couple [1], "1"))) {
 	
 	H323_G726_Capability * g72616_capa; 
 	
 	SetCapability (0, 0, g72616_capa = 
-		       new H323_G726_Capability (*this, H323_G726_Capability::e_24k));
+		       new H323_G726_Capability (*this, H323_G726_Capability::e_32k));
 	codecs_count++;
       }
       
@@ -736,26 +736,23 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   GtkWidget *b1 = NULL, *b2 = NULL;
   /* only a pointer => destroyed with the PString */
 
-  msg = g_strdup_printf (_("Call from %s"), (const char*) name);
-
-  gnomemeeting_threads_enter ();
-  gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-		     (gchar *) msg);
-			 
-  gnomemeeting_log_insert (msg);
-  gnomemeeting_threads_leave ();
-
-
   /* Check the forward host if any */
-  forward_host_gconf = gconf_client_get_string (client, "/apps/gnomemeeting/call_forwarding/forward_host", 0);
-  always_forward = gconf_client_get_bool (client, "/apps/gnomemeeting/call_forwarding/always_forward", 0);
-  busy_forward = gconf_client_get_bool (client, "/apps/gnomemeeting/call_forwarding/busy_forward", 0);
+  forward_host_gconf = 
+    gconf_client_get_string (client, 
+			     "/apps/gnomemeeting/call_forwarding/forward_host", 0);
+  always_forward = 
+    gconf_client_get_bool (client, 
+			   "/apps/gnomemeeting/call_forwarding/always_forward", 0);
+  busy_forward = 
+    gconf_client_get_bool (client, 
+			   "/apps/gnomemeeting/call_forwarding/busy_forward", 0);
  
 
   if (forward_host_gconf)
     forward_host = PString (forward_host_gconf);
   else
     forward_host = PString ("");
+
 
   /* if we have enabled call forwarding for all calls, do the forward */
   if ((!forward_host.IsEmpty())&&(always_forward)) {
@@ -852,12 +849,35 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   gnomemeeting_threads_leave ();
 
 
+  /* Update the history and status bar */
+  msg = g_strdup_printf (_("Call from %s"), (const char*) name);
+
+  gnomemeeting_threads_enter ();
+  gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
+		     (gchar *) msg);
+			 
+  gnomemeeting_log_insert (msg);
+  gnomemeeting_threads_leave ();
+  g_free (msg);
+
+
+  /* Incoming Call Popup */
   if (gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_popup", 0) 
-      && (!gconf_client_get_bool (client, "/apps/gnomemeeting/general/do_not_disturb", 0)) 
-      && (!gconf_client_get_bool (client, "/apps/gnomemeeting/general/auto_answer", 0)) 
+      && (!gconf_client_get_bool (client, 
+				  "/apps/gnomemeeting/general/do_not_disturb", 0)) 
+      && (!gconf_client_get_bool (client, 
+				  "/apps/gnomemeeting/general/auto_answer", 0)) 
       && (GetCurrentCallToken ().IsEmpty ())) {
 
     GtkWidget *label = NULL;
+    GdkPixbuf *pixbuf = NULL;
+    GtkWidget *image = NULL;
+    GtkWidget *hbox = NULL;
+    gchar *file = NULL;
+
+    msg = g_strdup_printf (_("Call from %s\nusing %s"), 
+			   (const char*) name, 
+			   (const char *) connection.GetRemoteApplication ());
 
     gnomemeeting_threads_enter ();
     gw->incoming_call_popup = gtk_dialog_new ();
@@ -867,9 +887,23 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 				_("Disconnect"), 1);
 
     label = gtk_label_new (msg);
+    hbox = gtk_hbox_new (0, 0);
+
     gtk_box_pack_start (GTK_BOX 
 			(GTK_DIALOG (gw->incoming_call_popup)->vbox), 
-			label, TRUE, TRUE, 0);
+			hbox, TRUE, TRUE, 0);
+
+    file = 
+      gnome_program_locate_file (NULL, GNOME_FILE_DOMAIN_PIXMAP, 
+				 "gnomemeeting-logo-icon.png", TRUE, NULL);
+    pixbuf = gdk_pixbuf_new_from_file (file, NULL);
+    image = gtk_image_new_from_pixbuf (pixbuf);
+    gtk_box_pack_start (GTK_BOX (hbox), 
+			image, TRUE, TRUE, GNOME_PAD_BIG);
+    gtk_box_pack_start (GTK_BOX (hbox), 
+			label, TRUE, TRUE, GNOME_PAD_BIG);
+    g_object_unref (pixbuf);
+    g_free (file);
     
     g_signal_connect (G_OBJECT (b1), "clicked",
 		      G_CALLBACK (connect_cb), gw);
@@ -881,13 +915,12 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 				  GTK_WINDOW (gm));
     gtk_window_set_modal (GTK_WINDOW (gw->incoming_call_popup), TRUE);
 
-    gtk_widget_show (label);
-    gtk_widget_show (gw->incoming_call_popup);
+    gtk_widget_show_all (gw->incoming_call_popup);
     gnomemeeting_threads_leave ();
+
+    g_free (msg);  
   }
   
-  g_free (msg);  
-
 
   gnomemeeting_threads_enter ();
   gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
@@ -1243,8 +1276,9 @@ BOOL GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
   opened_audio_channels++;
 
   if (H323EndPoint::OpenAudioChannel(connection, isEncoding, 
-				     bufferSize, codec))
+				     bufferSize, codec)) 
     return TRUE;
+
 
   cerr << "Could not open sound device ";
   if (isEncoding)
