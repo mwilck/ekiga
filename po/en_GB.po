@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-05-27 21:21-0400\n"
-"PO-Revision-Date: 2004-05-27 21:22-0400\n"
+"POT-Creation-Date: 2004-06-03 20:02-0400\n"
+"PO-Revision-Date: 2004-06-03 20:03-0400\n"
 "Last-Translator: Gareth Owen <gowen72@yahoo.comg>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #. Add the window icon and title
-#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:1185
+#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:1183
 msgid "GnomeMeeting"
 msgstr "GnomeMeeting"
 
@@ -98,7 +98,7 @@ msgstr ""
 msgid "Clear inactive calls"
 msgstr "Clear inactive calls"
 
-#: gnomemeeting.schemas.in.in.h:15 src/ldap_window.cpp:2878
+#: gnomemeeting.schemas.in.in.h:15 src/addressbook_window.cpp:1135
 msgid "Comment"
 msgstr "Comment"
 
@@ -370,7 +370,7 @@ msgstr "Listen port"
 msgid "Local video window size"
 msgstr "Local video window size"
 
-#: gnomemeeting.schemas.in.in.h:69 src/ldap_window.cpp:2891
+#: gnomemeeting.schemas.in.in.h:69 src/addressbook_window.cpp:1172
 msgid "Location"
 msgstr "Location"
 
@@ -576,7 +576,7 @@ msgstr "Size of the preferences window"
 msgid "Start hidden"
 msgstr "Start hidden"
 
-#: gnomemeeting.schemas.in.in.h:118 src/menu.cpp:463 src/menu.cpp:596
+#: gnomemeeting.schemas.in.in.h:118 src/menu.cpp:458 src/menu.cpp:585
 msgid "Switch to fullscreen"
 msgstr "Switch to fullscreen"
 
@@ -984,7 +984,7 @@ msgstr ""
 msgid "User directory"
 msgstr "User directory"
 
-#: gnomemeeting.schemas.in.in.h:183 src/ldap_window.cpp:2915
+#: gnomemeeting.schemas.in.in.h:183
 msgid "Version"
 msgstr "Version"
 
@@ -1016,7 +1016,7 @@ msgstr "Video preview"
 msgid "Video size"
 msgstr "Video size"
 
-#: lib/dialog.c:225
+#: lib/dialog.c:254
 msgid "Do not show this dialog again"
 msgstr "Do not show this dialogue again"
 
@@ -1028,69 +1028,69 @@ msgstr ""
 "An error has happened in the configuration backend.\n"
 "Maybe some of your settings won't be saved."
 
-#: src/callbacks.cpp:87
+#: src/callbacks.cpp:86
 msgid "_Retrieve Call"
 msgstr "_Retrieve Call"
 
-#: src/callbacks.cpp:100 src/menu.cpp:302
+#: src/callbacks.cpp:99 src/menu.cpp:297
 msgid "_Hold Call"
 msgstr "_Hold Call"
 
-#: src/callbacks.cpp:129
+#: src/callbacks.cpp:128
 msgid "Transfer call to:"
 msgstr "Transfer call to:"
 
-#: src/callbacks.cpp:130
+#: src/callbacks.cpp:129
 msgid "Transfer"
 msgstr "Transfer"
 
-#: src/callbacks.cpp:232 src/menu.cpp:312
+#: src/callbacks.cpp:231 src/menu.cpp:307
 msgid "Suspend _Audio"
 msgstr "Mute _Audio"
 
-#: src/callbacks.cpp:233
+#: src/callbacks.cpp:232
 msgid "Resume _Audio"
 msgstr "Resume _Audio"
 
-#: src/callbacks.cpp:234
+#: src/callbacks.cpp:233
 msgid "Audio transmission: suspended"
 msgstr "Audio transmission: muted"
 
-#: src/callbacks.cpp:235
+#: src/callbacks.cpp:234
 msgid "Audio transmission: resumed"
 msgstr "Audio transmission: resumed"
 
-#: src/callbacks.cpp:246 src/menu.cpp:317
+#: src/callbacks.cpp:245 src/menu.cpp:312
 msgid "Suspend _Video"
 msgstr "Suspend _Video"
 
-#: src/callbacks.cpp:247
+#: src/callbacks.cpp:246
 msgid "Resume _Video"
 msgstr "Resume _Video"
 
-#: src/callbacks.cpp:248
+#: src/callbacks.cpp:247
 msgid "Video transmission: suspended"
 msgstr "Video transmission: suspended"
 
-#: src/callbacks.cpp:249
+#: src/callbacks.cpp:248
 msgid "Video transmission: resumed"
 msgstr "Video transmission: resumed"
 
-#: src/callbacks.cpp:383
+#: src/callbacks.cpp:382
 msgid "Code contributors:"
 msgstr "Code contributors:"
 
-#: src/callbacks.cpp:395
+#: src/callbacks.cpp:394
 msgid "Artwork:"
 msgstr "Artwork:"
 
-#: src/callbacks.cpp:399
+#: src/callbacks.cpp:398
 msgid "Contributors:"
 msgstr "Contributors:"
 
 #. Translators: Please write translator credits here, and
 #. * seperate names with \n
-#: src/callbacks.cpp:435
+#: src/callbacks.cpp:434
 msgid "translator_credits"
 msgstr ""
 "Abigail Brady <morwen@evilmagi_c.org>\n"
@@ -1099,7 +1099,7 @@ msgstr ""
 
 #. Translators: Please test to see if your translation
 #. * looks OK and fits within the box
-#: src/callbacks.cpp:446
+#: src/callbacks.cpp:445
 msgid ""
 "GnomeMeeting is full-featured H.323 compatible videoconferencing, VoIP and "
 "IP-Telephony application that allows you to make audio and video calls to "
@@ -1268,11 +1268,11 @@ msgid ""
 msgstr ""
 "  --fix-permissions      fix permissions of GConf repository (run as root)"
 
-#: src/config.cpp:309 src/config.cpp:553
+#: src/config.cpp:301 src/config.cpp:545
 msgid "Changing this setting will only affect new calls"
 msgstr "Changing this setting will only affect new calls"
 
-#: src/config.cpp:310 src/config.cpp:554
+#: src/config.cpp:302 src/config.cpp:546
 msgid ""
 "You have changed a setting that doesn't permit to GnomeMeeting to apply the "
 "new change to the current call. Your new setting will only take effect for "
@@ -1282,51 +1282,51 @@ msgstr ""
 "new change to the current call. Your new setting will only take effect for "
 "the next call."
 
-#: src/config.cpp:372
+#: src/config.cpp:364
 msgid "H.245 Tunneling disabled"
 msgstr "H.245 Tunnelling disabled"
 
-#: src/config.cpp:373
+#: src/config.cpp:365
 msgid "H.245 Tunneling enabled"
 msgstr "H.245 Tunnelling enabled"
 
-#: src/config.cpp:402
+#: src/config.cpp:394
 msgid "Early H.245 disabled"
 msgstr "Early H.245 disabled"
 
-#: src/config.cpp:403
+#: src/config.cpp:395
 msgid "Early H.245 enabled"
 msgstr "Early H.245 enabled"
 
-#: src/config.cpp:432
+#: src/config.cpp:424
 msgid "Fast Start disabled"
 msgstr "Fast Start disabled"
 
-#: src/config.cpp:433
+#: src/config.cpp:425
 msgid "Fast Start enabled"
 msgstr "Fast Start enabled"
 
-#: src/config.cpp:464
+#: src/config.cpp:456
 msgid "No gateway or proxy specified"
 msgstr "No gateway or proxy specified"
 
-#: src/config.cpp:464
+#: src/config.cpp:456
 msgid "You need to specify a host to use as gateway or proxy."
 msgstr "You need to specify a host to use as gateway or proxy."
 
-#: src/config.cpp:612
+#: src/config.cpp:604
 msgid "Disabled silence detection"
 msgstr "Disabled silence detection"
 
-#: src/config.cpp:618
+#: src/config.cpp:610
 msgid "Enabled silence detection"
 msgstr "Enabled silence detection"
 
-#: src/config.cpp:1274
+#: src/config.cpp:1157
 msgid "Forward URL not specified"
 msgstr "Forward URL not specified"
 
-#: src/config.cpp:1275
+#: src/config.cpp:1158
 msgid ""
 "You need to specify an URL where to forward calls in the call forwarding "
 "section of the preferences!\n"
@@ -1337,18 +1337,6 @@ msgstr ""
 "section of the preferences!\n"
 "\n"
 "Disabling forwarding."
-
-#: src/config.cpp:1838 src/ldap_window.cpp:2501
-msgid "Friends"
-msgstr "Friends"
-
-#: src/config.cpp:1839 src/ldap_window.cpp:2505
-msgid "Work"
-msgstr "Work"
-
-#: src/config.cpp:1840 src/ldap_window.cpp:2503
-msgid "Family"
-msgstr "Family"
 
 #: src/connection.cpp:154
 #, c-format
@@ -1380,8 +1368,8 @@ msgstr "Failure opening %s for transmission, will try with next common codec"
 msgid "Failure opening %s for reception, will try with next common codec"
 msgstr "Failure opening %s for reception, will try with next common codec"
 
-#: src/connection.cpp:316 src/connection.cpp:317 src/urlhandler.cpp:77
-#: src/urlhandler.cpp:78
+#: src/connection.cpp:316 src/connection.cpp:317 src/urlhandler.cpp:76
+#: src/urlhandler.cpp:77
 msgid "Call transfer failed"
 msgstr "Call transfer failed"
 
@@ -1392,8 +1380,8 @@ msgstr ""
 "The remote user tried to transfer your call to another user, but it failed."
 
 #: src/druid.cpp:317 src/druid.cpp:704 src/druid.cpp:721 src/druid.cpp:776
-#: src/endpoint.cpp:1676 src/gnomemeeting.cpp:312 src/gnomemeeting.cpp:314
-#: src/gnomemeeting.cpp:316 src/sound_handling.cpp:558
+#: src/endpoint.cpp:1660 src/gnomemeeting.cpp:306 src/gnomemeeting.cpp:308
+#: src/gnomemeeting.cpp:310 src/sound_handling.cpp:558
 #: src/sound_handling.cpp:559 src/videograbber.cpp:311
 #: src/videograbber.cpp:574
 msgid "No device found"
@@ -1664,148 +1652,148 @@ msgid "First Time Configuration Druid"
 msgstr "First Time Configuration Druid"
 
 #. Update the log and status bar
-#: src/endpoint.cpp:732
+#: src/endpoint.cpp:718
 #, c-format
 msgid "Call from %s"
 msgstr "Call from %s"
 
-#: src/endpoint.cpp:744
+#: src/endpoint.cpp:730
 #, c-format
 msgid "Forwarding call from %s to %s (Forward all calls)"
 msgstr "Forwarding call from %s to %s (Forward all calls)"
 
 #. there is no forwarding, so reject the call
-#: src/endpoint.cpp:751 src/endpoint.cpp:772
+#: src/endpoint.cpp:737 src/endpoint.cpp:758
 #, c-format
 msgid "Rejecting call from %s (Busy)"
 msgstr "Rejecting call from %s (Busy)"
 
-#: src/endpoint.cpp:763
+#: src/endpoint.cpp:749
 #, c-format
 msgid "Forwarding call from %s to %s (Busy)"
 msgstr "Forwarding call from %s to %s (Busy)"
 
-#: src/endpoint.cpp:781
+#: src/endpoint.cpp:767
 #, c-format
 msgid "Accepting call from %s (Free For Chat)"
 msgstr "Accepting call from %s (Free For Chat)"
 
-#: src/endpoint.cpp:806
+#: src/endpoint.cpp:792
 msgid "Call rejected"
 msgstr "Call rejected"
 
-#: src/endpoint.cpp:815 src/endpoint.cpp:1187 src/endpoint.cpp:2120
+#: src/endpoint.cpp:801 src/endpoint.cpp:1172 src/endpoint.cpp:2104
 msgid "Call forwarded"
 msgstr "Call forwarded"
 
-#: src/endpoint.cpp:827
+#: src/endpoint.cpp:813
 msgid "Call automatically answered"
 msgstr "Call automatically answered"
 
-#: src/endpoint.cpp:897
+#: src/endpoint.cpp:883
 #, c-format
 msgid "Forwarding call to %s"
 msgstr "Forwarding call to %s"
 
-#: src/endpoint.cpp:908
+#: src/endpoint.cpp:894
 #, c-format
 msgid "Error while forwarding call to %s"
 msgstr "Error while forwarding call to %s"
 
-#: src/endpoint.cpp:911
+#: src/endpoint.cpp:897
 msgid "There was an error when forwarding the call to the given host."
 msgstr "There was an error when forwarding the call to the given host."
 
-#: src/endpoint.cpp:961
+#: src/endpoint.cpp:947
 msgid "Connected"
 msgstr "Connected"
 
-#: src/endpoint.cpp:963
+#: src/endpoint.cpp:949
 #, c-format
 msgid "Connected with %s using %s"
 msgstr "Connected with %s using %s"
 
-#: src/endpoint.cpp:1151
+#: src/endpoint.cpp:1136
 msgid "Local user cleared the call"
 msgstr "Local user cleared the call"
 
-#: src/endpoint.cpp:1154
+#: src/endpoint.cpp:1139
 msgid "Remote user cleared the call"
 msgstr "Remote user cleared the call"
 
-#: src/endpoint.cpp:1157
+#: src/endpoint.cpp:1142
 msgid "Remote user did not accept the call"
 msgstr "Remote user did not accept the call"
 
-#: src/endpoint.cpp:1160 src/endpoint.cpp:1163
+#: src/endpoint.cpp:1145 src/endpoint.cpp:1148
 msgid "Local user did not accept the call"
 msgstr "Local user did not accept the call"
 
-#: src/endpoint.cpp:1166
+#: src/endpoint.cpp:1151
 msgid "The Gatekeeper cleared the call"
 msgstr "The Gatekeeper cleared the call"
 
-#: src/endpoint.cpp:1169
+#: src/endpoint.cpp:1154
 msgid "Call not answered in the required time"
 msgstr "Call not answered in the required time"
 
-#: src/endpoint.cpp:1172
+#: src/endpoint.cpp:1157
 msgid "Remote user has stopped calling"
 msgstr "Remote user has stopped calling"
 
-#: src/endpoint.cpp:1175
+#: src/endpoint.cpp:1160
 msgid "Abnormal call termination"
 msgstr "Abnormal call termination"
 
-#: src/endpoint.cpp:1178
+#: src/endpoint.cpp:1163
 msgid "Could not connect to remote host"
 msgstr "Could not connect to remote host"
 
-#: src/endpoint.cpp:1181
+#: src/endpoint.cpp:1166
 msgid "Insufficient bandwidth"
 msgstr "Insufficient bandwidth"
 
-#: src/endpoint.cpp:1184
+#: src/endpoint.cpp:1169
 msgid "No common codec"
 msgstr "No common codec"
 
-#: src/endpoint.cpp:1190
+#: src/endpoint.cpp:1175
 msgid "Security check Failed"
 msgstr "Security check Failed"
 
-#: src/endpoint.cpp:1193
+#: src/endpoint.cpp:1178
 msgid "Local user is busy"
 msgstr "Local user is busy"
 
-#: src/endpoint.cpp:1196
+#: src/endpoint.cpp:1181
 msgid "Remote user is busy"
 msgstr "Remote user is busy"
 
-#: src/endpoint.cpp:1199 src/endpoint.cpp:1202
+#: src/endpoint.cpp:1184 src/endpoint.cpp:1187
 msgid "Congested link to remote party"
 msgstr "Congested link to remote party"
 
-#: src/endpoint.cpp:1205 src/endpoint.cpp:1208
+#: src/endpoint.cpp:1190 src/endpoint.cpp:1193
 msgid "Remote user is unreachable"
 msgstr "Remote user is unreachable"
 
-#: src/endpoint.cpp:1211
+#: src/endpoint.cpp:1196
 msgid "Remote host is offline"
 msgstr "Remote host is offline"
 
-#: src/endpoint.cpp:1214
+#: src/endpoint.cpp:1199
 msgid "Temporary failure"
 msgstr "Temporary failure"
 
-#: src/endpoint.cpp:1217 src/urlhandler.cpp:376 src/urlhandler.cpp:383
+#: src/endpoint.cpp:1202 src/urlhandler.cpp:376 src/urlhandler.cpp:383
 msgid "User not found"
 msgstr "User not found"
 
-#: src/endpoint.cpp:1221
+#: src/endpoint.cpp:1206
 msgid "Call completed"
 msgstr "Call completed"
 
-#: src/endpoint.cpp:1316 src/main_window.cpp:1274
+#: src/endpoint.cpp:1301 src/main_window.cpp:1272
 msgid ""
 "Lost packets:\n"
 "Late packets:\n"
@@ -1817,11 +1805,11 @@ msgstr ""
 "Round-trip delay:\n"
 "Jitter buffer:"
 
-#: src/endpoint.cpp:1534
+#: src/endpoint.cpp:1518
 msgid "Error while starting the listener"
 msgstr "Error while starting the listener"
 
-#: src/endpoint.cpp:1534
+#: src/endpoint.cpp:1518
 msgid ""
 "You will not be able to receive incoming calls. Please check that no other "
 "program is already running on the port used by GnomeMeeting."
@@ -1829,25 +1817,25 @@ msgstr ""
 "You will not be able to receive incoming calls. Please check that no other "
 "program is already running on the port used by GnomeMeeting."
 
-#: src/endpoint.cpp:1662
+#: src/endpoint.cpp:1646
 msgid "Attaching lid hardware to codec"
 msgstr "Attaching lid hardware to codec"
 
-#: src/endpoint.cpp:1696
+#: src/endpoint.cpp:1680
 #, c-format
 msgid "Opened %s for recording with plugin %s"
 msgstr "Opened %s for recording with plugin %s"
 
-#: src/endpoint.cpp:1697
+#: src/endpoint.cpp:1681
 #, c-format
 msgid "Opened %s for playing with plugin %s"
 msgstr "Opened %s for playing with plugin %s"
 
-#: src/endpoint.cpp:1735
+#: src/endpoint.cpp:1719
 msgid "Could not open audio channel for audio transmission"
 msgstr "Could not open audio channel for audio transmission"
 
-#: src/endpoint.cpp:1735
+#: src/endpoint.cpp:1719
 msgid ""
 "An error occured while trying to record from the soundcard for the audio "
 "transmission. Please check that your soundcard is not busy and that your "
@@ -1859,11 +1847,11 @@ msgstr ""
 "driver supports full-duplex.\n"
 "The audio transmission has been disabled."
 
-#: src/endpoint.cpp:1740
+#: src/endpoint.cpp:1724
 msgid "Could not open audio channel for audio reception"
 msgstr "Could not open audio channel for audio reception"
 
-#: src/endpoint.cpp:1740
+#: src/endpoint.cpp:1724
 msgid ""
 "An error occured while trying to play audio to the soundcard for the audio "
 "reception. Please check that your soundcard is not busy and that your driver "
@@ -1875,12 +1863,12 @@ msgstr ""
 "supports full-duplex.\n"
 "The audio reception has been disabled."
 
-#: src/endpoint.cpp:1952
+#: src/endpoint.cpp:1936
 #, c-format
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 
-#: src/endpoint.cpp:1994
+#: src/endpoint.cpp:1978
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -1893,7 +1881,7 @@ msgstr ""
 "Round-trip delay: %d ms\n"
 "Jitter buffer: %d ms"
 
-#: src/endpoint.cpp:2117
+#: src/endpoint.cpp:2101
 #, c-format
 msgid "Forwarding Call to %s (No Answer)"
 msgstr "Forwarding Call to %s (No Answer)"
@@ -1950,11 +1938,11 @@ msgstr "Error while registering with gatekeeper"
 msgid "Gatekeeper set to %s"
 msgstr "Gatekeeper set to %s"
 
-#: src/gnomemeeting.cpp:92
+#: src/gnomemeeting.cpp:89
 msgid "Notification area not detected"
 msgstr "Notification area not detected"
 
-#: src/gnomemeeting.cpp:92
+#: src/gnomemeeting.cpp:89
 msgid ""
 "You have chosen to start GnomeMeeting hidden, however the notification area "
 "is not present in your panel, GnomeMeeting can thus not start hidden."
@@ -1962,32 +1950,32 @@ msgstr ""
 "You have chosen to start GnomeMeeting hidden, however the notification area "
 "is not present in your panel, GnomeMeeting can thus not start hidden."
 
-#: src/gnomemeeting.cpp:182
+#: src/gnomemeeting.cpp:176
 msgid "Answering incoming call"
 msgstr "Answering incoming call"
 
-#: src/gnomemeeting.cpp:231
+#: src/gnomemeeting.cpp:225
 msgid "Trying to stop calling"
 msgstr "Trying to stop calling"
 
-#: src/gnomemeeting.cpp:242
+#: src/gnomemeeting.cpp:236
 msgid "Stopping current call"
 msgstr "Stopping current call"
 
-#: src/gnomemeeting.cpp:252
+#: src/gnomemeeting.cpp:246
 msgid "Refusing Incoming call"
 msgstr "Refusing Incoming call"
 
-#: src/gnomemeeting.cpp:489
+#: src/gnomemeeting.cpp:480
 #, c-format
 msgid "Started GnomeMeeting V%d.%d.%d for %s\n"
 msgstr "Started GnomeMeeting V%d.%d.%d for %s\n"
 
-#: src/ils.cpp:103
+#: src/ils.cpp:102
 msgid "Invalid parameters"
 msgstr "Invalid parameters"
 
-#: src/ils.cpp:103
+#: src/ils.cpp:102
 msgid ""
 "Please provide your first name and e-mail in the Personal Data section in "
 "order to be able to register to the users directory."
@@ -1995,19 +1983,19 @@ msgstr ""
 "Please provide your first name and e-mail in the Personal Data section in "
 "order to be able to register to the users directory."
 
-#: src/ils.cpp:137
+#: src/ils.cpp:136
 msgid "Invalid users directory"
 msgstr "Invalid users directory"
 
-#: src/ils.cpp:137
+#: src/ils.cpp:136
 msgid "Operation impossible since there is no users directory specified."
 msgstr "Operation impossible since there is no users directory specified."
 
-#: src/ils.cpp:216
+#: src/ils.cpp:215
 msgid "Failed to parse XML file"
 msgstr "Failed to parse XML file"
 
-#: src/ils.cpp:216
+#: src/ils.cpp:215
 msgid ""
 "There was an error while parsing the XML file. Please make sure that it is "
 "correctly installed in your system."
@@ -2015,20 +2003,20 @@ msgstr ""
 "There was an error while parsing the XML file. Please make sure that it is "
 "correctly installed in your system."
 
-#: src/ils.cpp:227
+#: src/ils.cpp:226
 msgid "Bad information"
 msgstr "Bad information"
 
-#: src/ils.cpp:227
+#: src/ils.cpp:226
 #, c-format
 msgid "Bad LDAP information from XML file: %s."
 msgstr "Bad LDAP information from XML file: %s."
 
-#: src/ils.cpp:236 src/ils.cpp:246 src/ils.cpp:255
+#: src/ils.cpp:235 src/ils.cpp:245 src/ils.cpp:254
 msgid "Cannot contact the users directory"
 msgstr "Cannot contact the users directory"
 
-#: src/ils.cpp:236
+#: src/ils.cpp:235
 #, c-format
 msgid ""
 "Failed to contact the users directory %s:%d. The directory is probably "
@@ -2037,318 +2025,204 @@ msgstr ""
 "Failed to contact the users directory %s:%d. The directory is probably "
 "currently overloaded, please try again later."
 
-#: src/ils.cpp:246
+#: src/ils.cpp:245
 msgid "Failed to set a time limit on operations."
 msgstr "Failed to set a time limit on operations."
 
-#: src/ils.cpp:255
+#: src/ils.cpp:254
 #, c-format
 msgid "Failed to bind to users directory: %s."
 msgstr "Failed to bind to users directory: %s."
 
-#: src/ils.cpp:279
+#: src/ils.cpp:278
 #, c-format
 msgid "Updated information on the users directory %s."
 msgstr "Updated information on the users directory %s."
 
-#: src/ils.cpp:283
+#: src/ils.cpp:282
 #, c-format
 msgid "Unregistered from the users directory %s."
 msgstr "Unregistered from the users directory %s."
 
-#: src/ils.cpp:305
+#: src/ils.cpp:304
 #, c-format
 msgid "Error while registering to %s"
 msgstr "Error while registering to %s"
 
-#: src/ils.cpp:641
-#, c-format
-msgid "Failed to contact LDAP server %s:%d"
-msgstr "Failed to contact LDAP server %s:%d"
+#: src/addressbook_window.cpp:475
+msgid "Add an address book"
+msgstr "Add an address book"
 
-#: src/ils.cpp:654
-msgid "Failed to set time limit on LDAP operations"
-msgstr "Failed to set time limit on LDAP operations"
-
-#: src/ils.cpp:664
-#, c-format
-msgid "Failed to contact to LDAP server %s: %s"
-msgstr "Failed to contact to LDAP server %s: %s"
-
-#: src/ils.cpp:674
-#, c-format
-msgid "Fetching online users list from %s"
-msgstr "Fetching online users list from %s"
-
-#: src/ils.cpp:692
-msgid "Could not fetch online users list"
-msgstr "Could not fetch online users list"
-
-#: src/ils.cpp:708
-#, c-format
-msgid "Connection to %s lost"
-msgstr "Connection to %s lost"
-
-#: src/ils.cpp:925
-#, c-format
-msgid "Search completed: %d user(s) listed on a total of %d user(s) from %s"
-msgstr "Search completed: %d user(s) listed on a total of %d user(s) from %s"
-
-#: src/ils.cpp:930
-#, c-format
-msgid "Search completed: %d user(s) found on %s"
-msgstr "Search completed: %d user(s) found on %s"
-
-#: src/ldap_window.cpp:707
-msgid "Edit the Contact Information"
-msgstr "Edit the Contact Information"
-
-#: src/ldap_window.cpp:724
+#: src/addressbook_window.cpp:492 src/addressbook_window.cpp:1871
 msgid "Name:"
 msgstr "Name:"
 
-#: src/ldap_window.cpp:744
-msgid "URL:"
-msgstr "URL:"
+#: src/addressbook_window.cpp:513
+msgid "Type:"
+msgstr "Type:"
 
-#: src/ldap_window.cpp:771
-msgid "Speed Dial:"
-msgstr "Speed Dial:"
+#: src/addressbook_window.cpp:520
+msgid "Local"
+msgstr "Local"
 
-#: src/ldap_window.cpp:795
-msgid "Groups:"
-msgstr "Groups:"
+#: src/addressbook_window.cpp:525
+msgid "Remote LDAP"
+msgstr "Remote LDAP"
 
-#: src/ldap_window.cpp:907
-msgid "Invalid user name or URL"
-msgstr "Invalid user name or URL"
+#: src/addressbook_window.cpp:530
+msgid "Remote ILS"
+msgstr "Remote ILS"
 
-#: src/ldap_window.cpp:907
-msgid ""
-"Please provide a valid name and URL for the contact you want to add to the "
-"address book."
-msgstr ""
-"Please provide a valid name and URL for the contact you want to add to the "
-"address book."
+#: src/addressbook_window.cpp:562
+msgid "Search Scope:"
+msgstr "Search Scope:"
 
-#: src/ldap_window.cpp:915
-msgid "Invalid group"
-msgstr "Invalid group"
+#: src/addressbook_window.cpp:569
+msgid "Subtree"
+msgstr "Subtree"
 
-#: src/ldap_window.cpp:915
-msgid "You have to select a group to which you want to add your contact."
-msgstr "You have to select a group to which you want to add your contact."
+#: src/addressbook_window.cpp:574
+msgid "One Level"
+msgstr "One Level"
 
-#: src/ldap_window.cpp:929
-msgid "Invalid speed dial"
-msgstr "Invalid speed dial"
+#: src/addressbook_window.cpp:604
+msgid "Hostname:"
+msgstr "Hostname:"
 
-#: src/ldap_window.cpp:929
-msgid ""
-"Another contact with the same speed dial already exists in the address book."
-msgstr ""
-"Another contact with the same speed dial already exists in the address book."
+#: src/addressbook_window.cpp:625
+msgid "Port:"
+msgstr "Port:"
 
-#: src/ldap_window.cpp:941
-msgid "Invalid URL"
-msgstr "Invalid URL"
+#: src/addressbook_window.cpp:648
+msgid "Base DN:"
+msgstr "Base DN:"
 
-#: src/ldap_window.cpp:941
-msgid "Another contact with the same URL already exists in the address book."
-msgstr "Another contact with the same URL already exists in the address book."
+#: src/addressbook_window.cpp:671
+msgid "Search Attribute:"
+msgstr "Search Attribute:"
 
-#: src/ldap_window.cpp:978
+#: src/addressbook_window.cpp:769
 #, c-format
-msgid "Are you sure you want to remove %s [%s] from this group?"
-msgstr "Are you sure you want to remove %s [%s] from this group?"
-
-#: src/ldap_window.cpp:1083
-#, c-format
-msgid "Add %s to Address Book"
-msgstr "Add %s to Address Book"
-
-#: src/ldap_window.cpp:1109 src/ldap_window.cpp:2565
-msgid "C_all Contact"
-msgstr "C_all Contact"
-
-#: src/ldap_window.cpp:1115 src/ldap_window.cpp:2568
-msgid "_Tranfer Call to Contact"
-msgstr "_Tranfer Call to Contact"
-
-#: src/ldap_window.cpp:1127 src/ldap_window.cpp:2585
-msgid "Contact _Properties"
-msgstr "Contact _Properties"
-
-#: src/ldap_window.cpp:1133
-msgid "Copy URL to the Clipboard"
-msgstr "Copy URL to the Clipboard"
-
-#: src/ldap_window.cpp:1139 src/ldap_window.cpp:1579 src/ldap_window.cpp:2547
-msgid "_Delete"
-msgstr "_Delete"
-
-#: src/ldap_window.cpp:1239
-msgid "Add a New Server"
-msgstr "Add a New Server"
-
-#: src/ldap_window.cpp:1240
-msgid "Enter the server name:"
-msgstr "Enter the server name:"
-
-#: src/ldap_window.cpp:1241 src/ldap_window.cpp:1351
-msgid ""
-"Sorry but there is already a server with the same name in the address book."
-msgstr ""
-"Sorry but there is already a server with the same name in the address book."
-
-#: src/ldap_window.cpp:1245
-msgid "Add a New Group"
-msgstr "Add a New Group"
-
-#: src/ldap_window.cpp:1246
-msgid "Enter the group name:"
-msgstr "Enter the group name:"
-
-#: src/ldap_window.cpp:1247 src/ldap_window.cpp:1362
-msgid ""
-"Sorry but there is already a group with the same name in the address book."
-msgstr ""
-"Sorry but there is already a group with the same name in the address book."
-
-#: src/ldap_window.cpp:1281 src/ldap_window.cpp:1411
-msgid "Invalid server or group name"
-msgstr "Invalid server or group name"
-
-#: src/ldap_window.cpp:1347
-#, c-format
-msgid "Please enter a new name for server %s:"
-msgstr "Please enter a new name for server %s:"
-
-#: src/ldap_window.cpp:1349
-#, c-format
-msgid "Are you sure you want to delete server %s?"
-msgstr "Are you sure you want to delete server %s?"
-
-#: src/ldap_window.cpp:1358
-#, c-format
-msgid "Please enter a new name for group %s:"
-msgstr "Please enter a new name for group %s:"
-
-#: src/ldap_window.cpp:1360
-#, c-format
-msgid "Are you sure you want to delete group %s and all its contacts?"
-msgstr "Are you sure you want to delete group %s and all its contacts?"
-
-#: src/ldap_window.cpp:1547
-msgid "New Server"
-msgstr "New Server"
-
-#: src/ldap_window.cpp:1557
-msgid "New Group"
-msgstr "New Group"
-
-#: src/ldap_window.cpp:1567
-msgid "_Find"
-msgstr "_Find"
-
-#: src/ldap_window.cpp:1574 src/ldap_window.cpp:1596 src/ldap_window.cpp:2551
-msgid "_Rename"
-msgstr "_Rename"
-
-#: src/ldap_window.cpp:1589
-msgid "New Contact"
-msgstr "New Contact"
-
-#: src/ldap_window.cpp:1601
-msgid "Delete"
-msgstr "Delete"
-
-#: src/ldap_window.cpp:2516
-msgid "Address Book"
-msgstr "Address Book"
-
-#: src/ldap_window.cpp:2534
-msgid "_File"
-msgstr "_File"
-
-#: src/ldap_window.cpp:2536
-msgid "New _Server"
-msgstr "New _Server"
-
-#: src/ldap_window.cpp:2540
-msgid "New _Group"
-msgstr "New _Group"
-
-#: src/ldap_window.cpp:2558 src/menu.cpp:332
-msgid "_Close"
-msgstr "_Close"
-
-#: src/ldap_window.cpp:2563
-msgid "C_ontact"
-msgstr "C_ontact"
-
-#: src/ldap_window.cpp:2574
-msgid "New _Contact"
-msgstr "New _Contact"
-
-#: src/ldap_window.cpp:2578
-msgid "Add Contact to _Address Book"
-msgstr "Add Contact to _Address Book"
+msgid "Are you sure you want to delete %s and all its contacts?"
+msgstr "Are you sure you want to delete %s and all its contacts?"
 
 #. Translators: This is "S" as in "Status"
-#: src/ldap_window.cpp:2836
+#: src/addressbook_window.cpp:1099
 msgid "S"
 msgstr "S"
 
-#. Translators: This is "A" as in "Audio"
-#: src/ldap_window.cpp:2846 src/pref_window.cpp:431 src/pref_window.cpp:1081
-msgid "A"
-msgstr "A"
-
-#. Translators: This is "V" as in "Video"
-#: src/ldap_window.cpp:2856
-msgid "V"
-msgstr "V"
-
-#: src/ldap_window.cpp:2865 src/ldap_window.cpp:2939 src/pref_window.cpp:445
+#: src/addressbook_window.cpp:1110 src/pref_window.cpp:445
 msgid "Name"
 msgstr "Name"
 
-#: src/ldap_window.cpp:2903 src/ldap_window.cpp:2951
+#: src/addressbook_window.cpp:1122
 msgid "URL"
 msgstr "URL"
 
-#: src/ldap_window.cpp:2926
-msgid "IP"
-msgstr "IP"
+#: src/addressbook_window.cpp:1148
+msgid "Software"
+msgstr "Software"
 
-#: src/ldap_window.cpp:2964
+#: src/addressbook_window.cpp:1161
+msgid "E-Mail"
+msgstr "E-Mail"
+
+#: src/addressbook_window.cpp:1185
+msgid "Categories"
+msgstr "Categories"
+
+#: src/addressbook_window.cpp:1198
 msgid "Speed Dial"
 msgstr "Speed Dial"
 
-#: src/ldap_window.cpp:3017
+#: src/addressbook_window.cpp:1489
+msgid "Address Book"
+msgstr "Address Book"
+
+#: src/addressbook_window.cpp:1516
+msgid "_File"
+msgstr "_File"
+
+#: src/addressbook_window.cpp:1518
+msgid "New _Address Book"
+msgstr "New _Address Book"
+
+#: src/addressbook_window.cpp:1525
+msgid "_Delete"
+msgstr "_Delete"
+
+#: src/addressbook_window.cpp:1529
+msgid "_Properties"
+msgstr "_Properties"
+
+#: src/addressbook_window.cpp:1536 src/menu.cpp:327
+msgid "_Close"
+msgstr "_Close"
+
+#: src/addressbook_window.cpp:1541
+msgid "C_ontact"
+msgstr "C_ontact"
+
+#: src/addressbook_window.cpp:1543
+msgid "C_all Contact"
+msgstr "C_all Contact"
+
+#: src/addressbook_window.cpp:1549
+msgid "New _Contact"
+msgstr "New _Contact"
+
+#: src/addressbook_window.cpp:1553
+msgid "Add Contact to _Address Book"
+msgstr "Add Contact to _Address Book"
+
+#: src/addressbook_window.cpp:1626
+msgid "On LDAP servers"
+msgstr "On LDAP servers"
+
+#: src/addressbook_window.cpp:1634
+msgid "On This Computer"
+msgstr "On This Computer"
+
+#: src/addressbook_window.cpp:1663
 msgid "Find all contacts"
 msgstr "Find all contacts"
 
-#: src/ldap_window.cpp:3022
-msgid "First name contains"
-msgstr "First name contains"
+#: src/addressbook_window.cpp:1668
+msgid "Name contains"
+msgstr "Name contains"
 
-#: src/ldap_window.cpp:3026
-msgid "Last name contains"
-msgstr "Last name contains"
+#: src/addressbook_window.cpp:1672
+msgid "URL contains"
+msgstr "URL contains"
 
-#: src/ldap_window.cpp:3030
-msgid "E-mail contains"
-msgstr "E-mail contains"
+#: src/addressbook_window.cpp:1676
+msgid "Belongs to category"
+msgstr "Belongs to category"
 
-#: src/ldap_window.cpp:3211
-msgid "Servers"
-msgstr "Servers"
+#: src/addressbook_window.cpp:1780
+#, c-format
+msgid "Are you sure you want to delete %s from %s?"
+msgstr "Are you sure you want to delete %s from %s?"
 
-#: src/ldap_window.cpp:3254
-msgid "Groups"
-msgstr "Groups"
+#: src/addressbook_window.cpp:1850
+msgid "Edit the Contact Information"
+msgstr "Edit the Contact Information"
+
+#: src/addressbook_window.cpp:1891
+msgid "URL:"
+msgstr "URL:"
+
+#: src/addressbook_window.cpp:1911
+msgid "Speed Dial:"
+msgstr "Speed Dial:"
+
+#: src/addressbook_window.cpp:1933
+msgid "Categories:"
+msgstr "Categories:"
+
+#: src/addressbook_window.cpp:1962
+msgid "Local Addressbook:"
+msgstr "Local Addressbook:"
 
 #: src/lid.cpp:135
 #, c-format
@@ -2380,16 +2254,16 @@ msgstr "Phone is off hook"
 msgid "Phone is on hook"
 msgstr "Phone is on hook"
 
-#: src/main_window.cpp:340
+#: src/main_window.cpp:338
 #, c-format
 msgid "Total: %.2f MB"
 msgstr "Total: %.2f MB"
 
-#: src/main_window.cpp:467
+#: src/main_window.cpp:465
 msgid "Cannot run GnomeMeeting"
 msgstr "Cannot run GnomeMeeting"
 
-#: src/main_window.cpp:467
+#: src/main_window.cpp:465
 msgid ""
 "GnomeMeeting is already running, if you want it to call a given callto or "
 "h323 URL, please use \"gnomemeeting -c URL\"."
@@ -2397,7 +2271,7 @@ msgstr ""
 "GnomeMeeting is already running, if you want it to call a given callto or "
 "h323 URL, please use \"gnomemeeting -c URL\"."
 
-#: src/main_window.cpp:520
+#: src/main_window.cpp:518
 msgid ""
 "It appears that you do not have gnomemeeting.server installed in a valid "
 "location. Factory mode disabled.\n"
@@ -2405,7 +2279,7 @@ msgstr ""
 "It appears that you do not have gnomemeeting.server installed in a valid "
 "location. Factory mode disabled.\n"
 
-#: src/main_window.cpp:524
+#: src/main_window.cpp:522
 msgid ""
 "Error registering GnomeMeeting with the activation service; factory mode "
 "disabled.\n"
@@ -2413,68 +2287,68 @@ msgstr ""
 "Error registering GnomeMeeting with the activation service; factory mode "
 "disabled.\n"
 
-#: src/main_window.cpp:564
+#: src/main_window.cpp:562
 msgid "Failed to retrieve gnomemeeting server from activation server\n"
 msgstr "Failed to retrieve gnomemeeting server from activation server\n"
 
-#: src/main_window.cpp:871
+#: src/main_window.cpp:869
 #, c-format
 msgid "Sent dtmf %c"
 msgstr "Sent dtmf %c"
 
-#: src/main_window.cpp:1140 src/menu.cpp:415 src/menu.cpp:548
+#: src/main_window.cpp:1138 src/menu.cpp:410 src/menu.cpp:537
 msgid "Local Video"
 msgstr "Local Video"
 
-#: src/main_window.cpp:1144 src/menu.cpp:421 src/menu.cpp:554
+#: src/main_window.cpp:1142 src/menu.cpp:416 src/menu.cpp:543
 msgid "Remote Video"
 msgstr "Remote Video"
 
-#: src/main_window.cpp:1279 src/menu.cpp:376
+#: src/main_window.cpp:1277 src/menu.cpp:371
 msgid "Statistics"
 msgstr "Statistics"
 
-#: src/main_window.cpp:1335
+#: src/main_window.cpp:1333
 msgid "Dialpad"
 msgstr "Dialpad"
 
-#: src/main_window.cpp:1390
+#: src/main_window.cpp:1388
 msgid "Adjust brightness"
 msgstr "Adjust brightness"
 
-#: src/main_window.cpp:1412
+#: src/main_window.cpp:1410
 msgid "Adjust whiteness"
 msgstr "Adjust whiteness"
 
-#: src/main_window.cpp:1434
+#: src/main_window.cpp:1432
 msgid "Adjust color"
 msgstr "Adjust colour"
 
-#: src/main_window.cpp:1456
+#: src/main_window.cpp:1454
 msgid "Adjust contrast"
 msgstr "Adjust contrast"
 
-#: src/main_window.cpp:1464
+#: src/main_window.cpp:1462
 msgid "Video"
 msgstr "Video"
 
-#: src/main_window.cpp:1540
+#: src/main_window.cpp:1538
 msgid "Audio"
 msgstr "Audio"
 
-#: src/main_window.cpp:1603
+#: src/main_window.cpp:1601
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Prints debug messages in the console (level between 1 and 6)"
 
-#: src/main_window.cpp:1606
+#: src/main_window.cpp:1604
 msgid "Makes GnomeMeeting call the given URL"
 msgstr "Makes GnomeMeeting call the given URL"
 
-#: src/main_window.cpp:1650
+#: src/main_window.cpp:1648
 msgid "No usable audio manager detected"
 msgstr "No usable audio manager detected"
 
-#: src/main_window.cpp:1650
+#: src/main_window.cpp:1648
 msgid ""
 "GnomeMeeting didn't find any usable sound manager. Make sure that your "
 "installation is correct."
@@ -2482,7 +2356,7 @@ msgstr ""
 "GnomeMeeting didn't find any usable sound manager. Make sure that your "
 "installation is correct."
 
-#: src/main_window.cpp:1670
+#: src/main_window.cpp:1668
 #, c-format
 msgid ""
 "GnomeMeeting got an invalid value for the GConf key %s.\n"
@@ -2505,338 +2379,342 @@ msgstr ""
 "gconf/) or the mailing list archives for more information (http://mail.gnome."
 "org) about this problem."
 
-#: src/main_window.cpp:1673
+#: src/main_window.cpp:1671
 msgid "Gconf key error"
 msgstr "Gconf key error"
 
-#: src/menu.cpp:261
+#: src/menu.cpp:256
 msgid "C_all"
 msgstr "C_all"
 
-#: src/menu.cpp:263
+#: src/menu.cpp:258
 msgid "C_onnect"
 msgstr "C_onnect"
 
-#: src/menu.cpp:263 src/menu.cpp:623
+#: src/menu.cpp:258 src/menu.cpp:612
 msgid "Create a new connection"
 msgstr "Create a new connection"
 
-#: src/menu.cpp:266 src/menu.cpp:626
+#: src/menu.cpp:261 src/menu.cpp:615
 msgid "_Disconnect"
 msgstr "_Disconnect"
 
-#: src/menu.cpp:267 src/menu.cpp:627
+#: src/menu.cpp:262 src/menu.cpp:616
 msgid "Close the current connection"
 msgstr "Close the current connection"
 
-#: src/menu.cpp:273 src/menu.cpp:633
+#: src/menu.cpp:268 src/menu.cpp:622
 msgid "_Available"
 msgstr "_Available"
 
-#: src/menu.cpp:274 src/menu.cpp:634
+#: src/menu.cpp:269 src/menu.cpp:623
 msgid "Display a popup to accept the call"
 msgstr "Display a popup to accept the call"
 
-#: src/menu.cpp:279 src/menu.cpp:639
+#: src/menu.cpp:274 src/menu.cpp:628
 msgid "Free for Cha_t"
 msgstr "Free for Cha_t"
 
-#: src/menu.cpp:280 src/menu.cpp:640
+#: src/menu.cpp:275 src/menu.cpp:629
 msgid "Auto answer calls"
 msgstr "Auto answer calls"
 
-#: src/menu.cpp:285 src/menu.cpp:645
+#: src/menu.cpp:280 src/menu.cpp:634
 msgid "_Busy"
 msgstr "_Busy"
 
-#: src/menu.cpp:285 src/menu.cpp:645
+#: src/menu.cpp:280 src/menu.cpp:634
 msgid "Reject calls"
 msgstr "Reject calls"
 
-#: src/menu.cpp:290 src/menu.cpp:650
+#: src/menu.cpp:285 src/menu.cpp:639
 msgid "_Forward"
 msgstr "_Forward"
 
-#: src/menu.cpp:290 src/menu.cpp:650
+#: src/menu.cpp:285 src/menu.cpp:639
 msgid "Forward calls"
 msgstr "Forward calls"
 
-#: src/menu.cpp:298
+#: src/menu.cpp:293
 msgid "Speed dials"
 msgstr "Speed dials"
 
-#: src/menu.cpp:302
+#: src/menu.cpp:297
 msgid "Hold the current call"
 msgstr "Hold the current call"
 
-#: src/menu.cpp:305
+#: src/menu.cpp:300
 msgid "_Transfer Call"
 msgstr "_Transfer Call"
 
-#: src/menu.cpp:306
+#: src/menu.cpp:301
 msgid "Transfer the current call"
 msgstr "Transfer the current call"
 
-#: src/menu.cpp:313
+#: src/menu.cpp:308
 msgid "Suspend or resume the audio transmission"
 msgstr "Suspend or resume the audio transmission"
 
-#: src/menu.cpp:318
+#: src/menu.cpp:313
 msgid "Suspend or resume the video transmission"
 msgstr "Suspend or resume the video transmission"
 
-#: src/menu.cpp:325
+#: src/menu.cpp:320
 msgid "_Save Current Picture"
 msgstr "_Save Current Picture"
 
-#: src/menu.cpp:326
+#: src/menu.cpp:321
 msgid "Save a snapshot of the current video"
 msgstr "Save a snapshot of the current video"
 
-#: src/menu.cpp:332
+#: src/menu.cpp:327
 msgid "Close the GnomeMeeting window"
 msgstr "Close the GnomeMeeting window"
 
-#: src/menu.cpp:339 src/menu.cpp:688
+#: src/menu.cpp:334 src/menu.cpp:677
 msgid "_Quit"
 msgstr "_Quit"
 
-#: src/menu.cpp:339 src/menu.cpp:689
+#: src/menu.cpp:334 src/menu.cpp:678
 msgid "Quit GnomeMeeting"
 msgstr "Quit GnomeMeeting"
 
-#: src/menu.cpp:343
+#: src/menu.cpp:338
 msgid "_Edit"
 msgstr "_Edit"
 
-#: src/menu.cpp:345
+#: src/menu.cpp:340
 msgid "Configuration Druid"
 msgstr "Configuration Druid"
 
-#: src/menu.cpp:346
+#: src/menu.cpp:341
 msgid "Run the configuration druid"
 msgstr "Run the configuration druid"
 
-#: src/menu.cpp:353 src/menu.cpp:674
+#: src/menu.cpp:348 src/menu.cpp:663
 msgid "_Preferences"
 msgstr "_Preferences"
 
-#: src/menu.cpp:354 src/menu.cpp:675
+#: src/menu.cpp:349 src/menu.cpp:664
 msgid "Change your preferences"
 msgstr "Change your preferences"
 
-#: src/menu.cpp:359
+#: src/menu.cpp:354
 msgid "_View"
 msgstr "_View"
 
-#: src/menu.cpp:361 src/pref_window.cpp:926
+#: src/menu.cpp:356 src/pref_window.cpp:926
 msgid "Text Chat"
 msgstr "Text Chat"
 
-#: src/menu.cpp:362
+#: src/menu.cpp:357
 msgid "View/Hide the text chat window"
 msgstr "View/Hide the text chat window"
 
-#: src/menu.cpp:367
+#: src/menu.cpp:362
 msgid "Status Bar"
 msgstr "Status Bar"
 
-#: src/menu.cpp:368
+#: src/menu.cpp:363
 msgid "View/Hide the status bar"
 msgstr "View/Hide the status bar"
 
-#: src/menu.cpp:374
+#: src/menu.cpp:369
 msgid "Control Panel"
 msgstr "Control Panel"
 
-#: src/menu.cpp:377
+#: src/menu.cpp:372
 msgid "View audio/video transmission and reception statistics"
 msgstr "View audio/video transmission and reception statistics"
 
-#: src/menu.cpp:382
+#: src/menu.cpp:377
 msgid "_Dialpad"
 msgstr "_Dialpad"
 
-#: src/menu.cpp:382
+#: src/menu.cpp:377
 msgid "View the dialpad"
 msgstr "View the dialpad"
 
-#: src/menu.cpp:387
+#: src/menu.cpp:382
 msgid "_Audio Settings"
 msgstr "_Audio Settings"
 
-#: src/menu.cpp:388
+#: src/menu.cpp:383
 msgid "View audio settings"
 msgstr "View audio settings"
 
-#: src/menu.cpp:393
+#: src/menu.cpp:388
 msgid "_Video Settings"
 msgstr "_Video Settings"
 
-#: src/menu.cpp:394
+#: src/menu.cpp:389
 msgid "View video settings"
 msgstr "View video settings"
 
-#: src/menu.cpp:399 src/pref_window.cpp:1301
+#: src/menu.cpp:394 src/pref_window.cpp:1301
 msgid "Off"
 msgstr "Off"
 
-#: src/menu.cpp:399
+#: src/menu.cpp:394
 msgid "Hide the control panel"
 msgstr "Hide the control panel"
 
-#: src/menu.cpp:407
+#: src/menu.cpp:402
 msgid "_Clear Text Chat"
 msgstr "_Clear Text Chat"
 
-#: src/menu.cpp:408
+#: src/menu.cpp:403
 msgid "Clear the text chat"
 msgstr "Clear the text chat"
 
-#: src/menu.cpp:416 src/menu.cpp:549
+#: src/menu.cpp:411 src/menu.cpp:538
 msgid "Local video image"
 msgstr "Local video image"
 
-#: src/menu.cpp:422 src/menu.cpp:555
+#: src/menu.cpp:417 src/menu.cpp:544
 msgid "Remote video image"
 msgstr "Remote video image"
 
-#: src/menu.cpp:427 src/menu.cpp:560
+#: src/menu.cpp:422 src/menu.cpp:549
 msgid "Both (Local Video Incrusted)"
 msgstr "Both (Local Video Incrusted)"
 
-#: src/menu.cpp:428 src/menu.cpp:435 src/menu.cpp:442 src/menu.cpp:561
-#: src/menu.cpp:568 src/menu.cpp:575
+#: src/menu.cpp:423 src/menu.cpp:430 src/menu.cpp:437 src/menu.cpp:550
+#: src/menu.cpp:557 src/menu.cpp:564
 msgid "Both video images"
 msgstr "Both video images"
 
-#: src/menu.cpp:434 src/menu.cpp:567
+#: src/menu.cpp:429 src/menu.cpp:556
 msgid "Both (Local Video in New Window)"
 msgstr "Both (Local Video in New Window)"
 
-#: src/menu.cpp:441 src/menu.cpp:574
+#: src/menu.cpp:436 src/menu.cpp:563
 msgid "Both (Both in New Windows)"
 msgstr "Both (Both in New Windows)"
 
-#: src/menu.cpp:450 src/menu.cpp:583
+#: src/menu.cpp:445 src/menu.cpp:572
 msgid "Zoom In"
 msgstr "Zoom In"
 
-#: src/menu.cpp:450 src/menu.cpp:583
+#: src/menu.cpp:445 src/menu.cpp:572
 msgid "Zoom in"
 msgstr "Zoom in"
 
-#: src/menu.cpp:454 src/menu.cpp:587
+#: src/menu.cpp:449 src/menu.cpp:576
 msgid "Zoom Out"
 msgstr "Zoom Out"
 
-#: src/menu.cpp:454 src/menu.cpp:587
+#: src/menu.cpp:449 src/menu.cpp:576
 msgid "Zoom out"
 msgstr "Zoom out"
 
-#: src/menu.cpp:458 src/menu.cpp:591
+#: src/menu.cpp:453 src/menu.cpp:580
 msgid "Normal Size"
 msgstr "Normal Size"
 
-#: src/menu.cpp:458 src/menu.cpp:591
+#: src/menu.cpp:453 src/menu.cpp:580
 msgid "Normal size"
 msgstr "Normal size"
 
-#: src/menu.cpp:463 src/menu.cpp:596
+#: src/menu.cpp:458 src/menu.cpp:585
 msgid "Fullscreen"
 msgstr "Fullscreen"
 
-#: src/menu.cpp:468
+#: src/menu.cpp:463
 msgid "_Tools"
 msgstr "_Tools"
 
-#: src/menu.cpp:470 src/menu.cpp:476 src/menu.cpp:658
+#: src/menu.cpp:465 src/menu.cpp:647
 msgid "Address _Book"
 msgstr "Address _Book"
 
-#: src/menu.cpp:471 src/menu.cpp:477 src/menu.cpp:659
+#: src/menu.cpp:466 src/menu.cpp:648
 msgid "Open the address book"
 msgstr "Open the address book"
 
-#: src/menu.cpp:484
+#: src/menu.cpp:473
 msgid "General History"
 msgstr "General History"
 
-#: src/menu.cpp:485
+#: src/menu.cpp:474
 msgid "View the operations history"
 msgstr "View the operations history"
 
-#: src/menu.cpp:489 src/menu.cpp:666
+#: src/menu.cpp:478 src/menu.cpp:655
 msgid "Calls History"
 msgstr "Calls History"
 
-#: src/menu.cpp:490 src/menu.cpp:667
+#: src/menu.cpp:479 src/menu.cpp:656
 msgid "View the calls history"
 msgstr "View the calls history"
 
-#: src/menu.cpp:498 src/menu.cpp:504
+#: src/menu.cpp:487 src/menu.cpp:493
 msgid "PC-To-Phone Account"
 msgstr "PC-To-Phone Account"
 
-#: src/menu.cpp:499 src/menu.cpp:505
+#: src/menu.cpp:488 src/menu.cpp:494
 msgid "Manage your PC-To-Phone account"
 msgstr "Manage your PC-To-Phone account"
 
-#: src/menu.cpp:510
+#: src/menu.cpp:499
 msgid "_Help"
 msgstr "_Help"
 
-#: src/menu.cpp:513 src/menu.cpp:518
+#: src/menu.cpp:502 src/menu.cpp:507
 msgid "_Contents"
 msgstr "_Contents"
 
-#: src/menu.cpp:514 src/menu.cpp:519
+#: src/menu.cpp:503 src/menu.cpp:508
 msgid "Get help by reading the GnomeMeeting manual"
 msgstr "Get help by reading the GnomeMeeting manual"
 
-#: src/menu.cpp:524
+#: src/menu.cpp:513
 msgid "_About"
 msgstr "_About"
 
-#: src/menu.cpp:525 src/menu.cpp:683
+#: src/menu.cpp:514 src/menu.cpp:672
 msgid "View information about GnomeMeeting"
 msgstr "View information about GnomeMeeting"
 
-#: src/menu.cpp:623
+#: src/menu.cpp:612
 msgid "_Connect"
 msgstr "_Connect"
 
-#: src/menu.cpp:682
+#: src/menu.cpp:671
 msgid "_About..."
 msgstr "_About..."
 
-#: src/misc.cpp:140
+#: src/misc.cpp:143
 msgid "Generic error"
 msgstr "Generic error"
 
-#: src/misc.cpp:184
+#: src/misc.cpp:187
 msgid "Reject"
 msgstr "Reject"
 
-#: src/misc.cpp:186
+#: src/misc.cpp:189
 msgid "Accept"
 msgstr "Accept"
 
-#: src/misc.cpp:193
+#: src/misc.cpp:196
 msgid "Incoming call from"
 msgstr "Incoming call from"
 
-#: src/misc.cpp:206
+#: src/misc.cpp:209
 msgid "Remote URL:"
 msgstr "Remote URL:"
 
-#: src/misc.cpp:218
+#: src/misc.cpp:221
 msgid "Remote Application:"
 msgstr "Remote Application:"
 
 #: src/pref_window.cpp:314 src/pref_window.cpp:342
 msgid "Choose a Picture"
 msgstr "Choose a Picture"
+
+#: src/pref_window.cpp:431 src/pref_window.cpp:1081
+msgid "A"
+msgstr "A"
 
 #: src/pref_window.cpp:456
 msgid "Bandwidth"
@@ -3665,11 +3543,11 @@ msgstr ""
 "Video transmission status. During a call, click here to suspend or resume "
 "the video transmission."
 
-#: src/tools.cpp:176 src/tools.cpp:190
+#: src/tools.cpp:175 src/tools.cpp:189
 msgid "PC-To-Phone Settings"
 msgstr "PC-To-Phone Settings"
 
-#: src/tools.cpp:179
+#: src/tools.cpp:178
 msgid ""
 "You can make calls to regular phones and cell numbers worldwide using "
 "GnomeMeeting and the MicroTelco service from Quicknet Technologies. To "
@@ -3683,27 +3561,27 @@ msgstr ""
 "then enable registering to the MicroTelco service. Please visit the "
 "GnomeMeeting website for more information."
 
-#: src/tools.cpp:192
+#: src/tools.cpp:191
 msgid "Account _number:"
 msgstr "Account _number:"
 
-#: src/tools.cpp:192
+#: src/tools.cpp:191
 msgid "Use your MicroTelco account number"
 msgstr "Use your MicroTelco account number"
 
-#: src/tools.cpp:195
+#: src/tools.cpp:194
 msgid "_Pin:"
 msgstr "_Pin:"
 
-#: src/tools.cpp:195
+#: src/tools.cpp:194
 msgid "Use your MicroTelco PIN"
 msgstr "Use your MicroTelco PIN"
 
-#: src/tools.cpp:199
+#: src/tools.cpp:198
 msgid "Use PC-To-Phone service"
 msgstr "Use PC-To-Phone service"
 
-#: src/tools.cpp:204
+#: src/tools.cpp:203
 msgid ""
 "Click on one of the following links to get more information about your "
 "existing MicroTelco account, or to create a new account."
@@ -3711,15 +3589,15 @@ msgstr ""
 "Click on one of the following links to get more information about your "
 "existing MicroTelco account, or to create a new account."
 
-#: src/tools.cpp:208
+#: src/tools.cpp:207
 msgid "Get an account"
 msgstr "Get an account"
 
-#: src/tools.cpp:210
+#: src/tools.cpp:209
 msgid "Buy a card"
 msgstr "Buy a card"
 
-#: src/tools.cpp:215
+#: src/tools.cpp:214
 msgid "Consult my account details"
 msgstr "Consult my account details"
 
@@ -3727,7 +3605,7 @@ msgstr "Consult my account details"
 msgid "GnomeMeeting Tray Icon"
 msgstr "GnomeMeeting Tray Icon"
 
-#: src/urlhandler.cpp:77
+#: src/urlhandler.cpp:76
 msgid ""
 "The call transfer failed, the user was either unreachable, or simply busy "
 "when he received the call transfer request."
@@ -3879,6 +3757,164 @@ msgstr "Error with the frame rate."
 #: src/videograbber.cpp:690
 msgid "Error with the frame size."
 msgstr "Error with the frame size."
+
+#~ msgid "Friends"
+#~ msgstr "Friends"
+
+#~ msgid "Work"
+#~ msgstr "Work"
+
+#~ msgid "Family"
+#~ msgstr "Family"
+
+#~ msgid "Failed to contact LDAP server %s:%d"
+#~ msgstr "Failed to contact LDAP server %s:%d"
+
+#~ msgid "Failed to set time limit on LDAP operations"
+#~ msgstr "Failed to set time limit on LDAP operations"
+
+#~ msgid "Failed to contact to LDAP server %s: %s"
+#~ msgstr "Failed to contact to LDAP server %s: %s"
+
+#~ msgid "Fetching online users list from %s"
+#~ msgstr "Fetching online users list from %s"
+
+#~ msgid "Could not fetch online users list"
+#~ msgstr "Could not fetch online users list"
+
+#~ msgid "Connection to %s lost"
+#~ msgstr "Connection to %s lost"
+
+#~ msgid "Search completed: %d user(s) listed on a total of %d user(s) from %s"
+#~ msgstr ""
+#~ "Search completed: %d user(s) listed on a total of %d user(s) from %s"
+
+#~ msgid "Search completed: %d user(s) found on %s"
+#~ msgstr "Search completed: %d user(s) found on %s"
+
+#~ msgid "Groups:"
+#~ msgstr "Groups:"
+
+#~ msgid "Invalid user name or URL"
+#~ msgstr "Invalid user name or URL"
+
+#~ msgid ""
+#~ "Please provide a valid name and URL for the contact you want to add to "
+#~ "the address book."
+#~ msgstr ""
+#~ "Please provide a valid name and URL for the contact you want to add to "
+#~ "the address book."
+
+#~ msgid "Invalid group"
+#~ msgstr "Invalid group"
+
+#~ msgid "You have to select a group to which you want to add your contact."
+#~ msgstr "You have to select a group to which you want to add your contact."
+
+#~ msgid "Invalid speed dial"
+#~ msgstr "Invalid speed dial"
+
+#~ msgid ""
+#~ "Another contact with the same speed dial already exists in the address "
+#~ "book."
+#~ msgstr ""
+#~ "Another contact with the same speed dial already exists in the address "
+#~ "book."
+
+#~ msgid "Invalid URL"
+#~ msgstr "Invalid URL"
+
+#~ msgid ""
+#~ "Another contact with the same URL already exists in the address book."
+#~ msgstr ""
+#~ "Another contact with the same URL already exists in the address book."
+
+#~ msgid "Are you sure you want to remove %s [%s] from this group?"
+#~ msgstr "Are you sure you want to remove %s [%s] from this group?"
+
+#~ msgid "Add %s to Address Book"
+#~ msgstr "Add %s to Address Book"
+
+#~ msgid "_Tranfer Call to Contact"
+#~ msgstr "_Tranfer Call to Contact"
+
+#~ msgid "Copy URL to the Clipboard"
+#~ msgstr "Copy URL to the Clipboard"
+
+#~ msgid "Add a New Server"
+#~ msgstr "Add a New Server"
+
+#~ msgid "Enter the server name:"
+#~ msgstr "Enter the server name:"
+
+#~ msgid ""
+#~ "Sorry but there is already a server with the same name in the address "
+#~ "book."
+#~ msgstr ""
+#~ "Sorry but there is already a server with the same name in the address "
+#~ "book."
+
+#~ msgid "Add a New Group"
+#~ msgstr "Add a New Group"
+
+#~ msgid "Enter the group name:"
+#~ msgstr "Enter the group name:"
+
+#~ msgid ""
+#~ "Sorry but there is already a group with the same name in the address book."
+#~ msgstr ""
+#~ "Sorry but there is already a group with the same name in the address book."
+
+#~ msgid "Invalid server or group name"
+#~ msgstr "Invalid server or group name"
+
+#~ msgid "Please enter a new name for server %s:"
+#~ msgstr "Please enter a new name for server %s:"
+
+#~ msgid "Please enter a new name for group %s:"
+#~ msgstr "Please enter a new name for group %s:"
+
+#~ msgid "New Server"
+#~ msgstr "New Server"
+
+#~ msgid "New Group"
+#~ msgstr "New Group"
+
+#~ msgid "_Find"
+#~ msgstr "_Find"
+
+#~ msgid "_Rename"
+#~ msgstr "_Rename"
+
+#~ msgid "New Contact"
+#~ msgstr "New Contact"
+
+#~ msgid "Delete"
+#~ msgstr "Delete"
+
+#~ msgid "New _Server"
+#~ msgstr "New _Server"
+
+#~ msgid "New _Group"
+#~ msgstr "New _Group"
+
+#~ msgid "V"
+#~ msgstr "V"
+
+#~ msgid "IP"
+#~ msgstr "IP"
+
+#~ msgid "First name contains"
+#~ msgstr "First name contains"
+
+#~ msgid "E-mail contains"
+#~ msgstr "E-mail contains"
+
+#~ msgid "Servers"
+#~ msgstr "Servers"
+
+#~ msgid "Groups"
+#~ msgstr "Groups"
 
 #~ msgid "Minimum transmitted FPS"
 #~ msgstr "Minimum transmitted FPS"
@@ -4132,6 +4168,3 @@ msgstr "Error with the frame size."
 
 #~ msgid "Call End Reason"
 #~ msgstr "Call End Reason"
-
-#~ msgid "Software"
-#~ msgstr "Software"
