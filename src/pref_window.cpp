@@ -2552,7 +2552,7 @@ gm_prefs_window_update_accounts_list (GtkWidget *prefs_window)
 
 void 
 gm_prefs_window_update_audio_codecs_list (GtkWidget *prefs_window,
-					  OpalMediaFormatList l)
+					  OpalMediaFormatList & l)
 {
   GmPreferencesWindow *pw = NULL;
 

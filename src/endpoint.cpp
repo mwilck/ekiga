@@ -363,8 +363,11 @@ OpalMediaFormatList
 GMEndPoint::GetAudioMediaFormats ()
 {
   OpalMediaFormatList full_list;
+  OpalMediaFormatList media_formats;
 
-  full_list = OpalMediaFormat::GetAllRegisteredMediaFormats ();
+  media_formats = pcssEP->GetMediaFormats ();
+
+  full_list += OpalTranscoder::GetPossibleFormats (media_formats);
   
   return full_list;
 }
@@ -1369,8 +1372,10 @@ void
 GMEndPoint::Init ()
 {
   GtkWidget *main_window = NULL;
+  GtkWidget *prefs_window = NULL;
 
   OpalSilenceDetector::Params sd;
+  OpalMediaFormatList list;
   
   int min_jitter = 20;
   int max_jitter = 500;
@@ -1380,6 +1385,7 @@ GMEndPoint::Init ()
   gboolean enable_sd = TRUE;  
   
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
+  prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
   
 
   /* GmConf cache */
@@ -1443,14 +1449,6 @@ GMEndPoint::Init ()
   /* Set the User Name and Alias */  
   SetUserNameAndAlias ();
 
-  OpalMediaFormatList mediaFormats;
-  PStringArray medias;
-  mediaFormats += pcssEP->GetMediaFormats ();
-  mediaFormats += h323EP->GetMediaFormats ();
-  mediaFormats += sipEP->GetMediaFormats ();
-  for (int i = 0 ; i < mediaFormats.GetSize () ; i++)
-    medias += mediaFormats [i];
-  SetMediaFormatOrder (medias);
 
   /* Add capabilities */
   //FIXME AddAllCapabilities ();
@@ -1477,6 +1475,11 @@ GMEndPoint::Init ()
   
   /* Register the various accounts */
   Register ();
+
+
+  /* Update the codecs list */
+  list = GetAudioMediaFormats ();
+  gm_prefs_window_update_audio_codecs_list (prefs_window, list);
 }
 
 

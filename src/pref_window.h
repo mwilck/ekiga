@@ -87,7 +87,7 @@ void gm_prefs_window_update_accounts_list (GtkWidget *prefs_window);
  * PRE          :  /
  */
 void gm_prefs_window_update_audio_codecs_list (GtkWidget *,
-					       OpalMediaFormatList);
+					       OpalMediaFormatList &);
 
 
 /* DESCRIPTION  :  / 

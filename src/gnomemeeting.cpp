@@ -415,13 +415,7 @@ void GnomeMeeting::BuildGUI ()
   GtkWidget *splash_window = NULL;
 
   bool show_splash = TRUE;
-  OpalMediaFormatList audio_formats;
 
-
-  /* Get the available capabilities list */
-  audio_formats = endpoint->GetAudioMediaFormats ();
-  
-  
   /* Init the splash screen */
   splash_window = e_splash_new ();
   g_signal_connect (G_OBJECT (splash_window), "delete_event",
@@ -437,19 +431,15 @@ void GnomeMeeting::BuildGUI ()
       gtk_main_iteration ();
   }
 
-  
   /* Init the address book */
   gnomemeeting_addressbook_init (_("On This Computer"), _("Personal"));
   
-  
   /* Init the stock icons */
   gnomemeeting_stock_icons_init ();
-
   
   /* Build the GUI */
   pc2phone_window = gm_pc2phone_window_new ();  
   prefs_window = gm_prefs_window_new ();  
-  gm_prefs_window_update_audio_codecs_list (prefs_window, audio_formats);
   calls_history_window = gm_calls_history_window_new ();
   history_window = gm_history_window_new ();
   addressbook_window = gm_addressbook_window_new ();
