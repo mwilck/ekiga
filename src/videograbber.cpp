@@ -693,7 +693,7 @@ void GMVideoTester::Main ()
 
     tmp = g_strdup_printf ("<b>%s</b>", msg);
     gdk_threads_enter ();
-    gtk_label_set_text (GTK_LABEL (test_label), tmp);
+    gtk_label_set_markup (GTK_LABEL (test_label), tmp);
     gdk_threads_leave ();
     g_free (msg);
     g_free (tmp);

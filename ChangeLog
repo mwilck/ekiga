@@ -1,3 +1,18 @@
+2003-11-05 Damien Sandras  <dsandras@seconix.com>
+
+	* src/druid.cpp: Fixed the ILS behavior. If GnomeMeeting is started
+	and that ILS registering was enabled, selecting to not register
+	will unregister the user, selecting to register will 
+	update his entry. If GnomeMeeting is started and that ILS registering
+	is disabled, selecting to not register will do nothing, reported
+	by Alessio.
+	
+	* src/endpoint.cpp: Code cleanups.
+
+	* src/pref_window.cpp: Changed label for ILS.
+	
+	* src/videograbber.cpp: Fixed markup language, reported by Kilian.
+	
 2003-11-05 Rodney Dawes  <dobey@ximian.com>
 
 	* lib/gnome_prefs_window.c: Set the mnemonic widget properly for

@@ -1507,7 +1507,8 @@ GMH323EndPoint::OnILSTimeout (PTimer &,
   gnomemeeting_threads_enter ();
   reg = gconf_get_bool (LDAP_KEY "register");
   gnomemeeting_threads_leave ();
-  
+
+
   if (!ils_client) {
     
     ils_client = new GMILSClient ();
@@ -1527,8 +1528,10 @@ GMH323EndPoint::OnILSTimeout (PTimer &,
 	  ils_client->Register ();
 	  ils_registered = true;
 	}
-	else
+	else {
+
 	  ils_client->Modify ();
+	}
       }
     }
     else if (ils_registered) {

@@ -750,7 +750,7 @@ gnomemeeting_init_pref_window_directories (GtkWidget *window,
 
   gnome_prefs_toggle_new (subsection, _("Enable _registering"), LDAP_KEY "register", _("If enabled, register with the selected user directory."), 1);
 
-  gnome_prefs_toggle_new (subsection, _("_Publish my details in the users directory"), LDAP_KEY "visible", _("If enabled, your details are shown to people browsing the user directory. If disabled, you are not visible to users browsing the user directory, but they can still use the callto URL to call you."), 2);
+  gnome_prefs_toggle_new (subsection, _("_Publish my details in the users directory when registering"), LDAP_KEY "visible", _("If enabled, your details are shown to people browsing the user directory. If disabled, you are not visible to users browsing the user directory, but they can still use the callto URL to call you."), 2);
 }
 
 

@@ -177,6 +177,8 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
   GmWindow *gw = NULL;
   GmDruidWindow *dw = NULL;
 
+  GMH323EndPoint *ep = NULL;
+  
   GtkWidget *active_item = NULL;
   int item_index = 0;
 
@@ -192,7 +194,8 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
 
   gw = GnomeMeeting::Process ()->GetMainWindow ();
   dw = GnomeMeeting::Process ()->GetDruidWindow ();
-
+  ep = GnomeMeeting::Process ()->Endpoint ();
+  
   active_item =
     gtk_menu_get_active (GTK_MENU (GTK_OPTION_MENU (dw->kind_of_net)->menu));
   item_index =
@@ -215,9 +218,12 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
 
   if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (dw->use_callto))
       && mail) {
-    
+
     gconf_set_string (PERSONAL_DATA_KEY "mail", mail);
-    gconf_set_bool (LDAP_KEY "register", TRUE);
+    if (!gconf_get_bool (LDAP_KEY "register"))
+      gconf_set_bool (LDAP_KEY "register", TRUE);
+    else
+      ep->ILSRegister ();
   }
   else {
 
@@ -494,7 +500,8 @@ gnomemeeting_druid_page_prepare (GnomeDruidPage *page,
   gchar *video_recorder = NULL;
   gchar *video_manager = NULL;
   gchar *audio_manager = NULL;
-
+  BOOL ils_register = FALSE;
+  
   int kind_of_net = 0;
   
   char **array = NULL;
@@ -526,7 +533,10 @@ gnomemeeting_druid_page_prepare (GnomeDruidPage *page,
 
     firstname = gconf_get_string (PERSONAL_DATA_KEY "firstname");
     lastname = gconf_get_string (PERSONAL_DATA_KEY "lastname");
-
+    mail = gconf_get_string (PERSONAL_DATA_KEY "mail");
+    kind_of_net = gconf_get_int (GENERAL_KEY "kind_of_net");
+    ils_register = gconf_get_bool (LDAP_KEY "register");
+    
     if (!strcmp (gtk_entry_get_text (GTK_ENTRY (dw->name)), "")) {
 
       if (firstname && lastname
@@ -538,13 +548,12 @@ gnomemeeting_druid_page_prepare (GnomeDruidPage *page,
       }
     }
 
-    mail = gconf_get_string (PERSONAL_DATA_KEY "mail");
 
     if (!strcmp (gtk_entry_get_text (GTK_ENTRY (dw->mail)), "")
 	&& mail)
       gtk_entry_set_text (GTK_ENTRY (dw->mail), mail);
 
-    kind_of_net = gconf_get_int (GENERAL_KEY "kind_of_net");
+    
     option_menu_update (dw->kind_of_net, options, NULL);
     gtk_option_menu_set_history (GTK_OPTION_MENU (dw->kind_of_net),
 				 kind_of_net - 1);
@@ -558,7 +567,9 @@ gnomemeeting_druid_page_prepare (GnomeDruidPage *page,
     video_manager = gconf_get_string (DEVICES_KEY "video_manager");
     option_menu_update (dw->video_manager, array, video_manager);
     free (array);
-    
+
+    GTK_TOGGLE_BUTTON (dw->use_callto)->active = !ils_register;
+      
     g_free (video_manager);
     g_free (audio_manager);    
     g_free (mail);
