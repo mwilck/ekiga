@@ -318,6 +318,8 @@ static void
 new_addressbook_cb (GtkWidget *w,
                     gpointer data)
 {
+  GmAddressbook *addb = NULL;
+
   GtkWidget *dialog = NULL;
   GtkWidget *parent_window = NULL;
   
@@ -333,8 +335,10 @@ new_addressbook_cb (GtkWidget *w,
   gchar *label_text = NULL;
   int result = -1;
   
+  g_return_if_fail (data != NULL);
   
   /* Create the dialog to create a new addressbook */
+  parent_window = GTK_WIDGET (data);
   dialog =
     gtk_dialog_new_with_buttons (_("Add an address book"), 
                                  GTK_WINDOW (parent_window),
@@ -419,6 +423,12 @@ new_addressbook_cb (GtkWidget *w,
 
   case GTK_RESPONSE_ACCEPT:
 
+    addb = gm_addressbook_new ();
+    addb->name = g_strdup (gtk_entry_get_text (GTK_ENTRY (addressbook_name_entry)));
+    gnomemeeting_addressbook_add (addb);
+    gnomemeeting_aw_add_addressbook (parent_window, addb);
+    gm_addressbook_delete (addb);
+  
     break;
 
   case GTK_RESPONSE_REJECT:
@@ -855,7 +865,7 @@ gm_addressbook_window_new ()
 
       GTK_MENU_ENTRY("new_addressbook", _("New _Address Book"), NULL,
 		     GM_STOCK_REMOTE_CONTACT, 0,
-                     GTK_SIGNAL_FUNC (new_addressbook_cb), NULL, TRUE),
+                     GTK_SIGNAL_FUNC (new_addressbook_cb), window, TRUE),
 
       GTK_MENU_SEPARATOR,
 

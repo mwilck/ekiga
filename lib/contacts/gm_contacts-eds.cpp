@@ -75,7 +75,7 @@ gnomemeeting_addressbook_get_local_source_group (ESourceList **source_list)
       addressbooks = e_source_group_peek_sources (E_SOURCE_GROUP (l->data));
     
       j = addressbooks;
-      while (j && !result) {
+      while (j) {
 
 
         uri = e_source_get_uri (E_SOURCE (j->data));
@@ -86,14 +86,10 @@ gnomemeeting_addressbook_get_local_source_group (ESourceList **source_list)
         j = g_slist_next (j);
       }
 
-      g_slist_foreach (addressbooks, (GFunc) g_object_unref, NULL);
-      g_slist_free (addressbooks);
 
       l = g_slist_next (l);
     }
 
-    g_slist_foreach (source_groups, (GFunc) g_object_unref, NULL);
-    g_slist_free (source_groups);
   }
 
   return result;
@@ -229,11 +225,8 @@ gnomemeeting_get_local_addressbooks ()
       }
 
       l = g_slist_next (l);
-
-      g_slist_free (groups);
     }
 
-    g_slist_free (sources);
   }
 
   return addressbooks;
@@ -384,18 +377,19 @@ gnomemeeting_addressbook_add (GmAddressbook *addressbook)
 
   g_return_val_if_fail (addressbook != NULL, FALSE);
 
+  source_group = gnomemeeting_addressbook_get_local_source_group (&list);
+  
   source = e_source_new ("", "");
 
   e_source_set_name (source, addressbook->name);
-  e_source_set_relative_uri (source, e_source_peek_uid (source));
-
-  source_group = gnomemeeting_addressbook_get_local_source_group (&list);
+  e_source_set_relative_uri (source, addressbook->uid);
+  e_source_set_group (source, source_group);
 
   e_source_group_add_source (source_group, source, -1); 
 
   e_source_list_sync (list, NULL);
-  
-  return FALSE;
+ 
+  return TRUE;
 }
 
 
