@@ -1,5 +1,12 @@
 2001-09-18  Damien Sandras  <dsandras@seconix.com>
 
+	* src/main.cpp: Fixed the seconds and minutes bug.
+
+	* src/gdkvideoio.cpp: Fixed a bug preventing the refresh of the screen when
+	local and remote video were displayed at the same time.
+	
+2001-09-18  Damien Sandras  <dsandras@seconix.com>
+
 	* FAQ: Added sysconfdir parameter to the FAQ for configure.
 	
 2001-09-18  Kenneth Rohde Christiansen  <kenneth@gnu.org>
@@ -13,7 +20,7 @@
 	
 2001-09-17  Damien Sandras  <dsandras@seconix.com>
 
-	* src/gdkvideoio.cpp: Removed compile error.
+	* src/gdkvideoio.cpp: Fixed compilation error.
 	
 2001-09-17  Damien Sandras  <dsandras@seconix.com>
 

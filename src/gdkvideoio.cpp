@@ -152,9 +152,7 @@ BOOL GDKVideoOutputDevice::Redraw(const void * frame)
 			frameWidth, frameHeight, GDK_RGB_DITHER_NORMAL, 
 			(guchar *) pic, 
 			frameWidth*3);
-    gdk_threads_leave ();
 
-    gdk_threads_enter ();
     gtk_widget_draw (gw->drawing_area, &update_rec);    
     gdk_threads_leave ();
  
@@ -171,6 +169,7 @@ BOOL GDKVideoOutputDevice::Redraw(const void * frame)
 			      ypos, frameWidth, frameHeight, 
 			      GDK_RGB_DITHER_NORMAL, 
 			      (guchar *) pic, frameWidth*3);
+
 	  gdk_threads_leave ();
 	}
 
@@ -185,11 +184,14 @@ BOOL GDKVideoOutputDevice::Redraw(const void * frame)
 			      (int) (frameWidth / 56), 
 			      GDK_RGB_DITHER_NORMAL, 
 			      (guchar *) small_pic, frameWidth * 3);
-	  gdk_threads_leave ();
+	  update_rec.x = 0;
+	  update_rec.y = 0;
+	  update_rec.width = gw->drawing_area->allocation.width;
+	  update_rec.height = gw->drawing_area->allocation.height;
 
-	  gdk_threads_enter ();
 	  gtk_widget_draw (gw->drawing_area, &update_rec);     
 	  gdk_threads_leave ();
+
 	  free (small_pic);
 	}
      }

@@ -58,6 +58,8 @@ gint gnome_idle_timer (void)
 
 gint AppbarUpdate (GtkWidget *statusbar)
 {
+  long minutes, seconds;
+
   if (MyApp->Endpoint ()) 
     {
       if (MyApp->Endpoint ()->Connection ())
@@ -65,9 +67,12 @@ gint AppbarUpdate (GtkWidget *statusbar)
 	  PTimeInterval t =
 	    PTime () - MyApp->Endpoint ()->Connection ()
 	    ->GetConnectionStartTime();
-	  
+
+	  minutes = t.GetMinutes () % 60;
+	  seconds = t.GetSeconds () % 60;
+
 	  gchar *msg = g_strdup_printf ("%.2ld:%.2ld:%.2ld", t.GetHours (), 
-					t.GetMinutes (), t.GetSeconds ());
+					minutes, seconds);
 	  if (t.GetSeconds () > 2)
 	    gnome_appbar_push (GNOME_APPBAR (statusbar), msg);
 	  
