@@ -44,7 +44,6 @@
 #include <esd.h>
 #include <gconf/gconf-client.h>
 
-
 /* Declarations */
 GtkWidget *gm;
 GnomeMeeting *MyApp;	
@@ -80,7 +79,8 @@ GnomeMeeting::~GnomeMeeting()
 }
 
 
-void GnomeMeeting::Connect()
+void 
+GnomeMeeting::Connect()
 {
   PString call_address;
   PString current_call_token;
@@ -93,11 +93,13 @@ void GnomeMeeting::Connect()
   gnomemeeting_threads_enter ();
   gnome_appbar_clear_stack (GNOME_APPBAR (gw->statusbar));
   call_address = (PString) gtk_entry_get_text 
-    (GTK_ENTRY (GTK_WIDGET(GTK_COMBO(gw->combo)->entry)));
+          (GTK_ENTRY (GTK_COMBO (gw->combo)->entry));
+  
   gnomemeeting_threads_leave ();
 
   /* If connection, then answer it */
-  if (connection != NULL) {
+  if (connection != NULL) 
+  {
     
 #ifdef HAS_IXJ
       OpalLineInterfaceDevice *lid = NULL;
@@ -114,21 +116,19 @@ void GnomeMeeting::Connect()
       connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 1);
       gnomemeeting_threads_leave ();
   }
-  else {
-
+  else 
+  {
     gnomemeeting_threads_enter ();
-    gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry),
-			call_address);
-
+    gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), call_address);
+    
     gm_history_combo_add_entry (GM_HISTORY_COMBO (gw->combo), 
-				"/apps/gnomemeeting/history/called_hosts", 
+				"/apps/gnomemeeting/history/connections", 
 				gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry)));
     gnomemeeting_threads_leave ();
 
-
     /* if we call somebody */
-    if (!call_address.IsEmpty ()) {
-      
+    if (!call_address.IsEmpty () && !(strcmp (call_address, "callto://") == 0)) 
+    {
       H323Connection *con = NULL;
       call_number++;
       GMILSClient *ils_client = (GMILSClient *) endpoint->GetILSClient ();
@@ -148,7 +148,6 @@ void GnomeMeeting::Connect()
       if (lid)
 	lid->PlayTone (0, OpalLineInterfaceDevice::RingTone);
 #endif
-
     }
     else  /* We untoggle the connect button in the case it was toggled */
       {
