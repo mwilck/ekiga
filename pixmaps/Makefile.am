@@ -1,8 +1,6 @@
-EXTRA_DIST = 
-
 pixmapdir = $(datadir)/pixmaps
 
-pixmap_DATA = gnomemeeting-logo-icon.png gnomemeeting-logo.png gnomemeeting-splash.png Lumi.png
+pixmap_DATA = gnomemeeting-logo-icon.png gnomemeeting-logo.png gnomemeeting-splash.png Lumi.png xdap-directory.xpm brightness.xpm whiteness.xpm contrast.xpm color.xpm text_logo.xpm
 
 
 EMOTICONS_FILES = \
@@ -17,6 +15,28 @@ EMOTICONS_FILES = \
 	emoticon-face9.png \
 	emoticon-face10.png \
 	emoticon-face11.png 
+
+IMAGES_FILES= \
+	ils-directory.png \
+	text-chat.png \
+	control-panel.png \
+	connect.png \
+	disconnect.png \
+	volume.png \
+	microphone.png \
+	video-preview.png \
+	audio-mute.png \
+	speaker-phone.png \
+	video-mute.png \
+	status-available-16.png \
+	status-ringing-16.png \
+	status-occupied-16.png \
+	druid_audio.png \
+	druid_video.png \
+	druid_ixj.png \
+	druid_personal.png \
+	druid_connection.png
+
 
 IMAGES= \
 	gm_ils_directory_stock_data ils-directory.png \
@@ -53,6 +73,8 @@ EMOTICONS= \
 	gm_emoticon_face11 emoticon-face11.png 
 
 noinst_DATA = inlines.h inline_emoticons.h
+
+EXTRA_DIST= $(pixmap_DATA) $(EMOTICONS_FILES) $(IMAGES_FILES)
 
 inlines.h: $(IMAGE_FILES) Makefile.am
 	gdk-pixbuf-csource --raw --build-list $(IMAGES) > inlines.h
