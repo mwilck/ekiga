@@ -51,7 +51,9 @@ gnomemeeting_SOURCES =		\
 	tools.cpp		\
 	tools.h			\
 	lid.cpp			\
-	lid.h
+	lid.h			\
+	codec_info.cpp		\
+	codec_info.h
 
 
 gnomemeeting_LDADD = \

@@ -1,3 +1,4 @@
+
 /* GnomeMeeting -- A Video-Conferencing application
  * Copyright (C) 2000-2003 Damien Sandras
  *
@@ -44,6 +45,7 @@
 #include "sound_handling.h"
 #include "misc.h"
 #include "urlhandler.h"
+#include "codec_info.h"
 
 #include "dialog.h"
 
@@ -285,8 +287,10 @@ static void codecs_list_button_clicked_callback (GtkWidget *widget,
 static void codecs_list_info_button_clicked_callback (GtkWidget *widget, 
 						      gpointer data)
 { 	
+  PString info;
+  GMH323CodecInfo codec;
+
   gchar *selected_codec_name = NULL;
-  gchar *info = NULL;
 
   GmWindow *gw = NULL;
 
@@ -306,60 +310,15 @@ static void codecs_list_info_button_clicked_callback (GtkWidget *widget,
   gtk_tree_model_get (GTK_TREE_MODEL (data), &iter,
 		      COLUMN_CODEC_NAME, &selected_codec_name, -1);
 
-  if (!strcmp (selected_codec_name, "iLBC-13k3")) {
+  if (selected_codec_name) {
 
-    info = g_strdup (_("iLBC-13k3 (internet Low Bitrate Codec) is a free speech codec suitable for robust voice communication over IP. The codec is designed for narrow band speech and results in a payload bit rate of 13.33 kbit/s with an encoding frame length of 30 ms. The iLBC codec enables graceful speech quality degradation in the case of lost frames, which occurs in connection with lost or delayed IP packets."));
+    codec = GMH323CodecInfo (selected_codec_name);
+    gnomemeeting_message_dialog (GTK_WINDOW (gw->pref_window), 
+				 _("Codec Information"), 
+				 codec.GetCodecInfo ());
+
+    g_free (selected_codec_name);
   }
-
-  if (!strcmp (selected_codec_name, "iLBC-15k2")) {
-
-    info = g_strdup (_("iLBC-15k2 (internet Low Bitrate Codec) is a free speech codec suitable for robust voice communication over IP. The codec is designed for narrow band speech and results in a payload bitrate of 15.20 kbps with an encoding length of 20 ms. The iLBC codec enables graceful speech quality degradation in the case of lost frames, which occurs in connection with lost or delayed IP packets."));
-  }
-
-  if (!strcmp (selected_codec_name, "SpeexNarrow-15k")) {
-
-    info = g_strdup (_("Speex is an Open Source/Free Software patent-free audio compression format designed for speech. The Speex Project aims to lower the barrier of entry for voice applications by providing a free alternative to expensive proprietary speech codecs. Moreover, Speex is well-adapted to Internet applications and provides useful features that are not present in most other codecs. Finally, Speex is part of the GNU Project and is available under the Xiph.org variant of the BSD license. SpeexNarrow-15k is based on CELP and is designed to compress voice at a payload bitrate of 15 kbps."));
-  }
-
-  if (!strcmp (selected_codec_name, "SpeexNarrow-8k")) {
-
-    info = g_strdup (_("Speex is an Open Source/Free Software patent-free audio compression format designed for speech. The Speex Project aims to lower the barrier of entry for voice applications by providing a free alternative to expensive proprietary speech codecs. Moreover, Speex is well-adapted to Internet applications and provides useful features that are not present in most other codecs. Finally, Speex is part of the GNU Project and is available under the Xiph.org variant of the BSD license. SpeexNarrow-8k is based on CELP and is designed to compress voice at a payload bitrate of 8 kbps."));
-  }
-
-  if (!strcmp (selected_codec_name, "MS-GSM")) {
-
-    info = g_strdup (_("MS-GSM is the Microsoft version of GSM 06.10. GSM 06.10 is a standardized lossy speech compression employed by most European wireless telephones. It uses RPE/LTP (residual pulse excitation/long term prediction) coding to compress frames of 160 13-bit samples with a frame rate of 50 Hz into 260 bits.  Microsoft's GSM 06.10 codec is not compatible with the standard frame format, they use 65-byte-frames (2 x 32 1/2) rather than rounding to 33, and they number the bits in their bytes from the other end."));
-  }
-
-  if (!strcmp (selected_codec_name, "G.711-ALaw-64k")) {
-
-    info = g_strdup (_("G.711 is the international standard for encoding telephone audio on 64 kbps channel. It is a pulse code modulation (PCM) scheme operating at 8 kHz sample rate, with 8 bits per sample, fully meeting ITU-T recommendations. This standard has two forms, A-Law and µ-Law. A-Law G.711 PCM encoder converts 13 bit linear PCM samples into 8 bit compressed PCM (logarithmic form) samples, and the decoder does the conversion vice versa. µ-Law G.711 PCM encoder converts 14 bit linear PCM samples into 8 bit compressed PCM samples."));
-  }
-
-  if (!strcmp (selected_codec_name, "G.711-uLaw-64k")) {
-
-    info = g_strdup (_("G.711 is the international standard for encoding telephone audio on 64 kbps channel. It is a pulse code modulation (PCM) scheme operating at 8 kHz sample rate, with 8 bits per sample, fully meeting ITU-T recommendations. This standard has two forms, A-Law and µ-Law. µ-Law G.711 PCM encoder converts 14 bit linear PCM samples into 8 bit compressed PCM (logarithmic form) samples, and the decoder does the conversion vice versa."));
-  }
-
-  if (!strcmp (selected_codec_name, "GSM-06.10")) {
-
-    info = g_strdup (_("GSM 06.10 is a standardized lossy speech compression employed by most European wireless telephones. It uses RPE/LTP (residual pulse excitation/long term prediction) coding to compress frames of 160 13-bit samples with a frame rate of 50 Hz into 260 bits."));
-  }
-
-  if (!strcmp (selected_codec_name, "G.726-32k")) {
-
-    info = g_strdup (_("G.726 conforms to ITU-T G.726 recommendation that specifies speech compression and decompression at rates of 16, 24, 32 and 40 Kbps based on Adaptive Differential Pulse Code Modulation (ADPCM)."));
-  }
-
-  if (!strcmp (selected_codec_name, "G.723.1")) {
-
-    info = g_strdup (_("G.723.1 conforms to ITU-T G.723.1 recommendation. It was designed for video conferencing / telephony over standard phone lines, and is optimized for realtime encode & decode. That codec is only available in GnomeMeeting when using Quicknet cards due to patents restrictions."));
-  }
-
-  gnomemeeting_message_dialog (GTK_WINDOW (gw->pref_window), 
-			       _("Codec Information"), info);
-
-  g_free (info);
 }
 
 
@@ -451,78 +410,74 @@ gnomemeeting_codecs_list_add (GtkTreeIter iter, GtkListStore *store,
 			      const gchar *codec_name, bool enabled,
 			      bool possible, gchar *color)
 {
-  gchar *data [3];
+  GMH323CodecInfo codec;
 
-  data [0] = g_strdup (codec_name);
-  data [1] = NULL;
-  data [2] = NULL;
+  PString codec_quality;
+  PString codec_bitrate;
 
-  if (!strcmp (codec_name, "iLBC-13k3")) {
-    data [1] = g_strdup (_("Excellent"));
-    data [2] = g_strdup ("13.33 Kbps");
-  }
+  if (!codec_name || !store || !color)
+    return;
 
-  if (!strcmp (codec_name, "iLBC-15k2")) {
-    data [1] = g_strdup (_("Excellent"));
-    data [2] = g_strdup ("15.2 Kbps");
-  }
+  codec = GMH323CodecInfo (codec_name);
+  codec_quality = codec.GetCodecQuality ();
+  codec_bitrate = codec.GetCodecBitRate ();
+    
+  if (!codec_quality.IsEmpty () && !codec_bitrate.IsEmpty ()) {
 
-  if (!strcmp (codec_name, "SpeexNarrow-15k")) {
-    data [1] = g_strdup (_("Excellent"));
-    data [2] = g_strdup ("15 Kbps");
-  }
-
-  if (!strcmp (codec_name, "SpeexNarrow-8k")) {
-    data [1] = g_strdup (_("Good Quality"));
-    data [2] = g_strdup ("8 Kbps");
-  }
-
-  if (!strcmp (codec_name, "MS-GSM")) {
-    data [1] = g_strdup (_("Good Quality"));
-    data [2] = g_strdup ("13 Kbps");
-  }
-
-  if (!strcmp (codec_name, "G.711-ALaw-64k")) {
-    data [1] = g_strdup (_("Excellent"));
-    data [2] = g_strdup ("64 Kbps");
-  }
-
-  if (!strcmp (codec_name, "G.711-uLaw-64k")) {
-    data [1] = g_strdup (_("Excellent"));
-    data [2] = g_strdup ("64 Kbps");
-  }
-
-  if (!strcmp (codec_name, "GSM-06.10")) {
-    data [1] = g_strdup (_("Good Quality"));
-    data [2] = g_strdup ("16.5 Kbps");
-  }
-
-  if (!strcmp (codec_name, "G.726-32k")) {
-    data [1] = g_strdup (_("Good Quality"));
-    data [2] = g_strdup ("32 Kbps");
-  }
-
-  if (!strcmp (codec_name, "G.723.1")) {
-    data [1] = g_strdup (_("Excellent Quality"));
-    data [2] = g_strdup ("6.3 Kbps");
-  }
-
-  if (data [1] && data [2]) {
- 
     gtk_list_store_append (store, &iter);
     gtk_list_store_set (store, &iter,
 			COLUMN_CODEC_ACTIVE, enabled,
-			COLUMN_CODEC_NAME, data [0],
-			COLUMN_CODEC_INFO, data [1],
-			COLUMN_CODEC_BANDWIDTH, data [2],
+			COLUMN_CODEC_NAME, codec_name,
+			COLUMN_CODEC_INFO, (const char *) codec_quality,
+			COLUMN_CODEC_BANDWIDTH, (const char *) codec_bitrate,
 			COLUMN_CODEC_SELECTABLE, possible,
 			COLUMN_CODEC_COLOR, color,
 			-1);
   }
+}
 
-  g_free (data [0]);
-  g_free (data [1]);
-  g_free (data [2]);
+
+static gint
+codecs_list_clicked_cb (GtkWidget *w,
+			GdkEventButton *e,
+			gpointer data)
+{
+  GMH323CodecInfo codec;
+
+  GtkTreeIter iter;
+  GtkTreeSelection *selection = NULL;
+  GtkTreeModel *model = NULL;
+
+  gchar *selected_codec_name = NULL;
+
+  GmPrefWindow *pw = NULL;
+
+  if (e->type == GDK_BUTTON_PRESS || e->type == GDK_KEY_PRESS) {
+    
+    selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (data));
+    model = gtk_tree_view_get_model (GTK_TREE_VIEW (data));
+
+    if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
+
+      gtk_tree_model_get (model, &iter, COLUMN_CODEC_NAME, 
+			  &selected_codec_name, -1);
+
+      if (selected_codec_name) {
+
+	pw = MyApp->GetPrefWindow ();
+	codec = GMH323CodecInfo (selected_codec_name);
+
+	if (codec.HasProps ())
+	  gtk_widget_set_sensitive (pw->codec_properties_button, TRUE);
+	else
+	  gtk_widget_set_sensitive (pw->codec_properties_button, FALSE);
+
+	g_free (selected_codec_name);
+      }
+    }
+  }
+
+  return FALSE;
 }
 
 
@@ -621,6 +576,8 @@ void gnomemeeting_codecs_list_build (GtkListStore *codecs_list_store)
   gchar *selected_codec = NULL;
   gchar *quicknet = NULL;
     
+  GMH323CodecInfo cdec;
+
   PString dev;
   PString codec;
     
@@ -678,17 +635,17 @@ void gnomemeeting_codecs_list_build (GtkListStore *codecs_list_store)
     current_row++;
   }
 
-      
+
+  /* Select the right row, and disable if needed the properties button */
   cselect_row = g_strdup_printf("%d", selected_row);
   tree_path = gtk_tree_path_new_from_string (cselect_row);
   tree_view =
     GTK_TREE_VIEW (g_object_get_data (G_OBJECT (codecs_list_store), 
 				      "tree_view"));
-  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view));
-  
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view));  
   gtk_tree_selection_select_path (GTK_TREE_SELECTION (selection),
 				  tree_path);
-  
+
   g_free (cselect_row);
   g_slist_free (codecs_data);
 
@@ -1301,7 +1258,9 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
   gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
   gtk_tree_view_column_add_attribute (column, renderer, "foreground", 
 				      COLUMN_CODEC_COLOR);
-
+  g_signal_connect (G_OBJECT (tree_view), "event-after",
+		    G_CALLBACK (codecs_list_clicked_cb), 
+		    (gpointer) tree_view);
   g_object_set_data (G_OBJECT (pw->codecs_list_store), "tree_view",
 		     (gpointer) tree_view);
 
@@ -1340,8 +1299,10 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
 		    G_CALLBACK (codecs_list_info_button_clicked_callback), 
 		    GTK_TREE_MODEL (pw->codecs_list_store));
 
-  button = gtk_button_new_from_stock (GTK_STOCK_PROPERTIES);
-  gtk_box_pack_start (GTK_BOX (buttons_vbox), button, TRUE, TRUE, 0);
+  pw->codec_properties_button = 
+    gtk_button_new_from_stock (GTK_STOCK_PROPERTIES);
+  gtk_box_pack_start (GTK_BOX (buttons_vbox), pw->codec_properties_button, 
+		      TRUE, TRUE, 0);
   //  g_signal_connect (G_OBJECT (button), "clicked",
   //	    G_CALLBACK (codecs_list_info_button_clicked_callback), 
   //	    GTK_TREE_MODEL (pw->codecs_list_store));

@@ -1,5 +1,18 @@
 2003-09-22 Damien Sandras  <dsandras@seconix.com>
 
+	* po/POTFILES.in: Added codec_info.*.
+
+	* src/Makefile.am: Added codec_info.*.
+	
+	* src/codec_info.cpp, src/codec_info.h: Those files contain an
+	easy to use class permitting to get information, quality, bitrate given
+	a codec name.
+	
+	* src/common.h, src/pref_window.cpp: Use the new class. Disable
+	the properties button for codecs having no modifiable properties.
+	
+2003-09-22 Damien Sandras  <dsandras@seconix.com>
+
 	* src/pref_window.cpp: Fixed alignment of buttons. Added Properties
 	buttons to set codec-specific and advanced options if required.
 	

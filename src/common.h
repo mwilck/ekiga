@@ -102,8 +102,6 @@
 
 #define GM_MAIN_NOTEBOOK_HIDDEN 4
 
-#define GM_AUDIO_CODECS_NUMBER 11
-
 #define GNOMEMEETING_PAD_SMALL 1
 
 #define GM_WINDOW(x) (GmWindow *)(x)
@@ -272,6 +270,7 @@ struct _GmPrefWindow
 {
   GtkTooltips  *tips;
   GtkListStore *codecs_list_store;
+  GtkWidget *codec_properties_button;
   GtkWidget    *show_splash;
   GtkWidget    *start_hidden;
   GtkWidget    *incoming_call_popup;
