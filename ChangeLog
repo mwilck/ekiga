@@ -1,3 +1,17 @@
+2001-12-04  Damien Sandras  <dsandras@seconix.com> -- 0.12.2
+
+	* src/config.cpp: Added release 122. Set argo.dyndns.org as default
+	ILS directory.
+	* src/endpoint.cpp: Fixed a problem with the H.261 capabilities that
+	prevented GM to work properly with NM.
+	* src/main_window.cpp: Fixed the definition of the delete_event
+	callback and make it return FALSE. That was making GM crash with
+	gcc 2.96
+	* src/video_grabber.cpp: Added NULL to g_strconcat. That missing
+	NULL could make GM crash when compiled with gcc 2.96.
+	* src/ils.cpp: Fixed unitialised variable. The refresh button is
+	made sensitive again in case of error.
+	
 2001-12-02  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* src/docklet.cpp: Added some commens to the code.
@@ -6,7 +20,7 @@
 
 	* configure.in: Added "ja" to ALL_LINGUAS.
 
-2001-11-27  Damien Sandras  <dsandras@seconix.com>
+2001-11-27  Damien Sandras  <dsandras@seconix.com> -- 0.12.1
 
 	* src/endpoint.cpp: Fixed bug when somebody is calling while you
 	are already in a call.

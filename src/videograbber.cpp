@@ -332,27 +332,29 @@ void GMVideoGrabber::VGOpen (void)
     switch (error_code)	{
 
     case 0:
-      msg = g_strconcat (msg, "\n", _("Error while opening the device."));
+      msg = g_strconcat (msg, "\n", _("Error while opening the device."), 
+			 NULL);
       break;
       
     case 1:
-      msg = g_strconcat (msg, "\n", _("Your video driver doesn't support the requested video format."));
+      msg = g_strconcat (msg, "\n", _("Your video driver doesn't support the requested video format."), NULL);
       break;
 
     case 2:
-      msg = g_strconcat (msg, "\n", _("Could not open the chosen channel."));
+      msg = g_strconcat (msg, "\n", _("Could not open the chosen channel."),
+			 NULL);
       break;
       
     case 3:
-      msg = g_strconcat (msg, "\n", _("Your driver doesn't support the YUV420P format."));
+      msg = g_strconcat (msg, "\n", _("Your driver doesn't support the YUV420P format."), NULL);
       break;
       
     case 4:
-      msg = g_strconcat (msg, "\n", _("Error with the frame rate."));
+      msg = g_strconcat (msg, "\n", _("Error with the frame rate."), NULL);
       break;
 
     case 5:
-      msg = g_strconcat (msg, "\n", _("Error with the frame size."));
+      msg = g_strconcat (msg, "\n", _("Error with the frame size."), NULL);
       break;
     }
 

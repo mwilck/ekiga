@@ -80,6 +80,7 @@ GMILSClient::GMILSClient (options *o)
 
   running = 1;
   in_the_loop = 0;
+  has_to_register = 0;
   has_to_unregister = 0;
   has_to_browse = 0;
   registered = 0;
@@ -439,6 +440,10 @@ BOOL GMILSClient::Register (BOOL reg)
   else {
     has_to_unregister = 0;
   }
+
+  gnomemeeting_threads_enter ();
+  gtk_widget_set_sensitive (GTK_WIDGET (lw->refresh_button), TRUE);
+  gnomemeeting_threads_leave ();
 
   return TRUE;
 }

@@ -117,21 +117,21 @@ void GMH323EndPoint::AddVideoCapabilities (int video_size)
 
      /* CIF Capability in first position */
      SetCapability(0, 1, 
-		   new H323_H261Capability (0, 4, FALSE, FALSE, 6217));
+                   new H323_H261Capability (0, 2, FALSE, FALSE, 6217));
      gnomemeeting_log_insert (_("Added H.261 CIF capability"));
      
      SetCapability(0, 1, 
-		   new H323_H261Capability (2, 0, FALSE, FALSE, 6217));
+                   new H323_H261Capability (4, 0, FALSE, FALSE, 6217));
      gnomemeeting_log_insert (_("Added H.261 QCIF capability"));
    }
    else {
 
      SetCapability(0, 1, 
-		   new H323_H261Capability (0, 4, FALSE, FALSE, 6217));
+                   new H323_H261Capability (4, 0, FALSE, FALSE, 6217));
      gnomemeeting_log_insert (_("Added H.261 QCIF capability"));
 
      SetCapability(0, 1, 
-		   new H323_H261Capability (2, 0, FALSE, FALSE, 6217));
+                   new H323_H261Capability (0, 2, FALSE, FALSE, 6217));
      gnomemeeting_log_insert (_("Added H.261 CIF capability"));
    }
 
@@ -144,7 +144,6 @@ void GMH323EndPoint::AddVideoCapabilities (int video_size)
      autoStartTransmitVideo = FALSE;
    }
 }
-
 
 void GMH323EndPoint::AddAudioCapabilities ()
 {

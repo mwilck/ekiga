@@ -78,6 +78,7 @@ static void preview_button_clicked (GtkButton *, gpointer);
 static void left_arrow_clicked (GtkWidget *, gpointer);
 static void right_arrow_clicked (GtkWidget *, gpointer);
 static void silence_detection_button_clicked (GtkWidget *, gpointer);
+static gint gm_quit_callback (GtkWidget *, GdkEvent *, gpointer);
 static void gnomemeeting_init_main_window (options *);
 static void gnomemeeting_init_main_window_video_settings (options *);
 static void gnomemeeting_init_main_window_audio_settings (options *);
@@ -320,10 +321,12 @@ void silence_detection_button_clicked (GtkWidget *w, gpointer data)
  * BEHAVIOR     :  Calls the real callback.
  * PRE          :  /
  */
-static void gm_quit_callback (GtkWidget *widget, GdkEvent *event, 
+static gint gm_quit_callback (GtkWidget *widget, GdkEvent *event, 
 			      gpointer data)
 {
   quit_callback (NULL, data);
+
+  return (TRUE);
 }  
 
 
@@ -508,7 +511,7 @@ void gnomemeeting_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
   /* Popup to warn the user of new settings */
   if (version < 121) {
     
-    GtkWidget *msg_box = gnome_message_box_new (_("Welcome to the new 0.12 release of GnomeMeeting.\nDefault settings for the new options\nhave been stored in the configuration."), GNOME_MESSAGE_BOX_INFO, "OK", NULL);
+    GtkWidget *msg_box = gnome_message_box_new (_("Welcome to the new 0.12.2 release of GnomeMeeting.\nDefault settings for the new options\nhave been stored in the configuration."), GNOME_MESSAGE_BOX_INFO, "OK", NULL);
     
     gtk_widget_show (msg_box);
   }

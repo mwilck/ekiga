@@ -571,7 +571,7 @@ int gnomemeeting_config_first_time (void)
   if (res == 0)
     gnomemeeting_init_config ();
 
-  if (version < 121) { 
+  if (version < 122) { 
        
     gnome_config_set_int ("UserSettings/version", 121);
 
@@ -592,7 +592,9 @@ int gnomemeeting_config_first_time (void)
     gnome_config_set_int ("AdvancedSettings/g711_frames", 30);
     
     gnome_config_set_string ("LDAPSettings/ldap_servers_list", 
-			     "ils.advalvas.be:ils.pi.be:ils.netmeetinghq.com:");
+			     "ils.advalvas.be:ils.netmeetinghq.com:argo.dyndns.org:");
+    gnome_config_set_string ("LDAPSettings/ldap_server", 
+			     "argo.dyndns.org");
 
     gnome_config_set_int ("GKSettings/gk", 0);
     gnome_config_set_string ("GKSettings/gk_host", "");
