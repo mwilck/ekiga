@@ -30,7 +30,6 @@
 #include "gatekeeper.h"
 #include "callbacks.h"
 #include "ils.h"
-#include <status-docklet.h>
 
 #include "../pixmaps/computer.xpm"
 
@@ -434,7 +433,7 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
     {
       sound_timeout = gtk_timeout_add (2000, 
 				       (GtkFunction) PlaySound,
-				       STATUS_DOCKLET (gw->docklet)->plug);
+				       gw->docklet);
     }
 
   if ((opts->popup) && (!opts->aa) && (!opts->dnd))

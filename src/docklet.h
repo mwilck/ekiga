@@ -84,6 +84,16 @@ GtkWidget *GM_docklet_init ();
 // PRE          :  /
 void GM_docklet_set_content (GtkWidget *, int);
 
+// DESCRIPTION  :  /
+// BEHAVIOR     :  Show the docklet
+// PRE          :  /
+void GM_docklet_show (GtkWidget *);
+
+// DESCRIPTION  :
+// BEHAVIOR     : Hides the docklet window
+// PRE          : /
+void GM_docklet_hide (GtkWidget *);
+
 /******************************************************************************/
 
 #endif

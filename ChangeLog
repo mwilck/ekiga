@@ -1,3 +1,21 @@
+2001-11-16  Miguel Rodríguez Pérez  <migrax@terra.es>
+
+	* src/endpoint.cpp: Removed include status-docklet.h that prevented
+	linking
+	(OnIncomingCall): Removed referento to docklet->plug, now it's just
+	docklet
+
+	* src/main_interface.cpp (GM_init): Only show the docklet if the
+	user wants it
+
+	* src/preferences.cpp (apply_options): Added code to show/hide the
+	docklet when the preference changes
+
+	* src/docklet.h: Declared new functions to show and hide the docklet
+
+	* src/docklet.cpp (GM_docklet_show)
+	(GM_docklet_hide): Added
+
 2001-11-15  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* src/common.h (struct _GM_window_widgets): Make docklet a GtkWidget

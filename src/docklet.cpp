@@ -209,8 +209,6 @@ GtkWidget *GM_docklet_init ()
   
   GM_setup_docklet_properties (GTK_WIDGET (docklet)->window);
 
-  gtk_widget_show (GTK_WIDGET (docklet));
-
   return GTK_WIDGET (docklet);
 }
 
@@ -255,6 +253,16 @@ void GM_docklet_set_content (GtkWidget *docklet, int choice)
 	  gtk_object_set_data (GTK_OBJECT (docklet), "pixmapm", pixmap);
 	}
     }
+}
+
+void GM_docklet_show (GtkWidget *docklet)
+{
+  gtk_widget_show (docklet);
+}
+
+void GM_docklet_hide (GtkWidget *docklet)
+{
+  gtk_widget_hide (docklet);
 }
 
 

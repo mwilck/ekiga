@@ -267,7 +267,7 @@ void GM_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
     } 
 
   // Gnome Initialisation
-  // CORBA is needed for the docklet stuff
+  // CORBA was needed for the docklet stuff
   CORBA_Environment ev;
   CORBA_exception_init (&ev);
   gnome_CORBA_init_with_popt_table (PACKAGE, VERSION, &argc, argv,
@@ -280,6 +280,8 @@ void GM_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
 
   // Startup Process
   gw->docklet = GM_docklet_init ();
+  if (opts->show_docklet)
+    GM_docklet_show (gw->docklet);
 
   // Init the splash screen
   gw->splash_win = GM_splash_init ();

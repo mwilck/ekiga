@@ -39,6 +39,7 @@
 #include "ils.h"
 #include "main_interface.h"
 #include "audio.h"
+#include "docklet.h"
 
 #include <iostream.h>
 
@@ -2456,7 +2457,7 @@ static void apply_options (options *opts, GM_pref_window_widgets *pw)
   }
 
 
-  /* Show / Hide notebook and / or statusbar */
+  /* Show / Hide notebook and / or statusbar and / or docklet */
   GtkWidget *object = (GtkWidget *) 
     gtk_object_get_data (GTK_OBJECT (gm),
 			 "view_menu_uiinfo");
@@ -2497,4 +2498,9 @@ static void apply_options (options *opts, GM_pref_window_widgets *pw)
     gtk_widget_show_all (pw->gw->quickbar_frame);  
     GTK_CHECK_MENU_ITEM (view_menu_uiinfo [4].widget)->active = TRUE;
   }
+ 
+ if (!opts->show_docklet) 
+   GM_docklet_hide (pw->gw->docklet);
+ else
+   GM_docklet_show (pw->gw->docklet);
 }
