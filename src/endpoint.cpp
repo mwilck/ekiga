@@ -1499,7 +1499,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   /* No need to do all that if we are simply receiving an incoming call
      that was rejected in connection.cpp because of(DND) */
-  if (GetCallingState () != 3) {
+  if ((GetCallingState () != 3)&&(GetCallingState () != 1)) {
 
     SetCallingState (0);
 
@@ -1514,6 +1514,8 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
       vg->Close (TRUE);
       vg->Open (TRUE, TRUE); /* Grab and do a synchronous opening
 				in this thread */
+      /* Display grabbed images */
+      vg->Start ();
     }
     else {
     
@@ -1530,9 +1532,6 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
     }
   }
 
-
-  /* Display grabbed images */
-  vg->Start ();
 
 
   /* Play Busy Tone */

@@ -707,7 +707,7 @@ void GMVideoGrabber::VGClose (int display_logo)
      is really closed */
   PThread::Current ()->Sleep (1000);
 
-  device_mutex.Signal ();
   grabbing_mutex.Signal ();
+  device_mutex.Signal ();
 }
 
