@@ -132,6 +132,14 @@ void gnomemeeting_popup_menu_tray_init (GtkWidget *, GtkAccelGroup *);
 
 
 /* DESCRIPTION  :  /
+ * BEHAVIOR     :  Builds a menu given a first menu, a structure and an
+ *                 AccelGroup.
+ * PRE          :  Valid parameters.
+ */
+void gnomemeeting_build_menu (GtkWidget *, MenuEntry *, GtkAccelGroup *);
+
+
+/* DESCRIPTION  :  /
  * BEHAVIOR     :  Enable/disable sensitivity (bool) of connect/disconnect.
  * PRE          :  true/false, 0 (connect) <= int <= 1 (disconnect)
  */

@@ -36,7 +36,7 @@
 #include "ils.h"
 #include "gnomemeeting.h"
 #include "callbacks.h"
-#include "history-combo.h"
+#include "menu.h"
 
 #ifndef DISABLE_GNOME
 #include <gnome.h>
@@ -50,8 +50,6 @@ extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;	
 
 static void row_activated (GtkTreeView *, GtkTreePath *, GtkTreeViewColumn *);
-static void ldap_notebook_clicked (GtkDialog *,  GtkNotebookPage *, 
-				   gint, gpointer);
 static gint ldap_window_clicked (GtkWidget *, GdkEvent *, gpointer);
 static void tree_selection_changed_cb (GtkTreeSelection *, gpointer);
 static void gnomemeeting_init_ldap_window_notebook (int, gchar *);
@@ -121,32 +119,6 @@ void row_activated (GtkTreeView *tree_view, GtkTreePath *path,
 
 
 /* DESCRIPTION  :  This callback is called when the user clicks
- *                 to show a new notebook page.
- * BEHAVIOR     :  Changes the page and update the ils combo entry.
- * PRE          :  gpointer is a valid pointer to a GmLdapWindow.
- */
-void ldap_notebook_clicked (GtkDialog *widget,  GtkNotebookPage *p,
-			    gint page_num, gpointer data)
-{
-  GmLdapWindow *lw = (GmLdapWindow *) data;
-  GtkWidget *label = NULL;
-  GtkWidget *page = NULL;
-  gchar *text_label = NULL;
-
-  page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook),
-				    page_num);
-
-  label = gtk_notebook_get_tab_label (GTK_NOTEBOOK (lw->notebook), 
-				      GTK_WIDGET (page));
-  label = (GtkWidget *) g_object_get_data (G_OBJECT (label), "label");
-
-  text_label = (gchar *) gtk_label_get_text (GTK_LABEL (label));
-  gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (lw->ils_server_combo)->entry),
-		      text_label);
-}
-
-
-/* DESCRIPTION  :  This callback is called when the user clicks
  *                 closes the window (destroy or delete_event signals).
  * BEHAVIOR     :  Hide the window.
  * PRE          :  gpointer is a valid pointer to a GmLdapWindow.
@@ -171,10 +143,10 @@ gint ldap_window_clicked (GtkWidget *widget, GdkEvent *ev, gpointer data)
 static void
 tree_selection_changed_cb (GtkTreeSelection *selection, gpointer data)
 {
-  int page_num = 0;
-  gchar *name = NULL;
+  int page_num = -1;
   GtkTreeIter iter;
   GtkTreeModel *model = NULL;
+  GtkTreePath *path = NULL;
 
   GmWindow *gw = NULL;
   GmLdapWindow *lw = NULL;
@@ -184,11 +156,21 @@ tree_selection_changed_cb (GtkTreeSelection *selection, gpointer data)
 
   if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
 
-    gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 
-			0, &name, 1, &page_num, -1);
+    path = gtk_tree_model_get_path  (model, &iter);
 
-    if (page_num != - 1) 
-      gtk_notebook_set_current_page (GTK_NOTEBOOK (lw->notebook), page_num);
+    if (path) {
+
+      if (gtk_tree_path_get_depth (path) >= 2) {
+
+	if (gtk_tree_path_get_indices (path) [0] == 0)
+	  page_num = gtk_tree_path_get_indices (path) [1];
+	if (page_num != - 1) 
+	  gtk_notebook_set_current_page (GTK_NOTEBOOK (lw->notebook), 
+					 page_num);
+      }
+
+      gtk_tree_path_free (path);
+    }
   }
 }
 
@@ -202,7 +184,7 @@ void contacts_tree_view_row_activated_cb (GtkTreeView *tree_view,
 					  GtkTreePath *path,
 					  GtkTreeViewColumn *column) 
 {
-  int page_num = 0;
+  int page_num = -1;
   gchar *name = NULL;
 
   GtkTreeIter iter;
@@ -224,8 +206,14 @@ void contacts_tree_view_row_activated_cb (GtkTreeView *tree_view,
   
   if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
 
-    gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 
-			0, &name, 1, &page_num, -1);
+    if (path) {
+
+      if (gtk_tree_path_get_depth (path) >= 2) {
+
+	if (gtk_tree_path_get_indices (path) [0] == 0)
+	  page_num = gtk_tree_path_get_indices (path) [1];
+      }
+    }
 
     if (page_num != - 1) {
     
@@ -251,6 +239,75 @@ void contacts_tree_view_row_activated_cb (GtkTreeView *tree_view,
       }
     }
   }
+}
+
+
+
+static gint
+contacts_tree_view_event_after_callback (GtkWidget *w, GdkEventButton *e,
+					 gpointer data)
+{
+  GtkWidget *menu = NULL;
+  GtkTreeSelection *selection = NULL;
+  GtkTreeView *tree_view = NULL;
+  GtkTreePath *path = NULL;
+
+  tree_view = GTK_TREE_VIEW (w);
+
+  if (e->window != gtk_tree_view_get_bin_window (tree_view)) 
+    return FALSE;
+    
+
+  if (e->type == GDK_BUTTON_PRESS) {
+
+    if (gtk_tree_view_get_path_at_pos (tree_view, (int) e->x, (int) e->y,
+				       &path, NULL, NULL, NULL)) {
+
+      selection = gtk_tree_view_get_selection (tree_view);
+
+      if (e->button == 3 && 
+	  gtk_tree_selection_path_is_selected (selection, path)) {
+	
+	menu = gtk_menu_new ();
+	
+	MenuEntry delete_server_menu [] =
+	  {
+	    {_("Delete"), NULL,
+	     NULL, 0, MENU_ENTRY, 
+	     GTK_SIGNAL_FUNC (NULL), 
+	     NULL, NULL},
+	    {NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL}
+	  };
+
+	MenuEntry new_server_menu [] =
+	  {
+	    {_("New"), NULL,
+	     NULL, 0, MENU_ENTRY, 
+	     GTK_SIGNAL_FUNC (NULL), 
+	     NULL, NULL},
+	    {NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL}
+	  };
+	
+	if (gtk_tree_path_get_depth (path) >= 2)
+	  gnomemeeting_build_menu (menu, delete_server_menu, NULL);
+	else
+	  gnomemeeting_build_menu (menu, new_server_menu, NULL);
+
+	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL,
+			e->button, e->time);
+	g_signal_connect (G_OBJECT (menu), "hide",
+			  GTK_SIGNAL_FUNC (g_object_unref), (gpointer) menu);
+	g_object_ref (G_OBJECT (menu));
+	gtk_object_sink (GTK_OBJECT (menu));
+	
+	gtk_tree_path_free (path);
+
+	return TRUE;
+      }
+    }
+  }
+
+  return FALSE;
 }
 
 
@@ -309,7 +366,7 @@ void gnomemeeting_init_ldap_window ()
   frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
   gtk_box_pack_start (GTK_BOX (hbox), frame, FALSE, FALSE, 0);
-  model = gtk_tree_store_new (2, G_TYPE_STRING, G_TYPE_INT);
+  model = gtk_tree_store_new (1, G_TYPE_STRING);
   tree_view = gtk_tree_view_new ();
   gtk_tree_view_set_model (GTK_TREE_VIEW (tree_view), GTK_TREE_MODEL (model));
   selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view));
@@ -321,7 +378,7 @@ void gnomemeeting_init_ldap_window ()
 
   gtk_tree_store_append (GTK_TREE_STORE (model), &iter, NULL);
   gtk_tree_store_set (GTK_TREE_STORE (model),
-		      &iter, 0, _("Servers"), 1, -1, -1);
+		      &iter, 0, _("Servers"), -1);
 
   ldap_servers_list =
     gconf_client_get_list (client, CONTACTS_SERVERS_KEY "ldap_servers_list",
@@ -357,8 +414,8 @@ void gnomemeeting_init_ldap_window ()
     gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
     gtk_tree_store_set (GTK_TREE_STORE (model),
 			&child_iter, 
-			0, ldap_servers_list_iter->data,
-			1, cpt, -1);
+			0, ldap_servers_list_iter->data, -1);
+
     gnomemeeting_init_ldap_window_notebook (cpt, (char *)
 					   ldap_servers_list_iter->data);
     ldap_servers_list_iter = ldap_servers_list_iter->next;
@@ -371,7 +428,8 @@ void gnomemeeting_init_ldap_window ()
 		    G_CALLBACK (tree_selection_changed_cb), NULL);
   g_signal_connect (G_OBJECT (tree_view), "row_activated",
 		    G_CALLBACK (contacts_tree_view_row_activated_cb), NULL);  
-
+  g_signal_connect_object (G_OBJECT (tree_view), "event-after",
+			   G_CALLBACK (contacts_tree_view_event_after_callback), NULL, (enum GConnectFlags) 0);
 
   /* The toolbar */
   // GtkWidget *handle = gtk_handle_box_new ();

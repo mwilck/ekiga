@@ -1,3 +1,12 @@
+2002-12-16 Damien Sandras  <dsandras@seconix.com>
+
+	* src/menu.cpp, src/menu.h: Made public the function that permits 
+	to build a menu from a struct so that it can be reused elsewhere.
+
+	* src/ldap_window.cpp: Now use the GtkTreePath to determine what
+	notebook page to show. Added context menu (not working yet) to the
+	servers list.
+	
 2002-12-11 Damien Sandras  <dsandras@seconix.com>
 
 	* configure.in: Incremented schema_age.

@@ -272,13 +272,7 @@ menu_toggle_changed (GtkWidget *widget, gpointer data)
 
 
 /* The functions */
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Builds a menu given a first menu, a structure and an
- *                 AccelGroup.
- * PRE          :  Valid parameters.
- */
-static void 
+void 
 gnomemeeting_build_menu (GtkWidget *menubar, MenuEntry *gnomemeeting_menu,
 			 GtkAccelGroup *accel)
 {
