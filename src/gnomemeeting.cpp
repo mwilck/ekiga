@@ -302,6 +302,8 @@ GnomeMeeting::DetectDevices ()
   gchar *audio_plugin = NULL;
   gchar *video_plugin = NULL;
 
+  PINDEX fake_idx;
+  
   audio_plugin = gconf_get_string (AUDIO_DEVICES_KEY "plugin");
   video_plugin = gconf_get_string (VIDEO_DEVICES_KEY "plugin");
 
@@ -331,12 +333,14 @@ GnomeMeeting::DetectDevices ()
   g_free (audio_plugin);
   g_free (video_plugin);
 
-  
   if (gw->audio_managers.GetSize () == 0)
     return FALSE;
+
+  fake_idx = gw->video_managers.GetValuesIndex (PString ("FakeVideo"));
+  if (fake_idx != P_MAX_INDEX)
+    gw->video_managers.RemoveAt (fake_idx);
   
   gw->audio_managers += PString ("Quicknet");
-  gw->video_devices += PString (_("Picture"));
   gnomemeeting_sound_daemons_resume ();
 
   return TRUE;

@@ -41,22 +41,23 @@
 #ifndef _VFAKEIO_H_
 #define _VFAKEIO_H_
 
+#define P_FORCE_STATIC_PLUGIN
+
 #include "common.h"
 
  
-class GMH323FakeVideoInputDevice : public PFakeVideoInputDevice 
+class GMH323FakeVideoInputDevice : public PVideoInputDevice 
 {
-  PCLASSINFO(GMH323FakeVideoInputDevice, PFakeVideoInputDevice);
+  PCLASSINFO(GMH323FakeVideoInputDevice, PVideoInputDevice);
 
   
  public:
   
   /* DESCRIPTION  :  The constructor.
    * BEHAVIOR     :  Creates the Fake Input Device.
-   * PRE          :  A name representing the path to the image to display. If
-   *                 NULL or wrong, the GM logo will be transmitted.
+   * PRE          :  /
    */
-  GMH323FakeVideoInputDevice (gchar *);
+  GMH323FakeVideoInputDevice ();
 
 
   /* DESCRIPTION  :  The destructor
@@ -65,6 +66,51 @@ class GMH323FakeVideoInputDevice : public PFakeVideoInputDevice
    */
   ~GMH323FakeVideoInputDevice ();
 
+  
+  BOOL Open (const PString &,
+	     BOOL = TRUE);
+
+  
+  /**Determine of the device is currently open.
+   */
+  BOOL IsOpen() ;
+
+  
+  /**Close the device.
+   */
+  BOOL Close();
+
+  
+  /**Start the video device I/O.
+   */
+  BOOL Start();
+
+  
+  /**Stop the video device I/O capture.
+   */
+  BOOL Stop();
+
+
+  /**Determine if the video device I/O capture is in progress.
+   */
+  BOOL IsCapturing();
+
+  
+  /**Get a list of all of the drivers available.
+   */
+  static PStringList GetInputDeviceNames();
+
+  
+  BOOL SetFrameSize (unsigned int,
+		     unsigned int);
+  
+  
+  /* DESCRIPTION  :  The destructor
+   * BEHAVIOR     :  /
+   * PRE          :  /
+   */
+  BOOL GetFrameData (BYTE *, PINDEX * = NULL);
+
 
   /* DESCRIPTION  :  The destructor
    * BEHAVIOR     :  /
@@ -72,9 +118,70 @@ class GMH323FakeVideoInputDevice : public PFakeVideoInputDevice
    */
   BOOL GetFrameDataNoDelay (BYTE *, PINDEX * = NULL);
 
+  
   BOOL GetFrame (PBYTEArray &);
 
-  BYTE *data;
+
+  BOOL TestAllFormats ();
+
+  
+  /**Get the maximum frame size in bytes.
+  */
+  PINDEX GetMaxFrameBytes();
+
+  
+  /** Given a preset interval of n milliseconds, this function
+      returns n msecs after the previous frame capture was initiated.
+  */
+  void WaitFinishPreviousFrame();
+
+  
+  /**Set the video format to be used.
+
+  Default behaviour sets the value of the videoFormat variable and then
+  returns the IsOpen() status.
+  */
+  BOOL SetVideoFormat (VideoFormat);
+
+  
+  /**Get the number of video channels available on the device.
+
+  Default behaviour returns 1.
+  */
+  int GetNumChannels() ;
+
+  
+  /**Set the video channel to be used on the device.
+
+  Default behaviour sets the value of the channelNumber variable and then
+  returns the IsOpen() status.
+  */
+  BOOL SetChannel (int);
+			
+
+  /**Set the colour format to be used.
+
+  Default behaviour sets the value of the colourFormat variable and then
+  returns the IsOpen() status.
+  */
+  BOOL SetColourFormat (const PString &);
+
+  
+  /**Set the video frame rate to be used on the device.
+
+  Default behaviour sets the value of the frameRate variable and then
+  return the IsOpen() status.
+  */
+  BOOL SetFrameRate (unsigned);
+
+  
+  BOOL GetFrameSizeLimits (unsigned &,
+			   unsigned &,
+			   unsigned &,
+			   unsigned &);
+  
+  
+  PBYTEArray data;
   GdkPixbuf *data_pix;
   GdkPixbuf *logo_pix;
   gchar *video_image;
@@ -84,5 +191,6 @@ class GMH323FakeVideoInputDevice : public PFakeVideoInputDevice
   int increment;
 };
 
+PCREATE_VIDINPUT_PLUGIN (MovingLogo, GMH323FakeVideoInputDevice);
 
 #endif

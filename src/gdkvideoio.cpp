@@ -557,6 +557,8 @@ BOOL GDKVideoOutputDevice::SetFrameData(
   if (!endFrame)
     return FALSE;
 
+  frameStore.SetSize (width * height * 3);
+  
   if (converter)
     converter->Convert (data, frameStore.GetPointer ());
   

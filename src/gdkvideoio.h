@@ -49,9 +49,9 @@
 
 
 
-class GDKVideoOutputDevice : public PVideoOutputDeviceRGB
+class GDKVideoOutputDevice : public PVideoOutputDevice
 {
-  PCLASSINFO(GDKVideoOutputDevice, PVideoOutputDeviceRGB);
+  PCLASSINFO(GDKVideoOutputDevice, PVideoOutputDevice);
 
 
   public:
@@ -148,7 +148,8 @@ class GDKVideoOutputDevice : public PVideoOutputDeviceRGB
   int display_config; /* Current display : local or remote or both */
 
   PMutex redraw_mutex;
-
+  PBYTEArray frameStore;
+  
 #ifdef HAS_SDL
   SDL_Surface *screen;
   SDL_Overlay *overlay;

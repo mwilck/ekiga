@@ -41,6 +41,8 @@
 #include "../config.h"
 
 #include "vfakeio.h"
+#include <ptlib/vconvert.h>
+
 #include "misc.h"
 
 #include "../pixmaps/text_logo.xpm"
@@ -94,21 +96,21 @@ static void RGBtoYUV420PSameSize (const BYTE * rgb,
 }
 
 
-GMH323FakeVideoInputDevice::GMH323FakeVideoInputDevice (gchar *image)
+GMH323FakeVideoInputDevice::GMH323FakeVideoInputDevice ()
 {
   data_pix = NULL;
   logo_pix = NULL;
 
-  if (image)
-    video_image = g_strdup (image);
-  else
-    video_image = NULL;
+  //  if (image)
+  //video_image = g_strdup (image);
+  //else
+  video_image = NULL;
 
   pos = 0;
   increment = 1;
 
   picture = false;
-
+  
   gnomemeeting_threads_enter ();
 
   logo_pix = 
@@ -134,9 +136,97 @@ GMH323FakeVideoInputDevice::~GMH323FakeVideoInputDevice ()
 }
 
 
-BOOL GMH323FakeVideoInputDevice::GetFrame (PBYTEArray &a)
+
+BOOL
+GMH323FakeVideoInputDevice::Open (const PString &,
+				  BOOL start_immediate)
 {
-  return GetFrameDataNoDelay (a.GetPointer ());
+  return TRUE;
+}
+
+
+BOOL
+GMH323FakeVideoInputDevice::IsOpen ()
+{
+  return TRUE;
+}
+
+
+BOOL
+GMH323FakeVideoInputDevice::Close ()
+{
+  return TRUE;
+}
+
+  
+BOOL
+GMH323FakeVideoInputDevice::Start ()
+{
+  return TRUE;
+}
+
+  
+BOOL
+GMH323FakeVideoInputDevice::Stop ()
+{
+  return TRUE;
+}
+
+
+BOOL
+GMH323FakeVideoInputDevice::IsCapturing ()
+{
+  return IsCapturing ();
+}
+
+
+PStringList
+GMH323FakeVideoInputDevice::GetInputDeviceNames ()
+{
+  PStringList l;
+
+  l.AppendString ("MovingLogo");
+  l.AppendString ("StaticPicture");
+
+  return l;
+}
+
+
+BOOL
+GMH323FakeVideoInputDevice::SetFrameSize (unsigned int width,
+					  unsigned int height)
+{
+  if (!PVideoDevice::SetFrameSize (width, height))
+    return FALSE;
+
+  return TRUE;
+}
+
+
+BOOL
+GMH323FakeVideoInputDevice::GetFrame (PBYTEArray &a)
+{
+  PINDEX returned;
+
+  if (!GetFrameData (a.GetPointer (), &returned))
+    return FALSE;
+
+  a.SetSize (returned);
+  
+  return TRUE;
+}
+
+
+BOOL
+GMH323FakeVideoInputDevice::GetFrameData (BYTE *a, PINDEX *i)
+{
+  WaitFinishPreviousFrame ();
+
+  GetFrameDataNoDelay (a, i);
+
+  *i = CalculateFrameBytes (frameWidth, frameHeight, colourFormat);
+
+  return TRUE;
 }
 
 
@@ -144,12 +234,12 @@ BOOL GMH323FakeVideoInputDevice::GetFrameDataNoDelay (BYTE *frame, PINDEX *i)
 {
   GdkPixbuf *data_pix_tmp = NULL;
 
+  guchar *data = NULL;
+
   unsigned width = 0;
   unsigned height = 0;
 
   GetFrameSize (width, height);
-
-  grabCount++;
 
   gnomemeeting_threads_enter ();
   if ((video_image)&&(!data_pix)) {
@@ -168,14 +258,14 @@ BOOL GMH323FakeVideoInputDevice::GetFrameDataNoDelay (BYTE *frame, PINDEX *i)
 	picture = true;
     }
   }
-
+  
   if (!data_pix) {
 
     data_pix = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8, 
 			       width, height);
     picture = false;
   }
-
+  
   if (!picture) {
 
     gdk_pixbuf_fill (data_pix, 0x000000FF); /* Opaque black */
@@ -187,16 +277,112 @@ BOOL GMH323FakeVideoInputDevice::GetFrameDataNoDelay (BYTE *frame, PINDEX *i)
     if ((int) pos > (int) height - 60 - 10) increment = -1;
     if (pos < 10) increment = +1;
   }
-
+  
   data = gdk_pixbuf_get_pixels (data_pix);
   rgb_increment = gdk_pixbuf_get_n_channels (data_pix);
 
-  RGBtoYUV420PSameSize (data, frame, rgb_increment, FALSE, 
-			width, height);
+  if (converter)
+    converter->Convert (data, frame);
 
+  //  RGBtoYUV420PSameSize (data, frame, rgb_increment, FALSE, 
+  //		width, height);
+  
 
   gnomemeeting_threads_leave ();
 
 
   return TRUE;
 }
+
+
+BOOL
+GMH323FakeVideoInputDevice::TestAllFormats ()
+{
+  return TRUE;
+}
+
+
+PINDEX
+GMH323FakeVideoInputDevice::GetMaxFrameBytes ()
+{
+  return CalculateFrameBytes (frameWidth, frameHeight, colourFormat);
+}
+
+
+void
+GMH323FakeVideoInputDevice::WaitFinishPreviousFrame ()
+{
+  frameTimeError += msBetweenFrames;
+
+  PTime now;
+  PTimeInterval delay = now - previousFrameTime;
+  frameTimeError -= (int)delay.GetMilliSeconds();
+  frameTimeError += 1000 / frameRate;
+  previousFrameTime = now;
+
+  if (frameTimeError > 0) {
+    PTRACE(6, "FakeVideo\t Sleep for " << frameTimeError << " milli seconds");
+#ifdef P_LINUX
+    usleep(frameTimeError * 1000);
+#else
+    PThread::Current()->Sleep(frameTimeError);
+#endif
+  }
+}
+
+
+BOOL
+GMH323FakeVideoInputDevice::SetVideoFormat (VideoFormat newFormat)
+{
+  return PVideoDevice::SetVideoFormat (newFormat);
+}
+
+
+int
+GMH323FakeVideoInputDevice::GetNumChannels()
+{
+  return 1;
+}
+
+
+BOOL
+GMH323FakeVideoInputDevice::SetChannel (int newChannel)
+{
+  return PVideoDevice::SetChannel (newChannel);
+}
+
+
+BOOL
+GMH323FakeVideoInputDevice::SetColourFormat (const PString &newFormat)
+{
+  if (newFormat == "BGR32") 
+    return PVideoDevice::SetColourFormat (newFormat);
+
+  return FALSE;  
+}
+
+
+BOOL
+GMH323FakeVideoInputDevice::SetFrameRate (unsigned rate)
+{
+  PVideoDevice::SetFrameRate (12);
+ 
+  return TRUE;
+}
+
+
+BOOL
+GMH323FakeVideoInputDevice::GetFrameSizeLimits (unsigned & minWidth,
+						unsigned & minHeight,
+						unsigned & maxWidth,
+						unsigned & maxHeight)
+{
+  minWidth  = 10;
+  minHeight = 10;
+  maxWidth  = 1000;
+  maxHeight =  800;
+
+  return TRUE;
+}
+
+

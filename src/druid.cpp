@@ -171,7 +171,7 @@ gnomemeeting_druid_cancel (GtkWidget *w, gpointer data)
 
   gw = GnomeMeeting::Process ()->GetMainWindow ();
   dw = GnomeMeeting::Process ()->GetDruidWindow ();
-
+  
   gnome_druid_set_page (dw->druid, GNOME_DRUID_PAGE (dw->page_edge));
   gtk_widget_hide (gw->druid_window);
   gtk_widget_show (gm);
@@ -206,6 +206,7 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
   gw = GnomeMeeting::Process ()->GetMainWindow ();
   dw = GnomeMeeting::Process ()->GetDruidWindow ();
   ep = GnomeMeeting::Process ()->Endpoint ();
+
   
   active_item =
     gtk_menu_get_active (GTK_MENU (GTK_OPTION_MENU (dw->kind_of_net)->menu));
@@ -309,7 +310,7 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
 static void 
 gnomemeeting_druid_destroy (GtkWidget *w, GdkEventAny *ev, gpointer data)
 {
-  gnomemeeting_druid_quit (w, data);
+  gnomemeeting_druid_cancel (w, data);
 }
 
 

@@ -1,3 +1,27 @@
+2003-11-19 Damien Sandras  <dsandras@seconix.com>
+
+	* autogen.sh: New compliant autogen.sh script. Closes #127352.
+	
+	* src/druid.cpp: Do not apply changes when closing the
+	window using the window manager.
+	
+	* src/gdkvideoio.cpp, src/gdkvideoio.h: Added frameStore pointer
+	as it is not part anymore of the upper level classes.
+	
+	* src/gnomemeeting.cpp: Remove the standard OpenH323 FakeVideo 
+	plugin from the list.
+	
+	* src/sound_handling.cpp: Fixed bug discovered by Johnny: crash
+	when doing the audio test while devices are busy. Do not delete
+	the object from inside itself, it is done automatically when exiting
+	or when doing another test.
+	
+	* src/vfakeio.cpp, src/vfakeio.h: Made a plugin of the old
+	FakeIO device. Not fully functionnal yet.
+	
+	* src/videograbber.cpp: Cleaned approach thanks to the new
+	plugin. Use the new plugin if the opening of the device fails.
+	
 2003-11-18 Damien Sandras  <dsandras@seconix.com>
 
 	* configure.in: Put an explicit request on libxml 2.6.
