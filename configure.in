@@ -7,7 +7,7 @@ AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
 
-AC_PROG_INTLTOOL([0.17])
+AC_PROG_INTLTOOL([0.20])
 
 AM_PROG_LIBTOOL
 
@@ -326,7 +326,7 @@ AC_SUBST(PACKAGE_PIXMAPS_DIR)
 AC_OUTPUT(
 Makefile
 src/gnomemeeting-config-tool
-gnomemeeting.schema
+gnomemeeting.schemas.in
 po/Makefile.in
 man/Makefile
 src/Makefile

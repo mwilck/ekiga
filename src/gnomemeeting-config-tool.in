@@ -94,7 +94,7 @@ installschemas () {
 
 	gettext "Installing schemas"; echo
 	GCONF_CONFIG_SOURCE=$SOURCE  gconftool-2 \
-	--makefile-install-rule $SYSCONFDIR/gconf/schemas/gnomemeeting.schema
+	--makefile-install-rule $SYSCONFDIR/gconf/schemas/gnomemeeting.schemas
     fi
 }
 
@@ -103,7 +103,7 @@ pkginstallschemas ()
     SOURCE=xml::/etc/gconf/gconf.xml.defaults
 
     GCONF_CONFIG_SOURCE=$SOURCE  gconftool-2 \
-    --makefile-install-rule $SYSCONFDIR/gconf/schemas/gnomemeeting.schema \
+    --makefile-install-rule $SYSCONFDIR/gconf/schemas/gnomemeeting.schemas \
     2>/dev/null >/dev/null \
     || installfailure;
 }
