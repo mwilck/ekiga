@@ -1,5 +1,10 @@
 2002-03-29  Miguel Rodríguez Pérez  <migrax@terra.es>
 
+	* src/docklet.cpp (docklet_clicked): Return false if we haven't
+	processed the event. (This was preventing the popup menu from apearing).
+
+2002-03-29  Miguel Rodríguez Pérez  <migrax@terra.es>
+
 	* src/docklet.cpp (docklet_toggle_callback) 
 	(gnomemeeting_build_docklet): Use gtk_image, instead of gtk_pixmap
 	(gnomemeeting_docklet_set_content): Dito.

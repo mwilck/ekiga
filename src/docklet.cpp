@@ -61,7 +61,7 @@ extern GnomeMeeting *MyApp;
 static void docklet_popup_menu_connect_callback (GtkWidget *, gpointer);
 static void docklet_popup_menu_disconnect_callback (GtkWidget *, gpointer);
 static void docklet_toggle_callback (GtkWidget *, gpointer);
-static void docklet_clicked (GtkWidget *, GdkEventButton *, gpointer);
+static int docklet_clicked (GtkWidget *, GdkEventButton *, gpointer);
 static void gnomemeeting_init_docklet_popup_menu (GtkWidget *);
 static void gnomemeeting_setup_docklet_properties (GdkWindow *);
 static void gnomemeeting_build_docklet (GtkWindow *);
@@ -111,15 +111,17 @@ void docklet_toggle_callback (GtkWidget *, gpointer)
  * BEHAVIOR     :  If double clic : hide or show main window.
  * PRE          :  /
 */
-void docklet_clicked (GtkWidget *widget, GdkEventButton *event, gpointer data)
+int docklet_clicked (GtkWidget *widget, GdkEventButton *event, gpointer data)
 {
-  if (event == NULL) 
-    return;
+  g_return_val_if_fail (event != NULL, false);
 
   if ((event->button == 1) && (event->type == GDK_BUTTON_PRESS)) {
 
     docklet_toggle_callback (widget, data);
+    return true;
   }
+
+  return false;
 }
 
 
