@@ -50,6 +50,7 @@
 #include "stock-icons.h"
 #include "gtk_menu_extensions.h"
 #include "gm_conf.h"
+#include "contacts/gm_contacts.h"
 
 #include <gdk/gdkkeysyms.h>
 
@@ -693,51 +694,52 @@ gnomemeeting_tray_init_menu (GtkWidget *widget)
 void
 gnomemeeting_speed_dials_menu_update (GtkWidget *menubar)
 {
-  /*
-   * GtkWidget *item = NULL;
+  GtkWidget *item = NULL;
   GtkWidget *menu = NULL;
-  
-  GSList *glist = NULL;
-  GList *old_glist_iter = NULL;
-  
-  gchar *ml = NULL;  
-  gchar **couple = NULL;
 
-  glist = gnomemeeting_addressbook_get_speed_dials ();
+  GmContact *contact = NULL;
+
+  GSList *glist = NULL;
+  GSList *glist_iter = NULL;
+  GList *old_glist_iter = NULL;
+
+  gchar *ml = NULL;  
+
+  glist = gnomemeeting_addressbook_get_contacts (NULL, NULL, NULL, NULL, "*"); 
   menu = gtk_menu_get_widget (menubar, "speed_dials");
 
   while ((old_glist_iter = GTK_MENU_SHELL (menu)->children)) 
     gtk_container_remove (GTK_CONTAINER (menu),
 			  GTK_WIDGET (old_glist_iter->data));
 
-  
-  while (glist && glist->data) {
+  glist_iter = glist;
+  while (glist_iter && glist_iter->data) {
 
-    couple = g_strsplit ((gchar *) glist->data, "|", 0);
+    contact = GM_CONTACT (glist_iter->data);
 
-    if (couple [0] && couple [1]) {
-      
-      ml = g_strdup_printf ("<b>%s#</b>   <i>%s</i>", couple [1], couple [0]);
-      item = gtk_menu_item_new_with_label (ml);
-      gtk_label_set_markup (GTK_LABEL (gtk_bin_get_child (GTK_BIN (item))),
-			    ml);
-      gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
-      gtk_widget_show (item);
+    ml = g_strdup_printf ("<b>%s#</b>   <i>%s</i>", 
+			  contact->speeddial, 
+			  contact->fullname);
 
-      g_signal_connect_data (G_OBJECT (item), "activate",
-			     GTK_SIGNAL_FUNC (speed_dial_menu_item_selected),
-			     (gpointer) g_strdup (couple [1]),
-			     (GClosureNotify) g_free, (GConnectFlags) 0);
-    }
-    
-    glist = g_slist_next (glist);
+    item = gtk_menu_item_new_with_label (ml);
+    gtk_label_set_markup (GTK_LABEL (gtk_bin_get_child (GTK_BIN (item))),
+			  ml);
+    gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+    gtk_widget_show (item);
+
+    g_signal_connect_data (G_OBJECT (item), "activate",
+			   GTK_SIGNAL_FUNC (speed_dial_menu_item_selected),
+			   (gpointer) g_strdup (contact->url),
+			   (GClosureNotify) g_free, (GConnectFlags) 0);
+
+
+    glist_iter = g_slist_next (glist_iter);
 
     g_free (ml);
-    g_strfreev (couple);
   }
-  
-  g_slist_free (glist);*/
-  g_warning ("FIX ME: Not implemented yet");
+
+  g_slist_foreach (glist, (GFunc) gm_contact_delete, NULL);
+  g_slist_free (glist);
 }
 
 

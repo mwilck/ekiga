@@ -599,6 +599,7 @@ void GMAudioTester::Main ()
 
   gtk_window_set_transient_for (GTK_WINDOW (test_dialog),
 				GTK_WINDOW (gw->druid_window));
+  gtk_widget_show_all (GTK_DIALOG (test_dialog)->vbox);
   gdk_threads_leave ();
 
   recorder = new GMAudioRP (this, audio_manager, audio_recorder, TRUE);

@@ -12,20 +12,21 @@ GSList *
 gnomemeeting_addressbook_get_contacts (GmAddressbook *addressbook,
 				       gchar *fullname,
 				       gchar *url,
-				       gchar *categorie)
+				       gchar *categorie,
+				       gchar *speeddial)
 {
-  g_return_val_if_fail (addressbook != NULL, NULL);
-
-  if (!gnomemeeting_addressbook_is_local (addressbook))  
+  if (addressbook && !gnomemeeting_addressbook_is_local (addressbook))  
     return gnomemeeting_remote_addressbook_get_contacts (addressbook,
 							 fullname,
 							 url,
-							 categorie);
+							 categorie,
+							 speeddial);
   else
     return gnomemeeting_local_addressbook_get_contacts (addressbook,
 							fullname,
 							url, 
-							categorie);
+							categorie,
+							speeddial);
 }
 
 

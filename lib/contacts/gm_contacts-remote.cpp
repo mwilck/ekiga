@@ -112,7 +112,8 @@ GSList *
 gnomemeeting_remote_addressbook_get_contacts (GmAddressbook *addressbook,
 					      gchar *fullname,
 					      gchar *url,
-					      gchar *categorie)
+					      gchar *categorie,
+					      gchar *speeddial)
 {
   PLDAPSession ldap;
   PLDAPSession::SearchContext context;

@@ -827,6 +827,10 @@ gm_aw_update_addressbook (GtkWidget *addressbook_window,
 
   page =
     gtk_notebook_get_nth_page (GTK_NOTEBOOK (aw->aw_notebook), page_num);
+  
+  if (!page)
+    return;
+  
   awp = gm_aw_get_awp (page);
 
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (awp->awp_tree_view));
@@ -840,7 +844,8 @@ gm_aw_update_addressbook (GtkWidget *addressbook_window,
     gnomemeeting_addressbook_get_contacts (addressbook, 
 					   (opt == 1)?(gchar *) filter:NULL,
 					   (opt == 2)?(gchar *) filter:NULL,
-					   (opt == 3)?(gchar *) filter:NULL);
+					   (opt == 3)?(gchar *) filter:NULL,
+					   NULL);
   l = contacts;
   while (l) {
 

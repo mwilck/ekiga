@@ -50,6 +50,7 @@
 #include "menu.h"
 
 #include "dialog.h"
+#include "contacts/gm_contacts.h"
 #include "gm_conf.h"
 
 /* Declarations */
@@ -230,6 +231,7 @@ GMURLHandler::~GMURLHandler ()
 void GMURLHandler::Main ()
 {
   GmWindow *gw = NULL;
+  GmContact *contact = NULL;
 
   BOOL use_gateway = FALSE;
   
@@ -279,9 +281,22 @@ void GMURLHandler::Main ()
   /* If it is a shortcut (# at the end of the URL), then we use it */
   if (url.GetType () == "shortcut") {
 
-    //url =
-      //gnomemeeting_addressbook_get_url_from_speed_dial (url.GetValidURL ());
-    g_warning ("FIX ME: Not reimplemented yet");
+    GSList *l = NULL;
+
+    l = gnomemeeting_addressbook_get_contacts (NULL, 
+					       NULL,
+					       NULL,
+					       NULL,
+					       (gchar *) (const char *) url.GetValidURL ());
+    
+    if (l && l->data) {
+      
+      contact = GM_CONTACT (l->data);
+      url = GMURL (contact->url);
+      gm_contact_delete (contact);
+    }
+    else
+      url = GMURL ();
     
     if (url.IsEmpty ()) {
 
