@@ -1,0 +1,163 @@
+#!/bin/sh
+
+prefix=@GNOMEMEETING_PREFIX@
+export TEXTDOMAIN=gnomemeeting
+
+clean () {
+
+    if ps hu -C gnomemeeting | grep $USER &>/dev/null 2>&1; then
+    gettext "Sorry, this script won't work while GnomeMeeting is running"; echo
+
+    else
+
+	    echo
+	    gettext "     WARNING!!!"; echo
+	    echo    "     ---------------------------------------------------------------"
+	    gettext "     This script will delete all user GnomeMeeting configuration"; echo
+	    gettext "     including preferences that may be important!"; echo
+	    gettext "     GConf daemon will be shutted down, so make sure you have no apps"; echo
+	    gettext "     depending on it running"; echo
+	    echo
+	    gettext "     Do you really want to do this?"; echo
+	    echo
+	    gettext "     If so, say \"YES\""; echo
+	    echo
+
+	    read WARNINGANSWER
+
+	    echo ""
+
+	    if [ -n "$WARNINGANSWER" ] && [ "$WARNINGANSWER" = "YES" ]; then
+
+		    gettext "Removing $HOME/.gconf/apps/gnomemeeting"; echo
+		    rm -rf $HOME/.gconf/apps/gnomemeeting
+
+		    gettext "Shutting down GConf daemon"; echo
+		    gconftool-2 --shutdown
+
+		    gettext "...Done."; echo
+
+	    else
+		    gettext "Leaving configuration alone."; echo
+		    echo
+		    gettext "Have a nice day."; echo
+
+	    fi
+
+	    echo ""
+
+	fi
+}
+
+shutdownwarning () {
+	    echo
+	    gettext "     WARNING!!!"; echo
+	    echo    "     ---------------------------------------------------------------"
+	    gettext "     GConf daemon will be shutted down, so make sure you have no apps"; echo
+	    gettext "     depending on it running"; echo
+	    echo
+	    gettext "     Do you really want to do this?"; echo
+	    echo
+	    gettext "     If so, say \"YES\""; echo
+	    echo
+}
+
+cleanschemas () {
+shutdownwarning;
+
+    read WARNINGANSWER
+
+    if [ -n "$WARNINGANSWER" ] && [ "$WARNINGANSWER" = "YES" ]; then
+
+	echo ""
+
+	SOURCE=`gconftool-2 --get-default-source`
+	    
+	gettext "Shutting down gconf daemon"; echo
+	gconftool-2 --shutdown
+
+	gettext "Removing schemas"; echo
+	SOURCE=`echo $SOURCE | sed "s/xml:://"`
+	SCHEMAS=$SOURCE/schemas/apps/gnomemeeting
+	SOURCE=$SOURCE/apps/gnomemeeting
+	echo $SCHEMAS
+	echo $SOURCE
+	rm -rf $SOURCE
+	rm -rf $SCHEMAS
+    fi
+}
+
+installschemas () {
+
+    shutdownwarning;
+
+    read WARNINGANSWER
+
+    if [ -n "$WARNINGANSWER" ] && [ "$WARNINGANSWER" = "YES" ]; then
+
+	echo
+
+	SOURCE=`gconftool-2 --get-default-source`
+	    
+	gettext "Shutting down GConf daemon"; echo
+	gconftool-2 --shutdown
+
+	gettext "Installing schemas"; echo
+	GCONF_CONFIG_SOURCE=$SOURCE  gconftool-2 \
+	--makefile-install-rule /etc/gconf/schemas/gnomemeeting.schemas
+    fi
+}
+
+pkginstallschemas ()
+{
+    SOURCE=xml::/etc/gconf/gconf.xml.defaults
+
+    GCONF_CONFIG_SOURCE=$SOURCE  gconftool-2 \
+    --makefile-install-rule /etc/gconf/schemas/gnomemeeting.schemas \
+    2>/dev/null >/dev/null \
+    || installfailure;
+}
+
+installfailure ()
+{
+    echo
+    gettext  "CRITICAL ERROR -- Schema installation is failed."; echo
+    gettext  "Most probably you have gconf daemon running as root."; echo
+    echo
+    gettext  "Run \"gnomemeeting-config-tool --install-schemas\" as root"; echo
+
+    exit 1
+}
+
+fixgconfperm ()
+{
+    killall gconfd-1 2>/dev/null >/dev/null
+    chmod -R o+rX /etc/gconf
+}
+
+case "$1" in
+  *--clean)
+        clean;
+        ;;
+  *--install-schemas)
+        installschemas;
+        ;;
+  *--pkg-install-schemas)
+        pkginstallschemas;
+        ;;
+  *--clean-schemas)
+	cleanschemas;
+        ;;
+  *--fix-permissions)
+        fixgconfperm;
+        ;;
+  *)
+        gettext "Usage:  gnomemeeting-config-tool OPTION"; echo
+	gettext "Fixes problems with the GnomeMeeting settings"; echo; echo
+	gettext "  --clean                remove all user settings"; echo
+	gettext "  --install-schemas      install schemas with settings defaults (run as root)"; echo
+	gettext "  --clean-schemas        remove schemas with settings defaults (run as root)"; echo
+	gettext "  --fix-permissions      fix permissions of GConf repository (run as root)"; echo
+        exit 1
+        ;;
+esac
