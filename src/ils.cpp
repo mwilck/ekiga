@@ -657,14 +657,10 @@ void GMILSBrowser::Main ()
   gw = MyApp->GetMainWindow ();  
   users_list_store =
     GTK_LIST_STORE (gtk_tree_view_get_model (GTK_TREE_VIEW (lwp->tree_view)));
+  gtk_list_store_clear (GTK_LIST_STORE (users_list_store));
   gnomemeeting_threads_leave ();
 
   do {
-
-    gnomemeeting_threads_enter ();
-    gnomemeeting_statusbar_push (lwp->statusbar,
-				 _("Contacting %s..."), ldap_server);
-    gnomemeeting_threads_leave ();
 
     /* must be able to reach ldap server */
     if (!(ldap_connection = ldap_init (ldap_server, 389))) {
@@ -721,16 +717,12 @@ void GMILSBrowser::Main ()
 
       gnomemeeting_threads_enter ();
       if (rc != 0)
-	if (rc == LDAP_SERVER_DOWN) 
-	  gnomemeeting_statusbar_push (lwp->statusbar,
-				       _("Connection to %s lost..."),
-				       ldap_server);
-	else
+	if (rc != LDAP_SERVER_DOWN) 
 	  gnomemeeting_statusbar_push (lwp->statusbar, _("Could not fetch online users list."));
       gnomemeeting_threads_leave ();
   
       if (rc == LDAP_SERVER_DOWN)
-	PThread::Current ()->Sleep (3000);
+	PThread::Current ()->Sleep (4000);
 
       retry++;
     }
@@ -738,11 +730,18 @@ void GMILSBrowser::Main ()
   } while ((rc == LDAP_SERVER_DOWN) && (retry <= 5) && (no_error == TRUE));
 
 
-  if (rc == 0 && users_list_store != NULL && res) { 
+  if (rc == LDAP_SERVER_DOWN) {
+    
+    gnomemeeting_threads_enter ();
+    gnomemeeting_statusbar_push (lwp->statusbar,
+				 _("Connection to %s lost..."),
+				 ldap_server);
+    gnomemeeting_threads_leave ();
+  }
+  else if (rc == 0 && users_list_store != NULL && res) { 
 
     gnomemeeting_threads_enter ();
     gtk_tree_view_set_model (GTK_TREE_VIEW (lwp->tree_view), NULL);
-    gtk_list_store_clear (GTK_LIST_STORE (users_list_store));
     gnomemeeting_threads_leave ();
 	
     for (e = ldap_first_entry (ldap_connection, res); 
