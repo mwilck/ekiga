@@ -1,5 +1,11 @@
 2005-03-06  Damien Sandras  <dsandras@gnome.org>
 
+	* src/stunclient.cpp, stunclient.h: Added PSyncPoint to make
+	sure that SetSTUNServer has been called when STUN support
+	is enabled.
+
+2005-03-06  Damien Sandras  <dsandras@gnome.org>
+
 	* gnomemeeting.schemas.in.in: Enable silence detection by default.
 
 	* src/*endpoint.*: Update the RTP statistics every second instead 

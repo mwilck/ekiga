@@ -57,16 +57,19 @@ GMStunClient::GMStunClient (BOOL r)
 {
   gchar *conf_string = NULL;
   
-  reg = r;
+  test_only = !r;
 
   gnomemeeting_threads_enter ();
   conf_string = gm_conf_get_string (NAT_KEY "stun_server");
+  regist = gm_conf_get_bool (NAT_KEY "enable_stun_support");
   stun_host = conf_string;
-  g_free (conf_string);
   gnomemeeting_threads_leave ();
   
   
   this->Resume ();
+  thread_sync_point.Wait ();
+  
+  g_free (conf_string);
 }
 
 
@@ -85,8 +88,6 @@ void GMStunClient::Main ()
   GMEndPoint *endpoint = NULL;
   PSTUNClient *stun = NULL;
 
-  BOOL regist = FALSE;
-  
   endpoint = GnomeMeeting::Process ()->Endpoint ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   druid_window = GnomeMeeting::Process ()->GetDruidWindow ();
@@ -99,23 +100,29 @@ void GMStunClient::Main ()
   GtkWidget *dialog = NULL;
   GtkWidget *dialog_label = NULL;
 
-  char *name [] = { N_("Unknown NAT"), N_("Open NAT"),
-    N_("Cone NAT"), N_("Restricted NAT"), N_("Port Restricted NAT"),
-    N_("Symmetric NAT"), N_("Symmetric Firewall"), N_("Blocked"),
-    N_("Partially Blocked")};
+  char *name [] = 
+    { 
+      N_("Unknown NAT"), 
+      N_("Open NAT"),
+      N_("Cone NAT"), 
+      N_("Restricted NAT"), 
+      N_("Port Restricted NAT"),
+      N_("Symmetric NAT"), 
+      N_("Symmetric Firewall"), 
+      N_("Blocked"),
+      N_("Partially Blocked")
+    };
 
   for (int i = 0 ; i < 9 ; i++)
     name [i] = gettext (name [i]);
 
   PWaitAndSignal m(quit_mutex);
 
-  gnomemeeting_threads_enter ();
-  regist = gm_conf_get_bool (NAT_KEY "enable_stun_support");
-  gnomemeeting_threads_leave ();
-
-  if (!regist && reg) {
+  if (!regist && !test_only) {
 
     ((OpalManager *) endpoint)->SetSTUNServer (PString ());
+    thread_sync_point.Signal ();
+    
     gnomemeeting_threads_enter ();
     gm_history_window_insert (history_window, _("Removed STUN server"));
     gnomemeeting_threads_leave ();
@@ -125,9 +132,11 @@ void GMStunClient::Main ()
     
   
   /* Set the STUN server for the endpoint */
-  if (!stun_host.IsEmpty () && reg) {
+  if (!stun_host.IsEmpty () && !test_only) {
     
     ((OpalManager *) endpoint)->SetSTUNServer (stun_host);
+    thread_sync_point.Signal ();
+
     stun = endpoint->GetSTUN ();
 
     if (stun) {
@@ -139,13 +148,14 @@ void GMStunClient::Main ()
     }
   } 
   /* Only detects and configure */
-  else if (!reg && !stun_host.IsEmpty ()) {
+  else if (test_only && !stun_host.IsEmpty ()) {
 
     PSTUNClient stun (stun_host,
 		      endpoint->GetUDPPortBase(), 
 		      endpoint->GetUDPPortMax(),
 		      endpoint->GetRtpIpPortBase(), 
 		      endpoint->GetRtpIpPortMax());
+    thread_sync_point.Signal ();
 
     nat_type = name [stun.GetNatType ()];
 
@@ -239,6 +249,7 @@ void GMStunClient::Main ()
       gm_conf_set_bool (NAT_KEY "enable_stun_support", FALSE);
       
       ((OpalManager *) endpoint)->SetSTUNServer (PString ());
+      thread_sync_point.Signal ();
 
       gm_history_window_insert (history_window, _("Removed STUN server"));
 

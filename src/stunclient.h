@@ -75,7 +75,10 @@ public:
 
 protected:
 
-  BOOL reg;
+  PSyncPoint thread_sync_point;
+
+  BOOL regist;
+  BOOL test_only;
   PString stun_host;
   PString nat_type;
 
