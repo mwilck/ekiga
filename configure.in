@@ -1,6 +1,6 @@
 AC_INIT(gnomemeeting, 0.94.1, http://bugzilla.gnome.org/enter_bug.cgi?product=gnomemeeting)
 AC_CANONICAL_TARGET
-AC_PREREQ(2.50)
+AC_PREREQ(2.53)
 AC_CONFIG_SRCDIR(src/gnomemeeting.cpp)
 AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
 
@@ -233,7 +233,7 @@ CPPFLAGS="$CPPFLAGS_save"
 dnl ###########################################################################
 dnl   Check for SDL
 dnl ###########################################################################
-SDL_VERSION=1.1.3
+SDL_VERSION=1.2.4
 SDL_HAS_SDL=
 AM_PATH_SDL($SDL_VERSION,
             SDL_HAS_SDL="-DHAS_SDL",
