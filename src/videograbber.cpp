@@ -720,10 +720,12 @@ void GMVideoGrabber::VGClose (int display_logo)
 
 
 /* The video tester class */
-GMVideoTester::GMVideoTester (GtkWidget *p)
+GMVideoTester::GMVideoTester (GtkWidget *p, GtkWindow *w)
   :PThread (1000, AutoDeleteThread)
 {
   progress = p;
+  window = w;
+
   this->Resume ();
 }
 
@@ -819,9 +821,9 @@ void GMVideoTester::Main ()
 
   gnomemeeting_threads_enter ();
   if (error_code == - 1)
-    gnomemeeting_message_dialog (GTK_WINDOW (gm), msg);
+    gnomemeeting_message_dialog (GTK_WINDOW (window), msg);
   else
-    gnomemeeting_error_dialog (GTK_WINDOW (gm), msg);
+    gnomemeeting_error_dialog (GTK_WINDOW (window), msg);
   gnomemeeting_threads_leave ();
   
   g_free (msg);

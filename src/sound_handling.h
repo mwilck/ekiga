@@ -127,7 +127,7 @@ public:
    * BEHAVIOR     :  
    * PRE          :  
    */
-  GMAudioTester (GMH323EndPoint *);
+  GMAudioTester (GMH323EndPoint *, GtkWindow *);
 
 
   /* DESCRIPTION  :  The destructor.
@@ -147,6 +147,7 @@ protected:
 
   BOOL stop;
   PMutex quit_mutex;
+  GtkWindow *window;
 
   GMH323EndPoint *ep;
 };

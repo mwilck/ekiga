@@ -1,5 +1,18 @@
 2002-11-25 Damien Sandras  <dsandras@seconix.com>
 
+	* src/druid.cpp: Set the druid window as parent of the dialog boxes.
+
+	* src/main_window.cpp: Set the druid window as parent of 
+	the dialog boxes.
+
+	* src/sound_handling.cpp, src/sound_handling.h: Set the druid window
+	as parent of the dialog boxes. Suspend ESD before testing.
+	
+	* src/videograbber.cpp, src/videograbber.h: Set the druid window as 
+	parent of the dialog boxes.
+
+2002-11-25 Damien Sandras  <dsandras@seconix.com>
+
 	* src/druid.cpp: Added pages to configure the audio and video devices.
 	Improved the current druid look.
 

@@ -61,7 +61,7 @@ static void gnomemeeting_druid_page_prepare (GnomeDruidPage *, GnomeDruid *,
 					     gpointer);
 
 static void gnomemeeting_init_druid_user_page (GnomeDruid *);
-static void gnomemeeting_init_druid_audio_devices_page (GnomeDruid *);
+static void gnomemeeting_init_druid_audio_devices_page (GnomeDruid *); 
 static void gnomemeeting_init_druid_video_devices_page (GnomeDruid *);
 static void gnomemeeting_init_druid_connection_type_page (GnomeDruid *);
 
@@ -77,12 +77,14 @@ static void
 audio_test_button_clicked (GtkWidget *w, gpointer data)
 {
   static GMAudioTester *t = NULL; /* Keep it static */
-
+  GtkWindow *window = 
+    (GtkWindow *) g_object_get_data (G_OBJECT (druid), "window");
+  
   if (GTK_TOGGLE_BUTTON (w)->active) {
     
     if (t)
       delete (t);
-    t = new GMAudioTester (MyApp->Endpoint ());
+    t = new GMAudioTester (MyApp->Endpoint (), window);
   }
   else {
 
@@ -96,9 +98,11 @@ static void
 video_test_button_clicked (GtkWidget *w, gpointer data)
 {
   GMVideoTester *t = NULL;
+  GtkWindow *window = 
+    (GtkWindow *) g_object_get_data (G_OBJECT (druid), "window");
 
   if (GTK_TOGGLE_BUTTON (w)->active)   
-    t = new GMVideoTester ((GtkWidget *) data);
+    t = new GMVideoTester ((GtkWidget *) data, window);
 }
 
 
@@ -548,7 +552,8 @@ static void gnomemeeting_init_druid_connection_type_page (GnomeDruid *druid)
  * BEHAVIOR     :  Builds the druid page for the audio devices configuration.
  * PRE          :  /
  */
-static void gnomemeeting_init_druid_audio_devices_page (GnomeDruid *druid)
+static void 
+gnomemeeting_init_druid_audio_devices_page (GnomeDruid *druid)
 {
   GtkWidget *vbox = NULL;
   GtkWidget *table = NULL;
@@ -660,7 +665,8 @@ static void gnomemeeting_init_druid_audio_devices_page (GnomeDruid *druid)
  * BEHAVIOR     :  Builds the druid page for the video devices configuration.
  * PRE          :  /
  */
-static void gnomemeeting_init_druid_video_devices_page (GnomeDruid *druid)
+static void 
+gnomemeeting_init_druid_video_devices_page (GnomeDruid *druid)
 {
   GtkWidget *vbox = NULL;
   GtkWidget *table = NULL;
@@ -764,8 +770,8 @@ void gnomemeeting_init_druid (gpointer data)
   gtk_window_set_title (GTK_WINDOW (window), 
 			_("First Time Configuration Druid"));
   gtk_window_set_position (GTK_WINDOW (window), GTK_WIN_POS_CENTER);
-
   druid = GNOME_DRUID (gnome_druid_new ());
+
   gtk_container_add (GTK_CONTAINER (window), GTK_WIDGET (druid));
 
   g_object_set_data (G_OBJECT (druid), "window", window);

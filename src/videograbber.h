@@ -268,7 +268,7 @@ public:
    * BEHAVIOR     :  
    * PRE          :  
    */
-  GMVideoTester (GtkWidget *);
+  GMVideoTester (GtkWidget *, GtkWindow *);
 
 
   /* DESCRIPTION  :  The destructor.
@@ -285,5 +285,6 @@ protected:
 
   PMutex quit_mutex;
   GtkWidget *progress;
+  GtkWindow *window;
 };
 #endif

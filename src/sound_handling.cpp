@@ -265,11 +265,14 @@ gnomemeeting_sound_play_ringtone (GtkWidget *widget)
 
 
 /* The Audio tester class */
-GMAudioTester::GMAudioTester (GMH323EndPoint *e)
+GMAudioTester::GMAudioTester (GMH323EndPoint *e, GtkWindow *w)
   :PThread (1000, AutoDeleteThread)
 {
   ep = e;
   stop = FALSE;
+  window = w;
+
+  gnomemeeting_sound_daemons_suspend ();
 
   this->Resume ();
 }
@@ -280,6 +283,7 @@ GMAudioTester::~GMAudioTester ()
   quit_mutex.Wait ();
 
   quit_mutex.Signal ();
+  gnomemeeting_sound_daemons_resume ();
 }
 
 
@@ -298,7 +302,7 @@ void GMAudioTester::Main ()
 		     1, 8000, 16)) {
 
     gnomemeeting_threads_enter ();
-    gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Impossible to open the selected audio device (%s) for playing. Please check your audio setup."), (const char *) ep->GetSoundChannelPlayDevice ());
+    gnomemeeting_error_dialog (GTK_WINDOW (window), _("Impossible to open the selected audio device (%s) for playing. Please check your audio setup."), (const char *) ep->GetSoundChannelPlayDevice ());
     gnomemeeting_threads_leave ();
 
     stop = TRUE;
@@ -309,7 +313,7 @@ void GMAudioTester::Main ()
 		       1, 8000, 16)) {
 
     gnomemeeting_threads_enter ();
-    gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Impossible to open the selected audio device (%s) for recording. Please check your audio setup."), (const char *) ep->GetSoundChannelRecordDevice ());
+    gnomemeeting_error_dialog (GTK_WINDOW (window), _("Impossible to open the selected audio device (%s) for recording. Please check your audio setup."), (const char *) ep->GetSoundChannelRecordDevice ());
     gnomemeeting_threads_leave ();
 
     stop = TRUE;
@@ -324,7 +328,7 @@ void GMAudioTester::Main ()
     if (!recorder->Read (buffer, 8 * 1024)) {
       
       gnomemeeting_threads_enter ();
-      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Impossible to read data from the selected audio device (%s). Please check your audio setup."), (const char*) ep->GetSoundChannelRecordDevice ());
+      gnomemeeting_error_dialog (GTK_WINDOW (window), _("Impossible to read data from the selected audio device (%s). Please check your audio setup."), (const char*) ep->GetSoundChannelRecordDevice ());
       gnomemeeting_threads_leave ();
 
       stop = TRUE;
@@ -332,7 +336,7 @@ void GMAudioTester::Main ()
     else if (!player->Write (buffer, 8 * 1024)) {
 
       gnomemeeting_threads_enter ();
-      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Impossible to write data to the selected audio device (%s). Please check your audio setup."), (const char*) ep->GetSoundChannelPlayDevice ());
+      gnomemeeting_error_dialog (GTK_WINDOW (window), _("Impossible to write data to the selected audio device (%s). Please check your audio setup."), (const char*) ep->GetSoundChannelPlayDevice ());
       gnomemeeting_threads_leave ();
       
       stop = TRUE;
@@ -342,7 +346,7 @@ void GMAudioTester::Main ()
       if (!displayed) {
 
 	gnomemeeting_threads_enter ();
-	gnomemeeting_message_dialog (GTK_WINDOW (gm), _("GnomeMeeting is now recording from %s and playing back to %s. Please speak in your microphone. You should hear yourself back into the speakers. Please make sure that what you hear is not the electronic feedback but your real recorded voice. If you don't hear yourself speaking, please fix your audio setup before using GnomeMeeting or others won't hear you. Most probably that your driver is not able to do full-duplex."), (const char*) ep->GetSoundChannelRecordDevice (), (const char*) ep->GetSoundChannelPlayDevice ());
+	gnomemeeting_message_dialog (GTK_WINDOW (window), _("GnomeMeeting is now recording from %s and playing back to %s. Please speak in your microphone. You should hear yourself back into the speakers. Please make sure that what you hear is not the electronic feedback but your real recorded voice. If you don't hear yourself speaking, please fix your audio setup before using GnomeMeeting or others won't hear you. Most probably that your driver is not able to do full-duplex."), (const char*) ep->GetSoundChannelRecordDevice (), (const char*) ep->GetSoundChannelPlayDevice ());
 	gnomemeeting_threads_leave ();
       }
 
