@@ -1397,13 +1397,6 @@ finish_cb (GnomeDruidPage *p,
   /* Will be done through the config if the manager changes, but not
      if the manager doesn't change */
   GnomeMeeting::Process ()->DetectDevices ();  
-  audio_input_devices = GnomeMeeting::Process ()->GetAudioInputDevices ();
-  audio_output_devices = GnomeMeeting::Process ()->GetAudioOutpoutDevices ();
-  video_input_devices = GnomeMeeting::Process ()->GetVideoInputDevices ();
-  gm_prefs_window_update_devices_list (prefs_window, 
-				       audio_input_devices,
-				       audio_output_devices,
-				       video_input_devices);
   
 
   /* Displays a welcome message */
@@ -1571,7 +1564,6 @@ prepare_audio_devices_page_cb (GnomeDruidPage *page,
 			       GnomeDruid *druid,
 			       gpointer data)
 {
-  GmWindow *gw = NULL;
   GmDruidWindow *dw = NULL;
 
   GMH323EndPoint *ep = NULL;
@@ -1580,7 +1572,6 @@ prepare_audio_devices_page_cb (GnomeDruidPage *page,
   gchar *audio_manager = NULL;
   gchar *player = NULL;
   gchar *recorder = NULL;
-  GdkCursor *cursor = NULL;
   PStringArray devices;
   char **array = NULL;
 
@@ -1605,6 +1596,11 @@ prepare_audio_devices_page_cb (GnomeDruidPage *page,
   player = gm_conf_get_string (AUDIO_DEVICES_KEY "output_device");
   recorder = gm_conf_get_string (AUDIO_DEVICES_KEY "input_device");
     
+
+  /* FIXME: We should use DetectDevices, however DetectDevices
+   * works only for the currently selected audio and video plugins,
+   * not for a random one.
+   */
   gnomemeeting_sound_daemons_suspend ();
   if (PString ("Quicknet") == audio_manager)
     devices = OpalIxJDevice::GetDeviceNames ();
@@ -1622,8 +1618,6 @@ prepare_audio_devices_page_cb (GnomeDruidPage *page,
   array = devices.ToCharArray ();
   gm_dw_option_menu_update (dw->audio_player, array, player);
   free (array);
-
-  cout << "Should be fixed ?" << endl << flush;
 
   if (PString ("Quicknet") == audio_manager)
     devices = OpalIxJDevice::GetDeviceNames ();

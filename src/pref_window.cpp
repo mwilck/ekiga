@@ -1389,21 +1389,9 @@ static void
 refresh_devices_list_cb (GtkWidget *w,
 			 gpointer data)
 {
-  PStringList audio_input_devices;
-  PStringList audio_output_devices;
-  PStringList video_input_devices;
-
   g_return_if_fail (data != NULL);
 
   GnomeMeeting::Process ()->DetectDevices ();
-  audio_input_devices = GnomeMeeting::Process ()->GetAudioInputDevices ();
-  audio_output_devices = GnomeMeeting::Process ()->GetAudioOutpoutDevices ();
-  video_input_devices = GnomeMeeting::Process ()->GetVideoInputDevices ();
-
-  gm_prefs_window_update_devices_list (GTK_WIDGET (data), 
-				       audio_input_devices,
-				       audio_output_devices,
-				       video_input_devices);
 }
 
 
