@@ -21,8 +21,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GnomeMeeting 0.84.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-03 15:14+0200\n"
-"PO-Revision-Date: 2004-08-03 15:13+0200\n"
+"POT-Creation-Date: 2004-08-04 14:01+0200\n"
+"PO-Revision-Date: 2004-08-04 13:50+0200\n"
 "Last-Translator: Martin Willemoes Hansen <mwh@sysrq.dk>\n"
 "Language-Team: Danish <dansk@klid.dk>\n"
 "MIME-Version: 1.0\n"
@@ -57,7 +57,7 @@ msgstr "Viderestil altid opkald til den givne vært"
 
 #: gnomemeeting.schemas.in.in.h:4
 msgid "Audio input device"
-msgstr "Lydinddataenhed"
+msgstr "Lydinddata-enhed"
 
 #: gnomemeeting.schemas.in.in.h:5
 msgid "Audio output device"
@@ -81,7 +81,7 @@ msgid ""
 "the specified amount of time (in seconds)"
 msgstr ""
 "Afvis eller viderestil automatisk indgående opkald hvis intet svar gives "
-"efter den angivne mængde tid (i sekunder)"
+"efter den angivne tid (i sekunder)"
 
 #: gnomemeeting.schemas.in.in.h:10
 msgid ""
@@ -178,7 +178,7 @@ msgid ""
 "has no effect in fullscreen mode)"
 msgstr ""
 "Aktivér eller deaktivér bilineær interpolation ved visning af videobilleder "
-"(har ingen effekt ved fuldskærmstilstand)"
+"(har ingen effekt i fuldskærmstilstand)"
 
 #: gnomemeeting.schemas.in.in.h:29
 msgid "Enable registering"
@@ -220,7 +220,7 @@ msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:36 src/pref_window.cpp:867
 msgid "Enter your e-mail address"
-msgstr "Indtast din e-postadresse"
+msgstr "Indtast din e-post-adresse"
 
 #: gnomemeeting.schemas.in.in.h:37 src/pref_window.cpp:853
 msgid "Enter your first name"
@@ -435,7 +435,7 @@ msgstr "Antal billeder der overføres i hver pakke for GSM-kodningen"
 
 #: gnomemeeting.schemas.in.in.h:81
 msgid "Output device type"
-msgstr "Uddataenhedstype"
+msgstr "Uddata-enhedstype"
 
 #: gnomemeeting.schemas.in.in.h:82 src/pref_window.cpp:922
 msgid "Place windows displaying video above other windows during calls"
@@ -781,7 +781,7 @@ msgid ""
 "The output device type is the type of device connected to your Quicknet "
 "card. It can be either a POTS (Plain Old Telephone System) or a headset."
 msgstr ""
-"Uddataenhedens type er typen på enheden der er forbundet med dit "
+"Uddata-enhedens type er typen på enheden der er forbundet med dit "
 "Quicknetkort. Enheden kan være enten et gammelt telefonsystem eller en "
 "hovedtelefon."
 
@@ -791,7 +791,7 @@ msgid ""
 "restarted for the new value to take effect."
 msgstr ""
 "Porten at lytte på for indgående forbindelser. GnomeMeeting skal genstartes "
-"for at denne nye værdi skal være gældende."
+"for at for at aktivere den nye port."
 
 #: gnomemeeting.schemas.in.in.h:155
 msgid "The position of the local video window"
@@ -821,8 +821,8 @@ msgstr ""
 "TCP-portintervallet undtagen lytteport som GnomeMeeting bruger til indgående "
 "forbindelser. Du kan ændre TCP-portintervallet hvis du bruger IP-"
 "oversættelse og hvis du behøver flere kopier af GnomeMeeting kørende bagved "
-"din NAT/PAT-ruter. GnomeMeeting skal genstartes for at de nye værdier er "
-"gældende Dette portinterval har ingen effekt hvis begge parter i konferencen "
+"din NAT/PAT-ruter. GnomeMeeting skal genstartes for at aktivere de nye "
+"værdier. Dette portinterval har ingen effekt hvis begge parter i konferencen "
 "bruger en H.245-tunnel."
 
 #: gnomemeeting.schemas.in.in.h:159
@@ -833,11 +833,11 @@ msgid ""
 "your NAT/PAT router. GnomeMeeting needs to be restarted for the new values "
 "to take effect."
 msgstr ""
-"UDP-portintervallet der bruges af GnomeMeeting til RTP (lyd og video "
+"UDP-portintervallet der bruges af GnomeMeeting til RTP (lyd- og video-"
 "kanalforbindelser). Du kan ændre UDP-portintervallet hvis du bruger IP-"
 "oversættelse og hvis du behøver flere kopier af GnomeMeeting kørende bagved "
-"din NAT/PAT-ruter. GnomeMeeting skal genstartes for at de nye værdier er "
-"gældende."
+"din NAT/PAT-ruter. GnomeMeeting skal genstartes for at aktivere de nye "
+"værdier."
 
 #: gnomemeeting.schemas.in.in.h:160
 msgid ""
@@ -851,7 +851,7 @@ msgstr ""
 "UDP-portintervallet der bruges af GnomeMeeting til portvagtsregistrering. Du "
 "kan ændre UDP-portintervallet hvis du bruger IP-oversættelse og hvis du "
 "behøver flere kopier af GnomeMeeting kørende bagved din NAT/PAT-ruter. "
-"GnomeMeeting skal genstartes for at de nye værdier er gældende. Dette "
+"GnomeMeeting skal genstartes for at aktivere de nye værdier. Dette "
 "portinterval har ingen effekt hvis du ikke registrere ved en portvagt."
 
 #: gnomemeeting.schemas.in.in.h:161 src/pref_window.cpp:1250
@@ -1046,7 +1046,7 @@ msgstr "Videobillede"
 
 #: gnomemeeting.schemas.in.in.h:192
 msgid "Video input device"
-msgstr "Videoindenhed"
+msgstr "Videoind-enhed"
 
 #: gnomemeeting.schemas.in.in.h:193
 msgid "Video plugin"
@@ -1576,7 +1576,7 @@ msgstr "Opkaldsadresse - side %d/%d"
 
 #: src/druid.cpp:985
 msgid "Please enter your e-mail address:"
-msgstr "Indtast din e-postadresse:"
+msgstr "Indtast din e-post-adresse:"
 
 #: src/druid.cpp:993
 msgid ""
@@ -1631,13 +1631,13 @@ msgid ""
 "The audio manager is the plugin that will manage your audio devices, ALSA is "
 "probably the best choice when available."
 msgstr ""
-"Lydstyringen er det modul der tager sig af dine lydenheder. ALSA er "
+"Lydstyringen er det modul der tager sig af dine lyd-enheder. ALSA er "
 "sandsynligviss det bedste valg når det er muligt."
 
 #: src/druid.cpp:1150
 #, c-format
 msgid "Audio Devices - page %d/%d"
-msgstr "Lydenheder - side %d/%d"
+msgstr "Lyd-enheder - side %d/%d"
 
 #. The Audio devices
 #: src/druid.cpp:1162
@@ -1680,13 +1680,13 @@ msgid ""
 "The video manager is the plugin that will manage your video devices, "
 "Video4Linux is the most common choice if you own a webcam."
 msgstr ""
-"Videostyringen er det modul som tager sig af dine videoenheder. Video4Linux "
+"Videostyringen er det modul som tager sig af dine video-enheder. Video4Linux "
 "er det mest almindelige valg hvis du har et netkamera."
 
 #: src/druid.cpp:1293
 #, c-format
 msgid "Video Devices - page %d/%d"
-msgstr "Videoenheder - Side %d/%d"
+msgstr "Video-enheder - Side %d/%d"
 
 #. The Video devices
 #: src/druid.cpp:1305
@@ -2049,7 +2049,7 @@ msgid ""
 "Please provide your first name and e-mail in the Personal Data section in "
 "order to be able to register to the users directory."
 msgstr ""
-"Vær så venlig at angive dit fornavn og din e-postadresse i sektionen med "
+"Vær så venlig at angive dit fornavn og din e-post-adresse i sektionen med "
 "personlige data for at kunne registrere til brugerkataloget."
 
 #: src/ils.cpp:136
@@ -2640,7 +2640,7 @@ msgstr "Kontrolpanel"
 
 #: src/menu.cpp:373
 msgid "View audio/video transmission and reception statistics"
-msgstr "Vis statistik for overførsel og modtagelse af lyd og video"
+msgstr "Vis statistik for overførsel og modtagelse af lyd- og video"
 
 #: src/menu.cpp:378
 msgid "_Dialpad"
@@ -2883,8 +2883,8 @@ msgid ""
 "on the Gatekeeper"
 msgstr ""
 "Klik hér for at opdatere det brugerkatalog som du er registreret i med det "
-"nye fornavn, efternavn, den nye e-postadresse, kommentar og plads, eller for "
-"at opdatere dit alias på portvagten"
+"nye fornavn, efternavn, den nye e-post-adresse, kommentar og plads, eller "
+"for at opdatere dit alias på portvagten"
 
 #: src/pref_window.cpp:905
 msgid "GnomeMeeting GUI"
@@ -2900,7 +2900,7 @@ msgstr "Start i _skjult modus"
 
 #: src/pref_window.cpp:914
 msgid "Video Display"
-msgstr "Videoenhed"
+msgstr "Video-enhed"
 
 #. Translators: the full sentence is Use a fullscreen size
 #. of X by Y pixels
@@ -3047,11 +3047,11 @@ msgstr "Afspil"
 
 #: src/pref_window.cpp:1162
 msgid "Output Device"
-msgstr "Uddataenhedstype"
+msgstr "Uddata-enhedstype"
 
 #: src/pref_window.cpp:1167 src/pref_window.cpp:1359
 msgid "Output device:"
-msgstr "Uddataenhed:"
+msgstr "Uddata-enhed:"
 
 #: src/pref_window.cpp:1184
 msgid "All"
@@ -3299,11 +3299,11 @@ msgstr "Lydmodulet der vil vil blive brugt til at opdage enheder og styre dem."
 
 #: src/pref_window.cpp:1353 src/pref_window.cpp:1769
 msgid "Audio Devices"
-msgstr "Lydenheder"
+msgstr "Lyd-enheder"
 
 #: src/pref_window.cpp:1365 src/pref_window.cpp:1436
 msgid "Input device:"
-msgstr "Inddataenhed:"
+msgstr "Inddata-enhed:"
 
 #: src/pref_window.cpp:1371
 msgid "Quicknet Hardware"
@@ -3315,7 +3315,7 @@ msgstr "Gentag _annullering:"
 
 #: src/pref_window.cpp:1375
 msgid "Output device type:"
-msgstr "Uddataenhedstype:"
+msgstr "Uddata-enhedstype:"
 
 #: src/pref_window.cpp:1378
 msgid "Country _code:"
@@ -3371,7 +3371,7 @@ msgstr "Videomodul:"
 
 #: src/pref_window.cpp:1431 src/pref_window.cpp:1773
 msgid "Video Devices"
-msgstr "Videoenheder"
+msgstr "Video-enheder"
 
 #. Video Channel
 #: src/pref_window.cpp:1440
@@ -3585,7 +3585,7 @@ msgid ""
 "Impossible to open the selected audio device (%s) for recording. Please "
 "check your audio setup, the permissions and that the device is not busy."
 msgstr ""
-"Umuligt at åbne den valgte lydenhed (%s) for optagelse. Kontrollér venligst "
+"Umuligt at åbne den valgte lyd-enhed (%s) for optagelse. Kontrollér venligst "
 "din lydkonfiguration, rettighederne og at enheden ikke er optaget."
 
 #: src/sound_handling.cpp:338
@@ -3594,12 +3594,12 @@ msgid ""
 "Impossible to open the selected audio device (%s) for playing. Please check "
 "your audio setup, the permissions and that the device is not busy."
 msgstr ""
-"Umuligt at åbne den valgte lydenhed (%s) for afspilling. Kontrollér venligst "
-"din lydkonfiguration, rettighederne og at enheden ikke er optaget."
+"Umuligt at åbne den valgte lyd-enhed (%s) for afspilling. Kontrollér "
+"venligst din lydkonfiguration, rettighederne og at enheden ikke er optaget."
 
 #: src/sound_handling.cpp:377 src/sound_handling.cpp:453
 msgid "Cannot use the audio device"
-msgstr "Kan ikke bruge audioenheden"
+msgstr "Kan ikke bruge lyd-enheden"
 
 #: src/sound_handling.cpp:377
 #, c-format
@@ -3607,7 +3607,7 @@ msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
 "to read data from this device. Please check your audio setup."
 msgstr ""
-"Den valgte lydenhed (%s) kunne åbnes men det er umuligt at læse data fra "
+"Den valgte lyd-enhed (%s) kunne åbnes men det er umuligt at læse data fra "
 "denne enhed. Kontrollér venligst din lydkonfiguration."
 
 #: src/sound_handling.cpp:386
@@ -3624,7 +3624,7 @@ msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
 "to write data to this device. Please check your audio setup."
 msgstr ""
-"Den valgte lydenhed (%s) kunne åbnes men det er umuligt at skrive data til "
+"Den valgte lyd-enhed (%s) kunne åbnes men det er umuligt at skrive data til "
 "denne enhed. Kontrollér venligst din lydkonfiguration."
 
 #: src/sound_handling.cpp:577
@@ -3659,7 +3659,7 @@ msgstr "Åbn adressebog"
 
 #: src/toolbar.cpp:258
 msgid "Display images from your camera device"
-msgstr "Vis billeder fra din kameraenhed"
+msgstr "Vis billeder fra din kamera-enhed"
 
 #: src/toolbar.cpp:280
 msgid ""
@@ -3778,17 +3778,17 @@ msgstr "Viderestiller opkald til %s"
 #: src/videograbber.cpp:320
 #, c-format
 msgid "Opening video device %s with plugin %s"
-msgstr "Åbner videoenhed %s med modul %s"
+msgstr "Åbner video-enhed %s med modul %s"
 
 #: src/videograbber.cpp:348
 #, c-format
 msgid "Successfully opened video device %s, channel %d"
-msgstr "Åbnede videoenhed %s, kanal %d"
+msgstr "Åbnede video-enhed %s, kanal %d"
 
 #: src/videograbber.cpp:359
 #, c-format
 msgid "Error while opening video device %s"
-msgstr "Fejl ved åbning af videoenheden %s"
+msgstr "Fejl ved åbning af video-enheden %s"
 
 #. Translators: Do not translate MovingLogo and Picture
 #: src/videograbber.cpp:363
@@ -3801,11 +3801,11 @@ msgstr ""
 "Et GnomeMeeting logo der bevæger sig, vil blive overført ved samtaler. "
 "Bemærk at du kan altid overføre et givent billede eller GnomeMeeting logoet "
 "der bevæger sig, ved at vælge \"Billede\" som videomodul og \"BevægendeLogo"
-"\" eller \"StatiskBillede\" som videoenhed."
+"\" eller \"StatiskBillede\" som video-enhed."
 
 #: src/videograbber.cpp:365
 msgid "Couldn't open the video device"
-msgstr "Kunne ikke åbne videoenheden"
+msgstr "Kunne ikke åbne video-enheden"
 
 #: src/videograbber.cpp:369
 msgid ""
@@ -3817,7 +3817,7 @@ msgstr ""
 
 #: src/videograbber.cpp:373 src/videograbber.cpp:675
 msgid "Your video driver doesn't support the requested video format."
-msgstr "Din videoenhed understøtter ikke det ønskede videoformat."
+msgstr "Din video-enhed understøtter ikke det ønskede videoformat."
 
 #: src/videograbber.cpp:377
 msgid "Could not open the chosen channel."
@@ -3845,7 +3845,7 @@ msgstr "Fejl ved opsætning af billedstørrelsen."
 
 #: src/videograbber.cpp:429
 msgid "Opened the video device using the \"Picture\" video plugin"
-msgstr "Åbnede videoenheden med \"Billede\"-videomodulet"
+msgstr "Åbnede video-enheden med \"Billede\"-videomodulet"
 
 #: src/videograbber.cpp:575
 msgid "Picture"
@@ -3857,7 +3857,7 @@ msgid ""
 "GnomeMeeting is now testing the %s video device. If you experience machine "
 "crashes, then report a bug to the video driver author."
 msgstr ""
-"GnomeMeeting tester nu %s videoenheden. Hvis du oplever maskinnedbrud, send "
+"GnomeMeeting tester nu %s video-enheden. Hvis du oplever maskinnedbrud, send "
 "da en fejlrapport til forfatteren af videodrivrutinen."
 
 #: src/videograbber.cpp:649
