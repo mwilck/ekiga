@@ -34,7 +34,10 @@ struct edata {
 };
 
 /* somehow not declared in string.h */
+#ifndef HAVE_STRCASECMP
 int strcasecmp (const char *s1, const char *s2);
+#endif
+
 
 #define DEBUG 0			/* Debugging compiled in or not */
 #if DEBUG
