@@ -1,5 +1,14 @@
 2003-06-22 Damien Sandras  <dsandras@seconix.com>
 
+	* src/ldap_window.cpp, src/ldap_window.h, src/tools.cpp: Moved some
+	static functions on contacts to global functions so that they can
+	be used in src/tools.cpp. Added right-click menu support in the 
+	history.
+
+	* configure.in: Incremented version to 0.98.0 (yes!).
+	
+2003-06-22 Damien Sandras  <dsandras@seconix.com>
+
 	* src/gnomemeeting.cpp: Fixed tray_hack so that not the whole GM
 	is shown.
 	

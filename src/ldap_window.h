@@ -90,8 +90,7 @@ enum {
  * BEHAVIOR     :  Build the LDAP window and returns it.
  * PRE          :  /
  */
-GtkWidget *
-gnomemeeting_ldap_window_new (GmLdapWindow *);
+GtkWidget *gnomemeeting_ldap_window_new (GmLdapWindow *);
 
 
 /* DESCRIPTION  :  /
@@ -99,8 +98,7 @@ gnomemeeting_ldap_window_new (GmLdapWindow *);
  *                 searches are terminated.
  * PRE          :  /
  */
-void
-gnomemeeting_ldap_window_destroy_notebook_pages ();
+void gnomemeeting_ldap_window_destroy_notebook_pages ();
 
 
 /* DESCRIPTION  :  / 
@@ -108,8 +106,7 @@ gnomemeeting_ldap_window_destroy_notebook_pages ();
  * PRE          :  The GtkWidget must be a pointer to a page of the addressbook
  *                 notebook.
  */
-GmLdapWindowPage *
-gnomemeeting_get_ldap_window_page (GtkWidget *);
+GmLdapWindowPage *gnomemeeting_get_ldap_window_page (GtkWidget *);
 
 
 /* DESCRIPTION  :  / 
@@ -119,9 +116,8 @@ gnomemeeting_get_ldap_window_page (GtkWidget *);
  * PRE          :  The server name, the type of page to create 
  *                 (CONTACTS_SERVERS / CONTACTS_GROUPS)
  */
-int
-gnomemeeting_init_ldap_window_notebook (gchar *,
-					int);
+int gnomemeeting_init_ldap_window_notebook (gchar *,
+					    int);
 
 
 /* DESCRIPTION  :  / 
@@ -129,25 +125,22 @@ gnomemeeting_init_ldap_window_notebook (gchar *,
  *                 given as second parameter.
  * PRE          :  /
  */
-void
-gnomemeeting_addressbook_group_populate (GtkListStore *,
-					 char *);
+void gnomemeeting_addressbook_group_populate (GtkListStore *,
+					      char *);
 
 
 /* DESCRIPTION  :  / 
  * BEHAVIOR     :  Fills in the arborescence of servers and groups.
  * PRE          :  /
  */
-void
-gnomemeeting_addressbook_sections_populate ();
+void gnomemeeting_addressbook_sections_populate ();
 
 
 /* DESCRIPTION  :  / 
  * BEHAVIOR     :  Returns the GMURL for the given speed dial or NULL if none.
  * PRE          :  /
  */
-GMURL
-gnomemeeting_addressbook_get_url_from_speed_dial (const char *);
+GMURL gnomemeeting_addressbook_get_url_from_speed_dial (const char *);
 
 
 /* DESCRIPTION  :  / 
@@ -157,7 +150,28 @@ gnomemeeting_addressbook_get_url_from_speed_dial (const char *);
  *                 in a call or not.
  * PRE          :  /
  */
-void
-gnomemeeting_addressbook_update_menu_sensitivity ();
+void gnomemeeting_addressbook_update_menu_sensitivity ();
 
+
+/* DESCRIPTION  :  This callback is called when there is an "event_after"
+ *                 signal on one of the contacts.
+ * BEHAVIOR     :  Displays a popup menu with the required options.
+ * PRE          :  gpointer = 0 if the contact is clicked in the addressbook,
+ *                 1 otherwise.
+ */
+gint contact_clicked_cb (GtkWidget *,
+			 GdkEventButton *,
+			 gpointer);
+
+
+/* DESCRIPTION  :  This callback is called when the user double clicks on
+ *                 a row corresonding to an user.
+ * BEHAVIOR     :  Add the user name in the combo box and call him or transfer
+ *                 the call to that user.
+ * PRE          :  data is the page type or 3 if contact activated from history
+ */
+void contact_activated_cb (GtkTreeView *,
+			   GtkTreePath *,
+			   GtkTreeViewColumn *,
+			   gpointer);
 #endif
