@@ -66,7 +66,7 @@ process (LDAP * ldap, xmlDocPtr xp, xmlNodePtr * curp)
   unsigned int ignoremask;
 
   /* process the current node and update to next node */
-  msgid = ldaprun (ldap, xp, curp, &op, &ignoremask, 1);  /* 0 == async */
+  msgid = ldaprun (ldap, xp, curp, &op, &ignoremask, 0);  /* 0 == async */
 
   if (msgid > 0) {
     do {
@@ -337,7 +337,6 @@ BOOL GMILSClient::Register (int reg)
     xml_filename = DATADIR "/gnomemeeting/xdap/ils_nm_mod.xml";
 
 
-  gnomemeeting_threads_enter ();
   if (CheckServerConfig ()) {
 
     ldap_server =  
@@ -345,19 +344,23 @@ BOOL GMILSClient::Register (int reg)
 			       "/apps/gnomemeeting/ldap/ldap_server", 
 			       NULL);
 
+    gnomemeeting_threads_enter ();
     msg = g_strdup_printf (_("Contacting %s..."), ldap_server);
 
     if (reg != 2)
       gnomemeeting_statusbar_flash (gm, msg);
     gnomemeeting_log_insert (gw->history_text_view, msg);    
     g_free (msg);
+    gnomemeeting_threads_leave ();
 
     /* xml file must parse */
     if (!(xp = parseonly (xml_filename,
 			  xdap_getentity, &oldgetent, 1))) {
       
+      gnomemeeting_threads_enter ();
       gnomemeeting_error_dialog (GTK_WINDOW (gm),
 				 _("Failed to parse XML file."));
+      gnomemeeting_threads_leave ();
 
       no_error = FALSE;
     }
@@ -365,19 +368,23 @@ BOOL GMILSClient::Register (int reg)
     /* this also updates a pointer to the first node to process */
     else if ((rc = getldapinfo (xp, &current, &host, &port, &who,
 				&cred, &method))) {
-      
+
+      gnomemeeting_threads_enter ();      
       gnomemeeting_error_dialog (GTK_WINDOW (gm),
 				 _("Bad ldap information from XML file: %s."),
 				 pferrtostring (rc));
+      gnomemeeting_threads_leave ();
 
       no_error = FALSE;
     }
     /* must be able to reach ldap server */
     else if (!(ldap = ldap_init (ldap_server, 389))) {
       
+      gnomemeeting_threads_enter ();
       gnomemeeting_error_dialog (GTK_WINDOW (gm),
 				 _("Failed to open ldap server %s:%d."),
 				 ldap_server, "389");
+      gnomemeeting_threads_leave ();
 
       no_error = FALSE;
     }
@@ -385,23 +392,28 @@ BOOL GMILSClient::Register (int reg)
     else if (ldap_set_option (ldap, LDAP_OPT_NETWORK_TIMEOUT, &time_limit)
 	     != LDAP_OPT_SUCCESS) {
      
+      gnomemeeting_threads_enter ();
       gnomemeeting_error_dialog (GTK_WINDOW (gm),
 				 _("Failed to set time limit on ldap operations."));
-      
+      gnomemeeting_threads_leave ();
+
       no_error = FALSE;  
     }
     /* must be able to bind to ldap server */
     else if ((rc = ldap_bind_s (ldap, who, cred, method))) {
       
+      gnomemeeting_threads_enter ();
       gnomemeeting_error_dialog (GTK_WINDOW (gm),
 				 _("Failed to bind to ldap server: %s."),
 				 ldap_err2string (rc));
+      gnomemeeting_threads_leave ();
 
       no_error = FALSE;
     }
     /* all successful, now process the xml ldap elements */
     else {
 
+      gnomemeeting_threads_enter ();
       if (CheckFieldsConfig ()) {
 	while (current) {
 
@@ -474,7 +486,9 @@ BOOL GMILSClient::Register (int reg)
 	gnomemeeting_statusbar_flash (gm, msg);
       gnomemeeting_log_insert (gw->history_text_view, msg);
       g_free (msg);
-    }  
+
+      gnomemeeting_threads_leave ();
+    }
   }
   else
     no_error = FALSE; /* CheckServerConfig failed */
@@ -484,6 +498,7 @@ BOOL GMILSClient::Register (int reg)
 
   if (!no_error) {
 
+    gnomemeeting_threads_enter ();
     if ((reg == 1) || (reg == 2))
       msg = g_strdup_printf (_("Error while registering to %s."),
 			     ldap_server);
@@ -499,12 +514,11 @@ BOOL GMILSClient::Register (int reg)
     has_to_register = 0;
     has_to_unregister = 0;
     has_to_modify = 0;
-
+    gnomemeeting_threads_leave ();
   }
 
   g_free (ldap_server);
 
-  gnomemeeting_threads_leave ();
 
   return no_error;
 }
