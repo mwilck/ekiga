@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
-"POT-Creation-Date: 2001-10-15 14:36+0200\n"
-"PO-Revision-Date: 2001-10-15 14:39+0200\n"
+"POT-Creation-Date: 2001-10-21 14:11+0200\n"
+"PO-Revision-Date: 2001-10-21 14:14+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -310,17 +310,17 @@ msgstr "Fel vid registrering med portvakt %s."
 msgid "No gatekeeper found."
 msgstr "Ingen portvakt hittades."
 
-#: src/ils.cpp:136
+#: src/ils.cpp:156
 #, c-format
 msgid "Connecting to ILS directory %s, port %s"
 msgstr "Ansluter till ILS-katalogen %s, port %s"
 
-#: src/ils.cpp:149
+#: src/ils.cpp:169
 #, c-format
 msgid "Error while connecting to ILS directory %s, port %s"
 msgstr "Fel vid anslutning till ILS-katalogen %s, port %s"
 
-#: src/ils.cpp:319
+#: src/ils.cpp:339
 #, c-format
 msgid ""
 "Error while connecting to ILS directory %s, port %s:\n"
@@ -329,103 +329,115 @@ msgstr ""
 "Fel vid anslutning till ILS-katalogen %s, port %s:\n"
 "Inget svar från servern."
 
-#: src/ils.cpp:335
+#: src/ils.cpp:355
 #, c-format
 msgid "Sucessfully registered to ILS directory %s, port %s"
 msgstr "Lyckades registrera i ILS-katalogen %s, port %s"
 
-#: src/ils.cpp:337
+#: src/ils.cpp:357
 #, c-format
 msgid "Sucessfully unregistered from ILS directory %s, port %s"
 msgstr "Lyckades avregistrera från ILS-katalogen %s, port %s"
 
-#: src/ils.cpp:406
-msgid "Please provide an ILS directory in Settings"
-msgstr "Ange en ILS-katalog i Inställningar"
+#: src/ils.cpp:434
+msgid "Please provide an ILS directory in the window"
+msgstr "Ange en ILS-katalog i fönstret"
 
-#: src/ils.cpp:421
+#: src/ils.cpp:456
 msgid "Connecting to ILS directory... Please Wait."
 msgstr "Ansluter till ILS-katalogen... Var vänlig vänta."
 
-#: src/ils.cpp:431 src/ils.cpp:440
+#: src/ils.cpp:472 src/ils.cpp:481
 msgid "Error while connecting to ILS directory"
 msgstr "Fel vid anslutning till ILS-katalog"
 
-#: src/ils.cpp:449
-msgid "Searching for users... Please Wait."
-msgstr "Söker efter användare... Var vänlig vänta."
+#: src/ils.cpp:489
+msgid "Fetching users' information... Please Wait."
+msgstr "Hämtar användarinformation... Var vänlig vänta."
 
-#: src/ils.cpp:466
+#: src/ils.cpp:507
 msgid "Search completed!"
 msgstr "Sökningen färdig!"
 
-#. Translators: This is as in "Audio".
-#: src/ldap.cpp:241
-msgid "A"
-msgstr "L"
-
-#. Translators: This is as in "Video".
-#: src/ldap.cpp:243
-msgid "V"
-msgstr "V"
-
-#: src/ldap.cpp:244
-msgid "First Name"
-msgstr "Förnamn"
-
-#: src/ldap.cpp:244
-msgid "Last name"
-msgstr "Efternamn"
-
-#: src/ldap.cpp:244
-msgid "E-mail"
-msgstr "E-post"
-
-#: src/ldap.cpp:245
-msgid "Location"
-msgstr "Plats"
-
-#: src/ldap.cpp:245
-msgid "Comment"
-msgstr "Kommentar"
-
-#: src/ldap.cpp:245
-msgid "IP"
-msgstr "IP"
-
 #. ILS directories combo box
-#: src/ldap.cpp:262
+#: src/ldap.cpp:239
 msgid "ILS directories to browse"
 msgstr "ILS-kataloger att bläddra i"
 
-#: src/ldap.cpp:271
-msgid "ILS directories list:"
-msgstr "Lista över ILS-kataloger:"
+#: src/ldap.cpp:247
+msgid "ILS directory:"
+msgstr "ILS-katalog:"
 
-#: src/ldap.cpp:298
+#: src/ldap.cpp:260
+msgid "Refresh"
+msgstr "Uppdatera"
+
+#: src/ldap.cpp:275
 msgid "first name"
 msgstr "förnamn"
 
-#: src/ldap.cpp:301
+#: src/ldap.cpp:278
 msgid "last name"
 msgstr "efternamn"
 
-#: src/ldap.cpp:304
+#: src/ldap.cpp:281
 msgid "e-mail"
 msgstr "e-post"
 
-#: src/ldap.cpp:307
+#: src/ldap.cpp:284
 msgid "location"
 msgstr "plats"
 
-#: src/ldap.cpp:334
+#: src/ldap.cpp:307
 msgid "Apply filter on"
 msgstr "Tillämpa filter på"
 
 #. Ldap users list
-#: src/ldap.cpp:350
+#: src/ldap.cpp:316
 msgid "ILS Users List"
 msgstr "ILS-användarlista"
+
+#: src/ldap.cpp:327
+msgid "No directory"
+msgstr "Ingen katalog"
+
+#: src/ldap.cpp:330
+msgid "Search Filter"
+msgstr "Sökfilter"
+
+#. Translators: This is as in "Audio".
+#: src/ldap.cpp:374
+msgid "A"
+msgstr "L"
+
+#. Translators: This is as in "Video".
+#: src/ldap.cpp:376
+msgid "V"
+msgstr "V"
+
+#: src/ldap.cpp:377
+msgid "First Name"
+msgstr "Förnamn"
+
+#: src/ldap.cpp:377
+msgid "Last name"
+msgstr "Efternamn"
+
+#: src/ldap.cpp:377
+msgid "E-mail"
+msgstr "E-post"
+
+#: src/ldap.cpp:378
+msgid "Location"
+msgstr "Plats"
+
+#: src/ldap.cpp:378
+msgid "Comment"
+msgstr "Kommentar"
+
+#: src/ldap.cpp:378
+msgid "IP"
+msgstr "IP"
 
 #: src/main.cpp:165
 msgid "Answering incoming call"
@@ -1287,8 +1299,8 @@ msgstr "Fel med ramhastigheten."
 msgid "Error with the frame size."
 msgstr "Fel med ramhastigheten."
 
-#~ msgid "Search filter"
-#~ msgstr "Sökfilter"
+#~ msgid "ILS directories list:"
+#~ msgstr "Lista över ILS-kataloger:"
 
 #~ msgid "Can't create applet!\n"
 #~ msgstr "Kan inte skapa panelprogram!\n"
