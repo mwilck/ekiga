@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-07-27 14:51+0200\n"
-"PO-Revision-Date: 2004-07-27 16:43+0200\n"
+"POT-Creation-Date: 2004-08-08 19:49+0200\n"
+"PO-Revision-Date: 2004-08-08 23:39+0200\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -20,8 +20,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #. Add the window icon and title
-#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:1046
-#: src/main_window.cpp:1255
+#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:1067
+#: src/main_window.cpp:1276
 msgid "GnomeMeeting"
 msgstr "GnomeMeeting"
 
@@ -102,7 +102,7 @@ msgstr ""
 msgid "Clear inactive calls"
 msgstr "Ukončovat neaktivní hovory"
 
-#: gnomemeeting.schemas.in.in.h:15 src/addressbook_window.cpp:810
+#: gnomemeeting.schemas.in.in.h:15 src/addressbook_window.cpp:857
 msgid "Comment"
 msgstr "Komentář"
 
@@ -376,7 +376,7 @@ msgstr "Přijímací port"
 msgid "Local video window size"
 msgstr "Velikost okna lokálního videa"
 
-#: gnomemeeting.schemas.in.in.h:70 src/addressbook_window.cpp:847
+#: gnomemeeting.schemas.in.in.h:70 src/addressbook_window.cpp:894
 msgid "Location"
 msgstr "Umístění"
 
@@ -1044,9 +1044,218 @@ msgstr "Náhled videa"
 msgid "Video size"
 msgstr "Velikost videa"
 
+#: lib/about/gnome-about.c:203
+msgid "Credits"
+msgstr "Kredity"
+
+#: lib/about/gnome-about.c:235
+msgid "Written by"
+msgstr "Napsali"
+
+#: lib/about/gnome-about.c:250
+msgid "Documented by"
+msgstr "Zdokumentovali"
+
+#: lib/about/gnome-about.c:265
+msgid "Translated by"
+msgstr "Přeložili"
+
+#. Add the credits button
+#: lib/about/gnome-about.c:326
+msgid "C_redits"
+msgstr "_Kredity"
+
+#: lib/about/gnome-about.c:377
+msgid "Program name"
+msgstr "Název programu"
+
+#: lib/about/gnome-about.c:378
+msgid "The name of the program"
+msgstr "Název programu"
+
+#: lib/about/gnome-about.c:385
+msgid "Program version"
+msgstr "Verze programu"
+
+#: lib/about/gnome-about.c:386
+msgid "The version of the program"
+msgstr "Verze programu"
+
+#: lib/about/gnome-about.c:392
+msgid "Copyright string"
+msgstr "Řetězec copyrightu"
+
+#: lib/about/gnome-about.c:393
+msgid "Copyright information for the program"
+msgstr "Informace o copyrightu na program"
+
+#: lib/about/gnome-about.c:400
+msgid "Comments string"
+msgstr "Řetězec s poznámkami"
+
+#: lib/about/gnome-about.c:401
+msgid "Comments about the program"
+msgstr "Poznámky o programu"
+
+#: lib/about/gnome-about.c:407
+msgid "Authors"
+msgstr "Autoři"
+
+#: lib/about/gnome-about.c:408
+msgid "List of authors of the programs"
+msgstr "Seznam autorů programů"
+
+#: lib/about/gnome-about.c:410
+msgid "Author entry"
+msgstr "Položka autora"
+
+#: lib/about/gnome-about.c:411
+msgid "A single author entry"
+msgstr "Položka jednoho autora"
+
+#: lib/about/gnome-about.c:418
+msgid "Documenters"
+msgstr "Dokumentující"
+
+#: lib/about/gnome-about.c:419
+msgid "List of people documenting the program"
+msgstr "Seznam lidí dokumentujících program"
+
+#: lib/about/gnome-about.c:421
+msgid "Documenter entry"
+msgstr "Položka dokumentujícího"
+
+#: lib/about/gnome-about.c:422
+msgid "A single documenter entry"
+msgstr "Položka jednoho dokumentujícího"
+
+#: lib/about/gnome-about.c:430
+msgid "Translator credits"
+msgstr "Kredity překladatelů"
+
+#: lib/about/gnome-about.c:431
+msgid ""
+"Credits to the translators. This string should be marked as translatable"
+msgstr "Kredity překladateům. Tento řetězec by měl být označen jako přeložitelný"
+
+#: lib/about/gnome-about.c:438 lib/druid/gnome-druid-page-standard.c:135
+msgid "Logo"
+msgstr "Logo"
+
+#: lib/about/gnome-about.c:439
+msgid "A logo for the about box"
+msgstr "Logo pro dialog o aplikaci"
+
+#: lib/about/gnome-about.c:518
+#, c-format
+msgid "About %s"
+msgstr "O %s"
+
 #: lib/dialog.c:254
 msgid "Do not show this dialog again"
 msgstr "Příště tento dialog nezobrazovat"
+
+#: lib/druid/gnome-druid-page-standard.c:127
+msgid "Title"
+msgstr "Nadpis"
+
+#: lib/druid/gnome-druid-page-standard.c:128
+msgid "Title of the druid"
+msgstr "Nadpis druida"
+
+#: lib/druid/gnome-druid-page-standard.c:136
+msgid "Logo image"
+msgstr "Obrázek loga"
+
+#: lib/druid/gnome-druid-page-standard.c:143
+msgid "Top Watermark"
+msgstr "Horní vodoznak"
+
+#: lib/druid/gnome-druid-page-standard.c:144
+msgid "Watermark image for the top"
+msgstr "Obrázek vodoznaku nahoře"
+
+#: lib/druid/gnome-druid-page-standard.c:151
+msgid "Title Foreground"
+msgstr "Popředí nadpisu"
+
+#: lib/druid/gnome-druid-page-standard.c:152
+msgid "Foreground color of the title"
+msgstr "Barva popředí nadpisu"
+
+#: lib/druid/gnome-druid-page-standard.c:159
+msgid "Title Foreground Color"
+msgstr "Barva popředí nadpisu"
+
+#: lib/druid/gnome-druid-page-standard.c:160
+msgid "Foreground color of the title as a GdkColor"
+msgstr "Barva popředí nadpisu jako GdkColor"
+
+#: lib/druid/gnome-druid-page-standard.c:167
+msgid "Title Foreground color set"
+msgstr "Barva popředí nadpisu nastavena"
+
+#: lib/druid/gnome-druid-page-standard.c:168
+msgid "Foreground color of the title is set"
+msgstr "Barva popředí nadpisu je nastavena"
+
+#: lib/druid/gnome-druid-page-standard.c:175
+#: lib/druid/gnome-druid-page-standard.c:183
+msgid "Background Color"
+msgstr "Barva pozadí"
+
+#: lib/druid/gnome-druid-page-standard.c:176
+msgid "Background color"
+msgstr "Barva pozadí"
+
+#: lib/druid/gnome-druid-page-standard.c:184
+msgid "Background color as a GdkColor"
+msgstr "Barva pozadí jako GdkColor"
+
+#: lib/druid/gnome-druid-page-standard.c:191
+msgid "Background color set"
+msgstr "Barva pozadí nastavena"
+
+#: lib/druid/gnome-druid-page-standard.c:192
+msgid "Background color is set"
+msgstr "Barva pozadí je nastavena"
+
+#: lib/druid/gnome-druid-page-standard.c:199
+#: lib/druid/gnome-druid-page-standard.c:207
+msgid "Logo Background Color"
+msgstr "Barva pozadí loga"
+
+#: lib/druid/gnome-druid-page-standard.c:200
+msgid "Logo Background color"
+msgstr "Barva pozadí loga"
+
+#: lib/druid/gnome-druid-page-standard.c:208
+msgid "Logo Background color as a GdkColor"
+msgstr "Barva pozadí loga jako GdkColor"
+
+#: lib/druid/gnome-druid-page-standard.c:215
+msgid "Logo Background color set"
+msgstr "Barva pozadí loga nastavena"
+
+#: lib/druid/gnome-druid-page-standard.c:216
+msgid "Logo Background color is set"
+msgstr "Barva pozadí loga je nastavena"
+
+#: lib/druid/gnome-druid.c:154
+msgid "Show Finish"
+msgstr "Zobrazovat Dokončit"
+
+#: lib/druid/gnome-druid.c:155
+msgid "Show the 'Finish' button instead of the 'Next' button"
+msgstr "Zobrazovat tlačítko 'Dokončit' místo tlačítka 'Vpřed'"
+
+#: lib/druid/gnome-druid.c:162
+msgid "Show Help"
+msgstr "Zobrazovat Nápověda"
+
+#: lib/druid/gnome-druid.c:163
+msgid "Show the 'Help' button"
+msgstr "Zobrazovat tlačítko 'Nápověda'"
 
 #: lib/gm_conf-gconf.c:155
 msgid ""
@@ -1055,6 +1264,237 @@ msgid ""
 msgstr ""
 "Chyba při práci s konfiguracemi.\n"
 "Některé vaše nastavení nemusí být uloženy."
+
+#: src/addressbook_window.cpp:657
+msgid "Contact collision"
+msgstr "Kolize kontaktů"
+
+#: src/addressbook_window.cpp:659
+#, c-format
+msgid ""
+"Another contact with the same speed dial already exists in your address "
+"book:\n"
+"\n"
+"<b>Contact Name</b>: %s\n"
+"<b>Contact URL</b>: %s\n"
+"<b>Contact Speed Dial</b>: %s\n"
+msgstr ""
+"Ve vašem adresáři již existuje jiný kontakt se stejným rychlým vytáčením:\n"
+"\n"
+"<b>Jméno kontaktu</b>: %s\n"
+"<b>URL kontaktu</b>: %s\n"
+"<b>Rychlé vytáčení kontaktu</b>: %s\n"
+
+#: src/addressbook_window.cpp:659 src/addressbook_window.cpp:661
+#: src/druid.cpp:853 src/pref_window.cpp:1185
+msgid "None"
+msgstr "Nic"
+
+#: src/addressbook_window.cpp:661
+#, c-format
+msgid ""
+"Another contact with similar information already exists in your address "
+"book:\n"
+"\n"
+"<b>Contact Name</b>: %s\n"
+"<b>Contact URL</b>: %s\n"
+"<b>Contact Speed Dial</b>: %s\n"
+"\n"
+"Do you still want to add the contact?"
+msgstr ""
+"Ve vašem adresáři již existuje jiný kontakt s podobnými informacemi:\n"
+"\n"
+"<b>Jméno kontaktu</b>: %s\n"
+"<b>URL kontaktu</b>: %s\n"
+"<b>Rychlé vytáčení kontaktu</b>: %s\n"
+"\n"
+"Chcete ještě přidat tento kontakt?Do you still want to add the contact?"
+
+#. Translators: This is "S" as in "Status"
+#: src/addressbook_window.cpp:821
+msgid "S"
+msgstr "S"
+
+#: src/addressbook_window.cpp:832 src/pref_window.cpp:445
+msgid "Name"
+msgstr "Jméno"
+
+#: src/addressbook_window.cpp:844
+msgid "URL"
+msgstr "URL"
+
+#: src/addressbook_window.cpp:870 src/calls_history_window.cpp:700
+msgid "Software"
+msgstr "Software"
+
+#: src/addressbook_window.cpp:883
+msgid "E-Mail"
+msgstr "E-mail"
+
+#: src/addressbook_window.cpp:907
+msgid "Categories"
+msgstr "Kategorie"
+
+#: src/addressbook_window.cpp:920
+msgid "Speed Dial"
+msgstr "Rychlé vytáčení"
+
+#: src/addressbook_window.cpp:1251 src/addressbook_window.cpp:1281
+#: src/addressbook_window.cpp:1914 src/calls_history_window.cpp:236
+msgid "C_all Contact"
+msgstr "Za_volat kontaktu"
+
+#: src/addressbook_window.cpp:1256 src/addressbook_window.cpp:1286
+msgid "_Copy URL to clipboard"
+msgstr "Z_kopírovat URL do schránky"
+
+#: src/addressbook_window.cpp:1263 src/addressbook_window.cpp:1900
+msgid "_Properties"
+msgstr "_Vlastnosti"
+
+#: src/addressbook_window.cpp:1270 src/addressbook_window.cpp:1895
+msgid "_Delete"
+msgstr "_Odstranit"
+
+#: src/addressbook_window.cpp:1293 src/addressbook_window.cpp:1924
+#: src/calls_history_window.cpp:243
+msgid "Add Contact to _Address Book"
+msgstr "Přidat kontakt do _adresáře"
+
+#: src/addressbook_window.cpp:1859
+msgid "Address Book"
+msgstr "Adresář"
+
+#: src/addressbook_window.cpp:1886
+msgid "_File"
+msgstr "_Soubor"
+
+#: src/addressbook_window.cpp:1888
+msgid "New _Address Book"
+msgstr "Nový _adresář"
+
+#: src/addressbook_window.cpp:1907 src/menu.cpp:328
+msgid "_Close"
+msgstr "_Zavřít"
+
+#: src/addressbook_window.cpp:1912
+msgid "C_ontact"
+msgstr "_Kontakt"
+
+#: src/addressbook_window.cpp:1920
+msgid "New _Contact"
+msgstr "Nový _kontakt"
+
+#: src/addressbook_window.cpp:1997
+msgid "On LDAP servers"
+msgstr "Na serverech LDAP"
+
+#. Init the address book
+#: src/addressbook_window.cpp:2005 src/gnomemeeting.cpp:422
+msgid "On This Computer"
+msgstr "V tomto počítači"
+
+#: src/addressbook_window.cpp:2036
+msgid "Find all contacts"
+msgstr "Hledat všechny kontakty"
+
+#: src/addressbook_window.cpp:2041
+msgid "Name contains"
+msgstr "Jméno obsahuje"
+
+#: src/addressbook_window.cpp:2045
+msgid "URL contains"
+msgstr "URL obsahuje"
+
+#: src/addressbook_window.cpp:2049
+msgid "Belongs to category"
+msgstr "Patří do kategorie"
+
+#: src/addressbook_window.cpp:2171
+msgid "Edit the Contact Information"
+msgstr "Upravit kontaktní informace"
+
+#: src/addressbook_window.cpp:2192 src/addressbook_window.cpp:2576
+msgid "Name:"
+msgstr "Jméno:"
+
+#: src/addressbook_window.cpp:2212
+msgid "URL:"
+msgstr "URL:"
+
+#: src/addressbook_window.cpp:2232
+msgid "Email:"
+msgstr "E-mail:"
+
+#: src/addressbook_window.cpp:2253
+msgid "Speed Dial:"
+msgstr "Rychlé vytáčení:"
+
+#: src/addressbook_window.cpp:2275
+msgid "Categories:"
+msgstr "Kategorie:"
+
+#: src/addressbook_window.cpp:2300
+msgid "Local Addressbook:"
+msgstr "Místní adresář:"
+
+#: src/addressbook_window.cpp:2451
+#, c-format
+msgid "Are you sure you want to delete %s from %s?"
+msgstr "Jste si jisti, že chcete odstranit %s z %s?"
+
+#: src/addressbook_window.cpp:2559
+msgid "Add an address book"
+msgstr "Přidat adresář"
+
+#: src/addressbook_window.cpp:2597
+msgid "Type:"
+msgstr "Typ:"
+
+#: src/addressbook_window.cpp:2604
+msgid "Local"
+msgstr "Místní"
+
+#: src/addressbook_window.cpp:2609
+msgid "Remote LDAP"
+msgstr "Vzdálený LDAP"
+
+#: src/addressbook_window.cpp:2614
+msgid "Remote ILS"
+msgstr "Vzdálený ILS"
+
+#: src/addressbook_window.cpp:2646
+msgid "Search Scope:"
+msgstr "Rozsah hledání:"
+
+#: src/addressbook_window.cpp:2653
+msgid "Subtree"
+msgstr "Podstrom"
+
+#: src/addressbook_window.cpp:2658
+msgid "One Level"
+msgstr "Jedna úroveň"
+
+#: src/addressbook_window.cpp:2688
+msgid "Hostname:"
+msgstr "Název počítače:"
+
+#: src/addressbook_window.cpp:2709
+msgid "Port:"
+msgstr "Port:"
+
+#: src/addressbook_window.cpp:2732
+msgid "Base DN:"
+msgstr "Základní DN:"
+
+#: src/addressbook_window.cpp:2753
+msgid "Search Attribute:"
+msgstr "Hledaný atribut:"
+
+#: src/addressbook_window.cpp:2851
+#, c-format
+msgid "Are you sure you want to delete %s and all its contacts?"
+msgstr "Jste si jisti, že chcete odstranit %s a všechny kontakty v ní?"
 
 #: src/callbacks.cpp:86
 msgid "_Retrieve Call"
@@ -1136,6 +1576,38 @@ msgstr ""
 "GnomeMeeting je plnohodnotná aplikace pro videokonference kompatibilní s "
 "H.323, VoIP a IP-Telephony, která vám umožňuje vytvářet zvukové a video "
 "hovory se vzdálenými uživateli s hardware nebo software H.323."
+
+#: src/calls_history_window.cpp:611
+msgid "Received Calls"
+msgstr "Přijaté hovory"
+
+#: src/calls_history_window.cpp:611
+msgid "Placed Calls"
+msgstr "Odchozí hovory"
+
+#: src/calls_history_window.cpp:611
+msgid "Unanswered Calls"
+msgstr "Nezodpovězené hovory"
+
+#: src/calls_history_window.cpp:623 src/menu.cpp:479 src/menu.cpp:656
+msgid "Calls History"
+msgstr "Historie hovorů"
+
+#: src/calls_history_window.cpp:664
+msgid "Date"
+msgstr "Datum"
+
+#: src/calls_history_window.cpp:672
+msgid "Remote User"
+msgstr "Vzdálený uživatel"
+
+#: src/calls_history_window.cpp:681
+msgid "Call Duration"
+msgstr "Délka hovoru"
+
+#: src/calls_history_window.cpp:691
+msgid "Call End Reason"
+msgstr "Důvod ukončení hovoru"
 
 #. shouldn't happen...
 #: src/chat_window.cpp:249
@@ -1502,11 +1974,6 @@ msgstr ""
 "Vstup videa: %s\n"
 "Callto URL: %s\n"
 
-#: src/druid.cpp:853 src/addressbook_window.cpp:614
-#: src/addressbook_window.cpp:616 src/pref_window.cpp:1185
-msgid "None"
-msgstr "Nic"
-
 #: src/druid.cpp:872
 msgid ""
 "This is the GnomeMeeting general configuration druid. The following steps "
@@ -1830,7 +2297,7 @@ msgstr "Uživatel nenalezen"
 msgid "Call completed"
 msgstr "Hovor ukončen"
 
-#: src/endpoint.cpp:1289 src/main_window.cpp:1346
+#: src/endpoint.cpp:1289 src/main_window.cpp:1360
 msgid ""
 "Lost packets:\n"
 "Late packets:\n"
@@ -2003,11 +2470,6 @@ msgstr "Zastavuji aktuální hovor"
 msgid "Refusing Incoming call"
 msgstr "Odmítám příchozí hovor"
 
-#. Init the address book
-#: src/gnomemeeting.cpp:422 src/addressbook_window.cpp:1821
-msgid "On This Computer"
-msgstr "V tomto počítači"
-
 #: src/gnomemeeting.cpp:422
 msgid "Personal"
 msgstr "Osobní"
@@ -2095,226 +2557,6 @@ msgstr "Odregistrován od adresáře uživatelů %s"
 msgid "Error while registering to %s"
 msgstr "Chyba při registraci u %s"
 
-#: src/addressbook_window.cpp:612
-msgid "Contact collision"
-msgstr "Kolize kontaktů"
-
-#: src/addressbook_window.cpp:614
-#, c-format
-msgid ""
-"Another contact with the same speed dial already exists in your address "
-"book:\n"
-"\n"
-"<b>Contact Name</b>: %s\n"
-"<b>Contact URL</b>: %s\n"
-"<b>Contact Speed Dial</b>: %s\n"
-msgstr ""
-"Ve vašem adresáři již existuje jiný kontakt se stejným rychlým vytáčením:\n"
-"\n"
-"<b>Jméno kontaktu</b>: %s\n"
-"<b>URL kontaktu</b>: %s\n"
-"<b>Rychlé vytáčení kontaktu</b>: %s\n"
-
-#: src/addressbook_window.cpp:616
-#, c-format
-msgid ""
-"Another contact with similar information already exists in your address "
-"book:\n"
-"\n"
-"<b>Contact Name</b>: %s\n"
-"<b>Contact URL</b>: %s\n"
-"<b>Contact Speed Dial</b>: %s\n"
-"\n"
-"Do you still want to add the contact?"
-msgstr ""
-"Ve vašem adresáři již existuje jiný kontakt s podobnými informacemi:\n"
-"\n"
-"<b>Jméno kontaktu</b>: %s\n"
-"<b>URL kontaktu</b>: %s\n"
-"<b>Rychlé vytáčení kontaktu</b>: %s\n"
-"\n"
-"Chcete ještě přidat tento kontakt?Do you still want to add the contact?"
-
-#. Translators: This is "S" as in "Status"
-#: src/addressbook_window.cpp:774
-msgid "S"
-msgstr "S"
-
-#: src/addressbook_window.cpp:785 src/pref_window.cpp:445
-msgid "Name"
-msgstr "Jméno"
-
-#: src/addressbook_window.cpp:797
-msgid "URL"
-msgstr "URL"
-
-#: src/addressbook_window.cpp:823
-msgid "Software"
-msgstr "Software"
-
-#: src/addressbook_window.cpp:836
-msgid "E-Mail"
-msgstr "E-mail"
-
-#: src/addressbook_window.cpp:860
-msgid "Categories"
-msgstr "Kategorie"
-
-#: src/addressbook_window.cpp:873
-msgid "Speed Dial"
-msgstr "Rychlé vytáčení"
-
-#: src/addressbook_window.cpp:1204 src/addressbook_window.cpp:1234
-#: src/addressbook_window.cpp:1730
-msgid "C_all Contact"
-msgstr "Za_volat kontaktu"
-
-#: src/addressbook_window.cpp:1209 src/addressbook_window.cpp:1239
-msgid "_Copy URL to clipboard"
-msgstr "Z_kopírovat URL do schránky"
-
-#: src/addressbook_window.cpp:1216 src/addressbook_window.cpp:1716
-msgid "_Properties"
-msgstr "_Vlastnosti"
-
-#: src/addressbook_window.cpp:1223 src/addressbook_window.cpp:1711
-msgid "_Delete"
-msgstr "_Odstranit"
-
-#: src/addressbook_window.cpp:1246 src/addressbook_window.cpp:1740
-msgid "Add Contact to _Address Book"
-msgstr "Přidat kontakt do _adresáře"
-
-#: src/addressbook_window.cpp:1675
-msgid "Address Book"
-msgstr "Adresář"
-
-#: src/addressbook_window.cpp:1702
-msgid "_File"
-msgstr "_Soubor"
-
-#: src/addressbook_window.cpp:1704
-msgid "New _Address Book"
-msgstr "Nový _adresář"
-
-#: src/addressbook_window.cpp:1723 src/menu.cpp:328
-msgid "_Close"
-msgstr "_Zavřít"
-
-#: src/addressbook_window.cpp:1728
-msgid "C_ontact"
-msgstr "_Kontakt"
-
-#: src/addressbook_window.cpp:1736
-msgid "New _Contact"
-msgstr "Nový _kontakt"
-
-#: src/addressbook_window.cpp:1813
-msgid "On LDAP servers"
-msgstr "Na serverech LDAP"
-
-#: src/addressbook_window.cpp:1850
-msgid "Find all contacts"
-msgstr "Hledat všechny kontakty"
-
-#: src/addressbook_window.cpp:1855
-msgid "Name contains"
-msgstr "Jméno obsahuje"
-
-#: src/addressbook_window.cpp:1859
-msgid "URL contains"
-msgstr "URL obsahuje"
-
-#: src/addressbook_window.cpp:1863
-msgid "Belongs to category"
-msgstr "Patří do kategorie"
-
-#: src/addressbook_window.cpp:1993
-msgid "Edit the Contact Information"
-msgstr "Upravit kontaktní informace"
-
-#: src/addressbook_window.cpp:2014 src/addressbook_window.cpp:2398
-msgid "Name:"
-msgstr "Jméno:"
-
-#: src/addressbook_window.cpp:2034
-msgid "URL:"
-msgstr "URL:"
-
-#: src/addressbook_window.cpp:2054
-msgid "Email:"
-msgstr "E-mail:"
-
-#: src/addressbook_window.cpp:2075
-msgid "Speed Dial:"
-msgstr "Rychlé vytáčení:"
-
-#: src/addressbook_window.cpp:2097
-msgid "Categories:"
-msgstr "Kategorie:"
-
-#: src/addressbook_window.cpp:2122
-msgid "Local Addressbook:"
-msgstr "Místní adresář:"
-
-#: src/addressbook_window.cpp:2273
-#, c-format
-msgid "Are you sure you want to delete %s from %s?"
-msgstr "Jste si jisti, že chcete odstranit %s z %s?"
-
-#: src/addressbook_window.cpp:2381
-msgid "Add an address book"
-msgstr "Přidat adresář"
-
-#: src/addressbook_window.cpp:2419
-msgid "Type:"
-msgstr "Typ:"
-
-#: src/addressbook_window.cpp:2426
-msgid "Local"
-msgstr "Místní"
-
-#: src/addressbook_window.cpp:2431
-msgid "Remote LDAP"
-msgstr "Vzdálený LDAP"
-
-#: src/addressbook_window.cpp:2436
-msgid "Remote ILS"
-msgstr "Vzdálený ILS"
-
-#: src/addressbook_window.cpp:2468
-msgid "Search Scope:"
-msgstr "Rozsah hledání:"
-
-#: src/addressbook_window.cpp:2475
-msgid "Subtree"
-msgstr "Podstrom"
-
-#: src/addressbook_window.cpp:2480
-msgid "One Level"
-msgstr "Jedna úroveň"
-
-#: src/addressbook_window.cpp:2510
-msgid "Hostname:"
-msgstr "Název počítače:"
-
-#: src/addressbook_window.cpp:2531
-msgid "Port:"
-msgstr "Port:"
-
-#: src/addressbook_window.cpp:2554
-msgid "Base DN:"
-msgstr "Základní DN:"
-
-#: src/addressbook_window.cpp:2575
-msgid "Search Attribute:"
-msgstr "Hledaný atribut:"
-
-#: src/addressbook_window.cpp:2673
-#, c-format
-msgid "Are you sure you want to delete %s and all its contacts?"
-msgstr "Jste si jisti, že chcete odstranit %s a všechny kontakty v ní?"
-
 #: src/lid.cpp:135
 #, c-format
 msgid "Opened Quicknet device %s"
@@ -2345,16 +2587,20 @@ msgstr "Telefon je vyvěšen"
 msgid "Phone is on hook"
 msgstr "Telefon je zavěšen"
 
-#: src/main_window.cpp:388
+#: src/log_window.cpp:60 src/menu.cpp:474
+msgid "General History"
+msgstr "Obecná historie"
+
+#: src/main_window.cpp:540
 #, c-format
 msgid "Total: %.2f MB"
 msgstr "Celkem: %.2f MB"
 
-#: src/main_window.cpp:472
+#: src/main_window.cpp:624
 msgid "Cannot run GnomeMeeting"
 msgstr "Nemohu spustit GnomeMeeting"
 
-#: src/main_window.cpp:472
+#: src/main_window.cpp:624
 msgid ""
 "GnomeMeeting is already running, if you want it to call a given callto or "
 "h323 URL, please use \"gnomemeeting -c URL\"."
@@ -2362,7 +2608,7 @@ msgstr ""
 "GnomeMeeting již běží, pokud chcete zavolat na dané URL callto nebo h323, "
 "použijte prosím \"gnomemeeting -c URL\"."
 
-#: src/main_window.cpp:525
+#: src/main_window.cpp:677
 msgid ""
 "It appears that you do not have gnomemeeting.server installed in a valid "
 "location. Factory mode disabled.\n"
@@ -2370,7 +2616,7 @@ msgstr ""
 "Vypadá to, že nemáte gnomemeeting.server nainstalován ve správném adresáři. "
 "Factory mode vypnut.\n"
 
-#: src/main_window.cpp:529
+#: src/main_window.cpp:681
 msgid ""
 "Error registering GnomeMeeting with the activation service; factory mode "
 "disabled.\n"
@@ -2378,68 +2624,68 @@ msgstr ""
 "Chyba při registraci aplikace GnomeMeeting u aktivační služby; factory mode "
 "vypnut.\n"
 
-#: src/main_window.cpp:569
+#: src/main_window.cpp:721
 msgid "Failed to retrieve gnomemeeting server from activation server\n"
 msgstr "Chyba při návratu gnomemeeting serveru od aktivační služby\n"
 
-#: src/main_window.cpp:876
+#: src/main_window.cpp:850
 #, c-format
 msgid "Sent dtmf %c"
 msgstr "Odesláno dtmf %c"
 
-#: src/main_window.cpp:1210 src/menu.cpp:411 src/menu.cpp:538
+#: src/main_window.cpp:1231 src/menu.cpp:411 src/menu.cpp:538
 msgid "Local Video"
 msgstr "Lokální video"
 
-#: src/main_window.cpp:1214 src/menu.cpp:417 src/menu.cpp:544
+#: src/main_window.cpp:1235 src/menu.cpp:417 src/menu.cpp:544
 msgid "Remote Video"
 msgstr "Vzdálené video"
 
-#: src/main_window.cpp:1351 src/menu.cpp:372
+#: src/main_window.cpp:1365 src/menu.cpp:372
 msgid "Statistics"
 msgstr "Statistiky"
 
-#: src/main_window.cpp:1407
+#: src/main_window.cpp:1421
 msgid "Dialpad"
 msgstr "Vytáčení"
 
-#: src/main_window.cpp:1462
+#: src/main_window.cpp:1476
 msgid "Adjust brightness"
 msgstr "Nastavení jasu"
 
-#: src/main_window.cpp:1484
+#: src/main_window.cpp:1499
 msgid "Adjust whiteness"
 msgstr "Nastavení světlosti"
 
-#: src/main_window.cpp:1506
+#: src/main_window.cpp:1522
 msgid "Adjust color"
 msgstr "Nastavení barev"
 
-#: src/main_window.cpp:1528
+#: src/main_window.cpp:1545
 msgid "Adjust contrast"
 msgstr "Nastavení kontrastu"
 
-#: src/main_window.cpp:1536
+#: src/main_window.cpp:1553
 msgid "Video"
 msgstr "Obraz"
 
-#: src/main_window.cpp:1614
+#: src/main_window.cpp:1631
 msgid "Audio"
 msgstr "Zvuk"
 
-#: src/main_window.cpp:1677
+#: src/main_window.cpp:1694
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Vypisování ladících zpráv v konzole (úroveň mezi 1 až 6)"
 
-#: src/main_window.cpp:1680
+#: src/main_window.cpp:1697
 msgid "Makes GnomeMeeting call the given URL"
 msgstr "Způsobí, že GnomeMeeting zavolá na zadané URL"
 
-#: src/main_window.cpp:1715
+#: src/main_window.cpp:1732
 msgid "No usable audio manager detected"
 msgstr "Nedetekován použitelný správce zvuku"
 
-#: src/main_window.cpp:1715
+#: src/main_window.cpp:1732
 msgid ""
 "GnomeMeeting didn't find any usable sound manager. Make sure that your "
 "installation is correct."
@@ -2447,7 +2693,7 @@ msgstr ""
 "GnomeMeeting nenašel použitelného správce zvuku. Přesvědčete ze, že vaše "
 "instalace je v pořádku."
 
-#: src/main_window.cpp:1735
+#: src/main_window.cpp:1752
 #, c-format
 msgid ""
 "GnomeMeeting got an invalid value for the GConf key %s.\n"
@@ -2469,7 +2715,7 @@ msgstr ""
 "týkající se řešení problémů (http://www.gnome.org/projects/gconf/) nebo "
 "archivy konferencí (http://mail.gnome.org) pro získání více informací."
 
-#: src/main_window.cpp:1738
+#: src/main_window.cpp:1755
 msgid "Gconf key error"
 msgstr "Chyba klíče gconf"
 
@@ -2722,17 +2968,9 @@ msgstr "_Adresář"
 msgid "Open the address book"
 msgstr "Otevřít adresář"
 
-#: src/menu.cpp:474
-msgid "General History"
-msgstr "Obecná historie"
-
 #: src/menu.cpp:475
 msgid "View the operations history"
 msgstr "Zobrazit historii událostí"
-
-#: src/menu.cpp:479 src/menu.cpp:656
-msgid "Calls History"
-msgstr "Historie hovorů"
 
 #: src/menu.cpp:480 src/menu.cpp:657
 msgid "View the calls history"
@@ -3864,784 +4102,3 @@ msgstr "Chyba s frekvencí rámců."
 #: src/videograbber.cpp:691
 msgid "Error with the frame size."
 msgstr "Chyba ve velikosti obrazu."
-
-#~ msgid "Friends"
-#~ msgstr "Přátelé"
-
-#~ msgid "Work"
-#~ msgstr "Práce"
-
-#~ msgid "Family"
-#~ msgstr "Rodina"
-
-#~ msgid "Failed to contact LDAP server %s:%d"
-#~ msgstr "Nemohu kontaktovat LDAP server %s:%d."
-
-#~ msgid "Failed to set time limit on LDAP operations"
-#~ msgstr "Nemohu nastavit časový limit pro operace LDAP"
-
-#~ msgid "Failed to contact to LDAP server %s: %s"
-#~ msgstr "Nemohu se připojit k LDAP serveru %s: %s"
-
-#~ msgid "Fetching online users list from %s"
-#~ msgstr "Získávám seznam připojených uživatelů z %s"
-
-#~ msgid "Could not fetch online users list"
-#~ msgstr "Nemohu získat seznam připojených uživatelů"
-
-#~ msgid "Connection to %s lost"
-#~ msgstr "Spojení s %s ztraceno"
-
-#~ msgid "Search completed: %d user(s) listed on a total of %d user(s) from %s"
-#~ msgstr "Hledání dokončeno: %d uživatelů vypsáno z celkem %d uživatelů na %s"
-
-#~ msgid "Search completed: %d user(s) found on %s"
-#~ msgstr "Hledání dokončeno: %d uživatelů nalezeno na %s"
-
-#~ msgid "Groups:"
-#~ msgstr "Skupiny:"
-
-#~ msgid "Invalid user name or URL"
-#~ msgstr "Neplatné jméno uživatele nebo URL"
-
-#~ msgid ""
-#~ "Please provide a valid name and URL for the contact you want to add to "
-#~ "the address book."
-#~ msgstr ""
-#~ "Zadejte prosím platné jméno a URL kontaktu, který chcete přidat do "
-#~ "adresáře."
-
-#~ msgid "Invalid group"
-#~ msgstr "Neplatná skupina"
-
-#~ msgid "You have to select a group to which you want to add your contact."
-#~ msgstr "Musíte vybrat skupinu, do které chcete přidat svůj kontakt."
-
-#~ msgid "Invalid speed dial"
-#~ msgstr "Neplatné rychlé vytáčení"
-
-#~ msgid "Invalid URL"
-#~ msgstr "Neplatné URL"
-
-#~ msgid ""
-#~ "Another contact with the same URL already exists in the address book."
-#~ msgstr "V adresáři již existuje jiný kontakt se stejným URL."
-
-#~ msgid "Are you sure you want to remove %s [%s] from this group?"
-#~ msgstr "Jste si jisti, že chcete z této skupiny odstranit %s [%s]?"
-
-#~ msgid "Add %s to Address Book"
-#~ msgstr "Přidat %s do adresáře"
-
-#~ msgid "_Tranfer Call to Contact"
-#~ msgstr "_Přesměrovat hovor na kontakt"
-
-#~ msgid "Add a New Server"
-#~ msgstr "Přidat nový server"
-
-#~ msgid "Enter the server name:"
-#~ msgstr "Zadejte název serveru:"
-
-#~ msgid ""
-#~ "Sorry but there is already a server with the same name in the address "
-#~ "book."
-#~ msgstr "Lituji, ale v adresáři již existuje server se stejným jménem."
-
-#~ msgid "Add a New Group"
-#~ msgstr "Přidat novou skupinu"
-
-#~ msgid "Enter the group name:"
-#~ msgstr "Zadejte název skupiny:"
-
-#~ msgid ""
-#~ "Sorry but there is already a group with the same name in the address book."
-#~ msgstr "Lituji, ale v adresáři již existuje skupina se stejným jménem."
-
-#~ msgid "Invalid server or group name"
-#~ msgstr "Neplatný název serveru nebo skupiny"
-
-#~ msgid "Please enter a new name for server %s:"
-#~ msgstr "Zadejte prosím nový název pro server %s:"
-
-#~ msgid "Please enter a new name for group %s:"
-#~ msgstr "Zadejte prosím nový název pro skupinu %s:"
-
-#~ msgid "New Group"
-#~ msgstr "Nová skupina"
-
-#~ msgid "_Find"
-#~ msgstr "_Hledat"
-
-#~ msgid "_Rename"
-#~ msgstr "_Přejmenovat"
-
-#~ msgid "New Contact"
-#~ msgstr "Nový kontakt"
-
-#~ msgid "Delete"
-#~ msgstr "Odstranit"
-
-#~ msgid "New _Server"
-#~ msgstr "Nový _server"
-
-#~ msgid "New _Group"
-#~ msgstr "Nová s_kupina"
-
-#~ msgid "Servers"
-#~ msgstr "Servery"
-
-#~ msgid "Groups"
-#~ msgstr "Skupiny"
-
-#~ msgid ""
-#~ "iLBC-13k3 (internet Low Bitrate Codec) is a free speech codec suitable "
-#~ "for robust voice communication over IP. The codec is designed for narrow "
-#~ "band speech and results in a payload bit rate of 13.33 kbit/s with an "
-#~ "encoding frame length of 30 ms. The iLBC codec enables graceful speech "
-#~ "quality degradation in the case of lost frames, which occurs in "
-#~ "connection with lost or delayed IP packets."
-#~ msgstr ""
-#~ "iLBC-13k3 (internet Low Bitrate Codec) je free kodek řeči vhodný pro "
-#~ "robustní komunikaci hlasem po IP. Kodek je navržen pro úzkopásmovou řeč a "
-#~ "používá bit rate 13.33 kbit/s s délkou kódovacího rámce 30 ms. Kodek iLBC "
-#~ "umožňuje postupné zhoršování kvality řeči v případě ztracených rámců, což "
-#~ "se stává ve spojeních se ztrácenými nebo zpožďovanými IP pakety."
-
-#~ msgid "Excellent"
-#~ msgstr "Vynikající"
-
-#~ msgid "13.33 Kbps"
-#~ msgstr "13.33 Kb/s"
-
-#~ msgid ""
-#~ "iLBC-15k2 (internet Low Bitrate Codec) is a free speech codec suitable "
-#~ "for robust voice communication over IP. The codec is designed for narrow "
-#~ "band speech and results in a payload bitrate of 15.20 kbps with an "
-#~ "encoding length of 20 ms. The iLBC codec enables graceful speech quality "
-#~ "degradation in the case of lost frames, which occurs in connection with "
-#~ "lost or delayed IP packets."
-#~ msgstr ""
-#~ "iLBC-15k2 (internet Low Bitrate Codec) je free kodek řeči vhodný pro "
-#~ "robustní komunikaci hlasem po IP. Kodek je narvržen pro úzkopásmovou řeč "
-#~ "a používá bit rate 15.20 kb/s s délkou kódovacího rámce 20 ms. Kodek iLBC "
-#~ "umožňuje postupné zhoršování kvality řeči v případě ztracených rámců, což "
-#~ "se stává ve spojeních se ztrácenými nebo zpožďovanými IP pakety."
-
-#~ msgid "15.2 Kbps"
-#~ msgstr "15.2 Kb/s"
-
-#~ msgid ""
-#~ "Speex is an Open Source/Free Software patent-free audio compression "
-#~ "format designed for speech. The Speex Project aims to lower the barrier "
-#~ "of entry for voice applications by providing a free alternative to "
-#~ "expensive proprietary speech codecs. Moreover, Speex is well-adapted to "
-#~ "Internet applications and provides useful features that are not present "
-#~ "in most other codecs. Finally, Speex is part of the GNU Project and is "
-#~ "available under the Xiph.org variant of the BSD license. SpeexNarrow-15k "
-#~ "is based on CELP and is designed to compress voice at a payload bitrate "
-#~ "of 15 kbps."
-#~ msgstr ""
-#~ "Speex je nepatentovaný Open Source/Free Software formát komprese zvuku "
-#~ "navržený pro řeč. Projekt Speex chce snížit bariéru pro vstup pro hlasové "
-#~ "aplikace poskytováním free alternativy k drahým proprietárním kodekům "
-#~ "řeči. Navíc je Speex dobře přizpůsoben internetovým aplikacím a poskytuje "
-#~ "užitečné vlastnosti, které většina jiných kodeků nenabízí. Konečně, Speex "
-#~ "je součást projektu GNU a je dostupný za podmínek varianty Xiph.org BSD "
-#~ "licence. SpeexNarrow-15k je založen na CELP a je navržen pro kompresi "
-#~ "hlasu s bit rate 15 kb/s."
-
-#~ msgid "15 Kbps"
-#~ msgstr "15 Kb/s"
-
-#~ msgid ""
-#~ "Speex is an Open Source/Free Software patent-free audio compression "
-#~ "format designed for speech. The Speex Project aims to lower the barrier "
-#~ "of entry for voice applications by providing a free alternative to "
-#~ "expensive proprietary speech codecs. Moreover, Speex is well-adapted to "
-#~ "Internet applications and provides useful features that are not present "
-#~ "in most other codecs. Finally, Speex is part of the GNU Project and is "
-#~ "available under the Xiph.org variant of the BSD license. SpeexNarrow-8k "
-#~ "is based on CELP and is designed to compress voice at a payload bitrate "
-#~ "of 8 kbps."
-#~ msgstr ""
-#~ "Speex je nepatentovaný Open Source/Free Software formát komprese zvuku "
-#~ "navržený pro řeč. Projekt Speex chce snížit bariéru pro vstup pro hlasové "
-#~ "aplikace poskytováním free alternativy k drahým proprietárním kodekům "
-#~ "řeči. Navíc je Speex dobře přizpůsoben internetovým aplikacím a poskytuje "
-#~ "užitečné vlastnosti, které většina jiných kodeků nenabízí. Konečně, Speex "
-#~ "je součást projektu GNU a je dostupný za podmínek varianty Xiph.org BSD "
-#~ "licence. SpeexNarrow-8k je založen na CELP a je navržen pro kompresi "
-#~ "hlasu s bit rate 8 kb/s."
-
-#~ msgid "Good"
-#~ msgstr "Dobrá"
-
-#~ msgid "8 Kbps"
-#~ msgstr "8 Kb/s"
-
-#~ msgid ""
-#~ "MS-GSM is the Microsoft version of GSM 06.10. GSM 06.10 is a standardized "
-#~ "lossy speech compression employed by most European wireless telephones. "
-#~ "It uses RPE/LTP (residual pulse excitation/long term prediction) coding "
-#~ "to compress frames of 160 13-bit samples with a frame rate of 50 Hz into "
-#~ "260 bits.  Microsoft's GSM 06.10 codec is not compatible with the "
-#~ "standard frame format, they use 65-byte-frames (2 x 32 1/2) rather than "
-#~ "rounding to 33, and they number the bits in their bytes from the other "
-#~ "end."
-#~ msgstr ""
-#~ "MS-GSM je verze GSM 06.10 od Microsoftu. GSM 06.10 je standardizovaná "
-#~ "ztrátová komprese řeči používaná většinou evropských bezdrátových "
-#~ "telefonů. Používá kódování RPE/LTP (reziduální vybuzení pulzů/dlouhodobá "
-#~ "predikce) pro komprimaci rámců 160 třináctibitových vzorků s 50 rámci/s "
-#~ "do 260 bitů. Kodek GSM 06.10 Microsoftu není kompatibilní se standardním "
-#~ "formátem rámců, používají 65-bajtové rámce (2 × 32 1/2) místo zarovnání "
-#~ "na 33, a číslují bity v bajtech z opačného konce."
-
-#~ msgid "13 Kbps"
-#~ msgstr "13 Kb/s"
-
-#~ msgid ""
-#~ "G.711 is the international standard for encoding telephone audio on 64 "
-#~ "kbps channel. It is a pulse code modulation (PCM) scheme operating at 8 "
-#~ "kHz sample rate, with 8 bits per sample, fully meeting ITU-T "
-#~ "recommendations. This standard has two forms, A-Law and u-Law. A-Law "
-#~ "G.711 PCM encoder converts 13 bit linear PCM samples into 8 bit "
-#~ "compressed PCM (logarithmic form) samples, and the decoder does the "
-#~ "conversion vice versa."
-#~ msgstr ""
-#~ "G.711 je mezinárodní standard pro kódování zvuku telefonu v kanálu 64 kb/"
-#~ "s. Je to schéma pulzně kódové modulace (PCM) pracující s vzorkovací "
-#~ "frekvencí 8 kHz a 8 bity na vzorek, plně splňující doporučení ITU-T. "
-#~ "Tento standard má dvě formy, A-Law a u-Law. PCM enkodér A-Law G.711 "
-#~ "převádí třináctibitové lineární vzorky PCM do osmibitových komprimovaných "
-#~ "vzorků PCM (v logaritmickém tvaru) a dekodér provádí opačnou konverzi."
-
-#~ msgid "64 Kbps"
-#~ msgstr "64 Kb/s"
-
-#~ msgid ""
-#~ "G.711 is the international standard for encoding telephone audio on 64 "
-#~ "kbps channel. It is a pulse code modulation (PCM) scheme operating at 8 "
-#~ "kHz sample rate, with 8 bits per sample, fully meeting ITU-T "
-#~ "recommendations. This standard has two forms, A-Law and u-Law. u-Law "
-#~ "G.711 PCM encoder converts 14 bit linear PCM samples into 8 bit "
-#~ "compressed PCM (logarithmic form) samples, and the decoder does the "
-#~ "conversion vice versa."
-#~ msgstr ""
-#~ "G.711 je mezinárodní standard pro kódování zvuku telefonu v kanálu 64 kb/"
-#~ "s. Je to schéma pulzně kódové modulace (PCM) pracující s vzorkovací "
-#~ "frekvencí 8 kHz a 8 bity na vzorek, plně splňující doporučení ITU-T. "
-#~ "Tento standard má dvě formy, A-Law a u-Law. PCM enkodér u-Law G.711 "
-#~ "převádí čtrnáctibitové lineární vzorky PCM do osmibitových komprimovaných "
-#~ "vzorků PCM (v logaritmickém tvaru) a dekodér provádí opačnou konverzi."
-
-#~ msgid ""
-#~ "GSM 06.10 is a standardized lossy speech compression employed by first "
-#~ "generation of digital mobile phones in Europe. It uses RPE/LTP (residual "
-#~ "pulse excitation/long term prediction) coding to compress frames of 20 "
-#~ "ms, achieving a bitrate of 13kbps."
-#~ msgstr ""
-#~ "GSM 06.10 je standardizovaná ztrátová komprese řeči používaná první "
-#~ "generací evropských digitálních mobilních telefonů. Používá kódování RPE/"
-#~ "LTP (reziduální vybuzení pulzů/dlouhodobá predikce) pro komprimaci 20 ms "
-#~ "rámců s bit rate 13 kb/s."
-
-#~ msgid "16.5 Kbps"
-#~ msgstr "16.5 Kb/s"
-
-#~ msgid ""
-#~ "G.726 conforms to ITU-T G.726 recommendation that specifies speech "
-#~ "compression and decompression at rates of 16, 24, 32 and 40 Kbps based on "
-#~ "Adaptive Differential Pulse Code Modulation (ADPCM)."
-#~ msgstr ""
-#~ "G.726 vyhovuje doporučení ITU-T G.726, které specifikuje kompresi a "
-#~ "dekompresi zvuku při bit rate 16, 24, 32 a 40 Kb/s založenou na adaptivní "
-#~ "diferenciální pulzně kódové modulaci (ADPCM)."
-
-#~ msgid "32 Kbps"
-#~ msgstr "32 Kb/s"
-
-#~ msgid ""
-#~ "G.723.1 conforms to ITU-T G.723.1 recommendation. It was designed for "
-#~ "videoconferencing / telephony over standard phone lines, and is optimized "
-#~ "for realtime encode and decode. That codec is only available in "
-#~ "GnomeMeeting when using Quicknet cards due to patents restrictions."
-#~ msgstr ""
-#~ "G.732.1 splňuje doporučení ITU-T G.723.1. Byl navržen pro videokonference "
-#~ "a telefonii po standardních telefonních linkách a je optimalizován pro "
-#~ "kódování a dekódování v reálném čase. Tento kodek je kvůli omezením "
-#~ "patentů v GnomeMeeting dostupný jen při používání karet Quicknet."
-
-#~ msgid "6.3 or 5.7 Kbps"
-#~ msgstr "6.3 nebo 5.7 Kb/s"
-
-#~ msgid "Codec Information"
-#~ msgstr "Informace o kodeku"
-
-#~ msgid "Keep a minimum video _quality of"
-#~ msgstr "Udržovat minimální _kvalitu přenosu videa"
-
-#~ msgid "Transmit at least"
-#~ msgstr "Odeslat alespoň"
-
-#~ msgid "_frames per second"
-#~ msgstr "rámců za sekundu"
-
-#~ msgid "Info"
-#~ msgstr "Informace"
-
-#~ msgid "Failed to restart the video channel"
-#~ msgstr "Nemohu restartovat kanál videa"
-
-#~ msgid ""
-#~ "You have changed a video device related setting during a call. That "
-#~ "requires to restart the video transmission channel, but it failed."
-#~ msgstr ""
-#~ "Změnili jste nastavení související se zařízením videa v průběhu hovoru. "
-#~ "To vyžaduje restart kanálu přenosu videa, který ale selhal."
-
-#~ msgid "Cannot contact the user directory"
-#~ msgstr "Nemohu kontaktovat adresář uživatelů"
-
-#~ msgid ""
-#~ "The minimum transmitted video quality to keep when trying to minimize the "
-#~ "used bandwidth:  choose 100% on a LAN for the best quality, 1% being the "
-#~ "worst quality"
-#~ msgstr ""
-#~ "Minimální kvalita přenášeného videa při pokusu o minimalizaci použitého "
-#~ "pásma:  vyberte 100% pro LAN a největší kvalitu, 1% pro nejhorší kvalitu"
-
-#~ msgid "Received Calls"
-#~ msgstr "Přijaté hovory"
-
-#~ msgid "Placed Calls"
-#~ msgstr "Odchozí hovory"
-
-#~ msgid "Unanswered Calls"
-#~ msgstr "Nezodpovězené hovory"
-
-#~ msgid "Date"
-#~ msgstr "Datum"
-
-#~ msgid "Remote User"
-#~ msgstr "Vzdálený uživatel"
-
-#~ msgid "Call Duration"
-#~ msgstr "Délka hovoru"
-
-#~ msgid "Call End Reason"
-#~ msgstr "Důvod ukončení hovoru"
-
-#~ msgid "Enabled Silence Detection"
-#~ msgstr "Povolena detekce ticha"
-
-#~ msgid "Test those settings"
-#~ msgstr "Otestovat tato nastavení"
-
-#~ msgid "New server"
-#~ msgstr "Nový server"
-
-#~ msgid "New group"
-#~ msgstr "Nová skupina"
-
-#~ msgid "New contact"
-#~ msgstr "Nový kontakt"
-
-#~ msgid "GnomeMeeting Address Book"
-#~ msgstr "Adresář GnomeMeeting"
-
-#~ msgid "Please choose the video image"
-#~ msgstr "Prosím vyberte obrázek pro video"
-
-#~ msgid "Calls Clearing"
-#~ msgstr "Ukončování hovorů"
-
-#~ msgid "Play or not the busy tone sound"
-#~ msgstr "Přehrávat obsazovací tón"
-
-#~ msgid "Play or not the incoming call sound"
-#~ msgstr "Přehrávat zvuk při příchozím hovoru"
-
-#~ msgid "Play or not the ring tone sound"
-#~ msgstr "Přehrávat zvuk zvonění"
-
-#~ msgid "Couldn't compile http/ftp regex!"
-#~ msgstr "Nemohu zkompilovat regex http/ftp!"
-
-#~ msgid "Couldn't compile smiley regex!"
-#~ msgstr "Nemohu zkompilovat regex úsměvů!"
-
-#~ msgid "Couldn't compile latex regex!"
-#~ msgstr "Nemohu zkompilovat regex latexu!"
-
-#~ msgid "Local video window height"
-#~ msgstr "Výška okna lokálního videa"
-
-#~ msgid "Number of entries to store in history boxes"
-#~ msgstr "Počet položek uchovávaných v historii"
-
-#~ msgid "Remote video window height"
-#~ msgstr "Výška okna vzdáleného videa"
-
-#~ msgid "The Video Quality to request to the remote"
-#~ msgstr "Kvalita videa požadovaná od vzdáleného systému"
-
-#~ msgid "The height of the local video window"
-#~ msgstr "Výška okna lokálního videa"
-
-#~ msgid "The height of the remote video window"
-#~ msgstr "Výška okna vzdáleného videa"
-
-#~ msgid "User Input Capabilities type"
-#~ msgstr "Typ Možností uživatelského vstupu"
-
-#~ msgid "Forward call to:"
-#~ msgstr "Přesměrovat hovor na:"
-
-#~ msgid "Remote user is not running GnomeMeeting"
-#~ msgstr "Vzdálený uživatel nemá spuštěn GnomeMeeting"
-
-#~ msgid "View the details of your account"
-#~ msgstr "Zobrazit podrobnosti vašeho účtu"
-
-#~ msgid "Maximum bandwidth available for the endpoint"
-#~ msgstr "Maximální šířka pásma dostupná pro koncový bod"
-
-#~ msgid ""
-#~ "The codecs will be chosen during the negotiation according to the maximum "
-#~ "bandwidth available to the endpoint."
-#~ msgstr ""
-#~ "Při vyjednávání budou kodeky vybírány podle maximální šířky pásma "
-#~ "dostupné koncovému bodu."
-
-#~ msgid "Maximum Bandwidth"
-#~ msgstr "Maximální šířka pásma"
-
-#~ msgid "Maximum available bandwidth:"
-#~ msgstr "Maximální dostupná šířka pásma:"
-
-#~ msgid "kbps"
-#~ msgstr "kb/s"
-
-#~ msgid "User Input Capabilities"
-#~ msgstr "Možnosti uživatelského vstupu"
-
-#~ msgid "Call Control"
-#~ msgstr "Ovládání hovoru"
-
-#~ msgid "Open Link"
-#~ msgstr "Otevřít odkaz"
-
-#~ msgid "Choose a file to play"
-#~ msgstr "Zvolte soubor, který přehrávat"
-
-#~ msgid ""
-#~ "If enabled, GnomeMeeting will play a sound when receiving an incoming "
-#~ "call (the sound to play is chosen in the Gnome Control Center)."
-#~ msgstr ""
-#~ "Je-li povoleno, GnomeMeeting přehraje zvuk při obdržení příchozího hovoru "
-#~ "(přehrávaný zvuk si lze vybrat v GNOME řídícím centru)."
-
-#~ msgid "Play a sound on incoming calls"
-#~ msgstr "Přehrát zvuk při příchozím hovoru"
-
-#~ msgid "Incoming Call"
-#~ msgstr "Příchozí hovor"
-
-#~ msgid "Started transmission of %s"
-#~ msgstr "Spuštěn přenos %s"
-
-#~ msgid "Stopped transmission of %s"
-#~ msgstr "Zastaven přenos %s"
-
-#~ msgid "Started reception of %s"
-#~ msgstr "Spuštěn příjem %s"
-
-#~ msgid "Stopped reception of %s"
-#~ msgstr "Zastaven příjem %s"
-
-#~ msgid "Audio player mixer"
-#~ msgstr "Mixér přehrávače zvuku"
-
-#~ msgid "Audio recorder"
-#~ msgstr "Záznam zvuku"
-
-#~ msgid "Audio recorder mixer"
-#~ msgstr "Mixér záznamu zvuku"
-
-#~ msgid "Do not disturb"
-#~ msgstr "Nerušit"
-
-#~ msgid "If enabled, incoming calls will be automatically answered."
-#~ msgstr "Je-li povoleno, bude se automaticky odpovídat na příchozí hovor."
-
-#~ msgid "If enabled, incoming calls will be automatically refused."
-#~ msgstr "Je-li povoleno, budou příchozí hovory automaticky odmítány."
-
-#~ msgid "Select the audio recorder device to use."
-#~ msgstr "Vyberte zařízení, které má být použito pro záznam zvuků."
-
-#~ msgid "Select the mixer to use to change the volume of the audio player."
-#~ msgstr "Vyberte mixér využívaný pro nastavení hlasitosti zvukového výstupu."
-
-#~ msgid "Select the mixer to use to change the volume of the audio recorder."
-#~ msgstr ""
-#~ "Vyberte mixér využívaný pro nastavení hlasitosti zaznamenaného zvuku."
-
-#~ msgid "Started New Logical Channel..."
-#~ msgstr "Spuštěn nový logický kanál..."
-
-#~ msgid "Enabled silence detection for %s"
-#~ msgstr "Povolena detekce ticha pro %s"
-
-#~ msgid "Disabled silence detection for %s"
-#~ msgstr "Zakázána detekce ticha pro %s"
-
-#~ msgid "Requesting remote to send video quality: %d%%"
-#~ msgstr "Dotaz na vzdálenou stranu pro odeslání kvality videa: %d%%"
-
-#~ msgid "Request ok"
-#~ msgstr "Požadavek splněn"
-
-#~ msgid "Auto Answering Incoming Call"
-#~ msgstr "Automatická odpověď na příchozí hovor"
-
-#~ msgid "Other"
-#~ msgstr "Jiné"
-
-#~ msgid "Enabled"
-#~ msgstr "Povoleno"
-
-#~ msgid "Disabled"
-#~ msgstr "Zakázáno"
-
-#~ msgid ""
-#~ "Please enter your first name and surname, they will be used when "
-#~ "connecting to other audio/video conferencing software.\n"
-#~ "\n"
-#~ "Your e-mail address is used to provide you with a callto address that "
-#~ "your friends can use to call you without knowing your IP address.\n"
-#~ "\n"
-#~ "No information is made public unless you allow it to be published on the "
-#~ "directory of online GnomeMeeting users."
-#~ msgstr ""
-#~ "Zadejte prosím své jméno a příjmení, které se budou používat při "
-#~ "připojení k jinému audio/video konferenčnímu software.\n"
-#~ "\n"
-#~ "Vaše emailová adresa se použije k vytvoření adresy callto, kterou mohou "
-#~ "vaši přátelé použít, aby vám zavolali, aniž by znali vaši IP adresu.\n"
-#~ "\n"
-#~ "Žádné informace nejsou zveřejněny, pokud nepovolíte jejich zveřejnění v "
-#~ "adresáři uživatelů online uživatelů GnomeMeeting."
-
-#~ msgid "Directory of Online GnomeMeeting Users"
-#~ msgstr "Adresář online uživatelů GnomeMeeting"
-
-#~ msgid "Publish my information on the directory of online GnomeMeeting users"
-#~ msgstr ""
-#~ "Zveřejnit vaše informace v adresáři online uživatelů aplikace GnomeMeeting"
-
-#~ msgid ""
-#~ "Please select your network connection type. This is used to set default "
-#~ "video settings for your bandwidth. It is possible to change these "
-#~ "defaults later."
-#~ msgstr ""
-#~ "Vyberte prosím způsob připojení k síti. Toto nastavení se používá pro "
-#~ "výchozí hodnoty videa podle vašeho přenosového pásma. Tyto implicitní "
-#~ "parametry je později možné změnit."
-
-#~ msgid "Connection Type"
-#~ msgstr "Typ připojení"
-
-#~ msgid ""
-#~ "Please choose the audio devices to use during the GnomeMeeting session. "
-#~ "You can also choose to use a Quicknet device instead of the soundcard, "
-#~ "but the \"Test Audio\" button will only work for soundcards. Notice that "
-#~ "some webcams models have an internal microphone that can be used with "
-#~ "GnomeMeeting."
-#~ msgstr ""
-#~ "Vyberte prosím zvuková zařízení, které chcete při sezení GnomeMeeting "
-#~ "používat. Můžete také vybrat použití zařízení Quicknet místo zvukové "
-#~ "karty, tlačítko \"Testovat zvuk\" však bude fungovat pouze pro zvukové "
-#~ "karty. Některé modely webových kamer mají interní mikrofon, který lze s "
-#~ "aplikací GnomeMeeting použít."
-
-#~ msgid "Audio player mixer:"
-#~ msgstr "Mixér přehrávače zvuku:"
-
-#~ msgid "Audio recorder:"
-#~ msgstr "Záznam zvuku:"
-
-#~ msgid "Audio recorder mixer:"
-#~ msgstr "Mixér záznamu zvuku:"
-
-#~ msgid "Click here to test your audio devices:"
-#~ msgstr "Kliknutím zde se otestují vaše zvuková zařízení:"
-
-#~ msgid "Test Audio"
-#~ msgstr "Testovat zvuk"
-
-#~ msgid ""
-#~ "Please choose the video device to use during the GnomeMeeting session. "
-#~ "Click on the \"Test Video\" button to check if your setup is correct and "
-#~ "if your driver is supported by GnomeMeeting. You can only test the "
-#~ "correctness of your driver if the selected device is not already in use."
-#~ msgstr ""
-#~ "Vyberte prosím video zařízení, které chcete při sezení GnomeMeeting "
-#~ "používat. Stiskněte tlačítko \"Testovat video\" a zkontrolujte, zdali je "
-#~ "vaše nastavení správné a ovladač vašeho zařízení je podporován aplikací "
-#~ "GnomeMeeting. Správnost vašeho ovladače lze otestovat pouze tehdy, pokud "
-#~ "není zvolené zařízení již používáno."
-
-#~ msgid "Video device:"
-#~ msgstr "Video zařízení:"
-
-#~ msgid ""
-#~ "Enter the video device to use. Using an invalid video device for video "
-#~ "transmission will transmit a test picture."
-#~ msgstr ""
-#~ "Vložte video zařízení, které se má používat. Použití nesprávného video "
-#~ "zařízení pro přenos bude generovat testovací obrázek."
-
-#~ msgid "Test Video"
-#~ msgstr "Testovat video"
-
-#~ msgid "PC-To-Phone Setup - page %d/%d"
-#~ msgstr "Nastavení PC-To-Phone - strana %d/%d"
-
-#~ msgid "Password:"
-#~ msgstr "Heslo:"
-
-#~ msgid "Enabling Fast Start"
-#~ msgstr "Povoluji rychlý start"
-
-#~ msgid "Disabling Fast Start"
-#~ msgstr "Zakazuji rychlý start"
-
-#~ msgid "Auto rejecting incoming call from %s (Do not disturb)"
-#~ msgstr "Automatické zamítání příchozích hovorů od %s (Zaneprázdněn)"
-
-#~ msgid "Auto Rejected"
-#~ msgstr "Automaticky odmítáno"
-
-#~ msgid "Parse error"
-#~ msgstr "Chyba syntaktické analýzy"
-
-#~ msgid ""
-#~ "There was an error while processing the registering to the user "
-#~ "directory: %d %s."
-#~ msgstr ""
-#~ "Při zpracovávání registrace do adresáře uživatelů došlo k chybě: %d %s."
-
-#~ msgid "Contacting %s..."
-#~ msgstr "Volám %s..."
-
-#~ msgid "Failed to contact the user directory %s:%d."
-#~ msgstr "Nemohu kontaktovat adresář uživatelů %s:%d."
-
-#~ msgid "Successfully registered to %s."
-#~ msgstr "Úspěšná registrace u %s."
-
-#~ msgid "Successfully unregistered from %s."
-#~ msgstr "Úspěšně odregistrováno od %s."
-
-#~ msgid "Error while unregistering from %s."
-#~ msgstr "Chyba při odregistrování od %s."
-
-#~ msgid ""
-#~ "GnomeMeeting didn't find any usable sound devices. You need to install "
-#~ "and setup a soundcard or a Quicknet card in order to be able to use "
-#~ "GnomeMeeting. Please check your driver settings and permissions."
-#~ msgstr ""
-#~ "GnomeMeeting nenašel použitelná zvuková zařízení. Abyste mohli používat "
-#~ "GnomeMeeting, musíte nainstalovat a nastavit zvukovou kartu nebo kartu "
-#~ "Quicknet. Zkontrolujte prosím svá nastavení ovladače a oprávnění."
-
-#~ msgid "Do _Not Disturb"
-#~ msgstr "_Nerušit"
-
-#~ msgid "Aut_o Answer"
-#~ msgstr "_Automatická odpověď"
-
-#~ msgid "Local Video Image"
-#~ msgstr "Lokální obraz videa"
-
-#~ msgid "Remote Video Image"
-#~ msgstr "Vzdálený obraz videa"
-
-#~ msgid "Both Video Images"
-#~ msgstr "Oba obrazy videa"
-
-#~ msgid "Both (Local and Remote Video in New Windows)"
-#~ msgstr "Obojí (lokální a vzdálené video v novém okně)"
-
-#~ msgid "Do not disturb (reject incoming calls)"
-#~ msgstr "Nerušit (odmítat příchozí hovory)"
-
-#~ msgid "Error: %s\n"
-#~ msgstr "Chyba: %s\n"
-
-#~ msgid ""
-#~ "Call from %s\n"
-#~ "using %s"
-#~ msgstr ""
-#~ "Hovor od %s\n"
-#~ "s využitím %s"
-
-#~ msgid "Okay"
-#~ msgstr "Dobrá kvalita"
-
-#~ msgid "Good Quality"
-#~ msgstr "Vysoká kvalita"
-
-#~ msgid "Excellent Quality"
-#~ msgstr "Vynikající kvalita"
-
-#~ msgid "Behavior"
-#~ msgstr "Chování"
-
-#~ msgid "_Automatically answer calls"
-#~ msgstr "_Automaticky odpovídat na hovory"
-
-#~ msgid "Do _not disturb"
-#~ msgstr "Ne_rušit"
-
-#~ msgid "Display a po_pup window when receiving a call"
-#~ msgstr "Zobrazit _vyskakovací okno při příchozím hovoru"
-
-#~ msgid "Enable bilinear _filtering on displayed video"
-#~ msgstr "Povolit bilineární _filtrování zobrazovaného videa"
-
-#~ msgid "User Input Capabilities _type:"
-#~ msgstr "_Typ možností uživatelského vstupu:"
-
-#~ msgid "Video format:"
-#~ msgstr "Formát videa:"
-
-#~ msgid "Video image:"
-#~ msgstr "Obraz videa:"
-
-#~ msgid "Failed to open the audio device"
-#~ msgstr "Nemohu otevřít zvukové zařízení"
-
-#~ msgid "Given calls"
-#~ msgstr "Odchozí hovory"
-
-#~ msgid "Video Device Opened"
-#~ msgstr "Video zařízení otevřeno"
-
-#~ msgid "Video Device Closed"
-#~ msgstr "Video zařízení uzavřeno"
-
-#~ msgid "Tests OK!"
-#~ msgstr "Testy dopadly dobře!"
-
-#~ msgid "Speaker phone enabled"
-#~ msgstr "Povolen hlasitý telefon"
-
-#~ msgid "Speaker phone disabled"
-#~ msgstr "Zakázán hlasitý telefon"
-
-#~ msgid ""
-#~ "Click here to activate the speaker phone device of your Quicknet card."
-#~ msgstr "Klikněte sem pro aktivaci hlasitého telefonu své karty Quicknet"
