@@ -402,7 +402,7 @@ gnomemeeting_text_chat_new ()
 					  "foreground", "blue",
 					  NULL);
   if (gtk_text_tag_set_regex (regex_tag,
-			      "\\<([s]?(ht|f)tp://[^[:blank:]]+)\\>")) {
+			      "\\<(http[s]?|[s]?ftp)://[^[:blank:]]+\\>")) {
     gtk_text_tag_add_actions_to_regex (regex_tag,
 #ifndef DISABLE_GNOME
 				       _("Open URI"),
