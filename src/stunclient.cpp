@@ -94,6 +94,7 @@ void GMStunClient::Main ()
   gchar *prefered_method = NULL;
   gchar *primary_text = NULL;
   gchar *dialog_text = NULL;
+  gboolean stun_dialog = FALSE;
 
   GtkWidget *dialog = NULL;
   GtkWidget *dialog_label = NULL;
@@ -152,22 +153,33 @@ void GMStunClient::Main ()
       {
       case 0:
 	prefered_method = g_strdup (_("GnomeMeeting couldn't detect the type of NAT you are using, the most appropriate method if your router doesn't natively support H.323 is probably to forward the required ports and to use IP translation or to use an H.323 gatekeeper in proxy mode."));
+	stun_dialog = FALSE;
 	break;
 	
       case 1:
 	prefered_method = g_strdup (_("Your system doesn't need any specific configuration as long as you don't have a local firewall blocking the ports required by GnomeMeeting."));
+	stun_dialog = FALSE;
 	break;
 
       case 5:
       case 6:
 	prefered_method = g_strdup (_("GnomeMeeting detected Symmetric NAT/Symmetric Firewall. The most appropriate method if your router doesn't natively support H.323 is to forward the required ports to change your Symmetric NAT/Symmetric Firewall into Cone NAT and run this test again. It should report Cone NAT, and allow GnomeMeeting to be used with a STUN Server. If it doesn't report Cone NAT after the port forwarding has been done, then it means it didn't work."));
+	stun_dialog = FALSE;
+	break;
+
+      case 7:
+      case 8:
+	prefered_method = g_strdup (_("You do not seem to be behind a NAT gateway, however, you are running a firewall that will prevent GnomeMeeting to behave correctly."));
+	stun_dialog = FALSE;
 	break;
 	
       default:
-	prefered_method = g_strdup_printf (_("GnomeMeeting detected %s. Using a STUN server is most probably the most appropriate method if your router doesn't natively support H.323.\nNotice that STUN support is not enough if you want to contact H.323 clients that do not support H.245 Tunneling like Netmeeting.\n\nEnable STUN Support?"), (const char *) nat_type);
+	prefered_method = g_strdup_printf (_("GnomeMeeting detected NAT: %s. Using a STUN server is most probably the most appropriate method if your router doesn't natively support H.323.\nNotice that STUN support is not enough if you want to contact H.323 clients that do not support H.245 Tunneling like Netmeeting.\n\nEnable STUN Support?"), (const char *) nat_type);
+	stun_dialog = TRUE;
+	break;
       }
 
-    if (stun.GetNatType () != 0 && stun.GetNatType () != 5) {
+    if (stun_dialog) {
       
       gnomemeeting_threads_enter ();
       dialog = 

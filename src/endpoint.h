@@ -692,14 +692,6 @@ class GMH323EndPoint : public H323EndPoint
    */
   PDECLARE_NOTIFIER(PTimer, GMH323EndPoint, OnGatewayIPTimeout);
 
-
-  /* DESCRIPTION  :  Notifier called periodically to update the registration
-   * 		     to the gatekeeper.
-   * BEHAVIOR     :  Register to the GK.
-   * PRE          :  /
-   */
-  PDECLARE_NOTIFIER(PTimer, GMH323EndPoint, OnGatekeeperTimeout);
-
   
   /* DESCRIPTION  :  Notifier called when an incoming call
    *                 has not been answered after 15 seconds.
@@ -739,7 +731,6 @@ class GMH323EndPoint : public H323EndPoint
 
   CallingState calling_state; 
 
-  PTimer GatekeeperTimer;
   PTimer ILSTimer;
   PTimer RTPTimer;
   PTimer GatewayIPTimer;

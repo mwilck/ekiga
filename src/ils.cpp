@@ -318,17 +318,6 @@ void GMILSClient::ILSOperation (Operation operation)
   xdapleakcheck();
 #endif
 
-  if (!no_error) {
-
-    gnomemeeting_threads_enter ();
-    msg = g_strdup_printf (_("Error while registering to %s"),
-			   ldap_server);
-    gm_history_window_insert (history_window, msg);
-    gm_main_window_flash_message (main_window, msg);
-    g_free (msg);
-    gnomemeeting_threads_leave ();
-  }
-
   g_free (ldap_server);
 }
 
