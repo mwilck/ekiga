@@ -252,7 +252,7 @@ dnl ###########################################################################
 dnl SDL does not work on Mac OS X yet, so disable it
 if test ${gm_platform} = "macosx" ; then
 	HAS_SDL="disabled"
-        AC_MSG_WARN([*** SDL cannot be used on Mac OS X. Fullscreen mode will be disabled]))
+        AC_MSG_WARN([*** SDL cannot be used on Mac OS X. Fullscreen mode will be disabled])
 
 else
 
@@ -304,7 +304,7 @@ msg_openssl="no"
 
 if test "x${with_openssl_libs}" != "xno" -a "x${have_openssl_includes}" != "xno"; then
         AC_CHECK_FILE(${with_openssl_libs}/libssl.so, openssl_libs="yes", openssl_libs="no")
-        if test "x${openssl_libs}" != "xno"; then 
+        if test "x${openssl_libs}" = "xno"; then 
                 AC_CHECK_FILE(${with_openssl_libs}/libssl.a, openssl_libs="yes", openssl_libs="no")
         fi
 
