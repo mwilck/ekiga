@@ -92,7 +92,7 @@ GMSIPEndPoint::Init ()
 
 
   /* Update the User Agent */
-  SetUserAgent ("GnomeMeeting " PACKAGE_VERSION);
+  SetUserAgent ("GnomeMeeting/" PACKAGE_VERSION);
   
   /* Start the listener */
   if (!StartListener ()) 
@@ -199,7 +199,6 @@ GMSIPEndPoint::OnRegistered ()
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
 
-  cout << "ici" << endl << flush;
   gnomemeeting_threads_enter ();
   registrar_host = gm_conf_get_string (SIP_KEY "registrar_host");
   
