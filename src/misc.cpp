@@ -453,7 +453,7 @@ gnomemeeting_table_add_entry (GtkWidget *table,
     gtk_table_attach (GTK_TABLE (table), label, 0, 1, row, row+1,
 		      (GtkAttachOptions) (GTK_FILL),
 		      (GtkAttachOptions) (GTK_FILL),
-		      GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+		      0, 0);
 
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
@@ -468,7 +468,7 @@ gnomemeeting_table_add_entry (GtkWidget *table,
     gtk_table_attach (GTK_TABLE (table), entry, 1, 2, row, row+1,
 		      (GtkAttachOptions) (NULL),
 		      (GtkAttachOptions) (NULL),
-		      GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+		      0, 0);
   
   gconf_string =
     gconf_client_get_string (GCONF_CLIENT (client), gconf_key, NULL);
@@ -490,7 +490,7 @@ gnomemeeting_table_add_entry (GtkWidget *table,
     gtk_table_attach (GTK_TABLE (table), hbox, 0, cols, row, row+1,
 		      (GtkAttachOptions) (NULL),
 		      (GtkAttachOptions) (NULL),
-		      GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+		      0, 0);
         
   if (tooltip)
     gtk_tooltips_set_tip (pw->tips, entry, tooltip, NULL);
@@ -525,7 +525,7 @@ gnomemeeting_table_add_toggle (GtkWidget *table,
   gtk_table_attach (GTK_TABLE (table), toggle, 0, cols, row, row+1,
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_FILL),
-                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+                    0, 0);
                                                                                
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle),
 				gconf_client_get_bool (client,
@@ -578,7 +578,7 @@ gnomemeeting_table_add_spin (GtkWidget *table,
     gtk_table_attach (GTK_TABLE (table), label, 0, 1, row, row+1,
 		      (GtkAttachOptions) (GTK_FILL),
 		      (GtkAttachOptions) (GTK_FILL),
-		      GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+		      0, 0);
 
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
@@ -596,7 +596,7 @@ gnomemeeting_table_add_spin (GtkWidget *table,
     gtk_table_attach (GTK_TABLE (table), spin_button, 1, 2, row, row+1,
 		      (GtkAttachOptions) (GTK_FILL),
 		      (GtkAttachOptions) (GTK_FILL),
-		      GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+		      0, 0);
 
   if (box && label_txt2) {
     
@@ -731,7 +731,7 @@ gnomemeeting_table_add_int_option_menu (GtkWidget *table,
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, row, row+1,
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_FILL),
-                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+                    0, 0);
 
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
@@ -754,7 +754,7 @@ gnomemeeting_table_add_int_option_menu (GtkWidget *table,
   gtk_table_attach (GTK_TABLE (table), option_menu, 1, 2, row, row+1,
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_FILL),
-                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+                    0, 0);
 
   gtk_tooltips_set_tip (pw->tips, option_menu, tooltip, NULL);
 
@@ -798,7 +798,7 @@ gnomemeeting_table_add_string_option_menu (GtkWidget *table,
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, row, row+1,                
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_FILL),
-                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+                    0, 0);
                                                                                
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);                         
   gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
@@ -836,7 +836,7 @@ gnomemeeting_table_add_string_option_menu (GtkWidget *table,
   gtk_table_attach (GTK_TABLE (table), option_menu, 1, 2, row, row+1,
                     (GtkAttachOptions) (GTK_FILL),                
                     (GtkAttachOptions) (GTK_FILL),                
-                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);           
+                    0, 0);           
                                                                                
                            
   gtk_tooltips_set_tip (pw->tips, option_menu, tooltip, NULL);
@@ -884,7 +884,7 @@ gnomemeeting_table_add_pstring_option_menu (GtkWidget *table,
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, row, row+1,                
                     (GtkAttachOptions) (GTK_FILL),                
                     (GtkAttachOptions) (GTK_FILL),                
-                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);           
+                    0, 0);           
                                                                                
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);                         
   gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);                
@@ -922,7 +922,7 @@ gnomemeeting_table_add_pstring_option_menu (GtkWidget *table,
   gtk_table_attach (GTK_TABLE (table), option_menu, 1, 2, row, row+1,         
                     (GtkAttachOptions) (GTK_FILL),                
                     (GtkAttachOptions) (GTK_FILL),                
-                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);           
+                    0, 0);           
                                                                                
                            
   gtk_tooltips_set_tip (pw->tips, option_menu, tooltip, NULL);
@@ -1004,7 +1004,8 @@ GtkWidget *
 gnomemeeting_vbox_add_table (GtkWidget *vbox,         
 			     gchar *frame_name,       
 			     int rows, int cols)      
-{                                                                              
+{                                                         
+  GtkWidget *hbox = NULL;
   GtkWidget *frame = NULL;
   GtkWidget *table = NULL;
   GtkWidget *label = NULL;
@@ -1012,7 +1013,8 @@ gnomemeeting_vbox_add_table (GtkWidget *vbox,
   PangoAttrList *attrs = NULL;
   PangoAttribute *attr = NULL;
    
-  
+  hbox = gtk_hbox_new (FALSE, 6);
+
   frame = gtk_frame_new (frame_name);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
   
@@ -1031,12 +1033,17 @@ gnomemeeting_vbox_add_table (GtkWidget *vbox,
                                                                               
   table = gtk_table_new (rows, cols, FALSE);                                   
                                                                               
-  gtk_container_add (GTK_CONTAINER (frame), table); 
-  gtk_container_set_border_width (GTK_CONTAINER (frame), 4);
-  gtk_container_set_border_width (GTK_CONTAINER (table), 4); 
+  gtk_container_add (GTK_CONTAINER (frame), hbox); 
+
+  gtk_container_set_border_width (GTK_CONTAINER (hbox), 3);
+  gtk_container_set_border_width (GTK_CONTAINER (frame), 6);
+
+  label = gtk_label_new ("    ");
+  gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox), table, FALSE, FALSE, 0);
                                                                                
-  gtk_table_set_row_spacings (GTK_TABLE (table), GNOMEMEETING_PAD_SMALL);     
-  gtk_table_set_col_spacings (GTK_TABLE (table), 0);     
+  gtk_table_set_row_spacings (GTK_TABLE (table), 1);     
+  gtk_table_set_col_spacings (GTK_TABLE (table), 6);     
   
   return table;
 }                                                                              

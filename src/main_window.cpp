@@ -1417,7 +1417,7 @@ void gnomemeeting_init_main_window_dialpad ()
 			i - 1, i, j2, j2+1,
 			(GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 			(GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-			3, 3);
+			1, 1);
 
       g_signal_connect (G_OBJECT (button), "clicked",
 			GTK_SIGNAL_FUNC (dialpad_button_clicked), NULL);

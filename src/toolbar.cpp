@@ -222,7 +222,7 @@ GtkWidget *gnomemeeting_init_left_toolbar (void)
   gtk_widget_show (image);
   gtk_toolbar_append_item (GTK_TOOLBAR (left_toolbar),
 			   NULL,
-			   _("Open the text chat."), 
+			   _("Open text chat."), 
 			   NULL,
 			   image,
 			   GTK_SIGNAL_FUNC (toolbar_button_changed),
@@ -233,7 +233,7 @@ GtkWidget *gnomemeeting_init_left_toolbar (void)
   gtk_widget_show (image);
   gtk_toolbar_append_item (GTK_TOOLBAR (left_toolbar),
 			   NULL,
-			   _("Open the control panel"),
+			   _("Open control panel"),
 			   NULL,
 			   image,
 			   GTK_SIGNAL_FUNC (toolbar_cp_button_changed),
@@ -245,7 +245,7 @@ GtkWidget *gnomemeeting_init_left_toolbar (void)
   gtk_widget_show (image);
   gtk_toolbar_append_item (GTK_TOOLBAR (left_toolbar),
 			   NULL,
-			   _("Open the address book"),
+			   _("Open address book"),
 			   NULL,
 			   image,
 			   GTK_SIGNAL_FUNC (gnomemeeting_component_view),

@@ -627,7 +627,7 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 
       {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
 
-      {_("Generic History"), _("View the operations history"),
+      {_("General History"), _("View the operations history"),
        NULL, 0, MENU_ENTRY, 
        GTK_SIGNAL_FUNC (gnomemeeting_component_view),
        (gpointer) gw->history_window, NULL},
