@@ -1618,7 +1618,7 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
    }
 #else // not TRY_PLUGINS
   if (!H323EndPoint::OpenAudioChannel (connection,
-				       isEncoding, 
+				       is_encoding, 
 				       bufferSize,
 				       codec)) 
     no_error = FALSE;
