@@ -307,6 +307,31 @@ GMAudioTester::GMAudioTester (GMH323EndPoint *e)
   player = new PSoundChannel;
   recorder = new PSoundChannel;
 
+  dialog =
+    gtk_dialog_new_with_buttons ("Audio test running...",
+				 GTK_WINDOW (gw->druid_window),
+				 (enum GtkDialogFlags) (GTK_DIALOG_MODAL
+							| GTK_DIALOG_DESTROY_WITH_PARENT),
+				 GTK_STOCK_OK,
+				 GTK_RESPONSE_ACCEPT,
+				 NULL);
+  msg = g_strdup_printf (_("GnomeMeeting is now recording from %s and playing back to %s. Please say \"1 2 3\" in your microphone, you should hear yourself back into the speakers in 5 seconds.\n\nRecording... Please talk."), (const char*) ep->GetSoundChannelRecordDevice (), (const char*) ep->GetSoundChannelPlayDevice ());
+  label = gtk_label_new (msg);
+  gtk_label_set_line_wrap (GTK_LABEL (label), true);
+  g_free (msg);
+	
+  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), label,
+		      FALSE, FALSE, 0);
+	
+  g_signal_connect (G_OBJECT (dialog), "response",
+		    G_CALLBACK (dialog_response_cb), NULL);
+  gtk_dialog_set_response_sensitive (GTK_DIALOG (dialog),
+				     GTK_RESPONSE_ACCEPT, false);
+  gtk_window_set_transient_for (GTK_WINDOW (dialog),
+				GTK_WINDOW (gw->druid_window));
+
+  gtk_widget_show_all (dialog);
+
   this->Resume ();
 }
 
@@ -331,10 +356,6 @@ void GMAudioTester::Main ()
 {
   GConfClient *client = NULL;
 
-  GtkWidget *dialog = NULL;
-  GtkWidget *label = NULL;
-
-  gchar *msg = NULL;
   char *buffer_play = (char *) malloc (8 * 1024);
   char *buffer_record = (char *) malloc (8 * 1024);
   char *buffer_ring = (char *) malloc (8 * 5 * 1024);
@@ -344,7 +365,6 @@ void GMAudioTester::Main ()
   int buffer_rec_pos = 0;
   int clock = 0;
 
-  bool displayed = false;
   bool label_displayed = false;
 
   PTime now;
@@ -360,7 +380,7 @@ void GMAudioTester::Main ()
   gnomemeeting_set_mixer_volume (mixer, SOURCE_MIC, 100);
   g_free (mixer);
 
-
+  
   /* We try to open the 2 selected devices */
   if (!player->Open (ep->GetSoundChannelPlayDevice (), PSoundChannel::Player,
 		     1, 8000, 16)) {
@@ -406,43 +426,8 @@ void GMAudioTester::Main ()
 	
       stop = TRUE;
     }
-    else {
 
-      if (!displayed) {
-
-	gdk_threads_enter ();
-	dialog =
-	  gtk_dialog_new_with_buttons ("Audio test running...",
-				       GTK_WINDOW (gw->druid_window),
-				       (enum GtkDialogFlags) (GTK_DIALOG_MODAL
-				       | GTK_DIALOG_DESTROY_WITH_PARENT),
-				       GTK_STOCK_OK,
-				       GTK_RESPONSE_ACCEPT,
-				       NULL);
-	msg = g_strdup_printf (_("GnomeMeeting is now recording from %s and playing back to %s. Please say \"1 2 3\" in your microphone, you should hear yourself back into the speakers in 5 seconds.\n\nRecording... Please talk."), (const char*) ep->GetSoundChannelRecordDevice (), (const char*) ep->GetSoundChannelPlayDevice ());
-	label = gtk_label_new (msg);
-	gtk_label_set_line_wrap (GTK_LABEL (label), true);
-	g_free (msg);
-	
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), label,
-			    FALSE, FALSE, 0);
-	
-	g_signal_connect (G_OBJECT (dialog), "response",
-			  G_CALLBACK (dialog_response_cb), NULL);
-	gtk_dialog_set_response_sensitive (GTK_DIALOG (dialog),
-					   GTK_RESPONSE_ACCEPT, false);
-	gtk_window_set_transient_for (GTK_WINDOW (dialog),
-				      GTK_WINDOW (gw->druid_window));
-	gdk_threads_leave ();
-
-	gdk_threads_enter ();
-       	gtk_widget_show_all (dialog);
-	gdk_threads_leave ();
-      }
-
-      displayed = TRUE;
-    }
-
+    
     if (clock >= 5) {
       
       buffer_play_pos += 8 * 1024;

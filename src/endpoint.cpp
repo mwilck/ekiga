@@ -317,7 +317,8 @@ void GMH323EndPoint::UpdateConfig ()
       gnomemeeting_threads_enter ();
       /* Change that setting only if needed */
       if (player && (GetSoundChannelPlayDevice () != PString (player))) { 
-	
+
+	SetSoundChannelPlayDevice (player);
 	/* Player is always a correct sound device, thanks to 
 	   gnomemeeting_add_string_option_menu */
 	text = g_strdup_printf (_("Set Audio player device to %s"), 

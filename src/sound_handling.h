@@ -130,6 +130,10 @@ protected:
   PSoundChannel *recorder;
 
   GmWindow *gw;
+  GtkWidget *dialog;
+  GtkWidget *label;
+
+  gchar *msg;
 
   GMH323EndPoint *ep;
 };
