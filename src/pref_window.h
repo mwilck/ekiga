@@ -49,6 +49,6 @@ void gnomemeeting_init_pref_window ();
  *                 parameter. Also sets row data (1 for Enabled, O for not).
  * PRE          :  First parameter should be a valid clist
  */
-void gnomemeeting_codecs_list_add (GtkWidget *, gchar *, gchar *);
+void gnomemeeting_codecs_list_add (GtkWidget *, const char *, const char *);
 
 #endif

@@ -226,6 +226,12 @@ void GnomeMeeting::Connect()
       endpoint->SetCallingState (1);
       con->Unlock ();
       gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
+
+      /* Enable disconnect: we must be able to stop calling */
+      GnomeUIInfo *call_menu_uiinfo =
+	(GnomeUIInfo *) gtk_object_get_data (GTK_OBJECT (gm), "call_menu_uiinfo");
+      gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [1].widget), TRUE);
+
       msg = g_strdup_printf (_("Call %d: calling %s"), 
 			     call_number,
 			     (const char *) call_address);
@@ -233,7 +239,9 @@ void GnomeMeeting::Connect()
       gnome_appbar_push (GNOME_APPBAR (gw->statusbar), msg);
       connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 1);
       g_free (msg);				 
-    }			
+    }
+    else  /* We untoggle the connect button in the case it was toggled */
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->connect_button), FALSE);
   }
 }
 

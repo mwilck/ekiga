@@ -786,7 +786,7 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook)
 						       0));
 
   tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, pw->show_chat_window,
+  gtk_tooltips_set_tip (tip, pw->show_left_toolbar,
 			_("If enabled, the left toolbar will be displayed at startup time"), NULL);
   gtk_signal_connect (GTK_OBJECT (pw->show_left_toolbar), "toggled",
 		      GTK_SIGNAL_FUNC (toggle_changed),

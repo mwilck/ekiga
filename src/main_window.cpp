@@ -287,7 +287,7 @@ void gnomemeeting_init (GM_window_widgets *gw,
 				    arguments, 0, NULL);
 
   gm = gnome_app_new ("gnomemeeting", _("GnomeMeeting"));
-  gtk_window_set_policy (GTK_WINDOW (gm), FALSE, FALSE, TRUE);
+  gtk_window_set_policy (GTK_WINDOW (gm), FALSE, TRUE, TRUE);
 
   /* Some little gconf stuff */  
   client = gconf_client_get_default ();
