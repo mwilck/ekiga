@@ -291,7 +291,8 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
   if ((int) (buffer.GetSize ()) != (int) (frameWidth * frameHeight * 3))
     buffer.SetSize(frameWidth * frameHeight * 3);
 
-  H323VideoDevice::Redraw(frame);
+  if (frame)
+    H323VideoDevice::Redraw(frame);
 
 
   /* The real size picture */

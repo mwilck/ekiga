@@ -1,5 +1,13 @@
 2002-10-09  Miguel Rodríguez Pérez  <migrax@terra.es>
 
+	* src/gdkvideoio.cpp (Redraw):  Added test in gdkvideoio.cpp in
+	case the frame to render is NULL (damien).
+
+	* src/ils.cpp (GMILSBrowser): Convert the search pattern from
+	UTF-8 to ISO-8859-1 before applying it.
+
+2002-10-09  Miguel Rodríguez Pérez  <migrax@terra.es>
+
 	* configure.in: Patch from Alex to allow buiding when
 	libdir=/usr/lib64
 

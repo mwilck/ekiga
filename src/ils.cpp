@@ -741,7 +741,8 @@ GMILSBrowser::GMILSBrowser (gchar *server, gchar *filter)
     ldap_server = NULL;
 
   if (filter)
-    search_filter = g_strdup (filter);
+    search_filter = g_convert (filter, strlen (filter), "ISO-8859-1", "UTF-8",
+			       NULL, NULL, NULL);
   else
     search_filter = NULL;
 
