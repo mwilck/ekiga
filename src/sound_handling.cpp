@@ -105,10 +105,10 @@ gnomemeeting_sound_daemons_resume (void)
 void 
 gnomemeeting_mixers_mic_select (void)
 {
+#ifndef P_MACOSX
   int rcsrc = 0;
   int mixerfd = -1;                                                            
   int cpt = -1;
-                                                                       
   PString mixer_name = PString ("/dev/mixer");
   PString mixer = mixer_name;
 
@@ -130,11 +130,15 @@ gnomemeeting_mixers_mic_select (void)
       close (mixerfd);
     }
   }
+#else
+  return;
+#endif
 }
 
 
 int gnomemeeting_get_mixer_volume (char *mixer, int source)
 {
+#ifndef P_MACOSX
   int vol = 0;
   int mixerfd = -1;
   
@@ -154,11 +158,15 @@ int gnomemeeting_get_mixer_volume (char *mixer, int source)
 
   close (mixerfd);
   return vol;
+#else
+  return 0;
+#endif
 }
 
 
 void gnomemeeting_set_mixer_volume (char *mixer, int source, int vol)
 {
+#ifndef P_MACOSX
   int mixerfd = -1;
   
   if (!mixer)
@@ -176,6 +184,9 @@ void gnomemeeting_set_mixer_volume (char *mixer, int source, int vol)
     ioctl (mixerfd, MIXER_WRITE (SOUND_MIXER_MIC), &vol);
   
   close (mixerfd);
+#else
+  return;
+#endif
 }
 
 
