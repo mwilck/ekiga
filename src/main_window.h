@@ -74,13 +74,23 @@ void gm_main_window_set_channel_pause (GtkWidget *,
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Update the main window sensitivity following the calling
- *                 state.
+ * BEHAVIOR     :  Update the main window sensitivity and state following 
+ * 		   the given calling state.
+ * 		   The state of widgets that depend on the calling state only
+ * 		   is updated: 
+ * 		   - the sensitivity of menu and toolbar items,
+ * 		   - the stay on top state of windows depending of the main 
+ * 		   window, 
+ * 		   - the state of the calling button,
+ * 		   - the transfer call window,
+ * 		   - the incoming call window can be destroyed or not.
+ * 		   Widgets for which the state depends on other parameters
+ * 		   are udpated in separate functions.
  * PRE          :  The main window GMObject.
  * 		   A valid GMH323EndPoint calling state.
  */
-void gm_main_window_update_sensitivity (//GtkWidget *,
-					unsigned);
+void gm_main_window_update_calling_state (//GtkWidget *,
+					  unsigned);
 
 
 /* DESCRIPTION  :  /
@@ -236,6 +246,46 @@ void gm_main_window_set_call_url (GtkWidget *,
  * PRE           : The main window GMObject.
  */
 const char *gm_main_window_get_call_url (GtkWidget *);
+
+
+/* DESCRIPTION   :  /
+ * BEHAVIOR      : Sets the given remote user name as user name in the GUI.
+ * PRE           : The main window GMObject.
+ */
+void gm_main_window_set_remote_user_name (GtkWidget *,
+					  const char *);
+
+
+/* DESCRIPTION   :  /
+ * BEHAVIOR      : Clears the stats area in the control panel. 
+ * PRE           : The main window GMObject.
+ */
+void gm_main_window_clear_stats (GtkWidget *);
+
+
+/* DESCRIPTION   :  /
+ * BEHAVIOR      : Updates the stats area in the control panel. 
+ * PRE           : The main window GMObject, lost, late packets, rtt, jitter,
+ * 		   video bytes received, transmitted, audio bytes received,
+ * 		   transmitted. All >= 0.
+ */
+void gm_main_window_update_stats (GtkWidget *,
+				  float,
+				  float,
+				  int,
+				  int,
+				  int,
+				  int,
+				  int,
+				  int);
+
+
+/* DESCRIPTION   :  /
+ * BEHAVIOR      : Returns the currently displayed picture as a pixbuf.
+ * PRE           : The main window GMObject.
+ */
+GdkPixbuf *
+gm_main_window_get_current_picture (GtkWidget *);
 
 #endif
 

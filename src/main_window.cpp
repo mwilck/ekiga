@@ -1999,34 +1999,71 @@ gm_main_window_set_channel_pause (GtkWidget *main_window,
 
 
 void
-gm_main_window_update_sensitivity (//GtkWidget *main_window,
-				   unsigned calling_state)
+gm_main_window_update_calling_state (//GtkWidget *main_window,
+				     unsigned calling_state)
 {
   GmWindow *mw = NULL;
   
   GtkWidget *main_window = NULL;
-
+  
+  GdkWindow *gm_window = NULL;
+  GdkWindow *local_window = NULL;
+  GdkWindow *remote_window = NULL;
+  
+  BOOL stay_on_top = FALSE;
+  
   mw = GnomeMeeting::Process ()->GetMainWindow ();
   main_window = gm;
- 
+  
+  gm_window = GDK_WINDOW (gm->window);
+  local_window = GDK_WINDOW (mw->local_video_window->window);
+  remote_window = GDK_WINDOW (mw->remote_video_window->window);
+
+  stay_on_top = gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top");
+    
+
   switch (calling_state)
     {
     case GMH323EndPoint::Standby:
 
+      /* Update the menus and toolbar items */
       gtk_menu_set_sensitive (mw->main_menu, "connect", TRUE);
       gtk_menu_set_sensitive (mw->main_menu, "disconnect", FALSE);
       gtk_menu_section_set_sensitive (mw->main_menu, "hold_call", FALSE);
       gtk_widget_set_sensitive (GTK_WIDGET (mw->preview_button), TRUE);
+
+      /* Update the connect button */
       gm_mw_update_connect_button (main_window, FALSE);
       
+      /* Update the stay-on-top attribute */
+      gdk_window_set_always_on_top (GDK_WINDOW (gm_window), FALSE);
+      gdk_window_set_always_on_top (GDK_WINDOW (local_window), FALSE);
+      gdk_window_set_always_on_top (GDK_WINDOW (remote_window), FALSE);
+      
+      /* Destroy the incoming call popup */
+      if (mw->incoming_call_popup) {
+
+	gtk_widget_destroy (mw->incoming_call_popup);
+	mw->incoming_call_popup = NULL;
+      }
+
+      /* Destroy the transfer call popup */
+      if (mw->transfer_call_popup) 
+	gtk_dialog_response (GTK_DIALOG (mw->transfer_call_popup),
+			     GTK_RESPONSE_REJECT);
+  
+	
       break;
 
 
     case GMH323EndPoint::Calling:
 
+      /* Update the menus and toolbar items */
       gtk_menu_set_sensitive (mw->main_menu, "connect", FALSE);
       gtk_menu_set_sensitive (mw->main_menu, "disconnect", TRUE);
       gtk_widget_set_sensitive (GTK_WIDGET (mw->preview_button), FALSE);
+
+      /* Update the connect button */
       gm_mw_update_connect_button (main_window, TRUE);
       
       break;
@@ -2034,18 +2071,35 @@ gm_main_window_update_sensitivity (//GtkWidget *main_window,
 
     case GMH323EndPoint::Connected:
 
+      /* Update the menus and toolbar items */
       gtk_menu_set_sensitive (mw->main_menu, "connect", FALSE);
       gtk_menu_set_sensitive (mw->main_menu, "disconnect", TRUE);
       gtk_menu_section_set_sensitive (mw->main_menu, "hold_call", TRUE);
       gtk_widget_set_sensitive (GTK_WIDGET (mw->preview_button), FALSE);
+
+      /* Update the connect button */
       gm_mw_update_connect_button (main_window, TRUE);
+
+      /* Update the stay-on-top attribute */
+      gdk_window_set_always_on_top (GDK_WINDOW (gm_window), stay_on_top);
+      gdk_window_set_always_on_top (GDK_WINDOW (local_window), stay_on_top);
+      gdk_window_set_always_on_top (GDK_WINDOW (remote_window), stay_on_top);
       
+      /* Destroy the incoming call popup */
+      if (mw->incoming_call_popup) {
+
+	gtk_widget_destroy (mw->incoming_call_popup);
+	mw->incoming_call_popup = NULL;
+      }
       break;
 
 
     case GMH323EndPoint::Called:
 
+      /* Update the menus and toolbar items */
       gtk_menu_set_sensitive (mw->main_menu, "disconnect", TRUE);
+
+      /* Update the connect button */
       gm_mw_update_connect_button (main_window, FALSE);
       
       break;
@@ -2834,8 +2888,90 @@ gm_main_window_get_call_url (GtkWidget *main_window)
 }
 
 
-/* The main () */
+void 
+gm_main_window_set_remote_user_name (GtkWidget *main_window,
+				     const char *name)
+{
+  GmWindow *mw = NULL;
 
+  g_return_if_fail (main_window != NULL);
+
+  mw = gm_mw_get_mw (main_window);
+
+  g_return_if_fail (mw != NULL);
+
+  gtk_label_set_text (GTK_LABEL (mw->remote_name), 
+		      (const char *) name);
+}
+
+
+void 
+gm_main_window_clear_stats (GtkWidget *main_window)
+{
+  GmWindow *mw = NULL;
+
+  g_return_if_fail (main_window != NULL);
+
+  mw = gm_mw_get_mw (main_window);
+
+  g_return_if_fail (mw != NULL);
+
+  stats_drawing_area_clear (mw->stats_drawing_area);
+  gtk_label_set_text (GTK_LABEL (mw->stats_label), 
+		      _("Lost packets:\nLate packets:\nRound-trip delay:\nJitter buffer:"));
+}
+
+
+void 
+gm_main_window_update_stats (GtkWidget *main_window,
+			     float lost,
+			     float late,
+			     int rtt,
+			     int jitter,
+			     int new_video_octets_received,
+			     int new_video_octets_transmitted,
+			     int new_audio_octets_received,
+			     int new_audio_octets_transmitted)
+{
+  GmWindow *mw = NULL;
+  
+  gchar *stats_msg = NULL;
+
+  
+  g_return_if_fail (main_window != NULL);
+
+  mw = gm_mw_get_mw (main_window);
+
+  g_return_if_fail (mw != NULL);
+
+  stats_msg =  g_strdup_printf (_("Lost packets: %.1f %%\nLate packets: %.1f %%\nRound-trip delay: %d ms\nJitter buffer: %d ms"), lost, late, rtt, jitter);
+  gtk_label_set_text (GTK_LABEL (mw->stats_label), stats_msg);
+  g_free (stats_msg);
+
+  stats_drawing_area_new_data (mw->stats_drawing_area,
+			       new_video_octets_received,
+			       new_video_octets_transmitted,
+			       new_audio_octets_received,
+			       new_audio_octets_transmitted);
+}
+
+
+GdkPixbuf *
+gm_main_window_get_current_picture (GtkWidget *main_window)
+{
+  GmWindow *mw = NULL;
+  
+  g_return_val_if_fail (main_window != NULL, NULL);
+
+  mw = gm_mw_get_mw (main_window);
+
+  g_return_val_if_fail (mw != NULL, NULL);
+
+  return gtk_image_get_pixbuf (GTK_IMAGE (mw->main_video_image));
+}
+
+
+/* The main () */
 int main (int argc, char ** argv, char ** envp)
 {
   PProcess::PreInitialise (argc, argv, envp);

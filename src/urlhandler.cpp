@@ -346,8 +346,8 @@ void GMURLHandler::Main ()
     gnomemeeting_threads_enter ();
     if (!call_address.IsEmpty ()) {
 
-      gm_main_window_update_sensitivity (GMH323EndPoint::Calling);
-      gm_tray_update_sensitivity (tray, GMH323EndPoint::Calling);
+      gm_main_window_update_calling_state (GMH323EndPoint::Calling);
+      gm_tray_update_calling_state (tray, GMH323EndPoint::Calling);
       endpoint->SetCallingState (GMH323EndPoint::Calling);
       
       if (!transfer_call) {
@@ -396,8 +396,8 @@ void GMURLHandler::Main ()
     else {
 
       gnomemeeting_threads_enter ();
-      gm_tray_update_sensitivity (tray, GMH323EndPoint::Standby);
-      gm_main_window_update_sensitivity (GMH323EndPoint::Standby);
+      gm_tray_update_calling_state (tray, GMH323EndPoint::Standby);
+      gm_main_window_update_calling_state (GMH323EndPoint::Standby);
 
       if (call_address.Find ("+type=directory") != P_MAX_INDEX) {
 	

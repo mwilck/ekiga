@@ -427,8 +427,8 @@ gm_tray_update (GtkWidget *tray_icon,
 
 
 void 
-gm_tray_update_sensitivity (GtkWidget *tray,
-			    int calling_state)
+gm_tray_update_calling_state (GtkWidget *tray,
+			      int calling_state)
 {
   GmTray *gt = NULL;
 

@@ -96,6 +96,9 @@ GMH323EndPoint::GMH323EndPoint ()
 #endif
   
   audio_tester = NULL;
+
+  audio_reception_popup = NULL;
+  audio_transmission_popup = NULL;
   
   ILSTimer.SetNotifier (PCREATE_NOTIFIER (OnILSTimeout));
   ils_registered = false;
@@ -828,8 +831,8 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   /* If we are here, the call doesn't need to be rejected, forwarded
      or automatically answered */
   gnomemeeting_threads_enter ();
-  gm_tray_update_sensitivity (tray, GMH323EndPoint::Called);
-  gm_main_window_update_sensitivity (GMH323EndPoint::Called);
+  gm_tray_update_calling_state (tray, GMH323EndPoint::Called);
+  gm_main_window_update_calling_state (GMH323EndPoint::Called);
   gnomemeeting_threads_leave ();
 
 
@@ -973,37 +976,6 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   forward_on_busy = gm_conf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
   gnomemeeting_threads_leave ();
   
-  
-  /* Connected */
-  gnomemeeting_threads_enter ();
-
-  gm_main_window_flash_message (main_window, _("Connected"));
-  gm_history_window_insert (history_window,
-			    _("Connected with %s using %s"), 
-			    utf8_name, utf8_app);
-  gnomemeeting_text_chat_call_start_notification (chat_window);
-
-  gtk_label_set_text (GTK_LABEL (gw->remote_name), (const char *) utf8_name);
-
-
-  /* set-on-top to True */
-  if (gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top")) {
-    
-    gdk_window_set_always_on_top (GDK_WINDOW (gm->window), TRUE);
-    gdk_window_set_always_on_top (GDK_WINDOW (gw->local_video_window->window), 
-				  TRUE);
-    gdk_window_set_always_on_top (GDK_WINDOW (gw->remote_video_window->window), 
-				  TRUE);
-  }
-
-  
-  if (gw->incoming_call_popup) {
-    
-    gtk_widget_destroy (gw->incoming_call_popup);
-    gw->incoming_call_popup = NULL;
-  }
-  gnomemeeting_threads_leave ();
-
 
   /* Stop the Timers */
   NoAnswerTimer.Stop ();
@@ -1030,12 +1002,18 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 
   /* Update the GUI */
   gnomemeeting_threads_enter ();
-  gm_main_window_update_sensitivity (GMH323EndPoint::Connected);
-  gm_tray_update_sensitivity (tray, GMH323EndPoint::Connected);
-  gm_tray_update (tray,
-		  GMH323EndPoint::Connected, 
-		  icm, 
-		  forward_on_busy);
+
+  gm_main_window_flash_message (main_window, _("Connected"));
+  gm_history_window_insert (history_window,
+			    _("Connected with %s using %s"), 
+			    utf8_name, utf8_app);
+  gnomemeeting_text_chat_call_start_notification (chat_window);
+
+  gm_main_window_set_remote_user_name (main_window, utf8_name);
+
+  gm_main_window_update_calling_state (GMH323EndPoint::Connected);
+  gm_tray_update_calling_state (tray, GMH323EndPoint::Connected);
+  gm_tray_update (tray, GMH323EndPoint::Connected, icm, forward_on_busy);
   gnomemeeting_threads_leave ();
 
   
@@ -1302,19 +1280,6 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   OutgoingCallTimer.Stop ();
   NoIncomingMediaTimer.Stop ();
   
-  
-  gnomemeeting_threads_enter ();
-  if (gw->incoming_call_popup) {
-
-    gtk_widget_destroy (gw->incoming_call_popup);
-    gw->incoming_call_popup = NULL;
-  }
-
-  if (gw->transfer_call_popup) 
-    gtk_dialog_response (GTK_DIALOG (gw->transfer_call_popup),
-			 GTK_RESPONSE_REJECT);
-  gnomemeeting_threads_leave ();
-  
 
   /* Play busy tone if it is not a missed call */
   sound_event_mutex.Wait ();
@@ -1323,10 +1288,13 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   sound_event_mutex.Signal ();
 
   
+  /* Update the main window */
   gnomemeeting_threads_enter ();
-  gtk_label_set_text (GTK_LABEL (gw->remote_name), "");
+  gm_main_window_set_remote_user_name (main_window, "");
+  gm_main_window_clear_stats (main_window);
   gnomemeeting_threads_leave ();
   
+
   /* Play Busy Tone */
 #ifdef HAS_IXJ
   l = GetLid ();
@@ -1347,28 +1315,15 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   /* We update the stats part */  
   gnomemeeting_threads_enter ();
-  stats_drawing_area_clear (gw->stats_drawing_area);
-  gtk_label_set_text (GTK_LABEL (gw->stats_label), _("Lost packets:\nLate packets:\nRound-trip delay:\nJitter buffer:"));
 
-  /* set-on-top to False */
-  if (stay_on_top) {
-   
-    gdk_window_set_always_on_top (GDK_WINDOW (gm->window), FALSE);
-    gdk_window_set_always_on_top (GDK_WINDOW (gw->local_video_window->window), 
-				  FALSE);
-    gdk_window_set_always_on_top (GDK_WINDOW (gw->remote_video_window->window), 
-				  FALSE);
-  }
-
-
-  gw->audio_reception_popup = NULL;
-  gw->audio_transmission_popup = NULL;
+  audio_reception_popup = NULL;
+  audio_transmission_popup = NULL;
 
   
   /* We update the GUI */
-  gm_main_window_update_sensitivity (GMH323EndPoint::Standby);
-  gm_tray_update_sensitivity (tray, 
-			      GMH323EndPoint::Standby);
+  gm_main_window_update_calling_state (GMH323EndPoint::Standby);
+  gm_tray_update_calling_state (tray, 
+				GMH323EndPoint::Standby);
   gm_tray_update (tray, 
 		  GMH323EndPoint::Standby, 
 		  icm, 
@@ -1403,18 +1358,20 @@ void
 GMH323EndPoint::SavePicture (void)
 { 
   PTime ts = PTime ();
+  
+  GtkWidget *main_window = NULL;
   GdkPixbuf *pic = NULL;
+  
   gchar *prefix = NULL;
   gchar *dirname = NULL;
   gchar *filename = NULL;
 
+  main_window = gm;
 
-  gnomemeeting_threads_enter ();
   prefix = gm_conf_get_string (GENERAL_KEY "save_prefix");
-  gnomemeeting_threads_leave ();
   
   dirname = (gchar *) g_get_home_dir ();
-  pic = gtk_image_get_pixbuf (GTK_IMAGE (gw->main_video_image));
+  pic = gm_main_window_get_current_picture (main_window);
 
   if (pic && prefix && dirname) {
     
@@ -1783,13 +1740,13 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
 
     if (is_encoding) {
 
-      if (!gw->audio_transmission_popup)
-	gw->audio_transmission_popup =
+      if (!audio_transmission_popup)
+	audio_transmission_popup =
 	  gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Could not open audio channel for audio transmission"), _("An error occured while trying to record from the soundcard for the audio transmission. Please check that your soundcard is not busy and that your driver supports full-duplex.\nThe audio transmission has been disabled."));
     }
     else
-      if (!gw->audio_reception_popup)
-	gw->audio_reception_popup =
+      if (!audio_reception_popup)
+	audio_reception_popup =
 	  gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Could not open audio channel for audio reception"), _("An error occured while trying to play audio to the soundcard for the audio reception. Please check that your soundcard is not busy and that your driver supports full-duplex.\nThe audio reception has been disabled."));
     gnomemeeting_threads_leave ();
   }
@@ -2022,17 +1979,19 @@ GMH323EndPoint::OnRTPTimeout (PTimer &, INT)
 
   gdk_threads_enter ();
   gm_main_window_flash_message (main_window, msg);
-  gchar *stats_msg = 
-    g_strdup_printf (_("Lost packets: %.1f %%\nLate packets: %.1f %%\nRound-trip delay: %d ms\nJitter buffer: %d ms"), lost_packets_per, late_packets_per, (int) rtt, int (jitter_buffer_size / 8));
-  gtk_label_set_text (GTK_LABEL (gw->stats_label), stats_msg);
-  g_free (stats_msg);
 
-  if (gm_conf_get_int (USER_INTERFACE_KEY "main_window/control_panel_section") == 0)
-    stats_drawing_area_new_data (gw->stats_drawing_area,
-				 new_video_octets_received,
-				 new_video_octets_transmitted,
-				 new_audio_octets_received,
-				 new_audio_octets_transmitted);
+  if (gm_conf_get_int (USER_INTERFACE_KEY "main_window/control_panel_section") 
+      == 0)
+    gm_main_window_update_stats (main_window,
+			     lost_packets_per,
+			     late_packets_per,
+			     (int) rtt,
+			     (int) (jitter_buffer_size / 8),
+			     new_video_octets_received,
+			     new_video_octets_transmitted,
+			     new_audio_octets_received,
+			     new_audio_octets_transmitted);
+      
 
   gdk_threads_leave ();
 
@@ -2139,12 +2098,6 @@ GMH323EndPoint::OnNoAnswerTimeout (PTimer &,
 
   gw = GnomeMeeting::Process ()->GetMainWindow ();
 
-  /* Destroy the incoming call popup */
-  if (gw->incoming_call_popup) {
-
-    gtk_widget_destroy (gw->incoming_call_popup);
-    gw->incoming_call_popup = NULL;
-  }
   gdk_threads_leave ();
 
 

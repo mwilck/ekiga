@@ -68,13 +68,13 @@ void gm_tray_update (GtkWidget *,
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Update the tray sensitivity following the calling
- *                 state.
+ * BEHAVIOR     :  Update the tray sensitivity and state following the given
+ * 		   calling state.
  * PRE          :  The tray GMObject.
  *                 A valid GMH323EndPoint calling state.
  */
-void gm_tray_update_sensitivity (GtkWidget *,
-				 int);
+void gm_tray_update_calling_state (GtkWidget *,
+				   int);
 
 
 /* DESCRIPTION  : /

@@ -679,6 +679,8 @@ class GMH323EndPoint : public H323EndPoint
    */
   PDECLARE_NOTIFIER(PTimer, GMH323EndPoint, OnOutgoingCall);
 
+  GtkWidget *audio_transmission_popup;
+  GtkWidget *audio_reception_popup;
   
   PString called_address;
   PString current_call_token;
