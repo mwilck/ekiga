@@ -38,6 +38,7 @@ e_splash_new ()
 {
   GtkWidget *window = NULL;
   GtkWidget *image = NULL;
+  GdkPixbuf *pixbuf_icon;
 
   image = 
     gtk_image_new_from_file (GNOMEMEETING_IMAGES "/gnomemeeting-splash.png");
@@ -45,6 +46,12 @@ e_splash_new ()
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_position (GTK_WINDOW (window), 
 			   GTK_WIN_POS_CENTER);
+
+  pixbuf_icon = 
+    gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES "/gnomemeeting-logo-icon.png", 
+			      NULL); 
+
+  gtk_window_set_icon (GTK_WINDOW (window), pixbuf_icon);
 
   gtk_container_add (GTK_CONTAINER (window), image);
   gtk_widget_show (image);
