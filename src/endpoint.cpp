@@ -842,8 +842,6 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   GTK_TOGGLE_BUTTON (gw->audio_chan_button)->active = FALSE;
   GTK_TOGGLE_BUTTON (gw->video_chan_button)->active = FALSE;
 
-  SetCurrentDisplay (0);
-
   GtkWidget *object = (GtkWidget *) gtk_object_get_data (GTK_OBJECT (gm),
 							 "display_uiinfo");
 
@@ -887,10 +885,9 @@ void GMH323EndPoint::SetCurrentDisplay (int choice)
 
   if (transmitted_video_device != NULL)
     transmitted_video_device->SetCurrentDisplay (choice);
-  
+
   if (received_video_device != NULL)		
     received_video_device->SetCurrentDisplay (choice);
- 
 }
 
 
@@ -961,9 +958,6 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
      PVideoChannel *channel = vg->GetVideoChannel ();
      transmitted_video_device = vg->GetEncodingDevice ();
 
-
-     SetCurrentDisplay (0);
-     
      GtkWidget *object = (GtkWidget *) 
        gtk_object_get_data (GTK_OBJECT (gm),
 			    "display_uiinfo");
@@ -1019,7 +1013,6 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 	vg->Stop ();
       
       gnomemeeting_threads_enter ();
-      SetCurrentDisplay (0);
       
       GtkWidget *object = (GtkWidget *) 
 	gtk_object_get_data (GTK_OBJECT (gm),

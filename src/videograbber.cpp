@@ -135,13 +135,14 @@ void GMVideoGrabber::Main ()
  	VGClose (0);
  	UpdateConfig ();
  	VGOpen ();
+
  	is_grabbing = 1;
       }
 
       has_to_reset--;
       
       /* if we still need to reset more than one time, only reset one time */
-      if (has_to_reset >= 1)
+      if (has_to_reset >= 1) 
 	has_to_reset = 1;
     }
 
@@ -270,7 +271,6 @@ void GMVideoGrabber::Reset (void)
 
 void GMVideoGrabber::Start (void)
 {
-  MyApp->Endpoint ()->SetCurrentDisplay (0);
   is_grabbing = 1;
 }
 
@@ -278,8 +278,6 @@ void GMVideoGrabber::Start (void)
 void GMVideoGrabber::Stop (void)
 {
   is_grabbing = 0;
-  grabbing_mutex.Wait ();
-  grabbing_mutex.Signal ();
 }
 
 
@@ -531,6 +529,7 @@ void GMVideoGrabber::VGOpen (void)
 
 void GMVideoGrabber::VGClose (int display_logo)
 {
+  grabbing_mutex.Wait ();
   device_mutex.Wait ();
 
   if (is_opened) {
@@ -580,5 +579,6 @@ void GMVideoGrabber::VGClose (int display_logo)
   PThread::Current ()->Sleep (500);
 
   device_mutex.Signal ();
+  grabbing_mutex.Signal ();
 }
 

@@ -82,7 +82,6 @@ gint AppbarUpdate (gpointer data)
   GM_window_widgets *gw = NULL;
 
 
-
   if (MyApp->Endpoint ()) {
 
     PString current_call_token = MyApp->Endpoint ()->GetCurrentCallToken ();
@@ -101,7 +100,7 @@ gint AppbarUpdate (gpointer data)
       PTimeInterval t =
 	PTime () - connection->GetConnectionStartTime();
 
-      if (t.GetSeconds () > 5) {
+      if (t.GetSeconds () > 1) {
 
 	audio_session = connection->GetSession(RTP_Session::DefaultAudioSessionID);
 	  
@@ -138,8 +137,11 @@ gint AppbarUpdate (gpointer data)
 	   tr_audio_speed, re_audio_speed,
 	   tr_video_speed, re_video_speed);
 	
-	gnome_appbar_clear_stack (GNOME_APPBAR (gw->statusbar));
-	gnome_appbar_push (GNOME_APPBAR (gw->statusbar), msg);
+	if (t.GetSeconds () > 3) {
+
+	  gnome_appbar_clear_stack (GNOME_APPBAR (gw->statusbar));
+	  gnome_appbar_push (GNOME_APPBAR (gw->statusbar), msg);
+	}
 
 	g_free (msg);
       }
@@ -358,8 +360,8 @@ int main (int argc, char ** argv, char ** envp)
   gtk_timeout_add (1000, (GtkFunction) AppbarUpdate, 
  		   rtp);
 
-//   gtk_timeout_add (5000, (GtkFunction) StressTest, 
-//   		   NULL);
+//   gtk_timeout_add (10000, (GtkFunction) StressTest, 
+//     		   NULL);
 
   /* The GTK loop */
   gtk_main ();

@@ -251,7 +251,7 @@ class GMVideoGrabber : public PThread
 			    grabbed from the device */
   PMutex device_mutex;   /* Here to prevent the device to be accessed 2 times
 			    by different threads */
-
+  PMutex var_mutex;      /* To protect variables that are set from various threads */
   GConfClient *client;   /* The gconf client */
 };
 

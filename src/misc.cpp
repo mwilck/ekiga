@@ -383,6 +383,8 @@ void PAssertFunc (const char * file, int line, const char * msg)
 
   inAssert = true;
 
+  cout << "Assertion Error:" << msg << " " << file << " " << line << endl << flush;
+
   gnomemeeting_threads_enter ();
   mesg = g_strdup_printf (_("Error: %s \nYou can choose to ignore and continue, or to close GnomeMeeting."), msg, NULL);
 

@@ -36,6 +36,7 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <videoio.h>
 #include <gnome.h>
+#include <pthread.h>
 
 #include "common.h"
 
@@ -99,6 +100,7 @@ class GDKVideoOutputDevice : public H323VideoDevice
   PBYTEArray buffer; /* The RGB24 buffer; contains the images */
   int display_config; /* Current display : local or remote or both */
   PMutex redraw_mutex;
+  PMutex display_config_mutex;
     
   GM_window_widgets *gw;
 };

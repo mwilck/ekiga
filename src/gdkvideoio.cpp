@@ -67,12 +67,20 @@ GDKVideoOutputDevice::GDKVideoOutputDevice(int idno, GM_window_widgets *w)
  device_id = idno; 
 
  /* If we don't transmit, then display is the remote image by default. */
- if (idno == 0)
+ if (idno == 0) {
+
+   display_config_mutex.Wait ();
    display_config = 1;
+   display_config_mutex.Signal ();
+ }
  
  /* If we transmit, then display is the local image by default. */
- if (idno == 1)
+ if (idno == 1) {
+
+   display_config_mutex.Wait ();
    display_config = 0;
+   display_config_mutex.Signal ();
+ }
 
  gw = w;
 }
@@ -87,7 +95,9 @@ GDKVideoOutputDevice::~GDKVideoOutputDevice()
 
 void GDKVideoOutputDevice::SetCurrentDisplay (int choice)
 {
+  display_config_mutex.Wait ();
   display_config = choice;
+  display_config_mutex.Signal ();
 }
 
 
@@ -103,10 +113,14 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
   int zoomed_width = (int) (frameWidth * gw->zoom);
   int zoomed_height = (int) (frameHeight * gw->zoom);
 
-  /* Take the mutex before the redraw */
+  int display = 0;
 
+  display_config_mutex.Wait ();
+  display = display_config;
+  display_config_mutex.Signal ();
+
+  /* Take the mutexes before the redraw */
   redraw_mutex.Wait ();
-
   gnomemeeting_threads_enter ();
 
   if (buffer.GetSize () != frameWidth * frameHeight * 3)
@@ -138,7 +152,7 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
   /* Need to redefine screen size ? */
   if (((gw->drawing_area->allocation.width != zoomed_width) || 
       (gw->drawing_area->allocation.height != zoomed_height)) &&
-      (device_id == !display_config)) {
+      (device_id == !display)) {
 
     gnomemeeting_threads_enter ();
     gtk_drawing_area_size (GTK_DRAWING_AREA (gw->drawing_area), 
@@ -154,9 +168,9 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
 
 
   /* We display what we transmit, or what we receive */
-  if (((device_id == 0 && display_config == 1) ||
-      (device_id == 1 && display_config == 0)) &&
-      (display_config != 2)) {
+  if (((device_id == 0 && display == 1) ||
+      (device_id == 1 && display == 0)) &&
+      (display != 2)) {
     
     /* We only draw if the drawing area has already been realized */
     if (gw->pixmap != NULL) {
@@ -176,7 +190,7 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
 
 
   /* we display both of them */
-  if (display_config == 2) {
+  if (display == 2) {
 
     /* What we receive, in big */
     if (device_id == 0)	{
@@ -239,10 +253,7 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
   }
 
   gnomemeeting_threads_leave ();
-
-
   redraw_mutex.Signal ();
-
 	
   return TRUE;
 }

@@ -1,3 +1,14 @@
+2002-03-03  Damien Sandras  <dsandras@seconix.com>	
+
+	* src/endpoint.cpp: Removed unuseful SetCurrentDisplay.
+
+	* src/gdkvideoio.cpp: Added mutex to protect the display_config
+	variable that can be accessed from several threads.
+
+	* src/videograbber.cpp: Added mutexes. Added device_mutex to not
+	grab if the device is closing or opening.
+	
+	
 2002-03-03  Christian Rose  <menthos@menthos.com>
 
 	* src/menu.cpp: Changed some access keys, and changed the "About"
