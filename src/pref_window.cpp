@@ -1217,6 +1217,7 @@ static void gnomemeeting_init_pref_window_codecs_settings (GtkWidget *notebook)
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);			
 
+  /* xgettext:no-c-format */
   label = gtk_label_new (_("%"));
   gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
   gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
@@ -1287,6 +1288,7 @@ static void gnomemeeting_init_pref_window_codecs_settings (GtkWidget *notebook)
 		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);			
 
+  /* xgettext:no-c-format */
   label = gtk_label_new (_("%"));
   gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
   gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);

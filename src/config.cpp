@@ -661,7 +661,7 @@ static void video_preview_changed_nt (GConfClient *client, guint cid,
     }
     else {
 
-      gchar *msg = g_strdup (_("Preview can't be changed during calls. Changes will take effect after that call."));
+      gchar *msg = g_strdup (_("Preview can't be changed during calls. Changes will take effect after this call."));
       GtkWidget *msg_box = gnome_message_box_new (msg, GNOME_MESSAGE_BOX_WARNING, 
 						  "OK", NULL);
       gtk_widget_show (msg_box);
@@ -757,7 +757,7 @@ static void enable_vid_tr_changed_nt (GConfClient *client, guint cid,
     /* We reset the video device */
     if (MyApp->Endpoint ()->GetCallingState () == 2) {
      
-      gchar *msg = g_strdup (_("Video transmission can't be changed during calls. Changes will take effect after that call."));
+      gchar *msg = g_strdup (_("Video transmission can't be changed during calls. Changes will take effect after this call."));
       GtkWidget *msg_box = gnome_message_box_new (msg, GNOME_MESSAGE_BOX_WARNING, 
 						  "OK", NULL);
       gtk_widget_show (msg_box);
