@@ -56,6 +56,7 @@ GMThreadsCleaner::GMThreadsCleaner ()
   :PThread (1000, AutoDeleteThread)
 {
   gw = gnomemeeting_get_main_window (gm);
+  gw->cleaner_thread_count = 1;
 
   this->Resume ();
 }
@@ -63,7 +64,7 @@ GMThreadsCleaner::GMThreadsCleaner ()
 
 GMThreadsCleaner::~GMThreadsCleaner ()
 {
-  /* Nothing to do here */
+  gw->cleaner_thread_count = 0;
 }
 
 
@@ -72,11 +73,9 @@ void GMThreadsCleaner::Main ()
   int x = 0, y = 0;
   GMH323EndPoint *endpoint = MyApp->Endpoint ();
 
+  quit_mutex.Wait ();
+  
   gnomemeeting_threads_enter ();
-
-  gint timeout = 
-    GPOINTER_TO_INT (g_object_get_data (G_OBJECT (gm), "timeout"));
-  gtk_timeout_remove (timeout);
 
   gnomemeeting_statusbar_push (gw->statusbar, _("Quit in progress..."));
 
@@ -85,13 +84,14 @@ void GMThreadsCleaner::Main ()
     endpoint->ClearCall (endpoint->GetCurrentCallToken (), 
 			 H323Connection::EndedByLocalUser);
 
+  gtk_widget_hide_all (gm);
+  gtk_widget_hide_all (gw->docklet);
   gnomemeeting_threads_leave ();
 
   while (endpoint->GetCallingState ())
     Current ()->Sleep (50);
 
   delete (endpoint);
-
   gnomemeeting_threads_enter ();
 
   gtk_window_get_size (GTK_WINDOW (gw->local_video_window), &x, &y);
@@ -108,8 +108,18 @@ void GMThreadsCleaner::Main ()
   gconf_client_set_int (gconf_client_get_default (), 
 			"/apps/gnomemeeting/video_display/remote_video_height",
 			y, NULL);
-	    
+
   gtk_main_quit ();
 
   gnomemeeting_threads_leave ();
+
+  quit_mutex.Signal ();
+}
+
+
+void GMThreadsCleaner::Wait ()
+{
+  quit_mutex.Wait ();
+
+  quit_mutex.Signal ();
 }

@@ -67,9 +67,17 @@ class GMThreadsCleaner : public PThread
    */
   void Main ();
 
+  
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Waits for the Main thread to terminate, then returns.
+   */
+  void Wait ();
+
+
 protected:
 
   GmWindow *gw;
+  PMutex quit_mutex;
 };
 
 #endif

@@ -202,12 +202,12 @@ PAssertFunc (const char *file, int line,
 
   inAssert = true;
 
+  cout << msg << endl << flush;
+  
   gnomemeeting_threads_enter ();
   gnomemeeting_error_dialog (GTK_WINDOW (gm), 
 			     _("Error: %s\n"), msg);
   gnomemeeting_threads_leave ();
-
-  cout << msg << endl << flush;
 
   inAssert = FALSE;
 

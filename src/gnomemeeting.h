@@ -101,7 +101,7 @@ class GnomeMeeting : public PProcess
 
   GmWindow *gw;
   GmLdapWindow *lw;
-
+  
   int call_number; 
 };
 

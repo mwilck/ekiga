@@ -71,9 +71,8 @@ GnomeMeeting::GnomeMeeting ()
   gw = gnomemeeting_get_main_window (gm);
   lw = gnomemeeting_get_ldap_window (gm);
 
-  MyApp = (this);
-
   endpoint = new GMH323EndPoint ();
+  MyApp = (this);
 
   call_number = 0;
 }
@@ -81,7 +80,6 @@ GnomeMeeting::GnomeMeeting ()
 
 GnomeMeeting::~GnomeMeeting()
 {
-
 }
 
 

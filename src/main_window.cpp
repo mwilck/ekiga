@@ -55,6 +55,7 @@
 #include "druid.h"
 #include "chat_window.h"
 #include "tools.h"
+#include "cleaner.h"
 
 #include <ptclib/asner.h>
 
@@ -1988,10 +1989,7 @@ int main (int argc, char ** argv, char ** envp)
   gconf_client_set_global_default_error_handler (gconf_error_callback);
 
 
-  /* Quick hack to make the GUI refresh even on high load from the other
-     threads */
   gint timeout = gtk_timeout_add (500, (GtkFunction) AppbarUpdate, rtp);
-  g_object_set_data (G_OBJECT (gm), "timeout", GINT_TO_POINTER (timeout));
 
 //   gtk_timeout_add (10000, (GtkFunction) StressTest, 
 // 		   NULL);
@@ -2000,12 +1998,19 @@ int main (int argc, char ** argv, char ** envp)
   /* The GTK loop */
   gtk_main ();
 
+  gtk_timeout_remove (timeout);
   gdk_threads_leave ();
  
+
+  /* Wait for the cleaner thread to AutoDelete */
+  while (gw->cleaner_thread_count)
+    PThread::Current ()->Sleep (100);
+
+  
   delete (gw);
   delete (lw);
   delete (pw);
   delete (rtp);
-  delete (chat); 
+  delete (chat);
   delete (clo);
 }

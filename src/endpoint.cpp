@@ -27,7 +27,9 @@
  *
  */
 
+
 #include "../config.h"
+
 
 #include "toolbar.h"
 #include "endpoint.h"

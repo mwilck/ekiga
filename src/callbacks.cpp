@@ -201,12 +201,14 @@ void about_callback (GtkWidget *widget, gpointer parent_window)
 
 void quit_callback (GtkWidget *widget, gpointer data)
 {
-  GmWindow *gw = (GmWindow *) data;
+  GmWindow *gw = gnomemeeting_get_main_window (gm);
+
+  gtk_widget_hide_all (gm);
 
   if (gw->cleaner_thread_count == 0) {
 
-      gw->cleaner_thread_count++;
-      new GMThreadsCleaner ();
+    GMThreadsCleaner *cleaner = new GMThreadsCleaner ();
+    g_object_set_data (G_OBJECT (gm), "cleaner", cleaner);
   }
 }  
 
