@@ -1295,6 +1295,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   NoIncomingMediaTimer.Stop ();
   
   
+  gnomemeeting_threads_enter ();
   if (gw->incoming_call_popup) {
 
     gtk_widget_destroy (gw->incoming_call_popup);

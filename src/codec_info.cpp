@@ -90,8 +90,8 @@ GMH323CodecInfo::GetCodecInfo (int pos)
   int i = 0;
 
   for (i = 0 ; i < GM_AUDIO_CODECS_NUMBER ; i++)
-    if (CodecInfo [i] [0] == codec_name)
-      return CodecInfo [i] [pos];
+    if ( PString (CodecInfo [i] [0]) == codec_name)
+      return PString (gettext (CodecInfo [i] [pos]) );
 
   return s;
 }
