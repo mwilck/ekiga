@@ -392,6 +392,7 @@ void GMVideoGrabber::VGOpen (void)
     gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
 		       _("Opening Video device"));
     gnomemeeting_log_insert (_("Opening Video device"));
+    gnomemeeting_threads_leave ();
     
     channel = new PVideoChannel ();
     encoding_device = new GDKVideoOutputDevice (1, gw);
@@ -430,15 +431,18 @@ void GMVideoGrabber::VGOpen (void)
     /* If no error */
     if (error_code == -1) {
 
+      gnomemeeting_threads_enter ();
       msg = g_strdup_printf 
 	(_("Successfully opened video device %s, channel %d"), 
 	 video_device, video_channel);
       gnomemeeting_log_insert (msg);
       gnome_appbar_push (GNOME_APPBAR (gw->statusbar), _("Done"));
       g_free (msg);
+      gnomemeeting_threads_leave ();
     }
     else {
     
+      gnomemeeting_threads_enter ();
       msg = g_strdup_printf 
 	(_("Error while opening video device %s, channel %d.\nA test image will be transmitted."), video_device, video_channel);
     
@@ -473,7 +477,7 @@ void GMVideoGrabber::VGOpen (void)
 
       gnomemeeting_log_insert (msg);
       g_free (msg);
-      
+      gnomemeeting_threads_leave ();
 
       /* delete the failed grabber and open the fake grabber */
       delete grabber;
@@ -498,7 +502,7 @@ void GMVideoGrabber::VGOpen (void)
 
     /* Setup the video settings */
     //GetParameters (&whiteness, &brightness, &colour, &contrast);
- 
+    gnomemeeting_threads_enter ();
     gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_brightness),
 			      brightness);
     gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_whiteness),
@@ -511,18 +515,19 @@ void GMVideoGrabber::VGOpen (void)
     /* Enable the video settings frame */
     gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame),
 			      TRUE);
-  
+    gnomemeeting_threads_leave ();
+
     /* Enable the video preview button if not in a call */
     if (MyApp->Endpoint ()->GetCallingState () == 0) {
-      
+
+      gnomemeeting_threads_enter ();      
       gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button),
 				TRUE);
       gtk_widget_set_sensitive (GTK_WIDGET (pw->video_preview),
 				TRUE);
+      gnomemeeting_threads_leave ();
     }
   }  
-
-  gnomemeeting_threads_leave ();
 
   device_mutex.Signal ();
 }
