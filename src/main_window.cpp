@@ -1136,8 +1136,10 @@ void gnomemeeting_init_main_window_audio_settings ()
 
   GmWindow *gw = gnomemeeting_get_main_window (gm);
 
-  volume = gdk_pixbuf_new_from_inline (-1, inline_volume, FALSE, NULL);
-  mic = gdk_pixbuf_new_from_inline (-1, inline_mic, FALSE, NULL);
+  volume = gdk_pixbuf_new_from_inline (-1, gm_volume_stock_data, 
+				       FALSE, NULL);
+  mic = gdk_pixbuf_new_from_inline (-1, gm_microphone_stock_data, 
+				    FALSE, NULL);
 
   frame = gtk_frame_new (_("Audio Settings"));
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_ETCHED_OUT);

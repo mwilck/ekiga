@@ -1,4 +1,4 @@
-SUBDIRS = po src pixmaps sounds man
+SUBDIRS = po pixmaps src sounds man
 
 @INTLTOOL_DESKTOP_RULE@
 @INTLTOOL_SCHEMAS_RULE@

@@ -195,19 +195,22 @@ void gnomemeeting_init_toolbar ()
 
   left_toolbar = gtk_toolbar_new ();
 	  
-  ils_directory = gdk_pixbuf_new_from_inline (-1, inline_ils_directory, 
+  ils_directory = gdk_pixbuf_new_from_inline (-1, gm_ils_directory_stock_data, 
 					      FALSE, NULL);
-  text_chat     = gdk_pixbuf_new_from_inline (-1, inline_text_chat, 
+  text_chat     = gdk_pixbuf_new_from_inline (-1, gm_text_chat_stock_data, 
 					      FALSE, NULL);
-  control_panel = gdk_pixbuf_new_from_inline (-1, inline_control_panel, 
+  control_panel = gdk_pixbuf_new_from_inline (-1,  gm_control_panel_stock_data, 
 					      FALSE, NULL);
-  speaker_phone = gdk_pixbuf_new_from_inline (-1, inline_speaker_phone, 
+  speaker_phone = gdk_pixbuf_new_from_inline (-1, gm_speaker_phone_stock_data, 
 					      FALSE, NULL);
-  disconnect = gdk_pixbuf_new_from_inline (-1, inline_connect, FALSE, NULL);
-  connect = gdk_pixbuf_new_from_inline (-1, inline_disconnect, FALSE, NULL);
-  video_preview = gdk_pixbuf_new_from_inline (-1, inline_video_preview, 
+  disconnect = gdk_pixbuf_new_from_inline (-1, gm_connect_stock_data, 
+					   FALSE, NULL);
+  connect = gdk_pixbuf_new_from_inline (-1, gm_disconnect_stock_data, 
+					FALSE, NULL);
+  video_preview = gdk_pixbuf_new_from_inline (-1, gm_video_preview_stock_data, 
 					      FALSE, NULL);
-  audio_mute = gdk_pixbuf_new_from_inline (-1, inline_audio_mute, FALSE, NULL);
+  audio_mute = gdk_pixbuf_new_from_inline (-1, gm_audio_mute_stock_data, 
+					   FALSE, NULL);
 
   gtk_toolbar_append_item  (GTK_TOOLBAR (left_toolbar),
                             _("ILS Directory"),
@@ -414,7 +417,8 @@ void connect_button_update_pixmap (GtkToggleButton *w, int pressed)
 
     if (pressed == 1) {
 
-      pixbuf = gdk_pixbuf_new_from_inline (-1, inline_connect, FALSE, NULL);
+      pixbuf = gdk_pixbuf_new_from_inline (-1, gm_connect_stock_data, 
+					   FALSE, NULL);
 
       /* Block the signal */
       g_signal_handlers_block_by_func (G_OBJECT (w), 
@@ -427,7 +431,8 @@ void connect_button_update_pixmap (GtkToggleButton *w, int pressed)
     }
     else {
 
-      pixbuf = gdk_pixbuf_new_from_inline (-1, inline_disconnect, FALSE, NULL);
+      pixbuf = gdk_pixbuf_new_from_inline (-1, gm_disconnect_stock_data, 
+					   FALSE, NULL);
   
       g_signal_handlers_block_by_func (G_OBJECT (w), 
 				       (void *) connect_button_clicked, 
