@@ -57,9 +57,7 @@ gnomemeeting_SOURCES =		\
 	log_window.cpp		\
 	log_window.h		\
 	lid.cpp			\
-	lid.h			\
-	codec_info.cpp		\
-	codec_info.h
+	lid.h			
 
 
 if ENABLE_EDS

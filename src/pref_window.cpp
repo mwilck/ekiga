@@ -45,7 +45,6 @@
 #include "sound_handling.h"
 #include "misc.h"
 #include "urlhandler.h"
-#include "codec_info.h"
 #include "callbacks.h"
 #include "lid.h"
 
@@ -69,9 +68,6 @@ static GSList *gm_codecs_list_to_gm_conf_list (GtkWidget *);
 
 static void gm_codecs_list_button_clicked_cb (GtkWidget *,
 					      gpointer);
-
-static void codecs_list_info_button_clicked_callback (GtkWidget *,
-						      gpointer);
 
 static GtkWidget *gnomemeeting_pref_window_add_update_button (GtkWidget *,
 							      const char *,
@@ -281,48 +277,6 @@ static void gm_codecs_list_button_clicked_cb (GtkWidget *widget,
   g_slist_free (codecs_data);
 }
 
-
-/* DESCRIPTION  :  This callback is called when the user clicks
- *                 on the info button in the Audio Codecs Settings.
- * BEHAVIOR     :  Displays an information popup about the codec.
- * PRE          :  /
- */
-static void codecs_list_info_button_clicked_callback (GtkWidget *widget, 
-						      gpointer data)
-{ 	
-  PString info;
-  GMH323CodecInfo codec;
-
-  gchar *selected_codec_name = NULL;
-
-  GmWindow *gw = NULL;
-
-  GtkTreeIter iter;
-  GtkTreeView *tree_view = NULL;
-  GtkTreeSelection *selection = NULL;
-
-
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
-
-  /* Get the current selected codec name, there is always one */
-  tree_view = GTK_TREE_VIEW (g_object_get_data (G_OBJECT (data), "tree_view"));
-  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view));
-
-  gtk_tree_selection_get_selected (GTK_TREE_SELECTION (selection), NULL,
-				   &iter);
-  gtk_tree_model_get (GTK_TREE_MODEL (data), &iter,
-		      COLUMN_CODEC_NAME, &selected_codec_name, -1);
-
-  if (selected_codec_name) {
-
-    codec = GMH323CodecInfo (selected_codec_name);
-    gnomemeeting_message_dialog (GTK_WINDOW (gw->pref_window), 
-				 _("Codec Information"), 
-				 codec.GetCodecInfo ());
-
-    g_free (selected_codec_name);
-  }
-}
 
 #if !GTK_CHECK_VERSION (2, 3, 2)
 /* DESCRIPTION  :  This callback is called when the user clicks
