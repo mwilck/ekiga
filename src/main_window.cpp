@@ -2435,29 +2435,19 @@ statusbar_clicked_cb (GtkWidget *widget,
 		      GdkEventButton *event,
 		      gpointer data)
 {
-  GmWindow *mw = NULL;
-
   GMEndPoint *ep = NULL;
-  
-  gint len = 0;
-  gint id = 0;
-  
-  g_return_val_if_fail (data != NULL, FALSE);
-
-  mw = gm_mw_get_mw (GTK_WIDGET (data));
-
-  g_return_val_if_fail (mw != NULL, FALSE);
+  gchar *info = NULL;
   
   ep = GnomeMeeting::Process ()->Endpoint ();
-
-  len = g_slist_length ((GSList *) (GTK_STATUSBAR (mw->statusbar)->messages));
-  id = gtk_statusbar_get_context_id (GTK_STATUSBAR (mw->statusbar), 
-				     "info");
   
-  for (int i = 0 ; i < len ; i++)
-    gtk_statusbar_pop (GTK_STATUSBAR (mw->statusbar), id);
-
   ep->ResetMissedCallsNumber ();
+  
+  info = g_strdup_printf (_("Missed calls: %d - Voice Mails: %s"),
+			  ep->GetMissedCallsNumber (),
+			  (const char *) ep->GetMWI ());
+  gm_main_window_push_info_message (GTK_WIDGET (data), info);
+  g_free (info);
+
 
   return FALSE;
 }
@@ -3968,19 +3958,13 @@ gm_main_window_push_info_message (GtkWidget *main_window,
 				  const char *msg, 
 				  ...)
 {
-  gchar *info = NULL;
-  
   va_list args;
   char buffer [1025];
 
   va_start (args, msg);
   vsnprintf (buffer, 1024, msg, args);
 
-  info = 
-    g_strdup_printf ("%s (%s)", 
-		     buffer, _("Click to clear"));
-  gm_mw_push_message (main_window, FALSE, TRUE, info);
-  g_free (info);
+  gm_mw_push_message (main_window, FALSE, TRUE, buffer);
   
   va_end (args);
 }
