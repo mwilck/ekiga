@@ -439,6 +439,13 @@ gdk_window_set_always_on_top (GdkWindow *window,
 }
 
 
+gboolean 
+gnomemeeting_window_is_visible (GtkWidget *w)
+{
+  return (GTK_WIDGET_VISIBLE (w) && !(gdk_window_get_state (GDK_WINDOW (w->window)) & GDK_WINDOW_STATE_ICONIFIED));
+}
+
+
 void
 gnomemeeting_window_show (GtkWidget *w)
 {
@@ -465,7 +472,7 @@ gnomemeeting_window_show (GtkWidget *w)
   gconf_key_size =
     g_strdup_printf ("%s%s/size", USER_INTERFACE_KEY, window_name);  
 
-  if (!GTK_WIDGET_VISIBLE (w)) {
+  if (!gnomemeeting_window_is_visible (w)) {
     
     position = gconf_get_string (gconf_key_position);
     if (position)
@@ -476,8 +483,11 @@ gnomemeeting_window_show (GtkWidget *w)
     if (couple && couple [1])
       y = atoi (couple [1]);
 
+
     if (x != 0 && y != 0)
       gtk_window_move (GTK_WINDOW (w), x, y);
+
+    gtk_window_present (GTK_WINDOW (w));
 
     g_strfreev (couple);
     g_free (position);
@@ -536,7 +546,7 @@ gnomemeeting_window_hide (GtkWidget *w)
 
   
   /* If the window is visible, save its position and hide the window */
-  if (GTK_WIDGET_VISIBLE (w)) {
+  if (gnomemeeting_window_is_visible (w)) {
     
     gtk_window_get_position (GTK_WINDOW (w), &x, &y);
     position = g_strdup_printf ("%d,%d", x, y);

@@ -153,8 +153,9 @@ tray_clicked_callback (GtkWidget *w,
       widget = gw->ldap_window;
     else
       return FALSE;
+
       
-    if (!GTK_WIDGET_VISIBLE (widget))
+    if (!gnomemeeting_window_is_visible (widget))
       gnomemeeting_window_show (widget);
     else
       gnomemeeting_window_hide (widget);

@@ -144,6 +144,15 @@ gdk_window_set_always_on_top (GdkWindow *window,
 			      gboolean enable);
 
 
+
+/* DESCRIPTION  :  / 
+ * BEHAVIOR     :  Returns TRUE if the specified window is present and visible
+ *                 on the current workspace, FALSE otherwise.
+ * PRE          :  Argument is a GtkWindow *.
+ */
+gboolean gnomemeeting_window_is_visible (GtkWidget *);
+        
+
 /* DESCRIPTION  :  This callback is called when a window of gnomemeeting
  *                 (addressbook, prefs, ...) has to be shown.
  * BEHAVIOR     :  Restore its size (if applicable) and position from the GConf
