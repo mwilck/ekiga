@@ -1,4 +1,3 @@
-
 /*
  * GnomeMeeting -- A Video-Conferencing application
  *
@@ -626,8 +625,19 @@ gnomemeeting_new_event (BonoboListener    *listener,
     
     connect_cb (NULL, NULL);
   }
-  else
-    cout << endl << _("GnomeMeeting already running, but no URL to call given, exiting.") << endl << flush;
+  else {
+
+    gchar *buffer = g_strdup_printf (_("GnomeMeeting is already running, if you want it to call a given callto URL, please use \"gnomemeeting -c URL.\""));
+    GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (gm),  
+						GTK_DIALOG_DESTROY_WITH_PARENT,
+						GTK_MESSAGE_ERROR,
+						GTK_BUTTONS_OK,
+						buffer);
+
+    gtk_dialog_run (GTK_DIALOG (dialog));
+
+    g_free (buffer);
+  }
 }
 
 
@@ -1156,6 +1166,39 @@ gnomemeeting_init (GmWindow *gw,
   }
 
 
+  /* Detect the devices */
+  gw->audio_player_devices = gnomemeeting_get_audio_player_devices ();
+  gw->audio_recorder_devices = gnomemeeting_get_audio_recorder_devices ();
+  gw->video_devices = PVideoInputDevice::GetInputDeviceNames ();
+  gw->audio_mixers = gnomemeeting_get_mixers ();
+
+  if (gw->audio_player_devices.GetSize () == 0 
+      || gw->audio_recorder_devices.GetSize () ==0)  {
+
+    /* We can't use gnomemeeting_error_dialog here, cause we need the
+       dialog_run and dialog_run can't be used in gnomemeeting_error_dialog
+       because it doesn't work in threads */
+    gchar *buffer = g_strdup_printf (_("GnomeMeeting can't be used without audio devices. Please install a soundcard or a Quicknet card."));
+    GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (gm),  
+						GTK_DIALOG_DESTROY_WITH_PARENT,
+						GTK_MESSAGE_ERROR,
+						GTK_BUTTONS_OK,
+						buffer);
+
+    gtk_dialog_run (GTK_DIALOG (dialog));
+
+    g_free (buffer);
+
+    delete (gw);
+    delete (lw);
+    delete (dw);
+    delete (pw);
+    delete (rtp);
+    delete (chat);
+    exit (-1);
+  }
+
+
   /* Create the global tooltips */
   gw->tips = gtk_tooltips_new ();
 
@@ -1246,14 +1289,7 @@ gnomemeeting_init (GmWindow *gw,
 
   /* Build the interface */
   gnomemeeting_init_history_window ();
-  gnomemeeting_init_calls_history_window ();
-  
-  /* Launch the GnomeMeeting H.323 part */
-  gw->audio_player_devices = gnomemeeting_get_audio_player_devices ();
-  gw->audio_recorder_devices = gnomemeeting_get_audio_recorder_devices ();
-  gw->video_devices = PVideoInputDevice::GetInputDeviceNames ();
-  gw->audio_mixers = gnomemeeting_get_mixers ();
-  
+  gnomemeeting_init_calls_history_window ();  
   gnomemeeting_init_pref_window ();  
   gnomemeeting_init_ldap_window ();
   gnomemeeting_init_druid ();

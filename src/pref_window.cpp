@@ -758,14 +758,14 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook)
                                                                                
   pw->mail = gnomemeeting_table_add_entry (table, _("E-mail address:"), "/apps/gnomemeeting/personal_data/mail", _("Enter your e-mail address."), 2);
                                                                                
-  pw->comment = gnomemeeting_table_add_entry (table, _("Comment:"), "/apps/gnomemeeting/personal_data/comment", _("Enter a comment about yourself for the ILS directories."), 3);
+  pw->comment = gnomemeeting_table_add_entry (table, _("Comment:"), "/apps/gnomemeeting/personal_data/comment", _("Enter a comment about yourself for the user directory."), 3);
                                                                                
-  pw->location = gnomemeeting_table_add_entry (table, _("Location:"), "/apps/gnomemeeting/personal_data/location", _("Enter your location (country or city)."), 4);
+  pw->location = gnomemeeting_table_add_entry (table, _("Location:"), "/apps/gnomemeeting/personal_data/location", _("Enter your location (country or city) for the user directory."), 4);
                                                                                
                                                                                
   /* Add the try button */                                                     
   pw->directory_update_button =                                                
-    gnomemeeting_pref_window_add_update_button (table, GTK_SIGNAL_FUNC (personal_data_update_button_clicked), _("Click here to update the LDAP server you are registered to with the new First Name, Last Name, E-Mail, Comment and Location or to update your alias on the Gatekeeper."), 5, 2);
+    gnomemeeting_pref_window_add_update_button (table, GTK_SIGNAL_FUNC (personal_data_update_button_clicked), _("Click here to update the user directory you are registered to with the new First Name, Last Name, E-Mail, Comment and Location or to update your alias on the Gatekeeper."), 5, 2);
   gtk_container_set_border_width (GTK_CONTAINER (pw->directory_update_button),
 				  GNOMEMEETING_PAD_SMALL*2);
 
@@ -791,7 +791,7 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook)
   vbox = gtk_vbox_new (FALSE, 4);
   gtk_notebook_append_page (GTK_NOTEBOOK(notebook), vbox, NULL);    
   table = gnomemeeting_vbox_add_table (vbox,
-					      _("GnomeMeeting GUI"), 2, 2);
+				       _("GnomeMeeting GUI"), 2, 2);
 
   pw->show_splash = gnomemeeting_table_add_toggle (table, _("Show splash screen"), "/apps/gnomemeeting/view/show_splash", _("If enabled, the splash screen will be displayed when GnomeMeeting starts."), 0, 1);
                                                                                           
@@ -807,25 +807,24 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook)
                                                                                
   pw->dnd = gnomemeeting_table_add_toggle (table, _("Do not disturb"), "/apps/gnomemeeting/general/do_not_disturb", _("If enabled, incoming calls will be automatically refused."), 0, 0);
                                                                                
-  pw->incoming_call_popup = gnomemeeting_table_add_toggle (table, _("Popup window when receiving call"), "/apps/gnomemeeting/view/show_popup", _("If enabled, a popup will be displayed when receiving an incoming call"), 2, 0);
+  pw->incoming_call_popup = gnomemeeting_table_add_toggle (table, _("Popup window when receiving a call"), "/apps/gnomemeeting/view/show_popup", _("If enabled, a popup will be displayed when receiving an incoming call."), 2, 0);
 
 
 
   /* Packing widget */                                                         
-  table = gnomemeeting_vbox_add_table (vbox, _("Video Display"), 
-					      3, 2);  
+  table = gnomemeeting_vbox_add_table (vbox, _("Video Display"), 3, 2);  
                                                                                
 #ifdef HAS_SDL  
   pw->fullscreen_width =
     gnomemeeting_table_add_spin (table, _("Fullscreen width:"),       
 				       "/apps/gnomemeeting/video_display/fullscreen_width",
-				       _("The image width for fullscreeen."),
+				       _("The image width for fullscreen."),
 				       10.0, 640.0, 10.0, 0);
 
   pw->fullscreen_height =
     gnomemeeting_table_add_spin (table, _("Fullscreen height:"),       
 				       "/apps/gnomemeeting/video_display/fullscreen_height",
-				       _("The image height for fullscreeen."),
+				       _("The image height for fullscreen."),
 				       10.0, 480.0, 10.0, 1);
 #endif
 
@@ -869,7 +868,7 @@ void gnomemeeting_init_pref_window_directories (GtkWidget *notebook)
                                                                                
   /* Add all the fields */                                                     
   pw->ldap_server = 
-    gnomemeeting_table_add_entry (table, _("User directory server:"),
+    gnomemeeting_table_add_entry (table, _("User directory:"),
 				  LDAP_KEY "ldap_server",
 				  _("The user directory server to register with."), 0);
 
@@ -956,7 +955,7 @@ void gnomemeeting_init_pref_window_h323_advanced (GtkWidget *notebook)
                                                                                
   /* The toggles */                                                            
   pw->ht = 
-    gnomemeeting_table_add_toggle (table, _("Enable H.245 tunnelling"), "/apps/gnomemeeting/general/h245_tunneling", _("This enables H.245 Tunnelling mode. In H.245 Tunnelling mode H.245 messages are encapsulated into the the H.225 channel (port 1720). This saves one random port TCP connection during calls. H.245 Tunnelling was introduced in H.323v2 and Netmeeting does not support it. Using both Fast Start and H.245 Tunnelling can crash some versions of Netmeeting."), 0, 0);
+    gnomemeeting_table_add_toggle (table, _("Enable H.245 tunnelling"), "/apps/gnomemeeting/general/h245_tunneling", _("This enables H.245 Tunnelling mode. In H.245 Tunnelling mode H.245 messages are encapsulated into the the H.225 channel (port 1720). This saves one TCP connection during calls. H.245 Tunnelling was introduced in H.323v2 and Netmeeting does not support it. Using both Fast Start and H.245 Tunnelling can crash some versions of Netmeeting."), 0, 0);
                                                                                
   pw->fs = 
     gnomemeeting_table_add_toggle (table, _("Enable 'Fast Start'"), "/apps/gnomemeeting/general/fast_start", _("Connection will be established in Fast Start mode. Fast Start is a new way to start calls faster that was introduced in H.323v2. It is not supported by Netmeeting and using both Fast Start and H.245 Tunnelling can crash some versions of Netmeeting."), 1, 0);
@@ -1102,7 +1101,7 @@ static void gnomemeeting_init_pref_window_video_devices (GtkWidget *notebook)
   gw->video_devices += (_("Picture"));
 
   pw->video_device = 
-    gnomemeeting_table_add_pstring_option_menu (table, _("Video device:"), gw->video_devices, "/apps/gnomemeeting/devices/video_recorder", _("Select the video device to use. Using an invalid video device for video transmission will transmit a test picture."), 1);
+    gnomemeeting_table_add_pstring_option_menu (table, _("Video device:"), gw->video_devices, "/apps/gnomemeeting/devices/video_recorder", _("Select the video device to use. Using an invalid video device or \"Picture\" for video transmission will transmit a test picture."), 1);
 
   /* Video Channel */
   pw->video_channel =
@@ -1119,7 +1118,7 @@ static void gnomemeeting_init_pref_window_video_devices (GtkWidget *notebook)
 
 
   pw->video_image =
-    gnomemeeting_table_add_entry (table, _("Video image:"), "/apps/gnomemeeting/devices/video_image", _("The image to transmit if Picture is selected for the video device or if the opening of the device fails. Leave blank to use the default GnomeMeeting logo."), 5);
+    gnomemeeting_table_add_entry (table, _("Video image:"), "/apps/gnomemeeting/devices/video_image", _("The image to transmit if \"Picture\" is selected for the video device or if the opening of the device fails. Leave blank to use the default GnomeMeeting logo."), 5);
 
 
   /* The file selector button */
@@ -1353,7 +1352,7 @@ void gnomemeeting_init_pref_window_video_codecs (GtkWidget *notebook)
   pw->maximum_video_bandwidth =
     gnomemeeting_table_add_spin (table, _("Maximum video bandwidth:"), 
 				 VIDEO_SETTINGS_KEY "maximum_video_bandwidth",
-				 _("The maximum video bandwidth in kbytes/s. The video quality and the number of transmitted frames per second will be dynamically adjusted above their minimum during calls to try to minimize the bandwidth to the given value"), 2.0, 100.0, 1.0, 0);
+				 _("The maximum video bandwidth in kbytes/s. The video quality and the number of transmitted frames per second will be dynamically adjusted above their minimum during calls to try to minimize the bandwidth to the given value."), 2.0, 100.0, 1.0, 0);
 
 
   
@@ -1507,14 +1506,13 @@ void gnomemeeting_init_pref_window ()
 
   gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
   gtk_tree_store_set (GTK_TREE_STORE (model),
-		      &child_iter, 0, _("H.323 Advanced"), 1, 3, -1);
-  gnomemeeting_init_pref_window_h323_advanced (notebook);          
-
-  gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
-  gtk_tree_store_set (GTK_TREE_STORE (model),
 		      &child_iter, 0, _("Directory Settings"), 1, 4, -1);
   gnomemeeting_init_pref_window_directories (notebook);
 
+  gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
+  gtk_tree_store_set (GTK_TREE_STORE (model),
+		      &child_iter, 0, _("H.323 Advanced"), 1, 3, -1);
+  gnomemeeting_init_pref_window_h323_advanced (notebook);          
  
   /* Another section */
   gtk_tree_store_append (GTK_TREE_STORE (model), &iter, NULL);

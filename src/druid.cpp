@@ -138,9 +138,12 @@ static void
 gnomemeeting_druid_cancel (GtkWidget *w, gpointer data)
 {
   GmWindow *gw = NULL;
+  GmDruidWindow *dw = NULL;
 
   gw = gnomemeeting_get_main_window (gm);
+  dw = gnomemeeting_get_druid_window (gm);
 
+  gnome_druid_set_page (dw->druid, GNOME_DRUID_PAGE (dw->page_edge));
   gtk_widget_hide (gw->druid_window);
   gtk_widget_show (gm);
 }

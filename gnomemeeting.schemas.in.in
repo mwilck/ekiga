@@ -9,8 +9,8 @@
       <type>string</type>
       <default>/dev/video0</default>
       <locale name="C">
-	<short>Video Device</short>
-	<long>The Video Device to use for recording</long>
+	<short>Video device</short>
+	<long>Select the video device to use. Using an invalid video device or "Picture" for video transmission will transmit a test picture.</long>
       </locale>
     </schema>
     <schema>
@@ -53,8 +53,8 @@
       <type>bool</type>
       <default>true</default>
       <locale name="C">
-	<short>Popup on incoming calls</short>
-	<long>Display a popup window every time you receive a call</long>
+	<short>Popup window when receiving a call</short>
+	<long>If enabled, a popup will be displayed when receiving an incoming call.</long>
       </locale>
     </schema>
     <schema>
@@ -64,8 +64,8 @@
       <type>bool</type>
       <default>true</default>
       <locale name="C">
-	<short>Show splash screen at startup</short>
-	<long>Show a nice window every time GnomeMeeting starts</long>
+	<short>Show splash screen</short>
+	<long>If enabled, the splash screen will be displayed when GnomeMeeting starts.</long>
       </locale>
     </schema>
     <schema>
@@ -75,8 +75,8 @@
       <type>int</type>
       <default>30</default>
       <locale name="C">
-	<short>Transmitted frames per second</short>
-	<long>Limitation on the number of transmitted frames grabbed by the grabber</long>
+	<short>Minimum transmitted FPS</short>
+	<long>The minimum number of video frames to transmit each second when trying to minimize the bandwidth.</long>
       </locale>
     </schema>
     <schema>
@@ -86,8 +86,8 @@
       <type>int</type>
       <default>6</default>
       <locale name="C">
-	<short></short>
-	<long></long>
+	<short>Maximum video bandwidth</short>
+	<long>The maximum video bandwidth in kbytes/s. The video quality and the number of transmitted frames per second will be dynamically adjusted above their minimum during calls to try to minimize the bandwidth to the given value.</long>
       </locale>
     </schema>
     <schema>
@@ -97,8 +97,8 @@
       <type>int</type>
       <default>75</default>
       <locale name="C">
-	<short>Video Quality</short>
-	<long>The transmitted video quality hint</long>
+	<short>Minimum transmitted video quality</short>
+	<long>The minimum transmitted video quality to keep when trying to minimize the used bandwidth:  choose 100% on a LAN for the best quality, 1% being the worst quality.</long>
       </locale>
     </schema>
     <schema>	
@@ -108,8 +108,8 @@
       <type>string</type>
       <default></default>
       <locale name="C">
-	<short>First Name</short>
-	<long>The user's first name that will be used in the directories</long>
+	<short>First name</short>
+	<long>Enter your first name.</long>
       </locale>
     </schema>
     <schema>
@@ -119,8 +119,8 @@
       <type>string</type>
       <default></default>
       <locale name="C">
-	<short>Last Name</short>
-	<long>The user's first name that will be used in the directories</long>
+	<short>Last name</short>
+	<long>Enter your last name.</long>
       </locale>
     </schema>
     <schema>
@@ -131,7 +131,7 @@
       <default></default>
       <locale name="C">
 	<short>Comment</short>
-	<long>A comment that will be listed in LDAP directories</long>
+	<long>Enter a comment about yourself for the user directory.</long>
       </locale>
     </schema>
     <schema>
@@ -142,7 +142,7 @@
       <default></default>
       <locale name="C">
 	<short>Location</short>
-	<long>The Location that will be published in the LDAP directories</long>
+	<long>Enter your location (country or city) for the user directory.</long>
       </locale>
     </schema>
     <schema>
@@ -152,8 +152,8 @@
       <type>string</type>
       <default></default>
       <locale name="C">
-	<short>E-Mail address</short>
-	<long>The E-Mail address that will be listed in the directories</long>
+	<short>E-mail address</short>
+	<long>Enter your e-mail address.</long>
       </locale>
     </schema>
     <schema>
@@ -176,7 +176,7 @@
       <default>4</default>
       <locale name="C">
 	<short>Number of frames for GSM</short>
-	<long>Number of frames transmitted in each packet for the GSM codec</long>
+	<long>Number of frames transmitted in each packet for the GSM codec.</long>
       </locale>
     </schema>
     <schema>
@@ -187,7 +187,7 @@
       <default>30</default>
       <locale name="C">
 	<short>Number of frames for G.711</short>
-	<long>Number of frames transmitted in each packet for the G.711 codec</long>
+	<long>Number of frames transmitted in each packet for the G.711 codec.</long>
       </locale>
     </schema>
     <schema>	
@@ -197,8 +197,8 @@
       <type>bool</type>
       <default>true</default>
       <locale name="C">
-	<short>Enable Silence Detection for G.711 and GSM</short>
-	<long>Enable Silence Detection for G.711 and GSM</long>
+	<short>Enable silence detection</short>
+	<long>If enabled, use silence detection with the GSM and G.711 codecs.</long>
       </locale>
     </schema>
     <schema>		
@@ -208,8 +208,8 @@
       <type>string</type>
       <default>ils.seconix.com</default>
       <locale name="C">
-	<short>LDAP Server</short>
-	<long>The LDAP Server to register to</long>
+	<short>User directory</short>
+	<long>The user directory server to register with.</long>
       </locale>
     </schema>
     <schema>
@@ -219,8 +219,8 @@
       <type>bool</type>
       <default>false</default>
       <locale name="C">
-	<short>Register</short>
-	<long>Enable registering to the LDAP server</long>
+	<short>Enable registering</short>
+	<long>If enabled, register with the selected user directory.</long>
       </locale>
     </schema>
     <schema>
@@ -230,8 +230,8 @@
       <type>bool</type>
       <default>true</default>
       <locale name="C">
-	<short>Show user on ILS</short>
-	<long>If enabled, the user will be shown online on the ILS directory every time he is using GnomeMeeting. If disabled, the user will never be shown online, but the callto address will still work.</long>
+	<short>Show my details to other registered users</short>
+	<long>If enabled, your details are shown to people browsing the user directory. If disabled, you are not visible to users browsing the user directory, but they can still use the callto URL to call you.</long>
       </locale>
     </schema>
     <schema>
@@ -241,7 +241,7 @@
       <type>bool</type>
       <default>false</default>
       <locale name="C">
-	<short>Auto Answer</short>
+	<short>Automatically answer calls</short>
 	<long>If enabled, incoming calls will be automatically answered.</long>
       </locale>
     </schema>
@@ -340,8 +340,8 @@
       <type>bool</type>
       <default>true</default>
       <locale name="C">
-	<short>H.245 Tunnelling</short>
-	<long>If enabled, calls will be established with H.245 Tunnelling.</long>
+	<short>Enable H.245 tunnelling</short>
+	<long>This enables H.245 Tunnelling mode. In H.245 Tunnelling mode H.245 messages are encapsulated into the the H.225 channel (port 1720). This saves one TCP connection during calls. H.245 Tunnelling was introduced in H.323v2 and Netmeeting does not support it. Using both Fast Start and H.245 Tunnelling can crash some versions of Netmeeting.</long>
       </locale>
     </schema>
     <schema>
@@ -351,8 +351,8 @@
       <type>bool</type>
       <default>false</default>
       <locale name="C">
-	<short>Fast Start</short>
-	<long>If enabled, calls will be established in Fast Start mode.</long>
+	<short>Enable 'Fast Start'</short>
+	<long>Connection will be established in Fast Start mode. Fast Start is a new way to start calls faster that was introduced in H.323v2. It is not supported by Netmeeting and using both Fast Start and H.245 Tunnelling can crash some versions of Netmeeting.</long>
       </locale>
     </schema>
    <schema>
@@ -362,7 +362,7 @@
       <type>bool</type>
       <default>false</default>
       <locale name="C">
-	<short>IP Translation</short>
+	<short>Enable IP translation</short>
 	<long>This enables IP translation. IP translation is useful if GnomeMeeting is running behind a NAT/PAT router. You have to put the public IP of the router in the field below. If you are registered to ils.seconix.com, GnomeMeeting will automatically fetch the public IP using the ILS service. If your router natively supports H.323, you can disable this.</long>
       </locale>
    </schema>
@@ -373,8 +373,8 @@
       <type>string</type>
       <default>All</default>
       <locale name="C">
-	<short>User Input Capability</short>
-	<long>This permits to set the mode for User Input Capabilities. The values can be "String", "Signal", "rfc2833", "None" or "All" (default is All). Choosing other values than "All", "String" or "rfc2833" disables the Text Chat.</long>
+	<short>User Input Capabilities type</short>
+	<long>This permits to set the mode for User Input Capabilities. The values can be "String", "Signal", "rfc2833", "None" or "All" (default is All). Choosing other values than "All", "String" or "rfc2833" disable the Text Chat.</long>
       </locale>
     </schema>
     <schema>
@@ -384,8 +384,8 @@
       <type>string</type>
       <default></default>
       <locale name="C">
-	<short>Public IP</short>
-	<long>You can put here the public IP of your NAT/PAT router if you want to use IP translation.  If you are registered to ils.seconix.com, GnomeMeeting will automatically fetch the public IP using the ILS service.</long>
+	<short>Public IP of the NAT/PAT router</short>
+	<long>Enter the public IP of your NAT/PAT router if you want to use IP translation. If you are registered to ils.seconix.com, GnomeMeeting will automatically fetch the public IP using the ILS service.</long>
       </locale>
     </schema>
     <schema>
@@ -395,8 +395,8 @@
       <type>bool</type>
       <default>true</default>
       <locale name="C">
-	<short>Incoming Call Sound</short>
-	<long>If enabled, a sound is played on incoming calls.</long>
+	<short>Play a sound on incoming calls</short>
+	<long>"If enabled, GnomeMeeting will play a sound when receiving an incoming call (the sound to play is chosen in the Gnome Control Center).</long>
       </locale>
     </schema>
     <schema>	
@@ -428,8 +428,8 @@
       <type>bool</type>
       <default>true</default>
       <locale name="C">
-	<short>Enable or disable bilinear filtering</short>
-	<long>Enable or disable bilinear interpolation when rendering video images (it has no effect on fullscreen).</long>
+	<short>Enable bilinear filtering on displayed video</short>
+	<long>Enable or disable bilinear interpolation when rendering video images (this has no effect in fullscreen mode).</long>
       </locale>
     </schema>
     <schema>
@@ -439,8 +439,8 @@
       <type>int</type>
       <default>640</default>
       <locale name="C">
-	<short>Fullscreen Width</short>
-	<long>The width of the picture displayed when being in fullscreen (using SDL)</long>
+	<short>Fullscreen width</short>
+	<long>The image width for fullscreen.</long>
       </locale>
     </schema>
     <schema>
@@ -450,8 +450,8 @@
       <type>int</type>
       <default>480</default>
       <locale name="C">
-	<short>Fullscreen Height</short>
-	<long>The height of the picture displayed when being in fullscreen (using SDL)</long>
+	<short>Fullscreen height</short>
+	<long>The image height for fullscreen.</long>
       </locale>
     </schema>
     <schema>
@@ -516,7 +516,7 @@
       <type>int</type>
       <default>2</default>
       <locale name="C">
-	<short>Automatic Echo Cancellation</short>
+	<short>Automatic echo cancellation</short>
 	<long>The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic Gain Compensation. Choosing Automatic Gain Compensation modulates the volume for best quality.</long>
       </locale>
     </schema>
@@ -539,7 +539,7 @@
       <default>/dev/mixer</default>
       <locale name="C">
 	<short>Audio player mixer</short>
-	<long>The mixer to use to change the volume of the audio player.</long>
+	<long>Select the mixer to use to change the volume of the audio player.</long>
       </locale>
     </schema>
     <schema>
@@ -550,7 +550,7 @@
       <default>/dev/mixer</default>
       <locale name="C">
 	<short>Audio recorder mixer</short>
-	<long>The mixer to use to change the volume of the audio recorder.</long>
+	<long>Select the mixer to use to change the volume of the audio recorder.</long>
       </locale>
     </schema>
     <schema>
@@ -561,7 +561,7 @@
       <default>/dev/dsp</default>
       <locale name="C">
 	<short>Audio player</short>
-	<long>The device to use to play audio</long>
+	<long>Select the audio player device to use.</long>
       </locale>
     </schema>
     <schema>	
@@ -583,7 +583,7 @@
       <default>/dev/dsp</default>
       <locale name="C">
 	<short>Audio recorder</short>
-	<long>The device to use to record audio</long>
+	<long>Select the audio recorder device to use.</long>
       </locale>
     </schema>
     <schema>
@@ -593,8 +593,8 @@
       <type>int</type>
       <default>20</default>
       <locale name="C">
-	<short>Minimal jitter buffer</short>
-	<long>The minimal jitter buffer size for audio reception (in ms).</long>
+	<short>Minimum jitter buffer</short>
+	<long>The minimum jitter buffer size for audio reception (in ms).</long>
       </locale>
     </schema>
     <schema>
@@ -604,8 +604,8 @@
       <type>int</type>
       <default>1000</default>
       <locale name="C">
-	<short>Maximal jitter buffer</short>
-	<long>The maximal jitter buffer size for audio reception (in ms).</long>
+	<short>Maximum jitter buffer</short>
+	<long>The maximum jitter buffer size for audio reception (in ms).</long>
       </locale>
     </schema>
     <schema>
@@ -615,8 +615,8 @@
       <type>int</type>
       <default>0</default>
       <locale name="C">
-	<short>Video Size</short>
-	<long>The Video Size: QCIF (0) or CIF (1)</long>
+	<short>Video size</short>
+	<long>Select the transmitted video size: Small (QCIF 176x144) or Large (CIF 352x288).</long>
       </locale>
     </schema>
     <schema>
@@ -626,8 +626,8 @@
       <type>int</type>
       <default>0</default>
       <locale name="C">
-	<short>Video Channel</short>
-	<long>The Video Channel</long>
+	<short>Video channel</short>
+	<long>The video channel number to use (to select camera, tv or other sources).</long>
       </locale>
     </schema>
     <schema>
@@ -637,8 +637,8 @@
       <type>int</type>
       <default>0</default>
       <locale name="C">
-	<short>Video Format</short>
-	<long>The Video Format: PAL, NTSC, SECAM, Auto</long>
+	<short>Video format</short>
+	<long>Select the format for video cameras. (Does not apply to most USB cameras).</long>
       </locale>
     </schema>
     <schema>
@@ -659,8 +659,8 @@
       <type>string</type>
       <default></default>
       <locale name="C">
-	<short>Image</short>
-	<long>The image to transmit if the Picture device is selected as video device or if the opening of the device fails (none specified = default GnomeMeeting logo).</long>
+	<short>Video image</short>
+	<long>The image to transmit if "Picture" is selected for the video device or if the opening of the device fails. Leave blank to use the default GnomeMeeting logo.</long>
       </locale>
     </schema>
      <schema>
@@ -670,8 +670,8 @@
       <type>bool</type>
       <default>1</default>
       <locale name="C">
-	<short>Enable Video Reception</short>
-	<long>Enable the video reception for calls</long>
+	<short>Enable video reception</short>
+	<long>If enabled, allows video to be received during a call.</long>
       </locale>
     </schema>
     <schema>
@@ -681,8 +681,8 @@
       <type>bool</type>
       <default>0</default>
       <locale name="C">
-	<short>Enable Video Transmission</short>
-	<long>Enable the video transmission for calls</long>
+	<short>Enable video transmission</short>
+	<long>If enabled, video is transmitted during a call.</long>
       </locale>
     </schema>
     <schema>
@@ -731,26 +731,14 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/contacts/ldap_servers_list</key>
-      <applyto>/apps/gnomemeeting/contacts/ldap_servers_list</applyto>
-      <owner>GnomeMeeting</owner>
-      <type>list</type>
-      <list_type>string</list_type>
-      <default>[ils.seconix.com]</default>
-      <locale name="C">
-	<short>The list of ILS servers</short>
-	<long>The list of ILS servers</long>
-      </locale>
-    </schema>
-    <schema>
       <key>/schemas/apps/gnomemeeting/gatekeeper/gk_host</key>
       <applyto>/apps/gnomemeeting/gatekeeper/gk_host</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default></default>
       <locale name="C">
-	<short>The Gatekeeper to register to</short>
-	<long>The hostname of the Gatekeeper to register to</long>
+	<short>Gatekeeper host</short>
+	<long>The Gatekeeper host to register with.</long>
       </locale>
     </schema>
     <schema>
@@ -760,8 +748,8 @@
       <type>string</type>
       <default></default>
       <locale name="C">
-	<short>The Gatekeeper password</short>
-	<long>The Gatekeeper password to use for H.235 authentication to the Gateleeper.</long>
+	<short>Gatekeeper password</short>
+	<long>The Gatekeeper password to use for H.235 authentication to the Gatekeeper.</long>
       </locale>
     </schema>
     <schema>
@@ -771,8 +759,8 @@
       <type>string</type>
       <default></default>
       <locale name="C">
-	<short>The Gatekeeper to register to</short>
-	<long>The ID of the Gatekeeper to register to</long>
+	<short>Gatekeeper ID</short>
+	<long>The Gatekeeper identifier to register with.</long>
       </locale>
     </schema>
     <schema>
@@ -782,8 +770,8 @@
       <type>int</type>
       <default>0</default>
       <locale name="C">
-	<short>The Method to use to register to the Gatekeeper</short>
-	<long>The Method to use to register to the Gatekeeper</long>
+	<short>Registering method</short>
+	<long>Registering method to use</long>
       </locale>
     </schema>
     <schema>
@@ -793,8 +781,8 @@
       <type>string</type>
       <default></default>
       <locale name="C">
-	<short>The alias to use when registering</short>
-	<long>The alias to use when registering. People will use this alias when calling you.</long>
+	<short>Gatekeeper alias</short>
+	<long>The Gatekeeper alias to use when registering (string, or E164 ID if only 0123456789#).</long>
       </locale>
     </schema>
     <schema>
@@ -804,8 +792,8 @@
       <type>bool</type>
       <default>false</default>
       <locale name="C">
-	<short>Show only the notification icon window at startup</short>
-	<long>Do not show the main GnomeMeeting window at startup, just show the notification icon.</long>
+	<short>Start hidden</short>
+	<long>If enabled, GnomeMeeting will start hidden. The docklet must be enabled.</long>
       </locale>
     </schema>
     <schema>
@@ -815,8 +803,8 @@
       <type>int</type>
       <default>2</default>
       <locale name="C">
-	<short>Number of background blocks transmitted at a time</short>
-	<long>Here you can choose the number of blocks (that haven't changed) transmitted with each frame. These blocks fill in the background.</long>
+	<short>Transmitted background blocks</short>
+	<long>Choose the number of blocks (that have not changed) transmitted with each frame. These blocks fill in the background.</long>
       </locale>
     </schema>
     <schema>
@@ -837,8 +825,8 @@
       <type>string</type>
       <default></default>
       <locale name="C">
-	<short>Forward calls to this host</short>
-	<long>The host to forward calls to</long>
+	<short>Forward calls to host</short>
+	<long>The host where calls should be forwarded to in the cases selected above.</long>
       </locale>
     </schema>
     <schema>
@@ -849,7 +837,7 @@
       <default>false</default>
       <locale name="C">
 	<short>Always forward calls to the given host</short>
-	<long>Always forward calls to the given host</long>
+	<long>If enabled, all incoming calls will be forwarded to the host that is specified in the field below.</long>
       </locale>
     </schema>
     <schema>
@@ -860,7 +848,7 @@
       <default>false</default>
       <locale name="C">
 	<short>Forward calls to the given host if busy</short>
-	<long>Forward calls to the given host if busy</long>
+	<long>If enabled, all incoming calls will be forwarded to the host that is specified in the field below if you already are in a call or if you are in Do Not Disturb mode.</long>
       </locale>
     </schema>
     <schema>
@@ -871,7 +859,7 @@
       <default>false</default>
       <locale name="C">
 	<short>Forward calls to the given host if no answer</short>
-	<long>Forward calls to the given host if no answer</long>
+	<long>If enabled, all incoming calls will be forwarded to the host that is specified in the field below if you do not answer the call.</long>
       </locale>
     </schema>
   </schemalist>
