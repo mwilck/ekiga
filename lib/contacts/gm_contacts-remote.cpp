@@ -49,6 +49,22 @@
 #endif
 
 
+static gchar *
+get_fixed_utf8 (PString str)
+{
+  gchar *utf8_str = NULL;
+
+  if (g_utf8_validate ((gchar *) (const unsigned char*) str, -1, NULL))
+    utf8_str = g_strdup ((char *) (const char *) (str));
+  else
+    utf8_str =  g_convert ((const char *) str.GetPointer (),
+			   str.GetSize (), "UTF-8", "ISO-8859-1", 
+			   0, 0, 0);
+
+  return utf8_str;
+}
+
+
 GSList *
 gnomemeeting_get_remote_addressbooks ()
 {
@@ -211,34 +227,34 @@ gnomemeeting_remote_addressbook_get_contacts (GmAddressbook *addressbook,
       
       if (ldap.GetSearchResult (context, "rfc822mailbox", arr)
 	  || ldap.GetSearchResult (context, "mail", arr)) 
-	contact->email = g_strdup ((const char *) arr [0]);
+	contact->email = get_fixed_utf8 ((const char *) arr [0]);
       
       
       if (ldap.GetSearchResult (context, "givenname", arr))
-	firstname = g_strdup ((const char *) arr [0]);
+	firstname = get_fixed_utf8 ((const char *) arr [0]);
       if (ldap.GetSearchResult (context, "surname", arr)
 	  || ldap.GetSearchResult (context, "sn", arr))
-	surname = g_strdup ((const char *) arr [0]);
+	surname = get_fixed_utf8 ((const char *) arr [0]);
 	  
       if (firstname || surname)
 	contact->fullname = g_strdup_printf ("%s %s", 
 					     firstname?firstname:"", 
 					     surname?surname:"");
       else if (ldap.GetSearchResult (context, "cn", arr)) 
-	  contact->fullname = g_strdup ((const char *) arr [0]);
+	  contact->fullname = get_fixed_utf8 ((const char *) arr [0]);
       else
-	contact->fullname = g_strdup ("");
+	contact->fullname = get_fixed_utf8 ("");
 
       
       if (ldap.GetSearchResult (context, "location", arr)
 	  || ldap.GetSearchResult (context, "l", arr) 
 	  || ldap.GetSearchResult (context, "localityname", arr)) 
-	contact->location = g_strdup ((const char *) arr [0]);
+	contact->location = get_fixed_utf8 ((const char *) arr [0]);
       
 
       if (ldap.GetSearchResult (context, "comment", arr)
 	  || ldap.GetSearchResult (context, "description", arr)) 
-	contact->comment = g_strdup ((const char *) arr [0]);
+	contact->comment = get_fixed_utf8 ((const char *) arr [0]);
  
 
       if (ldap.GetSearchResult (context, "ilsa26214430", arr))
@@ -249,7 +265,7 @@ gnomemeeting_remote_addressbook_get_contacts (GmAddressbook *addressbook,
       
       if (ldap.GetSearchResult (context, "sappid", arr)) {
 
-	tmp = g_strdup ((const char *) arr [0]);
+	tmp = get_fixed_utf8 ((const char *) arr [0]);
 	if (is_ils && ldap.GetSearchResult (context, "ilsa26279966", arr)) {
 
 	  v = atoi ((const char *) arr [0]);
@@ -261,7 +277,7 @@ gnomemeeting_remote_addressbook_get_contacts (GmAddressbook *addressbook,
 			     v & 0x0000ffff);
 	}
 	else
-	  contact->software = g_strdup (tmp);
+	  contact->software = get_fixed_utf8 (tmp);
 
 	g_free (tmp);
       }
@@ -282,7 +298,7 @@ gnomemeeting_remote_addressbook_get_contacts (GmAddressbook *addressbook,
 	  purl.Replace (" ", "");
 	}
       
-	contact->url = g_strdup ((const char *) purl);
+	contact->url = get_fixed_utf8 ((const char *) purl);
       }
       
       list = g_slist_append (list, (gpointer) contact);
