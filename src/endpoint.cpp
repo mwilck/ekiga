@@ -95,6 +95,9 @@ GMH323EndPoint::GMH323EndPoint (GM_window_widgets *w,
   listener = NULL;
   grabber = NULL;
 
+  GnomeUIInfo *display_uiinfo = (GnomeUIInfo *)
+      gtk_object_get_data (GTK_OBJECT (gw->main_notebook), "display_uiinfo");
+
   // Start the ILSClient PThread, do not register to it
   ils_client = new GMILSClient (gw, lw, opts);
   video_grabber = new GMVideoGrabber (gw, opts);
@@ -671,7 +674,9 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   enable_disconnect ();
   enable_connect ();
-  
+
+  SetCurrentDisplay (0);
+
   gdk_threads_leave ();
 
   /* Start to grab with Video Grabber if video preview
@@ -680,8 +685,11 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   if (opts->vid_tr)
     {
-      if (opts->video_preview)
+      if (opts->video_preview) {
+	gdk_threads_enter ();
 	vg->Start ();
+	gdk_threads_leave ();
+      }
       else
 	if (vg->IsOpened ())
 	  vg->Close ();
@@ -689,15 +697,26 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 }
 
 
-void GMH323EndPoint::DisplayConfig (int choice)
+void GMH323EndPoint::SetCurrentDisplay (int choice)
 {
+  /* we could be called when gw is no more valid */
+  if (GTK_IS_OBJECT (gw->drawing_area)) {
+
+  
+    if (display_uiinfo != NULL) {
+      
+      GTK_CHECK_MENU_ITEM (display_uiinfo [0].widget)->active = (choice == 0);
+      GTK_CHECK_MENU_ITEM (display_uiinfo [1].widget)->active = (choice == 1);
+      GTK_CHECK_MENU_ITEM (display_uiinfo [2].widget)->active = (choice == 2);
+    }
+  }
 
   display_config = choice;
   if (transmitted_video_device != NULL)
-    transmitted_video_device->DisplayConfig (choice);
+    transmitted_video_device->SetCurrentDisplay (choice);
   
   if (received_video_device != NULL)		
-    received_video_device->DisplayConfig (choice);
+    received_video_device->SetCurrentDisplay (choice);
  
 }
 
@@ -761,7 +780,9 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
      transmitted_video_device = vg->GetEncodingDevice ();
      vg->Stop ();
 
-     DisplayConfig (0);
+     gdk_threads_enter ();
+     SetCurrentDisplay (0);
+     gdk_threads_leave ();
 
      /* Codecs Settings */
      if (opts->vb != 0)
@@ -794,8 +815,10 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 	  
 	 channel->AttachVideoPlayer (received_video_device);
 	 
-	 DisplayConfig (1); 
-	 
+	 gdk_threads_enter ();
+	 SetCurrentDisplay (1); 
+ 	 gdk_threads_leave ();
+
          return codec.AttachChannel (channel);
        }
    }

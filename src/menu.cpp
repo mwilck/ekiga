@@ -22,6 +22,101 @@
 
 #include "../config.h"
 
+static void half_zoom_callback (GtkWidget *, gpointer);
+static void normal_zoom_callback (GtkWidget *, gpointer);
+static void double_zoom_callback (GtkWidget *, gpointer);
+
+static GnomeUIInfo zoom_uiinfo[] =
+  {
+    { 
+      GNOME_APP_UI_ITEM, N_("1:2"), N_("Zoom 1/2x"),
+      (void *) half_zoom_callback, NULL, NULL,
+      GNOME_APP_PIXMAP_NONE, NULL,
+      0, GDK_CONTROL_MASK, NULL 
+    },
+    { 
+      GNOME_APP_UI_ITEM, N_("1:1"), N_("Normal"),
+      (void *) normal_zoom_callback, NULL, NULL,
+	GNOME_APP_PIXMAP_NONE, NULL,
+	0, GDK_CONTROL_MASK, NULL 
+      },
+      { 
+	GNOME_APP_UI_ITEM, N_("2:1"), N_("Zoom 2x"),
+	(void *) double_zoom_callback, NULL, NULL,
+	GNOME_APP_PIXMAP_NONE, NULL,
+	0, GDK_CONTROL_MASK, NULL 
+      },
+      GNOMEUIINFO_END
+    };
+
+
+    static GnomeUIInfo display_uiinfo[] =
+    {
+      {
+	GNOME_APP_UI_ITEM,
+	N_("Local"), N_("Local Video Image"),
+	(void *) popup_menu_local_callback, NULL, NULL,
+	GNOME_APP_PIXMAP_NONE, NULL,
+	0, GDK_CONTROL_MASK, NULL
+      },
+      {
+	GNOME_APP_UI_ITEM,
+	N_("Remote"), N_("Remote Video Image"),
+	(void *) popup_menu_remote_callback, NULL, NULL,
+	GNOME_APP_PIXMAP_NONE, NULL,
+	0, GDK_CONTROL_MASK, NULL
+      },
+      {
+	GNOME_APP_UI_ITEM,
+	N_("Both"), N_("Both Video Images"),
+	(void *) popup_menu_both_callback, NULL, NULL,
+	GNOME_APP_PIXMAP_NONE, NULL,
+	0, GDK_CONTROL_MASK, NULL
+      },
+      GNOMEUIINFO_END
+    };
+
+  
+  static GnomeUIInfo popup_menu [] =
+    {
+      {
+	GNOME_APP_UI_RADIOITEMS,
+	NULL, NULL,
+	display_uiinfo, NULL, NULL,
+	GNOME_APP_PIXMAP_NONE, NULL,
+	0, GDK_CONTROL_MASK, NULL
+      },
+      GNOMEUIINFO_SEPARATOR,
+      {
+	GNOME_APP_UI_RADIOITEMS,
+	NULL, NULL,
+	zoom_uiinfo, NULL, NULL,
+	GNOME_APP_PIXMAP_NONE, NULL,
+	0, GDK_CONTROL_MASK, NULL
+      },
+      GNOMEUIINFO_END
+    };
+
+void half_zoom_callback (GtkWidget *widget, gpointer data)
+{
+  GM_window_widgets *gw = (GM_window_widgets *) data;
+  gw->zoom = 0.5;
+}
+
+
+void normal_zoom_callback (GtkWidget *widget, gpointer data)
+{
+  GM_window_widgets *gw = (GM_window_widgets *) data;
+  gw->zoom = 1;
+}
+
+
+void double_zoom_callback (GtkWidget *widget, gpointer data)
+{
+  GM_window_widgets *gw = (GM_window_widgets *) data;
+  gw->zoom = 2;
+}
+
 
 /******************************************************************************/
 /* The functions                                                              */
@@ -150,40 +245,22 @@ void GM_menu_init (GtkWidget *gapp, GM_window_widgets *gw,
 }
 
 
-void GM_popup_menu_init (GtkWidget *widget)
+void GM_popup_menu_init (GtkWidget *widget, GM_window_widgets *gw)
 {
   GtkWidget *popup_menu_widget;
 
-  static GnomeUIInfo popup_menu [] =
-    {
-      {
-	GNOME_APP_UI_ITEM,
-	N_("Local"), N_("Local Video Image"),
-	(void *)popup_menu_local_callback, GINT_TO_POINTER(0), NULL,
-	GNOME_APP_PIXMAP_NONE, NULL,
-	0, GDK_CONTROL_MASK, NULL
-      },
-      {
-	GNOME_APP_UI_ITEM,
-	N_("Remote"), N_("Remote Video Image"),
-	(void *)popup_menu_remote_callback, GINT_TO_POINTER(1), NULL,
-	GNOME_APP_PIXMAP_NONE, NULL,
-	0, GDK_CONTROL_MASK, NULL
-      },
-      {
-	GNOME_APP_UI_ITEM,
-	N_("Both"), N_("Both Video Images"),
-	(void *)popup_menu_both_callback, GINT_TO_POINTER(2), NULL,
-	GNOME_APP_PIXMAP_NONE, NULL,
-	0, GDK_CONTROL_MASK, NULL
-      },
-      GNOMEUIINFO_END
-    };
-
   /* Create a popup menu to attach it to the drawing area */
   popup_menu_widget = gnome_popup_menu_new (popup_menu);
-  gnome_popup_menu_attach (popup_menu_widget, GTK_WIDGET (widget),
-                           NULL);
+
+  gnome_popup_menu_attach(popup_menu_widget, GTK_WIDGET (widget),
+			  gw);
+
+  GTK_CHECK_MENU_ITEM (zoom_uiinfo [0].widget)->active = FALSE;
+  GTK_CHECK_MENU_ITEM (zoom_uiinfo [1].widget)->active = TRUE;
+  GTK_CHECK_MENU_ITEM (zoom_uiinfo [2].widget)->active = FALSE;
+
+  gtk_object_set_data (GTK_OBJECT (gw->main_notebook), "display_uiinfo", 
+		       display_uiinfo);
 }
 
 

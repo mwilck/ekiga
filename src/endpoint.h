@@ -185,8 +185,8 @@ class GMH323EndPoint : public H323EndPoint
   //                   O : local image
   //                   1 : remote image
   //                   2 : both images
-  // PRE          :  /
-  void DisplayConfig (int);
+  // PRE          :  / VOIR GDKVIDEOIO
+  void SetCurrentDisplay (int);
 
   
   // DESCRIPTION  :  /
@@ -271,6 +271,7 @@ class GMH323EndPoint : public H323EndPoint
   int display_config; // webcam image to display
   GDKVideoOutputDevice *transmitted_video_device; // GDKVideoOutputDevice : sent
   GDKVideoOutputDevice *received_video_device; // GDKVideoOutputDevice : received
+  GnomeUIInfo *display_uiinfo;
   PVideoInputDevice *grabber;
   GM_window_widgets *gw; // main window widgets that need to be updated
   GM_ldap_window_widgets *lw;

@@ -369,12 +369,12 @@ void GM_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
     }
 
   // The logo
-  gw->pixmap = gdk_pixmap_new(gw->drawing_area->window, 
-			      GM_CIF_WIDTH, GM_CIF_HEIGHT, -1);
+  gw->pixmap = gdk_pixmap_new (gw->drawing_area->window, 
+			       GM_CIF_WIDTH * 2, GM_CIF_HEIGHT * 2, -1);
   GM_init_main_interface_logo (gw);
 
   /* Create a popup menu to attach it to the drawing area  */
-  GM_popup_menu_init (gw->drawing_area);
+  GM_popup_menu_init (gw->drawing_area, gw);
 
   /* Set icon */
   gtk_widget_push_visual(gdk_rgb_get_visual());
@@ -466,7 +466,8 @@ void GM_main_interface_init (GM_window_widgets *gw, options *opts)
   gtk_widget_set_usize (GTK_WIDGET (gw->video_frame), 
 			GM_QCIF_WIDTH + GM_FRAME_SIZE, GM_QCIF_HEIGHT);
 
-  gtk_drawing_area_size (GTK_DRAWING_AREA (gw->drawing_area), GM_QCIF_WIDTH, GM_QCIF_HEIGHT);
+  gtk_drawing_area_size (GTK_DRAWING_AREA (gw->drawing_area), 
+			 GM_QCIF_WIDTH, GM_QCIF_HEIGHT);
 
   gtk_signal_connect (GTK_OBJECT (gw->drawing_area), "expose_event",
 		      (GtkSignalFunc) expose_event, gw);    	

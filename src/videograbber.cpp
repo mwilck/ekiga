@@ -166,7 +166,7 @@ void GMVideoGrabber::Reset (void)
 
 void GMVideoGrabber::Start (void)
 {
-  MyApp->Endpoint ()->DisplayConfig (0);
+  MyApp->Endpoint ()->SetCurrentDisplay (0);
   is_grabbing = 1;
 }
 

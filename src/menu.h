@@ -37,7 +37,7 @@ void GM_menu_init (GtkWidget *, GM_window_widgets *, GM_pref_window_widgets *);
 // BEHAVIOR     :  Creates the popup menu and attach it to the GtkWidget
 //                 given as parameter (for the gtk_drawing_area)
 // PRE          :  
-void GM_popup_menu_init (GtkWidget *);
+void GM_popup_menu_init (GtkWidget *, GM_window_widgets *);
 
 
 // DESCRIPTION  :  /

@@ -1,20 +1,32 @@
-/***************************************************************************
-                          gdkvideoio.h  -  description
-                             -------------------
-    begin                : Sat Feb 17 2001
-    copyright            : (C) 2001 by Damien Sandras
-    description          : Class needed to display in a GDK video outpur device
-    email                : dsandras@acm.org
- ***************************************************************************/
 
-/***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
+/* GnomeMeeting -- A Video-Conferencing application
+ * Copyright (C) 2000-2001 Damien Sandras
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
+
+/*
+ *                         gdkvideoio.cxx  -  description
+ *                        -------------------
+ *   begin                : Sat Feb 17 2001
+ *   copyright            : (C) 2000-2001 by Damien Sandras
+ *   description          : Class to permit to display in GDK Drawing Area
+ *   email                : dsandras@seconix.com
+ *
+ */
+
 
 #ifndef _GDKVIDEOIO_H_
 #define _GDKVIDEOIO_H_
@@ -28,63 +40,60 @@
 #include "common.h"
 
 
-/******************************************************************************/
-/*   GDKVideoOutputDevice : to manage the GDK output device (webcam)          */
-/******************************************************************************/
-
 class GDKVideoOutputDevice : public H323VideoDevice
 {
   PCLASSINFO(GDKVideoOutputDevice, H323VideoDevice);
 
+
   public:
 
-    // DESCRIPTION  :  The constructor
-    // BEHAVIOR     :  Setups the parameters
-    // PRE          :  GM_window_widgets is a valid pointer to a valid
-    //                 GM_window_widgets
-    GDKVideoOutputDevice (GM_window_widgets *);
-
+  /* DESCRIPTION  :  The constructor.
+   * BEHAVIOR     :  Setup parameters.
+   * PRE          :  GM_window_widgets is a valid pointer to a valid
+   *                 GM_window_widgets structure.
+   */
+  GDKVideoOutputDevice (GM_window_widgets *);
     
-    // DESCRIPTION  :  The constructor
-    // BEHAVIOR     :  Setups the parameters, int = 0 if we do not transmit,
-    //                 1 otherwise, if we do not transmit, default display = local
-    //                 else default display = remote
-    // PRE          :  GM_window_widgets is a valid pointer to a valid
-    //                 GM_window_widgets
-    GDKVideoOutputDevice (int, GM_window_widgets *);
+    
+  /* DESCRIPTION  :  The constructor.
+   * BEHAVIOR     :  Setups the parameters, 
+   *                 int = 0 if we do not transmit,
+   *                 1 otherwise, if we do not transmit, 
+   *                 default display = local
+   *                 else default display = remote.
+   * PRE          :  GM_window_widgets is a valid pointer to a valid
+   *                 GM_window_widgets structure.
+   */
+  GDKVideoOutputDevice (int, GM_window_widgets *);
 
 
-    // DESCRIPTION  :  /
-    // BEHAVIOR     :  scale of 1/9 if input buffer is 176x144 and returns the
-    //                 corresponding buffer, scale 1/18 if input buffer is 352x288
-    // PRE          :  a non-empty buffer
-    void Resize (void *, void *, double);
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Changes current buffer to display.
+   * PRE          :  * 0 (local) or 1 (remote) or 2 (both)
+   *                 Must be protected if called from threads.
+   */
+  void SetCurrentDisplay (int);
 
 
-    // DESCRIPTION  :  /
-    // BEHAVIOR     :  changes current buffer to display (1 or 0)
-    // PRE          :  1 or 0
-    void DisplayConfig (int);
+  /* Same as in H323VideoDevice.
+   */
+  virtual BOOL Redraw(const void * frame);
 
-
-    // Same as in H323VideoDevice
-    virtual BOOL Redraw(const void * frame);
 
   protected:
 
-    // Same as in H323VideoDevice
-    BOOL WriteLineSegment(int x, int y, unsigned len, const BYTE * data);
+  /* Same as in H323VideoDevice */
+  BOOL WriteLineSegment(int x, int y, unsigned len, const BYTE * data);
 
-    int device_id;
-    int transmitted_frame_number;
-    int received_frame_number;
+  int device_id; /* The current device : encoding or not */
+  int transmitted_frame_number;
+  int received_frame_number;
 
-    PBYTEArray buffer;
-    int display_config;
+  PBYTEArray buffer; /* The RGB24 buffer; contains the images */
+  int display_config; /* Current display : local or remote or both */
     
-    GM_window_widgets *gw;
+  GM_window_widgets *gw;
+  PMutex redraw_mutex;
 };
-
-/******************************************************************************/
 
 #endif

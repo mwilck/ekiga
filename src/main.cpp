@@ -258,6 +258,7 @@ int main (int argc, char ** argv, char ** envp)
   gw->ldap_window = NULL;
   gw->video_grabber_thread_count = 0;
   gw->cleaner_thread_count = 0;
+  gw->zoom = 1;
 
   // Init the GM_pref_window_widgets structure
   pw = new (GM_pref_window_widgets); 

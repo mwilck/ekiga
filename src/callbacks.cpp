@@ -254,21 +254,21 @@ void view_video_settings_callback (GtkWidget *widget, gpointer data)
 void popup_menu_local_callback (GtkWidget *widget, gpointer data)
 {
   GMH323EndPoint *endpoint = MyApp->Endpoint ();
-  endpoint->DisplayConfig (0);
+  endpoint->SetCurrentDisplay (0);
 }
 
 
 void popup_menu_remote_callback (GtkWidget *widget, gpointer data)
 {
   GMH323EndPoint *endpoint = MyApp->Endpoint ();
-  endpoint->DisplayConfig (1);
+  endpoint->SetCurrentDisplay (1);
 }
 
 
 void popup_menu_both_callback (GtkWidget *widget, gpointer data)
 {
   GMH323EndPoint *endpoint = MyApp->Endpoint ();
-  endpoint->DisplayConfig (2);
+  endpoint->SetCurrentDisplay (2);
 }
 
 
