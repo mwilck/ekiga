@@ -87,7 +87,7 @@ void GMH323Webcam::Main ()
     {
       gdk_threads_enter ();
       msg_box = 
-	gnome_message_box_new (_("Impossible to open the video device."), 
+	gnome_message_box_new (_("Could not open the video device."), 
 			       GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
       
       gtk_widget_show (msg_box);
@@ -206,5 +206,3 @@ void GMH323Webcam::GetParameters (int *whiteness, int *brightness,
 }
 
 /******************************************************************************/
-		
-

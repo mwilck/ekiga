@@ -253,7 +253,7 @@ void GM_init (GM_window_widgets *gw, options *opts, int argc,
   
   if (opts->show_splash)
     GM_splash_advance_progress (gw->splash_win, 
-				_("Done  !"), 0.99);
+				_("Done!"), 0.99);
 
 
   if (!(opts->show_notebook))
