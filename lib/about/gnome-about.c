@@ -433,7 +433,7 @@ gnome_about_class_init (GnomeAboutClass *klass)
 							      G_PARAM_READWRITE));
 	
 	g_object_class_install_property (object_class,
-					 prop_LOGO,
+					 PROP_LOGO,
 					 g_param_spec_object ("logo",
 							      "Logo",
 							      "A logo for the about box",
