@@ -1982,8 +1982,8 @@ video_settings_changed_cb (GtkAdjustment *adjustment,
   ep = GnomeMeeting::Process ()->Endpoint ();
   
   gm_main_window_get_video_sliders_values (GTK_WIDGET (data),
-					   brightness,
 					   whiteness,
+					   brightness,
 					   colour,
 					   contrast);
 
