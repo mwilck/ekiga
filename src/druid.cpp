@@ -1206,7 +1206,7 @@ gnomemeeting_druid_window_new (GmDruidWindow *dw)
   gtk_container_add (GTK_CONTAINER (window), GTK_WIDGET (dw->druid));
 
 
-  title = g_strdup_printf (_("Configuration Druid - page %d/%d"), 1, 7);
+  title = g_strdup_printf (_("Configuration Druid - page %d/%d"), 1, 9);
   static const gchar text[] =
     N_
     ("This is the GnomeMeeting general configuration druid. "
