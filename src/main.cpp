@@ -104,6 +104,22 @@ void GnomeMeeting::Connect()
   // We need a connection to use AnsweringCall
   current_call_token = endpoint->CallToken ();
   connection = endpoint->FindConnectionWithLock (current_call_token);
+  call_address = (PString) gtk_entry_get_text 
+    (GTK_ENTRY (GTK_WIDGET(GTK_COMBO(gw->combo)->entry)));
+
+  if ((connection != NULL) || (!call_address.IsEmpty ()))
+    {
+      if (gtk_toggle_button_get_active 
+	  (GTK_TOGGLE_BUTTON (gw->preview_button)))
+	{
+	  // Stop to grab and do not change the sensitivity of
+	  // the GTK widgets
+	  MyApp->Endpoint ()->StopVideoGrabber (0);
+	  GM_init_main_interface_logo (gw);
+	  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->preview_button), 
+					FALSE);
+	}
+    }
 
   // If connection, then answer it
   if (connection != NULL)
@@ -114,13 +130,11 @@ void GnomeMeeting::Connect()
       connection->AnsweringCall (H323Connection::AnswerCallNow);
       connection->Unlock ();
 
+
       GM_log_insert (gw->log_text, _("Answering incoming call"));
     }
   else
     {
-      call_address = (PString) gtk_entry_get_text 
-	(GTK_ENTRY (GTK_WIDGET(GTK_COMBO(gw->combo)->entry)));
-
       li = gtk_list_item_new_with_label(call_address);
       gtk_container_add(GTK_CONTAINER(GTK_COMBO(gw->combo)->list), li);
       gtk_widget_show (li);
@@ -135,7 +149,7 @@ void GnomeMeeting::Connect()
 					   current_call_token));
 	  endpoint->SetCurrentCallToken (current_call_token);
 	  endpoint->SetCallingState (1);
-
+	  gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
 	  GM_log_insert (gw->log_text, _("Calling..."));
 	  gnome_appbar_push (GNOME_APPBAR (gw->statusbar), _("Calling..."));
 
@@ -214,6 +228,7 @@ int main (int argc, char ** argv, char ** envp)
   gw->applet = NULL;
   gw->pref_window = NULL;
   gw->ldap_window = NULL;
+  gw->video_grabber_thread_count = 0;
 
   // Init the opts
   opts = new (options);
@@ -228,8 +243,6 @@ int main (int argc, char ** argv, char ** envp)
   GM_init (gw, opts, argc, argv, envp);
 
   gtk_idle_add ((GtkFunction) gnome_idle_timer, NULL);
-
-  PTrace::Initialise (6);
 
   if (opts->applet)
     applet_widget_gtk_main ();

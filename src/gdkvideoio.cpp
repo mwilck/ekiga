@@ -83,7 +83,7 @@ void * GDKVideoOutputDevice::Resize (void *pic)
 
   picsmall = (char *) malloc (frameWidth * frameHeight);
 
-  if (frameWidth == 352)
+  if (frameWidth == GM_CIF_WIDTH)
     quotient = 18;
  
   for (x = 0 ; x < frameWidth * frameHeight * 3; x = x + quotient)
@@ -138,7 +138,7 @@ BOOL GDKVideoOutputDevice::Redraw(const void * frame)
       gtk_drawing_area_size (GTK_DRAWING_AREA (gw->drawing_area), 
 			     frameWidth, frameHeight);
       gtk_widget_set_usize (GTK_WIDGET (gw->video_frame),
-			    frameWidth + 4, frameHeight + 4);
+			    frameWidth + GM_FRAME_SIZE, frameHeight + GM_FRAME_SIZE);
       gdk_threads_leave ();
     }
 

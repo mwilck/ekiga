@@ -42,6 +42,10 @@ GENERAL QUESTIONS :
 	Yes, but people will be unable to call you.
 	The appropriate module can be found on :
 	http://www.coritel.it/coritel/ip/sofia/nat/nat2/nat2.htm
+	However this module is not very stable and only works with the 2.2 kernel.
+	Another solution would be to install the OpenH323Proxy
+	(http://openh323proxy.sourceforge.net/) or the OpenMCU (http://www.openh323.org/code.html)
+	and install it on your firewall.
 
 9.  What is the licence  ?
 
@@ -61,6 +65,23 @@ GENERAL QUESTIONS :
 	
 	Cédric Valcke.  Feel free to contact him at cvalcke@redoute.fr
 	Thanks for the great job  !
+
+12.  How can I contact you  ?
+
+	The best way to contact me is one of the following  :
+
+	* subscribe to the mailing list 
+	(http://lists.sourceforge.net/lists/listinfo/gnomemeeting-list)
+	
+	* come on irc.gnome.org, port 6667, channel #gnomemeeting
+
+	* mail me at <dsandras@seconix.com>
+
+	But please prefer to mail the mailing list than me ! Thanks a lot :)
+
+13.  How can I report bugs  ?
+
+	You can report bugs using BugZilla (http://bugzilla.gnome.org/).
 
 
 COMPILATION QUESTIONS :
@@ -88,20 +109,22 @@ COMPILATION QUESTIONS :
 	1) pwlib
 
 	* download it either on http://www.gnomemeeting.org/downloads
-	* extract it : tar xvzf pwlib_min_1.1.36.tar.gz 
+	* extract it : tar xvzf pwlib_min_1.1.37.tar.gz 
 	* export PWLIBDIR=the directory where you extracted pwlib
  	 e.g. : bjack@localhost:~/$ export PWLIBDIR=/opt/pwlib
 	* cd into the directory where you extracted it
-	* make both (from the directory where you extracted pwlib)
+	* make opt (from the directory where you extracted pwlib)
 	* do the following :
 
-	localhost:/opt/pwlib/lib# cp libpt_linux_x86_r.so /usr/local/lib
-	localhost:/opt/pwlib/lib# ln -s /usr/local/lib/libpt_linux_x86_r.so 
+	localhost:/opt/pwlib/lib# cp libpt_linux_x86_r.so.1.1.37 /usr/local/lib
+	localhost:/opt/pwlib/lib# ln -s /usr/local/lib/libpt_linux_x86_r.so.1.1.37 
+	/usr/local/lib/libpt_linux_x86_r.so
+	localhost:/opt/pwlib/lib# ln -s /usr/local/lib/libpt_linux_x86_r.so.1.1.37 
 	/usr/local/lib/libpt_linux_x86_r.so.1
-	localhost:/opt/pwlib/lib# ln -s /usr/local/lib/libpt_linux_x86_r.so 
+	localhost:/opt/pwlib/lib# ln -s /usr/local/lib/libpt_linux_x86_r.so.1.1.37 
 	/usr/local/lib/libpt_linux_x86_r.so.1.1
-	localhost:/opt/pwlib/lib# ln -s /usr/local/lib/libpt_linux_x86_r.so 
-	/usr/local/lib/libpt_linux_x86_r.so.1.1.36
+	localhost:/opt/pwlib/lib# ln -s /usr/local/lib/libpt_linux_x86_r.so.1.1.37 
+	/usr/local/lib/libpt.so
 
 	* add /usr/local/lib to /etc/ld.so.conf and run ldconfig
 
@@ -109,11 +132,22 @@ COMPILATION QUESTIONS :
 	2) openh323
 
 	* download it either on http://www.gnomemeeting.org/downloads
-	* extract it :  tar xvzf openh323_1.6.0.tar.gz 
+	* extract it :  tar xvzf openh323_1.6.1.tar.gz 
 	* export OPENH323DIR=the directory where you extracted openh323
 	* cd into the directory where you extracted it
 	* make opt (from the directory where you extracted openh323)
-	* make install
+	* do the following :
+
+	localhost:/opt/pwlib/lib# cp libh323_linux_x86_r.so.1.6.1 /usr/local/lib
+	localhost:/opt/pwlib/lib# ln -s /usr/local/lib/libh323_linux_x86_r.so.1.6.1 
+	/usr/local/lib/libh323_linux_x86_r.so
+	localhost:/opt/pwlib/lib# ln -s /usr/local/lib/libh323_linux_x86_r.so.1.6.1 
+	/usr/local/lib/libh323_linux_x86_r.so.1
+	localhost:/opt/pwlib/lib# ln -s /usr/local/lib/libh323_linux_x86_r.so.1.6.1 
+	/usr/local/lib/libh323_linux_x86_r.so.1.6
+	localhost:/opt/pwlib/lib# ln -s /usr/local/lib/libh323_linux_x86_r.so.1.6.1 
+	/usr/local/lib/liboh323.so
+
 	* run ldconfig
 
 	If any problem, please have a look at openh323 FAQ :
@@ -130,12 +164,16 @@ COMPILATION QUESTIONS :
 
 	* download it on http://www.gnomemeeting.org/downloads
 	* extract it
-	* export PTLIB_INCLUDE_DIR=
-	the directory that contains the ptlib include files
-	* export OPENH323_INCLUDE_DIR=
-	the directory that contains the openh323 include files
 	* cd into the directory where you exctracted
-	* ./configure --prefix=/usr  to install it in /usr
+	* run the ./configure script that supports several parameters :
+
+	--prefix=/usr  to install it in /usr
+	--with-pt-includes= specifies the location of PTlib headers (for example,
+	/opt/pwlib/include/ptlib if you extracted PWlib in /opt, default is /usr/include/ptlib)
+	--with-pt-libs= specifies the location of the PTlib libraries
+	--with-h323-includes= specifies the location of OpenH323 headers
+	--with-h323-libs= specifies the location of the OpenH323 libraries
+
 	* make
 	* make install
 
@@ -147,7 +185,9 @@ COMPILATION QUESTIONS :
 
 4.  Is there a CVS  ?
 
-	Still not, but it will come.
+	Yes, the CVS of GnomeMeeting is located in the Gnome CVS.
+	(see http://developer.gnome.org/tools/cvs.html for details, the GnomeMeeting module
+	name is gnomemeeting)
 
 
 FEATURES QUESTIONS  :

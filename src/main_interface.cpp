@@ -147,22 +147,18 @@ void contrast_changed (GtkAdjustment *adjustment, gpointer data)
 
 void preview_button_clicked (GtkButton *button, gpointer data)
 {
-  GMH323Webcam *webcam;
   GM_window_widgets *gw = (GM_window_widgets *) data;
 
-  webcam = MyApp->Endpoint ()->Webcam ();
-
-  if (webcam != NULL)
+  if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (button)))
     {
-      if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (button)))
-	if (gw->pref_window == NULL)
-	  webcam->Start ();
-	else
-	  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button),
-					FALSE);
-      else
-	webcam->Stop ();
+      if (gw->pref_window == NULL)
+	{
+	  gtk_widget_set_sensitive (GTK_WIDGET (button), FALSE);
+	  MyApp->Endpoint ()->StartVideoGrabber ();
+	}
     }
+  else
+      MyApp->Endpoint ()->StopVideoGrabber ();
 }
 
 
@@ -192,6 +188,9 @@ void GM_init (GM_window_widgets *gw, options *opts, int argc,
 	      char ** argv, char ** envp)
 {
   GMH323EndPoint *endpoint = NULL;
+  int debug = 0;
+  
+  opts->applet = 1;
 
   if (config_first_time ())
     init_config ();
@@ -203,6 +202,8 @@ void GM_init (GM_window_widgets *gw, options *opts, int argc,
     {
       {"noapplet", 'a', POPT_ARG_NONE, 
        0, 0, N_("Startup without applet support"), NULL},
+      {"debug", 'd', POPT_ARG_NONE, 
+       0, 0, N_("Prints debug messages in the console"), NULL},
       {NULL, 0, 0, NULL, 0, NULL, NULL}
     };
 
@@ -210,8 +211,9 @@ void GM_init (GM_window_widgets *gw, options *opts, int argc,
     {
       if (!strcmp (argv[i], "-a") || !strcmp (argv[i], "--noapplet"))
 	opts->applet = 0;
-      else
-	opts->applet = 1;  
+
+      if (!strcmp (argv[i], "-d") || !strcmp (argv[i], "--debug"))
+	debug = 1;
     } 
 
   // Gnome Initialisation
@@ -267,20 +269,12 @@ void GM_init (GM_window_widgets *gw, options *opts, int argc,
 				    0.60);
 	GM_ldap_register (endpoint->IP (), gw);
     }
-
-  // Run the webcam
-  if (opts->show_splash)
-    GM_splash_advance_progress (gw->splash_win, 
-				_("Opening Video Device"), 
-				0.75);
       
-  endpoint->SetWebcam (new (GMH323Webcam) (gw, opts));
- 
   // Run the listener thread
   if (opts->show_splash)
     GM_splash_advance_progress (gw->splash_win, 
 				_("Starting the listener thread"), 
-				0.90);
+				0.80);
 
   if (!endpoint->StartListener ())
     {
@@ -293,6 +287,8 @@ void GM_init (GM_window_widgets *gw, options *opts, int argc,
     GM_splash_advance_progress (gw->splash_win, 
 				_("Done!"), 0.9999);
 
+  if (debug)
+    PTrace::Initialise (3);
 
   if (!(opts->show_notebook))
     gtk_widget_hide (gw->main_notebook);
@@ -303,7 +299,7 @@ void GM_init (GM_window_widgets *gw, options *opts, int argc,
   gtk_widget_show_all (gm);
 	
   // The logo
-  gw->pixmap = gdk_pixmap_new(gw->drawing_area->window, 352, 288, -1);
+  gw->pixmap = gdk_pixmap_new(gw->drawing_area->window, GM_CIF_WIDTH, GM_CIF_HEIGHT, -1);
   GM_init_main_interface_logo (gw);
 
   // Create a popup menu to attach it to the drawing area 
@@ -336,8 +332,8 @@ void GM_main_interface_init (GM_window_widgets *gw, options *opts)
   GtkWidget *pixmap;
   GtkWidget *left_arrow, *right_arrow;
 
-  int whiteness = 0, brightness = 0, contrast = 0, colour = 0;
-  
+  GtkTooltips *tip;
+
   // Create a table in the main window to attach things like buttons
   table = gtk_table_new (58, 35, FALSE);
   
@@ -400,9 +396,9 @@ void GM_main_interface_init (GM_window_widgets *gw, options *opts)
 
   gtk_container_add (GTK_CONTAINER (gw->video_frame), gw->drawing_area);
   gtk_widget_set_usize (GTK_WIDGET (gw->video_frame), 
-			176 + 4, 144 + 4);
+			GM_QCIF_WIDTH + GM_FRAME_SIZE, GM_QCIF_HEIGHT + GM_FRAME_SIZE);
 
-  gtk_drawing_area_size (GTK_DRAWING_AREA (gw->drawing_area), 176, 144);
+  gtk_drawing_area_size (GTK_DRAWING_AREA (gw->drawing_area), GM_QCIF_WIDTH, GM_QCIF_HEIGHT);
 
   gtk_signal_connect (GTK_OBJECT (gw->drawing_area), "expose_event",
 		      (GtkSignalFunc) expose_event, gw);    	
@@ -417,7 +413,7 @@ void GM_main_interface_init (GM_window_widgets *gw, options *opts)
   frame = gtk_frame_new(NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
 
-  gtk_widget_set_usize (GTK_WIDGET (frame), 176, 32);
+  gtk_widget_set_usize (GTK_WIDGET (frame), GM_QCIF_WIDTH, 32);
   gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (frame), 5, 30, 35, 37,
 		    (GtkAttachOptions) NULL,
 		    (GtkAttachOptions) NULL,
@@ -443,6 +439,10 @@ void GM_main_interface_init (GM_window_widgets *gw, options *opts)
   gtk_signal_connect (GTK_OBJECT (gw->preview_button), "clicked",
                       GTK_SIGNAL_FUNC (preview_button_clicked), gw);
 
+  tip = gtk_tooltips_new ();
+  gtk_tooltips_set_tip (tip, gw->preview_button,
+			_("Click here to begin to display images from your camera device."), NULL);
+
   /* Audio Channel Button */
   gw->audio_chan_button = gtk_toggle_button_new ();
 
@@ -460,6 +460,10 @@ void GM_main_interface_init (GM_window_widgets *gw, options *opts)
 
   gtk_signal_connect (GTK_OBJECT (gw->audio_chan_button), "clicked",
                       GTK_SIGNAL_FUNC (pause_audio_callback), gw);
+
+  tip = gtk_tooltips_new ();
+  gtk_tooltips_set_tip (tip, gw->audio_chan_button,
+			_("Audio Transmission Status. During a call, click here to pause the audio transmission."), NULL);
 
   /* Video Channel Button */
   gw->video_chan_button = gtk_toggle_button_new ();
@@ -479,6 +483,11 @@ void GM_main_interface_init (GM_window_widgets *gw, options *opts)
   gtk_signal_connect (GTK_OBJECT (gw->video_chan_button), "clicked",
                       GTK_SIGNAL_FUNC (pause_video_callback), gw);
 
+  tip = gtk_tooltips_new ();
+  gtk_tooltips_set_tip (tip, gw->video_chan_button,
+			_("Video Transmission Status. During a call, click here to pause the video transmission."), NULL);
+
+
   /* Left arrow */
   left_arrow = gtk_button_new ();
 
@@ -495,6 +504,10 @@ void GM_main_interface_init (GM_window_widgets *gw, options *opts)
 
   gtk_signal_connect (GTK_OBJECT (left_arrow), "clicked",
 		      GTK_SIGNAL_FUNC (left_arrow_clicked), gw);
+
+  tip = gtk_tooltips_new ();
+  gtk_tooltips_set_tip (tip, left_arrow,
+			_("Click here to display the previous section of the Control Panel."), NULL);
 
   /* Right arrow */
   right_arrow = gtk_button_new ();
@@ -513,6 +526,10 @@ void GM_main_interface_init (GM_window_widgets *gw, options *opts)
   gtk_signal_connect (GTK_OBJECT (right_arrow), "clicked",
 		      GTK_SIGNAL_FUNC (right_arrow_clicked), gw);
 
+  tip = gtk_tooltips_new ();
+  gtk_tooltips_set_tip (tip, right_arrow,
+			_("Click here to display the next section of the Control Panel."), NULL);
+
 
   // The statusbar
   gw->statusbar = gnome_appbar_new (FALSE, TRUE, GNOME_PREFERENCES_NEVER);	
@@ -522,23 +539,6 @@ void GM_main_interface_init (GM_window_widgets *gw, options *opts)
   // The menu and toolbar
   GM_menu_init (gm,gw);
   GM_toolbar_init (gm, gw);	  
-
-  /* Read the webcam values */
- /* MyApp->Endpoint ()->Webcam ()
-    ->GetParameters (&whiteness, &brightness, &colour, &contrast);
-*/
-  /* Set the values *//*
-  MyApp->Endpoint ()->Webcam ()->SetBrightness (brightness * 256);
-  gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_brightness),
-			    brightness);
-  gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_whiteness),
-			    whiteness);
-  gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_colour),
-			    colour);
-  gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_contrast),
-			    contrast);
-*/
- 
 }
 
 
@@ -548,27 +548,37 @@ void GM_init_main_interface_remote_user_info (GtkWidget *notebook,
 {
   GtkWidget *frame;
   GtkWidget *label;
-  gchar * clist_titles [] = {"", N_("Info")};
+  GtkWidget *scr;
+  gchar * clist_titles [] = {" ", N_("Info")};
 
   clist_titles [1] = gettext (clist_titles [1]);
 
-  frame = gtk_frame_new (_("Remote User Info"));
+  frame = gtk_frame_new (_("Remote User"));
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
+
+  scr = gtk_scrolled_window_new (NULL, NULL);
+
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scr),
+				  GTK_POLICY_AUTOMATIC,
+				  GTK_POLICY_AUTOMATIC);
+
+  gtk_container_add (GTK_CONTAINER (frame), scr);
 
   gw->user_list = gtk_clist_new_with_titles (2, clist_titles);
 
-  gtk_container_add (GTK_CONTAINER (frame), gw->user_list);
+  gtk_container_add (GTK_CONTAINER (scr), gw->user_list);
   gtk_container_set_border_width (GTK_CONTAINER (gw->user_list), 
 				  GNOME_PAD_SMALL);
   gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
   
   gtk_clist_set_row_height (GTK_CLIST (gw->user_list), 17);
-  gtk_clist_set_column_width (GTK_CLIST (gw->user_list), 1, 50);
-  gtk_clist_set_column_width (GTK_CLIST (gw->user_list), 2, 200);
-  
+  gtk_clist_set_column_width (GTK_CLIST (gw->user_list), 0, 20);
+  gtk_clist_set_column_width (GTK_CLIST (gw->user_list), 1, 180);
+  gtk_clist_set_column_auto_resize (GTK_CLIST (gw->user_list), 1, TRUE);
+
   gtk_clist_set_shadow_type (GTK_CLIST (gw->user_list), GTK_SHADOW_IN);
 
-  label = gtk_label_new (_("Remote User Info"));
+  label = gtk_label_new (_("Remote User"));
 
   gtk_notebook_append_page (GTK_NOTEBOOK (gw->main_notebook), frame, 
 			    label);
@@ -621,10 +631,9 @@ void GM_init_main_interface_video_settings (GtkWidget *notebook,
   GtkWidget *hscale_brightness, *hscale_colour, 
     *hscale_contrast, *hscale_whiteness;
 
+  int brightness = 0, colour = 0, contrast = 0, whiteness = 0;
+  
   GtkTooltips *tip;
-
-  int whiteness = 0, brightness = 0, colour = 0, contrast = 0;
-
 
   /* Webcam Control Frame */		
   gw->video_settings_frame = gtk_frame_new (_("Video Settings"));
@@ -737,6 +746,8 @@ void GM_init_main_interface_video_settings (GtkWidget *notebook,
   gtk_signal_connect (GTK_OBJECT (gw->adj_contrast), "value-changed",
 		      GTK_SIGNAL_FUNC (contrast_changed), (gpointer) gw);
 
+  gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame), FALSE);
+
   label = gtk_label_new (_("Video Settings"));  
 
   gtk_notebook_append_page (GTK_NOTEBOOK(notebook), gw->video_settings_frame, 
@@ -830,20 +841,20 @@ void GM_init_main_interface_logo (GM_window_widgets *gw)
   
   update_rec.x = 0;
   update_rec.y = 0;
-  update_rec.width = 176;
-  update_rec.height = 144;
+  update_rec.width = GM_QCIF_WIDTH;
+  update_rec.height = GM_QCIF_HEIGHT;
 
-  if (gw->drawing_area->allocation.width != 176 &&
-      gw->drawing_area->allocation.height != 144)
+  if (gw->drawing_area->allocation.width != GM_QCIF_WIDTH &&
+      gw->drawing_area->allocation.height != GM_QCIF_HEIGHT)
     {
       gtk_drawing_area_size (GTK_DRAWING_AREA (gw->drawing_area), 
-			     176, 144);
+			     GM_QCIF_WIDTH, GM_QCIF_HEIGHT);
       gtk_widget_set_usize (GTK_WIDGET (gw->video_frame),
-			    176 + 4, 144 + 4);
+			    GM_QCIF_WIDTH + GM_FRAME_SIZE, GM_QCIF_HEIGHT + GM_FRAME_SIZE);
     }
 
   gdk_draw_rectangle (gw->pixmap, gw->drawing_area->style->black_gc, TRUE,	
-		      0, 0, 176, 144);
+		      0, 0, GM_QCIF_WIDTH, GM_QCIF_HEIGHT);
 
   text_logo = gdk_pixmap_create_from_xpm_d (gm->window, &text_logo_mask,
 					    NULL,
@@ -851,8 +862,8 @@ void GM_init_main_interface_logo (GM_window_widgets *gw)
 
   gdk_draw_pixmap (gw->pixmap, gw->drawing_area->style->black_gc, 
 		   text_logo, 0, 0, 
-		   (176 - 150) / 2,
-		   (144 - 62) / 2, -1, -1);
+		   (GM_QCIF_WIDTH - 150) / 2,
+		   (GM_QCIF_HEIGHT - 62) / 2, -1, -1);
 
   gtk_widget_draw (gw->drawing_area, &update_rec);   
 }

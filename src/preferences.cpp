@@ -1367,7 +1367,7 @@ void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
   PStringArray audio_player_devices_from_pw = 
     PSoundChannel::GetDeviceNames (PSoundChannel::Player);
 
-  for (int i = audio_player_devices_from_pw.GetSize () - 1; i >= 0; i--) 
+  for (int i = audio_player_devices_from_pw.GetSize () - 1 ; i >= 0; i--) 
     {
       if (audio_player_devices_from_pw [i] != PString (opts->audio_player))
 	{
@@ -1721,18 +1721,7 @@ void apply_options (options *opts, GM_pref_window_widgets *pw)
 
   if (pw->vid_tr_changed)
     {
-      MyApp->Endpoint ()->Webcam ()
-	->GetParameters (&whiteness, &brightness, &colour, &contrast);
-
-      gtk_adjustment_set_value (GTK_ADJUSTMENT (pw->gw->adj_brightness),
-				brightness);
-      gtk_adjustment_set_value (GTK_ADJUSTMENT (pw->gw->adj_whiteness),
-				whiteness);
-      gtk_adjustment_set_value (GTK_ADJUSTMENT (pw->gw->adj_colour),
-				colour);
-      gtk_adjustment_set_value (GTK_ADJUSTMENT (pw->gw->adj_contrast),
-				contrast);
-
+      // kept for future changements in GM.
       pw->vid_tr_changed = 0;
     }
 

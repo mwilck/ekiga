@@ -1,6 +1,6 @@
 AC_INIT(src/main.cpp)
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE(GnomeMeeting, 0.10)
+AM_INIT_AUTOMAKE(GnomeMeeting, 0.11)
 AM_MAINTAINER_MODE
 AM_ACLOCAL_INCLUDE(macros)
 dnl #############################################################################
@@ -8,9 +8,9 @@ dnl   Versioning
 dnl #############################################################################
 
 MAJOR_VERSION=0
-MINOR_VERSION=10
+MINOR_VERSION=11
 BUILD_TYPE=ReleaseCode
-BUILD_NUMBER=1
+BUILD_NUMBER=0
 
 AC_DEFINE_UNQUOTED(MAJOR_VERSION, $MAJOR_VERSION)
 AC_DEFINE_UNQUOTED(MINOR_VERSION, $MINOR_VERSION)
@@ -30,7 +30,7 @@ dnl ************************************************
 dnl PTLib
 dnl Adapted from openh323 check in gnnomemeeting ;-)
 dnl ************************************************
-AC_ARG_WITH(ptlib-includes, [  --with-pt-includes=PFX   Location of PTLib includes.],  
+AC_ARG_WITH(pt-includes, [  --with-pt-includes=PFX   Location of PTLib includes.],  
 	with_pt_includes="$withval", with_pt_includes="/usr/include/ptlib")
 have_ptlib_includes="no"
 if test "x${with_ptlib_includes}" != "xno"; then
@@ -54,7 +54,7 @@ else
 	AC_MSG_ERROR([You need PTLib's header files to build GnomeMeeting])
 fi
 
-AC_ARG_WITH(ptlib-libs, [  --with-pt-libs=PFX       Location of PTLib libs.],
+AC_ARG_WITH(pt-libs, [  --with-pt-libs=PFX       Location of PTLib libs.],
 	with_pt_libs="$withval", with_pt_libs="/usr/lib")
 if test "x${with_pt_libs}" != "xno" -a "x${have_pt_includes}" != "xno"; then
 	AC_CHECK_FILE(${with_pt_libs}/libpt.so, pt_libs="yes", pt_libs="no")
@@ -69,7 +69,7 @@ else
 	AC_MSG_ERROR([You need PTLib to enjoy GnomeMeeting])
 fi
 
-H323_LIBS="-lh323_linux_x86_r -ldl -lpt_linux_x86_r -lpthread -lssl -lcrypto"
+H323_LIBS="-loh323 -ldl -lpt -lpthread -lssl -lcrypto"
 
 dnl ***************************************
 dnl OpenH323
@@ -103,7 +103,7 @@ AC_ARG_WITH(openh323-libs, [  --with-openh323-libs=PFX       Location of OpenH32
 	with_openh323_libs="$withval", with_openh323_libs="/usr/lib")
 msg_openh323="no"
 if test "x${with_openh323_libs}" != "xno" -a "x${have_openh323_includes}" != "xno"; then
-	AC_CHECK_FILE(${with_openh323_libs}/libh323_linux_x86_r.so, openh323_libs="yes", openh323_libs="no")
+	AC_CHECK_FILE(${with_openh323_libs}/liboh323.so, openh323_libs="yes", openh323_libs="no")
 	if test "x${openh323_libs}" != "xno"; then
 		msg_openh323="yes"
 		OPENH323_LDFLAGS="-L${with_openh323_libs} ${H323_LIBS}"
@@ -214,7 +214,7 @@ echo ""
 echo "   OpenH323 Include Directory is  :  $OPENH323_INCLUDE_DIR"
 echo "  OpenH323 Libraries Directory is :  $OPENH323_LIBS_DIR"
 echo "      PTLIB Include Directory is  :  $PTLIB_INCLUDE_DIR"
-echo "      PTLib Libraries Directory is:  $PTLIB_LIBS_DIR"
+echo "      PTLIB Libraries Directory is:  $PTLIB_LIBS_DIR"
 echo "                         OS Type  :  $OSTYPE"
 echo "                    Machine Type  :  $MACHTYPE"
 echo ""

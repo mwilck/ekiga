@@ -1,3 +1,21 @@
+2001-09-05  Damien Sandras  <dsandras@seconix.com>
+
+	* callbacks.cpp: Added support to leave during a call.
+
+	* common.h: Added define's for the CIF and QCIF size to prepare
+	the road for new size when OpenH323 will permit it.
+
+	* endpoint.cpp,endpoint.h: Added functions to support the new preview mode.
+	Fixed a lot of minor bugs.
+
+	* main.cpp,main_interface.cpp: Added support for the new preview mode 
+	(which has changed since 2001-09-01), added tooltips.
+
+	* webcam.cpp,webcam.h: completely changed the preview mode. The new class
+	is an autodelete thread. Fixed minor bugs.
+
+	* FAQ: Added new questions (and new answers ;) )
+	
 2001-09-04  Christian Rose  <menthos@menthos.com>
 
 	* gnomemeeting.desktop: s/H323/H.323/ and added Swedish entries.
@@ -6,7 +24,7 @@
 
 	* pixmaps/: Modified the logo to version 0.11
 
-	* src/webcam.cpp: Added ReInitilise method that will restart the webcam
+	* src/webcam.cpp: Added ReInitialise method that will restart the webcam
 	thread with other settings; The logo is now displayed when there is no
 	webcam image displayed.
 	

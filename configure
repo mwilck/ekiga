@@ -735,7 +735,7 @@ fi
 
 PACKAGE=GnomeMeeting
 
-VERSION=0.10
+VERSION=0.11
 
 if test "`cd $srcdir && pwd`" != "`pwd`" && test -f $srcdir/config.status; then
   { echo "configure: error: source directory already configured; run "make distclean" there first" 1>&2; exit 1; }
@@ -857,9 +857,9 @@ fi
 
 
 MAJOR_VERSION=0
-MINOR_VERSION=10
+MINOR_VERSION=11
 BUILD_TYPE=ReleaseCode
-BUILD_NUMBER=1
+BUILD_NUMBER=0
 
 cat >> confdefs.h <<EOF
 #define MAJOR_VERSION $MAJOR_VERSION
@@ -1777,9 +1777,9 @@ test "$program_suffix" != NONE &&
 test "$program_transform_name" = "" && program_transform_name="s,x,x,"
 
 
-# Check whether --with-ptlib-includes or --without-ptlib-includes was given.
-if test "${with_ptlib_includes+set}" = set; then
-  withval="$with_ptlib_includes"
+# Check whether --with-pt-includes or --without-pt-includes was given.
+if test "${with_pt_includes+set}" = set; then
+  withval="$with_pt_includes"
   with_pt_includes="$withval"
 else
   with_pt_includes="/usr/include/ptlib"
@@ -1840,9 +1840,9 @@ else
 	{ echo "configure: error: You need PTLib's header files to build GnomeMeeting" 1>&2; exit 1; }
 fi
 
-# Check whether --with-ptlib-libs or --without-ptlib-libs was given.
-if test "${with_ptlib_libs+set}" = set; then
-  withval="$with_ptlib_libs"
+# Check whether --with-pt-libs or --without-pt-libs was given.
+if test "${with_pt_libs+set}" = set; then
+  withval="$with_pt_libs"
   with_pt_libs="$withval"
 else
   with_pt_libs="/usr/lib"
@@ -1885,7 +1885,7 @@ else
 	{ echo "configure: error: You need PTLib to enjoy GnomeMeeting" 1>&2; exit 1; }
 fi
 
-H323_LIBS="-L/opt/pwlib/lib -L/opt/openh323/lib -lh323_linux_x86_d -ldl -lpt_linux_x86_d -lpthread -lssl -lcrypto"
+H323_LIBS="-loh323 -ldl -lpt -lpthread -lssl -lcrypto"
 
 # Check whether --with-openh323-includes or --without-openh323-includes was given.
 if test "${with_openh323_includes+set}" = set; then
@@ -1961,16 +1961,16 @@ fi
 msg_openh323="no"
 if test "x${with_openh323_libs}" != "xno" -a "x${have_openh323_includes}" != "xno"; then
 	
-ac_safe=`echo "${with_openh323_libs}/libh323_linux_x86_r.so" | sed 'y%./+-%__p_%'`
-echo $ac_n "checking for ${with_openh323_libs}/libh323_linux_x86_r.so""... $ac_c" 1>&6
-echo "configure:1967: checking for ${with_openh323_libs}/libh323_linux_x86_r.so" >&5
+ac_safe=`echo "${with_openh323_libs}/liboh323.so" | sed 'y%./+-%__p_%'`
+echo $ac_n "checking for ${with_openh323_libs}/liboh323.so""... $ac_c" 1>&6
+echo "configure:1967: checking for ${with_openh323_libs}/liboh323.so" >&5
 if eval "test \"`echo '$''{'ac_cv_file_$ac_safe'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   if test "$cross_compiling" = yes; then
     { echo "configure: error: Cannot check for file existence when cross compiling" 1>&2; exit 1; }
 else
-  if test -r ${with_openh323_libs}/libh323_linux_x86_r.so; then
+  if test -r ${with_openh323_libs}/liboh323.so; then
     eval "ac_cv_file_$ac_safe=yes"
   else
     eval "ac_cv_file_$ac_safe=no"
@@ -2006,7 +2006,7 @@ CFLAGS=""
 
 
 
-H323_CFLAGS="-DP_LINUX -D_REENTRANT -DP_HAS_SEMAPHORES -DP_PTHREADS -DPBYTE_ORDER=PLITTLE_ENDIAN -DHAS_OSS -O2 -D_DEBUG -DPMEMORY_CHECK=1 -DPTRACING -Wall -g"
+H323_CFLAGS="-DP_LINUX -D_REENTRANT -DP_HAS_SEMAPHORES -DP_PTHREADS -DPBYTE_ORDER=PLITTLE_ENDIAN -DHAS_OSS -O2"
 
 
 
@@ -5390,7 +5390,7 @@ echo ""
 echo "   OpenH323 Include Directory is  :  $OPENH323_INCLUDE_DIR"
 echo "  OpenH323 Libraries Directory is :  $OPENH323_LIBS_DIR"
 echo "      PTLIB Include Directory is  :  $PTLIB_INCLUDE_DIR"
-echo "      PTLib Libraries Directory is:  $PTLIB_LIBS_DIR"
+echo "      PTLIB Libraries Directory is:  $PTLIB_LIBS_DIR"
 echo "                         OS Type  :  $OSTYPE"
 echo "                    Machine Type  :  $MACHTYPE"
 echo ""

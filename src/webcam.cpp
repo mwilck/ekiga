@@ -31,7 +31,7 @@ extern GnomeMeeting *MyApp;
 
 
 GMH323Webcam::GMH323Webcam (GM_window_widgets *g, options *o)
-  :PThread (1000, NoAutoDeleteThread)
+  :PThread (1000, AutoDeleteThread)
 {
   gw = g;
   opts = o;
@@ -40,61 +40,105 @@ GMH323Webcam::GMH323Webcam (GM_window_widgets *g, options *o)
   encoding_device = new GDKVideoOutputDevice (1, gw);
   grabber = new PVideoInputDevice();
 
-  running = 0;
-  grabbing = 0;
-  reinit = 0;
-  logo = 0;
+  running = 1;
+  grabbing = 1;
+  initialised = 0;
+  sensitivity_change = 0;
+
+  gw->video_grabber_thread_count++;
 
   this->Resume ();
 }
 
 
 GMH323Webcam::~GMH323Webcam ()
-{
-  Stop ();
-  running = 0;
+{ 
+  usleep (800);
 
-  delete (channel);
+  while (!this->IsTerminated ())
+    usleep (100);
+
+  gdk_threads_enter ();
+
+  if (sensitivity_change)
+    {
+      // Enable the video preview button
+      gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), TRUE);
+    }
+
+  // Disable the video settings frame
+  gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame),
+			    FALSE);
+
+  // Display the logo
+  GM_init_main_interface_logo (gw);
+  gdk_threads_leave ();
+
+  gw->video_grabber_thread_count--;
 }
 
 
 void GMH323Webcam::Main ()
 {
   int height = 0, width = 0;
+  int whiteness = 0, brightness = 0, colour = 0, contrast = 0;
+
+  if (opts->video_size == 0)
+    { height = GM_QCIF_WIDTH; width = GM_QCIF_HEIGHT; }
+  else
+    { height = GM_CIF_WIDTH; width = GM_CIF_HEIGHT; }
 
   Initialise ();
 
+  // Enable the video preview button
+  gdk_threads_enter ();
+  gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), TRUE);
+
+  // Setup the video settings
+
+  GetParameters (&whiteness, &brightness, &colour, &contrast);
+
+  gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_brightness),
+			    brightness);
+  gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_whiteness),
+			    whiteness);
+  gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_colour),
+			    colour);
+  gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_contrast),
+			    contrast);
+
+  // Enable the video settings frame
+  gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame),
+			    TRUE);
+
+  gdk_threads_leave ();
+
+  initialised = 1;
+
   while (running == 1)
     {
-      if (reinit == 1)
-	{
-	  if (opts->video_size == 0)
-	    { height = 176; width = 144; }
-	  else
-	    { height = 352; width = 288; }
-
-	  Current ()->Sleep (1000);
-	  
-	  Initialise ();
-	  reinit = 0;
-	}
-	 
       if (grabbing == 1)
 	{
-	  if (channel->Read (video_buffer, height * width * 3))
-	    channel->Write (video_buffer, height * width * 3);
+	  channel->Read (video_buffer, height * width * 3);
+	  channel->Write (video_buffer, height * width * 3);
 	}
 
-      if (!logo)
-	{
-	  gdk_threads_enter ();
-	  GM_init_main_interface_logo (gw);
-	  logo = 1;
-	  gdk_threads_leave ();
-	}
-      
       Current()->Sleep (10);
     }
+
+  if (sensitivity_change)
+    {
+      // Disable the video preview button
+      gdk_threads_enter ();
+      gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
+      gdk_threads_leave ();
+    }
+
+  grabber->Close ();
+  channel->Close ();
+  Current ()->Sleep (500);
+
+  delete (channel);
 }
 
 
@@ -104,9 +148,9 @@ void GMH323Webcam::Initialise (void)
   gchar *msg = NULL;
 
   if (opts->video_size == 0)
-    { height = 176; width = 144; }
+    { height = GM_QCIF_WIDTH; width = GM_QCIF_HEIGHT; }
   else
-    { height = 352; width = 288; }
+    { height = GM_CIF_WIDTH; width = GM_CIF_HEIGHT; }
     
   encoding_device->SetFrameSize (height, width);
 
@@ -120,7 +164,9 @@ void GMH323Webcam::Initialise (void)
     {
       gdk_threads_enter ();
 
-      msg = g_strdup_printf (_("Successfully opened video device %s, channel %d"), opts->video_device, opts->video_channel);
+      msg = g_strdup_printf 
+	(_("Successfully opened video device %s, channel %d"), 
+	 opts->video_device, opts->video_channel);
       GM_log_insert (gw->log_text, msg);
       g_free (msg);
 
@@ -130,7 +176,9 @@ void GMH323Webcam::Initialise (void)
     {
       gdk_threads_enter ();
 
-      msg = g_strdup_printf (_("Error while opening video device %s, channel %d. A test image will be transmitted."), opts->video_device, opts->video_channel);
+      msg = g_strdup_printf 
+	(_("Error while opening video device %s, channel %d. A test image will be transmitted."), 
+	 opts->video_device, opts->video_channel);
       GM_log_insert (gw->log_text, msg);
       g_free (msg);
 
@@ -150,59 +198,33 @@ void GMH323Webcam::Initialise (void)
     
   grabber->Start ();
      
-  if (reinit == 0)
-    {
-      channel->AttachVideoReader (grabber);
-      channel->AttachVideoPlayer (encoding_device);
-    }
-    
-  // Ready to run
-  running = 1;
+  channel->AttachVideoReader (grabber);
+  channel->AttachVideoPlayer (encoding_device);
 }
 
 
-void GMH323Webcam::ReInitialise (options *o)
+int GMH323Webcam::Initialised (void)
 {
-  if (reinit == 0)
-    {
-//      g_options_free (opts);
-      
-//      opts = o;
-      
-      grabber->Close ();
-      cout << "ICI" << endl << flush;
-      reinit = 1;
-    }
+  return initialised;
 }
+
 
 void GMH323Webcam::Start (void)
 {
   MyApp->Endpoint ()->DisplayConfig (0);
-  grabbing = 1;
 }
 
 
-void GMH323Webcam::Stop (void)
+void GMH323Webcam::Stop (int s = 1)
+{
+  running = 0;
+  sensitivity_change = s;
+}
+
+
+void GMH323Webcam::StopGrabbing (void)
 {
   grabbing = 0;
-  logo = 0;
-}
-
-
-int GMH323Webcam::Running (void)
-{
-  return running;
-}
-
-void GMH323Webcam::Terminate (void)
-{
-  PThread::Current()->Terminate ();
-}
-
-
-PVideoChannel *GMH323Webcam::Channel (void)
-{
-  return channel;
 }
 
 
@@ -212,12 +234,11 @@ GDKVideoOutputDevice *GMH323Webcam::Device (void)
 }
 
 
-void GMH323Webcam::Restart (void)
+PVideoChannel *GMH323Webcam::Channel (void)
 {
-  grabbing = 0;
-  grabber->Close ();
-  Current ()->Restart ();
+  return channel;
 }
+
 
 void GMH323Webcam::SetColour (int colour)
 {

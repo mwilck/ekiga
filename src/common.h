@@ -21,6 +21,11 @@
 #include <gnome.h>
 #include <ptlib.h>
 
+#define GM_CIF_WIDTH   352
+#define GM_CIF_HEIGHT  288
+#define GM_QCIF_WIDTH  176
+#define GM_QCIF_HEIGHT 144
+#define GM_FRAME_SIZE  4
 
 typedef struct _GM_window_widgets GM_window_widgets;
 typedef struct _GM_pref_window_widgets GM_pref_window_widgets;
@@ -96,6 +101,8 @@ struct _GM_window_widgets
   GtkWidget *preview_button;
   GtkWidget *video_chan_button;
   GtkWidget *audio_chan_button;
+
+  int video_grabber_thread_count;
 };
 
 

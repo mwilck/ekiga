@@ -86,7 +86,7 @@ void pref_callback (GtkWidget *widget, gpointer data)
       // First we stop the video preview
       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->preview_button),
 				    FALSE);
-      MyApp->Endpoint ()->Webcam ()->Stop ();
+      MyApp->Endpoint ()->StopVideoGrabber ();
 
       GMPreferences (call_state, gw);
     }
@@ -130,11 +130,16 @@ void about_callback (GtkWidget *widget, gpointer data)
       "",
       N_("Contributors:"),
       "Alex Larsson <alexl@redhat.com>",
+      "Miguel Rodríguez Pérez <migrax@terra.es>",
       "Roger Hardiman <roger@freebsd.org>",
+      "",
+      N_("I18n Maintainer:"),
+      "Christian Rose <menthos@menthos.com>",
       NULL
     };
 	
   authors [2] = gettext (authors [2]);
+  authors [7] = gettext (authors [7]);
 	
   abox = gnome_about_new (PACKAGE,
 			  VERSION,
@@ -153,18 +158,13 @@ void about_callback (GtkWidget *widget, gpointer data)
 void quit_callback (GtkWidget *widget, gpointer data)
 {
   GM_window_widgets *gw = (GM_window_widgets *) data;
-  GMH323Webcam *webcam = NULL;
 
   MyApp->Disconnect ();
 
-  webcam = MyApp->Endpoint ()->Webcam ();
+  MyApp->Endpoint ()->StopVideoGrabber ();
 
-  if (webcam != NULL)
-    webcam->Stop ();
-  
   gnome_app_question (GNOME_APP(gm), _("Are you sure you want to quit?"),
 		     gtk_main_quit_callback, gw);
-
 }  
 
 
@@ -174,6 +174,7 @@ void gtk_main_quit_callback (int res, gpointer data)
 
    if (res == 0)
      {
+       gtk_widget_hide (GTK_WIDGET (gm));
        if (gw->applet == NULL)
 	 gtk_main_quit ();
        else

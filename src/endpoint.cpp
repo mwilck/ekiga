@@ -92,7 +92,11 @@ GMH323EndPoint::GMH323EndPoint (GM_window_widgets *w, options *o)
 
 GMH323EndPoint::~GMH323EndPoint ()
 {
-  delete (webcam);
+  if (webcam != NULL)
+    {
+      delete (webcam);
+      webcam=NULL;
+    }
 }
 
 
@@ -295,15 +299,12 @@ BOOL GMH323EndPoint::Initialise ()
 
 void GMH323EndPoint::ReInitialise ()
 {
-  GMH323Webcam *wcam = (GMH323Webcam *) webcam;
-
   // Free the old options
   g_options_free (opts);
 
   // Set the various options
   read_config (opts);
 
-  wcam->ReInitialise (opts);
 
   Initialise ();
 }
@@ -328,9 +329,26 @@ GMH323Webcam *GMH323EndPoint::Webcam (void)
 }
 
 
-void GMH323EndPoint::SetWebcam (GMH323Webcam *w)
+void GMH323EndPoint::StartVideoGrabber (void)
 {
-  webcam = w;
+  // first check that it is not already started
+  if (webcam == NULL)
+    webcam = new (GMH323Webcam) (gw, opts);
+}
+
+
+void GMH323EndPoint::StopVideoGrabber (int s = 1)
+{
+  GMH323Webcam * wcam = (GMH323Webcam *) webcam;
+
+  // first check that it is not already stopped
+  if (webcam != NULL)
+    {
+      wcam->Stop (s);
+
+      // This it an AutoDeleteThread Thread 
+      webcam = NULL;
+    }
 }
 
 
@@ -481,7 +499,6 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   
   if (CallToken () == clearedCallToken)  SetCurrentCallToken (PString ());
 
-
   gdk_threads_enter ();
   switch (connection.GetCallEndReason ())
     {
@@ -571,7 +588,6 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   SetCurrentConnection (NULL);
   SetCallingState (0);
 
-
   /* Remove the timers if needed */
   if (applet_timeout != 0)
     gtk_timeout_remove (applet_timeout);
@@ -593,11 +609,13 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame), FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), TRUE);
   gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_chan_button), FALSE);
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->audio_chan_button), FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button), FALSE);
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->video_chan_button), FALSE);
 
   enable_disconnect ();
   enable_connect ();
-  
+
   GM_init_main_interface_logo (gw);
   
   gdk_threads_leave ();
@@ -672,16 +690,29 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 				       BOOL isEncoding, 
 				       H323VideoCodec & codec)
 {
-  GMH323Webcam *wcam = (GMH323Webcam *) webcam;
+  int whiteness = 0, brightness = 0, colour = 0, contrast = 0;
 
   /* If it is possible to transmit and
      if the user enabled transmission and
      if OpenVideoDevice is called for the encoding */
  if ((opts->vid_tr) && (isEncoding)) 
    {
+     int height, width;
+     gchar *msg;
+     PVideoChannel *channel = new PVideoChannel ();
+     PVideoInputDevice *grabber = new PVideoInputDevice();
+
      codec.SetTxQualityLevel (opts->tr_vq);
      codec.SetBackgroundFill (opts->tr_ub);
-     
+
+     if (opts->video_size == 0)
+       { height = GM_QCIF_WIDTH; width = GM_QCIF_HEIGHT; }
+     else
+       { height = GM_CIF_WIDTH; width = GM_CIF_HEIGHT; }
+
+     transmitted_video_device = new GDKVideoOutputDevice (isEncoding, gw);
+     transmitted_video_device->SetFrameSize (height, width);
+
      gdk_threads_enter ();
      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->preview_button),
 				   FALSE);
@@ -694,11 +725,85 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 
      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->video_chan_button),
 				   TRUE);
+
      gdk_threads_leave ();
 
-     transmitted_video_device = wcam->Device ();
+     // First, we wait that the video grabber thread count becomes 0
+     while (gw->video_grabber_thread_count != 0)
+       { usleep (50); }
+
+     // I'm not using my GMH323Webcam class.
+     // This is ugly, but using this class gave me many problems
+     // because of the video design of OpenH323.
+     // This is a temporary fix.
+     // I hope that OPAL will solve this.
+     if (grabber->Open (opts->video_device, FALSE) &&
+	 grabber->SetVideoFormat 
+	 (opts->video_format ? PVideoDevice::NTSC : PVideoDevice::PAL) &&
+	 grabber->SetChannel (opts->video_channel) &&
+	 grabber->SetFrameRate (opts->tr_fps)  &&
+	 grabber->SetFrameSize (height, width) &&
+	 grabber->SetColourFormatConverter ("YUV420P"))
+       {
+	 gdk_threads_enter ();
+	 
+	 msg = g_strdup_printf 
+	   (_("Successfully opened video device %s, channel %d"), 
+	 opts->video_device, opts->video_channel);
+	 GM_log_insert (gw->log_text, msg);
+	 g_free (msg);
+	 
+	 gdk_threads_leave ();			     
+       }
+     else
+       {
+	 gdk_threads_enter ();
+	 
+	 msg = g_strdup_printf 
+	   (_("Error while opening video device %s, channel %d. A test image will be transmitted."), 
+	    opts->video_device, opts->video_channel);
+	 GM_log_insert (gw->log_text, msg);
+	 g_free (msg);
+	 
+	 gdk_threads_leave ();			     
+	 
+	 
+	 // delete the failed grabber and open the fake grabber
+	 delete grabber;
+	 
+	 grabber = new PFakeVideoInputDevice();
+	 grabber->SetColourFormatConverter ("YUV420P");
+	 grabber->SetVideoFormat (PVideoDevice::PAL);
+	 grabber->SetChannel (100);     //NTSC static image.
+	 grabber->SetFrameRate (10);
+	 grabber->SetFrameSize (height, width);
+       }
+
+     // Will change this part when using OPAL
+     gdk_threads_enter ();
+     gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame), TRUE);
+     whiteness = (int) grabber->GetWhiteness () / 256;
+     brightness = (int) grabber->GetBrightness () / 256;
+     colour = (int) grabber->GetColour () / 256;
+     contrast = (int) grabber->GetContrast () / 256;
+     gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_brightness),
+			       brightness);
+     gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_whiteness),
+			       whiteness);
+     gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_colour),
+			       colour);
+     gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_contrast),
+			       contrast);
+     gdk_threads_leave ();
+    
+     grabber->Start ();
      
-     return codec.AttachChannel (wcam->Channel (), FALSE);
+     channel->AttachVideoReader (grabber);
+     channel->AttachVideoPlayer (transmitted_video_device);
+
+     DisplayConfig (0);
+
+     return codec.AttachChannel (channel, TRUE);
    }
  else
    {

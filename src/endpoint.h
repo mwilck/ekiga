@@ -244,10 +244,9 @@ class GMH323EndPoint : public H323EndPoint
   // PRE          :  /
   GMH323Webcam *Webcam (void);
 
-  // DESCRIPTION  :  /
-  // BEHAVIOR     :  Sets the current webcam grabbing device
-  // PRE          :  /
-  void SetWebcam (GMH323Webcam *);  
+
+  void StartVideoGrabber (void);  
+  void StopVideoGrabber (int = 1);
 
  protected:
   

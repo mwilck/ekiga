@@ -54,31 +54,29 @@ class GMH323Webcam : public PThread
   
   void Main ();
   void Start ();
-  void Stop ();
-  int Running ();
-  PVideoChannel *Channel ();
+  void Stop (int = 1);
+  void Initialise ();
+  int Initialised ();
+  void StopGrabbing ();
   GDKVideoOutputDevice *Device (void);
-  void Restart (void);
+  PVideoChannel *Channel (void);
   void SetColour (int);
   void SetBrightness (int);
   void SetWhiteness (int);
   void SetContrast (int);
   void GetParameters (int *, int *, int *, int *);
-  void Terminate (void);
-  void Initialise (void);
-  void ReInitialise (options *);
 
  protected:
   GM_window_widgets *gw;
   options *opts;
-  char video_buffer [230400];
+  char video_buffer [3 * GM_CIF_WIDTH * GM_CIF_HEIGHT];
   PVideoChannel *channel;
   PVideoInputDevice *grabber;
   GDKVideoOutputDevice *encoding_device;
   int running;
   int grabbing;
-  int reinit;
-  int logo;
+  int initialised;
+  int sensitivity_change;
 };
 
 /******************************************************************************/
