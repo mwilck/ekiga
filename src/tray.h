@@ -74,6 +74,12 @@ void gnomemeeting_tray_show (GObject *);
  */
 void gnomemeeting_tray_hide (GObject *);
 
+/* DESCRIPTION  : Returns a popup menu item
+ * BEHAVIOR     : 
+ * PRE          : /
+ */
+GObject *gnomemeeting_tray_get_uiinfo (GObject *tray, int index);
+
 G_END_DECLS
 
 #endif
