@@ -186,36 +186,10 @@ void GMLid::Stop ()
 
 void GMLid::Close ()
 {
-  GConfClient *client = NULL;
-  GmWindow *gw = NULL;
-  gchar *mixer = NULL;
-  int vol = 0;
-
   PWaitAndSignal m(device_access_mutex);
   
   if (lid)
     lid->Close ();
-
-  /* Restore the normal mixers settings */
-  gnomemeeting_threads_enter ();
-  client = gconf_client_get_default ();
-  gw = MyApp->GetMainWindow ();
-
-  mixer =
-    gconf_client_get_string (client, DEVICES_KEY "audio_player_mixer", NULL);
-  vol = gnomemeeting_get_mixer_volume (mixer, SOURCE_AUDIO);
-  g_free (mixer);
-
-  GTK_ADJUSTMENT (gw->adj_play)->value = (int) (vol & 255);
-
-  mixer =
-    gconf_client_get_string (client, DEVICES_KEY "audio_recorder_mixer", NULL);
-  vol = gnomemeeting_get_mixer_volume (mixer, SOURCE_MIC);
-  g_free (mixer);
-
-  GTK_ADJUSTMENT (gw->adj_rec)->value = (int) (vol & 255);
-  gtk_widget_queue_draw (GTK_WIDGET (gw->audio_settings_frame));
-  gnomemeeting_threads_leave (); 
 }
 
 

@@ -785,6 +785,13 @@ gnomemeeting_init_druid_audio_devices_page (GnomeDruid *druid, int p, int t)
 
 
   /* The Audio devices */
+#ifdef TRY_PLUGINS
+  table = gnomemeeting_vbox_add_table (vbox, _("Audio Manager"), 1, 2);
+
+  dw->audio_manager =
+    gnomemeeting_table_add_pstring_option_menu (table, _("Audio manager:"), gw->audio_managers, DEVICES_KEY "audio_manager", _("The audio manager that will be used to detect the devices and manage them."), 0);
+#endif
+
   table = gnomemeeting_vbox_add_table (vbox, _("Audio Devices"), 4, 3);
 
   dw->audio_player = 
@@ -853,6 +860,13 @@ gnomemeeting_init_druid_video_devices_page (GnomeDruid *druid, int p, int t)
 
   gnomemeeting_druid_add_graphical_label (vbox, GM_STOCK_DRUID_VIDEO, _("Please choose the video device to use during the GnomeMeeting session. Click on the \"Test Video\" button to check if your setup is correct and if your driver is supported by GnomeMeeting. You can only test the correctness of your driver if the selected device is not already in use."));
 
+#ifdef TRY_PLUGINS
+  /* The video manager */
+  table = gnomemeeting_vbox_add_table (vbox, _("Video Manager"), 1, 2);
+
+  dw->video_manager =
+    gnomemeeting_table_add_pstring_option_menu (table, _("Video manager:"), gw->video_managers, DEVICES_KEY "video_manager", _("The video manager that will be used to detect the devices and manage them."), 0);
+#endif
 
   /* The Video device */
   table = gnomemeeting_vbox_add_table (vbox, _("Video Devices"), 2, 3);

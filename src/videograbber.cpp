@@ -80,7 +80,6 @@ GMVideoGrabber::GMVideoGrabber (PIntCondMutex *m,
   grabber = NULL;
   encoding_device = NULL;
   client = gconf_client_get_default ();
-  color_format = NULL;
   video_device = NULL;
   video_channel = 0;
   video_size = 0;
@@ -103,7 +102,6 @@ GMVideoGrabber::~GMVideoGrabber ()
 {
   PWaitAndSignal m(device_mutex);
 
-  g_free (color_format);
   g_free (video_device);
 
   --(*number_of_instances_mutex);
@@ -175,7 +173,6 @@ void GMVideoGrabber::UpdateConfig ()
   gchar *tmp = NULL;
 #endif
 
-  g_free (color_format);
   g_free (video_device);
  
   gnomemeeting_threads_enter ();
@@ -195,9 +192,6 @@ void GMVideoGrabber::UpdateConfig ()
     video_device = tmp;
   }
 #endif
-
-  color_format = 
-    gconf_client_get_string (client, DEVICES_KEY "color_format", NULL);
 
   video_channel =  
     gconf_client_get_int (client, DEVICES_KEY "video_channel", NULL);
@@ -675,13 +669,29 @@ void GMVideoTester::Main ()
   int cpt = 0;
   gdouble per = 0.0;
 
+  gchar *tmp = NULL;
   gchar *msg = NULL;
   gchar *video_device = NULL;
+  gchar *video_manager = NULL;
 
   gnomemeeting_threads_enter ();
   GConfClient *client = gconf_client_get_default ();
 
-  video_device =  gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/video_recorder", NULL);
+  video_device =  
+    gconf_client_get_string (client, DEVICES_KEY "video_recorder", NULL);
+
+#ifdef TRY_PLUGINS
+  video_manager =
+    gconf_client_get_string (client, DEVICES_KEY "video_manager", NULL);
+
+  if (video_device && video_manager) {
+
+    tmp = g_strdup_printf ("%s %s", video_manager, video_device);
+    g_free (video_device);
+    g_free (video_manager);
+    video_device = tmp;
+  }
+#endif
 
   gw = MyApp->GetMainWindow ();
   dw = MyApp->GetDruidWindow ();
@@ -717,7 +727,7 @@ void GMVideoTester::Main ()
     gdk_threads_leave ();
     
     if (video_device &&
-	PString (video_device).Find(_("Picture")) != P_MAX_INDEX) {
+	PString (video_device).Find(_("Picture")) == P_MAX_INDEX) {
 #ifndef TRY_PLUGINS      
       if (!grabber->Open (video_device, FALSE))
 	error_code = 0;
@@ -804,6 +814,8 @@ void GMVideoTester::Main ()
   if (grabber)
     delete (grabber);
 #endif
+
+  g_free (video_device);
 
   gdk_threads_enter ();
   gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (dw->progress), 1.0);

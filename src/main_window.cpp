@@ -757,48 +757,6 @@ main_notebook_page_changed (GtkNotebook *notebook, GtkNotebookPage *page,
 void 
 audio_volume_changed (GtkAdjustment *adjustment, gpointer data)
 {
-  int vol_play = 0, vol_rec = 0;
-  gchar *mixer = NULL;
-#ifdef HAS_IXJ
-  GMH323EndPoint *endpoint = NULL;
-  GMLid *lid = NULL;
-
-  endpoint = MyApp->Endpoint ();
-  if (endpoint)
-    lid = endpoint->GetLid ();
-#endif
-  
-  GConfClient *client = gconf_client_get_default ();
-  GmWindow *gw = MyApp->GetMainWindow ();
-
-  vol_play =  (int) (GTK_ADJUSTMENT (gw->adj_play)->value);
-  vol_rec =  (int) (GTK_ADJUSTMENT (gw->adj_rec)->value);
-
-#ifdef HAS_IXJ
-  if (lid) {
-
-    lid->SetVolume (vol_play, vol_rec);
-    lid->Unlock ();
-  }
-  else {
-#endif
-    mixer =
-      gconf_client_get_string (client, DEVICES_KEY "audio_player_mixer",
-			       NULL);
-
-    gnomemeeting_set_mixer_volume (mixer, SOURCE_AUDIO,
-				   ((vol_play<<8)|vol_play));
-    g_free (mixer);
-
-    mixer =
-      gconf_client_get_string (client, DEVICES_KEY "audio_recorder_mixer",
-			       NULL);
-  
-    gnomemeeting_set_mixer_volume (mixer, SOURCE_MIC, ((vol_rec<<8)|vol_rec));
-    g_free (mixer);
-#ifdef HAS_IXJ
-  }
-#endif
 }
 
 
@@ -1602,7 +1560,6 @@ void gnomemeeting_init_main_window_audio_settings ()
   GtkWidget *hbox = NULL;
   GtkWidget *vbox = NULL;
 
-  char *mixer = NULL;
   int vol = 0;
 
   GConfClient *client = gconf_client_get_default ();
@@ -1619,12 +1576,7 @@ void gnomemeeting_init_main_window_audio_settings ()
 						GTK_ICON_SIZE_SMALL_TOOLBAR),
 		      FALSE, FALSE, 0);
   
-  mixer =
-    gconf_client_get_string (client, DEVICES_KEY "audio_player_mixer", NULL);
-  vol = gnomemeeting_get_mixer_volume (mixer, SOURCE_AUDIO);
-  g_free (mixer);
-  
-  gw->adj_play = gtk_adjustment_new ((vol&255), 0.0, 100.0, 1.0, 5.0, 1.0);
+  gw->adj_play = gtk_adjustment_new (0, 0.0, 100.0, 1.0, 5.0, 1.0);
   hscale_play = gtk_hscale_new (GTK_ADJUSTMENT (gw->adj_play));
   gtk_range_set_update_policy (GTK_RANGE (hscale_play),
 			       GTK_UPDATE_DELAYED);
@@ -1641,12 +1593,7 @@ void gnomemeeting_init_main_window_audio_settings ()
 						GTK_ICON_SIZE_SMALL_TOOLBAR),
 		      FALSE, FALSE, 0);
 
-  mixer =
-    gconf_client_get_string (client, DEVICES_KEY "audio_recorder_mixer", NULL);
-  vol = gnomemeeting_get_mixer_volume (mixer, SOURCE_MIC);
-  g_free (mixer);
-  
-  gw->adj_rec = gtk_adjustment_new ((vol&255), 0.0, 100.0, 1.0, 5.0, 1.0);
+  gw->adj_rec = gtk_adjustment_new (0, 0.0, 100.0, 1.0, 5.0, 1.0);
   hscale_rec = gtk_hscale_new (GTK_ADJUSTMENT (gw->adj_rec));
   gtk_range_set_update_policy (GTK_RANGE (hscale_rec),
 			       GTK_UPDATE_DELAYED);

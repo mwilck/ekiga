@@ -158,62 +158,6 @@ gnomemeeting_mixers_mic_select (void)
 }
 
 
-int gnomemeeting_get_mixer_volume (char *mixer, int source)
-{
-#ifndef P_MACOSX
-  int vol = 0;
-  int mixerfd = -1;
-  
-  if (!mixer)
-    return 0;
-
-  mixerfd = open (mixer, O_RDWR);
-
-  if (mixerfd == -1)
-    return 0;
-
-  if (source == SOURCE_AUDIO)
-    ioctl (mixerfd, MIXER_READ (SOUND_MIXER_READ_VOLUME), &vol);
-
-  if (source == SOURCE_MIC)
-    ioctl (mixerfd, MIXER_READ (SOUND_MIXER_MIC), &vol);
-
-  close (mixerfd);
-  return vol;
-#else
-  return 0;
-#endif  
-}
-
-
-void gnomemeeting_set_mixer_volume (char *mixer, int source, int vol)
-{
-#ifndef WIN32
-#ifndef P_MACOSX
-  int mixerfd = -1;
-  
-  if (!mixer)
-    return;
-
-  mixerfd = open (mixer, O_RDWR);
-
-  if (mixerfd == -1)
-    return;
-
-  if (source == SOURCE_AUDIO)
-    ioctl (mixerfd, MIXER_WRITE (SOUND_MIXER_VOLUME), &vol);
-
-  if (source == SOURCE_MIC)
-    ioctl (mixerfd, MIXER_WRITE (SOUND_MIXER_MIC), &vol);
-  
-  close (mixerfd);
-#else
-  return;
-#endif
-#endif
-}
-
-
 PStringArray gnomemeeting_get_audio_player_devices ()
 {
   PStringArray devices;
@@ -267,48 +211,6 @@ PStringArray gnomemeeting_get_audio_recorder_devices ()
   }
   
   return d;
-}
-
-
-PStringArray gnomemeeting_get_mixers ()
-{
-  int mixerfd = -1;
-  int cpt = -1;
-  int i = 0;
-  
-  PStringArray mixers;
-
-  PString mixer_name;
-  PString mixer;
-
-  while (i < 2) {
-
-    if (i == 0)
-      mixer_name = PString ("/dev/sound/mixer");
-    else
-      mixer_name = PString ("/dev/mixer");
-    
-    mixer = mixer_name;
-
-    for (cpt = -1 ; cpt < 10 ; cpt++) {
-
-      if (cpt != -1)
-	mixer = mixer_name + PString (cpt);
-
-      mixerfd = open (mixer, O_RDWR);
-
-      if (!(mixerfd == -1)) {
-
-	mixers += mixer;
-
-	close (mixerfd);
-      }
-    }
-
-    i++;
-  }
-
-  return mixers;
 }
 
 
@@ -396,11 +298,11 @@ void GMAudioTester::Main ()
   GtkWidget *label = NULL;
 
   gchar *msg = NULL;
+  gchar *manager = NULL;
 
-  char *buffer_play = (char *) malloc (8 * 1024);
-  char *buffer_record = (char *) malloc (8 * 1024);
-  char *buffer_ring = (char *) malloc (8 * 5 * 1024);
-  char *mixer = NULL;
+  char *buffer_play = (char *) malloc (8 * 640);
+  char *buffer_record = (char *) malloc (8 * 640);
+  char *buffer_ring = (char *) malloc (8 * 5 * 640);
   
   int buffer_play_pos = 0;
   int buffer_rec_pos = 0;
@@ -409,6 +311,7 @@ void GMAudioTester::Main ()
   bool label_displayed = false;
   bool displayed = false;
   
+  PString device;
   PTime now;
   
   client = gconf_client_get_default ();
@@ -417,23 +320,27 @@ void GMAudioTester::Main ()
   memset (buffer_play, 0, sizeof (buffer_play));
   memset (buffer_record, 0, sizeof (buffer_record));
 
-  mixer =
-    gconf_client_get_string (client, DEVICES_KEY "audio_recorder_mixer", NULL);
-  gnomemeeting_set_mixer_volume (mixer, SOURCE_MIC, 100);
-  g_free (mixer);
+  gnomemeeting_threads_enter ();
+  manager =
+    gconf_client_get_string (client, DEVICES_KEY "audio_manager", 0);
+  if (manager)
+    device = PString (manager) + " ";
+  gnomemeeting_threads_leave ();
 
-  
+
   /* We try to open the 2 selected devices */
 #ifndef TRY_PLUGINS
   if (!player->Open (ep->GetSoundChannelPlayDevice (), 
 		     PSoundChannel::Player,
 		     1, 8000, 16)) {
 #else
-    player = 
-      PDeviceManager::GetOpenedSoundDevice (ep->GetSoundChannelPlayDevice (),
-					    PDeviceManager::Output,
-					    1, 8000, 16);
-    if (!player) {
+    
+  player = 
+    PDeviceManager::GetOpenedSoundDevice (device+
+					  ep->GetSoundChannelPlayDevice (),
+					  PDeviceManager::Output,
+					  1, 8000, 16);
+  if (!player) {
 #endif
     gdk_threads_enter ();  
     gnomemeeting_error_dialog (GTK_WINDOW (gw->druid_window), _("Failed to open the device"), _("Impossible to open the selected audio device (%s) for playing. Please check your audio setup, the permissions and that the device is not busy."), (const char *) ep->GetSoundChannelPlayDevice ());
@@ -441,18 +348,20 @@ void GMAudioTester::Main ()
 
     stop = TRUE;
   }
-
+  else
+    player->SetBuffers (640, 2);
 
 #ifndef TRY_PLUGINS
   if (!recorder->Open (ep->GetSoundChannelRecordDevice (), 
 		       PSoundChannel::Recorder,
 		       1, 8000, 16)) {
 #else
-    recorder = 
-      PDeviceManager::GetOpenedSoundDevice (ep->GetSoundChannelRecordDevice (),
-					    PDeviceManager::Input,
-					    1, 8000, 16);
-    if (!recorder) {                 
+  recorder = 
+    PDeviceManager::GetOpenedSoundDevice (device
+					  +ep->GetSoundChannelRecordDevice (),
+					  PDeviceManager::Input,
+					  1, 8000, 16);
+  if (!recorder) {                 
 #endif
 
     gdk_threads_enter ();  
@@ -461,16 +370,15 @@ void GMAudioTester::Main ()
 
     stop = TRUE;
   }
-  
-  recorder->SetBuffers (640, 2);
-  player->SetBuffers (640, 2);
+  else
+    recorder->SetBuffers (640, 2);
 
   quit_mutex.Wait ();
 
   while (!stop) {
  
     
-    if (!recorder->Read ((void *) buffer_record, 8 * 1024)) {
+    if (!recorder->Read ((void *) buffer_record, 8 * 640)) {
       
       gdk_threads_enter ();  
       gnomemeeting_error_dialog (GTK_WINDOW (gw->druid_window), _("Cannot use the audio device"), _("The selected audio device (%s) was successfully opened but it is impossible to read data from this device. Please check your audio setup."), (const char*) ep->GetSoundChannelRecordDevice ());
@@ -479,7 +387,7 @@ void GMAudioTester::Main ()
       stop = TRUE;
     }
     else if (clock > 5
-	     && !player->Write ((void *) buffer_play, 8 * 1024)) {
+	     && !player->Write ((void *) buffer_play, 8 * 640)) {
 
       gdk_threads_enter ();  
       gnomemeeting_error_dialog (GTK_WINDOW (gw->druid_window), _("Cannot use the audio device"), _("The selected audio device (%s) was successfully opened but it is impossible to write data to this device. Please check your audio setup."), (const char*) ep->GetSoundChannelPlayDevice ());
@@ -523,7 +431,7 @@ void GMAudioTester::Main ()
     
     if (clock >= 5) {
       
-      buffer_play_pos += 8 * 1024;
+      buffer_play_pos += 8 * 640;
 
       if (label && !label_displayed && clock) {
 
@@ -537,14 +445,14 @@ void GMAudioTester::Main ()
       }
     }
 
-    if (buffer_play_pos >= 8 * 5 * 1024)
+    if (buffer_play_pos >= 8 * 5 * 640)
       buffer_play_pos = 0;
-    if (buffer_rec_pos >= 8 * 5 * 1024)
+    if (buffer_rec_pos >= 8 * 5 * 640)
       buffer_rec_pos = 0;
 
-    memcpy (&buffer_ring [buffer_rec_pos], buffer_record, 8 * 1024);
-    memcpy (buffer_play, &buffer_ring [buffer_play_pos], 8 * 1024);
-    buffer_rec_pos += 8 * 1024;
+    memcpy (&buffer_ring [buffer_rec_pos], buffer_record, 8 * 640);
+    memcpy (buffer_play, &buffer_ring [buffer_play_pos], 8 * 640);
+    buffer_rec_pos += 8 * 640;
 
     clock = (PTime () - now).GetSeconds ();
   }

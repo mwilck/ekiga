@@ -193,7 +193,6 @@ class GMVideoGrabber : public PThread
   int has_to_stop;
 
   gchar *video_device;
-  gchar *color_format;
   int video_channel;
   int video_size;
   PVideoDevice::VideoFormat video_format;

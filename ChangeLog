@@ -1,3 +1,21 @@
+2003-08-19 Damien Sandras  <dsandras@seconix.com>
+
+	* src/common.h: Added widgets for the managers in the druid.
+	
+	* src/config.cpp: Updates the druid when the manager changes.
+	
+	* src/druid.cpp: Added the managers.
+	
+	* src/endpoint.cpp, src/endpoint.h: Added function to get
+	the manager name. Make sure UpdateConfig doesn't update the devices
+	list if the manager has not change after a call.
+	
+	* src/lid.cpp, src/main_window.cpp, src/sound_handling.cpp,
+	src/sound_handling.h: Removed mixers related things.
+	
+	* src/videograbber.cpp, src/videograbber.h: Fixed video tester.
+	Removed color_format variable.	
+	
 2003-08-18 Damien Sandras  <dsandras@seconix.com>
 
 	* configure.in: Incremented SCHEMA_AGE.

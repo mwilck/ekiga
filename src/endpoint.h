@@ -412,7 +412,8 @@ class GMH323EndPoint : public H323EndPoint
   /* FIX ME: Comments */
   BOOL SetSoundChannelPlayDevice(const PString &);
   BOOL SetSoundChannelRecordDevice(const PString &);
-
+  BOOL SetSoundChannelManager (const PString &);
+  PString GetSoundChannelManager () {return soundChannelManager;}
 
 #ifdef HAS_IXJ
   /* DESCRIPTION  :  /
@@ -468,6 +469,7 @@ class GMH323EndPoint : public H323EndPoint
   PString called_address;
   PString current_call_token;
   PString transfer_call_token;
+  PString soundChannelManager;
 
   H323Connection *current_connection;  
   H323ListenerTCP *listener;  

@@ -205,7 +205,6 @@ struct _GmWindow
   PStringArray video_devices;
   PStringArray audio_recorder_devices;
   PStringArray audio_player_devices;
-  PStringArray audio_mixers;
   PStringArray audio_managers;
   PStringArray video_managers;
 };
@@ -247,10 +246,10 @@ struct _GmDruidWindow
   GtkWidget *enable_microtelco;
   GtkWidget *kind_of_net;
   GtkWidget *progress;
+  GtkWidget *audio_manager;
+  GtkWidget *video_manager;
   GtkWidget *audio_player;
-  GtkWidget *audio_player_mixer;
   GtkWidget *audio_recorder;
-  GtkWidget *audio_recorder_mixer;
   GtkWidget *video_device;
   GtkWidget *gk_alias;
   GtkWidget *gk_password;
@@ -312,8 +311,6 @@ struct _GmPrefWindow
   GtkWidget    *audio_player;
   GtkWidget    *audio_manager;
   GtkWidget    *audio_recorder;
-  GtkWidget    *audio_player_mixer;
-  GtkWidget    *audio_recorder_mixer;
   GtkWidget    *video_device; 
   GtkWidget    *video_manager;
   GtkWidget    *video_channel;

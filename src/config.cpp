@@ -1636,7 +1636,9 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, DEVICES_KEY "audio_manager", 
 			   string_option_menu_changed_nt, 
 			   pw->audio_manager, 0, 0);
-  // FIX ME ajouter manager druide
+  gconf_client_notify_add (client, DEVICES_KEY "audio_manager", 
+			   string_option_menu_changed_nt, 
+			   dw->audio_manager, 0, 0);
   gconf_client_notify_add (client, DEVICES_KEY "audio_manager", 
 			   manager_changed_nt, 
 			   pw->audio_manager, 0, 0);
@@ -1648,7 +1650,9 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, DEVICES_KEY "video_manager", 
 			   string_option_menu_changed_nt, 
 			   pw->video_manager, 0, 0);
-  // FIX ME ajouter manager druide
+  gconf_client_notify_add (client, DEVICES_KEY "video_manager", 
+			   string_option_menu_changed_nt, 
+			   dw->video_manager, 0, 0);
   gconf_client_notify_add (client, DEVICES_KEY "video_manager", 
 			   manager_changed_nt, 
 			   pw->video_manager, 0, 0);

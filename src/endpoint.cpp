@@ -314,7 +314,8 @@ void GMH323EndPoint::UpdateConfig ()
 
     /* Refreshes the prefs window */
     gnomemeeting_threads_enter ();
-    gnomemeeting_pref_window_refresh_devices_list (NULL, NULL);
+    if (manager && (GetSoundChannelManager () != PString (manager)))
+      gnomemeeting_pref_window_refresh_devices_list (NULL, NULL);
     gnomemeeting_threads_leave ();
 
     /**/
@@ -1923,6 +1924,9 @@ GMH323EndPoint::SetSoundChannelPlayDevice(const PString &name)
     g_free (audio_manager);
     return FALSE;
   }
+
+  soundChannelManager = PString (audio_manager);
+
 #else
   if (PSoundChannel::GetDeviceNames(PSoundChannel::Player).GetValuesIndex(name) == P_MAX_INDEX)
     return FALSE;
@@ -1961,6 +1965,9 @@ GMH323EndPoint::SetSoundChannelRecordDevice (const PString &name)
     g_free (audio_manager);
     return FALSE;
   }
+
+  soundChannelManager = PString (audio_manager);
+
 #else
   if (PSoundChannel::GetDeviceNames(PSoundChannel::Recorder).GetValuesIndex(name) == P_MAX_INDEX)
     return FALSE;
