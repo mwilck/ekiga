@@ -590,7 +590,7 @@ gnomemeeting_init (GmWindow *gw,
 			GCONF_CLIENT_PRELOAD_RECURSIVE,
 			0);
   int gconf_test = -1;
-  gconf_test = gconf_client_get_int (client, "/apps/gnomemeeting/general/gconf_test", NULL);
+  gconf_test = gconf_client_get_int (client, "/apps/gnomemeeting/general/gconf_test_age", NULL);
 
    if (gconf_test != SCHEMA_AGE) {
 
