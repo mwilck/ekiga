@@ -1384,6 +1384,11 @@ GMEndPoint::Init ()
   /* Setup ports */
   SetPorts ();
   
+
+  /* Set the STUN Server */
+  if (stun_support) 
+    SetSTUNServer ();
+
   
   /* H.323 EndPoint */
   h323EP = new GMH323EndPoint (*this);
@@ -1428,11 +1433,6 @@ GMEndPoint::Init ()
   if (ils_registering)
     ILSRegister ();
   
-  
-  /* Set the STUN Server */
-  if (stun_support) 
-    SetSTUNServer ();
-
   
   /* FIXME: not clean */
 #ifdef HAS_HOWL
