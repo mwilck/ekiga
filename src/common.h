@@ -160,6 +160,8 @@ struct _GmTextChat
 {
   GtkWidget     *text_view;
   GtkTextBuffer *text_buffer;
+  gboolean	something_typed;
+  gchar		*begin_msg;
 };
 
 

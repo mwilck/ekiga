@@ -193,14 +193,38 @@ void gnomemeeting_text_chat_clear (GtkWidget *w,
   gtk_menu_set_sensitive (gw->main_menu, "clear_text_chat", FALSE);
 }
 
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Used by the two notification functions, to display an informative
- *		text message when an event occurs; starting allows to know if the
- *		call is beginning or ending
- * PRE          :  /
- */
-static void
-gnomemeeting_text_chat_call_startstop_notification (gboolean starting)
+void
+gnomemeeting_text_chat_call_start_notification (void)
+{
+  GmTextChat *chat = NULL;
+  GmWindow *gw = NULL;
+
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
+  chat = GnomeMeeting::Process ()->GetTextChat ();
+	
+  // find the time at which the event occured
+  time_t *timeptr;
+  char *time_str;
+  
+  time_str = (char *) malloc (21);
+  timeptr = new (time_t);
+ 
+  time (timeptr);
+  strftime(time_str, 20, "%H:%M:%S", localtime (timeptr));
+
+  // prepare the message
+  if (chat->begin_msg) g_free (chat->begin_msg); // shouldn't happen...
+  chat->begin_msg = g_strdup_printf ("---- Call begins at %s\n", time_str);
+
+  // we are ready to trigger the message display
+  chat->something_typed = FALSE;
+  
+  //  free what we should
+  g_free (time_str);
+}
+
+void
+gnomemeeting_text_chat_call_stop_notification (void)
 {
   GtkTextIter iter;
   GmTextChat *chat = NULL;
@@ -218,33 +242,19 @@ gnomemeeting_text_chat_call_startstop_notification (gboolean starting)
   strftime(time_str, 20, "%H:%M:%S", localtime (timeptr));
 
   // prepare the message to be displayed
-  if (starting)
-    text = g_strdup_printf ("---- Call begins at %s\n", time_str);
-  else
-    text = g_strdup_printf ("---- Call ends at %s\n", time_str);
+  text = g_strdup_printf ("---- Call ends at %s\n", time_str);
 
   // displays the message
   gw = GnomeMeeting::Process ()->GetMainWindow ();
   chat = GnomeMeeting::Process ()->GetTextChat ();
   gtk_text_buffer_get_end_iter (chat->text_buffer, &iter);
 
-  gtk_text_buffer_insert(chat->text_buffer, &iter, text, -1);
+  if (chat->something_typed == TRUE)
+    gtk_text_buffer_insert(chat->text_buffer, &iter, text, -1);
 
   // freeing what we need to
   free (time_str);
   g_free (text);
-}
-
-void
-gnomemeeting_text_chat_call_start_notification (void)
-{
-   gnomemeeting_text_chat_call_startstop_notification (TRUE);
-}
-
-void
-gnomemeeting_text_chat_call_stop_notification (void)
-{
-   gnomemeeting_text_chat_call_startstop_notification (FALSE);
 }
 
 void 
@@ -263,6 +273,16 @@ gnomemeeting_text_chat_insert (PString local,
   chat = GnomeMeeting::Process ()->GetTextChat ();
 
   gtk_text_buffer_get_end_iter (chat->text_buffer, &iter);
+
+  // delayed call begin notification first!
+  if (chat->something_typed == FALSE) {
+    chat->something_typed = TRUE;
+    if (chat->begin_msg) { // should always be true
+      gtk_text_buffer_insert(chat->text_buffer, &iter, chat->begin_msg, -1);
+      g_free (chat->begin_msg);
+      chat->begin_msg = NULL;
+    }
+  }
 
   msg = g_strdup_printf ("%s: ", (const char *) local);
 
@@ -317,6 +337,9 @@ gnomemeeting_text_chat_new (GmTextChat *chat)
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scr),
 				  GTK_POLICY_AUTOMATIC,
 				  GTK_POLICY_ALWAYS);
+
+  chat->begin_msg = NULL;
+  chat->something_typed = FALSE;
 
   chat->text_view = gtk_text_view_new_with_regex ();
   gtk_text_view_set_editable (GTK_TEXT_VIEW (chat->text_view), FALSE);
