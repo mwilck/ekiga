@@ -969,7 +969,7 @@ gnomemeeting_init_druid_ixj_device_page (GnomeDruid *druid, int p, int t)
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
 
   gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (label), FALSE, FALSE, 0);
-  href = gnome_href_new ("http://www.microtelco.com", _("Get an account"));
+  href = gnome_href_new ("http://www.linuxjack.com", _("Get an account"));
   gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (href), FALSE, FALSE, 0);
   href = gnome_href_new ("http://www.linuxjack.com", _("Buy a card"));
   gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (href), FALSE, FALSE, 0);

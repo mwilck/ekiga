@@ -730,6 +730,18 @@
 	<long>The list of groups</long>
       </locale>
     </schema>
+    <schema>		
+      <key>/schemas/apps/gnomemeeting/contacts/ldap_servers_list</key>
+      <applyto>/apps/gnomemeeting/contacts/ldap_servers_list</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>list</type>
+      <list_type>string</list_type>
+      <default>[ils.seconix.com]</default>
+      <locale name="C">
+	<short>User directory</short>
+	<long></long>
+      </locale>
+    </schema>
     <schema>
       <key>/schemas/apps/gnomemeeting/gatekeeper/gk_host</key>
       <applyto>/apps/gnomemeeting/gatekeeper/gk_host</applyto>

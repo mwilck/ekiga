@@ -86,21 +86,7 @@ void GMH323Gatekeeper::Main ()
   g_free (gconf_string);
   gconf_string = NULL;
 
-
-  gconf_string = gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/gatekeeper/gk_alias", 0);
-
-  /* set the alias to make sure it is set */
-  if ((gconf_string != NULL)&&(strcmp ("", gconf_string))) {
-
-    /* Remove the old aliases */
-    for (int i = endpoint->GetAliasNames ().GetSize () - 1; i >= 1; i--) 
-      if (!endpoint->GetAliasNames () [i].IsEmpty ())
-	endpoint->RemoveAliasName (endpoint->GetAliasNames () [i]);
-
-    endpoint->AddAliasName (gconf_string);
-  }
-  g_free (gconf_string);
-  gconf_string = NULL;
+  MyApp->Endpoint ()->SetUserNameAndAlias ();
 
 
   /* Fetch the needed data */

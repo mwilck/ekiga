@@ -272,7 +272,7 @@ void GMLid::Main ()
 	url = gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry)); 
 	gnomemeeting_threads_leave ();
 	
-	if (url)
+	if (url && strcmp (url, "callto://"))
 	  MyApp->Connect ();
       }
     }
