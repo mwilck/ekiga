@@ -288,7 +288,7 @@ BOOL GMH323EndPoint::Initialise ()
 	
   if (!StartListener (listener))
     {
-      msg_box = gnome_message_box_new (_("Impossible to start listener"), 
+      msg_box = gnome_message_box_new (_("Could not start listener."), 
 				       GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
 
       gnome_dialog_set_parent (GNOME_DIALOG (msg_box), GTK_WINDOW (gm));
@@ -738,7 +738,7 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
        {
 
 
-	 msg_box = gnome_message_box_new (_("Impossible to open the video device."), GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
+	 msg_box = gnome_message_box_new (_("Could not open the video device."), GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
   
 	 gtk_widget_show (msg_box);
 

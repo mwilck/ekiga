@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
-"POT-Creation-Date: 2001-08-24 02:13+0200\n"
-"PO-Revision-Date: 2001-08-24 02:14+0200\n"
+"POT-Creation-Date: 2001-08-24 04:17+0200\n"
+"PO-Revision-Date: 2001-08-24 04:18+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -66,18 +66,17 @@ msgid "Please provide a valid e-mail!"
 msgstr "Ange en giltig e-postadress!"
 
 #: src/config.cpp:254
-msgid "Impossible to open the mixer."
-msgstr "Omöjligt att öppna mixern."
+msgid "Could not open the mixer."
+msgstr "Kunde inte öppna mixern."
 
 #: src/config.cpp:271
 msgid ""
-"It is impossible to open the selected video device, but the video "
-"transmission is enabled.\n"
+"Could not open the selected video device, but video transmission is "
+"enabled.\n"
 "GnomeMeeting will transmit a test image to the remote party during "
 "communications."
 msgstr ""
-"Det är omöjligt att öppna den valda videoenheten, men videoöverföring är "
-"aktiverad.\n"
+"Kunde inte öppna den valda videoenheten, men videoöverföring är aktiverad.\n"
 "GnomeMeeting kommer att skicka en testbild till fjärrparten vid "
 "kommunikation."
 
@@ -170,8 +169,8 @@ msgid "Starting Listener"
 msgstr "Startar lyssnare"
 
 #: src/endpoint.cpp:291
-msgid "Impossible to start listener"
-msgstr "Omöjligt att starta lyssnare"
+msgid "Could not start listener."
+msgstr "Kunde inte starta lyssnare."
 
 #: src/endpoint.cpp:302
 msgid "Listener started"
@@ -231,7 +230,7 @@ msgstr "Samtalet avslutades onormalt"
 
 #: src/endpoint.cpp:540
 msgid "Could not find common codec with remote party"
-msgstr "Kunde inte hitta en codec gemensam med fjärrparten"
+msgstr "Kunde inte hitta en komprimeringsmetod gemensam med fjärrparten"
 
 #: src/endpoint.cpp:550
 msgid "Refused incoming call"
@@ -243,7 +242,7 @@ msgstr "Användaren kunde inte hittas"
 
 #: src/endpoint.cpp:560
 msgid "Call ended: insufficient bandwidth"
-msgstr "Samtalet slutade: otillräcklig bandbredd"
+msgstr "Samtalet avslutades: otillräcklig bandbredd"
 
 #: src/endpoint.cpp:568
 msgid "Remote party could not be reached"
@@ -266,16 +265,16 @@ msgid "Call completed"
 msgstr "Samtalet färdigt"
 
 #: src/endpoint.cpp:741
-msgid "Impossible to open the video device."
-msgstr "Omöjligt att öppna vidoeenheten."
+msgid "Could not open the video device."
+msgstr "Kunde inte öppna vidoeenheten."
 
 #: src/gdkvideoio.cpp:212
 msgid "Transmitted FPS: "
-msgstr "Överförda ramar per sekund: "
+msgstr "Överförda bilder per sekund: "
 
 #: src/gdkvideoio.cpp:218
 msgid "Received FPS: "
-msgstr "Mottagna ramar per sekund: "
+msgstr "Mottagna bilder per sekund: "
 
 #. Translators: This is as in "Audio".
 #: src/ldap.cpp:252
@@ -331,7 +330,7 @@ msgstr "Ange en ILS-katalog i Inställningar"
 
 #: src/ldap.cpp:471
 msgid "Connecting to ILS directory... Please Wait."
-msgstr "Ansluter till ILS-katalogen... var vänlig vänta."
+msgstr "Ansluter till ILS-katalogen... Var vänlig vänta."
 
 #: src/ldap.cpp:481 src/ldap.cpp:492
 msgid "Error while connecting to ILS directory"
@@ -339,7 +338,7 @@ msgstr "Fel vid anslutning till ILS-katalog"
 
 #: src/ldap.cpp:501
 msgid "Searching for users... Please Wait."
-msgstr "Söker efter användare... var vänlig vänta."
+msgstr "Söker efter användare... Var vänlig vänta."
 
 #: src/ldap.cpp:515
 msgid "Search completed!"
@@ -484,11 +483,11 @@ msgstr "Visa ljudinställningar"
 
 #: src/menu.cpp:85
 msgid "_Video Settings"
-msgstr "_Bildinställningar"
+msgstr "_Videoinställningar"
 
 #: src/menu.cpp:85
 msgid "View Video Settings"
-msgstr "Visa bildinställningar"
+msgstr "Visa videoinställningar"
 
 #: src/menu.cpp:93
 msgid "_Status Bar"
@@ -524,11 +523,11 @@ msgstr "Pausa ljudöverföringen"
 
 #: src/menu.cpp:133
 msgid "_Video Transmission"
-msgstr "_Bildöverföring"
+msgstr "_Videoöverföring"
 
 #: src/menu.cpp:133
 msgid "Pause the Video Transmission"
-msgstr "Pausa bildöverföringen"
+msgstr "Pausa videoöverföringen"
 
 #: src/menu.cpp:146
 msgid "_About"
@@ -625,15 +624,15 @@ msgstr "Enhetsinställningar"
 
 #: src/preferences.cpp:344
 msgid "Codecs"
-msgstr "Codecar"
+msgstr "Komprimeringsmetoder"
 
 #: src/preferences.cpp:354 src/preferences.cpp:559
 msgid "Audio Codecs"
-msgstr "Ljudcodecar"
+msgstr "Ljudkomprimeringsmetoder"
 
 #: src/preferences.cpp:367 src/preferences.cpp:893
 msgid "Video Codecs"
-msgstr "Grafikcodecar"
+msgstr "Grafikkomprimeringsmetoder"
 
 #: src/preferences.cpp:425
 msgid "Name"
@@ -646,7 +645,7 @@ msgstr "Bandbredd"
 #. In this table we put the frame
 #: src/preferences.cpp:439
 msgid "Available Codecs"
-msgstr "Tillgängliga codecar"
+msgstr "Tillgängliga komprimeringsmetoder"
 
 #. BUTTONS
 #. Add
@@ -657,8 +656,8 @@ msgstr "_Lägg till"
 #: src/preferences.cpp:494
 msgid "Use this button to add the selected codec to the available codecs list"
 msgstr ""
-"Använd denna knapp för att lägga till den valda codecen i listan "
-"övertillgängliga codecar"
+"Använd denna knapp för att lägga till den valda komprimeringsmetoden i "
+"listan över tillgängliga komprimeringsmetoder"
 
 #. Del
 #: src/preferences.cpp:498
@@ -669,8 +668,8 @@ msgstr "_Ta bort"
 msgid ""
 "Use this button to remove the selected codec from the available codecs list"
 msgstr ""
-"Använd denna knapp för att ta bort den valda codecen från listan "
-"övertillgängliga codecar"
+"Använd denna knapp för att ta bort den valda komprimeringsmetoden från "
+"listan över tillgängliga komprimeringsmetoder"
 
 #. Up
 #: src/preferences.cpp:516
@@ -680,7 +679,8 @@ msgstr "_Upp"
 #: src/preferences.cpp:530
 msgid "Use this button to move down the selected codec in the preference order"
 msgstr ""
-"Använd denna knapp för att flytta ner den valda codecen i prioritetsordning"
+"Använd denna knapp för att flytta ner den valda komprimeringsmetoden i "
+"prioritetsordning"
 
 #. Down
 #: src/preferences.cpp:534
@@ -690,7 +690,8 @@ msgstr "_Ned"
 #: src/preferences.cpp:548
 msgid "Use this button to move up the selected codec in the preference order"
 msgstr ""
-"Använd denna knapp för att flytta upp den valda codecen i prioritetsordning"
+"Använd denna knapp för att flytta upp den valda komprimeringsmetoden i "
+"prioritetsordning"
 
 #. Show / hide splash screen at startup
 #: src/preferences.cpp:601
@@ -765,12 +766,12 @@ msgstr ""
 #. *** Transmitted Video Settings Frame ***
 #: src/preferences.cpp:741
 msgid "Transmitted Video Codecs"
-msgstr "Överförda videocodecar"
+msgstr "Överförda videokomprimeringsmetoder"
 
 #. Video Size Option Menu
 #: src/preferences.cpp:753
 msgid "Video Size:"
-msgstr "Bildstorlek:"
+msgstr "Videostorlek:"
 
 #: src/preferences.cpp:761
 msgid "Small"
@@ -831,11 +832,11 @@ msgstr "Här kan du välja antalet ramar som överförs per sekund"
 #. *** Enable Video Transmission ***
 #: src/preferences.cpp:871
 msgid "Video Transmission"
-msgstr "Bildöverföring"
+msgstr "Videoöverföring"
 
 #: src/preferences.cpp:878
 msgid "_Enable Video Transmission"
-msgstr "_Aktivera bildöverföring"
+msgstr "_Aktivera videoöverföring"
 
 #: src/preferences.cpp:890
 msgid "Here you can choose to enable or disable video transmission"
@@ -938,7 +939,7 @@ msgstr ""
 #. *** Received Video Settings Frame ***
 #: src/preferences.cpp:1171
 msgid "Received Video Codecs"
-msgstr "Mottagna videocodecar"
+msgstr "Mottagna videokomprimeringsmetoder"
 
 #: src/preferences.cpp:1201
 msgid "The video quality to request from the remote party"
@@ -956,7 +957,7 @@ msgstr "ILS-katalogen att ansluta till"
 #. ILS port
 #: src/preferences.cpp:1268
 msgid "ILS Port:"
-msgstr "ICS-port:"
+msgstr "ILS-port:"
 
 #: src/preferences.cpp:1283
 msgid "The corresponding port: 389 is the standard port"

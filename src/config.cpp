@@ -251,7 +251,7 @@ gboolean check_config_from_struct (GM_pref_window_widgets *pw)
       if (GM_volume_get (gtk_entry_get_text (GTK_ENTRY (pw->audio_mixer)), 
 			 0, &vol) == -1)
 	{
-	  msg_box = gnome_message_box_new (_("Impossible to open the mixer."), 
+	  msg_box = gnome_message_box_new (_("Could not open the mixer."), 
 					   GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
 
 	  no_error = FALSE;
@@ -268,7 +268,7 @@ gboolean check_config_from_struct (GM_pref_window_widgets *pw)
 	  if (!GM_cam (gtk_entry_get_text (GTK_ENTRY (pw->video_device)),
 		       (int) pw->video_channel_spin_adj->value))
 	    
-	    msg_box = gnome_message_box_new (_("It is impossible to open the selected video device, but the video transmission is enabled.\nGnomeMeeting will transmit a test image to the remote party during communications."), 
+	    msg_box = gnome_message_box_new (_("Could not open the selected video device, but video transmission is enabled.\nGnomeMeeting will transmit a test image to the remote party during communications."), 
 					     GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
 	}
     }
