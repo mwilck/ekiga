@@ -623,7 +623,6 @@ class GMH323EndPoint : public H323EndPoint
 
   CallingState calling_state; 
 
-  PTimer NoIncomingMediaTimer;
   PTimer ILSTimer;
   PTimer RTPTimer;
   PTimer GatewayIPTimer;
@@ -634,6 +633,11 @@ class GMH323EndPoint : public H323EndPoint
   BOOL ils_registered;
 
   GmWindow *gw; 
+
+  /* detection of no incoming data */
+  int last_audio_octets_received;
+  int last_video_octets_received;
+  PTimer NoIncomingMediaTimer;
 
 
   /* The encoding video grabber */

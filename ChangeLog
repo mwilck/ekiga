@@ -1,5 +1,12 @@
 2004-08-18  Julien Puydt  <jpuydt@free.fr>
 
+	* src/endpoint.h: Added last_*_octets_received attributes, so the
+	endpoint can remember if data came in.
+	* src/endpoint.cpp: The detection of no-incoming data now doesn't use
+	GmRtpData anymore.
+
+2004-08-18  Julien Puydt  <jpuydt@free.fr>
+
 	* src/endpoint.cpp: Removed local variable that was just hiding an
 	object attribute (gw!).
 	* src/videograbber.cpp: Turns out the videograbber still used GmWindow
