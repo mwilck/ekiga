@@ -20,6 +20,7 @@
 #define _CONFIG_H
 
 #include <gnome.h>
+#include <ptlib.h>
 
 #include "common.h"
 

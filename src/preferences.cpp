@@ -187,7 +187,7 @@ void video_test_button_pressed (GtkButton *button, gpointer data)
 {
 //  GM_pref_window_widgets *pw = (GM_pref_window_widgets *) data;
 //  GtkWidget *msg_box;
-
+// To be changed
 /*
   if (!GM_cam (gtk_entry_get_text (GTK_ENTRY (pw->video_device)),
 	      (int) pw->video_channel_spin_adj->value))
@@ -1320,7 +1320,9 @@ void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
   GtkWidget *label;
   GtkWidget *video_channel;
   GtkWidget *test_button;
-
+  GList *audio_player_devices = NULL;
+  GList *audio_recorder_devices = NULL;
+  GList *video_devices = NULL;
   GtkTooltips *tip;
 
   vbox = gtk_vbox_new (FALSE, GNOME_PAD_SMALL);
@@ -1332,7 +1334,7 @@ void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
 
   /* Audio device */
-  frame = gtk_frame_new (_("Audio Device"));
+  frame = gtk_frame_new (_("Audio Devices"));
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
 
   gtk_box_pack_start (GTK_BOX (vbox), frame, 
@@ -1340,40 +1342,90 @@ void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
 
   /* Put a table in the first frame */
-  table = gtk_table_new (2, 4, TRUE);
+  table = gtk_table_new (3, 4, TRUE);
   gtk_container_add (GTK_CONTAINER (frame), table);
   gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_BIG);
 
 
   /* Audio Device */
-  label = gtk_label_new (_("Audio Device:"));
+  label = gtk_label_new (_("Audio Player:"));
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
 
-  pw->audio_device = gtk_entry_new ();
-  gtk_table_attach (GTK_TABLE (table), pw->audio_device, 1, 2, 0, 1,
+  pw->audio_player = gtk_combo_new ();
+  gtk_table_attach (GTK_TABLE (table), pw->audio_player, 1, 3, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
 
-  gtk_entry_set_text (GTK_ENTRY (pw->audio_device), opts->audio_device);
+  PStringArray audio_player_devices_from_pw = 
+    PSoundChannel::GetDeviceNames (PSoundChannel::Player);
+
+  for (int i = audio_player_devices_from_pw.GetSize () - 1; i >= 0; i--) 
+    {
+      if (audio_player_devices_from_pw [i] != PString (opts->audio_player))
+	{
+	  audio_player_devices = g_list_prepend 
+	    (audio_player_devices, g_strdup (audio_player_devices_from_pw [i]));
+	}
+     
+    }
+
+  audio_player_devices = g_list_prepend (audio_player_devices, opts->audio_player);
+  gtk_combo_set_popdown_strings (GTK_COMBO (pw->audio_player), audio_player_devices);
 
   tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, pw->audio_device,
-			_("Simply enter the audio device to use"), NULL);
+  gtk_tooltips_set_tip (tip, GTK_COMBO (pw->audio_player)->entry, 
+			_("Simply enter the audio player device to use"), NULL);
 
 
-  /* Audio Mixer */
-  label = gtk_label_new (_("Audio Mixer:"));
+  /* Audio Recorder Device */
+  label = gtk_label_new (_("Audio Recorder:"));
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 1, 2,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
 
+  pw->audio_recorder = gtk_combo_new ();
+  gtk_table_attach (GTK_TABLE (table), pw->audio_recorder, 1, 3, 1, 2,
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
+
+  PStringArray audio_recorder_devices_from_pw = 
+    PSoundChannel::GetDeviceNames (PSoundChannel::Recorder);
+
+  for (int i = audio_recorder_devices_from_pw.GetSize () - 1; i >= 0; i--) 
+    {
+      if (audio_recorder_devices_from_pw [i] != PString (opts->audio_recorder))
+	{
+	  audio_recorder_devices = g_list_prepend 
+	    (audio_recorder_devices, g_strdup (audio_recorder_devices_from_pw [i]));
+	}
+     
+    }
+
+  audio_recorder_devices = g_list_prepend (audio_recorder_devices, 
+					   opts->audio_recorder);
+  gtk_combo_set_popdown_strings (GTK_COMBO (pw->audio_recorder), 
+				 audio_recorder_devices);
+
+  tip = gtk_tooltips_new ();
+  gtk_tooltips_set_tip (tip, GTK_COMBO (pw->audio_recorder)->entry, 
+			_("Simply enter the audio recorder device to use"), NULL);
+
+
+  /* Audio Mixer */
+  label = gtk_label_new (_("Audio Mixer:"));
+  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 2, 3,
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
+
   pw->audio_mixer = gtk_entry_new ();
-  gtk_table_attach (GTK_TABLE (table), pw->audio_mixer, 1, 2, 1, 2,
+  gtk_table_attach (GTK_TABLE (table), pw->audio_mixer, 1, 3, 2, 3,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
@@ -1408,23 +1460,34 @@ void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
+  
+  pw->video_device = gtk_combo_new ();
+  gtk_table_attach (GTK_TABLE (table), pw->video_device, 1, 3, 0, 1,
+ 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+ 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+ 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
+  
+   PStringArray video_devices_from_pw = 
+     PVideoChannel::GetDeviceNames (PVideoChannel::Recorder);
 
-  pw->video_device = gtk_entry_new ();
-  gtk_table_attach (GTK_TABLE (table), pw->video_device, 1, 2, 0, 1,
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
+   for (int i = video_devices_from_pw.GetSize () - 1; i >= 0; i--) 
+     {
+       if (video_devices_from_pw[i] != PString (opts->video_device))
+	 video_devices = 
+	   g_list_prepend (video_devices, g_strdup (video_devices_from_pw[i]));
+    }
+   
+   video_devices = g_list_prepend (video_devices, opts->video_device);
+   gtk_combo_set_popdown_strings (GTK_COMBO (pw->video_device), video_devices);
+   
+   tip = gtk_tooltips_new ();
 
-  gtk_entry_set_text (GTK_ENTRY (pw->video_device), opts->video_device);
+   gtk_tooltips_set_tip (tip, GTK_COMBO (pw->video_device)->entry, 
+ 			_("Simply enter the video device to use"), NULL);
+ 
 
-  tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, pw->video_device,
-			_("Simply enter the video device to use"), NULL);
-
-
-  gtk_signal_connect (GTK_OBJECT (pw->video_device), "changed",
-		      GTK_SIGNAL_FUNC (vid_tr_changed), (gpointer) pw);
-
+  gtk_signal_connect (GTK_OBJECT (GTK_COMBO (pw->video_device)->entry), "changed",
+ 		      GTK_SIGNAL_FUNC (vid_tr_changed), (gpointer) pw);
 
   /* Video channel spin button */					
   label = gtk_label_new (_("Video Channel:"));
@@ -1451,19 +1514,6 @@ void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   gtk_signal_connect (GTK_OBJECT (pw->video_channel_spin_adj), "value-changed",
 		      GTK_SIGNAL_FUNC (vid_tr_changed), (gpointer) pw);
-
-
-  /* Device test button */
-  test_button = gtk_button_new_with_label (_("Video _Test"));
-
-  gtk_table_attach (GTK_TABLE (table), test_button, 3, 4, 0, 1,
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);	
-
-  
-  gtk_signal_connect (GTK_OBJECT (test_button), "pressed",
-		      GTK_SIGNAL_FUNC (video_test_button_pressed), (gpointer) pw);
 
 
   /* The End */									

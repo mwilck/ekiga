@@ -63,7 +63,8 @@ struct _options
   int show_notebook;
   int incoming_call_sound;
   int applet;
-  char *audio_device;
+  char *audio_player;
+  char *audio_recorder;
   char *audio_mixer;
   char *video_device;
   int video_channel; 
@@ -193,8 +194,10 @@ struct _GM_pref_window_widgets
 
  
   /* Device Settings */
-  // The audio device
-  GtkWidget *audio_device;
+  // The audio player device
+  GtkWidget *audio_player;
+  // The audio recorder device
+  GtkWidget *audio_recorder;
   // The audio mixer
   GtkWidget *audio_mixer;
   // The video device

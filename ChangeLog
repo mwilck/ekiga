@@ -1,3 +1,32 @@
+2001-08-26  Damien Sandras  <dsandras@seconix.com>
+
+	* src/config.cpp, src/endpoint.cpp, src/common.h, src/preferences.cpp:
+	Added support for multiple soundcards, you can now use a different soundcard
+	(or webcam) as sound recorder device and sound player device.
+	The Audio Settings part of the GnomeMeeting control panel still needs to be
+	updated.
+
+	* src/main_interface.cpp: fixed the -a bug (when GnomeMeeting is run with
+	the -a applet, if you close the window with the WM, GnomeMeeting will be 
+	closed and not hidden). See gtk_signal_connect ().
+
+	* src/endpoint.cpp: added message in the history to show the devices used
+	for recording and playing.
+	
+2001-08-26  Miguel Rodríguez Pérez  <migras@atlas.uvigo.es>
+
+	* src/preferences.cpp (video_test_button_pressed): 
+	* src/config.cpp (read_config_from_struct): Some changes
+	for read some preferences from a Combo instead of an Entry.
+
+	* src/preferences.cpp (init_pref_devices): Change the GTK_Entry
+	widget for a GTK_Combo for the video and audio devices.
+	Get the possible devices from PWLib.
+
+	* src/config.cpp (read_config): Don't hardcode default 
+	audio/video devices, get them from PWLib.
+	(init_config): Idem.
+
 2001-08-26  Christian Rose  <menthos@menthos.com>
 
 	* src/main_interface.cpp, src/webcam.cpp: Fixed messages.

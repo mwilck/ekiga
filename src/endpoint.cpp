@@ -271,8 +271,14 @@ BOOL GMH323EndPoint::Initialise ()
   
 
   // Set recording source and set micro to record
-  SetSoundChannelPlayDevice(opts->audio_device);
-  SetSoundChannelRecordDevice(opts->audio_device);
+  SetSoundChannelPlayDevice(opts->audio_player);
+  SetSoundChannelRecordDevice(opts->audio_recorder);
+
+  GM_log_insert (gw->log_text, _("Set Audio player device to:"));
+  GM_log_insert (gw->log_text, opts->audio_player);
+  GM_log_insert (gw->log_text, _("Set Audio recorder device to:"));
+  GM_log_insert (gw->log_text, opts->audio_recorder);
+
   GM_set_recording_source (opts->audio_mixer, 0); 
 
   received_video_device = NULL;
@@ -312,6 +318,17 @@ void GMH323EndPoint::ReInitialise ()
   RemoveAllCapabilities ();
   AddAudioCapabilities ();
   AddVideoCapabilities (opts->video_size);
+
+  // Set recording source and set micro to record
+  SetSoundChannelPlayDevice(opts->audio_player);
+  SetSoundChannelRecordDevice(opts->audio_recorder);
+
+  GM_log_insert (gw->log_text, _("Set Audio player device to:"));
+  GM_log_insert (gw->log_text, opts->audio_player);
+  GM_log_insert (gw->log_text, _("Set Audio recorder device to:"));
+  GM_log_insert (gw->log_text, opts->audio_recorder);
+
+  GM_set_recording_source (opts->audio_mixer, 0); 
   
   received_video_device = NULL;
   transmitted_video_device = NULL;

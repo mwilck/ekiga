@@ -71,7 +71,8 @@ void store_config (options *opts)
   gnome_config_set_string ("LDAPSettings/ldap_server", opts->ldap_server);
   gnome_config_set_string ("LDAPSettings/ldap_port", opts->ldap_port);
 
-  gnome_config_set_string ("Devices/audio_device", opts->audio_device);
+  gnome_config_set_string ("Devices/audio_player", opts->audio_player);
+  gnome_config_set_string ("Devices/audio_recorder", opts->audio_recorder);
   gnome_config_set_string ("Devices/audio_mixer", opts->audio_mixer);
   gnome_config_set_string ("Devices/video_device", opts->video_device);
   gnome_config_set_int ("Devices/video_channel", opts->video_channel);
@@ -144,7 +145,8 @@ void read_config (options *opts)
   opts->ldap_server = gnome_config_get_string ("LDAPSettings/ldap_server");
   opts->ldap_port = gnome_config_get_string ("LDAPSettings/ldap_port");
 
-  opts->audio_device = gnome_config_get_string ("Devices/audio_device");
+  opts->audio_player = gnome_config_get_string ("Devices/audio_player");
+  opts->audio_recorder = gnome_config_get_string ("Devices/audio_recorder");
   opts->audio_mixer = gnome_config_get_string ("Devices/audio_mixer");
   opts->video_device = gnome_config_get_string ("Devices/video_device");
   opts->video_channel = gnome_config_get_int ("Devices/video_channel");
@@ -158,18 +160,25 @@ void read_config (options *opts)
     {
       opts->audio_codecs [cpt] [0] = key;
       opts->audio_codecs [cpt] [1] = value;
-      // Do not free key and value as they are assigned as pointers to opts->audio_codecs
+      // Do not free key and value as they are assigned 
+      // as pointers to opts->audio_codecs
       cpt++;
     }
 
-  /* handle old config files which do not have a Devices section */
-  if(opts->audio_device == NULL) opts->audio_device="/dev/dsp";
-  if(opts->audio_mixer == NULL)  opts->audio_mixer="/dev/mixer";
-#ifdef __linux__
-  if(opts->video_device == NULL) opts->video_device="/dev/video";
-#else
-  if(opts->video_device == NULL) opts->video_device="/dev/bktr0";
-#endif
+  /* Handle old config files format */
+  if(opts->audio_player == NULL) 
+    opts->audio_player =  
+      g_strdup (PSoundChannel::GetDefaultDevice (PSoundChannel::Player));
+
+  if(opts->audio_recorder == NULL) 
+    opts->audio_recorder =  
+      g_strdup (PSoundChannel::GetDefaultDevice (PSoundChannel::Recorder));
+
+  if(opts->audio_mixer == NULL)  opts->audio_mixer = g_strdup ("/dev/mixer");
+
+  if (opts->video_device == NULL)
+    opts->video_device = 
+    g_strdup (PVideoChannel::GetDefaultDevice (PVideoChannel::Player));
 }
 
 
@@ -181,7 +190,8 @@ void g_options_free (options *opts)
   g_free (opts->mail);
   g_free (opts->location);
   g_free (opts->comment);
-  g_free (opts->audio_device);
+  g_free (opts->audio_player);
+  g_free (opts->audio_recorder);
   g_free (opts->audio_mixer);
   g_free (opts->video_device);
 
@@ -191,7 +201,6 @@ void g_options_free (options *opts)
 
   g_free (opts->ldap_server);
   g_free (opts->ldap_port);
-
 }
 
 
@@ -362,9 +371,13 @@ options * read_config_from_struct (GM_pref_window_widgets *pw)
     }
 
   /* Devices */
-  opts->audio_device = gtk_entry_get_text (GTK_ENTRY (pw->audio_device));
+  opts->audio_player = gtk_entry_get_text 
+    (GTK_ENTRY (GTK_COMBO (pw->audio_player)->entry));
+  opts->audio_recorder = gtk_entry_get_text 
+    (GTK_ENTRY (GTK_COMBO (pw->audio_recorder)->entry));
   opts->audio_mixer = gtk_entry_get_text (GTK_ENTRY (pw->audio_mixer));
-  opts->video_device = gtk_entry_get_text (GTK_ENTRY (pw->video_device));
+  opts->video_device = gtk_entry_get_text 
+    (GTK_ENTRY (GTK_COMBO (pw->video_device)->entry));
   opts->video_channel = (int) pw->video_channel_spin_adj->value; 
 
 
@@ -427,13 +440,13 @@ void init_config (void)
   gnome_config_set_string ("EnabledAudio/G.711-ALaw-64k", "1");
   gnome_config_set_string ("EnabledAudio/MS-GSM", "1");
 
-  gnome_config_set_string ("Devices/audio_device", "/dev/dsp");
+  gnome_config_set_string ("Devices/audio_player", 
+			   PSoundChannel::GetDefaultDevice (PSoundChannel::Player));
+  gnome_config_set_string ("Devices/audio_recorder", 
+			   PSoundChannel::GetDefaultDevice (PSoundChannel::Recorder));
   gnome_config_set_string ("Devices/audio_mixer", "/dev/mixer");
-#ifdef __linux__
-  gnome_config_set_string ("Devices/video_device", "/dev/video");
-#else
-  gnome_config_set_string ("Devices/video_device", "/dev/bktr0");
-#endif
+  gnome_config_set_string ("Devices/video_device", 
+			   PVideoChannel::GetDefaultDevice (PVideoChannel::Player));
   gnome_config_set_int ("Devices/video_channel", 0);
 
   gnome_config_set_string ("Placement/Dock", 

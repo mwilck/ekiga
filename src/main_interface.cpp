@@ -20,6 +20,7 @@
 
 #include "main_interface.h"
 #include "main.h"
+#include "callbacks.h"
 #include "applet.h"
 #include "splash.h"
 #include "ldap_h.h"
@@ -280,9 +281,14 @@ void GM_init (GM_window_widgets *gw, options *opts, int argc,
   gtk_widget_destroy (gw->splash_win);
 
   // if the user tries to close the window : delete_event
-  gtk_signal_connect (GTK_OBJECT (gm), "delete_event",
-		      GTK_SIGNAL_FUNC (toggle_window_callback),
-		      NULL);
+  if (opts->applet == 1)
+    gtk_signal_connect (GTK_OBJECT (gm), "delete_event",
+			GTK_SIGNAL_FUNC (toggle_window_callback),
+			NULL);
+  else
+    gtk_signal_connect (GTK_OBJECT (gm), "delete_event",
+			GTK_SIGNAL_FUNC (quit_callback),
+			NULL);
 }
 
 
