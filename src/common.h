@@ -163,7 +163,6 @@ struct _GmWindow
   GtkAccelGroup *accel;
 
   GtkWidget *main_menu;
-  GtkWidget *video_popup_menu;
   GtkWidget *audio_transmission_popup;
   GtkWidget *audio_reception_popup;
   

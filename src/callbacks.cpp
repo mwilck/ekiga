@@ -516,7 +516,7 @@ quit_callback (GtkWidget *widget,
   gnomemeeting_window_hide (calls_history_window);
   gnomemeeting_window_hide (addressbook_window);
   gnomemeeting_window_hide (prefs_window);
-  gnomemeeting_window_hide (tray);
+  gtk_widget_hide (tray);
   
   gdk_threads_leave ();
   ep->ClearAllCalls (H323Connection::EndedByLocalUser, TRUE);

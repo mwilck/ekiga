@@ -2427,7 +2427,7 @@ GMH323EndPoint::SetCallOnHold (PString callToken,
     else
       connection->RetrieveCall ();
 
-    if (connection->IsCallOnHold () == !state)
+    if (connection->IsCallOnHold () == state)
       result = TRUE;
     
     connection->Unlock ();

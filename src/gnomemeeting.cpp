@@ -146,8 +146,6 @@ GnomeMeeting::~GnomeMeeting()
     gtk_widget_destroy (gm);
   if (druid_window)
     gtk_widget_destroy (druid_window);
-  if (tray)
-    gtk_widget_destroy (tray);
 }
 
 

@@ -1389,16 +1389,12 @@ gm_main_window_update_sensitivity (//GtkWidget *,
 
       gtk_menu_section_set_sensitive (mw->main_menu,
 				      "local_video", TRUE);
-      gtk_menu_section_set_sensitive (mw->video_popup_menu,
-				      "local_video", TRUE);
     }
     else {
 
 
       /* Default to nothing being sensitive */
       gtk_menu_section_set_sensitive (mw->main_menu,
-				      "local_video", FALSE);
-      gtk_menu_section_set_sensitive (mw->video_popup_menu,
 				      "local_video", FALSE);
       
       
@@ -1408,16 +1404,12 @@ gm_main_window_update_sensitivity (//GtkWidget *,
 
 	gtk_menu_set_sensitive (mw->main_menu,
 				"local_video", TRUE);
-	gtk_menu_set_sensitive (mw->video_popup_menu,
-				"local_video", TRUE);
       }
       /* We are receiving video, but not transmitting,
        * => remote must be sensitive */
       else if (is_receiving) {
 
 	gtk_menu_set_sensitive (mw->main_menu,
-				"remote_video", TRUE);
-	gtk_menu_set_sensitive (mw->video_popup_menu,
 				"remote_video", TRUE);
       }
       
@@ -1428,16 +1420,12 @@ gm_main_window_update_sensitivity (//GtkWidget *,
 
 	gtk_menu_section_set_sensitive (mw->main_menu,
 					"zoom_in", FALSE);
-	gtk_menu_section_set_sensitive (mw->video_popup_menu,
-					"zoom_in", FALSE);
 	gtk_menu_set_sensitive (mw->main_menu, "save_picture", FALSE);
       }
       else {
 	/* Or activate it as at least something is transmitted or 
 	 * received */
 	gtk_menu_section_set_sensitive (mw->main_menu,
-					"zoom_in", TRUE);
-	gtk_menu_section_set_sensitive (mw->video_popup_menu,
 					"zoom_in", TRUE);
 	gtk_menu_set_sensitive (mw->main_menu, "save_picture", TRUE);
       }
