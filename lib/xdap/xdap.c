@@ -656,7 +656,7 @@ addattr (LDAPMod ** attrs, int *nattrs, char *name, char *val, int modval)
   if (k >= MAXOPS)
     return PFTOOMANYOPS;
 	
-  gval = g_convert (val, strlen(val), "ISO-8859-1", "UTF8", 0, 0, 0);
+  gval = g_convert (val, strlen(val), "ISO-8859-1", "UTF-8", 0, 0, 0);
   attrs[j]->mod_values[k] = (char *) xmlStrdup (BAD_CAST gval);
   attrs[j]->mod_values[++k] = 0;
   g_free (gval);

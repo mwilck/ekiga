@@ -1048,9 +1048,9 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 
   /* Convert the remote party name and app to UTF8 */
   utf8_name = g_convert ((const char *) name, strlen ((const char *) name),
-			 "UTF8", "ISO-8859-1", NULL, NULL, NULL);
+			 "UTF-8", "ISO-8859-1", NULL, NULL, NULL);
   utf8_app = g_convert ((const char *) app, strlen ((const char *) app),
-			"UTF8", "ISO-8859-1", NULL, NULL, NULL);
+			"UTF-8", "ISO-8859-1", NULL, NULL, NULL);
 
 
   if (forward_host_gconf)
@@ -1234,9 +1234,9 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 
   /* Convert remote app and remote name */
   utf8_app = g_convert ((const char *) app, strlen ((const char *) app),
-			"UTF8", "ISO-8859-1", NULL, NULL, NULL);
+			"UTF-8", "ISO-8859-1", NULL, NULL, NULL);
   utf8_name = g_convert ((const char *) name, strlen ((const char *) name),
-			 "UTF8", "ISO-8859-1", NULL, NULL, NULL);
+			 "UTF-8", "ISO-8859-1", NULL, NULL, NULL);
 
 
   gnomemeeting_threads_enter ();
