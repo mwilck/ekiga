@@ -217,12 +217,8 @@ dnd_drag_motion_cb (GtkWidget *tree_view,
   GtkTreePath *path = NULL;
 
   gchar *group_name = NULL;
-  gchar *contact_name = NULL;
-  gchar *contact_section = NULL;
   gchar *contact_url = NULL;
 
-  gboolean is_group = false;
-  
   GmLdapWindow *lw = NULL;
   
   GValue value =  {0, };
@@ -233,8 +229,7 @@ dnd_drag_motion_cb (GtkWidget *tree_view,
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (tree_view));
 
   /* Get the url field of the contact info from the source GtkTreeView */
-  if (get_selected_contact_info (&contact_section, &contact_name,
-				 &contact_url, NULL, &is_group)) {
+  if (get_selected_contact_info (NULL, NULL, &contact_url, NULL, NULL)) {
     
     /* See if the path in the destination GtkTreeView corresponds to a valid
        row (ie a group row, and a row corresponding to a group the user
@@ -270,9 +265,7 @@ dnd_drag_motion_cb (GtkWidget *tree_view,
   else
     return false;
 
-  g_free (contact_name);
   g_free (contact_url);
-  g_free (contact_section);
   
   return true;
 }
@@ -2275,7 +2268,8 @@ gnomemeeting_ldap_window_new (GmLdapWindow *lw)
 
 
   /* Drag and Drop Setup */
-  gtk_drag_dest_set (GTK_WIDGET (lw->tree_view), GTK_DEST_DEFAULT_ALL,
+  gtk_drag_dest_set (GTK_WIDGET (lw->tree_view),
+		     GTK_DEST_DEFAULT_ALL,
 		     dnd_targets, 1,
 		     GDK_ACTION_COPY);
   g_signal_connect (G_OBJECT (lw->tree_view), "drag_motion",

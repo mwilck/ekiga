@@ -49,12 +49,69 @@ extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;
 
 
+static void dnd_drag_data_get_cb (GtkWidget *,
+				  GdkDragContext *,
+				  GtkSelectionData *,
+				  guint,
+				  guint,
+				  gpointer);
+  
 static void call_activated_cb (GtkTreeView *,
 			       GtkTreePath *,
 			       GtkTreeViewColumn *,
 			       gpointer);
 
+
+/* DESCRIPTION  :  This callback is called when the user has released the drag.
+ * BEHAVIOR     :  Puts the required data into the selection_data, we put
+ *                 name and the url fields for now.
+ * PRE          :  data = the type of the page from where the drag occured :
+ *                 CONTACTS_GROUPS or CONTACTS_SERVERS.
+ */
+static void
+dnd_drag_data_get_cb (GtkWidget *tree_view,
+		      GdkDragContext *dc,
+		      GtkSelectionData *selection_data,
+		      guint info,
+		      guint t,
+		      gpointer data)
+{
+  GtkTreeSelection *selection = NULL;
+  GtkTreeModel *model = NULL;
+  GtkTreeIter iter;
   
+  gchar *contact_name = NULL;
+  gchar *contact_url = NULL;
+  gchar *drag_data = NULL;
+
+        
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view));
+  model = gtk_tree_view_get_model (GTK_TREE_VIEW (tree_view));
+    
+  if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
+      
+    gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 
+			1, &contact_name,
+			2, &contact_url, -1);
+
+    if (contact_name && contact_url) {
+      
+      drag_data = g_strdup_printf ("%s|%s", contact_name, contact_url);
+    
+      gtk_selection_data_set (selection_data,
+			      selection_data->target, 
+			      8,
+			      (const guchar *) drag_data,
+			      strlen (drag_data));
+      g_free (drag_data);
+    }
+  }
+  
+  g_free (contact_name);
+  g_free (contact_url);
+}
+
+
 /* DESCRIPTION  :  This callback is called when the user double clicks on
  *                 a row corresonding to an user.
  * BEHAVIOR     :  Add the user name in the combo box and call him or transfer
@@ -186,6 +243,12 @@ gnomemeeting_calls_history_window_new (GmCallsHistoryWindow *chw)
   label_text [0] = gettext (label_text [0]);
   label_text [1] = gettext (label_text [1]);
   label_text [2] = gettext (label_text [2]);
+
+  static GtkTargetEntry dnd_targets [] =
+    {
+      {"text/plain", GTK_TARGET_SAME_APP, 0}
+    };
+
   
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_title (GTK_WINDOW (window), _("Calls History"));
@@ -270,6 +333,13 @@ gnomemeeting_calls_history_window_new (GmCallsHistoryWindow *chw)
     /* Signal to call the person on the double-clicked row */
     g_signal_connect (G_OBJECT (tree_view), "row_activated", 
 		      G_CALLBACK (call_activated_cb), NULL);
+
+    /* The drag and drop information */
+    gtk_drag_source_set (GTK_WIDGET (tree_view),
+			 GDK_BUTTON1_MASK, dnd_targets, 1,
+			 GDK_ACTION_COPY);
+    g_signal_connect (G_OBJECT (tree_view), "drag_data_get",
+		      G_CALLBACK (dnd_drag_data_get_cb), NULL);
   }
 
   chw->received_calls_list_store = list_store [0];
