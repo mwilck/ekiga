@@ -33,7 +33,7 @@ dnl ************************************************
 AC_ARG_WITH(pt-includes, [  --with-pt-includes=PFX   Location of PTLib includes.],  
 	with_pt_includes="$withval", with_pt_includes="/usr/include/ptlib")
 have_ptlib_includes="no"
-if test "x${with_ptlib_includes}" != "xno"; then
+if test "x${with_pt_includes}" != "xno"; then
 	CPPFLAGS_save="$CPPFLAGS"
 	
 	AC_MSG_CHECKING(for PTLib includes)
