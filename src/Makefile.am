@@ -39,7 +39,9 @@ gnomemeeting_SOURCES =		\
 	gatekeeper.cpp		\
 	gatekeeper.h		\
 	ils.cpp			\
-	ils.h
+	ils.h			\
+	cleaner.cpp		\
+	cleaner.h
 
 
 gnomemeeting_LDADD =  @GNOMEMEETING_LDADD@ -lpanel_applet

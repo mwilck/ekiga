@@ -53,27 +53,24 @@ GMILSClient::GMILSClient (GM_window_widgets *g, options *o)
   else
     has_to_register = 0;
 
-  cout << "In constructor " << endl << flush;
   Resume ();
 }
 
 
 GMILSClient::~GMILSClient ()
 {
-  stop ();
-  while (in_the_loop == 1)
-    usleep (200);
+  running = 0;
+
+  quit_mutex.Wait ();
 }
 
 
 void GMILSClient::Main ()
 {
-  cout << "In main" << endl << flush;
+  quit_mutex.Wait ();
+
   while (running == 1)
     {
-      cout << "In main loop" << endl << flush;
-      cout << has_to_register << flush;
- 
      if (has_to_register == 1)
        ils_register (TRUE);
 
@@ -85,6 +82,8 @@ void GMILSClient::Main ()
 
       Current ()->Sleep (500);
     }
+
+  quit_mutex.Signal ();
 }
 
 
@@ -301,7 +300,7 @@ BOOL GMILSClient::ils_register (BOOL reg)
 	{
 	  // There was no direct error
 	  // Block until the result is ok or ko
-	  t.tv_sec = 5;
+	  t.tv_sec = 10;
 	  t.tv_usec = 0;
 
 	  rc = ldap_result (ldap_connection, msgid, 0, &t, &res);

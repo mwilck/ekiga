@@ -1,3 +1,21 @@
+2001-09-25  Damien Sandras  <dsandras@seconix.com>
+
+	* src/cleaner.cpp, src/cleaner.h: Added those 2 files that implement a new
+	multithreaded class that stops the connection before quitting and clear the
+	threads.
+	* src/endpoint.cpp: Changed destructor, internal GMH323Webcam and GMILSClient
+	and no more deleted in the destructor as they should but by the cleaner which 
+	is called by the quit callback. The ThreadsCleaner class is needed if we want to
+	quit cleanly, without freezing the main interface while waiting that the GMH323Webcam
+	class (for example) stops to grab.
+	* src/ldap.cpp, src/ldap_h.h: The LDap window is not anymore destroyed and rebuilt
+	each time, but only shown/hidden.
+	* src/main_interface.cpp: Disabled video preview (will be reenabled in a few time).
+	* src/webcam.cpp, src/webcam.h: Added mutexes to cleanly quit when the destructor
+	is called (we wait some time => the destructor can take some time to execute).
+	* src/ils.cpp, src/ils.h:  Added mutexes to cleanly quit when the destructor
+	is called (we wait some time => the destructor can take some time to execute).
+
 2001-09-24  Christian Rose  <menthos@menthos.com>
 
 	* src/ils.cpp: Fixed message.

@@ -78,6 +78,7 @@ class GMH323Webcam : public PThread
   int grabbing;
   int initialised;
   int sensitivity_change;
+  PMutex quit_mutex;
 };
 
 /******************************************************************************/

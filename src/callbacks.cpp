@@ -26,6 +26,7 @@
 #include "preferences.h"
 #include "ldap_h.h"
 #include "common.h"
+#include "cleaner.h"
 
 #include <iostream.h> //
 
@@ -100,8 +101,10 @@ void ldap_callback (GtkButton *button, gpointer data)
 {
   GM_window_widgets *gw = (GM_window_widgets *) data;
   
-  if (gw->ldap_window == NULL)
-    GM_ldap_init (gw);
+  if (!GTK_WIDGET_VISIBLE (gw->ldap_window))
+    gtk_widget_show_all (gw->ldap_window);
+  else
+    gtk_widget_hide_all (gw->ldap_window);
 }
 
 
@@ -179,6 +182,8 @@ void quit_callback (GtkWidget *widget, gpointer data)
 {
   GM_window_widgets *gw = (GM_window_widgets *) data;
 
+  new GMThreadsCleaner (gw);
+/*
   if (MyApp->Endpoint ()->CallingState () != 0)
     {
       GtkWidget *msg_box;
@@ -194,6 +199,7 @@ void quit_callback (GtkWidget *widget, gpointer data)
       gnome_app_question (GNOME_APP(gm), _("Are you sure you want to quit?"),
 			  gtk_main_quit_callback, gw);
     }
+*/
 }  
 
 

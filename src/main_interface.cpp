@@ -272,6 +272,7 @@ void GM_init (GM_window_widgets *gw, options *opts, int argc,
 				  _("Building main interface"), 0.15);
     }
   GM_main_interface_init (gw, opts);
+  GM_ldap_init (gw);
 
   // Launch the GnomeMeeting H.323 part
   static GnomeMeeting instance (gw, opts);
@@ -511,6 +512,9 @@ void GM_main_interface_init (GM_window_widgets *gw, options *opts)
 
   gtk_signal_connect (GTK_OBJECT (gw->preview_button), "clicked",
                       GTK_SIGNAL_FUNC (preview_button_clicked), gw);
+
+  // TO BE REMOVED
+  gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, gw->preview_button,

@@ -1,10 +1,10 @@
 /***************************************************************************
-                           ils.h  -  description
+                          garabage.h  -  description
                              -------------------
-    begin                : Sun Sep 23 2001
-    copyright            : (C) 2000-2001 by Damien Sandras
-    description          : This file contains all the functions needed 
-                           for ILS support
+    begin                : Wed Sep 19 2001
+    copyright            : (C) 2001 by Damien Sandras
+    description          : Multithreaded class to end the threads when
+                           quitting
     email                : dsandras@seconix.com
  ***************************************************************************/
 
@@ -17,52 +17,29 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#ifndef _ILS_H_
-#define _ILS_H_
-
-#include <lber.h>
-#include <ldap.h>
-#include <iostream.h>
-#include <gnome.h>
-#include <glib.h>
-#include <sys/socket.h>
-#include <ptlib.h>
+#ifndef _GARBAGE_H_
+#define _GARBAGE_H_
 
 #include "common.h"
 
+#include <gnome.h>
+#include <ptlib.h>
+#include <h323.h>
 
-class GMILSClient : public PThread
+class GMThreadsCleaner : public PThread
 {
-  PCLASSINFO(GMILSClient, PThread);
+  PCLASSINFO(GMThreadsCleaner, PThread);
 
 public:
-  GMILSClient (GM_window_widgets *, options *);
-  ~GMILSClient ();
+  GMThreadsCleaner (GM_window_widgets *);
+  ~GMThreadsCleaner ();
 
   void Main ();
-  void stop ();
-  void ils_register ();
-  void ils_unregister ();
-  void ils_browse (GM_ldap_window_widgets *);
 
 protected:
-  BOOL ils_register (BOOL);
-  void ils_browse (void);
-
   options *opts;
   GM_window_widgets *gw;
-  GM_ldap_window_widgets *lw;
-
-  int running;
-  int msgid;
-  int has_to_register;
-  int has_to_unregister;
-  int has_to_browse;
-  int in_the_loop;
-
-  LDAP *ldap_connection;
-  PMutex quit_mutex;
 };
 
+/******************************************************************************/
 #endif

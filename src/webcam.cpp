@@ -31,7 +31,7 @@ extern GnomeMeeting *MyApp;
 
 
 GMH323Webcam::GMH323Webcam (GM_window_widgets *g, options *o)
-  :PThread (1000, AutoDeleteThread)
+  :PThread (1000, NoAutoDeleteThread)
 {
   gw = g;
   opts = o;
@@ -53,10 +53,10 @@ GMH323Webcam::GMH323Webcam (GM_window_widgets *g, options *o)
 
 GMH323Webcam::~GMH323Webcam ()
 { 
-  usleep (800);
+  running = 0;
+  grabbing = 0;
 
-  while (!this->IsTerminated ())
-    usleep (100);
+  quit_mutex.Wait ();
 
   gdk_threads_enter ();
 
@@ -115,6 +115,8 @@ void GMH323Webcam::Main ()
 
   initialised = 1;
 
+  quit_mutex.Wait ();
+
   while (running == 1)
     {
       if (grabbing == 1)
@@ -139,6 +141,8 @@ void GMH323Webcam::Main ()
   Current ()->Sleep (500);
 
   delete (channel);
+
+  quit_mutex.Signal ();
 }
 
 

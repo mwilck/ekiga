@@ -17,11 +17,6 @@
  *                                                                         *
  ***************************************************************************/
 
-/* MEMORY : OK except openldap that doesn't free :-( */
-
-//#include <sys/time.h>
-
-//#include "../config.h"
 
 #include "ldap_h.h"
 #include "ils.h"
@@ -36,7 +31,6 @@
 #include "../pixmaps/ldap_add.xpm"
 #include "../pixmaps/ldap_refresh.xpm"
 
-int thread = 0;
 
 /******************************************************************************/
 /* Global Variables                                                           */
@@ -56,27 +50,19 @@ void ldap_window_clicked (GnomeDialog *widget, int button, gpointer data)
 {
   GM_ldap_window_widgets *lw = (GM_ldap_window_widgets *) data;
 
-  switch (button)
-    {
-      // The user destroys the window thanks to the WM
-      // or by clicking Apply
-    default:
-      gtk_clist_clear (GTK_CLIST (lw->ldap_users_clist));
-      gtk_widget_destroy (GTK_WIDGET (widget));
-      break;
-    }
-
-  lw->gw->ldap_window = NULL;
-  delete ((GM_ldap_window_widgets *) data);
-  data = NULL;
+  if (GTK_WIDGET_VISIBLE (lw->gw->ldap_window))
+    gtk_widget_hide_all (lw->gw->ldap_window);
 }
 
 
-gint ldap_window_destroyed (GtkWidget *widget, gpointer data)
+void ldap_window_destroyed (GtkWidget *widget, gpointer data)
 {
-  return (TRUE);
+  GM_ldap_window_widgets *lw = (GM_ldap_window_widgets *) data;
+
+  if (GTK_WIDGET_VISIBLE (lw->gw->ldap_window))
+    gtk_widget_hide_all (lw->gw->ldap_window);
 }
-       
+
 
 void search_entry_modified (GtkWidget *widget, gpointer data)
 {
@@ -415,9 +401,6 @@ void GM_ldap_init (GM_window_widgets *gw)
 
   gtk_signal_connect (GTK_OBJECT (gw->ldap_window), "close",
 		      GTK_SIGNAL_FUNC (ldap_window_destroyed), (gpointer) lw);
-
-  
-  gtk_widget_show_all (lw->gw->ldap_window);
 }
 
 

@@ -99,6 +99,11 @@ GMH323EndPoint::GMH323EndPoint (GM_window_widgets *w, options *o)
 
 GMH323EndPoint::~GMH323EndPoint ()
 {
+  // We do not delete the webcam and the ils_client 
+  // threads here, but in the Cleaner thread that is
+  // called when the user chooses to quit...
+
+/*
   GMILSClient *gm_ils_client = (GMILSClient *) ils_client;
 
   if (webcam != NULL)
@@ -106,13 +111,15 @@ GMH323EndPoint::~GMH323EndPoint ()
       delete (webcam);
       webcam=NULL;
     }
-
+*/
   // TO BE CHANGED
+/*
   if (ils_client != NULL)
     gm_ils_client->stop ();
 
   usleep (1000);
   delete (ils_client);
+*/
 }
 
 
@@ -520,7 +527,7 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 
 
 void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection, 
-					      const PString & token)
+						const PString & token)
 {
   PString name = connection.GetRemotePartyName();
   PString app = connection.GetRemoteApplication ();
