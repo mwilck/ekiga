@@ -49,10 +49,12 @@ extern GnomeMeeting *MyApp;
 
 static void tray_popup_menu_connect_callback (GtkWidget *, gpointer);
 static void tray_popup_menu_disconnect_callback (GtkWidget *, gpointer);
-static void tray_toggle_callback (GtkWidget *, gpointer);
+static void tray_popup_menu_show_callback (GtkWidget *, gpointer);
 static int tray_clicked (GtkWidget *, GdkEventButton *, gpointer);
 static void gnomemeeting_init_tray_popup_menu (GtkWidget *);
 static void gnomemeeting_build_tray (GtkContainer *);
+static void tray_popup_menu_dnd_callback (GtkWidget *, gpointer);
+static void tray_popup_menu_autoanswer_callback (GtkWidget *, gpointer);
 
 
 /* GTK Callbacks */
@@ -84,14 +86,42 @@ void tray_popup_menu_disconnect_callback (GtkWidget *, gpointer)
  * BEHAVIOR     :  Hide or show main window
  * PRE          :  /
  */
-void tray_toggle_callback (GtkWidget *, gpointer)
+void tray_popup_menu_show_callback (GtkWidget *, gpointer menu_item)
 {
+  /*  GtkCheckMenuItem *item = 
+      GTK_CHECK_MENU_ITEM (((GnomeUIInfo *)menu_item)->widget);*/
+			 
+						
   if (GTK_WIDGET_VISIBLE (GTK_WIDGET (gm))) {
     gtk_widget_hide (gm);
   }
   else {
     gtk_widget_show (gm);
   }
+  /*  item->active = GTK_WIDGET_VISIBLE (gm);
+      gtk_widget_queue_draw (GTK_WIDGET (item));*/
+}
+
+/* DESCRIPTION  :  This callback is called when the user chooses
+ *                 do not disturb in the tray icon menu
+ * BEHAVIOR     :  Hide or show main window
+ * PRE          :  /
+ */
+void tray_popup_menu_dnd_callback (GtkWidget *, gpointer)
+{
+
+}
+
+/* DESCRIPTION  :  This callback is called when the user chooses
+ *                 auto answer in the tray icon menu
+ * BEHAVIOR     :  Hide or show main window
+ * PRE          :  /
+ */
+
+
+void tray_popup_menu_autoanswer_callback (GtkWidget *, gpointer)
+{
+
 }
 
 
@@ -105,7 +135,7 @@ int tray_clicked (GtkWidget *widget, GdkEventButton *event, gpointer data)
   g_return_val_if_fail (event != NULL, false);
 
   if ((event->button == 1) && (event->type == GDK_BUTTON_PRESS)) {
-    tray_toggle_callback (widget, data);
+    tray_popup_menu_show_callback (widget, data);
     return true;
   }
 
@@ -129,22 +159,40 @@ void gnomemeeting_init_tray_popup_menu (GtkWidget *widget)
       {
 	GNOME_APP_UI_ITEM,
 	N_("Connect"), N_("Create A New Connection"),
-	(void *)tray_popup_menu_connect_callback, GINT_TO_POINTER(0), NULL,
+	(void *)tray_popup_menu_connect_callback, NULL, NULL,
 	GNOME_APP_PIXMAP_STOCK, GM_STOCK_CONNECT,
 	0, GDK_CONTROL_MASK, NULL
       },
       {
 	GNOME_APP_UI_ITEM,
 	N_("Disconnect"), N_("Close The Current Connection"),
-	(void *)tray_popup_menu_disconnect_callback, GINT_TO_POINTER(1), 
+	(void *)tray_popup_menu_disconnect_callback, NULL, 
 	NULL,
 	GNOME_APP_PIXMAP_STOCK, GM_STOCK_DISCONNECT,
 	0, GDK_CONTROL_MASK, NULL
       },
+      GNOMEUIINFO_SEPARATOR,
       {
-	GNOME_APP_UI_ITEM,
-	N_("Show/Hide Main Window"), N_("Show/hide The Main Window"),
-	(void *)tray_toggle_callback, GINT_TO_POINTER(2), NULL,
+	GNOME_APP_UI_TOGGLEITEM,
+	N_("Do not Disturb"), N_("Do Not Accept Calls"),
+	(void *)tray_popup_menu_dnd_callback, NULL,
+	NULL,
+	GNOME_APP_PIXMAP_NONE, NULL,
+	0, GDK_CONTROL_MASK, NULL
+      },
+      {GNOME_APP_UI_TOGGLEITEM,
+       N_("Auto Answer"), N_("Automatically Answer Calls"),
+       (void *)tray_popup_menu_autoanswer_callback, NULL,
+       NULL,
+       GNOME_APP_PIXMAP_NONE, NULL,
+       0, GDK_CONTROL_MASK, NULL
+      },
+      GNOMEUIINFO_SEPARATOR,
+      {
+	GNOME_APP_UI_TOGGLEITEM,
+	N_("Show Main Window"), N_("Show The Main Window"),
+	(void *)tray_popup_menu_show_callback, &(popup_menu[6]),
+	NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	0, GDK_CONTROL_MASK, NULL
       },
@@ -155,6 +203,24 @@ void gnomemeeting_init_tray_popup_menu (GtkWidget *widget)
   popup_menu_widget = gnome_popup_menu_new (popup_menu);
   gnome_popup_menu_attach (popup_menu_widget, GTK_WIDGET (widget),
                            NULL);
+
+  /* Set the state of toggle items */
+  GConfClient *client = gconf_client_get_default ();
+
+  GTK_CHECK_MENU_ITEM (popup_menu[3].widget)->active = 
+    gconf_client_get_bool (client, 
+			   "/apps/gnomemeeting/general/do_not_disturb", 0);
+  GTK_CHECK_MENU_ITEM (popup_menu[4].widget)->active = 
+    gconf_client_get_bool (client, 
+			   "/apps/gnomemeeting/general/auto_answer", 0);
+  GTK_CHECK_MENU_ITEM (popup_menu[6].widget)->active =
+    !gconf_client_get_bool (client,
+			   "/apps/gnomemeeting/view/start_docked", 0);
+
+  gtk_widget_queue_draw (GTK_WIDGET (popup_menu[3].widget));
+  gtk_widget_queue_draw (GTK_WIDGET (popup_menu[4].widget));
+  gtk_widget_queue_draw (GTK_WIDGET (popup_menu[6].widget));
+
 }
 
 /* DESCRIPTION  :  Builds up the tray icon
