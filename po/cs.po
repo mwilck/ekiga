@@ -11,13 +11,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-11-21 11:59+0100\n"
-"PO-Revision-Date: 2004-11-21 16:46+0100\n"
+"POT-Creation-Date: 2004-11-24 11:55+0100\n"
+"PO-Revision-Date: 2004-11-24 12:55+0100\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);"
 
 #. Add the window icon and title
 #: gnomemeeting.desktop.in.h:1 src/main_window.cpp:3710
@@ -1198,7 +1199,7 @@ msgid "Belongs to category"
 msgstr "Patří do kategorie"
 
 #: src/addressbook_window.cpp:1474 src/addressbook_window.cpp:1504
-#: src/addressbook_window.cpp:2271 src/calls_history_window.cpp:284
+#: src/addressbook_window.cpp:2276 src/calls_history_window.cpp:284
 msgid "C_all Contact"
 msgstr "Za_volat kontaktu"
 
@@ -1207,16 +1208,16 @@ msgid "_Copy URL to clipboard"
 msgstr "Z_kopírovat URL do schránky"
 
 #: src/addressbook_window.cpp:1486 src/addressbook_window.cpp:1544
-#: src/addressbook_window.cpp:2257
+#: src/addressbook_window.cpp:2262
 msgid "_Properties"
 msgstr "_Vlastnosti"
 
 #: src/addressbook_window.cpp:1493 src/addressbook_window.cpp:1551
-#: src/addressbook_window.cpp:2252
+#: src/addressbook_window.cpp:2257
 msgid "_Delete"
 msgstr "_Odstranit"
 
-#: src/addressbook_window.cpp:1516 src/addressbook_window.cpp:2281
+#: src/addressbook_window.cpp:1516 src/addressbook_window.cpp:2286
 #: src/calls_history_window.cpp:291
 msgid "Add Contact to _Address Book"
 msgstr "Přidat kontakt do _adresáře"
@@ -1229,155 +1230,151 @@ msgstr "Chyba při stahování seznamu uživatelů z %s"
 #: src/addressbook_window.cpp:1780
 #, c-format
 msgid "Found %d user in %s"
-msgstr "Nalezen %d uživatel v %s"
-
-#: src/addressbook_window.cpp:1781
-#, c-format
-msgid "Found %d users in %s"
-msgstr "Nalezeno %d uživatelů v %s"
+msgid_plural "Found %d users in %s"
+msgstr[0] "Nalezen %d uživatel v %s"
+msgstr[1] "Nalezeni %d uživatelé v %s"
+msgstr[2] "Nalezeno %d uživatelů v %s"
 
 #: src/addressbook_window.cpp:1784
 #, c-format
 msgid "Found %d user in %s for a total of %d users"
-msgstr "Nalezen %d uživatel v %s z celkem %d uživatelů"
+msgid_plural "Found %d users in %s for a total of %d users"
+msgstr[0] "Nalezen %d uživatel v %s z celkem %d uživatelů"
+msgstr[1] "Nalezeni %d uživatelé v %s z celkem %d uživatelů"
+msgstr[2] "Nalezeno %d uživatelů v %s z celkem %d uživatelů"
 
-#: src/addressbook_window.cpp:1784
-#, c-format
-msgid "Found %d users in %s for a total of %d users"
-msgstr "Nalezeno %d uživatelů v %s z celkem %d uživatelů"
-
-#: src/addressbook_window.cpp:2216
+#: src/addressbook_window.cpp:2221
 msgid "Address Book"
 msgstr "Adresář"
 
-#: src/addressbook_window.cpp:2243
+#: src/addressbook_window.cpp:2248
 msgid "_File"
 msgstr "_Soubor"
 
-#: src/addressbook_window.cpp:2245
+#: src/addressbook_window.cpp:2250
 msgid "New _Address Book"
 msgstr "Nový _adresář"
 
-#: src/addressbook_window.cpp:2264 src/main_window.cpp:1007
+#: src/addressbook_window.cpp:2269 src/main_window.cpp:1007
 msgid "_Close"
 msgstr "_Zavřít"
 
-#: src/addressbook_window.cpp:2269
+#: src/addressbook_window.cpp:2274
 msgid "C_ontact"
 msgstr "_Kontakt"
 
-#: src/addressbook_window.cpp:2277
+#: src/addressbook_window.cpp:2282
 msgid "New _Contact"
 msgstr "Nový _kontakt"
 
-#: src/addressbook_window.cpp:2354
+#: src/addressbook_window.cpp:2359
 msgid "Remote Contacts"
 msgstr "Vzdálené kontakty"
 
-#: src/addressbook_window.cpp:2362
+#: src/addressbook_window.cpp:2367
 msgid "Local Contacts"
 msgstr "Místní kontakty"
 
-#: src/addressbook_window.cpp:2485
+#: src/addressbook_window.cpp:2490
 msgid "Edit the Contact Information"
 msgstr "Upravit kontaktní informace"
 
-#: src/addressbook_window.cpp:2506 src/addressbook_window.cpp:2966
+#: src/addressbook_window.cpp:2511 src/addressbook_window.cpp:2971
 msgid "Name:"
 msgstr "Jméno:"
 
-#: src/addressbook_window.cpp:2526
+#: src/addressbook_window.cpp:2531
 msgid "URL:"
 msgstr "URL:"
 
-#: src/addressbook_window.cpp:2546
+#: src/addressbook_window.cpp:2551
 msgid "Email:"
 msgstr "E-mail:"
 
-#: src/addressbook_window.cpp:2567
+#: src/addressbook_window.cpp:2572
 msgid "Speed Dial:"
 msgstr "Rychlé vytáčení:"
 
-#: src/addressbook_window.cpp:2589
+#: src/addressbook_window.cpp:2594
 msgid "Categories:"
 msgstr "Kategorie:"
 
-#: src/addressbook_window.cpp:2614
+#: src/addressbook_window.cpp:2619
 msgid "Local Addressbook:"
 msgstr "Místní adresář:"
 
-#: src/addressbook_window.cpp:2775 src/addressbook_window.cpp:3269
+#: src/addressbook_window.cpp:2780 src/addressbook_window.cpp:3274
 msgid "Missing information"
 msgstr "Chybějící informace"
 
-#: src/addressbook_window.cpp:2775
+#: src/addressbook_window.cpp:2780
 msgid ""
 "Please make sure to provide at least a full name or an URL for the contact."
 msgstr ""
 "Přesvědčte se prosím, že pro kontakt zadáváte alespoň celé jméno nebo URL."
 
-#: src/addressbook_window.cpp:2819
+#: src/addressbook_window.cpp:2824
 #, c-format
 msgid "Are you sure you want to delete %s from %s?"
 msgstr "Jste si jisti, že chcete odstranit %s z %s?"
 
-#: src/addressbook_window.cpp:2945
+#: src/addressbook_window.cpp:2950
 msgid "Edit an address book"
 msgstr "Upravit adresář"
 
-#: src/addressbook_window.cpp:2946
+#: src/addressbook_window.cpp:2951
 msgid "Add an address book"
 msgstr "Přidat adresář"
 
-#: src/addressbook_window.cpp:2991
+#: src/addressbook_window.cpp:2996
 msgid "Type:"
 msgstr "Typ:"
 
-#: src/addressbook_window.cpp:2998
+#: src/addressbook_window.cpp:3003
 msgid "Local"
 msgstr "Místní"
 
-#: src/addressbook_window.cpp:3003
+#: src/addressbook_window.cpp:3008
 msgid "Remote LDAP"
 msgstr "Vzdálený LDAP"
 
-#: src/addressbook_window.cpp:3008
+#: src/addressbook_window.cpp:3013
 msgid "Remote ILS"
 msgstr "Vzdálený ILS"
 
-#: src/addressbook_window.cpp:3041
+#: src/addressbook_window.cpp:3046
 msgid "Hostname:"
 msgstr "Název počítače:"
 
-#: src/addressbook_window.cpp:3064
+#: src/addressbook_window.cpp:3069
 msgid "Port:"
 msgstr "Port:"
 
-#: src/addressbook_window.cpp:3089
+#: src/addressbook_window.cpp:3094
 msgid "Base DN:"
 msgstr "Základní DN:"
 
-#: src/addressbook_window.cpp:3112
+#: src/addressbook_window.cpp:3117
 msgid "Search Scope:"
 msgstr "Rozsah hledání:"
 
-#: src/addressbook_window.cpp:3119
+#: src/addressbook_window.cpp:3124
 msgid "Subtree"
 msgstr "Podstrom"
 
-#: src/addressbook_window.cpp:3124
+#: src/addressbook_window.cpp:3129
 msgid "One Level"
 msgstr "Jedna úroveň"
 
-#: src/addressbook_window.cpp:3156
+#: src/addressbook_window.cpp:3161
 msgid "Search Attribute:"
 msgstr "Hledaný atribut:"
 
-#: src/addressbook_window.cpp:3269
+#: src/addressbook_window.cpp:3274
 msgid "Please make sure to fill in all requested fields."
 msgstr "Přesvědčte se prosím, že jste vyplnili všechna vyžadovaná pole."
 
-#: src/addressbook_window.cpp:3312
+#: src/addressbook_window.cpp:3317
 #, c-format
 msgid "Are you sure you want to delete %s and all its contacts?"
 msgstr "Jste si jisti, že chcete odstranit %s a všechny kontakty v ní?"
@@ -2164,12 +2161,10 @@ msgstr "Hovor ukončen"
 #: src/endpoint.cpp:1365
 #, c-format
 msgid "Missed %d call"
-msgstr "Zmeškanán %d hovor"
-
-#: src/endpoint.cpp:1366
-#, c-format
-msgid "Missed %d calls"
-msgstr "Zmeškáno %d hovorů"
+msgid_plural "Missed %d calls"
+msgstr[0] "Zmeškán %d hovor"
+msgstr[1] "Zmeškány %d hovory"
+msgstr[2] "Zmeškáno %d hovorů"
 
 #: src/endpoint.cpp:1665
 msgid "Error while starting the listener"
@@ -4090,3 +4085,12 @@ msgstr "Chyba s frekvencí rámců."
 #: src/videograbber.cpp:683
 msgid "Error with the frame size."
 msgstr "Chyba ve velikosti obrazu."
+
+#~ msgid "Found %d users in %s"
+#~ msgstr "Nalezeno %d uživatelů v %s"
+
+#~ msgid "Found %d users in %s for a total of %d users"
+#~ msgstr "Nalezeno %d uživatelů v %s z celkem %d uživatelů"
+
+#~ msgid "Missed %d calls"
+#~ msgstr "Zmeškáno %d hovorů"
