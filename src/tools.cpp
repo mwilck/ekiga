@@ -101,52 +101,37 @@ pc2phone_window_response_cb (GtkWidget *w,
  *                 button to consult his account details.
  * BEHAVIOR     :  Builds a filename with autopost html in /tmp/ and opens it
  *                 with the GNOME preferred browser.
- * PRE          :  /
+ * PRE          :  GPOINTER_TO_INT (data) == 0 : recharge,
+ * 				          == 1 : balance history,
+ * 				          == 2 : calls history
  */
 #ifndef DISABLE_GNOME
 static void
 pc2phone_consult_cb (GtkWidget *widget,
-		       gpointer data)
+		     gpointer data)
 {
-  gchar *tmp_filename = NULL;
-  gchar *filename = NULL;
   gchar *account = NULL;
   gchar *pin = NULL;
-  gchar *buffer = NULL;
+  gchar *url = NULL;
   
-  int fd = -1;
-
   account = gm_conf_get_string (H323_GATEKEEPER_KEY "alias");
   pin = gm_conf_get_string (H323_GATEKEEPER_KEY "password");
 
   if (account == NULL || pin == NULL)
     return; /* no account configured yet */
   
-  buffer =
-    g_strdup_printf ("<HTML><HEAD><TITLE>MicroTelco Auto-Post</TITLE></HEAD>"
-		     "<BODY BGCOLOR=\"#FFFFFF\" "
-		     "onLoad=\"Javascript:document.autoform.submit()\">"
-		     "<FORM NAME=\"autoform\" "
-		     "ACTION=\"https://%s.an.pc2phone.com/acct/Controller\" "
-		     "METHOD=\"POST\">"
-		     "<input type=\"hidden\" name=\"command\" value=\"caller_login\">"
-		     "<input type=\"hidden\" name=\"caller_id\" value=\"%s\">"
-		     "<input type=\"hidden\" name=\"caller_pin\" value=\"%s\">"
-		     "</FORM></BODY></HTML>", account, account, pin);
+  if (GPOINTER_TO_INT (data) == 0)
+    url = g_strdup_printf ("https://www.diamondcard.us/exec/voip-login?accId=%s&pinCode=%s&act=rch&spo=gnomemeeting", account, pin);
+  else if (GPOINTER_TO_INT (data) == 1)
+    url = g_strdup_printf ("https://www.diamondcard.us/exec/voip-login?accId=%s&pinCode=%s&act=bh&spo=gnomemeeting", account, pin);
+  else if (GPOINTER_TO_INT (data) == 2)
+    url = g_strdup_printf ("https://www.diamondcard.us/exec/voip-login?accId=%s&pinCode=%s&act=ch&spo=gnomemeeting", account, pin);
+    
+  gnome_url_show (url, NULL);
 
-  fd = g_file_open_tmp ("mktmicro-XXXXXX", &tmp_filename, NULL);
-  filename = g_strdup_printf ("file:///%s", tmp_filename);
-  
-  write (fd, (char *) buffer, strlen (buffer)); 
-  close (fd);
-  
-  gnome_url_show (filename, NULL);
-
-  g_free (tmp_filename);
-  g_free (filename);
-  g_free (buffer);
   g_free (account);
   g_free (pin);
+  g_free (url);
 }
 #endif
 
@@ -206,21 +191,54 @@ gm_pc2phone_window_new ()
   label =
     gtk_label_new (_("Click on one of the following links to get more information about your existing GnomeMeeting PC-To-Phone account, or to create a new account."));
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-
   gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (label), FALSE, FALSE, 20);
-  href = gnome_href_new ("http://www.diamondcard.us/gnomemeeting", _("Get a GnomeMeeting PC-To-Phone account"));
+
+  
+  /* Get an account, good idea */
+  href = gnome_href_new ("https://www.diamondcard.us/exec/voip-login?act=sgn&spo=gnomemeeting", _("Get a GnomeMeeting PC-To-Phone account"));
   gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (href), FALSE, FALSE, 0);
+
+
+  /* Recharge accouont */
   button = gtk_button_new ();
   label = gtk_label_new (NULL);
   txt = g_strdup_printf ("<span foreground=\"blue\"><u>%s</u></span>",
-			 _("Consult my account details"));
+			 _("Recharge the account"));
   gtk_label_set_markup (GTK_LABEL (label), txt);
   g_free (txt);
   gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
   gtk_container_add (GTK_CONTAINER (button), label);
   gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (button), FALSE, FALSE, 0);
   g_signal_connect (GTK_OBJECT (button), "clicked",
-		    G_CALLBACK (pc2phone_consult_cb), NULL);
+		    G_CALLBACK (pc2phone_consult_cb), GINT_TO_POINTER (0));
+
+  
+  /* Consult the balance history */
+  button = gtk_button_new ();
+  label = gtk_label_new (NULL);
+  txt = g_strdup_printf ("<span foreground=\"blue\"><u>%s</u></span>",
+			 _("Consult the balance history"));
+  gtk_label_set_markup (GTK_LABEL (label), txt);
+  g_free (txt);
+  gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
+  gtk_container_add (GTK_CONTAINER (button), label);
+  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (button), FALSE, FALSE, 0);
+  g_signal_connect (GTK_OBJECT (button), "clicked",
+		    G_CALLBACK (pc2phone_consult_cb), GINT_TO_POINTER (1));
+
+  
+  /* Consult the calls history */
+  button = gtk_button_new ();
+  label = gtk_label_new (NULL);
+  txt = g_strdup_printf ("<span foreground=\"blue\"><u>%s</u></span>",
+			 _("Consult the calls history"));
+  gtk_label_set_markup (GTK_LABEL (label), txt);
+  g_free (txt);
+  gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
+  gtk_container_add (GTK_CONTAINER (button), label);
+  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (button), FALSE, FALSE, 0);
+  g_signal_connect (GTK_OBJECT (button), "clicked",
+		    G_CALLBACK (pc2phone_consult_cb), GINT_TO_POINTER (2));
 				
   g_signal_connect (GTK_OBJECT (window), 
 		    "response", 
