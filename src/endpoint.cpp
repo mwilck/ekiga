@@ -1791,30 +1791,9 @@ GMH323EndPoint::StartLogicalChannel (const PString & capability_name,
 	  !con->OpenLogicalChannel (*capability,
 				    capability->GetDefaultSessionID(),
 				    H323Channel::IsTransmitter)) {
-	no_error = FALSE;
+        no_error = FALSE;
       }
     }
-
-    /** This code is not supported yet (Mode Changes).
-    else {
-
-      if (id == RTP_Session::DefaultVideoSessionID)
-	channel = con->FindChannel (RTP_Session::DefaultAudioSessionID, TRUE);
-      else
-	channel = con->FindChannel (RTP_Session::DefaultVideoSessionID, TRUE);
-
-      if (channel) {
-
-	current_capa = channel->GetCapability ().GetFormatName ();
-
-	if (!current_capa.IsEmpty ())
-	  mode = capability_name + "\t" + current_capa;
-
-	con->RequestModeChange (mode);
-      }
-      else
-	no_error = TRUE;
-    } */
 
     con->Unlock ();
   }
@@ -2321,13 +2300,14 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 			codec.GetVideoMode());
 
 
-    /* Make sure there is a grabber */    
+    /* The channel for video transmission is not auto-deleted, which
+     * means that if it is closed, the video grabber has to be closed manually
+     * at the end of calls. We reset the video grabber here because the video
+     * transmission could have been suspended and restarted, which requires
+     * the video channel to be reopened.
+     */
+    CreateVideoGrabber (FALSE, TRUE);
     vg = GetVideoGrabber ();
-    if (!vg) {
-      
-      CreateVideoGrabber (FALSE, TRUE);
-      vg = GetVideoGrabber ();
-    }
     
     if (vg) {
 
@@ -2336,7 +2316,6 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
       vg->Unlock ();
     }
       
-
     gnomemeeting_threads_enter ();
     gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button), TRUE);
     gnomemeeting_threads_leave ();
