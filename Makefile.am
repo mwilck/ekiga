@@ -16,6 +16,7 @@ schemas_DATA = $(SCHEMAS_FILE)
 
 install-schemas: gnomemeeting.schema
 	GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) gconftool --makefile-install-rule $(SCHEMAS_FILE)
+	gconftool --shutdown
 
 if INSTALL_SCHEMAS
 install-dada-local: install-schemas

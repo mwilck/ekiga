@@ -1,5 +1,5 @@
 
-INCLUDES = @GNOMEMEETING_INCLUDES@ -DGNOMELOCALEDIR=\""$(datadir)/locale"\" -I$(top_srcdir)/src $(GNOME_INCLUDEDIR)
+INCLUDES = @GNOMEMEETING_INCLUDES@ -DGNOMELOCALEDIR=\""$(datadir)/locale"\" -I$(top_srcdir)/src $(GNOME_INCLUDEDIR) -DGNOMEMEETING_IMAGES=\""$(datadir)/pixmaps"\"
 
 
 bin_PROGRAMS = gnomemeeting
@@ -43,7 +43,9 @@ gnomemeeting_SOURCES =		\
 	cleaner.cpp		\
 	cleaner.h		\
 	misc.cpp		\
-	misc.h			
+	misc.h			\
+	e-splash.cpp		\
+	e-splah.h
 
 
 gnomemeeting_LDADD =  @GNOMEMEETING_LDADD@

@@ -706,7 +706,7 @@ void gnomemeeting_init_pref_window (int calling_state, options *opts)
 
   /* Now, add the logo as first page */
   pixmap = gnome_pixmap_new_from_file 
-    ("/usr/share/pixmaps/gnomemeeting-logo.png");
+    (GNOMEMEETING_IMAGES "/gnomemeeting-logo.png");
 
   frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);

@@ -1,3 +1,34 @@
+2001-12-19  Miguel Rodríguez Pérez  <migrax@terra.es>
+
+	* Makefile.am (install-schemas): shutdown gconf after
+	installing the schema
+
+	* gnomemeeting.schema: Corrected some little typos
+
+2001-12-17  Miguel Rodríguez Pérez  <migrax@terra.es>
+
+	* src/pref_window.cpp (gnomemeeting_init_pref_window): Don't
+	hardcode the logo location
+
+	* configure.in: Added gnomecanvaspixbuf to the needed libs
+
+	* src/e-splash.cpp (e_splash_construct): Replace evolution 
+	with Gnomemeeting
+	(e_splash_new): Ídem
+
+	* src/Makefile.am (INCLUDES): Added a define for the images
+	location
+
+	* src/e-splash.cpp: Replaced variables called new all over
+	the code with more sensible names (from a C++ compiler POV)
+	(create_darkened_pixbuf): Add proper casts
+	(E_MAKE_TYPE): Copy-pasted from gal
+	(class_init): Add a cast
+	Added backing store supprot for the splash screen from evolution
+
+	* src/Makefile.am (gnomemeeting_SOURCES): Added e-splash.c
+	and e-splash.h from evolution
+
 2001-12-19  Fatih Demir <kabalak@gtranslator.org>
 
 	* configure.in: Added "tr" to the languages list.
