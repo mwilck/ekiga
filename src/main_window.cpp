@@ -80,6 +80,7 @@ extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;	
 
 
+static void video_window_shown_cb (GtkWidget *, gpointer);
 static gboolean stats_drawing_area_exposed (GtkWidget *, gpointer data);
 
 #ifndef DISABLE_GNOME
@@ -303,6 +304,23 @@ gint AppbarUpdate (gpointer data)
   }
     
   return TRUE;
+}
+
+
+/* DESCRIPTION  :  This callback is called when a video window is shown.
+ * BEHAVIOR     :  Set the WM HINTS to stay-on-top if the gconf key is set
+ *                 to true.
+ * PRE          :  /
+ */
+static void
+video_window_shown_cb (GtkWidget *w, gpointer data)
+{
+  GConfClient *client = NULL;
+  client = gconf_client_get_default ();
+
+  if (gconf_client_get_bool (GCONF_CLIENT (client), 
+			     VIDEO_DISPLAY_KEY "stay_on_top", NULL))
+    gdk_window_set_always_on_top (GDK_WINDOW (w->window), TRUE);
 }
 
 
@@ -1203,6 +1221,11 @@ gnomemeeting_main_window_new (GmWindow *gw)
 				   x, y);
   gnomemeeting_init_main_window_logo (gw->main_video_image);
 
+  g_signal_connect (G_OBJECT (gw->local_video_window), "show", 
+		    GTK_SIGNAL_FUNC (video_window_shown_cb), NULL);
+  g_signal_connect (G_OBJECT (gw->remote_video_window), "show", 
+		    GTK_SIGNAL_FUNC (video_window_shown_cb), NULL);
+
 
   /* The remote name */
   frame = gtk_frame_new (NULL);
@@ -1698,6 +1721,9 @@ int main (int argc, char ** argv, char ** envp)
 #else
   gm = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 #endif
+
+  g_signal_connect (G_OBJECT (gm), "show", 
+		    GTK_SIGNAL_FUNC (video_window_shown_cb), NULL);
   
   gdk_threads_enter ();
   gconf_init (argc, argv, 0);
@@ -1778,7 +1804,6 @@ int main (int argc, char ** argv, char ** envp)
   //  gtk_timeout_add (15000, (GtkFunction) StressTest, 
   //		   NULL);
   
-
   /* The GTK loop */
   gtk_main ();
   gdk_threads_leave ();

@@ -213,22 +213,13 @@ BOOL GDKVideoOutputDevice::Redraw ()
     if (!GTK_WIDGET_VISIBLE (gw->remote_video_window))
       gtk_widget_show_all (GTK_WIDGET (gw->remote_video_window));
 
-    if (device_id == REMOTE) {
-
-      gtk_window_get_size (GTK_WINDOW (gw->remote_video_window), 
-			   &zoomed_width, &zoomed_height);
-      zoomed_width = zoomed_width - GM_FRAME_SIZE;
-      zoomed_height = zoomed_height - GM_FRAME_SIZE;
+    if (device_id == REMOTE) 
       image = gw->remote_video_image;
-    }
-    else {
-
-      gtk_window_get_size (GTK_WINDOW (gw->local_video_window), 
-			   &zoomed_width, &zoomed_height);
-      zoomed_width = zoomed_width - GM_FRAME_SIZE;
-      zoomed_height = zoomed_height - GM_FRAME_SIZE;
+    else 
       image = gw->local_video_image;
-    } 
+
+    gtk_widget_get_size_request (GTK_WIDGET (image), 
+				 &zoomed_width, &zoomed_height);
   }
   else {
 
@@ -246,11 +237,8 @@ BOOL GDKVideoOutputDevice::Redraw ()
       if (device_id == LOCAL) {
 
 	image = gw->local_video_image;
-
-	gtk_window_get_size (GTK_WINDOW (gw->local_video_window), 
-			     &zoomed_width, &zoomed_height);
-	zoomed_width = zoomed_width - GM_FRAME_SIZE;
-	zoomed_height = zoomed_height - GM_FRAME_SIZE;
+	gtk_widget_get_size_request (GTK_WIDGET (image), 
+				     &zoomed_width, &zoomed_height);
       }
 
       if (!GTK_WIDGET_VISIBLE (gw->local_video_window))

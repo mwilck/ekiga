@@ -194,4 +194,8 @@ gnomemeeting_update_pstring_option_menu (GtkWidget *,
 
 GtkWidget *
 gnomemeeting_vbox_add_table (GtkWidget *, gchar *, int, int);
+
+void
+gdk_window_set_always_on_top (GdkWindow *window, 
+			      gboolean enable);
 #endif

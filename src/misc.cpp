@@ -47,7 +47,9 @@
 
 #include "../pixmaps/text_logo.xpm"
 
-
+#include <gdk/gdkx.h>
+#include <X11/Xlib.h>
+                                                                                
 /* Declarations */
 extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;
@@ -340,24 +342,29 @@ gnomemeeting_statusbar_push (GtkWidget *widget, const char *msg, ...)
 }
 
 
-GtkWidget *gnomemeeting_video_window_new (gchar *title, GtkWidget *&image,
-					  int x, int y)
+GtkWidget *
+gnomemeeting_video_window_new (gchar *title, 
+			       GtkWidget *&image,
+			       int x, 
+			       int y)
 {
+  GtkWidget *vbox = NULL;
   GtkWidget *window = NULL;
-  GtkWidget *frame = NULL;
 
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_title (GTK_WINDOW (window), title);
 
-  frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
-
+  vbox = gtk_vbox_new (0, FALSE);
   image = gtk_image_new ();
-  gtk_container_add (GTK_CONTAINER (frame), image);
-  gtk_container_add (GTK_CONTAINER (window), frame);
 
-  gtk_window_set_default_size (GTK_WINDOW (window), 
-			       x, y);
+  gtk_box_pack_start (GTK_BOX (vbox), image, TRUE, TRUE, 0);
+  gtk_container_set_border_width (GTK_CONTAINER (window), 0);
+
+  gtk_container_add (GTK_CONTAINER (window), vbox);
+  gtk_widget_realize (image);
+
+  gtk_widget_set_size_request (GTK_WIDGET (image), x, y);
+  gtk_window_set_resizable (GTK_WINDOW (window), false);
 
   g_signal_connect (G_OBJECT (window), "delete_event",
 		    G_CALLBACK (gtk_widget_hide_on_delete), 0);
@@ -1048,3 +1055,44 @@ gnomemeeting_vbox_add_table (GtkWidget *vbox,
   return table;
 }                                                                              
         
+
+/* Stolen from GDK */
+static void
+gdk_wmspec_change_state (gboolean add,
+			 GdkWindow *window,
+			 GdkAtom state1,
+			 GdkAtom state2)
+{
+  GdkDisplay *display = 
+    gdk_screen_get_display (gdk_drawable_get_screen (GDK_DRAWABLE (window)));
+  XEvent xev;
+  
+#define _NET_WM_STATE_REMOVE        0    /* remove/unset property */
+#define _NET_WM_STATE_ADD           1    /* add/set property */
+#define _NET_WM_STATE_TOGGLE        2    /* toggle property  */  
+  
+  xev.xclient.type = ClientMessage;
+  xev.xclient.serial = 0;
+  xev.xclient.send_event = True;
+  xev.xclient.window = GDK_WINDOW_XID (window);
+  xev.xclient.message_type = 
+    gdk_x11_get_xatom_by_name_for_display (display, "_NET_WM_STATE");
+  xev.xclient.format = 32;
+  xev.xclient.data.l[0] = add ? _NET_WM_STATE_ADD : _NET_WM_STATE_REMOVE;
+  xev.xclient.data.l[1] = gdk_x11_atom_to_xatom_for_display (display, state1);
+  xev.xclient.data.l[2] = gdk_x11_atom_to_xatom_for_display (display, state2);
+  
+  XSendEvent (GDK_WINDOW_XDISPLAY (window),
+	      GDK_WINDOW_XWINDOW (gdk_screen_get_root_window (gdk_drawable_get_screen (GDK_DRAWABLE (window)))),
+	      False, SubstructureRedirectMask | SubstructureNotifyMask,
+	      &xev);
+}
+
+
+void
+gdk_window_set_always_on_top (GdkWindow *window, 
+			      gboolean enable)
+{
+  gdk_wmspec_change_state (enable, window, 
+			   gdk_atom_intern ("_NET_WM_STATE_ABOVE", FALSE), 0);
+}

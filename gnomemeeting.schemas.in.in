@@ -448,10 +448,21 @@
       <applyto>/apps/gnomemeeting/video_display/bilinear_filtering</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
-      <default>true</default>
+      <default>false</default>
       <locale name="C">
 	<short>Enable bilinear filtering on displayed video</short>
 	<long>Enable or disable bilinear interpolation when rendering video images (this has no effect in fullscreen mode).</long>
+      </locale>
+    </schema>
+    <schema>	
+      <key>/schemas/apps/gnomemeeting/video_display/stay_on_top</key>
+      <applyto>/apps/gnomemeeting/video_display/stay_on_top</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>bool</type>
+      <default>true</default>
+      <locale name="C">
+	<short>Place windows displaying video above other windows during calls.</short>
+	<long>Place windows displaying video above other windows during calls.</long>
       </locale>
     </schema>
     <schema>

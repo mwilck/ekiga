@@ -814,8 +814,8 @@ gnomemeeting_init_pref_window_interface (GtkWidget *notebook)
 				     10.0, 10.0, 640.0, 480.0, 10.0, 0);
 #endif
   
-  pw->bilinear_filtering =
-    gnomemeeting_table_add_toggle (table, _("Enable bilinear _filtering on displayed video"), VIDEO_DISPLAY_KEY "bilinear_filtering", _("Enable or disable bilinear interpolation when rendering video images (this has no effect in fullscreen mode)."), 2);
+  pw->stay_on_top =
+    gnomemeeting_table_add_toggle (table, _("Place windows displaying video _above other windows"), VIDEO_DISPLAY_KEY "stay_on_top", _("Place windows displaying video above other windows during calls."), 2);
 
   /* Text Chat */
   table = gnomemeeting_vbox_add_table (vbox, _("Text Chat"), 1, 1);

@@ -322,7 +322,7 @@ struct _GmPrefWindow
   GtkWidget    *no_answer_forward;
   GtkWidget    *fullscreen_width;
   GtkWidget    *fullscreen_height;
-  GtkWidget    *bilinear_filtering;
+  GtkWidget    *stay_on_top;
   GtkWidget    *ip_translation;
   GtkWidget    *public_ip;
 };

@@ -1145,10 +1145,12 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   H323VideoCodec *video_codec = NULL;
   H323Channel *channel = NULL;
   
+  PString local_name = GetLocalUserName ();
   PString name = connection.GetRemotePartyName();
   PString app = connection.GetRemoteApplication ();
   gchar *utf8_app = NULL;
   gchar *utf8_name = NULL;
+  gchar *utf8_local_name = NULL;
   char *msg = NULL;
   BOOL reg = FALSE;
   int vq = 0;
@@ -1161,6 +1163,8 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   /* Remote Name and application */
   utf8_app = gnomemeeting_get_utf8 (gnomemeeting_pstring_cut (app));
   utf8_name = gnomemeeting_get_utf8 (gnomemeeting_pstring_cut (name));
+  utf8_local_name = 
+    gnomemeeting_get_utf8 (gnomemeeting_pstring_cut (local_name));
 
   
   /* Get the gconf settings */
@@ -1171,6 +1175,7 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   tr_fps = gconf_client_get_int (client, VIDEO_SETTINGS_KEY "tr_fps", NULL);
   reg = gconf_client_get_bool (client, LDAP_KEY "register", NULL);
   gnomemeeting_threads_leave ();
+
 
   /* Remove the progress timeout */
   if (gw->progress_timeout) {
@@ -1215,6 +1220,7 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 
   /* Connected */
   gnomemeeting_threads_enter ();
+
   msg = g_strdup_printf (_("Connected with %s using %s"), 
 			 utf8_name, utf8_app);
   gnomemeeting_statusbar_push (gw->statusbar, _("Connected"));
@@ -1229,6 +1235,22 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   gnomemeeting_log_insert (gw->history_text_view, msg);
 
   gtk_label_set_text (GTK_LABEL (gw->remote_name), (const char *) utf8_name);
+  gtk_window_set_title (GTK_WINDOW (gw->remote_video_window), 
+			(const char *) utf8_name);
+  gtk_window_set_title (GTK_WINDOW (gw->local_video_window), 
+			(const char *) utf8_local_name);
+
+
+  /* set-on-top to True */
+  if (gconf_client_get_bool (GCONF_CLIENT (client), 
+			     VIDEO_DISPLAY_KEY "stay_on_top", NULL)) {
+    gdk_window_set_always_on_top (GDK_WINDOW (gm->window), TRUE);
+    gdk_window_set_always_on_top (GDK_WINDOW (gw->local_video_window->window), 
+				  TRUE);
+    gdk_window_set_always_on_top (GDK_WINDOW (gw->remote_video_window->window), 
+				  TRUE);
+  }
+
 
   if (docklet_timeout != 0) {
 
@@ -1282,6 +1304,7 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 
   g_free (msg);
   g_free (utf8_name);
+  g_free (utf8_local_name);
   g_free (utf8_app);
 }
 
@@ -1589,6 +1612,18 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   /* We empty the text chat buffer */
   if (auto_clear_text_chat)
     gnomemeeting_text_chat_clear (NULL, chat);
+
+
+  /* set-on-top to False */
+  if (gconf_client_get_bool (GCONF_CLIENT (client), 
+			     VIDEO_DISPLAY_KEY "stay_on_top", NULL)) {
+   
+    gdk_window_set_always_on_top (GDK_WINDOW (gm->window), FALSE);
+    gdk_window_set_always_on_top (GDK_WINDOW (gw->local_video_window->window), 
+				  FALSE);
+    gdk_window_set_always_on_top (GDK_WINDOW (gw->remote_video_window->window), 
+				  FALSE);
+  }
 
 
   /* Disable disconnect, and the mute functions in the call menu */

@@ -1,3 +1,43 @@
+2003-08-07 Damien Sandras  <dsandras@seconix.com>
+
+	* configure.in: Incremented SCHEMA_AGE.
+
+	* gnomemeeting.schemas.in.in: Added key for stay on top.
+
+	* src/common.h: Removed bilinear bifiltering widget and added
+	stay on top widget.
+
+	* src/config.cpp: Fixed notifier for fullscreen height and width. Added
+	notifier for the new stay on top pref.
+
+	* src/endpoint.cpp: Popup video windows now have the displayed
+	user name as title. Added stay-on-top window manager hint support
+	for windows displaying video so that users can continue doing
+	other things while videoconferencing.
+
+	* src/gdkvideoio.cpp: Removed gray border from the video window.
+	Made them non-resizable, the size is now based on the hidden
+	gconf keys. Will be extended later.
+
+	* src/ils.cpp: Make use of sflags for invisibility.
+
+	* src/main_window.cpp: Added stay-on-top window manager hint support
+	when windows are shown/hidden.
+
+	* src/misc.cpp: Fixed popup video windows, see above. Added function
+	to set stay-on-top wm hint.
+
+	* src/misc.h: Added function to set stay-on-top wm hint.
+
+	* src/pref_window.cpp: Added stay-on-top window manager hint support
+	for windows displaying video so that users can continue doing
+	other things while videoconferencing. Removed bilinear filtering from
+	the preferences window. Enabling it doesn't give significant 
+	improvements but is burning CPU. Still accessible through gconf.
+
+	* xdap_data/ils_nm_mod.xml, xdap_data/ils_nm_reg.xml: Make use of 
+	sflags for invisibility.
+	
 2003-08-06 Damien Sandras  <dsandras@seconix.com>
 
 	* configure.in: Version number is 0.99.0.

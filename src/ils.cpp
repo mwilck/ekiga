@@ -397,7 +397,7 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
   gchar *ip = NULL;
   gchar *port = NULL;
   gchar *ilsa32964638 = NULL;
-  gchar *ilsa39321630 = NULL;
+  gchar *sflags = NULL;
   
   unsigned long int sip = 0;
 
@@ -467,9 +467,9 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
     busy = g_strdup ("0");
 
   if (gconf_client_get_bool (client, LDAP_KEY "visible", NULL))
-    ilsa39321630 = g_strdup ("1");
+    sflags = g_strdup ("1");
   else
-    ilsa39321630 = g_strdup ("8");
+    sflags = g_strdup ("0");
   
   if (gconf_client_get_bool (client, "/apps/gnomemeeting/video_settings/enable_video_transmission", NULL))
     ilsa32964638 = g_strdup ("1");
@@ -508,10 +508,10 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
     entval = xmlStrdup (BAD_CAST firstname);
   else if (!strcmp ((char *) name, "surname"))
     entval = xmlStrdup (BAD_CAST surname);
+  else if (!strcmp ((char *) name, "sflags"))
+    entval = xmlStrdup (BAD_CAST sflags);
   else if (!strcmp ((char *) name, "sappid"))
     entval = xmlStrdup (BAD_CAST "GnomeMeeting");
-  else if (!strcmp ((char *) name, "ilsa39321630"))
-      entval = xmlStrdup (BAD_CAST ilsa39321630);
   else if (!strcmp ((char *) name, "ilsa26279966"))
     entval = xmlStrdup (BAD_CAST version);
   else
@@ -553,7 +553,7 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
   g_free (ip);
   g_free (port);
   g_free (ilsa32964638);
-  g_free (ilsa39321630);
+  g_free (sflags);
   
   return entity;
 }

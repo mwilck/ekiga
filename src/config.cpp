@@ -82,6 +82,8 @@ static void jitter_buffer_changed_nt (GConfClient*, guint, GConfEntry *,
 static void register_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static void ldap_visible_changed_nt (GConfClient*, guint, 
 				     GConfEntry *, gpointer);
+static void stay_on_top_changed_nt (GConfClient*, guint, 
+				    GConfEntry *, gpointer);
 static void do_not_disturb_changed_nt (GConfClient*, guint, 
 				       GConfEntry *, gpointer);
 static void forward_toggle_changed_nt (GConfClient*, guint, GConfEntry *, 
@@ -1344,6 +1346,36 @@ static void do_not_disturb_changed_nt (GConfClient *client, guint cid,
 }
 
 
+/* DESCRIPTION  :  This callback is called when the "stay_on_top" 
+ *                 gconf value changes.
+ * BEHAVIOR     :  Changes the hint for the video windows.
+ * PRE          :  /
+ */
+static void stay_on_top_changed_nt (GConfClient *client, guint cid, 
+				    GConfEntry *entry, gpointer data)
+{
+  GmWindow *gw = NULL;
+  bool val = false;
+
+  if (entry->value->type == GCONF_VALUE_BOOL) {
+
+    gdk_threads_enter ();
+
+    gw = MyApp->GetMainWindow ();
+
+    val = gconf_value_get_bool (entry->value);
+
+    gdk_window_set_always_on_top (GDK_WINDOW (gm->window), val);
+    gdk_window_set_always_on_top (GDK_WINDOW (gw->local_video_window->window), 
+				  val);
+    gdk_window_set_always_on_top (GDK_WINDOW (gw->remote_video_window->window), 
+				  val);
+
+    gdk_threads_leave ();
+  }
+}
+
+
 /* DESCRIPTION    : This is called when any setting related to the druid 
  *                  network speep selecion changes.
  * BEHAVIOR       : Just writes an entry in the gconf database registering 
@@ -1558,9 +1590,16 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
 
 
 #ifdef HAS_SDL
-  gconf_client_notify_add (client, "/apps/gnomemeeting/general/fullscreen_width", adjustment_changed_nt, pw->fullscreen_width, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/general/fullscreen_height", adjustment_changed_nt, pw->fullscreen_height, 0, 0);
+  gconf_client_notify_add (client, VIDEO_DISPLAY_KEY "fullscreen_width", 
+			   adjustment_changed_nt, pw->fullscreen_width, 0, 0);
+  gconf_client_notify_add (client, VIDEO_DISPLAY_KEY "fullscreen_height", 
+			   adjustment_changed_nt, pw->fullscreen_height, 0, 0);
 #endif
+
+  gconf_client_notify_add (client, VIDEO_DISPLAY_KEY "stay_on_top", 
+			   toggle_changed_nt, pw->stay_on_top, 0, 0);
+  gconf_client_notify_add (client, VIDEO_DISPLAY_KEY "stay_on_top", 
+			   stay_on_top_changed_nt, pw->stay_on_top, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/incoming_call_sound", toggle_changed_nt, pw->incoming_call_sound, 0, 0);
   gconf_client_notify_add (client, GENERAL_KEY "auto_clear_text_chat", toggle_changed_nt, pw->auto_clear_text_chat, 0, 0);
@@ -1887,7 +1926,15 @@ void gnomemeeting_gconf_upgrade ()
 			  GCONF_CLIENT_PRELOAD_RECURSIVE, 0);
   }
 
-  
+
+  /* Disable bilinear filtering */
+  if (version < 97) {
+
+    gconf_client_set_bool (client, VIDEO_DISPLAY_KEY "bilinear_filtering", 
+			   false, NULL);
+  }  
+
+
   /* Install the URL Handlers */
   gconf_url = 
     gconf_client_get_string (client, 
