@@ -641,11 +641,6 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 		    gnomemeeting_menu);
 
   /* Update to the initial values */
-#ifdef DISABLE_GNOME
-  gtk_widget_hide (GTK_WIDGET (gnomemeeting_menu [MICROTELCO1_TOOLS_MENU_INDICE].widget));
-  gtk_widget_hide (GTK_WIDGET (gnomemeeting_menu [MICROTELCO2_TOOLS_MENU_INDICE].widget));
-#endif
-
   GTK_CHECK_MENU_ITEM (gnomemeeting_menu [CHAT_WINDOW_VIEW_MENU_INDICE].widget)->active = 
     gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_chat_window",
 			   0);
@@ -681,8 +676,13 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 #endif
 
 #ifndef DISABLE_GNOME
-  if (!gconf_client_get_bool (client, SERVICES_KEY "enable_microtelco", 0)) {
+  if (gconf_client_get_bool (client, SERVICES_KEY "enable_microtelco", 0)) {
 
+    gtk_widget_show (GTK_WIDGET (gnomemeeting_menu [MICROTELCO1_TOOLS_MENU_INDICE].widget));
+    gtk_widget_show (GTK_WIDGET (gnomemeeting_menu [MICROTELCO2_TOOLS_MENU_INDICE].widget));
+  }
+  else {
+    
     gtk_widget_hide (GTK_WIDGET (gnomemeeting_menu [MICROTELCO1_TOOLS_MENU_INDICE].widget));
     gtk_widget_hide (GTK_WIDGET (gnomemeeting_menu [MICROTELCO2_TOOLS_MENU_INDICE].widget));
   }
