@@ -132,11 +132,14 @@ void about_callback (GtkWidget *widget, gpointer data)
       "Alex Larsson <alexl@redhat.com>",
       "Christopher R. Gabriel  <cgabriel@cgabriel.org>",
       "Kenneth Rohde Christiansen  <kenneth@gnu.org>",
-      "Miguel Rodríguez Pérez <migrax@terra.es>",
+      /* Translators: If your encoding allows it, use iacute (U00ED) for
+         the 'i' of 'Rodriguez' and eacute (U00E9) for the first 'e' of
+         'Perez'. */
+      N_("Miguel Rodriguez Perez <migrax@terra.es>"),
       "Roger Hardiman <roger@freebsd.org>",
       "",
       N_("I18n Maintainer:"),
-      "Christian Rose <menthos@menthos.com>",
+      "Christian Rose <menthos@gnu.org>",
       NULL
     };
 	
