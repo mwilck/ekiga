@@ -3759,9 +3759,11 @@ rename_contact_section (const char *contact_section_old,
   
   GConfClient *client = NULL;
 
-  if (!contact_section_old || !contact_section_new)
-    return;
-  
+ /* Do nothing if no contact section is specified or if they are 
+  * identical */
+  if (!contact_section_old || !contact_section_new || !strcmp
+		  (contact_section_new, contact_section_old))
+  return; 
   client = gconf_client_get_default ();
 
   for (int i = 0 ; i < 2 ; i++) {
