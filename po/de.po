@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: GnomeMeeting HEAD\n"
-"POT-Creation-Date: 2002-09-03 00:53+0200\n"
-"PO-Revision-Date: 2002-09-03 00:52+0100\n"
+"POT-Creation-Date: 2002-09-05 16:17+0200\n"
+"PO-Revision-Date: 2002-09-05 16:16+0100\n"
 "Last-Translator: Christian Neumair <christian-neumair@web.de>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -51,6 +51,7 @@ msgstr "Audio-Aufnahme"
 
 #. The toggles
 #: gnomemeeting.schemas.in.in.h:7 src/menu.cpp:487 src/pref_window.cpp:1249
+#: src/tray.cpp:184
 msgid "Auto Answer"
 msgstr "Automatisch entgegennehmen"
 
@@ -561,10 +562,6 @@ msgstr "Betreuer für Internationalisierung:"
 msgid "translator_credits"
 msgstr "Stefan Brüns"
 
-#: src/callbacks.cpp:171
-msgid "Copyright  2000, 2002 Damien Sandras"
-msgstr "(C) 2000, 2002 Damien Sandras"
-
 #. Translators: Please test to see if your translation
 #. * looks OK and fits within the box
 #: src/callbacks.cpp:174
@@ -577,11 +574,11 @@ msgstr ""
 
 #: src/callbacks.cpp:212
 msgid ""
-"An error has happened in the configuration backend\n"
-"Maybe some of your settings won't be stored"
+"An error has happened in the configuration backend.\n"
+"Maybe ome of your settings won't be stored."
 msgstr ""
 "Im Konfigurations-Backend ist ein Fehler aufgetreten\n"
-"Es kann sein, dass einige der Einstellungen nicht gespeichert wurden"
+"Möglicherweise können einige Ihrer Einstellungen nicht gespeichert werden."
 
 #: src/chat_window.cpp:356 src/menu.cpp:376
 msgid "Text Chat"
@@ -1054,73 +1051,73 @@ msgstr "H.245-Tunnel aktiviert"
 msgid "H.245 Tunnelling disabled"
 msgstr "H.245-Tunnel deaktiviert"
 
-#: src/endpoint.cpp:1287
+#: src/endpoint.cpp:1288
 msgid "Remote party has cleared the call"
 msgstr "Gegenseite hat Verbindung beendet"
 
-#: src/endpoint.cpp:1291
+#: src/endpoint.cpp:1292
 msgid "Remote party has stopped calling"
 msgstr "Gegenseite ruft nicht mehr an"
 
-#: src/endpoint.cpp:1295 src/endpoint.cpp:1319
+#: src/endpoint.cpp:1296 src/endpoint.cpp:1320
 msgid "Remote party did not accept your call"
 msgstr "Gegenseite hat Verbindungsaufbau abgelehnt"
 
-#: src/endpoint.cpp:1299
+#: src/endpoint.cpp:1300
 msgid "Remote party was busy"
 msgstr "Gegenseite war besetzt"
 
-#: src/endpoint.cpp:1303
+#: src/endpoint.cpp:1304
 msgid "Congested link to remote party"
 msgstr "Verbindung zur Gegenseite ausgelastet"
 
-#: src/endpoint.cpp:1307
+#: src/endpoint.cpp:1308
 msgid "Remote party did not answer your call"
 msgstr "Gegenseite hat Anruf nicht entgegengenommen"
 
-#: src/endpoint.cpp:1311
+#: src/endpoint.cpp:1312
 msgid "This call ended abnormally"
 msgstr "Verbindung wurde unerwartet beendet"
 
-#: src/endpoint.cpp:1315
+#: src/endpoint.cpp:1316
 msgid "Could not find common codec with remote party"
 msgstr "Gemeinsamer Codec mit Gegenseite konnte nicht gefunden werden"
 
-#: src/endpoint.cpp:1323
+#: src/endpoint.cpp:1324
 msgid "Refused incoming call"
 msgstr "Eingehender Anruf wurde abgelehnt"
 
-#: src/endpoint.cpp:1327 src/urlhandler.cpp:174 src/urlhandler.cpp:175
+#: src/endpoint.cpp:1328 src/urlhandler.cpp:174 src/urlhandler.cpp:175
 msgid "User not found"
 msgstr "Benutzer nicht gefunden"
 
-#: src/endpoint.cpp:1331
+#: src/endpoint.cpp:1332
 msgid "Call ended: insufficient bandwidth"
 msgstr "Verbindungsaufbau beendet, Bandbreite nicht ausreichend"
 
-#: src/endpoint.cpp:1335
+#: src/endpoint.cpp:1336
 msgid "Remote party could not be reached"
 msgstr "Gegenseite konnte nicht erreicht werden"
 
-#: src/endpoint.cpp:1339
+#: src/endpoint.cpp:1340
 msgid "Remote party is offline"
 msgstr "Gegenseite ist offline"
 
-#: src/endpoint.cpp:1343
+#: src/endpoint.cpp:1344
 msgid "Transport Error calling"
 msgstr "Fehler bei Verbindungsaufbau"
 
-#: src/endpoint.cpp:1347
+#: src/endpoint.cpp:1348
 msgid "Call completed"
 msgstr "Verbindung beendet"
 
-#: src/endpoint.cpp:1358
+#: src/endpoint.cpp:1359
 #, c-format
 msgid "Call duration: %.2ld:%.2ld:%.2ld"
 msgstr "Anrufdauer: %.2ld:%.2ld:%.2ld"
 
 #. The second one with some labels
-#: src/endpoint.cpp:1446 src/main_window.cpp:1409
+#: src/endpoint.cpp:1451 src/main_window.cpp:1409
 msgid ""
 "Sent/Received:\n"
 "Lost/Late Packets:\n"
@@ -1130,11 +1127,11 @@ msgstr ""
 "Verlorene/Verspätete Pakete:\n"
 "Verzögerung hin und zurück:"
 
-#: src/endpoint.cpp:1564
+#: src/endpoint.cpp:1569
 msgid "Attaching lid hardware to codec"
 msgstr "lid-Hardware wird zu Codecs hinzugefügt"
 
-#: src/endpoint.cpp:1584
+#: src/endpoint.cpp:1589
 msgid ""
 "Could not open audio channel for audio transmission (soundcard busy?).\n"
 " Disabling audio transmission."
@@ -1143,7 +1140,7 @@ msgstr ""
 "belegt?).\n"
 " Audio-Übertragung wird deaktiviert."
 
-#: src/endpoint.cpp:1586
+#: src/endpoint.cpp:1591
 msgid ""
 "Could not open audio channel for audio reception (soundcard busy?).\n"
 " Disabling audio reception."
@@ -1667,7 +1664,7 @@ msgstr "Festlegen der Einstellungen"
 msgid "_Connect"
 msgstr "_Verbinden"
 
-#: src/menu.cpp:464 src/tray.cpp:131
+#: src/menu.cpp:464 src/tray.cpp:161
 msgid "Create A New Connection"
 msgstr "Eine neue Verbindung herstellen"
 
@@ -1675,7 +1672,7 @@ msgstr "Eine neue Verbindung herstellen"
 msgid "_Disconnect"
 msgstr "_Trennen"
 
-#: src/menu.cpp:471 src/tray.cpp:138
+#: src/menu.cpp:471 src/tray.cpp:168
 msgid "Close The Current Connection"
 msgstr "Aktuelle Verbindung schließen"
 
@@ -1771,11 +1768,11 @@ msgstr ""
 "Anruf von %s\n"
 "%s wird benutzt"
 
-#: src/misc.cpp:322 src/tray.cpp:131
+#: src/misc.cpp:322 src/tray.cpp:161
 msgid "Connect"
 msgstr "Verbinden"
 
-#: src/misc.cpp:324 src/tray.cpp:138
+#: src/misc.cpp:324 src/tray.cpp:168
 msgid "Disconnect"
 msgstr "Verbindung beenden"
 
@@ -2429,13 +2426,25 @@ msgstr ""
 "Video-Übertragungs-Status. Während einer Verbindung hier klicken, um die "
 "Video-Übertragung anzuhalten."
 
-#: src/tray.cpp:146
-msgid "Show/Hide Main Window"
-msgstr "Hauptfenster anzeigen/verbergen"
+#: src/tray.cpp:177
+msgid "Do not Disturb"
+msgstr "Bitte nicht stören"
 
-#: src/tray.cpp:146
-msgid "Show/hide The Main Window"
-msgstr "Das Hauptfenster anzeigen oder verbergen"
+#: src/tray.cpp:177
+msgid "Do Not Accept Calls"
+msgstr "Anrufe abweisen"
+
+#: src/tray.cpp:184
+msgid "Automatically Answer Calls"
+msgstr "Anrufe automatisch beantworten"
+
+#: src/tray.cpp:193
+msgid "Show Main Window"
+msgstr "Hauptfenster zeigen"
+
+#: src/tray.cpp:193
+msgid "Show The Main Window"
+msgstr "Das Hauptfenster zeigen"
 
 #: src/urlhandler.cpp:128
 msgid "Searching for user"
