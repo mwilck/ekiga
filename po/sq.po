@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-11-03 20:02+0100\n"
-"PO-Revision-Date: 2004-11-04 02:10+0100\n"
+"POT-Creation-Date: 2004-11-10 12:03+0100\n"
+"PO-Revision-Date: 2004-11-10 19:03+0100\n"
 "Last-Translator: Jonita Prifti <jonita@jonita.net>\n"
 "Language-Team: Albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -17,8 +17,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit"
 
 #. Add the window icon and title
-#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:3715
-#: src/main_window.cpp:3904
+#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:3716
+#: src/main_window.cpp:3905
 msgid "GnomeMeeting"
 msgstr "GnomeMeeting"
 
@@ -1397,7 +1397,7 @@ msgid "On LDAP servers"
 msgstr "Në servera LDAP"
 
 #. Init the address book
-#: src/addressbook_window.cpp:2336 src/gnomemeeting.cpp:404
+#: src/addressbook_window.cpp:2336 src/gnomemeeting.cpp:418
 msgid "On This Computer"
 msgstr "Në Këtë Kompjuter"
 
@@ -2073,8 +2073,8 @@ msgid "Configuration complete - page %d/%d"
 msgstr "Konfigurimi i mbaruar - faqja %d/%d"
 
 #: src/druid.cpp:1432 src/druid.cpp:1692 src/druid.cpp:1709 src/druid.cpp:1775
-#: src/endpoint.cpp:1789 src/gnomemeeting.cpp:258 src/gnomemeeting.cpp:260
-#: src/gnomemeeting.cpp:262 src/sound_handling.cpp:573
+#: src/endpoint.cpp:1789 src/gnomemeeting.cpp:269 src/gnomemeeting.cpp:271
+#: src/gnomemeeting.cpp:273 src/sound_handling.cpp:573
 #: src/sound_handling.cpp:574 src/videograbber.cpp:310
 #: src/videograbber.cpp:571
 msgid "No device found"
@@ -2434,14 +2434,14 @@ msgstr "Ndalon thirrjen në veprim"
 msgid "Refusing Incoming call"
 msgstr "Refuzim i thirrjes që vjen"
 
-#: src/gnomemeeting.cpp:404
+#: src/gnomemeeting.cpp:418
 msgid "Personal"
 msgstr "Personale"
 
-#: src/gnomemeeting.cpp:465
+#: src/gnomemeeting.cpp:479
 #, c-format
-msgid "Started GnomeMeeting V%d.%d.%d for %s\n"
-msgstr "GnomeMeeting V%d.%d.%d u nis për %s\n"
+msgid "Started GnomeMeeting %d.%d.%d for user %s"
+msgstr "GnomeMeeting %d.%d.%d u nis për përdoruesin %s"
 
 #: src/ils.cpp:101
 msgid "Invalid parameters"
@@ -2641,7 +2641,7 @@ msgstr "Thirrjet e transferuara"
 msgid "Speed dials"
 msgstr "Telefonatat e shpejta"
 
-#: src/main_window.cpp:974 src/main_window.cpp:2889
+#: src/main_window.cpp:974 src/main_window.cpp:2890
 msgid "_Hold Call"
 msgstr "_Pushim i thirrjes"
 
@@ -2657,7 +2657,7 @@ msgstr "_Transferim i thirrjes"
 msgid "Transfer the current call"
 msgstr "Transferon thirrjen e tanishme"
 
-#: src/main_window.cpp:986 src/main_window.cpp:2923
+#: src/main_window.cpp:986 src/main_window.cpp:2924
 msgid "Suspend _Audio"
 msgstr "Pezullim i zërit"
 
@@ -2665,7 +2665,7 @@ msgstr "Pezullim i zërit"
 msgid "Suspend or resume the audio transmission"
 msgstr "Pezullon ose rimerr transmetimin e zërit"
 
-#: src/main_window.cpp:991 src/main_window.cpp:2925
+#: src/main_window.cpp:991 src/main_window.cpp:2926
 msgid "Suspend _Video"
 msgstr "Pezullim i videos"
 
@@ -2777,7 +2777,7 @@ msgstr "_Pastro Tekstin e Bisedës"
 msgid "Clear the text chat"
 msgstr "Fshin tekstin e bisedës"
 
-#: src/main_window.cpp:1083 src/main_window.cpp:3856
+#: src/main_window.cpp:1083 src/main_window.cpp:3857
 msgid "Local Video"
 msgstr "Video lokale"
 
@@ -2785,7 +2785,7 @@ msgstr "Video lokale"
 msgid "Local video image"
 msgstr "Figura e videos lokale"
 
-#: src/main_window.cpp:1089 src/main_window.cpp:3862
+#: src/main_window.cpp:1089 src/main_window.cpp:3863
 msgid "Remote Video"
 msgstr "Video e largët"
 
@@ -2889,7 +2889,7 @@ msgstr "_Informacione"
 msgid "View information about GnomeMeeting"
 msgstr "Shfaq informacionet rreth GnomeMeeting"
 
-#: src/main_window.cpp:1248 src/main_window.cpp:4046
+#: src/main_window.cpp:1248 src/main_window.cpp:4047
 msgid ""
 "Lost packets:\n"
 "Late packets:\n"
@@ -2934,51 +2934,51 @@ msgstr "Zëri"
 msgid "Sent DTMF %s"
 msgstr "Dërgo DTMF %s"
 
-#: src/main_window.cpp:2873
+#: src/main_window.cpp:2874
 msgid "_Retrieve Call"
 msgstr "_Rimarrje e thirrjes"
 
-#: src/main_window.cpp:2927
+#: src/main_window.cpp:2928
 msgid "Resume _Audio"
 msgstr "Rimarrje e zërit"
 
-#: src/main_window.cpp:2929
+#: src/main_window.cpp:2930
 msgid "Resume _Video"
 msgstr "Rimarrje e videos"
 
-#: src/main_window.cpp:3543
+#: src/main_window.cpp:3544
 msgid "Transfer call to:"
 msgstr "Transfero thirrjen drejt:"
 
-#: src/main_window.cpp:3544 src/main_window.cpp:3617
+#: src/main_window.cpp:3545 src/main_window.cpp:3618
 msgid "Transfer"
 msgstr "Transferimi"
 
-#: src/main_window.cpp:3615
+#: src/main_window.cpp:3616
 msgid "Reject"
 msgstr "Refuzim"
 
-#: src/main_window.cpp:3619
+#: src/main_window.cpp:3620
 msgid "Accept"
 msgstr "Prano"
 
-#: src/main_window.cpp:3627
+#: src/main_window.cpp:3628
 msgid "Incoming call from"
 msgstr "Thirrje që vjen nga"
 
-#: src/main_window.cpp:3640
+#: src/main_window.cpp:3641
 msgid "Remote URL:"
 msgstr "URL e Korrespondentit:"
 
-#: src/main_window.cpp:3652
+#: src/main_window.cpp:3653
 msgid "Remote Application:"
 msgstr "Programi i Korrespondentit:"
 
-#: src/main_window.cpp:3976
+#: src/main_window.cpp:3977
 msgid "Click to clear"
 msgstr "Kliko për të fshirë"
 
-#: src/main_window.cpp:4072
+#: src/main_window.cpp:4073
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2991,20 +2991,20 @@ msgstr ""
 "Vonesa vajtje-ardhje: %d ms\n"
 "Jitter buffer: %d ms"
 
-#: src/main_window.cpp:4181
+#: src/main_window.cpp:4185
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr ""
 "Shfaq mesazhet e debugimit në panelën e kontrollit (nivel midis 1 dhe 6)"
 
-#: src/main_window.cpp:4184
+#: src/main_window.cpp:4188
 msgid "Makes GnomeMeeting call the given URL"
 msgstr "Bën që GnomeMeeting të marri  URL callto:// të caktuar"
 
-#: src/main_window.cpp:4219
+#: src/main_window.cpp:4223
 msgid "No usable audio plugin detected"
 msgstr "Nuk u gjet asnjë plugin audio i përdorshëm"
 
-#: src/main_window.cpp:4219
+#: src/main_window.cpp:4223
 msgid ""
 "GnomeMeeting didn't find any usable audio plugin. Make sure that your "
 "installation is correct."
@@ -3012,7 +3012,7 @@ msgstr ""
 "GnomeMeeting nuk gjeti asnjë plugin zëri të përdorshëm. Sigurohu që "
 "instalimi është i saktë."
 
-#: src/main_window.cpp:4241
+#: src/main_window.cpp:4245
 #, c-format
 msgid ""
 "GnomeMeeting got an invalid value for the GConf key %s.\n"
@@ -3035,7 +3035,7 @@ msgstr ""
 "gconf/) ose arkivën e mailing listës për më shumë informacione rreth këtij "
 "problemi (http://mail.gnome.org)."
 
-#: src/main_window.cpp:4244
+#: src/main_window.cpp:4248
 msgid "Gconf key error"
 msgstr "Gabim çelësi Gconf"
 
@@ -3932,8 +3932,8 @@ msgid ""
 "Your system does not need any specific configuration as long as you do not "
 "have a local firewall blocking the ports required by GnomeMeeting."
 msgstr ""
-"Sistemi yt nuk ka nevojë për ndonjë konfigurim të veçantë për sa kohë nuk "
-"ke një firewall lokal i cili bllokon portat që përdor GnomeMeeting."
+"Sistemi yt nuk ka nevojë për ndonjë konfigurim të veçantë për sa kohë nuk ke "
+"një firewall lokal i cili bllokon portat që përdor GnomeMeeting."
 
 #: src/stunclient.cpp:166
 msgid ""
@@ -3947,11 +3947,11 @@ msgid ""
 msgstr ""
 "GnomeMeeting zbuloi një NAT Simetrik/Firewall Simetrik. Mënyra më e "
 "përshtatshme nëse router-i yt nuk e suporton vetë H.323, është transferimi i "
-"portave të duhura për ta ndryshuar NAT-in Simetrik në një NAT Konik "
-"dhe ekzekutimi i këtij testi për së dyti. Në këtë mënyrë duhet të zbulojë "
-"NAT Konik, dhe të lejojë përdorimin e GnomeMeeting me një suport STUN. Nëse "
-"nuk arrin të zbulojë NAT Konik pas transferimit të portave, do të thotë që "
-"pati një problem me rregullat e transferimit."
+"portave të duhura për ta ndryshuar NAT-in Simetrik në një NAT Konik dhe "
+"ekzekutimi i këtij testi për së dyti. Në këtë mënyrë duhet të zbulojë NAT "
+"Konik, dhe të lejojë përdorimin e GnomeMeeting me një suport STUN. Nëse nuk "
+"arrin të zbulojë NAT Konik pas transferimit të portave, do të thotë që pati "
+"një problem me rregullat e transferimit."
 
 #: src/stunclient.cpp:172
 msgid ""
@@ -3972,8 +3972,8 @@ msgid ""
 "\n"
 "Enable STUN Support?"
 msgstr ""
-"GnomeMeeting zbuloi NAT %s. Përdorimi i  një serveri STUN është mënyra "
-"më e përshtatshme nëse router-i yt nuk suporton H.323.\n"
+"GnomeMeeting zbuloi NAT %s. Përdorimi i  një serveri STUN është mënyra më e "
+"përshtatshme nëse router-i yt nuk suporton H.323.\n"
 "Kujdes, pasi suporti STUN nuk mjafton nëse dëshiron të kontaktosh klientë "
 "H.323 të cilët nuk suportojnë H.245 Tunneling si p.sh. Netmeeting. Në këtë "
 "rast duhet të përdorësh përkthimin e zakonshëm të IP-së dhe transferimin e "
@@ -3994,45 +3994,46 @@ msgstr "Lloji i NAT-it u zbulua me sukses"
 msgid "Set STUN server to %s"
 msgstr "Cakto serverin STUN tek %s"
 
-#: src/tools.cpp:178 src/tools.cpp:192
+#: src/tools.cpp:168 src/tools.cpp:182
 msgid "PC-To-Phone Settings"
 msgstr "Konfigurimi PC-Telefon"
 
-#: src/tools.cpp:181
+#: src/tools.cpp:171
 msgid ""
 "You can make calls to regular phones and cell numbers worldwide using "
-"GnomeMeeting. To enable this you need to register an account using the URL "
+"GnomeMeeting. To enable this, you need to register an account using the URL "
 "below, then enter your Account number and PIN, and finally enable "
 "registering to the GnomeMeeting PC-To-Phone service.\n"
 "\n"
-"Please make sure you are using the URL below to get your account or the "
-"service will not work."
+"Please make sure you are using the URL below to get your account otherwise "
+"the service will not work."
 msgstr ""
 "Mund të kryesh thirrje me numra telefonësh normalë dhe celularësh në të "
 "gjithë botën duke përdorur GnomeMeeting. Për të aktivizuar këtë duhet të "
-"futësh numrin e Llogarisë tënde dhe kodin PIN këtu poshtë, pastaj të aktivizosh "
-"regjistrimin në shërbimin GnomeMeeting PC-Telefon.\n"
+"regjistrohesh në URL këtu poshtë, më pas të futësh numrin e Llogarisë tënde"
+" dhe kodin PIN, e më në fund të aktivizosh regjistrimin në shërbimin "
+"GnomeMeeting PC-Telefon.\n"
 "\n"
 "Të lutem sigurohu që po përdor një URL këtu poshtë për të patur llogarinë, "
 "përndryshe shërbimi nuk do të punojë."
 
-#: src/tools.cpp:194
+#: src/tools.cpp:184
 msgid "Account _number:"
 msgstr "N_umri i llogarisë:"
 
-#: src/tools.cpp:194
+#: src/tools.cpp:184
 msgid "Use your MicroTelco account number"
 msgstr "Përdor numrin e llogarisë MicroTelco"
 
-#: src/tools.cpp:197
+#: src/tools.cpp:187
 msgid "_Pin:"
 msgstr "_Kodi:"
 
-#: src/tools.cpp:197
+#: src/tools.cpp:187
 msgid "Use your MicroTelco PIN"
 msgstr "Përdor kodin (PIN) MicroTelco"
 
-#: src/tools.cpp:201
+#: src/tools.cpp:193
 msgid "Use PC-To-Phone service"
 msgstr "Përdor shërbimin PC-Telefon"
 
@@ -4044,13 +4045,22 @@ msgstr ""
 "Kliko një nga adresat e mëposhtme për të patur më shumë informacione rreth "
 "llogarisë tëde GnomeMeeting PC-Telefon ose për të krijuar një llogari të re."
 
-#: src/tools.cpp:210
+#. Get an account, good idea
+#: src/tools.cpp:212
 msgid "Get a GnomeMeeting PC-To-Phone account"
 msgstr "Krijo një llogari GnomeMeeting PC-Telefon"
 
-#: src/tools.cpp:215
-msgid "Consult my account details"
-msgstr "Këshillo detajet e llogarisë time"
+#: src/tools.cpp:220
+msgid "Recharge the account"
+msgstr "Ringarko llogarinë"
+
+#: src/tools.cpp:234
+msgid "Consult the balance history"
+msgstr "Këshillo historikun e barazpeshës"
+
+#: src/tools.cpp:248
+msgid "Consult the calls history"
+msgstr "Këshillo historikun e thirrjeve"
 
 #: src/tray.cpp:241
 msgid "GnomeMeeting Tray Icon"
@@ -4215,6 +4225,9 @@ msgstr "Gabim tek numri i kapjeve të transmetuara për sekondë."
 #: src/videograbber.cpp:688
 msgid "Error with the frame size."
 msgstr "Gabim në masën e kapjes së zgjedhur."
+
+#~ msgid "Consult my account details"
+#~ msgstr "Këshillo detajet e llogarisë time"
 
 #~ msgid "Get an account"
 #~ msgstr "Krijoni një konto"
