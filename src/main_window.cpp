@@ -820,7 +820,9 @@ gnomemeeting_init (GmWindow *gw,
   gnomemeeting_popup_menu_init (gw->video_image);
   gnomemeeting_video_submenu_set_sensitive (FALSE);
   gnomemeeting_zoom_submenu_set_sensitive (FALSE);
+#ifdef HAS_SDL
   gnomemeeting_fullscreen_option_set_sensitive (FALSE);
+#endif
 
 
   /* The gtk_widget_show (gm) will show the toolbar, hide it if needed */
