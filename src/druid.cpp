@@ -46,13 +46,15 @@
 
 #include "dialog.h"
 #include "stock-icons.h"
-#include "gnome_prefs_window.h"
 #include "gconf_widgets_extensions.h"
 
 
 /* Declarations */
-static void audio_test_button_clicked (GtkWidget *, gpointer);
-static void video_test_button_clicked (GtkWidget *, gpointer);
+static void audio_test_button_clicked (GtkWidget *,
+				       gpointer);
+
+static void video_test_button_clicked (GtkWidget *,
+				       gpointer);
 
 static void gnomemeeting_druid_get_data (gchar *&,
 					 gchar *&,
@@ -87,7 +89,6 @@ extern GtkWidget *gm;
 
 
 /* GTK Callbacks */
-
 static void
 audio_test_button_clicked (GtkWidget *w,
 			   gpointer data)
@@ -125,7 +126,8 @@ audio_test_button_clicked (GtkWidget *w,
 
 
 static void
-video_test_button_clicked (GtkWidget *w, gpointer data)
+video_test_button_clicked (GtkWidget *w,
+			   gpointer data)
 {
   GMVideoTester *t = NULL;
 
@@ -496,6 +498,12 @@ gnomemeeting_druid_page_prepare (GnomeDruidPage *page,
   int kind_of_net = 0;
   
   char **array = NULL;
+  char *options [] =
+    {_("56k Modem"),
+     _("ISDN"),
+     _("xDSL/Cable"),
+     _("T1/LAN"),
+     _("Keep current settings"), NULL};
 
   GtkWidget *child = NULL;
 
@@ -512,6 +520,10 @@ gnomemeeting_druid_page_prepare (GnomeDruidPage *page,
   }
   else if (GPOINTER_TO_INT (data) == 2) {
 
+  /* When the first page is displayed, and only during that time,
+     we update the firstname, lastname, the audio / video managers menus,
+     the connection type menu to the default GConf values */
+
     firstname = gconf_get_string (PERSONAL_DATA_KEY "firstname");
     lastname = gconf_get_string (PERSONAL_DATA_KEY "lastname");
 
@@ -519,19 +531,12 @@ gnomemeeting_druid_page_prepare (GnomeDruidPage *page,
 
       if (firstname && lastname
 	  && strcmp (firstname, "") && strcmp (lastname, "")) {
-	
+
 	text = g_strdup_printf ("%s %s", firstname, lastname);
 	gtk_entry_set_text (GTK_ENTRY (dw->name), text);
 	g_free (text);
       }
     }
-
-    gnomemeeting_druid_personal_data_check (druid, GPOINTER_TO_INT (data));
-
-    g_free (firstname);
-    g_free (lastname);
-  }
-  else if (GPOINTER_TO_INT (data) == 3) {
 
     mail = gconf_get_string (PERSONAL_DATA_KEY "mail");
 
@@ -539,33 +544,33 @@ gnomemeeting_druid_page_prepare (GnomeDruidPage *page,
 	&& mail)
       gtk_entry_set_text (GTK_ENTRY (dw->mail), mail);
 
-    gnomemeeting_druid_personal_data_check (druid, GPOINTER_TO_INT (data));
-
-    g_free (mail);
-  }
-  else if (GPOINTER_TO_INT (data) == 4) {
-
-    char *options [] =
-      {_("56k Modem"),
-       _("ISDN"),
-       _("xDSL/Cable"),
-       _("T1/LAN"),
-       _("Keep current settings"), NULL};
-
-    kind_of_net = gconf_get_int (GENERAL_KEY "kind_of_net") + 1;
+    kind_of_net = gconf_get_int (GENERAL_KEY "kind_of_net");
     option_menu_update (dw->kind_of_net, options, NULL);
     gtk_option_menu_set_history (GTK_OPTION_MENU (dw->kind_of_net),
-				 kind_of_net);    
-    gnome_druid_set_buttons_sensitive (druid, TRUE, TRUE, TRUE, FALSE);
-  }
-  else if (GPOINTER_TO_INT (data) == 5) {
+				 kind_of_net - 1);
 
     array = gw->audio_managers.ToCharArray ();
     audio_manager = gconf_get_string (DEVICES_KEY "audio_manager");
     option_menu_update (dw->audio_manager, array, audio_manager);
-
     free (array);
-    g_free (audio_manager);
+    
+    array = gw->video_managers.ToCharArray ();
+    video_manager = gconf_get_string (DEVICES_KEY "video_manager");
+    option_menu_update (dw->video_manager, array, video_manager);
+    free (array);
+    
+    g_free (video_manager);
+    g_free (audio_manager);    
+    g_free (mail);
+    g_free (firstname);
+    g_free (lastname);
+  }
+
+
+  if (GPOINTER_TO_INT (data) == 2
+	   || GPOINTER_TO_INT (data) == 3) {	   	   
+
+    gnomemeeting_druid_personal_data_check (druid, GPOINTER_TO_INT (data));
   }
   else if (GPOINTER_TO_INT (data) == 6) {
 
@@ -617,15 +622,6 @@ gnomemeeting_druid_page_prepare (GnomeDruidPage *page,
     
     g_free (player);
     g_free (recorder);
-  }
-  else if (GPOINTER_TO_INT (data) == 7) {
-
-    array = gw->video_managers.ToCharArray ();
-    video_manager = gconf_get_string (DEVICES_KEY "video_manager");
-    option_menu_update (dw->video_manager, array, video_manager);
-
-    free (array);
-    g_free (video_manager);
   }
   else if (GPOINTER_TO_INT (data) == 8) {
 
@@ -696,7 +692,7 @@ gnomemeeting_init_druid_personal_data_page (GnomeDruid *druid, int p, int t)
   gnome_druid_page_standard_set_title (GNOME_DRUID_PAGE_STANDARD (page),
 				       title);
   g_free (title);
-				
+  
   gnome_druid_append_page (druid, GNOME_DRUID_PAGE (page));
 
   
@@ -854,17 +850,12 @@ gnomemeeting_init_druid_connection_type_page (GnomeDruid *druid,
   gtk_box_pack_start (GTK_BOX (vbox), dw->kind_of_net, FALSE, FALSE, 0);
 
   label = gtk_label_new (NULL);
-  text = g_strdup_printf ("<i>%s</i>", _("The connection type is ... Hahaha."));
+  text = g_strdup_printf ("<i>%s</i>", _("The connection type will permit determining the best quality settings that GnomeMeeting will use during calls. You can later change the settings individually in the preferences window."));
   gtk_label_set_markup (GTK_LABEL (label), text);
   g_free (text);
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, TRUE, 0);
-
-  g_signal_connect_after (G_OBJECT (page_standard), "prepare",
-			  G_CALLBACK (gnomemeeting_druid_page_prepare), 
-			  GINT_TO_POINTER (p));
-
 
   gtk_box_pack_start (GTK_BOX (page_standard->vbox), GTK_WIDGET (vbox), 
 		      TRUE, TRUE, 8);
@@ -926,10 +917,6 @@ gnomemeeting_init_druid_audio_manager_page (GnomeDruid *druid,
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, TRUE, 0);
 #endif
-
-  g_signal_connect_after (G_OBJECT (page_standard), "prepare",
-			  G_CALLBACK (gnomemeeting_druid_page_prepare), 
-			  GINT_TO_POINTER (p));
 
 
   gtk_box_pack_start (GTK_BOX (page_standard->vbox), GTK_WIDGET (vbox), 
@@ -1090,11 +1077,6 @@ gnomemeeting_init_druid_video_manager_page (GnomeDruid *druid,
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, TRUE, 0);
 #endif
-
-  g_signal_connect_after (G_OBJECT (page_standard), "prepare",
-			  G_CALLBACK (gnomemeeting_druid_page_prepare), 
-			  GINT_TO_POINTER (p));
-
 
   gtk_box_pack_start (GTK_BOX (page_standard->vbox), GTK_WIDGET (vbox), 
 		      TRUE, TRUE, 8);

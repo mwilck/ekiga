@@ -1,3 +1,11 @@
+2003-11-04 Damien Sandras  <dsandras@seconix.com>
+
+	* src/druid.cpp: Do not reset to the GConf value each time
+	Next is pressed, but do it one time for all widgets when the
+	first page is displayed.
+
+	* src/videograbber.cpp: Use bold messages for video tests.
+	
 2003-11-03 Damien Sandras  <dsandras@seconix.com>
 
 	* src/druid.cpp: Fixed connection type. It is now initialized

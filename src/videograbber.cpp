@@ -602,6 +602,7 @@ void GMVideoTester::Main ()
   int cpt = 0;
 
   gchar *msg = NULL;
+  gchar *tmp = NULL;
 
   gw = GnomeMeeting::Process ()->GetMainWindow ();
   dw = GnomeMeeting::Process ()->GetDruidWindow ();
@@ -690,10 +691,12 @@ void GMVideoTester::Main ()
     else
       msg = g_strdup_printf (_("Test %d failed"), cpt);
 
+    tmp = g_strdup_printf ("<b>%s</b>", msg);
     gdk_threads_enter ();
-    gtk_label_set_text (GTK_LABEL (test_label), msg);
+    gtk_label_set_text (GTK_LABEL (test_label), tmp);
     gdk_threads_leave ();
     g_free (msg);
+    g_free (tmp);
 
     cpt++;
     PThread::Current () ->Sleep (100);
