@@ -267,7 +267,7 @@ void GMAudioRP::Main ()
   GtkWidget *druid_window = NULL;
   
   PSoundChannel *channel = NULL;
-  GmWindow *gw = NULL;
+
 
 #ifdef HAS_IXJ
   /* We only have one GMLid thread, so use class variables instead
@@ -296,7 +296,6 @@ void GMAudioRP::Main ()
   PWaitAndSignal m(quit_mutex);
   thread_sync_point.Signal ();
 
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
   druid_window = GnomeMeeting::Process ()->GetDruidWindow ();
   ep = GnomeMeeting::Process ()->Endpoint ();
     
@@ -520,7 +519,6 @@ GMAudioRP::GetAverageSignalLevel (const short *buffer, int size)
 #ifndef DISABLE_GNOME
   stop = FALSE;
 
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
   test_dialog = NULL;
   test_label = NULL;
   
