@@ -997,7 +997,8 @@ static void contacts_list_changed_nt (GConfClient *client, guint cid,
       /* This will only add a page to the notebook if there was no page
        * for the given server name */
       page_num = 
-	gnomemeeting_init_ldap_window_notebook ((gchar *) server_name);
+	gnomemeeting_init_ldap_window_notebook ((gchar *) server_name,
+						GPOINTER_TO_INT (data));
     
       gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
       gtk_tree_store_set (GTK_TREE_STORE (model), &child_iter, 0, 

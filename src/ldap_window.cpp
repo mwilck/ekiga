@@ -598,7 +598,8 @@ void gnomemeeting_init_ldap_window ()
      * present */
     p = 
       gnomemeeting_init_ldap_window_notebook ((char *)
-					      ldap_servers_list_iter->data);
+					      ldap_servers_list_iter->data,
+					      CONTACTS_SERVERS);
 
     gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
     gtk_tree_store_set (GTK_TREE_STORE (model),
@@ -628,7 +629,8 @@ void gnomemeeting_init_ldap_window ()
      * present */
     p = 
       gnomemeeting_init_ldap_window_notebook ((char *)
-					      groups_list_iter->data);
+					      groups_list_iter->data,
+					      CONTACTS_GROUPS);
 
     gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
     gtk_tree_store_set (GTK_TREE_STORE (model),
@@ -749,7 +751,7 @@ void gnomemeeting_init_ldap_window ()
 }
 
 
-int gnomemeeting_init_ldap_window_notebook (gchar *text_label)
+int gnomemeeting_init_ldap_window_notebook (gchar *text_label, int type)
 {
   GtkWidget *page = NULL;
   GtkWidget *scroll = NULL;
@@ -781,18 +783,17 @@ int gnomemeeting_init_ldap_window_notebook (gchar *text_label)
   }
 
 
-  xdap_users_list_store = gtk_list_store_new (NUM_COLUMNS,
-					      GDK_TYPE_PIXBUF,
-					      G_TYPE_BOOLEAN,
-					      G_TYPE_BOOLEAN,
-					      G_TYPE_STRING,
-					      G_TYPE_STRING,
-					      G_TYPE_STRING,
-					      G_TYPE_STRING,
-					      G_TYPE_STRING,
-					      G_TYPE_STRING,
-					      G_TYPE_STRING,
-					      G_TYPE_STRING);
+  if (type == CONTACTS_SERVERS)
+    xdap_users_list_store = 
+      gtk_list_store_new (NUM_COLUMNS_SERVERS, GDK_TYPE_PIXBUF, G_TYPE_BOOLEAN,
+			  G_TYPE_BOOLEAN, G_TYPE_STRING, G_TYPE_STRING,
+			  G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING,
+			  G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
+  else
+    xdap_users_list_store = 
+      gtk_list_store_new (NUM_COLUMNS_GROUPS, G_TYPE_STRING, G_TYPE_STRING,
+			  G_TYPE_STRING);
+
 
   vbox = gtk_vbox_new (FALSE, 2);
   scroll = gtk_scrolled_window_new (NULL, NULL);
@@ -808,120 +809,157 @@ int gnomemeeting_init_ldap_window_notebook (gchar *text_label)
 				   COLUMN_FIRSTNAME);
 
   /* Set all Colums */
-  renderer = gtk_cell_renderer_pixbuf_new ();
-  /* Translators: This is "S" as in "Status" */
-  column = gtk_tree_view_column_new_with_attributes (_("S"),
-						     renderer,
-						     "pixbuf", 
-						     COLUMN_STATUS,
-						     NULL);
-  gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 25);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+  if (type == CONTACTS_SERVERS) {
+    
+    renderer = gtk_cell_renderer_pixbuf_new ();
+    /* Translators: This is "S" as in "Status" */
+    column = gtk_tree_view_column_new_with_attributes (_("S"),
+						       renderer,
+						       "pixbuf", 
+						       COLUMN_STATUS,
+						       NULL);
+    gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 25);
+    gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
 
-  renderer = gtk_cell_renderer_toggle_new ();
-  /* Translators: This is "A" as in "Audio" */
-  column = gtk_tree_view_column_new_with_attributes (_("A"),
-						     renderer,
-						     "active", 
-						     COLUMN_AUDIO,
-						     NULL);
-  gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 25);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+    renderer = gtk_cell_renderer_toggle_new ();
+    /* Translators: This is "A" as in "Audio" */
+    column = gtk_tree_view_column_new_with_attributes (_("A"),
+						       renderer,
+						       "active", 
+						       COLUMN_AUDIO,
+						       NULL);
+    gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 25);
+    gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
 
-  renderer = gtk_cell_renderer_toggle_new ();
-  /* Translators: This is "V" as in "Video" */
-  column = gtk_tree_view_column_new_with_attributes (_("V"),
-						     renderer,
-						     "active", 
-						     COLUMN_VIDEO,
-						     NULL);
-  gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 25);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+    renderer = gtk_cell_renderer_toggle_new ();
+    /* Translators: This is "V" as in "Video" */
+    column = gtk_tree_view_column_new_with_attributes (_("V"),
+						       renderer,
+						       "active", 
+						       COLUMN_VIDEO,
+						       NULL);
+    gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 25);
+    gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
 
-  renderer = gtk_cell_renderer_text_new ();
-  column = gtk_tree_view_column_new_with_attributes (_("First Name"),
-						     renderer,
-						     "text", 
-						     COLUMN_FIRSTNAME,
-						     NULL);
-  gtk_tree_view_column_set_sort_column_id (column, COLUMN_FIRSTNAME);
-  gtk_tree_view_column_add_attribute (column, renderer, "foreground", 
-				      COLUMN_COLOR);
-  gtk_tree_view_column_set_resizable (column, true);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+    renderer = gtk_cell_renderer_text_new ();
+    column = gtk_tree_view_column_new_with_attributes (_("First Name"),
+						       renderer,
+						       "text", 
+						       COLUMN_FIRSTNAME,
+						       NULL);
+    gtk_tree_view_column_set_sort_column_id (column, COLUMN_FIRSTNAME);
+    gtk_tree_view_column_add_attribute (column, renderer, "foreground", 
+					COLUMN_COLOR);
+    gtk_tree_view_column_set_resizable (column, true);
+    gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
 
-  renderer = gtk_cell_renderer_text_new ();
-  column = gtk_tree_view_column_new_with_attributes (_("Last Name"),
-						     renderer,
-						     "text", 
-						     COLUMN_LASTNAME,
-						     NULL);
-  gtk_tree_view_column_set_sort_column_id (column, COLUMN_LASTNAME);
-  gtk_tree_view_column_add_attribute (column, renderer, "foreground", 
-				      COLUMN_COLOR);
-  gtk_tree_view_column_set_resizable (column, true);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+    renderer = gtk_cell_renderer_text_new ();
+    column = gtk_tree_view_column_new_with_attributes (_("Last Name"),
+						       renderer,
+						       "text", 
+						       COLUMN_LASTNAME,
+						       NULL);
+    gtk_tree_view_column_set_sort_column_id (column, COLUMN_LASTNAME);
+    gtk_tree_view_column_add_attribute (column, renderer, "foreground", 
+					COLUMN_COLOR);
+    gtk_tree_view_column_set_resizable (column, true);
+    gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
 
-  renderer = gtk_cell_renderer_text_new ();
-  column = gtk_tree_view_column_new_with_attributes (_("E-Mail"),
-						     renderer,
-						     "text", 
-						     COLUMN_EMAIL,
-						     NULL);
-  gtk_tree_view_column_set_sort_column_id (column, COLUMN_EMAIL);
-  gtk_tree_view_column_add_attribute (column, renderer, "foreground", 
-				      COLUMN_COLOR);
-  gtk_tree_view_column_set_resizable (column, true);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+    renderer = gtk_cell_renderer_text_new ();
+    column = gtk_tree_view_column_new_with_attributes (_("E-Mail"),
+						       renderer,
+						       "text", 
+						       COLUMN_EMAIL,
+						       NULL);
+    gtk_tree_view_column_set_sort_column_id (column, COLUMN_EMAIL);
+    gtk_tree_view_column_add_attribute (column, renderer, "foreground", 
+					COLUMN_COLOR);
+    gtk_tree_view_column_set_resizable (column, true);
+    gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
 
-  renderer = gtk_cell_renderer_text_new ();
-  column = gtk_tree_view_column_new_with_attributes (_("Location"),
-						     renderer,
-						     "text", 
-						     COLUMN_LOCATION,
-						     NULL);
-  gtk_tree_view_column_set_sort_column_id (column, COLUMN_LOCATION);
-  gtk_tree_view_column_add_attribute (column, renderer, "foreground", 
-				      COLUMN_COLOR);
-  gtk_tree_view_column_set_resizable (column, true);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+    renderer = gtk_cell_renderer_text_new ();
+    column = gtk_tree_view_column_new_with_attributes (_("Location"),
+						       renderer,
+						       "text", 
+						       COLUMN_LOCATION,
+						       NULL);
+    gtk_tree_view_column_set_sort_column_id (column, COLUMN_LOCATION);
+    gtk_tree_view_column_add_attribute (column, renderer, "foreground", 
+					COLUMN_COLOR);
+    gtk_tree_view_column_set_resizable (column, true);
+    gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
 
-  renderer = gtk_cell_renderer_text_new ();
-  column = gtk_tree_view_column_new_with_attributes (_("Comment"),
-						     renderer,
-						     "text", 
-						     COLUMN_COMMENT,
-						     NULL);
-  gtk_tree_view_column_set_sort_column_id (column, COLUMN_COMMENT);
-  gtk_tree_view_column_add_attribute (column, renderer, "foreground", 
-				      COLUMN_COLOR);
-  gtk_tree_view_column_set_resizable (column, true);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+    renderer = gtk_cell_renderer_text_new ();
+    column = gtk_tree_view_column_new_with_attributes (_("Comment"),
+						       renderer,
+						       "text", 
+						       COLUMN_COMMENT,
+						       NULL);
+    gtk_tree_view_column_set_sort_column_id (column, COLUMN_COMMENT);
+    gtk_tree_view_column_add_attribute (column, renderer, "foreground", 
+					COLUMN_COLOR);
+    gtk_tree_view_column_set_resizable (column, true);
+    gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
 
-  renderer = gtk_cell_renderer_text_new ();
-  column = gtk_tree_view_column_new_with_attributes (_("Version"),
-						     renderer,
-						     "text", 
-						     COLUMN_VERSION,
-						     NULL);
-  gtk_tree_view_column_set_sort_column_id (column, COLUMN_VERSION);
-  gtk_tree_view_column_add_attribute (column, renderer, "foreground", 
-				      COLUMN_COLOR);
-  gtk_tree_view_column_set_resizable (column, true);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+    renderer = gtk_cell_renderer_text_new ();
+    column = gtk_tree_view_column_new_with_attributes (_("Version"),
+						       renderer,
+						       "text", 
+						       COLUMN_VERSION,
+						       NULL);
+    gtk_tree_view_column_set_sort_column_id (column, COLUMN_VERSION);
+    gtk_tree_view_column_add_attribute (column, renderer, "foreground", 
+					COLUMN_COLOR);
+    gtk_tree_view_column_set_resizable (column, true);
+    gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
 
 
-  renderer = gtk_cell_renderer_text_new ();
-  column = gtk_tree_view_column_new_with_attributes (_("IP"),
-						     renderer,
-						     "text", 
-						     COLUMN_IP,
-						     NULL);
-  gtk_tree_view_column_set_sort_column_id (column, COLUMN_IP);
-  gtk_tree_view_column_add_attribute (column, renderer, "foreground", 
-				      COLUMN_COLOR);
-  gtk_tree_view_column_set_resizable (column, true);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+    renderer = gtk_cell_renderer_text_new ();
+    column = gtk_tree_view_column_new_with_attributes (_("IP"),
+						       renderer,
+						       "text", 
+						       COLUMN_IP,
+						       NULL);
+    gtk_tree_view_column_set_sort_column_id (column, COLUMN_IP);
+    gtk_tree_view_column_add_attribute (column, renderer, "foreground", 
+					COLUMN_COLOR);
+    gtk_tree_view_column_set_resizable (column, true);
+    gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+  }
+  else {
+
+    renderer = gtk_cell_renderer_text_new ();
+    column = gtk_tree_view_column_new_with_attributes (_("Name"),
+						       renderer,
+						       "text", 
+						       COLUMN_NAME,
+						       NULL);
+    gtk_tree_view_column_set_sort_column_id (column, COLUMN_NAME);
+    gtk_tree_view_column_set_resizable (column, true);
+    gtk_tree_view_column_set_min_width (GTK_TREE_VIEW_COLUMN (column), 175);
+    gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+
+    renderer = gtk_cell_renderer_text_new ();
+    column = gtk_tree_view_column_new_with_attributes (_("Callto URL"),
+						       renderer,
+						       "text", 
+						       COLUMN_CALLTO,
+						       NULL);
+    gtk_tree_view_column_set_sort_column_id (column, COLUMN_CALLTO);
+    gtk_tree_view_column_set_resizable (column, true);
+    gtk_tree_view_column_set_min_width (GTK_TREE_VIEW_COLUMN (column), 125);
+    gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+
+    renderer = gtk_cell_renderer_text_new ();
+    column = gtk_tree_view_column_new_with_attributes (_("Netmask"),
+						       renderer,
+						       "text", 
+						       COLUMN_NETMASK,
+						       NULL);
+    gtk_tree_view_column_set_sort_column_id (column, COLUMN_EMAIL);
+    gtk_tree_view_column_set_resizable (column, true);
+    gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+  }
 
   gtk_container_add (GTK_CONTAINER (scroll), tree_view);
   gtk_container_set_border_width (GTK_CONTAINER (tree_view), 0);
@@ -930,16 +968,15 @@ int gnomemeeting_init_ldap_window_notebook (gchar *text_label)
   gtk_box_pack_start (GTK_BOX (vbox), scroll, TRUE, TRUE, 0);
   gtk_box_pack_start (GTK_BOX (vbox), statusbar, FALSE, FALSE, 0);
   gtk_statusbar_set_has_resize_grip (GTK_STATUSBAR (statusbar), FALSE);
-  
+
   gtk_notebook_append_page (GTK_NOTEBOOK (lw->notebook), vbox, NULL);
   gtk_widget_show_all (GTK_WIDGET (lw->notebook));
   gtk_notebook_set_show_tabs (GTK_NOTEBOOK (lw->notebook), FALSE);
 
   while ((page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), page_num))) 
     page_num++;
-  
+
   page_num--;
-  gtk_notebook_set_current_page (GTK_NOTEBOOK (lw->notebook), page_num); 
   page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), page_num);
 
   /* Store the list_store and the tree view as data for the page */

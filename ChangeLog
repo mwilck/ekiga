@@ -1,5 +1,15 @@
 2002-12-24 Damien Sandras  <dsandras@seconix.com>
 
+	* src/config.cpp: Fixed to respect the new API of the notebook
+	page creator.
+
+	* src/ldap_window.cpp: Function that is creating the notebook pages
+	is now able to create different pages for groups and servers.
+
+	* src/ldap_window.h: See above.
+
+2002-12-24 Damien Sandras  <dsandras@seconix.com>
+
 	* src/cleaner.cpp: The Appbar timer is now removed here.
 
 	* src/main_window.cpp: Removed the gtk_timeout_remove for the Appbar

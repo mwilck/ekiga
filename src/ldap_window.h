@@ -55,10 +55,19 @@ enum {
   COLUMN_VERSION,
   COLUMN_IP,
   COLUMN_COLOR,
-  NUM_COLUMNS
+  NUM_COLUMNS_SERVERS
 };
 
  
+enum {
+
+  COLUMN_NAME,
+  COLUMN_CALLTO,
+  COLUMN_NETMASK,
+  NUM_COLUMNS_GROUPS
+};
+
+
 /* The functions  */
 
 /* DESCRIPTION  :  /
@@ -71,8 +80,9 @@ void gnomemeeting_init_ldap_window ();
  * BEHAVIOR     :  Build the notebook inside the LDAP window if the server
  *                 name was not already present. Returns its page number
  *                 if it was already present.
- * PRE          :  The server name.
+ * PRE          :  The server name, the type of page to create 
+ *                 (CONTACTS_SERVERS / CONTACTS_GROUPS)
  */
-int gnomemeeting_init_ldap_window_notebook (gchar *);
+int gnomemeeting_init_ldap_window_notebook (gchar *, int);
 	
 #endif
