@@ -650,14 +650,14 @@ gnomemeeting_init_druid_user_page (GnomeDruid *druid, int p, int t)
   
   /* Packing widgets */
   vbox = gtk_vbox_new (FALSE, 2);
-  gnomemeeting_druid_add_graphical_label (vbox, GM_STOCK_DRUID_PERSONAL, _("Please enter your given name and surname, they will be used when connecting to other audio/video conferencing software.\n\nYour e-mail address is used to provide you a callto address that your friends can use to call you easily whatever your IP address is.\n\nNo information is made public except if you choose to be published on the directory of online GnomeMeeting users."));
+  gnomemeeting_druid_add_graphical_label (vbox, GM_STOCK_DRUID_PERSONAL, _("Please enter your first name and surname, they will be used when connecting to other audio/video conferencing software.\n\nYour e-mail address is used to provide you with a callto address that your friends can use to call you without knowing your IP address.\n\nNo information is made public unless you allow it to be published on the directory of online GnomeMeeting users."));
 					  
 
   /* The user fields */
   table = gnomemeeting_vbox_add_table (vbox, _("Personal Information"), 2, 2);
   
   entry = 
-    gnomemeeting_table_add_entry (table, _("Given _name:"), 
+    gnomemeeting_table_add_entry (table, _("First _name:"), 
 				  PERSONAL_DATA_KEY "firstname", NULL, 0);
   g_signal_connect (G_OBJECT (entry), "changed",
 		    G_CALLBACK (gnomemeeting_druid_entry_changed), NULL);
@@ -735,7 +735,7 @@ gnomemeeting_init_druid_connection_type_page (GnomeDruid *druid, int p, int t)
   vbox = gtk_vbox_new (FALSE, 2);
   box = gtk_vbox_new (FALSE, 2);
 
-  gnomemeeting_druid_add_graphical_label (vbox, GM_STOCK_DRUID_CONNECTION, _("Please enter your network connection type. This setting is used to set default settings following your bandwidth. It will set good default settings but it is still possible to change them later to obtain a better result in each particular case."));
+  gnomemeeting_druid_add_graphical_label (vbox, GM_STOCK_DRUID_CONNECTION, _("Please select your network connection type. This is used to set default video settings for your bandwidth. It is possible to change these defaults later."));
 
   
   /* Connection type */
@@ -831,17 +831,17 @@ gnomemeeting_init_druid_audio_devices_page (GnomeDruid *druid, int p, int t)
   table = gnomemeeting_vbox_add_table (vbox, _("Audio Devices"), 4, 3);
 
   dw->audio_player = 
-    gnomemeeting_table_add_pstring_option_menu (table, _("Audio player:"), gw->audio_player_devices, DEVICES_KEY "audio_player", _("Enter the audio player device to use."), 0);
+    gnomemeeting_table_add_pstring_option_menu (table, _("Audio player:"), gw->audio_player_devices, DEVICES_KEY "audio_player", _("Select the audio player device to use."), 0);
 
   dw->audio_player_mixer = 
-    gnomemeeting_table_add_pstring_option_menu (table, _("Audio player mixer:"), gw->audio_mixers, DEVICES_KEY "audio_player_mixer", _("The mixer to use to change the volume of the audio player."), 1);
+    gnomemeeting_table_add_pstring_option_menu (table, _("Audio player mixer:"), gw->audio_mixers, DEVICES_KEY "audio_player_mixer", _("Select the mixer to use to change the volume of the audio player."), 1);
   
   /* The recorder */
   dw->audio_recorder = 
-    gnomemeeting_table_add_pstring_option_menu (table, _("Audio recorder:"), gw->audio_recorder_devices, "/apps/gnomemeeting/devices/audio_recorder", _("Enter the audio recorder device to use."), 2);
+    gnomemeeting_table_add_pstring_option_menu (table, _("Audio recorder:"), gw->audio_recorder_devices, "/apps/gnomemeeting/devices/audio_recorder", _("Select the audio recorder device to use."), 2);
 
   dw->audio_recorder_mixer = 
-    gnomemeeting_table_add_pstring_option_menu (table, _("Audio recorder mixer:"), gw->audio_mixers, DEVICES_KEY "audio_recorder_mixer", _("The mixer to use to change the volume of the audio recorder."), 3);
+    gnomemeeting_table_add_pstring_option_menu (table, _("Audio recorder mixer:"), gw->audio_mixers, DEVICES_KEY "audio_recorder_mixer", _("Select the mixer to use to change the volume of the audio recorder."), 3);
   
 
   /* Test button */

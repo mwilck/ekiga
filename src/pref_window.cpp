@@ -750,7 +750,7 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook)
                                                                                
   /* Add all the fields */                                                     
   pw->firstname = 
-    gnomemeeting_table_add_entry (table, _("Given name:"), "/apps/gnomemeeting/personal_data/firstname", _("Enter your first name."), 0);
+    gnomemeeting_table_add_entry (table, _("First name:"), "/apps/gnomemeeting/personal_data/firstname", _("Enter your first name."), 0);
   gtk_widget_set_size_request (GTK_WIDGET (pw->firstname), 250, -1);
 
   pw->surname = 
