@@ -123,7 +123,10 @@ tray_clicked_callback (GtkWidget *widget, GdkEventButton *event, gpointer data)
     event_button = (GdkEventButton *) event;
     if (event_button->button == 1) {
 
-      gnomemeeting_component_view (NULL, (gpointer) gm);
+      if (GTK_WIDGET_VISIBLE (gm))
+	gtk_widget_hide (gm);
+      else
+	gtk_widget_show (gm);
       
       return TRUE;
     }

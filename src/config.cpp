@@ -48,6 +48,7 @@
 #include "gnomemeeting.h"
 #include "videograbber.h"
 #include "ils.h"
+#include "urlhandler.h"
 #include "sound_handling.h"
 #include "pref_window.h"
 #include "ldap_window.h"
@@ -1241,8 +1242,10 @@ static void contacts_sections_list_changed_nt (GConfClient *client, guint cid,
 static void forward_toggle_changed_nt (GConfClient *client, guint cid, 
 				       GConfEntry *entry, gpointer data)
 {
+  /* FIX ME: could be moved */
   GmWindow *gw = NULL;
   gchar *gconf_string = NULL;
+  GMURL url;
   GtkWidget *msg_box = NULL;
 
 
@@ -1255,8 +1258,10 @@ static void forward_toggle_changed_nt (GConfClient *client, guint cid,
 
     /* Checks if the forward host name is ok */
     gconf_string =  gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/call_forwarding/forward_host", NULL);
-      
-    if ((gconf_string == NULL) || (!strcmp (gconf_string, ""))) {
+
+    if (gconf_string)
+      url = GMURL (gconf_string);
+    if (url.IsEmpty ()) {
 	
       msg_box = 
 	gtk_message_dialog_new (GTK_WINDOW (gw->pref_window),

@@ -1,3 +1,11 @@
+2003-06-19 Damien Sandras  <dsandras@seconix.com>
+
+	* src/tray.cpp: Fixed bug when the tray is clicked: do not show the
+	whole GnomeMeeting, but only required and selected components.
+
+	* src/config.cpp: Fixed call forwarding notifier so that it considers
+	"callto:" and "h323:" as empty urls.
+	
 2003-06-18 Damien Sandras  <dsandras@seconix.com>
 
 	* lib/stock-icons.c, lib/stock-icons.h, pixmaps/Makefile.am:
