@@ -193,9 +193,7 @@ class GnomeMeeting : public PProcess
    * BEHAVIOR     :  Builds the GUI of GnomeMeeting. The config, GNOME
    *                 and GTK need to have been initialized before.
    *                 The GUI is built accordingly to the preferences
-   *                 stored in config and then show or hidden following
-   *                 them. Notice that a druid is displayed if it is
-   *                 a first time run.
+   *                 stored in config.
    * PRE          :  /
    */
   void BuildGUI ();

@@ -69,34 +69,7 @@
 #define new PNEW
 
 
-static gint
-gnomemeeting_tray_hack (gpointer);
-
 GnomeMeeting *GnomeMeeting::GM = NULL;
-
-
-static gint
-gnomemeeting_tray_hack (gpointer data)
-{
-  GtkWidget *main_window = NULL;
-  GtkWidget *tray = NULL;
-
-  tray = GnomeMeeting::Process ()->GetTray ();
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  
-  gdk_threads_enter ();
-
-  if (!gm_tray_is_embedded (tray)) {
-
-    gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Notification area not detected"), _("You have chosen to start GnomeMeeting hidden, however the notification area is not present in your panel, GnomeMeeting can thus not start hidden."));
-    gnomemeeting_window_show (main_window);
-  }
-  
-  gdk_threads_leave ();
-
-  return FALSE;
-}
-
 
 /* The main GnomeMeeting Class  */
 GnomeMeeting::GnomeMeeting ()
@@ -454,26 +427,6 @@ void GnomeMeeting::BuildGUI ()
   dbus_component = NULL;
 #endif
   main_window = gm_main_window_new ();
-
-
- if (gm_conf_get_int (GENERAL_KEY "version") 
-      < 1000 * MAJOR_VERSION + 10 * MINOR_VERSION + BUILD_NUMBER) {
-
-   gtk_widget_show_all (GTK_WIDGET (druid_window));
-  }
-  else {
-
-    /* Show the main window */
-#ifndef WIN32
-    if (!gm_conf_get_bool (USER_INTERFACE_KEY "start_hidden")) 
-#endif
-      gnomemeeting_window_show (main_window);
-#ifndef WIN32
-    else
-      gtk_timeout_add (15000, (GtkFunction) gnomemeeting_tray_hack, NULL);
-#endif
-  }
-
  
   /* Destroy the splash */
   if (splash_window) { 

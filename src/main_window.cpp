@@ -1771,6 +1771,29 @@ gm_mw_destroy_fullscreen_video_window (GtkWidget *main_window)
 
 
 /* GTK callbacks */
+static gint
+gnomemeeting_tray_hack_cb (gpointer data)
+{
+  GtkWidget *main_window = NULL;
+  GtkWidget *tray = NULL;
+
+  tray = GnomeMeeting::Process ()->GetTray ();
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+  
+  gdk_threads_enter ();
+
+  if (!gm_tray_is_embedded (tray)) {
+
+    gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Notification area not detected"), _("You have chosen to start GnomeMeeting hidden, however the notification area is not present in your panel, GnomeMeeting can thus not start hidden."));
+    gnomemeeting_window_show (main_window);
+  }
+  
+  gdk_threads_leave ();
+
+  return FALSE;
+}
+
+
 static void 
 hold_current_call_cb (GtkWidget *widget,
 		      gpointer data)
@@ -4094,6 +4117,7 @@ main (int argc,
   PProcess::PreInitialise (argc, argv, envp);
 
   GtkWidget *main_window = NULL;
+  GtkWidget *druid_window = NULL;
   GtkWidget *dialog = NULL;
   
   gchar *url = NULL;
@@ -4196,6 +4220,7 @@ main (int argc,
   GnomeMeeting::Process ()->Init ();
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
+  druid_window = GnomeMeeting::Process ()->GetDruidWindow ();
   
 
   /* Init the config DB, exit if it fails */
@@ -4218,6 +4243,26 @@ main (int argc,
     gtk_dialog_run (GTK_DIALOG (dialog));
     exit (-1);
   }
+
+
+  if (gm_conf_get_int (GENERAL_KEY "version") 
+      < 1000 * MAJOR_VERSION + 10 * MINOR_VERSION + BUILD_NUMBER) {
+
+    gtk_widget_show_all (GTK_WIDGET (druid_window));
+  }
+  else {
+
+    /* Show the main window */
+#ifndef WIN32
+    if (!gm_conf_get_bool (USER_INTERFACE_KEY "start_hidden")) 
+#endif
+      gnomemeeting_window_show (main_window);
+#ifndef WIN32
+    else
+      gtk_timeout_add (15000, (GtkFunction) gnomemeeting_tray_hack_cb, NULL);
+#endif
+  }
+
 
   
   /* Call the given host if needed */
