@@ -323,7 +323,6 @@ gm_druid_finish_cb (GnomeDruidPage *p, GtkWidget *w, gpointer data)
   /* Dialup */
   if (item_index == 1) {
     
-    gm_conf_set_int (VIDEO_CODECS_KEY "transmitted_fps", 1);
     gm_conf_set_int (VIDEO_CODECS_KEY "transmitted_video_quality", 1);
     gm_conf_set_int (VIDEO_CODECS_KEY "maximum_video_bandwidth", 1);
     gm_conf_set_bool (VIDEO_CODECS_KEY "enable_video_transmission", FALSE);
@@ -331,7 +330,6 @@ gm_druid_finish_cb (GnomeDruidPage *p, GtkWidget *w, gpointer data)
   }
   else if (item_index == 2) { /* ISDN */
     
-    gm_conf_set_int (VIDEO_CODECS_KEY "transmitted_fps", 1);
     gm_conf_set_int (VIDEO_CODECS_KEY "transmitted_video_quality", 1);
     gm_conf_set_int (VIDEO_CODECS_KEY "maximum_video_bandwidth", 2);
     gm_conf_set_bool (VIDEO_CODECS_KEY "enable_video_transmission", FALSE);
@@ -339,7 +337,6 @@ gm_druid_finish_cb (GnomeDruidPage *p, GtkWidget *w, gpointer data)
   }
   else if (item_index == 3) { /* DSL / CABLE */
     
-    gm_conf_set_int (VIDEO_CODECS_KEY "transmitted_fps", 8);
     gm_conf_set_int (VIDEO_CODECS_KEY "transmitted_video_quality", 60);
     gm_conf_set_int (VIDEO_CODECS_KEY "maximum_video_bandwidth", 8);
     gm_conf_set_bool (VIDEO_CODECS_KEY "enable_video_transmission",
@@ -348,7 +345,6 @@ gm_druid_finish_cb (GnomeDruidPage *p, GtkWidget *w, gpointer data)
   }
   else if (item_index == 4) { /* LDAN */
     
-    gm_conf_set_int (VIDEO_CODECS_KEY "transmitted_fps", 20);
     gm_conf_set_int (VIDEO_CODECS_KEY "transmitted_video_quality", 80);
     gm_conf_set_int (VIDEO_CODECS_KEY "maximum_video_bandwidth", 100);
     gm_conf_set_bool (VIDEO_CODECS_KEY "enable_video_transmission",
