@@ -9,8 +9,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting VERSION\n"
-"POT-Creation-Date: 2003-05-05 04:27+0200\n"
-"PO-Revision-Date: 2003-05-05 13:16+0200\n"
+"POT-Creation-Date: 2003-05-12 04:42+0200\n"
+"PO-Revision-Date: 2003-05-12 13:42+0200\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -98,7 +98,7 @@ msgid "Color Format for the video palette"
 msgstr "Barevný formát video palety"
 
 # src/ldap_window.cpp:529
-#: gnomemeeting.schemas.in.in.h:14 src/ldap_window.cpp:2088
+#: gnomemeeting.schemas.in.in.h:14 src/ldap_window.cpp:2006
 msgid "Comment"
 msgstr "Komentář"
 
@@ -374,7 +374,7 @@ msgid "Local Video Popup Width"
 msgstr "Šířka okna lokálního videa"
 
 # src/ldap_window.cpp:529
-#: gnomemeeting.schemas.in.in.h:63 src/ldap_window.cpp:2099
+#: gnomemeeting.schemas.in.in.h:63 src/ldap_window.cpp:2017
 msgid "Location"
 msgstr "Umístění"
 
@@ -837,7 +837,7 @@ msgstr "Typ Možností uživatelského vstupu"
 msgid "User directory"
 msgstr "Adresář uživatelů"
 
-#: gnomemeeting.schemas.in.in.h:142 src/ldap_window.cpp:2121
+#: gnomemeeting.schemas.in.in.h:142 src/ldap_window.cpp:2039
 msgid "Version"
 msgstr "Verze"
 
@@ -1266,7 +1266,7 @@ msgid "_Surname:"
 msgstr "_Příjmení:"
 
 #. The callto url
-#: src/druid.cpp:660 src/ldap_window.cpp:2160
+#: src/druid.cpp:660 src/ldap_window.cpp:2078
 msgid "Callto URL"
 msgstr "Callto URL"
 
@@ -1911,197 +1911,185 @@ msgid "Failed to contact %s."
 msgstr "Chyba při kontaktování %s."
 
 #. Create the dialog to easily modify the info of a specific contact
-#: src/ldap_window.cpp:459
+#: src/ldap_window.cpp:456
 msgid "Edit the contact information"
 msgstr "Upravit kontaktní informace"
 
-#: src/ldap_window.cpp:472
-msgid "<b>Name:</b>"
-msgstr "<b>Jméno:</b>"
+# src/pref_window.cpp:652
+#: src/ldap_window.cpp:469
+msgid "Name:"
+msgstr "Jméno:"
 
-#: src/ldap_window.cpp:488
-msgid "<b>URL:</b>"
-msgstr "<b>URL:</b>"
+#: src/ldap_window.cpp:487
+msgid "URL:"
+msgstr "URL:"
 
-#: src/ldap_window.cpp:509
-msgid "<b>Groups:</b>"
-msgstr "<b>Skupiny:</b>"
+#: src/ldap_window.cpp:510
+msgid "Groups:"
+msgstr "Skupiny:"
 
-#: src/ldap_window.cpp:580
+#: src/ldap_window.cpp:583
 msgid "Please provide a valid name and callto for the user"
 msgstr "Zadejte prosím platné jméno a callto uživatele"
 
 #. User already in the
 #. selected group
-#: src/ldap_window.cpp:648
+#: src/ldap_window.cpp:651
 #, c-format
 msgid "Another user with the callto %s already exists in group %s."
 msgstr "Ve skupině %2$s již existuje jiný uživatel s callto %1$s."
 
-#: src/ldap_window.cpp:659
+#: src/ldap_window.cpp:662
 msgid "You have to select a group to which you want to add your contact"
 msgstr "Musíte vybrat skupinu, do které chcete přidat svůj kontakt"
 
-#: src/ldap_window.cpp:758
+#: src/ldap_window.cpp:802
+#, c-format
+msgid "Add %s to Address Book"
+msgstr "Přídat %s do adresáře"
+
+# src/docklet.cpp:136 src/endpoint.cpp:457 src/toolbar.cpp:60
+#: src/ldap_window.cpp:813
+msgid "C_all Contact"
+msgstr "Za_volat kontaktu"
+
+#: src/ldap_window.cpp:830 src/ldap_window.cpp:1707
+msgid "Contact _Properties"
+msgstr "_Vlastnosti kontaktu"
+
+# src/menu.cpp:347
+#: src/ldap_window.cpp:836 src/ldap_window.cpp:1150 src/ldap_window.cpp:1164
+msgid "Delete"
+msgstr "Odstranit"
+
+#: src/ldap_window.cpp:898
 msgid "Add a new server"
 msgstr "Přidat nový server"
 
 # src/pref_window.cpp:1578
-#: src/ldap_window.cpp:759
+#: src/ldap_window.cpp:899
 msgid "Enter the server name:"
 msgstr "Zadejte název serveru:"
 
-#: src/ldap_window.cpp:764
+#: src/ldap_window.cpp:904
 msgid "Add a new group"
 msgstr "Přidat novou skupinu"
 
 # src/pref_window.cpp:1578
-#: src/ldap_window.cpp:765
+#: src/ldap_window.cpp:905
 msgid "Enter the group name:"
 msgstr "Zadejte název skupiny:"
 
-#: src/ldap_window.cpp:1450
+#: src/ldap_window.cpp:1127
 msgid "New server"
 msgstr "Nový server"
 
-#: src/ldap_window.cpp:1459
+#: src/ldap_window.cpp:1136
 msgid "New group"
 msgstr "Nová skupina"
 
 # src/ldap_window.cpp:404
-#: src/ldap_window.cpp:1468
+#: src/ldap_window.cpp:1145
 msgid "_Refresh"
 msgstr "O_bnovit"
 
-# src/menu.cpp:347
-#: src/ldap_window.cpp:1473 src/ldap_window.cpp:1487
-msgid "Delete"
-msgstr "Odstranit"
-
-#: src/ldap_window.cpp:1482
+#: src/ldap_window.cpp:1159
 msgid "New contact"
 msgstr "Nový kontakt"
 
-# src/menu.cpp:515
-#: src/ldap_window.cpp:1598
-msgid "Call this user"
-msgstr "Zavolat tomuto uživateli"
-
-# src/ils.cpp:586
-#: src/ldap_window.cpp:1608
-msgid "Edit this user information"
-msgstr "Upravit informace o tomto uživateli"
-
-# src/menu.cpp:515
-#: src/ldap_window.cpp:1615
-msgid "Delete this user"
-msgstr "Odstranit tohoto uživatele"
-
-#: src/ldap_window.cpp:1626
-msgid "Add to group"
-msgstr "Přidat do skupiny"
-
 # gnomemeeting.desktop.in.h:1 sounds/GnomeMeeting.soundlist.in.h:1
 # src/main_window.cpp:367 src/pref_window.cpp:1529
-#: src/ldap_window.cpp:1727
-msgid "GnomeMeeting Addressbook"
+#: src/ldap_window.cpp:1651
+msgid "GnomeMeeting Address Book"
 msgstr "Adresář GnomeMeeting"
 
-# src/pref_window.cpp:437 src/toolbar.cpp:83
-#: src/ldap_window.cpp:1743 src/pref_window.cpp:1557
-msgid "Section"
-msgstr "Oddíl"
+# src/menu.cpp:385
+#: src/ldap_window.cpp:1667
+msgid "_File"
+msgstr "_Soubor"
 
-#: src/ldap_window.cpp:1745
-msgid "New _server"
+#: src/ldap_window.cpp:1669
+msgid "New _Server"
 msgstr "Nový _server"
 
-#: src/ldap_window.cpp:1750
-msgid "New _group"
+#: src/ldap_window.cpp:1674
+msgid "New _Group"
 msgstr "Nová s_kupina"
 
-# src/pref_window.cpp:1148 src/pref_window.cpp:1197
-#: src/ldap_window.cpp:1757
-msgid "_Delete section"
-msgstr "_Odstranit oddíl"
+# src/menu.cpp:347
+#: src/ldap_window.cpp:1681
+msgid "_Delete"
+msgstr "_Odstranit"
 
-#: src/ldap_window.cpp:1763
+#: src/ldap_window.cpp:1687
 msgid "Close"
 msgstr "Zavřít"
 
 # src/docklet.cpp:136 src/endpoint.cpp:457 src/toolbar.cpp:60
-#: src/ldap_window.cpp:1769
+#: src/ldap_window.cpp:1693
 msgid "C_ontact"
-msgstr "_Kontakty"
+msgstr "_Kontakt"
 
-#: src/ldap_window.cpp:1771
-msgid "New _contact"
+#: src/ldap_window.cpp:1695
+msgid "New _Contact"
 msgstr "Nový _kontakt"
 
-#: src/ldap_window.cpp:1776
-msgid "Add _contact to address book"
-msgstr "Přídat _kontakt do adresáře"
-
-#: src/ldap_window.cpp:1781
-msgid "Contact _properties"
-msgstr "_Vlastnosti kontaktu"
-
-#: src/ldap_window.cpp:1787
-msgid "_Delete contact"
-msgstr "_Odstranit kontakt"
+#: src/ldap_window.cpp:1700
+msgid "Add Contact to _Group"
+msgstr "Přidat kontakt do _skupiny"
 
 # src/ldap_window.cpp:360
-#: src/ldap_window.cpp:1850
+#: src/ldap_window.cpp:1771
 msgid "Servers"
 msgstr "Servery"
 
-#: src/ldap_window.cpp:1891
+#: src/ldap_window.cpp:1812
 msgid "Groups"
 msgstr "Skupiny"
 
 #. Translators: This is "S" as in "Status"
-#: src/ldap_window.cpp:2045
+#: src/ldap_window.cpp:1963
 msgid "S"
 msgstr "S"
 
 # src/ldap_window.cpp:525
 #. Translators: This is "A" as in "Audio"
-#: src/ldap_window.cpp:2055 src/pref_window.cpp:1211
+#: src/ldap_window.cpp:1973 src/pref_window.cpp:1211
 msgid "A"
 msgstr "A"
 
 # src/ldap_window.cpp:527
 #. Translators: This is "V" as in "Video"
-#: src/ldap_window.cpp:2065
+#: src/ldap_window.cpp:1983
 msgid "V"
 msgstr "V"
 
 # src/pref_window.cpp:652
-#: src/ldap_window.cpp:2074 src/ldap_window.cpp:2147 src/pref_window.cpp:1225
+#: src/ldap_window.cpp:1992 src/ldap_window.cpp:2065 src/pref_window.cpp:1225
 msgid "Name"
 msgstr "Jméno"
 
 # src/pref_window.cpp:1242
-#: src/ldap_window.cpp:2109
+#: src/ldap_window.cpp:2027
 msgid "Callto"
 msgstr "Callto"
 
 # src/ldap_window.cpp:529
-#: src/ldap_window.cpp:2132 src/tools.cpp:163
+#: src/ldap_window.cpp:2050 src/tools.cpp:163
 msgid "IP"
 msgstr "IP"
 
 # src/ldap_window.cpp:419
-#: src/ldap_window.cpp:2194
+#: src/ldap_window.cpp:2112
 msgid "First name contains"
 msgstr "Jméno obsahuje"
 
 # src/ldap_window.cpp:422
-#: src/ldap_window.cpp:2198
+#: src/ldap_window.cpp:2116
 msgid "Last name contains"
 msgstr "Příjmení obsahuje"
 
-#: src/ldap_window.cpp:2202
+#: src/ldap_window.cpp:2120
 msgid "E-mail contains"
 msgstr "E-mail obsahuje"
 
@@ -3077,6 +3065,11 @@ msgstr "Video kodeky"
 #: src/pref_window.cpp:1542
 msgid "Devices"
 msgstr "Zařízení"
+
+# src/pref_window.cpp:437 src/toolbar.cpp:83
+#: src/pref_window.cpp:1557
+msgid "Section"
+msgstr "Oddíl"
 
 #: src/sound_handling.cpp:411
 #, c-format
