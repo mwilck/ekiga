@@ -1465,6 +1465,9 @@ BOOL GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
 {
   int esd_client = 0;
 
+  if (opened_audio_channels >= 2)
+    return FALSE;
+
   gnomemeeting_threads_enter ();
 
   /* If needed , delete the timers */
@@ -1526,7 +1529,6 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
   
   if (opened_video_channels >= 2)
     return FALSE;
-
 
   /* If it is possible to transmit and
      if the user enabled transmission and
