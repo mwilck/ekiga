@@ -600,7 +600,7 @@ silence_detection_changed_nt (gpointer id,
       if (channel)
 	raw_codec = channel->GetCodec();
       
-      if (raw_codec && raw_codec->IsDescendant (H323AudioCodec::Class() ))
+      if (raw_codec && PIsDescendant (raw_codec, H323AudioCodec))
 	ac = (H323AudioCodec *) raw_codec;
    
       /* We update the silence detection */
@@ -688,7 +688,7 @@ static void fps_limit_changed_nt (gpointer id,
       if (channel)
 	raw_codec = channel->GetCodec();
       
-      if (raw_codec && raw_codec->IsDescendant (H323VideoCodec::Class())) 
+      if (raw_codec && PIsDescendant (raw_codec, H323VideoCodec)) 
 	vc = (H323VideoCodec *) raw_codec;
         
 
@@ -741,7 +741,7 @@ maximum_video_bandwidth_changed_nt (gpointer id,
       if (channel)
 	raw_codec = channel->GetCodec();
       
-      if (raw_codec && raw_codec->IsDescendant (H323VideoCodec::Class())) 
+      if (raw_codec && PIsDescendant (raw_codec, H323VideoCodec)) 
 	vc = (H323VideoCodec *) raw_codec;
      
       /* We update the video quality */  
@@ -789,7 +789,7 @@ tr_vq_changed_nt (gpointer id,
       if (channel)
 	raw_codec = channel->GetCodec();
       
-      if (raw_codec && raw_codec->IsDescendant (H323VideoCodec::Class())) 
+      if (raw_codec && PIsDescendant (raw_codec, H323VideoCodec)) 
 	vc = (H323VideoCodec *) raw_codec;
 
       /* We update the video quality */
@@ -835,7 +835,7 @@ tr_ub_changed_nt (gpointer id,
       if (channel)
 	raw_codec = channel->GetCodec();
       
-      if (raw_codec && raw_codec->IsDescendant (H323VideoCodec::Class())) 
+      if (raw_codec && PIsDescendant (raw_codec, H323VideoCodec)) 
 	vc = (H323VideoCodec *) raw_codec;
 
       /* We update the current tr ub rate */

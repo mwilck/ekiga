@@ -251,6 +251,7 @@ gnomemeeting_addressbook_get_contacts (GmAddressbook *addressbook,
 {
   EBook *ebook = NULL;
   EBookQuery *query = NULL;
+  EVCardAttribute *attr = NULL;
 
   GmContact *contact = NULL;
 
@@ -285,8 +286,8 @@ gnomemeeting_addressbook_get_contacts (GmAddressbook *addressbook,
         contact->categories =  
           g_strdup ((const gchar *) e_contact_get_const (E_CONTACT (l->data), 
                                                          E_CONTACT_CATEGORIES));      
-        contact->speeddial = NULL;  
-
+        contact->speeddial =
+          e_contact_get_const (E_CONTACT (l->data), "TEL");
 
         contacts = g_slist_append (contacts, (gpointer) contact);
 
@@ -394,6 +395,7 @@ gnomemeeting_addressbook_add_contact (GmAddressbook *addressbook,
   EBook *ebook = NULL;
 
   EContact *contact = NULL;
+  EVCardAttribute *attr = NULL;
 
   g_return_val_if_fail (ctact != NULL, FALSE);
   g_return_val_if_fail (addressbook != NULL, FALSE);
@@ -413,6 +415,16 @@ gnomemeeting_addressbook_add_contact (GmAddressbook *addressbook,
       e_contact_set (contact, E_CONTACT_VIDEO_URL, ctact->url);
     if (ctact->categories)
       e_contact_set (contact, E_CONTACT_CATEGORIES, ctact->categories);
+    if (ctact->speeddial) {
+
+      attr = e_vcard_attribute_new (NULL, "TEL");
+      e_vcard_attribute_add_param_with_value (attr, 
+                                              e_vcard_attribute_param_new ("TYPE"),
+                                              "X-GNOME-MEETING-SPEEDDIAL");
+      e_vcard_attribute_add_value (attr, ctact->speeddial);
+
+      e_vcard_add_attribute (E_VCARD (contact), attr);
+    }
 
     if (e_book_add_contact (ebook, contact, NULL))
       return TRUE;

@@ -42,7 +42,9 @@
 #include "sound_handling.h"
 #include "ils.h"
 #include "urlhandler.h"
+#ifdef ENABLE_EDS
 #include "addressbook_window.h"
+#endif
 #include "ldap_window.h"
 #include "menu.h"
 #include "pref_window.h"
@@ -434,7 +436,9 @@ void GnomeMeeting::BuildGUI ()
   gw->calls_history_window = gnomemeeting_calls_history_window_new ();
   gw->pc_to_phone_window = gnomemeeting_pc_to_phone_window_new ();  
   gw->pref_window = gnomemeeting_pref_window_new (pw);  
+#ifdef ENABLE_EDS
   gw->addressbook_window = gm_addressbook_window_new ();
+#endif
   gw->ldap_window = gnomemeeting_ldap_window_new (lw);
   gw->druid_window = gnomemeeting_druid_window_new (dw);
 #ifndef WIN32

@@ -10,6 +10,8 @@ gnomemeeting_SOURCES =		\
 	common.h		\
 	callbacks.cpp		\
 	callbacks.h		\
+	druid.cpp		\
+	druid.h			\
 	gdkvideoio.cpp		\
 	gdkvideoio.h		\
 	gnomemeeting.cpp	\
@@ -32,8 +34,6 @@ gnomemeeting_SOURCES =		\
 	config.cpp		\
 	ldap_window.cpp		\
 	ldap_window.h		\
-	addressbook_window.cpp	\
-	addressbook_window.h	\
 	main_window.cpp		\
 	main_window.h		\
 	gatekeeper.cpp		\
@@ -62,8 +62,10 @@ gnomemeeting_SOURCES =		\
 	codec_info.h
 
 
-gnomemeeting_SOURCES += druid.cpp druid.h
-
+if ENABLE_EDS
+	gnomemeeting_SOURCES += addressbook_window.cpp addressbook_window.h
+endif
+	
 gnomemeeting_LDADD = \
 	@GNOMEMEETING_LIBS@ \
 	$(top_builddir)/lib/libgnomemeeting.la

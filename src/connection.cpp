@@ -116,7 +116,7 @@ GMH323Connection::OnLogicalChannel (H323Channel *channel,
   
   PWaitAndSignal m(channels);
 
-  is_video = (channel->GetCodec ()->IsDescendant (H323VideoCodec::Class ()));
+  is_video = (PIsDescendant (channel->GetCodec (), H323VideoCodec));
   is_encoding = (channel->GetDirection () == H323Channel::IsTransmitter);
   codec_name = channel->GetCapability ().GetFormatName ();
 

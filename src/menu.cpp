@@ -45,7 +45,11 @@
 #include "gnomemeeting.h"
 #include "misc.h"
 #include "chat_window.h"
+
+#ifdef ENABLE_EDS
 #include "addressbook_window.h"
+#endif
+
 #include "ldap_window.h"
 
 #include "stock-icons.h"
@@ -462,13 +466,19 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 		     NULL, FALSE),
 
       GTK_MENU_NEW(_("_Tools")),
-
+#ifdef ENABLE_EDS
       GTK_MENU_ENTRY("address_book", _("Address _Book"),
 		     _("Open the address book"),
 		     GM_STOCK_ADDRESSBOOK_16, 0,
 		     GTK_SIGNAL_FUNC (show_window_cb),
 		     (gpointer) gw->addressbook_window, TRUE),
-
+#else
+      GTK_MENU_ENTRY("address_book", _("Address _Book"),
+		     _("Open the address book"),
+		     GM_STOCK_ADDRESSBOOK_16, 0,
+		     GTK_SIGNAL_FUNC (show_window_cb),
+		     (gpointer) gw->ldap_window, TRUE),
+#endif
       GTK_MENU_SEPARATOR,
 
       GTK_MENU_ENTRY("log", _("General History"),

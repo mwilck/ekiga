@@ -40,7 +40,10 @@
 
 #include "ldap_window.h"
 #include "gm_conf.h"
+#if 0
 #include "contacts/gm_contacts.h"
+#endif
+
 #include "gnomemeeting.h"
 #include "ils.h"
 #include "menu.h"
@@ -78,7 +81,8 @@ static gboolean dnd_drag_motion_cb (GtkWidget *,
                                     int,
                                     guint,
                                     gpointer);
- 
+
+#if 0
 static void dnd_drag_data_received_cb (GtkWidget *,
 				       GdkDragContext *,
 				       int,
@@ -94,6 +98,7 @@ static void dnd_drag_data_get_cb (GtkWidget *,
 				  guint,
 				  guint,
 				  gpointer);
+#endif
 
 /* Callbacks: Operations on a contact */
 static void groups_list_store_toggled (GtkCellRendererToggle *cell,
@@ -299,6 +304,7 @@ dnd_drag_motion_cb (GtkWidget *tree_view,
   return true;
 }
 
+#if 0
 /* DESCRIPTION  :  This callback is called when the user has released
  *                 the drag.
  * BEHAVIOR     :  Adds the user config key of the group where the drop
@@ -427,7 +433,7 @@ dnd_drag_data_get_cb (GtkWidget *tree_view,
 			    8, (guchar *)&contact, sizeof (contact));
   }
 }
-
+#endif
 
 /* DESCRIPTION  :  This callback is called when the user toggles a group in
  *                 the groups list in the popup permitting to edit
@@ -2657,9 +2663,10 @@ gnomemeeting_ldap_window_new (GmLdapWindow *lw)
 		     GDK_ACTION_COPY);
   g_signal_connect (G_OBJECT (lw->tree_view), "drag_motion",
                     G_CALLBACK (dnd_drag_motion_cb), 0);
+#if 0
   g_signal_connect (G_OBJECT (lw->tree_view), "drag_data_received",
 		    G_CALLBACK (dnd_drag_data_received_cb), 0);
-  
+#endif
   /* Double-click on a server name or on a contact group */
   g_signal_connect (G_OBJECT (lw->tree_view), "row_activated",
 		    G_CALLBACK (contact_section_activated_cb), NULL);  
@@ -3059,8 +3066,10 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
   gtk_drag_source_set (GTK_WIDGET (lwp->tree_view),
 		       GDK_BUTTON1_MASK, dnd_targets, 1,
 		       GDK_ACTION_COPY);
+#if 0
   g_signal_connect (G_OBJECT (lwp->tree_view), "drag_data_get",
 		    G_CALLBACK (dnd_drag_data_get_cb), NULL);
+#endif
 
   gtk_notebook_append_page (GTK_NOTEBOOK (lw->notebook), vbox, NULL);
   gtk_widget_show_all (GTK_WIDGET (lw->notebook));

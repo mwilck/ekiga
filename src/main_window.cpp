@@ -54,8 +54,10 @@
 #include "gmentrydialog.h"
 #include "stock-icons.h"
 #include "gm_conf.h"
-#include "contacts/gm_contacts.h"
 
+#ifdef ENABLE_EDS
+#include "contacts/gm_contacts.h"
+#endif
 
 #ifndef DISABLE_GNOME
 #include <libgnomeui/gnome-window-icon.h>
@@ -362,6 +364,7 @@ stats_drawing_area_exposed (GtkWidget *drawing_area, gpointer data)
 }
 
 
+#if 0
 /* DESCRIPTION  :  This callback is called when the user has released the drag.
  * BEHAVIOR     :  Calls the user corresponding to the drag data.
  * PRE          :  /
@@ -401,6 +404,7 @@ dnd_drag_data_received_cb (GtkWidget *widget,
     }
   } 
 }
+#endif
 
 
 /* Factory stuff */
@@ -1196,8 +1200,10 @@ gnomemeeting_main_window_new (GmWindow *gw)
 		     dnd_targets, 1,
 		     GDK_ACTION_COPY);
 
+#if 0
   g_signal_connect (G_OBJECT (window), "drag_data_received",
 		    G_CALLBACK (dnd_drag_data_received_cb), 0);
+#endif
 
   /* if the user tries to close the window : delete_event */
   g_signal_connect (G_OBJECT (gm), "delete_event",

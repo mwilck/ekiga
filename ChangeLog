@@ -1,3 +1,18 @@
+2004-04-26  Damien Sandras  <dsandras@gnome.org>
+
+	* configure.in: Made EDS compilation optional. Request newer versions
+	of OpenH323 and PWLIB.
+
+	* lib/Makefile.am: Made EDS compilation optional.
+
+	* lib/contacts/gm_contacts-eds.cpp: Store the speed dial.
+	
+	* src/Makefile.am, src/calls_history_window.cpp, src/config.cpp,
+	src/connection.cpp, src/endpoint.cpp, src/gnomemeeting.cpp,
+	src/ldap_window.cpp, src/main_window.cpp, src/menu.cpp: Made E-D-S
+	based compilation optional until we are ready with it. Changes so that
+	it compiles with recent openh323 and pwlib.
+
 2004-04-26  Julien Puydt <julien.puydt@laposte.net>
 
 	* lib/contacts/gm_contacts-gm_conf.cpp: implemented empty-dummy

@@ -44,7 +44,10 @@
 #include "ldap_window.h"
 #include "misc.h"
 
+#ifdef ENABLE_EDS
 #include "contacts/gm_contacts.h"
+#endif
+
 #include "gm_conf.h"
 #include "gnome_prefs_window.h"
 #include "stock-icons.h"
@@ -61,12 +64,14 @@ struct _GmCallsHistory
 /* Helpers' declarations */
 static void gm_calls_history_destroy (gpointer pointer);
 
+#if 0
 static void dnd_drag_data_get_cb (GtkWidget *,
 				  GdkDragContext *,
 				  GtkSelectionData *,
 				  guint,
 				  guint,
 				  gpointer);
+#endif
 
 static void clear_button_clicked_cb (GtkButton *,
 				     gpointer);
@@ -86,6 +91,8 @@ gm_calls_history_destroy (gpointer pointer)
   delete (GmCallsHistory *)pointer;
 }
 
+
+#if 0
 /* DESCRIPTION  :  This callback is called when the user has released the drag.
  * BEHAVIOR     :  Puts the required data into the selection_data, we put
  *                 name and the url fields for now.
@@ -129,6 +136,8 @@ dnd_drag_data_get_cb (GtkWidget *tree_view,
     }
   }
 }
+#endif
+
 
 /* DESCRIPTION  :  This callback is called when the user has clicked the clear
  *                 button.
@@ -508,8 +517,10 @@ gnomemeeting_calls_history_window_new ()
     gtk_drag_source_set (GTK_WIDGET (tree_view),
 			 GDK_BUTTON1_MASK, dnd_targets, 1,
 			 GDK_ACTION_COPY);
+#if 0
     g_signal_connect (G_OBJECT (tree_view), "drag_data_get",
 		      G_CALLBACK (dnd_drag_data_get_cb), NULL);
+#endif 
 
     /* Right-click on a contact */
     g_signal_connect (G_OBJECT (tree_view), "event_after",

@@ -61,12 +61,7 @@
 #include "gm_conf.h"
 
 #include <g726codec.h>
-#include <ilbccodec.h>
-#include <gsmcodec.h>
-#include <mscodecs.h>
 #include <h261codec.h>
-#include <lpc10codec.h>
-#include <speexcodec.h>
 #include <ptclib/http.h>
 #include <ptclib/html.h>
 
@@ -413,20 +408,7 @@ GMH323EndPoint::AddAudioCapabilities ()
 
   if (use_pcm16_codecs && codecs_data) {
 
-    SetCapability (0, 0, 
-		   new H323_iLBC_Capability (*this,
-					     H323_iLBC_Capability::e_13k3));
-    SetCapability (0, 0, 
-		   new H323_iLBC_Capability (*this,
-					     H323_iLBC_Capability::e_15k2));
-
-    SetCapability (0, 0, new SpeexNarrow5AudioCapability ());
-    SetCapability (0, 0, new SpeexNarrow3AudioCapability ());
-
-    SetCapability (0, 0, gsm_capa = new MicrosoftGSMAudioCapability);
-    if (gsm_frames > 0)
-      gsm_capa->SetTxFramesInPacket (gsm_frames);
-
+    
     g711_capa = new H323_G711Capability (H323_G711Capability::muLaw);
     SetCapability (0, 0, g711_capa);
     if (g711_frames > 0)
@@ -436,10 +418,6 @@ GMH323EndPoint::AddAudioCapabilities ()
     SetCapability (0, 0, g711_capa);
     if (g711_frames > 0)
       g711_capa->SetTxFramesInPacket (g711_frames);
-
-    SetCapability (0, 0, gsm2_capa = new H323_GSM0610Capability);	
-    if (gsm_frames > 0)
-      gsm2_capa->SetTxFramesInPacket (gsm_frames);
 
     g72616_capa = 
       new H323_G726_Capability (*this, H323_G726_Capability::e_32k);
