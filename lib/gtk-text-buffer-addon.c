@@ -30,7 +30,7 @@
  *                         ------------------------------------
  *   begin                : Sat Nov 29 2003, but based on older code
  *   copyright            : (C) 2000-2003 by Julien Puydt
- *                                           Miguel Rodr�guez,
+ *                                           Miguel Rodríguez,
  *                                           Stéphane Wirtel
  *                                           Kenneth Christiansen
  *   description          : Add-on functions for regex-based context menus
@@ -108,8 +108,7 @@ gtk_text_buffer_insert_with_regex (GtkTextBuffer *buf,
 
     func = g_object_get_data (G_OBJECT(match.tag),
 					       "regex-display");
-    if (func == NULL) { /* if gtk_text_tag_set_regex_display was forgotten */
-      g_warning ("gtk_text_tag_set_regex_display was forgotten");
+    if (func == NULL) { /* this doesn't need any fancy stuff to be displayed */
       func = gtk_text_buffer_insert_plain;
     }
     (*func)(buf, bufiter, match.tag, string);
