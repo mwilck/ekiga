@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
-"POT-Creation-Date: 2002-07-03 22:35+0200\n"
-"PO-Revision-Date: 2002-07-03 22:35+0200\n"
+"POT-Creation-Date: 2002-07-25 16:54+0200\n"
+"PO-Revision-Date: 2002-07-25 16:55+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -21,8 +21,12 @@ msgid "GnomeMeeting"
 msgstr "GnomeMeeting"
 
 #: gnomemeeting.desktop.in.h:2
-msgid "H.323 Client"
-msgstr "H.323-klient"
+msgid "Talk to people over the internet"
+msgstr "Prata med personer över Internet"
+
+#: gnomemeeting.desktop.in.h:3
+msgid "Video Conferencing"
+msgstr "Videokonferens"
 
 #: gnomemeeting.schemas.in.in.h:1
 msgid "1: 56Kbps, 2: ISDN, 3:DSL, 4: LAN, 5: Custom"
@@ -960,189 +964,189 @@ msgid "Forwarding Call to %s (No Answer)"
 msgstr "Vidarebefordrar samtal till %s (inget svar)"
 
 #. GM is started
-#: src/endpoint.cpp:183
+#: src/endpoint.cpp:187
 #, c-format
 msgid "Started GnomeMeeting V%d.%d for %s\n"
 msgstr "Startade GnomeMeeting v%d.%d för %s\n"
 
-#: src/endpoint.cpp:271 src/endpoint.cpp:277
+#: src/endpoint.cpp:275 src/endpoint.cpp:281
 #, c-format
 msgid "Set Audio player device to %s"
 msgstr "Ställde in ljudspelarenhet till %s"
 
 #. Translators: This is shown in the history.
-#: src/endpoint.cpp:293 src/endpoint.cpp:303
+#: src/endpoint.cpp:297 src/endpoint.cpp:307
 #, c-format
 msgid "Set Audio recorder device to %s"
 msgstr "Ställde in ljudinspelningsenhet till %s"
 
-#: src/endpoint.cpp:318
+#: src/endpoint.cpp:322
 msgid "Disabling H.245 Tunnelling"
 msgstr "Inaktiverar H.245-tunnling"
 
-#: src/endpoint.cpp:320
+#: src/endpoint.cpp:324
 msgid "Enabling H.245 Tunnelling"
 msgstr "Aktiverar H.245-tunnling"
 
-#: src/endpoint.cpp:334
+#: src/endpoint.cpp:338
 msgid "Disabling Fast Start"
 msgstr "Inaktiverar snabbstart"
 
-#: src/endpoint.cpp:336
+#: src/endpoint.cpp:340
 msgid "Enabling Fast Start"
 msgstr "Aktiverar snabbstart"
 
-#: src/endpoint.cpp:364
+#: src/endpoint.cpp:368
 #, c-format
 msgid "Using Quicknet device %s"
 msgstr "Använder Quicknet-enheten %s"
 
-#: src/endpoint.cpp:428
+#: src/endpoint.cpp:432
 msgid "Error while opening the Quicknet device"
 msgstr "Fel vid öppnande av Quicknet-enheten"
 
-#: src/endpoint.cpp:856
+#: src/endpoint.cpp:860
 #, c-format
 msgid "Forwarding Call to %s"
 msgstr "Vidarebefordrar samtal till %s"
 
-#: src/endpoint.cpp:868
+#: src/endpoint.cpp:872
 #, c-format
 msgid "Error forwarding call to %s"
 msgstr "Fel vid vidarebefordrande av samtal till %s"
 
-#: src/endpoint.cpp:940
+#: src/endpoint.cpp:944
 #, c-format
 msgid "Forwarding Call from %s to %s (Forward All Calls)"
 msgstr "Vidarebefordrar samtal från %s till %s (vidarebefordrar alla samtal)"
 
-#: src/endpoint.cpp:961
+#: src/endpoint.cpp:965
 #, c-format
 msgid "Forwarding Call from %s to %s (Busy)"
 msgstr "Vidarbefordrar samtal från %s till %s (upptagen)"
 
-#: src/endpoint.cpp:978
+#: src/endpoint.cpp:982
 #, c-format
 msgid "Auto Rejecting Incoming Call from %s (Busy)"
 msgstr "Vägrar automatiskt inkommande samtal från %s (upptagen)"
 
 #. Update the history and status bar
-#: src/endpoint.cpp:1050
+#: src/endpoint.cpp:1054
 #, c-format
 msgid "Call from %s"
 msgstr "Samtal från %s"
 
 #. Connected
-#: src/endpoint.cpp:1128
+#: src/endpoint.cpp:1132
 #, c-format
 msgid "Connected with %s using %s"
 msgstr "Ansluten till %s med %s"
 
-#: src/endpoint.cpp:1134
+#: src/endpoint.cpp:1138
 msgid "Connected"
 msgstr "Ansluten"
 
-#: src/endpoint.cpp:1137
+#: src/endpoint.cpp:1141
 msgid "Fast start enabled"
 msgstr "Snabbstart aktiverad"
 
-#: src/endpoint.cpp:1139
+#: src/endpoint.cpp:1143
 msgid "Fast start disabled"
 msgstr "Snabbstart inaktiverad"
 
-#: src/endpoint.cpp:1142
+#: src/endpoint.cpp:1146
 msgid "H.245 Tunnelling enabled"
 msgstr "H.245-tunnling aktiverad"
 
-#: src/endpoint.cpp:1144
+#: src/endpoint.cpp:1148
 msgid "H.245 Tunnelling disabled"
 msgstr "H.245-tunnling inaktiverad"
 
-#: src/endpoint.cpp:1229
+#: src/endpoint.cpp:1240
 msgid "Remote party has cleared the call"
 msgstr "Fjärrparten har nollställt samtalet"
 
-#: src/endpoint.cpp:1234
+#: src/endpoint.cpp:1245
 msgid "Remote party has stopped calling"
 msgstr "Fjärrparten har slutat ringa"
 
-#: src/endpoint.cpp:1239 src/endpoint.cpp:1269
+#: src/endpoint.cpp:1250 src/endpoint.cpp:1280
 msgid "Remote party did not accept your call"
 msgstr "Fjärrparten accepterade inte ditt anrop"
 
-#: src/endpoint.cpp:1244
+#: src/endpoint.cpp:1255
 msgid "Remote party was busy"
 msgstr "Fjärrparten var upptagen"
 
-#: src/endpoint.cpp:1249
+#: src/endpoint.cpp:1260
 msgid "Congested link to remote party"
 msgstr "Överbelastad länk till fjärrparten"
 
-#: src/endpoint.cpp:1254
+#: src/endpoint.cpp:1265
 msgid "Remote party did not answer your call"
 msgstr "Fjärrparten svarade inte på ditt anrop"
 
-#: src/endpoint.cpp:1259
+#: src/endpoint.cpp:1270
 msgid "This call ended abnormally"
 msgstr "Samtalet avslutades onormalt"
 
-#: src/endpoint.cpp:1264
+#: src/endpoint.cpp:1275
 msgid "Could not find common codec with remote party"
 msgstr "Kunde inte hitta en komprimeringsmetod gemensam med fjärrparten"
 
-#: src/endpoint.cpp:1274
+#: src/endpoint.cpp:1285
 msgid "Refused incoming call"
 msgstr "Vägrade ta emot inkommande samtal"
 
-#: src/endpoint.cpp:1279 src/urlhandler.cpp:176 src/urlhandler.cpp:177
+#: src/endpoint.cpp:1290 src/urlhandler.cpp:173 src/urlhandler.cpp:174
 msgid "User not found"
 msgstr "Användaren kunde inte hittas"
 
-#: src/endpoint.cpp:1284
+#: src/endpoint.cpp:1295
 msgid "Call ended: insufficient bandwidth"
 msgstr "Samtalet avslutades: otillräcklig bandbredd"
 
-#: src/endpoint.cpp:1289
+#: src/endpoint.cpp:1300
 msgid "Remote party could not be reached"
 msgstr "Fjärrparten kunde inte nås"
 
-#: src/endpoint.cpp:1294
+#: src/endpoint.cpp:1305
 msgid "Remote party is offline"
 msgstr "Fjärrparten är inte ansluten"
 
-#: src/endpoint.cpp:1299
+#: src/endpoint.cpp:1310
 msgid "Transport Error calling"
 msgstr "Transportfel vid anrop"
 
-#: src/endpoint.cpp:1304 src/endpoint.cpp:1307
+#: src/endpoint.cpp:1315 src/endpoint.cpp:1318
 msgid "Call completed"
 msgstr "Samtalet färdigt"
 
-#: src/endpoint.cpp:1443
+#: src/endpoint.cpp:1454
 msgid "Could not resume ESD"
 msgstr "Kunde inte återuppta ESD"
 
-#: src/endpoint.cpp:1447
+#: src/endpoint.cpp:1458
 msgid "ESD resumed"
 msgstr "ESD återupptagen"
 
-#: src/endpoint.cpp:1496
+#: src/endpoint.cpp:1507
 msgid "Could not suspend ESD"
 msgstr "Kunde inte koppla från ESD"
 
-#: src/endpoint.cpp:1500
+#: src/endpoint.cpp:1511
 msgid "ESD suspended"
 msgstr "ESD frånkopplad"
 
-#: src/endpoint.cpp:1518
+#: src/endpoint.cpp:1529
 msgid "Could not suspend artsd"
 msgstr "Kunde inte koppla från artsd"
 
-#: src/endpoint.cpp:1522
+#: src/endpoint.cpp:1533
 msgid "artsd suspended"
 msgstr "artsd frånkopplad"
 
-#: src/endpoint.cpp:1541
+#: src/endpoint.cpp:1552
 msgid "Attaching lid hardware to codec"
 msgstr "Fäster bländarhårdvara vid komprimeringsmetoden"
 
@@ -1206,42 +1210,42 @@ msgstr "Ansluter till ILS-katalogen %s, port %s"
 msgid "Error while connecting to ILS directory %s, port %s"
 msgstr "Fel vid anslutning till ILS-katalogen %s, port %s"
 
-#: src/ils.cpp:478
+#: src/ils.cpp:479
 #, c-format
 msgid "Sucessfully registered to ILS directory %s, port %s"
 msgstr "Lyckades registrera i ILS-katalogen %s, port %s"
 
-#: src/ils.cpp:479
+#: src/ils.cpp:480
 msgid "Succesfully registered to ILS server"
 msgstr "Lyckades registrera i ILS-servern"
 
-#: src/ils.cpp:483
+#: src/ils.cpp:485
 #, c-format
 msgid "Sucessfully unregistered from ILS directory %s, port %s"
 msgstr "Lyckades avregistrera från ILS-katalogen %s, port %s"
 
-#: src/ils.cpp:484
+#: src/ils.cpp:486
 msgid "Succesfully unregistered from ILS server"
 msgstr "Lyckades avregistrera från ILS-servern"
 
-#: src/ils.cpp:661
+#: src/ils.cpp:662
 msgid "Please provide an ILS directory in the window"
 msgstr "Ange en ILS-katalog i fönstret"
 
-#: src/ils.cpp:679
+#: src/ils.cpp:680
 msgid "Connecting to ILS directory... Please Wait."
 msgstr "Ansluter till ILS-katalogen... Var vänlig vänta."
 
-#: src/ils.cpp:696 src/ils.cpp:715 src/urlhandler.cpp:153
-#: src/urlhandler.cpp:154
+#: src/ils.cpp:697 src/ils.cpp:716 src/urlhandler.cpp:151
+#: src/urlhandler.cpp:152
 msgid "Error while connecting to ILS directory"
 msgstr "Fel vid anslutning till ILS-katalog"
 
-#: src/ils.cpp:739
+#: src/ils.cpp:740
 msgid "Fetching users' information... Please Wait."
 msgstr "Hämtar användarinformation... Var vänlig vänta."
 
-#: src/ils.cpp:754
+#: src/ils.cpp:755
 msgid "Search completed!"
 msgstr "Sökningen färdig!"
 
@@ -1388,44 +1392,44 @@ msgstr ""
 "Kunde inte starta lyssnartråden. Du kommer inte att kunna ta emot inkommande "
 "samtal."
 
-#: src/main_window.cpp:944
+#: src/main_window.cpp:945
 msgid "History Log"
 msgstr "Historiklogg"
 
-#: src/main_window.cpp:966 src/menu.cpp:277
+#: src/main_window.cpp:967 src/menu.cpp:277
 msgid "History"
 msgstr "Historik"
 
 #. Webcam Control Frame
-#: src/main_window.cpp:996
+#: src/main_window.cpp:997
 msgid "Video Settings"
 msgstr "Videoinställningar"
 
-#: src/main_window.cpp:1028
+#: src/main_window.cpp:1029
 msgid "Adjust brightness"
 msgstr "Justera ljusstyrka"
 
-#: src/main_window.cpp:1055
+#: src/main_window.cpp:1056
 msgid "Adjust whiteness"
 msgstr "Justera vithet"
 
-#: src/main_window.cpp:1082
+#: src/main_window.cpp:1083
 msgid "Adjust color"
 msgstr "Justera färg"
 
-#: src/main_window.cpp:1109
+#: src/main_window.cpp:1110
 msgid "Adjust contrast"
 msgstr "Justera kontrast"
 
-#: src/main_window.cpp:1116
+#: src/main_window.cpp:1117
 msgid "Video"
 msgstr "Video"
 
-#: src/main_window.cpp:1143
+#: src/main_window.cpp:1144
 msgid "Audio Settings"
 msgstr "Ljudinställningar"
 
-#: src/main_window.cpp:1198
+#: src/main_window.cpp:1199
 msgid "Audio"
 msgstr "Ljud"
 
@@ -2272,29 +2276,29 @@ msgstr ""
 "Videoöverföringsstatus. Under ett samtal kan du klicka här för att pausa "
 "videoöverföringen."
 
-#: src/urlhandler.cpp:129
+#: src/urlhandler.cpp:128
 msgid "Searching for user"
 msgstr "Söker efter användaren"
 
-#: src/urlhandler.cpp:223
+#: src/urlhandler.cpp:220
 #, c-format
 msgid "Calling %s"
 msgstr "Ringer upp %s"
 
-#: src/videograbber.cpp:455 src/videograbber.cpp:456
+#: src/videograbber.cpp:454 src/videograbber.cpp:455
 msgid "Opening Video device"
 msgstr "Öppnar videoenhet"
 
-#: src/videograbber.cpp:496
+#: src/videograbber.cpp:495
 #, c-format
 msgid "Successfully opened video device %s, channel %d"
 msgstr "Lyckades öppna videoenheten %s, kanal %d"
 
-#: src/videograbber.cpp:499
+#: src/videograbber.cpp:498
 msgid "Video Device Opened"
 msgstr "Videoenhet öppnad"
 
-#: src/videograbber.cpp:507
+#: src/videograbber.cpp:506
 #, c-format
 msgid ""
 "Error while opening video device %s, channel %d.\n"
@@ -2303,23 +2307,23 @@ msgstr ""
 "Fel vid öppnande av videoenheten %s, kanal %d.\n"
 "En testbild kommer att överföras."
 
-#: src/videograbber.cpp:509
+#: src/videograbber.cpp:507
 msgid "Can't open the Video Device"
 msgstr "Kan inte öppna vidoeenheten"
 
-#: src/videograbber.cpp:514
+#: src/videograbber.cpp:512
 msgid "Error while opening the device."
 msgstr "Fel vid öppnande av enheten."
 
-#: src/videograbber.cpp:519
+#: src/videograbber.cpp:517
 msgid "Your video driver doesn't support the requested video format."
 msgstr "Din videodrivrutin stöder inte det begärda videoformatet."
 
-#: src/videograbber.cpp:523
+#: src/videograbber.cpp:521
 msgid "Could not open the chosen channel with the chosen video format."
 msgstr "Kunde inte öppna den valda kanalen med det valda videoformatet."
 
-#: src/videograbber.cpp:527
+#: src/videograbber.cpp:525
 #, c-format
 msgid ""
 "Your driver doesn't support the %s format.\n"
@@ -2335,17 +2339,20 @@ msgstr ""
 " gconftool --set \"/apps/gnomemeeting/devices/color_format\" DINPALETT --"
 "type string"
 
-#: src/videograbber.cpp:531
+#: src/videograbber.cpp:529
 msgid "Error with the frame rate."
 msgstr "Fel med ramhastigheten."
 
-#: src/videograbber.cpp:535
+#: src/videograbber.cpp:533
 msgid "Error with the frame size."
 msgstr "Fel med ramhastigheten."
 
-#: src/videograbber.cpp:654
+#: src/videograbber.cpp:653
 msgid "Video Device Closed"
 msgstr "Videoenhet stängd"
+
+#~ msgid "H.323 Client"
+#~ msgstr "H.323-klient"
 
 #~ msgid ""
 #~ "The height of the picture displayed when being in fullscreen (using SDL"
