@@ -1108,6 +1108,9 @@ void gnomemeeting_init_gconf (GConfClient *client)
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/audio_codecs/list", audio_codecs_list_changed_nt, pw->clist_avail, 0, 0);	     
 
+  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_splash", 
+			   toggle_changed_nt, pw->show_splash, 0, 0);
+
   gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_control_panel", view_widget_changed_nt, pw->show_notebook, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_status_bar", view_widget_changed_nt, pw->show_statusbar, 0, 0);

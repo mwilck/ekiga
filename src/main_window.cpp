@@ -294,6 +294,9 @@ void gnomemeeting_init (GM_window_widgets *gw,
 {
   GMH323EndPoint *endpoint = NULL;
   gchar *text = NULL;
+  bool show_splash;
+  bool gatekeeper_enabled;
+  GConfClient *client;
   int debug = 0;
 
   /* Cope with command line options */
@@ -317,7 +320,7 @@ void gnomemeeting_init (GM_window_widgets *gw,
   gtk_window_set_policy (GTK_WINDOW (gm), FALSE, FALSE, TRUE);
 
   /* Some little gconf stuff */  
-  GConfClient *client = gconf_client_get_default ();
+  client = gconf_client_get_default ();
   gconf_client_add_dir (client, "/apps/gnomemeeting",
 			GCONF_CLIENT_PRELOAD_RECURSIVE,
 			0);
@@ -336,8 +339,9 @@ void gnomemeeting_init (GM_window_widgets *gw,
 		      GTK_SIGNAL_FUNC (gtk_widget_hide_on_delete), 0);
   int icon_index = 0;
 
-  cout << "FIX ME: Show Splash" << endl << flush;
-  if (1) {
+  show_splash = gconf_client_get_bool (client, "/apps/gnomemeeting/"
+				       "view/show_splash", 0);  
+  if (show_splash) {
 
     /* We show the splash screen */
     gtk_widget_show (gw->splash_win);
@@ -386,8 +390,7 @@ void gnomemeeting_init (GM_window_widgets *gw,
   }
   
   /* Search for devices */
-  cout << "FIX ME: Show Splash" << endl << flush;
-  if (1) {
+  if (show_splash) {
     e_splash_set_icon_highlight (E_SPLASH (gw->splash_win), icon_index++, true);
     while (gtk_events_pending ())
       gtk_main_iteration ();
@@ -400,8 +403,7 @@ void gnomemeeting_init (GM_window_widgets *gw,
   gw->video_devices = PVideoInputDevice::GetInputDeviceNames ();
 
   /* Main interface creation */
-  cout << "FIX ME: Show Splash" << endl << flush;
-  if (1) {
+  if (show_splash) {
     e_splash_set_icon_highlight (E_SPLASH (gw->splash_win), icon_index++, true);
     while (gtk_events_pending ())
       gtk_main_iteration ();
@@ -421,15 +423,14 @@ void gnomemeeting_init (GM_window_widgets *gw,
   if (debug)
     PTrace::Initialise (4);
   
-  cout << "FIX ME: Show Splash" << endl << flush;
-  if (1) {
+  if (show_splash) {
     e_splash_set_icon_highlight (E_SPLASH (gw->splash_win), icon_index++, true);
     while (gtk_events_pending ())
       gtk_main_iteration ();
   }
   endpoint->AddAudioCapabilities ();
   
-  if (1) {
+  if (show_splash) {
     e_splash_set_icon_highlight (E_SPLASH (gw->splash_win), icon_index++, true);
     while (gtk_events_pending ())
       gtk_main_iteration ();
@@ -438,7 +439,7 @@ void gnomemeeting_init (GM_window_widgets *gw,
   
   /* The LDAP part, if needed */
   if (gconf_client_get_bool (GCONF_CLIENT (client), "/apps/gnomemeeting/ldap/register", NULL)) {
-    if (1) {
+    if (show_splash) {
       e_splash_set_icon_highlight (E_SPLASH (gw->splash_win), icon_index++, true);
       while (gtk_events_pending ())
 	gtk_main_iteration ();
@@ -449,8 +450,7 @@ void gnomemeeting_init (GM_window_widgets *gw,
   }
   
   /* Run the listener thread */
-  cout << "FIX ME: Show Splash" << endl << flush;
-  if (1) {
+  if (show_splash) {
       e_splash_set_icon_highlight (E_SPLASH (gw->splash_win), icon_index++, true);
       while (gtk_events_pending ())
 	gtk_main_iteration ();
@@ -463,10 +463,9 @@ void gnomemeeting_init (GM_window_widgets *gw,
   }
 
   /* Register to the Gatekeeper */
-  cout << "FIX ME: Show Splash" << endl << flush;
   cout << "FIX ME: GateKeeper" << endl << flush;
   if (0) {
-    if (1) {
+    if (show_splash) {
 	e_splash_set_icon_highlight (E_SPLASH (gw->splash_win), icon_index++, true);
 	while (gtk_events_pending ())
 	  gtk_main_iteration ();
