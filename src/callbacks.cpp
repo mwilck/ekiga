@@ -104,6 +104,11 @@ void ldap_callback (GtkButton *button, gpointer data)
 
 void connect_cb (GtkWidget *widget, gpointer data)
 {	
+  // data will be a widget if the callback is called from the popup window
+  // that can be displayed on incoming calls
+  if (GTK_IS_WIDGET (data))
+    gtk_widget_destroy (GTK_WIDGET (data));
+
   MyApp->Connect();
 }
 
@@ -112,6 +117,11 @@ void disconnect_cb (GtkWidget *widget, gpointer data)
 {	
   GMH323Connection *connection = (GMH323Connection *) MyApp->Endpoint ()
     ->Connection ();
+
+  // data will be a widget if the callback is called from the popup window
+  // that can be displayed on incoming calls
+  if (GTK_IS_WIDGET (data))
+    gtk_widget_destroy (GTK_WIDGET (data));
 
   if (connection != NULL)
     connection->UnPauseChannels ();

@@ -1,3 +1,22 @@
+2001-09-19  Damien Sandras  <dsandras@seconix.com>
+
+	* callbacks.cpp: Modified connect_cb and disconnect_cb to destroy the popup window
+	displayed during incoming calls (if any).
+	* common.h: Added gatekeeper options and widgets, added flags that indicates which
+	options have been changed and will need to be updated, added an PStringArray 
+	containing the devices.
+	* config.cpp: Added options for gatekeeper support (host, ID, registering method),
+	added an option to specify if a popup has to be displayed on incoming calls, moved
+	the auto answer and do not disturb modes to General Settings.
+	* endpoint.cpp: Modified Initialise so that most settings that have to be reapplied
+	are reapplied in preferences.cpp function (apply_options). Added functions for 
+	Gatekeeper (RegisterGatekeeper, and Gatekeeper). Added the ability to display a 
+	popup on incoming calls.
+	* main_interface.cpp: Added device initialization and auto-detection stuff in
+	GM_init.
+	* preferences.cpp,preferences.h: Added support for Gatekeeper options and popup option.
+	
+	
 2001-09-19  Christian Rose  <menthos@menthos.com>
 
 	* AUTHORS: Changed my e-mail address.
@@ -14,7 +33,6 @@
 2001-09-18  Damien Sandras  <dsandras@seconix.com>
 
 	* src/main.cpp: Fixed the seconds and minutes bug.
-
 	* src/gdkvideoio.cpp: Fixed a bug preventing the refresh of the screen when
 	local and remote video were displayed at the same time.
 	
@@ -25,10 +43,8 @@
 2001-09-18  Kenneth Rohde Christiansen  <kenneth@gnu.org>
 
 	* po/POTFILES.in:
-
 	* sounds/GnomeMeeting.soundlist: Removed that file, and added the corresponding
 	.in file.
-
 	* sounds/Makefile.am: Fixed the bug.
 	
 2001-09-17  Damien Sandras  <dsandras@seconix.com>
@@ -48,22 +64,16 @@
 2001-09-17  Damien Sandras  <dsandras@seconix.com>
 
 	* configure.in: Changed pt-includes to ptlib-includes.
-
 	* src/main.cpp: Elapsed time is now displayed in the statusbar when
 	being in a call.
-
 	* FAQ: Updated the FAQ.
 	
 2001-09-13  Damien Sandras  <dsandras@seconix.com>
 
 	* Makefile.am: Added pixmaps/ to EXTRA_DIST.
- 
 	* src/Makefile.am: Added common.h and webcam.h to the list of files.
-
 	* src/ldap.cpp: Fixed a bug in initialisation of the datas array.
-
 	* src/callbacks.cpp: Added 2 contributors.
-	
 	* AUTHORS: Changed my mail and added contributors.
 	
 2001-09-13  Damien Sandras  <dsandras@seconix.com>
@@ -73,26 +83,21 @@
 2001-09-12  Kenneth Rohde Christiansen  <kenneth@gnu.org>
 
 	* Added gnomemeeting.desktop.in to CVS.
-
 	* Added support for xml-i18n-tools.
 	
 2001-09-12  Miguel Rodríguez Pérez  <migras@atlas.uvigo.es>
 
 	* src/Makefile.am (gnomemeeting_SOURCES): Corrected the name of
 	two header files
-
 	* configure.in: added a call to AM_PROG_XML_I18N_TOOLS
-
 	* Makefile.am (EXTRA_DIST): added some files needed by xml-i18n-tools
 	
 2001-06-12  Damien Sandras  <dsandras@seconix.com>
 
 	* src/main_interface.cpp: Do not try to destroy the splash window
 	if there is not.
-
 	* src/preferences.cpp: Clicking on OK saves the options before 
 	destroying the preferences window. Added again the video test button.
-
 	* src/webcam.cpp: Added a C function to test the video settings.
 	
 2001-06-06  Damien Sandras  <dsandras@seconix.com>
@@ -109,9 +114,7 @@
 
 	* callbacks.cpp: Displays an error popup if the user try to quit while
 	being in a call.
-
 	* endpoint.cpp: Fixed the Xlib asynchronous reply bug.
-
 	* main.cpp: Changed the disconnection function to improve the response
 	time.
 	
@@ -156,26 +159,20 @@
 
 	* endpoint.h,endpoint.cpp: Added a function that returns the current 
 	PVideoInputDevice.
-
 	* main_interface.cpp: Changed the GTK callbacks for the video settings
 	so that they can use both the preview mode and the connection's grabber.
 	
 2001-09-05  Damien Sandras  <dsandras@seconix.com>
 
 	* callbacks.cpp: Added support to leave during a call.
-
 	* common.h: Added define's for the CIF and QCIF size to prepare
 	the road for new size when OpenH323 will permit it.
-
 	* endpoint.cpp,endpoint.h: Added functions to support the new preview mode.
 	Fixed a lot of minor bugs.
-
 	* main.cpp,main_interface.cpp: Added support for the new preview mode 
 	(which has changed since 2001-09-01), added tooltips.
-
 	* webcam.cpp,webcam.h: completely changed the preview mode. The new class
 	is an autodelete thread. Fixed minor bugs.
-
 	* FAQ: Added new questions (and new answers ;) )
 	
 2001-09-04  Christian Rose  <menthos@menthos.com>
@@ -185,11 +182,9 @@
 2001-09-01  Damien Sandras  <dsandras@seconix.com>
 
 	* pixmaps/: Modified the logo to version 0.11
-
 	* src/webcam.cpp: Added ReInitialise method that will restart the webcam
 	thread with other settings; The logo is now displayed when there is no
 	webcam image displayed.
-	
 	* src/preferences.cpp: Modified the ReInitialise method, webcam thread is
 	no more delete, but restarted.
 	
@@ -214,17 +209,12 @@
 
 	* src/main_interface.cpp: added buttons in the quick control panel to 
 	switch between the different sections of the control panel.
-
 	* src/endpoint.cpp: removed all calls to strcat, strcpy, by calls to
 	g_strdup_printf.
-
 	* src/endpoint.cpp: add a small computer icon when connected.
-
 	* src/ldap.cpp: added g_free calls, but needs to be changed again, 
 	gtk_clist_append stores a copy of the structures.
-
 	* src/preferences.cpp: removed the video test button
-
 	* src/callbacks.cpp, src/toolbar.cpp: it is now possible to quit during calls
 	
 2001-08-29  Damien Sandras  <dsandras@seconix.com>
@@ -232,7 +222,6 @@
 	* src/endpoint.cpp, src/main_interface.cpp: added function GM_init to cope 
 	with the endpoint's initialise. That permits to remove the gtk stuff and 
 	the splash screen from the Initialise Method in endpoint.
-
 	* src/config.cpp, src/preferences.cpp, src/main_interface.cpp: improved 
 	support	for different soundcards. Updated the Audio Settings in the control
 	panel.
@@ -258,11 +247,9 @@
 	(or webcam) as sound recorder device and sound player device.
 	The Audio Settings part of the GnomeMeeting control panel still needs to be
 	updated.
-
 	* src/main_interface.cpp: fixed the -a bug (when GnomeMeeting is run with
 	the -a applet, if you close the window with the WM, GnomeMeeting will be 
 	closed and not hidden). See gtk_signal_connect ().
-
 	* src/endpoint.cpp: added message in the history to show the devices used
 	for recording and playing.
 	
@@ -271,11 +258,9 @@
 	* src/preferences.cpp (video_test_button_pressed): 
 	* src/config.cpp (read_config_from_struct): Some changes
 	for read some preferences from a Combo instead of an Entry.
-
 	* src/preferences.cpp (init_pref_devices): Change the GTK_Entry
 	widget for a GTK_Combo for the video and audio devices.
 	Get the possible devices from PWLib.
-
 	* src/config.cpp (read_config): Don't hardcode default 
 	audio/video devices, get them from PWLib.
 	(init_config): Idem.
@@ -296,19 +281,14 @@
 
 	* src/main.cpp: Modified the startup process in main () using a new
 	GM_init function.
-
 	* src/main_interface.cpp: Added a new GM_init function that implements
 	the all startup process.
-
 	* src/endpoint.cpp: Moved all the GTK splash screen stuff out of
 	Initialise (and added it to GM_init, more logical).
-
 	* src/menu.cpp: Deleted the pause section of the menu.
-
 	* src/main_interface.cpp: Added 2 toggle buttons (one for audio
 	transmission, and one for video transmission) that are enabled during
 	calls and that permit to pause the audio and or video transmission.
-
 	* src/webcam.cpp: Improved that class.
 
 2001-08-25  Christian Rose  <menthos@enthos.com>
@@ -318,7 +298,6 @@
 2001-08-25  Christian Rose  <menthos@menthos.com>
 
 	* LICENCE: Renamed this file to LICENSE. Also added full GPL statement.
-
 	* COPYING: Added the GPL itself.
 
 2001-08-25  Christian Rose  <menthos@menthos.com>
@@ -330,9 +309,7 @@
 	* Makefile, intl/Makefile, pixmaps/Makefile, po/Makefile,
 	sounds/Makefile, src/Makefile, config.h, config.status: Removed these
 	files.
-
 	* po/.cvsignore: Added Makefile to this file.
-
 	* .cvsignore, intl/.cvsignore, pixmaps/.cvsignore, sounds/.cvsignore,
 	src/.cvsignore: Added .cvsignore files.
 
@@ -347,21 +324,15 @@
 2001-08-25  Damien Sandras  <dsandras@seconix.com>
 
 	* Changelog: Updated.
-
 	* config.log, config.sub: Removed.
-
 	* src/main_interface.cpp: Added support for a video preview button.
-
 	* src/webcam.cpp, src/webcam.h: Removed the old C functions to manage
 	the webcam and added a new multi-threaded class to cope with the
 	camera. This class uses PWlib for portability.
-
 	* src/endpoint.cpp:  The OpenVideoChannel function now uses the new
 	webcam.cpp class.
-
 	* src/main_interface.cpp:  Added support for the new webcam.cpp class
 	in GTK+ callbacks.
-
 	* src/preferences.cpp:  Added support for the new webcam.cpp class in
 	apply_options.
 
@@ -390,9 +361,7 @@
 2001-08-24  Christian Rose  <menthos@menthos.com>
 
 	* configure.in: Added sv to ALL_LINGUAS.
-
 	* po/ChangeLog: Added.
-
 	* src/applet.cpp, src/connection.cpp, src/endpoint.cpp,
 	src/gdkvideoio.cpp, src/ldap.cpp, src/main_interface.cpp,
 	src/menu.cpp, src/preferences.cpp: String changes, made some
@@ -403,26 +372,18 @@
  
 	* src/endpoint.cpp: added OpenVideoChannel function for new 
 	libraries support.
-
 	* src/main.cpp, src/main_interface.cpp: applet now optional.
-
 	* src/applet.cpp: adding support for resizeable applet.
-
 	* src/preferences.cpp, src/config.cpp: added support to change
 	soundcard and the video device and video test button has been added in
 	the preferences.
-
 	* src/endpoint.cpp: added support for a test image in case of failure.
-
 	* src/main_interface.cpp: added possibility to modify the brightness, 
 	contrast, whiteness, and colour level during calls.
-
 	* src/main_interface.cpp, src/endpoint.cpp: GnomeMeeting logo is
 	displayed again at the end of each call instead of the last
 	transmitted / received picture.
-
 	* src/menu.cpp: Options were added in the view menu to switch between 
 	the "Remote User Info", "History", "Audio Settings", "Video Settings".
-
 	* po/es.po: spanish translation has been added.
 

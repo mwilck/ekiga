@@ -35,7 +35,9 @@ gnomemeeting_SOURCES =		\
 	main_interface.cpp	\
 	main_interface.h	\
 	audio.cpp		\
-	audio.h
+	audio.h			\
+	gatekeeper.cpp		\
+	gatekeeper.h
 
 
 gnomemeeting_LDADD =  @GNOMEMEETING_LDADD@ -lpanel_applet

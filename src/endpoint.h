@@ -206,7 +206,6 @@ class GMH323EndPoint : public H323EndPoint
   int CallingState (void);
 
 
-
   // DESCRIPTION  :  /
   // BEHAVIOR     :  Returns the current IP of the endpoint, even if the endpoint
   //                 is listening on many interfaces
@@ -238,6 +237,17 @@ class GMH323EndPoint : public H323EndPoint
   // PRE          :  /
   PString CallToken (void);
 
+
+  // DESCRIPTION  :  /
+  // BEHAVIOR     :  Returns the current gatekeeper
+  // PRE          :  /
+  H323Gatekeeper *Gatekeeper (void);
+
+
+  // DESCRIPTION  :  /
+  // BEHAVIOR     :  Register to the gatekeeper given in the options, if any.
+  // PRE          :  /
+  void GatekeeperRegister (void);
 
   // DESCRIPTION  :  /
   // BEHAVIOR     :  Returns the current webcam grabbing device

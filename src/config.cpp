@@ -51,6 +51,9 @@ void store_config (options *opts)
   gnome_config_set_int ("GeneralSettings/show_statusbar", opts->show_statusbar);
   gnome_config_set_int ("GeneralSettings/incoming_call_sound", 
 			opts->incoming_call_sound);
+  gnome_config_set_int ("GeneralSettings/dnd", opts->dnd);
+  gnome_config_set_int ("GeneralSettings/enable_auto_answer", opts->aa);
+  gnome_config_set_int ("GeneralSettings/enable_popup", opts->popup);
 
   gnome_config_set_string ("UserSettings/firstname", opts->firstname);
   gnome_config_set_string ("UserSettings/surname", opts->surname);
@@ -62,14 +65,16 @@ void store_config (options *opts)
 
   gnome_config_set_int ("AdvancedSettings/enable_fast_start", opts->fs);
   gnome_config_set_int ("AdvancedSettings/enable_h245_tunneling", opts->ht); 	
-  gnome_config_set_int ("AdvancedSettings/enable_auto_answer", opts->aa);
   gnome_config_set_int ("AdvancedSettings/max_bps", opts->bps);
   gnome_config_set_int ("AdvancedSettings/silence_detection", opts->sd);
-  gnome_config_set_int ("AdvancedSettings/dnd", opts->dnd);
 
   gnome_config_set_int ("LDAPSettings/ldap", opts->ldap);
   gnome_config_set_string ("LDAPSettings/ldap_server", opts->ldap_server);
   gnome_config_set_string ("LDAPSettings/ldap_port", opts->ldap_port);
+
+  gnome_config_set_int ("GKSettings/gk", opts->gk);
+  gnome_config_set_string ("GKSettings/gk_host", opts->gk_host);
+  gnome_config_set_string ("GKSettings/gk_id", opts->gk_id);
 
   gnome_config_set_string ("Devices/audio_player", opts->audio_player);
   gnome_config_set_string ("Devices/audio_recorder", opts->audio_recorder);
@@ -126,6 +131,9 @@ void read_config (options *opts)
   opts->show_statusbar = gnome_config_get_int ("GeneralSettings/show_statusbar");
   opts->incoming_call_sound = 
     gnome_config_get_int ("GeneralSettings/incoming_call_sound");
+  opts->aa = gnome_config_get_int ("GeneralSettings/enable_auto_answer");
+  opts->dnd = gnome_config_get_int ("GeneralSettings/dnd");
+  opts->popup = gnome_config_get_int ("GeneralSettings/enable_popup");
 
   opts->firstname = gnome_config_get_string ("UserSettings/firstname");
   opts->listen_port = gnome_config_get_string ("UserSettings/listen_port");	
@@ -137,14 +145,17 @@ void read_config (options *opts)
 
   opts->fs = gnome_config_get_int ("AdvancedSettings/enable_fast_start");
   opts->ht = gnome_config_get_int ("AdvancedSettings/enable_h245_tunneling"); 	
-  opts->aa = gnome_config_get_int ("AdvancedSettings/enable_auto_answer");
+
   opts->bps = gnome_config_get_int ("AdvancedSettings/max_bps");
   opts->sd = gnome_config_get_int ("AdvancedSettings/silence_detection");
-  opts->dnd = gnome_config_get_int ("AdvancedSettings/dnd");
 
   opts->ldap = gnome_config_get_int ("LDAPSettings/ldap");
   opts->ldap_server = gnome_config_get_string ("LDAPSettings/ldap_server");
   opts->ldap_port = gnome_config_get_string ("LDAPSettings/ldap_port");
+
+  opts->gk = gnome_config_get_int ("GKSettings/gk");
+  opts->gk_host = gnome_config_get_string ("GKSettings/gk_host");
+  opts->gk_id = gnome_config_get_string ("GKSettings/gk_id");
 
   opts->audio_player = gnome_config_get_string ("Devices/audio_player");
   opts->audio_recorder = gnome_config_get_string ("Devices/audio_recorder");
@@ -186,6 +197,12 @@ void read_config (options *opts)
   if (opts->video_device == NULL)
     opts->video_device = 
     g_strdup (PVideoChannel::GetDefaultDevice (PVideoChannel::Player));
+
+  if (opts->gk_host == NULL)
+    opts->gk_host = g_strdup ("");
+
+  if (opts->gk_id == NULL)
+    opts->gk_id = g_strdup ("");
 }
 
 
@@ -197,6 +214,8 @@ void g_options_free (options *opts)
   g_free (opts->mail);
   g_free (opts->location);
   g_free (opts->comment);
+  g_free (opts->gk_host);
+  g_free (opts->gk_id);
   g_free (opts->audio_player);
   g_free (opts->audio_recorder);
   g_free (opts->audio_player_mixer);
@@ -290,16 +309,48 @@ gboolean check_config_from_struct (GM_pref_window_widgets *pw)
     {
       if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->vid_tr)))
 	{
-/*
 	  if (!GM_cam (gtk_entry_get_text (GTK_ENTRY (pw->video_device)),
 		       (int) pw->video_channel_spin_adj->value))
 	    
 	    msg_box = gnome_message_box_new (_("Could not open the selected video device, but video transmission is enabled.\nGnomeMeeting will transmit a test image to the remote party during communications."), 
 					     GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
-*/
 	}
     }
 
+
+  // Check Gatekeeper Settings
+  if (pw->gk_changed)
+    {
+      GtkWidget *active_item = gtk_menu_get_active (GTK_MENU 
+						    (GTK_OPTION_MENU (pw->gk)->menu));
+      int item_index = g_list_index (GTK_MENU_SHELL 
+				     (GTK_OPTION_MENU (pw->gk)->menu)->children, 
+				     active_item);
+      if (item_index == 1)
+	{
+	  if (!strcmp (gtk_entry_get_text (GTK_ENTRY (pw->gk_host)), ""))
+	    {
+	      msg_box = gnome_message_box_new (_("Impossible to register to an empty host. Please specify to host to contact to register with the gatekeeper."), GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
+
+	      no_error = FALSE;
+	    }
+	}
+
+
+     if (item_index == 2)
+	{
+	  if (!strcmp (gtk_entry_get_text (GTK_ENTRY (pw->gk_id)), ""))
+	    {
+	      msg_box = gnome_message_box_new (_("Please specify a Gatekeeper ID to contact to register."), GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
+
+	      no_error = FALSE;
+	    }
+	}
+
+     if (!no_error)
+       gtk_option_menu_set_history (GTK_OPTION_MENU (pw->gk), 0);	
+    }
+ 
 
   if (msg_box != NULL)
     gtk_widget_show (msg_box);
@@ -343,14 +394,23 @@ options * read_config_from_struct (GM_pref_window_widgets *pw)
   opts->fs = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->fs));
   opts->bps = (int) pw->bps_spin_adj->value;
   opts->sd = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->sd));
-
-  /* Advanced Settings */
   opts->dnd = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->dnd));
+  opts->popup = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->popup));
 
   /* LDAP Settings */
   opts->ldap =  gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->ldap));
   opts->ldap_server = gtk_entry_get_text (GTK_ENTRY (pw->ldap_server));
   opts->ldap_port = gtk_entry_get_text (GTK_ENTRY (pw->ldap_port));
+
+  /* Gatekeeper Settings */
+  active_item = gtk_menu_get_active (GTK_MENU 
+				     (GTK_OPTION_MENU (pw->gk)->menu));
+  item_index = g_list_index (GTK_MENU_SHELL 
+			     (GTK_OPTION_MENU (pw->gk)->menu)->children, 
+			      active_item);
+  opts->gk = item_index;
+  opts->gk_host = gtk_entry_get_text (GTK_ENTRY (pw->gk_host));
+  opts->gk_id = gtk_entry_get_text (GTK_ENTRY (pw->gk_id));
 
   /* Video Codec Settings */
   active_item = gtk_menu_get_active (GTK_MENU 
@@ -440,17 +500,23 @@ void init_config (void)
   gnome_config_set_int ("GeneralSettings/show_notebook", 1);
   gnome_config_set_int ("GeneralSettings/show_statusbar", 1);
   gnome_config_set_int ("GeneralSettings/incoming_call_sound", 1);
+  gnome_config_set_int ("AdvancedSettings/enable_auto_answer", 0);
+  gnome_config_set_int ("AdvancedSettings/dnd", 0);
+  gnome_config_set_int ("AdvancedSettings/enable_popup", 0);
 
   gnome_config_set_int ("AdvancedSettings/enable_fast_start", 0);
   gnome_config_set_int ("AdvancedSettings/enable_h245_tunneling", 0); 	
-  gnome_config_set_int ("AdvancedSettings/enable_auto_answer", 0);
+
   gnome_config_set_int ("AdvancedSettings/max_bps", 20000);
   gnome_config_set_int ("AdvancedSettings/silence_detection", 1);
-  gnome_config_set_int ("AdvancedSettings/dnd", 0);
 
   gnome_config_set_int ("LDAPSettings/ldap", 0);
   gnome_config_set_string ("LDAPSettings/ldap_server", "");
   gnome_config_set_string ("LDAPSettings/ldap_port", "389");
+
+  gnome_config_set_int ("GKSettings/gk", 0);
+  gnome_config_set_string ("GKSettings/gk_host", "");
+  gnome_config_set_string ("GKSettings/gk_id", "");
 
   gnome_config_set_string ("EnabledAudio/LPC10", "0");
   gnome_config_set_string ("EnabledAudio/GSM-06.10", "0");

@@ -57,19 +57,18 @@ void pref_window_clicked (GnomeDialog *widget, int button, gpointer data)
     case 2:
       // Save things
       opts = read_config_from_struct ((GM_pref_window_widgets *) data);
-
       if (check_config_from_struct ((GM_pref_window_widgets *) data))
 	{
 	  store_config (opts);
 	  apply_options (opts, (GM_pref_window_widgets *) data);
 	}
 
-      delete (opts); /* opts' content is destroyed with the widgets */
-
       // destroy
       ((GM_pref_window_widgets *) data)->gw->pref_window = NULL;
       delete ((GM_pref_window_widgets *) data);
       gtk_widget_destroy (GTK_WIDGET (widget));
+      // opts' content is destroyed with the widgets.
+      delete (opts);
       break;
 
       /* The user clicks on apply => only save */
@@ -155,6 +154,8 @@ void button_clicked (GtkWidget *widget, gpointer data)
 			  pw->row_avail + 1);
       if (pw->row_avail < GTK_CLIST (pw->clist_avail)->rows - 1) pw->row_avail++;
     }
+
+  pw->capabilities_changed = 1;
 }
 
 
@@ -218,6 +219,14 @@ void vid_tr_changed (GtkToggleButton *button, gpointer data)
 
   pw->vid_tr_changed = 1;
 }
+
+
+void gk_option_changed (GtkWidget *widget, gpointer data)
+{
+  GM_pref_window_widgets *pw = (GM_pref_window_widgets *) data;
+
+  pw->gk_changed = 1;
+}
  
 
 /******************************************************************************/
@@ -262,6 +271,8 @@ void GMPreferences (int calling_state, GM_window_widgets *gw)
   pw->gw = gw;
   pw->ldap_changed = 0;
   pw->audio_mixer_changed = 0;
+  pw->gk_changed = 0;
+  pw->capabilities_changed = 0;
 
 
   gw->pref_window = gnome_dialog_new (NULL, GNOME_STOCK_BUTTON_CANCEL,
@@ -287,7 +298,7 @@ void GMPreferences (int calling_state, GM_window_widgets *gw)
   gtk_box_pack_start (GTK_BOX (hbox), notebook, TRUE, TRUE, GNOME_PAD_SMALL);
 
   gtk_widget_set_usize (GTK_WIDGET (ctree), 170, 20);
-  gtk_widget_set_usize (GTK_WIDGET (notebook), 430, 300);
+  gtk_widget_set_usize (GTK_WIDGET (notebook), 460, 300);
   
   /* All the notebook pages */
   node_txt [0] = g_strdup (_("General"));
@@ -343,13 +354,23 @@ void GMPreferences (int calling_state, GM_window_widgets *gw)
   g_free (node_txt [0]);
   init_pref_ldap (notebook, pw, calling_state, opts);
 
-  node_txt [0] = g_strdup (_("Device Settings"));
+  node_txt [0] = g_strdup (_("Gatekeeper Settings"));
   node2 = gtk_ctree_insert_node (GTK_CTREE (ctree), node, 
 				 NULL, node_txt, 0,
 				 NULL, NULL, NULL, NULL,
 				 TRUE, FALSE);
   gtk_ctree_node_set_row_data (GTK_CTREE (ctree),
 			       node2, (gpointer) "5");
+  g_free (node_txt [0]);
+  init_pref_gatekeeper (notebook, pw, calling_state, opts);
+
+  node_txt [0] = g_strdup (_("Device Settings"));
+  node2 = gtk_ctree_insert_node (GTK_CTREE (ctree), node, 
+				 NULL, node_txt, 0,
+				 NULL, NULL, NULL, NULL,
+				 TRUE, FALSE);
+  gtk_ctree_node_set_row_data (GTK_CTREE (ctree),
+			       node2, (gpointer) "6");
   g_free (node_txt [0]);
   init_pref_devices (notebook, pw, calling_state, opts);
 
@@ -371,7 +392,7 @@ void GMPreferences (int calling_state, GM_window_widgets *gw)
 				 NULL, NULL, NULL, NULL,
 				 TRUE, FALSE);			
   gtk_ctree_node_set_row_data (GTK_CTREE (ctree),
-			       node2, (gpointer) "6");
+			       node2, (gpointer) "7");
   g_free (node_txt [0]);
   init_pref_audio_codecs (notebook, pw, calling_state, opts);
 
@@ -382,7 +403,7 @@ void GMPreferences (int calling_state, GM_window_widgets *gw)
 				NULL, NULL, NULL, NULL,
 				TRUE, FALSE);			
   gtk_ctree_node_set_row_data (GTK_CTREE (ctree),
-			       node, (gpointer) "7");
+			       node, (gpointer) "8");
   g_free (node_txt [0]);
   init_pref_video_codecs (notebook, pw, calling_state, opts);
 
@@ -409,7 +430,7 @@ void GMPreferences (int calling_state, GM_window_widgets *gw)
   gtk_notebook_set_page (GTK_NOTEBOOK (notebook), 0);
 
   gtk_clist_set_selectable (clist, 0, FALSE);
-  gtk_clist_set_selectable (clist, 6, FALSE);
+  gtk_clist_set_selectable (clist, 7, FALSE);
 
   gtk_widget_show_all (gw->pref_window);
 
@@ -688,6 +709,19 @@ void init_pref_interface (GtkWidget *notebook, GM_pref_window_widgets *pw,
   gtk_tooltips_set_tip (tip, pw->dnd,
 			_("If enabled, incoming calls will be automatically refused"), NULL);
   
+
+  /* Popup display */
+  pw->popup = gtk_check_button_new_with_label (_("Popup window"));
+  gtk_table_attach (GTK_TABLE (table), pw->popup, 2, 4, 0, 1,
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);	
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->popup), opts->popup);
+
+  tip = gtk_tooltips_new ();
+  gtk_tooltips_set_tip (tip, pw->popup,
+			_("If enabled, a popup will be displayed when receiving an incoming call"), NULL);
+
 
   /* Play Sound */
   frame = gtk_frame_new (_("Sound"));
@@ -1323,6 +1357,123 @@ void init_pref_ldap (GtkWidget *notebook, GM_pref_window_widgets *pw,
 }
 
 
+void init_pref_gatekeeper (GtkWidget *notebook, GM_pref_window_widgets *pw,
+			   int calling_state, options *opts)
+{
+  GtkWidget *general_frame;
+  GtkWidget *frame;
+  GtkWidget *vbox;
+  GtkWidget *table;
+  GtkWidget *label;
+  GtkWidget *menu;
+  GtkWidget *item;
+
+  GtkTooltips *tip;
+
+  vbox = gtk_vbox_new (FALSE, GNOME_PAD_SMALL);
+
+  general_frame = gtk_frame_new (NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (general_frame), GTK_SHADOW_IN);
+
+  gtk_container_add (GTK_CONTAINER (general_frame), vbox);
+
+
+  /* Gatekeeper settings */
+  frame = gtk_frame_new (_("Gatekeeper Settings"));
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
+
+  gtk_box_pack_start (GTK_BOX (vbox), frame, 
+		      FALSE, FALSE, 0);
+
+
+  /* Put a table in the first frame */
+  table = gtk_table_new (3, 4, TRUE);
+  gtk_container_add (GTK_CONTAINER (frame), table);
+  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_BIG);
+
+  /* Gatekeeper ID */
+  label = gtk_label_new (_("Gatekeeper ID"));
+  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 1, 2,
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
+  
+  pw->gk_id = gtk_entry_new();
+  gtk_table_attach (GTK_TABLE (table), pw->gk_id, 1, 4, 1, 2,
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
+  gtk_entry_set_text (GTK_ENTRY (pw->gk_id), opts->gk_id);
+
+  tip = gtk_tooltips_new ();
+  gtk_tooltips_set_tip (tip, pw->gk_id,
+			_("The Gatekeeper identifier."), NULL);
+
+  gtk_signal_connect (GTK_OBJECT (pw->gk_id), "changed",
+		      GTK_SIGNAL_FUNC (gk_option_changed), (gpointer) pw);
+
+
+  /* Gatekeeper Host */
+  label = gtk_label_new (_("Gatekeeper host"));
+  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1,
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
+  
+  pw->gk_host = gtk_entry_new();
+  gtk_table_attach (GTK_TABLE (table), pw->gk_host, 1, 4, 0, 1,
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
+  gtk_entry_set_text (GTK_ENTRY (pw->gk_host), opts->gk_host);
+
+  tip = gtk_tooltips_new ();
+  gtk_tooltips_set_tip (tip, pw->gk_host,
+			_("The Gatekeeper host to register to."), NULL);
+
+  gtk_signal_connect (GTK_OBJECT (pw->gk_host), "changed",
+		      GTK_SIGNAL_FUNC (gk_option_changed), (gpointer) pw);
+
+
+  /* GK registering method */ 
+  label = gtk_label_new (_("Registering method"));
+  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 2, 3,
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
+
+  menu = gtk_menu_new ();
+  pw->gk = gtk_option_menu_new ();
+  item = gtk_menu_item_new_with_label (_("Do not register to a Gatekeeper"));
+  gtk_menu_append (GTK_MENU (menu), item);
+  item = gtk_menu_item_new_with_label (_("Register using the Gatekeeper host"));
+  gtk_menu_append (GTK_MENU (menu), item);
+  item = gtk_menu_item_new_with_label (_("Register using the Gatekeeper ID"));
+  gtk_menu_append (GTK_MENU (menu), item);
+  item = gtk_menu_item_new_with_label (_("Try to discover the Gatekeeper"));
+  gtk_menu_append (GTK_MENU (menu), item);
+  gtk_option_menu_set_menu (GTK_OPTION_MENU (pw->gk), menu);
+  gtk_option_menu_set_history (GTK_OPTION_MENU (pw->gk), opts->gk);	
+
+  gtk_table_attach (GTK_TABLE (table), pw->gk, 1, 3, 2, 3,
+		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
+		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
+		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
+
+  gtk_signal_connect (GTK_OBJECT (GTK_OPTION_MENU (pw->gk)->menu), "deactivate",
+		      GTK_SIGNAL_FUNC (gk_option_changed), (gpointer) pw);
+
+  tip = gtk_tooltips_new ();
+  gtk_tooltips_set_tip (tip, pw->gk,
+			_("Registering method to use"), NULL);
+
+  /* The End */									
+  label = gtk_label_new (_("Gatekeeper Settings"));
+
+  gtk_notebook_append_page (GTK_NOTEBOOK(notebook), general_frame, label);
+}
+
+
 void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
 			int calling_state, options *opts)
 {
@@ -1333,12 +1484,10 @@ void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
   GtkWidget *label;
   GtkWidget *video_channel;
   GtkWidget *test_button;
-  GList *audio_player_devices = NULL;
-  GList *audio_recorder_devices = NULL;
-  GList *video_devices = NULL;
+  GList *audio_player_devices_list = NULL;
+  GList *audio_recorder_devices_list = NULL;
+  GList *video_devices_list = NULL;
   GtkTooltips *tip;
-  char name [32];
-  
 
   vbox = gtk_vbox_new (FALSE, GNOME_PAD_SMALL);
 
@@ -1375,26 +1524,26 @@ void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
 
-  PStringArray audio_player_devices_from_pw = 
-    PSoundChannel::GetDeviceNames (PSoundChannel::Player);
-
-  for (int i = audio_player_devices_from_pw.GetSize () - 1 ; i >= 0; i--) 
+  for (int i = pw->gw->audio_player_devices.GetSize () - 1 ; i >= 0; i--) 
     {
-      if (audio_player_devices_from_pw [i] != PString (opts->audio_player))
+      if (pw->gw->audio_player_devices [i] != PString (opts->audio_player))
 	{
-	  audio_player_devices = g_list_prepend 
-	    (audio_player_devices, g_strdup (audio_player_devices_from_pw [i]));
+	  audio_player_devices_list = g_list_prepend 
+	    (audio_player_devices_list, g_strdup (pw->gw->audio_player_devices [i]));
 	}
      
     }
 
-  audio_player_devices = g_list_prepend (audio_player_devices, opts->audio_player);
+  audio_player_devices_list = g_list_prepend (audio_player_devices_list, opts->audio_player);
   gtk_combo_set_popdown_strings (GTK_COMBO (pw->audio_player), 
-				 audio_player_devices);
+				 audio_player_devices_list);
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, GTK_COMBO (pw->audio_player)->entry, 
 			_("Enter the audio player device to use"), NULL);
+
+  gtk_signal_connect (GTK_OBJECT(GTK_COMBO (pw->audio_player)->entry), "changed",
+		      GTK_SIGNAL_FUNC (audio_mixer_changed), (gpointer) pw);
 
 
   /* Audio Recorder Device */
@@ -1410,29 +1559,29 @@ void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
 
-  PStringArray audio_recorder_devices_from_pw = 
-    PSoundChannel::GetDeviceNames (PSoundChannel::Recorder);
-
-  for (int i = audio_recorder_devices_from_pw.GetSize () - 1; i >= 0; i--) 
+  for (int i = pw->gw->audio_recorder_devices.GetSize () - 1; i >= 0; i--) 
     {
-      if (audio_recorder_devices_from_pw [i] != PString (opts->audio_recorder))
+      if (pw->gw->audio_recorder_devices [i] != PString (opts->audio_recorder))
 	{
-	  audio_recorder_devices = g_list_prepend 
-	    (audio_recorder_devices, 
-	     g_strdup (audio_recorder_devices_from_pw [i]));
+	  audio_recorder_devices_list = g_list_prepend 
+	    (audio_recorder_devices_list, 
+	     g_strdup (pw->gw->audio_recorder_devices [i]));
 	}
      
     }
 
-  audio_recorder_devices = g_list_prepend (audio_recorder_devices, 
-					   opts->audio_recorder);
+  audio_recorder_devices_list = g_list_prepend (audio_recorder_devices_list, 
+						opts->audio_recorder);
   gtk_combo_set_popdown_strings (GTK_COMBO (pw->audio_recorder), 
-				 audio_recorder_devices);
+				 audio_recorder_devices_list);
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, GTK_COMBO (pw->audio_recorder)->entry, 
 			_("Enter the audio recorder device to use"), NULL);
 
+  gtk_signal_connect (GTK_OBJECT(GTK_COMBO (pw->audio_recorder)->entry), "changed",
+		      GTK_SIGNAL_FUNC (audio_mixer_changed), (gpointer) pw);
+    
 
   /* Audio Mixers */
   label = gtk_label_new (_("Player Mixer:"));
@@ -1508,18 +1657,15 @@ void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
  		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
  		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
   
-   PStringArray video_devices_from_pw = 
-     PVideoInputDevice::GetInputDeviceNames ();
-
-   for (int i = video_devices_from_pw.GetSize () - 1; i >= 0; i--) 
+   for (int i = pw->gw->video_devices.GetSize () - 1; i >= 0; i--) 
      {
-       if (video_devices_from_pw[i] != PString (opts->video_device))
-	 video_devices = 
-	   g_list_prepend (video_devices, g_strdup (video_devices_from_pw[i]));
+       if (pw->gw->video_devices [i] != PString (opts->video_device))
+	 video_devices_list = 
+	   g_list_prepend (video_devices_list, g_strdup (pw->gw->video_devices [i]));
     }
    
-   video_devices = g_list_prepend (video_devices, opts->video_device);
-   gtk_combo_set_popdown_strings (GTK_COMBO (pw->video_device), video_devices);
+   video_devices_list = g_list_prepend (video_devices_list, opts->video_device);
+   gtk_combo_set_popdown_strings (GTK_COMBO (pw->video_device), video_devices_list);
    
    tip = gtk_tooltips_new ();
 
@@ -1694,7 +1840,6 @@ void apply_options (options *opts, GM_pref_window_widgets *pw)
 
   GMH323EndPoint *endpoint;
   int vol_play = 0, vol_rec = 0;
-  int brightness = 0, colour = 0, contrast = 0, whiteness = 0;
 
   endpoint = MyApp->Endpoint ();
 
@@ -1718,6 +1863,8 @@ void apply_options (options *opts, GM_pref_window_widgets *pw)
   // Change the audio mixer source
   if (pw->audio_mixer_changed)
     {
+      gchar *text;
+
       // We set the new mixer in the object as data, because me do not want
       // to keep it in memory
       gtk_object_remove_data (GTK_OBJECT (pw->gw->adj_play), "audio_player_mixer");
@@ -1736,7 +1883,24 @@ void apply_options (options *opts, GM_pref_window_widgets *pw)
 				 vol_play / 257);
       gtk_adjustment_set_value (GTK_ADJUSTMENT (pw->gw->adj_rec),
 				 vol_rec / 257);
-      
+       
+      // Set recording source and set micro to record
+      MyApp->Endpoint()->SetSoundChannelPlayDevice(opts->audio_player);
+      MyApp->Endpoint()->SetSoundChannelRecordDevice(opts->audio_recorder);
+
+      /* Translators: This is shown in the history. */
+      text = g_strdup_printf (_("Set Audio player device to %s"), opts->audio_player);
+      GM_log_insert (pw->gw->log_text, text);
+      g_free (text);
+
+      /* Translators: This is shown in the history. */
+      text = g_strdup_printf (_("Set Audio recorder device to %s"), 
+				     opts->audio_recorder);
+      GM_log_insert (pw->gw->log_text, text);
+      g_free (text);
+
+      GM_set_recording_source (opts->audio_recorder_mixer, 0); 
+  
       pw->audio_mixer_changed = 0;
     }
 
@@ -1747,6 +1911,27 @@ void apply_options (options *opts, GM_pref_window_widgets *pw)
       pw->vid_tr_changed = 0;
     }
 
+
+  // Unregister from the Gatekeeper, if any
+  if ((MyApp->Endpoint()->Gatekeeper () != NULL) && (pw->gk_changed))
+    MyApp->Endpoint()->RemoveGatekeeper ();
+
+  // Register to the gatekeeper
+  if ((opts->gk) && (pw->gk_changed))
+    {
+      MyApp->Endpoint()->GatekeeperRegister ();
+      pw->gk_changed = 0;
+    }
+
+  // Reinitialise the capabilities
+  if (pw->capabilities_changed)
+    {
+      MyApp->Endpoint ()->RemoveAllCapabilities ();
+      MyApp->Endpoint ()->AddAudioCapabilities ();
+      MyApp->Endpoint ()->AddVideoCapabilities (opts->video_size);
+
+      pw->capabilities_changed = 0;
+    }
 
   // Show / Hide notebook and / or statusbar
   if ( (!(opts->show_notebook)) 

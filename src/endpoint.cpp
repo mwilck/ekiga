@@ -27,6 +27,8 @@
 #include "applet.h"
 #include "audio.h"
 #include "webcam.h"
+#include "gatekeeper.h"
+#include "callbacks.h"
 
 #include "../pixmaps/computer.xpm"
 
@@ -253,9 +255,8 @@ BOOL GMH323EndPoint::StartListener ()
 
 BOOL GMH323EndPoint::Initialise ()
 {
-  char *name = NULL;
-  char *text = NULL;
-  
+  gchar *name = NULL;
+
   // Set the various options
   SetCallingState (0);
   applet_timeout = 0;
@@ -272,25 +273,7 @@ BOOL GMH323EndPoint::Initialise ()
       SetLocalUserName (name);
       g_free (name);
     }
-	
-
-  // Set recording source and set micro to record
-  SetSoundChannelPlayDevice(opts->audio_player);
-  SetSoundChannelRecordDevice(opts->audio_recorder);
-
-  /* Translators: This is shown in the history. */
-  text = g_strdup_printf (_("Set Audio player device to %s"), opts->audio_player);
-  GM_log_insert (gw->log_text, text);
-  g_free (text);
-
-  /* Translators: This is shown in the history. */
-  text = g_strdup_printf (_("Set Audio recorder device to %s"), 
-			  opts->audio_recorder);
-  GM_log_insert (gw->log_text, text);
-  g_free (text);
-
-  GM_set_recording_source (opts->audio_recorder_mixer, 0); 
-
+  
   received_video_device = NULL;
   transmitted_video_device = NULL;
 
@@ -377,6 +360,18 @@ PString GMH323EndPoint::CallToken ()
 }
 
 
+H323Gatekeeper * GMH323EndPoint::Gatekeeper ()
+{
+  return gatekeeper;
+}
+
+
+void GMH323EndPoint::GatekeeperRegister ()
+{
+  new GMH323Gatekeeper (gw, opts);
+}
+
+
 BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection, 
 				     const H323SignalPDU &, H323SignalPDU &)
 {
@@ -411,6 +406,29 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 				       gw->applet);
     }
 
+  if ((opts->popup) && (!opts->aa) && (!opts->dnd))
+    {
+      GtkWidget *msg_box = NULL;
+      GtkWidget *label = NULL;
+
+      msg_box = gnome_dialog_new (_("Incoming call"),
+				  _("Connect"), _("Disconnect"),
+				  NULL);
+
+      label = gtk_label_new (msg);
+      gtk_box_pack_start (GTK_BOX (GNOME_DIALOG (msg_box)->vbox), 
+			  label, TRUE, TRUE, 0);
+
+      gnome_dialog_button_connect (GNOME_DIALOG (msg_box),
+				   0, GTK_SIGNAL_FUNC (connect_cb), msg_box);
+
+      gnome_dialog_button_connect (GNOME_DIALOG (msg_box),
+				   1, GTK_SIGNAL_FUNC (disconnect_cb), msg_box);
+
+      gtk_widget_show (label);
+      gtk_widget_show (msg_box);
+    }
+  
   g_free (msg);  
 
   gdk_threads_leave ();

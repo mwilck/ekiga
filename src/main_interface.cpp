@@ -208,6 +208,7 @@ void GM_init (GM_window_widgets *gw, options *opts, int argc,
 	      char ** argv, char ** envp)
 {
   GMH323EndPoint *endpoint = NULL;
+  gchar *text = NULL;
   int debug = 0;
   
   opts->applet = 1;
@@ -269,6 +270,8 @@ void GM_init (GM_window_widgets *gw, options *opts, int argc,
   endpoint = MyApp->Endpoint ();
   endpoint->Initialise ();
 
+  if (debug)
+    PTrace::Initialise (3);
 
   endpoint->RemoveAllCapabilities ();
 
@@ -284,6 +287,7 @@ void GM_init (GM_window_widgets *gw, options *opts, int argc,
 
   if (opts->ldap)
     {
+      if (opts->show_splash)
         GM_splash_advance_progress (gw->splash_win, 
 				    _("Registering to ILS directory"), 
 				    0.60);
@@ -294,7 +298,7 @@ void GM_init (GM_window_widgets *gw, options *opts, int argc,
   if (opts->show_splash)
     GM_splash_advance_progress (gw->splash_win, 
 				_("Starting the listener thread"), 
-				0.80);
+				0.70);
 
   if (!endpoint->StartListener ())
     {
@@ -302,13 +306,51 @@ void GM_init (GM_window_widgets *gw, options *opts, int argc,
 
       gtk_widget_show (msg_box);
     }
- 
+
+
+  // Register to the Gatekeeper
+  if (opts->gk)
+    {
+      if (opts->show_splash)
+        GM_splash_advance_progress (gw->splash_win, 
+				    _("Registering to the Gatekeeper"), 
+				    0.80);
+
+      endpoint->GatekeeperRegister ();
+    }
+
+  
+  // Initialise the devices
+  if (opts->show_splash)
+    GM_splash_advance_progress (gw->splash_win, 
+				_("Initialising audio devices"), 0.90);
+  
+  /* Search for devices */
+  gw->audio_player_devices = PSoundChannel::GetDeviceNames (PSoundChannel::Player);
+  gw->audio_recorder_devices = PSoundChannel::GetDeviceNames (PSoundChannel::Recorder);
+  gw->video_devices = PVideoInputDevice::GetInputDeviceNames ();
+
+  /* Set recording source and set micro to record */
+  MyApp->Endpoint()->SetSoundChannelPlayDevice(opts->audio_player);
+  MyApp->Endpoint()->SetSoundChannelRecordDevice(opts->audio_recorder);
+  
+  /* Translators: This is shown in the history. */
+  text = g_strdup_printf (_("Set Audio player device to %s"), opts->audio_player);
+  GM_log_insert (gw->log_text, text);
+  g_free (text);
+  
+  /* Translators: This is shown in the history. */
+  text = g_strdup_printf (_("Set Audio recorder device to %s"), 
+				 opts->audio_recorder);
+  GM_log_insert (gw->log_text, text);
+  g_free (text);
+  
+  GM_set_recording_source (opts->audio_recorder_mixer, 0); 
+
+
   if (opts->show_splash)
     GM_splash_advance_progress (gw->splash_win, 
 				_("Done!"), 0.9999);
-
-  if (debug)
-    PTrace::Initialise (3);
 
   if (!(opts->show_notebook))
     gtk_widget_hide (gw->main_notebook);

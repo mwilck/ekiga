@@ -116,6 +116,12 @@ void video_test_button_pressed (GtkButton *, gpointer);
 // PRE          :  gpointer is a valid pointer to a GM_pref_window_widgets
 void vid_tr_changed (GtkToggleButton *, gpointer);
 
+
+// DESCRIPTION  :  This callback is called when the user changes
+//                 any gatekeeper option
+// BEHAVIOR     :  It sets a flag 
+// PRE          :  gpointer is a valid pointer to a GM_pref_window_widgets
+void gk_option_changed (GtkWidget *, gpointer);
 /******************************************************************************/
 
 
@@ -183,12 +189,21 @@ void GMPreferences (int, GM_window_widgets *);
 
 
 // DESCRIPTION  :  /
-// BEHAVIOR     :  It builds the notebook page for LDAP settings and
+// BEHAVIOR     :  It builds the notebook page for ILS settings and
 //                 add it to the notebook, default values are set from the
 //                 options struct given as parameter
 // PRE          :  See init_pref_audio_codecs
  void init_pref_ldap (GtkWidget *, GM_pref_window_widgets *,
 		      int, options *);
+
+
+// DESCRIPTION  :  /
+// BEHAVIOR     :  It builds the notebook page for GateKeeper settings and
+//                 add it to the notebook, default values are set from the
+//                 options struct given as parameter
+// PRE          :  See init_pref_audio_codecs
+ void init_pref_gatekeeper (GtkWidget *, GM_pref_window_widgets *,
+			    int, options *);
 
 
 // DESCRIPTION  :  /

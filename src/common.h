@@ -48,6 +48,7 @@ struct _options
   int aa;  // Auto Answer
   int ht;  // H245 Tunneling
   int fs;  // Fast Start
+  int popup; // Display popup or no when incoming call
   char *listen_port;  // Listen Port
   char *surname;
   char *mail;
@@ -62,6 +63,9 @@ struct _options
   int ldap;
   char *ldap_server;
   char *ldap_port;
+  int gk;
+  char *gk_host;
+  char *gk_id;
   int notfirst;
   int show_splash;
   int show_statusbar;
@@ -103,6 +107,9 @@ struct _GM_window_widgets
   GtkWidget *audio_chan_button;
 
   int video_grabber_thread_count;
+  PStringArray video_devices;
+  PStringArray audio_recorder_devices;
+  PStringArray audio_player_devices;
 };
 
 
@@ -142,6 +149,8 @@ struct _GM_pref_window_widgets
   GtkWidget *show_statusbar;
   // Toggle to show the notebook at startup time
   GtkWidget *show_notebook;
+  // Toggle to popup a window when receiving an incoming call
+  GtkWidget *popup;
   // Toggle to play or not a sound when receiving an incoming call
   GtkWidget *incoming_call_sound;
 
@@ -200,7 +209,14 @@ struct _GM_pref_window_widgets
   // Enable / Disable LDAP
   GtkWidget *ldap;
 
- 
+  /* Gatekeeper Settings */
+  // Enable / Disable GK support
+  GtkWidget *gk;
+  // Gatekeeper host
+  GtkWidget *gk_host;
+  // Gatekeeper ID 
+  GtkWidget *gk_id;
+
   /* Device Settings */
   // The audio player device
   GtkWidget *audio_player;
@@ -225,6 +241,10 @@ struct _GM_pref_window_widgets
   int audio_mixer_changed;
   // user had toggled the video transmission button
   int vid_tr_changed;
+  // user has changed a gatekeeper relative option
+  int gk_changed;
+  // user has changed the capabilities order, or added/deleted capabilities
+  int capabilities_changed;
 };
 /******************************************************************************/
 
