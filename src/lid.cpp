@@ -199,7 +199,10 @@ void GMLid::Main ()
     char c = lid->ReadDTMF (OpalIxJDevice::POTSLine);
     if (c) {
 
+      gnomemeeting_threads_enter ();
       gnomemeeting_dialpad_event (PString (c));
+      gnomemeeting_threads_leave ();
+
       last_key_press = PTime ();
       do_not_connect = FALSE;
     }
