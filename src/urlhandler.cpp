@@ -456,13 +456,12 @@ void GMURLHandler::Main ()
 	
 	gm_main_window_flash_message (main_window, _("User not found"));
 	if (!transfer_call)
-	  gm_calls_history_window_add_call (calls_history_window,
-					    1,
-					    NULL,
-					    call_address, 
-					    "0.00",
-					    _("User not found"),
-					    NULL);
+	  gm_calls_history_add_call (PLACED_CALL,
+				     NULL,
+				     call_address, 
+				     "0.00",
+				     _("User not found"),
+				     NULL);
       }
       
       gnomemeeting_threads_leave ();

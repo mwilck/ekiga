@@ -49,13 +49,6 @@ enum {
 /* The functions  */
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Returns the list of all contacts for all calls. 
- * PRE          :  /
- */
-GSList *gm_calls_history_get_calls ();
-
-
-/* DESCRIPTION  :  /
  * BEHAVIOR     :  Build the calls history window and returns a pointer to it.
  * PRE          :  /
  */
@@ -63,25 +56,32 @@ GtkWidget *gm_calls_history_window_new ();
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Add a call to the calls history, update the main window
- * 		   urls history.
+ * BEHAVIOR     :  Add a call to the calls history. This will update the 
+ * 		   window through a notifier.
  * PRE          :  /
  */
-void gm_calls_history_window_add_call (GtkWidget *,
-				       int,
-				       const char *, 
-				       const char *,
-				       const char *,
-				       const char *,
-				       const char *);
+void gm_calls_history_add_call (int,
+				const char *, 
+				const char *,
+				const char *,
+				const char *,
+				const char *);
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Clear the calls history, update the main window urls 
- * 		   history.
+ * BEHAVIOR     :  Clear the calls history. It will update the window
+ * 		   through a notifier.
  * PRE          :  /
  */
-void gm_calls_history_window_clear (GtkWidget *,
-				    int);
+void gm_calls_history_clear (int);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Returns the list of all contacts for all calls. 
+ * PRE          :  /
+ */
+GSList *gm_calls_history_get_calls ();
+
+
 
 #endif /* _CALLS_HISTORY_WINDOW_H_ */

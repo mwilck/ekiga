@@ -490,13 +490,13 @@ gnome_prefs_range_new (GtkWidget *table,
 		    G_CALLBACK (adjustment_changed),
 		    (gpointer) spin1_conf_key);
   gm_conf_notifier_add (spin1_conf_key, adjustment_changed_nt,
-			(gpointer) spin_button1);
+			(gpointer) adj1);
   
   g_signal_connect (G_OBJECT (adj2), "value-changed",
 		    G_CALLBACK (adjustment_changed),
 		    (gpointer) spin2_conf_key);
   gm_conf_notifier_add (spin2_conf_key, adjustment_changed_nt,
-			(gpointer) spin_button2);
+			(gpointer) adj2);
 
   if (spin1)
     *spin1 = spin_button1;

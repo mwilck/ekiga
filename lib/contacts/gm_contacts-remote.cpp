@@ -191,12 +191,11 @@ gnomemeeting_remote_addressbook_get_contacts (GmAddressbook *addressbook,
       filter = g_strdup_printf ("(&(cn=%)(rfc822mailbox=%%%s%%))", url);
   }  
   else
-      filter = g_strdup_printf ("(&(cn=*)(|(givenname=*%s*)(surname=*%s*))(rfc822mailbox=*%s*))", fullname?fullname:"", fullname?fullname:"", url?url:"");
+      filter = g_strdup_printf ("(&(cn=*)(|(givenname=*%s)(surname=*%s))(rfc822mailbox=*%s))", fullname?fullname:"", fullname?fullname:"", url?url:"");
+  cout << filter << endl << flush;
     
   if (ldap.Search (context, 
-		   (is_ils) 
-		   ? filter 
-		   : filter, 
+		   filter, 
 		   attrs, 
 		   base, 
 		   (sub_scope) 

@@ -1241,13 +1241,13 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   if (t.GetSeconds () == 0 
       && connection.HadAnsweredCall ()
       && connection.GetCallEndReason () != H323Connection::EndedByLocalUser) {
-    
-    gm_calls_history_window_add_call (calls_history_window,
-				      MISSED_CALL, utf8_name,
-				      utf8_url,
-				      "0",
-				      msg_reason,
-				      utf8_app);
+
+    gm_calls_history_add_call (MISSED_CALL, 
+			       utf8_name,
+			       utf8_url,
+			       "0",
+			       msg_reason,
+			       utf8_app);
     mc_access_mutex.Wait ();
     missed_calls++;
     mc_access_mutex.Signal ();
@@ -1257,19 +1257,18 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   }
   else
     if (connection.HadAnsweredCall ())
-      gm_calls_history_window_add_call (calls_history_window,
-					RECEIVED_CALL, utf8_name,
-					utf8_url,
-					t.AsString (0),
-					msg_reason,
-					utf8_app);
+      gm_calls_history_add_call (RECEIVED_CALL, utf8_name,
+				 utf8_url,
+				 t.AsString (0),
+				 msg_reason,
+				 utf8_app);
     else
-      gm_calls_history_window_add_call (calls_history_window,
-					PLACED_CALL, utf8_name,
-					GetLastCallAddress (),
-					t.AsString (0),
-					msg_reason,
-					utf8_app);
+      gm_calls_history_add_call (PLACED_CALL, 
+				 utf8_name,
+				 GetLastCallAddress (),
+				 t.AsString (0),
+				 msg_reason,
+				 utf8_app);
 
 
   gm_history_window_insert (history_window, msg_reason);

@@ -141,7 +141,9 @@ GSList *gnomemeeting_get_remote_addressbooks ();
 /* DESCRIPTION  : /
  * BEHAVIOR     : Returns a GSList of GmContact elements members of a given
  *                GmAddressbook. Only return the elements corresponding to the
- *                given filter (fullname, url, categorie, speed dial). The
+ *                given filter (first name, surname, url, categorie, 
+ *                speed dial). The second parameter contains the number of
+ *                registered users, or -1 in case of error. The
  *                speed dial is ignored on remote address books. If not 
  *                GmAddressbook is given, then the search is done on all
  *                local address books. Searching for speed dial "*" will return
