@@ -457,12 +457,12 @@ BOOL GMILSClient::Register (BOOL reg)
 	
 	if (reg) {
 	  msg = g_strdup_printf (_("Sucessfully registered to ILS directory %s, port %s"), ldap_server, ldap_port);
-	  gnome_appbar_push (GNOME_APPBAR (gw->statusbar), _("Succesfully registered to ILS server");
+	  gnome_appbar_push (GNOME_APPBAR (gw->statusbar), _("Succesfully registered to ILS server"));
 	  starttime = PTime ();
 	}
 	else {
 	  msg = g_strdup_printf (_("Sucessfully unregistered from ILS directory %s, port %s"), ldap_server, ldap_port);
-	  gnome_appbar_push (GNOME_APPBAR (gw->statusbar), _("Succesfully unregistered from ILS server");
+	  gnome_appbar_push (GNOME_APPBAR (gw->statusbar), _("Succesfully unregistered from ILS server"));
 	}
 	
 	gnomemeeting_log_insert (msg);
@@ -518,7 +518,7 @@ void GMILSClient::ils_browse (int page)
 
 void GMILSClient::ils_browse ()
 {
-  char *datas [] = {NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL};
+  char *datas [] = {NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL};
   char *attrs [] = { "surname", "givenname", "comment", "location", 
 		     "rfc822mailbox", "sipaddress", "ilsa32833566", 
 		     "ilsa32964638", NULL };
@@ -659,7 +659,7 @@ void GMILSClient::ils_browse ()
 		      "(&(cn=%))",
 		      attrs, 0, &res); 
 
-  for (int i = 0 ; i < 8 ; i++)
+  for (int i = 0 ; i < 9 ; i++)
     datas [i] = NULL;
 
   gnomemeeting_threads_enter ();
@@ -729,6 +729,22 @@ void GMILSClient::ils_browse ()
 	  g_strdup (ldap_get_values (ldap_connection, e, "comment") [0]);
 	ldap_value_free (ldap_get_values (ldap_connection, e, "comment"));
       }
+
+      if (ldap_get_values(ldap_connection, e, "ilsa26279966") != NULL)	{
+
+	gchar *value =
+	  g_strdup (ldap_get_values (ldap_connection, e, " ilsa26279966") [0]);
+	
+	int v,a,b,c;
+	v = atoi (value); 
+	a=v/65536;
+	b=(v-a*65536)/256;
+	c=(v-a*65536-b*256);
+	g_free (value);
+
+	datas [7] = g_strdup_printf ("%d.%d.%d", a, b, c); 
+	ldap_value_free (ldap_get_values (ldap_connection, e, "ilsa26279966"));
+      }
       
       if (ldap_get_values(ldap_connection, e, "rfc822mailbox") != NULL) {
 	
@@ -754,7 +770,7 @@ void GMILSClient::ils_browse ()
       sprintf (ip, "%d.%d.%d.%d", part4, part3, part2, part1);
       /* ip will be freed (char ip [16]), so we make a copy in datas [7] */
       
-      datas [7] = g_strdup ((char *) ip);
+      datas [8] = g_strdup ((char *) ip);
       
       /* Check if the window is still present or not */
       if (lw)
@@ -791,7 +807,7 @@ void GMILSClient::ils_browse ()
 				sound, sound_mask);
       }
       
-      for (int j = 2 ; j <= 7 ; j++) {
+      for (int j = 2 ; j <= 8 ; j++) {
 	
 	if (datas [j] != NULL)
 	  g_free (datas [j]);

@@ -526,13 +526,13 @@ void gnomemeeting_init_ldap_window_notebook (int page_num, gchar *text_label)
      /* Translators: This is as in "Video". */
      N_("V"),
      N_("First Name"), N_("Last name"), N_("E-mail"), 
-     N_("Location"), N_("Comment"), N_("IP")};
+     N_("Location"), N_("Comment"), N_("Version"), N_("IP")};
 
   /* Intl */
-  for (int i = 0 ; i < 8 ; i++)
+  for (int i = 0 ; i < 9 ; i++)
     clist_titles [i] = gettext (clist_titles [i]);
 
-  clist = gtk_clist_new_with_titles (8, clist_titles);
+  clist = gtk_clist_new_with_titles (9, clist_titles);
   gtk_object_set_data (GTK_OBJECT (clist), "last_selected_row",
 		       GINT_TO_POINTER (-1));
 
@@ -542,7 +542,7 @@ void gnomemeeting_init_ldap_window_notebook (int page_num, gchar *text_label)
 				  GTK_POLICY_AUTOMATIC,
 				  GTK_POLICY_AUTOMATIC);
 
-  for (int i = 0; i < 9; i++)
+  for (int i = 0; i < 10; i++)
     gtk_clist_set_column_auto_resize (GTK_CLIST (clist), i, true);
 
   gtk_clist_set_shadow_type (GTK_CLIST (clist), GTK_SHADOW_IN);
