@@ -1191,7 +1191,7 @@ GMH323EndPoint::GetRemoteConnectionInfo (H323Connection & connection,
     if (transport) 
       remote_ip = transport->GetRemoteAddress ().GetHostName ();
 
-    if (remote_ip.Find("::")) { // IPv6 notation
+    if (transport->GetRemoteAddress ().GetVersion () == 6) { // IPv6 notation
 
       remote_ip = "[" + remote_ip + "]";
     }
