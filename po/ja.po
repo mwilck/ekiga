@@ -1,0 +1,1099 @@
+# Japanese translation for GnomeMeeting.
+# Copyright (C) 2001 Free Software Foundation, Inc.
+# Katsumi Saito <katsumi@jo1upk.ymt.prug.or.jp>, 2001.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: GnomeMeeting 0.11\n"
+"POT-Creation-Date: 2001-11-30 01:06+0900\n"
+"PO-Revision-Date: 2001-11-30 01:14+9000\n"
+"Last-Translator: Katsumi Saito <Katsumi@jo1upk.ymt.prug.or.jp>\n"
+"Language-Team: Japanese <translation@gnome.gr.jp>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=EUC-JP\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/applet.cpp:112
+msgid "Can't create applet!\n"
+msgstr "アプレットが作成できません！\n"
+
+#: src/applet.cpp:135 src/toolbar.cpp:37
+msgid "Connect"
+msgstr "接続"
+
+#: src/applet.cpp:140 src/toolbar.cpp:44
+msgid "Disconnect"
+msgstr "切断"
+
+#: src/applet.cpp:145
+msgid "Toggle main window"
+msgstr "メインウィンドウ切替"
+
+#: src/callbacks.cpp:131
+msgid "Contributors:"
+msgstr "投稿者:"
+
+#: src/callbacks.cpp:138
+msgid "I18n Maintainer:"
+msgstr "I18n メンテナンス者:"
+
+#. Translators: Please change the (C) to a real
+#. copyright character if your character set allows it
+#. (Hint: iso-8859-1 is one of the character sets that
+#. has this symbol).
+#: src/callbacks.cpp:152
+msgid "(C) 2000, 2001 Damien Sandras"
+msgstr "(C) 2000, 2001 Damien Sandras"
+
+#: src/callbacks.cpp:154
+msgid ""
+"GnomeMeeting is an H.323 compliant program for GNOME.\n"
+"This program is not supported by Microsoft."
+msgstr ""
+"GnomeMeeting は、GNOME用の H.323 互換プログラムです。\n"
+"このプログラムは、マイクロソフトではサポートされません。"
+
+#: src/callbacks.cpp:170
+msgid ""
+"A call is currently in progress, please disconnect before trying to quit."
+msgstr "現在、呼び出し中です、終了する前に切断をして下さい。"
+
+#: src/callbacks.cpp:178
+msgid "Are you sure you want to quit?"
+msgstr "本当に終了してもよろしいですか？"
+
+#: src/config.cpp:231
+msgid "Sorry, no ldap server specified!"
+msgstr "すみませんが、ldapサーバが特定できませんでした！"
+
+#: src/config.cpp:241
+msgid "Sorry, invalid ldap server port!"
+msgstr "すみませんが、ldapサーバのポートが無効です！"
+
+#: src/config.cpp:249
+msgid "Please provide your first name!"
+msgstr "あなたの名前を入力して下さい！"
+
+#: src/config.cpp:257
+msgid "Please provide a valid e-mail!"
+msgstr "有効な電子メールアドレスを入力して下さい！"
+
+#: src/config.cpp:271 src/config.cpp:280
+msgid "Could not open the player mixer."
+msgstr "ミキサーを開けませんでした。"
+
+#: src/connection.cpp:78
+msgid "Started New Logical Channel..."
+msgstr "新しい論理チャンネルを開始しました..."
+
+#: src/connection.cpp:85
+msgid "Sending "
+msgstr "送信中 "
+
+#: src/connection.cpp:100
+msgid "Receiving "
+msgstr "受信中 "
+
+#: src/connection.cpp:140
+msgid "Request ok"
+msgstr "要求 ok"
+
+#: src/connection.cpp:165 src/connection.cpp:167
+msgid "Audio Channel:  Sending"
+msgstr "音声チャンネル: 送信中"
+
+#: src/connection.cpp:173 src/connection.cpp:175
+msgid "Audio Channel:  Paused"
+msgstr "音声チャンネル: 一時停止"
+
+#: src/connection.cpp:187 src/connection.cpp:189
+msgid "Video Channel:  Sending"
+msgstr "ビデオチャンネル: 送信中"
+
+#: src/connection.cpp:195 src/connection.cpp:197
+msgid "Video Channel:  Paused"
+msgstr "ビデオチャンネル: 一時停止"
+
+#: src/connection.cpp:224 src/connection.cpp:225
+msgid "Auto Rejecting Incoming Call"
+msgstr "呼出時自動無視"
+
+#: src/connection.cpp:238 src/connection.cpp:239
+msgid "Auto Answering Incoming Call"
+msgstr "呼出時自動応答"
+
+#: src/endpoint.cpp:136 src/endpoint.cpp:152
+msgid "Added H.261 CIF capability"
+msgstr "H261 CIF を追加"
+
+#: src/endpoint.cpp:141 src/endpoint.cpp:148
+msgid "Added H.261 QCIF capability"
+msgstr "H.261 QCIF を追加"
+
+#: src/endpoint.cpp:162
+msgid "Reinitialize the capabilities"
+msgstr "コーデックを再初期化します"
+
+#: src/endpoint.cpp:171
+msgid "Added MS-GSM capability"
+msgstr "MS-GSM を追加"
+
+#: src/endpoint.cpp:179
+msgid "Added G.711-uLaw capability"
+msgstr "G.711-uLaw を追加"
+
+#: src/endpoint.cpp:187
+msgid "Added G.711-ALaw capability"
+msgstr "G.711-ALaw を追加"
+
+#: src/endpoint.cpp:194
+msgid "Added GSM-06.10 capability"
+msgstr "GSM-06.10 を追加"
+
+#: src/endpoint.cpp:200
+msgid "Added LPC10 capability"
+msgstr "LPC10 を追加"
+
+#. Translators: This is shown in the history.
+#: src/endpoint.cpp:282
+#, c-format
+msgid "Set Audio player device to %s"
+msgstr "オーディオプレー装置 %s に設定"
+
+#. Translators: This is shown in the history.
+#: src/endpoint.cpp:287
+#, c-format
+msgid "Set Audio recorder device to %s"
+msgstr "オーディオレコーダー装置 %s に設定"
+
+#. only a pointer => destroyed with the PString
+#: src/endpoint.cpp:388
+#, c-format
+msgid "Call from %s"
+msgstr "%s から呼出"
+
+#: src/endpoint.cpp:446
+#, c-format
+msgid "Connected with %s using %s"
+msgstr "%s について %s を使用して接続しました"
+
+#: src/endpoint.cpp:452
+msgid "Connected"
+msgstr "接続"
+
+#: src/endpoint.cpp:455
+msgid "Fast start enabled"
+msgstr "迅速な起動を有効"
+
+#: src/endpoint.cpp:457
+msgid "Fast start disabled"
+msgstr "迅速な起動を無効"
+
+#: src/endpoint.cpp:460
+msgid "H.245 Tunnelling enabled"
+msgstr "H.245 トンネリング有効"
+
+#: src/endpoint.cpp:462
+msgid "H.245 Tunnelling disabled"
+msgstr "H.245 トンネリング無効"
+
+#: src/endpoint.cpp:513
+msgid "Remote party has cleared the call"
+msgstr "リモートパーティは、呼び出しをクリアしました"
+
+#: src/endpoint.cpp:518
+msgid "Remote party has stopped calling"
+msgstr "リモートパーティは、呼び出しを中止しました"
+
+#: src/endpoint.cpp:523 src/endpoint.cpp:543
+msgid "Remote party did not accept your call"
+msgstr "リモートパーティは、あなたの呼び出しを受理しませんでした"
+
+#: src/endpoint.cpp:528
+msgid "Remote party did not answer your call"
+msgstr "リモートパーティは、あなたの呼び出しに答えませんでした"
+
+#: src/endpoint.cpp:533
+msgid "This call ended abnormally"
+msgstr "この呼び出しは、異常終了しました"
+
+#: src/endpoint.cpp:538
+msgid "Could not find common codec with remote party"
+msgstr "リモートパーティと共通のコーデックを見つけられませんでした"
+
+#: src/endpoint.cpp:548
+msgid "Refused incoming call"
+msgstr "着信を拒否しました"
+
+#: src/endpoint.cpp:553
+msgid "User not found"
+msgstr "ユーザが見つかりません"
+
+#: src/endpoint.cpp:558
+msgid "Call ended: insufficient bandwidth"
+msgstr "呼出終了: 不十分な帯域幅"
+
+#: src/endpoint.cpp:566
+msgid "Remote party could not be reached"
+msgstr "リモートパーティに連絡できませんでした"
+
+#: src/endpoint.cpp:571
+msgid "Remote party is not online"
+msgstr "リモートパーティは、オフラインです"
+
+#: src/endpoint.cpp:576
+msgid "No phone running for remote party"
+msgstr "リモートパーティ用に電話は実行されていません"
+
+#: src/endpoint.cpp:581
+msgid "Transport error calling"
+msgstr "呼び出し中に転送エラー"
+
+#: src/endpoint.cpp:587 src/endpoint.cpp:590
+msgid "Call completed"
+msgstr "呼出完了"
+
+#: src/endpoint.cpp:760 src/webcam.cpp:169
+#, c-format
+msgid "Successfully opened video device %s, channel %d"
+msgstr "ビデオ装置 %s、チャンネル %d を開くことに成功しました"
+
+#: src/endpoint.cpp:772 src/webcam.cpp:181
+#, c-format
+msgid ""
+"Error while opening video device %s, channel %d. A test image will be "
+"transmitted."
+msgstr ""
+"ビデオ装置 %s、チャンネル %d を開いている際にエラー。テストパターンが送信され"
+"ます。"
+
+#. Translators: This is as in "Audio".
+#: src/ldap.cpp:252
+msgid "A"
+msgstr "A"
+
+#. Translators: This is as in "Video".
+#: src/ldap.cpp:254
+msgid "V"
+msgstr "V"
+
+#: src/ldap.cpp:255 src/ldap.cpp:280
+msgid "First Name"
+msgstr "名前"
+
+#: src/ldap.cpp:255 src/ldap.cpp:283
+msgid "Last name"
+msgstr "姓名"
+
+#: src/ldap.cpp:255 src/ldap.cpp:286
+msgid "E-mail"
+msgstr "E-Mail"
+
+#: src/ldap.cpp:256 src/ldap.cpp:289
+msgid "Location"
+msgstr "所在"
+
+#: src/ldap.cpp:256
+msgid "Comment"
+msgstr "注釈"
+
+#: src/ldap.cpp:256
+msgid "IP"
+msgstr "IP"
+
+#. Search filter entry
+#: src/ldap.cpp:273
+msgid "Search filter by name"
+msgstr "名前で検索"
+
+#. the filter button
+#: src/ldap.cpp:316
+msgid "Apply Filter On"
+msgstr "フィルター適用"
+
+#. Ldap users list
+#: src/ldap.cpp:350
+msgid "ILS Users List"
+msgstr "ILS ユーザリスト"
+
+#: src/ldap.cpp:454
+msgid "Please provide an ILS directory in Settings"
+msgstr "設定には ILS ディレクトリに入力して下さい"
+
+#: src/ldap.cpp:471
+msgid "Connecting to ILS directory... Please Wait."
+msgstr "ILS ディレクトリ接続中... 暫くお待ち下さい。"
+
+#: src/ldap.cpp:481 src/ldap.cpp:492
+msgid "Error while connecting to ILS directory"
+msgstr "ILS ディレクトリ接続中にエラー"
+
+#: src/ldap.cpp:501
+msgid "Searching for users... Please Wait."
+msgstr "ユーザ検索中... 暫くお待ち下さい。"
+
+#: src/ldap.cpp:515
+msgid "Search completed!"
+msgstr "検索完了！"
+
+#: src/ldap.cpp:627 src/ldap.cpp:629
+msgid "Connecting to ILS directory"
+msgstr "ILS ディレクトリへ接続中"
+
+#: src/ldap.cpp:808
+msgid "Error while registering to ILS directory"
+msgstr "ILS ディレクトリに登録中にエラー"
+
+#: src/ldap.cpp:814 src/ldap.cpp:816
+msgid "Successfully initiated registering to ILS directory"
+msgstr "ILS ディレクトリへの登録に成功しました"
+
+#: src/main.cpp:162
+msgid "Answering incoming call"
+msgstr "着信に応答中"
+
+#: src/main.cpp:183
+#, c-format
+msgid "Call %d: calling %s"
+msgstr "呼出 %d: %s 呼び出し中"
+
+#: src/main.cpp:209
+msgid "Trying to stop calling"
+msgstr "呼び出し終了中"
+
+#: src/main.cpp:212 src/main.cpp:223
+msgid "Failed to stop current call"
+msgstr "現在の呼び出しを終了できませんでした"
+
+#: src/main.cpp:220
+msgid "Stopping current call"
+msgstr "現在の呼び出しを終了中"
+
+#: src/main.cpp:227
+msgid "Refusing incoming call"
+msgstr "着信を拒否"
+
+#: src/main_interface.cpp:224
+msgid "Startup without applet support"
+msgstr "アプレットをサポートしない起動"
+
+#: src/main_interface.cpp:226
+msgid "Prints debug messages in the console"
+msgstr "コンソールにデバッグメッセージを印刷します"
+
+#: src/main_interface.cpp:263
+msgid "Building main interface"
+msgstr "主インターフェイス構築中"
+
+#: src/main_interface.cpp:276
+msgid "Adding Audio Capabilities"
+msgstr "音声利用追加中"
+
+#: src/main_interface.cpp:281
+msgid "Adding Video Capabilities"
+msgstr "ビデオ利用追加中"
+
+#: src/main_interface.cpp:288 src/preferences.cpp:1710
+msgid "Registering to ILS directory"
+msgstr "ILS ディレクトリへ登録"
+
+#: src/main_interface.cpp:296
+msgid "Starting the listener thread"
+msgstr "リスナースレッドの開始"
+
+#: src/main_interface.cpp:301
+msgid ""
+"Could not start the listener thread, you will not be able to receive "
+"incoming calls."
+msgstr "リスナースレッドの開始に失敗しました、着信はできません。"
+
+#: src/main_interface.cpp:308
+msgid "Done!"
+msgstr "完了！"
+
+#. The remote IP field
+#: src/main_interface.cpp:365
+msgid "Remote host to contact"
+msgstr "コンタクトするリモートホスト"
+
+#: src/main_interface.cpp:379
+msgid "Host:"
+msgstr "ホスト:"
+
+#: src/main_interface.cpp:465
+msgid "Click here to begin to display images from your camera device."
+msgstr "カメラからイメージを表示させるには、ここをクリックして下さい。"
+
+#: src/main_interface.cpp:487
+msgid ""
+"Audio Transmission Status. During a call, click here to pause the audio "
+"transmission."
+msgstr ""
+"音声送信状況。呼出中、音声送信を一時停止するためには、ここをクリックして下さ"
+"い。"
+
+#: src/main_interface.cpp:509
+msgid ""
+"Video Transmission Status. During a call, click here to pause the video "
+"transmission."
+msgstr ""
+"ビデオ送信状況。呼出中、ビデオ送信を一時停止するには、ここをクリックして下さ"
+"い。"
+
+#: src/main_interface.cpp:531
+msgid "Click here to display the previous section of the Control Panel."
+msgstr "制御パネルの前章を表示するには、ここをクリックして下さい。"
+
+#: src/main_interface.cpp:552
+msgid "Click here to display the next section of the Control Panel."
+msgstr "制御パネルの次章を表示するには、ここをクリックして下さい。"
+
+#: src/main_interface.cpp:573 src/preferences.cpp:437
+msgid "Info"
+msgstr "情報"
+
+#: src/main_interface.cpp:577 src/main_interface.cpp:602
+msgid "Remote User"
+msgstr "リモートユーザ"
+
+#: src/main_interface.cpp:617
+msgid "History Log"
+msgstr "過去ログ"
+
+#: src/main_interface.cpp:637
+msgid "History"
+msgstr "履歴"
+
+#. Webcam Control Frame
+#: src/main_interface.cpp:660 src/main_interface.cpp:772
+msgid "Video Settings"
+msgstr "画像設定"
+
+#: src/main_interface.cpp:690
+msgid "Adjust brightness"
+msgstr "明るさ調整"
+
+#: src/main_interface.cpp:715
+msgid "Adjust whiteness"
+msgstr "白さ調整"
+
+#: src/main_interface.cpp:740
+msgid "Adjust color"
+msgstr "色調整"
+
+#: src/main_interface.cpp:765
+msgid "Adjust contrast"
+msgstr "コントラスト調整"
+
+#: src/main_interface.cpp:793 src/main_interface.cpp:851
+msgid "Audio Settings"
+msgstr "音声設定"
+
+#: src/menu.cpp:36
+msgid "_Connect"
+msgstr "接続(_C)"
+
+#: src/menu.cpp:36 src/toolbar.cpp:37
+msgid "Create A New Connection"
+msgstr "新規に接続を作成します"
+
+#: src/menu.cpp:43
+msgid "_Disconnect"
+msgstr "切断(_D)"
+
+#: src/menu.cpp:43 src/toolbar.cpp:44
+msgid "Close The Current Connection"
+msgstr "現在の接続を閉じます"
+
+#: src/menu.cpp:51
+msgid "_Quit"
+msgstr "終了(_Q)"
+
+#: src/menu.cpp:51
+msgid "Quit GnomeMeeting"
+msgstr "GnomeMeeting 終了"
+
+#: src/menu.cpp:64
+msgid "_Remote User Info"
+msgstr "リモートユーザ情報(_R)"
+
+#: src/menu.cpp:64
+msgid "View Remote User Info"
+msgstr "リモートのユーザ情報を表示"
+
+#: src/menu.cpp:71
+msgid "_History"
+msgstr "履歴(_H)"
+
+#: src/menu.cpp:71
+msgid "View the log"
+msgstr "ログを表示"
+
+#: src/menu.cpp:78
+msgid "_Audio Settings"
+msgstr "音声設定(_A)"
+
+#: src/menu.cpp:78
+msgid "View Audio Settings"
+msgstr "音声の設定を表示"
+
+#: src/menu.cpp:85
+msgid "_Video Settings"
+msgstr "ビデオ設定(_V)"
+
+#: src/menu.cpp:85
+msgid "View Video Settings"
+msgstr "ビデオの設定を表示"
+
+#: src/menu.cpp:93
+msgid "_Status Bar"
+msgstr "ステータスバー(_S)"
+
+#: src/menu.cpp:93
+msgid "View / hide the Status Bar"
+msgstr "ステータスバーを 表示/隠す します"
+
+#: src/menu.cpp:100
+msgid "_Control Panel"
+msgstr "制御パネル(_C)"
+
+#: src/menu.cpp:100
+msgid "View / hide the Control Panel"
+msgstr "制御パネルを 表示/隠す します"
+
+#: src/menu.cpp:113 src/menu.cpp:139
+msgid "_Settings"
+msgstr "設定(_S)"
+
+#: src/menu.cpp:113 src/toolbar.cpp:60
+msgid "Change Your Preferences"
+msgstr "あなたの設定を変更します"
+
+#: src/menu.cpp:126
+msgid "_About"
+msgstr "GnomeMeeting について(_A)"
+
+#: src/menu.cpp:126
+msgid "About GnomeMeeting"
+msgstr "GnomeMeeting について"
+
+#: src/menu.cpp:137
+msgid "_File"
+msgstr "ファイル(_F)"
+
+#: src/menu.cpp:138
+msgid "_View"
+msgstr "表示(_V)"
+
+#: src/menu.cpp:140
+msgid "_Help"
+msgstr "ヘルプ(_H)"
+
+#: src/menu.cpp:160
+msgid "Local"
+msgstr "ローカル"
+
+#: src/menu.cpp:160
+msgid "Local Video Image"
+msgstr "ローカルの画像イメージ"
+
+#: src/menu.cpp:167
+msgid "Remote"
+msgstr "リモート"
+
+#: src/menu.cpp:167
+msgid "Remote Video Image"
+msgstr "リモートの画像イメージ"
+
+#: src/menu.cpp:174
+msgid "Both"
+msgstr "双方"
+
+#: src/menu.cpp:174
+msgid "Both Video Images"
+msgstr "双方の画像イメージ"
+
+#: src/preferences.cpp:205
+msgid "Impossible to open this device."
+msgstr "このデバイスを開くのに失敗しました。"
+
+#: src/preferences.cpp:208
+msgid "These settings are correct."
+msgstr "これらの設定は問題ありません。"
+
+#: src/preferences.cpp:233 src/toolbar.cpp:60
+msgid "Settings"
+msgstr "設定"
+
+#: src/preferences.cpp:276
+msgid "GnomeMeeting Preferences"
+msgstr "GnomeMeeting 設定"
+
+#. All the notebook pages
+#: src/preferences.cpp:293
+msgid "General"
+msgstr "全般"
+
+#: src/preferences.cpp:303 src/preferences.cpp:720
+msgid "General Settings"
+msgstr "全般設定"
+
+#. The End
+#: src/preferences.cpp:314 src/preferences.cpp:1081
+msgid "User Settings"
+msgstr "ユーザ設定"
+
+#. Advanced Settings
+#: src/preferences.cpp:325 src/preferences.cpp:1110 src/preferences.cpp:1219
+msgid "Advanced Settings"
+msgstr "拡張設定"
+
+#. ILS settings
+#: src/preferences.cpp:336 src/preferences.cpp:1246 src/preferences.cpp:1320
+msgid "ILS Settings"
+msgstr "ILS 設定"
+
+#. The End
+#: src/preferences.cpp:346 src/preferences.cpp:1572
+msgid "Device Settings"
+msgstr "デバイス設定"
+
+#: src/preferences.cpp:356
+msgid "Codecs"
+msgstr "コーデック"
+
+#: src/preferences.cpp:366 src/preferences.cpp:571
+msgid "Audio Codecs"
+msgstr "オーディオコーデック"
+
+#: src/preferences.cpp:379 src/preferences.cpp:907
+msgid "Video Codecs"
+msgstr "ビデオコーデック"
+
+#: src/preferences.cpp:437
+msgid "Name"
+msgstr "名称"
+
+#: src/preferences.cpp:437
+msgid "Bandwidth"
+msgstr "帯域幅"
+
+#. In this table we put the frame
+#: src/preferences.cpp:451
+msgid "Available Codecs"
+msgstr "可能なコーデック"
+
+#. BUTTONS
+#. Add
+#: src/preferences.cpp:492
+msgid "Add"
+msgstr "追加"
+
+#: src/preferences.cpp:506
+msgid "Use this button to add the selected codec to the available codecs list"
+msgstr ""
+"利用可能なコーデックリストにコーデックに追加するためには、このボタンを使用し"
+"ます"
+
+#. Del
+#: src/preferences.cpp:510
+msgid "Delete"
+msgstr "削除"
+
+#: src/preferences.cpp:524
+msgid ""
+"Use this button to remove the selected codec from the available codecs list"
+msgstr "利用可能なコーデックリストから削除するためには、このボタンを使用します"
+
+#. Up
+#: src/preferences.cpp:528
+msgid "Up"
+msgstr "上"
+
+#: src/preferences.cpp:542
+msgid "Use this button to move down the selected codec in the preference order"
+msgstr ""
+"選択されたコーデックの設定順を下に移動するために、このボタンを使用します"
+
+#. Down
+#: src/preferences.cpp:546
+msgid "Down"
+msgstr "下"
+
+#: src/preferences.cpp:560
+msgid "Use this button to move up the selected codec in the preference order"
+msgstr ""
+"選択されたコーデックの設定順を上に移動するために、このボタンを使用します"
+
+#. Show / hide splash screen at startup
+#: src/preferences.cpp:613
+msgid "Show Splash Screen"
+msgstr "起動画面表示"
+
+#: src/preferences.cpp:623
+msgid "If enabled, the splash screen will be displayed at startup time"
+msgstr "もし有効の場合、起動時にスプラッシュ画面が表示されます"
+
+#. Show / hide the notebook at startup
+#: src/preferences.cpp:627
+msgid "Show Control Panel"
+msgstr "制御パネル表示"
+
+#: src/preferences.cpp:637
+msgid "If enabled, the control panel is displayed"
+msgstr "もし有効の場合、制御パネルが表示されます"
+
+#. Show / hide the statusbar at startup
+#: src/preferences.cpp:641
+msgid "Show Status Bar"
+msgstr "ステータスバー表示"
+
+#: src/preferences.cpp:651
+msgid "If enabled, the statusbar is displayed"
+msgstr "もし有効の場合、ステータスバーが表示されます"
+
+#. Behavior
+#: src/preferences.cpp:654
+msgid "Behavior"
+msgstr "動作"
+
+#. Auto Answer toggle button
+#: src/preferences.cpp:667
+msgid "Auto Answer"
+msgstr "自動応答"
+
+#: src/preferences.cpp:676
+msgid "If enabled, incoming calls will be automatically answered"
+msgstr "もし有効の場合、着信した際に自動的に応答します"
+
+#. DND toggle button
+#: src/preferences.cpp:680
+msgid "Do Not Disturb"
+msgstr "多忙(DND)"
+
+#: src/preferences.cpp:689
+msgid "If enabled, incoming calls will be automatically refused"
+msgstr "もし有効の場合、着信した際に自動的に拒否します"
+
+#. Play Sound
+#: src/preferences.cpp:693
+msgid "Sound"
+msgstr "サウンド"
+
+#. Auto Answer toggle button
+#: sounds/GnomeMeeting.soundlist.in.h:1 src/preferences.cpp:706
+msgid "Incoming Call"
+msgstr "着信"
+
+#: src/preferences.cpp:716
+msgid ""
+"If enabled, GnomeMeeting will play a sound when receiving an incoming call "
+"(the sound to play is choosen in the Gnome Control Center)"
+msgstr ""
+"もし可能ば場合、着信した際に GnomeMeeting がサウンドを鳴らす(Gnome コントロー"
+"ルセンターで選択したサウンドを鳴らします)"
+
+#. In this table we put the frame
+#. *** Transmitted Video Settings Frame ***
+#: src/preferences.cpp:753
+msgid "Transmitted Video Codecs"
+msgstr "送信するビデオコーデック"
+
+#. Video Size Option Menu
+#: src/preferences.cpp:765
+msgid "Video Size:"
+msgstr "ビデオサイズ:"
+
+#: src/preferences.cpp:773
+msgid "Small"
+msgstr "小"
+
+#: src/preferences.cpp:775
+msgid "Large"
+msgstr "大"
+
+#: src/preferences.cpp:787
+msgid "Here you can choose the transmitted video size"
+msgstr "ここで、送信するビデオサイズを選択することが可能です"
+
+#. Video Format Option Menu
+#: src/preferences.cpp:791
+msgid "Video Format:"
+msgstr "画像形式:"
+
+#: src/preferences.cpp:813
+msgid "Here you can choose the transmitted video format"
+msgstr "ここで、送信するビデオ形式を選択する可能です"
+
+#. Transmitted Video Quality
+#: src/preferences.cpp:817 src/preferences.cpp:1197
+msgid "Video Quality:"
+msgstr "画像品質:"
+
+#: src/preferences.cpp:835
+msgid ""
+"Here you can choose the transmitted video quality:  choose 1 on a LAN for "
+"the best quality, 31 being the worst quality"
+msgstr ""
+"ここで、送信するビデオ品質を選択することが可能: LANでは、最高品質の１を選択"
+"し、最低品質は、３１です"
+
+#. Updated blocks / frame
+#: src/preferences.cpp:839
+msgid "Updated blocks:"
+msgstr "最新ブロック:"
+
+#: src/preferences.cpp:857
+msgid ""
+"Here you can choose the number of blocks (that haven't changed) transmitted "
+"with each frame. These blocks fill in the background."
+msgstr ""
+"ここで、各フレームで送信されたブロック(変更されていない)数を選択できます。こ"
+"れらのブロックは、背景に書き込まれます。"
+
+#. Transmitted FPS
+#: src/preferences.cpp:861
+msgid "Transmitted FPS:"
+msgstr "送信するFPS:"
+
+#: src/preferences.cpp:879
+msgid "Here you can choose the number of frames transmitted by second"
+msgstr "ここで、１秒あたりに送信するフレーム数が選択できます"
+
+#. *** Enable Video Transmission ***
+#: src/preferences.cpp:883
+msgid "Video Transmission"
+msgstr "ビデオ転送"
+
+#: src/preferences.cpp:891
+msgid "Enable Video Transmission"
+msgstr "ビデオ転送を有効"
+
+#: src/preferences.cpp:904
+msgid "Here you can choose to enable or disable video transmission"
+msgstr "ここで、ビデオ転送について有効または無効の選択できます"
+
+#. User Name entry
+#: src/preferences.cpp:947
+msgid "First Name:"
+msgstr "名前:"
+
+#: src/preferences.cpp:963
+msgid "Enter your first name"
+msgstr "あなたの名前を入力します"
+
+#. Surname entry (LDAP)
+#: src/preferences.cpp:970
+msgid "Last name:"
+msgstr "姓名:"
+
+#: src/preferences.cpp:986
+msgid "Enter your last name"
+msgstr "あなたの姓名を入力します"
+
+#. E-mail (LDAP)
+#: src/preferences.cpp:993
+msgid "E-mail address:"
+msgstr "電子メールアドレス:"
+
+#: src/preferences.cpp:1009
+msgid "Enter your e-mail address"
+msgstr "電子メールアドレスを入力します"
+
+#. Comment (LDAP)
+#: src/preferences.cpp:1016
+msgid "Comment:"
+msgstr "注釈:"
+
+#: src/preferences.cpp:1032
+msgid "Here you can fill in a comment about yourself for ILS directories"
+msgstr "ここに、ILSディレクトリ用にあなた自身に関するコメントを記入できます"
+
+#. Location
+#: src/preferences.cpp:1039
+msgid "Location:"
+msgstr "所在地:"
+
+#: src/preferences.cpp:1055
+msgid "Where do you call from?"
+msgstr "どこから呼びますか？"
+
+#. Port Entry
+#: src/preferences.cpp:1062
+msgid "Listen Port:"
+msgstr "受信ポート:"
+
+#: src/preferences.cpp:1077
+msgid "The port that GnomeMeeting should listen on"
+msgstr "GnomeMeeting が受信すべきポート番号"
+
+#. H245 Tunnelling button
+#: src/preferences.cpp:1124
+msgid "Enable H.245 Tunnelling"
+msgstr "H.245 トンネリング有効"
+
+#: src/preferences.cpp:1133
+msgid "This enables H.245 Tunnelling mode"
+msgstr "これは、H.245 トンネリングモードを有効にします"
+
+#. Fast Start button
+#: src/preferences.cpp:1137
+msgid "Enable Fast Start"
+msgstr "迅速起動を有効"
+
+#: src/preferences.cpp:1146
+msgid "Connection will be established in Fast Start mode"
+msgstr "接続は、迅速起動モードで確立される"
+
+#. Max Used Bandwidth spin button
+#: src/preferences.cpp:1150
+msgid "Maximum Bandwidth:"
+msgstr "最大帯域幅:"
+
+#: src/preferences.cpp:1168
+msgid "The maximum bandwidth that should be used for the communication"
+msgstr "通信のために使用される最大帯域幅"
+
+#. Silence Detection
+#: src/preferences.cpp:1172
+msgid "Enable Silence Detection"
+msgstr "サイレンス検知を有効"
+
+#: src/preferences.cpp:1181
+msgid ""
+"Enable or disable silence detection.  If silence detection is enabled, "
+"silences will not be transmitted over the Internet."
+msgstr ""
+"サイレンス検知を有効または無効にします。もし、サイレンス検知が有効の場合は、"
+"サイレンスは、インターネット上に送信されないでしょう。"
+
+#. *** Received Video Settings Frame ***
+#: src/preferences.cpp:1185
+msgid "Received Video Codecs"
+msgstr "受信するビデオコーデック"
+
+#: src/preferences.cpp:1215
+msgid "The video quality to request from the remote party"
+msgstr "リモートのパーティに要求するビデオ品質"
+
+#. ILS server
+#: src/preferences.cpp:1260
+msgid "ILS Directory:"
+msgstr "ILS ディレクトリ:"
+
+#: src/preferences.cpp:1275
+msgid "The ILS directory to connect to"
+msgstr "接続する ILS ディレクトリ"
+
+#. ILS port
+#: src/preferences.cpp:1282
+msgid "ILS Port:"
+msgstr "ILS ポート:"
+
+#: src/preferences.cpp:1297
+msgid "The corresponding port: 389 is the standard port"
+msgstr "対応ポート: 389 は、標準ポートです"
+
+#. Use ILS
+#: src/preferences.cpp:1304
+msgid "Register to ILS directory"
+msgstr "ILS ディレクトリに登録"
+
+#: src/preferences.cpp:1316
+msgid "If enabled, permit to register to the selected ILS directory"
+msgstr ""
+"有効な場合、選択した ILS ディレクトリに登録するためにチェックして下さい"
+
+#. Audio device
+#: src/preferences.cpp:1352
+msgid "Audio Devices"
+msgstr "音声装置"
+
+#. Audio Device
+#: src/preferences.cpp:1366
+msgid "Player:"
+msgstr "プレイヤー:"
+
+#: src/preferences.cpp:1397
+msgid "Enter the audio player device to use"
+msgstr "音声プレーヤーに使用するデバイスを入力します"
+
+#. Audio Recorder Device
+#: src/preferences.cpp:1401
+msgid "Recorder:"
+msgstr "レコーダー:"
+
+#: src/preferences.cpp:1434
+msgid "Enter the audio recorder device to use"
+msgstr "レコーダーに使用するデバイスを入力します"
+
+#. Audio Mixers
+#: src/preferences.cpp:1438
+msgid "Player Mixer:"
+msgstr "ミキサー:"
+
+#: src/preferences.cpp:1455
+msgid "The audio mixer to use for player settings"
+msgstr "プレーヤー設定で使用するミキサー"
+
+#: src/preferences.cpp:1461
+msgid "Recorder Mixer:"
+msgstr "レコーダーミキサー:"
+
+#: src/preferences.cpp:1478
+msgid "The audio mixer to use for recorder settings"
+msgstr "レコーダー設定で使用するミキサー"
+
+#. Video device
+#: src/preferences.cpp:1485
+msgid "Video Device"
+msgstr "映像装置"
+
+#. Video Device
+#: src/preferences.cpp:1499
+msgid "Video Device:"
+msgstr "映像装置:"
+
+#: src/preferences.cpp:1527
+msgid "Enter the video device to use"
+msgstr "使用するビデオデバイスを入力"
+
+#. Video channel spin button
+#: src/preferences.cpp:1534
+msgid "Video Channel:"
+msgstr "画像チャンネル:"
+
+#: src/preferences.cpp:1554
+msgid "The video channel number to use (camera, tv, ...)"
+msgstr "使用する (カメラ、テレビ、...)ビデオチャンネル番号"
+
+#. Device test button
+#: src/preferences.cpp:1560
+msgid "Video Test"
+msgstr "画像テスト"
+
+#: src/preferences.cpp:1632
+msgid "Okay"
+msgstr "承認"
+
+#: src/preferences.cpp:1638 src/preferences.cpp:1644 src/preferences.cpp:1650
+#: src/preferences.cpp:1656
+msgid "Good Quality"
+msgstr "最高品質"
+
+#: src/toolbar.cpp:52
+msgid "ILS Directory"
+msgstr "ILS ディレクトリ"
+
+#: src/toolbar.cpp:52
+msgid "Find friends on ILS"
+msgstr "ILS上で友達を見つけます"
+
+#. ****************************************************************************
+#: gnomemeeting.desktop.in.h:1
+msgid "GnomeMeeting"
+msgstr "GnomeMeeting"
+
+#: gnomemeeting.desktop.in.h:2
+msgid "H.323 Client"
+msgstr "H.323 クライアント"
