@@ -1131,7 +1131,12 @@ gnomemeeting_init (GmWindow *gw,
   }
   g_free (alias);
 
-  
+
+  /* Register to gatekeeper */
+  if (gconf_client_get_int (client, GATEKEEPER_KEY "registering_method", 0))
+    endpoint->GatekeeperRegister ();
+
+
   /* The LDAP part, if needed */
   if (gconf_client_get_bool (GCONF_CLIENT (client), LDAP_KEY "register", NULL)) 
   {

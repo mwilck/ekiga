@@ -54,6 +54,7 @@ extern GnomeMeeting *MyApp;
 static void pref_window_clicked_callback (GtkDialog *, int, gpointer);
 static gint pref_window_destroy_callback (GtkWidget *, GdkEvent *, gpointer);
 static void personal_data_update_button_clicked (GtkWidget *, gpointer);
+static void gatekeeper_update_button_clicked (GtkWidget *, gpointer);
 static void codecs_list_button_clicked_callback (GtkWidget *, gpointer);
 static void gnomemeeting_codecs_list_add (GtkTreeIter, GtkListStore *, 
 					  const gchar *, bool);
@@ -330,26 +331,32 @@ static void personal_data_update_button_clicked (GtkWidget *widget,
     MyApp->Endpoint ()->AddAliasName (alias);
   }
 
-
-  /* 3 */
-  /* Register to the Gatekeeper */
-  int method = gconf_client_get_int (GCONF_CLIENT (client), "/apps/gnomemeeting/gatekeeper/registering_method", 0);
-
-  /* We do that through the notifier */
-  if (method) {
-
-    gconf_client_set_int (GCONF_CLIENT (client),
-			  "/apps/gnomemeeting/gatekeeper/registering_method",
-			  0, 0);
-    gconf_client_set_int (GCONF_CLIENT (client),
-			  "/apps/gnomemeeting/gatekeeper/registering_method",
-			  method, 0);
-  }
+  /* Remove the current Gatekeeper */
+  MyApp->Endpoint ()->RemoveGatekeeper(0);
+    
+  /* Register the current Endpoint to the Gatekeeper */
+  MyApp->Endpoint ()->GatekeeperRegister ();
 
   g_free (alias_);
   g_free (firstname);
   g_free (lastname);
   g_free (local_name);
+}
+
+
+/* DESCRIPTION  :  This callback is called when the user clicks
+ *                 on the Update button of the gatekeeper Settings.
+ * BEHAVIOR     :  Updates the values
+ * PRE          :  /
+ */
+static void gatekeeper_update_button_clicked (GtkWidget *widget, 
+					      gpointer data)
+{
+  /* Remove the current Gatekeeper */
+  MyApp->Endpoint ()->RemoveGatekeeper(0);
+    
+  /* Register the current Endpoint to the Gatekeeper */
+  MyApp->Endpoint ()->GatekeeperRegister ();
 }
 
 
@@ -1225,7 +1232,7 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook)
   /* Packing widgets */                                                        
   vbox = gtk_vbox_new (FALSE, 4);
   table = gnomemeeting_pref_window_add_table (vbox, _("Personal Information"),
-                                              7, 3);                           
+                                              5, 3);                           
 
                                                                                
   /* Add all the fields */                                                     
@@ -1235,19 +1242,16 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook)
   pw->surname = 
     gnomemeeting_pref_window_add_entry (table, _("Last Name:"), "/apps/gnomemeeting/personal_data/lastname", _("Enter your last name."), 1);
                                                                                
-  pw->gk_alias = 
-    gnomemeeting_pref_window_add_entry (table, _("Gatekeeper alias: "), "/apps/gnomemeeting/gatekeeper/gk_alias", _("The Gatekeeper Alias to use when registering (string, or E164 ID if only 0123456789#)."), 2);
-
-  pw->mail = gnomemeeting_pref_window_add_entry (table, _("E-mail Address:"), "/apps/gnomemeeting/personal_data/mail", _("Enter your e-mail address."), 3);
+  pw->mail = gnomemeeting_pref_window_add_entry (table, _("E-mail Address:"), "/apps/gnomemeeting/personal_data/mail", _("Enter your e-mail address."), 2);
                                                                                
-  pw->comment = gnomemeeting_pref_window_add_entry (table, _("Comment:"), "/apps/gnomemeeting/personal_data/comment", _("Here you can fill in a comment about yourself for ILS directories."), 4);
+  pw->comment = gnomemeeting_pref_window_add_entry (table, _("Comment:"), "/apps/gnomemeeting/personal_data/comment", _("Here you can fill in a comment about yourself for ILS directories."), 3);
                                                                                
-  pw->location = gnomemeeting_pref_window_add_entry (table, _("Location:"), "/apps/gnomemeeting/personal_data/location", _("Where do you call from?"), 5);
+  pw->location = gnomemeeting_pref_window_add_entry (table, _("Location:"), "/apps/gnomemeeting/personal_data/location", _("Where do you call from?"), 4);
                                                                                
                                                                                
   /* Add the try button */                                                     
   pw->directory_update_button =                                                
-    gnomemeeting_pref_window_add_update_button (table, GTK_SIGNAL_FUNC (personal_data_update_button_clicked), _("Click here to update the LDAP server you are registered to with the new First Name, Last Name, E-Mail, Comment and Location or to update your alias on the Gatekeeper."), 6, 2);
+    gnomemeeting_pref_window_add_update_button (table, GTK_SIGNAL_FUNC (personal_data_update_button_clicked), _("Click here to update the LDAP server you are registered to with the new First Name, Last Name, E-Mail, Comment and Location or to update your alias on the Gatekeeper."), 5, 2);
   gtk_container_set_border_width (GTK_CONTAINER (pw->directory_update_button),
 				  GNOMEMEETING_PAD_SMALL*2);
 
@@ -1324,14 +1328,15 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook)
 }
 
 
-/* BEHAVIOR     :  It builds the notebook page for XDAP directories and gk,        
- *                 it adds it to the notebook.                                     
+/* BEHAVIOR     :  It builds the notebook page for XDAP directories and gk,
+ *                 it adds it to the notebook.                                
  * PRE          :  The notebook.                                               
  */                                                                            
-void gnomemeeting_init_pref_window_directories (GtkWidget *notebook)               
+void gnomemeeting_init_pref_window_directories (GtkWidget *notebook)        
 {                                                                              
   GtkWidget *vbox = NULL;                                                      
   GtkWidget *table = NULL;                                                     
+  GtkWidget *button = NULL;
   gchar *options [] = {_("Do not register"), 
 		       _("Gatekeeper host"), 
 		       _("Gatekeeper ID"), 
@@ -1342,7 +1347,7 @@ void gnomemeeting_init_pref_window_directories (GtkWidget *notebook)
   GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);              
                                                                                
                                                                                
-  /* Packing widgets for the XDAP directory */                                               
+  /* Packing widgets for the XDAP directory */                            
   vbox = gtk_vbox_new (FALSE, 4);
   gtk_notebook_append_page (GTK_NOTEBOOK(notebook), vbox, NULL);    
   table = gnomemeeting_pref_window_add_table (vbox, _("XDAP Directory"),
@@ -1357,7 +1362,7 @@ void gnomemeeting_init_pref_window_directories (GtkWidget *notebook)
 
 
   /* Add fields for the gatekeeper */
-  table = gnomemeeting_pref_window_add_table (vbox, _("Gatekeeper"), 4, 1);                 
+  table = gnomemeeting_pref_window_add_table (vbox, _("Gatekeeper"), 5, 3);
 
   pw->gk_id = 
     gnomemeeting_pref_window_add_entry (table, _("Gatekeeper ID:"), "/apps/gnomemeeting/gatekeeper/gk_id", _("The Gatekeeper identifier to register to."), 1);
@@ -1365,8 +1370,18 @@ void gnomemeeting_init_pref_window_directories (GtkWidget *notebook)
   pw->gk_host = 
     gnomemeeting_pref_window_add_entry (table, _("Gatekeeper host:"), "/apps/gnomemeeting/gatekeeper/gk_host", _("The Gatekeeper host to register to."), 2);
 
+  pw->gk_alias = 
+    gnomemeeting_pref_window_add_entry (table, _("Gatekeeper alias: "), "/apps/gnomemeeting/gatekeeper/gk_alias", _("The Gatekeeper Alias to use when registering (string, or E164 ID if only 0123456789#)."), 3);
+
+  pw->gk_password = 
+    gnomemeeting_pref_window_add_entry (table, _("Gatekeeper password:"), "/apps/gnomemeeting/gatekeeper/gk_password", _("The Gatekeeper password to use for H.235 authentication to the Gateleeper."), 4);
+  gtk_entry_set_visibility (GTK_ENTRY (pw->gk_password), FALSE);
+
   pw->gk = 
     gnomemeeting_pref_window_add_int_option_menu (table, _("Registering method:"), options, "/apps/gnomemeeting/gatekeeper/registering_method", _("Registering method to use"), 0);
+
+  button =
+    gnomemeeting_pref_window_add_update_button (table, GTK_SIGNAL_FUNC (gatekeeper_update_button_clicked), _("Click here to update your Gatekeeper settings."), 5, 2);
 }                                                                              
 
 

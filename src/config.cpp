@@ -60,7 +60,6 @@ static void int_option_menu_changed_nt (GConfClient *, guint, GConfEntry *, gpoi
 static void adjustment_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
 
 static void applicability_check_nt (GConfClient *, guint, GConfEntry *, gpointer);
-static void gatekeeper_method_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static void main_notebook_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static void fps_limit_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static void audio_mixer_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
@@ -449,33 +448,6 @@ static void applicability_check_nt (GConfClient *client, guint cid,
     gdk_threads_leave ();
   }
 }
-
-
-/* DESCRIPTION  :  This callback is called when the registering method to  the
- *                 gatekeeper options changes.
- * BEHAVIOR     :  It unregisters, registers to the gatekeeper using the class and with
- *                 the required method.
- * PRE          :  /
- */
-static void gatekeeper_method_changed_nt (GConfClient *client, guint cid, 
-					  GConfEntry *entry, 
-					  gpointer data)
-{
-  if (entry->value->type == GCONF_VALUE_INT) {
-
-    gdk_threads_enter ();
-
-    /* We update the registering to the gatekeeper */
-    /* Remove the current Gatekeeper */
-    MyApp->Endpoint ()->RemoveGatekeeper(0);
-    
-    /* Register the current Endpoint to the Gatekeeper */
-    MyApp->Endpoint ()->GatekeeperRegister ();
-
-    gdk_threads_leave ();
-
-  }
-} 
 
 
 /* DESCRIPTION  :  This callback is called when the control panel section changes.
@@ -1267,7 +1239,6 @@ void gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, "/apps/gnomemeeting/gatekeeper/gk_id",
 			   entry_changed_nt, pw->gk_id, 0, 0);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/gatekeeper/registering_method", gatekeeper_method_changed_nt, pw->gk, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/gatekeeper/registering_method", int_option_menu_changed_nt, pw->gk, 0, 0);
 
 

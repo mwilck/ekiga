@@ -73,9 +73,19 @@ void GMH323Gatekeeper::Main ()
 
   endpoint = (H323EndPoint *) MyApp->Endpoint ();
 
+  gconf_string = gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/gatekeeper/gk_password", 0);
+  endpoint->SetGatekeeperPassword ("");
+  if ((gconf_string != NULL)&&(strcmp ("", gconf_string))) {
+
+    endpoint->SetGatekeeperPassword (gconf_string);
+  }
+  g_free (gconf_string);
+  gconf_string = NULL;
+
+
   gconf_string = gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/gatekeeper/gk_alias", 0);
 
-  /* set the alias */
+  /* set the alias to make sure it is set */
   if ((gconf_string != NULL)&&(strcmp ("", gconf_string))) {
 
     /* Remove the old aliases */
@@ -85,9 +95,9 @@ void GMH323Gatekeeper::Main ()
 
     endpoint->AddAliasName (gconf_string);
   }
-
   g_free (gconf_string);
   gconf_string = NULL;
+
 
   /* Fetch the needed data */
   gnomemeeting_threads_enter ();
@@ -133,6 +143,7 @@ void GMH323Gatekeeper::Main ()
 	  
       gnomemeeting_threads_enter ();
       gnomemeeting_log_insert (gw->history_text_view, msg);
+      gnomemeeting_statusbar_flash (gm, msg);
       gnomemeeting_threads_leave ();
       
       g_free (msg);
@@ -200,6 +211,7 @@ void GMH323Gatekeeper::Main ()
 
       gnomemeeting_threads_enter ();
       gnomemeeting_log_insert (gw->history_text_view, msg);
+      gnomemeeting_statusbar_flash (gm, msg);
       gnomemeeting_threads_leave ();
       
       g_free (msg);
@@ -240,6 +252,7 @@ void GMH323Gatekeeper::Main ()
 
       gnomemeeting_threads_enter ();
       gnomemeeting_log_insert (gw->history_text_view, msg);
+      gnomemeeting_statusbar_flash (gm, msg);
       gnomemeeting_threads_leave ();
       
       g_free (msg);
