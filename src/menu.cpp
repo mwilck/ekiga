@@ -216,7 +216,7 @@ static void view_menu_toggles_changed (GtkWidget *widget, gpointer data)
      not when it becomes inactive */
   if (GTK_CHECK_MENU_ITEM (widget)->active) {
 
-    for (int i = 0; i <= 3; i++) 
+    for (int i = 0; i <= GM_MAIN_NOTEBOOK_HIDDEN; i++) 
       if (GTK_CHECK_MENU_ITEM (notebook_view_uiinfo[i].widget)->active) 
  	active = i;
   }
@@ -291,6 +291,14 @@ void gnomemeeting_init_menu ()
       {
 	GNOME_APP_UI_ITEM,
 	N_("_Video Settings"), N_("View Video Settings"),
+	(void *) view_menu_toggles_changed, 
+	NULL, (gpointer) "/apps/gnomemeeting/view/control_panel_section",
+	GNOME_APP_PIXMAP_NONE, NULL,
+	0, GDK_CONTROL_MASK, NULL
+      },
+      {
+	GNOME_APP_UI_ITEM,
+	N_("Statistics"), N_("View Audio/Video transmission and reception statistics"),
 	(void *) view_menu_toggles_changed, 
 	NULL, (gpointer) "/apps/gnomemeeting/view/control_panel_section",
 	GNOME_APP_PIXMAP_NONE, NULL,

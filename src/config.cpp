@@ -196,7 +196,7 @@ static void menu_radio_changed_nt (GConfClient *client, guint cid,
     GnomeUIInfo *e = (GnomeUIInfo *) (data);
 
     /* We set the new value for the widget */
-    for (int i = 0 ; i < 4 ; i++) {
+    for (int i = 0 ; i <= GM_MAIN_NOTEBOOK_HIDDEN ; i++) {
 
       if (gconf_value_get_int (entry->value) == i)
 	GTK_CHECK_MENU_ITEM (e [i].widget)->active = TRUE;
@@ -495,7 +495,7 @@ static void main_notebook_changed_nt (GConfClient *client, guint cid,
     gw = gnomemeeting_get_main_window (gm);
 
 
-    if (gconf_value_get_int (entry->value) == 3)
+    if (gconf_value_get_int (entry->value) == GM_MAIN_NOTEBOOK_HIDDEN)
       gtk_widget_hide_all (gw->main_notebook);
     else {
 
@@ -708,8 +708,6 @@ static void jitter_buffer_changed_nt (GConfClient *client, guint cid,
 				      GConfEntry *entry, gpointer data)
 {
   H323Connection *connection = NULL;
-  RTP_Session *session = NULL;
-  H323EndPoint *ep = MyApp->Endpoint ();
   gdouble val = 20.0;
 
   if (entry->value->type == GCONF_VALUE_INT) {
@@ -722,11 +720,7 @@ static void jitter_buffer_changed_nt (GConfClient *client, guint cid,
     connection = MyApp->Endpoint ()->GetCurrentConnection ();
 
     if (connection != NULL)
-      session = 
-	connection->GetSession (OpalMediaFormat::DefaultAudioSessionID);
-
-    if (session != NULL)
-      session->SetJitterBufferSize ((int) val, ep->GetJitterThreadStackSize());
+      connection->SetMaxAudioDelayJitter (val);
 
     gdk_threads_leave ();
   }
@@ -1303,6 +1297,7 @@ void gnomemeeting_init_gconf (GConfClient *client)
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/jitter_buffer", jitter_buffer_changed_nt, pw->jitter_buffer, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/jitter_buffer", adjustment_changed_nt, pw->jitter_buffer, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/jitter_buffer", applicability_check_nt, pw->jitter_buffer, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/jitter_buffer", network_settings_changed_nt, 0, 0, 0);
 
 

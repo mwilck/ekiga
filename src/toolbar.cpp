@@ -146,13 +146,15 @@ static void toolbar_cp_button_changed (GtkWidget *w, gpointer data)
 {
   GConfClient *client = gconf_client_get_default ();
 
-  if (gconf_client_get_int (client, (gchar *) data, 0) == 3) { 
+  if (gconf_client_get_int (client, (gchar *) data, 0) 
+      == GM_MAIN_NOTEBOOK_HIDDEN) { 
     
     gconf_client_set_int (client, (gchar *) data, 0, NULL);
   } 
   else {    
     
-    gconf_client_set_int (client, (gchar *) data, 3, NULL);
+    gconf_client_set_int (client, (gchar *) data, GM_MAIN_NOTEBOOK_HIDDEN, 
+			  NULL);
   }
 }
 

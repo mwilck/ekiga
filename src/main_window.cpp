@@ -82,6 +82,12 @@
 extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;	
 
+/* FIX ME*/
+GtkWidget *drawing_area;
+
+
+static gboolean stats_drawing_area_exposed (GtkWidget *);
+
 static gboolean gnomemeeting_invoke_factory (int, char **);
 static void gnomemeeting_new_event (BonoboListener *, const char *, 
 				    const CORBA_any *, CORBA_Environment *,
@@ -101,7 +107,7 @@ static gint gm_quit_callback (GtkWidget *, GdkEvent *, gpointer);
 static void gnomemeeting_init_main_window_video_settings ();
 static void gnomemeeting_init_main_window_audio_settings ();
 static void gnomemeeting_init_main_window_log  ();
-
+static void gnomemeeting_init_main_window_stats ();
 
 /* For stress testing */
 /* int i = 0; */
@@ -132,8 +138,6 @@ static void gnomemeeting_init_main_window_log  ();
 gint AppbarUpdate (gpointer data)
 {
   long minutes, seconds;
-  float tr_audio_speed = 0, tr_video_speed = 0;
-  float re_audio_speed = 0, re_video_speed = 0;
   RTP_Session *audio_session = NULL;
   RTP_Session *video_session = NULL;
   H323Connection *connection = NULL;
@@ -169,24 +173,44 @@ gint AppbarUpdate (gpointer data)
 	  
 	if (audio_session != NULL) {
 
-	  tr_audio_speed = 
-	    (float) (audio_session->GetOctetsSent()-rtp->tr_audio_bytes)/1024.00;
-	  rtp->tr_audio_bytes = audio_session->GetOctetsSent();
+	  /* Compute the current transmitted audio speed */
+	  rtp->tr_audio_speed [rtp->tr_audio_pos] = 
+	    (float) (audio_session->GetOctetsSent()
+		     - rtp->tr_audio_bytes)/1024;
+	  rtp->tr_audio_bytes = 
+	    audio_session->GetOctetsSent();
+	  rtp->tr_audio_pos++;
+	  if (rtp->tr_audio_pos >= 100) rtp->tr_audio_pos = 0;
 
-	  re_audio_speed = 
-	    (float) (audio_session->GetOctetsReceived()-rtp->re_audio_bytes)/1024.00;
-	  rtp->re_audio_bytes = audio_session->GetOctetsReceived();
+	  /* Compute the current received audio speed */
+	  rtp->re_audio_speed [rtp->re_audio_pos] = 
+	    (float) (audio_session->GetOctetsReceived()
+		     - rtp->re_audio_bytes)/1024;
+	  rtp->re_audio_bytes = 
+	    audio_session->GetOctetsReceived();
+	  rtp->re_audio_pos++;
+	  if (rtp->re_audio_pos >= 100) rtp->re_audio_pos = 0;
 	}
 
 	if (video_session != NULL) {
 
-	  tr_video_speed = 
-	    (float) (video_session->GetOctetsSent()-rtp->tr_video_bytes)/1024.00;
-	  rtp->tr_video_bytes = video_session->GetOctetsSent();
+	  /* Compute the current transmitted video speed */
+	  rtp->tr_video_speed [rtp->tr_video_pos] = 
+	    (float) (video_session->GetOctetsSent()
+		   - rtp->tr_video_bytes)/1024;
+	  rtp->tr_video_bytes = 
+	    video_session->GetOctetsSent();
+	  rtp->tr_video_pos++;
+	  if (rtp->tr_video_pos >= 100) rtp->tr_video_pos = 0;
 
-	  re_video_speed = 
-	    (float) (video_session->GetOctetsReceived()-rtp->re_video_bytes)/1024.00;
-	  rtp->re_video_bytes = video_session->GetOctetsReceived();
+	  /* Compute the current received video speed */
+	  rtp->re_video_speed [rtp->re_video_pos] = 
+	    (float) (video_session->GetOctetsReceived()
+		   - rtp->re_video_bytes)/1024;
+	  rtp->re_video_bytes = 
+	    video_session->GetOctetsReceived();
+	  rtp->re_video_pos++;
+	  if (rtp->re_video_pos >= 100) rtp->re_video_pos = 0;
 	}
 
 	minutes = t.GetMinutes () % 60;
@@ -195,13 +219,17 @@ gint AppbarUpdate (gpointer data)
 	gchar *msg = g_strdup_printf 
 	  (_("%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"), 
 	   (long) t.GetHours (), (long) minutes, (long) seconds, 
-	   tr_audio_speed, re_audio_speed,
-	   tr_video_speed, re_video_speed);
+	   rtp->tr_audio_speed [rtp->tr_audio_pos - 1], 
+	   rtp->re_audio_speed [rtp->re_audio_pos - 1],
+	   rtp->tr_video_speed [rtp->tr_video_pos - 1], 
+	   rtp->re_video_speed [rtp->re_video_pos - 1]);
 	
 
 	if (t.GetSeconds () > 3) {
 	  gnome_appbar_clear_stack (GNOME_APPBAR (gw->statusbar));
 	  gnome_appbar_push (GNOME_APPBAR (gw->statusbar), msg);
+
+	  gtk_widget_queue_draw_area (drawing_area, 0, 0, GTK_WIDGET (drawing_area)->allocation.width, GTK_WIDGET (drawing_area)->allocation.height);
 	}
         
 	g_free (msg);
@@ -210,6 +238,124 @@ gint AppbarUpdate (gpointer data)
 
     gdk_threads_leave ();
   }
+
+  return TRUE;
+}
+
+
+static gboolean 
+stats_drawing_area_exposed (GtkWidget *drawing_area)
+{
+  GdkColor black_clr;
+  GdkColor green_clr;
+  GdkColor red_clr;
+  GdkColor blue_clr;
+  GdkSegment s [50];
+  GdkGC *gc;
+  GdkColormap *colormap = NULL;
+  int x = 21, y = 21;
+  int cpt = 0;
+  int pos = 0;
+
+  GmRtpData *rtp = gnomemeeting_get_rtp_data (gm); 
+  GdkPoint points [100];
+
+  int width_step = GTK_WIDGET (drawing_area)->allocation.width / 100;
+  int height_step = GTK_WIDGET (drawing_area)->allocation.height / 15;
+
+  black_clr.red = 0;
+  black_clr.green = 0;
+  black_clr.blue = 0;
+
+  green_clr.red = 169;
+  green_clr.green = 38809;
+  green_clr.blue = 52441;
+  
+  red_clr.red = 65535;
+  red_clr.green = 0;
+  red_clr.blue = 0;
+
+  blue_clr.red = 0;
+  blue_clr.green = 0;
+  blue_clr.blue = 65535;
+
+  colormap = gdk_drawable_get_colormap (drawing_area->window);
+  gc = gdk_gc_new (drawing_area->window);
+  gdk_colormap_alloc_color (colormap, &black_clr, FALSE, TRUE);
+  gdk_colormap_alloc_color (colormap, &green_clr, FALSE, TRUE);
+  gdk_colormap_alloc_color (colormap, &red_clr, FALSE, TRUE);
+  gdk_colormap_alloc_color (colormap, &blue_clr, FALSE, TRUE);
+
+  gdk_gc_set_foreground (gc, &black_clr);
+  gdk_draw_rectangle (drawing_area->window,
+		      gc,
+		      TRUE, 0, 0, 
+		      GTK_WIDGET (drawing_area)->allocation.width,
+		      GTK_WIDGET (drawing_area)->allocation.height);
+
+  gdk_gc_set_foreground (gc, &green_clr);
+
+  while ((y < GTK_WIDGET (drawing_area)->allocation.height)&&(cpt < 50)) {
+
+    s [cpt].x1 = 0;
+    s [cpt].x2 = GTK_WIDGET (drawing_area)->allocation.width;
+    s [cpt].y1 = y;
+    s [cpt].y2 = y;
+      
+    y = y + 21;
+    cpt++;
+  }
+ 
+  gdk_draw_segments (GDK_DRAWABLE (drawing_area->window), gc, s, cpt);
+
+  cpt = 0;
+  while ((x < GTK_WIDGET (drawing_area)->allocation.width)&&(cpt < 50)) {
+
+    s [cpt].x1 = x;
+    s [cpt].x2 = x;
+    s [cpt].y1 = 0;
+    s [cpt].y2 = GTK_WIDGET (drawing_area)->allocation.height;
+      
+    x = x + 21;
+    cpt++;
+  }
+ 
+  gdk_draw_segments (GDK_DRAWABLE (drawing_area->window), gc, s, cpt);
+  gdk_window_set_background (drawing_area->window, &black_clr);
+
+
+  /* Transmitted audio */
+  gdk_gc_set_foreground (gc, &red_clr);
+  pos = rtp->tr_audio_pos;
+  for (int cpt = 0 ; cpt < 100 ; cpt++) {
+
+    points [cpt].x = cpt * width_step;
+
+    points [cpt].y = GTK_WIDGET (drawing_area)->allocation.height -
+      (gint) rtp->tr_audio_speed [pos] * height_step;
+    pos++;
+
+    if (pos >= 100) pos = 0;
+  }
+  gdk_draw_lines (GDK_DRAWABLE (drawing_area->window), gc, points, 100);
+
+  /* Transmitted video */
+  gdk_gc_set_foreground (gc, &blue_clr);
+  pos = rtp->tr_video_pos;
+  for (int cpt = 0 ; cpt < 100 ; cpt++) {
+
+    points [cpt].x = cpt * width_step;
+
+    points [cpt].y = GTK_WIDGET (drawing_area)->allocation.height -
+      (gint) rtp->tr_video_speed [pos] * height_step;
+    pos++;
+
+    if (pos >= 100) pos = 0;
+  }
+  gdk_draw_lines (GDK_DRAWABLE (drawing_area->window), gc, points, 100);
+
+  g_object_unref (gc);
+  g_object_unref (colormap);
 
   return TRUE;
 }
@@ -598,7 +744,7 @@ gnomemeeting_init (GmWindow *gw,
     /* We can't use gnomemeeting_error_dialog here, cause we need the
        dialog_run and dialog_run can't be used in gnomemeeting_error_dialog
        because it doesn't work in threads */
-    gchar *buffer = g_strdup_printf (_("GnomeMeeting got %d for the GConf key \"/apps/gnomemeeting/gconf_test_age\", but %d was expected.\n\nThat key represents the revision GnomeMeeting default settings. If it is not correct, it means that your GConf schemas have not been correctly installed or the that permissions are not correct.\n\nPlease check the FAQ (http://www.gnomemeeting.org/faq.php), the throubleshoot section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org).\n\nUsing 'gnomemeeting-config-tool' could help you fix these problem."), gconf_test, SCHEMA_AGE);
+    gchar *buffer = g_strdup_printf (_("GnomeMeeting got %d for the GConf key \"/apps/gnomemeeting/gconf_test_age\", but %d was expected.\n\nThat key represents the revision of GnomeMeeting setting. If it doesn't correspond to the expected value, it means that your GConf schemas have not been correctly installed or the that permissions are not correct.\n\nPlease check the FAQ (http://www.gnomemeeting.org/faq.php), the throubleshoot section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org).\n\nUsing 'gnomemeeting-config-tool' could help you to fix this problem."), gconf_test, SCHEMA_AGE);
     GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (gm),  
 						GTK_DIALOG_DESTROY_WITH_PARENT,
 						GTK_MESSAGE_ERROR,
@@ -657,6 +803,7 @@ gnomemeeting_init (GmWindow *gw,
   g_object_set_data (G_OBJECT (gm), "lw", lw);
   g_object_set_data (G_OBJECT (gm), "pw", pw);
   g_object_set_data (G_OBJECT (gm), "chat", chat);
+  g_object_set_data (G_OBJECT (gm), "rtp", rtp);
 
   /* Startup Process */
   gw->docklet = gnomemeeting_init_docklet ();
@@ -870,6 +1017,7 @@ void gnomemeeting_init_main_window ()
   gnomemeeting_init_main_window_log ();
   gnomemeeting_init_main_window_audio_settings ();
   gnomemeeting_init_main_window_video_settings ();
+  gnomemeeting_init_main_window_stats ();
 
   gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (gw->main_notebook),
 		    0, 2, 2, 3,
@@ -879,7 +1027,8 @@ void gnomemeeting_init_main_window ()
 
   main_notebook_section = 
     gconf_client_get_int (client, VIEW_KEY "control_panel_section", 0);
-  if (main_notebook_section != 3) {
+
+  if (main_notebook_section != GM_MAIN_NOTEBOOK_HIDDEN) {
 
     gtk_widget_show_all (GTK_WIDGET (gw->main_notebook));
     gtk_notebook_set_current_page (GTK_NOTEBOOK ((gw->main_notebook)), 
@@ -957,7 +1106,7 @@ void gnomemeeting_init_main_window ()
 
 /**
  * DESCRIPTION  :  /
- * BEHAVIOR     :  Builds the history log part of the main window.
+ * BEHAVIOR     :  Builds the general logs part of the main window.
  * PRE          :  /
  **/
 void gnomemeeting_init_main_window_log ()
@@ -968,15 +1117,14 @@ void gnomemeeting_init_main_window_log ()
 
   GmWindow *gw = gnomemeeting_get_main_window (gm);
 
-  frame = gtk_frame_new (_("History Log"));
+  frame = gtk_frame_new (_("History"));
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_ETCHED_OUT);
 
-  gw->history_view = gtk_text_view_new ();
-  gtk_text_view_set_editable (GTK_TEXT_VIEW (gw->history_view), FALSE);
+  gw->history_text_view = gtk_text_view_new ();
+  gtk_text_view_set_editable (GTK_TEXT_VIEW (gw->history_text_view), FALSE);
 
-  gw->history = gtk_text_view_get_buffer (GTK_TEXT_VIEW (gw->history_view));
-  gtk_text_view_set_editable (GTK_TEXT_VIEW (gw->history_view), FALSE);
-  gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (gw->history_view),
+  gtk_text_view_set_editable (GTK_TEXT_VIEW (gw->history_text_view), FALSE);
+  gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (gw->history_text_view),
 			       GTK_WRAP_WORD);
 
   scr = gtk_scrolled_window_new (NULL, NULL);
@@ -988,9 +1136,46 @@ void gnomemeeting_init_main_window_log ()
 				  GTK_POLICY_AUTOMATIC,
 				  GTK_POLICY_ALWAYS);
 
-  gtk_container_add (GTK_CONTAINER (scr), gw->history_view);    
+  gtk_container_add (GTK_CONTAINER (scr), gw->history_text_view);    
 
   label = gtk_label_new (_("History"));
+
+  gtk_notebook_append_page (GTK_NOTEBOOK (gw->main_notebook), frame, label);
+}
+
+
+/**
+ * DESCRIPTION  :  /
+ * BEHAVIOR     :  Builds the statistics part of the main window.
+ * PRE          :  /
+ **/
+void gnomemeeting_init_main_window_stats ()
+{
+  GtkWidget *frame = NULL;
+  GtkWidget *label = NULL;
+
+
+  GmWindow *gw = gnomemeeting_get_main_window (gm);
+
+
+  frame = gtk_frame_new (_("Statistics"));
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_ETCHED_OUT);
+
+  drawing_area = gtk_drawing_area_new ();
+ 
+  g_signal_connect (G_OBJECT (drawing_area), "expose_event",
+		    G_CALLBACK (stats_drawing_area_exposed), NULL);
+
+  gtk_container_add (GTK_CONTAINER (frame), drawing_area);    
+  gtk_container_set_border_width (GTK_CONTAINER (frame),
+				  GNOME_PAD_SMALL);
+
+  gtk_widget_queue_draw_area (drawing_area, 0, 0, 
+			      GTK_WIDGET (drawing_area)->allocation.width,
+			      GTK_WIDGET (drawing_area)->allocation.height);
+
+
+  label = gtk_label_new (_("Statistics"));
 
   gtk_notebook_append_page (GTK_NOTEBOOK (gw->main_notebook), frame, label);
 }
@@ -1263,10 +1448,14 @@ int main (int argc, char ** argv, char ** envp)
 
   /* Init the RTP stats structure */
   rtp = new (GmRtpData);
+  rtp->tr_audio_bytes = 0;
   rtp->re_audio_bytes = 0;
   rtp->re_video_bytes = 0;
   rtp->tr_video_bytes = 0;
-  rtp->tr_audio_bytes = 0;
+  rtp->tr_audio_pos = 0;
+  rtp->tr_video_pos = 0;
+  rtp->re_audio_pos = 0;
+  rtp->re_video_pos = 0;
 
 
   /* Init the TextChat structure */

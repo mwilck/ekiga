@@ -61,6 +61,14 @@
 
 #define new PNEW
 
+#ifndef IPTOS_LOWDELAY
+#define IPTOS_LOWDELAY 0x10
+#endif
+
+#ifndef IPTOS_PREC_PRIORITY
+#define IPTOS_PREC_PRIORITY 0x20
+#endif
+
 
 /* Declarations */
 
@@ -169,6 +177,9 @@ GMH323EndPoint::GMH323EndPoint ()
 
   SetRtpIpPorts (5000, 5003);
   SetTCPPorts (30000, 30010);
+
+  SetRtpIpTypeofService (IPTOS_LOWDELAY|IPTOS_PREC_PRIORITY);
+  soundChannelBuffers = 4;
 
   received_video_device = NULL;
   transmitted_video_device = NULL;

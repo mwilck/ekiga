@@ -150,10 +150,20 @@ GmTextChat *gnomemeeting_get_chat_window (GtkWidget *gm)
 }
 
 
+GmRtpData *gnomemeeting_get_rtp_data (GtkWidget *gm)
+{
+  GmRtpData *rtp = (GmRtpData *) 
+    g_object_get_data (G_OBJECT (gm), "rtp");
+
+  return rtp;
+}
+
+
 void gnomemeeting_log_insert (gchar *text)
 {
   GtkTextIter start, end;
   GtkTextMark *mark;
+  GtkTextBuffer *history;
 
   time_t *timeptr;
   char *time_str;
@@ -166,21 +176,23 @@ void gnomemeeting_log_insert (gchar *text)
   time (timeptr);
   strftime(time_str, 20, "%H:%M:%S ", localtime (timeptr));
 
-  gtk_text_buffer_get_bounds (GTK_TEXT_BUFFER (gw->history), 
-			      &start, &end);
-  gtk_text_buffer_insert (GTK_TEXT_BUFFER (gw->history), 
-			  &end, time_str, -1);
-  gtk_text_buffer_get_bounds (GTK_TEXT_BUFFER (gw->history), 
-			      &start, &end);
-  gtk_text_buffer_insert (GTK_TEXT_BUFFER (gw->history), &end, text, -1);
-  gtk_text_buffer_get_bounds (GTK_TEXT_BUFFER (gw->history), 
-			      &start, &end);
-  gtk_text_buffer_insert (GTK_TEXT_BUFFER (gw->history), &end, "\n", -1);
+  history = gtk_text_view_get_buffer (GTK_TEXT_VIEW (gw->history_text_view));
 
-  mark = gtk_text_buffer_create_mark (GTK_TEXT_BUFFER (gw->history), 
+  gtk_text_buffer_get_bounds (GTK_TEXT_BUFFER (history), 
+			      &start, &end);
+  gtk_text_buffer_insert (GTK_TEXT_BUFFER (history), 
+			  &end, time_str, -1);
+  gtk_text_buffer_get_bounds (GTK_TEXT_BUFFER (history), 
+			      &start, &end);
+  gtk_text_buffer_insert (GTK_TEXT_BUFFER (history), &end, text, -1);
+  gtk_text_buffer_get_bounds (GTK_TEXT_BUFFER (history), 
+			      &start, &end);
+  gtk_text_buffer_insert (GTK_TEXT_BUFFER (history), &end, "\n", -1);
+
+  mark = gtk_text_buffer_create_mark (GTK_TEXT_BUFFER (history), 
 				      "current-position", &end, FALSE);
 
-  gtk_text_view_scroll_to_mark (GTK_TEXT_VIEW (gw->history_view), mark, 
+  gtk_text_view_scroll_to_mark (GTK_TEXT_VIEW (gw->history_text_view), mark, 
 				0.0, FALSE, 0,0);
   
   free (time_str);

@@ -96,6 +96,14 @@ GmLdapWindow *gnomemeeting_get_ldap_window (GtkWidget *);
 GmTextChat *gnomemeeting_get_chat_window (GtkWidget *);
 
 
+/* DESCRIPTION  :  / 
+ * BEHAVIOR     :  Returns the rtp data. Only valid during calls.
+ * PRE          :  The GtkWidget must be a pointer to the Main gnomeMeeting 
+ *                 window.
+ */
+GmRtpData *gnomemeeting_get_rtp_data (GtkWidget *);
+
+
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Add some texts to the log part of the main window.
  * PRE          :  /

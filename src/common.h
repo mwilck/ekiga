@@ -43,6 +43,8 @@
 #define GM_QSIF_HEIGHT 120
 #define GM_FRAME_SIZE  10
 
+#define GM_MAIN_NOTEBOOK_HIDDEN 4
+
 #ifdef SPEEX_CODEC
 #define GM_AUDIO_CODECS_NUMBER 9
 #else
@@ -70,9 +72,17 @@ struct _GmTextChat
 struct _GmRtpData
 {
   int tr_audio_bytes;
+  float tr_audio_speed [100];
+  int tr_audio_pos;
+  float tr_video_speed [100];
+  int tr_video_pos;
   int tr_video_bytes;
   int re_audio_bytes;
+  float re_audio_speed [100];
+  int re_audio_pos;
   int re_video_bytes;
+  float re_video_speed [100];
+  int re_video_pos;
 };
 
 
@@ -89,8 +99,7 @@ struct _GmWindow
   GtkWidget *remote_name;
   GtkWidget *splash_win;
   GtkWidget *combo;
-  GtkTextBuffer *history;
-  GtkWidget *history_view;
+  GtkWidget *history_text_view;
   GtkWidget *main_notebook;
   GtkWidget *video_image;
   GtkWidget *video_frame;
