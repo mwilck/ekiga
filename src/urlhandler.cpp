@@ -43,6 +43,7 @@
 #include "urlhandler.h"
 #include "gnomemeeting.h"
 #include "misc.h"
+#include "log_window.h"
 #include "ldap_window.h"
 #include "main_window.h"
 #include "toolbar.h"
@@ -74,7 +75,7 @@ TransferTimeOut (gpointer data)
 
     gw = GnomeMeeting::Process ()->GetMainWindow ();
     gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Call transfer failed"), _("The call transfer failed, the user was either unreachable, or simply busy when he received the call transfer request."));
-    gnomemeeting_log_insert (_("Call transfer failed"));
+    gnomemeeting_log_insert (gw->log_window, _("Call transfer failed"));
   }
   gdk_threads_leave ();
 
@@ -285,7 +286,10 @@ void GMURLHandler::Main ()
     if (url.IsEmpty ()) {
 
       gnomemeeting_threads_enter ();
-      gnomemeeting_log_insert (_("No contact with speed dial %s# found, will call number %s instead"), (const char *) old_url.GetValidURL (), (const char *) (GMURL ().GetDefaultURL () + old_url.GetValidURL ()));
+      gnomemeeting_log_insert (gw->log_window,
+			       _("No contact with speed dial %s# found, will call number %s instead"),
+			       (const char *) old_url.GetValidURL (),
+			       (const char *) (GMURL ().GetDefaultURL () + old_url.GetValidURL ()));
       gnomemeeting_threads_leave ();
       
       url = GMURL (GMURL ().GetDefaultURL () + old_url.GetValidURL ());
@@ -326,7 +330,7 @@ void GMURLHandler::Main ()
       else
 	msg = g_strdup_printf (_("Transferring call to %s"), 
 			       (const char *) call_address);
-      gnomemeeting_log_insert (msg);
+      gnomemeeting_log_insert (gw->log_window, msg);
       gnomemeeting_statusbar_push (gw->statusbar, msg);
     }
     g_free (msg);

@@ -42,7 +42,7 @@
 #include "gatekeeper.h"
 #include "gnomemeeting.h"
 #include "misc.h"
-#include "tools.h"
+#include "log_window.h"
 
 #include "dialog.h"
 #include "gm_conf.h"
@@ -130,7 +130,7 @@ void GMH323Gatekeeper::Main ()
     gk_name = gatekeeper->GetName ();
     msg = g_strdup_printf (_("Unregistered from gatekeeper %s"),
 			   (const char *) gk_name);
-    gnomemeeting_log_insert (msg);
+    gnomemeeting_log_insert (gw->log_window, msg);
     gnomemeeting_statusbar_flash (gw->statusbar, msg);
     g_free (msg);
   }
@@ -215,7 +215,7 @@ void GMH323Gatekeeper::Main ()
 	msg = g_strdup (_("No gatekeeper corresponding to your options has been found."));
 
       gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Error while registering with gatekeeper"), msg);
-      gnomemeeting_log_insert (msg);
+      gnomemeeting_log_insert (gw->log_window, msg);
       g_free (msg);
     }
     
@@ -232,7 +232,7 @@ void GMH323Gatekeeper::Main ()
       g_strdup_printf (_("Gatekeeper set to %s"), (const char *) gk_name);
     
     gnomemeeting_threads_enter ();
-    gnomemeeting_log_insert (msg);
+    gnomemeeting_log_insert (gw->log_window, msg);
     gnomemeeting_statusbar_flash (gw->statusbar, msg);
     gnomemeeting_threads_leave ();
       

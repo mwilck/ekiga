@@ -50,6 +50,7 @@
 #include "menu.h"
 #include "pref_window.h"
 #include "ldap_window.h"
+#include "log_window.h"
 #include "tray.h"
 #include "misc.h"
 #include "tools.h"
@@ -369,7 +370,8 @@ h245_tunneling_changed_nt (gpointer id,
     ep->DisableH245Tunneling (!gm_conf_entry_get_bool (entry));
     
     gdk_threads_enter ();
-    gnomemeeting_log_insert (ep->IsH245TunnelingDisabled ()?
+    gnomemeeting_log_insert (gw->log_window,
+			     ep->IsH245TunnelingDisabled ()?
 			     _("H.245 Tunneling disabled"):
 			     _("H.245 Tunneling enabled"));
     gdk_threads_leave ();
@@ -398,7 +400,8 @@ early_h245_changed_nt (gpointer id,
     ep->DisableH245inSetup (!gm_conf_entry_get_bool (entry));
     
     gdk_threads_enter ();
-    gnomemeeting_log_insert (ep->IsH245inSetupDisabled ()?
+    gnomemeeting_log_insert (gw->log_window,
+			     ep->IsH245inSetupDisabled ()?
 			     _("Early H.245 disabled"):
 			     _("Early H.245 enabled"));
     gdk_threads_leave ();
@@ -427,7 +430,8 @@ fast_start_changed_nt (gpointer id,
     ep->DisableFastStart (!gm_conf_entry_get_bool (entry));
     
     gdk_threads_enter ();
-    gnomemeeting_log_insert (ep->IsFastStartDisabled ()?
+    gnomemeeting_log_insert (gw->log_window,
+			     ep->IsFastStartDisabled ()?
 			     _("Fast Start disabled"):
 			     _("Fast Start enabled"));
     gdk_threads_leave ();
@@ -607,12 +611,14 @@ silence_detection_changed_nt (gpointer id,
         if (mode == H323AudioCodec::AdaptiveSilenceDetection) {
 
           mode = H323AudioCodec::NoSilenceDetection;
-          gnomemeeting_log_insert (_("Disabled silence detection"));
+          gnomemeeting_log_insert (gw->log_window,
+				   _("Disabled silence detection"));
         } 
         else {
 
           mode = H323AudioCodec::AdaptiveSilenceDetection;
-          gnomemeeting_log_insert (_("Enabled silence detection"));
+          gnomemeeting_log_insert (gw->log_window,
+				   _("Enabled silence detection"));
         }
         gdk_threads_leave ();  
 

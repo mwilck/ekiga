@@ -43,7 +43,7 @@
 #include "gnomemeeting.h"
 #include "urlhandler.h"
 #include "misc.h"
-#include "tools.h"
+#include "log_window.h"
 #include "main_window.h"
 #include "pref_window.h"
 #include "callbacks.h"
@@ -131,8 +131,9 @@ GMLid::Open ()
     if (OpalIxJDevice::Open (dev_name)) {
 
       gnomemeeting_threads_enter ();
-      gnomemeeting_log_insert (_("Opened Quicknet device %s"), 
-				(const char *) GetName ()); // FIXME: is it thread-safe!?
+      gnomemeeting_log_insert (gw->log_window,
+			       _("Opened Quicknet device %s"), 
+			       (const char *) GetName ()); // FIXME: is it thread-safe!?
       gnomemeeting_threads_leave ();
       
       if (lid_country)
@@ -181,7 +182,8 @@ GMLid::Close ()
     OpalIxJDevice::Close ();
 
     gnomemeeting_threads_enter ();
-    gnomemeeting_log_insert (_("Closed Quicknet device %s"), 
+    gnomemeeting_log_insert (gw->log_window,
+			     _("Closed Quicknet device %s"), 
 			     (const char *) GetName ()); // FIXME: is it thread-safe?!
     gnomemeeting_threads_leave ();
   }
@@ -269,7 +271,7 @@ GMLid::Main ()
     if (off_hook == TRUE && last_off_hook == FALSE) {
 
       gnomemeeting_threads_enter ();
-      gnomemeeting_log_insert (_("Phone is off hook"));
+      gnomemeeting_log_insert (gw->log_window, _("Phone is off hook"));
       gnomemeeting_statusbar_flash (gw->statusbar, _("Phone is off hook"));
       gnomemeeting_threads_leave ();
 
@@ -305,7 +307,7 @@ GMLid::Main ()
     if (off_hook == FALSE && last_off_hook == TRUE) {
 
       gnomemeeting_threads_enter ();
-      gnomemeeting_log_insert (_("Phone is on hook"));
+      gnomemeeting_log_insert (gw->log_window, _("Phone is on hook"));
       gnomemeeting_statusbar_flash (gw->statusbar, _("Phone is on hook"));
   
       /* Remove the current called number */

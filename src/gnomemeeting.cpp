@@ -49,6 +49,7 @@
 #include "druid.h"
 #include "tools.h"
 #include "tray.h"
+#include "log_window.h"
 #include "main_window.h"
 #include "toolbar.h"
 #include "misc.h"
@@ -178,7 +179,7 @@ GnomeMeeting::Connect()
  if (endpoint->GetCallingState () == 3) {
 
     gnomemeeting_threads_enter ();
-    gnomemeeting_log_insert (_("Answering incoming call"));
+    gnomemeeting_log_insert (gw->log_window, _("Answering incoming call"));
     connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 1);
     gnomemeeting_threads_leave ();
 
@@ -227,7 +228,7 @@ GnomeMeeting::Disconnect (H323Connection::CallEndReason reason)
   if (endpoint->GetCallingState () == 1) {
 
     gnomemeeting_threads_enter ();
-    gnomemeeting_log_insert (_("Trying to stop calling"));
+    gnomemeeting_log_insert (gw->log_window, _("Trying to stop calling"));
     gnomemeeting_threads_leave ();
 
     endpoint->ClearCall (endpoint->GetCurrentCallToken (), reason);
@@ -238,7 +239,7 @@ GnomeMeeting::Disconnect (H323Connection::CallEndReason reason)
     if (endpoint->GetCallingState () == 2) {
 
       gnomemeeting_threads_enter ();	
-      gnomemeeting_log_insert (_("Stopping current call"));
+      gnomemeeting_log_insert (gw->log_window, _("Stopping current call"));
       connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 
 				    0);
       gnomemeeting_threads_leave ();
@@ -248,7 +249,7 @@ GnomeMeeting::Disconnect (H323Connection::CallEndReason reason)
     else if (endpoint->GetCallingState () == 3) {
 
       gnomemeeting_threads_enter ();
-      gnomemeeting_log_insert (_("Refusing Incoming call"));
+      gnomemeeting_log_insert (gw->log_window, _("Refusing Incoming call"));
       connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 
 				    0);
       gnomemeeting_threads_leave ();
@@ -466,7 +467,8 @@ void GnomeMeeting::BuildGUI ()
 
   
   /* GM is started */
-  gnomemeeting_log_insert (_("Started GnomeMeeting V%d.%d.%d for %s\n"), 
+  gnomemeeting_log_insert (gw->log_window,
+			   _("Started GnomeMeeting V%d.%d.%d for %s\n"), 
 			   MAJOR_VERSION, MINOR_VERSION, BUILD_NUMBER,
                            g_get_user_name ());
 }

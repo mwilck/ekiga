@@ -61,6 +61,7 @@
 #define vsnprintf _vsnprintf
 #endif
 
+
 #define GENERAL_KEY         "/apps/gnomemeeting/general/"
 
 #define USER_INTERFACE_KEY "/apps/gnomemeeting/general/user_interface/"
@@ -188,7 +189,6 @@ struct _GmWindow
   GtkWidget *splash_win;
   GtkWidget *combo;
   GtkWidget *log_window;
-  GtkWidget *log_text_view;
   GtkWidget *main_notebook;
   GtkWidget *main_video_image;
   GtkWidget *local_video_image;

@@ -40,11 +40,11 @@
 #include "../config.h"
 
 #include "ldap_window.h"
+#include "log_window.h"
 #include "callbacks.h"
 #include "gnomemeeting.h"
 #include "menu.h"
 #include "misc.h"
-#include "tools.h"
 #include "urlhandler.h"
 
 #include "gmentrydialog.h"
@@ -262,7 +262,7 @@ void pause_channel_callback (GtkWidget *widget, gpointer data)
 	  gtk_label_set_text_with_mnemonic (GTK_LABEL (child),
 					    menu_suspend_msg);
 
-	gnomemeeting_log_insert (log_resume_msg);
+	gnomemeeting_log_insert (gw->log_window, log_resume_msg);
 	gnomemeeting_statusbar_flash (gw->statusbar, log_resume_msg);
 
 	g_signal_handlers_block_by_func (G_OBJECT (b),
@@ -284,7 +284,7 @@ void pause_channel_callback (GtkWidget *widget, gpointer data)
 	  gtk_label_set_text_with_mnemonic (GTK_LABEL (child),
 					    menu_resume_msg);
 
-	gnomemeeting_log_insert (log_suspend_msg);
+	gnomemeeting_log_insert (gw->log_window, log_suspend_msg);
 	gnomemeeting_statusbar_flash (gw->statusbar, log_suspend_msg);
 
 	g_signal_handlers_block_by_func (G_OBJECT (b),

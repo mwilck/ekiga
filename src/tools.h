@@ -77,24 +77,9 @@ void gnomemeeting_calls_history_window_add_call (int,
 						 const char *);
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Build the log window and returns it.
- * PRE          :  /
- */
-GtkWidget *gnomemeeting_log_window_new ();
-
-
-/* DESCRIPTION  :  /
  * BEHAVIOR     :  Build the PC-To-Phone window and returns it.
  * PRE          :  /
  */
 GtkWidget *gnomemeeting_pc_to_phone_window_new ();
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Add text (gchar *) with timestamps into the log textview
- * PRE          :  The text to add (printf compatible)
- */
-void 
-gnomemeeting_log_insert (const char *,
-			 ...);
 
 #endif

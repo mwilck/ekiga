@@ -1,3 +1,14 @@
+2004-04-12 Kilian Krause <kk@verfaction.de>
+
+	* src/callbacks.cpp, src/common.h, src/config.cpp, src/connection.cpp,
+	src/endpoint.cpp, src/gatekeeper.cpp, src/gnomemeeting.cpp,
+	src/ils.cpp, src/lid.cpp, src/log_window.cpp, src/log_window.h,
+	src/Makefile.am, src/tools.cpp, src/tools.h, src/urlhandler.cpp,
+	src/videograbber.cpp: reorganization of the existing code makes the
+	log window fit the get-a-widget-as-first-argument api, and puts it in 
+	a separate set of files.
+	Patch provided by Julien Puydt <julien.puydt@laposte.net>. 
+
 2004-04-09  Guntupalli Karunakar  <karunakar@freedomink.org>
 
         * configure.in: Added "gu" (Gujarati) to ALL_LINGUAS.

@@ -52,6 +52,7 @@
 #include "toolbar.h"
 #include "chat_window.h"
 #include "ldap_window.h"
+#include "log_window.h"
 #include "pref_window.h"
 #include "main_window.h"
 #include "tools.h"
@@ -747,7 +748,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   msg = g_strdup_printf (_("Call from %s"), (const char *) utf8_name);
   gnomemeeting_threads_enter ();
   gnomemeeting_statusbar_push (gw->statusbar, msg);
-  gnomemeeting_log_insert (msg);
+  gnomemeeting_log_insert (gw->log_window, msg);
   gnomemeeting_threads_leave ();
   g_free (msg);
 
@@ -805,7 +806,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 
     /* Add the full message in the log */
     gnomemeeting_threads_enter ();
-    gnomemeeting_log_insert (msg);
+    gnomemeeting_log_insert (gw->log_window, msg);
     gnomemeeting_threads_leave ();
 
     /* Free things, we will return */
@@ -912,7 +913,7 @@ GMH323EndPoint::OnConnectionForwarded (H323Connection &,
     msg = g_strdup_printf (_("Forwarding call to %s"),
 			   (const char*) forward_party);
     gnomemeeting_statusbar_push (gw->statusbar, msg);
-    gnomemeeting_log_insert (msg);
+    gnomemeeting_log_insert (gw->log_window, msg);
     gnomemeeting_threads_leave ();
     g_free (msg);
 
@@ -974,8 +975,9 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   gnomemeeting_threads_enter ();
 
   gnomemeeting_statusbar_push (gw->statusbar, _("Connected"));
-  gnomemeeting_log_insert (_("Connected with %s using %s"), 
-			 utf8_name, utf8_app);
+  gnomemeeting_log_insert (gw->log_window,
+			   _("Connected with %s using %s"), 
+			   utf8_name, utf8_app);
   gnomemeeting_text_chat_call_start_notification (GnomeMeeting::Process ()->GetMainWindow ()->chat_window);
 
   gtk_label_set_text (GTK_LABEL (gw->remote_name), (const char *) utf8_name);
@@ -1267,7 +1269,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 						  utf8_app);
 
 
-  gnomemeeting_log_insert (msg_reason);
+  gnomemeeting_log_insert (gw->log_window, msg_reason);
   gnomemeeting_text_chat_call_stop_notification (GnomeMeeting::Process ()->GetMainWindow ()->chat_window);
   gnomemeeting_statusbar_flash (gw->statusbar, msg_reason);
   gnomemeeting_threads_leave ();
@@ -1682,7 +1684,8 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
 	l->Unlock ();
 
     gnomemeeting_threads_enter ();
-    gnomemeeting_log_insert (_("Attaching lid hardware to codec"));
+    gnomemeeting_log_insert (gw->log_window,
+			     _("Attaching lid hardware to codec"));
     gnomemeeting_threads_leave ();
   }
   else
@@ -1715,7 +1718,7 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
 	     plugin %s" or "Opening %s for recording with plugin" */
 
 	  gnomemeeting_threads_enter ();
-	  gnomemeeting_log_insert (is_encoding ?
+	  gnomemeeting_log_insert (gw->log_window, is_encoding ?
 				   _("Opened %s for recording with plugin %s")
 				   : _("Opened %s for playing with plugin %s"),
 				   (const char *) device, 
@@ -2136,8 +2139,9 @@ GMH323EndPoint::OnNoAnswerTimeout (PTimer &,
       connection->ForwardCall (PString ((const char *) forward_host));
 
       gdk_threads_enter ();
-      gnomemeeting_log_insert (_("Forwarding Call to %s (No Answer)"), 
-				(const char *) forward_host);
+      gnomemeeting_log_insert (gw->log_window,
+			       _("Forwarding Call to %s (No Answer)"), 
+			       (const char *) forward_host);
 
       gnomemeeting_statusbar_push (gw->statusbar, _("Call forwarded"));
       gdk_threads_leave ();

@@ -50,6 +50,8 @@ gnomemeeting_SOURCES =		\
 	tray.cpp		\
 	tools.cpp		\
 	tools.h			\
+	log_window.cpp		\
+	log_window.h		\
 	lid.cpp			\
 	lid.h			\
 	codec_info.cpp		\
