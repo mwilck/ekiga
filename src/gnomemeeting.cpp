@@ -151,43 +151,26 @@ GnomeMeeting::~GnomeMeeting()
 void 
 GnomeMeeting::Connect (PString url)
 {
+  GtkWidget *main_window = NULL;
+
+  main_window = gm;
+
+
   /* If incoming connection, then answer it */
   if (endpoint->GetCallingState () == GMH323EndPoint::Called) {
 
-    gnomemeeting_threads_enter ();
     gm_history_window_insert (history_window, _("Answering incoming call"));
-    gnomemeeting_threads_leave ();
 
     url_handler = new GMURLHandler ();
   }
-  else {
+  else if (endpoint->GetCallingState () == GMH323EndPoint::Standby
+	   && !GMURL (url).IsEmpty ()) {
     
     /* Update the GUI */
-    gnomemeeting_threads_enter ();
-    gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), 
-			url);
-
-    if (!url.IsEmpty ())
-      gm_history_combo_add_entry (GM_HISTORY_COMBO (gw->combo), 
-				  USER_INTERFACE_KEY "main_window/urls_history",
-				  url);
-    gnomemeeting_threads_leave ();
-
-
+    gm_main_window_set_call_url (main_window, url);
+ 
     /* if we call somebody, and if the URL is not empty */
-    if (!GMURL (url).IsEmpty ()) {
-      call_number++;
-
-      url_handler = new GMURLHandler (url);
-    }
-    else  /* We untoggle the connect button in the case it was toggled */
-      {
-
-	gnomemeeting_threads_enter ();
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->connect_button), 
-				      FALSE);
-	gnomemeeting_threads_leave ();
-      }
+    url_handler = new GMURLHandler (url);
   }
 }
 
@@ -195,36 +178,25 @@ GnomeMeeting::Connect (PString url)
 void
 GnomeMeeting::Disconnect (H323Connection::CallEndReason reason)
 {
-  gnomemeeting_threads_enter ();
-  gm_main_window_push_message (gm, NULL);
-  gnomemeeting_threads_leave ();
-
-
   /* if we are trying to call somebody */
-  if (endpoint->GetCallingState () == 1) {
+  if (endpoint->GetCallingState () == GMH323EndPoint::Calling) {
 
-    gnomemeeting_threads_enter ();
     gm_history_window_insert (history_window, _("Trying to stop calling"));
-    gnomemeeting_threads_leave ();
 
     endpoint->ClearCall (endpoint->GetCurrentCallToken (), reason);
   }
   else {
 
     /* if we are in call with somebody */
-    if (endpoint->GetCallingState () == 2) {
+    if (endpoint->GetCallingState () == GMH323EndPoint::Connected) {
 
-      gnomemeeting_threads_enter ();	
       gm_history_window_insert (history_window, _("Stopping current call"));
-      gnomemeeting_threads_leave ();
 
       endpoint->ClearAllCalls (reason, FALSE);
     }
-    else if (endpoint->GetCallingState () == 3) {
+    else if (endpoint->GetCallingState () == GMH323EndPoint::Called) {
 
-      gnomemeeting_threads_enter ();
       gm_history_window_insert (history_window, _("Refusing Incoming call"));
-      gnomemeeting_threads_leave ();
 
       endpoint->ClearCall (endpoint->GetCurrentCallToken (),
 			   H323Connection::EndedByLocalUser);

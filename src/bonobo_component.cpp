@@ -81,8 +81,6 @@ bonobo_component_handle_new_event (BonoboListener    *listener,
   char **argv;
   CORBA_sequence_CORBA_string *args;
   
-  GmWindow *mw = GnomeMeeting::Process ()->GetMainWindow ();
-
   args = (CORBA_sequence_CORBA_string *) any->_value;
   argc = args->_length;
   argv = args->_buffer;
@@ -101,18 +99,9 @@ bonobo_component_handle_new_event (BonoboListener    *listener,
 
 
   if ((i < argc) && (i + 1 < argc) && (argv [i+1])) {
-    
-     /* this function will store a copy of text */
-    if (GnomeMeeting::Process ()->Endpoint ()->GetCallingState () == GMH323EndPoint::Standby) {
-
-      gdk_threads_enter ();
-      gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (mw->combo)->entry), 
-			  argv [i + 1]);
-      gdk_threads_leave ();
-    }
 
     gdk_threads_enter ();
-    connect_cb (NULL, NULL);
+    GnomeMeeting::Process ()->Connect (argv [i+1]);
     gdk_threads_leave ();
   }
   else {

@@ -215,12 +215,14 @@ gm_tray_new ()
 
   GtkWidget *addressbook_window = NULL;
   GtkWidget *calls_history_window = NULL;
+  GtkWidget *main_window = NULL;
   GtkWidget *prefs_window = NULL;
 
   IncomingCallMode icm = AVAILABLE;
   
 
   /* Get the data */
+  main_window = gm;
   addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
   calls_history_window = GnomeMeeting::Process ()->GetCallsHistoryWindow ();
   prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
@@ -252,7 +254,7 @@ gm_tray_new ()
     {
       GTK_MENU_ENTRY("connect", _("_Connect"), _("Create a new connection"), 
 		     GM_STOCK_CONNECT_16, 'c', 
-		     GTK_SIGNAL_FUNC (connect_cb), NULL, TRUE),
+		     GTK_SIGNAL_FUNC (connect_cb), main_window, TRUE),
       GTK_MENU_ENTRY("disconnect", _("_Disconnect"),
 		     _("Close the current connection"), 
 		     GM_STOCK_DISCONNECT_16, 'd',

@@ -93,18 +93,12 @@ connect_cb (GtkWidget *widget,
 	    gpointer data)
 {	
   PString url;
+
+  g_return_if_fail (data != NULL);
   
-  GmWindow *gw = GnomeMeeting::Process ()->GetMainWindow ();
+  url = gm_main_window_get_call_url (GTK_WIDGET (data)); 
 
-  if (gw->incoming_call_popup)
-    gtk_widget_destroy (gw->incoming_call_popup);
-
-  gw->incoming_call_popup = NULL;
-
-  url = gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry));
-  if ((GnomeMeeting::Process ()->Endpoint ()->GetCallingState () == GMH323EndPoint::Standby) ||
-      (GnomeMeeting::Process ()->Endpoint ()->GetCallingState () == GMH323EndPoint::Called))
-    GnomeMeeting::Process ()->Connect (url);
+  GnomeMeeting::Process ()->Connect (url);
 }
 
 
@@ -112,13 +106,6 @@ void
 disconnect_cb (GtkWidget *widget,
 	       gpointer data)
 {	
-  GmWindow *gw = GnomeMeeting::Process ()->GetMainWindow ();
-
-  if (gw->incoming_call_popup)
-    gtk_widget_destroy (gw->incoming_call_popup);
-
-  gw->incoming_call_popup = NULL;
-  
   GnomeMeeting::Process ()->Disconnect ();
 }
 

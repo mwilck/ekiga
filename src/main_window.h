@@ -184,6 +184,17 @@ void gm_main_window_transfer_dialog_run (GtkWidget *,
 					 gchar *);
 
 
+/* DESCRIPTION   :  /
+ * BEHAVIOR      : Creates a new incoming call popup and run it as modal dialog.
+ * PRE           : The main window GMObject.
+ * 		   The name and the app in UTF-8 char * and the remote URL
+ */
+void gm_main_window_incoming_call_dialog_run (GtkWidget *,
+					      gchar *,
+					      gchar *,
+					      gchar *);
+
+
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Builds the main window and adds the popup to the image.
  * PRE          :  Accels.
@@ -196,10 +207,9 @@ GtkWidget *gm_main_window_new (GmWindow *);
  *                 Removes the previous message.
  * PRE           : The main window GMObject, followed by printf syntax format.
  */
-void 
-gm_main_window_flash_message (GtkWidget *, 
-			      const char *, 
-			      ...);
+void gm_main_window_flash_message (GtkWidget *, 
+				   const char *, 
+				   ...);
 
 
 /* DESCRIPTION   :  /
@@ -207,12 +217,24 @@ gm_main_window_flash_message (GtkWidget *,
  *                 Removes the previous message.
  * PRE           : The main window GMObject, followed by printf syntax format.
  */
-void 
-gm_main_window_push_message (GtkWidget *, 
-			     const char *, 
-			     ...);
+void gm_main_window_push_message (GtkWidget *, 
+				  const char *, 
+				  ...);
 
 
+/* DESCRIPTION   :  /
+ * BEHAVIOR      : Sets the given URL as called URL and updates the history.
+ * PRE           : The main window GMObject.
+ */
+void gm_main_window_set_call_url (GtkWidget *, 
+				  const char *);
+
+
+/* DESCRIPTION   :  /
+ * BEHAVIOR      : Returns the currently called URL in the URL bar.
+ * PRE           : The main window GMObject.
+ */
+const char *gm_main_window_get_call_url (GtkWidget *);
 
 #endif
 

@@ -74,16 +74,6 @@ gnomemeeting_button_new (const char *,
 
 
 /* DESCRIPTION   :  /
- * BEHAVIOR      : Creates a new incoming call popup and returns it.
- * PRE           : The name; and the app UTF-8 char * and the remote URL
- */
-GtkWidget * 
-gnomemeeting_incoming_call_popup_new (gchar *,
-				      gchar *,
-				      gchar *);
-
-
-/* DESCRIPTION   :  /
  * BEHAVIOR      : Creates a video window.
  * PRE           : The title of the window, the drawing area and the window
  *                 name that will be used by gnomemeeting_window_show/hide.

@@ -691,7 +691,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   GMLid *l = NULL;
 #endif    
   
-  main_window = GnomeMeeting::Process ()->GetHistoryWindow ();
+  main_window = gm;
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   tray = GnomeMeeting::Process ()->GetTray ();
 
@@ -849,22 +849,27 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   NoAnswerTimer.SetInterval (0, PMAX (no_answer_timeout, 10));
   CallPendingTimer.RunContinuous (PTimeInterval (5));
 
-    
+  
+  /* If no forward or reject, update the internal state */
+  SetCurrentCallToken (connection.GetCallToken ());
+  SetCallingState (GMH323EndPoint::Called);
+  
+
   /* Incoming Call Popup, if needed */
   if (show_popup) {
     
     gnomemeeting_threads_enter ();
-    gw->incoming_call_popup = 
-      gnomemeeting_incoming_call_popup_new (utf8_name, utf8_app, utf8_url);
+    gm_main_window_incoming_call_dialog_run (main_window,
+					     utf8_name, 
+					     utf8_app, 
+					     utf8_url);
     gnomemeeting_threads_leave ();
   }
   
-
-  /* If no forward or reject, update the internal state */
-  SetCurrentCallToken (connection.GetCallToken ());
-  SetCallingState (GMH323EndPoint::Called);
+  
   g_signal_emit_by_name (dispatcher, "call-begin",
-			 (const char *)GetCurrentCallToken ());
+			 (const char *) GetCurrentCallToken ());
+
 
   g_free (gateway_conf);
   g_free (forward_host_conf);

@@ -296,8 +296,10 @@ GMLid::Main ()
 
 
       /* We answer the call */
+      gnomemeeting_threads_enter ();
       if (calling_state == GMH323EndPoint::Called)
 	GnomeMeeting::Process ()->Connect ();
+      gnomemeeting_threads_leave ();
 
 
       /* We are in standby */
@@ -311,13 +313,14 @@ GMLid::Main ()
 	else
 	  EnableAudio (0, FALSE);
 
+	/* Get the URL from the GUI and call it */
 	gnomemeeting_threads_enter ();
-	url = gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry)); 
-	gnomemeeting_threads_leave ();
-
+	url = gm_main_window_get_call_url (main_window);
+	
 	/* Automatically connect */
 	if (url && !GMURL (url).IsEmpty ())
 	  GnomeMeeting::Process ()->Connect (url);
+	gnomemeeting_threads_leave ();
       }
     }
 
@@ -338,8 +341,12 @@ GMLid::Main ()
 
       /* If we are in a call, or calling, we disconnect */
       if (calling_state == GMH323EndPoint::Connected
-	  || calling_state == GMH323EndPoint::Calling)
+	  || calling_state == GMH323EndPoint::Calling) {
+	
+	gnomemeeting_threads_enter ();
 	GnomeMeeting::Process ()->Disconnect ();
+	gnomemeeting_threads_leave ();
+      }
     }
 
 
@@ -356,10 +363,12 @@ GMLid::Main ()
 	if (calling_state == GMH323EndPoint::Standby) {
 	  
 	  gnomemeeting_threads_enter ();
-	  url = gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry)); 
+	  url = gm_main_window_get_call_url (main_window);
+	
+	  /* Automatically connect */
+	  if (url && !GMURL (url).IsEmpty ())
+	    GnomeMeeting::Process ()->Connect (url);
 	  gnomemeeting_threads_leave ();
-
-	  GnomeMeeting::Process ()->Connect (url);
 	}
 	do_not_connect = TRUE;
       }
