@@ -614,7 +614,6 @@ gnomemeeting_init (GmWindow *gw,
      delete (chat);
      exit (-1);
    }
-   g_free (gconf_test);
 
   /* We store all the pointers to the structure as data of gm */
   g_object_set_data (G_OBJECT (gm), "gw", gw);
