@@ -50,6 +50,7 @@
 #include "toolbar.h"
 #include "chat_window.h"
 #include "ldap_window.h"
+#include "main_window.h"
 #include "tools.h"
 #include "dialog.h"
 
@@ -165,8 +166,6 @@ GMH323EndPoint::GMH323EndPoint ()
   opened_audio_channels = 0;
   opened_video_channels = 0;
 
-  is_received_call = FALSE;
-  
   /* Start the ILSClient PThread */
   ils_client = new GMILSClient ();
 
@@ -890,9 +889,6 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 
   int no_answer_timeout = 0;
 
-  if (GetCurrentCallToken ().IsEmpty ())
-    is_received_call = TRUE;
-
   
   /* Check the gconf keys */
   gnomemeeting_threads_enter ();
@@ -1277,10 +1273,10 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
     t = PTime () - connection.GetConnectionStartTime();
 
   gnomemeeting_threads_enter ();
-  if (t.GetSeconds () == 0 && is_received_call)
+  if (t.GetSeconds () == 0 && connection.HadAnsweredCall ())
     gnomemeeting_calls_history_window_add_call (2, remote_party_name, remote_ip, 0, remote_app);
   else 
-    gnomemeeting_calls_history_window_add_call (is_received_call ? 0 : 1, remote_party_name, remote_ip, t.AsString (2), remote_app);
+    gnomemeeting_calls_history_window_add_call (connection.HadAnsweredCall () ? 0 : 1, remote_party_name, remote_ip, t.AsString (2), remote_app);
   gnomemeeting_threads_leave ();
 
   /* Get GConf settings */
@@ -1297,8 +1293,8 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
      not another call, ok, else do nothing */
   if (GetCurrentCallToken () == clearedCallToken) {
 
-    if (!GetTransferCallToken ()) {
-
+    if (!GetTransferCallToken ().IsEmpty ()) {
+      
       SetCurrentCallToken (GetTransferCallToken ());
       SetTransferCallToken (PString ());
     }
@@ -1396,12 +1392,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   gnomemeeting_log_insert (gw->history_text_view, msg_reason);
 
-  if (gw->progress_timeout) {
-
-    gtk_timeout_remove (gw->progress_timeout);
-    gw->progress_timeout = 0;
-    gtk_widget_hide (gw->progressbar);
-  }
+  gnomemeeting_main_window_enable_statusbar_progress (false);
 
   if (gw->incoming_call_popup) {
 
@@ -1538,7 +1529,6 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   /* Update internal state */
   SetCurrentConnection (NULL);
   SetCallingState (0);
-  is_received_call = FALSE;
 
   /* Display the call end reason in the statusbar */
   gdk_threads_enter ();

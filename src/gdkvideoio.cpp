@@ -106,6 +106,7 @@ GDKVideoOutputDevice::~GDKVideoOutputDevice()
   }
 #endif
 
+
   /* Hide the 2 popup windows */
   gnomemeeting_threads_enter ();
 
@@ -143,7 +144,6 @@ BOOL GDKVideoOutputDevice::Redraw ()
   static gboolean has_to_fs = false;
   static gboolean has_to_switch_fs = false;
   static gboolean old_fullscreen = false;
-
   static int fs_device = 0;
   Uint32 rmask, gmask, bmask, amask;
   SDL_Surface *surface = NULL;
@@ -438,7 +438,7 @@ BOOL GDKVideoOutputDevice::Redraw ()
     sdl_mutex.Wait ();
    
     /* Go fullscreen */
-    if (has_to_switch_fs) {
+    if (has_to_switch_fs || (has_to_fs && !screen)) {
       
 	screen = SDL_SetVideoMode (640, 480, 0, 
 				   SDL_SWSURFACE | SDL_HWSURFACE | 
@@ -468,6 +468,7 @@ BOOL GDKVideoOutputDevice::Redraw ()
       SDL_CreateRGBSurfaceFrom ((void *) gdk_pixbuf_get_pixels (zoomed_pic),
 				zoomed_width, zoomed_height, 24,
 				zoomed_width * 3, rmask, gmask, bmask, amask);
+
 
     blit_conf = SDL_DisplayFormat (surface);
 

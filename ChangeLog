@@ -1,5 +1,32 @@
 2003-06-10 Damien Sandras  <dsandras@seconix.com>
 
+	* callbacks.cpp, callbacks.h: Added a default callbacks that
+	generates GTK_RESPONSE_ACCEPT in a Dialog when a GtkEntry is
+	activated. Thanks Kilian for the proposition.
+	
+	* endpoint.cpp, endpoint.h: Got rid of is_received_call, we 
+	can use openh323 for that.
+	
+	* gdkvideoio.cpp: Fixed bug when exiting from full screen after
+	the remote end has cleared the call. It was crashing on the next
+	call. Thanks Johnny for finding this one.
+	
+	* ldap_window.cpp: Removed static function and use the function
+	of callbacks.h. See above.
+	
+	* misc.cpp: Fixed the incoming call popup to use Accept/Reject
+	instead of Connect/Disconnect.
+	
+	* urlhandler.cpp: Do not transfer the call if the URL handler is
+	wrong. Add a Timeout that checks if the call has been transferred
+	or not. The remote is able to see it instantly but not the user
+	transferring the call. That popup permits to the person transferring
+	the call to see if it failed or not. Notice that if the call
+	is being transferred but that the remote user rejects the call
+	after 5 seconds, it is considered as a successful transfer.
+	
+2003-06-10 Damien Sandras  <dsandras@seconix.com>
+
 	* src/callbacks.cpp: Fixed crash when forward gconf key is NULL
 	in transfer_call_cb.
 	

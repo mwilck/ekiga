@@ -151,8 +151,6 @@ static void contact_section_activated_cb (GtkTreeView *,
 static void refresh_server_content_cb (GtkWidget *,
 				       gpointer);
 
-static void gtk_dialog_response_accept (GtkWidget *,
-					gpointer);
 
 /* Local functions: Operations on a contact */
 static gboolean is_contact_member_of_group (GMURL,
@@ -1138,20 +1136,6 @@ contact_clicked_cb (GtkWidget *w,
   }
 
   return FALSE;
-}
-
-
-/* DESCRIPTION  :  This callback is called when the user hits enter in
- *                 in a GtkEntry in a dialog.
- * BEHAVIOR     :  Emits the GTK_RESPONSE_ACCEPT signal for the dialog.
- * PRE          :  data = a pointer to a GtkDialog.
- */
-static void
-gtk_dialog_response_accept (GtkWidget *w,
-			    gpointer data)
-{
-  if (data)
-    gtk_dialog_response (GTK_DIALOG (data), GTK_RESPONSE_ACCEPT);
 }
 
 

@@ -205,15 +205,18 @@ gnomemeeting_incoming_call_popup_new (gchar * utf8_name,
   GmWindow  *gw = NULL;
 
 
-  msg = g_strdup_printf (_("Call from %s\nusing %s"), (const char*) utf8_name, 
+
+  msg = g_strdup_printf (_("Call from %s\nusing %s"),
+			 (const char*) utf8_name,
 			 (const char *) utf8_app);
+    
   gw = MyApp->GetMainWindow ();
 
   widget = gtk_dialog_new ();
   b2 = gtk_dialog_add_button (GTK_DIALOG (widget),
-			      _("Disconnect"), 0);
+			      _("Reject"), 0);
   b1 = gtk_dialog_add_button (GTK_DIALOG (widget),
-			      _("Connect"), 1);
+			      _("Accept"), 1);
 
   gtk_dialog_set_default_response (GTK_DIALOG (widget), 1);
 

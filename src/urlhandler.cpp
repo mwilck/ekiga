@@ -55,6 +55,29 @@
 extern GnomeMeeting *MyApp;
 extern GtkWidget *gm;
 
+static gint
+TransferTimeOut (gpointer data)
+{
+  PString transfer_call_token;
+  PString call_token;
+
+  GMH323EndPoint *ep = NULL;
+  
+  gdk_threads_enter ();
+  ep = MyApp->Endpoint ();
+
+  if (ep)
+    call_token = ep->GetCurrentCallToken ();
+
+  if (!call_token.IsEmpty ())
+    gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Call transfer failed"), _("The call transfer failed, the user was either unreachable, or simply busy when he received the call transfer request."));
+  gdk_threads_leave ();
+
+  
+  return FALSE;
+}
+
+
 
 GMURL::GMURL ()
 {
@@ -294,9 +317,12 @@ void GMURLHandler::Main ()
 	endpoint->MakeCallLocked (call_address, current_call_token);
     }
     else
-      if (!url.IsEmpty ())
+      if (!url.IsEmpty () && url.IsSupported ()) {
+	
 	endpoint->TransferCall (endpoint->GetCurrentCallToken (),
 				call_address);
+	g_timeout_add (11000, (GtkFunction) TransferTimeOut, NULL);
+      }
   }
   else {
 

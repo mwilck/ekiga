@@ -53,11 +53,15 @@ extern GtkWidget *gm;
 
 
 /* The callbacks */
-/* DESCRIPTION  :  This callback is called when the user chooses to forward
- *                 a call.
- * BEHAVIOR     :  Forward the current call.
- * PRE          :  /
- */
+void
+gtk_dialog_response_accept (GtkWidget *w,
+			    gpointer data)
+{
+  if (data)
+    gtk_dialog_response (GTK_DIALOG (data), GTK_RESPONSE_ACCEPT);
+}
+
+
 void
 transfer_call_cb (GtkWidget* widget,
 		  gpointer data)
@@ -66,8 +70,6 @@ transfer_call_cb (GtkWidget* widget,
   GtkWidget *hbox = NULL;
   GtkWidget *label = NULL;
   GtkWidget *entry = NULL;
-  GtkWidget *b1 = NULL;
-  GtkWidget *b2 = NULL;
 
   GMH323EndPoint *endpoint = NULL;
   GmWindow *gw = NULL;
@@ -82,7 +84,12 @@ transfer_call_cb (GtkWidget* widget,
   endpoint = MyApp->Endpoint ();
   gw = MyApp->GetMainWindow ();
 
-  transfer_call_popup = gtk_dialog_new ();
+  transfer_call_popup =
+        gtk_dialog_new_with_buttons (_("Edit the contact information"), 
+				     NULL, GTK_DIALOG_MODAL,
+				     GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
+				     _("_Transfer Call"), GTK_RESPONSE_ACCEPT,
+				     NULL);
   if (!data) {
 
     gtk_window_set_transient_for (GTK_WINDOW (transfer_call_popup),
@@ -99,13 +106,8 @@ transfer_call_cb (GtkWidget* widget,
     gconf_forward_value = g_strdup ((gchar *) data);
   }
   
-
-  
-  b1 = gtk_dialog_add_button (GTK_DIALOG (transfer_call_popup),
-			      GTK_STOCK_CANCEL, 0);
-  b2 = gtk_dialog_add_button (GTK_DIALOG (transfer_call_popup),
-			      _("_Transfer Call"), 1); 
-  gtk_dialog_set_default_response (GTK_DIALOG (transfer_call_popup), 1);
+  gtk_dialog_set_default_response (GTK_DIALOG (transfer_call_popup),
+				   GTK_RESPONSE_ACCEPT);
   
   label = gtk_label_new (_("Forward call to:"));
   hbox = gtk_hbox_new (0, 0);
@@ -121,7 +123,10 @@ transfer_call_cb (GtkWidget* widget,
     gtk_entry_set_text (GTK_ENTRY (entry),
 			(const char *) url.GetDefaultURL ());
   g_free (gconf_forward_value);
-
+  g_signal_connect (G_OBJECT (entry), "activate",
+		    GTK_SIGNAL_FUNC (gtk_dialog_response_accept),
+		    (gpointer) transfer_call_popup);
+  
   gconf_forward_value = NULL;
 
   gtk_box_pack_start (GTK_BOX (hbox), 
@@ -136,7 +141,7 @@ transfer_call_cb (GtkWidget* widget,
   answer = gtk_dialog_run (GTK_DIALOG (transfer_call_popup));
   switch (answer) {
 
-  case 1:
+  case GTK_RESPONSE_ACCEPT:
 
     gconf_forward_value = (gchar *) gtk_entry_get_text (GTK_ENTRY (entry));
     new GMURLHandler (gconf_forward_value, TRUE);
