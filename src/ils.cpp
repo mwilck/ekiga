@@ -519,9 +519,8 @@ void GMILSClient::ils_browse ()
   int part2;
   int part3;
   int part4;
-  char ip [15];
+  char ip [16];
   gchar *ldap_server = NULL;
-  gfloat per = 0;
 
   GdkPixmap *quickcam;
   GdkBitmap *quickcam_mask;
@@ -529,7 +528,7 @@ void GMILSClient::ils_browse ()
   GdkBitmap *sound_mask;
   GtkProgress *progress;
   guint ils_timeout;
-  GtkWidget *clist, *page;
+  GtkWidget *page, *clist = NULL;
   int curr_page;
 
   gnomemeeting_threads_enter ();
@@ -660,113 +659,113 @@ void GMILSClient::ils_browse ()
 
   curr_page = gtk_notebook_get_current_page (GTK_NOTEBOOK (lw->notebook));
   page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), curr_page);
-  clist = GTK_WIDGET (gtk_object_get_data (GTK_OBJECT (page), 
-					   "ldap_users_clist"));
-  gtk_clist_freeze (GTK_CLIST (clist));
-  /* FIXME: clist is not garantied to exists anymore, the tab that
-     holds it could have been closed after starting the search */
-  for (e = ldap_first_entry(ldap_connection, res); 
-       e != NULL; e = ldap_next_entry(ldap_connection, e)) {
-
-    if (ldap_get_values (ldap_connection, e, "surname") != NULL) {
-
-      datas [3] = 
-	g_strdup (ldap_get_values (ldap_connection, e, "surname") [0]);
-      ldap_value_free (ldap_get_values (ldap_connection, e, "surname"));
-    }
-
-    if (ldap_get_values(ldap_connection, e, "givenname") != NULL) {
-
-      datas [2] = g_strdup (ldap_get_values 
-			    (ldap_connection, e, "givenname") [0]);
-      ldap_value_free (ldap_get_values (ldap_connection, e, "givenname"));
-    }
+  if (page != NULL)
+    clist = GTK_WIDGET (gtk_object_get_data (GTK_OBJECT (page), "ldap_users_clist"));
+  if (clist != NULL) { /*Maybe the user closed the tab while we were waiting */
+    gtk_clist_freeze (GTK_CLIST (clist));
+    for (e = ldap_first_entry(ldap_connection, res); 
+	 e != NULL; e = ldap_next_entry(ldap_connection, e)) {
       
-    if (ldap_get_values(ldap_connection, e, "location") != NULL) {
-
-      datas [5] = g_strdup (ldap_get_values 
-			    (ldap_connection, e, "location") [0]);
-      ldap_value_free (ldap_get_values (ldap_connection, e, "location"));
-    }
+      if (ldap_get_values (ldap_connection, e, "surname") != NULL) {
+	
+	datas [3] = 
+	  g_strdup (ldap_get_values (ldap_connection, e, "surname") [0]);
+	ldap_value_free (ldap_get_values (ldap_connection, e, "surname"));
+      }
       
-    if (ldap_get_values(ldap_connection, e, "comment") != NULL)	{
-
-      datas [6] = 
-	g_strdup (ldap_get_values (ldap_connection, e, "comment") [0]);
-      ldap_value_free (ldap_get_values (ldap_connection, e, "comment"));
-    }
-
-    if (ldap_get_values(ldap_connection, e, "rfc822mailbox") != NULL) {
+      if (ldap_get_values(ldap_connection, e, "givenname") != NULL) {
+	
+	datas [2] = g_strdup (ldap_get_values 
+			      (ldap_connection, e, "givenname") [0]);
+	ldap_value_free (ldap_get_values (ldap_connection, e, "givenname"));
+      }
       
-      datas [4] = g_strdup (ldap_get_values 
-			    (ldap_connection, e, "rfc822mailbox") [0]);
-      ldap_value_free (ldap_get_values (ldap_connection, e, "rfc822mailbox"));
-    }
-
-    if (ldap_get_values(ldap_connection, e, "sipaddress") != NULL) {
+      if (ldap_get_values(ldap_connection, e, "location") != NULL) {
+	
+	datas [5] = g_strdup (ldap_get_values 
+			      (ldap_connection, e, "location") [0]);
+	ldap_value_free (ldap_get_values (ldap_connection, e, "location"));
+      }
       
-      nmip = strtoul (ldap_get_values(ldap_connection, e, "sipaddress") [0], 
-		      NULL, 10);
-      ldap_value_free (ldap_get_values (ldap_connection, e, "sipaddress"));
-    }
+      if (ldap_get_values(ldap_connection, e, "comment") != NULL)	{
+	
+	datas [6] = 
+	  g_strdup (ldap_get_values (ldap_connection, e, "comment") [0]);
+	ldap_value_free (ldap_get_values (ldap_connection, e, "comment"));
+      }
       
-    part1 = (int) (nmip/(256*256*256));
-    part2 = (int) ((nmip - part1 * (256 * 256 * 256)) / (256 * 256));
-    part3 = (int) ((nmip - part1 * (256 * 256 * 256) - part2 * (256 * 256)) 
-		   / 256);
-    part4 = (int) ((nmip - part1 * (256 * 256 * 256) - part2 * (256 * 256) 
-		    - part3 * 256));
-    
-    sprintf (ip, "%d.%d.%d.%d", part4, part3, part2, part1);
-    /* ip will be freed (char ip [15]), so we make a copy in datas [7] */
-     
-    datas [7] = g_strdup ((char *) ip);
-
-    /* Check if the window is still present or not */
-    if (lw)
-      gtk_clist_append (GTK_CLIST (clist), 
-			(gchar **) datas);
+      if (ldap_get_values(ldap_connection, e, "rfc822mailbox") != NULL) {
+	
+	datas [4] = g_strdup (ldap_get_values 
+			      (ldap_connection, e, "rfc822mailbox") [0]);
+	ldap_value_free (ldap_get_values (ldap_connection, e, "rfc822mailbox"));
+      }
+      
+      if (ldap_get_values(ldap_connection, e, "sipaddress") != NULL) {
+	
+	nmip = strtoul (ldap_get_values(ldap_connection, e, "sipaddress") [0], 
+			NULL, 10);
+	ldap_value_free (ldap_get_values (ldap_connection, e, "sipaddress"));
+      }
+      
+      part1 = (int) (nmip/(256*256*256));
+      part2 = (int) ((nmip - part1 * (256 * 256 * 256)) / (256 * 256));
+      part3 = (int) ((nmip - part1 * (256 * 256 * 256) - part2 * (256 * 256)) 
+		     / 256);
+      part4 = (int) ((nmip - part1 * (256 * 256 * 256) - part2 * (256 * 256) 
+		      - part3 * 256));
+      
+      sprintf (ip, "%d.%d.%d.%d", part4, part3, part2, part1);
+      /* ip will be freed (char ip [16]), so we make a copy in datas [7] */
+      
+      datas [7] = g_strdup ((char *) ip);
+      
+      /* Check if the window is still present or not */
+      if (lw)
+	gtk_clist_append (GTK_CLIST (clist), 
+			  (gchar **) datas);
           
-    /* Video Capable ? */
-    if (ldap_get_values(ldap_connection, e, "ilsa32964638") != NULL) {
-
-      nmip = atoi (ldap_get_values(ldap_connection, e, "ilsa32964638") [0]);
-      ldap_value_free (ldap_get_values (ldap_connection, e, "ilsa32964638"));
-    }
+      /* Video Capable ? */
+      if (ldap_get_values(ldap_connection, e, "ilsa32964638") != NULL) {
+	
+	nmip = atoi (ldap_get_values(ldap_connection, e, "ilsa32964638") [0]);
+	ldap_value_free (ldap_get_values (ldap_connection, e, "ilsa32964638"));
+      }
       
-    if (nmip == 1) {
-
-      if (lw)
-	gtk_clist_set_pixmap (GTK_CLIST (clist), 
-			      GTK_CLIST (clist)->rows - 1, 1, 
-			      quickcam, quickcam_mask);
-    }
-
-    /* Audio Capable ? */
-    if (ldap_get_values(ldap_connection, e, "ilsa32833566") != NULL) {
-
-      nmip = atoi (ldap_get_values(ldap_connection, e, "ilsa32833566") [0]);
-      ldap_value_free (ldap_get_values (ldap_connection, e, "ilsa32833566"));
-    }
+      if (nmip == 1) {
+	
+	if (lw)
+	  gtk_clist_set_pixmap (GTK_CLIST (clist), 
+				GTK_CLIST (clist)->rows - 1, 1, 
+				quickcam, quickcam_mask);
+      }
       
-    if (nmip == 1) {
-
-      if (lw)
-	gtk_clist_set_pixmap (GTK_CLIST (clist), 
-			      GTK_CLIST (clist)->rows - 1, 0, 
-			      sound, sound_mask);
-    }
-
-    for (int j = 2 ; j <= 7 ; j++) {
-
-      if (datas [j] != NULL)
-	g_free (datas [j]);
+      /* Audio Capable ? */
+      if (ldap_get_values(ldap_connection, e, "ilsa32833566") != NULL) {
+	
+	nmip = atoi (ldap_get_values(ldap_connection, e, "ilsa32833566") [0]);
+	ldap_value_free (ldap_get_values (ldap_connection, e, "ilsa32833566"));
+      }
       
-      datas [j] = NULL;
-    }
-  } /* end of for */
-
-  gtk_clist_thaw (GTK_CLIST (clist));
+      if (nmip == 1) {
+	
+	if (lw)
+	  gtk_clist_set_pixmap (GTK_CLIST (clist), 
+				GTK_CLIST (clist)->rows - 1, 0, 
+				sound, sound_mask);
+      }
+      
+      for (int j = 2 ; j <= 7 ; j++) {
+	
+	if (datas [j] != NULL)
+	  g_free (datas [j]);
+	
+	datas [j] = NULL;
+      }
+    } /* end of for */
+    
+    gtk_clist_thaw (GTK_CLIST (clist));
+  }
 
   /* Make the progress bar in activity mode go faster */
   gtk_progress_bar_set_activity_step (GTK_PROGRESS_BAR (progress), 5);
