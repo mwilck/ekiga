@@ -32,8 +32,7 @@
  *   begin                : Thu Nov 4 2004
  *   copyright            : (C) 2004 by Sebastien Estienne 
  *   				        Benjamin Leviant
- *   description          : This file contains the zeroconf publisher 
- *   			    and resolver
+ *   description          : This file contains the zeroconf publisher.
  *
  */
 
