@@ -9,7 +9,7 @@ dnl   Versioning
 dnl #############################################################################
 
 MAJOR_VERSION=0
-MINOR_VERSION=11
+MINOR_VERSION=12
 BUILD_TYPE=ReleaseCode
 BUILD_NUMBER=0
 
@@ -70,7 +70,7 @@ else
 	AC_MSG_ERROR([You need PTLib to enjoy GnomeMeeting])
 fi
 
-H323_LIBS="-lh323_linux_x86_d -ldl -lpt_linux_x86_d -lpthread -lssl -lcrypto"
+H323_LIBS="-loh323 -ldl -lpt -lpthread -lssl -lcrypto"
 
 dnl ***************************************
 dnl OpenH323
@@ -132,7 +132,7 @@ dnl * -D_DEBUG -DPMEMORY_CHECK=1 -DPTRACING -Wall -g
 dnl *************************************************************************
 
 
-H323_CFLAGS="-DP_LINUX -D_REENTRANT -DP_HAS_SEMAPHORES -DP_PTHREADS -DPBYTE_ORDER=PLITTLE_ENDIAN -DHAS_OSS -O2 -D_DEBUG -DPMEMORY_CHECK=1 -DPTRACING -Wall -g"
+H323_CFLAGS="-DP_LINUX -D_REENTRANT -DP_HAS_SEMAPHORES -DP_PTHREADS -DPBYTE_ORDER=PLITTLE_ENDIAN -DHAS_OSS -O2"
 
 
 dnl *********************************************************************
