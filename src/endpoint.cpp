@@ -735,7 +735,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 
 
   /* Check what action to take */
-  if (!forward_host.IsEmpty() && icm == FORWARD) {
+  if (!GMURL(forward_host).IsEmpty() && icm == FORWARD) {
 
     msg = 
       g_strdup_printf (_("Forwarding call from %s to %s (Forward all calls)"),
