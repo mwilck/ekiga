@@ -1,19 +1,34 @@
-2001-09-01  Damien Sandras  <dsandras@seconix.com>
+2001-10-02  Christian Rose  <menthos@menthos.com>
 
-	* src/endpoint.cpp, src/webcam.cpp: Completed the support of the new VideoGrabber
-	class : if the video preview is enabled, the camera device is not closed anymore
-	and reopened during the communication, but the video preview is reused.
+	* LICENSE: Line-wrapped to fit 80 character width.
+	* src/applet.cpp, src/config.cpp, src/ldap.cpp: Improved messages.
+	* src/main_interface.cpp: Made application title "GnomeMeeting" and
+	marked it for translation, as we do that in other places.
+	* src/preferences.cpp: Changed a comment to not cause conflicts with
+	older gettext versions, improved messages, marked some frame titles
+	for translation that accidentally were not marked previously.
+	* src/webcam.cpp: Fixed l10n bug. "config.h" must be the first of all
+	includes for translations to work correctly.
+
+2001-10-01  Damien Sandras  <dsandras@seconix.com>
+
+	* src/endpoint.cpp, src/webcam.cpp: Completed the support of the new
+	VideoGrabber class: if the video preview is enabled, the camera device
+	is not closed anymore and reopened during the communication, but the
+	video preview is reused.
 	
 2001-09-30  Damien Sandras  <dsandras@seconix.com>
 
-	* src/callbacks.cpp, src/cleaner.cpp, src/endpoint.cpp, src/main_interface.cpp, 
-	src/main.cpp: Renamed GMH323Webcam to GMVideoGrabber, and added support for the class.
-	Video Preview works again, but video connections only work if video preview is on.
+	* src/callbacks.cpp, src/cleaner.cpp, src/endpoint.cpp,
+	src/main_interface.cpp, src/main.cpp: Renamed GMH323Webcam to
+	GMVideoGrabber, and added support for the class.
+	Video Preview works again, but video connections only work if video
+	preview is on.
 	
 2001-09-25  Damien Sandras  <dsandras@seconix.com>
 
-	* FAQ, LICENSE: Added OpenSSL to the special exception part of
-	the license.
+	* FAQ, LICENSE: Added OpenSSL to the special exception part of the
+	license.
 	
 2001-09-25  Damien Sandras  <dsandras@seconix.com>
 
@@ -21,21 +36,25 @@
 	
 2001-09-25  Damien Sandras  <dsandras@seconix.com>
 
-	* src/cleaner.cpp, src/cleaner.h: Added those 2 files that implement a new
-	multithreaded class that stops the connection before quitting and clear the
-	threads.
-	* src/endpoint.cpp: Changed destructor, internal GMH323Webcam and GMILSClient
-	and no more deleted in the destructor as they should but by the cleaner which 
-	is called by the quit callback. The ThreadsCleaner class is needed if we want to
-	quit cleanly, without freezing the main interface while waiting that the GMH323Webcam
-	class (for example) stops to grab.
-	* src/ldap.cpp, src/ldap_h.h: The LDap window is not anymore destroyed and rebuilt
-	each time, but only shown/hidden.
-	* src/main_interface.cpp: Disabled video preview (will be reenabled in a few time).
-	* src/webcam.cpp, src/webcam.h: Added mutexes to cleanly quit when the destructor
-	is called (we wait some time => the destructor can take some time to execute).
-	* src/ils.cpp, src/ils.h:  Added mutexes to cleanly quit when the destructor
-	is called (we wait some time => the destructor can take some time to execute).
+	* src/cleaner.cpp, src/cleaner.h: Added those 2 files that implement a
+	new multithreaded class that stops the connection before quitting and
+	clear the threads.
+	* src/endpoint.cpp: Changed destructor, internal GMH323Webcam and
+	GMILSClient and no more deleted in the destructor as they should but
+	by the cleaner which is called by the quit callback. The
+	ThreadsCleaner class is needed if we want to quit cleanly, without
+	freezing the main interface while waiting that the GMH323Webcam class
+	(for example) stops to grab.
+	* src/ldap.cpp, src/ldap_h.h: The LDap window is not anymore destroyed
+	and rebuilt each time, but only shown/hidden.
+	* src/main_interface.cpp: Disabled video preview (will be reenabled in
+	a few time).
+	* src/webcam.cpp, src/webcam.h: Added mutexes to cleanly quit when the
+	destructor is called (we wait some time => the destructor can take
+	some time to execute).
+	* src/ils.cpp, src/ils.h:  Added mutexes to cleanly quit when the
+	destructor is called (we wait some time => the destructor can take
+	some time to execute).
 
 2001-09-24  Christian Rose  <menthos@menthos.com>
 
@@ -47,8 +66,9 @@
 	directories.
 	* src/ldap.cpp, src/ldap_h.h: Added support for those 2 files.
 	* src/Makefile.am: Added ils.cpp and ils.h
-	* src/main_interface.cpp, src/preferences.cpp: Added support for the new class:
-	the thread is created at startup time, even if the user choose to not register.
+	* src/main_interface.cpp, src/preferences.cpp: Added support for the
+	new class: the thread is created at startup time, even if the user
+	choose to not register.
 	
 2001-09-22  Christian Rose  <menthos@menthos.com>
 
@@ -57,32 +77,34 @@
 2001-09-20  Damien Sandras  <dsandras@seconix.com>
 
 	* common.h: Added silence detection button.
-	* config.cpp: Fixed bug that made GM crash when changing a video option.
+	* config.cpp: Fixed bug that made GM crash when changing a video
+	option.
 	* endpoint.cpp, endpoint.h: Added function to enable/disable Silence
 	detection.
-	* main_interface.cpp, main_interface.h: Added silence detection function in
-	the quickbar.
+	* main_interface.cpp, main_interface.h: Added silence detection
+	function in the quickbar.
 	* pixmaps/sample.xpm: Added this file.
 	
 2001-09-19  Damien Sandras  <dsandras@seconix.com>
 
-	* callbacks.cpp: Modified connect_cb and disconnect_cb to destroy the popup
-	window displayed during incoming calls (if any).
-	* common.h: Added gatekeeper options and widgets, added flags that indicates
-	which options have been changed and will need to be updated, added an
-	PStringArray containing the devices.
-	* config.cpp: Added options for gatekeeper support (host, ID, registering
-	method), added an option to specify if a popup has to be displayed on
-	incoming calls, moved the auto answer and do not disturb modes to General
-	Settings.
-	* endpoint.cpp: Modified Initialise so that most settings that have to be
-	reapplied are reapplied in preferences.cpp function (apply_options). Added
-	functions for Gatekeeper (RegisterGatekeeper, and Gatekeeper). Added the
-	ability to display a popup on incoming calls.
-	* main_interface.cpp: Added device initialization and auto-detection stuff
-	in GM_init.
-	* preferences.cpp, preferences.h: Added support for Gatekeeper options and
-	popup option.
+	* callbacks.cpp: Modified connect_cb and disconnect_cb to destroy the
+	popup window displayed during incoming calls (if any).
+	* common.h: Added gatekeeper options and widgets, added flags that
+	indicates which options have been changed and will need to be updated,
+	added an PStringArray containing the devices.
+	* config.cpp: Added options for gatekeeper support (host, ID,
+	registering method), added an option to specify if a popup has to be
+	displayed on incoming calls, moved the auto answer and do not disturb
+	modes to General Settings.
+	* endpoint.cpp: Modified Initialise so that most settings that have to
+	be reapplied are reapplied in preferences.cpp function
+	(apply_options). Added functions for Gatekeeper (RegisterGatekeeper,
+	and Gatekeeper). Added the ability to display a popup on incoming
+	calls.
+	* main_interface.cpp: Added device initialization and auto-detection
+	stuff in GM_init.
+	* preferences.cpp, preferences.h: Added support for Gatekeeper options
+	and popup option.
 	
 2001-09-19  Christian Rose  <menthos@menthos.com>
 
@@ -100,8 +122,8 @@
 2001-09-18  Damien Sandras  <dsandras@seconix.com>
 
 	* src/main.cpp: Fixed the seconds and minutes bug.
-	* src/gdkvideoio.cpp: Fixed a bug preventing the refresh of the screen when
-	local and remote video were displayed at the same time.
+	* src/gdkvideoio.cpp: Fixed a bug preventing the refresh of the screen
+	when local and remote video were displayed at the same time.
 	
 2001-09-18  Damien Sandras  <dsandras@seconix.com>
 
@@ -188,7 +210,8 @@
 2001-09-05  Damien Sandras  <dsandras@seconix.com>
 
 	* endpoint.cpp,webcam.cpp: Added SetFrameSizeConverter to add support
-	for some VAIO webcams. (Thanks to Stelian Pop <stelian.pop@fr.alcove.com>
+	for some VAIO webcams. (Thanks to
+	Stelian Pop <stelian.pop@fr.alcove.com>
 
 2001-09-06  Abel Cheung  <maddog@linux.org.hk>
 
@@ -227,19 +250,20 @@
 	* endpoint.h,endpoint.cpp: Added a function that returns the current 
 	PVideoInputDevice.
 	* main_interface.cpp: Changed the GTK callbacks for the video settings
-	so that they can use both the preview mode and the connection's grabber.
+	so that they can use both the preview mode and the connection's
+	grabber.
 	
 2001-09-05  Damien Sandras  <dsandras@seconix.com>
 
 	* callbacks.cpp: Added support to leave during a call.
 	* common.h: Added define's for the CIF and QCIF size to prepare
 	the road for new size when OpenH323 will permit it.
-	* endpoint.cpp,endpoint.h: Added functions to support the new preview mode.
-	Fixed a lot of minor bugs.
+	* endpoint.cpp,endpoint.h: Added functions to support the new preview
+	mode. Fixed a lot of minor bugs.
 	* main.cpp,main_interface.cpp: Added support for the new preview mode 
 	(which has changed since 2001-09-01), added tooltips.
-	* webcam.cpp,webcam.h: completely changed the preview mode. The new class
-	is an autodelete thread. Fixed minor bugs.
+	* webcam.cpp,webcam.h: completely changed the preview mode. The new
+	class is an autodelete thread. Fixed minor bugs.
 	* FAQ: Added new questions (and new answers ;) )
 	
 2001-09-04  Christian Rose  <menthos@menthos.com>
@@ -249,11 +273,11 @@
 2001-09-01  Damien Sandras  <dsandras@seconix.com>
 
 	* pixmaps/: Modified the logo to version 0.11
-	* src/webcam.cpp: Added ReInitialise method that will restart the webcam
-	thread with other settings; The logo is now displayed when there is no
-	webcam image displayed.
-	* src/preferences.cpp: Modified the ReInitialise method, webcam thread is
-	no more delete, but restarted.
+	* src/webcam.cpp: Added ReInitialise method that will restart the
+	webcam thread with other settings; The logo is now displayed when
+	there is no webcam image displayed.
+	* src/preferences.cpp: Modified the ReInitialise method, webcam thread
+	is no more delete, but restarted.
 	
 2001-08-31  Christian Rose  <menthos@menthos.com>
 
@@ -281,17 +305,18 @@
 	* src/endpoint.cpp: add a small computer icon when connected.
 	* src/ldap.cpp: added g_free calls, but needs to be changed again, 
 	gtk_clist_append stores a copy of the structures.
-	* src/preferences.cpp: removed the video test button
-	* src/callbacks.cpp, src/toolbar.cpp: it is now possible to quit during calls
+	* src/preferences.cpp: removed the video test button.
+	* src/callbacks.cpp, src/toolbar.cpp: it is now possible to quit
+	during calls.
 	
 2001-08-29  Damien Sandras  <dsandras@seconix.com>
 
-	* src/endpoint.cpp, src/main_interface.cpp: added function GM_init to cope 
-	with the endpoint's initialise. That permits to remove the gtk stuff and 
-	the splash screen from the Initialise Method in endpoint.
-	* src/config.cpp, src/preferences.cpp, src/main_interface.cpp: improved 
-	support	for different soundcards. Updated the Audio Settings in the control
-	panel.
+	* src/endpoint.cpp, src/main_interface.cpp: added function GM_init to
+	cope with the endpoint's initialise. That permits to remove the gtk
+	stuff and the splash screen from the Initialise Method in endpoint.
+	* src/config.cpp, src/preferences.cpp, src/main_interface.cpp:
+	improved support for different soundcards. Updated the Audio Settings
+	in the control panel.
 	
 2001-08-28  Miguel Rodríguez Pérez  <migras@atlas.uvigo.es>
 
@@ -304,21 +329,21 @@
 
 2001-08-27  Christian Rose  <menthos@menthos.com>
 
-	* src/preferences.cpp: Removed underlined accelerators from button labels
-	- doesn't work.
+	* src/preferences.cpp: Removed underlined accelerators from button
+	labels - doesn't work.
 
 2001-08-26  Damien Sandras  <dsandras@seconix.com>
 
 	* src/config.cpp, src/endpoint.cpp, src/common.h, src/preferences.cpp:
-	Added support for multiple soundcards, you can now use a different soundcard
-	(or webcam) as sound recorder device and sound player device.
-	The Audio Settings part of the GnomeMeeting control panel still needs to be
-	updated.
-	* src/main_interface.cpp: fixed the -a bug (when GnomeMeeting is run with
-	the -a applet, if you close the window with the WM, GnomeMeeting will be 
-	closed and not hidden). See gtk_signal_connect ().
-	* src/endpoint.cpp: added message in the history to show the devices used
-	for recording and playing.
+	Added support for multiple soundcards, you can now use a different
+	soundcard (or webcam) as sound recorder device and sound player
+	device. The Audio Settings part of the GnomeMeeting control panel
+	still needs to be updated.
+	* src/main_interface.cpp: fixed the -a bug (when GnomeMeeting is run
+	with the -a applet, if you close the window with the WM, GnomeMeeting
+	will be closed and not hidden). See gtk_signal_connect ().
+	* src/endpoint.cpp: added message in the history to show the devices
+	used for recording and playing.
 	
 2001-08-26  Miguel Rodríguez Pérez  <migras@atlas.uvigo.es>
 

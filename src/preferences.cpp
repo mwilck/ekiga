@@ -67,7 +67,7 @@ void pref_window_clicked (GnomeDialog *widget, int button, gpointer data)
       ((GM_pref_window_widgets *) data)->gw->pref_window = NULL;
       delete ((GM_pref_window_widgets *) data);
       gtk_widget_destroy (GTK_WIDGET (widget));
-      // opts' content is destroyed with the widgets.
+      /* opts' content is destroyed with the widgets. */
       delete (opts);
       break;
 
@@ -203,7 +203,7 @@ void video_test_button_pressed (GtkButton *button, gpointer data)
 
   if (!GM_cam (gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (pw->video_device)->entry)),
 	       (int) pw->video_channel_spin_adj->value))
-    msg_box = gnome_message_box_new (_("Impossible to open this device."), 
+    msg_box = gnome_message_box_new (_("Could not open the specified video device."), 
 				     GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
   else
     msg_box = gnome_message_box_new (_("These settings are correct."), 
@@ -619,7 +619,7 @@ void init_pref_interface (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   
   /* In this table we put the frame */
-  frame = gtk_frame_new ("GnomeMeeting Preferences");
+  frame = gtk_frame_new (_("GnomeMeeting Preferences"));
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
 
   gtk_box_pack_start (GTK_BOX (vbox), frame, 
@@ -830,7 +830,7 @@ void init_pref_video_codecs (GtkWidget *notebook, GM_pref_window_widgets *pw,
   
   menu2 = gtk_menu_new ();
   pw->opt2 = gtk_option_menu_new ();
-  item = gtk_menu_item_new_with_label ("Pal");
+  item = gtk_menu_item_new_with_label ("PAL");
   gtk_menu_append (GTK_MENU (menu2), item);
   item = gtk_menu_item_new_with_label ("NTSC");
   gtk_menu_append (GTK_MENU (menu2), item);
@@ -892,7 +892,7 @@ void init_pref_video_codecs (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
 
   /* Transmitted FPS */
-  label = gtk_label_new (_("Transmitted FPS:"));
+  label = gtk_label_new (_("Transmitted frames per second:"));
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 2, 3,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -966,7 +966,7 @@ void init_pref_general (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
 
   /* In this table we put the frame */
-  frame = gtk_frame_new ("GnomeMeeting");
+  frame = gtk_frame_new (_("GnomeMeeting"));
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
 
   gtk_box_pack_start (GTK_BOX (vbox), frame, 
@@ -1703,7 +1703,7 @@ void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
 		      GTK_SIGNAL_FUNC (vid_tr_changed), (gpointer) pw);
 
   /* Device test button */
-  test_button = gtk_button_new_with_label (_("Video Test"));
+  test_button = gtk_button_new_with_label (_("Test Video"));
 
   gtk_table_attach (GTK_TABLE (table), test_button, 3, 4, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),

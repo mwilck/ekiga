@@ -259,23 +259,23 @@ void GM_ldap_init (GM_window_widgets *gw)
     clist_titles [i] = gettext (clist_titles [i]);
 
   /* Search filter entry */
-  frame = gtk_frame_new (_("Search filter by name"));
+  frame = gtk_frame_new (_("Search filter"));
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
 
   entry_table = gtk_table_new (2, 10, FALSE);
 
   // option menu
   menu = gtk_menu_new ();
-  menu_item = gtk_menu_item_new_with_label (_("First Name"));
+  menu_item = gtk_menu_item_new_with_label (_("first name"));
   gtk_menu_append (GTK_MENU (menu), menu_item);
 
-  menu_item = gtk_menu_item_new_with_label (_("Last name"));
+  menu_item = gtk_menu_item_new_with_label (_("last name"));
   gtk_menu_append (GTK_MENU (menu), menu_item);
 
-  menu_item = gtk_menu_item_new_with_label (_("E-mail"));
+  menu_item = gtk_menu_item_new_with_label (_("e-mail"));
   gtk_menu_append (GTK_MENU (menu), menu_item);
 
-  menu_item = gtk_menu_item_new_with_label (_("Location"));
+  menu_item = gtk_menu_item_new_with_label (_("location"));
   gtk_menu_append (GTK_MENU (menu), menu_item);
 
   lw->option_menu = gtk_option_menu_new ();
@@ -302,7 +302,7 @@ void GM_ldap_init (GM_window_widgets *gw)
   gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
 
   // the filter button
-  apply_filter_button = gtk_button_new_with_label (_("Apply Filter On"));
+  apply_filter_button = gtk_button_new_with_label (_("Apply filter on"));
 
   gtk_table_attach (GTK_TABLE (entry_table), apply_filter_button, 0, 1, 0, 2,
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 

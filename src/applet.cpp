@@ -142,7 +142,7 @@ GtkWidget *GM_applet_init (int argc, char **argv)
 
   applet_widget_register_callback (APPLET_WIDGET (applet),
 				   "Toggle main window",
-				   _("Toggle main window"),
+				   _("Show/hide main window"),
 				   applet_toggle_callback, NULL);
 
   /* add the widget to the applet-widget, and thereby actually

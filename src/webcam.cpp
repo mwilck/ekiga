@@ -18,10 +18,10 @@
  ***************************************************************************/
 
 
+#include "config.h"
 #include "webcam.h"
 #include "main_interface.h"
 #include "gdkvideoio.h"
-#include "config.h"
 #include "common.h"
 #include "main.h"
 

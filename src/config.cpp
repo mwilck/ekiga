@@ -330,7 +330,7 @@ gboolean check_config_from_struct (GM_pref_window_widgets *pw)
 	{
 	  if (!strcmp (gtk_entry_get_text (GTK_ENTRY (pw->gk_host)), ""))
 	    {
-	      msg_box = gnome_message_box_new (_("Impossible to register to an empty host. Please specify to host to contact to register with the gatekeeper."), GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
+	      msg_box = gnome_message_box_new (_("Cannot register to an empty host. Please specify the host to contact to register with the gatekeeper."), GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
 
 	      no_error = FALSE;
 	    }

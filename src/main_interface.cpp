@@ -240,7 +240,7 @@ void GM_init (GM_window_widgets *gw, options *opts, int argc,
       gtk_widget_show (gw->applet);
     }
 
-  gm = gnome_app_new ("gnomemeeting", "Gnome Meeting");
+  gm = gnome_app_new ("gnomemeeting", _("GnomeMeeting"));
   gtk_window_set_policy (GTK_WINDOW (gm), FALSE, FALSE, TRUE);
 
   // Startup Process
@@ -295,7 +295,7 @@ void GM_init (GM_window_widgets *gw, options *opts, int argc,
 
   if (!endpoint->StartListener ())
     {
-      GtkWidget *msg_box = gnome_message_box_new (_("Could not start the listener thread, you will not be able to receive incoming calls."), GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
+      GtkWidget *msg_box = gnome_message_box_new (_("Could not start the listener thread. You will not be able to receive incoming calls."), GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
 
       gtk_widget_show (msg_box);
     }
