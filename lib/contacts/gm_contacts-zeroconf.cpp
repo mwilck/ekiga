@@ -42,6 +42,19 @@
 
 #include "gm_contacts-zeroconf.h"
 
+
+#ifndef _
+#include <libintl.h>
+#define _(x) gettext(x)
+#ifdef gettext_noop
+#define N_(String) gettext_noop (String)
+#else
+#define N_(String) (String)
+#endif
+#endif
+
+
+
 /* Declarations */
 
 
@@ -271,6 +284,23 @@ browse_reply (sw_discovery discovery,
 /* The GmContact API function */
 /* We can not do it without this global */
 GMZeroconfBrowser *zcb = NULL;
+
+GSList *
+gnomemeeting_get_zero_addressbooks ()
+{
+  GSList *addressbooks = NULL;
+  
+  GmAddressbook *elmt = NULL;
+  
+  elmt = gm_addressbook_new ();
+  elmt->aid = g_strdup ("1086500000@ethium01");
+  elmt->name = g_strdup (_("People Around"));
+  elmt->url = g_strdup ("zero://local");
+  addressbooks = g_slist_append (addressbooks, (gpointer) elmt);
+  
+  return addressbooks;
+}
+
 
 GSList *
 gnomemeeting_zero_addressbook_get_contacts (GmAddressbook *addressbook,

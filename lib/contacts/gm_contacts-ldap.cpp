@@ -85,6 +85,62 @@ gnomemeeting_addressbook_is_ldap (GmAddressbook *addressbook)
   return FALSE;
 }
 
+GSList *gnomemeeting_get_ldap_addressbooks () 
+{
+  GSList *j = NULL;
+  
+  GSList *list = NULL;
+  GSList *addressbooks = NULL;
+
+  GmAddressbook *elmt = NULL;
+  
+  gchar **couple = NULL;
+
+  list = 
+    gm_conf_get_string_list ("/apps/gnomemeeting/contacts/remote_addressbooks_list");
+
+  j = list;
+  while (j) {
+  
+    elmt = gm_addressbook_new ();
+
+    couple = g_strsplit ((char *) j->data, "|", 0);
+
+    if (couple) {
+
+      if (couple [0]) {
+	elmt->aid = g_strdup (couple [0]);
+
+	if (couple [1]) {
+	  elmt->name = g_strdup (couple [1]);
+
+	  if (couple [2]) {
+	    elmt->url = g_strdup (couple [2]);
+
+	    if (couple [3]) {
+	      elmt->call_attribute = g_strdup (couple [3]);
+	    }
+	  }
+	}
+      }
+      
+      g_strfreev (couple);
+    }
+
+    if (elmt->aid && elmt->name) 
+      addressbooks = g_slist_append (addressbooks, (gpointer) elmt);
+    else
+      gm_addressbook_delete (elmt);
+
+    j = g_slist_next (j);
+  }
+
+  g_slist_foreach (list, (GFunc) g_free, NULL);
+  g_slist_free (list);
+
+  return addressbooks;
+}
+
 
 GSList *
 gnomemeeting_ldap_addressbook_get_contacts (GmAddressbook *addressbook,

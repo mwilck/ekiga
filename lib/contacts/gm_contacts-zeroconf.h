@@ -59,6 +59,9 @@ typedef unsigned int		sw_discovery_oid;
 #define PORTS_KEY "/apps/gnomemeeting/protocols/h323/ports/"
 
 
+GSList *gnomemeeting_get_zero_addressbooks ();
+
+
 GSList *gnomemeeting_zero_addressbook_get_contacts (GmAddressbook *,
 						    int &,
 						    gboolean,

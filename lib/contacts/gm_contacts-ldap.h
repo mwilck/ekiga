@@ -55,6 +55,9 @@ G_BEGIN_DECLS
 gboolean gnomemeeting_addressbook_is_ldap (GmAddressbook *);
 
 
+GSList *gnomemeeting_get_ldap_addressbooks ();
+
+
 GSList *gnomemeeting_ldap_addressbook_get_contacts (GmAddressbook *,
 						    int &,
 						    gboolean,
