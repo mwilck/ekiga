@@ -74,7 +74,7 @@ hold_call_cb (GtkWidget *widget,
   
   if (!current_call_token.IsEmpty ())
     connection =
-      endpoint->FindConnectionWithLock (current_call_token);
+      endpoint->GetCurrentConnection ();
 
   if (connection) {
 
@@ -111,8 +111,6 @@ hold_call_cb (GtkWidget *widget,
 
       connection->RetrieveCall ();
     }
-
-    connection->Unlock ();
   }
 }
 

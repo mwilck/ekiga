@@ -558,7 +558,7 @@ static void silence_detection_changed_nt (GConfClient *client, guint cid,
 
     if (!current_call_token.IsEmpty ())
       connection =
-	endpoint->FindConnectionWithLock (current_call_token);
+	endpoint->GetCurrentConnection ();
 
     if (connection) {
 
@@ -600,8 +600,6 @@ static void silence_detection_changed_nt (GConfClient *client, guint cid,
 	  ac->SetSilenceDetectionMode(mode);
 	}
       }
-
-      connection->Unlock ();
     }
 
     gdk_threads_leave ();  
@@ -658,7 +656,7 @@ static void fps_limit_changed_nt (GConfClient *client, guint cid,
 
     if (!current_call_token.IsEmpty ())
       connection =
-	endpoint->FindConnectionWithLock (current_call_token);
+	endpoint->GetCurrentConnection ();
 
     if (connection) {
 
@@ -682,8 +680,6 @@ static void fps_limit_changed_nt (GConfClient *client, guint cid,
 
       if (vc != NULL)
 	vc->SetTargetFrameTimeMs ((unsigned int) frame_time);
-
-      connection->Unlock ();
     }
     
     gdk_threads_leave ();
@@ -721,7 +717,7 @@ maximum_video_bandwidth_changed_nt (GConfClient *client, guint cid,
 
     if (!current_call_token.IsEmpty ())
       connection =
-	endpoint->FindConnectionWithLock (current_call_token);
+	endpoint->GetCurrentConnection ();
 
     if (connection) {
 
@@ -743,7 +739,6 @@ maximum_video_bandwidth_changed_nt (GConfClient *client, guint cid,
       if (vc != NULL)
 	vc->SetMaxBitRate (bitrate);
 
-      connection->Unlock ();
     }
     
     gdk_threads_leave ();
@@ -778,7 +773,7 @@ static void tr_vq_changed_nt (GConfClient *client, guint cid,
 
     if (!current_call_token.IsEmpty ())
       connection =
-	endpoint->FindConnectionWithLock (current_call_token);
+	endpoint->GetCurrentConnection ();
 
     if (connection) {
 
@@ -799,8 +794,6 @@ static void tr_vq_changed_nt (GConfClient *client, guint cid,
   
       if (vc != NULL)
 	vc->SetTxMaxQuality (vq);
-
-      connection->Unlock ();
     }
 
     
@@ -834,7 +827,7 @@ static void tr_ub_changed_nt (GConfClient *client, guint cid,
 
     if (!current_call_token.IsEmpty ())
       connection =
-	endpoint->FindConnectionWithLock (current_call_token);
+	endpoint->GetCurrentConnection ();
 
     if (connection) {
 
@@ -853,8 +846,6 @@ static void tr_ub_changed_nt (GConfClient *client, guint cid,
       /* We update the current tr ub rate */
       if (vc != NULL)
 	vc->SetBackgroundFill ((int) gconf_value_get_int (entry->value));
-
-      connection->Unlock ();
     }
     
     gdk_threads_leave ();

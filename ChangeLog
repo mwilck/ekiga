@@ -1,4 +1,12 @@
 2003-06-22 Damien Sandras  <dsandras@seconix.com>
+
+	* src/callbacks.cpp, src/config.cpp: Do not use anymore 
+	FindConnectionWithLocks as it seems to deadlock.
+	
+	* src/main_window.cpp: Fixed lost packets and late packets % 
+	calculation.
+	
+2003-06-22 Damien Sandras  <dsandras@seconix.com>
 	
 	* src/chat_window.cpp: Do not send empty messages.
 	
