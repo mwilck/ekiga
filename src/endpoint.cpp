@@ -223,17 +223,10 @@ GMH323EndPoint::~GMH323EndPoint ()
     RemoveListener (listener);
 
   delete (ils_client);
- 
-  var_access_mutex.Wait ();
-  ils_client = NULL;
-  var_access_mutex.Signal ();
- 
+  
 #ifdef HAS_IXJ  
   if (lid_thread) 
     delete (lid_thread);
-  var_access_mutex.Wait ();
-  lid_thread = NULL;
-  var_access_mutex.Signal ();
 #endif
 }
 

@@ -39,6 +39,7 @@
 
 #include "../config.h"
 
+#include "ldap_window.h"
 #include "callbacks.h"
 #include "gnomemeeting.h"
 #include "menu.h"

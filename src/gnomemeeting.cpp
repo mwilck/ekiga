@@ -88,9 +88,9 @@ GnomeMeeting::GnomeMeeting ()
 
 GnomeMeeting::~GnomeMeeting()
 {
-  PWaitAndSignal m(var_mutex);
-
-  delete (endpoint);
+  endpoint->ClearAllCalls (H323Connection::EndedByLocalUser, TRUE);
+  RemoveVideoGrabber (true);
+  RemoveEndpoint ();
 }
 
 
@@ -249,7 +249,12 @@ void GnomeMeeting::Disconnect (H323Connection::CallEndReason reason)
 
 GMH323EndPoint *GnomeMeeting::Endpoint ()
 {
-  return endpoint;
+  GMH323EndPoint *ep = NULL;
+  PWaitAndSignal m(ep_var_mutex);
+
+  ep = endpoint;
+  
+  return ep;
 }
 
 
@@ -309,9 +314,20 @@ void GnomeMeeting::Init ()
 }
 
 
+void GnomeMeeting::RemoveEndpoint ()
+{
+  PWaitAndSignal m(ep_var_mutex);
+
+  if (endpoint)
+    delete (endpoint);
+  
+  endpoint = NULL;
+}
+
+
 void GnomeMeeting::CreateVideoGrabber (BOOL start_grabbing, BOOL synchronous)
 {
-  PWaitAndSignal m(var_mutex);
+  PWaitAndSignal m(vg_var_mutex);
   
   if (!video_grabber)
     video_grabber =
@@ -321,7 +337,7 @@ void GnomeMeeting::CreateVideoGrabber (BOOL start_grabbing, BOOL synchronous)
 
 void GnomeMeeting::RemoveVideoGrabber (BOOL synchronous)
 {
-  PWaitAndSignal m(var_mutex);
+  PWaitAndSignal m(vg_var_mutex);
 
   if (video_grabber) {
 
@@ -337,7 +353,7 @@ void GnomeMeeting::RemoveVideoGrabber (BOOL synchronous)
 GMVideoGrabber *GnomeMeeting::GetVideoGrabber ()
 {
   GMVideoGrabber *vg = NULL;
-  PWaitAndSignal m(var_mutex);
+  PWaitAndSignal m(vg_var_mutex);
 
   vg = video_grabber;
   

@@ -94,6 +94,7 @@ class GnomeMeeting : public PProcess
   void Main();
 
   void Init ();
+  void RemoveEndpoint ();
   void CreateVideoGrabber (BOOL = true, BOOL = false);
   
   void RemoveVideoGrabber (BOOL = false);
@@ -117,7 +118,8 @@ class GnomeMeeting : public PProcess
   GmWindow *gw;
   GmLdapWindow *lw;
 
-  PMutex var_mutex;
+  PMutex vg_var_mutex;
+  PMutex ep_var_mutex;
   PIntCondMutex *vg;
   int call_number; 
 };

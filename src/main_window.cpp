@@ -104,6 +104,7 @@ static void whiteness_changed          (GtkAdjustment *, gpointer);
 static void colour_changed             (GtkAdjustment *, gpointer);
 static void contrast_changed           (GtkAdjustment *, gpointer);
 static void dialpad_button_clicked     (GtkButton *, gpointer);
+static void gnomemeeting_quit_cleanup (void);
 
 static void gnomemeeting_init_main_window (GtkAccelGroup *accel);
 static gint gm_quit_callback (GtkWidget *, GdkEvent *, gpointer);
@@ -900,7 +901,7 @@ contrast_changed (GtkAdjustment *adjustment, gpointer data)
  * PRE          :  gpointer is a valid pointer containing the button pressed
  *                 symbol (char *).
  **/
-void 
+static void 
 dialpad_button_clicked (GtkButton *button, gpointer data)
 { 
   const char *button_text = NULL;
@@ -908,6 +909,54 @@ dialpad_button_clicked (GtkButton *button, gpointer data)
   button_text = gtk_button_get_label (GTK_BUTTON (button));
   if (button_text)
     gnomemeeting_dialpad_event (button_text);
+}
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  This function is the function corresponding to
+ *                 gnomemeeting_init but for the cleanup. It will
+ *                 destroy the widgets created by gnomemeeting_init and
+ *                 free the structures.
+ * PRE          :  /
+ */
+static void
+gnomemeeting_quit_cleanup (void)
+{
+  GmWindow *gw = NULL;
+  GmPrefWindow *pw = NULL;
+  GmLdapWindow *lw = NULL;
+  GmDruidWindow *dw = NULL;
+  GmCallsHistoryWindow *chw = NULL;
+  GmTextChat *chat = NULL;
+  GmRtpData *rtp = NULL;
+
+  gw = gnomemeeting_get_main_window (gm);
+  lw = gnomemeeting_get_ldap_window (gm);
+  dw = gnomemeeting_get_druid_window (gm);
+  chw = gnomemeeting_get_calls_history_window (gm);
+  chat = gnomemeeting_get_chat_window (gm);
+  pw = gnomemeeting_get_pref_window (gm);
+  rtp = gnomemeeting_get_rtp_data (gm);
+  
+  delete (MyApp);
+  
+  gnomemeeting_ldap_window_destroy_notebook_pages ();
+  gtk_widget_destroy (gw->ldap_window);
+  gtk_widget_destroy (gw->pref_window);
+  gtk_widget_destroy (gw->history_window);
+  gtk_widget_destroy (gw->calls_history_window);
+  gtk_widget_destroy (gm);
+#ifndef DISABLE_GNOME
+  gtk_widget_destroy (gw->druid_window);
+#endif
+
+  delete (gw);
+  delete (lw);
+  delete (dw);
+  delete (chw);
+  delete (chat);
+  delete (pw);
+  delete (rtp);
 }
 
 
@@ -1077,13 +1126,13 @@ gnomemeeting_init (GmWindow *gw,
 
 
   /* We store all the pointers to the structure as data of gm */
-  g_object_set_data_full (G_OBJECT (gm), "gw", gw, free);
-  g_object_set_data_full (G_OBJECT (gm), "lw", lw, free);
-  g_object_set_data_full (G_OBJECT (gm), "dw", dw, free);
-  g_object_set_data_full (G_OBJECT (gm), "chw", chw, free);
-  g_object_set_data_full (G_OBJECT (gm), "pw", pw, free);
-  g_object_set_data_full (G_OBJECT (gm), "chat", chat, free);
-  g_object_set_data_full (G_OBJECT (gm), "rtp", rtp, free);
+  g_object_set_data (G_OBJECT (gm), "gw", gw);
+  g_object_set_data (G_OBJECT (gm), "lw", lw);
+  g_object_set_data (G_OBJECT (gm), "dw", dw);
+  g_object_set_data (G_OBJECT (gm), "chw", chw);
+  g_object_set_data (G_OBJECT (gm), "pw", pw);
+  g_object_set_data (G_OBJECT (gm), "chat", chat);
+  g_object_set_data (G_OBJECT (gm), "rtp", rtp);
 
 
   /* Startup Process */
@@ -1929,23 +1978,11 @@ int main (int argc, char ** argv, char ** envp)
   gtk_main ();
   gdk_threads_leave ();
 
+  gnomemeeting_quit_cleanup ();
+
 #ifdef DISABLE_GCONF
   gconf_save_content_to_file ();
 #endif
-
-
-  /* Not the right place for this but it is a hack for openh323 */
-  MyApp->Endpoint ()->ClearAllCalls (H323Connection::EndedByLocalUser, true);
-  MyApp->RemoveVideoGrabber (true);
-  gnomemeeting_ldap_window_destroy_notebook_pages ();
-  gtk_widget_destroy (gw->ldap_window);
-  gtk_widget_destroy (gw->pref_window);
-  gtk_widget_destroy (gw->history_window);
-  gtk_widget_destroy (gw->calls_history_window);
-  gtk_widget_destroy (gm);
-#ifndef DISABLE_GNOME
-  gtk_widget_destroy (gw->druid_window);
-#endif  
 
   return 0;
 }
