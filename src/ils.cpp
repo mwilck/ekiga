@@ -1123,7 +1123,7 @@ void GMILSBrowser::Main ()
 	       but Microsoft ILS doesn't take care of that */
 	    if (datas [j + 2])
 	      utf8_data [j] = g_convert (datas [j+2], strlen (datas [j + 2]),
-					 "UTF8", "ISO-8859-1", NULL, NULL, 
+					 "UTF-8", "ISO-8859-1", NULL, NULL, 
 					 NULL);
 
 	  gnomemeeting_threads_enter ();
