@@ -2621,19 +2621,19 @@ gm_main_window_update_video (GtkWidget *main_window,
 #ifdef HAS_SDL
   case FULLSCREEN:
 
-    if (zlsrc_pic && zrsrc_pic) {
-
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
-      rmask = 0xff000000;
-      gmask = 0x00ff0000;
-      bmask = 0x0000ff00;
-      amask = 0x000000ff;
+    rmask = 0xff000000;
+    gmask = 0x00ff0000;
+    bmask = 0x0000ff00;
+    amask = 0x000000ff;
 #else
-      rmask = 0x000000ff;
-      gmask = 0x0000ff00;
-      bmask = 0x00ff0000;
-      amask = 0xff000000;
+    rmask = 0x000000ff;
+    gmask = 0x0000ff00;
+    bmask = 0x00ff0000;
+    amask = 0xff000000;
 #endif
+
+    if (zrsrc_pic) {
 
       rsurface =
 	SDL_CreateRGBSurfaceFrom ((void *) gdk_pixbuf_get_pixels (zrsrc_pic),
@@ -2645,41 +2645,51 @@ gm_main_window_update_video (GtkWidget *main_window,
 
       rblit_conf = SDL_DisplayFormat (rsurface);
 
-      dest.x = (int) (mw->screen->w - (int) (rf_width * rzoom) - (int) (lf_width * lzoom) - 50) / 2;
+      if (zlsrc_pic)
+	dest.x = (int) (mw->screen->w - (int) (rf_width * rzoom) - (int) (lf_width * lzoom) - 50) / 2;
+      else
+	dest.x = (int) (mw->screen->w - (int) (rf_width * rzoom)) / 2;
+	
       dest.y = (int) (mw->screen->h - (int) (rf_height * rzoom)) / 2;
       dest.w = (int) (rf_width * rzoom);
       dest.h = (int) (rf_height * rzoom);
 
       SDL_BlitSurface (rblit_conf, NULL, mw->screen, &dest);
-      
-      lsurface =
-	SDL_CreateRGBSurfaceFrom ((void *) gdk_pixbuf_get_pixels (zlsrc_pic),
-				  (int) (lf_width * lzoom),
-				  (int) (lf_height * lzoom),
-				  24,
-				  (int) (lf_width * lzoom * 3), 
-				  rmask, gmask, bmask, amask);
 
-      lblit_conf = SDL_DisplayFormat (lsurface);
-
-      dest.x = 640 - (int) (lf_width * lzoom);
-      dest.y = 480 - (int) (lf_height * lzoom);
-      dest.w = (int) (lf_width * lzoom);
-      dest.h = (int) (lf_height * lzoom);
-
-      SDL_BlitSurface (lblit_conf, NULL, mw->screen, &dest);
-
-      SDL_UpdateRect (mw->screen, 0, 0, 640, 480);
-
-      SDL_FreeSurface (lsurface);
-      SDL_FreeSurface (lblit_conf);
-      
       SDL_FreeSurface (rsurface);
       SDL_FreeSurface (rblit_conf);
 
       g_object_unref (zrsrc_pic);
-      g_object_unref (zlsrc_pic);
+
+      if (zlsrc_pic) {
+
+	lsurface =
+	  SDL_CreateRGBSurfaceFrom ((void *) gdk_pixbuf_get_pixels (zlsrc_pic),
+				    (int) (lf_width * lzoom),
+				    (int) (lf_height * lzoom),
+				    24,
+				    (int) (lf_width * lzoom * 3), 
+				    rmask, gmask, bmask, amask);
+
+	lblit_conf = SDL_DisplayFormat (lsurface);
+
+	dest.x = 640 - (int) (lf_width * lzoom);
+	dest.y = 480 - (int) (lf_height * lzoom);
+	dest.w = (int) (lf_width * lzoom);
+	dest.h = (int) (lf_height * lzoom);
+
+	SDL_BlitSurface (lblit_conf, NULL, mw->screen, &dest);
+
+	SDL_FreeSurface (lsurface);
+	SDL_FreeSurface (lblit_conf);
+
+	g_object_unref (zlsrc_pic);
+      }
     }
+
+    SDL_UpdateRect (mw->screen, 0, 0, 640, 480);
+
+
     break;
 #endif
   } 
@@ -3079,6 +3089,9 @@ gm_main_window_update_sensitivity (GtkWidget *main_window,
 	 * received */
 	gtk_menu_section_set_sensitive (mw->main_menu,
 					"zoom_in", TRUE);
+	if (!is_receiving)
+	  gtk_menu_section_set_sensitive (mw->main_menu,
+					  "fullscreen", FALSE);
 	gtk_menu_set_sensitive (mw->main_menu, "save_picture", TRUE);
       }
     }
