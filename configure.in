@@ -350,7 +350,7 @@ dnl ########################################################################
 
 CPPFLAGS_save="$CPPFLAGS"
 CPPFLAGS="$CPPFLAGS $GNOMEMEETING_CFLAGS"
-AC_CHECK_TYPES(xmlSAXHandler,,, [#include <libxml/SAX.h>])
+AC_CHECK_TYPES(xmlSAXHandlerV1,,, [#include <libxml/SAX.h>])
 CPPFLAGS="$CPPFLAGS_save"
 
 GNOMEMEETING_INCLUDES="$PTLIB_CFLAGS $LDAP_INCLUDES $OPENH323_CFLAGS $H323_CFLAGS $GNOMEMEETING_CFLAGS $SDL_CFLAGS $ARTSC_CFLAGS"

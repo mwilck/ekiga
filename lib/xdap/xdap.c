@@ -158,10 +158,10 @@ parseonly (char *filename, xmlEntityPtr (*getent) (void *, const xmlChar *),
 {
   xmlDocPtr xp;
 
-#if HAVE_XMLSAXHANDLER
-  xmlSAXHandler sax;
-#else
+#if HAVE_XMLSAXHANDLERV1
   xmlSAXHandlerV1 sax;
+#else
+  xmlSAXHandler sax;
 #endif
 
   memset (&sax, 0, sizeof sax);
