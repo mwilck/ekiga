@@ -448,7 +448,7 @@ void GMAccountsManager::SIPRegister (GmAccount *a)
 					  _("Registering"));
     gnomemeeting_threads_leave ();
     
-    result = sipEP->Register (a->host, a->login, a->password);
+    result = sipEP->Register (a->host, a->login, a->password, a->domain);
 
     if (!result) {
 

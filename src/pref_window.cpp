@@ -2345,6 +2345,7 @@ gm_prefs_window_update_account_state (GtkWidget *prefs_window,
   GtkTreeIter iter;
   
   gchar *host = NULL;
+  gchar *realm = NULL;
   gchar *username = NULL;
   
   GmPreferencesWindow *pw = NULL;
@@ -2364,14 +2365,21 @@ gm_prefs_window_update_account_state (GtkWidget *prefs_window,
 
       gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
 			  COLUMN_ACCOUNT_HOST, &host,
+			  COLUMN_ACCOUNT_DOMAIN, &realm,
 			  COLUMN_ACCOUNT_LOGIN, &username,
 			  -1);
 
-      if ((host && domain && !strcmp (host, domain))
+      if (((host && domain && !strcmp (host, domain))
+	   || (realm && domain && !strcmp (realm, domain)))
 	  && (login && username && !strcmp (login, username))) 
 	gtk_list_store_set (GTK_LIST_STORE (model), &iter,
 			    COLUMN_ACCOUNT_STATE, refreshing,
 			    COLUMN_ACCOUNT_ERROR_MESSAGE, status, -1);
+
+      g_free (host);
+      g_free (realm);
+      g_free (username);
+
     } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (model), &iter));
   }
   
