@@ -349,7 +349,19 @@ void GMH323Connection::OnUserInputString(const PString & value)
 
   gnomemeeting_threads_enter ();
 
-  val = value.Mid (3);
+  
+  /* The MCU sends MSG[remote] value as message, 
+     check if we are not using the MCU */
+  bracket = value.Find("[");
+
+  if ((bracket != P_MAX_INDEX) && (bracket == 3)) {
+    
+    remote = value.Mid (bracket + 1, value.Find ("] ") - 4);
+    bracket = value.Find ("] ");
+    val = value.Mid (bracket + 1);
+  }
+  else
+    val = value.Mid (3);
   
   gnomemeeting_text_chat_insert (remote, val, 1);
 
