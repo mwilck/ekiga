@@ -356,7 +356,7 @@ int main (int argc, char ** argv, char ** envp)
 
   textdomain (GETTEXT_PACKAGE);
   bindtextdomain (GETTEXT_PACKAGE, GNOMELOCALEDIR);
-
+  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 
   /* GnomeMeeting main initialisation */
   gnomemeeting_init (gw, pw, lw, rtp, argc, argv, envp);
