@@ -273,11 +273,13 @@ BOOL GMH323EndPoint::Initialise ()
   SetSoundChannelPlayDevice(opts->audio_player);
   SetSoundChannelRecordDevice(opts->audio_recorder);
 
-  text = g_strdup_printf (_("Set Audio player device to: %s"), opts->audio_player);
+  /* Translators: This is shown in the history. */
+  text = g_strdup_printf (_("Set Audio player device to %s"), opts->audio_player);
   GM_log_insert (gw->log_text, text);
   g_free (text);
 
-  text = g_strdup_printf (_("Set Audio recorder device to: %s"), 
+  /* Translators: This is shown in the history. */
+  text = g_strdup_printf (_("Set Audio recorder device to %s"), 
 			  opts->audio_recorder);
   GM_log_insert (gw->log_text, text);
   g_free (text);
@@ -357,7 +359,7 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   const char * remotePartyName = (const char *)name;  
   // only a pointer => destroyed with the PString
 
-  msg = g_strdup_printf (_("Call from: %s"), remotePartyName);
+  msg = g_strdup_printf (_("Call from %s"), remotePartyName);
 
   gdk_threads_enter ();
   gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
@@ -414,7 +416,7 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 					   NULL,
 					   (gchar **) computer_xpm); 
 
-  msg = g_strdup_printf (_("Connected with %s using %s."), 
+  msg = g_strdup_printf (_("Connected with %s using %s"), 
 			 remotePartyName, remoteApp);
 
   SetCurrentCallToken (token);

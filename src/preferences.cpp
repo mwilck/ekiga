@@ -949,7 +949,7 @@ void init_pref_general (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->firstname,
-			_("Simply enter your first name."), NULL);
+			_("Enter your first name"), NULL);
 
   gtk_signal_connect (GTK_OBJECT (pw->firstname), "changed",
 		      GTK_SIGNAL_FUNC (ldap_option_changed), (gpointer) pw);
@@ -972,7 +972,7 @@ void init_pref_general (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->surname,
-			_("Simply enter your last name."), NULL);
+			_("Enter your last name"), NULL);
 
   gtk_signal_connect (GTK_OBJECT (pw->surname), "changed",
 		      GTK_SIGNAL_FUNC (ldap_option_changed), (gpointer) pw);
@@ -995,7 +995,7 @@ void init_pref_general (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->mail,
-			_("Simply enter your e-mail address."), NULL);
+			_("Enter your e-mail address"), NULL);
 
   gtk_signal_connect (GTK_OBJECT (pw->mail), "changed",
 		      GTK_SIGNAL_FUNC (ldap_option_changed), (gpointer) pw);
@@ -1018,7 +1018,7 @@ void init_pref_general (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->comment,
-			_("Here you can fill in a comment about yourself for ILS directories."), NULL);
+			_("Here you can fill in a comment about yourself for ILS directories"), NULL);
 
   gtk_signal_connect (GTK_OBJECT (pw->comment), "changed",
 		      GTK_SIGNAL_FUNC (ldap_option_changed), (gpointer) pw);
@@ -1383,7 +1383,7 @@ void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, GTK_COMBO (pw->audio_player)->entry, 
-			_("Simply enter the audio player device to use"), NULL);
+			_("Enter the audio player device to use"), NULL);
 
 
   /* Audio Recorder Device */
@@ -1420,7 +1420,7 @@ void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, GTK_COMBO (pw->audio_recorder)->entry, 
-			_("Simply enter the audio recorder device to use"), NULL);
+			_("Enter the audio recorder device to use"), NULL);
 
 
   /* Audio Mixers */
@@ -1513,7 +1513,7 @@ void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
    tip = gtk_tooltips_new ();
 
    gtk_tooltips_set_tip (tip, GTK_COMBO (pw->video_device)->entry, 
- 			_("Simply enter the video device to use"), NULL);
+ 			_("Enter the video device to use"), NULL);
  
 
   gtk_signal_connect (GTK_OBJECT (GTK_COMBO (pw->video_device)->entry), "changed",

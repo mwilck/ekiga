@@ -142,7 +142,7 @@ void about_callback (GtkWidget *widget, gpointer data)
 			     character if your character set allows it. */
 			  _("(C) 2000, 2001 Damien Sandras"),
 			  authors,
-			  _("GnomeMeeting is an H.323 compliant program for GNOME.\nThis program is not supported by Microsoft(C)."),
+			  _("GnomeMeeting is an H.323 compliant program for GNOME.\nThis program is not supported by Microsoft."),
 			  "/usr/share/pixmaps/gnomemeeting-logo.png");
 	
   gtk_widget_show (abox);
