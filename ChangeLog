@@ -1,5 +1,28 @@
 2003-06-14 Damien Sandras  <dsandras@seconix.com>
 
+	* src/common.h: Removed the speaker phone button as we now
+	have an automatic speaker phone mode.
+	
+	* src/config.cpp: Adapted to the new Lid API.
+
+	* src/endpoint.cpp: Same.
+
+	* src/endpoint.h: Same.
+	
+	* src/gnomemeeting.cpp: Same.
+
+	* src/lid.cpp, src/lid.h: New API. This new API is based on the fact
+	that the device is Lock'ed before being used, so that functions
+	can be safely used.
+	
+	* src/main_window.cpp: Changes to adapt to the new API. Fixed
+	missing icon in the WM decoration when another window is realized
+	before the main window.
+	
+	* src/toolbar.cpp: Removed code relative to the speakerphone button.
+	
+2003-06-14 Damien Sandras  <dsandras@seconix.com>
+
 	* src/endpoint.cpp, src/endpoint.h: Moved the GMVideoGrabber
 	to the Endpoint class. That permits to more easily use the
 	mutexes and to ensure that everything is thread-safe.

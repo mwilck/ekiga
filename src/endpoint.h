@@ -383,10 +383,27 @@ class GMH323EndPoint : public H323EndPoint
 
 #ifdef HAS_IXJ
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Return the current Lid Thread.
+   * BEHAVIOR     :  Returns the current Lid Thread pointer, locked so that
+   *                 the object content is protected against deletion. See
+   *                 GetVideoGrabber ().
    * PRE          :  /
    */
-  GMLid *GetLidThread ();
+  GMLid *GetLid ();
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Removes the current Lid.
+   * PRE          :  /
+   */
+  void RemoveLid ();
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Create a new Lid.
+   * PRE          :  /
+   */
+  void CreateLid ();
+
 #endif
 
 
@@ -451,15 +468,15 @@ class GMH323EndPoint : public H323EndPoint
   PMutex cs_access_mutex;
   PMutex ct_access_mutex;
   PMutex tct_access_mutex;
-  PMutex lt_access_mutex;
-
+  PMutex lid_access_mutex;
+  
   PIntCondMutex *vg;
 
   int opened_audio_channels;
   int opened_video_channels;
 
 #ifdef HAS_IXJ
-  GMLid *lid_thread;
+  GMLid *lid;
 #endif
 };
 

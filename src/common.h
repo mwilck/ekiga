@@ -186,7 +186,6 @@ struct _GmWindow
   GtkWidget *connect_button;
   GtkWidget *video_chan_button;
   GtkWidget *audio_chan_button;
-  GtkWidget *speaker_phone_button;
   GtkWidget *incoming_call_popup;
   GtkWidget *stats_label;
   GtkWidget *stats_drawing_area;

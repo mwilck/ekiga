@@ -157,7 +157,7 @@ GMH323EndPoint::GMH323EndPoint ()
   SetCallingState (0);
   
 #ifdef HAS_IXJ
-  lid_thread = NULL;
+  lid = NULL;
 #endif
 
   listener = NULL;
@@ -219,11 +219,6 @@ GMH323EndPoint::~GMH323EndPoint ()
     RemoveListener (listener);
 
   delete (ils_client);
-  
-#ifdef HAS_IXJ  
-  if (lid_thread) 
-    delete (lid_thread);
-#endif
 }
 
 
@@ -333,16 +328,10 @@ void GMH323EndPoint::UpdateConfig ()
 
 #ifdef HAS_IXJ
     /* Use the quicknet card if needed */
-    if (use_lid) {
-
-      if (!lid_thread)
-	lid_thread = new GMLid ();
-    }
-    else {
-      
-      delete (lid_thread);
-      lid_thread = NULL;
-    }
+    if (use_lid) 
+      CreateLid ();
+    else
+      RemoveLid ();
 #endif
 
 
@@ -529,23 +518,17 @@ GMH323EndPoint::AddAudioCapabilities ()
   
 #ifdef HAS_IXJ
   /* Add the audio capabilities provided by the LID Hardware */
-  if (GetLidThread ()) {
+  GMLid *l = NULL;
+  if ((l = GetLid ())) {
 
-    OpalLineInterfaceDevice *lid = NULL;
+    /* If the LID can do PCM16 we can use the software
+       codecs like GSM too */
+    use_pcm16_codecs = l->areSoftwareCodecsSupported ();
 
-    lid = lid_thread->GetLidDevice ();
+    if (use_pcm16_codecs)
+      capabilities.Remove ("G.711");
 
-    if (lid && lid->IsOpen ()) {
-
-      /* If the LID can do PCM16 we can use the software
-	 codecs like GSM too */
-      use_pcm16_codecs = 
-	lid->GetMediaFormats ().GetValuesIndex (OpalMediaFormat(OPAL_PCM16)) 
-	!= P_MAX_INDEX;
-
-      if (use_pcm16_codecs)
-	capabilities.Remove ("G.711");
-    }
+    l->Unlock ();
   }
 #endif
 
@@ -579,14 +562,16 @@ GMH323EndPoint::AddAudioCapabilities ()
 
   
 #ifdef HAS_IXJ
-  if (GetLidThread ()) {
+  if ((l = GetLid ())) {
 
-    OpalLineInterfaceDevice *lid = NULL;
+    OpalLineInterfaceDevice *lid_device = NULL;
 
-    lid = lid_thread->GetLidDevice ();
+    lid_device = l->GetLidDevice ();
 
-    if (lid && lid->IsOpen ())
-      H323_LIDCapability::AddAllCapabilities (*lid, capabilities, 0, 0);
+    if (lid_device && lid_device->IsOpen ())
+      H323_LIDCapability::AddAllCapabilities (*lid_device, capabilities, 0, 0);
+
+    l->Unlock ();
   }
 #endif
   
@@ -1060,16 +1045,12 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   if (!aa && !dnd) {
 
 #ifdef HAS_IXJ
-    if (lid_thread) {
+    GMLid *l = NULL;
+    
+    if ((l = GetLid ())) {
 
-      OpalLineInterfaceDevice *lid = NULL;
-      lid = lid_thread->GetLidDevice ();
-
-      /* If we have a LID, make it ring */
-      if (lid && lid->IsOpen()) {
-	
-	lid->RingLine (OpalIxJDevice::POTSLine, 0x33);
-      }
+      l->RingLine (1);
+      l->Unlock ();
     }
 #endif
 
@@ -1242,22 +1223,16 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 
 
 #ifdef HAS_IXJ
-  if (lid_thread) {
+  GMLid *l = NULL;
+  
+  if ((l = GetLid ())) {
 
-    OpalLineInterfaceDevice *lid = NULL;
-    lid = lid_thread->GetLidDevice ();
-    
-    /* If we have a LID, make sure it is no longer ringing */
-    if (lid && lid->IsOpen()) {
-
-      lid->StopTone (0);
-      lid->SetRemoveDTMF (0, TRUE);
-      lid->EnableAudio (0, FALSE);
-      lid->RingLine (0, 0);
-    }
+    l->RingLine (3);
+    l->Unlock ();
   }
 #endif
 
+  
   /* Update internal state */
   SetCurrentCallToken (token);
   SetCurrentConnection (FindConnectionWithoutLocks (token));
@@ -1513,18 +1488,11 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   /* Play Busy Tone */
 #ifdef HAS_IXJ
-  if (lid_thread) {
+  GMLid *l = NULL;
+  if ((l = GetLid ())) {
 
-    OpalLineInterfaceDevice *lid = NULL;
-    lid = lid_thread->GetLidDevice ();
-    
-    if (lid) {
-
-      lid->StopTone (0);
-      lid->EnableAudio (0, TRUE);
-      lid->RingLine (0, 0);
-      lid->PlayTone (0, OpalLineInterfaceDevice::BusyTone);
-    }
+    l->RingLine (3);
+    l->Unlock ();
   }
 #endif
 
@@ -1689,20 +1657,25 @@ GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
   opened_audio_channels++;
 
 #ifdef HAS_IXJ
-  OpalLineInterfaceDevice *lid = NULL;
+  GMLid *l = NULL;
+  OpalLineInterfaceDevice *lid_device = NULL;
 
-  if (lid_thread) 
-    lid = lid_thread->GetLidDevice ();
+  if ((l = GetLid ())) 
+    lid_device = l->GetLidDevice ();
 
   /* If we are using a hardware LID, connect the audio stream to the LID */
-  if (lid && lid->IsOpen()) {
+  if (lid_device && lid_device->IsOpen()) {
 
-    lid->StopTone (0);
+    l->RingLine (4);
     
-    if (!codec.AttachChannel (new OpalLineChannel (*lid,
-						   OpalIxJDevice::POTSLine, codec))) {
+    if (!codec.AttachChannel (new OpalLineChannel (*lid_device,
+						   OpalIxJDevice::POTSLine,
+						   codec))) {
+
+      l->Unlock ();
       return FALSE;
     }
+   
 
     gnomemeeting_threads_enter ();
     gchar *msg = g_strdup_printf (_("Attaching lid hardware to codec"));
@@ -1858,15 +1831,40 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 
 #ifdef HAS_IXJ
 GMLid *
-GMH323EndPoint::GetLidThread (void)
+GMH323EndPoint::GetLid (void)
 {
   GMLid *l = NULL;
 
-  lt_access_mutex.Wait ();
-  l = lid_thread;
-  lt_access_mutex.Signal ();
+  lid_access_mutex.Wait ();
+  l = lid;
+  if (lid)
+    lid->Lock ();
+  lid_access_mutex.Signal ();
 
   return l;
+}
+
+
+void
+GMH323EndPoint::CreateLid (void)
+{
+  lid_access_mutex.Wait ();
+  if (!lid)
+    lid = new GMLid ();
+  lid_access_mutex.Signal ();
+}
+
+
+void
+GMH323EndPoint::RemoveLid (void)
+{
+  lid_access_mutex.Wait ();
+  if (lid) {
+    
+    delete (lid);
+    lid = NULL;
+  }
+  lid_access_mutex.Signal ();
 }
 #endif
 

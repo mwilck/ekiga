@@ -57,10 +57,6 @@ extern GtkWidget *gm;
 
 static void url_combo_changed            (GtkEditable  *, gpointer);
 
-#ifdef HAS_IXJ
-static void speaker_phone_toggle_changed (GtkToggleButton *, gpointer);
-#endif
-
 static void connect_button_clicked       (GtkToggleButton *, gpointer);
 static void toolbar_button_changed       (GtkWidget *, gpointer);
 static void toolbar_cp_button_changed    (GtkWidget *, gpointer);
@@ -77,44 +73,6 @@ static void url_combo_changed (GtkEditable  *e, gpointer data)
   gtk_tooltips_set_tip (gw->tips, GTK_WIDGET (GTK_COMBO (data)->entry), 
 			tip_text, NULL);
 }
-
-
-#ifdef HAS_IXJ
-static void speaker_phone_toggle_changed (GtkToggleButton *w, gpointer data)
-{
-  GmWindow *gw = MyApp->GetMainWindow ();
-  OpalLineInterfaceDevice *lid = NULL;
-  GMLid *lid_thread = NULL;
-
-  lid_thread = MyApp->Endpoint ()->GetLidThread ();
-
-  if (lid_thread)
-    lid = lid_thread->GetLidDevice ();
-
-  if (lid) {
-
-    if (gtk_toggle_button_get_active (w)) {
-      
-      gnomemeeting_log_insert (gw->history_text_view,
-			       _("Speaker phone enabled"));
-      if (MyApp->Endpoint()->GetCallingState () == 0) /* Not in a call */
-	lid->PlayTone (0, OpalLineInterfaceDevice::DialTone);
-
-      if (MyApp->Endpoint()->GetCallingState () == 1) /* Calling */
-	lid->PlayTone (0, OpalLineInterfaceDevice::RingTone);
-
-      lid->EnableAudio(0, FALSE);
-    }
-    else {
-
-      gnomemeeting_log_insert (gw->history_text_view,
-			       _("Speaker phone disabled"));
-      lid->EnableAudio(0, TRUE);
-      lid->StopTone (0);
-    }
-  }
-}
-#endif
 
 
 /* DESCRIPTION  :  This callback is called when the user toggles the 
@@ -323,29 +281,6 @@ GtkWidget *gnomemeeting_init_left_toolbar (void)
 
   gtk_toolbar_append_widget (GTK_TOOLBAR (left_toolbar), 
 			     gw->preview_button, NULL, NULL);
-
-
-#ifdef HAS_IXJ
-  /* Quicknet LID button speakerphone */
-  gw->speaker_phone_button = gtk_toggle_button_new ();
-
-  image = gtk_image_new_from_stock (GM_STOCK_SPEAKER_PHONE, 
-                                    GTK_ICON_SIZE_MENU);
-
-  gtk_container_add (GTK_CONTAINER (gw->speaker_phone_button), 
-		     GTK_WIDGET (image));
-
-  g_signal_connect (G_OBJECT (gw->speaker_phone_button), "clicked",
-		    G_CALLBACK (speaker_phone_toggle_changed), 
-		    NULL);
-
-  gtk_tooltips_set_tip (gw->tips, gw->speaker_phone_button,
-			_("Click here to activate the speaker phone device of your Quicknet card."), NULL);
-
-
-  gtk_toolbar_append_widget (GTK_TOOLBAR (left_toolbar), 
-			     gw->speaker_phone_button, NULL, NULL);
-#endif
 
 
   /* Audio Channel Button */

@@ -941,10 +941,10 @@ audio_mixer_changed_nt (GConfClient *client,
   GMLid *lid = NULL;
 #endif
   
-  if (entry->value->type == GCONF_VALUE_STRING) {
+  if (entry->value->type == GCONF_VALUE_STRING && endpoint) {
 
 #ifdef HAS_IXJ
-    lid = endpoint->GetLidThread ();
+    lid = endpoint->GetLid ();
 
     if (!lid) {
 #endif
@@ -1374,14 +1374,16 @@ static void network_settings_changed_nt (GConfClient *client, guint,
 static void 
 lid_aec_changed_nt (GConfClient *client, guint, GConfEntry *entry, gpointer)
 {
+  GMH323EndPoint *ep = NULL;
+  GMLid *lid = NULL;
+  int lid_aec = 0;
+  
   if (entry->value->type == GCONF_VALUE_INT) {
 
-    int lid_aec = gconf_value_get_int (entry->value);
-    OpalLineInterfaceDevice *lid = NULL;
-    GMLid *lid_thread = MyApp->Endpoint ()->GetLidThread ();
+    lid_aec = gconf_value_get_int (entry->value);
 
-    if (lid_thread)
-      lid = lid_thread->GetLidDevice ();
+    ep = MyApp->Endpoint ();
+    lid = (ep ? ep->GetLid () : NULL);
 
     if (lid) {
 
@@ -1407,6 +1409,8 @@ lid_aec_changed_nt (GConfClient *client, guint, GConfEntry *entry, gpointer)
 	lid->SetAEC (0, OpalLineInterfaceDevice::AECAGC);
 	break;
       }
+
+      lid->Unlock ();
     }
   }
 }
@@ -1421,16 +1425,23 @@ static void
 lid_country_changed_nt (GConfClient *client, guint, GConfEntry *entry, 
 			gpointer)
 {
+  GMH323EndPoint *ep = NULL;
+  GMLid *lid = NULL;
+  gchar *country_code = NULL;
+  
   if (entry->value->type == GCONF_VALUE_STRING) {
     
-    GMLid *lid_thread = GM_LID (MyApp->Endpoint ()->GetLidThread ());
-    OpalLineInterfaceDevice *lid = NULL;
+    ep = MyApp->Endpoint ();
+    lid = (ep ? ep->GetLid () : NULL);
 
-    if (lid_thread)
-      lid = lid_thread->GetLidDevice ();
-
-    if ((gconf_value_get_string (entry->value))&&(lid))
-      lid->SetCountryCodeName (gconf_value_get_string (entry->value));
+    country_code = g_strdup (gconf_value_get_string (entry->value));
+    
+    if (country_code && lid) {
+      
+      lid->SetCountryCodeName (country_code);
+      lid->Unlock ();
+      g_free (country_code);
+    }
   }
 }
 #endif

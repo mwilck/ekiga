@@ -70,9 +70,7 @@ GMLid::GMLid ()
 GMLid::~GMLid ()
 {
   stop = 1;
-  Close ();
-  quit_mutex.Wait ();
-  quit_mutex.Signal ();
+  PWaitAndSignal m(quit_mutex);
 }
 
 
@@ -84,6 +82,8 @@ void GMLid::Open ()
 
   GmWindow *gw = NULL;
   GConfClient *client = NULL;
+
+  PWaitAndSignal m(device_access_mutex);
   
   gnomemeeting_threads_enter ();
   client = gconf_client_get_default ();
@@ -146,24 +146,14 @@ void GMLid::Open ()
       lid->StopTone (0);
       lid->SetLineToLineDirect (0, 1, FALSE);
       lid->EnableAudio(0, TRUE); 
-
-      gnomemeeting_threads_enter ();
-      //      gtk_widget_show_all (gw->speaker_phone_button);
-      gnomemeeting_threads_leave ();
     }
     else {
       
       gnomemeeting_threads_enter ();
-      gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (gm), gw->speaker_phone_button, _("Error while opening the Quicknet device."), _("Please check that your driver is correctly installed and that the device is working correctly."));
+      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Error while opening the Quicknet device."), _("Please check that your driver is correctly installed and that the device is working correctly."));
       gnomemeeting_threads_leave ();
     }
   }
-}
-
-
-OpalLineInterfaceDevice *GMLid::GetLidDevice ()
-{
-  return lid;
 }
 
 
@@ -179,10 +169,11 @@ void GMLid::Close ()
   GmWindow *gw = NULL;
   gchar *mixer = NULL;
   int vol = 0;
+
+  PWaitAndSignal m(device_access_mutex);
   
   if (lid)
     lid->Close ();
-
 
   /* Restore the normal mixers settings */
   gnomemeeting_threads_enter ();
@@ -202,8 +193,6 @@ void GMLid::Close ()
   GTK_ADJUSTMENT (gw->adj_rec)->value = (int) (vol & 255);
   gtk_widget_queue_draw (GTK_WIDGET (gw->audio_settings_frame));
 
-  gtk_widget_hide_all (gw->speaker_phone_button);
-
   gnomemeeting_threads_leave ();
 }
 
@@ -222,8 +211,8 @@ void GMLid::Main ()
   int calling_state = 0;
   unsigned int vol = 0;
 
-  quit_mutex.Wait ();
-
+  PWaitAndSignal m(quit_mutex);
+  
   /* Check the initial hook status. */
   OffHook = lastOffHook = lid->IsLineOffHook (OpalIxJDevice::POTSLine);
 
@@ -239,10 +228,9 @@ void GMLid::Main ()
   gnomemeeting_threads_leave ();
 
 
-  while (lid && lid->IsOpen() && !stop)
-  {
-    endpoint = MyApp->Endpoint ();
+  while (lid && lid->IsOpen() && !stop) {
 
+    endpoint = MyApp->Endpoint ();
     calling_state = endpoint->GetCallingState ();
 
     OffHook = (lid->IsLineOffHook (0));
@@ -330,7 +318,104 @@ void GMLid::Main ()
     PThread::Sleep(50);
   }
 
-  quit_mutex.Signal ();
+  Close ();
+}
+
+
+void
+GMLid::RingLine (int i)
+{
+  if (lid && lid->IsOpen ()) {
+    
+    switch (i) {
+
+    case 0: /* RingTone */
+      lid->PlayTone (0, OpalLineInterfaceDevice::RingTone);
+      lid->RingLine (0, 0);
+      break;
+      
+    case 1: /* RingLine */
+      lid->RingLine (OpalIxJDevice::POTSLine, 0x33);
+      break;
+
+    case 2: /* Busy */
+      lid->StopTone (0);
+      lid->EnableAudio (0, TRUE);
+      lid->RingLine (0, 0);
+      lid->PlayTone (0, OpalLineInterfaceDevice::BusyTone);
+      break;
+      
+    case 3: /* Stop all */
+      lid->StopTone (0);
+      lid->SetRemoveDTMF (0, TRUE);
+      lid->EnableAudio (0, FALSE);
+      lid->RingLine (0, 0);
+      break;
+
+    case 4: /* Stop tone */
+      lid->StopTone (0);
+      break;
+    }
+  }
+}
+
+
+void
+GMLid::SetAEC (unsigned int l, OpalLineInterfaceDevice::AECLevels level)
+{
+  if (lid && lid->IsOpen ())
+    lid->SetAEC (l, level);
+}
+
+
+void
+GMLid::SetCountryCodeName (const PString & d)
+{
+  if (lid && lid->IsOpen ())
+    lid->SetCountryCodeName (d);
+}
+
+
+void
+GMLid::SetVolume (int x, int y)
+{
+  if (lid && lid->IsOpen ()) {
+
+    lid->SetPlayVolume (0, x);
+    lid->SetRecordVolume (0, y);
+  }
+}
+
+
+OpalLineInterfaceDevice *
+GMLid::GetLidDevice ()
+{
+  return lid;
+}
+
+
+BOOL
+GMLid::areSoftwareCodecsSupported ()
+{
+  if (lid && lid->IsOpen ())
+    return (lid->GetMediaFormats ().GetValuesIndex (OpalMediaFormat(OPAL_PCM16)) 
+	    != P_MAX_INDEX);
+  else
+    return TRUE;
+}
+
+
+void
+GMLid::Lock ()
+{
+  device_access_mutex.Wait ();
+}
+
+
+void
+GMLid::Unlock ()
+{
+  device_access_mutex.Signal ();
 }
 #endif
 

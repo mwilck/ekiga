@@ -46,6 +46,7 @@
 
 #define GM_LID(x) (GMLid *)(x)
 
+
 class GMLid : public PThread
 {
   PCLASSINFO(GMLid, PThread);
@@ -63,14 +64,28 @@ class GMLid : public PThread
  
   void Stop ();
 
-#ifdef HAS_IXJ
+  void RingLine (int);
+
+  void SetAEC (unsigned, OpalLineInterfaceDevice::AECLevels);
+
+  void SetCountryCodeName (const PString &);
+
+  void SetVolume (int, int);
+  
+  BOOL areSoftwareCodecsSupported ();
+
   OpalLineInterfaceDevice *GetLidDevice ();
-#endif
+  
+  void Lock ();
+
+  void Unlock ();
   
  private:
 
   OpalLineInterfaceDevice *lid;
+  PMutex device_access_mutex;
   PMutex quit_mutex;
+  
   int stop;
 };
 #endif

@@ -126,6 +126,7 @@ GnomeMeeting::~GnomeMeeting()
     
     endpoint->ClearAllCalls (H323Connection::EndedByLocalUser, TRUE);
     endpoint->RemoveVideoGrabber (true);
+    endpoint->RemoveLid ();
   }
   RemoveEndpoint ();
 
@@ -205,17 +206,14 @@ GnomeMeeting::Connect()
       url_handler = new GMURLHandler (call_address);
 
 #ifdef HAS_IXJ
-      OpalLineInterfaceDevice *lid = NULL;
-      GMLid *lid_thread = NULL;
-      lid_thread = endpoint->GetLidThread ();
+      GMLid *lid = NULL;
+      lid = endpoint->GetLid ();
 
-      lid_thread = endpoint->GetLidThread ();
-      if (lid_thread)
-	lid = lid_thread->GetLidDevice ();
       if (lid) {
 
-	lid->PlayTone (0, OpalLineInterfaceDevice::RingTone);
-	lid->RingLine (0, 0);
+	/* Stop all tones and play the call tone */
+	lid->RingLine (0);
+	lid->Unlock ();
       }
 #endif
     }

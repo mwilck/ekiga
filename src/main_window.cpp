@@ -725,14 +725,12 @@ audio_volume_changed (GtkAdjustment *adjustment, gpointer data)
   int vol_play = 0, vol_rec = 0;
   gchar *mixer = NULL;
 #ifdef HAS_IXJ
-  GMH323EndPoint *endpoint = MyApp->Endpoint ();
+  GMH323EndPoint *endpoint = NULL;
   GMLid *lid = NULL;
-  OpalLineInterfaceDevice *ld = NULL;
 
-  lid = endpoint->GetLidThread ();
-  
-  if (lid)
-   ld = lid->GetLidDevice ();
+  endpoint = MyApp->Endpoint ();
+  if (endpoint)
+    lid = endpoint->GetLid ();
 #endif
   
   GConfClient *client = gconf_client_get_default ();
@@ -742,10 +740,10 @@ audio_volume_changed (GtkAdjustment *adjustment, gpointer data)
   vol_rec =  (int) (GTK_ADJUSTMENT (gw->adj_rec)->value);
 
 #ifdef HAS_IXJ
-  if (ld) {
+  if (lid) {
 
-    ld->SetRecordVolume (0, vol_rec);
-    ld->SetPlayVolume (0, vol_play);
+    lid->SetVolume (vol_play, vol_rec);
+    lid->Unlock ();
   }
   else {
 #endif
@@ -1006,14 +1004,15 @@ void gnomemeeting_dialpad_event (const char *key)
       }
       
 #ifdef HAS_IXJ
-      OpalLineInterfaceDevice *lid = NULL;
-      GMLid *lid_thread = NULL;
-      lid_thread = endpoint->GetLidThread ();
-      if (lid_thread)
-	lid = lid_thread->GetLidDevice ();
+      GMLid *lid = NULL;
       
-      if (lid) 
-	lid->StopTone (0);
+      lid = endpoint->GetLid ();
+
+      if (lid) {
+	
+	lid->RingLine (4);
+	lid->Unlock ();
+      }
 #endif
     }
   }
@@ -1028,7 +1027,7 @@ gnomemeeting_main_window_new (GmWindow *gw)
   GtkWidget *frame = NULL;
   GtkWidget *vbox = NULL;
   GtkWidget *hbox = NULL;
-  GdkPixbuf *pixbuf_icon = NULL;
+  GdkPixbuf *pixbuf = NULL;
   GtkAccelGroup *accel = NULL;
 #ifdef DISABLE_GNOME
   GtkWidget *window_vbox = NULL;
@@ -1252,10 +1251,11 @@ gnomemeeting_main_window_new (GmWindow *gw)
 
   /* Add the window icon and title */
   gtk_window_set_title (GTK_WINDOW (window), _("GnomeMeeting"));
-  pixbuf_icon = 
-    gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES "/gnomemeeting-logo-icon.png", NULL); 
-  gtk_window_set_icon (GTK_WINDOW (window), pixbuf_icon);
-  g_object_unref (G_OBJECT (pixbuf_icon));
+  pixbuf = 
+    gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES "/gnomemeeting-logo-icon.png", NULL);
+  gtk_window_set_icon (GTK_WINDOW (window), pixbuf);
+  gtk_widget_realize (window);
+  g_object_unref (G_OBJECT (pixbuf));
   gtk_window_set_resizable (GTK_WINDOW (window), false);
 
   g_signal_connect_after (G_OBJECT (gw->main_notebook), "switch-page",
