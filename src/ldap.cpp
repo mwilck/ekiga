@@ -492,7 +492,7 @@ void GM_ldap_init_notebook (GM_ldap_window_widgets *lw, int page_num, gchar *tex
 				  GNOME_PAD_SMALL);
 
   /* The popup menu */
-  GM_ldap_popup_menu_init (lw->ldap_users_clist [page_num], lw);
+  gnomemeeting_ldap_popup_menu_init (lw->ldap_users_clist [page_num], lw);
 
   label = gtk_label_new (text_label);
 

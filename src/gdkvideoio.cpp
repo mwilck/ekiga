@@ -89,6 +89,8 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
   GdkPixbuf *src_pic = NULL;
   GdkPixbuf *zoomed_pic = NULL;
 
+  int unref = 1; /* unreference zoomed_pic */
+
   int xpos = 0 , ypos = 0;
   
   int zoomed_width = (int) (frameWidth * gw->zoom);
@@ -114,9 +116,17 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
 			      frameHeight, frameWidth * 3, NULL, NULL);
 
   /* The zoomed picture */
-  zoomed_pic = 
-    gdk_pixbuf_scale_simple (src_pic, zoomed_width, 
-			     zoomed_height, GDK_INTERP_HYPER);
+  if (gw->zoom != 1) {
+    
+    zoomed_pic = 
+      gdk_pixbuf_scale_simple (src_pic, zoomed_width, 
+			       zoomed_height, GDK_INTERP_NEAREST);
+  }
+  else {
+    zoomed_pic = src_pic;
+    unref = 0;
+  }
+
   gdk_threads_leave ();
 
   /* Need to redefine screen size ? */
@@ -180,7 +190,7 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
       GdkPixbuf *local_pic = 
 	gdk_pixbuf_scale_simple (zoomed_pic, zoomed_width / 4, 
 				 zoomed_height / 4, 
-				 GDK_INTERP_HYPER);
+				 GDK_INTERP_NEAREST);
 
       gdk_pixbuf_render_to_drawable(local_pic, gw->pixmap,
 				    gw->drawing_area->style->black_gc, 
@@ -216,7 +226,12 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
 
   gdk_threads_enter ();
   gdk_pixbuf_unref (src_pic);
-  gdk_pixbuf_unref (zoomed_pic);
+
+  if (unref == 1) {
+
+    gdk_pixbuf_unref (zoomed_pic);
+  }
+
   gdk_threads_leave ();
 
   redraw_mutex.Signal ();

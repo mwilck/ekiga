@@ -1,5 +1,23 @@
 2001-11-10  Damien Sandras  <dsandras@seconix.com>
 
+	* src/callbacks.cpp : Moved some callbacks to menu.cpp (static cb).
+	* src/config.cpp: Added a check in read_config_from_gui to update
+	the show_* options from the view menu state.
+	* src/gdkvideoio.cpp: Do not scale when it is not needed, and choosed
+	the NEAREST interpolation type.
+	* src/ldap.cpp: Changed some function names.
+	* src/main_interface.cpp: Changed some function names.
+	* src/menu.cpp: The popup menu is now build of TOGGLE and RADIO items.
+	Changing a TOGGLE item in the menu updates the corresponding TOGGLE
+	in the preferences window.
+	* src/preferences.cpp: Changing a show_* TOGGLE updates the corresp.
+	TOGGLE in the menu.
+	* src/toolbar.cpp: Minor changes (code cleanups).
+	* src/videograbber.cpp: Changed SetFrameSizeConverter for the test
+	image.
+	
+2001-11-11  Damien Sandras  <dsandras@seconix.com>
+
 	* endpoint.cpp: The default in the popup is changed at the opening
 	of the video connection (Remote) and at the end of the connection
 	(Remote). That fixes a segfault.

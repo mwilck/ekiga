@@ -515,6 +515,20 @@ void read_config_from_gui (GM_window_widgets *gw, GM_ldap_window_widgets *lw, op
       g_free (old_pointer);
       i++;
     }
+
+  /* Check options from the menus, and update the options structure */
+  GtkWidget *object = (GtkWidget *) 
+    gtk_object_get_data (GTK_OBJECT (gm),
+			 "view_menu_uiinfo");
+
+  GnomeUIInfo *view_menu_uiinfo = (GnomeUIInfo *) object;
+
+  opts->show_notebook =  
+    GTK_CHECK_MENU_ITEM (view_menu_uiinfo [2].widget)->active;
+  opts->show_quickbar =  
+    GTK_CHECK_MENU_ITEM (view_menu_uiinfo [3].widget)->active;
+  opts->show_statusbar =  
+    GTK_CHECK_MENU_ITEM (view_menu_uiinfo [4].widget)->active;
 }
 
 

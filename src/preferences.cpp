@@ -2295,27 +2295,44 @@ static void apply_options (options *opts, GM_pref_window_widgets *pw)
 
 
   /* Show / Hide notebook and / or statusbar */
-  if ( (!(opts->show_notebook)) 
-       && (GTK_WIDGET_VISIBLE (GTK_WIDGET (pw->gw->main_notebook))) )
+  GtkWidget *object = (GtkWidget *) 
+    gtk_object_get_data (GTK_OBJECT (gm),
+			 "view_menu_uiinfo");
+
+  GnomeUIInfo *view_menu_uiinfo = (GnomeUIInfo *) object;
+
+  if (!(opts->show_notebook)) {
+
     gtk_widget_hide_all (pw->gw->main_notebook);
+    GTK_CHECK_MENU_ITEM (view_menu_uiinfo [2].widget)->active = FALSE;
+  }
+  else {
 
-  if ( (opts->show_notebook)
-       && (!(GTK_WIDGET_VISIBLE (GTK_WIDGET (pw->gw->main_notebook)))) )
-    gtk_widget_show_all (pw->gw->main_notebook);
+    gtk_widget_show_all (pw->gw->main_notebook);  
+    GTK_CHECK_MENU_ITEM (view_menu_uiinfo [2].widget)->active = TRUE;
+  }
 
-  if ( (!(opts->show_statusbar)) 
-       && (GTK_WIDGET_VISIBLE (GTK_WIDGET (pw->gw->statusbar))) )
-    gtk_widget_hide (pw->gw->statusbar);
 
-  if ( (opts->show_statusbar)
-       && (!(GTK_WIDGET_VISIBLE (GTK_WIDGET (pw->gw->statusbar)))) )
-    gtk_widget_show (pw->gw->statusbar);
+ if (!(opts->show_statusbar)) {
 
-  if ( (!(opts->show_quickbar)) 
-       && (GTK_WIDGET_VISIBLE (GTK_WIDGET (pw->gw->quickbar_frame))) )
+    gtk_widget_hide_all (pw->gw->statusbar);
+    GTK_CHECK_MENU_ITEM (view_menu_uiinfo [3].widget)->active = FALSE;
+  }
+  else {
+
+    gtk_widget_show_all (pw->gw->statusbar);  
+    GTK_CHECK_MENU_ITEM (view_menu_uiinfo [3].widget)->active = TRUE;
+  }
+
+
+ if (!(opts->show_quickbar)) {
+
     gtk_widget_hide_all (pw->gw->quickbar_frame);
+    GTK_CHECK_MENU_ITEM (view_menu_uiinfo [4].widget)->active = FALSE;
+  }
+  else {
 
-  if ( (opts->show_quickbar)
-       && (!(GTK_WIDGET_VISIBLE (GTK_WIDGET (pw->gw->quickbar_frame)))) )
-    gtk_widget_show_all (pw->gw->quickbar_frame);
+    gtk_widget_show_all (pw->gw->quickbar_frame);  
+    GTK_CHECK_MENU_ITEM (view_menu_uiinfo [4].widget)->active = TRUE;
+  }
 }

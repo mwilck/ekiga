@@ -197,58 +197,7 @@ void quit_callback (GtkWidget *widget, gpointer data)
 }  
 
 
-void view_statusbar_callback (GtkWidget *widget, gpointer data)
-{
-  GM_window_widgets *gw = (GM_window_widgets *) data;
 
-  if (GTK_WIDGET_VISIBLE (GTK_WIDGET (gw->statusbar)))
-    gtk_widget_hide (gw->statusbar);
-  else
-    gtk_widget_show (gw->statusbar);  
-}
-
-
-void view_notebook_callback (GtkWidget *widget, gpointer data)
-{
-  GM_window_widgets *gw = (GM_window_widgets *) data;
-
-  if (GTK_WIDGET_VISIBLE (GTK_WIDGET (gw->main_notebook)))
-    gtk_widget_hide (gw->main_notebook);
-  else
-    gtk_widget_show (gw->main_notebook);  
-}
-
-
-void view_remote_user_info_callback (GtkWidget *widget, gpointer data)
-{
-  GM_window_widgets *gw = (GM_window_widgets *) data;
-
-  gtk_notebook_set_page (GTK_NOTEBOOK (gw->main_notebook), 0);
-}
-
-
-void view_log_callback (GtkWidget *widget, gpointer data)
-{
-  GM_window_widgets *gw = (GM_window_widgets *) data;
-
-  gtk_notebook_set_page (GTK_NOTEBOOK (gw->main_notebook), 1);
-}
-
-
-void view_audio_settings_callback (GtkWidget *widget, gpointer data)
-{
-  GM_window_widgets *gw = (GM_window_widgets *) data;
-
-  gtk_notebook_set_page (GTK_NOTEBOOK (gw->main_notebook), 2);
-}
-
-
-void view_video_settings_callback (GtkWidget *widget, gpointer data)
-{
-  GM_window_widgets *gw = (GM_window_widgets *) data;
-
-  gtk_notebook_set_page (GTK_NOTEBOOK (gw->main_notebook), 3);
-}
 
 
 void popup_menu_local_callback (GtkWidget *widget, gpointer data)

@@ -179,6 +179,21 @@ void left_arrow_clicked (GtkWidget *w, gpointer data)
   GM_window_widgets *gw = (GM_window_widgets *) data;
 
   gtk_notebook_prev_page (GTK_NOTEBOOK (gw->main_notebook));
+
+  GtkWidget *object = (GtkWidget *) 
+    gtk_object_get_data (GTK_OBJECT (gm),
+			 "notebook_view_uiinfo");
+
+  GnomeUIInfo *notebook_view_uiinfo = (GnomeUIInfo *) object;
+
+  GTK_CHECK_MENU_ITEM (notebook_view_uiinfo [0].widget)->active =
+    (gtk_notebook_get_current_page (GTK_NOTEBOOK (gw->main_notebook)) == 0);
+  GTK_CHECK_MENU_ITEM (notebook_view_uiinfo [1].widget)->active = 
+    (gtk_notebook_get_current_page (GTK_NOTEBOOK (gw->main_notebook)) == 1);
+  GTK_CHECK_MENU_ITEM (notebook_view_uiinfo [2].widget)->active = 
+    (gtk_notebook_get_current_page (GTK_NOTEBOOK (gw->main_notebook)) == 2);
+  GTK_CHECK_MENU_ITEM (notebook_view_uiinfo [3].widget)->active =
+    (gtk_notebook_get_current_page (GTK_NOTEBOOK (gw->main_notebook)) == 3);
 }
 
 
@@ -187,6 +202,21 @@ void right_arrow_clicked (GtkWidget *w, gpointer data)
   GM_window_widgets *gw = (GM_window_widgets *) data;
 
   gtk_notebook_next_page (GTK_NOTEBOOK (gw->main_notebook));
+
+  GtkWidget *object = (GtkWidget *) 
+    gtk_object_get_data (GTK_OBJECT (gm),
+			 "notebook_view_uiinfo");
+
+  GnomeUIInfo *notebook_view_uiinfo = (GnomeUIInfo *) object;
+
+  GTK_CHECK_MENU_ITEM (notebook_view_uiinfo [0].widget)->active =
+    (gtk_notebook_get_current_page (GTK_NOTEBOOK (gw->main_notebook)) == 0);
+  GTK_CHECK_MENU_ITEM (notebook_view_uiinfo [1].widget)->active = 
+    (gtk_notebook_get_current_page (GTK_NOTEBOOK (gw->main_notebook)) == 1);
+  GTK_CHECK_MENU_ITEM (notebook_view_uiinfo [2].widget)->active = 
+    (gtk_notebook_get_current_page (GTK_NOTEBOOK (gw->main_notebook)) == 2);
+  GTK_CHECK_MENU_ITEM (notebook_view_uiinfo [3].widget)->active =
+    (gtk_notebook_get_current_page (GTK_NOTEBOOK (gw->main_notebook)) == 3);
 }
 
 
@@ -265,7 +295,7 @@ void GM_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
   GM_main_interface_init (gw, opts);
   GM_ldap_init (gw, lw, opts);
   gnomemeeting_preferences_init (0, gw, pw, opts);
-  GM_menu_init (gm, gw, pw);
+  gnomemeeting_menu_init (gm, gw, pw);
   GM_toolbar_init (gm, gw, pw);	
 
   // Launch the GnomeMeeting H.323 part
@@ -374,7 +404,7 @@ void GM_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
   GM_init_main_interface_logo (gw);
 
   /* Create a popup menu to attach it to the drawing area  */
-  GM_popup_menu_init (gw->drawing_area, gw);
+  gnomemeeting_popup_menu_init (gw->drawing_area, gw);
 
   /* Set icon */
   gtk_widget_push_visual(gdk_rgb_get_visual());

@@ -95,47 +95,6 @@ void quit_callback (GtkWidget *, gpointer);
 void gtk_main_quit_callback (int, gpointer);
 
 
-// DESCRIPTION  :  This callback is called when the user chooses to show / hide
-//                 the statusbar
-// BEHAVIOR     :  Show or hide the statusbar
-// PRE          :  /
-void view_statusbar_callback (GtkWidget *, gpointer);
-
-
-// DESCRIPTION  :  This callback is called when the user chooses to view
-//                 the remote user info 
-// BEHAVIOR     :  Changes the main_notebook page to 0
-// PRE          :  /
-void view_remote_user_info_callback (GtkWidget *, gpointer);
-
-
-// DESCRIPTION  :  This callback is called when the user chooses to view
-//                 the history
-// BEHAVIOR     :  Changes the main_notebook page to 1
-// PRE          :  /
-void view_log_callback (GtkWidget *, gpointer);
-
-
-// DESCRIPTION  :  This callback is called when the user chooses to view
-//                 the audio settings
-// BEHAVIOR     :  Changes the main_notebook page to 2
-// PRE          :  /
-void view_audio_settings_callback (GtkWidget *, gpointer);
-
-
-// DESCRIPTION  :  This callback is called when the user chooses to view
-//                 the video settings 
-// BEHAVIOR     :  Changes the main_notebook page to 3
-// PRE          :  /
-void view_video_settings_callback (GtkWidget *, gpointer);
-
-
-// DESCRIPTION  :  This callback is called when the user chooses to show / hide
-//                 the notebook
-// BEHAVIOR     :  Show or hide the notebook
-// PRE          :  /
-void view_notebook_callback (GtkWidget *, gpointer);
-
 
 // DESCRIPTION  :  This callback is called when the user chooses to display
 //                 the local webcam image

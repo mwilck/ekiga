@@ -335,9 +335,9 @@ void GMVideoGrabber::VGOpen (void)
       grabber = new PFakeVideoInputDevice();
       grabber->SetColourFormatConverter ("YUV420P");
       grabber->SetVideoFormat (PVideoDevice::PAL);
-      grabber->SetChannel (100);     //NTSC static image.
+      grabber->SetChannel (50);     //NTSC static image.
       grabber->SetFrameRate (10);
-      grabber->SetFrameSizeConverter (height, width, FALSE);
+      grabber->SetFrameSize (height, width);
     }
     
   grabber->Start ();
