@@ -35,6 +35,7 @@
 #include "common.h"
 #include "webcam.h"
 #include "gdkvideoio.h"
+#include "ldap_h.h"
 
 
 /******************************************************************************/
@@ -255,10 +256,10 @@ class GMH323EndPoint : public H323EndPoint
   GMH323Webcam *Webcam (void);
 
   PVideoInputDevice *Grabber ();
-
   void ChangeSilenceDetection (void);
   void StartVideoGrabber (void);  
   void StopVideoGrabber (int = 1);
+  PThread *get_ils_client ();
 
  protected:
   
@@ -275,6 +276,7 @@ class GMH323EndPoint : public H323EndPoint
   PVideoInputDevice *grabber;
   GM_window_widgets *gw; // main window widgets that need to be updated
   PThread *webcam;
+  PThread *ils_client; // the ILS client PThread
 };
 
 /******************************************************************************/

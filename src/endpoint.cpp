@@ -29,6 +29,7 @@
 #include "webcam.h"
 #include "gatekeeper.h"
 #include "callbacks.h"
+#include "ils.h"
 
 #include "../pixmaps/computer.xpm"
 
@@ -90,16 +91,28 @@ GMH323EndPoint::GMH323EndPoint (GM_window_widgets *w, options *o)
   webcam = NULL;
   listener = NULL;
   grabber = NULL;
+
+  // Start the ILSClient PThread, do not register to it
+  ils_client = new GMILSClient (gw, opts);
 }
 
 
 GMH323EndPoint::~GMH323EndPoint ()
 {
+  GMILSClient *gm_ils_client = (GMILSClient *) ils_client;
+
   if (webcam != NULL)
     {
       delete (webcam);
       webcam=NULL;
     }
+
+  // TO BE CHANGED
+  if (ils_client != NULL)
+    gm_ils_client->stop ();
+
+  usleep (1000);
+  delete (ils_client);
 }
 
 
@@ -359,6 +372,28 @@ PVideoInputDevice *GMH323EndPoint::Grabber (void)
   return grabber;
 }
 
+
+PThread *GMH323EndPoint::get_ils_client (void)
+{
+  return ils_client;
+}
+
+/*
+void GMH323EndPoint::ils_register (void)
+{
+  GMILSClient *gm_ils_client = NULL;
+  
+  // if there is still no ILSClient thread running, then we
+  // create a new thread
+  if (ils_client == NULL)
+    ils_client = new GMILSClient (gw, opts);
+
+  gm_ils_client = (GMILSClient *) ils_client;
+
+  // And now, we register to the ILS directory
+  gm_ils_client->ils_register ();
+}
+*/
 
 void GMH323EndPoint::StartVideoGrabber (void)
 {

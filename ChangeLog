@@ -1,3 +1,12 @@
+2001-09-23  Damien Sandras  <dsandras@seconix.com>
+
+	* src/ils.cpp, src/ils.h: Created a new C++ class to cope with ILS
+	directories.
+	* src/ldap.cpp, src/ldap_h.h: Added support for those 2 files.
+	* src/Makefile.am: Added ils.cpp and ils.h
+	* src/main_interface.cpp, src/preferences.cpp: Added support for the new class:
+	the thread is created at startup time, even if the user choose to not register.
+	
 2001-09-22  Christian Rose  <menthos@menthos.com>
 
 	* src/main_interface.cpp, src/menu.cpp: Improved messages.

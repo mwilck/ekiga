@@ -26,7 +26,7 @@
 #include "config.h"
 #include "main.h"
 #include "common.h"
-#include "ldap_h.h"
+#include "ils.h"
 #include "main_interface.h"
 #include "audio.h"
 
@@ -1844,21 +1844,31 @@ void apply_options (options *opts, GM_pref_window_widgets *pw)
   endpoint = MyApp->Endpoint ();
 
   // Reinitialise the endpoint settings
+  // so that the opts structure of the EndPoint class
+  // is up to date.
   endpoint->ReInitialise ();
 
+  // ILS is enabled and an option has changed : register
   if ((opts->ldap) && (pw->ldap_changed))
     {
-      char *ip = endpoint->IP();
-      GM_ldap_register ((char *) ip, pw->gw);
+      // We register to the new ILS directory
+      GMILSClient *ils_client = (GMILSClient *) endpoint->get_ils_client ();
 
-      GM_log_insert (pw->gw->log_text, 
-		     _("Registering to ILS directory"));
+      ils_client->ils_register ();
 
       pw->ldap_changed = 0;
-
-      g_free (ip);
     }
 
+  // ILS is disabled, and an option has changed : unregister
+  if ((!opts->ldap) && (pw->ldap_changed))
+    {
+      // We unregister to the new ILS directory
+      GMILSClient *ils_client = (GMILSClient *) endpoint->get_ils_client ();
+
+      ils_client->ils_unregister ();
+
+      pw->ldap_changed = 0;
+    }
 
   // Change the audio mixer source
   if (pw->audio_mixer_changed)
@@ -1912,8 +1922,9 @@ void apply_options (options *opts, GM_pref_window_widgets *pw)
     }
 
 
-  // Unregister from the Gatekeeper, if any
-  if ((MyApp->Endpoint()->Gatekeeper () != NULL) && (pw->gk_changed))
+  // Unregister from the Gatekeeper, if any, and if
+  // it is needed
+  if ((MyApp->Endpoint()->Gatekeeper () != NULL) && (pw->gk_changed) && (!opts->gk))
     MyApp->Endpoint()->RemoveGatekeeper ();
 
   // Register to the gatekeeper

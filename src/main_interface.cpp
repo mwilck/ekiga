@@ -23,7 +23,7 @@
 #include "callbacks.h"
 #include "applet.h"
 #include "splash.h"
-#include "ldap_h.h"
+#include "ils.h"
 #include "common.h"
 #include "menu.h"
 #include "toolbar.h"
@@ -202,8 +202,6 @@ void right_arrow_clicked (GtkWidget *w, gpointer data)
 
 void silence_detection_button_clicked (GtkWidget *w, gpointer data)
 {
-  GM_window_widgets *gw = (GM_window_widgets *) data;
-
   MyApp->Endpoint ()->ChangeSilenceDetection ();
 }
 
@@ -301,9 +299,11 @@ void GM_init (GM_window_widgets *gw, options *opts, int argc,
         GM_splash_advance_progress (gw->splash_win, 
 				    _("Registering to ILS directory"), 
 				    0.60);
-	GM_ldap_register (endpoint->IP (), gw);
+      GMILSClient *gm_ils_client = (GMILSClient *) endpoint->get_ils_client ();
+      gm_ils_client->ils_register ();
     }
-      
+
+  
   // Run the listener thread
   if (opts->show_splash)
     GM_splash_advance_progress (gw->splash_win, 

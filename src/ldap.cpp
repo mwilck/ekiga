@@ -19,9 +19,12 @@
 
 /* MEMORY : OK except openldap that doesn't free :-( */
 
-#include "../config.h"
+//#include <sys/time.h>
+
+//#include "../config.h"
 
 #include "ldap_h.h"
+#include "ils.h"
 #include "config.h"
 #include "main.h"
 #include "webcam.h"
@@ -33,6 +36,7 @@
 #include "../pixmaps/ldap_add.xpm"
 #include "../pixmaps/ldap_refresh.xpm"
 
+int thread = 0;
 
 /******************************************************************************/
 /* Global Variables                                                           */
@@ -57,7 +61,6 @@ void ldap_window_clicked (GnomeDialog *widget, int button, gpointer data)
       // The user destroys the window thanks to the WM
       // or by clicking Apply
     default:
-      pthread_cancel (lw->fetch_results_thread);
       gtk_clist_clear (GTK_CLIST (lw->ldap_users_clist));
       gtk_widget_destroy (GTK_WIDGET (widget));
       break;
@@ -65,6 +68,7 @@ void ldap_window_clicked (GnomeDialog *widget, int button, gpointer data)
 
   lw->gw->ldap_window = NULL;
   delete ((GM_ldap_window_widgets *) data);
+  data = NULL;
 }
 
 
@@ -129,6 +133,8 @@ void ldap_clist_row_selected (GtkWidget *widget, gint row,
 void refresh_button_clicked (GtkButton *button, gpointer data)
 {
   GM_ldap_window_widgets *lw = (GM_ldap_window_widgets *) data;
+  GMH323EndPoint *endpoint = MyApp->Endpoint ();
+  GMILSClient *ils_client = (GMILSClient *) endpoint->get_ils_client ();
 
   lw->thread_count++;
 
@@ -137,10 +143,7 @@ void refresh_button_clicked (GtkButton *button, gpointer data)
       gtk_clist_freeze (GTK_CLIST (lw->ldap_users_clist));
       gtk_clist_clear (GTK_CLIST (lw->ldap_users_clist));
 
-      pthread_create (&lw->fetch_results_thread, 
-		      NULL,
-		      GM_ldap_populate_ldap_users_clist,
-		      (void *) data);
+      ils_client->ils_browse (lw);
 
       gtk_clist_thaw (GTK_CLIST (lw->ldap_users_clist));
     }
@@ -596,248 +599,6 @@ void * GM_ldap_populate_ldap_users_clist (void *lwi)
 
 void *GM_ldap_register (char *ip, GM_window_widgets *gw)
 {
-  // FREEING MEMORY  :  checked   STATUS  :  OK
-  GtkWidget *msg_box;
-
-  LDAP *ldap_connection = NULL;
-  options opts;
-  LDAPMod *mods [15];
-
-  char *firstname_value [2];
-  char *surname_value [2];
-  char *mail_value [2];
-  char *comment_value [2];
-  char *location_value [2];
-  char *ilsa32833566_value [2];
-  char *ilsa32964638_value [2];
-  char *ilsa26214430_value [2];
-  char *sipaddress_value [2];
-  char *sport_value [2];
-  char *sappid_value [2];
-  char *protid_value [2];
-  char *objectclass_value [2];
-  char *cn_value [2];
-
-  char *dn = NULL;
-  unsigned long sip;
-  int rc;
-
-  read_config (&opts); 
-
-  GM_log_insert (gw->log_text, _("Connecting to ILS directory"));
-  gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-		     _("Connecting to ILS directory"));
-
-  ldap_connection = ldap_open (opts.ldap_server, atoi (opts.ldap_port));
-
-
-  if (ldap_connection == NULL)
-    {
-      msg_box = gnome_message_box_new ("Error while connecting to ILS directory",
-				       GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
-      gtk_widget_show (msg_box);
-      return (0);
-    }
-
-  if (ldap_bind_s (ldap_connection, NULL, NULL, LDAP_AUTH_SIMPLE)
-      != LDAP_SUCCESS ) 
-    {
-      msg_box = gnome_message_box_new ("Error while connecting to ILS directory",
-				       GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
-      gtk_widget_show (msg_box);
-      return (0);
-    }
-
-
-  // cn
-  mods [0] = new (LDAPMod);
-  cn_value [0] = opts.mail;
-  cn_value [1] = NULL;
-  mods [0]->mod_op = LDAP_MOD_ADD | LDAP_MOD_REPLACE;
-  mods [0]->mod_type = g_strdup ("cn");
-  mods [0]->mod_values = cn_value;
-
-  // objectclass
-  mods [1] = new (LDAPMod);
-  objectclass_value [0] = (char *) malloc (20);
-  strcpy (objectclass_value [0], "rtperson");
-  objectclass_value [1] = NULL;
-  mods [1]->mod_op = LDAP_MOD_ADD | LDAP_MOD_REPLACE;
-  mods [1]->mod_type = g_strdup ("objectclass");
-  mods [1]->mod_values = objectclass_value;
-
-  // Sappid
-  mods [2] = new (LDAPMod);
-  // Berk !
-  sappid_value [0] = (char *) malloc (15);
-  strcpy (sappid_value [0], "gnomemeeting");
-  sappid_value [1] = NULL;
-  mods [2]->mod_op = LDAP_MOD_ADD | LDAP_MOD_REPLACE;
-  mods [2]->mod_type = g_strdup ("sappid");
-  mods [2]->mod_values = sappid_value;
-
-  // protid
-  mods [3] = new (LDAPMod);
-  protid_value [0] = (char *) malloc (5);
-  strcpy (protid_value [0], "h323");
-  protid_value [1] = NULL;
-  mods [3]->mod_op = LDAP_MOD_ADD | LDAP_MOD_REPLACE;
-  mods [3]->mod_type = g_strdup ("sprotid");
-  mods [3]->mod_values = protid_value;
-  
-  // Sip address
-  mods [4] = new (LDAPMod);
-  sip = inet_addr (ip);
-  sprintf (ip, "%lu", sip); 
-  sipaddress_value [0] = ip;
-  sipaddress_value [1] = NULL;
-  mods [4]->mod_op = LDAP_MOD_ADD | LDAP_MOD_REPLACE;
-  mods [4]->mod_type = g_strdup ("sipaddress");
-  mods [4]->mod_values = sipaddress_value;
-
-  // the firstname
-  mods [5] = new (LDAPMod);
-  firstname_value [0] = opts.firstname; // freed with opts
-  firstname_value [1] = NULL;
-  mods [5]->mod_op = LDAP_MOD_ADD | LDAP_MOD_REPLACE;
-  mods [5]->mod_type = g_strdup ("givenname");
-  mods [5]->mod_values = firstname_value;
-
-  // the surname
-  mods [6] = new (LDAPMod);
-  if (!strcmp (opts.surname ,""))
-    surname_value [0] = NULL;
-  else
-    {
-      surname_value [0] = opts.surname;
-      surname_value [1] = NULL;
-    }
-  mods [6]->mod_op = LDAP_MOD_ADD | LDAP_MOD_REPLACE;
-  mods [6]->mod_type = g_strdup ("surname");
-  mods [6]->mod_values = surname_value;
-
-  // the mail
-  mods [7] = new (LDAPMod);
-  mail_value [0] = opts.mail;
-  mail_value [1] = NULL;
-  mods [7]->mod_op = LDAP_MOD_ADD | LDAP_MOD_REPLACE;
-  mods [7]->mod_type = g_strdup ("rfc822mailbox");
-  mods [7]->mod_values = mail_value;
-
-  // the comment
-  mods [8] = new (LDAPMod);
-  if (!strcmp (opts.comment ,""))
-    comment_value [0] = NULL;
-  else
-    {
-      comment_value [0] = opts.comment;
-      comment_value [1] = NULL;
-    }
-  mods [8]->mod_op = LDAP_MOD_ADD | LDAP_MOD_REPLACE;
-  mods [8]->mod_type = g_strdup ("comment");
-  mods [8]->mod_values = comment_value;
-
-  // the location
-  mods [9] = new (LDAPMod);
-  if (!strcmp (opts.location ,""))
-    location_value [0] = NULL;
-  else
-    {
-      location_value [0] = opts.location;
-      location_value [1] = NULL;
-    }
-  mods [9]->mod_op = LDAP_MOD_ADD | LDAP_MOD_REPLACE;
-  mods [9]->mod_type = g_strdup ("location");
-  mods [9]->mod_values = location_value;
-  
-  // Audio Capable ?
-  mods [10] = new (LDAPMod);
-  ilsa32833566_value [0] = (char *) malloc (2);
-  strcpy (ilsa32833566_value [0], "1");
-  ilsa32833566_value [1] = NULL;
-  mods [10]->mod_op = LDAP_MOD_ADD | LDAP_MOD_REPLACE;
-  mods [10]->mod_type = g_strdup ("ilsa32833566");
-  mods [10]->mod_values = ilsa32833566_value;
-
-  // ilsa26214430
-  mods [11] = new (LDAPMod);
-  ilsa26214430_value [0] = (char *) malloc (2);
-  strcpy (ilsa26214430_value [0], "0");
-  ilsa26214430_value [1] = NULL;
-  mods [11]->mod_op = LDAP_MOD_ADD | LDAP_MOD_REPLACE;
-  mods [11]->mod_type = g_strdup ("ilsa26214430");
-  mods [11]->mod_values = ilsa26214430_value;
-
-  // Video Capable ?
-  mods [12] = new (LDAPMod);
-  ilsa32964638_value [0] = (char *) malloc (2);
-/*
-  if ( (opts.vid_tr) && (GM_cam (opts.video_device, opts.video_channel)) )
-    strcpy (ilsa32964638_value [0], "1");
-  else*/
-    strcpy (ilsa32964638_value [0], "0");
-  ilsa32964638_value [1] = NULL;
-  mods [12]->mod_op = LDAP_MOD_ADD | LDAP_MOD_REPLACE;
-  mods [12]->mod_type = g_strdup ("ilsa32964638");
-  mods [12]->mod_values = ilsa32964638_value;
-
-  // sport
-  mods [13] = new (LDAPMod);
-  sport_value [0] = (char *) malloc (10);
-  strcpy (sport_value [0], "1720");
-  sport_value [1] = NULL;
-  mods [13]->mod_op = LDAP_MOD_ADD | LDAP_MOD_REPLACE;
-  mods [13]->mod_type = g_strdup ("sport");
-  mods [13]->mod_values = sport_value;
-
-  mods [14] = NULL;
-
-
-  dn = (char *) malloc (strlen ("cn=") + strlen (opts.mail) + 
-			strlen (",objectclass=rtperson")  + 3);
-
-  strcpy (dn, "");
-  strcat (dn, "cn=");
-  strcat (dn, opts.mail);
-  strcat (dn, ",objectclass=rtperson");
-
-  rc = ldap_add (ldap_connection, dn, mods);
-
-  if(rc == -1)
-    {
-      msg_box = gnome_message_box_new (_("Error while registering to ILS directory"), GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
-      gtk_widget_show (msg_box);
-    }
-  else
-    {
-        GM_log_insert (gw->log_text, 
-		       _("Successfully initiated registering to ILS directory"));
-	gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-			   _("Successfully initiated registering to ILS directory"));
-    }
-
-  // We free things
-  free (ilsa32833566_value [0]);
-  free (ilsa32964638_value [0]);
-  free (ilsa26214430_value [0]);
-  free (objectclass_value [0]);
-  free (sport_value [0]);
-  free (sappid_value [0]);
-  free (protid_value [0]);
-  free (dn);
-
-  g_options_free (&opts);
-
-  for (int i = 0 ; i < 14 ; i++)
-    {
-      g_free (mods [i]->mod_type);
-      delete (mods [i]);
-    }
-
-  ldap_unbind (ldap_connection);
-
-  GM_ldap_refresh ();
-
   return (0);
 }
 
@@ -883,4 +644,3 @@ void *GM_ldap_refresh (void)
   return (0);
 }
 
-/******************************************************************************/

@@ -19,7 +19,7 @@
 
 
 #ifndef _LDAP_H_H_
-#define _LDAP_H_H
+#define _LDAP_H_H_
 
 #include <lber.h>
 #include <ldap.h>
@@ -31,6 +31,7 @@
 #include <glib.h>
 #include <pthread.h>
 #include <sys/socket.h>
+#include <ptlib.h>
 
 #include "common.h"
 
