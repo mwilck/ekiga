@@ -42,6 +42,7 @@
 #include "gnomemeeting.h"
 #include "ils.h"
 #include "menu.h"
+#include "callbacks.h"
 #include "dialog.h"
 #include "stock-icons.h"
 
@@ -65,10 +66,11 @@ static void add_contact_to_group_cb (GtkWidget *, gpointer);
 static void edit_contact_cb (GtkWidget *, gpointer);
 static void delete_contact_from_group_cb (GtkWidget *, gpointer);
 static void new_contact_section_cb (GtkWidget *, gpointer);
+static void delete_cb (GtkWidget *, gpointer);
 static void delete_contact_section_cb (GtkWidget *, gpointer);
 static void call_user_cb (GtkWidget *, gpointer);
 static void contact_activated_cb (GtkTreeView *, GtkTreePath *,
-				      GtkTreeViewColumn *, gpointer);
+				  GtkTreeViewColumn *, gpointer);
 static gint ldap_window_clicked (GtkWidget *, GdkEvent *, gpointer);
 static void contact_section_changed_cb (GtkTreeSelection *, gpointer);
 static void server_content_refresh (GtkWidget *, gint);
@@ -78,7 +80,7 @@ static void contact_section_activated_cb (GtkTreeView *, GtkTreePath *,
 static gboolean is_contact_member_of_group (gchar *, gchar *);
 static GSList *find_contact_in_group_content (gchar *, GSList *);
 static gboolean get_selected_contact_info (GtkNotebook *, gchar **,
-					   gchar **, gchar **);
+					   gchar **, gchar **, gboolean *);
 static gint contact_section_event_after_cb (GtkWidget *, GdkEventButton *,
 					    gpointer);
 static gint contact_event_after_cb (GtkWidget *, GdkEventButton *, gpointer);
@@ -107,6 +109,8 @@ dnd_drag_motion_cb (GtkWidget *tree_view,
   gchar *contact_section = NULL;
   gchar *contact_callto = NULL;
 
+  gboolean is_group;
+  
   GmLdapWindow *lw = NULL;
   
   GValue value =  {0, };
@@ -118,7 +122,8 @@ dnd_drag_motion_cb (GtkWidget *tree_view,
 
   /* Get the callto field of the contact info from the source GtkTreeView */
   if (get_selected_contact_info (GTK_NOTEBOOK (lw->notebook), &contact_section,
-				 &contact_name, &contact_callto)) {
+				 &contact_name, &contact_callto, &is_group)
+      && is_group) {
     
 
     /* See if the path in the destination GtkTreeView corresponds to a valid
@@ -317,6 +322,8 @@ add_contact_to_group_cb (GtkWidget *widget,
   gchar *contact_callto = NULL;
   gchar *contact_info = NULL;
 
+  gboolean is_group;
+  
   GConfClient *client = NULL;
   
   client = gconf_client_get_default ();
@@ -336,7 +343,7 @@ add_contact_to_group_cb (GtkWidget *widget,
 
     if (get_selected_contact_info (GTK_NOTEBOOK (lw->notebook),
 				   &contact_section, &contact_name,
-				   &contact_callto)) {
+				   &contact_callto, &is_group)) {
 
       contact_info = 
 	g_strdup_printf ("%s|%s", contact_name, contact_callto);
@@ -358,11 +365,29 @@ add_contact_to_group_cb (GtkWidget *widget,
 }
 
 
+static void
+groups_list_store_toggled (GtkCellRendererToggle *cell, gchar *path_str,
+			   gpointer data)
+{
+  GtkTreeModel *model = GTK_TREE_MODEL (data);
+  GtkTreePath *path = gtk_tree_path_new_from_string (path_str);
+  GtkTreeIter iter;
+  
+  gboolean member_of_group = false;
+
+  gtk_tree_model_get_iter (model, &iter, path);
+  gtk_tree_model_get (model, &iter, 0, &member_of_group, -1);
+  
+  gtk_list_store_set (GTK_LIST_STORE (model), &iter, 0,
+		      !member_of_group, -1);
+}
+
+
 /* DESCRIPTION  :  This callback is called when the user choose to edit the
- *                 info of a contact from a group or to add a group.
+ *                 info of a contact from a group or to add an user.
  * BEHAVIOR     :  Opens a popup, and save the modified info by modifying the
  *                 gconf key when the user clicks on "ok".
- * PRE          :  If data = 1, then we add the user, no need to see 
+ * PRE          :  If data = 1, then we add a new user, no need to see 
  *                 if something is selected and needs to be edited.
  */
 void
@@ -372,10 +397,17 @@ edit_contact_cb (GtkWidget *widget,
   GConfClient *client = NULL;
 
   GtkWidget *table = NULL;
+  GtkWidget *frame = NULL;
   GtkWidget *dialog = NULL;
   GtkWidget *label = NULL;
   GtkWidget *name_entry = NULL;
   GtkWidget *callto_entry = NULL;
+
+  GtkListStore *list_store = NULL;
+  GtkCellRenderer *renderer = NULL;
+  GtkWidget *tree_view = NULL;
+  GtkTreeViewColumn *column = NULL;
+  GtkTreeIter iter;
   
   gchar *contact_name = NULL;
   gchar *contact_callto = NULL;
@@ -383,9 +415,14 @@ edit_contact_cb (GtkWidget *widget,
   gchar *contact_info = NULL;
   gchar *old_contact_callto = NULL;
   gchar *contact_section = NULL;
+  gchar *group_name = NULL;
 
+  gboolean selected = false;
+  gboolean is_group = false;
   int result = 0;
+  int groups_nbr = 0;
   
+  GSList *groups_list = NULL;
   GSList *group_content = NULL;
   GSList *group_content_iter = NULL;
 
@@ -397,10 +434,11 @@ edit_contact_cb (GtkWidget *widget,
   client = gconf_client_get_default ();
 
 
-  /* We don't care if it fails as long as contact_section is correct */
+  /* We don't care if it fails as long as contact_section and is_group
+     are correct */
   get_selected_contact_info (GTK_NOTEBOOK (lw->notebook),
 			     &contact_section, &contact_name,
-			     &contact_callto);
+			     &contact_callto, &is_group);
 
 
   /* If we edit the user in the group */
@@ -416,33 +454,39 @@ edit_contact_cb (GtkWidget *widget,
     contact_callto = NULL;
   }
 
-  gconf_key =
-    g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, contact_section);
           
   /* Create the dialog to easily modify the info of a specific contact */
   dialog = gtk_dialog_new_with_buttons (_("Edit the contact information"), 
 					GTK_WINDOW (gw->ldap_window),
 					GTK_DIALOG_DESTROY_WITH_PARENT,
+					GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
 					GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
-					GTK_STOCK_CANCEL,
-					GTK_RESPONSE_REJECT,
 					NULL);
     
-  table = gtk_table_new (2, 2, FALSE);
-  label = gtk_label_new (_("Name:"));
+  table = gtk_table_new (3, 2, FALSE);
+  gtk_table_set_row_spacings (GTK_TABLE (table), 3 * GNOMEMEETING_PAD_SMALL);
+  gtk_table_set_col_spacings (GTK_TABLE (table), 3 * GNOMEMEETING_PAD_SMALL);
+  
+  label = gtk_label_new (NULL);
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);  
+  gtk_label_set_markup (GTK_LABEL (label), _("<b>Name:</b>"));
+
   name_entry = gtk_entry_new ();
   if (contact_name)
     gtk_entry_set_text (GTK_ENTRY (name_entry), contact_name);
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1, 
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+		    (GtkAttachOptions) (GTK_FILL),
+		    (GtkAttachOptions) (GTK_FILL),
+		    3 * GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
   gtk_table_attach (GTK_TABLE (table), name_entry, 1, 2, 0, 1, 
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+		    (GtkAttachOptions) (GTK_FILL),
+		    (GtkAttachOptions) (GTK_FILL),
 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
     
-  label = gtk_label_new (_("callto URL:"));
+  label = gtk_label_new (NULL);
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
+  gtk_label_set_markup (GTK_LABEL (label), _("<b>URL:</b>"));
+  
   callto_entry = gtk_entry_new ();
   gtk_widget_set_size_request (GTK_WIDGET (callto_entry), 300, -1);
   if (contact_callto)
@@ -450,16 +494,76 @@ edit_contact_cb (GtkWidget *widget,
   else
     gtk_entry_set_text (GTK_ENTRY (callto_entry), "callto://");
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 1, 2, 
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+		    (GtkAttachOptions) (GTK_FILL),
+		    (GtkAttachOptions) (GTK_FILL),
+		    3 * GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
   gtk_table_attach (GTK_TABLE (table), callto_entry, 1, 2, 1, 2, 
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
-		    (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),
+		    (GtkAttachOptions) (GTK_FILL),
+		    (GtkAttachOptions) (GTK_FILL),
 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+
+
+  /* The list store that contains the list of possible groups */
+  label = gtk_label_new (NULL);
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
+  gtk_label_set_markup (GTK_LABEL (label), _("<b>Groups:</b>"));
+
+  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 2, 3, 
+		    (GtkAttachOptions) (GTK_FILL),
+		    (GtkAttachOptions) (GTK_FILL),
+		    3 * GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+
+  frame = gtk_frame_new (NULL);
+  list_store = gtk_list_store_new (2, G_TYPE_BOOLEAN, G_TYPE_STRING);
+  tree_view = 
+    gtk_tree_view_new_with_model (GTK_TREE_MODEL (list_store));
+  gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (tree_view), FALSE);
+  
+  renderer = gtk_cell_renderer_toggle_new ();
+  column = gtk_tree_view_column_new_with_attributes ("", renderer,
+						     "active", 0, NULL);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+  g_signal_connect (G_OBJECT (renderer), "toggled",
+		    G_CALLBACK (groups_list_store_toggled), 
+		    GTK_TREE_MODEL (list_store));
+
+  renderer = gtk_cell_renderer_text_new ();
+  column = gtk_tree_view_column_new_with_attributes ("", renderer,
+						     "text", 1, NULL);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+  gtk_container_add (GTK_CONTAINER (frame), tree_view);
+
+  gtk_table_attach (GTK_TABLE (table), frame, 1, 2, 2, 3, 
+		    (GtkAttachOptions) (GTK_FILL),
+		    (GtkAttachOptions) (GTK_FILL),
+		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+
+  
+  /* Populate the list store with available groups */
+  groups_list =
+    gconf_client_get_list (client, CONTACTS_KEY "groups_list",
+			   GCONF_VALUE_STRING, NULL);
+  
+  while (groups_list) {
     
+    if (groups_list->data) {
+
+	gtk_list_store_append (list_store, &iter);
+	gtk_list_store_set (list_store, &iter,
+			    0, (is_group
+			    && old_contact_callto
+			    && is_contact_member_of_group (old_contact_callto, (char *) groups_list->data)
+			    && GPOINTER_TO_INT (data) != 1),
+			    1, groups_list->data, -1);
+    }
+
+    groups_list = g_slist_next (groups_list);
+  }
+  
+  
+  /* Pack the gtk entries and the list store in the window */
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), table,
-		      FALSE, FALSE, 4);
+		      FALSE, FALSE, GNOMEMEETING_PAD_SMALL);
   gtk_widget_show_all (dialog);
     
   result = gtk_dialog_run (GTK_DIALOG (dialog));
@@ -467,53 +571,97 @@ edit_contact_cb (GtkWidget *widget,
   switch (result) {
       
   case GTK_RESPONSE_ACCEPT:
-      
+
+    /* If there is no name or an empty callto, display an error message
+       and exit */
+    if (!strcmp (gtk_entry_get_text (GTK_ENTRY (name_entry)), "")
+	|| !strcmp (gtk_entry_get_text (GTK_ENTRY (callto_entry)), "")
+	|| !strcmp (gtk_entry_get_text (GTK_ENTRY (callto_entry)), "callto://")){
+      gnomemeeting_error_dialog (GTK_WINDOW (gw->ldap_window), _("Please provide a valid name and callto for the user"));
+      break;
+    }
+	
+    
     contact_info =
       g_strdup_printf ("%s|%s",
 		       gtk_entry_get_text (GTK_ENTRY (name_entry)),
 		       gtk_entry_get_text (GTK_ENTRY (callto_entry)));
-      
-    group_content =
-      gconf_client_get_list (client, gconf_key, GCONF_VALUE_STRING, NULL);
-      
-      
-    /* Once we find the contact corresponding to the old saved callto,
-       we delete it and insert the new one at the same position */
-    if (old_contact_callto) {
-	
-      group_content_iter =
-	find_contact_in_group_content (old_contact_callto, group_content);
-	
-      group_content =
-	g_slist_insert (group_content, (gpointer) contact_info,
-			g_slist_position (group_content,
-					  group_content_iter));
-	
-      group_content = g_slist_remove_link (group_content,
-					   group_content_iter);
-    }
-    else
-      group_content =
-	g_slist_append (group_content, (gpointer) contact_info);
-
+          
     contact_callto = (char *) gtk_entry_get_text (GTK_ENTRY (callto_entry));
 
-    /* We do not add the user to the group if the callto is already 
-       present in that group except if we are editing and if the user
-       didn't change the callto during the edit
-       (contact_callto == old_contact_callto).
-    */
-    if (is_contact_member_of_group (contact_callto, contact_section)
-	&& !(GPOINTER_TO_INT (data) == 0 
-	     && !strcmp (contact_callto, old_contact_callto)))
-      gnomemeeting_error_dialog (GTK_WINDOW (gw->ldap_window), _("Another user already exists with the same callto:// entry, please delete it first."));
-    else
-      gconf_client_set_list (client, gconf_key, GCONF_VALUE_STRING,
-			     group_content, NULL);
-         
+    /* Determine the groups where we want to add the contact */
+    if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (list_store), &iter)) {
+      
+      do {
+	
+	gtk_tree_model_get (GTK_TREE_MODEL (list_store), &iter,
+			    0, &selected, 1, &group_name, -1);
+	  
+	if (group_name) {
+	    
+	  gconf_key =
+	    g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, group_name);
+
+	  group_content =
+	    gconf_client_get_list (client, gconf_key,
+				   GCONF_VALUE_STRING, NULL);
+      
+	  /* Once we find the contact corresponding to the old saved callto
+	     (if we are editing an existing user and not adding a new one),
+	     we delete him and insert the new one at the same position;
+	     if the group is not selected for that user, we delete him from
+	     the group.
+	  */
+	  if (old_contact_callto) {
+	    
+	    group_content_iter =
+	      find_contact_in_group_content (old_contact_callto,
+					     group_content);
+
+	    /* Only reinsert the contact if the group is selected for him,
+	       otherwise, only delete him from the group */
+	    if (selected)
+	      group_content =
+		g_slist_insert (group_content, (gpointer) contact_info,
+				g_slist_position (group_content,
+						  group_content_iter));
+
+	    group_content = g_slist_remove_link (group_content,
+						 group_content_iter);
+	  }
+	  else
+	    group_content =
+	      g_slist_append (group_content, (gpointer) contact_info);
+
+	  /* Update the key if the contact is not already present in the group,
+	     and if the group is selected for him,
+	     or if it has to be removed because the group is not selected for
+	     him */
+	  if ((!is_contact_member_of_group (contact_callto, group_name)
+	       && selected)
+	      || (!selected && GPOINTER_TO_INT (data) != 1))
+	    gconf_client_set_list (client, gconf_key, GCONF_VALUE_STRING,
+				   group_content, NULL);
+	  else
+	    if (GPOINTER_TO_INT (data) == 1 && selected) /* User already in the
+							    selected group */
+	      gnomemeeting_error_dialog (GTK_WINDOW (gw->ldap_window), _("Another user with the callto %s already exists in group %s."), contact_callto, group_name);
+	  
+	  groups_nbr++;
+	}
+	
+      } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (list_store), &iter));
+
+
+      /* If the user had selected no groups, we display a warning */
+      if (!groups_nbr)
+	gnomemeeting_error_dialog (GTK_WINDOW (gw->ldap_window),
+				   _("You have to select a group to which you want to add your contact"));
+      
+    }
     g_free (contact_info);
     g_slist_free (group_content);
-      
+    
     break;
   }
     
@@ -541,6 +689,8 @@ delete_contact_from_group_cb (GtkWidget *widget,
   gchar *gconf_key = NULL;
   gchar *contact_section = NULL;
 
+  gboolean is_group;
+  
   GSList *group_content = NULL;
   GSList *group_content_iter = NULL;
   
@@ -551,7 +701,8 @@ delete_contact_from_group_cb (GtkWidget *widget,
 
   if (get_selected_contact_info (GTK_NOTEBOOK (lw->notebook),
 				 &contact_section, &contact_name,
-				 &contact_callto)) {
+				 &contact_callto, &is_group)
+      && is_group) {
 
     gconf_key =
       g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, contact_section);
@@ -665,6 +816,50 @@ new_contact_section_cb (GtkWidget *widget,
 }
 
 
+void
+delete_cb (GtkWidget *w,
+	   gpointer data)
+{
+  GmLdapWindow *lw = NULL;
+
+  GtkTreeSelection *selection = NULL;
+  GtkTreeModel *model = NULL;
+  GtkTreePath *tree_path = NULL;
+  GtkTreeIter iter;
+  
+  gchar *contact_section = NULL;
+  gchar *contact_name = NULL;
+  gchar *contact_callto = NULL;
+  gchar *path_string = NULL;
+  
+  gboolean is_group = false;
+  
+  lw = gnomemeeting_get_ldap_window (gm);
+
+
+  if (get_selected_contact_info (GTK_NOTEBOOK (lw->notebook),
+				 &contact_section, &contact_name,
+				 &contact_callto, &is_group)) {
+
+    delete_contact_from_group_cb (NULL, NULL);
+  }
+  /* No contact is selected, but perhaps a contact section to delete
+     is selected */
+  else {
+
+    selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (lw->tree_view));
+    model = gtk_tree_view_get_model (GTK_TREE_VIEW (lw->tree_view));
+    
+    if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
+
+      tree_path = gtk_tree_model_get_path (model, &iter);
+      path_string = gtk_tree_path_to_string (tree_path);	
+      delete_contact_section_cb (NULL, path_string);
+    }
+  }
+}
+
+
 /* DESCRIPTION  :  This callback is called when the user chooses to delete
  *                 a contact section, server or group.
  * BEHAVIOR     :  Removes the corresponding contact section from the gconf
@@ -765,13 +960,15 @@ contact_activated_cb (GtkTreeView *tree,
   gchar *contact_name = NULL;
   gchar *contact_callto = NULL;
 
+  gboolean is_group;
+  
   GmLdapWindow *lw = gnomemeeting_get_ldap_window (gm);
   GmWindow *gw = gnomemeeting_get_main_window (gm);
   
   
   if (get_selected_contact_info (GTK_NOTEBOOK (lw->notebook),
 				 &contact_section, &contact_name,
-				 &contact_callto)) {
+				 &contact_callto, &is_group)) {
     
     /* if we are waiting for a call, add the IP
        to the history, and call that user       */
@@ -810,7 +1007,8 @@ ldap_window_clicked (GtkWidget *widget,
 
 /* DESCRIPTION  :  This callback is called when the user clicks
  *                 on a server in the tree_store.
- * BEHAVIOR     :  Selects the corresponding GtkNotebook page.
+ * BEHAVIOR     :  Selects the corresponding GtkNotebook page, and unselects
+ *                 every row of the list store in that page.
  * PRE          :  /
  */
 void
@@ -820,6 +1018,10 @@ contact_section_changed_cb (GtkTreeSelection *selection,
   char *name = NULL;
   int page_num = -1;
 
+  GtkListStore *list_store = NULL;
+  GtkTreeView *tree_view = NULL;
+  GtkTreeSelection *list_store_selection = NULL;
+  GtkWidget *page = NULL;
   GtkTreeIter iter;
   GtkTreeModel *model = NULL;
   GtkTreePath *path = NULL;
@@ -842,13 +1044,34 @@ contact_section_changed_cb (GtkTreeSelection *selection,
 			    COLUMN_CONTACT_SECTION_NAME, &name, 
 			    COLUMN_NOTEBOOK_PAGE, &page_num, -1);
 
-	if (page_num != -1) 
+	if (page_num != -1) {
+
+	  /* Selects the good notebook page */
 	  gtk_notebook_set_current_page (GTK_NOTEBOOK (lw->notebook), 
 					 page_num);
-      }
 
-      gtk_tree_path_free (path);
+	  /* Unselect all rows of the list store in that notebook page */
+	  page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), 
+					    page_num);
+
+	  tree_view =
+	    GTK_TREE_VIEW (g_object_get_data (G_OBJECT (page), "tree_view"));
+	  list_store =
+	    GTK_LIST_STORE (g_object_get_data (G_OBJECT (page),"list_store"));
+
+	  if (list_store && tree_view) {
+	    
+	    list_store_selection =
+	      gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view));
+
+	    if (list_store_selection)
+	      gtk_tree_selection_unselect_all (GTK_TREE_SELECTION (list_store_selection));
+	  }
+	}
+      }
     }
+    
+    gtk_tree_path_free (path);
   }
 }
 
@@ -1115,7 +1338,8 @@ gboolean
 get_selected_contact_info (GtkNotebook *notebook,
 			   gchar **contact_section,
 			   gchar **contact_name,
-			   gchar **contact_callto)
+			   gchar **contact_callto,
+			   gboolean *is_group)
 {
   GtkWidget *page = NULL;
 
@@ -1152,6 +1376,7 @@ get_selected_contact_info (GtkNotebook *notebook,
 			    COLUMN_ILS_NAME, contact_name, 
 			    COLUMN_ILS_CALLTO, contact_callto,
 			    -1);
+	*is_group = false;
 	}
       else {
 	
@@ -1159,6 +1384,7 @@ get_selected_contact_info (GtkNotebook *notebook,
 			    COLUMN_NAME, contact_name, 
 			    COLUMN_CALLTO, contact_callto,
 			    -1);
+	*is_group = true;
       }
     }
     else
@@ -1380,7 +1606,7 @@ contact_event_after_cb (GtkWidget *w,
 	    
 	    MenuEntry edit_entry =
 	      {_("Edit this user information"), NULL,
-	       NULL, 0, MENU_ENTRY,
+	       GTK_STOCK_PROPERTIES, 0, MENU_ENTRY,
 	       GTK_SIGNAL_FUNC (edit_contact_cb),
 	       NULL, NULL};
 	    user_menu [cpt] = edit_entry;
@@ -1458,6 +1684,7 @@ gnomemeeting_init_ldap_window ()
   GtkWidget *hbox = NULL;
   GtkWidget *vbox = NULL;
   GtkWidget *frame = NULL;
+  GtkWidget *menubar = NULL;
   GdkPixbuf *xdap_pixbuf = NULL;
   GdkPixbuf *contact_icon = NULL;
   GtkCellRenderer *cell = NULL;
@@ -1504,11 +1731,63 @@ gnomemeeting_init_ldap_window ()
   gtk_window_set_default_size (GTK_WINDOW (gw->ldap_window), 550, 310);
   g_object_unref (G_OBJECT (xdap_pixbuf));
 
+  
+  /* A vbox that will contain the menubar, and also the hbox containing
+     the rest of the window */
+  vbox = gtk_vbox_new (0, FALSE);
+  gtk_container_add (GTK_CONTAINER (gw->ldap_window), vbox);
+  menubar = gtk_menu_bar_new ();
+  
+  static MenuEntry addressbook_menu [] =
+    {
+      {_("_File"), NULL, NULL, 0, MENU_NEW, NULL, NULL, NULL},
 
+      {_("New _server"), NULL,
+       GM_STOCK_REMOTE_CONTACT, 0, MENU_ENTRY, 
+       GTK_SIGNAL_FUNC (new_contact_section_cb),
+       GINT_TO_POINTER (CONTACTS_SERVERS), NULL},
+
+      {_("New _group"), NULL,
+       GM_STOCK_LOCAL_CONTACT, 0, MENU_ENTRY, 
+       GTK_SIGNAL_FUNC (new_contact_section_cb),
+       GINT_TO_POINTER (CONTACTS_GROUPS), NULL},
+
+      {_("New _contact"), NULL,
+       NULL, 0, MENU_ENTRY, 
+       GTK_SIGNAL_FUNC (edit_contact_cb), GINT_TO_POINTER (1),
+       NULL},
+
+      {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
+
+      {_("Close"), NULL,
+       GTK_STOCK_CLOSE, 0, MENU_ENTRY, 
+       GTK_SIGNAL_FUNC (gnomemeeting_component_view),
+       (gpointer) gw->ldap_window,
+       NULL},
+
+      {_("_Edit"), NULL, NULL, 0, MENU_NEW, NULL, NULL, NULL},
+
+      {_("_Properties"), NULL,
+       GTK_STOCK_PROPERTIES, 0, MENU_ENTRY, 
+       GTK_SIGNAL_FUNC (edit_contact_cb), GINT_TO_POINTER (0), NULL},
+
+      {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
+      
+      {_("_Delete"), NULL,
+       GTK_STOCK_DELETE, 0, MENU_ENTRY, 
+       GTK_SIGNAL_FUNC (delete_cb), NULL, NULL},
+
+      {NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL}
+    };
+
+  gnomemeeting_build_menu (menubar, addressbook_menu, NULL);
+  gtk_box_pack_start (GTK_BOX (vbox), menubar, FALSE, FALSE, 0);
+
+  
   /* A hbox to put the tree and the ldap browser */
   hbox = gtk_hbox_new (FALSE, 6);
   gtk_container_set_border_width (GTK_CONTAINER (hbox), 6);
-  gtk_container_add (GTK_CONTAINER (gw->ldap_window), hbox);
+  gtk_box_pack_start (GTK_BOX (vbox), hbox, TRUE, TRUE, 0);
   
 
   /* The GtkTreeView that will store the contacts sections */
@@ -1687,7 +1966,7 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
   GtkWidget *option_menu = NULL;
   GtkWidget *search_entry = NULL;
   GtkWidget *refresh_button = NULL;
-  
+    
   GConfClient *client = NULL;
   
   /* For the GTK TreeView */
