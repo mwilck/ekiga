@@ -382,6 +382,15 @@ static void addressbook_selected_cb (GtkTreeSelection *,
 				     gpointer);
 
 
+/* DESCRIPTION  :  This callback is called when the user chooses to copy
+ *                 a contact URL to the clipboard.
+ * BEHAVIOR     :  Copy the URL for the selected contact into the clipboard.
+ * PRE          :  The Address book window GmObject.
+ */
+static void copy_url_to_clipboard_cb (GtkWidget *,
+				      gpointer);
+
+
 /* Implementation */
 static void
 gm_awp_destroy (gpointer awp)
@@ -1194,6 +1203,11 @@ gm_aw_contact_menu_new (GtkWidget *addressbook_window,
 		     GTK_SIGNAL_FUNC (call_contact1_cb), 
 		     addressbook_window, TRUE),
 
+      GTK_MENU_ENTRY("copy", _("_Copy URL to clipboard"), NULL,
+		     GTK_STOCK_COPY, 0, 
+		     GTK_SIGNAL_FUNC (copy_url_to_clipboard_cb), 
+		     addressbook_window, TRUE),
+
       GTK_MENU_SEPARATOR,
 
       GTK_MENU_ENTRY("properties", _("_Properties"), NULL,
@@ -1217,6 +1231,11 @@ gm_aw_contact_menu_new (GtkWidget *addressbook_window,
       GTK_MENU_ENTRY("call", _("C_all Contact"), NULL,
 		     NULL, 0, 
 		     GTK_SIGNAL_FUNC (call_contact1_cb), 
+		     addressbook_window, TRUE),
+
+      GTK_MENU_ENTRY("copy", _("_Copy URL to clipboard"), NULL,
+		     GTK_STOCK_COPY, 0, 
+		     GTK_SIGNAL_FUNC (copy_url_to_clipboard_cb), 
 		     addressbook_window, TRUE),
 
       GTK_MENU_SEPARATOR,
@@ -1568,6 +1587,30 @@ addressbook_selected_cb (GtkTreeSelection *selection,
 
   gm_aw_update_menu_sensitivity (GTK_WIDGET (data),
 				 FALSE, FALSE);
+}
+
+
+static void
+copy_url_to_clipboard_cb (GtkWidget *w,
+			  gpointer data)
+{
+  GtkClipboard *cb = NULL;
+  GmContact *contact = NULL;
+
+  GtkWidget *addressbook_window = NULL;
+
+  g_return_if_fail (data != NULL);
+
+  addressbook_window = GTK_WIDGET (data);
+
+  contact = gm_aw_get_selected_contact (addressbook_window);
+
+  if (contact && contact->url) {
+
+    cb = gtk_clipboard_get (GDK_NONE);
+    gtk_clipboard_set_text (cb, contact->url, -1);
+    gm_contact_delete (contact);
+  }
 }
 
 
