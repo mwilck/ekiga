@@ -77,22 +77,26 @@ gnomemeeting_get_remote_addressbooks ()
 
     if (couple) {
 
-      if (couple [0])
+      if (couple [0]) {
 	elmt->aid = g_strdup (couple [0]);
-      
-      if (couple [1])
-	elmt->name = g_strdup (couple [1]);
 
-      if (couple [2])
-	elmt->url = g_strdup (couple [2]);
-      
-      if (couple [3])
-	elmt->call_attribute = g_strdup (couple [3]);
-      
+	if (couple [1]) {
+	  elmt->name = g_strdup (couple [1]);
+
+	  if (couple [2]) {
+	    elmt->url = g_strdup (couple [2]);
+
+	    if (couple [3]) {
+	      elmt->call_attribute = g_strdup (couple [3]);
+	    }
+	  }
+	}
+      }
       g_strfreev (couple);
     }
 
-    addressbooks = g_slist_append (addressbooks, (gpointer) elmt);
+    if (couple && couple [0] && couple [1])
+      addressbooks = g_slist_append (addressbooks, (gpointer) elmt);
 
     j = g_slist_next (j);
   }
