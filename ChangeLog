@@ -1,3 +1,14 @@
+2005-03-06  Damien Sandras  <dsandras@gnome.org>
+
+	* gnomemeeting.schemas.in.in: Enable silence detection by default.
+
+	* src/*endpoint.*: Update the RTP statistics every second instead 
+	of updating them when enough packets have been received 
+	(silence detection).
+
+	* src/config.cpp, src/gnomemeeting.cpp: Added missing #ifdef thanks
+	to Koop Mast.
+
 2005-03-03  Damien Sandras  <dsandras@gnome.org>
 
 	* src/prefs_window.cpp: Make sure to select the row when 
