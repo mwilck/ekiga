@@ -1,3 +1,14 @@
+2002-09-07  Miguel Rodríguez Pérez  <migrax@terra.es>
+
+	* src/chat_window.cpp (chat_entry_activate): Add code to convert
+	local user to utf-8 too, as done in OnUserInputtring.
+
+	* src/connection.cpp (OnUserInputString): Use remote not
+	remote_utf8 to convert from.
+
+	* src/ils.cpp (xdap_getentity): Use the iso_ strings, not the utf8
+	ones for xdap.
+
 2002-09-07  Damien Sandras  <dsandras@seconix.com>
 
 	* src/Makefile.am: Removed calls_history_window.[cpp, h] and

@@ -260,7 +260,10 @@ static void chat_entry_activate (GtkEditable *w, gpointer data)
   if (endpoint) {
         
     PString local = endpoint->GetLocalUserName ();
-        
+    /* The local party name has to be converted to UTF8, but not
+       the text */
+    gchar *utf8_local = NULL;
+
     PINDEX bracket = local.Find('[');
     if (bracket != P_MAX_INDEX)
       local = local.Left (bracket);
@@ -278,7 +281,10 @@ static void chat_entry_activate (GtkEditable *w, gpointer data)
 	s = PString (gtk_entry_get_text (GTK_ENTRY (w)));
 	connection->SendUserInput ("MSG"+s);
 
-	gnomemeeting_text_chat_insert (local, s, 0);
+	utf8_local = g_convert (local, strlen ((const char*) local),
+				 "UTF8", "ISO-8859-1", 0, 0, 0);
+	gnomemeeting_text_chat_insert (utf8_local, s, 0);
+	g_free (utf8_local);
                 
 	gtk_entry_set_text (GTK_ENTRY (w), "");
       }

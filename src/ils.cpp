@@ -644,9 +644,9 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
   ip = g_strdup_printf ("%lu", sip);
 
   if (!strcmp ((char *) name, "comment"))
-    entval = xmlStrdup (BAD_CAST comment);
+    entval = xmlStrdup (BAD_CAST iso_comment);
   else if (!strcmp ((char *) name, "location"))
-    entval = xmlStrdup (BAD_CAST location);
+    entval = xmlStrdup (BAD_CAST iso_location);
   else if (!strcmp ((char *) name, "org"))
     entval = xmlStrdup (BAD_CAST "Gnome");
   else if (!strcmp ((char *) name, "country"))
@@ -662,11 +662,11 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
   else if (!strcmp ((char *) name, "decip"))
     entval = xmlStrdup (BAD_CAST "1234567890");
   else if (!strcmp ((char *) name, "email"))
-    entval = xmlStrdup (BAD_CAST mail);
+    entval = xmlStrdup (BAD_CAST iso_mail);
   else if (!strcmp ((char *) name, "givenname"))
-    entval = xmlStrdup (BAD_CAST firstname);
+    entval = xmlStrdup (BAD_CAST iso_firstname);
   else if (!strcmp ((char *) name, "surname"))
-    entval = xmlStrdup (BAD_CAST surname);
+    entval = xmlStrdup (BAD_CAST iso_surname);
   else if (!strcmp ((char *) name, "sappid"))
     entval = xmlStrdup (BAD_CAST "GnomeMeeting");
   else if (!strcmp ((char *) name, "ilsa26279966"))
