@@ -1,3 +1,16 @@
+2002-05-05  Damien Sandras  <dsandras@seconix.com>
+
+	* src/callbacks.cpp: Added common callback to call the SavePicture function.
+	
+	* src/endpoint.cpp: Added function to save the current image in a png.
+	
+	* src/gdkvideoio.cpp: Checked mutexes.
+	
+	* src/menu.cpp: Added Save option to the file menu.
+	
+	* src/videograbber.cpp: Initialized variable. GDKVideoOutputDevice set to NULL when
+	deleted.
+	
 2002-05-04  Damien Sandras  <dsandras@seconix.com>
 
 	* src/main_window.cpp: GUI improved (eye-candy in the control panel). AA icons

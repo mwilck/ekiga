@@ -35,6 +35,13 @@
 #include <gconf/gconf-client.h>
 
 
+/* DESCRIPTION  :  This callback is called when the user chooses to save.
+ * BEHAVIOR     :  Saves the picture in the current video stream in a file.
+ * PRE          :  /
+ */
+void save_callback (GtkWidget *, gpointer);
+
+
 /* DESCRIPTION  :  This callback is called when the user chooses to pause
  *                 the audio transmission.
  * BEHAVIOR     :  Pause the audio transmission.

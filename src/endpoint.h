@@ -198,6 +198,13 @@ class GMH323EndPoint : public H323EndPoint
    */
   void SetCurrentDisplay (int);
 
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Saves the current displayed picture in a file.
+   * PRE          :  / 
+   */
+  void SavePicture (void);
+
   
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Set the current calling state :

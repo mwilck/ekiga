@@ -968,6 +968,13 @@ void GMH323EndPoint::SetCurrentDisplay (int choice)
 }
 
 
+void GMH323EndPoint::SavePicture (void)
+{ 
+  GdkPixbuf *pic = gtk_image_get_pixbuf (GTK_IMAGE (gw->video_image));
+  gdk_pixbuf_save (pic, "test.png", "png", NULL, NULL);
+}
+
+
 BOOL GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
 				      BOOL isEncoding,
 				      unsigned bufferSize,

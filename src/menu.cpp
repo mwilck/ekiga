@@ -162,6 +162,14 @@ void gnomemeeting_init_menu ()
     {
       {
 	GNOME_APP_UI_ITEM,
+	N_("_Save"), N_("Save A Snapshot of the Current Video Stream"),
+	(void *)save_callback, gw, NULL,
+	GNOME_APP_PIXMAP_STOCK, GTK_STOCK_SAVE,
+	'S', GDK_CONTROL_MASK, NULL
+      },
+      GNOMEUIINFO_SEPARATOR,
+      {
+	GNOME_APP_UI_ITEM,
 	N_("_Quit"), N_("Quit GnomeMeeting"),
 	(void *)quit_callback, gw, NULL,
 	GNOME_APP_PIXMAP_STOCK, GTK_STOCK_QUIT,
@@ -266,10 +274,10 @@ void gnomemeeting_init_menu ()
       GNOMEUIINFO_SEPARATOR,
       {
 	GNOME_APP_UI_ITEM,
-	N_("_Settings"), N_("Change Your Preferences"),
+	N_("_Preferences..."), N_("Change Your Preferences"),
 	(void *) gnomemeeting_component_view, gw->pref_window, NULL,
 	GNOME_APP_PIXMAP_STOCK, GTK_STOCK_PREFERENCES,
-	's', GDK_CONTROL_MASK, NULL
+	0, GDK_CONTROL_MASK, NULL
       },
       GNOMEUIINFO_END
     };

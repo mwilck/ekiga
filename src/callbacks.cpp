@@ -47,6 +47,12 @@ extern GtkWidget *gm;
 
 
 /* The callbacks */
+void save_callback (GtkWidget *widget, gpointer data)
+{
+  MyApp->Endpoint ()->SavePicture ();
+}
+
+
 void pause_audio_callback (GtkWidget *widget, gpointer data)
 {
   GM_window_widgets *gw = gnomemeeting_get_main_window (gm);

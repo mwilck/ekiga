@@ -63,6 +63,8 @@ GMVideoGrabber::GMVideoGrabber ()
   is_opened = 0;
 
   /* Initialisation */
+  encoding_device = NULL;
+  channel = NULL;
   grabber = NULL;
   client = gconf_client_get_default ();
   color_format = NULL;
@@ -639,6 +641,7 @@ void GMVideoGrabber::VGClose (int display_logo)
     /* Initialisation */
     grabber = NULL;
     channel = NULL;
+    encoding_device = NULL;
   }
 
   /* Quick Hack for buggy drivers that return from the ioctl before the device

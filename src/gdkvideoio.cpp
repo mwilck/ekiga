@@ -103,8 +103,8 @@ void GDKVideoOutputDevice::SetCurrentDisplay (int choice)
 
 BOOL GDKVideoOutputDevice::Redraw (const void * frame)
 {
-  GdkPixbuf *tmp = NULL;
   GdkPixbuf *src_pic = NULL;
+  GdkPixbuf *tmp = NULL;
   GdkPixbuf *zoomed_pic = NULL;
   GtkRequisition size_request;
 
@@ -227,6 +227,7 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
 
 
   gnomemeeting_threads_enter ();
+
 
   g_object_unref (G_OBJECT (src_pic));
 
