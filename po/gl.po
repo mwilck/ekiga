@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting 0.10\n"
-"POT-Creation-Date: 2001-08-28 22:24+0200\n"
-"PO-Revision-Date: 2001-08-28 23:02+0200\n"
+"POT-Creation-Date: 2001-09-06 13:45+0200\n"
+"PO-Revision-Date: 2001-09-06 13:55+0200\n"
 "Last-Translator: Jacobo Tarrio <jtarrio@trasno.net>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
 "MIME-Version: 1.0\n"
@@ -33,43 +33,49 @@ msgstr "Cambiar fiestra principal"
 msgid "Contributors:"
 msgstr "Colaboradores:"
 
-#. Translators: Please change the (C) to a real copyright
-#. character if your character set allows it.
-#: src/callbacks.cpp:143
+#: src/callbacks.cpp:136
+msgid "I18n Maintainer:"
+msgstr "Mantedor de I18n:"
+
+#. Translators: Please change the (C) to a real
+#. copyright character if your character set allows it
+#. (Hint: iso-8859-1 is one of the character sets that
+#. has this symbol).
+#: src/callbacks.cpp:150
 msgid "(C) 2000, 2001 Damien Sandras"
 msgstr "© 2000, 2001 Damien Sandras"
 
-#: src/callbacks.cpp:145
+#: src/callbacks.cpp:152
 msgid ""
 "GnomeMeeting is an H.323 compliant program for GNOME.\n"
-"This program is not supported by Microsoft(C)."
+"This program is not supported by Microsoft."
 msgstr ""
 "GnomeMeeting é un programa compatible con H.323 para GNOME.\n"
-"Este programa non está patrocinado por Microsoft©."
+"Este programa non está patrocinado por Microsoft."
 
-#: src/callbacks.cpp:165
+#: src/callbacks.cpp:168
 msgid "Are you sure you want to quit?"
 msgstr "¿Está seguro de que quere saír?"
 
-#: src/config.cpp:223
+#: src/config.cpp:231
 msgid "Sorry, no ldap server specified!"
 msgstr "Non se especificou un servidor LDAP"
 
-#: src/config.cpp:233
+#: src/config.cpp:241
 msgid "Sorry, invalid ldap server port!"
 msgstr "Porto do servidor LDAP non válido"
 
-#: src/config.cpp:241
+#: src/config.cpp:249
 msgid "Please provide your first name!"
 msgstr "Introduza o seu nome de pía."
 
-#: src/config.cpp:249
+#: src/config.cpp:257
 msgid "Please provide a valid e-mail!"
 msgstr "Introduza un enderezo válido."
 
-#: src/config.cpp:263
-msgid "Could not open the mixer."
-msgstr "Non se puido abri-lo mesturador."
+#: src/config.cpp:271 src/config.cpp:280
+msgid "Could not open the player mixer."
+msgstr "Non se puido abri-lo mesturador de reproducción."
 
 #: src/connection.cpp:78
 msgid "Started New Logical Channel..."
@@ -111,138 +117,148 @@ msgstr "Rexeitando a Chamada Entrante Automaticamente"
 msgid "Auto Answering Incoming Call"
 msgstr "Contestando a Chamada Entrante Automaticamente"
 
-#: src/endpoint.cpp:128 src/endpoint.cpp:144
+#: src/endpoint.cpp:136 src/endpoint.cpp:152
 msgid "Added H.261 CIF capability"
 msgstr "Engadida a capacidade CIF H.261"
 
-#: src/endpoint.cpp:133 src/endpoint.cpp:140
+#: src/endpoint.cpp:141 src/endpoint.cpp:148
 msgid "Added H.261 QCIF capability"
 msgstr "Engadida a capacidade QCIF H.261"
 
-#: src/endpoint.cpp:154
+#: src/endpoint.cpp:162
 msgid "Reinitialize the capabilities"
 msgstr "Reinicializa-las capacidades"
 
-#: src/endpoint.cpp:163
+#: src/endpoint.cpp:171
 msgid "Added MS-GSM capability"
 msgstr "Engadida a capacidade MS-GSM"
 
-#: src/endpoint.cpp:171
+#: src/endpoint.cpp:179
 msgid "Added G.711-uLaw capability"
 msgstr "Engadida a capacidade G.711-uLaw"
 
-#: src/endpoint.cpp:179
+#: src/endpoint.cpp:187
 msgid "Added G.711-ALaw capability"
 msgstr "Engadida a capacidade G.711-ALaw"
 
-#: src/endpoint.cpp:186
+#: src/endpoint.cpp:194
 msgid "Added GSM-06.10 capability"
 msgstr "Engadida a capacidade GSM-06.10"
 
-#: src/endpoint.cpp:192
+#: src/endpoint.cpp:200
 msgid "Added LPC10 capability"
 msgstr "Engadida a capacidade LPC10"
 
-#: src/endpoint.cpp:261
-msgid "Could not start listener."
-msgstr "Non se puido inicia-la escoita."
+#. Translators: This is shown in the history.
+#: src/endpoint.cpp:282
+#, c-format
+msgid "Set Audio player device to %s"
+msgstr "Estabrece-lo dispositivo de reproducción de audio a %s"
 
-#: src/endpoint.cpp:277 src/endpoint.cpp:326
-msgid "Set Audio player device to:"
-msgstr "Dispositivo de reproducción:"
-
-#: src/endpoint.cpp:279 src/endpoint.cpp:328
-msgid "Set Audio recorder device to:"
-msgstr "Dispositivo de gravación:"
+#. Translators: This is shown in the history.
+#: src/endpoint.cpp:287
+#, c-format
+msgid "Set Audio recorder device to %s"
+msgstr "Estabrece-lo dispositivo de gravación de audio a %s"
 
 #. only a pointer => destroyed with the PString
-#: src/endpoint.cpp:389
-msgid "Call from: "
-msgstr "Chamada de: "
+#: src/endpoint.cpp:388
+#, c-format
+msgid "Call from %s"
+msgstr "Chamada de %s"
 
-#: src/endpoint.cpp:450
-msgid "Connected with "
-msgstr "Conectado con "
+#: src/endpoint.cpp:445
+#, c-format
+msgid "Connected with %s using %s"
+msgstr "Conectado con %s empregando %s"
 
-#: src/endpoint.cpp:452
-msgid " using "
-msgstr " que emprega "
-
-#: src/endpoint.cpp:460
+#: src/endpoint.cpp:453
 msgid "Connected"
 msgstr "Conectado"
 
-#: src/endpoint.cpp:463
+#: src/endpoint.cpp:456
 msgid "Fast start enabled"
 msgstr "Comezo rápido activado"
 
-#: src/endpoint.cpp:465
+#: src/endpoint.cpp:458
 msgid "Fast start disabled"
 msgstr "Comezo rápido desactivado"
 
-#: src/endpoint.cpp:468
+#: src/endpoint.cpp:461
 msgid "H.245 Tunnelling enabled"
 msgstr "Túneles H.245 activados"
 
-#: src/endpoint.cpp:470
+#: src/endpoint.cpp:463
 msgid "H.245 Tunnelling disabled"
 msgstr "Túneles H.245 desactivados"
 
-#: src/endpoint.cpp:515
+#: src/endpoint.cpp:514
 msgid "Remote party has cleared the call"
 msgstr "O interlocutor finalizou a chamada"
 
-#: src/endpoint.cpp:520
+#: src/endpoint.cpp:519
 msgid "Remote party has stopped calling"
 msgstr "O chamante parou de chamar"
 
-#: src/endpoint.cpp:525 src/endpoint.cpp:545
+#: src/endpoint.cpp:524 src/endpoint.cpp:544
 msgid "Remote party did not accept your call"
 msgstr "O chamado non aceptou a chamada"
 
-#: src/endpoint.cpp:530
+#: src/endpoint.cpp:529
 msgid "Remote party did not answer your call"
 msgstr "O chamado non respostou á chamada"
 
-#: src/endpoint.cpp:535
+#: src/endpoint.cpp:534
 msgid "This call ended abnormally"
 msgstr "Esta chamada rematou dun xeito anormal"
 
-#: src/endpoint.cpp:540
+#: src/endpoint.cpp:539
 msgid "Could not find common codec with remote party"
 msgstr "Non se puido achar un codec común co interlocutor"
 
-#: src/endpoint.cpp:550
+#: src/endpoint.cpp:549
 msgid "Refused incoming call"
 msgstr "Chamada entrante rexeitada"
 
-#: src/endpoint.cpp:555
+#: src/endpoint.cpp:554
 msgid "User not found"
 msgstr "Usuario non atopado"
 
-#: src/endpoint.cpp:560
+#: src/endpoint.cpp:559
 msgid "Call ended: insufficient bandwidth"
 msgstr "Chamada rematada: ancho de banda insuficiente"
 
-#: src/endpoint.cpp:568
+#: src/endpoint.cpp:567
 msgid "Remote party could not be reached"
 msgstr "Non foi posible chegar ata o interlocutor"
 
-#: src/endpoint.cpp:573
+#: src/endpoint.cpp:572
 msgid "Remote party is not online"
 msgstr "O chamado non está en liña"
 
-#: src/endpoint.cpp:578
+#: src/endpoint.cpp:577
 msgid "No phone running for remote party"
 msgstr "O chamado non ten un teléfono en uso"
 
-#: src/endpoint.cpp:583
+#: src/endpoint.cpp:582
 msgid "Transport error calling"
 msgstr "Erro de transporte durante a chamada"
 
-#: src/endpoint.cpp:589 src/endpoint.cpp:592
+#: src/endpoint.cpp:588 src/endpoint.cpp:591
 msgid "Call completed"
 msgstr "Chamada completada"
+
+#: src/endpoint.cpp:758 src/webcam.cpp:168
+#, c-format
+msgid "Successfully opened video device %s, channel %d"
+msgstr "Abriuse con éxito o dispositivo de video %s, canle %d"
+
+#: src/endpoint.cpp:770 src/webcam.cpp:180
+#, c-format
+msgid ""
+"Error while opening video device %s, channel %d. A test image will be "
+"transmitted."
+msgstr "Erro ao abri-lo dispositivo de video %s, canle %d. Hase transmitir unha imaxe de proba."
 
 #: src/gdkvideoio.cpp:213
 msgid "Transmitted FPS: "
@@ -321,113 +337,147 @@ msgstr "Buscando usuarios... Agarde."
 msgid "Search completed!"
 msgstr "¡Busca rematada!"
 
-#: src/ldap.cpp:624 src/ldap.cpp:626
+#: src/ldap.cpp:627 src/ldap.cpp:629
 msgid "Connecting to ILS directory"
 msgstr "Conectando co directorio ILS"
 
-#: src/ldap.cpp:805
+#: src/ldap.cpp:808
 msgid "Error while registering to ILS directory"
 msgstr "Erro ao se rexistrar no directorio ILS"
 
-#: src/ldap.cpp:811 src/ldap.cpp:813
+#: src/ldap.cpp:814 src/ldap.cpp:816
 msgid "Successfully initiated registering to ILS directory"
 msgstr "Rexistro no directorio ILS comezado con éxito"
 
-#: src/main.cpp:117
+#: src/main.cpp:134
 msgid "Answering incoming call"
 msgstr "Contestando a chamada entrante"
 
-#: src/main.cpp:139 src/main.cpp:140
+#: src/main.cpp:153 src/main.cpp:154
 msgid "Calling..."
 msgstr "Chamando..."
 
-#: src/main.cpp:162
+#: src/main.cpp:176
 msgid "Trying to stop calling"
 msgstr "Tentando parar de chamar"
 
-#: src/main.cpp:171
+#: src/main.cpp:185
 msgid "Stopping current call"
 msgstr "Detendo a chamada actual"
 
-#: src/main.cpp:176
+#: src/main.cpp:190
 msgid "Refusing incoming call"
 msgstr "Rexeitando a chamada entrante"
 
-#: src/main_interface.cpp:181
+#: src/main_interface.cpp:224
 msgid "Startup without applet support"
 msgstr "Inicio sen soporte de applets"
 
-#: src/main_interface.cpp:217
+#: src/main_interface.cpp:226
+msgid "Prints debug messages in the console"
+msgstr "Amosa as mensaxes de depuración na consola"
+
+#: src/main_interface.cpp:263
 msgid "Building main interface"
 msgstr "Construíndo a interface principal"
 
-#: src/main_interface.cpp:230
+#: src/main_interface.cpp:276
 msgid "Adding Audio Capabilities"
 msgstr "Engadindo as Capacidades de Audio"
 
-#: src/main_interface.cpp:235
+#: src/main_interface.cpp:281
 msgid "Adding Video Capabilities"
 msgstr "Engadindo as Capacidades de Video"
 
-#: src/main_interface.cpp:242 src/preferences.cpp:1658
+#: src/main_interface.cpp:288 src/preferences.cpp:1688
 msgid "Registering to ILS directory"
 msgstr "Rexistrándose no directorio ILS"
 
-#: src/main_interface.cpp:250
-msgid "Opening Video Device"
-msgstr "Abrindo o Dispositivo de Video"
+#: src/main_interface.cpp:296
+msgid "Starting the listener thread"
+msgstr "Iniciando o fío de escoita"
 
-#: src/main_interface.cpp:257
+#: src/main_interface.cpp:301
+msgid ""
+"Could not start the listener thread, you will not be able to receive "
+"incoming calls."
+msgstr "Non se puido inicia-lo fío de escoita, non ha poder recibi-las chamadas entrantes."
+
+#: src/main_interface.cpp:308
 msgid "Done!"
 msgstr "Rematado"
 
 #. The remote IP field
-#: src/main_interface.cpp:310
+#: src/main_interface.cpp:364
 msgid "Remote host to contact"
 msgstr "Máquina remota a contactar"
 
-#: src/main_interface.cpp:324
+#: src/main_interface.cpp:378
 msgid "Host:"
 msgstr "Máquina:"
 
-#: src/main_interface.cpp:479 src/preferences.cpp:426
+#: src/main_interface.cpp:464
+msgid "Click here to begin to display images from your camera device."
+msgstr "Prema aquí para comezar a amosa-las imaxes da súa cámara."
+
+#: src/main_interface.cpp:486
+msgid ""
+"Audio Transmission Status. During a call, click here to pause the audio "
+"transmission."
+msgstr "Estado da Transmisión de Audio. Durante unha chamada, prema aquí para dete-la transmisión de audio."
+
+#: src/main_interface.cpp:508
+msgid ""
+"Video Transmission Status. During a call, click here to pause the video "
+"transmission."
+msgstr "Estado da Transmisión de Video. Durante unha chamada, prema aquí para dete-la transmisión de video."
+
+#: src/main_interface.cpp:530
+msgid "Click here to display the previous section of the Control Panel."
+msgstr "Prema aquí para amosa-la sección anterior do Panel de Control."
+
+#: src/main_interface.cpp:551
+msgid "Click here to display the next section of the Control Panel."
+msgstr "Prema aquí para amosa-la seguinte sección do Panel de Control."
+
+#: src/main_interface.cpp:572 src/preferences.cpp:426
 msgid "Info"
 msgstr "Información"
 
-#: src/main_interface.cpp:481 src/main_interface.cpp:496
-msgid "Remote User Info"
-msgstr "Información do Usuario Remoto"
+#: src/main_interface.cpp:576 src/main_interface.cpp:601
+msgid "Remote User"
+msgstr "Usuario Remoto"
 
-#: src/main_interface.cpp:511
+#: src/main_interface.cpp:616
 msgid "History Log"
 msgstr "Rexistro Histórico"
 
-#: src/main_interface.cpp:531
+#: src/main_interface.cpp:636
 msgid "History"
 msgstr "Historial"
 
 #. Webcam Control Frame
-#: src/main_interface.cpp:555 src/main_interface.cpp:665
+#: src/main_interface.cpp:659 src/main_interface.cpp:771
 msgid "Video Settings"
 msgstr "Configuración de Video"
 
-#: src/main_interface.cpp:585
+#: src/main_interface.cpp:689
 msgid "Adjust brightness"
 msgstr "Axusta-lo brillo"
 
-#: src/main_interface.cpp:610
+#: src/main_interface.cpp:714
 msgid "Adjust whiteness"
 msgstr "Axusta-lo branco"
 
-#: src/main_interface.cpp:635
+#: src/main_interface.cpp:739
 msgid "Adjust color"
 msgstr "Axusta-la cor"
 
-#: src/main_interface.cpp:660
+#: src/main_interface.cpp:764
 msgid "Adjust contrast"
 msgstr "Axusta-lo contraste"
 
-#: src/main_interface.cpp:686 src/main_interface.cpp:741
+#: src/main_interface.cpp:792 src/main_interface.cpp:850
 msgid "Audio Settings"
 msgstr "Configuración de Audio"
 
@@ -496,12 +546,12 @@ msgid "View / hide the Status Bar"
 msgstr "Ver / agocha-la Barra de Estado"
 
 #: src/menu.cpp:100
-msgid "_Notebook"
-msgstr "_Caderno"
+msgid "_Control Panel"
+msgstr "Panel de _Control"
 
 #: src/menu.cpp:100
-msgid "View / hide the Notebook"
-msgstr "Ver / agocha-lo Caderno"
+msgid "View / hide the Control Panel"
+msgstr "Ver / agocha-lo Panel de Control"
 
 #: src/menu.cpp:113 src/menu.cpp:139
 msgid "_Settings"
@@ -573,22 +623,22 @@ msgid "General Settings"
 msgstr "Config. Xeral"
 
 #. The End
-#: src/preferences.cpp:303 src/preferences.cpp:1068
+#: src/preferences.cpp:303 src/preferences.cpp:1070
 msgid "User Settings"
 msgstr "Config. de Usuario"
 
 #. Advanced Settings
-#: src/preferences.cpp:314 src/preferences.cpp:1097 src/preferences.cpp:1206
+#: src/preferences.cpp:314 src/preferences.cpp:1099 src/preferences.cpp:1208
 msgid "Advanced Settings"
 msgstr "Config. Avanzada"
 
 #. ILS settings
-#: src/preferences.cpp:325 src/preferences.cpp:1233 src/preferences.cpp:1307
+#: src/preferences.cpp:325 src/preferences.cpp:1235 src/preferences.cpp:1309
 msgid "ILS Settings"
 msgstr "Config. de ILS"
 
 #. The End
-#: src/preferences.cpp:335 src/preferences.cpp:1520
+#: src/preferences.cpp:335 src/preferences.cpp:1550
 msgid "Device Settings"
 msgstr "Config. de Dispositivos"
 
@@ -600,7 +650,7 @@ msgstr "Codecs"
 msgid "Audio Codecs"
 msgstr "Codecs de Audio"
 
-#: src/preferences.cpp:368 src/preferences.cpp:894
+#: src/preferences.cpp:368 src/preferences.cpp:896
 msgid "Video Codecs"
 msgstr "Codecs de Video"
 
@@ -671,12 +721,12 @@ msgstr ""
 
 #. Show / hide the notebook at startup
 #: src/preferences.cpp:616
-msgid "Show Notebook"
-msgstr "Amosa-lo Caderno"
+msgid "Show Control Panel"
+msgstr "Amosa-lo Panel de Control"
 
 #: src/preferences.cpp:626
-msgid "If enabled, the notebook is displayed"
-msgstr "Se está activado, amósase o caderno"
+msgid "If enabled, the control panel is displayed"
+msgstr "Se está activado, amósase o panel de control"
 
 #. Show / hide the statusbar at startup
 #: src/preferences.cpp:630
@@ -724,7 +774,9 @@ msgstr "Chamada Entrante"
 msgid ""
 "If enabled, GnomeMeeting will play a sound when receiving an incoming call "
 "(the sound to play is choosen in the Gnome Control Center)"
-msgstr "Se está activado, GnomeMeeting ha producir un son cando se reciba unha chamada entrante (o son escóllese no Centro de Control de Gnome)"
+msgstr ""
+"Se está activado, GnomeMeeting ha producir un son cando se reciba unha "
+"chamada entrante (o son escóllese no Centro de Control de Gnome)"
 
 #. In this table we put the frame
 #. *** Transmitted Video Settings Frame ***
@@ -759,7 +811,7 @@ msgid "Here you can choose the transmitted video format"
 msgstr "Aquí pode escolle-lo formato da imaxe transmitida"
 
 #. Transmitted Video Quality
-#: src/preferences.cpp:806 src/preferences.cpp:1184
+#: src/preferences.cpp:806 src/preferences.cpp:1186
 msgid "Video Quality:"
 msgstr "Calidade:"
 
@@ -767,7 +819,9 @@ msgstr "Calidade:"
 msgid ""
 "Here you can choose the transmitted video quality:  choose 1 on a LAN for "
 "the best quality, 31 being the worst quality"
-msgstr "Aquí pode escolle-la calidade da imaxe transmitida:  escolla 1 nunha rede local para a mellor calidade; 31 é a peor calidade"
+msgstr ""
+"Aquí pode escolle-la calidade da imaxe transmitida:  escolla 1 nunha rede "
+"local para a mellor calidade; 31 é a peor calidade"
 
 #. Updated blocks / frame
 #: src/preferences.cpp:828
@@ -796,102 +850,101 @@ msgstr "Aquí pode escolle-lo número de imaxes transmitidas por segundo"
 msgid "Video Transmission"
 msgstr "Transmisión de Video"
 
-#: src/preferences.cpp:879
+#: src/preferences.cpp:880
 msgid "Enable Video Transmission"
 msgstr "Activa-la Transmisión de Imaxe"
 
-#: src/preferences.cpp:891
+#: src/preferences.cpp:893
 msgid "Here you can choose to enable or disable video transmission"
 msgstr "Aquí pode escoller se se activa ou non a transmisión de imaxe"
 
 #. User Name entry
-#: src/preferences.cpp:934
+#: src/preferences.cpp:936
 msgid "First Name:"
 msgstr "Nome:"
 
-#: src/preferences.cpp:950
-msgid "Simply enter your first name."
-msgstr "Introduza o seu nome de pía."
+#: src/preferences.cpp:952
+msgid "Enter your first name"
+msgstr "Introduza o seu nome de pía"
 
 #. Surname entry (LDAP)
-#: src/preferences.cpp:957
+#: src/preferences.cpp:959
 msgid "Last name:"
 msgstr "Apelidos:"
 
-#: src/preferences.cpp:973
-msgid "Simply enter your last name."
-msgstr "Introduza os seus apelidos."
+#: src/preferences.cpp:975
+msgid "Enter your last name"
+msgstr "Introduza os seus apelidos"
 
 #. E-mail (LDAP)
-#: src/preferences.cpp:980
+#: src/preferences.cpp:982
 msgid "E-mail address:"
 msgstr "Enderezo de E-mail:"
 
-#: src/preferences.cpp:996
-msgid "Simply enter your e-mail address."
-msgstr "Introduza o seu enderezo de e-mail."
+#: src/preferences.cpp:998
+msgid "Enter your e-mail address"
+msgstr "Introduza o seu enderezo de e-mail"
 
 #. Comment (LDAP)
-#: src/preferences.cpp:1003
+#: src/preferences.cpp:1005
 msgid "Comment:"
 msgstr "Comentario:"
 
-#: src/preferences.cpp:1019
-msgid "Here you can fill in a comment about yourself for ILS directories."
-msgstr ""
-"Aquí pode escribir un comentario sobre vostede para os directorios ILS."
+#: src/preferences.cpp:1021
+msgid "Here you can fill in a comment about yourself for ILS directories"
+msgstr "Aquí pode escribir un comentario sobre vostede para os directorios ILS"
 
 #. Location
-#: src/preferences.cpp:1026
+#: src/preferences.cpp:1028
 msgid "Location:"
 msgstr "Lugar:"
 
-#: src/preferences.cpp:1042
+#: src/preferences.cpp:1044
 msgid "Where do you call from?"
 msgstr "¿Dende onde chama?"
 
 #. Port Entry
-#: src/preferences.cpp:1049
+#: src/preferences.cpp:1051
 msgid "Listen Port:"
 msgstr "Escoitar no Porto:"
 
-#: src/preferences.cpp:1064
+#: src/preferences.cpp:1066
 msgid "The port that GnomeMeeting should listen on"
 msgstr "O porto no que debería escoitar GnomeMeeting"
 
 #. H245 Tunnelling button
-#: src/preferences.cpp:1111
+#: src/preferences.cpp:1113
 msgid "Enable H.245 Tunnelling"
 msgstr "Activa-los Túneles H.245"
 
-#: src/preferences.cpp:1120
+#: src/preferences.cpp:1122
 msgid "This enables H.245 Tunnelling mode"
 msgstr "Isto activa os túneles H.245"
 
 #. Fast Start button
-#: src/preferences.cpp:1124
+#: src/preferences.cpp:1126
 msgid "Enable Fast Start"
 msgstr "Activa-lo Comezo Rápido"
 
-#: src/preferences.cpp:1133
+#: src/preferences.cpp:1135
 msgid "Connection will be established in Fast Start mode"
 msgstr "Hase estabrece-la conexión en modo Comezo Rápido"
 
 #. Max Used Bandwidth spin button
-#: src/preferences.cpp:1137
+#: src/preferences.cpp:1139
 msgid "Maximum Bandwidth:"
 msgstr "Ancho de Banda:"
 
-#: src/preferences.cpp:1155
+#: src/preferences.cpp:1157
 msgid "The maximum bandwidth that should be used for the communication"
 msgstr "O ancho de banda que se debería empregar como máximo na comunicación"
 
 #. Silence Detection
-#: src/preferences.cpp:1159
+#: src/preferences.cpp:1161
 msgid "Enable Silence Detection"
 msgstr "Activa-lo Detector de Silencios"
 
-#: src/preferences.cpp:1168
+#: src/preferences.cpp:1170
 msgid ""
 "Enable or disable silence detection.  If silence detection is enabled, "
 "silences will not be transmitted over the Internet."
@@ -900,102 +953,110 @@ msgstr ""
 "transmiti-los silencios por internet."
 
 #. *** Received Video Settings Frame ***
-#: src/preferences.cpp:1172
+#: src/preferences.cpp:1174
 msgid "Received Video Codecs"
 msgstr "Codecs de Imaxe Recibida"
 
-#: src/preferences.cpp:1202
+#: src/preferences.cpp:1204
 msgid "The video quality to request from the remote party"
 msgstr "A calidade de imaxe a solicitar ao extremo remoto"
 
 #. ILS server
-#: src/preferences.cpp:1247
+#: src/preferences.cpp:1249
 msgid "ILS Directory:"
 msgstr "Directorio ILS:"
 
-#: src/preferences.cpp:1262
+#: src/preferences.cpp:1264
 msgid "The ILS directory to connect to"
 msgstr "O directorio ILS ao que se conectar"
 
 #. ILS port
-#: src/preferences.cpp:1269
+#: src/preferences.cpp:1271
 msgid "ILS Port:"
 msgstr "Porto ILS:"
 
-#: src/preferences.cpp:1284
+#: src/preferences.cpp:1286
 msgid "The corresponding port: 389 is the standard port"
 msgstr "O porto correspondente: 389 é o porto estándar"
 
 #. Use ILS
-#: src/preferences.cpp:1291
+#: src/preferences.cpp:1293
 msgid "Register to ILS directory"
 msgstr "Rexistrarse no directorio ILS"
 
-#: src/preferences.cpp:1303
+#: src/preferences.cpp:1305
 msgid "If enabled, permit to register to the selected ILS directory"
 msgstr "Se está activado, permitir rexistrarse no directorio ILS seleccionado"
 
 #. Audio device
-#: src/preferences.cpp:1337
+#: src/preferences.cpp:1341
 msgid "Audio Devices"
 msgstr "Dispositivos de Audio"
 
 #. Audio Device
-#: src/preferences.cpp:1351
-msgid "Audio Player:"
+#: src/preferences.cpp:1355
+msgid "Player:"
 msgstr "Reproductor:"
 
-#: src/preferences.cpp:1381
-msgid "Simply enter the audio player device to use"
+#: src/preferences.cpp:1386
+msgid "Enter the audio player device to use"
 msgstr "Introduza o dispositivo reproductor de audio a empregar"
 
 #. Audio Recorder Device
-#: src/preferences.cpp:1385
-msgid "Audio Recorder:"
+#: src/preferences.cpp:1390
+msgid "Recorder:"
 msgstr "Gravador:"
 
-#: src/preferences.cpp:1417
-msgid "Simply enter the audio recorder device to use"
+#: src/preferences.cpp:1423
+msgid "Enter the audio recorder device to use"
 msgstr "Introduza o dispositivo gravador de audio a empregar"
 
-#. Audio Mixer
-#: src/preferences.cpp:1421
-msgid "Audio Mixer:"
-msgstr "Mesturador:"
+#. Audio Mixers
+#: src/preferences.cpp:1427
+msgid "Player Mixer:"
+msgstr "Mesturador Reproductor:"
 
-#: src/preferences.cpp:1437
-msgid "Simply enter the audio mixer to use"
-msgstr "Introduza o mesturador de audio a empregar"
+#: src/preferences.cpp:1444
+msgid "The audio mixer to use for player settings"
+msgstr "O mesturador de audio para empregar na configuración de reproducción"
+
+#: src/preferences.cpp:1450
+msgid "Recorder Mixer:"
+msgstr "Mesturador Gravador:"
+
+#: src/preferences.cpp:1467
+msgid "The audio mixer to use for recorder settings"
+msgstr "O mesturador de audio para empregar na configuración de gravación."
 
 #. Video device
-#: src/preferences.cpp:1444
+#: src/preferences.cpp:1474
 msgid "Video Device"
 msgstr "Dispositivo de Video"
 
 #. Video Device
-#: src/preferences.cpp:1458
+#: src/preferences.cpp:1488
 msgid "Video Device:"
 msgstr "Dispositivo:"
 
-#: src/preferences.cpp:1486
-msgid "Simply enter the video device to use"
+#: src/preferences.cpp:1516
+msgid "Enter the video device to use"
 msgstr "Introduza o dispositivo de video a empregar"
 
 #. Video channel spin button
-#: src/preferences.cpp:1493
+#: src/preferences.cpp:1523
 msgid "Video Channel:"
 msgstr "Canle de Video:"
 
-#: src/preferences.cpp:1513
+#: src/preferences.cpp:1543
 msgid "The video channel number to use (camera, tv, ...)"
 msgstr "A canle do dispositivo de video a empregar (cámara, tv, ...)"
 
-#: src/preferences.cpp:1580
+#: src/preferences.cpp:1610
 msgid "Okay"
 msgstr "Correcto"
 
-#: src/preferences.cpp:1586 src/preferences.cpp:1592 src/preferences.cpp:1598
-#: src/preferences.cpp:1604
+#: src/preferences.cpp:1616 src/preferences.cpp:1622 src/preferences.cpp:1628
+#: src/preferences.cpp:1634
 msgid "Good Quality"
 msgstr "Boa Calidade"
 
@@ -1007,9 +1068,29 @@ msgstr "Directorio ILS"
 msgid "Find friends on ILS"
 msgstr "Buscar amigos en ILS"
 
-#: src/webcam.cpp:90
-msgid "Could not open the video device."
-msgstr "Non se puido abri-lo dispositivo de video."
+#~ msgid "Could not start listener."
+#~ msgstr "Non se puido inicia-la escoita."
+
+#~ msgid " using "
+#~ msgstr " que emprega "
+
+#~ msgid "Opening Video Device"
+#~ msgstr "Abrindo o Dispositivo de Video"
+
+#~ msgid "_Notebook"
+#~ msgstr "_Caderno"
+
+#~ msgid "Show Notebook"
+#~ msgstr "Amosa-lo Caderno"
+
+#~ msgid "Audio Mixer:"
+#~ msgstr "Mesturador:"
+
+#~ msgid "Simply enter the audio mixer to use"
+#~ msgstr "Introduza o mesturador de audio a empregar"
+
+#~ msgid "Could not open the video device."
+#~ msgstr "Non se puido abri-lo dispositivo de video."
 
 #~ msgid "Change You Preferences"
 #~ msgstr "Cambia-las Preferencias"
@@ -1025,9 +1106,6 @@ msgstr "Non se puido abri-lo dispositivo de video."
 
 #~ msgid "Pause"
 #~ msgstr "Pausa"
-
-#~ msgid "Starting Listener"
-#~ msgstr "Iniciando a Escoita"
 
 #~ msgid "Listener started"
 #~ msgstr "Escoita iniciada"
