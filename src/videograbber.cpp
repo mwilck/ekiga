@@ -234,6 +234,18 @@ GMVideoGrabber::GetParameters (int *whiteness,
 }
 
 
+BOOL
+GMVideoGrabber::IsChannelOpen ()
+{
+  PWaitAndSignal m(var_mutex);
+
+  if (video_channel && video_channel->IsOpen ()) 
+    return TRUE;
+  
+  return FALSE;
+}
+
+
 void
 GMVideoGrabber::Lock ()
 {

@@ -1745,7 +1745,7 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
       }
       else {
 
-	return TRUE; /* Device was _("No device found"), ignore, no popup */
+	return FALSE; /* Device was _("No device found"), ignore, no popup */
       }
     }
 
@@ -1767,7 +1767,7 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
     gnomemeeting_threads_leave ();
   }
     
-  return TRUE;
+  return no_error;
 }
 
 
@@ -2326,19 +2326,25 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 			H323VideoCodec::AdaptivePacketDelay |
 			codec.GetVideoMode());
 
-    
     /* Needed to be able to stop start the channel on-the-fly. When
      * the channel has been closed, the rawdata channel has been closed
      * too but not deleted. We delete it now.
      */
-    CreateVideoGrabber (FALSE, TRUE);
     vg = GetVideoGrabber ();
-    if (vg) {
+    if (!vg || !vg->IsChannelOpen ()) {
 
+      CreateVideoGrabber (FALSE, TRUE);
+      vg = GetVideoGrabber ();
+    }
+      
+    if (vg) {
+      
       channel = vg->GetVideoChannel ();
       transmitted_video_device = vg->GetEncodingDevice ();
       vg->Unlock ();
     }
+    else
+      return FALSE;
 
     gnomemeeting_threads_enter ();
     gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button), TRUE);

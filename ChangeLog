@@ -1,3 +1,14 @@
+2004-02-11 Damien Sandras  <dsandras@seconix.com>
+
+	* src/endpoint.cpp: Only recreate a videograbber if the previous
+	video grabber has it PVideoChannel closed, otherwise, reuse it.
+	
+	* src/misc.cpp: Removed unneeded cout.
+	
+	* src/videograbber.cpp, src/videograbber.h: Added function to determine
+	if the PVideoChannel associated to the GMVideoGrabber is still open
+	or not.
+	
 2004-02-10 Damien Sandras  <dsandras@seconix.com>
 
 	* src/config.cpp: Removed erroneous message.

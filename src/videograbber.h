@@ -143,6 +143,14 @@ class GMVideoGrabber : public PThread
 
 
   /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns TRUE if the associated PVideoChannel is Open,
+   *                 FALSE otherwise.
+   * PRE          :  /
+   */
+  BOOL IsChannelOpen ();
+
+
+  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Lock the device, preventing it to be Closed and deleted.
    * PRE          :  /
    */
