@@ -1106,7 +1106,7 @@ GMH323EndPoint::OnConnectionForwarded (H323Connection &,
 				       const PString &forward_party,
 				       const H323SignalPDU &)
 {
-  gchar *msg = NULL;
+  //  gchar *msg = NULL;
   PString call_token = GetCurrentCallToken ();
 
   if (MakeCall (forward_party, call_token)) {
@@ -1294,19 +1294,66 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 }
 
 
+void
+GMH323EndPoint::GetRemoteConnectionInfo (H323Connection & connection,
+					 gchar * & utf8_name,
+					 gchar * & utf8_app,
+					 gchar * & utf8_url)
+{
+  const H323Transport *transport = NULL;
+  H323TransportAddress address;
+
+  PINDEX idx;
+  
+  PString remote_ip;
+  PString remote_name;
+  PString remote_app;
+  PString remote_alias;
+
+    /* Get information about the remote user */
+  remote_name = connection.GetRemotePartyName ();
+  idx = remote_name.Find ("(");
+  if (idx != P_MAX_INDEX) {
+    
+    remote_alias = remote_name.Mid (idx + 1);
+    remote_alias =
+      remote_alias.Mid (0, (remote_alias.Find (",") != P_MAX_INDEX) ?
+			remote_alias.Find (",") : remote_alias.Find (")"));
+  }
+  remote_app = connection.GetRemoteApplication ();
+  gnomemeeting_threads_enter ();
+  if (gconf_client_get_int (client,
+			    GATEKEEPER_KEY "registering_method", NULL) > 0
+      && !remote_alias.IsEmpty ()) {
+
+    if (!connection.GetRemotePartyNumber ().IsEmpty ())
+      remote_ip = connection.GetRemotePartyNumber ();
+    else
+      remote_ip = remote_alias;
+  }
+  else {
+
+    /* Get the remote IP to display in the calls history */
+    transport = connection.GetSignallingChannel ();
+    if (transport) 
+      remote_ip = transport->GetRemoteAddress ().GetHostName ();
+  }
+  gnomemeeting_threads_leave ();
+
+  remote_ip = GMURL ().GetDefaultURL () + remote_ip;
+  utf8_app = gnomemeeting_get_utf8 (remote_app);
+  utf8_name = gnomemeeting_get_utf8 (gnomemeeting_pstring_cut (remote_name));
+  utf8_url = gnomemeeting_get_utf8 (remote_ip);
+}
+
+
 void 
 GMH323EndPoint::OnConnectionCleared (H323Connection & connection, 
                                      const PString & clearedCallToken)
 {
   gchar *msg_reason = NULL;
-
-  PString remote_ip;
-  PString remote_name;
-  PString remote_app;
-
-  const H323Transport *transport = NULL;
-  H323TransportAddress address;
   
+  gchar *utf8_url = NULL;
   gchar *utf8_name = NULL;
   gchar *utf8_app = NULL;
 
@@ -1320,33 +1367,20 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   player_channel = NULL;
   recorder_channel = NULL;
   ch_access_mutex.Signal ();
-
-
-  /* Get the remote IP to display in the calls history */
-  transport = connection.GetSignallingChannel ();
-  if (transport) 
-    remote_ip = transport->GetRemoteAddress ().GetHostName ();
-
-
-  /* Get information about the remote user */
-  remote_name = connection.GetRemotePartyName ();
-  remote_app = connection.GetRemoteApplication ();
-  remote_ip = GMURL ().GetDefaultURL () + remote_ip;
-  utf8_app = gnomemeeting_get_utf8 (remote_app);
-  utf8_name = gnomemeeting_get_utf8 (gnomemeeting_pstring_cut (remote_name));
-
+  
   if (connection.GetConnectionStartTime ().IsValid ())
     t = PTime () - connection.GetConnectionStartTime();
 
+  GetRemoteConnectionInfo (connection, utf8_name, utf8_app, utf8_url);
   gnomemeeting_threads_enter ();
   if (t.GetSeconds () == 0 && connection.HadAnsweredCall ())
     gnomemeeting_calls_history_window_add_call (2, utf8_name,
-						(const char *) remote_ip,
+						(const char *) utf8_url,
 						"0", utf8_app);
   else
     if (connection.HadAnsweredCall ())
       gnomemeeting_calls_history_window_add_call (0, utf8_name,
-						  (const char *) remote_ip,
+						  (const char *) utf8_url,
 						  t.AsString (2), utf8_app);
     else
       gnomemeeting_calls_history_window_add_call (1, utf8_name,
@@ -1354,7 +1388,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 						  t.AsString (2), utf8_app);
   g_free (utf8_app);
   g_free (utf8_name);
-
+  g_free (utf8_url);
   gnomemeeting_threads_leave ();
 
   /* Get GConf settings */

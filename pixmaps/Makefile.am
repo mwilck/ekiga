@@ -58,7 +58,10 @@ IMAGES_FILES= \
 	whiteness.png \
 	brightness.png \
 	colourness.png \
-	contrast.png
+	contrast.png \
+	connect-16.png \
+	disconnect-16.png \
+	calls-history.png
 
 
 IMAGES= \
@@ -87,7 +90,10 @@ IMAGES= \
 	gm_whiteness_stock_data whiteness.png \
 	gm_brightness_stock_data brightness.png \
 	gm_colourness_stock_data colourness.png \
-	gm_contrast_stock_data contrast.png 
+	gm_contrast_stock_data contrast.png \
+	gm_connect_16_stock_data connect-16.png \
+	gm_disconnect_16_stock_data disconnect-16.png \
+	gm_calls_history_stock_data calls-history.png
 
 
 EMOTICONS= \

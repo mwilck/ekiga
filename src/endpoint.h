@@ -174,7 +174,23 @@ class GMH323EndPoint : public H323EndPoint
    */
   virtual void OnConnectionEstablished (H323Connection &,
 				        const PString &);
+
   
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns the remote party name (UTF-8), the
+   *                 remote application name (UTF-8), and the best
+   *                 guess for the URL to use when calling back the user
+   *                 (the IP, or the alias or e164 number if the local
+   *                 user is registered to a gatekeeper. Not always accurate,
+   *                 for example if you are called by an user with an alias,
+   *                 but not registered to the same GK as you.)
+   * PRE          :  /
+   */
+  void GetRemoteConnectionInfo (H323Connection &,
+				gchar * &,
+				gchar * &,
+				gchar * &);
+
   
   /* DESCRIPTION  :  This callback is called when the connection to a remote
    *                 endpoint is cleared.

@@ -1,5 +1,22 @@
 2003-06-18 Damien Sandras  <dsandras@seconix.com>
 
+	* lib/stock-icons.c, lib/stock-icons.h, pixmaps/Makefile.am:
+	Added calls history icons, and connect/disconnect in size 16 icons.
+	
+	* pixmaps/connect-16.png, pixmaps/disconnect-16.png, 
+	pixmaps/calls_history.png: Added those files.
+	
+	* src/endpoint.cpp, src/endpoint.h: Added function to get info
+	about the remote party of a connection. Make more intelligent
+	guessing of the URL to call back in the case where a gatekeeper 
+	is used (use the alias or the e164 id in that case instead of the IP).
+	
+	* src/menu.cpp: Changed the icons to size 16 icons.
+	
+	* src/tray.cpp: Middle-click button opens the ldap window.
+	
+2003-06-18 Damien Sandras  <dsandras@seconix.com>
+
 	* src/tools.cpp: Don't show the duration column for unanswered calls
 	and use a blue color for links.
 	

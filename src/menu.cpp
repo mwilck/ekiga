@@ -432,12 +432,12 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
       {_("C_all"), NULL, NULL, 0, MENU_NEW, NULL, NULL, NULL},
 
       {_("_Connect"), _("Create a new connection"), 
-       GM_STOCK_CONNECT, 'c', MENU_ENTRY, 
+       GM_STOCK_CONNECT_16, 'c', MENU_ENTRY, 
        GTK_SIGNAL_FUNC (connect_cb),
        gw, NULL},
 
       {_("_Disconnect"), _("Close the current connection"), 
-       GM_STOCK_DISCONNECT, 'd', MENU_ENTRY, 
+       GM_STOCK_DISCONNECT_16, 'd', MENU_ENTRY, 
        GTK_SIGNAL_FUNC (disconnect_cb),
        gw, NULL},
 
@@ -633,7 +633,7 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
        (gpointer) gw->history_window, NULL},
 
       {_("Calls History"), _("View the calls history"),
-       NULL, 0, MENU_ENTRY, 
+       GM_STOCK_CALLS_HISTORY, 'h', MENU_ENTRY, 
        GTK_SIGNAL_FUNC (gnomemeeting_component_view),
        (gpointer) gw->calls_history_window, NULL},
 
@@ -892,12 +892,12 @@ gnomemeeting_popup_menu_tray_init (GtkWidget *widget)
   static MenuEntry tray_menu [] =
     {
       {_("_Connect"), _("Create a new connection"), 
-       GM_STOCK_CONNECT, 'c', MENU_ENTRY, 
+       GM_STOCK_CONNECT_16, 'c', MENU_ENTRY, 
        GTK_SIGNAL_FUNC (connect_cb),
        gw, NULL},
 
       {_("_Disconnect"), _("Close the current connection"), 
-       GM_STOCK_DISCONNECT, 'd', MENU_ENTRY, 
+       GM_STOCK_DISCONNECT_16, 'd', MENU_ENTRY, 
        GTK_SIGNAL_FUNC (disconnect_cb),
        gw, NULL},
 
@@ -923,7 +923,7 @@ gnomemeeting_popup_menu_tray_init (GtkWidget *widget)
       {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
 
       {_("Calls History"), _("View the calls history"),
-       NULL, 0, MENU_ENTRY, 
+       GM_STOCK_CALLS_HISTORY, 0, MENU_ENTRY, 
        GTK_SIGNAL_FUNC (gnomemeeting_component_view),
        (gpointer) gw->calls_history_window, NULL},
 

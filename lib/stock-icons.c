@@ -77,6 +77,9 @@ gnomemeeting_stock_icons_init (void)
 		{ GM_STOCK_BRIGHTNESS, gm_brightness_stock_data},
 		{ GM_STOCK_COLOURNESS, gm_colourness_stock_data},
 		{ GM_STOCK_CONTRAST, gm_contrast_stock_data},
+		{ GM_STOCK_CONNECT_16, gm_connect_16_stock_data},
+		{ GM_STOCK_DISCONNECT_16, gm_disconnect_16_stock_data},
+		{ GM_STOCK_CALLS_HISTORY, gm_calls_history_stock_data},
 	};
 
 	factory = gtk_icon_factory_new ();

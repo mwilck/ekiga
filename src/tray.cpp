@@ -45,6 +45,7 @@
 #include "gnomemeeting.h"
 #include "eggtrayicon.h"
 #include "menu.h"
+#include "callbacks.h"
 #include "stock-icons.h"
 
 
@@ -115,17 +116,23 @@ static gint
 tray_clicked_callback (GtkWidget *widget, GdkEventButton *event, gpointer data)
 {
   GdkEventButton *event_button = NULL;
-  
+  GmWindow *gw = NULL;
+   
   if (event->type == GDK_BUTTON_PRESS) {
 
     event_button = (GdkEventButton *) event;
     if (event_button->button == 1) {
 
-      if (GTK_WIDGET_VISIBLE (GTK_WIDGET (gm)))
-	gtk_widget_hide (gm);
-      else
-	gtk_widget_show (gm);
+      gnomemeeting_component_view (NULL, (gpointer) gm);
       
+      return TRUE;
+    }
+    else if (event_button->button == 2) {
+
+      gw = MyApp->GetMainWindow ();
+
+      gnomemeeting_component_view (NULL, (gpointer) gw->ldap_window);
+
       return TRUE;
     }
   }
