@@ -61,9 +61,9 @@ GMVideoGrabber::GMVideoGrabber (PIntCondMutex *m,
   height = 0, width = 0;
   whiteness = 0, brightness = 0, colour = 0, contrast = 0;
 
-  gw = gnomemeeting_get_main_window (gm);
-  pw = gnomemeeting_get_pref_window (gm);
-  dw = gnomemeeting_get_druid_window (gm);
+  gw = MyApp->GetMainWindow ();
+  pw = MyApp->GetPrefWindow ();
+  dw = MyApp->GetDruidWindow ();
   
   /* Internal state */
   is_running = 1;
@@ -643,8 +643,8 @@ void GMVideoTester::Main ()
 
   video_device =  gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/video_recorder", NULL);
 
-  gw = gnomemeeting_get_main_window (gm);
-  dw = gnomemeeting_get_druid_window (gm);
+  gw = MyApp->GetMainWindow ();
+  dw = MyApp->GetDruidWindow ();
   gtk_widget_set_sensitive (GTK_WIDGET (dw->video_test_button), FALSE);
   gtk_progress_bar_set_text (GTK_PROGRESS_BAR (dw->progress), "");
   gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (dw->progress), 0.0);

@@ -86,10 +86,11 @@ enum {
 /* The functions  */
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Build the LDAP window.
+ * BEHAVIOR     :  Build the LDAP window and returns it.
  * PRE          :  /
  */
-void gnomemeeting_init_ldap_window ();
+GtkWidget *
+gnomemeeting_ldap_window_new (GmLdapWindow *);
 
 
 /* DESCRIPTION  :  /
@@ -97,7 +98,17 @@ void gnomemeeting_init_ldap_window ();
  *                 searches are terminated.
  * PRE          :  /
  */
-void gnomemeeting_ldap_window_destroy_notebook_pages ();
+void
+gnomemeeting_ldap_window_destroy_notebook_pages ();
+
+
+/* DESCRIPTION  :  / 
+ * BEHAVIOR     :  Returns the structure of widgets of the ldap window page.
+ * PRE          :  The GtkWidget must be a pointer to a page of the addressbook
+ *                 notebook.
+ */
+GmLdapWindowPage *
+gnomemeeting_get_ldap_window_page (GtkWidget *);
 
 
 /* DESCRIPTION  :  / 
@@ -107,7 +118,9 @@ void gnomemeeting_ldap_window_destroy_notebook_pages ();
  * PRE          :  The server name, the type of page to create 
  *                 (CONTACTS_SERVERS / CONTACTS_GROUPS)
  */
-int gnomemeeting_init_ldap_window_notebook (gchar *, int);
+int
+gnomemeeting_init_ldap_window_notebook (gchar *,
+					int);
 
 
 /* DESCRIPTION  :  / 
@@ -115,19 +128,23 @@ int gnomemeeting_init_ldap_window_notebook (gchar *, int);
  *                 given as second parameter.
  * PRE          :  /
  */
-void gnomemeeting_addressbook_group_populate (GtkListStore *, char *);
+void
+gnomemeeting_addressbook_group_populate (GtkListStore *,
+					 char *);
 
 
 /* DESCRIPTION  :  / 
  * BEHAVIOR     :  Fills in the arborescence of servers and groups.
  * PRE          :  /
  */
-void gnomemeeting_addressbook_sections_populate ();
+void
+gnomemeeting_addressbook_sections_populate ();
 
 
 /* DESCRIPTION  :  / 
  * BEHAVIOR     :  Returns the GMURL for the given speed dial or NULL if none.
  * PRE          :  /
  */
-GMURL gnomemeeting_addressbook_get_url_from_speed_dial (const char *);
+GMURL
+gnomemeeting_addressbook_get_url_from_speed_dial (const char *);
 #endif

@@ -157,7 +157,7 @@ void gnomemeeting_popup_menu_init (GtkWidget *, GtkAccelGroup *);
  *                 to the given widget.
  * PRE          :  The widget to attach the menu to, and the accelgroup.
  */
-void gnomemeeting_popup_menu_tray_init (GtkWidget *, GtkAccelGroup *);
+void gnomemeeting_popup_menu_tray_init (GtkWidget *);
 
 
 /* DESCRIPTION  :  /

@@ -52,14 +52,14 @@ G_BEGIN_DECLS
  *                 then displays globe2, else displays globe
  * PRE          :  /
  */
-gint gnomemeeting_tray_flash (GObject *);
+gint gnomemeeting_tray_flash (GtkWidget *);
 
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Init the tray and menus and callbacks (for this tray icon)
  * PRE          :  The GtkAccelGroup.
  */
-GObject *gnomemeeting_init_tray (GtkAccelGroup *);
+GtkWidget *gnomemeeting_init_tray ();
 
 
 /* DESCRIPTION  :  /
@@ -68,34 +68,34 @@ GObject *gnomemeeting_init_tray (GtkAccelGroup *);
  *                 If int = 2, displays the busy icon.
  * PRE          :  /
  */
-void gnomemeeting_tray_set_content (GObject *, int);
+void gnomemeeting_tray_set_content (GtkWidget *, int);
 
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Show the tray icon.
  * PRE          :  /
  */
-void gnomemeeting_tray_show (GObject *);
+void gnomemeeting_tray_show (GtkWidget *);
 
 
 /* DESCRIPTION  : /
  * BEHAVIOR     : Hide the tray window
  * PRE          : /
  */
-void gnomemeeting_tray_hide (GObject *);
+void gnomemeeting_tray_hide (GtkWidget *);
 
 
 /* DESCRIPTION  : Returns true if the tray shows a rining phone
  * BEHAVIOR     : 
  * PRE          : /
  */
-gboolean gnomemeeting_tray_is_ringing (GObject *tray);
+gboolean gnomemeeting_tray_is_ringing (GtkWidget *tray);
 
 /* DESCRIPTION  : Returns true if the tray is visible
  * BEHAVIOR     : 
  * PRE          : /
  */
-gboolean gnomemeeting_tray_is_visible (GObject *tray);
+gboolean gnomemeeting_tray_is_visible (GtkWidget *tray);
 
 G_END_DECLS
 

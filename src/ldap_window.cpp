@@ -207,7 +207,7 @@ dnd_drag_motion_cb (GtkWidget *tree_view,
   GValue value =  {0, };
   GtkTreeIter iter;
 
-  lw = gnomemeeting_get_ldap_window (gm);
+  lw = MyApp->GetLdapWindow ();
 
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (tree_view));
 
@@ -455,8 +455,8 @@ edit_contact_cb (GtkWidget *widget,
   GmLdapWindow *lw = NULL;
   GmWindow *gw = NULL;
     
-  lw = gnomemeeting_get_ldap_window (gm);
-  gw = gnomemeeting_get_main_window (gm);
+  lw = MyApp->GetLdapWindow ();
+  gw = MyApp->GetMainWindow ();
   
   client = gconf_client_get_default ();
 
@@ -654,7 +654,7 @@ addressbook_edit_contact_dialog_new (const char *contact_name,
   gboolean selected = false;
 
   
-  gw = gnomemeeting_get_main_window (gm);
+  gw = MyApp->GetMainWindow ();
   client = gconf_client_get_default ();
 
   edit_dialog = new (GmEditContactDialog);
@@ -928,7 +928,7 @@ delete_contact_from_group_cb (GtkWidget *widget,
   
   GmLdapWindow *lw = NULL;
 
-  lw = gnomemeeting_get_ldap_window (gm);
+  lw = MyApp->GetLdapWindow ();
   client = gconf_client_get_default ();
 
   if (get_selected_contact_info (&contact_section, &contact_name,
@@ -987,7 +987,7 @@ contact_clicked_cb (GtkWidget *w,
   gboolean is_group = false;
   gboolean already_member = false;
 
-  lw = gnomemeeting_get_ldap_window (gm);
+  lw = MyApp->GetLdapWindow ();
   client = gconf_client_get_default ();
 
   if (e->type == GDK_BUTTON_PRESS || e->type == GDK_KEY_PRESS) {
@@ -1145,7 +1145,7 @@ new_contact_section_cb (GtkWidget *widget,
   gchar *dialog_title = NULL;
   gchar *gconf_key = NULL;
   
-  gw = gnomemeeting_get_main_window (gm);
+  gw = MyApp->GetMainWindow ();
   client = gconf_client_get_default ();
 
   if (GPOINTER_TO_INT (data) == CONTACTS_SERVERS) {
@@ -1258,8 +1258,8 @@ delete_contact_section_cb (GtkWidget *widget,
 
   gboolean is_group = false;
 
-  gw = gnomemeeting_get_main_window (gm);
-  lw = gnomemeeting_get_ldap_window (gm);
+  gw = MyApp->GetMainWindow ();
+  lw = MyApp->GetLdapWindow ();
   client = gconf_client_get_default ();
 
   selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (lw->tree_view));
@@ -1372,7 +1372,7 @@ contact_section_changed_cb (GtkTreeSelection *selection,
   GmLdapWindow *lw = NULL;
   GmLdapWindowPage *lwp = NULL;
 
-  lw = gnomemeeting_get_ldap_window (gm);
+  lw = MyApp->GetLdapWindow ();
 
   /* Update the sensitivity of DELETE */
   update_menu_sensitivity (false, true, false);
@@ -1435,7 +1435,7 @@ contact_section_clicked_cb (GtkWidget *w,
   if (e->window != gtk_tree_view_get_bin_window (tree_view)) 
     return FALSE;
 
-  lw = gnomemeeting_get_ldap_window (gm);
+  lw = MyApp->GetLdapWindow ();
 
   if (e->type == GDK_BUTTON_PRESS || e->type == GDK_KEY_PRESS) {
 
@@ -1551,7 +1551,7 @@ delete_cb (GtkWidget *w,
 {
   GmLdapWindow *lw = NULL;
 
-  lw = gnomemeeting_get_ldap_window (gm);
+  lw = MyApp->GetLdapWindow ();
 
 
   if (get_selected_contact_info (NULL, NULL, NULL, NULL, NULL)) 
@@ -1600,7 +1600,7 @@ contact_activated_cb (GtkTreeView *tree,
   
   GmWindow *gw = NULL;
 
-  gw = gnomemeeting_get_main_window (gm);
+  gw = MyApp->GetMainWindow ();
   
   if (get_selected_contact_info (&contact_section, &contact_name,
 				 &contact_url, NULL, &is_group)) {
@@ -1644,8 +1644,8 @@ contact_section_activated_cb (GtkTreeView *tree_view,
   GmWindow *gw = NULL;
   GmLdapWindow *lw = NULL;
 
-  gw = gnomemeeting_get_main_window (gm);
-  lw = gnomemeeting_get_ldap_window (gm);
+  gw = MyApp->GetMainWindow ();
+  lw = MyApp->GetLdapWindow ();
 
   selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view));
   
@@ -1697,7 +1697,7 @@ refresh_server_content_cb (GtkWidget *w,
   
   GtkWidget *page = NULL;
 
-  lw = gnomemeeting_get_ldap_window (gm);
+  lw = MyApp->GetLdapWindow ();
   gtk_notebook_set_current_page (GTK_NOTEBOOK (lw->notebook), 
 				 page_num);
   page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), 
@@ -1871,7 +1871,7 @@ get_selected_contact_info (gchar **contact_section,
   GmLdapWindowPage *lwp = NULL;
   GmLdapWindow *lw = NULL;
 
-  lw = gnomemeeting_get_ldap_window (gm);
+  lw = MyApp->GetLdapWindow ();
   
   /* Get the required data from the GtkNotebook page */
   page_num = gtk_notebook_get_current_page (GTK_NOTEBOOK (lw->notebook));
@@ -1949,7 +1949,7 @@ update_menu_sensitivity (gboolean is_group,
 {
   GmLdapWindow *lw = NULL;
   
-  lw = gnomemeeting_get_ldap_window (gm);
+  lw = MyApp->GetLdapWindow ();
 
   if (is_group || is_section) {
       
@@ -1995,9 +1995,10 @@ update_menu_sensitivity (gboolean is_group,
 
 
 /* The functions */
-void
-gnomemeeting_init_ldap_window ()
+GtkWidget *
+gnomemeeting_ldap_window_new (GmLdapWindow *lw)
 {
+  GtkWidget *window = NULL;
   GtkWidget *hpaned = NULL;
   GtkWidget *vbox = NULL;
   GtkWidget *frame = NULL;
@@ -2011,9 +2012,6 @@ gnomemeeting_init_ldap_window ()
   GtkAccelGroup *accel = NULL;
   GtkTreeStore *model = NULL;
 
-  GmWindow *gw = NULL;
-  GmLdapWindow *lw = NULL;
-
   GConfClient *client = NULL;
 
   static GtkTargetEntry dnd_targets [] =
@@ -2022,30 +2020,27 @@ gnomemeeting_init_ldap_window ()
     };
 
   
-  /* Get the structs from the application */
-  gw = gnomemeeting_get_main_window (gm);
-  lw = gnomemeeting_get_ldap_window (gm);
   client = gconf_client_get_default ();
 
-  gw->ldap_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  icon = gtk_widget_render_icon (GTK_WIDGET (gw->ldap_window),
+  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  icon = gtk_widget_render_icon (GTK_WIDGET (window),
 				 GM_STOCK_ADDRESSBOOK_16,
 				 GTK_ICON_SIZE_MENU, NULL);
-  gtk_window_set_title (GTK_WINDOW (gw->ldap_window), 
+  gtk_window_set_title (GTK_WINDOW (window), 
 			_("GnomeMeeting Address Book"));
-  gtk_window_set_icon (GTK_WINDOW (gw->ldap_window), icon);
-  gtk_window_set_position (GTK_WINDOW (gw->ldap_window), 
+  gtk_window_set_icon (GTK_WINDOW (window), icon);
+  gtk_window_set_position (GTK_WINDOW (window), 
 			   GTK_WIN_POS_CENTER);
-  gtk_window_set_default_size (GTK_WINDOW (gw->ldap_window), 670, 370);
+  gtk_window_set_default_size (GTK_WINDOW (window), 670, 370);
   g_object_unref (icon);
   
   accel = gtk_accel_group_new ();
-  gtk_window_add_accel_group (GTK_WINDOW (gw->ldap_window), accel);
+  gtk_window_add_accel_group (GTK_WINDOW (window), accel);
   
   /* A vbox that will contain the menubar, and also the hbox containing
      the rest of the window */
   vbox = gtk_vbox_new (0, FALSE);
-  gtk_container_add (GTK_CONTAINER (gw->ldap_window), vbox);
+  gtk_container_add (GTK_CONTAINER (window), vbox);
   menubar = gtk_menu_bar_new ();
   
   static MenuEntry addressbook_menu [] =
@@ -2073,7 +2068,7 @@ gnomemeeting_init_ldap_window ()
       {_("_Close"), NULL,
        GTK_STOCK_CLOSE, 'w', MENU_ENTRY, 
        GTK_SIGNAL_FUNC (gnomemeeting_component_view),
-       (gpointer) gw->ldap_window,
+       (gpointer) window,
        NULL},
 
       {_("C_ontact"), NULL, NULL, 0, MENU_NEW, NULL, NULL, NULL},
@@ -2187,8 +2182,20 @@ gnomemeeting_init_ldap_window ()
 			   NULL, (GConnectFlags) 0);
 
   /* Hide but do not delete the ldap window */
-  g_signal_connect (G_OBJECT (gw->ldap_window), "delete_event",
-		    G_CALLBACK (gtk_widget_hide_on_delete), NULL);  
+  g_signal_connect (G_OBJECT (window), "delete_event",
+		    G_CALLBACK (gtk_widget_hide_on_delete), NULL);
+
+  return window;
+}
+
+
+GmLdapWindowPage *
+gnomemeeting_get_ldap_window_page (GtkWidget *page)
+{
+  GmLdapWindowPage *lwp =
+    (GmLdapWindowPage *) g_object_get_data (G_OBJECT (page), "lwp");
+
+  return lwp;
 }
 
 
@@ -2223,7 +2230,7 @@ void gnomemeeting_ldap_window_destroy_notebook_pages ()
   GtkWidget *page = NULL;
   int i = 0;
 
-  lw = gnomemeeting_get_ldap_window (gm);
+  lw = MyApp->GetLdapWindow ();
   
   while ((page =
 	  gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), i))) {
@@ -2270,7 +2277,7 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
       {"text/plain", GTK_TARGET_SAME_APP, 0}
     };
  
-  GmLdapWindow *lw = gnomemeeting_get_ldap_window (gm);
+  GmLdapWindow *lw = MyApp->GetLdapWindow ();
   GmLdapWindowPage *current_lwp = NULL;
 
   
@@ -2666,7 +2673,7 @@ gnomemeeting_addressbook_sections_populate ()
 
   int p = 0, cpt = 0;
   
-  lw = gnomemeeting_get_ldap_window (gm);
+  lw = MyApp->GetLdapWindow ();
   client = gconf_client_get_default ();
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (lw->tree_view));
 

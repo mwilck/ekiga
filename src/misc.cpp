@@ -40,6 +40,7 @@
 #include "../config.h"
 
 #include "misc.h"
+#include "gnomemeeting.h"
 #include "callbacks.h"
 #include "config.h"
 #include "dialog.h"
@@ -49,6 +50,8 @@
 
 /* Declarations */
 extern GtkWidget *gm;
+extern GnomeMeeting *MyApp;
+
 
 /* The functions */
 
@@ -136,7 +139,7 @@ void gnomemeeting_init_main_window_logo (GtkWidget *image)
   GdkPixbuf *text_logo_pix = NULL;
   GtkRequisition size_request;
 
-  GmWindow *gw = gnomemeeting_get_main_window (gm);
+  GmWindow *gw = MyApp->GetMainWindow ();
 
   gtk_widget_size_request (GTK_WIDGET (gw->video_frame), &size_request);
 
@@ -204,7 +207,7 @@ gnomemeeting_incoming_call_popup_new (gchar * utf8_name,
 
   msg = g_strdup_printf (_("Call from %s\nusing %s"), (const char*) utf8_name, 
 			 (const char *) utf8_app);
-  gw = gnomemeeting_get_main_window (gm);
+  gw = MyApp->GetMainWindow ();
 
   widget = gtk_dialog_new ();
   b1 = gtk_dialog_add_button (GTK_DIALOG (widget),
@@ -256,7 +259,7 @@ static int statusbar_clear_msg (gpointer data)
 
   gdk_threads_enter ();
 
-  gw = gnomemeeting_get_main_window (gm);
+  gw = MyApp->GetMainWindow ();
   id = gtk_statusbar_get_context_id (GTK_STATUSBAR (gw->statusbar),
 				     "statusbar");
 
@@ -414,7 +417,7 @@ gnomemeeting_table_add_entry (GtkWidget *table,
   GConfClient *client = NULL;
   GmPrefWindow *pw = NULL;
 
-  pw = gnomemeeting_get_pref_window (gm);
+  pw = MyApp->GetPrefWindow ();
   client = gconf_client_get_default ();
 
   if (box) {
@@ -496,7 +499,7 @@ gnomemeeting_table_add_toggle (GtkWidget *table,
   GConfClient *client = NULL;
   
   client = gconf_client_get_default ();
-  pw = gnomemeeting_get_pref_window (gm);
+  pw = MyApp->GetPrefWindow ();
 
   g_value_init (&value, G_TYPE_INT);
   g_object_get_property (G_OBJECT (table), "n-columns", &value);
@@ -546,7 +549,7 @@ gnomemeeting_table_add_spin (GtkWidget *table,
   GConfClient *client = NULL;
 
   client = gconf_client_get_default ();
-  pw = gnomemeeting_get_pref_window (gm);
+  pw = MyApp->GetPrefWindow ();
 
   if (box)
     hbox = gtk_hbox_new (FALSE, 0);
@@ -634,7 +637,7 @@ gnomemeeting_table_add_spin_range (GtkWidget *table,
   GmPrefWindow *pw = NULL;
   GConfClient *client = NULL;
 
-  pw = gnomemeeting_get_pref_window (gm);
+  pw = MyApp->GetPrefWindow ();
   client = gconf_client_get_default ();
 
   hbox = gtk_hbox_new (FALSE, 0);
@@ -706,7 +709,7 @@ gnomemeeting_table_add_int_option_menu (GtkWidget *table,
   GConfClient *client = NULL;                                                  
   
   client = gconf_client_get_default ();                                        
-  pw = gnomemeeting_get_pref_window (gm);
+  pw = MyApp->GetPrefWindow ();
 
   label = gtk_label_new_with_mnemonic (label_txt);
 
@@ -764,7 +767,7 @@ gnomemeeting_table_add_string_option_menu (GtkWidget *table,
   GtkWidget *label = NULL;                                                     
   GtkWidget *option_menu = NULL;
   GtkWidget *menu = NULL;
-  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);  
+  GmPrefWindow *pw = MyApp->GetPrefWindow ();  
   gchar *gconf_string = NULL;
   int history = -1;
 
@@ -850,7 +853,7 @@ gnomemeeting_table_add_pstring_option_menu (GtkWidget *table,
   GtkWidget *label = NULL;                                                     
   GtkWidget *option_menu = NULL;
   GtkWidget *menu = NULL;
-  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);  
+  GmPrefWindow *pw = MyApp->GetPrefWindow ();  
   gchar *gconf_string = NULL;
   int history = -1;
 

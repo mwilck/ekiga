@@ -5,7 +5,6 @@ bin_SCRIPTS = gnomemeeting-config-tool
 bin_PROGRAMS = gnomemeeting
 
 gnomemeeting_SOURCES =		\
-	common.cpp		\
 	common.h		\
 	callbacks.cpp		\
 	callbacks.h		\

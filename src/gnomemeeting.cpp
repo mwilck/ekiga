@@ -39,14 +39,23 @@
 #include "../config.h"
 
 #include "gnomemeeting.h"
+#include "callbacks.h"
 #include "sound_handling.h"
 #include "ils.h"
 #include "urlhandler.h"
+#include "ldap_window.h"
+#include "pref_window.h"
+#include "chat_window.h"
+#include "druid.h"
+#include "tools.h"
+#include "tray.h"
 #include "main_window.h"
 #include "toolbar.h"
 #include "misc.h"
 #include "history-combo.h"
 #include "dialog.h"
+#include "e-splash.h"
+#include "stock-icons.h"
 
 #ifndef WIN32
 #include <esd.h>
@@ -54,16 +63,39 @@
 #endif
 
 
+static gint
+gnomemeeting_tray_hack (gpointer);
+
+
 /* Declarations */
-GtkWidget *gm;
 GnomeMeeting *MyApp;	
+GtkWidget *gm;
+
+
+static gint
+gnomemeeting_tray_hack (gpointer data)
+{
+  GmWindow *gw = NULL;
+
+  gdk_threads_enter ();
+
+  gw = MyApp->GetMainWindow ();
+  
+  if (!gnomemeeting_tray_is_visible (gw->docklet)) {
+
+    gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Notification area not detected"), _("You have chosen to start GnomeMeeting hidden, however the notification area is not present in your panel, GnomeMeeting can thus not start hidden."));
+    gtk_widget_show_all (gm);
+  }
+  
+  gdk_threads_leave ();
+
+  return FALSE;
+}
 
 
 /* The main GnomeMeeting Class  */
-
 GnomeMeeting::GnomeMeeting ()
-  : PProcess("", "", MAJOR_VERSION, MINOR_VERSION, BUILD_TYPE,
-	     BUILD_NUMBER)
+  : PProcess("", "", MAJOR_VERSION, MINOR_VERSION, BUILD_TYPE, BUILD_NUMBER)
 
 {
   /* no endpoint for the moment */
@@ -73,16 +105,25 @@ GnomeMeeting::GnomeMeeting ()
   video_grabber = NULL;
 
   client = gconf_client_get_default ();
-  gw = gnomemeeting_get_main_window (gm);
-  lw = gnomemeeting_get_ldap_window (gm);
-
-  endpoint = new GMH323EndPoint ();
-  MyApp = (this);
 
   vg = new PIntCondMutex (0, 0);
 
-  Init ();
+  /* Init the different structures */
+  gw = new (GmWindow);
+  pw = new (GmPrefWindow);
+  lw = new (GmLdapWindow);
+  dw = new (GmDruidWindow);
+  chat = new (GmTextChat);
+  chw = new (GmCallsHistoryWindow);
+  rtp = new (GmRtpData);
+  memset (rtp, 0, sizeof (GmRtpData));
+
   call_number = 0;
+
+  MyApp = (this);
+  BuildGUI ();
+  endpoint = new GMH323EndPoint ();
+  Init ();
 }
 
 
@@ -91,6 +132,24 @@ GnomeMeeting::~GnomeMeeting()
   endpoint->ClearAllCalls (H323Connection::EndedByLocalUser, TRUE);
   RemoveVideoGrabber (true);
   RemoveEndpoint ();
+
+  gnomemeeting_ldap_window_destroy_notebook_pages ();
+  gtk_widget_destroy (gw->ldap_window);
+  gtk_widget_destroy (gw->pref_window);
+  gtk_widget_destroy (gw->history_window);
+  gtk_widget_destroy (gw->calls_history_window);
+  gtk_widget_destroy (gm);
+#ifndef DISABLE_GNOME
+  gtk_widget_destroy (gw->druid_window);
+#endif
+  
+  delete (gw);
+  delete (pw);
+  delete (lw);
+  delete (dw);
+  delete (chat);
+  delete (chw);
+  delete (rtp);
 }
 
 
@@ -107,8 +166,7 @@ GnomeMeeting::Connect()
   
   gnomemeeting_threads_enter ();
   gnomemeeting_statusbar_push  (gw->statusbar, NULL);
-  call_address = (PString) gtk_entry_get_text 
-          (GTK_ENTRY (GTK_COMBO (gw->combo)->entry));  
+  call_address = gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry));
   gnomemeeting_threads_leave ();
 
 
@@ -131,14 +189,13 @@ GnomeMeeting::Connect()
     
     if (!call_address.IsEmpty ())
       gm_history_combo_add_entry (GM_HISTORY_COMBO (gw->combo), 
-				  "/apps/gnomemeeting/history/called_urls_list", 
-				  gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry)));
+				  HISTORY_KEY "called_urls_list", 
+				  call_address);
     gnomemeeting_threads_leave ();
 
 
     /* if we call somebody, and if the URL is not empty */
-    if (!GMURL (call_address).IsEmpty ())
-    {
+    if (!GMURL (call_address).IsEmpty ()) {
       call_number++;
 
       url_handler = new GMURLHandler (call_address);
@@ -177,7 +234,8 @@ GnomeMeeting::Connect()
 }
 
 
-void GnomeMeeting::Disconnect (H323Connection::CallEndReason reason)
+void
+GnomeMeeting::Disconnect (H323Connection::CallEndReason reason)
 {
   /* If somebody is calling us, then we do not accept the connection
      else we finish it */
@@ -247,7 +305,8 @@ void GnomeMeeting::Disconnect (H323Connection::CallEndReason reason)
 }
 
 
-GMH323EndPoint *GnomeMeeting::Endpoint ()
+GMH323EndPoint *
+GnomeMeeting::Endpoint ()
 {
   GMH323EndPoint *ep = NULL;
   PWaitAndSignal m(ep_var_mutex);
@@ -258,21 +317,66 @@ GMH323EndPoint *GnomeMeeting::Endpoint ()
 }
 
 
-void GnomeMeeting::Main ()
+GmWindow *
+GnomeMeeting::GetMainWindow ()
 {
+  return gw;
 }
 
 
-void GnomeMeeting::Init ()
+GmPrefWindow *
+GnomeMeeting::GetPrefWindow ()
+{
+  return pw;
+}
+
+
+GmLdapWindow *
+GnomeMeeting::GetLdapWindow ()
+{
+  return lw;
+}
+
+
+GmDruidWindow *
+GnomeMeeting::GetDruidWindow ()
+{
+  return dw;
+}
+
+
+GmCallsHistoryWindow *
+GnomeMeeting::GetCallsHistoryWindow ()
+{
+  return chw;
+}
+
+
+GmTextChat *
+GnomeMeeting::GetTextChat ()
+{
+  return chat;
+}
+
+
+GmRtpData *
+GnomeMeeting::GetRtpData ()
+{
+  return rtp;
+}
+
+
+void GnomeMeeting::Main () {}
+
+
+void
+GnomeMeeting::Init ()
 {
 #ifndef WIN32
   /* Ignore SIGPIPE */
   signal (SIGPIPE, SIG_IGN);
 #endif
   
-  //  if (clo->debug_level != 0)
-  // PTrace::Initialise (clo->debug_level);
-
 
   /* Start the video preview */
   if (gconf_client_get_bool (client, DEVICES_KEY "video_preview", NULL))
@@ -309,8 +413,88 @@ void GnomeMeeting::Init ()
 #endif
 
   gw->audio_mixers = gnomemeeting_get_mixers ();
-  gnomemeeting_sound_daemons_resume ();
   gnomemeeting_mixers_mic_select ();
+  gnomemeeting_sound_daemons_resume ();
+}
+
+
+void GnomeMeeting::BuildGUI ()
+{
+  gchar *msg = NULL;
+  bool show_splash = TRUE;
+
+  
+  /* Init the splash screen */
+  gw->splash_win = e_splash_new ();
+  g_signal_connect (G_OBJECT (gw->splash_win), "delete_event",
+		    G_CALLBACK (gtk_widget_hide_on_delete), 0);
+
+  show_splash = gconf_client_get_bool (client, VIEW_KEY "show_splash", 0);
+  if (show_splash) 
+  {
+    /* We show the splash screen */
+    gtk_widget_show_all (gw->splash_win);
+
+    while (gtk_events_pending ())
+      gtk_main_iteration ();
+  }
+
+  
+  /* Build the GUI */
+  gnomemeeting_stock_icons_init ();
+  gw->tips = gtk_tooltips_new ();
+  gw->history_window = gnomemeeting_history_window_new ();
+  gw->calls_history_window = gnomemeeting_calls_history_window_new (chw);  
+  gw->pref_window = gnomemeeting_pref_window_new (pw);  
+  gw->ldap_window = gnomemeeting_ldap_window_new (lw);
+  gw->druid_window = gnomemeeting_druid_window_new (dw);
+#ifndef WIN32
+  gw->docklet = gnomemeeting_init_tray ();
+  if (gconf_client_get_bool (client, GENERAL_KEY "do_not_disturb", 0))
+    gnomemeeting_tray_set_content (gw->docklet, 2);
+#endif
+  gnomemeeting_main_window_new (gw);
+
+
+#ifndef DISABLE_GNOME
+ if (gconf_client_get_int (client, GENERAL_KEY "version", NULL) 
+      < 100 * MAJOR_VERSION + MINOR_VERSION) {
+
+   gtk_widget_show_all (GTK_WIDGET (gw->druid_window));
+  }
+  else {
+#endif
+    /* Show the main window */
+#ifndef WIN32
+    if (!gconf_client_get_bool (GCONF_CLIENT (client),
+				VIEW_KEY "start_docked", 0)) {
+#endif
+      gtk_widget_show (GTK_WIDGET (gm));
+#ifndef WIN32
+    }
+    else
+      gtk_timeout_add (15000, (GtkFunction) gnomemeeting_tray_hack, NULL);
+#endif
+#ifndef DISABLE_GNOME
+  }
+#endif
+
+ gconf_client_set_int (client, GENERAL_KEY "version", 
+		       100 * MAJOR_VERSION + MINOR_VERSION, NULL);
+ 
+  /* Destroy the splash */
+ if (gw->splash_win) {
+   
+   gtk_widget_destroy (gw->splash_win);
+   gw->splash_win = NULL;
+ }
+
+  
+  /* GM is started */
+  msg = g_strdup_printf (_("Started GnomeMeeting V%d.%d for %s\n"), 
+			 MAJOR_VERSION, MINOR_VERSION, g_get_user_name ());
+  gnomemeeting_log_insert (gw->history_text_view, msg);
+  g_free (msg);
 }
 
 

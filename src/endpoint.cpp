@@ -94,7 +94,7 @@ IncomingCallTimeout (gpointer data)
   else
     forward_host = PString ("");
 
-  gw = gnomemeeting_get_main_window (gm);
+  gw = MyApp->GetMainWindow ();
 
   /* Destroy the incoming call popup */
   if (gw->incoming_call_popup) {
@@ -136,16 +136,15 @@ IncomingCallTimeout (gpointer data)
 /* The class */
 GMH323EndPoint::GMH323EndPoint ()
 {
-  gchar *msg = NULL;
   gchar *udp_port_range = NULL;
   gchar *tcp_port_range = NULL;
   gchar **udp_couple = NULL;
   gchar **tcp_couple = NULL;
 
   /* Get the GTK structures and GConf client */
-  gw = gnomemeeting_get_main_window (gm);
-  lw = gnomemeeting_get_ldap_window (gm);
-  chat = gnomemeeting_get_chat_window (gm);
+  gw = MyApp->GetMainWindow ();
+  lw = MyApp->GetLdapWindow ();
+  chat = MyApp->GetTextChat ();
   client = gconf_client_get_default ();
 
   /* Initialise the endpoint paramaters */
@@ -208,12 +207,6 @@ GMH323EndPoint::GMH323EndPoint ()
 
   /* Update general configuration */
   UpdateConfig ();
-
-  /* GM is started */
-  msg = g_strdup_printf (_("Started GnomeMeeting V%d.%d for %s\n"), 
-			 MAJOR_VERSION, MINOR_VERSION, g_get_user_name ());
-  gnomemeeting_log_insert (gw->history_text_view, msg);
-  g_free (msg);
 }
 
 
@@ -250,8 +243,8 @@ void GMH323EndPoint::UpdateConfig ()
   GmWindow *gw = NULL;
 
   gnomemeeting_threads_enter ();
-  pw = gnomemeeting_get_pref_window (gm);
-  gw = gnomemeeting_get_main_window (gm);
+  pw = MyApp->GetPrefWindow ();
+  gw = MyApp->GetMainWindow ();
   
   /* Get the gconf settings */
   player = 
@@ -1209,7 +1202,7 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 1);
   gnomemeeting_call_menu_connect_set_sensitive (0, FALSE);
   gnomemeeting_call_menu_functions_set_sensitive (TRUE);
-  gnomemeeting_tray_set_content (G_OBJECT (gw->docklet), 2);
+  gnomemeeting_tray_set_content (gw->docklet, 2);
   gnomemeeting_threads_leave ();
 
 
@@ -1403,9 +1396,9 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   /* Update the tray icon */
   gnomemeeting_threads_enter ();
   if (dnd)
-    gnomemeeting_tray_set_content (G_OBJECT (gw->docklet), 2);
+    gnomemeeting_tray_set_content (gw->docklet, 2);
   else
-    gnomemeeting_tray_set_content (G_OBJECT (gw->docklet), 0);
+    gnomemeeting_tray_set_content (gw->docklet, 0);
   gnomemeeting_threads_leave ();
 
 

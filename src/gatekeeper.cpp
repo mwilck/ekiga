@@ -124,7 +124,7 @@ void GMH323Gatekeeper::Main ()
   
   endpoint = MyApp->Endpoint ();
   gnomemeeting_threads_enter ();
-  gw = gnomemeeting_get_main_window (gm);
+  gw = MyApp->GetMainWindow ();
   gnomemeeting_threads_leave ();
 
   

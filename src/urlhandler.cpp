@@ -156,7 +156,7 @@ BOOL GMURL::operator != (GMURL u)
 GMURLHandler::GMURLHandler (PString c)
   :PThread (1000, AutoDeleteThread)
 {
-  gw = gnomemeeting_get_main_window (gm);
+  gw = MyApp->GetMainWindow ();
   url = GMURL (c);
 
   answer_call = FALSE;
@@ -168,7 +168,7 @@ GMURLHandler::GMURLHandler (PString c)
 GMURLHandler::GMURLHandler ()
   :PThread (1000, AutoDeleteThread)
 {
-  gw = gnomemeeting_get_main_window (gm);
+  gw = MyApp->GetMainWindow ();
 
   answer_call = TRUE;
   
@@ -202,7 +202,7 @@ void GMURLHandler::Main ()
   
   gnomemeeting_threads_enter ();
   client = gconf_client_get_default ();
-  gw = gnomemeeting_get_main_window (gm);
+  gw = MyApp->GetMainWindow ();
   gnomemeeting_threads_leave ();
   
   endpoint = MyApp->Endpoint ();

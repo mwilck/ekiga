@@ -64,7 +64,7 @@ GMH323Connection::GMH323Connection (GMH323EndPoint & ep,
   int max_jitter = 1000;
 
   gnomemeeting_threads_enter ();
-  gw = gnomemeeting_get_main_window (gm);
+  gw = MyApp->GetMainWindow ();
 
   opened_channels = 0;
 

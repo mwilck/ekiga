@@ -232,7 +232,7 @@ popup_menu_callback (GtkWidget *widget, GdkEventButton *event, gpointer data)
 static void 
 menu_item_selected (GtkWidget *w, gpointer data)
 {
-  GmWindow *gw = gnomemeeting_get_main_window (gm);
+  GmWindow *gw = MyApp->GetMainWindow ();
 
   gnomemeeting_statusbar_push (gw->statusbar, (char *) data);
 }
@@ -298,7 +298,7 @@ hold_call_callback (GtkWidget *widget, gpointer data)
   current_call_token = endpoint->GetCurrentCallToken ();
 
   gnomemeeting_menu = gnomemeeting_get_menu (gm);
-  gw = gnomemeeting_get_main_window (gm);
+  gw = MyApp->GetMainWindow ();
   
   if (!current_call_token.IsEmpty ())
     connection =
@@ -462,7 +462,8 @@ menu_toggle_changed (GtkWidget *widget, gpointer data)
 
 /* The functions */
 void 
-gnomemeeting_build_menu (GtkWidget *menubar, MenuEntry *gnomemeeting_menu,
+gnomemeeting_build_menu (GtkWidget *menubar,
+			 MenuEntry *gnomemeeting_menu,
 			 GtkAccelGroup *accel)
 {
   GtkWidget *menu = menubar;
@@ -509,7 +510,7 @@ gnomemeeting_build_menu (GtkWidget *menubar, MenuEntry *gnomemeeting_menu,
 	gtk_widget_show (GTK_WIDGET (image));
       }
 
-      if (gnomemeeting_menu [i].accel)
+      if (gnomemeeting_menu [i].accel && accel)
 	gtk_widget_add_accelerator (gnomemeeting_menu [i].widget, "activate", 
 				    accel, gnomemeeting_menu [i].accel, 
 				    GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
@@ -570,7 +571,7 @@ GtkWidget *
 gnomemeeting_init_menu (GtkAccelGroup *accel)
 {
   /* Get the data */
-  GmWindow *gw = gnomemeeting_get_main_window (gm);
+  GmWindow *gw = MyApp->GetMainWindow ();
   GConfClient *client = gconf_client_get_default ();
   GtkWidget *menubar = NULL;
 
@@ -805,8 +806,8 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
   gnomemeeting_build_menu (menubar, gnomemeeting_menu, accel);
   gtk_widget_show_all (GTK_WIDGET (menubar));
   
-  g_object_set_data(G_OBJECT(gm), "gnomemeeting_menu", 
-		    gnomemeeting_menu);
+  g_object_set_data (G_OBJECT (gm), "gnomemeeting_menu", 
+		     gnomemeeting_menu);
 
   /* Update to the initial values */
   GTK_CHECK_MENU_ITEM (gnomemeeting_menu [CHAT_WINDOW_VIEW_MENU_INDICE].widget)->active = 
@@ -1017,17 +1018,13 @@ gnomemeeting_popup_menu_init (GtkWidget *widget, GtkAccelGroup *accel)
 			 GDK_KEY_PRESS_MASK);
 }
 
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Creates a video menu which will popup, and attach it
- *                 to the given widget.
- * PRE          :  The widget to attach the menu to, and the accelgroup.
- */
+
 void 
-gnomemeeting_popup_menu_tray_init (GtkWidget *widget, GtkAccelGroup *accel)
+gnomemeeting_popup_menu_tray_init (GtkWidget *widget)
 {
   GtkWidget *popup_menu_widget = NULL;
   GConfClient *client = gconf_client_get_default ();
-  GmWindow *gw = gnomemeeting_get_main_window (gm);
+  GmWindow *gw = MyApp->GetMainWindow ();
   
   popup_menu_widget = gtk_menu_new ();
 
@@ -1091,7 +1088,7 @@ gnomemeeting_popup_menu_tray_init (GtkWidget *widget, GtkAccelGroup *accel)
       {NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL}
     };
 
-  gnomemeeting_build_menu (popup_menu_widget, tray_menu, accel);
+  gnomemeeting_build_menu (popup_menu_widget, tray_menu, NULL);
   gtk_widget_show_all (popup_menu_widget);
 
   g_object_set_data (G_OBJECT (gm), "tray_menu", 
@@ -1124,7 +1121,7 @@ gnomemeeting_call_menu_connect_set_sensitive (int i, bool b)
 #ifndef WIN32
   MenuEntry *tray_menu = gnomemeeting_get_tray_menu (gm);
 #endif
-  
+
   gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [CONNECT_CALL_MENU_INDICE+i].widget), b);
 #ifndef WIN32
   gtk_widget_set_sensitive (GTK_WIDGET (tray_menu [i].widget), b);

@@ -37,6 +37,8 @@
 
 #include "../config.h"
 
+#include "common.h"
+#include "gnomemeeting.h"
 #include "sound_handling.h"
 #include "endpoint.h"
 #include "misc.h"
@@ -62,6 +64,7 @@
 static void dialog_response_cb (GtkWidget *, gint, gpointer);
 
 extern GtkWidget *gm;
+extern GnomeMeeting *MyApp;
 
 
 /* The GTK callbacks */
@@ -69,7 +72,7 @@ void dialog_response_cb (GtkWidget *w, gint, gpointer data)
 {
   GmDruidWindow *dw = NULL;
 
-  dw = gnomemeeting_get_druid_window (gm);
+  dw = MyApp->GetDruidWindow ();
 
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (dw->audio_test_button),
 				false);
@@ -309,7 +312,7 @@ gnomemeeting_sound_play_ringtone (GtkWidget *widget)
      are executed in the main thread */
 #ifndef DISABLE_GNOME
   gdk_threads_enter ();
-  gboolean is_ringing = gnomemeeting_tray_is_ringing (G_OBJECT (widget));
+  gboolean is_ringing = gnomemeeting_tray_is_ringing (widget);
   gdk_threads_leave ();
 
   /* If the systray icon contains the ringing pic */
@@ -334,7 +337,7 @@ GMAudioTester::GMAudioTester (GMH323EndPoint *e)
   
   gnomemeeting_sound_daemons_suspend ();
   gnomemeeting_threads_enter ();
-  gw = gnomemeeting_get_main_window (gm);
+  gw = MyApp->GetMainWindow ();
   gnomemeeting_threads_leave ();
 
   player = new PSoundChannel;
@@ -516,7 +519,7 @@ void GMAudioTester::Main ()
   }
 
   gnomemeeting_threads_enter ();
-  dw = gnomemeeting_get_druid_window (gm);
+  dw = MyApp->GetDruidWindow ();
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (dw->audio_test_button),
 				FALSE);
   gtk_widget_queue_draw (dw->audio_test_button);

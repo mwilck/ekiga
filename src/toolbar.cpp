@@ -69,7 +69,7 @@ static void toolbar_cp_button_changed    (GtkWidget *, gpointer);
 /* Static functions */
 static void url_combo_changed (GtkEditable  *e, gpointer data)
 {
-  GmWindow *gw = gnomemeeting_get_main_window (gm);
+  GmWindow *gw = MyApp->GetMainWindow ();
 
   gchar *tip_text = (gchar *)
     gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (data)->entry));
@@ -82,7 +82,7 @@ static void url_combo_changed (GtkEditable  *e, gpointer data)
 #ifdef HAS_IXJ
 static void speaker_phone_toggle_changed (GtkToggleButton *w, gpointer data)
 {
-  GmWindow *gw = gnomemeeting_get_main_window (gm);
+  GmWindow *gw = MyApp->GetMainWindow ();
   OpalLineInterfaceDevice *lid = NULL;
   GMLid *lid_thread = NULL;
 
@@ -181,7 +181,7 @@ gnomemeeting_init_main_toolbar ()
   GtkWidget *hbox = NULL;
   GtkWidget *image = NULL;
 
-  GmWindow *gw = gnomemeeting_get_main_window (gm);
+  GmWindow *gw = MyApp->GetMainWindow ();
   
 
   /* The main horizontal toolbar */
@@ -248,7 +248,7 @@ GtkWidget *gnomemeeting_init_left_toolbar (void)
 
   PString dev;
   
-  GmWindow *gw = gnomemeeting_get_main_window (gm);
+  GmWindow *gw = MyApp->GetMainWindow ();
 
   GConfClient *client = gconf_client_get_default ();
 
@@ -402,7 +402,7 @@ void connect_button_update_pixmap (GtkToggleButton *button, int pressed)
 {
   GtkWidget *image = NULL;
   
-  GmWindow *gw = gnomemeeting_get_main_window (gm);
+  GmWindow *gw = MyApp->GetMainWindow ();
   
   image = (GtkWidget *) g_object_get_data (G_OBJECT (button), "image");
   

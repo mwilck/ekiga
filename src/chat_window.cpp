@@ -95,7 +95,7 @@ gnomemeeting_text_chat_insert (PString local, PString str, int user)
   GtkTextIter iter;
   GtkTextMark *mark;
   
-  GmTextChat *chat = gnomemeeting_get_chat_window (gm);
+  GmTextChat *chat = MyApp->GetTextChat ();
 
   gtk_text_buffer_get_end_iter (chat->text_buffer, &iter);
 
@@ -139,7 +139,7 @@ GtkWidget *gnomemeeting_text_chat_init ()
   GtkTextMark *mark;
 
   /* Get the structs from the application */
-  GmTextChat *chat = gnomemeeting_get_chat_window (gm);
+  GmTextChat *chat = MyApp->GetTextChat ();
 
   chat_window = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (chat_window), GTK_SHADOW_NONE);

@@ -102,13 +102,4 @@ void quit_callback (GtkWidget *, gpointer);
  * PRE          :  /
  */
 void gtk_main_quit_callback (int, gpointer);
-
-
-/* DESCRIPTION  :  This callback is called when a gconf error happens
- * BEHAVIOR     :  Pop-up a message-box
- * PRE          :  /
- */
-void gconf_error_callback (GConfClient *, GError *);
-
-
 #endif

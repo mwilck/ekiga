@@ -87,13 +87,23 @@ class GnomeMeeting : public PProcess
    * BEHAVIOR     :  To refuse a call, or interrupt the current call.
    * PRE          :  The reason why the call was not disconnected.
    */
-  void Disconnect (H323Connection::CallEndReason = H323Connection::EndedByLocalUser);
+  void Disconnect (H323Connection::CallEndReason
+		   = H323Connection::EndedByLocalUser);
 
-		
+
+  GmWindow *GetMainWindow ();
+  GmPrefWindow *GetPrefWindow ();
+  GmLdapWindow *GetLdapWindow ();
+  GmDruidWindow *GetDruidWindow ();
+  GmCallsHistoryWindow *GetCallsHistoryWindow ();
+  GmTextChat *GetTextChat ();
+  GmRtpData *GetRtpData ();
+  
   /* Needed for PProcess */
   void Main();
 
   void Init ();
+  void BuildGUI ();
   void RemoveEndpoint ();
   void CreateVideoGrabber (BOOL = true, BOOL = false);
   
@@ -117,6 +127,11 @@ class GnomeMeeting : public PProcess
   
   GmWindow *gw;
   GmLdapWindow *lw;
+  GmDruidWindow *dw;
+  GmCallsHistoryWindow *chw;
+  GmPrefWindow *pw;
+  GmTextChat *chat;
+  GmRtpData *rtp;
 
   PMutex vg_var_mutex;
   PMutex ep_var_mutex;

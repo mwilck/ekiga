@@ -40,20 +40,16 @@
 
 #include "main_window.h"
 #include "gnomemeeting.h"
+#include "chat_window.h"
+#include "ldap_window.h"
+#include "config.h"
 #include "ils.h"
 #include "misc.h"
-#include "config.h"
-#include "ldap_window.h"
-#include "pref_window.h"
-#include "chat_window.h"
-#include "druid.h"
-#include "tools.h"
-#include "tray.h"
 #include "toolbar.h"
 #include "menu.h"
 #include "callbacks.h"
 #include "sound_handling.h"
-#include "e-splash.h"
+#include "tray.h"
 #include "dialog.h"
 #include "stock-icons.h"
 
@@ -80,7 +76,6 @@
 
 
 /* Declarations */
-
 extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;	
 
@@ -95,7 +90,6 @@ static void gnomemeeting_new_event (BonoboListener *, const char *,
 static Bonobo_RegistrationResult gnomemeeting_register_as_factory (void);
 #endif
 
-static gint gnomemeeting_tray_hack (gpointer);
 static void main_notebook_page_changed (GtkNotebook *, GtkNotebookPage *,
 					gint, gpointer);
 static void audio_volume_changed       (GtkAdjustment *, gpointer);
@@ -104,9 +98,7 @@ static void whiteness_changed          (GtkAdjustment *, gpointer);
 static void colour_changed             (GtkAdjustment *, gpointer);
 static void contrast_changed           (GtkAdjustment *, gpointer);
 static void dialpad_button_clicked     (GtkButton *, gpointer);
-static void gnomemeeting_quit_cleanup (void);
 
-static void gnomemeeting_init_main_window (GtkAccelGroup *accel);
 static gint gm_quit_callback (GtkWidget *, GdkEvent *, gpointer);
 static void gnomemeeting_init_main_window_video_settings ();
 static void gnomemeeting_init_main_window_audio_settings ();
@@ -115,29 +107,16 @@ static void gnomemeeting_init_main_window_dialpad ();
 
 
 /* For stress testing */
-int i = 0;
+//int i = 0;
 
 /* GTK Callbacks */
-gint IdleUpdate (gpointer data)
-{
-  gdk_threads_enter ();
-
-  while (gtk_events_pending ())
-    gtk_main_iteration ();
-
-  gdk_threads_leave ();
-
-  PThread::Current ()->Sleep (20);
-  return TRUE;
-}
-
-
+/*
 gint StressTest (gpointer data)
  {
    gdk_threads_enter ();
 
 
-   GmWindow *gw = gnomemeeting_get_main_window (gm);
+   GmWindow *gw = MyApp->GetMainWindow ();
 
    if (!GTK_TOGGLE_BUTTON (gw->connect_button)->active) {
 
@@ -151,6 +130,7 @@ gint StressTest (gpointer data)
    gdk_threads_leave ();
    return TRUE;
 }
+*/
 
 
 gint AppbarUpdate (gpointer data)
@@ -175,7 +155,7 @@ gint AppbarUpdate (gpointer data)
     
     gdk_threads_enter ();
 
-    gw = gnomemeeting_get_main_window (gm);
+    gw = MyApp->GetMainWindow ();
 
     connection = MyApp->Endpoint ()->GetCurrentConnection ();
 
@@ -312,27 +292,6 @@ gint AppbarUpdate (gpointer data)
 }
 
 
-static gint
-gnomemeeting_tray_hack (gpointer data)
-{
-  GmWindow *gw = NULL;
-
-  gdk_threads_enter ();
-
-  gw = gnomemeeting_get_main_window (gm);
-  
-  if (!gnomemeeting_tray_is_visible (G_OBJECT (gw->docklet))) {
-
-    gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Notification area not detected"), _("You have chosen to start GnomeMeeting hidden, however the notification area is not present in your panel, GnomeMeeting can thus not start hidden."));
-    gtk_widget_show_all (gm);
-  }
-  
-  gdk_threads_leave ();
-
-  return FALSE;
-}
-
-
 static gboolean 
 stats_drawing_area_exposed (GtkWidget *drawing_area, gpointer data)
 {
@@ -350,8 +309,8 @@ stats_drawing_area_exposed (GtkWidget *drawing_area, gpointer data)
   int cpt = 0;
   int pos = 0;
   
-  GmWindow *gw = gnomemeeting_get_main_window (gm);
-  GmRtpData *rtp = gnomemeeting_get_rtp_data (gm); 
+  GmWindow *gw = MyApp->GetMainWindow ();
+  GmRtpData *rtp = MyApp->GetRtpData (); 
   GdkPoint points [50];
 
   int width_step = (int) GTK_WIDGET (drawing_area)->allocation.width / 40;
@@ -555,7 +514,7 @@ dnd_drag_data_received_cb (GtkWidget *widget,
   gchar **data_split = NULL;
 
 
-  gw = gnomemeeting_get_main_window (gm);
+  gw = MyApp->GetMainWindow ();
   
   if (selection_data && selection_data->data) {
 
@@ -597,7 +556,7 @@ gnomemeeting_new_event (BonoboListener    *listener,
   char **argv;
   CORBA_sequence_CORBA_string *args;
   
-  GmWindow *gw = gnomemeeting_get_main_window (gm);
+  GmWindow *gw = MyApp->GetMainWindow ();
 
   args = (CORBA_sequence_CORBA_string *) any->_value;
   argc = args->_length;
@@ -745,7 +704,7 @@ main_notebook_page_changed (GtkNotebook *notebook, GtkNotebookPage *page,
 {
   GConfClient *client = gconf_client_get_default ();
 
-  GmWindow *gw = gnomemeeting_get_main_window (gm);
+  GmWindow *gw = MyApp->GetMainWindow ();
 
   gconf_client_set_int (client, VIEW_KEY "control_panel_section",
 			gtk_notebook_get_current_page (GTK_NOTEBOOK (gw->main_notebook)), 0);
@@ -775,7 +734,7 @@ audio_volume_changed (GtkAdjustment *adjustment, gpointer data)
 #endif
   
   GConfClient *client = gconf_client_get_default ();
-  GmWindow *gw = gnomemeeting_get_main_window (gm);
+  GmWindow *gw = MyApp->GetMainWindow ();
 
   vol_play =  (int) (GTK_ADJUSTMENT (gw->adj_play)->value);
   vol_rec =  (int) (GTK_ADJUSTMENT (gw->adj_rec)->value);
@@ -912,69 +871,20 @@ dialpad_button_clicked (GtkButton *button, gpointer data)
 }
 
 
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  This function is the function corresponding to
- *                 gnomemeeting_init but for the cleanup. It will
- *                 destroy the widgets created by gnomemeeting_init and
- *                 free the structures.
- * PRE          :  /
- */
-static void
-gnomemeeting_quit_cleanup (void)
-{
-  GmWindow *gw = NULL;
-  GmPrefWindow *pw = NULL;
-  GmLdapWindow *lw = NULL;
-  GmDruidWindow *dw = NULL;
-  GmCallsHistoryWindow *chw = NULL;
-  GmTextChat *chat = NULL;
-  GmRtpData *rtp = NULL;
-
-  gw = gnomemeeting_get_main_window (gm);
-  lw = gnomemeeting_get_ldap_window (gm);
-  dw = gnomemeeting_get_druid_window (gm);
-  chw = gnomemeeting_get_calls_history_window (gm);
-  chat = gnomemeeting_get_chat_window (gm);
-  pw = gnomemeeting_get_pref_window (gm);
-  rtp = gnomemeeting_get_rtp_data (gm);
-  
-  delete (MyApp);
-  
-  gnomemeeting_ldap_window_destroy_notebook_pages ();
-  gtk_widget_destroy (gw->ldap_window);
-  gtk_widget_destroy (gw->pref_window);
-  gtk_widget_destroy (gw->history_window);
-  gtk_widget_destroy (gw->calls_history_window);
-  gtk_widget_destroy (gm);
-#ifndef DISABLE_GNOME
-  gtk_widget_destroy (gw->druid_window);
-#endif
-
-  delete (gw);
-  delete (lw);
-  delete (dw);
-  delete (chw);
-  delete (chat);
-  delete (pw);
-  delete (rtp);
-}
-
-
-/**
- * DESCRIPTION  :  This callback is called when the user tries to close
+/* DESCRIPTION  :  This callback is called when the user tries to close
  *                 the application using the window manager.
  * BEHAVIOR     :  Calls the real callback if the notification icon is 
  *                 not shown else hide GM.
  * PRE          :  /
- **/
+ */
 static gint 
 gm_quit_callback (GtkWidget *widget, GdkEvent *event, 
 			      gpointer data)
 {
   gboolean b;
-  GmWindow *gw = gnomemeeting_get_main_window (gm);
+  GmWindow *gw = MyApp->GetMainWindow ();
 
-  b = gnomemeeting_tray_is_visible (G_OBJECT (gw->docklet));
+  b = gnomemeeting_tray_is_visible (gw->docklet);
 
   if (!b)
     quit_callback (NULL, data);
@@ -1014,7 +924,7 @@ void gnomemeeting_dialpad_event (const char *key)
 
   GmWindow *gw = NULL;
 
-  gw = gnomemeeting_get_main_window (gm);
+  gw = MyApp->GetMainWindow ();
   endpoint = MyApp->Endpoint ();
 
   button_text = (gchar *) key;
@@ -1064,213 +974,16 @@ void gnomemeeting_dialpad_event (const char *key)
 }
 
 
-void 
-gnomemeeting_init (GmWindow *gw, 
-                   GmPrefWindow *pw,
-                   GmLdapWindow *lw,
-		   GmDruidWindow *dw,
-		   GmCallsHistoryWindow *chw,
-                   GmRtpData *rtp,
-		   GmTextChat *chat,
-		   GmCommandLineOptions *clo,
-                   int argc, char ** argv, char ** envp)
+GtkWidget *
+gnomemeeting_main_window_new (GmWindow *gw)
 {
-  GMH323EndPoint *endpoint = NULL;
-  bool show_splash = TRUE;
-  
-  GConfClient *client = NULL;
-
-  GtkWidget *dialog = NULL;
-  GtkAccelGroup *accel = NULL;
-
-  static GtkTargetEntry dnd_targets [] =
-  {
-    {"text/plain", GTK_TARGET_SAME_APP, 0}
-  };
-
-
-
-
-  /* The factory */
-#ifndef DISABLE_GNOME
-  if (gnomemeeting_invoke_factory (argc, argv))
-    exit (1);
-#endif
-
-
-  /* Some little gconf stuff */  
-  client = gconf_client_get_default ();
-      
-  /*
-  if (gw->audio_player_devices.GetSize () == 0 
-      || gw->audio_recorder_devices.GetSize () ==0)  {
-
-
-    gchar *buffer = g_strdup_printf (_("GnomeMeeting can't be used without audio devices. Please install a soundcard or a Quicknet card."));
-    GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (gm),  
-						GTK_DIALOG_DESTROY_WITH_PARENT,
-						GTK_MESSAGE_ERROR,
-						GTK_BUTTONS_OK,
-						buffer);
-
-    gtk_dialog_run (GTK_DIALOG (dialog));
-
-    g_free (buffer);
-
-    exit (-1);
-  }
-  */
-
-  /* Create the global tooltips */
-  gw->tips = gtk_tooltips_new ();
-
-
-  /* We store all the pointers to the structure as data of gm */
-  g_object_set_data (G_OBJECT (gm), "gw", gw);
-  g_object_set_data (G_OBJECT (gm), "lw", lw);
-  g_object_set_data (G_OBJECT (gm), "dw", dw);
-  g_object_set_data (G_OBJECT (gm), "chw", chw);
-  g_object_set_data (G_OBJECT (gm), "pw", pw);
-  g_object_set_data (G_OBJECT (gm), "chat", chat);
-  g_object_set_data (G_OBJECT (gm), "rtp", rtp);
-
-
-  /* Startup Process */
-  gnomemeeting_stock_icons_init ();
-
-  accel = gtk_accel_group_new ();
-  gtk_window_add_accel_group (GTK_WINDOW (gm), accel);
-
-
-  /* Init the splash screen */
-  gw->splash_win = e_splash_new ();
-  g_signal_connect (G_OBJECT (gw->splash_win), "delete_event",
-		    G_CALLBACK (gtk_widget_hide_on_delete), 0);
-
-  show_splash = gconf_client_get_bool (client, VIEW_KEY "show_splash", 0);  
-
-  if (show_splash) 
-  {
-    /* We show the splash screen */
-    gtk_widget_show_all (gw->splash_win);
-
-    while (gtk_events_pending ())
-      gtk_main_iteration ();
-  }
-
-  gnomemeeting_init_history_window ();
-  
-  //  static GnomeMeeting instance;
-  MyApp = new GnomeMeeting ();
-  endpoint = MyApp->Endpoint ();
-  /* Build the interface */
-
-  gnomemeeting_init_calls_history_window ();  
-  gnomemeeting_init_pref_window ();  
-  gnomemeeting_init_ldap_window ();
-  gnomemeeting_init_druid ();  
-
-  /* Init the tray icon. This has to be done after the prefs 
-     and xdap window are set up */
-#ifndef WIN32
-  gw->docklet = GTK_WIDGET (gnomemeeting_init_tray (accel));
-  if (gconf_client_get_bool 
-      (client, "/apps/gnomemeeting/general/do_not_disturb", 0)) 
-    gnomemeeting_tray_set_content (G_OBJECT (gw->docklet), 2);
-#endif
-  gnomemeeting_init_main_window (accel);
-
-  
-
-  /* Start the Gconf notifiers */
-  gnomemeeting_gconf_upgrade ();
-    if (!gnomemeeting_init_gconf (client)) {
-
-    dialog = gnomemeeting_error_dialog (NULL, _("Gconf key error"), _("GnomeMeeting got an invalid value for the GConf key \"/apps/gnomemeeting/gconf_test_age\".\n\nIt probably means that your GConf schemas have not been correctly installed or the that permissions are not correct.\n\nPlease check the FAQ (http://www.gnomemeeting.org/faq.php), the throubleshoot section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org) about this problem."));
-
-    g_signal_handlers_disconnect_by_func (G_OBJECT (dialog),
-					  (gpointer) gtk_widget_destroy,
-					  G_OBJECT (dialog));
-
-    
-    gtk_dialog_run (GTK_DIALOG (dialog));
-
-    exit (-1);
-  }
-
-    
-#ifdef DISABLE_GNOME
-
-#endif 
-#ifndef DISABLE_GNOME
- if (gconf_client_get_int (client, GENERAL_KEY "version", NULL) 
-      < 100 * MAJOR_VERSION + MINOR_VERSION) {
-
-   gtk_widget_show_all (GTK_WIDGET (gw->druid_window));
-  }
-  else {
-#endif
-    /* Show the main window */
-#ifndef WIN32
-    if (!gconf_client_get_bool (GCONF_CLIENT (client),
-				VIEW_KEY "start_docked", 0)) {
-#endif
-      gtk_widget_show (GTK_WIDGET (gm));
-#ifndef WIN32
-    }
-    else
-      gtk_timeout_add (15000, (GtkFunction) gnomemeeting_tray_hack, NULL);
-#endif
-#ifndef DISABLE_GNOME
-  }
-#endif
-
- gconf_client_set_int (client, GENERAL_KEY "version", 
-		       100 * MAJOR_VERSION + MINOR_VERSION, NULL);
- 
-  /* Hide the splash */
-  if (gw->splash_win)
-    gtk_widget_hide (gw->splash_win);
-
-
-  /* if the user tries to close the window : delete_event */
-  g_signal_connect (G_OBJECT (gm), "delete_event",
-		    G_CALLBACK (gm_quit_callback), (gpointer) gw);
-
-
- 
-
-  /* Init the Drag and drop features */
-  gtk_drag_dest_set (GTK_WIDGET (gm), GTK_DEST_DEFAULT_ALL,
-		     dnd_targets, 1,
-		     GDK_ACTION_COPY);
-
-  g_signal_connect (G_OBJECT (gm), "drag_data_received",
-		    G_CALLBACK (dnd_drag_data_received_cb), 0);
-  
-
-  /* Call the given host if needed */
-  if (clo->url) {
-
-     gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), 
-			 clo->url);
-     connect_cb (NULL, NULL);
-  }
-}
-
-
-/**
- * DESCRIPTION  :  /
- * BEHAVIOR     :  Builds the main window and adds the popup to the image.
- * PRE          :  Accels.
- **/
-void gnomemeeting_init_main_window (GtkAccelGroup *accel)
-{ 
+  GtkWidget *window = gm;
   GtkWidget *table = NULL;	
   GtkWidget *frame = NULL;
   GtkWidget *vbox = NULL;
   GtkWidget *hbox = NULL;
   GdkPixbuf *pixbuf_icon = NULL;
+  GtkAccelGroup *accel = NULL;
 #ifdef DISABLE_GNOME
   GtkWidget *window_vbox = NULL;
   GtkWidget *window_hbox = NULL;
@@ -1284,21 +997,26 @@ void gnomemeeting_init_main_window (GtkAccelGroup *accel)
   int y = GM_QCIF_HEIGHT;
 
   GConfClient *client = NULL;
-  GmWindow *gw = NULL;
+
+  static GtkTargetEntry dnd_targets [] =
+  {
+    {"text/plain", GTK_TARGET_SAME_APP, 0}
+  };
 
   client = gconf_client_get_default ();
-  gw = gnomemeeting_get_main_window (gm);
 
-  
+  accel = gtk_accel_group_new ();
+  gtk_window_add_accel_group (GTK_WINDOW (window), accel);
+
 #ifdef DISABLE_GNOME
   window_vbox = gtk_vbox_new (0, FALSE);
-  gtk_container_add (GTK_CONTAINER (gm), window_vbox);
+  gtk_container_add (GTK_CONTAINER (window), window_vbox);
   gtk_widget_show (window_vbox);
 #endif
 
   menubar = gnomemeeting_init_menu (accel);
 #ifndef DISABLE_GNOME
-  gnome_app_add_docked (GNOME_APP (gm), 
+  gnome_app_add_docked (GNOME_APP (window), 
 			menubar,
 			"menubar",
 			BONOBO_DOCK_ITEM_BEH_EXCLUSIVE,
@@ -1310,7 +1028,7 @@ void gnomemeeting_init_main_window (GtkAccelGroup *accel)
 
   main_toolbar = gnomemeeting_init_main_toolbar ();
 #ifndef DISABLE_GNOME
-  gnome_app_add_docked (GNOME_APP (gm), main_toolbar, "main_toolbar",
+  gnome_app_add_docked (GNOME_APP (window), main_toolbar, "main_toolbar",
   			BONOBO_DOCK_ITEM_BEH_EXCLUSIVE,
   			BONOBO_DOCK_TOP, 1, 0, 0);
 #else
@@ -1320,7 +1038,7 @@ void gnomemeeting_init_main_window (GtkAccelGroup *accel)
 
   left_toolbar = gnomemeeting_init_left_toolbar ();
 #ifndef DISABLE_GNOME
-  gnome_app_add_toolbar (GNOME_APP (gm), GTK_TOOLBAR (left_toolbar),
+  gnome_app_add_toolbar (GNOME_APP (window), GTK_TOOLBAR (left_toolbar),
  			 "left_toolbar", BONOBO_DOCK_ITEM_BEH_EXCLUSIVE,
  			 BONOBO_DOCK_LEFT, 2, 0, 0);
 #else
@@ -1342,7 +1060,7 @@ void gnomemeeting_init_main_window (GtkAccelGroup *accel)
 #ifdef DISABLE_GNOME
   gtk_box_pack_start (GTK_BOX (window_hbox), table, FALSE, FALSE, 0);
 #else
-  gnome_app_set_contents (GNOME_APP (gm), table);
+  gnome_app_set_contents (GNOME_APP (window), table);
 #endif
   gtk_widget_show (table);
 
@@ -1451,7 +1169,7 @@ void gnomemeeting_init_main_window (GtkAccelGroup *accel)
   gtk_box_pack_start (GTK_BOX (window_vbox), hbox, 
 		      FALSE, FALSE, 0);
 #else
-  gnome_app_add_docked (GNOME_APP (gm), hbox, "statusbar",
+  gnome_app_add_docked (GNOME_APP (window), hbox, "statusbar",
   			BONOBO_DOCK_ITEM_BEH_EXCLUSIVE,
   			BONOBO_DOCK_BOTTOM, 3, 0, 0);
 #endif
@@ -1474,7 +1192,7 @@ void gnomemeeting_init_main_window (GtkAccelGroup *accel)
 
   
   gtk_widget_set_size_request (GTK_WIDGET (gw->main_notebook), 210, -1);
-  gtk_widget_set_size_request (GTK_WIDGET (gm), -1, -1);
+  gtk_widget_set_size_request (GTK_WIDGET (window), -1, -1);
 
   
   /* Add the popup menu and change all menus sensitivity */
@@ -1485,15 +1203,34 @@ void gnomemeeting_init_main_window (GtkAccelGroup *accel)
 
 
   /* Add the window icon and title */
-  gtk_window_set_title (GTK_WINDOW (gm), _("GnomeMeeting"));
+  gtk_window_set_title (GTK_WINDOW (window), _("GnomeMeeting"));
   pixbuf_icon = 
     gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES "/gnomemeeting-logo-icon.png", NULL); 
-  gtk_window_set_icon (GTK_WINDOW (gm), pixbuf_icon);
+  gtk_window_set_icon (GTK_WINDOW (window), pixbuf_icon);
   g_object_unref (G_OBJECT (pixbuf_icon));
-  gtk_window_set_resizable (GTK_WINDOW (gm), false);
+  gtk_window_set_resizable (GTK_WINDOW (window), false);
 
   g_signal_connect_after (G_OBJECT (gw->main_notebook), "switch-page",
 			  G_CALLBACK (main_notebook_page_changed), NULL);
+
+
+  /* Init the Drag and drop features */
+  gtk_drag_dest_set (GTK_WIDGET (window), GTK_DEST_DEFAULT_ALL,
+		     dnd_targets, 1,
+		     GDK_ACTION_COPY);
+
+  g_signal_connect (G_OBJECT (window), "drag_data_received",
+		    G_CALLBACK (dnd_drag_data_received_cb), 0);
+
+  /* if the user tries to close the window : delete_event */
+  g_signal_connect (G_OBJECT (gm), "delete_event",
+		    G_CALLBACK (gm_quit_callback), (gpointer) gw);
+
+  GmRtpData *rtp = MyApp->GetRtpData (); /* Fix ME: shouldn't always run*/
+  gtk_timeout_add (1000, (GtkFunction) AppbarUpdate, rtp);
+
+  
+  return window;
 }
 
 
@@ -1509,7 +1246,7 @@ void gnomemeeting_init_main_window_stats ()
   GtkWidget *label = NULL;
   GtkWidget *vbox = NULL;
 
-  GmWindow *gw = gnomemeeting_get_main_window (gm);
+  GmWindow *gw = MyApp->GetMainWindow ();
 
   frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_ETCHED_IN);
@@ -1589,7 +1326,7 @@ void gnomemeeting_init_main_window_dialpad ()
   int j = 0;
   int j2 = 0;
 
-  GmWindow *gw = gnomemeeting_get_main_window (gm);
+  GmWindow *gw = MyApp->GetMainWindow ();
 
   frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_ETCHED_IN);
@@ -1655,7 +1392,7 @@ void gnomemeeting_init_main_window_video_settings ()
 
   int brightness = 0, colour = 0, contrast = 0, whiteness = 0;
   
-  GmWindow *gw = gnomemeeting_get_main_window (gm);
+  GmWindow *gw = MyApp->GetMainWindow ();
 
   
   /* Webcam Control Frame */		
@@ -1797,7 +1534,7 @@ void gnomemeeting_init_main_window_audio_settings ()
   int vol = 0;
 
   GConfClient *client = gconf_client_get_default ();
-  GmWindow *gw = gnomemeeting_get_main_window (gm);
+  GmWindow *gw = MyApp->GetMainWindow ();
 
   gw->audio_settings_frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (gw->audio_settings_frame), 
@@ -1879,29 +1616,11 @@ int main (int argc, char ** argv, char ** envp)
 {
   PProcess::PreInitialise (argc, argv, envp);
 
-  /* The different structures needed by most of the classes and functions */
+  GtkWidget *dialog = NULL;
   GmWindow *gw = NULL;
-  GmLdapWindow *lw = NULL;
-  GmDruidWindow *dw = NULL;
-  GmCallsHistoryWindow *chw = NULL;
-  GmPrefWindow *pw = NULL;
-  GmTextChat *chat = NULL;
-  GmRtpData *rtp = NULL;
-  GmCommandLineOptions *clo = NULL;
-
-
-  /* Init the different structures */
-  gw = new (GmWindow);
-  pw = new (GmPrefWindow);
-  lw = new (GmLdapWindow);
-  dw = new (GmDruidWindow);
-  chat = new (GmTextChat);
-  chw = new (GmCallsHistoryWindow);
-  rtp = new (GmRtpData);
-  memset (rtp, 0, sizeof (GmRtpData));
-  clo = new (GmCommandLineOptions);
-  memset (clo, 0, sizeof (GmCommandLineOptions));
-
+  gchar *url = NULL;
+  int debug_level = 0;
+  
 #ifndef WIN32
 #if !defined(HAS_ESD)
   /* If we are not using ESD (ie we are using OSS or ALSA, then
@@ -1925,10 +1644,10 @@ int main (int argc, char ** argv, char ** envp)
   /* Cope with command line options */
   static struct poptOption arguments[] =
     {
-      {"debug", 'd', POPT_ARG_INT, &clo->debug_level, 
+      {"debug", 'd', POPT_ARG_INT, &debug_level, 
        1, N_("Prints debug messages in the console (level between 1 and 6)"), 
        NULL},
-      {"call", 'c', POPT_ARG_STRING, &clo->url,
+      {"call", 'c', POPT_ARG_STRING, &url,
        1, N_("Makes GnomeMeeting call the given URL"), NULL},
       {NULL, '\0', 0, NULL, 0, NULL, NULL}
     };
@@ -1942,10 +1661,11 @@ int main (int argc, char ** argv, char ** envp)
 		      "gnomemeeting",
 		      GNOME_PARAM_APP_DATADIR, DATADIR,
 		      (void *) NULL);
+
   gm = gnome_app_new ("gnomemeeting", NULL);
 #else
   gm = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-#endif 
+#endif
   
   gdk_threads_enter ();
   gconf_init (argc, argv, 0);
@@ -1956,30 +1676,59 @@ int main (int argc, char ** argv, char ** envp)
 #endif
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
  
+  /* The factory */
+#ifndef DISABLE_GNOME
+  if (gnomemeeting_invoke_factory (argc, argv))
+    exit (1);
+#endif
+  
+
+  /* Start the Gconf notifiers */
+  gnomemeeting_gconf_upgrade ();
+
   
   /* GnomeMeeting main initialisation */
-  gnomemeeting_init (gw, pw, lw, dw, chw, rtp, chat, clo, argc, argv, envp);
+  MyApp = new GnomeMeeting;
+
+  
+  if (!gnomemeeting_init_gconf (gconf_client_get_default ())) {
+
+    dialog = gnomemeeting_error_dialog (NULL, _("Gconf key error"), _("GnomeMeeting got an invalid value for the GConf key \"/apps/gnomemeeting/gconf_test_age\".\n\nIt probably means that your GConf schemas have not been correctly installed or the that permissions are not correct.\n\nPlease check the FAQ (http://www.gnomemeeting.org/faq.php), the throubleshoot section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org) about this problem."));
+
+    g_signal_handlers_disconnect_by_func (G_OBJECT (dialog),
+					  (gpointer) gtk_widget_destroy,
+					  G_OBJECT (dialog));
+
     
-  /* Set a default gconf error handler */
-  gconf_client_set_error_handling (gconf_client_get_default (),
-				   GCONF_CLIENT_HANDLE_UNRETURNED);
-  gconf_client_set_global_default_error_handler (gconf_error_callback);
+    gtk_dialog_run (GTK_DIALOG (dialog));
+
+    exit (-1);
+  }
+
+  
+  /* Debug */
+  if (debug_level != 0)
+    PTrace::Initialise (PMAX (PMIN (4, debug_level), 0));
 
 
-  gint timeout = gtk_timeout_add (500, (GtkFunction) AppbarUpdate, rtp);
-  g_object_set_data (G_OBJECT (gm), "timeout", GINT_TO_POINTER (timeout));
+  /* Call the given host if needed */
+  if (url) {
+
+    gw = MyApp->GetMainWindow ();
+    gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), url);
+    connect_cb (NULL, NULL);
+  }
 
   //  gtk_timeout_add (15000, (GtkFunction) StressTest, 
   //		   NULL);
-  // g_idle_add ((GtkFunction) IdleUpdate, NULL);
   
 
   /* The GTK loop */
   gtk_main ();
   gdk_threads_leave ();
 
-  gnomemeeting_quit_cleanup ();
-
+  delete (MyApp);
+  
 #ifdef DISABLE_GCONF
   gconf_save_content_to_file ();
 #endif

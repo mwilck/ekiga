@@ -1,3 +1,27 @@
+2003-06-08 Damien Sandras  <dsandras@seconix.com>
+
+	* configure.in: Incremented version to 0.97.2.
+
+	* src/Makefile.am: Got rid of common.cpp.
+
+	* src/common.cpp: Removed.
+	
+	* src/callbacks.cpp, src/callbacks.h, src/chat_window.cpp, 
+	src/common.h, src/config.cpp, src/connection.cpp, src/druid.cpp,
+	src/druid.h, src/endpoint.cpp, src/gatekeeper.cpp, 
+	src/gnomemeeting.cpp, src/gnomemeeting.h, src/ils.cpp, 
+	src/ldap_window.cpp, src/ldap_window.h, src/lid.cpp, 
+	src/main_window.cpp, src/main_window.h, src/menu.cpp, src/menu.h,
+	src/misc.cpp, src/pref_window.cpp, src/pref_window.h, 
+	src/sound_handling.cpp, src/toolbar.cpp, src/tools.cpp, src/tools.h,
+	src/tray.cpp, src/tray.h, src/urlhandler.cpp, src/videograbber.cpp:
+	Changed the API for creating widgets so that it sounds more intuitive
+	and prepares the way to migrate to pure GObjects for each of the
+	components of GM. Changed the startup and quit sequence, the 
+	GnomeMeeting GUI is now built in the main C++ class together
+	with the Endpoint. Removed much stuff from common.cpp as we
+	can now more logically use the main class.
+	
 2003-06-06 Paul Duffy <dubhthach@frink.nuigalway.ie>
 
         * configure.in: Added ga (irish) to ALL_LINGUAS

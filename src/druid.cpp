@@ -136,8 +136,8 @@ gnomemeeting_druid_cancel (GtkWidget *w, gpointer data)
   GmWindow *gw = NULL;
   GmDruidWindow *dw = NULL;
 
-  gw = gnomemeeting_get_main_window (gm);
-  dw = gnomemeeting_get_druid_window (gm);
+  gw = MyApp->GetMainWindow ();
+  dw = MyApp->GetDruidWindow ();
 
   gnome_druid_set_page (dw->druid, GNOME_DRUID_PAGE (dw->page_edge));
   gtk_widget_hide (gw->druid_window);
@@ -164,8 +164,8 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
   
   client = gconf_client_get_default ();
 
-  gw = gnomemeeting_get_main_window (gm);
-  dw = gnomemeeting_get_druid_window (gm);
+  gw = MyApp->GetMainWindow ();
+  dw = MyApp->GetDruidWindow ();
 
 
   /* Always register to make the callto available,the user can choose
@@ -289,7 +289,7 @@ gnomemeeting_druid_user_page_check (GnomeDruid *druid)
   
   /* Fetch data */
   client = gconf_client_get_default ();
-  dw = gnomemeeting_get_druid_window (gm);
+  dw = MyApp->GetDruidWindow ();
   
 
   /* We check that all fields are present, or the toggle desactivated */
@@ -331,7 +331,7 @@ gnomemeeting_druid_entry_changed (GtkWidget *w, gpointer data)
 {
   GmDruidWindow *dw = NULL;
 
-  dw = gnomemeeting_get_druid_window (gm);
+  dw = MyApp->GetDruidWindow ();
 
   gnomemeeting_druid_user_page_check (dw->druid);
 }
@@ -350,8 +350,8 @@ gnomemeeting_druid_radio_changed (GtkToggleButton *b, gpointer data)
   GmWindow *gw = NULL;
   GmDruidWindow *dw = NULL;
   
-  gw = gnomemeeting_get_main_window (gm);
-  dw = gnomemeeting_get_druid_window (gm);
+  gw = MyApp->GetMainWindow ();
+  dw = MyApp->GetDruidWindow ();
   client = gconf_client_get_default ();
 
   /* Dialup */
@@ -433,7 +433,7 @@ static void
 gnomemeeting_druid_page_prepare (GnomeDruidPage *page, GnomeDruid *druid,
 				 gpointer data)
 {
-  GmDruidWindow *dw = gnomemeeting_get_druid_window (gm);
+  GmDruidWindow *dw = MyApp->GetDruidWindow ();
   GConfClient *client = gconf_client_get_default ();
   
   int kind_of_net = 1, cpt = 1;
@@ -498,7 +498,7 @@ gnomemeeting_druid_final_page_prepare (GnomeDruid *druid)
 
   /* Fetch the data */
   GConfClient *client = gconf_client_get_default ();
-  dw = gnomemeeting_get_druid_window (gm);
+  dw = MyApp->GetDruidWindow ();
 
   group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (dw->kind_of_net));
   while (group) {
@@ -593,7 +593,7 @@ gnomemeeting_init_druid_user_page (GnomeDruid *druid, int p, int t)
   GnomeDruidPageStandard *page_standard = NULL;
 
 
-  dw = gnomemeeting_get_druid_window (gm);
+  dw = MyApp->GetDruidWindow ();
   page_standard = 
     GNOME_DRUID_PAGE_STANDARD (gnome_druid_page_standard_new ());
 
@@ -671,7 +671,7 @@ gnomemeeting_init_druid_connection_type_page (GnomeDruid *druid, int p, int t)
 
   GConfClient *client = NULL;
 
-  GmDruidWindow *dw = gnomemeeting_get_druid_window (gm);
+  GmDruidWindow *dw = MyApp->GetDruidWindow ();
   GnomeDruidPageStandard *page_standard = NULL;
 
 
@@ -761,8 +761,8 @@ gnomemeeting_init_druid_audio_devices_page (GnomeDruid *druid, int p, int t)
 
   GConfClient *client = gconf_client_get_default ();
 
-  GmDruidWindow *dw = gnomemeeting_get_druid_window (gm);
-  GmWindow *gw = gnomemeeting_get_main_window (gm);
+  GmDruidWindow *dw = MyApp->GetDruidWindow ();
+  GmWindow *gw = MyApp->GetMainWindow ();
   
   gchar *title = NULL;
   gchar *player = NULL;
@@ -842,8 +842,8 @@ gnomemeeting_init_druid_video_devices_page (GnomeDruid *druid, int p, int t)
 
   GnomeDruidPageStandard *page_standard = NULL;
 
-  GmWindow *gw = gnomemeeting_get_main_window (gm);
-  GmDruidWindow *dw = gnomemeeting_get_druid_window (gm);
+  GmWindow *gw = MyApp->GetMainWindow ();
+  GmDruidWindow *dw = MyApp->GetDruidWindow ();
 
   page_standard = 
     GNOME_DRUID_PAGE_STANDARD (gnome_druid_page_standard_new ());
@@ -902,7 +902,7 @@ gnomemeeting_init_druid_ixj_device_page (GnomeDruid *druid, int p, int t)
   GtkWidget *vbox = NULL;
   GtkWidget *label = NULL;
 
-  GmDruidWindow *dw = gnomemeeting_get_druid_window (gm);
+  GmDruidWindow *dw = MyApp->GetDruidWindow ();
     
   GConfClient *client = gconf_client_get_default ();
 
@@ -983,27 +983,23 @@ gnomemeeting_init_druid_ixj_device_page (GnomeDruid *druid, int p, int t)
 
 
 /* Functions */
-void 
-gnomemeeting_init_druid ()
+GtkWidget *
+gnomemeeting_druid_window_new (GmDruidWindow *dw)
 {
+  GtkWidget *window = NULL;
+  
 #ifndef DISABLE_GNOME
-  GmWindow *gw = NULL;
-  GmDruidWindow *dw = NULL;
-
   gchar *title = NULL;
 
   GnomeDruidPageEdge *page_final = NULL;
-
-  gw = gnomemeeting_get_main_window (gm);
-  dw = gnomemeeting_get_druid_window (gm);
   
-  gw->druid_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_title (GTK_WINDOW (gw->druid_window), 
+  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  gtk_window_set_title (GTK_WINDOW (window), 
 			_("First Time Configuration Druid"));
-  gtk_window_set_position (GTK_WINDOW (gw->druid_window), GTK_WIN_POS_CENTER);
+  gtk_window_set_position (GTK_WINDOW (window), GTK_WIN_POS_CENTER);
   dw->druid = GNOME_DRUID (gnome_druid_new ());
 
-  gtk_container_add (GTK_CONTAINER (gw->druid_window), GTK_WIDGET (dw->druid));
+  gtk_container_add (GTK_CONTAINER (window), GTK_WIDGET (dw->druid));
 
 
   title = g_strdup_printf (_("Configuration Druid - page %d/%d"), 1, 7);
@@ -1066,8 +1062,10 @@ gnomemeeting_init_druid ()
   g_signal_connect (G_OBJECT (dw->druid), "cancel",
 		    G_CALLBACK (gnomemeeting_druid_cancel), NULL);
 
-  g_signal_connect (G_OBJECT (gw->druid_window), "delete_event",
+  g_signal_connect (G_OBJECT (window), "delete_event",
 		    G_CALLBACK (gnomemeeting_druid_destroy), NULL);
 #endif
+
+  return window;
 }
 

@@ -40,9 +40,11 @@
 #include "../config.h"
 
 #include "tools.h"
+#include "gnomemeeting.h"
 
 
 extern GtkWidget *gm;
+extern GnomeMeeting *MyApp;
 
 
 /* The functions */
@@ -61,7 +63,7 @@ gnomemeeting_calls_history_window_add_call (int i,
   
   GmCallsHistoryWindow *chw = NULL;
 
-  chw = gnomemeeting_get_calls_history_window (gm);
+  chw = MyApp->GetCallsHistoryWindow ();
   
   switch (i) {
 
@@ -98,8 +100,9 @@ gnomemeeting_calls_history_window_add_call (int i,
 }
 
 
-void gnomemeeting_init_calls_history_window ()
+GtkWidget *gnomemeeting_calls_history_window_new (GmCallsHistoryWindow *chw)
 {
+  GtkWidget *window = NULL;
   GtkWidget *notebook = NULL;
   GtkWidget *scr = NULL;
   GtkWidget *label = NULL;
@@ -116,20 +119,13 @@ void gnomemeeting_init_calls_history_window ()
   label_text [1] = gettext (label_text [1]);
   label_text [2] = gettext (label_text [2]);
   
-  /* Get the structs from the application */
-  GmWindow *gw = gnomemeeting_get_main_window (gm);
-  GmCallsHistoryWindow *chw = gnomemeeting_get_calls_history_window (gm);
-  
-  gw->calls_history_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_title (GTK_WINDOW (gw->calls_history_window), 
-			_("Calls History"));
-  gtk_window_set_position (GTK_WINDOW (gw->calls_history_window), 
-			   GTK_WIN_POS_CENTER);
-  gtk_window_set_default_size (GTK_WINDOW (gw->calls_history_window), 
-			       330, 225);
+  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  gtk_window_set_title (GTK_WINDOW (window), _("Calls History"));
+  gtk_window_set_position (GTK_WINDOW (window), GTK_WIN_POS_CENTER);
+  gtk_window_set_default_size (GTK_WINDOW (window), 330, 225);
 
   notebook = gtk_notebook_new ();
-  gtk_container_add (GTK_CONTAINER (gw->calls_history_window), notebook);
+  gtk_container_add (GTK_CONTAINER (window), notebook);
 
   for (int i = 0 ; i < 3 ; i++) {
 
@@ -201,30 +197,28 @@ void gnomemeeting_init_calls_history_window ()
   chw->given_calls_list_store = list_store [1];
   chw->missed_calls_list_store = list_store [2];
 
-  g_signal_connect (G_OBJECT (gw->calls_history_window), "delete_event",
-		    G_CALLBACK (gtk_widget_hide_on_delete), NULL); 
+  g_signal_connect (G_OBJECT (window), "delete_event",
+		    G_CALLBACK (gtk_widget_hide_on_delete), NULL);
+
+  return window;
 }
 
 
-void gnomemeeting_init_history_window ()
+GtkWidget *gnomemeeting_history_window_new ()
 {
+  GtkWidget *window = NULL;
   GtkWidget *frame = NULL;
   GtkWidget *scr = NULL;
   GtkTextMark *mark = NULL;
   GtkTextBuffer *buffer = NULL;
   GtkTextIter end;
 
-
-  /* Get the structs from the application */
-  GmWindow *gw = gnomemeeting_get_main_window (gm);
-  
-  gw->history_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_title (GTK_WINDOW (gw->history_window), 
-			_("General History"));
-  gtk_window_set_position (GTK_WINDOW (gw->history_window), 
-			   GTK_WIN_POS_CENTER);
-  gtk_window_set_default_size (GTK_WINDOW (gw->history_window), 
-			       325, 175);
+  GmWindow *gw = MyApp->GetMainWindow ();
+  cout << "TO BE FIXED" << endl << flush;
+  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  gtk_window_set_title (GTK_WINDOW (window), _("General History"));
+  gtk_window_set_position (GTK_WINDOW (window), GTK_WIN_POS_CENTER);
+  gtk_window_set_default_size (GTK_WINDOW (window), 325, 175);
 
   frame = gtk_frame_new (_("General History"));
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_ETCHED_OUT);
@@ -256,8 +250,10 @@ void gnomemeeting_init_history_window ()
 				  GTK_POLICY_ALWAYS);
 
   gtk_container_add (GTK_CONTAINER (scr), gw->history_text_view);
-  gtk_container_add (GTK_CONTAINER (gw->history_window), frame);    
+  gtk_container_add (GTK_CONTAINER (window), frame);    
  
-  g_signal_connect (G_OBJECT (gw->history_window), "delete_event",
-		    G_CALLBACK (gtk_widget_hide_on_delete), NULL); 
+  g_signal_connect (G_OBJECT (window), "delete_event",
+		    G_CALLBACK (gtk_widget_hide_on_delete), NULL);
+
+  return window;
 }

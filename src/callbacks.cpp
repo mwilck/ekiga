@@ -80,7 +80,7 @@ void pause_channel_callback (GtkWidget *widget, gpointer data)
   current_call_token = endpoint->GetCurrentCallToken ();
 
   gnomemeeting_menu = gnomemeeting_get_menu (gm);
-  gw = gnomemeeting_get_main_window (gm);
+  gw = MyApp->GetMainWindow ();
   
   if (!current_call_token.IsEmpty ())
     connection =
@@ -188,7 +188,7 @@ void gnomemeeting_component_view (GtkWidget *w, gpointer data)
 
 void connect_cb (GtkWidget *widget, gpointer data)
 {	
-  GmWindow *gw = gnomemeeting_get_main_window (gm);
+  GmWindow *gw = MyApp->GetMainWindow ();
 
   if (gw->incoming_call_popup)
     gtk_widget_destroy (gw->incoming_call_popup);
@@ -203,7 +203,7 @@ void connect_cb (GtkWidget *widget, gpointer data)
 
 void disconnect_cb (GtkWidget *widget, gpointer data)
 {	
-  GmWindow *gw = gnomemeeting_get_main_window (gm);
+  GmWindow *gw = MyApp->GetMainWindow ();
 
   if (gw->incoming_call_popup)
     gtk_widget_destroy (gw->incoming_call_popup);
@@ -310,7 +310,7 @@ void about_callback (GtkWidget *widget, gpointer parent_window)
 
 void quit_callback (GtkWidget *widget, gpointer data)
 {
-  GmWindow *gw = gnomemeeting_get_main_window (gm);
+  GmWindow *gw = MyApp->GetMainWindow ();
 
   gtk_widget_hide (gm);
   gtk_widget_hide (gw->docklet);
@@ -321,19 +321,3 @@ void quit_callback (GtkWidget *widget, gpointer data)
 }  
 
 
-/* DESCRIPTION  :  This callback is called when a gconf error happens
- * BEHAVIOR     :  Pop-up a message-box
- * PRE          :  /
- */
-void gconf_error_callback (GConfClient *, GError *)
-{
-  GtkWidget *dialog = 
-    gtk_message_dialog_new (NULL, GTK_DIALOG_MODAL,
-			    GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE,
-			    _("An error has happened in the configuration"
-			      " backend.\nMaybe some of your settings won't "
-			      "be saved."));
-
-  gtk_dialog_run (GTK_DIALOG (dialog));
-  gtk_widget_destroy (dialog);
-}

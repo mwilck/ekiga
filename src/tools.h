@@ -46,19 +46,25 @@
 /* The functions  */
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Build the calls history window.
+ * BEHAVIOR     :  Build the calls history window and returns a pointer to it.
  * PRE          :  /
  */
-void gnomemeeting_init_calls_history_window ();
+GtkWidget *
+gnomemeeting_calls_history_window_new (GmCallsHistoryWindow *);
 
-void gnomemeeting_calls_history_window_add_call (int, const char *, const char *, 
-						 const char *, const char *,
+
+void gnomemeeting_calls_history_window_add_call (int,
+						 const char *,
+						 const char *, 
+						 const char *,
+						 const char *,
 						 const char *);
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Build the history window.
  * PRE          :  /
  */
-void gnomemeeting_init_history_window ();
+GtkWidget *
+gnomemeeting_history_window_new ();
 
 #endif

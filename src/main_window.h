@@ -44,21 +44,20 @@
 void gnomemeeting_dialpad_event (const char *);
 
 
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Initialise gnomemeeting and builds the windows.
- * PRE          :  /
- */
-void gnomemeeting_init (GmWindow *, GmPrefWindow *, 
-			GmLdapWindow *, GmDruidWindow *,
-			GmCallsHistoryWindow *,	GmRtpData *, 
-			GmTextChat *, GmCommandLineOptions *, int, 
-			char **, char **);
+/**
+ * DESCRIPTION  :  /
+ * BEHAVIOR     :  Builds the main window and adds the popup to the image.
+ * PRE          :  Accels.
+ **/
+GtkWidget *
+gnomemeeting_main_window_new (GmWindow *);
 
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Gives a pulse to the progressbar of the main window.
  * PRE          :  The progressbar as parameter.
  */
-int gnomemeeting_window_appbar_update (gpointer); 
+int
+gnomemeeting_window_appbar_update (gpointer); 
 
 #endif

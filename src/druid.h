@@ -39,8 +39,9 @@
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Builds the "First time configuration druid".
+ * BEHAVIOR     :  Builds the "First time configuration druid" and returns it.
  * PRE          :  /
  */
-void gnomemeeting_init_druid ();
+GtkWidget *
+gnomemeeting_druid_window_new (GmDruidWindow *);
 

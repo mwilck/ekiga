@@ -87,7 +87,7 @@ void GMLid::Open ()
   
   gnomemeeting_threads_enter ();
   client = gconf_client_get_default ();
-  gw = gnomemeeting_get_main_window (gm);
+  gw = MyApp->GetMainWindow ();
   gnomemeeting_threads_leave ();
 
   if (!lid) {
@@ -187,7 +187,7 @@ void GMLid::Close ()
   /* Restore the normal mixers settings */
   gnomemeeting_threads_enter ();
   client = gconf_client_get_default ();
-  gw = gnomemeeting_get_main_window (gm);
+  gw = MyApp->GetMainWindow ();
 
   mixer =
     gconf_client_get_string (client, DEVICES_KEY "audio_player_mixer", NULL);
@@ -228,7 +228,7 @@ void GMLid::Main ()
   OffHook = lastOffHook = lid->IsLineOffHook (OpalIxJDevice::POTSLine);
 
   gnomemeeting_threads_enter ();
-  gw = gnomemeeting_get_main_window (gm);
+  gw = MyApp->GetMainWindow ();
 
   /* Update the mixers if the lid is used */
   lid->GetPlayVolume (0, vol);

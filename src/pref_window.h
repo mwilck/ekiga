@@ -46,10 +46,11 @@
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  It builds the preferences window
  *                 (sections' ctree / Notebook pages) and connect GTK signals
- *                 to appropriate callbacks
+ *                 to appropriate callbacks, then returns it.
  * PRE          :  /
  */
-void gnomemeeting_init_pref_window ();
+GtkWidget *
+gnomemeeting_pref_window_new (GmPrefWindow *);
 
 
 /* DESCRIPTION  :  / 

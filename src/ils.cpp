@@ -126,8 +126,8 @@ process (LDAP * ldap, xmlDocPtr xp, xmlNodePtr * curp)
 GMILSClient::GMILSClient ()
   :PThread (1000, NoAutoDeleteThread)
 {
-  gw = gnomemeeting_get_main_window (gm);
-  lw = gnomemeeting_get_ldap_window (gm);
+  gw = MyApp->GetMainWindow ();
+  lw = MyApp->GetLdapWindow ();
 
   running = 1;
   has_to_register = 0;
@@ -808,7 +808,7 @@ GMILSBrowser::GMILSBrowser (GmLdapWindowPage *lwpage,
 			    gchar *filter)
   :PThread (1000, AutoDeleteThread)
 {
-  lw = gnomemeeting_get_ldap_window (gm);
+  lw = MyApp->GetLdapWindow ();
   lwp = lwpage;
   
   if (server)
@@ -889,7 +889,7 @@ void GMILSBrowser::Main ()
   lwp->search_quit_mutex.Wait ();
 
   gnomemeeting_threads_enter ();
-  gw = gnomemeeting_get_main_window (gm);  
+  gw = MyApp->GetMainWindow ();  
   users_list_store =
     GTK_LIST_STORE (gtk_tree_view_get_model (GTK_TREE_VIEW (lwp->tree_view)));
   gnomemeeting_statusbar_push (lwp->statusbar,

@@ -108,9 +108,9 @@ static void refresh_devices (GtkWidget *widget, gpointer data)
   GmWindow *gw = NULL;
   GmDruidWindow *dw = NULL;
 
-  gw = gnomemeeting_get_main_window (gm);
-  pw = gnomemeeting_get_pref_window (gm);
-  dw = gnomemeeting_get_druid_window (gm);
+  gw = MyApp->GetMainWindow ();
+  pw = MyApp->GetPrefWindow ();
+  dw = MyApp->GetDruidWindow ();
   
   /* The player */
   gw->audio_player_devices = gnomemeeting_get_audio_player_devices ();
@@ -378,7 +378,7 @@ tree_selection_changed_cb (GtkTreeSelection *selection,
   GtkTreeModel *model;
   GmWindow *gw = NULL;
 
-  gw = gnomemeeting_get_main_window (gm);
+  gw = MyApp->GetMainWindow ();
 
   if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
 
@@ -410,7 +410,7 @@ file_selector_clicked (GtkFileSelection *selector, gpointer data)
   GmPrefWindow *pw = NULL;
   gchar *filename = NULL;
 
-  pw = gnomemeeting_get_pref_window (gm);
+  pw = MyApp->GetPrefWindow ();
   filename = (gchar *)
     gtk_file_selection_get_filename (GTK_FILE_SELECTION (data));
   
@@ -708,7 +708,7 @@ gnomemeeting_pref_window_add_update_button (GtkWidget *table,
   GmPrefWindow *pw = NULL;                                           
 
   
-  pw = gnomemeeting_get_pref_window (gm);                                      
+  pw = MyApp->GetPrefWindow ();                                      
 
   image = gtk_image_new_from_stock (stock_id, GTK_ICON_SIZE_BUTTON);
   button = gnomemeeting_button_new (label, image);
@@ -740,7 +740,7 @@ gnomemeeting_init_pref_window_general (GtkWidget *notebook)
   GtkWidget *table = NULL;
 
   /* Get the data */
-  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);
+  GmPrefWindow *pw = MyApp->GetPrefWindow ();
 
   /* Packing widgets */                                                        
   vbox = gtk_vbox_new (FALSE, 4);
@@ -790,7 +790,7 @@ gnomemeeting_init_pref_window_interface (GtkWidget *notebook)
   GtkWidget *table = NULL;
 
   /* Get the data */
-  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);
+  GmPrefWindow *pw = MyApp->GetPrefWindow ();
 
   /* Packing widgets */
   vbox = gtk_vbox_new (FALSE, 4);
@@ -860,7 +860,7 @@ gnomemeeting_init_pref_window_directories (GtkWidget *notebook)
   GtkWidget *table = NULL;
 
   /* Get the data */
-  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);
+  GmPrefWindow *pw = MyApp->GetPrefWindow ();
 
 
   /* Packing widgets for the XDAP directory */
@@ -893,7 +893,7 @@ gnomemeeting_init_pref_window_call_forwarding (GtkWidget *notebook)
 
   
   /* Get the data */
-  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);
+  GmPrefWindow *pw = MyApp->GetPrefWindow ();
 
   
   /* Packing widgets */
@@ -935,7 +935,7 @@ gnomemeeting_init_pref_window_h323_advanced (GtkWidget *notebook)
 			    NULL};
                                                                                
   /* Get the data */                                                           
-  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);
+  GmPrefWindow *pw = MyApp->GetPrefWindow ();
 
   
   /* Packing widget */
@@ -981,7 +981,7 @@ gnomemeeting_init_pref_window_gatekeeper (GtkWidget *notebook)
 
   
   /* Get the data */
-  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);
+  GmPrefWindow *pw = MyApp->GetPrefWindow ();
 
   
   /* Add fields for the gatekeeper */
@@ -1023,7 +1023,7 @@ gnomemeeting_init_pref_window_nat (GtkWidget *notebook)
 
 
   /* Get the data */
-  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);
+  GmPrefWindow *pw = MyApp->GetPrefWindow ();
 
   /* IP translation */
   vbox = gtk_vbox_new (FALSE, 4);
@@ -1059,8 +1059,8 @@ gnomemeeting_init_pref_window_audio_devices (GtkWidget *notebook)
 		   NULL};
 
   /* Get the data */                                             
-  GmWindow *gw = gnomemeeting_get_main_window (gm);
-  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);
+  GmWindow *gw = MyApp->GetMainWindow ();
+  GmPrefWindow *pw = MyApp->GetPrefWindow ();
   
   client = gconf_client_get_default ();
 
@@ -1126,8 +1126,8 @@ gnomemeeting_init_pref_window_video_devices (GtkWidget *notebook)
 
 
   /* Get the data */                                             
-  GmWindow *gw = gnomemeeting_get_main_window (gm);
-  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);
+  GmWindow *gw = MyApp->GetMainWindow ();
+  GmPrefWindow *pw = MyApp->GetPrefWindow ();
   
   client = gconf_client_get_default ();
 
@@ -1198,7 +1198,7 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
                                                        
 
   /* Get the data */
-  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);
+  GmPrefWindow *pw = MyApp->GetPrefWindow ();
 
 
   /* Packing widgets */
@@ -1363,7 +1363,7 @@ gnomemeeting_init_pref_window_video_codecs (GtkWidget *notebook)
 
 
   /* Get the data */
-  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);
+  GmPrefWindow *pw = MyApp->GetPrefWindow ();
 
 
   /* Packing widgets for the XDAP directory */ 
@@ -1407,7 +1407,7 @@ gnomemeeting_init_pref_window_video_codecs (GtkWidget *notebook)
 }
 
 
-void gnomemeeting_init_pref_window ()
+GtkWidget *gnomemeeting_pref_window_new (GmPrefWindow *pw)
 {
   GtkTreeSelection *selection = NULL;
   GtkCellRenderer *cell = NULL;
@@ -1417,6 +1417,7 @@ void gnomemeeting_init_pref_window ()
   GtkTreeIter iter;
   GtkTreeIter child_iter;
 
+  GtkWidget *window = NULL;
   GtkWidget *event_box = NULL, *hbox = NULL, *vbox = NULL;
   GtkWidget *frame = NULL;
   GtkWidget *pixmap = NULL;
@@ -1432,29 +1433,24 @@ void gnomemeeting_init_pref_window ()
   /* Box inside the prefs window */
   GtkWidget *dialog_vbox = NULL;
  
-  /* Get the data */
-  GmWindow *gw = gnomemeeting_get_main_window (gm);
-  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);
+  window = gtk_dialog_new ();
+  gtk_dialog_add_button (GTK_DIALOG (window), GTK_STOCK_CLOSE, 0);
 
-  gw->pref_window = gtk_dialog_new ();
-  gtk_dialog_add_button (GTK_DIALOG (gw->pref_window), GTK_STOCK_CLOSE, 0);
-
-  g_signal_connect (G_OBJECT (gw->pref_window), "response",
+  g_signal_connect (G_OBJECT (window), "response",
  		    G_CALLBACK (pref_window_clicked_callback), 
  		    (gpointer) pw);
 
-  g_signal_connect (G_OBJECT (gw->pref_window), "delete_event",
+  g_signal_connect (G_OBJECT (window), "delete_event",
  		    G_CALLBACK (pref_window_destroy_callback), 
  		    (gpointer) pw);
 
-  gtk_window_set_title (GTK_WINDOW (gw->pref_window), 
-			_("GnomeMeeting Settings"));	
+  gtk_window_set_title (GTK_WINDOW (window), _("GnomeMeeting Settings"));
 
 
   /* Construct the window */
   notebook = gtk_notebook_new ();
 
-  dialog_vbox = GTK_DIALOG (gw->pref_window)->vbox;
+  dialog_vbox = GTK_DIALOG (window)->vbox;
 
   hbox = gtk_hbox_new (FALSE, 6);
   gtk_container_set_border_width (GTK_CONTAINER (hbox), 6);
@@ -1514,7 +1510,7 @@ void gnomemeeting_init_pref_window ()
   gtk_box_pack_start (GTK_BOX (vbox), hsep, FALSE, FALSE, 0); 
   gtk_box_pack_start (GTK_BOX (vbox), notebook, FALSE, FALSE, 0);
 
-  g_object_set_data (G_OBJECT (gw->pref_window), "section_label", label);
+  g_object_set_data (G_OBJECT (window), "section_label", label);
 
 
   /* All the notebook pages */
@@ -1627,5 +1623,7 @@ void gnomemeeting_init_pref_window ()
   g_signal_connect (selection, "changed",
 		    G_CALLBACK (tree_selection_changed_cb), 
 		    notebook);
+
+  return window;
 }
 

@@ -429,7 +429,7 @@ static void main_notebook_changed_nt (GConfClient *client, guint cid,
 
     gdk_threads_enter ();
 
-    gw = gnomemeeting_get_main_window (gm);
+    gw = MyApp->GetMainWindow ();
 
     if (gconf_value_get_int (entry->value) == GM_MAIN_NOTEBOOK_HIDDEN)
       gtk_widget_hide_all (gw->main_notebook);
@@ -464,7 +464,7 @@ static void microtelco_enabled_nt (GConfClient *client, guint cid,
     gdk_threads_enter ();
 
     gnomemeeting_menu = gnomemeeting_get_menu (gm);
-    dw = gnomemeeting_get_druid_window (gm);
+    dw = MyApp->GetDruidWindow ();
     
     if (gconf_value_get_bool (entry->value)) {
 
@@ -578,7 +578,7 @@ static void silence_detection_changed_nt (GConfClient *client, guint cid,
       /* We update the silence detection */
       if (ac && MyApp->Endpoint ()->GetCallingState () == 2) {
 	
-	gw = gnomemeeting_get_main_window (gm);
+	gw = MyApp->GetMainWindow ();
 	
 	if (ac != NULL) {
 	  
@@ -882,7 +882,7 @@ static void jitter_buffer_changed_nt (GConfClient *client, guint cid,
 
     gdk_threads_enter ();
 
-    pw = gnomemeeting_get_pref_window (gm);
+    pw = MyApp->GetPrefWindow ();
 
     min_val = 
       gconf_client_get_int (client, AUDIO_SETTINGS_KEY "min_jitter_buffer", 0);
@@ -952,7 +952,7 @@ audio_mixer_changed_nt (GConfClient *client,
 #endif
       gdk_threads_enter ();
 
-      gw = gnomemeeting_get_main_window (gm);
+      gw = MyApp->GetMainWindow ();
       mixer = (char *) gconf_value_get_string (entry->value);
 
       vol = gnomemeeting_get_mixer_volume (mixer, GPOINTER_TO_INT (data));
@@ -995,9 +995,9 @@ static void audio_device_changed_nt (GConfClient *client, guint cid,
   if (entry->value->type == GCONF_VALUE_STRING) {
 
     gdk_threads_enter ();
-    dw = gnomemeeting_get_druid_window (gm);
-    pw = gnomemeeting_get_pref_window (gm);
-    gw = gnomemeeting_get_main_window (gm);
+    dw = MyApp->GetDruidWindow ();
+    pw = MyApp->GetPrefWindow ();
+    gw = MyApp->GetMainWindow ();
       
     dev = PString (gconf_value_get_string (entry->value));
 
@@ -1072,7 +1072,7 @@ static void lid_device_changed_nt (GConfClient *client, guint cid,
   if (entry->value->type == GCONF_VALUE_BOOL) {
 
     gdk_threads_enter ();
-    gw = gnomemeeting_get_main_window (gm);
+    gw = MyApp->GetMainWindow ();
     
     if (MyApp->Endpoint ()->GetCallingState () == 0) {
 
@@ -1165,7 +1165,7 @@ static void audio_codecs_list_changed_nt (GConfClient *client, guint cid,
    
     gdk_threads_enter ();
 
-    pw = gnomemeeting_get_pref_window (gm);
+    pw = MyApp->GetPrefWindow ();
 
     /* We set the new value for the widget */
     gnomemeeting_codecs_list_build (pw->codecs_list_store);
@@ -1201,7 +1201,7 @@ contacts_sections_list_group_content_changed_nt (GConfClient *client,
   
     gdk_threads_enter ();
 
-    lw = gnomemeeting_get_ldap_window (gm);
+    lw = MyApp->GetLdapWindow ();
     
     gconf_key = gconf_entry_get_key (e);
 
@@ -1280,7 +1280,7 @@ static void forward_toggle_changed_nt (GConfClient *client, guint cid,
  
     gdk_threads_enter ();
 
-    gw = gnomemeeting_get_main_window (gm);
+    gw = MyApp->GetMainWindow ();
 
     /* Checks if the forward host name is ok */
     gconf_string =  gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/call_forwarding/forward_host", NULL);
@@ -1374,12 +1374,12 @@ static void do_not_disturb_changed_nt (GConfClient *client, guint cid,
       ils_client->Modify ();
 
     gdk_threads_enter ();
-    gw = gnomemeeting_get_main_window (gm);
+    gw = MyApp->GetMainWindow ();
 
     if (gconf_value_get_bool (entry->value))
-      gnomemeeting_tray_set_content (G_OBJECT (gw->docklet), 2);
+      gnomemeeting_tray_set_content (gw->docklet, 2);
     else
-      gnomemeeting_tray_set_content (G_OBJECT (gw->docklet), 0);
+      gnomemeeting_tray_set_content (gw->docklet, 0);
     gdk_threads_leave ();
   }
 }
@@ -1470,12 +1470,32 @@ lid_country_changed_nt (GConfClient *client, guint, GConfEntry *entry,
 #endif
 
 
+/* DESCRIPTION  :  This callback is called when a gconf error happens
+ * BEHAVIOR     :  Pop-up a message-box
+ * PRE          :  /
+ */
+static void
+gconf_error_callback (GConfClient *,
+		      GError *)
+{
+  GtkWidget *dialog = 
+    gtk_message_dialog_new (NULL, GTK_DIALOG_MODAL,
+			    GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE,
+			    _("An error has happened in the configuration"
+			      " backend.\nMaybe some of your settings won't "
+			      "be saved."));
+
+  gtk_dialog_run (GTK_DIALOG (dialog));
+  gtk_widget_destroy (dialog);
+}
+
+
 /* The functions  */
 gboolean gnomemeeting_init_gconf (GConfClient *client)
 {
-  GmDruidWindow *dw = gnomemeeting_get_druid_window (gm);
-  GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);
-  GmWindow *gw = gnomemeeting_get_main_window (gm);
+  GmDruidWindow *dw = MyApp->GetDruidWindow ();
+  GmPrefWindow *pw = MyApp->GetPrefWindow ();
+  GmWindow *gw = MyApp->GetMainWindow ();
   MenuEntry *gnomemeeting_menu = gnomemeeting_get_menu (gm);
 #ifndef WIN32
   MenuEntry *tray_menu = gnomemeeting_get_tray_menu (gm);
@@ -1490,7 +1510,7 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
 			GCONF_CLIENT_PRELOAD_RECURSIVE, 0);
 #endif
 
-
+    
 #ifndef WIN32
   gconf_test =
     gconf_client_get_int (client, GENERAL_KEY "gconf_test_age", NULL);
@@ -1500,6 +1520,12 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
 #endif
 
   
+  /* Set a default gconf error handler */
+  gconf_client_set_error_handling (gconf_client_get_default (),
+				   GCONF_CLIENT_HANDLE_UNRETURNED);
+  gconf_client_set_global_default_error_handler (gconf_error_callback);
+
+
   /* There are in general 2 notifiers to attach to each widget :
      - the notifier that will update the widget itself to the new key
      - the notifier to take an appropriate action */

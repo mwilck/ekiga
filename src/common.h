@@ -82,6 +82,7 @@
 #define DEVICES_KEY         "/apps/gnomemeeting/devices/"
 #define CONTACTS_KEY        "/apps/gnomemeeting/contacts/"
 #define CONTACTS_GROUPS_KEY "/apps/gnomemeeting/contacts/groups/"
+#define HISTORY_KEY         "/apps/gnomemeeting/history/"
 
 
 #define GM_CIF_WIDTH   352
@@ -123,7 +124,6 @@ typedef struct _GmTextChat GmTextChat;
 typedef struct _GmDruidWindow GmDruidWindow;
 typedef struct _GmCallsHistoryWindow GmCallsHistoryWindow;
 typedef struct _GmRtpData GmRtpData;
-typedef struct _GmCommandLineOptions GmCommandLineOptions;
 
 enum {CONTACTS_SERVERS, CONTACTS_GROUPS};
 
@@ -325,78 +325,4 @@ struct _GmPrefWindow
   GtkWidget    *ip_translation;
   GtkWidget    *public_ip;
 };
-
-
-struct _GmCommandLineOptions
-{
-  int    debug_level;
-  gchar *url;
-  int    daemon;
-};
-
-
-/* DESCRIPTION  :  / 
- * BEHAVIOR     :  Returns the structure of widgets of the main window.
- * PRE          :  The GtkWidget must be a pointer to the Main gnomeMeeting 
- *                 window.
- */
-GmWindow *gnomemeeting_get_main_window (GtkWidget *);
-
-
-/* DESCRIPTION  :  / 
- * BEHAVIOR     :  Returns the structure of widgets of the prefs window.
- * PRE          :  The GtkWidget must be a pointer to the Main gnomeMeeting 
- *                 window.
- */
-GmPrefWindow *gnomemeeting_get_pref_window (GtkWidget *);
-
-
-/* DESCRIPTION  :  / 
- * BEHAVIOR     :  Returns the structure of widgets of the ldap window.
- * PRE          :  The GtkWidget must be a pointer to the Main gnomeMeeting 
- *                 window.
- */
-GmLdapWindow *gnomemeeting_get_ldap_window (GtkWidget *);
-
-
-/* DESCRIPTION  :  / 
- * BEHAVIOR     :  Returns the structure of widgets of the ldap window page.
- * PRE          :  The GtkWidget must be a pointer to a page of the addressbook
- *                 notebook.
- */
-GmLdapWindowPage *gnomemeeting_get_ldap_window_page (GtkWidget *);
-
-
-/* DESCRIPTION  :  / 
- * BEHAVIOR     :  Returns the structure of widgets of the chat window.
- * PRE          :  The GtkWidget must be a pointer to the Main gnomeMeeting 
- *                 window.
- */
-GmTextChat *gnomemeeting_get_chat_window (GtkWidget *);
-
-
-/* DESCRIPTION  :  / 
- * BEHAVIOR     :  Returns the structure of widgets of the druid window.
- * PRE          :  The GtkWidget must be a pointer to the Main gnomeMeeting 
- *                 window.
- */
-GmDruidWindow *gnomemeeting_get_druid_window (GtkWidget *);
-
-
-/* DESCRIPTION  :  / 
- * BEHAVIOR     :  Returns the structure of widgets of the calls history
- *                 window.
- * PRE          :  The GtkWidget must be a pointer to the Main gnomeMeeting 
- *                 window.
- */
-GmCallsHistoryWindow *gnomemeeting_get_calls_history_window (GtkWidget *);
-
-
-/* DESCRIPTION  :  / 
- * BEHAVIOR     :  Returns the rtp data. Only valid during calls.
- * PRE          :  The GtkWidget must be a pointer to the Main gnomeMeeting 
- *                 window.
- */
-GmRtpData *gnomemeeting_get_rtp_data (GtkWidget *);
-
 #endif /* GM_COMMON_H */

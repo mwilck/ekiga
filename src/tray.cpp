@@ -42,6 +42,7 @@
 #include "../config.h"
 
 #include "tray.h"
+#include "gnomemeeting.h"
 #include "eggtrayicon.h"
 #include "menu.h"
 #include "stock-icons.h"
@@ -50,11 +51,12 @@
 /* Declarations */
 
 extern GtkWidget *gm;
+extern GnomeMeeting *MyApp;
 
 static gint tray_clicked_callback (GtkWidget *, GdkEventButton *, gpointer);
-static gint tray_icon_embedded (GObject *, gpointer);
-static gint tray_icon_destroyed (GObject *, gpointer);
-static void gnomemeeting_build_tray (GtkContainer *, GtkAccelGroup *);
+static gint tray_icon_embedded (GtkWidget *, gpointer);
+static gint tray_icon_destroyed (GtkWidget *, gpointer);
+static void gnomemeeting_build_tray (GtkContainer *);
 
 
 /* The functions  */
@@ -63,7 +65,7 @@ static void gnomemeeting_build_tray (GtkContainer *, GtkAccelGroup *);
  * BEHAVIOR     :  Store the info in the object
  * PRE          :  
  */
-static gint tray_icon_embedded (GObject *tray_icon, gpointer)
+static gint tray_icon_embedded (GtkWidget *tray_icon, gpointer)
 {
   static bool first_time = true;
 
@@ -74,7 +76,7 @@ static gint tray_icon_embedded (GObject *tray_icon, gpointer)
     }
     first_time = false;
   }
-  g_object_set_data (tray_icon, "embedded", GINT_TO_POINTER (1));
+  g_object_set_data (G_OBJECT (tray_icon), "embedded", GINT_TO_POINTER (1));
 
   return true;
 }
@@ -84,21 +86,21 @@ static gint tray_icon_embedded (GObject *tray_icon, gpointer)
  * BEHAVIOR     :  Create a new tray_icon and substitute the old one
  * PRE          :  A GtkAccelGroup
  */
-static gint tray_icon_destroyed (GObject *tray, gpointer accel) 
+static gint tray_icon_destroyed (GtkWidget *tray, gpointer data) 
 {
   GConfClient *client = gconf_client_get_default ();
 
   /* Somehow the delete_event never got called, so we use "destroy" */
-  if (tray != G_OBJECT (gnomemeeting_get_main_window (gm)->docklet))
+  if (tray != MyApp->GetMainWindow ()->docklet)
     return true;
-  GObject *new_tray = gnomemeeting_init_tray (GTK_ACCEL_GROUP (accel));
+  GtkWidget *new_tray = gnomemeeting_init_tray ();
 
   if (gconf_client_get_bool 
       (client, GENERAL_KEY "do_not_disturb", 0)) 
     gnomemeeting_tray_set_content (new_tray, 2);
 
   
-  gnomemeeting_get_main_window (gm)->docklet = GTK_WIDGET (new_tray);
+  MyApp->GetMainWindow ()->docklet = GTK_WIDGET (new_tray);
   gtk_widget_show (gm);
 
   return true;
@@ -134,17 +136,16 @@ tray_clicked_callback (GtkWidget *widget, GdkEventButton *event, gpointer data)
 
 /* DESCRIPTION  :  Builds up the tray icon
  * BEHAVIOR     :  Adds needed widgets to the docklet window
- * PRE          :  docklet must be a valid pointer to a GtkWindow,
- *                 the GtkAccelGroup.
+ * PRE          :  docklet must be a valid pointer to a GtkWindow.
  */
 static void 
-gnomemeeting_build_tray (GtkContainer *tray_icon, GtkAccelGroup *accel)
+gnomemeeting_build_tray (GtkContainer *tray_icon)
 {
   GtkWidget *image = NULL;
   GtkWidget *eventbox = NULL;
 
   /* Add the popup menu to the tray */
-  gnomemeeting_popup_menu_tray_init (GTK_WIDGET (tray_icon), accel);
+  gnomemeeting_popup_menu_tray_init (GTK_WIDGET (tray_icon));
 
   image = gtk_image_new_from_stock (GM_STOCK_STATUS_AVAILABLE,
 				    GTK_ICON_SIZE_MENU);
@@ -164,88 +165,88 @@ gnomemeeting_build_tray (GtkContainer *tray_icon, GtkAccelGroup *accel)
   g_signal_connect (G_OBJECT (tray_icon), "embedded",
 		    G_CALLBACK (tray_icon_embedded), NULL);
   g_signal_connect (G_OBJECT (tray_icon), "destroy",
-		    G_CALLBACK (tray_icon_destroyed), accel);
+		    G_CALLBACK (tray_icon_destroyed), NULL);
   g_signal_connect (G_OBJECT (eventbox), "button_press_event",
 		    G_CALLBACK (tray_clicked_callback), NULL);
 }
 
 
 /* The nctions */
-GObject *gnomemeeting_init_tray (GtkAccelGroup *accel)
+GtkWidget *gnomemeeting_init_tray ()
 {
   EggTrayIcon *tray_icon;
 
 #ifndef WIN32
   tray_icon = egg_tray_icon_new (_("GnomeMeeting Tray Icon"));
-  gnomemeeting_build_tray (GTK_CONTAINER (tray_icon), accel);
-  gnomemeeting_tray_show (G_OBJECT (tray_icon));
+  gnomemeeting_build_tray (GTK_CONTAINER (tray_icon));
+  gnomemeeting_tray_show (GTK_WIDGET (tray_icon));
 #endif
   
-  return G_OBJECT (tray_icon);
+  return GTK_WIDGET (tray_icon);
 }
 
 
-void gnomemeeting_tray_set_content (GObject *tray, int choice)
+void gnomemeeting_tray_set_content (GtkWidget *tray, int choice)
 {
   gpointer image = NULL;
 
   /* if choice = 0, set the phone as content
      if choice = 1, set the ringing phone as content */
   if (choice == 0)  {
-    image = g_object_get_data (tray, "image");
+    image = g_object_get_data (G_OBJECT (tray), "image");
   
     /* if that was was not already the pixmap */
     if (image != NULL)	{
       gtk_image_set_from_stock (GTK_IMAGE (image), GM_STOCK_STATUS_AVAILABLE, 
 				GTK_ICON_SIZE_MENU);
-      g_object_set_data (tray, "available", GINT_TO_POINTER (1));
+      g_object_set_data (G_OBJECT (tray), "available", GINT_TO_POINTER (1));
     }
   }
 
   if (choice == 1) {
 
-    image = g_object_get_data (tray, "image");
+    image = g_object_get_data (G_OBJECT (tray), "image");
     
     if (image != NULL)	{
       gtk_image_set_from_stock (GTK_IMAGE (image), GM_STOCK_STATUS_RINGING,
 				GTK_ICON_SIZE_MENU);
-      g_object_set_data (tray, "available", GINT_TO_POINTER (0));
+      g_object_set_data (G_OBJECT (tray), "available", GINT_TO_POINTER (0));
     }
   }
 
   if (choice == 2) {
 
-    image = g_object_get_data (tray, "image");
+    image = g_object_get_data (G_OBJECT (tray), "image");
 
     if (image != NULL) {
       gtk_image_set_from_stock (GTK_IMAGE (image), GM_STOCK_STATUS_OCCUPIED,
 				GTK_ICON_SIZE_MENU);
-      g_object_set_data (tray, "available", GINT_TO_POINTER (0));
+      g_object_set_data (G_OBJECT (tray), "available", GINT_TO_POINTER (0));
     }
   }
 }
 
 
-void gnomemeeting_tray_show (GObject *tray)
+void gnomemeeting_tray_show (GtkWidget *tray)
 {
-  gtk_widget_show (GTK_WIDGET (tray));
+  gtk_widget_show (tray);
 }
 
 
-void gnomemeeting_tray_hide (GObject *tray)
+void gnomemeeting_tray_hide (GtkWidget *tray)
 {
   gtk_widget_hide (GTK_WIDGET (tray));
 }
 
 
-gint gnomemeeting_tray_flash (GObject *tray)
+gint gnomemeeting_tray_flash (GtkWidget *tray)
 {
   gpointer data;
 
   /* we can't call gnomemeeting_threads_enter as idles and timers
      are executed in the main thread */
   gdk_threads_enter ();
-  data = g_object_get_data (tray, "available");
+  data = g_object_get_data (G_OBJECT (tray), "available");
 
   if (GPOINTER_TO_INT (data) == 1) {
     gnomemeeting_tray_set_content (tray, 1);
@@ -258,7 +259,7 @@ gint gnomemeeting_tray_flash (GObject *tray)
 }
 
 
-gboolean gnomemeeting_tray_is_ringing (GObject *tray)
+gboolean gnomemeeting_tray_is_ringing (GtkWidget *tray)
 {
   g_assert (EGG_IS_TRAY_ICON (tray));
 
@@ -271,7 +272,7 @@ gboolean gnomemeeting_tray_is_ringing (GObject *tray)
  * BEHAVIOR     : 
  * PRE          : /
  */
-gboolean gnomemeeting_tray_is_visible (GObject *tray)
+gboolean gnomemeeting_tray_is_visible (GtkWidget *tray)
 {
-  return GPOINTER_TO_INT (g_object_get_data (tray, "embedded"));
+  return GPOINTER_TO_INT (g_object_get_data (G_OBJECT (tray), "embedded"));
 }
