@@ -52,7 +52,11 @@ static void gnomemeeting_init_druid_callback (GtkWidget *, gpointer);
 static void half_zoom_callback (GtkWidget *, gpointer);
 static void normal_zoom_callback (GtkWidget *, gpointer);
 static void double_zoom_callback (GtkWidget *, gpointer);
+
+#ifdef HAS_SDL
 static void toggle_fullscreen_callback (GtkWidget *, gpointer);
+#endif
+
 static void video_view_changed_callback (GtkWidget *, gpointer);
 static void view_menu_toggles_changed (GtkWidget *, gpointer);
 static void menu_toggle_changed (GtkWidget *, gpointer);
@@ -116,6 +120,7 @@ static void double_zoom_callback (GtkWidget *widget, gpointer data)
 }
 
 
+#ifdef HAS_SDL
 /* DESCRIPTION  :  This callback is called when the user toggles fullscreen
  *                 factor in the popup menu.
  * BEHAVIOR     :  Toggles fullscreen.
@@ -126,6 +131,7 @@ static void toggle_fullscreen_callback (GtkWidget *widget, gpointer data)
   GmWindow *gw = gnomemeeting_get_main_window (gm);
   gw->fullscreen = !gw->fullscreen;
 }
+#endif
 
 
 /* DESCRIPTION  :  This callback is called when the user changes the current
@@ -135,6 +141,12 @@ static void toggle_fullscreen_callback (GtkWidget *widget, gpointer data)
  */
 static void video_view_changed_callback (GtkWidget *widget, gpointer data)
 {
+#ifdef HAS_SDL
+  int view_number = 3;
+#else
+  int view_number = 2;
+#endif
+
   GnomeUIInfo *right_menu_uiinfo = NULL;
   GnomeUIInfo *bad_menu_uiinfo = NULL;
 
@@ -159,7 +171,7 @@ static void video_view_changed_callback (GtkWidget *widget, gpointer data)
     bad_menu_uiinfo = video_view_menu_uiinfo;
   }
 
-  for (int i = 0 ; i < 4 ; i++) {
+  for (int i = 0 ; i <= view_number ; i++) {
 
     GTK_CHECK_MENU_ITEM (bad_menu_uiinfo [i].widget)->active =
       GTK_CHECK_MENU_ITEM (right_menu_uiinfo [i].widget)->active;
@@ -167,6 +179,7 @@ static void video_view_changed_callback (GtkWidget *widget, gpointer data)
   }
     
 
+#ifdef HAS_SDL
   if (GTK_CHECK_MENU_ITEM (video_view_menu_uiinfo [2].widget)->active
       || GTK_CHECK_MENU_ITEM (video_view_menu_uiinfo [3].widget)->active) {
 
@@ -182,6 +195,7 @@ static void video_view_changed_callback (GtkWidget *widget, gpointer data)
     gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [12].widget), 
 			      TRUE);
   }
+#endif
 }
 
 
@@ -317,6 +331,7 @@ void gnomemeeting_init_menu ()
 	GNOME_APP_PIXMAP_NONE, NULL,
 	0, GDK_CONTROL_MASK, NULL
       },
+#ifdef HAS_SDL
       {
 	GNOME_APP_UI_ITEM,
 	N_("Both (Local Video in New Window)"), N_("Both Video Images"),
@@ -324,6 +339,7 @@ void gnomemeeting_init_menu ()
 	GNOME_APP_PIXMAP_NONE, NULL,
 	0, GDK_CONTROL_MASK, NULL
       },
+#endif
       GNOMEUIINFO_END,
     };
 
@@ -403,6 +419,7 @@ void gnomemeeting_init_menu ()
        	GNOME_APP_PIXMAP_STOCK, GTK_STOCK_ZOOM_100,
 	'=', GDK_CONTROL_MASK, NULL 
       },
+#ifdef HAS_SDL
       GNOMEUIINFO_SEPARATOR,
       { 
 	GNOME_APP_UI_ITEM, N_("Toggle Fullscreen"), N_("Toggle Fullscreen"),
@@ -410,6 +427,7 @@ void gnomemeeting_init_menu ()
        	GNOME_APP_PIXMAP_STOCK, GTK_STOCK_ZOOM_FIT,
 	'f', GDK_CONTROL_MASK, NULL 
       },
+#endif
       GNOMEUIINFO_END
     };  
   
@@ -578,14 +596,13 @@ void gnomemeeting_zoom_submenu_set_sensitive (gboolean b)
   gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [8].widget), b);
   gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [9].widget), b);
   gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [10].widget), b);
-  gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [12].widget), b);
-  gtk_widget_set_sensitive (GTK_WIDGET (popup_menu_uiinfo [6].widget), b);
   gtk_widget_set_sensitive (GTK_WIDGET (popup_menu_uiinfo [2].widget), b);
   gtk_widget_set_sensitive (GTK_WIDGET (popup_menu_uiinfo [3].widget), b);
   gtk_widget_set_sensitive (GTK_WIDGET (popup_menu_uiinfo [4].widget), b);
 }
 
 
+#ifdef HAS_SDL
 void gnomemeeting_fullscreen_option_set_sensitive (gboolean b)
 {
   GnomeUIInfo *view_menu_uiinfo = 
@@ -596,6 +613,7 @@ void gnomemeeting_fullscreen_option_set_sensitive (gboolean b)
   gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [12].widget), b);
   gtk_widget_set_sensitive (GTK_WIDGET (popup_menu_uiinfo [6].widget), b);
 }
+#endif
 
 
 void gnomemeeting_video_submenu_set_sensitive (gboolean b)
@@ -608,23 +626,35 @@ void gnomemeeting_video_submenu_set_sensitive (gboolean b)
 
   gtk_widget_set_sensitive (GTK_WIDGET (video_view_menu_uiinfo [1].widget), b);
   gtk_widget_set_sensitive (GTK_WIDGET (video_view_menu_uiinfo [2].widget), b);
+
+#ifdef HAS_SDL
   gtk_widget_set_sensitive (GTK_WIDGET (video_view_menu_uiinfo [3].widget), b);
+#endif
 
   gtk_widget_set_sensitive (GTK_WIDGET (popup_video_view_menu_uiinfo [1].widget), b);
   gtk_widget_set_sensitive (GTK_WIDGET (popup_video_view_menu_uiinfo [2].widget), b);
+
+#ifdef HAS_SDL
   gtk_widget_set_sensitive (GTK_WIDGET (popup_video_view_menu_uiinfo [3].widget), b);
+#endif
 }
 
 
 void gnomemeeting_video_submenu_select (int j)
 {
+#ifdef HAS_SDL
+  int view_number = 3;
+#else
+  int view_number = 2;
+#endif
+
   GnomeUIInfo *video_view_menu_uiinfo = 
     (GnomeUIInfo *) g_object_get_data (G_OBJECT(gm), "video_view_menu_uiinfo");
   GnomeUIInfo *popup_video_view_menu_uiinfo = 
     (GnomeUIInfo *) g_object_get_data (G_OBJECT(gm), 
 				       "popup_video_view_menu_uiinfo");
 
-  for (int i = 0 ; i < 4 ; i++) {
+  for (int i = 0 ; i <= view_number ; i++) {
 
     GTK_CHECK_MENU_ITEM (video_view_menu_uiinfo [i].widget)->active = (i == j);
     gtk_widget_queue_draw (GTK_WIDGET (video_view_menu_uiinfo [i].widget)); 
@@ -668,6 +698,7 @@ void gnomemeeting_popup_menu_init (GtkWidget *widget)
 	GNOME_APP_PIXMAP_NONE, NULL,
 	0, GDK_CONTROL_MASK, NULL
       },
+#ifdef HAS_SDL
       {
 	GNOME_APP_UI_ITEM,
 	N_("Both (Local Video in New Window)"), N_("Both Video Images"),
@@ -675,6 +706,7 @@ void gnomemeeting_popup_menu_init (GtkWidget *widget)
 	GNOME_APP_PIXMAP_NONE, NULL,
 	0, GDK_CONTROL_MASK, NULL
       },
+#endif
       GNOMEUIINFO_END,
     };
 
@@ -707,6 +739,7 @@ void gnomemeeting_popup_menu_init (GtkWidget *widget)
        	GNOME_APP_PIXMAP_STOCK, GTK_STOCK_ZOOM_100,
 	'=', GDK_CONTROL_MASK, NULL 
       },
+#ifdef HAS_SDL
       GNOMEUIINFO_SEPARATOR,
       { 
 	GNOME_APP_UI_ITEM, N_("Toggle Fullscreen"), N_("Toggle Fullscreen"),
@@ -714,6 +747,7 @@ void gnomemeeting_popup_menu_init (GtkWidget *widget)
        	GNOME_APP_PIXMAP_STOCK, GTK_STOCK_ZOOM_FIT,
 	'f', GDK_CONTROL_MASK, NULL 
       },
+#endif
       GNOMEUIINFO_END
     };
 

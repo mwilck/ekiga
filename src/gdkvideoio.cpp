@@ -162,9 +162,10 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
     display = 1;
   if (GTK_CHECK_MENU_ITEM (video_view_menu_uiinfo [2].widget)->active)
     display = 2;
+#ifdef HAS_SDL
   if (GTK_CHECK_MENU_ITEM (video_view_menu_uiinfo [3].widget)->active)
     display = 3;
-
+#endif
   
 #ifdef HAS_SDL
   /* If it is needed, delete the SDL window */
