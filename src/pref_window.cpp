@@ -49,6 +49,7 @@
 
 #include "dialog.h"
 #include "gnome_prefs_window.h"
+#include "gconf_widgets_extensions.h"
 
 
 /* Declarations */
@@ -366,7 +367,7 @@ file_selector_clicked (GtkWidget *b, gpointer data)
   filename = (gchar *)
     gtk_file_selection_get_filename (GTK_FILE_SELECTION (data));
   
-  gconf_client_set_string (client, DEVICES_KEY "video_image",
+  gconf_client_set_string (client, VIDEO_DEVICES_KEY "image",
 			   filename, NULL);
 }
 
@@ -560,9 +561,8 @@ void gnomemeeting_codecs_list_build (GtkListStore *codecs_list_store)
 
     if ((couple [0]) && (couple [1])) {
 
-      quicknet =
-	gconf_client_get_string (client, DEVICES_KEY "audio_player", NULL);
-
+      dev = gconf_get_string (AUDIO_DEVICES_KEY "input_device");
+      cout << "FIX ME here for Quicknet" << endl << flush;
       codec = PString (couple [0]);
       if (quicknet)
 	dev = PString (quicknet);
@@ -935,11 +935,11 @@ gnomemeeting_init_pref_window_audio_devices (GtkWidget *window,
   
 
   subsection = gnome_prefs_subsection_new (window, container,
-					   _("Audio Manager"), 1, 2);
+					   _("Audio Plugin"), 1, 2);
                                                                                
   /* Add all the fields for the audio manager */
   array = gw->audio_managers.ToCharArray ();
-  gnome_prefs_string_option_menu_new (subsection, _("Audio manager:"), array, DEVICES_KEY "audio_manager", _("The audio manager that will be used to detect the devices and manage them."), 0);
+  gnome_prefs_string_option_menu_new (subsection, _("Audio plugin:"), array, AUDIO_DEVICES_KEY "plugin", _("The audio plugin that will be used to detect the devices and manage them."), 0);
   free (array);
 
 
@@ -951,17 +951,18 @@ gnomemeeting_init_pref_window_audio_devices (GtkWidget *window,
   /* The player */
   array = gw->audio_player_devices.ToCharArray ();
   pw->audio_player =
-    gnome_prefs_string_option_menu_new (subsection, _("Playing device:"), array, DEVICES_KEY "audio_player", _("Select the audio player device to use."), 0);
+    gnome_prefs_string_option_menu_new (subsection, _("Output device:"), array, AUDIO_DEVICES_KEY "output_device", _("Select the audio output device to use."), 0);
   free (array);
   
   /* The recorder */
   array = gw->audio_recorder_devices.ToCharArray ();
   pw->audio_recorder =
-    gnome_prefs_string_option_menu_new (subsection, _("Recording device:"), array, DEVICES_KEY "audio_recorder", _("Select the audio recorder device to use."), 2);
+    gnome_prefs_string_option_menu_new (subsection, _("Input device:"), array, AUDIO_DEVICES_KEY "input_device", _("Select the audio input device to use."), 2);
   free (array);
 
 #ifdef HAS_IXJ
   /* The Quicknet devices related options */
+  /*
   subsection = gnome_prefs_subsection_new (window, container,
 					   _("Quicknet Device"), 2, 2);
 
@@ -971,6 +972,7 @@ gnomemeeting_init_pref_window_audio_devices (GtkWidget *window,
     gnome_prefs_entry_new (subsection, _("Country _code:"), DEVICES_KEY "lid_country", _("The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)."), 1, false);
   gtk_entry_set_max_length (GTK_ENTRY (entry), 2);
   gtk_widget_set_size_request (GTK_WIDGET (entry), 100, -1);  
+  */
 #endif
 
   
@@ -1012,10 +1014,10 @@ gnomemeeting_init_pref_window_video_devices (GtkWidget *window,
 
   /* The video manager */
   subsection = gnome_prefs_subsection_new (window, container,
-					   _("Video Manager"), 1, 2);
+					   _("Video Plugin"), 1, 2);
 
   array = gw->video_managers.ToCharArray ();
-  gnome_prefs_string_option_menu_new (subsection, _("Video manager:"), array, DEVICES_KEY "video_manager", _("The video manager that will be used to detect the devices and manage them."), 0);
+  gnome_prefs_string_option_menu_new (subsection, _("Video plugin:"), array, VIDEO_DEVICES_KEY "plugin", _("The video plugin that will be used to detect the devices and manage them."), 0);
   free (array);
 
 
@@ -1026,18 +1028,18 @@ gnomemeeting_init_pref_window_video_devices (GtkWidget *window,
   /* The video device */
   array = gw->video_devices.ToCharArray ();
   pw->video_device =
-    gnome_prefs_string_option_menu_new (subsection, _("Video device:"), array, DEVICES_KEY "video_recorder", _("Select the video device to use. Using an invalid video device or \"Picture\" for video transmission will transmit a test picture."), 0);
+    gnome_prefs_string_option_menu_new (subsection, _("Input device:"), array, VIDEO_DEVICES_KEY "input_device", _("Select the video device to use. Using an invalid video device or \"Picture\" for video transmission will transmit a test picture."), 0);
   free (array);
   
   /* Video Channel */
-  gnome_prefs_spin_new (subsection, _("Video channel:"), DEVICES_KEY "video_channel", _("The video channel number to use (to select camera, tv or other sources)."), 0.0, 10.0, 1.0, 3, NULL, false);
+  gnome_prefs_spin_new (subsection, _("Channel:"), VIDEO_DEVICES_KEY "channel", _("The video channel number to use (to select camera, tv or other sources)."), 0.0, 10.0, 1.0, 3, NULL, false);
   
-  gnome_prefs_int_option_menu_new (subsection, _("Video size:"), video_size, DEVICES_KEY "video_size", _("Select the transmitted video size: Small (QCIF 176x144) or Large (CIF 352x288)."), 1);
+  gnome_prefs_int_option_menu_new (subsection, _("Size:"), video_size, VIDEO_DEVICES_KEY "size", _("Select the transmitted video size: Small (QCIF 176x144) or Large (CIF 352x288)."), 1);
 
-  gnome_prefs_int_option_menu_new (subsection, _("Video format:"), video_format, DEVICES_KEY "video_format", _("Select the format for video cameras. (Does not apply to most USB cameras)."), 2);
+  gnome_prefs_int_option_menu_new (subsection, _("Format:"), video_format, VIDEO_DEVICES_KEY "format", _("Select the format for video cameras. (Does not apply to most USB cameras)."), 2);
 
   entry =
-    gnome_prefs_entry_new (subsection, _("Video image:"), DEVICES_KEY "video_image", _("The image to transmit if \"Picture\" is selected for the video device or if the opening of the device fails. Leave blank to use the default GnomeMeeting logo."), 4, false);
+    gnome_prefs_entry_new (subsection, _("Image:"), VIDEO_DEVICES_KEY "image", _("The image to transmit if \"Picture\" is selected for the video device or if the opening of the device fails. Leave blank to use the default GnomeMeeting logo."), 4, false);
 
 
   /* The file selector button */
@@ -1280,14 +1282,14 @@ gnomemeeting_pref_window_update_devices_list ()
   array = gw->audio_player_devices.ToCharArray ();
   gnome_prefs_string_option_menu_update (pw->audio_player,
 					 array,
-					 DEVICES_KEY "audio_player");
+					 AUDIO_DEVICES_KEY "output_device");
   free (array);
   
   /* The recorder */
   array = gw->audio_recorder_devices.ToCharArray ();
   gnome_prefs_string_option_menu_update (pw->audio_recorder,
 					 array,
-					 DEVICES_KEY "audio_recorder");
+					 AUDIO_DEVICES_KEY "input_device");
   free (array);
   
   
@@ -1296,7 +1298,7 @@ gnomemeeting_pref_window_update_devices_list ()
 
   gnome_prefs_string_option_menu_update (pw->video_device,
 					 array,
-					 DEVICES_KEY "video_recorder");
+					 VIDEO_DEVICES_KEY "input_device");
   free (array);
 }
 

@@ -73,7 +73,11 @@
 #define PORTS_KEY           "/apps/gnomemeeting/ports/"
 #define VIEW_KEY            "/apps/gnomemeeting/view/"
 #define VIDEO_DISPLAY_KEY   "/apps/gnomemeeting/video_display/"
-#define DEVICES_KEY         "/apps/gnomemeeting/devices/"
+
+#define AUDIO_DEVICES_KEY "/apps/gnomemeeting/devices/audio/"
+#define VIDEO_DEVICES_KEY "/apps/gnomemeeting/devices/video/"
+#define QUICKNET_DEVICES_KEY "/apps/gnomemeeting/devices/quicknet/"
+
 #define PERSONAL_DATA_KEY   "/apps/gnomemeeting/personal_data/"
 #define LDAP_KEY            "/apps/gnomemeeting/ldap/"
 #define GATEKEEPER_KEY      "/apps/gnomemeeting/gatekeeper/"
@@ -82,7 +86,6 @@
 #define VIDEO_SETTINGS_KEY  "/apps/gnomemeeting/video_settings/"
 #define AUDIO_CODECS_KEY    "/apps/gnomemeeting/audio_codecs/"
 #define AUDIO_SETTINGS_KEY  "/apps/gnomemeeting/audio_settings/"
-#define DEVICES_KEY         "/apps/gnomemeeting/devices/"
 #define CONTACTS_KEY        "/apps/gnomemeeting/contacts/"
 #define CONTACTS_GROUPS_KEY "/apps/gnomemeeting/contacts/groups/"
 #define HISTORY_KEY         "/apps/gnomemeeting/history/"

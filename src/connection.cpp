@@ -121,7 +121,7 @@ GMH323Connection::OnLogicalChannel (H323Channel *channel,
   codec_name = channel->GetCapability ().GetFormatName ();
 
   gnomemeeting_threads_enter ();
-  preview = gconf_get_bool (DEVICES_KEY "video_preview");
+  preview = gconf_get_bool (VIDEO_DEVICES_KEY "enable_preview");
   gnomemeeting_threads_leave ();
 
   

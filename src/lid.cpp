@@ -45,9 +45,10 @@
 #include "sound_handling.h"
 #include "main_window.h"
 #include "callbacks.h"
-#include "dialog.h"
 
-#define new PNEW
+#include "dialog.h"
+#include "gconf_widgets_extensions.h"
+
 
 static gboolean transfer_callback_cb (gpointer data);
 
@@ -113,12 +114,9 @@ void GMLid::Open ()
   if (!lid) {
 
     gnomemeeting_threads_enter ();
-    lid_device =  
-      gconf_client_get_string (client, DEVICES_KEY "audio_player", NULL);
-    lid_country =
-      gconf_client_get_string (client, DEVICES_KEY "lid_country", NULL);
-    lid_aec =
-      gconf_client_get_int (client, DEVICES_KEY "lid_aec", NULL);
+    lid_device = gconf_get_string (QUICKNET_DEVICES_KEY "input_device");
+    lid_country = gconf_get_string (QUICKNET_DEVICES_KEY "country_code");
+    lid_aec = gconf_get_int (QUICKNET_DEVICES_KEY "echo_cancellation_level");
     gnomemeeting_threads_leave ();
 
     if (lid_device == NULL)

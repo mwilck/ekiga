@@ -526,36 +526,6 @@ class GMH323EndPoint : public H323EndPoint
 
   
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Set the output audio device to be used during calls.
-   *                 It also udpates the manager.
-   * PRE          :  /
-   */
-  BOOL SetSoundChannelPlayDevice(const PString &);
-
-  
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Set the input audio device to be used during calls.
-   *                 It also updates the manager.
-   * PRE          :  /
-   */
-  BOOL SetSoundChannelRecordDevice(const PString &);
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Set the output audio manager to be used during calls.
-   * PRE          :  /
-   */
-  void SetSoundChannelManager (const PString &);
-
-  
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns the output audio manager to be used during calls.
-   * PRE          :  /
-   */
-  PString GetSoundChannelManager ();
-
-
-  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Set (BOOL = TRUE) or get (BOOL = FALSE) the
    *                 audio playing and recording volumes for the
    *                 audio device.
@@ -617,7 +587,6 @@ class GMH323EndPoint : public H323EndPoint
   PString called_address;
   PString current_call_token;
   PString transfer_call_token;
-  PString soundChannelManager;
 
   H323Connection *current_connection;  
   H323ListenerTCP *listener;  
@@ -646,8 +615,6 @@ class GMH323EndPoint : public H323EndPoint
 
   /* Various mutexes to ensure thread safeness around internal
      variables */
-  PMutex am_access_mutex;
-  PMutex sch_access_mutex;
   PMutex vg_access_mutex;
   PMutex ils_access_mutex;
   PMutex cs_access_mutex;

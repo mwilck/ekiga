@@ -52,10 +52,12 @@
 #include "main_window.h"
 #include "toolbar.h"
 #include "misc.h"
+
 #include "history-combo.h"
 #include "dialog.h"
 #include "e-splash.h"
 #include "stock-icons.h"
+#include "gconf_widgets_extensions.h"
 
 #ifndef WIN32
 #include <esd.h>
@@ -297,42 +299,37 @@ GnomeMeeting::Init ()
 BOOL
 GnomeMeeting::DetectDevices ()
 {
-  GConfClient *client = NULL;
+  gchar *audio_plugin = NULL;
+  gchar *video_plugin = NULL;
 
-  gchar *audio_manager = NULL;
-  gchar *video_manager = NULL;
+  audio_plugin = gconf_get_string (AUDIO_DEVICES_KEY "plugin");
+  video_plugin = gconf_get_string (VIDEO_DEVICES_KEY "plugin");
 
-  client = gconf_client_get_default ();
-  audio_manager = 
-    gconf_client_get_string (client, DEVICES_KEY "audio_manager", NULL);
-  video_manager = 
-    gconf_client_get_string (client, DEVICES_KEY "video_manager", NULL);
-
-  if (!audio_manager || !video_manager)
+  if (!audio_plugin || !video_plugin)
     return FALSE;
 
   /* Detect the devices */
   gnomemeeting_sound_daemons_suspend ();
 
-  /* Detect the managers */
+  /* Detect the plugins */
   gw->audio_managers = PSoundChannel::GetDriverNames ();
   gw->video_managers = PVideoInputDevice::GetDriverNames ();
 
   /* Detect the devices */
-  gw->video_devices = PVideoInputDevice::GetDeviceNames (video_manager);
+  gw->video_devices = PVideoInputDevice::GetDeviceNames (video_plugin);
 
   gw->audio_recorder_devices = 
-    PSoundChannel::GetDeviceNames (audio_manager, PSoundChannel::Recorder);
+    PSoundChannel::GetDeviceNames (audio_plugin, PSoundChannel::Recorder);
   gw->audio_player_devices = 
-    PSoundChannel::GetDeviceNames (audio_manager, PSoundChannel::Player);
+    PSoundChannel::GetDeviceNames (audio_plugin, PSoundChannel::Player);
 
   if (gw->audio_recorder_devices.GetSize () == 0) 
     gw->audio_recorder_devices += PString (_("No device found"));
   if (gw->audio_player_devices.GetSize () == 0)
     gw->audio_player_devices += PString (_("No device found"));
 
-  g_free (audio_manager);
-  g_free (video_manager);
+  g_free (audio_plugin);
+  g_free (video_plugin);
 
   
   if (gw->audio_managers.GetSize () == 0)

@@ -244,15 +244,15 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
 
   /* Set the right devices and managers */
   if (audio_manager)
-    gconf_set_string (DEVICES_KEY "audio_manager", audio_manager);
+    gconf_set_string (AUDIO_DEVICES_KEY "plugin", audio_manager);
   if (player)
-    gconf_set_string (DEVICES_KEY "audio_player", player);
+    gconf_set_string (AUDIO_DEVICES_KEY "output_device", player);
   if (recorder)
-    gconf_set_string (DEVICES_KEY "audio_recorder", recorder);
+    gconf_set_string (AUDIO_DEVICES_KEY "input_device", recorder);
   if (video_manager)
-    gconf_set_string (DEVICES_KEY "video_manager", video_manager);
+    gconf_set_string (VIDEO_DEVICES_KEY "plugin", video_manager);
   if (video_recorder)
-    gconf_set_string (DEVICES_KEY "video_recorder", video_recorder);
+    gconf_set_string (VIDEO_DEVICES_KEY "input_device", video_recorder);
 
 
   /* Set the connection quality settings */
@@ -572,12 +572,12 @@ gnomemeeting_druid_page_prepare (GnomeDruidPage *page,
 				 kind_of_net - 1);
 
     array = gw->audio_managers.ToCharArray ();
-    audio_manager = gconf_get_string (DEVICES_KEY "audio_manager");
+    audio_manager = gconf_get_string (AUDIO_DEVICES_KEY "plugin");
     option_menu_update (dw->audio_manager, array, audio_manager);
     free (array);
     
     array = gw->video_managers.ToCharArray ();
-    video_manager = gconf_get_string (DEVICES_KEY "video_manager");
+    video_manager = gconf_get_string (VIDEO_DEVICES_KEY "plugin");
     option_menu_update (dw->video_manager, array, video_manager);
     free (array);
 
@@ -609,8 +609,8 @@ gnomemeeting_druid_page_prepare (GnomeDruidPage *page,
     else
       audio_manager = "";
 	
-    player = gconf_get_string (DEVICES_KEY "audio_player");
-    recorder = gconf_get_string (DEVICES_KEY "audio_recorder");
+    player = gconf_get_string (AUDIO_DEVICES_KEY "input_device");
+    recorder = gconf_get_string (AUDIO_DEVICES_KEY "input_device");
     
     gnomemeeting_sound_daemons_suspend ();
     devices = PSoundChannel::GetDeviceNames (audio_manager,
@@ -660,7 +660,7 @@ gnomemeeting_druid_page_prepare (GnomeDruidPage *page,
     else
       video_manager = "";
 	
-    video_recorder = gconf_get_string (DEVICES_KEY "video_recorder");
+    video_recorder = gconf_get_string (VIDEO_DEVICES_KEY "input_device");
     
     devices = PVideoInputDevice::GetDeviceNames (video_manager);
 

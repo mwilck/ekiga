@@ -159,10 +159,6 @@ GMH323EndPoint::MakeCallLocked (const PString & call_addr,
 
 void GMH323EndPoint::UpdateDevices ()
 {
-  gchar *player = NULL;
-  gchar *recorder = NULL;
-  gchar *manager = NULL;
-
   BOOL use_lid = FALSE;
 
   GmPrefWindow *pw = NULL;
@@ -176,27 +172,20 @@ void GMH323EndPoint::UpdateDevices ()
 
   /* Get the gconf settings */
   gnomemeeting_threads_enter ();
-  manager = gconf_get_string (DEVICES_KEY "audio_manager");
-  player = gconf_get_string (DEVICES_KEY "audio_player");
-  recorder = gconf_get_string (DEVICES_KEY "audio_recorder");
-  preview = gconf_get_bool (DEVICES_KEY "video_preview");
+  preview = gconf_get_bool (VIDEO_DEVICES_KEY "enable_preview");
   gnomemeeting_threads_leave ();
-  
-  if (!manager || !player || !recorder)
-    return;
   
   gnomemeeting_sound_daemons_suspend ();
 
   /* Do not change these values during calls */
   if (GetCallingState () == GMH323EndPoint::Standby) {
 
-
     /* Quicknet hardware */
-    if (PString (player).Find ("/dev/phone") != P_MAX_INDEX
+    /*    if (PString (player).Find ("/dev/phone") != P_MAX_INDEX
 	|| PString (recorder).Find ("/dev/phone") != P_MAX_INDEX) {
       
       use_lid = true;
-    }
+      }*/
 
     /* Video preview */
     if (preview) 
@@ -215,10 +204,6 @@ void GMH323EndPoint::UpdateDevices ()
   }
 
   gnomemeeting_sound_daemons_resume ();
-
-  g_free (manager);
-  g_free (player);
-  g_free (recorder);
 }
 
 
@@ -293,7 +278,7 @@ GMH323EndPoint::AddVideoCapabilities ()
 {
   int video_size = 0;
 
-  video_size = gconf_get_int (DEVICES_KEY "video_size");
+  video_size = gconf_get_int (VIDEO_DEVICES_KEY "size");
 
   /* Add video capabilities */
   if (video_size == 1) {
@@ -1536,10 +1521,17 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
 				  unsigned bufferSize,
 				  H323AudioCodec & codec)
 {
+  PSoundChannel *sound_channel = NULL;
+
+  PString plugin;
+  PString device;
+  
   unsigned int vol_rec = 0;
   unsigned int vol_play = 0;
-  bool sd = FALSE;
+
+  BOOL sd = FALSE;
   BOOL no_error = TRUE;
+  
   gchar *msg = NULL;
 
   if ((is_encoding && is_transmitting_audio)
@@ -1602,29 +1594,19 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
   }
   else
 #endif
-   {
-     PSoundChannel *sound_channel = NULL;
-     gchar *audio_dri = NULL;
-     PString audio_driver;
-     PString device;
-
-     
+   {   
      gnomemeeting_threads_enter ();
-     audio_dri = gconf_get_string (DEVICES_KEY "audio_manager");
-     if (audio_dri)
-       audio_driver = PString (audio_dri);
-     gnomemeeting_threads_leave ();
-     
-     if (is_encoding) 
-       device = GetSoundChannelRecordDevice ();
+     plugin = gconf_get_string (AUDIO_DEVICES_KEY "plugin");
+     if (is_encoding)
+       device = gconf_get_string (AUDIO_DEVICES_KEY "input_device");
      else
-       device = GetSoundChannelPlayDevice ();
-
+       device = gconf_get_string (AUDIO_DEVICES_KEY "output_device");
+     gnomemeeting_threads_leave ();
 
      if (device.Find (_("No device found")) == P_MAX_INDEX) {
 
        sound_channel = 
-	 PSoundChannel::CreateOpenedChannel (audio_driver,
+	 PSoundChannel::CreateOpenedChannel (plugin,
 					     device,
 					     is_encoding ?
 					     PSoundChannel::Recorder
@@ -1633,11 +1615,12 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
 
        if (sound_channel) {
 
-	 /* Translators : the full sentence is "Opening %s for playing"
-	    or "Opening %s for recording */
-	 msg = g_strdup_printf (_("Opening %s for %s"),
+	 /* Translators : the full sentence is "Opening %s for playing with
+	    plugin %s" or "Opening %s for recording with plugin" */
+	 msg = g_strdup_printf (_("Opened %s for %s with plugin %s"),
 				(const char *) device,
-				is_encoding ? _("recording") : _("playing"));
+				is_encoding ? _("recording") : _("playing"),
+				(const char *) plugin);
 
 	 gnomemeeting_threads_enter ();
 	 gnomemeeting_log_insert (gw->history_text_view, msg);
@@ -1679,106 +1662,6 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
     is_encoding ? is_transmitting_audio = TRUE : is_receiving_audio = TRUE;
     
   return no_error;
-}
-
-
-BOOL
-GMH323EndPoint::SetSoundChannelPlayDevice(const PString &name)
-{
-  gchar *text = NULL;
-
-  PWaitAndSignal m(sch_access_mutex);
-  
-  gchar *audio_manager = NULL;
-
-  audio_manager = gconf_get_string (DEVICES_KEY "audio_manager");
-
-  if (gw->audio_player_devices.GetSize () == 0) 
-    gw->audio_player_devices = 
-      PSoundChannel::GetDeviceNames (audio_manager, PSoundChannel::Player);
-
-  if (!audio_manager 
-      || gw->audio_player_devices.GetValuesIndex (name) == P_MAX_INDEX) {
-
-    g_free (audio_manager);
-    return FALSE;
-  }
-  
-  SetSoundChannelManager (PString (audio_manager));
-
-  g_free (audio_manager);
-
-  soundChannelPlayDevice = name;
-
-  
-  gnomemeeting_threads_enter ();
-  text = g_strdup_printf (_("Set Audio player device to %s"), 
-			  (const char *) soundChannelPlayDevice);
-  gnomemeeting_log_insert (gw->history_text_view, text);
-  gnomemeeting_threads_leave ();
-  
-  g_free (text);
-
-  return TRUE;   
-}
- 
-
-void
-GMH323EndPoint::SetSoundChannelManager (const PString & sm)
-{
-  PWaitAndSignal m(am_access_mutex);
-
-  soundChannelManager = sm;
-}
-
-
-PString
-GMH323EndPoint::GetSoundChannelManager ()
-{
-  PWaitAndSignal m(am_access_mutex);
-
-  return soundChannelManager;
-}
-
-
-BOOL
-GMH323EndPoint::SetSoundChannelRecordDevice (const PString &name)
-{
-  gchar *text = NULL;
-
-  PWaitAndSignal m(sch_access_mutex);
-  
-  gchar *audio_manager = NULL;
-
-  audio_manager = gconf_get_string (DEVICES_KEY "audio_manager");
-
-  if (gw->audio_recorder_devices.GetSize () == 0) 
-    gw->audio_recorder_devices = 
-      PSoundChannel::GetDeviceNames (audio_manager, PSoundChannel::Recorder);
-
-
-  if (!audio_manager 
-      || gw->audio_recorder_devices.GetValuesIndex (name) == P_MAX_INDEX) {
-
-    g_free (audio_manager);
-    return FALSE;
-  }
-
-  SetSoundChannelManager (PString (audio_manager));
-
-  g_free (audio_manager);
-
-  soundChannelRecordDevice = name;
-
-  gnomemeeting_threads_enter ();
-  text = g_strdup_printf (_("Set Audio player device to %s"), 
-			  (const char *) soundChannelPlayDevice);
-  gnomemeeting_log_insert (gw->history_text_view, text);
-  gnomemeeting_threads_leave ();
-  
-  g_free (text);
-
-  return TRUE;
 }
 
 

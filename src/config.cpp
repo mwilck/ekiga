@@ -426,7 +426,7 @@ enable_video_transmission_changed_nt (GConfClient *client,
 
     ep->SetAutoStartTransmitVideo (gconf_value_get_bool (entry->value));
 
-    if (gconf_client_get_int (client, DEVICES_KEY "video_size", NULL) == 0)
+    if (gconf_get_int (VIDEO_DEVICES_KEY "size") == 0)
       name = "H.261-QCIF";
     else
       name = "H.261-CIF";
@@ -473,7 +473,7 @@ enable_video_reception_changed_nt (GConfClient *client,
 
     ep->SetAutoStartReceiveVideo (gconf_value_get_bool (entry->value));
 
-    if (gconf_client_get_int (client, DEVICES_KEY "video_size", NULL) == 0)
+    if (gconf_get_int (VIDEO_DEVICES_KEY "size") == 0)
       name = "H.261-QCIF";
     else
       name = "H.261-CIF";
@@ -884,10 +884,8 @@ audio_device_changed_nt (GConfClient *client,
     gdk_threads_enter ();
       
     dev = PString (gconf_value_get_string (entry->value));
-
-
-    /* If one of the devices that we are using is a quicknet device,
-       we update the other devices too */
+    cout << "FIX ME QUICKNET" << endl << flush;
+    /*
     if (dev.Find ("phone") != P_MAX_INDEX) {
 
       use_lid = TRUE;
@@ -904,10 +902,7 @@ audio_device_changed_nt (GConfClient *client,
     }
     else {
 
-      /* If what we changed right now has now a non quicknet value,
-	 and that the other device value is a quicknet device, we change
-	 it, because Quicknet can't be used for one device and not for
-	 the other */
+      
       player =
 	gconf_client_get_string (client, DEVICES_KEY "audio_player", NULL);
       recorder =
@@ -929,7 +924,8 @@ audio_device_changed_nt (GConfClient *client,
 	gtk_widget_set_sensitive (GTK_WIDGET (dw->audio_test_button), true);
 #endif
       }
-    }
+      }
+    */
     gdk_threads_leave ();
   }
 }
@@ -960,7 +956,7 @@ video_device_changed_nt (GConfClient *client,
     if (ep && ep->GetCallingState () == GMH323EndPoint::Standby) {
 
       gdk_threads_enter ();
-      preview = gconf_get_bool (DEVICES_KEY "video_preview");
+      preview = gconf_get_bool (VIDEO_DEVICES_KEY "enable_preview");
       gdk_threads_leave ();
 
       if (preview)
@@ -1003,7 +999,7 @@ video_device_setting_changed_nt (GConfClient *client,
     if (ep && ep->GetCallingState () == GMH323EndPoint::Standby) {
 
       gdk_threads_enter ();
-      preview = gconf_get_bool (DEVICES_KEY "video_preview");
+      preview = gconf_get_bool (VIDEO_DEVICES_KEY "enable_preview");
       gdk_threads_leave ();
 
       if (preview)
@@ -1012,7 +1008,7 @@ video_device_setting_changed_nt (GConfClient *client,
     else if (ep->GetCallingState () == GMH323EndPoint::Connected) {
 
       gdk_threads_enter ();
-      if (gconf_get_int (DEVICES_KEY "video_size") == 0)
+      if (gconf_get_int (VIDEO_DEVICES_KEY "size") == 0)
 	name = "H.261-QCIF";
       else
 	name = "H.261-CIF";
@@ -1609,67 +1605,67 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
 
 
   /* gnomemeeting_init_pref_window_devices */
-  gconf_client_notify_add (client, DEVICES_KEY "audio_manager", 
+  gconf_client_notify_add (client, VIDEO_DEVICES_KEY "plugin", 
 			   manager_changed_nt, 
 			   NULL, 0, 0);
-  gconf_client_notify_add (client, DEVICES_KEY "video_manager", 
+  gconf_client_notify_add (client, AUDIO_DEVICES_KEY "plugin", 
 			   manager_changed_nt, 
 			   NULL, 0, 0);
 
 
-  gconf_client_notify_add (client, DEVICES_KEY "audio_player",
+  gconf_client_notify_add (client, AUDIO_DEVICES_KEY "output_device",
 			   audio_device_changed_nt,
 			   pw->audio_player, 0, 0);
-  gconf_client_notify_add (client, DEVICES_KEY "audio_player",
+  gconf_client_notify_add (client, AUDIO_DEVICES_KEY "output_device",
 			   applicability_check_nt,
 			   pw->audio_player, 0, 0);
   
 
-  gconf_client_notify_add (client, DEVICES_KEY "audio_recorder",
+  gconf_client_notify_add (client, AUDIO_DEVICES_KEY "input_device",
 			   audio_device_changed_nt,
 			   pw->audio_recorder, 0, 0);
-  gconf_client_notify_add (client, DEVICES_KEY "audio_recorder",
+  gconf_client_notify_add (client, AUDIO_DEVICES_KEY "input_device",
 			   applicability_check_nt,
 			   pw->audio_recorder, 0, 0);
 
-  gconf_client_notify_add (client, DEVICES_KEY "video_recorder", 
+  gconf_client_notify_add (client, VIDEO_DEVICES_KEY "input_device", 
 			   video_device_changed_nt, 
 			   NULL, NULL, NULL);
-  gconf_client_notify_add (client, DEVICES_KEY "video_recorder",
+  gconf_client_notify_add (client, VIDEO_DEVICES_KEY "input_device",
 			   applicability_check_nt,
 			   pw->video_device, 0, 0);
 
-  gconf_client_notify_add (client, DEVICES_KEY "video_channel", 
+  gconf_client_notify_add (client, VIDEO_DEVICES_KEY "channel", 
 			   video_device_setting_changed_nt, 
 			   NULL, NULL, NULL);
 
-  gconf_client_notify_add (client, DEVICES_KEY "video_size", 
+  gconf_client_notify_add (client, VIDEO_DEVICES_KEY "size", 
 			   video_device_setting_changed_nt, 
 			   NULL, NULL, NULL);
-  gconf_client_notify_add (client, DEVICES_KEY "video_size", 
+  gconf_client_notify_add (client, VIDEO_DEVICES_KEY "size", 
 			   capabilities_changed_nt,
 			   NULL, NULL, NULL);
 
-  gconf_client_notify_add (client, DEVICES_KEY "video_format", 
+  gconf_client_notify_add (client, VIDEO_DEVICES_KEY "format", 
 			   video_device_setting_changed_nt, 
 			   NULL, NULL, NULL);
 
-  gconf_client_notify_add (client, DEVICES_KEY "video_image", 
+  gconf_client_notify_add (client, VIDEO_DEVICES_KEY "image", 
 			   video_device_setting_changed_nt, 
 			   NULL, NULL, NULL);
 
 
-  gconf_client_notify_add (client, DEVICES_KEY "video_preview",
+  gconf_client_notify_add (client, VIDEO_DEVICES_KEY "enable_preview",
 			   video_preview_changed_nt,
 			   NULL, 0, 0);
-  gconf_client_notify_add (client, DEVICES_KEY "video_preview",
+  gconf_client_notify_add (client, VIDEO_DEVICES_KEY "enable_preview",
 			   toggle_changed_nt,
 			   gw->preview_button, 0, 0);
 
 #ifdef HAS_IXJ
-  gconf_client_notify_add (client, DEVICES_KEY "lid_country", lid_country_changed_nt, NULL, 0, 0);
+  gconf_client_notify_add (client, QUICKNET_DEVICES_KEY "country_code", lid_country_changed_nt, NULL, 0, 0);
 
-  gconf_client_notify_add (client, DEVICES_KEY "lid_aec", lid_aec_changed_nt, NULL, 0, 0);
+  gconf_client_notify_add (client, QUICKNET_DEVICES_KEY "echo_cancellation_level", lid_aec_changed_nt, NULL, 0, 0);
 #endif
 
 

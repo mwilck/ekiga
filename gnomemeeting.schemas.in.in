@@ -3,36 +3,146 @@
 <gconfschemafile>
   <schemalist>
     <schema>
-      <key>/schemas/apps/gnomemeeting/devices/audio_manager</key>
-      <applyto>/apps/gnomemeeting/devices/audio_manager</applyto>
+      <key>/schemas/apps/gnomemeeting/devices/audio/plugin</key>
+      <applyto>/apps/gnomemeeting/devices/audio/plugin</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default>ALSA</default>
       <locale name="C">
-	<short>Audio manager</short>
-	<long>The audio manager that will be used to detect the devices and manage them.</long>
+	<short>Audio plugin</short>
+	<long>The audio plugin that will be used to detect the devices and manage them.</long>
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/devices/video_manager</key>
-      <applyto>/apps/gnomemeeting/devices/video_manager</applyto>
+      <key>/schemas/apps/gnomemeeting/devices/audio/output_device</key>
+      <applyto>/apps/gnomemeeting/devices/audio/output_device</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default>None</default>
+      <locale name="C">
+	<short>Audio output device</short>
+	<long>Select the audio output device device to use.</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/devices/audio/input_device</key>
+      <applyto>/apps/gnomemeeting/devices/audio/input_device</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default>None</default>
+      <locale name="C">
+	<short>Audio input device</short>
+	<long>Select the audio input device to use.</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/devices/video/plugin</key>
+      <applyto>/apps/gnomemeeting/devices/video/plugin</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default>V4L</default>
       <locale name="C">
-	<short>Video manager</short>
-	<long>The video manager that will be used to detect the devices and manage them.</long>
+	<short>Video plugin</short>
+	<long>The video plugin that will be used to detect the devices and manage them.</long>
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/devices/video_recorder</key>
-      <applyto>/apps/gnomemeeting/devices/video_recorder</applyto>
+      <key>/schemas/apps/gnomemeeting/devices/video/input_device</key>
+      <applyto>/apps/gnomemeeting/devices/video/input_device</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default>/dev/video0</default>
       <locale name="C">
-	<short>Video device</short>
-	<long>Select the video device to use. Using an invalid video device or "Picture" for video transmission will transmit a test picture.</long>
+	<short>Video input device</short>
+	<long>Select the video input device to use. Using an invalid video device or "Picture" for video transmission will transmit a test picture.</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/devices/video/size</key>
+      <applyto>/apps/gnomemeeting/devices/video/size</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>int</type>
+      <default>0</default>
+      <locale name="C">
+	<short>Video size</short>
+	<long>Select the transmitted video size: Small (QCIF 176x144) or Large (CIF 352x288).</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/devices/video/channel</key>
+      <applyto>/apps/gnomemeeting/devices/video/channel</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>int</type>
+      <default>0</default>
+      <locale name="C">
+	<short>Video channel</short>
+	<long>The video channel number to use (to select camera, tv or other sources).</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/devices/video/format</key>
+      <applyto>/apps/gnomemeeting/devices/video/format</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>int</type>
+      <default>0</default>
+      <locale name="C">
+	<short>Video format</short>
+	<long>Select the format for video cameras. (Does not apply to most USB cameras).</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/devices/video/enable_preview</key>
+      <applyto>/apps/gnomemeeting/devices/video/enable_preview</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>bool</type>
+      <default>0</default>
+      <locale name="C">
+	<short>Video preview</short>
+	<long>Video preview</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/devices/video/image</key>
+      <applyto>/apps/gnomemeeting/devices/video/image</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default></default>
+      <locale name="C">
+	<short>Video image</short>
+	<long>The image to transmit if "Picture" is selected for the video device or if the opening of the device fails. Leave blank to use the default GnomeMeeting logo.</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/devices/quicknet/input_device</key>
+      <applyto>/apps/gnomemeeting/devices/quicknet/input_device</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default>/dev/phone0</default>
+      <locale name="C">
+	<short>Quicknet input device</short>
+	<long>Select the Quicknet input device to use.</long>
+      </locale>
+    </schema>
+    <schema>	
+      <key>/schemas/apps/gnomemeeting/devices/quicknet/echo_cancellation_level</key>
+      <applyto>/apps/gnomemeeting/devices/quicknet/echo_cancellation_level</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>int</type>
+      <default>2</default>
+      <locale name="C">
+	<short>Automatic echo cancellation</short>
+	<long>The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic Gain Compensation. Choosing Automatic Gain Compensation modulates the volume for best quality.</long>
+      </locale>
+    </schema>
+    <schema>	
+      <key>/schemas/apps/gnomemeeting/devices/quicknet/country_code</key>
+      <applyto>/apps/gnomemeeting/devices/quicknet/country_code</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default>BE</default>
+      <locale name="C">
+	<short>Country code</short>
+	<long>The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...).</long>
       </locale>
     </schema>
     <schema>
@@ -553,50 +663,6 @@
 	<long>The height of the remote video window</long>
       </locale>
     </schema>
-    <schema>	
-      <key>/schemas/apps/gnomemeeting/devices/lid_aec</key>
-      <applyto>/apps/gnomemeeting/devices/lid_aec</applyto>
-      <owner>GnomeMeeting</owner>
-      <type>int</type>
-      <default>2</default>
-      <locale name="C">
-	<short>Automatic echo cancellation</short>
-	<long>The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic Gain Compensation. Choosing Automatic Gain Compensation modulates the volume for best quality.</long>
-      </locale>
-    </schema>
-    <schema>	
-      <key>/schemas/apps/gnomemeeting/devices/lid_country</key>
-      <applyto>/apps/gnomemeeting/devices/lid_country</applyto>
-      <owner>GnomeMeeting</owner>
-      <type>string</type>
-      <default>BE</default>
-      <locale name="C">
-	<short>Country code</short>
-	<long>The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...).</long>
-      </locale>
-    </schema>
-    <schema>
-      <key>/schemas/apps/gnomemeeting/devices/audio_player</key>
-      <applyto>/apps/gnomemeeting/devices/audio_player</applyto>
-      <owner>GnomeMeeting</owner>
-      <type>string</type>
-      <default>/dev/dsp</default>
-      <locale name="C">
-	<short>Audio player</short>
-	<long>Select the audio player device to use.</long>
-      </locale>
-    </schema>
-    <schema>
-      <key>/schemas/apps/gnomemeeting/devices/audio_recorder</key>
-      <applyto>/apps/gnomemeeting/devices/audio_recorder</applyto>
-      <owner>GnomeMeeting</owner>
-      <type>string</type>
-      <default>/dev/dsp</default>
-      <locale name="C">
-	<short>Audio recorder</short>
-	<long>Select the audio recorder device to use.</long>
-      </locale>
-    </schema>
     <schema>
       <key>/schemas/apps/gnomemeeting/audio_settings/min_jitter_buffer</key>
       <applyto>/apps/gnomemeeting/audio_settings/min_jitter_buffer</applyto>
@@ -617,61 +683,6 @@
       <locale name="C">
 	<short>Maximum jitter buffer</short>
 	<long>The maximum jitter buffer size for audio reception (in ms).</long>
-      </locale>
-    </schema>
-    <schema>
-      <key>/schemas/apps/gnomemeeting/devices/video_size</key>
-      <applyto>/apps/gnomemeeting/devices/video_size</applyto>
-      <owner>GnomeMeeting</owner>
-      <type>int</type>
-      <default>0</default>
-      <locale name="C">
-	<short>Video size</short>
-	<long>Select the transmitted video size: Small (QCIF 176x144) or Large (CIF 352x288).</long>
-      </locale>
-    </schema>
-    <schema>
-      <key>/schemas/apps/gnomemeeting/devices/video_channel</key>
-      <applyto>/apps/gnomemeeting/devices/video_channel</applyto>
-      <owner>GnomeMeeting</owner>
-      <type>int</type>
-      <default>0</default>
-      <locale name="C">
-	<short>Video channel</short>
-	<long>The video channel number to use (to select camera, tv or other sources).</long>
-      </locale>
-    </schema>
-    <schema>
-      <key>/schemas/apps/gnomemeeting/devices/video_format</key>
-      <applyto>/apps/gnomemeeting/devices/video_format</applyto>
-      <owner>GnomeMeeting</owner>
-      <type>int</type>
-      <default>0</default>
-      <locale name="C">
-	<short>Video format</short>
-	<long>Select the format for video cameras. (Does not apply to most USB cameras).</long>
-      </locale>
-    </schema>
-    <schema>
-      <key>/schemas/apps/gnomemeeting/devices/video_preview</key>
-      <applyto>/apps/gnomemeeting/devices/video_preview</applyto>
-      <owner>GnomeMeeting</owner>
-      <type>bool</type>
-      <default>0</default>
-      <locale name="C">
-	<short>Video Preview</short>
-	<long>Video Preview</long>
-      </locale>
-    </schema>
-    <schema>
-      <key>/schemas/apps/gnomemeeting/devices/video_image</key>
-      <applyto>/apps/gnomemeeting/devices/video_image</applyto>
-      <owner>GnomeMeeting</owner>
-      <type>string</type>
-      <default></default>
-      <locale name="C">
-	<short>Video image</short>
-	<long>The image to transmit if "Picture" is selected for the video device or if the opening of the device fails. Leave blank to use the default GnomeMeeting logo.</long>
       </locale>
     </schema>
      <schema>

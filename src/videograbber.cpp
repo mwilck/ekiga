@@ -127,21 +127,13 @@ void GMVideoGrabber::Main ()
 
 void GMVideoGrabber::UpdateConfig ()
 {
-  gchar *video_dri = NULL;
-  gchar *video_rec = NULL;
- 
   gnomemeeting_threads_enter ();
-  video_rec = gconf_get_string (DEVICES_KEY "video_recorder");
-  video_dri = gconf_get_string (DEVICES_KEY "video_manager");
-  video_channel = gconf_get_int (DEVICES_KEY "video_channel");
-  video_size = gconf_get_int (DEVICES_KEY "video_size");
+  video_recorder = gconf_get_string (VIDEO_DEVICES_KEY "input_device");
+  video_driver = gconf_get_string (VIDEO_DEVICES_KEY "plugin");
+  video_channel = gconf_get_int (VIDEO_DEVICES_KEY "channel");
+  video_size = gconf_get_int (VIDEO_DEVICES_KEY "size");
 
-  if (video_rec)
-    video_recorder = PString (video_rec);
-  if (video_dri)
-    video_driver = PString (video_dri);
-  
-  switch (gconf_get_int (DEVICES_KEY "video_format")) {
+  switch (gconf_get_int (VIDEO_DEVICES_KEY "format")) {
     
   case 0:
     video_format = PVideoDevice::PAL;
@@ -164,7 +156,6 @@ void GMVideoGrabber::UpdateConfig ()
     break;
   }
   gnomemeeting_threads_leave ();
-
 }
 
 
@@ -384,7 +375,7 @@ void GMVideoGrabber::VGOpen (void)
 
 
       gnomemeeting_threads_enter ();
-      video_image = gconf_client_get_string (GCONF_CLIENT (client), DEVICES_KEY "video_image", NULL);
+      video_image = gconf_get_string (VIDEO_DEVICES_KEY "image");
       gnomemeeting_threads_leave ();
 
       grabber = new GMH323FakeVideoInputDevice (video_image);
@@ -457,7 +448,7 @@ void GMVideoGrabber::VGClose ()
     gnomemeeting_threads_enter ();
   
 
-    if (GnomeMeeting::Process ()->Endpoint ()->GetCallingState () == GMH323EndPoint::Standby && !gconf_get_bool (DEVICES_KEY "video_preview")) {
+    if (GnomeMeeting::Process ()->Endpoint ()->GetCallingState () == GMH323EndPoint::Standby && !gconf_get_bool (VIDEO_DEVICES_KEY "enable_preview")) {
       
       gnomemeeting_menu_update_sensitivity (TRUE, FALSE, FALSE);
       gnomemeeting_init_main_window_logo (gw->main_video_image);

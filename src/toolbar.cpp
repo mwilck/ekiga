@@ -209,7 +209,6 @@ GtkWidget *gnomemeeting_init_left_toolbar (void)
   
   GmWindow *gw = GnomeMeeting::Process ()->GetMainWindow ();
 
-  GConfClient *client = gconf_client_get_default ();
 
   left_toolbar = gtk_toolbar_new ();
   gtk_toolbar_set_orientation (GTK_TOOLBAR (left_toolbar), 
@@ -261,11 +260,11 @@ GtkWidget *gnomemeeting_init_left_toolbar (void)
 
   gtk_container_add (GTK_CONTAINER (gw->preview_button), GTK_WIDGET (image));
   GTK_TOGGLE_BUTTON (gw->preview_button)->active =
-    gconf_client_get_bool (client, DEVICES_KEY "video_preview", NULL);
+    gconf_get_bool (VIDEO_DEVICES_KEY "enable_preview");
 
   g_signal_connect (G_OBJECT (gw->preview_button), "toggled",
 		    G_CALLBACK (toggle_changed),
-		    (gpointer) DEVICES_KEY "video_preview");
+		    (gpointer) VIDEO_DEVICES_KEY "enable_preview");
 
   gtk_tooltips_set_tip (gw->tips, gw->preview_button,
 			_("Display images from your camera device."),
