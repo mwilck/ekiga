@@ -243,7 +243,7 @@ static void gnomemeeting_build_tray (GtkContainer *tray_icon)
   /* Add the popup menu to the tray */
   gnomemeeting_init_tray_popup_menu (GTK_WIDGET (tray_icon));
 
-  image = gtk_image_new_from_stock (GM_STOCK_PANEL_AVAILABLE,
+  image = gtk_image_new_from_stock (GM_STOCK_STATUS_AVAILABLE,
 				    GTK_ICON_SIZE_MENU);
 
   GtkWidget *eventbox = gtk_event_box_new ();

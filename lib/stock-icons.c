@@ -62,8 +62,6 @@ gnomemeeting_stock_icons_init (void)
 		{ GM_STOCK_MICROPHONE,    gm_microphone_stock_data },
                 { GM_STOCK_SPEAKER_PHONE, gm_speaker_phone_stock_data },
 		{ GM_STOCK_QUICKCAM,      gm_quickcam_stock_data },
-		{ GM_STOCK_AVAILABLE,     gm_available_stock_data },
-		{ GM_STOCK_OCCUPIED,      gm_occupied_stock_data },
 		{ GM_STOCK_STATUS_AVAILABLE, gm_status_available_stock_data },
 		{ GM_STOCK_STATUS_RINGING,   gm_status_ringing_stock_data},
 		{ GM_STOCK_STATUS_OCCUPIED, gm_status_occupied_stock_data},
