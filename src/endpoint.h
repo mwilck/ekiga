@@ -75,6 +75,14 @@ class GMH323EndPoint : public H323EndPoint
    */
   void UpdateConfig ();
 
+  /* DESCRIPTION  :  This callback is called to create an instance of
+   *                 H323Gatekeeper for gatekeeper registration.
+   * BEHAVIOR     :  Return an instance of H323GatekeeperWithNAT
+   *                 that implements the Citron NAT Technology.
+   * PRE          :  /
+   */
+  virtual H323Gatekeeper * CreateGatekeeper (H323Transport *);
+
   
   /* DESCRIPTION  :  This callback is called if we create a connection
    *                 or if somebody calls and we accept the call.

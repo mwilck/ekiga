@@ -740,6 +740,13 @@ GMH323EndPoint::StopAudioTester ()
 }
 
 
+H323Gatekeeper *
+GMH323EndPoint::CreateGatekeeper(H323Transport * transport)
+{
+  return new H323GatekeeperWithNAT(*this, transport);
+}
+
+
 H323Connection *
 GMH323EndPoint::CreateConnection (unsigned callReference)
 {

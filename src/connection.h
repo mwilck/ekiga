@@ -111,6 +111,12 @@ class GMH323Connection : public H323Connection
   virtual void OnUserInputString(const PString &);
 
 
+  /* DESCRIPTION  :  This is called when we received Q.931 Facility
+   * BEHAVIOR     :  Detect if it's an H.245 reverting message
+   * PRE          :  /
+   */
+  virtual BOOL OnReceivedFacility(const H323SignalPDU &);
+
   protected:
     GmWindow *gw;
     int opened_channels; 

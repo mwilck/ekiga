@@ -396,3 +396,27 @@ void GMH323Connection::OnUserInputString(const PString & value)
   gnomemeeting_threads_leave ();
 }
 
+
+BOOL GMH323Connection::OnReceivedFacility(const H323SignalPDU & pdu)
+{
+  if (pdu.m_h323_uu_pdu.m_h323_message_body.GetTag() == H225_H323_UU_PDU_h323_message_body::e_empty)
+    return TRUE;
+
+  if (pdu.m_h323_uu_pdu.m_h323_message_body.GetTag() != H225_H323_UU_PDU_h323_message_body::e_facility)
+    return FALSE;
+  const H225_Facility_UUIE & fac = pdu.m_h323_uu_pdu.m_h323_message_body;
+
+  // Check that it has the H.245 channel connection info
+  if (fac.m_reason.GetTag() == H225_FacilityReason::e_startH245 &&
+		  fac.HasOptionalField(H225_Facility_UUIE::e_h245Address) &&
+			fac.m_protocolIdentifier.GetValue().IsEmpty()) {
+    if (controlChannel != NULL && !controlChannel->IsOpen()) {
+        PTRACE(2, "H225\tSimultaneous start of H.245 channel, connecting to remote.");
+        controlChannel->CleanUpOnTermination();
+        delete controlChannel;
+        controlChannel = NULL;
+    }
+  }
+  return H323Connection::OnReceivedFacility(pdu);
+}
+
