@@ -339,12 +339,12 @@ void gnomemeeting_docklet_hide (GtkWidget *docklet)
  */
 gint gnomemeeting_docklet_flash (GtkWidget *docklet)
 {
-  GtkWidget *object;
+  gpointer object;
 
   /* we can't call gnomemeeting_threads_enter as idles and timers
      are executed in the main thread */
   gdk_threads_enter ();
-  object = GTK_WIDGET (g_object_get_data (G_OBJECT (docklet), "pixmapg"));
+  object = g_object_get_data (G_OBJECT (docklet), "pixmapg");
   gdk_threads_leave ();
   
   gdk_threads_enter ();
