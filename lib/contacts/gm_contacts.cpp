@@ -74,6 +74,9 @@ gnomemeeting_addressbook_is_local (GmAddressbook *addressbook)
 {
   g_return_val_if_fail (addressbook != NULL, TRUE);
 
+  if (addressbook->url == NULL)
+    return TRUE; /* FIXME: is it right? */
+
   if (addressbook->url 
       && g_str_has_prefix (addressbook->url, "file:"))
     return TRUE;
