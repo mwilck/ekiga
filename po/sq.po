@@ -2,14 +2,16 @@
 # Copyright (C) 2000-2004 Free Software Foundation, Inc.
 # Jonita Prifti <jonita@jonita.net>, 2003.
 # maintainer: Jonita Prifti <jonita@jonita.net>, 2003.
-#
+# 
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: GnomeMeeting 0.98.4\n"
+"Project-Id-Version: gnomemeeting.gnome_2_4.sq\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-09-02 13:28+0200\n"
-"PO-Revision-Date: 2002-05-25 21:16+0200\n"
+"POT-Creation-Date: 2004-02-10 10:45+0100\n"
+"PO-Revision-Date: 2004-02-09 12:35+0100\n"
 "Last-Translator: Jonita Prifti <jonita@jonita.net>\n"
+"Language-Team: Albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -33,7 +35,7 @@ msgstr "1 : 56Kbps, 2 : ISDN, 3 : DSL, 4 : LAN, 5 : I personalizuar"
 
 #: gnomemeeting.schemas.in.in.h:2
 msgid "Always forward calls to the given host"
-msgstr "Transferim i thirrjeve gjithmonë drejtë korrespondentit të caktuar "
+msgstr "Gjithmonë transfero thirrjet drejt korrespondentit të caktuar"
 
 #: gnomemeeting.schemas.in.in.h:3
 msgid "Audio player"
@@ -625,9 +627,8 @@ msgid "The list of groups"
 msgstr "Lista e grupeve"
 
 #: gnomemeeting.schemas.in.in.h:119 src/pref_window.cpp:1331
-#, fuzzy
 msgid "The maximum jitter buffer size for audio reception (in ms)."
-msgstr "Masa e jitter buffer minimum për marrjen e zërit (në ms)."
+msgstr "Masa maksimale e jitter buffer për marrjen e zërit (në ms)."
 
 #: gnomemeeting.schemas.in.in.h:120 src/pref_window.cpp:1373
 msgid ""
@@ -817,9 +818,8 @@ msgid "UDP Port Range"
 msgstr "Intervali i porteve UDP"
 
 #: gnomemeeting.schemas.in.in.h:143
-#, fuzzy
 msgid "User Input Capabilities type"
-msgstr "User Input Capabilities"
+msgstr "Lloji i Mundësive të Përdoruesit"
 
 #: gnomemeeting.schemas.in.in.h:144
 msgid "User directory"
@@ -959,11 +959,11 @@ msgstr "PO"
 
 #: src/config-tool-i18n.h:2
 msgid "Sorry, this script won't work while GnomeMeeting is running"
-msgstr ""
+msgstr "Ky script nuk do punojë ndërsa GnomeMeeting është duke punuar"
 
 #: src/config-tool-i18n.h:3
 msgid "  WARNING!!!"
-msgstr ""
+msgstr "  KUJDES!!!"
 
 #: src/config-tool-i18n.h:4
 msgid ""
@@ -977,6 +977,14 @@ msgid ""
 "  If so, say \"YES\".\n"
 "\n"
 msgstr ""
+"  Ky script do fshijë gjithë konfigurimin e përdoruesit të GnomeMeeting,\n"
+"  duke përfshirë preferencat që mund të jenë të rëndësishme! \n"
+"  GConf do mbyllet, pra sigurohu që nuk ke programe që varen nga ai.\n"
+"\n"
+"  Vërtet dëshiron ta bësh këtë?\n"
+"\n"
+"  Nëse je i sigurtë, shkruaj \"PO\".\n"
+"\n"
 
 #: src/config-tool-i18n.h:5
 msgid "Removing $HOME/.gconf/apps/gnomemeeting"
@@ -997,7 +1005,7 @@ msgstr "Lëreni kështu konfigurimin."
 
 #: src/config-tool-i18n.h:9
 msgid "Have a nice day."
-msgstr "Kaloni një ditë të mbarë."
+msgstr "Kalofsh një ditë të mbarë."
 
 #: src/config-tool-i18n.h:10
 msgid ""
@@ -1009,6 +1017,13 @@ msgid ""
 "  If so, say \"YES\".\n"
 "\n"
 msgstr ""
+"  GConf do mbyllet, pra sigurohu që nuk ke asnjë\n"
+"  program që varet nga ai.\n"
+"\n"
+"  Vërtet dëshiron ta bësh këtë?\n"
+"\n"
+"  Nëse je i sigurtë, shkruaj \"PO\".\n"
+"\n"
 
 #: src/config-tool-i18n.h:12
 msgid "Removing schemas"
@@ -1025,15 +1040,18 @@ msgid ""
 "\n"
 "Run \"gnomemeeting-config-tool --install-schemas\" as root.\n"
 msgstr ""
+"GABIM KRITIK -- Instalimi i skemave dështoi.\n"
+"Ka shumë mundësi që GConf të jetë duke u ekzekutuar si root.\n"
+"\n"
+"Ekzekuto \"gnomemeeting-config-tool --install-schemas\" si root.\n"
 
 #: src/config-tool-i18n.h:16
 msgid "Usage:  gnomemeeting-config-tool OPTION"
 msgstr "Përdorim: gnomemeeting-config-tool OPTION"
 
 #: src/config-tool-i18n.h:17
-#, fuzzy
 msgid "Fixes problems with the GnomeMeeting settings"
-msgstr "Parametrat GnomeMeeting"
+msgstr "Ndreq probleme me konfigurimin e GnomeMeeting"
 
 #: src/config-tool-i18n.h:18
 msgid "  --clean                remove all user settings"
@@ -1044,20 +1062,26 @@ msgstr ""
 msgid ""
 "  --install-schemas      install schemas with default settings (run as root)"
 msgstr ""
+" --install-schemas      instalon skemat me preferencat e prezgjedhura "
+"(ekzekutoje si root)"
 
 #: src/config-tool-i18n.h:20
 msgid ""
 "  --clean-schemas        remove schemas with default settings (run as root)"
 msgstr ""
+"  --clean-schemas       fshin skemat me preferencat e prezgjedhura "
+"(ekzekutoje si root)"
 
 #: src/config-tool-i18n.h:21
 msgid ""
 "  --fix-permissions      fix permissions of GConf repository (run as root)"
 msgstr ""
+"  --fix-permissions      ndreq lejet e vendruajtjes së GConf (ekzekutoje si "
+"root)"
 
 #: src/config.cpp:409
 msgid "Changing this setting will only affect new calls"
-msgstr ""
+msgstr "Këto preferenca do ndryshohen vetëm në telefonata të reja"
 
 #: src/config.cpp:409
 msgid ""
@@ -1065,6 +1089,8 @@ msgid ""
 "new change to the current call. Your new setting will only take effect for "
 "the next call."
 msgstr ""
+"Ndryshove një preferencë që nuk lejon GnomeMeeting të aplikojë ndryshimin e "
+"ri gjatë telefonatës së tanishme. Kjo do bëhet e mundur telefonatën tjetër."
 
 #: src/config.cpp:591
 msgid "Disabled Silence Detection"
@@ -1079,12 +1105,17 @@ msgid ""
 "You need to specify an host to forward calls to!\n"
 "Disabling forwarding."
 msgstr ""
+"Duhet të saktësosh një strehues (host) për të\n"
+"parashtruar telefonatat! \n"
+"Duke çaktivizuar parashtrimin."
 
 #: src/config.cpp:1459
 msgid ""
 "An error has happened in the configuration backend.\n"
 "Maybe some of your settings won't be saved."
 msgstr ""
+"Një gabim ka ndodhur në konfigurimin e programit.\n"
+"Ndoshta disa nga preferencat nuk do shpëtohen."
 
 #: src/connection.cpp:112
 msgid "Started New Logical Channel..."
@@ -1103,7 +1134,7 @@ msgstr "Detektimi i heshtjes i aktivuar për %s"
 #: src/connection.cpp:141
 #, c-format
 msgid "Disabled silence detection for %s"
-msgstr "Detektimi i heshtjes nuk ështê i aktivuar për %s"
+msgstr "Detektimi i heshtjes nuk është aktivizuar për %s"
 
 #: src/connection.cpp:157
 #, c-format
@@ -1121,12 +1152,12 @@ msgstr "Kërkesa është ok"
 
 #: src/connection.cpp:244 src/connection.cpp:246
 msgid "Auto Answering Incoming Call"
-msgstr "Përgjigje automatike e thirrjes që vjen"
+msgstr "Përgjigje Automatike e Thirrjes që Vjen"
 
 #: src/connection.cpp:337 src/connection.cpp:338 src/urlhandler.cpp:76
 #: src/urlhandler.cpp:77
 msgid "Call transfer failed"
-msgstr "Tranferimi i thirrjes dështoi"
+msgstr "Transferimi i thirrjes dështoi"
 
 #: src/connection.cpp:337
 msgid ""
@@ -1210,6 +1241,14 @@ msgid ""
 "No information is made public unless you allow it to be published on the "
 "directory of online GnomeMeeting users."
 msgstr ""
+"Të lutem zgjidh emrin dhe mbiemrin, këto do përdoren gjatë lidhjes me "
+"programe të tjerë konferece audio/vizive.\n"
+"\n"
+"Adresa e email-it përdoret për të të pajisur me një adresë callto të cilën "
+"miqtë e tu do ta përdorin për të të telefonuar pa njohur adresën tënde IP.\n"
+"\n"
+"Asnjë informacion nuk bëhet publik deri kur lejon publikimin e tyre në "
+"kartelën e përdoruesve në linjë të GnomeMeeting."
 
 #. The user fields
 #: src/druid.cpp:613 src/pref_window.cpp:728
@@ -1240,7 +1279,7 @@ msgstr "Numeratori i përdoruesve në lidhje të GnomeMeeting"
 
 #: src/druid.cpp:642
 msgid "Publish my information on the directory of online GnomeMeeting users"
-msgstr "Afisho informacionet e mija në numeratorin e përdoruesve në lidhje"
+msgstr "Shfaq të dhënat e mia në numratorin e përdoruesve në linjë"
 
 #: src/druid.cpp:683
 #, c-format
@@ -1253,20 +1292,23 @@ msgid ""
 "video settings for your bandwidth. It is possible to change these defaults "
 "later."
 msgstr ""
+"Të lutem zgjidh llojin e lidhjes me rrjetin. Kjo përdoret për të caktuar "
+"preferencat e prezgjedhura të videos për gjerësinë e bandës tënde. Mund ti "
+"ndryshosh këto të dhëna edhe më vonë."
 
 #. Connection type
 #: src/druid.cpp:698
 msgid "Connection Type"
-msgstr "Lloji i lidhjes"
+msgstr "Lloji i Lidhjes"
 
 #: src/druid.cpp:707
 msgid "DSL/Cable"
 msgstr "xDSL/Cable"
 
 #: src/druid.cpp:775
-#, fuzzy, c-format
+#, c-format
 msgid "Audio Devices - page %d/%d"
-msgstr "Konfiguracion i mbaruar - faqe %d/%d"
+msgstr "Dispozitivat e Zërit - faqja %d/%d"
 
 #: src/druid.cpp:785
 msgid ""
@@ -1276,47 +1318,46 @@ msgid ""
 "webcams models have an internal microphone that can be used with "
 "GnomeMeeting."
 msgstr ""
+"Të lutem zgjidh dispozitivat e zërit për tu përdorur me GnomeMeeting. "
+"Gjithashtu mund të zgjedhësh një dispozitiv Quicknet në vend të kartës së "
+"zërit, por butoni \"Provo Zërin\" do punojë vetëm për këto të fundit. Vëre "
+"se disa modele web-kamerash kanë një mikrofon të brendshëm që mund të "
+"përdoret me GnomeMeeting."
 
 #. The Audio devices
 #: src/druid.cpp:789 src/pref_window.cpp:1055 src/pref_window.cpp:1572
-#, fuzzy
 msgid "Audio Devices"
-msgstr "Kodekët e audios"
+msgstr "Dispozitivët e Zërit"
 
 #: src/druid.cpp:792
 msgid "Audio player:"
-msgstr "Lexues i audios:"
+msgstr "Lexues i zërit:"
 
 #: src/druid.cpp:795
-#, fuzzy
 msgid "Audio player mixer:"
-msgstr "Miksazh i lexuesit të zërit"
+msgstr "Miksazh i lexuesit të zërit:"
 
 #: src/druid.cpp:799
-#, fuzzy
 msgid "Audio recorder:"
-msgstr "Regjistrues i zërit"
+msgstr "Regjistrues i zërit:"
 
 #: src/druid.cpp:802
-#, fuzzy
 msgid "Audio recorder mixer:"
-msgstr "Miksazh i regjistruesit të zërit"
+msgstr "Miksazh i regjistruesit të zërit:"
 
 #. Test button
 #: src/druid.cpp:806
-#, fuzzy
 msgid "Click here to test your audio devices:"
-msgstr "Klikoni këtu për të freskuar listën e dispozitivëve:"
+msgstr "Klikoni këtu për të provuar dispozitivat e zërit:"
 
 #: src/druid.cpp:808
-#, fuzzy
 msgid "Test Audio"
-msgstr "Rimarrje e zërit"
+msgstr "Provo Zërin"
 
 #: src/druid.cpp:851
-#, fuzzy, c-format
+#, c-format
 msgid "Video Devices - page %d/%d"
-msgstr "Dispozitivi i videos është i hapur"
+msgstr "Dispozitivat e Videos - faqja %d/%d"
 
 #: src/druid.cpp:861
 msgid ""
@@ -1325,38 +1366,39 @@ msgid ""
 "driver is supported by GnomeMeeting. You can only test the correctness of "
 "your driver if the selected device is not already in use."
 msgstr ""
+"Të lutem zgjidh dispozitivin e videos për tu përdorur gjatë sesionit të "
+"GnomeMeeting. Kliko butonin \"Provo Videon\" për të kontrolluar nëse "
+"konfigurimi është i saktë dhe driver punon me GnomeMeeting. Mund të provosh "
+"videon nëse dispozitivi i zgjedhur nuk është në përdorim."
 
 #. The Video device
+#. The video devices related options
 #: src/druid.cpp:865 src/pref_window.cpp:1126 src/pref_window.cpp:1577
-#, fuzzy
 msgid "Video Devices"
-msgstr "Dispozitivi i videos"
+msgstr "Dispozitivat e videos"
 
 #: src/druid.cpp:868 src/pref_window.cpp:1130
-#, fuzzy
 msgid "Video device:"
-msgstr "Dispozitivi i videos"
+msgstr "Dispozitivi i videos:"
 
 #: src/druid.cpp:868
-#, fuzzy
 msgid ""
 "Enter the video device to use. Using an invalid video device for video "
 "transmission will transmit a test picture."
 msgstr ""
-"Seleksiononi dispozitivin e videos që do të përdorni. Në qoftë se përdorni "
-"një dispozitiv video të pavlefshëm ose \"Figurë\" atëhere vetëm një figurë "
-"testi do të transmetohet. "
+"Zgjidh dispozitivin e videos që do të përdorësh. Në qoftë se përdor një "
+"dispozitiv video të pavlefshëm ose \"Figurë\" atëhere do të transmetohet "
+"vetëm një imazh provë."
 
 #. Test button
 #: src/druid.cpp:872
-#, fuzzy
 msgid "Test Video"
-msgstr "Video e largët"
+msgstr "Provo Videon"
 
 #: src/druid.cpp:916
 #, c-format
 msgid "PC-To-Phone Setup - page %d/%d"
-msgstr "Konfiguracion PC-To-Phone - faqe %d/%d"
+msgstr "Konfiguracioni i PC-To-Phone - faqja %d/%d"
 
 #: src/druid.cpp:926
 msgid ""
@@ -1366,6 +1408,12 @@ msgid ""
 "then enable registering to the MicroTelco service. Please visit the "
 "GnomeMeeting website for more information."
 msgstr ""
+"Mund të krysh telefonata me telefona normalë ose numra celularësh në të "
+"gjithë botën duke përdorur GnomeMeeting dhe shërbimin MicroTelco "
+"tëTeknologjisë Quicknet. Për të aktivizuar këtë duhet të shkruash emrin e "
+"llogarisë tënde MicroTelco dhe kodin PIN këtu poshtë, pastaj zgjidh "
+"regjistrimin në shërbimin MicroTelco. Të lutem vizito faqen internet të "
+"GnomeMeeting për akoma më shumë të dhëna."
 
 #: src/druid.cpp:931
 msgid "PC-To-Phone Setup"
@@ -1373,39 +1421,40 @@ msgstr "Konfiguracion PC-To-Phone"
 
 #: src/druid.cpp:934
 msgid "Account number:"
-msgstr "Numri i kontos :"
+msgstr "Numri i llogarisë :"
 
 #: src/druid.cpp:937
 msgid "Password:"
-msgstr "Password :"
+msgstr "Fjalëkalimi :"
 
 #: src/druid.cpp:944
 msgid "Register to the MicroTelco service"
-msgstr "Regjistrohuni në servisin MicroTelco"
+msgstr "Regjistrohuni në shërbimin MicroTelco"
 
 #: src/druid.cpp:962
 msgid ""
 "Click on one of the following links to get more information about your "
 "existing MicroTelco account, or to create a new account."
 msgstr ""
+"Kliko në një nga lidhjet e mëposhtme për të marrë më shumë informacione mbi "
+"llogarinë tënde MicroTelco, ose për të hapur një llogari të re."
 
 #: src/druid.cpp:966
 msgid "Get an account"
-msgstr "Krijoni një konto"
+msgstr "Krijo një llogari"
 
 #: src/druid.cpp:968
 msgid "Buy a card"
-msgstr "Bleni një kartë"
+msgstr "Blej një kartë"
 
 #: src/druid.cpp:998
-#, fuzzy
 msgid "First Time Configuration Druid"
-msgstr "Ndihmë për konfigurimin"
+msgstr "Konfigurimi Fillestar"
 
 #: src/druid.cpp:1005
-#, fuzzy, c-format
+#, c-format
 msgid "Configuration Druid - page %d/%d"
-msgstr "Konfiguracion i mbaruar - faqe %d/%d"
+msgstr "Konfigurimi Fillestar - faqja %d/%d"
 
 #: src/druid.cpp:1008
 msgid ""
@@ -1415,22 +1464,22 @@ msgid ""
 "Once you have completed these steps, you can always change them later by "
 "selecting Preferences in the Edit menu."
 msgstr ""
-"Ky është ndihmësi i konfiguracionit të parë në GnomeMeeting. Fazat që vijnë "
-"do t'ju ndihmojnë për të konfiguruar GnomeMeeting duke ju bërë disa pyetje "
-"të thjeshta.\n"
+"Ky është ndihmësi i konfigurimit të parë në GnomeMeeting. Fazat që vijnë do "
+"t'ju ndihmojnë për të konfiguruar GnomeMeeting duke ju bërë disa pyetje të "
+"thjeshta.\n"
 "\n"
-"Kur të keni mbaruar këtë konfiguracion fazë mbas faze, mund ti ndryshoni "
-"edhe më vonë duke zgjedhur Preferenca në mënynë Redaktim."
+"Pasi të keni përfunduar këto faza, mund ti ndryshoni edhe më vonë duke "
+"zgjedhur Preferencat në menunë Redaktim."
 
 #: src/druid.cpp:1047
 #, c-format
 msgid "Configuration complete - page %d/%d"
-msgstr "Konfiguracion i mbaruar - faqe %d/%d"
+msgstr "Konfigurim i mbaruar - faqja %d/%d"
 
 #: src/endpoint.cpp:117
 #, c-format
 msgid "Forwarding Call to %s (No Answer)"
-msgstr "Tranferim i thirrjeve drejtë %s (S'ka përgjigje)"
+msgstr "Duke Transferuar Thirrjet Drejt %s (S'ka Përgjigje)"
 
 #: src/endpoint.cpp:121 src/endpoint.cpp:1468
 msgid "Call forwarded"
@@ -1441,30 +1490,28 @@ msgstr "Thirrje e transferuar"
 #: src/endpoint.cpp:314
 #, c-format
 msgid "Set Audio player device to %s"
-msgstr "Vendosje e dispozitivit të leximit të zërit me %s"
+msgstr "Zgjidh dispozitivin e leximit të zërit si %s"
 
 #: src/endpoint.cpp:325
 #, c-format
 msgid "Set Audio recorder device to %s"
-msgstr "Vendosje e dispozitivit të regjistrimit të zërit me %s"
+msgstr "Zgjidh dispozitivin e regjistrimit të zërit si %s"
 
 #: src/endpoint.cpp:342
 msgid "Enabling H.245 Tunnelling"
-msgstr "Aktivim i Tunnelling H.245"
+msgstr "Duke aktivizuar Tunnelling H.245"
 
 #: src/endpoint.cpp:343
-#, fuzzy
 msgid "Disabling H.245 Tunnelling"
-msgstr "Aktivim i Tunnelling H.245"
+msgstr "Duke çaktivizuar Tunnelling H.245"
 
 #: src/endpoint.cpp:353
-#, fuzzy
 msgid "Enabling Fast Start"
-msgstr "Heqje e nisjes së shpejtë"
+msgstr "Duke Aktivizuar Nisjen e Shpejtë"
 
 #: src/endpoint.cpp:354
 msgid "Disabling Fast Start"
-msgstr "Heqje e nisjes së shpejtë"
+msgstr "Duke çaktivizuar Nisjen e Shpejtë"
 
 #. Update the history and status bar
 #: src/endpoint.cpp:945
@@ -2133,9 +2180,8 @@ msgid "E-mail contains"
 msgstr "E-mail përmban"
 
 #: src/ldap_window.cpp:2909
-#, fuzzy
 msgid "Servers"
-msgstr "_Server i ri"
+msgstr "Serverat"
 
 #: src/ldap_window.cpp:2955
 msgid "Groups"
@@ -2219,7 +2265,7 @@ msgstr ""
 
 #: src/main_window.cpp:701
 msgid "Failed to retrieve gnomemeeting server from activation server\n"
-msgstr ""
+msgstr "Tërheqja e serverit gnomemeeting nga serveri i aktivizimit dështoi\n"
 
 #: src/main_window.cpp:1196 src/menu.cpp:566 src/menu.cpp:815
 msgid "Local Video"
@@ -2261,20 +2307,20 @@ msgstr "Video"
 msgid "Audio"
 msgstr "Audio"
 
-#: src/main_window.cpp:1680
+#: src/main_window.cpp:1685
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr ""
 "Afishon mesazhet e debugimit në panelën e kontrollit (nivel midis 1 dhe 6)"
 
-#: src/main_window.cpp:1683
+#: src/main_window.cpp:1688
 msgid "Makes GnomeMeeting call the given URL"
 msgstr "Bën që GnomeMeeting të marri  URL callto:// të caktuar"
 
-#: src/main_window.cpp:1729
+#: src/main_window.cpp:1734
 msgid "No usable audio devices detected"
 msgstr "Asnjë dispozitiv audio i përdorshëm nuk është detektuar"
 
-#: src/main_window.cpp:1729
+#: src/main_window.cpp:1734
 msgid ""
 "GnomeMeeting didn't find any usable sound devices. You need to install and "
 "setup a soundcard or a Quicknet card in order to be able to use "
@@ -2285,11 +2331,11 @@ msgstr ""
 "qenë të aftë të përdorniGnomeMeetin.  Verifikoni vendosjet dhe lejet e "
 "driverit."
 
-#: src/main_window.cpp:1749
+#: src/main_window.cpp:1754
 msgid "Gconf key error"
 msgstr "Gabim çelësi Gconf"
 
-#: src/main_window.cpp:1749
+#: src/main_window.cpp:1754
 msgid ""
 "GnomeMeeting got an invalid value for the GConf key \"/apps/gnomemeeting/"
 "gconf_test_age\".\n"
@@ -2411,46 +2457,44 @@ msgid "View/Hide the text chat window"
 msgstr "Afishon/fshen dritaren e bisedës"
 
 #: src/menu.cpp:518
-#, fuzzy
 msgid "Status Bar"
-msgstr "Afisho ndikimin e gjëndjes"
+msgstr "Dritarja e Gjendjes"
 
 #: src/menu.cpp:518
-#, fuzzy
 msgid "View/Hide the status bar"
-msgstr "Afishon/fshen dritaren e bisedës"
+msgstr "Shfaq/Fshih dritaren e gjendjes"
 
 #: src/menu.cpp:524
 msgid "Control Panel"
-msgstr "Panela e kontrollit"
+msgstr "Paneli i Kontrollit"
 
 #: src/menu.cpp:527
 msgid "View audio/video transmission and reception statistics"
-msgstr "Afishon statistikat e transmetimit dhe të marrjes audio/video"
+msgstr "Shfaq statistikat e transmetimit dhe të marrjes audio/video"
 
 #: src/menu.cpp:533
 msgid "_Dialpad"
-msgstr "_Dialpad"
+msgstr "_Numrat"
 
 #: src/menu.cpp:533
 msgid "View the dialpad"
-msgstr "Afishon dialpad-in"
+msgstr "Shfaq numrat e telefonit"
 
 #: src/menu.cpp:539
 msgid "_Audio Settings"
-msgstr "Parametrat _audio"
+msgstr "Parametrat e Zë_rit"
 
 #: src/menu.cpp:539
 msgid "View audio settings"
-msgstr "Afishon parametrat audio"
+msgstr "Shfaq parametrat e zërit"
 
 #: src/menu.cpp:545
 msgid "_Video Settings"
-msgstr "Parametrat _video"
+msgstr "Parametrat e _Video"
 
 #: src/menu.cpp:545
 msgid "View video settings"
-msgstr "Afishon parametrat video"
+msgstr "Shfaq parametrat video"
 
 #: src/menu.cpp:551 src/pref_window.cpp:1039
 msgid "Off"
@@ -2458,15 +2502,15 @@ msgstr "E mbyllur"
 
 #: src/menu.cpp:551
 msgid "Hide the control panel"
-msgstr "Afishon/fshen panelën e kontrollit"
+msgstr "Fshih panelin e kontrollit"
 
 #: src/menu.cpp:559
 msgid "_Clear text chat"
-msgstr "_Fshin tekstin e bisedës"
+msgstr "_Fshi tekstin e bisedës"
 
 #: src/menu.cpp:559
 msgid "Clear the text chat"
-msgstr "Fshin tekstin e bisedës"
+msgstr "Fshi tekstin e bisedës"
 
 #: src/menu.cpp:566
 msgid "Local video image"
@@ -2474,7 +2518,7 @@ msgstr "Figura e videos lokale"
 
 #: src/menu.cpp:572
 msgid "Remote video image"
-msgstr "Figura e videos e korrepondentit"
+msgstr "Figura e videos së korrespondentit"
 
 #: src/menu.cpp:578 src/menu.cpp:825
 msgid "Both (Local Video Incrusted)"
@@ -2537,9 +2581,8 @@ msgid "General History"
 msgstr "Historik i përgjithshëm"
 
 #: src/menu.cpp:630
-#, fuzzy
 msgid "View the operations history"
-msgstr "Shiko historikun e thirrjeve"
+msgstr "Shiko historikun e veprimeve"
 
 #: src/menu.cpp:635 src/menu.cpp:925 src/tools.cpp:200
 msgid "Calls History"
@@ -2795,23 +2838,21 @@ msgid "User Input Capabilities"
 msgstr "User Input Capabilities"
 
 #: src/pref_window.cpp:944
-#, fuzzy
 msgid "User Input Capabilities _type:"
-msgstr "User Input Capabilities"
+msgstr "L_loji i Mundësive të Përdoruesit:"
 
 #: src/pref_window.cpp:944
-#, fuzzy
 msgid ""
 "This permits to set the mode for User Input Capabilities. The values can be "
 "\"All\", \"None\", \"rfc2833\", \"Signal\" or \"String\" (default is \"All"
 "\"). Choosing other values than \"All\", \"String\" or \"rfc2833\" disables "
 "the Text Chat."
 msgstr ""
-"Kjo ju lejon të përcaktoni modën për User Input Capabilities. Vlerat mund të "
-"jenë \"Të gjitha\" (0), \"Asnjë\" (1), \"rfc2833\" (2), \"Sinjal\" (3), ose "
-"\"String\" (4) (e përcaktuar është \"Të gjitha\"). Kur zgjidhni vlera të "
-"tjera se \"Të gjitha\", \"String\", ose \"rfc2833\" atëhere biseda tekstuale "
-"nuk është në veprim."
+"Kjo ju lejon të përcaktoni modën për Mundësive të Përdoruesit. Vlerat mund "
+"të jenë \"Të gjitha\" (0), \"Asnjë\" (1), \"rfc2833\" (2), \"Sinjal\" (3), "
+"ose \"Stringë\" (4) (e përcaktuar është \"Të gjitha\"). Kur zgjidhni vlera "
+"të tjera nga \"Të gjitha\", \"Stringë\", ose \"rfc2833\" atëhere biseda "
+"tekstuale nuk është në veprim."
 
 #: src/pref_window.cpp:961
 msgid "Do not register"
