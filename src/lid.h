@@ -86,10 +86,10 @@ class GMLid : public PThread, public OpalIxJDevice
   
 
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Updates the playing and recording volumes.
-   * PRE          :  0% < volume < 100%
+   * BEHAVIOR     :  Updates the playing or the recording volume.
+   * PRE          :  BOOL = is_encoding or not, 0% < volume < 100%
    */
-  void SetVolume (int,
+  void SetVolume (BOOL,
 		  int);
 
 

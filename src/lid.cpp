@@ -429,12 +429,15 @@ GMLid::UpdateState (GMH323EndPoint::CallingState i)
 
 
 void
-GMLid::SetVolume (int x, int y)
+GMLid::SetVolume (BOOL is_encoding, 
+                  int x)
 {
   if (IsOpen ()) {
 
-    SetPlayVolume (0, x);
-    SetRecordVolume (0, y);
+    if (!is_encoding)
+      SetPlayVolume (0, x);
+    else
+      SetRecordVolume (0, x);
   }
 }
 

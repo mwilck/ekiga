@@ -427,14 +427,15 @@ class GMH323EndPoint : public H323EndPoint
    * BEHAVIOR     :  Update the audio device volume (playing then recording). 
    * PRE          :  /
    */
-  BOOL SetDeviceVolume (unsigned int, unsigned int);
+  BOOL SetDeviceVolume (PSoundChannel *, BOOL, unsigned int);
 
   
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns the audio device volume (playing then recording). 
    * PRE          :  /
    */
-  BOOL GetDeviceVolume (unsigned int &, unsigned int &);
+  BOOL GetDeviceVolume (PSoundChannel *, BOOL, unsigned int &);
+  
 
 
   /* DESCRIPTION  :  /
@@ -536,7 +537,7 @@ class GMH323EndPoint : public H323EndPoint
    *                 audio device.
    * PRE          :  /
    */
-  BOOL DeviceVolume (BOOL, unsigned int &, unsigned int &);
+  BOOL DeviceVolume (PSoundChannel *, BOOL, BOOL, unsigned int &);
 
 
   /* DESCRIPTION  :  /
@@ -613,9 +614,6 @@ class GMH323EndPoint : public H323EndPoint
   H323ListenerTCP *listener;  
 
   CallingState calling_state; 
-
-  GDKVideoOutputDevice *transmitted_video_device; 
-  GDKVideoOutputDevice *received_video_device; 
 
   PTimer NoIncomingMediaTimer;
   PTimer ILSTimer;

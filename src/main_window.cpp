@@ -590,6 +590,12 @@ audio_volume_changed (GtkAdjustment *adjustment, gpointer data)
 {
   GmWindow *gw = NULL;
   GMH323EndPoint *ep = NULL;
+  
+  H323Connection *con = NULL;
+  H323Codec *raw_codec = NULL;
+  H323Channel *channel = NULL;
+
+  PSoundChannel *sound_channel = NULL;
 
   unsigned int play_vol =  0, rec_vol = 0;
 
@@ -600,7 +606,33 @@ audio_volume_changed (GtkAdjustment *adjustment, gpointer data)
   rec_vol = (unsigned int) (GTK_ADJUSTMENT (gw->adj_rec)->value);
 
   gdk_threads_leave ();
-  ep->SetDeviceVolume (play_vol, rec_vol);  
+ 
+  con = ep->FindConnectionWithLock (ep->GetCurrentCallToken ());
+
+  if (con) {
+
+    for (int cpt = 0 ; cpt < 2 ; cpt++) {
+
+      channel = 
+        con->FindChannel (RTP_Session::DefaultAudioSessionID, (cpt == 0));         
+      if (channel) {
+
+        raw_codec = channel->GetCodec();
+
+        if (raw_codec) {
+
+          sound_channel = (PSoundChannel *) raw_codec->GetRawDataChannel ();
+
+          if (sound_channel)
+            ep->SetDeviceVolume (sound_channel, 
+                                 (cpt == 1), 
+                                 (cpt == 1) ? rec_vol : play_vol);
+        }
+      }
+    }
+    con->Unlock ();
+  }
+
   gdk_threads_enter ();
 }
 

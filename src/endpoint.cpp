@@ -101,8 +101,6 @@ GMH323EndPoint::GMH323EndPoint ()
     PIPSocket::SetDefaultIpAddressFamilyV6();
 #endif
   
-  received_video_device = NULL;
-  transmitted_video_device = NULL;
   audio_tester = NULL;
   
   ILSTimer.SetNotifier (PCREATE_NOTIFIER (OnILSTimeout));
@@ -1637,8 +1635,7 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
   PString plugin;
   PString device;
   
-  unsigned int vol_rec = 0;
-  unsigned int vol_play = 0;
+  unsigned int vol = 0;
 
   BOOL sd = FALSE;
   BOOL no_error = TRUE;
@@ -1676,10 +1673,8 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
   if ((l = GetLid ()) && l->IsOpen()) {
 
     lid->StopTone (0);
-    
-    if (!codec.AttachChannel (new OpalLineChannel (*l,
-						   OpalIxJDevice::POTSLine,
-						   codec))) {
+      
+    if (!codec.AttachChannel (new OpalLineChannel (*l, OpalIxJDevice::POTSLine, codec))) {
 
       l->Unlock ();
 
@@ -1726,7 +1721,8 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
 	  gnomemeeting_log_insert (is_encoding ?
 				   _("Opened %s for recording with plugin %s")
 				   : _("Opened %s for playing with plugin %s"),
-				   (const char *) device, (const char *) plugin);
+				   (const char *) device, 
+                                   (const char *) plugin);
 	  gnomemeeting_threads_leave ();
 
 	  /* Control the channel and attach it to the codec, do not
@@ -1736,9 +1732,11 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
 
 	  /* Update the volume sliders */
 	  gnomemeeting_threads_enter ();
-	  GetDeviceVolume (vol_play, vol_rec);
-	  GTK_ADJUSTMENT (gw->adj_play)->value = vol_play;
-	  GTK_ADJUSTMENT (gw->adj_rec)->value = vol_rec;
+	  GetDeviceVolume (sound_channel, is_encoding, vol);
+          if (!is_encoding)
+            GTK_ADJUSTMENT (gw->adj_play)->value = vol;
+          else
+            GTK_ADJUSTMENT (gw->adj_rec)->value = vol;
 	  gtk_widget_queue_draw (GTK_WIDGET (gw->audio_settings_frame));
 	  gnomemeeting_threads_leave ();
 	}
@@ -1774,18 +1772,20 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
 
 
 BOOL
-GMH323EndPoint::SetDeviceVolume (unsigned int play_vol, 
-				 unsigned int rec_vol)
+GMH323EndPoint::SetDeviceVolume (PSoundChannel *sound_channel,
+                                 BOOL is_encoding,
+                                 unsigned int vol)
 {
-  return DeviceVolume (TRUE, play_vol, rec_vol);
+  return DeviceVolume (sound_channel, is_encoding, TRUE, vol);
 }
 
 
 BOOL
-GMH323EndPoint::GetDeviceVolume (unsigned int &play_vol, 
-				 unsigned int &rec_vol)
+GMH323EndPoint::GetDeviceVolume (PSoundChannel *sound_channel,
+                                 BOOL is_encoding,
+                                 unsigned int &vol)
 {
-  return DeviceVolume (FALSE, play_vol, rec_vol);
+  return DeviceVolume (sound_channel, is_encoding, FALSE, vol);
 }
 
 
@@ -2199,18 +2199,15 @@ GMH323EndPoint::OnOutgoingCall (PTimer &,
 
 
 BOOL 
-GMH323EndPoint::DeviceVolume (BOOL set, 
-			      unsigned int &play_vol, 
-			      unsigned int &rec_vol)
+GMH323EndPoint::DeviceVolume (PSoundChannel *sound_channel,
+                              BOOL is_encoding,
+                              BOOL set, 
+			      unsigned int &vol) 
 {
-  H323Channel *channel = NULL;
-  PSoundChannel *sound_channel = NULL;
-  H323Codec *raw_codec = NULL;
   H323Connection *con = NULL;
 
 #ifdef HAS_IXJ
   GMLid *l = NULL;
-  BOOL has_lid = FALSE;
 #endif
 
   BOOL err = TRUE;
@@ -2224,49 +2221,34 @@ GMH323EndPoint::DeviceVolume (BOOL set,
 
 #ifdef HAS_IXJ
     if (set) {
-      
+
       l = GetLid ();
       if (l) {
 
-	l->SetVolume (play_vol, rec_vol);
-	l->Unlock ();
-	has_lid = TRUE;
+        l->SetVolume (is_encoding, vol);
+        l->Unlock ();
       }
     }
 #endif
 
-    if (!has_lid) {
 
-      for (int cpt = 0 ; cpt < 2 ; cpt ++) {
+    /* TRUE = from_remote = playing */
+    if (sound_channel) {
 
-	/* TRUE = from_remote = playing */
-	channel = 
-	  con->FindChannel (RTP_Session::DefaultAudioSessionID, (cpt == 0));
+      if (set) {
 
-	if (channel) {
+        err = 
+          sound_channel->SetVolume (vol)
+          && err;
+      }
+      else {
 
-	  raw_codec = channel->GetCodec();
-
-	  if (raw_codec) {
-
-	    sound_channel = (PSoundChannel *) raw_codec->GetRawDataChannel ();
-	    if (sound_channel)
-	      if (set) {
-	      
-		err = 
-		  sound_channel->SetVolume ((cpt == 0)?play_vol:rec_vol)
-		  && err;
-	      }
-	      else {
-
-		err = 
-		  sound_channel->GetVolume ((cpt == 0)?play_vol:rec_vol)
-		  && err;
-	      }
-	  }
-	}
+        err = 
+          sound_channel->GetVolume (vol)
+          && err;
       }
     }
+
     con->Unlock ();
   }
 
@@ -2286,6 +2268,8 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
   double frame_time = 0.0;
 
   PVideoChannel *channel = NULL;
+  GDKVideoOutputDevice *display_device = NULL;
+  
   GMVideoGrabber *vg = NULL;
 
   BOOL result = FALSE;
@@ -2341,17 +2325,13 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
     }
       
     if (vg) {
-     
+    
+      vg->StopGrabbing ();
       channel = vg->GetVideoChannel ();
-      transmitted_video_device = vg->GetEncodingDevice ();
       vg->Unlock ();
     }
     else
       return FALSE;
-
-    gnomemeeting_threads_enter ();
-    gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button), TRUE);
-    gnomemeeting_threads_leave ();
 
 
     if (channel)
@@ -2362,9 +2342,9 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
   else if (!is_encoding && autoStartReceiveVideo) {
 
     channel = new PVideoChannel;
-    received_video_device = new GDKVideoOutputDevice (is_encoding, gw);
-    received_video_device->SetColourFormatConverter ("YUV420P");      
-    channel->AttachVideoPlayer (received_video_device);
+    display_device = new GDKVideoOutputDevice (is_encoding, gw);
+    display_device->SetColourFormatConverter ("YUV420P");      
+    channel->AttachVideoPlayer (display_device);
 
     vg = GetVideoGrabber ();
     if (vg) {
