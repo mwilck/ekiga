@@ -346,8 +346,8 @@ void GMAudioRP::Main ()
       }
       else {
 
-	if ((now - PTime ()).GetSeconds () > 3) {
-	  
+	if ((PTime () - now).GetSeconds () > 3) {
+
 	  tester->buffer_ring_access_mutex.Wait ();
 	  memcpy (buffer, &tester->buffer_ring [buffer_pos], 640); 
 	  tester->buffer_ring_access_mutex.Signal ();
