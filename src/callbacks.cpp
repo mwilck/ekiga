@@ -60,9 +60,8 @@ void pause_audio_callback (GtkWidget *widget, gpointer data)
   GMH323Connection *connection = (GMH323Connection *)  MyApp->Endpoint ()
     ->GetCurrentConnection ();
 
-  if (connection != NULL)
+  if ((connection != NULL)&&(MyApp->Endpoint ()->GetCallingState () == 2))
     connection->PauseChannel (0);
-
 }
 
 
@@ -73,9 +72,8 @@ void pause_video_callback (GtkWidget *widget, gpointer data)
   GMH323Connection *connection = (GMH323Connection *)  MyApp->Endpoint ()
     ->GetCurrentConnection ();
 
-  if (connection != NULL)
+  if ((connection != NULL)&&(MyApp->Endpoint ()->GetCallingState () == 2))
     connection->PauseChannel (1);
-
 }
 
 
