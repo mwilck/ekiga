@@ -452,14 +452,33 @@ GMVideoGrabber::VGOpen (void)
       
     /* Setup the video settings */
     GetParameters (&whiteness, &brightness, &colour, &contrast);
-    gnomemeeting_threads_enter ();
-    gm_main_window_set_video_sliders_values (main_window,
-					     brightness,
-					     whiteness,
-					     colour, 
-					     contrast);
-    gnomemeeting_threads_leave ();
+    if (whiteness > 0 || brightness > 0 || colour > 0 || contrast > 0) {
 
+      gnomemeeting_threads_enter ();
+      gm_main_window_set_video_sliders_values (main_window,
+					       whiteness,
+					       brightness,
+					       colour, 
+					       contrast);
+      gnomemeeting_threads_leave ();
+    }
+    else {
+
+      /* Driver made a reset, keep the old values */
+      gnomemeeting_threads_enter ();
+      gm_main_window_get_video_sliders_values (main_window,
+					       whiteness,
+					       brightness,
+					       colour,
+					       contrast);
+      gnomemeeting_threads_leave ();
+
+      SetWhiteness (whiteness << 8);
+      SetBrightness (brightness << 8);
+      SetColour (colour << 8);
+      SetContrast (contrast << 8);
+    }
+    
       
     /* Update the GUI sensitivity if not in a call */
     if (ep->GetCallingState () == GMH323EndPoint::Standby) {
