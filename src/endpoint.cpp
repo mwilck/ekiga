@@ -1,4 +1,3 @@
-
 /* GnomeMeeting -- A Video-Conferencing application
  * Copyright (C) 2000-2003 Damien Sandras
  *
@@ -67,6 +66,8 @@
 #include <speexcodec.h>
 #include <ptclib/http.h>
 #include <ptclib/html.h>
+#include <ptclib/pwavfile.h>
+
 
 #define new PNEW
 
@@ -2060,7 +2061,18 @@ GMH323EndPoint::OnCallPending (PTimer &,
 			       INT) 
 {
   GmWindow *gw = NULL;
-  BOOL is_ringing;
+  PSoundChannel *channel = NULL;
+  
+  BOOL is_ringing = FALSE;
+
+  gchar *device = NULL;
+  gchar *plugin = NULL;
+
+  PSound sound;
+  PWAVFile wav ("/home/damien/gnomemeeting.wav");
+  
+  plugin = gconf_get_string (AUDIO_DEVICES_KEY "plugin");
+  device = gconf_get_string (AUDIO_DEVICES_KEY "output_device");
   
   gw = GnomeMeeting::Process ()->GetMainWindow ();
 
@@ -2069,8 +2081,30 @@ GMH323EndPoint::OnCallPending (PTimer &,
   is_ringing = gnomemeeting_tray_is_ringing (gw->docklet);
   gdk_threads_leave ();
 
-  if (is_ringing) 
-    g_warning ("FIX ME: Play sound here");
+  if (is_ringing && wav.IsValid ()) {
+
+    channel =
+      PSoundChannel::CreateOpenedChannel (plugin, device,
+					  PSoundChannel::Player, 
+					  wav.GetChannels (),
+					  wav.GetSampleRate (),
+					  wav.GetSampleSize ());
+    
+
+    if (channel) {
+
+      PBYTEArray buffer;
+      buffer.SetSize (wav.GetDataLength ());
+      wav.Read (buffer.GetPointer (), wav.GetDataLength ());
+      
+      sound = buffer;
+      channel->PlaySound (sound);
+      channel->Close ();
+    
+      delete (channel);
+    }
+  }
+  g_free (device);
 }
 
 

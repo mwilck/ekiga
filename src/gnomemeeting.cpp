@@ -1,4 +1,3 @@
-
 /* GnomeMeeting -- A Video-Conferencing application
  * Copyright (C) 2000-2003 Damien Sandras
  *
@@ -329,6 +328,8 @@ GnomeMeeting::DetectDevices ()
     gw->audio_recorder_devices += PString (_("No device found"));
   if (gw->audio_player_devices.GetSize () == 0)
     gw->audio_player_devices += PString (_("No device found"));
+  if (gw->video_devices.GetSize () == 0)
+    gw->video_devices += PString (_("No device found"));
 
   g_free (audio_plugin);
   g_free (video_plugin);
