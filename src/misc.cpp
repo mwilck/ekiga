@@ -262,7 +262,7 @@ gnomemeeting_history_combo_box_new (const gchar *key)
   contacts_list = NULL;
   /* We read the history on the hard disk */
   
-  contacts = g_strsplit (stored_contacts ? (stored_contacts) : (""), ":", 0);
+  contacts = g_strsplit (stored_contacts ? (stored_contacts) : (""), "|", 0);
   if (stored_contacts)
     g_free (stored_contacts);
   for (i = 0 ; contacts [i] != NULL ; i++)
@@ -289,8 +289,8 @@ gnomemeeting_history_combo_box_new (const gchar *key)
  * PRE           : key is the gconf key used to store the history.
  */
 void 
-gnomemeeting_history_combo_box_add_entry(GtkCombo *combo, const gchar *key,
-					 const gchar *new_entry)
+gnomemeeting_history_combo_box_add_entry (GtkCombo *combo, const gchar *key,
+					  const gchar *new_entry)
 {
   bool found = false;
   unsigned int max_contacts;
@@ -341,7 +341,7 @@ gnomemeeting_history_combo_box_add_entry(GtkCombo *combo, const gchar *key,
     gchar *history = 0;
     /* FIXME: This can be heavily improved */
     for (GList *item = contacts_list; item != 0; item = g_list_next (item)) {
-      gchar *temp = g_strjoin ((history) ? (":") : (""), 
+      gchar *temp = g_strjoin ((history) ? ("|") : (""), 
 			       (history) ? (history) : (""), item->data, 0);
       if (history)
 	g_free (history);
