@@ -313,7 +313,7 @@ void GMLid::Main ()
     lastOffHook = OffHook;
 
     /* We must poll to read the hook state */
-    PThread::Sleep(500);
+    PThread::Sleep(50);
   }
 
   quit_mutex.Signal ();
