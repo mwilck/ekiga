@@ -368,18 +368,21 @@ void int_option_menu_changed (GtkWidget *menu, gpointer data)
 
 void string_option_menu_changed (GtkWidget *menu, gpointer data)
 {
-  GtkWidget *label;
   GtkWidget *active_item;
+  const gchar *text;
   GConfClient *client = gconf_client_get_default ();
 
   gchar *key = (gchar *) data;
   guint item_index;
 
   active_item = gtk_menu_get_active (GTK_MENU (menu));
-  label = GTK_BIN (active_item)->child;
+  if (active_item == NULL)
+    text = "";
+  else
+    text = gtk_label_get_text (GTK_LABEL (GTK_BIN (active_item)->child));
 
   gconf_client_set_string (GCONF_CLIENT (client),
-			   key, gtk_label_get_text (GTK_LABEL (label)), NULL);
+			   key, text, NULL);
 }
 
 
