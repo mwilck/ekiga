@@ -24,7 +24,6 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <videoio.h>
 #include <gnome.h>
-#include <sys/time.h>
 
 #include "common.h"
 
@@ -79,9 +78,6 @@ class GDKVideoOutputDevice : public H323VideoDevice
     int device_id;
     int transmitted_frame_number;
     int received_frame_number;
-
-    struct timeval start;
-    struct timeval cur;
 
     PBYTEArray buffer;
     int display_config;

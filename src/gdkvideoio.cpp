@@ -204,32 +204,6 @@ BOOL GDKVideoOutputDevice::Redraw(const void * frame)
   if (device_id == 1)
     transmitted_frame_number++;
 
-  gettimeofday(&cur, NULL);
- 
-  if ((cur.tv_sec - start.tv_sec) * 1000 > 1)
-    {
-      strcpy (statusbar_msg, "");
-
-      strcpy (statusbar_msg, _("Transmitted FPS: "));
-      sprintf (tmp, "%d", transmitted_frame_number);
-      strcat (statusbar_msg, tmp);
-
-      strcat (statusbar_msg, "  ");
-
-      strcat (statusbar_msg, _("Received FPS: "));
-      sprintf (tmp, "%d", received_frame_number);
-      strcat (statusbar_msg, tmp);
-
-      gdk_threads_enter ();
-      gnome_appbar_push (GNOME_APPBAR (gw->statusbar), statusbar_msg);
-      gdk_threads_leave ();
-
-      transmitted_frame_number = 0;
-      received_frame_number = 0;
-
-      gettimeofday (&start, NULL);
-    }
-
   buffer.SetSize(0);
   free (pic);
 	
