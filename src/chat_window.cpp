@@ -131,6 +131,8 @@ connect_uri_callback (const gchar *uri)
   
   g_return_if_fail (uri != NULL);
 
+  ep =  GnomeMeeting::Process ()->Endpoint ();
+
   if (ep->GetCallingState () == GMH323EndPoint::Standby) {    
     gw = GnomeMeeting::Process ()->GetMainWindow ();
     gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), uri);

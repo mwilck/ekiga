@@ -180,13 +180,17 @@ transfer_call_cb (GtkWidget* widget,
 }
 
 
-void save_callback (GtkWidget *widget, gpointer data)
+void
+save_callback (GtkWidget *widget,
+	       gpointer data)
 {
   GnomeMeeting::Process ()->Endpoint ()->SavePicture ();
 }
 
 
-void pause_channel_callback (GtkWidget *widget, gpointer data)
+void
+pause_channel_callback (GtkWidget *widget,
+			gpointer data)
 {
   GmWindow *gw = NULL;
   
@@ -346,7 +350,9 @@ show_window_cb (GtkWidget *w,
 }
 
 
-void connect_cb (GtkWidget *widget, gpointer data)
+void
+connect_cb (GtkWidget *widget,
+	    gpointer data)
 {	
   PString url;
   
@@ -364,7 +370,9 @@ void connect_cb (GtkWidget *widget, gpointer data)
 }
 
 
-void disconnect_cb (GtkWidget *widget, gpointer data)
+void
+disconnect_cb (GtkWidget *widget,
+	       gpointer data)
 {	
   GmWindow *gw = GnomeMeeting::Process ()->GetMainWindow ();
 
@@ -377,7 +385,9 @@ void disconnect_cb (GtkWidget *widget, gpointer data)
 }
 
 
-void about_callback (GtkWidget *widget, gpointer parent_window)
+void
+about_callback (GtkWidget *widget, 
+		gpointer parent_window)
 {
   GtkWidget *abox = NULL;
   GdkPixbuf *pixbuf = NULL;
@@ -464,8 +474,9 @@ void about_callback (GtkWidget *widget, gpointer parent_window)
 }
 
 
-void help_cb (GtkWidget *widget,
-	       gpointer data)
+void
+help_cb (GtkWidget *widget,
+	 gpointer data)
 {
 #ifndef DISABLE_GNOME
   GError *err = NULL;
@@ -474,8 +485,9 @@ void help_cb (GtkWidget *widget,
 }
 
 
-void quit_callback (GtkWidget *widget, 
-		    gpointer data)
+void
+quit_callback (GtkWidget *widget, 
+	       gpointer data)
 {
   GtkWidget *prefs_window = NULL;
   GtkWidget *addressbook_window = NULL;
