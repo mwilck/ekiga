@@ -31,8 +31,8 @@ INCLUDES =						\
 	-DGNOMEMEETING_IMAGES=\""$(datadir)/pixmaps"\"	\
 	-DG_LOG_DOMAIN=\"GnomeMeeting\"		 	\
 	-DSHARE_DIR=\"$(pkgdatadir)\"			\
-	-I$(top_srcdir) 				\
-	$(GNOMEMEETING_CFLAGS)
+	-I$(top_srcdir)					\
+        $(GNOMEMEETING_LIB_CFLAGS)
 
 libgnomemeeting_la_LDFLAGS = -export-dynamic
 libgnomemeeting_la_LIBADD = widgets/libgmwidgets.la xdap/libxdap.la 
