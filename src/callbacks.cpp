@@ -101,7 +101,7 @@ void disconnect_cb (GtkWidget *widget, gpointer data)
 }
 
 
-void about_callback (GtkWidget *widget, gpointer data)
+void about_callback (GtkWidget *widget, gpointer parent_window)
 {
   GtkWidget *abox;
 	
@@ -121,7 +121,7 @@ void about_callback (GtkWidget *widget, gpointer data)
       "Fabrice Alphonso <fabrice.alphonso@wanadoo.fr>",
       "Alp Toker <alp@atoker.com>",
       "Paul <paul666@mailandnews.com>",
-      ""
+      NULL
     };
 
   const gchar *translators [] =
@@ -153,8 +153,9 @@ void about_callback (GtkWidget *widget, gpointer data)
 			  NULL,
 			  "me",
 			  NULL);
-	
-  gtk_widget_show (abox);
+
+  gtk_window_set_transient_for (GTK_WINDOW (abox), GTK_WINDOW (parent_window));
+  gtk_window_present (GTK_WINDOW (abox));
   return;
 }
 

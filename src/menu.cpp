@@ -302,7 +302,7 @@ void gnomemeeting_init_menu ()
       {
 	GNOME_APP_UI_ITEM,
 	N_("_About GnomeMeeting"), N_("View information about GnomeMeeting"),
-	(void *)about_callback, NULL, NULL,
+	(void *)about_callback, gm, NULL,
 	GNOME_APP_PIXMAP_STOCK, GNOME_STOCK_ABOUT,
 	'A', GDK_CONTROL_MASK, NULL
       },

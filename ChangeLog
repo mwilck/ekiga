@@ -1,5 +1,12 @@
 2002-03-31  Miguel Rodríguez Pérez  <migrax@terra.es>
 
+	* src/menu.cpp (gnomemeeting_init_menu): 
+	* src/callbacks.cpp (about_callback): Fixed segfault while showing
+	credits. Also set the window as a transient for gm, and call
+	gtk_window_present instead of gtk_widget_show.
+
+2002-03-31  Miguel Rodríguez Pérez  <migrax@terra.es>
+
 	* src/ils.cpp (ils_browse, Register): Simplyfy version decoding
 	and don't hardcode version number anymore.
 
