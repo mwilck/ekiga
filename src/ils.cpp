@@ -985,7 +985,7 @@ void GMILSBrowser::Main ()
       gnomemeeting_threads_leave ();
   
       if (rc == LDAP_SERVER_DOWN)
-	PThread::Current ()->Sleep (500);
+	PThread::Current ()->Sleep (1000);
 
       retry++;
     }

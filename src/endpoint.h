@@ -154,6 +154,15 @@ class GMH323EndPoint : public H323EndPoint
 			       H323SignalPDU &);
 
 
+  /* DESCRIPTION  :  This callback is called when a call is forwarded.
+   * BEHAVIOR     :  Outputs a message in the history and statusbar.
+   * PRE          :  /
+   */
+  virtual BOOL OnConnectionForwarded (H323Connection &,
+				      const PString &,
+				      const H323SignalPDU &);
+
+  
   /* DESCRIPTION  :  This callback is called when the connection is 
    *                 established and everything is ok.
    *                 It means that a connection to a remote endpoint is ok,

@@ -1107,6 +1107,50 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 }
 
 
+BOOL
+GMH323EndPoint::OnConnectionForwarded (H323Connection &,
+				       const PString &forward_party,
+				       const H323SignalPDU &)
+{
+  gchar *msg = NULL;
+  PString call_token = GetCurrentCallToken ();
+
+  if (MakeCall (forward_party, call_token)) {
+
+    /* FIX ME: No comment here */
+    /*
+    gnomemeeting_threads_enter ();
+    msg = g_strdup_printf (_("Forwarding call to %s"),
+			   (const char*) forward_party);
+    gnomemeeting_statusbar_push (gw->statusbar, msg);
+    gnomemeeting_log_insert (gw->history_text_view, msg);
+    gnomemeeting_threads_leave ();
+    g_free (msg);
+    */
+
+    return TRUE;
+  }
+  else {
+
+    /* FIX ME: no comment here */
+    /*
+    msg = g_strdup_printf (_("Error while forwarding call to %s"),
+			   (const char*) forward_party);
+    gnomemeeting_threads_enter ();
+    gnomemeeting_warning_dialog (GTK_WINDOW (gm), msg, _("There was an error when forwarding the call to the given host."));
+    gnomemeeting_threads_leave ();
+
+    g_free (msg);
+    */
+
+    return FALSE;
+  }
+
+  
+  return FALSE;
+}
+
+
 void 
 GMH323EndPoint::OnConnectionEstablished (H323Connection & connection, 
                                          const PString & token)
@@ -1326,7 +1370,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   if (GetCurrentCallToken () == clearedCallToken) {
 
     if (!GetTransferCallToken ().IsEmpty ()) {
-      
+
       SetCurrentCallToken (GetTransferCallToken ());
       SetTransferCallToken (PString ());
     }
@@ -1337,10 +1381,10 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
     }
   }
   else {
-
+  
     return;
   }
-
+  
   opened_video_channels = 0;
   opened_audio_channels = 0;
 
@@ -1421,7 +1465,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   default :
     msg_reason = g_strdup (_("Call completed"));
   }
-
+  cout << "5" << endl << flush;
   gnomemeeting_log_insert (gw->history_text_view, msg_reason);
 
   gnomemeeting_main_window_enable_statusbar_progress (false);
