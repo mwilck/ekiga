@@ -284,8 +284,6 @@ GMH323EndPoint::AddAllCapabilities ()
   AddAudioCapabilities ();
   AddVideoCapabilities ();
   AddUserInputCapabilities ();
-
-  cout << capabilities << endl << flush;
 }
 
 
@@ -339,8 +337,8 @@ GMH323EndPoint::AddVideoCapabilities ()
   if (video_size == 1) {
 
 #if H323_RFC2190_AVCODEC
-    SetCapability (0, 1, new H323_RFC2190_H263Capability (0, 0, 1, 0, 0, 8*8*1024, 8));
-    SetCapability (0, 1, new H323_RFC2190_H263Capability (0, 1, 0, 0, 0, 8*8*1024, 8));
+    SetCapability (0, 1, new H323_RFC2190_H263Capability (0, 0, 1, 0, 0));
+    SetCapability (0, 1, new H323_RFC2190_H263Capability (0, 1, 0, 0, 0));
 #endif
 
     /* CIF Capability in first position */
@@ -350,8 +348,8 @@ GMH323EndPoint::AddVideoCapabilities ()
   else {
 
 #if H323_RFC2190_AVCODEC
-    SetCapability (0, 1, new H323_RFC2190_H263Capability (0, 1, 0, 0, 0, 8*8*1024, 8));
-    SetCapability (0, 1, new H323_RFC2190_H263Capability (0, 0, 1, 0, 0, 8*8*1024, 8));
+    SetCapability (0, 1, new H323_RFC2190_H263Capability (0, 1, 0, 0, 0));
+    SetCapability (0, 1, new H323_RFC2190_H263Capability (0, 0, 1, 0, 0));
 #endif
     
     SetCapability (0, 1, new H323_H261Capability (4, 0, FALSE, FALSE, 6217)); 
@@ -2290,13 +2288,12 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
     
     /* The maximum quality corresponds to the lowest quality indice, 1
        and the lowest quality corresponds to 24 */
-    codec.SetTxMinQuality (1);
+    codec.SetTxMinQuality (4);
     codec.SetTxMaxQuality (vq);
     codec.SetBackgroundFill (bf);   
     codec.SetMaxBitRate (bitrate * 8 * 1024);
     codec.SetTargetFrameTimeMs ((unsigned int) frame_time);
     codec.SetVideoMode (H323VideoCodec::DynamicVideoQuality | 
-			H323VideoCodec::AdaptivePacketDelay |
 			codec.GetVideoMode());
 
     /* Needed to be able to stop start the channel on-the-fly. When
