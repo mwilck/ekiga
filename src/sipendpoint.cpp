@@ -87,7 +87,6 @@ GMSIPEndPoint::Init ()
 
   /* Timeouts */
   SetPduCleanUpTimeout (PTimeInterval (0, 2));
-  SetRetryTimeouts (15000, 30000);
 
 
   /* Update the User Agent */
@@ -301,6 +300,7 @@ GMSIPEndPoint::OnIncomingConnection (OpalConnection &connection)
   
   gchar *forward_host = NULL;
 
+  IncomingCallMode icm;
   gboolean busy_forward = FALSE;
   gboolean always_forward = FALSE;
 
@@ -314,13 +314,16 @@ GMSIPEndPoint::OnIncomingConnection (OpalConnection &connection)
   forward_host = gm_conf_get_string (SIP_KEY "forward_host");
   busy_forward = gm_conf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
   always_forward = gm_conf_get_bool (CALL_FORWARDING_KEY "always_forward");
+  icm =
+    (IncomingCallMode) gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
   gnomemeeting_threads_leave ();
   
 
   call = endpoint.FindCallWithLock (endpoint.GetCurrentCallToken());
   if (call)
     con = endpoint.GetConnection (call, TRUE);
-  if (con && con->GetIdentifier () == connection.GetIdentifier()) 
+  if ((con && con->GetIdentifier () == connection.GetIdentifier()) 
+      || (icm == DO_NOT_DISTURB))
     reason = 1;
   else if (forward_host && always_forward)
     reason = 2; // Forward
@@ -332,6 +335,8 @@ GMSIPEndPoint::OnIncomingConnection (OpalConnection &connection)
     else
       reason = 1; // Reject
   }
+  else if (icm == AUTO_ANSWER)
+    reason = 4; // Auto Answer
   else
     reason = 0; // Ask the user
 

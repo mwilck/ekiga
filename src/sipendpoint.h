@@ -122,9 +122,14 @@ class GMSIPEndPoint : public SIPEndPoint
 			     BOOL);
   
   
-  /* DESCRIPTION  :  Called when there is an incoming call.
-   * BEHAVIOR     :  Calls the Manage function of the same name of forward
-   * 		     the connection.
+  /* DESCRIPTION  :  Called when there is an incoming SIP connection.
+   * BEHAVIOR     :  Checks if the connection must be rejected or forwarded
+   * 		     and call the manager function of the same name
+   * 		     to update the GUI and take the appropriate action
+   * 		     on the connection. If the connection is not forwarded,
+   * 		     or rejected, OnShowIncoming will be called on the PCSS
+   * 		     endpoint, allowing to auto-answer the call or do further
+   * 		     updates of the GUI and internal timers.
    * PRE          :  /
    */
   BOOL OnIncomingConnection (OpalConnection &);
