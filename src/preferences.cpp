@@ -449,7 +449,7 @@ void gnomemeeting_preferences_init (int calling_state, GM_window_widgets *gw,
   init_pref_gatekeeper (notebook, pw, calling_state, opts);
 
 
-  node_txt [0] = g_strdup (_("Devices Settings"));
+  node_txt [0] = g_strdup (_("Device Settings"));
   node2 = gtk_ctree_insert_node (GTK_CTREE (ctree), node, 
 				 NULL, node_txt, 0,
 				 NULL, NULL, NULL, NULL,
@@ -1821,7 +1821,7 @@ static void init_pref_gatekeeper (GtkWidget *notebook,
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, bps,
-			_("The maximum bandwidth that should be used for the communication, that bandwidth limitation will be transmitted to the gatekeeper."), NULL);
+			_("The maximum bandwidth that should be used for the communication. This bandwidth limitation will be transmitted to the gatekeeper."), NULL);
 
 
   /* The End */									
@@ -1863,7 +1863,7 @@ static void init_pref_devices (GtkWidget *notebook, GM_pref_window_widgets *pw,
   gtk_box_pack_start (GTK_BOX (vbox), frame, 
 		      FALSE, TRUE, 0);
 
-  label = gtk_label_new (_("Devices Settings"));
+  label = gtk_label_new (_("Device Settings"));
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_misc_set_padding (GTK_MISC (label), 2, 1);
   gtk_container_add (GTK_CONTAINER (frame), label);
