@@ -2877,10 +2877,6 @@ gnomemeeting_ldap_window_new (GmLdapWindow *lw)
 			    G_CALLBACK (gnomemeeting_window_hide),
 			    (gpointer) window);
   
-  g_signal_connect_swapped (G_OBJECT (window), "delete_event",
-			    G_CALLBACK (gtk_widget_hide_on_delete),
-			    (gpointer) window);
-
   gtk_widget_show_all (GTK_WIDGET (vbox));
   
   return window;
