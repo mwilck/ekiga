@@ -339,6 +339,23 @@ gnomemeeting_calls_history_window_add_call (int i,
   g_slist_free (calls_list);
 }
 
+#define CLOSE_BUTTON_ID 0
+#define CLEAR_BUTTON_ID 1
+
+void
+gnomemeeting_calls_history_window_response_event (GtkDialog *dialog, gint id, gpointer window)
+{
+  switch (id) {
+    case CLOSE_BUTTON_ID:
+      gnomemeeting_window_hide (GTK_WIDGET (window));
+      break;
+    case CLEAR_BUTTON_ID:
+      gconf_set_string_list (USER_INTERFACE_KEY "calls_history_window/received_calls_history", NULL);
+      gconf_set_string_list (USER_INTERFACE_KEY "calls_history_window/placed_calls_history", NULL);
+      gconf_set_string_list (USER_INTERFACE_KEY "calls_history_window/missed_calls_history", NULL);
+      break;
+  }
+}
 
 GtkWidget *
 gnomemeeting_calls_history_window_new (GmCallsHistoryWindow *chw)
@@ -368,7 +385,8 @@ gnomemeeting_calls_history_window_new (GmCallsHistoryWindow *chw)
 
   
   window = gtk_dialog_new ();
-  gtk_dialog_add_button (GTK_DIALOG (window), GTK_STOCK_CLOSE, 0);
+  gtk_dialog_add_button (GTK_DIALOG (window), GTK_STOCK_CLEAR, CLEAR_BUTTON_ID);
+  gtk_dialog_add_button (GTK_DIALOG (window), GTK_STOCK_CLOSE, CLOSE_BUTTON_ID);
   g_object_set_data_full (G_OBJECT (window), "window_name",
 			  g_strdup ("calls_history_window"), g_free);
   
@@ -488,7 +506,7 @@ gnomemeeting_calls_history_window_new (GmCallsHistoryWindow *chw)
 
   g_signal_connect_swapped (GTK_OBJECT (window), 
 			    "response", 
-			    G_CALLBACK (gnomemeeting_window_hide),
+			    G_CALLBACK (gnomemeeting_calls_history_window_response_event),
 			    (gpointer) window);
 
   g_signal_connect_swapped (GTK_OBJECT (window), 
@@ -593,7 +611,6 @@ gnomemeeting_pc_to_phone_window_new ()
 
   return window;
 }
-
 
 GtkWidget *
 gnomemeeting_history_window_new ()
