@@ -1582,7 +1582,7 @@ static void
 call_contact1_cb (GtkWidget *w,
 		  gpointer data)
 {
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
   
   GtkWidget *addressbook_window = NULL;
   GmContact *contact = NULL;
@@ -1594,7 +1594,7 @@ call_contact1_cb (GtkWidget *w,
 
   ep = GnomeMeeting::Process ()->Endpoint ();
   
-  if (ep->GetCallingState () != GMH323EndPoint::Standby)
+  if (ep->GetCallingState () != GMEndPoint::Standby)
     return;
 
   contact = gm_aw_get_selected_contact (addressbook_window);

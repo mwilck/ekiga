@@ -66,6 +66,8 @@
 #include <signal.h>
 #endif
 
+#define new PNEW
+
 
 static gint
 gnomemeeting_tray_hack (gpointer);
@@ -110,7 +112,7 @@ GnomeMeeting::GnomeMeeting ()
 
   GM = this;
   
-  endpoint = new GMH323EndPoint ();
+  endpoint = new GMEndPoint ();
   
   call_number = 0;
 }
@@ -149,13 +151,13 @@ void
 GnomeMeeting::Connect (PString url)
 {
   /* If incoming connection, then answer it */
-  if (endpoint->GetCallingState () == GMH323EndPoint::Called) {
+  if (endpoint->GetCallingState () == GMEndPoint::Called) {
 
     gm_history_window_insert (history_window, _("Answering incoming call"));
 
     url_handler = new GMURLHandler (FALSE);
   }
-  else if (endpoint->GetCallingState () == GMH323EndPoint::Standby
+  else if (endpoint->GetCallingState () == GMEndPoint::Standby
 	   && !GMURL (url).IsEmpty ()) {
     
     /* Update the GUI */
@@ -170,27 +172,31 @@ GnomeMeeting::Connect (PString url)
 void
 GnomeMeeting::Disconnect (H323Connection::CallEndReason reason)
 {
+  PString call_token;
+
+  call_token = endpoint->GetCurrentCallToken ();
+  
   /* if we are trying to call somebody */
-  if (endpoint->GetCallingState () == GMH323EndPoint::Calling) {
+  if (endpoint->GetCallingState () == GMEndPoint::Calling) {
 
     gm_history_window_insert (history_window, _("Trying to stop calling"));
 
-    endpoint->ClearCall (endpoint->GetCurrentCallToken (), reason);
+    endpoint->ClearCall (call_token, reason);
   }
   else {
 
     /* if we are in call with somebody */
-    if (endpoint->GetCallingState () == GMH323EndPoint::Connected) {
+    if (endpoint->GetCallingState () == GMEndPoint::Connected) {
 
       gm_history_window_insert (history_window, _("Stopping current call"));
 
-      endpoint->ClearAllCalls (reason, FALSE);
+      endpoint->ClearAllCalls (OpalConnection::EndedByLocalUser, FALSE);
     }
-    else if (endpoint->GetCallingState () == GMH323EndPoint::Called) {
+    else if (endpoint->GetCallingState () == GMEndPoint::Called) {
 
       gm_history_window_insert (history_window, _("Refusing Incoming call"));
 
-      endpoint->ClearCall (endpoint->GetCurrentCallToken (),
+      endpoint->ClearCall (call_token,
 			   H323Connection::EndedByLocalUser);
     }
   }
@@ -230,6 +236,15 @@ GnomeMeeting::DetectDevices ()
   /* Detect the plugins */
   audio_managers = PSoundChannel::GetDriverNames ();
   video_managers = PVideoInputDevice::GetDriverNames ();
+  
+  fake_idx = video_managers.GetValuesIndex (PString ("FakeVideo"));
+  if (fake_idx != P_MAX_INDEX)
+    video_managers.RemoveAt (fake_idx);
+
+  PTRACE (1, "Detected audio plugins: " << setfill (',') << audio_managers
+	  << setfill (' '));
+  PTRACE (1, "Detected video plugins: " << setfill (',') << video_managers
+	  << setfill (' '));
 
   fake_idx = video_managers.GetValuesIndex (PString ("FakeVideo"));
   if (fake_idx != P_MAX_INDEX)
@@ -251,19 +266,11 @@ GnomeMeeting::DetectDevices ()
   /* Detect the devices */
   video_input_devices = PVideoInputDevice::GetDriversDeviceNames (video_plugin);
  
-  if (PString ("Quicknet") == audio_plugin) {
+  audio_input_devices = 
+    PSoundChannel::GetDeviceNames (audio_plugin, PSoundChannel::Recorder);
+  audio_output_devices = 
+    PSoundChannel::GetDeviceNames (audio_plugin, PSoundChannel::Player);
 
-    audio_input_devices = OpalIxJDevice::GetDeviceNames ();
-    audio_output_devices = audio_input_devices;
-  }
-  else {
-    
-    audio_input_devices = 
-      PSoundChannel::GetDeviceNames (audio_plugin, PSoundChannel::Recorder);
-    audio_output_devices = 
-      PSoundChannel::GetDeviceNames (audio_plugin, PSoundChannel::Player);
-  }
-    
   
   if (audio_input_devices.GetSize () == 0) 
     audio_input_devices += PString (_("No device found"));
@@ -272,6 +279,16 @@ GnomeMeeting::DetectDevices ()
   if (video_input_devices.GetSize () == 0)
     video_input_devices += PString (_("No device found"));
 
+
+  PTRACE (1, "Detected the following audio input devices: "
+	  << setfill (',') << audio_input_devices << setfill (' ')
+	  << " with plugin " << audio_plugin);
+  PTRACE (1, "Detected the following audio output devices: "
+	  << setfill (',') << audio_output_devices << setfill (' ')
+	  << " with plugin " << audio_plugin);
+  PTRACE (1, "Detected the following video input devices: "
+	  << setfill (',') << video_input_devices << setfill (' ')
+	  << " with plugin " << video_plugin);
   
   PTRACE (1, "Detected the following audio input devices: " 
 	  << setfill (',') << audio_input_devices << setfill (' ') 
@@ -299,10 +316,10 @@ GnomeMeeting::DetectDevices ()
 }
 
 
-GMH323EndPoint *
+GMEndPoint *
 GnomeMeeting::Endpoint ()
 {
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
   PWaitAndSignal m(ep_var_mutex);
 
   ep = endpoint;
@@ -391,11 +408,11 @@ void GnomeMeeting::BuildGUI ()
   GtkWidget *splash_window = NULL;
 
   bool show_splash = TRUE;
-  OpalMediaFormat::List available_capabilities;
+  OpalMediaFormatList audio_formats;
 
 
   /* Get the available capabilities list */
-  available_capabilities = endpoint->GetAvailableAudioCapabilities ();
+  audio_formats = endpoint->GetAudioMediaFormats ();
   
   
   /* Init the splash screen */
@@ -425,9 +442,7 @@ void GnomeMeeting::BuildGUI ()
   /* Build the GUI */
   pc2phone_window = gm_pc2phone_window_new ();  
   prefs_window = gm_prefs_window_new ();  
-  gm_prefs_window_update_audio_codecs_list (prefs_window, 
-					    available_capabilities);
-  
+  gm_prefs_window_update_audio_codecs_list (prefs_window, audio_formats);
   calls_history_window = gm_calls_history_window_new ();
   history_window = gm_history_window_new ();
   addressbook_window = gm_addressbook_window_new ();
@@ -476,9 +491,10 @@ void GnomeMeeting::BuildGUI ()
 			    _("Started GnomeMeeting %d.%d.%d for user %s"), 
 			    MAJOR_VERSION, MINOR_VERSION, BUILD_NUMBER,
 			    g_get_user_name ());
-  PTRACE (1, "GnomeMeeting version " 
+
+  PTRACE (1, "GnomeMeeting version "
 	  << MAJOR_VERSION << "." << MINOR_VERSION << "." << BUILD_NUMBER);
-  PTRACE (1, "OpenH323 version " << OPENH323_VERSION);
+  PTRACE (1, "OPAL version " << "unknown");
   PTRACE (1, "PWLIB version " << PWLIB_VERSION);
 #ifndef DISABLE_GNOME
   PTRACE (1, "GNOME support enabled");

@@ -1,5 +1,32 @@
 2004-12-02  Damien Sandras  <dsandras@gnome.org>
 
+	* configure.in: Added OPAL Support.
+
+	* gnomemeeting.schemas.in.in: Removed obsolete register alias as
+	primary alias.
+
+	* lib/stats_drawing_area.c, lib/stats_drawing_area.h: Cleaned code so
+	that computations are only done in the endpoint. Some graphical fixes
+	too.
+	
+	* lib/contacts/Makefile.am: Fixed makefile to support pwlib in another
+	place than /usr/
+
+	* po/POTFILES.in: Added and removed files.
+
+	* src/Makefile.am, src/addressbook_window.cpp, src/callbacks.cpp,
+	src/chat_window.cpp, src/common.h, src/config.cpp, src/connection.cpp,
+	src/druid.cpp, src/endpoint.cpp, src/endpoint.h, src/gdkvideoio.cpp,
+	src/gnomemeeting.cpp, src/gnomemeeting.h, src/h323endpoint.cpp,
+	src/h323endpoint.h, src/h323gatekeeper.cpp, src/h323gatekeeper.h,
+	src/ils.cpp, src/main_window.cpp, src/main_window.h, src/misc.cpp,
+	src/pcssendpoint.cpp, src/pcssendpoint.h, src/pref_window.cpp, 
+	src/pref_window.h, src/sound_handling.cpp, src/stunclient.cpp,
+	src/tools.cpp, src/tray.cpp, src/tray.h, src/urlhandler.cpp,
+	src/videograbber.cpp: Preliminary OPAL support.
+
+2004-12-02  Damien Sandras  <dsandras@gnome.org>
+
 	* Makefile.am: Fixed EXTRA_DIST to contain the list of marshallers.
 
 	* lib/contacts/Makefile.am: Fixed it so that make dist contains

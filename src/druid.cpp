@@ -260,7 +260,7 @@ static gint kind_of_net_hack_cb (gpointer);
 
 /* DESCRIPTION  : Callback called when the audio test button is clicked in the
  * 		  druid window GMObject.
- * BEHAVIOR     : Start or stop the GMH323EndPoint Audio Tester following
+ * BEHAVIOR     : Start or stop the GMEndPoint Audio Tester following
  * 		  the toggle is active or not.
  * PRE          : A valid pointer to a valid druid window GMObject.
  */
@@ -1224,7 +1224,7 @@ static void
 audio_test_button_clicked_cb (GtkWidget *w,
 			      gpointer data)
 { 
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
 
   GtkWidget *druid_window = NULL;
   
@@ -1334,7 +1334,7 @@ finish_cb (GnomeDruidPage *p,
 {
   GmDruidWindow *dw = NULL;
 
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
   
   GtkWidget *druid_window = NULL;
   GtkWidget *main_window = NULL;
@@ -1646,7 +1646,7 @@ prepare_audio_devices_page_cb (GnomeDruidPage *page,
 {
   GmDruidWindow *dw = NULL;
 
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
 
   GtkWidget *child = NULL;
   gchar *audio_manager = NULL;
@@ -1682,11 +1682,8 @@ prepare_audio_devices_page_cb (GnomeDruidPage *page,
    * not for a random one.
    */
   gnomemeeting_sound_daemons_suspend ();
-  if (PString ("Quicknet") == audio_manager)
-    devices = OpalIxJDevice::GetDeviceNames ();
-  else
-    devices = PSoundChannel::GetDeviceNames (audio_manager,
-					     PSoundChannel::Player);
+  devices = PSoundChannel::GetDeviceNames (audio_manager,
+					   PSoundChannel::Player);
   if (devices.GetSize () == 0) {
     
     devices += PString (_("No device found"));
@@ -1699,11 +1696,8 @@ prepare_audio_devices_page_cb (GnomeDruidPage *page,
   gm_dw_option_menu_update (dw->audio_player, array, player);
   free (array);
 
-  if (PString ("Quicknet") == audio_manager)
-    devices = OpalIxJDevice::GetDeviceNames ();
-  else
-    devices = PSoundChannel::GetDeviceNames (audio_manager,
-					     PSoundChannel::Recorder);
+  devices = PSoundChannel::GetDeviceNames (audio_manager,
+					   PSoundChannel::Recorder);
   if (devices.GetSize () == 0) {
     
     devices += PString (_("No device found"));
@@ -1721,7 +1715,7 @@ prepare_audio_devices_page_cb (GnomeDruidPage *page,
   g_free (player);
   g_free (recorder);
   
-  if (ep->GetCallingState () != GMH323EndPoint::Standby)
+  if (ep->GetCallingState () != GMEndPoint::Standby)
     gtk_widget_set_sensitive (GTK_WIDGET (dw->audio_test_button), FALSE);
 }
 
@@ -1733,7 +1727,7 @@ prepare_video_devices_page_cb (GnomeDruidPage *page,
 {
   GmDruidWindow *dw = NULL;
   
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
 
   GdkCursor *cursor = NULL;
   GtkWidget *child = NULL;
@@ -1786,7 +1780,7 @@ prepare_video_devices_page_cb (GnomeDruidPage *page,
   
   g_free (video_recorder);
   
-  if (ep->GetCallingState () != GMH323EndPoint::Standby)
+  if (ep->GetCallingState () != GMEndPoint::Standby)
     gtk_widget_set_sensitive (GTK_WIDGET (dw->video_test_button), FALSE);
 
 }
@@ -1799,7 +1793,7 @@ prepare_final_page_cb (GnomeDruidPage *page,
 {
   GmDruidWindow *dw = NULL;
   
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
   
   gchar *name = NULL;
   gchar *mail = NULL;

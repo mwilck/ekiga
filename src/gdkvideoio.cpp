@@ -97,7 +97,7 @@ BOOL GDKVideoOutputDevice::Redraw ()
 {
   GtkWidget *main_window = NULL;
   
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
 
   double zoom = 1.0;
   double rzoom = 1.0;
@@ -142,7 +142,7 @@ BOOL GDKVideoOutputDevice::Redraw ()
       display = LOCAL_VIDEO;
   }
 
-  if (ep->GetCallingState () != GMH323EndPoint::Connected) 
+  if (ep->GetCallingState () != GMEndPoint::Connected) 
     display = LOCAL_VIDEO;
 
 

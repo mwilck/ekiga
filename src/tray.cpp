@@ -153,7 +153,7 @@ tray_embedded_cb (GtkWidget *tray_icon,
   icm =
     (IncomingCallMode) gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
 
-  gm_tray_update (tray_icon, GMH323EndPoint::Standby, icm);
+  gm_tray_update (tray_icon, GMEndPoint::Standby, icm);
   gt->embedded = TRUE;
 
   return true;
@@ -380,7 +380,7 @@ gm_tray_new ()
 
 void 
 gm_tray_update (GtkWidget *tray_icon,
-		GMH323EndPoint::CallingState calling_state, 
+		GMEndPoint::CallingState calling_state, 
 		IncomingCallMode icm,
 		BOOL forward_on_busy)
 {
@@ -401,7 +401,7 @@ gm_tray_update (GtkWidget *tray_icon,
   
 
   /* Update the icon */
-  if (calling_state == GMH323EndPoint::Standby) {
+  if (calling_state == GMEndPoint::Standby) {
 
     switch (icm) {
 
@@ -463,27 +463,27 @@ gm_tray_update_calling_state (GtkWidget *tray,
 
   switch (calling_state)
     {
-    case GMH323EndPoint::Standby:
+    case GMEndPoint::Standby:
 
       gtk_menu_set_sensitive (gt->popup_menu, "connect", TRUE);
       gtk_menu_set_sensitive (gt->popup_menu, "disconnect", FALSE);
       break;
 
 
-    case GMH323EndPoint::Calling:
+    case GMEndPoint::Calling:
 
       gtk_menu_set_sensitive (gt->popup_menu, "connect", FALSE);
       gtk_menu_set_sensitive (gt->popup_menu, "disconnect", TRUE);
       break;
 
 
-    case GMH323EndPoint::Connected:
+    case GMEndPoint::Connected:
       gtk_menu_set_sensitive (gt->popup_menu, "connect", FALSE);
       gtk_menu_set_sensitive (gt->popup_menu, "disconnect", TRUE);
       break;
 
 
-    case GMH323EndPoint::Called:
+    case GMEndPoint::Called:
       gtk_menu_set_sensitive (gt->popup_menu, "disconnect", TRUE);
       break;
     }

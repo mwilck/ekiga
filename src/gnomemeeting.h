@@ -183,7 +183,7 @@ class GnomeMeeting : public PProcess
    * BEHAVIOR     :  Returns the current endpoint.
    * PRE          :  /
    */
-  GMH323EndPoint *Endpoint (void);
+  GMEndPoint *Endpoint (void);
   
 
   static GnomeMeeting *Process ();
@@ -247,7 +247,7 @@ class GnomeMeeting : public PProcess
   
   
  private:
-  GMH323EndPoint *endpoint;
+  GMEndPoint *endpoint;
   PThread *url_handler;
   
   PMutex ep_var_mutex;

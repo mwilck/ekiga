@@ -49,6 +49,7 @@
 #include "dialog.h"
 #include "gm_conf.h"
 
+#define new PNEW
 
 
 /* The functions */
@@ -262,7 +263,7 @@ GMVideoGrabber::VGOpen (void)
   GtkWidget *history_window = NULL;
   GtkWidget *main_window = NULL;
 
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
   
   PString input_device;
   PString plugin;
@@ -462,7 +463,7 @@ GMVideoGrabber::VGOpen (void)
 
       
     /* Update the GUI sensitivity if not in a call */
-    if (ep->GetCallingState () == GMH323EndPoint::Standby) {
+    if (ep->GetCallingState () == GMEndPoint::Standby) {
 
       gnomemeeting_threads_enter ();      
       gm_main_window_update_sensitivity (main_window, TRUE, FALSE, TRUE);
@@ -475,7 +476,7 @@ GMVideoGrabber::VGOpen (void)
 void
 GMVideoGrabber::VGClose ()
 {
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
 
   GtkWidget *main_window = NULL;
 
@@ -493,7 +494,7 @@ GMVideoGrabber::VGClose ()
 
     /* Update menu sensitivity if we are not in a call */
     gnomemeeting_threads_enter ();
-    if (ep->GetCallingState () == GMH323EndPoint::Standby
+    if (ep->GetCallingState () == GMEndPoint::Standby
 	&& !gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview")) {
 
       gm_main_window_update_sensitivity (main_window, TRUE, FALSE, FALSE);

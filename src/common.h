@@ -39,11 +39,15 @@
 #ifndef GM_COMMON_H_
 #define GM_COMMON_H_
 
-#include <openh323buildopts.h>
+#include <opal/buildopts.h>
 #include <ptbuildopts.h>
 
 #include <ptlib.h>
-#include <h323.h>
+
+#include <opal/manager.h>
+#include <opal/pcss.h>
+
+#include <h323/h323.h>
 
 #ifndef DISABLE_GNOME
 #include <gnome.h>

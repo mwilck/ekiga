@@ -44,6 +44,7 @@
 #include "../config.h"
 
 #include "config.h"
+#include "h323endpoint.h"
 #include "endpoint.h"
 #include "gnomemeeting.h"
 #include "lid.h"
@@ -211,7 +212,7 @@ applicability_check_nt (gpointer id,
 			GmConfEntry *entry,
 			gpointer data)
 {
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
   
   g_return_if_fail (data != NULL);
 
@@ -222,7 +223,7 @@ applicability_check_nt (gpointer id,
       ||(gm_conf_entry_get_type (entry) == GM_CONF_STRING)
       ||(gm_conf_entry_get_type (entry) == GM_CONF_INT)) {
 
-    if (ep->GetCallingState () != GMH323EndPoint::Standby) {
+    if (ep->GetCallingState () != GMEndPoint::Standby) {
 
       gdk_threads_enter ();
       gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (data),
@@ -285,19 +286,21 @@ h245_tunneling_changed_nt (gpointer id,
 {
   GtkWidget *history_window = NULL;
   
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
+  GMH323EndPoint *h323EP = NULL;
   
   
   if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
 
     ep = GnomeMeeting::Process ()->Endpoint ();
     history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
+    h323EP = ep->GetH323EndPoint ();
     
-    ep->DisableH245Tunneling (!gm_conf_entry_get_bool (entry));
+    h323EP->DisableH245Tunneling (!gm_conf_entry_get_bool (entry));
     
     gdk_threads_enter ();
     gm_history_window_insert (history_window,
-			      ep->IsH245TunnelingDisabled ()?
+			      h323EP->IsH245TunnelingDisabled ()?
 			      _("H.245 Tunneling disabled"):
 			      _("H.245 Tunneling enabled"));
     gdk_threads_leave ();
@@ -317,19 +320,20 @@ early_h245_changed_nt (gpointer id,
 {
   GtkWidget *history_window = NULL;
   
-  GMH323EndPoint *ep = NULL;
-  
+  GMEndPoint *ep = NULL;
+  GMH323EndPoint *h323EP = NULL;  
   
   if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
 
     ep = GnomeMeeting::Process ()->Endpoint ();
     history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
+    h323EP = ep->GetH323EndPoint ();
     
-    ep->DisableH245inSetup (!gm_conf_entry_get_bool (entry));
+    h323EP->DisableH245inSetup (!gm_conf_entry_get_bool (entry));
     
     gdk_threads_enter ();
     gm_history_window_insert (history_window,
-			      ep->IsH245inSetupDisabled ()?
+			      h323EP->IsH245inSetupDisabled ()?
 			      _("Early H.245 disabled"):
 			      _("Early H.245 enabled"));
     gdk_threads_leave ();
@@ -349,19 +353,21 @@ fast_start_changed_nt (gpointer id,
 {
   GtkWidget *history_window = NULL;
   
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
+  GMH323EndPoint *h323EP = NULL;
   
   
   if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
 
     ep = GnomeMeeting::Process ()->Endpoint ();
+    h323EP = ep->GetH323EndPoint ();
     history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
     
-    ep->DisableFastStart (!gm_conf_entry_get_bool (entry));
+    h323EP->DisableFastStart (!gm_conf_entry_get_bool (entry));
     
     gdk_threads_enter ();
     gm_history_window_insert (history_window,
-			      ep->IsFastStartDisabled ()?
+			      h323EP->IsFastStartDisabled ()?
 			      _("Fast Start disabled"):
 			      _("Fast Start enabled"));
     gdk_threads_leave ();
@@ -418,14 +424,15 @@ enable_video_transmission_changed_nt (gpointer id,
 				      gpointer data)
 {
   PString name;
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
 
   ep = GnomeMeeting::Process ()->Endpoint ();
 
   if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
 
     ep->SetAutoStartTransmitVideo (gm_conf_entry_get_bool (entry));
-    ep->AddAllCapabilities ();
+    //FIXME
+    //ep->AddAllCapabilities ();
 
     if (gm_conf_get_int (VIDEO_DEVICES_KEY "size") == 0)
       name = "H.261-QCIF";
@@ -434,14 +441,14 @@ enable_video_transmission_changed_nt (gpointer id,
 
     if (gm_conf_entry_get_bool (entry)) {
 	
-      ep->StartLogicalChannel (name,
-			       RTP_Session::DefaultVideoSessionID,
-			       FALSE);
+      //ep->StartLogicalChannel (name,
+	//		       RTP_Session::DefaultVideoSessionID,
+	//		       FALSE);
     }
     else {
 
-      ep->StopLogicalChannel (RTP_Session::DefaultVideoSessionID,
-			      FALSE);
+      //ep->StopLogicalChannel (RTP_Session::DefaultVideoSessionID,
+	//		      FALSE);
     }
   }
 }
@@ -460,7 +467,7 @@ enable_video_reception_changed_nt (gpointer id,
 				   gpointer data)
 {
   PString name;
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
 
   ep = GnomeMeeting::Process ()->Endpoint ();
 
@@ -471,7 +478,7 @@ enable_video_reception_changed_nt (gpointer id,
   if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
 
     ep->SetAutoStartReceiveVideo (gm_conf_entry_get_bool (entry));
-    ep->AddAllCapabilities ();
+    //FIXME ep->AddAllCapabilities ();
 
     if (gm_conf_get_int (VIDEO_DEVICES_KEY "size") == 0)
       name = "H.261-QCIF";
@@ -480,12 +487,12 @@ enable_video_reception_changed_nt (gpointer id,
 
     if (!gm_conf_entry_get_bool (entry)) {
 	
-      ep->StopLogicalChannel (RTP_Session::DefaultVideoSessionID,
-			      TRUE);
+      //ep->StopLogicalChannel (RTP_Session::DefaultVideoSessionID,
+	//		      TRUE);
     }
     else {
 
-      if (ep->GetCallingState () != GMH323EndPoint::Standby) {
+      if (ep->GetCallingState () != GMEndPoint::Standby) {
 
 	gdk_threads_enter ();
 	gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (data),
@@ -511,59 +518,35 @@ silence_detection_changed_nt (gpointer id,
                               gpointer data)
 {
   GtkWidget *history_window = NULL;
+  OpalSilenceDetector::Params sd;
   
-  H323Codec *raw_codec = NULL;
-  H323Connection *connection = NULL;
-  H323Channel *channel = NULL;
-  H323AudioCodec *ac = NULL;
-  H323AudioCodec::SilenceDetectionMode mode;
-  GMH323EndPoint *endpoint = NULL;
+  GMEndPoint *ep = NULL;
   
-  endpoint = GnomeMeeting::Process ()->Endpoint ();
+  
+  ep = GnomeMeeting::Process ()->Endpoint ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   
   if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
 
-    connection = 
-      endpoint->FindConnectionWithLock (endpoint->GetCurrentCallToken ());
+    /* We update the silence detection */
+    sd = ep->GetSilenceDetectParams ();
 
-    if (connection) {
+    gdk_threads_enter ();
+    if (sd.m_mode == OpalSilenceDetector::NoSilenceDetection) {
 
-      channel = 
-	connection->FindChannel (RTP_Session::DefaultAudioSessionID, 
-				 FALSE);
+      sd.m_mode = OpalSilenceDetector::AdaptiveSilenceDetection;
+      gm_history_window_insert (history_window,
+				_("Enabled silence detection"));
+    } 
+    else {
 
-      if (channel)
-	raw_codec = channel->GetCodec();
-      
-      if (raw_codec && PIsDescendant (raw_codec, H323AudioCodec))
-	ac = (H323AudioCodec *) raw_codec;
-   
-      /* We update the silence detection */
-      if (ac && endpoint->GetCallingState () == GMH323EndPoint::Connected) {
-
-        mode = ac->GetSilenceDetectionMode();
-
-        gdk_threads_enter ();
-        if (mode == H323AudioCodec::AdaptiveSilenceDetection) {
-
-          mode = H323AudioCodec::NoSilenceDetection;
-	  gm_history_window_insert (history_window,
-				    _("Disabled silence detection"));
-        } 
-        else {
-
-          mode = H323AudioCodec::AdaptiveSilenceDetection;
-	  gm_history_window_insert (history_window,
-				    _("Enabled silence detection"));
-        }
-        gdk_threads_leave ();  
-
-        ac->SetSilenceDetectionMode (mode);
-      }
-
-      connection->Unlock ();
+      sd.m_mode = OpalSilenceDetector::NoSilenceDetection;
+      gm_history_window_insert (history_window,
+				_("Disabled silence detection"));
     }
+    gdk_threads_leave ();  
+    
+    ep->SetSilenceDetectParams (sd);
   }
 }
 
@@ -577,7 +560,7 @@ capabilities_changed_nt (gpointer id,
 			 GmConfEntry *entry,
 			 gpointer data)
 {
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
 
   if (gm_conf_entry_get_type (entry) == GM_CONF_INT
       || gm_conf_entry_get_type (entry) == GM_CONF_LIST
@@ -585,8 +568,9 @@ capabilities_changed_nt (gpointer id,
    
     ep = GnomeMeeting::Process ()->Endpoint ();
 
-    ep->RemoveAllCapabilities ();
-    ep->AddAllCapabilities ();
+    // FIXME
+    //ep->RemoveAllCapabilities ();
+    //ep->AddAllCapabilities ();
   }
 }
 
@@ -601,11 +585,12 @@ maximum_video_bandwidth_changed_nt (gpointer id,
 				    GmConfEntry *entry, 
                                     gpointer data)
 {
+  /* FIXME
   H323Channel *channel = NULL;
   H323Codec *raw_codec = NULL;
   H323VideoCodec *vc = NULL;
   H323Connection *connection = NULL;
-  GMH323EndPoint *endpoint = NULL;
+  GMEndPoint *endpoint = NULL;
 
   int bitrate = 2;
 
@@ -628,16 +613,16 @@ maximum_video_bandwidth_changed_nt (gpointer id,
       
       if (raw_codec && PIsDescendant (raw_codec, H323VideoCodec)) 
 	vc = (H323VideoCodec *) raw_codec;
-     
+     */
       /* We update the video quality */  
-      bitrate = gm_conf_entry_get_int (entry) * 8 * 1024;
+      /*bitrate = gm_conf_entry_get_int (entry) * 8 * 1024;
   
       if (vc != NULL)
 	vc->SetMaxBitRate (bitrate);
 
       connection->Unlock ();
     }
-  }
+  }*/
 }
 
 
@@ -650,11 +635,12 @@ tr_vq_changed_nt (gpointer id,
                   GmConfEntry *entry, 
                   gpointer data)
 {
+  /*
   H323Connection *connection = NULL;
   H323Channel *channel = NULL;
   H323Codec *raw_codec = NULL;
   H323VideoCodec *vc = NULL;
-  GMH323EndPoint *endpoint = NULL;
+  GMEndPoint *endpoint = NULL;
 
   int vq = 1;
 
@@ -677,7 +663,6 @@ tr_vq_changed_nt (gpointer id,
       if (raw_codec && PIsDescendant (raw_codec, H323VideoCodec)) 
 	vc = (H323VideoCodec *) raw_codec;
 
-      /* We update the video quality */
       vq = 25 - (int) ((double) (int) gm_conf_entry_get_int (entry) / 100 * 24);
 
       if (vc)
@@ -685,7 +670,7 @@ tr_vq_changed_nt (gpointer id,
 
       connection->Unlock ();
     }
-  }
+  }*/
 }
 
 
@@ -698,11 +683,12 @@ tr_ub_changed_nt (gpointer id,
                   GmConfEntry *entry, 
                   gpointer data)
 {
+  /* FIXME
   H323Connection *connection = NULL;
   H323Channel *channel = NULL;
   H323Codec *raw_codec = NULL;
   H323VideoCodec *vc = NULL;
-  GMH323EndPoint *endpoint = NULL;
+  GMEndPoint *endpoint = NULL;
 
   endpoint = GnomeMeeting::Process ()->Endpoint ();
 
@@ -723,13 +709,12 @@ tr_ub_changed_nt (gpointer id,
       if (raw_codec && PIsDescendant (raw_codec, H323VideoCodec)) 
 	vc = (H323VideoCodec *) raw_codec;
 
-      /* We update the current tr ub rate */
       if (vc)
 	vc->SetBackgroundFill ((int) gm_conf_entry_get_int (entry));
       
       connection->Unlock ();
     }
-  }
+  }*/
 }
 
 
@@ -743,30 +728,35 @@ jitter_buffer_changed_nt (gpointer id,
                           GmConfEntry *entry, 
                           gpointer data)
 {
-  RTP_Session *session = NULL;  
-  H323Connection *connection = NULL;
-  GMH323EndPoint *ep = GnomeMeeting::Process ()->Endpoint ();  
-  gdouble min_val = 20.0;
-  gdouble max_val = 500.0;
+  GMEndPoint *ep = NULL;
+  
+  PSafePtr<OpalCall> call = NULL;
+  PSafePtr<OpalConnection> connection = NULL;
+  RTP_Session *session = NULL;
 
+  int min_val = 20;
+  int max_val = 500;
+
+  ep = GnomeMeeting::Process ()->Endpoint ();  
+  
   if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
 
+    gdk_threads_enter ();
     min_val = gm_conf_get_int (AUDIO_CODECS_KEY "minimum_jitter_buffer");
     max_val = gm_conf_get_int (AUDIO_CODECS_KEY "maximum_jitter_buffer");
+    gdk_threads_leave ();
 
-    /* We update the current value */
-    connection = 
-      ep->FindConnectionWithLock (ep->GetCurrentCallToken ());
+    call = ep->FindCallWithLock (ep->GetCurrentCallToken ());
+    if (call != NULL) {
 
-    if (connection) {
+      //FIXME
+      connection = call->GetConnection (0);
 
-      session =                                                                
-        connection->GetSession (OpalMediaFormat::DefaultAudioSessionID);
+      if (connection != NULL) {
 
-      if (session)
-        session->SetJitterBufferSize ((int) min_val * 8, (int) max_val * 8); 
-
-      connection->Unlock ();
+	session = 
+	  connection->GetSession (OpalMediaFormat::DefaultAudioSessionID);
+      }
     }
   }
 }
@@ -809,9 +799,9 @@ audio_device_changed_nt (gpointer id,
 			 gpointer data)
 {
   GtkWidget *prefs_window = NULL;
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
 
-  OpalMediaFormat::List capa;
+  OpalMediaFormatList capa;
   PString dev;
 
   ep = GnomeMeeting::Process ()->Endpoint ();
@@ -821,24 +811,25 @@ audio_device_changed_nt (gpointer id,
 
     dev = gm_conf_entry_get_string (entry);
 
-    if (ep->GetCallingState () == GMH323EndPoint::Standby
+    if (ep->GetCallingState () == GMEndPoint::Standby
 	&& gm_conf_entry_get_key (entry)
 	&& !strcmp (gm_conf_entry_get_key (entry),
 		    AUDIO_DEVICES_KEY "input_device")) {
       
-      if (dev.Find ("/dev/phone") != P_MAX_INDEX) 
-	ep->CreateLid (dev);
-      else 
-	ep->RemoveLid ();
-      
-      capa = ep->GetAvailableAudioCapabilities ();
+      //if (dev.Find ("/dev/phone") != P_MAX_INDEX) 
+	//ep->CreateLid (dev);
+      //else 
+	//ep->RemoveLid ();
+      //FIXME
+      capa = ep->GetAudioMediaFormats ();
 
       /* Update the codecs list and the capabilities */
       gnomemeeting_threads_enter ();
       gm_prefs_window_update_audio_codecs_list (prefs_window, capa);
       gnomemeeting_threads_leave ();
 
-      ep->AddAllCapabilities ();
+      //FIXME
+      //ep->AddAllCapabilities ();
     }
   }
 }
@@ -861,7 +852,7 @@ video_device_changed_nt (gpointer id,
 			 GmConfEntry *entry, 
 			 gpointer data)
 {
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
   BOOL preview = FALSE;
   
   ep = GnomeMeeting::Process ()->Endpoint ();
@@ -869,7 +860,7 @@ video_device_changed_nt (gpointer id,
   if ((gm_conf_entry_get_type (entry) == GM_CONF_STRING) ||
       (gm_conf_entry_get_type (entry) == GM_CONF_INT)) {
 
-    if (ep && ep->GetCallingState () == GMH323EndPoint::Standby) {
+    if (ep && ep->GetCallingState () == GMEndPoint::Standby) {
 
       gdk_threads_enter ();
       preview = gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview");
@@ -899,11 +890,11 @@ video_device_setting_changed_nt (gpointer id,
 {
   PString name;
 
-  int max_try = 0;
+  //int max_try = 0;
   BOOL preview = FALSE;
-  BOOL no_error = FALSE;
+  //BOOL no_error = FALSE;
 
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
 
   ep = GnomeMeeting::Process ()->Endpoint ();
 
@@ -912,9 +903,9 @@ video_device_setting_changed_nt (gpointer id,
       (gm_conf_entry_get_type (entry) == GM_CONF_INT)) {
   
     /* Update the capabilities */
-    ep->AddAllCapabilities ();
+    //FIXME ep->AddAllCapabilities ();
     
-    if (ep && ep->GetCallingState () == GMH323EndPoint::Standby) {
+    if (ep && ep->GetCallingState () == GMEndPoint::Standby) {
 
       gdk_threads_enter ();
       preview = gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview");
@@ -923,7 +914,7 @@ video_device_setting_changed_nt (gpointer id,
       if (preview)
 	ep->CreateVideoGrabber ();
     }
-    else if (ep->GetCallingState () == GMH323EndPoint::Connected) {
+    else if (ep->GetCallingState () == GMEndPoint::Connected) {
 
       gdk_threads_enter ();
       if (gm_conf_get_int (VIDEO_DEVICES_KEY "size") == 0)
@@ -934,6 +925,7 @@ video_device_setting_changed_nt (gpointer id,
 
       if (gm_conf_get_bool (VIDEO_CODECS_KEY "enable_video_transmission")) {
 
+	/*
 	no_error =
 	  ep->StopLogicalChannel (RTP_Session::DefaultVideoSessionID,
 				  FALSE);
@@ -951,7 +943,7 @@ video_device_setting_changed_nt (gpointer id,
 	    break;
 	  }
 	}
-
+*/
         /* if (!no_error) {
 
 	  gdk_threads_enter ();
@@ -974,14 +966,14 @@ static void video_preview_changed_nt (gpointer id,
 				      GmConfEntry *entry,
 				      gpointer data)
 {
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
   
   if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
    
     /* We reset the video device */
     ep = GnomeMeeting::Process ()->Endpoint ();
     
-    if (ep && ep->GetCallingState () == GMH323EndPoint::Standby) {
+    if (ep && ep->GetCallingState () == GMEndPoint::Standby) {
     
       if (gm_conf_entry_get_bool (entry)) 
 	ep->CreateVideoGrabber ();
@@ -1024,36 +1016,18 @@ audio_codecs_list_changed_nt (gpointer id,
 			      GmConfEntry *entry,
 			      gpointer data)
 {
-#ifdef HAS_IXJ
-  GMLid *lid = NULL;
-#endif
+  GMEndPoint *ep = NULL;
 
-  GMH323EndPoint *ep = NULL;
+  OpalMediaFormatList l;
 
-  OpalMediaFormat::List l;
 
-  BOOL use_quicknet = FALSE;
-  BOOL soft_codecs_supported = FALSE;
-
-  
   g_return_if_fail (data != NULL);
   
   
   if (gm_conf_entry_get_type (entry) == GM_CONF_LIST) {
    
     ep = GnomeMeeting::Process ()->Endpoint ();
-
-#ifdef HAS_IXJ
-    lid = ep->GetLid ();
-    if (lid) {
-      
-      use_quicknet = TRUE;
-      soft_codecs_supported = lid->areSoftwareCodecsSupported ();
-      lid->Unlock ();
-    }
-#endif
-
-    l = ep->GetAvailableAudioCapabilities ();
+    l = ep->GetAudioMediaFormats ();
     
     /* Update the GUI */
     gdk_threads_enter ();
@@ -1151,7 +1125,7 @@ ils_option_changed_nt (gpointer id,
 		       GmConfEntry *entry, 
 		       gpointer data)
 {
-  GMH323EndPoint *endpoint = NULL;
+  GMEndPoint *endpoint = NULL;
   
   endpoint = GnomeMeeting::Process ()->Endpoint ();
  
@@ -1180,8 +1154,8 @@ incoming_call_mode_changed_nt (gpointer id,
   GtkWidget *tray = NULL;
   
   
-  GMH323EndPoint::CallingState calling_state = GMH323EndPoint::Standby;
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint::CallingState calling_state = GMEndPoint::Standby;
+  GMEndPoint *ep = NULL;
 
   gboolean forward_on_busy = FALSE;
   IncomingCallMode i;
@@ -1277,7 +1251,7 @@ lid_aec_changed_nt (gpointer id,
                     GmConfEntry *entry, 
                     gpointer)
 {
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
   GMLid *lid = NULL;
   
   int lid_aec = 0;
@@ -1309,7 +1283,7 @@ lid_country_changed_nt (gpointer id,
                         GmConfEntry *entry, 
 			gpointer)
 {
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
   GMLid *lid = NULL;
   
   gchar *country_code = NULL;
@@ -1343,7 +1317,7 @@ lid_output_device_type_changed_nt (gpointer id,
 				   GmConfEntry *entry, 
 				   gpointer)
 {
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
   GMLid *lid = NULL;
     
   ep = GnomeMeeting::Process ()->Endpoint ();

@@ -63,7 +63,7 @@ gm_prefs_window_update_devices_list (GtkWidget *,
  */
 void
 gm_prefs_window_update_audio_codecs_list (GtkWidget *,
-					  OpalMediaFormat::List);
+					  OpalMediaFormatList);
 
 
 /* DESCRIPTION  :  / 

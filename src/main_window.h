@@ -336,12 +336,12 @@ void gm_main_window_clear_stats (GtkWidget *);
 void gm_main_window_update_stats (GtkWidget *,
 				  float,
 				  float,
+				  float,
 				  int,
-				  int,
-				  int,
-				  int,
-				  int,
-				  int);
+				  float,
+				  float,
+				  float,
+				  float);
 
 
 /* DESCRIPTION   :  /

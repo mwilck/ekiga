@@ -63,7 +63,7 @@ TransferTimeOut (gpointer data)
   PString transfer_call_token;
   PString call_token;
 
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
@@ -303,9 +303,9 @@ void GMURLHandler::Main ()
   gchar *msg = NULL;
 
   int nbr = 0;
+  gboolean result = FALSE;
   
-  GMH323EndPoint *endpoint = NULL;
-  H323Connection *con = NULL;
+  GMEndPoint *endpoint = NULL;
 
   PWaitAndSignal m(quit_mutex);
   
@@ -325,20 +325,9 @@ void GMURLHandler::Main ()
   /* Answer the current call in a separate thread if we are called
    * and return 
    */
-  if (endpoint->GetCallingState () == GMH323EndPoint::Called) {
+  if (endpoint->GetCallingState () == GMEndPoint::Called) {
 
-    con = 
-      endpoint->FindConnectionWithLock (endpoint->GetCurrentCallToken ());
-
-    if (con) {
-
-      if (answer_call) 
-	con->AnsweringCall (H323Connection::AnswerCallNow);
-      else if (transfer_call) 
-	con->ForwardCall (url.GetValidURL ());
-      
-      con->Unlock ();
-    }
+    endpoint->AcceptCurrentIncomingCall ();
 
     return;
   }
@@ -434,21 +423,19 @@ void GMURLHandler::Main ()
 
     /* Update the state to "calling" */
     gnomemeeting_threads_enter ();
-    gm_main_window_update_calling_state (main_window, GMH323EndPoint::Calling);
-    gm_tray_update_calling_state (tray, GMH323EndPoint::Calling);
+    gm_main_window_update_calling_state (main_window, GMEndPoint::Calling);
+    gm_tray_update_calling_state (tray, GMEndPoint::Calling);
     gnomemeeting_threads_leave ();
 
-    endpoint->SetCallingState (GMH323EndPoint::Calling);
+    endpoint->SetCallingState (GMEndPoint::Calling);
 
-    con = 
-      endpoint->MakeCallLocked (call_address, current_call_token);
-
+    result = endpoint->SetUpCall (call_address, current_call_token);
+    
     /* If we have a valid URL, we a have a valid connection, if not
        we put things back in the initial state */
-    if (con) {
+    if (result) {
 
       endpoint->SetCurrentCallToken (current_call_token);
-      con->Unlock ();
     }
     else {
 
@@ -457,9 +444,9 @@ void GMURLHandler::Main ()
        * be done in OnConnectionEstablished if con exists.
        */
       gnomemeeting_threads_enter ();
-      gm_tray_update_calling_state (tray, GMH323EndPoint::Standby);
+      gm_tray_update_calling_state (tray, GMEndPoint::Standby);
       gm_main_window_update_calling_state (main_window, 
-					   GMH323EndPoint::Standby);
+					   GMEndPoint::Standby);
 
       if (call_address.Find ("+type=directory") != P_MAX_INDEX) {
 
@@ -471,15 +458,25 @@ void GMURLHandler::Main ()
 				   _("User not found"),
 				   NULL);
       }
+      else {
+	
+	gm_main_window_flash_message (main_window, _("Failed to call user"));
+	gm_calls_history_add_call (PLACED_CALL,
+				   NULL,
+				   call_address, 
+				   "0.00",
+				   _("Failed to call user"),
+				   NULL);
+      }
       gnomemeeting_threads_leave ();
 
-      endpoint->SetCallingState (GMH323EndPoint::Standby);
+      endpoint->SetCallingState (GMEndPoint::Standby);
     }
   }
   else {
 
-    endpoint->TransferCall (endpoint->GetCurrentCallToken (),
-			    call_address);
+//FIXME    endpoint->TransferCall (endpoint->GetCurrentCallToken (),
+//			    call_address);
     g_timeout_add (11000, (GtkFunction) TransferTimeOut, NULL);
   }
 }

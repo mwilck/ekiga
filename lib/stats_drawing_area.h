@@ -57,7 +57,7 @@ GtkWidget *stats_drawing_area_new ();
 void stats_drawing_area_clear (GtkWidget *);
 
 void stats_drawing_area_new_data (GtkWidget *w,
-				  int vin, int vout, int ain, int aout);
+				  float vin, float vout, float ain, float aout);
 
 G_END_DECLS
 

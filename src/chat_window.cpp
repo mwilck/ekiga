@@ -130,18 +130,18 @@ static void
 connect_uri_callback (const gchar *uri)
 {
   GtkWidget *main_window = NULL;
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
   
   g_return_if_fail (uri != NULL);
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   ep =  GnomeMeeting::Process ()->Endpoint ();
 
-  if (ep->GetCallingState () == GMH323EndPoint::Standby) {    
+  if (ep->GetCallingState () == GMEndPoint::Standby) {    
 
     GnomeMeeting::Process ()->Connect (uri);
   }
-  else if (ep->GetCallingState () == GMH323EndPoint::Connected)
+  else if (ep->GetCallingState () == GMEndPoint::Connected)
     gm_main_window_transfer_dialog_run (main_window, (gchar *) uri);
 }
 
@@ -168,20 +168,22 @@ static void
 chat_entry_activate (GtkEditable *w,
 		     gpointer data)
 {
-  GMH323EndPoint *endpoint = GnomeMeeting::Process ()->Endpoint ();
+  GMEndPoint *endpoint = GnomeMeeting::Process ()->Endpoint ();
   GtkWidget *chat_window = GnomeMeeting::Process ()->GetChatWindow ();
   PString s;
     
   if (endpoint) {
-        
-    PString local = endpoint->GetLocalUserName ();
+      
+    // FIXME
+    PString local;
+    //PString local = endpoint->GetLocalUserName ();
     /* The local party name has to be converted to UTF-8, but not
        the text */
     gchar *utf8_local = NULL;
 
     s = PString (gtk_entry_get_text (GTK_ENTRY (w)));
     
-    if (endpoint->GetCallingState () == GMH323EndPoint::Connected
+    if (endpoint->GetCallingState () == GMEndPoint::Connected
 	&& !s.IsEmpty ()) {
             
       /* Don't hold any lock when asking things to the endpoint */

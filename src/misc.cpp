@@ -127,6 +127,7 @@ PAssertFunc (const char *file, int line,
   if (inAssert)
     return;
 
+  cout << file << "-" << line << "-" << className << "-" << msg << endl << flush;
   inAssert = true;
 
   g_idle_add (assert_error_msg, (gpointer) msg);

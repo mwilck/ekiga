@@ -40,6 +40,7 @@
 #include "../config.h"
 
 #include "tools.h"
+#include "h323endpoint.h"
 #include "gnomemeeting.h"
 #include "callbacks.h"
 #include "misc.h"
@@ -64,9 +65,11 @@ pc2phone_window_response_cb (GtkWidget *w,
 			     gint response,
 			     gpointer data)
 {
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
+  GMH323EndPoint *h323EP = NULL;
 
   ep = GnomeMeeting::Process ()->Endpoint ();
+  h323EP = ep->GetH323EndPoint ();
   
   if (response != 1)
     gnomemeeting_window_hide (w);
@@ -87,7 +90,7 @@ pc2phone_window_response_cb (GtkWidget *w,
       gm_conf_set_int (H323_GATEKEEPER_KEY "registering_method", 0);
     
     /* Register the current Endpoint to the Gatekeeper */
-    ep->GatekeeperRegister ();
+    h323EP->GatekeeperRegister ();
   }
 }
 

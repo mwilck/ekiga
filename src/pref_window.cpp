@@ -40,6 +40,7 @@
 #include "../config.h"
 
 #include "pref_window.h"
+#include "h323endpoint.h"
 #include "gnomemeeting.h"
 #include "ils.h"
 #include "sound_handling.h"
@@ -990,7 +991,7 @@ gm_pw_init_gatekeeper_page (GtkWidget *prefs_window,
   
   /* Add fields for the gatekeeper */
   subsection = gnome_prefs_subsection_new (prefs_window, container,
-					   _("Gatekeeper"), 7, 3);
+					   _("Gatekeeper"), 6, 3);
 
   gnome_prefs_entry_new (subsection, _("Gatekeeper _ID:"), H323_GATEKEEPER_KEY "id", _("The Gatekeeper identifier to register with"), 1, false);
 
@@ -1005,8 +1006,6 @@ gm_pw_init_gatekeeper_page (GtkWidget *prefs_window,
   /* Translators: the full sentence is Registration timeout of X minutes */
   gnome_prefs_spin_new (subsection, _("Registration timeout of"), H323_GATEKEEPER_KEY "registration_timeout", _("The time after which GnomeMeeting will renew its registration with the gatekeeper"), 2.0, 60.0, 1.0, 5, _("minutes"), true);
 
-  gnome_prefs_toggle_new (subsection, _("Register this alias as the primary alias with the gatekeeper"), H323_GATEKEEPER_KEY "register_alias_as_primary", _("Use this option to ensure the above alias is used as the primary alias when registering with a gatekeeper. This may be required if your gatekeeper can only perform authentication using the first alias in the list."), 6);
-  
   gnome_prefs_int_option_menu_new (subsection, _("Registering method:"), options, H323_GATEKEEPER_KEY "registering_method", _("The registering method to use"), 0);
 
   gm_pw_add_update_button (prefs_window, container, GTK_STOCK_APPLY, _("_Apply"), GTK_SIGNAL_FUNC (gatekeeper_update_cb), _("Click here to update your Gatekeeper settings"), 0);
@@ -1068,23 +1067,11 @@ gm_pw_init_audio_devices_page (GtkWidget *prefs_window,
 {
   GmPreferencesWindow *pw = NULL;
   
-  GtkWidget *entry = NULL;  
   GtkWidget *subsection = NULL;
 
   PStringArray devs;
 
   gchar **array = NULL;
-  gchar *aec [] = {_("Off"),
-		   _("Low"),
-		   _("Medium"),
-		   _("High"),
-		   _("AGC"),
-		   NULL};
-
-  gchar *types_array [] = {_("POTS"),
-			   _("Headset"),
-			   NULL};
-
 
   pw = gm_pw_get_pw (prefs_window);
   
@@ -1217,7 +1204,7 @@ static void
 gm_pw_init_audio_codecs_page (GtkWidget *prefs_window,
 			      GtkWidget *container)
 {
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
   
   GtkWidget *subsection = NULL;
   GtkWidget *box = NULL;  
@@ -1406,7 +1393,8 @@ refresh_devices_list_cb (GtkWidget *w,
 static void personal_data_update_cb (GtkWidget *widget, 
 				     gpointer data)
 {
-  GMH323EndPoint *endpoint = NULL;
+  GMEndPoint *endpoint = NULL;
+  GMH323EndPoint *h323EP = NULL;
 
   endpoint = GnomeMeeting::Process ()->Endpoint ();
 
@@ -1415,7 +1403,7 @@ static void personal_data_update_cb (GtkWidget *widget,
 
   /* Both are able to not register if the option is not active */
   endpoint->ILSRegister ();
-  endpoint->GatekeeperRegister ();
+  h323EP->GatekeeperRegister ();
 #ifdef HAS_HOWL
   endpoint->ZeroconfUpdate ();
 #endif
@@ -1428,15 +1416,17 @@ static void
 gatekeeper_update_cb (GtkWidget *widget, 
 		      gpointer data)
 {
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
+  GMH323EndPoint *h323EP = NULL;
 
   ep = GnomeMeeting::Process ()->Endpoint ();
+  h323EP = ep->GetH323EndPoint ();
 
   /* Prevent GDK deadlock */
   gdk_threads_leave ();
 
   /* Register the current Endpoint to the Gatekeeper */
-  ep->GatekeeperRegister ();
+  h323EP->GatekeeperRegister ();
 
   gdk_threads_enter ();
 }
@@ -1446,7 +1436,7 @@ static void
 stunserver_update_cb (GtkWidget *widget, 
 		      gpointer data)
 {
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
 
   ep = GnomeMeeting::Process ()->Endpoint ();
 
@@ -1701,7 +1691,7 @@ gm_prefs_window_update_devices_list (GtkWidget *prefs_window,
 
 void 
 gm_prefs_window_update_audio_codecs_list (GtkWidget *prefs_window,
-					  OpalMediaFormat::List l)
+					  OpalMediaFormatList l)
 {
   GmPreferencesWindow *pw = NULL;
   
@@ -1709,7 +1699,7 @@ gm_prefs_window_update_audio_codecs_list (GtkWidget *prefs_window,
   GtkTreeModel *model = NULL;
   GtkTreeIter iter;
 
-  OpalMediaFormat::List k;
+  OpalMediaFormatList k;
   PStringList m;
 
   gchar *bandwidth = NULL;

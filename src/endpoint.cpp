@@ -39,11 +39,11 @@
 #include "../config.h"
 
 #include "endpoint.h"
-#include "connection.h"
-#include "gatekeeper.h"
+#include "pcssendpoint.h"
+#include "h323endpoint.h"
+
 #include "urlhandler.h"
 #include "ils.h"
-#include "lid.h"
 #include "gnomemeeting.h"
 #include "sound_handling.h"
 #include "tray.h"
@@ -59,8 +59,6 @@
 #include "gm_conf.h"
 #include "gm_events.h"
 
-#include <h261codec.h>
-
 #include <ptclib/http.h>
 #include <ptclib/html.h>
 #include <ptclib/pstun.h>
@@ -70,11 +68,11 @@
 
 
 /* The class */
-GMH323EndPoint::GMH323EndPoint ()
+GMEndPoint::GMEndPoint ()
 {
   /* Initialise the endpoint paramaters */
   video_grabber = NULL;
-  SetCallingState (GMH323EndPoint::Standby);
+  SetCallingState (GMEndPoint::Standby);
   
 #ifdef HAS_IXJ
   lid = NULL;
@@ -83,7 +81,6 @@ GMH323EndPoint::GMH323EndPoint ()
   zcp = NULL;
 #endif
   ils_client = NULL;
-  listener = NULL;
   gk = NULL;
   sc = NULL;
 
@@ -105,43 +102,28 @@ GMH323EndPoint::GMH323EndPoint ()
   GatewayIPTimer.SetNotifier (PCREATE_NOTIFIER (OnGatewayIPTimeout));
   GatewayIPTimer.RunContinuous (PTimeInterval (5));
 
-  signallingChannelCallTimeout = PTimeInterval (0, 0, 3);
-    
   NoIncomingMediaTimer.SetNotifier (PCREATE_NOTIFIER (OnNoIncomingMediaTimeout));
 
   missed_calls = 0;
 
   dispatcher = gm_events_dispatcher_new ();
 
-  last_audio_octets_received = 0;
-  last_video_octets_received = 0;
-  last_audio_octets_transmitted = 0;
-  last_video_octets_transmitted = 0;
-
-  NoAnswerTimer.SetNotifier (PCREATE_NOTIFIER (OnNoAnswerTimeout));
-  CallPendingTimer.SetNotifier (PCREATE_NOTIFIER (OnCallPending));
   OutgoingCallTimer.SetNotifier (PCREATE_NOTIFIER (OnOutgoingCall));
+
+  h323EP = NULL;
+  pcssEP = NULL;
 }
 
 
-GMH323EndPoint::~GMH323EndPoint ()
+GMEndPoint::~GMEndPoint ()
 {
-  if (listener)
-    RemoveListener (listener);
-
-  /* Delete any GMH323Gatekeeper thread, the real gatekeeper
-   * will be delete by openh323 
-   */
-  if (gk)
-    delete (gk);
-
   /* Delete any GMStunClient thread. 
    */
   if (sc)
     delete (sc);
   
-  PWaitAndSignal m(ils_access_mutex);
   /* Delete any ILS client which could be running */
+  PWaitAndSignal m(ils_access_mutex);
   if (ils_client)
     delete (ils_client);
 
@@ -160,6 +142,7 @@ GMH323EndPoint::~GMH323EndPoint ()
   if (audio_tester)
     delete (audio_tester);
 
+
   /* Stop the zeroconf publishing thread */
 #ifdef HAS_HOWL
   zcp_access_mutex.Wait ();
@@ -170,142 +153,72 @@ GMH323EndPoint::~GMH323EndPoint ()
 }
 
 
-H323Connection *
-GMH323EndPoint::MakeCallLocked (const PString & call_addr,
-				PString & call_token)
+BOOL
+GMEndPoint::SetUpCall (const PString & call_addr,
+		       PString & call_token)
 {
+  BOOL result = FALSE;
+  
   PWaitAndSignal m(lca_access_mutex);
-  H323Connection *con = NULL;
   
   called_address = call_addr;
   
-  con = H323EndPoint::MakeCallLocked (call_addr, call_token);
+  result = OpalManager::SetUpCall ("pc:*", call_addr, call_token);
 
-#ifdef HAS_IXJ
-  GMLid *lid = NULL;
-  lid = GetLid ();
-#endif
-
-  if (con) {
+  if (result) {
     
     OutgoingCallTimer.RunContinuous (PTimeInterval (5));
-
-#ifdef HAS_IXJ
-    if (lid)
-      lid->UpdateState (GMH323EndPoint::Calling); // Calling
-#endif
   }
   else {
     
     OutgoingCallTimer.Stop ();
 
-#ifdef HAX_IXJ
-    if (lid)
-      lid->UpdateStatus (GMH323EndPoint::Standby); // Busy
-#endif
-
-    sound_event_mutex.Wait ();
-    GMSoundEvent ("busy_tone_sound");
-    sound_event_mutex.Signal ();
+    pcssEP->PlaySoundEvent ("busy_tone_sound");
   }
-
-#ifdef HAS_IXJ
-  if (lid)
-    lid->Unlock ();
-#endif
   
-  return con;
+  return result;
 }
 
 
-void GMH323EndPoint::UpdateDevices ()
+BOOL
+GMEndPoint::AcceptCurrentIncomingCall ()
 {
-  BOOL use_lid = FALSE;
+  if (pcssEP) {
+    
+    pcssEP->AcceptCurrentIncomingCall ();
+    return TRUE;
+  }
 
+  return FALSE;
+}
+
+
+void GMEndPoint::UpdateDevices ()
+{
   BOOL preview = FALSE;
-
-  PString dev;
-  gchar *audio_input = NULL;
 
 
   /* Get the config settings */
   gnomemeeting_threads_enter ();
   preview = gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview");
-  audio_input = gm_conf_get_string (AUDIO_DEVICES_KEY "input_device");
   gnomemeeting_threads_leave ();
   
   gnomemeeting_sound_daemons_suspend ();
 
   /* Do not change these values during calls */
-  if (GetCallingState () == GMH323EndPoint::Standby) {
+  if (GetCallingState () == GMEndPoint::Standby) {
 
-#ifdef HAS_IXJ
-    GtkWidget *prefs_window = NULL;
-    GMLid *l = GetLid ();
-    OpalMediaFormat::List capa;
-
-    prefs_window = GnomeMeeting::Process ()->GetPrefsWindow (); 
-    if (l) {
-
-      use_lid = TRUE;
-      l->Unlock ();
-    }
-    else
-      use_lid = FALSE;
-
-    dev = audio_input;
-
-    /* Quicknet hardware */
-    if (dev.Find ("/dev/phone") != P_MAX_INDEX) {
-
-      /* Use the quicknet card if needed */
-      if (!use_lid) {
-	
-	CreateLid (audio_input);
-	
-	capa = GetAvailableAudioCapabilities ();
-
-	/* We added the LID : update the codecs list 
-	 * and the capabilities */
-	gnomemeeting_threads_enter ();
-	gm_prefs_window_update_audio_codecs_list (prefs_window, capa);
-	gnomemeeting_threads_leave ();
-
-	AddAllCapabilities ();
-      }
-    }
-    else if (use_lid) {
-      
-      RemoveLid ();
-      
-      capa = GetAvailableAudioCapabilities ();
-
-      /* We removed the LID : update the codecs list 
-       * and the capabilities */
-      gnomemeeting_threads_enter ();
-      gm_prefs_window_update_audio_codecs_list (prefs_window, capa);
-      gnomemeeting_threads_leave ();
-
-      AddAllCapabilities ();
-    }
-    
-#endif
-    
     /* Video preview */
     if (preview) 
       CreateVideoGrabber (TRUE, TRUE);
     else
       RemoveVideoGrabber ();
   }
-
-  gnomemeeting_sound_daemons_resume ();
-
-  g_free (audio_input);
 }
 
-
+/*
 H323Capabilities 
-GMH323EndPoint::RemoveCapability (PString name)
+GMEndPoint::RemoveCapability (PString name)
 {
   capabilities.Remove (name);
   return capabilities;
@@ -313,7 +226,7 @@ GMH323EndPoint::RemoveCapability (PString name)
 
 
 void 
-GMH323EndPoint::RemoveAllCapabilities ()
+GMEndPoint::RemoveAllCapabilities ()
 {
   if (capabilities.GetSize ())
     capabilities.RemoveAll ();
@@ -321,7 +234,7 @@ GMH323EndPoint::RemoveAllCapabilities ()
 
 
 void 
-GMH323EndPoint::AddAllCapabilities ()
+GMEndPoint::AddAllCapabilities ()
 {
   RemoveAllCapabilities ();
   
@@ -330,31 +243,31 @@ GMH323EndPoint::AddAllCapabilities ()
   AddVideoCapabilities ();
   AddUserInputCapabilities ();
 }
-
+*/
 
 void 
-GMH323EndPoint::SetCallingState (GMH323EndPoint::CallingState i)
+GMEndPoint::SetCallingState (GMEndPoint::CallingState i)
 {
   PWaitAndSignal m(cs_access_mutex);
   
   calling_state = i;
-  /* FIXME: holding a mutex!? */
-  if (dispatcher)
-    g_signal_emit_by_name (dispatcher, "endpoint-state-changed", i);
+
+  //if (dispatcher)
+    //g_signal_emit_by_name (dispatcher, "endpoint-state-changed", i);
 }
 
 
-GMH323EndPoint::CallingState
-GMH323EndPoint::GetCallingState (void)
+GMEndPoint::CallingState
+GMEndPoint::GetCallingState (void)
 {
   PWaitAndSignal m(cs_access_mutex);
 
   return calling_state;
 }
 
-
+/*
 H323Connection * 
-GMH323EndPoint::SetupTransfer (const PString & token,
+GMEndPoint::SetupTransfer (const PString & token,
 			       const PString & call_identity,
 			       const PString & remote_party,
 			       PString & new_token,
@@ -375,25 +288,25 @@ GMH323EndPoint::SetupTransfer (const PString & token,
 
 
 void 
-GMH323EndPoint::AddVideoCapabilities ()
+GMEndPoint::AddVideoCapabilities ()
 {
   int video_size = 0;
 
   video_size = gm_conf_get_int (VIDEO_DEVICES_KEY "size");
-
+*/
   /* Add video capabilities */
-  if (video_size == 1) {
+  /*if (video_size == 1) {
 
     if (autoStartTransmitVideo && !autoStartReceiveVideo) {
       
-      /* CIF Capability in first position */
-      AddCapability (new H323_H261Capability (0, 4, FALSE, FALSE, 6217));
+    */  /* CIF Capability in first position */
+     /* AddCapability (new H323_H261Capability (0, 4, FALSE, FALSE, 6217));
       AddCapability (new H323_H261Capability (2, 0, FALSE, FALSE, 6217));
     }
     else {
 
-      /* CIF Capability in first position */
-      SetCapability (0, 1, new H323_H261Capability (0, 4, FALSE, FALSE, 6217));
+      *//* CIF Capability in first position */
+     /* SetCapability (0, 1, new H323_H261Capability (0, 4, FALSE, FALSE, 6217));
       SetCapability (0, 1, new H323_H261Capability (2, 0, FALSE, FALSE, 6217));
     }
   }
@@ -411,10 +324,10 @@ GMH323EndPoint::AddVideoCapabilities ()
     }
   }
 }
-
-
+*/
+/*
 void
-GMH323EndPoint::AddUserInputCapabilities ()
+GMEndPoint::AddUserInputCapabilities ()
 {
   int cap = 0;
 
@@ -432,55 +345,34 @@ GMH323EndPoint::AddUserInputCapabilities ()
   } else if (cap != 1)
     AddAllUserInputCapabilities(0, P_MAX_INDEX);
 }
+*/
 
 
-OpalMediaFormat::List
-GMH323EndPoint::GetAvailableAudioCapabilities ()
+OpalMediaFormatList
+GMEndPoint::GetAudioMediaFormats ()
 {
-#ifdef HAS_IXJ
-  GMLid *l = NULL;
-#endif
-  
-  PString s;
-  
-  OpalMediaFormat::List full_list;
-  OpalMediaFormat::List lid_list;
-  
-  full_list = H323PluginCodecManager::GetMediaFormats ();
+  OpalMediaFormatList full_list;
 
-#ifdef HAS_IXJ
-  l = GetLid ();
-
-  if (l) {
-
-    lid_list = l->GetAvailableAudioCapabilities ();
-    l->Unlock ();
-  
-    for (int i = 0 ; i < lid_list.GetSize () ; i++) {
-
-      if (full_list.GetValuesIndex (lid_list [i]) == P_MAX_INDEX)
-	full_list.Append (new OpalMediaFormat (lid_list [i]));
-    }
-  }
-#endif
+  full_list = OpalMediaFormat::GetAllRegisteredMediaFormats ();
   
   return full_list;
 }
 
 
+/*
 void 
-GMH323EndPoint::AddAudioCapabilities ()
+GMEndPoint::AddAudioCapabilities ()
 {
   gchar **couple = NULL;
   GSList *codecs_data = NULL;
   
-  
+  */
   /* Read config settings */ 
-  codecs_data = gm_conf_get_string_list (AUDIO_CODECS_KEY "list");
+  //codecs_data = gm_conf_get_string_list (AUDIO_CODECS_KEY "list");
   
 
   /* Let's go */
-  while (codecs_data) {
+  /*while (codecs_data) {
     
     couple = g_strsplit ((gchar *) codecs_data->data, "=", 0);
 
@@ -492,24 +384,26 @@ GMH323EndPoint::AddAudioCapabilities ()
   }
 
   g_slist_free (codecs_data);
+}
+*/
 
-#ifdef HAS_IXJ
-    GMLid *l = NULL;
-    if ((l = GetLid ())) {
-/* FIXME */
-      if (l->IsOpen ()) {
 
-	H323_LIDCapability::AddAllCapabilities (*l, capabilities, 0, 0);
-      }
+GMH323EndPoint *
+GMEndPoint::GetH323EndPoint ()
+{
+  return h323EP;
+}
 
-      l->Unlock ();
-    }
-#endif
+
+GMPCSSEndPoint *
+GMEndPoint::GetPCSSEndPoint ()
+{
+  return pcssEP;
 }
 
 
 PString
-GMH323EndPoint::GetCurrentIP ()
+GMEndPoint::GetCurrentIP ()
 {
   PIPSocket::InterfaceTable interfaces;
   PIPSocket::Address ip_addr;
@@ -534,9 +428,9 @@ GMH323EndPoint::GetCurrentIP ()
 }
 
 
-void 
-GMH323EndPoint::TranslateTCPAddress(PIPSocket::Address &local_address, 
-				    const PIPSocket::Address &remote_address)
+BOOL
+GMEndPoint::TranslateIPAddress(PIPSocket::Address &local_address, 
+			       const PIPSocket::Address &remote_address)
 {
   PIPSocket::Address addr;
   BOOL ip_translation = FALSE;
@@ -569,40 +463,16 @@ GMH323EndPoint::TranslateTCPAddress(PIPSocket::Address &local_address,
 
       g_free (ip);
     }
+
+    return TRUE;
   }
-}
 
-
-BOOL 
-GMH323EndPoint::StartListener ()
-{
-  int listen_port = 1720;
-
-  gnomemeeting_threads_enter ();
-  listen_port = gm_conf_get_int (PORTS_KEY "listen_port");
-  gnomemeeting_threads_leave ();
-
-  
-  /* Start the listener thread for incoming calls */
-  listener =
-    new H323ListenerTCP (*this, PIPSocket::GetDefaultIpAny (), listen_port);
-   
-
-  /* unsuccesfull */
-  if (!H323EndPoint::StartListener (listener)) {
-
-    delete listener;
-    listener = NULL;
-
-    return FALSE;
-  }
-   
-  return TRUE;
+  return FALSE;
 }
 
 
 void 
-GMH323EndPoint::StartAudioTester (gchar *audio_manager,
+GMEndPoint::StartAudioTester (gchar *audio_manager,
 				  gchar *audio_player,
 				  gchar *audio_recorder)
 {
@@ -617,7 +487,7 @@ GMH323EndPoint::StartAudioTester (gchar *audio_manager,
 
 
 void 
-GMH323EndPoint::StopAudioTester ()
+GMEndPoint::StopAudioTester ()
 {
   PWaitAndSignal m(at_access_mutex);
 
@@ -630,7 +500,7 @@ GMH323EndPoint::StopAudioTester ()
 
 
 GMVideoGrabber *
-GMH323EndPoint::CreateVideoGrabber (BOOL start_grabbing,
+GMEndPoint::CreateVideoGrabber (BOOL start_grabbing,
 				    BOOL synchronous)
 {
   PWaitAndSignal m(vg_access_mutex);
@@ -645,7 +515,7 @@ GMH323EndPoint::CreateVideoGrabber (BOOL start_grabbing,
 
 
 void
-GMH323EndPoint::RemoveVideoGrabber ()
+GMEndPoint::RemoveVideoGrabber ()
 {
   PWaitAndSignal m(vg_access_mutex);
 
@@ -658,7 +528,7 @@ GMH323EndPoint::RemoveVideoGrabber ()
 
 
 GMVideoGrabber *
-GMH323EndPoint::GetVideoGrabber ()
+GMEndPoint::GetVideoGrabber ()
 {
   PWaitAndSignal m(vg_access_mutex);
 
@@ -669,18 +539,15 @@ GMH323EndPoint::GetVideoGrabber ()
 }
 
 
-H323Gatekeeper *
-GMH323EndPoint::CreateGatekeeper(H323Transport * transport)
+#ifdef HAS_HOWL
+void
+GMEndPoint::ZeroconfUpdate (void)
 {
-  return new H323GatekeeperWithNAT (*this, transport);
+  PWaitAndSignal m(zcp_access_mutex);
+  if (zcp)  
+    zcp->Publish ();
 }
-
-
-H323Connection *
-GMH323EndPoint::CreateConnection (unsigned call_reference)
-{
-  return new GMH323Connection (*this, call_reference);
-}
+#endif
 
 
 #ifdef HAS_HOWL
@@ -695,7 +562,7 @@ GMH323EndPoint::ZeroconfUpdate (void)
 
 
 void
-GMH323EndPoint::ILSRegister (void)
+GMEndPoint::ILSRegister (void)
 {
   /* Force the Update */
   ILSTimer.RunContinuous (PTimeInterval (5));
@@ -703,7 +570,7 @@ GMH323EndPoint::ILSRegister (void)
 
 
 void 
-GMH323EndPoint::SetCurrentCallToken (PString s)
+GMEndPoint::SetCurrentCallToken (PString s)
 {
   PWaitAndSignal m(ct_access_mutex);
 
@@ -712,7 +579,7 @@ GMH323EndPoint::SetCurrentCallToken (PString s)
 
 
 PString 
-GMH323EndPoint::GetCurrentCallToken ()
+GMEndPoint::GetCurrentCallToken ()
 {
   PWaitAndSignal m(ct_access_mutex);
 
@@ -720,35 +587,8 @@ GMH323EndPoint::GetCurrentCallToken ()
 }
 
 
-H323Gatekeeper *
-GMH323EndPoint::GetGatekeeper ()
-{
-  return gatekeeper;
-}
-
-
 void 
-GMH323EndPoint::GatekeeperRegister ()
-{
-  int timeout = 0;
-  int registering_method = 0;
-  
-  gnomemeeting_threads_enter ();
-  registering_method = gm_conf_get_int (H323_GATEKEEPER_KEY "registering_method");
-  timeout = gm_conf_get_int (H323_GATEKEEPER_KEY "registration_timeout");
-  gnomemeeting_threads_leave ();
-  
-  if (gk)
-    delete (gk);
-  
-  registrationTimeToLive = 
-    PTimeInterval (0, PMAX (120, PMIN (3600, timeout * 60)));
-  gk = new GMH323Gatekeeper ();
-}
-
-
-void 
-GMH323EndPoint::SetSTUNServer ()
+GMEndPoint::SetSTUNServer ()
 {
   if (sc)
     delete (sc);
@@ -758,228 +598,9 @@ GMH323EndPoint::SetSTUNServer ()
 }
 
 
-BOOL 
-GMH323EndPoint::OnIncomingCall (H323Connection & connection, 
-                                const H323SignalPDU &, H323SignalPDU &)
-{
-  GtkWidget *main_window = NULL;
-  GtkWidget *history_window = NULL;
-  GtkWidget *tray = NULL;
-  
-  char *msg = NULL;
-  
-  PString gateway;
-  PString forward_host;
-
-  int no_answer_timeout = 45;
-  gchar *utf8_name = NULL;
-  gchar *utf8_app = NULL;
-  gchar *utf8_url = NULL;
-  
-  gchar *forward_host_conf = NULL;
-  gchar *gateway_conf = NULL;
-
-  IncomingCallMode icm = AVAILABLE;
-  
-  BOOL busy_forward = FALSE;
-  BOOL show_popup = FALSE;
-  BOOL do_forward = FALSE;
-  BOOL do_reject = FALSE;
-  BOOL do_answer = FALSE;
-  BOOL use_gateway = FALSE;
-  
-#ifdef HAS_IXJ
-  GMLid *l = NULL;
-#endif    
-  
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
-  tray = GnomeMeeting::Process ()->GetTray ();
-
-
-  /* Check the config keys */
-  gnomemeeting_threads_enter ();
-  forward_host_conf = gm_conf_get_string (CALL_FORWARDING_KEY "forward_host");
-  busy_forward = gm_conf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
-  icm =
-    (IncomingCallMode) gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
-  show_popup = gm_conf_get_bool (USER_INTERFACE_KEY "show_popup");
-  no_answer_timeout = gm_conf_get_int (CALL_OPTIONS_KEY "no_answer_timeout");
-  use_gateway = gm_conf_get_bool (H323_GATEWAY_KEY "use_gateway");
-  gateway_conf = gm_conf_get_string (H323_GATEWAY_KEY "host");
-  gnomemeeting_threads_leave ();
-
-
-  if (forward_host_conf)
-    forward_host = PString (GMURL (forward_host_conf).GetValidURL ());
-  else
-    forward_host = PString ("");
-    
-  gateway = PString (gateway_conf);
-
-
-  /* Remote Name and application */
-  GetRemoteConnectionInfo (connection, utf8_name, utf8_app, utf8_url);
-
-
-  /* Update the log and status bar */
-  msg = g_strdup_printf (_("Call from %s"), (const char *) utf8_name);
-  gnomemeeting_threads_enter ();
-  gm_main_window_flash_message (main_window, msg);
-  gm_history_window_insert (history_window, msg);
-  gnomemeeting_threads_leave ();
-  g_free (msg);
-
-
-  /* Check what action to take */
-  if (!GMURL(forward_host).IsEmpty() && icm == FORWARD) {
-
-    msg = 
-      g_strdup_printf (_("Forwarding call from %s to %s (Forward all calls)"),
-		       (const char *) utf8_name, (const char *) forward_host);
-    do_forward = TRUE;
-  }
-  else if (icm == DO_NOT_DISTURB) {
-
-    msg =
-      g_strdup_printf (_("Rejecting call from %s (Do Not Disturb)"),
-		       (const char *) utf8_name);
-    
-    do_reject = TRUE;
-  }
-  /* if we are already in a call: forward or reject */
-  else if (GetCallingState () != GMH323EndPoint::Standby) {
-
-    /* if we have enabled forward when busy, do the forward */
-    if (!forward_host.IsEmpty() && busy_forward) {
-
-      msg = 
-	g_strdup_printf (_("Forwarding call from %s to %s (Busy)"),
-			 (const char *) utf8_name, 
-			 (const char *) forward_host);
-
-      do_forward = TRUE;
-    } 
-    else {
-
-      /* there is no forwarding, so reject the call */
-      msg = g_strdup_printf (_("Rejecting call from %s (Busy)"),
-			     (const char *) utf8_name);
-     
-      do_reject = TRUE;
-    }
-  }
-  else if (icm == AUTO_ANSWER) {
-
-    msg =
-      g_strdup_printf (_("Accepting call from %s (Auto Answer)"),
-		       (const char *) utf8_name);
-    
-    do_answer = TRUE;
-  }
-
-
-  /* Take that action */
-  if (do_reject || do_forward || do_answer) {
-
-    /* Add the full message in the log */
-    gnomemeeting_threads_enter ();
-    gm_history_window_insert (history_window, msg);
-    gnomemeeting_threads_leave ();
-
-    /* Free things, we will return */
-    g_free (gateway_conf);
-    g_free (forward_host_conf);
-    g_free (utf8_name);
-    g_free (utf8_app);
-    g_free (msg);
-
-    if (do_reject) {
-      
-      gnomemeeting_threads_enter ();
-      gm_main_window_flash_message (main_window, _("Call rejected"));
-      gnomemeeting_threads_leave ();
-
-      connection.ClearCall (H323Connection::EndedByLocalBusy); 
-      return FALSE;
-    }
-    else if (do_forward) {
-
-      gnomemeeting_threads_enter ();
-      gm_main_window_flash_message (main_window, _("Call forwarded"));
-      gnomemeeting_threads_leave ();
-
-      if (use_gateway && !gateway.IsEmpty ())
-        forward_host = forward_host + "@" + gateway;
-
-      return !connection.ForwardCall (forward_host);
-    }
-    else if (do_answer) {
-
-      gnomemeeting_threads_enter ();
-      gm_main_window_flash_message (main_window,
-				    _("Call automatically answered"));
-      gnomemeeting_threads_leave ();
-
-      return TRUE;
-    }
-  }
-   
-
-  /* If we are here, the call doesn't need to be rejected, forwarded
-     or automatically answered */
-  gnomemeeting_threads_enter ();
-  gm_tray_update_calling_state (tray, GMH323EndPoint::Called);
-  gm_main_window_update_calling_state (main_window, GMH323EndPoint::Called);
-  gnomemeeting_threads_leave ();
-
-
-  /* Update the LID state */
-#ifdef HAS_IXJ
-  l = GetLid ();
-  
-  if (l) {
-
-    l->UpdateState (GMH323EndPoint::Called);
-    l->Unlock ();
-  }
-#endif
-
-    
-  /* The timers */
-  NoAnswerTimer.SetInterval (0, PMAX (no_answer_timeout, 10));
-  CallPendingTimer.RunContinuous (PTimeInterval (5));
-
-  
-  /* If no forward or reject, update the internal state */
-  SetCurrentCallToken (connection.GetCallToken ());
-  SetCallingState (GMH323EndPoint::Called);
-  
-
-  /* Incoming Call Popup, if needed */
-  if (show_popup) {
-    
-    gnomemeeting_threads_enter ();
-    gm_main_window_incoming_call_dialog_show (main_window,
-					      utf8_name, 
-					      utf8_app, 
-					      utf8_url);
-    gnomemeeting_threads_leave ();
-  }
-  
-
-  g_free (gateway_conf);
-  g_free (forward_host_conf);
-  g_free (utf8_name);
-  g_free (utf8_app);
-  g_free (utf8_url);
-
-  return TRUE;
-}
-
-
+/*
 BOOL
-GMH323EndPoint::OnConnectionForwarded (H323Connection &,
+GMEndPoint::OnConnectionForwarded (H323Connection &,
 				       const PString &forward_party,
 				       const H323SignalPDU &)
 {
@@ -1022,129 +643,36 @@ GMH323EndPoint::OnConnectionForwarded (H323Connection &,
 
   return FALSE;
 }
+*/
 
 
-void 
-GMH323EndPoint::OnConnectionEstablished (H323Connection & connection, 
-                                         const PString & token)
+
+PSafePtr<OpalConnection> GMEndPoint::GetConnection (PSafePtr<OpalCall> call, 
+						    BOOL is_remote)
 {
-  GtkWidget *main_window = NULL;
-  GtkWidget *history_window = NULL;
-  GtkWidget *chat_window = NULL;
-  GtkWidget *tray = NULL;
+  PSafePtr<OpalConnection> connection = NULL;
 
-  gchar *utf8_url = NULL;
-  gchar *utf8_app = NULL;
-  gchar *utf8_name = NULL;
-  gchar *utf8_local_name = NULL;
-  BOOL reg = FALSE;
-  BOOL forward_on_busy = FALSE;
-  BOOL stay_on_top = FALSE;
-  IncomingCallMode icm = AVAILABLE;
-  
-#ifdef HAS_IXJ
-  GMLid *l = NULL;
-#endif
-  
+  if (call == NULL)
+    return connection;
 
-  /* Get the widgets */
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
-  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
-  tray = GnomeMeeting::Process ()->GetTray ();
-  
-  
-  /* Start refreshing the stats */
-  RTPTimer.RunContinuous (PTimeInterval (0, 1));
+  connection = call->GetConnection (is_remote ? 1:0);
+  /* is_remote => SIP or H.323 connection
+   * !is_remote => PCSS Connection
+   */
+  if (!connection
+      || (is_remote && PIsDescendant(&(*connection), OpalPCSSConnection))
+      || (!is_remote && !PIsDescendant(&(*connection), OpalPCSSConnection))) 
+    connection = call->GetConnection (is_remote ? 0:1);
 
-  
-  /* Remote Name and application */
-  GetRemoteConnectionInfo (connection, utf8_name, utf8_app, utf8_url);
-  utf8_local_name = g_strdup ((const char *) GetLocalUserName ());
-
-  
-  /* Get the config settings */
-  gnomemeeting_threads_enter ();
-  reg = gm_conf_get_bool (LDAP_KEY "enable_registering");
-  icm = 
-    (IncomingCallMode) gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
-  forward_on_busy = gm_conf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
-  stay_on_top = gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top");
-  gnomemeeting_threads_leave ();
-  
-
-  /* Stop the Timers */
-  NoAnswerTimer.Stop ();
-  CallPendingTimer.Stop ();
-  OutgoingCallTimer.Stop ();
-
-
-#ifdef HAS_IXJ
-  l = GetLid ();
-  
-  if (l) {
-
-    l->UpdateState (GMH323EndPoint::Connected);
-    l->Unlock ();
-  }
-#endif
-
-
-  /* Update internal state */
-  SetCurrentCallToken (token);
-  SetCallingState (GMH323EndPoint::Connected);
-
-
-  /* Update the GUI */
-  gnomemeeting_threads_enter ();
-  
-  if (connection.HadAnsweredCall ())
-    gm_main_window_set_call_url (main_window, GMURL ().GetDefaultURL ());
-
-  gm_main_window_flash_message (main_window, _("Connected"));
-  gm_history_window_insert (history_window,
-			    _("Connected with %s using %s"), 
-			    utf8_name, utf8_app);
-  gnomemeeting_text_chat_call_start_notification (chat_window);
-
-  gm_main_window_set_remote_user_name (main_window, utf8_name);
-  gm_main_window_set_stay_on_top (main_window, stay_on_top);
-
-  gm_main_window_update_calling_state (main_window, GMH323EndPoint::Connected);
-  gm_tray_update_calling_state (tray, GMH323EndPoint::Connected);
-  gm_tray_update (tray, GMH323EndPoint::Connected, icm, forward_on_busy);
-  gnomemeeting_threads_leave ();
-
-  
-  /* Signal the call begin */
-  if (dispatcher)
-    g_signal_emit_by_name (dispatcher, "call-begin", (const gchar *)token);
-
-  
-  /* Update ILS if needed */
-  if (reg)
-    ILSRegister ();
-
-#ifdef HAS_HOWL
-  ZeroconfUpdate ();
-#endif
-
-  g_free (utf8_name);
-  g_free (utf8_local_name);
-  g_free (utf8_app);
-  g_free (utf8_url);
+  return connection;
 }
 
 
-void
-GMH323EndPoint::GetRemoteConnectionInfo (H323Connection & connection,
-					 gchar * & utf8_name,
-					 gchar * & utf8_app,
-					 gchar * & utf8_url)
+void GMEndPoint::GetRemoteConnectionInfo (OpalConnection & connection,
+					  gchar * & utf8_name,
+					  gchar * & utf8_app,
+					  gchar * & utf8_url)
 {
-  const H323Transport *transport = NULL;
-  H323TransportAddress address;
-
   PINDEX idx;
   
   PString remote_ip;
@@ -1168,7 +696,9 @@ GMH323EndPoint::GetRemoteConnectionInfo (H323Connection & connection,
   if (idx != P_MAX_INDEX)
     remote_name = remote_name.Left (idx);
   
-  remote_app = connection.GetRemoteApplication ();
+
+  /* The remote application */
+  remote_app = "Unknown";
   idx = remote_app.Find ("(");
   if (idx != P_MAX_INDEX)
     remote_app = remote_app.Left (idx);
@@ -1176,6 +706,10 @@ GMH323EndPoint::GetRemoteConnectionInfo (H323Connection & connection,
   if (idx != P_MAX_INDEX)
     remote_app = remote_app.Left (idx);
   
+
+  /* The remote url */
+  //FIXME 
+  /*
   if (IsRegisteredWithGatekeeper ()) {
 
     if (!connection.GetRemotePartyNumber ().IsEmpty ())
@@ -1183,13 +717,18 @@ GMH323EndPoint::GetRemoteConnectionInfo (H323Connection & connection,
     else if (!remote_alias.IsEmpty ()) 
       remote_ip = remote_alias;
   }
-
+  */
+  
+   
   if (remote_ip.IsEmpty ()) {
 
-    /* Get the remote IP to display in the calls history */
-    transport = connection.GetSignallingChannel ();
-    if (transport) 
-      remote_ip = transport->GetRemoteAddress ().GetHostName ();
+    remote_ip = connection.GetRemotePartyAddress ();
+    idx = remote_ip.Find ("$");
+    if (idx != P_MAX_INDEX)
+      remote_ip = remote_ip.Mid (idx + 1);
+    idx = remote_ip.Find (":");
+    if (idx != P_MAX_INDEX)
+      remote_ip = remote_ip.Left (idx);
   }
 
   remote_ip = GMURL ().GetDefaultURL () + remote_ip;
@@ -1200,9 +739,119 @@ GMH323EndPoint::GetRemoteConnectionInfo (H323Connection & connection,
 
 
 void 
-GMH323EndPoint::OnConnectionCleared (H323Connection & connection, 
-                                     const PString & clearedCallToken)
+GMEndPoint::OnEstablished (OpalConnection &connection)
 {
+  GtkWidget *main_window = NULL;
+  GtkWidget *history_window = NULL;
+  GtkWidget *chat_window = NULL;
+  GtkWidget *tray = NULL;
+
+  gchar *utf8_url = NULL;
+  gchar *utf8_app = NULL;
+  gchar *utf8_name = NULL;
+  BOOL reg = FALSE;
+  BOOL forward_on_busy = FALSE;
+  BOOL stay_on_top = FALSE;
+  IncomingCallMode icm = AVAILABLE;
+  
+  
+  /* Do not update the current state if it is not the remote connection
+   * that is established.
+   */
+  if (PIsDescendant(&(connection), OpalPCSSConnection)) {
+
+    PTRACE (3, "GMEndPoint\t Will establish the PCSS connection");
+    OpalManager::OnEstablished (connection);
+    return;
+  }
+
+
+  /* Get the widgets */
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
+  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
+  tray = GnomeMeeting::Process ()->GetTray ();
+  
+  
+  /* Start refreshing the stats */
+  RTPTimer.RunContinuous (PTimeInterval (0, 1));
+
+  
+  /* Get the config settings */
+  gnomemeeting_threads_enter ();
+  reg = gm_conf_get_bool (LDAP_KEY "enable_registering");
+  icm = 
+    (IncomingCallMode) gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
+  forward_on_busy = gm_conf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
+  stay_on_top = gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top");
+  gnomemeeting_threads_leave ();
+  
+
+  /* Stop the Timers */
+  OutgoingCallTimer.Stop ();
+
+
+  /* Update internal state */
+  SetCallingState (GMEndPoint::Connected);
+  SetCurrentCallToken (connection.GetCall ().GetToken ());
+  GetRemoteConnectionInfo (connection, 
+			   utf8_name, 
+			   utf8_app, 
+			   utf8_url);
+  
+  if (!connection.IsOriginating ()) {
+    
+    PWaitAndSignal m(lca_access_mutex);
+
+    called_address = PString ();
+  }
+
+
+  /* Update the GUI */
+  gnomemeeting_threads_enter ();
+  if (called_address.IsEmpty ()) 
+    gm_main_window_set_call_url (main_window, GMURL ().GetDefaultURL ());
+  
+  gm_main_window_flash_message (main_window, _("Connected"));
+  gm_history_window_insert (history_window,
+			    _("Connected with %s using %s"), 
+			    utf8_name, utf8_app);
+  gnomemeeting_text_chat_call_start_notification (chat_window);
+
+  gm_main_window_set_remote_user_name (main_window, utf8_name);
+  gm_main_window_set_stay_on_top (main_window, stay_on_top);
+
+  gm_main_window_update_calling_state (main_window, GMEndPoint::Connected);
+  gm_tray_update_calling_state (tray, GMEndPoint::Connected);
+  gm_tray_update (tray, GMEndPoint::Connected, icm, forward_on_busy);
+  gnomemeeting_threads_leave ();
+
+  
+  /* Signal the call begin */
+  if (dispatcher)
+    g_signal_emit_by_name (dispatcher, "call-begin", (const gchar *)token);
+
+  
+  /* Update ILS if needed */
+  if (reg)
+    ILSRegister ();
+
+#ifdef HAS_HOWL
+  ZeroconfUpdate ();
+#endif
+
+  g_free (utf8_name);
+  g_free (utf8_app);
+  g_free (utf8_url);
+
+  PTRACE (3, "GMEndPoint\t Will establish the H.323/SIP connection");
+  OpalManager::OnEstablished (connection);
+}
+
+
+void
+GMEndPoint::OnReleased (OpalConnection & connection)
+{ 
   GtkWidget *calls_history_window = NULL;
   GtkWidget *main_window = NULL;
   GtkWidget *history_window = NULL;
@@ -1223,32 +872,43 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   IncomingCallMode icm = AVAILABLE;
 
-#ifdef HAS_IXJ
-  GMLid *l = NULL;
-#endif
-
   calls_history_window = GnomeMeeting::Process ()->GetCallsHistoryWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
   tray = GnomeMeeting::Process ()->GetTray ();
 
-
+  
+  /* Start time */
   if (connection.GetConnectionStartTime ().IsValid ())
     t = PTime () - connection.GetConnectionStartTime();
 
 
+  /* Do not update the current state if it is not the remote connection
+   * that is cleared.
+   */
+  if (PIsDescendant(&(connection), OpalPCSSConnection)) {
+    
+    PTRACE (3, "GMEndPoint\t Will release the PCSS connection");
+    OpalManager::OnReleased (connection);
+
+    return;
+  }
+  
+
+  
   /* Get config settings */
   gnomemeeting_threads_enter ();
   reg = gm_conf_get_bool (LDAP_KEY "enable_registering");
-  icm = (IncomingCallMode)gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
+  icm = (IncomingCallMode)
+    gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
   forward_on_busy = gm_conf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
   gnomemeeting_threads_leave ();
 
 
   /* If we are called because the current incoming call has ended and 
      not another call, ok, else do nothing */
-  if (GetCurrentCallToken () == clearedCallToken) {
+  if (GetCurrentCallToken () == connection.GetCall ().GetToken ()) {
 
     if (!GetTransferCallToken ().IsEmpty ()) {
 
@@ -1265,90 +925,90 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
     not_current = TRUE;
 
 
-
   switch (connection.GetCallEndReason ()) {
 
-  case H323Connection::EndedByLocalUser :
+  case OpalConnection::EndedByLocalUser :
     msg_reason = g_strdup (_("Local user cleared the call"));
     break;
-  case H323Connection::EndedByRemoteUser :
+  case OpalConnection::EndedByNoAccept :
+    msg_reason = g_strdup (_("Local user did not accept the call"));
+    break;
+  case OpalConnection::EndedByAnswerDenied :
+    msg_reason = g_strdup (_("Local user did not accept the call"));
+    break;
+  case OpalConnection::EndedByRemoteUser :
     msg_reason = g_strdup (_("Remote user cleared the call"));
     break;
-  case H323Connection::EndedByRefusal :
+  case OpalConnection::EndedByRefusal :
     msg_reason = g_strdup (_("Remote user did not accept the call"));
     break;
-  case H323Connection::EndedByNoAccept :
-    msg_reason = g_strdup (_("Local user did not accept the call"));
-    break;
-  case H323Connection::EndedByAnswerDenied :
-    msg_reason = g_strdup (_("Local user did not accept the call"));
-    break;
-  case H323Connection::EndedByGatekeeper :
-    msg_reason = g_strdup (_("The Gatekeeper cleared the call"));
-    break;
-  case H323Connection::EndedByNoAnswer :
+  case OpalConnection::EndedByNoAnswer :
     msg_reason = g_strdup (_("Call not answered in the required time"));
     break;
-  case H323Connection::EndedByCallerAbort :
+  case OpalConnection::EndedByCallerAbort :
     msg_reason = g_strdup (_("Remote user has stopped calling"));
     break;
-  case H323Connection::EndedByTransportFail :
+  case OpalConnection::EndedByTransportFail :
     msg_reason = g_strdup (_("Abnormal call termination"));
     break;
-  case H323Connection::EndedByConnectFail :
+  case OpalConnection::EndedByConnectFail :
     msg_reason = g_strdup (_("Could not connect to remote host"));
     break;
-  case H323Connection::EndedByNoBandwidth :
+  case OpalConnection::EndedByGatekeeper :
+    msg_reason = g_strdup (_("The Gatekeeper cleared the call"));
+    break;
+  case OpalConnection::EndedByNoUser :
+    msg_reason = g_strdup (_("User not found"));
+    break;
+  case OpalConnection::EndedByNoBandwidth :
     msg_reason = g_strdup (_("Insufficient bandwidth"));
     break;
-  case H323Connection::EndedByCapabilityExchange :
+  case OpalConnection::EndedByCapabilityExchange :
     msg_reason = g_strdup (_("No common codec"));
     break;
-  case H323Connection::EndedByCallForwarded :
+  case OpalConnection::EndedByCallForwarded :
     msg_reason = g_strdup (_("Call forwarded"));
     break;
-  case H323Connection::EndedBySecurityDenial :
+  case OpalConnection::EndedBySecurityDenial :
     msg_reason = g_strdup (_("Security check failed"));
     break;
-  case H323Connection::EndedByLocalBusy :
+  case OpalConnection::EndedByLocalBusy :
     msg_reason = g_strdup (_("Local user is busy"));
     break;
-  case H323Connection::EndedByRemoteBusy :
+  case OpalConnection::EndedByLocalCongestion :
+    msg_reason = g_strdup (_("Congested link to remote party"));
+    break;
+  case OpalConnection::EndedByRemoteBusy :
     msg_reason = g_strdup (_("Remote user is busy"));
     break;
-  case H323Connection::EndedByRemoteCongestion :
+  case OpalConnection::EndedByRemoteCongestion :
     msg_reason = g_strdup (_("Congested link to remote party"));
     break;
-  case H323Connection::EndedByLocalCongestion :
-    msg_reason = g_strdup (_("Congested link to remote party"));
-    break;
-  case H323Connection::EndedByUnreachable :
+  case OpalConnection::EndedByUnreachable :
     msg_reason = g_strdup (_("Remote user is unreachable"));
     break;
-  case H323Connection::EndedByNoEndPoint :
+  case OpalConnection::EndedByNoEndPoint :
     msg_reason = g_strdup (_("Remote user is unreachable"));
     break;
-  case H323Connection::EndedByHostOffline :
+  case OpalConnection::EndedByHostOffline :
     msg_reason = g_strdup (_("Remote host is offline"));
     break;
-  case H323Connection::EndedByTemporaryFailure :
+  case OpalConnection::EndedByTemporaryFailure :
     msg_reason = g_strdup (_("Temporary failure"));
-    break;
-  case H323Connection::EndedByNoUser :
-    msg_reason = g_strdup (_("User not found"));
     break;
 
   default :
     msg_reason = g_strdup (_("Call completed"));
   }
 
+  
   /* Update the calls history */
   GetRemoteConnectionInfo (connection, utf8_name, utf8_app, utf8_url);
-
+  
   gnomemeeting_threads_enter ();
   if (t.GetSeconds () == 0 
-      && connection.HadAnsweredCall ()
-      && connection.GetCallEndReason () != H323Connection::EndedByLocalUser) {
+      && GetLastCallAddress ().IsEmpty ()
+      && connection.GetCallEndReason () != OpalConnection::EndedByLocalUser) {
 
     gm_calls_history_add_call (MISSED_CALL, 
 			       utf8_name,
@@ -1360,7 +1020,6 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
     missed_calls++;
     mc_access_mutex.Signal ();
 
-    /* Translators, pay attention to the singular/plural distinction */
     gm_main_window_push_info_message (main_window, 
 				      ngettext ("Missed %d call",
 						"Missed %d calls",
@@ -1368,8 +1027,9 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 				      missed_calls);
   }
   else
-    if (connection.HadAnsweredCall ())
-      gm_calls_history_add_call (RECEIVED_CALL, utf8_name,
+    if (GetLastCallAddress ().IsEmpty ())
+      gm_calls_history_add_call (RECEIVED_CALL, 
+				 utf8_name,
 				 utf8_url,
 				 t.AsString (0),
 				 msg_reason,
@@ -1382,36 +1042,34 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 				 msg_reason,
 				 utf8_app);
 
-
   gm_history_window_insert (history_window, msg_reason);
   gnomemeeting_text_chat_call_stop_notification (chat_window);
   gm_main_window_flash_message (main_window, msg_reason);
   gnomemeeting_threads_leave ();
+  
   if (dispatcher)
-    g_signal_emit_by_name (dispatcher, "call-end",
-			   (const gchar *)clearedCallToken);
+    g_signal_emit_by_name (dispatcher, "call-end", 
+			   (const gchar *) connection.GetToken ());
 
   g_free (utf8_app);
   g_free (utf8_name);
   g_free (utf8_url);  
   g_free (msg_reason);
 
-  if (not_current) 
+
+  /* The call we released is not the current call */
+  if (not_current) {
+  
+    PTRACE (3, "GMEndPoint\t Will release a non current H.323/SIP connection");
+    OpalManager::OnReleased (connection);
+    
     return;
-
-
-  /* Stop the Timers */
-  NoAnswerTimer.Stop ();
-  CallPendingTimer.Stop (); 
-  OutgoingCallTimer.Stop ();
-  NoIncomingMediaTimer.Stop ();
+  }
   
 
-  /* Play busy tone if it is not a missed call */
-  sound_event_mutex.Wait ();
-  if (!(t.GetSeconds () == 0 && connection.HadAnsweredCall ()))
-    GMSoundEvent ("busy_tone_sound");
-  sound_event_mutex.Signal ();
+  /* Stop the Timers */
+  OutgoingCallTimer.Stop ();
+  NoIncomingMediaTimer.Stop ();
 
   
   /* Update the main window */
@@ -1421,49 +1079,30 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   gnomemeeting_threads_leave ();
   
 
-  /* Play Busy Tone */
-#ifdef HAS_IXJ
-  l = GetLid ();
-  
-  if (l) {
-
-    l->UpdateState (GMH323EndPoint::Standby);
-    l->Unlock ();
-  }
-#endif
-
   /* we reset the no-data detection */
   RTPTimer.Stop ();
-  last_audio_octets_received = 0;
-  last_video_octets_received = 0;
-  last_audio_octets_transmitted = 0;
-  last_video_octets_transmitted = 0;
+  stats.Reset ();
 
-  /* We update the stats part */  
+
+  /* Update the various parts of the GUI */
   gnomemeeting_threads_enter ();
-
-  audio_reception_popup = NULL;
-  audio_transmission_popup = NULL;
-
-  
-  /* We update the GUI */
   gm_main_window_set_stay_on_top (main_window, FALSE);
-  gm_main_window_update_calling_state (main_window, GMH323EndPoint::Standby);
-  gm_tray_update_calling_state (tray, GMH323EndPoint::Standby);
-  gm_tray_update (tray, GMH323EndPoint::Standby, icm, forward_on_busy);
+  gm_main_window_update_calling_state (main_window, GMEndPoint::Standby);
+  gm_tray_update_calling_state (tray, GMEndPoint::Standby);
+  gm_tray_update (tray, GMEndPoint::Standby, icm, forward_on_busy);
   gnomemeeting_threads_leave ();
   
   gnomemeeting_sound_daemons_resume ();
 
   
   /* Update internal state */
-  SetCallingState (GMH323EndPoint::Standby);
+  SetCallingState (GMEndPoint::Standby);
 
 
   /* No need to do all that if we are simply receiving an incoming call
      that was rejected because of DND */
-  if (GetCallingState () != GMH323EndPoint::Called
-      && GetCallingState () != GMH323EndPoint::Calling) {
+  if (GetCallingState () != GMEndPoint::Called
+      && GetCallingState () != GMEndPoint::Calling) {
 
     /* Update ILS if needed */
     if (reg)
@@ -1478,11 +1117,14 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   /* Try to update the devices use if some settings were changed 
      during the call */
   UpdateDevices ();
+  
+  PTRACE (3, "GMEndPoint\t Will release the current H.323/SIP connection");
+  OpalManager::OnReleased (connection);
 }
 
 
 void 
-GMH323EndPoint::SavePicture (void)
+GMEndPoint::SavePicture (void)
 { 
   PTime ts = PTime ();
   
@@ -1515,58 +1157,37 @@ GMH323EndPoint::SavePicture (void)
 
 
 void
-GMH323EndPoint::SetUserNameAndAlias ()
+GMEndPoint::SetUserNameAndAlias ()
 {
   gchar *firstname = NULL;
   gchar *lastname = NULL;
   gchar *local_name = NULL;
-  gchar *alias = NULL;
-  BOOL gk_alias_as_first = FALSE;
-
   
-  /* Set the local User name */
+  
   gnomemeeting_threads_enter ();
   firstname = gm_conf_get_string (PERSONAL_DATA_KEY "firstname");
   lastname = gm_conf_get_string (PERSONAL_DATA_KEY "lastname");
-  alias = gm_conf_get_string (H323_GATEKEEPER_KEY "alias");  
-  gk_alias_as_first =
-    gm_conf_get_bool (H323_GATEKEEPER_KEY "register_alias_as_primary");  
   gnomemeeting_threads_leave ();
 
   
-  if (firstname && lastname && strcmp (firstname, ""))  { 
+  if (!PString (firstname).IsEmpty ())  { 
 
-    if (strcmp (lastname, ""))
+    if (!PString (lastname).IsEmpty ())
       local_name = g_strconcat (firstname, " ", lastname, NULL);
     else
       local_name = g_strdup (firstname);
 
-    SetLocalUserName (local_name);
+    SetDefaultDisplayName (local_name);
   }
-
-  if (alias && strcmp (alias, "")) {
-
-    if (!gk_alias_as_first)
-      AddAliasName (alias);
-    else {
-
-      SetLocalUserName (alias);
-
-      if (local_name && strcmp (local_name, ""))
-	AddAliasName (local_name);
-    }
-  }
-
   
-  g_free (alias);
-  g_free (firstname);
-  g_free (lastname);
-  g_free (local_name);
+  
+  /* Update the H.323 endpoint user name and alias */
+  h323EP->SetUserNameAndAlias ();
 }
 
 
 void
-GMH323EndPoint::SetPorts ()
+GMEndPoint::SetPorts ()
 {
   gchar *rtp_port_range = NULL;
   gchar *udp_port_range = NULL;
@@ -1618,55 +1239,101 @@ GMH323EndPoint::SetPorts ()
 
 
 void
-GMH323EndPoint::Init ()
+GMEndPoint::Init ()
 {
   GtkWidget *main_window = NULL;
+
+  OpalSilenceDetector::Params sd;
   
   gchar *stun_server = NULL;
   
-  stun_server = gm_conf_get_string (NAT_KEY "stun_server");
-
-
+  int min_jitter = 20;
+  int max_jitter = 500;
+  
+  gboolean stun_support = FALSE;
+  gboolean ils_registering = FALSE;
+  gboolean enable_sd = TRUE;  
+  
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
+  
+
+  /* GmConf cache */
+  gnomemeeting_threads_enter ();
+  stun_server = gm_conf_get_string (NAT_KEY "stun_server");
+  ils_registering = gm_conf_get_bool (LDAP_KEY "enable_registering");
+  stun_support = gm_conf_get_bool (NAT_KEY "enable_stun_support");
+  min_jitter = gm_conf_get_int (AUDIO_CODECS_KEY "minimum_jitter_buffer");
+  max_jitter = gm_conf_get_int (AUDIO_CODECS_KEY "maximum_jitter_buffer");
+  enable_sd = gm_conf_get_bool (AUDIO_CODECS_KEY "enable_silence_detection");
+  gnomemeeting_threads_leave ();
+
 
   
   /* Update the internal state */
-  autoStartTransmitVideo =
-    gm_conf_get_bool (VIDEO_CODECS_KEY "enable_video_transmission");
-  autoStartReceiveVideo =
-    gm_conf_get_bool (VIDEO_CODECS_KEY "enable_video_reception");
+  /* FIXME */
+  autoStartTransmitVideo = FALSE;
+    //gm_conf_get_bool (VIDEO_CODECS_KEY "enable_video_transmission");
+  autoStartReceiveVideo = FALSE;
+    //gm_conf_get_bool (VIDEO_CODECS_KEY "enable_video_reception");
 
-  disableH245Tunneling = !gm_conf_get_bool (H323_ADVANCED_KEY "enable_h245_tunneling");
-  disableFastStart = !gm_conf_get_bool (H323_ADVANCED_KEY "enable_fast_start");
-  disableH245inSetup = !gm_conf_get_bool (H323_ADVANCED_KEY "enable_early_h245");
+  
+  /* H.323 EndPoint */
+  h323EP = new GMH323EndPoint (*this);
+  h323EP->Init ();
+  AddRouteEntry("pc:.*             = h323:<da>");
+	
     
+
+  /* PC Sound System EndPoint */
+  pcssEP = new GMPCSSEndPoint (*this);
+  AddRouteEntry("h323:.* = pc:<da>");
+  
+
+  /* Jitter buffer */
+  SetAudioJitterDelay (PMAX (min_jitter, 20), PMIN (max_jitter, 1000));
+  
+
+  /* Silence Detection */
+  sd = GetSilenceDetectParams ();
+  if (enable_sd)
+    sd.m_mode = OpalSilenceDetector::AdaptiveSilenceDetection;
+  else
+    sd.m_mode = OpalSilenceDetector::NoSilenceDetection;
+  SetSilenceDetectParams (sd);
+  
+
   /* Setup ports */
   SetPorts ();
+  
   
   /* Update general devices configuration */
   UpdateDevices ();
   
+  
   /* Set the User Name and Alias */  
   SetUserNameAndAlias ();
 
+  
   /* Add capabilities */
-  AddAllCapabilities ();
+  //FIXME AddAllCapabilities ();
 
-  /* Register to gatekeeper */
-  if (gm_conf_get_int (H323_GATEKEEPER_KEY "registering_method"))
-    GatekeeperRegister ();
 
   /* The LDAP part, if needed */
-  if (gm_conf_get_bool (LDAP_KEY "enable_registering"))
+  if (ils_registering)
     ILSRegister ();
   
   
-  if (!StartListener ()) 
-    gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Error while starting the listener"), _("You will not be able to receive incoming calls. Please check that no other program is already running on the port used by GnomeMeeting."));
+  /* Set the STUN Server */
+  if (stun_support) 
+    SetSTUNServer ();
 
   
-  if (gm_conf_get_bool (NAT_KEY "enable_stun_support")) 
-    SetSTUNServer ();
+#ifdef HAS_HOWL
+  zcp_access_mutex.Wait ();
+  zcp = new GMZeroconfPublisher ();
+  ZeroconfUpdate ();
+  zcp_access_mutex.Signal ();
+#endif
 
   
 #ifdef HAS_HOWL
@@ -1682,7 +1349,7 @@ GMH323EndPoint::Init ()
 
 
 void
-GMH323EndPoint::OnNoIncomingMediaTimeout (PTimer &,
+GMEndPoint::OnNoIncomingMediaTimeout (PTimer &,
 					  INT)
 {
   if (gm_conf_get_bool (CALL_OPTIONS_KEY "clear_inactive_calls"))
@@ -1691,7 +1358,7 @@ GMH323EndPoint::OnNoIncomingMediaTimeout (PTimer &,
 
 
 void 
-GMH323EndPoint::OnILSTimeout (PTimer &,
+GMEndPoint::OnILSTimeout (PTimer &,
 			      INT)
 {
   PWaitAndSignal m(ils_access_mutex);
@@ -1743,171 +1410,18 @@ GMH323EndPoint::OnILSTimeout (PTimer &,
 }
 
 
-BOOL 
-GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
-				  BOOL is_encoding,
-				  unsigned bufferSize,
-				  H323AudioCodec & codec)
-{
-  GtkWidget *main_window = NULL;
-  GtkWidget *history_window = NULL;
-  
-  PSoundChannel *sound_channel = NULL;
-  
-  PString plugin;
-  PString device;
-  
-  unsigned int vol = 0;
-
-  BOOL sd = FALSE;
-  BOOL no_error = TRUE;
-
-  
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
-
-  
-  PWaitAndSignal m(audio_channel_mutex);
-
-  /* Wait that the primary call has terminated (in case of transfer)
-     before opening the channels for the second call */
-  TransferCallWait ();
-
-
-  /* Stop the OnNoAnswerTimers */
-  NoAnswerTimer.Stop ();
-  CallPendingTimer.Stop ();
-  OutgoingCallTimer.Stop ();
-  
-  
-  gnomemeeting_threads_enter ();
-  sd = gm_conf_get_bool (AUDIO_CODECS_KEY "enable_silence_detection");
-  gnomemeeting_threads_leave ();
-
-  if (is_encoding) 
-    codec.SetSilenceDetectionMode (!sd ?
-				   H323AudioCodec::NoSilenceDetection :
-				   H323AudioCodec::AdaptiveSilenceDetection);
-  
-
-  /* Suspend the daemons */
-  gnomemeeting_sound_daemons_suspend ();
-
-#ifdef HAS_IXJ
-  GMLid *l = NULL;
-
-  /* If we are using a hardware LID, connect the audio stream to the LID */
-  if ((l = GetLid ()) && l->IsOpen()) {
-
-    lid->StopTone (0);
-      
-    if (!codec.AttachChannel (new OpalLineChannel (*l, OpalIxJDevice::POTSLine, codec))) {
-
-      l->Unlock ();
-
-      return FALSE;
-    }
-    else
-      if (l)
-	l->Unlock ();
-
-    gnomemeeting_threads_enter ();
-    gm_history_window_insert (history_window,
-			      _("Attaching lid hardware to codec"));
-    gnomemeeting_threads_leave ();
-  }
-  else
-#endif
-    {   
-      gnomemeeting_threads_enter ();
-      plugin = gm_conf_get_string (AUDIO_DEVICES_KEY "plugin");
-      if (is_encoding)
-	device = gm_conf_get_string (AUDIO_DEVICES_KEY "input_device");
-      else
-	device = gm_conf_get_string (AUDIO_DEVICES_KEY "output_device");
-      gnomemeeting_threads_leave ();
-
-      if (device.Find (_("No device found")) == P_MAX_INDEX) {
-
-	sound_event_mutex.Wait ();
-	sound_channel = 
-	  PSoundChannel::CreateOpenedChannel (plugin,
-					      device,
-					      is_encoding ?
-					      PSoundChannel::Recorder
-					      : PSoundChannel::Player, 
-					      1, 8000, 16);
-	sound_event_mutex.Signal ();
-
-       
-	if (sound_channel) {
-
-	  /* Translators : the full sentence is "Opening %s for playing with
-	     plugin %s" or "Opening %s for recording with plugin" */
-
-	  gnomemeeting_threads_enter ();
-	  gm_history_window_insert (history_window, is_encoding ?
-				    _("Opened %s for recording with plugin %s")
-				    : _("Opened %s for playing with plugin %s"),
-				    (const char *) device, 
-				    (const char *) plugin);
-	  gnomemeeting_threads_leave ();
-
-	  /* Control the channel and attach it to the codec, do not
-	     auto delete it */
-	  sound_channel->SetBuffers (bufferSize, soundChannelBuffers);
-	  no_error = codec.AttachChannel (sound_channel);
-
-	  /* Update the volume sliders */
-	  GetDeviceVolume (sound_channel, is_encoding, vol);
-	  gnomemeeting_threads_enter ();
-	  gm_main_window_set_volume_sliders_values (main_window, 
-						    is_encoding?-1:(int) vol,
-						    !is_encoding?-1:(int) vol);
-	  gnomemeeting_threads_leave ();
-	}
-	else
-	  no_error = FALSE; /* No PSoundChannel */
-      }
-      else {
-
-	return FALSE; /* Device was _("No device found"), ignore, no popup */
-      }
-    }
-
-  
-  if (!no_error) {
-
-    gnomemeeting_threads_enter ();
-
-    if (is_encoding) {
-
-      if (!audio_transmission_popup)
-	audio_transmission_popup =
-	  gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Could not open audio channel for audio transmission"), _("An error occured while trying to record from the soundcard for the audio transmission. Please check that your soundcard is not busy and that your driver supports full-duplex.\nThe audio transmission has been disabled."));
-    }
-    else
-      if (!audio_reception_popup)
-	audio_reception_popup =
-	  gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Could not open audio channel for audio reception"), _("An error occured while trying to play audio to the soundcard for the audio reception. Please check that your soundcard is not busy and that your driver supports full-duplex.\nThe audio reception has been disabled."));
-    gnomemeeting_threads_leave ();
-  }
-    
-  return no_error;
-}
-
 
 BOOL
-GMH323EndPoint::SetDeviceVolume (PSoundChannel *sound_channel,
-                                 BOOL is_encoding,
-                                 unsigned int vol)
+GMEndPoint::SetDeviceVolume (PSoundChannel *sound_channel,
+			     BOOL is_encoding,
+			     unsigned int vol)
 {
   return DeviceVolume (sound_channel, is_encoding, TRUE, vol);
 }
 
 
 BOOL
-GMH323EndPoint::GetDeviceVolume (PSoundChannel *sound_channel,
+GMEndPoint::GetDeviceVolume (PSoundChannel *sound_channel,
                                  BOOL is_encoding,
                                  unsigned int &vol)
 {
@@ -1915,10 +1429,165 @@ GMH323EndPoint::GetDeviceVolume (PSoundChannel *sound_channel,
 }
 
 
+void
+GMEndPoint::OnClosedMediaStream (OpalMediaStream & stream)
+{
+  OpalManager::OnClosedMediaStream (stream);
+
+  OnMediaStream (stream, TRUE);
+}
+
+
 BOOL 
-GMH323EndPoint::StartLogicalChannel (const PString & capability_name,
-				     unsigned id, 
-				     BOOL from_remote)
+GMEndPoint::OnOpenMediaStream (OpalConnection & connection,
+			       OpalMediaStream & stream)
+{
+  if (!OpalManager::OnOpenMediaStream (connection, stream))
+    return FALSE;
+
+  OnMediaStream (stream, FALSE);
+
+  return TRUE;
+}
+
+
+BOOL 
+GMEndPoint::OnMediaStream (OpalMediaStream & stream,
+			   BOOL is_closing)
+{
+  GtkWidget *history_window = NULL;
+  GtkWidget *main_window = NULL;
+  
+  PString codec_name;
+  BOOL is_encoding = FALSE;
+  BOOL is_video = FALSE;
+  BOOL preview = FALSE;
+  
+  gchar *msg = NULL;
+
+
+  /* Get the data */
+  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+
+  
+  is_video = (stream.GetSessionID () == OpalMediaFormat::DefaultVideoSessionID);
+  is_encoding = stream.IsSource ();
+  codec_name = PString (stream.GetMediaFormat ());
+
+  gnomemeeting_threads_enter ();
+  preview = gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview");
+  gnomemeeting_threads_leave ();
+
+  if (is_video) {
+    
+    is_closing ?
+      (is_encoding ? is_transmitting_video = FALSE:is_receiving_video = FALSE)
+      :(is_encoding ? is_transmitting_video = TRUE:is_receiving_video = TRUE);
+  }
+  else {
+    
+    is_closing ?
+      (is_encoding ? is_transmitting_audio = FALSE:is_receiving_audio = FALSE)
+      :(is_encoding ? is_transmitting_audio = TRUE:is_receiving_audio = TRUE);
+  }
+
+  
+  /* Do not optimize, easier for translators */
+  if (is_encoding)
+    if (!is_closing)
+      msg = g_strdup_printf (_("Opened codec %s for transmission"),
+			     (const char *) codec_name);
+    else
+      msg = g_strdup_printf (_("Closed codec %s which was opened for transmission"),
+			     (const char *) codec_name);
+  else
+    if (!is_closing)
+      msg = g_strdup_printf (_("Opened codec %s for reception"),
+			     (const char *) codec_name);
+    else
+      msg = g_strdup_printf (_("Closed codec %s which was opened for reception"),
+			     (const char *) codec_name);
+
+
+  /* Update the GUI and menus wrt opened channels */
+  gnomemeeting_threads_enter ();
+  gm_history_window_insert (history_window, msg);
+  gm_main_window_update_sensitivity (main_window, is_video, is_video?is_receiving_video:is_receiving_audio, is_video?is_transmitting_video:is_transmitting_audio);
+  if (!is_receiving_video && !is_transmitting_video && !preview)
+    gm_main_window_update_logo (main_window);
+  gm_main_window_set_channel_pause (main_window, FALSE, is_video);
+  gnomemeeting_threads_leave ();
+  
+  g_free (msg);
+    
+  return TRUE;
+}
+
+
+void 
+GMEndPoint::UpdateRTPStats (PTime start_time,
+			    const RTP_Session & session)
+{
+  PTimeInterval t;
+  PTime now;
+  
+  int elapsed_seconds = 0;
+  int re_bytes = 0;
+  int tr_bytes = 0;
+
+
+  t = now - stats.last_tick;
+  elapsed_seconds = t.GetSeconds ();
+
+  PWaitAndSignal m(stats_access_mutex);
+
+  
+  if (elapsed_seconds > 1) { /* To get more precision */
+
+    re_bytes = session.GetOctetsReceived ();
+    tr_bytes = session.GetOctetsSent ();
+
+    if (session.GetSessionID () == OpalMediaFormat::DefaultAudioSessionID) {
+
+      stats.a_re_bandwidth = (re_bytes - stats.re_a_bytes) 
+	/ (1024.0 * elapsed_seconds);
+      stats.a_tr_bandwidth = (tr_bytes - stats.tr_a_bytes) 
+	/ (1024.0 * elapsed_seconds);
+
+      stats.jitter_buffer_size = session.GetJitterBufferSize ();
+
+      stats.re_a_bytes = re_bytes;
+      stats.tr_a_bytes = tr_bytes;
+    }
+    else if (session.GetSessionID () 
+	     == OpalMediaFormat::DefaultVideoSessionID) {
+
+      stats.v_re_bandwidth = (re_bytes - stats.re_v_bytes) 
+	/ (1024.0 * elapsed_seconds);
+      stats.v_tr_bandwidth = (tr_bytes - stats.tr_v_bytes) 
+	/ (1024.0 * elapsed_seconds);
+
+      stats.re_v_bytes = re_bytes;
+      stats.tr_a_bytes = tr_bytes;
+    }
+
+    stats.total_packets += session.GetPacketsReceived ();
+    stats.lost_packets += session.GetPacketsLost ();
+    stats.late_packets += session.GetPacketsTooLate ();
+    stats.out_of_order_packets += session.GetPacketsOutOfOrder ();
+    
+    stats.last_tick = now;
+    stats.start_time = start_time;
+  }
+}
+
+
+/*
+BOOL 
+GMEndPoint::StartLogicalChannel (const PString & capability_name,
+				 unsigned id, 
+				 BOOL from_remote)
 {
   H323Connection *con = NULL;
   H323Channel *channel = NULL;
@@ -1951,13 +1620,17 @@ GMH323EndPoint::StartLogicalChannel (const PString & capability_name,
     con->Unlock ();
   }
 
-    
+   
   return no_error;
+  //FIXME
+  return TRUE;
 }
+*/
 
 
+/*
 BOOL 
-GMH323EndPoint::StopLogicalChannel (unsigned id, 
+GMEndPoint::StopLogicalChannel (unsigned id, 
 				    BOOL from_remote)
 {
   H323Connection *con = NULL;
@@ -1982,140 +1655,68 @@ GMH323EndPoint::StopLogicalChannel (unsigned id,
   }
 
   return no_error;
+
+  //FIXME
+  return TRUE;
 }
+*/
 
 
 void 
-GMH323EndPoint::OnRTPTimeout (PTimer &, INT)
+GMEndPoint::OnRTPTimeout (PTimer &, 
+			  INT)
 {
   GtkWidget *main_window = NULL;
   
-  int rtt = 0;
-  int jitter_buffer_size = 0;
-  RTP_Session *audio_session = NULL;
-  RTP_Session *video_session = NULL;
-
-  H323Connection *con = NULL;
-
   gchar *msg = NULL;
-
-  int received_packets = 0;
-  int lost_packets = 0;
-  int late_packets = 0;
-  float lost_packets_per = 0.0;
-  float late_packets_per = 0.0;
-
-  int new_audio_octets_received = 0;
-  int new_video_octets_received = 0;
-  int new_audio_octets_transmitted = 0;
-  int new_video_octets_transmitted = 0;
-  float received_audio_speed = 0;
-  float received_video_speed = 0;
-  float transmitted_audio_speed = 0;
-  float transmitted_video_speed = 0;
-
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-
-  con = FindConnectionWithLock (GetCurrentCallToken ());
-
-  if (!con)
-    return;
-
-  if (con->GetConnectionStartTime () == PTime (0)) {
-
-    con->Unlock ();
-    return;
-  }
-
-  PTimeInterval t =
-    PTime () - con->GetConnectionStartTime();
-
-  audio_session = 
-    con->GetSession(RTP_Session::DefaultAudioSessionID);	  
-  video_session = 
-    con->GetSession(RTP_Session::DefaultVideoSessionID);
-
-	  
-  if (audio_session) {
-    new_audio_octets_received = audio_session->GetOctetsReceived();
-    new_audio_octets_transmitted = audio_session->GetOctetsSent();
-  } else {
-    new_audio_octets_received = last_audio_octets_received;
-    new_audio_octets_transmitted = last_audio_octets_transmitted;
-  }
-  received_audio_speed = (float) (new_audio_octets_received
-				  - last_audio_octets_received)/ 1024;
-  transmitted_audio_speed = (float) (new_audio_octets_transmitted
-				     - last_audio_octets_transmitted)/ 1024;
-
-
-  if (video_session) {
-    new_video_octets_received = video_session->GetOctetsReceived();
-    new_video_octets_transmitted = video_session->GetOctetsSent();
-  } else {
-    new_video_octets_received = last_video_octets_received;
-    new_video_octets_transmitted = last_video_octets_transmitted;
-  }
-  received_video_speed = (float) (new_video_octets_received
-				  - last_video_octets_received)/ 1024;
-  transmitted_video_speed = (float) (new_video_octets_transmitted
-				     - last_video_octets_transmitted)/ 1024;
-
+	
+  float lost_packets_per = 0;
+  float late_packets_per = 0;
+  float out_of_order_packets_per = 0;
+  
   
   /* If we didn't receive any audio and video data this time,
      then we start the timer */
-  if (new_audio_octets_received == last_audio_octets_received
+  /*if (new_audio_octets_received == last_audio_octets_received
       && new_video_octets_received == last_video_octets_received) {
-    
+
     if (!NoIncomingMediaTimer.IsRunning ()) 
       NoIncomingMediaTimer.SetInterval (0, 30);
   }
   else
     NoIncomingMediaTimer.Stop ();
-  
-  last_audio_octets_received = new_audio_octets_received;
-  last_video_octets_received = new_video_octets_received;
-  last_audio_octets_transmitted = new_audio_octets_transmitted;
-  last_video_octets_transmitted = new_video_octets_transmitted;
+  */
+//FIXME above
+
+  PTimeInterval t;
+
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+
+  PWaitAndSignal m(stats_access_mutex);
+
+  if (stats.start_time.IsValid ())
+    t = PTime () - stats.start_time;
 
   msg = g_strdup_printf 
     (_("%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"), 
      (long) t.GetHours (), (long) (t.GetMinutes () % 60), 
      (long) (t.GetSeconds () % 60),
-     transmitted_audio_speed, received_audio_speed,
-     transmitted_video_speed, received_video_speed);
+     stats.a_tr_bandwidth, stats.a_re_bandwidth, 
+     stats.v_tr_bandwidth, stats.v_tr_bandwidth);
 	
+  
+  if (stats.total_packets > 0) {
 
-  if (audio_session) {
-
-    received_packets = audio_session->GetPacketsReceived ();
-    lost_packets = audio_session->GetPacketsLost ();
-    late_packets = audio_session->GetPacketsTooLate ();
-	
-    jitter_buffer_size = audio_session->GetJitterBufferSize ();
-  }
-	
-  if (video_session) {
-
-    received_packets =
-      received_packets + video_session->GetPacketsReceived ();
-    lost_packets = lost_packets+video_session->GetPacketsLost ();
-    late_packets = late_packets+video_session->GetPacketsTooLate ();
-  }
-
-  if (received_packets > 0) {
-
-    lost_packets_per = ((float) lost_packets * 100.0
-			/ (float) received_packets);
-    late_packets_per = ((float) late_packets * 100.0
-			/ (float) received_packets);
+    lost_packets_per = ((float) stats.lost_packets * 100.0
+			/ (float) stats.total_packets);
+    late_packets_per = ((float) stats.late_packets * 100.0
+			/ (float) stats.total_packets);
+    out_of_order_packets_per = ((float) stats.out_of_order_packets * 100.0
+				/ (float) stats.total_packets);
     lost_packets_per = PMIN (100, PMAX (0, lost_packets_per));
     late_packets_per = PMIN (100, PMAX (0, late_packets_per));
+    out_of_order_packets_per = PMIN (100, PMAX (0, out_of_order_packets_per));
   }
-
-  rtt = con->GetRoundTripDelay().GetMilliSeconds();
-      
-  con->Unlock ();
 
 
   gdk_threads_enter ();
@@ -2124,16 +1725,14 @@ GMH323EndPoint::OnRTPTimeout (PTimer &, INT)
   if (gm_conf_get_int (USER_INTERFACE_KEY "main_window/control_panel_section") 
       == 0)
     gm_main_window_update_stats (main_window,
-			     lost_packets_per,
-			     late_packets_per,
-			     (int) rtt,
-			     (int) (jitter_buffer_size / 8),
-			     new_video_octets_received,
-			     new_video_octets_transmitted,
-			     new_audio_octets_received,
-			     new_audio_octets_transmitted);
-      
-
+				 lost_packets_per,
+				 late_packets_per,
+				 out_of_order_packets_per,
+				 (int) (stats.jitter_buffer_size / 8),
+				 stats.v_re_bandwidth,
+				 stats.v_tr_bandwidth,
+				 stats.a_re_bandwidth,
+				 stats.a_tr_bandwidth);
   gdk_threads_leave ();
 
 
@@ -2142,7 +1741,7 @@ GMH323EndPoint::OnRTPTimeout (PTimer &, INT)
 
 
 PString
-GMH323EndPoint::CheckTCPPorts ()
+GMEndPoint::CheckTCPPorts ()
 {
   PHTTPClient web_client ("GnomeMeeting");
   PString html;
@@ -2160,7 +1759,7 @@ GMH323EndPoint::CheckTCPPorts ()
 
 
 void 
-GMH323EndPoint::OnGatewayIPTimeout (PTimer &,
+GMEndPoint::OnGatewayIPTimeout (PTimer &,
 				    INT)
 {
   PHTTPClient web_client ("GnomeMeeting");
@@ -2202,107 +1801,10 @@ GMH323EndPoint::OnGatewayIPTimeout (PTimer &,
 
 
 void
-GMH323EndPoint::OnNoAnswerTimeout (PTimer &,
-				   INT) 
+GMEndPoint::OnOutgoingCall (PTimer &,
+			    INT) 
 {
-  GtkWidget *main_window = NULL;
-  GtkWidget *history_window = NULL;
-
-  
-  H323Connection *connection = NULL;
-  
-  gchar *forward_host_conf = NULL;
-  
-  PString forward_host;
-
-  gboolean no_answer_forward = FALSE;
-  
-  
-  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-
-
-  gdk_threads_enter ();
-  
-  /* Forwarding on no answer */
-  no_answer_forward = 
-    gm_conf_get_bool (CALL_FORWARDING_KEY "forward_on_no_answer");
-  forward_host_conf = 
-    gm_conf_get_string (CALL_FORWARDING_KEY "forward_host");
-
-  if (forward_host_conf)
-    forward_host = PString (forward_host_conf);
-  else
-    forward_host = PString ("");
-
-  gdk_threads_leave ();
-
-
-  /* If forward host specified and forward requested */
-  if (!forward_host.IsEmpty () && no_answer_forward) {
-
-    connection = FindConnectionWithLock (GetCurrentCallToken ());
-
-    if (connection) {
-      
-      connection->ForwardCall (PString ((const char *) forward_host));
-
-      gdk_threads_enter ();
-      gm_history_window_insert (history_window,
-			       _("Forwarding Call to %s (No Answer)"), 
-			       (const char *) forward_host);
-
-      gm_main_window_flash_message (main_window, _("Call forwarded"));
-      gdk_threads_leave ();
-
-      connection->Unlock ();
-    }
-  }
-  else {
-
-    if (GetCallingState () == GMH323EndPoint::Called) 
-      ClearAllCalls (H323Connection::EndedByNoAnswer, FALSE);
-  }
-  g_free (forward_host_conf);
-}
-
-
-void
-GMH323EndPoint::OnCallPending (PTimer &,
-			       INT) 
-{
-  GtkWidget *tray = NULL;
-  
-  BOOL is_ringing = FALSE;
-
-  tray = GnomeMeeting::Process ()->GetTray ();
-
-
-  gdk_threads_enter ();
-  gm_tray_ring (tray);
-  is_ringing = gm_tray_is_ringing (tray);
-  gdk_threads_leave ();
-
-  
-  if (is_ringing) {
-
-    sound_event_mutex.Wait ();
-    GMSoundEvent ("incoming_call_sound");
-    sound_event_mutex.Signal ();
-  }
-
-  if (CallPendingTimer.IsRunning ())
-    CallPendingTimer.RunContinuous (PTimeInterval (0, 1));
-}
-
-
-void
-GMH323EndPoint::OnOutgoingCall (PTimer &,
-				INT) 
-{
-  sound_event_mutex.Wait ();
-  GMSoundEvent ("ring_tone_sound");
-  sound_event_mutex.Signal ();
+  pcssEP->PlaySoundEvent ("ring_tone_sound");
 
   if (OutgoingCallTimer.IsRunning ())
     OutgoingCallTimer.RunContinuous (PTimeInterval (0, 3));
@@ -2310,70 +1812,37 @@ GMH323EndPoint::OnOutgoingCall (PTimer &,
 
 
 BOOL 
-GMH323EndPoint::DeviceVolume (PSoundChannel *sound_channel,
-                              BOOL is_encoding,
-                              BOOL set, 
-			      unsigned int &vol) 
+GMEndPoint::DeviceVolume (PSoundChannel *sound_channel,
+			  BOOL is_encoding,
+			  BOOL set, 
+			  unsigned int &vol) 
 {
-  H323Connection *con = NULL;
-
-#ifdef HAS_IXJ
-  GMLid *l = NULL;
-#endif
-
   BOOL err = TRUE;
-  PString call_token;
 
-  call_token = GetCurrentCallToken ();
+  if (sound_channel && GetCallingState () == GMEndPoint::Connected) {
 
-  con = FindConnectionWithLock (call_token);
-
-  if (con) {
-
-#ifdef HAS_IXJ
+    
     if (set) {
 
-      l = GetLid ();
-      if (l) {
-
-        l->SetVolume (is_encoding, vol);
-        l->Unlock ();
-
-        con->Unlock ();
-
-        return TRUE; /* Ignore the sound channel if a LID is used. Hopefully,
-                        OpenH323 will be fixed soon */
-      }
+      err = 
+	sound_channel->SetVolume (vol)
+	&& err;
     }
-#endif
+    else {
 
-
-    /* TRUE = from_remote = playing */
-    if (sound_channel) {
-
-      if (set) {
-
-        err = 
-          sound_channel->SetVolume (vol)
-          && err;
-      }
-      else {
-
-        err = 
-          sound_channel->GetVolume (vol)
-          && err;
-      }
+      err = 
+	sound_channel->GetVolume (vol)
+	&& err;
     }
-
-    con->Unlock ();
   }
 
   return err;
 }
 
 
+/*
 BOOL 
-GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
+GMEndPoint::OpenVideoChannel (H323Connection & connection,
                                   BOOL is_encoding, 
                                   H323VideoCodec & codec)
 {
@@ -2390,18 +1859,18 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
   BOOL result = FALSE;
 
   PWaitAndSignal m(video_channel_mutex);
-  
+*/  
   /* Wait that the primary call has terminated (in case of transfer)
      before opening the channels for the second call */
-  TransferCallWait ();
+  /*TransferCallWait ();
 
-
+*/
   /* Stop the OnNoAnswerTimers */
-  NoAnswerTimer.Stop ();
+  /*NoAnswerTimer.Stop ();
   CallPendingTimer.Stop ();
-
+*/
   /* Transmitting */
-  if (is_encoding && autoStartTransmitVideo) {
+  /*if (is_encoding && autoStartTransmitVideo) {
 
     gnomemeeting_threads_enter ();
     vq = gm_conf_get_int (VIDEO_CODECS_KEY "transmitted_video_quality");
@@ -2409,26 +1878,26 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
     bitrate = gm_conf_get_int (VIDEO_CODECS_KEY "maximum_video_bandwidth");
     tr_fps = gm_conf_get_int (VIDEO_CODECS_KEY "transmitted_fps");
     gnomemeeting_threads_leave ();
-
+*/
 
     /* Will update the codec settings */
-    vq = 25 - (int) ((double) vq / 100 * 24);
+  //  vq = 25 - (int) ((double) vq / 100 * 24);
 
     
     /* The maximum quality corresponds to the lowest quality indice, 1
        and the lowest quality corresponds to 24 */
-    codec.SetTxQualityLevel (vq);
+    /*codec.SetTxQualityLevel (vq);
     codec.SetBackgroundFill (bf);   
     codec.SetMaxBitRate (bitrate * 8 * 1024);
     codec.SetTargetFrameTimeMs (0);
     codec.SetVideoMode (H323VideoCodec::AdaptivePacketDelay |
 			codec.GetVideoMode());
-
+*/
     /* Needed to be able to stop start the channel on-the-fly. When
      * the channel has been closed, the rawdata channel has been closed
      * too but not deleted. We delete it now.
      */
-    vg = GetVideoGrabber ();
+  /*  vg = GetVideoGrabber ();
     if (!vg || !vg->IsChannelOpen ()) {
 
       CreateVideoGrabber (FALSE, TRUE);
@@ -2476,11 +1945,13 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 
   return FALSE;
 }
+//FIXME
+*/
 
 
 #ifdef HAS_IXJ
 GMLid *
-GMH323EndPoint::GetLid (void)
+GMEndPoint::GetLid (void)
 {
   PWaitAndSignal m(lid_access_mutex);
     
@@ -2492,7 +1963,7 @@ GMH323EndPoint::GetLid (void)
 
 
 GMLid *
-GMH323EndPoint::CreateLid (PString lid_device)
+GMEndPoint::CreateLid (PString lid_device)
 {
   PWaitAndSignal m(lid_access_mutex);
   
@@ -2506,7 +1977,7 @@ GMH323EndPoint::CreateLid (PString lid_device)
 
 
 void
-GMH323EndPoint::RemoveLid (void)
+GMEndPoint::RemoveLid (void)
 {
   PWaitAndSignal m(lid_access_mutex);
   
@@ -2519,28 +1990,31 @@ GMH323EndPoint::RemoveLid (void)
 
 
 void
-GMH323EndPoint::SendTextMessage (PString callToken,
-				 PString message)
+GMEndPoint::SendTextMessage (PString callToken,
+			     PString message)
 {
-  H323Connection *connection = NULL;
+  OpalCall *call = NULL;
+  OpalConnection *connection = NULL;
 
-  connection = FindConnectionWithLock (callToken);
+  call = FindCallWithLock (callToken);
 
-  if (connection) {
+  if (call != NULL) {
 
-    connection->SendUserInput ("MSG"+message);
-    connection->Unlock ();
+    connection = call->GetConnection (1);
+
+    if (connection != NULL) {
+
+      connection->SendUserInputString ("MSG" + message);
+    }
   }
-
 }
 
 
 BOOL
-GMH323EndPoint::IsCallOnHold (PString callToken)
+GMEndPoint::IsCallOnHold (PString callToken)
 {
-  H323Connection *connection = NULL;
   BOOL result = FALSE;
-
+/*
   connection = FindConnectionWithLock (callToken);
 
   if (connection) {
@@ -2548,18 +2022,18 @@ GMH323EndPoint::IsCallOnHold (PString callToken)
     result = connection->IsCallOnHold ();
     connection->Unlock ();
   }
-
+*///FIXME
   return result;
 }
 
 
 BOOL
-GMH323EndPoint::SetCallOnHold (PString callToken,
+GMEndPoint::SetCallOnHold (PString callToken,
 			       gboolean state)
 {
-  H323Connection *connection = NULL;
   BOOL result = FALSE;
-  
+ //FIXME
+ /*
   connection = FindConnectionWithLock (callToken);
 
   if (connection) {
@@ -2574,34 +2048,33 @@ GMH323EndPoint::SetCallOnHold (PString callToken,
     
     connection->Unlock ();
   }
-
+*/
   return result;
 }
 
 
 void
-GMH323EndPoint::SendDTMF (PString call_token,
-			  PString dtmf)
+GMEndPoint::SendDTMF (PString callToken,
+		      PString dtmf)
 {
-  H323Connection *connection = NULL;
+  OpalCall *call = NULL;
+  OpalConnection *connection = NULL;
+
+  call = FindCallWithLock (callToken);
+
+  if (call) 
+    connection = call->GetConnection (1);
   
-  connection = FindConnectionWithLock (call_token);
-
-  if (connection) {
-    
-    connection->SendUserInput (dtmf);
-    connection->Unlock ();
-  }
+  if (connection)
+    connection->SendUserInputString (dtmf);
 }
 
 
 gboolean
-GMH323EndPoint::IsCallWithAudio (PString callToken)
+GMEndPoint::IsCallWithAudio (PString callToken)
 {
-  H323Connection *connection = NULL;
-  H323Channel *channel = NULL;
   gboolean result = FALSE;
-
+/* FIXME
 
   connection = FindConnectionWithLock(callToken);
 
@@ -2614,19 +2087,17 @@ GMH323EndPoint::IsCallWithAudio (PString callToken)
       result = FALSE;
     connection->Unlock ();
   }
-
+*/
   return result;
 }
 
 
 gboolean
-GMH323EndPoint::IsCallWithVideo (PString callToken)
+GMEndPoint::IsCallWithVideo (PString callToken)
 {
-  H323Connection *connection = NULL;
-  H323Channel *channel = NULL;
   gboolean result = FALSE;
 
-
+  /* FIXME
   connection = FindConnectionWithLock(callToken);
 
   if (connection) {
@@ -2638,19 +2109,18 @@ GMH323EndPoint::IsCallWithVideo (PString callToken)
       result = FALSE;
     connection->Unlock ();
   }
-
+*/
+  
   return result;
 }
 
 
 gboolean
-GMH323EndPoint::IsCallAudioPaused (PString callToken)
+GMEndPoint::IsCallAudioPaused (PString callToken)
 {
-  H323Connection *connection = NULL;
-  H323Channel *channel = NULL;
   gboolean result = FALSE;
 
-
+/* FIXME
   connection = FindConnectionWithLock(callToken);
 
   if (connection) {
@@ -2662,19 +2132,19 @@ GMH323EndPoint::IsCallAudioPaused (PString callToken)
       result = FALSE;
     connection->Unlock ();
   }
-
+*/
+  
   return result;
 }
 
 
 gboolean
-GMH323EndPoint::IsCallVideoPaused (PString callToken)
+GMEndPoint::IsCallVideoPaused (PString callToken)
 {
-  H323Connection *connection = NULL;
-  H323Channel *channel = NULL;
+  
   gboolean result = FALSE;
 
-
+/* FIXME
   connection = FindConnectionWithLock(callToken);
 
   if (connection) {
@@ -2686,17 +2156,18 @@ GMH323EndPoint::IsCallVideoPaused (PString callToken)
       result = FALSE;
     connection->Unlock ();
   }
-
+*/
+  
   return result;
 }
 
 
 BOOL
-GMH323EndPoint::SetCallAudioPause (PString callToken, 
+GMEndPoint::SetCallAudioPause (PString callToken, 
 				   BOOL state)
 {
   BOOL result = FALSE;
-  
+  /* FIXME
   H323Connection *connection = NULL;
   H323Channel *channel = NULL;
 
@@ -2715,17 +2186,17 @@ GMH323EndPoint::SetCallAudioPause (PString callToken,
     
     connection->Unlock ();
   }
-
+*/
   return result;
 }
 
 
 BOOL
-GMH323EndPoint::SetCallVideoPause (PString callToken, 
+GMEndPoint::SetCallVideoPause (PString callToken, 
 				   BOOL state)
 {
   BOOL result = FALSE;
-
+/*FIXME
   H323Connection *connection = NULL;
   H323Channel *channel = NULL;
 
@@ -2743,13 +2214,13 @@ GMH323EndPoint::SetCallVideoPause (PString callToken,
     }
     connection->Unlock ();
   }
-
+*/
   return result;
 }
 
 
 void
-GMH323EndPoint::ResetMissedCallsNumber ()
+GMEndPoint::ResetMissedCallsNumber ()
 {
   PWaitAndSignal m(mc_access_mutex);
 
@@ -2758,7 +2229,7 @@ GMH323EndPoint::ResetMissedCallsNumber ()
 
 
 int
-GMH323EndPoint::GetMissedCallsNumber ()
+GMEndPoint::GetMissedCallsNumber ()
 {
   PWaitAndSignal m(mc_access_mutex);
 
@@ -2773,8 +2244,17 @@ GMH323EndPoint::AddObserver (GObject *observer)
   gm_events_dispatcher_add_observer (dispatcher, observer);
 }
 
+void
+GMEndPoint::AddObserver (GObject *observer)
+{
+  g_return_if_fail (observer != NULL);
+
+  gm_events_dispatcher_add_observer (dispatcher, observer);
+}
+
+
 PString
-GMH323EndPoint::GetLastCallAddress ()
+GMEndPoint::GetLastCallAddress ()
 {
   PWaitAndSignal m(lca_access_mutex);
 
@@ -2783,7 +2263,7 @@ GMH323EndPoint::GetLastCallAddress ()
 
 
 void 
-GMH323EndPoint::SetTransferCallToken (PString s)
+GMEndPoint::SetTransferCallToken (PString s)
 {
   tct_access_mutex.Wait ();
   transfer_call_token = s;
@@ -2792,7 +2272,7 @@ GMH323EndPoint::SetTransferCallToken (PString s)
 
 
 PString 
-GMH323EndPoint::GetTransferCallToken ()
+GMEndPoint::GetTransferCallToken ()
 {
   PString c;
 
@@ -2805,7 +2285,7 @@ GMH323EndPoint::GetTransferCallToken ()
 
 
 void
-GMH323EndPoint::TransferCallWait ()
+GMEndPoint::TransferCallWait ()
 {
 
   while (!GetTransferCallToken ().IsEmpty ())

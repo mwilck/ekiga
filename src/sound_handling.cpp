@@ -270,18 +270,8 @@ void GMAudioRP::Main ()
   GtkWidget *druid_window = NULL;
   
   PSoundChannel *channel = NULL;
-
-
-#ifdef HAS_IXJ
-  /* We only have one GMLid thread, so use class variables instead
-     of instance variables. We do not need full-duplex for the Quicknet
-     test anyway */
-  static GMLid *l = NULL;
-  static PMutex lid_mutex;
-  PINDEX i;
-#endif
   
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
   
   gchar *msg = NULL;
   char *buffer = NULL;
@@ -315,16 +305,7 @@ void GMAudioRP::Main ()
 					  : PSoundChannel::Player,
 					  1, 8000, 16);
   }
-#ifdef HAS_IXJ
-  else {
-
-    lid_mutex.Wait ();
-    if (!l) 
-      l = ep->CreateLid (device_name);
-    lid_mutex.Signal ();
-  }
-#endif
-
+  
   if (!is_encoding)
     msg = g_strdup_printf ("<b>%s</b>", _("Opening device for playing"));
   else
@@ -335,8 +316,7 @@ void GMAudioRP::Main ()
   gdk_threads_leave ();
   g_free (msg);
 
-  if ((driver_name != "Quicknet" && !channel)
-      || (driver_name == "Quicknet" && (!l || !l->IsOpen ()))) {
+  if (!channel) {
 
     gdk_threads_enter ();  
     if (is_encoding)
@@ -349,36 +329,13 @@ void GMAudioRP::Main ()
     
     nbr_opened_channels++;
 
-    if (driver_name != "Quicknet")
-      channel->SetBuffers (640, 2);
-#ifdef HAS_IXJ
-    else {
-
-      if (l) {
-	
-	l->SetReadFrameSize (0, 640);
-	l->SetReadFormat (0, OpalPCM16);
-	l->SetWriteFrameSize (0, 640);
-	l->SetWriteFormat (0, OpalPCM16);
-
-	l->StopTone (0);
-      }
-    }
-#endif
+    channel->SetBuffers (640, 2);
     
     while (!stop) {
-
-#ifdef HAS_IXJ
-      l = ep->GetLid ();
-#endif
       
       if (is_encoding) {
 
-	if ((driver_name != "Quicknet"
-	     && !channel->Read ((void *) buffer, 640))
-	    || (driver_name == "Quicknet"
-		&& l
-		&& !l->ReadFrame (0, (void *) buffer, i)))  {
+	if (!channel->Read ((void *) buffer, 640)) {
       
 	  gdk_threads_enter ();  
 	  gnomemeeting_error_dialog (GTK_WINDOW (druid_window), _("Cannot use the audio device"), _("The selected audio device (%s) was successfully opened but it is impossible to read data from this device. Please check your audio setup."), (const char*) device_name);
@@ -405,7 +362,7 @@ void GMAudioRP::Main ()
 
 	  /* We update the VUMeter only 3 times for each sample
 	     of size 640, that will permit to spare some CPU cycles */
-	  for (i = 0 ; i < 480 ; i = i + 160) {
+	  for (int i = 0 ; i < 480 ; i = i + 160) {
 	    
 	    val = GetAverageSignalLevel ((const short *) (buffer + i), 160); 
 	    if (val > peak)
@@ -450,11 +407,7 @@ void GMAudioRP::Main ()
 	
 	  buffer_pos += 640;
 
-	  if ((driver_name != "Quicknet"
-	       && !channel->Write ((void *) buffer, 640))
-	      || (driver_name == "Quicknet"
-		  && l
-		  && !l->WriteFrame (0, (const void *) buffer, 640, i)))  {
+	  if (!channel->Write ((void *) buffer, 640)) {
       
 	    gdk_threads_enter ();  
 	    gnomemeeting_error_dialog (GTK_WINDOW (druid_window), _("Cannot use the audio device"), _("The selected audio device (%s) was successfully opened but it is impossible to write data to this device. Please check your audio setup."), (const char*) device_name);
@@ -469,11 +422,6 @@ void GMAudioRP::Main ()
 
       if (buffer_pos >= 80000)
 	buffer_pos = 0;	
-
-#ifdef HAS_IXJ
-      if (l)
-	l->Unlock ();
-#endif
     }
   }
 
@@ -486,7 +434,6 @@ void GMAudioRP::Main ()
   nbr_opened_channels = PMAX (nbr_opened_channels--, 0);
 
   free (buffer);
-  l = NULL;
 }
 
 

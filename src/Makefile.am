@@ -16,10 +16,12 @@ gnomemeeting_SOURCES =		\
 	gdkvideoio.h		\
 	gnomemeeting.cpp	\
 	gnomemeeting.h		\
-	connection.cpp		\
-	connection.h		\
 	endpoint.cpp		\
 	endpoint.h		\
+	h323endpoint.cpp	\
+	h323endpoint.h		\
+	h323gatekeeper.cpp	\
+	h323gatekeeper.h	\
 	pref_window.cpp		\
 	pref_window.h		\
 	sound_handling.cpp	\
@@ -30,14 +32,14 @@ gnomemeeting_SOURCES =		\
 	config.cpp		\
 	main_window.cpp		\
 	main_window.h		\
-	gatekeeper.cpp		\
-	gatekeeper.h		\
 	ils.cpp			\
 	ils.h			\
 	misc.cpp		\
 	misc.h			\
 	chat_window.cpp		\
 	chat_window.h		\
+	pcssendpoint.cpp	\
+	pcssendpoint.h		\
 	stunclient.cpp		\
 	stunclient.h		\
 	urlhandler.cpp		\

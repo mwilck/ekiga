@@ -212,7 +212,7 @@ void
 quit_callback (GtkWidget *widget, 
 	       gpointer data)
 {
-  GMH323EndPoint *ep =NULL;
+  GMEndPoint *ep =NULL;
   
   GtkWidget *main_window = NULL;
   GtkWidget *prefs_window = NULL;

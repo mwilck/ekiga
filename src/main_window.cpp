@@ -40,6 +40,7 @@
 
 #include "main_window.h"
 #include "calls_history_window.h"
+#include "pcssendpoint.h"
 #include "gnomemeeting.h"
 #include "chat_window.h"
 #include "config.h"
@@ -1757,7 +1758,7 @@ hold_current_call_cb (GtkWidget *widget,
 		      gpointer data)
 {
   PString call_token;
-  GMH323EndPoint *endpoint = NULL;
+  GMEndPoint *endpoint = NULL;
 
   BOOL is_on_hold = FALSE;
   
@@ -1785,7 +1786,7 @@ static void
 pause_current_call_channel_cb (GtkWidget *widget,
 			       gpointer data)
 {
-  GMH323EndPoint *endpoint = NULL;
+  GMEndPoint *endpoint = NULL;
   GMVideoGrabber *vg = NULL;
 
   GtkWidget *main_window = NULL;
@@ -1800,7 +1801,7 @@ pause_current_call_channel_cb (GtkWidget *widget,
 
   if (current_call_token.IsEmpty ()
       && (GPOINTER_TO_INT (data) == 1)
-      && endpoint->GetCallingState () == GMH323EndPoint::Standby) {
+      && endpoint->GetCallingState () == GMEndPoint::Standby) {
 
     gdk_threads_leave ();
     vg = endpoint->GetVideoGrabber ();
@@ -1856,13 +1857,13 @@ static void
 video_window_shown_cb (GtkWidget *w, 
 		       gpointer data)
 {
-  GMH323EndPoint *endpoint = NULL;
+  GMEndPoint *endpoint = NULL;
 
   endpoint = GnomeMeeting::Process ()->Endpoint ();
 
   if (endpoint 
       && gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top")
-      && endpoint->GetCallingState () == GMH323EndPoint::Connected)
+      && endpoint->GetCallingState () == GMEndPoint::Connected)
     gdk_window_set_always_on_top (GDK_WINDOW (w->window), TRUE);
 }
 
@@ -1880,7 +1881,7 @@ dnd_call_contact_cb (GtkWidget *widget,
   
   if (contact && contact->url) {
     mw = (GmWindow *)data;
-     if (GnomeMeeting::Process ()->Endpoint ()->GetCallingState () == GMH323EndPoint::Standby) {
+     if (GnomeMeeting::Process ()->Endpoint ()->GetCallingState () == GMEndPoint::Standby) {
        
        /* this function will store a copy of text */
        //gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (mw->combo)->entry),
@@ -1899,7 +1900,17 @@ static void
 audio_volume_changed_cb (GtkAdjustment *adjustment, 
 			 gpointer data)
 {
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
+  GMPCSSEndPoint *pcssEP = NULL;
+
+  g_return_if_fail (data != NULL);
+
+  ep = GnomeMeeting::Process ()->Endpoint ();
+  pcssEP = ep->GetPCSSEndPoint ();
+
+  pcssEP->SetDeviceVolume ();
+  /*
+  GMEndPoint *ep = NULL;
   
   H323Connection *con = NULL;
   H323Codec *raw_codec = NULL;
@@ -1945,6 +1956,9 @@ audio_volume_changed_cb (GtkAdjustment *adjustment,
   }
 
   gdk_threads_enter ();
+  */
+  //FIXME
+  cout << "FIXME" << endl << flush;
 }
 
 
@@ -1952,7 +1966,7 @@ static void
 video_settings_changed_cb (GtkAdjustment *adjustment, 
 			   gpointer data)
 { 
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
   GMVideoGrabber *video_grabber = NULL;
 
   int brightness = -1;
@@ -2023,7 +2037,7 @@ dialpad_button_clicked_cb (GtkButton *button,
   PString call_token;
   PString url;
 
-  GMH323EndPoint *endpoint = NULL;
+  GMEndPoint *endpoint = NULL;
 
   g_return_if_fail (data != NULL);
 
@@ -2170,7 +2184,7 @@ speed_dial_menu_item_selected_cb (GtkWidget *w,
   GtkWidget *main_window = NULL;
   
   GmWindow *mw = NULL;
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
   
   gchar *url = NULL;
   
@@ -2186,7 +2200,7 @@ speed_dial_menu_item_selected_cb (GtkWidget *w,
     
 
   /* Directly Connect or run the transfer dialog */
-  if (ep->GetCallingState () == GMH323EndPoint::Connected)
+  if (ep->GetCallingState () == GMEndPoint::Connected)
     gm_main_window_transfer_dialog_run (main_window, url);
   else
     GnomeMeeting::Process ()->Connect (url);
@@ -2437,7 +2451,7 @@ statusbar_clicked_cb (GtkWidget *widget,
 {
   GmWindow *mw = NULL;
 
-  GMH323EndPoint *ep = NULL;
+  GMEndPoint *ep = NULL;
   
   gint len = 0;
   gint id = 0;
@@ -2969,7 +2983,7 @@ gm_main_window_update_calling_state (GtkWidget *main_window,
 
   switch (calling_state)
     {
-    case GMH323EndPoint::Standby:
+    case GMEndPoint::Standby:
 
       
       /* Update the hold state */
@@ -3018,7 +3032,7 @@ gm_main_window_update_calling_state (GtkWidget *main_window,
       break;
 
 
-    case GMH323EndPoint::Calling:
+    case GMEndPoint::Calling:
 
       /* Update the menus and toolbar items */
       gtk_menu_set_sensitive (mw->main_menu, "connect", FALSE);
@@ -3031,7 +3045,7 @@ gm_main_window_update_calling_state (GtkWidget *main_window,
       break;
 
 
-    case GMH323EndPoint::Connected:
+    case GMEndPoint::Connected:
 
       /* Update the menus and toolbar items */
       gtk_menu_set_sensitive (mw->main_menu, "connect", FALSE);
@@ -3051,7 +3065,7 @@ gm_main_window_update_calling_state (GtkWidget *main_window,
       break;
 
 
-    case GMH323EndPoint::Called:
+    case GMEndPoint::Called:
 
       /* Update the menus and toolbar items */
       gtk_menu_set_sensitive (mw->main_menu, "disconnect", TRUE);
@@ -3517,7 +3531,7 @@ void
 gm_main_window_transfer_dialog_run (GtkWidget *main_window,
 				    gchar *u)
 {
-  GMH323EndPoint *endpoint = NULL;
+  GMEndPoint *endpoint = NULL;
   GmWindow *mw = NULL;
   
   GMURL url;
@@ -3745,7 +3759,6 @@ gm_main_window_new ()
 #endif
   
   gm_mw_init_toolbars (window);
-
 
 #ifndef DISABLE_GNOME
   gnome_app_add_docked (GNOME_APP (window), 
@@ -4046,7 +4059,7 @@ gm_main_window_clear_stats (GtkWidget *main_window)
 
   stats_drawing_area_clear (mw->stats_drawing_area);
   gtk_label_set_text (GTK_LABEL (mw->stats_label), 
-		      _("Lost packets:\nLate packets:\nRound-trip delay:\nJitter buffer:"));
+		      _("Lost packets:\nLate packets:\nOut of order packets:\nJitter buffer:"));
 }
 
 
@@ -4054,12 +4067,12 @@ void
 gm_main_window_update_stats (GtkWidget *main_window,
 			     float lost,
 			     float late,
-			     int rtt,
+			     float out_of_order,
 			     int jitter,
-			     int new_video_octets_received,
-			     int new_video_octets_transmitted,
-			     int new_audio_octets_received,
-			     int new_audio_octets_transmitted)
+			     float new_video_octets_received,
+			     float new_video_octets_transmitted,
+			     float new_audio_octets_received,
+			     float new_audio_octets_transmitted)
 {
   GmWindow *mw = NULL;
   
@@ -4072,7 +4085,7 @@ gm_main_window_update_stats (GtkWidget *main_window,
 
   g_return_if_fail (mw != NULL);
 
-  stats_msg =  g_strdup_printf (_("Lost packets: %.1f %%\nLate packets: %.1f %%\nRound-trip delay: %d ms\nJitter buffer: %d ms"), lost, late, rtt, jitter);
+  stats_msg =  g_strdup_printf (_("Lost packets: %.1f %%\nLate packets: %.1f %%\nOut of order packets: %.1f %%\nJitter buffer: %d ms"), lost, late, out_of_order, jitter);
   gtk_label_set_text (GTK_LABEL (mw->stats_label), stats_msg);
   g_free (stats_msg);
 

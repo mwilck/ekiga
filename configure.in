@@ -1,4 +1,4 @@
-AC_INIT(gnomemeeting, 1.1.99, http://bugzilla.gnome.org/enter_bug.cgi?product=gnomemeeting)
+AC_INIT(gnomemeeting, 1.3.1, http://bugzilla.gnome.org/enter_bug.cgi?product=gnomemeeting)
 AC_CANONICAL_TARGET
 AC_PREREQ(2.53)
 AC_CONFIG_SRCDIR(src/gnomemeeting.cpp)
@@ -13,9 +13,9 @@ dnl   GnomeMeeting Version
 dnl ###########################################################################
 
 MAJOR_VERSION=1
-MINOR_VERSION=1
+MINOR_VERSION=9
 BUILD_TYPE=ReleaseCode
-BUILD_NUMBER=99
+BUILD_NUMBER=1
 
 AC_DEFINE_UNQUOTED(MAJOR_VERSION, $MAJOR_VERSION,[fix])
 AC_DEFINE_UNQUOTED(MINOR_VERSION, $MINOR_VERSION,[fix])
@@ -83,7 +83,7 @@ PKG_CHECK_MODULES(GNOMEMEETING, gtk+-2.0 >= 2.4.0 gthread-2.0 >= 2.4.0 esound >=
 fi
 
 PWLIB_REC_VERSION="1.8.3"
-OPENH323_REC_VERSION="1.15.2"
+OPAL_REC_VERSION="1.15.2"
 
 
 dnl ###########################################################################
@@ -107,8 +107,8 @@ AC_MSG_CHECKING(whether OS type is supported)
 case $target_os in
 
   linux-gnu | linux | Linux)
-    ARCH_OPENH323_CFLAGS="-DPTRACING -DNDEBUG -Wall -Os -g"
-    ARCH_OPENH323_LIBS="-lopenh323 -ldl -lpt -lpthread"
+    ARCH_OPAL_CFLAGS="-DPTRACING -D_DEBUG -DNDEBUG -Wall -Os -g -fno-exceptions -felide-constructors"
+    ARCH_OPAL_LIBS="-L/home/damien/CVS/pwlib/lib/ -lopal -ldl -lpt_linux_x86_d  -lpthread"
     AC_MSG_RESULT([yes])
     gm_platform="linux"
 
@@ -117,15 +117,15 @@ dnl -D_DEBUG -DPMEMORY_CHECK=1 -DPTRACING -g
     ;;
 
   FreeBSD* | freebsd* )
-    ARCH_OPENH323_CFLAGS="-Os -Wall -DPTRACING -DNDEBUG -DSTATIC_LIBS_USED"
-    ARCH_OPENH323_LIBS="-lh323_FreeBSD_x86_r_s -lpt_FreeBSD_x86_r_s -pthread -lssl -lcrypto"
+    ARCH_OPAL_CFLAGS="-Os -Wall -DPTRACING -DNDEBUG -DSTATIC_LIBS_USED"
+    ARCH_OPAL_LIBS="-lh323_FreeBSD_x86_r_s -lpt_FreeBSD_x86_r_s -pthread -lssl -lcrypto"
     AC_MSG_RESULT([yes])
     gm_platform="freebsd"
     ;;
 
   darwin* )
-    ARCH_OPENH323_CFLAGS="-Os -Wall -DPTRACING -DNDEBUG -DNO_LONG_DOUBLE -DSTATIC_LIBS_USED"
-    ARCH_OPENH323_LIBS="-multiply_defined suppress -lh323_Darwin_ppc_r_s -lpt_Darwin_ppc_r_s -lssl -lcrypto -lX11 -framework AudioToolbox -framework CoreAudio -framework CoreServices"
+    ARCH_OPAL_CFLAGS="-Os -Wall -DPTRACING -DNDEBUG -DNO_LONG_DOUBLE -DSTATIC_LIBS_USED"
+    ARCH_OPAL_LIBS="-multiply_defined suppress -lh323_Darwin_ppc_r_s -lpt_Darwin_ppc_r_s -lssl -lcrypto -lX11 -framework AudioToolbox -framework CoreAudio -framework CoreServices"
     AC_MSG_RESULT([yes])
     gm_platform="macosx"
     ;;
@@ -251,61 +251,61 @@ if test "x${HAS_PTLIB_CONFIG}" != "x1" ; then
 else
         AC_PATH_PROG(PTLIB_CONFIG, ptlib-config, , ${with_pwlib_dir}/bin/)
 fi
-ARCH_OPENH323_CFLAGS="$ARCH_OPENH323_CFLAGS `$PTLIB_CONFIG --ccflags`"
+ARCH_OPAL_CFLAGS="$ARCH_OPAL_CFLAGS `$PTLIB_CONFIG --ccflags`"
                   
 
 dnl ###########################################################################
-dnl OpenH323 Headers and Libraries
+dnl Opal Headers and Libraries
 dnl ###########################################################################
-AC_ARG_WITH(openh323-dir, [  --with-openh323-dir=PFX   Location of OpenH323], with_openh323_dir="$withval", with_openh323_dir="/usr")
+AC_ARG_WITH(opal-dir, [  --with-opal-dir=PFX   Location of Opal], with_opal_dir="$withval", with_opal_dir="/usr")
 
 dnl Check for the includes presence
-AC_MSG_CHECKING(for Openh323 includes in ${with_openh323_dir}/include/)
+AC_MSG_CHECKING(for Opal includes in ${with_opal_dir}/include/)
 AC_MSG_RESULT()
 
 CPPFLAGS_save="$CPPFLAGS"
-CPPFLAGS="$CPPFLAGS -I${with_openh323_dir}/include"
-AC_CHECK_FILE(${with_openh323_dir}/include/openh323/h323.h, openh323_includes="yes", openh323_includes="no")
+CPPFLAGS="$CPPFLAGS -I${with_opal_dir}/include"
+AC_CHECK_FILE(${with_opal_dir}/include/opal/call.h, opal_includes="yes", opal_includes="no")
 CPPFLAGS="$CPPFLAGS_save"
 	
-if test "x${openh323_includes}" != "xno" ; then
-	OPENH323_CFLAGS="-I${with_openh323_dir}/include/openh323"
+if test "x${opal_includes}" != "xno" ; then
+	OPAL_CFLAGS="-I${with_opal_dir}/include/"
 else
-	AC_MSG_ERROR(You need the Openh323 headers to compile GnomeMeeting)
+	AC_MSG_ERROR(You need the Opal headers to compile GnomeMeeting)
 fi
 
 dnl Checking for the library presence
 LIBS_save="$LIBS"
-LIBS="${LIBS} -L${with_openh323_dir}/${libname}/ -L${with_pwlib_dir}/${libname}/ -lpt"
-AC_CHECK_LIB(openh323, main, openh323_libs="yes", openh323_libs="yes")
+LIBS="${LIBS} -L${with_opal_dir}/${libname}/ -L${with_pwlib_dir}/${libname}/ -lpt"
+AC_CHECK_LIB(opal, main, opal_libs="yes", opal_libs="yes")
 LIBS="${LIBS_save}"
 
-if test "x${openh323_libs}" != "xno"; then
-	if test "x${with_openh323_dir}" != "x/usr"; then
-		OPENH323_LIBS="-L${with_openh323_dir}/lib"
+if test "x${opal_libs}" != "xno"; then
+	if test "x${with_opal_dir}" != "x/usr"; then
+		OPAL_LIBS="-L${with_opal_dir}/lib"
 	fi
 else
-	AC_MSG_ERROR(You need the Openh323 library to compile GnomeMeeting)
+	AC_MSG_ERROR(You need the Opal library to compile GnomeMeeting)
 fi
 
-dnl Checking for Openh323 version
-AC_MSG_CHECKING(for Openh323 version);
-OPENH323_VERSION=`cat ${with_openh323_dir}/include/openh323/openh323buildopts.h | grep VERSION | cut -f2 -d ' ' | sed "s/\"//g"`
-AC_MSG_RESULT($OPENH323_VERSION)
-if test "x${OPENH323_VERSION}" != "x${OPENH323_REC_VERSION}"; then
-	AC_MSG_ERROR(Sorry but the recommended Openh323 version is ${OPENH323_REC_VERSION});
-fi
+dnl Checking for Opal version
+dnl AC_MSG_CHECKING(for Opal version);
+dnl OPAL_VERSION=`cat ${with_opal_dir}/include/opal/opalbuildopts.h | grep VERSION | cut -f2 -d ' ' | sed "s/\"//g"`
+dnl AC_MSG_RESULT($OPAL_VERSION)
+dnl if test "x${OPAL_VERSION}" != "x${OPAL_REC_VERSION}"; then
+dnl	AC_MSG_ERROR(Sorry but the recommended Opal version is ${OPAL_REC_VERSION});
+dnl fi
 
 dnl Checking for plugins support in PWLIB
-AC_MSG_CHECKING(for Quicknet support in OpenH323);
-OPENH323_IXJ_SUPPORT=`cat ${with_openh323_dir}/include/openh323/openh323buildopts.h | grep "HAS_IXJ 1" | cut -f2  -d ' '`
-if test "x${OPENH323_IXJ_SUPPORT}" != "x1"; then
-	AC_MSG_RESULT(no);
-	AC_MSG_ERROR(Sorry but the OpenH323 version you are using doesn't support Quicknet devices);
-else
-	AC_MSG_RESULT(yes);
-        HAS_IXJ="enabled";
-fi
+dnl AC_MSG_CHECKING(for Quicknet support in Opal);
+dnl OPAL_IXJ_SUPPORT=`cat ${with_opal_dir}/include/opal/opalbuildopts.h | grep "HAS_IXJ 1" | cut -f2  -d ' '`
+dnl if test "x${OPAL_IXJ_SUPPORT}" != "x1"; then
+dnl	AC_MSG_RESULT(no);
+dnl	AC_MSG_ERROR(Sorry but the Opal version you are using doesn't support Quicknet devices);
+dnl else
+dnl	AC_MSG_RESULT(yes);
+dnl        HAS_IXJ="enabled";
+dnl fi
 
 
 dnl ###########################################################################
@@ -461,8 +461,8 @@ dnl  The various CFLAGS are merged into GNOMEMEETING_CFLAGS and
 dnl  GNOMEMEETING_LIB_CFLAGS
 dnl ###########################################################################
 GNOMEMEETING_LIB_CFLAGS="$GNOMEMEETING_CFLAGS"
-GNOMEMEETING_CFLAGS="$GNOMEMEETING_CFLAGS $PWLIB_CFLAGS $LDAP_INCLUDES $OPENH323_CFLAGS $SDL_CFLAGS $LDAP_CFLAGS $ARCH_OPENH323_CFLAGS"
-GNOMEMEETING_LIBS="$GNOMEMEETING_LIBS $PWLIB_LIBS $OPENH323_LIBS $LDAP_LIBS $SDL_LDFLAGS $ARCH_OPENH323_LIBS"
+GNOMEMEETING_CFLAGS="$GNOMEMEETING_CFLAGS $PWLIB_CFLAGS $LDAP_INCLUDES $OPAL_CFLAGS $SDL_CFLAGS $LDAP_CFLAGS $ARCH_OPAL_CFLAGS"
+GNOMEMEETING_LIBS="$GNOMEMEETING_LIBS $PWLIB_LIBS $OPAL_LIBS $LDAP_LIBS $SDL_LDFLAGS $ARCH_OPAL_LIBS"
 CFLAGS=""
 
 
@@ -537,8 +537,8 @@ echo ""
 echo "================ Final configuration ==================="
 echo "          Installing into prefix  :  $prefix"
 echo ""
-echo "             OpenH323 Version is  :  $OPENH323_REC_VERSION"
-echo "           OpenH323 Directory is  :  $with_openh323_dir"
+echo "                 OPAL Version is  :  $OPAL_REC_VERSION"
+echo "               OPAL Directory is  :  $with_opal_dir"
 echo "                PWLIB Version is  :  $PWLIB_REC_VERSION"
 echo "              PWLIB Directory is  :  $with_pwlib_dir"
 echo "                 ptlib-config is  :  $with_pwlib_dir/bin/ptlib-config"

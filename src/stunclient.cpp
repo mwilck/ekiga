@@ -82,7 +82,7 @@ void GMStunClient::Main ()
   GtkWidget *history_window = NULL;
   GtkWidget *druid_window = NULL;
 
-  GMH323EndPoint *endpoint = NULL;
+  GMEndPoint *endpoint = NULL;
   PSTUNClient *stun = NULL;
 
   BOOL regist = FALSE;
@@ -115,7 +115,7 @@ void GMStunClient::Main ()
 
   if (!regist && reg) {
 
-    ((H323EndPoint *) endpoint)->SetSTUNServer (PString ());
+    ((OpalManager *) endpoint)->SetSTUNServer (PString ());
     gnomemeeting_threads_enter ();
     gm_history_window_insert (history_window, _("Removed STUN server"));
     gnomemeeting_threads_leave ();
@@ -127,7 +127,7 @@ void GMStunClient::Main ()
   /* Set the STUN server for the endpoint */
   if (!stun_host.IsEmpty () && reg) {
     
-    ((H323EndPoint *) endpoint)->SetSTUNServer (stun_host);
+    ((OpalManager *) endpoint)->SetSTUNServer (stun_host);
     stun = endpoint->GetSTUN ();
 
     if (stun) {
@@ -227,7 +227,7 @@ void GMStunClient::Main ()
       gm_conf_set_string (NAT_KEY "stun_server", "stun.voxgratia.org");
       gm_conf_set_bool (NAT_KEY "enable_stun_support", TRUE);
       
-      ((H323EndPoint *) endpoint)->SetSTUNServer ("stun.voxgratia.org");
+      ((OpalManager *) endpoint)->SetSTUNServer ("stun.voxgratia.org");
       
       gm_history_window_insert (history_window, _("Set STUN server to %s"), 
 				"stun.voxgratia.org");
@@ -238,7 +238,7 @@ void GMStunClient::Main ()
       
       gm_conf_set_bool (NAT_KEY "enable_stun_support", FALSE);
       
-      ((H323EndPoint *) endpoint)->SetSTUNServer (PString ());
+      ((OpalManager *) endpoint)->SetSTUNServer (PString ());
 
       gm_history_window_insert (history_window, _("Removed STUN server"));
 

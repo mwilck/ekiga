@@ -441,7 +441,7 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
 			            MINOR_VERSION << 16 |
 			            BUILD_NUMBER);
 
-  if ((GnomeMeeting::Process ()->Endpoint ()->GetCallingState () != GMH323EndPoint::Standby)
+  if ((GnomeMeeting::Process ()->Endpoint ()->GetCallingState () != GMEndPoint::Standby)
       || (gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode") == DO_NOT_DISTURB))
     busy = g_strdup ("1");
   else

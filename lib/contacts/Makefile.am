@@ -30,7 +30,7 @@ INCLUDES =						\
 	-DG_LOG_DOMAIN=\"GnomeMeeting\"		 	\
 	-DSHARE_DIR=\"$(pkgdatadir)\"			\
 	-I$(top_srcdir) 				\
-	$(GNOMEMEETING_LIB_CFLAGS)				
+	@GNOMEMEETING_CFLAGS@				
 
 libgmcontacts_la_LDFLAGS = -export-dynamic
 libgmcontacts_la_LIDADD = 
