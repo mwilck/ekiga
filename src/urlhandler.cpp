@@ -121,8 +121,8 @@ void GMURLHandler::Main ()
   url.Replace ("callto://", "");
   if (url.Find ('#') == url.GetLength () - 1) 
     call_address =
-      gnomemeeting_addressbook_get_speed_dial_url (url.Left (url.GetLength ()
-							     -1));
+      gnomemeeting_addressbook_get_url_from_speed_dial
+      (url.Left (url.GetLength () -1));
   else
     call_address = url;
 

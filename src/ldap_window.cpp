@@ -53,6 +53,20 @@
 extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;	
 
+struct GmEditContactDialog_ {
+
+  GtkWidget *dialog;
+  GtkWidget *name_entry;
+  GtkWidget *url_entry;
+  GtkWidget *shortcut_entry;
+  
+  GtkListStore *groups_list_store;
+
+  int selected_groups_number;
+  gchar *old_contact_url;
+};
+typedef struct GmEditContactDialog_ GmEditContactDialog;
+
 
 /* Callbacks: Drag and drop management */
 static gboolean dnd_drag_motion_cb (GtkWidget *,
@@ -86,12 +100,21 @@ static void groups_list_store_toggled (GtkCellRendererToggle *cell,
 static void edit_contact_cb (GtkWidget *,
 			     gpointer);
 
+static GmEditContactDialog *addressbook_edit_contact_dialog_new (gchar *,
+								 gchar *,
+								 gchar *);
+
+static gboolean addressbook_edit_contact_valid (GmEditContactDialog *,
+						gboolean);
+
 static void delete_contact_from_group_cb (GtkWidget *,
 					  gpointer);
 
 static gint contact_clicked_cb (GtkWidget *,
 				GdkEventButton *,
 				gpointer);
+
+PString gnomemeeting_addressbook_get_speed_dial_from_url (PString);
 
 /* Callbacks: Operations on contact sections */
 static void new_contact_section_cb (GtkWidget *,
@@ -127,6 +150,8 @@ static void refresh_server_content_cb (GtkWidget *,
 static gboolean is_contact_member_of_group (gchar *,
 					    gchar *);
 
+static gboolean is_contact_member_of_addressbook (PString);
+
 static GSList *find_contact_in_group_content (gchar *,
 					      GSList *);
 
@@ -139,6 +164,10 @@ static gboolean get_selected_contact_info (GtkNotebook *,
 
 /* Misc */
 static void notebook_page_destroy (gpointer data);
+
+void update_menu_sensitivity (gboolean,
+			      gboolean,
+			      gboolean);
 
 
 /* GTK Callbacks */
@@ -362,16 +391,19 @@ dnd_drag_data_get_cb (GtkWidget *tree_view,
 /* DESCRIPTION  :  This callback is called when the user toggles a group in
  *                 the groups list in the popup permitting to edit
  *                 the properties of a contact.
- * BEHAVIOR     :  Update the toggles for that group.
- * PRE          :  data = a GtkTreeModel containing the groups list.
+ * BEHAVIOR     :  Update the toggles for that group, updates the number
+ *                 of selected groups field of the GmEditContactDialog given
+ *                 as parameter.
+ * PRE          :  data = a valid GmEditContactDialog.
  */
 static void
 groups_list_store_toggled (GtkCellRendererToggle *cell,
 			   gchar *path_str,
 			   gpointer data)
 {
+  GmEditContactDialog *edit_dialog = (GmEditContactDialog *) data;
   GtkTreeIter iter;
-  GtkTreeModel *model = GTK_TREE_MODEL (data);
+  GtkTreeModel *model = GTK_TREE_MODEL (edit_dialog->groups_list_store);
   GtkTreePath *path = gtk_tree_path_new_from_string (path_str);
   
   gboolean member_of_group = false;
@@ -381,6 +413,11 @@ groups_list_store_toggled (GtkCellRendererToggle *cell,
   
   gtk_list_store_set (GTK_LIST_STORE (model), &iter, 0,
 		      !member_of_group, -1);
+
+  if (member_of_group)
+    edit_dialog->selected_groups_number--;
+  else
+    edit_dialog->selected_groups_number++;
 }
 
 
@@ -398,43 +435,30 @@ edit_contact_cb (GtkWidget *widget,
   GConfClient *client = NULL;
 
   gchar *contact_name = NULL;
-  gchar *contact_speed_dial = NULL;
-  gchar *contact_callto = NULL;
-  gchar *gconf_key = NULL;
-  gchar *contact_info = NULL;
-  gchar *old_contact_callto = NULL;
+  gchar *contact_shortcut = NULL;
+  gchar *contact_url = NULL;
   gchar *contact_section = NULL;
+  gchar *contact_info = NULL;
   gchar *group_name = NULL;
-  gchar *label_text = NULL;
-    
-  PString other_speed_dial;
+  gchar *gconf_key = NULL;
 
-  GtkWidget *dialog = NULL;
-  GtkWidget *table = NULL;
-  GtkWidget *label = NULL;
-  GtkWidget *name_entry = NULL;
-  GtkWidget *callto_entry = NULL;
-  GtkWidget *speed_dial_entry = NULL;
-  GtkWidget *frame = NULL;
+  GSList *group_content = NULL;
+  GSList *group_content_iter = NULL;
+  
+  const char *name_entry_text = NULL;
+  const char *url_entry_text = NULL;
+  const char *shortcut_entry_text = NULL;
+  
+  PString other_speed_dial, shortcut;
 
-  GtkListStore *list_store = NULL;
-  GtkWidget *tree_view = NULL;
-  GtkCellRenderer *renderer = NULL;
-  GtkTreeViewColumn *column = NULL;
   GtkTreeIter iter;
-
-  GSList *groups_list = NULL;
-  GSList *groups_list_iter = NULL;
   
   gboolean is_group = false;
   gboolean selected = false;
   gboolean valid_answer = false;
   int result = 0;
-  int groups_nbr = 0;
-  
-  GSList *group_content = NULL;
-  GSList *group_content_iter = NULL;
 
+  GmEditContactDialog *edit_dialog = NULL;
   GmLdapWindow *lw = NULL;
   GmWindow *gw = NULL;
     
@@ -448,32 +472,185 @@ edit_contact_cb (GtkWidget *widget,
      are correct */
   get_selected_contact_info (GTK_NOTEBOOK (lw->notebook),
 			     &contact_section, &contact_name,
-			     &contact_callto, &contact_speed_dial,
+			     &contact_url, &contact_shortcut,
 			     &is_group);
 
+  /* If the selected contact is in ILS, we try to find his speed_dial
+     using GConf in our addressbook */
+  if (!is_group && contact_url) {
 
-  /* If we edit the user in the group */
-  if (GPOINTER_TO_INT (data) != 1) {
-    
-    /* Store the old callto to be able to delete the user later */
-    old_contact_callto = g_strdup (contact_callto);
+    shortcut = gnomemeeting_addressbook_get_speed_dial_from_url (contact_url);
+
+    g_free (contact_shortcut); /* Free the old allocated string */
+    contact_shortcut = g_strdup ((gchar *) (const char *) shortcut);
   }
-  else {
 
-    /* If we add a new user, we forget what is selected */
+  /* If we add a new user, we forget what is selected */
+  if (GPOINTER_TO_INT (data) == 1) {
+
+    g_free (contact_name);
+    g_free (contact_url);
+    g_free (contact_shortcut);
     contact_name = NULL;
-    contact_callto = NULL;
-    contact_speed_dial = NULL;
+    contact_url = NULL;
+    contact_shortcut = NULL;
   }
 
   
+  edit_dialog =
+    addressbook_edit_contact_dialog_new (contact_name, contact_url,
+					 contact_shortcut);
+  
+  while (!valid_answer) {
+    
+    result = gtk_dialog_run (GTK_DIALOG (edit_dialog->dialog));
+    
+    switch (result) {
+      
+    case GTK_RESPONSE_ACCEPT:
+
+      valid_answer =
+	addressbook_edit_contact_valid (edit_dialog,
+					(GPOINTER_TO_INT (data) == 1));
+
+      if (valid_answer) {
+	
+	name_entry_text =
+	  gtk_entry_get_text (GTK_ENTRY (edit_dialog->name_entry));
+	url_entry_text =
+	  gtk_entry_get_text (GTK_ENTRY (edit_dialog->url_entry));
+	shortcut_entry_text =
+	  gtk_entry_get_text (GTK_ENTRY (edit_dialog->shortcut_entry));
+      
+	contact_info =
+	  g_strdup_printf ("%s|%s|%s", name_entry_text, url_entry_text,
+			   shortcut_entry_text);
+      
+	/* Determine the groups where we want to add the contact */
+	if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (edit_dialog->groups_list_store), &iter)) {
+	
+	  do {
+	  
+	    gtk_tree_model_get (GTK_TREE_MODEL (edit_dialog->groups_list_store), &iter, 0, &selected, 1, &group_name, -1);
+	  
+	    if (group_name) {
+	    
+	      gconf_key =
+		g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, group_name);
+	    
+	      group_content =
+		gconf_client_get_list (client, gconf_key,
+				       GCONF_VALUE_STRING, NULL);
+	    
+	      /* Once we find the contact corresponding to the old saved callto
+		 (if we are editing an existing user and not adding a new one),
+		 we delete him and insert the new one at the same position;
+		 if the group is not selected for that user, we delete him from
+		 the group.
+	      */
+	      if (edit_dialog->old_contact_url) {
+	      
+		group_content_iter =
+		  find_contact_in_group_content (edit_dialog->old_contact_url,
+						 group_content);
+	      
+		/* Only reinsert the contact if the group is selected for him,
+		   otherwise, only delete him from the group */
+		if (selected)
+		  group_content =
+		    g_slist_insert (group_content, (gpointer) contact_info,
+				    g_slist_position (group_content,
+						      group_content_iter));
+	      
+		group_content = g_slist_remove_link (group_content,
+						     group_content_iter);
+	      }
+	      else
+		if (selected)
+		  group_content =
+		    g_slist_append (group_content, (gpointer) contact_info);
+	    
+	      gconf_client_set_list (client, gconf_key,
+				     GCONF_VALUE_STRING,
+				     group_content, NULL);
+	      valid_answer = true;
+	    
+	      g_free (gconf_key);
+	      g_slist_free (group_content);
+
+	      update_menu_sensitivity (false, false, false);
+	    }
+	  
+	    g_free (group_name);
+	  
+	  } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (edit_dialog->groups_list_store), &iter));
+
+	}
+      }
+      break;
+
+
+    case GTK_RESPONSE_REJECT:
+      valid_answer = true;
+      break;
+      
+    }
+  }
+
+
+  g_free (contact_name);
+  g_free (contact_shortcut);
+  g_free (contact_url);
+  g_free (contact_section);
+  
+  if (edit_dialog->dialog) 
+    gtk_widget_destroy (edit_dialog->dialog);
+  
+  g_free (edit_dialog->old_contact_url);
+  delete (edit_dialog);
+}
+
+
+static GmEditContactDialog*
+addressbook_edit_contact_dialog_new (gchar *contact_name,
+				     gchar *contact_url,
+				     gchar *contact_shortcut)
+{
+  GmWindow *gw = NULL;
+  GmEditContactDialog *edit_dialog = NULL;
+  
+  GtkWidget *frame = NULL;
+  GtkWidget *table = NULL;
+  GtkWidget *label = NULL;
+
+  GtkWidget *tree_view = NULL;
+  GtkCellRenderer *renderer = NULL;
+  GtkTreeViewColumn *column = NULL;
+  GtkTreeIter iter;
+
+  GConfClient *client = NULL;
+  
+  GSList *groups_list = NULL;
+  GSList *groups_list_iter = NULL;
+
+  gchar *label_text = NULL;
+  gboolean selected = false;
+
+  
+  gw = gnomemeeting_get_main_window (gm);
+  client = gconf_client_get_default ();
+
+  edit_dialog = new (GmEditContactDialog);
+  memset (edit_dialog, 0, sizeof (GmEditContactDialog));
+  
   /* Create the dialog to easily modify the info of a specific contact */
-  dialog = gtk_dialog_new_with_buttons (_("Edit the contact information"), 
-					GTK_WINDOW (gw->ldap_window),
-					GTK_DIALOG_MODAL,
-					GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
-					GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
-					NULL);
+  edit_dialog->dialog =
+    gtk_dialog_new_with_buttons (_("Edit the contact information"), 
+				 GTK_WINDOW (gw->ldap_window),
+				 GTK_DIALOG_MODAL,
+				 GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
+				 GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
+				 NULL);
     
   table = gtk_table_new (4, 2, FALSE);
   gtk_table_set_row_spacings (GTK_TABLE (table), 3 * GNOMEMEETING_PAD_SMALL);
@@ -485,14 +662,14 @@ edit_contact_cb (GtkWidget *widget,
   gtk_label_set_markup (GTK_LABEL (label), label_text);
   g_free (label_text);
 
-  name_entry = gtk_entry_new ();
+  edit_dialog->name_entry = gtk_entry_new ();
   if (contact_name)
-    gtk_entry_set_text (GTK_ENTRY (name_entry), contact_name);
+    gtk_entry_set_text (GTK_ENTRY (edit_dialog->name_entry), contact_name);
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1, 
 		    (GtkAttachOptions) (GTK_FILL),
 		    (GtkAttachOptions) (GTK_FILL),
 		    3 * GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-  gtk_table_attach (GTK_TABLE (table), name_entry, 1, 2, 0, 1, 
+  gtk_table_attach (GTK_TABLE (table), edit_dialog->name_entry, 1, 2, 0, 1, 
 		    (GtkAttachOptions) (GTK_FILL),
 		    (GtkAttachOptions) (GTK_FILL),
 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
@@ -503,35 +680,41 @@ edit_contact_cb (GtkWidget *widget,
   gtk_label_set_markup (GTK_LABEL (label), label_text);
   g_free (label_text);
   
-  callto_entry = gtk_entry_new ();
-  gtk_widget_set_size_request (GTK_WIDGET (callto_entry), 300, -1);
-  if (contact_callto)
-    gtk_entry_set_text (GTK_ENTRY (callto_entry), contact_callto);
+  edit_dialog->url_entry = gtk_entry_new ();
+  gtk_widget_set_size_request (GTK_WIDGET (edit_dialog->url_entry), 300, -1);
+  if (contact_url) {
+    
+    gtk_entry_set_text (GTK_ENTRY (edit_dialog->url_entry), contact_url);
+    edit_dialog->old_contact_url = g_strdup (contact_url);
+    cout << "FIX ME: set_object_data_full" << endl << flush;
+  }
   else
-    gtk_entry_set_text (GTK_ENTRY (callto_entry), "callto://");
+    gtk_entry_set_text (GTK_ENTRY (edit_dialog->url_entry), "callto://");
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 1, 2, 
 		    (GtkAttachOptions) (GTK_FILL),
 		    (GtkAttachOptions) (GTK_FILL),
 		    3 * GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-  gtk_table_attach (GTK_TABLE (table), callto_entry, 1, 2, 1, 2, 
+  gtk_table_attach (GTK_TABLE (table), edit_dialog->url_entry, 1, 2, 1, 2, 
 		    (GtkAttachOptions) (GTK_FILL),
 		    (GtkAttachOptions) (GTK_FILL),
 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
 
   label = gtk_label_new (NULL);
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
-  label_text = g_strdup_printf ("<b>%s</b>", _("Speed dial:"));
+  label_text = g_strdup_printf ("<b>%s</b>", _("Shortcut:"));
   gtk_label_set_markup (GTK_LABEL (label), label_text);
   g_free (label_text);
 
-  speed_dial_entry = gtk_entry_new ();
-  if (contact_speed_dial)
-    gtk_entry_set_text (GTK_ENTRY (speed_dial_entry), contact_speed_dial);
+  edit_dialog->shortcut_entry = gtk_entry_new ();
+  if (contact_shortcut)
+    gtk_entry_set_text (GTK_ENTRY (edit_dialog->shortcut_entry),
+			contact_shortcut);
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 2, 3, 
 		    (GtkAttachOptions) (GTK_FILL),
 		    (GtkAttachOptions) (GTK_FILL),
 		    3 * GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
-  gtk_table_attach (GTK_TABLE (table), speed_dial_entry, 1, 2, 2, 3, 
+  gtk_table_attach (GTK_TABLE (table), edit_dialog->shortcut_entry,
+		    1, 2, 2, 3, 
 		    (GtkAttachOptions) (GTK_FILL),
 		    (GtkAttachOptions) (GTK_FILL),
 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
@@ -549,9 +732,10 @@ edit_contact_cb (GtkWidget *widget,
 		    3 * GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
 
   frame = gtk_frame_new (NULL);
-  list_store = gtk_list_store_new (2, G_TYPE_BOOLEAN, G_TYPE_STRING);
+  edit_dialog->groups_list_store =
+    gtk_list_store_new (2, G_TYPE_BOOLEAN, G_TYPE_STRING);
   tree_view = 
-    gtk_tree_view_new_with_model (GTK_TREE_MODEL (list_store));
+    gtk_tree_view_new_with_model (GTK_TREE_MODEL (edit_dialog->groups_list_store));
   gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (tree_view), FALSE);
   
   renderer = gtk_cell_renderer_toggle_new ();
@@ -560,7 +744,7 @@ edit_contact_cb (GtkWidget *widget,
   gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
   g_signal_connect (G_OBJECT (renderer), "toggled",
 		    G_CALLBACK (groups_list_store_toggled), 
-		    GTK_TREE_MODEL (list_store));
+		    gpointer (edit_dialog));
 
   renderer = gtk_cell_renderer_text_new ();
   column = gtk_tree_view_column_new_with_attributes ("", renderer,
@@ -584,13 +768,18 @@ edit_contact_cb (GtkWidget *widget,
     
     if (groups_list_iter->data) {
 
-	gtk_list_store_append (list_store, &iter);
-	gtk_list_store_set (list_store, &iter,
-			    0, (is_group
-			    && old_contact_callto
-			    && is_contact_member_of_group (old_contact_callto, (char *) groups_list_iter->data)
-			    && GPOINTER_TO_INT (data) != 1),
-			    1, groups_list_iter->data, -1);
+      selected =
+	(contact_url
+	 && is_contact_member_of_group (contact_url,
+					(char *) groups_list_iter->data));
+      
+      gtk_list_store_append (edit_dialog->groups_list_store, &iter);
+      gtk_list_store_set (edit_dialog->groups_list_store, &iter,
+			  0, selected,
+			  1, groups_list_iter->data, -1);
+
+      if (selected)
+	edit_dialog->selected_groups_number++;
     }
 
     groups_list_iter = g_slist_next (groups_list_iter);
@@ -599,147 +788,74 @@ edit_contact_cb (GtkWidget *widget,
 
   
   /* Pack the gtk entries and the list store in the window */
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), table,
+  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (edit_dialog->dialog)->vbox), table,
 		      FALSE, FALSE, GNOMEMEETING_PAD_SMALL);
-  gtk_widget_show_all (dialog);
-    
+  gtk_widget_show_all (edit_dialog->dialog);
 
-  while (!valid_answer) {
-    
-    result = gtk_dialog_run (GTK_DIALOG (dialog));
-    
-    switch (result) {
-      
-    case GTK_RESPONSE_ACCEPT:
-
-      /* If there is no name or an empty callto, display an error message
-	 and exit */
-      if (!strcmp (gtk_entry_get_text (GTK_ENTRY (name_entry)), "")
-	  || !strcmp (gtk_entry_get_text (GTK_ENTRY (callto_entry)), "")
-	  || !strcmp (gtk_entry_get_text (GTK_ENTRY (callto_entry)), "callto://")){
-	gnomemeeting_error_dialog (GTK_WINDOW (dialog), _("Please provide a valid name and callto for the contact."));
-	valid_answer = false;
-      }
-      else {
-	
-	contact_info =
-	  g_strdup_printf ("%s|%s|%s",
-			   gtk_entry_get_text (GTK_ENTRY (name_entry)),
-			   gtk_entry_get_text (GTK_ENTRY (callto_entry)),
-			   gtk_entry_get_text (GTK_ENTRY (speed_dial_entry)));
-          
-	contact_callto = (char *) gtk_entry_get_text (GTK_ENTRY (callto_entry));
-
-	/* Determine the groups where we want to add the contact */
-	if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (list_store), &iter)) {
-      
-	  do {
-	
-	    gtk_tree_model_get (GTK_TREE_MODEL (list_store), &iter,
-				0, &selected, 1, &group_name, -1);
-	  
-	    if (group_name) {
-	    
-	      gconf_key =
-		g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, group_name);
-
-	      group_content =
-		gconf_client_get_list (client, gconf_key,
-				       GCONF_VALUE_STRING, NULL);
-      
-	      /* Once we find the contact corresponding to the old saved callto
-		 (if we are editing an existing user and not adding a new one),
-		 we delete him and insert the new one at the same position;
-		 if the group is not selected for that user, we delete him from
-		 the group.
-	      */
-	      if (old_contact_callto) {
-	    
-		group_content_iter =
-		  find_contact_in_group_content (old_contact_callto,
-						 group_content);
-
-		/* Only reinsert the contact if the group is selected for him,
-		   otherwise, only delete him from the group */
-		if (selected)
-		  group_content =
-		    g_slist_insert (group_content, (gpointer) contact_info,
-				    g_slist_position (group_content,
-						      group_content_iter));
-
-		group_content = g_slist_remove_link (group_content,
-						     group_content_iter);
-	      }
-	      else
-		group_content =
-		  g_slist_append (group_content, (gpointer) contact_info);
-
-	      /* If we are adding a new user for a selected group and that he
-		 already belongs to that group, then display a warning */
-	      if (GPOINTER_TO_INT (data) == 1 && selected
-		  && is_contact_member_of_group (contact_callto, group_name)) {
-	    
-		gnomemeeting_error_dialog (GTK_WINDOW (dialog), _("Another contact with the callto %s already exists in group %s."), contact_callto, group_name);
-	      }
-	      else {
-
-		other_speed_dial =
-		  gnomemeeting_addressbook_get_speed_dial_url (gtk_entry_get_text (GTK_ENTRY (speed_dial_entry)));
-	    
-		if (!other_speed_dial.IsEmpty () 
-		    && other_speed_dial != PString (contact_callto)) {
-
-		  if (selected) {
-		
-		    gnomemeeting_error_dialog (GTK_WINDOW (dialog), _("Another contact with the same speed dial already exists."));
-		    valid_answer = false;
-		  }
-		}
-		else
-		  if ((GPOINTER_TO_INT (data) == 1 && selected)
-		      || (GPOINTER_TO_INT (data) == 0)) {
-		
-		    gconf_client_set_list (client, gconf_key, GCONF_VALUE_STRING,
-					   group_content, NULL);
-		    valid_answer = true;
-		  }
-	      }	  
-
-	      if (selected)
-		groups_nbr++;
-	      g_free (gconf_key);
-	    }
-	
-	
-	  } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (list_store), &iter));
-
-	  /* If the user had selected no groups, we display a warning */
-	  if (!groups_nbr) {
-
-	    gnomemeeting_error_dialog (GTK_WINDOW (dialog),
-				       _("You have to select a group to which you want to add your contact."));
-	    valid_answer = false;
-	  }
-	}
-	g_free (contact_info);
-	g_slist_free (group_content);
-      }
-      break;
+  return edit_dialog;
+}
 
 
-    case GTK_RESPONSE_REJECT:
-      valid_answer = true;
-      break;
+static gboolean
+addressbook_edit_contact_valid (GmEditContactDialog *edit_dialog,
+				gboolean n)
+{
+  const char *name_entry_text = NULL;
+  const char *url_entry_text = NULL;
+  const char *shortcut_entry_text = NULL;
 
-    }
-
-    groups_nbr = 0;
-  }
+  PString other_speed_dial_url;
   
-  g_free (old_contact_callto);
+  name_entry_text = gtk_entry_get_text (GTK_ENTRY (edit_dialog->name_entry));
+  url_entry_text = gtk_entry_get_text (GTK_ENTRY (edit_dialog->url_entry));
+  shortcut_entry_text =
+    gtk_entry_get_text (GTK_ENTRY (edit_dialog->shortcut_entry));
+  
+  /* If there is no name or an empty callto, display an error message
+     and exit */
+  if (!strcmp (name_entry_text, "")
+      || !strcmp (url_entry_text, "")
+      || !strcmp (url_entry_text, "callto://")) {
     
-  if (dialog)
-    gtk_widget_destroy (dialog);  
+    gnomemeeting_error_dialog (GTK_WINDOW (edit_dialog->dialog), _("Please provide a valid name and URL for the contact you want to add to the address book."));
+    return false;
+  }
+
+
+  /* If the user selected no groups, display an error message and exit */
+  if (edit_dialog->selected_groups_number == 0) {
+
+    gnomemeeting_error_dialog (GTK_WINDOW (edit_dialog->dialog), _("You have to select a group to which you want to add your contact."));
+    return false;
+  }
+
+
+  /* If we can find another url for the same speed dial, display an error
+     message and exit */
+  other_speed_dial_url =
+    gnomemeeting_addressbook_get_url_from_speed_dial (shortcut_entry_text);
+
+  if (!other_speed_dial_url.IsEmpty () 
+      && other_speed_dial_url != PString (url_entry_text)) {
+		
+    gnomemeeting_error_dialog (GTK_WINDOW (edit_dialog->dialog), _("Another contact with the same shortcut already exists in the address book."));
+    return false;
+  }
+
+
+  /* If the user is adding a new user, and there is already an identical
+     url OR if the user modified an existing user to an user having
+     an identical url, display a warning and exit */
+  if (is_contact_member_of_addressbook (PString (url_entry_text))
+      && (n || (!n && edit_dialog->old_contact_url
+		&& PString (edit_dialog->old_contact_url)
+		!= PString (url_entry_text)))) {
+    
+    gnomemeeting_error_dialog (GTK_WINDOW (edit_dialog->dialog), _("Another contact with the same URL already exists in the address book."));
+    return false;
+  }
+
+  return true;
 }
 
 
@@ -808,74 +924,43 @@ contact_clicked_cb (GtkWidget *w,
 {
   GmLdapWindow *lw = NULL;
   GtkWidget *menu = NULL;
+  GtkWidget *child = NULL;
 
-  GtkTreeSelection *selection = NULL;
-  GtkTreeView *tree_view = NULL;
-  GtkTreeModel *model = NULL;
-  GtkTreePath *path = NULL;
-  GtkTreeIter iter;
-  
   GConfClient *client = NULL;
 
-  gchar *contact_callto = NULL;
+  gchar *contact_url = NULL;
   gchar *contact_name = NULL;
-  
-  tree_view = GTK_TREE_VIEW (w);
+  gchar *contact_section = NULL;
+  gchar *msg = NULL;
+
+  gboolean is_group = false;
+  gboolean already_member = false;
 
   lw = gnomemeeting_get_ldap_window (gm);
-
-  if (e->window != gtk_tree_view_get_bin_window (tree_view)) 
-    return FALSE;
-    
   client = gconf_client_get_default ();
 
   if (e->type == GDK_BUTTON_PRESS) {
 
-    if (gtk_tree_view_get_path_at_pos (tree_view, (int) e->x, (int) e->y,
-				       &path, NULL, NULL, NULL)) {
+    if (get_selected_contact_info (GTK_NOTEBOOK (lw->notebook),
+				   &contact_section, &contact_name,
+				   &contact_url, NULL, &is_group)) {
 
-      selection = gtk_tree_view_get_selection (tree_view);
-      model = gtk_tree_view_get_model (GTK_TREE_VIEW (tree_view));
+      already_member =
+	is_contact_member_of_addressbook (PString (contact_url));
 
-      gtk_tree_model_get_iter (GTK_TREE_MODEL (model), &iter, path);
 
-      if (GPOINTER_TO_INT (data) == CONTACTS_GROUPS) {
-
-	gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
-			    COLUMN_CALLTO, &contact_callto,
-			    COLUMN_NAME, &contact_name, -1);
-
-	gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu [4].widget),
-				  TRUE);
-	gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu [9].widget),
-				  FALSE);
-	gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu [11].widget),
-				  TRUE);
-      }
-      else {
-
-	gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
-			    COLUMN_ILS_CALLTO, &contact_callto,
-			    COLUMN_ILS_NAME, &contact_name, -1);
-
-	gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu [4].widget),
-				  FALSE);
-	gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu [9].widget),
-				  TRUE);
-	gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu [11].widget),
-				  FALSE);
-      }
-
-      gchar *msg = g_strdup_printf (_("Add %s to Address Book"), contact_name);
-      GtkWidget *child = GTK_BIN (lw->addressbook_menu [9].widget)->child;
+      /* Update the main menu sensitivity */
+      update_menu_sensitivity (is_group, false, !already_member);
+      msg = g_strdup_printf (_("Add %s to Address Book"), contact_name);
+			       
+      child = GTK_BIN (lw->addressbook_menu [9].widget)->child;
       gtk_label_set_text (GTK_LABEL (child), msg);
 			  
-      if (e->button == 3 && 
-	  gtk_tree_selection_path_is_selected (selection, path)) {
+      if (e->button == 3) {
 	
 	menu = gtk_menu_new ();
 
-	MenuEntry server_contact_menu [] =
+	MenuEntry server_contact_menu_not_member [] =
 	  {
 	    {_("C_all Contact"), NULL,
 	     NULL, 0, MENU_ENTRY, 
@@ -885,6 +970,23 @@ contact_clicked_cb (GtkWidget *w,
 	    
 	    {msg, NULL,
 	     GTK_STOCK_ADD, 0, MENU_ENTRY,
+	     GTK_SIGNAL_FUNC (edit_contact_cb),
+	     GINT_TO_POINTER (0), NULL},
+	    
+	    {NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL}
+	  };
+
+
+	MenuEntry server_contact_menu_member [] =
+	  {
+	    {_("C_all Contact"), NULL,
+	     NULL, 0, MENU_ENTRY, 
+	     GTK_SIGNAL_FUNC (call_user_cb), data, NULL},
+
+	    {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
+	    
+	    {_("Contact _Properties"), NULL,
+	     GTK_STOCK_PROPERTIES, 0, MENU_ENTRY,
 	     GTK_SIGNAL_FUNC (edit_contact_cb),
 	     GINT_TO_POINTER (0), NULL},
 	    
@@ -908,8 +1010,11 @@ contact_clicked_cb (GtkWidget *w,
 	    {NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL}
 	  };
 	
-	if (GPOINTER_TO_INT (data) == CONTACTS_SERVERS)  
-	  gnomemeeting_build_menu (menu, server_contact_menu, NULL);
+	if (GPOINTER_TO_INT (data) == CONTACTS_SERVERS)
+	  if (!already_member)
+	    gnomemeeting_build_menu (menu, server_contact_menu_not_member, 0);
+	  else
+	    gnomemeeting_build_menu (menu, server_contact_menu_member, 0);
 	else
 	  gnomemeeting_build_menu (menu, group_contact_menu, NULL);
 	
@@ -920,7 +1025,9 @@ contact_clicked_cb (GtkWidget *w,
 	g_object_ref (G_OBJECT (menu));
 	gtk_object_sink (GTK_OBJECT (menu));
 	
-	gtk_tree_path_free (path);
+	g_free (contact_url);
+	g_free (contact_name);
+	g_free (contact_section);
 	
 	return TRUE;
       }
@@ -1034,6 +1141,7 @@ delete_contact_section_cb (GtkWidget *widget,
 			   gpointer data)
 {
   GmLdapWindow *lw = NULL;
+  GmWindow *gw = NULL;
   
   GConfClient *client = NULL;
 
@@ -1045,9 +1153,14 @@ delete_contact_section_cb (GtkWidget *widget,
   GtkTreeSelection *selection = NULL;
   GtkTreeIter iter;
 
+  GtkWidget *dialog = NULL;
+
+  gchar *confirm_msg = NULL;
   gchar *gconf_key = NULL;
+  gchar *unset_group_gconf_key = NULL;
   gchar *name = NULL;
-  
+
+  gw = gnomemeeting_get_main_window (gm);
   lw = gnomemeeting_get_ldap_window (gm);
   client = gconf_client_get_default ();
 
@@ -1061,39 +1174,71 @@ delete_contact_section_cb (GtkWidget *widget,
     gtk_tree_model_get_iter (GTK_TREE_MODEL (model), &iter, path);
     gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 
 			COLUMN_CONTACT_SECTION_NAME, &name, -1);
-  
-    if (gtk_tree_path_get_depth (path) >= 2)
-      if (gtk_tree_path_get_indices (path) [0] == 0)
+      
+    if (gtk_tree_path_get_depth (path) >= 2) {
+      
+      if (gtk_tree_path_get_indices (path) [0] == 0) {
+	
 	gconf_key = g_strdup (CONTACTS_KEY "ldap_servers_list");
-      else
+	confirm_msg = g_strdup_printf (_("Are you sure you want to delete server %s?"), name);
+      }
+      else {
+
+	unset_group_gconf_key =
+	  g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, name);
+	
 	gconf_key = g_strdup (CONTACTS_KEY "groups_list");
-  
-    contacts_list =
-      gconf_client_get_list (client, gconf_key, GCONF_VALUE_STRING, NULL); 
+	confirm_msg = g_strdup_printf (_("Are you sure you want to delete group %s and all its contacts?"), name);
+      }
+
+      dialog =
+	gtk_message_dialog_new (GTK_WINDOW (gw->ldap_window),
+				GTK_DIALOG_MODAL, GTK_MESSAGE_QUESTION,
+				GTK_BUTTONS_YES_NO, confirm_msg);
+
+      switch (gtk_dialog_run (GTK_DIALOG (dialog))) {
+
+      case GTK_RESPONSE_YES:
+
+	contacts_list =
+	  gconf_client_get_list (client, gconf_key, GCONF_VALUE_STRING, NULL); 
 
   
-    contacts_list_iter = contacts_list;
-    while (name && contacts_list_iter) {
-    
-      if (!strcmp ((char *) name, (char *) contacts_list_iter->data)) {      
-	contacts_list = 
-	  g_slist_remove_link (contacts_list, contacts_list_iter);
-	g_slist_free (contacts_list_iter);
+	contacts_list_iter = contacts_list;
+	while (name && contacts_list_iter) {
+	
+	  if (!strcmp ((char *) name, (char *) contacts_list_iter->data)) {      
+	    contacts_list = 
+	      g_slist_remove_link (contacts_list, contacts_list_iter);
+	    g_slist_free (contacts_list_iter);
+	  
+	    /* Only remove the selected server */
+	    break;
+	  }
+	
+	  contacts_list_iter = contacts_list_iter->next;
+	}
       
-	/* Only remove the selected server */
+	gconf_client_set_list (client, gconf_key, GCONF_VALUE_STRING, 
+			       contacts_list, NULL);
+	if (unset_group_gconf_key)
+	  gconf_client_set_list (client, unset_group_gconf_key,
+				 GCONF_VALUE_STRING, NULL, NULL);
+      
 	break;
+
       }
-  
-      contacts_list_iter = contacts_list_iter->next;
+
+      gtk_tree_path_free (path);
+      g_free (name);
+      g_slist_free (contacts_list);
+      g_free (unset_group_gconf_key);
+      g_free (gconf_key);
+      g_free (confirm_msg);
+
+      if (dialog)
+	gtk_widget_destroy (dialog);
     }
-  
-    gconf_client_set_list (client, gconf_key, GCONF_VALUE_STRING, 
-			   contacts_list, NULL);
-  
-    gtk_tree_path_free (path);
-    g_free (data);
-    g_slist_free (contacts_list);
-    g_free (gconf_key);
   }
 }
 
@@ -1145,16 +1290,7 @@ contact_section_clicked_cb (GtkWidget *w,
 			    COLUMN_NOTEBOOK_PAGE, &page_num, -1);
 
       /* Update the sensitivity of DELETE */
-      if (gtk_tree_path_get_depth (path) < 2)
-	gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu [4].widget),
-				  FALSE);
-      else
-	gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu [4].widget),
-				  TRUE);
-      gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu [9].widget),
-				FALSE);
-      gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu [11].widget),
-				FALSE);
+      update_menu_sensitivity (false, true, false);
 
       /* Selectes the good notebook page for the contact section */
       if (page_num != -1) {
@@ -1574,8 +1710,8 @@ find_contact_in_group_content (gchar *contact_callto,
  *                 storing the contacts. Returns false on failure (nothing
  *                 selected). The contact_speed_dial pointer is not udpated
  *                 if *is_group = FALSE, ie if the selection corresponds to
- *                 server and not a group of contacts. No pointer should be
- *                 freed as they point to internal things freed on exit.
+ *                 server and not a group of contacts. All allocated
+ *                 pointers should be freed.
  * PRE          :  /
  */
 gboolean
@@ -1603,7 +1739,7 @@ get_selected_contact_info (GtkNotebook *notebook,
   
   if (page && lwp) {
 
-    *contact_section = lwp->contact_section_name;
+    *contact_section = g_strdup (lwp->contact_section_name); // should be freed
       
     selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (lwp->tree_view));
     model = GTK_TREE_MODEL (lwp->users_list_store);
@@ -1652,6 +1788,53 @@ get_selected_contact_info (GtkNotebook *notebook,
 }
 
 
+void
+update_menu_sensitivity (gboolean is_group,
+			 gboolean is_section,
+			 gboolean is_new)
+{
+  GmLdapWindow *lw = NULL;
+  
+  lw = gnomemeeting_get_ldap_window (gm);
+
+    
+  if (is_group || is_section) {
+      
+    gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[4].widget),
+			      TRUE);
+  }
+  else {
+    
+    gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[4].widget),
+			      FALSE);
+  }
+  
+  if (is_group || !is_new) {
+    
+    gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[9].widget),
+			      FALSE);
+    gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[11].widget),
+			      TRUE);
+  }
+  else {
+    
+    gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[9].widget),
+			      TRUE);
+    gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[11].widget),
+			      FALSE);
+  }
+
+  
+  if (is_section) {
+
+    gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[9].widget),
+			      FALSE);
+    gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[11].widget),
+			      FALSE);
+  }
+}
+
+
 /* The functions */
 void
 gnomemeeting_init_ldap_window ()
@@ -1666,6 +1849,7 @@ gnomemeeting_init_ldap_window ()
   GtkCellRenderer *cell = NULL;
   GtkTreeSelection *selection = NULL;
   GtkTreeViewColumn *column = NULL;
+  GtkAccelGroup *accel = NULL;
   GtkTreeStore *model = NULL;
 
   GmWindow *gw = NULL;
@@ -1696,6 +1880,8 @@ gnomemeeting_init_ldap_window ()
   gtk_window_set_default_size (GTK_WINDOW (gw->ldap_window), 650, 350);
   g_object_unref (G_OBJECT (xdap_pixbuf));
 
+  accel = gtk_accel_group_new ();
+  gtk_window_add_accel_group (GTK_WINDOW (gw->ldap_window), accel);
   
   /* A vbox that will contain the menubar, and also the hbox containing
      the rest of the window */
@@ -1720,13 +1906,13 @@ gnomemeeting_init_ldap_window ()
       {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
 
       {_("_Delete"), NULL,
-       GTK_STOCK_DELETE, 0, MENU_ENTRY, 
+       GTK_STOCK_DELETE, 'd', MENU_ENTRY, 
        GTK_SIGNAL_FUNC (delete_cb), NULL, NULL},
 
       {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
 
       {_("Close"), NULL,
-       GTK_STOCK_CLOSE, 0, MENU_ENTRY, 
+       GTK_STOCK_CLOSE, 'w', MENU_ENTRY, 
        GTK_SIGNAL_FUNC (gnomemeeting_component_view),
        (gpointer) gw->ldap_window,
        NULL},
@@ -1734,7 +1920,7 @@ gnomemeeting_init_ldap_window ()
       {_("C_ontact"), NULL, NULL, 0, MENU_NEW, NULL, NULL, NULL},
 
       {_("New _Contact"), NULL,
-       GTK_STOCK_NEW, 0, MENU_ENTRY, 
+       GTK_STOCK_NEW, 'n', MENU_ENTRY, 
        GTK_SIGNAL_FUNC (edit_contact_cb), GINT_TO_POINTER (1),
        NULL},
 
@@ -1753,7 +1939,7 @@ gnomemeeting_init_ldap_window ()
     };
 
   lw->addressbook_menu = (MenuEntry *) addressbook_menu;
-  gnomemeeting_build_menu (menubar, addressbook_menu, NULL);
+  gnomemeeting_build_menu (menubar, addressbook_menu, accel);
   gtk_box_pack_start (GTK_BOX (vbox), menubar, FALSE, FALSE, 0);
 
   
@@ -2177,8 +2363,7 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
 
   /* Right-click on a contact */
   g_signal_connect (G_OBJECT (lwp->tree_view), "event-after",
-		    G_CALLBACK (contact_clicked_cb), 
-		    GINT_TO_POINTER (type));
+		    G_CALLBACK (contact_clicked_cb), NULL);
 
   return page_num;
 }
@@ -2350,11 +2535,18 @@ gnomemeeting_addressbook_sections_populate ()
   gtk_tree_view_set_cursor (GTK_TREE_VIEW (lw->tree_view), path,
 			    NULL, false);
   gtk_tree_path_free (path);
+  
+
+  /* Update sensitivity */
+  gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[9].widget),
+			    FALSE);
+  gtk_widget_set_sensitive (GTK_WIDGET (lw->addressbook_menu[11].widget),
+			    FALSE);
 }
 
 
 PString
-gnomemeeting_addressbook_get_speed_dial_url (PString url)
+gnomemeeting_addressbook_get_url_from_speed_dial (PString url)
 {
   gchar *group_content_gconf_key = NULL;
   char **contact_info = NULL;
@@ -2368,7 +2560,7 @@ gnomemeeting_addressbook_get_speed_dial_url (PString url)
 
   if (url.IsEmpty ())
     return result;
-  
+
   client = gconf_client_get_default ();
 
   groups =
@@ -2383,17 +2575,14 @@ gnomemeeting_addressbook_get_speed_dial_url (PString url)
     group_content =
       gconf_client_get_list (client, group_content_gconf_key,
 			     GCONF_VALUE_STRING, NULL);
-
-    while (group_content && group_content->data) {
+    
+    while (group_content && group_content->data && result.IsEmpty ()) {
       
       contact_info =
 	g_strsplit ((char *) group_content->data, "|", 0);
-      
-      if (contact_info [2] && !strcmp (contact_info [2], (const char *) url)) {
 
+      if (contact_info [2] && !strcmp (contact_info [2], (const char *) url)) 
 	result = PString (contact_info [1]);
-	break;
-      }
 
       g_strfreev (contact_info);
       group_content = g_slist_next (group_content);
@@ -2409,3 +2598,115 @@ gnomemeeting_addressbook_get_speed_dial_url (PString url)
 
   return result;
 }
+
+
+PString
+gnomemeeting_addressbook_get_speed_dial_from_url (PString url)
+{
+  gchar *group_content_gconf_key = NULL;
+  char **contact_info = NULL;
+  
+  GSList *group_content = NULL;
+  GSList *groups = NULL;
+
+  PString result;
+  
+  GConfClient *client = NULL;
+
+  if (url.IsEmpty ())
+    return result;
+
+  client = gconf_client_get_default ();
+
+  groups =
+    gconf_client_get_list (client, CONTACTS_KEY "groups_list",
+			   GCONF_VALUE_STRING, NULL);
+
+  while (groups && groups->data) {
+    
+    group_content_gconf_key =
+      g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, (char *) groups->data);
+
+    group_content =
+      gconf_client_get_list (client, group_content_gconf_key,
+			     GCONF_VALUE_STRING, NULL);
+
+    while (group_content && group_content->data && result.IsEmpty ()) {
+      
+      contact_info =
+	g_strsplit ((char *) group_content->data, "|", 0);
+      
+      if (contact_info [1] && !strcmp (contact_info [1], (const char *) url)) 
+	result = PString (contact_info [2]);
+
+      g_strfreev (contact_info);
+      group_content = g_slist_next (group_content);
+    }
+
+    g_free (group_content_gconf_key);
+    g_slist_free (group_content);
+
+    groups = g_slist_next (groups);
+  }
+
+  g_slist_free (groups);
+
+  return result;
+}
+
+
+gboolean
+is_contact_member_of_addressbook (PString url)
+{
+  gchar *group_content_gconf_key = NULL;
+  char **contact_info = NULL;
+
+  gboolean result = false;
+  
+  GSList *group_content = NULL;
+  GSList *groups = NULL;
+
+  GConfClient *client = NULL;
+
+  if (url.IsEmpty ())
+    return result;
+
+  client = gconf_client_get_default ();
+
+  groups =
+    gconf_client_get_list (client, CONTACTS_KEY "groups_list",
+			   GCONF_VALUE_STRING, NULL);
+
+  while (groups && groups->data) {
+    
+    group_content_gconf_key =
+      g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, (char *) groups->data);
+
+    group_content =
+      gconf_client_get_list (client, group_content_gconf_key,
+			     GCONF_VALUE_STRING, NULL);
+
+    while (group_content && group_content->data && !result) {
+      
+      contact_info =
+	g_strsplit ((char *) group_content->data, "|", 0);
+      
+      if (contact_info [1] && !strcmp (contact_info [1], (const char *) url)) 
+	result = true;
+
+      g_strfreev (contact_info);
+      group_content = g_slist_next (group_content);
+    }
+
+    g_free (group_content_gconf_key);
+    g_slist_free (group_content);
+
+    groups = g_slist_next (groups);
+  }
+
+  g_slist_free (groups);
+
+  return result;
+}
+
+

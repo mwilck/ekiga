@@ -118,5 +118,5 @@ void gnomemeeting_addressbook_sections_populate ();
 
 
 
-PString gnomemeeting_addressbook_get_speed_dial_url (PString);
+PString gnomemeeting_addressbook_get_url_from_speed_dial (PString);
 #endif
