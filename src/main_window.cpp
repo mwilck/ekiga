@@ -1235,13 +1235,13 @@ gnomemeeting_init (GmWindow *gw,
   gw->video_devices = PVideoInputDevice::GetInputDeviceNames ();
   gw->audio_mixers = gnomemeeting_get_mixers ();
   
-  static GnomeMeeting instance;
-  endpoint = MyApp->Endpoint ();
-
   gnomemeeting_init_pref_window ();  
   gnomemeeting_init_ldap_window ();
   gnomemeeting_init_druid ();
   gnomemeeting_init_main_window (accel);
+
+  static GnomeMeeting instance;
+  endpoint = MyApp->Endpoint ();
 
   gnomemeeting_sound_daemons_resume ();
   gnomemeeting_mixers_mic_select ();
