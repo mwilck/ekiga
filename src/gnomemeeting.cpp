@@ -290,15 +290,13 @@ GnomeMeeting::DetectDevices ()
   audio_plugin = gconf_get_string (AUDIO_DEVICES_KEY "plugin");
   video_plugin = gconf_get_string (VIDEO_DEVICES_KEY "plugin");
  
-  if (!audio_plugin || !video_plugin)
-    return FALSE;
 
   /* Detect the devices */
   gnomemeeting_sound_daemons_suspend ();
 
   /* Detect the plugins */
   gw->audio_managers = PSoundChannel::GetDriverNames ();
-  gw->video_managers  =PVideoInputDevice::GetDriverNames ();
+  gw->video_managers = PVideoInputDevice::GetDriverNames ();
 
   /* Detect the devices */
    gw->video_devices = PVideoInputDevice::GetDriversDeviceNames (video_plugin);

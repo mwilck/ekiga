@@ -420,18 +420,22 @@ GMH323EndPoint::AddAudioCapabilities ()
     SetCapability (0, 0, new SpeexNarrow3AudioCapability ());
 
     SetCapability (0, 0, gsm_capa = new MicrosoftGSMAudioCapability);
-    gsm_capa->SetTxFramesInPacket (gsm_frames);
+    if (gsm_frames > 0)
+      gsm_capa->SetTxFramesInPacket (gsm_frames);
 
     g711_capa = new H323_G711Capability (H323_G711Capability::muLaw);
     SetCapability (0, 0, g711_capa);
-    g711_capa->SetTxFramesInPacket (g711_frames);
+    if (g711_frames > 0)
+      g711_capa->SetTxFramesInPacket (g711_frames);
 
     g711_capa = new H323_G711Capability (H323_G711Capability::ALaw);
     SetCapability (0, 0, g711_capa);
-    g711_capa->SetTxFramesInPacket (g711_frames);
+    if (g711_frames > 0)
+      g711_capa->SetTxFramesInPacket (g711_frames);
 
     SetCapability (0, 0, gsm2_capa = new H323_GSM0610Capability);	
-    gsm2_capa->SetTxFramesInPacket (gsm_frames);
+    if (gsm_frames > 0)
+      gsm2_capa->SetTxFramesInPacket (gsm_frames);
 
     g72616_capa = 
       new H323_G726_Capability (*this, H323_G726_Capability::e_32k);
