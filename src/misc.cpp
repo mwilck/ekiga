@@ -32,6 +32,12 @@
 
 #include <ptlib.h>
 #include <gnome.h>
+#include <esd.h>
+
+#ifdef HAVE_ARTS
+#include <artsc.h>
+#endif
+
 #include "config.h"
 #include "main_window.h"
 #include "common.h"
@@ -359,4 +365,55 @@ void gnomemeeting_statusbar_flash (GtkWidget *widget, const char *msg, ...)
   gnome_app_flash (GNOME_APP (widget), buffer);
 
   va_end (args);
+}
+
+
+void gnomemeeting_sound_daemons_suspend (void)
+{
+  int esd_client = 0;
+
+  /* Put esd into standby mode */
+  esd_client = esd_open_sound (NULL);
+  if (esd_standby (esd_client) != 1) {
+    
+    gnomemeeting_log_insert (_("Could not suspend ESD"));
+  }
+      
+  esd_close (esd_client);
+
+
+  /* Put artsd into standby mode */
+#ifdef HAVE_ARTS
+  int artserror = arts_init();
+  if (artserror) {
+    
+    gchar* artsmsg = g_strdup(arts_error_text(artserror));
+    gnomemeeting_log_insert(artsmsg);
+  } 
+  else {
+    
+    if (0 == arts_suspend()) {
+      
+      gnomemeeting_log_insert (_("Could not suspend artsd"));
+    } 
+          
+    arts_free();
+  }
+#endif
+}
+
+
+void gnomemeeting_sound_daemons_resume (void)
+{
+  int esd_client = 0;
+
+  /* Put esd into normal mode */
+  esd_client = esd_open_sound (NULL);
+
+  if (esd_resume (esd_client) != 1) {
+
+    gnomemeeting_log_insert (_("Could not resume ESD"));
+  }
+
+  esd_close (esd_client);
 }

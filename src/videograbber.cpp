@@ -519,7 +519,7 @@ void GMVideoGrabber::VGOpen (void)
 
 	gnomemeeting_threads_enter ();
 	msg = g_strdup_printf 
-	  (_("Error while opening video device %s, channel %d.\nThe chosen Video Image will be transmitted during calls."), video_device, video_channel);
+	  (_("Error while opening video device %s, channel %d.\nThe chosen Video Image will be transmitted during calls. If you didn't choose any image, then the default GnomeMeeting logo will be transmitted. Notice that you can always transmit a given image or the GnomeMeeting logo by choosing \"Picture\" as video device."), video_device, video_channel);
 	gnomemeeting_statusbar_flash (gm, _("Can't open the Video Device"));
 	
 	switch (error_code)	{

@@ -131,4 +131,25 @@ gnomemeeting_incoming_call_popup_new (gchar *, gchar *);
  * PRE           : The GnomeApp, followed by printf syntax format.
  */
 void gnomemeeting_statusbar_flash (GtkWidget *, const char *, ...);
+
+
+/* DESCRIPTION   :  /
+ * BEHAVIOR      : Puts ESD (and Artsd if support compiled in) into standby 
+ *                 mode. An error message is displayed in the gnomemeeting
+ *                 history if it failed. No message is displayed if it is
+ *                 succesful.
+ * PRE           : /
+ */
+void gnomemeeting_sound_daemons_suspend ();
+
+
+/* DESCRIPTION   :  /
+ * BEHAVIOR      : Puts ESD (and Artsd if support compiled in) into normal
+ *                 mode. An error message is displayed in the gnomemeeting
+ *                 history if it failed. No message is displayed if it is
+ *                 succesful.
+ * PRE           : /
+ */
+void gnomemeeting_sound_daemons_resume ();
+
 #endif

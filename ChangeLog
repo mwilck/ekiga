@@ -1,5 +1,18 @@
 2002-08-01  Damien Sandras  <dsandras@seconix.com>
 
+	* src/misc.cpp: Added 2 functions : gnomemeeting_sound_daemons_suspend
+	and gnomemeeting_sound_daemons_resume.
+
+	* src/misc.h: See above.
+
+	* src/endpoint.cpp: Make use of the 2 new functions. The old method
+	could fail to close ESD when opening the audio channel in fast
+	start mode.
+
+	* src/videograbber.cpp: Made the error message more explicit.
+	
+2002-08-01  Damien Sandras  <dsandras@seconix.com>
+
 	* configure.in: Changed Gettextpackage and program name to 
 	gnomemeeting.
 
