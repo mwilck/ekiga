@@ -922,6 +922,13 @@ gnomemeeting_popup_menu_tray_init (GtkWidget *widget)
 
       {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
 
+      {_("Calls History"), _("View the calls history"),
+       NULL, 0, MENU_ENTRY, 
+       GTK_SIGNAL_FUNC (gnomemeeting_component_view),
+       (gpointer) gw->calls_history_window, NULL},
+
+      {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
+
       {_("_Preferences..."), _("Change your preferences"),
        GTK_STOCK_PREFERENCES, 'P', MENU_ENTRY, 
        GTK_SIGNAL_FUNC (gnomemeeting_component_view),
