@@ -54,10 +54,11 @@ extern GtkWidget *gm;
 /* The functions */
 
 
-void gnomemeeting_threads_enter () {
-
-  if (PThread::Current ()->GetThreadName () != "gnomemeeting") {
-    
+void 
+gnomemeeting_threads_enter () 
+{
+  if (PThread::Current ()->GetThreadName () != "gnomemeeting") 
+  {    
     //    cout << "Will take GDK Lock" << endl << flush;
     PTRACE(1, "Will Take GDK Lock");
     gdk_threads_enter ();
@@ -72,8 +73,9 @@ void gnomemeeting_threads_enter () {
 }
 
 
-void gnomemeeting_threads_leave () {
-
+void 
+gnomemeeting_threads_leave () 
+{
   if (PThread::Current ()->GetThreadName () != "gnomemeeting") {
 
     //    cout << "Will Release GDK Lock" << endl << flush;
@@ -91,7 +93,8 @@ void gnomemeeting_threads_leave () {
 }
 
 
-GtkWidget *gnomemeeting_button (gchar *lbl, GtkWidget *pixmap)
+GtkWidget *
+gnomemeeting_button (gchar *lbl, GtkWidget *pixmap)
 {
   GtkWidget *button;
   GtkWidget *hbox2;
@@ -113,53 +116,8 @@ GtkWidget *gnomemeeting_button (gchar *lbl, GtkWidget *pixmap)
   return button;
 }
 
-
-GmWindow *gnomemeeting_get_main_window (GtkWidget *gm)
-{
-  GmWindow *gw = (GmWindow *) 
-    g_object_get_data (G_OBJECT (gm), "gw");
-
-  return gw;
-}
-
-
-GmPrefWindow *gnomemeeting_get_pref_window (GtkWidget *gm)
-{
-  GmPrefWindow *pw = (GmPrefWindow *) 
-    g_object_get_data (G_OBJECT (gm), "pw");
-
-  return pw;
-}
-
-
-GmLdapWindow *gnomemeeting_get_ldap_window (GtkWidget *gm)
-{
-  GmLdapWindow *lw = (GmLdapWindow *) 
-    g_object_get_data (G_OBJECT (gm), "lw");
-
-  return lw;
-}
-
-
-GmTextChat *gnomemeeting_get_chat_window (GtkWidget *gm)
-{
-  GmTextChat *chat = (GmTextChat *) 
-    g_object_get_data (G_OBJECT (gm), "chat");
-
-  return chat;
-}
-
-
-GmRtpData *gnomemeeting_get_rtp_data (GtkWidget *gm)
-{
-  GmRtpData *rtp = (GmRtpData *) 
-    g_object_get_data (G_OBJECT (gm), "rtp");
-
-  return rtp;
-}
-
-
-void gnomemeeting_log_insert (GtkWidget *text_view, gchar *text)
+void 
+gnomemeeting_log_insert (GtkWidget *text_view, gchar *text)
 {
   GtkTextIter start, end;
   GtkTextMark *mark;
@@ -198,7 +156,8 @@ void gnomemeeting_log_insert (GtkWidget *text_view, gchar *text)
 }
 
 
-void gnomemeeting_init_main_window_logo ()
+void 
+gnomemeeting_init_main_window_logo ()
 {
   GdkPixbuf *tmp = NULL;
   GdkPixbuf *text_logo_pix = NULL;
@@ -228,42 +187,17 @@ void gnomemeeting_init_main_window_logo ()
   g_object_unref (tmp);
 }
 
-
-gint PlaySound (GtkWidget *widget)
-{
-  gpointer data = NULL;
-
-  if (widget != NULL) {
-
-    /* First we check the current displayed image in the systray.
-       We can't call gnomemeeting_threads_enter as idles and timers
-       are executed in the main thread */
-    gdk_threads_enter ();
-    data = g_object_get_data (G_OBJECT (widget), "available");
-    gdk_threads_leave ();
-  }
-
-  /* If the systray icon contains the ringing pic */
-  if (GPOINTER_TO_INT (data) == 0) {
-
-    gnome_triggers_do ("", "program", "gnomemeeting", 
-		       "incoming_call", NULL);
-  }
-
-  return TRUE;
-}
-
-
 /* Helper functions por the PAssert dialog */
-static void passert_close_cb (GtkDialog *dialog, gpointer data)
+static void 
+passert_close_cb (GtkDialog *dialog, gpointer data)
 {
   _exit (1);
 }
 
 
 /* This function overrides from a pwlib function */
-void PAssertFunc (const char * file, int line, const char * msg)
-
+void 
+PAssertFunc (const char * file, int line, const char * msg)
 {
   static bool inAssert;
   gchar *mesg = NULL;
@@ -315,9 +249,9 @@ gnomemeeting_incoming_call_popup_new (gchar * utf8_name,
   GtkWidget *hbox = NULL;
   GtkWidget *widget = NULL;
   GtkWidget *b1 = NULL, *b2 = NULL;
-  gchar *file = NULL;
-  gchar *msg = NULL;
-  GmWindow *gw = NULL;
+  gchar     *file = NULL;
+  gchar     *msg = NULL;
+  GmWindow  *gw = NULL;
 
 
   msg = g_strdup_printf (_("Call from %s\nusing %s"), (const char*) utf8_name, 
@@ -370,10 +304,11 @@ gnomemeeting_incoming_call_popup_new (gchar * utf8_name,
 }
 
 
-void gnomemeeting_statusbar_flash (GtkWidget *widget, const char *msg, ...)
+void 
+gnomemeeting_statusbar_flash (GtkWidget *widget, const char *msg, ...)
 {
   va_list args;
-  char buffer [1025];
+  char    buffer [1025];
 
   va_start (args, msg);
   vsnprintf (buffer, 1024, msg, args);
@@ -384,36 +319,3 @@ void gnomemeeting_statusbar_flash (GtkWidget *widget, const char *msg, ...)
   va_end (args);
 }
 
-
-void gnomemeeting_sound_daemons_suspend (void)
-{
-  GmWindow *gw = gnomemeeting_get_main_window (gm);
-  int esd_client = 0;
-  
-  /* Put esd into standby mode */
-  esd_client = esd_open_sound (NULL);
-  if (esd_standby (esd_client) != 1) {
-    
-    gnomemeeting_log_insert (gw->history_text_view, 
-			     _("Could not suspend ESD"));
-  }
-      
-  esd_close (esd_client);
-}
-
-
-void gnomemeeting_sound_daemons_resume (void)
-{
-  GmWindow *gw = gnomemeeting_get_main_window (gm);
-  int esd_client = 0;
-
-  /* Put esd into normal mode */
-  esd_client = esd_open_sound (NULL);
-
-  if (esd_resume (esd_client) != 1) {
-
-    gnomemeeting_log_insert (gw->history_text_view, _("Could not resume ESD"));
-  }
-
-  esd_close (esd_client);
-}

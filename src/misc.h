@@ -63,47 +63,6 @@ void gnomemeeting_threads_leave ();
  */
 GtkWidget *gnomemeeting_button (char *, GtkWidget *);
 
-
-/* DESCRIPTION  :  / 
- * BEHAVIOR     :  Returns the structure of widgets of the main window.
- * PRE          :  The GtkWidget must be a pointer to the Main gnomeMeeting 
- *                 window.
- */
-GmWindow *gnomemeeting_get_main_window (GtkWidget *);
-
-
-/* DESCRIPTION  :  / 
- * BEHAVIOR     :  Returns the structure of widgets of the prefs window.
- * PRE          :  The GtkWidget must be a pointer to the Main gnomeMeeting 
- *                 window.
- */
-GmPrefWindow *gnomemeeting_get_pref_window (GtkWidget *);
-
-
-/* DESCRIPTION  :  / 
- * BEHAVIOR     :  Returns the structure of widgets of the ldap window.
- * PRE          :  The GtkWidget must be a pointer to the Main gnomeMeeting 
- *                 window.
- */
-GmLdapWindow *gnomemeeting_get_ldap_window (GtkWidget *);
-
-
-/* DESCRIPTION  :  / 
- * BEHAVIOR     :  Returns the structure of widgets of the chat window.
- * PRE          :  The GtkWidget must be a pointer to the Main gnomeMeeting 
- *                 window.
- */
-GmTextChat *gnomemeeting_get_chat_window (GtkWidget *);
-
-
-/* DESCRIPTION  :  / 
- * BEHAVIOR     :  Returns the rtp data. Only valid during calls.
- * PRE          :  The GtkWidget must be a pointer to the Main gnomeMeeting 
- *                 window.
- */
-GmRtpData *gnomemeeting_get_rtp_data (GtkWidget *);
-
-
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Add text (gchar *) with timestamps into the given 
  *                 GtkTextView.
@@ -117,14 +76,6 @@ void gnomemeeting_log_insert (GtkWidget *, gchar *);
  * PRE          :  /
  */
 void gnomemeeting_init_main_window_logo ();
-
-
-/* DESCRIPTION  :  This callback is called by a timer function.
- * BEHAVIOR     :  Plays the sound choosen in the gnome control center.
- * PRE          :  The pointer to the docklet must be valid.
- */
-gint PlaySound (GtkWidget *);
-
 
 /* DESCRIPTION   :  /
  * BEHAVIOR      : Creates a new incoming call popup and returns it.
@@ -140,25 +91,5 @@ gnomemeeting_incoming_call_popup_new (gchar *, gchar *);
  * PRE           : The GnomeApp, followed by printf syntax format.
  */
 void gnomemeeting_statusbar_flash (GtkWidget *, const char *, ...);
-
-
-/* DESCRIPTION   :  /
- * BEHAVIOR      : Puts ESD (and Artsd if support compiled in) into standby 
- *                 mode. An error message is displayed in the gnomemeeting
- *                 history if it failed. No message is displayed if it is
- *                 succesful.
- * PRE           : /
- */
-void gnomemeeting_sound_daemons_suspend ();
-
-
-/* DESCRIPTION   :  /
- * BEHAVIOR      : Puts ESD (and Artsd if support compiled in) into normal
- *                 mode. An error message is displayed in the gnomemeeting
- *                 history if it failed. No message is displayed if it is
- *                 succesful.
- * PRE           : /
- */
-void gnomemeeting_sound_daemons_resume ();
 
 #endif

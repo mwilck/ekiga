@@ -1,6 +1,6 @@
 
 /* GnomeMeeting -- A Video-Conferencing application
- * Copyright (C) 2000-2001 Damien Sandras
+ * Copyright (C) 2000-2002 Damien Sandras
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,24 +15,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- */
-
-/*                            common.h
- *                       -------------------
- *   begin                : Wed Mar 21 2001
- *   copyright            : (C) 2000-2002 by Damien Sandras
- *   description          : This file contains all the general things.
- *   email                : dsandras@seconix.com
+ *
+ * begin      : Wed Mar 21 2001
+ * description: This file contains all the general things.
  */
 
 
-#ifndef _COMMON_H_
-#define _COMMON_H_
+#ifndef GM_COMMON_H_
+#define GM_COMMON_H_
 
 #include <gtk/gtk.h>
+
 #include <ptlib.h>
 #include <iostream>
-
 
 #define GM_CIF_WIDTH   352
 #define GM_CIF_HEIGHT  288
@@ -54,14 +49,6 @@
 
 #define GM_WINDOW(x) (GmWindow *)(x)
 
-
-typedef struct _GmWindow GmWindow;
-typedef struct _GmPrefWindow GmPrefWindow;
-typedef struct _GmLdapWindow GmLdapWindow;
-typedef struct _GmTextChat GmTextChat;
-typedef struct _GmRtpData GmRtpData;
-typedef struct _GmCommandLineOptions GmCommandLineOptions;
-
 struct _GmTextChat
 {
   GtkWidget     *text_view;
@@ -72,18 +59,18 @@ struct _GmTextChat
 
 struct _GmRtpData
 {
-  int tr_audio_bytes;
+  int   tr_audio_bytes;
   float tr_audio_speed [100];
-  int tr_audio_pos;
+  int   tr_audio_pos;
   float tr_video_speed [100];
-  int tr_video_pos;
-  int tr_video_bytes;
-  int re_audio_bytes;
+  int   tr_video_pos;
+  int   tr_video_bytes;
+  int   re_audio_bytes;
   float re_audio_speed [100];
-  int re_audio_pos;
-  int re_video_bytes;
+  int   re_audio_pos;
+  int   re_video_bytes;
   float re_video_speed [100];
-  int re_video_pos;
+  int   re_video_pos;
 };
 
 
@@ -120,14 +107,15 @@ struct _GmWindow
   GtkWidget *stats_label;
   GtkWidget *stats_drawing_area;
 
-  int progress_timeout;
-  int cleaner_thread_count;
+  int          progress_timeout;
+  int          cleaner_thread_count;
+
   PStringArray video_devices;
   PStringArray audio_recorder_devices;
   PStringArray audio_player_devices;
- 
-  double zoom;
-  gboolean fullscreen;
+
+  double       zoom;
+  gboolean     fullscreen;
 };
 
 
@@ -140,80 +128,126 @@ struct _GmLdapWindow
   GtkWidget *option_menu;
   GtkWidget *refresh_button;
   
-  int thread_count;
+  int        thread_count;
 };
 
 
 struct _GmPrefWindow
 {
-  GtkTooltips *tips;
-  GtkWidget *show_splash;
-  GtkWidget *start_hidden;
-  GtkWidget *incoming_call_popup;
-  GtkWidget *video_preview;
-  GtkWidget *incoming_call_sound;
-  GtkWidget *opt1, *opt2;
-  GtkWidget *tr_vq;
-  GtkWidget *tr_ub;
-  GtkWidget *bps_frame;
-  GtkWidget *re_vq;
-  GtkWidget *tr_fps;
-  GtkWidget *vid_tr;
-  GtkWidget *sd;
-  GtkWidget *jitter_buffer;
-  GtkWidget *video_bandwidth;
-  GtkWidget *vb;
-  GtkWidget *fps;
-  GtkWidget *firstname, *entry_port;
-  GtkWidget *surname;
-  GtkWidget *mail;
-  GtkWidget *location;
-  GtkWidget *comment;
-  GtkWidget *ht;
-  GtkWidget *fs;
-  GtkWidget *aa;
-  GtkWidget *dnd;
+  GtkTooltips  *tips;
   GtkListStore *codecs_list_store;
-  GtkWidget *ldap_server;
-  GtkWidget *ldap_port;
-  GtkWidget *ldap;
-  GtkWidget *gk;
-  GtkWidget *gk_host;
-  GtkWidget *gk_alias;
-  GtkWidget *gk_id;
-  GtkWidget *audio_player;
-  GtkWidget *audio_recorder;
-  GtkWidget *audio_player_mixer;
-  GtkWidget *audio_recorder_mixer;
-  GtkWidget *video_device; 
-  GtkWidget *video_channel;
-  GtkWidget *video_image;
-  GtkWidget *lid_device;
-  GtkWidget *lid_aec;
-  GtkWidget *lid_country;
-  GtkWidget *lid;
-  GtkWidget *show_docklet;
-  GtkWidget *directory_update_button;
-  GtkWidget *gatekeeper_update_button;
-  GtkWidget *video_device_apply_button;
-  GtkWidget *g711_frames;
-  GtkWidget *gsm_frames;
-  GtkWidget *forward_host;
-  GtkWidget *always_forward;
-  GtkWidget *busy_forward;
-  GtkWidget *no_answer_forward;
-  GtkWidget *fullscreen_width;
-  GtkWidget *fullscreen_height;
+
+  GtkWidget    *show_splash;
+  GtkWidget    *start_hidden;
+  GtkWidget    *incoming_call_popup;
+  GtkWidget    *video_preview;
+  GtkWidget    *incoming_call_sound;
+  GtkWidget    *opt1, *opt2;
+  GtkWidget    *tr_vq;
+  GtkWidget    *tr_ub;
+  GtkWidget    *bps_frame;
+  GtkWidget    *re_vq;
+  GtkWidget    *tr_fps;
+  GtkWidget    *vid_tr;
+  GtkWidget    *sd;
+  GtkWidget    *jitter_buffer;
+  GtkWidget    *video_bandwidth;
+  GtkWidget    *vb;
+  GtkWidget    *fps;
+  GtkWidget    *firstname, *entry_port;
+  GtkWidget    *surname;
+  GtkWidget    *mail;
+  GtkWidget    *location;
+  GtkWidget    *comment;
+  GtkWidget    *ht;
+  GtkWidget    *fs;
+  GtkWidget    *aa;
+  GtkWidget    *dnd;
+  GtkWidget    *ldap_server;
+  GtkWidget    *ldap_port;
+  GtkWidget    *ldap;
+  GtkWidget    *gk;
+  GtkWidget    *gk_host;
+  GtkWidget    *gk_alias;
+  GtkWidget    *gk_id;
+  GtkWidget    *audio_player;
+  GtkWidget    *audio_recorder;
+  GtkWidget    *audio_player_mixer;
+  GtkWidget    *audio_recorder_mixer;
+  GtkWidget    *video_device; 
+  GtkWidget    *video_channel;
+  GtkWidget    *video_image;
+  GtkWidget    *lid_device;
+  GtkWidget    *lid_aec;
+  GtkWidget    *lid_country;
+  GtkWidget    *lid;
+  GtkWidget    *show_docklet;
+  GtkWidget    *directory_update_button;
+  GtkWidget    *gatekeeper_update_button;
+  GtkWidget    *video_device_apply_button;
+  GtkWidget    *g711_frames;
+  GtkWidget    *gsm_frames;
+  GtkWidget    *forward_host;
+  GtkWidget    *always_forward;
+  GtkWidget    *busy_forward;
+  GtkWidget    *no_answer_forward;
+  GtkWidget    *fullscreen_width;
+  GtkWidget    *fullscreen_height;
 };
 
 
 struct _GmCommandLineOptions
 {
-  int debug_level;
+  int    debug_level;
   gchar *url;
-  int daemon;
+  int    daemon;
 };
 
 
-#endif 
-/* _COMMON_H */
+typedef struct _GmWindow GmWindow;
+typedef struct _GmPrefWindow GmPrefWindow;
+typedef struct _GmLdapWindow GmLdapWindow;
+typedef struct _GmTextChat GmTextChat;
+typedef struct _GmRtpData GmRtpData;
+typedef struct _GmCommandLineOptions GmCommandLineOptions;
+
+/* DESCRIPTION  :  / 
+ * BEHAVIOR     :  Returns the structure of widgets of the main window.
+ * PRE          :  The GtkWidget must be a pointer to the Main gnomeMeeting 
+ *                 window.
+ */
+GmWindow *gnomemeeting_get_main_window (GtkWidget *);
+
+
+/* DESCRIPTION  :  / 
+ * BEHAVIOR     :  Returns the structure of widgets of the prefs window.
+ * PRE          :  The GtkWidget must be a pointer to the Main gnomeMeeting 
+ *                 window.
+ */
+GmPrefWindow *gnomemeeting_get_pref_window (GtkWidget *);
+
+
+/* DESCRIPTION  :  / 
+ * BEHAVIOR     :  Returns the structure of widgets of the ldap window.
+ * PRE          :  The GtkWidget must be a pointer to the Main gnomeMeeting 
+ *                 window.
+ */
+GmLdapWindow *gnomemeeting_get_ldap_window (GtkWidget *);
+
+
+/* DESCRIPTION  :  / 
+ * BEHAVIOR     :  Returns the structure of widgets of the chat window.
+ * PRE          :  The GtkWidget must be a pointer to the Main gnomeMeeting 
+ *                 window.
+ */
+GmTextChat *gnomemeeting_get_chat_window (GtkWidget *);
+
+
+/* DESCRIPTION  :  / 
+ * BEHAVIOR     :  Returns the rtp data. Only valid during calls.
+ * PRE          :  The GtkWidget must be a pointer to the Main gnomeMeeting 
+ *                 window.
+ */
+GmRtpData *gnomemeeting_get_rtp_data (GtkWidget *);
+
+#endif /* GM_COMMON_H */

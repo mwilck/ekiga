@@ -38,7 +38,7 @@
 #include "common.h"
 #include "connection.h"
 #include "tray.h"
-#include "audio.h"
+#include "sound-handling.h"
 #include "videograbber.h"
 #include "gatekeeper.h"
 #include "callbacks.h"
@@ -54,6 +54,7 @@
 #include <videoio.h>
 #include <gnome.h>
 #include <lpc10codec.h>
+
 #ifdef SPEEX_CODEC
 #include <speexcodec.h>
 #endif
@@ -218,18 +219,18 @@ GMH323EndPoint::~GMH323EndPoint ()
 
 void GMH323EndPoint::UpdateConfig ()
 {
-  int found_player = 0;
-  int found_recorder = 0;
+  int    found_player = 0;
+  int    found_recorder = 0;
   gchar *text = NULL;
   gchar *player = NULL;
   gchar *recorder = NULL;
   gchar *recorder_mixer = NULL;
   gchar *lid_device = NULL;
   gchar *lid_country = NULL;
-  int lid_aec = 0;
-  bool use_lid = FALSE;
+  int    lid_aec = 0;
+  bool   use_lid = FALSE;
   GmPrefWindow *pw = NULL;
-  GmWindow *gw = NULL;
+  GmWindow     *gw = NULL;
 
   gnomemeeting_threads_enter ();
   pw = gnomemeeting_get_pref_window (gm);
@@ -476,21 +477,24 @@ void GMH323EndPoint::UpdateConfig ()
 }
 
 
-H323Capabilities GMH323EndPoint::RemoveCapability (PString name)
+H323Capabilities 
+GMH323EndPoint::RemoveCapability (PString name)
 {
   capabilities.Remove (name);
   return capabilities;
 }
 
 
-void GMH323EndPoint::RemoveAllCapabilities ()
+void 
+GMH323EndPoint::RemoveAllCapabilities ()
 {
   codecs_count = 1;
   capabilities.RemoveAll ();
 }
 
 
-void GMH323EndPoint::SetCallingState (int i)
+void 
+GMH323EndPoint::SetCallingState (int i)
 {
   var_mutex.Wait ();
   calling_state = i;
@@ -498,7 +502,8 @@ void GMH323EndPoint::SetCallingState (int i)
 }
 
 
-int GMH323EndPoint::GetCallingState (void)
+int 
+GMH323EndPoint::GetCallingState (void)
 {
   int cstate;
 
@@ -510,7 +515,8 @@ int GMH323EndPoint::GetCallingState (void)
 }
 
 
-void GMH323EndPoint::AddVideoCapabilities (int video_size)
+void 
+GMH323EndPoint::AddVideoCapabilities (int video_size)
 {
   if (video_size == 1) {
 
@@ -549,7 +555,8 @@ void GMH323EndPoint::AddVideoCapabilities (int video_size)
 }
 
 
-void GMH323EndPoint::AddAudioCapabilities ()
+void 
+GMH323EndPoint::AddAudioCapabilities ()
 {
   gchar **codecs;
   gchar *clist_data = NULL;
@@ -666,7 +673,8 @@ void GMH323EndPoint::AddAudioCapabilities ()
 }
 
 
-gchar *GMH323EndPoint::GetCurrentIP ()
+char *
+GMH323EndPoint::GetCurrentIP ()
 {
   PIPSocket::InterfaceTable interfaces;
   PIPSocket::Address ip_addr;
@@ -695,7 +703,8 @@ gchar *GMH323EndPoint::GetCurrentIP ()
 }
 
 
-BOOL GMH323EndPoint::StartListener ()
+BOOL 
+GMH323EndPoint::StartListener ()
 {
   int listen_port = gconf_client_get_int (client, "/apps/gnomemeeting/general/listen_port", NULL);
 
@@ -716,13 +725,15 @@ BOOL GMH323EndPoint::StartListener ()
 }
 
 
-H323Connection *GMH323EndPoint::CreateConnection (unsigned callReference)
+H323Connection *
+GMH323EndPoint::CreateConnection (unsigned callReference)
 {
   return new GMH323Connection (*this, callReference);
 }
 
 
-H323Connection *GMH323EndPoint::GetCurrentConnection ()
+H323Connection *
+GMH323EndPoint::GetCurrentConnection ()
 {
   H323Connection *con;
 
@@ -734,19 +745,22 @@ H323Connection *GMH323EndPoint::GetCurrentConnection ()
 }
 
 
-GMVideoGrabber *GMH323EndPoint::GetVideoGrabber (void)
+GMVideoGrabber *
+GMH323EndPoint::GetVideoGrabber (void)
 {
   return (GMVideoGrabber *) video_grabber;
 }
 
 
-void GMH323EndPoint::EnableVideoTransmission (bool i)
+void 
+GMH323EndPoint::EnableVideoTransmission (bool i)
 {
   autoStartTransmitVideo = i;
 }
 
 
-H323VideoCodec *GMH323EndPoint::GetCurrentVideoCodec (void)
+H323VideoCodec *
+GMH323EndPoint::GetCurrentVideoCodec (void)
 {
   H323VideoCodec *video_codec = NULL;
   H323Channel *channel = NULL;
@@ -767,7 +781,8 @@ H323VideoCodec *GMH323EndPoint::GetCurrentVideoCodec (void)
 }
 
 
-H323AudioCodec *GMH323EndPoint::GetCurrentAudioCodec (void)
+H323AudioCodec *
+GMH323EndPoint::GetCurrentAudioCodec (void)
 {
   H323AudioCodec *audio_codec = NULL;
   H323Channel *channel = NULL;
@@ -787,7 +802,8 @@ H323AudioCodec *GMH323EndPoint::GetCurrentAudioCodec (void)
 }
 
 
-H323Channel *GMH323EndPoint::GetCurrentAudioChannel (void)
+H323Channel *
+GMH323EndPoint::GetCurrentAudioChannel (void)
 {
   H323Channel *channel = NULL;
 
@@ -810,7 +826,8 @@ H323Channel *GMH323EndPoint::GetCurrentAudioChannel (void)
 }
 
 
-H323Channel *GMH323EndPoint::GetCurrentVideoChannel (void)
+H323Channel *
+GMH323EndPoint::GetCurrentVideoChannel (void)
 {
   H323Channel *channel = NULL;
 
@@ -833,19 +850,22 @@ H323Channel *GMH323EndPoint::GetCurrentVideoChannel (void)
 }
 
 
-PThread *GMH323EndPoint::GetILSClient (void)
+PThread *
+GMH323EndPoint::GetILSClient (void)
 {
   return ils_client;
 }
 
 
-void GMH323EndPoint::SetCurrentConnection (H323Connection *c)
+void 
+GMH323EndPoint::SetCurrentConnection (H323Connection *c)
 {
   current_connection = c;
 }
 
 
-void GMH323EndPoint::SetCurrentCallToken (PString s)
+void 
+GMH323EndPoint::SetCurrentCallToken (PString s)
 {
   var_mutex.Wait ();
   current_call_token = s;
@@ -853,7 +873,8 @@ void GMH323EndPoint::SetCurrentCallToken (PString s)
 }
 
 
-PString GMH323EndPoint::GetCurrentCallToken ()
+PString 
+GMH323EndPoint::GetCurrentCallToken ()
 {
   PString c;
 
@@ -865,21 +886,24 @@ PString GMH323EndPoint::GetCurrentCallToken ()
 }
 
 
-H323Gatekeeper *GMH323EndPoint::GetGatekeeper ()
+H323Gatekeeper *
+GMH323EndPoint::GetGatekeeper ()
 {
   return gatekeeper;
 }
 
 
-void GMH323EndPoint::GatekeeperRegister ()
+void 
+GMH323EndPoint::GatekeeperRegister ()
 {
   new GMH323Gatekeeper ();
 }
 
 
-BOOL GMH323EndPoint::OnConnectionForwarded (H323Connection &,
-					    const PString &forward_party,
-                                            const H323SignalPDU &)
+BOOL 
+GMH323EndPoint::OnConnectionForwarded (H323Connection &,
+                                       const PString &forward_party,
+                                       const H323SignalPDU &)
 {  
   gchar *msg = NULL;
 
@@ -915,8 +939,9 @@ BOOL GMH323EndPoint::OnConnectionForwarded (H323Connection &,
 }
 
 
-BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection, 
-				     const H323SignalPDU &, H323SignalPDU &)
+BOOL 
+GMH323EndPoint::OnIncomingCall (H323Connection & connection, 
+                                const H323SignalPDU &, H323SignalPDU &)
 {
   char *msg = NULL;
   PString name = connection.GetRemotePartyName ();
@@ -1086,7 +1111,7 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
     if ((sound_timeout == 0) && (gconf_client_get_bool (client, "/apps/gnomemeeting/general/incoming_call_sound", 0))) {
 
       sound_timeout = gtk_timeout_add (1000, 
-				       (GtkFunction) PlaySound,
+				       (GtkFunction) gnomemeeting_sound_play_ringtone,
 				       gw->docklet);
     }
 
@@ -1126,8 +1151,9 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 }
 
 
-void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection, 
-					      const PString & token)
+void 
+GMH323EndPoint::OnConnectionEstablished (H323Connection & connection, 
+                                         const PString & token)
 {
   H323VideoCodec *video_codec = NULL;
   PString name = connection.GetRemotePartyName();
@@ -1254,8 +1280,9 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 }
 
 
-void GMH323EndPoint::OnConnectionCleared (H323Connection & connection, 
-					  const PString & clearedCallToken)
+void 
+GMH323EndPoint::OnConnectionCleared (H323Connection & connection, 
+                                     const PString & clearedCallToken)
 {
   GMVideoGrabber *vg = (GMVideoGrabber *) video_grabber;
   gchar *msg = NULL;
@@ -1520,7 +1547,8 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 }
 
 
-void GMH323EndPoint::SavePicture (void)
+void 
+GMH323EndPoint::SavePicture (void)
 { 
   GdkPixbuf *pic = gtk_image_get_pixbuf (GTK_IMAGE (gw->video_image));
   gchar *prefix = gconf_client_get_string (client, "/apps/gnomemeeting/general/save_prefix", NULL);
@@ -1536,10 +1564,11 @@ void GMH323EndPoint::SavePicture (void)
 }
 
 
-BOOL GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
-				      BOOL isEncoding,
-				      unsigned bufferSize,
-				      H323AudioCodec & codec)
+BOOL 
+GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
+                                 BOOL isEncoding,
+                                 unsigned bufferSize,
+                                 H323AudioCodec & codec)
 {
   gnomemeeting_threads_enter ();
 
@@ -1599,9 +1628,10 @@ BOOL GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
 }
 
 
-BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
-				       BOOL isEncoding, 
-				       H323VideoCodec & codec)
+BOOL 
+GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
+                                  BOOL isEncoding, 
+                                  H323VideoCodec & codec)
 {
   GMVideoGrabber *vg = (GMVideoGrabber *) video_grabber;
   
@@ -1690,13 +1720,15 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 
 
 #ifdef HAS_IXJ
-PThread *GMH323EndPoint::GetLidThread (void)
+PThread *
+GMH323EndPoint::GetLidThread (void)
 {
   return lid_thread;
 }
 
 
-OpalLineInterfaceDevice *GMH323EndPoint::GetLidDevice ()
+OpalLineInterfaceDevice *
+GMH323EndPoint::GetLidDevice ()
 {
   return lid;
 }
@@ -1704,7 +1736,8 @@ OpalLineInterfaceDevice *GMH323EndPoint::GetLidDevice ()
 
 
 #ifdef HAS_IXJ
-void GMH323EndPoint::LidThread (PThread &, INT)
+void 
+GMH323EndPoint::LidThread (PThread &, INT)
 {
   BOOL OffHook, lastOffHook;
 

@@ -1,3 +1,31 @@
+2002-09-21  Miguel Rodríguez Pérez  <migrax@terra.es>
+
+	* src/misc.cpp (passert_close_cb): Fix some conflicts.
+
+	* src/main_window.cpp: 
+	* src/config.cpp: 
+	* src/pref_window.cpp: Include sound-handling.h and not audio.h.
+
+	* src/callbacks.cpp (about_callback): Correct spelling of manty's
+	name.
+
+2002-09-21  Miguel Rodríguez Pérez  <migrax@terra.es>
+
+	* lib/Makefile.am: 
+	* src/Makefile.am: 
+	* src/chat_window.cpp: 
+	* src/common.h: 
+	* src/endpoint.cpp: 
+	* src/misc.cpp: 
+	* src/misc.h: 
+	* src/audio.h: 
+	* src/audio.cpp: 
+	* src/sound-handling.h: 
+	* src/sound-handling.cpp: 
+	* lib/gtk-text-buffer-extentions.c: 
+	* lib/gtk-text-buffer-extentions.h: Big patch from kenneth that
+	moves some code around to more appropiate places.
+
 2002-09-19  Damien Sandras  <dsandras@seconix.com>
 
 	* lib/xdap/xdap.h: Added patch from Paul <xml@mailandnews.com>

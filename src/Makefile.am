@@ -5,6 +5,7 @@ bin_SCRIPTS = gnomemeeting-config-tool
 bin_PROGRAMS = gnomemeeting
 
 gnomemeeting_SOURCES =		\
+	common.cpp		\
 	common.h		\
 	callbacks.cpp		\
 	callbacks.h		\
@@ -22,6 +23,8 @@ gnomemeeting_SOURCES =		\
 	toolbar.h		\
 	pref_window.cpp		\
 	pref_window.h		\
+	sound-handling.cpp	\
+	sound-handling.h	\
 	videograbber.h		\
 	videograbber.cpp	\
 	config.h		\
@@ -30,8 +33,6 @@ gnomemeeting_SOURCES =		\
 	ldap_window.h		\
 	main_window.cpp		\
 	main_window.h		\
-	audio.cpp		\
-	audio.h			\
 	gatekeeper.cpp		\
 	gatekeeper.h		\
 	ils.cpp			\

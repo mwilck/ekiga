@@ -41,7 +41,7 @@
 #include "menu.h"
 #include "toolbar.h"
 #include "callbacks.h"
-#include "audio.h"
+#include "sound-handling.h"
 #include "videograbber.h"
 #include "endpoint.h"
 #include "pref_window.h"

@@ -9,6 +9,8 @@ libgnomemeeting_la_SOURCES =				\
 	dialog.h					\
 	stock-icons.c					\
 	stock-icons.h					\
+	gtk-text-buffer-extentions.c			\
+	gtk-text-buffer-extentions.h			\
 	e-splash.c					\
 	e-splash.h					\
 	eggtrayicon.h					\
