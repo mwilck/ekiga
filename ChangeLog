@@ -1,3 +1,12 @@
+2004-04-08  Miguel Rodr�guez P�rez  <migrax@terra.es>
+
+	* configure.in: Add explicit detection of gnome-vfs.
+	
+	* src/pref_window.cpp (browse_button_clicked_cb): Accept non local files.
+
+	* src/vfakeio.cpp: 
+	* src/vfakeio.h: Implement async loading of gnome-vfs uris.
+
 2004-04-08 Kilian Krause <kk@verfaction.de>
 
 	* configure.in: use Janus_patch2 release.
@@ -8396,7 +8405,7 @@ CVS Tag: R0_93_0B
 	credits. Also set the window as a transient for gm, and call
 	gtk_window_present instead of gtk_widget_show.
 
-2002-03-31  Miguel RodrÃ­guez PÃ©rez  <migrax@terra.es>
+2002-03-31  Miguel RodrÃ�­guez PÃ©rez  <migrax@terra.es>
 
 	* src/ils.cpp (ils_browse, Register): Simplyfy version decoding
 	and don't hardcode version number anymore.

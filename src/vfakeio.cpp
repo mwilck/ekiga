@@ -48,6 +48,11 @@
 
 #include "../pixmaps/text_logo.xpm"
 
+#ifndef DISABLE_GNOME
+#include <libgnomevfs/gnome-vfs.h>
+
+const size_t GMH323FakeVideoInputDevice::buffer_size = 4096;
+#endif
 
 GMH323FakeVideoInputDevice::GMH323FakeVideoInputDevice ()
 {
@@ -58,15 +63,107 @@ GMH323FakeVideoInputDevice::GMH323FakeVideoInputDevice ()
   increment = 1;
 
   moving = false;
+
+#ifndef DISABLE_GNOME
+  loader_pix = NULL;
+  filehandle = NULL;
+
+  buffer = new guchar [buffer_size];
+#endif
 }
 
 
 GMH323FakeVideoInputDevice::~GMH323FakeVideoInputDevice ()
 {
   Close ();
+
+#ifndef DISABLE_GNOME
+  delete[] buffer;
+#endif
 }
 
+#ifndef DISABLE_GNOME
+void GMH323FakeVideoInputDevice::loader_area_updated_cb (GdkPixbufLoader *loader,
+							 gint x, gint y, gint width,
+							 gint height, 
+							 gpointer thisclass)
+{
+  GMH323FakeVideoInputDevice *thisc = static_cast<GMH323FakeVideoInputDevice *> (thisclass);
 
+  if (thisc->orig_pix)
+    g_object_unref (G_OBJECT (thisc->orig_pix));
+  if (thisc->cached_pix != NULL) {
+    g_object_unref (G_OBJECT (thisc->cached_pix));
+    thisc->cached_pix = NULL;
+  }
+
+  thisc->orig_pix = gdk_pixbuf_loader_get_pixbuf (loader);
+  g_object_ref (G_OBJECT (thisc->orig_pix));
+}
+
+void GMH323FakeVideoInputDevice::async_close_cb (GnomeVFSAsyncHandle *fp,
+						 GnomeVFSResult result, 
+						 gpointer thisclass)
+{
+  GMH323FakeVideoInputDevice *thisc = static_cast<GMH323FakeVideoInputDevice *> (thisclass);
+
+  if (thisc->loader_pix != NULL) {
+    gdk_pixbuf_loader_close (thisc->loader_pix, NULL);
+    g_object_unref (G_OBJECT (thisc->loader_pix));
+    thisc->loader_pix = NULL;
+  }
+}
+
+void GMH323FakeVideoInputDevice::async_read_cb (GnomeVFSAsyncHandle *fp,
+						GnomeVFSResult result, 
+						gpointer buffer,
+						GnomeVFSFileSize requested,
+						GnomeVFSFileSize bytes_read,
+						gpointer thisclass)
+{
+  GMH323FakeVideoInputDevice *thisc = static_cast<GMH323FakeVideoInputDevice *> (thisclass);
+  
+
+  if (result != GNOME_VFS_OK && result != GNOME_VFS_ERROR_EOF) {
+    gnome_vfs_async_close (fp, async_close_cb, thisclass);
+    return;
+  }
+  
+  if (thisc->loader_pix != NULL)
+    gdk_pixbuf_loader_write (thisc->loader_pix,
+			     thisc->buffer, thisc->buffer_size, NULL);
+  
+  if (result == GNOME_VFS_ERROR_EOF) {
+    gnome_vfs_async_close (fp, async_close_cb, thisclass);
+  } else {
+    gnome_vfs_async_read (fp, thisc->buffer, thisc->buffer_size,
+			  async_read_cb, thisclass);
+  }
+}
+
+void GMH323FakeVideoInputDevice::async_open_cb (GnomeVFSAsyncHandle *fp,
+						GnomeVFSResult result, 
+						gpointer thisclass)
+{
+  GMH323FakeVideoInputDevice *thisc = static_cast<GMH323FakeVideoInputDevice *> (thisclass);
+  
+
+  if (result != GNOME_VFS_OK) {
+    gnome_vfs_async_close (fp, async_close_cb, thisclass);
+    return;
+  }
+
+  gnome_vfs_async_read (fp, thisc->buffer, 4096,
+			async_read_cb, thisclass);
+}
+
+gboolean GMH323FakeVideoInputDevice::async_cancel (gpointer data)
+{
+  gnome_vfs_async_cancel ((GnomeVFSAsyncHandle *)data);
+
+  return FALSE;
+}
+#endif
 
 BOOL
 GMH323FakeVideoInputDevice::Open (const PString &name,
@@ -89,6 +186,7 @@ GMH323FakeVideoInputDevice::Open (const PString &name,
   moving = false;
   
   image_name = gm_conf_get_string (VIDEO_DEVICES_KEY "image");
+#ifdef DISABLE_GNOME
   orig_pix =  gdk_pixbuf_new_from_file (image_name, NULL);
   g_free (image_name);
 
@@ -96,6 +194,25 @@ GMH323FakeVideoInputDevice::Open (const PString &name,
     return TRUE;
 
   return FALSE;
+#else
+  loader_pix = gdk_pixbuf_loader_new ();
+  g_signal_connect (G_OBJECT (loader_pix), "area-updated",
+		    G_CALLBACK (loader_area_updated_cb), this);
+
+  if (orig_pix != NULL) {
+    g_object_unref (G_OBJECT (orig_pix));
+    orig_pix = NULL;
+  }
+
+  gnome_vfs_async_open (&filehandle, image_name, GNOME_VFS_OPEN_READ,
+			GNOME_VFS_PRIORITY_DEFAULT,
+			async_open_cb,
+			this);
+
+  g_free (image_name);
+
+  return TRUE;
+#endif
 }
 
 
@@ -113,14 +230,27 @@ BOOL
 GMH323FakeVideoInputDevice::Close ()
 {
   gnomemeeting_threads_enter ();
-  if (orig_pix != NULL)
+#ifndef DISABLE_GNOME
+  if (filehandle != NULL) {
+    g_idle_add (async_cancel, filehandle);
+    filehandle = NULL;
+  }
+  if (loader_pix != NULL) {
+    gdk_pixbuf_loader_close (loader_pix, NULL);
+    g_object_unref (G_OBJECT (loader_pix));
+    loader_pix = NULL;
+  }
+#endif
+  if (orig_pix != NULL) {
     g_object_unref (G_OBJECT (orig_pix));
-  if (cached_pix != NULL)
+    orig_pix = NULL;
+  }
+  if (cached_pix != NULL) {
     g_object_unref (G_OBJECT (cached_pix));
+    cached_pix = NULL;
+  }
   gnomemeeting_threads_leave ();
   
-  orig_pix = NULL;
-  cached_pix = NULL;
   
   return TRUE;
 }
@@ -208,6 +338,9 @@ BOOL GMH323FakeVideoInputDevice::GetFrameDataNoDelay (BYTE *frame, PINDEX *i)
   int orig_height = 0;
   
   GetFrameSize (width, height);
+
+  if (orig_pix == NULL)
+    return FALSE;
 
   gnomemeeting_threads_enter ();
   

@@ -416,12 +416,19 @@ browse_button_clicked_cb (GtkWidget *b, gpointer data)
 					  GTK_STOCK_OPEN,
 					  GTK_RESPONSE_ACCEPT,
 					  NULL);
+#ifndef DISABLE_GNOME
+  gtk_file_chooser_set_local_only (GTK_FILE_CHOOSER (selector), FALSE);
+#endif
   
   if (gtk_dialog_run (GTK_DIALOG (selector)) == GTK_RESPONSE_ACCEPT)
   {
     char *filename;
 
+#ifdef DISABLE_GNOME
     filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (selector));
+#else
+    filename = gtk_file_chooser_get_uri (GTK_FILE_CHOOSER (selector));
+#endif
     gtk_entry_set_text (GTK_ENTRY (data), filename);
     g_free (filename);
 
