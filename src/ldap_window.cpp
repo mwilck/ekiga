@@ -43,6 +43,7 @@
 
 #define GM_HISTORY_LDAP_SERVERS "/apps/gnomemeeting/history/ldap_servers_list"
 
+
 /* Declarations */
 
 extern GtkWidget *gm;
@@ -447,6 +448,7 @@ void gnomemeeting_init_ldap_window ()
   vbox = gtk_vbox_new (FALSE, GNOME_PAD_SMALL);
   gtk_container_add (GTK_CONTAINER (gw->ldap_window), vbox);
 
+
   /* The toolbar */
   GtkWidget *handle = gtk_handle_box_new ();
   GtkWidget *toolbar = gtk_toolbar_new ();
@@ -455,6 +457,7 @@ void gnomemeeting_init_ldap_window ()
   gtk_container_add (GTK_CONTAINER (handle), toolbar);
   gtk_container_set_border_width (GTK_CONTAINER (handle), 0);
   gtk_container_set_border_width (GTK_CONTAINER (toolbar), 0);
+
 
   /* ILS directories combo box */
   lw->ils_server_combo = gm_history_combo_new (GM_HISTORY_LDAP_SERVERS);
@@ -594,6 +597,7 @@ void gnomemeeting_init_ldap_window_notebook (int page_num, gchar *text_label)
   GmLdapWindow *lw = gnomemeeting_get_ldap_window (gm);
   
   xdap_users_list_store = gtk_list_store_new (NUM_COLUMNS,
+					      GDK_TYPE_PIXBUF,
 					      G_TYPE_BOOLEAN,
 					      G_TYPE_BOOLEAN,
 					      G_TYPE_STRING,
@@ -617,6 +621,16 @@ void gnomemeeting_init_ldap_window_notebook (int page_num, gchar *text_label)
 				   COLUMN_FIRSTNAME);
 
   /* Set all Colums */
+  renderer = gtk_cell_renderer_pixbuf_new ();
+  column = gtk_tree_view_column_new_with_attributes (_("S"),
+						     renderer,
+						     "pixbuf", 
+						     COLUMN_STATUS,
+						     NULL);
+  gtk_tree_view_column_set_sort_column_id (column, COLUMN_STATUS);
+  gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 25);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+
   renderer = gtk_cell_renderer_toggle_new ();
   column = gtk_tree_view_column_new_with_attributes (_("A"),
 						     renderer,

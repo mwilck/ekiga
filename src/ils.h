@@ -55,13 +55,14 @@ public:
   void stop ();
   void Register ();
   void Unregister ();
+  void Modify ();
   gchar *Search (gchar *, gchar *, gchar *);
   void ils_browse (int);
 
 protected:
-  BOOL Register (BOOL);
+  BOOL Register (int);
   void ils_browse (void);
-  void UpdateConfig (void);
+  BOOL UpdateConfig (void);
 
   GmWindow *gw;
   GmLdapWindow *lw;
@@ -70,6 +71,7 @@ protected:
   int msgid;
   int has_to_register;
   int has_to_unregister;
+  int has_to_modify;
   int has_to_browse;
   int in_the_loop;
   int page_num;

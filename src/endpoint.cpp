@@ -1188,6 +1188,11 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [7].widget), TRUE);
 
 
+  /* Update ILS if needed */
+  if (gconf_client_get_bool (client, "/apps/gnomemeeting/ldap/register", 0))
+    ((GMILSClient *) (ils_client))->Modify ();
+
+
   /* If popup, destroy it */
   if (gw->incoming_call_popup) {
     
@@ -1324,7 +1329,12 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   gnomemeeting_threads_leave ();
 
-  
+
+  /* Update ILS if needed */
+  if (gconf_client_get_bool (client, "/apps/gnomemeeting/ldap/register", 0))
+    ((GMILSClient *) (ils_client))->Modify ();
+
+
   /* If we are called because the current call has ended and not another
      call, return */
   if (exit == 1) 

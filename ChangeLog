@@ -1,3 +1,29 @@
+2002-08-04  Damien Sandras  <dsandras@seconix.com>
+
+	* lib/stock-icons.c: Added available and occupied stock icons.
+
+	* lib/stock-icons.h: Added available and occupied stock icons.
+
+	* pixmaps/available.png: Added.
+
+	* pixmaps/occupied.png: Added.
+
+	* src/config.cpp: Sets the person to "Occupied" in the ILS if 
+	Do not Disturb is chosen.
+	
+	* src/endpoint.cpp: Changes the status in ILS during calls.
+	
+	* src/ils.cpp: UpdateConfig now checks that all needed parameters are 
+	given. Added possibility to change the status in ILS.
+	
+	* src/ils.h: See above.
+	
+	* src/ldap_window.cpp: Added a status icon.
+	
+	* src/ldap_window.h: Added a status icon.
+	
+	* src/pref_window.cpp: "Update" is only doing a "MOD" now.
+	
 2002-08-02  Damien Sandras  <dsandras@seconix.com>
 
 	* lib/dialog.c: Fixed bug. gtk_dialog_run didn't work in threads.

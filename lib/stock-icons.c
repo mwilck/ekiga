@@ -61,7 +61,9 @@ gnomemeeting_stock_icons_init (void)
 		{ GM_STOCK_VOLUME,        gm_volume_stock_data },
 		{ GM_STOCK_MICROPHONE,    gm_microphone_stock_data },
                 { GM_STOCK_SPEAKER_PHONE, gm_speaker_phone_stock_data },
-		{ GM_STOCK_QUICKCAM,      gm_quickcam_stock_data }
+		{ GM_STOCK_QUICKCAM,      gm_quickcam_stock_data },
+		{ GM_STOCK_AVAILABLE,     gm_available_stock_data },
+		{ GM_STOCK_OCCUPIED,      gm_occupied_stock_data }
 	};
 
 	factory = gtk_icon_factory_new ();
@@ -75,6 +77,7 @@ gnomemeeting_stock_icons_init (void)
                 pixbuf = gdk_pixbuf_new_from_inline (-1, items[i].data, FALSE, NULL);
 
 		icon_set = gtk_icon_set_new_from_pixbuf (pixbuf);
+
 		gtk_icon_factory_add (factory, items[i].id, icon_set);
 		gtk_icon_set_unref (icon_set);
 		

@@ -26,6 +26,7 @@
  *   email                : dsandras@seconix.com
  *
  */
+
 	
 #include <sys/time.h>
 
@@ -36,6 +37,9 @@
 #include "videograbber.h"
 #include "common.h"
 #include "misc.h"
+#include "../pixmaps/inlines.h"
+#include "stock-icons.h"
+#include "dialog.h"
 
 
 /* Declarations */
@@ -71,6 +75,7 @@ GMILSClient::GMILSClient ()
   has_to_register = 0;
   has_to_unregister = 0;
   has_to_browse = 0;
+  has_to_modify = 0;
   registered = 0;
 
   client = gconf_client_get_default ();
@@ -100,7 +105,7 @@ GMILSClient::~GMILSClient ()
   /* After the thread has stopped,
      we unregister if we were registered */
   if (registered == 1)
-    Register (FALSE);
+    Register (0);
 }
 
 
@@ -114,14 +119,26 @@ void GMILSClient::Main ()
     if (has_to_unregister == 1) {
      
       /* Unregister the old values */
-      Register (FALSE);
-      UpdateConfig ();
+      if (UpdateConfig ())
+	Register (0);
+      else
+	has_to_unregister = 0;
     }
 
     if (has_to_register == 1) {
 
-      UpdateConfig ();
-      Register (TRUE);
+      if (UpdateConfig ())
+	Register (1);
+      else
+	has_to_register = 0;
+    }
+
+    if (has_to_modify == 1) {
+
+      if (UpdateConfig ())
+	Register (2);
+      else
+	has_to_modify = 0;
     }
 
     if (has_to_browse == 1)
@@ -147,7 +164,7 @@ void GMILSClient::Main ()
 }
 
 
-void GMILSClient::UpdateConfig ()
+BOOL GMILSClient::UpdateConfig ()
 {
   g_free (ldap_server);
   g_free (firstname);
@@ -155,6 +172,7 @@ void GMILSClient::UpdateConfig ()
   g_free (mail);
   g_free (comment);
   g_free (location);
+
 
   ldap_server =  
     gconf_client_get_string (GCONF_CLIENT (client),
@@ -180,6 +198,44 @@ void GMILSClient::UpdateConfig ()
     gconf_client_get_string (GCONF_CLIENT (client),
 			     "/apps/gnomemeeting/personal_data/location", 
 			     NULL);
+
+
+  /* First, we check that there is an ILS server specified */
+  if ((ldap_server == NULL) || (!strcmp (ldap_server, ""))) {
+
+    gnomemeeting_threads_enter ();
+    gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Not registering/deregistering because there is no LDAP server specified!"));
+    gnomemeeting_threads_leave ();
+
+    gconf_client_set_bool (client, "/apps/gnomemeeting/ldap/register", FALSE,
+			   NULL);
+
+    return FALSE;
+  }
+  
+  
+  if ((firstname == NULL) || (!strcmp (firstname, ""))
+      || (surname == NULL) || (!strcmp (surname, ""))
+      || (comment == NULL) || (!strcmp (comment, ""))
+      || (location == NULL) || (!strcmp (location, ""))
+      || (mail == NULL) || (!strcmp (mail, ""))) {
+      
+      gnomemeeting_threads_enter ();
+
+      /* No need to display that for unregistering */
+      if (gconf_client_get_bool (client, "/apps/gnomemeeting/ldap/register", 
+				 0))
+	gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Please provide your first name, last name, comment, e-mail and location details in the Personal Data section in order to be able to register to the XDAP server!\nDisabling registering."));
+
+      gnomemeeting_threads_leave ();
+      gconf_client_set_bool (client, "/apps/gnomemeeting/ldap/register", FALSE,
+			     NULL);
+      
+      return FALSE;
+    }
+			       
+      
+  return TRUE;
 }
 
 
@@ -201,27 +257,33 @@ void GMILSClient::Unregister ()
 }
 
 
-BOOL GMILSClient::Register (BOOL reg)
+void GMILSClient::Modify ()
+{
+  has_to_modify = 1;
+}
+
+
+BOOL GMILSClient::Register (int reg)
 {
   LDAPMessage *res=NULL;
-  LDAPMod *mods [17];
+  LDAPMod *mods [18];
 
-  char *firstname_value [2];
-  char *surname_value [2];
-  char *mail_value [2];
-  char *comment_value [2];
-  char *location_value [2];
-  char *ilsa32833566_value [2];
-  char *ilsa32964638_value [2];
-  char *ilsa26214430_value [2];
-  char *ilsa26279966_value [2];
-  char *sipaddress_value [2];
-  char *sport_value [2];
-  char *sappid_value [2];
-  char *protid_value [2];
-  char *objectclass_value [2];
-  char *cn_value [2];
-  char *sflags_value [2];
+  char *firstname_value [2] = {NULL, NULL};
+  char *surname_value [2] = {NULL, NULL};
+  char *mail_value [2] = {NULL, NULL};
+  char *comment_value [2] = {NULL, NULL};
+  char *location_value [2] = {NULL, NULL};
+  char *ilsa32833566_value [2] = {NULL, NULL};
+  char *ilsa32964638_value [2] = {NULL, NULL};
+  char *ilsa26214430_value [2] = {NULL, NULL};
+  char *ilsa26279966_value [2] = {NULL, NULL};
+  char *sipaddress_value [2] = {NULL, NULL};
+  char *sport_value [2] = {NULL, NULL};
+  char *sappid_value [2] = {NULL, NULL};
+  char *protid_value [2] = {NULL, NULL};
+  char *objectclass_value [2] = {NULL, NULL};
+  char *cn_value [2] = {NULL, NULL};
+  char *sflags_value [2] = {NULL, NULL};
 
   char *dn = NULL;
   gchar *msg = NULL;
@@ -236,12 +298,13 @@ BOOL GMILSClient::Register (BOOL reg)
 
   /* if it asks to unregister and that we are not registered, 
      exit */
-  if (!reg) {
+  if (reg == 0) {
     if (!registered) {
       has_to_unregister = 0;
       return TRUE;
     }
   }
+
 
   gnomemeeting_threads_enter ();
   msg = g_strdup_printf (_("Connecting to ILS directory %s, port %s"), 
@@ -274,6 +337,7 @@ BOOL GMILSClient::Register (BOOL reg)
 
     gnomemeeting_threads_leave ();
   }
+
 
   /* if there was no error while connecting */
   if (!error) {
@@ -416,20 +480,44 @@ BOOL GMILSClient::Register (BOOL reg)
     mods [15]->mod_type = g_strdup ("ilsa26279966");
     mods [15]->mod_values = ilsa26279966_value;
 
-    mods [16] = NULL;
+    /* ilsa */
+    mods [16] = new (LDAPMod);
+    if ((MyApp->Endpoint ()->GetCallingState () != 0)
+	|| (gconf_client_get_bool (client, "/apps/gnomemeeting/general/do_not_disturb", NULL)))
+      ilsa26214430_value [0] = g_strdup ("1");
+    else
+      ilsa26214430_value [0] = g_strdup ("0");
+
+    ilsa26214430_value [1] = NULL;
+    mods [16]->mod_op = LDAP_MOD_ADD | LDAP_MOD_REPLACE;
+    mods [16]->mod_type = g_strdup ("ilsa26214430");
+    mods [16]->mod_values = ilsa26214430_value;
+
+    mods [17] = NULL;
 
 
     dn = g_strdup_printf ("c=-,o=Gnome,cn=%s,objectclass=rtperson", mail);
 
+
     /* Asynchronously add or remove the entry */
-    if (reg) {
+    if (reg == 1) {
+
       msgid = ldap_add (ldap_connection, dn, mods);
       registered = 1;
     }
-    else {
+
+    if (reg == 0) {
+
       msgid = ldap_delete (ldap_connection, dn);
       registered = 0;
     }
+
+    if (reg == 2) {
+
+      msgid = ldap_modify(ldap_connection, dn, mods);
+      registered = 1;
+    }
+
 
     /* If there is an error, display it... */
     if (msgid == -1) {
@@ -474,13 +562,15 @@ BOOL GMILSClient::Register (BOOL reg)
       else {
 	gnomemeeting_threads_enter ();
 	
-	if (reg) {
+	if (reg == 1) {
 
 	  msg = g_strdup_printf (_("Sucessfully registered to ILS directory %s, port %s"), ldap_server, ldap_port);
 	  gnomemeeting_statusbar_flash (gm, _("Succesfully registered to ILS server"));
 	  starttime = PTime ();
 	}
-	else {
+
+
+	if (reg == 0) {
 
 	  msg = g_strdup_printf (_("Sucessfully unregistered from ILS directory %s, port %s"), ldap_server, ldap_port);
 	  gnomemeeting_statusbar_flash (gm, _("Succesfully unregistered from ILS server"));
@@ -497,15 +587,15 @@ BOOL GMILSClient::Register (BOOL reg)
     /* We free things */
     g_free (ilsa32833566_value [0]);
     g_free (ilsa32964638_value [0]);
-    g_free (ilsa26214430_value [0]);
     g_free (ilsa26279966_value [0]);
+    g_free (ilsa26214430_value [0]);
     g_free (objectclass_value [0]);
     g_free (sport_value [0]);
     g_free (sappid_value [0]);
     g_free (protid_value [0]);
     g_free (dn);
     
-    for (int i = 0 ; i < 16 ; i++) {
+    for (int i = 0 ; i < 17 ; i++) {
       g_free (mods [i]->mod_type);
       delete (mods [i]);
     }
@@ -515,12 +605,14 @@ BOOL GMILSClient::Register (BOOL reg)
       
   } /* if (!error) */
 
-  if (reg) {
+  if (reg == 1) 
     has_to_register = 0;
-  }
-  else {
+
+  if (reg == 0)
     has_to_unregister = 0;
-  }
+  
+  if (reg == 2)
+    has_to_modify = 0;
 
   gnomemeeting_threads_enter ();
   gtk_widget_set_sensitive (GTK_WIDGET (lw->refresh_button), TRUE);
@@ -565,6 +657,7 @@ gchar *GMILSClient::Search (gchar *ldap_server, gchar *ldap_port, gchar *mail)
     ldap_abandon (ldap_search_connection, rc_search_connection);
 	
   }
+
 
   /* Opens the connection to the ILS directory */
   ldap_search_connection = ldap_open (ldap_server, atoi (ldap_port));
@@ -624,7 +717,9 @@ void GMILSClient::ils_browse ()
   char *datas [] = {NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL};
   char *attrs [] = { "surname", "givenname", "comment", "location", 
 		     "rfc822mailbox", "sipaddress", "ilsa32833566", 
-		     "ilsa32964638", "ilsa26279966", "sappid", NULL };
+		     "ilsa32964638", "ilsa26279966", "ilsa26214430", "sappid", 
+		     NULL };
+
   char **ldv;
 
   LDAPMessage *res = NULL, *e = NULL;
@@ -647,8 +742,11 @@ void GMILSClient::ils_browse ()
   GtkWidget *page = NULL, *label = NULL;
   GtkListStore *xdap_users_list_store = NULL;
   GtkTreeIter list_iter;
+  GdkPixbuf *status_pixbuf = NULL;
+
   int curr_page;
-  bool audio = false, video = false;
+  bool audio = false, video = false; bool available = true;
+
 
   gnomemeeting_threads_enter ();
   gtk_widget_set_sensitive (GTK_WIDGET (lw->refresh_button), FALSE);
@@ -892,6 +990,25 @@ void GMILSClient::ils_browse ()
       }
       
 
+      /* Busy ? */
+      ldv = ldap_get_values(ldap_connection, e, "ilsa26214430");
+      if (ldv != NULL) {
+	
+ 	available = 
+	  !(bool) atoi (ldv [0]);
+ 	ldap_value_free (ldv);
+      }
+
+      if (available)
+	status_pixbuf = 
+	  gdk_pixbuf_new_from_inline (-1, gm_available_stock_data,
+				      FALSE, NULL);
+      else
+	status_pixbuf = 
+	  gdk_pixbuf_new_from_inline (-1, gm_occupied_stock_data,
+				      FALSE, NULL);
+
+
       /* Check if the window is still present or not */
       if (lw) {
 
@@ -907,6 +1024,7 @@ void GMILSClient::ils_browse ()
 
 	gtk_list_store_append (xdap_users_list_store, &list_iter);
 	gtk_list_store_set (xdap_users_list_store, &list_iter,
+			    COLUMN_STATUS, status_pixbuf,
 			    COLUMN_AUDIO, audio,
 			    COLUMN_VIDEO, video,
 			    COLUMN_FIRSTNAME, utf8_data [0],
@@ -917,6 +1035,8 @@ void GMILSClient::ils_browse ()
  			    COLUMN_VERSION, utf8_data [5],
  			    COLUMN_IP, utf8_data [6],
 			    -1);
+
+	g_object_unref (status_pixbuf);
 
 	for (int j = 0 ; j < 7 ; j++)
 	  if (utf8_data [j])

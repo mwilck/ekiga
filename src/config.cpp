@@ -69,6 +69,8 @@ static void tr_ub_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static void jitter_buffer_changed_nt (GConfClient*, guint, GConfEntry *, 
 				      gpointer);
 static void register_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
+static void do_not_disturb_changed_nt (GConfClient*, guint, 
+				       GConfEntry *, gpointer);
 static void forward_toggle_changed_nt (GConfClient*, guint, GConfEntry *, 
 				       gpointer);
 static void audio_device_changed_nt (GConfClient *, guint, GConfEntry *, 
@@ -1000,27 +1002,16 @@ static void forward_toggle_changed_nt (GConfClient *client, guint cid,
 
 /* DESCRIPTION  :  This callback is called when the "register" gconf value 
  *                 changes.
- *                 The "register" value can change if the user plays with 
- *                 the button, or if he clicks on "Update" in Personal data, 
- *                 or if he uses gconftool.
- * BEHAVIOR     :  It registers to the LDAP server, IF all recquired fields are
- *                 available, else disable registering.
+ * BEHAVIOR     :  It first checks if the server name is ok. If the server
+ *                 name is ok, then it registers or unregisters. The ILS
+ *                 thread will check that all required values are provided.
  * PRE          :  /
  */
 static void register_changed_nt (GConfClient *client, guint cid, 
 				 GConfEntry *entry, gpointer data)
 {
+  BOOL no_error = TRUE;
   gchar *gconf_string = NULL;
-  gchar *gconf_string_firstname = NULL;
-  gchar *gconf_string_lastname = NULL;
-  gchar *gconf_string_comment = NULL;
-  gchar *gconf_string_location = NULL;
-  gchar *gconf_string_mail = NULL;
-
-  GmWindow *gw = NULL;
-  GmPrefWindow *pw = NULL;
-  bool no_error = TRUE;
-  GtkWidget *msg_box = NULL;
   GMH323EndPoint *endpoint = MyApp->Endpoint ();
   GMILSClient *ils_client = (GMILSClient *) endpoint->GetILSClient ();
 
@@ -1028,75 +1019,51 @@ static void register_changed_nt (GConfClient *client, guint cid,
 
     gdk_threads_enter ();
     
-    pw = gnomemeeting_get_pref_window (gm);
-    gw = gnomemeeting_get_main_window (gm);
-
-    if (!gconf_value_get_bool (entry->value)) {
-
-      ils_client->Unregister ();
-    }
-    else {
-
-      /* Checks if the server name is ok */
-      gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
-					       "/apps/gnomemeeting/ldap/ldap_server", 
-					       NULL);
+    /* Checks if the server name is ok */
+    gconf_string =  
+      gconf_client_get_string (GCONF_CLIENT (client),
+			       "/apps/gnomemeeting/ldap/ldap_server", 
+			       NULL);
       
-      if ((gconf_string == NULL) || (!strcmp (gconf_string, ""))) {
+    if ((gconf_string == NULL) || (!strcmp (gconf_string, ""))) {
 	
-	msg_box = 
-	  gtk_message_dialog_new (GTK_WINDOW (gw->pref_window),
-				  GTK_DIALOG_MODAL,
-				  GTK_MESSAGE_ERROR,
-				  GTK_BUTTONS_CLOSE,
-				  _("Not Registering because there is no LDAP server specified!\nDisabling registering."));
+      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Not registering/deregistering because there is no LDAP server specified!"));
       
-	no_error = FALSE;
-      }
-      g_free (gconf_string);
-
-
-      /* Check if the required fields are present */
-      gconf_string_firstname =  gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/personal_data/firstname", NULL);
-      gconf_string_lastname =  gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/personal_data/lastname", NULL);
-      gconf_string_comment =  gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/personal_data/comment", NULL);
-      gconf_string_location =  gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/personal_data/location", NULL);
-      gconf_string_mail =  gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/personal_data/mail", NULL);
-    
-      if ((gconf_string_firstname == NULL) || (!strcmp (gconf_string_firstname, ""))
-	  || (gconf_string_lastname == NULL) || (!strcmp (gconf_string_lastname, ""))
-	  || (gconf_string_comment == NULL) || (!strcmp (gconf_string_comment, ""))
-	  || (gconf_string_location == NULL) || (!strcmp (gconf_string_location, ""))
-	  || (gconf_string_mail == NULL) || (!strcmp (gconf_string_mail, ""))) {
-      
-	msg_box = 
-	  gtk_message_dialog_new (GTK_WINDOW (gw->pref_window),
-				  GTK_DIALOG_MODAL,
-				  GTK_MESSAGE_ERROR,
-				  GTK_BUTTONS_CLOSE,
-				  _("Please provide your first name, last name, comment, e-mail and location details in the Personal Data section in order to be able to register to the XDAP server!\nDisabling registering."));
-      
-	gtk_widget_show (msg_box);
-	g_signal_connect_swapped (GTK_OBJECT (msg_box), "response",
-				  G_CALLBACK (gtk_widget_destroy),
-				  GTK_OBJECT (msg_box));
-      
-	gconf_client_set_bool (client, "/apps/gnomemeeting/ldap/register", 0, NULL);      
-      }
-      else {
-      
-	if (no_error)
-	  ils_client->Register ();
-      }
-
-      g_free (gconf_string_firstname);
-      g_free (gconf_string_lastname);
-      g_free (gconf_string_comment);
-      g_free (gconf_string_location);
-      g_free (gconf_string_mail);
+      no_error = FALSE;
     }
+    g_free (gconf_string);
+
+    if (no_error)
+      if (gconf_value_get_bool (entry->value))
+	ils_client->Register ();
+      else
+	ils_client->Unregister ();
+    else
+      gconf_client_set_bool (client, "/apps/gnomemeeting/ldap/register", FALSE,
+			     NULL);
+      
 
     gdk_threads_leave ();
+  }
+}
+
+
+/* DESCRIPTION  :  This callback is called when the "do_not_disturb" 
+ *                 gconf value changes.
+ * BEHAVIOR     :  Simply issued a modify request if we are regitered to an ILS
+ *                 directory.
+ * PRE          :  /
+ */
+static void do_not_disturb_changed_nt (GConfClient *client, guint cid, 
+				       GConfEntry *entry, gpointer data)
+{
+  GMH323EndPoint *endpoint = MyApp->Endpoint ();
+  GMILSClient *ils_client = (GMILSClient *) endpoint->GetILSClient ();
+
+  if (entry->value->type == GCONF_VALUE_BOOL) {
+
+    if (gconf_client_get_bool (client, "/apps/gnomemeeting/ldap/register", 0))
+      ils_client->Modify ();
   }
 }
 
@@ -1247,6 +1214,7 @@ void gnomemeeting_init_gconf (GConfClient *client)
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/do_not_disturb", toggle_changed_nt, pw->dnd, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/do_not_disturb", menu_toggle_changed_nt, call_menu [3].widget, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/general/do_not_disturb", do_not_disturb_changed_nt, pw->dnd, 0, 0);
 
 #ifdef HAS_SDL
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/fullscreen_width", adjustment_changed_nt, pw->fullscreen_width, 0, 0);

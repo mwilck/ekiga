@@ -14,7 +14,9 @@ IMAGE_FILES = \
 	microphone.png \
 	video-preview.png \
 	audio-mute.png \
-	speaker-phone.png
+	speaker-phone.png \
+	available.png \
+	occupied.png
 
 
 IMAGES= \
@@ -28,7 +30,9 @@ IMAGES= \
 	gm_video_preview_stock_data video-preview.png \
 	gm_audio_mute_stock_data audio-mute.png \
 	gm_speaker_phone_stock_data speaker-phone.png \
-	gm_quickcam_stock_data quickcam.xpm
+	gm_quickcam_stock_data quickcam.xpm \
+	gm_occupied_stock_data occupied.png \
+	gm_available_stock_data available.png
 
 noinst_DATA = inlines.h
 

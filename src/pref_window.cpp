@@ -260,19 +260,18 @@ static void personal_data_update_button_clicked (GtkWidget *widget,
   gchar *alias_ = NULL;
   PString alias;
   GConfClient *client = gconf_client_get_default ();
+
   
   /* 1 */
   /* if registering is enabled for LDAP,
      trigger the register notifier */
   if (gconf_client_get_bool (GCONF_CLIENT (client), "/apps/gnomemeeting/ldap/register", 0)) {
 
-    gconf_client_set_bool (GCONF_CLIENT (client),
-			  "/apps/gnomemeeting/ldap/register",
-			  0, 0);
-    gconf_client_set_bool (GCONF_CLIENT (client),
-			  "/apps/gnomemeeting/ldap/register",
-			  1, 0);
+    GMILSClient *ils_client = 
+      (GMILSClient *) MyApp->Endpoint ()->GetILSClient ();
+    ils_client->Modify ();
   }
+
 
   /* 2 */
   /* Set the local User name */
