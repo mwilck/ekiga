@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-11-03 04:01+0100\n"
-"PO-Revision-Date: 2004-11-03 13:29+0100\n"
+"POT-Creation-Date: 2004-11-09 12:01+0100\n"
+"PO-Revision-Date: 2004-11-09 15:09+0100\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -20,8 +20,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #. Add the window icon and title
-#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:3715
-#: src/main_window.cpp:3904
+#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:3716
+#: src/main_window.cpp:3905
 msgid "GnomeMeeting"
 msgstr "GnomeMeeting"
 
@@ -1377,7 +1377,7 @@ msgid "On LDAP servers"
 msgstr "Na serverech LDAP"
 
 #. Init the address book
-#: src/addressbook_window.cpp:2336 src/gnomemeeting.cpp:404
+#: src/addressbook_window.cpp:2336 src/gnomemeeting.cpp:418
 msgid "On This Computer"
 msgstr "V tomto počítači"
 
@@ -2053,8 +2053,8 @@ msgid "Configuration complete - page %d/%d"
 msgstr "Nastavení dokončeno - strana %d/%d"
 
 #: src/druid.cpp:1432 src/druid.cpp:1692 src/druid.cpp:1709 src/druid.cpp:1775
-#: src/endpoint.cpp:1789 src/gnomemeeting.cpp:258 src/gnomemeeting.cpp:260
-#: src/gnomemeeting.cpp:262 src/sound_handling.cpp:573
+#: src/endpoint.cpp:1789 src/gnomemeeting.cpp:269 src/gnomemeeting.cpp:271
+#: src/gnomemeeting.cpp:273 src/sound_handling.cpp:573
 #: src/sound_handling.cpp:574 src/videograbber.cpp:310
 #: src/videograbber.cpp:571
 msgid "No device found"
@@ -2412,14 +2412,14 @@ msgstr "Zastavuji aktuální hovor"
 msgid "Refusing Incoming call"
 msgstr "Odmítám příchozí hovor"
 
-#: src/gnomemeeting.cpp:404
+#: src/gnomemeeting.cpp:418
 msgid "Personal"
 msgstr "Osobní"
 
-#: src/gnomemeeting.cpp:465
+#: src/gnomemeeting.cpp:479
 #, c-format
-msgid "Started GnomeMeeting V%d.%d.%d for %s\n"
-msgstr "Spuštěn GnomeMeeting V%d.%d.%d pro %s\n"
+msgid "Started GnomeMeeting %d.%d.%d for user %s"
+msgstr "Spuštěn GnomeMeeting %d.%d.%d pro uživatele %s"
 
 #: src/ils.cpp:101
 msgid "Invalid parameters"
@@ -2616,7 +2616,7 @@ msgstr "Přesměrovávat hovory"
 msgid "Speed dials"
 msgstr "Rychlá vytáčení"
 
-#: src/main_window.cpp:974 src/main_window.cpp:2889
+#: src/main_window.cpp:974 src/main_window.cpp:2890
 msgid "_Hold Call"
 msgstr "_Pozdržet hovor"
 
@@ -2632,7 +2632,7 @@ msgstr "_Přesměrovat hovor"
 msgid "Transfer the current call"
 msgstr "Přesměrovat aktuální hovor"
 
-#: src/main_window.cpp:986 src/main_window.cpp:2923
+#: src/main_window.cpp:986 src/main_window.cpp:2924
 msgid "Suspend _Audio"
 msgstr "Pozastavit _zvuk"
 
@@ -2640,7 +2640,7 @@ msgstr "Pozastavit _zvuk"
 msgid "Suspend or resume the audio transmission"
 msgstr "Pozastavit nebo obnovit přenos zvuku"
 
-#: src/main_window.cpp:991 src/main_window.cpp:2925
+#: src/main_window.cpp:991 src/main_window.cpp:2926
 msgid "Suspend _Video"
 msgstr "Pozastavit _Video"
 
@@ -2752,7 +2752,7 @@ msgstr "_Vymazat textový chat"
 msgid "Clear the text chat"
 msgstr "Vymazat textový chat"
 
-#: src/main_window.cpp:1083 src/main_window.cpp:3856
+#: src/main_window.cpp:1083 src/main_window.cpp:3857
 msgid "Local Video"
 msgstr "Lokální video"
 
@@ -2760,7 +2760,7 @@ msgstr "Lokální video"
 msgid "Local video image"
 msgstr "Lokální obraz videa"
 
-#: src/main_window.cpp:1089 src/main_window.cpp:3862
+#: src/main_window.cpp:1089 src/main_window.cpp:3863
 msgid "Remote Video"
 msgstr "Vzdálené video"
 
@@ -2864,7 +2864,7 @@ msgstr "O _aplikaci"
 msgid "View information about GnomeMeeting"
 msgstr "Zobraz informace o GnomeMeeting"
 
-#: src/main_window.cpp:1248 src/main_window.cpp:4046
+#: src/main_window.cpp:1248 src/main_window.cpp:4047
 msgid ""
 "Lost packets:\n"
 "Late packets:\n"
@@ -2909,51 +2909,51 @@ msgstr "Zvuk"
 msgid "Sent DTMF %s"
 msgstr "Odesláno DTMF %s"
 
-#: src/main_window.cpp:2873
+#: src/main_window.cpp:2874
 msgid "_Retrieve Call"
 msgstr "_Přijmout hovor"
 
-#: src/main_window.cpp:2927
+#: src/main_window.cpp:2928
 msgid "Resume _Audio"
 msgstr "Obnovit _zvuk"
 
-#: src/main_window.cpp:2929
+#: src/main_window.cpp:2930
 msgid "Resume _Video"
 msgstr "Obnovit _video"
 
-#: src/main_window.cpp:3543
+#: src/main_window.cpp:3544
 msgid "Transfer call to:"
 msgstr "Přesměrovávat hovor na:"
 
-#: src/main_window.cpp:3544 src/main_window.cpp:3617
+#: src/main_window.cpp:3545 src/main_window.cpp:3618
 msgid "Transfer"
 msgstr "Přesměrovat"
 
-#: src/main_window.cpp:3615
+#: src/main_window.cpp:3616
 msgid "Reject"
 msgstr "Odmítnout"
 
-#: src/main_window.cpp:3619
+#: src/main_window.cpp:3620
 msgid "Accept"
 msgstr "Přijmout"
 
-#: src/main_window.cpp:3627
+#: src/main_window.cpp:3628
 msgid "Incoming call from"
 msgstr "Příchozí hovor od"
 
-#: src/main_window.cpp:3640
+#: src/main_window.cpp:3641
 msgid "Remote URL:"
 msgstr "Vzdálené URL:"
 
-#: src/main_window.cpp:3652
+#: src/main_window.cpp:3653
 msgid "Remote Application:"
 msgstr "Vzdálená aplikace:"
 
-#: src/main_window.cpp:3976
+#: src/main_window.cpp:3977
 msgid "Click to clear"
 msgstr "Vymažte kliknutím"
 
-#: src/main_window.cpp:4072
+#: src/main_window.cpp:4073
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2966,19 +2966,19 @@ msgstr ""
 "Zpoždění komunikace: %d ms\n"
 "Buffer rozptylu: %d ms"
 
-#: src/main_window.cpp:4181
+#: src/main_window.cpp:4185
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Vypisování ladících zpráv v konzole (úroveň mezi 1 až 6)"
 
-#: src/main_window.cpp:4184
+#: src/main_window.cpp:4188
 msgid "Makes GnomeMeeting call the given URL"
 msgstr "Způsobí, že GnomeMeeting zavolá na zadané URL"
 
-#: src/main_window.cpp:4219
+#: src/main_window.cpp:4223
 msgid "No usable audio plugin detected"
 msgstr "Nedetekován použitelný modul zvuku"
 
-#: src/main_window.cpp:4219
+#: src/main_window.cpp:4223
 msgid ""
 "GnomeMeeting didn't find any usable audio plugin. Make sure that your "
 "installation is correct."
@@ -2986,7 +2986,7 @@ msgstr ""
 "GnomeMeeting nenašel použitelný modul zvuku. Přesvědčte se, že vaše "
 "instalace je v pořádku."
 
-#: src/main_window.cpp:4241
+#: src/main_window.cpp:4245
 #, c-format
 msgid ""
 "GnomeMeeting got an invalid value for the GConf key %s.\n"
@@ -3008,7 +3008,7 @@ msgstr ""
 "týkající se řešení problémů (http://www.gnome.org/projects/gconf/) nebo "
 "archivy konferencí (http://mail.gnome.org) pro získání více informací."
 
-#: src/main_window.cpp:4244
+#: src/main_window.cpp:4248
 msgid "Gconf key error"
 msgstr "Chyba klíče gconf"
 
@@ -3879,13 +3879,18 @@ msgid ""
 "appropriate method, if your router does not natively support H.323, is "
 "probably to forward the required ports to your internal machine and use IP "
 "translation."
-msgstr "GnomeMeeting nemohl detekovat typ NAT, který používáte. Pokud váš router nativně nepodporuje H.323, je asi nejvhodnější metoda přeposílat vyžadované porty na váš interní počítač a používat překlad IP."
+msgstr ""
+"GnomeMeeting nemohl detekovat typ NAT, který používáte. Pokud váš router "
+"nativně nepodporuje H.323, je asi nejvhodnější metoda přeposílat vyžadované "
+"porty na váš interní počítač a používat překlad IP."
 
 #: src/stunclient.cpp:161
 msgid ""
 "Your system does not need any specific configuration as long as you do not "
 "have a local firewall blocking the ports required by GnomeMeeting."
-msgstr "Váš systém nepotřebuje žádné zvláštní nastavení, pokud nemáte místní firewall, který blokuje porty vyžadované GnomeMeetingem."
+msgstr ""
+"Váš systém nepotřebuje žádné zvláštní nastavení, pokud nemáte místní "
+"firewall, který blokuje porty vyžadované GnomeMeetingem."
 
 #: src/stunclient.cpp:166
 msgid ""
@@ -3896,13 +3901,22 @@ msgid ""
 "report Cone NAT and allow GnomeMeeting to be used with STUN support enabled. "
 "If it does not report Cone NAT, then it means that there is a problem in "
 "your forwarding rules."
-msgstr "GnomeMeeting detekoval symetrický NAT. Pokud váš router nepodporuje H.323, nejvhodnější metoda je přeposílat vyžadované porty na váš interní počítač, aby se váš symetrický NAT stal NAT na jeden port. Další spuštění tohoto testu po nastavení přeposílání portů by mělo ohlásit NAT na jeden port a umožnit používání GnomeMeeting s povolenou podporou STUN. Pokud po přeposílání portů neohlásí NAT na jeden port, znamená to, že ve vašich pravidlech pro přeposílání je problém."
+msgstr ""
+"GnomeMeeting detekoval symetrický NAT. Pokud váš router nepodporuje H.323, "
+"nejvhodnější metoda je přeposílat vyžadované porty na váš interní počítač, "
+"aby se váš symetrický NAT stal NAT na jeden port. Další spuštění tohoto "
+"testu po nastavení přeposílání portů by mělo ohlásit NAT na jeden port a "
+"umožnit používání GnomeMeeting s povolenou podporou STUN. Pokud po "
+"přeposílání portů neohlásí NAT na jeden port, znamená to, že ve vašich "
+"pravidlech pro přeposílání je problém."
 
 #: src/stunclient.cpp:172
 msgid ""
 "You do not seem to be behind a NAT gateway, however, you are running a "
 "firewall that will prevent GnomeMeeting from behaving correctly."
-msgstr "Zřejmě nejste za bránou NAT, ale používáte firewall, který GnomeMeetingu brání chovat se správně."
+msgstr ""
+"Zřejmě nejste za bránou NAT, ale používáte firewall, který GnomeMeetingu "
+"brání chovat se správně."
 
 #: src/stunclient.cpp:177
 #, c-format
@@ -3915,8 +3929,11 @@ msgid ""
 "\n"
 "Enable STUN Support?"
 msgstr ""
-"GnomeMeeting detekoval NAT: %s. Pokud váš router nativně nepodporuje H.323, je pravděpodobně nejvhodnější metoda používat server STUN.\n"
-"Všimněte si, že podpora STUN nestačí, pokud chcete kontaktovat klienty H.323, kteří nepodporují tunelování H.245, např. Netmeeting. V tom případě budete muset používat klasický překlad IP a přeposílání portů.\n"
+"GnomeMeeting detekoval NAT: %s. Pokud váš router nativně nepodporuje H.323, "
+"je pravděpodobně nejvhodnější metoda používat server STUN.\n"
+"Všimněte si, že podpora STUN nestačí, pokud chcete kontaktovat klienty "
+"H.323, kteří nepodporují tunelování H.245, např. Netmeeting. V tom případě "
+"budete muset používat klasický překlad IP a přeposílání portů.\n"
 "\n"
 "Povolit podporu STUN?"
 
@@ -3933,41 +3950,41 @@ msgstr "Typ NAT byl úspěšně detekován"
 msgid "Set STUN server to %s"
 msgstr "Nastavit server STUN na %s"
 
-#: src/tools.cpp:178 src/tools.cpp:192
+#: src/tools.cpp:168 src/tools.cpp:182
 msgid "PC-To-Phone Settings"
 msgstr "Nastavení PC-To-Phone"
 
-#: src/tools.cpp:181
+#: src/tools.cpp:171
 msgid ""
 "You can make calls to regular phones and cell numbers worldwide using "
-"GnomeMeeting. To enable this you need to register an account using the URL "
+"GnomeMeeting. To enable this, you need to register an account using the URL "
 "below, then enter your Account number and PIN, and finally enable "
 "registering to the GnomeMeeting PC-To-Phone service.\n"
 "\n"
-"Please make sure you are using the URL below to get your account or the "
-"service will not work."
+"Please make sure you are using the URL below to get your account otherwise "
+"the service will not work."
 msgstr ""
-"Pomocí GnomeMeetingu můžete volat na běžné telefony a mobilní telefony po celém světě. Pro využití této funkce musíte zaregistrovat účet na URL níže a zadat číslo svého účtu a PIN a povolit registraci ke službě GnomeMeeting PC-To-Phone.\n"
+"Pomocí GnomeMeetingu můžete volat na běžné telefony a mobilní telefony po celém světě. Pro využití této funkce musíte zaregistrovat účet na URL níže, pak zadat číslo svého účtu a PIN a konečně povolit registraci ke službě GnomeMeeting PC-To-Phone.\n"
 "\n"
 "Přesvědčte se prosím, že pro získání účtu používáte URL níže, jinak služba nebude fungovat."
 
-#: src/tools.cpp:194
+#: src/tools.cpp:184
 msgid "Account _number:"
 msgstr "_Číslo účtu:"
 
-#: src/tools.cpp:194
+#: src/tools.cpp:184
 msgid "Use your MicroTelco account number"
 msgstr "Použijte své číslo účtu MicroTelco"
 
-#: src/tools.cpp:197
+#: src/tools.cpp:187
 msgid "_Pin:"
 msgstr "_Pin:"
 
-#: src/tools.cpp:197
+#: src/tools.cpp:187
 msgid "Use your MicroTelco PIN"
 msgstr "Použijte svůj PIN MicroTelco"
 
-#: src/tools.cpp:201
+#: src/tools.cpp:193
 msgid "Use PC-To-Phone service"
 msgstr "Používat službu PC-To-Phone"
 
@@ -3975,15 +3992,26 @@ msgstr "Používat službu PC-To-Phone"
 msgid ""
 "Click on one of the following links to get more information about your "
 "existing GnomeMeeting PC-To-Phone account, or to create a new account."
-msgstr "Pro získání více informací o vašem existujícím účtu GnomeMeeting PC-To-Phone nebo pro vytvoření nového účtu klikněte na jeden z následujících odkazů."
+msgstr ""
+"Pro získání více informací o vašem existujícím účtu GnomeMeeting PC-To-Phone "
+"nebo pro vytvoření nového účtu klikněte na jeden z následujících odkazů."
 
-#: src/tools.cpp:210
+#. Get an account, good idea
+#: src/tools.cpp:212
 msgid "Get a GnomeMeeting PC-To-Phone account"
 msgstr "Získat účet GnomeMeeting PC-To-Phone"
 
-#: src/tools.cpp:215
-msgid "Consult my account details"
-msgstr "Zobrazit podrobnosti o mém účtu"
+#: src/tools.cpp:220
+msgid "Recharge the account"
+msgstr "Dobít účet"
+
+#: src/tools.cpp:234
+msgid "Consult the balance history"
+msgstr "Zobrazit historii zůstatku"
+
+#: src/tools.cpp:248
+msgid "Consult the calls history"
+msgstr "Zobrazit historii hovorů"
 
 #: src/tray.cpp:241
 msgid "GnomeMeeting Tray Icon"
@@ -4145,6 +4173,9 @@ msgstr "Chyba s frekvencí rámců."
 #: src/videograbber.cpp:688
 msgid "Error with the frame size."
 msgstr "Chyba ve velikosti obrazu."
+
+#~ msgid "Consult my account details"
+#~ msgstr "Zobrazit podrobnosti o mém účtu"
 
 #~ msgid "Get an account"
 #~ msgstr "Získat účet"
