@@ -276,7 +276,6 @@ gnomemeeting_incoming_call_popup_new (gchar * utf8_name,
   
   gtk_window_set_transient_for (GTK_WINDOW (widget),
 				GTK_WINDOW (gm));
-  gtk_window_set_modal (GTK_WINDOW (widget), TRUE);
 
   gtk_widget_show_all (widget);
 

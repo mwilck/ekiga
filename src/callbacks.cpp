@@ -290,7 +290,7 @@ void about_callback (GtkWidget *widget, gpointer parent_window)
 
   abox = gnome_about_new ("GnomeMeeting",
 			  VERSION,
-			  "Copyright © 2000, 2002 Damien Sandras",
+			  "Copyright © 2000, 2003 Damien Sandras",
                           /* Translators: Please test to see if your translation
                            * looks OK and fits within the box */
 			  _("GnomeMeeting is a full-featured H.323\nvideo conferencing application."),

@@ -51,7 +51,8 @@ void gnomemeeting_dialpad_event (const char *);
  * PRE          :  /
  */
 void gnomemeeting_init (GmWindow *, GmPrefWindow *, 
-			GmLdapWindow *, GmDruidWindow *, GmRtpData *, 
+			GmLdapWindow *, GmDruidWindow *,
+			GmCallsHistoryWindow *,	GmRtpData *, 
 			GmTextChat *, GmCommandLineOptions *, int, 
 			char **, char **);
 

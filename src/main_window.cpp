@@ -1050,7 +1050,8 @@ void
 gnomemeeting_init (GmWindow *gw, 
                    GmPrefWindow *pw,
                    GmLdapWindow *lw,
-		   GmDruidWindow *dw, 
+		   GmDruidWindow *dw,
+		   GmCallsHistoryWindow *chw,
                    GmRtpData *rtp,
 		   GmTextChat *chat,
 		   GmCommandLineOptions *clo,
@@ -1205,9 +1206,11 @@ gnomemeeting_init (GmWindow *gw,
     delete (gw);
     delete (lw);
     delete (dw);
+    delete (chw);
     delete (pw);
     delete (rtp);
     delete (chat);
+ 
     exit (-1);
   }
 
@@ -1270,6 +1273,7 @@ gnomemeeting_init (GmWindow *gw,
   g_object_set_data (G_OBJECT (gm), "gw", gw);
   g_object_set_data (G_OBJECT (gm), "lw", lw);
   g_object_set_data (G_OBJECT (gm), "dw", dw);
+  g_object_set_data (G_OBJECT (gm), "chw", chw);
   g_object_set_data (G_OBJECT (gm), "pw", pw);
   g_object_set_data (G_OBJECT (gm), "chat", chat);
   g_object_set_data (G_OBJECT (gm), "rtp", rtp);
@@ -2037,6 +2041,7 @@ int main (int argc, char ** argv, char ** envp)
   GmWindow *gw = NULL;
   GmLdapWindow *lw = NULL;
   GmDruidWindow *dw = NULL;
+  GmCallsHistoryWindow *chw = NULL;
   GmPrefWindow *pw = NULL;
   GmTextChat *chat = NULL;
   GmRtpData *rtp = NULL;
@@ -2054,19 +2059,11 @@ int main (int argc, char ** argv, char ** envp)
   gw->progress_timeout = 0;
 
 
-  /* Init the GmPrefWindow structure */
+  /* Init the different structures */
   pw = new (GmPrefWindow); 
-
-
-  /* Init the GmLdapWindow structure */
   lw = new (GmLdapWindow);
-
-  
-  /* Init the GmDruidWindow structure */
   dw = new (GmDruidWindow);
-
-
-  /* Init the RTP stats structure */
+  chw = new (GmCallsHistoryWindow);
   rtp = new (GmRtpData);
   rtp->tr_audio_bytes = 0;
   rtp->re_audio_bytes = 0;
@@ -2076,13 +2073,7 @@ int main (int argc, char ** argv, char ** envp)
   rtp->tr_video_pos = 0;
   rtp->re_audio_pos = 0;
   rtp->re_video_pos = 0;
-
-
-  /* Init the TextChat structure */
   chat = new (GmTextChat);
-
-
-  /* Init the CommandLineOptions structure */
   clo = new (GmCommandLineOptions);
   clo->debug_level = 0;
   clo->url = NULL;
@@ -2104,7 +2095,7 @@ int main (int argc, char ** argv, char ** envp)
  
   
   /* GnomeMeeting main initialisation */
-  gnomemeeting_init (gw, pw, lw, dw, rtp, chat, clo, argc, argv, envp);
+  gnomemeeting_init (gw, pw, lw, dw, chw, rtp, chat, clo, argc, argv, envp);
     
   /* Set a default gconf error handler */
   gconf_client_set_error_handling (gconf_client_get_default (),
@@ -2134,6 +2125,7 @@ int main (int argc, char ** argv, char ** envp)
   delete (gw);
   delete (lw);
   delete (dw);
+  delete (chw);
   delete (pw);
   delete (rtp);
   delete (chat);

@@ -112,6 +112,7 @@ typedef struct _GmPrefWindow GmPrefWindow;
 typedef struct _GmLdapWindow GmLdapWindow;
 typedef struct _GmTextChat GmTextChat;
 typedef struct _GmDruidWindow GmDruidWindow;
+typedef struct _GmCallsHistoryWindow GmCallsHistoryWindow;
 typedef struct _GmRtpData GmRtpData;
 typedef struct _GmCommandLineOptions GmCommandLineOptions;
 
@@ -172,7 +173,6 @@ struct _GmWindow
   GtkWidget *ldap_window;
   GtkWidget *chat_window;
   GtkWidget *calls_history_window;
-  GtkWidget *calls_history_text_view;
   GtkWidget *preview_button;
   GtkWidget *connect_button;
   GtkWidget *video_chan_button;
@@ -226,6 +226,14 @@ struct _GmDruidWindow
 #ifndef DISABLE_GNOME
   GnomeDruidPageEdge *page_edge;
 #endif
+};
+
+
+struct _GmCallsHistoryWindow
+{
+  GtkListStore *given_calls_list_store;
+  GtkListStore *received_calls_list_store;
+  GtkListStore *missed_calls_list_store;
 };
 
 
@@ -339,6 +347,15 @@ GmTextChat *gnomemeeting_get_chat_window (GtkWidget *);
  *                 window.
  */
 GmDruidWindow *gnomemeeting_get_druid_window (GtkWidget *);
+
+
+/* DESCRIPTION  :  / 
+ * BEHAVIOR     :  Returns the structure of widgets of the calls history
+ *                 window.
+ * PRE          :  The GtkWidget must be a pointer to the Main gnomeMeeting 
+ *                 window.
+ */
+GmCallsHistoryWindow *gnomemeeting_get_calls_history_window (GtkWidget *);
 
 
 /* DESCRIPTION  :  / 

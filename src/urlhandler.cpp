@@ -154,7 +154,6 @@ void GMURLHandler::Main ()
   msg = g_strdup_printf (_("Calling %s"), 
 			 (const char *) call_address);
   gnomemeeting_log_insert (gw->history_text_view, msg);
-  gnomemeeting_log_insert (gw->calls_history_text_view, msg);
   gnomemeeting_statusbar_push (gw->statusbar, msg);
   connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 1);
   g_free (msg);		

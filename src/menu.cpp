@@ -98,6 +98,7 @@ transfer_call_cb (GtkWidget* widget, gpointer parent_window)
   GtkWidget *b2 = NULL;
   
   char *gconf_forward_value = NULL;
+  gint answer = 0;
   
   GConfClient *client = gconf_client_get_default ();
   gconf_forward_value =
@@ -121,23 +122,41 @@ transfer_call_cb (GtkWidget* widget, gpointer parent_window)
 		      hbox, TRUE, TRUE, 0);
     
   entry = gtk_entry_new ();
-  gtk_entry_set_text (GTK_ENTRY (entry), gconf_forward_value);
+  if (gconf_forward_value)
+    gtk_entry_set_text (GTK_ENTRY (entry), gconf_forward_value);
+  g_free (gconf_forward_value);
+  gconf_forward_value = NULL;
 
   gtk_box_pack_start (GTK_BOX (hbox), 
 		      label, TRUE, TRUE, 10);
   gtk_box_pack_start (GTK_BOX (hbox), 
 		      entry, TRUE, TRUE, 10);
 
-  g_signal_connect (G_OBJECT (b1), "clicked",
-		    G_CALLBACK (gtk_widget_destroy), transfer_call_popup);
-  g_signal_connect (G_OBJECT (b1), "delete-event",
-		    G_CALLBACK (gtk_widget_destroy), transfer_call_popup);
-  
   gtk_window_set_transient_for (GTK_WINDOW (transfer_call_popup),
 				GTK_WINDOW (gm));
   gtk_window_set_modal (GTK_WINDOW (transfer_call_popup), TRUE);
 
   gtk_widget_show_all (transfer_call_popup);
+
+  answer = gtk_dialog_run (GTK_DIALOG (transfer_call_popup));
+  switch (answer) {
+
+  case 1:
+
+    gconf_forward_value = (gchar *) gtk_entry_get_text (GTK_ENTRY (entry));
+
+    if (gconf_forward_value && !PString (gconf_forward_value).IsEmpty ()) {
+
+      MyApp->Endpoint ()->TransferCall (MyApp->Endpoint ()->GetCurrentCallToken (), gconf_forward_value);
+    }
+      
+    break;
+
+  default:
+    break;
+  }
+
+  gtk_widget_destroy (transfer_call_popup);
 }
 
 
@@ -604,8 +623,7 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 
       {_("_Transfer Call"), _("Transfer the current call"),
        NULL, 0, MENU_ENTRY, 
-       //       GTK_SIGNAL_FUNC (transfer_call_cb),
-       NULL,
+       GTK_SIGNAL_FUNC (transfer_call_cb),
        (gpointer) gw, NULL},
 
       {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},

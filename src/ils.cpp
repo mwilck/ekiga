@@ -1207,7 +1207,7 @@ void GMILSBrowser::Main ()
 
 	  gnomemeeting_threads_enter ();
 
-	  gtk_list_store_append (xdap_users_list_store, &list_iter);
+ 	  gtk_list_store_append (xdap_users_list_store, &list_iter);
 
 	  gtk_list_store_set (xdap_users_list_store, &list_iter,
 			      COLUMN_ILS_STATUS, status_icon,

@@ -76,6 +76,16 @@ gnomemeeting_get_druid_window (GtkWidget *gm)
 }
 
 
+GmCallsHistoryWindow *
+gnomemeeting_get_calls_history_window (GtkWidget *gm)
+{
+  GmCallsHistoryWindow *chw =
+    (GmCallsHistoryWindow *) g_object_get_data (G_OBJECT (gm), "chw");
+
+  return chw;
+}
+
+
 GmTextChat *
 gnomemeeting_get_chat_window (GtkWidget *gm)
 {

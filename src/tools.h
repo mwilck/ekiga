@@ -49,6 +49,8 @@
  */
 void gnomemeeting_init_calls_history_window ();
 
+void gnomemeeting_calls_history_window_add_call (int, char *, char *, char *,
+						 char *, char *);
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Build the history window.

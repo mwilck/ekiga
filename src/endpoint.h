@@ -359,7 +359,8 @@ class GMH323EndPoint : public H323EndPoint
 
  protected:
   
-  PString current_call_token;  
+  PString current_call_token;
+  BOOL is_received_call;
   H323Connection *current_connection;  
   H323ListenerTCP *listener;  
 

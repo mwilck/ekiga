@@ -53,6 +53,7 @@
 #include "misc.h"
 #include "menu.h"
 #include "main_window.h"
+#include "tools.h"
 #include "lid.h"
 
 #ifndef DISABLE_GCONF
@@ -133,8 +134,6 @@ IncomingCallTimeout (gpointer data)
       gnomemeeting_log_insert (gw->history_text_view, msg);
 
       gnomemeeting_statusbar_push (gw->statusbar, _("Call forwarded"));
-      gnomemeeting_log_insert (gw->calls_history_text_view, 
- 			       _("Call forwarded"));
       g_free (msg);
     }
   }
@@ -184,6 +183,8 @@ GMH323EndPoint::GMH323EndPoint ()
   opened_audio_channels = 0;
   opened_video_channels = 0;
 
+  is_received_call = FALSE;
+  
   /* Start the ILSClient PThread */
   ils_client = new GMILSClient ();
 
@@ -851,7 +852,7 @@ GMH323EndPoint::OnConnectionForwarded (H323Connection &,
 			   (const char*) forward_party);
     gnomemeeting_statusbar_push (gw->statusbar, msg);
     gnomemeeting_log_insert (gw->history_text_view, msg);
-    gnomemeeting_log_insert (gw->calls_history_text_view, _("Call forwarded"));
+
     gnomemeeting_threads_leave ();
 
     g_free (msg);
@@ -901,7 +902,10 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 
   int no_answer_timeout = 0;
 
+  if (GetCurrentCallToken ().IsEmpty ())
+    is_received_call = TRUE;
 
+  
   /* Check the gconf keys */
   gnomemeeting_threads_enter ();
   forward_host_gconf = 
@@ -939,7 +943,6 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   gnomemeeting_threads_enter ();
   gnomemeeting_statusbar_push (gw->statusbar, msg);
   gnomemeeting_log_insert (gw->history_text_view, msg);
-  gnomemeeting_log_insert (gw->calls_history_text_view, msg);
   gnomemeeting_threads_leave ();
   g_free (msg);
 
@@ -1002,8 +1005,6 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
       
       gnomemeeting_threads_enter ();
       gnomemeeting_statusbar_push (gw->statusbar, _("Auto Rejected"));
-      gnomemeeting_log_insert (gw->calls_history_text_view, 
-			       _("Auto Rejected"));
       gnomemeeting_threads_leave ();
 
       connection.ClearCall (H323Connection::EndedByLocalBusy); 
@@ -1013,8 +1014,6 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 
       gnomemeeting_threads_enter ();
       gnomemeeting_statusbar_push (gw->statusbar, _("Call Forwarded"));
-      gnomemeeting_log_insert (gw->calls_history_text_view, 
-			       _("Call Forwarded"));
       gnomemeeting_threads_leave ();
 
       return !connection.ForwardCall (forward_host);
@@ -1191,7 +1190,6 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 			   (gchar *)_("H.245 Tunnelling disabled"):
 			   (gchar *)_("H.245 Tunnelling enabled"));
   gnomemeeting_log_insert (gw->history_text_view, msg);
-  gnomemeeting_log_insert (gw->calls_history_text_view, msg);
 
   gtk_entry_set_text (GTK_ENTRY (gw->remote_name), (const char *) utf8_name);
 
@@ -1262,18 +1260,45 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
                                      const PString & clearedCallToken)
 {
   gchar *msg_reason = NULL;
-  gchar *msg = NULL;
+  PString remote_party_name;
+  PString remote_app;
+  PString remote_ip;
+  PINDEX index;
   PTimeInterval t;
   GtkTextIter start_iter, end_iter;
   BOOL dnd = FALSE;
   BOOL reg = FALSE;
   BOOL preview = FALSE;
+  int i = 0;
   
   var_access_mutex.Wait ();
   player_channel = NULL;
   recorder_channel = NULL;
   var_access_mutex.Signal ();
 
+  /* Get information about the remote user */
+  cout << "FIX ME" << endl << flush;
+  remote_party_name = connection.GetRemotePartyName ();
+  index = remote_party_name.Find ('[');
+  if (index != P_MAX_INDEX) {
+    
+    remote_ip = remote_party_name.Mid (index);
+    remote_party_name = remote_party_name.Left (index);
+  }
+  remote_app = connection.GetRemoteApplication ();
+
+  if (connection.GetConnectionStartTime ().IsValid ())
+    t = PTime () - connection.GetConnectionStartTime();
+
+  gnomemeeting_threads_enter ();
+  if (connection.GetCallEndReason () == H323Connection::EndedByNoAnswer
+      || GetCurrentCallToken () != clearedCallToken)
+    i = 2;
+  else
+    is_received_call ? i=0:i=1;
+  
+  gnomemeeting_calls_history_window_add_call (i, (char *) (const char *) PTime ().AsString (), (char *) (const char *) remote_party_name, (char *) (const char *) remote_ip, (char *) (const char *) (t.AsString (2)+PString (_("s"))), (char *) (const char *) remote_app);
+  gnomemeeting_threads_leave ();
 
   /* Get GConf settings */
   gnomemeeting_threads_enter ();
@@ -1282,6 +1307,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   preview = gconf_client_get_bool (client, DEVICES_KEY "video_preview", NULL);
   gnomemeeting_threads_leave ();
 
+  
   /* If we are called because the current incoming call has ended and 
      not another call, ok, else do nothing */
   if (GetCurrentCallToken () == clearedCallToken) {
@@ -1376,19 +1402,6 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   }
 
   gnomemeeting_log_insert (gw->history_text_view, msg_reason);
-  gnomemeeting_log_insert (gw->calls_history_text_view, msg_reason);
-  
- 
-  if (connection.GetConnectionStartTime ().GetTimeInSeconds () > 0) {
-
-    t = PTime () - connection.GetConnectionStartTime();
-    msg = g_strdup_printf (_("Call duration: %.2ld:%.2ld:%.2ld"),
-			   (long) t.GetHours (), (long) t.GetMinutes () % 60,
-			   (long) t.GetSeconds () % 60);
-    gnomemeeting_log_insert (gw->history_text_view, msg);
-    gnomemeeting_log_insert (gw->calls_history_text_view, msg);
-    g_free (msg);
-  }
 
   if (gw->progress_timeout) {
 
@@ -1487,7 +1500,8 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   gtk_label_set_text (GTK_LABEL (gw->stats_label), _("Lost packets:\nLate packets:\nRound-trip delay:\nJitter buffer:"));
 
   
-  /* We empty the text chat buffer */ 
+  /* We empty the text chat buffer */
+  cout << "FIX ME" << endl << flush;
   gtk_text_buffer_get_start_iter (chat->text_buffer, &start_iter);
   gtk_text_buffer_get_end_iter (chat->text_buffer, &end_iter);
 
@@ -1534,7 +1548,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   /* Update internal state */
   SetCurrentConnection (NULL);
   SetCallingState (0);
-
+  is_received_call = FALSE;
 
   /* Display the call end reason in the statusbar */
   gdk_threads_enter ();
