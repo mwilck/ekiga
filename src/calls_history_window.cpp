@@ -461,6 +461,69 @@ add_contact_cb (GtkWidget *w,
 
 
 /* The functions */
+GSList *
+gnomemeeting_calls_history_window_get_calls (GtkWidget *calls_history_window)
+{
+  GmContact *contact = NULL;
+
+  GSList *calls_list = NULL;
+  GSList *result = NULL;
+
+  gchar **call_data = NULL;
+  gchar *conf_key = NULL;
+
+
+  for (int i = 0 ; i < MAX_VALUE_CALL ; i++) {
+
+    switch (i) {
+
+    case RECEIVED_CALL:
+      conf_key =
+	g_strdup (USER_INTERFACE_KEY "calls_history_window/received_calls_history");
+      break;
+    case PLACED_CALL:
+      conf_key =
+	g_strdup (USER_INTERFACE_KEY "calls_history_window/placed_calls_history");
+      break;
+    case MISSED_CALL:
+      conf_key =
+	g_strdup (USER_INTERFACE_KEY "calls_history_window/missed_calls_history");
+      break;
+    }
+
+    calls_list = gm_conf_get_string_list (conf_key);
+
+    while (calls_list && calls_list->data) {
+      
+      call_data = g_strsplit ((char *) calls_list->data, "|", 0);
+      
+      if (call_data) {
+	
+	contact = gm_contact_new ();
+	
+	if (call_data [1])
+	  contact->fullname = g_strdup (call_data [1]);
+	
+	if (call_data [2])
+	  contact->url = g_strdup (call_data [2]);
+      
+	result = g_slist_append (result, (gpointer) contact);
+      }
+      
+      g_strfreev (call_data);
+
+      calls_list = g_slist_next (calls_list);
+    }
+
+    g_slist_foreach (calls_list, (GFunc) g_free, NULL);
+    g_slist_free (calls_list);
+  }
+
+
+  return result;
+}
+
+
 void
 gnomemeeting_calls_history_window_populate (GtkWidget *calls_history_window)
 {

@@ -53,7 +53,6 @@
 #include "main_window.h"
 #include "misc.h"
 
-#include "history-combo.h"
 #include "dialog.h"
 #include "e-splash.h"
 #include "stock-icons.h"

@@ -225,6 +225,15 @@ void gm_main_window_speed_dials_menu_update (GtkWidget *,
 
 
 /* DESCRIPTION  :  /
+ * BEHAVIOR     :  Update the urls in the cache of the url entry. It is done
+ * 		   using the list of the last 100 given/received/missed calls,
+ * 		   but also using the address book contacts.
+ * PRE          :  The main window GMObject.
+ */
+void gm_main_window_urls_history_update (GtkWidget *);
+
+
+/* DESCRIPTION  :  /
  * BEHAVIOR     :  Runs a dialog to transfer a call. The default transfer
  * 		   destination is the specified forward host if any, if not
  * 		   it will be the forward host from the configuration, if any.

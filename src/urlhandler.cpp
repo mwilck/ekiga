@@ -178,9 +178,73 @@ PString GMURL::GetValidURL ()
 }
 
 
+PString GMURL::GetCanonicalURL ()
+{
+  return url;
+}
+
+
+PString GMURL::GetCalltoServer ()
+{
+  PINDEX i;
+  
+  if (type == "callto") {
+
+    if ((i = url.Find ('/')) != P_MAX_INDEX) {
+
+      return url.Left (i);
+    }
+    else
+      return url;
+  }
+  else 
+    return PString ();
+}
+
+
+PString GMURL::GetCalltoEmail ()
+{
+  PINDEX i;
+
+  if (type == "callto") {
+
+    if ((i = url.Find ('/')) != P_MAX_INDEX) {
+
+      return url.Mid (i+1);
+    }
+  }
+   
+  return PString ();
+}
+
+
 PString GMURL::GetDefaultURL ()
 {
   return PString ("h323:");
+}
+
+
+BOOL GMURL::Find (GMURL u)
+{
+  /* 
+   * We have a callto address with an email, match on the callto email
+   * of the given url if any, or on its canonical part.
+   */
+  if (!this->GetCalltoEmail ().IsEmpty ()) {
+    
+    if (!u.GetCalltoEmail ().IsEmpty ())
+      return (this->GetCalltoEmail ().Find (u.GetCalltoEmail ()) == 0);
+    else
+      return (this->GetCalltoEmail ().Find (u.GetCanonicalURL ()) == 0);
+  }
+  /* 
+   * We don't have a callto address with an email, match on the 
+   * canonical part.
+   */
+  else 
+    return (url.Find (u.GetCanonicalURL ()) == 0);
+
+  return FALSE;
 }
 
 

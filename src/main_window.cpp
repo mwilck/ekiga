@@ -39,6 +39,7 @@
 #include "../config.h"
 
 #include "main_window.h"
+#include "calls_history_window.h"
 #include "gnomemeeting.h"
 #include "chat_window.h"
 #include "config.h"
@@ -56,7 +57,6 @@
 #include <contacts/gm_contacts.h>
 #include <gtk_menu_extensions.h>
 #include <stats_drawing_area.h>
-#include <widgets/history-combo.h>
 #include <gm_events.h>
 
 
@@ -345,8 +345,38 @@ static void speed_dial_menu_item_selected_cb (GtkWidget *,
  * BEHAVIOR     :  It udpates the tooltip with the new URL.
  * PRE          :  data is a valid pointer to the main window GMObject.
  */
-static void combo_url_changed_cb (GtkEditable *, 
-				  gpointer);
+static void url_changed_cb (GtkEditable *, 
+			    gpointer);
+
+
+/* DESCRIPTION  :  This callback is called when the user selects a match in the
+ * 		   possible URLs list.
+ * BEHAVIOR     :  It udpates the URL bar.
+ * PRE          :  /
+ */
+static gboolean url_selected_cb (GtkEntryCompletion *,
+				 GtkTreeModel *,
+				 GtkTreeIter *,
+				 gpointer);
+
+
+/* DESCRIPTION  :  This callback is called to compare urls and see if they
+ * 		   match.
+ * BEHAVIOR     :  It returns TRUE if the given key matches an URL OR a last
+ * 		   name or first name in the list store of the completion 
+ * 		   entry AND if the matched URL was not already returned
+ * 		   previously.
+ * 		   2 H323 URLs match if they begin by
+ * 		   the same chars, and 2 CALLTO URLs with a valid email
+ * 		   address on an ILS server match if the key matches an email
+ * 		   address or the begin of a server. 
+ * PRE          :  data is a valid pointer to the list store.
+ */
+static gboolean found_url_cb (GtkEntryCompletion *,
+			      const gchar *,
+			      GtkTreeIter *,
+			      gpointer);
+
 
 /* DESCRIPTION  :  This callback is called when the user presses the control 
  *                 panel button in the toolbar. 
@@ -473,7 +503,10 @@ gm_mw_init_toolbars (GtkWidget *main_window)
 {
   GmWindow *mw = NULL;
   
+  GtkListStore *list_store = NULL;
   GtkWidget *toolbar = NULL;
+  
+  GtkEntryCompletion *completion = NULL;
   
   GtkWidget *hbox = NULL;
   GtkWidget *image = NULL;
@@ -494,30 +527,39 @@ gm_mw_init_toolbars (GtkWidget *main_window)
   toolbar = gtk_toolbar_new ();
 
 
-  /* Combo */
-  mw->combo =
-    gm_history_combo_new (USER_INTERFACE_KEY "main_window/urls_history");
+  /* URL bar */
+  /* Entry */
+  mw->combo = gtk_entry_new ();
+  completion = gtk_entry_completion_new ();
+  
+  list_store = gtk_list_store_new (3, 
+				   G_TYPE_STRING,
+				   G_TYPE_STRING,
+				   G_TYPE_STRING);
+  
+  gtk_entry_completion_set_model (GTK_ENTRY_COMPLETION (completion),
+				  GTK_TREE_MODEL (list_store));
+  gtk_entry_completion_set_text_column (GTK_ENTRY_COMPLETION (completion), 2);
+  gtk_entry_set_completion (GTK_ENTRY (mw->combo), completion);
 
-  gtk_combo_set_use_arrows_always (GTK_COMBO(mw->combo), TRUE);
-  gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (mw->combo)->entry), "h323:");
+  gtk_entry_completion_set_match_func (GTK_ENTRY_COMPLETION (completion),
+				       found_url_cb, 
+				       (gpointer) list_store,
+				       NULL);
+  gtk_entry_set_text (GTK_ENTRY (mw->combo), GMURL ().GetDefaultURL ());
+  gm_main_window_urls_history_update (main_window);
+  g_signal_connect (G_OBJECT (mw->combo), "changed", 
+		    GTK_SIGNAL_FUNC (url_changed_cb), (gpointer) main_window);
+  g_signal_connect (G_OBJECT (completion), "match-selected", 
+		    GTK_SIGNAL_FUNC (url_selected_cb), NULL);
 
-  gtk_tooltips_set_tip (mw->tips, GTK_WIDGET (GTK_COMBO (mw->combo)->entry), 
-			"h323:", NULL);
-
-  gtk_combo_disable_activate (GTK_COMBO (mw->combo));
-  g_signal_connect (G_OBJECT (GTK_COMBO (mw->combo)->entry), "activate",
-  		    G_CALLBACK (connect_cb), main_window);
-
+  /* Connect button */
   hbox = gtk_hbox_new (FALSE, 2);
 
   gtk_box_pack_start (GTK_BOX (hbox), mw->combo, TRUE, TRUE, 1);
   gtk_box_pack_start (GTK_BOX (hbox), toolbar, FALSE, FALSE, 1);
  
   gtk_container_set_border_width (GTK_CONTAINER (toolbar), 2);
-
-  g_signal_connect (G_OBJECT (GTK_WIDGET (GTK_COMBO(mw->combo)->entry)),
-		    "changed", G_CALLBACK (combo_url_changed_cb), 
-		    (gpointer) main_window);
 
 
   /* The connect button */
@@ -1430,11 +1472,12 @@ dnd_call_contact_cb (GtkWidget *widget,
      if (GnomeMeeting::Process ()->Endpoint ()->GetCallingState () == GMH323EndPoint::Standby) {
        
        /* this function will store a copy of text */
-       gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (mw->combo)->entry),
-			   PString (contact->url));
+       //gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (mw->combo)->entry),
+	//		   PString (contact->url));
        
-       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (mw->connect_button),
-				     true);
+       //gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (mw->connect_button),
+	//			     true);
+//FIXME
      }
      gm_contact_delete (contact);
   }
@@ -1687,30 +1730,138 @@ speed_dial_menu_item_selected_cb (GtkWidget *w,
 
 
 static void
-combo_url_changed_cb (GtkEditable  *e, 
-		      gpointer data)
+url_changed_cb (GtkEditable  *e, 
+		gpointer data)
 {
-  GtkWidget *main_window = NULL;
-  
   GmWindow *mw = NULL;
 
-  gchar *tip_text = NULL;
-  
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+  const char *tip_text = NULL;
   
   g_return_if_fail (data != NULL);
-  mw = gm_mw_get_mw (main_window); 
+  mw = gm_mw_get_mw (GTK_WIDGET (data)); 
 
   g_return_if_fail (mw != NULL);
   
-  tip_text = (gchar *)
-    gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (mw->combo)->entry));
+  tip_text = gtk_entry_get_text (GTK_ENTRY (mw->combo));
 
-  gtk_tooltips_set_tip (mw->tips, 
-			GTK_WIDGET (GTK_COMBO (mw->combo)->entry), 
-			tip_text, NULL);
+  gtk_tooltips_set_tip (mw->tips, GTK_WIDGET (mw->combo), tip_text, NULL);
 }
 
+
+static gboolean
+url_selected_cb (GtkEntryCompletion *completion,
+		 GtkTreeModel *model,
+		 GtkTreeIter *iter,
+		 gpointer data)
+{
+  GtkWidget *entry = NULL;
+
+  gchar *url = NULL;
+  
+  entry = gtk_entry_completion_get_entry (completion);
+  gtk_tree_model_get (GTK_TREE_MODEL (model), iter, 1, &url, -1);
+  gtk_entry_set_text (GTK_ENTRY (entry), url);
+
+  g_free (url);
+
+  return TRUE;
+}
+
+
+gboolean 
+found_url_cb (GtkEntryCompletion *completion,
+	      const gchar *key,
+	      GtkTreeIter *iter,
+	      gpointer data)
+{
+  GtkListStore *list_store = NULL;
+  GtkTreeIter tree_iter;
+  
+  GtkTreePath *current_path = NULL;
+  GtkTreePath *path = NULL;
+    
+  gchar *val = NULL;
+  gchar *entry = NULL;
+  gchar *tmp_entry = NULL;
+  
+  PCaselessString s;
+
+  PINDEX j = 0;
+  BOOL found = FALSE;
+  
+  g_return_val_if_fail (data != NULL, FALSE);
+  
+  list_store = GTK_LIST_STORE (data);
+
+  for (int i = 0 ; (i < 2 && !found) ; i++) {
+    
+    gtk_tree_model_get (GTK_TREE_MODEL (list_store), iter, i, &val, -1);
+    s = val;
+    /* Check if one of the names matches the canonical form of the URL */
+    if (i == 0) {
+      
+      j = s.Find (GMURL (key).GetCanonicalURL ());
+
+      if (j != P_MAX_INDEX && j > 0) {
+
+	char c = s [j - 1];
+	
+	found = (c == 32);
+      }
+      else if (j == 0)
+	found = TRUE;
+      else
+	found = FALSE;
+    }
+    /* Check if both GMURLs match */
+    else if (i == 1 && GMURL(s).Find (GMURL (key))) 
+      found = TRUE;
+
+    g_free (val);
+  }
+  
+  if (!found)
+    return FALSE;
+  
+  /* We have found something, but is it the first item ? */
+  gtk_tree_model_get (GTK_TREE_MODEL (list_store), iter, 2, &entry, -1);
+  
+  if (found) {
+
+    if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (list_store),
+				       &tree_iter)) {
+
+      do {
+
+	gtk_tree_model_get (GTK_TREE_MODEL (list_store), &tree_iter, 
+			    2, &tmp_entry, -1);
+
+	if (tmp_entry && !strcmp (tmp_entry, entry)) {
+
+	  current_path = 
+	    gtk_tree_model_get_path (GTK_TREE_MODEL (list_store),
+				     iter);
+	  path = 
+	    gtk_tree_model_get_path (GTK_TREE_MODEL (list_store), 
+				     &tree_iter);
+
+	  if (gtk_tree_path_compare (current_path, path) > 0)
+	    found = FALSE;
+
+	  gtk_tree_path_free (path);
+	  gtk_tree_path_free (current_path);
+	}
+	
+      } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (list_store), 
+					 &tree_iter) && found);
+
+    }
+  }
+  
+  g_free (entry);
+  
+  return found;
+}
 
 static void 
 control_panel_button_clicked_cb (GtkWidget *w, 
@@ -1999,8 +2150,7 @@ gm_main_window_dialpad_event (GtkWidget *main_window,
   if (mw->transfer_call_popup)
     url = gm_entry_dialog_get_text (GM_ENTRY_DIALOG (mw->transfer_call_popup));
   else
-    url = gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (mw->combo)->entry)); 
-
+    url = gm_main_window_get_call_url (main_window); 
   
   if (endpoint->GetCallingState () == GMH323EndPoint::Standby) {
 
@@ -2015,7 +2165,7 @@ gm_main_window_dialpad_event (GtkWidget *main_window,
     gm_entry_dialog_set_text (GM_ENTRY_DIALOG (mw->transfer_call_popup),
 			      new_url);
   else if (endpoint->GetCallingState () == GMH323EndPoint::Standby)
-    gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (mw->combo)->entry), new_url);
+    gm_main_window_set_call_url (main_window, new_url); 
 
   if (dtmf == '#' && mw->transfer_call_popup)
     gtk_dialog_response (GTK_DIALOG (mw->transfer_call_popup),
@@ -2586,6 +2736,75 @@ gm_main_window_speed_dials_menu_update (GtkWidget *main_window,
 
 
 void 
+gm_main_window_urls_history_update (GtkWidget *main_window)
+{
+  GmWindow *mw = NULL;
+
+  GmContact *c = NULL;
+
+  GtkListStore *list_store = NULL;
+  GtkEntryCompletion *completion = NULL;
+  
+  GtkTreeIter tree_iter;
+  
+  GSList *c1 = NULL;
+  GSList *c2 = NULL;
+  GSList *contacts = NULL;
+  GSList *iter = NULL;
+
+  gchar *entry = NULL;
+  
+  g_return_if_fail (main_window != NULL);
+  
+  mw = gm_mw_get_mw (main_window);
+  
+  completion = gtk_entry_get_completion (GTK_ENTRY (mw->combo));
+  list_store = GTK_LIST_STORE (gtk_entry_completion_get_model (GTK_ENTRY_COMPLETION (completion)));
+  
+  c1 = gnomemeeting_addressbook_get_contacts (NULL,
+					      FALSE,
+					      NULL,
+					      NULL,
+					      NULL,
+					      NULL);
+  
+  c2 = gnomemeeting_calls_history_window_get_calls (NULL);
+  contacts = g_slist_concat (c1, c2);
+
+
+  iter = contacts;
+  while (iter) {
+
+    c = GM_CONTACT (iter->data);
+    if (c->url && strcmp (c->url, "")) {
+
+      entry = NULL;
+
+      if (c->fullname)
+	entry = g_strdup_printf ("%s [%s]", 
+				 c->url, 
+				 c->fullname);
+      else
+	entry = g_strdup (c->url);
+      
+      gtk_list_store_append (GTK_LIST_STORE (list_store), &tree_iter);
+      gtk_list_store_set (GTK_LIST_STORE (list_store), &tree_iter, 
+			  0, c->fullname,
+			  1, c->url,
+			  2, (char *) entry, -1);
+
+      g_free (entry);
+    }
+    
+    iter = g_slist_next (iter);
+  }
+
+  g_slist_foreach (contacts, (GFunc) gm_contact_delete, NULL);
+  g_slist_free (contacts);
+}
+
+
+void 
 gm_main_window_transfer_dialog_run (GtkWidget *main_window,
 				    gchar *u)
 {
@@ -3070,10 +3289,7 @@ gm_main_window_set_call_url (GtkWidget *main_window,
 
   g_return_if_fail (mw != NULL);
  
-  
-  gm_history_combo_add_entry (GM_HISTORY_COMBO (mw->combo), 
-			      USER_INTERFACE_KEY "main_window/urls_history",
-			      url);
+  gtk_entry_set_text (GTK_ENTRY (mw->combo), url);
 }
 
 
@@ -3088,8 +3304,7 @@ gm_main_window_get_call_url (GtkWidget *main_window)
 
   g_return_val_if_fail (mw != NULL, NULL);
  
-  
-  return gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (mw->combo)->entry));
+  return gtk_entry_get_text (GTK_ENTRY (mw->combo));
 }
 
 

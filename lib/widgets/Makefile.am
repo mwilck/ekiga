@@ -4,9 +4,7 @@ libgmwidgets_la_SOURCES =				\
 	gmentrydialog.c					\
 	gmentrydialog.h					\
 	gtklevelmeter.c					\
-	gtklevelmeter.h					\
-	history-combo.c					\
-	history-combo.h					
+	gtklevelmeter.h					
 
 INCLUDES =						\
 	-DGNOMELOCALEDIR=\""$(datadir)/locale/"\"        \

@@ -52,11 +52,16 @@ class GMURL
   GMURL (const GMURL &);
   BOOL IsEmpty ();
   BOOL IsSupported ();
+  BOOL Find (GMURL);
   PString GetType ();
+  PString GetCanonicalURL ();
+  PString GetCalltoServer ();
+  PString GetCalltoEmail ();
   PString GetValidURL ();
   PString GetDefaultURL ();
   BOOL operator == (GMURL);
   BOOL operator != (GMURL);
+  
  private:
   PString url;
   PString type;

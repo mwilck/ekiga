@@ -1,3 +1,19 @@
+2004-09-21  Damien Sandras  <dsandras@gnome.org>
+
+	* lib/widgets/Makefile.am, lib/widgets/history-combo.c, 
+	lib/widgets/history-combo.h: Removed the now unused history combo.
+
+	* src/addressbook_window.cpp: Added FIXME.
+
+	* src/calls_history_window.cpp, src/calls_history_window.h: Added
+	function to retrieve all missed, given, received calls contacts.
+
+	* src/gnomemeeting.cpp, src/main_window.cpp, src/main_window.h, 
+	src/urlhandler.cpp, src/urlhandler.h: Upgraded the API and changed
+	the URL bar in a GtkCompletionEntry that is able to match against
+	the missed, given, received calls contacts and against the address
+	book contacts.
+
 2004-09-12  Akagic Amila  <bono@linux.org.ba>
 
 	* configure.in: Added 'bs' to ALL_LINGUAS.

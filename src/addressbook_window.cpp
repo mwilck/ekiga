@@ -1495,6 +1495,7 @@ public:
       PWaitAndSignal m(quit_mutex);
 
       /* Get the search parameters from the addressbook_window */
+      //FIXME
       //GmAddressbookWindow *aw = gm_aw_get_aw (addressbook_window);
       //int opt = gtk_option_menu_get_history (GTK_OPTION_MENU (aw->aw_option_menu));
       //char *filter = gtk_entry_get_text (GTK_ENTRY (aw->aw_search_entry));

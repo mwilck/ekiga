@@ -49,6 +49,13 @@ enum {
 /* The functions  */
 
 /* DESCRIPTION  :  /
+ * BEHAVIOR     :  Returns the list of all contacts for all calls. 
+ * PRE          :  /
+ */
+GSList *gnomemeeting_calls_history_window_get_calls (GtkWidget *);
+
+
+/* DESCRIPTION  :  /
  * BEHAVIOR     :  Build the calls history window and returns a pointer to it.
  * PRE          :  /
  */
