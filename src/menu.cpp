@@ -49,7 +49,8 @@ static void view_audio_settings_callback (GtkWidget *, gpointer);
 static void view_video_settings_callback (GtkWidget *, gpointer);
 static void view_docklet_callback (GtkWidget *, gpointer);
 static void view_widget_changed (GConfClient *, guint, GConfEntry *, gpointer);
-static void notebook_info_changed (GConfClient *, guint, GConfEntry *, gpointer);
+static void notebook_info_changed (GConfClient *, guint, GConfEntry *, 
+				   gpointer);
 
 /* GTK Callbacks */
 
@@ -157,9 +158,9 @@ static void view_video_settings_callback (GtkWidget *widget, gpointer data)
  *                 structure.
  */
 static void view_widget_changed (GConfClient* client,
-				  guint cnxn_id,
-				  GConfEntry *entry,
-				  gpointer user_data)
+				 guint cnxn_id,
+				 GConfEntry *entry,
+				 gpointer user_data)
 {
   if (entry->value->type == GCONF_VALUE_BOOL)
     gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (user_data),
@@ -172,26 +173,31 @@ static void view_widget_changed (GConfClient* client,
  * PRE          :  gpointer is a valid pointer to the menu
  *                 structure.
  */
-static void notebook_info_changed (GConfClient *client, guint, GConfEntry *entry, 
+static void notebook_info_changed (GConfClient *client, guint, 
+				   GConfEntry *entry, 
 				   gpointer user_data)
 {
   if (entry->value->type == GCONF_VALUE_INT) {
+
     int current_page = gconf_value_get_int (entry->value);
     if (current_page < 0 || current_page > 3)
       return;
     GnomeUIInfo *notebook_view_uiinfo = (GnomeUIInfo *) user_data;
 
     for (int i = 0; i < 4; i++)
-      gtk_signal_handler_block_by_data (GTK_OBJECT (notebook_view_uiinfo[i].widget),
-					client);
+      gtk_signal_handler_block_by_data 
+	(GTK_OBJECT (notebook_view_uiinfo[i].widget),
+	 client);
 
     for (int i = 0; i < 4; i++)
-      gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (notebook_view_uiinfo[i].widget),
-				      current_page == i);
+      gtk_check_menu_item_set_active 
+	(GTK_CHECK_MENU_ITEM (notebook_view_uiinfo[i].widget),
+	 current_page == i);
 
     for (int i = 0; i < 4; i++)
-      gtk_signal_handler_unblock_by_data (GTK_OBJECT (notebook_view_uiinfo[i].widget),
-					  client);
+      gtk_signal_handler_unblock_by_data 
+	(GTK_OBJECT (notebook_view_uiinfo[i].widget),
+	 client);
   }
 }
 

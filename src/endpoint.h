@@ -242,6 +242,14 @@ class GMH323EndPoint : public H323EndPoint
    */
   H323Connection *GetCurrentConnection (void);
 
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Return the current video codec in use
+   *                 NULL if there is no one.
+   * PRE          :  /
+   */
+  H323VideoCodec *GetCurrentVideoCodec (void);
+
   
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Set the current connection to the parameter.

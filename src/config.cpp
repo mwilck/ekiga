@@ -42,8 +42,102 @@
 extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;
 
+static void fps_limit_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
+static void tr_vq_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
+static void tr_ub_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
+
+
+/* DESCRIPTION  :  This callback is called to update the fps limitation.
+ * BEHAVIOR     :  Update it.
+ * PRE          :  /
+ */
+static void fps_limit_changed_nt (GConfClient *client, guint cid, 
+				  GConfEntry *entry, gpointer data)
+{
+  GMVideoGrabber *vg = NULL;
+  GM_pref_window_widgets *pw = (GM_pref_window_widgets *) data;
+
+  if (entry->value->type == GCONF_VALUE_INT) {
+   
+    /* We set the new value for tr_fps_spin_adj */
+    GTK_ADJUSTMENT (pw->tr_fps_spin_adj)->value = 
+      gconf_value_get_int (entry->value);
+
+    /* We update the current frame rate */
+    vg = MyApp->Endpoint ()->GetVideoGrabber ();
+
+    if (vg != NULL)
+      vg->SetFrameRate ((int) gconf_value_get_int (entry->value));
+  }
+}
+
+
+/* DESCRIPTION  :  This callback is called the transmitted video quality.
+ * BEHAVIOR     :  It updates the video quality.
+ * PRE          :  data is a pointer to the tr_fps_spin_adj widget
+ */
+static void tr_vq_changed_nt (GConfClient *client, guint cid, 
+			      GConfEntry *entry, gpointer data)
+{
+  H323VideoCodec *vc = NULL;
+  GM_pref_window_widgets *pw = (GM_pref_window_widgets *) data;
+
+  if (entry->value->type == GCONF_VALUE_INT) {
+   
+    /* We set the new value for tr_fps_spin_adj */
+    GTK_ADJUSTMENT (pw->tr_vq_spin_adj)->value = 
+      gconf_value_get_int (entry->value);
+
+    /* We update the video quality */
+    vc = MyApp->Endpoint ()->GetCurrentVideoCodec ();
+
+    if (vc != NULL)
+      vc->SetTxQualityLevel ((int) gconf_value_get_int (entry->value));
+  }
+}
+
+
+/* DESCRIPTION  :  This callback is called when the bg fill needs to be changed.
+ * BEHAVIOR     :  It updates the background fill.
+ * PRE          :  /
+ */
+static void tr_ub_changed_nt (GConfClient *client, guint cid, 
+			      GConfEntry *entry, gpointer data)
+{
+  H323VideoCodec *vc = NULL;
+  GM_pref_window_widgets *pw = (GM_pref_window_widgets *) data;
+
+  if (entry->value->type == GCONF_VALUE_INT) {
+   
+    /* We set the new value for tr_fps_spin_adj */
+    GTK_ADJUSTMENT (pw->tr_ub_spin_adj)->value = 
+      gconf_value_get_int (entry->value);
+
+    /* We update the current frame rate */
+    vc = MyApp->Endpoint ()->GetCurrentVideoCodec ();
+
+    if (vc != NULL)
+      vc->SetBackgroundFill ((int) gconf_value_get_int (entry->value));
+  }
+}
+
 
 /* The functions  */
+void gnomemeeting_init_gconf (GConfClient *client)
+{
+  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/tr_fps",
+			   fps_limit_changed_nt, pw, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/tr_vq",
+			   tr_vq_changed_nt, pw, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/tr_ub",
+			   tr_ub_changed_nt, pw, 0, 0);
+
+}
+
 
 void gnomemeeting_store_config (options *opts)
 {

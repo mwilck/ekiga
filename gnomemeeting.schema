@@ -66,5 +66,27 @@
 	<long>Display a popup window every time you receive a call</long>
       </locale>
     </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/video_settings/tr_fps</key>
+      <applyto>/apps/gnomemeeting/video_settings/tr_fps</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>int</type>
+      <default>30</default>
+      <locale name="C">
+	<short>Transmitted frames per second</short>
+	<long>Limitation on the number of transmitted frames grabbed by the grabber</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/video_settings/tr_vq</key>
+      <applyto>/apps/gnomemeeting/video_settings/tr_vq</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>int</type>
+      <default>12</default>
+      <locale name="C">
+	<short>Video quality<short>
+	<long>The transmitted video quality hint</long>
+      </locale>
+    </schema>
   </schemalist>
 </gconfschemafile>

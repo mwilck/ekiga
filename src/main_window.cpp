@@ -49,7 +49,9 @@ extern "C" {
 #include "videograbber.h"
 #include "endpoint.h"
 #include "pref_window.h"
+#include "config.h"
 #include "misc.h"
+
 #include <gconf/gconf-client.h>
 
 #include "../pixmaps/speaker.xpm"
@@ -108,6 +110,7 @@ static void notebook_page_changed_callback (GtkNotebook *notebook, gpointer)
 			gtk_notebook_get_current_page (notebook), 0);
 }
 
+
 /* DESCRIPTION  :  This callback is called when something toggles the
  *                 corresponding option in gconf.
  * BEHAVIOR     :  Shows the appropiate page in the notebook and
@@ -127,6 +130,7 @@ static void notebook_info_changed (GConfClient *client, guint, GConfEntry *entry
     
     gtk_widget_set_sensitive (GTK_WIDGET (gw->left_arrow), true);
     gtk_widget_set_sensitive (GTK_WIDGET (gw->right_arrow), true);
+
     if (current_page == 0)
       gtk_widget_set_sensitive (GTK_WIDGET (gw->left_arrow), false);
     else if (current_page == 3) 
@@ -137,6 +141,7 @@ static void notebook_info_changed (GConfClient *client, guint, GConfEntry *entry
     gtk_signal_handler_unblock_by_data (GTK_OBJECT (gw->main_notebook), 0);
   }
 }
+
 
 /* DESCRIPTION  :  This callback is called when something toggles the 
  *                 corresponding option in gconf.
@@ -155,6 +160,7 @@ static void view_widget_changed_callback (GConfClient* client,
     else
       gtk_widget_hide (GTK_WIDGET (user_data));
 }
+
 
 /* DESCRIPTION  :  This callback is called when the main window is covered by
  *                 another window or updated.
@@ -396,7 +402,7 @@ void gnomemeeting_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
   gm = gnome_app_new ("gnomemeeting", _("GnomeMeeting"));
   gtk_window_set_policy (GTK_WINDOW (gm), FALSE, FALSE, TRUE);
 
-  /* Some little gconf stuff */
+  /* Some little gconf stuff */  
   GConfClient *client = gconf_client_get_default ();
   gconf_client_add_dir (client, "/apps/gnomemeeting",
 			GCONF_CLIENT_PRELOAD_RECURSIVE,
@@ -547,7 +553,8 @@ void gnomemeeting_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
     g_free (message);
   }
 
-  /* Add notifiers to some gconf settings */
+  /* Add notifiers to gconf settings */
+  gnomemeeting_init_gconf (client);
   gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_control_panel",
 			   view_widget_changed_callback, gw->main_notebook, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_quick_bar",
@@ -641,7 +648,8 @@ void gnomemeeting_init_main_window (options *opts, GConfClient *client)
   if (selected_page >= 0 && selected_page < 4)
     gtk_notebook_set_page (GTK_NOTEBOOK (gw->main_notebook), selected_page);
 
-  if (gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_control_panel", 0))
+  if (gconf_client_get_bool 
+      (client, "/apps/gnomemeeting/view/show_control_panel", 0))
     gtk_widget_show_all (GTK_WIDGET (gw->main_notebook));
 
   gtk_signal_connect_after (GTK_OBJECT (gw->main_notebook), "switch-page",

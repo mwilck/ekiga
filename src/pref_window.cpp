@@ -61,8 +61,7 @@ static void video_transmission_option_changed_callback (GtkToggleButton *,
 							gpointer);
 static void video_bandwidth_limit_option_changed_callback (GtkToggleButton *, 
 							   gpointer);
-static void fps_limit_option_changed_callback (GtkToggleButton *, 
-					       gpointer);
+static void adjustment_changed (GtkAdjustment *, gpointer);
 static void gatekeeper_option_changed (GtkWidget *, gpointer);
 static void gatekeeper_option_type_changed_callback (GtkWidget *, gpointer);
 static void audio_codecs_option_changed_callback (GtkAdjustment *, gpointer);
@@ -145,7 +144,7 @@ static void pref_window_clicked_callback (GnomeDialog *widget, int button,
 
 /* DESCRIPTION  :  This callback is called when the pref window is destroyed.
  * BEHAVIOR     :  Prevents the destroy, only hides the window.
- * PRE          :  //
+ * PRE          :  /
  */
 static gint pref_window_destroy_callback (GtkWidget *widget, gpointer data)
 {
@@ -340,29 +339,19 @@ static void video_bandwidth_limit_option_changed_callback (GtkToggleButton *butt
 }
 
 
-/* DESCRIPTION  :  This callback is called when the user enables or disables
- *                 the fps limitation.
- * BEHAVIOR     :  It enables/disables other conflicting settings.
- * PRE          :  gpointer is a valid pointer to a GM_pref_window_widgets.
+/* DESCRIPTION  :  This callback is called when the user changes
+ *                 the adjustment value
+ * BEHAVIOR     :  It updates the gconf cache
+ * PRE          :  /
  */
-static void fps_limit_option_changed_callback (GtkToggleButton *button, gpointer data)
+static void adjustment_changed (GtkAdjustment  *adj, gpointer data)
 {
-  GM_pref_window_widgets *pw = (GM_pref_window_widgets *) data;
+  GConfClient *client = gconf_client_get_default ();
+  gchar *key = (gchar *) data;
 
-  int fps = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->fps));
-
-  if (fps) {
-
-    gtk_widget_set_sensitive (GTK_WIDGET (pw->tr_fps_label), TRUE);
-    gtk_widget_set_sensitive (GTK_WIDGET (pw->tr_fps), TRUE);
-  }
-  else {
-
-    gtk_widget_set_sensitive (GTK_WIDGET (pw->tr_fps_label), FALSE);
-    gtk_widget_set_sensitive (GTK_WIDGET (pw->tr_fps), FALSE);
-  }
-
-  pw->vid_tr_changed = 1;
+  gconf_client_set_int (GCONF_CLIENT (client),
+			key,
+			(int) adj->value, NULL);
 }
 
 
@@ -1084,7 +1073,9 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook,
 			    gconf_client_key_is_writable (client,
 							  "/apps/gnomemeeting/view/show_popup", 0));
   gtk_signal_connect (GTK_OBJECT (popup), "clicked",
-		      GTK_SIGNAL_FUNC (show_popup_clicked_callback), (gpointer) client);
+		      GTK_SIGNAL_FUNC (show_popup_clicked_callback), 
+		      (gpointer) client);
+
   gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_popup",
 			   view_widget_changed, popup, 0, 0);
 
@@ -1171,6 +1162,7 @@ static void gnomemeeting_init_pref_window_codecs_settings (GtkWidget *notebook,
 
   /* Get the data */
   GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
+  GConfClient *client = gconf_client_get_default ();
 		
   vbox = gtk_vbox_new (FALSE, GNOME_PAD_SMALL);
 
@@ -1419,12 +1411,19 @@ static void gnomemeeting_init_pref_window_codecs_settings (GtkWidget *notebook,
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);			
 
   pw->tr_fps_spin_adj = (GtkAdjustment *) 
-    gtk_adjustment_new(opts->tr_fps, 
-		       1.0, 40.0, 
-		       1.0, 1.0, 1.0);
+    gtk_adjustment_new(gconf_client_get_int (client, "/apps/gnomemeeting/video_settings/tr_fps", 0), 1.0, 40.0, 1.0, 1.0, 1.0);
 
   pw->tr_fps = gtk_spin_button_new (pw->tr_fps_spin_adj, 1.0, 0);
-  
+
+  gtk_widget_set_sensitive (GTK_WIDGET (pw->tr_fps),
+			    gconf_client_key_is_writable (client,
+							  "/apps/gnomemeeting/video_settings/tr_fps", 0));
+
+  /* Connect the signal that updates the gconf cache */
+  gtk_signal_connect (GTK_OBJECT (pw->tr_fps_spin_adj), "value-changed",
+		      GTK_SIGNAL_FUNC (adjustment_changed), 
+		      (gpointer) "/apps/gnomemeeting/video_settings/tr_fps");
+
   gtk_table_attach (GTK_TABLE (table), pw->tr_fps, 3, 4, 1, 2,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -1446,9 +1445,9 @@ static void gnomemeeting_init_pref_window_codecs_settings (GtkWidget *notebook,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);		
 
-  gtk_signal_connect (GTK_OBJECT (pw->fps), "toggled",
-		      GTK_SIGNAL_FUNC (fps_limit_option_changed_callback), 
-		      (gpointer) pw);
+ //  gtk_signal_connect (GTK_OBJECT (pw->fps), "toggled",
+// 		      GTK_SIGNAL_FUNC (fps_limit_option_changed_callback), 
+// 		      (gpointer) pw);
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->fps,
@@ -1456,7 +1455,7 @@ static void gnomemeeting_init_pref_window_codecs_settings (GtkWidget *notebook,
 
 
   /* Init the buttons */
-  fps_limit_option_changed_callback (GTK_TOGGLE_BUTTON (pw->fps), pw);
+//  fps_limit_option_changed_callback (GTK_TOGGLE_BUTTON (pw->fps), pw);
   
   /* Enable Video Transmission */
   pw->vid_tr = 
@@ -1493,16 +1492,25 @@ static void gnomemeeting_init_pref_window_codecs_settings (GtkWidget *notebook,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);			
   
-  pw->tr_vq_spin_adj = (GtkAdjustment *) gtk_adjustment_new(opts->tr_vq, 
-							    1.0, 31.0, 
-							    1.0, 1.0, 1.0);
+  pw->tr_vq_spin_adj = (GtkAdjustment *) 
+    gtk_adjustment_new(gconf_client_get_int (client, "/apps/gnomemeeting/video_settings/tr_vq", 0), 1.0, 31.0, 1.0, 1.0, 1.0);
+
   pw->tr_vq = gtk_spin_button_new (pw->tr_vq_spin_adj, 1.0, 0);
-  
+
+  gtk_widget_set_sensitive (GTK_WIDGET (pw->tr_vq),
+			    gconf_client_key_is_writable (client,
+							  "/apps/gnomemeeting/video_settings/tr_vq", 0));
+
   gtk_table_attach (GTK_TABLE (table), pw->tr_vq, 1, 2, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);			
-										
+
+  /* Connect the signal that updates the gconf cache */
+  gtk_signal_connect (GTK_OBJECT (pw->tr_vq_spin_adj), "value-changed",
+		      GTK_SIGNAL_FUNC (adjustment_changed), 
+		      (gpointer) "/apps/gnomemeeting/video_settings/tr_vq");	
+
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->tr_vq,
 			_("Here you can choose the transmitted video quality:  choose 1 on a LAN for the best quality, 31 being the worst quality"), NULL);
@@ -1515,16 +1523,25 @@ static void gnomemeeting_init_pref_window_codecs_settings (GtkWidget *notebook,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);			
   
-  pw->tr_ub_spin_adj = (GtkAdjustment *) gtk_adjustment_new(opts->tr_ub, 
-							2.0, 99.0, 1.0, 
-							1.0, 1.0);
+  pw->tr_ub_spin_adj = (GtkAdjustment *) 
+    gtk_adjustment_new(gconf_client_get_int (client, "/apps/gnomemeeting/video_settings/tr_ub", 0), 2.0, 99.0, 1.0, 1.0, 1.0);
+
   pw->tr_ub = gtk_spin_button_new (pw->tr_ub_spin_adj, 2.0, 0);
   
+  gtk_widget_set_sensitive (GTK_WIDGET (pw->tr_ub),
+			    gconf_client_key_is_writable (client,
+							  "/apps/gnomemeeting/video_settings/tr_ub", 0));
+
   gtk_table_attach (GTK_TABLE (table), pw->tr_ub, 1, 2, 1, 2,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);			
  
+  /* Connect the signal that updates the gconf cache */
+  gtk_signal_connect (GTK_OBJECT (pw->tr_ub_spin_adj), "value-changed",
+		      GTK_SIGNAL_FUNC (adjustment_changed), 
+		      (gpointer) "/apps/gnomemeeting/video_settings/tr_ub");
+
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->tr_ub,
 			_("Here you can choose the number of blocks (that haven't changed) transmitted with each frame. These blocks fill in the background."), NULL);

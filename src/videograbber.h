@@ -151,6 +151,13 @@ class GMVideoGrabber : public PThread
    */
   PVideoChannel *GetVideoChannel (void);
 
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Set the grabber frame rate, if there is a grabber.
+   * PRE          :  /
+   */
+  void SetFrameRate (int);
+
   
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Sets the colour for the specified device.

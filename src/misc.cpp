@@ -228,7 +228,6 @@ void gnomemeeting_disable_connect ()
 
   gtk_widget_set_sensitive (main_toolbar [0].widget, FALSE);
   gtk_widget_set_sensitive (main_toolbar [3].widget, FALSE);
-  gtk_widget_set_sensitive (main_toolbar [5].widget, FALSE);
 
   object = (GtkWidget *) gtk_object_get_data (GTK_OBJECT (gm),
 					      "file_menu_uiinfo");
@@ -237,13 +236,6 @@ void gnomemeeting_disable_connect ()
 
   gtk_widget_set_sensitive (file_menu_uiinfo [0].widget, FALSE);
 
-
-  object = (GtkWidget *) gtk_object_get_data (GTK_OBJECT (gm),
-					      "settings_menu_uiinfo");
-
-  GnomeUIInfo *settings_menu_uiinfo = (GnomeUIInfo *) object;
-
-  gtk_widget_set_sensitive (settings_menu_uiinfo [0].widget, FALSE);
 }
 
 
@@ -257,7 +249,6 @@ void gnomemeeting_enable_connect ()
 
   gtk_widget_set_sensitive (main_toolbar [0].widget, TRUE);
   gtk_widget_set_sensitive (main_toolbar [3].widget, TRUE);
-  gtk_widget_set_sensitive (main_toolbar [5].widget, TRUE);
 
   object = (GtkWidget *) gtk_object_get_data (GTK_OBJECT (gm),
 					      "file_menu_uiinfo");
@@ -266,13 +257,6 @@ void gnomemeeting_enable_connect ()
 
   gtk_widget_set_sensitive (file_menu_uiinfo [0].widget, TRUE);
 
-
-  object = (GtkWidget *) gtk_object_get_data (GTK_OBJECT (gm),
-					      "settings_menu_uiinfo");
-
-  GnomeUIInfo *settings_menu_uiinfo = (GnomeUIInfo *) object;
-
-  gtk_widget_set_sensitive (settings_menu_uiinfo [0].widget, TRUE);
 }
 
 
@@ -295,7 +279,6 @@ void gnomemeeting_enable_disconnect ()
 
   gtk_widget_set_sensitive (main_toolbar [1].widget, TRUE);
   gtk_widget_set_sensitive (main_toolbar [3].widget, TRUE);
-  gtk_widget_set_sensitive (main_toolbar [5].widget, TRUE);
 }
 
 
@@ -318,8 +301,8 @@ void gnomemeeting_disable_disconnect ()
 
   gtk_widget_set_sensitive (main_toolbar [1].widget, FALSE);
   gtk_widget_set_sensitive (main_toolbar [3].widget, FALSE);
-  gtk_widget_set_sensitive (main_toolbar [5].widget, FALSE);
 }
+
 
 GtkWidget*
 gnomemeeting_history_combo_box_new (GM_window_widgets* gw, options* opts)
@@ -335,16 +318,18 @@ gnomemeeting_history_combo_box_new (GM_window_widgets* gw, options* opts)
   contacts = g_strsplit (opts->old_contacts_list, ":", 0);
   
   for (i = 0 ; contacts [i] != NULL ; i++)
-    gw->old_contacts_list = g_list_append (gw->old_contacts_list, contacts [i]);
+    gw->old_contacts_list = g_list_append (gw->old_contacts_list, 
+					   contacts [i]);
      
   if (gw->old_contacts_list != NULL)
     gtk_combo_set_popdown_strings (GTK_COMBO (combo), 
-	   gw->old_contacts_list);
+				   gw->old_contacts_list);
 
   gtk_entry_set_text(GTK_ENTRY(GTK_COMBO(combo)->entry),""); 
   return combo; 
 	
 }
+
 
 void 
 gnomemeeting_add_contact_entry(GM_window_widgets* gw, int max_contacts)
@@ -383,6 +368,7 @@ gnomemeeting_add_contact_entry(GM_window_widgets* gw, int max_contacts)
 	}
       i++;
     }
+
   if (!found)
     {
       /* this will not store a copy of entry_content, but entry_content itself */
@@ -406,4 +392,4 @@ gnomemeeting_add_contact_entry(GM_window_widgets* gw, int max_contacts)
 
 }
 
-
+

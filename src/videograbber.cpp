@@ -39,7 +39,7 @@
 #include "misc.h"
 
 #include <sys/time.h>
-
+#include <gconf/gconf-client.h>
 
 /* Declarations */
 extern GnomeMeeting *MyApp;
@@ -60,6 +60,9 @@ GMVideoGrabber::GMVideoGrabber (options *o)
   has_to_reset = 0;
   is_grabbing = 0;
   is_opened = 0;
+
+  /* Initialisation */
+  grabber = NULL;
 
   /* Start the thread */
   this->Resume ();
@@ -216,6 +219,13 @@ PVideoChannel *GMVideoGrabber::GetVideoChannel (void)
 }
 
 
+void GMVideoGrabber::SetFrameRate (int fps)
+{
+  if (grabber != NULL)
+    grabber->SetFrameRate (fps);
+}
+
+
 void GMVideoGrabber::SetColour (int colour)
 {
   grabber->SetColour (colour);
@@ -240,7 +250,6 @@ void GMVideoGrabber::SetContrast (int constrast)
 }
 
 
-
 void GMVideoGrabber::GetParameters (int *whiteness, int *brightness, 
 				  int *colour, int *contrast)
 {
@@ -257,7 +266,7 @@ void GMVideoGrabber::VGOpen (void)
   int error_code = -1;  // No error
   int tr_fps;
   
-
+  GConfClient *client = gconf_client_get_default ();
 
   /* The number of Transmitted FPS must be equal to 0 to disable */
   if (opts->fps == 0)
@@ -302,7 +311,7 @@ void GMVideoGrabber::VGOpen (void)
   if (!grabber->SetColourFormatConverter ("YUV420P"))
     error_code = 3;
   else
-  if (!grabber->SetFrameRate (tr_fps))
+    if (!grabber->SetFrameRate (gconf_client_get_int (client, "/apps/gnomemeeting/video_settings/tr_fps", 0)))
    error_code = 4;
   else
   if (!grabber->SetFrameSizeConverter (height, width, FALSE))
@@ -451,5 +460,8 @@ void GMVideoGrabber::VGClose (void)
 			    FALSE);
   
   gnomemeeting_threads_leave ();
+
+  /* Initialisation */
+  grabber = NULL;
 }
 

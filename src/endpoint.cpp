@@ -44,6 +44,7 @@
 #include "callbacks.h"
 #include "ils.h"
 #include "misc.h"
+
 #include <gconf/gconf-client.h>
 
 #include "../pixmaps/computer.xpm"
@@ -332,6 +333,36 @@ H323Connection *GMH323EndPoint::GetCurrentConnection ()
 GMVideoGrabber *GMH323EndPoint::GetVideoGrabber (void)
 {
   return (GMVideoGrabber *) video_grabber;
+}
+
+
+H323VideoCodec *GMH323EndPoint::GetCurrentVideoCodec (void)
+{
+  H323VideoCodec *video_codec = NULL;
+
+  if (!GetCurrentCallToken ().IsEmpty()) {
+    
+    H323Connection * connection = GetCurrentConnection ();
+    
+    if (connection != NULL) {
+
+      H323Channel * channel = 
+	connection->FindChannel (RTP_Session::DefaultVideoSessionID, 
+				 FALSE);
+
+      if (channel != NULL) {
+	
+	H323Codec * raw_codec  = channel->GetCodec();
+
+	if (raw_codec->IsDescendant (H323VideoCodec::Class())) {
+	  
+	  video_codec = (H323VideoCodec *) raw_codec;
+	}
+      }
+    }
+  } 
+  
+  return video_codec;
 }
 
 
@@ -811,7 +842,7 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 				       H323VideoCodec & codec)
 {
   GMVideoGrabber *vg = (GMVideoGrabber *) video_grabber;
-
+  GConfClient *client = gconf_client_get_default ();
 
   /* If it is possible to transmit and
      if the user enabled transmission and
@@ -848,8 +879,8 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
      else {
        
        codec.SetAverageBitRate (0); // Disable
-       codec.SetTxQualityLevel (opts->tr_vq);
-       codec.SetBackgroundFill (opts->tr_ub);   
+       codec.SetTxQualityLevel (gconf_client_get_int (client, "/apps/gnomemeeting/video_settings/tr_vq", 0));
+       codec.SetBackgroundFill (gconf_client_get_int (client, "/apps/gnomemeeting/video_settings/tr_ub", 0));   
      }
      
      gnomemeeting_threads_enter ();

@@ -1,3 +1,20 @@
+2001-12-12  Damien Sandras  <dsandras@seconix.com>
+
+	* src/main_window.cpp: Added call to gnomemeeting_init_gconf.
+	* src/videograbber.cpp: Added function to change the transmitted
+	frames per second limit on the fly.
+	* src/config.cpp: Added gnomemeeting_init_gconf that inits the
+	gconf notifiers. Added the corresponding callbacks to change
+	the video quality, the background fill, and the transmitted
+	frames per second.
+	* src/endpoint.cpp: Added support for gconf, added function to
+	get the Video Codec that is in use to be able to change the settings
+	on the fly (needs my patch to openh323 though).
+	* src/misc.cpp: Added demichele's changes for history combo box,
+	preferences are not anymore disabled during calls.
+	* src/pref_window.cpp: Ported the above settings to gconf and added
+	a callback that updates the gconf cache for the adjustment widgets.
+	
 2001-12-07  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* src/main_window.cpp (gnomemeeting_init_main_window): 
@@ -10,35 +27,29 @@
 
 	* src/main_window.cpp (notebook_info_changed): Silly bug not
 	updating arrows' sensitivity properly
-
 	* src/pref_window.cpp (gnomemeeting_init_pref_window_interface): 
 	Use notifiers for the popup pref
 	(show_popup_clicked_callback): added
-
 	* src/common.h (struct _GM_pref_window_widgets): Removed the popup
-
 	* src/endpoint.cpp (OnIncomingCall): Use gconf to determine
 	if we should show the popup
-
 	* src/config.cpp (gnomemeeting_read_config): 
 	(gnomemeeting_read_config_from_struct):
 	(gnomemeeting_store_config): Removed popup
-
 	* gnomemeeting.schema: Added the needed info for the
 	popup option
-
 	* src/common.h (struct _options): Removed popup
-
 	* src/pref_window.cpp: Added some prototypes
 
 2001-12-07  Miguel Rodríguez Pérez  <migrax@terra.es>
 
-	* src/main_window.cpp (gnomemeeting_init_main_window): Show the selected
-	page in the prefs.
-	(left_arrow_clicked, right_arrow_clicked): Just write the new value to gconf
-	(gnomemeeting_init_main_window): Added a notifier for notebook_info changes
+	* src/main_window.cpp (gnomemeeting_init_main_window): Show the 
+	selected page in the prefs.
+	(left_arrow_clicked, right_arrow_clicked): Just write the new value to
+	gconf
+	(gnomemeeting_init_main_window): Added a notifier for notebook_info 
+	changes
 	(notebook_info_changed): Added
-
 	* gnomemeeting.schema: Updated
 
 2001-12-06  Miguel Rodríguez Pérez  <migrax@terra.es>
@@ -59,26 +70,18 @@
 
 	* configure.in: 
 	* Makefile.am: Added some code to install the schema file
-
 	* gnomemeeting.schema: New file
 
-2001-12-05 Miguel Rodríguez Pérez <migrax@terra.es>
-	
 2001-12-05  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* src/main_window.cpp (view_widget_changed_callback): Changed
 	gtk_widget_show for gtk_widget_show_all
 
-2001-12-05 Miguel Rodríguez Pérez <migrax@terra.es>
-
-
 2001-12-05  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* src/main_window.cpp (gnomemeeting_init): Replaced a hard-coded
 	version number with the one from VERSION. (#66272)
-
 	* src/pref_window.cpp: Added some missing prototypes
-
 	* TODO: Updated.
 
 2001-12-04  Miguel Rodríguez Pérez  <migrax@terra.es>
@@ -90,12 +93,10 @@
 	(gnomemeeting_init_pref_window_interface): Add notifiers to most
 	gui options. And make them apply on the fly
 	(apply_options): Removed a lot of code to apply GUI options
-
 	* src/menu.cpp (view_widget_changed):
 	(view_control_panel_callback, view_status_bar_callback) 
 	(view_quick_bar_callback, view_docklet_callback): Added
 	(gnomemeeting_init_menu): GConfied the thing a little
-
 	* src/main_window.cpp (view_widget_changed_callback): New func
 	to show/hide sidgets when the gconf setting changes
 	(gnomemeeting_init): Removed gnorba initialisation
@@ -103,37 +104,19 @@
 	Added notifiers more some widgets
 	(gnomemeeting_init_main_window): Added a parameter to the function
 	Read options from gconf
-
 	* src/docklet.cpp (view_docklet_changed): New function to show/hide 
 	the docklet when the gconf setting changes
 	(gnomemeeting_init_docklet): Add a notification
-
 	* src/pref_window.cpp (apply_options): Removed some dead-code
-
 	* src/config.cpp (gnomemeeting_store_config): Don't write options
 	now in gconf
 	(gnomemeeting_read_config): Don't read options now in gconf
 	(gnomemeeting_read_config_from_struct): Some options moved to
 	gconf
 	(gnomemeeting_read_config_from_gui): Removed some now unused code
-
 	* src/common.h (struct _options): Removed some options 
 	now if gconf
-
 	* configure.in: Uncommented gconf stuff
-	
-2001-12-01  Miguel Rodríguez Pérez  <migrax@terra.es>
-
-	* configure.in: Removed GNORBA requirement
-
-2001-11-27 Miguel Rodríguez Pérez <migrax@terra.es>
-
-	* src/main_window.cpp: Add include gnome-window-icon.h
-
-	* src/menu.h: 
-	* src/common.h: 
-	* src/gnomemeeting.h: 
-	* src/docklet.h: Include just necesary files	
 
 2001-12-04  Damien Sandras  <dsandras@seconix.com> -- 0.12.2
 
@@ -153,6 +136,18 @@
 	NULL could make GM crash when compiled with gcc 2.96.
 	* src/ils.cpp: Fixed unitialised variable. The refresh button is
 	made sensitive again in case of error.
+
+2001-12-01  Miguel Rodríguez Pérez  <migrax@terra.es>
+
+	* configure.in: Removed GNORBA requirement
+
+2001-11-27 Miguel Rodríguez Pérez <migrax@terra.es>
+
+	* src/main_window.cpp: Add include gnome-window-icon.h
+	* src/menu.h: 
+	* src/common.h: 
+	* src/gnomemeeting.h: 
+	* src/docklet.h: Include just necesary files	
 	
 2001-12-02  Miguel Rodríguez Pérez  <migrax@terra.es>
 

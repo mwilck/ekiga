@@ -34,10 +34,20 @@
 #include <gnome.h>
 #include <ptlib.h>
 
+#include <gconf/gconf-client.h>
+
 #include "common.h"
 
 
 /* The functions */
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  This function inits all the notifiers
+ *                 that GnomeMeeting uses.
+ * PRE          :  /
+ */
+void gnomemeeting_init_gconf (GConfClient *);
+
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Store the configuration parameters from the 
