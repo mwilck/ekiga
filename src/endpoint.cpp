@@ -1190,6 +1190,11 @@ GMH323EndPoint::GetRemoteConnectionInfo (H323Connection & connection,
     transport = connection.GetSignallingChannel ();
     if (transport) 
       remote_ip = transport->GetRemoteAddress ().GetHostName ();
+
+    if (remote_ip.Find("::")) { // IPv6 notation
+
+      remote_ip = "[" + remote_ip + "]";
+    }
   }
 
   remote_ip = GMURL ().GetDefaultURL () + remote_ip;
