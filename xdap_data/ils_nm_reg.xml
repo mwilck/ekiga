@@ -14,7 +14,7 @@
 <ils host="ils.seconix.com">
 <!-- No need to create parent objects -->
 <!-- Add the record itself, after deleting -->
- <delete ignore="noobject">
+ <delete ignore="noaccess">
   <dn>c=&country;,o=&org;,cn=&email;,objectclass=&class;</dn>
  </delete>
  <add>
