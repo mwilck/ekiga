@@ -54,11 +54,11 @@ xdapfree(void)
 /* check if libxml failed to call our unregister handler on any pointer */
 void
 xdapleakcheck(void)
-{
+{/*
 	int i;
 	for (i = 0; i < nregs; i++)
 		if (regs[i].refcount != 0)
-			fprintf(stderr, "LEAK %d %d %lx\n", i, regs[i].refcount, (unsigned long)regs[i].val);
+		fprintf(stderr, "LEAK %d %d %lx\n", i, regs[i].refcount, (unsigned long)regs[i].val);*/
 }
 
 /* register a pointer manually */

@@ -182,10 +182,7 @@ void GnomeMeeting::Disconnect (H323Connection::CallEndReason reason)
   PString current_call_token = endpoint->GetCurrentCallToken ();
 
 
-  /* Update the button */
   gnomemeeting_threads_enter ();
-
-  connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 0);
 
   if (gw->progress_timeout) {
 

@@ -38,7 +38,6 @@
 #include "misc.h"
 #include "endpoint.h"
 #include "toolbar.h"
-#include "ils.h"
 #include "menu.h"
 
 
@@ -78,42 +77,35 @@ GMURLHandler::GMURLHandler ()
 
 GMURLHandler::~GMURLHandler ()
 {
-  quit_mutex.Wait ();
-
+  PWaitAndSignal m(quit_mutex);
   /* Nothing to do here except waiting that LDAP at worse
      cancels the search */
-
-  quit_mutex.Signal ();
 }
 
 
 void GMURLHandler::Main ()
 {
   PString call_address;
-  GMILSClient *ils_client = NULL;
-  PINDEX slash;
   PINDEX callto;
   PString tmp_url;
-  PString ils_server;
-  PString ils_port = PString ("389");
   PString mail;
   PString current_call_token;
-  gchar *ip = NULL;
   gchar *msg = NULL;
   GmWindow *gw = NULL;
   GMH323EndPoint *endpoint = NULL;
   H323Connection *con = NULL;
   GConfClient *client = NULL;
+
+  PWaitAndSignal m(quit_mutex);
   
   gnomemeeting_threads_enter ();
   client = gconf_client_get_default ();
   gw = gnomemeeting_get_main_window (gm);
   gnomemeeting_threads_leave ();
-
+  
   endpoint = MyApp->Endpoint ();
 
-
-  if (answer_call && endpoint) {
+  if (answer_call && endpoint || endpoint->GetCallingState ()) {
 
     con = endpoint->GetCurrentConnection ();
 
@@ -130,102 +122,11 @@ void GMURLHandler::Main ()
   if (callto != P_MAX_INDEX)
     url = url.Mid (callto + 2, P_MAX_INDEX);
 
-  call_address = url;
+  call_address = "callto:" + url;
 
-  slash = url.Find ('/');
-  
   /* We have a callto URL of the form : ils_server(:port)/mail */
-  if (slash != P_MAX_INDEX) {
-
-    quit_mutex.Wait ();
-    /* We disable the connect button and the connect menu 
-       while searching */
-    gnomemeeting_threads_enter ();
-    gnomemeeting_call_menu_connect_set_sensitive (0, FALSE);
-    gnomemeeting_call_menu_connect_set_sensitive (1, FALSE);
-    gtk_widget_set_sensitive (GTK_WIDGET (gw->connect_button), FALSE);
-    gnomemeeting_threads_leave ();
-  
-    ils_server = url.Left (slash);
-    PINDEX p = url.Find (':');
-
-    gnomemeeting_threads_enter ();
-    gnomemeeting_statusbar_flash (gw->statusbar, _("Searching for user"));
-    gnomemeeting_threads_leave ();
-    /* There is a port */
-    if (p != P_MAX_INDEX) {
-    
-      ils_port = ils_server.Mid (p + 1, P_MAX_INDEX);
-      ils_server = ils_server.Left (p);
-    }
-
-    mail = url.Mid (slash + 1, P_MAX_INDEX);
-
-    /* Search for the user on ILS */
-    ils_client = GM_ILS_CLIENT (endpoint->GetILSClientThread ());
-    
-    ip =
-      ils_client->Search ((gchar *) (const char *) ils_server, 
-			  (gchar *) (const char *) ils_port, 
-			  (gchar *) (const char *) mail);
-
-
-    if (ip == NULL) {
-
-      gnomemeeting_threads_enter ();
-      gnomemeeting_statusbar_flash (gw->statusbar, 
-				    _("Error while connecting to ILS directory"));
-      gnomemeeting_log_insert (gw->history_text_view, 
-			       _("Error while connecting to ILS directory"));
-      connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 0);
-      gnomemeeting_call_menu_connect_set_sensitive (0, TRUE);
-      gtk_widget_set_sensitive (GTK_WIDGET (gw->connect_button), TRUE);
-
-      if (gw->progress_timeout) {
-
-	gtk_timeout_remove (gw->progress_timeout);
-	gw->progress_timeout = 0;
-	gtk_widget_hide (GTK_WIDGET (gw->progressbar));
-      }
-
-      gnomemeeting_threads_leave ();
-
-      quit_mutex.Signal ();
-      return;
-    }
-     
-    if ((ip)&&(!strcmp (ip, "0.0.0.0:1720"))) {
-
-      gnomemeeting_threads_enter ();
-      gnomemeeting_statusbar_flash (gw->statusbar, _("User is offline"));
-      gnomemeeting_log_insert (gw->history_text_view, _("User is offline"));
-      connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 0);
-      gnomemeeting_call_menu_connect_set_sensitive (0, TRUE);
-      gtk_widget_set_sensitive (GTK_WIDGET (gw->connect_button), TRUE);
-
-      if (gw->progress_timeout) {
-
-	gtk_timeout_remove (gw->progress_timeout);
-	gw->progress_timeout = 0;
-	gtk_widget_hide (GTK_WIDGET (gw->progressbar));
-      }
-
-      gnomemeeting_threads_leave ();
-
-      quit_mutex.Signal ();
-      return;
-    }
-    else {
-
-      call_address = PString (ip);
-    }
-
-    gnomemeeting_threads_enter ();
-    gtk_widget_set_sensitive (GTK_WIDGET (gw->connect_button), TRUE);
-    gnomemeeting_threads_leave ();
-
-    quit_mutex.Signal ();
-  }
+  if (url.Find ('/') != P_MAX_INDEX && url.Find ("type") == P_MAX_INDEX) 
+    call_address = call_address + "+type=directory";
     
 
   /* If the user is using MicroTelco, but G.723.1 is not available for
@@ -239,24 +140,9 @@ void GMURLHandler::Main ()
 	endpoint->GetCapabilities ().FindCapability ("G.723.1") == NULL)
       call_address = PString ("0610#") + call_address;
   }
-  gnomemeeting_threads_leave ();
 
-  
-  /* Connect to the URL */
-  con = 
-    endpoint->MakeCallLocked (call_address, current_call_token);
-  endpoint->SetCurrentConnection (con);
-  endpoint->SetCurrentCallToken (current_call_token);
-  endpoint->SetCallingState (1);
-  con->Unlock ();
-  
-  gnomemeeting_threads_enter ();
   gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
-
-
-  /* Enable disconnect: we must be able to stop calling */
   gnomemeeting_call_menu_connect_set_sensitive (1, TRUE);
-  
   msg = g_strdup_printf (_("Calling %s"), 
 			 (const char *) call_address);
   gnomemeeting_log_insert (gw->history_text_view, msg);
@@ -264,5 +150,35 @@ void GMURLHandler::Main ()
   gnomemeeting_statusbar_push (gw->statusbar, msg);
   connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 1);
   g_free (msg);		
-  gnomemeeting_threads_leave ();		 
+  gnomemeeting_threads_leave ();
+  
+  /* Connect to the URL */
+  endpoint->SetCallingState (1);
+  con = 
+    endpoint->MakeCallLocked (call_address, current_call_token);
+  if (con) {
+    
+    endpoint->SetCurrentConnection (con);
+    endpoint->SetCurrentCallToken (current_call_token);
+    con->Unlock ();
+  }
+  else {
+    
+    endpoint->SetCallingState (0);
+
+    gnomemeeting_threads_enter ();
+    connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 0);
+    gnomemeeting_call_menu_connect_set_sensitive (1, FALSE);
+
+    if (gw->progress_timeout) {
+
+      gtk_timeout_remove (gw->progress_timeout);
+      gw->progress_timeout = 0;
+      gtk_widget_hide (gw->progressbar);
+    }
+
+    gnomemeeting_statusbar_flash (gw->statusbar, "");
+    
+    gnomemeeting_threads_leave ();
+  }
 }

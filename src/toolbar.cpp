@@ -120,16 +120,11 @@ static void speaker_phone_toggle_changed (GtkToggleButton *w, gpointer data)
  */
 static void connect_button_clicked (GtkToggleButton *w, gpointer data)
 {
-  GmWindow *gw = gnomemeeting_get_main_window (gm);
   if (gtk_toggle_button_get_active (w))
     if (MyApp->Endpoint ()->GetCallingState () == 0) 
       MyApp->Connect ();
-    else {
-      
-      connect_button_update_pixmap (w, 0);
-      gnomemeeting_log_insert (gw->history_text_view,
-			       _("Trying to stop calling"));
-    }
+    else 
+      connect_button_update_pixmap (w, 1);
   else
     MyApp->Disconnect ();
 }
@@ -247,7 +242,6 @@ GtkWidget *gnomemeeting_init_left_toolbar (void)
   GtkWidget *image = NULL;
   GtkWidget *left_toolbar = NULL;
 
-  gchar *device = NULL;
   PString dev;
   
   GmWindow *gw = gnomemeeting_get_main_window (gm);
@@ -439,5 +433,6 @@ void connect_button_update_pixmap (GtkToggleButton *button, int pressed)
       }   
     
     gtk_widget_queue_draw (GTK_WIDGET (image));
+    gtk_widget_queue_draw (GTK_WIDGET (button));
   }
 }
