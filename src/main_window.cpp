@@ -1336,15 +1336,11 @@ gconf_client_set_int (client, GENERAL_KEY "version",
   else {
 #endif
     /* Show the main window */
-    /* We need to do this to let the embedded signal reach the tray */
-    while (gtk_events_pending ()) 
-      gtk_main_iteration ();
-    
-    if (gnomemeeting_tray_is_visible (G_OBJECT (gw->docklet)) ||
+    if (!gnomemeeting_tray_is_visible (G_OBJECT (gw->docklet)) ||
 	!gconf_client_get_bool (GCONF_CLIENT (client),
-				VIEW_KEY "start_docked", 0))
-
-    gtk_widget_show (GTK_WIDGET (gm));
+				VIEW_KEY "start_docked", 0)) {
+      gtk_widget_show (GTK_WIDGET (gm));
+    }
 #ifndef DISABLE_GNOME
   }
 #endif

@@ -63,6 +63,15 @@ static void gnomemeeting_build_tray (GtkContainer *, GtkAccelGroup *);
  */
 static gint tray_icon_embedded (GObject *tray_icon, gpointer)
 {
+  static bool first_time = true;
+
+  if (first_time) {
+    GConfClient *client = gconf_client_get_default ();
+    if (gconf_client_get_bool (client, VIEW_KEY "start_docked", 0)) {
+      gtk_widget_hide (gm);
+    }
+    first_time = false;
+  }
   g_object_set_data (tray_icon, "embedded", GINT_TO_POINTER (1));
 
   return true;
@@ -88,6 +97,7 @@ static gint tray_icon_destroyed (GObject *tray, gpointer accel)
 
   
   gnomemeeting_get_main_window (gm)->docklet = GTK_WIDGET (new_tray);
+  gtk_widget_show (gm);
 
   return true;
 }

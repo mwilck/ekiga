@@ -1,3 +1,17 @@
+2003-01-22  Miguel Rodríguez Pérez  <migrax@terra.es>
+
+	* src/tray.cpp (tray_icon_destroyed): Show main gnomemeeting
+	window if the notification area gets destroyed.
+
+	* src/main_window.cpp (gnomemeeting_init): Fix thinko, there was a
+	missing negation in the logic for showing the main gm window.
+
+2003-01-21  Miguel Rodríguez Pérez  <migrax@terra.es>
+
+	* src/tray.cpp (tray_icon_embedded): Add logic to hide the main
+	GnomeMeeting window when we detect the notification area being
+	available if we are set up to start hidden.
+
 2003-01-22 Damien Sandras  <dsandras@seconix.com>
         
 	* src/endpoint.cpp: Fixed label for stats.
