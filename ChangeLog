@@ -1,3 +1,20 @@
+2002-06-20  Miguel Rodríguez Pérez  <migrax@terra.es>
+
+	* src/config.cpp: Add dialog.h
+	(applicability_check_nt): s/gnomemeeting_warning_popup/gnomemeeting_warning_dialog
+
+	* src/gnomemeeting.cpp (Connect): Removed obsolete comment, and
+	rename gnomemeeting_history_combo... to gm_history_combo
+	Include history-combo.h
+	(Connect): Replace GTK_COMBO with GM_HISTORY_COMBO where appropiate
+
+	* src/Makefile.am (INCLUDES): 
+	* src/main_window.cpp (gnomemeeting_init): Add again new way of
+	checking correct schemas installation. It got lost with kenneths
+	commit :(
+
+	* lib/Makefile.am: s/libgm/libgnomemeeting
+
 2002-06-18  Kenneth Rohde Christiansen  <kenneth@gnu.org>
 
 	* lib/widgets/Makefile.am: New file.
@@ -27,6 +44,7 @@
 	* src/endpoint.cpp: Likewise.
 	* gnomemeeting.schemas.in.in: Changed some <type> declarations as
 	we are not using lists some places instead of treading strings as lists. 
+
 2002-06-20  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* pixmaps/Makefile.am (IMAGES): We use again the right

@@ -39,6 +39,7 @@
 #include "misc.h"
 #include "ils.h"
 #include "urlhandler.h"
+#include "history-combo.h"
 
 #include <esd.h>
 #include <gconf/gconf-client.h>
@@ -116,11 +117,12 @@ void GnomeMeeting::Connect()
   else {
 
     gnomemeeting_threads_enter ();
-    gtk_entry_set_text (GTK_ENTRY (GTK_WIDGET(GTK_COMBO(gw->combo)->entry)),
+    gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry),
 			call_address);
-    /* 20 = max number of contacts to store on HD, put here the value */
-    /* got from preferences if any*/
-    gnomemeeting_history_combo_box_add_entry (GTK_COMBO (gw->combo), "/apps/gnomemeeting/history/called_hosts", gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry)));
+
+    gm_history_combo_add_entry (GM_HISTORY_COMBO (gw->combo), 
+				"/apps/gnomemeeting/history/called_hosts", 
+				gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry)));
     gnomemeeting_threads_leave ();
 
 

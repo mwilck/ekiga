@@ -591,15 +591,16 @@ gnomemeeting_init (GmWindow *gw,
     client = gconf_client_get_default ();
     gconf_client_add_dir (client, "/apps/gnomemeeting",
                           GCONF_CLIENT_PRELOAD_RECURSIVE, 0);
-    gchar *gconf_test = NULL;
+    int gconf_test = -1;
 
-    gconf_test = gconf_client_get_string (client, GENERAL_KEY "gconf_test", NULL);
+    gconf_test = gconf_client_get_int (client, GENERAL_KEY "gconf_test_age", 
+				       NULL);
 
-    if (gconf_test == NULL || strcmp (gconf_test, BUILD_ID)) 
+    if (gconf_test == NULL || strcmp (gconf_test, SCHEMA_AGE)) 
     {
         int reply = 0;
 
-        gnomemeeting_error_dialog (GTK_WINDOW (gm), _("GnomeMeeting got %s for the GConf key \"/apps/gnomemeeting/gconf_test\", but %s was expected.\n\nThat key represents the build date of GnomeMeeting. If it is not correct, it means that your GConf schemas have not been correctly installed or the that permissions are not correct.\n\nPlease check the FAQ (http://www.gnomemeeting.org/faq.php), the throubleshoot section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org).\n\nUsing 'gnomemeeting-config-tool' could help you fix these problem."), gconf_test, BUILD_ID);
+        gnomemeeting_error_dialog (GTK_WINDOW (gm), _("GnomeMeeting got %d for the GConf key \"/apps/gnomemeeting/gconf_test_age\", but %d was expected.\n\nThat key represents the revision GnomeMeeting default settings. If it is not correct, it means that your GConf schemas have not been correctly installed or the that permissions are not correct.\n\nPlease check the FAQ (http://www.gnomemeeting.org/faq.php), the throubleshoot section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org).\n\nUsing 'gnomemeeting-config-tool' could help you fix these problem."), gconf_test, SCHEMA_AGE);
 
         delete (gw);
         delete (lw);
@@ -609,7 +610,6 @@ gnomemeeting_init (GmWindow *gw,
         exit (-1);
     }
 
-    g_free (gconf_test);
 
   /* We store all the pointers to the structure as data of gm */
   g_object_set_data (G_OBJECT (gm), "gw", gw);

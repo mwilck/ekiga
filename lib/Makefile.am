@@ -1,8 +1,8 @@
 SUBDIRS = widgets
 
-noinst_LTLIBRARIES = libgm.la
+noinst_LTLIBRARIES = libgnomemeeting.la
 
-libgm_la_SOURCES =					\
+libgnomemeeting_la_SOURCES =					\
 	dialog.c					\
 	dialog.h					\
 	stock-icons.c					\
@@ -18,5 +18,5 @@ INCLUDES =						\
 	-I$(top_srcdir) 				\
 	$(GNOMEMEETING_CFLAGS)
 
-libgm_la_LDFLAGS = -export-dynamic
-libgm_la_LIBADD = widgets/libgmwidgets.la
+libgnomemeeting_la_LDFLAGS = -export-dynamic
+libgnomemeeting_la_LIBADD = widgets/libgmwidgets.la

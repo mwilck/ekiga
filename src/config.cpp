@@ -43,6 +43,7 @@
 #include "pref_window.h"
 #include "main_window.h"
 #include "ils.h"
+#include "dialog.h"
 
 
 
@@ -438,8 +439,8 @@ static void applicability_check_nt (GConfClient *client, guint cid,
     gdk_threads_enter ();
   
     if (MyApp->Endpoint ()->GetCallingState () != 0)
-      gnomemeeting_warning_popup (GTK_WIDGET (data), 
-				  _("Changing this setting will only affect new calls"));
+      gnomemeeting_warning_dialog (GTK_WIDGET (data), 
+				   _("Changing this setting will only affect new calls"));
     
     gdk_threads_leave ();
   }

@@ -6,7 +6,7 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/widgets			\
 	$(GNOME_INCLUDEDIR) 				\
 	-DGNOMEMEETING_IMAGES=\""$(datadir)/pixmaps"\" 	\
-	-DBUILD_ID=\""@BUILD_ID@"\" 			\
+	-DSCHEMA_AGE=@SCHEMA_AGE@ 			\
 	-DDATADIR=\""$(datadir)"\" 			\
 	-DG_DISABLE_DEPRECATED 				\
 	-DGTK_DISABLE_DEPRECATED 			\
