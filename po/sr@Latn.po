@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-12-15 09:12+0100\n"
-"PO-Revision-Date: 2003-12-15 09:14+0100\n"
+"POT-Creation-Date: 2003-12-16 04:22+0100\n"
+"PO-Revision-Date: 2003-12-16 04:23+0100\n"
 "Last-Translator: Dejan Matijević <dejan@ns.sympatico.ca>\n"
 "Language-Team: Serbian (sr) <serbiangnome-lista@nongnu.org>\n"
 "MIME-Version: 1.0\n"
@@ -698,7 +698,10 @@ msgstr ""
 msgid ""
 "The output device type is the type of device connected to your Quicknet "
 "card. It can be either a POTS (plain old telephone set) or a headset."
-msgstr "Vrsta izlaznog uređaja predstavlja vrstu uređaja povezanog na vašu Quicknet karticu. Ona može biti ili SDTA (stari dobri telefonski aparat) ili slušalice."
+msgstr ""
+"Vrsta izlaznog uređaja predstavlja vrstu uređaja povezanog na vašu Quicknet "
+"karticu. Ona može biti ili SDTA (stari dobri telefonski aparat) ili "
+"slušalice."
 
 #: gnomemeeting.schemas.in.in.h:140
 msgid ""
@@ -1205,15 +1208,11 @@ msgstr ""
 
 #: src/codec_info.h:67
 msgid ""
-"GSM 06.10 is a standardized lossy speech compression employed by most "
-"European wireless telephones. It uses RPE/LTP (residual pulse excitation/"
-"long term prediction) coding to compress frames of 160 13-bit samples with a "
-"frame rate of 50 Hz into 260 bits."
-msgstr ""
-"GSM 06.10 je standardizovan neočuvajuće sažimanje koje koristi većina "
-"evropskih mobilnih telefona. Koristi RPE/LTP (residual pulse excitation/long "
-"term prediction) kodiranje za sažimanje kadrova od 160 13-bitnih uzoraka sa "
-"učestalošću kadrova od 50 Hz u 260 bita."
+"GSM 06.10 is a standardized lossy speech compression employed by first "
+"generation of digital mobile phones in Europe. It uses RPE/LTP (residual "
+"pulse excitation/long term prediction) coding to compress frames of 20 ms, "
+"achieving a bitrate of 13kbps."
+msgstr "GSM 06.10 je standardizovano neočuvajuće sažimanje koje koristi većina evropskih mobilnih telefona prve generacije. Koristi RPE/LTP (residual pulse excitation/long term prediction) kodiranje za sažimanje kadrova od 20ms, dostižući količinu podataka od 13kbps."
 
 #: src/codec_info.h:67
 msgid "16.5 Kbps"
@@ -1496,7 +1495,7 @@ msgstr ""
 "nije uspeo."
 
 #: src/druid.cpp:265 src/druid.cpp:649 src/druid.cpp:663 src/druid.cpp:698
-#: src/endpoint.cpp:1688 src/gnomemeeting.cpp:325 src/gnomemeeting.cpp:327
+#: src/endpoint.cpp:1691 src/gnomemeeting.cpp:325 src/gnomemeeting.cpp:327
 #: src/gnomemeeting.cpp:329 src/sound_handling.cpp:462
 #: src/sound_handling.cpp:463 src/videograbber.cpp:273
 #: src/videograbber.cpp:544
@@ -1742,153 +1741,153 @@ msgid "Configuration complete - page %d/%d"
 msgstr "Konfiguracija kompetna - strana %d/%d"
 
 #. Update the history and status bar
-#: src/endpoint.cpp:729
+#: src/endpoint.cpp:732
 #, c-format
 msgid "Call from %s"
 msgstr "Poziv od %s"
 
-#: src/endpoint.cpp:741
+#: src/endpoint.cpp:744
 #, c-format
 msgid "Forwarding call from %s to %s (Forward all calls)"
 msgstr "Preusmeravanje poziva od %s do %s (Preusmeri sve pozive)"
 
 #  there is no forwarding, so reject the call
 #. there is no forwarding, so reject the call
-#: src/endpoint.cpp:748 src/endpoint.cpp:769
+#: src/endpoint.cpp:751 src/endpoint.cpp:772
 #, c-format
 msgid "Rejecting call from %s (Busy)"
 msgstr "Odbijam poziv od %s (zauzeto)"
 
-#: src/endpoint.cpp:760
+#: src/endpoint.cpp:763
 #, c-format
 msgid "Forwarding call from %s to %s (Busy)"
 msgstr "Preusmeravanje poziva od %s do %s (Zauzeto)"
 
-#: src/endpoint.cpp:778
+#: src/endpoint.cpp:781
 #, c-format
 msgid "Accepting call from %s (Free For Chat)"
 msgstr "Prihvatam poziv od %s (slobodan za ćaskanje)"
 
-#: src/endpoint.cpp:802
+#: src/endpoint.cpp:805
 msgid "Call rejected"
 msgstr "Poziv odbijen"
 
-#: src/endpoint.cpp:811 src/endpoint.cpp:1184 src/endpoint.cpp:2150
+#: src/endpoint.cpp:814 src/endpoint.cpp:1187 src/endpoint.cpp:2153
 msgid "Call forwarded"
 msgstr "Poziv preusmeren"
 
-#: src/endpoint.cpp:820
+#: src/endpoint.cpp:823
 msgid "Call automatically answered"
 msgstr "Automatski odgovoreno na poziv"
 
-#: src/endpoint.cpp:889
+#: src/endpoint.cpp:892
 #, c-format
 msgid "Forwarding call to %s"
 msgstr "Prosleđuje poziv za %s"
 
-#: src/endpoint.cpp:900
+#: src/endpoint.cpp:903
 #, c-format
 msgid "Error while forwarding call to %s"
 msgstr "Greška pri prosleđivanju poziva za %s"
 
-#: src/endpoint.cpp:903
+#: src/endpoint.cpp:906
 msgid "There was an error when forwarding the call to the given host."
 msgstr "Došlo je do greške pri prosleđivanju poziva na dati računar."
 
-#: src/endpoint.cpp:960
+#: src/endpoint.cpp:963
 #, c-format
 msgid "Connected with %s using %s"
 msgstr "Konektovan sa %s koristeći %s"
 
-#: src/endpoint.cpp:962
+#: src/endpoint.cpp:965
 msgid "Connected"
 msgstr "Veza uspostavljena"
 
-#: src/endpoint.cpp:1148
+#: src/endpoint.cpp:1151
 msgid "Local user cleared the call"
 msgstr "Lokalani korisnik je poništio poziv"
 
-#: src/endpoint.cpp:1151
+#: src/endpoint.cpp:1154
 msgid "Remote user cleared the call"
 msgstr "Daljinski korisnik je poništio poziv"
 
-#: src/endpoint.cpp:1154
+#: src/endpoint.cpp:1157
 msgid "Remote user did not accept the call"
 msgstr "Daljinski korisnik nije prihvatio poziv"
 
-#: src/endpoint.cpp:1157 src/endpoint.cpp:1160
+#: src/endpoint.cpp:1160 src/endpoint.cpp:1163
 msgid "Local user did not accept the call"
 msgstr "Lokalni korisnik nije prihvatio poziv"
 
-#: src/endpoint.cpp:1163
+#: src/endpoint.cpp:1166
 msgid "The Gatekeeper cleared the call"
 msgstr "Čuvar kapije je poništio poziv"
 
-#: src/endpoint.cpp:1166
+#: src/endpoint.cpp:1169
 msgid "Call not answered in the required time"
 msgstr "Na poziv nije odgovoreno u zahtevanom vremenu"
 
-#: src/endpoint.cpp:1169
+#: src/endpoint.cpp:1172
 msgid "Remote user has stopped calling"
 msgstr "Daljinski korisnik je zaustavio poziv"
 
-#: src/endpoint.cpp:1172
+#: src/endpoint.cpp:1175
 msgid "Abnormal call termination"
 msgstr "Nenormalan prekid poziva"
 
-#: src/endpoint.cpp:1175
+#: src/endpoint.cpp:1178
 msgid "Could not connect to remote host"
 msgstr "Ne može se povezati na daljinskog domaćina"
 
-#: src/endpoint.cpp:1178
+#: src/endpoint.cpp:1181
 msgid "Insufficient bandwidth"
 msgstr "Nedovoljna širina propusnog opsega"
 
-#: src/endpoint.cpp:1181
+#: src/endpoint.cpp:1184
 msgid "No common codec"
 msgstr "Neuobičajen kodeks"
 
-#: src/endpoint.cpp:1187
+#: src/endpoint.cpp:1190
 msgid "Security check Failed"
 msgstr "Neuspešna sigurnosna provera"
 
-#: src/endpoint.cpp:1190
+#: src/endpoint.cpp:1193
 msgid "Local user is busy"
 msgstr "Lokalni korisnik je zauzet"
 
-#: src/endpoint.cpp:1193
+#: src/endpoint.cpp:1196
 msgid "Remote user is busy"
 msgstr "Daljinski korisnik je zauzet"
 
-#: src/endpoint.cpp:1196 src/endpoint.cpp:1199
+#: src/endpoint.cpp:1199 src/endpoint.cpp:1202
 msgid "Congested link to remote party"
 msgstr "Prepuna veza do daljinske strane"
 
-#: src/endpoint.cpp:1202
+#: src/endpoint.cpp:1205
 msgid "Remote user is unreachable"
 msgstr "Daljinski korisnik je nedostižan"
 
-#: src/endpoint.cpp:1205
+#: src/endpoint.cpp:1208
 msgid "Remote user is not running GnomeMeeting"
 msgstr "Daljinski korisnik nije pokrenuo Gnom Sastanak"
 
-#: src/endpoint.cpp:1208
+#: src/endpoint.cpp:1211
 msgid "Remote host is offline"
 msgstr "Daljinski korisnik nije priključen"
 
-#: src/endpoint.cpp:1211
+#: src/endpoint.cpp:1214
 msgid "Temporary failure"
 msgstr "Privremena greška"
 
-#: src/endpoint.cpp:1214 src/urlhandler.cpp:380 src/urlhandler.cpp:386
+#: src/endpoint.cpp:1217 src/urlhandler.cpp:380 src/urlhandler.cpp:386
 msgid "User not found"
 msgstr "Korisnik nije pronađen"
 
-#: src/endpoint.cpp:1218
+#: src/endpoint.cpp:1221
 msgid "Call completed"
 msgstr "Poziv završen"
 
-#: src/endpoint.cpp:1316 src/main_window.cpp:1230
+#: src/endpoint.cpp:1319 src/main_window.cpp:1230
 msgid ""
 "Lost packets:\n"
 "Late packets:\n"
@@ -1900,11 +1899,11 @@ msgstr ""
 "Trajanje povratnog puta:\n"
 "Jitter bafer:"
 
-#: src/endpoint.cpp:1548
+#: src/endpoint.cpp:1551
 msgid "Error while starting the listener"
 msgstr "Greška pri pokretanju slušača"
 
-#: src/endpoint.cpp:1548
+#: src/endpoint.cpp:1551
 msgid ""
 "You will not be able to receive incoming calls. Please check that no other "
 "program is already running on the port used by GnomeMeeting."
@@ -1912,31 +1911,31 @@ msgstr ""
 "Nećete moći da primate pozive.  Proverite da neki drugi program nije "
 "trenutno pokrenut na portu koji koristi Gnom Sastanak."
 
-#: src/endpoint.cpp:1672
+#: src/endpoint.cpp:1675
 msgid "Attaching lid hardware to codec"
 msgstr "Zakačiti lid hardware na kodeks"
 
 # bug: SUCKS BIG TIME!!!
 #. Translators : the full sentence is "Opening %s for playing with
 #. plugin %s" or "Opening %s for recording with plugin"
-#: src/endpoint.cpp:1723
+#: src/endpoint.cpp:1726
 #, c-format
 msgid "Opened %s for %s with plugin %s"
 msgstr "Otvorio sam %s radi %s pomoću dodatka %s"
 
-#: src/endpoint.cpp:1725
+#: src/endpoint.cpp:1728
 msgid "recording"
 msgstr "snimanja"
 
-#: src/endpoint.cpp:1725
+#: src/endpoint.cpp:1728
 msgid "playing"
 msgstr "puštanja"
 
-#: src/endpoint.cpp:1762
+#: src/endpoint.cpp:1765
 msgid "Could not open audio channel for audio transmission"
 msgstr "Ne može da otvori zvučni kanal za zvučni prenos"
 
-#: src/endpoint.cpp:1762
+#: src/endpoint.cpp:1765
 msgid ""
 "An error occured while trying to record from the soundcard for the audio "
 "transmission. Please check that your soundcard is not busy and that your "
@@ -1948,11 +1947,11 @@ msgstr ""
 "podržava full-duplex.\n"
 "Zvučni prenos isključen."
 
-#: src/endpoint.cpp:1767
+#: src/endpoint.cpp:1770
 msgid "Could not open audio channel for audio reception"
 msgstr "Ne može da otvori zvučni kanal za zvučni prijem"
 
-#: src/endpoint.cpp:1767
+#: src/endpoint.cpp:1770
 msgid ""
 "An error occured while trying to play audio to the soundcard for the audio "
 "reception. Please check that your soundcard is not busy and that your driver "
@@ -1964,12 +1963,12 @@ msgstr ""
 "vaš drajver podržava full-duplex.\n"
 "Zvučni prijem isključen."
 
-#: src/endpoint.cpp:1983
+#: src/endpoint.cpp:1986
 #, c-format
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "%.2ld:%.2ld:%.2ld  Z:%.2f/%.2f   V:%.2f/%.2f"
 
-#: src/endpoint.cpp:2025
+#: src/endpoint.cpp:2028
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -1982,7 +1981,7 @@ msgstr ""
 "Trajanje povratnog puta: %d ms\n"
 "Jitter bafer: %d ms"
 
-#: src/endpoint.cpp:2146
+#: src/endpoint.cpp:2149
 #, c-format
 msgid "Forwarding Call to %s (No Answer)"
 msgstr "Preusmeravanje poziva na %s (Ne odgovaranje)"
