@@ -314,7 +314,8 @@ class GMH323EndPoint : public H323EndPoint
   PString current_call_token;  
   H323Connection *current_connection;  
   H323ListenerTCP *listener;  
-  H323VideoCodec *vc;
+  H323VideoCodec *current_video_codec;
+  H323AudioCodec *current_audio_codec;
   int calling_state; 
   int docklet_timeout; 
   int sound_timeout; 

@@ -1,5 +1,11 @@
 2002-05-15  Damien Sandras  <dsandras@seconix.com>
 
+	* src/endpoint.cpp: Added the same for the audio codec.
+	Changed GetCurrentAudioCodec and GetCurrentVideoCodec
+	to use the internal values.
+	
+2002-05-15  Damien Sandras  <dsandras@seconix.com>
+
 	* src/endpoint.cpp: Added internal variables that is the current
 	video codec that is used. Only for internal use. External methods
 	should use GetCurrentVideoCodec ().
