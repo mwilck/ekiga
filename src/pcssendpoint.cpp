@@ -360,7 +360,6 @@ GMPCSSEndPoint::CreateSoundChannel (const OpalPCSSConnection & connection,
       else 
 	sound_channel->GetVolume (play_vol);
 
-      
       /* Translators : the full sentence is "Opening %s for playing with
 	 plugin %s" or "Opening %s for recording with plugin" */
       gnomemeeting_threads_enter ();
@@ -371,8 +370,8 @@ GMPCSSEndPoint::CreateSoundChannel (const OpalPCSSConnection & connection,
 				(const char *) plugin);
       
       gm_main_window_set_volume_sliders_values (main_window, 
-						play_vol,
-						record_vol);
+						is_source?-1:play_vol,
+						is_source?record_vol:-1);
       gnomemeeting_threads_leave ();
 
       return sound_channel;
@@ -418,7 +417,6 @@ GMPCSSEndPoint::OnReleased (OpalConnection &connection)
 
   
   /* Play busy tone if it is not a missed call */
-  cout << "FIXME" << endl << flush;
   PlaySoundEvent ("busy_tone_sound"); 
 
   
