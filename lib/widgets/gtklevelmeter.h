@@ -42,6 +42,8 @@
 #include <gdk/gdk.h>
 #include <gtk/gtkwidget.h>
 
+#include <stdio.h>
+
 
 G_BEGIN_DECLS
 

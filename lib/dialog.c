@@ -88,6 +88,8 @@ gnomemeeting_error_dialog (GtkWindow *parent,
 			 GTK_MESSAGE_ERROR);
   
   va_end (args);
+
+  return dialog;
 }
 
 
@@ -137,7 +139,6 @@ warning_dialog_destroyed_cb (GtkWidget *w,
 			     gint i,
 			     gpointer data)
 {
-  GtkWidget *button = NULL;
   GList *children = NULL;
   
   children = gtk_container_get_children (GTK_CONTAINER (GTK_DIALOG (w)->vbox));
@@ -177,8 +178,8 @@ gnomemeeting_warning_dialog_on_widget (GtkWindow *parent,
   
   va_start (args, format);
   
-  g_return_if_fail (parent != NULL);
-  g_return_if_fail (key != NULL);
+  g_return_val_if_fail (parent != NULL, NULL);
+  g_return_val_if_fail (key != NULL, NULL);
 
      
   /* if not set, do_not_show will get the value of 0 */
@@ -186,7 +187,7 @@ gnomemeeting_warning_dialog_on_widget (GtkWindow *parent,
   
   if (do_not_show)
     /* doesn't show warning dialog as state is 'hide' */
-    return;
+    return NULL;
  
   button = 
     gtk_check_button_new_with_label (_("Do not show this dialog again"));

@@ -148,7 +148,7 @@ gm_entry_dialog_set_text (GmEntryDialog *ed,
 const char *
 gm_entry_dialog_get_text (GmEntryDialog *ed)
 {
-  g_return_if_fail (ed != NULL);
+  g_return_val_if_fail (ed != NULL, NULL);
 
   return gtk_entry_get_text (GTK_ENTRY (ed->field_entry));
 }

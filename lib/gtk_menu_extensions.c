@@ -294,14 +294,16 @@ gtk_build_menu (GtkWidget *menubar,
 			     menu [i].widget);      
 
     
-    if (menu [i].id)
+    if (menu [i].id) {
+      
       if (menu [i].type != MENU_SUBMENU_NEW)
 	g_object_set_data (G_OBJECT (menubar), menu [i].id,
 			   menu [i].widget);
       else
 	g_object_set_data (G_OBJECT (menubar), menu [i].id,
 			   menu_widget);
-      
+    }
+    
     if (!menu [i].sensitive)
       gtk_widget_set_sensitive (GTK_WIDGET (menu [i].widget), FALSE);
     

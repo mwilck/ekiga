@@ -99,7 +99,6 @@ static void
 gm_history_combo_class_init (GmHistoryComboClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  GmHistoryComboClass *combo_class = GM_HISTORY_COMBO_CLASS (klass);
   
   parent_class = g_type_class_peek_parent (klass);
   
@@ -132,8 +131,6 @@ gm_history_combo_construct (GmHistoryCombo *combo)
   GConfClient *client;
   
   GSList *contact_gconf;
-  GSList *iter;
-  GList  *contact_list = NULL;
   const char *key;
 
   g_object_get (G_OBJECT (combo), "key", &key, NULL);
@@ -290,11 +287,8 @@ gm_history_combo_add_entry (GmHistoryCombo *combo,
                             const char *new_entry)
 {
   GConfClient  *client;
-  GList        *contact_list;
   GSList       *contact_gconf;
   GList        *iter;
-  GList        *item;
-  GList        *last_item;
   char         *entry_content;
   unsigned int  max_entries;
   

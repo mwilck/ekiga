@@ -39,6 +39,9 @@
 
 #include <glib-object.h>
 #include <gtk/gtk.h>
+
+#include <string.h>
+
 #ifndef DISABLE_GCONF
 #include <gconf/gconf-client.h>
 #else

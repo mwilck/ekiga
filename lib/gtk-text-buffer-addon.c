@@ -202,7 +202,7 @@ static const struct _smiley table_smiley [] =
     {"|(", gm_emoticon_sad_glasses},
     {"|-(", gm_emoticon_sad_nose_glasses},
     {"|-)", gm_emoticon_happy_nose_glasses},
-    NULL
+    {NULL}
   };
 
 /**

@@ -39,6 +39,7 @@
 #include <gconf/gconf-client.h>
 #include <gtk/gtk.h>
 
+#include <string.h>
 
 G_BEGIN_DECLS
 

@@ -71,7 +71,6 @@ tree_selection_changed_cb (GtkTreeSelection *selection,
   int page = 0;
   gchar *name = NULL;
   GtkTreeIter iter;
-  GtkWidget *label = NULL;
   GtkTreeModel *model = NULL;
   GnomePrefsWindow *gpw = NULL;
 
@@ -898,12 +897,12 @@ gnome_prefs_window_subsection_new (GtkWidget *window,
   GtkTreeIter child_iter;
     
   if (!window)
-    return;
+    return NULL;
   
   gpw = (GnomePrefsWindow *) g_object_get_data (G_OBJECT (window), "gpw");
 
   if (!gpw || !section_name)
-    return;
+    return NULL;
 
   container = gtk_vbox_new (FALSE, 4);
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (gpw->sections_tree_view));

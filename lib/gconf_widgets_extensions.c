@@ -84,7 +84,6 @@ entry_changed_nt (GConfClient *client,
 {
   GtkWidget *e = NULL;
   gchar *current_value = NULL;
-  gulong sid = 0;
   
   if (entry->value->type == GCONF_VALUE_STRING) {
 
