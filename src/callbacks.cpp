@@ -120,7 +120,7 @@ void about_callback (GtkWidget *widget, gpointer parent_window)
       "Damien Sandras <dsandras@seconix.com>",
       "",
       N_("Code Contributors:"),
-      "Kenneth Rohde Christiansen  <kenneth@gnu.org>",
+      "Kenneth Rohde Christiansen <kenneth@gnu.org>",
       "Miguel Rodríguez Pérez <migrax@terra.es>",
       "Paul <paul  at  argo dot dyndns dot org>", 
       "Roger Hardiman <roger at freebsd dot org>",
@@ -128,9 +128,9 @@ void about_callback (GtkWidget *widget, gpointer parent_window)
       N_("Contributors:"),
       "Alex Larsson <alexl@redhat.com>",
       "Alp Toker <alp@toker.com>",
-      "Christian  Rose <menthos@menthos.com>",
-      "Christopher R. Gabriel  <cgabriel@cgabriel.org>",
-      "Fabrice  Alphonso <fabrice.alphonso@wanadoo.fr>", 
+      "Christian Rose <menthos@menthos.com>",
+      "Christopher R. Gabriel <cgabriel@cgabriel.org>",
+      "Fabrice Alphonso <fabrice.alphonso@wanadoo.fr>", 
       "Florin <florin@mandrakesoft.com>,"
       "Kilian Krause <kk@verfaction.de>",
       "Rafael Pinilla <r_pinilla@yahoo.com>",
@@ -168,7 +168,7 @@ void about_callback (GtkWidget *widget, gpointer parent_window)
 
   abox = gnome_about_new ("GnomeMeeting",
 			  VERSION,
-			  _("Copyright © 2000, 2002 Damien Sandras"),
+			  "Copyright © 2000, 2002 Damien Sandras",
                           /* Translators: Please test to see if your translation
                            * looks OK and fits within the box */
 			  _("GnomeMeeting is a full-featured H.323\nvideo conferencing application."),
@@ -210,8 +210,8 @@ void gconf_error_callback (GConfClient *, GError *)
     gtk_message_dialog_new (NULL, GTK_DIALOG_MODAL,
 			    GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE,
 			    _("An error has happened in the configuration"
-			    " backend\nMaybe some of your settings won't"
-			      " be stored"));
+			    " backend.\nMaybe ome of your settings won't "
+			      "be stored."));
 
   gtk_dialog_run (GTK_DIALOG (dialog));
   gtk_widget_destroy (dialog);
