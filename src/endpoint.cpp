@@ -1917,18 +1917,15 @@ GMEndPoint::OnRTPTimeout (PTimer &,
 
   gdk_threads_enter ();
   gm_main_window_flash_message (main_window, msg);
-
-  if (gm_conf_get_int (USER_INTERFACE_KEY "main_window/control_panel_section") 
-      == 0)
-    gm_main_window_update_stats (main_window,
-				 lost_packets_per,
-				 late_packets_per,
-				 out_of_order_packets_per,
-				 (int) (stats.jitter_buffer_size / 8),
-				 stats.v_re_bandwidth,
-				 stats.v_tr_bandwidth,
-				 stats.a_re_bandwidth,
-				 stats.a_tr_bandwidth);
+  gm_main_window_update_stats (main_window,
+			       lost_packets_per,
+			       late_packets_per,
+			       out_of_order_packets_per,
+			       (int) (stats.jitter_buffer_size / 8),
+			       stats.v_re_bandwidth,
+			       stats.v_tr_bandwidth,
+			       stats.a_re_bandwidth,
+			       stats.a_tr_bandwidth);
   gdk_threads_leave ();
 
 

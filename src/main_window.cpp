@@ -197,6 +197,13 @@ static void gm_mw_init_stats (GtkWidget *);
 
 
 /* DESCRIPTION  : /
+ * BEHAVIOR     : Builds the roster part of the main window.
+ * PRE          : The given GtkWidget pointer must be the main window GMObject. 
+ */
+static void gm_mw_init_roster (GtkWidget *);
+
+
+/* DESCRIPTION  : /
  * BEHAVIOR     : Builds the dialpad part of the main window.
  * PRE          : The given GtkWidget pointer must be the main window GMObject. 
  */
@@ -1261,6 +1268,93 @@ gm_mw_init_stats (GtkWidget *main_window)
   label = gtk_label_new (_("Statistics"));
 
   gtk_notebook_append_page (GTK_NOTEBOOK (mw->main_notebook), vbox, label);
+}
+
+
+static void
+gm_mw_init_roster (GtkWidget *main_window)
+{
+  GmWindow *mw = NULL;
+  
+  GtkWidget *table = NULL;
+  GtkWidget *label = NULL;
+
+  GtkWidget *scroll = NULL;
+  GtkWidget *frame = NULL;
+
+  GtkTreeIter iter;
+  GtkTreeStore *model = NULL;
+  GtkTreeSelection *selection = NULL;
+  GtkTreeViewColumn *column = NULL;
+  GtkCellRenderer *cell = NULL;
+  GtkWidget *tree_view = NULL;
+ 
+  
+  g_return_if_fail (main_window != NULL);
+
+  mw = gm_mw_get_mw (main_window);
+  
+  table = gtk_table_new (1, 1, TRUE);
+  gtk_container_set_border_width (GTK_CONTAINER (table), 6);
+  
+  /* The Tree View */
+  frame = gtk_frame_new (NULL);
+  gtk_table_attach_defaults (GTK_TABLE (table), frame, 0, 1, 0, 1);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
+  model = gtk_tree_store_new (2,
+			      G_TYPE_STRING,
+			      G_TYPE_STRING); 
+
+  scroll = gtk_scrolled_window_new (NULL, NULL);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scroll), 
+				  GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+  gtk_container_add (GTK_CONTAINER (frame), scroll);
+
+  tree_view = gtk_tree_view_new ();  
+  gtk_tree_view_set_model (GTK_TREE_VIEW (tree_view), 
+			   GTK_TREE_MODEL (model));
+  
+  gtk_container_add (GTK_CONTAINER (scroll), tree_view);
+  gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (tree_view), FALSE);
+  
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view));
+  gtk_tree_selection_set_mode (GTK_TREE_SELECTION (selection),
+			       GTK_SELECTION_BROWSE);
+
+  /* Two renderers for one column */
+  column = gtk_tree_view_column_new ();
+  cell = gtk_cell_renderer_text_new (); /* Contact Name or Account Name */
+  gtk_tree_view_column_pack_start (column, cell, FALSE);
+  gtk_tree_view_column_set_attributes (column, cell, 
+				       "text", 0, NULL);
+
+  cell = gtk_cell_renderer_text_new (); /* Number of voice mails, if account */
+  gtk_tree_view_column_pack_start (column, cell, FALSE);
+  gtk_tree_view_column_set_attributes (column, cell, 
+				       "text", 1, NULL);
+
+  gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view),
+			       GTK_TREE_VIEW_COLUMN (column));
+
+  /* Test */
+  gtk_tree_store_append (GTK_TREE_STORE (model), &iter, NULL);
+  gtk_tree_store_set (GTK_TREE_STORE (model),
+		      &iter,
+		      0, _("Accounts"), 
+		      1, _("Hehe"),
+		      -1);
+  gtk_tree_store_append (GTK_TREE_STORE (model), &iter, NULL);
+  gtk_tree_store_set (GTK_TREE_STORE (model),
+		      &iter,
+		      0, _("Contacts"), 
+		      1, _("Hehe"),
+		      -1);
+  gtk_widget_show_all (tree_view);
+
+  label = gtk_label_new (_("Favorites"));
+
+  gtk_notebook_append_page (GTK_NOTEBOOK (mw->main_notebook),
+			    table, label);
 }
 
 
@@ -3753,6 +3847,7 @@ gm_main_window_new ()
   gtk_notebook_set_scrollable (GTK_NOTEBOOK (mw->main_notebook), TRUE);
 
   gm_mw_init_stats (window);
+  //gm_mw_init_roster (window);
   gm_mw_init_dialpad (window);
   gm_mw_init_audio_settings (window);
   gm_mw_init_video_settings (window);
@@ -4040,9 +4135,13 @@ gm_main_window_update_stats (GtkWidget *main_window,
 
   g_return_if_fail (mw != NULL);
 
-  stats_msg =  g_strdup_printf (_("Lost packets: %.1f %%\nLate packets: %.1f %%\nOut of order packets: %.1f %%\nJitter buffer: %d ms"), lost, late, out_of_order, jitter);
-  gtk_label_set_text (GTK_LABEL (mw->stats_label), stats_msg);
-  g_free (stats_msg);
+  if (GTK_WIDGET_REALIZED (mw->stats_label)) {
+
+    stats_msg =  g_strdup_printf (_("Lost packets: %.1f %%\nLate packets: %.1f %%\nOut of order packets: %.1f %%\nJitter buffer: %d ms"), lost, late, out_of_order, jitter);
+    gtk_label_set_text (GTK_LABEL (mw->stats_label), stats_msg);
+    g_free (stats_msg);
+  }
+
 
   stats_drawing_area_new_data (mw->stats_drawing_area,
 			       new_video_octets_received,
