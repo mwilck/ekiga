@@ -389,24 +389,24 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/general/sound_events/enable_dial_tone_sound</key>
-      <applyto>/apps/gnomemeeting/general/sound_events/enable_dial_tone_sound</applyto>
+      <key>/schemas/apps/gnomemeeting/general/sound_events/enable_ring_tone_sound</key>
+      <applyto>/apps/gnomemeeting/general/sound_events/enable_ring_tone_sound</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
       <default>true</default>
       <locale name="C">
-	<short>Play or not the dial tone sound</short>
+	<short>Play or not the ring tone sound</short>
 	<long>The chosen sound will be played when calling somebody, if enabled.</long>
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/general/sound_events/dial_tone_sound</key>
-      <applyto>/apps/gnomemeeting/general/sound_events/dial_tone_sound</applyto>
+      <key>/schemas/apps/gnomemeeting/general/sound_events/ring_tone_sound</key>
+      <applyto>/apps/gnomemeeting/general/sound_events/ring_tone_sound</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
-      <default>dialtone.wav</default>
+      <default>ringtone.wav</default>
       <locale name="C">
-	<short>The dial tone sound</short>
+	<short>The ring tone sound</short>
 	<long>The sound that will be played when calling somebody, if enabled.</long>
       </locale>
     </schema>
@@ -883,6 +883,17 @@
       <locale name="C">
 	<short>Gatekeeper alias</short>
 	<long>The Gatekeeper alias to use when registering (string, or E164 ID if only 0123456789#).</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/gatekeeper/register_alias_as_primary</key>
+      <applyto>/apps/gnomemeeting/gatekeeper/register_alias_as_primary</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>bool</type>
+      <default>false</default>
+      <locale name="C">
+	<short>Gatekeeper alias as primary alias</short>
+	<long>Use this option to ensure the above alias is used as the primary alias when registering with a gatekeeper. This may be required if your gatekeeper can only perform authentication using the first alias in the list.</long>
       </locale>
     </schema>
     <schema>

@@ -331,7 +331,6 @@ void GMURLHandler::Main ()
       
       if (!transfer_call) {
 
-	gnomemeeting_main_window_enable_statusbar_progress (true);
 	msg = g_strdup_printf (_("Calling %s"), 
 			       (const char *) call_address);
       }
@@ -373,7 +372,6 @@ void GMURLHandler::Main ()
     else {
 
       gnomemeeting_threads_enter ();
-      gnomemeeting_main_window_enable_statusbar_progress (false);
       gnomemeeting_menu_update_sensitivity (GMH323EndPoint::Standby);
       gnomemeeting_main_window_update_sensitivity (GMH323EndPoint::Standby);
 

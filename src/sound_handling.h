@@ -74,19 +74,31 @@ void gnomemeeting_sound_daemons_suspend ();
 void gnomemeeting_sound_daemons_resume ();
 
 
-/* DESCRIPTION  :  This callback is called by a timer function.
- * BEHAVIOR     :  Plays the sound choosen in the gnome control center.
- * PRE          :  The pointer to the docklet must be valid.
- */
-int gnomemeeting_sound_play_ringtone (GtkWidget *widget);
-
-
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Selects the Mic as recording input. OSS only.
  * PRE          :  /
  */
 void gnomemeeting_mixers_mic_select (void);
      
+
+/* GnomeMeeting Sound Event class */
+class GMSoundEvent
+{
+
+ public:
+
+  /* DESCRIPTION  :  The constructor.
+   * BEHAVIOR     :  Builds the PSound corresponding to the event name
+   *                 and plays it if it is valid.
+   * PRE          :  The sound event name.
+   */
+  GMSoundEvent (PString);
+
+ private:
+  void Main ();
+
+  PString event;
+};
 
 
 /* Audio Tester class */

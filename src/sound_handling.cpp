@@ -42,9 +42,8 @@
 #include "sound_handling.h"
 #include "endpoint.h"
 #include "misc.h"
-#include "tray.h"
 #include "dialog.h"
-
+#include "gconf_widgets_extensions.h"
 
 #ifdef HAS_IXJ
 #include <ixjlid.h>
@@ -61,6 +60,9 @@
 #include <machine/soundcard.h>
 #endif
 #endif
+
+#include <ptclib/pwavfile.h>
+
 
 static void dialog_response_cb (GtkWidget *, gint, gpointer);
   
@@ -158,26 +160,73 @@ gnomemeeting_mixers_mic_select (void)
 }
 
 
-gint 
-gnomemeeting_sound_play_ringtone (GtkWidget *widget)
+GMSoundEvent::GMSoundEvent (PString ev)
 {
-  /* First we check the current displayed image in the systray.
-     We can't call gnomemeeting_threads_enter as idles and timers
-     are executed in the main thread */
-#ifndef DISABLE_GNOME
-  gdk_threads_enter ();
-  gboolean is_ringing = gnomemeeting_tray_is_ringing (widget);
-  gdk_threads_leave ();
+  event = ev;
 
-  /* If the systray icon contains the ringing pic */
-  if (is_ringing) {
+  Main ();
+}
 
-    gnome_triggers_do ("", NULL, "gnomemeeting", 
-		       "incoming_call", NULL);
+
+void GMSoundEvent::Main ()
+{
+  gchar *sound_file = NULL;
+  gchar *device = NULL;
+  gchar *plugin = NULL;
+
+  PSound sound;
+  PSoundChannel *channel = NULL;
+
+  PBYTEArray buffer;  
+
+  PString psound_file;
+  PString enable_event_gconf_key;
+  PString event_gconf_key;
+  
+  plugin = gconf_get_string (AUDIO_DEVICES_KEY "plugin");
+  device = gconf_get_string (AUDIO_DEVICES_KEY "output_device");
+
+  enable_event_gconf_key = PString (SOUND_EVENTS_KEY) + "enable_" + event;
+  event_gconf_key = PString (SOUND_EVENTS_KEY) + event;
+  
+  if (gconf_get_bool ((gchar *) (const char *) enable_event_gconf_key)) {
+
+    sound_file = gconf_get_string ((gchar *) (const char *) event_gconf_key);
+    psound_file = PString (sound_file);
+
+    if (psound_file.Find ("/") == P_MAX_INDEX)
+      psound_file = "/usr/share/sounds/gnomemeeting/" + psound_file;
+
+    PWAVFile wav (psound_file, PFile::ReadOnly);
+
+    if (wav.IsValid ()) {
+
+      channel =
+	PSoundChannel::CreateOpenedChannel (plugin, device,
+					    PSoundChannel::Player, 
+					    wav.GetChannels (),
+					    wav.GetSampleRate (),
+					    wav.GetSampleSize ());
+    
+
+      if (channel) {
+
+	buffer.SetSize (wav.GetDataLength ());
+	wav.Read (buffer.GetPointer (), wav.GetDataLength ());
+      
+	sound = buffer;
+	channel->PlaySound (sound);
+	channel->Close ();
+    
+	delete (channel);
+      }
+    }
+      
+    g_free (sound_file);
   }
-#endif
-
-  return TRUE;
+  
+  g_free (device);
+  g_free (plugin);
 }
 
 

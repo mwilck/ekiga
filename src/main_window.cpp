@@ -100,8 +100,6 @@ static void colour_changed             (GtkAdjustment *, gpointer);
 static void contrast_changed           (GtkAdjustment *, gpointer);
 static void dialpad_button_clicked     (GtkButton *, gpointer);
 
-static int
-gnomemeeting_main_window_appbar_update (gpointer); 
 static gint gm_quit_callback (GtkWidget *, GdkEvent *, gpointer);
 static void gnomemeeting_init_main_window_video_settings ();
 static void gnomemeeting_init_main_window_audio_settings ();
@@ -778,22 +776,6 @@ gm_quit_callback (GtkWidget *widget, GdkEvent *event,
 
 
 /* The functions */
-static int
-gnomemeeting_main_window_appbar_update (gpointer data) 
-{
-  GtkWidget *progress = (GtkWidget *) data;
-  
-  gdk_threads_enter ();
-
-  if (GTK_WIDGET_VISIBLE (GTK_WIDGET (progress)))
-    gtk_progress_bar_pulse (GTK_PROGRESS_BAR (progress));
-
-  gdk_threads_leave ();
-
-  return 1;
-}
-
-
 void
 gnomemeeting_main_window_enable_statusbar_progress (gboolean i)
 {
@@ -801,18 +783,11 @@ gnomemeeting_main_window_enable_statusbar_progress (gboolean i)
   
   if (i) {
     
-    gw->progress_timeout =
-      gtk_timeout_add (2,
-		       gnomemeeting_main_window_appbar_update, 
-		       gw->progressbar);
 
     gtk_widget_show (gw->progressbar);
   }
   else {
 
-    if (gw->progress_timeout != 0)
-      gtk_timeout_remove (gw->progress_timeout);
-    gw->progress_timeout = 0;
 
     gtk_widget_hide (gw->progressbar);
   }    

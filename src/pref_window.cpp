@@ -688,13 +688,13 @@ gnomemeeting_prefs_window_sound_events_list_build (GtkTreeView *tree_view)
 		      3, SOUND_EVENTS_KEY "enable_incoming_call_sound",
 		      -1);
 
-  enabled = gconf_get_bool (SOUND_EVENTS_KEY "enable_dial_tone_sound");
+  enabled = gconf_get_bool (SOUND_EVENTS_KEY "enable_ring_tone_sound");
   gtk_list_store_append (GTK_LIST_STORE (model), &iter);
   gtk_list_store_set (GTK_LIST_STORE (model), &iter,
 		      0, enabled,
-		      1, _("Play dial tone"),
-		      2, SOUND_EVENTS_KEY "dial_tone_sound",
-		      3, SOUND_EVENTS_KEY "enable_dial_tone_sound",
+		      1, _("Play ring tone"),
+		      2, SOUND_EVENTS_KEY "ring_tone_sound",
+		      3, SOUND_EVENTS_KEY "enable_ring_tone_sound",
 		      -1);
 
   enabled = gconf_get_bool (SOUND_EVENTS_KEY "enable_busy_tone_sound");
@@ -870,7 +870,7 @@ gnomemeeting_init_pref_window_general (GtkWidget *window,
   entry =
     gnome_prefs_entry_new (subsection, _("Sur_name:"),
 			   PERSONAL_DATA_KEY "lastname",
-			   _("Enter your last name."), 1, false);
+			   _("Enter your surname."), 1, false);
   gtk_widget_set_size_request (GTK_WIDGET (entry), 250, -1);
   gtk_entry_set_max_length (GTK_ENTRY (entry), 65);
 
@@ -1206,6 +1206,8 @@ gnomemeeting_init_pref_window_gatekeeper (GtkWidget *window,
     gnome_prefs_entry_new (subsection, _("Gatekeeper _password:"), GATEKEEPER_KEY "gk_password", _("The Gatekeeper password to use for H.235 authentication to the Gatekeeper."), 4, false);
   gtk_entry_set_visibility (GTK_ENTRY (entry), FALSE);
 
+  gnome_prefs_toggle_new (subsection, _("Register this alias as the primary alias with the gatekeeper"), GATEKEEPER_KEY "register_alias_as_primary", _("Use this option to ensure the above alias is used as the primary alias when registering with a gatekeeper. This may be required if your gatekeeper can only perform authentication using the first alias in the list."), 5);
+  
   gnome_prefs_int_option_menu_new (subsection, _("Registering method:"), options, GATEKEEPER_KEY "registering_method", _("Registering method to use"), 0);
 
   gnomemeeting_pref_window_add_update_button (container, GTK_STOCK_APPLY, _("_Apply"), GTK_SIGNAL_FUNC (gatekeeper_update_button_clicked), _("Click here to update your Gatekeeper settings."), 0);

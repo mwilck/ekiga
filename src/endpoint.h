@@ -575,13 +575,22 @@ class GMH323EndPoint : public H323EndPoint
   PDECLARE_NOTIFIER(PTimer, GMH323EndPoint, OnNoAnswerTimeout);
 
 
-  /* DESCRIPTION  :  Notifier called after second while waiting for an answer
+  /* DESCRIPTION  :  Notifier called every second while waiting for an answer
    *                 for an incoming call.
    * BEHAVIOR     :  Display an animation in the docklet and play a ring
    *                 sound.
    * PRE          :  /
    */
   PDECLARE_NOTIFIER(PTimer, GMH323EndPoint, OnCallPending);
+
+
+  /* DESCRIPTION  :  Notifier called every 2 seconds while waiting for an
+   *                 answer for an outging call.
+   * BEHAVIOR     :  Display an animation in the main winow and play a ring
+   *                 sound.
+   * PRE          :  /
+   */
+  PDECLARE_NOTIFIER(PTimer, GMH323EndPoint, OnOutgoingCall);
 
   
   PString called_address;
@@ -601,7 +610,8 @@ class GMH323EndPoint : public H323EndPoint
   PTimer GatewayIPTimer;
   PTimer NoAnswerTimer;
   PTimer CallPendingTimer;
-
+  PTimer OutgoingCallTimer;
+    
   BOOL ils_registered;
 
   GmWindow *gw; 

@@ -1,5 +1,23 @@
 2003-12-01 Damien Sandras  <dsandras@seconix.com>
 
+	* configure.in: Incremented SCHEMA_AGE.
+
+	* gnomemeeting.schemas.in.in: Added support for ring tone and busy tone
+	and also to force registering the alias as primary alias on 
+	gatekeepers.
+
+	* sounds/Makefile.am: Added support for ring tone and busy tone.
+
+	* sounds/busytone.wav, sounds/ringtone.wav: Added to CVS.
+	
+	* src/config.cpp, src/endpoint.cpp, src/endpoint.h, 
+	src/main_window.cpp, src/pref_window.cpp, src/sound_handling.cpp,
+	src/sound_handling.h, src/urlhandler.cpp: Added support for ring tone 
+	and busy tone and also to force registering the alias as 
+	primary alias on gatekeepers.
+	
+2003-12-01 Damien Sandras  <dsandras@seconix.com>
+
 	* src/endpoint.cpp, src/endpoint.h: Open sound in ReadOnly mode 
 	and use mute for sound events to make sure only one is played at a time
 	and that only one channel is used at a time.

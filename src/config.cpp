@@ -1711,11 +1711,11 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
 			   NULL, NULL, NULL);
 
   gconf_client_notify_add (client,
-			   SOUND_EVENTS_KEY "enable_dial_tone_sound",
+			   SOUND_EVENTS_KEY "enable_ring_tone_sound",
 			   sound_events_list_changed_nt,
 			   NULL, NULL, NULL);
   gconf_client_notify_add (client,
-			   SOUND_EVENTS_KEY "dial_tone_sound",
+			   SOUND_EVENTS_KEY "ring_tone_sound",
 			   sound_events_list_changed_nt,
 			   NULL, NULL, NULL);
   

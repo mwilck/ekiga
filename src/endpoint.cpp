@@ -1,3 +1,4 @@
+
 /* GnomeMeeting -- A Video-Conferencing application
  * Copyright (C) 2000-2003 Damien Sandras
  *
@@ -66,8 +67,6 @@
 #include <speexcodec.h>
 #include <ptclib/http.h>
 #include <ptclib/html.h>
-#include <ptclib/pwavfile.h>
-#include <ptclib/pstun.h>
 
 
 #define new PNEW
@@ -120,6 +119,7 @@ GMH323EndPoint::GMH323EndPoint ()
 
   NoAnswerTimer.SetNotifier (PCREATE_NOTIFIER (OnNoAnswerTimeout));
   CallPendingTimer.SetNotifier (PCREATE_NOTIFIER (OnCallPending));
+  OutgoingCallTimer.SetNotifier (PCREATE_NOTIFIER (OnOutgoingCall));
 }
 
 
@@ -152,9 +152,21 @@ GMH323EndPoint::MakeCallLocked (const PString & call_addr,
 				PString & call_token)
 {
   PWaitAndSignal m(lca_access_mutex);
+  H323Connection *con = NULL;
+  
   called_address = call_addr;
+  
+  con = H323EndPoint::MakeCallLocked (call_addr, call_token);
 
-  return H323EndPoint::MakeCallLocked (call_addr, call_token);
+  if (con)
+    OutgoingCallTimer.RunContinuous (PTimeInterval (5));
+  else {
+    
+    OutgoingCallTimer.Stop ();
+    GMSoundEvent ("busy_tone_sound");
+  }
+  
+  return con;
 }
 
 
@@ -809,7 +821,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
     
   /* The timers */
   NoAnswerTimer.SetInterval (0, 15);
-  CallPendingTimer.RunContinuous (PTimeInterval (0, 1));
+  CallPendingTimer.RunContinuous (PTimeInterval (5));
 
     
   /* Incoming Call Popup, if needed */
@@ -949,6 +961,7 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   /* Stop the Timers */
   NoAnswerTimer.Stop ();
   CallPendingTimer.Stop ();
+  OutgoingCallTimer.Stop ();
 
 
 #ifdef HAS_IXJ
@@ -1222,9 +1235,10 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   /* Stop the Timers */
   NoAnswerTimer.Stop ();
-  CallPendingTimer.Stop ();
+  CallPendingTimer.Stop (); 
+  OutgoingCallTimer.Stop ();
 
-
+  
   /* No need to do all that if we are simply receiving an incoming call
      that was rejected because of DND */
   if (GetCallingState () != GMH323EndPoint::Called
@@ -1276,18 +1290,20 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   is_receiving_video = FALSE;
   is_transmitting_audio = FALSE;
   is_receiving_audio = FALSE;
-  
+
 
   /* No Audio reception or transmission */
   gnomemeeting_menu_update_sensitivity (GMH323EndPoint::Standby);
   gnomemeeting_main_window_update_sensitivity (GMH323EndPoint::Standby);
   gnomemeeting_addressbook_update_menu_sensitivity ();
-  
-  /* Resume sound daemons */
-  gnomemeeting_sound_daemons_resume ();
   gnomemeeting_threads_leave ();
 
+  
+  /* Play busy tone */
+  GMSoundEvent ("busy_tone_sound");
+  gnomemeeting_sound_daemons_resume ();
 
+  
   /* Update internal state */
   SetCallingState (GMH323EndPoint::Standby);
 
@@ -1336,13 +1352,16 @@ GMH323EndPoint::SetUserNameAndAlias ()
   gchar *lastname = NULL;
   gchar *local_name = NULL;
   gchar *alias = NULL;
-  
+  BOOL gk_alias_as_first = FALSE;
 
+  
   /* Set the local User name */
   gnomemeeting_threads_enter ();
   firstname = gconf_get_string (PERSONAL_DATA_KEY "firstname");
   lastname = gconf_get_string (PERSONAL_DATA_KEY "lastname");
   alias = gconf_get_string (GATEKEEPER_KEY "gk_alias");  
+  gk_alias_as_first =
+    gconf_get_bool (GATEKEEPER_KEY "register_alias_as_primary");  
   gnomemeeting_threads_leave ();
 
   
@@ -1354,17 +1373,26 @@ GMH323EndPoint::SetUserNameAndAlias ()
       local_name = g_strdup (firstname);
 
     SetLocalUserName (local_name);
-
-    g_free (firstname);
-    g_free (lastname);
-    g_free (local_name);
   }
 
   if (alias && strcmp (alias, "")) {
 
-    AddAliasName (alias);
-    g_free (alias);
+    if (!gk_alias_as_first)
+      AddAliasName (alias);
+    else {
+
+      SetLocalUserName (alias);
+
+      if (local_name && strcmp (local_name, ""))
+	AddAliasName (local_name);
+    }
   }
+
+  
+  g_free (alias);
+  g_free (firstname);
+  g_free (lastname);
+  g_free (local_name);
 }
 
 
@@ -1548,7 +1576,8 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
   /* Stop the OnNoAnswerTimers */
   NoAnswerTimer.Stop ();
   CallPendingTimer.Stop ();
-
+  OutgoingCallTimer.Stop ();
+  
   
   gnomemeeting_threads_enter ();
   sd = gconf_get_bool (AUDIO_SETTINGS_KEY "sd");
@@ -2063,20 +2092,9 @@ GMH323EndPoint::OnCallPending (PTimer &,
 			       INT) 
 {
   GmWindow *gw = NULL;
-  PSoundChannel *channel = NULL;
   
   BOOL is_ringing = FALSE;
 
-  gchar *sound_file = NULL;
-  gchar *device = NULL;
-  gchar *plugin = NULL;
-
-  PSound sound;
-  PString psound_file;
-  
-  plugin = gconf_get_string (AUDIO_DEVICES_KEY "plugin");
-  device = gconf_get_string (AUDIO_DEVICES_KEY "output_device");
-  
   gw = GnomeMeeting::Process ()->GetMainWindow ();
 
   gdk_threads_enter ();
@@ -2085,46 +2103,28 @@ GMH323EndPoint::OnCallPending (PTimer &,
   gdk_threads_leave ();
 
   
-  if (gconf_get_bool (SOUND_EVENTS_KEY "enable_incoming_call_sound")) {
-
-    sound_file = gconf_get_string (SOUND_EVENTS_KEY "incoming_call_sound");
-    psound_file = PString (sound_file);
-
-    if (psound_file.Find ("/") == P_MAX_INDEX)
-      psound_file = "/usr/share/sounds/gnomemeeting/" + psound_file;
-
-    PWAVFile wav (psound_file, PFile::ReadOnly);
+  if (is_ringing) {
 
     sound_event_mutex.Wait ();
-    if (is_ringing && wav.IsValid ()) {
-
-      channel =
-	PSoundChannel::CreateOpenedChannel (plugin, device,
-					    PSoundChannel::Player, 
-					    wav.GetChannels (),
-					    wav.GetSampleRate (),
-					    wav.GetSampleSize ());
-    
-
-      if (channel) {
-
-	PBYTEArray buffer;
-	buffer.SetSize (wav.GetDataLength ());
-	wav.Read (buffer.GetPointer (), wav.GetDataLength ());
-      
-	sound = buffer;
-	channel->PlaySound (sound);
-	channel->Close ();
-    
-	delete (channel);
-      }
-    }
+    GMSoundEvent ("incoming_call_sound");
     sound_event_mutex.Signal ();
-    
-    g_free (sound_file);
   }
+
   
-  g_free (device);
+  CallPendingTimer.RunContinuous (PTimeInterval (0, 1));
+}
+
+
+void
+GMH323EndPoint::OnOutgoingCall (PTimer &,
+				INT) 
+{
+  sound_event_mutex.Wait ();
+  GMSoundEvent ("ring_tone_sound");
+  sound_event_mutex.Signal ();
+
+  
+  OutgoingCallTimer.RunContinuous (PTimeInterval (0, 3));
 }
 
 
