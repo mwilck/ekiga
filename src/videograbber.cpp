@@ -715,6 +715,11 @@ void GMVideoTester::Main ()
       else
 	grabber->Close ();
 
+#ifdef TRY_PLUGINS
+      if (grabber)
+	delete (grabber)
+#endif
+
       if (error_code != -1)
 	break;
     }
@@ -768,8 +773,10 @@ void GMVideoTester::Main ()
   gdk_threads_leave ();
   g_free (msg);
 
+#ifndef TRY_PLUGINS
   if (grabber)
     delete (grabber);
+#endif
 
   gdk_threads_enter ();
   gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (dw->progress), 1.0);
