@@ -261,7 +261,7 @@ stats_drawing_area_exposed (GtkWidget *drawing_area)
   GdkPoint points [100];
 
   int width_step = GTK_WIDGET (drawing_area)->allocation.width / 100;
-  int height_step = GTK_WIDGET (drawing_area)->allocation.height / 15;
+  int height_step = GTK_WIDGET (drawing_area)->allocation.height / 5;
 
   black_clr.red = 0;
   black_clr.green = 0;
@@ -323,6 +323,8 @@ stats_drawing_area_exposed (GtkWidget *drawing_area)
   gdk_draw_segments (GDK_DRAWABLE (drawing_area->window), gc, s, cpt);
   gdk_window_set_background (drawing_area->window, &black_clr);
 
+  gdk_gc_set_line_attributes (gc, 2, GDK_LINE_SOLID, 
+			      GDK_CAP_ROUND, GDK_JOIN_BEVEL),
 
   /* Transmitted audio */
   gdk_gc_set_foreground (gc, &red_clr);
@@ -1096,7 +1098,7 @@ void gnomemeeting_init_main_window ()
     gtk_widget_hide (GTK_WIDGET (gw->statusbar));
 
   
-  gtk_widget_set_size_request (GTK_WIDGET (gw->main_notebook), 230, 170);
+  gtk_widget_set_size_request (GTK_WIDGET (gw->main_notebook), 230, -1);
   gtk_widget_set_size_request (GTK_WIDGET (gm), -1, -1);
 
   g_signal_connect_after (G_OBJECT (gw->main_notebook), "switch-page",
@@ -1152,21 +1154,31 @@ void gnomemeeting_init_main_window_log ()
 void gnomemeeting_init_main_window_stats ()
 {
   GtkWidget *frame = NULL;
+  GtkWidget *frame2 = NULL;
   GtkWidget *label = NULL;
-
+  GtkWidget *vbox = NULL;
 
   GmWindow *gw = gnomemeeting_get_main_window (gm);
-
 
   frame = gtk_frame_new (_("Statistics"));
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_ETCHED_OUT);
 
+  
+  /* The first frame with statistics display */
+  frame2 = gtk_frame_new (NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
+
+  vbox = gtk_vbox_new (FALSE, 4);
   drawing_area = gtk_drawing_area_new ();
- 
+  gtk_box_pack_start (GTK_BOX (vbox), frame2, FALSE, TRUE, 0);
+  gtk_container_add (GTK_CONTAINER (frame2), drawing_area);
+
+  gtk_widget_set_size_request (GTK_WIDGET (frame2), 180, 67);
+
   g_signal_connect (G_OBJECT (drawing_area), "expose_event",
 		    G_CALLBACK (stats_drawing_area_exposed), NULL);
 
-  gtk_container_add (GTK_CONTAINER (frame), drawing_area);    
+  gtk_container_add (GTK_CONTAINER (frame), vbox);    
   gtk_container_set_border_width (GTK_CONTAINER (frame),
 				  GNOME_PAD_SMALL);
 
@@ -1175,6 +1187,11 @@ void gnomemeeting_init_main_window_stats ()
 			      GTK_WIDGET (drawing_area)->allocation.height);
 
 
+  /* The second one with some labels */
+  label = gtk_label_new (_("Send Time:\nReceive Time:\nPackets:\nRound trip delay:"));
+  gtk_misc_set_alignment (GTK_MISC (label), 0, 0);
+  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, TRUE, 0);
+  
   label = gtk_label_new (_("Statistics"));
 
   gtk_notebook_append_page (GTK_NOTEBOOK (gw->main_notebook), frame, label);
