@@ -18,6 +18,8 @@ gnomemeeting_SOURCES =		\
 	endpoint.h		\
 	menu.cpp		\
 	menu.h			\
+	misc_widgets.cpp	\
+	misc_widgets.h		\
 	toolbar.cpp		\
 	toolbar.h		\
 	pref_window.cpp		\
