@@ -66,6 +66,20 @@ void gnomemeeting_main_window_update_sensitivity (BOOL,
 						  BOOL);
 
 
+void gm_main_window_set_video_sliders_values (GtkWidget *,
+					      int,
+					      int,
+					      int, 
+					      int);
+
+
+void gm_main_window_get_video_sliders_values (GtkWidget *,
+					      int &,
+					      int &,
+					      int &, 
+					      int &);
+
+
 void gm_main_window_set_volume_sliders_values (GtkWidget *,
 					       int, 
 					       int);
@@ -80,7 +94,7 @@ void gm_main_window_get_volume_sliders_values (GtkWidget *,
  * BEHAVIOR     :  Builds the main window and adds the popup to the image.
  * PRE          :  Accels.
  **/
-GtkWidget *gnomemeeting_main_window_new (GmWindow *);
+GtkWidget *gm_main_window_new (GmWindow *);
 
 
 

@@ -442,7 +442,7 @@ void GnomeMeeting::BuildGUI ()
   gw->docklet = gnomemeeting_tray_new ();
   gw->tray_popup_menu = gnomemeeting_tray_init_menu (gw->docklet);
 #endif
-  gnomemeeting_main_window_new (gw);
+  gm_main_window_new (gw);
 
 
 #ifndef DISABLE_GNOME

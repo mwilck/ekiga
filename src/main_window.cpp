@@ -113,6 +113,24 @@ static GmWindow *gm_mw_get_mw (GtkWidget *);
 static void video_window_shown_cb (GtkWidget *,
 				   gpointer);
 
+
+/* DESCRIPTION  :  This callback is called when the user changes the
+ *                 audio settings sliders in the main notebook.
+ * BEHAVIOR     :  Update the volume of the choosen mixers or of the lid.
+ * PRE          :  The main window GMObject.
+ */
+static void audio_volume_changed_cb (GtkAdjustment *, 
+				     gpointer);
+
+
+/* DESCRIPTION  :  This callback is called when the user changes one of the 
+ *                 video settings sliders in the main notebook.
+ * BEHAVIOR     :  Updates the value in real time.
+ * PRE          :  gpointer is a valid pointer to the main window GmObject.
+ */
+static void video_settings_changed_cb (GtkAdjustment *, 
+				       gpointer);
+
 static gboolean stats_drawing_area_exposed (GtkWidget *,
 					    gpointer data);
 
@@ -126,11 +144,10 @@ static Bonobo_RegistrationResult gnomemeeting_register_as_factory (void);
 
 static void main_notebook_page_changed (GtkNotebook *, GtkNotebookPage *,
 					gint, gpointer);
-static void audio_volume_changed       (GtkAdjustment *, gpointer);
-static void brightness_changed         (GtkAdjustment *, gpointer);
-static void whiteness_changed          (GtkAdjustment *, gpointer);
-static void colour_changed             (GtkAdjustment *, gpointer);
-static void contrast_changed           (GtkAdjustment *, gpointer);
+
+
+
+
 static void dialpad_button_clicked     (GtkButton *, gpointer);
 
 static gint gm_quit_callback (GtkWidget *, GdkEvent *, gpointer);
@@ -195,7 +212,8 @@ gm_mw_get_mw (GtkWidget *main_window)
 
 
 static void
-video_window_shown_cb (GtkWidget *w, gpointer data)
+video_window_shown_cb (GtkWidget *w, 
+		       gpointer data)
 {
   GMH323EndPoint *endpoint = NULL;
 
@@ -205,6 +223,101 @@ video_window_shown_cb (GtkWidget *w, gpointer data)
       && gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top")
       && endpoint->GetCallingState () == GMH323EndPoint::Connected)
     gdk_window_set_always_on_top (GDK_WINDOW (w->window), TRUE);
+}
+
+
+static void 
+audio_volume_changed_cb (GtkAdjustment *adjustment, 
+			 gpointer data)
+{
+  GMH323EndPoint *ep = NULL;
+  
+  H323Connection *con = NULL;
+  H323Codec *raw_codec = NULL;
+  H323Channel *channel = NULL;
+
+  PSoundChannel *sound_channel = NULL;
+
+  int play_vol =  0, rec_vol = 0;
+
+
+  g_return_if_fail (data != NULL);
+  ep = GnomeMeeting::Process ()->Endpoint ();
+
+  gm_main_window_get_volume_sliders_values (GTK_WIDGET (data), 
+					    play_vol, rec_vol);
+
+  gdk_threads_leave ();
+ 
+  con = ep->FindConnectionWithLock (ep->GetCurrentCallToken ());
+
+  if (con) {
+
+    for (int cpt = 0 ; cpt < 2 ; cpt++) {
+
+      channel = 
+        con->FindChannel (RTP_Session::DefaultAudioSessionID, (cpt == 0));         
+      if (channel) {
+
+        raw_codec = channel->GetCodec();
+
+        if (raw_codec) {
+
+          sound_channel = (PSoundChannel *) raw_codec->GetRawDataChannel ();
+
+          if (sound_channel)
+            ep->SetDeviceVolume (sound_channel, 
+                                 (cpt == 1), 
+                                 (cpt == 1) ? rec_vol : play_vol);
+        }
+      }
+    }
+    con->Unlock ();
+  }
+
+  gdk_threads_enter ();
+}
+
+
+static void 
+video_settings_changed_cb (GtkAdjustment *adjustment, 
+			   gpointer data)
+{ 
+  GMH323EndPoint *ep = NULL;
+  GMVideoGrabber *video_grabber = NULL;
+
+  int brightness = -1;
+  int whiteness = -1;
+  int colour = -1;
+  int contrast = -1;
+
+  g_return_if_fail (data != NULL);
+  
+  ep = GnomeMeeting::Process ()->Endpoint ();
+  
+  gm_main_window_get_video_sliders_values (GTK_WIDGET (data),
+					   brightness,
+					   whiteness,
+					   colour,
+					   contrast);
+
+  /* Notice about mutexes:
+     The GDK lock is taken in the callback. We need to release it, because
+     if CreateVideoGrabber is called in another thread, it will only
+     release its internal mutex (also used by GetVideoGrabber) after it 
+     returns, but it will return only if it is opened, and it can't open 
+     if the GDK lock is held as it will wait on the GDK lock before 
+     updating the GUI */
+  gdk_threads_leave ();
+  if (ep && (video_grabber = ep->GetVideoGrabber ())) {
+    
+    video_grabber->SetWhiteness (whiteness << 8);
+    video_grabber->SetBrightness (brightness << 8);
+    video_grabber->SetColour (colour << 8);
+    video_grabber->SetContrast (contrast << 8);
+    video_grabber->Unlock ();
+  }
+  gdk_threads_enter ();
 }
 
 
@@ -592,184 +705,6 @@ main_notebook_page_changed (GtkNotebook *notebook, GtkNotebookPage *page,
 
 
 /**
- * DESCRIPTION  :  This callback is called when the user changes the
- *                 audio settings sliders in the main notebook.
- * BEHAVIOR     :  Update the volume of the choosen mixers or of the lid.
- * PRE          :  The main window GMObject.
- **/
-void 
-audio_volume_changed (GtkAdjustment *adjustment, gpointer data)
-{
-  GMH323EndPoint *ep = NULL;
-  
-  H323Connection *con = NULL;
-  H323Codec *raw_codec = NULL;
-  H323Channel *channel = NULL;
-
-  PSoundChannel *sound_channel = NULL;
-
-  int play_vol =  0, rec_vol = 0;
-
-
-  g_return_if_fail (data != NULL);
-  ep = GnomeMeeting::Process ()->Endpoint ();
-
-  gm_main_window_get_volume_sliders_values (GTK_WIDGET (data), 
-					    play_vol, rec_vol);
-
-  gdk_threads_leave ();
- 
-  con = ep->FindConnectionWithLock (ep->GetCurrentCallToken ());
-
-  if (con) {
-
-    for (int cpt = 0 ; cpt < 2 ; cpt++) {
-
-      channel = 
-        con->FindChannel (RTP_Session::DefaultAudioSessionID, (cpt == 0));         
-      if (channel) {
-
-        raw_codec = channel->GetCodec();
-
-        if (raw_codec) {
-
-          sound_channel = (PSoundChannel *) raw_codec->GetRawDataChannel ();
-
-          if (sound_channel)
-            ep->SetDeviceVolume (sound_channel, 
-                                 (cpt == 1), 
-                                 (cpt == 1) ? rec_vol : play_vol);
-        }
-      }
-    }
-    con->Unlock ();
-  }
-
-  gdk_threads_enter ();
-}
-
-
-/**
- * DESCRIPTION  :  This callback is called when the user changes the 
- *                 video brightness slider in the main notebook.
- * BEHAVIOR     :  Update the value in real time.
- * PRE          :  gpointer is a valid pointer to GmWindow
- */
-void 
-brightness_changed (GtkAdjustment *adjustment, gpointer data)
-{ 
-  GmWindow *gw = GM_WINDOW (data);
-  GMH323EndPoint *ep = NULL;
-  GMVideoGrabber *video_grabber = NULL;
-
-  int brightness;
-
-  brightness =  (int) (GTK_ADJUSTMENT (gw->adj_brightness)->value);
-
-
-  /* Notice about mutexes:
-     The GDK lock is taken in the callback. We need to release it, because
-     if CreateVideoGrabber is called in another thread, it will only
-     release its internal mutex (also used by GetVideoGrabber) after it 
-     returns, but it will return only if it is opened, and it can't open 
-     if the GDK lock is held as it will wait on the GDK lock before 
-     updating the GUI */
-  gdk_threads_leave ();
-  ep = GnomeMeeting::Process ()->Endpoint ();
-  if (ep && (video_grabber = ep->GetVideoGrabber ())) {
-    
-    video_grabber->SetBrightness (brightness << 8);
-    video_grabber->Unlock ();
-  }
-  gdk_threads_enter ();
-}
-
-
-/**
- * DESCRIPTION  :  This callback is called when the user changes the 
- *                 video whiteness slider in the main notebook.
- * BEHAVIOR     :  Update the value in real time.
- * PRE          :  gpointer is a valid pointer to GmWindow
- */
-void 
-whiteness_changed (GtkAdjustment *adjustment, gpointer data)
-{ 
-  GmWindow *gw = GM_WINDOW (data);
-  GMVideoGrabber *video_grabber = NULL;
-  GMH323EndPoint *ep = NULL;
-  
-  int whiteness;
-
-  whiteness =  (int) (GTK_ADJUSTMENT (gw->adj_whiteness)->value);
-
-  gdk_threads_leave ();
-  ep = GnomeMeeting::Process ()->Endpoint ();
-  if (ep && (video_grabber = ep->GetVideoGrabber ())) {
-    
-    video_grabber->SetWhiteness (whiteness << 8);
-    video_grabber->Unlock ();
-  }
-  gdk_threads_enter ();
-}
-
-
-/**
- * DESCRIPTION  :  This callback is called when the user changes the 
- *                 video colour slider in the main notebook.
- * BEHAVIOR     :  Update the value in real time.
- * PRE          :  gpointer is a valid pointer to GmWindow
- */
-void 
-colour_changed (GtkAdjustment *adjustment, gpointer data)
-{ 
-  GmWindow *gw = GM_WINDOW (data);
-  GMVideoGrabber *video_grabber = NULL;
-  GMH323EndPoint *ep = NULL;
-  
-  int colour;
-
-  colour =  (int) (GTK_ADJUSTMENT (gw->adj_colour)->value);
-
-  gdk_threads_leave ();
-  ep = GnomeMeeting::Process ()->Endpoint ();
-  if (ep && (video_grabber = ep->GetVideoGrabber ())) {
-    
-    video_grabber->SetColour (colour << 8);
-    video_grabber->Unlock ();
-  }
-  gdk_threads_enter ();
-}
-
-
-/**
- * DESCRIPTION  :  This callback is called when the user changes the 
- *                 video contrast slider in the main notebook.
- * BEHAVIOR     :  Update the value in real time.
- * PRE          :  gpointer is a valid pointer to GmWindow
- **/
-void 
-contrast_changed (GtkAdjustment *adjustment, gpointer data)
-{ 
-  GmWindow *gw = GM_WINDOW (data);
-  GMVideoGrabber *video_grabber = NULL;
-  GMH323EndPoint *ep = NULL;
-  
-  int contrast;
-
-  contrast =  (int) (GTK_ADJUSTMENT (gw->adj_contrast)->value);
-
-  gdk_threads_leave ();
-  ep = GnomeMeeting::Process ()->Endpoint ();
-  if (ep && (video_grabber = ep->GetVideoGrabber ())) {
-    
-    video_grabber->SetContrast (contrast << 8);
-    video_grabber->Unlock ();
-  }
-  gdk_threads_enter ();
-}
-
-
-/**
  * DESCRIPTION  :  This callback is called when the user 
  *                 clicks on the dialpad button.
  * BEHAVIOR     :  Puts it in the URL at the right place, and also sends 
@@ -1004,8 +939,61 @@ gm_main_window_get_volume_sliders_values (GtkWidget *main_window,
 }
 
 
+void
+gm_main_window_set_video_sliders_values (GtkWidget *main_window,
+					 int whiteness,
+					 int brightness,
+					 int colour,
+					 int contrast)
+{
+  GmWindow *mw = NULL;
+
+  g_return_if_fail (main_window != NULL);
+
+  mw = gm_mw_get_mw (main_window);
+
+  g_return_if_fail (mw != NULL);
+
+  if (whiteness != -1)
+    GTK_ADJUSTMENT (mw->adj_whiteness)->value = whiteness;
+
+  if (brightness != -1)
+    GTK_ADJUSTMENT (mw->adj_brightness)->value = brightness;
+  
+  if (colour != -1)
+    GTK_ADJUSTMENT (mw->adj_colour)->value = colour;
+  
+  if (contrast != -1)
+    GTK_ADJUSTMENT (mw->adj_contrast)->value = contrast;
+  
+  gtk_widget_queue_draw (GTK_WIDGET (mw->video_settings_frame));
+}
+
+
+void
+gm_main_window_get_video_sliders_values (GtkWidget *main_window,
+					 int &whiteness, 
+					 int &brightness,
+					 int &colour,
+					 int &contrast)
+{
+  GmWindow *mw = NULL;
+
+  g_return_if_fail (main_window != NULL);
+
+  mw = gm_mw_get_mw (main_window);
+
+  g_return_if_fail (mw != NULL);
+
+  whiteness = (int) GTK_ADJUSTMENT (mw->adj_whiteness)->value;
+  brightness = (int) GTK_ADJUSTMENT (mw->adj_brightness)->value;
+  colour = (int) GTK_ADJUSTMENT (mw->adj_colour)->value;
+  contrast = (int) GTK_ADJUSTMENT (mw->adj_contrast)->value;
+}
+
+
 GtkWidget *
-gnomemeeting_main_window_new (GmWindow *gw)
+gm_main_window_new (GmWindow *gw)
 {
   GtkWidget *window = NULL;
   GtkWidget *table = NULL;	
@@ -1462,7 +1450,8 @@ void gnomemeeting_init_main_window_video_settings ()
 			_("Adjust brightness"), NULL);
 
   g_signal_connect (G_OBJECT (gw->adj_brightness), "value-changed",
-		    G_CALLBACK (brightness_changed), (gpointer) gw);
+		    G_CALLBACK (video_settings_changed_cb), 
+		    (gpointer) gm);
 
 
   /* Whiteness */
@@ -1484,7 +1473,8 @@ void gnomemeeting_init_main_window_video_settings ()
 			_("Adjust whiteness"), NULL);
 
   g_signal_connect (G_OBJECT (gw->adj_whiteness), "value-changed",
-		    G_CALLBACK (whiteness_changed), (gpointer) gw);
+		    G_CALLBACK (video_settings_changed_cb), 
+		    (gpointer) gm);
 
 
   /* Colour */
@@ -1506,7 +1496,8 @@ void gnomemeeting_init_main_window_video_settings ()
 			_("Adjust color"), NULL);
 
   g_signal_connect (G_OBJECT (gw->adj_colour), "value-changed",
-		    G_CALLBACK (colour_changed), (gpointer) gw);
+		    G_CALLBACK (video_settings_changed_cb), 
+		    (gpointer) gm);
 
 
   /* Contrast */
@@ -1528,7 +1519,7 @@ void gnomemeeting_init_main_window_video_settings ()
 			_("Adjust contrast"), NULL);
 
   g_signal_connect (G_OBJECT (gw->adj_contrast), "value-changed",
-		    G_CALLBACK (contrast_changed), (gpointer) gw);
+		    G_CALLBACK (video_settings_changed_cb), (gpointer) gm);
   
 
   gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame), FALSE);
@@ -1605,10 +1596,10 @@ gnomemeeting_init_main_window_audio_settings (GtkWidget *main_window)
 
 
   g_signal_connect (G_OBJECT (mw->adj_output_volume), "value-changed",
-		    G_CALLBACK (audio_volume_changed), main_window);
+		    G_CALLBACK (audio_volume_changed_cb), main_window);
 
   g_signal_connect (G_OBJECT (mw->adj_input_volume), "value-changed",
-		    G_CALLBACK (audio_volume_changed), main_window);
+		    G_CALLBACK (audio_volume_changed_cb), main_window);
 
 		    
   label = gtk_label_new (_("Audio"));

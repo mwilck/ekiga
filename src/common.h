@@ -169,18 +169,20 @@ struct _GmWindow
   GtkObject *adj_output_volume;
   GtkWidget *audio_volume_frame;
 
+  GtkObject *adj_whiteness;
+  GtkObject *adj_brightness;
+  GtkObject *adj_colour;
+  GtkObject *adj_contrast;
+  GtkWidget *video_settings_frame;
+  
   GtkTooltips *tips;
   GtkWidget *main_menu;
   GtkWidget *tray_popup_menu;
   GtkWidget *video_popup_menu;
   GtkWidget *audio_transmission_popup;
   GtkWidget *audio_reception_popup;
-  GtkObject *adj_whiteness;
-  GtkObject *adj_brightness;
-  GtkObject *adj_colour;
-  GtkObject *adj_contrast;
+  
   GtkWidget *docklet;
-  GtkWidget *video_settings_frame;
   GtkWidget *statusbar;
   GtkWidget *remote_name;
   GtkWidget *splash_win;
