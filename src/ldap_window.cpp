@@ -1244,6 +1244,7 @@ delete_contact_section_cb (GtkWidget *widget,
   gchar *gconf_key = NULL;
   gchar *unset_group_gconf_key = NULL;
   gchar *name = NULL;
+  gchar *name_no_case = NULL;
 
   gboolean is_group = false;
 
@@ -1300,17 +1301,25 @@ delete_contact_section_cb (GtkWidget *widget,
 
 	    if (is_group) {
 
+	      name_no_case = g_utf8_strdown (name, -1);
 	      unset_group_gconf_key =
-		g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, name);
+		g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, name_no_case);
 	      gconf_client_set_list (client, unset_group_gconf_key,
 				     GCONF_VALUE_STRING, NULL, NULL);
+
+	      gconf_client_remove_dir (client, "/apps/gnomemeeting", 0);
+	      gconf_client_unset (client, unset_group_gconf_key, NULL);
+	      gconf_client_add_dir (client, "/apps/gnomemeeting",
+				    GCONF_CLIENT_PRELOAD_RECURSIVE, 0);
 	      g_free (unset_group_gconf_key);
+	      g_free (name_no_case);
 	    }
 
 	    contacts_list_iter = contacts_list;
 	  }
-	
-	  contacts_list_iter = contacts_list_iter->next;
+
+	  if (contacts_list_iter)
+	    contacts_list_iter = contacts_list_iter->next;
 	}
 	g_slist_free (contacts_list_iter);
       

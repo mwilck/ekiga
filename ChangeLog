@@ -1,5 +1,13 @@
 2003-05-28 Damien Sandras  <dsandras@seconix.com>
 
+	* src/main_window.cpp: Delete old groups in conversion routine.
+
+	* src/ldap_window.cpp: Delete the corresponding key when a group
+	gets deleted. Fix crash when the last group is deleted (thanks
+	to Matthias).
+	
+2003-05-28 Damien Sandras  <dsandras@seconix.com>
+
 	* configure.in: Incremented version to 0.97.1
 
 	* src/main_window.cpp: Added conversion routine to convert from

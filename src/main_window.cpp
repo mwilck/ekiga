@@ -1261,6 +1261,10 @@ gnomemeeting_init (GmWindow *gw,
 
       gconf_client_set_list (client, new_group_content_gconf_key,
 			     GCONF_VALUE_STRING, new_group_content, NULL);
+      gconf_client_remove_dir (client, "/apps/gnomemeeting", 0);
+      gconf_client_unset (client, group_content_gconf_key, NULL);
+      gconf_client_add_dir (client, "/apps/gnomemeeting",
+			    GCONF_CLIENT_PRELOAD_RECURSIVE, 0);
       g_free (group_content_gconf_key);
       g_free (new_group_content_gconf_key);
       g_free (group_name);
