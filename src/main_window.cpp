@@ -43,7 +43,6 @@
 #include "chat_window.h"
 #include "config.h"
 #include "misc.h"
-#include "toolbar.h"
 #include "callbacks.h"
 #include "tray.h"
 #include "lid.h"
@@ -1718,6 +1717,24 @@ gm_main_window_get_video_sliders_values (GtkWidget *main_window,
 }
 
 
+void 
+gm_main_window_control_panel_section_menu_update (GtkWidget *main_window,
+						  int section)
+{
+  GmWindow *mw = NULL;
+  
+  GtkWidget *menu = NULL;
+  
+  g_return_if_fail (main_window != NULL);
+  
+  mw = gm_mw_get_mw (main_window);
+
+  menu = gtk_menu_get_widget (mw->main_menu, "statistics");
+  
+  gtk_radio_menu_select_with_widget (GTK_WIDGET (menu), section);
+}
+
+
 void
 gm_main_window_speed_dials_menu_update (GtkWidget *main_window,
 					GSList *glist)
@@ -2271,11 +2288,6 @@ toolbar_toggle_button_changed_cb (GtkWidget *widget,
 }
 
 
-/* DESCRIPTION  :  This callback is called when the user toggles the 
- *                 connect button.
- * BEHAVIOR     :  Connect or disconnect.
- * PRE          :  /
- */
 static void 
 toolbar_connect_button_clicked_cb (GtkToggleButton *w, 
 				   gpointer data)

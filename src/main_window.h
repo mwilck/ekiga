@@ -157,6 +157,15 @@ void gm_main_window_get_volume_sliders_values (GtkWidget *,
 
 
 /* DESCRIPTION  :  /
+ * BEHAVIOR     :  Update the control panel section menu in the view menu 
+ * 		   given the main window GMObject..
+ * PRE          :  The main window GMObject and a valid section.
+ */
+void gm_main_window_control_panel_section_menu_update (GtkWidget *,
+						       int);
+
+
+/* DESCRIPTION  :  /
  * BEHAVIOR     :  Update the speed dials menu in the call menu given the
  *                 main window GMObject and using the address book.
  * PRE          :  The main window GMObject and the GSList of GmContacts.

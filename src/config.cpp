@@ -48,6 +48,7 @@
 #include "gnomemeeting.h"
 #include "lid.h"
 #include "pref_window.h"
+#include "main_window.h"
 #include "log_window.h"
 #include "calls_history_window.h"
 #include "tray.h"
@@ -313,7 +314,7 @@ applicability_check_nt (gpointer id,
 /* DESCRIPTION  :  This callback is called when the control panel 
  *                 section changes.
  * BEHAVIOR     :  Sets the right page or hide it, and also sets 
- *                 the good value for the toggle in the prefs.
+ *                 the good value for the radio menu.
  * PRE          :  /
  */
 static void 
@@ -325,6 +326,7 @@ control_panel_section_changed_nt (gpointer id,
     
   gw = GnomeMeeting::Process ()->GetMainWindow ();
 
+  g_return_if_fail (data != NULL);
   
   if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
 
@@ -337,6 +339,8 @@ control_panel_section_changed_nt (gpointer id,
       gtk_notebook_set_current_page (GTK_NOTEBOOK (gw->main_notebook),
 				     gm_conf_entry_get_int (entry));
     }
+    gm_main_window_control_panel_section_menu_update (GTK_WIDGET (data),
+						      gm_conf_entry_get_int (entry));
     gdk_threads_leave ();
   }
 }
@@ -1487,6 +1491,7 @@ lid_output_device_type_changed_nt (gpointer id,
 gboolean 
 gnomemeeting_conf_init ()
 {
+  GtkWidget *main_window = NULL;
   GtkWidget *chat_window = NULL;
   GtkWidget *prefs_window = NULL;
   GtkWidget *tray = NULL;
@@ -1499,6 +1504,7 @@ gnomemeeting_conf_init ()
   prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
   tray = GnomeMeeting::Process ()->GetTray ();
+  main_window = gm;
 
 
   /* Start listeners */
@@ -1525,7 +1531,8 @@ gnomemeeting_conf_init ()
    */
 
   /* Notifiers for the USER_INTERFACE_KEY keys */
-  gm_conf_notifier_add (USER_INTERFACE_KEY "main_window/control_panel_section", control_panel_section_changed_nt, NULL);
+  gm_conf_notifier_add (USER_INTERFACE_KEY "main_window/control_panel_section",
+			control_panel_section_changed_nt, main_window);
   
   gm_conf_notifier_add (USER_INTERFACE_KEY "main_window/show_status_bar",
 			menu_toggle_changed_nt,
@@ -1534,7 +1541,8 @@ gnomemeeting_conf_init ()
 			view_widget_changed_nt, gw->statusbar);
 
   gm_conf_notifier_add (USER_INTERFACE_KEY "main_window/show_chat_window",
-			menu_toggle_changed_nt, gtk_menu_get_widget (gw->main_menu, "text_chat"));
+			menu_toggle_changed_nt, 
+			gtk_menu_get_widget (gw->main_menu, "text_chat"));
 
   gm_conf_notifier_add (USER_INTERFACE_KEY "main_window/show_chat_window",
 			view_widget_changed_nt, chat_window);

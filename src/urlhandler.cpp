@@ -46,7 +46,6 @@
 #include "calls_history_window.h"
 #include "log_window.h"
 #include "main_window.h"
-#include "toolbar.h"
 #include "tray.h"
 
 #include "dialog.h"

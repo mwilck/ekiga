@@ -51,7 +51,6 @@
 #include "tray.h"
 #include "log_window.h"
 #include "main_window.h"
-#include "toolbar.h"
 #include "misc.h"
 
 #include "history-combo.h"

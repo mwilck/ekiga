@@ -48,7 +48,6 @@
 #include "sound_handling.h"
 #include "tray.h"
 #include "misc.h"
-#include "toolbar.h"
 #include "chat_window.h"
 #include "log_window.h"
 #include "pref_window.h"
