@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-31 23:56+0900\n"
-"PO-Revision-Date: 2004-08-31 23:55+0900\n"
+"POT-Creation-Date: 2004-09-06 10:42+0900\n"
+"PO-Revision-Date: 2004-09-06 10:39+0900\n"
 "Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
@@ -16,8 +16,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #. Add the window icon and title
-#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:2339
-#: src/main_window.cpp:2525
+#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:2374
+#: src/main_window.cpp:2560
 msgid "GnomeMeeting"
 msgstr "GnomeMeeting"
 
@@ -584,7 +584,7 @@ msgstr "設定ウィンドウのサイズ"
 msgid "Start hidden"
 msgstr "起動時に隠す"
 
-#: gnomemeeting.schemas.in.in.h:120 src/main_window.cpp:857
+#: gnomemeeting.schemas.in.in.h:120 src/main_window.cpp:865
 msgid "Switch to fullscreen"
 msgstr "フルスクリーンに切り替える"
 
@@ -1213,15 +1213,15 @@ msgid ""
 "Another contact with the same speed dial already exists in your address "
 "book:\n"
 "\n"
-"<b>Contact Name</b>: %s\n"
-"<b>Contact URL</b>: %s\n"
-"<b>Contact Speed Dial</b>: %s\n"
+"<b>Name</b>: %s\n"
+"<b>URL</b>: %s\n"
+"<b>Speed Dial</b>: %s\n"
 msgstr ""
-"アドレス帳の中に同じショートカット・ダイアルを持った、コンタクトが既に存在し"
-"ます:\n"
+"アドレス帳の中に同じショートカット・ダイアルを持ったコンタクトが既に存在しま"
+"す:\n"
 "\n"
-"<b>コンタクトの名前</b>: %s\n"
-"<b>コンタクトの URL</b>: %s\n"
+"<b>氏名</b>: %s\n"
+"<b>URL</b>: %s\n"
 "<b>ショートカット・ダイアル</b>: %s\n"
 
 #: src/addressbook_window.cpp:662 src/addressbook_window.cpp:664
@@ -1235,17 +1235,17 @@ msgid ""
 "Another contact with similar information already exists in your address "
 "book:\n"
 "\n"
-"<b>Contact Name</b>: %s\n"
-"<b>Contact URL</b>: %s\n"
-"<b>Contact Speed Dial</b>: %s\n"
+"<b>Name</b>: %s\n"
+"<b>URL</b>: %s\n"
+"<b>Speed Dial</b>: %s\n"
 "\n"
 "Do you still want to add the contact?"
 msgstr ""
-"アドレス帳の中に似たような情報を持った、コンタクトが既に存在します:\n"
+"アドレス帳の中に似たような情報を持ったコンタクトが既に存在します:\n"
 "\n"
-"<b>コンタクトの名前</b>: %s\n"
-"<b>コンタクトの URL</b>: %s\n"
-"<b>コンタクトのショートカット</b>: %s\n"
+"<b>氏名</b>: %s\n"
+"<b>URL</b>: %s\n"
+"<b>ショートカット・ダイアル</b>: %s\n"
 "\n"
 "それでも新しいコンタクトを追加しますか？"
 
@@ -1256,7 +1256,7 @@ msgstr "状態"
 
 #: src/addressbook_window.cpp:835 src/pref_window.cpp:500
 msgid "Name"
-msgstr "名称"
+msgstr "氏名"
 
 #: src/addressbook_window.cpp:847
 msgid "URL"
@@ -1312,7 +1312,7 @@ msgstr "ファイル(_F)"
 msgid "New _Address Book"
 msgstr "新しいアドレス帳(_A)"
 
-#: src/addressbook_window.cpp:1917 src/main_window.cpp:726
+#: src/addressbook_window.cpp:1917 src/main_window.cpp:734
 msgid "_Close"
 msgstr "閉じる(_C)"
 
@@ -1513,7 +1513,7 @@ msgstr "発信"
 msgid "Unanswered Calls"
 msgstr "未応答の着信"
 
-#: src/calls_history_window.cpp:623 src/main_window.cpp:877 src/tray.cpp:296
+#: src/calls_history_window.cpp:623 src/main_window.cpp:885 src/tray.cpp:296
 msgid "Calls History"
 msgstr "着信履歴"
 
@@ -1992,7 +1992,7 @@ msgid "Configuration complete - page %d/%d"
 msgstr "設定が完了しました - %d/%d ページ"
 
 #: src/druid.cpp:1344 src/druid.cpp:1612 src/druid.cpp:1629 src/druid.cpp:1697
-#: src/endpoint.cpp:1700 src/gnomemeeting.cpp:294 src/gnomemeeting.cpp:296
+#: src/endpoint.cpp:1726 src/gnomemeeting.cpp:294 src/gnomemeeting.cpp:296
 #: src/gnomemeeting.cpp:298 src/sound_handling.cpp:570
 #: src/sound_handling.cpp:571 src/videograbber.cpp:316
 #: src/videograbber.cpp:579
@@ -2083,148 +2083,148 @@ msgid "First Time Configuration Druid"
 msgstr "初回時の設定ドルイド"
 
 #. Update the log and status bar
-#: src/endpoint.cpp:710
+#: src/endpoint.cpp:725
 #, c-format
 msgid "Call from %s"
 msgstr "%s からの着信"
 
-#: src/endpoint.cpp:722
+#: src/endpoint.cpp:737
 #, c-format
 msgid "Forwarding call from %s to %s (Forward all calls)"
 msgstr "%s からの着信を %s へ転送中です (全ての呼び出しをフォワードする)"
 
 #. there is no forwarding, so reject the call
-#: src/endpoint.cpp:729 src/endpoint.cpp:750
+#: src/endpoint.cpp:744 src/endpoint.cpp:765
 #, c-format
 msgid "Rejecting call from %s (Busy)"
 msgstr "%s からの着信を拒否中です (多忙)"
 
-#: src/endpoint.cpp:741
+#: src/endpoint.cpp:756
 #, c-format
 msgid "Forwarding call from %s to %s (Busy)"
 msgstr "%s からの着信を %s へフォワード中です (多忙)"
 
-#: src/endpoint.cpp:759
+#: src/endpoint.cpp:774
 #, c-format
 msgid "Accepting call from %s (Free For Chat)"
 msgstr "%s からの着信を受諾中です (チャット可)"
 
-#: src/endpoint.cpp:784
+#: src/endpoint.cpp:799
 msgid "Call rejected"
 msgstr "着信拒否しました"
 
-#: src/endpoint.cpp:793 src/endpoint.cpp:1188 src/endpoint.cpp:2129
+#: src/endpoint.cpp:808 src/endpoint.cpp:1212 src/endpoint.cpp:2160
 msgid "Call forwarded"
 msgstr "着信を転送しました"
 
-#: src/endpoint.cpp:805
+#: src/endpoint.cpp:820
 msgid "Call automatically answered"
 msgstr "着信自動応答しました"
 
-#: src/endpoint.cpp:880
+#: src/endpoint.cpp:899
 #, c-format
 msgid "Forwarding call to %s"
 msgstr "着信を %s へフォワード中"
 
-#: src/endpoint.cpp:891
+#: src/endpoint.cpp:910
 #, c-format
 msgid "Error while forwarding call to %s"
 msgstr "着信を %s へ転送する際にエラー"
 
-#: src/endpoint.cpp:894
+#: src/endpoint.cpp:913
 msgid "There was an error when forwarding the call to the given host."
 msgstr "指定したホストへ転送するときにエラーが発生しました。"
 
-#: src/endpoint.cpp:954
+#: src/endpoint.cpp:975
 msgid "Connected"
 msgstr "接続完了"
 
-#: src/endpoint.cpp:956
+#: src/endpoint.cpp:977
 #, c-format
 msgid "Connected with %s using %s"
 msgstr "%2$s を使って %1$s で接続完了しました"
 
-#: src/endpoint.cpp:1152
+#: src/endpoint.cpp:1176
 msgid "Local user cleared the call"
 msgstr "ローカル・ユーザが呼び出しを切りました"
 
-#: src/endpoint.cpp:1155
+#: src/endpoint.cpp:1179
 msgid "Remote user cleared the call"
 msgstr "リモート・ユーザが呼び出しを切りました"
 
-#: src/endpoint.cpp:1158
+#: src/endpoint.cpp:1182
 msgid "Remote user did not accept the call"
 msgstr "リモート・ユーザが着信を拒否しました"
 
-#: src/endpoint.cpp:1161 src/endpoint.cpp:1164
+#: src/endpoint.cpp:1185 src/endpoint.cpp:1188
 msgid "Local user did not accept the call"
 msgstr "ローカル・ユーザが着信を拒否しました"
 
-#: src/endpoint.cpp:1167
+#: src/endpoint.cpp:1191
 msgid "The Gatekeeper cleared the call"
 msgstr "ゲートキーパが呼び出しを切りました"
 
-#: src/endpoint.cpp:1170
+#: src/endpoint.cpp:1194
 msgid "Call not answered in the required time"
 msgstr "要求時間内に応答していない呼び出しです"
 
-#: src/endpoint.cpp:1173
+#: src/endpoint.cpp:1197
 msgid "Remote user has stopped calling"
 msgstr "リモート・ユーザは通話を停止しました"
 
-#: src/endpoint.cpp:1176
+#: src/endpoint.cpp:1200
 msgid "Abnormal call termination"
 msgstr "呼び出しが切断されました (異常あり)"
 
-#: src/endpoint.cpp:1179
+#: src/endpoint.cpp:1203
 msgid "Could not connect to remote host"
 msgstr "リモート・ホストへ接続できませんでした"
 
-#: src/endpoint.cpp:1182
+#: src/endpoint.cpp:1206
 msgid "Insufficient bandwidth"
 msgstr "帯域幅<が不十分です"
 
-#: src/endpoint.cpp:1185
+#: src/endpoint.cpp:1209
 msgid "No common codec"
 msgstr "共通コーデックではありません"
 
-#: src/endpoint.cpp:1191
+#: src/endpoint.cpp:1215
 msgid "Security check Failed"
 msgstr "セキュリティ・チェックに失敗しました"
 
-#: src/endpoint.cpp:1194
+#: src/endpoint.cpp:1218
 msgid "Local user is busy"
 msgstr "ローカル・ユーザは多忙のようです"
 
-#: src/endpoint.cpp:1197
+#: src/endpoint.cpp:1221
 msgid "Remote user is busy"
 msgstr "リモート・ユーザは多忙のようです"
 
-#: src/endpoint.cpp:1200 src/endpoint.cpp:1203
+#: src/endpoint.cpp:1224 src/endpoint.cpp:1227
 msgid "Congested link to remote party"
 msgstr "リモートの仲間へのリンクが混在しています"
 
-#: src/endpoint.cpp:1206 src/endpoint.cpp:1209
+#: src/endpoint.cpp:1230 src/endpoint.cpp:1233
 msgid "Remote user is unreachable"
 msgstr "リモート・ユーザに到達しませんでした"
 
-#: src/endpoint.cpp:1212
+#: src/endpoint.cpp:1236
 msgid "Remote host is offline"
 msgstr "リモート・ホストはオフラインです"
 
-#: src/endpoint.cpp:1215
+#: src/endpoint.cpp:1239
 msgid "Temporary failure"
 msgstr "一時的な障害です"
 
-#: src/endpoint.cpp:1218 src/urlhandler.cpp:402 src/urlhandler.cpp:409
+#: src/endpoint.cpp:1242 src/urlhandler.cpp:404 src/urlhandler.cpp:411
 msgid "User not found"
 msgstr "ユーザが見つかりません"
 
-#: src/endpoint.cpp:1222
+#: src/endpoint.cpp:1246
 msgid "Call completed"
 msgstr "呼出が完了しました"
 
-#: src/endpoint.cpp:1320 src/main_window.cpp:968
+#: src/endpoint.cpp:1346 src/main_window.cpp:976
 msgid ""
 "Lost packets:\n"
 "Late packets:\n"
@@ -2236,11 +2236,11 @@ msgstr ""
 "往復時の遅延:\n"
 "Jitter バッファ:"
 
-#: src/endpoint.cpp:1545
+#: src/endpoint.cpp:1571
 msgid "Error while starting the listener"
 msgstr "リスナの起動時にエラーが発生"
 
-#: src/endpoint.cpp:1545
+#: src/endpoint.cpp:1571
 msgid ""
 "You will not be able to receive incoming calls. Please check that no other "
 "program is already running on the port used by GnomeMeeting."
@@ -2248,25 +2248,25 @@ msgstr ""
 "着信を受け取ることはできません。GnomeMeeting が使用するポート番号で、他のプロ"
 "グラムが起動されていないことを確認して下さい。"
 
-#: src/endpoint.cpp:1686
+#: src/endpoint.cpp:1712
 msgid "Attaching lid hardware to codec"
 msgstr "LID ハードウェアをコーデックにアタッチしています"
 
-#: src/endpoint.cpp:1720
+#: src/endpoint.cpp:1746
 #, c-format
 msgid "Opened %s for recording with plugin %s"
 msgstr "%s をプラグイン %s を使って録音用に開きました"
 
-#: src/endpoint.cpp:1721
+#: src/endpoint.cpp:1747
 #, c-format
 msgid "Opened %s for playing with plugin %s"
 msgstr "%s をプラグイン %s を使って再生用に開きました"
 
-#: src/endpoint.cpp:1757
+#: src/endpoint.cpp:1783
 msgid "Could not open audio channel for audio transmission"
 msgstr "音声発信用の音声チャンネルを開けませんでした"
 
-#: src/endpoint.cpp:1757
+#: src/endpoint.cpp:1783
 msgid ""
 "An error occured while trying to record from the soundcard for the audio "
 "transmission. Please check that your soundcard is not busy and that your "
@@ -2278,11 +2278,11 @@ msgstr ""
 "重をサポートしているか確認して下さい。\n"
 "音声発信を無効にしました。"
 
-#: src/endpoint.cpp:1762
+#: src/endpoint.cpp:1788
 msgid "Could not open audio channel for audio reception"
 msgstr "音声受信用の音声チャンネルを開けませんでした"
 
-#: src/endpoint.cpp:1762
+#: src/endpoint.cpp:1788
 msgid ""
 "An error occured while trying to play audio to the soundcard for the audio "
 "reception. Please check that your soundcard is not busy and that your driver "
@@ -2294,12 +2294,12 @@ msgstr ""
 "全二重をサポートしているか確認して下さい。\n"
 "音声受信を無効にしました。"
 
-#: src/endpoint.cpp:1952
+#: src/endpoint.cpp:1981
 #, c-format
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "%.2ld:%.2ld:%.2ld  音:%.2f/%.2f   映:%.2f/%.2f"
 
-#: src/endpoint.cpp:1992
+#: src/endpoint.cpp:2021
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2312,40 +2312,40 @@ msgstr ""
 "往復時の遅延: %d ms\n"
 "Jitter バッファ: %d ms"
 
-#: src/endpoint.cpp:2126
+#: src/endpoint.cpp:2157
 #, c-format
 msgid "Forwarding Call to %s (No Answer)"
 msgstr "着信を %s へフォワード中です (応答なし)"
 
-#: src/gatekeeper.cpp:135
+#: src/gatekeeper.cpp:136
 #, c-format
 msgid "Unregistered from gatekeeper %s"
 msgstr "ゲートキーパ %s は登録されていません"
 
-#: src/gatekeeper.cpp:150
+#: src/gatekeeper.cpp:151
 msgid "Invalid gatekeeper hostname"
 msgstr "ゲートキーパのホスト名が正しくありません"
 
-#: src/gatekeeper.cpp:150
+#: src/gatekeeper.cpp:151
 msgid "Please provide a hostname to use for the gatekeeper."
 msgstr "ゲートキーパで使用するホスト名を指定して下さい。"
 
-#: src/gatekeeper.cpp:158
+#: src/gatekeeper.cpp:159
 msgid "Invalid gatekeeper ID"
 msgstr "ゲートキーパの ID が正しくありません"
 
-#: src/gatekeeper.cpp:158
+#: src/gatekeeper.cpp:159
 msgid "Please provide a valid ID for the gatekeeper."
 msgstr "ゲートキーパの正しい ID を指定して下さい。"
 
-#: src/gatekeeper.cpp:205
+#: src/gatekeeper.cpp:206
 msgid ""
 "Another user already exists with the same alias, please use another alias."
 msgstr ""
 "同じエイリアスを持つ別のユーザが既に存在します。別のエイリアスを使用して下さ"
 "い。"
 
-#: src/gatekeeper.cpp:208
+#: src/gatekeeper.cpp:209
 msgid ""
 "You are not allowed to register to the gatekeeper. Please check your login, "
 "password and firewall."
@@ -2353,19 +2353,19 @@ msgstr ""
 "ゲートキーパに登録できません。アカウントとパスワード、そしてファイヤーウォー"
 "ルを確認して下さい。"
 
-#: src/gatekeeper.cpp:211
+#: src/gatekeeper.cpp:212
 msgid "There was a transport error."
 msgstr "転送エラーがありました"
 
-#: src/gatekeeper.cpp:214 src/gatekeeper.cpp:219
+#: src/gatekeeper.cpp:215 src/gatekeeper.cpp:220
 msgid "No gatekeeper corresponding to your options has been found."
 msgstr "オプションに対応したゲートキーパが見つかりませんでした"
 
-#: src/gatekeeper.cpp:221
+#: src/gatekeeper.cpp:222
 msgid "Error while registering with gatekeeper"
 msgstr "ゲートキーパを登録する際にエラー"
 
-#: src/gatekeeper.cpp:236
+#: src/gatekeeper.cpp:237
 #, c-format
 msgid "Gatekeeper set to %s"
 msgstr "ゲートキーパを %s に設定しました"
@@ -2407,11 +2407,11 @@ msgstr "パーソナル"
 msgid "Started GnomeMeeting V%d.%d.%d for %s\n"
 msgstr "GnomeMeeting V%d.%d.%d (%s) を起動しました\n"
 
-#: src/ils.cpp:100
+#: src/ils.cpp:101
 msgid "Invalid parameters"
 msgstr "パラメータが正しくありません"
 
-#: src/ils.cpp:100
+#: src/ils.cpp:101
 msgid ""
 "Please provide your first name and e-mail in the Personal Data section in "
 "order to be able to register to the users directory."
@@ -2419,19 +2419,19 @@ msgstr ""
 "ユーザ・ディレクトリに登録できるようにするために、個人情報セクションの中に名"
 "前と E-メールを指定して下さい。"
 
-#: src/ils.cpp:134
+#: src/ils.cpp:135
 msgid "Invalid users directory"
 msgstr "ユーザ・ディレクトリが正しくありません"
 
-#: src/ils.cpp:134
+#: src/ils.cpp:135
 msgid "Operation impossible since there is no users directory specified."
 msgstr "指定したユーザ・ディレクトリが存在しないので、操作を実行できません"
 
-#: src/ils.cpp:218
+#: src/ils.cpp:220
 msgid "Failed to parse XML file"
 msgstr "XML ファイルの解析に失敗しました"
 
-#: src/ils.cpp:218
+#: src/ils.cpp:220
 msgid ""
 "There was an error while parsing the XML file. Please make sure that it is "
 "correctly installed in your system."
@@ -2439,20 +2439,20 @@ msgstr ""
 "XML 形式のファイルを解析する際にエラーが発生しました。GnomeMeeting が正しくイ"
 "ンストールされているか確認して下さい。"
 
-#: src/ils.cpp:229
+#: src/ils.cpp:231
 msgid "Bad information"
 msgstr "おかしな情報です"
 
-#: src/ils.cpp:229
+#: src/ils.cpp:231
 #, c-format
 msgid "Bad LDAP information from XML file: %s."
 msgstr "XML ファイル %s の中におかしな LDAP 情報があります。"
 
-#: src/ils.cpp:238 src/ils.cpp:248 src/ils.cpp:257
+#: src/ils.cpp:240 src/ils.cpp:250 src/ils.cpp:259
 msgid "Cannot contact the users directory"
 msgstr "ユーザ・ディレクトリと通信できません"
 
-#: src/ils.cpp:238
+#: src/ils.cpp:240
 #, c-format
 msgid ""
 "Failed to contact the users directory %s:%d. The directory is probably "
@@ -2461,26 +2461,26 @@ msgstr ""
 "ユーザ・ディレクトリ %s:%d との通信に失敗しました。そのディレクトリの負荷が高"
 "くなっているかもしれません。あとでまた試してみて下さい。"
 
-#: src/ils.cpp:248
+#: src/ils.cpp:250
 msgid "Failed to set a time limit on operations."
 msgstr "時刻制限をセットする操作が失敗しました"
 
-#: src/ils.cpp:257
+#: src/ils.cpp:259
 #, c-format
 msgid "Failed to bind to users directory: %s."
 msgstr "ユーザ・ディレクトリへの bind に失敗しました: %s"
 
-#: src/ils.cpp:281
+#: src/ils.cpp:283
 #, c-format
 msgid "Updated information on the users directory %s."
 msgstr "ユーザ・ディレクトリ %s にある情報を更新しました"
 
-#: src/ils.cpp:285
+#: src/ils.cpp:287
 #, c-format
 msgid "Unregistered from the users directory %s."
 msgstr "ユーザ・ディレクトリ %s の登録を解除しました"
 
-#: src/ils.cpp:307
+#: src/ils.cpp:309
 #, c-format
 msgid "Error while registering to %s"
 msgstr "%s へ登録する際にエラー"
@@ -2515,11 +2515,11 @@ msgstr "電話はオフ・フックです"
 msgid "Phone is on hook"
 msgstr "電話はオン・フックです"
 
-#: src/log_window.cpp:117 src/main_window.cpp:872
+#: src/log_window.cpp:117 src/main_window.cpp:880
 msgid "General History"
 msgstr "全般の履歴"
 
-#: src/main_window.cpp:459
+#: src/main_window.cpp:467
 msgid ""
 "Enter an URL to call on the left, and click on this button to connect to the "
 "given URL"
@@ -2527,23 +2527,23 @@ msgstr ""
 "左側に呼び出す URL を入力し、このボタンをクリックして指定した URL へ接続して"
 "下さい"
 
-#: src/main_window.cpp:499
+#: src/main_window.cpp:507
 msgid "Open text chat"
 msgstr "テキスト・チャットを開きます"
 
-#: src/main_window.cpp:510
+#: src/main_window.cpp:518
 msgid "Open control panel"
 msgstr "コントロール・パネルを開きます"
 
-#: src/main_window.cpp:522
+#: src/main_window.cpp:530
 msgid "Open address book"
 msgstr "アドレス帳を開きます"
 
-#: src/main_window.cpp:546
+#: src/main_window.cpp:554
 msgid "Display images from your camera device"
 msgstr "カメラ・デバイスからの映像を表示します"
 
-#: src/main_window.cpp:569
+#: src/main_window.cpp:577
 msgid ""
 "Audio transmission status. During a call, click here to suspend or resume "
 "the audio transmission."
@@ -2551,7 +2551,7 @@ msgstr ""
 "音声の発信状態です (呼び出し中に、ここをクリックすると音声の発信を一時停止し"
 "たり再開します)"
 
-#: src/main_window.cpp:590
+#: src/main_window.cpp:598
 msgid ""
 "Video transmission status. During a call, click here to suspend or resume "
 "the video transmission."
@@ -2559,380 +2559,380 @@ msgstr ""
 "映像の発信状態です (呼び出し中に、ここをクリックすると映像の発信を一時停止し"
 "たり再開します)"
 
-#: src/main_window.cpp:653
+#: src/main_window.cpp:661
 msgid "C_all"
 msgstr "呼び出し(_C)"
 
-#: src/main_window.cpp:655
+#: src/main_window.cpp:663
 msgid "C_onnect"
 msgstr "接続(_O)"
 
-#: src/main_window.cpp:655 src/tray.cpp:253
+#: src/main_window.cpp:663 src/tray.cpp:253
 msgid "Create a new connection"
 msgstr "新しい接続を確立します"
 
-#: src/main_window.cpp:658 src/tray.cpp:256
+#: src/main_window.cpp:666 src/tray.cpp:256
 msgid "_Disconnect"
 msgstr "切断(_D)"
 
-#: src/main_window.cpp:659 src/tray.cpp:257
+#: src/main_window.cpp:667 src/tray.cpp:257
 msgid "Close the current connection"
 msgstr "現在の接続を閉じます"
 
-#: src/main_window.cpp:665 src/tray.cpp:263
+#: src/main_window.cpp:673 src/tray.cpp:263
 msgid "_Available"
 msgstr "応答可能(_A)"
 
-#: src/main_window.cpp:666 src/tray.cpp:264
+#: src/main_window.cpp:674 src/tray.cpp:264
 msgid "Display a popup to accept the call"
 msgstr "着信に応答するためにポップアップを表示します"
 
-#: src/main_window.cpp:671 src/tray.cpp:269
+#: src/main_window.cpp:679 src/tray.cpp:269
 msgid "Free for Cha_t"
 msgstr "自動応答(_T)"
 
-#: src/main_window.cpp:672 src/tray.cpp:270
+#: src/main_window.cpp:680 src/tray.cpp:270
 msgid "Auto answer calls"
 msgstr "着信に自動応答します"
 
-#: src/main_window.cpp:677 src/tray.cpp:275
+#: src/main_window.cpp:685 src/tray.cpp:275
 msgid "_Busy"
 msgstr "多忙(_B)"
 
-#: src/main_window.cpp:677 src/tray.cpp:275
+#: src/main_window.cpp:685 src/tray.cpp:275
 msgid "Reject calls"
 msgstr "着信を拒否します"
 
-#: src/main_window.cpp:682 src/tray.cpp:280
+#: src/main_window.cpp:690 src/tray.cpp:280
 msgid "_Forward"
 msgstr "フォワード(_F)"
 
-#: src/main_window.cpp:682 src/tray.cpp:280
+#: src/main_window.cpp:690 src/tray.cpp:280
 msgid "Forward calls"
 msgstr "着信をフォワードします"
 
-#: src/main_window.cpp:690
+#: src/main_window.cpp:698
 msgid "Speed dials"
 msgstr "ショートカット"
 
-#: src/main_window.cpp:694 src/main_window.cpp:1406
+#: src/main_window.cpp:702 src/main_window.cpp:1414
 msgid "_Hold Call"
 msgstr "保留(_H)"
 
-#: src/main_window.cpp:694
+#: src/main_window.cpp:702
 msgid "Hold the current call"
 msgstr "現在の呼び出しを保留します"
 
-#: src/main_window.cpp:698
+#: src/main_window.cpp:706
 msgid "_Transfer Call"
 msgstr "着信の転送(_T)"
 
-#: src/main_window.cpp:699
+#: src/main_window.cpp:707
 msgid "Transfer the current call"
 msgstr "現在の呼び出しを転送します"
 
-#: src/main_window.cpp:706 src/main_window.cpp:1440
+#: src/main_window.cpp:714 src/main_window.cpp:1448
 msgid "Suspend _Audio"
 msgstr "音声の一時停止(_A)"
 
-#: src/main_window.cpp:707
+#: src/main_window.cpp:715
 msgid "Suspend or resume the audio transmission"
 msgstr "音声の発信を一時停止または再開します"
 
-#: src/main_window.cpp:711 src/main_window.cpp:1442
+#: src/main_window.cpp:719 src/main_window.cpp:1450
 msgid "Suspend _Video"
 msgstr "ビデオの一時停止(_V)"
 
-#: src/main_window.cpp:712
+#: src/main_window.cpp:720
 msgid "Suspend or resume the video transmission"
 msgstr "映像の発信を一時停止または再開します"
 
-#: src/main_window.cpp:719
+#: src/main_window.cpp:727
 msgid "_Save Current Picture"
 msgstr "現在の映像の保存(_S)"
 
-#: src/main_window.cpp:720
+#: src/main_window.cpp:728
 msgid "Save a snapshot of the current video"
 msgstr "現在の映像に対するスナップショットを保存します"
 
-#: src/main_window.cpp:726
+#: src/main_window.cpp:734
 msgid "Close the GnomeMeeting window"
 msgstr "GnomeMeeting のウィンドウを閉じます"
 
-#: src/main_window.cpp:733 src/tray.cpp:318
+#: src/main_window.cpp:741 src/tray.cpp:318
 msgid "_Quit"
 msgstr "終了(_Q)"
 
-#: src/main_window.cpp:733 src/tray.cpp:319
+#: src/main_window.cpp:741 src/tray.cpp:319
 msgid "Quit GnomeMeeting"
 msgstr "GnomeMeeting を終了します"
 
-#: src/main_window.cpp:737
+#: src/main_window.cpp:745
 msgid "_Edit"
 msgstr "編集(_E)"
 
-#: src/main_window.cpp:739
+#: src/main_window.cpp:747
 msgid "Configuration Druid"
 msgstr "設定ドルイド"
 
-#: src/main_window.cpp:740
+#: src/main_window.cpp:748
 msgid "Run the configuration druid"
 msgstr "設定ドルイドを起動します"
 
-#: src/main_window.cpp:747 src/tray.cpp:304
+#: src/main_window.cpp:755 src/tray.cpp:304
 msgid "_Preferences"
 msgstr "設定(_P)"
 
-#: src/main_window.cpp:748 src/tray.cpp:305
+#: src/main_window.cpp:756 src/tray.cpp:305
 msgid "Change your preferences"
 msgstr "お使いの設定を変更します"
 
-#: src/main_window.cpp:753
+#: src/main_window.cpp:761
 msgid "_View"
 msgstr "表示(_V)"
 
-#: src/main_window.cpp:755 src/pref_window.cpp:711
+#: src/main_window.cpp:763 src/pref_window.cpp:711
 msgid "Text Chat"
 msgstr "テキスト・チャット"
 
-#: src/main_window.cpp:756
+#: src/main_window.cpp:764
 msgid "View/Hide the text chat window"
 msgstr "テキスト形式のチャット・ウィンドウの表示を ON/OFF します"
 
-#: src/main_window.cpp:761
+#: src/main_window.cpp:769
 msgid "Status Bar"
 msgstr "ステータス・バー"
 
-#: src/main_window.cpp:762
+#: src/main_window.cpp:770
 msgid "View/Hide the status bar"
 msgstr "ステータス・バーの表示を ON/OFF します"
 
-#: src/main_window.cpp:768
+#: src/main_window.cpp:776
 msgid "Control Panel"
 msgstr "コントロール・パネル"
 
-#: src/main_window.cpp:770 src/main_window.cpp:973
+#: src/main_window.cpp:778 src/main_window.cpp:981
 msgid "Statistics"
 msgstr "統計情報"
 
-#: src/main_window.cpp:771
+#: src/main_window.cpp:779
 msgid "View audio/video transmission and reception statistics"
 msgstr "音声/映像の発信と着信に対する統計情報を表示します"
 
-#: src/main_window.cpp:776
+#: src/main_window.cpp:784
 msgid "_Dialpad"
 msgstr "ダイアルパッド(_D)"
 
-#: src/main_window.cpp:776
+#: src/main_window.cpp:784
 msgid "View the dialpad"
 msgstr "ダイアルを表示します"
 
-#: src/main_window.cpp:781
+#: src/main_window.cpp:789
 msgid "_Audio Settings"
 msgstr "音声の設定(_A)"
 
-#: src/main_window.cpp:782
+#: src/main_window.cpp:790
 msgid "View audio settings"
 msgstr "音声を設定します"
 
-#: src/main_window.cpp:787
+#: src/main_window.cpp:795
 msgid "_Video Settings"
 msgstr "映像の設定(_V)"
 
-#: src/main_window.cpp:788
+#: src/main_window.cpp:796
 msgid "View video settings"
 msgstr "映像を設定します"
 
-#: src/main_window.cpp:793 src/pref_window.cpp:1069
+#: src/main_window.cpp:801 src/pref_window.cpp:1069
 msgid "Off"
 msgstr "表示しない"
 
-#: src/main_window.cpp:793
+#: src/main_window.cpp:801
 msgid "Hide the control panel"
 msgstr "コントロール・パネルを隠します"
 
-#: src/main_window.cpp:801
+#: src/main_window.cpp:809
 msgid "_Clear Text Chat"
 msgstr "テキスト・チャットのクリア(_C)"
 
-#: src/main_window.cpp:802
+#: src/main_window.cpp:810
 msgid "Clear the text chat"
 msgstr "チャット・ウィンドウのテキストを消去します"
 
-#: src/main_window.cpp:809 src/main_window.cpp:2479
+#: src/main_window.cpp:817 src/main_window.cpp:2514
 msgid "Local Video"
 msgstr "ローカルの映像"
 
-#: src/main_window.cpp:810
+#: src/main_window.cpp:818
 msgid "Local video image"
 msgstr "ローカルの映像イメージ"
 
-#: src/main_window.cpp:815 src/main_window.cpp:2483
+#: src/main_window.cpp:823 src/main_window.cpp:2518
 msgid "Remote Video"
 msgstr "リモートの映像"
 
-#: src/main_window.cpp:816
+#: src/main_window.cpp:824
 msgid "Remote video image"
 msgstr "リモートの映像イメージ"
 
-#: src/main_window.cpp:821
+#: src/main_window.cpp:829
 msgid "Both (Local Video Incrusted)"
 msgstr "両方 (外枠つきのローカルの映像)"
 
-#: src/main_window.cpp:822 src/main_window.cpp:829 src/main_window.cpp:836
+#: src/main_window.cpp:830 src/main_window.cpp:837 src/main_window.cpp:844
 msgid "Both video images"
 msgstr "両方の映像イメージ"
 
-#: src/main_window.cpp:828
+#: src/main_window.cpp:836
 msgid "Both (Local Video in New Window)"
 msgstr "両方 (ローカルのみ新しいウィンドウ)"
 
-#: src/main_window.cpp:835
+#: src/main_window.cpp:843
 msgid "Both (Both in New Windows)"
 msgstr "両方 (新しいウィンドウ)"
 
-#: src/main_window.cpp:844
+#: src/main_window.cpp:852
 msgid "Zoom In"
 msgstr "拡大"
 
-#: src/main_window.cpp:844
+#: src/main_window.cpp:852
 msgid "Zoom in"
 msgstr "映像を拡大します"
 
-#: src/main_window.cpp:848
+#: src/main_window.cpp:856
 msgid "Zoom Out"
 msgstr "縮小"
 
-#: src/main_window.cpp:848
+#: src/main_window.cpp:856
 msgid "Zoom out"
 msgstr "映像を縮小します"
 
-#: src/main_window.cpp:852
+#: src/main_window.cpp:860
 msgid "Normal Size"
 msgstr "標準のサイズ"
 
-#: src/main_window.cpp:852
+#: src/main_window.cpp:860
 msgid "Normal size"
 msgstr "デフォルトの映像サイズにします"
 
-#: src/main_window.cpp:857
+#: src/main_window.cpp:865
 msgid "Fullscreen"
 msgstr "フルスクリーン"
 
-#: src/main_window.cpp:862
+#: src/main_window.cpp:870
 msgid "_Tools"
 msgstr "ツール(_T)"
 
-#: src/main_window.cpp:864 src/tray.cpp:288
+#: src/main_window.cpp:872 src/tray.cpp:288
 msgid "Address _Book"
 msgstr "アドレス帳(_B)"
 
-#: src/main_window.cpp:865 src/tray.cpp:289
+#: src/main_window.cpp:873 src/tray.cpp:289
 msgid "Open the address book"
 msgstr "アドレス帳を開きます"
 
-#: src/main_window.cpp:873
+#: src/main_window.cpp:881
 msgid "View the operations history"
 msgstr "操作に関連する履歴を表示します"
 
-#: src/main_window.cpp:878 src/tray.cpp:297
+#: src/main_window.cpp:886 src/tray.cpp:297
 msgid "View the calls history"
 msgstr "着信履歴を表示します"
 
-#: src/main_window.cpp:886 src/main_window.cpp:892
+#: src/main_window.cpp:894 src/main_window.cpp:900
 msgid "PC-To-Phone Account"
 msgstr "PC-To-Phone のアカウント"
 
-#: src/main_window.cpp:887 src/main_window.cpp:893
+#: src/main_window.cpp:895 src/main_window.cpp:901
 msgid "Manage your PC-To-Phone account"
 msgstr "PC-To-Phone のアカウントを管理します"
 
-#: src/main_window.cpp:898
+#: src/main_window.cpp:906
 msgid "_Help"
 msgstr "ヘルプ(_H)"
 
-#: src/main_window.cpp:901 src/main_window.cpp:906
+#: src/main_window.cpp:909 src/main_window.cpp:914
 msgid "_Contents"
 msgstr "目次(_C)"
 
-#: src/main_window.cpp:902 src/main_window.cpp:907
+#: src/main_window.cpp:910 src/main_window.cpp:915
 msgid "Get help by reading the GnomeMeeting manual"
 msgstr "GnomeMeeting のマニュアルからヘルプを取得します"
 
-#: src/main_window.cpp:912
+#: src/main_window.cpp:920
 msgid "_About"
 msgstr "情報(_A)"
 
-#: src/main_window.cpp:913 src/tray.cpp:313
+#: src/main_window.cpp:921 src/tray.cpp:313
 msgid "View information about GnomeMeeting"
 msgstr "GnomeMeeting の情報を表示します"
 
-#: src/main_window.cpp:1028
+#: src/main_window.cpp:1036
 msgid "Dialpad"
 msgstr "ダイアルパッド"
 
-#: src/main_window.cpp:1084
+#: src/main_window.cpp:1092
 msgid "Adjust brightness"
 msgstr "明るさを調整します"
 
-#: src/main_window.cpp:1107
+#: src/main_window.cpp:1115
 msgid "Adjust whiteness"
 msgstr "白さを調整します"
 
-#: src/main_window.cpp:1130
+#: src/main_window.cpp:1138
 msgid "Adjust color"
 msgstr "色を調整します"
 
-#: src/main_window.cpp:1153
+#: src/main_window.cpp:1161
 msgid "Adjust contrast"
 msgstr "コントラストを調整します"
 
-#: src/main_window.cpp:1161
+#: src/main_window.cpp:1169
 msgid "Video"
 msgstr "映像"
 
-#: src/main_window.cpp:1239
+#: src/main_window.cpp:1247
 msgid "Audio"
 msgstr "音声"
 
-#: src/main_window.cpp:1343
+#: src/main_window.cpp:1351
 #, c-format
 msgid "Sent dtmf %c"
 msgstr "dtmf %c を送信しました"
 
-#: src/main_window.cpp:1390
+#: src/main_window.cpp:1398
 msgid "_Retrieve Call"
 msgstr "再開(_R)"
 
-#: src/main_window.cpp:1444
+#: src/main_window.cpp:1452
 msgid "Resume _Audio"
 msgstr "音声の再開(_A)"
 
-#: src/main_window.cpp:1446
+#: src/main_window.cpp:1454
 msgid "Resume _Video"
 msgstr "ビデオの再開(_V)"
 
-#: src/main_window.cpp:1824
+#: src/main_window.cpp:1832
 msgid "Transfer call to:"
 msgstr "転送先:"
 
-#: src/main_window.cpp:1825
+#: src/main_window.cpp:1833
 msgid "Transfer"
 msgstr "転送"
 
-#: src/main_window.cpp:2611
+#: src/main_window.cpp:2727
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "端末にデバッグ・メッセージを表示する (レベル: 1〜6)"
 
-#: src/main_window.cpp:2614
+#: src/main_window.cpp:2730
 msgid "Makes GnomeMeeting call the given URL"
 msgstr "GnomeMeetiing で指定した URL を呼び出す"
 
-#: src/main_window.cpp:2649
+#: src/main_window.cpp:2765
 msgid "No usable audio plugin detected"
 msgstr "利用可能な音声プラグインを検出できませんでした"
 
-#: src/main_window.cpp:2649
+#: src/main_window.cpp:2765
 msgid ""
 "GnomeMeeting didn't find any usable audio plugin. Make sure that your "
 "installation is correct."
@@ -2940,7 +2940,7 @@ msgstr ""
 "GnomeMeeting は利用可能な音声プラグインを検出できませんでした。インストールを"
 "確認して下さい。"
 
-#: src/main_window.cpp:2669
+#: src/main_window.cpp:2785
 #, c-format
 msgid ""
 "GnomeMeeting got an invalid value for the GConf key %s.\n"
@@ -2963,7 +2963,7 @@ msgstr ""
 "トラブルシューティングのセクションをチェックするか、またはメーリング・リスト "
 "(http://mail.gnome.org) のアーカイブをチェックして下さい。"
 
-#: src/main_window.cpp:2672
+#: src/main_window.cpp:2788
 msgid "Gconf key error"
 msgstr "Gconf キーのエラー"
 
@@ -3875,18 +3875,18 @@ msgstr ""
 "呼び出しに失敗しました。ユーザに到達しないか、あるいは単にあなたの呼び出し要"
 "求を受信するときにビジーなのかもしれません。"
 
-#: src/urlhandler.cpp:316
+#: src/urlhandler.cpp:318
 #, c-format
 msgid "No contact with speed dial %s# found, will call number %s instead"
 msgstr ""
 "ショートカット %s# のコンタクトが見つかりません。代わりに呼び出し番号 %s を利"
 "用します"
 
-#: src/urlhandler.cpp:333
+#: src/urlhandler.cpp:335
 msgid "Invalid URL handler"
 msgstr "URL ハンドラが正しくありません"
 
-#: src/urlhandler.cpp:333
+#: src/urlhandler.cpp:335
 msgid ""
 "Please specify a valid URL handler. Currently both h323: and callto: are "
 "supported."
@@ -3894,12 +3894,12 @@ msgstr ""
 "正しい URL ハンドラを指定して下さい。現在は h323: と callto: の両方をサポート"
 "しています。"
 
-#: src/urlhandler.cpp:353
+#: src/urlhandler.cpp:355
 #, c-format
 msgid "Calling %s"
 msgstr "%s の呼び出し中です"
 
-#: src/urlhandler.cpp:357
+#: src/urlhandler.cpp:359
 #, c-format
 msgid "Transferring call to %s"
 msgstr "呼び出しを %s へ転送中です"
