@@ -1,5 +1,44 @@
 2003-06-16 Damien Sandras  <dsandras@seconix.com>
 
+	* configure.in: Incremented to 0.97.9 as it is the 0.98 release.
+	
+	* src/callbacks.cpp, src/callbacks.h: Added hold_call_cb so that
+	it can be used by the lid thread too. Removed unneeded 
+	gtk_dialog_response_accept.
+
+	* src/endpoint.cpp, src/endpoint.h: Removed unneeded OnForwardingCall.
+	Display right IP address in addressbook. Display the URL instead
+	of the pure IP.
+	
+	* src/ils.cpp: Limited the number of chars for the different fields
+	to the maximum supported.
+	
+	* src/ldap_window.cpp: Changes so that gconf keys for group and server
+	names are escaped before manipulation in gconf_* functions and
+	unescaped before displaying.
+	
+	* src/lid.cpp: Various fixes, and added support for *1 *2 to
+	hold and transfer calls.
+	
+	* src/main_window.cpp: Added callback to disconnect after 15 seconds
+	of no data has been received.
+	
+	* src/menu.cpp: Removed hold_call_cb to make it public.
+	
+	* src/pref_window.cpp: Added h323: as default URL for call forwarding.
+	Limited the different fields for the user details on ILS to the max
+	allowed size.
+	
+	* src/toolbar.cpp: Changed tooltips to respect propositions from 
+	Leonard and Alessio.
+	
+	* src/tools.cpp: The calls history now presents an URL and not a simple
+	IP. It also permits entries to be double-clicked to call the contacts.
+	
+	* src/urlhandler.cpp: Fix when calling an invalid speed dial.
+	
+2003-06-16 Damien Sandras  <dsandras@seconix.com>
+
 	* src/endpoint.cpp: Fixed calls history.
 	
 	* src/tools.cpp: Same.

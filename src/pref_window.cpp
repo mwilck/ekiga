@@ -44,43 +44,75 @@
 #include "ils.h"
 #include "sound_handling.h"
 #include "misc.h"
-
+#include "urlhandler.h"
 
 /* Declarations */
 
 extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;	
 
-static void pref_window_clicked_callback (GtkDialog *, int, gpointer);
-static gint pref_window_destroy_callback (GtkWidget *, GdkEvent *, gpointer);
-static void personal_data_update_button_clicked (GtkWidget *, gpointer);
-static void gatekeeper_update_button_clicked (GtkWidget *, gpointer);
-static void codecs_list_button_clicked_callback (GtkWidget *, gpointer);
-static void gnomemeeting_codecs_list_add (GtkTreeIter, GtkListStore *, 
-					  const gchar *, bool, bool,
-					  gchar *);
-static GtkWidget *
-gnomemeeting_pref_window_add_update_button (GtkWidget *table,
-					    const char *,
-					    GtkSignalFunc func,
-					    gchar *tooltip,  
-					    int row, int col);
-static void codecs_list_fixed_toggled (GtkCellRendererToggle *, gchar *, 
-				       gpointer);
-static void video_image_browse_clicked (GtkWidget *, gpointer);
-static void file_selector_clicked (GtkFileSelection *, gpointer);
+static void pref_window_clicked_callback (GtkDialog *,
+					  int,
+					  gpointer);
 
+static gint pref_window_destroy_callback (GtkWidget *,
+					  GdkEvent *,
+					  gpointer);
+
+static void personal_data_update_button_clicked (GtkWidget *,
+						 gpointer);
+
+static void gatekeeper_update_button_clicked (GtkWidget *,
+					      gpointer);
+
+static void codecs_list_button_clicked_callback (GtkWidget *,
+						 gpointer);
+
+static void gnomemeeting_codecs_list_add (GtkTreeIter,
+					  GtkListStore *, 
+					  const gchar *,
+					  bool,
+					  bool,
+					  gchar *);
+
+static GtkWidget *gnomemeeting_pref_window_add_update_button (GtkWidget *,
+							      const char *,
+							      const char *,
+							      GtkSignalFunc,
+							      gchar *,  
+							      int,
+							      int);
+
+static void codecs_list_fixed_toggled (GtkCellRendererToggle *,
+				       gchar *, 
+				       gpointer);
+
+static void video_image_browse_clicked (GtkWidget *,
+					gpointer);
+
+static void file_selector_clicked (GtkFileSelection *,
+				   gpointer);
 
 static void gnomemeeting_init_pref_window_general (GtkWidget *);
+
 static void gnomemeeting_init_pref_window_interface (GtkWidget *);
+
 static void gnomemeeting_init_pref_window_directories (GtkWidget *);
+
 static void gnomemeeting_init_pref_window_call_forwarding (GtkWidget *);
+
 static void gnomemeeting_init_pref_window_h323_advanced (GtkWidget *);
+
 static void gnomemeeting_init_pref_window_gatekeeper (GtkWidget *);
+
 static void gnomemeeting_init_pref_window_nat (GtkWidget *);
+
 static void gnomemeeting_init_pref_window_video_devices (GtkWidget *);
+
 static void gnomemeeting_init_pref_window_audio_devices (GtkWidget *);
+
 static void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *);
+
 static void gnomemeeting_init_pref_window_video_codecs (GtkWidget *);
 
 
@@ -736,23 +768,27 @@ gnomemeeting_init_pref_window_general (GtkWidget *notebook)
   pw->firstname =
     gnomemeeting_table_add_entry (table, _("_First name:"), PERSONAL_DATA_KEY "firstname", _("Enter your first name."), 0);
   gtk_widget_set_size_request (GTK_WIDGET (pw->firstname), 250, -1);
+  gtk_entry_set_max_length (GTK_ENTRY (pw->firstname), 65);
 
   pw->surname = 
     gnomemeeting_table_add_entry (table, _("Sur_name:"), PERSONAL_DATA_KEY "lastname", _("Enter your last name."), 1);
   gtk_widget_set_size_request (GTK_WIDGET (pw->surname), 250, -1);
+  gtk_entry_set_max_length (GTK_ENTRY (pw->surname), 65);
                                                                                
   pw->mail =
     gnomemeeting_table_add_entry (table, _("E-_mail address:"), PERSONAL_DATA_KEY "mail", _("Enter your e-mail address."), 2);
   gtk_widget_set_size_request (GTK_WIDGET (pw->mail), 250, -1);
+  gtk_entry_set_max_length (GTK_ENTRY (pw->mail), 65);
   
   pw->comment =
     gnomemeeting_table_add_entry (table, _("_Comment:"), PERSONAL_DATA_KEY "comment", _("Enter a comment about yourself for the user directory."), 3);
   gtk_widget_set_size_request (GTK_WIDGET (pw->comment), 250, -1);
+  gtk_entry_set_max_length (GTK_ENTRY (pw->comment), 65);
   
   pw->location =
     gnomemeeting_table_add_entry (table, _("_Location:"), PERSONAL_DATA_KEY "location", _("Enter your location (country or city) for the user directory."), 4);
   gtk_widget_set_size_request (GTK_WIDGET (pw->location), 250, -1);
-
+  gtk_entry_set_max_length (GTK_ENTRY (pw->location), 65);
 
   /* Add the try button */
   pw->directory_update_button =
@@ -888,7 +924,11 @@ gnomemeeting_init_pref_window_call_forwarding (GtkWidget *notebook)
   /* Add all the fields */                                                     
   pw->forward_host = 
     gnomemeeting_table_add_entry (table, _("Forward calls to _host:"), CALL_FORWARDING_KEY "forward_host", _("The host where calls should be forwarded to in the cases selected above."), 0, true);
-
+  if (!strcmp (gtk_entry_get_text (GTK_ENTRY (pw->forward_host)), ""))
+    gtk_entry_set_text (GTK_ENTRY (pw->forward_host),
+			GMURL ().GetDefaultURL ());
+  gtk_widget_set_size_request (GTK_WIDGET (pw->forward_host), 250, -1);  
+  
   pw->always_forward =
     gnomemeeting_table_add_toggle (table, _("_Always forward calls to the given host"), CALL_FORWARDING_KEY "always_forward", _("If enabled, all incoming calls will be forwarded to the host that is specified in the field below."), 1);
 

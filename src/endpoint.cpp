@@ -41,6 +41,7 @@
 #include "endpoint.h"
 #include "connection.h"
 #include "gatekeeper.h"
+#include "urlhandler.h"
 #include "ils.h"
 #include "gnomemeeting.h"
 #include "sound_handling.h"
@@ -221,6 +222,15 @@ GMH323EndPoint::~GMH323EndPoint ()
     RemoveListener (listener);
 
   delete (ils_client);
+}
+
+
+H323Connection *
+GMH323EndPoint::MakeCallLocked (const PString &call_addr, PString &call_token)
+{
+  called_address = call_addr;
+
+  return H323EndPoint::MakeCallLocked (call_addr, call_token);
 }
 
 
@@ -857,46 +867,6 @@ GMH323EndPoint::GatekeeperRegister ()
 
 
 BOOL 
-GMH323EndPoint::OnConnectionForwarded (H323Connection &,
-                                       const PString &forward_party,
-                                       const H323SignalPDU &)
-{  
-  gchar *msg = NULL;
-  PString call_token = GetCurrentCallToken ();
-
-  if (MakeCall (forward_party, call_token)) {
-
-    gnomemeeting_threads_enter ();
-    msg = g_strdup_printf (_("Forwarding call to %s"), 
-			   (const char*) forward_party);
-    gnomemeeting_statusbar_push (gw->statusbar, msg);
-    gnomemeeting_log_insert (gw->history_text_view, msg);
-
-    gnomemeeting_threads_leave ();
-
-    g_free (msg);
-
-    return TRUE;
-  }
-  else {
-
-    msg = g_strdup_printf (_("Error while forwarding call to %s"), 
-			   (const char*) forward_party);
-    
-    gnomemeeting_threads_enter ();
-    gnomemeeting_warning_dialog (GTK_WINDOW (gm), msg, _("There was an error when forwarding the call to the given host."));
-    gnomemeeting_threads_leave ();
-
-    g_free (msg);
-
-    return FALSE;
-  }
-
-  return FALSE;
-}
-
-
-BOOL 
 GMH323EndPoint::OnIncomingCall (H323Connection & connection, 
                                 const H323SignalPDU &, H323SignalPDU &)
 {
@@ -904,6 +874,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   PString forward_host;
   PString name = connection.GetRemotePartyName ();
   PString app = connection.GetRemoteApplication ();
+  const H323Transport *transport = NULL;
   gchar *utf8_name = NULL;
   gchar *utf8_app = NULL;
 
@@ -921,7 +892,13 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 
   int no_answer_timeout = 0;
 
-  
+
+  /* Get the remote IP to display in the calls history */
+  transport = connection.GetSignallingChannel ();
+  if (transport)
+    remote_ip = transport->GetRemoteAddress ().GetHostName ();
+      
+    
   /* Check the gconf keys */
   gnomemeeting_threads_enter ();
   forward_host_gconf = 
@@ -941,7 +918,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   gnomemeeting_threads_leave ();
 
   if (forward_host_gconf)
-    forward_host = PString (forward_host_gconf);
+    forward_host = PString (GMURL (forward_host_gconf).GetValidURL ());
   else
     forward_host = PString ("");
 
@@ -967,7 +944,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   if (!forward_host.IsEmpty() && always_forward) {
 
     msg = 
-      g_strdup_printf (_("Forwarding Call from %s to %s (Forward All Calls)"),
+      g_strdup_printf (_("Forwarding call from %s to %s (Forward all calls)"),
 		       (const char *) utf8_name, (const char *) forward_host);
     do_forward = TRUE;
   }
@@ -975,7 +952,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 
     /* dnd, so reject the call */
     msg =
-      g_strdup_printf (_("Auto Rejecting Incoming Call from %s (Do Not Disturb)"),
+      g_strdup_printf (_("Auto rejecting incoming call from %s (Do not disturb)"),
 		       (const char *) utf8_name);
     
     do_reject = TRUE;
@@ -987,7 +964,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
     if (!forward_host.IsEmpty() && busy_forward) {
 
       msg = 
-	g_strdup_printf (_("Forwarding Call from %s to %s (Busy)"),
+	g_strdup_printf (_("Forwarding call from %s to %s (Busy)"),
 			 (const char *) utf8_name, 
 			 (const char *) forward_host);
 
@@ -996,7 +973,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
     else {
 
       /* there is no forwarding, so reject the call */
-      msg = g_strdup_printf (_("Auto Rejecting Incoming Call from %s (Busy)"),
+      msg = g_strdup_printf (_("Auto rejecting incoming call from %s (Busy)"),
 			     (const char *) utf8_name);
      
       do_reject = TRUE;
@@ -1268,7 +1245,6 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   PString remote_name;
   PString remote_app;
-  PString remote_ip;
 
   H323TransportAddress address;
   
@@ -1290,8 +1266,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   /* Get information about the remote user */
   remote_name = connection.GetRemotePartyName ();
   remote_app = connection.GetRemoteApplication ();
-  remote_ip = connection.GetRemotePartyName ();
-  remote_ip = remote_ip.Mid (remote_ip.Find ("[")+1, remote_ip.Find ("]")-2);
+  remote_ip = GMURL ().GetDefaultURL () + remote_ip;
   utf8_app = gnomemeeting_get_utf8 (remote_app);
   utf8_name = gnomemeeting_get_utf8 (gnomemeeting_pstring_cut (remote_name));
 
@@ -1303,9 +1278,15 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
     gnomemeeting_calls_history_window_add_call (2, utf8_name,
 						(const char *) remote_ip,
 						"0", utf8_app);
-  else 
-    gnomemeeting_calls_history_window_add_call (connection.HadAnsweredCall () ? 0 : 1, utf8_name, (const char *) remote_ip, t.AsString (2), utf8_app);
-
+  else
+    if (connection.HadAnsweredCall ())
+      gnomemeeting_calls_history_window_add_call (0, utf8_name,
+						  (const char *) remote_ip,
+						  t.AsString (2), utf8_app);
+    else
+      gnomemeeting_calls_history_window_add_call (1, utf8_name,
+						  (const char*) called_address,
+						  t.AsString (2), utf8_app);
   g_free (utf8_app);
   g_free (utf8_name);
 

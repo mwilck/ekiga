@@ -53,12 +53,67 @@ extern GtkWidget *gm;
 
 
 /* The callbacks */
-void
-gtk_dialog_response_accept (GtkWidget *w,
-			    gpointer data)
+void 
+hold_call_cb (GtkWidget *widget,
+	      gpointer data)
 {
-  if (data)
-    gtk_dialog_response (GTK_DIALOG (data), GTK_RESPONSE_ACCEPT);
+  GtkWidget *child = NULL;
+
+  MenuEntry *gnomemeeting_menu = NULL;
+  GmWindow *gw = NULL;
+  
+  H323Connection *connection = NULL;
+  GMH323EndPoint *endpoint = NULL;
+  PString current_call_token;
+  
+  endpoint = MyApp->Endpoint ();
+  current_call_token = endpoint->GetCurrentCallToken ();
+
+  gnomemeeting_menu = gnomemeeting_get_menu (gm);
+  gw = MyApp->GetMainWindow ();
+  
+  if (!current_call_token.IsEmpty ())
+    connection =
+      endpoint->FindConnectionWithLock (current_call_token);
+
+  if (connection) {
+
+    child = GTK_BIN (gnomemeeting_menu [HOLD_CALL_MENU_INDICE].widget)->child;
+    
+    if (!connection->IsCallOnHold ()) {
+
+      if (GTK_IS_LABEL (child))
+	gtk_label_set_text_with_mnemonic (GTK_LABEL (child),
+					  _("_Retrieve Call"));
+
+      gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_chan_button), FALSE);
+      gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button), FALSE);
+      gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [AUDIO_PAUSE_CALL_MENU_INDICE].widget), FALSE);
+      gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [VIDEO_PAUSE_CALL_MENU_INDICE].widget), FALSE);
+      
+      connection->HoldCall (TRUE);
+    }
+    else {
+      
+      if (GTK_IS_LABEL (child))
+	gtk_label_set_text_with_mnemonic (GTK_LABEL (child),
+					  _("_Hold Call"));
+
+      gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_chan_button), TRUE);
+      gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button), TRUE);
+      gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [AUDIO_PAUSE_CALL_MENU_INDICE].widget), TRUE);
+      gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [VIDEO_PAUSE_CALL_MENU_INDICE].widget), TRUE);
+
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->audio_chan_button),
+				    FALSE);
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->video_chan_button),
+				    FALSE);
+
+      connection->RetrieveCall ();
+    }
+
+    connection->Unlock ();
+  }
 }
 
 
@@ -123,9 +178,7 @@ transfer_call_cb (GtkWidget* widget,
     gtk_entry_set_text (GTK_ENTRY (entry),
 			(const char *) url.GetDefaultURL ());
   g_free (gconf_forward_value);
-  g_signal_connect (G_OBJECT (entry), "activate",
-		    GTK_SIGNAL_FUNC (gtk_dialog_response_accept),
-		    (gpointer) transfer_call_popup);
+  gtk_entry_set_activates_default (GTK_ENTRY (entry), true);
   
   gconf_forward_value = NULL;
 

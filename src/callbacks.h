@@ -43,16 +43,16 @@
 #include "common.h"
 
 
-/* DESCRIPTION  :  This callback is called when the user hits enter in
- *                 in a GtkEntry in a dialog.
- * BEHAVIOR     :  Emits the GTK_RESPONSE_ACCEPT signal for the dialog.
- * PRE          :  data = a pointer to a GtkDialog.
+/* DESCRIPTION  :  This callback is called when the user chooses to hold
+ *                 a call.
+ * BEHAVIOR     :  Hold the current call.
+ * PRE          :  /
  */
 void
-gtk_dialog_response_accept (GtkWidget *,
-			    gpointer);
+hold_call_cb (GtkWidget *,
+	      gpointer);
 
-     
+
 /* DESCRIPTION  :  This callback is called when the user chooses to forward
  *                 a call.
  * BEHAVIOR     :  Forward the current call.

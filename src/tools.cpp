@@ -94,7 +94,7 @@ call_activated_cb (GtkTreeView *tree_view,
 	  
 	    /* this function will store a copy of text */
 	    gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry),
-				PString ("h323:@") + contact_url);
+				contact_url);
 	  
 	    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->connect_button),
 					  true);
@@ -102,8 +102,7 @@ call_activated_cb (GtkTreeView *tree_view,
 	  else if (MyApp->Endpoint ()->GetCallingState () == 2) {
 
 	    transfer_call_cb (NULL,
-			      (gpointer) (const char *)
-			      (PString ("h323:@") + contact_url));
+			      (gpointer) contact_url);
 	  }
 	}
     }
@@ -224,18 +223,16 @@ GtkWidget *gnomemeeting_calls_history_window_new (GmCallsHistoryWindow *chw)
 						       1,
 						       NULL);
     gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
-    g_object_set (G_OBJECT (renderer), "weight", "bold",
-		  "style", PANGO_STYLE_ITALIC, NULL);
+    g_object_set (G_OBJECT (renderer), "weight", "bold", NULL);
         
     renderer = gtk_cell_renderer_text_new ();
-    column = gtk_tree_view_column_new_with_attributes (_("IP"),
+    column = gtk_tree_view_column_new_with_attributes (_("URL"),
 						       renderer,
 						       "text", 
 						       2,
 						       NULL);
     gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
-    g_object_set (G_OBJECT (renderer), "foreground", "darkgray",
-		  "style", PANGO_STYLE_ITALIC, NULL);
+    g_object_set (G_OBJECT (renderer), "style", PANGO_STYLE_ITALIC, NULL);
 
     renderer = gtk_cell_renderer_text_new ();
     column = gtk_tree_view_column_new_with_attributes (_("Call duration"),

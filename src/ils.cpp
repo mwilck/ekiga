@@ -646,6 +646,7 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
   gchar *mail = NULL;
   gchar *comment = NULL;
   gchar *location = NULL;
+  gchar *tmp = NULL;
   gchar *version = NULL;
   gchar *busy = NULL;
   gchar *ip = NULL;
@@ -670,11 +671,17 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
 			     NULL);
   if (!surname || !strcmp (surname, ""))
     surname = g_strdup ("-");
-
+  tmp = g_strdup_printf ("%.65s", surname);
+  g_free (surname);
+  surname = tmp;
+  
   mail =  
     gconf_client_get_string (GCONF_CLIENT (client),
 			     "/apps/gnomemeeting/personal_data/mail", 
 			     NULL);
+  tmp = g_strdup_printf ("%.65s", mail);
+  g_free (mail);
+  mail = tmp;
 
   comment =  
     gconf_client_get_string (GCONF_CLIENT (client),
@@ -682,6 +689,9 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
 			     NULL);
   if (!comment || !strcmp (comment, ""))
     comment = g_strdup ("-");
+  tmp = g_strdup_printf ("%.65s", comment);
+  g_free (comment);
+  comment = tmp;
 
   location =  
     gconf_client_get_string (GCONF_CLIENT (client),
@@ -689,6 +699,9 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
 			     NULL);
   if (!location || !strcmp (location, ""))
     location = g_strdup ("-");
+  tmp = g_strdup_printf ("%.65s", location);
+  g_free (location);
+  location = tmp;
 
   port = 
     g_strdup_printf ("%d", 

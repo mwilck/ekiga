@@ -73,6 +73,15 @@ class GMH323EndPoint : public H323EndPoint
 
 
   /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Makes a call to the given address, and fills in the
+   *                 call taken. It returns a locked pointer to the connection
+   *                 in case of success.
+   * PRE          :  The called address, its call token.
+   */
+  H323Connection *MakeCallLocked (const PString &, PString &);
+
+  
+  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Updates some of the internal values of the endpoint such 
    *                 as the local username, the capabilities, the tunneling,
    *                 the fast start, the audio devices to use, the video 
@@ -145,14 +154,6 @@ class GMH323EndPoint : public H323EndPoint
 			       H323SignalPDU &);
 
 
-  /* DESCRIPTION  :  This callback is called when a call is forwarded.
-   * BEHAVIOR     :  Outputs a message in the history and statusbar.
-   * PRE          :  /
-   */
-  virtual BOOL OnConnectionForwarded (H323Connection &, const PString &,
-				      const H323SignalPDU &);
-
-  
   /* DESCRIPTION  :  This callback is called when the connection is 
    *                 established and everything is ok.
    *                 It means that a connection to a remote endpoint is ok,
@@ -431,7 +432,8 @@ class GMH323EndPoint : public H323EndPoint
   void TransferCallWait ();
 
 
-  
+  PString called_address;
+  PString remote_ip;
   PString current_call_token;
   PString transfer_call_token;
 

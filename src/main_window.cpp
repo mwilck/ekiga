@@ -144,9 +144,12 @@ gint AppbarUpdate (gpointer data)
   H323Connection *connection = NULL;
   GmRtpData *rtp = (GmRtpData *) data; 
   GmWindow *gw = NULL;
-  
+
+  int received_packets = 0;
   int lost_packets = 0;
   int late_packets = 0;
+  float lost_packets_per = 0.0;
+  float late_packets_per = 0.0;
   
   if (MyApp->Endpoint ()) {
     
@@ -258,31 +261,43 @@ gint AppbarUpdate (gpointer data)
 	
 
       if (audio_session) {
-	  
+
+	received_packets = audio_session->GetPacketsReceived ();
 	lost_packets = audio_session->GetPacketsLost ();
 	late_packets = audio_session->GetPacketsTooLate ();
+	
 	jitter_buffer_size = audio_session->GetJitterBufferSize ();
       }
 	
       if (video_session) {
 
+	received_packets =
+	  received_packets + video_session->GetPacketsReceived ();
 	lost_packets = lost_packets+video_session->GetPacketsLost ();
 	late_packets = late_packets+video_session->GetPacketsTooLate ();
       }
 
+      if (received_packets > 0) {
+	
+	lost_packets_per = lost_packets / received_packets;
+	late_packets_per = late_packets / received_packets;
+      }
       
       if (t.GetSeconds () > 5) {
 
 	gnomemeeting_statusbar_push (gw->statusbar, msg);
 	gchar *stats_msg = 
-	  g_strdup_printf (_("Lost packets: %d\nLate packets: %d\nRound-trip delay: %d ms\nJitter buffer: %d ms"), lost_packets, late_packets, (int) connection->GetRoundTripDelay().GetMilliSeconds(), int (jitter_buffer_size / 8));
-
+	  g_strdup_printf (_("Lost packets: %.1f %%\nLate packets: %.1f %%\nRound-trip delay: %d ms\nJitter buffer: %d ms"), lost_packets_per, late_packets_per, (int) connection->GetRoundTripDelay().GetMilliSeconds(), int (jitter_buffer_size / 8));
 	gtk_label_set_text (GTK_LABEL (gw->stats_label), stats_msg);
 	g_free (stats_msg);
 
 	gtk_widget_queue_draw_area (gw->stats_drawing_area, 0, 0, GTK_WIDGET (gw->stats_drawing_area)->allocation.width, GTK_WIDGET (gw->stats_drawing_area)->allocation.height);
+      }
 
-      }     
+
+      if (t.GetSeconds () > 15 && rtp->re_audio_bytes == 0 &&
+	  rtp->re_video_bytes == 0)
+	MyApp->Disconnect (H323Connection::EndedByTemporaryFailure);
   
       g_free (msg);
     }
@@ -590,7 +605,7 @@ gnomemeeting_new_event (BonoboListener    *listener,
   }
   else {
 
-    gnomemeeting_warning_dialog (GTK_WINDOW (gm), _("Cannot run GnomeMeeting"), _("GnomeMeeting is already running, if you want it to call a given callto URL, please use \"gnomemeeting -c URL.\""));
+    gnomemeeting_warning_dialog (GTK_WINDOW (gm), _("Cannot run GnomeMeeting"), _("GnomeMeeting is already running, if you want it to call a given callto URL, please use \"gnomemeeting -c URL\"."));
   }
 }
 
@@ -973,7 +988,7 @@ void gnomemeeting_dialpad_event (const char *key)
 
   button_text = (gchar *) key;
   url = gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry)); 
-  
+
   if (button_text) {
 
     dtmf = PString (button_text);
@@ -1002,18 +1017,6 @@ void gnomemeeting_dialpad_event (const char *key)
 	  connection->SendUserInput (dtmf);
 	}
       }
-      
-#ifdef HAS_IXJ
-      GMLid *lid = NULL;
-      
-      lid = endpoint->GetLid ();
-
-      if (lid) {
-	
-	lid->RingLine (4);
-	lid->Unlock ();
-      }
-#endif
     }
   }
 }

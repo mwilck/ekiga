@@ -220,22 +220,22 @@ GtkWidget *gnomemeeting_init_left_toolbar (void)
   gtk_widget_show (image);
   gtk_toolbar_append_item (GTK_TOOLBAR (left_toolbar),
 			   NULL,
-			   _("Make a text chat with your friend"), 
+			   _("Open the text chat."), 
 			   NULL,
 			   image,
 			   GTK_SIGNAL_FUNC (toolbar_button_changed),
-			   (gpointer) "/apps/gnomemeeting/view/show_chat_window");
+			   (gpointer) VIEW_KEY "show_chat_window");
   
   image = gtk_image_new_from_stock (GM_STOCK_CONTROL_PANEL, 
 				    GTK_ICON_SIZE_LARGE_TOOLBAR);
   gtk_widget_show (image);
   gtk_toolbar_append_item (GTK_TOOLBAR (left_toolbar),
 			   NULL,
-			   _("Display the control panel"),
+			   _("Open the control panel"),
 			   NULL,
 			   image,
 			   GTK_SIGNAL_FUNC (toolbar_cp_button_changed),
-			   (gpointer) "/apps/gnomemeeting/view/control_panel_section");
+			   (gpointer) VIEW_KEY "control_panel_section");
 
   
   image = gtk_image_new_from_stock (GM_STOCK_ADDRESSBOOK_24,
@@ -266,17 +266,17 @@ GtkWidget *gnomemeeting_init_left_toolbar (void)
   /* We set the key as data to be able to get the data in order to block       
      the signal in the gconf notifier */                             
   g_object_set_data (G_OBJECT (gw->preview_button), "gconf_key", 
-		     (void *) "/apps/gnomemeeting/devices/video_preview");
+		     (void *) DEVICES_KEY "video_preview");
 
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->preview_button), 
-				gconf_client_get_bool (client, "/apps/gnomemeeting/devices/video_preview", NULL));
+				gconf_client_get_bool (client, DEVICES_KEY "video_preview", NULL));
 
   g_signal_connect (G_OBJECT (gw->preview_button), "clicked",
 		    G_CALLBACK (toggle_changed), 
-		    (gpointer) "/apps/gnomemeeting/devices/video_preview");
+		    (gpointer) DEVICES_KEY "video_preview");
 
   gtk_tooltips_set_tip (gw->tips, gw->preview_button,
-			_("Click here to begin displaying images from your camera device."),
+			_("Display images from your camera device."),
 			NULL);
 
   gtk_toolbar_append_widget (GTK_TOOLBAR (left_toolbar), 

@@ -44,14 +44,33 @@
 #include "misc.h"
 #include "sound_handling.h"
 #include "main_window.h"
+#include "callbacks.h"
 #include "dialog.h"
 
 #define new PNEW
+
+static gboolean transfer_callback_cb (gpointer data);
 
 
 /* Declarations */
 extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Hack to be able to call the transfer_call_cb in as a g_idle
+ *                 from a thread.
+ * PRE          :  /
+ */
+static gboolean
+transfer_callback_cb (gpointer data)
+{
+  gdk_threads_enter ();
+  transfer_call_cb (NULL, NULL);
+  gdk_threads_leave ();
+
+  return false;
+}
 
 
 #ifdef HAS_IXJ
@@ -71,6 +90,8 @@ GMLid::~GMLid ()
 {
   stop = 1;
   PWaitAndSignal m(quit_mutex);
+
+  Close ();
 }
 
 
@@ -176,8 +197,25 @@ void GMLid::Close ()
     lid->Close ();
 
   /* Restore the normal mixers settings */
-  cout << "Restore here the normal mixers settings"
-       << endl << flush;
+  gnomemeeting_threads_enter ();
+  client = gconf_client_get_default ();
+  gw = MyApp->GetMainWindow ();
+
+  mixer =
+    gconf_client_get_string (client, DEVICES_KEY "audio_player_mixer", NULL);
+  vol = gnomemeeting_get_mixer_volume (mixer, SOURCE_AUDIO);
+  g_free (mixer);
+
+  GTK_ADJUSTMENT (gw->adj_play)->value = (int) (vol & 255);
+
+  mixer =
+    gconf_client_get_string (client, DEVICES_KEY "audio_recorder_mixer", NULL);
+  vol = gnomemeeting_get_mixer_volume (mixer, SOURCE_MIC);
+  g_free (mixer);
+
+  GTK_ADJUSTMENT (gw->adj_rec)->value = (int) (vol & 255);
+  gtk_widget_queue_draw (GTK_WIDGET (gw->audio_settings_frame));
+  gnomemeeting_threads_leave (); 
 }
 
 
@@ -189,6 +227,8 @@ void GMLid::Main ()
   GMH323EndPoint *endpoint = NULL;
   GmWindow *gw = NULL;
 
+  char old_c = 0;
+  
   const char *url = NULL;
   PTime now, last_key_press;
 
@@ -250,7 +290,7 @@ void GMLid::Main ()
       if (calling_state == 0) { /* not connected */
 
         lid->PlayTone (0, OpalLineInterfaceDevice::DialTone);
-	lid->EnableAudio (0, TRUE);
+      	lid->EnableAudio (0, TRUE);
 
 	gnomemeeting_threads_enter ();
 	url = gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry)); 
@@ -293,16 +333,31 @@ void GMLid::Main ()
 	  MyApp->Connect ();
 	do_not_connect = TRUE;
       }
+
+      if (old_c == '*' && c == '1' && calling_state == 2) {
+
+	gnomemeeting_threads_enter ();
+	hold_call_cb (NULL, NULL);
+	gnomemeeting_threads_leave ();
+      }
+
+
+      if (old_c == '*' && c == '2' && calling_state == 2) {
+
+	gnomemeeting_threads_enter ();
+	g_idle_add (transfer_callback_cb, NULL);
+	gnomemeeting_threads_leave ();
+      }
     }
 
 
     lastOffHook = OffHook;
-
+    if (c)
+      old_c = c;
+    
     /* We must poll to read the hook state */
     PThread::Sleep(50);
   }
-  
-  Close ();
 }
 
 
@@ -324,18 +379,15 @@ GMLid::RingLine (int i)
 
     case 2: /* Busy */
       lid->StopTone (0);
-      lid->EnableAudio (0, TRUE);
       lid->RingLine (0, 0);
       lid->PlayTone (0, OpalLineInterfaceDevice::BusyTone);
       break;
-      
-    case 3: /* Stop all */
+
+    case 3:
       lid->StopTone (0);
       lid->SetRemoveDTMF (0, TRUE);
-      lid->EnableAudio (0, FALSE);
       lid->RingLine (0, 0);
-      break;
-
+      
     case 4: /* Stop tone */
       lid->StopTone (0);
       break;
