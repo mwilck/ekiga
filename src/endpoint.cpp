@@ -71,88 +71,8 @@
 #define new PNEW
 
 
-/* Declarations */
-static gint IncomingCallTimeout (gpointer);
-
 extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;
-
-
-/* The Timer */
-static gint 
-IncomingCallTimeout (gpointer data) 
-{
-  GmWindow *gw = NULL;
- 
-  GMH323EndPoint *ep = NULL;
-  H323Connection *connection = NULL;
-  
-  gchar *msg = NULL;
-  gchar *forward_host_gconf = NULL;
-  
-  PString forward_host;
-
-  gboolean no_answer_forward = FALSE;
-  
-  GConfClient *client = NULL;
-
-  ep = MyApp->Endpoint ();
- 
-  gdk_threads_enter ();
-  client = gconf_client_get_default ();
-  
-  /* Forwarding on no answer */
-  no_answer_forward = 
-    gconf_client_get_bool (client, CALL_FORWARDING_KEY "no_answer_forward", 0);
-  forward_host_gconf = 
-    gconf_client_get_string (client, CALL_FORWARDING_KEY "forward_host", 0);
-
-  if (forward_host_gconf)
-    forward_host = PString (forward_host_gconf);
-  else
-    forward_host = PString ("");
-
-  gw = MyApp->GetMainWindow ();
-
-  /* Destroy the incoming call popup */
-  if (gw->incoming_call_popup) {
-
-    gtk_widget_destroy (gw->incoming_call_popup);
-    gw->incoming_call_popup = NULL;
-  }
-  gdk_threads_leave ();
-
-
-  /* If forward host specified and forward requested */
-  if ((!forward_host.IsEmpty ())&&(no_answer_forward)) {
-
-    if (connection) {
-
-      connection = ep->FindConnectionWithLock (ep->GetCurrentCallToken ());
-      connection->ForwardCall (PString ((const char *) forward_host));
-
-      gdk_threads_enter ();
-      msg = g_strdup_printf (_("Forwarding Call to %s (No Answer)"), 
-			     (const char *) forward_host);
-      gnomemeeting_log_insert (gw->history_text_view, msg);
-
-      gnomemeeting_statusbar_push (gw->statusbar, _("Call forwarded"));
-      g_free (msg);
-      gdk_threads_leave ();
-
-      connection->Unlock ();
-    }
-  }
-  else {
-
-    if (ep->GetCallingState () == 3) 
-      ep->ClearAllCalls (H323Connection::EndedByNoAnswer, FALSE);
-  }
-  g_free (forward_host_gconf);
-
-
-  return FALSE;
-}
 
 
 /* The class */
@@ -248,13 +168,16 @@ GMH323EndPoint::GMH323EndPoint ()
   disableFastStart = !gconf_get_bool (GENERAL_KEY "fast_start");
   
   SetNoMediaTimeout (PTimeInterval (0, 15, 0));
-  ILSTimer.SetNotifier (PCREATE_NOTIFIER(OnILSTimeout));
+  ILSTimer.SetNotifier (PCREATE_NOTIFIER (OnILSTimeout));
   ils_registered = false;
 
-  RTPTimer.SetNotifier (PCREATE_NOTIFIER(OnRTPTimeout));
-  GatewayIPTimer.SetNotifier (PCREATE_NOTIFIER(OnGatewayIPTimeout));
+  RTPTimer.SetNotifier (PCREATE_NOTIFIER (OnRTPTimeout));
+  GatewayIPTimer.SetNotifier (PCREATE_NOTIFIER (OnGatewayIPTimeout));
   GatewayIPTimer.RunContinuous (PTimeInterval (5));
 
+  NoAnswerTimer.SetNotifier (PCREATE_NOTIFIER (OnNoAnswerTimeout));
+
+  
   AddAllCapabilities ();
   
   /* Update general configuration */
@@ -866,8 +789,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 			      the call */
   BOOL do_reject = FALSE; /* TRUE if we reject the call */
 
-  int no_answer_timeout = 0;
-
+  
   /* Check the gconf keys */
   gnomemeeting_threads_enter ();
   forward_host_gconf = gconf_get_string (CALL_FORWARDING_KEY "forward_host");
@@ -976,8 +898,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 
   /* If we are here, the call doesn't need to be rejected or forwarded */
   gnomemeeting_threads_enter ();
-  gtk_menu_set_sensitive (gw->main_menu, "disconnect", TRUE);
-  gtk_menu_set_sensitive (gw->tray_popup_menu, "disconnect", TRUE);
+  gnomemeeting_menu_update_sensitivity (3);
   gnomemeeting_threads_leave ();
 
  
@@ -1011,13 +932,9 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 			 gw->docklet);
     }
     
-    if (no_answer_timeout == 0) {
-      
-      no_answer_timeout = 
-	gtk_timeout_add (25000, (GtkFunction) IncomingCallTimeout, NULL);
-    }
     gnomemeeting_threads_leave ();
-			
+    NoAnswerTimer.SetInterval (0, 15);
+    
 			
     /* Incoming Call Popup, if needed */
     if (show_popup) {
@@ -1216,6 +1133,8 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
     gtk_timeout_remove (sound_timeout);
     sound_timeout = 0;
   }
+  /* Stop the OnNoAnswerTimeout */
+  NoAnswerTimer.Stop ();
 
   if (gw->incoming_call_popup) {
     
@@ -1244,12 +1163,7 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
   connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 1);
   gnomemeeting_addressbook_update_menu_sensitivity ();
-  gtk_menu_set_sensitive (gw->main_menu, "connect", FALSE);
-  gtk_menu_set_sensitive (gw->tray_popup_menu, "connect", FALSE);
-  gtk_menu_set_sensitive (gw->main_menu, "disconnect", TRUE);
-  gtk_menu_set_sensitive (gw->tray_popup_menu, "disconnect", TRUE);
-  gtk_menu_section_set_sensitive (gw->main_menu, "hold_call", TRUE);
-  gtk_menu_section_set_sensitive (gw->main_menu, "suspend_audio", TRUE);
+  gnomemeeting_menu_update_sensitivity (2);
   gnomemeeting_tray_set_content (gw->docklet, 2);
   gnomemeeting_threads_leave ();
 
@@ -1488,6 +1402,8 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
     gtk_timeout_remove (sound_timeout);
     sound_timeout = 0;
   }
+  /* Stop the OnNoAnswerTimeout */
+  NoAnswerTimer.Stop ();
 
   gnomemeeting_threads_leave ();
 
@@ -1547,13 +1463,11 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   }
 
 
-  /* Disable disconnect, and the mute functions in the call menu */
-  gtk_menu_set_sensitive (gw->main_menu, "connect", TRUE);
-  gtk_menu_set_sensitive (gw->tray_popup_menu, "connect", TRUE);
-  gtk_menu_set_sensitive (gw->main_menu, "disconnect", FALSE);
-  gtk_menu_set_sensitive (gw->tray_popup_menu, "disconnect", FALSE);
-  gtk_menu_set_sensitive (gw->main_menu, "hold_call", FALSE);
-  gtk_menu_set_sensitive (gw->main_menu, "suspend_audio", FALSE);
+  gnomemeeting_menu_update_sensitivity (0);
+
+  /* No Audio reception or transmission */
+  gnomemeeting_menu_update_sensitivity (FALSE, FALSE, FALSE);
+
   gnomemeeting_addressbook_update_menu_sensitivity ();
   connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 0);
 
@@ -1742,6 +1656,8 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
     gtk_timeout_remove (sound_timeout);
     sound_timeout = 0;
   }
+  /* Stop the OnNoAnswerTimeout */
+  NoAnswerTimer.Stop ();
 
 
   /* Suspend the daemons */
@@ -1855,7 +1771,14 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
       gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Could not open audio channel for audio reception"), _("An error occured while trying to play audio to the soundcard for the audio reception. Please check that your soundcard is not busy and that your driver supports full-duplex.\nThe audio reception has been disabled."));
     gnomemeeting_threads_leave ();
   }
+  else {
 
+    gnomemeeting_threads_enter ();
+    /* No audio reception, or at least we don't care, but audio transmission */
+    gnomemeeting_menu_update_sensitivity (FALSE, FALSE, TRUE);
+    gnomemeeting_threads_leave ();
+  }
+    
   return no_error;
 }
 
@@ -2001,6 +1924,8 @@ GMH323EndPoint::StartLogicalChannel (const PString & capability_name,
 	no_error = FALSE;
       }
     }
+
+    /** This code is not supported yet (Mode Changes).
     else {
 
       if (id == RTP_Session::DefaultVideoSessionID)
@@ -2019,7 +1944,7 @@ GMH323EndPoint::StartLogicalChannel (const PString & capability_name,
       }
       else
 	no_error = TRUE;
-    }
+    } */
 
     con->Unlock ();
   }
@@ -2232,7 +2157,8 @@ GMH323EndPoint::CheckTCPPorts ()
 
 
 void 
-GMH323EndPoint::OnGatewayIPTimeout (PTimer &, INT)
+GMH323EndPoint::OnGatewayIPTimeout (PTimer &,
+				    INT)
 {
   PHTTPClient web_client ("GnomeMeeting");
   PString html, ip_address;
@@ -2267,6 +2193,76 @@ GMH323EndPoint::OnGatewayIPTimeout (PTimer &, INT)
   }
 
   GatewayIPTimer.RunContinuous (PTimeInterval (0, 0, 15));
+}
+
+
+void
+GMH323EndPoint::OnNoAnswerTimeout (PTimer &,
+				   INT) 
+{
+  GmWindow *gw = NULL;
+ 
+  H323Connection *connection = NULL;
+  
+  gchar *msg = NULL;
+  gchar *forward_host_gconf = NULL;
+  
+  PString forward_host;
+
+  gboolean no_answer_forward = FALSE;
+  
+  
+  gdk_threads_enter ();
+  
+  /* Forwarding on no answer */
+  no_answer_forward = 
+    gconf_get_bool (CALL_FORWARDING_KEY "no_answer_forward");
+  forward_host_gconf = 
+    gconf_get_string (CALL_FORWARDING_KEY "forward_host");
+
+  if (forward_host_gconf)
+    forward_host = PString (forward_host_gconf);
+  else
+    forward_host = PString ("");
+
+  gw = MyApp->GetMainWindow ();
+
+  /* Destroy the incoming call popup */
+  if (gw->incoming_call_popup) {
+
+    gtk_widget_destroy (gw->incoming_call_popup);
+    gw->incoming_call_popup = NULL;
+  }
+  gdk_threads_leave ();
+
+
+  /* If forward host specified and forward requested */
+  if (!forward_host.IsEmpty () && no_answer_forward) {
+
+    connection = FindConnectionWithLock (GetCurrentCallToken ());
+
+    if (connection) {
+      
+      connection->ForwardCall (PString ((const char *) forward_host));
+
+      gdk_threads_enter ();
+      msg = g_strdup_printf (_("Forwarding Call to %s (No Answer)"), 
+			     (const char *) forward_host);
+      gnomemeeting_log_insert (gw->history_text_view, msg);
+
+      gnomemeeting_statusbar_push (gw->statusbar, _("Call forwarded"));
+      g_free (msg);
+      gdk_threads_leave ();
+
+      connection->Unlock ();
+    }
+  }
+  else {
+
+    if (GetCallingState () == 3) 
+      ClearAllCalls (H323Connection::EndedByNoAnswer, FALSE);
+  }
+  g_free (forward_host_gconf);
 }
 
 

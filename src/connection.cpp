@@ -186,7 +186,7 @@ GMH323Connection::OnAnswerCall (const PString & caller,
     
     return AnswerCallNow; 
   }
-  
+
   return AnswerCallPending;
 }
 

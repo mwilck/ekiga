@@ -287,7 +287,8 @@ class GMH323EndPoint : public H323EndPoint
    * BEHAVIOR     :  Set the current calling state :
    *                   0 : not in a call
    *                   1 : calling somebody
-   *                   2 : currently in a call 
+   *                   2 : currently in a call
+   *                   3 : receiving a call
    * PRE          :  /
    */
   void SetCallingState (int);
@@ -459,6 +460,7 @@ class GMH323EndPoint : public H323EndPoint
   PDECLARE_NOTIFIER(PTimer, GMH323EndPoint, OnILSTimeout);
   PDECLARE_NOTIFIER(PTimer, GMH323EndPoint, OnRTPTimeout);
   PDECLARE_NOTIFIER(PTimer, GMH323EndPoint, OnGatewayIPTimeout);
+  PDECLARE_NOTIFIER(PTimer, GMH323EndPoint, OnNoAnswerTimeout);
 
 
   PString called_address;
@@ -480,6 +482,7 @@ class GMH323EndPoint : public H323EndPoint
   PTimer ILSTimer;
   PTimer RTPTimer;
   PTimer GatewayIPTimer;
+  PTimer NoAnswerTimer;
 
   BOOL ils_registered;
 

@@ -705,3 +705,126 @@ gnomemeeting_tray_init_menu (GtkWidget *widget)
 
   return popup_menu_widget;
 }
+
+
+void
+gnomemeeting_menu_update_sensitivity (int calling_state)
+{
+  GmWindow *gw = NULL;
+
+  gw = MyApp->GetMainWindow ();
+  
+  switch (calling_state)
+    {
+    case 0:
+
+      gtk_menu_set_sensitive (gw->main_menu, "connect", TRUE);
+      gtk_menu_set_sensitive (gw->tray_popup_menu, "connect", TRUE);
+      gtk_menu_set_sensitive (gw->main_menu, "disconnect", FALSE);
+      gtk_menu_set_sensitive (gw->tray_popup_menu, "disconnect", FALSE);
+      gtk_menu_section_set_sensitive (gw->main_menu, "hold_call", FALSE);
+      break;
+
+
+    case 1:
+
+      gtk_menu_set_sensitive (gw->main_menu, "connect", FALSE);
+      gtk_menu_set_sensitive (gw->tray_popup_menu, "connect", FALSE);
+      gtk_menu_set_sensitive (gw->main_menu, "disconnect", TRUE);
+      gtk_menu_set_sensitive (gw->tray_popup_menu, "disconnect", TRUE);
+      break;
+
+
+    case 2:
+      gtk_menu_set_sensitive (gw->main_menu, "connect", FALSE);
+      gtk_menu_set_sensitive (gw->tray_popup_menu, "connect", FALSE);
+      gtk_menu_set_sensitive (gw->main_menu, "disconnect", TRUE);
+      gtk_menu_set_sensitive (gw->tray_popup_menu, "disconnect", TRUE);
+      gtk_menu_section_set_sensitive (gw->main_menu, "hold_call", TRUE);
+      break;
+
+
+    case 3:
+      gtk_menu_set_sensitive (gw->main_menu, "disconnect", TRUE);
+      gtk_menu_set_sensitive (gw->tray_popup_menu, "disconnect", TRUE);
+      break;
+    }
+}
+
+
+void
+gnomemeeting_menu_update_sensitivity (BOOL is_video,
+				      BOOL is_receiving,
+				      BOOL is_transmitting)
+{
+  GmWindow *gw = NULL;
+
+  gw = MyApp->GetMainWindow ();
+  
+  if (is_video) {
+
+    if (is_transmitting) {
+      
+      gtk_menu_section_set_sensitive (gw->main_menu, "local_video", TRUE);
+      gtk_menu_section_set_sensitive (gw->main_menu, "suspend_video", TRUE);
+    }
+    else {
+      
+      gtk_menu_section_set_sensitive (gw->main_menu, "local_video", FALSE);
+      gtk_menu_section_set_sensitive (gw->main_menu, "suspend_video", FALSE);
+    }
+    
+    if (is_receiving && is_transmitting) {
+    
+      gtk_menu_section_set_sensitive (gw->main_menu,
+				      "local_video", TRUE);
+      gtk_menu_section_set_sensitive (gw->video_popup_menu,
+				      "local_video", TRUE);
+    }
+    else {
+      
+      gtk_menu_section_set_sensitive (gw->main_menu,
+				      "local_video", FALSE);
+      gtk_menu_section_set_sensitive (gw->video_popup_menu,
+				      "local_video", FALSE);
+      if (is_transmitting) {
+	
+	gtk_menu_set_sensitive (gw->main_menu,
+				"local_video", TRUE);
+	gtk_menu_set_sensitive (gw->video_popup_menu,
+				"local_video", TRUE);
+      }
+      else if (is_receiving) {
+
+	gtk_menu_set_sensitive (gw->main_menu,
+				"remote_video", TRUE);
+	gtk_menu_set_sensitive (gw->video_popup_menu,
+				"remote_video", TRUE);
+      }
+
+      if (!is_receiving && !is_transmitting) {
+
+	gtk_menu_section_set_sensitive (gw->main_menu,
+					"zoom_in", FALSE);
+	gtk_menu_section_set_sensitive (gw->video_popup_menu,
+					"zoom_in", FALSE);
+	gtk_menu_set_sensitive (gw->main_menu, "save_picture", FALSE);
+      }
+      else {
+
+	gtk_menu_section_set_sensitive (gw->main_menu,
+					"zoom_in", TRUE);
+	gtk_menu_section_set_sensitive (gw->video_popup_menu,
+					"zoom_in", TRUE);
+	gtk_menu_set_sensitive (gw->main_menu, "save_picture", TRUE);
+      }
+    }
+  }
+  else {
+
+    if (is_transmitting)
+      gtk_menu_set_sensitive (gw->main_menu, "suspend_audio", TRUE);
+    else
+      gtk_menu_set_sensitive (gw->main_menu, "suspend_audio", FALSE);
+  }
+}

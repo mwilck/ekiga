@@ -331,9 +331,9 @@ void GMURLHandler::Main ()
       /* Disable the preview, and enable Disconnect, this is done
 	 in all cases, including when calling an unexisting callto */
       gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
-      gtk_menu_set_sensitive (gw->main_menu, "disconnect", TRUE);
-      gtk_menu_set_sensitive (gw->tray_popup_menu, "disconnect", TRUE);
-
+      gnomemeeting_menu_update_sensitivity (1);
+      endpoint->SetCallingState (1);
+      
       if (!transfer_call) {
 
 	gnomemeeting_main_window_enable_statusbar_progress (true);
@@ -355,7 +355,6 @@ void GMURLHandler::Main ()
     /* Connect to the URL */
     if (!transfer_call) {
 
-      endpoint->SetCallingState (1);
       con = 
 	endpoint->MakeCallLocked (call_address, current_call_token);
     }
@@ -383,8 +382,7 @@ void GMURLHandler::Main ()
       gnomemeeting_threads_enter ();
       connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 0);
       gnomemeeting_main_window_enable_statusbar_progress (false);
-      gtk_menu_set_sensitive (gw->main_menu, "disconnect", FALSE);
-      gtk_menu_set_sensitive (gw->tray_popup_menu, "disconnect", FALSE);
+      gnomemeeting_menu_update_sensitivity (0);
       gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), TRUE);
 
       if (call_address.Find ("+type=directory") != P_MAX_INDEX) {

@@ -62,8 +62,7 @@ enum {
  *                 required items being unsensitive.
  * PRE          :  The accel group.
  */
-GtkWidget *
-gnomemeeting_init_menu (GtkAccelGroup *);
+GtkWidget *gnomemeeting_init_menu (GtkAccelGroup *);
 
 
 GtkWidget *gnomemeeting_video_popup_init_menu (GtkWidget *,
@@ -76,6 +75,28 @@ GtkWidget *gnomemeeting_video_popup_init_menu (GtkWidget *,
  * PRE          :  The widget to attach the menu to, and the accelgroup.
  */
 GtkWidget *gnomemeeting_tray_init_menu (GtkWidget *);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Updates the main menu items that depend on the current
+ *                 calling state of the endpoint.
+ * PRE          :  A valid calling state.
+ */
+void gnomemeeting_menu_update_sensitivity (int);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Updates the main menu items that depend on the currently
+ *                 opened audio and video channels.
+ * PRE          :  The first parameter is TRUE if we are updating video
+ *                 channels related items, FALSE if we are updating audio
+ *                 channels related items. The second parameter is TRUE
+ *                 if we are transmitting audio (or video), the third is TRUE
+ *                 if we are receiving audio (or video).
+ */
+void gnomemeeting_menu_update_sensitivity (BOOL,
+					   BOOL,
+					   BOOL);
 
 #endif
 

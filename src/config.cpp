@@ -412,10 +412,9 @@ enable_video_transmission_changed_nt (GConfClient *client,
 
     if (gconf_value_get_bool (entry->value)) {
 	
-      bool res = ep->StartLogicalChannel (name,
+      ep->StartLogicalChannel (name,
 			       RTP_Session::DefaultVideoSessionID,
 			       FALSE);
-      cout << "ici " << res << endl << flush;
     }
     else {
 
@@ -434,9 +433,8 @@ enable_video_transmission_changed_nt (GConfClient *client,
 /* DESCRIPTION  :  This notifier is called when the gconf database data
  *                 associated with the enable_video_transmission key changes.
  * BEHAVIOR     :  It updates the endpoint.
- *                 If the user is in a call, the video channel will be started
- *                 and stopped on-the-fly as long as the remote has enabled
- *                 video reception.
+ *                 If the user is in a call, the video recpetion will be 
+ *                 stopped on-the-fly if required.
  * PRE          :  /
  */
 static void
@@ -463,12 +461,6 @@ enable_video_reception_changed_nt (GConfClient *client,
 	
       ep->StopLogicalChannel (RTP_Session::DefaultVideoSessionID,
 			      TRUE);
-    }
-    else {
-
-      ep->StartLogicalChannel (name,
-			       RTP_Session::DefaultVideoSessionID,
-			       TRUE);
     }
   }
 }

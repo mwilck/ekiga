@@ -1,3 +1,27 @@
+2003-10-23 Damien Sandras  <dsandras@seconix.com>
+
+	* src/config.cpp: Removed unuseful cout.
+
+	* src/endpoint.cpp, src/endpoint.h: Code cleanups. Replaced the
+	old GTK timeout for Non answered calls by a PWLib Notifier.
+	That fixes a previous bug. Do not update the menu items individually
+	in the code but use the 2 new menu.h functions written for that 
+	purpose.
+	
+	* src/gdkvideoio.cpp, src/gdkvideoio.h:  Do not update the menu items 
+	individually in the code but use the 2 new menu.h functions written 
+	for that purpose.
+	
+	* src/menu.cpp, src/menu.h: Added a function that updates the 
+	sensitivity of general menu items, non-related to the opening/closing
+	of audio and video channels. Added another function that updates
+	the sensitivity of general menu items related to the opening
+	and closing of audio and video channels. Fixed previous bug
+	so that the "Save snapshot" menu item is sensitive as soon
+	as at least one video channel is opened (Reported by Kilian). 
+
+	* src/urlhandler.cpp: Use the 2 previous functions.
+	
 2003-10-22 Damien Sandras  <dsandras@seconix.com>
 
 	* src/config.cpp: Fixed possible bug in previous commit.
@@ -11,6 +35,7 @@
 	Fast Start. Directly update capabilities list when needed and
 	not at the end of calls.
 	
+
 	* src/endpoint.cpp, src/endpoint.h: See above.
 	
 2003-10-21 Damien Sandras  <dsandras@seconix.com>
