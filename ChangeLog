@@ -1,5 +1,15 @@
 2004-02-01 Damien Sandras  <dsandras@seconix.com>
 
+	* src/common.h: Added search entry to the calls history.
+
+	* src/tools.cpp: Removed unrequired #defines, changed clear button
+	so that it is not placed at a non-HIG compliant place and so that
+	it only clears the current calls list. Added search function to
+	allow searches on the calls history. Fixed bug with wrong UTF-8
+	reported by Johnny.
+	
+2004-02-01 Damien Sandras  <dsandras@seconix.com>
+
 	* configure.in: Added checks for plugins support and quicknet support
 	in pwlib and openh323.
 

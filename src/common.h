@@ -298,6 +298,7 @@ struct _GmCallsHistoryWindow
   GtkListStore *given_calls_list_store;
   GtkListStore *received_calls_list_store;
   GtkListStore *missed_calls_list_store;
+  GtkWidget *search_entry;
 };
 
 

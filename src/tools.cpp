@@ -66,6 +66,12 @@ static void dnd_drag_data_get_cb (GtkWidget *,
 				  guint,
 				  gpointer);
 
+static void clear_button_clicked_cb (GtkButton *,
+				     gpointer);
+
+static void find_button_clicked_cb (GtkButton *,
+				    gpointer);
+
 
 /* DESCRIPTION  :  This callback is called when the user validates an answer
  *                 to the PC-To-Phone window.
@@ -208,6 +214,113 @@ dnd_drag_data_get_cb (GtkWidget *tree_view,
 }
 
 
+/* DESCRIPTION  :  This callback is called when the user has clicked the clear
+ *                 button.
+ * BEHAVIOR     :  Clears the corresponding calls list using the GConf DB.
+ * PRE          :  data = the GtkNotebook containing the 3 lists of calls.
+ */
+static void
+clear_button_clicked_cb (GtkButton *b, gpointer data)
+{
+  if (!data)
+    return;
+  
+  switch (gtk_notebook_get_current_page (GTK_NOTEBOOK (data))) {
+
+  case RECEIVED_CALL:
+    gconf_set_string_list (USER_INTERFACE_KEY "calls_history_window/received_calls_history", NULL);
+    break;
+  case PLACED_CALL:
+    gconf_set_string_list (USER_INTERFACE_KEY "calls_history_window/placed_calls_history", NULL);
+    break;
+  case MISSED_CALL:
+    gconf_set_string_list (USER_INTERFACE_KEY "calls_history_window/missed_calls_history", NULL);
+    break;
+  }
+}
+
+
+/* DESCRIPTION  :  This callback is called when the user has clicked the find
+ *                 button.
+ * BEHAVIOR     :  Hides the rows that do not contain the text in the search
+ *                 entry.
+ * PRE          :  data = the GtkNotebook containing the 3 lists of calls.
+ */
+static void
+find_button_clicked_cb (GtkButton *b, gpointer data)
+{ 
+  GmCallsHistoryWindow *chw = NULL;
+
+  GtkListStore *list_store = NULL;
+  GtkTreeIter iter;
+  const char *entry_text = NULL;
+  gchar *date = NULL;
+  gchar *software = NULL;
+  gchar *remote_user = NULL;
+  gchar *end_reason = NULL;
+
+  BOOL removed = FALSE;
+  BOOL ok = FALSE;
+  
+  if (!data)
+    return;
+
+  /* Fill in the window */
+  gnomemeeting_calls_history_window_populate ();
+  
+  chw = GnomeMeeting::Process ()->GetCallsHistoryWindow ();
+  entry_text = gtk_entry_get_text (GTK_ENTRY (chw->search_entry));
+
+  switch (gtk_notebook_get_current_page (GTK_NOTEBOOK (data))) {
+    
+  case RECEIVED_CALL:
+    list_store = chw->received_calls_list_store;
+    break;
+  case PLACED_CALL:
+    list_store = chw->given_calls_list_store;
+    break;
+  case MISSED_CALL:
+    list_store = chw->missed_calls_list_store;
+    break;
+  }
+
+  if (strcmp (entry_text, "")
+      && gtk_tree_model_get_iter_first (GTK_TREE_MODEL (list_store), &iter)) {
+
+    do {
+
+      ok = FALSE;
+      removed = FALSE;
+      gtk_tree_model_get (GTK_TREE_MODEL (list_store),
+			  &iter,
+			  0, &date,
+			  1, &remote_user,
+			  4, &end_reason,
+			  5, &software,
+			  -1);
+
+      if (!(PString (date).Find (entry_text) != P_MAX_INDEX
+	  || PString (remote_user).Find (entry_text) != P_MAX_INDEX
+	  || PString (end_reason).Find (entry_text) != P_MAX_INDEX
+	    || PString (software).Find (entry_text) != P_MAX_INDEX)) {
+	
+	ok = gtk_list_store_remove (GTK_LIST_STORE (list_store), &iter);
+	removed = TRUE;
+      }
+      
+      g_free (date);
+      g_free (remote_user);
+      g_free (end_reason);
+      g_free (software);
+
+      if (!removed)
+	ok = gtk_tree_model_iter_next (GTK_TREE_MODEL (list_store), &iter);
+	
+    } while (ok);
+  }
+}
+
+
 /* The functions */
 void
 gnomemeeting_calls_history_window_populate ()
@@ -294,7 +407,7 @@ gnomemeeting_calls_history_window_add_call (int i,
   GSList *calls_list = NULL;
   GSList *tmp = NULL;
   
-  time = PTime ().AsString ("www dd MMM, hh:mm:ss");
+  time = PTime ().AsString ("yyyy/MM/dd hh:mm:ss");
   
   switch (i) {
 
@@ -339,27 +452,12 @@ gnomemeeting_calls_history_window_add_call (int i,
   g_slist_free (calls_list);
 }
 
-#define CLOSE_BUTTON_ID 0
-#define CLEAR_BUTTON_ID 1
-
-void
-gnomemeeting_calls_history_window_response_event (GtkDialog *dialog, gint id, gpointer window)
-{
-  switch (id) {
-    case CLOSE_BUTTON_ID:
-      gnomemeeting_window_hide (GTK_WIDGET (window));
-      break;
-    case CLEAR_BUTTON_ID:
-      gconf_set_string_list (USER_INTERFACE_KEY "calls_history_window/received_calls_history", NULL);
-      gconf_set_string_list (USER_INTERFACE_KEY "calls_history_window/placed_calls_history", NULL);
-      gconf_set_string_list (USER_INTERFACE_KEY "calls_history_window/missed_calls_history", NULL);
-      break;
-  }
-}
 
 GtkWidget *
 gnomemeeting_calls_history_window_new (GmCallsHistoryWindow *chw)
 {
+  GtkWidget *hbox = NULL;
+  GtkWidget *button = NULL;
   GtkWidget *window = NULL;
   GtkWidget *notebook = NULL;
   GtkWidget *scr = NULL;
@@ -385,8 +483,8 @@ gnomemeeting_calls_history_window_new (GmCallsHistoryWindow *chw)
 
   
   window = gtk_dialog_new ();
-  gtk_dialog_add_button (GTK_DIALOG (window), GTK_STOCK_CLEAR, CLEAR_BUTTON_ID);
-  gtk_dialog_add_button (GTK_DIALOG (window), GTK_STOCK_CLOSE, CLOSE_BUTTON_ID);
+  gtk_dialog_add_button (GTK_DIALOG (window), GTK_STOCK_CLOSE, 0);
+
   g_object_set_data_full (G_OBJECT (window), "window_name",
 			  g_strdup ("calls_history_window"), g_free);
   
@@ -398,14 +496,18 @@ gnomemeeting_calls_history_window_new (GmCallsHistoryWindow *chw)
   gtk_window_set_icon (GTK_WINDOW (window), icon);
   g_object_unref (icon);
 
+  
+  /* The notebook containing the 3 lists of calls */
   notebook = gtk_notebook_new ();
   gtk_container_set_border_width (GTK_CONTAINER (notebook), 6);
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG (window)->vbox), notebook,
 		      TRUE, TRUE, 0);
 
+
   for (int i = 0 ; i < MAX_VALUE_CALL ; i++) {
 
     label = gtk_label_new (N_(label_text [i]));
+    
     scr = gtk_scrolled_window_new (NULL, NULL);
     gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scr), 
 				    GTK_POLICY_AUTOMATIC,
@@ -424,7 +526,7 @@ gnomemeeting_calls_history_window_new (GmCallsHistoryWindow *chw)
     tree_view = 
       gtk_tree_view_new_with_model (GTK_TREE_MODEL (list_store [i]));
     gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (tree_view), TRUE);
-    
+
     renderer = gtk_cell_renderer_text_new ();
     column = gtk_tree_view_column_new_with_attributes (_("Date"),
 						       renderer,
@@ -504,14 +606,41 @@ gnomemeeting_calls_history_window_new (GmCallsHistoryWindow *chw)
   chw->given_calls_list_store = list_store [1];
   chw->missed_calls_list_store = list_store [2];
 
+
+  /* The hbox added below the notebook that contains the Search field,
+     and the search and clear buttons */
+  hbox = gtk_hbox_new (FALSE, 0);  
+  chw->search_entry = gtk_entry_new ();
+  gtk_box_pack_start (GTK_BOX (hbox), chw->search_entry, TRUE, TRUE, 6);
+  g_signal_connect (G_OBJECT (chw->search_entry), "activate",
+		    G_CALLBACK (find_button_clicked_cb),
+		    (gpointer) notebook);  
+  
+  button = gtk_button_new_from_stock (GTK_STOCK_FIND);
+  gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 2);
+  g_signal_connect (G_OBJECT (button), "clicked",
+		    G_CALLBACK (find_button_clicked_cb),
+		    (gpointer) notebook);
+
+  button = gtk_button_new_from_stock (GTK_STOCK_CLEAR);
+  gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 2);
+  g_signal_connect (G_OBJECT (button), "clicked",
+		    G_CALLBACK (clear_button_clicked_cb),
+		    (gpointer) notebook);
+
+  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (window)->vbox), hbox,
+		      FALSE, FALSE, 0);  
+
+  
+  /* Generic signals */
   g_signal_connect_swapped (GTK_OBJECT (window), 
 			    "response", 
-			    G_CALLBACK (gnomemeeting_calls_history_window_response_event),
+			    G_CALLBACK (gnomemeeting_window_hide),
 			    (gpointer) window);
 
   g_signal_connect_swapped (GTK_OBJECT (window), 
 			    "delete-event", 
-			    G_CALLBACK (gtk_widget_hide_on_delete),
+			    G_CALLBACK (gnomemeeting_window_hide),
 			    (gpointer) window);
 
   
@@ -565,10 +694,10 @@ gnomemeeting_pc_to_phone_window_new ()
     gnome_prefs_subsection_new (window, vbox,
 				_("PC-To-Phone Settings"), 2, 1);
 
-  gnome_prefs_entry_new (subsection, _("Gatekeeper _alias:"), H323_GATEKEEPER_KEY "alias", _("The Gatekeeper alias to use when registering (string, or E164 ID if only 0123456789#)."), 1, false);
+  gnome_prefs_entry_new (subsection, _("Account _number:"), H323_GATEKEEPER_KEY "alias", _("Use your MicroTelco account number."), 1, false);
 
   entry =
-    gnome_prefs_entry_new (subsection, _("Gatekeeper _password:"), H323_GATEKEEPER_KEY "password", _("The Gatekeeper password to use for H.235 authentication to the Gatekeeper."), 2, false);
+    gnome_prefs_entry_new (subsection, _("_Pin:"), H323_GATEKEEPER_KEY "password", _("Use your MicroTelco PIN."), 2, false);
   gtk_entry_set_visibility (GTK_ENTRY (entry), FALSE);
 
   use_service_button =
