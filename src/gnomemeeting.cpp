@@ -146,9 +146,9 @@ GnomeMeeting::Connect()
       if (lid_thread)
 	lid = lid_thread->GetLidDevice ();
       if (lid) {
-	
-	lid->EnableAudio (0, FALSE);
+
 	lid->PlayTone (0, OpalLineInterfaceDevice::RingTone);
+	lid->EnableAudio (0, FALSE);
       }
 #endif
     }

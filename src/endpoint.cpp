@@ -1542,6 +1542,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
            
       lid->PlayTone (0, OpalLineInterfaceDevice::BusyTone);
       lid->RingLine (0, 0);
+      lid->EnableAudio (0, TRUE);
     }
   }
 #endif

@@ -412,12 +412,13 @@ BOOL GMILSClient::Register (int reg)
     else {
 
       gnomemeeting_threads_enter ();
-      if (CheckFieldsConfig ()) {
+      bool ok = CheckFieldsConfig ();
+      gnomemeeting_threads_leave ();
+      
+      if (ok) {
 	while (current) {
 
-	  gnomemeeting_threads_leave (); /* It is a long operation */
 	  process (ldap, xp, &current);
-	  gnomemeeting_threads_enter ();
 	}
       }
       else
@@ -480,6 +481,8 @@ BOOL GMILSClient::Register (int reg)
 	registered = 0;
       }
 
+      gnomemeeting_threads_enter ();
+      
       if (reg != 2)
 	gnomemeeting_statusbar_flash (gw->statusbar, msg);
       gnomemeeting_log_insert (gw->history_text_view, msg);
