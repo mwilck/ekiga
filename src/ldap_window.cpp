@@ -40,6 +40,7 @@
 
 #include "ldap_window.h"
 #include "gm_conf.h"
+#include "contacts/gm_contacts.h"
 #include "gnomemeeting.h"
 #include "ils.h"
 #include "menu.h"
@@ -72,12 +73,12 @@ static void filter_option_menu_changed (GtkWidget *,
 
 /* Callbacks: Drag and drop management */
 static gboolean dnd_drag_motion_cb (GtkWidget *,
-				    GdkDragContext *,
-				    int,
-				    int,
-				    guint,
-				    gpointer);
-
+                                    GdkDragContext *,
+                                    int,
+                                    int,
+                                    guint,
+                                    gpointer);
+ 
 static void dnd_drag_data_received_cb (GtkWidget *,
 				       GdkDragContext *,
 				       int,
@@ -243,7 +244,6 @@ filter_option_menu_changed (GtkWidget *menu,
     gtk_widget_set_sensitive (GTK_WIDGET (data), TRUE);
 }
 
-
 /* DESCRIPTION  :  This callback is called when the user moves the drag.
  * BEHAVIOR     :  Draws a rectangle around the groups in which the user info
  *                 can be dropped.
@@ -251,93 +251,53 @@ filter_option_menu_changed (GtkWidget *menu,
  */
 static gboolean
 dnd_drag_motion_cb (GtkWidget *tree_view,
-		    GdkDragContext *context,
-		    int x,
-		    int y,
-		    guint time,
-		    gpointer data)		     
+                    GdkDragContext *context,
+                    int x,
+                    int y,
+                    guint time,
+                    gpointer data)
 {
-  GtkWidget *src_widget = NULL;
-  GtkTreeModel *src_model = NULL;
-  GtkTreeSelection *src_selection = NULL;
   GtkTreeModel *model = NULL;
   GtkTreePath *path = NULL;
-
-  gchar *group_name = NULL;
-  gchar *contact_url = NULL;
-
-  GmLdapWindow *lw = NULL;
-  GmCallsHistory *chw = NULL;
-  
+  gchar *group_name = NULL;  
   GValue value =  {0, };
   GtkTreeIter iter;
-
-  lw = GnomeMeeting::Process ()->GetLdapWindow ();
-  chw = (GmCallsHistory *)g_object_get_data (G_OBJECT (GnomeMeeting::Process ()->GetCallsHistoryWindow ()), "GMObject");
-  
-  src_widget = gtk_drag_get_source_widget (context);
-  src_model = gtk_tree_view_get_model (GTK_TREE_VIEW (src_widget));
-
+    
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (tree_view));
-
-  /* The source can be either the addressbook OR the calls history */
-  if (src_model == GTK_TREE_MODEL (chw->given_calls_list_store)
-      || src_model == GTK_TREE_MODEL (chw->received_calls_list_store)
-      || src_model == GTK_TREE_MODEL (chw->missed_calls_list_store)) {
-
-    src_selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (src_widget));
-
-    if (gtk_tree_selection_get_selected (src_selection, &src_model, &iter))
-      gtk_tree_model_get (GTK_TREE_MODEL (src_model), &iter,
-			  2, &contact_url, -1);
-  }
-  else
-    get_selected_contact_info (NULL, NULL, &contact_url, NULL, NULL);
-
-
-  /* Get the url field of the contact info from the source GtkTreeView */
-  if (contact_url) {
-
+  
+  /* See if the path in the destination GtkTreeView corresponds to a valid
+     row (ie a group row, and a row corresponding to a group the user
+     doesn't belong to */
+  if (gtk_tree_view_get_dest_row_at_pos (GTK_TREE_VIEW (tree_view),
+					 x, y, &path, NULL)) {
     
-    /* See if the path in the destination GtkTreeView corresponds to a valid
-       row (ie a group row, and a row corresponding to a group the user
-       doesn't belong to */
-    if (gtk_tree_view_get_dest_row_at_pos (GTK_TREE_VIEW (tree_view),
-					   x, y, &path, NULL)) {
-
-      if (gtk_tree_model_get_iter (model, &iter, path)) {
-	    
-	gtk_tree_model_get_value (model, &iter, 
-				  COLUMN_CONTACT_SECTION_NAME, &value);
-	group_name = (gchar *) g_value_get_string (&value);
-
-	/* If the user doesn't belong to the selected group and if
-	   the selected row corresponds to a group and not a server */
-	if (gtk_tree_path_get_depth (path) >= 2 &&
-	    gtk_tree_path_get_indices (path) [0] >= 1 
-	    && group_name && contact_url &&
-	    !is_contact_member_of_group (GMURL (contact_url), group_name)) {
-    
-	  gtk_tree_view_set_drag_dest_row (GTK_TREE_VIEW (tree_view),
-					   path,
-					   GTK_TREE_VIEW_DROP_INTO_OR_AFTER);
-	}
-
-	g_value_unset (&value);
-	
-	gtk_tree_path_free (path);
-	gdk_drag_status (context, GDK_ACTION_COPY, time);
+    if (gtk_tree_model_get_iter (model, &iter, path)) {
+      
+      gtk_tree_model_get_value (model, &iter,
+				COLUMN_CONTACT_SECTION_NAME, &value);
+      group_name = (gchar *) g_value_get_string (&value);
+      
+      /* If the user doesn't belong to the selected group and if
+	 the selected row corresponds to a group and not a server */
+      if (gtk_tree_path_get_depth (path) >= 2 &&
+	  gtk_tree_path_get_indices (path) [0] >= 1
+	  && group_name) {
+	gtk_tree_view_set_drag_dest_row (GTK_TREE_VIEW (tree_view),
+					 path,
+					 GTK_TREE_VIEW_DROP_INTO_OR_AFTER);
       }
-    } 
+      
+      g_value_unset (&value);
+      
+      gtk_tree_path_free (path);
+      gdk_drag_status (context, GDK_ACTION_COPY, time);
+    }
   }
   else
     return false;
-
-  g_free (contact_url);
   
   return true;
 }
-
 
 /* DESCRIPTION  :  This callback is called when the user has released
  *                 the drag.
@@ -360,7 +320,8 @@ dnd_drag_data_received_cb (GtkWidget *tree_view,
 
   GtkTreeIter iter;
 
-  gchar **contact_info = NULL;
+  GmContact *contact = NULL;
+  gchar *contact_info = NULL;
   gchar *group_name = NULL;
   gchar *conf_key = NULL;
 
@@ -389,11 +350,20 @@ dnd_drag_data_received_cb (GtkWidget *tree_view,
 
 	if (group_name && selection_data && selection_data->data) {
 
-	  contact_info = g_strsplit ((char *) selection_data->data, "|", 0);
+	  contact =  *(GmContact **)selection_data->data;
 
-	  if (contact_info [1] &&
-	      !is_contact_member_of_group (GMURL (contact_info [1]),
+	  if (contact->url &&
+	      !is_contact_member_of_group (GMURL (contact->url),
 					   g_value_get_string (&value))) {
+	    if (contact->speeddial)
+	      contact_info = g_strdup_printf ("%s|%s|%s",
+					      contact->fullname,
+					      contact->url, 
+					      contact->speeddial);
+	    else
+	      contact_info = g_strdup_printf ("%s|%s", 
+					      contact->fullname, 
+					      contact->url);
 
 	    conf_key = 
 	      g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, 
@@ -402,15 +372,15 @@ dnd_drag_data_received_cb (GtkWidget *tree_view,
 	    group_content = gm_conf_get_string_list (conf_key);
 	    
 	    group_content =
-	      g_slist_append (group_content, (char *) selection_data->data);
+	      g_slist_append (group_content, contact_info);
 	    
 	    gm_conf_set_string_list (conf_key, group_content);
 	  
 	    g_slist_free (group_content);
 	    g_free (conf_key);
+	    g_free (contact_info);
 	  }
-
-	  g_strfreev (contact_info);
+	  gm_contact_delete (contact);
 	}
 	
 	g_value_unset (&value);
@@ -441,27 +411,21 @@ dnd_drag_data_get_cb (GtkWidget *tree_view,
   gchar *contact_name = NULL;
   gchar *contact_url = NULL;
   gchar *contact_speed_dial = NULL;
-  gchar *drag_data = NULL;
+  GmContact *contact = NULL;
 
 
   if (get_selected_contact_info (NULL, &contact_name,
 				 &contact_url, &contact_speed_dial, NULL)
       && contact_name && contact_url) {
-      
-    if (contact_speed_dial)
-      drag_data = g_strdup_printf ("%s|%s|%s", contact_name, contact_url, contact_speed_dial);
-    else
-      drag_data = g_strdup_printf ("%s|%s", contact_name, contact_url);
+     
+    contact = gm_contact_new ();
+    contact->fullname = g_strdup (contact_name);
+    contact->url = g_strdup (contact_url);
+    contact->speeddial = g_strdup (contact_speed_dial);
     
     gtk_selection_data_set (selection_data, selection_data->target, 
-			    8, (const guchar *) drag_data,
-			    strlen (drag_data));
-    g_free (drag_data);
+			    8, (guchar *)&contact, sizeof (contact));
   }
-
-  g_free (contact_name);
-  g_free (contact_url);
-  g_free (contact_speed_dial);
 }
 
 
@@ -2526,7 +2490,7 @@ gnomemeeting_ldap_window_new (GmLdapWindow *lw)
 
   static GtkTargetEntry dnd_targets [] =
     {
-      {"text/plain", GTK_TARGET_SAME_APP, 0}
+      {"GMContact", GTK_TARGET_SAME_APP, 0}
     };
 
   /* Hack to make sure that they are translated in the addressbook
@@ -2697,7 +2661,7 @@ gnomemeeting_ldap_window_new (GmLdapWindow *lw)
 		     dnd_targets, 1,
 		     GDK_ACTION_COPY);
   g_signal_connect (G_OBJECT (lw->tree_view), "drag_motion",
-		    G_CALLBACK (dnd_drag_motion_cb), 0);
+                    G_CALLBACK (dnd_drag_motion_cb), 0);
   g_signal_connect (G_OBJECT (lw->tree_view), "drag_data_received",
 		    G_CALLBACK (dnd_drag_data_received_cb), 0);
   
@@ -2809,7 +2773,7 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
   
   static GtkTargetEntry dnd_targets [] =
     {
-      {"text/plain", GTK_TARGET_SAME_APP, 0}
+      {"GMContact", GTK_TARGET_SAME_APP, 0}
     };
  
   GmLdapWindow *lw = GnomeMeeting::Process ()->GetLdapWindow ();

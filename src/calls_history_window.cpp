@@ -44,6 +44,7 @@
 #include "ldap_window.h"
 #include "misc.h"
 
+#include "contacts/gm_contacts.h"
 #include "gm_conf.h"
 #include "gnome_prefs_window.h"
 #include "stock-icons.h"
@@ -96,7 +97,7 @@ dnd_drag_data_get_cb (GtkWidget *tree_view,
   
   gchar *contact_name = NULL;
   gchar *contact_url = NULL;
-  gchar *drag_data = NULL;
+  GmContact *contact = NULL;
 
         
   selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view));
@@ -110,19 +111,14 @@ dnd_drag_data_get_cb (GtkWidget *tree_view,
 
     if (contact_name && contact_url) {
       
-      drag_data = g_strdup_printf ("%s|%s", contact_name, contact_url);
+      contact = gm_contact_new ();
+      contact->fullname = g_strdup (contact_name);
+      contact->url = g_strdup (contact_url);
     
-      gtk_selection_data_set (selection_data,
-			      selection_data->target, 
-			      8,
-			      (const guchar *) drag_data,
-			      strlen (drag_data));
-      g_free (drag_data);
+      gtk_selection_data_set (selection_data, selection_data->target, 
+			      8, (guchar *)&contact, sizeof (contact));
     }
   }
-  
-  g_free (contact_name);
-  g_free (contact_url);
 }
 
 /* DESCRIPTION  :  This callback is called when the user has clicked the clear
@@ -386,7 +382,7 @@ gnomemeeting_calls_history_window_new ()
 
   static GtkTargetEntry dnd_targets [] =
     {
-      {"text/plain", GTK_TARGET_SAME_APP, 0}
+      {"GMContact", GTK_TARGET_SAME_APP, 0}
     };
 
   

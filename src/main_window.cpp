@@ -54,6 +54,7 @@
 #include "gmentrydialog.h"
 #include "stock-icons.h"
 #include "gm_conf.h"
+#include "contacts/gm_contacts.h"
 
 
 #ifndef DISABLE_GNOME
@@ -376,26 +377,27 @@ dnd_drag_data_received_cb (GtkWidget *widget,
 			   gpointer data)
 {
   GmWindow *gw = NULL;
-  gchar **data_split = NULL;
+  GmContact *contact = NULL;
 
 
   gw = GnomeMeeting::Process ()->GetMainWindow ();
   
   if (selection_data && selection_data->data) {
 
-    data_split = g_strsplit ((char *) selection_data->data, "|", 0);
+    contact = *(GmContact **)selection_data->data;
 
-    if (data_split && data_split [1]) {
+    if (contact && contact->url) {
 
       if (GnomeMeeting::Process ()->Endpoint ()->GetCallingState () == GMH323EndPoint::Standby) {
       
 	/* this function will store a copy of text */
 	gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry),
-			    PString (data_split [1]));
+			    PString (contact->url));
 	
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->connect_button),
 				      true);
       }
+      gm_contact_delete (contact);
     }
   } 
 }
@@ -975,7 +977,7 @@ gnomemeeting_main_window_new (GmWindow *gw)
 
   static GtkTargetEntry dnd_targets [] =
   {
-    {"text/plain", GTK_TARGET_SAME_APP, 0}
+    {"GMContact", GTK_TARGET_SAME_APP, 0}
   };
   
   accel = gtk_accel_group_new ();
