@@ -21,7 +21,7 @@
  *                         menu.cpp  -  description
  *                            -------------------
  *   begin                : Tue Dec 23 2000
- *   copyright            : (C) 2000-2001 by Damien Sandras
+ *   copyright            : (C) 2000-2002 by Damien Sandras
  *   description          :  Functions to create the menus.
  *   email                : dsandras@seconix.com
  *
@@ -241,7 +241,14 @@ void gnomemeeting_init_menu ()
       },
       {
 	GNOME_APP_UI_ITEM,
-	N_("Both"), N_("Both Video Images"),
+	N_("Both (Local Video Incrusted)"), N_("Both Video Images"),
+	(void *) NULL, NULL, NULL,
+	GNOME_APP_PIXMAP_NONE, NULL,
+	0, GDK_CONTROL_MASK, NULL
+      },
+      {
+	GNOME_APP_UI_ITEM,
+	N_("Both (Local Video in New Window)"), N_("Both Video Images"),
 	(void *) NULL, NULL, NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	0, GDK_CONTROL_MASK, NULL
@@ -506,6 +513,7 @@ void gnomemeeting_video_submenu_set_sensitive (gboolean b)
 
   gtk_widget_set_sensitive (GTK_WIDGET (video_view_menu_uiinfo [1].widget), b);
   gtk_widget_set_sensitive (GTK_WIDGET (video_view_menu_uiinfo [2].widget), b);
+  gtk_widget_set_sensitive (GTK_WIDGET (video_view_menu_uiinfo [3].widget), b);
 }
 
 
@@ -514,7 +522,7 @@ void gnomemeeting_video_submenu_select (int j)
   GnomeUIInfo *video_view_menu_uiinfo = 
     (GnomeUIInfo *) g_object_get_data (G_OBJECT(gm), "video_view_menu_uiinfo");
 
-  for (int i = 0 ; i < 3 ; i++) {
+  for (int i = 0 ; i < 4 ; i++) {
 
     GTK_CHECK_MENU_ITEM (video_view_menu_uiinfo [i].widget)->active = (i == j);
     gtk_widget_queue_draw (GTK_WIDGET (video_view_menu_uiinfo [i].widget)); 

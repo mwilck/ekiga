@@ -1,3 +1,17 @@
+2002-06-24  Damien Sandras  <dsandras@seconix.com>
+
+	* src/gdkvideoio.cpp: The SDL window is now deleted when not needed.
+	Moreover, we can now display local video in GM, or remote video in
+	GM, or remote video with local video incrusted in GM, or remote video
+	in GM and local in a floating SDL window. Fullscreen in menu not
+	yet implemented.
+
+	* src/main_window.cpp: SDL initialisation done in gdkvideoio.cpp on
+	request when needed.
+
+	* src/menu.cpp: Added an option in the video menu (we can now display
+	local "incrusted" or in a separate window).
+
 2002-06-23  Damien Sandras  <dsandras@seconix.com>
 
 	* src/configure.in: Added SDL detection. Still mandatory, but

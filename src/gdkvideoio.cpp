@@ -21,7 +21,7 @@
  *                         gdkvideoio.cpp  -  description
  *                         ------------------------------
  *   begin                : Sat Feb 17 2001
- *   copyright            : (C) 2000-2001 by Damien Sandras
+ *   copyright            : (C) 2000-2002 by Damien Sandras
  *   description          : Class to permit to display in GDK Drawing Area
  *   email                : dsandras@seconix.com
  *
@@ -29,16 +29,20 @@
 
 #include "../config.h"
 
+
 #ifdef HAS_SDL
 #include <SDL.h>
 #endif
 
 #include <sys/time.h>
 
+
 #include "gdkvideoio.h"
 #include "common.h"
 #include "gnomemeeting.h"
 #include "misc.h"
+#include "menu.h"
+
 
 #define new PNEW
 
@@ -47,6 +51,8 @@
 
 extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;
+
+
 
 
 /* The Methods */
@@ -77,6 +83,14 @@ GDKVideoOutputDevice::GDKVideoOutputDevice(int idno, GmWindow *w)
 
 GDKVideoOutputDevice::~GDKVideoOutputDevice()
 {
+  /* Display again the local image */
+  redraw_mutex.Wait ();
+  redraw_mutex.Signal ();
+ 
+  gnomemeeting_threads_enter ();
+  gnomemeeting_video_submenu_select (0);
+  gnomemeeting_threads_leave ();
+
   redraw_mutex.Wait ();
   redraw_mutex.Signal ();
 }
@@ -102,6 +116,9 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
 
   static GdkPixbuf *local_pic = NULL;
 
+
+  /* We do have 2 gdkvideoio devices, one for encoding, one for decoding,
+     but the SDL surface must be the same */
 #ifdef HAS_SDL
   static gboolean has_to_fs = false; /* Do Full Screen */
   static gboolean has_to_switch_fs = false;
@@ -127,6 +144,26 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
     display = 1;
   if (GTK_CHECK_MENU_ITEM (video_view_menu_uiinfo [2].widget)->active)
     display = 2;
+  if (GTK_CHECK_MENU_ITEM (video_view_menu_uiinfo [3].widget)->active)
+    display = 3;
+
+  
+#ifdef HAS_SDL
+  /* If it is needed, delete the SDL window */
+  if ((display != 3) && (screen)) {
+    
+    SDL_FreeSurface (screen);
+    if (overlay)
+      SDL_FreeYUVOverlay (overlay);
+    screen = NULL;
+    overlay = NULL;
+    SDL_Quit ();
+  }
+  else
+    /* SDL init */
+    if ((display == 3) && (!screen))
+      SDL_Init (SDL_INIT_VIDEO);
+#endif
 
 
   if (buffer.GetSize () != frameWidth * frameHeight * 3)
@@ -174,22 +211,23 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
   gnomemeeting_threads_enter ();
   SDL_Event event;
   
-  while (SDL_PollEvent (&event)) {
+  if (display == 3)
+    while (SDL_PollEvent (&event)) {
   
-    if ((event.type == SDL_KEYDOWN) && (event.key.keysym.sym == SDLK_f)) {
+      if ((event.type == SDL_KEYDOWN) && (event.key.keysym.sym == SDLK_f)) {
 
-      has_to_fs = !has_to_fs;
-      has_to_switch_fs = true;
+	has_to_fs = !has_to_fs;
+	has_to_switch_fs = true;
+      }
     }
-  }
   gnomemeeting_threads_leave ();
 #endif
 
 
   /* We display what we transmit, or what we receive */
-  if (((device_id == 0 && display == 1) ||
-      (device_id == 1 && display == 0)) &&
-      (display != 2)) {
+  if ( (((device_id == 0 && display == 1) ||
+	(device_id == 1 && display == 0)) && (display != 2)) 
+       || ((display == 3) && (device_id == 0)) ) {
     
     gnomemeeting_threads_enter ();
     gtk_image_set_from_pixbuf (GTK_IMAGE (gw->video_image), 
@@ -199,11 +237,10 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
 
 
 #ifdef HAS_SDL
-  if (((device_id == display) && (display != 2))
-      || ((display == 2) && (device_id == 1))) {
+  /* Display local in a SDL window */
+  if ((display == 3) && (device_id == 1)) {
   
     gnomemeeting_threads_enter ();
-
     if ((!overlay) || (!screen) || (has_to_switch_fs) ||
 	(screen->w != zoomed_width) || (screen->h != zoomed_height)){
 
