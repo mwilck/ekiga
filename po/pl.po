@@ -9,8 +9,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
-"POT-Creation-Date: 2002-09-26 13:16+0200\n"
-"PO-Revision-Date: 2002-09-26 15:55+0200\n"
+"POT-Creation-Date: 2002-10-06 01:17+0200\n"
+"PO-Revision-Date: 2002-10-06 01:18+0200\n"
 "Last-Translator: GNOME PL Team <translators@gnome.pl>\n"
 "Language-Team: Polish <pl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -580,6 +580,10 @@ msgstr "Jakość obrazu"
 msgid "Video Size"
 msgstr "Rozmiar obrazu"
 
+#: lib/dialog.c:1
+msgid "Do not show this dialog again"
+msgstr ""
+
 #. The toggles
 #: sounds/gnomemeeting.soundlist.in.h:1 src/pref_window.cpp:1
 msgid "Incoming Call"
@@ -620,7 +624,7 @@ msgstr ""
 #: src/callbacks.cpp:1
 msgid ""
 "An error has happened in the configuration backend.\n"
-"Maybe ome of your settings won't be stored."
+"Maybe some of your settings won't be saved."
 msgstr ""
 "Wystąpił błąd w systemie konfiguracji.\n"
 "Część ustawień może zostać utracona."
@@ -1166,7 +1170,7 @@ msgstr "Przydzielenie urządzenia komunikacyjnego do kodeka"
 #: src/endpoint.cpp:1
 msgid ""
 "Could not open audio channel for audio transmission (soundcard busy?).\n"
-" Disabling audio transmission."
+"Disabling audio transmission."
 msgstr ""
 "Nie można otworzyć kanału dźwiękowego dla dźwięku wysyłanego (zajęta karta "
 "dźwiękowa?).\n"
@@ -1175,7 +1179,7 @@ msgstr ""
 #: src/endpoint.cpp:1
 msgid ""
 "Could not open audio channel for audio reception (soundcard busy?).\n"
-" Disabling audio reception."
+"Disabling audio reception."
 msgstr ""
 "Nie można otworzyć kanału dźwiękowego dla dźwięku odbieranego (zajęta karta "
 "dźwiękowa?).\n"
@@ -1593,7 +1597,7 @@ msgstr "Obydwa (lokalne wideo w nowym oknie)"
 
 #: src/menu.cpp:1 src/menu.cpp:1
 msgid "Both (Local and Remote Video in New Windows)"
-msgstr "Obydwa (lokalne wideo w nowych oknach)"
+msgstr "Obydwa (lokalne i zdalne wideo w nowych oknach)"
 
 #: src/menu.cpp:1
 msgid "Toolbar"
@@ -1801,7 +1805,7 @@ msgstr "OK"
 
 #: src/pref_window.cpp:1 src/pref_window.cpp:1 src/pref_window.cpp:1
 msgid "Excellent"
-msgstr ""
+msgstr "Doskonały"
 
 #: src/pref_window.cpp:1 src/pref_window.cpp:1 src/pref_window.cpp:1
 #: src/pref_window.cpp:1 src/pref_window.cpp:1
@@ -1814,11 +1818,11 @@ msgstr "Informacje osobiste"
 
 #: src/pref_window.cpp:1
 msgid "Enter your first name."
-msgstr ""
+msgstr "Proszę podać imię."
 
 #: src/pref_window.cpp:1
 msgid "Enter your last name."
-msgstr ""
+msgstr "Proszę podać nazwisko."
 
 #: src/pref_window.cpp:1
 msgid "Gatekeeper alias: "
@@ -1832,11 +1836,11 @@ msgstr ""
 
 #: src/pref_window.cpp:1
 msgid "Enter your e-mail address."
-msgstr ""
+msgstr "Proszę podać adres e-mail."
 
 #: src/pref_window.cpp:1
 msgid "Here you can fill in a comment about yourself for ILS directories."
-msgstr ""
+msgstr "Tutaj można wprowadzić informacje o sobie prezentowane w katalogu ILS."
 
 #: src/pref_window.cpp:1
 msgid "Where do you call from?"
@@ -1929,15 +1933,15 @@ msgstr ""
 
 #: src/pref_window.cpp:1
 msgid "Gatekeeper host"
-msgstr ""
+msgstr "Komputer bramki"
 
 #: src/pref_window.cpp:1
 msgid "Gatekeeper ID"
-msgstr ""
+msgstr "Identyfikator bramki"
 
 #: src/pref_window.cpp:1
 msgid "Automatic Discover"
-msgstr ""
+msgstr "Automatyczne wykrywanie"
 
 #: src/pref_window.cpp:1
 msgid "XDAP Directory"
@@ -1949,11 +1953,11 @@ msgstr "Katalog XDAP:"
 
 #: src/pref_window.cpp:1
 msgid "The XDAP server to register to."
-msgstr ""
+msgstr "Serwer XDAP w którym nastąpi rejestracja."
 
 #: src/pref_window.cpp:1
 msgid "Enable Registering"
-msgstr ""
+msgstr "Rejestracja"
 
 #: src/pref_window.cpp:1
 msgid "If enabled, permit to register to the selected LDAP directory"
@@ -1962,23 +1966,23 @@ msgstr ""
 #. Add fields for the gatekeeper
 #: src/pref_window.cpp:1
 msgid "Gatekeeper"
-msgstr ""
+msgstr "Bramka"
 
 #: src/pref_window.cpp:1
 msgid "Gatekeeper ID:"
-msgstr ""
+msgstr "Identyfikator bramki:"
 
 #: src/pref_window.cpp:1
 msgid "The Gatekeeper identifier to register to."
-msgstr ""
+msgstr "Identyfikator bramki w której nastąpi rejestracja."
 
 #: src/pref_window.cpp:1
 msgid "Gatekeeper host:"
-msgstr ""
+msgstr "Komputer bramki:"
 
 #: src/pref_window.cpp:1
 msgid "The Gatekeeper host to register to."
-msgstr ""
+msgstr "Komputer bramki w której nastąpi rejestracja."
 
 #: src/pref_window.cpp:1
 msgid "Registering method:"
@@ -2053,19 +2057,19 @@ msgstr ""
 
 #: src/pref_window.cpp:1
 msgid "Low"
-msgstr ""
+msgstr "Niski"
 
 #: src/pref_window.cpp:1
 msgid "Medium"
-msgstr ""
+msgstr "Średni"
 
 #: src/pref_window.cpp:1
 msgid "High"
-msgstr ""
+msgstr "Wysoki"
 
 #: src/pref_window.cpp:1
 msgid "Automatic Gain Compensation"
-msgstr ""
+msgstr "Automatyczna kompensacja wzmocnienia"
 
 #: src/pref_window.cpp:1 src/pref_window.cpp:1
 msgid "Audio Devices"
@@ -2077,7 +2081,7 @@ msgstr "Odtwarzacz dźwięku:"
 
 #: src/pref_window.cpp:1
 msgid "Enter the audio player device to use."
-msgstr ""
+msgstr "Proszę wybrać urządzenie odtwarzacza dźwięku."
 
 #: src/pref_window.cpp:1
 msgid "Player Mixer:"
@@ -2093,7 +2097,7 @@ msgstr "Rejestrator dźwięku:"
 
 #: src/pref_window.cpp:1
 msgid "Enter the audio recorder device to use."
-msgstr ""
+msgstr "Proszę wybrać urządzenie rejestratora dźwięku."
 
 #: src/pref_window.cpp:1
 msgid "Recorder Mixer:"
@@ -2154,6 +2158,8 @@ msgid ""
 "Enter the video device to use. Using an invalid video device for video "
 "transmission will transmit a test picture."
 msgstr ""
+"Proszę wybrać urządzenie wideo. Użycie niepoprawnego urządzenia dla przesyłu "
+"wideo spowoduje wysłanie obrazka testowego."
 
 #: src/pref_window.cpp:1
 msgid "Video Channel:"
@@ -2169,7 +2175,7 @@ msgstr "Rozmiar obrazu:"
 
 #: src/pref_window.cpp:1
 msgid "Choose the transmitted video size: QCIF (small) or CIF (large)."
-msgstr ""
+msgstr "Wybór rozmiaru przesyłanego obrazu: QCIF (mały) lub CIF (duży)."
 
 #: src/pref_window.cpp:1
 msgid "Video Format:"
@@ -2177,7 +2183,7 @@ msgstr "Format obrazu:"
 
 #: src/pref_window.cpp:1
 msgid "Here you can choose the transmitted video format."
-msgstr ""
+msgstr "Wybór formatu przesyłanego obrazu"
 
 #: src/pref_window.cpp:1
 msgid "Video Image:"
@@ -2221,7 +2227,7 @@ msgstr "Bufor synchronizacji:"
 
 #: src/pref_window.cpp:1
 msgid "The jitter buffer delay to buffer audio calls (in ms)."
-msgstr ""
+msgstr "Opóźnienie bufora synchronizacji dla połączeń dźwiękowych (w ms)."
 
 #: src/pref_window.cpp:1
 msgid "GSM Frames per packet:"
@@ -2269,7 +2275,7 @@ msgstr "Przełącza ograniczanie liczby przesyłanych ramek na sekundę."
 
 #: src/pref_window.cpp:1
 msgid "Enable/disable the video transmission."
-msgstr "Przełącza transmitowanie orbazu"
+msgstr "Przełącza przesyłanie obrazu"
 
 #. H.261 Settings
 #: src/pref_window.cpp:1
@@ -2339,14 +2345,6 @@ msgstr "Urządzenia"
 #: src/pref_window.cpp:1
 msgid "Section"
 msgstr ""
-
-#: src/sound_handling.cpp:1
-msgid "Failed to suspend ESD"
-msgstr "Nie można uśpić ESD"
-
-#: src/sound_handling.cpp:1
-msgid "Failed to resume ESD"
-msgstr "Nie można wznowić ESD"
 
 #: src/toolbar.cpp:1
 msgid "Speakerphone enabled"
@@ -2418,7 +2416,7 @@ msgstr "Przełącza wyświetlanie głównego okno"
 
 #: src/tray.cpp:1
 msgid "GnomeMeeting Tray Icon"
-msgstr ""
+msgstr "Ikona stanu GnomeMeeting"
 
 #: src/urlhandler.cpp:1
 msgid "Searching for user"
@@ -2455,6 +2453,11 @@ msgid ""
 "Notice that you can always transmit a given image or the GnomeMeeting logo "
 "by choosing \"Picture\" as video device."
 msgstr ""
+"Błąd otwarcia urządzenia wideo %s, kanał %d.\n"
+"Podczas połączenia będzie przesyłany uprzednio wybrany obraz. Jeżeli nie "
+"wybrano żadnego obrazu, domyślnie wysyłane będzie logo programu "
+"GnomeMeeting. Zawsze można przesyłać wybrany obraz lub logo GnomeMeeting, "
+"jeżeli wybierze się \"Obraz\" jako urządzenie wideo."
 
 #: src/videograbber.cpp:1
 msgid "Can't open the Video Device"
@@ -2482,10 +2485,15 @@ msgid ""
 " gconftool --set \"/apps/gnomemeeting/devices/color_format\" YOURPALETTE "
 "--type string"
 msgstr ""
+"Sterownik nie obsługuje formatu %s.\n"
+" Proszę sprawdzić dokumentację sterownika w celu ustalenia jakie palety są "
+"obsługiwane. Można następnie ustawić ją jako domyślną za pomocą polecenia:\n"
+" gconftool --set \"/apps/gnomemeeting/devices/color_format\" PALETA --type "
+"string "
 
 #: src/videograbber.cpp:1
 msgid "Error with the frame rate."
-msgstr ""
+msgstr "Błąd związany z ilością ramek."
 
 #: src/videograbber.cpp:1
 msgid "Error with the frame size."
@@ -2494,6 +2502,12 @@ msgstr "Błąd związany z rozmiarem ramki."
 #: src/videograbber.cpp:1
 msgid "Video Device Closed"
 msgstr "Urządzenie wideo zostało zamknięte"
+
+#~ msgid "Failed to suspend ESD"
+#~ msgstr "Nie można uśpić ESD"
+
+#~ msgid "Failed to resume ESD"
+#~ msgstr "Nie można wznowić ESD"
 
 #~ msgid "Fullscreen"
 #~ msgstr "Pełny ekran"
