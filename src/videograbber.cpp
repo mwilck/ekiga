@@ -82,6 +82,8 @@ GMVideoGrabber::GMVideoGrabber (BOOL start_grabbing,
   video_channel = NULL;
   grabber = NULL;
 
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
+
   if (synchronous)
     VGOpen ();
 

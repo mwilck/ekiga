@@ -195,14 +195,10 @@ void GMH323EndPoint::UpdateDevices ()
 {
   BOOL use_lid = FALSE;
 
-  GmWindow *gw = NULL;
-
   BOOL preview = FALSE;
 
   PString dev;
   gchar *audio_input = NULL;
-  
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
 
 
   /* Get the config settings */

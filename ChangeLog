@@ -1,5 +1,13 @@
 2004-08-18  Julien Puydt  <jpuydt@free.fr>
 
+	* src/endpoint.cpp: Removed local variable that was just hiding an
+	object attribute (gw!).
+	* src/videograbber.cpp: Turns out the videograbber still used GmWindow
+	once. Made sure the gw attribute is set correctly, so gnomemeeting
+	stops crashing.
+
+2004-08-18  Julien Puydt  <jpuydt@free.fr>
+
 	* src/gnomemeeting.cpp(DetectDevices): Made sure the ui is updated
 	only when it is already created (fixes a warning).
 
