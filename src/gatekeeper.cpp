@@ -447,8 +447,8 @@ BOOL H323GatekeeperWithNAT::MakeRequest (Request &request)
       transport->Connect();
       PTRACE(2, "GK\tTry " << altInfo->rasAddress);
 
-      isRegistered = FALSE;
-      discoveryComplete = FALSE;
+      BOOL isRegistered = FALSE;
+      BOOL discoveryComplete = FALSE;
       gatekeeperIdentifier = altInfo->gatekeeperIdentifier;
 
       H323RasPDU pdu;
