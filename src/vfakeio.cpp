@@ -174,7 +174,7 @@ BOOL GMH323FakeVideoInputDevice::GetFrameDataNoDelay (BYTE *frame, PINDEX *i)
 
     pos = pos + increment;
 
-    if (pos > height - 60 - 10) increment = -1;
+    if ((int) pos > (int) height - 60 - 10) increment = -1;
     if (pos < 10) increment = +1;
   }
 

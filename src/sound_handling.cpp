@@ -129,7 +129,8 @@ gnomemeeting_volume_get (char *mixer, int source, int *volume)
   else {
 #endif
 
-    mixerfd = open (mixer, O_RDWR);
+    if (mixer)
+      mixerfd = open (mixer, O_RDWR);
       
     if (mixerfd == -1)
       return -1;
@@ -153,10 +154,11 @@ gnomemeeting_volume_get (char *mixer, int source, int *volume)
 int 
 gnomemeeting_set_recording_source (char *mixer, int source)
 {
-  int mixerfd;
+  int mixerfd = -1;
   int rcsrc;
   
-  mixerfd = open (mixer, O_RDWR);
+  if (mixer)
+    mixerfd = open (mixer, O_RDWR);
       
   if (mixerfd == -1)
       return -1;

@@ -343,7 +343,7 @@ static void ldap_page_close_button_clicked (GtkWidget *button, gpointer data)
 void gnomemeeting_init_ldap_window ()
 {
   GtkWidget *label;
-  GtkWidget *button, *image;
+  GtkWidget *button;
   GtkWidget *vbox;
   GtkWidget *frame;
   GdkPixbuf *xdap_pixbuf;
