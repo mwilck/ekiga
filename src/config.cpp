@@ -707,7 +707,9 @@ static void tr_ub_changed_nt (GConfClient *client, guint cid,
 static void jitter_buffer_changed_nt (GConfClient *client, guint cid, 
 				      GConfEntry *entry, gpointer data)
 {
+  RTP_Session *session = NULL;  
   H323Connection *connection = NULL;
+  H323EndPoint *ep = MyApp->Endpoint ();  
   gdouble val = 20.0;
 
   if (entry->value->type == GCONF_VALUE_INT) {
@@ -720,7 +722,12 @@ static void jitter_buffer_changed_nt (GConfClient *client, guint cid,
     connection = MyApp->Endpoint ()->GetCurrentConnection ();
 
     if (connection != NULL)
-      connection->SetMaxAudioDelayJitter (val);
+      session =                                                                
+        connection->GetSession (OpalMediaFormat::DefaultAudioSessionID);       
+                                                                               
+    if (session != NULL)                                                       
+      session->SetJitterBufferSize ((int) val * 8, 
+				    ep->GetJitterThreadStackSize());
 
     gdk_threads_leave ();
   }
@@ -1003,8 +1010,6 @@ static void forward_toggle_changed_nt (GConfClient *client, guint cid,
 static void register_changed_nt (GConfClient *client, guint cid, 
 				 GConfEntry *entry, gpointer data)
 {
-  BOOL no_error = TRUE;
-  gchar *gconf_string = NULL;
   GMH323EndPoint *endpoint = MyApp->Endpoint ();
   GMILSClient *ils_client = (GMILSClient *) endpoint->GetILSClient ();
 
@@ -1297,7 +1302,6 @@ void gnomemeeting_init_gconf (GConfClient *client)
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/jitter_buffer", jitter_buffer_changed_nt, pw->jitter_buffer, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/jitter_buffer", adjustment_changed_nt, pw->jitter_buffer, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/jitter_buffer", applicability_check_nt, pw->jitter_buffer, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/jitter_buffer", network_settings_changed_nt, 0, 0, 0);
 
 

@@ -108,10 +108,10 @@ static void gnomemeeting_init_main_window_log  ();
 static void gnomemeeting_init_main_window_stats ();
 
 /* For stress testing */
-/* int i = 0; */
+int i = 0;
 
 /* GTK Callbacks */
-/* gint StressTest (gpointer data)
+gint StressTest (gpointer data)
  {
    gdk_threads_enter ();
 
@@ -130,7 +130,7 @@ static void gnomemeeting_init_main_window_stats ();
    gdk_threads_leave ();
    return TRUE;
 }
-*/
+
 
 
 gint AppbarUpdate (gpointer data)
@@ -161,107 +161,135 @@ gint AppbarUpdate (gpointer data)
       PTimeInterval t =
 	PTime () - connection->GetConnectionStartTime();
 
-      if (t.GetSeconds () > 0) {
+      if (t.GetSeconds () == 4) {
 
-	audio_session = 
-	  connection->GetSession(RTP_Session::DefaultAudioSessionID);
-	  
-	video_session = 
-	  connection->GetSession(RTP_Session::DefaultVideoSessionID);
-	  
-	if (audio_session != NULL) {
+	for (int cpt = 0 ; cpt < 50 ; cpt++) {
 
-	  /* Compute the current transmitted audio speed */
-	  rtp->tr_audio_speed [rtp->tr_audio_pos] = 
-	    (float) (audio_session->GetOctetsSent()
-		     - rtp->tr_audio_bytes)/1024;
-	  rtp->tr_audio_bytes = 
-	    audio_session->GetOctetsSent();
-	  rtp->tr_audio_pos++;
-	  if (rtp->tr_audio_pos >= 50) rtp->tr_audio_pos = 0;
-
-	  /* Compute the current received audio speed */
-	  rtp->re_audio_speed [rtp->re_audio_pos] = 
-	    (float) (audio_session->GetOctetsReceived()
-		     - rtp->re_audio_bytes)/1024;
-	  rtp->re_audio_bytes = 
-	    audio_session->GetOctetsReceived();
-	  rtp->re_audio_pos++;
-	  if (rtp->re_audio_pos >= 50) rtp->re_audio_pos = 0;
+	  rtp->tr_audio_speed [cpt] = 0;
+	  rtp->re_audio_speed [cpt] = 0;
+	  rtp->tr_video_speed [cpt] = 0;
+	  rtp->re_video_speed [cpt] = 0;
+	  rtp->tr_audio_pos = 0;
+	  rtp->re_audio_pos = 0;
+	  rtp->tr_video_pos = 0;
+	  rtp->re_video_pos = 0;
 	}
-
-	if (video_session != NULL) {
-
-	  /* Compute the current transmitted video speed */
-	  rtp->tr_video_speed [rtp->tr_video_pos] = 
-	    (float) (video_session->GetOctetsSent()
-		   - rtp->tr_video_bytes)/1024;
-	  rtp->tr_video_bytes = 
-	    video_session->GetOctetsSent();
-	  rtp->tr_video_pos++;
-	  if (rtp->tr_video_pos >= 50) rtp->tr_video_pos = 0;
-
-	  /* Compute the current received video speed */
-	  rtp->re_video_speed [rtp->re_video_pos] = 
-	    (float) (video_session->GetOctetsReceived()
-		   - rtp->re_video_bytes)/1024;
-	  rtp->re_video_bytes = 
-	    video_session->GetOctetsReceived();
-	  rtp->re_video_pos++;
-	  if (rtp->re_video_pos >= 50) rtp->re_video_pos = 0;
-	}
-
-	minutes = t.GetMinutes () % 60;
-	seconds = t.GetSeconds () % 60;
-	
-	gchar *msg = g_strdup_printf 
-	  (_("%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"), 
-	   (long) t.GetHours (), (long) minutes, (long) seconds, 
-	   rtp->tr_audio_speed [rtp->tr_audio_pos - 1], 
-	   rtp->re_audio_speed [rtp->re_audio_pos - 1],
-	   rtp->tr_video_speed [rtp->tr_video_pos - 1], 
-	   rtp->re_video_speed [rtp->re_video_pos - 1]);
-	
-	float bytes_sent = 0;
-	float bytes_received = 0;
-	int lost_packets = 0;
-	int late_packets = 0;
-
-	if (audio_session) {
-	  
-	  bytes_sent = (float) audio_session->GetOctetsSent ();
-	  bytes_received = (float) audio_session->GetOctetsReceived ();
-	  lost_packets = audio_session->GetPacketsLost ();
-	  late_packets = audio_session->GetPacketsTooLate ();
-	}
-	
-	if (video_session) {
-
-	  bytes_sent = (float) bytes_sent+video_session->GetOctetsSent ();
-	  bytes_received = 
-	    (float) bytes_received+video_session->GetOctetsReceived ();
-	  lost_packets = lost_packets+video_session->GetPacketsLost ();
-	  late_packets = late_packets+video_session->GetPacketsTooLate ();
-	}
-
-	bytes_sent = (float) bytes_sent / 1024 / 1024;
-	bytes_received = (float) bytes_received / 1024 / 1024;
-
-	if (t.GetSeconds () > 5) {
-
-	  gnome_appbar_clear_stack (GNOME_APPBAR (gw->statusbar));
-	  gnome_appbar_push (GNOME_APPBAR (gw->statusbar), msg);
-	  gchar *stats_msg = 
-	    g_strdup_printf (_("Sent/Received: %.3f Mb/%.3f Mb\nLost/Late Packets: %d/%d\nRound trip delay: %d ms"), bytes_sent, bytes_received, lost_packets, late_packets, (int) connection->GetRoundTripDelay().GetMilliSeconds());
-
-	  gtk_label_set_text (GTK_LABEL (gw->stats_label), stats_msg);
-	  g_free (stats_msg);
-
-	  gtk_widget_queue_draw_area (gw->stats_drawing_area, 0, 0, GTK_WIDGET (gw->stats_drawing_area)->allocation.width, GTK_WIDGET (gw->stats_drawing_area)->allocation.height);
-	}
-        
-	g_free (msg);
       }
+      
+      audio_session = 
+	connection->GetSession(RTP_Session::DefaultAudioSessionID);
+	  
+      video_session = 
+	connection->GetSession(RTP_Session::DefaultVideoSessionID);
+	  
+      if (audio_session != NULL) {
+
+	/* Compute the current transmitted audio speed */
+	if ((rtp->tr_audio_bytes == 0) && (rtp->tr_audio_pos == 0))
+	  /* Default value for the 1st element */
+	  rtp->tr_audio_bytes = audio_session->GetOctetsSent();
+	rtp->tr_audio_speed [rtp->tr_audio_pos] = 
+	  (float) (audio_session->GetOctetsSent()
+		   - rtp->tr_audio_bytes)/1024;
+	rtp->tr_audio_bytes = 
+	  audio_session->GetOctetsSent();	
+
+	rtp->tr_audio_pos++;
+	if (rtp->tr_audio_pos >= 50) rtp->tr_audio_pos = 0;
+
+	/* Compute the current received audio speed */
+	if ((rtp->re_audio_bytes == 0) && (rtp->re_audio_pos == 0))
+	  /* Default value for the 1st element */
+	  rtp->re_audio_bytes = audio_session->GetOctetsReceived();
+	rtp->re_audio_speed [rtp->re_audio_pos] = 
+	  (float) (audio_session->GetOctetsReceived()
+		   - rtp->re_audio_bytes)/1024;
+	rtp->re_audio_bytes = 
+	  audio_session->GetOctetsReceived();
+
+	rtp->re_audio_pos++;
+	if (rtp->re_audio_pos >= 50) rtp->re_audio_pos = 0;
+      }
+
+      if (video_session != NULL) {
+
+	/* Compute the current transmitted video speed */
+	if ((rtp->tr_video_bytes == 0) && (rtp->tr_video_pos == 0)) 
+	  /* Default value for the 1st element */
+	  rtp->tr_video_bytes = video_session->GetOctetsSent();
+	rtp->tr_video_speed [rtp->tr_video_pos] = 
+	  (float) (video_session->GetOctetsSent()
+		   - rtp->tr_video_bytes)/1024;
+	rtp->tr_video_bytes = 
+	  video_session->GetOctetsSent();
+
+	rtp->tr_video_pos++;
+	if (rtp->tr_video_pos >= 50) rtp->tr_video_pos = 0;
+
+	/* Compute the current received video speed */
+	if ((rtp->re_video_bytes == 0) && (rtp->re_video_pos == 0)) 
+	  /* Default value for the 1st element */
+	  rtp->re_video_bytes = video_session->GetOctetsReceived();
+	rtp->re_video_speed [rtp->re_video_pos] = 
+	  (float) (video_session->GetOctetsReceived()
+		   - rtp->re_video_bytes)/1024;
+	rtp->re_video_bytes = 
+	  video_session->GetOctetsReceived();
+
+	rtp->re_video_pos++;
+	if (rtp->re_video_pos >= 50) rtp->re_video_pos = 0;
+      }
+
+      minutes = t.GetMinutes () % 60;
+      seconds = t.GetSeconds () % 60;
+	
+      gchar *msg = g_strdup_printf 
+	(_("%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"), 
+	 (long) t.GetHours (), (long) minutes, (long) seconds, 
+	 rtp->tr_audio_speed [rtp->tr_audio_pos - 1], 
+	 rtp->re_audio_speed [rtp->re_audio_pos - 1],
+	 rtp->tr_video_speed [rtp->tr_video_pos - 1], 
+	 rtp->re_video_speed [rtp->re_video_pos - 1]);
+	
+      float bytes_sent = 0;
+      float bytes_received = 0;
+      int lost_packets = 0;
+      int late_packets = 0;
+
+      if (audio_session) {
+	  
+	bytes_sent = (float) audio_session->GetOctetsSent ();
+	bytes_received = (float) audio_session->GetOctetsReceived ();
+	lost_packets = audio_session->GetPacketsLost ();
+	late_packets = audio_session->GetPacketsTooLate ();
+      }
+	
+      if (video_session) {
+
+	bytes_sent = (float) bytes_sent+video_session->GetOctetsSent ();
+	bytes_received = 
+	  (float) bytes_received+video_session->GetOctetsReceived ();
+	lost_packets = lost_packets+video_session->GetPacketsLost ();
+	late_packets = late_packets+video_session->GetPacketsTooLate ();
+      }
+
+      bytes_sent = (float) bytes_sent / 1024 / 1024;
+      bytes_received = (float) bytes_received / 1024 / 1024;
+
+      if (t.GetSeconds () > 5) {
+
+	gnome_appbar_clear_stack (GNOME_APPBAR (gw->statusbar));
+	gnome_appbar_push (GNOME_APPBAR (gw->statusbar), msg);
+	gchar *stats_msg = 
+	  g_strdup_printf (_("Sent/Received: %.3f Mb/%.3f Mb\nLost/Late Packets: %d/%d\nRound trip delay: %d ms"), bytes_sent, bytes_received, lost_packets, late_packets, (int) connection->GetRoundTripDelay().GetMilliSeconds());
+
+	gtk_label_set_text (GTK_LABEL (gw->stats_label), stats_msg);
+	g_free (stats_msg);
+
+	gtk_widget_queue_draw_area (gw->stats_drawing_area, 0, 0, GTK_WIDGET (gw->stats_drawing_area)->allocation.width, GTK_WIDGET (gw->stats_drawing_area)->allocation.height);
+      }
+        
+      g_free (msg);
     }
 
     gdk_threads_leave ();
@@ -505,7 +533,7 @@ stats_drawing_area_exposed (GtkWidget *drawing_area)
       points [cpt].x = cpt * width_step;
 
       points [cpt].y = allocation_height + 15 -
-	(gint) (rtp->re_video_speed [pos] * height_step);
+	(float) (rtp->re_video_speed [pos] * height_step);
       pos++;
 
       if (pos >= 50) pos = 0;
@@ -1677,9 +1705,9 @@ int main (int argc, char ** argv, char ** envp)
      threads */
   gtk_timeout_add (500, (GtkFunction) AppbarUpdate, rtp);
 
-  /* gtk_timeout_add (10000, (GtkFunction) StressTest, 
-     NULL);
-  */
+  // gtk_timeout_add (10000, (GtkFunction) StressTest, 
+// 		   NULL);
+  
 
   /* The GTK loop */
   gtk_main ();
