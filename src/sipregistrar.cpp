@@ -86,14 +86,11 @@ GMSIPRegistrar::GMSIPRegistrar ()
   }
 
   /* Host */
-  if (registering_method == 1) {
-    
-    conf_string = gm_conf_get_string (SIP_KEY "registrar_host");
-    if (conf_string) {
-      
-      registrar_host = PString (conf_string);
-      g_free (conf_string);
-    }
+  conf_string = gm_conf_get_string (SIP_KEY "registrar_host");
+  if (conf_string) {
+
+    registrar_host = PString (conf_string);
+    g_free (conf_string);
   }
 
   gnomemeeting_threads_leave ();
@@ -133,7 +130,7 @@ void GMSIPRegistrar::Main ()
   
   if (registering_method == 0) {
     
-    sipEP->Unregister ();
+    sipEP->Unregister (registrar_host);
   }
   /* Check if we have all the needed information, if so we register */
   else if (registering_method == 1) {

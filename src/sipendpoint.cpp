@@ -188,53 +188,49 @@ GMSIPEndPoint::OnRTPStatistics (const SIPConnection & connection,
 
 
 void
-GMSIPEndPoint::OnRegistered (BOOL wasRegistering)
+GMSIPEndPoint::OnRegistered (PString domain,
+			     BOOL wasRegistering)
 {
   GtkWidget *history_window = NULL;
   GtkWidget *main_window = NULL;
 
-  gchar *registrar_host = NULL;
   gchar *msg = NULL;
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
 
   gnomemeeting_threads_enter ();
-  registrar_host = gm_conf_get_string (SIP_KEY "registrar_host");
-  
   /* Registering is ok */
   if (wasRegistering)
-    msg = g_strdup_printf (_("Registrar set to %s"), 
-			   (const char *) registrar_host);
+    msg = g_strdup_printf (_("Registered to %s"), 
+			   (const char *) domain);
   else
-    msg = g_strdup_printf (_("Unregistration successful")); 
+    msg = g_strdup_printf (_("Unregistered from %s"),
+			   (const char *) domain); 
 
   gm_history_window_insert (history_window, msg);
   gm_main_window_flash_message (main_window, msg);
   gnomemeeting_threads_leave ();
 
   g_free (msg);
-  g_free (registrar_host);
 }
 
 
 void
-GMSIPEndPoint::OnRegistrationFailed (SIPEndPoint::RegistrationFailReasons r,
+GMSIPEndPoint::OnRegistrationFailed (PString domain,
+				     SIPEndPoint::RegistrationFailReasons r,
 				     BOOL wasRegistering)
 {
   GtkWidget *history_window = NULL;
   GtkWidget *main_window = NULL;
 
   gchar *msg_reason = NULL;
-  gchar *registrar_host = NULL;
   gchar *msg = NULL;
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
 
   gnomemeeting_threads_enter ();
-  registrar_host = gm_conf_get_string (SIP_KEY "registrar_host");
-  
   /* Registering is ok */
   switch (r) {
 
@@ -268,18 +264,19 @@ GMSIPEndPoint::OnRegistrationFailed (SIPEndPoint::RegistrationFailReasons r,
   
   if (wasRegistering)
     msg = g_strdup_printf (_("Registration to %s failed: %s"), 
-			   (const char *) registrar_host,
+			   (const char *) domain,
 			   msg_reason);
   else
-    msg = g_strdup_printf (_("Unregistration failed: %s"), 
+    msg = g_strdup_printf (_("Unregistration from %s failed: %s"), 
+			   (const char *) domain,
 			   msg_reason);
 
   gm_history_window_insert (history_window, msg);
   gm_main_window_push_message (main_window, msg);
   gnomemeeting_threads_leave ();
 
+  SIPEndPoint::OnRegistrationFailed (domain, r, wasRegistering);
   g_free (msg);
-  g_free (registrar_host);
 }
 
 

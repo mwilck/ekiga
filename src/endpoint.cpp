@@ -145,8 +145,6 @@ GMEndPoint::~GMEndPoint ()
   if (audio_tester)
     delete (audio_tester);
 
-//FIXME delete endpoints?
-//
   /* Stop the zeroconf publishing thread */
 #ifdef HAS_HOWL
   zcp_access_mutex.Wait ();
@@ -2189,15 +2187,11 @@ GMEndPoint::SendDTMF (PString callToken,
 
   if (call != NULL) {
     
-    PSafePtr<OpalConnection> connection = call->GetConnection(1);
+    connection = GetConnection (call, TRUE);
 
-    if (connection != NULL) {
-      if (!PIsDescendant(&(*connection), OpalPCSSConnection))
-	connection = call->GetConnection(0);
-      connection->OnUserInputTone('6', 100);
-    }
+    if (connection != NULL) 
+      connection->SendUserInputTone(dtmf [0], 50);
   }
-  //FIXME
 }
 
 
