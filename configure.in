@@ -237,12 +237,7 @@ dnl *****************************
 
 LDAP_INCLUDES=""
 
-if test "$OSTYPE" = "linux-gnu"; then
-	LDAP_LIBS="-lldap -llber -lresolv"
-else
-	LDAP_LIBS="-lldap -llber"
-fi
-
+LDAP_LIBS="-lldap -llber -lresolv"
 
 AC_ARG_WITH(ldap, [  --with-ldap=PFX       Location of ldap.],
 	with_ldap="$withval", with_ldap="/usr")
@@ -279,10 +274,7 @@ CXXFLAGS="-O3 $ORBIT_CFLAGS"
 dnl #########################################################################
 dnl  Check for LDAP if available.
 dnl ########################################################################
-if test "$OSTYPE" = "linux-gnu"; then
-  AC_CHECK_LIB(resolv, res_gethostbyaddr, [LIBS="-lresolv $LIBS"], AC_MSG_ERROR([*** libresolv not found.]), -lresolv)
-fi
-
+AC_CHECK_LIB(resolv, res_gethostbyaddr, [LIBS="-lresolv $LIBS"], AC_MSG_ERROR([*** libresolv not found.]), -lresolv)
 
 LIBS="$LDAP_LIBS $LIBS"
 
