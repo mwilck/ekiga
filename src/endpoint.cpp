@@ -1115,7 +1115,6 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   PTimeInterval t;
 
-  BOOL auto_clear_text_chat = FALSE;
   BOOL reg = FALSE;
   BOOL stay_on_top = FALSE;
   BOOL not_current = FALSE;
@@ -1137,8 +1136,6 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   /* Get config settings */
   gnomemeeting_threads_enter ();
-  auto_clear_text_chat =
-    gm_conf_get_bool (USER_INTERFACE_KEY "auto_clear_text_chat");
   reg = gm_conf_get_bool (LDAP_KEY "enable_registering");
   stay_on_top = gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top");
   icm = (IncomingCallMode)
@@ -1334,12 +1331,6 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   memset ((void *) rtp, 0, sizeof (struct _GmRtpData));
   gtk_widget_queue_draw_area (gw->stats_drawing_area, 0, 0, GTK_WIDGET (gw->stats_drawing_area)->allocation.width, GTK_WIDGET (gw->stats_drawing_area)->allocation.height);
   gtk_label_set_text (GTK_LABEL (gw->stats_label), _("Lost packets:\nLate packets:\nRound-trip delay:\nJitter buffer:"));
-
-  
-  /* We empty the text chat buffer */
-  if (auto_clear_text_chat)
-    gnomemeeting_text_chat_clear (GnomeMeeting::Process ()->GetMainWindow ()->chat_window);
-
 
   /* set-on-top to False */
   if (stay_on_top) {

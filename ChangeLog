@@ -1,5 +1,12 @@
 2004-04-12 Kilian Krause <kk@verfaction.de>
 
+	* src/chat_window.cpp, src/endpoint.cpp: The autoclear feature of the
+	text chat was handled in src/endpoint.cpp. This patch basically moves
+	it to src/chat_window.cpp. Patch provided by Julien Puydt
+	<julien.puydt@laposte.net>.
+
+2004-04-12 Kilian Krause <kk@verfaction.de>
+
 	* src/log_window.cpp, src/log_window.h: missing files for previous
 	commit. Argh ;)
 

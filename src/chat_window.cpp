@@ -46,6 +46,7 @@
 #include "callbacks.h"
 #include "misc.h"
 
+#include "gm_conf.h"
 #include "gtk-text-tag-addon.h"
 #include "gtk-text-buffer-addon.h"
 #include "gtk-text-view-addon.h"
@@ -260,32 +261,40 @@ gnomemeeting_text_chat_call_stop_notification (GtkWidget *chat_window)
   GtkTextIter iter;
   GmTextChat *chat = NULL;
   gchar *text = NULL;
+  gboolean auto_clear = FALSE;
 
   g_return_if_fail (chat_window != NULL);
 
-  // find the time at which the event occured	
-  time_t *timeptr;
-  char *time_str;
-  
-  time_str = (char *) malloc (21);
-  timeptr = new (time_t);
- 
-  time (timeptr);
-  strftime(time_str, 20, "%H:%M:%S", localtime (timeptr));
+  auto_clear = gm_conf_get_bool (USER_INTERFACE_KEY "auto_clear_text_chat");
 
-  // prepare the message to be displayed
-  text = g_strdup_printf ("---- Call ends at %s\n", time_str);
+  if (auto_clear)
+    gnomemeeting_text_chat_clear (chat_window);
+  else {
+    // find the time at which the event occured	
+    time_t *timeptr;
+    char *time_str;
+    
+    time_str = (char *) malloc (21);
+    timeptr = new (time_t);
+    
+    time (timeptr);
+    strftime(time_str, 20, "%H:%M:%S", localtime (timeptr));
+    
+    // prepare the message to be displayed
+    text = g_strdup_printf ("---- Call ends at %s\n", time_str);
+    
+    // displays the message
+    chat = (GmTextChat *)g_object_get_data (G_OBJECT (chat_window), 
+					    "GMObject");
+    gtk_text_buffer_get_end_iter (chat->text_buffer, &iter);
+    
+    if (chat->something_typed == TRUE)
+      gtk_text_buffer_insert(chat->text_buffer, &iter, text, -1);
 
-  // displays the message
-  chat = (GmTextChat *)g_object_get_data (G_OBJECT (chat_window), "GMObject");
-  gtk_text_buffer_get_end_iter (chat->text_buffer, &iter);
-
-  if (chat->something_typed == TRUE)
-    gtk_text_buffer_insert(chat->text_buffer, &iter, text, -1);
-
-  // freeing what we need to
-  free (time_str);
-  g_free (text);
+    // freeing what we need to
+    free (time_str);
+    g_free (text);
+  }
 }
 
 void 
