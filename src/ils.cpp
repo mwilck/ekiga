@@ -35,6 +35,26 @@
 extern GnomeMeeting MyApp;
 extern GtkWidget *gm;
 
+
+int gm_appbar_update (gpointer data) {
+  float val;
+  GtkWidget *statusbar = (GtkWidget *) data;
+  
+  GtkProgress *progress = gnome_appbar_get_progress (GNOME_APPBAR (statusbar));
+
+  val = gtk_progress_get_value(GTK_PROGRESS (progress));
+  
+  val += 0.5;
+  
+  if (val > 100) 
+    val = 0;
+   
+  gtk_progress_set_value(GTK_PROGRESS(progress), val);
+   
+  return 1;
+}
+
+
 GMILSClient::GMILSClient (GM_window_widgets *g, options *o)
   :PThread (1000, NoAutoDeleteThread)
 {
@@ -393,21 +413,35 @@ void GMILSClient::ils_browse ()
   int part3;
   int part4;
   char ip [15];
+  gchar *ldap_server = NULL;
+  gfloat per = 0;
 
   GdkPixmap *quickcam;
   GdkBitmap *quickcam_mask;
   GdkPixmap *sound;
   GdkBitmap *sound_mask;
+  GtkProgress *progress;
+  guint ils_timeout;
 
-  if (!strcmp (opts->ldap_server, ""))
+
+  ldap_server = gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (lw->ils_server_entry)->entry));
+
+  if (!strcmp (ldap_server, ""))
     {
       gdk_threads_enter ();
       gnome_appbar_push (GNOME_APPBAR (lw->statusbar), 
-			 _("Please provide an ILS directory in Settings"));
+			 _("Please provide an ILS directory in the window"));
       gdk_threads_leave ();
+
+      lw->thread_count--;
+      has_to_browse = 0;
+
+      return;
     }
 
   gdk_threads_enter ();
+  
+  progress = gnome_appbar_get_progress (GNOME_APPBAR (lw->statusbar));
   
   quickcam = gdk_pixmap_create_from_xpm_d (gm->window, &quickcam_mask,
 					   NULL,
@@ -420,9 +454,15 @@ void GMILSClient::ils_browse ()
   gnome_appbar_push (GNOME_APPBAR (lw->statusbar), 
 		     _("Connecting to ILS directory... Please Wait."));
 
+  /* We add a timeout to make the status indicator move in activity mode */
+  gtk_progress_set_activity_mode (GTK_PROGRESS (progress), TRUE);
+  gtk_progress_bar_set_activity_step (GTK_PROGRESS_BAR (progress), 4);
+  ils_timeout = gtk_timeout_add (50, gm_appbar_update, lw->statusbar);
+
   gdk_threads_leave ();
 
-  ldap_connection = ldap_open (opts->ldap_server, atoi (opts->ldap_port));
+  /* Opens the connection to the ILS directory */
+  ldap_connection = ldap_open (ldap_server, 389);
 
   if (ldap_connection == NULL)
     {
@@ -444,9 +484,11 @@ void GMILSClient::ils_browse ()
 
   gdk_threads_enter ();        
 
-  if (lw)
-    gnome_appbar_push (GNOME_APPBAR (lw->statusbar), 
-		       _("Searching for users... Please Wait."));
+  gnome_appbar_push (GNOME_APPBAR (lw->statusbar), 
+		     _("Fetching users' information... Please Wait."));
+
+  /* Make the progress bar in activity mode go faster */
+  gtk_progress_bar_set_activity_step (GTK_PROGRESS_BAR (progress), 20);
 
   gdk_threads_leave ();
 
@@ -458,12 +500,12 @@ void GMILSClient::ils_browse ()
   for (int i = 0 ; i < 8 ; i++)
     datas [i] = NULL;
 
-
   gdk_threads_enter ();
 
-  if (lw)
-    gnome_appbar_push (GNOME_APPBAR (lw->statusbar), 
-		       _("Search completed!"));
+  gnome_appbar_push (GNOME_APPBAR (lw->statusbar), 
+		     _("Search completed!"));
+
+  gtk_clist_freeze (GTK_CLIST (lw->ldap_users_clist));
 
   for(e = ldap_first_entry(ldap_connection, res); 
       e != NULL; e = ldap_next_entry(ldap_connection, e)) 
@@ -524,7 +566,7 @@ void GMILSClient::ils_browse ()
       // Check if the window is still present or not
       if (lw)
 	gtk_clist_append (GTK_CLIST (lw->ldap_users_clist), (gchar **) datas);
-    
+          
       /* Video Capable ? */
       if (ldap_get_values(ldap_connection, e, "ilsa32964638") != NULL)
 	{
@@ -563,8 +605,11 @@ void GMILSClient::ils_browse ()
 	  datas [j] = NULL;
 	}
     } // end of for
-  
-  gdk_threads_leave ();
+
+  gtk_clist_thaw (GTK_CLIST (lw->ldap_users_clist));
+
+  /* Make the progress bar in activity mode go faster */
+  gtk_progress_bar_set_activity_step (GTK_PROGRESS_BAR (progress), 5);
   
   ldap_msgfree (res);
   ldap_unbind (ldap_connection);
@@ -572,6 +617,12 @@ void GMILSClient::ils_browse ()
   lw->thread_count = 0;
 
   has_to_browse = 0;
+
+  /* Remove the timeout */
+  gtk_timeout_remove (ils_timeout);
+  gtk_progress_set_activity_mode (GTK_PROGRESS (progress), FALSE);
+  gtk_progress_set_value(GTK_PROGRESS(progress), 0);
+  gdk_threads_leave ();
 }
 
 /******************************************************************************/

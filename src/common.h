@@ -118,6 +118,7 @@ struct _GM_ldap_window_widgets
   GtkWidget *ldap_users_clist;
   GtkWidget *statusbar;
   GtkWidget *search_entry;
+  GtkWidget *ils_server_entry;
   GtkWidget *option_menu;
   
   // the last selected row and column

@@ -41,17 +41,10 @@
 /******************************************************************************/
 
 // DESCRIPTION  :  This callback is called when the user clicks
-//                 on a button : OK, CANCEL, APPLY
+//                 closes the window (destroy or delete_event signals)
 // BEHAVIOR     :  hide the window
 // PRE          :  gpointer is a valid pointer to a GM_ldap_window_widgets
 void ldap_window_clicked (GnomeDialog *, int, gpointer);
-
-
-// DESCRIPTION  :  This callback is called when the user clicks
-//                 on a button : closed by the WM
-// BEHAVIOR     :  hide the window
-// PRE          :  gpointer is a valid pointer to a GM_ldap_window_widgets
-void ldap_window_destroyed (GtkWidget *widget, gpointer data);
 
 
 // DESCRIPTION  :  This callback is called when the user has modified

@@ -25,10 +25,11 @@
 #include "videograbber.h"
 #include "common.h"
 #include "main_interface.h"
+// Needed for add_button, to be changed !!!
+#include "preferences.h"
 
 #include "../pixmaps/quickcam.xpm"
 #include "../pixmaps/sound.xpm"
-#include "../pixmaps/ldap_add.xpm"
 #include "../pixmaps/ldap_refresh.xpm"
 
 
@@ -47,15 +48,6 @@ extern GnomeMeeting *MyApp;
 /******************************************************************************/
 
 void ldap_window_clicked (GnomeDialog *widget, int button, gpointer data)
-{
-  GM_ldap_window_widgets *lw = (GM_ldap_window_widgets *) data;
-
-  if (GTK_WIDGET_VISIBLE (lw->gw->ldap_window))
-    gtk_widget_hide_all (lw->gw->ldap_window);
-}
-
-
-void ldap_window_destroyed (GtkWidget *widget, gpointer data)
 {
   GM_ldap_window_widgets *lw = (GM_ldap_window_widgets *) data;
 
@@ -128,12 +120,10 @@ void refresh_button_clicked (GtkButton *button, gpointer data)
     {
       gtk_clist_freeze (GTK_CLIST (lw->ldap_users_clist));
       gtk_clist_clear (GTK_CLIST (lw->ldap_users_clist));
+      gtk_clist_thaw (GTK_CLIST (lw->ldap_users_clist));
 
       ils_client->ils_browse (lw);
-
-      gtk_clist_thaw (GTK_CLIST (lw->ldap_users_clist));
-    }
-    
+    }   
 }
 
 
@@ -213,17 +203,15 @@ void GM_ldap_init (GM_window_widgets *gw)
 {
   GtkWidget *table, *entry_table;
   GtkWidget *vbox;
-  GtkWidget *dialog_vbox;
+  GtkWidget *vbox2;
   GtkWidget *frame;
   GtkWidget *scroll;
   GtkWidget *refresh_button;
   GtkWidget *user_add_button;
   GtkWidget *apply_filter_button;
   GtkWidget *who_pixmap;
-  GtkWidget *user_add_pixmap;
   GtkWidget *menu;
   GtkWidget *menu_item;
-
 
   GM_ldap_window_widgets *lw = NULL;
 
@@ -245,14 +233,15 @@ void GM_ldap_init (GM_window_widgets *gw)
      N_("Location"), N_("Comment"), N_("IP")};
 
   who_pixmap =  gnome_pixmap_new_from_xpm_d ((char **) ldap_refresh_xpm);
-  user_add_pixmap =  gnome_pixmap_new_from_xpm_d ((char **) ldap_add_xpm);
 
-  lw->gw->ldap_window = gnome_dialog_new (NULL, GNOME_STOCK_BUTTON_OK, NULL);
-  dialog_vbox = GNOME_DIALOG (gw->ldap_window)->vbox;
+  lw->gw->ldap_window = gtk_window_new (GTK_WINDOW_DIALOG);
+  gtk_window_set_policy (GTK_WINDOW (lw->gw->ldap_window), FALSE, FALSE, TRUE);
+  gtk_window_set_transient_for (GTK_WINDOW (lw->gw->ldap_window), GTK_WINDOW (gm));
+  gtk_window_set_position (GTK_WINDOW (lw->gw->ldap_window), GTK_WIN_POS_CENTER);
 
   /* a vbox to put the frames and the user list */
   vbox = gtk_vbox_new (FALSE, GNOME_PAD_SMALL);
-  gtk_box_pack_start (GTK_BOX (dialog_vbox), vbox, TRUE, TRUE, 0);
+  gtk_container_add (GTK_CONTAINER (lw->gw->ldap_window), vbox);
 
   // Intl
   for (int i = 0 ; i < 8 ; i++)
@@ -264,25 +253,25 @@ void GM_ldap_init (GM_window_widgets *gw)
   gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
 
   // Put a table in that first frame
-  table = gtk_table_new (4, 1, FALSE);
+  table = gtk_table_new (1, 3, FALSE);
   gtk_container_add (GTK_CONTAINER (frame), table);
   gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_BIG);
 
-  GtkWidget *label = gtk_label_new (_("ILS directories list:"));
+  GtkWidget *label = gtk_label_new (_("ILS directory:"));
   gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
 
-  GtkWidget *audio_player = gtk_combo_new ();
-  gtk_table_attach (GTK_TABLE (table), audio_player, 1, 2, 0, 1,
+  lw->ils_server_entry = gtk_combo_new ();
+  gtk_table_attach (GTK_TABLE (table), lw->ils_server_entry, 1, 2, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
 
-  refresh_button = gtk_button_new ();
-  gtk_widget_set_usize (GTK_WIDGET (refresh_button), 30, 30);
-  gtk_container_add (GTK_CONTAINER (refresh_button), who_pixmap);
+  refresh_button = add_button (_("Refresh"), who_pixmap);
+  gtk_widget_set_usize (GTK_WIDGET (refresh_button), 90, 30);
+
   gtk_table_attach (GTK_TABLE (table), refresh_button, 2, 3, 0, 1,
 		    (GtkAttachOptions) NULL, 
 		    (GtkAttachOptions) NULL,
@@ -320,15 +309,11 @@ void GM_ldap_init (GM_window_widgets *gw)
 
   // entry
   lw->search_entry = gtk_entry_new ();
-  gtk_container_add (GTK_CONTAINER (frame), entry_table);
-  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
 
   gtk_table_attach (GTK_TABLE (entry_table), lw->search_entry, 4, 8, 0, 2,
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
-
-  gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
 
   // the filter button
   apply_filter_button = gtk_button_new_with_label (_("Apply filter on"));
@@ -338,24 +323,23 @@ void GM_ldap_init (GM_window_widgets *gw)
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
 
-  /* Status Bar */
-  lw->statusbar = gnome_appbar_new (FALSE, TRUE, GNOME_PREFERENCES_NEVER);
-  gtk_container_add (GTK_CONTAINER (dialog_vbox), 
-		     lw->statusbar);
-  gtk_container_set_border_width (GTK_CONTAINER (lw->statusbar), 
-				  GNOME_PAD_SMALL);
-
 
   /* Ldap users list */
   frame = gtk_frame_new (_("ILS Users List"));
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
+  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_BIG);
 
   gtk_box_pack_start (GTK_BOX (vbox), frame, 
 		      FALSE, FALSE, 0);
-  
+
+  // A new vbox to put in the frame
+  vbox2 = gtk_vbox_new (FALSE, GNOME_PAD_SMALL);  
+  gtk_container_add (GTK_CONTAINER (frame), vbox2);
+
   table = gtk_table_new (2, 10, FALSE);
-  gtk_container_add (GTK_CONTAINER (frame), table);
-  gtk_container_set_border_width (GTK_CONTAINER (frame), GNOME_PAD_SMALL);
+
+  gtk_box_pack_start (GTK_BOX (vbox2), table, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox2), entry_table, FALSE, FALSE, 0);
 
   scroll = gtk_scrolled_window_new (NULL, NULL);
 
@@ -377,7 +361,7 @@ void GM_ldap_init (GM_window_widgets *gw)
 
   gtk_clist_set_shadow_type (GTK_CLIST (lw->ldap_users_clist), GTK_SHADOW_IN);
 
-  gtk_widget_set_usize (GTK_WIDGET (lw->ldap_users_clist), 520, 180);
+  gtk_widget_set_usize (GTK_WIDGET (lw->ldap_users_clist), 450, 200);
   
   gtk_container_add (GTK_CONTAINER (scroll), lw->ldap_users_clist);
   gtk_table_attach (GTK_TABLE (table), scroll, 0, 10, 0, 2,
@@ -385,12 +369,15 @@ void GM_ldap_init (GM_window_widgets *gw)
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
 		    GNOME_PAD_BIG, GNOME_PAD_BIG);
 
+  /* Status Bar */
+  lw->statusbar = gnome_appbar_new (TRUE, TRUE, GNOME_PREFERENCES_NEVER);
+  gtk_container_add (GTK_CONTAINER (vbox), lw->statusbar);
+  gtk_container_set_border_width (GTK_CONTAINER (lw->statusbar), 0);
+
+
+  /* Signals */
   gtk_signal_connect (GTK_OBJECT (refresh_button), "pressed",
 		      GTK_SIGNAL_FUNC (refresh_button_clicked), 
-		      (gpointer) lw);
-
-  gtk_signal_connect (GTK_OBJECT (user_add_button), "pressed",
-		      GTK_SIGNAL_FUNC (user_add_button_clicked), 
 		      (gpointer) lw);
 
   gtk_signal_connect (GTK_OBJECT (apply_filter_button), "pressed",
@@ -407,9 +394,9 @@ void GM_ldap_init (GM_window_widgets *gw)
   gtk_signal_connect (GTK_OBJECT(lw->search_entry), "changed",
 		      GTK_SIGNAL_FUNC(search_entry_modified), (gpointer) lw);
 
-  gtk_signal_connect (GTK_OBJECT(gw->ldap_window), "clicked",
+  gtk_signal_connect (GTK_OBJECT(gw->ldap_window), "delete_event",
 		     GTK_SIGNAL_FUNC(ldap_window_clicked), (gpointer) lw);
 
-  gtk_signal_connect (GTK_OBJECT (gw->ldap_window), "close",
-		      GTK_SIGNAL_FUNC (ldap_window_destroyed), (gpointer) lw);
+  gtk_signal_connect (GTK_OBJECT (gw->ldap_window), "destroy",
+		      GTK_SIGNAL_FUNC (ldap_window_clicked), (gpointer) lw);
 }
