@@ -324,6 +324,17 @@ gnomemeeting_zero_addressbook_get_contacts (GmAddressbook *addressbook,
 					    gchar *speeddial)
 {
   GSList *l = NULL;
+  GmContact *lc = NULL;
+  
+  GSList *f = NULL;
+  GmContact *fc = NULL;
+
+  gboolean match = FALSE;
+
+  gchar *down_fullname = NULL;
+  gchar *down_lcfullname = NULL;
+  gchar *down_url = NULL;
+  gchar *down_lcurl = NULL;
   
   if (!zcb)
     return NULL;
@@ -331,11 +342,106 @@ gnomemeeting_zero_addressbook_get_contacts (GmAddressbook *addressbook,
   if (addressbook) {
     
     l = zcb->GetContacts ();
-    if (l) 
-      nbr = g_slist_length (l);
+    if (l) {
+
+      /* No categorie and no speed dial for ZeroConf contacts, only
+       * search for URL or Fullname*/
+
+      while (l) {
+
+	if (l->data) {
+
+	  match = FALSE;
+	  lc = GM_CONTACT (l->data);
+
+
+	  /* Search filter */
+	  if (!fullname && !url) {
+
+	    match = TRUE;
+	  }
+	  else {
+
+	    /* Full Name search */
+	    if (fullname && strcmp (fullname, "")) {
+
+	      down_fullname = g_utf8_strdown (fullname, -1);
+	      down_lcfullname = g_utf8_strdown (lc->fullname, -1);
+	      
+	      if (partial_match 
+		  && down_lcfullname 
+		  && g_strrstr (down_lcfullname, down_fullname))
+		match = TRUE;
+
+	      if (!partial_match
+		  && down_lcfullname
+		  && !strcmp (down_lcfullname, down_fullname))
+		match = TRUE;
+
+	      g_free (down_fullname);
+	      down_fullname = NULL;
+
+	      g_free (down_lcfullname);
+	      down_lcfullname = NULL;
+	    }
+
+
+	    /* URL search */
+	    if (url && strcmp (url, "")) {
+
+	      down_url = g_utf8_strdown (url, -1);
+	      down_lcurl = g_utf8_strdown (lc->url, -1);
+
+	      if (partial_match 
+		  && down_lcurl 
+		  && g_strrstr (down_lcurl, down_url))
+		match = TRUE;
+
+	      if (!partial_match
+		  && lc->url
+		  && !strcmp (down_lcurl, down_url))
+		match = TRUE;
+
+	      g_free (down_url);
+	      down_url = NULL;
+
+	      g_free (down_lcurl);
+	      down_lcurl = NULL;
+	    }
+	  }
+
+	  /* Match ? */
+	  if (match) {
+
+	    fc = gm_contact_new ();
+	    
+	    fc->fullname = g_strdup (lc->fullname);
+	    fc->categories = g_strdup (lc->categories);
+	    fc->url = g_strdup (lc->url);
+	    fc->location = g_strdup (lc->location);
+	    fc->speeddial = g_strdup (lc->speeddial);
+	    fc->comment = g_strdup (lc->comment);
+	    fc->software = g_strdup (lc->software);
+	    fc->email = g_strdup (lc->email);
+	    fc->state = lc->state;
+	    fc->video_capable = lc->video_capable;
+
+	    f = g_slist_append (f, (gpointer) fc);
+	  }
+	}
+
+	l = g_slist_next (l);
+      }
+    }
+    
+    if (f)
+      nbr = g_slist_length (f);
   }
 
-  return l;
+  g_slist_foreach (l, (GFunc) gm_contact_delete, NULL);
+  g_slist_free (l);
+  
+  return f;
 }
 
 
