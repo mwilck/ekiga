@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
-"POT-Creation-Date: 2003-01-03 01:01+0100\n"
-"PO-Revision-Date: 2003-01-03 01:02+0100\n"
+"POT-Creation-Date: 2003-01-03 11:15+0100\n"
+"PO-Revision-Date: 2003-01-03 11:15+0100\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -56,8 +56,7 @@ msgid "Audio recorder mixer"
 msgstr "Ljudinspelarmixer"
 
 #. The toggles
-#: gnomemeeting.schemas.in.in.h:8 src/menu.cpp:522 src/menu.cpp:808
-#: src/pref_window.cpp:765
+#: gnomemeeting.schemas.in.in.h:8 src/menu.cpp:808 src/pref_window.cpp:765
 msgid "Auto Answer"
 msgstr "Svara automatiskt"
 
@@ -94,7 +93,7 @@ msgstr "Landskod"
 msgid "Display a popup window every time you receive a call"
 msgstr "Visa ett popupfönster varje gång du får ett samtal"
 
-#: gnomemeeting.schemas.in.in.h:17
+#: gnomemeeting.schemas.in.in.h:17 src/menu.cpp:517
 msgid "Do not disturb"
 msgstr "Stör inte"
 
@@ -936,14 +935,6 @@ msgid "Video Channel:  Paused"
 msgstr "Videokanal:  Pausad"
 
 #: src/connection.cpp:329 src/connection.cpp:331
-msgid "Auto Rejecting Incoming Call"
-msgstr "Vägrar automatiskt inkommande samtal"
-
-#: src/connection.cpp:332 src/endpoint.cpp:1041 src/endpoint.cpp:1043
-msgid "Auto Rejected"
-msgstr "Automatiskt vägrad"
-
-#: src/connection.cpp:344 src/connection.cpp:346
 msgid "Auto Answering Incoming Call"
 msgstr "Svarar automatiskt på inkommande samtal"
 
@@ -1275,112 +1266,121 @@ msgstr "Samtal från %s med %s"
 msgid "Forwarding Call from %s to %s (Forward All Calls)"
 msgstr "Vidarebefordrar samtal från %s till %s (vidarebefordrar alla samtal)"
 
-#: src/endpoint.cpp:1008
+#: src/endpoint.cpp:1005
+#, c-format
+msgid "Auto Rejecting Incoming Call from %s (Do Not Disturb)"
+msgstr "Vägrar automatiskt inkommande samtal från %s (Stör inte)"
+
+#: src/endpoint.cpp:1017
 #, c-format
 msgid "Forwarding Call from %s to %s (Busy)"
 msgstr "Vidarbefordrar samtal från %s till %s (upptagen)"
 
 #. there is no forwarding, so reject the call
-#: src/endpoint.cpp:1017
+#: src/endpoint.cpp:1026
 #, c-format
 msgid "Auto Rejecting Incoming Call from %s (Busy)"
 msgstr "Vägrar automatiskt inkommande samtal från %s (upptagen)"
 
-#: src/endpoint.cpp:1052 src/endpoint.cpp:1054
+#: src/endpoint.cpp:1050 src/endpoint.cpp:1052
+msgid "Auto Rejected"
+msgstr "Automatiskt vägrad"
+
+#: src/endpoint.cpp:1061 src/endpoint.cpp:1063
 msgid "Call Forwarded"
 msgstr "Samtal vidarebefordrat"
 
-#: src/endpoint.cpp:1204
+#: src/endpoint.cpp:1213
 #, c-format
 msgid "Connected with %s using %s"
 msgstr "Ansluten till %s med %s"
 
-#: src/endpoint.cpp:1206
+#: src/endpoint.cpp:1215
 msgid "Connected"
 msgstr "Ansluten"
 
-#: src/endpoint.cpp:1209
+#: src/endpoint.cpp:1218
 msgid "Fast start disabled"
 msgstr "Snabbstart inaktiverad"
 
-#: src/endpoint.cpp:1210
+#: src/endpoint.cpp:1219
 msgid "Fast start enabled"
 msgstr "Snabbstart aktiverad"
 
-#: src/endpoint.cpp:1213
+#: src/endpoint.cpp:1222
 msgid "H.245 Tunnelling disabled"
 msgstr "H.245-tunnling inaktiverad"
 
-#: src/endpoint.cpp:1214
+#: src/endpoint.cpp:1223
 msgid "H.245 Tunnelling enabled"
 msgstr "H.245-tunnling aktiverad"
 
-#: src/endpoint.cpp:1328
+#: src/endpoint.cpp:1337
 msgid "Remote party has cleared the call"
 msgstr "Fjärrparten har nollställt samtalet"
 
-#: src/endpoint.cpp:1332
+#: src/endpoint.cpp:1341
 msgid "Remote party has stopped calling"
 msgstr "Fjärrparten har slutat ringa"
 
-#: src/endpoint.cpp:1336 src/endpoint.cpp:1360
+#: src/endpoint.cpp:1345 src/endpoint.cpp:1369
 msgid "Remote party did not accept your call"
 msgstr "Fjärrparten accepterade inte ditt anrop"
 
-#: src/endpoint.cpp:1340
+#: src/endpoint.cpp:1349
 msgid "Remote party was busy"
 msgstr "Fjärrparten var upptagen"
 
-#: src/endpoint.cpp:1344
+#: src/endpoint.cpp:1353
 msgid "Congested link to remote party"
 msgstr "Överbelastad länk till fjärrparten"
 
-#: src/endpoint.cpp:1348
+#: src/endpoint.cpp:1357
 msgid "The call was not answered in the required time"
 msgstr "Anropet besvarades inte inom den tid som krävs"
 
-#: src/endpoint.cpp:1352
+#: src/endpoint.cpp:1361
 msgid "This call ended abnormally"
 msgstr "Samtalet avslutades onormalt"
 
-#: src/endpoint.cpp:1356
+#: src/endpoint.cpp:1365
 msgid "Could not find common codec with remote party"
 msgstr "Kunde inte hitta en komprimeringsmetod gemensam med fjärrparten"
 
-#: src/endpoint.cpp:1364
+#: src/endpoint.cpp:1373
 msgid "Refused incoming call"
 msgstr "Vägrade ta emot inkommande samtal"
 
-#: src/endpoint.cpp:1368 src/urlhandler.cpp:176 src/urlhandler.cpp:177
+#: src/endpoint.cpp:1377 src/urlhandler.cpp:176 src/urlhandler.cpp:177
 msgid "User not found"
 msgstr "Användaren kunde inte hittas"
 
-#: src/endpoint.cpp:1372
+#: src/endpoint.cpp:1381
 msgid "Call ended: insufficient bandwidth"
 msgstr "Samtalet avslutades: otillräcklig bandbredd"
 
-#: src/endpoint.cpp:1376
+#: src/endpoint.cpp:1385
 msgid "Remote party could not be reached"
 msgstr "Fjärrparten kunde inte nås"
 
-#: src/endpoint.cpp:1380
+#: src/endpoint.cpp:1389
 msgid "Remote party is offline"
 msgstr "Fjärrparten är inte ansluten"
 
-#: src/endpoint.cpp:1384
+#: src/endpoint.cpp:1393
 msgid "Transport Error calling"
 msgstr "Transportfel vid anrop"
 
-#: src/endpoint.cpp:1388
+#: src/endpoint.cpp:1397
 msgid "Call completed"
 msgstr "Samtalet färdigt"
 
-#: src/endpoint.cpp:1398
+#: src/endpoint.cpp:1407
 #, c-format
 msgid "Call duration: %.2ld:%.2ld:%.2ld"
 msgstr "Anslutningsvaraktighet: %.2ld.%.2ld.%.2ld"
 
-#: src/endpoint.cpp:1502 src/main_window.cpp:1626
+#: src/endpoint.cpp:1511 src/main_window.cpp:1626
 msgid ""
 "Sent/Received:\n"
 "Lost/Late Packets:\n"
@@ -1392,11 +1392,11 @@ msgstr ""
 "Fördröjning för runda:\n"
 "Jitterbuffert:"
 
-#: src/endpoint.cpp:1657
+#: src/endpoint.cpp:1666
 msgid "Attaching lid hardware to codec"
 msgstr "Fäster bländarhårdvara vid komprimeringsmetoden"
 
-#: src/endpoint.cpp:1677
+#: src/endpoint.cpp:1686
 msgid ""
 "Could not open audio channel for audio transmission (soundcard busy?).\n"
 "Disabling audio transmission."
@@ -1404,7 +1404,7 @@ msgstr ""
 "Kunde inte öppna ljudkanal för ljudöverföring (ljudkortet upptaget?).\n"
 "Inaktiverar ljudöverföring."
 
-#: src/endpoint.cpp:1679
+#: src/endpoint.cpp:1688
 msgid ""
 "Could not open audio channel for audio reception (soundcard busy?).\n"
 "Disabling audio reception."
@@ -1855,7 +1855,7 @@ msgid "_Save"
 msgstr "_Spara"
 
 #: src/menu.cpp:378
-msgid "Save A Snapshot of the Current Video"
+msgid "Save a snapshot of the current video"
 msgstr "Spara en ögonblicksbild av den aktuella videobilden"
 
 #: src/menu.cpp:384
@@ -1875,7 +1875,7 @@ msgid "Configuration druid"
 msgstr "Konfigurationsguide"
 
 #: src/menu.cpp:389
-msgid "Start The Configuration duid"
+msgid "Start the configuration druid"
 msgstr "Starta konfigurationsguiden"
 
 #: src/menu.cpp:396
@@ -1883,7 +1883,7 @@ msgid "_Preferences..."
 msgstr "_Inställningar..."
 
 #: src/menu.cpp:396
-msgid "Change Your Preferences"
+msgid "Change your preferences"
 msgstr "Ändra dina inställningar"
 
 #: src/menu.cpp:401
@@ -1895,7 +1895,7 @@ msgid "Text Chat"
 msgstr "Textchatt"
 
 #: src/menu.cpp:403
-msgid "View/Hide the Text Chat Window"
+msgid "View/Hide the text chat window"
 msgstr "Visa/Dölj textchattfönstret"
 
 #: src/menu.cpp:408
@@ -1903,7 +1903,7 @@ msgid "Status Bar"
 msgstr "Statusrad"
 
 #: src/menu.cpp:408
-msgid "View/Hide the Status Bar"
+msgid "View/Hide the status bar"
 msgstr "Visa/Dölj statusraden"
 
 #: src/menu.cpp:413
@@ -1911,7 +1911,7 @@ msgid "Control Panel"
 msgstr "Kontrollpanel"
 
 #: src/menu.cpp:416
-msgid "View Audio/Video transmission and reception statistics"
+msgid "View audio/video transmission and reception statistics"
 msgstr "Visa statistik för överföring och mottagning av ljud och video"
 
 #: src/menu.cpp:422
@@ -1927,7 +1927,7 @@ msgid "_Audio Settings"
 msgstr "_Ljudinställningar"
 
 #: src/menu.cpp:428
-msgid "View Audio Settings"
+msgid "View audio settings"
 msgstr "Visa ljudinställningar"
 
 #: src/menu.cpp:434
@@ -1935,7 +1935,7 @@ msgid "_Video Settings"
 msgstr "_Videoinställningar"
 
 #: src/menu.cpp:434
-msgid "View Video Settings"
+msgid "View video settings"
 msgstr "Visa videoinställningar"
 
 #: src/menu.cpp:440 src/pref_window.cpp:936
@@ -1946,21 +1946,20 @@ msgstr "Av"
 msgid "Hide the control panel"
 msgstr "Dölj kontrollpanelen"
 
-#: src/menu.cpp:448 src/menu.cpp:712
-msgid "Local Video Image"
+#: src/menu.cpp:448
+msgid "Local video image"
 msgstr "Lokal videobild"
 
-#: src/menu.cpp:454 src/menu.cpp:717
-msgid "Remote Video Image"
+#: src/menu.cpp:454
+msgid "Remote video image"
 msgstr "Fjärrvideobild"
 
 #: src/menu.cpp:460 src/menu.cpp:722
 msgid "Both (Local Video Incrusted)"
 msgstr "Båda (lokal videobild överlagrad)"
 
-#: src/menu.cpp:460 src/menu.cpp:466 src/menu.cpp:473 src/menu.cpp:722
-#: src/menu.cpp:727 src/menu.cpp:733
-msgid "Both Video Images"
+#: src/menu.cpp:460 src/menu.cpp:466 src/menu.cpp:473
+msgid "Both video images"
 msgstr "Båda videobilder"
 
 #: src/menu.cpp:466 src/menu.cpp:727
@@ -1975,12 +1974,24 @@ msgstr "Båda (lokal videobild och fjärrvideobild i nya fönster)"
 msgid "Zoom In"
 msgstr "Zooma in"
 
+#: src/menu.cpp:481
+msgid "Zoom in"
+msgstr "Zooma in"
+
 #: src/menu.cpp:486 src/menu.cpp:745
 msgid "Zoom Out"
 msgstr "Zooma ut"
 
+#: src/menu.cpp:486
+msgid "Zoom out"
+msgstr "Zooma ut"
+
 #: src/menu.cpp:491 src/menu.cpp:750
 msgid "Normal Size"
+msgstr "Normal storlek"
+
+#: src/menu.cpp:491
+msgid "Normal size"
 msgstr "Normal storlek"
 
 #: src/menu.cpp:498 src/menu.cpp:757
@@ -1995,29 +2006,29 @@ msgstr "_Samtal"
 msgid "_Connect"
 msgstr "_Anslut"
 
-#: src/menu.cpp:505 src/menu.cpp:791
-msgid "Create A New Connection"
+#: src/menu.cpp:505
+msgid "Create a new connection"
 msgstr "Skapa en ny anslutning"
 
 #: src/menu.cpp:510 src/menu.cpp:796
 msgid "_Disconnect"
 msgstr "_Koppla från"
 
-#: src/menu.cpp:510 src/menu.cpp:796
-msgid "Close The Current Connection"
+#: src/menu.cpp:510
+msgid "Close the current connection"
 msgstr "Stäng den nuvarande anslutningen"
 
 #: src/menu.cpp:517 src/menu.cpp:803
 msgid "Do _Not Disturb"
 msgstr "Stör i_nte"
 
-#: src/menu.cpp:517 src/menu.cpp:803 src/pref_window.cpp:767
-msgid "Do Not Disturb"
-msgstr "Stör inte"
-
 #: src/menu.cpp:522 src/menu.cpp:808
 msgid "Aut_o Answer"
 msgstr "Svara aut_omatiskt"
+
+#: src/menu.cpp:522
+msgid "Auto answer"
+msgstr "Svara automatiskt"
 
 #: src/menu.cpp:529
 msgid "_Audio Mute"
@@ -2041,6 +2052,10 @@ msgstr "Verk_tyg"
 
 #: src/menu.cpp:541
 msgid "XDAP Browser"
+msgstr "XDAP-bläddrare"
+
+#: src/menu.cpp:541
+msgid "XDAP browser"
 msgstr "XDAP-bläddrare"
 
 #: src/menu.cpp:548
@@ -2070,6 +2085,30 @@ msgstr "_Om GnomeMeeting"
 #: src/menu.cpp:561 src/menu.cpp:566
 msgid "View information about GnomeMeeting"
 msgstr "Visa information om GnomeMeeting"
+
+#: src/menu.cpp:712
+msgid "Local Video Image"
+msgstr "Lokal videobild"
+
+#: src/menu.cpp:717
+msgid "Remote Video Image"
+msgstr "Fjärrvideobild"
+
+#: src/menu.cpp:722 src/menu.cpp:727 src/menu.cpp:733
+msgid "Both Video Images"
+msgstr "Båda videobilder"
+
+#: src/menu.cpp:791
+msgid "Create A New Connection"
+msgstr "Skapa en ny anslutning"
+
+#: src/menu.cpp:796
+msgid "Close The Current Connection"
+msgstr "Stäng den nuvarande anslutningen"
+
+#: src/menu.cpp:803 src/pref_window.cpp:767
+msgid "Do Not Disturb"
+msgstr "Stör inte"
 
 #: src/misc.cpp:209
 #, c-format
@@ -2871,8 +2910,11 @@ msgstr ""
 "GnomeMeeting lyckades testa din videoenhet. Drivrutinen verkar kunna "
 "användas för videokonferenser med GnomeMeeting."
 
-#~ msgid "Start the Configuration druid"
+#~ msgid "Start The Configuration duid"
 #~ msgstr "Starta konfigurationsguiden"
+
+#~ msgid "Auto Rejecting Incoming Call"
+#~ msgstr "Vägrar automatiskt inkommande samtal"
 
 #~ msgid "Player:"
 #~ msgstr "Spelare:"
