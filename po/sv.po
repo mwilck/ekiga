@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
-"POT-Creation-Date: 2003-01-11 13:06+0100\n"
-"PO-Revision-Date: 2003-01-11 13:08+0100\n"
+"POT-Creation-Date: 2003-01-11 13:14+0100\n"
+"PO-Revision-Date: 2003-01-11 13:14+0100\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -627,11 +627,11 @@ msgstr ""
 "ILS-tjänsten. Om din router har inbyggt stöd för H.323 kan du inaktivera "
 "detta."
 
-#: gnomemeeting.schemas.in.in.h:128 src/pref_window.cpp:971
+#: gnomemeeting.schemas.in.in.h:128
 msgid ""
 "This permits to set the mode for User Input Capabilities. The values can be "
 "\"String\", \"Signal\", \"rfc2833\", \"None\" or \"All\" (default is All). "
-"Choosing other values than \"All\", \"String\" or \"rfc2833\" disable the "
+"Choosing other values than \"All\", \"String\" or \"rfc2833\" disables the "
 "Text Chat."
 msgstr ""
 "Detta möjliggör inställning av läget för kapabiliteter för användarindata. "
@@ -648,7 +648,7 @@ msgid "UDP Port Range"
 msgstr "UDP-portintervall"
 
 #: gnomemeeting.schemas.in.in.h:131
-msgid "User Input Capabiliy"
+msgid "User Input Capability"
 msgstr "Kapabilitet för användarindata"
 
 #: gnomemeeting.schemas.in.in.h:132 src/ldap_window.cpp:1758
@@ -2531,6 +2531,18 @@ msgstr "Kapabiliteter för användarindata"
 msgid "User Input Capabilities type:"
 msgstr "Typ av kapabiliteter för användarindata:"
 
+#: src/pref_window.cpp:971
+msgid ""
+"This permits to set the mode for User Input Capabilities. The values can be "
+"\"String\", \"Signal\", \"rfc2833\", \"None\" or \"All\" (default is All). "
+"Choosing other values than \"All\", \"String\" or \"rfc2833\" disable the "
+"Text Chat."
+msgstr ""
+"Detta möjliggör inställning av läget för kapabiliteter för användarindata. "
+"Värdena kan vara \"String\", \"Signal\", \"rfc2833\", \"None\" eller \"All"
+"\" (standardvärdet är \"All\"). Att välja andra värden än \"All\", \"String"
+"\" eller \"rfc2833\" inaktiverar textchatt."
+
 #: src/pref_window.cpp:975
 msgid "NAT/PAT Router Support"
 msgstr "Stöd för NAT/PAT-routrar"
@@ -3003,7 +3015,7 @@ msgstr "Din drivrutin stöder inte YUV420P-färgformatet"
 msgid "Tests OK!"
 msgstr "Testen OK!"
 
-#~ msgid "User Input Capability"
+#~ msgid "User Input Capabiliy"
 #~ msgstr "Kapabilitet för användarindata"
 
 #~ msgid "Video device"
