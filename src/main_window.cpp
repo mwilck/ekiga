@@ -618,25 +618,16 @@ gnomemeeting_new_event (BonoboListener    *listener,
     
      /* this function will store a copy of text */
     if (MyApp->Endpoint ()->GetCallingState () == 0) {
-      
+
       gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), 
-			  argv [i + 1]);  
+			  argv [i + 1]);
     }
     
     connect_cb (NULL, NULL);
   }
   else {
 
-    gchar *buffer = g_strdup_printf (_("GnomeMeeting is already running, if you want it to call a given callto URL, please use \"gnomemeeting -c URL.\""));
-    GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (gm),  
-						GTK_DIALOG_DESTROY_WITH_PARENT,
-						GTK_MESSAGE_ERROR,
-						GTK_BUTTONS_OK,
-						buffer);
-
-    gtk_dialog_run (GTK_DIALOG (dialog));
-
-    g_free (buffer);
+    gnomemeeting_warning_dialog (GTK_WINDOW (gm), _("GnomeMeeting is already running, if you want it to call a given callto URL, please use \"gnomemeeting -c URL.\""));
   }
 }
 

@@ -1711,19 +1711,17 @@ GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
   
   /* If we are using a hardware LID, connect the audio stream to the LID */
   if (lid && lid->IsOpen()) {
-    
-    gnomemeeting_threads_enter ();
-    gchar *msg = g_strdup_printf (_("Attaching lid hardware to codec"));
-    gnomemeeting_log_insert (gw->history_text_view, msg);
-    g_free (msg);
-    
-    gnomemeeting_threads_leave ();
-    
-      
+          
     if (!codec.AttachChannel (new OpalLineChannel (*lid,
 						   OpalIxJDevice::POTSLine, codec))) {
       return FALSE;
     }
+
+    gnomemeeting_threads_enter ();
+    gchar *msg = g_strdup_printf (_("Attaching lid hardware to codec"));
+    gnomemeeting_log_insert (gw->history_text_view, msg);
+    g_free (msg);    
+    gnomemeeting_threads_leave ();
   }
   else
 #endif
