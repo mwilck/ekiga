@@ -83,6 +83,9 @@ gboolean gnomemeeting_local_addressbook_modify_contact (GmAddressbook *,
 							GmContact *);
 
 
+gboolean gnomemeeting_local_addressbook_is_editable (GmAddressbook *);
+
+
 void gnomemeeting_local_addressbook_init (gchar *,
 					  gchar *);
 

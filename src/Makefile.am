@@ -65,6 +65,10 @@ if HAS_DBUS
 gnomemeeting_SOURCES += dbus_component.cpp dbus_component.h
 endif
 
+if HAS_HOWL
+gnomemeeting_SOURCES += zeroconf_publisher.cpp zeroconf_publisher.h
+endif
+
 gnomemeeting_LDADD = \
 	@GNOMEMEETING_LIBS@ \
 	$(top_builddir)/lib/libgnomemeeting.la

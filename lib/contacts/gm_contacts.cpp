@@ -78,11 +78,12 @@ gnomemeeting_addressbook_is_local (GmAddressbook *addressbook)
   g_return_val_if_fail (addressbook != NULL, TRUE);
 
   if (addressbook->url == NULL)
-    return TRUE; /* FIXME: is it right? */
+    return TRUE; 
 
   if (addressbook->url 
       && g_str_has_prefix (addressbook->url, "file:"))
     return TRUE;
+
 
   return FALSE;
 }
@@ -130,6 +131,18 @@ gnomemeeting_addressbook_modify_contact (GmAddressbook *addressbook,
 }
 
 
+gboolean
+gnomemeeting_addressbook_is_editable (GmAddressbook *addressbook)
+{
+  g_return_val_if_fail (addressbook != NULL, FALSE);
+
+  if (gnomemeeting_addressbook_is_local (addressbook))
+    return gnomemeeting_local_addressbook_is_editable (addressbook);
+  else
+    return gnomemeeting_remote_addressbook_is_editable (addressbook);
+}
+
+
 void
 gnomemeeting_addressbook_init (gchar *group_name, 
 			       gchar *addressbook_name)
@@ -137,4 +150,5 @@ gnomemeeting_addressbook_init (gchar *group_name,
   g_return_if_fail (group_name != NULL && addressbook_name != NULL);
   
   gnomemeeting_local_addressbook_init (group_name, addressbook_name);
+  gnomemeeting_remote_addressbook_init ();
 }

@@ -406,6 +406,7 @@ CPPFLAGS="$CPPFLAGS $GNOMEMEETING_CFLAGS"
 AC_CHECK_TYPES(xmlSAXHandlerV1,,, [#include <libxml/SAX.h>])
 CPPFLAGS="$CPPFLAGS_save"
 
+
 dnl #########################################################################
 dnl   Check for DBUS
 dnl #########################################################################
@@ -429,6 +430,31 @@ if test x"${enable_dbus}" = xyes ; then
 fi
 AM_CONDITIONAL(HAS_DBUS, test x"${enable_dbus}" = xyes)
 AM_CONDITIONAL(DBUS_SERVICES_INSTALL, test x"${enable_dbus}" = xyes)
+
+
+dnl #########################################################################
+dnl   Check for Howl
+dnl #########################################################################
+AC_ARG_ENABLE(howl,
+       [  --enable-howl       Enable the HOWL component.],
+       enable_howl=yes, enable_howl=no)
+
+AC_MSG_CHECKING(whether the HOWL component should be compiled in)
+if test x"${enable_howl}" = xyes ; then
+   HOWL="enabled"
+   AC_MSG_RESULT([yes])
+else
+   HOWL="disabled"
+   AC_MSG_RESULT([no])
+fi
+
+if test x"${enable_howl}" = xyes ; then
+   PKG_CHECK_MODULES(HOWL,  howl >= 0.9.6)
+   GNOMEMEETING_CFLAGS="$GNOMEMEETING_CFLAGS $HOWL_CFLAGS -DHAS_HOWL"
+   GNOMEMEETING_LIBS="$GNOMEMEETING_LIBS $HOWL_LIBS"
+fi
+AM_CONDITIONAL(HAS_HOWL, test x"${enable_howl}" = xyes)
+
 
 dnl ###########################################################################
 dnl  The various CFLAGS are merged into GNOMEMEETING_CFLAGS and 
@@ -519,6 +545,7 @@ echo ""
 echo "                Quicknet support  :  $HAS_IXJ"
 echo "          SDL Fullscreen support  :  $HAS_SDL"
 echo "                    DBUS support  :  $DBUS"
+echo "                Zeroconf support  :  $HOWL"
 echo ""
 echo "                         OS Type  :  $target_os"
 echo "                    Machine Type  :  $target_cpu"

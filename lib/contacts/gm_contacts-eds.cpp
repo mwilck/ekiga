@@ -721,6 +721,13 @@ gnomemeeting_local_addressbook_modify_contact (GmAddressbook *addressbook,
 }
 
 
+gboolean 
+gnomemeeting_local_addressbook_is_editable (GmAddressbook *)
+{
+  return TRUE;
+}
+
+
 void
 gnomemeeting_local_addressbook_init (gchar *group_name, gchar *source_name)
 {

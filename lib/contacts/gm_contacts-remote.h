@@ -28,7 +28,7 @@
 
 /*
  *                         gm_contacts-remote.h - description 
- *                         ----------------------------------
+ *                         --------------------------------
  *   begin                : Mon May 23 2004
  *   copyright            : (C) 2000-2004 by Damien Sandras
  *   description          : Declaration of the remote addressbook access 
@@ -69,6 +69,12 @@ gboolean gnomemeeting_remote_addressbook_delete (GmAddressbook *);
 
 
 gboolean gnomemeeting_remote_addressbook_modify (GmAddressbook *);
+
+
+gboolean gnomemeeting_remote_addressbook_is_editable (GmAddressbook *);
+
+
+void gnomemeeting_remote_addressbook_init ();
 
 
 G_END_DECLS

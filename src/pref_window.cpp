@@ -1416,6 +1416,9 @@ static void personal_data_update_cb (GtkWidget *widget,
   /* Both are able to not register if the option is not active */
   endpoint->ILSRegister ();
   endpoint->GatekeeperRegister ();
+#ifdef HAS_HOWL
+  endpoint->ZeroconfUpdate ();
+#endif
 
   gdk_threads_enter ();
 }

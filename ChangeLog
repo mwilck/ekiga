@@ -1,3 +1,25 @@
+2004-11-13  Damien Sandras  <dsandras@gnome.org>
+
+	* configure.in, lib/contacts/Makefile.am, 
+	lib/contacts/gm_contacts-eds.cpp,
+	lib/contacts/gm_contacts-gm_conf.cpp,
+	lib/contacts/gm_contacts-local.h, lib/contacts/gm_contacts-remote.cpp,
+	lib/contacts/gm_contacts-remote.h, lib/contacts/gm_contacts.cpp,
+	lib/contacts/gm_contacts.h: Added patch from Sebastien Lestienne
+	and Benjamin Leviant for Zeroconf support. Added initialisation
+	function for remote address books. Made Zeroconf address book a remote
+	one. Added function indicating if an address book can be
+	edited/deleted or if it is a static one.
+
+	* src/Makefile.am: Added patch. Thanks! 
+	
+	* src/addressbook_window.cpp: Do not allow to delete or edit non
+	editable address books.
+
+	* src/config.cpp, src/endpoint.cpp, src/endpoint.h, 
+	src/pref_window.cpp: Added Zeroconf support thanks to Benjamin Leviant
+	and Sebastien Lestienne.
+
 2004-11-05  Damien Sandras  <dsandras@gnome.org>
 
 	* src/tools.cpp: Fixed state of the service button. Allow the window

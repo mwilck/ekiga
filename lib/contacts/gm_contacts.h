@@ -230,6 +230,14 @@ gboolean gnomemeeting_addressbook_modify_contact (GmAddressbook *,
 
 
 /* DESCRIPTION  : /
+ * BEHAVIOR     : Returns TRUE if the given address book properties can
+ * 		  be edited, FALSE if it is a "static" address book.
+ * PRE          : The uri field of the GmAddressbook must exist. 
+ */
+gboolean gnomemeeting_addressbook_is_editable (GmAddressbook *);
+
+	
+/* DESCRIPTION  : /
  * BEHAVIOR     : Creates the initial addressbooks if none are found, 
  * 		  do nothing otherwise.
  * PRE          : Non-Null group name and address book name.

@@ -79,6 +79,9 @@ GMH323EndPoint::GMH323EndPoint ()
 #ifdef HAS_IXJ
   lid = NULL;
 #endif
+#ifdef HAS_HOWL
+  zcp = NULL;
+#endif
   ils_client = NULL;
   listener = NULL;
   gk = NULL;
@@ -156,6 +159,14 @@ GMH323EndPoint::~GMH323EndPoint ()
   /* Remove any running audio tester, if any */
   if (audio_tester)
     delete (audio_tester);
+
+  /* Stop the zeroconf publishing thread */
+#ifdef HAS_HOWL
+  zcp_access_mutex.Wait ();
+  if (zcp)
+    delete (zcp);
+  zcp_access_mutex.Signal ();
+#endif
 }
 
 
@@ -672,6 +683,17 @@ GMH323EndPoint::CreateConnection (unsigned call_reference)
 }
 
 
+#ifdef HAS_HOWL
+void
+GMH323EndPoint::ZeroconfUpdate (void)
+{
+  PWaitAndSignal m(zcp_access_mutex);
+  if (zcp) 
+    zcp->Publish ();
+}
+#endif
+
+
 void
 GMH323EndPoint::ILSRegister (void)
 {
@@ -1092,6 +1114,9 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   gm_tray_update_calling_state (tray, GMH323EndPoint::Connected);
   gm_tray_update (tray, GMH323EndPoint::Connected, icm, forward_on_busy);
   gnomemeeting_threads_leave ();
+
+  
+  /* Signal the call begin */
   if (dispatcher)
     g_signal_emit_by_name (dispatcher, "call-begin", (const gchar *)token);
 
@@ -1099,6 +1124,10 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   /* Update ILS if needed */
   if (reg)
     ILSRegister ();
+
+#ifdef HAS_HOWL
+  ZeroconfUpdate ();
+#endif
 
   g_free (utf8_name);
   g_free (utf8_local_name);
@@ -1439,6 +1468,10 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
     /* Update ILS if needed */
     if (reg)
       ILSRegister ();
+
+#ifdef HAS_HOWL
+    ZeroconfUpdate ();
+#endif
   }
 
 
@@ -1634,6 +1667,14 @@ GMH323EndPoint::Init ()
   
   if (gm_conf_get_bool (NAT_KEY "enable_stun_support")) 
     SetSTUNServer ();
+
+  
+#ifdef HAS_HOWL
+  zcp_access_mutex.Wait ();
+  zcp = new GMZeroconfPublisher ();
+  ZeroconfUpdate ();
+  zcp_access_mutex.Signal ();
+#endif
 
 
   g_free (stun_server);

@@ -44,6 +44,10 @@
 
 #include "common.h"
 
+#ifdef HAS_HOWL
+#include "zeroconf_publisher.h"
+#endif
+
 #ifdef HAS_IXJ
 #include <ixjlid.h>
 #endif
@@ -418,6 +422,15 @@ class GMH323EndPoint : public H323EndPoint
   void SetSTUNServer (void);
 
 
+#ifdef HAS_HOWL
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Update the information published by zeroconf.
+   * PRE          :  /
+   */
+  void ZeroconfUpdate (void);
+#endif
+
+  
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Register to (or unregister from) the ILS server
    *                 given in the options, if any.
@@ -782,6 +795,11 @@ class GMH323EndPoint : public H323EndPoint
 
 #ifdef HAS_IXJ
   GMLid *lid;
+#endif
+
+#ifdef HAS_HOWL
+  GMZeroconfPublisher *zcp;
+  PMutex zcp_access_mutex;
 #endif
 };
 

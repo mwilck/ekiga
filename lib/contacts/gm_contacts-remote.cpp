@@ -36,33 +36,22 @@
  *
  */
 
-#include <ptlib.h>
-#include <ptclib/pldap.h>
 
+/*
+ * Remote users can be either LDAP or ILS or ZeroConf users
+ */
+
+#include <string.h>
 #include <lib/gm_conf.h>
 
 #include "gm_contacts.h"
 #ifndef _GM_CONTACTS_H_INSIDE__
 #define _GM_CONTACTS_H_INSIDE__
 #include "gm_contacts-remote.h"
+#include "gm_contacts-ldap.h"
+#include "gm_contacts-zeroconf.h"
 #undef _GM_CONTACTS_H_INSIDE__
 #endif
-
-
-static gchar *
-get_fixed_utf8 (PString str)
-{
-  gchar *utf8_str = NULL;
-
-  if (g_utf8_validate ((gchar *) (const unsigned char*) str, -1, NULL))
-    utf8_str = g_strdup ((char *) (const char *) (str));
-  else
-    utf8_str =  g_convert ((const char *) str.GetPointer (),
-			   str.GetSize (), "UTF-8", "ISO-8859-1", 
-			   0, 0, 0);
-
-  return utf8_str;
-}
 
 
 GSList *
@@ -119,6 +108,14 @@ gnomemeeting_get_remote_addressbooks ()
   g_slist_foreach (list, (GFunc) g_free, NULL);
   g_slist_free (list);
 
+#ifdef HAS_HOWL
+  elmt = gm_addressbook_new ();
+  elmt->aid = g_strdup ("1086500000@ethium01");
+  elmt->name = g_strdup ("LAN Users");
+  elmt->url = g_strdup ("zero://local");
+  addressbooks = g_slist_append (addressbooks, (gpointer) elmt);
+#endif
+  
   return addressbooks;
 }
 
@@ -132,219 +129,24 @@ gnomemeeting_remote_addressbook_get_contacts (GmAddressbook *addressbook,
 					      gchar *categorie,
 					      gchar *speeddial)
 {
-  PLDAPSession ldap;
-  PLDAPSession::SearchContext context;
-  PStringList attrs;
-  PStringArray arr, arr2;
-  PString entry;
-  PString purl;
-
-  char prefix [256] = "";
-  char hostname [256] = "";
-  char port [256] = "";
-  char base [256] = "";
-  char scope [256] = "";
-
-  gchar *firstname = NULL;
-  gchar *surname = NULL;
-  gchar *tmp = NULL;
-  gchar *filter = NULL;
-
-  gboolean sub_scope = FALSE;
-  gboolean is_ils = FALSE;
-
-  gchar *xstatuses = NULL;
-  gchar **xs = NULL;
-
-  int xstatus = 0;
-  int done = 0;
-  int v = 0;
-
-  GmContact *contact = NULL;
-  GSList *list = NULL;
-  
-  g_return_val_if_fail (addressbook != NULL, NULL);
-
-  attrs += "cn";
-  attrs += "sappid";
-  attrs += "rfc822mailbox";
-  attrs += "mail";
-  attrs += "surname";
-  attrs += "sn";
-  attrs += "givenname";
-  attrs += "location";
-  attrs += "comment";
-  attrs += "description";
-  attrs += "l";
-  attrs += "localityname";
-  attrs += "ilsa26214430";
-  attrs += "ilsa26279966";
-  attrs += "xstatus";
-  if (addressbook->call_attribute)
-    attrs += addressbook->call_attribute;
-
-  entry = addressbook->url;
-  entry.Replace (":", " ", TRUE);
-  entry.Replace ("/", " ", TRUE);
-  entry.Replace ("?", " ", TRUE);
-  
-  done = sscanf ((const char *) entry, 
-		 "%255s %255s %255s %255s %255s", 
-		 prefix, hostname, port, base, scope);
-
-  if (done < 5) 
-    return NULL;
-  
-  if (!strcmp (scope, "sub"))
-    sub_scope = TRUE;
-
-  if (!strcmp (prefix, "ils"))
-    is_ils = TRUE;
-  
-  if (!ldap.Open (hostname, atoi (port))
-      || !ldap.Bind ()) {
-    
-    nbr = -1;
-    return NULL;
-  }
-
-  if (is_ils) /* No url in ILS, and no OR either */ {
-   
-    if (fullname && strcmp (fullname, ""))
-      filter = g_strdup_printf ("(&(cn=%)(surname=%%%s%%))", fullname);
-    else if (url && strcmp (url, ""))
-      filter = g_strdup_printf ("(&(cn=%)(rfc822mailbox=%%%s%%))", url);
-    else
-      filter = g_strdup ("(&(cn=%))");
-  }  
-  else {
-    
-    filter = g_strdup_printf ("(&(cn=*)(|(givenname=*%s%s)(surname=*%s%s))(rfc822mailbox=*%s%s))", fullname?fullname:"", fullname?"*":"", fullname?fullname:"", fullname?"*":"", url?url:"", url?"*":"");
-  }
-
-  if (ldap.Search (context, 
-		   filter, 
-		   attrs, 
-		   base, 
-		   (sub_scope) 
-		   ? PLDAPSession::ScopeSubTree
-		   : PLDAPSession::ScopeSingleLevel)) {
-
-    do {
-
-      contact = gm_contact_new ();
-      
-      if (ldap.GetSearchResult (context, "rfc822mailbox", arr)
-	  || ldap.GetSearchResult (context, "mail", arr)) 
-	contact->email = get_fixed_utf8 ((const char *) arr [0]);
-      
-      
-      if (ldap.GetSearchResult (context, "givenname", arr))
-	firstname = get_fixed_utf8 ((const char *) arr [0]);
-      if (ldap.GetSearchResult (context, "surname", arr)
-	  || ldap.GetSearchResult (context, "sn", arr))
-	surname = get_fixed_utf8 ((const char *) arr [0]);
-	  
-      if (firstname || surname)
-	contact->fullname = g_strdup_printf ("%s %s", 
-					     firstname?firstname:"", 
-					     surname?surname:"");
-      else if (ldap.GetSearchResult (context, "cn", arr)) 
-	  contact->fullname = get_fixed_utf8 ((const char *) arr [0]);
-      else
-	contact->fullname = get_fixed_utf8 ("");
-
-      
-      if (ldap.GetSearchResult (context, "location", arr)
-	  || ldap.GetSearchResult (context, "l", arr) 
-	  || ldap.GetSearchResult (context, "localityname", arr)) 
-	contact->location = get_fixed_utf8 ((const char *) arr [0]);
-      
-
-      if (ldap.GetSearchResult (context, "comment", arr)
-	  || ldap.GetSearchResult (context, "description", arr)) 
-	contact->comment = get_fixed_utf8 ((const char *) arr [0]);
- 
-
-      if (ldap.GetSearchResult (context, "ilsa26214430", arr))
-	contact->state = atoi ((const char *) arr [0]);
-      else
-	contact->state = 0;
-
-      
-      /* Specific to seconix.com */
-      if (ldap.GetSearchResult (context, "xstatus", arr)) {
-	
-	xstatuses = g_strdup ((const char *) arr [0]);
-	xs = g_strsplit (xstatuses, ",", 0);
-	if (xs)
-	  xstatus = atoi (xs [1]);
-	g_free (xstatuses);
-	g_strfreev (xs);
-      }
-      else
-	xstatus = 0;
-
-      
-      if (ldap.GetSearchResult (context, "sappid", arr)) {
-
-	tmp = get_fixed_utf8 ((const char *) arr [0]);
-	if (is_ils && ldap.GetSearchResult (context, "ilsa26279966", arr)) {
-
-	  v = atoi ((const char *) arr [0]);
-	  contact->software = 
-	    g_strdup_printf ("%s %d.%d.%d",
-			     tmp,
-			     (v & 0xff000000) >> 24,
-			     (v & 0x00ff0000) >> 16,
-			     v & 0x0000ffff);
-	}
-	else
-	  contact->software = get_fixed_utf8 (tmp);
-
-	g_free (tmp);
-      }
-
-  
-      if (addressbook->call_attribute
-	  && ldap.GetSearchResult (context, addressbook->call_attribute, arr)) {
-	
-	/* Some clever guessing */
-	if (is_ils && !strcasecmp (addressbook->call_attribute, "rfc822Mailbox"))
-	  purl = PString ("callto:") + PString (hostname)
-	    + PString ("/") + PString ((const char *) arr [0]);
-	else {
-	  
-	  purl = PString ("h323:") + PString ((const char *) arr [0]);
-	  purl.Replace ("+", "");
-	  purl.Replace ("-", "");
-	  purl.Replace (" ", "");
-	}
-      
-	contact->url = get_fixed_utf8 ((const char *) purl);
-      }
-      
-      list = g_slist_append (list, (gpointer) contact);
-
-      g_free (surname);
-      g_free (firstname);
-      surname = NULL;
-      firstname = NULL;
-
-    } while (ldap.GetNextSearchResult (context));
-  }
-
-  g_free (filter);
-
-  if (nbr != -1) {
-   
-    if (xstatus != 0)
-      nbr = xstatus;
-    else
-      nbr = g_slist_length (list);
-  }
-
-  return list;
+  if (addressbook && gnomemeeting_addressbook_is_ldap (addressbook)) 
+    return gnomemeeting_ldap_addressbook_get_contacts (addressbook,
+						       nbr,
+						       partial_match,
+						       fullname,
+						       url,
+						       categorie,
+						       speeddial);
+#ifdef HAS_HOWL /* If it is not an ldap addressbook, then it is a ZC one */
+  else
+    return gnomemeeting_zero_addressbook_get_contacts (addressbook,
+						       nbr,
+						       partial_match,
+						       fullname,
+						       url,
+						       categorie,
+						       speeddial);
+#endif
 }
 
 
@@ -480,5 +282,22 @@ gnomemeeting_remote_addressbook_modify (GmAddressbook *addressbook)
   g_slist_free (list);
 
   return found;
+}
+
+
+gboolean
+gnomemeeting_remote_addressbook_is_editable (GmAddressbook *addressbook)
+{
+  if (addressbook && gnomemeeting_addressbook_is_ldap (addressbook))
+    return TRUE;
+  else
+    return FALSE;
+}
+
+
+void
+gnomemeeting_remote_addressbook_init ()
+{
+  gnomemeeting_zero_addressbook_init ();
 }
 

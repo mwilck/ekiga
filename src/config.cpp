@@ -1212,6 +1212,10 @@ incoming_call_mode_changed_nt (gpointer id,
 
     /* Update the main window and its menu */
     gm_main_window_set_incoming_call_mode (main_window, i);
+
+#ifdef HAS_HOWL
+    ep->ZeroconfUpdate ();
+#endif
     
     gdk_threads_leave ();
   }

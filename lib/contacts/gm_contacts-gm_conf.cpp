@@ -551,9 +551,15 @@ gnomemeeting_local_addressbook_modify_contact (GmAddressbook *addb,
 }
 
 
+gboolean 
+gnomemeeting_local_addressbook_is_editable (GmAddressbook *)
+{
+  return TRUE;
+}
+
+
 void
 gnomemeeting_local_addressbook_init (gchar *,
 				     gchar *)
 {
-  /* FIXME: what is it supposed to do!? */
 }

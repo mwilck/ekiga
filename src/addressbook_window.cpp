@@ -257,12 +257,16 @@ static void gm_aw_update_addressbook (GtkWidget *,
  * BEHAVIOR     : Updates the content of the given GmAddressbook in the 
  * 		  address book window GMObject.
  * PRE          : The given GtkWidget pointer must point to the address book
- * 		  GMObject. The first boolean must indicate if a local 
- * 		  addressbook is selected, the second one if a remote 
+ * 		  GMObject. 
+ * 		  The first boolean indicates if the address book props
+ * 		  are editable.
+ * 		  The second boolean must indicate if a local 
+ * 		  addressbook is selected, the third one if a remote 
  * 		  addressbook is selected, both may not be true at the same 
  * 		  time. All other situations are possible.
  */
 static void gm_aw_update_menu_sensitivity (GtkWidget *,
+					   gboolean,
 					   gboolean,
 					   gboolean);
 
@@ -1383,6 +1387,7 @@ gm_aw_update_addressbook (GtkWidget *addressbook_window,
 
 static void 
 gm_aw_update_menu_sensitivity (GtkWidget *addressbook_window,
+			       gboolean editable,
 			       gboolean ls,
 			       gboolean rs)
 {
@@ -1394,9 +1399,11 @@ gm_aw_update_menu_sensitivity (GtkWidget *addressbook_window,
   aw = gm_aw_get_aw (addressbook_window);
 
   gtk_menu_set_sensitive (aw->aw_menu, "call", rs || ls);
-  gtk_menu_set_sensitive (aw->aw_menu, "delete", (ls || (!rs && !ls)));
+  gtk_menu_set_sensitive (aw->aw_menu, "delete", (ls 
+						  || (!rs && !ls && editable)));
   gtk_menu_set_sensitive (aw->aw_menu, "add", rs);
-  gtk_menu_set_sensitive (aw->aw_menu, "properties", !rs);
+  gtk_menu_set_sensitive (aw->aw_menu, "properties", (ls || 
+						      (!rs && !ls && editable)));
 }
 
 
@@ -1778,8 +1785,12 @@ public:
 				addressbook,
 				contacts,
 				msg);
-      gm_addressbook_delete (addressbook);
       gdk_threads_leave ();
+
+      gm_addressbook_delete (addressbook);
+
+      g_slist_foreach (contacts, (GFunc) gm_contact_delete, NULL);
+      g_slist_free (contacts);
 
       g_free (filter);
       g_free (msg);
@@ -1879,7 +1890,8 @@ addressbook_clicked_cb (GtkWidget *w,
 
     if (e->type == GDK_BUTTON_PRESS || e->type == GDK_KEY_PRESS) {
 
-      if (e->button == 3) {
+      if (e->button == 3 
+	  && gnomemeeting_addressbook_is_editable (addressbook)) {
 
 	menu = gm_aw_addressbook_menu_new (GTK_WIDGET (data));
 	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL,
@@ -1904,6 +1916,7 @@ contact_selected_cb (GtkTreeSelection *selection,
 {
   GmAddressbook *addressbook = NULL;
 
+  gboolean editable = FALSE;
   gboolean ls = FALSE;
   gboolean rs = FALSE;
 
@@ -1912,11 +1925,14 @@ contact_selected_cb (GtkTreeSelection *selection,
   addressbook = 
     GM_ADDRESSBOOK (gm_aw_get_selected_addressbook (GTK_WIDGET (data)));
 
+  editable = gnomemeeting_addressbook_is_editable (addressbook);
   ls = gnomemeeting_addressbook_is_local (addressbook);
   rs = !ls;
 
   gm_aw_update_menu_sensitivity (GTK_WIDGET (data),
-				 ls, rs);
+				 editable, ls, rs);
+
+  gm_addressbook_delete (addressbook);
 }
 
 
@@ -1930,13 +1946,20 @@ addressbook_selected_cb (GtkTreeSelection *selection,
   GtkTreeSelection *lselection = NULL;
   GtkTreeIter iter;
 
+  GmAddressbook *addressbook = NULL;
   GmAddressbookWindow *aw = NULL;
   GmAddressbookWindowPage *awp = NULL;
 
   gint page_num = -1;
+  gboolean editable = FALSE;
 
   g_return_if_fail (data != NULL);
-
+  
+  addressbook = 
+    GM_ADDRESSBOOK (gm_aw_get_selected_addressbook (GTK_WIDGET (data)));
+  editable = gnomemeeting_addressbook_is_editable (addressbook);
+  gm_addressbook_delete (addressbook);
+  
   aw = gm_aw_get_aw (GTK_WIDGET (data));
 
   if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
@@ -1970,7 +1993,7 @@ addressbook_selected_cb (GtkTreeSelection *selection,
   }
 
   gm_aw_update_menu_sensitivity (GTK_WIDGET (data),
-				 FALSE, FALSE);
+				 editable, FALSE, FALSE);
 }
 
 
@@ -2325,7 +2348,7 @@ gm_addressbook_window_new ()
   gtk_tree_store_append (GTK_TREE_STORE (model), &iter, NULL);
   gtk_tree_store_set (GTK_TREE_STORE (model),
 		      &iter,
-		      COLUMN_NAME, _("On LDAP servers"), 
+		      COLUMN_NAME, _("Remote Contacts"), 
 		      COLUMN_NOTEBOOK_PAGE, -1, 
 		      COLUMN_PIXBUF_VISIBLE, FALSE,
 		      COLUMN_WEIGHT, PANGO_WEIGHT_BOLD, 
@@ -2333,7 +2356,7 @@ gm_addressbook_window_new ()
   gtk_tree_store_append (GTK_TREE_STORE (model), &iter, NULL);
   gtk_tree_store_set (GTK_TREE_STORE (model),
 		      &iter,
-		      COLUMN_NAME, _("On This Computer"), 
+		      COLUMN_NAME, _("Local Contacts"), 
 		      COLUMN_NOTEBOOK_PAGE, -1, 
 		      COLUMN_PIXBUF_VISIBLE, FALSE,
 		      COLUMN_WEIGHT, PANGO_WEIGHT_BOLD, 
