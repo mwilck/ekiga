@@ -670,10 +670,13 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   // else close the grabber
   GMVideoGrabber *vg = (GMVideoGrabber *) video_grabber;
 
-  if (opts->video_preview)
-    vg->Start ();
-  else
-    vg->Close ();
+  if (opts->vid_tr)
+    {
+      if (opts->video_preview)
+	vg->Start ();
+      else
+	vg->Close ();
+    }
 }
 
 

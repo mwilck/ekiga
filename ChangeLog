@@ -1,5 +1,10 @@
 2001-10-22  Damien Sandras  <dsandras@seconix.com>
 
+	* src/endpoint.cpp: Fixed a small bug for pure audio calls (the video grabber, 
+	not opened, was closed).
+	
+2001-10-22  Damien Sandras  <dsandras@seconix.com>
+
 	* common.h, config.cpp, preferences.cpp: Added support for a video_preview button
 	located in the preferences window (has the same effect and purpose than
 	the button in the quick bar).
