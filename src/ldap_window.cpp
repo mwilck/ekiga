@@ -436,7 +436,7 @@ dnd_drag_data_received_cb (GtkWidget *tree_view,
 
 /* DESCRIPTION  :  This callback is called when the user has released the drag.
  * BEHAVIOR     :  Puts the required data into the selection_data, we put
- *                 name and the url fields for now.
+ *                 name, the url fields and the speed-dial.
  * PRE          :  data = the type of the page from where the drag occured :
  *                 CONTACTS_GROUPS or CONTACTS_SERVERS.
  */
@@ -450,14 +450,18 @@ dnd_drag_data_get_cb (GtkWidget *tree_view,
 {
   gchar *contact_name = NULL;
   gchar *contact_url = NULL;
+  gchar *contact_speed_dial = NULL;
   gchar *drag_data = NULL;
 
 
   if (get_selected_contact_info (NULL, &contact_name,
-				 &contact_url, NULL, NULL)
+				 &contact_url, &contact_speed_dial, NULL)
       && contact_name && contact_url) {
       
-    drag_data = g_strdup_printf ("%s|%s", contact_name, contact_url);
+    if (contact_speed_dial)
+      drag_data = g_strdup_printf ("%s|%s|%s", contact_name, contact_url, contact_speed_dial);
+    else
+      drag_data = g_strdup_printf ("%s|%s", contact_name, contact_url);
     
     gtk_selection_data_set (selection_data, selection_data->target, 
 			    8, (const guchar *) drag_data,
@@ -467,6 +471,7 @@ dnd_drag_data_get_cb (GtkWidget *tree_view,
 
   g_free (contact_name);
   g_free (contact_url);
+  g_free (contact_speed_dial);
 }
 
 
