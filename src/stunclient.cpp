@@ -155,7 +155,7 @@ void GMStunClient::Main ()
 	break;
 
       case 5:
-	prefered_method = g_strdup (_("GnomeMeeting detected Symmetric NAT. The most appropriate method if your router doesn't natively support H.323 is to forward the required ports to change your Symmetric NAT into Cone NAT and run this test again. It should report Cone NAT, and allow GnomeMeeting to be used with a STUN Server."));
+	prefered_method = g_strdup (_("GnomeMeeting detected Symmetric NAT. The most appropriate method if your router doesn't natively support H.323 is to forward the required ports to change your Symmetric NAT into Cone NAT and run this test again. It should report Cone NAT, and allow GnomeMeeting to be used with a STUN Server. If it doesn't report Cone NAT after the port forwarding has been done, then it means it didn't work."));
 	break;
 	
       default:
