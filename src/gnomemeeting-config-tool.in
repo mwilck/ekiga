@@ -10,15 +10,10 @@ ACCEPT=`gettext "YES"`
 
 clean () {
 
-    if ps hu -C gnomemeeting | grep -v gnomemeeting-config-tool | grep $USER &>/dev/null 2>&1; 
-	then gettext "Sorry, this script won't work while GnomeMeeting is running"; echo
-
-    else
-
 	echo
 	gettext "  WARNING!!!"; echo
 	echo    "  ---------------------------------------------------------------"
-	printf "`gettext "  This script will delete all user GnomeMeeting configuration,\n  including preferences that may be important! \n  The GConf daemon will be shut down, so make sure you have no\n  applications depending on it running.\n\n  Do you really want to do this?\n\n  If so, say $ACCEPT.\n\n"`";
+	printf "`gettext "  This script will delete all user GnomeMeeting configuration,\n  including preferences that may be important! \n  The GConf daemon will be shut down, so make sure you have no\n  applications depending on it running.\n\n  Please make sure that GnomeMeeting is not running!\n\n  Do you really want to do this?\n\n  If so, say $ACCEPT.\n\n"`";
 
 	read WARNINGANSWER
 	
@@ -42,15 +37,13 @@ clean () {
 	fi
 	
 	echo
-	
-    fi
 }
 
 shutdownwarning () {
     echo
     gettext "  WARNING!!!"; echo
     echo    "  ---------------------------------------------------------------"
-    printf "`gettext "  The GConf daemon will be shut down, so make sure you have no\n  applications depending on it running.\n\n  Do you really want to do this?\n\n  If so, say $ACCEPT.\n\n"`";
+    printf "`gettext "  The GConf daemon will be shut down, so make sure you have no\n  applications depending on it running.\n\n  Please make sure that GnomeMeeting is not running!\n\n  Do you really want to do this?\n\n  If so, say $ACCEPT.\n\n"`";
 }
 
 cleanschemas () {
