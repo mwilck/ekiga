@@ -16,7 +16,9 @@ IMAGE_FILES = \
 	audio-mute.png \
 	speaker-phone.png \
 	available.png \
-	occupied.png
+	occupied.png \
+	globe-22.xpm \
+	globe2-22.xpm 
 
 
 IMAGES= \
@@ -32,7 +34,9 @@ IMAGES= \
 	gm_speaker_phone_stock_data speaker-phone.png \
 	gm_quickcam_stock_data quickcam.xpm \
 	gm_occupied_stock_data occupied.png \
-	gm_available_stock_data available.png
+	gm_available_stock_data available.png \
+	gm_tray_default_stock_data globe-22.xpm \
+	gm_tray_flash_stock_data globe2-22.xpm 
 
 noinst_DATA = inlines.h
 

@@ -33,7 +33,6 @@
 #include "menu.h"
 #include "gnomemeeting.h"
 #include "common.h"
-#include "docklet.h"
 #include "misc.h"
 #include "druid.h"
 
@@ -394,7 +393,7 @@ void gnomemeeting_init_menu ()
       },
       {
 	GNOME_APP_UI_TOGGLEITEM,
-	N_("Docklet"), N_("View/Hide the Docklet"),
+	N_("Tray Icon"), N_("View/Hide the Tray Icon"),
 	(void *) menu_toggle_changed, 
 	(gpointer) "/apps/gnomemeeting/view/show_docklet",
 	NULL, GNOME_APP_PIXMAP_NONE, NULL,

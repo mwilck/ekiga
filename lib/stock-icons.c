@@ -63,7 +63,9 @@ gnomemeeting_stock_icons_init (void)
                 { GM_STOCK_SPEAKER_PHONE, gm_speaker_phone_stock_data },
 		{ GM_STOCK_QUICKCAM,      gm_quickcam_stock_data },
 		{ GM_STOCK_AVAILABLE,     gm_available_stock_data },
-		{ GM_STOCK_OCCUPIED,      gm_occupied_stock_data }
+		{ GM_STOCK_OCCUPIED,      gm_occupied_stock_data },
+		{ GM_STOCK_TRAY_DEFAULT,  gm_tray_default_stock_data },
+		{ GM_STOCK_TRAY_FLASH,    gm_tray_flash_stock_data }
 	};
 
 	factory = gtk_icon_factory_new ();

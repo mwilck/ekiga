@@ -1,3 +1,23 @@
+2002-09-01  Miguel Rodríguez Pérez  <migrax@terra.es>
+
+	* src/menu.cpp: 
+	* src/main_window.cpp: 
+	* src/endpoint.cpp: Use the new tray instead of the old docklet
+	everywhere (I hope)
+
+	* src/docklet.h: 
+	* src/docklet.cpp: Removed
+
+	* src/tray.h: 
+	* src/tray.cpp: Added
+
+	* lib/stock-icons.c: 
+	* lib/stock-icons.h (GM_TRAY_FLASH): 
+	* pixmaps/Makefile.am (IMAGES): Added globe-22 and globe2-22
+
+	* src/Makefile.am (gnomemeeting_SOURCES): Removed docklet.cpp and
+	.h and added tray.cpp and .h instead, with eggtrayicon.[ch] from libegg.
+
 2002-08-31  Damien Sandras  <dsandras@seconix.com>
 
 	* src/main_window.cpp: Made notebook scrollable.

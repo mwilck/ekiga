@@ -28,8 +28,6 @@ gnomemeeting_SOURCES =		\
 	config.cpp		\
 	ldap_window.cpp		\
 	ldap_window.h		\
-	docklet.cpp		\
-	docklet.h		\
 	main_window.cpp		\
 	main_window.h		\
 	audio.cpp		\
@@ -49,7 +47,11 @@ gnomemeeting_SOURCES =		\
 	urlhandler.cpp		\
 	urlhandler.h		\
 	vfakeio.cpp		\
-	vfakeio.h
+	vfakeio.h		\
+	eggtrayicon.h		\
+	eggtrayicon.c		\
+	tray.h			\
+	tray.cpp
 
 
 gnomemeeting_LDADD = \

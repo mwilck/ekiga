@@ -1,6 +1,6 @@
 
 /* GnomeMeeting -- A Video-Conferencing application
- * Copyright (C) 2000-2001 Damien Sandras
+ * Copyright (C) 2000-2002 Damien Sandras
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,38 +18,38 @@
  */
 
 /*
- *                         docklet.h  -  description
+ *                         tray.h  -  description
  *                         -------------------------
  *   begin                : Wed Oct 3 2001
- *   copyright            : (C) 2000-2001 by Miguel Rodriguez
+ *   copyright            : (C) 2000-2002 by Miguel Rodríguez
  *   description          : This file contains all functions needed for
- *                          Gnome Panel docklet.
+ *                          the system tray.
  *   email                : migrax@terra.es (all the new code)
  *                          dsandras@seconix.com (old applet code).
  *
  */
 
-#ifndef _DOCKLET_H_
-#define _DOCKLET_H_
-
-#include <gtk/gtkwidget.h>
+#ifndef _TRAY_H_
+#define _TRAY_H_
 
 #include "config.h"
+#include <glib-object.h>
 
+G_BEGIN_DECLS
 
 /* DESCRIPTION  :  This callback is called by a timeout function
- * BEHAVIOR     :  If current picture in the docklet is globe,
+ * BEHAVIOR     :  If current picture in the tray is globe,
  *                 then displays globe2, else displays globe
  * PRE          :  /
  */
-gint gnomemeeting_docklet_flash (GtkWidget *);
+gint gnomemeeting_tray_flash (GObject *);
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Init the docklet and menus and callbacks (for this docklet)
+ * BEHAVIOR     :  Init the tray and menus and callbacks (for this tray icon)
  * PRE          :  /
  */
-GtkWidget *gnomemeeting_init_docklet ();
+GObject *gnomemeeting_init_tray (void);
 
 
 /* DESCRIPTION  :  /
@@ -57,20 +57,22 @@ GtkWidget *gnomemeeting_init_docklet ();
  *                 globe
  * PRE          :  /
  */
-void gnomemeeting_docklet_set_content (GtkWidget *, int);
+void gnomemeeting_tray_set_content (GObject *, int);
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Show the docklet.
+ * BEHAVIOR     :  Show the tray icon.
  * PRE          :  /
  */
-void gnomemeeting_docklet_show (GtkWidget *);
+void gnomemeeting_tray_show (GObject *);
 
 
 /* DESCRIPTION  : /
- * BEHAVIOR     : Hide the docklet window
+ * BEHAVIOR     : Hide the tray window
  * PRE          : /
  */
-void gnomemeeting_docklet_hide (GtkWidget *);
+void gnomemeeting_tray_hide (GObject *);
+
+G_END_DECLS
 
 #endif

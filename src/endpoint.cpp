@@ -37,7 +37,7 @@
 #include "config.h"
 #include "common.h"
 #include "connection.h"
-#include "docklet.h"
+#include "tray.h"
 #include "audio.h"
 #include "videograbber.h"
 #include "gatekeeper.h"
@@ -1056,7 +1056,7 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 
       docklet_timeout = 
 	gtk_timeout_add (1000, 
-			 (GtkFunction) gnomemeeting_docklet_flash, 
+			 (GtkFunction) gnomemeeting_tray_flash, 
 			 gw->docklet);
     }
 
@@ -1204,7 +1204,7 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 #endif
 
 
-  gnomemeeting_docklet_set_content (gw->docklet, 0);
+  gnomemeeting_tray_set_content (G_OBJECT (gw->docklet), 0);
 
   connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 1);
   
@@ -1461,7 +1461,7 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   
   sound_timeout = 0;
 
-  gnomemeeting_docklet_set_content (gw->docklet, 0);
+  gnomemeeting_tray_set_content (G_OBJECT (gw->docklet), 0);
   
   gnomemeeting_threads_leave ();
   
@@ -1530,7 +1530,7 @@ BOOL GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
 
 
   /* Clear the docklet */
-  gnomemeeting_docklet_set_content (gw->docklet, 0);
+  gnomemeeting_tray_set_content (G_OBJECT (gw->docklet), 0);
   gnomemeeting_threads_leave ();
 
   opened_audio_channels++;

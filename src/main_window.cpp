@@ -35,7 +35,7 @@
 #include "main_window.h"
 #include "gnomemeeting.h"
 #include "callbacks.h"
-#include "docklet.h"
+#include "tray.h"
 #include "ils.h"
 #include "common.h"
 #include "menu.h"
@@ -1010,7 +1010,9 @@ gnomemeeting_init (GmWindow *gw,
   g_object_set_data (G_OBJECT (gm), "rtp", rtp);
 
   /* Startup Process */
-  gw->docklet = gnomemeeting_init_docklet ();
+  gnomemeeting_stock_icons_init ();
+
+  gw->docklet = GTK_WIDGET (gnomemeeting_init_tray ());
 
   /* Init the splash screen */
   gw->splash_win = e_splash_new ();
@@ -1041,8 +1043,6 @@ gnomemeeting_init (GmWindow *gw,
   gw->video_devices = PVideoInputDevice::GetInputDeviceNames ();
   esd_resume (esd_client);
   esd_close (esd_client);
-
-  gnomemeeting_stock_icons_init ();
 
   /* Build the interface */
   gnomemeeting_init_main_window ();
@@ -1146,10 +1146,10 @@ gnomemeeting_init (GmWindow *gw,
   else {
 
   /* Show the main window */
-  if (!gconf_client_get_bool (GCONF_CLIENT (client), 
-			     VIEW_KEY "show_docklet", 0) ||
-      !gconf_client_get_bool (GCONF_CLIENT (client),
-			     VIEW_KEY "start_docked", 0))
+    if (!gconf_client_get_bool (GCONF_CLIENT (client), 
+				VIEW_KEY "show_docklet", 0) ||
+	!gconf_client_get_bool (GCONF_CLIENT (client),
+				VIEW_KEY "start_docked", 0))
 
     gtk_widget_show (GTK_WIDGET (gm));
   }
