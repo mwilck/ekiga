@@ -1254,7 +1254,7 @@ gnomemeeting_init (GmWindow *gw,
   if (show_splash) 
   {
     /* We show the splash screen */
-    gtk_widget_show (gw->splash_win);
+    gtk_widget_show_all (gw->splash_win);
 
     while (gtk_events_pending ())
       gtk_main_iteration ();

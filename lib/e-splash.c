@@ -55,7 +55,6 @@ e_splash_new ()
   gtk_window_set_title (GTK_WINDOW (window), "GnomeMeeting");
 
   gtk_container_add (GTK_CONTAINER (window), image);
-  gtk_widget_show (image);
 
   return GTK_WIDGET (window);
 }
