@@ -368,7 +368,6 @@ AC_ARG_ENABLE(firewire, [  --enable-firewire     enable Firewire support], firew
 if test -e "/usr/include/libdc1394/dc1394_control.h" -a -e "/usr/include/libavc1394/avc1394.h" -a "${firewire}" != "no"; then
    HAS_FIREWIRE="enabled"
    H323_CFLAGS="$H323_CFLAGS -DTRY_1394DC -DTRY_1394AVC"
-   H323_LIBS="$H323_LIBS -lraw1394 -ldc1394_control -lavc1394"
 else
 if test "${firewire}" != "no"; then
 AC_MSG_ERROR([***Firewire headers not found.])
