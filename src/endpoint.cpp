@@ -86,19 +86,6 @@ IncomingCallTimeout (gpointer data)
 
   client = gconf_client_get_default ();
 
-#ifdef HAS_IXJ
-  GMLid *lid_thread = NULL;
-  lid_thread = MyApp->Endpoint ()->GetLidThread ();
-  if (lid_thread) {
-
-    OpalLineInterfaceDevice *lid = NULL;
-    lid = lid_thread->GetLidDevice ();
-
-    lid->RingLine (0, 0);
-    lid->StopTone (0);
-  }
-#endif
-
   gdk_threads_enter ();
 
   /* Forwarding on no answer */
@@ -1561,6 +1548,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 	lid->EnableAudio (0, FALSE);
       
       lid->PlayTone (0, OpalLineInterfaceDevice::BusyTone);
+      lid->RingLine (0, 0);
     }
   }
 #endif
