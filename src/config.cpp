@@ -261,7 +261,7 @@ applicability_check_nt (GConfClient *client,
   if ((entry->value->type == GCONF_VALUE_BOOL)
       ||(entry->value->type == GCONF_VALUE_STRING)
       ||(entry->value->type == GCONF_VALUE_INT)) {
-  
+
     if (ep->GetCallingState () != GMH323EndPoint::Standby) {
 
       gdk_threads_enter ();
@@ -485,9 +485,12 @@ enable_video_reception_changed_nt (GConfClient *client,
     }
     else {
 
-      gdk_threads_enter ();
-      gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (gm), GTK_WIDGET (data), _("Changing this setting will only affect new calls"), _("You have changed a setting that doesn't permit to GnomeMeeting to apply the new change to the current call. Your new setting will only take effect for the next call."));
-      gdk_threads_leave ();
+      if (ep->GetCallingState () != GMH323EndPoint::Standby) {
+
+	gdk_threads_enter ();
+	gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (gm), GTK_WIDGET (data), _("Changing this setting will only affect new calls"), _("You have changed a setting that doesn't permit to GnomeMeeting to apply the new change to the current call. Your new setting will only take effect for the next call."));
+	gdk_threads_leave ();
+      }
     }
   }
 }

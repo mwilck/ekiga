@@ -305,6 +305,10 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 
       GTK_MENU_SEPARATOR,
 
+      GTK_SUBMENU_NEW(_("Speed dials")),
+
+      GTK_MENU_SEPARATOR,
+
       GTK_MENU_ENTRY("hold_call", _("_Hold Call"), _("Hold the current call"),
 		     NULL, 0, 
 		     GTK_SIGNAL_FUNC (hold_call_cb), (gpointer) gw, FALSE),
