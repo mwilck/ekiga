@@ -118,7 +118,7 @@ static gchar* gnomemeeting_addressbook_get_speed_dial_from_url (GMURL);
 static void new_contact_section_cb (GtkWidget *,
 				    gpointer);
 
-static void delete_contact_section_cb (GtkWidget *,
+static void modify_contact_section_cb (GtkWidget *,
 				       gpointer);
 
 static void contact_section_changed_cb (GtkTreeSelection *,
@@ -143,7 +143,7 @@ static void refresh_server_content_cb (GtkWidget *,
 				       gpointer);
 
 
-/* Local functions: Operations on a contact */
+/* Local functions: Operations on a contact or on a contact section */
 static gboolean is_contact_member_of_group (GMURL,
 					    const char *);
 
@@ -153,6 +153,11 @@ static gboolean is_group_member_of_addressbook (const char *);
 
 static GSList *find_contact_in_group_content (const char *,
 					      GSList *);
+
+static void delete_contact_section (const char *);
+
+static void rename_contact_section (const char *,
+				    const char *);
 
 static gboolean get_selected_contact_info (gchar ** = NULL,
 					   gchar ** = NULL,
@@ -1296,10 +1301,10 @@ new_contact_section_cb (GtkWidget *widget,
  *                 a contact section, server or group.
  * BEHAVIOR     :  Removes the corresponding contact section from the gconf
  *                 key and updates it.
- * PRE          :  /
+ * PRE          :  data = 1 if rename is invoked instead of delete.
  */
 static void
-delete_contact_section_cb (GtkWidget *widget,
+modify_contact_section_cb (GtkWidget *widget,
 			   gpointer data)
 {
   GmLdapWindow *lw = NULL;
@@ -1307,23 +1312,19 @@ delete_contact_section_cb (GtkWidget *widget,
   
   GConfClient *client = NULL;
 
-  GSList *contacts_list = NULL;
-  GSList *contacts_list_iter = NULL;
- 
   GtkTreePath *path = NULL;
   GtkTreeModel *model = NULL;
   GtkTreeSelection *selection = NULL;
   GtkTreeIter iter;
 
+  GtkWidget *label = NULL;
+  GtkWidget *entry = NULL;
   GtkWidget *dialog = NULL;
 
+  gchar *entry_text = NULL;
+  gchar *name = NULL;
   gchar *confirm_msg = NULL;
   gchar *gconf_key = NULL;
-  gchar *unset_group_gconf_key = NULL;
-  gchar *name = NULL;
-  gchar *name_no_case = NULL;
-  gchar *name_escaped = NULL;
-
   gboolean is_group = false;
 
   gw = MyApp->GetMainWindow ();
@@ -1346,77 +1347,82 @@ delete_contact_section_cb (GtkWidget *widget,
       if (gtk_tree_path_get_indices (path) [0] == 0) {
 	
 	gconf_key = g_strdup (CONTACTS_KEY "ldap_servers_list");
-	confirm_msg = g_strdup_printf (_("Are you sure you want to delete server %s?"), name);
+	if (GPOINTER_TO_INT (data) == 1)
+	  confirm_msg = g_strdup_printf (_("Please enter a new name for server %s:"), name);
+	else
+	  confirm_msg = g_strdup_printf (_("Are you sure you want to delete server %s?"), name);
       }
       else {
 
 	is_group = true;
 	gconf_key = g_strdup (CONTACTS_KEY "groups_list");
-	confirm_msg = g_strdup_printf (_("Are you sure you want to delete group %s and all its contacts?"), name);
+	if (GPOINTER_TO_INT (data) == 1)
+	  confirm_msg = g_strdup_printf (_("Please enter a new name for group %s:"), name);
+	else
+	  confirm_msg = g_strdup_printf (_("Are you sure you want to delete group %s and all its contacts?"), name);
       }
 
-      dialog =
-	gtk_message_dialog_new (GTK_WINDOW (gw->ldap_window),
-				GTK_DIALOG_MODAL, GTK_MESSAGE_QUESTION,
-				GTK_BUTTONS_YES_NO, confirm_msg);
 
+      if (GPOINTER_TO_INT (data) == 1) {
+	
+	dialog =
+	  gtk_dialog_new_with_buttons (NULL,
+				       GTK_WINDOW (gw->ldap_window),
+				       GTK_DIALOG_DESTROY_WITH_PARENT,
+				       GTK_STOCK_CANCEL, GTK_RESPONSE_NO,
+				       GTK_STOCK_OK, GTK_RESPONSE_YES,
+				       NULL);
+
+	label = gtk_label_new (confirm_msg);
+	entry = gtk_entry_new ();
+	gtk_entry_set_text (GTK_ENTRY (entry), name);
+	gtk_box_pack_start (GTK_BOX (GTK_DIALOG(dialog)->vbox), label,
+			    FALSE, FALSE, 4);
+	gtk_box_pack_start (GTK_BOX (GTK_DIALOG(dialog)->vbox), entry,
+			    FALSE, FALSE, 4);
+	gtk_entry_set_activates_default (GTK_ENTRY (entry), true);
+
+      }
+      else
+	dialog =
+	  gtk_message_dialog_new (GTK_WINDOW (gw->ldap_window),
+				  GTK_DIALOG_MODAL, GTK_MESSAGE_QUESTION,
+				  GTK_BUTTONS_YES_NO, confirm_msg);
+
+      gtk_dialog_set_default_response (GTK_DIALOG (dialog),
+				       GTK_RESPONSE_YES);
+      gtk_widget_show_all (dialog);
+      
       switch (gtk_dialog_run (GTK_DIALOG (dialog))) {
 
       case GTK_RESPONSE_YES:
 
-	contacts_list =
-	  gconf_client_get_list (client, gconf_key, GCONF_VALUE_STRING, NULL); 
+	if (GPOINTER_TO_INT (data) == 1) {
 
-	if (name)
-	  name_escaped =
-	    gconf_escape_key (name, strlen (name));
-	
-	contacts_list_iter = contacts_list;
-	while (name_escaped && contacts_list_iter) {
-	
-	  if (!strcasecmp ((char *) name_escaped,
-			   (char *) contacts_list_iter->data)) {
+	  entry_text = (gchar *) gtk_entry_get_text (GTK_ENTRY (entry));
 
-	    contacts_list = 
-	      g_slist_remove_link (contacts_list, contacts_list_iter);
-	    g_slist_free_1 (contacts_list_iter);
-	      
-	    if (is_group) {
-
-	      name_no_case = g_utf8_strdown (name_escaped, -1);
-	      unset_group_gconf_key =
-		g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, name_no_case);
-	      gconf_client_set_list (client, unset_group_gconf_key,
-				     GCONF_VALUE_STRING, NULL, NULL);
-
-	      gconf_client_remove_dir (client, "/apps/gnomemeeting", 0);
-	      gconf_client_unset (client, unset_group_gconf_key, NULL);
-	      gconf_client_add_dir (client, "/apps/gnomemeeting",
-				    GCONF_CLIENT_PRELOAD_RECURSIVE, 0);
-	      g_free (unset_group_gconf_key);
-	      g_free (name_no_case);
-	    }
-
-	    contacts_list_iter = contacts_list;
+	  /* Do nothing if no text is entered, and display an error if
+	     another group of the same name already exists */
+	  if (strcmp (entry_text, "")) {
+	    
+	    if (is_group_member_of_addressbook (entry_text))
+	      gnomemeeting_error_dialog (GTK_WINDOW (gw->ldap_window),
+					 _("Invalid server or group name"),
+					 _("Sorry but there is already a group or a server with the same name in the address book."));
+	    else
+	      rename_contact_section (name, entry_text);
 	  }
-
-	  if (contacts_list_iter)
-	    contacts_list_iter = contacts_list_iter->next;
 	}
-	g_free (name_escaped);
-	g_slist_free (contacts_list_iter);
-      
-	gconf_client_set_list (client, gconf_key, GCONF_VALUE_STRING, 
-			       contacts_list, NULL);
-      
+	else
+	  delete_contact_section (name);
+				  
 	break;
 
       }
 
       gtk_tree_path_free (path);
       g_free (name);
-      g_slist_free (contacts_list);
-      g_free (gconf_key);
+      
       g_free (confirm_msg);
 
       if (dialog)
@@ -1562,10 +1568,15 @@ contact_section_clicked_cb (GtkWidget *w,
 			   GINT_TO_POINTER (page_num), TRUE),
 
 	    GTK_MENU_SEPARATOR,
+
+	    GTK_MENU_ENTRY("rename", _("_Rename"), NULL,
+			   NULL, 0, 
+			   GTK_SIGNAL_FUNC (modify_contact_section_cb),
+			   GINT_TO_POINTER (1), TRUE),
 	    
-	    GTK_MENU_ENTRY("delete", _("Delete"), NULL,
+	    GTK_MENU_ENTRY("delete", _("_Delete"), NULL,
 			   GTK_STOCK_DELETE, 0, 
-			   GTK_SIGNAL_FUNC (delete_contact_section_cb), NULL,
+			   GTK_SIGNAL_FUNC (modify_contact_section_cb), NULL,
 			   TRUE),
 
 	    GTK_MENU_END
@@ -1580,9 +1591,14 @@ contact_section_clicked_cb (GtkWidget *w,
 
 	    GTK_MENU_SEPARATOR,
 
+	    GTK_MENU_ENTRY("rename", _("_Rename"), NULL,
+			   NULL, 0, 
+			   GTK_SIGNAL_FUNC (modify_contact_section_cb),
+			   GINT_TO_POINTER (1), TRUE),
+
 	    GTK_MENU_ENTRY("delete", _("Delete"), NULL,
 			   GTK_STOCK_DELETE, 0, 
-			   GTK_SIGNAL_FUNC (delete_contact_section_cb), 
+			   GTK_SIGNAL_FUNC (modify_contact_section_cb), 
 			   NULL, TRUE),
 
 	    GTK_MENU_END
@@ -1644,7 +1660,7 @@ delete_cb (GtkWidget *w,
   /* No contact is selected, but perhaps a contact section to delete
      is selected */
   else 
-    delete_contact_section_cb (NULL, NULL);
+    modify_contact_section_cb (NULL, NULL);
 }
 
 
@@ -1998,6 +2014,200 @@ find_contact_in_group_content (const char *contact_url,
 
 
 /* DESCRIPTION  :  /
+ * BEHAVIOR     :  Delete the contact section (group or server) given as
+ *                 parameter under its non-escaped form.
+ * PRE          :  /
+ */
+static void
+delete_contact_section (const char *contact_section)
+{
+  GSList *contacts_sections = NULL;
+  GSList *contacts_sections_iter = NULL;
+
+  gchar *name_escaped = NULL;
+  gchar *name_no_case = NULL;
+  gchar *unset_group_gconf_key = NULL;
+  gchar *gconf_key = NULL;
+  
+  GConfClient *client = NULL;
+
+  if (!contact_section)
+    return;
+  
+  client = gconf_client_get_default ();
+
+  for (int i = 0 ; i < 2 ; i++) {
+
+    if (i == 0)
+      gconf_key = g_strdup (CONTACTS_KEY "ldap_servers_list");
+    else
+      gconf_key = g_strdup (CONTACTS_KEY "groups_list");
+    
+    contacts_sections =
+      gconf_client_get_list (client, gconf_key, GCONF_VALUE_STRING, NULL);
+    contacts_sections_iter = contacts_sections;
+
+    name_escaped =
+	gconf_escape_key (contact_section, strlen (contact_section));
+    name_no_case = g_utf8_strdown (name_escaped, -1);
+    unset_group_gconf_key =
+      g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, name_no_case);
+
+    while (contacts_sections_iter && contacts_sections_iter->data) {
+      
+      if (!strcmp ((char *) contacts_sections_iter->data, name_escaped)
+	  || !strcmp ((char *) contacts_sections_iter->data,
+		      contact_section)) {
+
+	contacts_sections =
+	  g_slist_remove_link (contacts_sections, contacts_sections_iter);
+	g_slist_free_1 (contacts_sections_iter);
+	
+
+	gconf_client_set_list (client, unset_group_gconf_key,
+			       GCONF_VALUE_STRING, NULL, NULL);
+
+	gconf_client_remove_dir (client, "/apps/gnomemeeting", 0);
+	gconf_client_unset (client, unset_group_gconf_key, NULL);
+	gconf_client_add_dir (client, "/apps/gnomemeeting",
+			      GCONF_CLIENT_PRELOAD_RECURSIVE, 0);
+
+	contacts_sections_iter = contacts_sections;
+      }
+
+      contacts_sections_iter = g_slist_next (contacts_sections_iter);
+    }
+    
+    gconf_client_set_list (client, gconf_key, GCONF_VALUE_STRING,
+			   contacts_sections, NULL);
+
+    g_free (gconf_key);
+    g_free (name_escaped);
+    g_free (name_no_case);
+    g_free (unset_group_gconf_key);
+    
+    g_slist_free (contacts_sections);
+    g_slist_free (contacts_sections_iter);
+  }
+}
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Rename the contact section (group or server) given as
+ *                 parameter under its non-escaped form into the other
+ *                 parameter.
+ * PRE          :  /
+ */
+static void
+rename_contact_section (const char *contact_section_old,
+			const char *contact_section_new)
+{
+  GSList *contacts_sections = NULL;
+  GSList *contacts_sections_iter = NULL;
+  GSList *old_list = NULL;
+  
+  gchar *old_name_escaped = NULL;
+  gchar *new_name_escaped = NULL;
+  gchar *old_name_no_case = NULL;
+  gchar *new_name_no_case = NULL;
+  gchar *old_gconf_key = NULL;
+  gchar *new_gconf_key = NULL;
+  gchar *gconf_key = NULL;
+
+  int pos = 0;
+  
+  GConfClient *client = NULL;
+
+  if (!contact_section_old || !contact_section_new)
+    return;
+  
+  client = gconf_client_get_default ();
+
+  for (int i = 0 ; i < 2 ; i++) {
+
+    if (i == 1)
+      gconf_key = g_strdup (CONTACTS_KEY "ldap_servers_list");
+    else
+      gconf_key = g_strdup (CONTACTS_KEY "groups_list");
+    
+    contacts_sections =
+      gconf_client_get_list (client, gconf_key, GCONF_VALUE_STRING, NULL);
+    contacts_sections_iter = contacts_sections;
+
+    old_name_escaped =
+      gconf_escape_key (contact_section_old,
+			strlen (contact_section_old));
+    old_name_no_case = g_utf8_strdown (old_name_escaped, -1);
+    old_gconf_key =
+      g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, old_name_no_case);
+
+    new_name_escaped =
+      gconf_escape_key (contact_section_new,
+			strlen (contact_section_new));
+    new_name_no_case = g_utf8_strdown (new_name_escaped, -1);
+    new_gconf_key =
+      g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, new_name_no_case);
+
+
+    while (contacts_sections_iter && contacts_sections_iter->data) {
+
+      if (!strcmp ((char *) contacts_sections_iter->data,
+		   old_name_escaped)
+	  || !strcmp ((char *) contacts_sections_iter->data,
+		      contact_section_old)) {
+
+	contacts_sections =
+	  g_slist_remove_link (contacts_sections, contacts_sections_iter);
+	g_slist_free_1 (contacts_sections_iter);
+
+	contacts_sections =
+	  g_slist_insert (contacts_sections,
+			  (gpointer) new_name_escaped, pos);
+
+	/* If it was a group, copy the old group content to the new one
+	   and unset the old key */
+	if (i == 0) {
+	  
+	  old_list =
+	    gconf_client_get_list (client, old_gconf_key,
+				   GCONF_VALUE_STRING, NULL);
+	
+	  gconf_client_set_list (client, new_gconf_key,
+				 GCONF_VALUE_STRING, old_list, NULL);
+
+	  gconf_client_remove_dir (client, "/apps/gnomemeeting", 0);
+	  gconf_client_unset (client, old_gconf_key, NULL);
+	  gconf_client_add_dir (client, "/apps/gnomemeeting",
+				GCONF_CLIENT_PRELOAD_RECURSIVE, 0);
+
+	  g_slist_free (old_list);
+	}
+	
+	contacts_sections_iter = contacts_sections;
+      }
+
+      contacts_sections_iter = g_slist_next (contacts_sections_iter);
+      pos++;
+    }    
+
+    gconf_client_set_list (client, gconf_key, GCONF_VALUE_STRING,
+			   contacts_sections, NULL);
+
+    g_slist_free (contacts_sections);
+    g_slist_free (contacts_sections_iter);
+
+    g_free (old_name_no_case);
+    g_free (old_gconf_key);
+    g_free (new_name_no_case);
+    g_free (new_name_escaped);
+    g_free (new_gconf_key);
+    g_free (old_name_escaped);    
+    g_free (gconf_key);
+  }
+}
+
+
+/* DESCRIPTION  :  /
  * BEHAVIOR     :  Updates the given pointers so that they point to the
  *                 good sections in the GtkNotebook holding the GtkTreeViews
  *                 storing the contacts. Returns false on failure (nothing
@@ -2092,10 +2302,7 @@ get_selected_contact_info (gchar **contact_section,
  *                 in the addressbook: a contact of a group, a contact section,
  *                 a contact of ILS. The "Call" and "Transfer" menu entries
  *                 are also updated.
- * PRE          :  true if the contact is currently selected from a group,
- *                 true if a contact section is selected,
- *                 true if the selected contact is currently selected from ILS
- *                 and if he is not already member of a group.
+ * PRE          :  /
  */
 void
 gnomemeeting_addressbook_update_menu_sensitivity ()
@@ -2165,7 +2372,10 @@ gnomemeeting_addressbook_update_menu_sensitivity ()
 
     gtk_menu_set_sensitive (lw->main_menu, "add", FALSE);
     gtk_menu_set_sensitive (lw->main_menu, "properties", FALSE);
+    gtk_menu_set_sensitive (lw->main_menu, "rename", TRUE);
   }
+  else
+    gtk_menu_set_sensitive (lw->main_menu, "rename", FALSE);
 
   g_free (contact_url);
 }
@@ -2239,6 +2449,11 @@ gnomemeeting_ldap_window_new (GmLdapWindow *lw)
       GTK_MENU_ENTRY("delete", _("_Delete"), NULL,
 		     GTK_STOCK_DELETE, 'd', 
 		     GTK_SIGNAL_FUNC (delete_cb), NULL, FALSE),
+
+      GTK_MENU_ENTRY("rename", _("_Rename"), NULL,
+		     NULL, 0,
+		     GTK_SIGNAL_FUNC (modify_contact_section_cb),
+		     GINT_TO_POINTER (1), TRUE),
 
       GTK_MENU_SEPARATOR,
 
