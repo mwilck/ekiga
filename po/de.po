@@ -5,12 +5,13 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
-"POT-Creation-Date: 2002-02-21 11:49+0100\n"
-"PO-Revision-Date: 2002-02-14 20:53+0100\n"
-"Last-Translator: Christian Meyer <chrisime@gnome.org>\n"
-"Language-Team:  <gnome-de@gnome.org>\n"
+"POT-Creation-Date: 2002-02-22 20:53+0100\n"
+"PO-Revision-Date: 2002-02-21 22:17+0100\n"
+"Last-Translator: Stefan Brüns <lurchi@kawo1.rwth-aachen.de>\n"
+"Language-Team:  <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ISO-8859-15\n"
+"Content-Transfer-Encoding: 8bit\n"
 
 #: gnomemeeting.desktop.in.h:1 sounds/GnomeMeeting.soundlist.in.h:1
 #: src/main_window.cpp:289
@@ -153,15 +154,15 @@ msgstr ""
 
 #: src/config.cpp:1379
 msgid "Not registering because there is no LDAP server specified!"
-msgstr "Anmeldung nicht durchgeführt, da kein LDAP-Server angegeben wurde!"
+msgstr "Anmeldung nicht durchgeführt, da kein ILS-Verzeichnis angegeben wurde!"
 
 #: src/config.cpp:1391
 msgid "Not Registering: Please provide your first name!"
-msgstr "Keine Anmeldung: Bitte Vornamen eingeben!"
+msgstr "Keine Anmeldung: Bitte Vornamen eintragen!"
 
 #: src/config.cpp:1403
 msgid "Not Registering: Please provide a valid e-mail!"
-msgstr "Keine Anmeldung: Bitte geben Sie eine gültige E-Mail-Adresse an!"
+msgstr "Keine Anmeldung: Bitte eine gültige E-Mail-Adresse eintragen!"
 
 #: src/connection.cpp:89
 msgid "Started New Logical Channel..."
@@ -410,12 +411,12 @@ msgstr "Ankommender Anruf wird abgelehnt"
 #: src/ils.cpp:247
 #, c-format
 msgid "Connecting to ILS directory %s, port %s"
-msgstr "Verbindungsaufbau mit ILS-Verzeichnis %s, Port %s"
+msgstr "Verbindungsaufbau zu ILS-Verzeichnis %s, Port %s"
 
 #: src/ils.cpp:261
 #, c-format
 msgid "Error while connecting to ILS directory %s, port %s"
-msgstr "Fehler beim Verbinden mit ILS-Verzeichnist %s, Port %s"
+msgstr "Fehler beim Verbinden mit ILS-Verzeichnis %s, Port %s"
 
 #: src/ils.cpp:444
 #, c-format
@@ -423,26 +424,26 @@ msgid ""
 "Error while connecting to ILS directory %s, port %s:\n"
 "No answer from server."
 msgstr ""
-"Fehler beim Verbinden mit ILS-Verzeichnist %s, Port %s:\n"
-"Keine Antwort vom Server."
+"Fehler beim Verbinden mit ILS-Verzeichnis %s, Port %s\n"
+":Keine Antwort vom Server."
 
 #: src/ils.cpp:459
 #, c-format
 msgid "Sucessfully registered to ILS directory %s, port %s"
-msgstr "Erfolgreich bei ILS-Verzeichnis %s, Port %s angemeldet"
+msgstr "Erfolgreich am ILS-Verzeichnis %s, Port %s angemeldet"
 
 #: src/ils.cpp:460
 msgid "Succesfully registered to ILS server"
-msgstr "Erfolgreich beim ILS-Server angemeldet"
+msgstr "Erfolgreich am ILS-Verzeichnis angemeldet"
 
 #: src/ils.cpp:464
 #, c-format
 msgid "Sucessfully unregistered from ILS directory %s, port %s"
-msgstr "Erfolgreich bei ILS-Verzeichnis %s, Port %s abgemeldet"
+msgstr "Erfolgreich von ILS-Verzeichnis %s, Port %s abgemeldet"
 
 #: src/ils.cpp:465
 msgid "Succesfully unregistered from ILS server"
-msgstr "Erfolgreich beim ILS-Server abgemeldet"
+msgstr "Erfolgreich vom ILS-Verzeichnis abgemeldet"
 
 #: src/ils.cpp:560
 msgid "Please provide an ILS directory in the window"
@@ -471,7 +472,7 @@ msgstr "Kein Verzeichnis"
 
 #: src/ldap_window.cpp:364
 msgid "LDAP Server Browser"
-msgstr "LDAP-Server-Auswahl"
+msgstr "Suche im ILS-Verzeichnis"
 
 #. ILS directories combo box
 #: src/ldap_window.cpp:374
@@ -557,14 +558,14 @@ msgstr "IP"
 
 #: src/main_window.cpp:276
 msgid "Prints debug messages in the console"
-msgstr "Debug-Meldungen in der Console ausgeben"
+msgstr "Debug-Meldungen in der Konsole ausgeben"
 
 #: src/main_window.cpp:302
 msgid ""
 "Please check your gconf settings and permissions, it seems that gconf is not "
 "properly setup on your system"
 msgstr ""
-"Bitte die Einstellugen und Zugriffsrechte für gconf überprüfen, anscheinend "
+"Bitte die Einstellungen und Zugriffsrechte für gconf überprüfen, anscheinend "
 "ist gconf nicht korrekt auf diesem System eingerichtet"
 
 #: src/main_window.cpp:419
@@ -727,7 +728,7 @@ msgstr "_Datei"
 # missing accelerator
 #: src/menu.cpp:288
 msgid "C_all"
-msgstr "Verbinden"
+msgstr "_Verbindung"
 
 #: src/menu.cpp:289
 msgid "_View"
@@ -803,10 +804,13 @@ msgid ""
 "Error: %s \n"
 "You can choose to ignore and continue, or to close GnomeMeeting."
 msgstr ""
+"Fehler: %s\n"
+"Der Fehler kann entweder ignoriert und GnomeMeeting fortgesetzt werden, oder "
+"GnomeMeeting wird beendet.  "
 
 #: src/misc.cpp:380
 msgid "Continue"
-msgstr "Fortfahren"
+msgstr "Fortsetzen"
 
 #: src/misc.cpp:421
 msgid "Do not show this dialog again"
@@ -910,7 +914,7 @@ msgstr ""
 #. Down
 #: src/pref_window.cpp:656
 msgid "Down"
-msgstr "Abwärts"
+msgstr "Nach unten"
 
 #: src/pref_window.cpp:670
 msgid "Use this button to move up the selected codec in the preference order"
@@ -966,7 +970,7 @@ msgstr "Docklet zeigen"
 #: src/pref_window.cpp:814
 msgid "If enabled, there is support for a docklet in the Gnome or KDE panel"
 msgstr ""
-"Wenn aktiviert, wird in der Gnome- oder KDE-Kontrollleiste ein Icon angezeigt"
+"Wenn aktiviert, wird in der GNOME- oder KDE-Kontrollleiste ein Icon angezeigt"
 
 #. Start hidden
 #: src/pref_window.cpp:822
@@ -1055,7 +1059,7 @@ msgstr "Audio-Codec-Einstellungen"
 
 #: src/pref_window.cpp:1044
 msgid "Jitter Buffer Delay:"
-msgstr "Jitter-Puffer-Verzögerung:"
+msgstr "Jitter-Puffer-Größe (ms):"
 
 #: src/pref_window.cpp:1071
 msgid "The jitter buffer delay to buffer audio calls (in ms)"
@@ -1139,7 +1143,7 @@ msgstr "Hier kann die Videoübertragung an-/abgestellt werden"
 #. Transmitted Video Quality
 #: src/pref_window.cpp:1296
 msgid "Transmitted Quality of"
-msgstr "Sendequalität von"
+msgstr "Sendequalität:"
 
 #: src/pref_window.cpp:1316 src/pref_window.cpp:1387
 #, no-c-format
@@ -1152,7 +1156,7 @@ msgid ""
 "the best quality, 1% being the worst quality"
 msgstr ""
 "Hier kann die zu übertragende Qualität des Bildes eingestellt werden. In "
-"einem LAN sollte 100% für die höchste Qualiiät ausgewählt werden, 1% steht "
+"einem LAN sollte 100% für die höchste Qualität ausgewählt werden, 1% steht "
 "für die geringste Qualität"
 
 #. Updated blocks / frame
@@ -1175,7 +1179,7 @@ msgstr "Video-Empfangsqualität:"
 
 #: src/pref_window.cpp:1403
 msgid "The video quality hint to request to the remote"
-msgstr "Die Videoquälität, die bei der Gegenseite angefordert werden soll"
+msgstr "Die Videoqualität, die bei der Gegenseite angefordert werden soll"
 
 #: src/pref_window.cpp:1408
 msgid "Limit the bandwidth to"
@@ -1214,7 +1218,7 @@ msgstr "Vorname:"
 
 #: src/pref_window.cpp:1558
 msgid "Enter your first name"
-msgstr "Vornamen eingeben"
+msgstr "Vornamen eintragen"
 
 #. Surname entry (LDAP)
 #: src/pref_window.cpp:1562
@@ -1223,12 +1227,12 @@ msgstr "Nachname:"
 
 #: src/pref_window.cpp:1593
 msgid "Enter your last name"
-msgstr "Nachnamen eingeben"
+msgstr "Nachnamen eintragen"
 
 #. Gatekeeper Alias
 #: src/pref_window.cpp:1597
 msgid "Gatekeeper alias:"
-msgstr "Alias für Gatekeeper:"
+msgstr "Alias am Gatekeeper:"
 
 #: src/pref_window.cpp:1631
 msgid ""
@@ -1279,9 +1283,9 @@ msgid ""
 "First Name, Last Name, E-Mail, Comment and Location or to update your alias "
 "on the Gatekeeper."
 msgstr ""
-"Hier klicken, um den LDAP-Server zu aktualisieren, bei dem Sie mit dem neuen "
-"Vornamen, Nachnamen, E-Mail-Adresse, Kommentar und Adresse registriert sind, "
-"oder um Ihren Alias auf dem Gatekeeper zu aktualisieren."
+"Hier klicken, um das ILS-Verzeichnis zu aktualisieren, bei dem Sie mit dem "
+"neuen Vornamen, Nachnamen, E-Mail-Adresse, Kommentar und Adresse registriert "
+"sind, oder um Ihren Alias auf dem Gatekeeper zu aktualisieren."
 
 #. The End
 #: src/pref_window.cpp:1762
@@ -1295,7 +1299,7 @@ msgstr "Verzeichnis-Einstellungen"
 #. ILS settings
 #: src/pref_window.cpp:1810
 msgid "LDAP Directory"
-msgstr "LDAP-Verzeichnis"
+msgstr "ILS-Verzeichnis"
 
 #. ILS directory
 #: src/pref_window.cpp:1822
@@ -1304,7 +1308,7 @@ msgstr "ILS-Verzeichnis:"
 
 #: src/pref_window.cpp:1851
 msgid "The ILS directory to register to"
-msgstr "Das ILS-Verzeichnis, an dem angemeldet werden soll  "
+msgstr "Das ILS-Verzeichnis, an dem angemeldet werden soll"
 
 #. ILS port
 #.
@@ -1333,7 +1337,8 @@ msgstr "Anmelden"
 #: src/pref_window.cpp:1891
 msgid "If enabled, permit to register to the selected LDAP directory"
 msgstr ""
-"Wenn aktiviert, wird eine Anmeldung am ausgewählten LDAP-Server vorgenommen"
+"Wenn aktiviert, wird eine Anmeldung am ausgewählten ILS-Verzeichnis "
+"vorgenommen"
 
 #. Gatekeeper settings
 #: src/pref_window.cpp:1895
@@ -1488,7 +1493,7 @@ msgstr "Groß"
 
 #: src/pref_window.cpp:2449
 msgid "Here you can choose the transmitted video size"
-msgstr "Hier die Größe des übertragenen Videos ausgewählt werden."
+msgstr "Hier kann die Größe des übertragenen Videos ausgewählt werden."
 
 #. Video Format Option Menu
 #: src/pref_window.cpp:2453
@@ -1501,7 +1506,7 @@ msgstr "Automatisch"
 
 #: src/pref_window.cpp:2492
 msgid "Here you can choose the transmitted video format"
-msgstr "Hier das Format des zu übertragenen Videos ausgewählt werden"
+msgstr "Hier kann das Format des zu übertragenen Videos ausgewählt werden"
 
 #. Enable / disable video preview
 #: src/pref_window.cpp:2496
@@ -1514,44 +1519,44 @@ msgstr "Wenn aktiviert, wird die Videovorschau beim Starten aktiviert"
 
 #: src/pref_window.cpp:2548
 msgid "Okay"
-msgstr "OK"
+msgstr "Zufriedenstellend"
 
 #: src/pref_window.cpp:2553 src/pref_window.cpp:2558 src/pref_window.cpp:2563
 #: src/pref_window.cpp:2568
 msgid "Good Quality"
 msgstr "Gute Qualität"
 
-#: src/toolbar.cpp:163
+#: src/toolbar.cpp:166
 msgid "ILS Directory"
 msgstr "ILS-Verzeichnis"
 
-#: src/toolbar.cpp:163
+#: src/toolbar.cpp:166
 msgid "Find friends on ILS"
 msgstr "Freunde beim ILS suchen"
 
-#: src/toolbar.cpp:170
+#: src/toolbar.cpp:173
 msgid "Chat"
 msgstr "Chat"
 
-#: src/toolbar.cpp:170
+#: src/toolbar.cpp:173
 msgid "Make a text chat with your friend"
 msgstr "Mit einem Freund chatten"
 
-#: src/toolbar.cpp:178
+#: src/toolbar.cpp:181
 msgid "Control Panel"
 msgstr "Kontroll-Panel"
 
-#: src/toolbar.cpp:178
+#: src/toolbar.cpp:181
 msgid "Display the control panel"
 msgstr "Kontroll-Panel anzeigen"
 
-#: src/toolbar.cpp:260
+#: src/toolbar.cpp:263
 msgid "Click here to begin to display images from your camera device."
 msgstr ""
 "Hier klicken, um mit dem Anzeigen der Bilder von der eigenen Kamera zu "
 "beginnen."
 
-#: src/toolbar.cpp:281
+#: src/toolbar.cpp:284
 msgid ""
 "Audio Transmission Status. During a call, click here to pause the audio "
 "transmission."
@@ -1559,7 +1564,7 @@ msgstr ""
 "Audio-Übertragungs-Status. Während einer Verbindung hier klicken, um die "
 "Audio-Übertragung anzuhalten."
 
-#: src/toolbar.cpp:302
+#: src/toolbar.cpp:305
 msgid ""
 "Video Transmission Status. During a call, click here to pause the video "
 "transmission."
@@ -1578,7 +1583,7 @@ msgstr "Video-Gerät %s, Kanal %d wurde erfolgreich geöffnet"
 
 #: src/videograbber.cpp:443
 msgid "Video Device Opened"
-msgstr "Geöffnetes Video-Gerät"
+msgstr "Video-Gerät geöffnet"
 
 #: src/videograbber.cpp:451
 #, c-format
@@ -1614,6 +1619,12 @@ msgid ""
 " gconftool --set \"/apps/gnomemeeting/devices/color_format\" YOURPALETTE --"
 "type string"
 msgstr ""
+"Der Treiber unterstützt das %s Format nicht.\n"
+" In der Dokumentation für den Kerneltreiber kann überprüft werden, welche "
+"Palette unterstützt wird. Es kann folgendermaßen für GnomeMeeting als "
+"Voreinstellung eingetragen werden:\n"
+" gconftool --set \"/apps/gnomemeeting/devices/color_format\" PALETTENFORMAT "
+"--type string"
 
 #: src/videograbber.cpp:476
 msgid "Error with the frame rate."

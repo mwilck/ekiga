@@ -58,8 +58,6 @@ void pause_audio_callback (GtkWidget *widget, gpointer data)
   if (connection != NULL)
     connection->PauseChannel (0);
 
-  GTK_TOGGLE_BUTTON (gw->audio_chan_button)->active = FALSE;
-  gtk_widget_draw (GTK_WIDGET (gw->audio_chan_button), NULL);
 }
 
 
@@ -73,8 +71,6 @@ void pause_video_callback (GtkWidget *widget, gpointer data)
   if (connection != NULL)
     connection->PauseChannel (1);
 
-  GTK_TOGGLE_BUTTON (gw->video_chan_button)->active = FALSE;
-  gtk_widget_draw (GTK_WIDGET (gw->video_chan_button), NULL);
 }
 
 
