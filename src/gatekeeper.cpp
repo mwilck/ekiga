@@ -249,7 +249,7 @@ void GMH323Gatekeeper::Main ()
    Any question or comment, redirect to Chih-Wei Huang <cwhuang@citron.com.tw>
    This permits to GnomeMeeting clients to register to public GNU GK while
    being behind a non-configured NAT gateway and to still work.
-*//*
+*/
 static bool
 SendTPKT (PTCPSocket *sender,
 	  const PBYTEArray &buf)
@@ -389,12 +389,13 @@ BOOL H323GatekeeperWithNAT::MakeRequest (Request &request)
 	  continue;
 
 	PTRACE(1, "GK\tSwitch to altGK " << gatekeeperIdentifier << " with id " << endpointIdentifier << " successful");
-	if (request.requestPDU.GetTag() == H323RasPDU::e_admissionRequest) {
+	if (request.requestPDU.GetChoice ().GetTag() == H323RasPDU::e_admissionRequest) {
 
-	  H225_AdmissionRequest & arq = request.requestPDU;
+	  H225_AdmissionRequest & arq = dynamic_cast<H225_RasMessage&>(request.requestPDU.GetChoice());
+
 	  arq.m_gatekeeperIdentifier = gatekeeperIdentifier;
 	  arq.m_endpointIdentifier = endpointIdentifier;
-	} else if (request.requestPDU.GetTag() == H323RasPDU::e_registrationRequest)
+	} else if (request.requestPDU.GetChoice ().GetTag() == H323RasPDU::e_registrationRequest)
 	  return TRUE;
 	break;
       }
@@ -568,4 +569,4 @@ bool H323GatekeeperWithNAT::SendInfo(int state)
   return SendTPKT(incomingTCP, buf);
 }
 
-*/
+
