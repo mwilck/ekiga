@@ -430,6 +430,8 @@ gnome_prefs_int_option_menu_new (GtkWidget *table,
   menu = gtk_menu_new ();
   option_menu = gtk_option_menu_new ();
 
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label), option_menu);
+
   while (options [cpt]) {
 
     item = gtk_menu_item_new_with_label (options [cpt]);
@@ -499,6 +501,7 @@ gnome_prefs_string_option_menu_new (GtkWidget *table,
 
   menu = gtk_menu_new ();
   option_menu = gtk_option_menu_new ();
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label), option_menu);
 
   gconf_string = gconf_client_get_string (client, gconf_key, NULL);
 

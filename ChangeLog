@@ -1,3 +1,12 @@
+2003-11-05 Rodney Dawes  <dobey@ximian.com>
+
+	* lib/gnome_prefs_window.c: Set the mnemonic widget properly for
+	the labels that correspond to the GtkOptionMenus that we create
+	* src/pref_window.cpp: Use "T_ype:" for the User Input Cap. option
+	label, instead of having the same mnemonic as another widget in
+	the same prefs page, or displaying the same text as the group label
+	contains, since we already know that it affects User Input Caps.
+
 2003-11-04 Damien Sandras  <dsandras@seconix.com>
 
 	* src/druid.cpp: Do not reset to the GConf value each time

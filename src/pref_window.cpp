@@ -826,7 +826,7 @@ gnomemeeting_init_pref_window_h323_advanced (GtkWidget *window,
 				_("User Input Capabilities"), 1, 1);
 
   pw->uic =
-    gnome_prefs_int_option_menu_new (subsection, _("User Input Capabilities _type:"), capabilities, GENERAL_KEY "user_input_capability", _("This permits to set the mode for User Input Capabilities. The values can be \"All\", \"None\", \"rfc2833\", \"Signal\" or \"String\" (default is \"All\"). Choosing other values than \"All\", \"String\" or \"rfc2833\" disables the Text Chat."), 0);
+    gnome_prefs_int_option_menu_new (subsection, _("T_ype:"), capabilities, GENERAL_KEY "user_input_capability", _("This permits to set the mode for User Input Capabilities. The values can be \"All\", \"None\", \"rfc2833\", \"Signal\" or \"String\" (default is \"All\"). Choosing other values than \"All\", \"String\" or \"rfc2833\" disables the Text Chat."), 0);
 }                               
 
 
