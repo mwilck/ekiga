@@ -521,7 +521,7 @@ void GMILSClient::ils_browse ()
   char *datas [] = {NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL};
   char *attrs [] = { "surname", "givenname", "comment", "location", 
 		     "rfc822mailbox", "sipaddress", "ilsa32833566", 
-		     "ilsa32964638", NULL };
+		     "ilsa32964638", "ilsa26279966", NULL };
   
   LDAPMessage *res = NULL, *e = NULL;
 
