@@ -757,7 +757,7 @@ void init_pref_interface (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->incoming_call_sound,
-			_("If enabled, GnomeMeeting will play a sound when receiving an incoming call (the sound to play is choosen in the Gnome Control Center)"), NULL);
+			_("If enabled, GnomeMeeting will play a sound when receiving an incoming call (the sound to play is chosen in the Gnome Control Center)"), NULL);
 
 
 

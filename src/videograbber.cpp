@@ -303,7 +303,7 @@ void GMVideoGrabber::VGOpen (void)
 	  break;
 
 	case 2:
-	  msg = g_strconcat (msg, "\n", _("Impossible to open the choosed channel."));
+	  msg = g_strconcat (msg, "\n", _("Could not open the chosen channel."));
 	  break;
 
 	case 3:

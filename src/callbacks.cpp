@@ -156,8 +156,9 @@ void about_callback (GtkWidget *widget, gpointer data)
       "",
       N_("I18n Maintainer:"),
       "Christian Rose <menthos@gnu.org>",
-      /* Translators: Replace "english" by your language, and my name by your name */
+      /* Translators: Replace "English" with the name of your language. */
       N_("English Translation:"),
+      /* Translators: Replace my name with your name. */
       N_("Damien Sandras <dsandras@seconix.com>"),
       NULL
     };
@@ -170,9 +171,9 @@ void about_callback (GtkWidget *widget, gpointer data)
   abox = gnome_about_new (PACKAGE,
 			  VERSION,
 			  /* Translators: Please change the (C) to a real
-			     copyright character if your character set allows it
-			     (Hint: iso-8859-1 is one of the character sets that
-			     has this symbol). */
+			     copyright character if your character set allows
+			     it (Hint: iso-8859-1 is one of the character sets
+			     that has this symbol). */
 			  _("(C) 2000, 2001 Damien Sandras"),
 			  authors,
 			  _("GnomeMeeting is an H.323 compliant program for GNOME.\nThis program is not supported by Microsoft."),
