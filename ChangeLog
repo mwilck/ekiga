@@ -1,3 +1,16 @@
+2003-03-16 Damien Sandras  <dsandras@seconix.com>
+
+	* src/druid.cpp: Do not unregister from the gatekeeper here as it
+	will be done in the gatekeeper thread in gatekeeper.cpp.
+
+	* src/pref_window.cpp: Same.
+	
+	* src/gatekeeper.cpp: Code cleanups. Made the code shorter,
+	faster and safer.
+	
+	* src/gatekeeper.h: Same.
+	
+	
 2003-03-10 Damien Sandras  <dsandras@seconix.com>
 
 	* configure.in: Fixed previous change.

@@ -1,6 +1,7 @@
 
+
 /* GnomeMeeting -- A Video-Conferencing application
- * Copyright (C) 2000-2001 Damien Sandras
+ * Copyright (C) 2000-2003 Damien Sandras
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,14 +16,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *
+ *
+ * GnomeMeting is licensed under the GPL license and as a special exception,
+ * you have permission to link or otherwise combine this program with the
+ * programs OpenH323 and Pwlib, and distribute the combination, without
+ * applying the requirements of the GNU GPL to the OpenH323 program, as long
+ * as you do follow the requirements of the GNU GPL for all the rest of the
+ * software thus combined.
  */
 
+
 /*
- *                         gatekeeper.cpp  -  description
- *                         ------------------------------
+ *                         gatekeeper.h  -  description
+ *                         ----------------------------
  *   begin                : Wed Sep 19 2001
- *   copyright            : (C) 2000-2001 by Damien Sandras
- *   description          : Multithreaded class to register to gatekeepers.
+ *   copyright            : (C) 2000-2003 by Damien Sandras
+ *   description          : Multithreaded class to register to gatekeepers
+ *                          given the options in gconf.
  *   email                : dsandras@seconix.com
  *
  */
@@ -33,6 +44,7 @@
 
 #include "common.h"
 
+#include <gconf/gconf-client.h>
 #include <gtk/gtk.h>
 #include <ptlib.h>
 #include <h323.h>
@@ -61,15 +73,23 @@ public:
 
   /* DESCRIPTION  :  The constructor.
    * BEHAVIOR     :  Register to the gatekeeper using the method and the 
-   *                 parameters in opts. This is done in a separate thread.
-   *                 This class is auto-deleted on termination.
+   *                 parameters in gconf. This is done in a separate thread.
+   *                 This class is auto-deleted on termination. A popup
+   *                 is displayed if registration fails or if options are
+   *                 missing.
    * PRE          :  /
    */
   void Main ();
 
 protected:
 
-  GmWindow *gw;
+  GConfClient *client;
+
+  int registering_method;
+
+  PString gk_host;
+  PString gk_password;
+  PString gk_id;
 };
 
 

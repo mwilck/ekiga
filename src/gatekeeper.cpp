@@ -1,6 +1,6 @@
 
 /* GnomeMeeting -- A Video-Conferencing application
- * Copyright (C) 2000-2001 Damien Sandras
+ * Copyright (C) 2000-2003 Damien Sandras
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,14 +15,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ *
+ *
+ * GnomeMeting is licensed under the GPL license and as a special exception,
+ * you have permission to link or otherwise combine this program with the
+ * programs OpenH323 and Pwlib, and distribute the combination, without
+ * applying the requirements of the GNU GPL to the OpenH323 program, as long
+ * as you do follow the requirements of the GNU GPL for all the rest of the
+ * software thus combined.
  */
+
 
 /*
  *                         gatekeeper.cpp  -  description
  *                         ------------------------------
  *   begin                : Wed Sep 19 2001
- *   copyright            : (C) 2000-2001 by Damien Sandras
- *   description          : Multithreaded class to register to gatekeepers.
+ *   copyright            : (C) 2000-2003 by Damien Sandras
+ *   description          : Multithreaded class to register to gatekeepers
+ *                          given the options in gconf.
  *   email                : dsandras@seconix.com
  *
  */
@@ -33,6 +43,7 @@
 #include "gatekeeper.h"
 #include "gnomemeeting.h"
 #include "misc.h"
+#include "dialog.h"
 
 #ifndef DISABLE_GNOME
 #include <gnome.h>
@@ -50,8 +61,52 @@ extern GtkWidget *gm;
 GMH323Gatekeeper::GMH323Gatekeeper ()
   :PThread (1000, AutoDeleteThread)
 {
-  gw = gnomemeeting_get_main_window (gm);
+  gchar *gconf_string = NULL;
   
+  client = gconf_client_get_default ();
+
+  
+  /* Query the gconf database for options */
+  registering_method =
+    gconf_client_get_int (GCONF_CLIENT (client),
+			  GATEKEEPER_KEY "registering_method", NULL);
+
+  /* Gatekeeper password */
+  gconf_string =
+    gconf_client_get_string (GCONF_CLIENT (client),
+			     GATEKEEPER_KEY "gk_password", NULL);
+  if (gconf_string) {
+    
+    gk_password = PString (gconf_string);
+    g_free (gconf_string);
+  }
+
+  /* Gatekeeper host */
+  if (registering_method == 1) {
+    
+    gconf_string =
+      gconf_client_get_string (GCONF_CLIENT (client),
+			       GATEKEEPER_KEY "gk_host", NULL);
+    if (gconf_string) {
+      
+      gk_host = PString (gconf_string);
+      g_free (gconf_string);
+    }
+  }
+
+  /* Gatekeeper ID */
+  if (registering_method == 2) {
+    
+    gconf_string =
+      gconf_client_get_string (GCONF_CLIENT (client),
+			       GATEKEEPER_KEY "gk_id", NULL);
+    if (gconf_string) {
+      
+      gk_id = PString (gconf_string);
+      g_free (gconf_string);
+    }
+  }
+
   this->Resume ();
 }
 
@@ -64,256 +119,129 @@ GMH323Gatekeeper::~GMH323Gatekeeper ()
 
 void GMH323Gatekeeper::Main ()
 {
-  GtkWidget *msg_box = NULL;
+  PString gk_name;
   gchar *msg = NULL;
-  gchar *gconf_string = NULL;
-  GConfClient *client = NULL;
-  H323EndPoint *endpoint = NULL;
-  GmPrefWindow *pw = NULL;
+
+  GMH323EndPoint *endpoint = NULL;
+  H323Gatekeeper *gatekeeper = NULL;
+  
+  BOOL no_error = TRUE;
   GmWindow *gw = NULL;
-
-  int method;
-
-  /* Register using the gatekeeper host */
+  
+  endpoint = MyApp->Endpoint ();
   gnomemeeting_threads_enter ();
-  client = gconf_client_get_default ();
-  method =
-    gconf_client_get_int (GCONF_CLIENT (client),
-			  "/apps/gnomemeeting/gatekeeper/registering_method",
-			  0);
-  gnomemeeting_threads_leave ();
-
-  endpoint = (H323EndPoint *) MyApp->Endpoint ();
-
-  gnomemeeting_threads_enter ();
-  gconf_string = gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/gatekeeper/gk_password", 0);
-  gnomemeeting_threads_leave ();
-
-  endpoint->SetGatekeeperPassword ("");
-  if ((gconf_string != NULL)&&(strcmp ("", gconf_string))) {
-
-    endpoint->SetGatekeeperPassword (gconf_string);
-  }
-  g_free (gconf_string);
-  gconf_string = NULL;
-
-  MyApp->Endpoint ()->SetUserNameAndAlias ();
-
-
-  /* Fetch the needed data */
-  gnomemeeting_threads_enter ();
-  pw = gnomemeeting_get_pref_window (gm);
   gw = gnomemeeting_get_main_window (gm);
   gnomemeeting_threads_leave ();
+
   
-
-  /* Use the hostname */
-  if (method == 1) {
-
-    gnomemeeting_threads_enter ();
-    gconf_string = gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/gatekeeper/gk_host", 0);
-    gnomemeeting_threads_leave ();
-
-    if ((gconf_string == NULL) || (!strcmp ("", gconf_string))) {
-     
-      gnomemeeting_threads_enter ();
-      msg_box = 
-	gtk_message_dialog_new (GTK_WINDOW (gm),
-				GTK_DIALOG_MODAL,
-				GTK_MESSAGE_ERROR,
-				GTK_BUTTONS_CLOSE,
-				_("Please provide a hostname to use for the gatekeeper.\nDisabling registering."));
-
-      gtk_widget_show (msg_box);
-      g_signal_connect_swapped (GTK_OBJECT (msg_box), "response",
-				G_CALLBACK (gtk_widget_destroy),
-				GTK_OBJECT (msg_box));
-
-      gconf_client_set_int (GCONF_CLIENT (client), "/apps/gnomemeeting/gatekeeper/registering_method", 0, NULL);
-  
-      /* We disable microtelco if it was enabled */
-      gconf_client_set_bool (client, SERVICES_KEY "enable_microtelco",
-			     false, 0);
-      gnomemeeting_threads_leave ();
-
-      return;
-    }
-
-
-    if (MyApp->Endpoint ()->SetGatekeeper(PString (gconf_string))) {
- 
-      msg = g_strdup_printf (_("Gatekeeper set to %s"), 
-			     (const char*) MyApp->Endpoint ()
-			     ->GetGatekeeper ()->GetName ());
-	  
-      gnomemeeting_threads_enter ();
-      gnomemeeting_log_insert (gw->history_text_view, msg);
-      gnomemeeting_statusbar_flash (gw->statusbar, msg);
-
-      /* If the host to which we registered is the MicroTelco GK, enable
-	 MicroTelco, if not disable it, in case it was enabled */
-      if (PString (gconf_string).Find ("gk.microtelco.com") != P_MAX_INDEX)
-	gconf_client_set_bool (client, SERVICES_KEY "enable_microtelco",
-			       true, 0);
-      else
-	gconf_client_set_bool (client, SERVICES_KEY "enable_microtelco",
-			       false, 0);
-      gnomemeeting_threads_leave ();
-
-      g_free (msg);
-    } 
-    else {
-
-      msg = g_strdup_printf (_("Error while registering with Gatekeeper at %s."), 
-			     gconf_string);
-      
-      gnomemeeting_threads_enter ();
-      gnomemeeting_log_insert (gw->history_text_view, msg);
-      msg_box = 
-	gtk_message_dialog_new (GTK_WINDOW (gm),
-				GTK_DIALOG_MODAL,
-				GTK_MESSAGE_ERROR,
-				GTK_BUTTONS_CLOSE,
-				msg);
-
-      gtk_widget_show (msg_box);
-      g_signal_connect_swapped (GTK_OBJECT (msg_box), "response",
-				G_CALLBACK (gtk_widget_destroy),
-				GTK_OBJECT (msg_box));
-      
-      gconf_client_set_int (GCONF_CLIENT (client), "/apps/gnomemeeting/gatekeeper/registering_method", 0, NULL);
-
-      /* We disable microtelco if it was enabled */
-      gconf_client_set_bool (client, SERVICES_KEY "enable_microtelco",
-			     false, 0);
-      gnomemeeting_threads_leave ();
-
-      g_free (msg);
-    }
-
-    g_free (gconf_string);
-  }
-  
-
-  /* Register using the gatekeeper ID */
-  if (method == 2) {
-
-    /* We disable microtelco if it was enabled */
-    gnomemeeting_threads_enter ();
-    gconf_client_set_bool (client, SERVICES_KEY "enable_microtelco",
-			   false, 0);
-    gconf_string = gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/gatekeeper/gk_id", 0);
-    gnomemeeting_threads_leave ();
-
-    if ((gconf_string == NULL) || (!strcmp ("", gconf_string))) {
-     
-      gnomemeeting_threads_enter ();
-      msg_box = 
-	gtk_message_dialog_new (GTK_WINDOW (gm),
-				GTK_DIALOG_MODAL,
-				GTK_MESSAGE_ERROR,
-				GTK_BUTTONS_CLOSE,
-				_("Please provide a valid ID for the gatekeeper.\nDisabling registering."));
-
-      gtk_widget_show (msg_box);
-      g_signal_connect_swapped (GTK_OBJECT (msg_box), "response",
-				G_CALLBACK (gtk_widget_destroy),
-				GTK_OBJECT (msg_box));
-    
-      gconf_client_set_int (GCONF_CLIENT (client), "/apps/gnomemeeting/gatekeeper/registering_method", 0, NULL);
-      gnomemeeting_threads_leave ();
-
-      return;
-    }
-
-
-    if (MyApp->Endpoint ()->LocateGatekeeper(PString (gconf_string))) {
- 
-      msg = g_strdup_printf (_("Gatekeeper set to %s"), 
-			     (const char*) MyApp->Endpoint ()
-			     ->GetGatekeeper ()->GetName ());
-
-      gnomemeeting_threads_enter ();
-      gnomemeeting_log_insert (gw->history_text_view, msg);
-      gnomemeeting_statusbar_flash (gw->statusbar, msg);
-      gnomemeeting_threads_leave ();
-      
-      g_free (msg);
-    } 
-    else {
-
-      msg = g_strdup_printf (_("Error while registering with Gatekeeper."));
-      
-      gnomemeeting_threads_enter ();
-      msg_box = 
-	gtk_message_dialog_new (GTK_WINDOW (gm),
-				GTK_DIALOG_MODAL,
-				GTK_MESSAGE_ERROR,
-				GTK_BUTTONS_CLOSE,
-				msg);
-
-      gtk_widget_show (msg_box);
-      g_signal_connect_swapped (GTK_OBJECT (msg_box), "response",
-				G_CALLBACK (gtk_widget_destroy),
-				GTK_OBJECT (msg_box));
-  
-      gconf_client_set_int (GCONF_CLIENT (client), "/apps/gnomemeeting/gatekeeper/registering_method", 0, NULL);
-      gnomemeeting_threads_leave ();
-
-      g_free (msg);
-    }
-  }
-  
-
-  /* Register after trying to discover the Gatekeeper */
-  if (method == 3) {
-
-    /* We disable microtelco if it was enabled */
-    gnomemeeting_threads_enter ();
-    gconf_client_set_bool (client, SERVICES_KEY "enable_microtelco",
-			   false, 0);
-    gnomemeeting_threads_leave ();
-
-    if (MyApp->Endpoint ()->DiscoverGatekeeper ()) {
- 
-      msg = g_strdup_printf (_("Gatekeeper set to %s"), 
-			     (const char*) MyApp->Endpoint ()
-			     ->GetGatekeeper ()->GetName ());
-
-      gnomemeeting_threads_enter ();
-      gnomemeeting_log_insert (gw->history_text_view, msg);
-      gnomemeeting_statusbar_flash (gw->statusbar, msg);
-      gnomemeeting_threads_leave ();
-      
-      g_free (msg);
-    } 
-    else {
-
-      gnomemeeting_threads_enter ();
-      msg_box = 
-	gtk_message_dialog_new (GTK_WINDOW (gm),
-				GTK_DIALOG_MODAL,
-				GTK_MESSAGE_ERROR,
-				GTK_BUTTONS_CLOSE,
-				_("No gatekeeper found"));
-
-      gtk_widget_show (msg_box);
-      g_signal_connect_swapped (GTK_OBJECT (msg_box), "response",
-				G_CALLBACK (gtk_widget_destroy),
-				GTK_OBJECT (msg_box));
-  
-      gconf_client_set_int (GCONF_CLIENT (client), "/apps/gnomemeeting/gatekeeper/registering_method", 0, NULL);
-      gnomemeeting_threads_leave ();
-
-    }
-  }
-
+  /* Remove the current Gatekeeper */
   gnomemeeting_threads_enter ();
-  if (method == 0)
-    /* We disable microtelco if it was enabled */
+  gatekeeper = endpoint->GetGatekeeper ();
+  if (gatekeeper) {
+
+    gk_name = gatekeeper->GetName ();
+    msg = g_strdup_printf (_("Unregistered from gatekeeper %s"),
+			   (const char *) gk_name);
+    gnomemeeting_log_insert (gw->history_text_view, msg);
+    g_free (msg);
+  }
+  gnomemeeting_threads_leave ();
+  endpoint->RemoveGatekeeper (0);  
+  endpoint->SetUserNameAndAlias (); 
+
+  
+  /* Check if we have all the needed information, if so we register */
+  if (registering_method == 1 && gk_host.IsEmpty ()) {
+  
+    gnomemeeting_threads_enter ();
+    gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Please provide a hostname to use for the gatekeeper.\nDisabling registering."));
+    gnomemeeting_threads_leave ();
+
+    no_error = FALSE;
+  }
+  else if (registering_method == 2 && gk_id.IsEmpty ()) {
+
+    gnomemeeting_threads_enter ();
+    gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Please provide a valid ID for the gatekeeper.\nDisabling registering."));
+    gnomemeeting_threads_leave ();
+
+    no_error = FALSE;
+  }
+  else {
+
+    /* Set the gatekeeper password */
+    endpoint->SetGatekeeperPassword ("");
+    if (!gk_password.IsEmpty ())
+      endpoint->SetGatekeeperPassword (gk_password);
+
+
+    /* Registers to the gk */
+    if (registering_method == 3) {
+    
+      if (!endpoint->UseGatekeeper ())
+	no_error = FALSE;
+    }
+    else if (registering_method == 1) {
+      
+      if (!endpoint->UseGatekeeper (gk_host, PString ()))
+	no_error = FALSE;
+    }
+    else if (registering_method == 2) {
+      
+      if (!endpoint->UseGatekeeper (PString (), gk_id))
+	no_error = FALSE;
+    }
+  }
+
+  
+  /* There was an error (missing parameter or registration failed)
+     or the user chose to not register */
+  if (!no_error || registering_method == 0) {
+      
+    /* Registering failed */
+    gnomemeeting_threads_enter ();
+    msg = g_strdup (_("Error while registering with Gatekeeper."));
+
+    if (!no_error) {
+
+      gnomemeeting_error_dialog (GTK_WINDOW (gm), msg);
+      gnomemeeting_log_insert (gw->history_text_view, msg);
+    }
+    
+    gconf_client_set_int (client, GATEKEEPER_KEY "registering_method",
+			  0, NULL);
     gconf_client_set_bool (client, SERVICES_KEY "enable_microtelco",
 			   false, 0);
-  gnomemeeting_threads_leave ();
+    gnomemeeting_threads_leave ();
+    
+    g_free (msg);
+  }
+  /* Registering is ok */
+  else {
+
+    gatekeeper = endpoint->GetGatekeeper ();
+    if (gatekeeper)
+      gk_name = gatekeeper->GetName ();
+    msg =
+      g_strdup_printf (_("Gatekeeper set to %s"), (const char *) gk_name);
+    
+    gnomemeeting_threads_enter ();
+    gnomemeeting_log_insert (gw->history_text_view, msg);
+    gnomemeeting_statusbar_flash (gw->statusbar, msg);
+    
+    /* If the host to which we registered is the MicroTelco GK, enable
+       MicroTelco, if not disable it, in case it was enabled */
+    if (registering_method == 1
+	&& PString (gk_host).Find ("gk.microtelco.com") != P_MAX_INDEX)
+      gconf_client_set_bool (client, SERVICES_KEY "enable_microtelco",
+			     true, 0);
+    else
+      gconf_client_set_bool (client, SERVICES_KEY "enable_microtelco",
+			     false, 0);
+    gnomemeeting_threads_leave ();
+      
+    g_free (msg);
+  } 
 }
 
 
@@ -447,8 +375,6 @@ BOOL H323GatekeeperWithNAT::MakeRequest (Request &request)
       transport->Connect();
       PTRACE(2, "GK\tTry " << altInfo->rasAddress);
 
-      BOOL isRegistered = FALSE;
-      BOOL discoveryComplete = FALSE;
       gatekeeperIdentifier = altInfo->gatekeeperIdentifier;
 
       H323RasPDU pdu;

@@ -217,8 +217,6 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
       gconf_client_set_bool (client, SERVICES_KEY "enable_microtelco",
 			     true, 0);
 
-      MyApp->Endpoint ()->SetUserNameAndAlias ();
-      MyApp->Endpoint ()->RemoveGatekeeper (0);
       MyApp->Endpoint ()->GatekeeperRegister ();
     }
 
@@ -259,8 +257,7 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
 	&& registering_method == 1) {
 
       gconf_client_set_int (client, GATEKEEPER_KEY "registering_method", 0, 0);
-      MyApp->Endpoint ()->SetUserNameAndAlias ();
-      MyApp->Endpoint ()->RemoveGatekeeper (0);
+      MyApp->Endpoint ()->GatekeeperRegister ();
     }
 
     g_free (gk_name);

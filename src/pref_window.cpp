@@ -222,15 +222,7 @@ static void personal_data_update_button_clicked (GtkWidget *widget,
       (GMILSClient *) MyApp->Endpoint ()->GetILSClientThread ();
     ils_client->Modify ();
   }
-
   
-  /* 2 */
-  /* Set the local User name */
-  MyApp->Endpoint ()->SetUserNameAndAlias ();
-
-  /* Remove the current Gatekeeper */
-  MyApp->Endpoint ()->RemoveGatekeeper(0);
-    
   /* Register the current Endpoint to the Gatekeeper */
   MyApp->Endpoint ()->GatekeeperRegister ();
 }
@@ -244,9 +236,6 @@ static void personal_data_update_button_clicked (GtkWidget *widget,
 static void gatekeeper_update_button_clicked (GtkWidget *widget, 
 					      gpointer data)
 {
-  /* Remove the current Gatekeeper */
-  MyApp->Endpoint ()->RemoveGatekeeper(0);
-    
   /* Register the current Endpoint to the Gatekeeper */
   MyApp->Endpoint ()->GatekeeperRegister ();
 }
