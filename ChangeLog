@@ -1,3 +1,17 @@
+2004-01-25 Damien Sandras  <dsandras@seconix.com>
+
+	* configure.in: Incremented SCHEMA_AGE.
+
+	* gnomemeeting.schemas.in.in: Added key to be able to change
+	the time before a call is rejected or forwarded when no answer
+	is given.
+
+	* src/endpoint.cpp, src/pref_window.cpp: Added code to manage the 
+	above key. Changed the outgoing call timer to 3 minutes.
+		
+	* pixmaps/gnomemeeting-logo-icon.png: Updated icon thanks to 
+	Jakub "Jimmac" Steiner and Stefan Bruëns.
+	
 2004-01-24 Kilian Krause <kk@verfaction.de>
 
 	* gnomemeeting.schemas.in.in, src/callbacks.cpp, src/common.h,

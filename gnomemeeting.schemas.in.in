@@ -1143,6 +1143,17 @@
       </locale>
     </schema>
     <schema>
+      <key>/schemas/apps/gnomemeeting/general/call_options/no_answer_timeout</key>
+      <applyto>/apps/gnomemeeting/general/call_options/no_answer_timeout</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>int</type>
+      <default>45</default>
+      <locale name="C">
+	<short>No answer timeout</short>
+	<long>Automatically reject or forward incoming calls if no answer is given after the specified amount of time (in seconds).</long>
+      </locale>
+    </schema>
+    <schema>
       <key>/schemas/apps/gnomemeeting/general/call_options/incoming_call_mode</key>
       <applyto>/apps/gnomemeeting/general/call_options/incoming_call_mode</applyto>
       <owner>GnomeMeeting</owner>

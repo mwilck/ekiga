@@ -112,6 +112,8 @@ GMH323EndPoint::GMH323EndPoint ()
   GatewayIPTimer.SetNotifier (PCREATE_NOTIFIER (OnGatewayIPTimeout));
   GatewayIPTimer.RunContinuous (PTimeInterval (5));
 
+  signallingChannelCallTimeout = PTimeInterval (0, 0, 3);
+    
   NoIncomingMediaTimer.SetNotifier (PCREATE_NOTIFIER (OnNoIncomingMediaTimeout));
   NoAnswerTimer.SetNotifier (PCREATE_NOTIFIER (OnNoAnswerTimeout));
   CallPendingTimer.SetNotifier (PCREATE_NOTIFIER (OnCallPending));
@@ -685,6 +687,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   char *msg = NULL;
   PString forward_host;
 
+  int no_answer_timeout = 45;
   gchar *utf8_name = NULL;
   gchar *utf8_app = NULL;
   gchar *utf8_url = NULL;
@@ -709,6 +712,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   icm =
     (IncomingCallMode) gconf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
   show_popup = gconf_get_bool (USER_INTERFACE_KEY "show_popup");
+  no_answer_timeout = gconf_get_int (CALL_OPTIONS_KEY "no_answer_timeout");
   gnomemeeting_threads_leave ();
 
   if (forward_host_gconf)
@@ -842,7 +846,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 
     
   /* The timers */
-  NoAnswerTimer.SetInterval (0, 15);
+  NoAnswerTimer.SetInterval (0, PMAX (no_answer_timeout, 10));
   CallPendingTimer.RunContinuous (PTimeInterval (5));
 
     
@@ -1488,7 +1492,7 @@ GMH323EndPoint::Init ()
   disableH245Tunneling = !gconf_get_bool (H323_ADVANCED_KEY "enable_h245_tunneling");
   disableFastStart = !gconf_get_bool (H323_ADVANCED_KEY "enable_fast_start");
   disableH245inSetup = !gconf_get_bool (H323_ADVANCED_KEY "enable_early_h245");
-
+    
   /* Setup ports */
   SetPorts ();
   

@@ -1019,11 +1019,15 @@ gnomemeeting_init_pref_window_call_options (GtkWidget *window,
   pw = GnomeMeeting::Process ()->GetPrefWindow ();
   
   subsection = gnome_prefs_subsection_new (window, container,
-					   _("Calls Clearing"), 1, 1);
+					   _("Call Options"), 2, 3);
 
 
   /* Add all the fields */
-  gnome_prefs_toggle_new (subsection, _("Automatically _clear calls after 30 seconds of inactivity"), CALL_OPTIONS_KEY "clear_inactive_calls", _("If enabled, calls for which no audio and video has been received in the last 30 seconds are automatically cleared."), 1);  
+  gnome_prefs_toggle_new (subsection, _("Automatically _clear calls after 30 seconds of inactivity"), CALL_OPTIONS_KEY "clear_inactive_calls", _("If enabled, calls for which no audio and video has been received in the last 30 seconds are automatically cleared."), 0);  
+
+  /* Translators: the full sentence is Reject or forward
+     unanswered incoming calls after X seconds */
+  gnome_prefs_spin_new (subsection, _("Reject or forward unanswered incoming calls after "), CALL_OPTIONS_KEY "no_answer_timeout", _("Automatically reject or forward incoming calls if no answer is given after the specified amount of time (in seconds)."), 10.0, 299.0, 1.0, 1, _("seconds"), true);
 }
 
 
