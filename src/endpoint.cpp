@@ -170,6 +170,8 @@ GMH323EndPoint::GMH323EndPoint ()
   clearCallOnRoundTripFail = FALSE;
   rtpIpPort = rtpIpPortBase = 5000;
   rtpIpPortMax  = 5003;
+  tcpPort = tcpPortBase = 30000;
+  tcpPortMax = 30010;
 
   received_video_device = NULL;
   transmitted_video_device = NULL;
