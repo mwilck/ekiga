@@ -1151,10 +1151,12 @@ gm_mw_init_menu (GtkWidget *main_window)
 		     GTK_SIGNAL_FUNC (zoom_normal_changed_cb),
 		     (gpointer) VIDEO_DISPLAY_KEY "zoom_factor", FALSE),
 
+#ifdef HAS_SDL
       GTK_MENU_ENTRY("fullscreen", _("Fullscreen"), _("Switch to fullscreen"), 
 		     GTK_STOCK_ZOOM_IN, 'f', 
 		     GTK_SIGNAL_FUNC (fullscreen_changed_cb),
 		     (gpointer) main_window, FALSE),
+#endif
 
       GTK_MENU_NEW(_("_Tools")),
       
@@ -1655,10 +1657,12 @@ gm_mw_video_window_new (GtkWidget *main_window,
 		     GTK_SIGNAL_FUNC (zoom_normal_changed_cb),
 		     (gpointer) VIDEO_DISPLAY_KEY "local_zoom_factor", TRUE),
 
+#ifdef HAS_SDL
       GTK_MENU_ENTRY("fullscreen", _("Fullscreen"), _("Switch to fullscreen"), 
 		     GTK_STOCK_ZOOM_IN, 'f', 
 		     GTK_SIGNAL_FUNC (fullscreen_changed_cb),
 		     (gpointer) main_window, TRUE),
+#endif
 
       GTK_MENU_END
   };
@@ -1678,10 +1682,12 @@ gm_mw_video_window_new (GtkWidget *main_window,
 		     GTK_SIGNAL_FUNC (zoom_normal_changed_cb),
 		     (gpointer) VIDEO_DISPLAY_KEY "remote_zoom_factor", TRUE),
 
+#ifdef HAS_SDL
       GTK_MENU_ENTRY("fullscreen", _("Fullscreen"), _("Switch to fullscreen"), 
 		     GTK_STOCK_ZOOM_IN, 'f', 
 		     GTK_SIGNAL_FUNC (fullscreen_changed_cb),
 		     (gpointer) main_window, TRUE),
+#endif
 
       GTK_MENU_END
   };

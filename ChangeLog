@@ -1,3 +1,9 @@
+2005-01-04  Miguel Rodríguez Pérez  <miguelrp@gmail.com>
+
+	* src/main_window.cpp (gm_mw_init_menu, gm_mw_video_window_new):
+	Don't create an entry in the manus to switch to fullscreen if
+	SDL is not available at compile time.
+	
 2005-01-04  Damien Sandras  <dsandras@gnome.org>
 
 	* src/sipendpoint.cpp: The local party name is now set by OPAL.
