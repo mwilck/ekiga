@@ -4,6 +4,8 @@
 srcdir=`dirname $0`
 test -z "$srcdir" && srcdir=.
 
+REQUIRED_AUTOMAKE_VERSION=1.7
+
 PKG_NAME="gnomemeeting"
 
 (test -f $srcdir/configure.in \

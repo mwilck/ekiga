@@ -219,10 +219,7 @@ struct _GmWindow
   GtkWidget *transfer_call_popup;
   GtkWidget *stats_label;
   GtkWidget *stats_drawing_area;
-
-#ifndef DISABLE_GNOME
   GtkWidget *druid_window;
-#endif
 
   GdkColor colors [6];
 

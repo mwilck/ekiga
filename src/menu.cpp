@@ -51,6 +51,8 @@
 #include "gtk_menu_extensions.h"
 #include "gm_conf.h"
 
+#include <gdk/gdkkeysyms.h>
+
 
 /* Declarations */
 extern GtkWidget *gm;
@@ -472,13 +474,20 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 		     (gpointer) gw->calls_history_window, TRUE),
 
       GTK_MENU_SEPARATOR,
-      
+
+#ifndef DISABLE_GNOME      
       GTK_MENU_ENTRY("pc-to-phone", _("PC-To-Phone Account"),
 		     _("Manage your PC-To-Phone account"),
 		     NULL, 0, 
 		     GTK_SIGNAL_FUNC (show_window_cb),
 		     (gpointer) gw->pc_to_phone_window, TRUE),
-
+#else
+      GTK_MENU_ENTRY("pc-to-phone", _("PC-To-Phone Account"),
+		     _("Manage your PC-To-Phone account"),
+		     NULL, 0, 
+                     NULL, NULL, FALSE),
+#endif
+      
       GTK_MENU_NEW(_("_Help")),
 
 #ifndef DISABLE_GNOME
@@ -490,7 +499,7 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
        GTK_MENU_ENTRY("help", _("_Contents"),
                      _("Get help by reading the GnomeMeeting manual"),
                      GTK_STOCK_HELP, GDK_F1, 
-                     NULL, NULL, TRUE),
+                     NULL, NULL, FALSE),
 #endif
        
 #ifndef DISABLE_GNOME

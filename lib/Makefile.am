@@ -4,6 +4,7 @@ SUBDIRS =						\
 
 noinst_LTLIBRARIES = libgnomemeeting.la
 
+
 libgnomemeeting_la_SOURCES =				\
 	dialog.c					\
 	dialog.h					\
@@ -17,8 +18,7 @@ libgnomemeeting_la_SOURCES =				\
 	gtk-text-view-addon.h                           \
 	gtk_menu_extensions.c				\
 	gtk_menu_extensions.h				\
-	gm_conf.h					\
-	gm_conf-gconf.c					\
+	gm_conf.h				 	\
 	gm_conf-widgets_extensions.h			\
 	gm_conf-widgets_extensions.c			\
 	gnome_prefs_window.c				\
@@ -28,11 +28,20 @@ libgnomemeeting_la_SOURCES =				\
 	eggtrayicon.h					\
 	eggtrayicon.c
 
+
+if DISABLE_GNOME
+libgnomemeeting_la_SOURCES += gm_conf-glib.c
+else
+libgnomemeeting_la_SOURCES += gm_conf-gconf.c
+endif
+
+
 INCLUDES =						\
 	-DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \
 	-DGNOMEMEETING_IMAGES=\""$(datadir)/pixmaps"\"	\
 	-DG_LOG_DOMAIN=\"GnomeMeeting\"		 	\
 	-DSHARE_DIR=\"$(pkgdatadir)\"			\
+	-DSYSCONFDIR=\""$(sysconfdir)"\"		\
 	-I$(top_srcdir)					\
         $(GNOMEMEETING_LIB_CFLAGS)
 

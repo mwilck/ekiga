@@ -1,3 +1,24 @@
+2004-03-27  Damien Sandras  <dsandras@seconix.com>
+
+        * Makefile.am: Do not install GConf SCHEMAS if --disable-gnome
+        is used, but install the main schemas file in /etc/gnomemeeting/.
+        
+        * autogen.sh: Required automake 1.7.
+
+        * configure.in: Added --disable-gnome back.
+        
+        * lib/Makefile.am: Define SYSCONFDIR to know where to get
+        gnomemeeting.schemas.
+        
+        * lib/gm_conf-glib.c: Take default values in
+        $(SYSCONFDIR)/etc/gnomemeeting and save them in
+        ~/.gnomemeeting/config.xml.
+
+        * src/Makefile.am: Cleanups.
+        
+        * src/common.h, src/gnomemeeting.cpp, src/main_window.cpp, 
+        src/menu.cpp, src/tools.cpp: Added --disable-gnome back.
+
 2004-03-29  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* src/pref_window.cpp (browse_button_clicked_cb,

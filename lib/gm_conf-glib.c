@@ -39,9 +39,8 @@
 
 #include "gm_conf.h" 
 
-/* FIXME: those should come from elsewhere! */
-#define SYSTEM_CONF "/etc/gconf/schemas/gnomemeeting.schemas"
-#define USER_CONF   "/tmp/gnomemeeting.conf"
+#define SYSTEM_CONF SYSCONFDIR "/gnomemeeting/gnomemeeting.schemas"
+
 
 /* the data types used in this file */
 
@@ -179,6 +178,8 @@ static GmConfEntry *database_get_entry_for_key_create (DataBase *,
 
 static void database_set_watched (DataBase *, const gboolean);
 static void database_notify_on_namespace (DataBase *, const gchar *);
+static gchar *gm_conf_get_filename ();
+
 
 /* implementations of the data manipulation functions */
 
@@ -957,14 +958,28 @@ database_notify_on_namespace (DataBase *db, const gchar *namespac)
   g_free (key);
 }
 
-/* last but not least, the implementation of the gm_conf.h api */
 
+static gchar *
+gm_conf_get_filename ()
+{
+  gchar *final = NULL;
+
+  final = g_strdup_printf ("%s/.gnomemeeting/config.xml", g_get_home_dir ());
+}
+
+
+/* last but not least, the implementation of the gm_conf.h api */
 static gboolean
 saveconf_timer_callback (gpointer unused)
 {
   DataBase *db = database_get_default ();
+  gchar *user_conf = NULL;
 
-  database_save_file (db, USER_CONF);
+  user_conf = gm_conf_get_filename ();
+  database_save_file (db, user_conf);
+
+  g_free (user_conf);
+  
   return TRUE;
 }
 
@@ -972,8 +987,11 @@ void
 gm_conf_init (int argc, char **argv)
 {
   DataBase *db = database_get_default ();
-
-  if (!database_load_file (db, USER_CONF))
+  gchar *user_conf = NULL;
+  
+  user_conf = gm_conf_get_filename ();
+ 
+  if (!database_load_file (db, user_conf))
     if (!database_load_file (db, SYSTEM_CONF))
       g_warning ("Couldn't load system configuration");
 
@@ -982,14 +1000,21 @@ gm_conf_init (int argc, char **argv)
 
   /* automatic savings */
   g_timeout_add (120000, (GSourceFunc)saveconf_timer_callback, NULL);
+
+  g_free (user_conf);
 }
 
 void 
 gm_conf_save ()
 {
   DataBase *db = database_get_default ();
+  gchar *user_conf = NULL;
 
-  database_save_file (db, USER_CONF);
+  user_conf = gm_conf_get_filename ();
+
+  database_save_file (db, user_conf);
+
+  g_free (user_conf);
 }
 
 void 

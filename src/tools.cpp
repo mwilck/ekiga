@@ -122,6 +122,7 @@ static void
 microtelco_consult_cb (GtkWidget *widget,
 		       gpointer data)
 {
+#ifndef DISABLE_GNOME
   gchar *tmp_filename = NULL;
   gchar *filename = NULL;
   gchar *account = NULL;
@@ -161,6 +162,7 @@ microtelco_consult_cb (GtkWidget *widget,
   g_free (buffer);
   g_free (account);
   g_free (pin);
+#endif
 }
 
 
@@ -657,6 +659,7 @@ GtkWidget *
 gnomemeeting_pc_to_phone_window_new ()
 {
   GtkWidget *window = NULL;
+#ifndef DISABLE_GNOME
   GtkWidget *button = NULL;
   GtkWidget *label = NULL;
   GtkWidget *use_service_button = NULL;
@@ -734,7 +737,8 @@ gnomemeeting_pc_to_phone_window_new ()
                     G_CALLBACK (delete_window_cb), NULL);
   
   gtk_widget_show_all (GTK_WIDGET (GTK_DIALOG (window)->vbox));
-
+#endif
+  
   return window;
 }
 

@@ -989,30 +989,9 @@ gnomemeeting_main_window_new (GmWindow *gw)
   gtk_widget_show (window_vbox);
 #endif
 
-    /* The statusbar and the progressbar */
-  hbox = gtk_hbox_new (0, FALSE);
-#ifdef DISABLE_GNOME
-  gtk_box_pack_start (GTK_BOX (window_vbox), hbox, 
-		      FALSE, FALSE, 0);
-#else
-  gnome_app_add_docked (GNOME_APP (window), hbox, "statusbar",
-  			BONOBO_DOCK_ITEM_BEH_EXCLUSIVE,
-  			BONOBO_DOCK_BOTTOM, 3, 0, 0);
-#endif
-  gtk_widget_show (hbox);
-
   
+  /* The main menu */
   gw->statusbar = gtk_statusbar_new ();
-  gtk_statusbar_set_has_resize_grip (GTK_STATUSBAR (gw->statusbar), FALSE);
-  gtk_box_pack_start (GTK_BOX (hbox), gw->statusbar, 
-		      TRUE, TRUE, 0);
-
-  if (gm_conf_get_bool (USER_INTERFACE_KEY "main_window/show_status_bar"))
-    gtk_widget_show (GTK_WIDGET (gw->statusbar));
-  else
-    gtk_widget_hide (GTK_WIDGET (gw->statusbar));
-
-  
   gw->main_menu = gnomemeeting_init_menu (accel);
 #ifndef DISABLE_GNOME
   gnome_app_add_docked (GNOME_APP (window), 
@@ -1025,6 +1004,8 @@ gnomemeeting_main_window_new (GmWindow *gw)
 		      FALSE, FALSE, 0);
 #endif
 
+
+  /* The main and left toolbar */
   main_toolbar = gnomemeeting_init_main_toolbar ();
 #ifndef DISABLE_GNOME
   gnome_app_add_docked (GNOME_APP (window), main_toolbar, "main_toolbar",
@@ -1092,8 +1073,6 @@ gnomemeeting_main_window_new (GmWindow *gw)
   }
 
 
-  /* The drawing area that will display the webcam images */
-
   /* The frame that contains video and remote name display */
   frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
@@ -1128,6 +1107,29 @@ gnomemeeting_main_window_new (GmWindow *gw)
 
   gtk_widget_show_all (GTK_WIDGET (frame));
 
+  
+  /* The statusbar and the progressbar */
+  hbox = gtk_hbox_new (0, FALSE);
+#ifdef DISABLE_GNOME
+  gtk_box_pack_start (GTK_BOX (window_vbox), hbox, 
+		      FALSE, FALSE, 0);
+#else
+  gnome_app_add_docked (GNOME_APP (window), hbox, "statusbar",
+  			BONOBO_DOCK_ITEM_BEH_EXCLUSIVE,
+  			BONOBO_DOCK_BOTTOM, 3, 0, 0);
+#endif
+  gtk_widget_show (hbox);
+
+  
+  gtk_statusbar_set_has_resize_grip (GTK_STATUSBAR (gw->statusbar), FALSE);
+  gtk_box_pack_start (GTK_BOX (hbox), gw->statusbar, 
+		      TRUE, TRUE, 0);
+
+  if (gm_conf_get_bool (USER_INTERFACE_KEY "main_window/show_status_bar"))
+    gtk_widget_show (GTK_WIDGET (gw->statusbar));
+  else
+    gtk_widget_hide (GTK_WIDGET (gw->statusbar));
+  
   
   /* The 2 video window popups */
   gw->local_video_window =

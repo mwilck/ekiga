@@ -42,8 +42,6 @@ gnomemeeting_SOURCES =		\
 	misc.h			\
 	chat_window.cpp		\
 	chat_window.h		\
-	druid.cpp		\
-	druid.h			\
 	urlhandler.cpp		\
 	urlhandler.h		\
 	vfakeio.cpp		\
@@ -57,6 +55,12 @@ gnomemeeting_SOURCES =		\
 	codec_info.cpp		\
 	codec_info.h
 
+
+if DISABLE_GNOME
+gnomemeeting_SOURCES +=
+else
+gnomemeeting_SOURCES += druid.cpp druid.h
+endif
 
 gnomemeeting_LDADD = \
 	@GNOMEMEETING_LIBS@ \

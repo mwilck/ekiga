@@ -1,4 +1,4 @@
-SUBDIRS = pixmaps lib src po sounds man xdap_data help
+SUBDIRS = man sounds xdap_data help pixmaps lib src po 
 
 @INTLTOOL_DESKTOP_RULE@
 @INTLTOOL_SCHEMAS_RULE@
@@ -12,15 +12,20 @@ EXTRA_DIST = $(DESKTOP_IN_FILES) $(DESKTOP_FILES) intltool-extract.in intltool-m
 Applicationsdir = $(datadir)/applications
 Applications_DATA = $(DESKTOP_FILES)
 
+if DISABLE_GNOME
+schemasdir = $(sysconfdir)/gnomemeeting
+schemas_DATA = $(SCHEMAS_FILE)
+else
 schemasdir = $(GCONF_SCHEMA_FILE_DIR)
 schemas_DATA = $(SCHEMAS_FILE)
+endif
 
 install-schemas: gnomemeeting.schemas
 	GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) gconftool-2 --makefile-install-rule $(SCHEMAS_FILE) >&1 > /dev/null
 	gconftool-2 --shutdown
 
 if GCONF_SCHEMAS_INSTALL
-install-data-local: install-schemas
+install-data-local: install-schemas 
 else
 install-data-local:
 endif
