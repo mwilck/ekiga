@@ -93,9 +93,21 @@ static void RGBtoYUV420PSameSize (const BYTE * rgb,
 GMH323FakeVideoInputDevice::GMH323FakeVideoInputDevice (gchar *video_image)
 {
   GdkPixbuf *data_pix_tmp = NULL;
+
   data_pix = NULL;
+  logo_pix = NULL;
+
+  pos = 0;
+  increment = 1;
+
+  picture = false;
 
   gnomemeeting_threads_enter ();
+
+  logo_pix = 
+    gdk_pixbuf_new_from_xpm_data ((const char **) text_logo_xpm);
+
+
   if (video_image) {
 
     data_pix_tmp =  gdk_pixbuf_new_from_file (video_image, NULL);
@@ -109,11 +121,13 @@ GMH323FakeVideoInputDevice::GMH323FakeVideoInputDevice (gchar *video_image)
     }
   }
 
-  if (!data_pix)
-    data_pix = gdk_pixbuf_new_from_xpm_data ((const char **) text_logo_xpm);
+  if (data_pix)
+    picture = true;
+  else {
 
-  data = gdk_pixbuf_get_pixels (data_pix);
-  rgb_increment = gdk_pixbuf_get_n_channels (data_pix);
+    data_pix = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8, 176, 144);
+    picture = false;
+  }
 
   gnomemeeting_threads_leave ();
 }
@@ -123,7 +137,11 @@ GMH323FakeVideoInputDevice::~GMH323FakeVideoInputDevice ()
 {
   gnomemeeting_threads_enter ();
 
-  g_object_unref (G_OBJECT (data_pix));
+  if (data_pix)
+    g_object_unref (G_OBJECT (data_pix));
+
+  if (logo_pix)
+    g_object_unref (G_OBJECT (logo_pix));
 
   gnomemeeting_threads_leave ();
 }
@@ -139,7 +157,26 @@ BOOL GMH323FakeVideoInputDevice::GetFrameDataNoDelay (BYTE *frame, PINDEX *i)
 
   grabCount++;
 
+  gnomemeeting_threads_enter ();
+  if (!picture) {
+
+    gdk_pixbuf_fill (data_pix, 0x000000FF); /* Opaque black */
+    gdk_pixbuf_copy_area (logo_pix, 0, 0, 176, 60, 
+			  data_pix, 0, pos);
+
+    pos = pos + increment;
+
+    if (pos > 74) increment = -1;
+    if (pos < 10) increment = +1;
+  }
+
+  data = gdk_pixbuf_get_pixels (data_pix);
+  rgb_increment = gdk_pixbuf_get_n_channels (data_pix);
+
   RGBtoYUV420PSameSize (data, frame, rgb_increment, FALSE, width, height);
+
+  gnomemeeting_threads_leave ();
+
 
   return TRUE;
 }

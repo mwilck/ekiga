@@ -569,7 +569,7 @@ void GMVideoGrabber::VGOpen (void)
       grabber->SetColourFormatConverter ("YUV420P");
       grabber->SetVideoFormat (PVideoDevice::PAL);
       grabber->SetChannel (1);    
-      grabber->SetFrameRate (1);
+      grabber->SetFrameRate (6);
       grabber->SetFrameSize (176, 144);
 
       g_free (video_image);

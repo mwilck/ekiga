@@ -200,6 +200,7 @@ void gnomemeeting_log_insert (GtkWidget *text_view, gchar *text)
 
 void gnomemeeting_init_main_window_logo ()
 {
+  GdkPixbuf *tmp = NULL;
   GdkPixbuf *text_logo_pix = NULL;
   GtkRequisition size_request;
 
@@ -215,10 +216,16 @@ void gnomemeeting_init_main_window_logo ()
   }
 
   text_logo_pix = gdk_pixbuf_new_from_xpm_data ((const char **) text_logo_xpm);
+  tmp = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8, 176, 144);
+  gdk_pixbuf_fill (tmp, 0x000000FF);  /* Opaque black */
+
+  gdk_pixbuf_copy_area (text_logo_pix, 0, 0, 176, 60, 
+			tmp, 0, 42);
   gtk_image_set_from_pixbuf (GTK_IMAGE (gw->video_image),
-			     GDK_PIXBUF (text_logo_pix));
+			     GDK_PIXBUF (tmp));
 
   g_object_unref (text_logo_pix);
+  g_object_unref (tmp);
 }
 
 
