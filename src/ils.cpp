@@ -984,6 +984,9 @@ void GMILSBrowser::Main ()
 	  gnomemeeting_statusbar_push (lwp->statusbar, _("Could not fetch online users list."));
       gnomemeeting_threads_leave ();
   
+      if (rc == LDAP_SERVER_DOWN)
+	PThread::Current ()->Sleep (500);
+
       retry++;
     }
   } while ((rc == LDAP_SERVER_DOWN) && (retry <= 5));
