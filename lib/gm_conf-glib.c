@@ -591,7 +591,7 @@ entry_set_float (GmConfEntry *entry, const gfloat val)
   g_return_if_fail (entry != NULL);
 
   entry->type = GM_CONF_FLOAT;
-  entry->value.boolean = val;
+  entry->value.floa = val;
 }
 
 static const gchar *

@@ -130,8 +130,6 @@ BOOL GDKVideoOutputDevice::Redraw ()
    * it requests to display both video streams and that there is only
    * one available 
    */
-  
-
   if (!ep->CanAutoStartTransmitVideo () 
       || !ep->CanAutoStartReceiveVideo ()) {
 
