@@ -1,6 +1,6 @@
 SUBDIRS =						\
 	widgets						\
-	xdap
+	xdap				
 
 noinst_LTLIBRARIES = libgnomemeeting.la
 

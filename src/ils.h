@@ -31,13 +31,12 @@
 #ifndef _ILS_H_
 #define _ILS_H_
 
-#include <lber.h>
-#include <ldap.h>
 #include <iostream>
 #include <gnome.h>
 #include <glib.h>
 #include <sys/socket.h>
 #include <ptlib.h>
+#include <ldapapi.h>
 
 #include <gconf/gconf-client.h>
 

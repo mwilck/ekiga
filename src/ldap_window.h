@@ -32,8 +32,6 @@
 #ifndef _LDAP_H_H_
 #define _LDAP_H_H_
 
-#include <lber.h>
-#include <ldap.h>
 #include <iostream>
 #include <string.h>
 #include <stdio.h>

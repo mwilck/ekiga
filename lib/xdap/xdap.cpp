@@ -794,10 +794,10 @@ evalcmd (char *cmd)
     close (pfd[1]);
     while ((nc = read (pfd[0], buf, sizeof buf)) > 0) {
       if (!rb) {
-	if (!(rb = malloc (nc)))
+	if (!(rb = (char *) malloc (nc)))
 	  return "NOMEM";
       } else {
-	if (!(rb = realloc (rb, size + nc)))
+	if (!(rb = (char *) realloc (rb, size + nc)))
 	  return "NOMEM";
       }
       memcpy (rb + size, buf, nc);

@@ -1,7 +1,7 @@
 noinst_LTLIBRARIES = libxdap.la
 
 libxdap_la_SOURCES =					\
-	xdap.c						\
+	xdap.cpp					\
 	xdap.h					
 
 INCLUDES =						\
@@ -10,7 +10,8 @@ INCLUDES =						\
 	-DG_LOG_DOMAIN=\"GnomeMeeting\"		 	\
 	-DSHARE_DIR=\"$(pkgdatadir)\"			\
 	-I$(top_srcdir) 				\
-	$(GNOMEMEETING_CFLAGS)
+	$(GNOMEMEETING_CFLAGS)				\
+	$(GNOMEMEETING_INCLUDES)
 
 libxdap_la_LDFLAGS = -export-dynamic
 libxdap_la_LIDADD = 

@@ -1,9 +1,26 @@
+2002-10-11 Damien Sandras  <dsandras@seconix.com>
+
+	* configure.in: Removed LDAP check. Now GM is able to work without it.
+
+	* lib/xdap/Makefile.am: Changed xdap.c to xdap.cpp, now xdap is using
+	some C++.
+
+	* lib/xdap/xdap.c: Removed.
+
+	* lib/xdap/xdap.h: Few fixes for the new LDAP API.
+
+	* src/ils.cpp: Added tests for non NULL values.
+
+	* src/ils.h: Changed #include to not include OpenLDAP anymore.
+
+	* src/ldap_window.h: Removed unneeded #include.
+	
 2002-10-11  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* gnomemeeting.schemas.in.in: Make the show_docklet key default to
 	true, now that gnome has support for it again.
 
-2002-10-12 Damien Sandras  <dsandras@seconix.com>
+2002-10-11 Damien Sandras  <dsandras@seconix.com>
 
 	* src/sound_handling.cpp: Fixed warning, and applied patch from
 	Roger Hardiman for FreeBSD.

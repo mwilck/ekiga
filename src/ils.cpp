@@ -29,7 +29,8 @@
 
 	
 #include <sys/time.h>
-#include <ldap.h>
+#include <ptlib.h>
+#include <ldapapi.h>
 
 #include "../config.h"
 
@@ -588,7 +589,7 @@ gchar *GMILSClient::Search (gchar *ldap_server, gchar *ldap_port, gchar *mail)
       
       ldv = ldap_get_values (ldap_search_connection, e, "sipaddress");
       
-      if (ldv != NULL) {
+      if ((ldv != NULL)&&(ldv [0] != NULL)) {
 	
 	nmip = strtoul (ldv [0], NULL, 10);
 	ldap_value_free (ldv);
@@ -596,7 +597,7 @@ gchar *GMILSClient::Search (gchar *ldap_server, gchar *ldap_port, gchar *mail)
 
       ldv = ldap_get_values (ldap_search_connection, e, "sport");
 
-      if (ldv != NULL) {
+      if ((ldv != NULL)&&(ldv [0] != NULL)) {
 	
 	port = atoi (ldv [0]);
 	ldap_value_free (ldv);
@@ -968,7 +969,7 @@ void GMILSBrowser::Main ()
 	users_nbr++;
 
 	ldv = ldap_get_values (ldap_connection, e, "surname");
-	if (ldv != NULL) {
+	if ((ldv != NULL)&&(ldv [0] != NULL)) {
 	
 	  datas [3] = 
 	    g_strdup (ldv [0]);
@@ -976,21 +977,21 @@ void GMILSBrowser::Main ()
 	}      
 	
 	ldv = ldap_get_values(ldap_connection, e, "givenname");
-	if (ldv != NULL) {
+	if ((ldv != NULL)&&(ldv [0] != NULL)) {
 	  
 	  datas [2] = g_strdup (ldv [0]);
 	  ldap_value_free (ldv);
 	}
 	
 	ldv = ldap_get_values(ldap_connection, e, "location");
-	if (ldv != NULL) {
+	if ((ldv != NULL)&&(ldv [0] != NULL)) {
 	  
 	  datas [5] = g_strdup (ldv [0]);
 	  ldap_value_free (ldv);
 	}
 	
 	ldv = ldap_get_values(ldap_connection, e, "comment");
-	if (ldv != NULL)	{
+	if ((ldv != NULL)&&(ldv [0] != NULL)) {
 	  
 	  datas [6] = 
 	    g_strdup (ldv [0]);
@@ -998,7 +999,7 @@ void GMILSBrowser::Main ()
 	}
 
 	ldv = ldap_get_values(ldap_connection, e, "sappid");
-	if (ldv != NULL)	{
+	if ((ldv != NULL)&&(ldv [0] != NULL)) {
 	  
 	  datas [7]  =
 	    g_strdup (ldv [0]);
@@ -1006,7 +1007,8 @@ void GMILSBrowser::Main ()
 	}
 	
 	ldv = ldap_get_values(ldap_connection, e, "ilsa26279966");
-	if (ldv != NULL)	{
+	if ((ldv != NULL)&&(ldv [0] != NULL)) {
+
 	  gchar *value =
 	    g_strdup (ldv [0]);
 	
@@ -1026,21 +1028,21 @@ void GMILSBrowser::Main ()
 	}
 	
 	ldv = ldap_get_values(ldap_connection, e, "rfc822mailbox");
-	if (ldv != NULL) {
+	if ((ldv != NULL)&&(ldv [0] != NULL)) {
 	
 	  datas [4] = g_strdup (ldv [0]);
 	  ldap_value_free (ldv);
 	}
 
 	ldv = ldap_get_values(ldap_connection, e, "sport");
-	if (ldv != NULL) {
+	if ((ldv != NULL)&&(ldv [0] != NULL)) {
 	
 	  port = atoi (ldv [0]);
 	  ldap_value_free (ldv);
 	}
 	
 	ldv = ldap_get_values(ldap_connection, e, "sipaddress");
-	if (ldv != NULL) {
+	if ((ldv != NULL)&&(ldv [0] != NULL)) {
 	
 	  nmip = strtoul (ldv [0], NULL, 10);
 	  ldap_value_free (ldv);
@@ -1061,7 +1063,7 @@ void GMILSBrowser::Main ()
 	
 	/* Video Capable ? */
 	ldv = ldap_get_values(ldap_connection, e, "ilsa32964638");
-	if (ldv != NULL) {
+	if ((ldv != NULL)&&(ldv [0] != NULL)) {
 	  
 	  video = 
 	    (bool)atoi (ldv [0]);
@@ -1071,7 +1073,7 @@ void GMILSBrowser::Main ()
 
 	/* Audio Capable ? */
 	ldv = ldap_get_values(ldap_connection, e, "ilsa32833566");
-	if (ldv != NULL) {
+	if ((ldv != NULL)&&(ldv [0] != NULL)) {
 	  
 	  audio = 
 	    (bool)atoi (ldv [0]);
@@ -1081,7 +1083,7 @@ void GMILSBrowser::Main ()
 
 	/* Busy ? */
 	ldv = ldap_get_values(ldap_connection, e, "ilsa26214430");
-	if (ldv != NULL) {
+	if ((ldv != NULL)&&(ldv [0] != NULL)) {
 	  
 	  available = 
 	    !(bool) atoi (ldv [0]);
