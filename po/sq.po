@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-10-08 19:34+0200\n"
-"PO-Revision-Date: 2004-10-08 23:53+0200\n"
+"POT-Creation-Date: 2004-10-19 11:36+0200\n"
+"PO-Revision-Date: 2004-10-20 02:24+0200\n"
 "Last-Translator: Jonita Prifti <jonita@jonita.net>\n"
 "Language-Team: Albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -17,8 +17,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit"
 
 #. Add the window icon and title
-#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:3237
-#: src/main_window.cpp:3419
+#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:3712
+#: src/main_window.cpp:3901
 msgid "GnomeMeeting"
 msgstr "GnomeMeeting"
 
@@ -58,11 +58,11 @@ msgstr "Plugin i zërit"
 msgid "Automatic echo cancellation"
 msgstr "Heqje automatike e jehonës"
 
-#: gnomemeeting.schemas.in.in.h:8 src/pref_window.cpp:722
+#: gnomemeeting.schemas.in.in.h:8 src/pref_window.cpp:716
 msgid "Automatically clear the text chat at the end of calls"
 msgstr "Fshi automatikisht tekstin e bisedës në fund të thirrjeve"
 
-#: gnomemeeting.schemas.in.in.h:9 src/pref_window.cpp:790
+#: gnomemeeting.schemas.in.in.h:9 src/pref_window.cpp:784
 msgid ""
 "Automatically reject or forward incoming calls if no answer is given after "
 "the specified amount of time (in seconds)"
@@ -101,7 +101,7 @@ msgstr ""
 msgid "Clear inactive calls"
 msgstr "Pastro thirrjet jo aktive"
 
-#: gnomemeeting.schemas.in.in.h:15 src/addressbook_window.cpp:956
+#: gnomemeeting.schemas.in.in.h:15 src/addressbook_window.cpp:973
 msgid "Comment"
 msgstr "Komenti"
 
@@ -241,39 +241,31 @@ msgid "Forward calls to the given host if no answer"
 msgstr ""
 "Transfero thirrjet drejt korrespondentit të caktuar nëse s'ka përgjigje"
 
-#: gnomemeeting.schemas.in.in.h:44
-msgid "Fullscreen height"
-msgstr "Gjatësia me ekran të plotë"
-
-#: gnomemeeting.schemas.in.in.h:45
-msgid "Fullscreen width"
-msgstr "Gjerësia me ekran të plotë"
-
-#: gnomemeeting.schemas.in.in.h:46 src/pref_window.cpp:992
+#: gnomemeeting.schemas.in.in.h:44 src/pref_window.cpp:986
 msgid "Gatekeeper ID"
 msgstr "ID i Gatekeeper"
 
-#: gnomemeeting.schemas.in.in.h:47
+#: gnomemeeting.schemas.in.in.h:45
 msgid "Gatekeeper alias"
 msgstr "Alias në Gatekeeper"
 
-#: gnomemeeting.schemas.in.in.h:48
+#: gnomemeeting.schemas.in.in.h:46
 msgid "Gatekeeper alias as primary alias"
 msgstr "Alias kryesor në Gatekeeper"
 
-#: gnomemeeting.schemas.in.in.h:49 src/pref_window.cpp:991
+#: gnomemeeting.schemas.in.in.h:47 src/pref_window.cpp:985
 msgid "Gatekeeper host"
 msgstr "Host Gatekeeper"
 
-#: gnomemeeting.schemas.in.in.h:50
+#: gnomemeeting.schemas.in.in.h:48
 msgid "Gatekeeper password"
 msgstr "Fjalëkalimi në Gatekeeper"
 
-#: gnomemeeting.schemas.in.in.h:51
+#: gnomemeeting.schemas.in.in.h:49
 msgid "Gateway/proxy host"
 msgstr "Host gateway/proxy"
 
-#: gnomemeeting.schemas.in.in.h:52 src/pref_window.cpp:701
+#: gnomemeeting.schemas.in.in.h:50 src/pref_window.cpp:701
 msgid ""
 "If enabled, GnomeMeeting will start hidden provided that the notification "
 "area is present in the GNOME panel"
@@ -281,13 +273,13 @@ msgstr ""
 "GnomeMeeting do të fillojë i fshehtë nëse aktivizon këtë funksion. Zona e "
 "njoftimit duhet të jetë e aktivizuar në panelin GNOME"
 
-#: gnomemeeting.schemas.in.in.h:53
+#: gnomemeeting.schemas.in.in.h:51
 msgid ""
 "If enabled, a popup window will be displayed when receiving an incoming call"
 msgstr ""
 "Nëse e aktivizon, një dritare popup do të afishohet kur merr një thirrje."
 
-#: gnomemeeting.schemas.in.in.h:54
+#: gnomemeeting.schemas.in.in.h:52
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below"
@@ -295,7 +287,7 @@ msgstr ""
 "Nëse e aktivizon, të gjitha thirrjet që vijnë do të transferohen drejt "
 "korrespondentit që ke zgjedhur në zonën këtu poshtë"
 
-#: gnomemeeting.schemas.in.in.h:55
+#: gnomemeeting.schemas.in.in.h:53
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you already are in a call or if you are in "
@@ -305,7 +297,7 @@ msgstr ""
 "transferohen drejt korrespondentit që ke zgjedhur, nëse je duke folur ose "
 "nëse ke zgjedhur mënyrën Mos Më Shqetësoni"
 
-#: gnomemeeting.schemas.in.in.h:56
+#: gnomemeeting.schemas.in.in.h:54
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you do not answer the call"
@@ -314,11 +306,11 @@ msgstr ""
 "korrespondentit që ke zgjedhur në zonën këtu poshtë, kur nuk i përgjigjesh "
 "thirrjes."
 
-#: gnomemeeting.schemas.in.in.h:57
+#: gnomemeeting.schemas.in.in.h:55
 msgid "If enabled, allows video to be received during a call"
 msgstr "Nëse e aktivizon, lejon marrjen e videos gjatënjë thirrjeje."
 
-#: gnomemeeting.schemas.in.in.h:58 src/pref_window.cpp:786
+#: gnomemeeting.schemas.in.in.h:56 src/pref_window.cpp:780
 msgid ""
 "If enabled, calls for which no audio and video has been received in the last "
 "30 seconds are automatically cleared"
@@ -326,33 +318,33 @@ msgstr ""
 "Nëse e aktivizon, thirrjet për të cilat as audio as video nuk është marrë në "
 "30 sekondat e fundit pastrohen automatikisht"
 
-#: gnomemeeting.schemas.in.in.h:59
+#: gnomemeeting.schemas.in.in.h:57
 msgid "If enabled, register with the selected user directory"
 msgstr ""
 "Nëse e aktivizon, mund të regjistrohesh me numratorin e përdoruesve që ke "
 "zgjedhur."
 
-#: gnomemeeting.schemas.in.in.h:60 src/pref_window.cpp:699
+#: gnomemeeting.schemas.in.in.h:58 src/pref_window.cpp:699
 msgid ""
 "If enabled, the splash screen will be displayed when GnomeMeeting starts"
 msgstr "Nëse e aktivizon, një ekran nisjeje do të dali kur GnomeMeeting niset."
 
-#: gnomemeeting.schemas.in.in.h:61 src/pref_window.cpp:722
+#: gnomemeeting.schemas.in.in.h:59 src/pref_window.cpp:716
 msgid ""
 "If enabled, the text chat will automatically be cleared at the end of calls"
 msgstr ""
 "Nëse e aktivizon, teksti i bisedës do të fshihet në fund të çdo thirrjeje."
 
-#: gnomemeeting.schemas.in.in.h:62
+#: gnomemeeting.schemas.in.in.h:60
 msgid "If enabled, use silence detection with the GSM and G.711 codecs"
 msgstr ""
 "Nëse e aktivizon, përdor zbulimin e heshtjes për kodekët GSM dhe G.711."
 
-#: gnomemeeting.schemas.in.in.h:63
+#: gnomemeeting.schemas.in.in.h:61
 msgid "If enabled, video is transmitted during a call"
 msgstr "Nëse e aktivizon, video do të transmetohet gjatë një thirrjeje"
 
-#: gnomemeeting.schemas.in.in.h:64
+#: gnomemeeting.schemas.in.in.h:62
 msgid ""
 "If enabled, your details are shown to people browsing the user directory. If "
 "disabled, you are not visible to users browsing the user directory, but they "
@@ -363,171 +355,170 @@ msgstr ""
 "njerëz nuk të shikojnë në listë, por megjithatë ata mund të të thërrasin "
 "duke përdorur URL callto."
 
-#: gnomemeeting.schemas.in.in.h:65
+#: gnomemeeting.schemas.in.in.h:63
 msgid "Incoming call mode"
 msgstr "Mënyra e thirrjeve që vijnë"
 
-#: gnomemeeting.schemas.in.in.h:66
+#: gnomemeeting.schemas.in.in.h:64
 msgid "Kind of network selected in the druid"
 msgstr "Lloji i rrjetit i zgjedhur në asistentin e ndihmës (druid)"
 
-#: gnomemeeting.schemas.in.in.h:67
+#: gnomemeeting.schemas.in.in.h:65
 msgid "Last name"
 msgstr "Mbiemri"
 
-#: gnomemeeting.schemas.in.in.h:68
+#: gnomemeeting.schemas.in.in.h:66
 msgid "Listen port"
 msgstr "Porta e ndëgjimit"
 
-#: gnomemeeting.schemas.in.in.h:69
+#: gnomemeeting.schemas.in.in.h:67
 msgid "Local video window size"
 msgstr "Gjërësia e dritares së videos lokale"
 
-#: gnomemeeting.schemas.in.in.h:70 src/addressbook_window.cpp:996
+#: gnomemeeting.schemas.in.in.h:68 src/addressbook_window.cpp:1013
 msgid "Location"
 msgstr "Vendodhja"
 
-#: gnomemeeting.schemas.in.in.h:71
+#: gnomemeeting.schemas.in.in.h:69
 msgid "Maximum jitter buffer"
 msgstr "Maksimumi i jitter buffer"
 
-#: gnomemeeting.schemas.in.in.h:72
+#: gnomemeeting.schemas.in.in.h:70
 msgid "Maximum video bandwidth"
 msgstr "Gjërësia maksimale e bandës së videos"
 
-#: gnomemeeting.schemas.in.in.h:73
+#: gnomemeeting.schemas.in.in.h:71
 msgid "Minimum jitter buffer"
 msgstr "Minimumi i jitter buffer"
 
-#: gnomemeeting.schemas.in.in.h:74
+#: gnomemeeting.schemas.in.in.h:72
 msgid "Minimum transmitted video quality"
 msgstr "Cilësia minimale e videos së transmetuar"
 
-#: gnomemeeting.schemas.in.in.h:75
+#: gnomemeeting.schemas.in.in.h:73
 msgid "Missed calls history"
 msgstr "Historiku i thirrjeve të humbura"
 
-#: gnomemeeting.schemas.in.in.h:76
+#: gnomemeeting.schemas.in.in.h:74
 msgid "No answer timeout"
 msgstr "Asnjë skadencë kohe për përgjigjen"
 
-#: gnomemeeting.schemas.in.in.h:77
+#: gnomemeeting.schemas.in.in.h:75
 msgid "Number of frames for G.711"
 msgstr "Numri i frame për G.711"
 
-#: gnomemeeting.schemas.in.in.h:78
+#: gnomemeeting.schemas.in.in.h:76
 msgid "Number of frames for GSM"
 msgstr "Numri i frame për GSM"
 
-#: gnomemeeting.schemas.in.in.h:79
+#: gnomemeeting.schemas.in.in.h:77
 msgid "Number of frames transmitted in each packet for the G.711 codec"
 msgstr "Numri i frame-ve të transmetuara në çdo paketë për kodekun G.711"
 
-#: gnomemeeting.schemas.in.in.h:80
+#: gnomemeeting.schemas.in.in.h:78
 msgid "Number of frames transmitted in each packet for the GSM codec"
 msgstr "Numri i frame-ve të transmetuara në çdo paketë për kodekun GSM."
 
-#: gnomemeeting.schemas.in.in.h:81
+#: gnomemeeting.schemas.in.in.h:79
 msgid "Output device type"
 msgstr "Lloji i dispozitivit të daljes"
 
-#: gnomemeeting.schemas.in.in.h:82 src/pref_window.cpp:716
+#: gnomemeeting.schemas.in.in.h:80 src/pref_window.cpp:709
 msgid "Place windows displaying video above other windows during calls"
 msgstr "Vendos dritaret që shfaqin videon mbi dritaret e tjera gjatë thirrjeve"
 
-#: gnomemeeting.schemas.in.in.h:83
+#: gnomemeeting.schemas.in.in.h:81
 msgid "Placed calls history"
 msgstr "Historiku i thirrjeve të kryera"
 
-#: gnomemeeting.schemas.in.in.h:84 src/pref_window.cpp:1855
+#: gnomemeeting.schemas.in.in.h:82 src/pref_window.cpp:1849
 msgid "Play busy tone"
 msgstr "Bjeri ziles kur thirrja është e zënë"
 
-#: gnomemeeting.schemas.in.in.h:85 src/pref_window.cpp:1846
+#: gnomemeeting.schemas.in.in.h:83 src/pref_window.cpp:1840
 msgid "Play ring tone"
 msgstr "Bjeri ziles"
 
-#: gnomemeeting.schemas.in.in.h:86 src/pref_window.cpp:1837
+#: gnomemeeting.schemas.in.in.h:84 src/pref_window.cpp:1831
 msgid "Play sound on incoming calls"
 msgstr "Sinjalizo kur vijnë thirrjet"
 
-#: gnomemeeting.schemas.in.in.h:87
+#: gnomemeeting.schemas.in.in.h:85
 msgid "Position of the local video window"
 msgstr "Pozicioni i dritares së videos lokale"
 
-#: gnomemeeting.schemas.in.in.h:88
+#: gnomemeeting.schemas.in.in.h:86
 msgid "Position on the screen of the PC-To-Phone window"
 msgstr "Pozicioni i dritares PC-Telefon"
 
-#: gnomemeeting.schemas.in.in.h:89
+#: gnomemeeting.schemas.in.in.h:87
 msgid "Position on the screen of the address book window"
 msgstr "Pozicioni i dritares së bllokut të adresave."
 
-#: gnomemeeting.schemas.in.in.h:90
+#: gnomemeeting.schemas.in.in.h:88
 msgid "Position on the screen of the calls history window"
 msgstr "Pozicioni i dritares së historikut të thirrjeve"
 
-#: gnomemeeting.schemas.in.in.h:91
+#: gnomemeeting.schemas.in.in.h:89
 msgid "Position on the screen of the druid window"
 msgstr "Pozicioni i dritares së ndihmësit të konfigurimit"
 
-#: gnomemeeting.schemas.in.in.h:92
+#: gnomemeeting.schemas.in.in.h:90
 msgid "Position on the screen of the log window"
 msgstr "Pozicioni i dritares së regjistrimeve"
 
-#: gnomemeeting.schemas.in.in.h:93
+#: gnomemeeting.schemas.in.in.h:91
 msgid "Position on the screen of the main window"
 msgstr "Pozicioni i dritares kryesore"
 
-#: gnomemeeting.schemas.in.in.h:94
+#: gnomemeeting.schemas.in.in.h:92
 msgid "Position on the screen of the preferences window"
 msgstr "Pozicioni i dritares së preferimeve"
 
-#: gnomemeeting.schemas.in.in.h:95
+#: gnomemeeting.schemas.in.in.h:93
 msgid "Public IP of the NAT/PAT router"
 msgstr "Adresa IP publike e router-it NAT/PAT"
 
-#: gnomemeeting.schemas.in.in.h:96
+#: gnomemeeting.schemas.in.in.h:94
 msgid "Received calls history"
 msgstr "Historiku i thirrjeve të marra"
 
-#: gnomemeeting.schemas.in.in.h:97
+#: gnomemeeting.schemas.in.in.h:95
 msgid "Registering method"
 msgstr "Mënyra e regjistrimit"
 
-#: gnomemeeting.schemas.in.in.h:98
+#: gnomemeeting.schemas.in.in.h:96
 msgid "Remote video window position"
 msgstr "Pozicioni i dritares së videos e korrespondentit"
 
-#: gnomemeeting.schemas.in.in.h:99
+#: gnomemeeting.schemas.in.in.h:97
 msgid "Remote video window size"
 msgstr "Madhësia e dritares së videos e korrespondentit"
 
-#: gnomemeeting.schemas.in.in.h:100
+#: gnomemeeting.schemas.in.in.h:98
 msgid "Revision of the schema file"
 msgstr "Rishikim i skemës së konfigurimit"
 
-#: gnomemeeting.schemas.in.in.h:101 src/pref_window.cpp:1121
+#: gnomemeeting.schemas.in.in.h:99 src/pref_window.cpp:1115
 msgid "Select the audio input device to use"
 msgstr "Zgjidh dispozitivin zërit në hyrje"
 
-#: gnomemeeting.schemas.in.in.h:102 src/pref_window.cpp:1114
+#: gnomemeeting.schemas.in.in.h:100 src/pref_window.cpp:1108
 msgid "Select the audio output device to use"
 msgstr "Zgjidh dispozitivin e zërit në dalje"
 
-#: gnomemeeting.schemas.in.in.h:103 src/pref_window.cpp:942
-msgid "Select the audio output device to use for sound events"
-msgstr ""
-"Zgjidh dispozitivin e zërit në dalje që duhet përdorur për tingujt e ndodhive"
+#: gnomemeeting.schemas.in.in.h:101
+msgid "Select the audio output device to use for the ring sound event."
+msgstr "Zgjidh dispozitivin e zërit në dalje që duhet përdorur për tingujt e ndodhive."
 
-#: gnomemeeting.schemas.in.in.h:104 src/pref_window.cpp:1198
+#: gnomemeeting.schemas.in.in.h:102 src/pref_window.cpp:1192
 msgid ""
 "Select the format for video cameras (does not apply to most USB cameras)"
 msgstr ""
 "Zgjidh formatin për kameran video. (nuk hyn në punë për shumicën e kamerave "
 "USB)."
 
-#: gnomemeeting.schemas.in.in.h:105 src/pref_window.cpp:1196
+#: gnomemeeting.schemas.in.in.h:103 src/pref_window.cpp:1190
 msgid ""
 "Select the transmitted video size: Small (QCIF 176x144) or Large (CIF "
 "352x288)"
@@ -535,7 +526,7 @@ msgstr ""
 "Zgjidh madhësinë e videos së transmetuar : E vogël (QCIF 176x144) ose E "
 "madhe (CIF 352x288)."
 
-#: gnomemeeting.schemas.in.in.h:106 src/pref_window.cpp:1190
+#: gnomemeeting.schemas.in.in.h:104 src/pref_window.cpp:1184
 msgid ""
 "Select the video input device to use. If an error occurs when using this "
 "device a test picture will be transmitted."
@@ -543,63 +534,64 @@ msgstr ""
 "Zgjidh dispozitivin e videos. Nëse ndodh një gabim atëhere vetëm një imazh "
 "testi do të transmetohet."
 
-#: gnomemeeting.schemas.in.in.h:107
+#: gnomemeeting.schemas.in.in.h:105
 msgid "Show chat window"
 msgstr "Shfaq dritaren e dialogut"
 
-#: gnomemeeting.schemas.in.in.h:108
+#: gnomemeeting.schemas.in.in.h:106
 msgid "Show my details to other registered users"
 msgstr "Shfaq informacionet personale për përdoruesit e tjerë të regjistruar"
 
-#: gnomemeeting.schemas.in.in.h:109
+#: gnomemeeting.schemas.in.in.h:107
 msgid "Show splash screen at startup"
 msgstr "Shfaq ekranin e nisjes"
 
-#: gnomemeeting.schemas.in.in.h:110
+#: gnomemeeting.schemas.in.in.h:108
 msgid "Show the chat window in the main window"
 msgstr "Shfaq dritaren e dialogut në dritaren kryesore"
 
-#: gnomemeeting.schemas.in.in.h:111
+#: gnomemeeting.schemas.in.in.h:109
 msgid "Size of the PC-To-Phone window"
 msgstr "Madhësia e dritares PC-Telefon"
 
-#: gnomemeeting.schemas.in.in.h:112
+#: gnomemeeting.schemas.in.in.h:110
 msgid "Size of the address book window"
 msgstr "Madhësia e dritares së bllokut të adresave"
 
-#: gnomemeeting.schemas.in.in.h:113
+#: gnomemeeting.schemas.in.in.h:111
 msgid "Size of the calls history window"
 msgstr "Madhësia e dritares së historikut të thirrjeve"
 
-#: gnomemeeting.schemas.in.in.h:114
+#: gnomemeeting.schemas.in.in.h:112
 msgid "Size of the druid window"
 msgstr "Madhësia e dritares së ndihmuesit të konfigurimit"
 
-#: gnomemeeting.schemas.in.in.h:115
+#: gnomemeeting.schemas.in.in.h:113
 msgid "Size of the log window"
 msgstr "Madhësia e dritares së regjistrimeve"
 
-#: gnomemeeting.schemas.in.in.h:116
+#: gnomemeeting.schemas.in.in.h:114
 msgid "Size of the preferences window"
 msgstr "Madhësia e dritares së preferencave"
 
-#: gnomemeeting.schemas.in.in.h:117
+#: gnomemeeting.schemas.in.in.h:115
 msgid "Start hidden"
 msgstr "Nisu fshehurazi"
 
-#: gnomemeeting.schemas.in.in.h:118 src/main_window.cpp:1042
+#: gnomemeeting.schemas.in.in.h:116 src/main_window.cpp:1123
+#: src/main_window.cpp:1625 src/main_window.cpp:1648
 msgid "Switch to fullscreen"
 msgstr "Kalo në modalitetin me ekran të plotë"
 
-#: gnomemeeting.schemas.in.in.h:119
+#: gnomemeeting.schemas.in.in.h:117
 msgid "TCP port range"
 msgstr "Interval i portave TCP"
 
-#: gnomemeeting.schemas.in.in.h:120
+#: gnomemeeting.schemas.in.in.h:118
 msgid "The Audio Codecs List"
 msgstr "Lista e Kodekëve Audio"
 
-#: gnomemeeting.schemas.in.in.h:121 src/pref_window.cpp:1129
+#: gnomemeeting.schemas.in.in.h:119 src/pref_window.cpp:1123
 msgid ""
 "The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic "
 "Gain Compensation. Choosing Automatic Gain Compensation modulates the volume "
@@ -609,7 +601,7 @@ msgstr ""
 "Automatikisht. Kur zgjedh Automatikisht, kjo ndryshon volumin për një cilësi "
 "më të mirë."
 
-#: gnomemeeting.schemas.in.in.h:122 src/pref_window.cpp:1005
+#: gnomemeeting.schemas.in.in.h:120 src/pref_window.cpp:999
 msgid ""
 "The Gatekeeper alias to use when registering (string, or E164 ID if only "
 "0123456789#)"
@@ -617,22 +609,22 @@ msgstr ""
 "Aliasi që duhet të përdor për tu regjistruar në Gatekeeper (string, ose E164 "
 "ID nëse ka vetëm 0123456789#)"
 
-#: gnomemeeting.schemas.in.in.h:123 src/pref_window.cpp:1003
+#: gnomemeeting.schemas.in.in.h:121 src/pref_window.cpp:997
 msgid "The Gatekeeper host to register with"
 msgstr "Host Gatekeeper ku duhet të regjistrohesh"
 
-#: gnomemeeting.schemas.in.in.h:124 src/pref_window.cpp:1001
+#: gnomemeeting.schemas.in.in.h:122 src/pref_window.cpp:995
 msgid "The Gatekeeper identifier to register with"
 msgstr "Identifikuesi Gatekeeper-it me të cilin duhet të regjistrohesh"
 
-#: gnomemeeting.schemas.in.in.h:125 src/pref_window.cpp:1008
+#: gnomemeeting.schemas.in.in.h:123 src/pref_window.cpp:1002
 msgid ""
 "The Gatekeeper password to use for H.235 authentication to the Gatekeeper"
 msgstr ""
 "Fjalëkalimi që duhet përdorur për tu identifikuar në Gatekeeper për "
 "protokollin H.235."
 
-#: gnomemeeting.schemas.in.in.h:126 src/pref_window.cpp:1030
+#: gnomemeeting.schemas.in.in.h:124 src/pref_window.cpp:1024
 msgid ""
 "The Gateway host is the host to use to do H.323 calls through a gateway that "
 "will relay calls"
@@ -640,11 +632,11 @@ msgstr ""
 "Host Gateway është host për tu përdorur për thirrje H.323 nëpërmjet një "
 "gatway që pason thirrjet"
 
-#: gnomemeeting.schemas.in.in.h:127
+#: gnomemeeting.schemas.in.in.h:125
 msgid "The STUN Server"
 msgstr "Serveri STUN"
 
-#: gnomemeeting.schemas.in.in.h:128 src/pref_window.cpp:1062
+#: gnomemeeting.schemas.in.in.h:126 src/pref_window.cpp:1056
 msgid ""
 "The STUN server to use for STUN Support. STUN is a technic that permits to "
 "go through some types of NAT gateways."
@@ -652,17 +644,17 @@ msgstr ""
 "Serveri STUN që duhet përdorur për suportin STUN. STUN është një teknikë që "
 "mundëson kalimin midis disa prej llojeve të gateways NAT."
 
-#: gnomemeeting.schemas.in.in.h:129
+#: gnomemeeting.schemas.in.in.h:127
 msgid ""
 "The audio plugin that will be used to detect the devices and manage them"
 msgstr ""
 "Plugin i zërit që do përdoret për të gjetur dhe organizuar dispozitivat"
 
-#: gnomemeeting.schemas.in.in.h:130
+#: gnomemeeting.schemas.in.in.h:128
 msgid "The busy tone sound"
 msgstr "Tingulli i thirrjes së zënë"
 
-#: gnomemeeting.schemas.in.in.h:131
+#: gnomemeeting.schemas.in.in.h:129
 msgid ""
 "The chosen sound will be played at the end of calls or calling somebody who "
 "is busy, if enabled"
@@ -670,19 +662,19 @@ msgstr ""
 "Tingulli i zgjedhur do dëgjohet në fund të thirrjeve ose kur merr dikë që "
 "ështëi zënë, nëse aktivizohet"
 
-#: gnomemeeting.schemas.in.in.h:132
+#: gnomemeeting.schemas.in.in.h:130
 msgid "The chosen sound will be played on incoming calls, if enabled"
 msgstr "Tingulli i zgjedhur do dëgjohet kur vijnë thirrje, nëse aktivizohet"
 
-#: gnomemeeting.schemas.in.in.h:133
+#: gnomemeeting.schemas.in.in.h:131
 msgid "The chosen sound will be played when calling somebody, if enabled"
 msgstr "Tingulli i zgjedhur do dëgjohet kur thërret dikë, nëse aktivizohet"
 
-#: gnomemeeting.schemas.in.in.h:134
+#: gnomemeeting.schemas.in.in.h:132
 msgid "The default video view"
 msgstr "Pamja e prezgjedhur e videos"
 
-#: gnomemeeting.schemas.in.in.h:135
+#: gnomemeeting.schemas.in.in.h:133
 msgid ""
 "The default video view (0: Local, 1: Remote, 2: Both incrusted, 3: Both with "
 "local video in a separate window, 4: Both)"
@@ -691,29 +683,25 @@ msgstr ""
 "dyja në një dritare 3: Të dyja me videon lokale në një dritare të veçantë, "
 "4: Të dyja në dritare të veçanta) "
 
-#: gnomemeeting.schemas.in.in.h:136
+#: gnomemeeting.schemas.in.in.h:134
 msgid "The history of the last 100 missed calls"
 msgstr "Historiku i 100 thirrjeve të fundit të humbura"
 
-#: gnomemeeting.schemas.in.in.h:137
+#: gnomemeeting.schemas.in.in.h:135
 msgid "The history of the last 100 placed calls"
 msgstr "Historiku i 100 thirrjeve të fundit të kryera"
 
-#: gnomemeeting.schemas.in.in.h:138
+#: gnomemeeting.schemas.in.in.h:136
 msgid "The history of the last 100 received calls"
 msgstr "Historiku i 100 thirrjeve të fundit të marra"
 
-#: gnomemeeting.schemas.in.in.h:139 src/pref_window.cpp:761
+#: gnomemeeting.schemas.in.in.h:137 src/pref_window.cpp:755
 msgid "The host where calls should be forwarded to in the cases selected above"
 msgstr ""
 "Korrespondeti drejt të cilit do të transferohen thirrjet në rastet e "
 "zgjedhur më sipër"
 
-#: gnomemeeting.schemas.in.in.h:140
-msgid "The image height for fullscreen"
-msgstr "Gjatësia e imazhit me ekran të plotë."
-
-#: gnomemeeting.schemas.in.in.h:141 src/pref_window.cpp:1201
+#: gnomemeeting.schemas.in.in.h:138 src/pref_window.cpp:1195
 msgid ""
 "The image to transmit if \"Picture\" is selected as video plugin or if the "
 "opening of the device fails. Leave blank to use the default GnomeMeeting "
@@ -723,19 +711,19 @@ msgstr ""
 "video ose nëse hapja e dispozitivit së videos dështon. Nëse nuk zgjedh asgjë "
 "atëhere do të shfaqet logo e GnomeMeeting."
 
-#: gnomemeeting.schemas.in.in.h:142
-msgid "The image width for fullscreen"
-msgstr "Gjerësia e imazhit me ekran të plotë."
-
-#: gnomemeeting.schemas.in.in.h:143
+#: gnomemeeting.schemas.in.in.h:139
 msgid "The incoming call sound"
 msgstr "Tingulli i thirrjeve që vijnë"
 
-#: gnomemeeting.schemas.in.in.h:144
+#: gnomemeeting.schemas.in.in.h:140
+msgid "The local zoom value"
+msgstr "Vlera e zoom-it lokal"
+
+#: gnomemeeting.schemas.in.in.h:141
 msgid "The maximum jitter buffer size for audio reception (in ms)"
 msgstr "Masa maksimale e jitter buffer për marrjen e zërit (në ms)."
 
-#: gnomemeeting.schemas.in.in.h:145
+#: gnomemeeting.schemas.in.in.h:142
 msgid ""
 "The maximum video bandwidth in kbytes/s. The video quality and the number of "
 "transmitted frames per second will be dynamically adjusted above their "
@@ -746,11 +734,11 @@ msgstr ""
 "sipër minimumit gjatë thirrjeve për të minimizuar gjerësinë e bandës rreth "
 "vlerës së dhënë"
 
-#: gnomemeeting.schemas.in.in.h:146
+#: gnomemeeting.schemas.in.in.h:143
 msgid "The minimum jitter buffer size for audio reception (in ms)"
 msgstr "Masa minimale e jitter buffer për marrjen e zërit (në ms)"
 
-#: gnomemeeting.schemas.in.in.h:148
+#: gnomemeeting.schemas.in.in.h:145
 #, no-c-format
 msgid ""
 "The minimum transmitted video quality to keep when trying to minimize the "
@@ -761,7 +749,7 @@ msgstr ""
 "në përdorim: zgjidh 100% në një LAN për cilësinë më të mirë, 1% është "
 "cilësia më e keqe"
 
-#: gnomemeeting.schemas.in.in.h:149 src/pref_window.cpp:1131
+#: gnomemeeting.schemas.in.in.h:146 src/pref_window.cpp:1125
 msgid ""
 "The output device type is the type of device connected to your Quicknet "
 "card. It can be either a POTS (Plain Old Telephone System) or a headset."
@@ -769,7 +757,7 @@ msgstr ""
 "Lloji i dispozitivit në dalje është dispozitivi i lidhur me kartën Quicknet. "
 "Mund të jetë një POTS (Plain Old Telephone System) apo një kufje koke."
 
-#: gnomemeeting.schemas.in.in.h:150
+#: gnomemeeting.schemas.in.in.h:147
 msgid ""
 "The port to listen to for incoming connections. GnomeMeeting needs to be "
 "restarted for the new value to take effect."
@@ -777,15 +765,15 @@ msgstr ""
 "Porta e dëgjimit të thirrjeve që vijnë. GnomeMeeting duhet të riniset që "
 "vlera e re të ketë efekt."
 
-#: gnomemeeting.schemas.in.in.h:151
+#: gnomemeeting.schemas.in.in.h:148
 msgid "The position of the local video window"
 msgstr "Pozicioni i dritares së videos lokale"
 
-#: gnomemeeting.schemas.in.in.h:152
+#: gnomemeeting.schemas.in.in.h:149
 msgid "The position of the remote video window"
 msgstr "Pozicioni i dritares së videos së korrespondentit"
 
-#: gnomemeeting.schemas.in.in.h:153
+#: gnomemeeting.schemas.in.in.h:150
 msgid ""
 "The prefix that will be used to save pictures of the conversation. That "
 "prefix is followed by the snapshot number."
@@ -793,7 +781,7 @@ msgstr ""
 "Parashtesa që do të përdoret për regjistrimin e imazheve gjatë bisedës. Kjo "
 "parashtesë është i ndjekur nga numri i figurës së kapur."
 
-#: gnomemeeting.schemas.in.in.h:154
+#: gnomemeeting.schemas.in.in.h:151
 msgid ""
 "The range of TCP ports beside the listen_port that GnomeMeeting will use for "
 "the H.245 channel. You can change the TCP port range if you are using IP "
@@ -809,7 +797,7 @@ msgstr ""
 "vlerat e reja të kenë efekt. Kjo shtrirje portash nuk ka efekt nëse të dy "
 "korrespondentët e një konference janë duke përdorur Tunneling H.245."
 
-#: gnomemeeting.schemas.in.in.h:155
+#: gnomemeeting.schemas.in.in.h:152
 msgid ""
 "The range of UDP ports that GnomeMeeting will use for RTP (audio and video "
 "communication channels). You can change the UDP port range if you are using "
@@ -823,7 +811,7 @@ msgstr ""
 "GnomeMeeting mbrapa router-it NAT/PAT. GnomeMeeting duhet të niset prapë, që "
 "vlerat e reja të kenë efekt."
 
-#: gnomemeeting.schemas.in.in.h:156
+#: gnomemeeting.schemas.in.in.h:153
 msgid ""
 "The range of UDP ports that GnomeMeeting will use when registering to "
 "gatekeepers. You can change the UDP port range if you are using IP "
@@ -839,27 +827,31 @@ msgstr ""
 "të kenë efekt.Kjo shtrirje portash nuk ka efekt nëse nuk regjistrohesh në "
 "një gatekeeper."
 
-#: gnomemeeting.schemas.in.in.h:157 src/pref_window.cpp:1013
+#: gnomemeeting.schemas.in.in.h:154 src/pref_window.cpp:1007
 msgid "The registering method to use"
 msgstr "Mënyra e regjistrimit që duhet përdorur"
 
-#: gnomemeeting.schemas.in.in.h:158
+#: gnomemeeting.schemas.in.in.h:155
+msgid "The remote zoom value"
+msgstr "Vlera e zoom-it në distancë"
+
+#: gnomemeeting.schemas.in.in.h:156
 msgid "The ring tone sound"
 msgstr "Tingulli i ziles"
 
-#: gnomemeeting.schemas.in.in.h:159
+#: gnomemeeting.schemas.in.in.h:157
 msgid "The save prefix"
 msgstr "Parashtesa e shpëtimit"
 
-#: gnomemeeting.schemas.in.in.h:160
+#: gnomemeeting.schemas.in.in.h:158
 msgid "The size of the local video window"
 msgstr "Madhësia e dritares së videos lokale"
 
-#: gnomemeeting.schemas.in.in.h:161
+#: gnomemeeting.schemas.in.in.h:159
 msgid "The size of the remote video window"
 msgstr "Madhësia e dritares së videos të korrespondentit"
 
-#: gnomemeeting.schemas.in.in.h:162
+#: gnomemeeting.schemas.in.in.h:160
 msgid ""
 "The sound that will be played at the end of calls or when calling somebody "
 "who is busy, if enabled"
@@ -867,35 +859,35 @@ msgstr ""
 "Tingulli që do dëgjohet në fund të thirrjes apo kur mer dikë që është i "
 "zënë, nëse aktivizohet"
 
-#: gnomemeeting.schemas.in.in.h:163
+#: gnomemeeting.schemas.in.in.h:161
 msgid "The sound that will be played on incoming calls, if enabled"
 msgstr "Tingulli që do dëgjohet kur vijnë thirrje, nëse aktivizohet"
 
-#: gnomemeeting.schemas.in.in.h:164
+#: gnomemeeting.schemas.in.in.h:162
 msgid "The sound that will be played when calling somebody, if enabled"
 msgstr "Tingulli që do dëgjohet kur merr dikë, nëse aktivizohet"
 
-#: gnomemeeting.schemas.in.in.h:165
+#: gnomemeeting.schemas.in.in.h:163
 msgid "The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)"
 msgstr "Kodi i shtetit tënd me dy shifra (shembull : AL, FR, BE, UK, DE, ...)"
 
-#: gnomemeeting.schemas.in.in.h:166
+#: gnomemeeting.schemas.in.in.h:164
 msgid "The user directory server to register with"
 msgstr "Serveri i përdoruesve ku duhet të regjistrohesh"
 
-#: gnomemeeting.schemas.in.in.h:167 src/pref_window.cpp:1194
+#: gnomemeeting.schemas.in.in.h:165 src/pref_window.cpp:1188
 msgid "The video channel number to use (to select camera, tv or other sources)"
 msgstr ""
 "Numri i kanalit të videos që duhet përdorur (për të zgjedhur një webcam , "
 "një TV, apo diçka tjetër)."
 
-#: gnomemeeting.schemas.in.in.h:168 src/pref_window.cpp:1178
+#: gnomemeeting.schemas.in.in.h:166 src/pref_window.cpp:1172
 msgid ""
 "The video plugin that will be used to detect the devices and manage them"
 msgstr ""
 "Plugin video që do përdoret për gjetjen dhe organizimin e dispozitivave"
 
-#: gnomemeeting.schemas.in.in.h:169
+#: gnomemeeting.schemas.in.in.h:167
 msgid ""
 "The way to react to incoming calls: 0 displays a popup, 1 automatically "
 "answers the call, 2 automatically rejects the call and 3 forwards the call "
@@ -905,17 +897,33 @@ msgstr ""
 "përgjigjet automatikisht, 2 refuzon automatikisht thirrjen, 3 transferon "
 "thirrjen tek URL e dhëne, nëse kjo e fundit ekziston"
 
-#: gnomemeeting.schemas.in.in.h:170
+#: gnomemeeting.schemas.in.in.h:168
 msgid "The zoom value"
 msgstr "Vlera e zoom-it"
 
-#: gnomemeeting.schemas.in.in.h:171
+#: gnomemeeting.schemas.in.in.h:169
+msgid ""
+"The zoom value to apply to images displayed in the local video window (can "
+"be 0.50, 1.00, or 2.00) for video"
+msgstr ""
+"Vlera e zoom-it që duhet zgjedhur për imazhet e shfaqura në dritaren lokale "
+"(mund të jetë 0.50, 1.00, ose 2.00) për videon"
+
+#: gnomemeeting.schemas.in.in.h:170
 msgid ""
 "The zoom value to apply to images displayed in the main GUI (can be 0.50, "
-"1.00, or 2.00)"
+"1.00, or 2.00) for video"
 msgstr ""
-"Vlera e zoom-it që duhet zgjedhur për imazhit e shfaqura në dritaren "
-"kryesore (mund të jetë 0.50, 1.00, ose 2.00)"
+"Vlera e zoom-it që duhet zgjedhur për imazhet e shfaqura në dritaren "
+"kryesore (mund të jetë 0.50, 1.00, ose 2.00) për videon"
+
+#: gnomemeeting.schemas.in.in.h:171
+msgid ""
+"The zoom value to apply to images displayed in the remote video window (can "
+"be 0.50, 1.00, or 2.00) for video"
+msgstr ""
+"Vlera e zoom-it që duhet zgjedhur për imazhet e shfaqura në dritaren "
+"në distancë (mund të jetë 0.50, 1.00, ose 2.00) për videon"
 
 #: gnomemeeting.schemas.in.in.h:172
 msgid ""
@@ -931,7 +939,7 @@ msgstr ""
 "punon me Netmeeting. Përdorimi i Nisjes së Shpejtë dhe i Tunneling H.245 "
 "mund të krijojë difekte në disa versione të Netmeeting. "
 
-#: gnomemeeting.schemas.in.in.h:173 src/pref_window.cpp:969
+#: gnomemeeting.schemas.in.in.h:173 src/pref_window.cpp:963
 msgid "This enables H.245 early in the setup"
 msgstr "Kjo aktivizon H.245 e hershme në përgatitje"
 
@@ -962,7 +970,7 @@ msgstr ""
 "serveri ILS. Nëse router-i tëaj mbështet protokollin H323, atëhere mund ta "
 "hiqni këtë mundësi"
 
-#: gnomemeeting.schemas.in.in.h:176 src/pref_window.cpp:1060
+#: gnomemeeting.schemas.in.in.h:176 src/pref_window.cpp:1054
 msgid ""
 "This enables STUN Support. STUN is a technic that permits to go through some "
 "types of NAT gateways."
@@ -995,7 +1003,7 @@ msgstr "Intervali i portave UDP"
 msgid "Use the gateway"
 msgstr "Përdor gateway"
 
-#: gnomemeeting.schemas.in.in.h:181 src/pref_window.cpp:1032
+#: gnomemeeting.schemas.in.in.h:181 src/pref_window.cpp:1026
 msgid "Use the specified gateway to do calls"
 msgstr "Përdor gateway e veçantë për të kryer thirrje"
 
@@ -1210,11 +1218,11 @@ msgstr ""
 msgid "Total: %.2f MB"
 msgstr "Shuma: %.2f Mb"
 
-#: src/addressbook_window.cpp:745
+#: src/addressbook_window.cpp:762
 msgid "Contact collision"
 msgstr "Përplasje ndërlidhësi"
 
-#: src/addressbook_window.cpp:747
+#: src/addressbook_window.cpp:764
 #, c-format
 msgid ""
 "Another contact with the same speed dial already exists in your address "
@@ -1231,12 +1239,12 @@ msgstr ""
 "<b>URL</b> %s\n"
 "<b>Shpejtësia e lidhjes</b>: %s\n"
 
-#: src/addressbook_window.cpp:747 src/addressbook_window.cpp:749
-#: src/druid.cpp:1839 src/pref_window.cpp:954
+#: src/addressbook_window.cpp:764 src/addressbook_window.cpp:766
+#: src/druid.cpp:1839 src/pref_window.cpp:948
 msgid "None"
 msgstr "Asnjë"
 
-#: src/addressbook_window.cpp:749
+#: src/addressbook_window.cpp:766
 #, c-format
 msgid ""
 "Another contact with similar information already exists in your address "
@@ -1257,237 +1265,243 @@ msgstr ""
 "Dëshiron akoma të shtosh kontaktin?"
 
 #. Translators: This is "S" as in "Status"
-#: src/addressbook_window.cpp:917
+#: src/addressbook_window.cpp:934
 msgid "S"
 msgstr "S"
 
-#: src/addressbook_window.cpp:928 src/pref_window.cpp:509
+#: src/addressbook_window.cpp:945 src/pref_window.cpp:509
 msgid "Name"
 msgstr "Emri"
 
-#: src/addressbook_window.cpp:942
+#: src/addressbook_window.cpp:959
 msgid "URL"
 msgstr "URL"
 
-#: src/addressbook_window.cpp:970 src/calls_history_window.cpp:705
+#: src/addressbook_window.cpp:987 src/calls_history_window.cpp:737
 msgid "Software"
 msgstr "Software"
 
-#: src/addressbook_window.cpp:984
+#: src/addressbook_window.cpp:1001
 msgid "E-Mail"
 msgstr "E-Mail"
 
-#: src/addressbook_window.cpp:1010
+#: src/addressbook_window.cpp:1027
 msgid "Categories"
 msgstr "Kategoritë"
 
-#: src/addressbook_window.cpp:1024
+#: src/addressbook_window.cpp:1041
 msgid "Speed Dial"
 msgstr "Speed Dial"
 
-#: src/addressbook_window.cpp:1057
+#: src/addressbook_window.cpp:1074
 msgid "Find all contacts"
 msgstr "Gjen të gjithë ndërlidhësit"
 
-#: src/addressbook_window.cpp:1062
+#: src/addressbook_window.cpp:1079
 msgid "Name contains"
 msgstr "Emri përmban"
 
-#: src/addressbook_window.cpp:1066
+#: src/addressbook_window.cpp:1083
 msgid "URL contains"
 msgstr "URL përmban"
 
-#: src/addressbook_window.cpp:1070
+#: src/addressbook_window.cpp:1089
 msgid "Belongs to category"
 msgstr "I përket kategorisë"
 
-#: src/addressbook_window.cpp:1441 src/addressbook_window.cpp:1471
-#: src/addressbook_window.cpp:2210 src/calls_history_window.cpp:275
+#: src/addressbook_window.cpp:1461 src/addressbook_window.cpp:1491
+#: src/addressbook_window.cpp:2242 src/calls_history_window.cpp:284
 msgid "C_all Contact"
 msgstr "Th_irr Ndërlidhësin"
 
-#: src/addressbook_window.cpp:1446 src/addressbook_window.cpp:1476
+#: src/addressbook_window.cpp:1466 src/addressbook_window.cpp:1496
 msgid "_Copy URL to clipboard"
 msgstr "_Kopjo URL"
 
-#: src/addressbook_window.cpp:1453 src/addressbook_window.cpp:1511
-#: src/addressbook_window.cpp:2196
+#: src/addressbook_window.cpp:1473 src/addressbook_window.cpp:1531
+#: src/addressbook_window.cpp:2228
 msgid "_Properties"
 msgstr "_Pronësitë"
 
-#: src/addressbook_window.cpp:1460 src/addressbook_window.cpp:1518
-#: src/addressbook_window.cpp:2191
+#: src/addressbook_window.cpp:1480 src/addressbook_window.cpp:1538
+#: src/addressbook_window.cpp:2223
 msgid "_Delete"
 msgstr "_Elemino"
 
-#: src/addressbook_window.cpp:1483 src/addressbook_window.cpp:2220
-#: src/calls_history_window.cpp:282
+#: src/addressbook_window.cpp:1503 src/addressbook_window.cpp:2252
+#: src/calls_history_window.cpp:291
 msgid "Add Contact to _Address Book"
 msgstr "Shto Ndërlidhësin në Bllokun e _Adresave"
 
-#: src/addressbook_window.cpp:1743
+#: src/addressbook_window.cpp:1763
 #, c-format
 msgid "Error while fetching users list from %s"
 msgstr "Gabim gjatë tërheqjes së listës së përdoruesve prej %s"
 
-#: src/addressbook_window.cpp:1747
+#: src/addressbook_window.cpp:1767
 #, c-format
 msgid "Found %d user in %s"
 msgstr "U gjet %d përdorues në %s"
 
-#: src/addressbook_window.cpp:1748
+#: src/addressbook_window.cpp:1768
 #, c-format
 msgid "Found %d users in %s"
 msgstr "U gjetën %d përdorues në %s"
 
-#: src/addressbook_window.cpp:1751
+#: src/addressbook_window.cpp:1771
 #, c-format
 msgid "Found %d user in %s for a total of %d users"
 msgstr "U gjet %d përdorues në %s për një total prej %d përdoruesish"
 
-#: src/addressbook_window.cpp:1751
+#: src/addressbook_window.cpp:1771
 #, c-format
 msgid "Found %d users in %s for a total of %d users"
 msgstr "U gjetën %d përdorues në %s për një total prej %d përdoruesish"
 
-#: src/addressbook_window.cpp:2155
+#: src/addressbook_window.cpp:2187
 msgid "Address Book"
 msgstr "Rubrika"
 
-#: src/addressbook_window.cpp:2182
+#: src/addressbook_window.cpp:2214
 msgid "_File"
 msgstr "_File"
 
-#: src/addressbook_window.cpp:2184
+#: src/addressbook_window.cpp:2216
 msgid "New _Address Book"
 msgstr "Bllok _Adresash i Ri"
 
-#: src/addressbook_window.cpp:2203 src/main_window.cpp:924
+#: src/addressbook_window.cpp:2235 src/main_window.cpp:999
 msgid "_Close"
 msgstr "_Mbyll"
 
-#: src/addressbook_window.cpp:2208
+#: src/addressbook_window.cpp:2240
 msgid "C_ontact"
 msgstr "_Kontakti"
 
-#: src/addressbook_window.cpp:2216
+#: src/addressbook_window.cpp:2248
 msgid "New _Contact"
 msgstr "Kontakt i _ri"
 
-#: src/addressbook_window.cpp:2293
+#: src/addressbook_window.cpp:2325
 msgid "On LDAP servers"
 msgstr "Në servera LDAP"
 
 #. Init the address book
-#: src/addressbook_window.cpp:2301 src/gnomemeeting.cpp:399
+#: src/addressbook_window.cpp:2333 src/gnomemeeting.cpp:399
 msgid "On This Computer"
 msgstr "Në Këtë Kompjuter"
 
-#: src/addressbook_window.cpp:2419
+#: src/addressbook_window.cpp:2456
 msgid "Edit the Contact Information"
 msgstr "Ndrysho Të Dhënat e Kontaktit"
 
-#: src/addressbook_window.cpp:2440 src/addressbook_window.cpp:2875
+#: src/addressbook_window.cpp:2477 src/addressbook_window.cpp:2937
 msgid "Name:"
 msgstr "Emri:"
 
-#: src/addressbook_window.cpp:2460
+#: src/addressbook_window.cpp:2497
 msgid "URL:"
 msgstr "URL:"
 
-#: src/addressbook_window.cpp:2480
+#: src/addressbook_window.cpp:2517
 msgid "Email:"
 msgstr "Email:"
 
-#: src/addressbook_window.cpp:2501
+#: src/addressbook_window.cpp:2538
 msgid "Speed Dial:"
 msgstr "Shpejtësia e Telefonatës:"
 
-#: src/addressbook_window.cpp:2523
+#: src/addressbook_window.cpp:2560
 msgid "Categories:"
 msgstr "Kategoritë:"
 
-#: src/addressbook_window.cpp:2548
+#: src/addressbook_window.cpp:2585
 msgid "Local Addressbook:"
 msgstr "Blloku i Adresave Lokal:"
 
-#: src/addressbook_window.cpp:2728
+#: src/addressbook_window.cpp:2746 src/addressbook_window.cpp:3240
+msgid "Missing information"
+msgstr "Informacione munguese"
+
+#: src/addressbook_window.cpp:2746
+msgid ""
+"Please make sure to provide at least a full name or an URL for the contact."
+msgstr ""
+"Të lutem sigurohu që siguron të paktën emër dhe mbiemër ose një URL për kontaktin."
+
+#: src/addressbook_window.cpp:2790
 #, c-format
 msgid "Are you sure you want to delete %s from %s?"
 msgstr "Je i sigurtë që dëshiron të fshish %s nga %s?"
 
-#: src/addressbook_window.cpp:2854
+#: src/addressbook_window.cpp:2916
 msgid "Edit an address book"
 msgstr "Ndrysho një bllok adresash"
 
-#: src/addressbook_window.cpp:2855
+#: src/addressbook_window.cpp:2917
 msgid "Add an address book"
 msgstr "Shto një bllok adresash"
 
-#: src/addressbook_window.cpp:2900
+#: src/addressbook_window.cpp:2962
 msgid "Type:"
 msgstr "Lloji:"
 
-#: src/addressbook_window.cpp:2907
+#: src/addressbook_window.cpp:2969
 msgid "Local"
 msgstr "Lokale"
 
-#: src/addressbook_window.cpp:2912
+#: src/addressbook_window.cpp:2974
 msgid "Remote LDAP"
 msgstr "LDAP e largët"
 
-#: src/addressbook_window.cpp:2917
+#: src/addressbook_window.cpp:2979
 msgid "Remote ILS"
 msgstr "ILS i largët"
 
-#: src/addressbook_window.cpp:2950
+#: src/addressbook_window.cpp:3012
 msgid "Hostname:"
 msgstr "Emri i host:"
 
-#: src/addressbook_window.cpp:2973
+#: src/addressbook_window.cpp:3035
 msgid "Port:"
 msgstr "Porta:"
 
-#: src/addressbook_window.cpp:2998
+#: src/addressbook_window.cpp:3060
 msgid "Base DN:"
 msgstr "DN Bazë:"
 
-#: src/addressbook_window.cpp:3021
+#: src/addressbook_window.cpp:3083
 msgid "Search Scope:"
 msgstr "Qëllimi i Kërkimit:"
 
-#: src/addressbook_window.cpp:3028
+#: src/addressbook_window.cpp:3090
 msgid "Subtree"
 msgstr "Degëzimi"
 
-#: src/addressbook_window.cpp:3033
+#: src/addressbook_window.cpp:3095
 msgid "One Level"
 msgstr "Një Nivel"
 
-#: src/addressbook_window.cpp:3065
+#: src/addressbook_window.cpp:3127
 msgid "Search Attribute:"
 msgstr "Vetia e Kërkimit:"
 
-#: src/addressbook_window.cpp:3178
-msgid "Missing information"
-msgstr "Informacione munguese"
-
-#: src/addressbook_window.cpp:3178
+#: src/addressbook_window.cpp:3240
 msgid "Please make sure to fill in all requested fields."
 msgstr "Të lutem sigurohu ti mbushësh të gjitha të dhënat e kërkuara."
 
-#: src/addressbook_window.cpp:3221
+#: src/addressbook_window.cpp:3283
 #, c-format
 msgid "Are you sure you want to delete %s and all its contacts?"
 msgstr ""
 "Je i sigurtë që dëshiron të fshish grupin %s dhe të gjithë ndërlidhësit e "
 "tij?"
 
-#: src/bonobo_component.cpp:111
+#: src/bonobo_component.cpp:114
 msgid "Cannot run GnomeMeeting"
 msgstr "S'mund të vej në punë GnomeMeeting"
 
-#: src/bonobo_component.cpp:111
+#: src/bonobo_component.cpp:114
 msgid ""
 "GnomeMeeting is already running, if you want it to call a given callto or "
 "h323 URL, please use \"gnomemeeting -c URL\"."
@@ -1495,7 +1509,7 @@ msgstr ""
 "GnomeMeeting është në ekzekutim, nëse dëshiron të thërrasësh një callto apo "
 "një URL h323, përdor komandën \"gnomemeeting -c URL\"."
 
-#: src/bonobo_component.cpp:164
+#: src/bonobo_component.cpp:167
 msgid ""
 "It appears that you do not have gnomemeeting.server installed in a valid "
 "location. Factory mode disabled.\n"
@@ -1503,7 +1517,7 @@ msgstr ""
 "Duket sikur gnomemeeting.server nuk është instaluar në një vend të vlefshëm."
 "Moda Factory nuk është e aktivizuar.\n"
 
-#: src/bonobo_component.cpp:168
+#: src/bonobo_component.cpp:171
 msgid ""
 "Error registering GnomeMeeting with the activation service; factory mode "
 "disabled.\n"
@@ -1511,7 +1525,7 @@ msgstr ""
 "Gabim gjatë regjistrimit të GnomeMeeting tek shërbimet e aktivimit; moda "
 "Factory nuk është e aktivizuar.\n"
 
-#: src/bonobo_component.cpp:208
+#: src/bonobo_component.cpp:211
 msgid "Failed to retrieve gnomemeeting server from activation server\n"
 msgstr "Dështoi në tërheqjen e serverit gnomemeeting nga serveri aktivues\n"
 
@@ -1545,35 +1559,35 @@ msgstr ""
 "videokonferencë, një program VoIP dhe IP-Telefonik që bën të mundur thirrje "
 "audio-vizive me përdorues hardware apo software H.323."
 
-#: src/calls_history_window.cpp:614
+#: src/calls_history_window.cpp:646
 msgid "Received Calls"
 msgstr "Thirrjet e marra"
 
-#: src/calls_history_window.cpp:614
+#: src/calls_history_window.cpp:646
 msgid "Placed Calls"
 msgstr "Thirrjet e kryera"
 
-#: src/calls_history_window.cpp:614
+#: src/calls_history_window.cpp:646
 msgid "Missed Calls"
 msgstr "Thirrjet e Humbura"
 
-#: src/calls_history_window.cpp:626 src/main_window.cpp:1062 src/tray.cpp:298
+#: src/calls_history_window.cpp:658 src/main_window.cpp:1143 src/tray.cpp:298
 msgid "Calls History"
 msgstr "Historiku i thirrjeve"
 
-#: src/calls_history_window.cpp:669
+#: src/calls_history_window.cpp:701
 msgid "Date"
 msgstr "Data"
 
-#: src/calls_history_window.cpp:677
+#: src/calls_history_window.cpp:709
 msgid "Remote User"
 msgstr "Përdoruesi remot"
 
-#: src/calls_history_window.cpp:686
+#: src/calls_history_window.cpp:718
 msgid "Call Duration"
 msgstr "Kohëzgjatja e Thirrjes"
 
-#: src/calls_history_window.cpp:696
+#: src/calls_history_window.cpp:728
 msgid "Call End Reason"
 msgstr "Arsyea e përfundimit të thirrjes"
 
@@ -1827,23 +1841,23 @@ msgstr "U hap kodek %s për marrje"
 msgid "Closed codec %s which was opened for reception"
 msgstr "Mbylli kodek %s i cili ishte hapur për marrje"
 
-#: src/connection.cpp:202
+#: src/connection.cpp:203
 #, c-format
 msgid "Failure opening %s for transmission, will try with next common codec"
 msgstr ""
 "Hapja e %s për transmetim dështoi, do provojë kodekun tjetër të zakonshëm"
 
-#: src/connection.cpp:203
+#: src/connection.cpp:204
 #, c-format
 msgid "Failure opening %s for reception, will try with next common codec"
 msgstr "Hapja e %s për marrje dështoi, do provojë kodekun tjetër të zakonshëm"
 
-#: src/connection.cpp:325 src/connection.cpp:326 src/urlhandler.cpp:78
-#: src/urlhandler.cpp:79
+#: src/connection.cpp:326 src/connection.cpp:327 src/urlhandler.cpp:77
+#: src/urlhandler.cpp:78
 msgid "Call transfer failed"
 msgstr "Tranferimi i thirrjes dështoi"
 
-#: src/connection.cpp:325
+#: src/connection.cpp:326
 msgid ""
 "The remote user tried to transfer your call to another user, but it failed."
 msgstr ""
@@ -1953,8 +1967,8 @@ msgid ""
 "The NAT type detection will permit to assist you in configuring your NAT "
 "router to be able to do calls with GnomeMeeting."
 msgstr ""
-"Zbulimi i llojit të NAT-it do të të ndihmojë në konfigurimin e router-it tënd NAT "
-"për të mundësuar thirrjet me GnomeMeeting."
+"Zbulimi i llojit të NAT-it do të të ndihmojë në konfigurimin e router-it "
+"tënd NAT për të mundësuar thirrjet me GnomeMeeting."
 
 #: src/druid.cpp:916
 #, c-format
@@ -2048,9 +2062,9 @@ msgid "Configuration complete - page %d/%d"
 msgstr "Konfigurimi i mbaruar - faqja %d/%d"
 
 #: src/druid.cpp:1433 src/druid.cpp:1693 src/druid.cpp:1710 src/druid.cpp:1776
-#: src/endpoint.cpp:1727 src/gnomemeeting.cpp:253 src/gnomemeeting.cpp:255
-#: src/gnomemeeting.cpp:257 src/sound_handling.cpp:570
-#: src/sound_handling.cpp:571 src/videograbber.cpp:310
+#: src/endpoint.cpp:1709 src/gnomemeeting.cpp:253 src/gnomemeeting.cpp:255
+#: src/gnomemeeting.cpp:257 src/sound_handling.cpp:573
+#: src/sound_handling.cpp:574 src/videograbber.cpp:310
 #: src/videograbber.cpp:573
 msgid "No device found"
 msgstr "Nuk u gjet asnjë dispozitiv"
@@ -2113,163 +2127,163 @@ msgid "First Time Configuration Druid"
 msgstr "Ndihmuesi i Konfigurimit të Parë"
 
 #. Update the log and status bar
-#: src/endpoint.cpp:742
+#: src/endpoint.cpp:729
 #, c-format
 msgid "Call from %s"
 msgstr "Thirrje nga %s"
 
-#: src/endpoint.cpp:754
+#: src/endpoint.cpp:741
 #, c-format
 msgid "Forwarding call from %s to %s (Forward all calls)"
 msgstr ""
 "Transferim i thirrjes nga %s drejt %s (Transferim i të gjitha thirrjeve)"
 
 #. there is no forwarding, so reject the call
-#: src/endpoint.cpp:761 src/endpoint.cpp:782
+#: src/endpoint.cpp:748 src/endpoint.cpp:769
 #, c-format
 msgid "Rejecting call from %s (Busy)"
 msgstr "Duke refuzuar thirrjen që vjen nga %s (I zënë)"
 
-#: src/endpoint.cpp:773
+#: src/endpoint.cpp:760
 #, c-format
 msgid "Forwarding call from %s to %s (Busy)"
 msgstr "Transferim i thirrjes nga %s drejt %s (I zënë)"
 
-#: src/endpoint.cpp:791
+#: src/endpoint.cpp:778
 #, c-format
 msgid "Accepting call from %s (Free For Chat)"
 msgstr "Duke pranuar thirrje nga %s (I Lirë Për Bisedim)"
 
-#: src/endpoint.cpp:816
+#: src/endpoint.cpp:803
 msgid "Call rejected"
 msgstr "Thirrja u refuzua"
 
-#: src/endpoint.cpp:825 src/endpoint.cpp:1217 src/endpoint.cpp:2150
+#: src/endpoint.cpp:812 src/endpoint.cpp:1202 src/endpoint.cpp:2132
 msgid "Call forwarded"
 msgstr "Thirrje e transferuar"
 
-#: src/endpoint.cpp:837
+#: src/endpoint.cpp:824
 msgid "Call automatically answered"
 msgstr "Përgjigje automatike e thirrjes"
 
-#: src/endpoint.cpp:921
+#: src/endpoint.cpp:904
 #, c-format
 msgid "Forwarding call to %s"
 msgstr "Duke transferuar thirrjen tek %s"
 
-#: src/endpoint.cpp:932
+#: src/endpoint.cpp:915
 #, c-format
 msgid "Error while forwarding call to %s"
 msgstr "Gabim gjatë transferimit të thirrjes tek %s"
 
-#: src/endpoint.cpp:935
+#: src/endpoint.cpp:918
 msgid "There was an error when forwarding the call to the given host."
 msgstr "Ndodhi një gabim gjatë transferimit të thirrjes tek host i dhënë."
 
-#: src/endpoint.cpp:1022
+#: src/endpoint.cpp:1007
 msgid "Connected"
 msgstr "I lidhur"
 
-#: src/endpoint.cpp:1024
+#: src/endpoint.cpp:1009
 #, c-format
 msgid "Connected with %s using %s"
 msgstr "I lidhur me %s që përdor %s"
 
-#: src/endpoint.cpp:1181
+#: src/endpoint.cpp:1166
 msgid "Local user cleared the call"
 msgstr "Përdoruesi lokal e mbylli thirrjen"
 
-#: src/endpoint.cpp:1184
+#: src/endpoint.cpp:1169
 msgid "Remote user cleared the call"
 msgstr "Korrespondenti e mbylli thirrjen"
 
-#: src/endpoint.cpp:1187
+#: src/endpoint.cpp:1172
 msgid "Remote user did not accept the call"
 msgstr "Korrespondenti nuk e pranoi thirrjen tënd"
 
-#: src/endpoint.cpp:1190 src/endpoint.cpp:1193
+#: src/endpoint.cpp:1175 src/endpoint.cpp:1178
 msgid "Local user did not accept the call"
 msgstr "Përdoruesi lokal nuk e pranoi thirrjen tënd"
 
-#: src/endpoint.cpp:1196
+#: src/endpoint.cpp:1181
 msgid "The Gatekeeper cleared the call"
 msgstr "Gatekeeperi e mbylli thirrjen"
 
-#: src/endpoint.cpp:1199
+#: src/endpoint.cpp:1184
 msgid "Call not answered in the required time"
 msgstr "Nuk të përgjigj thirrjes në kohën që duhej"
 
-#: src/endpoint.cpp:1202
+#: src/endpoint.cpp:1187
 msgid "Remote user has stopped calling"
 msgstr "Korrespondenti e ndërpreu thirrjen"
 
-#: src/endpoint.cpp:1205
+#: src/endpoint.cpp:1190
 msgid "Abnormal call termination"
 msgstr "Mbarim anormal i thirrjes"
 
-#: src/endpoint.cpp:1208
+#: src/endpoint.cpp:1193
 msgid "Could not connect to remote host"
 msgstr "Nuk mundi të lidhet me korrespondentin"
 
-#: src/endpoint.cpp:1211
+#: src/endpoint.cpp:1196
 msgid "Insufficient bandwidth"
 msgstr "Gjerësi bande e pamjaftueshme"
 
-#: src/endpoint.cpp:1214
+#: src/endpoint.cpp:1199
 msgid "No common codec"
 msgstr "S'ka kodek të përbashkët"
 
-#: src/endpoint.cpp:1220
+#: src/endpoint.cpp:1205
 msgid "Security check Failed"
 msgstr "Dështim i verifikimit të sigurimit"
 
-#: src/endpoint.cpp:1223
+#: src/endpoint.cpp:1208
 msgid "Local user is busy"
 msgstr "Përdoruesi lokal është i zënë"
 
-#: src/endpoint.cpp:1226
+#: src/endpoint.cpp:1211
 msgid "Remote user is busy"
 msgstr "Korrespondenti ështe i zënë"
 
-#: src/endpoint.cpp:1229 src/endpoint.cpp:1232
+#: src/endpoint.cpp:1214 src/endpoint.cpp:1217
 msgid "Congested link to remote party"
 msgstr "Linja e korrespondentit  është e ngarkuar"
 
-#: src/endpoint.cpp:1235 src/endpoint.cpp:1238
+#: src/endpoint.cpp:1220 src/endpoint.cpp:1223
 msgid "Remote user is unreachable"
 msgstr "Korrespondenti nuk është i arritshëm"
 
-#: src/endpoint.cpp:1241
+#: src/endpoint.cpp:1226
 msgid "Remote host is offline"
 msgstr "Korrespondenti nuk është në lidhje"
 
-#: src/endpoint.cpp:1244
+#: src/endpoint.cpp:1229
 msgid "Temporary failure"
 msgstr "Dështim i përkohshëm"
 
-#: src/endpoint.cpp:1247 src/urlhandler.cpp:460 src/urlhandler.cpp:466
+#: src/endpoint.cpp:1232 src/urlhandler.cpp:470 src/urlhandler.cpp:476
 msgid "User not found"
 msgstr "Përdoruesi nuk u gjet"
 
-#: src/endpoint.cpp:1251
+#: src/endpoint.cpp:1236
 msgid "Call completed"
 msgstr "Thirrja u mbarua"
 
-#: src/endpoint.cpp:1274
+#: src/endpoint.cpp:1259
 #, c-format
 msgid "Missed %d call"
 msgstr "%d thirrje të humbura"
 
-#: src/endpoint.cpp:1275
+#: src/endpoint.cpp:1260
 #, c-format
 msgid "Missed %d calls"
 msgstr "%d thirrje të humbura"
 
-#: src/endpoint.cpp:1570
+#: src/endpoint.cpp:1552
 msgid "Error while starting the listener"
 msgstr "Gabim gjatë nisjes të përgtëesit"
 
-#: src/endpoint.cpp:1570
+#: src/endpoint.cpp:1552
 msgid ""
 "You will not be able to receive incoming calls. Please check that no other "
 "program is already running on the port used by GnomeMeeting."
@@ -2277,25 +2291,25 @@ msgstr ""
 "Nuk mund të merrni thirrjet që vijnë.  Ju lutem verifikoni që s'ka program "
 "tjetër duke zënë portin që përdoret nga GnomeMeeting."
 
-#: src/endpoint.cpp:1713
+#: src/endpoint.cpp:1695
 msgid "Attaching lid hardware to codec"
 msgstr "Bashkëngjitje e kodekut me LID"
 
-#: src/endpoint.cpp:1747
+#: src/endpoint.cpp:1729
 #, c-format
 msgid "Opened %s for recording with plugin %s"
 msgstr "Hapi %s për të regjistruar me plugin %s"
 
-#: src/endpoint.cpp:1748
+#: src/endpoint.cpp:1730
 #, c-format
 msgid "Opened %s for playing with plugin %s"
 msgstr "Hapi %s për të lexuar me plugin %s"
 
-#: src/endpoint.cpp:1784
+#: src/endpoint.cpp:1766
 msgid "Could not open audio channel for audio transmission"
 msgstr "Nuk mund të hapi kanalin e audios për transmetimin e zërit"
 
-#: src/endpoint.cpp:1784
+#: src/endpoint.cpp:1766
 msgid ""
 "An error occured while trying to record from the soundcard for the audio "
 "transmission. Please check that your soundcard is not busy and that your "
@@ -2307,11 +2321,11 @@ msgstr ""
 "funksiononme full-duplex.\n"
 "Transmetimi i zërit nuk ishte i aktivizuar."
 
-#: src/endpoint.cpp:1789
+#: src/endpoint.cpp:1771
 msgid "Could not open audio channel for audio reception"
 msgstr "Nuk mund të hapi kanalin e audios për marrjen e zërit"
 
-#: src/endpoint.cpp:1789
+#: src/endpoint.cpp:1771
 msgid ""
 "An error occured while trying to play audio to the soundcard for the audio "
 "reception. Please check that your soundcard is not busy and that your driver "
@@ -2323,12 +2337,12 @@ msgstr ""
 "me full-duplex.\n"
 "Marrja e zërit nuk ishte e aktivizuar."
 
-#: src/endpoint.cpp:1979
+#: src/endpoint.cpp:1961
 #, c-format
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 
-#: src/endpoint.cpp:2147
+#: src/endpoint.cpp:2129
 #, c-format
 msgid "Forwarding Call to %s (No Answer)"
 msgstr "Tranferim i thirrjeve drejt %s (S'ka përgjigje)"
@@ -2533,11 +2547,11 @@ msgstr "Telefoni është i hapur"
 msgid "Phone is on hook"
 msgstr "Telefoni është i mbyllur"
 
-#: src/log_window.cpp:117 src/main_window.cpp:1057
+#: src/log_window.cpp:117 src/main_window.cpp:1138
 msgid "General History"
 msgstr "Historiku i përgjithshëm"
 
-#: src/main_window.cpp:625
+#: src/main_window.cpp:698
 msgid ""
 "Enter an URL to call on the left, and click on this button to connect to the "
 "given URL"
@@ -2545,19 +2559,23 @@ msgstr ""
 "Fut një URL për të telefonuar në të majtë, pastaj klikoni në këtë buton për "
 "tu lidhur me URL e dhënë"
 
-#: src/main_window.cpp:693
+#: src/main_window.cpp:744
+msgid "Open text chat"
+msgstr "Hap tekstin e bisedës"
+
+#: src/main_window.cpp:768
 msgid "Open control panel"
 msgstr "Hap panelën e kontrollit"
 
-#: src/main_window.cpp:712
+#: src/main_window.cpp:787
 msgid "Open address book"
 msgstr "Hap bllokun e adresave"
 
-#: src/main_window.cpp:733
+#: src/main_window.cpp:808
 msgid "Display images from your camera device"
 msgstr "Shfaq imazhe nga dispozitivi i kamerës"
 
-#: src/main_window.cpp:759
+#: src/main_window.cpp:834
 msgid ""
 "Audio transmission status. During a call, click here to suspend or resume "
 "the audio transmission."
@@ -2565,7 +2583,7 @@ msgstr ""
 "Gjëndja e transmetimit të audios. Gjatë thirrjes, klikoni këtu për të "
 "ndaluar ose rifilluar transmetimin e zërit."
 
-#: src/main_window.cpp:782
+#: src/main_window.cpp:857
 msgid ""
 "Video transmission status. During a call, click here to suspend or resume "
 "the video transmission."
@@ -2573,303 +2591,307 @@ msgstr ""
 "Gjëndja e transmetimit të videos. Gjatë thirrjes, klikoni këtu për të "
 "ndaluar ose rifilluar transmetimin e videos."
 
-#: src/main_window.cpp:851
+#: src/main_window.cpp:926
 msgid "C_all"
 msgstr "_Thirrje"
 
-#: src/main_window.cpp:853
+#: src/main_window.cpp:928
 msgid "C_onnect"
 msgstr "Li_dhu"
 
-#: src/main_window.cpp:853 src/tray.cpp:255
+#: src/main_window.cpp:928 src/tray.cpp:255
 msgid "Create a new connection"
 msgstr "Krijo një lidhje të re"
 
-#: src/main_window.cpp:856 src/tray.cpp:258
+#: src/main_window.cpp:931 src/tray.cpp:258
 msgid "_Disconnect"
 msgstr "_Shkëputu"
 
-#: src/main_window.cpp:857 src/tray.cpp:259
+#: src/main_window.cpp:932 src/tray.cpp:259
 msgid "Close the current connection"
 msgstr "Mbyll lidhjen e tanishme"
 
-#: src/main_window.cpp:863 src/tray.cpp:265
+#: src/main_window.cpp:938 src/tray.cpp:265
 msgid "_Available"
 msgstr "_I Lirë"
 
-#: src/main_window.cpp:864 src/tray.cpp:266
+#: src/main_window.cpp:939 src/tray.cpp:266
 msgid "Display a popup to accept the call"
 msgstr "Shfaq një dritare kur të thërrasin"
 
-#: src/main_window.cpp:869 src/tray.cpp:271
+#: src/main_window.cpp:944 src/tray.cpp:271
 msgid "Free for Cha_t"
 msgstr "I Lirë për Bisedi_m"
 
-#: src/main_window.cpp:870 src/tray.cpp:272
+#: src/main_window.cpp:945 src/tray.cpp:272
 msgid "Auto answer calls"
 msgstr "Përgjigju automatikisht thirrjeve"
 
-#: src/main_window.cpp:875 src/tray.cpp:277
+#: src/main_window.cpp:950 src/tray.cpp:277
 msgid "_Busy"
 msgstr "I _Zënë"
 
-#: src/main_window.cpp:875 src/tray.cpp:277
+#: src/main_window.cpp:950 src/tray.cpp:277
 msgid "Reject calls"
 msgstr "Thirrjet e refuzuara"
 
-#: src/main_window.cpp:880 src/tray.cpp:282
+#: src/main_window.cpp:955 src/tray.cpp:282
 msgid "_Forward"
 msgstr "_Vazhdo"
 
-#: src/main_window.cpp:880 src/tray.cpp:282
+#: src/main_window.cpp:955 src/tray.cpp:282
 msgid "Forward calls"
 msgstr "Thirrjet e transferuara"
 
-#: src/main_window.cpp:888
+#: src/main_window.cpp:963
 msgid "Speed dials"
 msgstr "Telefonatat e shpejta"
 
-#: src/main_window.cpp:892 src/main_window.cpp:2450
+#: src/main_window.cpp:967 src/main_window.cpp:2906
 msgid "_Hold Call"
 msgstr "_Pushim i thirrjes"
 
-#: src/main_window.cpp:892
+#: src/main_window.cpp:967
 msgid "Hold the current call"
 msgstr "Ndalon thirrjen e tanishme"
 
-#: src/main_window.cpp:896
+#: src/main_window.cpp:971
 msgid "_Transfer Call"
 msgstr "_Transferim i thirrjes"
 
-#: src/main_window.cpp:897
+#: src/main_window.cpp:972
 msgid "Transfer the current call"
 msgstr "Transferon thirrjen e tanishme"
 
-#: src/main_window.cpp:904 src/main_window.cpp:2484
+#: src/main_window.cpp:979 src/main_window.cpp:2940
 msgid "Suspend _Audio"
 msgstr "Pezullim i zërit"
 
-#: src/main_window.cpp:905
+#: src/main_window.cpp:980
 msgid "Suspend or resume the audio transmission"
 msgstr "Pezullon ose rimerr transmetimin e zërit"
 
-#: src/main_window.cpp:909 src/main_window.cpp:2486
+#: src/main_window.cpp:984 src/main_window.cpp:2942
 msgid "Suspend _Video"
 msgstr "Pezullim i videos"
 
-#: src/main_window.cpp:910
+#: src/main_window.cpp:985
 msgid "Suspend or resume the video transmission"
 msgstr "Pezullon ose rimerr transmetimin e videos"
 
-#: src/main_window.cpp:917
+#: src/main_window.cpp:992
 msgid "_Save Current Picture"
 msgstr "_Ruaj imazhin e tanishëm"
 
-#: src/main_window.cpp:918
+#: src/main_window.cpp:993
 msgid "Save a snapshot of the current video"
 msgstr "Regjistron një fotografi të videos së tanishme"
 
-#: src/main_window.cpp:924
+#: src/main_window.cpp:999
 msgid "Close the GnomeMeeting window"
 msgstr "Mbyll dritaren e GnomeMeeting"
 
-#: src/main_window.cpp:931 src/tray.cpp:320
+#: src/main_window.cpp:1006 src/tray.cpp:320
 msgid "_Quit"
 msgstr "_Dalja"
 
-#: src/main_window.cpp:931 src/tray.cpp:321
+#: src/main_window.cpp:1006 src/tray.cpp:321
 msgid "Quit GnomeMeeting"
 msgstr "Ndërpren GnomeMeeting"
 
-#: src/main_window.cpp:935
+#: src/main_window.cpp:1010
 msgid "_Edit"
 msgstr "_Ndrysho"
 
-#: src/main_window.cpp:937
+#: src/main_window.cpp:1012
 msgid "Configuration Druid"
 msgstr "Ndihmë për konfigurimin"
 
-#: src/main_window.cpp:938
+#: src/main_window.cpp:1013
 msgid "Run the configuration druid"
 msgstr "Sjell ndihmën e konfigurimit"
 
-#: src/main_window.cpp:945 src/tray.cpp:306
+#: src/main_window.cpp:1020 src/tray.cpp:306
 msgid "_Preferences"
 msgstr "_Preferimet"
 
-#: src/main_window.cpp:946 src/tray.cpp:307
+#: src/main_window.cpp:1021 src/tray.cpp:307
 msgid "Change your preferences"
 msgstr "Ndrysho preferencat"
 
-#: src/main_window.cpp:951
+#: src/main_window.cpp:1026
 msgid "_View"
 msgstr "_Shfaq"
 
-#: src/main_window.cpp:953 src/pref_window.cpp:720
+#: src/main_window.cpp:1028 src/pref_window.cpp:714
 msgid "Text Chat"
 msgstr "Bisedë me tekst"
 
-#: src/main_window.cpp:954
+#: src/main_window.cpp:1029
 msgid "View/Hide the text chat window"
 msgstr "Shfaq/fshen dritaren e bisedës"
 
-#: src/main_window.cpp:960
+#: src/main_window.cpp:1035
 msgid "Control Panel"
 msgstr "Paneli i Kontrollit"
 
-#: src/main_window.cpp:962 src/main_window.cpp:1165
+#: src/main_window.cpp:1037 src/main_window.cpp:1246
 msgid "Statistics"
 msgstr "Statistikat"
 
-#: src/main_window.cpp:963
+#: src/main_window.cpp:1038
 msgid "View audio/video transmission and reception statistics"
 msgstr "Shiko statistikat e transmetimit dhe të marrjes audio/video"
 
-#: src/main_window.cpp:968
+#: src/main_window.cpp:1043
 msgid "_Dialpad"
 msgstr "_Tastiera"
 
-#: src/main_window.cpp:968
+#: src/main_window.cpp:1043
 msgid "View the dialpad"
 msgstr "Shfaq tastierën"
 
-#: src/main_window.cpp:973
+#: src/main_window.cpp:1048
 msgid "_Audio Settings"
 msgstr "Parametrat _audio"
 
-#: src/main_window.cpp:974
+#: src/main_window.cpp:1049
 msgid "View audio settings"
 msgstr "Shfaq parametrat audio"
 
-#: src/main_window.cpp:979
+#: src/main_window.cpp:1054
 msgid "_Video Settings"
 msgstr "Parametrat _video"
 
-#: src/main_window.cpp:980
+#: src/main_window.cpp:1055
 msgid "View video settings"
 msgstr "Shfaq parametrat video"
 
-#: src/main_window.cpp:985 src/pref_window.cpp:1080
+#: src/main_window.cpp:1060 src/pref_window.cpp:1074
 msgid "Off"
 msgstr "E mbyllur"
 
-#: src/main_window.cpp:985
+#: src/main_window.cpp:1060
 msgid "Hide the control panel"
 msgstr "Shfaq/fshen panelën e kontrollit"
 
-#: src/main_window.cpp:993
+#: src/main_window.cpp:1068
 msgid "_Clear Text Chat"
 msgstr "_Pastro Tekstin e Bisedës"
 
-#: src/main_window.cpp:994
+#: src/main_window.cpp:1069
 msgid "Clear the text chat"
 msgstr "Fshin tekstin e bisedës"
 
-#: src/main_window.cpp:1001 src/main_window.cpp:3373
+#: src/main_window.cpp:1076 src/main_window.cpp:3853
 msgid "Local Video"
 msgstr "Video lokale"
 
-#: src/main_window.cpp:1002
+#: src/main_window.cpp:1077
 msgid "Local video image"
 msgstr "Figura e videos lokale"
 
-#: src/main_window.cpp:1007 src/main_window.cpp:3377
+#: src/main_window.cpp:1082 src/main_window.cpp:3859
 msgid "Remote Video"
 msgstr "Video e largët"
 
-#: src/main_window.cpp:1008
+#: src/main_window.cpp:1083
 msgid "Remote video image"
 msgstr "Figura e videos e korrepondentit"
 
-#: src/main_window.cpp:1013
-msgid "Both (Local Video Incrusted)"
-msgstr "Të dyja (Video lokale e futur në dritare)"
+#: src/main_window.cpp:1088
+msgid "Both (Picture-in-Picture)"
+msgstr "Të Dyja (Imazh-në Imazh)"
 
-#: src/main_window.cpp:1014 src/main_window.cpp:1021
+#: src/main_window.cpp:1089 src/main_window.cpp:1095 src/main_window.cpp:1102
 msgid "Both video images"
-msgstr "Të dyja imazhit e videos"
+msgstr "Të dyja imazhet e videos"
 
-#: src/main_window.cpp:1020
+#: src/main_window.cpp:1094
+msgid "Both (Side-by-Side)"
+msgstr "Të Dyja (Anash-e-Anash)"
+
+#: src/main_window.cpp:1101
 msgid "Both (Both in New Windows)"
 msgstr "Të dyja (Të dyja videot në dritare të veçanta)"
 
-#: src/main_window.cpp:1029
+#: src/main_window.cpp:1110 src/main_window.cpp:1612 src/main_window.cpp:1635
 msgid "Zoom In"
 msgstr "Zmadho"
 
-#: src/main_window.cpp:1029
+#: src/main_window.cpp:1110 src/main_window.cpp:1612 src/main_window.cpp:1635
 msgid "Zoom in"
 msgstr "Zmadho"
 
-#: src/main_window.cpp:1033
+#: src/main_window.cpp:1114 src/main_window.cpp:1616 src/main_window.cpp:1639
 msgid "Zoom Out"
 msgstr "Zvogëlo"
 
-#: src/main_window.cpp:1033
+#: src/main_window.cpp:1114 src/main_window.cpp:1616 src/main_window.cpp:1639
 msgid "Zoom out"
 msgstr "Zvogëlo"
 
-#: src/main_window.cpp:1037
+#: src/main_window.cpp:1118 src/main_window.cpp:1620 src/main_window.cpp:1643
 msgid "Normal Size"
 msgstr "Madhësi Normale"
 
-#: src/main_window.cpp:1037
+#: src/main_window.cpp:1118 src/main_window.cpp:1620 src/main_window.cpp:1643
 msgid "Normal size"
 msgstr "Madhësi normale"
 
-#: src/main_window.cpp:1042
+#: src/main_window.cpp:1123 src/main_window.cpp:1625 src/main_window.cpp:1648
 msgid "Fullscreen"
 msgstr "Ekran të plotë"
 
-#: src/main_window.cpp:1047
+#: src/main_window.cpp:1128
 msgid "_Tools"
 msgstr "_Instrumentë"
 
-#: src/main_window.cpp:1049 src/tray.cpp:290
+#: src/main_window.cpp:1130 src/tray.cpp:290
 msgid "Address _Book"
 msgstr "_Rubrika"
 
-#: src/main_window.cpp:1050 src/tray.cpp:291
+#: src/main_window.cpp:1131 src/tray.cpp:291
 msgid "Open the address book"
 msgstr "Hap bllokun e adresave"
 
-#: src/main_window.cpp:1058
+#: src/main_window.cpp:1139
 msgid "View the operations history"
 msgstr "Shiko historikun e veprimeve"
 
-#: src/main_window.cpp:1063 src/tray.cpp:299
+#: src/main_window.cpp:1144 src/tray.cpp:299
 msgid "View the calls history"
 msgstr "Shiko historikun e thirrjeve"
 
-#: src/main_window.cpp:1071 src/main_window.cpp:1077
+#: src/main_window.cpp:1152 src/main_window.cpp:1158
 msgid "PC-To-Phone Account"
 msgstr "Llogaria PC-Telefon"
 
-#: src/main_window.cpp:1072 src/main_window.cpp:1078
+#: src/main_window.cpp:1153 src/main_window.cpp:1159
 msgid "Manage your PC-To-Phone account"
 msgstr "Organizo llogarinë PC-Telefon"
 
-#: src/main_window.cpp:1083
+#: src/main_window.cpp:1164
 msgid "_Help"
 msgstr "_Ndihmë"
 
-#: src/main_window.cpp:1086 src/main_window.cpp:1097
+#: src/main_window.cpp:1167 src/main_window.cpp:1178
 msgid "_Contents"
 msgstr "_Përmbajtja"
 
-#: src/main_window.cpp:1087 src/main_window.cpp:1098
+#: src/main_window.cpp:1168 src/main_window.cpp:1179
 msgid "Get help by reading the GnomeMeeting manual"
 msgstr "Merr ndihmë duke lexuar manualin e GnomeMeeting"
 
-#: src/main_window.cpp:1091 src/main_window.cpp:1102
+#: src/main_window.cpp:1172 src/main_window.cpp:1183
 msgid "_About"
 msgstr "_Informacione"
 
-#: src/main_window.cpp:1092 src/main_window.cpp:1103 src/tray.cpp:315
+#: src/main_window.cpp:1173 src/main_window.cpp:1184 src/tray.cpp:315
 msgid "View information about GnomeMeeting"
 msgstr "Shfaq informacionet rreth GnomeMeeting"
 
-#: src/main_window.cpp:1160 src/main_window.cpp:3561
+#: src/main_window.cpp:1241 src/main_window.cpp:4043
 msgid ""
 "Lost packets:\n"
 "Late packets:\n"
@@ -2881,84 +2903,84 @@ msgstr ""
 "Round-trip delay:\n"
 "Jitter buffer:"
 
-#: src/main_window.cpp:1220
+#: src/main_window.cpp:1301
 msgid "Dialpad"
 msgstr "Tastiera"
 
-#: src/main_window.cpp:1276
+#: src/main_window.cpp:1357
 msgid "Adjust brightness"
 msgstr "Rregullon dritën"
 
-#: src/main_window.cpp:1299
+#: src/main_window.cpp:1380
 msgid "Adjust whiteness"
 msgstr "Përshtat bardhësinë e figurës"
 
-#: src/main_window.cpp:1322
+#: src/main_window.cpp:1403
 msgid "Adjust color"
 msgstr "Rregullon ngjyrën"
 
-#: src/main_window.cpp:1345
+#: src/main_window.cpp:1426
 msgid "Adjust contrast"
 msgstr "Rregullon kontrastin"
 
-#: src/main_window.cpp:1354
+#: src/main_window.cpp:1435
 msgid "Video"
 msgstr "Video"
 
-#: src/main_window.cpp:1432
+#: src/main_window.cpp:1513
 msgid "Audio"
 msgstr "Zëri"
 
-#: src/main_window.cpp:2387
+#: src/main_window.cpp:2843
 #, c-format
 msgid "Sent dtmf %c"
 msgstr "Dërgoi dtmf %c"
 
-#: src/main_window.cpp:2434
+#: src/main_window.cpp:2890
 msgid "_Retrieve Call"
 msgstr "_Rimarrje e thirrjes"
 
-#: src/main_window.cpp:2488
+#: src/main_window.cpp:2944
 msgid "Resume _Audio"
 msgstr "Rimarrje e zërit"
 
-#: src/main_window.cpp:2490
+#: src/main_window.cpp:2946
 msgid "Resume _Video"
 msgstr "Rimarrje e videos"
 
-#: src/main_window.cpp:3082
+#: src/main_window.cpp:3557
 msgid "Transfer call to:"
 msgstr "Transfero thirrjen drejt:"
 
-#: src/main_window.cpp:3083
+#: src/main_window.cpp:3558
 msgid "Transfer"
 msgstr "Transferimi"
 
-#: src/main_window.cpp:3153
+#: src/main_window.cpp:3628
 msgid "Reject"
 msgstr "Refuzim"
 
-#: src/main_window.cpp:3155
+#: src/main_window.cpp:3630
 msgid "Accept"
 msgstr "Prano"
 
-#: src/main_window.cpp:3162
+#: src/main_window.cpp:3637
 msgid "Incoming call from"
 msgstr "Thirrje që vjen nga"
 
-#: src/main_window.cpp:3175
+#: src/main_window.cpp:3650
 msgid "Remote URL:"
 msgstr "URL e Korrespondentit:"
 
-#: src/main_window.cpp:3187
+#: src/main_window.cpp:3662
 msgid "Remote Application:"
 msgstr "Programi i Korrespondentit:"
 
-#: src/main_window.cpp:3492
+#: src/main_window.cpp:3974
 msgid "Click to clear"
 msgstr "Kliko për të fshirë"
 
-#: src/main_window.cpp:3587
+#: src/main_window.cpp:4069
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2971,20 +2993,20 @@ msgstr ""
 "Vonesa vajtje-ardhje: %d ms\n"
 "Jitter buffer: %d ms"
 
-#: src/main_window.cpp:3697
+#: src/main_window.cpp:4178
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr ""
 "Shfaq mesazhet e debugimit në panelën e kontrollit (nivel midis 1 dhe 6)"
 
-#: src/main_window.cpp:3700
+#: src/main_window.cpp:4181
 msgid "Makes GnomeMeeting call the given URL"
 msgstr "Bën që GnomeMeeting të marri  URL callto:// të caktuar"
 
-#: src/main_window.cpp:3735
+#: src/main_window.cpp:4216
 msgid "No usable audio plugin detected"
 msgstr "Nuk u gjet asnjë plugin audio i përdorshëm"
 
-#: src/main_window.cpp:3735
+#: src/main_window.cpp:4216
 msgid ""
 "GnomeMeeting didn't find any usable audio plugin. Make sure that your "
 "installation is correct."
@@ -2992,7 +3014,7 @@ msgstr ""
 "GnomeMeeting nuk gjeti asnjë plugin zëri të përdorshëm. Sigurohu që "
 "instalimi është i saktë."
 
-#: src/main_window.cpp:3757
+#: src/main_window.cpp:4238
 #, c-format
 msgid ""
 "GnomeMeeting got an invalid value for the GConf key %s.\n"
@@ -3015,7 +3037,7 @@ msgstr ""
 "gconf/) ose arkivën e mailing listës për më shumë informacione rreth këtij "
 "problemi (http://mail.gnome.org)."
 
-#: src/main_window.cpp:3760
+#: src/main_window.cpp:4241
 msgid "Gconf key error"
 msgstr "Gabim çelësi Gconf"
 
@@ -3023,7 +3045,7 @@ msgstr "Gabim çelësi Gconf"
 msgid "Generic error"
 msgstr "Gabim i përgjithshëm"
 
-#: src/pref_window.cpp:495 src/pref_window.cpp:859
+#: src/pref_window.cpp:495 src/pref_window.cpp:853
 msgid "A"
 msgstr "A"
 
@@ -3068,7 +3090,7 @@ msgid "Enter your country or city"
 msgstr "Fut shtetin ose qytetin tënd"
 
 #. Add the update button
-#: src/pref_window.cpp:683 src/pref_window.cpp:1015 src/pref_window.cpp:1064
+#: src/pref_window.cpp:683 src/pref_window.cpp:1009 src/pref_window.cpp:1058
 msgid "_Apply"
 msgstr "_Zbato"
 
@@ -3098,60 +3120,38 @@ msgstr "Nisje e _fshehur"
 msgid "Video Display"
 msgstr "Shfaq videon"
 
-#. Translators: the full sentence is Use a fullscreen size
-#. of X by Y pixels
-#: src/pref_window.cpp:713
-msgid "Use a fullscreen size of"
-msgstr "Përdorni një masë ekrani të plotë prej"
-
-#: src/pref_window.cpp:713
-msgid "by"
-msgstr "nga"
-
-#: src/pref_window.cpp:713
-msgid "pixels"
-msgstr "pixels"
-
-#: src/pref_window.cpp:713
-msgid "The image width for fullscreen."
-msgstr "Gjerësija e figurës me ekran të plotë."
-
-#: src/pref_window.cpp:713
-msgid "The image height for fullscreen."
-msgstr "Lartësia e figurës me ekran të plotë."
-
-#: src/pref_window.cpp:716
+#: src/pref_window.cpp:709
 msgid "Place windows displaying video _above other windows"
 msgstr "Vendos dritaren e videos _mbi dritaret e tjera"
 
-#: src/pref_window.cpp:735
+#: src/pref_window.cpp:729
 msgid "Users Directory"
 msgstr "Numratori i Përdoruesve"
 
 #. Add all the fields
-#: src/pref_window.cpp:739
+#: src/pref_window.cpp:733
 msgid "Users directory:"
 msgstr "Numratori i Përdoruesve:"
 
-#: src/pref_window.cpp:739
+#: src/pref_window.cpp:733
 msgid "The users directory server to register with"
 msgstr "Serveri i numratorit të përdoruesve ku duhet të regjistrohesh"
 
-#: src/pref_window.cpp:741
+#: src/pref_window.cpp:735
 msgid "Enable _registering"
 msgstr "Lejo _regjistrimin"
 
-#: src/pref_window.cpp:741
+#: src/pref_window.cpp:735
 msgid "If enabled, register with the selected users directory"
 msgstr ""
 "Nëse e aktivizon, regjistrohesh me numratorin e përdoruesve që ke zgjedhur."
 
-#: src/pref_window.cpp:743
+#: src/pref_window.cpp:737
 msgid "_Publish my details in the users directory when registering"
 msgstr ""
 "_Publiko të dhënat personale në numratorin e përdoruesve gjatë regjistrimit"
 
-#: src/pref_window.cpp:743
+#: src/pref_window.cpp:737
 msgid ""
 "If enabled, your details are shown to people browsing the users directory. "
 "If disabled, you are not visible to users browsing the users directory, but "
@@ -3162,19 +3162,19 @@ msgstr ""
 "njerëz nuk të shikojnë në listë, por megjithatë ata mund t'të bëjnë një "
 "thirrje duke përdorur callto URL."
 
-#: src/pref_window.cpp:756 src/pref_window.cpp:1925
+#: src/pref_window.cpp:750 src/pref_window.cpp:1919
 msgid "Call Forwarding"
 msgstr "Transferimi i Thirrjes"
 
-#: src/pref_window.cpp:761
+#: src/pref_window.cpp:755
 msgid "Forward calls to _host:"
 msgstr "Transfero thirrjet drejt _korrespondentit:"
 
-#: src/pref_window.cpp:766
+#: src/pref_window.cpp:760
 msgid "_Always forward calls to the given host"
 msgstr "Transfero i gjithmonë thirrjet _drejt korrespondentit të caktuar"
 
-#: src/pref_window.cpp:766
+#: src/pref_window.cpp:760
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field above"
@@ -3182,12 +3182,12 @@ msgstr ""
 "Nëse e aktivizon, të gjitha thirrjet që vijnë do të transferohen drejt "
 "korrespondentit që ke zgjedhur në zonën këtu poshtë"
 
-#: src/pref_window.cpp:768
+#: src/pref_window.cpp:762
 msgid "Forward calls to the given host if _no answer"
 msgstr ""
 "Transfero thirrjet drejt korrespondentit të caktuar nëse _s'ka përgjigje"
 
-#: src/pref_window.cpp:768
+#: src/pref_window.cpp:762
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field above if you do not answer the call"
@@ -3196,11 +3196,11 @@ msgstr ""
 "korrespondentit që ke zgjedhur në zonën këtu poshtë, kur nuk i përgjigjesh "
 "thirrjes"
 
-#: src/pref_window.cpp:770
+#: src/pref_window.cpp:764
 msgid "Forward calls to the given host if _busy"
 msgstr "Transfero thirrjet drejt korrespondentit të caktuar nëse je i _zënë"
 
-#: src/pref_window.cpp:770
+#: src/pref_window.cpp:764
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field above if you already are in a call or if you are in "
@@ -3210,75 +3210,79 @@ msgstr ""
 "korrespondentit që ke zgjedhur, nëse je duke folur ose nëse ke zgjedhur "
 "mënyrën Mos Më Shqetësoni"
 
-#: src/pref_window.cpp:782 src/pref_window.cpp:1906
+#: src/pref_window.cpp:776 src/pref_window.cpp:1900
 msgid "Call Options"
 msgstr "Mundësitë e Thirrjes"
 
 #. Add all the fields
-#: src/pref_window.cpp:786
+#: src/pref_window.cpp:780
 msgid "Automatically _clear calls after 30 seconds of inactivity"
 msgstr "Mbyll thirrjen automatikish pas 30 sekondash mosveprimi"
 
 #. Translators: the full sentence is Reject or forward
 #. unanswered incoming calls after X s (seconds)
-#: src/pref_window.cpp:790
+#: src/pref_window.cpp:784
 msgid "Reject or forward unanswered incoming calls after "
 msgstr "Refuzo ose transfero thirrjet e papërgjigjura pas "
 
-#: src/pref_window.cpp:790
+#: src/pref_window.cpp:784
 msgid "seconds"
 msgstr "sekonda"
 
-#: src/pref_window.cpp:822
+#: src/pref_window.cpp:816
 msgid "GnomeMeeting Sound Events"
 msgstr "Tingujt e  GnomeMeeting"
 
-#: src/pref_window.cpp:871 src/pref_window.cpp:880 src/pref_window.cpp:889
+#: src/pref_window.cpp:865 src/pref_window.cpp:874 src/pref_window.cpp:883
 msgid "Event"
 msgstr "Ndodhi"
 
-#: src/pref_window.cpp:900
+#: src/pref_window.cpp:894
 msgid "Sound to play:"
 msgstr "Tingulli për tu dëgjuar:"
 
-#: src/pref_window.cpp:913
+#: src/pref_window.cpp:907
 msgid "Play"
 msgstr "Luaj"
 
-#: src/pref_window.cpp:936
+#: src/pref_window.cpp:930
 msgid "Output Device"
 msgstr "Dispozitivi i daljes"
 
-#: src/pref_window.cpp:942 src/pref_window.cpp:1114
+#: src/pref_window.cpp:936 src/pref_window.cpp:1108
 msgid "Output device:"
 msgstr "Dispozitivi i daljes:"
 
-#: src/pref_window.cpp:953
+#: src/pref_window.cpp:936
+msgid "Select the audio output device to use for the ring sound event"
+msgstr "Zgjidh dispozitivin e zërit në dalje që duhet përdorur për tingujt e ndodhive"
+
+#: src/pref_window.cpp:947
 msgid "All"
 msgstr "Gjithçka"
 
-#: src/pref_window.cpp:955
+#: src/pref_window.cpp:949
 msgid "rfc2833"
 msgstr "rfc2833"
 
-#: src/pref_window.cpp:956
+#: src/pref_window.cpp:950
 msgid "Signal"
 msgstr "Sinjali"
 
-#: src/pref_window.cpp:957
+#: src/pref_window.cpp:951
 msgid "String"
 msgstr "Stringë"
 
-#: src/pref_window.cpp:964
+#: src/pref_window.cpp:958
 msgid "H.323 Version 2 Settings"
 msgstr "Parametrat e H.323 Verzioni 2"
 
 #. The toggles
-#: src/pref_window.cpp:967
+#: src/pref_window.cpp:961
 msgid "Enable H.245 _tunneling"
 msgstr "Aktivizo _tunnelling H.245"
 
-#: src/pref_window.cpp:967
+#: src/pref_window.cpp:961
 msgid ""
 "This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
 "are encapsulated into the the H.225 channel (port 1720). This saves one TCP "
@@ -3292,15 +3296,15 @@ msgstr ""
 "punon me Netmeeting. Përdorimi i Nisjes së Shpejtë dhe Tunneling H.245 mund "
 "të krijojë probleme në disa versione të Netmeeting."
 
-#: src/pref_window.cpp:969
+#: src/pref_window.cpp:963
 msgid "Enable _early H.245"
 msgstr "Aktivizo H.245 e _hershme"
 
-#: src/pref_window.cpp:971
+#: src/pref_window.cpp:965
 msgid "Enable fast _start procedure"
 msgstr "Aktivizo \"_Nisjen e Shpejtë\""
 
-#: src/pref_window.cpp:971
+#: src/pref_window.cpp:965
 msgid ""
 "Connection will be established in Fast Start mode. Fast Start is a new way "
 "to start calls faster that was introduced in H.323v2. It is not supported by "
@@ -3313,15 +3317,15 @@ msgstr ""
 "të njëjtën kohë atëhere mund të ndodhin probleme me disa versione të "
 "Netmeeting."
 
-#: src/pref_window.cpp:977
+#: src/pref_window.cpp:971
 msgid "DTMF Sending"
 msgstr "Dërgimi i DTMF"
 
-#: src/pref_window.cpp:979
+#: src/pref_window.cpp:973
 msgid "_Send DTMF as:"
 msgstr "_Dërgo DTMF si:"
 
-#: src/pref_window.cpp:979
+#: src/pref_window.cpp:973
 msgid ""
 "This permits to set the mode for DTMFs sending. The values can be \"All\", "
 "\"None\", \"rfc2833\", \"Signal\" or \"String\" (default is \"All\"). "
@@ -3334,39 +3338,39 @@ msgstr ""
 "nga \"Të gjitha\", \"String\", ose \"rfc2833\" atëhere biseda tekstuale nuk "
 "punon."
 
-#: src/pref_window.cpp:990
+#: src/pref_window.cpp:984
 msgid "Do not register"
 msgstr "Mos më regjistro"
 
-#: src/pref_window.cpp:993
+#: src/pref_window.cpp:987
 msgid "Automatically discover"
 msgstr "Gjen automatikisht"
 
-#: src/pref_window.cpp:999
+#: src/pref_window.cpp:993
 msgid "Gatekeeper"
 msgstr "Gatekeeper"
 
-#: src/pref_window.cpp:1001
+#: src/pref_window.cpp:995
 msgid "Gatekeeper _ID:"
 msgstr "ID në Gatekeeper :"
 
-#: src/pref_window.cpp:1003
+#: src/pref_window.cpp:997
 msgid "Gatekeeper _host:"
 msgstr "_Host Gatekeeper :"
 
-#: src/pref_window.cpp:1005
+#: src/pref_window.cpp:999
 msgid "Gatekeeper _alias:"
 msgstr "_Alias në Gatekeeper :"
 
-#: src/pref_window.cpp:1008
+#: src/pref_window.cpp:1002
 msgid "Gatekeeper _password:"
 msgstr "_Fjala kalim në Gatekeeper :"
 
-#: src/pref_window.cpp:1011
+#: src/pref_window.cpp:1005
 msgid "Register this alias as the primary alias with the gatekeeper"
 msgstr "Regjistro këtë alias si alias parësor me gatekeeper"
 
-#: src/pref_window.cpp:1011
+#: src/pref_window.cpp:1005
 msgid ""
 "Use this option to ensure the above alias is used as the primary alias when "
 "registering with a gatekeeper. This may be required if your gatekeeper can "
@@ -3376,35 +3380,35 @@ msgstr ""
 "regjistrohesh me një gatekeeper. Kjo mund të kërkohet nëse gatekeeper mund "
 "të kryejë autentikimin vetëm duke përdorur aliasin e parë në listë."
 
-#: src/pref_window.cpp:1013
+#: src/pref_window.cpp:1007
 msgid "Registering method:"
 msgstr "Metodë regjistrimi:"
 
-#: src/pref_window.cpp:1015
+#: src/pref_window.cpp:1009
 msgid "Click here to update your Gatekeeper settings"
 msgstr "Klikoni këtu për të freskuar parametrat në Gatekeeper"
 
-#: src/pref_window.cpp:1028
+#: src/pref_window.cpp:1022
 msgid "Gateway/Proxy"
 msgstr "Gateway/Proxy"
 
-#: src/pref_window.cpp:1030
+#: src/pref_window.cpp:1024
 msgid "Gateway / Proxy host:"
 msgstr "Hosti Gateway / Proxy:"
 
-#: src/pref_window.cpp:1032
+#: src/pref_window.cpp:1026
 msgid "Use gateway or proxy"
 msgstr "Përdor gateway ose proxy"
 
-#: src/pref_window.cpp:1046
+#: src/pref_window.cpp:1040
 msgid "IP Translation"
 msgstr "Përkthimi i IP-së"
 
-#: src/pref_window.cpp:1048
+#: src/pref_window.cpp:1042
 msgid "Enable IP _translation"
 msgstr "Aktivizo _përkthimin e IPsë"
 
-#: src/pref_window.cpp:1048
+#: src/pref_window.cpp:1042
 msgid ""
 "This enables IP translation. IP translation is useful if GnomeMeeting is "
 "running behind a NAT/PAT router. You have to put the public IP of the router "
@@ -3419,11 +3423,11 @@ msgstr ""
 "serveri ILS. Nëse router-i tëaj mbështet protokollin H323, atëhere mund ta "
 "hiqni këtë mundësi."
 
-#: src/pref_window.cpp:1050
+#: src/pref_window.cpp:1044
 msgid "Enable _automatic IP checking"
 msgstr "Aktivizo kontrollin _automatik të IP-së"
 
-#: src/pref_window.cpp:1050
+#: src/pref_window.cpp:1044
 msgid ""
 "This enables IP checking from seconix.com and fills the IP in the public IP "
 "of the NAT/PAT gateway field of GnomeMeeting. The returned IP is only used "
@@ -3435,11 +3439,11 @@ msgstr ""
 "vetëm kur aktivizohet Përkthimi IP. Nëse çaktivizon kontrollin e IP-së, do "
 "të duhet të konfigurosh vetë IP e gateway tënd në preferimet e GnomeMeeting."
 
-#: src/pref_window.cpp:1052
+#: src/pref_window.cpp:1046
 msgid "Public _IP of the NAT/PAT router:"
 msgstr "Adresa _IP publike e routerit NAT/PAT :"
 
-#: src/pref_window.cpp:1052
+#: src/pref_window.cpp:1046
 msgid ""
 "Enter the public IP of your NAT/PAT router if you want to use IP "
 "translation. If you are registered to ils.seconix.com, GnomeMeeting will "
@@ -3449,228 +3453,228 @@ msgstr ""
 "përkthimin e adresës IP. Nëse je regjistruar nëserver ils.seconix.com, "
 "GnomeMeeting do të përdori automatikisht adresën e kthyer nga serveri ILS."
 
-#: src/pref_window.cpp:1058
+#: src/pref_window.cpp:1052
 msgid "STUN Support"
 msgstr "Suporti STUN"
 
-#: src/pref_window.cpp:1060
+#: src/pref_window.cpp:1054
 msgid "Enable _STUN Support"
 msgstr "Aktivo suportin _STUN"
 
-#: src/pref_window.cpp:1062
+#: src/pref_window.cpp:1056
 msgid "STUN Se_rver:"
 msgstr "Se_rveri STUN:"
 
-#: src/pref_window.cpp:1064
+#: src/pref_window.cpp:1058
 msgid "Click here to update your STUN Server settings"
 msgstr "Kliko këtu për të freskuar parametrat e Serverit STUN"
 
-#: src/pref_window.cpp:1081
+#: src/pref_window.cpp:1075
 msgid "Low"
 msgstr "E ulët"
 
-#: src/pref_window.cpp:1082
+#: src/pref_window.cpp:1076
 msgid "Medium"
 msgstr "Mesatare"
 
-#: src/pref_window.cpp:1083
+#: src/pref_window.cpp:1077
 msgid "High"
 msgstr "E lartë"
 
-#: src/pref_window.cpp:1084
+#: src/pref_window.cpp:1078
 msgid "AGC"
 msgstr "AGC"
 
-#: src/pref_window.cpp:1087
+#: src/pref_window.cpp:1081
 msgid "POTS"
 msgstr "POTS"
 
-#: src/pref_window.cpp:1088
+#: src/pref_window.cpp:1082
 msgid "Headset"
 msgstr "Kufje me mikrofon"
 
-#: src/pref_window.cpp:1096
+#: src/pref_window.cpp:1090
 msgid "Audio Plugin"
 msgstr "Plugin Audio"
 
-#: src/pref_window.cpp:1101
+#: src/pref_window.cpp:1095
 msgid "Audio plugin:"
 msgstr "Plugin audio:"
 
-#: src/pref_window.cpp:1101
+#: src/pref_window.cpp:1095
 msgid ""
 "The audio plugin that will be used to detect the devices and manage them."
 msgstr ""
 "Plugin audio që do përdoret për zbulimin e dispozitivave dhe organizimin e "
 "tyre."
 
-#: src/pref_window.cpp:1107 src/pref_window.cpp:1950
+#: src/pref_window.cpp:1101 src/pref_window.cpp:1944
 msgid "Audio Devices"
 msgstr "Dispozitivët e Audios"
 
-#: src/pref_window.cpp:1121 src/pref_window.cpp:1190
+#: src/pref_window.cpp:1115 src/pref_window.cpp:1184
 msgid "Input device:"
 msgstr "Dispozitivi i hyrjes:"
 
-#: src/pref_window.cpp:1127
+#: src/pref_window.cpp:1121
 msgid "Quicknet Hardware"
 msgstr "Dispozitivi Quicknet"
 
-#: src/pref_window.cpp:1129
+#: src/pref_window.cpp:1123
 msgid "Echo _cancellation:"
 msgstr "Heqje automatike e _jehonës:"
 
-#: src/pref_window.cpp:1131
+#: src/pref_window.cpp:1125
 msgid "Output device type:"
 msgstr "Lloji i dispozitivit në dalje:"
 
-#: src/pref_window.cpp:1134
+#: src/pref_window.cpp:1128
 msgid "Country _code:"
 msgstr "Kodi i _shtetit:"
 
-#: src/pref_window.cpp:1134
+#: src/pref_window.cpp:1128
 msgid ""
 "The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)."
 msgstr ""
 "Kodi i shtetit të tëaj me dy shifra (shembull : AL, FR, BE, UK, DE, ...)."
 
 #. That button will refresh the devices list
-#: src/pref_window.cpp:1141 src/pref_window.cpp:1215
+#: src/pref_window.cpp:1135 src/pref_window.cpp:1209
 msgid "_Detect devices"
 msgstr "_Zbulon dispozitivat"
 
-#: src/pref_window.cpp:1141
+#: src/pref_window.cpp:1135
 msgid "Click here to refresh the devices list"
 msgstr "Kliko këtu për të freskuar listën e dispozitivëve"
 
-#: src/pref_window.cpp:1159
+#: src/pref_window.cpp:1153
 msgid "Small"
 msgstr "E vogël"
 
-#: src/pref_window.cpp:1160
+#: src/pref_window.cpp:1154
 msgid "Large"
 msgstr "E madhe"
 
-#: src/pref_window.cpp:1162
+#: src/pref_window.cpp:1156
 msgid "PAL (Europe)"
 msgstr "PAL (Europa)"
 
-#: src/pref_window.cpp:1163
+#: src/pref_window.cpp:1157
 msgid "NTSC (America)"
 msgstr "NTSC (Amerika)"
 
-#: src/pref_window.cpp:1164
+#: src/pref_window.cpp:1158
 msgid "SECAM (France)"
 msgstr "SECAM (Francë)"
 
-#: src/pref_window.cpp:1165
+#: src/pref_window.cpp:1159
 msgid "Auto"
 msgstr "Automatike"
 
-#: src/pref_window.cpp:1174
+#: src/pref_window.cpp:1168
 msgid "Video Plugin"
 msgstr "Plugin Video"
 
-#: src/pref_window.cpp:1178
+#: src/pref_window.cpp:1172
 msgid "Video plugin:"
 msgstr "Plugin video:"
 
-#: src/pref_window.cpp:1184 src/pref_window.cpp:1954
+#: src/pref_window.cpp:1178 src/pref_window.cpp:1948
 msgid "Video Devices"
 msgstr "Dispozitivët e Videos"
 
 #. Video Channel
-#: src/pref_window.cpp:1194
+#: src/pref_window.cpp:1188
 msgid "Channel:"
 msgstr "Kanali:"
 
-#: src/pref_window.cpp:1196
+#: src/pref_window.cpp:1190
 msgid "Size:"
 msgstr "Madhësia:"
 
-#: src/pref_window.cpp:1198
+#: src/pref_window.cpp:1192
 msgid "Format:"
 msgstr "Formati:"
 
-#: src/pref_window.cpp:1201
+#: src/pref_window.cpp:1195
 msgid "Image:"
 msgstr "Figura:"
 
-#: src/pref_window.cpp:1215
+#: src/pref_window.cpp:1209
 msgid "Click here to refresh the devices list."
 msgstr "Klikoni këtu për të freskuar listën e dispozitivëve:"
 
-#: src/pref_window.cpp:1238
+#: src/pref_window.cpp:1232
 msgid "Available Audio Codecs"
 msgstr "Kodekë audio në dispozicion"
 
-#: src/pref_window.cpp:1253
+#: src/pref_window.cpp:1247
 msgid "Audio Codecs Settings"
 msgstr "Parametrat e kodekëve audio"
 
 #. Translators: the full sentence is Automatically adjust jitter buffer
 #. between X and Y ms
-#: src/pref_window.cpp:1257
+#: src/pref_window.cpp:1251
 msgid "Automatically adjust _jitter buffer between"
 msgstr "Përshtat automatikisht _jitter buffer-in midis"
 
-#: src/pref_window.cpp:1257
+#: src/pref_window.cpp:1251
 msgid "and"
 msgstr "dhe"
 
-#: src/pref_window.cpp:1257
+#: src/pref_window.cpp:1251
 msgid "ms"
 msgstr "ms"
 
-#: src/pref_window.cpp:1257
+#: src/pref_window.cpp:1251
 msgid "The minimum jitter buffer size for audio reception (in ms)."
 msgstr "Masa e jitter buffer minimum për marrjen e zërit (në ms)."
 
-#: src/pref_window.cpp:1257
+#: src/pref_window.cpp:1251
 msgid "The maximum jitter buffer size for audio reception (in ms)."
 msgstr "Masa maksimale e jitter buffer për marrjen e zërit (në ms)."
 
-#: src/pref_window.cpp:1259
+#: src/pref_window.cpp:1253
 msgid "Enable silence _detection"
 msgstr "Aktivizo _zbulimin e heshtjes"
 
-#: src/pref_window.cpp:1259
+#: src/pref_window.cpp:1253
 msgid "If enabled, use silence detection with the GSM and G.711 codecs."
 msgstr ""
 "Nëse e aktivizon, përdor zbulimin e heshtjes për kodekët GSM dhe G.711."
 
-#: src/pref_window.cpp:1271 src/pref_window.cpp:1897
+#: src/pref_window.cpp:1265 src/pref_window.cpp:1891
 msgid "General Settings"
 msgstr "Parametra të përgjithshëm"
 
 #. Add fields
-#: src/pref_window.cpp:1275
+#: src/pref_window.cpp:1269
 msgid "Enable video _transmission"
 msgstr "Lejo _transmetimin e videos"
 
-#: src/pref_window.cpp:1275
+#: src/pref_window.cpp:1269
 msgid "If enabled, video is transmitted during a call."
 msgstr "Nëse e aktivizon, video do të transmetohet gjatë një thirrje."
 
-#: src/pref_window.cpp:1277
+#: src/pref_window.cpp:1271
 msgid "Enable video _reception"
 msgstr "Aktivizo _marrjen e videos"
 
-#: src/pref_window.cpp:1277
+#: src/pref_window.cpp:1271
 msgid "If enabled, allows video to be received during a call."
 msgstr ""
 "Nëse e aktivizon, marrja e videos do të jetë e autorizuar gjatë një thirrje."
 
-#: src/pref_window.cpp:1282
+#: src/pref_window.cpp:1276
 msgid "Bandwidth Control"
 msgstr "Kontrolli i gjerësisë së bandës"
 
 #. Translators: the full sentence is Maximum video bandwidth of X kB/s
-#: src/pref_window.cpp:1285
+#: src/pref_window.cpp:1279
 msgid "Maximum video _bandwidth of"
 msgstr "Gjerësia maksimale e bandës së videos"
 
-#: src/pref_window.cpp:1285
+#: src/pref_window.cpp:1279
 msgid ""
 "The maximum video bandwidth in kbytes/s. The video quality and the number of "
 "transmitted frames per second will be dynamically adjusted above their "
@@ -3681,24 +3685,24 @@ msgstr ""
 "sipër minimumit gjatë thirrjeve për të provuar të minimizojë gjerësinë e "
 "bandës rreth vlerës së dhënë."
 
-#: src/pref_window.cpp:1285
+#: src/pref_window.cpp:1279
 msgid "kB/s"
 msgstr "kB/s"
 
-#: src/pref_window.cpp:1291
+#: src/pref_window.cpp:1285
 msgid "Advanced Quality Settings"
 msgstr "Parametrat e Avancuara Të Cilësisë"
 
 #. Translators: the full sentence is Keep a minimum video quality of X %
-#: src/pref_window.cpp:1294
+#: src/pref_window.cpp:1288
 msgid "Frame Rate"
 msgstr "Raporti i Imazheve (framerate)"
 
-#: src/pref_window.cpp:1294
+#: src/pref_window.cpp:1288
 msgid "Picture Quality"
 msgstr "Cilësia e Imazhit"
 
-#: src/pref_window.cpp:1294
+#: src/pref_window.cpp:1288
 msgid ""
 "Choose if you want to favour speed or quality for the transmitted video."
 msgstr ""
@@ -3707,11 +3711,11 @@ msgstr ""
 
 #. Translators: the full sentence is Transmit X background blocks with each
 #. frame
-#: src/pref_window.cpp:1298
+#: src/pref_window.cpp:1292
 msgid "Transmit"
 msgstr "Transmeto"
 
-#: src/pref_window.cpp:1298
+#: src/pref_window.cpp:1292
 msgid ""
 "Choose the number of blocks (that have not changed) transmitted with each "
 "frame. These blocks fill in the background."
@@ -3719,80 +3723,80 @@ msgstr ""
 "Zgjidh numrin e blloqeve (që nuk kanë ndryshuar) të transmetuara në çdo "
 "figurë.  Këto blloqe mbushin sfondin."
 
-#: src/pref_window.cpp:1298
+#: src/pref_window.cpp:1292
 msgid "background _blocks with each frame"
 msgstr "blloqet e _sfondit me çdo imazh"
 
-#: src/pref_window.cpp:1486 src/pref_window.cpp:1514
+#: src/pref_window.cpp:1480 src/pref_window.cpp:1508
 msgid "Choose a Picture"
 msgstr "Zgjidh një Imazh"
 
-#: src/pref_window.cpp:1891
+#: src/pref_window.cpp:1885
 msgid "General"
 msgstr "Të përgjithshme"
 
-#: src/pref_window.cpp:1892
+#: src/pref_window.cpp:1886
 msgid "Personal Data"
 msgstr "Të dhëna personale"
 
-#: src/pref_window.cpp:1902
+#: src/pref_window.cpp:1896
 msgid "Directory Settings"
 msgstr "Rregullimet e directory"
 
-#: src/pref_window.cpp:1910
+#: src/pref_window.cpp:1904
 msgid "NAT Settings"
 msgstr "Parametrat e NAT"
 
-#: src/pref_window.cpp:1915
+#: src/pref_window.cpp:1909
 msgid "Sound Events"
 msgstr "Efekte Zanore"
 
-#: src/pref_window.cpp:1919
+#: src/pref_window.cpp:1913
 msgid "H.323 Settings"
 msgstr "Parametrat H.323"
 
-#: src/pref_window.cpp:1921
+#: src/pref_window.cpp:1915
 msgid "Advanced Settings"
 msgstr "Rregullimet e detajuara"
 
-#: src/pref_window.cpp:1930
+#: src/pref_window.cpp:1924
 msgid "Gatekeeper Settings"
 msgstr "Parametrat e Gatekeeper"
 
-#: src/pref_window.cpp:1935
+#: src/pref_window.cpp:1929
 msgid "Gateway / Proxy Settings"
 msgstr "Parametrat e Gateway / Proxy"
 
-#: src/pref_window.cpp:1939
+#: src/pref_window.cpp:1933
 msgid "Codecs"
 msgstr "Kodekët"
 
-#: src/pref_window.cpp:1941
+#: src/pref_window.cpp:1935
 msgid "Audio Codecs"
 msgstr "Kodekët e Zërit"
 
-#: src/pref_window.cpp:1945
+#: src/pref_window.cpp:1939
 msgid "Video Codecs"
 msgstr "Kodekët e Videos"
 
-#: src/pref_window.cpp:1949
+#: src/pref_window.cpp:1943
 msgid "Devices"
 msgstr "Dispozitivët"
 
-#: src/sound_handling.cpp:330
+#: src/sound_handling.cpp:333
 msgid "Opening device for playing"
 msgstr "Duke hapur dispozitivin për lexim"
 
-#: src/sound_handling.cpp:332
+#: src/sound_handling.cpp:335
 msgid "Opening device for recording"
 msgstr "Duke hapur dispozitivin për regjistrim"
 
-#: src/sound_handling.cpp:344 src/sound_handling.cpp:346
+#: src/sound_handling.cpp:347 src/sound_handling.cpp:349
 #: src/videograbber.cpp:696
 msgid "Failed to open the device"
 msgstr "Nuk mund të hapi dispozitivin"
 
-#: src/sound_handling.cpp:344
+#: src/sound_handling.cpp:347
 #, c-format
 msgid ""
 "Impossible to open the selected audio device (%s) for recording. Please "
@@ -3802,7 +3806,7 @@ msgstr ""
 "regjistruar. Verifikoni konfigurimin e audios, lejet dhe shikoni që "
 "dispozitivi nuk është i zënë."
 
-#: src/sound_handling.cpp:346
+#: src/sound_handling.cpp:349
 #, c-format
 msgid ""
 "Impossible to open the selected audio device (%s) for playing. Please check "
@@ -3812,11 +3816,11 @@ msgstr ""
 "lexuar. Verifikoni konfigurimin e audios, lejet dhe shikoni që dispozitivi "
 "nuk është i zënë."
 
-#: src/sound_handling.cpp:385 src/sound_handling.cpp:461
+#: src/sound_handling.cpp:388 src/sound_handling.cpp:464
 msgid "Cannot use the audio device"
 msgstr "Nuk mund të vejë në përdorim dispozitivin e audios"
 
-#: src/sound_handling.cpp:385
+#: src/sound_handling.cpp:388
 #, c-format
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
@@ -3826,15 +3830,15 @@ msgstr ""
 "pamundurtë dhënat të lexohen nga ky dispozitiv. Verifikoni konfigurimin e "
 "audios. "
 
-#: src/sound_handling.cpp:394
+#: src/sound_handling.cpp:397
 msgid "Recording your voice"
 msgstr "Duke regjistruar zërin tënd"
 
-#: src/sound_handling.cpp:436
+#: src/sound_handling.cpp:439
 msgid "Recording and playing back"
 msgstr "Duke regjistruar dhe lexuar"
 
-#: src/sound_handling.cpp:461
+#: src/sound_handling.cpp:464
 #, c-format
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
@@ -3844,7 +3848,7 @@ msgstr ""
 "pamundurqë të dhënat të shkruhen në këtë dispozitiv. Verifikoni konfigurimin "
 "e audios. "
 
-#: src/sound_handling.cpp:589
+#: src/sound_handling.cpp:592
 #, c-format
 msgid ""
 "GnomeMeeting is now recording from %s and playing back to %s. Please say \"1 "
@@ -3855,99 +3859,116 @@ msgstr ""
 "thuaj \"1 2 3\" në mikrofonin tënd, duhet të dëgjosh veten në altoparlant me "
 "4 sekonda vonesë."
 
-#: src/stunclient.cpp:95
+#: src/stunclient.cpp:101
 msgid "Unknown NAT"
 msgstr "NAT i Panjohur"
 
-#: src/stunclient.cpp:95
+#: src/stunclient.cpp:101
 msgid "Open NAT"
 msgstr "NAT i Hapur"
 
-#: src/stunclient.cpp:96
+#: src/stunclient.cpp:102
 msgid "Cone NAT"
 msgstr "NAT Konik"
 
-#: src/stunclient.cpp:96
+#: src/stunclient.cpp:102
 msgid "Restricted NAT"
 msgstr "NAT i Kufizuar"
 
-#: src/stunclient.cpp:96
+#: src/stunclient.cpp:102
 msgid "Port Restricted NAT"
 msgstr "NAT me Porta Kufizuese"
 
-#: src/stunclient.cpp:97
+#: src/stunclient.cpp:103
 msgid "Symmetric NAT"
 msgstr "NAT Simetrik"
 
-#: src/stunclient.cpp:97
+#: src/stunclient.cpp:103
 msgid "Symmetric Firewall"
 msgstr "Firewall Simetrik"
 
-#: src/stunclient.cpp:97
+#: src/stunclient.cpp:103
 msgid "Blocked"
 msgstr "Bllokuar"
 
-#: src/stunclient.cpp:98
+#: src/stunclient.cpp:104
 msgid "Partially Blocked"
 msgstr "Bllokuar Pjesërisht"
 
-#: src/stunclient.cpp:113
+#: src/stunclient.cpp:119 src/stunclient.cpp:235
 msgid "Removed STUN server"
 msgstr "Serveri STUN u hoq"
 
-#: src/stunclient.cpp:130
+#: src/stunclient.cpp:136
 #, c-format
 msgid "Set STUN server to %s (%s)"
 msgstr "Cakto serverin STUN tek %s (%s)"
 
-#: src/stunclient.cpp:148
+#: src/stunclient.cpp:154
 msgid ""
 "GnomeMeeting couldn't detect the type of NAT you are using, the most "
-"appropriate method if your router doesn't support H.323 is probably to use "
-"IP Translation or a gatekeeper in proxy mode."
+"appropriate method if your router doesn't natively support H.323 is probably "
+"to forward the required ports and to use IP translation or to use an H.323 "
+"gatekeeper in proxy mode."
 msgstr ""
 "GnomeMeeting nuk mundi të zbulojë llojin e NAT-it që po përdor, metoda më e "
-"përshtatshme nëse router-i yt nuk suporton H.323 është ndoshta përdorimi i "
-"Përkthimit të IP-së ose një gatekeeper si proxy."
+"përshtatshme nëse router-i yt nuk suporton H.323 është ndoshta transferimi i "
+"portave të nevojshme dhe përdorimi i përkthimit të IP-së ose përdorimi një "
+"gatekeeper-i H.323 si proxy."
 
-#: src/stunclient.cpp:152
+#: src/stunclient.cpp:158
 msgid ""
-"GnomeMeeting detected Symmetric NAT. The most appropriate method if your "
-"router doesn't support H.323 is to use IP Translation or a gatekeeper in "
-"proxy mode."
+"Your system doesn't need any specific configuration as long as you don't "
+"have a local firewall blocking the ports required by GnomeMeeting."
 msgstr ""
-"GnomeMeeting zbuloi  një NAT Simetrik. Mënyra më e përshtatshme nëse router-i "
-"yt nuk suporton H.323 është përdorimi i Përkthimit të IP-së ose një gatekeeper si "
-"proxy."
+"Sistemi yt nuk ka nevojë për ndonjë konfigurim të veçantë për sa kohë nuk gjendet "
+"një firewall lokal i cili bllokon portat që përdor GnomeMeeting."
 
-#: src/stunclient.cpp:156
+#: src/stunclient.cpp:163
 msgid ""
-"Using a STUN server is most probably the most appropriate method if your "
-"router doesn't support H.323."
+"GnomeMeeting detected Symmetric NAT/Symmetric Firewall. The most appropriate "
+"method if your router doesn't natively support H.323 is to forward the "
+"required ports to change your Symmetric NAT/Symmetric Firewall into Cone NAT "
+"and run this test again. It should report Cone NAT, and allow GnomeMeeting "
+"to be used with a STUN Server. If it doesn't report Cone NAT after the port "
+"forwarding has been done, then it means it didn't work."
 msgstr ""
-"Përdorimi i një serveri STUN është ndoshta mënyra më e përshtatshme nëse "
-"router-i yt nuk suporton H.323."
+"GnomeMeeting zbuloi një NAT Simetrik/Firewall Simetrik. Mënyra më e përshtatshme "
+"nëse router-i yt nuk e suporton vetë H.323, është transferimi i portave të duhura për "
+"ta ndryshuar NAT-in/firewall-in tënd në një NAT Konik dhe ekzekutimi i këtij testi për "
+"së dyti. Në këtë mënyrë duhet të zbulojë NAT Konik, dhe të lejojë përdorimin e "
+"GnomeMeeting me një server STUN. Nëse nuk arrin të zbulojë NAT Konik pas "
+"transferimit të portave, do të thotë që diçka nuk punoi."
 
-#: src/stunclient.cpp:161
-msgid "NAT detection successfull"
-msgstr "Zbulimi i NAT-it pati sukses"
-
-#: src/stunclient.cpp:162
+#: src/stunclient.cpp:167
 #, c-format
 msgid ""
-"Detected %s using %s.\n"
+"GnomeMeeting detected %s. Using a STUN server is most probably the most "
+"appropriate method if your router doesn't natively support H.323.\n"
+"Notice that STUN support is not enough if you want to contact H.323 clients "
+"that do not support H.245 Tunneling like Netmeeting.\n"
 "\n"
-"%s\n"
-"\n"
-"Please see the FAQ on http://www.gnomemeeting.org for more information and "
-"possibilities."
+"Enable STUN Support?"
 msgstr ""
-"U zbulua %s që përdor %s.\n"
+"GnomeMeeting zbuloi %s. Përdorimi i  një serveri STUN është mënyra më e "
+"përshtatshme nëse router-i yt nuk suporton H.323.\n"
+"Vër re që suporti STUN nuk mjafton nëse dëshiron të kontaktosh klientë H.323 të "
+"cilët nuk suportojnë H.245 Tunneling si p.sh. Netmeeting.\n"
 "\n"
-"%s\n"
-"\n"
-"Të lutem lexo FAQ në http://www.gnomemeeting.org për më tepër informacione dhe "
-"mundësi."
+"Ta aktivizoj Suportin STUN?"
+
+#: src/stunclient.cpp:174 src/stunclient.cpp:188
+msgid "NAT Detection Successfull"
+msgstr "Zbulim i Suksesshëm i NAT-it"
+
+#: src/stunclient.cpp:199
+msgid "The type of NAT was successfully detected"
+msgstr "Lloji i NAT-it u zbulua me sukses"
+
+#: src/stunclient.cpp:224
+#, c-format
+msgid "Set STUN server to %s"
+msgstr "Cakto serverin STUN tek %s"
 
 #: src/tools.cpp:177 src/tools.cpp:191
 msgid "PC-To-Phone Settings"
@@ -4020,7 +4041,7 @@ msgstr "_Lidhu"
 msgid "_About..."
 msgstr "_Informacione..."
 
-#: src/urlhandler.cpp:78
+#: src/urlhandler.cpp:77
 msgid ""
 "The call transfer failed, the user was either unreachable, or simply busy "
 "when he received the call transfer request."
@@ -4028,18 +4049,18 @@ msgstr ""
 "Transferimi i thirrjes dështoi, përdoruesi nuk është i arritshëm, ose ishte "
 "i zënëkur mori kërkesën e trasferimit të thirrjes."
 
-#: src/urlhandler.cpp:380
+#: src/urlhandler.cpp:391
 #, c-format
 msgid "No contact with speed dial %s# found, will call number %s instead"
 msgstr ""
 "Nuk u gjet asnjë ndërlidhës me thirrje të shpejtë %s#, do të marri numrin %s "
 "në vend të thirrjes"
 
-#: src/urlhandler.cpp:397
+#: src/urlhandler.cpp:407
 msgid "Invalid URL handler"
 msgstr "URL e pavlefshme"
 
-#: src/urlhandler.cpp:397
+#: src/urlhandler.cpp:407
 msgid ""
 "Please specify a valid URL handler. Currently both h323: and callto: are "
 "supported."
@@ -4047,12 +4068,12 @@ msgstr ""
 "Specifikoni një URL të saktë.  Tashmë h323: dhe callto: janë të dyjatë "
 "mbështetura."
 
-#: src/urlhandler.cpp:411
+#: src/urlhandler.cpp:419
 #, c-format
 msgid "Calling %s"
 msgstr "Duke thirrur %s"
 
-#: src/urlhandler.cpp:415
+#: src/urlhandler.cpp:422
 #, c-format
 msgid "Transferring call to %s"
 msgstr "Transferim i thirrjes drejt %s"
@@ -4176,6 +4197,67 @@ msgstr "Gabim tek numri i kapjeve të transmetuara për sekondë."
 msgid "Error with the frame size."
 msgstr "Gabim në masën e kapjes së zgjedhur."
 
+#~ msgid "Fullscreen height"
+#~ msgstr "Gjatësia me ekran të plotë"
+
+#~ msgid "Fullscreen width"
+#~ msgstr "Gjerësia me ekran të plotë"
+
+#~ msgid "The image height for fullscreen"
+#~ msgstr "Gjatësia e imazhit me ekran të plotë."
+
+#~ msgid "The image width for fullscreen"
+#~ msgstr "Gjerësia e imazhit me ekran të plotë."
+
+#~ msgid "Both (Local Video Incrusted)"
+#~ msgstr "Të dyja (Video lokale e futur në dritare)"
+
+#~ msgid "Use a fullscreen size of"
+#~ msgstr "Përdorni një masë ekrani të plotë prej"
+
+#~ msgid "by"
+#~ msgstr "nga"
+
+#~ msgid "pixels"
+#~ msgstr "pixels"
+
+#~ msgid "The image width for fullscreen."
+#~ msgstr "Gjerësija e figurës me ekran të plotë."
+
+#~ msgid "The image height for fullscreen."
+#~ msgstr "Lartësia e figurës me ekran të plotë."
+
+#~ msgid ""
+#~ "GnomeMeeting detected Symmetric NAT. The most appropriate method if your "
+#~ "router doesn't support H.323 is to use IP Translation or a gatekeeper in "
+#~ "proxy mode."
+#~ msgstr ""
+#~ "GnomeMeeting zbuloi  një NAT Simetrik. Mënyra më e përshtatshme nëse "
+#~ "router-i yt nuk suporton H.323 është përdorimi i Përkthimit të IP-së ose "
+#~ "një gatekeeper si proxy."
+
+#~ msgid ""
+#~ "Using a STUN server is most probably the most appropriate method if your "
+#~ "router doesn't support H.323."
+#~ msgstr ""
+#~ "Përdorimi i një serveri STUN është ndoshta mënyra më e përshtatshme nëse "
+#~ "router-i yt nuk suporton H.323."
+
+#~ msgid ""
+#~ "Detected %s using %s.\n"
+#~ "\n"
+#~ "%s\n"
+#~ "\n"
+#~ "Please see the FAQ on http://www.gnomemeeting.org for more information "
+#~ "and possibilities."
+#~ msgstr ""
+#~ "U zbulua %s që përdor %s.\n"
+#~ "\n"
+#~ "%s\n"
+#~ "\n"
+#~ "Të lutem lexo FAQ në http://www.gnomemeeting.org për më tepër "
+#~ "informacione dhe mundësi."
+
 #~ msgid "Show a status bar at the bottom of the main window"
 #~ msgstr "Shfaq gjëndjen poshtë dritares kryesor"
 
@@ -4221,9 +4303,6 @@ msgstr "Gabim në masën e kapjes së zgjedhur."
 #~ "versionit të artë 1.00!\n"
 #~ "\n"
 #~ "Ekipi i GnomeMeeting."
-
-#~ msgid "Open text chat"
-#~ msgstr "Hap tekstin e bisedës"
 
 #~ msgid "Status Bar"
 #~ msgstr "Paneli i gjendjes"
