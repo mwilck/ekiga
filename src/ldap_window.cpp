@@ -219,12 +219,13 @@ void contacts_tree_view_row_activated_cb (GtkTreeView *tree_view,
     
       gtk_notebook_set_current_page (GTK_NOTEBOOK (lw->notebook), page_num);
       page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), page_num);
-      
-
+ 
       xdap_users_list_store = 
 	GTK_LIST_STORE (g_object_get_data (G_OBJECT (page), "list_store"));
       gtk_list_store_clear (xdap_users_list_store);
 
+      /* Get the server name */
+      gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 0, &name, -1);
 
       /* Check if there is already a search running */
       ils_browser = (GMILSBrowser *) g_object_get_data (G_OBJECT (page), 
