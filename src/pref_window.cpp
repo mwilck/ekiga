@@ -263,6 +263,10 @@ static void gm_codecs_list_button_clicked_cb (GtkWidget *widget,
       && gtk_list_store_iter_is_valid (GTK_LIST_STORE (model), iter2))
     gtk_list_store_swap (GTK_LIST_STORE (model), &iter, iter2);
   
+  /* Scroll to the new position */
+  gtk_tree_view_scroll_to_cell (GTK_TREE_VIEW (tree_view), 
+				tree_path, NULL, FALSE, 0, 0);
+
   gtk_tree_path_free (tree_path);
   gtk_tree_iter_free (iter2);
   g_free (path_str);
