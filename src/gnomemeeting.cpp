@@ -100,13 +100,9 @@ GnomeMeeting::GnomeMeeting ()
 {
   /* no endpoint for the moment */
   endpoint = NULL;
-
   url_handler = NULL;
-  video_grabber = NULL;
 
   client = gconf_client_get_default ();
-
-  vg = new PIntCondMutex (0, 0);
 
   /* Init the different structures */
   gw = new (GmWindow);
@@ -126,9 +122,11 @@ GnomeMeeting::GnomeMeeting ()
 
 GnomeMeeting::~GnomeMeeting()
 {
-  if (endpoint)
+  if (endpoint) {
+    
     endpoint->ClearAllCalls (H323Connection::EndedByLocalUser, TRUE);
-  RemoveVideoGrabber (true);
+    endpoint->RemoveVideoGrabber (true);
+  }
   RemoveEndpoint ();
 
   if (gw->ldap_window) {
@@ -396,11 +394,12 @@ GnomeMeeting::InitComponents ()
   signal (SIGPIPE, SIG_IGN);
 #endif
   
+
   endpoint = new GMH323EndPoint ();
-  
+
   /* Start the video preview */
   if (gconf_client_get_bool (client, DEVICES_KEY "video_preview", NULL))
-    MyApp->CreateVideoGrabber ();
+    endpoint->CreateVideoGrabber ();
 
   endpoint->SetUserNameAndAlias ();
 
@@ -513,37 +512,3 @@ void GnomeMeeting::RemoveEndpoint ()
 }
 
 
-void GnomeMeeting::CreateVideoGrabber (BOOL start_grabbing, BOOL synchronous)
-{
-  PWaitAndSignal m(vg_var_mutex);
-  
-  if (!video_grabber)
-    video_grabber =
-      new GMVideoGrabber (vg, start_grabbing, synchronous);
-}
-
-
-void GnomeMeeting::RemoveVideoGrabber (BOOL synchronous)
-{
-  PWaitAndSignal m(vg_var_mutex);
-
-  if (video_grabber) {
-
-    video_grabber->Close ();
-  }      
-  video_grabber = NULL;
-
-  if (synchronous)
-    vg->WaitCondition ();
-}
-
-
-GMVideoGrabber *GnomeMeeting::GetVideoGrabber ()
-{
-  GMVideoGrabber *vg = NULL;
-  PWaitAndSignal m(vg_var_mutex);
-
-  vg = video_grabber;
-  
-  return vg;
-}

@@ -1,3 +1,21 @@
+2003-06-14 Damien Sandras  <dsandras@seconix.com>
+
+	* src/endpoint.cpp, src/endpoint.h: Moved the GMVideoGrabber
+	to the Endpoint class. That permits to more easily use the
+	mutexes and to ensure that everything is thread-safe.
+	Returning the GMVideoGrabber returns a locked pointer to ensure
+	that the object will continue to live until the object is 
+	unlocked.
+	
+	* src/gnomemeeting.cpp, src/gnomemeeting.h: See above.
+	
+	* src/config.cpp: Adapted to the new API.
+	
+	* src/main_window.cpp: Adapted to the new API.
+	
+	* src/videograbber.cpp, src/videograbber.h: Added the 2 Lock and Unlock
+	functions.
+	
 2003-06-11 Damien Sandras  <dsandras@seconix.com>
 
 	* src/endpoint.cpp: Fixed wrong UTF-8 PString when Netmeeting 

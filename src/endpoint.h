@@ -43,6 +43,7 @@
 
 #include "common.h"
 #include "gdkvideoio.h"
+#include "videograbber.h"
 #include "lid.h"
 
 #ifdef HAS_IXJ
@@ -80,6 +81,40 @@ class GMH323EndPoint : public H323EndPoint
    */
   void UpdateConfig ();
 
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Creates a video grabber.
+   * PRE          :  If TRUE, then the grabber will start
+   *                 grabbing after its creation. If TRUE,
+   *                 then the opening is done sync.
+   */  
+  void CreateVideoGrabber (BOOL = true, BOOL = false);
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Removes the current video grabber, if any.
+   * PRE          :  If TRUE, then wait until all video grabbers
+   *                 are removed before returning.
+   */  
+  void RemoveVideoGrabber (BOOL = false);
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns the current videograbber, if any.
+   *                 The pointer is locked, which means that the device
+   *                 can't be deleted until the pointer is unlocked with
+   *                 Unlock. This is a protection to always manipulate
+   *                 existing objects. Notice that all methods in the
+   *                 GMH323EndPoint class related to the GMVideoGrabber
+   *                 use internal mutexes so that the pointer cannot be
+   *                 returned during a RemoveVideoGrabber/CreateVideoGrabber,
+   *                 among others. You should use those functions and not
+   *                 manually delete the GMVideoGrabber.
+   * PRE          :  /
+   */
+  GMVideoGrabber *GetVideoGrabber ();
+
+  
   /* DESCRIPTION  :  This callback is called to create an instance of
    *                 H323Gatekeeper for gatekeeper registration.
    * BEHAVIOR     :  Return an instance of H323GatekeeperWithNAT
@@ -402,12 +437,14 @@ class GMH323EndPoint : public H323EndPoint
   GmTextChat *chat;
   GConfClient *client;
 
+  GMVideoGrabber *video_grabber;
   PThread *ils_client;
   PThread *audio_tester;
 
   /* Mutexes for the different variables to make
      sure there is not 2 threads accessing them
      at the same time */
+  PMutex vg_access_mutex;
   PMutex ils_access_mutex;
   PMutex cc_access_mutex;
   PMutex ch_access_mutex;
@@ -415,6 +452,8 @@ class GMH323EndPoint : public H323EndPoint
   PMutex ct_access_mutex;
   PMutex tct_access_mutex;
   PMutex lt_access_mutex;
+
+  PIntCondMutex *vg;
 
   int opened_audio_channels;
   int opened_video_channels;

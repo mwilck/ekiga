@@ -247,16 +247,12 @@ void GMVideoGrabber::StopGrabbing (void)
 
 GDKVideoOutputDevice *GMVideoGrabber::GetEncodingDevice (void)
 {
-  PWaitAndSignal m(device_mutex);
-  
   return encoding_device;
 }
 
 
 PVideoChannel *GMVideoGrabber::GetVideoChannel (void)
 {
-  PWaitAndSignal m(device_mutex);
-  
   return channel;
 }
 
@@ -289,14 +285,24 @@ void GMVideoGrabber::GetParameters (int *whiteness, int *brightness,
 				    int *colour, int *contrast)
 {
   int hue;
-  PWaitAndSignal m(device_mutex);
-  
   grabber->GetParameters (whiteness, brightness, colour, contrast, &hue);
 
   *whiteness = (int) *whiteness / 256;
   *brightness = (int) *brightness / 256;
   *colour = (int) *colour / 256;
   *contrast = (int) *contrast / 256;
+}
+
+
+void GMVideoGrabber::Lock ()
+{
+  device_mutex.Wait ();
+}
+
+
+void GMVideoGrabber::Unlock ()
+{
+  device_mutex.Signal ();
 }
 
 

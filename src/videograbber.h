@@ -151,12 +151,24 @@ class GMVideoGrabber : public PThread
   void GetParameters (int *, int *, int *, int *);
 
 
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Lock the device, preventing it to be Closed and deleted.
+   * PRE          :  /
+   */
+  void Lock ();
+
+  
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Unlock the device.
+   * PRE          :  /
+   */
+  void Unlock ();
+
+  
  protected:
   void Main (void);
-  
   void VGOpen (void);     /* That function really opens the video device */
   void VGClose (void);    /* That function really closes the video device */
-
   void UpdateConfig (void); /* That function updates the internal values */
 
   GmWindow *gw;

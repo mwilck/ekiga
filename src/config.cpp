@@ -117,8 +117,6 @@ static void silence_detection_changed_nt (GConfClient *, guint,
 static void network_settings_changed_nt (GConfClient *, guint, 
 					 GConfEntry *, gpointer);
 #ifdef HAS_IXJ
-static void lid_device_changed_nt (GConfClient *, guint, GConfEntry *, 
-				   gpointer);
 static void lid_aec_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
 static void lid_country_changed_nt (GConfClient *, guint, GConfEntry *, 
 				    gpointer);
@@ -1054,48 +1052,6 @@ static void audio_device_changed_nt (GConfClient *client, guint cid,
 }
 
 
-#ifdef HAS_IXJ
-/* DESCRIPTION  :  This notifier is called when the gconf database data
- *                 associated with the lid device changes.
- * BEHAVIOR     :  It updates the endpoint and displays
- *                 a message in the history. If the device is not valid,
- *                 a message is displayed. Disable Speaker Phone mode, and
- *                 show/hide the toolbar button for speaker phone following
- *                 Quicknet is used or not.
- * PRE          :  /
- */
-static void lid_device_changed_nt (GConfClient *client, guint cid, 
-				   GConfEntry *entry, gpointer data)
-{
-  GmWindow *gw = NULL;
-
-  if (entry->value->type == GCONF_VALUE_BOOL) {
-
-    gdk_threads_enter ();
-    gw = MyApp->GetMainWindow ();
-    
-    if (MyApp->Endpoint ()->GetCallingState () == 0) {
-
-      /* Update the configuration in order to update 
-	 the local user name for calls */
-      MyApp->Endpoint ()->UpdateConfig ();
-      gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(gw->speaker_phone_button),
-				   FALSE);
-    }
-
-    /*
-    if (gconf_value_get_bool (entry->value))
-      gtk_widget_show_all (gw->speaker_phone_button);
-    else
-      gtk_widget_hide_all (gw->speaker_phone_button);
-    */
-
-    gdk_threads_leave ();
-  }
-}
-#endif
-
-
 /* DESCRIPTION  :  This callback is called when the video device changes in
  *                 the gconf database.
  * BEHAVIOR     :  It resets the video device.
@@ -1104,6 +1060,7 @@ static void lid_device_changed_nt (GConfClient *client, guint cid,
 static void video_device_setting_changed_nt (GConfClient *client, guint cid, 
 					     GConfEntry *entry, gpointer data)
 {
+  GMH323EndPoint *ep = NULL;
   GMVideoGrabber *vg = NULL;
 
   if ((entry->value->type == GCONF_VALUE_STRING) ||
@@ -1112,12 +1069,17 @@ static void video_device_setting_changed_nt (GConfClient *client, guint cid,
     gdk_threads_enter ();
 
     /* We reset the video device */
-    if (MyApp->Endpoint ()->GetCallingState () == 0) {
+    ep = MyApp->Endpoint ();
     
-      vg = MyApp->GetVideoGrabber ();
+    if (ep && ep->GetCallingState () == 0) {
+    
+      vg = ep->GetVideoGrabber ();
 
-      if (vg)
+      if (vg) {
+	
 	vg->Reset ();
+	vg->Unlock ();
+      }
     }
   
     gdk_threads_leave ();
@@ -1132,17 +1094,21 @@ static void video_device_setting_changed_nt (GConfClient *client, guint cid,
 static void video_preview_changed_nt (GConfClient *client, guint cid, 
 				      GConfEntry *entry, gpointer data)
 {
+  GMH323EndPoint *ep = NULL;
+  
   if (entry->value->type == GCONF_VALUE_BOOL) {
    
     gdk_threads_enter ();
          
     /* We reset the video device */
-    if (MyApp->Endpoint ()->GetCallingState () == 0) {
+    ep = MyApp->Endpoint ();
+    
+    if (ep && ep->GetCallingState () == 0) {
     
       if (gconf_value_get_bool (entry->value)) 
-	MyApp->CreateVideoGrabber ();
+	ep->CreateVideoGrabber ();
       else 
-	MyApp->RemoveVideoGrabber ();
+	ep->RemoveVideoGrabber ();
     }
  
     gdk_threads_leave ();
@@ -1500,8 +1466,6 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
 #ifndef WIN32
   MenuEntry *tray_menu = gnomemeeting_get_tray_menu (gm);
 #endif
-  GtkWidget *dialog = NULL;
-  gchar *buffer = NULL;
   int gconf_test = -1;
 
   

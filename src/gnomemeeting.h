@@ -41,7 +41,6 @@
 
 #include "common.h"
 #include "endpoint.h"
-#include "videograbber.h"
 
 
 /* The main gnomeMeeting class */
@@ -156,30 +155,6 @@ class GnomeMeeting : public PProcess
    * PRE          :  /
    */  
   void RemoveEndpoint ();
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Creates a video grabber.
-   * PRE          :  If TRUE, then the grabber will start
-   *                 grabbing after its creation. If TRUE,
-   *                 then the opening is done sync.
-   */  
-  void CreateVideoGrabber (BOOL = true, BOOL = false);
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Removes the current video grabber, if any.
-   * PRE          :  If TRUE, then wait until all video grabbers
-   *                 are removed before returning.
-   */  
-  void RemoveVideoGrabber (BOOL = false);
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns the current videograbber, if any.
-   * PRE          :  /
-   */
-  GMVideoGrabber *GetVideoGrabber ();
   
   
   /* DESCRIPTION  :  /
@@ -213,7 +188,6 @@ class GnomeMeeting : public PProcess
   GConfClient *client;
   GMH323EndPoint *endpoint;
   PThread *url_handler;
-  GMVideoGrabber *video_grabber;
   
   GmWindow *gw;
   GmLdapWindow *lw;
@@ -223,9 +197,7 @@ class GnomeMeeting : public PProcess
   GmTextChat *chat;
   GmRtpData *rtp;
 
-  PMutex vg_var_mutex;
   PMutex ep_var_mutex;
-  PIntCondMutex *vg;
   int call_number; 
 };
 

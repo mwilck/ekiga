@@ -769,7 +769,6 @@ audio_volume_changed (GtkAdjustment *adjustment, gpointer data)
 }
 
 
-
 /**
  * DESCRIPTION  :  This callback is called when the user changes the 
  *                 video brightness slider in the main notebook.
@@ -780,14 +779,19 @@ void
 brightness_changed (GtkAdjustment *adjustment, gpointer data)
 { 
   GmWindow *gw = GM_WINDOW (data);
-  GMVideoGrabber *video_grabber = MyApp->GetVideoGrabber ();
+  GMH323EndPoint *ep = NULL;
+  GMVideoGrabber *video_grabber = NULL;
 
   int brightness;
 
   brightness =  (int) (GTK_ADJUSTMENT (gw->adj_brightness)->value);
 
-  if (video_grabber)
+  ep = MyApp->Endpoint ();
+  if (ep && (video_grabber = ep->GetVideoGrabber ())) {
+    
     video_grabber->SetBrightness (brightness << 8);
+    video_grabber->Unlock ();
+  }
 }
 
 
@@ -801,14 +805,19 @@ void
 whiteness_changed (GtkAdjustment *adjustment, gpointer data)
 { 
   GmWindow *gw = GM_WINDOW (data);
-  GMVideoGrabber *video_grabber = MyApp->GetVideoGrabber ();
+  GMVideoGrabber *video_grabber = NULL;
+  GMH323EndPoint *ep = NULL;
   
   int whiteness;
 
   whiteness =  (int) (GTK_ADJUSTMENT (gw->adj_whiteness)->value);
 
-  if (video_grabber)
+  ep = MyApp->Endpoint ();
+  if (ep && (video_grabber = ep->GetVideoGrabber ())) {
+    
     video_grabber->SetWhiteness (whiteness << 8);
+    video_grabber->Unlock ();
+  }
 }
 
 
@@ -822,14 +831,19 @@ void
 colour_changed (GtkAdjustment *adjustment, gpointer data)
 { 
   GmWindow *gw = GM_WINDOW (data);
-  GMVideoGrabber *video_grabber = MyApp->GetVideoGrabber ();
+  GMVideoGrabber *video_grabber = NULL;
+  GMH323EndPoint *ep = NULL;
   
   int colour;
 
   colour =  (int) (GTK_ADJUSTMENT (gw->adj_colour)->value);
 
-  if (video_grabber)
+  ep = MyApp->Endpoint ();
+  if (ep && (video_grabber = ep->GetVideoGrabber ())) {
+    
     video_grabber->SetColour (colour << 8);
+    video_grabber->Unlock ();
+  }
 }
 
 
@@ -843,14 +857,19 @@ void
 contrast_changed (GtkAdjustment *adjustment, gpointer data)
 { 
   GmWindow *gw = GM_WINDOW (data);
-  GMVideoGrabber *video_grabber = MyApp->GetVideoGrabber ();
+  GMVideoGrabber *video_grabber = NULL;
+  GMH323EndPoint *ep = NULL;
   
   int contrast;
 
   contrast =  (int) (GTK_ADJUSTMENT (gw->adj_contrast)->value);
 
-  if (video_grabber)
+  ep = MyApp->Endpoint ();
+  if (ep && (video_grabber = ep->GetVideoGrabber ())) {
+    
     video_grabber->SetContrast (contrast << 8);
+    video_grabber->Unlock ();
+  }
 }
 
 
