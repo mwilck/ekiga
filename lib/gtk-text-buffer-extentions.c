@@ -169,7 +169,7 @@ smiley_tree_init (smile_detect *root)
       {":|", &pixbufs[7]},
       {":-|", &pixbufs[7]},
       {":-/", &pixbufs[8]},
-      {":/", &pixbufs[8]},
+      /*      {":/", &pixbufs[8]},*/
       {":-P", &pixbufs[9]},
       {":-p", &pixbufs[9]},
       {":P", &pixbufs[9]},
