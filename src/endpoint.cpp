@@ -358,7 +358,6 @@ void GMH323EndPoint::UpdateConfig ()
       !gconf_client_get_bool (client, 
 			      "/apps/gnomemeeting/general/fast_start", 0);
 
-
 #ifdef HAS_IXJ
     /* Use the quicknet card if needed */
     if (use_lid) {

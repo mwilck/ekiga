@@ -26,10 +26,10 @@ MINOR_VERSION=94
 BUILD_TYPE=ReleaseCode
 BUILD_NUMBER=0
 
-AC_DEFINE_UNQUOTED(MAJOR_VERSION, $MAJOR_VERSION)
-AC_DEFINE_UNQUOTED(MINOR_VERSION, $MINOR_VERSION)
-AC_DEFINE_UNQUOTED(BUILD_TYPE, $BUILD_TYPE)
-AC_DEFINE_UNQUOTED(BUILD_NUMBER, $BUILD_NUMBER)
+AC_DEFINE_UNQUOTED(MAJOR_VERSION, $MAJOR_VERSION,[fix])
+AC_DEFINE_UNQUOTED(MINOR_VERSION, $MINOR_VERSION,[fix])
+AC_DEFINE_UNQUOTED(BUILD_TYPE, $BUILD_TYPE,[fix])
+AC_DEFINE_UNQUOTED(BUILD_NUMBER, $BUILD_NUMBER,[fix])
 
 
 dnl ###########################################################################
@@ -348,7 +348,7 @@ ALL_LINGUAS="cs de el es fr gl hu it ja nl no pl pt pt_BR ru sk sv ta tr vi wa z
 
 GETTEXT_PACKAGE=gnomemeeting
 AC_SUBST(GETTEXT_PACKAGE)
-AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE")
+AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE",[fix])
 AM_GLIB_GNU_GETTEXT
 
 
@@ -360,9 +360,9 @@ dnl #########################################################################
 dnl Set PACKAGE_LOCALE_DIR in config.h.
 dnl #########################################################################
 if test "x${prefix}" = "xNONE"; then
-  AC_DEFINE_UNQUOTED(PACKAGE_LOCALE_DIR, "${ac_default_prefix}/${DATADIRNAME}/locale")
+  AC_DEFINE_UNQUOTED(PACKAGE_LOCALE_DIR, "${ac_default_prefix}/${DATADIRNAME}/locale",[fix])
 else
-  AC_DEFINE_UNQUOTED(PACKAGE_LOCALE_DIR, "${prefix}/${DATADIRNAME}/locale")
+  AC_DEFINE_UNQUOTED(PACKAGE_LOCALE_DIR, "${prefix}/${DATADIRNAME}/locale",[fix])
 fi
 
 AC_MSG_CHECKING([whether to install into Gnome's prefix])
