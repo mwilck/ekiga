@@ -218,10 +218,6 @@ void GMH323EndPoint::UpdateDevices ()
   /* Get the gconf settings */
   gnomemeeting_threads_enter ();
   preview = gconf_get_bool (VIDEO_DEVICES_KEY "enable_preview");
-  autoStartTransmitVideo =
-    gconf_get_bool (VIDEO_CODECS_KEY "enable_video_transmission");
-  autoStartReceiveVideo =
-    gconf_get_bool (VIDEO_CODECS_KEY "enable_video_reception");
   audio_input = gconf_get_string (AUDIO_DEVICES_KEY "input_device");
   gnomemeeting_threads_leave ();
   
@@ -643,7 +639,7 @@ GMH323EndPoint::GetVideoGrabber ()
 H323Gatekeeper *
 GMH323EndPoint::CreateGatekeeper(H323Transport * transport)
 {
-  return new H323GatekeeperWithNAT(*this, transport);
+  return new H323GatekeeperWithNAT (*this, transport);
 }
 
 
@@ -2300,7 +2296,6 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
   NoAnswerTimer.Stop ();
   CallPendingTimer.Stop ();
 
-  
   /* Transmitting */
   if (is_encoding && autoStartTransmitVideo) {
 
@@ -2329,15 +2324,12 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 			H323VideoCodec::AdaptivePacketDelay |
 			codec.GetVideoMode());
 
-
-    /* The channel for video transmission is not auto-deleted, which
-     * means that if it is closed, the video grabber has to be closed manually
-     * at the end of calls. We reset the video grabber here because the video
-     * transmission could have been suspended and restarted, which requires
-     * the video channel to be reopened.
-     */
-    CreateVideoGrabber (FALSE, TRUE);
     vg = GetVideoGrabber ();
+    if (!vg) {
+    
+      CreateVideoGrabber (FALSE, TRUE);
+      vg = GetVideoGrabber ();
+    }
     
     if (vg) {
 
