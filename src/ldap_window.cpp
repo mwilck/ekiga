@@ -1,4 +1,4 @@
-
+e
 /* GnomeMeeting -- A Video-Conferencing application
  * Copyright (C) 2000-2001 Damien Sandras
  *
@@ -654,7 +654,6 @@ void gnomemeeting_init_ldap_window_notebook (int page_num, gchar *text_label)
   gtk_container_add (GTK_CONTAINER (scroll), tree_view);
   gtk_container_set_border_width (GTK_CONTAINER (tree_view), GNOME_PAD_SMALL);
 
-  cout << "FIX ME: gnomemeeting_init_ldap_popup_menu, remove it" << endl <<flush;
   /* The page's "label" */
   hbox = gtk_hbox_new (false, 0);
   label = gtk_label_new (text_label);

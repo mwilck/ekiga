@@ -250,7 +250,6 @@ void gnomemeeting_init (GM_window_widgets *gw,
 
   gm = gnome_app_new ("gnomemeeting", _("GnomeMeeting"));
 
-
   /* Some little gconf stuff */  
   client = gconf_client_get_default ();
   gconf_client_add_dir (client, "/apps/gnomemeeting",

@@ -174,7 +174,8 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
       (display != 2)) {
     
     gnomemeeting_threads_enter ();
-    gtk_image_set_from_pixbuf (GTK_IMAGE (gw->video_image), GDK_PIXBUF (zoomed_pic));
+    gtk_image_set_from_pixbuf (GTK_IMAGE (gw->video_image), 
+			       GDK_PIXBUF (zoomed_pic));
     gtk_widget_queue_draw (GTK_WIDGET (gw->video_image));
     gnomemeeting_threads_leave ();
   }
@@ -203,7 +204,8 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
  				 zoomed_height / 4, 
  				 GDK_INTERP_NEAREST);
 
-      gtk_image_set_from_pixbuf (GTK_IMAGE (gw->video_image), GDK_PIXBUF (local_pic));
+      gtk_image_set_from_pixbuf (GTK_IMAGE (gw->video_image), 
+				 GDK_PIXBUF (local_pic));
       gtk_widget_queue_draw (GTK_WIDGET (gw->video_image));
       
       g_object_unref (G_OBJECT (local_pic));

@@ -337,6 +337,59 @@ static void menu_ctree_row_seletected_callback (GtkWidget *widget, gint row,
 }
 
 
+void entry_changed (GtkEditable  *e, gpointer data)
+{
+  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
+  GConfClient *client = gconf_client_get_default ();
+  gchar *key = (gchar *) data;
+
+  gconf_client_set_string (GCONF_CLIENT (client),
+                           key,
+                           gtk_entry_get_text (GTK_ENTRY (e)),
+                           NULL);
+}
+
+
+void adjustment_changed (GtkAdjustment *adj, gpointer data)
+{
+  GConfClient *client = gconf_client_get_default ();
+  gchar *key = (gchar *) data;
+
+  gconf_client_set_int (GCONF_CLIENT (client),
+                        key,
+                        (int) adj->value, NULL);
+}
+
+
+void toggle_changed (GtkCheckButton *but, gpointer data)
+{
+  GConfClient *client = gconf_client_get_default ();
+  gchar *key = (gchar *) data;
+
+  gconf_client_set_bool (GCONF_CLIENT (client),
+                         key,
+                         gtk_toggle_button_get_active
+                         (GTK_TOGGLE_BUTTON (but)),
+                         NULL);
+}
+
+
+void option_menu_changed (GtkWidget *menu, gpointer data)
+{
+  GConfClient *client = gconf_client_get_default ();
+  gchar *key = (gchar *) data;
+  guint item_index;
+  GtkWidget *active_item;
+
+  active_item = gtk_menu_get_active (GTK_MENU (menu));
+  item_index = g_list_index (GTK_MENU_SHELL (GTK_MENU (menu))->children, 
+			     active_item);
+ 
+  gconf_client_set_int (GCONF_CLIENT (client),
+			key, item_index, NULL);
+}
+
+
 static GtkWidget *gnomemeeting_pref_window_build_page (GtkWidget *notebook,  
                                                        gchar *category_name)   
 {                                                                              
@@ -440,17 +493,15 @@ static GtkWidget *gnomemeeting_pref_window_add_entry (GtkWidget *table,
                                                                                
                                                                                
   /* We set the key as data to be able to get the data in order to block       
-     the signal in the gconf notifier */                                       
-                                                                               
-  gtk_object_set_data (GTK_OBJECT (entry), "gconf_key",                        
-                       (void *) gconf_key);                                    
-                                                                               
-  gtk_signal_connect (GTK_OBJECT (entry), "changed",                           
-                      GTK_SIGNAL_FUNC (entry_changed),                         
-                      (gpointer) gtk_object_get_data (GTK_OBJECT (entry),      
-                                                      "gconf_key"));           
-                                                                               
-                                                                               
+     the signal in the gconf notifier */                             
+  g_object_set_data (G_OBJECT (entry), "gconf_key", (void *) gconf_key);
+
+  g_signal_connect (G_OBJECT (entry), "changed",                           
+		    G_CALLBACK (entry_changed),                         
+		    (gpointer) g_object_get_data (G_OBJECT (entry),
+						  "gconf_key"));
+
+
   tip = gtk_tooltips_new ();                                                   
   gtk_tooltips_set_tip (tip, entry, tooltip, NULL);                            
                                                                                
@@ -463,10 +514,9 @@ static GtkWidget *gnomemeeting_pref_window_add_toggle (GtkWidget *table,
                                                        gchar *gconf_key,       
                                                        gchar *tooltip,         
                                                        int row, int col)       
-{                                                                              
-                                                                               
-  GtkWidget *toggle = NULL;                                                    
+{
   GtkWidget *label = NULL;                                                     
+  GtkWidget *toggle = NULL;  
   GtkTooltips *tip = NULL;                                                     
                                                                                
                                                                                
@@ -482,7 +532,8 @@ static GtkWidget *gnomemeeting_pref_window_add_toggle (GtkWidget *table,
                     GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);           
                                                                                
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle), 
-				gconf_client_get_bool (client, gconf_key, NULL));
+				gconf_client_get_bool (client, 
+						       gconf_key, NULL));
 
                                                                                
   tip = gtk_tooltips_new ();                                                   

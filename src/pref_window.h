@@ -51,4 +51,12 @@ void gnomemeeting_init_pref_window ();
  */
 void gnomemeeting_codecs_list_add (GtkWidget *, const char *, const char *);
 
+
+void entry_changed (GtkEditable  *, gpointer);
+void adjustment_changed (GtkAdjustment *, gpointer);
+void toggle_changed (GtkCheckButton *, gpointer);
+void option_menu_changed (GtkWidget *, gpointer);
+
+
 #endif
+     

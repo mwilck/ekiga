@@ -47,18 +47,14 @@
 
 #include "../config.h"
 
-/* Here due to a bug in GLIB 2.00 */
-#define	g_signal_handlers_block_by_func(instance, func, data) \
-    g_signal_handlers_block_matched ((instance), (GSignalMatchType) (G_SIGNAL_MATCH_FUNC | G_SIGNAL_MATCH_DATA), \
-				     0, 0, NULL, (func), (data))
-#define	g_signal_handlers_unblock_by_func(instance, func, data) \
-    g_signal_handlers_unblock_matched ((instance), (GSignalMatchType) (G_SIGNAL_MATCH_FUNC | G_SIGNAL_MATCH_DATA), \
-				       0, 0, NULL, (func), (data))
+
 
 /* Declarations */
 extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;
 
+static void entry_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
+static void toggle_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 
 static gboolean answer_mode_changed (gpointer);
 static void answer_mode_changed_nt (GConfClient*, guint, 
@@ -71,7 +67,6 @@ static void fps_limit_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static gboolean vb_limit_changed (gpointer);
 static void vb_limit_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static gboolean toggle_changed (gpointer);
-static void toggle_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static gboolean ht_fs_changed (gpointer);
 static void ht_fs_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static gboolean entry_changed_ (gpointer);
@@ -117,7 +112,6 @@ static void enable_vid_tr_changed_nt (GConfClient *, guint, GConfEntry *,
 static gboolean audio_codecs_list_changed (gpointer);
 static void audio_codecs_list_changed_nt (GConfClient *, guint, GConfEntry *, 
 					  gpointer);
-static gboolean view_widget_changed (gpointer);
 static void view_widget_changed_nt (GConfClient *, guint, GConfEntry *, 
 				    gpointer);
 static gboolean notebook_info_changed (gpointer);
@@ -129,6 +123,129 @@ static void audio_codec_setting_changed_nt (GConfClient *, guint,
 static gboolean silence_detection_changed (gpointer);
 static void silence_detection_changed_nt (GConfClient *, guint, 
 					    GConfEntry *, gpointer);
+
+
+/* 
+ * Generic notifiers that update specific widgets when a gconf key changes
+ */
+
+
+/* DESCRIPTION  :  Generic notifiers for entries.
+ *                 This callback is called when a specific key of
+ *                 the gconf database associated with an entry changes.
+ * BEHAVIOR     :  It updates the widget.
+ * PRE          :  /
+ */
+static void entry_changed_nt (GConfClient *client, guint cid, 
+			      GConfEntry *entry, gpointer data)
+{
+
+  if (entry->value->type == GCONF_VALUE_STRING) {
+
+    gdk_threads_enter ();
+  
+    GtkWidget *e = GTK_WIDGET (data);
+
+    /* We set the new value for the widget */
+    g_signal_handlers_block_by_func (G_OBJECT (e),
+				     entry_changed, 
+				     g_object_get_data (G_OBJECT (e), 
+							"gconf_key")); 
+  
+    gtk_entry_set_text (GTK_ENTRY (e), gconf_value_get_string (entry->value));
+
+    g_signal_handlers_unblock_by_func (G_OBJECT (e),
+				       entry_changed, 
+				       g_object_get_data (G_OBJECT (e), 
+							  "gconf_key")); 
+
+    
+    gdk_threads_leave (); 
+  }
+}
+
+
+/* DESCRIPTION  :  Generic notifiers for toggles.
+ *                 This callback is called when a specific key of
+ *                 the gconf database associated with a toggle changes, this
+ *                 only updates the toggle.
+ * BEHAVIOR     :  It only updates the widget.
+ * PRE          :  /
+ */
+static void toggle_changed_nt (GConfClient *client, guint cid, 
+			       GConfEntry *entry, gpointer data)
+{
+  if (entry->value->type == GCONF_VALUE_BOOL) {
+   
+    gdk_threads_enter ();
+  
+    GtkWidget *e = GTK_WIDGET (data);
+
+    /* We set the new value for the widget */
+    g_signal_handlers_block_by_func (G_OBJECT (e),
+				     entry_changed, 
+				     g_object_get_data (G_OBJECT (e), 
+							"gconf_key")); 
+  
+    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (e), 
+				  (bool) gconf_value_get_bool (entry->value));
+
+    g_signal_handlers_unblock_by_func (G_OBJECT (e),
+				       entry_changed, 
+				       g_object_get_data (G_OBJECT (e), 
+							  "gconf_key")); 
+
+    
+    gdk_threads_leave (); 
+  }
+}
+
+
+/* DESCRIPTION  :  Generic notifiers for toggles in the menu.
+ *                 This callback is called when a specific key of
+ *                 the gconf database associated with a toggle changes, this
+ *                 only updates the toggle in the menu.
+ * BEHAVIOR     :  It only updates the widget.
+ * PRE          :  /
+ */
+static void menu_toggle_changed_nt (GConfClient *client, guint cid, 
+				    GConfEntry *entry, gpointer data)
+{
+  if (entry->value->type == GCONF_VALUE_BOOL) {
+   
+    gdk_threads_enter ();
+  
+    GtkWidget *e = GTK_WIDGET (data);
+
+    /* We set the new value for the widget */
+    GTK_CHECK_MENU_ITEM (e)->active = (bool) gconf_value_get_bool (entry->value);
+    gtk_widget_queue_draw (GTK_WIDGET (e));
+    
+    gdk_threads_leave (); 
+  }
+}
+
+
+/* DESCRIPTION  :  This callback is called when something changes in the view
+ *                 directory (either from the menu, either from the prefs).
+ * BEHAVIOR     :  It shows/hides the corresponding widget.
+ * PRE          :  /
+ */
+static void view_widget_changed_nt (GConfClient *client, guint cid, 
+				    GConfEntry *entry, gpointer data)
+{
+  if (entry->value->type == GCONF_VALUE_BOOL) {
+
+    gdk_threads_enter ();
+  
+    if (gconf_value_get_bool (entry->value))
+      gtk_widget_show_all (GTK_WIDGET (data));
+    else
+      gtk_widget_hide_all (GTK_WIDGET (data));
+    
+    gdk_threads_leave ();
+  }
+}
 
 
 static gboolean answer_mode_changed (gpointer data)
@@ -604,21 +721,6 @@ static void jitter_buffer_changed_nt (GConfClient *client, guint cid,
 }
 
 
-static gboolean toggle_changed (gpointer data)
-{
-  gdk_threads_enter ();
-  GtkWidget *toggle = GTK_WIDGET (data);
-
-  /* We set the new value for the widget
-     This value is different from the previous one, or we are not called */
-  GTK_TOGGLE_BUTTON (toggle)->active = !GTK_TOGGLE_BUTTON (toggle)->active; 
-  gtk_widget_draw (GTK_WIDGET (toggle), NULL);
-  
-  gdk_threads_leave ();
-
-  return FALSE;
-}
-
 
 /* This function is called by the notifier for toggles when specific settings
    corresponding to toggles need to be changed in the endpoint */
@@ -656,67 +758,6 @@ static void ht_fs_changed_nt (GConfClient *client, guint cid,
   if (entry->value->type == GCONF_VALUE_BOOL) {
    
     g_idle_add (ht_fs_changed, (gpointer) toggle);
-  }
-}
-
-
-/* DESCRIPTION  :  Generic notifiers for toggles.
- *                 This callback is called when a specific key of
- *                 the gconf database associated with a toggle changes, this
- *                 only updates the toggle.
- * BEHAVIOR     :  It only updates the widget.
- * PRE          :  /
- */
-static void toggle_changed_nt (GConfClient *client, guint cid, 
-			       GConfEntry *entry, gpointer data)
-{
-  GtkWidget *toggle = GTK_WIDGET (data);
-
-  if (entry->value->type == GCONF_VALUE_BOOL) {
-   
-    if ((bool) GTK_TOGGLE_BUTTON (toggle)->active != gconf_value_get_bool (entry->value))
-      g_idle_add (toggle_changed, (gpointer) toggle);
-  }
-}
-
-
-static gboolean entry_changed_ (gpointer data)
-{
-  gdk_threads_enter ();
-  
-  GtkWidget *e = GTK_WIDGET (data);
-
-  /* We set the new value for the widget */
-  g_signal_handlers_block_by_func (G_OBJECT (e),
-				   entry_changed, 
-				   (gpointer) gtk_object_get_data (GTK_OBJECT (e), "gconf_key")); 
-  
-  /* I can't set that value till Orbit2 and the new gconf are out! */
-
-  /*  gtk_entry_set_text (GTK_ENTRY (e), gconf_value_get_string (entry->value));*/
-  g_signal_handlers_unblock_by_func (G_OBJECT (e),
-				     entry_changed, 
-				     (gpointer) gtk_object_get_data (GTK_OBJECT (e), "gconf_key")); 
-
-  
-  gdk_threads_leave ();
-
-  return FALSE;
-}
-
-
-/* DESCRIPTION  :  Generic notifiers for entries.
- *                 This callback is called when a specific key of
- *                 the gconf database associated with an entry changes.
- * BEHAVIOR     :  It updates the widget.
- * PRE          :  /
- */
-static void entry_changed_nt (GConfClient *client, guint cid, 
-			      GConfEntry *entry, gpointer data)
-{
-  if (entry->value->type == GCONF_VALUE_STRING) {
-   
-    g_idle_add (entry_changed_, data);
   }
 }
 
@@ -1314,145 +1355,6 @@ static void audio_codecs_list_changed_nt (GConfClient *client, guint cid,
 }
 
 
-/* Not able to change all widgets */
-// FIX ME: Need to be rewritten! Awful!
-static gboolean view_widget_changed (gpointer data)
-{
-  gdk_threads_enter ();
-  
-  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
-  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
-
-  GnomeUIInfo *view_menu_uiinfo =
-    (GnomeUIInfo *) gtk_object_get_data (GTK_OBJECT (gm), "view_menu_uiinfo");
-   
-  /* We set the new value for the widget */
-  /* We are Unable to do it before Gnome 2 :-(
-  GTK_TOGGLE_BUTTON (data)->active = 
-    gconf_value_get_bool (entry->value);
-  gtk_widget_draw (GTK_WIDGET (data), NULL);
-  */
-
-  /* We show or hide the corresponding widget */
-  if (data == pw->show_left_toolbar) {
-
-    /* Update the menu, 
-       we are called only if the value has changed */
-    GTK_CHECK_MENU_ITEM (view_menu_uiinfo [6].widget)->active = 
-      !GTK_WIDGET_VISIBLE (GTK_WIDGET (gnome_app_get_dock_item_by_name(GNOME_APP (gm), "left_toolbar")));
-
-    GTK_TOGGLE_BUTTON (pw->show_left_toolbar)->active =
-      !GTK_WIDGET_VISIBLE (GTK_WIDGET (gnome_app_get_dock_item_by_name(GNOME_APP (gm), "left_toolbar")));
-
-    gtk_widget_draw (view_menu_uiinfo [6].widget, NULL);
-    gtk_widget_draw (pw->show_left_toolbar, NULL);
-
-    if (!GTK_WIDGET_VISIBLE (GTK_WIDGET (gnome_app_get_dock_item_by_name(GNOME_APP (gm), "left_toolbar"))))
-      gtk_widget_show (GTK_WIDGET (gnome_app_get_dock_item_by_name(GNOME_APP (gm), "left_toolbar")));
-    else
-      gtk_widget_hide (GTK_WIDGET (gnome_app_get_dock_item_by_name(GNOME_APP (gm), "left_toolbar")));
-  }
-    
-  if (data == pw->show_notebook) {
-
-    /* Update the menu, 
-       we are called only if the value has changed */
-    GTK_CHECK_MENU_ITEM (view_menu_uiinfo [2].widget)->active = 
-      !GTK_WIDGET_VISIBLE (gw->main_notebook);
-
-    GTK_TOGGLE_BUTTON (pw->show_notebook)->active =
-      !GTK_WIDGET_VISIBLE (gw->main_notebook);
-
-    gtk_widget_draw (view_menu_uiinfo [2].widget, NULL);
-    gtk_widget_draw (pw->show_notebook, NULL);
-
-    if (!GTK_WIDGET_VISIBLE (gw->main_notebook))
-      gtk_widget_show_all (gw->main_notebook);
-    else
-      gtk_widget_hide (gw->main_notebook);
-  }
-  
-  if (data == pw->show_statusbar) {
-    
-    /* Update the menu,
-       we are called only if the value has changed */
-    GTK_CHECK_MENU_ITEM (view_menu_uiinfo [4].widget)->active = 
-      !GTK_WIDGET_VISIBLE (gw->statusbar);
-
-    GTK_TOGGLE_BUTTON (pw->show_statusbar)->active = 
-      !GTK_WIDGET_VISIBLE (gw->statusbar);
-
-    gtk_widget_draw (view_menu_uiinfo [4].widget, NULL);
-    gtk_widget_draw (pw->show_statusbar, NULL);
-
-    if (!GTK_WIDGET_VISIBLE (gw->statusbar))
-      gtk_widget_show_all (gw->statusbar);
-    else
-      gtk_widget_hide (gw->statusbar);
-  }
-
-
-  if (data == pw->show_docklet) {
-    
-    /* Update the menu,
-       we are called only if the value has changed */
-    GTK_CHECK_MENU_ITEM (view_menu_uiinfo [5].widget)->active = 
-      !GTK_WIDGET_VISIBLE (gw->docklet);
-
-    GTK_TOGGLE_BUTTON (pw->show_docklet)->active =
-      !GTK_WIDGET_VISIBLE (gw->docklet);
-
-    gtk_widget_draw (pw->show_docklet, NULL);
-    gtk_widget_draw (view_menu_uiinfo [5].widget, NULL);
-
-    if (!GTK_WIDGET_VISIBLE (gw->docklet))
-      gtk_widget_show (gw->docklet);
-    else
-      gtk_widget_hide (gw->docklet);
-  }
-
-
-  if (data == pw->show_chat_window) {
-    
-    /* Update the menu,
-       we are called only if the value has changed */
-    GTK_CHECK_MENU_ITEM (view_menu_uiinfo [3].widget)->active = 
-      !GTK_WIDGET_VISIBLE (gw->chat_window);
-
-    GTK_TOGGLE_BUTTON (pw->show_chat_window)->active =
-      !GTK_WIDGET_VISIBLE (gw->chat_window);
-
-    gtk_widget_draw (pw->show_chat_window, NULL);
-    gtk_widget_draw (view_menu_uiinfo [3].widget, NULL);
-
-    if (!GTK_WIDGET_VISIBLE (gw->chat_window))
-      gtk_widget_show_all (gw->chat_window);
-    else
-      gtk_widget_hide_all (gw->chat_window);
-  }
-
-  gdk_threads_leave ();
-
-  return FALSE;
-}
-
-
-/* DESCRIPTION  :  This callback is called when something changes in the view
- *                 directory (either from the menu, either from the prefs).
- * BEHAVIOR     :  It updates the widget, menu and shows/hides the 
- *                 corresponding widget.
- * PRE          :  /
- */
-static void view_widget_changed_nt (GConfClient *client, guint cid, 
-				    GConfEntry *entry, gpointer data)
-{
-  if (entry->value->type == GCONF_VALUE_BOOL) {
-   
-    g_idle_add (view_widget_changed, data);
-  }
-}
-
-
 /* Able to update widgets */
 static gboolean register_changed (gpointer data)
 {
@@ -1703,7 +1605,67 @@ static void history_changed_nt (GConfClient *client, guint, GConfEntry *entry,
 void gnomemeeting_init_gconf (GConfClient *client)
 {
   GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
+  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+  GnomeUIInfo *view_menu = (GnomeUIInfo *) g_object_get_data (G_OBJECT (gm), 
+							      "view_menu_uiinfo");
 
+  /* There are in general 2 notifiers to attach to each widget :
+     - the notifier that will update the widget itself to the new key
+     - the notifier to take an appropriate action */
+
+  /*1*/
+  gconf_client_notify_add (client, "/apps/gnomemeeting/gatekeeper/gk_alias",
+			   entry_changed_nt, pw->gk_alias, 0, 0);
+
+  gconf_client_notify_add (client, 
+			   "/apps/gnomemeeting/personal_data/firstname",
+			   entry_changed_nt, pw->firstname, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/personal_data/mail",
+			   entry_changed_nt, pw->mail, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/personal_data/lastname",
+			   entry_changed_nt, pw->surname, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/personal_data/location",
+			   entry_changed_nt, pw->location, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/personal_data/comment",
+			   entry_changed_nt, pw->comment, 0, 0);
+
+  /* 2 */
+  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_popup", 
+			   toggle_changed_nt, pw->incoming_call_popup, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_splash", 
+			   toggle_changed_nt, pw->show_splash, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_control_panel", menu_toggle_changed_nt, view_menu [2].widget, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_control_panel", toggle_changed_nt, pw->show_notebook, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_control_panel", view_widget_changed_nt, gw->main_notebook, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_status_bar", menu_toggle_changed_nt, view_menu [4].widget, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_status_bar", toggle_changed_nt, pw->show_statusbar, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_status_bar", view_widget_changed_nt, gw->statusbar, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_docklet", menu_toggle_changed_nt, view_menu [5].widget, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_docklet", toggle_changed_nt, pw->show_docklet, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_docklet", view_widget_changed_nt, gw->docklet, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_chat_window", menu_toggle_changed_nt, view_menu [3].widget, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_chat_window", toggle_changed_nt, pw->show_chat_window, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_chat_window", view_widget_changed_nt, gw->chat_window, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/view/left_toolbar", menu_toggle_changed_nt, view_menu [6].widget, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/view/left_toolbar", view_widget_changed_nt, GTK_WIDGET (gnome_app_get_dock_item_by_name(GNOME_APP (gm), "left_toolbar")), 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/view/left_toolbar", toggle_changed_nt, pw->show_left_toolbar, 0, 0);
+
+  /**/
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/view/notebook_info", notebook_info_changed_nt, NULL, 0, 0);
+
+
+  /**/
   gconf_client_notify_add (client, "/apps/gnomemeeting/gatekeeper/registering_method", gatekeeper_option_menu_changed_nt, pw->gk, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/g711_sd",
@@ -1735,23 +1697,6 @@ void gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, "/apps/gnomemeeting/ldap/register",
 			   register_changed_nt, pw, 0, 0);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/gatekeeper/gk_alias",
-			   entry_changed_nt, pw->gk_alias, 0, 0);
-
-  gconf_client_notify_add (client, "/apps/gnomemeeting/personal_data/firstname",
-			   entry_changed_nt, pw->firstname, 0, 0);
-
-  gconf_client_notify_add (client, "/apps/gnomemeeting/personal_data/mail",
-			   entry_changed_nt, pw->mail, 0, 0);
-
-  gconf_client_notify_add (client, "/apps/gnomemeeting/personal_data/lastname",
-			   entry_changed_nt, pw->surname, 0, 0);
-
-  gconf_client_notify_add (client, "/apps/gnomemeeting/personal_data/location",
-			   entry_changed_nt, pw->location, 0, 0);
-
-  gconf_client_notify_add (client, "/apps/gnomemeeting/personal_data/comment",
-			   entry_changed_nt, pw->comment, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/auto_answer",
 			   answer_mode_changed_nt, pw->aa, 0, 0);
@@ -1767,7 +1712,6 @@ void gnomemeeting_init_gconf (GConfClient *client)
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/incoming_call_sound", toggle_changed_nt, pw->incoming_call_sound, 0, 0);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_popup", toggle_changed_nt, pw->incoming_call_popup, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_player", audio_device_changed_nt, pw->audio_player, 0, 0);
 
@@ -1795,20 +1739,6 @@ void gnomemeeting_init_gconf (GConfClient *client)
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/audio_codecs/list", audio_codecs_list_changed_nt, pw->clist_avail, 0, 0);	     
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_splash", 
-			   toggle_changed_nt, pw->show_splash, 0, 0);
-
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_control_panel", view_widget_changed_nt, pw->show_notebook, 0, 0);
-
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_status_bar", view_widget_changed_nt, pw->show_statusbar, 0, 0);
-
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_docklet", view_widget_changed_nt, pw->show_docklet, 0, 0);
-
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_chat_window", view_widget_changed_nt, pw->show_chat_window, 0, 0);
-
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/left_toolbar", view_widget_changed_nt, pw->show_left_toolbar, 0, 0);
-
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/notebook_info", notebook_info_changed_nt, NULL, 0, 0);
 
 #if 0 /* FIXME: Uncomment when we are under GNOME2*/
   gconf_client_notify_add (client, "/apps/gnomemeeting/history/called_hosts", history_changed_nt, gw->combo, 0, 0);
@@ -1818,54 +1748,4 @@ void gnomemeeting_init_gconf (GConfClient *client)
 }
 
 
-void entry_changed (GtkEditable  *e, gpointer data)
-{
-  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
-  GConfClient *client = gconf_client_get_default ();
-  gchar *key = (gchar *) data;
 
-  gconf_client_set_string (GCONF_CLIENT (client),
-                           key,
-                           gtk_entry_get_text (GTK_ENTRY (e)),
-                           NULL);
-}
-
-
-void adjustment_changed (GtkAdjustment *adj, gpointer data)
-{
-  GConfClient *client = gconf_client_get_default ();
-  gchar *key = (gchar *) data;
-
-  gconf_client_set_int (GCONF_CLIENT (client),
-                        key,
-                        (int) adj->value, NULL);
-}
-
-
-void toggle_changed (GtkCheckButton *but, gpointer data)
-{
-  GConfClient *client = gconf_client_get_default ();
-  gchar *key = (gchar *) data;
-
-  gconf_client_set_bool (GCONF_CLIENT (client),
-                         key,
-                         gtk_toggle_button_get_active
-                         (GTK_TOGGLE_BUTTON (but)),
-                         NULL);
-}
-
-
-void option_menu_changed (GtkWidget *menu, gpointer data)
-{
-  GConfClient *client = gconf_client_get_default ();
-  gchar *key = (gchar *) data;
-  guint item_index;
-  GtkWidget *active_item;
-
-  active_item = gtk_menu_get_active (GTK_MENU (menu));
-  item_index = g_list_index (GTK_MENU_SHELL (GTK_MENU (menu))->children, 
-			     active_item);
- 
-  gconf_client_set_int (GCONF_CLIENT (client),
-			key, item_index, NULL);
-}

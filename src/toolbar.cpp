@@ -1,4 +1,4 @@
-
+ 
 /* GnomeMeeting -- A Video-Conferencing application
  * Copyright (C) 2000-2001 Damien Sandras
  *
@@ -42,8 +42,8 @@
 #include "../pixmaps/disconnect.xpm"
 #include "../pixmaps/xdap-directory.xpm"
 #include "../pixmaps/settings.xpm"
-#include "../pixmaps/gnome-chat.xpm"
-#include "../pixmaps/eye.xpm"
+#include "../pixmaps/text-chat.xpm"
+#include "../pixmaps/video-preview.xpm"
 #include "../pixmaps/speaker.xpm"
 #include "../pixmaps/quickcam.xpm"
 
@@ -171,7 +171,7 @@ void gnomemeeting_init_toolbar ()
 	N_("Chat"), N_("Make a text chat with your friend"),
 	(void *) toolbar_toggle_changed, 
 	(gpointer) "/apps/gnomemeeting/view/show_chat_window",
-	NULL, GNOME_APP_PIXMAP_DATA, gnome_chat_xpm,
+	NULL, GNOME_APP_PIXMAP_DATA, text_chat_xpm,
 	NULL, GDK_CONTROL_MASK, NULL
 	},
 	{
@@ -242,13 +242,13 @@ void gnomemeeting_init_toolbar ()
   gnome_app_add_toolbar (GNOME_APP (gm), GTK_TOOLBAR (toolbar2),
  			 "left_toolbar", BONOBO_DOCK_ITEM_BEH_EXCLUSIVE,
  			 BONOBO_DOCK_LEFT, 3, 0, 0);
-
+  gtk_toolbar_set_style (GTK_TOOLBAR (toolbar2), GTK_TOOLBAR_ICONS);
 
   /* Video Preview Button */
   gw->preview_button = gtk_toggle_button_new ();
 
   pixbuf = 
-    gdk_pixbuf_new_from_xpm_data ((const char **) eye_xpm);
+    gdk_pixbuf_new_from_xpm_data ((const char **) video_preview_xpm);
   image = gtk_image_new_from_pixbuf (pixbuf);
   gtk_container_add (GTK_CONTAINER (gw->preview_button), GTK_WIDGET (image));
   g_object_unref (pixbuf);
@@ -256,7 +256,7 @@ void gnomemeeting_init_toolbar ()
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->preview_button), gconf_client_get_bool (client, "/apps/gnomemeeting/devices/video_preview", NULL));
 
   g_signal_connect (G_OBJECT (gw->preview_button), "clicked",
-		    G_CALLBACK (toggle_changed), 
+		    G_CALLBACK (toolbar_toggle_changed), 
 		    (gpointer) "/apps/gnomemeeting/devices/video_preview");
 
   tip = gtk_tooltips_new ();

@@ -348,6 +348,9 @@ void gnomemeeting_init_menu ()
   GTK_CHECK_MENU_ITEM (view_menu_uiinfo [5].widget)->active =
     gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_docklet", 0);
 
+  GTK_CHECK_MENU_ITEM (view_menu_uiinfo [6].widget)->active =
+    gconf_client_get_bool (client, "/apps/gnomemeeting/view/left_toolbar", 0);
+
   GTK_CHECK_MENU_ITEM (call_menu_uiinfo [3].widget)->active =
     gconf_client_get_bool (client, "/apps/gnomemeeting/general/do_not_disturb", 0);
 
