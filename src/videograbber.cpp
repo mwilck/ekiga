@@ -328,9 +328,12 @@ void GMVideoGrabber::Reset (void)
 
 void GMVideoGrabber::Start (void)
 {
-  var_mutex.Wait ();
-  is_grabbing = 1;
-  var_mutex.Signal ();
+  if (is_opened) {
+
+    var_mutex.Wait ();
+    is_grabbing = 1;
+    var_mutex.Signal ();
+  }
 }
 
 
@@ -339,8 +342,6 @@ void GMVideoGrabber::Stop (void)
   var_mutex.Wait ();
   is_grabbing = 0;
   var_mutex.Signal ();
-  grabbing_mutex.Wait ();
-  grabbing_mutex.Signal ();
 }
 
 

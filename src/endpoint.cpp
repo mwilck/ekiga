@@ -1529,6 +1529,10 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   }
 
 
+  /* In all cases, ensure that video images are displayed */
+  vg->Start ();
+
+
   /* Play Busy Tone */
 #ifdef HAS_IXJ
   if (lid_thread) {
