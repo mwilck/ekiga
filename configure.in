@@ -70,14 +70,14 @@ else
 	AC_MSG_ERROR([You need PTLib to enjoy GnomeMeeting])
 fi
 
-H323_LIBS="-loh323 -ldl -lpt -lpthread -lssl -lcrypto"
+H323_LIBS="-lopenh323 -ldl -lpt -lpthread -lssl -lcrypto"
 
 dnl ***************************************
 dnl OpenH323
 dnl Adapted from openssl check in gnome-vfs
 dnl ***************************************
 AC_ARG_WITH(openh323-includes, [  --with-openh323-includes=PFX   Location of OpenH323 includes.],  
-	with_openh_includes="$withval", with_openh_includes="/usr/include/oh323")
+	with_openh_includes="$withval", with_openh_includes="/usr/include/openh323")
 have_openh323_includes="no"
 if test "x${with_openh_includes}" != "xno" -a "x${have_ptlib_includes}" != "xno"; then
 	CPPFLAGS_save="$CPPFLAGS"
@@ -104,7 +104,7 @@ AC_ARG_WITH(openh323-libs, [  --with-openh323-libs=PFX       Location of OpenH32
 	with_openh323_libs="$withval", with_openh323_libs="/usr/lib")
 msg_openh323="no"
 if test "x${with_openh323_libs}" != "xno" -a "x${have_openh323_includes}" != "xno"; then
-	AC_CHECK_FILE(${with_openh323_libs}/liboh323.so, openh323_libs="yes", openh323_libs="no")
+	AC_CHECK_FILE(${with_openh323_libs}/libopenh323.so, openh323_libs="yes", openh323_libs="no")
 	if test "x${openh323_libs}" != "xno"; then
 		msg_openh323="yes"
 		OPENH323_LDFLAGS="-L${with_openh323_libs} ${H323_LIBS}"
@@ -122,7 +122,7 @@ dnl ***************************************
 dnl OpenSSL
 dnl ***************************************
 AC_ARG_WITH(openssl-includes, [  --with-openssl-includes=PFX   Location of OpenSSL includes.],
-        with_openssl_includes="$withval", with_openssl_includes="/usr/include/ssl")
+        with_openssl_includes="$withval", with_openssl_includes="/usr/include/openssl")
 have_openssl_includes="no"
 if test "x${with_openssl_includes}" != "xno" ; then
         CPPFLAGS_save="$CPPFLAGS"
