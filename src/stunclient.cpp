@@ -153,13 +153,18 @@ void GMStunClient::Main ()
       case 0:
 	prefered_method = g_strdup (_("GnomeMeeting couldn't detect the type of NAT you are using, the most appropriate method if your router doesn't natively support H.323 is probably to forward the required ports and to use IP translation or to use an H.323 gatekeeper in proxy mode."));
 	break;
+	
+      case 1:
+	prefered_method = g_strdup (_("Your system doesn't need any specific configuration as long as you don't have a local firewall blocking the ports required by GnomeMeeting."));
+	break;
 
       case 5:
-	prefered_method = g_strdup (_("GnomeMeeting detected Symmetric NAT. The most appropriate method if your router doesn't natively support H.323 is to forward the required ports to change your Symmetric NAT into Cone NAT and run this test again. It should report Cone NAT, and allow GnomeMeeting to be used with a STUN Server. If it doesn't report Cone NAT after the port forwarding has been done, then it means it didn't work."));
+      case 6:
+	prefered_method = g_strdup (_("GnomeMeeting detected Symmetric NAT/Symmetric Firewall. The most appropriate method if your router doesn't natively support H.323 is to forward the required ports to change your Symmetric NAT/Symmetric Firewall into Cone NAT and run this test again. It should report Cone NAT, and allow GnomeMeeting to be used with a STUN Server. If it doesn't report Cone NAT after the port forwarding has been done, then it means it didn't work."));
 	break;
 	
       default:
-	prefered_method = g_strdup_printf (_("GnomeMeeting detected %s. Using a STUN server is most probably the most appropriate method if your router doesn't natively support H.323.\n\nEnable STUN Support?"), (const char *) nat_type);
+	prefered_method = g_strdup_printf (_("GnomeMeeting detected %s. Using a STUN server is most probably the most appropriate method if your router doesn't natively support H.323.\nNotice that STUN support is not enough if you want to contact H.323 clients that do not support H.245 Tunneling like Netmeeting.\n\nEnable STUN Support?"), (const char *) nat_type);
       }
 
     gnomemeeting_threads_enter ();
