@@ -172,7 +172,8 @@ static void gm_mw_init_toolbars (GtkWidget *);
  * BEHAVIOR     :  Create the menu of the main window.
  *                 The menu is created in its initial state, with
  *                 required items being unsensitive.
- * PRE          :  The main window GMObject.
+ * PRE          :  The main window GMObject. The statusbar must have been
+ * 		   created.
  */
 static void gm_mw_init_menu (GtkWidget *);
 
@@ -3032,14 +3033,15 @@ gm_main_window_new ()
 		      FALSE, FALSE, 0);
 #endif
 
+    
+  /* The statusbar */
+  mw->statusbar = gtk_statusbar_new ();
+  gtk_widget_show (mw->statusbar);
+
   
   /* The main menu and the toolbars */
   gm_mw_init_menu (window);
   gm_mw_init_toolbars (window);
-
-    
-  /* The statusbar */
-  mw->statusbar = gtk_statusbar_new ();
 #ifndef DISABLE_GNOME
   gnome_app_add_docked (GNOME_APP (window), 
 			mw->main_menu,
@@ -3050,9 +3052,8 @@ gm_main_window_new ()
   gtk_box_pack_start (GTK_BOX (mw->window_vbox), mw->main_menu,
 		      FALSE, FALSE, 0);
 #endif
-  gtk_widget_show (mw->statusbar);
-
   
+
   /* Create a table in the main window to attach things like buttons */
   table = gtk_table_new (3, 4, FALSE);
 #ifdef DISABLE_GNOME
