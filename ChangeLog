@@ -1,3 +1,13 @@
+2004-06-02  Damien Sandras  <dsandras@gnome.org>
+
+	* Makefile.am, lib/Makefile.am, lib/dialog.c, lib/dialog.h,
+	lib/gm_conf-glib.c, lib/contacts/Makefile.am, 
+	lib/contacts/gm_contacts-gm_conf.cpp, src/Makefile.am, src/ils.cpp,
+	src/main_window.cpp, src/misc.cpp: Fixed compilation without EDS and 
+	GNOME. Fixed bugs reported by Xavier Ricco and integrated his latest
+	patches. Added support for gnomemeeting_threads_dialog_hide to
+	cope with GTK+ problems from threads on WIN32.
+
 2004-06-01  Damien Sandras  <dsandras@gnome.org>
 
 	* lib/contacts/gm_contacts-eds.cpp: Removed debug printf.

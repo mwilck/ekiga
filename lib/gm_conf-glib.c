@@ -913,6 +913,8 @@ database_save_file (DataBase *db, const gchar *filename)
   io = g_io_channel_new_file (filename, "w", NULL);
   g_datalist_foreach (&db->entries, database_save_entry, io);
   g_io_channel_unref (io);
+
+  return TRUE;
 }
 
 static void 
@@ -1011,6 +1013,8 @@ gm_conf_get_filename ()
   gchar *final = NULL;
 
   final = g_strdup_printf ("%s/.gnomemeetingrc", g_get_home_dir ());
+
+  return final;
 }
 
 

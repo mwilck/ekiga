@@ -1,5 +1,5 @@
 INCLUDES = \
-	-DGNOMELOCALEDIR=\""$(datadir)/locale"\" -I$(top_srcdir)/src -I$(top_srcdir)/lib -I$(top_srcdir)/lib/widgets -I$(top_srcdir)/lib/xdap $(GNOME_INCLUDEDIR) @GNOMEMEETING_CFLAGS@ -DGNOMEMEETING_IMAGES=\""$(datadir)/pixmaps/"\" -DGNOMEMEETING_SOUNDS=\""$(datadir)/sounds/gnomemeeting/"\" -DSCHEMA_AGE=@SCHEMA_AGE@ -DDATADIR=\""$(datadir)"\" 
+	-DGNOMELOCALEDIR=\""$(datadir)/locale"\" -I$(top_srcdir)/src -I$(top_srcdir)/lib -I$(top_srcdir)/lib/widgets -I$(top_srcdir)/lib/xdap $(GNOME_INCLUDEDIR) @GNOMEMEETING_CFLAGS@ -DGNOMEMEETING_IMAGES=\""$(datadir)/pixmaps/"\" -DGNOMEMEETING_SOUNDS=\""$(datadir)/sounds/gnomemeeting/"\" -DSCHEMA_AGE=@SCHEMA_AGE@ -DGNOMEMEETING_DATADIR=\""$(datadir)"\" 
 
 #-DG_DISABLE_DEPRECATED -DGTK_DISABLE_DEPRECATED -DGDK_DISABLE_DEPRECATED -DGDK_DISABLE_DEPRECATED -DGDK_PIXBUF_DISABLE_DEPRECATED -DGNOME_DISABLE_DEPRECATED
 
@@ -55,12 +55,9 @@ gnomemeeting_SOURCES =		\
 	log_window.cpp		\
 	log_window.h		\
 	lid.cpp			\
-	lid.h			
-
-
-if ENABLE_EDS
-gnomemeeting_SOURCES += addressbook_window.cpp addressbook_window.h
-endif
+	lid.h			\
+	addressbook_window.cpp	\
+	addressbook_window.h
 	
 gnomemeeting_LDADD = \
 	@GNOMEMEETING_LIBS@ \

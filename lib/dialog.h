@@ -43,7 +43,7 @@ G_BEGIN_DECLS
 
 
 /**
- * gnomemeeting_dialog_show:
+ * gnomemeeting_threads_dialog_show:
  *
  * @widget: the dialog to show
  *
@@ -52,6 +52,18 @@ G_BEGIN_DECLS
  * a widget has to be shown from a thread.
  **/
 void gnomemeeting_threads_dialog_show (GtkWidget *);
+
+
+/**
+ * gnomemeeting_threads_dialog_hide:
+ *
+ * @widget: the dialog to hide
+ *
+ * Hides the dialog from a thread. Using that function instead of 
+ * gtk_widget_hide is required for Win32 to work around GTK+ problems when
+ * a widget has to be hidden from a thread.
+ **/
+void gnomemeeting_threads_dialog_hide (GtkWidget *);
 
 
 /**

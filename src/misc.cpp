@@ -49,8 +49,11 @@
 
 #include "../pixmaps/text_logo.xpm"
 
+
+#ifndef WIN32
 #include <gdk/gdkx.h>
 #include <X11/Xlib.h>
+#endif
 
 
 /* Declarations */
@@ -235,6 +238,7 @@ gnomemeeting_incoming_call_popup_new (gchar *utf8_name,
   gtk_window_set_transient_for (GTK_WINDOW (widget),
 				GTK_WINDOW (gm));
 
+  gtk_widget_show_all (vbox);
   gnomemeeting_threads_dialog_show (widget);
 
   return widget;
@@ -396,6 +400,7 @@ gchar *gnomemeeting_get_utf8 (PString str)
     
 
 /* Stolen from GDK */
+#ifndef WIN32
 static void
 gdk_wmspec_change_state (gboolean add,
 			 GdkWindow *window,
@@ -426,14 +431,17 @@ gdk_wmspec_change_state (gboolean add,
 	      False, SubstructureRedirectMask | SubstructureNotifyMask,
 	      &xev);
 }
+#endif
 
 
 void
 gdk_window_set_always_on_top (GdkWindow *window, 
 			      gboolean enable)
 {
+#ifndef WIN32
   gdk_wmspec_change_state (enable, window, 
 			   gdk_atom_intern ("_NET_WM_STATE_ABOVE", FALSE), 0);
+#endif
 }
 
 
@@ -482,8 +490,6 @@ gnomemeeting_window_show (GtkWidget *w)
 
     if (x != 0 && y != 0)
       gtk_window_move (GTK_WINDOW (w), x, y);
-
-    gtk_window_present (GTK_WINDOW (w));
 
     g_strfreev (couple);
     g_free (position);
@@ -556,7 +562,7 @@ gnomemeeting_window_hide (GtkWidget *w)
     }
 
 	
-    gtk_widget_hide (w);
+    gnomemeeting_threads_dialog_hide (w);
   }
     
   

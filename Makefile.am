@@ -2,7 +2,7 @@
 if DISABLE_GNOME
 SUBDIRS = man sounds xdap_data pixmaps lib src po 
 else
-SUBDIRS = man sounds xdap_data help pixmaps lib src po 
+SUBDIRS = help man sounds xdap_data pixmaps lib src po 
 endif
 
 

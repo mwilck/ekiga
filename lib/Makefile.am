@@ -1,11 +1,7 @@
-SUBDIRS = widgets xdap
+SUBDIRS = widgets xdap contacts
 
 if DISABLE_GNOME
 SUBDIRS += about druid
-endif
-
-if ENABLE_EDS
-SUBDIRS += contacts
 endif
 
 noinst_LTLIBRARIES = libgnomemeeting.la
@@ -49,10 +45,7 @@ INCLUDES =						\
         $(GNOMEMEETING_LIB_CFLAGS)
 
 libgnomemeeting_la_LDFLAGS = -export-dynamic
-libgnomemeeting_la_LIBADD = widgets/libgmwidgets.la xdap/libxdap.la 
+libgnomemeeting_la_LIBADD = widgets/libgmwidgets.la xdap/libxdap.la contacts/libgmcontacts.la  
 if DISABLE_GNOME
 libgnomemeeting_la_LIBADD += about/libabout.la druid/libdruid.la
-endif
-if ENABLE_EDS
-libgnomemeeting_la_LIBADD += contacts/libgmcontacts.la 
 endif

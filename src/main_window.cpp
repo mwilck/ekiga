@@ -1611,7 +1611,7 @@ int main (int argc, char ** argv, char ** envp)
 		      GNOME_PARAM_POPT_TABLE, arguments,
 		      GNOME_PARAM_HUMAN_READABLE_NAME,
 		      "gnomemeeting",
-		      GNOME_PARAM_APP_DATADIR, DATADIR,
+		      GNOME_PARAM_APP_DATADIR, GNOMEMEETING_DATADIR,
 		      (void *) NULL);
 
   gm = gnome_app_new ("gnomemeeting", NULL);

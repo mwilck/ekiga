@@ -7,10 +7,10 @@ libgmcontacts_la_SOURCES = \
 			gm_contacts-remote.cpp \
 			gm_contacts-local.h
 
-if DISABLE_GNOME
-libgmcontacts_la_SOURCES += gm_contacts-gm_conf.cpp
-else
+if ENABLE_EDS 
 libgmcontacts_la_SOURCES += gm_contacts-eds.cpp
+else
+libgmcontacts_la_SOURCES += gm_contacts-gm_conf.cpp
 endif
 
 INCLUDES =						\

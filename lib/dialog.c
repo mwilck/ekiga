@@ -66,6 +66,7 @@
 
 #ifdef WIN32
 static gboolean thread_safe_window_show (gpointer);
+static gboolean thread_safe_window_hide (gpointer);
 #endif
 
 
@@ -83,7 +84,21 @@ thread_safe_window_show (gpointer data)
   g_return_val_if_fail (data != NULL, FALSE);
 
   gdk_threads_enter ();
+  gtk_window_present (GTK_WINDOW (data));
   gtk_widget_show_all (GTK_WIDGET (data));
+  gdk_threads_leave ();
+
+  return FALSE;
+}
+
+
+static gboolean
+thread_safe_window_hide (gpointer data)
+{
+  g_return_val_if_fail (data != NULL, FALSE);
+
+  gdk_threads_enter ();
+  gtk_widget_hide (GTK_WIDGET (data));
   gdk_threads_leave ();
 
   return FALSE;
@@ -97,9 +112,23 @@ gnomemeeting_threads_dialog_show (GtkWidget *dialog)
   g_return_if_fail (dialog != NULL);
 
 #ifndef WIN32
+  gtk_window_present (GTK_WINDOW (dialog));
   gtk_widget_show (dialog);
 #else
-  g_idle_add (thread_safe_window_show (dialog));
+  g_idle_add (thread_safe_window_show, dialog);
+#endif
+}
+
+
+void
+gnomemeeting_threads_dialog_hide (GtkWidget *dialog)
+{
+  g_return_if_fail (dialog != NULL);
+
+#ifndef WIN32
+  gtk_widget_hide (dialog);
+#else
+  g_idle_add (thread_safe_window_hide, dialog);
 #endif
 }
 
@@ -241,7 +270,6 @@ gnomemeeting_warning_dialog_on_widget (GtkWindow *parent,
                                    GTK_BUTTONS_OK,
                                    "");
   gtk_window_set_transient_for (GTK_WINDOW (dialog), parent);
-  gtk_window_present (GTK_WINDOW (dialog));
   
   gtk_window_set_title (GTK_WINDOW (dialog), "");
   gtk_label_set_markup (GTK_LABEL (GTK_MESSAGE_DIALOG (dialog)->label),

@@ -187,15 +187,15 @@ void GMILSClient::ILSOperation (Operation operation)
 
   if (operation == ILS_REGISTER) {
     
-    xml_filename = DATADIR "/gnomemeeting/xdap/ils_nm_reg.xml";
+    xml_filename = GNOMEMEETING_DATADIR "/gnomemeeting/xdap/ils_nm_reg.xml";
     registering = TRUE;
   } else if (operation == ILS_UNREGISTER) {
     
-    xml_filename = DATADIR "/gnomemeeting/xdap/ils_nm_unreg.xml";
+    xml_filename = GNOMEMEETING_DATADIR "/gnomemeeting/xdap/ils_nm_unreg.xml";
     registering = FALSE;
   } else if (operation == ILS_UPDATE) {
     
-    xml_filename = DATADIR "/gnomemeeting/xdap/ils_nm_mod.xml";
+    xml_filename = GNOMEMEETING_DATADIR "/gnomemeeting/xdap/ils_nm_mod.xml";
     registering = TRUE;
   }
 
