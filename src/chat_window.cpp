@@ -252,7 +252,7 @@ gnomemeeting_text_chat_call_start_notification (GtkWidget *chat_window)
   chat->something_typed = FALSE;
   
   //  free what we should
-  g_free (time_str);
+  free (time_str);
 }
 
 void
