@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
-"POT-Creation-Date: 2001-08-31 17:58+0200\n"
-"PO-Revision-Date: 2001-08-27 19:31+0200\n"
+"POT-Creation-Date: 2001-09-01 17:40+0200\n"
+"PO-Revision-Date: 2001-09-01 17:44+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -157,89 +157,89 @@ msgstr "Satte ljudspelarenhet till %s"
 msgid "Set Audio recorder device to %s"
 msgstr "Satte ljudinspelningsenhet till %s"
 
-#: src/endpoint.cpp:362
+#: src/endpoint.cpp:363
 #, c-format
 msgid "Call from %s"
 msgstr "Samtal från %s"
 
-#: src/endpoint.cpp:419
+#: src/endpoint.cpp:420
 #, c-format
 msgid "Connected with %s using %s"
 msgstr "Ansluten till %s med %s"
 
-#: src/endpoint.cpp:427
+#: src/endpoint.cpp:428
 msgid "Connected"
 msgstr "Ansluten"
 
-#: src/endpoint.cpp:430
+#: src/endpoint.cpp:431
 msgid "Fast start enabled"
 msgstr "Snabbstart aktiverad"
 
-#: src/endpoint.cpp:432
+#: src/endpoint.cpp:433
 msgid "Fast start disabled"
 msgstr "Snabbstart deaktiverad"
 
-#: src/endpoint.cpp:435
+#: src/endpoint.cpp:436
 msgid "H.245 Tunnelling enabled"
 msgstr "H.245-tunnling aktiverad"
 
-#: src/endpoint.cpp:437
+#: src/endpoint.cpp:438
 msgid "H.245 Tunnelling disabled"
 msgstr "H.245-tunnling deaktiverad"
 
-#: src/endpoint.cpp:489
+#: src/endpoint.cpp:490
 msgid "Remote party has cleared the call"
 msgstr "Fjärrparten har nollställt samtalet"
 
-#: src/endpoint.cpp:494
+#: src/endpoint.cpp:495
 msgid "Remote party has stopped calling"
 msgstr "Fjärrparten har slutat ringa"
 
-#: src/endpoint.cpp:499 src/endpoint.cpp:519
+#: src/endpoint.cpp:500 src/endpoint.cpp:520
 msgid "Remote party did not accept your call"
 msgstr "Fjärrparten accepterade inte ditt anrop"
 
-#: src/endpoint.cpp:504
+#: src/endpoint.cpp:505
 msgid "Remote party did not answer your call"
 msgstr "Fjärrparten svarade inte på ditt anrop"
 
-#: src/endpoint.cpp:509
+#: src/endpoint.cpp:510
 msgid "This call ended abnormally"
 msgstr "Samtalet avslutades onormalt"
 
-#: src/endpoint.cpp:514
+#: src/endpoint.cpp:515
 msgid "Could not find common codec with remote party"
 msgstr "Kunde inte hitta en komprimeringsmetod gemensam med fjärrparten"
 
-#: src/endpoint.cpp:524
+#: src/endpoint.cpp:525
 msgid "Refused incoming call"
 msgstr "Vägrade ta emot inkommande samtal"
 
-#: src/endpoint.cpp:529
+#: src/endpoint.cpp:530
 msgid "User not found"
 msgstr "Användaren kunde inte hittas"
 
-#: src/endpoint.cpp:534
+#: src/endpoint.cpp:535
 msgid "Call ended: insufficient bandwidth"
 msgstr "Samtalet avslutades: otillräcklig bandbredd"
 
-#: src/endpoint.cpp:542
+#: src/endpoint.cpp:543
 msgid "Remote party could not be reached"
 msgstr "Fjärrparten kunde inte nås"
 
-#: src/endpoint.cpp:547
+#: src/endpoint.cpp:548
 msgid "Remote party is not online"
 msgstr "Fjärrparten är inte ansluten"
 
-#: src/endpoint.cpp:552
+#: src/endpoint.cpp:553
 msgid "No phone running for remote party"
 msgstr "Ingen telefon är på hos fjärrparten"
 
-#: src/endpoint.cpp:557
+#: src/endpoint.cpp:558
 msgid "Transport error calling"
 msgstr "Transportfel vid anrop"
 
-#: src/endpoint.cpp:563 src/endpoint.cpp:566
+#: src/endpoint.cpp:564 src/endpoint.cpp:567
 msgid "Call completed"
 msgstr "Samtalet färdigt"
 
@@ -1032,9 +1032,22 @@ msgstr "ILS-katalog"
 msgid "Find friends on ILS"
 msgstr "Sök vänner på ILS"
 
-#: src/webcam.cpp:89
-msgid "Could not open the video device."
-msgstr "Kunde inte öppna vidoeenheten."
+#: src/webcam.cpp:123
+#, c-format
+msgid "Successfully opened video device %s, channel %d"
+msgstr "Lyckades öppna videoenheten %s, kanal %d"
+
+#: src/webcam.cpp:133
+#, c-format
+msgid ""
+"Error while opening video device %s, channel %d. A test image will be "
+"transmitted."
+msgstr ""
+"Fel vid öppnande av videoenheten %s, kanal %d. En testbild kommer att "
+"överföras."
+
+#~ msgid "Could not open the video device."
+#~ msgstr "Kunde inte öppna vidoeenheten."
 
 #~ msgid "Could not start listener."
 #~ msgstr "Kunde inte starta lyssnare."
