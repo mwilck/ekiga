@@ -116,7 +116,7 @@ GnomeMeeting::GnomeMeeting ()
   memset ((void *) rtp, 0, sizeof (struct _GmRtpData));
   gw->progress_timeout = 0;
   gw->docklet = gw->ldap_window = gw->pref_window = gw->calls_history_window =
-    gw->splash_win = gw->incoming_call_popup = gw->history_window =
+    gw->splash_win = gw->incoming_call_popup = gw->history_window = 
 #ifndef DISABLE_GNOME
     gw->druid_window =
 #endif

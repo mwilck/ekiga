@@ -73,13 +73,6 @@ GMH323CodecInfo::GetCodecBitRate ()
 }
 
 
-BOOL
-GMH323CodecInfo::HasProps ()
-{
-  return (GetCodecInfo (4) == "Y");
-}
-
-
 GMH323CodecInfo
 GMH323CodecInfo::operator = (const GMH323CodecInfo & info)
 {

@@ -437,50 +437,6 @@ gnomemeeting_codecs_list_add (GtkTreeIter iter, GtkListStore *store,
 }
 
 
-static gint
-codecs_list_clicked_cb (GtkWidget *w,
-			GdkEventButton *e,
-			gpointer data)
-{
-  GMH323CodecInfo codec;
-
-  GtkTreeIter iter;
-  GtkTreeSelection *selection = NULL;
-  GtkTreeModel *model = NULL;
-
-  gchar *selected_codec_name = NULL;
-
-  GmPrefWindow *pw = NULL;
-
-  if (e->type == GDK_BUTTON_PRESS || e->type == GDK_KEY_PRESS) {
-    
-    selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (data));
-    model = gtk_tree_view_get_model (GTK_TREE_VIEW (data));
-
-    if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
-
-      gtk_tree_model_get (model, &iter, COLUMN_CODEC_NAME, 
-			  &selected_codec_name, -1);
-
-      if (selected_codec_name) {
-
-	pw = MyApp->GetPrefWindow ();
-	codec = GMH323CodecInfo (selected_codec_name);
-
-	if (codec.HasProps ())
-	  gtk_widget_set_sensitive (pw->codec_properties_button, TRUE);
-	else
-	  gtk_widget_set_sensitive (pw->codec_properties_button, FALSE);
-
-	g_free (selected_codec_name);
-      }
-    }
-  }
-
-  return FALSE;
-}
-
-
 static void
 codecs_list_fixed_toggled (GtkCellRendererToggle *cell, gchar *path_str, gpointer data)
 {
@@ -1266,9 +1222,6 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
   gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
   gtk_tree_view_column_add_attribute (column, renderer, "foreground", 
 				      COLUMN_CODEC_COLOR);
-  g_signal_connect (G_OBJECT (tree_view), "event-after",
-		    G_CALLBACK (codecs_list_clicked_cb), 
-		    (gpointer) tree_view);
   g_object_set_data (G_OBJECT (pw->codecs_list_store), "tree_view",
 		     (gpointer) tree_view);
 
@@ -1301,16 +1254,7 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
   gtk_box_pack_start (GTK_BOX (buttons_vbox), button, TRUE, TRUE, 0);
   g_signal_connect (G_OBJECT (button), "clicked",
 		    G_CALLBACK (codecs_list_info_button_clicked_callback), 
-		    GTK_TREE_MODEL (pw->codecs_list_store));
-
-  pw->codec_properties_button = 
-    gtk_button_new_from_stock (GTK_STOCK_PROPERTIES);
-  gtk_box_pack_start (GTK_BOX (buttons_vbox), pw->codec_properties_button, 
-		      TRUE, TRUE, 0);
-  //  g_signal_connect (G_OBJECT (button), "clicked",
-  //	    G_CALLBACK (codecs_list_info_button_clicked_callback), 
-  //	    GTK_TREE_MODEL (pw->codecs_list_store));
-  
+		    GTK_TREE_MODEL (pw->codecs_list_store));  
   gtk_widget_show_all (frame);
 
 

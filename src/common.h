@@ -128,6 +128,7 @@ typedef struct _GmDruidWindow GmDruidWindow;
 typedef struct _GmCallsHistoryWindow GmCallsHistoryWindow;
 typedef struct _GmRtpData GmRtpData;
 
+
 enum {CONTACTS_SERVERS, CONTACTS_GROUPS};
 
 
@@ -270,7 +271,6 @@ struct _GmPrefWindow
 {
   GtkTooltips  *tips;
   GtkListStore *codecs_list_store;
-  GtkWidget *codec_properties_button;
   GtkWidget    *show_splash;
   GtkWidget    *start_hidden;
   GtkWidget    *incoming_call_popup;

@@ -64,11 +64,12 @@ gnomemeeting_pref_window_new (GmPrefWindow *);
 
 
 /* DESCRIPTION  :  / 
- * BEHAVIOR     :  Add the codecs to the codecs clist. 
+ * BEHAVIOR     :  Add the codecs to the codecs list. 
  * PRE          :  /
  */
 void 
 gnomemeeting_codecs_list_build (GtkListStore *);
+
 
 #endif
      
