@@ -1,5 +1,15 @@
 2001-11-23  Damien Sandras  <dsandras@seconix.com>
 
+	* src/endpoint.cpp: Fixed a bug with the sound. The incoming sound 
+	is now always played if requested.
+	* src/main.cpp: Fixed a initialisation bug : no need to restart
+	the video device every time.
+	* src/preferences.cpp: Fixed some tooltips.
+	* src/videograbber.cpp: Added comments in the status bar and in
+	the history when opening the video device.
+	
+2001-11-23  Damien Sandras  <dsandras@seconix.com>
+
 	* src/toolbar.cpp: Fixed bug in disable_disconnect (disconnect was
 	not disabled in the File menu).
 	* src/config.cpp, src/main_interface.cpp: Set version to 121 and 

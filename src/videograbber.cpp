@@ -255,6 +255,8 @@ void GMVideoGrabber::VGOpen (void)
   // Disable the video preview button while opening
   gnomemeeting_threads_enter ();
   gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
+  gnome_appbar_push (GNOME_APPBAR (gw->statusbar), _("Opening Video device"));
+  GM_log_insert (gw->log_text, _("Opening Video device"));
   gnomemeeting_threads_leave ();
 
   channel = new PVideoChannel ();
@@ -295,6 +297,7 @@ void GMVideoGrabber::VGOpen (void)
 	(_("Successfully opened video device %s, channel %d"), 
 	 opts->video_device, opts->video_channel);
       GM_log_insert (gw->log_text, msg);
+      gnome_appbar_push (GNOME_APPBAR (gw->statusbar), _("Done"));
       g_free (msg);
 
       gnomemeeting_threads_leave ();			     
@@ -338,6 +341,7 @@ void GMVideoGrabber::VGOpen (void)
 						  GNOME_STOCK_BUTTON_OK, NULL);
       g_free (msg);
       gtk_widget_show (msg_box);
+      gnome_appbar_push (GNOME_APPBAR (gw->statusbar), _("Failed"));
 
       gnomemeeting_threads_leave ();			     
 

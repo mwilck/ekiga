@@ -121,8 +121,8 @@ dnl *****************************
 LDAP_INCLUDES=""
 LDAP_LIBS="-lldap -llber -lresolv"
 
-GNOMEMEETING_INCLUDES="$PTLIB_CFLAGS -I/usr/local/include -I/usr/include $OPENH323_CFLAGS `gnome-config --cflags gdk_pixbuf gnorba`"
-GNOMEMEETING_LDADD="$PTLIB_LDFLAGS $OPENH323_LDFLAGS"
+GNOMEMEETING_INCLUDES="$PTLIB_CFLAGS -I/usr/local/include -I/usr/include $OPENH323_CFLAGS `gnome-config --cflags gdk_pixbuf gnorba` `orbit-config client --cflags`"
+GNOMEMEETING_LDADD="$PTLIB_LDFLAGS $OPENH323_LDFLAGS `orbit-config client --cflags`"
 CFLAGS=""
 
 dnl *************************************************************************

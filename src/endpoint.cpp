@@ -114,7 +114,7 @@ GMH323EndPoint::~GMH323EndPoint ()
 
 H323Capabilities GMH323EndPoint::RemoveCapability (PString name)
 {
-  capabilities.Remove(name);
+  capabilities.Remove (name);
   return capabilities;
 }
 
@@ -133,7 +133,7 @@ int GMH323EndPoint::CallingState (void)
 
 void GMH323EndPoint::RemoveAllCapabilities ()
 {
-//  capabilities.RemoveAll ();
+  capabilities.RemoveAll ();
 }
 
 
@@ -311,7 +311,7 @@ BOOL GMH323EndPoint::Initialise ()
       g_free (name);
     }
 
-  disableFastStart = !opts->fs;
+  disableFastStart = 1;
   disableH245Tunneling = !opts->ht;
   
   received_video_device = NULL;
@@ -470,7 +470,7 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 
   if ((sound_timeout == 0) && (opts->incoming_call_sound))
     {
-      sound_timeout = gtk_timeout_add (2000, 
+      sound_timeout = gtk_timeout_add (1000, 
 				       (GtkFunction) PlaySound,
 				       gw->docklet);
     }

@@ -286,7 +286,6 @@ static void video_transmission_option_changed_callback (GtkToggleButton *button,
 							gpointer data)
 {
   GM_pref_window_widgets *pw = (GM_pref_window_widgets *) data;
-
   pw->vid_tr_changed = 1;
 }
 
@@ -895,7 +894,7 @@ static void init_pref_interface (GtkWidget *notebook,
 				opts->show_quickbar);
 
   tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, pw->show_statusbar,
+  gtk_tooltips_set_tip (tip, pw->show_quickbar,
 			_("If enabled, the quick access bar is displayed"), 
 			NULL);
 
@@ -910,7 +909,7 @@ static void init_pref_interface (GtkWidget *notebook,
 				opts->show_docklet);
 
   tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, pw->show_statusbar,
+  gtk_tooltips_set_tip (tip, pw->show_docklet,
 			_("If enabled, there is support for a docklet in the Gnome or KDE panel"), 
 			NULL);
 
@@ -1094,6 +1093,10 @@ static void init_pref_codecs_settings (GtkWidget *notebook,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);			
 	
+  tip = gtk_tooltips_new ();
+  gtk_tooltips_set_tip (tip, jitter_buffer,
+			_("The jitter buffer delay to buffer audio calls (in ms)"), NULL);
+
 
   label = gtk_label_new (_("General Settings"));
 
@@ -1119,7 +1122,12 @@ static void init_pref_codecs_settings (GtkWidget *notebook,
   gtk_table_attach (GTK_TABLE (table), gsm_frames, 1, 2, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);			
+		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
+
+  tip = gtk_tooltips_new ();
+  gtk_tooltips_set_tip (tip, gsm_frames,
+			_("The number of frames in each transmitted GSM packet"), NULL);
+
 
   /* if it changes, we have to reinit the capabilities */
   gtk_signal_connect (GTK_OBJECT (pw->gsm_frames_spin_adj), "value-changed",
@@ -1133,6 +1141,11 @@ static void init_pref_codecs_settings (GtkWidget *notebook,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);			
+
+  tip = gtk_tooltips_new ();
+  gtk_tooltips_set_tip (tip, pw->gsm_sd,
+			_("Enables the silence detection for the GSM based codecs"), NULL);
+
 
   label = gtk_label_new (_("GSM Codec Settings"));
 
@@ -1160,6 +1173,11 @@ static void init_pref_codecs_settings (GtkWidget *notebook,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);			
 
+  tip = gtk_tooltips_new ();
+  gtk_tooltips_set_tip (tip, gsm_frames,
+			_("The number of frames in each transmitted G.711 packet"), NULL);
+
+
   /* If it changes, we have to reinit the capabilities */
   gtk_signal_connect (GTK_OBJECT (pw->gsm_frames_spin_adj), "value-changed",
 		      GTK_SIGNAL_FUNC (audio_codecs_option_changed_callback), 
@@ -1172,6 +1190,11 @@ static void init_pref_codecs_settings (GtkWidget *notebook,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);			
+
+  tip = gtk_tooltips_new ();
+  gtk_tooltips_set_tip (tip, gsm_frames,
+			_("Enables silence detection for the G.711 based codecs"), NULL);
+
 
   label = gtk_label_new (_("G.711 Codec Settings"));
 
@@ -1295,8 +1318,9 @@ static void init_pref_codecs_settings (GtkWidget *notebook,
 		      (gpointer) pw);
 
   tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, pw->tr_fps,
+  gtk_tooltips_set_tip (tip, pw->fps,
 			_("Here you can enable or disable the limit on the number of transmitted frames per second."), NULL);
+
 
   /* Init the buttons */
   fps_limit_option_changed_callback (GTK_TOGGLE_BUTTON (pw->fps), pw);
@@ -1413,7 +1437,7 @@ static void init_pref_codecs_settings (GtkWidget *notebook,
  
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->video_bandwidth,
-			_("Here you can choose the maximum bandwidth that can be used by the H.261 video codec. Choose 0 to disable it."), NULL);
+			_("Here you can choose the maximum bandwidth that can be used by the H.261 video codec (in kbytes/s)"), NULL);
 
   /* Enable Bandwidth Limitation */
   pw->vb = 
