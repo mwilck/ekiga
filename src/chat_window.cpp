@@ -169,7 +169,7 @@ chat_entry_activate (GtkEditable *w,
 		     gpointer data)
 {
   GMH323EndPoint *endpoint = GnomeMeeting::Process ()->Endpoint ();
-  GtkWidget *chat_window = GnomeMeeting::Process ()->GetMainWindow ()->chat_window;
+  GtkWidget *chat_window = GnomeMeeting::Process ()->GetChatWindow ();
   PString s;
     
   if (endpoint) {

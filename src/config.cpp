@@ -1303,11 +1303,11 @@ incoming_call_mode_changed_nt (gpointer id,
     forward_on_busy = gm_conf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
        
     /* Update the tray icon */
-    gnomemeeting_tray_update (gw->docklet, 
-                              calling_state, 
-                              (IncomingCallMode)
-                              gm_conf_entry_get_int (entry), 
-                              forward_on_busy);
+    gm_tray_update (gw->docklet, 
+		    calling_state, 
+		    (IncomingCallMode)
+		    gm_conf_entry_get_int (entry), 
+		    forward_on_busy);
     
     gdk_threads_leave ();
   }
@@ -1488,6 +1488,7 @@ lid_output_device_type_changed_nt (gpointer id,
 gboolean 
 gnomemeeting_conf_init ()
 {
+  GtkWidget *chat_window = NULL;
   GtkWidget *prefs_window = NULL;
   
   GmWindow *gw = NULL;
@@ -1496,10 +1497,14 @@ gnomemeeting_conf_init ()
   
   gw = GnomeMeeting::Process ()->GetMainWindow ();
   prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
+  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
 
+
+  /* Start listeners */
   gm_conf_watch ();
 
     
+  /* Check the config is ok */
   conf_test = gm_conf_get_int (GENERAL_KEY "gconf_test_age");
   
   if (conf_test != SCHEMA_AGE) 
@@ -1531,7 +1536,7 @@ gnomemeeting_conf_init ()
 			menu_toggle_changed_nt, gtk_menu_get_widget (gw->main_menu, "text_chat"));
 
   gm_conf_notifier_add (USER_INTERFACE_KEY "main_window/show_chat_window",
-			view_widget_changed_nt, gw->chat_window);
+			view_widget_changed_nt, chat_window);
 
   gm_conf_notifier_add (USER_INTERFACE_KEY "calls_history_window/placed_calls_history", calls_history_changed_nt, NULL);
 

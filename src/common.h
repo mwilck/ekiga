@@ -169,7 +169,6 @@ struct _GmWindow
   GtkWidget *remote_video_image;
   GtkWidget *remote_video_window;
   GtkWidget *video_frame;
-  GtkWidget *chat_window;
   GtkWidget *pc_to_phone_window;
   GtkWidget *preview_button;
   GtkWidget *connect_button;

@@ -489,7 +489,7 @@ window_closed_cb (GtkWidget *widget,
   g_return_val_if_fail (data != NULL, FALSE);
   mw = gm_mw_get_mw (GTK_WIDGET (data));
 
-  b = gnomemeeting_tray_is_embedded (mw->docklet);
+  b = gm_tray_is_embedded (mw->docklet);
 
   if (!b)
     quit_callback (NULL, data);
@@ -506,8 +506,7 @@ text_chat_clear_cb (GtkWidget *widget,
 {
   g_return_if_fail (data != NULL);
   
-  // FIXME
-  //gm_main_window_text_chat_clear (GTK_WIDGET (data));
+  gnomemeeting_text_chat_clear (GTK_WIDGET (data));
 }
 
 
@@ -626,6 +625,7 @@ gm_mw_init_menu (GtkWidget *main_window)
   GmWindow *mw = NULL;
   
   GtkWidget *addressbook_window = NULL;
+  GtkWidget *chat_window = NULL;
   GtkWidget *druid_window = NULL;
   GtkWidget *calls_history_window = NULL;
   GtkWidget *history_window = NULL;
@@ -644,6 +644,7 @@ gm_mw_init_menu (GtkWidget *main_window)
   addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
   calls_history_window = GnomeMeeting::Process ()->GetCallsHistoryWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
+  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
   druid_window = GnomeMeeting::Process ()->GetDruidWindow ();
   prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
 
@@ -813,7 +814,7 @@ gm_mw_init_menu (GtkWidget *main_window)
 		     _("Clear the text chat"), 
 		     GTK_STOCK_CLEAR, 'L',
 		     GTK_SIGNAL_FUNC (text_chat_clear_cb),
-		     (gpointer) mw, FALSE),
+		     (gpointer) chat_window, FALSE),
 
       GTK_MENU_SEPARATOR,
 
@@ -1906,7 +1907,8 @@ gm_main_window_new (GmWindow *mw)
 
 
   /* The Chat Window */
-  chat_window = GnomeMeeting::Process ()->GetMainWindow ()->chat_window;
+  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
+  /* FIXME */
   gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (chat_window), 
  		    2, 4, 0, 3,
  		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),

@@ -908,6 +908,7 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
                                          const PString & token)
 {
   GtkWidget *history_window = NULL;
+  GtkWidget *chat_window = NULL;
 
   gchar *utf8_url = NULL;
   gchar *utf8_app = NULL;
@@ -924,6 +925,7 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 
   /* Get the widgets */
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
+  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
   
   
   /* Start refreshing the stats */
@@ -951,7 +953,7 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   gm_history_window_insert (history_window,
 			    _("Connected with %s using %s"), 
 			    utf8_name, utf8_app);
-  gnomemeeting_text_chat_call_start_notification (GnomeMeeting::Process ()->GetMainWindow ()->chat_window);
+  gnomemeeting_text_chat_call_start_notification (chat_window);
 
   gtk_label_set_text (GTK_LABEL (gw->remote_name), (const char *) utf8_name);
 
@@ -1001,8 +1003,8 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   gnomemeeting_threads_enter ();
   gm_main_window_update_sensitivity (GMH323EndPoint::Connected);
   gnomemeeting_menu_update_sensitivity (GMH323EndPoint::Connected);
-  gnomemeeting_tray_update (gw->docklet, GMH323EndPoint::Connected, 
-                            icm, forward_on_busy);
+  gm_tray_update (gw->docklet, GMH323EndPoint::Connected, 
+		  icm, forward_on_busy);
   gnomemeeting_threads_leave ();
 
   
@@ -1077,6 +1079,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 {
   GtkWidget *calls_history_window = NULL;
   GtkWidget *history_window = NULL;
+  GtkWidget *chat_window = NULL;
   
   gchar *msg_reason = NULL;
   
@@ -1099,6 +1102,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   calls_history_window = GnomeMeeting::Process ()->GetCallsHistoryWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
+  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
 
 
   if (connection.GetConnectionStartTime ().IsValid ())
@@ -1241,7 +1245,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
 
   gm_history_window_insert (history_window, msg_reason);
-  gnomemeeting_text_chat_call_stop_notification (gw->chat_window);
+  gnomemeeting_text_chat_call_stop_notification (chat_window);
   gnomemeeting_statusbar_flash (gw->statusbar, msg_reason);
   gnomemeeting_threads_leave ();
 
@@ -1327,8 +1331,8 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   /* We update the GUI */
   gnomemeeting_menu_update_sensitivity (GMH323EndPoint::Standby);
   gm_main_window_update_sensitivity (GMH323EndPoint::Standby);
-  gnomemeeting_tray_update (gw->docklet, GMH323EndPoint::Standby, 
-                            icm, forward_on_busy);
+  gm_tray_update (gw->docklet, GMH323EndPoint::Standby, 
+		  icm, forward_on_busy);
   gnomemeeting_threads_leave ();
   
   gnomemeeting_sound_daemons_resume ();
@@ -2139,8 +2143,8 @@ GMH323EndPoint::OnCallPending (PTimer &,
   gw = GnomeMeeting::Process ()->GetMainWindow ();
 
   gdk_threads_enter ();
-  gnomemeeting_tray_ring (gw->docklet);
-  is_ringing = gnomemeeting_tray_is_ringing (gw->docklet);
+  gm_tray_ring (gw->docklet);
+  is_ringing = gm_tray_is_ringing (gw->docklet);
   gdk_threads_leave ();
 
   

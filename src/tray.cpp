@@ -65,47 +65,47 @@ typedef struct _GmTray {
   gboolean embedded;
 } GmTray;
 
+#define GM_TRAY(x) (GmTray *) (x)
+
 
 extern GtkWidget *gm;
 
 
-static gint tray_icon_embedded (GtkWidget *, 
-                                gpointer);
+/* Declarations */
 
-static gint tray_clicked_callback (GtkWidget *, 
-                                   GdkEventButton *, 
-                                   gpointer);
 
-static gint tray_icon_destroyed (GtkWidget *, 
-                                 gpointer);
+/* DESCRIPTION  : / 
+ * BEHAVIOR     : Frees a GmAddressbookWindow and its content.
+ * PRE          : A non-NULL pointer to a GmAddressbookWindow.
+ */
+static void gm_tray_destroy (gpointer);
+	
+
+/* DESCRIPTION  : / 
+ * BEHAVIOR     : Returns a pointer to the private GmTray
+ * 		  used by the tray GMObject.
+ * PRE          : The given GtkWidget pointer must be a tray GMObject.
+ */
+static GmTray *gm_tray_get_tray (GtkWidget *);
 
 
 /* DESCRIPTION  :  This callback is called when the tray appears on the panel.
  * BEHAVIOR     :  Store the info in the GMObject.
  * PRE          :  /
  */
-static gint 
-tray_icon_embedded (GtkWidget *tray_icon, 
-                    gpointer data)
-{
-  GmTray *gt = NULL;
-  
-  IncomingCallMode icm = AVAILABLE;
+static gint tray_embedded_cb (GtkWidget *, 
+			      gpointer);
 
-  gt = (GmTray *) g_object_get_data (G_OBJECT (tray_icon), "GMObject");
-  
-  if (!gt)
-    return FALSE;
- 
-  /* Check the current incoming call mode */
-  icm =
-    (IncomingCallMode) gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
 
-  gnomemeeting_tray_update (tray_icon, GMH323EndPoint::Standby, icm);
-  gt->embedded = TRUE;
 
-  return true;
-}
+/* DESCRIPTION  :  This callback is called when the user double clicks on the 
+ *                 tray event-box.
+ * BEHAVIOR     :  Show / hide the GnomeMeeting GUI or address book.
+ * PRE          :  /
+ */
+static gint tray_clicked_cb (GtkWidget *, 
+			     GdkEventButton *, 
+			     gpointer);
 
 
 /* DESCRIPTION  :  This callback is called when the panel gets closed
@@ -113,43 +113,70 @@ tray_icon_embedded (GtkWidget *tray_icon,
  * BEHAVIOR     :  Create a new tray_icon and substitute the old one.
  * PRE          :  /
  */
-static gint 
-tray_icon_destroyed (GtkWidget *tray, 
-                     gpointer data) 
+static gint tray_destroyed_cb (GtkWidget *, 
+			       gpointer);
+
+
+/* Implementation */
+
+static void
+gm_tray_destroy (gpointer tray)
 {
-  GmWindow *gw = NULL;
+  g_return_if_fail (tray != NULL);
 
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
-  
-  /* Somehow the delete_event never got called, so we use "destroy" */
-  if (tray != gw->docklet)
-    return TRUE;
-  
-  gw->docklet = gnomemeeting_tray_new ();
-
-  gnomemeeting_window_show (gm);
-
-  
-  return TRUE;
+  delete ((GmTray *) tray);
 }
 
 
-/* DESCRIPTION  :  This callback is called when the user double clicks on the 
- *                 tray event-box.
- * BEHAVIOR     :  Show / hide the GnomeMeeting GUI.
- * PRE          :  /
- */
+static GmTray *
+gm_tray_get_tray (GtkWidget *tray)
+{
+  g_return_val_if_fail (tray != NULL, NULL);
+
+  return GM_TRAY (g_object_get_data (G_OBJECT (tray), "GMObject"));
+}
+
+
+static gint 
+tray_embedded_cb (GtkWidget *tray_icon, 
+		  gpointer data)
+{
+  GmTray *gt = NULL;
+  
+  IncomingCallMode icm = AVAILABLE;
+
+  gt = gm_tray_get_tray (GTK_WIDGET (tray_icon));
+  g_return_val_if_fail (gt != NULL, FALSE);
+   
+  /* Check the current incoming call mode */
+  icm =
+    (IncomingCallMode) gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
+
+  gm_tray_update (tray_icon, GMH323EndPoint::Standby, icm);
+  gt->embedded = TRUE;
+
+  return true;
+}
+
+
+static gint 
+tray_destroyed_cb (GtkWidget *tray, 
+		   gpointer data) 
+{
+  gnomemeeting_window_show (gm);
+  
+  return FALSE;
+}
+
+
 static gint
-tray_clicked_callback (GtkWidget *w,
-		       GdkEventButton *event,
-		       gpointer data)
+tray_clicked_cb (GtkWidget *w,
+		 GdkEventButton *event,
+		 gpointer data)
 {
   GtkWidget *widget = NULL;
   GtkWidget *addressbook_window = NULL;
   
-  GmWindow *gw = NULL;
-
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
   addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
 
   if (event->type == GDK_BUTTON_PRESS) {
@@ -176,15 +203,13 @@ tray_clicked_callback (GtkWidget *w,
 
 /* The functions */
 GtkWidget *
-gnomemeeting_tray_new ()
+gm_tray_new ()
 {
+  GmTray *gt = NULL;
+  
   GtkWidget *tray_icon = NULL;
   GtkWidget *event_box = NULL;
 
-  GmTray *gt = NULL;
-
-  /* Build the internal GMObject structure */
-  gt = (GmTray *) g_malloc (sizeof (GmTray));
 
   /* Start building the GMObject and associate the structure
    * to the object so that it is deleted when the object is
@@ -196,6 +221,14 @@ gnomemeeting_tray_new ()
   tray_icon = GTK_WIDGET (egg_tray_icon_new (_("GnomeMeeting Tray Icon")));
 #endif
 
+  
+  /* The GMObject data */
+  gt = new GmTray ();
+  g_object_set_data_full (G_OBJECT (tray_icon), "GMObject",
+                          (gpointer) gt, 
+			  (GDestroyNotify) (gm_tray_destroy));
+
+
   event_box = gtk_event_box_new ();
   gt->image = gtk_image_new_from_stock (GM_STOCK_STATUS_AVAILABLE,
                                         GTK_ICON_SIZE_MENU);
@@ -205,16 +238,14 @@ gnomemeeting_tray_new ()
   gtk_container_add (GTK_CONTAINER (event_box), gt->image);
   gtk_container_add (GTK_CONTAINER (tray_icon), event_box);
   
-  g_object_set_data_full (G_OBJECT (tray_icon), "GMObject",
-                          (gpointer) gt, (GDestroyNotify) (g_free));
 
   /* Connect the signals */
   g_signal_connect (G_OBJECT (tray_icon), "embedded",
-		    G_CALLBACK (tray_icon_embedded), NULL);
+		    G_CALLBACK (tray_embedded_cb), NULL);
   g_signal_connect (G_OBJECT (tray_icon), "destroy",
-		    G_CALLBACK (tray_icon_destroyed), NULL);
+		    G_CALLBACK (tray_destroyed_cb), NULL);
   g_signal_connect (G_OBJECT (event_box), "button_press_event",
-		    G_CALLBACK (tray_clicked_callback), NULL);
+		    G_CALLBACK (tray_clicked_cb), NULL);
 
   gtk_widget_show_all (tray_icon);
   
@@ -223,16 +254,19 @@ gnomemeeting_tray_new ()
 
 
 void 
-gnomemeeting_tray_update (GtkWidget *tray_icon,
-                          GMH323EndPoint::CallingState calling_state, 
-                          IncomingCallMode icm,
-                          BOOL forward_on_busy)
+gm_tray_update (GtkWidget *tray_icon,
+		GMH323EndPoint::CallingState calling_state, 
+		IncomingCallMode icm,
+		BOOL forward_on_busy)
 {
   GmTray *gt = NULL;
-  
-  gt = (GmTray *) g_object_get_data (G_OBJECT (tray_icon), "GMObject");
 
+  g_return_if_fail (tray_icon != NULL);
+  
+  
+  gt = gm_tray_get_tray (tray_icon);
   g_return_if_fail (gt != NULL);
+  
   
   if (calling_state == GMH323EndPoint::Standby) {
 
@@ -281,13 +315,16 @@ gnomemeeting_tray_update (GtkWidget *tray_icon,
 
 
 void 
-gnomemeeting_tray_ring (GtkWidget *tray)
+gm_tray_ring (GtkWidget *tray)
 {
   GmTray *gt = NULL;
 
-  gt = (GmTray *) g_object_get_data (G_OBJECT (tray), "GMObject");
+  g_return_if_fail (tray != NULL);
 
+  
+  gt = gm_tray_get_tray (tray);
   g_return_if_fail (gt != NULL);
+  
 
   if (gt->ringing) {
 
@@ -307,11 +344,15 @@ gnomemeeting_tray_ring (GtkWidget *tray)
 
 
 gboolean 
-gnomemeeting_tray_is_ringing (GtkWidget *tray)
+gm_tray_is_ringing (GtkWidget *tray)
 {
   GmTray *gt = NULL;
 
-  gt = (GmTray *) g_object_get_data (G_OBJECT (tray), "GMObject");
+  g_return_val_if_fail (tray != NULL, FALSE);
+  
+  gt = gm_tray_get_tray (tray);
+  g_return_val_if_fail (gt != NULL, FALSE);
+
 
   if (!gt)
     return FALSE;
@@ -321,11 +362,15 @@ gnomemeeting_tray_is_ringing (GtkWidget *tray)
 
 
 gboolean 
-gnomemeeting_tray_is_embedded (GtkWidget *tray)
+gm_tray_is_embedded (GtkWidget *tray)
 {
   GmTray *gt = NULL;
 
-  gt = (GmTray *) g_object_get_data (G_OBJECT (tray), "GMObject");
+  g_return_val_if_fail (tray != NULL, FALSE);
+
+  
+  gt = gm_tray_get_tray (tray);
+  g_return_val_if_fail (gt != NULL, FALSE);
 
   if (!gt)
     return FALSE;
