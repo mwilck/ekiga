@@ -1247,6 +1247,7 @@ gnomemeeting_main_window_new (GmWindow *gw)
 		      FALSE, FALSE, 0);
 
   gw->statusbar = gtk_statusbar_new ();
+  gtk_statusbar_set_has_resize_grip (GTK_STATUSBAR (gw->statusbar), FALSE);
   gtk_box_pack_start (GTK_BOX (hbox), gw->statusbar, 
 		      TRUE, TRUE, 0);
 

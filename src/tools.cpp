@@ -198,6 +198,7 @@ gnomemeeting_calls_history_window_new (GmCallsHistoryWindow *chw)
   g_object_unref (icon);
 
   notebook = gtk_notebook_new ();
+  gtk_container_set_border_width (GTK_CONTAINER (notebook), 6);
   gtk_container_add (GTK_CONTAINER (window), notebook);
 
   for (int i = 0 ; i < 3 ; i++) {
