@@ -43,8 +43,11 @@
 #include "endpoint.h"
 #include "lid.h"
 #include "misc.h"
+
+#include "gtklevelmeter.h"
 #include "dialog.h"
 #include "gconf_widgets_extensions.h"
+
 
 #ifdef HAS_IXJ
 #include <ixjlid.h>
@@ -281,24 +284,28 @@ void GMAudioRP::Main ()
   
   gchar *msg = NULL;
   char *buffer = NULL;
-
+  
   BOOL label_displayed = FALSE;
+
   int buffer_pos = 0;
   static int nbr_opened_channels = 0;
+
+  gfloat peak = 0.0;
+  gfloat val = 0.0;
   
   PTime now;
 
   PWaitAndSignal m(quit_mutex);
   thread_sync_point.Signal ();
-  
+
   gw = GnomeMeeting::Process ()->GetMainWindow ();
   ep = GnomeMeeting::Process ()->Endpoint ();
     
   buffer = (char *) malloc (640);
   memset (buffer, '0', sizeof (buffer));
-
+  
   /* We try to open the selected device */
-  if (driver_name != "Quicknet") 
+  if (driver_name != "Quicknet") {
     channel = 
       PSoundChannel::CreateOpenedChannel (driver_name,
 					  device_name,
@@ -306,6 +313,7 @@ void GMAudioRP::Main ()
 					  PSoundChannel::Recorder
 					  : PSoundChannel::Player,
 					  1, 8000, 16);
+  }
 #ifdef HAS_IXJ
   else {
 
@@ -318,7 +326,7 @@ void GMAudioRP::Main ()
     lid_mutex.Signal ();
   }
 #endif
-  
+
   if (!is_encoding)
     msg = g_strdup_printf ("<b>%s</b>", _("Opening device for playing"));
   else
@@ -330,7 +338,7 @@ void GMAudioRP::Main ()
   g_free (msg);
 
   if ((driver_name != "Quicknet" && !channel)
-      || (driver_name == "Quicknet" && !lid || !lid->IsOpen ())) {
+      || (driver_name == "Quicknet" && (!lid || !lid->IsOpen ()))) {
 
     gdk_threads_enter ();  
     if (is_encoding)
@@ -340,7 +348,7 @@ void GMAudioRP::Main ()
     gdk_threads_leave ();  
   }
   else {
-
+    
     nbr_opened_channels++;
 
     if (driver_name != "Quicknet")
@@ -381,7 +389,7 @@ void GMAudioRP::Main ()
 	  stop = TRUE;
 	}
 	else {
-
+	  
 	  if (!label_displayed) {
 
 	    msg =  g_strdup_printf ("<b>%s</b>", _("Recording your voice"));
@@ -396,6 +404,22 @@ void GMAudioRP::Main ()
 	    label_displayed = TRUE;
 	  }
 
+
+	  /* We update the VUMeter only 3 times for each sample
+	     of size 640, that will permit to spare some CPU cycles */
+	  for (i = 0 ; i < 480 ; i = i + 160) {
+	    
+	    val = GetAverageSignalLevel ((const short *) (buffer + i), 160); 
+	    if (val > peak)
+	      peak = val;
+
+	    gdk_threads_enter ();
+	    gtk_levelmeter_set_level (GTK_LEVELMETER (tester->level_meter),
+				      val, peak);
+	    gdk_threads_leave ();
+	  }
+
+	  
 	  tester->buffer_ring_access_mutex.Wait ();
 	  memcpy (&tester->buffer_ring [buffer_pos], buffer,  640); 
 	  tester->buffer_ring_access_mutex.Signal ();
@@ -404,9 +428,9 @@ void GMAudioRP::Main ()
 	}
       }
       else {
-
+	
 	if ((PTime () - now).GetSeconds () > 3) {
-
+	
 	  if (!label_displayed) {
 
 	    msg = g_strdup_printf ("<b>%s</b>", 
@@ -465,6 +489,29 @@ void GMAudioRP::Main ()
 
   free (buffer);
   l = NULL;
+}
+
+
+gfloat
+GMAudioRP::GetAverageSignalLevel (const short *buffer, int size)
+{
+  int sum = 0;
+  
+  const short * pcm = NULL;
+  const short * end = NULL;
+
+  pcm = (const short *) buffer;
+  end = (const short *) (pcm + size);
+  
+  while (pcm != end) {
+
+    if (*pcm < 0)
+      sum -= *pcm++;
+    else
+      sum += *pcm++;
+  }
+	  
+  return log10 (9.0*sum/size/32767+1)*1.0;
 }
 
 
@@ -551,6 +598,10 @@ void GMAudioTester::Main ()
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG (test_dialog)->vbox), 
 		      test_label, FALSE, FALSE, 2);
 
+  level_meter = gtk_levelmeter_new ();
+  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (test_dialog)->vbox), 
+		      level_meter, FALSE, FALSE, 2);
+    
   g_signal_connect (G_OBJECT (test_dialog), "delete-event",
 		    G_CALLBACK (gtk_widget_hide_on_delete), NULL);
   g_signal_connect (G_OBJECT (test_dialog), "response",

@@ -1,6 +1,8 @@
 noinst_LTLIBRARIES = libgmwidgets.la
 
 libgmwidgets_la_SOURCES =				\
+	gtklevelmeter.c					\
+	gtklevelmeter.h					\
 	history-combo.c					\
 	history-combo.h					
 

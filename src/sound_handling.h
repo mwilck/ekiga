@@ -149,7 +149,8 @@ protected:
   
   GtkWidget *test_label;
   GtkWidget *test_dialog;
-
+  GtkWidget *level_meter;
+  
   friend class GMAudioRP;
 };
 #endif
@@ -167,7 +168,8 @@ class GMAudioRP : public PThread
   void Main ();
 
  private:
-
+  gfloat GetAverageSignalLevel (const short *, int);
+  
   BOOL is_encoding;
   GMAudioTester *tester;
   PString driver_name;

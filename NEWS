@@ -29,6 +29,7 @@ Calls history:
 Audio :
 
 * Added support for plugins (Julien Puydt, Craig Southeren).
+* Added support for native ALSA.
 
 Video :
 
@@ -41,6 +42,7 @@ Configuration Assistant :
 * Completely rewrote the configuration assistant to make it simpler and more HIG compliant
 * Users are now only registered to ILS if they explicitely request it
 * Automatically disable video transmission when there is no video device for the selected plugin
+* Added VU Meter support (widget from Stefan Bruëns)
 * The settings are now only applied when the user clicks on "Finish"
 * Better default settings for DSL and cable users
 * Rewrote the Audio Tester for better performance, and to permit it to work with Quicknet cards.
@@ -60,5 +62,7 @@ Misc :
 * All windows sizes and positions are remembered between sessions.
 * Do not use ILS anymore to get the public IP when a NAT gateway is used, that allows people to have the service even if they don't register to ILS.
 * Added possibility to keep video on windows on top of others.
-* New notion of status : Available, Free For Chat, Busy, Forward
+* New notion of status : Available, Free For Chat, Busy, Forward.
+* Unusable codecs are now grayed out when a Quicknet card is used.
+* The text chat now supports h323:, callto:, http: and mailto: URLs (thanks to Julien Puydt).
 * Better GConf keys structure.

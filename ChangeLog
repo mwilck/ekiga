@@ -1,3 +1,19 @@
+2003-12-23 Damien Sandras  <dsandras@seconix.com>
+
+	* NEWS: Updated with new features.
+
+	* lib/widgets/Makefile.am, lib/widgets/gtklevelmeter.c, 
+	lib/widgets/gtklevelmeter.h: Added support for the new VU Meter. Widget
+	code from Stefan Bruëns <lurchi@gmx.li>.
+
+	* src/callbacks.cpp: Updated GM description in about box. Moved
+	Julien to the code contributors (a shame it was not done yet!) and
+	also moved Stefan.
+	
+	* src/sound_handling.cpp, src/sound_handling.h: Added the new
+	VU Meter in the test dialog box and added code to update it
+	in 3 times for each recorded sound buffer.
+	
 2003-12-21 Damien Sandras  <dsandras@seconix.com>
 
 	* lib/gnome_prefs_window.c: Gray out widgets corresponding

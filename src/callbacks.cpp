@@ -402,14 +402,16 @@ void about_callback (GtkWidget *widget, gpointer parent_window)
   GdkPixbuf *pixbuf = NULL;
 	
   const gchar *authors [] = {
-      "Damien Sandras <sandras@info.ucl.ac.be>",
+      "Damien Sandras <damien.sandras@it-optics.com>",
       "",
       N_("Code Contributors:"),
       "Kenneth Rohde Christiansen <kenneth@gnu.org>",
+      "Julien Puydt <julien.puydt@club-internet.fr>",
       "Miguel Rodríguez Pérez <migrax@terra.es>",
       "Paul <paul@argo.dyndns.org>", 
       "Roger Hardiman <roger@freebsd.org>",
       "Sébastien Josset <Sebastien.Josset@space.alcatel.fr>",
+      "Stefan Bruëns <lurch@gmx.li>",
       "Tuan <tuan@info.ucl.ac.be>",
       "",
       N_("Artwork:"),
@@ -428,32 +430,22 @@ void about_callback (GtkWidget *widget, gpointer parent_window)
       "Florin Grad <florin@mandrakesoft.com>",
       "Georgi Georgiev <chutz@gg3.net>",
       "Johnny Ström <jonny.strom@netikka.fi>",
-      "Julien Puydt <julien.puydt@club-internet.fr>",
       "Kilian Krause <kk@verfaction.de>",
       "Matthias Marks <matthias@marksweb.de>",
       "Rafael Pinilla <r_pinilla@yahoo.com>",
       "Santiago García Mantiñán <manty@manty.net>",
       "Shawn Pai-Hsiang Hsiao <shawn@eecs.harvard.edu>",
-      "Stefan Bruens <lurch@gmx.li>",
-      "Stéphane Wirtel<stephane.wirtel@belgacom.net>",
+      "Stéphane Wirtel <stephane.wirtel@belgacom.net>",
       "Vincent Deroo <crossdatabase@aol.com>",
-      NULL
-  };
-
-  const gchar *translators [] = {
-      N_("Internationalisation Maintainer:"),
-      "Christian Rose <menthos@gnu.org>",
       NULL
   };
 	
   authors [2] = gettext (authors [2]);
   authors [10] = gettext (authors [10]);
   authors [13] = gettext (authors [13]);
-  translators [0] = gettext (translators [0]);
   
   const char *documenters [] = {
     "Damien Sandras <dsandras@seconix.com>",
-    "Rafael Pinilla <r_pinilla@yahoo.com>",
     NULL
   };
 
@@ -470,7 +462,7 @@ void about_callback (GtkWidget *widget, gpointer parent_window)
 			  "Copyright © 2000, 2003 Damien Sandras",
                           /* Translators: Please test to see if your translation
                            * looks OK and fits within the box */
-			  _("GnomeMeeting is a full-featured H.323\nvideo conferencing application."),
+			  _("GnomeMeeting is full-featured H.323 compatible videoconferencing, VoIP and IP-Telephony application that allows you to make audio and video calls to remote users with H.323 hardware or software."),
 			  (const char **) authors,
                           (const char **) documenters,
                           strcmp (translator_credits, 
