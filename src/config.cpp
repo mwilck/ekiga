@@ -856,7 +856,6 @@ static void audio_device_changed_nt (GConfClient *client, guint cid,
 #ifndef DISABLE_GNOME
       gtk_widget_set_sensitive (GTK_WIDGET (dw->audio_test_button), false);
 #endif
-      //      gtk_widget_show_all (GTK_WIDGET (gw->speaker_phone_button));
     }
     else {
 
@@ -884,7 +883,6 @@ static void audio_device_changed_nt (GConfClient *client, guint cid,
 #ifndef DISABLE_GNOME
 	gtk_widget_set_sensitive (GTK_WIDGET (dw->audio_test_button), true);
 #endif
-	//gtk_widget_hide_all (GTK_WIDGET (gw->speaker_phone_button));
       }
     }
     

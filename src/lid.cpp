@@ -109,7 +109,6 @@ void GMLid::Open ()
       g_free (msg);
       
       lid->SetLineToLineDirect(0, 1, FALSE);
-      lid->EnableAudio(0, TRUE); 
       
       if (lid_country)
 	lid->SetCountryCodeName(lid_country);
@@ -136,7 +135,13 @@ void GMLid::Open ()
 	lid->SetAEC (0, OpalLineInterfaceDevice::AECAGC);
 	break;
       }
-      
+
+      lid->StopTone (0);
+      lid->EnableAudio(0, TRUE); 
+
+      gnomemeeting_threads_enter ();
+      gtk_widget_show_all (gw->speaker_phone_button);
+      gnomemeeting_threads_leave ();
     }
     else {
       
@@ -189,6 +194,8 @@ void GMLid::Close ()
   GTK_ADJUSTMENT (gw->adj_rec)->value = (int) (vol & 255);
   gtk_widget_queue_draw (GTK_WIDGET (gw->audio_settings_frame));
 
+  gtk_widget_hide_all (gw->speaker_phone_button);
+
   gnomemeeting_threads_leave ();
 }
 
@@ -223,10 +230,6 @@ void GMLid::Main ()
   gtk_widget_queue_draw (GTK_WIDGET (gw->audio_settings_frame));
   gnomemeeting_threads_leave ();
 
-  /* OffHook can take a few cycles to settle, so on the first pass */
-  /* assume we are off-hook and play a dial tone. */
-  if (lid)
-    lid->PlayTone (0, OpalLineInterfaceDevice::DialTone);
 
   while (lid != NULL && lid->IsOpen() && !stop)
   {
