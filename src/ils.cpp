@@ -443,7 +443,7 @@ BOOL GMILSClient::Register (int reg)
 
       gnomemeeting_threads_enter ();
       gnomemeeting_statusbar_flash (gm, msg);
-      gnomemeeting_log_insert (msg);
+      gnomemeeting_log_insert (gw->history_text_view, msg);
       g_free (msg);
       gnomemeeting_threads_leave ();
       
@@ -467,7 +467,7 @@ BOOL GMILSClient::Register (int reg)
       msg = g_strdup_printf (_("Error while unregistering from %s."),
 			     ldap_server);
     
-    gnomemeeting_log_insert (msg);
+    gnomemeeting_log_insert (gw->history_text_view, msg);
     gnomemeeting_statusbar_flash (gm, msg);
     g_free (msg);
 

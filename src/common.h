@@ -31,6 +31,7 @@
 
 #include <gtk/gtk.h>
 #include <ptlib.h>
+#include <iostream>
 
 
 #define GM_CIF_WIDTH   352
@@ -107,6 +108,8 @@ struct _GmWindow
   GtkWidget *pref_window;
   GtkWidget *ldap_window;
   GtkWidget *chat_window;
+  GtkWidget *calls_history_window;
+  GtkWidget *calls_history_text_view;
   GtkWidget *preview_button;
   GtkWidget *connect_button;
   GtkWidget *video_chan_button;

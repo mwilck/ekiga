@@ -89,7 +89,8 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
   H323AudioCodec *codec = (H323AudioCodec *) channel.GetCodec ();
 
   gnomemeeting_threads_enter ();
-  gnomemeeting_log_insert (_("Started New Logical Channel..."));
+  gnomemeeting_log_insert (gw->history_text_view,
+			   _("Started New Logical Channel..."));
   gnomemeeting_threads_leave ();
 
   switch (channel.GetDirection ()) {
@@ -99,12 +100,14 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
     msg = g_strdup_printf (_("Sending %s"), (const char *) name);
 
     gnomemeeting_threads_enter ();
-    gnomemeeting_log_insert (msg);
+    gnomemeeting_log_insert (gw->history_text_view, msg);
     gnomemeeting_threads_leave ();
     
     g_free (msg);
     
-    sd = gconf_client_get_bool (client, "/apps/gnomemeeting/audio_settings/sd", NULL);
+    sd = 
+      gconf_client_get_bool (client, "/apps/gnomemeeting/audio_settings/sd", 
+			     NULL);
     	
     codec->SetSilenceDetectionMode(!sd ?
 				   H323AudioCodec::NoSilenceDetection :
@@ -117,7 +120,7 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
 			     (const char *) name);
       
     gnomemeeting_threads_enter ();
-    gnomemeeting_log_insert (msg);
+    gnomemeeting_log_insert (gw->history_text_view, msg);
     gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_chan_button),
 			      TRUE);
     gnomemeeting_threads_leave ();
@@ -132,7 +135,7 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
 			   (const char *) name);
     
     gnomemeeting_threads_enter ();
-    gnomemeeting_log_insert (msg);
+    gnomemeeting_log_insert (gw->history_text_view, msg);
     gnomemeeting_threads_leave ();
     
     g_free (msg);
@@ -145,7 +148,9 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
 
 
   /* Compute the received video quality */
-  re_vq_ = gconf_client_get_int (GCONF_CLIENT (client), "/apps/gnomemeeting/video_settings/re_vq", NULL);
+  re_vq_ = gconf_client_get_int (GCONF_CLIENT (client), 
+				 "/apps/gnomemeeting/video_settings/re_vq", 
+				 NULL);
   re_vq = 32 - (int) ((double) re_vq_ / 100 * 31);
     
   if (channel.GetDirection() == H323Channel::IsReceiver) {
@@ -153,11 +158,12 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
     if (channel.GetCodec ()->IsDescendant(H323VideoCodec::Class()) 
 	&& (re_vq >= 0)) {
 	
-      msg = g_strdup_printf (_("Requesting remote to send video quality: %d%%"), 
-			     re_vq_);
+      msg = 
+	g_strdup_printf (_("Requesting remote to send video quality: %d%%"), 
+			 re_vq_);
 	
       gnomemeeting_threads_enter ();
-      gnomemeeting_log_insert (msg);
+      gnomemeeting_log_insert (gw->history_text_view, msg);
       gnomemeeting_threads_leave ();
       
       g_free (msg);
@@ -178,7 +184,7 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
       WriteControlPDU(pdu);
       
       gnomemeeting_threads_enter ();
-      gnomemeeting_log_insert (_("Request ok"));
+      gnomemeeting_log_insert (gw->history_text_view, _("Request ok"));
       gnomemeeting_threads_leave ();
     }  
   }
@@ -208,7 +214,8 @@ void GMH323Connection::PauseChannel (int chan_num)
 
 	audio_channel->SetPause (FALSE);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->audio_chan_button), FALSE);
-	gnomemeeting_log_insert (_("Audio Channel:  Sending"));
+	gnomemeeting_log_insert (gw->history_text_view,
+				 _("Audio Channel:  Sending"));
 	gnomemeeting_statusbar_flash (gm, 
 				      _("Audio Channel:  Sending"));
       }
@@ -216,7 +223,8 @@ void GMH323Connection::PauseChannel (int chan_num)
 
 	audio_channel->SetPause (TRUE);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->audio_chan_button), TRUE);
-	gnomemeeting_log_insert (_("Audio Channel:  Paused"));
+	gnomemeeting_log_insert (gw->history_text_view, 
+				 _("Audio Channel:  Paused"));
 	gnomemeeting_statusbar_flash (gm, 
 				      _("Audio Channel:  Paused"));
       }
@@ -239,14 +247,16 @@ void GMH323Connection::PauseChannel (int chan_num)
 
 	video_channel->SetPause (FALSE);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->video_chan_button), FALSE);
-	gnomemeeting_log_insert (_("Video Channel:  Sending"));
+	gnomemeeting_log_insert (gw->history_text_view,
+				 _("Video Channel:  Sending"));
 	gnomemeeting_statusbar_flash (gm,
 				      _("Video Channel:  Sending"));
       }
       else {
 	video_channel->SetPause (TRUE);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->video_chan_button), TRUE);
-	gnomemeeting_log_insert (_("Video Channel:  Paused"));
+	gnomemeeting_log_insert (gw->history_text_view,
+				 _("Video Channel:  Paused"));
 	gnomemeeting_statusbar_flash (gm,
 				      _("Video Channel:  Paused"));
       }
@@ -296,7 +306,9 @@ GMH323Connection::OnAnswerCall (const PString & caller,
     gnomemeeting_threads_enter ();
     gnomemeeting_statusbar_flash (gm,
 				  _("Auto Rejecting Incoming Call"));
-    gnomemeeting_log_insert (_("Auto Rejecting Incoming Call"));
+    gnomemeeting_log_insert (gw->history_text_view,
+			     _("Auto Rejecting Incoming Call"));
+    gnomemeeting_log_insert (gw->calls_history_text_view, _("Auto Rejected"));
     gnomemeeting_threads_leave ();
     
     return AnswerCallDenied;
@@ -309,7 +321,8 @@ GMH323Connection::OnAnswerCall (const PString & caller,
     gnomemeeting_threads_enter ();
     gnomemeeting_statusbar_flash (gm,
 				  _("Auto Answering Incoming Call"));
-    gnomemeeting_log_insert (_("Auto Answering Incoming Call"));
+    gnomemeeting_log_insert (gw->history_text_view,
+			     _("Auto Answering Incoming Call"));
     gnomemeeting_threads_leave ();
     
     return AnswerCallNow;

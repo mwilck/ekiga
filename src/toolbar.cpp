@@ -72,6 +72,7 @@ static void url_combo_changed (GtkEditable  *e, gpointer data)
 #ifdef HAS_IXJ
 static void speaker_phone_toggle_changed (GtkToggleButton *w, gpointer data)
 {
+  GmWindow *gw = gnomemeeting_get_main_window (gm);
   OpalLineInterfaceDevice *lid = NULL;
 
   lid = MyApp->Endpoint ()->GetLidDevice ();
@@ -80,7 +81,8 @@ static void speaker_phone_toggle_changed (GtkToggleButton *w, gpointer data)
 
     if (gtk_toggle_button_get_active (w)) {
       
-      gnomemeeting_log_insert (_("Speakerphone enabled"));
+      gnomemeeting_log_insert (gw->history_text_view,
+			       _("Speakerphone enabled"));
       if (MyApp->Endpoint()->GetCallingState () == 0) /* Not in a call */
 	lid->PlayTone (0, OpalLineInterfaceDevice::DialTone);
 
@@ -91,7 +93,8 @@ static void speaker_phone_toggle_changed (GtkToggleButton *w, gpointer data)
     }
     else {
 
-      gnomemeeting_log_insert (_("Speakerphone disabled"));
+      gnomemeeting_log_insert (gw->history_text_view,
+			       _("Speakerphone disabled"));
       lid->EnableAudio(0, TRUE);
       lid->StopTone (0);
     }
@@ -107,14 +110,15 @@ static void speaker_phone_toggle_changed (GtkToggleButton *w, gpointer data)
  */
 static void connect_button_clicked (GtkToggleButton *w, gpointer data)
 {
-
+  GmWindow *gw = gnomemeeting_get_main_window (gm);
   if (gtk_toggle_button_get_active (w))
     if (MyApp->Endpoint ()->GetCallingState () == 0) 
       MyApp->Connect ();
     else {
       
       connect_button_update_pixmap (w, 0);
-      gnomemeeting_log_insert (_("Trying to stop calling"));
+      gnomemeeting_log_insert (gw->history_text_view,
+			       _("Trying to stop calling"));
     }
   else
     MyApp->Disconnect ();

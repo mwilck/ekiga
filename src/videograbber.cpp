@@ -458,7 +458,7 @@ void GMVideoGrabber::VGOpen (void)
     gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
     gtk_widget_set_sensitive (GTK_WIDGET (pw->video_preview), FALSE);
     gnomemeeting_statusbar_flash (gm, _("Opening Video device"));
-    gnomemeeting_log_insert (_("Opening Video device"));
+    gnomemeeting_log_insert (gw->history_text_view, _("Opening Video device"));
     gnomemeeting_threads_leave ();
     
     channel = new PVideoChannel ();
@@ -508,7 +508,7 @@ void GMVideoGrabber::VGOpen (void)
       msg = g_strdup_printf 
 	(_("Successfully opened video device %s, channel %d"), 
 	 video_device, video_channel);
-      gnomemeeting_log_insert (msg);
+      gnomemeeting_log_insert (gw->history_text_view, msg);
       gnomemeeting_statusbar_flash (gm, _("Video Device Opened"));
       g_free (msg);
       gnomemeeting_threads_leave ();

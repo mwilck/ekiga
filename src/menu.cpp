@@ -508,6 +508,25 @@ void gnomemeeting_init_menu ()
       GNOMEUIINFO_END
     };
 
+  static GnomeUIInfo tools_menu_uiinfo [] =
+    {
+      {
+        GNOME_APP_UI_ITEM,
+        N_("XDAP _Browser"), N_("XDAP Browser"),
+	(void *) gnomemeeting_component_view, gw->ldap_window , NULL,
+	GNOME_APP_PIXMAP_NONE, NULL,
+	0, GDK_CONTROL_MASK, NULL
+      },
+      {
+        GNOME_APP_UI_ITEM,
+        N_("Calls History"), N_("Calls History"),
+	(void *) gnomemeeting_component_view, gw->calls_history_window , NULL,
+	GNOME_APP_PIXMAP_NONE, NULL,
+	0, GDK_CONTROL_MASK, NULL
+      },
+      GNOMEUIINFO_END
+    };  
+
 
   static GnomeUIInfo help_menu_uiinfo [] =
     {
@@ -528,6 +547,7 @@ void gnomemeeting_init_menu ()
       GNOMEUIINFO_SUBTREE (N_("_Edit"), settings_menu_uiinfo),
       GNOMEUIINFO_SUBTREE (N_("_View"), view_menu_uiinfo),
       GNOMEUIINFO_SUBTREE (N_("C_all"), call_menu_uiinfo),
+      GNOMEUIINFO_SUBTREE (N_("_Tools"), tools_menu_uiinfo),
       GNOMEUIINFO_SUBTREE (N_("_Help"), help_menu_uiinfo),
       GNOMEUIINFO_END
     };
@@ -544,6 +564,8 @@ void gnomemeeting_init_menu ()
 		    call_menu_uiinfo);
   g_object_set_data(G_OBJECT(gm), "video_view_menu_uiinfo", 
 		    video_view_menu_uiinfo);
+  g_object_set_data(G_OBJECT(gm), "tools_menu_uiinfo", 
+		    tools_menu_uiinfo);
 
   gnome_app_create_menus (GNOME_APP (gm), main_menu_uiinfo);
   gnome_app_install_menu_hints (GNOME_APP (gm), main_menu_uiinfo);

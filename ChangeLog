@@ -1,3 +1,55 @@
+2002-09-01  Damien Sandras  <dsandras@seconix.com>
+
+	* configure.in: Added Esound to pkg-config.
+	
+	* lib/widgets/history-combo.c: Fixed 3 memory leaks.
+
+	* po/POTFILES.in: Added calls_history_window.
+
+	* src/Makefile.am: Added calls_history_window.
+
+	* src/cleaner.cpp: Adapted to the new API of gnomemeeting_log_insert.
+
+	* src/common.h: Added calls_history_window.
+
+	* src/config.cpp: Adapted to the new API of gnomemeeting_log_insert.
+
+	* src/connection.cpp: Adapted to the new API of 
+	gnomemeeting_log_insert.
+
+	* src/endpoint.cpp: Adapted to the new API of gnomemeeting_log_insert.
+	Added call duration at the end of calls. Added useful info when needed
+	in the calls history window.
+
+	* src/gatekeeper.cpp: Adapted to the new API of 
+	gnomemeeting_log_insert.
+
+	* src/gnomemeeting.cpp: Adapted to the new API of 
+	gnomemeeting_log_insert. Added useful info when needed
+	in the calls history window.
+
+	* src/ils.cpp: Same.
+
+	* src/main_window.cpp: Same.
+
+	* src/menu.cpp: Added Tools menu from Fabrice Alphonso.
+
+	* src/misc.cpp: Changed API of gnomemeeting_log_insert so that we
+	can insert in a given Textview.
+
+	* src/misc.h: Changed API of gnomemeeting_log_insert so that we
+	can insert in a given Textview.
+
+	* src/toolbar.cpp: Same.
+
+	* src/urlhandler.cpp: Same.
+
+	* src/videograbber.cpp: Same.
+
+	* src/calls_history_window.cpp .h: Added that window that will contain
+	all the calls, when they finish, why and their duration. It also
+	indicates incoming calls and if they are rejected or not.
+	
 2002-09-01  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* src/callbacks.cpp (about_callback): Fix bug #82201
@@ -32,6 +84,11 @@
 	* src/Makefile.am (gnomemeeting_SOURCES): Removed docklet.cpp and
 	.h and added tray.cpp and .h instead, with eggtrayicon.[ch] from libegg.
 
+2002-08-31  Damien Sandras  <dsandras@seconix.com>
+
+	* src/endpoint.cpp src/main_window.cpp src/pref_window.cpp:
+	Reduced memory footprint.
+	
 2002-08-31  Damien Sandras  <dsandras@seconix.com>
 
 	* src/main_window.cpp: Made notebook scrollable.

@@ -159,11 +159,11 @@ GmRtpData *gnomemeeting_get_rtp_data (GtkWidget *gm)
 }
 
 
-void gnomemeeting_log_insert (gchar *text)
+void gnomemeeting_log_insert (GtkWidget *text_view, gchar *text)
 {
   GtkTextIter start, end;
   GtkTextMark *mark;
-  GtkTextBuffer *history;
+  GtkTextBuffer *buffer;
 
   time_t *timeptr;
   char *time_str;
@@ -171,28 +171,26 @@ void gnomemeeting_log_insert (gchar *text)
   time_str = (char *) malloc (21);
   timeptr = new (time_t);
 
-  GmWindow *gw = gnomemeeting_get_main_window (gm);
-
   time (timeptr);
   strftime(time_str, 20, "%H:%M:%S ", localtime (timeptr));
 
-  history = gtk_text_view_get_buffer (GTK_TEXT_VIEW (gw->history_text_view));
+  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (text_view));
 
-  gtk_text_buffer_get_bounds (GTK_TEXT_BUFFER (history), 
+  gtk_text_buffer_get_bounds (GTK_TEXT_BUFFER (buffer), 
 			      &start, &end);
-  gtk_text_buffer_insert (GTK_TEXT_BUFFER (history), 
+  gtk_text_buffer_insert (GTK_TEXT_BUFFER (buffer), 
 			  &end, time_str, -1);
-  gtk_text_buffer_get_bounds (GTK_TEXT_BUFFER (history), 
+  gtk_text_buffer_get_bounds (GTK_TEXT_BUFFER (buffer), 
 			      &start, &end);
-  gtk_text_buffer_insert (GTK_TEXT_BUFFER (history), &end, text, -1);
-  gtk_text_buffer_get_bounds (GTK_TEXT_BUFFER (history), 
+  gtk_text_buffer_insert (GTK_TEXT_BUFFER (buffer), &end, text, -1);
+  gtk_text_buffer_get_bounds (GTK_TEXT_BUFFER (buffer), 
 			      &start, &end);
-  gtk_text_buffer_insert (GTK_TEXT_BUFFER (history), &end, "\n", -1);
+  gtk_text_buffer_insert (GTK_TEXT_BUFFER (buffer), &end, "\n", -1);
 
-  mark = gtk_text_buffer_create_mark (GTK_TEXT_BUFFER (history), 
+  mark = gtk_text_buffer_create_mark (GTK_TEXT_BUFFER (buffer), 
 				      "current-position", &end, FALSE);
 
-  gtk_text_view_scroll_to_mark (GTK_TEXT_VIEW (gw->history_text_view), mark, 
+  gtk_text_view_scroll_to_mark (GTK_TEXT_VIEW (text_view), mark, 
 				0.0, FALSE, 0,0);
   
   free (time_str);
@@ -382,41 +380,24 @@ void gnomemeeting_statusbar_flash (GtkWidget *widget, const char *msg, ...)
 
 void gnomemeeting_sound_daemons_suspend (void)
 {
+  GmWindow *gw = gnomemeeting_get_main_window (gm);
   int esd_client = 0;
-
+  
   /* Put esd into standby mode */
   esd_client = esd_open_sound (NULL);
   if (esd_standby (esd_client) != 1) {
     
-    gnomemeeting_log_insert (_("Could not suspend ESD"));
+    gnomemeeting_log_insert (gw->history_text_view, 
+			     _("Could not suspend ESD"));
   }
       
   esd_close (esd_client);
-
-
-  /* Put artsd into standby mode */
-#ifdef HAVE_ARTS
-  int artserror = arts_init();
-  if (artserror) {
-    
-    gchar* artsmsg = g_strdup(arts_error_text(artserror));
-    gnomemeeting_log_insert(artsmsg);
-  } 
-  else {
-    
-    if (0 == arts_suspend()) {
-      
-      gnomemeeting_log_insert (_("Could not suspend artsd"));
-    } 
-          
-    arts_free();
-  }
-#endif
 }
 
 
 void gnomemeeting_sound_daemons_resume (void)
 {
+  GmWindow *gw = gnomemeeting_get_main_window (gm);
   int esd_client = 0;
 
   /* Put esd into normal mode */
@@ -424,7 +405,7 @@ void gnomemeeting_sound_daemons_resume (void)
 
   if (esd_resume (esd_client) != 1) {
 
-    gnomemeeting_log_insert (_("Could not resume ESD"));
+    gnomemeeting_log_insert (gw->history_text_view, _("Could not resume ESD"));
   }
 
   esd_close (esd_client);

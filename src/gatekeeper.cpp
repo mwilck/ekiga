@@ -63,6 +63,7 @@ void GMH323Gatekeeper::Main ()
   GConfClient *client = gconf_client_get_default ();
   H323EndPoint *endpoint = NULL;
   GmPrefWindow *pw = NULL;
+  GmWindow *gw = NULL;
 
   int method;
 
@@ -91,6 +92,7 @@ void GMH323Gatekeeper::Main ()
   /* Fetch the needed data */
   gnomemeeting_threads_enter ();
   pw = gnomemeeting_get_pref_window (gm);
+  gw = gnomemeeting_get_main_window (gm);
   gnomemeeting_threads_leave ();
   
 
@@ -130,7 +132,7 @@ void GMH323Gatekeeper::Main ()
 			     ->GetGatekeeper ()->GetName ());
 	  
       gnomemeeting_threads_enter ();
-      gnomemeeting_log_insert (msg);
+      gnomemeeting_log_insert (gw->history_text_view, msg);
       gnomemeeting_threads_leave ();
       
       g_free (msg);
@@ -197,7 +199,7 @@ void GMH323Gatekeeper::Main ()
 			     ->GetGatekeeper ()->GetName ());
 
       gnomemeeting_threads_enter ();
-      gnomemeeting_log_insert (msg);
+      gnomemeeting_log_insert (gw->history_text_view, msg);
       gnomemeeting_threads_leave ();
       
       g_free (msg);
@@ -237,7 +239,7 @@ void GMH323Gatekeeper::Main ()
 			     ->GetGatekeeper ()->GetName ());
 
       gnomemeeting_threads_enter ();
-      gnomemeeting_log_insert (msg);
+      gnomemeeting_log_insert (gw->history_text_view, msg);
       gnomemeeting_threads_leave ();
       
       g_free (msg);

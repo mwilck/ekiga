@@ -118,8 +118,9 @@ static gint IncomingCallTimeout (gpointer data)
       msg = g_strdup_printf (_("Forwarding Call to %s (No Answer)"), 
 			     (const char*) forward_host);
       gnome_appbar_push (GNOME_APPBAR (gw->statusbar), msg);
-      gnomemeeting_log_insert (msg);
-
+      gnomemeeting_log_insert (gw->history_text_view, msg);
+      gnomemeeting_log_insert (gw->calls_history_text_view, 
+			       _("Call forwarded"));
       g_free (msg);
     }
   }
@@ -194,16 +195,15 @@ GMH323EndPoint::GMH323EndPoint ()
   /* GM is started */
   msg = g_strdup_printf (_("Started GnomeMeeting V%d.%d for %s\n"), 
 			 MAJOR_VERSION, MINOR_VERSION, g_get_user_name ());
-  gnomemeeting_log_insert (msg);
+  gnomemeeting_log_insert (gw->history_text_view, msg);
   g_free (msg);
 }
 
 
 GMH323EndPoint::~GMH323EndPoint ()
 {
-  /* We do not delete the webcam and the ils_client 
-     threads here, but in the Cleaner thread that is
-     called when the user chooses to quit... */
+  /* grabber and ILS threads are deleted in the
+     cleaner */
 
 #ifdef HAS_IXJ  
   if (lid) {
@@ -290,7 +290,7 @@ void GMH323EndPoint::UpdateConfig ()
 				  (const char *) gw->audio_player_devices [0]);
 	}
 
-	gnomemeeting_log_insert (text);
+	gnomemeeting_log_insert (gw->history_text_view, text);
 	g_free (text);
       } 
 
@@ -313,10 +313,11 @@ void GMH323EndPoint::UpdateConfig ()
 
 	  /* Translators: This is shown in the history. */
 	  text = g_strdup_printf (_("Set Audio recorder device to %s"), 
-				  (const char *) gw->audio_recorder_devices [0]);
+				  (const char *) 
+				  gw->audio_recorder_devices [0]);
 	}
     
-	gnomemeeting_log_insert (text);
+	gnomemeeting_log_insert (gw->history_text_view, text);
 	g_free (text);
       }
     }
@@ -331,7 +332,7 @@ void GMH323EndPoint::UpdateConfig ()
       else
 	text = g_strdup (_("Enabling H.245 Tunnelling"));
 
-      gnomemeeting_log_insert (text);
+      gnomemeeting_log_insert (gw->history_text_view, text);
       g_free (text);
     }
 
@@ -347,7 +348,7 @@ void GMH323EndPoint::UpdateConfig ()
       else
 	text = g_strdup (_("Enabling Fast Start"));
 
-      gnomemeeting_log_insert (text);
+      gnomemeeting_log_insert (gw->history_text_view, text);
       g_free (text);
     }
 
@@ -375,7 +376,7 @@ void GMH323EndPoint::UpdateConfig ()
 	  gchar *msg = NULL;
 	  msg = g_strdup_printf (_("Using Quicknet device %s"), 
 				 (const char *) lid->GetName ());
-	  gnomemeeting_log_insert (msg);
+	  gnomemeeting_log_insert (gw->history_text_view, msg);
 	  g_free (msg);
 	  
 	  lid->SetLineToLineDirect(0, 1, FALSE);
@@ -887,7 +888,8 @@ BOOL GMH323EndPoint::OnConnectionForwarded (H323Connection &,
     msg = g_strdup_printf (_("Forwarding Call to %s"), 
 			   (const char*) forward_party);
     gnome_appbar_push (GNOME_APPBAR (gw->statusbar), msg);
-    gnomemeeting_log_insert (msg);
+    gnomemeeting_log_insert (gw->history_text_view, msg);
+    gnomemeeting_log_insert (gw->calls_history_text_view, _("Call forwarded"));
     gnomemeeting_threads_leave ();
 
     g_free (msg);
@@ -971,7 +973,8 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
       g_strdup_printf (_("Forwarding Call from %s to %s (Forward All Calls)"),
 		       (const char *) utf8_name, (const char *) forward_host);
     gnome_appbar_push (GNOME_APPBAR (gw->statusbar), msg);
-    gnomemeeting_log_insert (msg);
+    gnomemeeting_log_insert (gw->history_text_view, msg);
+    gnomemeeting_log_insert (gw->calls_history_text_view, msg);
     gnomemeeting_threads_leave ();
 
     g_free (forward_host_gconf);
@@ -993,7 +996,9 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 			     (const char *) utf8_name, 
 			     (const char *) forward_host);
       gnome_appbar_push (GNOME_APPBAR (gw->statusbar), msg);
-      gnomemeeting_log_insert (msg);
+      gnomemeeting_log_insert (gw->history_text_view, msg);
+      gnomemeeting_log_insert (gw->calls_history_text_view, 
+			       _("Call forwarded"));
       gnomemeeting_threads_leave ();
 
       g_free (forward_host_gconf);
@@ -1009,7 +1014,9 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
       msg = g_strdup_printf (_("Auto Rejecting Incoming Call from %s (Busy)"),
 			     (const char *) utf8_name);
       gnome_appbar_push (GNOME_APPBAR (gw->statusbar), msg);
-      gnomemeeting_log_insert (msg);
+      gnomemeeting_log_insert (gw->history_text_view, msg);
+      gnomemeeting_log_insert (gw->calls_history_text_view, 
+			       _("Auto Rejected"));
       g_free (msg);
 
       gnomemeeting_threads_leave ();
@@ -1078,13 +1085,16 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 
 
   /* Update the history and status bar */
-  msg = g_strdup_printf (_("Call from %s"), (const char*) utf8_name);
+  msg = g_strdup_printf (_("Call from %s using %s"), 
+			 (const char *) utf8_name,
+			 (const char *) utf8_app);
 
   gnomemeeting_threads_enter ();
   gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
 		     (gchar *) msg);
 			 
-  gnomemeeting_log_insert (msg);
+  gnomemeeting_log_insert (gw->history_text_view, msg);
+  gnomemeeting_log_insert (gw->calls_history_text_view, msg);
   gnomemeeting_threads_leave ();
   g_free (msg);
 
@@ -1116,7 +1126,7 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 
 
 void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection, 
-						const PString & token)
+					      const PString & token)
 {
   H323VideoCodec *video_codec = NULL;
   PString name = connection.GetRemotePartyName();
@@ -1165,16 +1175,18 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   gnome_appbar_push (GNOME_APPBAR (gw->statusbar), _("Connected"));
 
   if (gconf_client_get_bool (client, "/apps/gnomemeeting/general/fast_start", 0))    
-    gnomemeeting_log_insert (_("Fast start enabled"));
+    gnomemeeting_log_insert (gw->history_text_view, _("Fast start enabled"));
   else
-    gnomemeeting_log_insert (_("Fast start disabled"));
+    gnomemeeting_log_insert (gw->history_text_view, _("Fast start disabled"));
 
   if (disableH245Tunneling == 0)    
-    gnomemeeting_log_insert (_("H.245 Tunnelling enabled"));
+    gnomemeeting_log_insert (gw->history_text_view, 
+			     _("H.245 Tunnelling enabled"));
   else
-    gnomemeeting_log_insert (_("H.245 Tunnelling disabled"));
+    gnomemeeting_log_insert (gw->history_text_view,
+			     _("H.245 Tunnelling disabled"));
 
-  gnomemeeting_log_insert (msg);
+  gnomemeeting_log_insert (gw->history_text_view, msg);
 
   PINDEX bracket = name.Find('[');
   if (bracket != P_MAX_INDEX)
@@ -1203,11 +1215,9 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   }
 #endif
 
-
   gnomemeeting_tray_set_content (G_OBJECT (gw->docklet), 0);
-
   connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 1);
-  
+
 
   /* Enable the mute functions in the call menu */
   GnomeUIInfo *call_menu_uiinfo =
@@ -1241,6 +1251,8 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 void GMH323EndPoint::OnConnectionCleared (H323Connection & connection, 
 					  const PString & clearedCallToken)
 {
+  gchar *msg = NULL;
+  PTimeInterval t;
   int exit = 0; /* do not exit */
   GtkTextIter start_iter, end_iter;
 
@@ -1267,86 +1279,84 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   switch (connection.GetCallEndReason ()) {
 
   case H323Connection::EndedByRemoteUser :
-    gnomemeeting_statusbar_flash (gm,
-				  _("Remote party has cleared the call"));
+    msg = g_strdup (_("Remote party has cleared the call"));
     break;
     
   case H323Connection::EndedByCallerAbort :
-    gnomemeeting_statusbar_flash (gm,
-				  _("Remote party has stopped calling"));
+    msg = g_strdup (_("Remote party has stopped calling"));
     break;
 
   case H323Connection::EndedByRefusal :
-    gnomemeeting_statusbar_flash (gm,
-				  _("Remote party did not accept your call"));
+    msg = g_strdup (_("Remote party did not accept your call"));
     break;
 
   case H323Connection::EndedByRemoteBusy :
-    gnomemeeting_statusbar_flash (gm,
-				  _("Remote party was busy"));
+    msg = g_strdup (_("Remote party was busy"));
     break;
 
   case H323Connection::EndedByRemoteCongestion :
-    gnomemeeting_statusbar_flash (gm,
-				  _("Congested link to remote party"));
+    msg = g_strdup (_("Congested link to remote party"));
     break;
 
   case H323Connection::EndedByNoAnswer :
-    gnomemeeting_statusbar_flash (gm,
-				  _("Remote party did not answer your call"));
+    msg = g_strdup (_("Remote party did not answer your call"));
     break;
     
   case H323Connection::EndedByTransportFail :
-    gnomemeeting_statusbar_flash (gm,
-				  _("This call ended abnormally"));
+    msg = g_strdup (_("This call ended abnormally"));
     break;
     
   case H323Connection::EndedByCapabilityExchange :
-    gnomemeeting_statusbar_flash (gm,
-				  _("Could not find common codec with remote party"));
+    msg = g_strdup (_("Could not find common codec with remote party"));
     break;
 
   case H323Connection::EndedByNoAccept :
-    gnomemeeting_statusbar_flash (gm,
-				  _("Remote party did not accept your call"));
+    msg = g_strdup (_("Remote party did not accept your call"));
     break;
 
   case H323Connection::EndedByAnswerDenied :
-    gnomemeeting_statusbar_flash (gm,
-				  _("Refused incoming call"));
+    msg = g_strdup (_("Refused incoming call"));
     break;
 
   case H323Connection::EndedByNoUser :
-    gnomemeeting_statusbar_flash (gm,
-				  _("User not found"));
+    msg = g_strdup (_("User not found"));
     break;
     
   case H323Connection::EndedByNoBandwidth :
-    gnomemeeting_statusbar_flash (gm,
-				  _("Call ended: insufficient bandwidth"));
+    msg = g_strdup (_("Call ended: insufficient bandwidth"));
     break;
 
   case H323Connection::EndedByUnreachable :
-    gnomemeeting_statusbar_flash (gm,
-				  _("Remote party could not be reached"));
+    msg = g_strdup (_("Remote party could not be reached"));
     break;
 
   case H323Connection::EndedByHostOffline :
-    gnomemeeting_statusbar_flash (gm,
-				  _("Remote party is offline"));
+    msg = g_strdup (_("Remote party is offline"));
     break;
 
   case H323Connection::EndedByConnectFail :
-    gnomemeeting_statusbar_flash (gm,
-				  _("Transport Error calling"));
+    msg = g_strdup (_("Transport Error calling"));
     break;
 
   default :
-    gnomemeeting_statusbar_flash (gm,
-				  _("Call completed"));
+    msg = g_strdup (_("Call completed"));
   }
   
-  gnomemeeting_log_insert (_("Call completed"));
+  gnomemeeting_statusbar_flash (gm, msg);
+  gnomemeeting_log_insert (gw->history_text_view, msg);
+  gnomemeeting_log_insert (gw->calls_history_text_view, msg);
+  g_free (msg);
+ 
+  if (connection.GetConnectionStartTime ().GetTimeInSeconds () > 0) {
+
+    t = PTime () - connection.GetConnectionStartTime();
+    msg = g_strdup_printf (_("Call duration: %.2ld:%.2ld:%.2ld\n\n"),
+			   (long) t.GetHours (), (long) t.GetMinutes () % 60,
+			   (long) t.GetSeconds () % 60);
+    gnomemeeting_log_insert (gw->history_text_view, msg);
+    gnomemeeting_log_insert (gw->calls_history_text_view, msg);
+    g_free (msg);
+  }
 
   if (gw->progress_timeout) {
 
@@ -1540,7 +1550,7 @@ BOOL GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
 
     gnomemeeting_threads_enter ();
     gchar *msg = g_strdup_printf (_("Attaching lid hardware to codec"));
-    gnomemeeting_log_insert (msg);
+    gnomemeeting_log_insert (gw->history_text_view, msg);
     g_free (msg);
 
     gnomemeeting_threads_leave ();

@@ -51,7 +51,9 @@ gnomemeeting_SOURCES =		\
 	eggtrayicon.h		\
 	eggtrayicon.c		\
 	tray.h			\
-	tray.cpp
+	tray.cpp		\
+	calls_history_window.cpp	\
+	calls_history_window.h
 
 
 gnomemeeting_LDADD = \

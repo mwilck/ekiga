@@ -77,7 +77,6 @@ void GMThreadsCleaner::Main ()
   gnomemeeting_threads_enter ();
 
   gnome_appbar_push (GNOME_APPBAR (gw->statusbar), _("Quit in progress..."));
-  gnomemeeting_log_insert (_("Quit in progress..."));
 
 
   /* Synchronous End of Call */
@@ -103,10 +102,10 @@ void GMThreadsCleaner::Main ()
     Current ()->Sleep (100);
     counter++;  
   }
-  
+
   delete (ils_client);
   delete (video_grabber);
-
+  
   gnomemeeting_threads_enter ();
   gtk_main_quit ();
   gnomemeeting_threads_leave ();

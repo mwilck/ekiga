@@ -149,7 +149,8 @@ void GMURLHandler::Main ()
 
       gnomemeeting_threads_enter ();
       gnomemeeting_statusbar_flash (gm, _("Error while connecting to ILS directory"));
-      gnomemeeting_log_insert (_("Error while connecting to ILS directory"));
+      gnomemeeting_log_insert (gw->history_text_view, 
+			       _("Error while connecting to ILS directory"));
       connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 0);
       gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [0].widget), 
 				TRUE);
@@ -171,7 +172,7 @@ void GMURLHandler::Main ()
 
       gnomemeeting_threads_enter ();
       gnomemeeting_statusbar_flash (gm, _("User not found"));
-      gnomemeeting_log_insert (_("User not found"));
+      gnomemeeting_log_insert (gw->history_text_view, _("User not found"));
       connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 0);
       gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [0].widget), 
 				TRUE);
@@ -219,7 +220,8 @@ void GMURLHandler::Main ()
   
   msg = g_strdup_printf (_("Calling %s"), 
 			 (const char *) call_address);
-  gnomemeeting_log_insert (msg);
+  gnomemeeting_log_insert (gw->history_text_view, msg);
+  gnomemeeting_log_insert (gw->calls_history_text_view, msg);
   gnome_appbar_push (GNOME_APPBAR (gw->statusbar), msg);
   connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 1);
   g_free (msg);		

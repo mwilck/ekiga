@@ -105,10 +105,11 @@ GmRtpData *gnomemeeting_get_rtp_data (GtkWidget *);
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Add some texts to the log part of the main window.
- * PRE          :  /
+ * BEHAVIOR     :  Add text (gchar *) with timestamps into the given 
+ *                 GtkTextView.
+ * PRE          :  The text to add, and the text view to add the text into.
  */
-void gnomemeeting_log_insert (gchar *);
+void gnomemeeting_log_insert (GtkWidget *, gchar *);
 
 
 /* DESCRIPTION  :  /

@@ -52,6 +52,7 @@
 #include "stock-icons.h"
 #include "druid.h"
 #include "chat_window.h"
+#include "calls_history_window.h"
 
 
 #include <libgnomeui/gnome-window-icon.h>
@@ -1050,7 +1051,8 @@ gnomemeeting_init (GmWindow *gw,
   gnomemeeting_init_pref_window ();  
   gnomemeeting_init_menu ();
   gnomemeeting_init_toolbar ();
-  
+  gnomemeeting_init_calls_history_window ();
+
  
   /* Launch the GnomeMeeting H.323 part */
   static GnomeMeeting instance;
@@ -1726,6 +1728,7 @@ int main (int argc, char ** argv, char ** envp)
   gtk_widget_hide (GTK_WIDGET (gm));
   gtk_widget_destroy (GTK_WIDGET (gw->ldap_window));
   gtk_widget_destroy (GTK_WIDGET (gw->pref_window));
+  gtk_widget_destroy (GTK_WIDGET (gw->calls_history_window));
   gtk_widget_destroy (GTK_WIDGET (gm));
 
   gdk_threads_leave ();
@@ -1735,6 +1738,7 @@ int main (int argc, char ** argv, char ** envp)
   delete (pw);
   delete (rtp);
   delete (chat); 
+  delete (clo);
 
-  return 0;
+  exit (0);
 }

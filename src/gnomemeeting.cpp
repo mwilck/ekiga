@@ -75,7 +75,6 @@ GnomeMeeting::GnomeMeeting ()
 GnomeMeeting::~GnomeMeeting()
 {
   delete (endpoint);
-  endpoint = NULL;
 }
 
 
@@ -85,7 +84,7 @@ GnomeMeeting::Connect()
   PString call_address;
   PString current_call_token;
   H323Connection *connection = NULL;
-  
+
   /* We need a connection to use AnsweringCall */
   current_call_token = endpoint->GetCurrentCallToken ();
   connection = endpoint->GetCurrentConnection ();
@@ -93,9 +92,9 @@ GnomeMeeting::Connect()
   gnomemeeting_threads_enter ();
   gnome_appbar_clear_stack (GNOME_APPBAR (gw->statusbar));
   call_address = (PString) gtk_entry_get_text 
-          (GTK_ENTRY (GTK_COMBO (gw->combo)->entry));
-  
+          (GTK_ENTRY (GTK_COMBO (gw->combo)->entry));  
   gnomemeeting_threads_leave ();
+
 
   /* If connection, then answer it */
   if (connection != NULL) 
@@ -112,19 +111,22 @@ GnomeMeeting::Connect()
       connection->AnsweringCall (H323Connection::AnswerCallNow);
       
       gnomemeeting_threads_enter ();
-      gnomemeeting_log_insert (_("Answering incoming call"));
+      gnomemeeting_log_insert (gw->history_text_view,
+			       _("Answering incoming call"));
       connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 1);
       gnomemeeting_threads_leave ();
   }
   else 
   {
     gnomemeeting_threads_enter ();
-    gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), call_address);
+    gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), 
+			call_address);
     
     gm_history_combo_add_entry (GM_HISTORY_COMBO (gw->combo), 
 				"/apps/gnomemeeting/history/called_urls_list", 
 				gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry)));
     gnomemeeting_threads_leave ();
+
 
     /* if we call somebody, and if the URL is not empty */
     if ((!call_address.IsEmpty ()) && (call_address.ToLower () != "callto://"))
@@ -189,7 +191,8 @@ void GnomeMeeting::Disconnect ()
     if (endpoint->GetCallingState () == 1) {
 
       gnomemeeting_threads_enter ();
-      gnomemeeting_log_insert (_("Trying to stop calling"));
+      gnomemeeting_log_insert (gw->history_text_view,
+			       _("Trying to stop calling"));
       gnomemeeting_threads_leave ();
 
       endpoint->ClearCall (current_call_token);
@@ -201,7 +204,8 @@ void GnomeMeeting::Disconnect ()
       if (endpoint->GetCallingState () == 2) {
 
 	gnomemeeting_threads_enter ();	
-	gnomemeeting_log_insert (_("Stopping current call"));
+	gnomemeeting_log_insert (gw->history_text_view,
+				 _("Stopping current call"));
 	connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 
 				      0);
 	gnomemeeting_threads_leave ();
@@ -212,7 +216,8 @@ void GnomeMeeting::Disconnect ()
       else {
 
 	gnomemeeting_threads_enter ();
-	gnomemeeting_log_insert (_("Refusing Incoming call"));
+	gnomemeeting_log_insert (gw->history_text_view,
+				 _("Refusing Incoming call"));
 	connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 
 				      0);
 	gnomemeeting_threads_leave ();

@@ -411,13 +411,13 @@ static void audio_mixer_changed_nt (GConfClient *client, guint cid,
     /* Translators: This is shown in the history. */
     text = g_strdup_printf (_("Set Audio Mixer for player to %s"),
 			    player_mixer);
-    gnomemeeting_log_insert (text);
+    gnomemeeting_log_insert (gw->history_text_view, text);
     g_free (text);
     
     /* Translators: This is shown in the history. */
     text = g_strdup_printf (_("Set Audio Mixer for recorder to %s"),
 			    recorder_mixer);
-    gnomemeeting_log_insert (text);
+    gnomemeeting_log_insert (gw->history_text_view, text);
     g_free (text);
 
     gnomemeeting_set_recording_source (recorder_mixer, 0);
@@ -559,6 +559,7 @@ static void silence_detection_changed_nt (GConfClient *client, guint cid,
 					  GConfEntry *entry, gpointer data)
 {
   H323AudioCodec *ac = NULL;
+  GmWindow *gw = NULL;
 
   if (entry->value->type == GCONF_VALUE_BOOL) {
 
@@ -568,6 +569,7 @@ static void silence_detection_changed_nt (GConfClient *client, guint cid,
     if (MyApp->Endpoint ()->GetCallingState () == 2) {
 
       ac = MyApp->Endpoint ()->GetCurrentAudioCodec ();
+      gw = gnomemeeting_get_main_window (gm);
 
       if (ac != NULL) {
 
@@ -577,12 +579,14 @@ static void silence_detection_changed_nt (GConfClient *client, guint cid,
 	if (mode == H323AudioCodec::AdaptiveSilenceDetection) {
 	  
 	  mode = H323AudioCodec::NoSilenceDetection;
-	  gnomemeeting_log_insert (_("Disabled Silence Detection"));
+	  gnomemeeting_log_insert (gw->history_text_view,
+				   _("Disabled Silence Detection"));
 	} 
 	else {
 
 	  mode = H323AudioCodec::AdaptiveSilenceDetection;
-	  gnomemeeting_log_insert (_("Enabled Silence Detection"));
+	  gnomemeeting_log_insert (gw->history_text_view,
+				   _("Enabled Silence Detection"));
 	}
 
 	ac->SetSilenceDetectionMode(mode);

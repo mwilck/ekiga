@@ -116,6 +116,7 @@ gm_history_combo_class_init (GmHistoryComboClass *klass)
                                                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
 }
 
+
 static void
 gm_history_combo_init (GmHistoryCombo *combo)
 {
@@ -137,7 +138,8 @@ gm_history_combo_construct (GmHistoryCombo *combo)
   g_object_get (G_OBJECT (combo), "key", &key, NULL);
 
   client = gconf_client_get_default ();
-  contact_gconf = gconf_client_get_list (client, key, GCONF_VALUE_STRING, NULL);
+  contact_gconf = 
+    gconf_client_get_list (client, key, GCONF_VALUE_STRING, NULL);
   
   combo->contact_list = g_list_from_gslist (contact_gconf);
   g_slist_free (contact_gconf);
@@ -163,6 +165,7 @@ gm_history_combo_finalize (GObject *object)
   
   g_return_if_fail (combo->priv != NULL);
   
+  g_free (combo->priv->key);
   g_free (combo->priv);
   
   while (combo->contact_list != NULL)
@@ -225,7 +228,8 @@ gm_history_combo_new (const char *key)
 {
   GmHistoryCombo *combo;
   
-  combo = GM_HISTORY_COMBO (g_object_new (GM_TYPE_HISTORY_COMBO, "key", key, NULL));
+  combo = 
+    GM_HISTORY_COMBO (g_object_new (GM_TYPE_HISTORY_COMBO, "key", key, NULL));
   
   g_return_val_if_fail (combo->priv != NULL, NULL);
   
@@ -327,7 +331,7 @@ gm_history_combo_add_entry (GmHistoryCombo *combo,
   
   contact_gconf = g_slist_from_glist (combo->contact_list);
   gconf_client_set_list (client, key, GCONF_VALUE_STRING, contact_gconf, NULL);
-  
+  g_slist_free (contact_gconf);
 
   gm_history_combo_update (combo);  
   
