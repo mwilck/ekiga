@@ -1,5 +1,40 @@
 2002-11-29 Damien Sandras  <dsandras@seconix.com>
 
+	* src/config.cpp: Fixed the jitter range. Impossible for the max jitter
+	to go lower than the min jitter, and if the min jitter goes higher
+	than the max jitter, the max jitter is increased.
+
+	* src/connection.cpp: Fixed previous hack.
+
+	* src/pref_window.cpp: Fixed previous hack.
+
+	
+2002-11-29 Damien Sandras  <dsandras@seconix.com>
+
+	* configure.in: Incremented SCHEMA_AGE.
+	
+	* gnomemeeting.schemas.in.in: Removed show_docklet, jitter_buffer and
+	added min_jitter_buffer	and max_jitter_buffer.
+
+	* src/common.h: Removed the jitter buffer widget and added 2 widgets
+	for the min and max jitter buffer.
+
+	* src/connection.cpp: The jitter buffer is now dynamic and it only
+	needs limits.
+	
+	* src/config.cpp: Added support for min_jitter_buffer and 
+	max_jitter_buffer.
+	
+	* src/druid.cpp: Fixed druid exit.
+	
+	* src/menu.cpp: Removed "Notification Icon" from the View menu
+	and added room for the dialpad.
+	
+	* src/pref_window.cpp: Added Jitter buffer options.
+	
+
+2002-11-29 Damien Sandras  <dsandras@seconix.com>
+
 	* src/callbacks.cpp: Applied patch from Fabrice Alphonso 
 	<fabrice@alphonso.dyndns.org>. Thanks! Thanks to menthos for
 	the bug report.

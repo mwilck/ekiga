@@ -76,7 +76,7 @@ GMH323Connection::GMH323Connection (GMH323EndPoint & ep,
     gconf_client_get_int (gconf_client_get_default (), 
 			  AUDIO_SETTINGS_KEY "max_jitter_buffer", NULL);
 
-  SetMaxAudioDelayJitter (min_jitter, max_jitter);
+  SetAudioJitterDelay (min_jitter, max_jitter);
 }
 
 

@@ -634,13 +634,16 @@ static void jitter_buffer_changed_nt (GConfClient *client, guint cid,
 {
   RTP_Session *session = NULL;  
   H323Connection *connection = NULL;
-  H323EndPoint *ep = MyApp->Endpoint ();  
+  GMH323EndPoint *ep = MyApp->Endpoint ();  
   gdouble min_val = 20.0;
   gdouble max_val = 500.0;
+  GmPrefWindow *pw = NULL;
 
   if (entry->value->type == GCONF_VALUE_INT) {
 
     gdk_threads_enter ();
+
+    pw = gnomemeeting_get_pref_window (gm);
 
     min_val = 
       gconf_client_get_int (client, AUDIO_SETTINGS_KEY "min_jitter_buffer", 0);
@@ -648,8 +651,27 @@ static void jitter_buffer_changed_nt (GConfClient *client, guint cid,
       gconf_client_get_int (client, AUDIO_SETTINGS_KEY "max_jitter_buffer", 0);
 			    
 
+    g_signal_handlers_block_by_func (G_OBJECT (data),
+				     (gpointer) adjustment_changed, 
+				       (gpointer) g_object_get_data (G_OBJECT (data), 
+								     "gconf_key")); 
+
+    if (data == pw->max_jitter_buffer)
+      gtk_spin_button_set_range (GTK_SPIN_BUTTON (pw->min_jitter_buffer),
+				 20.0, (gdouble) max_val+1);
+
+    if (data == pw->min_jitter_buffer)
+      gtk_spin_button_set_range (GTK_SPIN_BUTTON (pw->max_jitter_buffer),
+				 (gdouble) min_val, 1000.0);
+
+    g_signal_handlers_unblock_by_func (G_OBJECT (data),
+				       (gpointer) adjustment_changed, 
+				       (gpointer) g_object_get_data (G_OBJECT (data), 
+								     "gconf_key")); 
+
+
     /* We update the current value */
-    connection = MyApp->Endpoint ()->GetCurrentConnection ();
+    connection = ep->GetCurrentConnection ();
 
     if (connection != NULL)
       session =                                                                

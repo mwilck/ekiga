@@ -43,18 +43,7 @@
       <default>3</default>
       <locale name="C">
 	<short>Change the control panel section</short>
-	<long>Change the control panel section (3 means that the control panel is off)</long>
-      </locale>
-    </schema>
-    <schema>
-      <key>/schemas/apps/gnomemeeting/view/show_docklet</key>
-      <applyto>/apps/gnomemeeting/view/show_docklet</applyto>
-      <owner>GnomeMeeting</owner>
-      <type>bool</type>
-      <default>true</default>
-      <locale name="C">
-	<short>Show docklet</short>
-	<long>Show a docklet in the gnome-panel or KDE systray</long>
+	<long>Change the control panel section (4 means that the control panel is off)</long>
       </locale>
     </schema>
     <schema>
@@ -565,14 +554,25 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/audio_settings/jitter_buffer</key>
-      <applyto>/apps/gnomemeeting/audio_settings/jitter_buffer</applyto>
+      <key>/schemas/apps/gnomemeeting/audio_settings/min_jitter_buffer</key>
+      <applyto>/apps/gnomemeeting/audio_settings/min_jitter_buffer</applyto>
       <owner>GnomeMeeting</owner>
       <type>int</type>
-      <default>50</default>
+      <default>20</default>
       <locale name="C">
-	<short>Jitter buffer</short>
-	<long>Jitter buffer for audio reception in ms</long>
+	<short>Minimal jitter buffer</short>
+	<long>The minimal jitter buffer size for audio reception (in ms).</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/audio_settings/max_jitter_buffer</key>
+      <applyto>/apps/gnomemeeting/audio_settings/max_jitter_buffer</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>int</type>
+      <default>500</default>
+      <locale name="C">
+	<short>Maximal jitter buffer</short>
+	<long>The maximal jitter buffer size for audio reception (in ms).</long>
       </locale>
     </schema>
     <schema>

@@ -1374,10 +1374,10 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
   table = gnomemeeting_vbox_add_table (vbox, _("Dynamic Jitter Buffer"), 2, 2);
 
   pw->min_jitter_buffer =
-    gnomemeeting_table_add_spin (table, _("Minimal Jitter Buffer:"), AUDIO_SETTINGS_KEY "min_jitter_buffer", _("The minimal jitter buffer size for audio reception (in ms)."), 20.0, 1000.0, 10.0, 0);
+    gnomemeeting_table_add_spin (table, _("Minimal Jitter Buffer:"), AUDIO_SETTINGS_KEY "min_jitter_buffer", _("The minimal jitter buffer size for audio reception (in ms)."), 20.0, 1000.0, 1.0, 0);
 
   pw->max_jitter_buffer =
-    gnomemeeting_table_add_spin (table, _("Maximal Jitter Buffer:"), AUDIO_SETTINGS_KEY "max_jitter_buffer", _("The maximal jitter buffer size for audio reception (in ms)."), 500.0, 1000.0, 10.0, 1);
+    gnomemeeting_table_add_spin (table, _("Maximal Jitter Buffer:"), AUDIO_SETTINGS_KEY "max_jitter_buffer", _("The maximal jitter buffer size for audio reception (in ms)."), 20.0, 1000.0, 1.0, 1);
 }
                                                                                
 
