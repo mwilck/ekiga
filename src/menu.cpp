@@ -454,7 +454,7 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
        (gpointer) "/apps/gnomemeeting/view/control_panel_section",
        NULL},
 
-      {_("_Video Settings"), _("View Viddeo Settings"),
+      {_("_Video Settings"), _("View Video Settings"),
        NULL, 0, MENU_ENTRY_RADIO, 
        GTK_SIGNAL_FUNC (view_menu_toggles_changed), 
        (gpointer) "/apps/gnomemeeting/view/control_panel_section",
