@@ -864,6 +864,8 @@ gm_aw_add_addressbook (GtkWidget *addressbook_window,
   gtk_tree_view_column_set_sort_column_id (column, COLUMN_FULLNAME);
   gtk_tree_view_column_set_resizable (column, true);
   gtk_tree_view_column_set_min_width (GTK_TREE_VIEW_COLUMN (column), 125);
+  gtk_tree_view_column_set_sizing (GTK_TREE_VIEW_COLUMN (column),
+				   GTK_TREE_VIEW_COLUMN_AUTOSIZE);
   gtk_tree_view_append_column (GTK_TREE_VIEW (awp->awp_tree_view), column);
   g_object_set (G_OBJECT (renderer), "weight", "bold", NULL);
 
@@ -875,7 +877,8 @@ gm_aw_add_addressbook (GtkWidget *addressbook_window,
 						     NULL);
   gtk_tree_view_column_set_sort_column_id (column, COLUMN_UURL);
   gtk_tree_view_column_set_resizable (column, true);
-  gtk_tree_view_column_set_min_width (GTK_TREE_VIEW_COLUMN (column), 280);
+  gtk_tree_view_column_set_sizing (GTK_TREE_VIEW_COLUMN (column),
+				   GTK_TREE_VIEW_COLUMN_AUTOSIZE);
   gtk_tree_view_append_column (GTK_TREE_VIEW (awp->awp_tree_view), column);
   g_object_set (G_OBJECT (renderer), "foreground", "blue",
 		"underline", TRUE, NULL);
@@ -888,7 +891,8 @@ gm_aw_add_addressbook (GtkWidget *addressbook_window,
 						     NULL);
   gtk_tree_view_column_set_sort_column_id (column, COLUMN_COMMENT);
   gtk_tree_view_column_set_resizable (column, true);
-  gtk_tree_view_column_set_min_width (GTK_TREE_VIEW_COLUMN (column), 280);
+  gtk_tree_view_column_set_sizing (GTK_TREE_VIEW_COLUMN (column),
+				   GTK_TREE_VIEW_COLUMN_AUTOSIZE);
   gtk_tree_view_append_column (GTK_TREE_VIEW (awp->awp_tree_view), column);
   if (gnomemeeting_addressbook_is_local (addressbook))
     g_object_set (G_OBJECT (column), "visible", false, NULL);
@@ -901,7 +905,8 @@ gm_aw_add_addressbook (GtkWidget *addressbook_window,
 						     NULL);
   gtk_tree_view_column_set_sort_column_id (column, COLUMN_SOFTWARE);
   gtk_tree_view_column_set_resizable (column, true);
-  gtk_tree_view_column_set_min_width (GTK_TREE_VIEW_COLUMN (column), 280);
+  gtk_tree_view_column_set_sizing (GTK_TREE_VIEW_COLUMN (column),
+				   GTK_TREE_VIEW_COLUMN_AUTOSIZE);
   gtk_tree_view_append_column (GTK_TREE_VIEW (awp->awp_tree_view), column);
   if (gnomemeeting_addressbook_is_local (addressbook))
     g_object_set (G_OBJECT (column), "visible", false, NULL);
@@ -914,7 +919,8 @@ gm_aw_add_addressbook (GtkWidget *addressbook_window,
 						     NULL);
   gtk_tree_view_column_set_sort_column_id (column, COLUMN_EMAIL);
   gtk_tree_view_column_set_resizable (column, true);
-  gtk_tree_view_column_set_min_width (GTK_TREE_VIEW_COLUMN (column), 280);
+  gtk_tree_view_column_set_sizing (GTK_TREE_VIEW_COLUMN (column),
+				   GTK_TREE_VIEW_COLUMN_AUTOSIZE);
   gtk_tree_view_append_column (GTK_TREE_VIEW (awp->awp_tree_view), column);
 
   renderer = gtk_cell_renderer_text_new ();
@@ -925,7 +931,8 @@ gm_aw_add_addressbook (GtkWidget *addressbook_window,
 						     NULL);
   gtk_tree_view_column_set_sort_column_id (column, COLUMN_LOCATION);
   gtk_tree_view_column_set_resizable (column, true);
-  gtk_tree_view_column_set_min_width (GTK_TREE_VIEW_COLUMN (column), 280);
+  gtk_tree_view_column_set_sizing (GTK_TREE_VIEW_COLUMN (column),
+				   GTK_TREE_VIEW_COLUMN_AUTOSIZE);
   gtk_tree_view_append_column (GTK_TREE_VIEW (awp->awp_tree_view), column);
   if (gnomemeeting_addressbook_is_local (addressbook))
     g_object_set (G_OBJECT (column), "visible", false, NULL);
@@ -938,7 +945,8 @@ gm_aw_add_addressbook (GtkWidget *addressbook_window,
 						     NULL);
   gtk_tree_view_column_set_sort_column_id (column, COLUMN_CATEGORIES);
   gtk_tree_view_column_set_resizable (column, true);
-  gtk_tree_view_column_set_min_width (GTK_TREE_VIEW_COLUMN (column), 280);
+  gtk_tree_view_column_set_sizing (GTK_TREE_VIEW_COLUMN (column),
+				   GTK_TREE_VIEW_COLUMN_AUTOSIZE);
   gtk_tree_view_append_column (GTK_TREE_VIEW (awp->awp_tree_view), column);
   if (!gnomemeeting_addressbook_is_local (addressbook))
     g_object_set (G_OBJECT (column), "visible", false, NULL);
@@ -951,6 +959,8 @@ gm_aw_add_addressbook (GtkWidget *addressbook_window,
 						     NULL);
   gtk_tree_view_column_set_sort_column_id (column, COLUMN_SPEED_DIAL);
   gtk_tree_view_column_set_resizable (column, true);
+  gtk_tree_view_column_set_sizing (GTK_TREE_VIEW_COLUMN (column),
+				   GTK_TREE_VIEW_COLUMN_AUTOSIZE);
   gtk_tree_view_append_column (GTK_TREE_VIEW (awp->awp_tree_view), column);
   if (!gnomemeeting_addressbook_is_local (addressbook))
     g_object_set (G_OBJECT (column), "visible", false, NULL);
