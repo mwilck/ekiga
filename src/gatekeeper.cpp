@@ -28,6 +28,9 @@
  */
 
 
+#include "../config.h" 
+
+
 #include "gatekeeper.h"
 #include "gnomemeeting.h"
 #include "misc.h"

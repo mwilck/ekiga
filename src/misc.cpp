@@ -381,7 +381,7 @@ void PAssertFunc (const char * file, int line, const char * msg)
   inAssert = TRUE;
 
   gnomemeeting_threads_enter ();
-  mesg = g_strdup_printf (_("Error: %s \nYou can choose to ignore and continue, or to close GnomeMeeting.", msg, NULL);
+  mesg = g_strdup_printf (_("Error: %s \nYou can choose to ignore and continue, or to close GnomeMeeting."), msg, NULL);
 
   GtkWidget *dialog = 
     gnome_message_box_new (mesg,
