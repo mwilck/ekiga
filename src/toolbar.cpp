@@ -25,6 +25,7 @@
  *           Kenneth Christiansen <kenneth@gnu.org>
  */
 
+
 #include "../config.h"
 
 
@@ -361,7 +362,7 @@ void gnomemeeting_init_toolbar ()
   /* Video Channel Button */
   gw->video_chan_button = gtk_toggle_button_new ();
 
-  image = gtk_image_new_from_stock (GM_STOCK_QUICKCAM,
+  image = gtk_image_new_from_stock (GM_STOCK_VIDEO_MUTE,
 				    GTK_ICON_SIZE_MENU);
   gtk_container_add (GTK_CONTAINER (gw->video_chan_button), 
 		     GTK_WIDGET (image));

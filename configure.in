@@ -290,9 +290,69 @@ else
         AC_MSG_ERROR([You need OpenSSL to enjoy GnomeMeeting])
 fi
 
+dnl ###########################################################################
+dnl LDAP Checks                                                                
+dnl ###########################################################################
+AC_ARG_WITH(openldap-includes, [  --with-ldap-includes=PFX   Location of OpenLDAP includes.], with_openldap_includes="$withval", with_openldap_includes="/usr/include")
+                                                                               
+have_openldap_includes="no"                                                    
+                                                                               
+if test "x${with_openldap_includes}" != "xno" ; then                           
+        CPPFLAGS_save="$CPPFLAGS"                                              
+        AC_MSG_CHECKING(for OpenLDAP includes)                                 
+        AC_MSG_RESULT()                                                        
+                                                                               
+        CPPFLAGS="$CPPFLAGS -I${with_openldap_includes}"                       
+                                                                               
+        AC_CHECK_HEADER(ldap.h, [ openldap_includes="yes" ])                   
+                                                                               
+        CPPFLAGS="$CPPFLAGS_save"                                              
 
-GNOMEMEETING_INCLUDES="$GNOMEMEETING_CFLAGS $PTLIB_CFLAGS $OPENH323_CFLAGS $OPENSSL_CFLAGS $H323_CFLAGS $SDL_CFLAGS $ARTSC_CFLAGS"
-GNOMEMEETING_LDADD="$PTLIB_LDFLAGS $OPENH323_LDFLAGS $OPENSSL_LDFLAGS $GNOMEMEETING_LIBS $SDL_LDFLAGS $ARTSC_LDFLAGS $H323_LIBS"
+        if test "x${openldap_includes}" != "xno" -a "x${openldap_includes}" != "x"; then
+                have_openldap_includes="yes"                                   
+                LDAP_INCLUDES="-I${with_openldap_includes}"                    
+        else                                                                   
+                AC_MSG_ERROR([You need OpenLDAP's header files to build GnomeMeeting])
+        fi                                                                     
+else                                                                           
+        AC_MSG_ERROR([You need OpenLDAP's header files to build GnomeMeeting]) 
+fi                                                                             
+                                                                               
+                                                                              
+                                                                               
+AC_ARG_WITH(openldap-libs, [  --with-openldap-libs=PFX       Location of OpenLDAP libs.], with_openldap_libs="$withval", with_openldap_libs="/usr/lib")
+                                                                               
+msg_openldap="no"                                                              
+                                                                               
+if test "x${with_openldap_libs}" != "xno" -a "x${have_openldap_includes}" != "xno"; then
+        AC_CHECK_FILE(${with_openldap_libs}/libldap.so, openldap_libs="yes", openldap_libs="no")
+
+        if test "x${openldap_libs}" != "xno"; then                             
+                msg_openldap="yes"                                             
+                LDAP_LIBS="-L${with_openldap_libs} -lldap -llber -lresolv ${LDAP_LIBS}"
+        else                                                                   
+                AC_MSG_ERROR([You need OpenLDAP to enjoy GnomeMeeting])        
+        fi                                                                     
+else                                                                           
+        AC_MSG_ERROR([You need OpenLDAP to enjoy GnomeMeeting])                
+fi                                                                             
+
+
+dnl #########################################################################  
+dnl  Check for LDAP if available.                                              
+dnl ########################################################################   
+AC_CHECK_LIB(resolv, res_gethostbyaddr, [LIBS="-lresolv $LIBS"], AC_MSG_ERROR([*** libresolv not found.]), -lresolv)
+                                                                               
+LIBS="$LDAP_LIBS $LIBS"                                                        
+                                                                               
+AC_CHECK_LIB(ldap, ldap_simple_bind, LIBS="$LDAP_LIBS $LIBS", AC_MSG_ERROR([***
+LDAP library is not found.]), -llber)
+
+
+
+
+GNOMEMEETING_INCLUDES="$GNOMEMEETING_CFLAGS $PTLIB_CFLAGS $LDAP_INCLUDES $OPENH323_CFLAGS $OPENSSL_CFLAGS $H323_CFLAGS $SDL_CFLAGS $ARTSC_CFLAGS"
+GNOMEMEETING_LDADD="$PTLIB_LDFLAGS $OPENH323_LDFLAGS $OPENSSL_LDFLAGS $GNOMEMEETING_LIBS $LDAP_LIBS $SDL_LDFLAGS $ARTSC_LDFLAGS $H323_LIBS"
 CFLAGS=""
 
 CXXFLAGS="-O3 $ORBIT_CFLAGS"

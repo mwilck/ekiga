@@ -38,7 +38,7 @@ G_BEGIN_DECLS
 #define GM_STOCK_VOLUME           "gm_volume_stock"
 #define GM_STOCK_MICROPHONE       "gm_microphone_stock"
 #define GM_STOCK_SPEAKER_PHONE    "gm_speaker_phone_stock"
-#define GM_STOCK_QUICKCAM         "gm_quickcam_stock"
+#define GM_STOCK_VIDEO_MUTE       "gm_video_mute_stock"
 #define GM_STOCK_STATUS_AVAILABLE "gm_status_available_stock"
 #define GM_STOCK_STATUS_OCCUPIED  "gm_status_busy_stock"
 #define GM_STOCK_STATUS_RINGING   "gm_status_ringing_stock"

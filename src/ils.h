@@ -36,7 +36,7 @@
 #include <glib.h>
 #include <sys/socket.h>
 #include <ptlib.h>
-#include <ldapapi.h>
+#include <ldap.h>
 
 #include <gconf/gconf-client.h>
 

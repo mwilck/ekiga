@@ -1,7 +1,7 @@
 noinst_LTLIBRARIES = libxdap.la
 
 libxdap_la_SOURCES =					\
-	xdap.cpp					\
+	xdap.c						\
 	xdap.h					
 
 INCLUDES =						\

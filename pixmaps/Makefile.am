@@ -4,20 +4,6 @@ pixmapdir = $(datadir)/pixmaps
 
 pixmap_DATA = gnomemeeting-logo-icon.png gnomemeeting-logo.png gnomemeeting-splash.png Lumi.png
 
-IMAGE_FILES = \
-	ils-directory.png \
-	text-chat.png \
-	control-panel.png \
-	connect.png \
-	disconnect.png \
-	volume.png \
-	microphone.png \
-	video-preview.png \
-	audio-mute.png \
-	speaker-phone.png \
-	status-available-16.png	\
-	status-ringing-16.png	\
-	status-occupied-16.png
 
 EMOTICONS_FILES = \
 	emoticon-face1.png \
@@ -43,7 +29,7 @@ IMAGES= \
 	gm_video_preview_stock_data video-preview.png \
 	gm_audio_mute_stock_data audio-mute.png \
 	gm_speaker_phone_stock_data speaker-phone.png \
-	gm_quickcam_stock_data quickcam.xpm \
+	gm_video_mute_stock_data video-mute.png \
 	gm_status_available_stock_data status-available-16.png \
 	gm_status_ringing_stock_data status-ringing-16.png \
 	gm_status_occupied_stock_data status-occupied-16.png 

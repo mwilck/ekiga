@@ -30,7 +30,7 @@
 	
 #include <sys/time.h>
 #include <ptlib.h>
-#include <ldapapi.h>
+#include <ldap.h>
 
 #include "../config.h"
 

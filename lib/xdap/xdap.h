@@ -16,9 +16,8 @@
 #include <errno.h>
 
 #include <libxml/parser.h>
-//#include <lber.h>
-#include <ptlib.h>
-#include <ldapapi.h>
+#include <lber.h>
+#include <ldap.h>
 
 #include <glib.h>
 #include <unistd.h>
@@ -96,12 +95,6 @@ int dbgmask;			/* Debug mask */
 /* Hacks */
 #define MAXATTRS 200
 #define MAXOPS 20
-
-/* Missing in ldapapi.h from OpenH323 */
-typedef long ber_tag_t;
-#define LDAP_AUTH_KRBV4		((ber_tag_t) 0xffU)	
-#define LDAP_AUTH_KRBV41	((ber_tag_t) 0x81U)	
-#define LDAP_AUTH_KRBV42	((ber_tag_t) 0x82U)	
 
 
 xmlDocPtr parseonly (char *, xmlEntityPtr (*)(void *, const xmlChar *),
