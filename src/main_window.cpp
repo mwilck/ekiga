@@ -1671,7 +1671,12 @@ int main (int argc, char ** argv, char ** envp)
 #else
   gtk_init (NULL, NULL);
 #endif
-    
+
+
+  /* Init libxml, could add an XDAP function for that: FIX ME */
+  xmlInitParser ();
+
+  
 #ifndef DISABLE_GNOME
   /* Cope with command line options */
   static struct poptOption arguments[] =
