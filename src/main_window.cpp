@@ -240,9 +240,15 @@ void gnomemeeting_init (GM_window_widgets *gw,
   } 
 
   /* Gnome Initialisation */
-  gnome_init_with_popt_table (PACKAGE, VERSION, argc, argv,
-				    arguments, 0, NULL);
+  gnome_program_init ("GnomeMeeting", VERSION,
+		      LIBGNOMEUI_MODULE, argc, argv,
+		      GNOME_PARAM_POPT_TABLE, arguments,	    
+		      GNOME_PARAM_HUMAN_READABLE_NAME,
+		      _("The GNOME text editor"),
+		      GNOME_PARAM_APP_DATADIR, DATADIR,
+		      NULL);
 
+  cout << "main_window.cpp:251, FIX ME not needed" << endl << flush;
   gm = gnome_app_new ("gnomemeeting", _("GnomeMeeting"));
   gtk_window_set_policy (GTK_WINDOW (gm), FALSE, FALSE, TRUE);
 

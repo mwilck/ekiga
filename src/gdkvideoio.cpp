@@ -103,6 +103,7 @@ void GDKVideoOutputDevice::SetCurrentDisplay (int choice)
 
 BOOL GDKVideoOutputDevice::Redraw (const void * frame)
 {
+  GdkPixbuf *tmp = NULL;
   GdkPixbuf *src_pic = NULL;
   GdkPixbuf *zoomed_pic = NULL;
   GtkRequisition size_request;
@@ -132,10 +133,13 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
 
   /* The real size picture */
 
-  src_pic =  
+  tmp =  
     gdk_pixbuf_new_from_data ((const guchar *) buffer,
 			      GDK_COLORSPACE_RGB, FALSE, 8, frameWidth,
 			      frameHeight, frameWidth * 3, NULL, NULL);
+
+  src_pic = gdk_pixbuf_copy (tmp);
+  g_object_unref (tmp);
 
   /* The zoomed picture */
   if (gw->zoom != 1) {
