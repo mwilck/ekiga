@@ -246,7 +246,7 @@ gnomemeeting_text_chat_call_start_notification (GtkWidget *chat_window)
   // prepare the message
   chat = (GmTextChat *)g_object_get_data (G_OBJECT (chat_window), "GMObject");
   if (chat->begin_msg) g_free (chat->begin_msg); // shouldn't happen...
-  chat->begin_msg = g_strdup_printf ("---- Call begins at %s\n", time_str);
+  chat->begin_msg = g_strdup_printf (_("---- Call begins at %s\n"), time_str);
 
   // we are ready to trigger the message display
   chat->something_typed = FALSE;
@@ -281,7 +281,7 @@ gnomemeeting_text_chat_call_stop_notification (GtkWidget *chat_window)
     strftime(time_str, 20, "%H:%M:%S", localtime (timeptr));
     
     // prepare the message to be displayed
-    text = g_strdup_printf ("---- Call ends at %s\n", time_str);
+    text = g_strdup_printf (_("---- Call ends at %s\n"), time_str);
     
     // displays the message
     chat = (GmTextChat *)g_object_get_data (G_OBJECT (chat_window), 
