@@ -703,16 +703,16 @@ gnomemeeting_pref_window_add_update_button (GtkWidget *table,
 					    int row, int col)
 {
   GtkWidget *button = NULL;                                                    
-
   GmPrefWindow *pw = NULL;                                           
-                                                                               
+
+  
   pw = gnomemeeting_get_pref_window (gm);                                      
-                                                                               
+
   button = gtk_button_new_from_stock (stock_id);
-                                                                               
-  gtk_table_attach (GTK_TABLE (table),  button, col, col+1, row, row+1,        
-                    (GtkAttachOptions) (GTK_EXPAND),                           
-                    (GtkAttachOptions) (GTK_EXPAND),                           
+
+  gtk_table_attach (GTK_TABLE (table),  button, col, col+1, row, row+1,
+                    (GtkAttachOptions) (NULL),                           
+                    (GtkAttachOptions) (NULL),                           
                     GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);           
                                                                                
   g_signal_connect (G_OBJECT (button), "clicked",                          
@@ -1062,7 +1062,7 @@ gnomemeeting_init_pref_window_audio_devices (GtkWidget *notebook)
   /* Packing widgets for the XDAP directory */
   vbox = gtk_vbox_new (FALSE, 4);
   gtk_notebook_append_page (GTK_NOTEBOOK(notebook), vbox, NULL);
-  table = gnomemeeting_vbox_add_table (vbox, _("Audio Devices"), 4, 2);
+  table = gnomemeeting_vbox_add_table (vbox, _("Audio Devices"), 5, 3);
                                                                                
   /* Add all the fields */
   /* The player */
@@ -1077,23 +1077,23 @@ gnomemeeting_init_pref_window_audio_devices (GtkWidget *notebook)
     gnomemeeting_table_add_pstring_option_menu (table, _("Recording device:"), gw->audio_recorder_devices, DEVICES_KEY "audio_recorder", _("Select the audio recorder device to use."), 2);
 
   pw->audio_recorder_mixer = 
-    gnomemeeting_table_add_pstring_option_menu (table, _("Recording mixer:"), gw->audio_mixers, DEVICES_KEY "audio_recorder_mixer", _("Select the mixer to use to change the volume of the audio recorder."), 4);
+    gnomemeeting_table_add_pstring_option_menu (table, _("Recording mixer:"), gw->audio_mixers, DEVICES_KEY "audio_recorder_mixer", _("Select the mixer to use to change the volume of the audio recorder."), 3);
 
-
+  /* That button will refresh the devices list */
+  gnomemeeting_pref_window_add_update_button (table, GTK_STOCK_REFRESH, GTK_SIGNAL_FUNC (refresh_devices), _("Click here to refresh the devices list."), 4, 2);
+  
 #ifdef HAS_IXJ
   /* The Quicknet devices related options */
-  table = gnomemeeting_vbox_add_table (vbox, _("Quicknet Device"), 3, 3);
+  table = gnomemeeting_vbox_add_table (vbox, _("Quicknet Device"), 2, 2);
 
   pw->lid_aec =
-    gnomemeeting_table_add_int_option_menu (table, _("Automatic echo _cancellation:"), aec, DEVICES_KEY "lid_aec", _("The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic Gain Compensation. Choosing Automatic Gain Compensation modulates the volume for best quality."), 0);
+    gnomemeeting_table_add_int_option_menu (table, _("Echo _cancellation:"), aec, DEVICES_KEY "lid_aec", _("The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic Gain Compensation. Choosing Automatic Gain Compensation modulates the volume for best quality."), 0);
 
   pw->lid_country =
     gnomemeeting_table_add_entry (table, _("Country _code:"), DEVICES_KEY "lid_country", _("The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)."), 1, false);
+  gtk_entry_set_max_length (GTK_ENTRY (pw->lid_country), 2);
+  gtk_widget_set_size_request (GTK_WIDGET (pw->lid_country), 100, -1);  
 #endif
-
-
-  /* That button will refresh the devices list */
-    gnomemeeting_pref_window_add_update_button (table, GTK_STOCK_REFRESH, GTK_SIGNAL_FUNC (refresh_devices), _("Click here to refresh the devices list."), 3, 2);
 }
 
 
