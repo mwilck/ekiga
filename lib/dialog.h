@@ -65,10 +65,10 @@ G_BEGIN_DECLS
  *
  * This function only works in the current session.
  **/
-void gnomemeeting_warning_dialog_on_widget (GtkWindow *, 
-                                            GtkWidget *,
-					    const char *,
-                                            const char *, ...);
+GtkWidget *gnomemeeting_warning_dialog_on_widget (GtkWindow *, 
+						  GtkWidget *,
+						  const char *,
+						  const char *, ...);
 
 
 /**
@@ -78,8 +78,10 @@ void gnomemeeting_warning_dialog_on_widget (GtkWindow *,
  *
  * Constructs and shows an error dialog.
  **/
-void gnomemeeting_error_dialog   (GtkWindow *parent, const char *,
-				  const char *format, ...);
+GtkWidget *gnomemeeting_error_dialog (GtkWindow *parent,
+				      const char *,
+				      const char *format,
+				      ...);
 
 
 /**
@@ -89,8 +91,10 @@ void gnomemeeting_error_dialog   (GtkWindow *parent, const char *,
  *
  * Constructs and shows a warning dialog.
  **/
-void gnomemeeting_warning_dialog (GtkWindow *parent, const char *,
-				  const char *format, ...);
+GtkWidget *gnomemeeting_warning_dialog (GtkWindow *parent,
+					const char *,
+					const char *format,
+					...);
 
 
 /**
@@ -100,8 +104,10 @@ void gnomemeeting_warning_dialog (GtkWindow *parent, const char *,
  *
  * Constructs and shows a message dialog.
  **/
-void gnomemeeting_message_dialog (GtkWindow *parent, const char *,
-				  const char *format, ...);
+GtkWidget *gnomemeeting_message_dialog (GtkWindow *parent,
+					const char *,
+					const char *format,
+					...);
 
 G_END_DECLS
 

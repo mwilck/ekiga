@@ -181,11 +181,6 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
 				FALSE);
 
 
-  /**/
-  gconf_client_set_int (client, GENERAL_KEY "version", 
-			MAJOR_VERSION * 100 + MINOR_VERSION, 0);
-
-
   /* Connection type */
   group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (dw->kind_of_net));
   while (group) {

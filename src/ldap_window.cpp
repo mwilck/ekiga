@@ -2199,7 +2199,8 @@ gnomemeeting_init_ldap_window ()
  *                 GmLdapWindowPage contains a Mutex released when the server
  *                 corresponding to that page has been browsed. Another
  *                 function must use it to ensure that the browse is terminated
- *                 before this function is called.
+ *                 before this function is called, you can use
+ *                 void gnomemeeting_ldap_window_destroy_notebook_pages ();
  *
  */
 static void
@@ -2208,9 +2209,33 @@ notebook_page_destroy (gpointer data)
   GmLdapWindowPage *lwp = (GmLdapWindowPage *) data;
 
   if (data) {
-    
+
     g_free (lwp->contact_section_name);
     delete (lwp);
+  }
+}
+
+
+void gnomemeeting_ldap_window_destroy_notebook_pages ()
+{
+  GmLdapWindow *lw = NULL;
+  GmLdapWindowPage *lwp = NULL;
+  GtkWidget *page = NULL;
+  int i = 0;
+
+  lw = gnomemeeting_get_ldap_window (gm);
+  
+  while ((page =
+	  gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), i))) {
+
+    lwp = gnomemeeting_get_ldap_window_page (page);
+    if (lwp) {
+
+      lwp->search_quit_mutex.Wait ();
+      gtk_widget_destroy (page);
+    }
+    
+    i++;
   }
 }
 

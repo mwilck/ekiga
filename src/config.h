@@ -51,10 +51,19 @@
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  This function inits all the notifiers
- *                 that GnomeMeeting uses.
+ *                 that GnomeMeeting uses. It also checks that there the
+ *                 keys are coherent. If not, it returns FALSE.
  * PRE          :  /
  */
-void gnomemeeting_init_gconf (GConfClient *);
+gboolean gnomemeeting_init_gconf (GConfClient *);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  This function updates the GConf keys from version
+ *                 to version.
+ * PRE          :  /
+ */
+void gnomemeeting_gconf_upgrade ();
 
 
 /* DESCRIPTION  :  This function is called when an entry changes.
@@ -62,7 +71,8 @@ void gnomemeeting_init_gconf (GConfClient *);
  *                 entry.  
  * PRE          :  Non-Null data corresponding to the gconf key to modify.
  */
-void entry_changed (GtkEditable  *, gpointer);
+void entry_changed (GtkEditable  *,
+		    gpointer);
 
 
 /* DESCRIPTION  :  This function is called when an adjustment changes.
@@ -70,7 +80,8 @@ void entry_changed (GtkEditable  *, gpointer);
  *                 adjustment.  
  * PRE          :  Non-Null data corresponding to the gconf key to modify.
  */
-void adjustment_changed (GtkAdjustment *, gpointer);
+void adjustment_changed (GtkAdjustment *,
+			 gpointer);
 
 
 /* DESCRIPTION  :  This function is called when a toggle changes.
@@ -78,7 +89,8 @@ void adjustment_changed (GtkAdjustment *, gpointer);
  *                 toggle.  
  * PRE          :  Non-Null data corresponding to the gconf key to modify.
  */
-void toggle_changed (GtkCheckButton *, gpointer);
+void toggle_changed (GtkCheckButton *,
+		     gpointer);
 
 
 /* DESCRIPTION  :  This function is called when an int option menu changes.
@@ -86,7 +98,8 @@ void toggle_changed (GtkCheckButton *, gpointer);
  *                 int option menu.  
  * PRE          :  Non-Null data corresponding to the gconf key to modify.
  */
-void int_option_menu_changed (GtkWidget *, gpointer);
+void int_option_menu_changed (GtkWidget *,
+			      gpointer);
 
 
 /* DESCRIPTION  :  This function is called when a string option menu changes.
@@ -94,6 +107,7 @@ void int_option_menu_changed (GtkWidget *, gpointer);
  *                 string option menu.  
  * PRE          :  Non-Null data corresponding to the gconf key to modify.
  */
-void string_option_menu_changed (GtkWidget *, gpointer);
+void string_option_menu_changed (GtkWidget *,
+				 gpointer);
 
 #endif

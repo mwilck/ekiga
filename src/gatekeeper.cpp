@@ -212,14 +212,14 @@ void GMH323Gatekeeper::Main ()
 	  msg = g_strdup (_("There was a transport error."));
 	  break;
 	default :
-	  msg = g_strdup (_("Unknown reason. Please run GnomeMeeting with the --debug parameter to find out more about the problem."));
+	  msg = g_strdup (_("No gatekeeper corresponding to your options has been found."));
 	  break;
 	}
       }
       else
-	msg = g_strdup (_("Unknown reason. Please run GnomeMeeting with the --debug parameter to find out more about the problem."));
+	msg = g_strdup (_("No gatekeeper corresponding to your options has been found."));
 
-      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Error while registering with gatekeeper."), msg);
+      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Error while registering with gatekeeper"), msg);
       gnomemeeting_log_insert (gw->history_text_view, msg);
     }
     

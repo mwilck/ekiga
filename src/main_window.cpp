@@ -66,7 +66,6 @@
 #include <bonobo/bonobo-listener.h>
 #endif
 
-#include <signal.h>
 #include <stdlib.h>
 
 #ifndef WIN32
@@ -1029,7 +1028,10 @@ gnomemeeting_init (GmWindow *gw,
 {
   GMH323EndPoint *endpoint = NULL;
   bool show_splash = TRUE;
+  
   GConfClient *client = NULL;
+
+  GtkWidget *dialog = NULL;
   GtkAccelGroup *accel = NULL;
 
   static GtkTargetEntry dnd_targets [] =
@@ -1038,130 +1040,23 @@ gnomemeeting_init (GmWindow *gw,
   };
 
 
-#ifndef WIN32
-#if !defined(HAS_ESD)
-  /* If we are not using ESD (ie we are using OSS or ALSA, then
-     prevent ESD from spawning */
-  setenv ("ESD_NO_SPAWN", "1", 1);
-#endif
-
-  /* Ignore SIGPIPE */
-  signal (SIGPIPE, SIG_IGN);
-#endif
-  
-  
-#ifndef DISABLE_GNOME
-  /* Cope with command line options */
-  static struct poptOption arguments[] =
-    {
-      {"debug", 'd', POPT_ARG_INT, &clo->debug_level, 
-       1, N_("Prints debug messages in the console (level between 1 and 6)"), 
-       NULL},
-      {"call", 'c', POPT_ARG_STRING, &clo->url,
-       1, N_("Makes GnomeMeeting call the given given URL"), NULL},
-      {NULL, '\0', 0, NULL, 0, NULL, NULL}
-    };
-
-
-  /* GnomeMeeting Initialisation */
-  gnome_program_init ("gnomemeeting", VERSION,
-		      LIBGNOMEUI_MODULE, argc, argv,
-		      GNOME_PARAM_POPT_TABLE, arguments,
-		      GNOME_PARAM_HUMAN_READABLE_NAME,
-		      "gnomemeeting",
-		      GNOME_PARAM_APP_DATADIR, DATADIR,
-		      (void *)NULL);
-  gm = gnome_app_new ("gnomemeeting", NULL);
-#else
-#ifndef WIN32
-  gtk_init (&argc, &argv);
-#else
-  gtk_init (NULL, NULL);
-#endif
-  gm = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-#endif 
-
-  gtk_window_set_title (GTK_WINDOW (gm), _("GnomeMeeting"));
-  GdkPixbuf *pixbuf_icon = 
-    gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES "/gnomemeeting-logo-icon.png", NULL); 
-
-  gtk_window_set_icon (GTK_WINDOW (gm), pixbuf_icon);
-  g_object_unref (G_OBJECT (pixbuf_icon));
-  gtk_window_set_resizable (GTK_WINDOW (gm), false);
 
 
   /* The factory */
 #ifndef DISABLE_GNOME
-  if (gnomemeeting_invoke_factory (argc, argv)) {
-
-    delete (gw);
-    delete (lw);
-    delete (pw);
-    delete (rtp);
-    delete (chat);
+  if (gnomemeeting_invoke_factory (argc, argv))
     exit (1);
-  }
 #endif
 
 
   /* Some little gconf stuff */  
   client = gconf_client_get_default ();
-#ifndef DISABLE_GCONF
-  gconf_client_add_dir (client, "/apps/gnomemeeting",
-			GCONF_CLIENT_PRELOAD_RECURSIVE, 0);
-#endif
-  int gconf_test = -1;
-
-#ifndef WIN32
-  gconf_test = gconf_client_get_int (client, GENERAL_KEY "gconf_test_age", 
-				     NULL);
-  
-  if (gconf_test != SCHEMA_AGE)  {
-
-    /* We can't use gnomemeeting_error_dialog here, cause we need the
-       dialog_run and dialog_run can't be used in gnomemeeting_error_dialog
-       because it doesn't work in threads */
-    gchar *buffer = g_strdup_printf (_("GnomeMeeting got %d for the GConf key \"/apps/gnomemeeting/gconf_test_age\", but %d was expected.\n\nThat key represents the revision of GnomeMeeting setting. If it doesn't correspond to the expected value, it means that your GConf schemas have not been correctly installed or the that permissions are not correct.\n\nPlease check the FAQ (http://www.gnomemeeting.org/faq.php), the throubleshoot section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org).\n\nUsing 'gnomemeeting-config-tool' could help you to fix this problem."), gconf_test, SCHEMA_AGE);
-    GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (gm),  
-						GTK_DIALOG_DESTROY_WITH_PARENT,
-						GTK_MESSAGE_ERROR,
-						GTK_BUTTONS_OK,
-						buffer);
-
-    gtk_dialog_run (GTK_DIALOG (dialog));
-
-    g_free (buffer);
-
-    delete (gw);
-    delete (lw);
-    delete (dw);
-    delete (pw);
-    delete (rtp);
-    delete (chat);
-    exit (-1);
-  }
-#endif
-  
-
-  /* Detect the devices */
-  gw->audio_player_devices = gnomemeeting_get_audio_player_devices ();
-  gw->audio_recorder_devices = gnomemeeting_get_audio_recorder_devices ();
-  gw->video_devices = PVideoInputDevice::GetInputDeviceNames ();
-#ifdef TRY_1394DC
-  gw->video_devices += PVideoInput1394DcDevice::GetInputDeviceNames();
-#endif
-#ifdef TRY_1394AVC
-  gw->video_devices += PVideoInput1394AvcDevice::GetInputDeviceNames();
-#endif
-
-  gw->audio_mixers = gnomemeeting_get_mixers ();
-
+      
+  /*
   if (gw->audio_player_devices.GetSize () == 0 
       || gw->audio_recorder_devices.GetSize () ==0)  {
 
-    /* We can't use gnomemeeting_error_dialog here, cause we need the
-       dialog_run and dialog_run can't be used in gnomemeeting_error_dialog
-       because it doesn't work in threads */
+
     gchar *buffer = g_strdup_printf (_("GnomeMeeting can't be used without audio devices. Please install a soundcard or a Quicknet card."));
     GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (gm),  
 						GTK_DIALOG_DESTROY_WITH_PARENT,
@@ -1173,155 +1068,22 @@ gnomemeeting_init (GmWindow *gw,
 
     g_free (buffer);
 
-    delete (gw);
-    delete (lw);
-    delete (dw);
-    delete (chw);
-    delete (pw);
-    delete (rtp);
-    delete (chat);
- 
     exit (-1);
   }
-
+  */
 
   /* Create the global tooltips */
   gw->tips = gtk_tooltips_new ();
 
 
-  /* New Speex Audio codec in 0.95 (all Unix versions of 0.95 will have it)
-     Also enable Fast Start and enable Tunneling */
-  if (gconf_client_get_int (client, GENERAL_KEY "version", NULL) < 95) {
-
-    GSList *list = NULL;
-
-    list = g_slist_append (list, (void *) "SpeexNarrow-8k=1");
-    list = g_slist_append (list, (void *) "MS-GSM=1");
-    list = g_slist_append (list, (void *) "SpeexNarrow-15k=1");
-    list = g_slist_append (list, (void *) "GSM-06.10=1");
-    list = g_slist_append (list, (void *) "G.726-32k=1");
-    list = g_slist_append (list, (void *) "G.711-uLaw-64k=1");
-    list = g_slist_append (list, (void *) "G.711-ALaw-64k=1");
-    list = g_slist_append (list, (void *) "LPC-10=1");
-    list = g_slist_append (list, (void *) "G.723.1=1");
-    gconf_client_set_list (GCONF_CLIENT (client),
-			   "/apps/gnomemeeting/audio_codecs/codecs_list", 
-			   GCONF_VALUE_STRING, list, NULL);
-
-    g_slist_free (list);
-
-    gconf_client_set_bool (client, GENERAL_KEY "fast_start", false, NULL);
-    gconf_client_set_bool (client, GENERAL_KEY "h245_tunneling", true, NULL);
-  }
-
-  cout << "FIX ME" << endl << flush;
-  /* With 0.97, we convert to the new addressbook format */
-  if (gconf_client_get_int (client, GENERAL_KEY "version", NULL) < 97) {
-
-    gchar *group_name = NULL;
-    gchar *group_content_gconf_key = NULL;
-    gchar *new_group_content_gconf_key = NULL;
-
-    GSList *group_content = NULL;
-    GSList *group_content_iter = NULL;
-
-    GSList *new_group_content = NULL;
-
-    GSList *groups = NULL;
-    GSList *groups_iter = NULL;
-  
-    groups =
-      gconf_client_get_list (client, CONTACTS_KEY "groups_list",
-			     GCONF_VALUE_STRING, NULL);
-    groups_iter = groups;
-  
-    while (groups_iter && groups_iter->data) {
-    
-      group_name = g_utf8_strdown ((char *) groups_iter->data, -1);
-      group_content_gconf_key =
-	g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY,
-			 (char *) groups_iter->data);
-      new_group_content_gconf_key =
-	g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, group_name);
-	
-      group_content =
-	gconf_client_get_list (client, group_content_gconf_key,
-			       GCONF_VALUE_STRING, NULL);
-      group_content_iter = group_content;
-	
-      while (group_content_iter && group_content_iter->data) {
-
-	new_group_content =
-	  g_slist_append (new_group_content, group_content_iter->data);
-	  
-	group_content_iter = g_slist_next (group_content_iter);
-      }
-
-      gconf_client_set_list (client, new_group_content_gconf_key,
-			     GCONF_VALUE_STRING, new_group_content, NULL);
-      gconf_client_remove_dir (client, "/apps/gnomemeeting", 0);
-      gconf_client_unset (client, group_content_gconf_key, NULL);
-      gconf_client_add_dir (client, "/apps/gnomemeeting",
-			    GCONF_CLIENT_PRELOAD_RECURSIVE, 0);
-      g_free (group_content_gconf_key);
-      g_free (new_group_content_gconf_key);
-      g_free (group_name);
-      g_slist_free (group_content);
-      g_slist_free (new_group_content);
-      new_group_content = NULL;
-      groups_iter = g_slist_next (groups_iter);
-    }
-      
-    g_slist_free (groups);
-  }
-
-  
-  /* Install the URL Handlers */
-  gchar *gconf_url = 
-    gconf_client_get_string (client, 
-			     "/desktop/gnome/url-handlers/callto/command", 0);
-					       
-  if (!gconf_url) {
-    
-    gconf_client_set_string (client,
-			     "/desktop/gnome/url-handlers/callto/command", 
-			     "gnomemeeting -c \"%s\"", NULL);
-    gconf_client_set_bool (client,
-			   "/desktop/gnome/url-handlers/callto/need-terminal", 
-			   false, NULL);
-    gconf_client_set_bool (client,
-			   "/desktop/gnome/url-handlers/callto/enabled", 
-			   true, NULL);
-  }
-  g_free (gconf_url);
-
-  gconf_url = 
-    gconf_client_get_string (client, 
-			     "/desktop/gnome/url-handlers/h323/command", 0);
-					       
-  if (!gconf_url) {
-    
-    gconf_client_set_string (client,
-			     "/desktop/gnome/url-handlers/h323/command", 
-			     "gnomemeeting -c \"%s\"", NULL);
-    gconf_client_set_bool (client,
-			   "/desktop/gnome/url-handlers/h323/need-terminal", 
-			   false, NULL);
-    gconf_client_set_bool (client,
-			   "/desktop/gnome/url-handlers/h323/enabled", 
-			   true, NULL);
-  }
-  g_free (gconf_url);
-
-
   /* We store all the pointers to the structure as data of gm */
-  g_object_set_data (G_OBJECT (gm), "gw", gw);
-  g_object_set_data (G_OBJECT (gm), "lw", lw);
-  g_object_set_data (G_OBJECT (gm), "dw", dw);
-  g_object_set_data (G_OBJECT (gm), "chw", chw);
-  g_object_set_data (G_OBJECT (gm), "pw", pw);
-  g_object_set_data (G_OBJECT (gm), "chat", chat);
-  g_object_set_data (G_OBJECT (gm), "rtp", rtp);
+  g_object_set_data_full (G_OBJECT (gm), "gw", gw, free);
+  g_object_set_data_full (G_OBJECT (gm), "lw", lw, free);
+  g_object_set_data_full (G_OBJECT (gm), "dw", dw, free);
+  g_object_set_data_full (G_OBJECT (gm), "chw", chw, free);
+  g_object_set_data_full (G_OBJECT (gm), "pw", pw, free);
+  g_object_set_data_full (G_OBJECT (gm), "chat", chat, free);
+  g_object_set_data_full (G_OBJECT (gm), "rtp", rtp, free);
 
 
   /* Startup Process */
@@ -1346,15 +1108,19 @@ gnomemeeting_init (GmWindow *gw,
     while (gtk_events_pending ())
       gtk_main_iteration ();
   }
-  
-  gnomemeeting_sound_daemons_suspend ();
 
-  /* Build the interface */
   gnomemeeting_init_history_window ();
+  
+  //  static GnomeMeeting instance;
+  MyApp = new GnomeMeeting ();
+  endpoint = MyApp->Endpoint ();
+  /* Build the interface */
+
   gnomemeeting_init_calls_history_window ();  
   gnomemeeting_init_pref_window ();  
   gnomemeeting_init_ldap_window ();
-  gnomemeeting_init_druid ();
+  gnomemeeting_init_druid ();  
+
   /* Init the tray icon. This has to be done after the prefs 
      and xdap window are set up */
 #ifndef WIN32
@@ -1365,53 +1131,27 @@ gnomemeeting_init (GmWindow *gw,
 #endif
   gnomemeeting_init_main_window (accel);
 
-  //  static GnomeMeeting instance;
-  MyApp = new GnomeMeeting ();
-  endpoint = MyApp->Endpoint ();
-
-  gnomemeeting_sound_daemons_resume ();
-  gnomemeeting_mixers_mic_select ();
-
-  if (clo->debug_level != 0)
-    PTrace::Initialise (clo->debug_level);
-
-
-  /* Start the video preview */
-  if (gconf_client_get_bool (client, DEVICES_KEY "video_preview", NULL)) {
-
-    MyApp->CreateVideoGrabber ();
-  }
-
-  endpoint->SetUserNameAndAlias ();
-
-  /* Register to gatekeeper */
-  if (gconf_client_get_int (client, GATEKEEPER_KEY "registering_method", 0))
-    endpoint->GatekeeperRegister ();
-
-
-  /* The LDAP part, if needed */
-  if (gconf_client_get_bool (GCONF_CLIENT (client), LDAP_KEY "register", NULL)) 
-  {
-      GMILSClient *gm_ils_client = 
-	GM_ILS_CLIENT (endpoint->GetILSClientThread ());
-      gm_ils_client->Register ();
-  }
   
-  
-  if (!endpoint->StartListener ()) 
-  {
-      gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Error while starting the listener"), _("You will not be able to receive incoming calls. Please check that no other program is already running on the port used by GnomeMeeting."));
-  }
 
-  
   /* Start the Gconf notifiers */
-  gnomemeeting_init_gconf (client);
+  gnomemeeting_gconf_upgrade ();
+    if (!gnomemeeting_init_gconf (client)) {
 
+    dialog = gnomemeeting_error_dialog (NULL, _("Gconf key error"), _("GnomeMeeting got an invalid value for the GConf key \"/apps/gnomemeeting/gconf_test_age\".\n\nIt probably means that your GConf schemas have not been correctly installed or the that permissions are not correct.\n\nPlease check the FAQ (http://www.gnomemeeting.org/faq.php), the throubleshoot section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org) about this problem."));
 
-  /* Init the druid */
+    g_signal_handlers_disconnect_by_func (G_OBJECT (dialog),
+					  G_CALLBACK (gtk_widget_destroy),
+					  G_OBJECT (dialog));
+
+    
+    gtk_dialog_run (GTK_DIALOG (dialog));
+
+    exit (-1);
+  }
+
+    
 #ifdef DISABLE_GNOME
-gconf_client_set_int (client, GENERAL_KEY "version", 
-		      100 * MAJOR_VERSION + MINOR_VERSION, NULL);
+
 #endif 
 #ifndef DISABLE_GNOME
  if (gconf_client_get_int (client, GENERAL_KEY "version", NULL) 
@@ -1436,7 +1176,9 @@ gconf_client_set_int (client, GENERAL_KEY "version",
   }
 #endif
 
-
+ gconf_client_set_int (client, GENERAL_KEY "version", 
+		       100 * MAJOR_VERSION + MINOR_VERSION, NULL);
+ 
   /* Hide the splash */
   if (gw->splash_win)
     gtk_widget_hide (gw->splash_win);
@@ -1447,12 +1189,7 @@ gconf_client_set_int (client, GENERAL_KEY "version",
 		    G_CALLBACK (gm_quit_callback), (gpointer) gw);
 
 
-  /* Add the popup menu and change all menus sensitivity */
-  gnomemeeting_video_submenu_set_sensitive (FALSE, LOCAL_VIDEO);
-  gnomemeeting_video_submenu_set_sensitive (FALSE, REMOTE_VIDEO);
-  gnomemeeting_zoom_submenu_set_sensitive (FALSE);
-  gnomemeeting_fullscreen_option_set_sensitive (FALSE);
-
+ 
 
   /* Init the Drag and drop features */
   gtk_drag_dest_set (GTK_WIDGET (gm), GTK_DEST_DEFAULT_ALL,
@@ -1480,11 +1217,11 @@ gconf_client_set_int (client, GENERAL_KEY "version",
  **/
 void gnomemeeting_init_main_window (GtkAccelGroup *accel)
 { 
-  GConfClient *client = gconf_client_get_default ();
   GtkWidget *table = NULL;	
   GtkWidget *frame = NULL;
   GtkWidget *vbox = NULL;
   GtkWidget *hbox = NULL;
+  GdkPixbuf *pixbuf_icon = NULL;
 #ifdef DISABLE_GNOME
   GtkWidget *window_vbox = NULL;
   GtkWidget *window_hbox = NULL;
@@ -1496,9 +1233,14 @@ void gnomemeeting_init_main_window (GtkAccelGroup *accel)
   int main_notebook_section = 0;
   int x = GM_QCIF_WIDTH;
   int y = GM_QCIF_HEIGHT;
-  
-  GmWindow *gw = gnomemeeting_get_main_window (gm);
 
+  GConfClient *client = NULL;
+  GmWindow *gw = NULL;
+
+  client = gconf_client_get_default ();
+  gw = gnomemeeting_get_main_window (gm);
+
+  
 #ifdef DISABLE_GNOME
   window_vbox = gtk_vbox_new (0, FALSE);
   gtk_container_add (GTK_CONTAINER (gm), window_vbox);
@@ -1561,7 +1303,6 @@ void gnomemeeting_init_main_window (GtkAccelGroup *accel)
   gtk_notebook_popup_enable (GTK_NOTEBOOK (gw->main_notebook));
   gtk_notebook_set_show_tabs (GTK_NOTEBOOK (gw->main_notebook), TRUE);
   gtk_notebook_set_scrollable (GTK_NOTEBOOK (gw->main_notebook), TRUE);
-
 
   gnomemeeting_init_main_window_stats ();
   gnomemeeting_init_main_window_dialpad ();
@@ -1685,6 +1426,22 @@ void gnomemeeting_init_main_window (GtkAccelGroup *accel)
   
   gtk_widget_set_size_request (GTK_WIDGET (gw->main_notebook), 210, -1);
   gtk_widget_set_size_request (GTK_WIDGET (gm), -1, -1);
+
+  
+  /* Add the popup menu and change all menus sensitivity */
+  gnomemeeting_video_submenu_set_sensitive (FALSE, LOCAL_VIDEO);
+  gnomemeeting_video_submenu_set_sensitive (FALSE, REMOTE_VIDEO);
+  gnomemeeting_zoom_submenu_set_sensitive (FALSE);
+  gnomemeeting_fullscreen_option_set_sensitive (FALSE);
+
+
+  /* Add the window icon and title */
+  gtk_window_set_title (GTK_WINDOW (gm), _("GnomeMeeting"));
+  pixbuf_icon = 
+    gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES "/gnomemeeting-logo-icon.png", NULL); 
+  gtk_window_set_icon (GTK_WINDOW (gm), pixbuf_icon);
+  g_object_unref (G_OBJECT (pixbuf_icon));
+  gtk_window_set_resizable (GTK_WINDOW (gm), false);
 
   g_signal_connect_after (G_OBJECT (gw->main_notebook), "switch-page",
 			  G_CALLBACK (main_notebook_page_changed), NULL);
@@ -2095,11 +1852,52 @@ int main (int argc, char ** argv, char ** envp)
   memset (rtp, 0, sizeof (GmRtpData));
   clo = new (GmCommandLineOptions);
   memset (clo, 0, sizeof (GmCommandLineOptions));
+
+#ifndef WIN32
+#if !defined(HAS_ESD)
+  /* If we are not using ESD (ie we are using OSS or ALSA, then
+     prevent ESD from spawning */
+  setenv ("ESD_NO_SPAWN", "1", 1);
+#endif
+#endif
   
+
   /* Threads + Locale Init + Gconf */
   g_thread_init (NULL);
   gdk_threads_init ();
+  
+#ifndef WIN32
+  gtk_init (&argc, &argv);
+#else
+  gtk_init (NULL, NULL);
+#endif
+    
+#ifndef DISABLE_GNOME
+  /* Cope with command line options */
+  static struct poptOption arguments[] =
+    {
+      {"debug", 'd', POPT_ARG_INT, &clo->debug_level, 
+       1, N_("Prints debug messages in the console (level between 1 and 6)"), 
+       NULL},
+      {"call", 'c', POPT_ARG_STRING, &clo->url,
+       1, N_("Makes GnomeMeeting call the given given URL"), NULL},
+      {NULL, '\0', 0, NULL, 0, NULL, NULL}
+    };
 
+
+  /* GnomeMeeting Initialisation */
+  gnome_program_init ("gnomemeeting", VERSION,
+		      LIBGNOMEUI_MODULE, argc, argv,
+		      GNOME_PARAM_POPT_TABLE, arguments,
+		      GNOME_PARAM_HUMAN_READABLE_NAME,
+		      "gnomemeeting",
+		      GNOME_PARAM_APP_DATADIR, DATADIR,
+		      (void *) NULL);
+  gm = gnome_app_new ("gnomemeeting", NULL);
+#else
+  gm = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+#endif 
+  
   gdk_threads_enter ();
   gconf_init (argc, argv, 0);
 
@@ -2135,30 +1933,18 @@ int main (int argc, char ** argv, char ** envp)
   gconf_save_content_to_file ();
 #endif
 
-  
-  GtkWidget *page = NULL;
-  int i = 0;
-  while ((page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), i))) {
-    GmLdapWindowPage *lwp = (GmLdapWindowPage *) g_object_get_data (G_OBJECT (page), "lwp");
-    if (lwp)
-      lwp->search_quit_mutex.Wait ();
 
-    i++;
-  }
-
-  cout << "FIX ME" << endl << flush;
+  /* Not the right place for this but it is a hack for openh323 */
   MyApp->Endpoint ()->ClearAllCalls (H323Connection::EndedByLocalUser, true);
+  gnomemeeting_ldap_window_destroy_notebook_pages ();
   gtk_widget_destroy (gw->ldap_window);
-  delete (MyApp);
-
-  delete (gw);
-  delete (lw);
-  delete (dw);
-  delete (chw);
-  delete (pw);
-  delete (rtp);
-  delete (chat);
-  delete (clo);
+  gtk_widget_destroy (gw->pref_window);
+  gtk_widget_destroy (gw->history_window);
+  gtk_widget_destroy (gw->calls_history_window);
+  gtk_widget_destroy (gm);
+#ifndef DISABLE_GNOME
+  gtk_widget_destroy (gw->druid_window);
+#endif  
 
   return 0;
 }

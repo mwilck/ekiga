@@ -92,6 +92,14 @@ enum {
 void gnomemeeting_init_ldap_window ();
 
 
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Destroy all notebook pages after having wait that the
+ *                 searches are terminated.
+ * PRE          :  /
+ */
+void gnomemeeting_ldap_window_destroy_notebook_pages ();
+
+
 /* DESCRIPTION  :  / 
  * BEHAVIOR     :  Build the notebook inside the LDAP window if the server
  *                 name was not already present. Returns its page number

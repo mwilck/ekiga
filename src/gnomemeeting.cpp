@@ -39,14 +39,18 @@
 #include "../config.h"
 
 #include "gnomemeeting.h"
+#include "sound_handling.h"
+#include "ils.h"
 #include "urlhandler.h"
 #include "main_window.h"
 #include "toolbar.h"
 #include "misc.h"
 #include "history-combo.h"
+#include "dialog.h"
 
 #ifndef WIN32
 #include <esd.h>
+#include <signal.h>
 #endif
 
 
@@ -67,7 +71,8 @@ GnomeMeeting::GnomeMeeting ()
 
   url_handler = NULL;
   video_grabber = NULL;
-  
+
+  client = gconf_client_get_default ();
   gw = gnomemeeting_get_main_window (gm);
   lw = gnomemeeting_get_ldap_window (gm);
 
@@ -75,7 +80,8 @@ GnomeMeeting::GnomeMeeting ()
   MyApp = (this);
 
   vg = new PIntCondMutex (0, 0);
-  
+
+  Init ();
   call_number = 0;
 }
 
@@ -250,7 +256,57 @@ GMH323EndPoint *GnomeMeeting::Endpoint ()
 
 void GnomeMeeting::Main ()
 {
-  /* Nothing interesting here */
+}
+
+
+void GnomeMeeting::Init ()
+{
+#ifndef WIN32
+  /* Ignore SIGPIPE */
+  signal (SIGPIPE, SIG_IGN);
+#endif
+  
+  //  if (clo->debug_level != 0)
+  // PTrace::Initialise (clo->debug_level);
+
+
+  /* Start the video preview */
+  if (gconf_client_get_bool (client, DEVICES_KEY "video_preview", NULL))
+    MyApp->CreateVideoGrabber ();
+
+  endpoint->SetUserNameAndAlias ();
+
+  /* Register to gatekeeper */
+  if (gconf_client_get_int (client, GATEKEEPER_KEY "registering_method", 0))
+    endpoint->GatekeeperRegister ();
+
+  /* The LDAP part, if needed */
+  if (gconf_client_get_bool (GCONF_CLIENT (client), LDAP_KEY "register", NULL)) 
+  {
+      GMILSClient *gm_ils_client = 
+	GM_ILS_CLIENT (endpoint->GetILSClientThread ());
+      gm_ils_client->Register ();
+  }
+  
+  
+  if (!endpoint->StartListener ()) 
+    gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Error while starting the listener"), _("You will not be able to receive incoming calls. Please check that no other program is already running on the port used by GnomeMeeting."));
+
+  gnomemeeting_sound_daemons_suspend ();
+  /* Detect the devices */
+  gw->audio_player_devices = gnomemeeting_get_audio_player_devices ();
+  gw->audio_recorder_devices = gnomemeeting_get_audio_recorder_devices ();
+  gw->video_devices = PVideoInputDevice::GetInputDeviceNames ();
+#ifdef TRY_1394DC
+  gw->video_devices += PVideoInput1394DcDevice::GetInputDeviceNames();
+#endif
+#ifdef TRY_1394AVC
+  gw->video_devices += PVideoInput1394AvcDevice::GetInputDeviceNames();
+#endif
+
+  gw->audio_mixers = gnomemeeting_get_mixers ();
+  gnomemeeting_sound_daemons_resume ();
+  gnomemeeting_mixers_mic_select ();
 }
 
 

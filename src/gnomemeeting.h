@@ -93,6 +93,7 @@ class GnomeMeeting : public PProcess
   /* Needed for PProcess */
   void Main();
 
+  void Init ();
   void CreateVideoGrabber (BOOL = true, BOOL = false);
   
   void RemoveVideoGrabber (BOOL = false);
@@ -108,6 +109,7 @@ class GnomeMeeting : public PProcess
 
  private:
 
+  GConfClient *client;
   GMH323EndPoint *endpoint;
   PThread *url_handler;
   GMVideoGrabber *video_grabber;

@@ -65,13 +65,16 @@ gnomemeeting_calls_history_window_add_call (int i,
   
   switch (i) {
 
-  case 0:
+  case 2:
     list_store = chw->received_calls_list_store;
     break;
   case 1:
     list_store = chw->given_calls_list_store;
     break;
-  case 2:
+  case 0:
+    list_store = chw->missed_calls_list_store;
+    break;
+  case 3:
     list_store = chw->missed_calls_list_store;
     break;    
   }

@@ -1471,7 +1471,7 @@ lid_country_changed_nt (GConfClient *client, guint, GConfEntry *entry,
 
 
 /* The functions  */
-void gnomemeeting_init_gconf (GConfClient *client)
+gboolean gnomemeeting_init_gconf (GConfClient *client)
 {
   GmDruidWindow *dw = gnomemeeting_get_druid_window (gm);
   GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);
@@ -1480,6 +1480,25 @@ void gnomemeeting_init_gconf (GConfClient *client)
 #ifndef WIN32
   MenuEntry *tray_menu = gnomemeeting_get_tray_menu (gm);
 #endif
+  GtkWidget *dialog = NULL;
+  gchar *buffer = NULL;
+  int gconf_test = -1;
+
+  
+#ifndef DISABLE_GCONF
+  gconf_client_add_dir (client, "/apps/gnomemeeting",
+			GCONF_CLIENT_PRELOAD_RECURSIVE, 0);
+#endif
+
+
+#ifndef WIN32
+  gconf_test =
+    gconf_client_get_int (client, GENERAL_KEY "gconf_test_age", NULL);
+  
+  if (gconf_test != SCHEMA_AGE) 
+    return FALSE;
+#endif
+
   
   /* There are in general 2 notifiers to attach to each widget :
      - the notifier that will update the widget itself to the new key
@@ -1742,9 +1761,138 @@ void gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, SERVICES_KEY "enable_microtelco",
 			   microtelco_enabled_nt, NULL, 0, 0);
 #endif
+
+  return TRUE;
 }
 
 
+void gnomemeeting_gconf_upgrade ()
+{
+  gchar *gconf_url = NULL;
+  gchar *group_name = NULL;
+  gchar *group_content_gconf_key = NULL;
+  gchar *new_group_content_gconf_key = NULL;
+  GSList *group_content = NULL;
+  GSList *group_content_iter = NULL;
+  GSList *new_group_content = NULL;
+  GSList *groups = NULL;
+  GSList *groups_iter = NULL;
+  GSList *list = NULL;
+
+  int version = 0;
+  GConfClient *client = NULL;
+
+  client = gconf_client_get_default ();
+  version = gconf_client_get_int (client, GENERAL_KEY "version", NULL);
+  
+  /* New Speex Audio codec in 0.95 (all Unix versions of 0.95 will have it)
+     Also enable Fast Start and enable Tunneling */
+  if (version < 95) {
+
+    list = g_slist_append (list, (void *) "SpeexNarrow-8k=1");
+    list = g_slist_append (list, (void *) "MS-GSM=1");
+    list = g_slist_append (list, (void *) "SpeexNarrow-15k=1");
+    list = g_slist_append (list, (void *) "GSM-06.10=1");
+    list = g_slist_append (list, (void *) "G.726-32k=1");
+    list = g_slist_append (list, (void *) "G.711-uLaw-64k=1");
+    list = g_slist_append (list, (void *) "G.711-ALaw-64k=1");
+    list = g_slist_append (list, (void *) "LPC-10=1");
+    list = g_slist_append (list, (void *) "G.723.1=1");
+    gconf_client_set_list (client, AUDIO_CODECS_KEY "codecs_list", 
+			   GCONF_VALUE_STRING, list, NULL);
+
+    g_slist_free (list);
+
+    gconf_client_set_bool (client, GENERAL_KEY "fast_start", false, NULL);
+    gconf_client_set_bool (client, GENERAL_KEY "h245_tunneling", true, NULL);
+  }
+
+
+  /* With 0.97, we convert the old addressbook to the new format */
+  if (version < 97) {
+
+    groups =
+      gconf_client_get_list (client, CONTACTS_KEY "groups_list",
+			     GCONF_VALUE_STRING, NULL);
+    groups_iter = groups;
+  
+    while (groups_iter && groups_iter->data) {
+    
+      group_name = g_utf8_strdown ((char *) groups_iter->data, -1);
+      group_content_gconf_key =
+	g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY,
+			 (char *) groups_iter->data);
+      new_group_content_gconf_key =
+	g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, group_name);
+	
+      group_content =
+	gconf_client_get_list (client, group_content_gconf_key,
+			       GCONF_VALUE_STRING, NULL);
+      group_content_iter = group_content;
+	
+      while (group_content_iter && group_content_iter->data) {
+
+	new_group_content =
+	  g_slist_append (new_group_content, group_content_iter->data);
+	  
+	group_content_iter = g_slist_next (group_content_iter);
+      }
+
+      gconf_client_set_list (client, new_group_content_gconf_key,
+			     GCONF_VALUE_STRING, new_group_content, NULL);
+      gconf_client_remove_dir (client, "/apps/gnomemeeting", 0);
+      gconf_client_unset (client, group_content_gconf_key, NULL);
+      gconf_client_add_dir (client, "/apps/gnomemeeting",
+			    GCONF_CLIENT_PRELOAD_RECURSIVE, 0);
+      g_free (group_content_gconf_key);
+      g_free (new_group_content_gconf_key);
+      g_free (group_name);
+      g_slist_free (group_content);
+      g_slist_free (new_group_content);
+      new_group_content = NULL;
+      groups_iter = g_slist_next (groups_iter);
+    }
+      
+    g_slist_free (groups);
+  }
+
+  
+  /* Install the URL Handlers */
+  gconf_url = 
+    gconf_client_get_string (client, 
+			     "/desktop/gnome/url-handlers/callto/command", 0);
+					       
+  if (!gconf_url) {
+    
+    gconf_client_set_string (client,
+			     "/desktop/gnome/url-handlers/callto/command", 
+			     "gnomemeeting -c \"%s\"", NULL);
+    gconf_client_set_bool (client,
+			   "/desktop/gnome/url-handlers/callto/need-terminal", 
+			   false, NULL);
+    gconf_client_set_bool (client,
+			   "/desktop/gnome/url-handlers/callto/enabled", 
+			   true, NULL);
+  }
+  g_free (gconf_url);
+
+  gconf_url = 
+    gconf_client_get_string (client, 
+			     "/desktop/gnome/url-handlers/h323/command", 0);
+  if (!gconf_url) {
+    
+    gconf_client_set_string (client,
+			     "/desktop/gnome/url-handlers/h323/command", 
+			     "gnomemeeting -c \"%s\"", NULL);
+    gconf_client_set_bool (client,
+			   "/desktop/gnome/url-handlers/h323/need-terminal", 
+			   false, NULL);
+    gconf_client_set_bool (client,
+			   "/desktop/gnome/url-handlers/h323/enabled", 
+			   true, NULL);
+  }
+  g_free (gconf_url);
+}
 
 
 void entry_changed (GtkEditable  *e, gpointer data)

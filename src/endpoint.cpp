@@ -1272,19 +1272,8 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
     t = PTime () - connection.GetConnectionStartTime();
 
   gnomemeeting_threads_enter ();
-  if (connection.GetCallEndReason () == H323Connection::EndedByNoAnswer
-      || GetCurrentCallToken () != clearedCallToken)
-    i = 2;
-  else
-    is_received_call ? i=0:i=1;
-
   /* Translators: the "s" is for "seconds" */
-  cout << GetCallingState () << endl << flush;
-  gnomemeeting_calls_history_window_add_call (i, 
-					      PTime ().AsString ("www dd MMM, hh:mm:ss"),
-					      remote_party_name, remote_ip, 
-					      t.AsString (2) + PString (_("s")), 
-					      remote_app);
+  gnomemeeting_calls_history_window_add_call (GetCallingState (), PTime ().AsString ("www dd MMM, hh:mm:ss"), remote_party_name, remote_ip, t.AsString (2) + PString (_("s")), remote_app);
   gnomemeeting_threads_leave ();
 
   /* Get GConf settings */

@@ -63,7 +63,7 @@
 #endif
 
 
-static void
+static GtkWidget *
 gnomemeeting_dialog (GtkWindow *parent,
 		     const char *primary_text,
 		     const char *format, 
@@ -71,52 +71,63 @@ gnomemeeting_dialog (GtkWindow *parent,
 		     GtkMessageType type);
 
 
-void
+GtkWidget *
 gnomemeeting_error_dialog (GtkWindow *parent,
 			   const char *primary_text,
 			   const char *format,
 			   ...)
 {
+  GtkWidget *dialog = NULL;
   va_list args;
   
   va_start (args, format);
-  
-  gnomemeeting_dialog (parent, primary_text, format, args, GTK_MESSAGE_ERROR);
+
+  dialog =
+    gnomemeeting_dialog (parent, primary_text, format, args,
+			 GTK_MESSAGE_ERROR);
   
   va_end (args);
 }
 
 
-void
+GtkWidget *
 gnomemeeting_warning_dialog (GtkWindow *parent,
 			     const char *primary_text,
 			     const char *format,
 			     ...)
 {
+  GtkWidget *dialog = NULL;
   va_list args;
   
   va_start (args, format);
-  
-  gnomemeeting_dialog (parent, primary_text, format, args,
-		       GTK_MESSAGE_WARNING);
+
+  dialog =
+    gnomemeeting_dialog (parent, primary_text, format, args,
+			 GTK_MESSAGE_WARNING);
   
   va_end (args);
+
+  return dialog;
 }
 
 
-void
+GtkWidget *
 gnomemeeting_message_dialog (GtkWindow *parent,
 			     const char *primary_text,
 			     const char *format,
 			     ...)
 {
+  GtkWidget *dialog = NULL;
   va_list args;
   
   va_start (args, format);
   
-  gnomemeeting_dialog (parent, primary_text, format, args, GTK_MESSAGE_INFO);
+  dialog =
+    gnomemeeting_dialog (parent, primary_text, format, args, GTK_MESSAGE_INFO);
   
   va_end (args);
+
+  return dialog;
 }
 
 
@@ -137,7 +148,7 @@ popup_toggle_changed (GtkCheckButton *button,
 }
 
 
-void 
+GtkWidget *
 gnomemeeting_warning_dialog_on_widget (GtkWindow *parent, 
                                        GtkWidget *widget,
 				       const char *primary_text,
@@ -216,6 +227,8 @@ gnomemeeting_warning_dialog_on_widget (GtkWindow *parent,
 
   g_free (prim_text);
   g_free (dialog_text);
+
+  return dialog;
 }
 
 
@@ -229,7 +242,7 @@ gnomemeeting_warning_dialog_on_widget (GtkWindow *parent,
  *
  * Creates and runs a dialog and destroys it afterward. 
  **/
-static void
+static GtkWidget *
 gnomemeeting_dialog (GtkWindow *parent,
 		     const char *prim_text,
                      const char *format, 
@@ -261,8 +274,10 @@ gnomemeeting_dialog (GtkWindow *parent,
                             G_CALLBACK (gtk_widget_destroy),
                             GTK_OBJECT (dialog));
   
-  gtk_widget_show (dialog);
+  gtk_widget_show_all (dialog);
 
   g_free (dialog_text);
   g_free (primary_text);
+
+  return dialog;
 }
