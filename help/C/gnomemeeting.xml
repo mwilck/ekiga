@@ -61,7 +61,9 @@ This documentation is for version &appversion; of <application>&app;</applicatio
 <sect1 id="gnomemeeting-introduction">
     <title>Introduction</title>
     <para><application>&app;</application> is a free audio/video-conferencing application for Linux and other Unices (e.g BSD or MacOSX). It was written by Damien Sandras and is licensed under the GNU/GPL. It is based on the H.323 ITU standard and allows you to make audio and video calls to remote users with H.323 hardware or software (such as Microsoft Netmeeting). It also supports all modern videoconferencing features, such as registering to an Internet Locator Service (ILS) directory, gatekeeper support, making multi-user conference calls using an external Multipoint Control Unit (MCU), using modern Quicknet telephony cards and making PC-To-Phone calls.
+    <para>
     <graphic fileref="figures/lumi.png"></graphic> 
+    </para>
     </para>
 </sect1>
 
@@ -151,7 +153,7 @@ This documentation is for version &appversion; of <application>&app;</applicatio
 	<para><emphasis>NAT Type</emphasis></para>
 
 	<para>
-	The NAT Type detection page will permit to detect which type of NAT you are using (if any) and help configuring GnomeMeeting appropriately. Clicking on the detection button will bring a popup indicating which type of NAT was detected and describing the most appropriate way to configure GnomeMeeting to allow it to go through that type of NAT. No configuration will be required in most of the cases, but some NAT routers will require the administrator to forward a few TCP and UDP ports to the internal computer running GnomeMeeting. Please refer to the FAQ for configuration examples.	
+	The NAT Type detection page will allow you to detect which type of NAT you are using (if any) and help configure GnomeMeeting appropriately. Clicking on the detection button will bring a popup indicating which type of NAT was detected. This will help to describe the most appropriate way to configure GnomeMeeting allowing it to operate best with your NAT configuration. No configuration should be required in most cases, however some NAT routers will require the administrator to forward a few TCP and UDP ports to the internal computer running GnomeMeeting. Please refer to the GnomeMeeting <ulink url="http://www.gnomemeeting.org" type="http">FAQ</ulink> for configuration examples.	
 	</para>
 	
 	<figure>
@@ -248,7 +250,7 @@ This documentation is for version &appversion; of <application>&app;</applicatio
  <title>To Call Other Users</title>
 
 <graphic fileref="figures/call_d1.png"></graphic>
-<para>Calling other users via Gnomemeeting is available in different forms and is done through the use of URL's. <application>&app;</application> supports two different kinds of URLs: h323:// and callto://. Callto URL's were used by Microsoft for Netmeeting, and H.323 URLs respect the H.323 standard and are thus the default for <application>&app;</application>.</para>
+<para>Calling other users via Gnomemeeting is available in different forms and is done primarily through the use of URL's. <application>&app;</application> supports two different kinds of URLs: h323:// and callto://. Callto URL's were used by Microsoft for Netmeeting, and H.323 URLs respect the H.323 standard and are thus the default for <application>&app;</application>.</para>
 
 <para><emphasis>H.323 URL's</emphasis></para>
 
@@ -314,29 +316,28 @@ will now resemble a power plug connected to a socket.</para>-->
 
 <para><emphasis>Calling users from the offline address book</emphasis></para>
 
-<para>The offline address book permits you to bookmark your favorite users with their h323 or callto URLs.Notice that if you are already in a call, double-clicking on an user will transfer the call with the remote user to the user you double-clicked in the address book.</para>
+<para>The offline address book permits you to bookmark your favorite users with their h323 or callto URLs.</para>
 
 <para><emphasis>Calling users from the calls history</emphasis></para>
-<para>The calls history remembers the callto and h323 URLs that have been used when giving or receiving calls. You can call again any user present in your calls history by double-clicking on his entry in the history. Notice that if you are already in a call, double-clicking on an user will transfer the call with the remote user to the user you double-clicked in the calls history.
-</para>
+<para>The calls history remembers the callto and h323 URLs that have been used when giving or receiving calls. You can call any user again that is already present in your calls history by double-clicking on his entry in the history.</para>
 </sect2>
 
 <sect2 id="gnomemeeting-callable-other-users">
-<title>To be Callable by Other Users</title>
+<title>To be Reached by Other Users</title>
 
-<para>There are several ways to get a universally callable address that other clients can use to call you. The most classical ones will be described here.</para>
+<para>There are several ways to get a universally reachable address that other clients can use to call you. The most classical ones will be described here.</para>
 
 <para><emphasis>Using an ILS directory</emphasis></para>
-<para>If you are registering to an ILS directory like <emphasis>ils.seconix.com</emphasis>, then other users will be able to call you using an URL like <emphasis>callto:ils.seconix.com/myself@example.com</emphasis> whatever your IP address is.</para>
+<para>If you are registering to an ILS directory like <emphasis>ils.seconix.com</emphasis>, then other users will be able to call you using an URL such as <emphasis>callto:ils.seconix.com/myself@example.com</emphasis> whatever your IP address is.</para>
 
 <para><emphasis>Using a dynamic hostname</emphasis></para>
-<para>You can register to a service providing DNS services for dynamic IP's. That way, your machine will always be associated to the registered hostname and other users will not need to know your IP address to be able to call you.</para>
+<para>You can also register to a service providing DNS services for dynamic IP's. That way, your machine will always be associated to the registered hostname. This way other users will not need to know your IP address to be able to call you.</para>
 
 <para><emphasis>Using a gatekeeper</emphasis></para>
 <para>If your company is running an H.323 gatekeeper on a public IP, it can be configured to accept calls and redirect them to the correct GnomeMeeting client based on the called URL. For example, if a gatekeeper is installed on <emphasis>example.com</emphasis> and user <emphasis>joe</emphasis> is registered to that gatekeeper, then other users will be able to call <emphasis>joe</emphasis> using the following URL: <emphasis>h323:joe@example.com</emphasis>.</para>
 
 <para><emphasis>Using an ENUM record</emphasis></para>
-<para>You can register an ENUM record on <ulink url="http://www.e164.org" type="http">www.e164.org</ulink>. That will permit you to associate your real phone number to any valid H.323 URL, and other users will be able to call you using your real phone number. For example, <emphasis>+3210444555</emphasis> will be associated to <emphasis>h323:myhostname.com</emphasis> and other users will be able to call you using <emphasis>h323:3210444555</emphasis></para>.
+<para>You can register an ENUM record on <ulink url="http://www.e164.org" type="http">www.e164.org</ulink>. That will permit you to associate your real phone number to any valid H.323 URL, and other users will be able to call you using your real phone number. For example, <emphasis>+3210444555</emphasis> will be directly linked to <emphasis>h323:myhostname.com</emphasis> and other users will be able to call you using <emphasis>h323:3210444555</emphasis></para>.
 
 </sect2>
 
@@ -451,17 +452,17 @@ Select the field you wish to search, enter the search query and press enter.
 
 	<para>
 	The Address Book is a feature which allows you to find users to call and/or to save your list
-	 of persons that you call on a regular basis in a 'Group'. It loads the list of users from 
+ of persons that you call on a regular basis in a 'Group'. It loads the list of users from
 	the ILS directory and will store locally CALLTO and H.323 URLS and associated speed dials as well as addresses of ILS directories.</para>
 
 <para><emphasis>Basics of the Address Book</emphasis></para>
 	<para>
 	To open the Address Book select Tools -> Address Book and the GnomeMeeting Addressbook window 
-	should appear. On your left there will be a list dialog showing the Servers you have added to
+	should appear. To your left there will be a list dialog showing the Servers you have added to
 	 the list as well as a list of Groups. The defaults are ils.seconix.com for Servers and the Personal address book.</para>
 
 	<para>
-	GnomeMeeting is able to use several types of address books. The most common address book type is the ILS directory where you can find information about registered users. GnomeMeeting is also able to browse real LDAP directories and use a specific attribute as calling URL. For example, you could have a gatekeeper in your company where all users are registering using their email address. All users would also be listed in the company's LDAP server, and a double-click on a specific user would trigger a call through the gatekeeper using the clicked user's e-mail address. GnomeMeeting is also able to detect other GnomeMeeting users on the LAN using the Rendez-Vous technology popularized by Apple (tm). That supposes you have a local mDNSResponder daemon running on your computer. Finally, GnomeMeeting is able to bookmark contacts in the local address book, shared with the Evolution suite.
+	GnomeMeeting is able to use several types of address books. The most common address book type is the ILS directory where you can find information about registered users. GnomeMeeting is also able to browse real LDAP directories and use a specific attribute as calling URL. For example, you could have a gatekeeper in your company where all users are registering using their email address. All users would also be listed in the company's LDAP server, and a double-click on a specific user would trigger a call through the gatekeeper using the selected user's e-mail address. GnomeMeeting is also able to detect other GnomeMeeting users on the LAN using Rendez-Vous technology popularized by Apple (tm). That supposes you have a local mDNSResponder daemon running on your computer. Finally, GnomeMeeting is able to bookmark contacts in the local address book, shared with the Evolution suite.
 	</para>
 	
 	<para>
