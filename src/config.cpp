@@ -165,12 +165,12 @@ void read_config (options *opts)
   opts->popup = gnome_config_get_int ("GeneralSettings/enable_popup");
   opts->video_preview = gnome_config_get_int ("GeneralSettings/video_preview");
 
-  opts->firstname = gnome_config_get_string ("UserSettings/firstname");
-  opts->listen_port = gnome_config_get_string ("UserSettings/listen_port");	
-  opts->surname = gnome_config_get_string ("UserSettings/surname");
-  opts->mail = gnome_config_get_string ("UserSettings/mail");
-  opts->comment = gnome_config_get_string ("UserSettings/comment");
-  opts->location =  gnome_config_get_string ("UserSettings/location");
+  opts->firstname = gnome_config_get_string ("UserSettings/firstname=");
+  opts->listen_port = gnome_config_get_string ("UserSettings/listen_port=");	
+  opts->surname = gnome_config_get_string ("UserSettings/surname=");
+  opts->mail = gnome_config_get_string ("UserSettings/mail=");
+  opts->comment = gnome_config_get_string ("UserSettings/comment=");
+  opts->location =  gnome_config_get_string ("UserSettings/location=");
   opts->notfirst = gnome_config_get_int ("UserSettings/notfirst");
 
   opts->fs = gnome_config_get_int ("AdvancedSettings/enable_fast_start");
@@ -188,22 +188,22 @@ void read_config (options *opts)
     gnome_config_get_int ("AdvancedSettings/gsm_frames");
 
   opts->ldap = gnome_config_get_int ("LDAPSettings/ldap");
-  opts->ldap_server = gnome_config_get_string ("LDAPSettings/ldap_server");
-  opts->ldap_port = gnome_config_get_string ("LDAPSettings/ldap_port");
+  opts->ldap_server = gnome_config_get_string ("LDAPSettings/ldap_server=");
+  opts->ldap_port = gnome_config_get_string ("LDAPSettings/ldap_port=");
   opts->ldap_servers_list = 
-    gnome_config_get_string ("LDAPSettings/ldap_servers_list");
+    gnome_config_get_string ("LDAPSettings/ldap_servers_list=");
   
   opts->gk = gnome_config_get_int ("GKSettings/gk");
-  opts->gk_host = gnome_config_get_string ("GKSettings/gk_host");
-  opts->gk_id = gnome_config_get_string ("GKSettings/gk_id");
+  opts->gk_host = gnome_config_get_string ("GKSettings/gk_host=");
+  opts->gk_id = gnome_config_get_string ("GKSettings/gk_id=");
 
-  opts->audio_player = gnome_config_get_string ("Devices/audio_player");
-  opts->audio_recorder = gnome_config_get_string ("Devices/audio_recorder");
+  opts->audio_player = gnome_config_get_string ("Devices/audio_player=");
+  opts->audio_recorder = gnome_config_get_string ("Devices/audio_recorder=");
   opts->audio_player_mixer = 
-    gnome_config_get_string ("Devices/audio_player_mixer");
+    gnome_config_get_string ("Devices/audio_player_mixer=");
   opts->audio_recorder_mixer = 
-    gnome_config_get_string ("Devices/audio_recorder_mixer");
-  opts->video_device = gnome_config_get_string ("Devices/video_device");
+    gnome_config_get_string ("Devices/audio_recorder_mixer=");
+  opts->video_device = gnome_config_get_string ("Devices/video_device=");
   opts->video_channel = gnome_config_get_int ("Devices/video_channel");
 
   gnome_config_sync();
@@ -517,7 +517,7 @@ void read_config_from_gui (GM_window_widgets *gw, GM_ldap_window_widgets *lw, op
   g_free (opts->ldap_servers_list);
   opts->ldap_servers_list = NULL;
 
-  while (text = (gchar *) g_list_nth_data (lw->ldap_servers_list, i))
+  while ((text = (gchar *) g_list_nth_data (lw->ldap_servers_list, i)))
     {
       old_pointer = opts->ldap_servers_list;
       opts->ldap_servers_list = g_strconcat (text, ":", old_pointer, NULL);

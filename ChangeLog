@@ -1,3 +1,18 @@
+2001-11-21  Damien Sandras  <dsandras@seconix.com>
+
+	* src/callbacks.cpp: Removed the destroy of the popup from callbacks.
+	* src/config.cpp: Added some = to gnome_config_get_string to have
+	a default value.
+	* src/endpoint.cpp: Modify autoStartTransmitVideo, disableH245Tunneling
+	and disableFastStart in the H323Endpoint directly. That Fixes a bug.
+	Added gdk_threads_leave to OpenVideoChannel before all other things!
+	Bad this is bad, but it is a workaround. Fixed one thing: the popup
+	is no more displayed if the call is not accepted.
+	* src/main.cpp: Initialized ldap_servers_list to prevent bad things
+	to happen.
+	* src/main_interface.cpp: Code cleanups.
+	* src/ldap.cpp: Code cleanups.
+	
 2001-11-20  Christian Rose  <menthos@menthos.com>
 
 	* configure.in: Renamed "pt" to "pt_BR" in ALL_LINGUAS. It

@@ -275,7 +275,6 @@ void GM_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
 				    arguments, 0, NULL, 
 				    static_cast<GnorbaInitFlags> (0), &ev);
 
-
   gm = gnome_app_new ("gnomemeeting", _("GnomeMeeting"));
   gtk_window_set_policy (GTK_WINDOW (gm), FALSE, FALSE, TRUE);
 
@@ -319,9 +318,7 @@ void GM_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
   endpoint->Initialise ();
 
   if (debug)
-    PTrace::Initialise (3);
-
-  endpoint->RemoveAllCapabilities ();
+    PTrace::Initialise (4);
 
   if (opts->show_splash)
     GM_splash_advance_progress (gw->splash_win, _("Adding Audio Capabilities"), 

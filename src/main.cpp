@@ -139,7 +139,7 @@ void GnomeMeeting::Connect()
   // We need a connection to use AnsweringCall
   current_call_token = endpoint->CallToken ();
   connection = endpoint->FindConnectionWithLock (current_call_token);
-  connection = endpoint->Connection ();
+  
   call_address = (PString) gtk_entry_get_text 
     (GTK_ENTRY (GTK_WIDGET(GTK_COMBO(gw->combo)->entry)));
 
@@ -272,6 +272,7 @@ int main (int argc, char ** argv, char ** envp)
 
   // Init the GM_ldap_window_widgets structure
   lw = new (GM_ldap_window_widgets);
+  lw->ldap_servers_list = NULL;
 
   // Init the opts
   opts = new (options);
@@ -302,6 +303,7 @@ int main (int argc, char ** argv, char ** envp)
   delete (opts);
   delete (gw);
   delete (lw);
+  delete (pw);
 
   return 0;
 }

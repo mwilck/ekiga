@@ -39,7 +39,7 @@ extern GnomeMeeting *MyApp;
 GMH323Connection::GMH323Connection (GMH323EndPoint & ep, 
 				    unsigned callReference,
 				    GM_window_widgets *w, options *o)
-  :H323Connection(ep, callReference, 1, !o->ht)
+  :H323Connection(ep, callReference, !o->fs, !o->ht)
 {
   // Just assign pointers, no need to create a copy
   gw = w;
@@ -61,7 +61,7 @@ void GMH323Connection::OnClosedLogicalChannel(H323Channel & channel)
 
 BOOL GMH323Connection::OnClosingLogicalChannel (H323Channel & channel)
 {
-  return TRUE;
+
 }
 
 

@@ -338,9 +338,13 @@ void GM_ldap_init (GM_window_widgets *gw, GM_ldap_window_widgets *lw, options *o
 
   /* We read the history on the hard disk */
   servers = g_strsplit (opts->ldap_servers_list, ":", 0);
-
-  for (i = 0 ; servers [i] != NULL ; i++)
-    lw->ldap_servers_list = g_list_append (lw->ldap_servers_list, servers [i]);
+  i = 0;
+  while (servers [i] != NULL) {
+    
+    lw->ldap_servers_list = 
+      g_list_insert (lw->ldap_servers_list, (void *)"hello", 0);
+    i++;
+  }
      
   if (lw->ldap_servers_list != NULL)
     gtk_combo_set_popdown_strings (GTK_COMBO (lw->ils_server_combo), lw->ldap_servers_list);

@@ -113,8 +113,8 @@ void connect_cb (GtkWidget *widget, gpointer data)
 {	
   GM_window_widgets *gw = (GM_window_widgets *) data;
 
-  if (GTK_IS_WIDGET (gw->incoming_call_popup))
-    gtk_widget_destroy (GTK_WIDGET (gw->incoming_call_popup));
+//   if (GTK_IS_WIDGET (gw->incoming_call_popup))
+//     gtk_widget_destroy (GTK_WIDGET (gw->incoming_call_popup));
 
   if (MyApp->Endpoint ()->CallingState () == 0)
     MyApp->Connect();
@@ -128,8 +128,8 @@ void disconnect_cb (GtkWidget *widget, gpointer data)
 
   GM_window_widgets *gw = (GM_window_widgets *) data;
 
-  if (GTK_IS_WIDGET (gw->incoming_call_popup))
-    gtk_widget_destroy (GTK_WIDGET (gw->incoming_call_popup));
+//   if (GTK_IS_WIDGET (gw->incoming_call_popup))
+//     gtk_widget_destroy (GTK_WIDGET (gw->incoming_call_popup));
 
   if (connection != NULL)
     connection->UnPauseChannels ();

@@ -89,7 +89,7 @@ GMH323EndPoint::GMH323EndPoint (GM_window_widgets *w,
 
   SetCurrentConnection (NULL);
   SetCallingState (0);
-
+  
   video_grabber = NULL;
   listener = NULL;
   grabber = NULL;
@@ -135,29 +135,34 @@ void GMH323EndPoint::RemoveAllCapabilities ()
 
 void GMH323EndPoint::AddVideoCapabilities (int video_size)
 {
-  if (video_size == 1)
+   if (video_size == 1)
     {
       /* CIF Capability in first position */
       SetCapability(0, 1, 
-		    new H323_H261Capability (0, 2, FALSE, FALSE, 6217));
+		    new H323_H261Capability (0, 4, FALSE, FALSE, 6217));
       GM_log_insert (gw->log_text, _("Added H.261 CIF capability"));
       
       SetCapability(0, 1, 
-		    new H323_H261Capability (4, 0, FALSE, FALSE, 6217));
+		    new H323_H261Capability (2, 0, FALSE, FALSE, 6217));
       GM_log_insert (gw->log_text, 
 			    _("Added H.261 QCIF capability"));
     }
   else
     {
       SetCapability(0, 1, 
-		    new H323_H261Capability (4, 0, FALSE, FALSE, 6217));
+		    new H323_H261Capability (0, 4, FALSE, FALSE, 6217));
       GM_log_insert (gw->log_text, 
 			    _("Added H.261 QCIF capability"));
 
       SetCapability(0, 1, 
-		    new H323_H261Capability (0, 2, FALSE, FALSE, 6217));
+		    new H323_H261Capability (2, 0, FALSE, FALSE, 6217));
       GM_log_insert (gw->log_text, _("Added H.261 CIF capability"));
     }
+
+   if (opts->vid_tr)
+     autoStartTransmitVideo = TRUE;
+   else
+     autoStartTransmitVideo = FALSE;
 }
 
 
@@ -301,6 +306,9 @@ BOOL GMH323EndPoint::Initialise ()
       SetLocalUserName (name);
       g_free (name);
     }
+
+  disableFastStart = !opts->fs;
+  disableH245Tunneling = !opts->ht;
   
   received_video_device = NULL;
   transmitted_video_device = NULL;
@@ -463,7 +471,8 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 				       gw->docklet);
     }
 
-  if ((opts->popup) && (!opts->aa) && (!opts->dnd))
+  if ((opts->popup) && (!opts->aa) && (!opts->dnd) && 
+      (CallToken ().IsEmpty ()))
     {
       GtkWidget *label = NULL;
 
@@ -789,21 +798,25 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 {
   GMVideoGrabber *vg = (GMVideoGrabber *) video_grabber;
 
+
   /* If it is possible to transmit and
      if the user enabled transmission and
      if OpenVideoDevice is called for the encoding */
- if ((opts->vid_tr) && (isEncoding)) 
+  cout << "Dans OpenVideoChannel" << endl << flush;
+  cout << "Encoding : " << isEncoding << endl << flush;
+  if ((opts->vid_tr)&&(isEncoding)) 
    {
+     gdk_threads_leave (); /* Why is it needed ? */
      if (!vg->IsOpened ())
 	 vg->Open ();
 
-     while (!vg->IsOpened ())
-       usleep (100);
+      while (!vg->IsOpened ())
+        usleep (100);
 
      PVideoChannel *channel = vg->GetVideoChannel ();
      transmitted_video_device = vg->GetEncodingDevice ();
      vg->Stop ();
-
+    
      gdk_threads_enter ();
      SetCurrentDisplay (0);
 
@@ -835,43 +848,45 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
      GTK_TOGGLE_BUTTON (gw->video_chan_button)->active = TRUE;
      gdk_threads_leave ();
 
-     return codec.AttachChannel (channel, FALSE); // do not close the channel at the end
+     return codec.AttachChannel (channel, FALSE); 
    }
  else
    {
-     /* If we only receive */
-     if (!isEncoding)
-       {       
-	 PVideoChannel *channel = new PVideoChannel;
-	 
-	 received_video_device = new GDKVideoOutputDevice (isEncoding, gw);
-	  
-	 channel->AttachVideoPlayer (received_video_device);
-
-	 /* Stop to grab */
-	 if (vg->IsOpened ())
-	   vg->Stop ();
-	 
-	 gdk_threads_enter ();
-	 SetCurrentDisplay (0);
-	 
-	 GtkWidget *object = (GtkWidget *) 
-	   gtk_object_get_data (GTK_OBJECT (gm),
-				"display_uiinfo");
-	 
-	 GnomeUIInfo *display_uiinfo = (GnomeUIInfo *) object;
-	 
-	 GTK_CHECK_MENU_ITEM (display_uiinfo [0].widget)->active = FALSE;
-	 GTK_CHECK_MENU_ITEM (display_uiinfo [1].widget)->active = TRUE;
-	 GTK_CHECK_MENU_ITEM (display_uiinfo [2].widget)->active = FALSE;
-	 
-	 SetCurrentDisplay (1); 
- 	 gdk_threads_leave ();
-
-         return codec.AttachChannel (channel);
-       }
+  /* If we only receive */
+  if (!isEncoding)
+    {       
+      PVideoChannel *channel = new PVideoChannel;
+      
+      received_video_device = new GDKVideoOutputDevice (isEncoding, gw);
+      
+      channel->AttachVideoPlayer (received_video_device);
+      
+      /* Stop to grab */
+      if (vg->IsOpened ())
+	vg->Stop ();
+      
+      gdk_threads_enter ();
+      SetCurrentDisplay (0);
+      
+      GtkWidget *object = (GtkWidget *) 
+	gtk_object_get_data (GTK_OBJECT (gm),
+			     "display_uiinfo");
+      
+      GnomeUIInfo *display_uiinfo = (GnomeUIInfo *) object;
+      
+      GTK_CHECK_MENU_ITEM (display_uiinfo [0].widget)->active = FALSE;
+      GTK_CHECK_MENU_ITEM (display_uiinfo [1].widget)->active = TRUE;
+      GTK_CHECK_MENU_ITEM (display_uiinfo [2].widget)->active = FALSE;
+      
+      SetCurrentDisplay (1); 
+      gdk_threads_leave ();
+      
+      return codec.AttachChannel (channel);
+    }
    }
- 
- return FALSE;
+
+  cout << "Will Return False" << endl << flush;
+  return FALSE;
+
 }
 /******************************************************************************/
