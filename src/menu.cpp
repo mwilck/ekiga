@@ -30,6 +30,7 @@
 #include "callbacks.h"
 #include "menu.h"
 #include "common.h"
+#include "docklet.h"
 
 #include "../config.h"
 
@@ -48,7 +49,7 @@ static void view_video_settings_callback (GtkWidget *, gpointer);
 static void view_statusbar_callback (GtkWidget *, gpointer data);
 static void view_notebook_callback (GtkWidget *, gpointer);
 static void view_quickbar_callback (GtkWidget *, gpointer);
-
+static void view_docklet_callback (GtkWidget *, gpointer);
 
 /* GTK Callbacks */
 
@@ -215,6 +216,30 @@ static void view_quickbar_callback (GtkWidget *widget, gpointer data)
 }
 
 
+/* DESCRIPTION  :  This callback is called when the user toggles the 
+ *                 corresponding option in the View Menu.
+ * BEHAVIOR     :  Shows or hide the widget, and toggles the corresponding
+ *                 button in the preferences window with the good value.
+ * PRE          :  gpointer is a valid pointer to a GM_pref_window_widgets 
+ *                 structure.
+ */
+static void view_docklet_callback (GtkWidget *widget, gpointer data)
+{
+  GM_pref_window_widgets *pw = (GM_pref_window_widgets *) data;
+
+  if (GTK_WIDGET_VISIBLE (pw->gw->docklet)) {
+
+    GM_docklet_hide (pw->gw->docklet);
+    GTK_TOGGLE_BUTTON (pw->show_docklet)->active = FALSE;
+  }
+  else {
+
+    GM_docklet_show (pw->gw->docklet);
+    GTK_TOGGLE_BUTTON (pw->show_docklet)->active = TRUE;
+  }
+}
+
+
 /* The functions */
 
 void gnomemeeting_menu_init (GtkWidget *gapp, GM_window_widgets *gw, 
@@ -313,6 +338,13 @@ void gnomemeeting_menu_init (GtkWidget *gapp, GM_window_widgets *gw,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	NULL, GDK_CONTROL_MASK, NULL
       },
+      {
+	GNOME_APP_UI_TOGGLEITEM,
+	N_("_Docklet"), N_("View/Hide the Docklet"),
+	(void *) view_docklet_callback, pw, NULL,
+	GNOME_APP_PIXMAP_NONE, NULL,
+	NULL, GDK_CONTROL_MASK, NULL
+      },
       GNOMEUIINFO_END
     };
   
@@ -370,6 +402,8 @@ void gnomemeeting_menu_init (GtkWidget *gapp, GM_window_widgets *gw,
     gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->show_statusbar));
   GTK_CHECK_MENU_ITEM (view_menu_uiinfo [4].widget)->active =
     gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->show_quickbar));
+  GTK_CHECK_MENU_ITEM (view_menu_uiinfo [5].widget)->active =
+    gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->show_docklet));
 }
 
 

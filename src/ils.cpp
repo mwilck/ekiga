@@ -515,6 +515,18 @@ void GMILSClient::ils_browse ()
       gnome_appbar_push (GNOME_APPBAR (lw->statusbar), 
 			 _("Error while connecting to ILS directory"));
       gtk_widget_set_sensitive (GTK_WIDGET (lw->refresh_button), TRUE);
+
+      /* Remove the timeout */
+      gtk_timeout_remove (ils_timeout);
+      gtk_progress_set_activity_mode (GTK_PROGRESS (progress), FALSE);
+      gtk_progress_set_value(GTK_PROGRESS(progress), 0);
+
+      /* Remove the current page */
+      gtk_notebook_remove_page (GTK_NOTEBOOK (lw->notebook), page_num);
+      if (page_num == 1)
+	gtk_widget_show (gtk_notebook_get_nth_page 
+			 (GTK_NOTEBOOK (lw->notebook),
+			  0));
       gdk_threads_leave ();
       
       lw->thread_count--;
@@ -530,10 +542,25 @@ void GMILSClient::ils_browse ()
       gnome_appbar_push (GNOME_APPBAR (lw->statusbar), 
 			 _("Error while connecting to ILS directory"));
       gtk_widget_set_sensitive (GTK_WIDGET (lw->refresh_button), TRUE);
+
+      /* Remove the timeout */
+      gtk_timeout_remove (ils_timeout);
+      gtk_progress_set_activity_mode (GTK_PROGRESS (progress), FALSE);
+      gtk_progress_set_value(GTK_PROGRESS(progress), 0);
+
+      /* Remove the current page */
+      gtk_notebook_remove_page (GTK_NOTEBOOK (lw->notebook), page_num);
+      if (page_num == 1)
+	gtk_widget_show (gtk_notebook_get_nth_page 
+			 (GTK_NOTEBOOK (lw->notebook),
+			  0));
+
       gdk_threads_leave ();
 
       lw->thread_count--;
       has_to_browse = 0;
+
+      return;
     }
 
 

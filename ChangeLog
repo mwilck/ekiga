@@ -1,9 +1,17 @@
+2001-11-18  Damien Sandras  <dsandras@seconix.com>
+
+	* config.cpp: Added support for show_docklet in the menu.
+	* ils.cpp: The notebook page is destroyed if the user could not
+	be contacted.
+	* menu.cpp: Added support for show_docklet in the menu.
+	* preferences.cpp:  Added support for show_docklet in the menu.
+	
 2001-11-17  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* sounds/Makefile.am: I missed this one
 	* Makefile.am: Typo
 
-2001-11-16  Damien Sandras  <dsandras@seconix.com>
+2001-11-17  Damien Sandras  <dsandras@seconix.com>
 
 	* src/preferences.cpp: Disables some more widgets if needed at startup.
 	* src/cleaner.cpp: Fixed bug that made GM crash when quitting since
@@ -16,7 +24,7 @@
 	* Makefile.am (EXTRA_DIST): s/xml-i18n/intltool
 	* macros/autogen.sh: Moving to intltool
 
-2001-11-16  Damien Sandras  <dsandras@seconix.com>
+2001-11-17  Damien Sandras  <dsandras@seconix.com>
 
 	* src/common.h: Added the incoming_call_popup widget to 
 	GM_window_widgets.
@@ -27,7 +35,7 @@
 	* src/menu.cpp: Added support for the new incoming_call_popup widget.
 	* src/toolbar.cpp: Added support for the new incoming_call_popup widget.
 
-2001-11-16  Damien Sandras  <dsandras@seconix.com>
+2001-11-17  Damien Sandras  <dsandras@seconix.com>
 
 	* src/main.cpp: Fixed a bug that could appear if the user chooses
 	to answer an incoming call, then immediately chooses to disconnect.

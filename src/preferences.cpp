@@ -2507,8 +2507,13 @@ static void apply_options (options *opts, GM_pref_window_widgets *pw)
     GTK_CHECK_MENU_ITEM (view_menu_uiinfo [4].widget)->active = TRUE;
   }
  
- if (!opts->show_docklet) 
+ if (!opts->show_docklet) {
+
+   GTK_CHECK_MENU_ITEM (view_menu_uiinfo [5].widget)->active = FALSE;
    GM_docklet_hide (pw->gw->docklet);
- else
+ }
+ else {
+   GTK_CHECK_MENU_ITEM (view_menu_uiinfo [5].widget)->active = TRUE;
    GM_docklet_show (pw->gw->docklet);
+ }
 }
