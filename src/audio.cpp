@@ -33,6 +33,11 @@
 
 #include <ptlib.h>
 
+#ifdef __FreeBSD__
+#include <sys/types.h>
+#include <signal.h>
+#endif
+
 /* The functions */
 
 int gnomemeeting_volume_set (char *mixer, int source, int *volume)
