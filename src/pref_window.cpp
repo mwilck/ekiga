@@ -1907,21 +1907,7 @@ void gnomemeeting_init_pref_window ()
 		      &child_iter, 0, _("Directory Settings"), 1, 4, -1);
   gnomemeeting_init_pref_window_directories (notebook);
 
-  /* Another section */
-  gtk_tree_store_append (GTK_TREE_STORE (model), &iter, NULL);
-  gtk_tree_store_set (GTK_TREE_STORE (model),
-		      &iter, 0, _("Devices"), 1, 0, -1);
-
-  gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
-  gtk_tree_store_set (GTK_TREE_STORE (model),
-		      &child_iter, 0, _("Audio Devices"), 1, 5, -1);
-  gnomemeeting_init_pref_window_audio_devices (notebook);
-
-  gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
-  gtk_tree_store_set (GTK_TREE_STORE (model),
-		      &child_iter, 0, _("Video Devices"), 1, 6, -1);
-  gnomemeeting_init_pref_window_video_devices (notebook);
-
+ 
   /* Another section */
   gtk_tree_store_append (GTK_TREE_STORE (model), &iter, NULL);
   gtk_tree_store_set (GTK_TREE_STORE (model),
@@ -1929,14 +1915,31 @@ void gnomemeeting_init_pref_window ()
 
   gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
   gtk_tree_store_set (GTK_TREE_STORE (model),
-		      &child_iter, 0, _("Audio Codecs"), 1, 7, -1);
+		      &child_iter, 0, _("Audio Codecs"), 1, 5, -1);
   gnomemeeting_init_pref_window_audio_codecs (notebook);
 
 
   gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
   gtk_tree_store_set (GTK_TREE_STORE (model),
-		      &child_iter, 0, _("Video Codecs"), 1, 8, -1);
+		      &child_iter, 0, _("Video Codecs"), 1, 6, -1);
   gnomemeeting_init_pref_window_video_codecs (notebook);
+
+
+  /* Another section */
+  gtk_tree_store_append (GTK_TREE_STORE (model), &iter, NULL);
+  gtk_tree_store_set (GTK_TREE_STORE (model),
+		      &iter, 0, _("Devices"), 1, 0, -1);
+
+  gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
+  gtk_tree_store_set (GTK_TREE_STORE (model),
+		      &child_iter, 0, _("Audio Devices"), 1, 7, -1);
+  gnomemeeting_init_pref_window_audio_devices (notebook);
+
+  gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
+  gtk_tree_store_set (GTK_TREE_STORE (model),
+		      &child_iter, 0, _("Video Devices"), 1, 8, -1);
+  gnomemeeting_init_pref_window_video_devices (notebook);
+
 
 
   cell = gtk_cell_renderer_text_new ();

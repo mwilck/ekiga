@@ -1136,7 +1136,7 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 
   gnomemeeting_threads_enter ();
 
-
+  
   /* Set Video Codecs Settings */
   vq = 32 - (int) ((double) gconf_client_get_int (client, "/apps/gnomemeeting/video_settings/tr_vq", NULL) / 100 * 31);
 
@@ -1337,9 +1337,9 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   
   /* Play Busy Tone */
 #ifdef HAS_IXJ
-  if ((lid)&&(GTK_TOGGLE_BUTTON (gw->speaker_phone_button))) {
+  if ((lid)&&(GTK_TOGGLE_BUTTON (gw->speaker_phone_button)->active)) {
 
-//    lid->EnableAudio (0, FALSE);
+    lid->EnableAudio (0, FALSE);
     lid->PlayTone (0, OpalLineInterfaceDevice::BusyTone);
   }
 #endif
@@ -1497,8 +1497,6 @@ BOOL GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
     gnomemeeting_log_insert (msg);
     g_free (msg);
 
-    if (GTK_TOGGLE_BUTTON (gw->speaker_phone_button)->active)
-      lid->EnableAudio (0, FALSE);
     gnomemeeting_threads_leave ();
 
 
