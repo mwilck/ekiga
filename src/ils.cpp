@@ -475,13 +475,15 @@ BOOL GMILSClient::Register (BOOL reg)
 	gnomemeeting_threads_enter ();
 	
 	if (reg) {
+
 	  msg = g_strdup_printf (_("Sucessfully registered to ILS directory %s, port %s"), ldap_server, ldap_port);
-	  gnome_appbar_push (GNOME_APPBAR (gw->statusbar), _("Succesfully registered to ILS server"));
+	  gnomemeeting_statusbar_flash (gm, _("Succesfully registered to ILS server"));
 	  starttime = PTime ();
 	}
 	else {
+
 	  msg = g_strdup_printf (_("Sucessfully unregistered from ILS directory %s, port %s"), ldap_server, ldap_port);
-	  gnome_appbar_push (GNOME_APPBAR (gw->statusbar), _("Succesfully unregistered from ILS server"));
+	  gnomemeeting_statusbar_flash (gm, _("Succesfully unregistered from ILS server"));
 	}
 	
 	gnomemeeting_log_insert (msg);
@@ -657,8 +659,7 @@ void GMILSClient::ils_browse ()
   if (!strcmp (ldap_server, "")) {
 
     gnomemeeting_threads_enter ();
-    gnome_appbar_push (GNOME_APPBAR (lw->statusbar), 
-		       _("Please provide an ILS directory in the window"));
+    gnome_appbar_push (GNOME_APPBAR (lw->statusbar), _("Please provide an ILS directory in the window"));
     gnomemeeting_threads_leave ();
     
     lw->thread_count--;

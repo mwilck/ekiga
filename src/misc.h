@@ -116,10 +116,18 @@ void gnomemeeting_init_main_window_logo ();
  */
 gint PlaySound (GtkWidget *);
 
+
 /* DESCRIPTION   :  /
  * BEHAVIOR      : Creates a new incoming call popup and returns it.
  * PRE           : The name; and the app UTF8 char *.
  */
 GtkWidget * 
 gnomemeeting_incoming_call_popup_new (gchar *, gchar *);
+
+
+/* DESCRIPTION   :  /
+ * BEHAVIOR      : Flashes a message on the statusbar during a few seconds.
+ * PRE           : The GnomeApp, followed by printf syntax format.
+ */
+void gnomemeeting_statusbar_flash (GtkWidget *, const char *, ...);
 #endif

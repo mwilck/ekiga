@@ -451,8 +451,7 @@ void GMVideoGrabber::VGOpen (void)
     gnomemeeting_threads_enter ();
     gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
     gtk_widget_set_sensitive (GTK_WIDGET (pw->video_preview), FALSE);
-    gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-		       _("Opening Video device"));
+    gnomemeeting_statusbar_flash (gm, _("Opening Video device"));
     gnomemeeting_log_insert (_("Opening Video device"));
     gnomemeeting_threads_leave ();
     
@@ -496,7 +495,7 @@ void GMVideoGrabber::VGOpen (void)
 	(_("Successfully opened video device %s, channel %d"), 
 	 video_device, video_channel);
       gnomemeeting_log_insert (msg);
-      gnome_appbar_push (GNOME_APPBAR (gw->statusbar), _("Video Device Opened"));
+      gnomemeeting_statusbar_flash (gm, _("Video Device Opened"));
       g_free (msg);
       gnomemeeting_threads_leave ();
     }
@@ -505,8 +504,7 @@ void GMVideoGrabber::VGOpen (void)
       gnomemeeting_threads_enter ();
       msg = g_strdup_printf 
 	(_("Error while opening video device %s, channel %d.\nA test image will be transmitted."), video_device, video_channel);
-      gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-			 _("Can't open the Video Device"));
+      gnomemeeting_statusbar_flash (gm, _("Can't open the Video Device"));
 
       switch (error_code)	{
 	
@@ -651,7 +649,8 @@ void GMVideoGrabber::VGClose (int display_logo)
     if (display_logo)
       gnomemeeting_init_main_window_logo ();
 
-    gnome_appbar_push (GNOME_APPBAR (gw->statusbar), _("Video Device Closed"));
+
+    gnomemeeting_statusbar_flash (gm, _("Video Device Closed"));
     
     /* Disable the video settings frame */
     gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame),

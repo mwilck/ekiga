@@ -1214,94 +1214,100 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
      call, do nothing */
   if (GetCurrentCallToken () == clearedCallToken) 
     SetCurrentCallToken (PString ());
-  else
-    exit = 1;
+  else {
+
+    gnomemeeting_threads_enter ();
+    gnome_appbar_clear_stack (GNOME_APPBAR (gw->statusbar));
+    gnomemeeting_threads_leave ();
+
+    return;
+  }
+
 
   opened_video_channels = 0;
   opened_audio_channels = 0;
 
-  gnomemeeting_threads_enter ();
 
   switch (connection.GetCallEndReason ()) {
 
   case H323Connection::EndedByRemoteUser :
-    gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-		       _("Remote party has cleared the call"));
+    gnomemeeting_statusbar_flash (gm,
+				  _("Remote party has cleared the call"));
     break;
     
   case H323Connection::EndedByCallerAbort :
-    gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-		       _("Remote party has stopped calling"));
+    gnomemeeting_statusbar_flash (gm,
+				  _("Remote party has stopped calling"));
     break;
 
   case H323Connection::EndedByRefusal :
-    gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-		       _("Remote party did not accept your call"));
+    gnomemeeting_statusbar_flash (gm,
+				  _("Remote party did not accept your call"));
     break;
 
   case H323Connection::EndedByRemoteBusy :
-    gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-		       _("Remote party was busy"));
+    gnomemeeting_statusbar_flash (gm,
+				  _("Remote party was busy"));
     break;
 
   case H323Connection::EndedByRemoteCongestion :
-    gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-		       _("Congested link to remote party"));
+    gnomemeeting_statusbar_flash (gm,
+				  _("Congested link to remote party"));
     break;
 
   case H323Connection::EndedByNoAnswer :
-    gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-		       _("Remote party did not answer your call"));
+    gnomemeeting_statusbar_flash (gm,
+				  _("Remote party did not answer your call"));
     break;
     
   case H323Connection::EndedByTransportFail :
-    gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-		       _("This call ended abnormally"));
+    gnomemeeting_statusbar_flash (gm,
+				  _("This call ended abnormally"));
     break;
     
   case H323Connection::EndedByCapabilityExchange :
-    gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-		       _("Could not find common codec with remote party"));
+    gnomemeeting_statusbar_flash (gm,
+				  _("Could not find common codec with remote party"));
     break;
 
   case H323Connection::EndedByNoAccept :
-    gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-			 _("Remote party did not accept your call"));
+    gnomemeeting_statusbar_flash (gm,
+				  _("Remote party did not accept your call"));
     break;
 
   case H323Connection::EndedByAnswerDenied :
-    gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-		       _("Refused incoming call"));
+    gnomemeeting_statusbar_flash (gm,
+				  _("Refused incoming call"));
     break;
 
   case H323Connection::EndedByNoUser :
-    gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-		       _("User not found"));
+    gnomemeeting_statusbar_flash (gm,
+				  _("User not found"));
     break;
     
   case H323Connection::EndedByNoBandwidth :
-    gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-		       _("Call ended: insufficient bandwidth"));
+    gnomemeeting_statusbar_flash (gm,
+				  _("Call ended: insufficient bandwidth"));
     break;
 
   case H323Connection::EndedByUnreachable :
-    gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-		       _("Remote party could not be reached"));
+    gnomemeeting_statusbar_flash (gm,
+				  _("Remote party could not be reached"));
     break;
 
   case H323Connection::EndedByHostOffline :
-    gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-		       _("Remote party is offline"));
+    gnomemeeting_statusbar_flash (gm,
+				  _("Remote party is offline"));
     break;
 
   case H323Connection::EndedByConnectFail :
-    gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-		       _("Transport Error calling"));
+    gnomemeeting_statusbar_flash (gm,
+				  _("Transport Error calling"));
     break;
 
   default :
-    gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-		       _("Call completed"));
+    gnomemeeting_statusbar_flash (gm,
+				  _("Call completed"));
   }
   
   gnomemeeting_log_insert (_("Call completed"));

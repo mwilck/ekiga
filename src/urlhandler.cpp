@@ -125,8 +125,7 @@ void GMURLHandler::Main ()
     PINDEX p = url.Find (':');
 
     gnomemeeting_threads_enter ();
-    gnome_appbar_push (GNOME_APPBAR (gw->statusbar),
-		       _("Searching for user"));
+    gnomemeeting_statusbar_flash (gm, _("Searching for user"));
     gnomemeeting_threads_leave ();
     /* There is a port */
     if (p != P_MAX_INDEX) {
@@ -149,8 +148,7 @@ void GMURLHandler::Main ()
     if (ip == NULL) {
 
       gnomemeeting_threads_enter ();
-      gnome_appbar_push (GNOME_APPBAR (gw->statusbar),
-			 _("Error while connecting to ILS directory"));
+      gnomemeeting_statusbar_flash (gm, _("Error while connecting to ILS directory"));
       gnomemeeting_log_insert (_("Error while connecting to ILS directory"));
       connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 0);
       gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [0].widget), 
@@ -172,8 +170,7 @@ void GMURLHandler::Main ()
     if ((ip)&&(!strcmp (ip, "0.0.0.0"))) {
 
       gnomemeeting_threads_enter ();
-      gnome_appbar_push (GNOME_APPBAR (gw->statusbar),
-			 _("User not found"));
+      gnomemeeting_statusbar_flash (gm, _("User not found"));
       gnomemeeting_log_insert (_("User not found"));
       connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 0);
       gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [0].widget), 

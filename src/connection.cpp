@@ -209,16 +209,16 @@ void GMH323Connection::PauseChannel (int chan_num)
 	audio_channel->SetPause (FALSE);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->audio_chan_button), FALSE);
 	gnomemeeting_log_insert (_("Audio Channel:  Sending"));
-	gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-			   _("Audio Channel:  Sending"));
+	gnomemeeting_statusbar_flash (gm, 
+				      _("Audio Channel:  Sending"));
       }
       else {
 
 	audio_channel->SetPause (TRUE);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->audio_chan_button), TRUE);
 	gnomemeeting_log_insert (_("Audio Channel:  Paused"));
-	gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-			   _("Audio Channel:  Paused"));
+	gnomemeeting_statusbar_flash (gm, 
+				      _("Audio Channel:  Paused"));
       }
 
       g_signal_handlers_unblock_by_func (G_OBJECT (gw->audio_chan_button),
@@ -240,15 +240,15 @@ void GMH323Connection::PauseChannel (int chan_num)
 	video_channel->SetPause (FALSE);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->video_chan_button), FALSE);
 	gnomemeeting_log_insert (_("Video Channel:  Sending"));
-	gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-			   _("Video Channel:  Sending"));
+	gnomemeeting_statusbar_flash (gm,
+				      _("Video Channel:  Sending"));
       }
       else {
 	video_channel->SetPause (TRUE);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->video_chan_button), TRUE);
 	gnomemeeting_log_insert (_("Video Channel:  Paused"));
-	gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-			   _("Video Channel:  Paused"));
+	gnomemeeting_statusbar_flash (gm,
+				      _("Video Channel:  Paused"));
       }
 
       g_signal_handlers_unblock_by_func (G_OBJECT (gw->video_chan_button),
@@ -294,8 +294,8 @@ GMH323Connection::OnAnswerCall (const PString & caller,
       (client, "/apps/gnomemeeting/general/do_not_disturb", 0)) {
 
     gnomemeeting_threads_enter ();
-    gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-		       _("Auto Rejecting Incoming Call"));
+    gnomemeeting_statusbar_flash (gm,
+				  _("Auto Rejecting Incoming Call"));
     gnomemeeting_log_insert (_("Auto Rejecting Incoming Call"));
     gnomemeeting_threads_leave ();
     
@@ -307,8 +307,8 @@ GMH323Connection::OnAnswerCall (const PString & caller,
       (client, "/apps/gnomemeeting/general/auto_answer", 0)) {
 
     gnomemeeting_threads_enter ();
-    gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-		       _("Auto Answering Incoming Call"));
+    gnomemeeting_statusbar_flash (gm,
+				  _("Auto Answering Incoming Call"));
     gnomemeeting_log_insert (_("Auto Answering Incoming Call"));
     gnomemeeting_threads_leave ();
     
