@@ -187,7 +187,7 @@ PString gnomemeeting_pstring_cut (PString s)
   if (bracket != P_MAX_INDEX)                                                
     s2 = s2.Left (bracket);     
 
-  return s2;
+  return s2.Trim ();
 }
 
 

@@ -1,5 +1,17 @@
 2004-09-22  Damien Sandras  <dsandras@gnome.org>
 
+	* src/chat_window.cpp, src/endpoint.cpp, src/endpoint.h: Applied
+	patch from Julien for API change. Do not use anymore
+	gnomemeeting_pstring_cut, cut in the right function directly and trim
+	the result. Fixed stay on top bug reported by Josep and Johnny.
+
+	* src/main_window.cpp: Inversed logic. Only trigger the completion
+	after 2 chars are typed.
+
+	* src/misc.cpp: Trim the result of gnomemeeting_pstring_cut.
+
+2004-09-22  Damien Sandras  <dsandras@gnome.org>
+
 	* configure.in: Lowered dep on GTK+ 2.4.0.
 
 2004-09-21  Damien Sandras  <dsandras@gnome.org>

@@ -540,6 +540,7 @@ gm_mw_init_toolbars (GtkWidget *main_window)
   gtk_entry_completion_set_model (GTK_ENTRY_COMPLETION (completion),
 				  GTK_TREE_MODEL (list_store));
   gtk_entry_completion_set_text_column (GTK_ENTRY_COMPLETION (completion), 2);
+  gtk_entry_completion_set_minimum_key_length (GTK_ENTRY_COMPLETION (completion), 2);
   gtk_entry_set_completion (GTK_ENTRY (mw->combo), completion);
 
   gtk_entry_completion_set_match_func (GTK_ENTRY_COMPLETION (completion),
@@ -1825,6 +1826,7 @@ found_url_cb (GtkEntryCompletion *completion,
   
   /* We have found something, but is it the first item ? */
   gtk_tree_model_get (GTK_TREE_MODEL (list_store), iter, 2, &entry, -1);
+
   
   if (found) {
 
@@ -1845,7 +1847,7 @@ found_url_cb (GtkEntryCompletion *completion,
 	    gtk_tree_model_get_path (GTK_TREE_MODEL (list_store), 
 				     &tree_iter);
 
-	  if (gtk_tree_path_compare (current_path, path) > 0)
+	  if (gtk_tree_path_compare (path, current_path) < 0) 
 	    found = FALSE;
 
 	  gtk_tree_path_free (path);
@@ -1859,9 +1861,10 @@ found_url_cb (GtkEntryCompletion *completion,
   }
   
   g_free (entry);
-  
+
   return found;
 }
+
 
 static void 
 control_panel_button_clicked_cb (GtkWidget *w, 

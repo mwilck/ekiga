@@ -184,30 +184,21 @@ chat_entry_activate (GtkEditable *w,
     if (endpoint->GetCallingState () == GMH323EndPoint::Connected
 	&& !s.IsEmpty ()) {
             
-      /* If the GDK lock is taken, the connection will never get a
-	 chance to be established if we lock its mutex */
+      /* Don't hold any lock when asking things to the endpoint */
       gdk_threads_leave ();
-      H323Connection *connection = 
-	endpoint->FindConnectionWithLock (endpoint->GetCurrentCallToken ());
+      endpoint->SendTextMessage (endpoint->GetCurrentCallToken (), s);
       gdk_threads_enter ();
 
-      if (connection != NULL)  {
-                
-	connection->SendUserInput ("MSG"+s);
-
-	if (g_utf8_validate ((gchar *) (const unsigned char*) local, -1, NULL))
-	  utf8_local = g_strdup ((char *) (const char *) (local));
-	else
-	  utf8_local = gnomemeeting_from_iso88591_to_utf8 (local);
-
-	if (utf8_local)
-	  gnomemeeting_text_chat_insert (chat_window, utf8_local, s, 0);
-	g_free (utf8_local);
-                
-	gtk_entry_set_text (GTK_ENTRY (w), "");
-
-	connection->Unlock ();
-      }
+      if (g_utf8_validate ((gchar *) (const unsigned char*) local, -1, NULL))
+	utf8_local = g_strdup ((char *) (const char *) (local));
+      else
+	utf8_local = gnomemeeting_from_iso88591_to_utf8 (local);
+      
+      if (utf8_local)
+	gnomemeeting_text_chat_insert (chat_window, utf8_local, s, 0);
+      g_free (utf8_local);
+      
+      gtk_entry_set_text (GTK_ENTRY (w), "");
     }
   }
 }

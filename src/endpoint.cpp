@@ -1051,10 +1051,20 @@ GMH323EndPoint::GetRemoteConnectionInfo (H323Connection & connection,
     remote_alias =
       remote_alias.Mid (0, (remote_alias.Find (",") != P_MAX_INDEX) ?
 			remote_alias.Find (",") : remote_alias.Find (")"));
+    remote_name = remote_name.Left (idx);
   }
+  idx = remote_name.Find ("[");
+  if (idx != P_MAX_INDEX)
+    remote_name = remote_name.Left (idx);
+  
   remote_app = connection.GetRemoteApplication ();
-
-  gnomemeeting_threads_enter ();
+  idx = remote_app.Find ("(");
+  if (idx != P_MAX_INDEX)
+    remote_app = remote_app.Left (idx);
+  idx = remote_app.Find ("[");
+  if (idx != P_MAX_INDEX)
+    remote_app = remote_app.Left (idx);
+  
   if (IsRegisteredWithGatekeeper ()) {
 
     if (!connection.GetRemotePartyNumber ().IsEmpty ())
@@ -1070,11 +1080,10 @@ GMH323EndPoint::GetRemoteConnectionInfo (H323Connection & connection,
     if (transport) 
       remote_ip = transport->GetRemoteAddress ().GetHostName ();
   }
-  gnomemeeting_threads_leave ();
 
   remote_ip = GMURL ().GetDefaultURL () + remote_ip;
-  utf8_app = gnomemeeting_get_utf8 (gnomemeeting_pstring_cut (remote_app));
-  utf8_name = gnomemeeting_get_utf8 (gnomemeeting_pstring_cut (remote_name));
+  utf8_app = gnomemeeting_get_utf8 (remote_app.Trim ());
+  utf8_name = gnomemeeting_get_utf8 (remote_name.Trim ());
   utf8_url = gnomemeeting_get_utf8 (remote_ip);
 }
 
@@ -1100,7 +1109,6 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   BOOL reg = FALSE;
   BOOL not_current = FALSE;
   BOOL forward_on_busy = FALSE;
-  BOOL stay_on_top = FALSE;
 
   IncomingCallMode icm = AVAILABLE;
 
@@ -1122,10 +1130,8 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   /* Get config settings */
   gnomemeeting_threads_enter ();
   reg = gm_conf_get_bool (LDAP_KEY "enable_registering");
-  stay_on_top = gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top");
   icm = (IncomingCallMode)gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
   forward_on_busy = gm_conf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
-  stay_on_top = gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top");
   gnomemeeting_threads_leave ();
 
 
@@ -1317,7 +1323,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   
   /* We update the GUI */
-  gm_main_window_set_stay_on_top (main_window, stay_on_top);
+  gm_main_window_set_stay_on_top (main_window, FALSE);
   gm_main_window_update_calling_state (main_window, GMH323EndPoint::Standby);
   gm_tray_update_calling_state (tray, GMH323EndPoint::Standby);
   gm_tray_update (tray, GMH323EndPoint::Standby, icm, forward_on_busy);
@@ -2372,6 +2378,23 @@ GMH323EndPoint::RemoveLid (void)
   lid = NULL;
 }
 #endif
+
+
+void
+GMH323EndPoint::SendTextMessage (PString callToken,
+				 PString message)
+{
+  H323Connection *connection = NULL;
+
+  connection = FindConnectionWithLock (callToken);
+
+  if (connection) {
+
+    connection->SendUserInput ("MSG"+message);
+    connection->Unlock ();
+  }
+
+}
 
 
 BOOL

@@ -509,6 +509,13 @@ class GMH323EndPoint : public H323EndPoint
 
 
   /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Sends the given text to the other end
+   * PRE          :  /
+   */
+  void SendTextMessage (PString callToken, PString message);
+
+
+  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Checks if the call is on hold
    * PRE          :  /
    */
