@@ -942,6 +942,7 @@ void gnomemeeting_dialpad_event (const char *key)
   PINDEX at;
   PINDEX dot;
   PINDEX callto;
+  PString dtmf;
 
   GmWindow *gw = NULL;
 
@@ -953,6 +954,8 @@ void gnomemeeting_dialpad_event (const char *key)
   
   if (button_text) {
 
+    dtmf = PString (button_text);
+    
     /* Update the callto part of the GUI */
     if (url) {
       
@@ -961,7 +964,8 @@ void gnomemeeting_dialpad_event (const char *key)
       dot = url_.FindLast ('.');
 
       /* Replace the * by a . */
-      if (!strcmp (button_text, "*")) 
+      if (endpoint && endpoint->GetCallingState () == 0
+	  && !strcmp (button_text, "*")) 
 	button_text = g_strdup (".");
 
       /* We remove the callto:// part if any */
@@ -1003,9 +1007,10 @@ void gnomemeeting_dialpad_event (const char *key)
             
 	if (connection != NULL) {
 
-	  connection->SendUserInput (PString (button_text));
+	  connection->SendUserInput (dtmf);
 	}
       }
+      
 #ifdef HAS_IXJ
       OpalLineInterfaceDevice *lid = NULL;
       GMLid *lid_thread = NULL;

@@ -1753,7 +1753,7 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
   if (opened_video_channels >= 2)
     return FALSE;
 
-
+    
   /* Get the gconf config */
   vid_tr = 
     gconf_client_get_bool (client, 

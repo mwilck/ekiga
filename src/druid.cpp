@@ -445,8 +445,11 @@ gnomemeeting_druid_page_prepare (GnomeDruidPage *page, GnomeDruid *druid,
 				 gpointer data)
 {
   GmDruidWindow *dw = gnomemeeting_get_druid_window (gm);
+  GmWindow *gw = gnomemeeting_get_main_window (gm);
   GConfClient *client = gconf_client_get_default ();
+  
   int kind_of_net = 1, cpt = 1;
+  bool found = false;
   GSList *group = NULL;
   
   if (!strcmp ((char *) data, "0"))
@@ -478,6 +481,33 @@ gnomemeeting_druid_page_prepare (GnomeDruidPage *page, GnomeDruid *druid,
       gtk_widget_queue_draw (GTK_WIDGET (group->data));
       group = g_slist_next (group);
       cpt++;
+    }
+  }
+
+
+  cpt = 0;
+  if (!strcmp ((char *) data, "6")) {
+
+    while (cpt < gw->audio_player_devices.GetSize ()) {
+    
+      if (gw->audio_player_devices [cpt].Find ("phone") != P_MAX_INDEX) {
+
+	found = true;
+	break;
+      }
+    
+      cpt++;
+    }
+
+    if (found) {
+
+      gtk_widget_set_sensitive (GTK_WIDGET (dw->microtelco_table), true);
+      gtk_widget_hide (GTK_WIDGET (dw->no_quicknet_label));
+    }
+    else {
+
+      gtk_widget_set_sensitive (GTK_WIDGET (dw->microtelco_table), false);
+      gtk_widget_show (GTK_WIDGET (dw->no_quicknet_label));
     }
   }
 }
@@ -900,16 +930,15 @@ gnomemeeting_init_druid_ixj_device_page (GnomeDruid *druid, int p, int t)
   GtkWidget *href = NULL;
   GtkWidget *entry = NULL;
   GtkWidget *vbox = NULL;
-  GtkWidget *table = NULL;
   GtkWidget *label = NULL;
 
+  PangoAttrList *attrs = NULL;
+  PangoAttribute *attr = NULL;
+
   GmDruidWindow *dw = gnomemeeting_get_druid_window (gm);
-  GmWindow *gw = gnomemeeting_get_main_window (gm);
-  
+    
   GConfClient *client = gconf_client_get_default ();
 
-  bool found = false;
-  int cpt = 0;
   gchar *title = NULL;
 
   GnomeDruidPageStandard *page_standard = NULL;
@@ -922,49 +951,40 @@ gnomemeeting_init_druid_ixj_device_page (GnomeDruid *druid, int p, int t)
   g_free (title);
 
   gnome_druid_append_page (druid, GNOME_DRUID_PAGE (page_standard));
-
-
-  while (cpt < gw->audio_player_devices.GetSize ()) {
-    
-    if (gw->audio_player_devices [cpt].Find ("phone") != P_MAX_INDEX) {
-
-      found = true;
-      break;
-    }
-    
-    cpt++;
-  }   
-
+  
 
   /* Packing widgets */
   vbox = gtk_vbox_new (FALSE, 2);
 
   gnomemeeting_druid_add_graphical_label (vbox, GM_STOCK_DRUID_IXJ, _("You can make calls to regular phones and cell numbers worldwide using GnomeMeeting and the MicroTelco service from Quicknet Technologies. To enable this feature you need a compatible card from Quicknet Technologies and you need to enter your MicroTelco Account number and PIN below, then enable registering to the MicroTelco service."));
 
-  if (!found) {
-
-    label = gtk_label_new (_("No Quicknet device detected"));
-    gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 10);
-    gtk_widget_set_sensitive (vbox, FALSE);
-  }
+  attrs = pango_attr_list_new ();
+  attr = pango_attr_weight_new (PANGO_WEIGHT_HEAVY);
+  attr->start_index = 0;
+  attr->end_index = strlen (_("No Quicknet device detected"));
+  pango_attr_list_insert (attrs, attr);
+  dw->no_quicknet_label = gtk_label_new (_("No Quicknet device detected"));
+  gtk_label_set_attributes (GTK_LABEL (dw->no_quicknet_label), attrs);
+  pango_attr_list_unref (attrs);
+  gtk_box_pack_start (GTK_BOX (vbox), dw->no_quicknet_label, FALSE, FALSE, 10);
 
   
   /* The PC-To-Phone setup */
-  table = gnomemeeting_vbox_add_table (vbox, _("PC-To-Phone Setup"), 3, 4);
+  dw->microtelco_table =
+    gnomemeeting_vbox_add_table (vbox, _("PC-To-Phone Setup"), 3, 4);
 
   entry = 
-    gnomemeeting_table_add_entry (table, _("Account Number:"), 
+    gnomemeeting_table_add_entry (dw->microtelco_table, _("Account Number:"), 
 				  GATEKEEPER_KEY "gk_alias", NULL, 0);
   entry = 
-    gnomemeeting_table_add_entry (table, _("Password:"), 
+    gnomemeeting_table_add_entry (dw->microtelco_table, _("Password:"), 
 				  GATEKEEPER_KEY "gk_password", NULL, 1);
-  gtk_entry_set_max_length (GTK_ENTRY (entry), 4);
   gtk_entry_set_visibility (GTK_ENTRY (entry), FALSE);
 
 
   /* The register toggle */
   dw->enable_microtelco = 
-    gnomemeeting_table_add_toggle (table,
+    gnomemeeting_table_add_toggle (dw->microtelco_table,
 				   _("Register to the MicroTelco service"), 
 				   SERVICES_KEY "enable_microtelco",
 				   NULL, 2, 0);
@@ -987,7 +1007,12 @@ gnomemeeting_init_druid_ixj_device_page (GnomeDruid *druid, int p, int t)
   gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (href), FALSE, FALSE, 0);
   g_free (gconf_url);
 
+  
+  g_signal_connect_after (G_OBJECT (page_standard), "prepare",
+			  G_CALLBACK (gnomemeeting_druid_page_prepare), 
+			  (gpointer) "6");
 
+  
   /**/
   gtk_box_pack_start (GTK_BOX (page_standard->vbox), GTK_WIDGET (vbox), 
 		      TRUE, TRUE, 8);

@@ -373,7 +373,7 @@ void GMH323Connection::OnUserInputString(const PString & value)
   else
     utf8_remote = gnomemeeting_from_iso88591_to_utf8 (remote);
 
-  if (utf8_remote)
+  if (utf8_remote && strcmp (utf8_remote, ""))
     gnomemeeting_text_chat_insert (utf8_remote, val, 1);
   
   g_free (utf8_remote);

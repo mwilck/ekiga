@@ -1,5 +1,25 @@
 2003-01-09 Damien Sandras  <dsandras@seconix.com>
 
+        * src/common.h: Added druid widgets to be able to unsensitize the
+	Microtelco part when no Quicknet card is detected.
+	
+	* src/connection.cpp: Do not output empty chat messages.
+	
+	* src/druid.cpp: Made the MT stuff unsensitive when no Quicknet card
+	is detected.
+	
+	* src/endpoint.cpp: Cosmetics.
+	
+	* src/lid.cpp: Automatic call when hanging up when url not empty.
+	
+	* src/main_window.cpp: Do not convert DTMF "*" to "." when being
+	in a call for displaying and always send "*" as DTMF.
+	
+	* src/menu.cpp: Fixed the unsensitization of menu parts (zoom, fs,
+	remote video).
+	
+2003-01-09 Damien Sandras  <dsandras@seconix.com>
+
 	* gnomemeeting.schemas.in.in: Changed description again for
 	User Input Capabilities. Only Signal prevents Text Chat to work.
 	

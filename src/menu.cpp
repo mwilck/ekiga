@@ -587,7 +587,7 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 
       {_("_Tools"), NULL, NULL, 0, MENU_NEW, NULL, NULL, NULL},
 
-      {_("XDAP Browser"), _("XDAP browser"),
+      {_("Address_book"), _("Addressbook"),
        NULL, 0, MENU_ENTRY, 
        GTK_SIGNAL_FUNC (gnomemeeting_component_view),
        (gpointer) gw->ldap_window, NULL},
@@ -690,7 +690,7 @@ gnomemeeting_zoom_submenu_set_sensitive (gboolean b)
   for (int i = 0 ; i < 3 ; i++) {
 
     gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [i+ZOOM_VIEW_MENU_INDICE].widget), b);
-    gtk_widget_set_sensitive (GTK_WIDGET (video_menu [i+5].widget), b);
+    gtk_widget_set_sensitive (GTK_WIDGET (video_menu [i+6].widget), b);
   }
 }
 
@@ -705,13 +705,13 @@ gnomemeeting_fullscreen_option_set_sensitive (gboolean b)
   if (b == FALSE) {
 
     gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [FULLSCREEN_VIEW_MENU_INDICE].widget), b);
-    gtk_widget_set_sensitive (GTK_WIDGET (video_menu [9].widget), b);
+    gtk_widget_set_sensitive (GTK_WIDGET (video_menu [10].widget), b);
   }
 #ifdef HAS_SDL
   else {
 
     gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [FULLSCREEN_VIEW_MENU_INDICE].widget), b);
-    gtk_widget_set_sensitive (GTK_WIDGET (video_menu [9].widget), b);
+    gtk_widget_set_sensitive (GTK_WIDGET (video_menu [10].widget), b);
   }
 #endif
 }
@@ -729,7 +729,7 @@ gnomemeeting_video_submenu_set_sensitive (gboolean b, int j, gboolean both)
   if (both)
     limit = BOTH;
   else
-    limit = REMOTE_VIDEO;
+    limit = j;
 
   while (cpt <= limit) {
 
@@ -883,7 +883,7 @@ gnomemeeting_popup_menu_tray_init (GtkWidget *widget, GtkAccelGroup *accel)
        GTK_SIGNAL_FUNC (gnomemeeting_component_view),
        (gpointer) gw->pref_window, NULL},
 
-      {_("XDAP Browser"), _("XDAP browser"),
+      {_("Address_book"), _("Addressbook"),
        NULL, 0, MENU_ENTRY, 
        GTK_SIGNAL_FUNC (gnomemeeting_component_view),
        (gpointer) gw->ldap_window, NULL},

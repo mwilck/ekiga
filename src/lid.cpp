@@ -201,6 +201,7 @@ void GMLid::Main ()
   GMH323EndPoint *endpoint = NULL;
   GmWindow *gw = NULL;
 
+  const char *url = NULL;
   PTime now, last_key_press;
 
   int calling_state = 0;
@@ -237,7 +238,7 @@ void GMLid::Main ()
     now = PTime ();
 
     char c = lid->ReadDTMF (0);
-    if (c) {
+    if (c && c != '\0') {
 
       gnomemeeting_threads_enter ();
       gnomemeeting_dialpad_event (PString (c));
@@ -259,7 +260,6 @@ void GMLid::Main ()
       if (calling_state == 3) { /* 3 = incoming call */
 
 	lid->StopTone (0);
-	
 	MyApp->Connect ();
       }
 
@@ -267,6 +267,13 @@ void GMLid::Main ()
       if (calling_state == 0) { /* not connected */
 
         lid->PlayTone (0, OpalLineInterfaceDevice::DialTone);
+
+	gnomemeeting_threads_enter ();
+	url = gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry)); 
+	gnomemeeting_threads_leave ();
+	
+	if (url)
+	  MyApp->Connect ();
       }
     }
 
@@ -306,7 +313,7 @@ void GMLid::Main ()
     lastOffHook = OffHook;
 
     /* We must poll to read the hook state */
-    PThread::Sleep(200);
+    PThread::Sleep(500);
   }
 
   quit_mutex.Signal ();
