@@ -422,9 +422,6 @@ gnomemeeting_local_addressbook_delete (GmAddressbook *addressbook)
 
   source_group = gnomemeeting_addressbook_get_local_source_group (&list);
 
-  printf ("Will delete %s with URL %s\n", 
-	  addressbook->aid, addressbook->url);
-  
   if (addressbook->aid) {
     
     if (e_source_group_remove_source_by_uid (source_group, 
