@@ -959,6 +959,7 @@ delete_contact_from_group_cb (GtkWidget *widget,
   gchar *contact_name = NULL;
   gchar *gconf_key = NULL;
   gchar *contact_section = NULL;
+  gchar *contact_section_escaped = NULL;
   gchar *contact_section_no_case = NULL;
 
   gboolean is_group;
@@ -976,8 +977,10 @@ delete_contact_from_group_cb (GtkWidget *widget,
       && is_group) {
 
     contact_section_no_case = g_utf8_strdown (contact_section, -1);
+    contact_section_escaped =
+      gconf_escape_key (contact_section_no_case, -1);
     gconf_key =
-      g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, contact_section);
+      g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, contact_section_escaped);
     g_free (contact_section_no_case);
 
     group_content =
@@ -996,6 +999,7 @@ delete_contact_from_group_cb (GtkWidget *widget,
     g_slist_free (group_content);
 
     g_free (gconf_key);
+    g_free (contact_section_escaped);
   }
 
   g_free (contact_section);
@@ -2726,7 +2730,7 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
   /* If the type of page is "groups", then we populate the page */
   if (type == CONTACTS_GROUPS) 
     gnomemeeting_addressbook_group_populate (users_list_store,
-					     section);
+					     text_label);
   
   /* Signal to call the person on the double-clicked row */
   g_signal_connect (G_OBJECT (lwp->tree_view), "row_activated", 
@@ -2754,6 +2758,7 @@ gnomemeeting_addressbook_group_populate (GtkListStore *list_store,
   char **contact_info = NULL;
   gchar *gconf_key = NULL;
   gchar *group_name = NULL;
+  gchar *group_name_escaped = NULL;
 
   GConfClient *client = NULL;
 
@@ -2762,8 +2767,13 @@ gnomemeeting_addressbook_group_populate (GtkListStore *list_store,
   gtk_list_store_clear (GTK_LIST_STORE (list_store));
 
   group_name = g_utf8_strdown (g_name, -1);
-  gconf_key =
-    g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, (char *) group_name);
+  if (group_name)
+    group_name_escaped =
+      gconf_escape_key (group_name, -1);
+  if (group_name_escaped)
+    gconf_key =
+      g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY,
+		       (char *) group_name_escaped);
 
   group_content =
     gconf_client_get_list (client, gconf_key, GCONF_VALUE_STRING, NULL);
@@ -2793,6 +2803,7 @@ gnomemeeting_addressbook_group_populate (GtkListStore *list_store,
 
   g_free (gconf_key);
   g_free (group_name);
+  g_free (group_name_escaped);
   g_slist_free (group_content);
 }
 

@@ -1154,6 +1154,7 @@ contacts_sections_list_group_content_changed_nt (GConfClient *client,
   const char *gconf_key = NULL;
   gchar **group_split = NULL;
   gchar *group_name = NULL;
+  gchar *group_name_unescaped = NULL;
   
   int cpt = 0;
 
@@ -1197,7 +1198,11 @@ contacts_sections_list_group_content_changed_nt (GConfClient *client,
 
 	  list_store =
 	    GTK_LIST_STORE (gtk_tree_view_get_model (GTK_TREE_VIEW (lwp->tree_view)));
-	  gnomemeeting_addressbook_group_populate (list_store, group_name);
+	  group_name_unescaped =
+	    gconf_unescape_key (group_name, -1);
+	  gnomemeeting_addressbook_group_populate (list_store,
+						   group_name_unescaped);
+	  g_free (group_name_unescaped);
 	}
 	g_free (group_name);
       }
