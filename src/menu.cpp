@@ -65,7 +65,7 @@ extern GnomeMeeting *MyApp;
 
 
 /* Static functions */
-static void transfert_call_cb (GtkWidget *, gpointer);
+static void transfer_call_cb (GtkWidget *, gpointer);
 static void microtelco_consult_cb (GtkWidget *, gpointer);
 static gint popup_menu_callback (GtkWidget *, GdkEventButton *, gpointer);
 static void menu_item_selected (GtkWidget *, gpointer);
@@ -86,17 +86,17 @@ static void menu_toggle_changed (GtkWidget *, gpointer);
  * PRE          :  /
  */
 static void
-transfert_call_cb (GtkWidget* widget, gpointer parent_window)
+transfer_call_cb (GtkWidget* widget, gpointer parent_window)
 {
-  GtkWidget *forward_call_popup = NULL;
-  GtkWidget *table = NULL;
-  GtkWidget *picture = NULL;
-  GtkWidget *explain_text = NULL;
+  GtkWidget *transfer_call_popup = NULL;
+  GtkWidget *hbox = NULL;
   GtkWidget *label = NULL;
   GtkWidget *button_forward = NULL;
   GtkWidget *button_cancel = NULL;
-  GtkWidget *entry_forward = NULL;
-
+  GtkWidget *entry = NULL;
+  GtkWidget *b1 = NULL;
+  GtkWidget *b2 = NULL;
+  
   char *gconf_forward_value = NULL;
   
   GConfClient *client = gconf_client_get_default ();
@@ -106,69 +106,38 @@ transfert_call_cb (GtkWidget* widget, gpointer parent_window)
 			     NULL);
   
   
-  forward_call_popup = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_resizable (GTK_WINDOW (forward_call_popup), FALSE);
-  
-  table = gtk_table_new (3, 3, FALSE);
-  gtk_widget_show (table);
-  gtk_container_add (GTK_CONTAINER (forward_call_popup), table);
-  
-  
-  explain_text = gtk_label_new (_("Enter here the IP address or the name of the host you want to redirect the current call to."));
-  gtk_label_set_justify (GTK_LABEL (explain_text), GTK_JUSTIFY_LEFT);
-  gtk_label_set_line_wrap (GTK_LABEL (explain_text), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (explain_text), 0, 0.5);
-  gtk_widget_show (explain_text);
-  
-  label = gtk_label_new(N_("Forward call to..."));
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
-  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
-  gtk_widget_show (label);
-  
-  button_cancel = gtk_button_new_from_stock ("gtk-cancel");
-  gtk_widget_show (button_cancel);
-  
-  button_forward = gtk_button_new_from_stock ("gtk-jump-to");
-  gtk_widget_show (button_forward);
-  
-  entry_forward = gtk_entry_new ();
-  gtk_entry_set_text (GTK_ENTRY (entry_forward), gconf_forward_value);
-  gtk_widget_show (entry_forward);
-  
-  
-  // Ensure that the dialog box is destroyed when the user responds.
-  g_signal_connect_swapped (GTK_OBJECT (button_cancel),
-			    "clicked",
-			    G_CALLBACK (gtk_widget_destroy),
-			    GTK_OBJECT (forward_call_popup));
-  
-  // Now attach all the widgets to the table, and show them.
-  gtk_table_attach (GTK_TABLE (table), picture, 0, 1, 0, 1,
-		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
-		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 12, 12);
-  
-  gtk_table_attach (GTK_TABLE (table), explain_text, 1, 3, 0, 1,
-		    (GtkAttachOptions) (GTK_FILL),
-		    (GtkAttachOptions) (0), 12, 12);
+  transfer_call_popup = gtk_dialog_new ();
 
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 1, 2,
-		    (GtkAttachOptions) (0),
-		    (GtkAttachOptions) (0), 12, 6);
+  b1 = gtk_dialog_add_button (GTK_DIALOG (transfer_call_popup),
+			      GTK_STOCK_CANCEL, 0);
+  b2 = gtk_dialog_add_button (GTK_DIALOG (transfer_call_popup),
+			      GTK_STOCK_GO_FORWARD, 1);
   
-  gtk_table_attach (GTK_TABLE (table), entry_forward, 1, 3, 1, 2,
-		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
-		    (GtkAttachOptions) (0), 12, 6);
+  label = gtk_label_new (_("Forward call to:"));
+  hbox = gtk_hbox_new (0, 0);
+  
+  gtk_box_pack_start (GTK_BOX 
+		      (GTK_DIALOG (transfer_call_popup)->vbox), 
+		      hbox, TRUE, TRUE, 0);
+    
+  entry = gtk_entry_new ();
+  gtk_entry_set_text (GTK_ENTRY (entry), gconf_forward_value);
 
-  gtk_table_attach (GTK_TABLE (table), button_forward, 1, 2, 2, 3,
-		    (GtkAttachOptions) (0),
-		    (GtkAttachOptions) (0), 12, 6);
+  gtk_box_pack_start (GTK_BOX (hbox), 
+		      label, TRUE, TRUE, 10);
+  gtk_box_pack_start (GTK_BOX (hbox), 
+		      entry, TRUE, TRUE, 10);
+
+  g_signal_connect (G_OBJECT (b1), "clicked",
+		    G_CALLBACK (gtk_widget_destroy), transfer_call_popup);
+  g_signal_connect (G_OBJECT (b1), "delete-event",
+		    G_CALLBACK (gtk_widget_destroy), transfer_call_popup);
   
-  gtk_table_attach (GTK_TABLE (table), button_forward, 2, 3, 2, 3,
-		    (GtkAttachOptions) (0),
-		    (GtkAttachOptions) (0), 12, 6);
-  
-  gtk_widget_show_all (forward_call_popup);  
+  gtk_window_set_transient_for (GTK_WINDOW (transfer_call_popup),
+				GTK_WINDOW (gm));
+  gtk_window_set_modal (GTK_WINDOW (transfer_call_popup), TRUE);
+
+  gtk_widget_show_all (transfer_call_popup);
 }
 
 
@@ -633,9 +602,9 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
        GTK_SIGNAL_FUNC (hold_call_callback),
        (gpointer) gw, NULL},
 
-      {_("_Transfert Call"), _("Transfert the current call"),
+      {_("_Transfer Call"), _("Transfer the current call"),
        NULL, 0, MENU_ENTRY, 
-       //GTK_SIGNAL_FUNC (transfert_call_cb),
+       //       GTK_SIGNAL_FUNC (transfer_call_cb),
        NULL,
        (gpointer) gw, NULL},
 
