@@ -48,8 +48,6 @@ gnomemeeting_SOURCES =		\
 	urlhandler.h		\
 	vfakeio.cpp		\
 	vfakeio.h		\
-	eggtrayicon.h		\
-	eggtrayicon.c		\
 	tray.h			\
 	tray.cpp		\
 	calls_history_window.cpp	\
