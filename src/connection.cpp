@@ -107,12 +107,17 @@ BOOL
 GMH323Connection::OnLogicalChannel (H323Channel *channel,
 				    BOOL is_closing)
 {
+  GtkWidget *history_window = NULL;
+  
   PString codec_name;
   BOOL is_encoding = FALSE;
   BOOL is_video = FALSE;
   BOOL preview = FALSE;
   
   gchar *msg = NULL;
+  
+  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
+
   
   PWaitAndSignal m(channels);
 
@@ -166,7 +171,7 @@ GMH323Connection::OnLogicalChannel (H323Channel *channel,
 
   /* Update the GUI and menus wrt opened channels */
   gnomemeeting_threads_enter ();
-  gnomemeeting_log_insert (gw->log_window, msg);
+  gm_history_window_insert (history_window, msg);
   gnomemeeting_menu_update_sensitivity (is_video, is_video?is_receiving_video:is_receiving_audio, is_video?is_transmitting_video:is_transmitting_audio);
   gm_main_window_update_sensitivity (is_video, is_video?is_receiving_video:is_receiving_audio, is_video?is_transmitting_video:is_transmitting_audio);
   if (!is_receiving_video && !is_transmitting_video && !preview)
@@ -184,9 +189,12 @@ GMH323Connection::OpenLogicalChannel (const H323Capability &capability,
 				      H323Channel::Directions dir)
 {
   GmWindow *gw = NULL;
+
+  GtkWidget *history_window = NULL;
   BOOL success = FALSE;
   
   gw = GnomeMeeting::Process ()->GetMainWindow ();
+  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   
   success =
     H323Connection::OpenLogicalChannel (capability, session_id, dir);
@@ -197,7 +205,7 @@ GMH323Connection::OpenLogicalChannel (const H323Capability &capability,
   if (!success) {
     
     gnomemeeting_threads_enter ();
-    gnomemeeting_log_insert (gw->log_window,
+    gm_history_window_insert (history_window,
 			     (dir == H323Channel::IsTransmitter)
 			     ? _("Failure opening %s for transmission, will try with next common codec")
 			     : _("Failure opening %s for reception, will try with next common codec"),
@@ -309,12 +317,13 @@ BOOL GMH323Connection::OnReceivedFacility(const H323SignalPDU & pdu)
 void 
 GMH323Connection::HandleCallTransferFailure (const int returnError)
 {
-  GmWindow *gw = NULL;
+  GtkWidget *history_window = NULL;
+  
+  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   
   gnomemeeting_threads_enter ();
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
   gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Call transfer failed"), _("The remote user tried to transfer your call to another user, but it failed."));
-  gnomemeeting_log_insert (gw->log_window, _("Call transfer failed"));
+  gm_history_window_insert (history_window, _("Call transfer failed"));
   gnomemeeting_threads_leave ();
 }
 

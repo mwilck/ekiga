@@ -234,6 +234,7 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
   GtkWidget *addressbook_window = NULL;
   GtkWidget *druid_window = NULL;
   GtkWidget *calls_history_window = NULL;
+  GtkWidget *history_window = NULL;
   GtkWidget *prefs_window = NULL;
   
   GtkWidget *menubar = NULL;
@@ -246,6 +247,7 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
   gw = GnomeMeeting::Process ()->GetMainWindow ();
   addressbook_window = GnomeMeeting::Process ()->GetAddressbookWindow ();
   calls_history_window = GnomeMeeting::Process ()->GetCallsHistoryWindow ();
+  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   druid_window = GnomeMeeting::Process ()->GetDruidWindow ();
   prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
 
@@ -484,7 +486,7 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 		     _("View the operations history"),
 		     NULL, 0, 
 		     GTK_SIGNAL_FUNC (show_window_cb),
-		     (gpointer) gw->log_window, TRUE),
+		     (gpointer) history_window, TRUE),
       GTK_MENU_ENTRY("calls_history", _("Calls History"),
 		     _("View the calls history"),
 		     GM_STOCK_CALLS_HISTORY, 'h',

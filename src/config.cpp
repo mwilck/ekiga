@@ -353,21 +353,23 @@ h245_tunneling_changed_nt (gpointer id,
 			   GmConfEntry *entry,
 			   gpointer data)
 {
+  GtkWidget *history_window = NULL;
+  
   GMH323EndPoint *ep = NULL;
-  GmWindow *gw = NULL;
+  
   
   if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
 
     ep = GnomeMeeting::Process ()->Endpoint ();
-    gw = GnomeMeeting::Process ()->GetMainWindow ();
+    history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
     
     ep->DisableH245Tunneling (!gm_conf_entry_get_bool (entry));
     
     gdk_threads_enter ();
-    gnomemeeting_log_insert (gw->log_window,
-			     ep->IsH245TunnelingDisabled ()?
-			     _("H.245 Tunneling disabled"):
-			     _("H.245 Tunneling enabled"));
+    gm_history_window_insert (history_window,
+			      ep->IsH245TunnelingDisabled ()?
+			      _("H.245 Tunneling disabled"):
+			      _("H.245 Tunneling enabled"));
     gdk_threads_leave ();
   }
 }
@@ -383,21 +385,23 @@ early_h245_changed_nt (gpointer id,
 		       GmConfEntry *entry,
 		       gpointer data)
 {
+  GtkWidget *history_window = NULL;
+  
   GMH323EndPoint *ep = NULL;
-  GmWindow *gw = NULL;
+  
   
   if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
 
     ep = GnomeMeeting::Process ()->Endpoint ();
-    gw = GnomeMeeting::Process ()->GetMainWindow ();
+    history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
     
     ep->DisableH245inSetup (!gm_conf_entry_get_bool (entry));
     
     gdk_threads_enter ();
-    gnomemeeting_log_insert (gw->log_window,
-			     ep->IsH245inSetupDisabled ()?
-			     _("Early H.245 disabled"):
-			     _("Early H.245 enabled"));
+    gm_history_window_insert (history_window,
+			      ep->IsH245inSetupDisabled ()?
+			      _("Early H.245 disabled"):
+			      _("Early H.245 enabled"));
     gdk_threads_leave ();
   }
 }
@@ -413,21 +417,23 @@ fast_start_changed_nt (gpointer id,
 		       GmConfEntry *entry,
 		       gpointer data)
 {
+  GtkWidget *history_window = NULL;
+  
   GMH323EndPoint *ep = NULL;
-  GmWindow *gw = NULL;
+  
   
   if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
 
     ep = GnomeMeeting::Process ()->Endpoint ();
-    gw = GnomeMeeting::Process ()->GetMainWindow ();
+    history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
     
     ep->DisableFastStart (!gm_conf_entry_get_bool (entry));
     
     gdk_threads_enter ();
-    gnomemeeting_log_insert (gw->log_window,
-			     ep->IsFastStartDisabled ()?
-			     _("Fast Start disabled"):
-			     _("Fast Start enabled"));
+    gm_history_window_insert (history_window,
+			      ep->IsFastStartDisabled ()?
+			      _("Fast Start disabled"):
+			      _("Fast Start enabled"));
     gdk_threads_leave ();
   }
 }
@@ -568,6 +574,8 @@ silence_detection_changed_nt (gpointer id,
                               GmConfEntry *entry, 
                               gpointer data)
 {
+  GtkWidget *history_window = NULL;
+  
   H323Codec *raw_codec = NULL;
   H323Connection *connection = NULL;
   H323Channel *channel = NULL;
@@ -579,6 +587,7 @@ silence_detection_changed_nt (gpointer id,
 	
   gw = GnomeMeeting::Process ()->GetMainWindow ();
   endpoint = GnomeMeeting::Process ()->Endpoint ();
+  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   
   if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
 
@@ -606,14 +615,14 @@ silence_detection_changed_nt (gpointer id,
         if (mode == H323AudioCodec::AdaptiveSilenceDetection) {
 
           mode = H323AudioCodec::NoSilenceDetection;
-          gnomemeeting_log_insert (gw->log_window,
-				   _("Disabled silence detection"));
+	  gm_history_window_insert (history_window,
+				    _("Disabled silence detection"));
         } 
         else {
 
           mode = H323AudioCodec::AdaptiveSilenceDetection;
-          gnomemeeting_log_insert (gw->log_window,
-				   _("Enabled silence detection"));
+	  gm_history_window_insert (history_window,
+				    _("Enabled silence detection"));
         }
         gdk_threads_leave ();  
 

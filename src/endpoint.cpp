@@ -648,6 +648,8 @@ BOOL
 GMH323EndPoint::OnIncomingCall (H323Connection & connection, 
                                 const H323SignalPDU &, H323SignalPDU &)
 {
+  GtkWidget *history_window = NULL;
+  
   char *msg = NULL;
   
   PString gateway;
@@ -674,6 +676,9 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   GMLid *l = NULL;
 #endif    
   
+  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
+
+
   /* Check the config keys */
   gnomemeeting_threads_enter ();
   forward_host_conf = gm_conf_get_string (CALL_FORWARDING_KEY "forward_host");
@@ -703,7 +708,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   msg = g_strdup_printf (_("Call from %s"), (const char *) utf8_name);
   gnomemeeting_threads_enter ();
   gnomemeeting_statusbar_push (gw->statusbar, msg);
-  gnomemeeting_log_insert (gw->log_window, msg);
+  gm_history_window_insert (history_window, msg);
   gnomemeeting_threads_leave ();
   g_free (msg);
 
@@ -761,7 +766,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 
     /* Add the full message in the log */
     gnomemeeting_threads_enter ();
-    gnomemeeting_log_insert (gw->log_window, msg);
+    gm_history_window_insert (history_window, msg);
     gnomemeeting_threads_leave ();
 
     /* Free things, we will return */
@@ -857,10 +862,15 @@ GMH323EndPoint::OnConnectionForwarded (H323Connection &,
 				       const PString &forward_party,
 				       const H323SignalPDU &)
 {
+  GtkWidget *history_window = NULL;
+  
   gchar *msg = NULL;
   PString call_token;
 
   call_token = GetCurrentCallToken ();
+  
+  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
+
   
   if (MakeCall (forward_party, call_token)) {
 
@@ -868,7 +878,7 @@ GMH323EndPoint::OnConnectionForwarded (H323Connection &,
     msg = g_strdup_printf (_("Forwarding call to %s"),
 			   (const char*) forward_party);
     gnomemeeting_statusbar_push (gw->statusbar, msg);
-    gnomemeeting_log_insert (gw->log_window, msg);
+    gm_history_window_insert (history_window, msg);
     gnomemeeting_threads_leave ();
     g_free (msg);
 
@@ -895,6 +905,8 @@ void
 GMH323EndPoint::OnConnectionEstablished (H323Connection & connection, 
                                          const PString & token)
 {
+  GtkWidget *history_window = NULL;
+
   gchar *utf8_url = NULL;
   gchar *utf8_app = NULL;
   gchar *utf8_name = NULL;
@@ -906,6 +918,10 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 #ifdef HAS_IXJ
   GMLid *l = NULL;
 #endif
+  
+
+  /* Get the widgets */
+  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   
   
   /* Start refreshing the stats */
@@ -930,9 +946,9 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   gnomemeeting_threads_enter ();
 
   gnomemeeting_statusbar_push (gw->statusbar, _("Connected"));
-  gnomemeeting_log_insert (gw->log_window,
-			   _("Connected with %s using %s"), 
-			   utf8_name, utf8_app);
+  gm_history_window_insert (history_window,
+			    _("Connected with %s using %s"), 
+			    utf8_name, utf8_app);
   gnomemeeting_text_chat_call_start_notification (GnomeMeeting::Process ()->GetMainWindow ()->chat_window);
 
   gtk_label_set_text (GTK_LABEL (gw->remote_name), (const char *) utf8_name);
@@ -1058,6 +1074,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
                                      const PString & clearedCallToken)
 {
   GtkWidget *calls_history_window = NULL;
+  GtkWidget *history_window = NULL;
   
   gchar *msg_reason = NULL;
   
@@ -1082,6 +1099,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   rtp = GnomeMeeting::Process ()->GetRtpData ();
   calls_history_window = GnomeMeeting::Process ()->GetCallsHistoryWindow ();
+  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
 
 
   if (connection.GetConnectionStartTime ().IsValid ())
@@ -1223,7 +1241,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 						  utf8_app);
 
 
-  gnomemeeting_log_insert (gw->log_window, msg_reason);
+  gm_history_window_insert (history_window, msg_reason);
   gnomemeeting_text_chat_call_stop_notification (gw->chat_window);
   gnomemeeting_statusbar_flash (gw->statusbar, msg_reason);
   gnomemeeting_threads_leave ();
@@ -1588,6 +1606,8 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
 				  unsigned bufferSize,
 				  H323AudioCodec & codec)
 {
+  GtkWidget *history_window = NULL;
+  
   PSoundChannel *sound_channel = NULL;
   
   PString plugin;
@@ -1598,6 +1618,10 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
   BOOL sd = FALSE;
   BOOL no_error = TRUE;
 
+  
+  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
+
+  
   PWaitAndSignal m(audio_channel_mutex);
 
   /* Wait that the primary call has terminated (in case of transfer)
@@ -1643,8 +1667,8 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
 	l->Unlock ();
 
     gnomemeeting_threads_enter ();
-    gnomemeeting_log_insert (gw->log_window,
-			     _("Attaching lid hardware to codec"));
+    gm_history_window_insert (history_window,
+			      _("Attaching lid hardware to codec"));
     gnomemeeting_threads_leave ();
   }
   else
@@ -1677,11 +1701,11 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
 	     plugin %s" or "Opening %s for recording with plugin" */
 
 	  gnomemeeting_threads_enter ();
-	  gnomemeeting_log_insert (gw->log_window, is_encoding ?
-				   _("Opened %s for recording with plugin %s")
-				   : _("Opened %s for playing with plugin %s"),
-				   (const char *) device, 
-                                   (const char *) plugin);
+	  gm_history_window_insert (history_window, is_encoding ?
+				    _("Opened %s for recording with plugin %s")
+				    : _("Opened %s for playing with plugin %s"),
+				    (const char *) device, 
+				    (const char *) plugin);
 	  gnomemeeting_threads_leave ();
 
 	  /* Control the channel and attach it to the codec, do not
@@ -2051,6 +2075,9 @@ void
 GMH323EndPoint::OnNoAnswerTimeout (PTimer &,
 				   INT) 
 {
+  GtkWidget *history_window = NULL;
+
+  
   GmWindow *gw = NULL;
  
   H323Connection *connection = NULL;
@@ -2062,6 +2089,9 @@ GMH323EndPoint::OnNoAnswerTimeout (PTimer &,
   gboolean no_answer_forward = FALSE;
   
   
+  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
+
+
   gdk_threads_enter ();
   
   /* Forwarding on no answer */
@@ -2096,7 +2126,7 @@ GMH323EndPoint::OnNoAnswerTimeout (PTimer &,
       connection->ForwardCall (PString ((const char *) forward_host));
 
       gdk_threads_enter ();
-      gnomemeeting_log_insert (gw->log_window,
+      gm_history_window_insert (history_window,
 			       _("Forwarding Call to %s (No Answer)"), 
 			       (const char *) forward_host);
 

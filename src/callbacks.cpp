@@ -202,6 +202,8 @@ pause_channel_callback (GtkWidget *widget,
 
   GtkToggleButton *b = NULL;
   GtkWidget *child = NULL;
+
+  GtkWidget *history_window = NULL;
   
   gchar *menu_suspend_msg = NULL;
   gchar *menu_resume_msg = NULL;
@@ -213,6 +215,7 @@ pause_channel_callback (GtkWidget *widget,
   endpoint = GnomeMeeting::Process ()->Endpoint ();
   current_call_token = endpoint->GetCurrentCallToken ();
 
+  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   gw = GnomeMeeting::Process ()->GetMainWindow ();
 
   if (!current_call_token.IsEmpty ())
@@ -269,7 +272,8 @@ pause_channel_callback (GtkWidget *widget,
 	  gtk_label_set_text_with_mnemonic (GTK_LABEL (child),
 					    menu_suspend_msg);
 
-	gnomemeeting_log_insert (gw->log_window, log_resume_msg);
+	gm_history_window_insert (history_window, 
+				  log_resume_msg);
 	gnomemeeting_statusbar_flash (gw->statusbar, log_resume_msg);
 
 	g_signal_handlers_block_by_func (G_OBJECT (b),
@@ -291,7 +295,8 @@ pause_channel_callback (GtkWidget *widget,
 	  gtk_label_set_text_with_mnemonic (GTK_LABEL (child),
 					    menu_resume_msg);
 
-	gnomemeeting_log_insert (gw->log_window, log_suspend_msg);
+	gm_history_window_insert (history_window, 
+				  log_suspend_msg);
 	gnomemeeting_statusbar_flash (gw->statusbar, log_suspend_msg);
 
 	g_signal_handlers_block_by_func (G_OBJECT (b),
@@ -492,6 +497,7 @@ quit_callback (GtkWidget *widget,
   GtkWidget *prefs_window = NULL;
   GtkWidget *addressbook_window = NULL;
   GtkWidget *calls_history_window = NULL;
+  GtkWidget *history_window = NULL;
   
   GmWindow *gw = NULL;
   GMH323EndPoint *ep =NULL;
@@ -503,7 +509,7 @@ quit_callback (GtkWidget *widget,
   prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
   
   gnomemeeting_window_hide (gm);
-  gnomemeeting_window_hide (gw->log_window);
+  gnomemeeting_window_hide (history_window);
   gnomemeeting_window_hide (calls_history_window);
   gnomemeeting_window_hide (addressbook_window);
   gnomemeeting_window_hide (prefs_window);

@@ -177,7 +177,6 @@ struct _GmWindow
   GtkWidget *remote_name;
   GtkWidget *splash_win;
   GtkWidget *combo;
-  GtkWidget *log_window;
   GtkWidget *main_notebook;
   GtkWidget *main_video_image;
   GtkWidget *local_video_image;

@@ -115,7 +115,7 @@ GnomeMeeting::GnomeMeeting ()
   
   gw->docklet =   
     gw->splash_win = gw->incoming_call_popup = 
-    gw->transfer_call_popup = gw->log_window = gw->audio_transmission_popup = 
+    gw->transfer_call_popup = gw->audio_transmission_popup = 
     gw->audio_reception_popup = 
     NULL;
 
@@ -143,10 +143,12 @@ GnomeMeeting::~GnomeMeeting()
     gtk_widget_destroy (addressbook_window);  
   if (prefs_window)
     gtk_widget_destroy (prefs_window);
-  if (gw->log_window)
-    gtk_widget_destroy (gw->log_window);
+  if (history_window)
+    gtk_widget_destroy (history_window);
   if (calls_history_window)
     gtk_widget_destroy (calls_history_window);
+  if (history_window)
+    gtk_widget_destroy (history_window);
   if (gm)
     gtk_widget_destroy (gm);
   if (druid_window)
@@ -163,7 +165,7 @@ GnomeMeeting::Connect (PString url)
   if (endpoint->GetCallingState () == GMH323EndPoint::Called) {
 
     gnomemeeting_threads_enter ();
-    gnomemeeting_log_insert (gw->log_window, _("Answering incoming call"));
+    gm_history_window_insert (history_window, _("Answering incoming call"));
     connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 1);
     gnomemeeting_threads_leave ();
 
@@ -213,7 +215,7 @@ GnomeMeeting::Disconnect (H323Connection::CallEndReason reason)
   if (endpoint->GetCallingState () == 1) {
 
     gnomemeeting_threads_enter ();
-    gnomemeeting_log_insert (gw->log_window, _("Trying to stop calling"));
+    gm_history_window_insert (history_window, _("Trying to stop calling"));
     gnomemeeting_threads_leave ();
 
     endpoint->ClearCall (endpoint->GetCurrentCallToken (), reason);
@@ -224,7 +226,7 @@ GnomeMeeting::Disconnect (H323Connection::CallEndReason reason)
     if (endpoint->GetCallingState () == 2) {
 
       gnomemeeting_threads_enter ();	
-      gnomemeeting_log_insert (gw->log_window, _("Stopping current call"));
+      gm_history_window_insert (history_window, _("Stopping current call"));
       connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 
 				    0);
       gnomemeeting_threads_leave ();
@@ -234,7 +236,7 @@ GnomeMeeting::Disconnect (H323Connection::CallEndReason reason)
     else if (endpoint->GetCallingState () == 3) {
 
       gnomemeeting_threads_enter ();
-      gnomemeeting_log_insert (gw->log_window, _("Refusing Incoming call"));
+      gm_history_window_insert (history_window, _("Refusing Incoming call"));
       connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 
 				    0);
       gnomemeeting_threads_leave ();
@@ -378,6 +380,13 @@ GnomeMeeting::GetRtpData ()
 }
 
 
+GtkWidget *
+GnomeMeeting::GetHistoryWindow ()
+{
+  return history_window;
+}
+
+
 void GnomeMeeting::Main ()
 {
 }
@@ -420,13 +429,13 @@ void GnomeMeeting::BuildGUI ()
   /* Build the GUI */
   gw->chat_window = gnomemeeting_text_chat_new ();
   gw->tips = gtk_tooltips_new ();
-  gw->log_window = gnomemeeting_log_window_new ();
   gw->pc_to_phone_window = gnomemeeting_pc_to_phone_window_new ();  
   prefs_window = gm_prefs_window_new ();  
   gm_prefs_window_update_audio_codecs_list (prefs_window, 
 					    available_capabilities);
   
   calls_history_window = gnomemeeting_calls_history_window_new ();
+  history_window = gm_history_window_new ();
   addressbook_window = gm_addressbook_window_new ();
   druid_window = gm_druid_window_new ();
 #ifndef WIN32
@@ -467,10 +476,10 @@ void GnomeMeeting::BuildGUI ()
 
   
   /* GM is started */
-  gnomemeeting_log_insert (gw->log_window,
+ gm_history_window_insert (history_window,
 			   _("Started GnomeMeeting V%d.%d.%d for %s\n"), 
 			   MAJOR_VERSION, MINOR_VERSION, BUILD_NUMBER,
-                           g_get_user_name ());
+			   g_get_user_name ());
 }
 
 

@@ -162,6 +162,8 @@ void GMILSClient::Modify ()
 
 void GMILSClient::ILSOperation (Operation operation)
 {
+  GtkWidget *history_window = NULL;
+
   BOOL registering = TRUE;
   bool no_error = TRUE;
   LDAP *ldap = NULL; 
@@ -182,7 +184,10 @@ void GMILSClient::ILSOperation (Operation operation)
 
   struct timeval time_limit = {10, 0};
 
+  
+  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
 
+  
   if (operation == ILS_REGISTER) {
     
     xml_filename = GNOMEMEETING_DATADIR "/gnomemeeting/xdap/ils_nm_reg.xml";
@@ -280,7 +285,7 @@ void GMILSClient::ILSOperation (Operation operation)
 	  msg = g_strdup_printf (_("Unregistered from the users directory %s."), ldap_server);	
 
 	gnomemeeting_threads_enter ();
-	gnomemeeting_log_insert (gw->log_window, msg);
+	gm_history_window_insert (history_window, msg);
 	g_free (msg);
 	gnomemeeting_threads_leave ();
       }
@@ -301,7 +306,7 @@ void GMILSClient::ILSOperation (Operation operation)
     gnomemeeting_threads_enter ();
     msg = g_strdup_printf (_("Error while registering to %s"),
 			   ldap_server);
-    gnomemeeting_log_insert (gw->log_window, msg);
+    gm_history_window_insert (history_window, msg);
     gnomemeeting_statusbar_flash (gw->statusbar, msg);
     g_free (msg);
     gnomemeeting_threads_leave ();

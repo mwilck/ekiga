@@ -45,14 +45,16 @@
  * BEHAVIOR     :  Build the log window and returns it.
  * PRE          :  /
  */
-GtkWidget *gnomemeeting_log_window_new ();
+GtkWidget *gm_history_window_new ();
+
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Add text (gchar *) with timestamps into the log textview
  * PRE          :  The text to add (printf compatible)
  */
 void
-gnomemeeting_log_insert (GtkWidget *, const char *,
-                         ...);
+gm_history_window_insert (GtkWidget *, 
+			  const char *,
+			  ...);
 
 #endif /* _LOG_WINDOW_H_ */

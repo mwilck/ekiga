@@ -108,6 +108,8 @@ GMH323Gatekeeper::~GMH323Gatekeeper ()
 
 void GMH323Gatekeeper::Main ()
 {
+  GtkWidget *history_window = NULL;
+
   PString gk_name;
   gchar *msg = NULL;
 
@@ -119,6 +121,8 @@ void GMH323Gatekeeper::Main ()
   
   endpoint = GnomeMeeting::Process ()->Endpoint ();
   gw = GnomeMeeting::Process ()->GetMainWindow ();
+  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
+  
 
   PWaitAndSignal m(quit_mutex);
   
@@ -130,7 +134,7 @@ void GMH323Gatekeeper::Main ()
     gk_name = gatekeeper->GetName ();
     msg = g_strdup_printf (_("Unregistered from gatekeeper %s"),
 			   (const char *) gk_name);
-    gnomemeeting_log_insert (gw->log_window, msg);
+    gm_history_window_insert (history_window, msg);
     gnomemeeting_statusbar_flash (gw->statusbar, msg);
     g_free (msg);
   }
@@ -215,7 +219,7 @@ void GMH323Gatekeeper::Main ()
 	msg = g_strdup (_("No gatekeeper corresponding to your options has been found."));
 
       gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Error while registering with gatekeeper"), msg);
-      gnomemeeting_log_insert (gw->log_window, msg);
+      gm_history_window_insert (history_window, msg);
       g_free (msg);
     }
     
@@ -232,7 +236,7 @@ void GMH323Gatekeeper::Main ()
       g_strdup_printf (_("Gatekeeper set to %s"), (const char *) gk_name);
     
     gnomemeeting_threads_enter ();
-    gnomemeeting_log_insert (gw->log_window, msg);
+    gm_history_window_insert (history_window, msg);
     gnomemeeting_statusbar_flash (gw->statusbar, msg);
     gnomemeeting_threads_leave ();
       

@@ -1,15 +1,23 @@
+2004-08-16  Damien Sandras  <dsandras@gnome.org>
+
+	* src/callbacks.cpp, src/common.h, src/config.cpp, src/connection.cpp,
+	src/endpoint.cpp, src/gatekeeper.cpp, src/gnomemeeting.cpp, 
+	src/gnomemeeting.h, src/ils.cpp, src/lid.cpp, src/log_window.cpp,
+	src/log_window.h, src/menu.cpp, src/urlhandler.cpp, 
+	src/videograbber.cpp: More cleanups to port the log window to a
+	GMObject.
+
 2004-08-14  Julien Puydt <jpuydt@free.fr>
 
 	* src/callbacks.cpp: Made some definitions easier to find with
 	the Ever-Powerful Grep.
 	* src/chat_window.cpp: Fixed something that must have been a bug...
-
 	
-2004-08-14 Kilian Krause <kk@verfaction.de>
+2004-08-14  Kilian Krause <kk@verfaction.de>
 
 	* Makefile.am: fixed broken 1>&1 command for gconf installation.
 
-2004-08-13 Kilian Krause <kk@verfaction.de>
+2004-08-13  Kilian Krause <kk@verfaction.de>
 
 	* configure.in: Adjust to make compile with CVS HEAD of
 	PWLib/OpenH323.

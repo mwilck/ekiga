@@ -104,6 +104,8 @@ GMLid::~GMLid ()
 BOOL
 GMLid::Open ()
 {
+  GtkWidget *history_window = NULL;
+  
   GMH323EndPoint *ep = NULL;
   GmWindow *gw = NULL;
 
@@ -118,6 +120,7 @@ GMLid::Open ()
   
   gw = GnomeMeeting::Process ()->GetMainWindow ();
   ep = GnomeMeeting::Process ()->Endpoint ();
+  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   
   if (!IsOpen ()) {
 
@@ -131,9 +134,9 @@ GMLid::Open ()
     if (OpalIxJDevice::Open (dev_name)) {
 
       gnomemeeting_threads_enter ();
-      gnomemeeting_log_insert (gw->log_window,
-			       _("Opened Quicknet device %s"), 
-			       (const char *) GetName ()); // FIXME: is it thread-safe!?
+      gm_history_window_insert (history_window,
+				_("Opened Quicknet device %s"), 
+				(const char *) GetName ()); // FIXME: is it thread-safe!?
       gnomemeeting_threads_leave ();
       
       if (lid_country)
@@ -172,19 +175,22 @@ BOOL
 GMLid::Close ()
 {
   GmWindow *gw = NULL;
+  GtkWidget *history_window = NULL;
   
   PWaitAndSignal m(device_access_mutex);
 
   gw = GnomeMeeting::Process ()->GetMainWindow ();
+  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
+  
   
   if (IsOpen ()) {
 
     OpalIxJDevice::Close ();
 
     gnomemeeting_threads_enter ();
-    gnomemeeting_log_insert (gw->log_window,
-			     _("Closed Quicknet device %s"), 
-			     (const char *) GetName ()); // FIXME: is it thread-safe?!
+    gm_history_window_insert (history_window,
+			      _("Closed Quicknet device %s"), 
+			      (const char *) GetName ()); // FIXME: is it thread-safe?!
     gnomemeeting_threads_leave ();
   }
 
@@ -195,6 +201,8 @@ GMLid::Close ()
 void
 GMLid::Main ()
 {
+  GtkWidget *history_window = NULL;
+
   GMH323EndPoint *endpoint = NULL;
 
   GmWindow *gw = NULL;
@@ -221,6 +229,7 @@ GMLid::Main ()
   
   endpoint = GnomeMeeting::Process ()->Endpoint ();
   gw = GnomeMeeting::Process ()->GetMainWindow ();
+  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
 
   
   /* Check the initial hook status. */
@@ -272,7 +281,7 @@ GMLid::Main ()
     if (off_hook == TRUE && last_off_hook == FALSE) {
 
       gnomemeeting_threads_enter ();
-      gnomemeeting_log_insert (gw->log_window, _("Phone is off hook"));
+      gm_history_window_insert (history_window, _("Phone is off hook"));
       gnomemeeting_statusbar_flash (gw->statusbar, _("Phone is off hook"));
       gnomemeeting_threads_leave ();
 
@@ -308,7 +317,7 @@ GMLid::Main ()
     if (off_hook == FALSE && last_off_hook == TRUE) {
 
       gnomemeeting_threads_enter ();
-      gnomemeeting_log_insert (gw->log_window, _("Phone is on hook"));
+      gm_history_window_insert (history_window, _("Phone is on hook"));
       gnomemeeting_statusbar_flash (gw->statusbar, _("Phone is on hook"));
   
       /* Remove the current called number */

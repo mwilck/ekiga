@@ -146,7 +146,14 @@ class GnomeMeeting : public PProcess
    */
   GmRtpData *GetRtpData ();
   
+  
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns a pointer to the history window.
+   * PRE          :  /
+   */
+  GtkWidget *GetHistoryWindow ();
 
+  
   /* Needed for PProcess */
   void Main();
 
@@ -193,6 +200,7 @@ class GnomeMeeting : public PProcess
   /* The different components of the GUI */
   GtkWidget *addressbook_window;
   GtkWidget *calls_history_window;
+  GtkWidget *history_window;
   GtkWidget *druid_window;
   GtkWidget *prefs_window;
 

@@ -59,25 +59,27 @@ extern GtkWidget *gm;
 static gint
 TransferTimeOut (gpointer data)
 {
+  GtkWidget *history_window = NULL;
+  
   PString transfer_call_token;
   PString call_token;
 
-  GmWindow *gw = NULL;
   GMH323EndPoint *ep = NULL;
-  
-  gdk_threads_enter ();
+
+  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   ep = GnomeMeeting::Process ()->Endpoint ();
+ 
 
   if (ep)
     call_token = ep->GetCurrentCallToken ();
 
   if (!call_token.IsEmpty ()) {
 
-    gw = GnomeMeeting::Process ()->GetMainWindow ();
+    gdk_threads_enter ();
     gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Call transfer failed"), _("The call transfer failed, the user was either unreachable, or simply busy when he received the call transfer request."));
-    gnomemeeting_log_insert (gw->log_window, _("Call transfer failed"));
+    gm_history_window_insert (history_window, _("Call transfer failed"));
+    gdk_threads_leave ();
   }
-  gdk_threads_leave ();
 
   
   return FALSE;
@@ -230,6 +232,8 @@ GMURLHandler::~GMURLHandler ()
 
 void GMURLHandler::Main ()
 {
+  GtkWidget *history_window = NULL;
+
   GmWindow *gw = NULL;
   GmContact *contact = NULL;
 
@@ -257,6 +261,7 @@ void GMURLHandler::Main ()
 
   gw = GnomeMeeting::Process ()->GetMainWindow ();
   calls_history_window = GnomeMeeting::Process ()->GetCallsHistoryWindow ();
+  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
 
   endpoint = GnomeMeeting::Process ()->Endpoint ();
 
@@ -306,10 +311,10 @@ void GMURLHandler::Main ()
     if (url.IsEmpty ()) {
 
       gnomemeeting_threads_enter ();
-      gnomemeeting_log_insert (gw->log_window,
-			       _("No contact with speed dial %s# found, will call number %s instead"),
-			       (const char *) old_url.GetValidURL (),
-			       (const char *) (GMURL ().GetDefaultURL () + old_url.GetValidURL ()));
+      gm_history_window_insert (history_window,
+				_("No contact with speed dial %s# found, will call number %s instead"),
+				(const char *) old_url.GetValidURL (),
+				(const char *) (GMURL ().GetDefaultURL () + old_url.GetValidURL ()));
       gnomemeeting_threads_leave ();
       
       url = GMURL (GMURL ().GetDefaultURL () + old_url.GetValidURL ());
@@ -350,7 +355,7 @@ void GMURLHandler::Main ()
       else
 	msg = g_strdup_printf (_("Transferring call to %s"), 
 			       (const char *) call_address);
-      gnomemeeting_log_insert (gw->log_window, msg);
+      gm_history_window_insert (history_window, msg);
       gnomemeeting_statusbar_push (gw->statusbar, msg);
     }
     g_free (msg);
