@@ -401,7 +401,6 @@ class GMH323EndPoint : public H323EndPoint
   PString GetSoundChannelManager () {return soundChannelManager;}
   BOOL SetDeviceVolume (unsigned int, unsigned int);
   BOOL GetDeviceVolume (unsigned int &, unsigned int &);
-  void OnRTPStatistics (const H323Connection &, const RTP_Session &) const;
 
 
 #ifdef HAS_IXJ
@@ -456,6 +455,7 @@ class GMH323EndPoint : public H323EndPoint
 
 
   PDECLARE_NOTIFIER(PTimer, GMH323EndPoint, OnILSTimeout);
+  PDECLARE_NOTIFIER(PTimer, GMH323EndPoint, OnRTPTimeout);
 
 
   PString called_address;
@@ -475,6 +475,8 @@ class GMH323EndPoint : public H323EndPoint
   GDKVideoOutputDevice *received_video_device; 
 
   PTimer ILSTimer;
+  PTimer RTPTimer;
+
   BOOL ils_registered;
 
   GmWindow *gw; 

@@ -910,6 +910,8 @@ static void manager_changed_nt (GConfClient *client, guint cid,
  *                 i.e. the user erroneously used gconftool, a message is
  *                 displayed. Notice that the code ensures that either no
  *                 no Quicknet device is used, or it is used for both devices.
+ *                 It also disables the druid test buttons for cases where
+ *                 a test is not possible (no device found or quicknet).
  * PRE          :  /
  */
 static void audio_device_changed_nt (GConfClient *client, guint cid, 
@@ -931,6 +933,14 @@ static void audio_device_changed_nt (GConfClient *client, guint cid,
     gw = MyApp->GetMainWindow ();
       
     dev = PString (gconf_value_get_string (entry->value));
+
+
+    /* Disable the druid button if no device is found */
+    if (dev.Find (_("No device found")) == P_MAX_INDEX) 
+      gtk_widget_set_sensitive (GTK_WIDGET (dw->audio_test_button), TRUE);
+    else
+      gtk_widget_set_sensitive (GTK_WIDGET (dw->audio_test_button), FALSE);
+	
 
     /* If one of the devices that we are using is a quicknet device,
        we update the other devices too */

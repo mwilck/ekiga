@@ -109,8 +109,10 @@ public:
 protected:
 
   BOOL stop;
+
   PMutex quit_mutex;
   PSyncPoint thread_sync_point;
+
   PSoundChannel *player;
   PSoundChannel *recorder;
 
@@ -119,6 +121,9 @@ protected:
 
   GmWindow *gw;
   GMH323EndPoint *ep;
+  
+  GtkWidget *test_label;
+  GtkWidget *test_dialog;
 
   friend class GMAudioRP;
 };

@@ -265,8 +265,12 @@ void GMAudioRP::Main ()
   GConfClient *client = NULL;
   PSoundChannel *channel = NULL;
   GmWindow *gw = NULL;
+  
   gchar *manager = NULL;
+  gchar *msg = NULL;
   char *buffer = NULL;
+
+  BOOL label_displayed = FALSE;
   int buffer_pos = 0;
 
   PTime now;
@@ -310,6 +314,17 @@ void GMAudioRP::Main ()
 					  is_encoding ? PDeviceManager::Input 
 					  : PDeviceManager::Output,
 					  1, 8000, 16);
+
+  if (!is_encoding)
+    msg = g_strdup_printf ("<b>%s</b>", _("Opening device for playing"));
+  else
+    msg = g_strdup_printf ("<b>%s</b>", _("Opening device for recording"));
+
+  gdk_threads_enter ();
+  gtk_label_set_markup (GTK_LABEL (tester->test_label), msg);
+  gdk_threads_leave ();
+  g_free (msg);
+
   if (!channel) {
 #endif
     gdk_threads_enter ();  
@@ -322,7 +337,7 @@ void GMAudioRP::Main ()
   else {
 
     channel->SetBuffers (640, 2);
-    
+
     while (!stop) {
 
       if (is_encoding) {
@@ -337,6 +352,19 @@ void GMAudioRP::Main ()
 	}
 	else {
 
+	  if (!label_displayed) {
+
+	    msg =  g_strdup_printf ("<b>%s</b>", _("Recording your voice"));
+
+	    gdk_threads_enter ();
+	    gtk_label_set_markup (GTK_LABEL (tester->test_label), msg);
+	    gtk_widget_show_all (GTK_WIDGET (tester->test_dialog));
+	    gdk_threads_leave ();
+	    g_free (msg);
+
+	    label_displayed = TRUE;
+	  }
+
 	  tester->buffer_ring_access_mutex.Wait ();
 	  memcpy (&tester->buffer_ring [buffer_pos], buffer,  640); 
 	  tester->buffer_ring_access_mutex.Signal ();
@@ -347,6 +375,20 @@ void GMAudioRP::Main ()
       else {
 
 	if ((PTime () - now).GetSeconds () > 3) {
+
+	  if (!label_displayed) {
+
+	    msg = g_strdup_printf ("<b>%s</b>", 
+				   _("Recording and playing back"));
+
+	    gdk_threads_enter ();
+	    gtk_label_set_markup (GTK_LABEL (tester->test_label), msg);
+	    gtk_widget_show_all (GTK_WIDGET (tester->test_dialog));
+	    gdk_threads_leave ();
+	    g_free (msg);
+
+	    label_displayed = TRUE;
+	  }
 
 	  tester->buffer_ring_access_mutex.Wait ();
 	  memcpy (buffer, &tester->buffer_ring [buffer_pos], 640); 
@@ -415,7 +457,6 @@ void GMAudioTester::Main ()
 {
 #ifndef DISABLE_GNOME
   GtkWidget *dialog = NULL;
-  GtkWidget *label = NULL;
   GMAudioRP *player = NULL;
   GMAudioRP *recorder = NULL;
   GmDruidWindow *dw = NULL;
@@ -432,29 +473,35 @@ void GMAudioTester::Main ()
   memset (buffer_ring, '0', sizeof (buffer_ring));
 
   gdk_threads_enter ();
-  dialog =
+  test_dialog =
     gtk_dialog_new_with_buttons ("Audio test running",
 				 GTK_WINDOW (gw->druid_window),
 				 (enum GtkDialogFlags) 
-				 (GTK_DIALOG_DESTROY_WITH_PARENT),
+				 (GTK_DIALOG_DESTROY_WITH_PARENT
+				  | GTK_DIALOG_MODAL),
 				 GTK_STOCK_OK,
 				 GTK_RESPONSE_ACCEPT,
 				 NULL);
   msg = 
-    g_strdup_printf (_("GnomeMeeting is now recording from %s and playing back to %s. Please say \"1 2 3\" in your microphone, you should hear yourself back into the speakers in 4 seconds.\n\nRecording... Please talk."), 
+    g_strdup_printf (_("GnomeMeeting is now recording from %s and playing back to %s. Please say \"1 2 3\" in your microphone, you should hear yourself back into the speakers with a 4 seconds delay."), 
 		     (const char*) ep->GetSoundChannelRecordDevice (), 
 		     (const char*) ep->GetSoundChannelPlayDevice ());
-  label = gtk_label_new (msg);
-  gtk_label_set_line_wrap (GTK_LABEL (label), true);
+  test_label = gtk_label_new (msg);
+  gtk_label_set_line_wrap (GTK_LABEL (test_label), true);
   g_free (msg);
 
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), label,
-		      FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (test_dialog)->vbox), test_label,
+		      FALSE, FALSE, 2);
+  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (test_dialog)->vbox), 
+		      gtk_hseparator_new (), FALSE, FALSE, 2);
 
-  gtk_widget_show_all (GTK_WIDGET (dialog));
-  g_signal_connect (G_OBJECT (dialog), "response",
+  test_label = gtk_label_new (NULL);
+  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (test_dialog)->vbox), 
+		      test_label, FALSE, FALSE, 2);
+
+  g_signal_connect (G_OBJECT (test_dialog), "response",
 		    G_CALLBACK (dialog_response_cb), NULL);
-  gtk_window_set_transient_for (GTK_WINDOW (dialog),
+  gtk_window_set_transient_for (GTK_WINDOW (test_dialog),
 				GTK_WINDOW (gw->druid_window));
   gdk_threads_leave ();
 
@@ -462,13 +509,18 @@ void GMAudioTester::Main ()
   player = new GMAudioRP (this, ep->GetSoundChannelPlayDevice (), FALSE);
 
 
-  while (!stop) {
+  while (!stop && !player->IsTerminated () && !recorder->IsTerminated ()) {
 
     PThread::Current ()->Sleep (100);
   }
 
   delete (player);
   delete (recorder);
+
+  gdk_threads_enter ();
+  GTK_TOGGLE_BUTTON (dw->audio_test_button)->active = FALSE;
+  gtk_widget_queue_draw (GTK_WIDGET (dw->audio_test_button));
+  gdk_threads_leave ();
 
   free (buffer_ring);
 #endif

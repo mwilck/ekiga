@@ -816,7 +816,9 @@ gnomemeeting_init_druid_audio_devices_page (GnomeDruid *druid, int p, int t)
   player =
     gconf_client_get_string (client, DEVICES_KEY "audio_player", NULL);
 
-  if (player && PString (player).Find ("phone") != P_MAX_INDEX)
+  if (player && 
+      (PString (player).Find ("phone") != P_MAX_INDEX
+       || PString (player).Find (_("No device found")) != P_MAX_INDEX))
     gtk_widget_set_sensitive (dw->audio_test_button, false);
   
   gtk_table_attach (GTK_TABLE (table), dw->audio_test_button, 2, 3, 3, 4,

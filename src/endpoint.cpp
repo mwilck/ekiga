@@ -238,8 +238,9 @@ GMH323EndPoint::GMH323EndPoint ()
 
   SetNoMediaTimeout (PTimeInterval (0, 15, 0));
   ILSTimer.SetNotifier (PCREATE_NOTIFIER(OnILSTimeout));
-
   ils_registered = false;
+
+  RTPTimer.SetNotifier (PCREATE_NOTIFIER(OnRTPTimeout));
 
   /* Update general configuration */
   UpdateConfig ();
@@ -1158,6 +1159,10 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   int bitrate = 2;
   double frame_time = 0.0;
 
+
+  /* Start refreshing the stats */
+  RTPTimer.RunContinuous (PTimeInterval (0, 1));
+
   
   /* Remote Name and application */
   utf8_app = gnomemeeting_get_utf8 (gnomemeeting_pstring_cut (app));
@@ -1600,6 +1605,8 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
  
   /* We update the stats part */
+  RTPTimer.Stop ();
+
   gnomemeeting_threads_enter ();
   gtk_label_set_text (GTK_LABEL (gw->remote_name), "");
   memset ((void *) rtp, 0, sizeof (struct _GmRtpData));
@@ -2049,13 +2056,14 @@ GMH323EndPoint::GetDeviceVolume (unsigned int &play_vol,
 
 
 void 
-GMH323EndPoint::OnRTPStatistics (const H323Connection &con, 
-				 const RTP_Session &rtp_session) const
+GMH323EndPoint::OnRTPTimeout (PTimer &, INT)
 {
+  int rtt = 0;
   int jitter_buffer_size = 0;
-  RTP_Session *session = NULL;
   RTP_Session *audio_session = NULL;
   RTP_Session *video_session = NULL;
+
+  H323Connection *con = NULL;
 
   GmRtpData *rtp = NULL; 
   GmWindow *gw = NULL;
@@ -2071,29 +2079,24 @@ GMH323EndPoint::OnRTPStatistics (const H323Connection &con,
   rtp = MyApp->GetRtpData ();
   gw = MyApp->GetMainWindow ();
 
-  if (con.GetConnectionStartTime () == PTime (0))
+  con = FindConnectionWithLock (GetCurrentCallToken ());
+
+  if (!con)
     return;
 
-  PTimeInterval t =
-    PTime () - con.GetConnectionStartTime();
+  if (con->GetConnectionStartTime () == PTime (0)) {
 
-
-  /* Set the report time interval */
-  for (int i = 0 ; i < 2 ; i++) {
-
-    session = con.GetSession (i);
-    if (session) {
-
-      session->SetTxStatisticsInterval (60);
-      session->SetRxStatisticsInterval (60);
-    }
+    con->Unlock ();
+    return;
   }
 
+  PTimeInterval t =
+    PTime () - con->GetConnectionStartTime();
 
   audio_session = 
-    con.GetSession(RTP_Session::DefaultAudioSessionID);	  
+    con->GetSession(RTP_Session::DefaultAudioSessionID);	  
   video_session = 
-    con.GetSession(RTP_Session::DefaultVideoSessionID);
+    con->GetSession(RTP_Session::DefaultVideoSessionID);
 	  
 
   if (audio_session) {
@@ -2189,13 +2192,15 @@ GMH323EndPoint::OnRTPStatistics (const H323Connection &con,
 			/ (float) received_packets);
   }
 
+  rtt = con->GetRoundTripDelay().GetMilliSeconds();
       
+  con->Unlock ();
 
 
   gdk_threads_enter ();
   gnomemeeting_statusbar_push (gw->statusbar, msg);
   gchar *stats_msg = 
-    g_strdup_printf (_("Lost packets: %.1f %%\nLate packets: %.1f %%\nRound-trip delay: %d ms\nJitter buffer: %d ms"), lost_packets_per, late_packets_per, (int) con.GetRoundTripDelay().GetMilliSeconds(), int (jitter_buffer_size / 8));
+    g_strdup_printf (_("Lost packets: %.1f %%\nLate packets: %.1f %%\nRound-trip delay: %d ms\nJitter buffer: %d ms"), lost_packets_per, late_packets_per, (int) rtt, int (jitter_buffer_size / 8));
   gtk_label_set_text (GTK_LABEL (gw->stats_label), stats_msg);
   g_free (stats_msg);
 

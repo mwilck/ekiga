@@ -1,3 +1,18 @@
+2003-09-04 Damien Sandras  <dsandras@seconix.com>
+
+	* src/config.cpp: Disable the druid audio test button when
+	no devices are found.
+	
+	* src/druid.cpp: See above.
+	
+	* src/endpoint.cpp, src/endpoint.h: Use a normal PNOTIFIER Timer to 
+	display the statistics every second in a call.
+
+	* src/sound_handling.cpp, src/sound_handling.h: Display an informative
+	popup when tests are running if the devices are successfully opened.
+	Disable test button when a test has failed. Made the informative
+	dialog MODAL.
+	
 2003-09-03 Damien Sandras  <dsandras@seconix.com>
 
 	* src/sound_handling.cpp: Added popup.
