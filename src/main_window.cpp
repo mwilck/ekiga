@@ -144,19 +144,6 @@ gint StressTest (gpointer data)
 }
 
 
-gint IdleUpdate (gpointer data)
-{
-  gdk_threads_enter ();
-  while (gtk_events_pending ())
-    gtk_main_iteration ();
-  gdk_threads_leave ();
-
-  PThread::Current ()->Sleep (50);
-  
-  return true;
-}
-
-
 gint AppbarUpdate (gpointer data)
 {
   long minutes = 0, seconds = 0;
@@ -1137,7 +1124,7 @@ gnomemeeting_init (GmWindow *gw,
 
 #ifdef SPEEX_CODEC
   /* New Speex Audio codec in 0.95 (all Unix versions of 0.95 will have it)
-     Also disable Fast Start and enable Tunneling */
+     Also enable Fast Start and enable Tunneling */
   if (gconf_client_get_int (client, GENERAL_KEY "version", NULL) < 95) {
 
     GSList *list = NULL;
@@ -1156,7 +1143,7 @@ gnomemeeting_init (GmWindow *gw,
 
     g_slist_free (list);
 
-    gconf_client_set_bool (client, GENERAL_KEY "fast_start", false, NULL);
+    gconf_client_set_bool (client, GENERAL_KEY "fast_start", true, NULL);
     gconf_client_set_bool (client, GENERAL_KEY "h245_tunneling", true, NULL);
   }
 #endif
@@ -2031,10 +2018,8 @@ int main (int argc, char ** argv, char ** envp)
   gint timeout = gtk_timeout_add (500, (GtkFunction) AppbarUpdate, rtp);
   g_object_set_data (G_OBJECT (gm), "timeout", GINT_TO_POINTER (timeout));
 
-  gtk_idle_add ((GtkFunction) IdleUpdate, NULL);
-  
-  /*  gtk_timeout_add (10000, (GtkFunction) StressTest, 
-      NULL);*/
+  //  gtk_timeout_add (15000, (GtkFunction) StressTest, 
+  //		   NULL);
   
 
   /* The GTK loop */

@@ -1734,7 +1734,7 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
        vg->Stop ();
      else 
        vg->Open (FALSE, TRUE); /* Do not grab, synchronous opening */
-     
+
      gnomemeeting_threads_enter ();
      
      /* Here, the grabber is opened */

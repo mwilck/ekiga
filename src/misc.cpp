@@ -121,38 +121,35 @@ gnomemeeting_button (gchar *lbl, GtkWidget *pixmap)
 void 
 gnomemeeting_log_insert (GtkWidget *text_view, gchar *text)
 {
-  GtkTextIter start, end;
+  GtkTextIter end;
   GtkTextMark *mark;
   GtkTextBuffer *buffer;
-
+  
   time_t *timeptr;
   char *time_str;
+  gchar *text_buffer = NULL;
 
   time_str = (char *) malloc (21);
   timeptr = new (time_t);
 
   time (timeptr);
-  strftime(time_str, 20, "%H:%M:%S ", localtime (timeptr));
+  strftime(time_str, 20, "%H:%M:%S", localtime (timeptr));
+
+  text_buffer = g_strdup_printf ("%s %s\n", time_str, text);
 
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (text_view));
 
-  gtk_text_buffer_get_bounds (GTK_TEXT_BUFFER (buffer), 
-			      &start, &end);
-  gtk_text_buffer_insert (GTK_TEXT_BUFFER (buffer), 
-			  &end, time_str, -1);
-  gtk_text_buffer_get_bounds (GTK_TEXT_BUFFER (buffer), 
-			      &start, &end);
-  gtk_text_buffer_insert (GTK_TEXT_BUFFER (buffer), &end, text, -1);
-  gtk_text_buffer_get_bounds (GTK_TEXT_BUFFER (buffer), 
-			      &start, &end);
-  gtk_text_buffer_insert (GTK_TEXT_BUFFER (buffer), &end, "\n", -1);
+  gtk_text_buffer_get_iter_at_offset (GTK_TEXT_BUFFER (buffer), &end, -1);
+  gtk_text_buffer_insert (GTK_TEXT_BUFFER (buffer), &end, text_buffer, -1);
 
-  mark = gtk_text_buffer_create_mark (GTK_TEXT_BUFFER (buffer), 
-				      "current-position", &end, FALSE);
+  mark = gtk_text_buffer_get_mark (GTK_TEXT_BUFFER (buffer), 
+				   "current-position");
 
-  gtk_text_view_scroll_to_mark (GTK_TEXT_VIEW (text_view), mark, 
-				0.0, FALSE, 0,0);
+  if (mark)
+    gtk_text_view_scroll_to_mark (GTK_TEXT_VIEW (text_view), mark, 
+ 				  0.0, FALSE, 0,0);
   
+  g_free (text_buffer);
   free (time_str);
   delete (timeptr);
 }

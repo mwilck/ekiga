@@ -51,6 +51,9 @@ void gnomemeeting_init_calls_history_window ()
 {
   GtkWidget *frame = NULL;
   GtkWidget *scr = NULL;
+  GtkTextBuffer *buffer = NULL;
+  GtkTextMark *mark;
+  GtkTextIter end;
 
   /* Get the structs from the application */
   GmWindow *gw = gnomemeeting_get_main_window (gm);
@@ -76,6 +79,12 @@ void gnomemeeting_init_calls_history_window ()
   gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (gw->calls_history_text_view),
 			       GTK_WRAP_WORD);
 
+  buffer = 
+    gtk_text_view_get_buffer (GTK_TEXT_VIEW (gw->calls_history_text_view));
+  gtk_text_buffer_get_end_iter (buffer, &end);
+  mark = gtk_text_buffer_create_mark (GTK_TEXT_BUFFER (buffer), 
+				      "current-position", &end, FALSE);
+
   scr = gtk_scrolled_window_new (NULL, NULL);
   gtk_container_add (GTK_CONTAINER (frame), scr);
   gtk_container_set_border_width (GTK_CONTAINER (frame), 2);
@@ -97,6 +106,10 @@ void gnomemeeting_init_history_window ()
 {
   GtkWidget *frame = NULL;
   GtkWidget *scr = NULL;
+  GtkTextMark *mark = NULL;
+  GtkTextBuffer *buffer = NULL;
+  GtkTextIter end;
+
 
   /* Get the structs from the application */
   GmWindow *gw = gnomemeeting_get_main_window (gm);
@@ -122,6 +135,12 @@ void gnomemeeting_init_history_window ()
 			       GTK_WRAP_WORD);
   gtk_text_view_set_cursor_visible (GTK_TEXT_VIEW (gw->history_text_view), 
 				    FALSE);
+
+  buffer = 
+    gtk_text_view_get_buffer (GTK_TEXT_VIEW (gw->history_text_view));
+  gtk_text_buffer_get_end_iter (buffer, &end);
+  mark = gtk_text_buffer_create_mark (GTK_TEXT_BUFFER (buffer), 
+				      "current-position", &end, FALSE);
 
   scr = gtk_scrolled_window_new (NULL, NULL);
   gtk_container_add (GTK_CONTAINER (frame), scr);

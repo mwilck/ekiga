@@ -202,9 +202,8 @@ gnomemeeting_dialog (GtkWindow *parent,
   char buffer[1025];
   
   vsnprintf (buffer, 1024, format, args);
-  
   dialog = gtk_message_dialog_new (parent, 
-                                   GTK_DIALOG_MODAL,
+                                   GTK_DIALOG_DESTROY_WITH_PARENT,
                                    type,
                                    GTK_BUTTONS_OK,
                                    buffer);
@@ -213,5 +212,5 @@ gnomemeeting_dialog (GtkWindow *parent,
                             G_CALLBACK (gtk_widget_destroy),
                             GTK_OBJECT (dialog));
   
-  gtk_widget_show_all (dialog);
+  gtk_widget_show (dialog);
 }

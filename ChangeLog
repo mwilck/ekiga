@@ -1,5 +1,22 @@
 2003-01-05 Damien Sandras  <dsandras@seconix.com>
 
+	* gnomemeeting.schemas.in.in: Fixed default for fast start.
+
+	* lib/dialog.c: Added GTK_DESTROY_WITH_PARENT for dialogs.
+
+	* src/config.cpp: Fixed View menus updates.
+
+	* src/endpoint.cpp: Reorganised some code.
+
+	* src/main_window.cpp: Reorganised startup sequence.
+
+	* src/misc.cpp: Fixed gnomemeeting_log_insert. An unuseful
+	mark was created there.
+
+	* src/tools.cpp: Creates the mark when building the window.
+
+2003-01-05 Damien Sandras  <dsandras@seconix.com>
+
 	* src/ldap_window.cpp: Selects the first server on startup.
 
 	* src/pref_window.cpp: Made the personal data entries larger.
