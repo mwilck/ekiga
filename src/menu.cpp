@@ -45,6 +45,7 @@
 #include "gnomemeeting.h"
 #include "misc.h"
 #include "chat_window.h"
+#include "ldap_window.h"
 #include "stock-icons.h"
 #include "gtk_menu_extensions.h"
 
@@ -305,7 +306,7 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 
       GTK_MENU_SEPARATOR,
 
-      GTK_SUBMENU_NEW(_("Speed dials")),
+      GTK_SUBMENU_NEW("speed_dials", _("Speed dials")),
 
       GTK_MENU_SEPARATOR,
 
@@ -388,7 +389,7 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 			    (gpointer) VIEW_KEY "show_status_bar",
 			    show_status_bar, TRUE),
 
-      GTK_SUBMENU_NEW(_("Control Panel")),
+      GTK_SUBMENU_NEW("control_panel", _("Control Panel")),
 
       GTK_MENU_RADIO_ENTRY("statistics", _("Statistics"), 
 			   _("View audio/video transmission and reception statistics"),
@@ -530,10 +531,26 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
   gtk_build_menu (menubar, gnomemeeting_menu, accel, gw->statusbar);
   gtk_widget_show_all (GTK_WIDGET (menubar));
 
+  gnomemeeting_addressbook_get_speed_dials ();
   if (!gconf_client_get_bool (client, SERVICES_KEY "enable_microtelco", NULL))
     gtk_widget_hide (gtk_menu_get_widget (menubar, "microtelco"));
     
   return menubar;
+}
+
+
+/* A deplacer dans gtk_mlenu */
+static void
+gnomemeeting_speed_dials_menu_update ()
+{
+  GmWindow *gw = NULL;
+  GtkWidget *menu = NULL;
+
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
+
+  menu = gtk_menu_get_widget (gw->main_menu, "speed_dials");
+
+  
 }
 
 

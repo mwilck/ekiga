@@ -2047,7 +2047,7 @@ add_contact_section (const char *c_section,
   if (!is_contact_section_member_of_addressbook (c_section, is_group)) {
 
     contacts_sections =
-      g_slist_append (contacts_sections, (void *) contact_section);
+      g_slist_append (contacts_sections, g_strdup (contact_section));
 	  
     gconf_client_set_list (client, gconf_key, GCONF_VALUE_STRING, 
 			   contacts_sections, NULL);
@@ -2195,7 +2195,7 @@ add_contact_to_group (const char *contact_name,
       /* Only reinsert the contact if the group is selected for him,
 	 otherwise, only delete him from the group */
       group_content =
-	g_slist_insert (group_content, (gpointer) contact_info,
+	g_slist_insert (group_content, g_strdup (contact_info),
 			g_slist_position (group_content,
 					  group_content_iter));
 	      
@@ -2205,7 +2205,7 @@ add_contact_to_group (const char *contact_name,
     }
     else
       group_content =
-	g_slist_append (group_content, (gpointer) contact_info);
+	g_slist_append (group_content, g_strdup (contact_info));
     
     gconf_client_set_list (client, gconf_key, GCONF_VALUE_STRING,
 			   group_content, NULL);
@@ -2330,7 +2330,7 @@ rename_contact_section (const char *contact_section_old,
 	g_slist_free_1 (contacts_sections_iter);
 
 	contacts_sections =
-	  g_slist_insert (contacts_sections, (gpointer) new_name, pos);
+	  g_slist_insert (contacts_sections, g_strdup (new_name), pos);
 
 	/* If it was a group, copy the old group content to the new one
 	   and unset the old key */
@@ -2464,13 +2464,7 @@ get_selected_contact_info (gchar **contact_section,
 }
 
 
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Updates the menu sensitivity following what is selected
- *                 in the addressbook: a contact of a group, a contact section,
- *                 a contact of ILS. The "Call" and "Transfer" menu entries
- *                 are also updated.
- * PRE          :  /
- */
+/* The functions */
 void
 gnomemeeting_addressbook_update_menu_sensitivity ()
 {
@@ -2548,7 +2542,6 @@ gnomemeeting_addressbook_update_menu_sensitivity ()
 }
 
 
-/* The functions */
 GtkWidget *
 gnomemeeting_ldap_window_new (GmLdapWindow *lw)
 {
@@ -3442,6 +3435,73 @@ gnomemeeting_addressbook_get_url_from_speed_dial (const char *url)
       if (contact_info [2] && strcmp (contact_info [2], "")
 	  && !strcmp (contact_info [2], (const char *) url)) 
 	result = GMURL (contact_info [1]);
+
+      g_strfreev (contact_info);
+      group_content_iter = g_slist_next (group_content_iter);
+    }
+
+    g_free (group_content_gconf_key);
+    g_slist_free (group_content);
+
+    groups_iter = g_slist_next (groups_iter);
+    g_free (group_name);
+  }
+
+  g_slist_free (groups);
+
+  return result;
+}
+
+
+GSList *
+gnomemeeting_addressbook_get_speed_dials ()
+{
+  gchar *group_content_gconf_key = NULL;
+  gchar *group_name = NULL;
+  gchar *speed_dial_info = NULL;
+  char **contact_info = NULL;
+  
+  GSList *group_content = NULL;
+  GSList *group_content_iter = NULL;
+  GSList *groups = NULL;
+  GSList *groups_iter = NULL;
+
+  GSList *result = NULL;
+
+  GConfClient *client = NULL;
+
+
+  client = gconf_client_get_default ();
+
+  groups =
+    gconf_client_get_list (client, CONTACTS_KEY "groups_list",
+			   GCONF_VALUE_STRING, NULL);
+  groups_iter = groups;
+  
+  while (groups_iter && groups_iter->data) {
+    
+    group_name = g_utf8_strdown ((char *) groups_iter->data, -1);
+    group_content_gconf_key =
+      g_strdup_printf ("%s%s", CONTACTS_GROUPS_KEY, group_name);
+		       
+
+    group_content =
+      gconf_client_get_list (client, group_content_gconf_key,
+			     GCONF_VALUE_STRING, NULL);
+    group_content_iter = group_content;
+    
+    while (group_content_iter
+	   && group_content_iter->data) {
+      
+      contact_info =
+	g_strsplit ((char *) group_content_iter->data, "|", 0);
+
+      if (contact_info [2] && strcmp (contact_info [2], "")) {
+
+	speed_dial_info = 
+	  g_strdup_printf ("%s|%s", contact_info [0], contact_info [2]);
+	result = g_slist_append (result, (gpointer) speed_dial_info);
+      }
 
       g_strfreev (contact_info);
       group_content_iter = g_slist_next (group_content_iter);
