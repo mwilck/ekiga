@@ -157,7 +157,7 @@ void about_callback (GtkWidget *widget, gpointer data)
 			     copyright character if your character set allows
 			     it (Hint: iso-8859-1 is one of the character sets
 			     that has this symbol). */
-			  _("(C) 2000, 2001 Damien Sandras"),
+			  _("Copyright (C) 2000, 2001, 2002 Damien Sandras"),
 			  authors,
 			  _("GnomeMeeting is an H.323 compliant program for GNOME.\nThis program is not supported by Microsoft."),
 			  "/usr/share/pixmaps/gnomemeeting-logo.png");
