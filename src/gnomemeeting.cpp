@@ -147,8 +147,6 @@ GnomeMeeting::~GnomeMeeting()
     gtk_widget_destroy (history_window);
   if (calls_history_window)
     gtk_widget_destroy (calls_history_window);
-  if (history_window)
-    gtk_widget_destroy (history_window);
   if (gm)
     gtk_widget_destroy (gm);
   if (druid_window)
