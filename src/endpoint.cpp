@@ -785,6 +785,8 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   gnomemeeting_threads_enter ();
   gtk_entry_set_text (GTK_ENTRY (gw->remote_name), "");
+  gtk_editable_delete_text (GTK_EDITABLE (gw->chat_text),
+			    0, -1);
   
   SetCurrentConnection (NULL);
   SetCallingState (0);

@@ -1,5 +1,13 @@
 2002-02-24  Damien Sandras  <dsandras@seconix.com>
 
+	* src/endpoint.cpp: Clear the chat window at the end of a call.
+
+	* src/connection.cpp: Fixed the chat bug (received msg's not displayed).
+	Added function that displays the chat window if it was closed while you
+	receive a message.
+	
+2002-02-24  Damien Sandras  <dsandras@seconix.com>
+
 	* src/videograbber.cpp: Added small delay in the Reset for 
 	buggy drivers.
 	

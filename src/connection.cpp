@@ -324,11 +324,11 @@ void GMH323Connection::OnUserInputString(const PString & value)
 
   PString remote = GetRemotePartyName ();
 
-  PINDEX bracket = remote.Find('[');
+  PINDEX bracket = remote.Find(" [");
   if (bracket != P_MAX_INDEX)
     remote = remote.Left (bracket);
 
-  bracket = remote.Find('(');
+  bracket = remote.Find(" (");
   if (bracket != P_MAX_INDEX)
     remote = remote.Left (bracket);
 
@@ -348,15 +348,16 @@ void GMH323Connection::OnUserInputString(const PString & value)
   gtk_text_insert (GTK_TEXT (gw->chat_text), lucida_font, &color, NULL, msg, -1);
   g_free (msg);
 
-  bracket = value.Find("MSG");
-  if (bracket != P_MAX_INDEX)
-    val = value.Left (bracket);
-
+  val = value.Mid (3);
+  
   msg = g_strdup_printf ("%s\n", (const char *) val);
   gtk_text_insert (GTK_TEXT (gw->chat_text), NULL, &gw->chat_text->style->black, 
 		   NULL, msg, -1);
   g_free (msg);
   gtk_text_thaw (GTK_TEXT (gw->chat_text));
+
+  if (!GTK_WIDGET_VISIBLE (gw->chat_window))
+    gtk_widget_show_all (gw->chat_window);
 
   gnomemeeting_threads_leave ();
 }
