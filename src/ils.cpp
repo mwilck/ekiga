@@ -102,10 +102,11 @@ BOOL GMILSClient::CheckFieldsConfig (BOOL registering)
 
 
   if (registering) {
+    
+    if ((!firstname || PString (firstname).Trim ().IsEmpty ())
+        || (!mail || PString (mail).Trim ().IsEmpty () 
+            || PString (mail).Find ("@") == P_MAX_INDEX)) {
 
-    if ((firstname == NULL) || (!strcmp (firstname, ""))
-	|| (mail == NULL) || (!strcmp (mail, ""))) {
-      
       /* No need to display that for unregistering */
       gnomemeeting_threads_enter ();
       gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Invalid parameters"), _("Please provide your first name and e-mail in the Personal Data section in order to be able to register to the user directory."));
