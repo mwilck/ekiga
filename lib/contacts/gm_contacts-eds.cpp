@@ -48,12 +48,11 @@ extern "C" {
 
 
 static ESourceGroup *
-gnomemeeting_addressbook_get_local_source_group ()
+gnomemeeting_addressbook_get_local_source_group (ESourceList **source_list)
 {
   EBook *ebook = NULL;
   
   ESourceGroup *result = NULL;
-  ESourceList *source_list = NULL;
   
   GSList *source_groups = NULL;
   GSList *addressbooks = NULL;
@@ -66,9 +65,9 @@ gnomemeeting_addressbook_get_local_source_group ()
 
 
   /* Get the list of possible sources */
-  if (e_book_get_addressbooks (&source_list, NULL)) {
+  if (e_book_get_addressbooks (source_list, NULL)) {
 
-    source_groups = e_source_list_peek_groups (source_list);
+    source_groups = e_source_list_peek_groups (*source_list);
 
     l = source_groups;
     while (l) {
@@ -379,6 +378,7 @@ gnomemeeting_addressbook_get_contacts (GmAddressbook *addressbook,
 gboolean 
 gnomemeeting_addressbook_add (GmAddressbook *addressbook)
 {
+  ESourceList *list = NULL;
   ESource *source = NULL;
   ESourceGroup *source_group = NULL;
 
@@ -389,10 +389,12 @@ gnomemeeting_addressbook_add (GmAddressbook *addressbook)
   e_source_set_name (source, addressbook->name);
   e_source_set_relative_uri (source, e_source_peek_uid (source));
 
-  source_group = gnomemeeting_addressbook_get_local_source_group ();
+  source_group = gnomemeeting_addressbook_get_local_source_group (&list);
 
   e_source_group_add_source (source_group, source, -1); 
 
+  e_source_list_sync (list, NULL);
+  
   return FALSE;
 }
 
