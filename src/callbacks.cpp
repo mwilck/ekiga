@@ -124,9 +124,10 @@ void disconnect_cb (GtkWidget *widget, gpointer data)
 void about_callback (GtkWidget *widget, gpointer parent_window)
 {
   GtkWidget *abox;
+  GdkPixbuf *pixbuf = NULL;
+  gchar *file;
 	
-  const gchar *authors [] =
-    {
+  const gchar *authors [] = {
       "Damien Sandras <dsandras@seconix.com>",
       "",
       N_("Contributors:"),
@@ -142,37 +143,46 @@ void about_callback (GtkWidget *widget, gpointer parent_window)
       "Alp Toker <alp@atoker.com>",
       "Paul <paul666@mailandnews.com>",
       NULL
-    };
+  };
 
-  const gchar *translators [] =
-    {
-      N_("I18n Maintainer:"),
+  const gchar *translators [] = {
+      N_("Internationalisation Maintainer:"),
       "Christian Rose <menthos@gnu.org>",
-      /* Translators: Replace "English" with the name of your language. */
-      N_("English Translation:"),
-      /* Translators: Replace my name with your name. */
-      N_("Damien Sandras <dsandras@seconix.com>"),
       NULL
-    };
+  };
 	
   authors [2] = gettext (authors [2]);
   authors [6] = gettext (authors [6]);
   translators [0] = gettext (translators [0]);
-  translators [2] = gettext (translators [2]);
-  translators [3] = gettext (translators [3]);
+  
+  const char *documenters [] = {
+      NULL
+  };
 
-  abox = gnome_about_new (PACKAGE,
+  /* Translators: Please write translator credits here, and
+   * seperate names with \n */
+  const char *translator_credits = _("translator_credits");
+
+  file = gnome_program_locate_file (NULL, GNOME_FILE_DOMAIN_PIXMAP, "gnomemeeting-logo-icon.png", TRUE, NULL);
+  pixbuf = gdk_pixbuf_new_from_file (file, NULL);
+  g_free(file);
+
+  abox = gnome_about_new ("GnomeMeeting",
 			  VERSION,
 			  /* Translators: Please change the (C) to a real
 			     copyright character if your character set allows
 			     it (Hint: iso-8859-1 is one of the character sets
 			     that has this symbol). */
-			  _("Copyright (C) 2000, 2001, 2002 Damien Sandras"),
-			  _("GnomeMeeting is a full-featured H.323 videoconferencing application."),
-			  authors,
-			  NULL,
-			  "me",
-			  NULL);
+			  _("Copyright (C) 2000, 2002 Damien Sandras"),
+                          /* Translators: Please test to see if your translation
+                           * looks OK and fits within the box */
+			  _("GnomeMeeting is a full-featured H.323\nvideo conferencing application."),
+			  (const char **) authors,
+                          (const char **) documenters,
+                          strcmp (translator_credits, "translator_credits") != 0 ? 
+                          translator_credits : "No translators, English by\n"
+                          "Damien Sandras <dsandras@seconix.com>",
+			  pixbuf);
 
   gtk_window_set_transient_for (GTK_WINDOW (abox), GTK_WINDOW (parent_window));
   gtk_window_present (GTK_WINDOW (abox));

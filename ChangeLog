@@ -1,3 +1,12 @@
+2002-05-06  Kenneth Rohde Christiansen  <kenneth@gnu.org>
+
+	* src/callbacks.cpp (about_callback): 
+	- Hard coded the name GnomeMeeting as gnomeMeeting looks weird. 
+	- Added support for having translators in the translator tab.
+	- Made stuff look better with GNOME 2.
+	- Added translation comments.
+	- Added the GnomeMeeting logo icon.
+	
 2002-05-05  Kenneth Rohde Christiansen  <kenneth@gnu.org>
 
 	* pixmaps/inline_emoticons.h: Added some emoticons from gtkhtml.
@@ -11,11 +20,11 @@
 
 	* src/callbacks.cpp: Added common callback to call the SavePicture function.
 	
-	* src/endpoint.cpp: Added function to save the current image in a png.
+	* src/endpoint.cpp: Added function to save the current image as a png.
 	
 	* src/gdkvideoio.cpp: Checked mutexes.
 	
-	* src/menu.cpp: Added Save option to the file menu.
+	* src/menu.cpp: Added save option to the file menu.
 	
 	* src/videograbber.cpp: Initialized variable. GDKVideoOutputDevice set to NULL when
 	deleted.
