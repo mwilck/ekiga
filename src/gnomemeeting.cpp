@@ -47,29 +47,19 @@
 GtkWidget *gm;
 GnomeMeeting *MyApp;	
 
-#if 0
-/* DESCRIPTION  :  This Timer is called when Gnome erroneously thinks that
- *                 it has nothing to do.
- * BEHAVIOR     :  It treats signals if needed.
- * PRE          :  /
- */
-static gint gnome_idle_timer (void);
 
 /* GTK Callbacks */
-
-gint gnome_idle_timer (void)
+gint StressTest (gpointer data)
 {
-  /* we can't call gnomemeeting_threads_enter as idles and timers
-     are executed in the main thread */
   gdk_threads_enter ();
-  while (gtk_events_pending())
-    gtk_main_iteration(); 
-  gdk_threads_leave ();
 
-  usleep (500);
+  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->connect_button), 
+				!GTK_TOGGLE_BUTTON (gw->connect_button)->active);
+
+  gdk_threads_leave ();
   return TRUE;
 }
-#endif
 
 gint AppbarUpdate (gpointer data)
 {
@@ -214,7 +204,7 @@ void GnomeMeeting::Connect()
     
     /* if we call somebody */
     if (!call_address.IsEmpty ()) {
-      
+
       call_number++;
       gchar *msg = NULL;
       endpoint->SetCurrentConnection (endpoint->MakeCall 
@@ -360,11 +350,12 @@ int main (int argc, char ** argv, char ** envp)
 
   /* Quick hack to make the GUI refresh even on high load from the other
      threads */
- //  gtk_idle_add ((GtkFunction) gnome_idle_timer, gw);
 
   gtk_timeout_add (1000, (GtkFunction) AppbarUpdate, 
  		   rtp);
 
+//  gtk_timeout_add (5000, (GtkFunction) StressTest, 
+//  		   NULL);
 
   /* The GTK loop */
   gtk_main ();
