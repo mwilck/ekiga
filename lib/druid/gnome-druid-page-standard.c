@@ -124,96 +124,96 @@ gnome_druid_page_standard_class_init (GnomeDruidPageStandardClass *class)
 	g_object_class_install_property (gobject_class,
 					 PROP_TITLE,
 					 g_param_spec_string ("title",
-							      _("Title"),
-							      _("Title of the druid"),
+							      "Title",
+							      "Title of the druid",
 							      NULL,
 							      G_PARAM_READWRITE));
 
 	g_object_class_install_property (gobject_class,
 					 PROP_LOGO,
 					 g_param_spec_object ("logo",
-							      _("Logo"),
-							      _("Logo image"),
+							      "Logo",
+							      "Logo image",
 							      GDK_TYPE_PIXBUF,
 							      G_PARAM_READWRITE));
 
 	g_object_class_install_property (gobject_class,
 					 PROP_TOP_WATERMARK,
 					 g_param_spec_object ("top_watermark",
-							      _("Top Watermark"),
-							      _("Watermark image for the top"),
+							      "Top Watermark",
+							      "Watermark image for the top",
 							      GDK_TYPE_PIXBUF,
 							      G_PARAM_READWRITE));
 
 	g_object_class_install_property (gobject_class,
 					 PROP_TITLE_FOREGROUND,
 					 g_param_spec_string ("title_foreground",
-							      _("Title Foreground"),
-							      _("Foreground color of the title"),
+							      "Title Foreground",
+							      "Foreground color of the title",
 							      NULL,
 							      G_PARAM_WRITABLE));
 
 	g_object_class_install_property (gobject_class,
 					 PROP_TITLE_FOREGROUND_GDK,
 					 g_param_spec_boxed ("title_foreground_gdk",
-							     _("Title Foreground Color"),
-							     _("Foreground color of the title as a GdkColor"),
+							     "Title Foreground Color",
+							     "Foreground color of the title as a GdkColor",
 							     GDK_TYPE_COLOR,
 							     G_PARAM_READWRITE));
 
 	g_object_class_install_property (gobject_class,
 					 PROP_TITLE_FOREGROUND_SET,
 					 g_param_spec_boolean ("title_foreground_set",
-							       _("Title Foreground color set"),
-							       _("Foreground color of the title is set"),
+							       "Title Foreground color set",
+							       "Foreground color of the title is set",
 							       FALSE,
 							       G_PARAM_READWRITE));
 
 	g_object_class_install_property (gobject_class,
 					 PROP_BACKGROUND,
 					 g_param_spec_string ("background",
-							      _("Background Color"),
-							      _("Background color"),
+							      "Background Color",
+							      "Background color",
 							      NULL,
 							      G_PARAM_WRITABLE));
 
 	g_object_class_install_property (gobject_class,
 					 PROP_BACKGROUND_GDK,
 					 g_param_spec_boxed ("background_gdk",
-							     _("Background Color"),
-							     _("Background color as a GdkColor"),
+							     "Background Color",
+							     "Background color as a GdkColor",
 							     GDK_TYPE_COLOR,
 							     G_PARAM_READWRITE));
 
 	g_object_class_install_property (gobject_class,
 					 PROP_BACKGROUND_SET,
 					 g_param_spec_boolean ("background_set",
-							       _("Background color set"),
-							       _("Background color is set"),
+							       "Background color set",
+							       "Background color is set",
 							       FALSE,
 							       G_PARAM_READWRITE));
 
 	g_object_class_install_property (gobject_class,
 					 PROP_LOGO_BACKGROUND,
 					 g_param_spec_string ("logo_background",
-							      _("Logo Background Color"),
-							      _("Logo Background color"),
+							      "Logo Background Color",
+							      "Logo Background color",
 							      NULL,
 							      G_PARAM_WRITABLE));
 
 	g_object_class_install_property (gobject_class,
 					 PROP_LOGO_BACKGROUND_GDK,
 					 g_param_spec_boxed ("logo_background_gdk",
-							     _("Logo Background Color"),
-							     _("Logo Background color as a GdkColor"),
+							     "Logo Background Color",
+							     "Logo Background color as a GdkColor",
 							     GDK_TYPE_COLOR,
 							     G_PARAM_READWRITE));
 
 	g_object_class_install_property (gobject_class,
 					 PROP_LOGO_BACKGROUND_SET,
 					 g_param_spec_boolean ("logo_background_set",
-							       _("Logo Background color set"),
-							       _("Logo Background color is set"),
+							       "Logo Background color set",
+							       "Logo Background color is set",
 							       FALSE,
 							       G_PARAM_READWRITE));
 }

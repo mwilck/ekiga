@@ -151,16 +151,16 @@ gnome_druid_class_init (GnomeDruidClass *klass)
 	g_object_class_install_property (gobject_class,
 					 PROP_SHOW_FINISH,
 					 g_param_spec_boolean ("show_finish",
-							       _("Show Finish"),
-							       _("Show the 'Finish' button instead of the 'Next' button"),
+							       "Show Finish",
+							       "Show the 'Finish' button instead of the 'Next' button",
 							       FALSE,
 							       G_PARAM_READWRITE));
 
 	g_object_class_install_property (gobject_class,
 					 PROP_SHOW_HELP,
 					 g_param_spec_boolean ("show_help",
-							       _("Show Help"),
-							       _("Show the 'Help' button"),
+							       "Show Help",
+							       "Show the 'Help' button",
 							       FALSE,
 							       G_PARAM_READWRITE));
 }
