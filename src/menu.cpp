@@ -97,7 +97,7 @@ void GM_menu_init (GtkWidget *gapp, GM_window_widgets *gw)
       },
       {
 	GNOME_APP_UI_ITEM,
-	N_("_Notebook"), N_("View / hide the Notebook"),
+	N_("_Control Panel"), N_("View / hide the Control Panel"),
 	(void *)view_notebook_callback, gw, NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	NULL, GDK_CONTROL_MASK, NULL

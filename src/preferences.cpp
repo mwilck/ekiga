@@ -613,7 +613,7 @@ void init_pref_interface (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
 
   /* Show / hide the notebook at startup */
-  pw->show_notebook = gtk_check_button_new_with_label (_("Show Notebook"));
+  pw->show_notebook = gtk_check_button_new_with_label (_("Show Control Panel"));
   gtk_table_attach (GTK_TABLE (table), pw->show_notebook, 0, 2, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -623,7 +623,7 @@ void init_pref_interface (GtkWidget *notebook, GM_pref_window_widgets *pw,
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->show_notebook,
-			_("If enabled, the notebook is displayed"), NULL);
+			_("If enabled, the control panel is displayed"), NULL);
 
 
   /* Show / hide the statusbar at startup */

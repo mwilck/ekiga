@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
-"POT-Creation-Date: 2001-09-01 17:40+0200\n"
-"PO-Revision-Date: 2001-09-01 17:44+0200\n"
+"POT-Creation-Date: 2001-09-05 11:05+0200\n"
+"PO-Revision-Date: 2001-09-05 11:11+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -35,13 +35,17 @@ msgstr "Växla huvudfönstret"
 msgid "Contributors:"
 msgstr "Bidragsgivare:"
 
+#: src/callbacks.cpp:136
+msgid "I18n Maintainer:"
+msgstr "Internationaliseringsansvarig:"
+
 #. Translators: Please change the (C) to a real copyright
 #. character if your character set allows it.
-#: src/callbacks.cpp:143
+#: src/callbacks.cpp:148
 msgid "(C) 2000, 2001 Damien Sandras"
 msgstr "© 2000, 2001 Damien Sandras"
 
-#: src/callbacks.cpp:145
+#: src/callbacks.cpp:150
 msgid ""
 "GnomeMeeting is an H.323 compliant program for GNOME.\n"
 "This program is not supported by Microsoft."
@@ -49,7 +53,7 @@ msgstr ""
 "GnomeMeeting är ett H.323-kompatibelt program för GNOME.\n"
 "Detta program stöds inte av Microsoft."
 
-#: src/callbacks.cpp:165
+#: src/callbacks.cpp:166
 msgid "Are you sure you want to quit?"
 msgstr "Är du säker på att du vill avsluta?"
 
@@ -113,135 +117,149 @@ msgstr "Vägrar automatiskt inkommande samtal"
 msgid "Auto Answering Incoming Call"
 msgstr "Svarar automatiskt på inkommande samtal"
 
-#: src/endpoint.cpp:131 src/endpoint.cpp:147
+#: src/endpoint.cpp:136 src/endpoint.cpp:152
 msgid "Added H.261 CIF capability"
 msgstr "Lade till H.261 CIF-kapabilitet"
 
-#: src/endpoint.cpp:136 src/endpoint.cpp:143
+#: src/endpoint.cpp:141 src/endpoint.cpp:148
 msgid "Added H.261 QCIF capability"
 msgstr "Lade till H.261 QCIF-kapabilitet"
 
-#: src/endpoint.cpp:157
+#: src/endpoint.cpp:162
 msgid "Reinitialize the capabilities"
 msgstr "Initiera om kapabiliteterna"
 
-#: src/endpoint.cpp:166
+#: src/endpoint.cpp:171
 msgid "Added MS-GSM capability"
 msgstr "Lade till MS-GSM-kapabilitet"
 
-#: src/endpoint.cpp:174
+#: src/endpoint.cpp:179
 msgid "Added G.711-uLaw capability"
 msgstr "Lade till G.711-uLaw-kapabilitet"
 
-#: src/endpoint.cpp:182
+#: src/endpoint.cpp:187
 msgid "Added G.711-ALaw capability"
 msgstr "Lade till G.711-ALaw-kapabilitet"
 
-#: src/endpoint.cpp:189
+#: src/endpoint.cpp:194
 msgid "Added GSM-06.10 capability"
 msgstr "Lade till GSM-06.10-kapabilitet"
 
-#: src/endpoint.cpp:195
+#: src/endpoint.cpp:200
 msgid "Added LPC10 capability"
 msgstr "Lade till LPC10-kapabilitet"
 
 #. Translators: This is shown in the history.
-#: src/endpoint.cpp:277
+#: src/endpoint.cpp:282
 #, c-format
 msgid "Set Audio player device to %s"
 msgstr "Satte ljudspelarenhet till %s"
 
 #. Translators: This is shown in the history.
-#: src/endpoint.cpp:282
+#: src/endpoint.cpp:287
 #, c-format
 msgid "Set Audio recorder device to %s"
 msgstr "Satte ljudinspelningsenhet till %s"
 
-#: src/endpoint.cpp:363
+#: src/endpoint.cpp:388
 #, c-format
 msgid "Call from %s"
 msgstr "Samtal från %s"
 
-#: src/endpoint.cpp:420
+#: src/endpoint.cpp:445
 #, c-format
 msgid "Connected with %s using %s"
 msgstr "Ansluten till %s med %s"
 
-#: src/endpoint.cpp:428
+#: src/endpoint.cpp:453
 msgid "Connected"
 msgstr "Ansluten"
 
-#: src/endpoint.cpp:431
+#: src/endpoint.cpp:456
 msgid "Fast start enabled"
 msgstr "Snabbstart aktiverad"
 
-#: src/endpoint.cpp:433
+#: src/endpoint.cpp:458
 msgid "Fast start disabled"
 msgstr "Snabbstart deaktiverad"
 
-#: src/endpoint.cpp:436
+#: src/endpoint.cpp:461
 msgid "H.245 Tunnelling enabled"
 msgstr "H.245-tunnling aktiverad"
 
-#: src/endpoint.cpp:438
+#: src/endpoint.cpp:463
 msgid "H.245 Tunnelling disabled"
 msgstr "H.245-tunnling deaktiverad"
 
-#: src/endpoint.cpp:490
+#: src/endpoint.cpp:514
 msgid "Remote party has cleared the call"
 msgstr "Fjärrparten har nollställt samtalet"
 
-#: src/endpoint.cpp:495
+#: src/endpoint.cpp:519
 msgid "Remote party has stopped calling"
 msgstr "Fjärrparten har slutat ringa"
 
-#: src/endpoint.cpp:500 src/endpoint.cpp:520
+#: src/endpoint.cpp:524 src/endpoint.cpp:544
 msgid "Remote party did not accept your call"
 msgstr "Fjärrparten accepterade inte ditt anrop"
 
-#: src/endpoint.cpp:505
+#: src/endpoint.cpp:529
 msgid "Remote party did not answer your call"
 msgstr "Fjärrparten svarade inte på ditt anrop"
 
-#: src/endpoint.cpp:510
+#: src/endpoint.cpp:534
 msgid "This call ended abnormally"
 msgstr "Samtalet avslutades onormalt"
 
-#: src/endpoint.cpp:515
+#: src/endpoint.cpp:539
 msgid "Could not find common codec with remote party"
 msgstr "Kunde inte hitta en komprimeringsmetod gemensam med fjärrparten"
 
-#: src/endpoint.cpp:525
+#: src/endpoint.cpp:549
 msgid "Refused incoming call"
 msgstr "Vägrade ta emot inkommande samtal"
 
-#: src/endpoint.cpp:530
+#: src/endpoint.cpp:554
 msgid "User not found"
 msgstr "Användaren kunde inte hittas"
 
-#: src/endpoint.cpp:535
+#: src/endpoint.cpp:559
 msgid "Call ended: insufficient bandwidth"
 msgstr "Samtalet avslutades: otillräcklig bandbredd"
 
-#: src/endpoint.cpp:543
+#: src/endpoint.cpp:567
 msgid "Remote party could not be reached"
 msgstr "Fjärrparten kunde inte nås"
 
-#: src/endpoint.cpp:548
+#: src/endpoint.cpp:572
 msgid "Remote party is not online"
 msgstr "Fjärrparten är inte ansluten"
 
-#: src/endpoint.cpp:553
+#: src/endpoint.cpp:577
 msgid "No phone running for remote party"
 msgstr "Ingen telefon är på hos fjärrparten"
 
-#: src/endpoint.cpp:558
+#: src/endpoint.cpp:582
 msgid "Transport error calling"
 msgstr "Transportfel vid anrop"
 
-#: src/endpoint.cpp:564 src/endpoint.cpp:567
+#: src/endpoint.cpp:588 src/endpoint.cpp:591
 msgid "Call completed"
 msgstr "Samtalet färdigt"
+
+#: src/endpoint.cpp:758 src/webcam.cpp:168
+#, c-format
+msgid "Successfully opened video device %s, channel %d"
+msgstr "Lyckades öppna videoenheten %s, kanal %d"
+
+#: src/endpoint.cpp:770 src/webcam.cpp:180
+#, c-format
+msgid ""
+"Error while opening video device %s, channel %d. A test image will be "
+"transmitted."
+msgstr ""
+"Fel vid öppnande av videoenheten %s, kanal %d. En testbild kommer att "
+"överföras."
 
 #: src/gdkvideoio.cpp:213
 msgid "Transmitted FPS: "
@@ -331,55 +349,55 @@ msgstr "Fel vid registrering i ILS-katalogen"
 msgid "Successfully initiated registering to ILS directory"
 msgstr "Lyckades initiera registrering i ILS-katalogen"
 
-#: src/main.cpp:117
+#: src/main.cpp:134
 msgid "Answering incoming call"
 msgstr "Svarar på inkommande samtal"
 
-#: src/main.cpp:139 src/main.cpp:140
+#: src/main.cpp:153 src/main.cpp:154
 msgid "Calling..."
 msgstr "Ringer upp..."
 
-#: src/main.cpp:162
+#: src/main.cpp:176
 msgid "Trying to stop calling"
 msgstr "Försöker stoppa uppringning"
 
-#: src/main.cpp:171
+#: src/main.cpp:185
 msgid "Stopping current call"
 msgstr "Stoppar aktuellt samtal"
 
-#: src/main.cpp:176
+#: src/main.cpp:190
 msgid "Refusing incoming call"
 msgstr "Vägrar inkommande samtal"
 
-#: src/main_interface.cpp:205
+#: src/main_interface.cpp:224
 msgid "Startup without applet support"
 msgstr "Starta utan panelprogramstöd"
 
-#: src/main_interface.cpp:241
+#: src/main_interface.cpp:226
+msgid "Prints debug messages in the console"
+msgstr "Skriv ut felsökningsmeddelanden på konsollen"
+
+#: src/main_interface.cpp:263
 msgid "Building main interface"
 msgstr "Bygger huvudgränssnittet"
 
-#: src/main_interface.cpp:254
+#: src/main_interface.cpp:276
 msgid "Adding Audio Capabilities"
 msgstr "Lägger till ljudkapabiliteter"
 
-#: src/main_interface.cpp:259
+#: src/main_interface.cpp:281
 msgid "Adding Video Capabilities"
 msgstr "Lägger till videokapabiliteter"
 
-#: src/main_interface.cpp:266 src/preferences.cpp:1688
+#: src/main_interface.cpp:288 src/preferences.cpp:1688
 msgid "Registering to ILS directory"
 msgstr "Registrerar i ILS-katalogen"
 
-#: src/main_interface.cpp:274
-msgid "Opening Video Device"
-msgstr "Öppnar videoenhet"
-
-#: src/main_interface.cpp:282
+#: src/main_interface.cpp:296
 msgid "Starting the listener thread"
 msgstr "Startar lyssnartråden"
 
-#: src/main_interface.cpp:287
+#: src/main_interface.cpp:301
 msgid ""
 "Could not start the listener thread, you will not be able to receive "
 "incoming calls."
@@ -387,56 +405,84 @@ msgstr ""
 "Kunde inte starta lyssnartråden, du kommer inte att kunna ta emot inkommande "
 "samtal."
 
-#: src/main_interface.cpp:294
+#: src/main_interface.cpp:308
 msgid "Done!"
 msgstr "Klar!"
 
-#: src/main_interface.cpp:348
+#: src/main_interface.cpp:364
 msgid "Remote host to contact"
 msgstr "Fjärrvärd att kontakta"
 
-#: src/main_interface.cpp:362
+#: src/main_interface.cpp:378
 msgid "Host:"
 msgstr "Värd:"
 
-#: src/main_interface.cpp:551 src/preferences.cpp:426
+#: src/main_interface.cpp:464
+msgid "Click here to begin to display images from your camera device."
+msgstr "Klicka här för att börja visa bilder från din kameraenhet."
+
+#: src/main_interface.cpp:486
+msgid ""
+"Audio Transmission Status. During a call, click here to pause the audio "
+"transmission."
+msgstr ""
+"Ljudöverföringsstatus. Under ett samtal kan du klicka här för att pausa "
+"ljudöverföringen."
+
+#: src/main_interface.cpp:508
+msgid ""
+"Video Transmission Status. During a call, click here to pause the video "
+"transmission."
+msgstr ""
+"Videoöverföringsstatus. Under ett samtal kan du klicka här för att pausa "
+"videoöverföringen."
+
+#: src/main_interface.cpp:530
+msgid "Click here to display the previous section of the Control Panel."
+msgstr "Klicka här för att visa föregående sektion i kontrollpanelen."
+
+#: src/main_interface.cpp:551
+msgid "Click here to display the next section of the Control Panel."
+msgstr "Klicka här för att visa föregående sektion i kontrollpanelen."
+
+#: src/main_interface.cpp:572 src/preferences.cpp:426
 msgid "Info"
 msgstr "Info"
 
-#: src/main_interface.cpp:555 src/main_interface.cpp:571
-msgid "Remote User Info"
-msgstr "Information om fjärranvändare"
+#: src/main_interface.cpp:576 src/main_interface.cpp:601
+msgid "Remote User"
+msgstr "Fjärranvändare"
 
-#: src/main_interface.cpp:586
+#: src/main_interface.cpp:616
 msgid "History Log"
 msgstr "Historiklogg"
 
-#: src/main_interface.cpp:606
+#: src/main_interface.cpp:636
 msgid "History"
 msgstr "Historik"
 
 #. Webcam Control Frame
-#: src/main_interface.cpp:630 src/main_interface.cpp:740
+#: src/main_interface.cpp:659 src/main_interface.cpp:771
 msgid "Video Settings"
 msgstr "Grafikinställningar"
 
-#: src/main_interface.cpp:660
+#: src/main_interface.cpp:689
 msgid "Adjust brightness"
 msgstr "Justera ljusstyrka"
 
-#: src/main_interface.cpp:685
+#: src/main_interface.cpp:714
 msgid "Adjust whiteness"
 msgstr "Justera vithet"
 
-#: src/main_interface.cpp:710
+#: src/main_interface.cpp:739
 msgid "Adjust color"
 msgstr "Justera färg"
 
-#: src/main_interface.cpp:735
+#: src/main_interface.cpp:764
 msgid "Adjust contrast"
 msgstr "Justera kontrast"
 
-#: src/main_interface.cpp:761 src/main_interface.cpp:819
+#: src/main_interface.cpp:792 src/main_interface.cpp:850
 msgid "Audio Settings"
 msgstr "Ljudinställningar"
 
@@ -505,12 +551,12 @@ msgid "View / hide the Status Bar"
 msgstr "Visa/göm statusraden"
 
 #: src/menu.cpp:100
-msgid "_Notebook"
-msgstr "_Flikhäfte"
+msgid "_Control Panel"
+msgstr "_Kontrollpanelen"
 
 #: src/menu.cpp:100
-msgid "View / hide the Notebook"
-msgstr "Visa/göm flikhäftet"
+msgid "View / hide the Control Panel"
+msgstr "Visa/göm kontrollpanelen"
 
 #: src/menu.cpp:113 src/menu.cpp:139
 msgid "_Settings"
@@ -683,12 +729,12 @@ msgstr "Om detta är aktiverat kommer startbilden att visas vid uppstart"
 
 #. Show / hide the notebook at startup
 #: src/preferences.cpp:616
-msgid "Show Notebook"
-msgstr "Visa flikhäfte"
+msgid "Show Control Panel"
+msgstr "Visa kontrollpanel"
 
 #: src/preferences.cpp:626
-msgid "If enabled, the notebook is displayed"
-msgstr "Om detta är aktiverat visas flikhäftet"
+msgid "If enabled, the control panel is displayed"
+msgstr "Om detta är aktiverat visas kontrollpanelen"
 
 #. Show / hide the statusbar at startup
 #: src/preferences.cpp:630
@@ -1032,19 +1078,14 @@ msgstr "ILS-katalog"
 msgid "Find friends on ILS"
 msgstr "Sök vänner på ILS"
 
-#: src/webcam.cpp:123
-#, c-format
-msgid "Successfully opened video device %s, channel %d"
-msgstr "Lyckades öppna videoenheten %s, kanal %d"
+#~ msgid "_Notebook"
+#~ msgstr "_Flikhäfte"
 
-#: src/webcam.cpp:133
-#, c-format
-msgid ""
-"Error while opening video device %s, channel %d. A test image will be "
-"transmitted."
-msgstr ""
-"Fel vid öppnande av videoenheten %s, kanal %d. En testbild kommer att "
-"överföras."
+#~ msgid "Show Notebook"
+#~ msgstr "Visa flikhäfte"
+
+#~ msgid "Opening Video Device"
+#~ msgstr "Öppnar videoenhet"
 
 #~ msgid "Could not open the video device."
 #~ msgstr "Kunde inte öppna vidoeenheten."
