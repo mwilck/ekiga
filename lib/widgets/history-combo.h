@@ -74,6 +74,8 @@ void gm_history_combo_add_entry (GmHistoryCombo *combo,
                                  const char *key,
                                  const char *new_entry);
 
+void gm_history_combo_update (GmHistoryCombo *combo);
+
 G_END_DECLS
 
 #endif /* __GM_HISTORY_COMBO_H */

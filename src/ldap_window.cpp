@@ -42,6 +42,8 @@
 #include "../pixmaps/small-close.xpm"
 #include "../pixmaps/xdap-directory.xpm"
 
+#define GM_HISTORY_LDAP_SERVERS "/apps/gnomemeeting/history/directory_servers"
+
 /* Declarations */
 
 extern GtkWidget *gm;
@@ -218,7 +220,7 @@ void refresh_button_clicked (GtkButton *button, gpointer data)
 
   /* Put the current entry in the history of the combo */
   gm_history_combo_add_entry (GM_HISTORY_COMBO (lw->ils_server_combo),
-					    "/apps/gnomemeeting/history/ldap_servers",
+					    GM_HISTORY_LDAP_SERVERS,
 					    entry_content);
 
 					    
@@ -455,18 +457,9 @@ void gnomemeeting_init_ldap_window ()
   gtk_container_set_border_width (GTK_CONTAINER (toolbar), 0);
 
   /* ILS directories combo box */
-  lw->ils_server_combo = 
-    gm_history_combo_new ("/apps/gnomemeeting/history/ldap_servers");
-//  gtk_combo_disable_activate (GTK_COMBO(lw->ils_server_combo));
-  stored_contacts = 
-    gconf_client_get_string (client, 
-			     "/apps/gnomemeeting/history/ldap_servers", 0);
-  servers = g_strsplit (stored_contacts ? (stored_contacts) : (""), "|", 0);
+  lw->ils_server_combo = gm_history_combo_new (GM_HISTORY_LDAP_SERVERS);
 
-  gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (lw->ils_server_combo)->entry),
-		      servers [0]);
-  g_free (stored_contacts);
-  g_strfreev (servers);
+  gm_history_combo_update (GM_HISTORY_COMBO (lw->ils_server_combo));
 
   gtk_toolbar_append_widget (GTK_TOOLBAR (toolbar), 
 			     GTK_WIDGET (lw->ils_server_combo),

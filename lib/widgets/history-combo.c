@@ -303,28 +303,42 @@ gm_history_combo_add_entry (GmHistoryCombo *combo,
     /* this will not store a copy of entry_content, but entry_content itself */
     combo->contact_list = g_list_prepend (combo->contact_list, entry_content);
 
-    /* this is a while loop as people dynamically can change the number of
-     * max_contacts via GConf */
-    while (g_list_length (combo->contact_list) > max_entries) 
-    {
-      last_item = g_list_last (combo->contact_list);
-      combo->contact_list = g_list_remove (combo->contact_list, last_item->data);
-      g_free (last_item->data);
-    }
-
     contact_gconf = g_slist_from_glist (combo->contact_list);
     gconf_client_set_list (client, key, GCONF_VALUE_STRING, contact_gconf, NULL);
-  }   
-  
-  if (combo->contact_list != NULL)
-  {    
-    gtk_combo_set_popdown_strings (GTK_COMBO (combo), combo->contact_list);
-  }
 
+  }   
+
+  gm_history_combo_update (combo);  
+  
   gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (combo)->entry), entry_content);
   
   /* if found, it is not added in the GList, we can free it */
   if (found == TRUE)
     g_free (entry_content);
+}
+
+void 
+gm_history_combo_update (GmHistoryCombo *combo)
+{
+  GConfClient  *client;
+  GList        *last_item;
+  unsigned int  max_entries;
+
+  client = gconf_client_get_default ();
+  max_entries = gconf_client_get_int (client, GM_HISTORY_ENTRIES_NUM, 0);     
+ 
+  /* this is a while loop as people dynamically can change the number of
+   * max_contacts via GConf */
+  while (g_list_length (combo->contact_list) > max_entries)
+  {
+    last_item = g_list_last (combo->contact_list);
+    combo->contact_list = g_list_remove (combo->contact_list, last_item->data);
+    g_free (last_item->data);
+  }     
+
+  if (combo->contact_list != NULL)
+  {    
+    gtk_combo_set_popdown_strings (GTK_COMBO (combo), combo->contact_list);
+  }
 }
 
