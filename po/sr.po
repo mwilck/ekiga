@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-11-06 12:59+0100\n"
-"PO-Revision-Date: 2003-11-06 13:20+0100\n"
+"POT-Creation-Date: 2003-11-10 20:55+0100\n"
+"PO-Revision-Date: 2003-11-10 20:55+0100\n"
 "Last-Translator: Дејан Матијевић <dejan@ns.sympatico.ca>\n"
 "Language-Team: Serbian (sr) <serbiangnome-lista@nongnu.org>\n"
 "MIME-Version: 1.0\n"
@@ -76,7 +76,7 @@ msgstr ""
 "Изаберите број блокова (да није промењен) пренесен са сваким оквиром. Ови "
 "блокови се попуњавају у позадини."
 
-#: gnomemeeting.schemas.in.in.h:11 src/ldap_window.cpp:2950
+#: gnomemeeting.schemas.in.in.h:11 src/ldap_window.cpp:2943
 msgid "Comment"
 msgstr "Коментар"
 
@@ -327,7 +327,7 @@ msgstr "Висина прозора локалног видеа"
 msgid "Local video window width"
 msgstr "Ширина прозора локалног видеа"
 
-#: gnomemeeting.schemas.in.in.h:61 src/ldap_window.cpp:2963
+#: gnomemeeting.schemas.in.in.h:61 src/ldap_window.cpp:2956
 msgid "Location"
 msgstr "Локација"
 
@@ -466,7 +466,7 @@ msgstr "Прикажи прозор за разговор у главном пр
 msgid "Start hidden"
 msgstr "Почни скривен"
 
-#: gnomemeeting.schemas.in.in.h:93 src/menu.cpp:476 src/menu.cpp:591
+#: gnomemeeting.schemas.in.in.h:93 src/menu.cpp:481 src/menu.cpp:612
 msgid "Switch to fullscreen"
 msgstr "Пребаци у цео екран"
 
@@ -797,7 +797,7 @@ msgstr "Тип корисничких улазних способности"
 msgid "User directory"
 msgstr "Кориснички директоријум"
 
-#: gnomemeeting.schemas.in.in.h:143 src/ldap_window.cpp:2987
+#: gnomemeeting.schemas.in.in.h:143 src/ldap_window.cpp:2980
 msgid "Version"
 msgstr "Верзија"
 
@@ -853,7 +853,7 @@ msgstr "gnomemeeting"
 msgid "_Retrieve Call"
 msgstr "Повратити позив"
 
-#: src/callbacks.cpp:95 src/menu.cpp:308
+#: src/callbacks.cpp:95 src/menu.cpp:313
 msgid "_Hold Call"
 msgstr "Задржи позив"
 
@@ -861,7 +861,7 @@ msgstr "Задржи позив"
 msgid "Edit the contact information"
 msgstr "Уреди податке контаката"
 
-#: src/callbacks.cpp:141 src/menu.cpp:311
+#: src/callbacks.cpp:141 src/menu.cpp:316
 msgid "_Transfer Call"
 msgstr "Преусмери позив"
 
@@ -869,7 +869,7 @@ msgstr "Преусмери позив"
 msgid "Forward call to:"
 msgstr "Проследи позив до:"
 
-#: src/callbacks.cpp:258 src/menu.cpp:318
+#: src/callbacks.cpp:258 src/menu.cpp:323
 msgid "Suspend _Audio"
 msgstr "Обустави звук"
 
@@ -885,7 +885,7 @@ msgstr "Звућни пренос: обустављен"
 msgid "Audio transmission: resumed"
 msgstr "Звућни пренос: настављен"
 
-#: src/callbacks.cpp:272 src/menu.cpp:323
+#: src/callbacks.cpp:272 src/menu.cpp:328
 msgid "Suspend _Video"
 msgstr "Обустави видео"
 
@@ -1267,11 +1267,11 @@ msgstr ""
 "  --поправља-овлашћења   поправља овлашћења од GConf спремишта (покренути "
 "као администратор)"
 
-#: src/config.cpp:268 src/config.cpp:489
+#: src/config.cpp:268 src/config.cpp:491
 msgid "Changing this setting will only affect new calls"
 msgstr "Мењање овог подешавања ће се одразити само на нове позиве"
 
-#: src/config.cpp:268 src/config.cpp:489
+#: src/config.cpp:268 src/config.cpp:491
 msgid ""
 "You have changed a setting that doesn't permit to GnomeMeeting to apply the "
 "new change to the current call. Your new setting will only take effect for "
@@ -1297,27 +1297,27 @@ msgstr "Брзи старт искључен"
 msgid "Fast Start enabled"
 msgstr "Брзи старт укључен"
 
-#: src/config.cpp:548
+#: src/config.cpp:551
 msgid "Disabled Silence Detection"
 msgstr "Искључи проналажење тишине"
 
-#: src/config.cpp:554
+#: src/config.cpp:557
 msgid "Enabled Silence Detection"
 msgstr "Омогући проналажење тишине"
 
 #. Disable the druid button if no device is found
-#: src/config.cpp:897 src/druid.cpp:607 src/druid.cpp:621
+#: src/config.cpp:900 src/druid.cpp:620 src/druid.cpp:634
 #: src/endpoint.cpp:1641 src/gnomemeeting.cpp:349 src/gnomemeeting.cpp:351
 #: src/sound_handling.cpp:459 src/sound_handling.cpp:460
 #: src/videograbber.cpp:615
 msgid "No device found"
 msgstr "Нисам нашао уређај"
 
-#: src/config.cpp:1062
+#: src/config.cpp:1065
 msgid "Failed to restart the video channel"
 msgstr "Не могу да поново покренем видео канал"
 
-#: src/config.cpp:1062
+#: src/config.cpp:1065
 msgid ""
 "You have changed a video device related setting during a call. That requires "
 "to restart the video transmission channel, but it failed."
@@ -1325,11 +1325,11 @@ msgstr ""
 "Изменили сте подешавање видео уређаја у току позива. Ово захтева поновно "
 "покретање канала за пренос, али то није успело."
 
-#: src/config.cpp:1272
+#: src/config.cpp:1275
 msgid "Forward URL not specified"
 msgstr "Није наведена адреса за преусмеравање"
 
-#: src/config.cpp:1273
+#: src/config.cpp:1276
 msgid ""
 "You need to specify an URL where to forward calls in the call forwarding "
 "section of the preferences!\n"
@@ -1341,7 +1341,7 @@ msgstr ""
 "\n"
 "Искључује преусмеравање."
 
-#: src/config.cpp:1519
+#: src/config.cpp:1522
 msgid ""
 "An error has happened in the configuration backend.\n"
 "Maybe some of your settings won't be saved."
@@ -1381,32 +1381,32 @@ msgstr ""
 "Даљински корисник је покашао да пребаци ваш позив до другог корисника, али "
 "није успео."
 
-#: src/druid.cpp:509
+#: src/druid.cpp:522
 msgid "56k Modem"
 msgstr "56k модем"
 
-#: src/druid.cpp:510
+#: src/druid.cpp:523
 msgid "ISDN"
 msgstr "ISDN"
 
-#: src/druid.cpp:511
+#: src/druid.cpp:524
 msgid "xDSL/Cable"
 msgstr "xDSL/Кабл"
 
-#: src/druid.cpp:512
+#: src/druid.cpp:525
 msgid "T1/LAN"
 msgstr "T1/LAN"
 
-#: src/druid.cpp:513
+#: src/druid.cpp:526
 msgid "Keep current settings"
 msgstr "Задржи текућа подешавања"
 
-#: src/druid.cpp:659 src/gnomemeeting.cpp:369 src/videograbber.cpp:338
+#: src/druid.cpp:672 src/gnomemeeting.cpp:369 src/videograbber.cpp:338
 #: src/videograbber.cpp:616
 msgid "Picture"
 msgstr "Слика"
 
-#: src/druid.cpp:674
+#: src/druid.cpp:687
 #, c-format
 msgid ""
 "You have now finished the GnomeMeeting configuration. All the settings can "
@@ -1439,21 +1439,21 @@ msgstr ""
 "Пуштање видеа:  %s\n"
 "Мој адреса за позив:  %s\n"
 
-#: src/druid.cpp:674 src/pref_window.cpp:801
+#: src/druid.cpp:687 src/pref_window.cpp:801
 msgid "None"
 msgstr "Ништа"
 
-#: src/druid.cpp:702
+#: src/druid.cpp:715
 #, c-format
 msgid "Personal Information - page %d/%d"
 msgstr "Лични подаци - страна %d/%d"
 
 #. The user fields
-#: src/druid.cpp:715
+#: src/druid.cpp:728
 msgid "Please enter your firstname and your surname:"
 msgstr "Унесите ваше име и презиме:"
 
-#: src/druid.cpp:723
+#: src/druid.cpp:736
 msgid ""
 "Your firstname and surname will be used when connecting to other VoIP and "
 "videoconferencing software."
@@ -1461,16 +1461,16 @@ msgstr ""
 "Ваше име и презиме ће се користити при повезивању са осталим VoIP и "
 "конференцијским програмима."
 
-#: src/druid.cpp:766
+#: src/druid.cpp:779
 #, c-format
 msgid "Callto URL - page %d/%d"
 msgstr "Адреса за позив — страна %d/%d"
 
-#: src/druid.cpp:777
+#: src/druid.cpp:790
 msgid "Please enter your e-mail address:"
 msgstr "Унесите адресу ваше е-поште:"
 
-#: src/druid.cpp:785
+#: src/druid.cpp:798
 msgid ""
 "Your e-mail address is used when registering to the GnomeMeeting users "
 "directory. It is used to create a callto address permitting your contacts to "
@@ -1480,7 +1480,7 @@ msgstr ""
 "састанка. Користи се за образовање позивних адреса које вам дозвољавају да "
 "вас ваши познаници лако позову где год да сте."
 
-#: src/druid.cpp:794
+#: src/druid.cpp:807
 msgid ""
 "I don't want to register to the GnomeMeeting users directory and get a "
 "callto address"
@@ -1488,17 +1488,17 @@ msgstr ""
 "Не желим да се пријавим у именик корисника Гном састанка и да добијем "
 "позивну адресу"
 
-#: src/druid.cpp:844
+#: src/druid.cpp:857
 #, c-format
 msgid "Connection Type - page %d/%d"
 msgstr "Врста везе — страна %d/%d"
 
 #. The connection type
-#: src/druid.cpp:856
+#: src/druid.cpp:869
 msgid "Please choose your connection type:"
 msgstr "Изаберите врсту ваше везе:"
 
-#: src/druid.cpp:864
+#: src/druid.cpp:877
 msgid ""
 "The connection type will permit determining the best quality settings that "
 "GnomeMeeting will use during calls. You can later change the settings "
@@ -1508,16 +1508,16 @@ msgstr ""
 "Гном састанак користити за позиве. Накнадно можете изменити појединачна "
 "подешавања међу поставкама."
 
-#: src/druid.cpp:903
+#: src/druid.cpp:916
 #, c-format
 msgid "Audio Manager - page %d/%d"
 msgstr "Управљање звуком — страна %d/%d"
 
-#: src/druid.cpp:916
+#: src/druid.cpp:929
 msgid "Please choose your audio manager:"
 msgstr "Изаберите управљач вашим звуком:"
 
-#: src/druid.cpp:924
+#: src/druid.cpp:937
 msgid ""
 "The audio manager is the plugin that will manage your audio devices, ALSA is "
 "probably the best choice when available."
@@ -1525,17 +1525,17 @@ msgstr ""
 "Управљач звуком је додатак који барата вашим звучним уређајима, АЛСА је "
 "сигурно најбоље решење ако је доступна."
 
-#: src/druid.cpp:966
+#: src/druid.cpp:979
 #, c-format
 msgid "Audio Devices - page %d/%d"
 msgstr "Звучни уређај - страна %d/%d"
 
 #. The Audio devices
-#: src/druid.cpp:978
+#: src/druid.cpp:991
 msgid "Please choose the audio output device:"
 msgstr "Изаберите излазни уређај за звук:"
 
-#: src/druid.cpp:986
+#: src/druid.cpp:999
 msgid ""
 "The audio output device is the device managed by the audio manager that will "
 "be used to play audio."
@@ -1543,11 +1543,11 @@ msgstr ""
 "Излазни уређај за звук је уређај којим барата управљач звуком, а који се "
 "користи за пуштање звука."
 
-#: src/druid.cpp:996
+#: src/druid.cpp:1009
 msgid "Please choose the audio input device:"
 msgstr "Изаберите улазни уређај за звук:"
 
-#: src/druid.cpp:1004
+#: src/druid.cpp:1017
 msgid ""
 "The audio input device is the device managed by the audio manager that will "
 "be used to record your voice."
@@ -1555,20 +1555,20 @@ msgstr ""
 "Улазни уређај за звук је уређај којим барата управљач звуком, а који се "
 "користи за снимање вашег гласа."
 
-#: src/druid.cpp:1017 src/druid.cpp:1157
+#: src/druid.cpp:1030 src/druid.cpp:1170
 msgid "Test those settings"
 msgstr "Испробајте ова подешавања"
 
-#: src/druid.cpp:1063
+#: src/druid.cpp:1076
 #, c-format
 msgid "Video Manager - page %d/%d"
 msgstr "Управљање видеом — страна %d/%d"
 
-#: src/druid.cpp:1076
+#: src/druid.cpp:1089
 msgid "Please choose your video manager:"
 msgstr "Изаберите управљача вашим видеом:"
 
-#: src/druid.cpp:1084
+#: src/druid.cpp:1097
 msgid ""
 "The video manager is the plugin that will manage your video devices, "
 "Video4Linux is the most common choice if you own a webcam."
@@ -1576,17 +1576,17 @@ msgstr ""
 "Управљач видеом је додатак који барата вашим видео уређајима, Видео4Линукс "
 "је најчешћи избор уколико имате веб камеру."
 
-#: src/druid.cpp:1125
+#: src/druid.cpp:1138
 #, c-format
 msgid "Video Devices - page %d/%d"
 msgstr "Видео уређаји — страна %d/%d"
 
 #. The Video devices
-#: src/druid.cpp:1137
+#: src/druid.cpp:1150
 msgid "Please choose the video input device:"
 msgstr "Изаберите улазни уређај за видео:"
 
-#: src/druid.cpp:1145
+#: src/druid.cpp:1158
 msgid ""
 "The video input device is the device managed by the video manager that will "
 "be used to capture video."
@@ -1594,16 +1594,16 @@ msgstr ""
 "Улазни уређај за видео је уређај којим барата управљач видеом, а који се "
 "користи за снимање видеа."
 
-#: src/druid.cpp:1189
+#: src/druid.cpp:1202
 msgid "First Time Configuration Druid"
 msgstr "Конфигурација Друида први пут"
 
-#: src/druid.cpp:1196
+#: src/druid.cpp:1209
 #, c-format
 msgid "Configuration Druid - page %d/%d"
 msgstr "Конфигурација Друида - страна %d/%d"
 
-#: src/druid.cpp:1199
+#: src/druid.cpp:1212
 msgid ""
 "This is the GnomeMeeting general configuration druid. The following steps "
 "will set up GnomeMeeting by asking a few simple questions.\n"
@@ -1617,7 +1617,7 @@ msgstr ""
 "Једном када завршите ове кораке, касније увек можете да их промените "
 "одабирањем карактеристика у уреди менију."
 
-#: src/druid.cpp:1239
+#: src/druid.cpp:1252
 #, c-format
 msgid "Configuration complete - page %d/%d"
 msgstr "Конфигурација компетна - страна %d/%d"
@@ -2136,15 +2136,15 @@ msgstr "Да ли сте сигурни да желите да уклоните 
 msgid "Add %s to Address Book"
 msgstr "Додај %s у адресар"
 
-#: src/ldap_window.cpp:1109 src/ldap_window.cpp:2634
+#: src/ldap_window.cpp:1109 src/ldap_window.cpp:2627
 msgid "C_all Contact"
 msgstr "Контакт листа"
 
-#: src/ldap_window.cpp:1115 src/ldap_window.cpp:2637
+#: src/ldap_window.cpp:1115 src/ldap_window.cpp:2630
 msgid "_Tranfer Call to Contact"
 msgstr "Пребацивање позива за контакт"
 
-#: src/ldap_window.cpp:1127 src/ldap_window.cpp:2654
+#: src/ldap_window.cpp:1127 src/ldap_window.cpp:2647
 msgid "Contact _Properties"
 msgstr "Особине контакта"
 
@@ -2152,7 +2152,7 @@ msgstr "Особине контакта"
 msgid "Copy URL to the clipboard"
 msgstr "Умножи адресу у списак исечака"
 
-#: src/ldap_window.cpp:1139 src/ldap_window.cpp:1584 src/ldap_window.cpp:2616
+#: src/ldap_window.cpp:1139 src/ldap_window.cpp:1584 src/ldap_window.cpp:2609
 msgid "_Delete"
 msgstr "О_бриши"
 
@@ -2218,7 +2218,7 @@ msgstr "Нова група"
 msgid "_Find"
 msgstr "Пронађи"
 
-#: src/ldap_window.cpp:1579 src/ldap_window.cpp:1601 src/ldap_window.cpp:2620
+#: src/ldap_window.cpp:1579 src/ldap_window.cpp:1601 src/ldap_window.cpp:2613
 msgid "_Rename"
 msgstr "П_реименуј"
 
@@ -2230,93 +2230,93 @@ msgstr "Нови контакт"
 msgid "Delete"
 msgstr "Обриши"
 
-#: src/ldap_window.cpp:2585
+#: src/ldap_window.cpp:2578
 msgid "GnomeMeeting Address Book"
 msgstr "Гном Састанак адресар"
 
-#: src/ldap_window.cpp:2603
+#: src/ldap_window.cpp:2596
 msgid "_File"
 msgstr "Датотека"
 
-#: src/ldap_window.cpp:2605
+#: src/ldap_window.cpp:2598
 msgid "New _Server"
 msgstr "Нови сервер"
 
-#: src/ldap_window.cpp:2609
+#: src/ldap_window.cpp:2602
 msgid "New _Group"
 msgstr "Нова група"
 
-#: src/ldap_window.cpp:2627 src/menu.cpp:338
+#: src/ldap_window.cpp:2620 src/menu.cpp:343
 msgid "_Close"
 msgstr "Затвори"
 
-#: src/ldap_window.cpp:2632
+#: src/ldap_window.cpp:2625
 msgid "C_ontact"
 msgstr "Kontakt"
 
-#: src/ldap_window.cpp:2643
+#: src/ldap_window.cpp:2636
 msgid "New _Contact"
 msgstr "Нови контакт"
 
-#: src/ldap_window.cpp:2647
+#: src/ldap_window.cpp:2640
 msgid "Add Contact to _Address Book"
 msgstr "Додај контакт у адресар"
 
 #  Translators: This is "S" as in "Status"
 #. Translators: This is "S" as in "Status"
-#: src/ldap_window.cpp:2908
+#: src/ldap_window.cpp:2901
 msgid "S"
 msgstr "С"
 
 #  Translators: This is "A" as in "Audio"
 #. Translators: This is "A" as in "Audio"
-#: src/ldap_window.cpp:2918 src/pref_window.cpp:1108
+#: src/ldap_window.cpp:2911 src/pref_window.cpp:1108
 msgid "A"
 msgstr "З"
 
 #  Translators: This is "V" as in "Video"
 #. Translators: This is "V" as in "Video"
-#: src/ldap_window.cpp:2928
+#: src/ldap_window.cpp:2921
 msgid "V"
 msgstr "B"
 
-#: src/ldap_window.cpp:2937 src/ldap_window.cpp:3011 src/pref_window.cpp:1122
+#: src/ldap_window.cpp:2930 src/ldap_window.cpp:3004 src/pref_window.cpp:1122
 msgid "Name"
 msgstr "Име"
 
-#: src/ldap_window.cpp:2975 src/ldap_window.cpp:3023 src/tools.cpp:255
+#: src/ldap_window.cpp:2968 src/ldap_window.cpp:3016 src/tools.cpp:255
 msgid "URL"
 msgstr "Адреса (URL)"
 
-#: src/ldap_window.cpp:2998
+#: src/ldap_window.cpp:2991
 msgid "IP"
 msgstr "IP"
 
-#: src/ldap_window.cpp:3036
+#: src/ldap_window.cpp:3029
 msgid "Speed Dial"
 msgstr "Брзо бирање"
 
-#: src/ldap_window.cpp:3089
+#: src/ldap_window.cpp:3082
 msgid "Find all contacts"
 msgstr "Тражи све контакте"
 
-#: src/ldap_window.cpp:3094
+#: src/ldap_window.cpp:3087
 msgid "First name contains"
 msgstr "Име садржи"
 
-#: src/ldap_window.cpp:3098
+#: src/ldap_window.cpp:3091
 msgid "Last name contains"
 msgstr "Презиме садржи"
 
-#: src/ldap_window.cpp:3102
+#: src/ldap_window.cpp:3095
 msgid "E-mail contains"
 msgstr "Е-пошта садржи"
 
-#: src/ldap_window.cpp:3288
+#: src/ldap_window.cpp:3281
 msgid "Servers"
 msgstr "Сервери"
 
-#: src/ldap_window.cpp:3334
+#: src/ldap_window.cpp:3327
 msgid "Groups"
 msgstr "Групе"
 
@@ -2382,15 +2382,15 @@ msgstr ""
 msgid "Failed to retrieve gnomemeeting server from activation server\n"
 msgstr "Није успео да позове gnomemeeting сервер од сервера за покретање\n"
 
-#: src/main_window.cpp:1142 src/menu.cpp:428 src/menu.cpp:543
+#: src/main_window.cpp:1142 src/menu.cpp:433 src/menu.cpp:564
 msgid "Local Video"
 msgstr "Локални видео"
 
-#: src/main_window.cpp:1148 src/menu.cpp:434 src/menu.cpp:549
+#: src/main_window.cpp:1148 src/menu.cpp:439 src/menu.cpp:570
 msgid "Remote Video"
 msgstr "Даљински видео"
 
-#: src/main_window.cpp:1280 src/menu.cpp:389
+#: src/main_window.cpp:1280 src/menu.cpp:394
 msgid "Statistics"
 msgstr "Статистика"
 
@@ -2480,284 +2480,288 @@ msgstr ""
 msgid "Gconf key error"
 msgstr "Gconf грешка кључа"
 
-#: src/menu.cpp:271
+#: src/menu.cpp:272
 msgid "C_all"
 msgstr "Позив"
 
-#: src/menu.cpp:273
+#: src/menu.cpp:274
 msgid "C_onnect"
 msgstr "Ус_постави везу"
 
-#: src/menu.cpp:273 src/menu.cpp:621
+#: src/menu.cpp:274 src/menu.cpp:642
 msgid "Create a new connection"
 msgstr "Направи нову везу "
 
-#: src/menu.cpp:276 src/menu.cpp:624
+#: src/menu.cpp:277 src/menu.cpp:645
 msgid "_Disconnect"
 msgstr "_Раскини везу"
 
-#: src/menu.cpp:277 src/menu.cpp:625
+#: src/menu.cpp:278 src/menu.cpp:646
 msgid "Close the current connection"
 msgstr "Затвори тренутну конекцију"
 
-#: src/menu.cpp:283 src/menu.cpp:631
+#: src/menu.cpp:284 src/menu.cpp:652
 msgid "_Available"
 msgstr "_Доступан"
 
-#: src/menu.cpp:284 src/menu.cpp:632
+#: src/menu.cpp:285 src/menu.cpp:653
 msgid "Display a popup to accept the call"
 msgstr "Прикажи искачући прозор за пријем позива"
 
-#: src/menu.cpp:289 src/menu.cpp:637
+#: src/menu.cpp:290 src/menu.cpp:658
 msgid "Free for Cha_t"
 msgstr "Слободан за раз_говор"
 
-#: src/menu.cpp:290 src/menu.cpp:638
+#: src/menu.cpp:291 src/menu.cpp:659
 msgid "Auto answer calls"
 msgstr "Аутоматски одговара на позиве"
 
-#: src/menu.cpp:295 src/menu.cpp:643
+#: src/menu.cpp:296 src/menu.cpp:664
 msgid "_Busy"
 msgstr "_Заузет"
 
-#: src/menu.cpp:295 src/menu.cpp:643
+#: src/menu.cpp:296 src/menu.cpp:664
 msgid "Reject calls"
 msgstr "Одбија позиви"
 
-#: src/menu.cpp:300 src/menu.cpp:648
+#: src/menu.cpp:301 src/menu.cpp:669
 msgid "_Forward"
 msgstr "_Преусмерава"
 
-#: src/menu.cpp:300 src/menu.cpp:648
+#: src/menu.cpp:301 src/menu.cpp:669
 msgid "Forward calls"
 msgstr "Преусмерава позиве"
 
-#: src/menu.cpp:308
+#: src/menu.cpp:309
+msgid "Speed dials"
+msgstr "Брзо бирање"
+
+#: src/menu.cpp:313
 msgid "Hold the current call"
 msgstr "Задржи тренутни позив"
 
-#: src/menu.cpp:312
+#: src/menu.cpp:317
 msgid "Transfer the current call"
 msgstr "Пребаци тренутни позив"
 
-#: src/menu.cpp:319
+#: src/menu.cpp:324
 msgid "Suspend or resume the audio transmission"
 msgstr "Зауставља или наставља звучни пренос"
 
-#: src/menu.cpp:324
+#: src/menu.cpp:329
 msgid "Suspend or resume the video transmission"
 msgstr "Зауставља или наставља видео пренос"
 
-#: src/menu.cpp:331
+#: src/menu.cpp:336
 msgid "_Save Current Picture"
 msgstr "Сними тренутну слику"
 
-#: src/menu.cpp:332
+#: src/menu.cpp:337
 msgid "Save a snapshot of the current video"
 msgstr "Сними текуће стање видеа"
 
-#: src/menu.cpp:338
+#: src/menu.cpp:343
 msgid "Close the GnomeMeeting window"
 msgstr "Затвори прозор Гном Састанка"
 
-#: src/menu.cpp:345 src/menu.cpp:694
+#: src/menu.cpp:350 src/menu.cpp:715
 msgid "_Quit"
 msgstr "_Изађи"
 
-#: src/menu.cpp:345 src/menu.cpp:694
+#: src/menu.cpp:350 src/menu.cpp:715
 msgid "Quit GnomeMeeting"
 msgstr "Изађи из Гном Састанака"
 
-#: src/menu.cpp:349
+#: src/menu.cpp:354
 msgid "_Edit"
 msgstr "_Уређивање"
 
-#: src/menu.cpp:352 src/menu.cpp:358
+#: src/menu.cpp:357 src/menu.cpp:363
 msgid "Configuration Druid"
 msgstr "Конфигурација Друида"
 
-#: src/menu.cpp:353 src/menu.cpp:359
+#: src/menu.cpp:358 src/menu.cpp:364
 msgid "Run the configuration druid"
 msgstr "Покрени конфигурацију Друида"
 
-#: src/menu.cpp:366 src/menu.cpp:672
+#: src/menu.cpp:371 src/menu.cpp:693
 msgid "_Preferences..."
 msgstr "_Поставке..."
 
-#: src/menu.cpp:367 src/menu.cpp:673
+#: src/menu.cpp:372 src/menu.cpp:694
 msgid "Change your preferences"
 msgstr "Измените ваше поставке"
 
-#: src/menu.cpp:372
+#: src/menu.cpp:377
 msgid "_View"
 msgstr "П_реглед"
 
-#: src/menu.cpp:374 src/pref_window.cpp:725
+#: src/menu.cpp:379 src/pref_window.cpp:725
 msgid "Text Chat"
 msgstr "Текстуални разговор"
 
-#: src/menu.cpp:375
+#: src/menu.cpp:380
 msgid "View/Hide the text chat window"
 msgstr "Погледај или склони прозор текстуалног разговора"
 
-#: src/menu.cpp:380
+#: src/menu.cpp:385
 msgid "Status Bar"
 msgstr "Линија стања"
 
-#: src/menu.cpp:381
+#: src/menu.cpp:386
 msgid "View/Hide the status bar"
 msgstr "Погледај или склони линију стања"
 
-#: src/menu.cpp:387
+#: src/menu.cpp:392
 msgid "Control Panel"
 msgstr "Панел елемената"
 
-#: src/menu.cpp:390
+#: src/menu.cpp:395
 msgid "View audio/video transmission and reception statistics"
 msgstr "Преглед статистике звучног/видео преноса и пријема"
 
-#: src/menu.cpp:395
+#: src/menu.cpp:400
 msgid "_Dialpad"
 msgstr "Бројчаник"
 
-#: src/menu.cpp:395
+#: src/menu.cpp:400
 msgid "View the dialpad"
 msgstr "Погледај бројчаник"
 
-#: src/menu.cpp:400
+#: src/menu.cpp:405
 msgid "_Audio Settings"
 msgstr "Подешавања звука"
 
-#: src/menu.cpp:401
+#: src/menu.cpp:406
 msgid "View audio settings"
 msgstr "Преглед подешености звука"
 
-#: src/menu.cpp:406
+#: src/menu.cpp:411
 msgid "_Video Settings"
 msgstr "Подешавања видеа"
 
-#: src/menu.cpp:407
+#: src/menu.cpp:412
 msgid "View video settings"
 msgstr "Преглед подешености видеа"
 
-#: src/menu.cpp:412 src/pref_window.cpp:909
+#: src/menu.cpp:417 src/pref_window.cpp:909
 msgid "Off"
 msgstr "Искључено"
 
-#: src/menu.cpp:412
+#: src/menu.cpp:417
 msgid "Hide the control panel"
 msgstr "Сакриј панел елеманата"
 
-#: src/menu.cpp:420
+#: src/menu.cpp:425
 msgid "_Clear text chat"
 msgstr "Очисти текстуални разговор"
 
-#: src/menu.cpp:421
+#: src/menu.cpp:426
 msgid "Clear the text chat"
 msgstr "Очисти текстуални разговор"
 
-#: src/menu.cpp:429 src/menu.cpp:544
+#: src/menu.cpp:434 src/menu.cpp:565
 msgid "Local video image"
 msgstr "Локални видео снимак"
 
-#: src/menu.cpp:435 src/menu.cpp:550
+#: src/menu.cpp:440 src/menu.cpp:571
 msgid "Remote video image"
 msgstr "Даљински видео снимак"
 
-#: src/menu.cpp:440 src/menu.cpp:555
+#: src/menu.cpp:445 src/menu.cpp:576
 msgid "Both (Local Video Incrusted)"
 msgstr "Оба (Обложен локални видео)"
 
-#: src/menu.cpp:441 src/menu.cpp:448 src/menu.cpp:455 src/menu.cpp:556
-#: src/menu.cpp:563 src/menu.cpp:570
+#: src/menu.cpp:446 src/menu.cpp:453 src/menu.cpp:460 src/menu.cpp:577
+#: src/menu.cpp:584 src/menu.cpp:591
 msgid "Both video images"
 msgstr "Оба видео снимка"
 
-#: src/menu.cpp:447 src/menu.cpp:562
+#: src/menu.cpp:452 src/menu.cpp:583
 msgid "Both (Local Video in New Window)"
 msgstr "Оба (Локални видео у новом прозору)"
 
-#: src/menu.cpp:454 src/menu.cpp:569
+#: src/menu.cpp:459 src/menu.cpp:590
 msgid "Both (Both in New Windows)"
 msgstr "Оба (Оба у новом прозору)"
 
-#: src/menu.cpp:463 src/menu.cpp:578
+#: src/menu.cpp:468 src/menu.cpp:599
 msgid "Zoom In"
 msgstr "Увећај"
 
-#: src/menu.cpp:463 src/menu.cpp:578
+#: src/menu.cpp:468 src/menu.cpp:599
 msgid "Zoom in"
 msgstr "Увећај"
 
-#: src/menu.cpp:467 src/menu.cpp:582
+#: src/menu.cpp:472 src/menu.cpp:603
 msgid "Zoom Out"
 msgstr "Умањи"
 
-#: src/menu.cpp:467 src/menu.cpp:582
+#: src/menu.cpp:472 src/menu.cpp:603
 msgid "Zoom out"
 msgstr "Умањи"
 
-#: src/menu.cpp:471 src/menu.cpp:586
+#: src/menu.cpp:476 src/menu.cpp:607
 msgid "Normal Size"
 msgstr "Нормална величина"
 
-#: src/menu.cpp:471 src/menu.cpp:586
+#: src/menu.cpp:476 src/menu.cpp:607
 msgid "Normal size"
 msgstr "Нормална величина"
 
-#: src/menu.cpp:476 src/menu.cpp:591
+#: src/menu.cpp:481 src/menu.cpp:612
 msgid "Fullscreen"
 msgstr "Цео екран"
 
-#: src/menu.cpp:481
+#: src/menu.cpp:486
 msgid "_Tools"
 msgstr "Алати"
 
-#: src/menu.cpp:483 src/menu.cpp:656
+#: src/menu.cpp:488 src/menu.cpp:677
 msgid "Address _Book"
 msgstr "Адресар"
 
-#: src/menu.cpp:484 src/menu.cpp:657
+#: src/menu.cpp:489 src/menu.cpp:678
 msgid "Open the address book"
 msgstr "Отвори адресар"
 
-#: src/menu.cpp:491 src/tools.cpp:345
+#: src/menu.cpp:496 src/tools.cpp:345
 msgid "General History"
 msgstr "Општи историјат"
 
-#: src/menu.cpp:492
+#: src/menu.cpp:497
 msgid "View the operations history"
 msgstr "Погледај историјат радњи"
 
-#: src/menu.cpp:496 src/menu.cpp:664 src/tools.cpp:201
+#: src/menu.cpp:501 src/menu.cpp:685 src/tools.cpp:201
 msgid "Calls History"
 msgstr "Историјат позива"
 
-#: src/menu.cpp:497 src/menu.cpp:665
+#: src/menu.cpp:502 src/menu.cpp:686
 msgid "View the calls history"
 msgstr "Погледај историјат позива"
 
-#: src/menu.cpp:502
+#: src/menu.cpp:507
 msgid "Consult MicroTelco Account"
 msgstr "Консултујте MicroTelco налог"
 
-#: src/menu.cpp:503
+#: src/menu.cpp:508
 msgid "View the details of your account"
 msgstr "Погледајте детаље вашег налога"
 
-#: src/menu.cpp:507
+#: src/menu.cpp:512
 msgid "_Help"
 msgstr "Помоћ"
 
-#: src/menu.cpp:510 src/menu.cpp:516 src/menu.cpp:681 src/menu.cpp:687
+#: src/menu.cpp:515 src/menu.cpp:521 src/menu.cpp:702 src/menu.cpp:708
 msgid "_About GnomeMeeting"
 msgstr "О Гном Састанаку"
 
-#: src/menu.cpp:511 src/menu.cpp:517 src/menu.cpp:682 src/menu.cpp:688
+#: src/menu.cpp:516 src/menu.cpp:522 src/menu.cpp:703 src/menu.cpp:709
 msgid "View information about GnomeMeeting"
 msgstr "Прикажи информације о Гном Састанаку"
 
-#: src/menu.cpp:621
+#: src/menu.cpp:642
 msgid "_Connect"
 msgstr "Успостави везу"
 
