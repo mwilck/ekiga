@@ -1506,12 +1506,12 @@ void gnomemeeting_init_pref_window ()
 
   gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
   gtk_tree_store_set (GTK_TREE_STORE (model),
-		      &child_iter, 0, _("Directory Settings"), 1, 4, -1);
+		      &child_iter, 0, _("Directory Settings"), 1, 3, -1);
   gnomemeeting_init_pref_window_directories (notebook);
 
   gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
   gtk_tree_store_set (GTK_TREE_STORE (model),
-		      &child_iter, 0, _("H.323 Advanced"), 1, 3, -1);
+		      &child_iter, 0, _("H.323 Advanced"), 1, 4, -1);
   gnomemeeting_init_pref_window_h323_advanced (notebook);          
  
   /* Another section */
