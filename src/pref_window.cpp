@@ -317,15 +317,7 @@ static void personal_data_update_button_clicked (GtkWidget *widget,
   /* It is the first alias for the gatekeeper */
   if (local_name != NULL) {
 
-    gunichar *ucs_2_local_name = NULL;
-    ucs_2_local_name = (gunichar *)
-      g_convert (local_name, strlen (local_name), "UCS-2", "UTF-8", 0, 0, 0);
-    PString lname = PString ((const WORD *) ucs_2_local_name);
-    
-    if (!lname.IsEmpty ())
-      MyApp->Endpoint ()->SetLocalUserName (lname);
-    
-    g_free ((gunichar *) ucs_2_local_name);
+    MyApp->Endpoint ()->SetLocalUserName (gnomemeeting_from_utf8_to_ucs2 (local_name));    
   }
 
   

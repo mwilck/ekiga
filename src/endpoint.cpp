@@ -1050,14 +1050,16 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
     (client, "/apps/gnomemeeting/general/auto_answer", 0);
 
 
-  /* Convert the remote party name and app to UTF-8 */
-  utf8_name = g_convert ((gchar *) (const unsigned char *) (name), 
-			 strlen ((const char *)(const unsigned char *) (name)),
-			 "UTF-8", "UCS-2", NULL, NULL, NULL);
-  utf8_app = g_convert ((gchar *) (const unsigned char *) (app), 
-			strlen ((const char *)(const unsigned char *) (app)),
-			"UTF-8", "UCS-2", NULL, NULL, NULL);
+  /* Convert the remote party name and app to UTF-8, it the conversion
+     fails, then use the direct char* */
+  utf8_name = gnomemeeting_from_ucs2_to_utf8 (name);
+  if (utf8_name == NULL)
+    utf8_name = gnomemeeting_from_iso88591_to_utf8 (name);
 
+  utf8_app = gnomemeeting_from_ucs2_to_utf8 (app);
+  if (utf8_app == NULL)
+    utf8_app = gnomemeeting_from_iso88591_to_utf8 (app);
+  
 
   if (forward_host_gconf)
     forward_host = PString (forward_host_gconf);
@@ -1095,6 +1097,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
     g_free (forward_host_gconf);
     g_free (msg);
     g_free (utf8_name);
+    g_free (utf8_app);
 
     return !connection.ForwardCall (forward_host);
   }
@@ -1119,6 +1122,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
       g_free (forward_host_gconf);
       g_free (msg);
       g_free (utf8_name);
+      g_free (utf8_app);
 
       return !connection.ForwardCall (forward_host);
     } 
@@ -1140,6 +1144,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 
       g_free (forward_host_gconf);
       g_free (utf8_name);
+      g_free (utf8_app);
 
       return FALSE;
     }
@@ -1239,13 +1244,13 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 
 
   /* Convert remote app and remote name */
-  utf8_app = g_convert ((gchar *) (const unsigned char *) (app), 
-			strlen ((const char *) (const unsigned char *) (app)),
-			"UTF-8", "ISO-8859-1", NULL, NULL, NULL);
-  utf8_name = g_convert ((gchar *) (const unsigned char *) (name), 
-			 strlen ((const char *) (const unsigned char *) (name)),
-			 "UTF-8", "ISO-8859-1", NULL, NULL, NULL);
+  utf8_app = gnomemeeting_from_ucs2_to_utf8 (app);
+  if (utf8_app == NULL)
+    utf8_app = gnomemeeting_from_iso88591_to_utf8 (app);
 
+  utf8_name = gnomemeeting_from_ucs2_to_utf8 (name);
+  if (utf8_name == NULL)
+    utf8_name = gnomemeeting_from_iso88591_to_utf8 (name);
 
   gnomemeeting_threads_enter ();
 
@@ -1291,14 +1296,7 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 
   gnomemeeting_log_insert (gw->history_text_view, msg);
 
-  PINDEX bracket = name.Find('[');
-  if (bracket != P_MAX_INDEX)
-    name = name.Left (bracket);
-
-  bracket = name.Find('(');
-  if (bracket != P_MAX_INDEX)
-    name = name.Left (bracket);
-
+  
   gtk_entry_set_text (GTK_ENTRY (gw->remote_name), (const char *) utf8_name);
 
   if (docklet_timeout != 0)

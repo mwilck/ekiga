@@ -1137,9 +1137,7 @@ void GMILSBrowser::Main ()
 	    /* Strings are already UTF-8-encoded for LDAP v3,
 	       but Microsoft ILS doesn't take care of that */
 	    if (datas [j + 2])
-	      utf8_data [j] = g_convert (datas [j+2], strlen (datas [j + 2]),
-					 "UTF-8", "ISO-8859-1", NULL, NULL, 
-					 NULL);
+	      utf8_data [j] = g_strdup (datas [j+2]);
 
 	  gnomemeeting_threads_enter ();
 

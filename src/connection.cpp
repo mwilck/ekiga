@@ -342,23 +342,15 @@ void GMH323Connection::OnUserInputString(const PString & value)
 {
   PString val;
   PString remote = GetRemotePartyName ();
+  PINDEX bracket;
   GConfClient *client = gconf_client_get_default ();
 
   /* The remote party name has to be converted to UTF-8, but not
      the text */
   gchar *utf8_remote = NULL;
 
-  PINDEX bracket = remote.Find(" [");
-  if (bracket != P_MAX_INDEX)
-    remote = remote.Left (bracket);
-
-  bracket = remote.Find(" (");
-  if (bracket != P_MAX_INDEX)
-    remote = remote.Left (bracket);
-
   gnomemeeting_threads_enter ();
 
-  
   /* The MCU sends MSG[remote] value as message, 
      check if we are not using the MCU */
   bracket = value.Find("[");
@@ -371,11 +363,17 @@ void GMH323Connection::OnUserInputString(const PString & value)
   }
   else
     val = value.Mid (3);
+
+
+  /* If the remote name can be converted, use the conversion,
+     else (Netmeeting), suppose it is ISO-8859-1 */  
+  utf8_remote = gnomemeeting_from_ucs2_to_utf8 (remote);
+  if (utf8_remote == NULL)
+    utf8_remote = gnomemeeting_from_iso88591_to_utf8 (remote);
+
+  if (utf8_remote)
+    gnomemeeting_text_chat_insert (utf8_remote, val, 1);
   
-  utf8_remote = g_convert ((gchar *) (const unsigned char *)(remote), 
-			   strlen ((const char*)(const unsigned char*)(remote)),
-			   "UTF-8", "UCS-2", 0, 0, 0);
-  gnomemeeting_text_chat_insert (utf8_remote, val, 1);
   g_free (utf8_remote);
   
   if (!GTK_WIDGET_VISIBLE (gw->chat_window))

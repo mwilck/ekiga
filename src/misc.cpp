@@ -34,9 +34,6 @@
 #include <gnome.h>
 #include <esd.h>
 
-#ifdef HAVE_ARTS
-#include <artsc.h>
-#endif
 
 #include "config.h"
 #include "main_window.h"
@@ -343,4 +340,55 @@ GtkWidget *gnomemeeting_video_window_new (gchar *title, GtkWidget *&image,
 		    G_CALLBACK (gtk_widget_hide_on_delete), 0);
 
   return window;
+}
+
+
+PString gnomemeeting_from_utf8_to_ucs2 (gchar *utf8_string)
+{
+  gunichar *ucs_2_string = NULL;
+  gsize len = 0;
+  PString s;
+
+  if (!utf8_string)
+    return (s);
+
+  ucs_2_string = (gunichar *)
+    g_convert (utf8_string, strlen (utf8_string), "UCS-2", "UTF-8", 
+	       0, &len, 0);
+
+  PASN_BMPString bmp_string = 
+    PASN_BMPString (PWORDArray ((const WORD *) ucs_2_string, (int) len));
+      
+  s = bmp_string.GetValue ();
+
+  return s;
+}
+
+
+gchar *gnomemeeting_from_ucs2_to_utf8 (PString ucs_2_string)
+{
+  PWORDArray arr = 
+    (const PWORDArray) (PASN_BMPString (ucs_2_string));
+      
+  if (ucs_2_string.IsEmpty ())
+    return NULL;
+
+  gchar *utf_8_string =
+    g_convert ((const char *) arr.GetPointer (), 
+	       arr.GetSize (), "UTF-8", "UCS-2", 0, 0, 0);
+
+  return utf_8_string;
+}
+
+
+gchar *gnomemeeting_from_iso88591_to_utf8 (PString iso_string)
+{
+  if (iso_string.IsEmpty ())
+    return NULL;
+
+  gchar *utf_8_string =
+    g_convert ((const char *) iso_string.GetPointer (), 
+	       iso_string.GetSize (), "UTF-8", "ISO-8859-1", 0, 0, 0);
+
+  return utf_8_string;
 }

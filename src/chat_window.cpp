@@ -63,14 +63,7 @@ static void chat_entry_activate (GtkEditable *w, gpointer data)
        the text */
     gchar *utf8_local = NULL;
 
-    PINDEX bracket = local.Find('[');
-    if (bracket != P_MAX_INDEX)
-      local = local.Left (bracket);
-        
-    bracket = local.Find('(');
-    if (bracket != P_MAX_INDEX)
-      local = local.Left (bracket);
-        
+
     if (endpoint->GetCallingState () == 2) {
             
       H323Connection *connection = endpoint->GetCurrentConnection ();
@@ -80,10 +73,10 @@ static void chat_entry_activate (GtkEditable *w, gpointer data)
 	s = PString (gtk_entry_get_text (GTK_ENTRY (w)));
 	connection->SendUserInput ("MSG"+s);
 
-	utf8_local = g_convert ((gchar *) (const unsigned char *) (local), 
-				strlen ((const char*) (const unsigned char *) (local)),
-				"UTF-8", "UCS-2", 0, 0, 0);
-	gnomemeeting_text_chat_insert (utf8_local, s, 0);
+	
+	utf8_local = gnomemeeting_from_ucs2_to_utf8 (local);
+	if (utf8_local)
+	  gnomemeeting_text_chat_insert (utf8_local, s, 0);
 	g_free (utf8_local);
                 
 	gtk_entry_set_text (GTK_ENTRY (w), "");

@@ -54,7 +54,7 @@
 #include "chat_window.h"
 #include "tools.h"
 
-
+#include <ptclib/asner.h>
 #include <libgnomeui/gnome-window-icon.h>
 #include <bonobo-activation/bonobo-activation-activate.h>
 #include <bonobo-activation/bonobo-activation-register.h>
@@ -1105,19 +1105,8 @@ gnomemeeting_init (GmWindow *gw,
     /* It is the first alias for the gatekeeper */
     if (local_name != NULL) {
 
-      gunichar *ucs_2_local_name = NULL;
-      ucs_2_local_name = (gunichar *)
-	g_convert (local_name, strlen (local_name), "UCS-2", "UTF-8", 0, 0, 0);
-      PString lname = PString ((const WORD *) ucs_2_local_name);
-      
-      if (!lname.IsEmpty ())
-	endpoint->SetLocalUserName (lname);
-      
-      g_free ((gunichar *) ucs_2_local_name);
+      endpoint->SetLocalUserName (gnomemeeting_from_utf8_to_ucs2 (local_name));
     }
-    else
-      local_name = 
-	g_strdup ((const char *) MyApp->Endpoint ()->GetLocalUserName ());
 
     g_free (firstname);
     g_free (lastname);

@@ -35,6 +35,8 @@
 
 #include <gtk/gtkcombo.h>
 #include <gtk/gtkwidget.h>
+#include <ptclib/asner.h>
+
 #include "common.h"
 
 
@@ -44,7 +46,8 @@
  *                 or idle functions, because they are executed in the main
  *                 thread.
  */
-void gnomemeeting_threads_enter ();
+void 
+gnomemeeting_threads_enter ();
 
 
 /* DESCRIPTION  :  /
@@ -53,29 +56,34 @@ void gnomemeeting_threads_enter ();
  *                 or idle functions, because they are executed in the main
  *                 thread.
  */
-void gnomemeeting_threads_leave ();
+void 
+gnomemeeting_threads_leave ();
 
 
 /* DESCRIPTION  :  / 
- * BEHAVIOR     :  Creates a button with the GtkWidget * as pixmap and the label
- *                 as label.
+ * BEHAVIOR     :  Creates a button with the GtkWidget * as pixmap 
+ *                 and the label as label.
  * PRE          :  /
  */
-GtkWidget *gnomemeeting_button (char *, GtkWidget *);
+GtkWidget *
+gnomemeeting_button (char *, GtkWidget *);
+
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Add text (gchar *) with timestamps into the given 
  *                 GtkTextView.
  * PRE          :  The text to add, and the text view to add the text into.
  */
-void gnomemeeting_log_insert (GtkWidget *, gchar *);
+void 
+gnomemeeting_log_insert (GtkWidget *, gchar *);
 
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Displays the gnomemeeting logo in the drawing area.
  * PRE          :  The GtkImage where to put the logo (pixbuf).
  */
-void gnomemeeting_init_main_window_logo (GtkWidget *);
+void 
+gnomemeeting_init_main_window_logo (GtkWidget *);
 
 
 /* DESCRIPTION   :  /
@@ -91,8 +99,42 @@ gnomemeeting_incoming_call_popup_new (gchar *, gchar *);
  *                 Removes the previous message.
  * PRE           : The GnomeApp, followed by printf syntax format.
  */
-void gnomemeeting_statusbar_flash (GtkWidget *, const char *, ...);
+void 
+gnomemeeting_statusbar_flash (GtkWidget *, const char *, ...);
 
 
-GtkWidget *gnomemeeting_video_window_new (gchar *, GtkWidget *&, int, int);
+/* DESCRIPTION   :  /
+ * BEHAVIOR      : Creates a video window.
+ * PRE           : The title of the window, the drawing area, and the width and
+ *                 height.
+ */
+GtkWidget *
+gnomemeeting_video_window_new (gchar *, GtkWidget *&, int, int);
+
+
+/* DESCRIPTION   :  /
+ * BEHAVIOR      : Takes an UTF-8 encoded string, and returns an UCS-2 encoded
+ *                 PString.
+ * PRE           : An UTF-8 encoded string.
+ */
+PString
+gnomemeeting_from_utf8_to_ucs2 (gchar *);
+
+
+/* DESCRIPTION   :  /
+ * BEHAVIOR      : Takes an UCS-2 encoded PString, and returns an UTF-8 encoded
+ *                 string.
+ * PRE           : An UCS-2 encoded PString.
+ */
+gchar *
+gnomemeeting_from_ucs2_to_utf8 (PString);
+
+
+/* DESCRIPTION   :  /
+ * BEHAVIOR      : Takes an ISO-8859-1 encoded PString, and returns an UTF-8 
+ *                 encoded string.
+ * PRE           : An ISO-8859-1 encoded PString.
+ */
+gchar *
+gnomemeeting_from_iso88591_to_utf8 (PString);
 #endif
