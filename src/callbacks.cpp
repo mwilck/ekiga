@@ -381,7 +381,7 @@ void about_callback (GtkWidget *widget, gpointer parent_window)
       "",
       N_("Code contributors:"),
       "Kenneth Rohde Christiansen <kenneth@gnu.org>",
-      "Julien Puydt <julien.puydt@club-internet.fr>",
+      "Julien Puydt <julien.puydt@laposte.net>",
       "Miguel Rodríguez Pérez <migrax@terra.es>",
       "Paul <paul@argo.dyndns.org>", 
       "Roger Hardiman <roger@freebsd.org>",

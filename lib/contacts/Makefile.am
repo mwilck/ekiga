@@ -1,8 +1,12 @@
 noinst_LTLIBRARIES = libgmcontacts.la
 
-libgmcontacts_la_SOURCES =				\
-	gm_contacts-eds.cpp				\
-	gm_contacts.h					
+libgmcontacts_la_SOURCES = gm_contacts.h
+
+if DISABLE_GNOME
+libgmcontacts_la_SOURCES += gm_contacts-gm_conf.cpp
+else
+libgmcontacts_la_SOURCES += gm_contacts-eds.cpp
+endif
 
 INCLUDES =						\
 	-DGNOMELOCALEDIR=\""$(datadir)/locale"\"        \
