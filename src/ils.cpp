@@ -201,12 +201,6 @@ void GMILSClient::Main ()
     Current ()->Sleep (100);
   }
 
-  /* After the thread has stopped,
-     we unregister if we were registered */
-  if (registered == 1)
-    Register (0);
-
-
   quit_mutex.Signal ();
 }
 
@@ -544,7 +538,6 @@ gchar *GMILSClient::Search (gchar *ldap_server, gchar *ldap_port, gchar *mail)
 
   LDAPMessage *res = NULL, *e = NULL;
 
-
   if (((!strcmp (ldap_server, ""))&&(ldap_server)) 
       ||((!strcmp (ldap_port, ""))&&(ldap_port)) 
       ||((!strcmp (mail, ""))&&(mail)))
@@ -582,9 +575,9 @@ gchar *GMILSClient::Search (gchar *ldap_server, gchar *ldap_port, gchar *mail)
     
     cn = g_strdup_printf ("(&(cn=%s))", mail);
     rc_search_connection = 
-      ldap_search_st (ldap_search_connection, "objectClass=RTPerson", 
-		      LDAP_SCOPE_BASE,
-		      cn, attrs, 0, &t, &res); 
+      ldap_search_s (ldap_search_connection, "objectClass=RTPerson", 
+		     LDAP_SCOPE_BASE,
+		     cn, attrs, 0, &res); 
     g_free (cn);
     
     if (rc_search_connection != 0)
@@ -644,7 +637,7 @@ gchar *GMILSClient::Search (gchar *ldap_server, gchar *ldap_port, gchar *mail)
 
   rc_search_connection = -1;
   ldap_search_connection = NULL;
-
+  
   return ip;
 }
 
