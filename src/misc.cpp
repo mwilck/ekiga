@@ -392,3 +392,25 @@ gchar *gnomemeeting_from_iso88591_to_utf8 (PString iso_string)
 
   return utf_8_string;
 }
+
+
+PString gnomemeeting_pstring_cut (PString s)
+{
+  PString s2 = s;
+
+  if (s.IsEmpty ())
+    return s2;
+
+  PINDEX bracket = s2.Find('[');                                          
+                                                                               
+  if (bracket != P_MAX_INDEX)                                                
+    s2 = s2.Left (bracket);                                            
+
+
+  bracket = s2.Find('(');                                                 
+                                                                               
+  if (bracket != P_MAX_INDEX)                                                
+    s2 = s2.Left (bracket);     
+
+  return s2;
+}

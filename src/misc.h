@@ -137,4 +137,12 @@ gnomemeeting_from_ucs2_to_utf8 (PString);
  */
 gchar *
 gnomemeeting_from_iso88591_to_utf8 (PString);
+
+
+/* DESCRIPTION   :  /
+ * BEHAVIOR      : Takes a PString and returns the Left part before a [ or a (.
+ * PRE           : An non-empty PString.
+ */
+PString 
+gnomemeeting_pstring_cut (PString);
 #endif

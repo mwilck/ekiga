@@ -367,6 +367,7 @@ void GMH323Connection::OnUserInputString(const PString & value)
 
   /* If the remote name can be converted, use the conversion,
      else (Netmeeting), suppose it is ISO-8859-1 */  
+  remote = gnomemeeting_pstring_cut (remote);
   utf8_remote = gnomemeeting_from_ucs2_to_utf8 (remote);
   if (utf8_remote == NULL)
     utf8_remote = gnomemeeting_from_iso88591_to_utf8 (remote);

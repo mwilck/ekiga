@@ -1052,6 +1052,8 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 
   /* Convert the remote party name and app to UTF-8, it the conversion
      fails, then use the direct char* */
+  name = gnomemeeting_pstring_cut (name);
+  app = gnomemeeting_pstring_cut (app);
   utf8_name = gnomemeeting_from_ucs2_to_utf8 (name);
   if (utf8_name == NULL)
     utf8_name = gnomemeeting_from_iso88591_to_utf8 (name);
@@ -1244,6 +1246,8 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 
 
   /* Convert remote app and remote name */
+  app = gnomemeeting_pstring_cut (app);
+  name = gnomemeeting_pstring_cut (name);
   utf8_app = gnomemeeting_from_ucs2_to_utf8 (app);
   if (utf8_app == NULL)
     utf8_app = gnomemeeting_from_iso88591_to_utf8 (app);

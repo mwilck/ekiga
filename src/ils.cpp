@@ -40,6 +40,7 @@
 #include "misc.h"
 #include "stock-icons.h"
 #include "dialog.h"
+#include "misc.h"
 #include "xdap.h"
 
 #include "../pixmaps/inlines.h"
@@ -1132,13 +1133,20 @@ void GMILSBrowser::Main ()
 	  
 	  gchar *utf8_data [7] = {NULL, NULL, NULL, NULL, NULL, NULL, NULL};
 	  
-	  for (int j = 0 ; j < 7 ; j++) 
+	  for (int j = 0 ; j < 7 ; j++) {
 	    
 	    /* Strings are already UTF-8-encoded for LDAP v3,
 	       but Microsoft ILS doesn't take care of that */
-	    if (datas [j + 2])
-	      utf8_data [j] = g_strdup (datas [j+2]);
-
+	    if (datas [j + 2]) {
+	      
+	      /* If valid UTF-8, ok */
+	      if (g_utf8_validate (datas [j + 2], -1, NULL))
+		 utf8_data [j] = g_strdup (datas [j+2]);
+	      else
+		utf8_data [j] = 
+		  gnomemeeting_from_iso88591_to_utf8 (PString (datas [j+2]));
+	    }
+	  }
 	  gnomemeeting_threads_enter ();
 
 	  gtk_list_store_append (xdap_users_list_store, &list_iter);

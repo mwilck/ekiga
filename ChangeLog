@@ -1,5 +1,22 @@
 2002-10-30 Damien Sandras  <dsandras@seconix.com>
 
+	* src/chat_window.cpp: Make use of the new misc.h function.
+
+	* src/connection.cpp: Make use of the new misc.h function.
+
+	* src/endpoint.cpp: Make use of the new misc.h function.
+
+	* src/ils.cpp: If the ILS server doesn't send valid UTF-8, then we
+	know it is Netmeeting or old GnomeMeeting, and we convert from
+	ISO-8859-1.
+
+	* src/misc.cpp: Added new function to cut PString's 
+	after the "[" or "(".
+
+	* src/misc.h: Added new function to cut PString's after the "[" or "(".
+	
+2002-10-30 Damien Sandras  <dsandras@seconix.com>
+
 	* src/chat_window.cpp: Fixed conversion. If conversion fails, then
 	fallback to ISO-8859-1.
 	* src/connection.cpp: Same.
