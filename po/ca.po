@@ -6,16 +6,17 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: GnomeMeeting 0.95.0\n"
-"POT-Creation-Date: 2003-01-21 00:34+0100\n"
-"PO-Revision-Date: 2003-01-21 01:00+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-09-03 20:25+0200\n"
+"PO-Revision-Date: 2003-09-05 02:00+0200\n"
 "Last-Translator: Traducci al Catal <catalan@deimos>\n"
 "Language-Team:  <ca@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 0.9.6\n"
+"Content-Transfer-Encoding: 8bit"
 
-#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:1086
+#. Add the window icon and title
+#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:1274
 msgid "GnomeMeeting"
 msgstr "GnomeMeeting"
 
@@ -25,19 +26,19 @@ msgstr "Parlar amb gent per internet"
 
 #: gnomemeeting.desktop.in.h:3
 msgid "Video Conferencing"
-msgstr "Fer videoconferència"
+msgstr "Videoconferència"
 
 #: gnomemeeting.schemas.in.in.h:1
 msgid "1: 56Kbps, 2: ISDN, 3:DSL, 4: LAN, 5: Custom"
 msgstr "1: 56Kbps, 2: ISDN, 3:DSL, 4: LAN, 5: Personalitzat"
 
-#: gnomemeeting.schemas.in.in.h:2 src/pref_window.cpp:970
+#: gnomemeeting.schemas.in.in.h:2
 msgid "Always forward calls to the given host"
 msgstr "Desvia sempre les trucades a un ordinador en concret"
 
 #: gnomemeeting.schemas.in.in.h:3
 msgid "Audio player"
-msgstr "Reproductor de so"
+msgstr "Reproductor d'àudio"
 
 #: gnomemeeting.schemas.in.in.h:4
 msgid "Audio player mixer"
@@ -45,187 +46,182 @@ msgstr "Mesclador d'àudio"
 
 #: gnomemeeting.schemas.in.in.h:5
 msgid "Audio recorder"
-msgstr "Gravadora de so"
+msgstr "Gravadora d'àudio"
 
 #: gnomemeeting.schemas.in.in.h:6
 msgid "Audio recorder mixer"
-msgstr "Gravadora d'àudio"
+msgstr "Mesclador de la gravadora d'àudio"
 
 #: gnomemeeting.schemas.in.in.h:7
 msgid "Automatic echo cancellation"
-msgstr "Cancel·lació d'eco automàtica"
+msgstr "Cancel·lació automàtica de l'eco"
 
-#. The toggles
-#: gnomemeeting.schemas.in.in.h:8 src/menu.cpp:874 src/pref_window.cpp:835
+#: gnomemeeting.schemas.in.in.h:8 src/menu.cpp:911
 msgid "Automatically answer calls"
 msgstr "Contesta les trucades automàticament"
 
-#: gnomemeeting.schemas.in.in.h:9
+#: gnomemeeting.schemas.in.in.h:9 src/pref_window.cpp:829
+msgid "Automatically clear the text chat at the end of calls"
+msgstr "Esborra automàticament la finestra del xat al finalitzar cada trucada"
+
+#: gnomemeeting.schemas.in.in.h:10
 msgid "Change the control panel section"
 msgstr "Canvia la secció del tauler de control"
 
-#: gnomemeeting.schemas.in.in.h:10
-msgid "Change the control panel section (4 means that the control panel is off)"
-msgstr "Canvia la secció del tauler de control (4 vol dir que el tauler està apagat)"
+#: gnomemeeting.schemas.in.in.h:11
+msgid ""
+"Change the control panel section (4 means that the control panel is off)"
+msgstr ""
+"Canvia la secció del tauler de control (4 vol dir que el tauler està apagat)"
 
-#: gnomemeeting.schemas.in.in.h:11 src/pref_window.cpp:1405
+#: gnomemeeting.schemas.in.in.h:12 src/pref_window.cpp:1391
 msgid ""
 "Choose the number of blocks (that have not changed) transmitted with each "
 "frame. These blocks fill in the background."
-msgstr ""
-"Aquí podeu especificar el nombre de blocs transmesos (que no hagin canviat) "
-"en cada quadre. Aquests blocs emplenen el fons."
+msgstr " Escolliu el nombre de blocs (que no hagin canviat) a transmetre en cada quadre. Aquests blocs emplenen el fons."
 
-#: gnomemeeting.schemas.in.in.h:12
+#: gnomemeeting.schemas.in.in.h:13
 msgid "Color Format"
 msgstr "Format del color"
 
-#: gnomemeeting.schemas.in.in.h:13
+#: gnomemeeting.schemas.in.in.h:14
 msgid "Color Format for the video palette"
 msgstr "Format del color per a la paleta de vídeo"
 
-#: gnomemeeting.schemas.in.in.h:14 src/ldap_window.cpp:1725
+#: gnomemeeting.schemas.in.in.h:15 src/ldap_window.cpp:2572
 msgid "Comment"
 msgstr "Comentari"
 
-#: gnomemeeting.schemas.in.in.h:15 src/pref_window.cpp:990
+#: gnomemeeting.schemas.in.in.h:16 src/pref_window.cpp:936
 msgid ""
 "Connection will be established in Fast Start mode. Fast Start is a new way "
 "to start calls faster that was introduced in H.323v2. It is not supported by "
 "Netmeeting and using both Fast Start and H.245 Tunnelling can crash some "
 "versions of Netmeeting."
-msgstr ""
-"La connexió s'establirà en el mode d'Arrencada Ràpida. Aquesta és una nova "
-"manera d'iniciar les trucades que va introduir-se en la versió 2 del "
-"protocol H323. El Netmeeting no ho suporta, de manera que utilitzant "
-"l'Arrencada Ràpida i la tunnelització H.245 al mateix temps, pot fer penjar "
-"algunes versions del Netmeeting."
+msgstr " La connexió s'establirà en el mode d'Arrencada Ràpida. Aquesta és una nova manera d'iniciar les trucades que va introduir-se en la versió 2 del  protocol H323. El Netmeeting no ho implementa, de manera que utilitzant l'Arrencada Ràpida i la tunelització H.245 al mateix temps, pot fer penjar algunes versions del Netmeeting."
 
-#: gnomemeeting.schemas.in.in.h:16
+#: gnomemeeting.schemas.in.in.h:17
 msgid "Country code"
 msgstr "Codi de país"
 
-#: gnomemeeting.schemas.in.in.h:17 src/menu.cpp:439 src/pref_window.cpp:837
-msgid "Do not disturb"
-msgstr "No molestar"
-
 #: gnomemeeting.schemas.in.in.h:18
+msgid "Display a popup window when receiving a call"
+msgstr "Mostra una finestra emergen per trucades entrants"
+
+#: gnomemeeting.schemas.in.in.h:19 src/menu.cpp:446
+msgid "Do not disturb"
+msgstr "No molesteu"
+
+#: gnomemeeting.schemas.in.in.h:20
 msgid "E-mail address"
 msgstr "Adreça electrònica"
 
-#: gnomemeeting.schemas.in.in.h:19 src/pref_window.cpp:990
+#: gnomemeeting.schemas.in.in.h:21
 msgid "Enable 'Fast Start'"
 msgstr "Activa l'arrencada ràpida"
 
-#: gnomemeeting.schemas.in.in.h:20 src/pref_window.cpp:987
+#: gnomemeeting.schemas.in.in.h:22
 msgid "Enable H.245 tunnelling"
-msgstr "Activa la tunnelització H.245"
+msgstr "Activa la tunelització H.245"
 
-#: gnomemeeting.schemas.in.in.h:21 src/pref_window.cpp:1007
+#: gnomemeeting.schemas.in.in.h:23
 msgid "Enable IP translation"
-msgstr "Activa la traducció d'adreçes d'IP"
+msgstr "Activa la traducció d'adreçes IP"
 
-#: gnomemeeting.schemas.in.in.h:22 src/pref_window.cpp:861
+#: gnomemeeting.schemas.in.in.h:24
 msgid "Enable bilinear filtering on displayed video"
-msgstr "Activa el filtre bilinear"
+msgstr "Activa el filtre bilineal en el vídeo mostrat"
 
-#: gnomemeeting.schemas.in.in.h:23 src/pref_window.cpp:861
+#: gnomemeeting.schemas.in.in.h:25 src/pref_window.cpp:824
 msgid ""
 "Enable or disable bilinear interpolation when rendering video images (this "
 "has no effect in fullscreen mode)."
-msgstr ""
-"Activa o desactiva la interpolació bilinear quan es representin imatges de "
-"vídeo (no té efecte a pantalla completa)."
+msgstr " Activa o desactiva la interpolació bilineal quan es representin imatges de vídeo (no té efecte a pantalla completa)."
 
-#: gnomemeeting.schemas.in.in.h:24 src/pref_window.cpp:905
+#: gnomemeeting.schemas.in.in.h:26
 msgid "Enable registering"
-msgstr "Activa registre"
+msgstr "Activa el registre"
 
-#: gnomemeeting.schemas.in.in.h:25 src/pref_window.cpp:1338
+#: gnomemeeting.schemas.in.in.h:27
 msgid "Enable silence detection"
 msgstr "Activa la detecció de silenci"
 
-#: gnomemeeting.schemas.in.in.h:26 src/pref_window.cpp:1375
+#: gnomemeeting.schemas.in.in.h:28
 msgid "Enable video reception"
-msgstr "Activa la detecció de silenci"
+msgstr "Activa la recepció de vídeo"
 
-#: gnomemeeting.schemas.in.in.h:27 src/pref_window.cpp:1372
+#: gnomemeeting.schemas.in.in.h:29
 msgid "Enable video transmission"
 msgstr "Activa la transmissió de vídeo"
 
-#: gnomemeeting.schemas.in.in.h:28 src/pref_window.cpp:790
+#: gnomemeeting.schemas.in.in.h:30 src/pref_window.cpp:747
 msgid "Enter a comment about yourself for the user directory."
-msgstr "Aquí podeu indicar un comentari que es mostrarà en el directori ILS."
+msgstr "Introduïu un comentari que es mostrarà en el directori ILS."
 
-#: gnomemeeting.schemas.in.in.h:29 src/pref_window.cpp:1010
+#: gnomemeeting.schemas.in.in.h:31 src/pref_window.cpp:1022
 msgid ""
 "Enter the public IP of your NAT/PAT router if you want to use IP "
 "translation. If you are registered to ils.seconix.com, GnomeMeeting will "
 "automatically fetch the public IP using the ILS service."
-msgstr ""
-"Aquí podeu posar l'adreça d'IP pública del vostre encaminador NAT/PAT si "
-"voleu fer servir traducció d'adreces d'IP. Si esteu registrat a ils.seconix."
-"com, el GnomeMeeting la recollirà automàticament fent servir el servei ILS."
+msgstr " Introduïu l'adreça IP pública del vostre encaminador NAT/PAT si  voleu fer servir traducció d'adreces IP. Si esteu registrat a ils.seconix. com, el GnomeMeeting la recollirà automàticament fent servir el servei ILS."
 
-#: gnomemeeting.schemas.in.in.h:30 src/pref_window.cpp:788
+#: gnomemeeting.schemas.in.in.h:32 src/pref_window.cpp:742
 msgid "Enter your e-mail address."
-msgstr "Indiqueu la vostra adreça electrònica"
+msgstr "Introduïu la vostra adreça electrònica"
 
-#: gnomemeeting.schemas.in.in.h:31 src/pref_window.cpp:782
+#: gnomemeeting.schemas.in.in.h:33 src/pref_window.cpp:732
 msgid "Enter your first name."
-msgstr "Indiqueu el vostre nom"
+msgstr "Introduïu el vostre nom"
 
-#: gnomemeeting.schemas.in.in.h:32 src/pref_window.cpp:786
+#: gnomemeeting.schemas.in.in.h:34 src/pref_window.cpp:737
 msgid "Enter your last name."
-msgstr "Indiqueu el vostre cognom"
+msgstr "Introduïu el vostre cognom"
 
-#: gnomemeeting.schemas.in.in.h:33 src/pref_window.cpp:792
+#: gnomemeeting.schemas.in.in.h:35 src/pref_window.cpp:752
 msgid "Enter your location (country or city) for the user directory."
-msgstr ""
-"Entreu la ubicació (país o ciutat) de l'usuari per mostrar-ho en el "
-"directori."
+msgstr " Entreu la ubicació (país o ciutat) de l'usuari per mostrar-ho en el directori."
 
-#: gnomemeeting.schemas.in.in.h:34
+#: gnomemeeting.schemas.in.in.h:36
 msgid "First name"
 msgstr "Nom"
 
-#: gnomemeeting.schemas.in.in.h:35
+#: gnomemeeting.schemas.in.in.h:37
 msgid "Forward calls to host"
-msgstr "Desviar trucades a l'ordinador"
+msgstr "Desvia trucades a l'ordinador"
 
-#: gnomemeeting.schemas.in.in.h:36 src/pref_window.cpp:976
+#: gnomemeeting.schemas.in.in.h:38
 msgid "Forward calls to the given host if busy"
 msgstr "Desvia les trucades a un ordinador en concret quan estigui ocupat"
 
-#: gnomemeeting.schemas.in.in.h:37 src/pref_window.cpp:973
+#: gnomemeeting.schemas.in.in.h:39
 msgid "Forward calls to the given host if no answer"
 msgstr "Desvia les trucades a un ordinador en concret si no contesto"
 
-#: gnomemeeting.schemas.in.in.h:38
+#: gnomemeeting.schemas.in.in.h:40
 msgid "Fullscreen height"
 msgstr "Alçada a pantalla completa"
 
-#: gnomemeeting.schemas.in.in.h:39
+#: gnomemeeting.schemas.in.in.h:41
 msgid "Fullscreen width"
 msgstr "Amplada a pantalla completa"
 
-#: gnomemeeting.schemas.in.in.h:40 src/pref_window.cpp:884
+#: gnomemeeting.schemas.in.in.h:42 src/pref_window.cpp:963
 msgid "Gatekeeper ID"
 msgstr "ID del Gatekeeper"
 
-#: gnomemeeting.schemas.in.in.h:41
-msgid "Gatekeeper alias"
-msgstr "Alias pel Gatekeeper"
-
-#: gnomemeeting.schemas.in.in.h:42 src/pref_window.cpp:883
-msgid "Gatekeeper host"
-msgstr "Adreça d'IP del gatekeeper"
-
 #: gnomemeeting.schemas.in.in.h:43
-msgid "Gatekeeper password"
-msgstr "Contrasenya pel Gatekeeper"
+msgid "Gatekeeper alias"
+msgstr "Àlias pel Gatekeeper"
 
-#: gnomemeeting.schemas.in.in.h:44 src/pref_window.cpp:869
+#: gnomemeeting.schemas.in.in.h:44 src/pref_window.cpp:962
+msgid "Gatekeeper host"
+msgstr "Adreça IP del gatekeeper"
+
+#: gnomemeeting.schemas.in.in.h:45
+msgid "Gatekeeper password"
+msgstr "Contrasenya pel gatekeeper"
+
+#: gnomemeeting.schemas.in.in.h:46
 msgid ""
 "If enabled, GnomeMeeting will play a sound when receiving an incoming call "
 "(the sound to play is chosen in the Gnome Control Center)."
@@ -233,68 +229,74 @@ msgstr ""
 "Si s'activa, el GnomeMeeting reproduirà un so quan rebeu una trucada (aquest "
 "so es pot canviar en el Centre de Control del Gnome)."
 
-#: gnomemeeting.schemas.in.in.h:45 src/pref_window.cpp:827
-msgid "If enabled, GnomeMeeting will start hidden. The docklet must be enabled."
+#: gnomemeeting.schemas.in.in.h:47 src/pref_window.cpp:788
+msgid ""
+"If enabled, GnomeMeeting will start hidden. The docklet must be enabled."
 msgstr ""
 "Si s'activa, el GnomeMeeting s'iniciarà amagat. El docklet ha d'estar "
 "activat."
 
-#: gnomemeeting.schemas.in.in.h:46 src/pref_window.cpp:839
-msgid "If enabled, a popup will be displayed when receiving an incoming call."
+#: gnomemeeting.schemas.in.in.h:48 src/pref_window.cpp:802
+msgid ""
+"If enabled, a popup window will be displayed when receiving an incoming call."
 msgstr "Si s'activa, apareixerà una finestra emergent cada cop que us truquin."
 
-#: gnomemeeting.schemas.in.in.h:47 src/pref_window.cpp:976
+#: gnomemeeting.schemas.in.in.h:49 src/pref_window.cpp:901
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you already are in a call or if you are in "
 "Do Not Disturb mode."
-msgstr ""
-"Si s'activa, totes les trucades entrants que rebeu mentre estigueu en una "
-"trucada, on en mode No Molestar, es desviaran a l'ordinador indicat."
+msgstr " Si s'activa, totes les trucades entrants que rebeu mentre estigueu en una  trucada, on en mode No Molesteu, es desviaran a l'ordinador indicat."
 
-#: gnomemeeting.schemas.in.in.h:48 src/pref_window.cpp:973
+#: gnomemeeting.schemas.in.in.h:50 src/pref_window.cpp:898
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you do not answer the call."
-msgstr ""
-"Si s'activa, totes les trucades entrants que no contesteu en un temps "
-"determinat, es desviaran cap a l'ordinador indicat."
+msgstr " Si s'activa, les trucades entrants que no contesteu es desviaran cap a l'ordinador indicat."
 
-#: gnomemeeting.schemas.in.in.h:49 src/pref_window.cpp:970
+#: gnomemeeting.schemas.in.in.h:51 src/pref_window.cpp:895
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below."
-msgstr "Si s'activa, totes les trucades entrants es desviaran a l'ordinador indicat."
+msgstr ""
+"Si s'activa, totes les trucades entrants es desviaran a l'ordinador indicat."
 
-#: gnomemeeting.schemas.in.in.h:50 src/pref_window.cpp:1375
+#: gnomemeeting.schemas.in.in.h:52 src/pref_window.cpp:1365
 msgid "If enabled, allows video to be received during a call."
-msgstr "Si s'activa, les trucades s'establirant en mode d'arrencada ràpida."
+msgstr "Si s'activa, s'acceptarà la recepció de vídeo durant la trucada."
 
-#: gnomemeeting.schemas.in.in.h:51 src/pref_window.cpp:835
+#: gnomemeeting.schemas.in.in.h:53 src/pref_window.cpp:796
 msgid "If enabled, incoming calls will be automatically answered."
 msgstr "Si s'activa, les trucades entrants s'acceptaran automàticament."
 
-#: gnomemeeting.schemas.in.in.h:52 src/pref_window.cpp:837
+#: gnomemeeting.schemas.in.in.h:54 src/pref_window.cpp:799
 msgid "If enabled, incoming calls will be automatically refused."
 msgstr "Si s'activa, les trucades entrants es descartaran automàticament."
 
-#: gnomemeeting.schemas.in.in.h:53 src/pref_window.cpp:907
+#: gnomemeeting.schemas.in.in.h:55 src/pref_window.cpp:858
 msgid "If enabled, register with the selected user directory."
-msgstr "Si s'activa, us permetrà registrar-vos al directori indicat."
+msgstr "Si s'activa, se us registrarà al directori indicat."
 
-#: gnomemeeting.schemas.in.in.h:54 src/pref_window.cpp:825
-msgid "If enabled, the splash screen will be displayed when GnomeMeeting starts."
-msgstr "Si s'activa, es mostrarà una pantalla flash a l'arrencar."
+#: gnomemeeting.schemas.in.in.h:56 src/pref_window.cpp:785
+msgid ""
+"If enabled, the splash screen will be displayed when GnomeMeeting starts."
+msgstr "Si s'activa, es mostrarà una pantalla flaix a l'arrencar."
 
-#: gnomemeeting.schemas.in.in.h:55 src/pref_window.cpp:1340
+#: gnomemeeting.schemas.in.in.h:57 src/pref_window.cpp:829
+msgid ""
+"If enabled, the text chat will automatically be cleared at the end of calls."
+msgstr "Si s'activa, el xat s'esborrarà automàticament al final de cada trucada."
+
+#: gnomemeeting.schemas.in.in.h:58 src/pref_window.cpp:1335
 msgid "If enabled, use silence detection with the GSM and G.711 codecs."
-msgstr "Si s'activa, es farà servir la detecció de silenci pels còdecs GSM i G.711."
+msgstr ""
+"Si s'activa, es farà servir la detecció de silenci pels còdecs GSM i G.711."
 
-#: gnomemeeting.schemas.in.in.h:56 src/pref_window.cpp:1372
+#: gnomemeeting.schemas.in.in.h:59 src/pref_window.cpp:1362
 msgid "If enabled, video is transmitted during a call."
-msgstr "Si s'activa, es reproduirà un so quan hi hagi trucades entrants."
+msgstr "Si s'activa, es transmetrà vídeo durant la trucada."
 
-#: gnomemeeting.schemas.in.in.h:57 src/pref_window.cpp:912
+#: gnomemeeting.schemas.in.in.h:60 src/pref_window.cpp:861
 msgid ""
 "If enabled, your details are shown to people browsing the user directory. If "
 "disabled, you are not visible to users browsing the user directory, but they "
@@ -305,134 +307,128 @@ msgstr ""
 "que naveguin pel directori, però encara us podran trucar fent servir la "
 "vostra URL amb callto."
 
-#: gnomemeeting.schemas.in.in.h:58
+#: gnomemeeting.schemas.in.in.h:61
 msgid "Kind of network selected in the druid"
 msgstr "Tipus de xarxa seleccionada en l'assistent"
 
-#: gnomemeeting.schemas.in.in.h:59
+#: gnomemeeting.schemas.in.in.h:62
 msgid "Last name"
 msgstr "Cognom"
 
-#: gnomemeeting.schemas.in.in.h:60
+#: gnomemeeting.schemas.in.in.h:63
 msgid "Listen Port"
 msgstr "Port on escoltar"
 
-#: gnomemeeting.schemas.in.in.h:61
-msgid "Local Video Popup Height"
-msgstr "Alçada de la finestra emergent pel vídeo local"
+#: gnomemeeting.schemas.in.in.h:64
+msgid "Local video window height"
+msgstr "Alçada de la finestra pel vídeo local"
 
-#: gnomemeeting.schemas.in.in.h:62
-msgid "Local Video Popup Width"
-msgstr "Amplada de la finestra emergent pel vídeo local"
+#: gnomemeeting.schemas.in.in.h:65
+msgid "Local video window width"
+msgstr "Amplada de la finestra pel vídeo local"
 
-#: gnomemeeting.schemas.in.in.h:63 src/ldap_window.cpp:1736
+#: gnomemeeting.schemas.in.in.h:66 src/ldap_window.cpp:2585
 msgid "Location"
 msgstr "Ubicació"
 
-#: gnomemeeting.schemas.in.in.h:64
+#: gnomemeeting.schemas.in.in.h:67
 msgid "Maximum jitter buffer"
 msgstr "Memòria intermèdeia màxima pel jitter"
 
-#: gnomemeeting.schemas.in.in.h:65
+#: gnomemeeting.schemas.in.in.h:68
 msgid "Maximum video bandwidth"
 msgstr "Ample de banda màxim pel vídeo"
 
-#: gnomemeeting.schemas.in.in.h:66
+#: gnomemeeting.schemas.in.in.h:69
 msgid "Minimum jitter buffer"
 msgstr "Memòria intermèdia mínima pel jitter"
 
-#: gnomemeeting.schemas.in.in.h:67
+#: gnomemeeting.schemas.in.in.h:70
 msgid "Minimum transmitted FPS"
 msgstr "Màxim FPS transmesos"
 
-#: gnomemeeting.schemas.in.in.h:68
+#: gnomemeeting.schemas.in.in.h:71
 msgid "Minimum transmitted video quality"
-msgstr "La qualitat desitjada pel vídeo transmès"
+msgstr "La qualitat mínima desitjada pel vídeo transmès"
 
-#: gnomemeeting.schemas.in.in.h:69
+#: gnomemeeting.schemas.in.in.h:72
 msgid "Number of entries to store in history boxes"
-msgstr "Número d'entrades guardades a l'historial"
+msgstr "Número d'entrades que es guardadaran a l'historial"
 
-#: gnomemeeting.schemas.in.in.h:70
+#: gnomemeeting.schemas.in.in.h:73
 msgid "Number of frames for G.711"
 msgstr "Quantitat de quadres per a G.711"
 
-#: gnomemeeting.schemas.in.in.h:71
+#: gnomemeeting.schemas.in.in.h:74
 msgid "Number of frames for GSM"
 msgstr "Quantitat de quadres per a GSM"
 
-#: gnomemeeting.schemas.in.in.h:72
+#: gnomemeeting.schemas.in.in.h:75
 msgid "Number of frames transmitted in each packet for the G.711 codec."
 msgstr "Quantitat de quadres transmesos en cada paquet pel còdec G.711"
 
-#: gnomemeeting.schemas.in.in.h:73
+#: gnomemeeting.schemas.in.in.h:76
 msgid "Number of frames transmitted in each packet for the GSM codec."
 msgstr "Quantitat de quadres transmesos en cada paquet pel còdec GSM"
 
-#. The toggles
-#: gnomemeeting.schemas.in.in.h:74 src/pref_window.cpp:869
+#: gnomemeeting.schemas.in.in.h:77
 msgid "Play a sound on incoming calls"
 msgstr "Reproduir un so per trucades entrants"
 
-#: gnomemeeting.schemas.in.in.h:75 src/pref_window.cpp:839
-msgid "Popup window when receiving a call"
-msgstr "Finestra emergent per trucades entrants"
-
-#: gnomemeeting.schemas.in.in.h:76
+#: gnomemeeting.schemas.in.in.h:78
 msgid "Public IP of the NAT/PAT router"
 msgstr "IP pública de l'encaminador NAT/PAT"
 
-#: gnomemeeting.schemas.in.in.h:77
+#: gnomemeeting.schemas.in.in.h:79
 msgid "Received Video Quality Hint"
-msgstr "Qualitat de video rebuda aconsellada"
+msgstr "Qualitat de video rebuda suggerida"
 
-#: gnomemeeting.schemas.in.in.h:78
+#: gnomemeeting.schemas.in.in.h:80
 msgid "Registering method"
 msgstr "Mètode de registre"
 
-#: gnomemeeting.schemas.in.in.h:79 src/pref_window.cpp:932
+#: gnomemeeting.schemas.in.in.h:81 src/pref_window.cpp:990
 msgid "Registering method to use"
 msgstr "Mètode de registre que s'utilitzarà"
 
-#: gnomemeeting.schemas.in.in.h:80
-msgid "Remote Video Popup Height"
-msgstr "Alçada de la finestra emergent pel vídeo remot"
-
-#: gnomemeeting.schemas.in.in.h:81
-msgid "Remote Video Popup Width"
-msgstr "Amplada de la finestra emergent pel vídeo remot"
-
 #: gnomemeeting.schemas.in.in.h:82
+msgid "Remote video window height"
+msgstr "Alçada de la finestra pel vídeo remot"
+
+#: gnomemeeting.schemas.in.in.h:83
+msgid "Remote video window width"
+msgstr "Amplada de la finestra pel vídeo remot"
+
+#: gnomemeeting.schemas.in.in.h:84
 msgid "Revision of the schema file"
 msgstr "Revisió del fitxer d'esquemes"
 
-#: gnomemeeting.schemas.in.in.h:83 src/druid.cpp:809 src/pref_window.cpp:1052
+#: gnomemeeting.schemas.in.in.h:85 src/druid.cpp:792 src/pref_window.cpp:1060
 msgid "Select the audio player device to use."
-msgstr "Indiqueu el reproductor d'àudio que vulgueu utilitzar."
+msgstr "Indiqueu el dispositiu reproductor d'àudio que vulgueu utilitzar."
 
-#: gnomemeeting.schemas.in.in.h:84 src/druid.cpp:816 src/pref_window.cpp:1059
+#: gnomemeeting.schemas.in.in.h:86 src/druid.cpp:799 src/pref_window.cpp:1067
 msgid "Select the audio recorder device to use."
-msgstr "Indiqueu la gravadora d'àudio que vulgueu utilitzar."
+msgstr "Indiqueu el dispositiu gravador d'àudio que vulgueu utilitzar."
 
-#: gnomemeeting.schemas.in.in.h:85 src/pref_window.cpp:1146
-msgid "Select the format for video cameras. (Does not apply to most USB cameras)."
+#: gnomemeeting.schemas.in.in.h:87 src/pref_window.cpp:1140
+msgid ""
+"Select the format for video cameras. (Does not apply to most USB cameras)."
 msgstr ""
 "Selecioneu el format per càmeres de vídeo. (No té rellevància en la majoria "
 "de càmeres USB)."
 
-#: gnomemeeting.schemas.in.in.h:86 src/druid.cpp:812 src/pref_window.cpp:1055
+#: gnomemeeting.schemas.in.in.h:88 src/druid.cpp:795 src/pref_window.cpp:1063
 msgid "Select the mixer to use to change the volume of the audio player."
-msgstr ""
-"Seleccioneu el mesclador que vulgueu fer servir per canviar el volum del "
-"reproductor de so."
+msgstr " Seleccioneu el mesclador que vulgueu fer servir per canviar el volum del  reproductor d'àudio."
 
-#: gnomemeeting.schemas.in.in.h:87 src/druid.cpp:819 src/pref_window.cpp:1062
+#: gnomemeeting.schemas.in.in.h:89 src/druid.cpp:802 src/pref_window.cpp:1070
 msgid "Select the mixer to use to change the volume of the audio recorder."
 msgstr ""
 "Seleccioneu el mesclador que vulgueu fer servir per canviar el volum de la "
 "gravadora d'àudio."
 
-#: gnomemeeting.schemas.in.in.h:88 src/pref_window.cpp:1143
+#: gnomemeeting.schemas.in.in.h:90 src/pref_window.cpp:1137
 msgid ""
 "Select the transmitted video size: Small (QCIF 176x144) or Large (CIF "
 "352x288)."
@@ -440,7 +436,7 @@ msgstr ""
 "Escolliu la mida del vídeo transmès: Petita (QCIF 176x144) o Gran (CIF "
 "352x288)."
 
-#: gnomemeeting.schemas.in.in.h:89 src/pref_window.cpp:1133
+#: gnomemeeting.schemas.in.in.h:91 src/pref_window.cpp:1130
 msgid ""
 "Select the video device to use. Using an invalid video device or \"Picture\" "
 "for video transmission will transmit a test picture."
@@ -448,143 +444,133 @@ msgstr ""
 "Indiqueu el dispositiu de vídeo que vulgueu fer servir. Si n'indiqueu un "
 "d'incorrecte o \"Imatge\" el GnomeMeeting transmetrà una imatge de prova."
 
-#: gnomemeeting.schemas.in.in.h:90
+#: gnomemeeting.schemas.in.in.h:92
 msgid "Show a status bar at the bottom of the main window"
 msgstr "Mostra una barra d'estat al peu de la finestra principal"
 
-#: gnomemeeting.schemas.in.in.h:91
+#: gnomemeeting.schemas.in.in.h:93
 msgid "Show chat window"
-msgstr "Mostra la finestra de conversa"
-
-#: gnomemeeting.schemas.in.in.h:92 src/pref_window.cpp:910
-msgid "Show my details to other registered users"
-msgstr "Mostra les meves dades a d'altres usuaris registrats."
-
-#: gnomemeeting.schemas.in.in.h:93 src/pref_window.cpp:825
-msgid "Show splash screen"
-msgstr "Mostra pantalla flash"
+msgstr "Mostra la finestra de xat"
 
 #: gnomemeeting.schemas.in.in.h:94
+msgid "Show my details to other registered users"
+msgstr "Mostra les meves dades a d'altres usuaris registrats"
+
+#: gnomemeeting.schemas.in.in.h:95
+msgid "Show splash screen"
+msgstr "Mostra pantalla flaix"
+
+#: gnomemeeting.schemas.in.in.h:96
 msgid "Show status bar"
 msgstr "Mostra la barra d'estat"
 
-#: gnomemeeting.schemas.in.in.h:95
+#: gnomemeeting.schemas.in.in.h:97
 msgid "Show the chat window in the main window"
 msgstr "Mostra la finestra de conversa dins la finestra principal"
 
-#: gnomemeeting.schemas.in.in.h:96 src/pref_window.cpp:827
+#: gnomemeeting.schemas.in.in.h:98
 msgid "Start hidden"
 msgstr "Arrenca amagat"
 
-#: gnomemeeting.schemas.in.in.h:97 src/menu.cpp:583 src/menu.cpp:819
+#: gnomemeeting.schemas.in.in.h:99 src/menu.cpp:616 src/menu.cpp:860
 msgid "Switch to fullscreen"
 msgstr "Conmuta a pantalla completa"
 
-#: gnomemeeting.schemas.in.in.h:98
+#: gnomemeeting.schemas.in.in.h:100
 msgid "Switch to fullscreen for images displayed in the main GUI."
 msgstr "Conmuta a pantalla completa per imatges mostrades a la GUI principal"
 
-#: gnomemeeting.schemas.in.in.h:99
+#: gnomemeeting.schemas.in.in.h:101
 msgid "TCP Port Range"
-msgstr "Marge de ports TCP"
+msgstr "Rang de ports TCP"
 
-#: gnomemeeting.schemas.in.in.h:100
+#: gnomemeeting.schemas.in.in.h:102
 msgid "The Audio Codecs List"
 msgstr "Llista de còdecs d'àudio"
 
-#: gnomemeeting.schemas.in.in.h:101 src/pref_window.cpp:1071
+#: gnomemeeting.schemas.in.in.h:103 src/pref_window.cpp:1078
 msgid ""
 "The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic "
 "Gain Compensation. Choosing Automatic Gain Compensation modulates the volume "
 "for best quality."
-msgstr ""
-"Nivell de la cancel·lació d'eco automàtica: Apagada, Baixa, Mitjana, "
-"Autimàtica Compensació de guany. Seleccionant Compensació Automàtica de "
-"Guany, es modula el volum per a la millor qualitat."
+msgstr " Nivell de la cancel·lació automàtica d'eco: Apagada, Baixa, Mitjana,  Compensació automàtica del guany. Seleccionant Compensació Automàtica del  Guany, es modula el volum per a la millor qualitat."
 
-#: gnomemeeting.schemas.in.in.h:102 src/pref_window.cpp:925
+#: gnomemeeting.schemas.in.in.h:104 src/pref_window.cpp:983
 msgid ""
 "The Gatekeeper alias to use when registering (string, or E164 ID if only "
 "0123456789#)."
-msgstr ""
-"L'àlias que voleu fer servir quan us registreu al gatekeeper (cadena, o ID "
-"E164 si només hi ha números 0123456789#)."
+msgstr " L'àlias que voleu fer servir quan us registreu al gatekeeper (cadena, o ID E164 si només 0123456789#)."
 
-#: gnomemeeting.schemas.in.in.h:103 src/pref_window.cpp:922
+#: gnomemeeting.schemas.in.in.h:105 src/pref_window.cpp:980
 msgid "The Gatekeeper host to register with."
-msgstr "L'adreça d'IP on hi ha el gatekeeper on us vulgueu registrar."
+msgstr "L'adreça IP on hi ha el gatekeeper on us vulgueu registrar."
 
-#: gnomemeeting.schemas.in.in.h:104 src/pref_window.cpp:919
+#: gnomemeeting.schemas.in.in.h:106 src/pref_window.cpp:977
 msgid "The Gatekeeper identifier to register with."
 msgstr "La identificació amb la qual registrar-vos al gatekeeper."
 
-#: gnomemeeting.schemas.in.in.h:105 src/pref_window.cpp:928
-msgid "The Gatekeeper password to use for H.235 authentication to the Gatekeeper."
-msgstr "La contrasenya que es farà servir per l'autenticació H.235 pel Gatekeeper."
+#: gnomemeeting.schemas.in.in.h:107 src/pref_window.cpp:986
+msgid ""
+"The Gatekeeper password to use for H.235 authentication to the Gatekeeper."
+msgstr " La contrasenya que es farà servir per a l'autenticació H.235 al Gatekeeper."
 
-#: gnomemeeting.schemas.in.in.h:106
+#: gnomemeeting.schemas.in.in.h:108
 msgid "The Video Quality to request to the remote"
-msgstr "La qualitat de video que es suggerirà a l'altre interlocutor"
+msgstr "La qualitat de video que es suggerirà al vostre interlocutor"
 
-#: gnomemeeting.schemas.in.in.h:107
+#: gnomemeeting.schemas.in.in.h:109
 msgid "The default video view"
 msgstr "La vista de vídeo predeterminada"
 
-#: gnomemeeting.schemas.in.in.h:108
+#: gnomemeeting.schemas.in.in.h:110
 msgid ""
 "The default video view (0: Local, 1: Remote, 2: Both incrusted, 3: Both with "
-"local in popup, 4: Both)"
-msgstr ""
-"La vista de vídeo predeterminada (0: Local, 1: Remota, 2: Ambdues "
-"incrustades, 3: Ambdues ambla local emergent, 4: Ambdues)"
+"local video in a separate window, 4: Both)"
+msgstr " La vista de vídeo predeterminada (0: Local, 1: Remota, 2: Ambdues incrustades, 3: Ambdues amb la local emergent, 4: Ambdues)"
 
-#: gnomemeeting.schemas.in.in.h:109
-msgid "The height of the local video popup"
-msgstr "L'alçada de la finestra emergent pel vídeo local"
+#: gnomemeeting.schemas.in.in.h:111
+msgid "The height of the local video window"
+msgstr "L'alçada de la finestra pel vídeo local"
 
-#: gnomemeeting.schemas.in.in.h:110
-msgid "The height of the remote video popup"
-msgstr "L'alçada de la finestra emergent pel vídeo remot"
+#: gnomemeeting.schemas.in.in.h:112
+msgid "The height of the remote video window"
+msgstr "L'alçada de la finestra pel vídeo remot"
 
-#: gnomemeeting.schemas.in.in.h:111 src/pref_window.cpp:967
-msgid "The host where calls should be forwarded to in the cases selected above."
-msgstr ""
-"Indiqueu el nom de l'ordinador on es desviaran les trucades en els casos "
-"seleccionats més amunt."
+#: gnomemeeting.schemas.in.in.h:113 src/pref_window.cpp:888
+msgid ""
+"The host where calls should be forwarded to in the cases selected above."
+msgstr " Indiqueu el nom de l'ordinador on es desviaran les trucades en els casos  seleccionats més amunt."
 
-#: gnomemeeting.schemas.in.in.h:112 src/pref_window.cpp:856
+#: gnomemeeting.schemas.in.in.h:114 src/pref_window.cpp:819
 msgid "The image height for fullscreen."
 msgstr "L'alçada de la imatge a pantalla completa."
 
-#: gnomemeeting.schemas.in.in.h:113 src/pref_window.cpp:1150
+#: gnomemeeting.schemas.in.in.h:115 src/pref_window.cpp:1143
 msgid ""
 "The image to transmit if \"Picture\" is selected for the video device or if "
 "the opening of the device fails. Leave blank to use the default GnomeMeeting "
 "logo."
-msgstr ""
-"La imatgee que es transmetrà si s'ecull \"Imatge\" com a dispositiu de "
-"vídeo, o en cas que el dispositiu de vídeo escollit no funcioni (si no "
-"n'especifiqueu cap, es mostrarà el logo del GnomeMeeting)."
+msgstr " La imatgee que es transmetrà si s'ecull \"Imatge\" com a dispositiu de  vídeo, o en cas que el dispositiu de vídeo escollit no funcioni (si no  n'especifiqueu cap, es mostrarà el logotip del GnomeMeeting)."
 
-#: gnomemeeting.schemas.in.in.h:114 src/pref_window.cpp:850
+#: gnomemeeting.schemas.in.in.h:116 src/pref_window.cpp:818
 msgid "The image width for fullscreen."
 msgstr "L'amplada de la imatge a pantalla completa."
 
-#: gnomemeeting.schemas.in.in.h:115
+#: gnomemeeting.schemas.in.in.h:117
 msgid "The list of called URLs"
-msgstr "La llista de URL trucades"
+msgstr "La llista d'URL trucades"
 
-#: gnomemeeting.schemas.in.in.h:116
+#: gnomemeeting.schemas.in.in.h:118
 msgid "The list of groups"
 msgstr "La llista dels grups"
 
-#: gnomemeeting.schemas.in.in.h:117 src/pref_window.cpp:1346
+#: gnomemeeting.schemas.in.in.h:119 src/pref_window.cpp:1331
 msgid "The maximum jitter buffer size for audio reception (in ms)."
 msgstr ""
 "El valor màxim de la memòria intermèdia pel jitter per a la recepció d'àudio"
 "(en ms)."
 
-#: gnomemeeting.schemas.in.in.h:118 src/pref_window.cpp:1384
+#: gnomemeeting.schemas.in.in.h:120 src/pref_window.cpp:1373
 msgid ""
 "The maximum video bandwidth in kbytes/s. The video quality and the number of "
 "transmitted frames per second will be dynamically adjusted above their "
@@ -595,32 +581,27 @@ msgstr ""
 "mínim durant les trucades per tal de minimitzar l'ample de banda al valor "
 "que indiqueu aquí."
 
-#: gnomemeeting.schemas.in.in.h:119 src/pref_window.cpp:1343
+#: gnomemeeting.schemas.in.in.h:121 src/pref_window.cpp:1330
 msgid "The minimum jitter buffer size for audio reception (in ms)."
 msgstr ""
 "El valor mínim de la memòria intermèdia pel jitter per a la recepció d'àudio"
 "(en ms)."
 
-#: gnomemeeting.schemas.in.in.h:120 src/pref_window.cpp:1399
+#: gnomemeeting.schemas.in.in.h:122 src/pref_window.cpp:1386
 msgid ""
 "The minimum number of video frames to transmit each second when trying to "
 "minimize the bandwidth."
-msgstr ""
-"El nombre mínim de fotogrames per segon a transmetre quan intenti minimitzar "
-"l'ample de banda."
+msgstr " El nombre mínim de fotogrames per segon a transmetre quan s'intenti minimitzar  l'ample de banda."
 
-#: gnomemeeting.schemas.in.in.h:122
+#: gnomemeeting.schemas.in.in.h:124
 #, no-c-format
 msgid ""
 "The minimum transmitted video quality to keep when trying to minimize the "
 "used bandwidth: choose 100% on a LAN for the best quality, 1% being the "
 "worst quality."
-msgstr ""
-"La qualitat de vídeo mínima que vulgueu mantenir quan intenti minimitzar "
-"l'ample de banda usat: escolliu 100% en una LAN per a la millor qualitat, "
-"essent-ne 1% la pitjor."
+msgstr " La qualitat de vídeo mínima que vulgueu mantenir quan s'intenti minimitzar  l'ample de banda usat: escolliu 100% en una LAN per a la millor qualitat,  essent-ne l'1% la pitjor."
 
-#: gnomemeeting.schemas.in.in.h:123
+#: gnomemeeting.schemas.in.in.h:125
 msgid ""
 "The port to listen to for incoming connections. GnomeMeeting needs to be "
 "restarted for the new value to take effect."
@@ -628,7 +609,7 @@ msgstr ""
 "El port on escoltar per trucades entrants. Caldrà que reinicieu el programa "
 "per tal que el nou valor tingui efecte."
 
-#: gnomemeeting.schemas.in.in.h:124
+#: gnomemeeting.schemas.in.in.h:126
 msgid ""
 "The prefix that will be used to save pictures of the conversation. That "
 "prefix is followed by the snapshot number."
@@ -636,62 +617,66 @@ msgstr ""
 "El prefix que he de fer servir per guardar imatges de la conversa. Aquest "
 "prefix anirà seguit pel número de la instantània."
 
-#: gnomemeeting.schemas.in.in.h:125
+#: gnomemeeting.schemas.in.in.h:127
 msgid ""
 "The range of TCP ports beside the listen_port that GnomeMeeting will use for "
-"incoming connections. You can change the TCP port range if you are using IP "
+"the H.245 channel. You can change the TCP port range if you are using IP "
 "translation and if you need to have several GnomeMeeting running behind your "
 "NAT/PAT router. GnomeMeeting needs to be restarted for the new values to "
-"take effect."
-msgstr ""
-"El marge de ports TCP a banda del listen_port que el GnomeMeeting farà "
-"servir per trucades entrants. Podeu canviar el marge de ports TCP si feu "
-"servir  traducció d'adreçes d'IP i necessiteu fer córrer diferents "
-"instàncies del GnomeMeeting sota el vostre encaminador NAT/PAT. Caldrà que "
-"reinicieu el GnomeMeeting per tal que els nous valors tinguin efecte."
+"take effect. This port range has no effect if both participants to the "
+"conference are using H.245 Tunneling."
+msgstr " El rang de ports TCP a banda del listen_port que el GnomeMeeting farà  servir pel canal H.245. Podeu canviar el rang de ports TCP si feu  servir  traducció d'adreçes IP i necessiteu fer córrer diferents  instàncies del GnomeMeeting sota el vostre encaminador NAT/PAT. Caldrà que  reinicieu el GnomeMeeting per tal que els nous valors tinguin efecte. El rang de ports no té cap efecte si els dos interlocutors fan servir tunelització H.245."
 
-#: gnomemeeting.schemas.in.in.h:126
+#: gnomemeeting.schemas.in.in.h:128
 msgid ""
-"The range of UDP ports that GnomeMeeting will use for incoming connections. "
-"You can change the UDP port range if you are using IP translation and if you "
-"need to have several GnomeMeeting running behind your NAT/PAT router. "
-"GnomeMeeting needs to be restarted for the new values to take effect."
-msgstr ""
-"El marge de ports UDP que el GnomeMeeting farà servir per trucades entrants. "
-"Podeu canviar el marge de ports UDP si feu servir  traducció d'adreçes d'IP "
-"i necessiteu fer córrer diferents instàncies del GnomeMeeting sota el vostre "
-"encaminador NAT/PAT. Caldrà que reinicieu el GnomeMeeting per tal que els "
-"nous valors tinguin efecte."
+"The range of UDP ports that GnomeMeeting will use for RTP (audio and video "
+"communication channels). You can change the UDP port range if you are using "
+"IP translation and if you need to have several GnomeMeeting running behind "
+"your NAT/PAT router. GnomeMeeting needs to be restarted for the new values "
+"to take effect."
+msgstr " El marge de ports UDP que el GnomeMeeting farà servir per trucades entrants.  Podeu canviar el marge de ports UDP si feu servir  traducció d'adreçes IP  i necessiteu fer córrer diferents instàncies del GnomeMeeting sota el vostre  encaminador NAT/PAT. Caldrà que reinicieu el GnomeMeeting per tal que els  nous valors tinguin efecte."
 
-#: gnomemeeting.schemas.in.in.h:127
+#: gnomemeeting.schemas.in.in.h:129
+msgid ""
+"The range of UDP ports that GnomeMeeting will use when registering to "
+"gatekeepers. You can change the UDP port range if you are using IP "
+"translation and if you need to have several GnomeMeeting running behind your "
+"NAT/PAT router. GnomeMeeting needs to be restarted for the new values to "
+"take effect. This port range has no effect if you are not registering to a "
+"gatekeeper."
+msgstr " El marge de ports UDP que el GnomeMeeting farà servir per trucades entrants.  Podeu canviar el marge de ports UDP si feu servir  traducció d'adreçes IP  i necessiteu fer córrer diferents instàncies del GnomeMeeting sota el vostre  encaminador NAT/PAT. Caldrà que reinicieu el GnomeMeeting per tal que els  nous valors tinguin efecte."
+
+#: gnomemeeting.schemas.in.in.h:130
 msgid "The save prefix"
 msgstr "El prefix per guardar"
 
-#: gnomemeeting.schemas.in.in.h:128 src/pref_window.cpp:1074
-msgid "The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)."
-msgstr "Les dues lletres del codi del vostre pais (p.ex.: AD, BE, DE, FR, UK, ...)."
+#: gnomemeeting.schemas.in.in.h:131 src/pref_window.cpp:1081
+msgid ""
+"The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)."
+msgstr " Les dues lletres del codi del vostre pais (p.ex.: AD, BE, DE, UK, ...)."
 
-#: gnomemeeting.schemas.in.in.h:129 src/pref_window.cpp:902
+#: gnomemeeting.schemas.in.in.h:132 src/pref_window.cpp:855
 msgid "The user directory server to register with."
 msgstr "El directori d'usuaris on registrar-vos."
 
-#: gnomemeeting.schemas.in.in.h:130 src/pref_window.cpp:1139
-msgid "The video channel number to use (to select camera, tv or other sources)."
-msgstr "El canal de vídeo que es farà sevir (seleccioeu càmera, tv, altres fonts...)."
+#: gnomemeeting.schemas.in.in.h:133 src/pref_window.cpp:1134
+msgid ""
+"The video channel number to use (to select camera, tv or other sources)."
+msgstr " El canal de vídeo que es farà sevir (seleccioneu càmera, tv, altres fonts...)."
 
-#: gnomemeeting.schemas.in.in.h:131
-msgid "The width of the local video popup"
-msgstr "L'amplada de la finestra emergent pel vídeo local"
+#: gnomemeeting.schemas.in.in.h:134
+msgid "The width of the local video window"
+msgstr "L'amplada de la finestra pel vídeo local"
 
-#: gnomemeeting.schemas.in.in.h:132
-msgid "The width of the remote video popup"
-msgstr "L'amplada de la finestra emergent pel vídeo remot"
+#: gnomemeeting.schemas.in.in.h:135
+msgid "The width of the remote video window"
+msgstr "L'amplada de la finestra pel vídeo remot"
 
-#: gnomemeeting.schemas.in.in.h:133
+#: gnomemeeting.schemas.in.in.h:136
 msgid "The zoom value"
 msgstr "El valor del zoom"
 
-#: gnomemeeting.schemas.in.in.h:134
+#: gnomemeeting.schemas.in.in.h:137
 msgid ""
 "The zoom value to apply to images displayed in the main GUI (can be 0.50, "
 "1.00, or 2.00)."
@@ -699,22 +684,16 @@ msgstr ""
 "El valor del zoom que s'aplicarà a imatges mostrades a la GUI principal (pot "
 "ser 0.50, 1.00 o 2.00)."
 
-#: gnomemeeting.schemas.in.in.h:135 src/pref_window.cpp:987
+#: gnomemeeting.schemas.in.in.h:138 src/pref_window.cpp:933
 msgid ""
 "This enables H.245 Tunnelling mode. In H.245 Tunnelling mode H.245 messages "
 "are encapsulated into the the H.225 channel (port 1720). This saves one TCP "
 "connection during calls. H.245 Tunnelling was introduced in H.323v2 and "
 "Netmeeting does not support it. Using both Fast Start and H.245 Tunnelling "
 "can crash some versions of Netmeeting."
-msgstr ""
-"Això activarà la tunnelització H.245. En aquest mode, els missatges estaran "
-"encapsulats en el canal H.225 (port 1720). Això permet estalviar un port TCP "
-"durant les trucades. La tunnelització H.245 es va introduir en la versió 2 "
-"del protocol H.323, i el Netmeeting no ho suporta. Utilitzant l'Arrencada "
-"Ràpida i la tunnelització H.245 al mateix temps, pot fer penjar algunes "
-"versions del Netmeeting."
+msgstr " Això activarà la tunelització H.245. En aquest mode, els missatges estaran  encapsulats en el canal H.225 (port 1720). Això permet estalviar un port TCP  durant les trucades. La tunelització H.245 es va introduir en la versió 2  del protocol H.323, i el Netmeeting no ho implementa. Utilitzant l'Arrencada  Ràpida i la tunelització H.245 al mateix temps, pot fer penjar algunes  versions del Netmeeting."
 
-#: gnomemeeting.schemas.in.in.h:136 src/pref_window.cpp:1007
+#: gnomemeeting.schemas.in.in.h:139 src/pref_window.cpp:1019
 msgid ""
 "This enables IP translation. IP translation is useful if GnomeMeeting is "
 "running behind a NAT/PAT router. You have to put the public IP of the router "
@@ -729,7 +708,7 @@ msgstr ""
 "mitjançant el servei ILS. Si el vostre encaminador suporta H.323, podeu "
 "desactivar aquesta opció."
 
-#: gnomemeeting.schemas.in.in.h:137
+#: gnomemeeting.schemas.in.in.h:140
 msgid ""
 "This permits to set the mode for User Input Capabilities. The values can be "
 "\"All\" (0), \"None\" (1), \"rfc2833\" (2), \"Signal\" (3) or \"String\" (4) "
@@ -737,57 +716,57 @@ msgid ""
 "\"rfc2833\" disables the Text Chat."
 msgstr ""
 "Això permet seleccionar el mode per User Input Capabilites. Els valors poden "
-"ser \"Tot\" (0), \"Cap\" (1), \"rfc2833\" (2), \"Senyal\" (3) o bé \"Cadena\" (4) "
-"(Per defecte és \"Tot\"). Escollint un altre valor que no sigui \"Tot\", \"Cadena\" "
-" o \"rfc2833\", desactivareu el xat de text."
+"ser \"Tot\" (0), \"Cap\" (1), \"rfc2833\" (2), \"Senyal\" (3) o bé \"Cadena"
+"\" (4) (Per defecte és \"Tot\"). Escollint un altre valor que no sigui \"Tot"
+"\", \"Cadena\"  o \"rfc2833\", desactivareu el xat de text."
 
-#: gnomemeeting.schemas.in.in.h:138
+#: gnomemeeting.schemas.in.in.h:141
 msgid "Transmitted background blocks"
 msgstr "Blocs de fons transmesos"
 
-#: gnomemeeting.schemas.in.in.h:139
+#: gnomemeeting.schemas.in.in.h:142
 msgid "UDP Port Range"
-msgstr "Marge de ports UDP"
+msgstr "Rang de ports UDP"
 
-#: gnomemeeting.schemas.in.in.h:140
+#: gnomemeeting.schemas.in.in.h:143
 msgid "User Input Capabilities type"
 msgstr "Tipus d'User Input Capabilities"
 
-#: gnomemeeting.schemas.in.in.h:141
+#: gnomemeeting.schemas.in.in.h:144
 msgid "User directory"
 msgstr "Directori d'usuari"
 
-#: gnomemeeting.schemas.in.in.h:142 src/ldap_window.cpp:1758
+#: gnomemeeting.schemas.in.in.h:145 src/ldap_window.cpp:2609
 msgid "Version"
 msgstr "Versió"
 
-#: gnomemeeting.schemas.in.in.h:143
+#: gnomemeeting.schemas.in.in.h:146
 msgid "Video Preview"
 msgstr "Visualització prèvia del vídeo"
 
-#: gnomemeeting.schemas.in.in.h:144
+#: gnomemeeting.schemas.in.in.h:147
 msgid "Video channel"
 msgstr "Canal de vídeo"
 
-#: gnomemeeting.schemas.in.in.h:145
+#: gnomemeeting.schemas.in.in.h:148
 msgid "Video device"
 msgstr "Dispositiu de vídeo"
 
-#: gnomemeeting.schemas.in.in.h:146
+#: gnomemeeting.schemas.in.in.h:149
 msgid "Video format"
 msgstr "Format de vídeo"
 
-#: gnomemeeting.schemas.in.in.h:147
+#: gnomemeeting.schemas.in.in.h:150
 msgid "Video image"
-msgstr "Imatge de vídeo:"
+msgstr "Imatge de vídeo"
 
-#: gnomemeeting.schemas.in.in.h:148
+#: gnomemeeting.schemas.in.in.h:151
 msgid "Video size"
 msgstr "Mida del vídeo"
 
-#: lib/dialog.c:148
+#: lib/dialog.c:182
 msgid "Do not show this dialog again"
-msgstr "No em tornis a mostrar aquest quadre de diàleg"
+msgstr "No tornis a mostrar aquest quadre de diàleg"
 
 #: sounds/gnomemeeting.soundlist.in.h:1
 msgid "Incoming Call"
@@ -797,27 +776,83 @@ msgstr "Trucada entrant"
 msgid "gnomemeeting"
 msgstr "gnomemeeting"
 
-#: src/callbacks.cpp:128
+#: src/callbacks.cpp:87
+msgid "_Retrieve Call"
+msgstr "Accepta T_rucada"
+
+#: src/callbacks.cpp:100 src/menu.cpp:458
+msgid "_Hold Call"
+msgstr "_Manté Trucada"
+
+#: src/callbacks.cpp:141 src/ldap_window.cpp:708
+msgid "Edit the contact information"
+msgstr "Edita la informació sobre el contacte"
+
+#: src/callbacks.cpp:144 src/menu.cpp:463
+msgid "_Transfer Call"
+msgstr "_Transfereix Trucada"
+
+#: src/callbacks.cpp:165
+msgid "Forward call to:"
+msgstr "Desviar trucades a:"
+
+#: src/callbacks.cpp:260 src/menu.cpp:470
+msgid "Suspend _Audio"
+msgstr "_Atura l'àudio"
+
+#: src/callbacks.cpp:261
+msgid "Resume _Audio"
+msgstr "Reprèn l'_àudio"
+
+#: src/callbacks.cpp:262
+msgid "Audio transmission: suspended"
+msgstr "Transmissió d'àudio: aturada"
+
+#: src/callbacks.cpp:263
+msgid "Audio transmission: resumed"
+msgstr "Transmissió d'àudio: represa"
+
+#: src/callbacks.cpp:272 src/menu.cpp:475
+msgid "Suspend _Video"
+msgstr "Atura el _Vídeo"
+
+#: src/callbacks.cpp:273
+msgid "Resume _Video"
+msgstr "Reprèn el _Vídeo"
+
+#: src/callbacks.cpp:274
+msgid "Video transmission: suspended"
+msgstr "Transmissió de vídeo: aturada"
+
+#: src/callbacks.cpp:275
+msgid "Video transmission: resumed"
+msgstr "Transmissió de vídeo: represa"
+
+#: src/callbacks.cpp:381
 msgid "Code Contributors:"
 msgstr "Col·laboradors del codi:"
 
-#: src/callbacks.cpp:134
+#: src/callbacks.cpp:389
+msgid "Artwork:"
+msgstr "Art:"
+
+#: src/callbacks.cpp:392
 msgid "Contributors:"
 msgstr "Col·laboradors:"
 
-#: src/callbacks.cpp:155
+#: src/callbacks.cpp:418
 msgid "Internationalisation Maintainer:"
-msgstr "Coordinador per a la internacionalització"
+msgstr "Coordinador per a la internacionalització:"
 
 #. Translators: Please write translator credits here, and
 #. * seperate names with \n
-#: src/callbacks.cpp:172
+#: src/callbacks.cpp:436
 msgid "translator_credits"
-msgstr "Josep Puigdemont i Casamajó <baldrick@terra.es>"
+msgstr "Josep Puigdemont i Casamajó <baldrick@terra.es> Softcatalà <gnome@softcatala.net>"
 
 #. Translators: Please test to see if your translation
 #. * looks OK and fits within the box
-#: src/callbacks.cpp:183
+#: src/callbacks.cpp:447
 msgid ""
 "GnomeMeeting is a full-featured H.323\n"
 "video conferencing application."
@@ -826,21 +861,9 @@ msgstr ""
 "videoconferència completament\n"
 "compatible amb el protocol H.323."
 
-#: src/callbacks.cpp:225
-msgid ""
-"An error has happened in the configuration backend.\n"
-"Maybe some of your settings won't be saved."
-msgstr ""
-"Hi ha hagut un error en la configuració de rerefins.\n"
-"Es poden haver perdut algunes de les vostres preferències."
-
-#: src/chat_window.cpp:199
+#: src/chat_window.cpp:205
 msgid "Send Message:"
 msgstr "Envia el missatge:"
-
-#: src/cleaner.cpp:82
-msgid "Quit in progress..."
-msgstr "S'està sortint..."
 
 #: src/config-tool-i18n.h:1
 msgid "YES"
@@ -848,7 +871,8 @@ msgstr "SI"
 
 #: src/config-tool-i18n.h:2
 msgid "Sorry, this script won't work while GnomeMeeting is running"
-msgstr "Aquest fitxer de seqüència no funcionarà mentre s'executi el GnomeMeeting"
+msgstr ""
+"Aquest fitxer de seqüència no funcionarà mentre s'executi el GnomeMeeting"
 
 #: src/config-tool-i18n.h:3
 msgid "  WARNING!!!"
@@ -865,17 +889,7 @@ msgid ""
 "\n"
 "  If so, say \"YES\".\n"
 "\n"
-msgstr ""
-"  Aquest fitxer de seqüència esborrarà les prferències de tots els\n"
-"  usuaris del GnomeMeeting, incloent preferències que podrien ser \n"
-"  importants!\n"
-"  S'aturarà el dimoni GConf, assegureu-vos que no hi ha cap\n"
-"  aplicació executant-se que en depengui.\n"
-"\n"
-"  Esteu segur que voleu continuar?\n"
-"\n"
-"  Si és així, escriviu \"SI\".\n"
-"\n"
+msgstr "   Aquest fitxer de seqüència esborrarà les preferències de tots els\n   usuaris del GnomeMeeting, incloent preferències que podrien ser \n   importants!\n   S'aturarà el dimoni GConf, assegureu-vos que no hi ha cap\n   aplicació executant-se que en depengui.\n \n   Esteu segur que voleu continuar?\n \n   Si és així, escriviu \"SI\".\n \n"
 
 #: src/config-tool-i18n.h:5
 msgid "Removing $HOME/.gconf/apps/gnomemeeting"
@@ -950,34 +964,44 @@ msgid "  --clean                remove all user settings"
 msgstr "  -clean                esborrarà totes les preferències de l'usuari"
 
 #: src/config-tool-i18n.h:19
-msgid "  --install-schemas      install schemas with default settings (run as root)"
+msgid ""
+"  --install-schemas      install schemas with default settings (run as root)"
 msgstr ""
 "  --install-schemas      instal.larà els esquemes amb les opcions per "
 "defecte (root)"
 
 #: src/config-tool-i18n.h:20
-msgid "  --clean-schemas        remove schemas with default settings (run as root)"
+msgid ""
+"  --clean-schemas        remove schemas with default settings (run as root)"
 msgstr ""
 "  --clean-schemas        esborrarà els esquemes amb opcions per defecte "
 "(root)"
 
 #: src/config-tool-i18n.h:21
-msgid "  --fix-permissions      fix permissions of GConf repository (run as root)"
+msgid ""
+"  --fix-permissions      fix permissions of GConf repository (run as root)"
 msgstr "  --fix-permissions      arreglarà permisos del dipòsit GConf (root)"
 
-#: src/config.cpp:403
+#: src/config.cpp:409
 msgid "Changing this setting will only affect new calls"
 msgstr "El canvi d'aquests paràmetres només afectarà les noves trucades"
 
-#: src/config.cpp:556
+#: src/config.cpp:409
+msgid ""
+"You have changed a setting that doesn't permit to GnomeMeeting to apply the "
+"new change to the current call. Your new setting will only take effect for "
+"the next call."
+msgstr " Heu canviat un paràmetre que no permet que el GnomeMeeting l'apliqui a la trucada en curs. El nou paràmetre tindrà efecte a partir de le següent trucada."
+
+#: src/config.cpp:591
 msgid "Disabled Silence Detection"
 msgstr "S'ha desactivat la detecció de silenci"
 
-#: src/config.cpp:562
+#: src/config.cpp:597
 msgid "Enabled Silence Detection"
 msgstr "S'ha activat la detecció de silenci"
 
-#: src/config.cpp:1238
+#: src/config.cpp:1259
 msgid ""
 "You need to specify an host to forward calls to!\n"
 "Disabling forwarding."
@@ -985,88 +1009,82 @@ msgstr ""
 "Cal que especifiqueu un ordinador on desviar les trucades!\n"
 "S'ha desactivat la desviació de trucades."
 
-#: src/connection.cpp:109
+#: src/config.cpp:1459
+msgid ""
+"An error has happened in the configuration backend.\n"
+"Maybe some of your settings won't be saved."
+msgstr ""
+"Hi ha hagut un error en la configuració de rerefins.\n"
+"Es poden haver perdut algunes de les vostres preferències."
+
+#: src/connection.cpp:112
 msgid "Started New Logical Channel..."
 msgstr "S'ha iniciat un nou canal lògic..."
 
-#: src/connection.cpp:116
+#: src/connection.cpp:119
 #, c-format
 msgid "Sending %s"
 msgstr "S'està enviant %s"
 
-#: src/connection.cpp:135
+#: src/connection.cpp:138
 #, c-format
 msgid "Enabled silence detection for %s"
 msgstr "S'ha activat la detecció de silenci per a %s"
 
-#: src/connection.cpp:138
+#: src/connection.cpp:141
 #, c-format
 msgid "Disabled silence detection for %s"
 msgstr "S'ha desactivat la detecció de silenci per a %s"
 
-#: src/connection.cpp:154
+#: src/connection.cpp:157
 #, c-format
 msgid "Receiving %s"
 msgstr "S'està rebent %s"
 
-#: src/connection.cpp:182
+#: src/connection.cpp:187
 #, c-format
 msgid "Requesting remote to send video quality: %d%%"
-msgstr "S'està demanant a l'interlocutor que enviï una qualitat de vídeo: %d%%"
+msgstr "S'està suggerit a l'interlocutor que enviï una qualitat de vídeo: %d%%"
 
-#: src/connection.cpp:207
+#: src/connection.cpp:212
 msgid "Request ok"
 msgstr "Sol·licitut ok"
 
-#: src/connection.cpp:238 src/connection.cpp:240
-msgid "Audio Channel:  Sending"
-msgstr "Canal d'àudio:  S'està enviant"
-
-#: src/connection.cpp:247 src/connection.cpp:249
-msgid "Audio Channel:  Paused"
-msgstr "Canal d'àudio:  Aturat"
-
-#: src/connection.cpp:271 src/connection.cpp:273
-msgid "Video Channel:  Sending"
-msgstr "Canal de vídeo:  s'està enviant"
-
-#: src/connection.cpp:279 src/connection.cpp:281
-msgid "Video Channel:  Paused"
-msgstr "Canal de vídeo:  Aturat"
-
-#: src/connection.cpp:329 src/connection.cpp:331
+#: src/connection.cpp:244 src/connection.cpp:246
 msgid "Auto Answering Incoming Call"
 msgstr "S'està contestant automàticament la trucada entrant"
 
-#: src/druid.cpp:336
-msgid ""
-"You chose to NOT use the GnomeMeeting ILS directory. Other users will not be "
-"able to contact you if you don't register to a directory service."
-msgstr ""
-"Heu escollit NO fer ús del directori ILS del GnomeMeeting. Altres usuaris no "
-"podran contactar amb vostè si no us registreu a un servei de directori."
+#: src/connection.cpp:337 src/connection.cpp:338 src/urlhandler.cpp:76
+#: src/urlhandler.cpp:77
+msgid "Call transfer failed"
+msgstr "Ha fallat la transferència de la trucada"
 
-#: src/druid.cpp:536 src/druid.cpp:718
+#: src/connection.cpp:337
+msgid ""
+"The remote user tried to transfer your call to another user, but it failed."
+msgstr " El vostre interlocutor ha intentat transferir la seva trucada a un altre usuari, però ha fallat."
+
+#: src/druid.cpp:517 src/druid.cpp:699
 msgid "56K modem"
 msgstr "Mòdem de 56K"
 
-#: src/druid.cpp:540 src/druid.cpp:722
+#: src/druid.cpp:521 src/druid.cpp:703
 msgid "ISDN"
 msgstr "XDSI"
 
-#: src/druid.cpp:544
+#: src/druid.cpp:525
 msgid "xDSL/Cable"
 msgstr "xDSL/Cable"
 
-#: src/druid.cpp:548 src/druid.cpp:730
+#: src/druid.cpp:529 src/druid.cpp:711
 msgid "T1/LAN"
 msgstr "T1/LAN"
 
-#: src/druid.cpp:552 src/druid.cpp:734
+#: src/druid.cpp:533 src/druid.cpp:715
 msgid "Other"
 msgstr "Altres"
 
-#: src/druid.cpp:585
+#: src/druid.cpp:566
 #, c-format
 msgid ""
 "You have now finished the GnomeMeeting configuration. All the settings can "
@@ -1083,8 +1101,8 @@ msgid ""
 "My Callto URL: %s\n"
 "PC-To-Phone calls: %s"
 msgstr ""
-"Acabeu de configurar el GnomeMeeting. Tots els paràmetres han estat "
-"canviats en les preferències del GnomeMeeting. Que disfruteu!\n"
+"Acabeu de configurar el GnomeMeeting. Tots els paràmetres han estat canviats "
+"en les preferències del GnomeMeeting. Que disfruteu!\n"
 "\n"
 "\n"
 "Sumari de la configuració:\n"
@@ -1097,20 +1115,20 @@ msgstr ""
 "La vostra URL callto:  %s\n"
 "Trucades de PC-a-Telèfon:  %s"
 
-#: src/druid.cpp:585
+#: src/druid.cpp:566
 msgid "Enabled"
 msgstr "Activades"
 
-#: src/druid.cpp:585
+#: src/druid.cpp:566
 msgid "Disabled"
 msgstr "Desactivades"
 
-#: src/druid.cpp:619
+#: src/druid.cpp:600
 #, c-format
 msgid "Personal Information - page %d/%d"
 msgstr "Dades personals - pàgina %d/%d"
 
-#: src/druid.cpp:628
+#: src/druid.cpp:609
 msgid ""
 "Please enter your first name and surname, they will be used when connecting "
 "to other audio/video conferencing software.\n"
@@ -1132,68 +1150,65 @@ msgstr ""
 "GnomeMeeting a no ser que vostè ho autoritzi."
 
 #. The user fields
-#: src/druid.cpp:632 src/pref_window.cpp:776
+#: src/druid.cpp:613 src/pref_window.cpp:728
 msgid "Personal Information"
 msgstr "Informació personal"
 
-#: src/druid.cpp:635
+#: src/druid.cpp:616
 msgid "First _name:"
 msgstr "_Nom:"
 
-#: src/druid.cpp:641
+#: src/druid.cpp:622
 msgid "_Surname:"
 msgstr "_Cognom:"
 
 #. The callto url
-#: src/druid.cpp:649 src/ldap_window.cpp:1797
+#: src/druid.cpp:630
 msgid "Callto URL"
 msgstr "URL callto"
 
-#: src/druid.cpp:652
+#: src/druid.cpp:633 src/pref_window.cpp:742
 msgid "E-_mail address:"
 msgstr "_Adreça electrònica:"
 
 #. The ILS registering
-#: src/druid.cpp:659
+#: src/druid.cpp:640
 msgid "Directory of Online GnomeMeeting Users"
 msgstr "Directori d'usuaris en línia del GnomeMeeting"
 
-#: src/druid.cpp:661
+#: src/druid.cpp:642
 msgid "Publish my information on the directory of online GnomeMeeting users"
 msgstr ""
 "Fes pública informació meva en el directori d'usuaris en línia del "
 "GnomeMeeting"
 
-#: src/druid.cpp:702
+#: src/druid.cpp:683
 #, c-format
 msgid "Network Connection - page %d/%d"
 msgstr "Connexió de Xarxa - pàgina %d/%d"
 
-#: src/druid.cpp:713
+#: src/druid.cpp:694
 msgid ""
 "Please select your network connection type. This is used to set default "
 "video settings for your bandwidth. It is possible to change these defaults "
 "later."
-msgstr ""
-"Si us plau, indiqueu el tipus de xarxa. Aquesta informació es farà servir "
-"per indicar els paràmetres de vídeo i d'ample de banda per defece. És "
-"possible canviar aquest valors més endavant."
+msgstr " Si us plau, indiqueu el tipus de xarxa. Aquesta informació es farà servir  per decidir els paràmetres de vídeo i d'ample de banda per defece. És  possible canviar aquest valors més endavant."
 
 #. Connection type
-#: src/druid.cpp:717
+#: src/druid.cpp:698
 msgid "Connection Type"
 msgstr "Tipus de connexió"
 
-#: src/druid.cpp:726
+#: src/druid.cpp:707
 msgid "DSL/Cable"
 msgstr "DSL/Cable"
 
-#: src/druid.cpp:792
+#: src/druid.cpp:775
 #, c-format
 msgid "Audio Devices - page %d/%d"
 msgstr "Dispositius d'àudio - pàgina %d/%d"
 
-#: src/druid.cpp:802
+#: src/druid.cpp:785
 msgid ""
 "Please choose the audio devices to use during the GnomeMeeting session. You "
 "can also choose to use a Quicknet device instead of the soundcard, but the "
@@ -1208,41 +1223,41 @@ msgstr ""
 "GnomeMeeting."
 
 #. The Audio devices
-#: src/druid.cpp:806 src/pref_window.cpp:1046 src/pref_window.cpp:1570
+#: src/druid.cpp:789 src/pref_window.cpp:1055 src/pref_window.cpp:1572
 msgid "Audio Devices"
 msgstr "Dispositius d'àudio"
 
-#: src/druid.cpp:809 src/pref_window.cpp:1052
+#: src/druid.cpp:792
 msgid "Audio player:"
 msgstr "Reproductor d'àudio:"
 
-#: src/druid.cpp:812 src/pref_window.cpp:1055
+#: src/druid.cpp:795
 msgid "Audio player mixer:"
 msgstr "Mesclador d'àudio:"
 
-#: src/druid.cpp:816 src/pref_window.cpp:1059
+#: src/druid.cpp:799
 msgid "Audio recorder:"
-msgstr "enregistrador d'àudio:"
+msgstr "Enregistrador d'àudio:"
 
-#: src/druid.cpp:819 src/pref_window.cpp:1062
+#: src/druid.cpp:802
 msgid "Audio recorder mixer:"
 msgstr "Mesclador per l'enregistrador d'àudio:"
 
 #. Test button
-#: src/druid.cpp:823
+#: src/druid.cpp:806
 msgid "Click here to test your audio devices:"
-msgstr "Premeu aquí per provar els seus dispositius d'àudio."
+msgstr "Premeu aquí per provar els dispositius d'àudio:"
 
-#: src/druid.cpp:825
+#: src/druid.cpp:808
 msgid "Test Audio"
 msgstr "Prova l'àudio"
 
-#: src/druid.cpp:861
+#: src/druid.cpp:851
 #, c-format
 msgid "Video Devices - page %d/%d"
 msgstr "Dispositius de vídeo - pàgina %d/%d"
 
-#: src/druid.cpp:871
+#: src/druid.cpp:861
 msgid ""
 "Please choose the video device to use during the GnomeMeeting session. Click "
 "on the \"Test Video\" button to check if your setup is correct and if your "
@@ -1256,15 +1271,15 @@ msgstr ""
 "la prova."
 
 #. The Video device
-#: src/druid.cpp:875 src/pref_window.cpp:1127 src/pref_window.cpp:1575
+#: src/druid.cpp:865 src/pref_window.cpp:1126 src/pref_window.cpp:1577
 msgid "Video Devices"
 msgstr "Dispositius de vídeo"
 
-#: src/druid.cpp:878 src/pref_window.cpp:1133
+#: src/druid.cpp:868 src/pref_window.cpp:1130
 msgid "Video device:"
 msgstr "Dispositiu de vídeo:"
 
-#: src/druid.cpp:878
+#: src/druid.cpp:868
 msgid ""
 "Enter the video device to use. Using an invalid video device for video "
 "transmission will transmit a test picture."
@@ -1273,16 +1288,16 @@ msgstr ""
 "d'incorrecte el GnomeMeeting transmetrà una imatge de prova."
 
 #. Test button
-#: src/druid.cpp:882
+#: src/druid.cpp:872
 msgid "Test Video"
 msgstr "Prova el Vídeo"
 
-#: src/druid.cpp:927
+#: src/druid.cpp:916
 #, c-format
 msgid "PC-To-Phone Setup - page %d/%d"
 msgstr "Configuració de PC-a-Telèfon - pàgina %d/%d"
 
-#: src/druid.cpp:937
+#: src/druid.cpp:926
 msgid ""
 "You can make calls to regular phones and cell numbers worldwide using "
 "GnomeMeeting and the MicroTelco service from Quicknet Technologies. To "
@@ -1293,26 +1308,26 @@ msgstr ""
 "Podeu fer trucades a telèfons convencionals i mòbils a qualsevol lloc del "
 "món amb el GnomeMeeting i el servei MicroTelco de Quicknet Technologies. Per "
 "activar aquesta opció caldrà que indiqueu el PIN i el número del compte "
-"MicroTelco més avall, després activeu el registre al servei MicroTelco. Si us "
-"plau visiteu la pàgina del GnomeMeeting per a més informació."
+"MicroTelco més avall, després activeu el registre al servei MicroTelco. Si "
+"us plau visiteu la pàgina del GnomeMeeting per a més informació."
 
-#: src/druid.cpp:942
+#: src/druid.cpp:931
 msgid "PC-To-Phone Setup"
 msgstr "Configuració de PC-a-Telèfon"
 
-#: src/druid.cpp:945
+#: src/druid.cpp:934
 msgid "Account number:"
 msgstr "Número del compte:"
 
-#: src/druid.cpp:948
+#: src/druid.cpp:937
 msgid "Password:"
 msgstr "Contrasenya:"
 
-#: src/druid.cpp:956
+#: src/druid.cpp:944
 msgid "Register to the MicroTelco service"
 msgstr "Registra'm el servei MicroTelco"
 
-#: src/druid.cpp:968
+#: src/druid.cpp:962
 msgid ""
 "Click on one of the following links to get more information about your "
 "existing MicroTelco account, or to create a new account."
@@ -1320,256 +1335,264 @@ msgstr ""
 "Cliqueu en algun dels enllaços següents per obtenir més informació sobre el "
 "vostre compte MicroTel, o per crear-ne un de nou."
 
-#: src/druid.cpp:972
+#: src/druid.cpp:966
 msgid "Get an account"
 msgstr "Obtenir un compte"
 
-#: src/druid.cpp:974
+#: src/druid.cpp:968
 msgid "Buy a card"
 msgstr "Comprar una targeta"
 
-#: src/druid.cpp:1008
+#: src/druid.cpp:998
 msgid "First Time Configuration Druid"
 msgstr "Assistent per a la primera configuració"
 
-#: src/druid.cpp:1015
+#: src/druid.cpp:1005
 #, c-format
 msgid "Configuration Druid - page %d/%d"
 msgstr "Assistent per a la configuració - pàgina %d/%d"
 
-#: src/druid.cpp:1018
+#: src/druid.cpp:1008
 msgid ""
 "This is the GnomeMeeting general configuration druid. The following steps "
 "will set up GnomeMeeting by asking a few simple questions.\n"
 "\n"
 "Once you have completed these steps, you can always change them later by "
-"selecting Preferences in the Edit menu. "
-msgstr ""
-"Aquest és l'Assistent per a la configuració del GnomeMeeting. Els següents "
-"passos us permetran configurar el GnomeMeeting a través de perguntes molt "
-"senzilles.\n"
-"\n"
-"Un cop finalitzats aquests passos, sempre podreu canviar qualsevol d'aquests "
-"paràmetres més endavant en el menú de Preferències d'Edició."
+"selecting Preferences in the Edit menu."
+msgstr " Aquest és l'Assistent per a la configuració del GnomeMeeting. Els següents  passos us permetran configurar el GnomeMeeting a través de perguntes molt  senzilles.\n \n Un cop finalitzats aquests passos, sempre podreu canviar qualsevol d'aquests  paràmetres més endavant en el menú de Preferències del menú Edició."
 
-#: src/druid.cpp:1057
+#: src/druid.cpp:1047
 #, c-format
 msgid "Configuration complete - page %d/%d"
 msgstr "Assistent per a la configuració - pàgina %d/%d"
 
-#: src/endpoint.cpp:120
+#: src/endpoint.cpp:117
 #, c-format
 msgid "Forwarding Call to %s (No Answer)"
 msgstr "Desviant trucada a %s (No heu contestat)"
 
-#: src/endpoint.cpp:124 src/endpoint.cpp:126 src/endpoint.cpp:946
+#: src/endpoint.cpp:121 src/endpoint.cpp:1468
 msgid "Call forwarded"
 msgstr "S'ha desviat la trucada"
 
-#. GM is started
-#: src/endpoint.cpp:221
-#, c-format
-msgid "Started GnomeMeeting V%d.%d for %s\n"
-msgstr "S'ha iniciat el GnomeMeeting V%d.%d per %s\n"
-
 #. Player is always a correct sound device, thanks to
 #. gnomemeeting_add_string_option_menu
-#: src/endpoint.cpp:319
+#: src/endpoint.cpp:314
 #, c-format
 msgid "Set Audio player device to %s"
 msgstr "S'utilitzarà el dispositiu d'àudio %s"
 
-#: src/endpoint.cpp:330
+#: src/endpoint.cpp:325
 #, c-format
 msgid "Set Audio recorder device to %s"
 msgstr "S'utilitzarà l'enregistrador d'àudio %s"
 
-#: src/endpoint.cpp:347
+#: src/endpoint.cpp:342
 msgid "Enabling H.245 Tunnelling"
-msgstr "S'està activant la tunnelització H.245"
+msgstr "S'està activant la tunelització H.245"
 
-#: src/endpoint.cpp:348
+#: src/endpoint.cpp:343
 msgid "Disabling H.245 Tunnelling"
-msgstr "S'esta desactivant la tunnelització H.245"
+msgstr "S'esta desactivant la tunelització H.245"
 
-#: src/endpoint.cpp:358
+#: src/endpoint.cpp:353
 msgid "Enabling Fast Start"
 msgstr "S'està activant l'arrencada ràpida"
 
-#: src/endpoint.cpp:359
+#: src/endpoint.cpp:354
 msgid "Disabling Fast Start"
 msgstr "S'està desactivant l'arrencada ràpida"
 
-#: src/endpoint.cpp:942
-#, c-format
-msgid "Forwarding Call to %s"
-msgstr "S'està desviant la trucada a %s"
-
-#: src/endpoint.cpp:955
-#, c-format
-msgid "Error forwarding call to %s"
-msgstr "Hi ha hagut un error al desviar la trucada a %s"
-
 #. Update the history and status bar
-#: src/endpoint.cpp:1025
+#: src/endpoint.cpp:945
 #, c-format
 msgid "Call from %s using %s"
 msgstr "Trucada de %s utilitzant %s"
 
-#: src/endpoint.cpp:1041
+#: src/endpoint.cpp:960
 #, c-format
-msgid "Forwarding Call from %s to %s (Forward All Calls)"
+msgid "Forwarding call from %s to %s (Forward all calls)"
 msgstr "S'està desviant la trucada de %s a %s (Desvia totes les trucades)"
 
-#: src/endpoint.cpp:1049
+#: src/endpoint.cpp:968
 #, c-format
-msgid "Auto Rejecting Incoming Call from %s (Do Not Disturb)"
-msgstr "Descartant automàticament la trucada entrant de %s (Ocupat)"
+msgid "Auto rejecting incoming call from %s (Do not disturb)"
+msgstr "Descartant automàticament la trucada entrant de %s (No molesteu)"
 
-#: src/endpoint.cpp:1061
+#: src/endpoint.cpp:980
 #, c-format
-msgid "Forwarding Call from %s to %s (Busy)"
+msgid "Forwarding call from %s to %s (Busy)"
 msgstr "Desviant trucada de %s a %s (Ocupat)"
 
 #. there is no forwarding, so reject the call
-#: src/endpoint.cpp:1070
+#: src/endpoint.cpp:989
 #, c-format
-msgid "Auto Rejecting Incoming Call from %s (Busy)"
+msgid "Auto rejecting incoming call from %s (Busy)"
 msgstr "Descartant automàticament la trucada entrant de %s (Ocupat)"
 
-#: src/endpoint.cpp:1094 src/endpoint.cpp:1096
+#: src/endpoint.cpp:1013
 msgid "Auto Rejected"
 msgstr "Es descartaran trucades entrants"
 
-#: src/endpoint.cpp:1105 src/endpoint.cpp:1107
+#: src/endpoint.cpp:1022
 msgid "Call Forwarded"
 msgstr "S'ha desviat la trucada"
 
-#: src/endpoint.cpp:1257
+#: src/endpoint.cpp:1226
 #, c-format
 msgid "Connected with %s using %s"
 msgstr "S'ha establert connexió amb %s utilitzant %s"
 
-#: src/endpoint.cpp:1259
+#: src/endpoint.cpp:1228
 msgid "Connected"
 msgstr "Connectat"
 
-#: src/endpoint.cpp:1262
+#: src/endpoint.cpp:1231
 msgid "Fast start disabled"
 msgstr "S'ha desactivat l'arrencada ràpida"
 
-#: src/endpoint.cpp:1263
+#: src/endpoint.cpp:1232
 msgid "Fast start enabled"
 msgstr "S'ha activat l'arrencada ràpida"
 
-#: src/endpoint.cpp:1266
+#: src/endpoint.cpp:1235
 msgid "H.245 Tunnelling disabled"
-msgstr "S'ha desactivat la tunnelització H.245"
+msgstr "S'ha desactivat la tunelització H.245"
 
-#: src/endpoint.cpp:1267
+#: src/endpoint.cpp:1236
 msgid "H.245 Tunnelling enabled"
-msgstr "S'ha activat la tunnelització H.245"
+msgstr "S'ha activat la tunelització H.245"
 
-#: src/endpoint.cpp:1382
-msgid "Remote party has cleared the call"
-msgstr "El vostre interlocutor ha tallat la trucada"
+#: src/endpoint.cpp:1432
+msgid "Local user cleared the call"
+msgstr "L'usuari local ha tallat la trucada"
 
-#: src/endpoint.cpp:1386
-msgid "Remote party has stopped calling"
-msgstr "El vostre interlocutor ha deixat de trucar"
+#: src/endpoint.cpp:1435
+msgid "Remote user cleared the call"
+msgstr "L'usuari remot ha tallat la trucada"
 
-#: src/endpoint.cpp:1390 src/endpoint.cpp:1414
-msgid "Remote party did not accept your call"
-msgstr "El vostre interlocutor no us ha acceptat la trucada"
+#: src/endpoint.cpp:1438 src/endpoint.cpp:1441
+msgid "Remote user did not accept the call"
+msgstr "L'usuari remot no ha acceptat la trucada"
 
-#: src/endpoint.cpp:1394
-msgid "Remote party was busy"
-msgstr "El vostre interlocutor està ocupat"
+#: src/endpoint.cpp:1444
+msgid "Local user did not accept the call"
+msgstr "L'usuari local no ha acceptat la trucada"
 
-#: src/endpoint.cpp:1398
+#: src/endpoint.cpp:1447
+msgid "The Gatekeeper cleared the call"
+msgstr "El Gatekeeper ha tallat la trucada"
+
+#: src/endpoint.cpp:1450
+msgid "Call not answered in the required time"
+msgstr "No s'ha respost la trucada dins el termini establert"
+
+#: src/endpoint.cpp:1453
+msgid "Remote user has stopped calling"
+msgstr "L'usuari remot ha deixat de trucar"
+
+#: src/endpoint.cpp:1456
+msgid "Abnormal call termination"
+msgstr "La trucada ha acabat anormalment"
+
+#: src/endpoint.cpp:1459
+msgid "Could not connect to remote host"
+msgstr "No s'ha pogut connectar a l'ordinador remot"
+
+#: src/endpoint.cpp:1462
+msgid "Insufficient bandwidth"
+msgstr "No hi ha prou ample de banda"
+
+#: src/endpoint.cpp:1465
+msgid "No common codec"
+msgstr "No hi ha cap còdec en comú"
+
+#: src/endpoint.cpp:1471
+msgid "Security check Failed"
+msgstr "Ha fallat la verificació de seguretat"
+
+#: src/endpoint.cpp:1474
+msgid "Local user is busy"
+msgstr "L'usuari local està ocupat"
+
+#: src/endpoint.cpp:1477
+msgid "Remote user is busy"
+msgstr "L'usuari remot està ocupat"
+
+#: src/endpoint.cpp:1480 src/endpoint.cpp:1483
 msgid "Congested link to remote party"
 msgstr "L'enllaç cap el vostre interlocutor està saturat"
 
-#: src/endpoint.cpp:1402
-msgid "The call was not answered in the required time"
-msgstr "No se us ha respost la trucada dins el termini establert"
+#: src/endpoint.cpp:1486
+msgid "Remote user is unreachable"
+msgstr "No s'ha pogut trobar l'usuari remot"
 
-#: src/endpoint.cpp:1406
-msgid "This call ended abnormally"
-msgstr "La trucada ha finalitzat anormalment"
+#: src/endpoint.cpp:1489
+msgid "Remote user is not running GnomeMeeting"
+msgstr "L'usuari remot no fa servir GnomeMeeting"
 
-#: src/endpoint.cpp:1410
-msgid "Could not find common codec with remote party"
-msgstr "No s'ha pogut trobar un còdec comú amb el vostre interlocutor"
+#: src/endpoint.cpp:1492
+msgid "Remote host is offline"
+msgstr "L'usuari remot no està en línia"
 
-#: src/endpoint.cpp:1418
-msgid "Refused incoming call"
-msgstr "S'ha refusat la trucada entrant"
+#: src/endpoint.cpp:1495
+msgid "Temporary failure"
+msgstr "Fallada temporal"
 
-#: src/endpoint.cpp:1422
+#: src/endpoint.cpp:1498 src/urlhandler.cpp:366
 msgid "User not found"
 msgstr "No s'ha trobat aquest usuari"
 
-#: src/endpoint.cpp:1426
-msgid "Call ended: insufficient bandwidth"
-msgstr "S'ha finalitzat la trucada: ample de banda insuficient"
-
-#: src/endpoint.cpp:1430
-msgid "Remote party could not be reached"
-msgstr "El GnomeMeeting s'ha pogut connectar amb el vostre interlocutor"
-
-#: src/endpoint.cpp:1434
-msgid "Remote party is offline"
-msgstr "El vostre interlocutor no està en línia"
-
-#: src/endpoint.cpp:1438
-msgid "Transport Error calling"
-msgstr "Hi ha hagut un error de transport al trucar"
-
-#: src/endpoint.cpp:1442
+#: src/endpoint.cpp:1502
 msgid "Call completed"
 msgstr "S'ha finalitzat la trucada"
 
-#: src/endpoint.cpp:1452
-#, c-format
-msgid "Call duration: %.2ld:%.2ld:%.2ld"
-msgstr "La trucada ha durat: %.2ld:%.2ld:%.2ld"
-
-#: src/endpoint.cpp:1556
+#: src/endpoint.cpp:1594 src/main_window.cpp:1364
 msgid ""
-"Sent/Received:\n"
-"Lost/Late Packets:\n"
-"Round trip delay:\n"
-"Jitter Buffer:"
-msgstr ""
-"Enviat/Rebut:\n"
-"Paquets Perduts/Tard\n"
-"Round trip delay:\n"
-"Jitter Buffer:"
+"Lost packets:\n"
+"Late packets:\n"
+"Round-trip delay:\n"
+"Jitter buffer:"
+msgstr " Paquets Perduts:\n Paquests Endarrerits:\n Round trip delay:\n Mem. int. pel Jitter:"
 
-#: src/endpoint.cpp:1714
+#: src/endpoint.cpp:1773
 msgid "Attaching lid hardware to codec"
 msgstr "S'està adjuntant maquinari lid al còdec"
 
-#: src/endpoint.cpp:1727
-msgid ""
-"Could not open audio channel for audio transmission (soundcard busy?).\n"
-"Disabling audio transmission."
-msgstr ""
-"No s'ha pogut obrir el canal d'àudio per a la transmissió (targeta de so "
-"ocupada?)\n"
-"S'està desactivant la transmissió d'àudio."
+#: src/endpoint.cpp:1788
+msgid "Could not open audio channel for audio transmission"
+msgstr " No s'ha pogut obrir el canal d'àudio per a la transmissió"
 
-#: src/endpoint.cpp:1729
+#: src/endpoint.cpp:1788
 msgid ""
-"Could not open audio channel for audio reception (soundcard busy?).\n"
-"Disabling audio reception."
-msgstr ""
-"No s'ha pogut obrir el canal d'àudio per a la recepció (targeta de so "
-"ocupada?)\n"
-"S'està desactivant la recepció d'àudio."
+"An error occured while trying to record from the soundcard for the audio "
+"transmission. Please check that your soundcard is not busy and that your "
+"driver supports full-duplex.\n"
+"The audio transmission has been disabled."
+msgstr "HI ha hagut un error intentant enregistrar des de la targeta de so per a la transmissió d'àudio. Si us plau, comproveu que la targeta de so no estigui ocupada i que el controlador sigui full-dúplex.\n La transmissió d'àudio s'ha desactivat."
 
-#: src/gatekeeper.cpp:126
+#: src/endpoint.cpp:1790
+msgid "Could not open audio channel for audio reception"
+msgstr "No s'ha pogut obrir el canal d'àudio per a la recepció"
+
+#: src/endpoint.cpp:1790
+msgid ""
+"An error occured while trying to play audio to the soundcard for the audio "
+"reception. Please check that your soundcard is not busy and that your driver "
+"supports full-duplex.\n"
+"The audio reception has been disabled."
+msgstr " Hi ha hagut un error amb la targeta de so a l'intentar reproduir l'àudio rebut. Si us plau comprioveu que la·targeta·de·so·no·estigui·ocupada·i·que·el·controlador·sigui·full-dúplex.\n·La·recepció·d'àudio·s'ha·desactivat."
+
+#: src/gatekeeper.cpp:137
+#, c-format
+msgid "Unregistered from gatekeeper %s"
+msgstr "S'ha desregistrat del gatekeeper %s"
+
+#: src/gatekeeper.cpp:151
+msgid "Invalid gatekeeper hostname"
+msgstr "Adreça del gatekeeper invàlida"
+
+#: src/gatekeeper.cpp:151
 msgid ""
 "Please provide a hostname to use for the gatekeeper.\n"
 "Disabling registering."
@@ -1577,17 +1600,11 @@ msgstr ""
 "Si us plau, indiqueu l'adreça de l'ordinador a utilitzar com a gatekeeper.\n"
 "S'està desactivant el registre."
 
-#: src/gatekeeper.cpp:143 src/gatekeeper.cpp:213 src/gatekeeper.cpp:253
-#, c-format
-msgid "Gatekeeper set to %s"
-msgstr "S'ha establert %s com a gatekeeper."
+#: src/gatekeeper.cpp:159
+msgid "Invalid gatekeeper ID"
+msgstr "ID del gatekeeper invàlid"
 
-#: src/gatekeeper.cpp:156
-#, c-format
-msgid "Error while registering with Gatekeeper at %s."
-msgstr "Hi ha hagut un error al registrar-vos al gatekeeper a %s."
-
-#: src/gatekeeper.cpp:196
+#: src/gatekeeper.cpp:159
 msgid ""
 "Please provide a valid ID for the gatekeeper.\n"
 "Disabling registering."
@@ -1595,297 +1612,490 @@ msgstr ""
 "Si us plau, indiqueu un ID vàlid pel gatekeeper.\n"
 "S'ha desactivat el registre."
 
-#: src/gatekeeper.cpp:226
-msgid "Error while registering with Gatekeeper."
-msgstr "Hi ha hagut un error al registrar-vos al Gatekeeper."
+#: src/gatekeeper.cpp:206
+msgid ""
+"Another user already exists with the same alias, please use another alias."
+msgstr " Ja hi ha un usuari amb aquest àlies, si us plau empreu-ne un altre."
 
-#: src/gatekeeper.cpp:272
-msgid "No gatekeeper found"
-msgstr "No s'ha trobat cap Gatekeeper"
+#: src/gatekeeper.cpp:209
+msgid ""
+"You are not allowed to register to the gatekeeper. Please check your login, "
+"password and firewall."
+msgstr " No se us autoritza a registrar-vos al gatekeeper. Si us plau comproveu el nom, la contrasenya i l'encaminador."
 
-#: src/gnomemeeting.cpp:111
+#: src/gatekeeper.cpp:212
+msgid "There was a transport error."
+msgstr "S'ha produit un error en el transpor."
+
+#: src/gatekeeper.cpp:215 src/gatekeeper.cpp:220
+msgid "No gatekeeper corresponding to your options has been found."
+msgstr "No s'ha pogut trobar cap gatekeeper que correspongui a les seves opcions."
+
+#: src/gatekeeper.cpp:222
+msgid "Error while registering with gatekeeper"
+msgstr "Hi ha hagut un error al registrar-vos al gatekeeper"
+
+#: src/gatekeeper.cpp:240
+#, c-format
+msgid "Gatekeeper set to %s"
+msgstr "S'ha establert %s com a gatekeeper"
+
+#: src/gnomemeeting.cpp:86
+msgid "Notification area not detected"
+msgstr "No s'ha detectat l'àrea de notificació"
+
+#: src/gnomemeeting.cpp:86
+msgid ""
+"You have chosen to start GnomeMeeting hidden, however the notification area "
+"is not present in your panel, GnomeMeeting can thus not start hidden."
+msgstr " Heu escollit iniciar el GnomeMeeting amagat, però no hi ha cap àrea de notificació al vostre panell, de manera que el GnomeMeeting no es pot iniciar amagat."
+
+#: src/gnomemeeting.cpp:193
 msgid "Answering incoming call"
 msgstr "S'està responent a la trucada entrant"
 
-#: src/gnomemeeting.cpp:195 src/toolbar.cpp:131
+#: src/gnomemeeting.cpp:264
 msgid "Trying to stop calling"
 msgstr "S'està intentant parar de trucar"
 
-#: src/gnomemeeting.cpp:208
+#: src/gnomemeeting.cpp:277
 msgid "Stopping current call"
 msgstr "S'està parant la trucada en curs"
 
-#: src/gnomemeeting.cpp:220
+#: src/gnomemeeting.cpp:289
 msgid "Refusing Incoming call"
 msgstr "S'està refusant la trucada entrant"
 
-#: src/ils.cpp:123
+#. no error if Picture is choosen as video device
+#: src/gnomemeeting.cpp:320 src/videograbber.cpp:366 src/videograbber.cpp:683
+msgid "Picture"
+msgstr "Imatge"
+
+#: src/gnomemeeting.cpp:428
+msgid "Error while starting the listener"
+msgstr "Hi ha hagut un error iniciant l'escoltador"
+
+#: src/gnomemeeting.cpp:428
+msgid ""
+"You will not be able to receive incoming calls. Please check that no other "
+"program is already running on the port used by GnomeMeeting."
+msgstr " No podreu rebre trucades entrants. Si us plau comproveu que no hi hagi cap altre programa que faci servir els mateixos ports que el GnomeMeeting."
+
+#. GM is started
+#: src/gnomemeeting.cpp:505
 #, c-format
-msgid "Parse error: %d %s."
-msgstr "Error d'anàlisi: %d %s."
+msgid "Started GnomeMeeting V%d.%d for %s\n"
+msgstr "S'ha iniciat el GnomeMeeting V%d.%d per %s\n"
+
+#: src/ils.cpp:119
+msgid "Parse error"
+msgstr "Error d'anàlisi"
+
+#: src/ils.cpp:119
+#, c-format
+msgid ""
+"There was an error while processing the registering to the user directory: %"
+"d %s."
+msgstr " S'ha produit un error al processar el registre al directori: %·d·%s."
 
 #. No need to display that for unregistering
-#: src/ils.cpp:248
+#: src/ils.cpp:233
+msgid "Invalid parameters"
+msgstr "Paràmetres invàlids"
+
+#: src/ils.cpp:233
 msgid ""
-"Please provide your first name, last name, and e-mail in the Personal Data "
-"section in order to be able to register to the XDAP server."
-msgstr ""
-"Si us plau, indiqueu el vostre nom, cognom i adreça electrònica dins la "
-"secció Dades Personals, per tal de poder-vos registrar al servidor XDAP."
+"Please provide your first name and e-mail in the Personal Data section in "
+"order to be able to register to the user directory."
+msgstr " Si us plau, indiqueu el vostre nom, cognom i adreça electrònica dins la  secció Dades Personals, per tal de poder-vos registrar al directori."
 
-#: src/ils.cpp:280
-msgid "Operation impossible since there is no XDAP server specified."
-msgstr "Impossible de fer ja que no heu indicat cap servidor XDAP."
+#: src/ils.cpp:268
+msgid "Invalid user directory"
+msgstr "Directori d'usuari invàlid"
 
-#: src/ils.cpp:346 src/ils.cpp:900
+#: src/ils.cpp:268
+msgid "Operation impossible since there is no user directory specified."
+msgstr "Impossible de fer ja que no s'ha especificat cap directori d'usuaris."
+
+#: src/ils.cpp:334 src/ils.cpp:921
 #, c-format
 msgid "Contacting %s..."
 msgstr "S'està contactant %s..."
 
-#: src/ils.cpp:360
-msgid "Failed to parse XML file."
-msgstr "Hi ha hagut un error analitzant el fitxer XML."
+#: src/ils.cpp:347
+msgid "Failed to parse XML file"
+msgstr "Hi ha hagut un error analitzant el fitxer XML"
 
-#: src/ils.cpp:372
+#: src/ils.cpp:347
+msgid ""
+"There was an error while parsing the XML file. Please make sure that it is "
+"correctly installed in your system."
+msgstr " S'ha produit un error al analitzar el fitxer XML. Si us plau assegureu-vos  de que està correctament intstal·lat al vostre sistema."
+
+#: src/ils.cpp:358
+msgid "Bad information"
+msgstr "Informació errònia"
+
+#: src/ils.cpp:358
 #, c-format
 msgid "Bad ldap information from XML file: %s."
-msgstr "Informació errònia en el fixer XML: %s."
+msgstr "Informació ldap errònia en el fixer XML: %s."
 
-#: src/ils.cpp:383 src/ils.cpp:942
+#: src/ils.cpp:367 src/ils.cpp:377 src/ils.cpp:386
+msgid "Cannot contact the user directory"
+msgstr "No s'ha pogut contactar el directori d'usuaris"
+
+#: src/ils.cpp:367
 #, c-format
-msgid "Failed to open ldap server %s:%d."
-msgstr "Impossible obrir el servidor ldap %s:%d"
+msgid "Failed to contact the user directory %s:%d."
+msgstr "Impossible obrir el directori d'usuaris %s:%d"
 
-#: src/ils.cpp:395 src/ils.cpp:955
-msgid "Failed to set time limit on ldap operations."
-msgstr "Impossible indicar límits de temps durant operacions ldap."
+#: src/ils.cpp:377
+msgid "Failed to set a time limit on operations."
+msgstr "Impossible indicar un límit de temps a les operacions."
 
-#: src/ils.cpp:405
+#: src/ils.cpp:386
 #, c-format
-msgid "Failed to bind to ldap server: %s."
-msgstr "Impossible de fer vincular al servidor ldap: %s."
+msgid "Failed to bind to user directory: %s."
+msgstr "Impossible de vincular al directori d'usuaris: %s."
 
-#: src/ils.cpp:436
+#: src/ils.cpp:417
 #, c-format
 msgid "Successfully registered to %s."
 msgstr "S'ha registrat amb èxit a %s."
 
-#: src/ils.cpp:467
+#: src/ils.cpp:453
 #, c-format
 msgid "Updated information on %s."
 msgstr "S'ha acualitzat la informació a %s."
 
-#: src/ils.cpp:477
+#: src/ils.cpp:463
 #, c-format
 msgid "Successfully unregistered from %s."
 msgstr "Us heu desenregistrat amb èxit de %s."
 
-#: src/ils.cpp:501
+#: src/ils.cpp:495
 #, c-format
 msgid "Error while registering to %s."
 msgstr "Hi ha hagut un error al registrar-se a %s."
 
-#: src/ils.cpp:504
+#: src/ils.cpp:498
 #, c-format
 msgid "Error while unregistering from %s."
 msgstr "Hi ha hagut un error al desenregistrar-se de %s."
 
-#: src/ils.cpp:966
+#: src/ils.cpp:929
 #, c-format
-msgid "Failed to bind to ldap server %s: %s."
-msgstr "Hi ha hagut un error al vincular al servidor ldap %s:%s."
+msgid "Failed to contact LDAP server %s:%d."
+msgstr "Impossible contactar el servidor LDAP %s:%d"
 
-#: src/ils.cpp:976
+#: src/ils.cpp:942
+msgid "Failed to set time limit on LDAP operations."
+msgstr "Impossible indicar un límit de temps a operacions LDAP."
+
+#: src/ils.cpp:952
 #, c-format
-msgid "Fetching user information from %s."
-msgstr "S'està recollint informació de %s."
+msgid "Failed to contact to LDAP server %s: %s."
+msgstr "Hi ha hagut un error al comstactar el servidor LDAP %s: %s."
 
-#: src/ils.cpp:1239
+#: src/ils.cpp:962
+#, c-format
+msgid "Fetching online users list from %s."
+msgstr "S'està recollint la llista d'usuaris en línia de %s."
+
+#: src/ils.cpp:981
+#, c-format
+msgid "Connection to %s lost..."
+msgstr "S'ha perdutla connexió a %s..."
+
+#: src/ils.cpp:984
+msgid "Could not fetch online users list."
+msgstr "No s'ha pogut recollir la llista d'usuaris en línia."
+
+#: src/ils.cpp:1210
 #, c-format
 msgid "Search completed: %d user(s) listed on a total of %d user(s) from %s."
 msgstr ""
 "S'ha finalitzat la cerca: %d usuari(s) llistats d'un total de %d usuari(s) "
 "de %s."
 
-#: src/ils.cpp:1244
+#: src/ils.cpp:1215
 #, c-format
 msgid "Search completed: %d user(s) found on %s."
 msgstr "S'ha finalitzat la cerca: %d usuari(s) trobats a %s."
 
-#: src/ils.cpp:1262
-#, c-format
-msgid "Failed to contact %s."
-msgstr "Hi ha hagut un error al contactar %s."
-
-#. Create the dialog to easily modify the info of a specific contact
-#: src/ldap_window.cpp:403
-msgid "Edit the contact information"
-msgstr "Edita la informació sobre el contacte"
-
-#: src/ldap_window.cpp:412
+#: src/ldap_window.cpp:725
 msgid "Name:"
 msgstr "Nom:"
 
-#: src/ldap_window.cpp:425
-msgid "callto URL:"
-msgstr "URL callto:"
+#: src/ldap_window.cpp:745
+msgid "URL:"
+msgstr "URL:"
 
-#: src/ldap_window.cpp:575
+#: src/ldap_window.cpp:772
+msgid "Speed Dial:"
+msgstr "Tecla ràpida:"
+
+#: src/ldap_window.cpp:796
+msgid "Groups:"
+msgstr "Grups:"
+
+#: src/ldap_window.cpp:912
+msgid "Invalid user name or URL"
+msgstr "Nom d'usuari o URL invàlids."
+
+#: src/ldap_window.cpp:912
+msgid ""
+"Please provide a valid name and URL for the contact you want to add to the "
+"address book."
+msgstr " Si us plau introduïu un nom i una URL pel contacte que voleu afegir al llibre d'adreces."
+
+#: src/ldap_window.cpp:920
+msgid "Invalid group"
+msgstr "Grup no vàlid"
+
+#: src/ldap_window.cpp:920
+msgid "You have to select a group to which you want to add your contact."
+msgstr "Heu de seleccionar un grup on afegir el nou contacte."
+
+#: src/ldap_window.cpp:934
+msgid "Invalid speed dial"
+msgstr "Tecla ràpida no vàlida"
+
+#: src/ldap_window.cpp:934
+msgid ""
+"Another contact with the same speed dial already exists in the address book."
+msgstr " Hi ha un altre usuari al llibre d'adreces amb la mateixa tecla ràpida."
+
+#: src/ldap_window.cpp:946
+msgid "Invalid URL"
+msgstr "URL no vàlida"
+
+#: src/ldap_window.cpp:946
+msgid "Another contact with the same URL already exists in the address book."
+msgstr "Hi ha un altre usuari registrat al llibre d'adreces amb la mateixa URL."
+
+#: src/ldap_window.cpp:1073
+#, c-format
+msgid "Add %s to Address Book"
+msgstr "Afegeix %s al llibre d'adreces"
+
+#: src/ldap_window.cpp:1093 src/ldap_window.cpp:2258
+msgid "C_all Contact"
+msgstr "Truc_a Contacte"
+
+#: src/ldap_window.cpp:1098 src/ldap_window.cpp:2262
+msgid "_Tranfer Call to Contact"
+msgstr "_Transfereix Trucada al Contacte"
+
+#: src/ldap_window.cpp:1109 src/ldap_window.cpp:2280
+msgid "Contact _Properties"
+msgstr "_Propietats del Contacte"
+
+#: src/ldap_window.cpp:1115 src/ldap_window.cpp:2244
+msgid "_Delete"
+msgstr "_Esborra"
+
+#: src/ldap_window.cpp:1220
 msgid "Add a new server"
 msgstr "Afegeix un servidor nou"
 
-#: src/ldap_window.cpp:576
+#: src/ldap_window.cpp:1221
 msgid "Enter the server name:"
 msgstr "Indiqueu el nom del servidor:"
 
-#: src/ldap_window.cpp:581
+#: src/ldap_window.cpp:1222
+msgid ""
+"Sorry but there is already a server with the same name in the address book."
+msgstr " Ja hi ha un altre servidor amb el mateix nom al llibre d'adreces."
+
+#: src/ldap_window.cpp:1227
 msgid "Add a new group"
 msgstr "Afegeix un nou grup"
 
-#: src/ldap_window.cpp:582
+#: src/ldap_window.cpp:1228
 msgid "Enter the group name:"
-msgstr "Indiqueu el nom del grup:"
+msgstr "Introduïu el nom del grup:"
 
-#: src/ldap_window.cpp:1187
+#: src/ldap_window.cpp:1229
+msgid ""
+"Sorry but there is already a group with the same name in the address book."
+msgstr " Ja hi ha un altre grup amb el mateix nom al llibre d'adreces."
+
+#: src/ldap_window.cpp:1264
+msgid "Invalid server or group name"
+msgstr "Servidor o nom del grup no vàlids"
+
+#: src/ldap_window.cpp:1350
+#, c-format
+msgid "Are you sure you want to delete server %s?"
+msgstr "Esteu segur que voleu esborrar el servidor %s?"
+
+#: src/ldap_window.cpp:1356
+#, c-format
+msgid "Are you sure you want to delete group %s and all its contacts?"
+msgstr "Esteu segur que voleu esborrar el grup %s amb tots els contactes?"
+
+#: src/ldap_window.cpp:1539
 msgid "New server"
 msgstr "Afegeix servidor"
 
-#: src/ldap_window.cpp:1196
+#: src/ldap_window.cpp:1548
 msgid "New group"
 msgstr "Afegeix grup"
 
-#: src/ldap_window.cpp:1205
-msgid "_Refresh"
-msgstr "_Refresca"
+#: src/ldap_window.cpp:1557
+msgid "_Find"
+msgstr "_Busca"
 
-#: src/ldap_window.cpp:1210 src/ldap_window.cpp:1224
+#: src/ldap_window.cpp:1562 src/ldap_window.cpp:1576
 msgid "Delete"
 msgstr "Esborra"
 
-#: src/ldap_window.cpp:1219
+#: src/ldap_window.cpp:1571
 msgid "New contact"
 msgstr "Afegeixi contacte"
 
-#: src/ldap_window.cpp:1334
-msgid "Call this user"
-msgstr "Truca aquest usuari"
-
-#: src/ldap_window.cpp:1344
-msgid "Edit this user information"
-msgstr "Edita la informació d'aquest usuari"
-
-#: src/ldap_window.cpp:1351
-msgid "Delete this user"
-msgstr "Esborra aquest usuari"
-
-#: src/ldap_window.cpp:1362
-msgid "Add to group"
-msgstr "Afegeix al grup"
-
-#: src/ldap_window.cpp:1461
-msgid "GnomeMeeting Addressbook"
+#: src/ldap_window.cpp:2212
+msgid "GnomeMeeting Address Book"
 msgstr "Llibre d'Adreces del GnomeMeeting"
 
-#: src/ldap_window.cpp:1491
-msgid "Contacts"
-msgstr "Contactes"
+#: src/ldap_window.cpp:2230
+msgid "_File"
+msgstr "_Fitxer"
 
-#: src/ldap_window.cpp:1510
-msgid "Servers"
-msgstr "Servidors"
+#: src/ldap_window.cpp:2232
+msgid "New _Server"
+msgstr "Afegeix _Servidor"
 
-#: src/ldap_window.cpp:1540
-msgid "Groups"
-msgstr "Grups"
+#: src/ldap_window.cpp:2237
+msgid "New _Group"
+msgstr "Afegeix _Grup"
+
+#: src/ldap_window.cpp:2250
+msgid "_Close"
+msgstr "Tan_ca"
+
+#: src/ldap_window.cpp:2256
+msgid "C_ontact"
+msgstr "C_ontacte"
+
+#: src/ldap_window.cpp:2268
+msgid "New _Contact"
+msgstr "Afegeix _Contacte"
+
+#: src/ldap_window.cpp:2273
+msgid "Add Contact to _Address Book"
+msgstr "Afegeix contacte al Llibre d'_Adreces"
 
 #. Translators: This is "S" as in "Status"
-#: src/ldap_window.cpp:1682
+#: src/ldap_window.cpp:2530
 msgid "S"
-msgstr "S"
+msgstr "E"
 
 #. Translators: This is "A" as in "Audio"
-#: src/ldap_window.cpp:1692 src/pref_window.cpp:1235
+#: src/ldap_window.cpp:2540 src/pref_window.cpp:1218
 msgid "A"
 msgstr "A"
 
 #. Translators: This is "V" as in "Video"
-#: src/ldap_window.cpp:1702
+#: src/ldap_window.cpp:2550
 msgid "V"
 msgstr "V"
 
-#: src/ldap_window.cpp:1711 src/ldap_window.cpp:1784 src/pref_window.cpp:1249
+#: src/ldap_window.cpp:2559 src/ldap_window.cpp:2633 src/pref_window.cpp:1232
 msgid "Name"
 msgstr "Nom"
 
-#: src/ldap_window.cpp:1746
-msgid "Callto"
-msgstr "Callto"
+#: src/ldap_window.cpp:2597 src/ldap_window.cpp:2645 src/tools.cpp:248
+msgid "URL"
+msgstr "URL"
 
-#: src/ldap_window.cpp:1769
+#: src/ldap_window.cpp:2620
 msgid "IP"
-msgstr "Adreça d'IP"
+msgstr "IP"
 
-#: src/ldap_window.cpp:1831
+#: src/ldap_window.cpp:2658
+msgid "Speed Dial"
+msgstr "Tecla Ràpida"
+
+#: src/ldap_window.cpp:2711
+msgid "Find all contacts"
+msgstr "Troba tots els contactes"
+
+#: src/ldap_window.cpp:2716
 msgid "First name contains"
 msgstr "El nom conté"
 
-#: src/ldap_window.cpp:1835
+#: src/ldap_window.cpp:2720
 msgid "Last name contains"
 msgstr "El cognom conté"
 
-#: src/ldap_window.cpp:1839
+#: src/ldap_window.cpp:2724
 msgid "E-mail contains"
 msgstr "L'adreça electrònica conté"
 
-#: src/lid.cpp:104
+#: src/ldap_window.cpp:2909
+msgid "Servers"
+msgstr "Servidors"
+
+#: src/ldap_window.cpp:2955
+msgid "Groups"
+msgstr "Grups"
+
+#: src/lid.cpp:132
 #, c-format
 msgid "Using Quicknet device %s"
 msgstr "S'està fent servir el dispositiu Quicknet %s"
 
-#: src/lid.cpp:144
+#: src/lid.cpp:174
 msgid "Error while opening the Quicknet device."
 msgstr "Hi ha hagut un error obrint el dispositiu Quicknet."
 
-#: src/lid.cpp:256 src/lid.cpp:257
+#: src/lid.cpp:174
+msgid ""
+"Please check that your driver is correctly installed and that the device is "
+"working correctly."
+msgstr " Si us plau comproveu que el controlador estigui correctament instal·lat i que el dispositiu funcioni degudament."
+
+#: src/lid.cpp:279 src/lid.cpp:280
 msgid "Phone is off hook"
 msgstr "El telèfon està despenjat"
 
-#: src/lid.cpp:285 src/lid.cpp:286
+#: src/lid.cpp:309 src/lid.cpp:310
 msgid "Phone is on hook"
 msgstr "El telèfon està penjat"
 
-#: src/main_window.cpp:272
+#: src/main_window.cpp:255
 #, c-format
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 
-#: src/main_window.cpp:300
+#: src/main_window.cpp:292
 #, c-format
 msgid ""
-"Lost packets: %d\n"
-"Late packets: %d\n"
+"Lost packets: %.1f %%\n"
+"Late packets: %.1f %%\n"
 "Round-trip delay: %d ms\n"
 "Jitter buffer: %d ms"
-msgstr ""
-"Paquests Perduts: %d\n"
-"Paquets Endarrerits: %d\n"
-"Round trip delay: %d ms\n"
-"Memòria int. pel jitter: %d ms"
+msgstr " Paquests Perduts: %d\n Paquets Endarrerits: %d\n Round trip delay: %d ms\n Mem. int. pel jitter: %d ms"
 
-#: src/main_window.cpp:495
+#: src/main_window.cpp:486
 #, c-format
-msgid "Total: %.2f Mb"
-msgstr "Total: %.2f Mb"
+msgid "Total: %.2f MB"
+msgstr "Total: %.2f MB"
 
-#: src/main_window.cpp:614
+#: src/main_window.cpp:605
+msgid "Cannot run GnomeMeeting"
+msgstr "No s'ha pogut executar el GnomeMeeting"
+
+#: src/main_window.cpp:605
 msgid ""
 "GnomeMeeting is already running, if you want it to call a given callto URL, "
-"please use \"gnomemeeting -c URL.\""
-msgstr ""
-"El GnomeMeeting ja està executant-se, si voleu fer una trucada a una URL "
-"callto determinada, feu servir \"gnomemeeting -c URL\""
+"please use \"gnomemeeting -c URL\"."
+msgstr " El GnomeMeeting ja està executant-se, si voleu fer una trucada a una URL  callto determinada, feu servir \"gnomemeeting -c URL\"."
 
-#: src/main_window.cpp:666
+#: src/main_window.cpp:657
 msgid ""
 "It appears that you do not have gnomemeeting.server installed in a valid "
 "location. Factory mode disabled.\n"
@@ -1893,7 +2103,7 @@ msgstr ""
 "Sembla que no teniu el servidor gnomemeeting instal·lat en una ubicació "
 "vàlida. Es desactivarà el mode de Fàbrica.\n"
 
-#: src/main_window.cpp:670
+#: src/main_window.cpp:661
 msgid ""
 "Error registering GnomeMeeting with the activation service; factory mode "
 "disabled.\n"
@@ -1901,411 +2111,370 @@ msgstr ""
 "Hi ha hagut un error registrant el GnomeMeeting al servei d'activació, el "
 "mode de Fàbrica es desactivarà.\n"
 
-#: src/main_window.cpp:710
+#: src/main_window.cpp:701
 msgid "Failed to retrieve gnomemeeting server from activation server\n"
 msgstr "No s'ha pogut obtenir el servidor gnomemeeting del servidor d'activació.\n"
 
-#: src/main_window.cpp:1064
+#: src/main_window.cpp:1196 src/menu.cpp:566 src/menu.cpp:815
+msgid "Local Video"
+msgstr "Vídeo local"
+
+#: src/main_window.cpp:1202 src/menu.cpp:572 src/menu.cpp:820
+msgid "Remote Video"
+msgstr "Vídeo remot"
+
+#: src/main_window.cpp:1369 src/menu.cpp:526
+msgid "Statistics"
+msgstr "Estadístiques"
+
+#: src/main_window.cpp:1430
+msgid "Dialpad"
+msgstr "Marcador"
+
+#: src/main_window.cpp:1484
+msgid "Adjust brightness"
+msgstr "Ajusta la lluminositat"
+
+#: src/main_window.cpp:1506
+msgid "Adjust whiteness"
+msgstr "Ajusta la blancor"
+
+#: src/main_window.cpp:1528
+msgid "Adjust color"
+msgstr "Ajusta el color"
+
+#: src/main_window.cpp:1550
+msgid "Adjust contrast"
+msgstr "Ajusta el contrast"
+
+#: src/main_window.cpp:1558
+msgid "Video"
+msgstr "Vídeo"
+
+#: src/main_window.cpp:1638
+msgid "Audio"
+msgstr "Àudio"
+
+#: src/main_window.cpp:1680
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Imprimeix missatges de depuració a la consola (nivell entre 1 i 6)"
 
-#: src/main_window.cpp:1067
-msgid "Makes GnomeMeeting call the given callto:// URL"
-msgstr "Fa que el GnomeMeeting truqui la URL donada a callto://"
+#: src/main_window.cpp:1683
+msgid "Makes GnomeMeeting call the given URL"
+msgstr "Fa que el GnomeMeeting truqui la URL indicada"
 
-#. We can't use gnomemeeting_error_dialog here, cause we need the
-#. dialog_run and dialog_run can't be used in gnomemeeting_error_dialog
-#. because it doesn't work in threads
-#: src/main_window.cpp:1123
-#, c-format
+#: src/main_window.cpp:1729
+msgid "No usable audio devices detected"
+msgstr "No s'ha detectat cap dispositiu d'àudio adequat"
+
+#: src/main_window.cpp:1729
 msgid ""
-"GnomeMeeting got %d for the GConf key \"/apps/gnomemeeting/gconf_test_age\", "
-"but %d was expected.\n"
+"GnomeMeeting didn't find any usable sound devices. You need to install and "
+"setup a soundcard or a Quicknet card in order to be able to use "
+"GnomeMeeting. Please check your driver settings and permissions."
+msgstr " El GnomeMeeting no ha pogut trobar cap dispositiu d'àudio que pugui fer servir. Caldrà que instal·leu una targeta de so o una Quicknet per tal de poder utilitzar el GnomeMeeting. Si us plau consulteu els paràmetres del controlador i els permisos."
+
+#: src/main_window.cpp:1749
+msgid "Gconf key error"
+msgstr "Error en clau Gconf"
+
+#: src/main_window.cpp:1749
+msgid ""
+"GnomeMeeting got an invalid value for the GConf key \"/apps/gnomemeeting/"
+"gconf_test_age\".\n"
 "\n"
-"That key represents the revision of GnomeMeeting setting. If it doesn't "
-"correspond to the expected value, it means that your GConf schemas have not "
-"been correctly installed or the that permissions are not correct.\n"
+"It probably means that your GConf schemas have not been correctly installed "
+"or the that permissions are not correct.\n"
 "\n"
 "Please check the FAQ (http://www.gnomemeeting.org/faq.php), the "
 "throubleshoot section of the GConf site (http://www.gnome.org/projects/"
 "gconf/) or the mailing list archives for more information (http://mail.gnome."
-"org).\n"
-"\n"
-"Using 'gnomemeeting-config-tool' could help you to fix this problem."
-msgstr ""
-"El GnomeMeeting ha obtingut %d per a la clau del GConf \"/apps/gnomemeeting/"
-"gconf_test_age\", però s'esperava %d.\n"
-"\n"
-"Aquesta clau indica el número de revisió de les preferències del "
-"GnomeMeeting. Si no es correspon amb el valor esperat, vol dir que els "
-"esquemes del GConf no han estat ben instal·lats o els permisos no són els "
-"correctes.\n"
-"\n"
-"Si us plau, comproveu les PMF (http://www.gnomemeeting.org/faq.php), o la "
-"secció de resolució de problemes del GConf a (http://www.gnome.org/projects/ "
-"gconf/) or the mailing list archives for more information (http://mail.gnome."
-"org).\n"
-"\n"
-"El 'gnomemeeting-config-tool' us podria ajudar a resoldre aquest problema."
+"org) about this problem."
+msgstr " El GnomeMeeting ha obtingut un valor invàlid per a la clau del GConf \"/apps/gnomemeeting/ gconf_test_age\".\n\n Això possiblement vol dir que els  esquemes del GConf no han estat ben instal·lats o els permisos no són els  correctes.\n \n Si us plau, comproveu les PMF (http://www.gnomemeeting.org/faq.php), o la  secció de resolució de problemes del GConf a (http://www.gnome.org/projects/gconf/) o als arxius de les llistres de distribució per a més informació (http://mail.gnome. org) sobre aquest problema."
 
-#. We can't use gnomemeeting_error_dialog here, cause we need the
-#. dialog_run and dialog_run can't be used in gnomemeeting_error_dialog
-#. because it doesn't work in threads
-#: src/main_window.cpp:1156
-msgid ""
-"GnomeMeeting can't be used without audio devices. Please install a soundcard "
-"or a Quicknet card."
-msgstr ""
-"No es pot utilitzar el GnomeMeeting sense dispositius d'àudio. Si us plau "
-"instal·leu una targeta de so o una targeta Quicknet."
-
-#: src/main_window.cpp:1226
-msgid ""
-"GnomeMeeting just installed an URL handler for callto:// URLs. callto URLs "
-"are an easy way to call people on the internet using GnomeMeeting. They are "
-"now available to all GNOME programs able to cope with URLs. You can for "
-"example create an URL launcher on the GNOME panel of the form \"callto://ils."
-"seconix.com/me@foo.com\" to call the person registered on the ILS server ils."
-"seconix.com with the me@foo.com e-mail address."
-msgstr ""
-"El GnomeMeeting acava d'instal·lar un gestor per a URL del tipus callto://, "
-"aquesta és una manera senzilla de trucar gent per internet amb el "
-"GnomeMeeting. Ara estarà disponible per tots els programes del Gnome que "
-"poden manegar URL. Per exemple, podeu crear un accés ràpid d'URL en el "
-"panell del Gnome, així: \"callto://ils.seconix. com/jo@foo.com\" per trucar "
-"a una persona registrada al servidor ILS ils. seconix.com que tingui per "
-"adreça de correu jo@foo.com."
-
-#: src/main_window.cpp:1317
-msgid ""
-"Could not start the listener thread. You will not be able to receive "
-"incoming calls."
-msgstr ""
-"No s'ha pogut iniciar el fil encarregat de rebre connexions. No podreu rebre "
-"trucades entrants."
-
-#: src/main_window.cpp:1540 src/menu.cpp:533 src/menu.cpp:774
-msgid "Local Video"
-msgstr "Vídeo local"
-
-#: src/main_window.cpp:1546 src/menu.cpp:539 src/menu.cpp:779
-msgid "Remote Video"
-msgstr "Vídeo remot"
-
-#: src/main_window.cpp:1675
-msgid ""
-"Lost packets:\n"
-"Late packets:\n"
-"Round-trip delay:\n"
-"Jitter buffer:"
-msgstr ""
-"Paquets Perduts:\n"
-"Paquests Endarrerits:\n"
-"Round trip delay:\n"
-"Memòria int. pel Jitter:"
-
-#: src/main_window.cpp:1679 src/menu.cpp:500
-msgid "Statistics"
-msgstr "Estadístiques"
-
-#: src/main_window.cpp:1745
-msgid "Dialpad"
-msgstr "Marcador"
-
-#: src/main_window.cpp:1804
-msgid "Adjust brightness"
-msgstr "Lluminositat"
-
-#: src/main_window.cpp:1830
-msgid "Adjust whiteness"
-msgstr "Blancor"
-
-#: src/main_window.cpp:1856
-msgid "Adjust color"
-msgstr "Color"
-
-#: src/main_window.cpp:1882
-msgid "Adjust contrast"
-msgstr "Contrast"
-
-#: src/main_window.cpp:1890
-msgid "Video"
-msgstr "Vídeo"
-
-#: src/main_window.cpp:1976
-msgid "Audio"
-msgstr "Àudio"
-
-#: src/menu.cpp:425
+#: src/menu.cpp:432
 msgid "C_all"
 msgstr "Truc_ada"
 
-#: src/menu.cpp:427 src/menu.cpp:857
-msgid "_Connect"
-msgstr "_Connecta"
+#: src/menu.cpp:434
+msgid "C_onnect"
+msgstr "C_onnecta"
 
-#: src/menu.cpp:427 src/menu.cpp:857
+#: src/menu.cpp:434 src/menu.cpp:894
 msgid "Create a new connection"
-msgstr "Inicia una nova connexió"
+msgstr "Crea una nova connexió"
 
-#: src/menu.cpp:432 src/menu.cpp:862
+#: src/menu.cpp:439 src/menu.cpp:899
 msgid "_Disconnect"
 msgstr "_Desconnecta"
 
-#: src/menu.cpp:432 src/menu.cpp:862
+#: src/menu.cpp:439 src/menu.cpp:899
 msgid "Close the current connection"
 msgstr "Tanca la connexió actual"
 
-#: src/menu.cpp:439 src/menu.cpp:869
+#: src/menu.cpp:446 src/menu.cpp:906
 msgid "Do _Not Disturb"
-msgstr "_No molestar"
+msgstr "_No molesteu"
 
-#: src/menu.cpp:444 src/menu.cpp:874
+#: src/menu.cpp:451 src/menu.cpp:911
 msgid "Aut_o Answer"
 msgstr "Contesta aut_omàticament"
 
-#: src/menu.cpp:444
+#: src/menu.cpp:451
 msgid "Auto answer incoming call"
 msgstr "S'està responent a la trucada entrant"
 
-#: src/menu.cpp:451
-msgid "_Audio Mute"
-msgstr "Silenci_a l'àudio"
-
-#: src/menu.cpp:451
-msgid "Mute the audio transmission"
-msgstr "Silencia la transmissió d'àudio"
-
-#: src/menu.cpp:456
-msgid "_Video Mute"
-msgstr "Atura el _vídeo"
-
-#: src/menu.cpp:456
-msgid "Mute the video transmission"
-msgstr "Atura la transmissió de vídeo"
+#: src/menu.cpp:458
+msgid "Hold the current call"
+msgstr "Mantenir la trucada en curs"
 
 #: src/menu.cpp:463
+msgid "Transfer the current call"
+msgstr "Transfereix la trucada actual"
+
+#: src/menu.cpp:470
+msgid "Suspend or resume the audio transmission"
+msgstr "Atura o reprèn la transmissió d'àudio"
+
+#: src/menu.cpp:475
+msgid "Suspend or resume the video transmission"
+msgstr "Atura o reprèn la transmissió de vídeo"
+
+#: src/menu.cpp:482
 msgid "_Save Current Picture"
-msgstr "_Guarda Aquesta Imatge"
+msgstr "De_sa Aquesta Imatge"
 
-#: src/menu.cpp:463
+#: src/menu.cpp:482
 msgid "Save a snapshot of the current video"
-msgstr "Guarda una instantània del vídeo actual"
+msgstr "Desa una instantània del vídeo actual"
 
-#: src/menu.cpp:469 src/menu.cpp:907
+#: src/menu.cpp:488 src/menu.cpp:951
 msgid "_Quit"
-msgstr "Surt"
+msgstr "S_urt"
 
-#: src/menu.cpp:469 src/menu.cpp:907
+#: src/menu.cpp:488 src/menu.cpp:951
 msgid "Quit GnomeMeeting"
 msgstr "Surt del GnomeMeeting"
 
-#: src/menu.cpp:472
+#: src/menu.cpp:491
 msgid "_Edit"
 msgstr "_Edició"
 
-#: src/menu.cpp:474
+#: src/menu.cpp:494 src/menu.cpp:499
 msgid "Configuration Druid"
 msgstr "Assistent per a la configuració"
 
-#: src/menu.cpp:474
-msgid "Rerun the configuration druid"
-msgstr "Retorna a l'assistent per a la configuració"
+#: src/menu.cpp:494 src/menu.cpp:499
+msgid "Run the configuration druid"
+msgstr "Inicia l'assistent per a la configuració"
 
-#: src/menu.cpp:481 src/menu.cpp:888
+#: src/menu.cpp:506 src/menu.cpp:932
 msgid "_Preferences..."
 msgstr "_Preferències..."
 
-#: src/menu.cpp:481 src/menu.cpp:888
+#: src/menu.cpp:506 src/menu.cpp:932
 msgid "Change your preferences"
 msgstr "Canvia les preferències"
 
-#: src/menu.cpp:486
+#: src/menu.cpp:511
 msgid "_View"
 msgstr "_Visualització"
 
-#: src/menu.cpp:488
+#. Text Chat
+#: src/menu.cpp:513 src/pref_window.cpp:827
 msgid "Text Chat"
 msgstr "Xat"
 
-#: src/menu.cpp:488
+#: src/menu.cpp:513
 msgid "View/Hide the text chat window"
 msgstr "Veure/Amagar Finestra de xat"
 
-#: src/menu.cpp:493
+#: src/menu.cpp:518
 msgid "Status Bar"
 msgstr "Barra d'estat"
 
-#: src/menu.cpp:493
+#: src/menu.cpp:518
 msgid "View/Hide the status bar"
 msgstr "Veure/Amagar la barra d'estat"
 
-#: src/menu.cpp:498
+#: src/menu.cpp:524
 msgid "Control Panel"
 msgstr "Tauler de control"
 
-#: src/menu.cpp:501
+#: src/menu.cpp:527
 msgid "View audio/video transmission and reception statistics"
 msgstr "Mostra estadístiques de transmissió i recepció d'àudio i vídeo"
 
-#: src/menu.cpp:507
+#: src/menu.cpp:533
 msgid "_Dialpad"
 msgstr "Marca_dor"
 
-#: src/menu.cpp:507
+#: src/menu.cpp:533
 msgid "View the dialpad"
 msgstr "Visualitza el marcador"
 
-#: src/menu.cpp:513
+#: src/menu.cpp:539
 msgid "_Audio Settings"
 msgstr "P_aràmtres d'àudio"
 
-#: src/menu.cpp:513
+#: src/menu.cpp:539
 msgid "View audio settings"
 msgstr "Mostra els paràmtres d'àudio"
 
-#: src/menu.cpp:519
+#: src/menu.cpp:545
 msgid "_Video Settings"
 msgstr "Paràmetres de _vídeo"
 
-#: src/menu.cpp:519
+#: src/menu.cpp:545
 msgid "View video settings"
 msgstr "Mostra els paràmetres de vídeo"
 
-#: src/menu.cpp:525 src/pref_window.cpp:1029
+#: src/menu.cpp:551 src/pref_window.cpp:1039
 msgid "Off"
 msgstr "Inactiu"
 
-#: src/menu.cpp:525
+#: src/menu.cpp:551
 msgid "Hide the control panel"
 msgstr "Amaga el tauler de control"
 
-#: src/menu.cpp:533
+#: src/menu.cpp:559
+msgid "_Clear text chat"
+msgstr "_Neteja finestra del xat"
+
+#: src/menu.cpp:559
+msgid "Clear the text chat"
+msgstr "Esborrar finestra de xat"
+
+#: src/menu.cpp:566
 msgid "Local video image"
 msgstr "Imatge de vídeo local"
 
-#: src/menu.cpp:539
+#: src/menu.cpp:572
 msgid "Remote video image"
 msgstr "Imatge de vídeo remota"
 
-#: src/menu.cpp:545 src/menu.cpp:784
+#: src/menu.cpp:578 src/menu.cpp:825
 msgid "Both (Local Video Incrusted)"
 msgstr "Ambdues (vídeo local incrustat)"
 
-#: src/menu.cpp:545 src/menu.cpp:551 src/menu.cpp:558
+#: src/menu.cpp:578 src/menu.cpp:584 src/menu.cpp:591
 msgid "Both video images"
 msgstr "Ambúes imatges de vídeo"
 
-#: src/menu.cpp:551 src/menu.cpp:789
+#: src/menu.cpp:584 src/menu.cpp:830
 msgid "Both (Local Video in New Window)"
 msgstr "Ambdúes (vídeo local en una nova finestra)"
 
-#: src/menu.cpp:557
+#: src/menu.cpp:590
 msgid "Both (Both in New Windows)"
 msgstr "Ambdúes (ambdúes en finestres noves)"
 
-#: src/menu.cpp:566 src/menu.cpp:802
+#: src/menu.cpp:599 src/menu.cpp:843
 msgid "Zoom In"
 msgstr "Apropar"
 
-#: src/menu.cpp:566
+#: src/menu.cpp:599
 msgid "Zoom in"
 msgstr "Apropar"
 
-#: src/menu.cpp:571 src/menu.cpp:807
+#: src/menu.cpp:604 src/menu.cpp:848
 msgid "Zoom Out"
 msgstr "Allunyar"
 
-#: src/menu.cpp:571
+#: src/menu.cpp:604
 msgid "Zoom out"
 msgstr "Allunyar"
 
-#: src/menu.cpp:576 src/menu.cpp:812
+#: src/menu.cpp:609 src/menu.cpp:853
 msgid "Normal Size"
 msgstr "Mida normal"
 
-#: src/menu.cpp:576
+#: src/menu.cpp:609
 msgid "Normal size"
 msgstr "Mida normal"
 
-#: src/menu.cpp:583 src/menu.cpp:819
+#: src/menu.cpp:616 src/menu.cpp:860
 msgid "Fullscreen"
 msgstr "Pantalla completa"
 
-#: src/menu.cpp:588
+#: src/menu.cpp:621
 msgid "_Tools"
 msgstr "_Eines"
 
-#: src/menu.cpp:590 src/menu.cpp:881
+#: src/menu.cpp:623 src/menu.cpp:918
 msgid "Address _Book"
 msgstr "Lli_bre d'Adreces"
 
-#: src/menu.cpp:590 src/menu.cpp:881
+#: src/menu.cpp:623 src/menu.cpp:918
 msgid "Open the address book"
 msgstr "Obre el llibre d'adreces"
 
-#: src/menu.cpp:597
-msgid "Generic History"
-msgstr "Historial"
+#: src/menu.cpp:630 src/tools.cpp:329
+msgid "General History"
+msgstr "Historial genèric"
 
-#: src/menu.cpp:597
+#: src/menu.cpp:630
 msgid "View the operations history"
 msgstr "Mostra l'historial d'operacions"
 
-#: src/menu.cpp:602 src/tools.cpp:63 src/tools.cpp:69
+#: src/menu.cpp:635 src/menu.cpp:925 src/tools.cpp:200
 msgid "Calls History"
 msgstr "Historial de trucades"
 
-#: src/menu.cpp:602
+#: src/menu.cpp:635 src/menu.cpp:925
 msgid "View the calls history"
 msgstr "Mostra l'historial de les trucades"
 
-#: src/menu.cpp:609
+#: src/menu.cpp:642
 msgid "Consult MicroTelco Account"
 msgstr "Consulta el compte MicroTelco"
 
-#: src/menu.cpp:609
+#: src/menu.cpp:642
 msgid "View the details of your account"
 msgstr "Veure els detalls del seu compte"
 
-#: src/menu.cpp:614
+#: src/menu.cpp:647
 msgid "_Help"
 msgstr "_Ajuda"
 
-#: src/menu.cpp:617 src/menu.cpp:622 src/menu.cpp:896 src/menu.cpp:901
+#: src/menu.cpp:650 src/menu.cpp:655 src/menu.cpp:940 src/menu.cpp:945
 msgid "_About GnomeMeeting"
 msgstr "_Quant a GnomeMeeting"
 
-#: src/menu.cpp:617 src/menu.cpp:622 src/menu.cpp:896 src/menu.cpp:901
+#: src/menu.cpp:650 src/menu.cpp:655 src/menu.cpp:940 src/menu.cpp:945
 msgid "View information about GnomeMeeting"
 msgstr "Mostra informació sobre el GnomeMeeting"
 
-#: src/menu.cpp:774
+#: src/menu.cpp:815
 msgid "Local Video Image"
 msgstr "Imatge de vídeo local"
 
-#: src/menu.cpp:779
+#: src/menu.cpp:820
 msgid "Remote Video Image"
 msgstr "Imatge de vídeo remota"
 
-#: src/menu.cpp:784 src/menu.cpp:789 src/menu.cpp:795
+#: src/menu.cpp:825 src/menu.cpp:830 src/menu.cpp:836
 msgid "Both Video Images"
 msgstr "Ambúes imatges de vídeo"
 
-#: src/menu.cpp:794
+#: src/menu.cpp:835
 msgid "Both (Local and Remote Video in New Windows)"
 msgstr "Ambdúes (vídeos local i remot en noves finestres)"
 
-#: src/menu.cpp:869
+#: src/menu.cpp:894
+msgid "_Connect"
+msgstr "_Connecta"
+
+#: src/menu.cpp:906
 msgid "Do not disturb (reject incoming calls)"
 msgstr "No molestar (refusar trucades entrants)"
 
-#: src/misc.cpp:206
+#: src/misc.cpp:175
 #, c-format
 msgid "Error: %s\n"
 msgstr "Error: %s\n"
 
-#: src/misc.cpp:230
+#: src/misc.cpp:219
 #, c-format
 msgid ""
 "Call from %s\n"
@@ -2314,184 +2483,191 @@ msgstr ""
 "Trucada de %s\n"
 "usant %s"
 
-#: src/misc.cpp:236
-msgid "Connect"
-msgstr "Connecta"
+#: src/misc.cpp:227
+msgid "Reject"
+msgstr "Descarta"
 
-#: src/misc.cpp:238
-msgid "Disconnect"
-msgstr "Desconnecta"
+#: src/misc.cpp:229
+msgid "Accept"
+msgstr "Accepta"
 
-#. The video device
-#: src/pref_window.cpp:151 src/pref_window.cpp:1130 src/videograbber.cpp:479
-#: src/videograbber.cpp:773
-msgid "Picture"
-msgstr "Imatge"
-
-#: src/pref_window.cpp:446
+#: src/pref_window.cpp:410
 msgid "Please choose the video image"
 msgstr "Escolliu la imatge de vídeo"
 
-#: src/pref_window.cpp:495
+#: src/pref_window.cpp:444
 msgid "Okay"
 msgstr "Acceptable"
 
-#: src/pref_window.cpp:501 src/pref_window.cpp:517 src/pref_window.cpp:522
+#: src/pref_window.cpp:449 src/pref_window.cpp:464 src/pref_window.cpp:469
 msgid "Excellent"
 msgstr "Excel·lent"
 
-#: src/pref_window.cpp:506 src/pref_window.cpp:512 src/pref_window.cpp:527
-#: src/pref_window.cpp:532
+#: src/pref_window.cpp:454 src/pref_window.cpp:459 src/pref_window.cpp:474
+#: src/pref_window.cpp:479
 msgid "Good Quality"
 msgstr "Bona qualitat"
 
-#: src/pref_window.cpp:537
+#: src/pref_window.cpp:484
 msgid "Excellent Quality"
 msgstr "Qualitat Excel·lent"
 
-#: src/pref_window.cpp:782
-msgid "First name:"
-msgstr "Nom:"
+#: src/pref_window.cpp:732
+msgid "_First name:"
+msgstr "_Nom:"
 
-#: src/pref_window.cpp:786
-msgid "Surname:"
-msgstr "Cognom:"
+#: src/pref_window.cpp:737
+msgid "Sur_name:"
+msgstr "_Cognom:"
 
-#: src/pref_window.cpp:788
-msgid "E-mail address:"
-msgstr "Adreça electrònica:"
+#: src/pref_window.cpp:747
+msgid "_Comment:"
+msgstr "C_omentari:"
 
-#: src/pref_window.cpp:790
-msgid "Comment:"
-msgstr "Comentari:"
+#: src/pref_window.cpp:752
+msgid "_Location:"
+msgstr "_Ubicació:"
 
-#: src/pref_window.cpp:792
-msgid "Location:"
-msgstr "Ubicació:"
+#: src/pref_window.cpp:758 src/pref_window.cpp:993
+msgid "_Apply"
+msgstr "_Aplica"
 
-#: src/pref_window.cpp:797
+#: src/pref_window.cpp:758
 msgid ""
 "Click here to update the user directory you are registered to with the new "
 "First Name, Last Name, E-Mail, Comment and Location or to update your alias "
 "on the Gatekeeper."
-msgstr ""
-"Cliqueu aquí per tal d'actualitzar el servidor d'usuari on esteu registrat, "
-"amb els nous nom, cognom, adreça electrònica, comentari i ubicació o bé per "
-"actualitzar-vos en el Gatekeeper."
+msgstr " Feu clic aquí per tal d'actualitzar el servidor d'usuari on esteu registrat,  amb els nous nom, cognom, adreça electrònica, comentari i ubicació o bé per  actualitzar l'àlies en el Gatekeeper."
 
-#: src/pref_window.cpp:823
+#: src/pref_window.cpp:782
 msgid "GnomeMeeting GUI"
 msgstr "GUI del GnomeMeeting"
 
+#: src/pref_window.cpp:785
+msgid "_Show splash screen"
+msgstr "Mo_stra pantalla flaix"
+
+#: src/pref_window.cpp:788
+msgid "Start _hidden"
+msgstr "A_rrenca amagat"
+
 #. Packing widget
-#: src/pref_window.cpp:831
+#: src/pref_window.cpp:792
 msgid "Behavior"
 msgstr "Comportament"
 
+#: src/pref_window.cpp:796
+msgid "_Automatically answer calls"
+msgstr "Contesta les trucades _automàticament"
+
+#: src/pref_window.cpp:799
+msgid "Do _not disturb"
+msgstr "_No molesteu"
+
+#: src/pref_window.cpp:802
+msgid "Display a po_pup window when receiving a call"
+msgstr "Finestra emergent _per trucades entrants"
+
 #. Packing widget
-#: src/pref_window.cpp:844
+#: src/pref_window.cpp:806
 msgid "Video Display"
 msgstr "Pantalla"
 
-#: src/pref_window.cpp:848
-msgid "Fullscreen width:"
-msgstr "Amplada a pantalla completa:"
+#. Translators: the full sentence is Use a fullscreen size
+#. of X by Y pixels
+#: src/pref_window.cpp:811
+msgid "Use a fullscreen size of"
+msgstr "Utilitza una pantalla completa de mida"
 
-#: src/pref_window.cpp:854
-msgid "Fullscreen height:"
-msgstr "Alçada a pantalla completa:"
+#: src/pref_window.cpp:813
+msgid "by"
+msgstr "per"
 
-#. Packing widget
-#: src/pref_window.cpp:865
-msgid "Sound"
-msgstr "So"
+#: src/pref_window.cpp:815
+msgid "pixels"
+msgstr "píxels"
 
-#: src/pref_window.cpp:882
-msgid "Do not register"
-msgstr "No em registris"
+#: src/pref_window.cpp:824
+msgid "Enable bilinear _filtering on displayed video"
+msgstr "Activa el _filtre bilineal en el vídeo mostrat"
 
-#: src/pref_window.cpp:885
-msgid "Automatically discover"
-msgstr "Descobreix automaticament"
-
-#: src/pref_window.cpp:895
+#: src/pref_window.cpp:850
 msgid "User Directory"
 msgstr "Directori d'usuari"
 
-#: src/pref_window.cpp:900
+#: src/pref_window.cpp:855
 msgid "User directory:"
-msgstr "Directory d'usuari:"
+msgstr "Directori d'usuari:"
 
-#. Add fields for the gatekeeper
-#: src/pref_window.cpp:916
-msgid "Gatekeeper"
-msgstr "Gatekeeper"
+#: src/pref_window.cpp:858
+msgid "Enable _registering"
+msgstr "Activa _registre"
 
-#: src/pref_window.cpp:919
-msgid "Gatekeeper ID:"
-msgstr "ID al Gatekeeper:"
+#: src/pref_window.cpp:861
+msgid "_Publish my details in the users directory"
+msgstr "_Publica les meves dades al directori d'usuaris"
 
-#: src/pref_window.cpp:922
-msgid "Gatekeeper host:"
-msgstr "Adreça del Gatekeeper:"
+#: src/pref_window.cpp:883 src/pref_window.cpp:1523
+msgid "Call Forwarding"
+msgstr "Desviació de trucades"
 
-#: src/pref_window.cpp:925
-msgid "Gatekeeper alias: "
-msgstr "Alias pel Gatekeeper:"
+#: src/pref_window.cpp:888
+msgid "Forward calls to _host:"
+msgstr "Desviar trucades a l'ordinador:"
 
-#: src/pref_window.cpp:928
-msgid "Gatekeeper password:"
-msgstr "Contrasenya pel Gatekeeper:"
+#: src/pref_window.cpp:895
+msgid "_Always forward calls to the given host"
+msgstr "Desvi_a sempre les trucades a un ordinador en concret"
 
-#: src/pref_window.cpp:932
-msgid "Registering method:"
-msgstr "Mètode de registre:"
+#: src/pref_window.cpp:898
+msgid "Forward calls to the given host if _no answer"
+msgstr "Desvia les trucades a un ordinador en concret si _no contesto"
 
-#: src/pref_window.cpp:935
-msgid "Click here to update your Gatekeeper settings."
-msgstr "Feu clic aquí per actualitzar els paràmetres del Gatekeeper."
+#: src/pref_window.cpp:901
+msgid "Forward calls to the given host if _busy"
+msgstr "Desvia les trucades a un ordinador en concret quan estigui ocupat"
 
-#: src/pref_window.cpp:948
+#: src/pref_window.cpp:915
 msgid "All"
 msgstr "Tot"
 
-#: src/pref_window.cpp:949
+#: src/pref_window.cpp:916
 msgid "None"
 msgstr "Cap"
 
-#: src/pref_window.cpp:950
+#: src/pref_window.cpp:917
 msgid "rfc2833"
 msgstr "rfc2833"
 
-#: src/pref_window.cpp:951
+#: src/pref_window.cpp:918
 msgid "Signal"
 msgstr "Senyal"
 
-#: src/pref_window.cpp:952
+#: src/pref_window.cpp:919
 msgid "String"
 msgstr "Cadena"
 
-#: src/pref_window.cpp:961
-msgid "H.323 Call Forwarding"
-msgstr "Desviació de trucades H.323"
+#: src/pref_window.cpp:929
+msgid "H.323 Version 2 Settings"
+msgstr "Paràmetres de l'H.323 Versió 2"
 
-#: src/pref_window.cpp:967
-msgid "Forward calls to host:"
-msgstr "Desviar trucades a l'ordinador:"
+#: src/pref_window.cpp:933
+msgid "Enable H.245 _tunnelling"
+msgstr "Activa la _tunelització H.245"
 
-#: src/pref_window.cpp:981
-msgid "H.323 V2 Settings"
-msgstr "Paràmetres del H.323 V2"
+#: src/pref_window.cpp:936
+msgid "Enable fast _start procedure"
+msgstr "A_ctiva l'arrencada ràpida"
 
-#: src/pref_window.cpp:995
+#: src/pref_window.cpp:941
 msgid "User Input Capabilities"
 msgstr "User Input Capabilites"
 
-#: src/pref_window.cpp:999
-msgid "User Input Capabilities type:"
-msgstr "Tipus d'User Input Capabilities:"
+#: src/pref_window.cpp:944
+msgid "User Input Capabilities _type:"
+msgstr "_Tipus d'User Input Capabilities:"
 
-#: src/pref_window.cpp:999
+#: src/pref_window.cpp:944
 msgid ""
 "This permits to set the mode for User Input Capabilities. The values can be "
 "\"All\", \"None\", \"rfc2833\", \"Signal\" or \"String\" (default is \"All"
@@ -2499,46 +2675,111 @@ msgid ""
 "the Text Chat."
 msgstr ""
 "Això permet seleccionar el mode per User Input Capabilites. Els valors poden "
-"ser \"Tot\", \"Cap\", \"rfc2833\", \"Senyal\" o bé \"Cadena\" (Per defecte és "
-"\"Tot\"). Escollint un altre valor que no sigui \"Tot\", \"Cadena\" o \"rfc2833\", "
-"desactivareu el xat de text."
+"ser \"Tot\", \"Cap\", \"rfc2833\", \"Senyal\" o bé \"Cadena\" (Per defecte "
+"és \"Tot\"). Escollint un altre valor que no sigui \"Tot\", \"Cadena\" o "
+"\"rfc2833\", desactivareu el xat de text."
 
-#: src/pref_window.cpp:1003
+#: src/pref_window.cpp:961
+msgid "Do not register"
+msgstr "No em registris"
+
+#: src/pref_window.cpp:964
+msgid "Automatically discover"
+msgstr "Descobreix automaticament"
+
+#: src/pref_window.cpp:974
+msgid "Gatekeeper"
+msgstr "Gatekeeper"
+
+#: src/pref_window.cpp:977
+msgid "Gatekeeper _ID:"
+msgstr "_ID al Gatekeeper:"
+
+#: src/pref_window.cpp:980
+msgid "Gatekeeper _host:"
+msgstr "Adreça del Gatekeeper:"
+
+#: src/pref_window.cpp:983
+msgid "Gatekeeper _alias:"
+msgstr "_Alias pel Gatekeeper:"
+
+#: src/pref_window.cpp:986
+msgid "Gatekeeper _password:"
+msgstr "Contrasenya pel Gatekee_per:"
+
+#: src/pref_window.cpp:990
+msgid "Registering method:"
+msgstr "Mètode de registre:"
+
+#: src/pref_window.cpp:993
+msgid "Click here to update your Gatekeeper settings."
+msgstr "Feu clic aquí per a actualitzar els paràmetres del Gatekeeper."
+
+#: src/pref_window.cpp:1016
 msgid "NAT/PAT Router Support"
 msgstr "Suport per a encaminador NAT/PAT"
 
-#: src/pref_window.cpp:1010
-msgid "Public IP of the NAT/PAT router:"
-msgstr "IP pública de l'encaminador NAT/PAT:"
+#: src/pref_window.cpp:1019
+msgid "Enable IP _translation"
+msgstr "Activa la _traducció d'adreçes IP"
 
-#: src/pref_window.cpp:1030
+#: src/pref_window.cpp:1022
+msgid "Public _IP of the NAT/PAT router:"
+msgstr "_IP pública de l'encaminador NAT/PAT:"
+
+#: src/pref_window.cpp:1040
 msgid "Low"
 msgstr "Baixa"
 
-#: src/pref_window.cpp:1031
+#: src/pref_window.cpp:1041
 msgid "Medium"
 msgstr "Mitjana"
 
-#: src/pref_window.cpp:1032
+#: src/pref_window.cpp:1042
 msgid "High"
 msgstr "Alta"
 
-#: src/pref_window.cpp:1033
+#: src/pref_window.cpp:1043
 msgid "AGC"
-msgstr "AGC"
+msgstr "CAG"
+
+#: src/pref_window.cpp:1060
+msgid "Playing device:"
+msgstr "Dispositiu reproductor:"
+
+#: src/pref_window.cpp:1063
+msgid "Playing mixer:"
+msgstr "Mesclador del reproductor:"
+
+#: src/pref_window.cpp:1067
+msgid "Recording device:"
+msgstr "Dispositiu enregistrador:"
+
+#: src/pref_window.cpp:1070
+msgid "Recording mixer:"
+msgstr "Mesclador per l'enregistrador:"
 
 #. The Quicknet devices related options
-#: src/pref_window.cpp:1067
+#: src/pref_window.cpp:1075
 msgid "Quicknet Device"
 msgstr "Dispositiu Quicknet"
 
-#: src/pref_window.cpp:1071
-msgid "Automatic echo cancellation:"
-msgstr "Cancel·lació automàtica de l'eco:"
+#: src/pref_window.cpp:1078
+msgid "Echo _cancellation:"
+msgstr "_Cancel·lació automàtica de l'eco:"
 
-#: src/pref_window.cpp:1074
-msgid "Country code:"
-msgstr "Codi de país:"
+#: src/pref_window.cpp:1081
+msgid "Country _code:"
+msgstr "_Codi de país:"
+
+#. That button will refresh the devices list
+#: src/pref_window.cpp:1088 src/pref_window.cpp:1159
+msgid "_Detect devices"
+msgstr "_Detecta Dispositius"
+
+#: src/pref_window.cpp:1088 src/pref_window.cpp:1159
+msgid "Click here to refresh the devices list."
+msgstr "Feu clic aquí per refrescar la llista de dispositius."
 
 #: src/pref_window.cpp:1105
 msgid "Small"
@@ -2564,74 +2805,94 @@ msgstr "SECAM (França)"
 msgid "Auto"
 msgstr "Auto"
 
-#: src/pref_window.cpp:1137
+#: src/pref_window.cpp:1134
 msgid "Video channel:"
 msgstr "Canal de vídeo:"
 
-#: src/pref_window.cpp:1143
+#: src/pref_window.cpp:1137
 msgid "Video size:"
 msgstr "Mida del vídeo:"
 
-#: src/pref_window.cpp:1146
+#: src/pref_window.cpp:1140
 msgid "Video format:"
 msgstr "Format de vídeo:"
 
-#: src/pref_window.cpp:1150
+#: src/pref_window.cpp:1143
 msgid "Video image:"
 msgstr "Imatge de vídeo:"
 
 #. The file selector button
-#: src/pref_window.cpp:1154
-msgid "Browse..."
-msgstr "Navega..."
+#: src/pref_window.cpp:1147
+msgid "Choose a picture"
+msgstr "Escull una imatge"
 
-#: src/pref_window.cpp:1209
+#: src/pref_window.cpp:1193
 msgid "Available Audio Codecs"
 msgstr "Còdecs d'àudio disponibles"
 
-#: src/pref_window.cpp:1260
+#: src/pref_window.cpp:1243
 msgid "Info"
 msgstr "Informació"
 
-#: src/pref_window.cpp:1272
+#: src/pref_window.cpp:1255
 msgid "Bandwidth"
 msgstr "Ample de banda"
 
 #. Here we add the audio codecs options
-#: src/pref_window.cpp:1335
+#: src/pref_window.cpp:1318
 msgid "Audio Codecs Settings"
 msgstr "Paràmtres dels còdecs d'àudio"
 
-#: src/pref_window.cpp:1343
-msgid "Minimum jitter buffer:"
-msgstr "Memòria intermèdia mínima pel jitter"
+#: src/pref_window.cpp:1323
+msgid "Automatically adjust _jitter buffer between"
+msgstr "Ajusta la memòria intermèdia pel jitter entre"
 
-#: src/pref_window.cpp:1346
-msgid "Maximum jitter buffer:"
-msgstr "Memòria intermèdeia màxima pel jitter"
+#: src/pref_window.cpp:1325
+msgid "and"
+msgstr "i"
 
-#: src/pref_window.cpp:1367 src/pref_window.cpp:1533
+#: src/pref_window.cpp:1327
+msgid "ms"
+msgstr "ms"
+
+#: src/pref_window.cpp:1335
+msgid "Enable silence _detection"
+msgstr "Activa la _detecció de silenci"
+
+#: src/pref_window.cpp:1357 src/pref_window.cpp:1513
 msgid "General Settings"
 msgstr "Paràmetres Generals"
 
+#: src/pref_window.cpp:1362
+msgid "Enable video _transmission"
+msgstr "Activa la _transmissió de vídeo"
+
+#: src/pref_window.cpp:1365
+msgid "Enable video _reception"
+msgstr "Activa la _recepció de silenci"
+
 #. H.261 Settings
-#: src/pref_window.cpp:1379
+#: src/pref_window.cpp:1369
 msgid "Bandwidth Control"
 msgstr "Control de l'ample de banda"
 
-#: src/pref_window.cpp:1382
-msgid "Maximum video bandwidth:"
-msgstr "Ample de banda màxim pel vídeo:"
+#: src/pref_window.cpp:1373
+msgid "Maximum video _bandwidth of"
+msgstr "Ample de _banda màxim de"
 
-#: src/pref_window.cpp:1388
+#: src/pref_window.cpp:1373
+msgid "KB/s"
+msgstr "KB/s"
+
+#: src/pref_window.cpp:1377
 msgid "Advanced Quality Settings"
 msgstr "Paràmetres de Qualitat Avançats"
 
-#: src/pref_window.cpp:1391
-msgid "Minimum transmitted video quality:"
-msgstr "Qualitat de vídeo transmesa:"
+#: src/pref_window.cpp:1382
+msgid "Keep a minimum video _quality of"
+msgstr "Mantingues una _qualitat mínima pel vídeo de"
 
-#: src/pref_window.cpp:1393
+#: src/pref_window.cpp:1382
 msgid ""
 "The minimum transmitted video quality to keep when trying to minimize the "
 "used bandwidth:  choose 100% on a LAN for the best quality, 1% being the "
@@ -2641,91 +2902,119 @@ msgstr ""
 "minimitzar l'ample de banda:  escolliu 100% en una LAN per a la millor "
 "qualitat, essent-ne l'1% la pitjor."
 
-#: src/pref_window.cpp:1397
-msgid "Minimum transmitted FPS:"
-msgstr "Màxim FPS transmesos:"
+#: src/pref_window.cpp:1382
+msgid "%"
+msgstr "%"
 
-#: src/pref_window.cpp:1403
-msgid "Transmitted background blocks:"
-msgstr "Blocs de fons transmesos:"
+#: src/pref_window.cpp:1386
+msgid "Transmit at least"
+msgstr "Almenys transmet"
 
-#: src/pref_window.cpp:1451
+#: src/pref_window.cpp:1386
+msgid "_frames per second"
+msgstr "_quadres per segon"
+
+#: src/pref_window.cpp:1391
+msgid "Transmit"
+msgstr "Transmet"
+
+#: src/pref_window.cpp:1391
+msgid "background _blocks with each frame"
+msgstr "quantitat de _blocks de fons en cada quadre"
+
+#: src/pref_window.cpp:1432
 msgid "GnomeMeeting Settings"
 msgstr "Paràmetres del GnomeMeeting"
 
-#: src/pref_window.cpp:1524
+#: src/pref_window.cpp:1504
 msgid "General"
 msgstr "General"
 
-#: src/pref_window.cpp:1528
+#: src/pref_window.cpp:1508
 msgid "Personal Data"
 msgstr "Dades personals"
 
-#: src/pref_window.cpp:1538
+#: src/pref_window.cpp:1518
 msgid "Directory Settings"
 msgstr "Paràmetres del directori"
 
-#: src/pref_window.cpp:1543
-msgid "H.323 Advanced"
-msgstr "H.323 Avançat"
+#: src/pref_window.cpp:1530
+msgid "H.323 Settings"
+msgstr "Paràmetres H.323"
 
-#: src/pref_window.cpp:1549
+#: src/pref_window.cpp:1534
+msgid "Advanced Settings"
+msgstr "Paràmetres Avançats"
+
+#: src/pref_window.cpp:1539
+msgid "Gatekeeper Settings"
+msgstr "Paràmetres gatekeeper"
+
+#: src/pref_window.cpp:1544
+msgid "NAT Settings"
+msgstr "Paràmetres NAT"
+
+#: src/pref_window.cpp:1551
 msgid "Codecs"
 msgstr "Còdecs"
 
-#: src/pref_window.cpp:1553
+#: src/pref_window.cpp:1555
 msgid "Audio Codecs"
 msgstr "Còdecs d'àudio"
 
-#: src/pref_window.cpp:1559
+#: src/pref_window.cpp:1561
 msgid "Video Codecs"
 msgstr "Còdecs de vídeo"
 
-#: src/pref_window.cpp:1566
+#: src/pref_window.cpp:1568
 msgid "Devices"
 msgstr "Dispositius"
 
-#: src/pref_window.cpp:1581
+#: src/pref_window.cpp:1583
 msgid "Section"
 msgstr "Secció"
 
-#: src/sound_handling.cpp:372
+#: src/sound_handling.cpp:416
+msgid "Failed to open the device"
+msgstr "No s'ha pogut obrir el dispositiu"
+
+#: src/sound_handling.cpp:416
 #, c-format
 msgid ""
 "Impossible to open the selected audio device (%s) for playing. Please check "
-"your audio setup."
-msgstr ""
-"No s'ha pogut obrir el dispositiu d'àudio (%s) per a la reproducció. Si "
-"usplau, comproveu la configuració d'àudio."
+"your audio setup, the permissions and that the device is not busy."
+msgstr " No s'ha pogut obrir el dispositiu d'àudio (%s) per a la reproducció. Si  usplau, comproveu la configuració d'àudio, els permisos i que el dispositiu no estigui ocupat."
 
-#: src/sound_handling.cpp:384
+#: src/sound_handling.cpp:428
+msgid "Failed to open the audio device"
+msgstr "No s'ha pogut obrir el dispositiu d'àudio"
+
+#: src/sound_handling.cpp:428
 #, c-format
 msgid ""
 "Impossible to open the selected audio device (%s) for recording. Please "
-"check your audio setup."
-msgstr ""
-"No s'ha pogut obrir el dispositiu d'àudio (%s) per tal de gravar-hi. Si us "
-"plau, comproveu la configuració d'àudio."
+"check your audio setup, the permissions and that the device is not busy."
+msgstr " No s'ha pogut obrir el dispositiu d'àudio (%s) per gracar. Si us  plau, comproveu la configuració d'àudio, els permisos i que el dispositiu no estigui ocupat."
 
-#: src/sound_handling.cpp:398
+#: src/sound_handling.cpp:447 src/sound_handling.cpp:456
+msgid "Cannot use the audio device"
+msgstr "No es pot utilitzar el dispositiu d'àudio"
+
+#: src/sound_handling.cpp:447
 #, c-format
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
 "to read data from this device. Please check your audio setup."
-msgstr ""
-"S'ha obert amb èxit el dispositiu d'àudio seleccionat (%s), però sembla que "
-"noés possible llegir-ne dades. Si us plau, comproveu la configuració d'àudio."
+msgstr " S'ha obert amb èxit el dispositiu d'àudio seleccionat (%s), però sembla que  no és possible llegir-ne dades. Si us plau, comproveu la configuració d'àudio."
 
-#: src/sound_handling.cpp:407
+#: src/sound_handling.cpp:456
 #, c-format
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
 "to write data to this device. Please check your audio setup."
-msgstr ""
-"S'ha obert amb èxit el dispositiu d'àudio seleccionat (%s), però sembla que "
-"noés possible gravar-hi dades. Si us plau, comproveu la configuració d'àudio."
+msgstr " S'ha obert amb èxit el dispositiu d'àudio seleccionat (%s), però sembla que  no és possible gravar-hi dades. Si us plau, comproveu la configuració d'àudio."
 
-#: src/sound_handling.cpp:424
+#: src/sound_handling.cpp:473
 #, c-format
 msgid ""
 "GnomeMeeting is now recording from %s and playing back to %s. Please say \"1 "
@@ -2739,7 +3028,7 @@ msgstr ""
 "\n"
 "Enregistrant... Si us plau, parleu."
 
-#: src/sound_handling.cpp:453
+#: src/sound_handling.cpp:502
 msgid ""
 "GnomeMeeting is now playing what it is recording with a 5 seconds delay. If "
 "you don't hear yourself with the delay, you will have to fix your audio "
@@ -2747,175 +3036,380 @@ msgid ""
 "GnomeMeeting users.\n"
 "\n"
 "Recording and playing... Please talk."
-msgstr ""
-"El GnomeMeeting reprodueix el que ha enregistrat amb una diferència de 5 "
-"segons. Si no us sentiu a vostè mateix amb endarreriment, haureu d'arreglar "
-"la vostra configuració del so, i possiblement haureu d'instal·lar un "
-"programa de control full-duplex abans de poder trucar altres usuaris del "
-"GnomeMeeting. \n"
-"\n"
-"Enregistrant i reproduint... Parlau, si us plau."
+msgstr " El GnomeMeeting reprodueix el que ha enregistrat amb una diferència de 5  segons. Si no us sentiu a vostè mateix amb endarreriment, haureu d'arreglar  la vostra configuració del so, i possiblement haureu d'instal·lar un  programa de control full-duplex abans de poder trucar altres usuaris del  GnomeMeeting. \n \n Enregistrant i reproduint... Parleu, si us plau."
 
-#: src/toolbar.cpp:95
-msgid "Speaker phone enabled"
-msgstr "Speaker phone activat"
-
-#: src/toolbar.cpp:107
-msgid "Speaker phone disabled"
-msgstr "Speaker phone desactivat"
-
-#: src/toolbar.cpp:266
-msgid "Find friends on the ILS directory service"
-msgstr "Busca amics a l'ILS"
-
-#: src/toolbar.cpp:279
-msgid "Make a text chat with your friend"
-msgstr "Fer un xat de text amb el vostre interlocutor"
-
-#: src/toolbar.cpp:290
-msgid "Display the control panel"
-msgstr "Mostra el panell de control"
-
-#: src/toolbar.cpp:322
-msgid "Click here to begin displaying images from your camera device."
-msgstr "Feu clic aquí per tal de començar a mostrar imatges de la càmera."
-
-#: src/toolbar.cpp:344
-msgid "Click here to activate the speaker phone device of your Quicknet card."
-msgstr ""
-"Feu clic aquí per tal d'activar l'altaveu del telèfon del vostre dispositiu "
-"Quicknet."
-
-#: src/toolbar.cpp:367
+#: src/toolbar.cpp:178
 msgid ""
-"Audio transmission status. During a call, click here to pause the audio "
-"transmission."
-msgstr ""
-"Estat de la transmissió d'àudio. Durant una trucada, cliqueu aquí per tal "
-"d'aturar la transmissió d'àudio."
+"Enter an URL to call on the left, and click on this button to connect to the "
+"given URL."
+msgstr " Introduïu un URL a on trucar a l'esquerre, i feu clic en aquest botó per connectar-vos-hi."
 
-#: src/toolbar.cpp:387
+#: src/toolbar.cpp:225
+msgid "Open text chat."
+msgstr "Obre el xat de text."
+
+#: src/toolbar.cpp:236
+msgid "Open control panel"
+msgstr "Obre el tauler de control"
+
+#: src/toolbar.cpp:248
+msgid "Open address book"
+msgstr "Obre el llibre d'adreces"
+
+#: src/toolbar.cpp:278
+msgid "Display images from your camera device."
+msgstr "Mostra imatges de la càmera."
+
+#: src/toolbar.cpp:300
 msgid ""
-"Video transmission status. During a call, click here to pause the video "
-"transmission."
-msgstr ""
-"Estat de la transmissió de vídeo. Durant una trucada, cliqueu aquí per tal "
-"d'aturar la transmissió de vídeo."
+"Audio transmission status. During a call, click here to suspend or resume "
+"the audio transmission."
+msgstr " Estat de la transmissió d'àudio. Durant una trucada, feu clic aquí per d'aturar o reprendre la transmissió d'àudio."
 
-#: src/tools.cpp:119 src/tools.cpp:125
-msgid "General History"
-msgstr "Historial genèric"
+#: src/toolbar.cpp:320
+msgid ""
+"Video transmission status. During a call, click here to suspend or resume "
+"the video transmission."
+msgstr " Estat de la transmissió de vídeo. Durant una trucada, feu clic aquí per  d'aturar o rependre la transmissió de vídeo."
 
-#: src/tray.cpp:166
+#: src/tools.cpp:186
+msgid "Received calls"
+msgstr "Trucades rebudes"
+
+#: src/tools.cpp:186
+msgid "Given calls"
+msgstr "Trucades fetes"
+
+#: src/tools.cpp:186
+msgid "Unanswered calls"
+msgstr "Trucades no contestades"
+
+#: src/tools.cpp:231
+msgid "Date"
+msgstr "Data"
+
+#: src/tools.cpp:239
+msgid "Remote user"
+msgstr "Usuari remot"
+
+#: src/tools.cpp:258
+msgid "Call duration"
+msgstr "Durada de la trucada"
+
+#: src/tools.cpp:269
+msgid "Software"
+msgstr "Programari"
+
+#: src/tray.cpp:190
 msgid "GnomeMeeting Tray Icon"
-msgstr "Tray Icon del GnomeMeeting"
+msgstr "Icona del GnomeMeeting"
 
-#: src/urlhandler.cpp:127
-msgid "Searching for user"
-msgstr "Buscant l'usuari"
+#: src/urlhandler.cpp:76
+msgid ""
+"The call transfer failed, the user was either unreachable, or simply busy "
+"when he received the call transfer request."
+msgstr " Ha fallat la transferència de la trucada, o bé no s'ha pogut connectar amb l'usuari, o bé aquest estava ocupat."
 
-#: src/urlhandler.cpp:151 src/urlhandler.cpp:153
-msgid "Error while connecting to ILS directory"
-msgstr "Hi ha hagut un error al connectar al directory ILS"
+#: src/urlhandler.cpp:268
+#, c-format
+msgid "No contact with speed dial %s# found, will call number %s instead"
+msgstr "Ni hi ha cap contacte amb la tecla ràpida %s#, es trucarà el número %s."
 
-#: src/urlhandler.cpp:174 src/urlhandler.cpp:175
-msgid "User is offline"
-msgstr "L'interlocutor no està en línia"
+#: src/urlhandler.cpp:286
+msgid "Invalid URL handler"
+msgstr "Gestor d'URL invàlid"
 
-#: src/urlhandler.cpp:232
+#: src/urlhandler.cpp:286
+msgid ""
+"Please specify a valid URL handler. Currently both h323: and callto: are "
+"supported."
+msgstr " Introduïu un gestor d'URL vàlid. Actualment tant h323: com callto: estan implementats."
+
+#: src/urlhandler.cpp:314
 #, c-format
 msgid "Calling %s"
 msgstr "S'està trucant a %s"
 
-#: src/videograbber.cpp:457 src/videograbber.cpp:458
+#: src/urlhandler.cpp:318
+#, c-format
+msgid "Transferring call to %s"
+msgstr "S'està transferint la trucada a %s"
+
+#: src/videograbber.cpp:331 src/videograbber.cpp:332
 msgid "Opening Video device"
 msgstr "S'està obrint el dispositiu de vídeo"
 
-#: src/videograbber.cpp:506
+#: src/videograbber.cpp:396
 #, c-format
 msgid "Successfully opened video device %s, channel %d"
 msgstr "S'ha obert el dispositiu de vídeo %s, del canal %d, amb èxit."
 
-#: src/videograbber.cpp:509
+#: src/videograbber.cpp:399
 msgid "Video Device Opened"
 msgstr "S'ha obert el dispositiu de vídeo"
 
-#: src/videograbber.cpp:522
+#: src/videograbber.cpp:412
 #, c-format
+msgid "Error while opening video device %s"
+msgstr "Hi ha hagut un error mentre s'obria el dispositiu de vídeo %s."
+
+#: src/videograbber.cpp:414
 msgid ""
-"Error while opening video device %s, channel %d.\n"
 "The chosen Video Image will be transmitted during calls. If you didn't "
 "choose any image, then the default GnomeMeeting logo will be transmitted. "
 "Notice that you can always transmit a given image or the GnomeMeeting logo "
 "by choosing \"Picture\" as video device."
-msgstr ""
-"Hi ha hagut un error obrint el dispositiu de vídeo %s, canal %d.\n"
-"Enlloc de vídeo, durant la trucada es transmetrà la imatge escollida. Si no "
-"heu seleccionat cap imatge, es transmetrà el logotip del GnomeMeeting. És "
-"possible, en qualsevol moment, escollir transmetre una imatge enlloc de "
-"vídeo indicant \"Imatge\" com a dispositiu de vídeo al menú Preferències."
+msgstr " Es transmetrà la imatge de vídeo escollida durant les trucades. Si no heu seleccionat cap imatge, es transmetrà el logotip del GnomeMeeting. És possible, en qualsevol moment, escollir transmetre una imatge enlloc de  vídeo indicant \"Imatge\" com a dispositiu de vídeo al menú Preferències."
 
-#: src/videograbber.cpp:523
+#: src/videograbber.cpp:415
 msgid "Can't open the Video Device"
 msgstr "No s'ha pogut obrir el dispositiu de vídeo"
 
-#: src/videograbber.cpp:528
-msgid "Error while opening the device."
-msgstr "Hi ha hagut un error obrint el dispositiu"
+#: src/videograbber.cpp:420
+msgid ""
+"There was an error while opening the device. Please check your permissions "
+"and make sure that the appropriate driver is loaded."
+msgstr " Hi ha hagut un error obrint el dispositiu. Si us plau comproveu els permisos i assegureu-vos que el controlador adequat estigui carregat."
 
-#: src/videograbber.cpp:533 src/videograbber.cpp:817
+#: src/videograbber.cpp:425 src/videograbber.cpp:727
 msgid "Your video driver doesn't support the requested video format."
-msgstr "El programa de control que feu servir no suporta el format de vídeo requerit."
+msgstr ""
+"El programa de control que feu servir no suporta el format de vídeo requerit."
 
-#: src/videograbber.cpp:537 src/videograbber.cpp:821
+#: src/videograbber.cpp:429 src/videograbber.cpp:731
 msgid "Could not open the chosen channel with the chosen video format."
 msgstr "No s'ha pogut obrir el canal escollit amb el format de vídeo indicat."
 
-#: src/videograbber.cpp:541
-#, c-format
+#: src/videograbber.cpp:433
 msgid ""
-"Your driver doesn't support the %s format.\n"
+"Your driver doesn't seem to support any of the colour formats supported by "
+"GnomeMeeting.\n"
 " Please check your kernel driver documentation in order to determine which "
 "Palette is supported. Set it as GnomeMeeting default with:\n"
 " gconftool --set \"/apps/gnomemeeting/devices/color_format\" YOURPALETTE --"
 "type string"
-msgstr ""
-"El programa de control que feu servir no suporta el format %s.\n"
-" Si us plau, comproveu la documentació sobre programes de control del vostre "
-"nucli per tal de determinar quines paletes suporta. Podreu seleccioneu-ho "
-"com a per  defecte amb:\n"
-" gconftool --set \"/apps/gnomemeeting/devices/color_format\" LA_PALETA --"
-"type string"
+msgstr " El controlador que feu servir no implementa cap dels formats de color que utilitza el GnomeMeeting.\n  Si us plau, comproveu la documentació sobre controladors del vostre  nucli per tal de determinar quines paletes implementa. Podreu seleccionar-ho al GnomeMeeting per defecte amb:\n  gconftool --set \"/apps/gnomemeeting/devices/color_format\" LA_PALETA -- type string"
 
-#: src/videograbber.cpp:545 src/videograbber.cpp:829
-msgid "Error with the frame rate."
-msgstr "Error en el ràtio de quadres."
+#: src/videograbber.cpp:437
+msgid "Error while setting the frame rate."
+msgstr "Hi ha hagut un error especificant el ràtio de quadres."
 
-#: src/videograbber.cpp:549 src/videograbber.cpp:833
-msgid "Error with the frame size."
-msgstr "Hi ha hagut un error en la mida del quadre"
+#: src/videograbber.cpp:441
+msgid "Error while setting the frame size."
+msgstr "Hi ha hagut un error especificant la mida del quadre"
 
-#: src/videograbber.cpp:678
+#: src/videograbber.cpp:574
 msgid "Video Device Closed"
 msgstr "S'ha tancat el dispositiu de vídeo"
 
-#: src/videograbber.cpp:796
+#: src/videograbber.cpp:706
 #, c-format
 msgid "Test %d done"
 msgstr "Test %d fet"
 
-#: src/videograbber.cpp:813
+#: src/videograbber.cpp:723
 #, c-format
 msgid "Error while opening %s."
 msgstr "Hi ha hagut un error obrint %s."
 
-#: src/videograbber.cpp:825
+#: src/videograbber.cpp:735
 msgid "Your driver doesn't support the YUV420P color format"
 msgstr "El programa de control no suporta el format de color YUV420P."
 
-#: src/videograbber.cpp:838
+#: src/videograbber.cpp:739
+msgid "Error with the frame rate."
+msgstr "Hi ha hagut un error en el ràtio de quadres."
+
+#: src/videograbber.cpp:743
+msgid "Error with the frame size."
+msgstr "Hi ha hagut un error en la mida del quadre"
+
+#: src/videograbber.cpp:748
 msgid "Tests OK!"
 msgstr "Proves OK!"
+
+#~ msgid "Quit in progress..."
+#~ msgstr "S'està sortint..."
+
+#~ msgid "Audio Channel:  Sending"
+#~ msgstr "Canal d'àudio:  S'està enviant"
+
+#~ msgid "Audio Channel:  Paused"
+#~ msgstr "Canal d'àudio:  Aturat"
+
+#~ msgid "Video Channel:  Sending"
+#~ msgstr "Canal de vídeo:  s'està enviant"
+
+#~ msgid "Video Channel:  Paused"
+#~ msgstr "Canal de vídeo:  Aturat"
+
+#~ msgid ""
+#~ "You chose to NOT use the GnomeMeeting ILS directory. Other users will not "
+#~ "be able to contact you if you don't register to a directory service."
+#~ msgstr ""
+#~ "Heu escollit NO fer ús del directori ILS del GnomeMeeting. Altres usuaris "
+#~ "no podran contactar amb vostè si no us registreu a un servei de directori."
+
+#~ msgid "Error forwarding call to %s"
+#~ msgstr "Hi ha hagut un error al desviar la trucada a %s"
+
+#~ msgid "This call ended abnormally"
+#~ msgstr "La trucada ha finalitzat anormalment"
+
+#~ msgid "Refused incoming call"
+#~ msgstr "S'ha refusat la trucada entrant"
+
+#~ msgid "Remote party could not be reached"
+#~ msgstr "El GnomeMeeting s'ha pogut connectar amb el vostre interlocutor"
+
+#~ msgid "Call duration: %.2ld:%.2ld:%.2ld"
+#~ msgstr "La trucada ha durat: %.2ld:%.2ld:%.2ld"
+
+#~ msgid ""
+#~ "Sent/Received:\n"
+#~ "Lost/Late Packets:\n"
+#~ "Round trip delay:\n"
+#~ "Jitter Buffer:"
+#~ msgstr ""
+#~ "Enviat/Rebut:\n"
+#~ "Paquets Perduts/Tard\n"
+#~ "Round trip delay:\n"
+#~ "Jitter Buffer:"
+
+#~ msgid "Error while registering with Gatekeeper at %s."
+#~ msgstr "Hi ha hagut un error al registrar-vos al gatekeeper a %s."
+
+#~ msgid "No gatekeeper found"
+#~ msgstr "No s'ha trobat cap Gatekeeper"
+
+#~ msgid "callto URL:"
+#~ msgstr "URL callto:"
+
+#~ msgid "_Refresh"
+#~ msgstr "_Refresca"
+
+#~ msgid "Call this user"
+#~ msgstr "Truca aquest usuari"
+
+#~ msgid "Edit this user information"
+#~ msgstr "Edita la informació d'aquest usuari"
+
+#~ msgid "Delete this user"
+#~ msgstr "Esborra aquest usuari"
+
+#~ msgid "Add to group"
+#~ msgstr "Afegeix al grup"
+
+#~ msgid ""
+#~ "GnomeMeeting can't be used without audio devices. Please install a "
+#~ "soundcard or a Quicknet card."
+#~ msgstr ""
+#~ "No es pot utilitzar el GnomeMeeting sense dispositius d'àudio. Si us plau "
+#~ "instal·leu una targeta de so o una targeta Quicknet."
+
+#~ msgid ""
+#~ "GnomeMeeting just installed an URL handler for callto:// URLs. callto "
+#~ "URLs are an easy way to call people on the internet using GnomeMeeting. "
+#~ "They are now available to all GNOME programs able to cope with URLs. You "
+#~ "can for example create an URL launcher on the GNOME panel of the form "
+#~ "\"callto://ils.seconix.com/me@foo.com\" to call the person registered on "
+#~ "the ILS server ils.seconix.com with the me@foo.com e-mail address."
+#~ msgstr ""
+#~ "El GnomeMeeting acava d'instal·lar un gestor per a URL del tipus "
+#~ "callto://, aquesta és una manera senzilla de trucar gent per internet amb "
+#~ "el GnomeMeeting. Ara estarà disponible per tots els programes del Gnome "
+#~ "que poden manegar URL. Per exemple, podeu crear un accés ràpid d'URL en "
+#~ "el panell del Gnome, així: \"callto://ils.seconix. com/jo@foo.com\" per "
+#~ "trucar a una persona registrada al servidor ILS ils. seconix.com que "
+#~ "tingui per adreça de correu jo@foo.com."
+
+#~ msgid ""
+#~ "Could not start the listener thread. You will not be able to receive "
+#~ "incoming calls."
+#~ msgstr ""
+#~ "No s'ha pogut iniciar el fil encarregat de rebre connexions. No podreu "
+#~ "rebre trucades entrants."
+
+#~ msgid "_Audio Mute"
+#~ msgstr "Silenci_a l'àudio"
+
+#~ msgid "_Video Mute"
+#~ msgstr "Atura el _vídeo"
+
+#~ msgid "Generic History"
+#~ msgstr "Historial"
+
+#~ msgid "Disconnect"
+#~ msgstr "Desconnecta"
+
+#~ msgid "E-mail address:"
+#~ msgstr "Adreça electrònica:"
+
+#~ msgid "Fullscreen width:"
+#~ msgstr "Amplada a pantalla completa:"
+
+#~ msgid "Fullscreen height:"
+#~ msgstr "Alçada a pantalla completa:"
+
+#~ msgid "Sound"
+#~ msgstr "So"
+
+#~ msgid "Browse..."
+#~ msgstr "Navega..."
+
+#~ msgid "Minimum jitter buffer:"
+#~ msgstr "Memòria intermèdia mínima pel jitter"
+
+#~ msgid "Maximum jitter buffer:"
+#~ msgstr "Memòria intermèdeia màxima pel jitter"
+
+#~ msgid "Maximum video bandwidth:"
+#~ msgstr "Ample de banda màxim pel vídeo:"
+
+#~ msgid "Minimum transmitted video quality:"
+#~ msgstr "Qualitat de vídeo transmesa:"
+
+#~ msgid "Minimum transmitted FPS:"
+#~ msgstr "Màxim FPS transmesos:"
+
+#~ msgid "Transmitted background blocks:"
+#~ msgstr "Blocs de fons transmesos:"
+
+#~ msgid "H.323 Advanced"
+#~ msgstr "H.323 Avançat"
+
+#~ msgid "Speaker phone enabled"
+#~ msgstr "Speaker phone activat"
+
+#~ msgid "Speaker phone disabled"
+#~ msgstr "Speaker phone desactivat"
+
+#~ msgid "Find friends on the ILS directory service"
+#~ msgstr "Busca amics a l'ILS"
+
+#~ msgid "Make a text chat with your friend"
+#~ msgstr "Fer un xat de text amb el vostre interlocutor"
+
+#~ msgid "Display the control panel"
+#~ msgstr "Mostra el panell de control"
+
+#~ msgid ""
+#~ "Click here to activate the speaker phone device of your Quicknet card."
+#~ msgstr ""
+#~ "Feu clic aquí per tal d'activar l'altaveu del telèfon del vostre "
+#~ "dispositiu Quicknet."
+
+#~ msgid "Searching for user"
+#~ msgstr "Buscant l'usuari"
+
+#~ msgid "Error while connecting to ILS directory"
+#~ msgstr "Hi ha hagut un error al connectar al directory ILS"
+
+#~ msgid "User is offline"
+#~ msgstr "L'interlocutor no està en línia"
+
+#~ msgid "Error while opening the device."
+#~ msgstr "Hi ha hagut un error obrint el dispositiu"
 
 #~ msgid ""
 #~ "\"If enabled, GnomeMeeting will play a sound when receiving an incoming "
@@ -2923,9 +3417,6 @@ msgstr "Proves OK!"
 #~ msgstr ""
 #~ "\"Si s'activa, el GnomeMeeting reproduirà un so quan rebeu una trucada "
 #~ "(aquest so es pot canviar en el Centre de Control del Gnome)."
-
-#~ msgid "No Quicknet device detected"
-#~ msgstr "No s'ha detectat cap dispositiu Quicknet"
 
 #~ msgid "No data received in 10 seconds, clearing call"
 #~ msgstr "No s'han rebut dades durant 10 segons, s'està tallant la trucada"
@@ -2987,9 +3478,6 @@ msgstr "Proves OK!"
 #~ "Limitation on the number of transmitted frames grabbed by the grabber"
 #~ msgstr ""
 #~ "Limitació en el número de quadres transmesos que arreplega el grabber"
-
-#~ msgid "Number of background blocks transmitted at a time"
-#~ msgstr "Quantitat de blocks de fons transmesos a la vegada"
 
 #~ msgid "Public IP"
 #~ msgstr "Adreça IP pública"
@@ -3062,9 +3550,6 @@ msgstr "Proves OK!"
 #~ msgstr ""
 #~ "L'amplada de la imatge mostrada quan estigui a pantalla completa (usant "
 #~ "SDL)"
-
-#~ msgid "Transmitted frames per second"
-#~ msgstr "Quadres per segon transmesos"
 
 #~ msgid "Use Quicknet Device"
 #~ msgstr "Fes servir el dispositiu Quicknet"
@@ -3152,14 +3637,8 @@ msgstr "Proves OK!"
 #~ "Feu clic aquí per fer una visualització prèvia de les imatges capturades "
 #~ "pel dipsositiu de vídeo, i veure l'efecte dels paràmtres escollits."
 
-#~ msgid "Audio Settings"
-#~ msgstr "Paràmetres d'àudio"
-
 #~ msgid "Audio Test"
 #~ msgstr "Prova d'àudio"
-
-#~ msgid "_File"
-#~ msgstr "_Fitxer"
 
 #~ msgid "_Save"
 #~ msgstr "De_sa"
@@ -3272,9 +3751,6 @@ msgstr "Proves OK!"
 #~ "podrà sentir. Podeu fer servirles barres desplaçadores del panell de "
 #~ "control tant per ajustar el volum delsaltaveus com del micròfon."
 
-#~ msgid "Error while opening the video device %s."
-#~ msgstr "Hi ha hagut un error mentre s'obria el dispositiu de vídeo %s."
-
 #~ msgid ""
 #~ "GnomeMeeting successfully tested your video device. The driver seems to "
 #~ "be usable for videoconferencing with GnomeMeeting."
@@ -3282,4 +3758,3 @@ msgstr "Proves OK!"
 #~ "El GnomeMeeting ha comprovat amb èxit el vostre dispositiu de vídeo. El "
 #~ "programa de control sembla que es pot fer servir per a videoconferència "
 #~ "amb el GnomeMeeting."
-
