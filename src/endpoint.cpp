@@ -698,7 +698,7 @@ GMH323EndPoint::TranslateTCPAddress(PIPSocket::Address &localAddr,
 
   if (ip_translation) {
 
-    /* Ignore Ip translation for local networks */
+    /* Ignore Ip translation for local networks and for IPv6 */
     if ( !((remoteAddr.Byte1() == 192) && (remoteAddr.Byte2() == 168))
 
 	 && !((remoteAddr.Byte1() == 127)
@@ -709,7 +709,12 @@ GMH323EndPoint::TranslateTCPAddress(PIPSocket::Address &localAddr,
 	 && !((remoteAddr.Byte1() == 172) 
 	      && ((remoteAddr.Byte2() >= 16)&&(remoteAddr.Byte2()<=31)))
 	 
-	 && !(remoteAddr.Byte1() == 10)) {
+	 && !(remoteAddr.Byte1() == 10)
+
+#ifdef P_HAS_IPV6
+	 && (remoteAddr.GetVersion () != 6 || remoteAddr.IsV4Mapped ())
+#endif
+	 ) {
 
       gnomemeeting_threads_enter ();
       ip = 
