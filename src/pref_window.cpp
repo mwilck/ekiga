@@ -1428,13 +1428,13 @@ static void gnomemeeting_init_pref_window_audio_devices (GtkWidget *notebook)
 					      3, 2);
 
   pw->lid_aec =
-    gnomemeeting_pref_window_add_int_option_menu (table, _("Automatic Echo Cancellation:"), aec, "/apps/gnomemeeting/devices/lid_aec", _("The Automatic Echo Cancellation level : Off, Low, Medium, High, Automatic Gain Compensation. Choosing Automatic Gain Compensation modulates the volumes for best quality."), 0);
+    gnomemeeting_pref_window_add_int_option_menu (table, _("Automatic Echo Cancellation:"), aec, "/apps/gnomemeeting/devices/lid_aec", _("The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic Gain Compensation. Choosing Automatic Gain Compensation modulates the volume for best quality."), 0);
 
   pw->lid_country =
-    gnomemeeting_pref_window_add_entry (table, _("Country Code:"), "/apps/gnomemeeting/devices/lid_country", _("The 2 letters country code of your country (e.g.: BE, UK, FR, DE, ...)."), 1);
+    gnomemeeting_pref_window_add_entry (table, _("Country Code:"), "/apps/gnomemeeting/devices/lid_country", _("The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)."), 1);
 
   pw->lid =
-    gnomemeeting_pref_window_add_toggle (table, _("Use the Quicknet Device"), "/apps/gnomemeeting/devices/lid", _("If enabled, GnomeMeeting will use the Quicknet device instead of the classical soundcard during calls."), 2, 0);
+    gnomemeeting_pref_window_add_toggle (table, _("Use the Quicknet Device"), "/apps/gnomemeeting/devices/lid", _("If enabled, GnomeMeeting will use the Quicknet device instead of the regular soundcard during calls."), 2, 0);
 #endif
 
 
