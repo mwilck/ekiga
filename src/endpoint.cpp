@@ -886,11 +886,13 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   gnomemeeting_threads_enter ();
   gtk_entry_set_text (GTK_ENTRY (gw->remote_name), "");
   
-  gtk_text_buffer_get_start_iter (gw->chat_buffer, &start_iter);
-  gtk_text_buffer_get_end_iter (gw->chat_buffer, &end_iter);
+  /* We empty the text chat buffer */ 
+  gtk_text_buffer_get_start_iter (gw->chat->text_buffer, &start_iter);
+  gtk_text_buffer_get_end_iter (gw->chat->text_buffer, &end_iter);
 
-  gtk_text_buffer_delete (gw->chat_buffer, &start_iter, &end_iter);
-  
+  gtk_text_buffer_delete (gw->chat->text_buffer, &start_iter, &end_iter);
+  gw->chat->buffer_is_empty = TRUE;
+
   SetCurrentConnection (NULL);
   SetCallingState (0);
 

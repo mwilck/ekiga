@@ -36,7 +36,7 @@
  * BEHAVIOR     :  Build the chat window.
  * PRE          :  /
  */
-void gnomemeeting_init_chat_window ();
+void gnomemeeting_init_text_chat_window ();
 
 
 /* DESCRIPTION  :  /
@@ -45,4 +45,4 @@ void gnomemeeting_init_chat_window ();
  *                 otherwise it is in red.
  * PRE          :  /
  */
-void gnomemeeting_chat_window_text_insert (PString, PString, int);
+void gnomemeeting_text_chat_insert (PString, PString, int);

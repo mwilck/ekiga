@@ -35,12 +35,28 @@
 
 #define GM_AUDIO_CODECS_NUMBER 7
 
-typedef struct _GM_window_widgets GM_window_widgets;
-typedef struct _GM_pref_window_widgets GM_pref_window_widgets;
-typedef struct _GM_ldap_window_widgets GM_ldap_window_widgets;
-typedef struct _GM_rtp_data GM_rtp_data;
+#define GM_WINDOW(x) (GmWindow *)(x)
 
-struct _GM_rtp_data
+/* Should be removed at some point */
+typedef struct _GmWindow GM_window_widgets;
+typedef struct _GmPrefWindow GM_pref_window_widgets;
+typedef struct _GmLdapWindow GM_ldap_window_widgets;
+typedef struct _GmRtpData GM_rtp_data;
+
+typedef struct _GmWindow GmWindow;
+typedef struct _GmPrefWindow GmPrefWindow;
+typedef struct _GmLdapWindow GmLdapWindow;
+typedef struct _GmTextChat GmTextChat;
+
+struct _GmTextChat
+{
+    GtkWidget     *window;
+    GtkWidget     *text_view;
+    GtkTextBuffer *text_buffer;
+    gboolean       buffer_is_empty;
+};
+
+struct _GmRtpData
 {
   int tr_audio_bytes;
   int tr_video_bytes;
@@ -49,7 +65,7 @@ struct _GM_rtp_data
 };
 
 
-struct _GM_window_widgets
+struct _GmWindow
 {
   // widgets
   GtkObject *adj_play, *adj_rec;
@@ -69,9 +85,7 @@ struct _GM_window_widgets
   GtkWidget *video_frame;
   GtkWidget *pref_window;
   GtkWidget *ldap_window;
-  GtkWidget *chat_window;
-  GtkWidget *chat_view;
-  GtkTextBuffer *chat_buffer;
+  GmTextChat *chat;
   GtkWidget *preview_button;
   GtkWidget *connect_button;
   GtkWidget *video_chan_button;
@@ -88,7 +102,7 @@ struct _GM_window_widgets
 };
 
 
-struct _GM_ldap_window_widgets
+struct _GmLdapWindow
 {
   GtkWidget *statusbar;
   GtkWidget *search_entry;
@@ -103,7 +117,7 @@ struct _GM_ldap_window_widgets
 };
 
 
-struct _GM_pref_window_widgets
+struct _GmPrefWindow
 {
   GtkWidget *show_splash;
   GtkWidget *show_chat_window;
@@ -165,8 +179,8 @@ struct _GM_pref_window_widgets
   /* Miscellaneous */
   // contains the row selected by the user
   int row_avail;
-  // pointer to GM_window_widgets ;-)
-  GM_window_widgets * gw;
+  // pointer to GmWindow ;-)
+  GmWindow *gw;
   // user has changed ldap related settings
   int ldap_changed;
   // user has changed audio mixer related settings
@@ -183,4 +197,4 @@ struct _GM_pref_window_widgets
 /******************************************************************************/
 
 
-#endif
+#endif /* _COMMON_H */

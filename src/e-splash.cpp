@@ -52,7 +52,7 @@ struct _ESplashPrivate {
 	int layout_idle_id;
 };
 
-
+
 /* Layout constants.  These need to be changed if the splash changes.  */
 
 #define ICON_Y    280
@@ -178,7 +178,7 @@ icon_free (Icon *icon)
 	g_free (icon);
 }
 
-
+
 /* Icon layout management.  */
 
 static void
@@ -239,7 +239,7 @@ schedule_relayout (ESplash *splash)
 	priv->layout_idle_id = gtk_idle_add (layout_idle_cb, splash);
 }
 
-
+
 /* GtkObject methods.  */
 
 static void
@@ -272,7 +272,7 @@ impl_destroy (GtkObject *object)
 	(* GTK_OBJECT_CLASS (parent_class)->destroy) (object);
 }
 
-
+
 static void
 class_init (ESplashClass *klass)
 {
@@ -312,7 +312,7 @@ button_press_event (GtkWidget *widget, GdkEventButton *event, gpointer data)
 	return TRUE;
 }
 
-
+
 /**
  * e_splash_construct:
  * @splash: A pointer to an ESplash widget
@@ -483,5 +483,5 @@ GType l##_get_type(void)\
         return type;                                    \
 }
 
-
+
 E_MAKE_TYPE (e_splash, "ESplash", ESplash, class_init, init, PARENT_TYPE)

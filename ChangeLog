@@ -1,5 +1,17 @@
 2002-05-06  Kenneth Rohde Christiansen  <kenneth@gnu.org>
 
+	* src/chat_window.cpp:
+	* src/chat_window.h: Fixed a bug in the text chat and restructored 
+	some of the code.
+	* src/common.h: Added a new struct and cleaned up a little.
+	* src/config.cpp: Changed to work with the above changes.
+	* src/connection.cpp: Same.
+	* src/e-splash.cpp: Removed some weird encodings.
+	* src/endpoint.cpp: Set a buffer_is_empty flag, used by text chat.
+	* src/main_window.cpp: Changed some GM_window_widgets to GmWindow.
+
+2002-05-06  Kenneth Rohde Christiansen  <kenneth@gnu.org>	
+
 	* src/callbacks.cpp (about_callback): 
 	- Hard coded the name GnomeMeeting as gnomeMeeting looks weird. 
 	- Added support for having translators in the translator tab.

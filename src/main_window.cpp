@@ -1,6 +1,8 @@
 
-/* GnomeMeeting -- A Video-Conferencing application
- * Copyright (C) 2000-2001 Damien Sandras
+/*
+ * GnomeMeeting -- A Video-Conferencing application
+ *
+ * Copyright (C) 2000-2002 Damien Sandras
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -82,11 +84,12 @@ static void gnomemeeting_init_main_window_log  ();
 
 /* GTK Callbacks */
 
-/* DESCRIPTION  :  This callback is called when the user changes the
+/**
+ * DESCRIPTION  :  This callback is called when the user changes the
  *                 page in the main notebook.
  * BEHAVIOR     :  Update the menu accordingly.
  * PRE          :  /
- */
+ **/
 static void 
 main_notebook_page_changed (GtkNotebook *notebook, GtkNotebookPage *page,
 			    gint page_num, gpointer user_data) {
@@ -94,7 +97,7 @@ main_notebook_page_changed (GtkNotebook *notebook, GtkNotebookPage *page,
   GnomeUIInfo *notebook_view_uiinfo =
     (GnomeUIInfo *) g_object_get_data (G_OBJECT (gm),
 				       "notebook_view_uiinfo");
-  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+  GmWindow *gw = gnomemeeting_get_main_window (gm);
 
   for (int i = 0; i < 3; i++) 
     GTK_CHECK_MENU_ITEM (notebook_view_uiinfo[i].widget)->active =
@@ -103,19 +106,21 @@ main_notebook_page_changed (GtkNotebook *notebook, GtkNotebookPage *page,
 }
 
 
-/* DESCRIPTION  :  This callback is called when the user changes the
+/**
+ * DESCRIPTION  :  This callback is called when the user changes the
  *                 audio settings sliders in the main notebook.
  * BEHAVIOR     :  Update the volume.
  * PRE          :  gpointer is a valid pointer to GM_pref_window_widgets
- */
-void audio_volume_changed (GtkAdjustment *adjustment, gpointer data)
+ **/
+void 
+audio_volume_changed (GtkAdjustment *adjustment, gpointer data)
 {
   GConfClient *client = gconf_client_get_default ();
   int vol_play, vol_rec;
   char *audio_recorder_mixer;
   char *audio_player_mixer;
 
-  GM_window_widgets *gw = (GM_window_widgets *) data;
+  GmWindow *gw = GM_WINDOW (data);
   
   vol_play =  (int) (GTK_ADJUSTMENT (gw->adj_play)->value) * 257;
   vol_rec =  (int) (GTK_ADJUSTMENT (gw->adj_rec)->value) * 257;
@@ -132,14 +137,16 @@ void audio_volume_changed (GtkAdjustment *adjustment, gpointer data)
 }
 
 
-/* DESCRIPTION  :  This callback is called when the user changes the 
+/**
+ * DESCRIPTION  :  This callback is called when the user changes the 
  *                 video brightness slider in the main notebook.
  * BEHAVIOR     :  Update the value in real time.
  * PRE          :  gpointer is a valid pointer to GM_window_widgets
  */
-void brightness_changed (GtkAdjustment *adjustment, gpointer data)
+void 
+brightness_changed (GtkAdjustment *adjustment, gpointer data)
 { 
-  GM_window_widgets *gw = (GM_window_widgets *) data;
+  GmWindow *gw = GM_WINDOW (data);
   GMVideoGrabber *video_grabber = MyApp->Endpoint ()->GetVideoGrabber ();
 
   int brightness;
@@ -150,14 +157,16 @@ void brightness_changed (GtkAdjustment *adjustment, gpointer data)
 }
 
 
-/* DESCRIPTION  :  This callback is called when the user changes the 
+/**
+ * DESCRIPTION  :  This callback is called when the user changes the 
  *                 video whiteness slider in the main notebook.
  * BEHAVIOR     :  Update the value in real time.
  * PRE          :  gpointer is a valid pointer to GM_window_widgets
  */
-void whiteness_changed (GtkAdjustment *adjustment, gpointer data)
+void 
+whiteness_changed (GtkAdjustment *adjustment, gpointer data)
 { 
-  GM_window_widgets *gw = (GM_window_widgets *) data;
+  GmWindow *gw = GM_WINDOW (data);
   GMVideoGrabber *video_grabber = MyApp->Endpoint ()->GetVideoGrabber ();
 
   int whiteness;
@@ -168,14 +177,16 @@ void whiteness_changed (GtkAdjustment *adjustment, gpointer data)
 }
 
 
-/* DESCRIPTION  :  This callback is called when the user changes the 
+/**
+ * DESCRIPTION  :  This callback is called when the user changes the 
  *                 video colour slider in the main notebook.
  * BEHAVIOR     :  Update the value in real time.
  * PRE          :  gpointer is a valid pointer to GM_window_widgets
  */
-void colour_changed (GtkAdjustment *adjustment, gpointer data)
+void 
+colour_changed (GtkAdjustment *adjustment, gpointer data)
 { 
-  GM_window_widgets *gw = (GM_window_widgets *) data;
+  GmWindow *gw = GM_WINDOW (data);
   GMVideoGrabber *video_grabber = MyApp->Endpoint ()->GetVideoGrabber ();
 
   int colour;
@@ -186,14 +197,16 @@ void colour_changed (GtkAdjustment *adjustment, gpointer data)
 }
 
 
-/* DESCRIPTION  :  This callback is called when the user changes the 
+/**
+ * DESCRIPTION  :  This callback is called when the user changes the 
  *                 video contrast slider in the main notebook.
  * BEHAVIOR     :  Update the value in real time.
  * PRE          :  gpointer is a valid pointer to GM_window_widgets
- */
-void contrast_changed (GtkAdjustment *adjustment, gpointer data)
+ **/
+void 
+contrast_changed (GtkAdjustment *adjustment, gpointer data)
 { 
-  GM_window_widgets *gw = (GM_window_widgets *) data;
+  GmWindow *gw = GM_WINDOW (data);
   GMVideoGrabber *video_grabber = MyApp->Endpoint ()->GetVideoGrabber ();
 
   int contrast;
@@ -204,12 +217,14 @@ void contrast_changed (GtkAdjustment *adjustment, gpointer data)
 }
 
 
-/* DESCRIPTION  :  This callback is called when the user tries to close
+/**
+ * DESCRIPTION  :  This callback is called when the user tries to close
  *                 the application using the window manager.
  * BEHAVIOR     :  Calls the real callback.
  * PRE          :  /
- */
-static gint gm_quit_callback (GtkWidget *widget, GdkEvent *event, 
+ **/
+static gint 
+gm_quit_callback (GtkWidget *widget, GdkEvent *event, 
 			      gpointer data)
 {
   quit_callback (NULL, data);
@@ -220,11 +235,12 @@ static gint gm_quit_callback (GtkWidget *widget, GdkEvent *event,
 
 /* The functions */
 
-void gnomemeeting_init (GM_window_widgets *gw, 
-			GM_pref_window_widgets *pw,
-			GM_ldap_window_widgets *lw, 
-			GM_rtp_data *rtp,
-			int argc, char ** argv, char ** envp)
+void 
+gnomemeeting_init (GmWindow *gw, 
+                   GM_pref_window_widgets *pw,
+                   GM_ldap_window_widgets *lw, 
+                   GM_rtp_data *rtp,
+                   int argc, char ** argv, char ** envp)
 {
   GMH323EndPoint *endpoint = NULL;
   gchar *firstname = NULL;
@@ -462,10 +478,11 @@ void gnomemeeting_init (GM_window_widgets *gw,
 }
 
 
-/* DESCRIPTION  :  /
+/**
+ * DESCRIPTION  :  /
  * BEHAVIOR     :  Builds the main window.
  * PRE          :  Valid options.
- */
+ **/
 void gnomemeeting_init_main_window ()
 { 
   GConfClient *client = gconf_client_get_default ();
@@ -524,15 +541,15 @@ void gnomemeeting_init_main_window ()
 
 
   /* The Chat Window */
-  gnomemeeting_init_chat_window ();
-  gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (gw->chat_window), 
+  gnomemeeting_init_text_chat_window ();
+  gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (gw->chat->window), 
  		    2, 4, 0, 3,
  		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
  		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
  		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
- if (gconf_client_get_bool 
+  if (gconf_client_get_bool 
       (client, "/apps/gnomemeeting/view/show_chat_window", 0))
-    gtk_widget_show_all (GTK_WIDGET (gw->chat_window));
+          gtk_widget_show_all (GTK_WIDGET (gw->chat->window));
 
 
   /* The remote name */
@@ -562,10 +579,11 @@ void gnomemeeting_init_main_window ()
 }
 
 
-/* DESCRIPTION  :  /
+/**
+ * DESCRIPTION  :  /
  * BEHAVIOR     :  Builds the history log part of the main window.
  * PRE          :  /
- */
+ **/
 void gnomemeeting_init_main_window_log ()
 {
   GtkWidget *view;
@@ -600,11 +618,12 @@ void gnomemeeting_init_main_window_log ()
 }
 
 
-/* DESCRIPTION  :  /
+/**
+ * DESCRIPTION  :  /
  * BEHAVIOR     :  Builds the video settings part of the main window. This
  *                 part is made unsensitive while the grabber is not enabled.
  * PRE          :  /
- */
+ **/
 void gnomemeeting_init_main_window_video_settings ()
 {
   GtkWidget *label;
@@ -620,7 +639,7 @@ void gnomemeeting_init_main_window_video_settings ()
   
   GtkTooltips *tip;
 
-  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+  GmWindow *gw = gnomemeeting_get_main_window (gm);
 
   /* Webcam Control Frame */		
   gw->video_settings_frame = gtk_frame_new (_("Video Settings"));
@@ -752,10 +771,11 @@ void gnomemeeting_init_main_window_video_settings ()
 }
 
 
-/* DESCRIPTION  :  /
+/**
+ * DESCRIPTION  :  /
  * BEHAVIOR     :  Builds the audio setting part of the main window.
  * PRE          :  /
- */
+ **/
 void gnomemeeting_init_main_window_audio_settings ()
 {
   GtkWidget *label;
@@ -769,7 +789,7 @@ void gnomemeeting_init_main_window_audio_settings ()
   GtkWidget *frame;
   GConfClient *client = gconf_client_get_default ();
 
-  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+  GmWindow *gw = gnomemeeting_get_main_window (gm);
 
   volume = gdk_pixbuf_new_from_inline (-1, inline_volume, FALSE, NULL);
   mic = gdk_pixbuf_new_from_inline (-1, inline_mic, FALSE, NULL);

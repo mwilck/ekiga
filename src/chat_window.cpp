@@ -51,6 +51,16 @@
 extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;
 
+
+/**
+ * gtk_text_buffer_insert_with_emoticons:
+ * @buf: A pointer to a GtkTextBuffer
+ * @bufiter: An iterator for the buffer
+ * @text: A text string
+ *
+ * Inserts @test into the @buf, but with all smilies shown
+ * as pictures and not text.
+ **/
 void
 gtk_text_buffer_insert_with_emoticons (GtkTextBuffer *buf, 
                                        GtkTextIter *bufiter, 
@@ -246,7 +256,7 @@ gtk_text_buffer_insert_with_emoticons (GtkTextBuffer *buf,
 static void chat_entry_activate (GtkEditable *w, gpointer data)
 {
     /* Get the structs from the application */
-    GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+    GmWindow *gw = gnomemeeting_get_main_window (gm);
 
     GMH323EndPoint *endpoint = MyApp->Endpoint ();
     PString s;
@@ -272,7 +282,7 @@ static void chat_entry_activate (GtkEditable *w, gpointer data)
                 s = PString (gtk_entry_get_text (GTK_ENTRY (w)));
                 connection->SendUserInput ("MSG"+s);
 
-                gnomemeeting_chat_window_text_insert (local, s, 0);
+                gnomemeeting_text_chat_insert (local, s, 0);
                 
                 gtk_entry_set_text (GTK_ENTRY (w), "");
             }
@@ -281,44 +291,44 @@ static void chat_entry_activate (GtkEditable *w, gpointer data)
 }
 
 
-void gnomemeeting_chat_window_text_insert (PString local, PString str, int user)
+void 
+gnomemeeting_text_chat_insert (PString local, PString str, int user)
 {
     gchar *msg = NULL;
     GtkTextIter iter;
     GtkTextMark *mark;
-    static gboolean first = TRUE;
 
-    GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+    GmTextChat *chat = gnomemeeting_get_main_window (gm)->chat;
 
-    gtk_text_buffer_get_end_iter (gw->chat_buffer, &iter);
+    gtk_text_buffer_get_end_iter (chat->text_buffer, &iter);
 
-    if (first) 
+    if (chat->buffer_is_empty) 
     {
         msg = g_strdup_printf ("%s: ", (const char *) local);
-        first = FALSE;
+        chat->buffer_is_empty = FALSE;
     }
     else
         msg = g_strdup_printf ("\n%s: ", (const char *) local);
 
     if (user == 1)
-        gtk_text_buffer_insert_with_tags_by_name (gw->chat_buffer, &iter, msg, 
+        gtk_text_buffer_insert_with_tags_by_name (chat->text_buffer, &iter, msg, 
                                                   -1, "primary-user", NULL);
     else
-        gtk_text_buffer_insert_with_tags_by_name (gw->chat_buffer, &iter, msg, 
+        gtk_text_buffer_insert_with_tags_by_name (chat->text_buffer, &iter, msg, 
                                                   -1, "secondary-user", NULL);
   
     g_free (msg);
   
-    gtk_text_buffer_insert_with_emoticons (gw->chat_buffer, &iter, (const char *) str);
+    gtk_text_buffer_insert_with_emoticons (chat->text_buffer, &iter, (const char *) str);
 
-    mark = gtk_text_buffer_get_mark (gw->chat_buffer, "current-position");
+    mark = gtk_text_buffer_get_mark (chat->text_buffer, "current-position");
 
-    gtk_text_view_scroll_to_mark (GTK_TEXT_VIEW (gw->chat_view), mark, 
+    gtk_text_view_scroll_to_mark (GTK_TEXT_VIEW (chat->text_view), mark, 
                                   0.0, FALSE, 0,0);
 }
 
 
-void gnomemeeting_init_chat_window ()
+void gnomemeeting_init_text_chat_window ()
 {
     GtkWidget *entry;
     GtkWidget *scr;
@@ -332,15 +342,18 @@ void gnomemeeting_init_chat_window ()
     GtkTextMark *mark;
 
     /* Get the structs from the application */
-    GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+    GmWindow *gw = gnomemeeting_get_main_window (gm);
+    gw->chat = new GmTextChat;
 
-    gw->chat_window = gtk_frame_new (_("Text Chat"));
+    GmTextChat *chat = gw->chat;
+
+    chat->window = gtk_frame_new (_("Text Chat"));
 
     table = gtk_table_new (1, 3, FALSE);
 
     gtk_container_set_border_width (GTK_CONTAINER (table), 
                                     GNOME_PAD_SMALL);
-    gtk_container_add (GTK_CONTAINER (gw->chat_window), table);
+    gtk_container_add (GTK_CONTAINER (chat->window), table);
 
     scr = gtk_scrolled_window_new (NULL, NULL);
     gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scr),
@@ -348,26 +361,26 @@ void gnomemeeting_init_chat_window ()
                                     GTK_POLICY_ALWAYS);
     gtk_widget_set_size_request (GTK_WIDGET (scr), 225, -1);
 
-    gw->chat_view = gtk_text_view_new ();
-    gtk_text_view_set_editable (GTK_TEXT_VIEW (gw->chat_view), FALSE);
-    gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (gw->chat_view), GTK_WRAP_WORD);
+    chat->text_view = gtk_text_view_new ();
+    gtk_text_view_set_editable (GTK_TEXT_VIEW (chat->text_view), FALSE);
+    gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (chat->text_view), GTK_WRAP_WORD);
 
-    gw->chat_buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (gw->chat_view));
+    chat->text_buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (chat->text_view));
 
-    gtk_text_buffer_get_end_iter (gw->chat_buffer, &iter);
+    gtk_text_buffer_get_end_iter (chat->text_buffer, &iter);
   
-    mark = gtk_text_buffer_create_mark (gw->chat_buffer, 
+    mark = gtk_text_buffer_create_mark (chat->text_buffer, 
                                         "current-position", &iter, FALSE);
 
-    gtk_text_buffer_create_tag (gw->chat_buffer, "primary-user",
+    gtk_text_buffer_create_tag (chat->text_buffer, "primary-user",
                                 "foreground", "red", 
-                                "weight", 900, NULL); 
+                                "weight", 900, NULL);
 
-    gtk_text_buffer_create_tag (gw->chat_buffer, "secondary-user",
+    gtk_text_buffer_create_tag (chat->text_buffer, "secondary-user",
                                 "foreground", "blue", 
                                 "weight", 900, NULL);
 
-    gtk_container_add (GTK_CONTAINER (scr), gw->chat_view);
+    gtk_container_add (GTK_CONTAINER (scr), chat->text_view);
   
     gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (scr), 
                       0, 1, 0, 1,
@@ -393,6 +406,7 @@ void gnomemeeting_init_chat_window ()
                       0, 0);
 
     g_signal_connect (GTK_OBJECT (entry), "activate",
-                      G_CALLBACK (chat_entry_activate), gw->chat_view);
+                      G_CALLBACK (chat_entry_activate), chat->text_view);
 
+    chat->buffer_is_empty = TRUE;
 }
