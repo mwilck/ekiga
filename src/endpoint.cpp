@@ -1304,10 +1304,10 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
     /* If we have a LID, make sure it is no longer ringing */
     if (lid && lid->IsOpen()) {
 
-      lid->RingLine (0, 0);
       lid->StopTone (0);
       lid->SetRemoveDTMF (0, TRUE);
       lid->EnableAudio (0, FALSE);
+      lid->RingLine (0, 0);
     }
   }
 #endif
