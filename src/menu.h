@@ -45,4 +45,24 @@
 void gnomemeeting_init_menu ();
 
 
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Changes sensitivity in the zoom section.
+ * PRE          :  /
+ */
+void gnomemeeting_zoom_submenu_set_sensitive (gboolean);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Changes sensitivity in the video section.
+ * PRE          :  /
+ */
+void gnomemeeting_video_submenu_set_sensitive (gboolean);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Select radio item i in the video section.
+ * PRE          :  0 <= i < 2
+ */
+void gnomemeeting_video_submenu_select (int);
+
 #endif

@@ -44,6 +44,7 @@
 #include "callbacks.h"
 #include "ils.h"
 #include "misc.h"
+#include "menu.h"
 
 #include <gconf/gconf-client.h>
 #include <esd.h>
@@ -72,6 +73,7 @@ GMH323EndPoint::GMH323EndPoint ()
   video_grabber = NULL;
   listener = NULL;
   codecs_count = 1;
+  snapshot_number = 0;
 
   docklet_timeout = 0;
   sound_timeout = 0;
@@ -882,6 +884,7 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
     
     if (vg->IsOpened ())
       vg->Close ();
+    gnomemeeting_zoom_submenu_set_sensitive (FALSE);
   }
 
   gnomemeeting_threads_enter ();
@@ -907,10 +910,11 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [6].widget), FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [7].widget), FALSE);
 
-  /* Disable Remote Video (Local video is disabled elsewhere) */
-  GnomeUIInfo *view_menu_uiinfo = (GnomeUIInfo *) 
-	g_object_get_data (G_OBJECT(gm), "view_menu_uiinfo");
-  gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [7].widget), FALSE);
+
+  /* Disable Remote Video (Local video is disabled elsewhere) 
+     and select the good section */
+  gnomemeeting_video_submenu_set_sensitive (FALSE);
+  gnomemeeting_video_submenu_select (0);
 
 
   /* Remove the timers if needed and clear the docklet */
@@ -930,6 +934,7 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   
   gnomemeeting_threads_enter ();
 
+
   /* Disable / enable buttons */
   if (!gconf_client_get_bool (client, "/apps/gnomemeeting/devices/video_preview", 0))
     gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame), FALSE);
@@ -939,6 +944,8 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   GTK_TOGGLE_BUTTON (gw->audio_chan_button)->active = FALSE;
   GTK_TOGGLE_BUTTON (gw->video_chan_button)->active = FALSE;
+  gtk_widget_queue_draw (gw->audio_chan_button);
+  gtk_widget_queue_draw (gw->video_chan_button);
 
   gnomemeeting_threads_leave ();
 
@@ -967,7 +974,16 @@ void GMH323EndPoint::SetCurrentDisplay (int choice)
 void GMH323EndPoint::SavePicture (void)
 { 
   GdkPixbuf *pic = gtk_image_get_pixbuf (GTK_IMAGE (gw->video_image));
-  gdk_pixbuf_save (pic, "test.png", "png", NULL, NULL);
+  gchar *prefix = gconf_client_get_string (client, "/apps/gnomemeeting/general/save_prefix", NULL);
+  gchar *dirname = (gchar *) g_get_home_dir ();
+  gchar *filename = g_strdup_printf ("%s/%s%d.png", dirname, prefix, 
+				     snapshot_number);
+
+  snapshot_number++;
+
+  gdk_pixbuf_save (pic, filename, "png", NULL, NULL);
+  g_free (prefix);
+  g_free (filename);
 }
 
 
@@ -1019,8 +1035,7 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 				       H323VideoCodec & codec)
 {
   GMVideoGrabber *vg = (GMVideoGrabber *) video_grabber;
-  GnomeUIInfo *view_menu_uiinfo = NULL;
-
+  
   /* If it is possible to transmit and
      if the user enabled transmission and
      if OpenVideoDevice is called for the encoding */
@@ -1033,34 +1048,30 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
        vg->Open (FALSE, TRUE); /* Do not grab, synchronous opening */
      
      gnomemeeting_threads_enter ();
+
      
      /* Here, the grabber is opened */
      PVideoChannel *channel = vg->GetVideoChannel ();
      transmitted_video_device = vg->GetEncodingDevice ();
 
-     view_menu_uiinfo = (GnomeUIInfo *) g_object_get_data (G_OBJECT(gm), "view_menu_uiinfo");
-     gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [9].widget), TRUE);
-     gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [10].widget), TRUE);
-     gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [11].widget), TRUE);
+
+     /* Updates the view menu */
+     gnomemeeting_zoom_submenu_set_sensitive (TRUE);
+     gnomemeeting_video_submenu_select (0);
+
 
      /* Codecs Settings */
-     if (gconf_client_get_bool (client, "/apps/gnomemeeting/video_settings/enable_vb", NULL))
-       codec.SetAverageBitRate (1024 * gconf_client_get_int (client, "/apps/gnomemeeting/video_settings/video_bandwidth", NULL) * 8);
-     else {
+     codec.SetAverageBitRate (0); // Disable
        
-       codec.SetAverageBitRate (0); // Disable
-       
-       int vq = 32 - (int) ((double) gconf_client_get_int (client, "/apps/gnomemeeting/video_settings/tr_vq", NULL) / 100 * 31);
+     int vq = 32 - (int) ((double) gconf_client_get_int (client, "/apps/gnomemeeting/video_settings/tr_vq", NULL) / 100 * 31);
 
-       codec.SetTxQualityLevel (vq);
-       codec.SetBackgroundFill (gconf_client_get_int (client, "/apps/gnomemeeting/video_settings/tr_ub", 0));   
-     }
-     
+     codec.SetTxQualityLevel (vq);
+     codec.SetBackgroundFill (gconf_client_get_int (client, "/apps/gnomemeeting/video_settings/tr_ub", 0));   
+         
 
      gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button),
 			       TRUE);
      
-     GTK_TOGGLE_BUTTON (gw->video_chan_button)->active = TRUE;
      gnomemeeting_threads_leave ();
 
      bool result = codec.AttachChannel (channel, FALSE); 
@@ -1083,14 +1094,12 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 	vg->Stop ();
       
       gnomemeeting_threads_enter ();
-      
-      view_menu_uiinfo = (GnomeUIInfo *) 
-	g_object_get_data (G_OBJECT(gm), "view_menu_uiinfo");
-      gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [7].widget), TRUE);
-      gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [9].widget), TRUE);
-      gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [10].widget), TRUE);
-      gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [11].widget), TRUE);
 
+
+      /* Update menus */
+      gnomemeeting_zoom_submenu_set_sensitive (TRUE);
+      gnomemeeting_video_submenu_set_sensitive (TRUE);
+      gnomemeeting_video_submenu_select (1);
       
       SetCurrentDisplay (1); 
       gnomemeeting_threads_leave ();

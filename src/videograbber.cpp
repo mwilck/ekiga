@@ -37,6 +37,7 @@
 #include "common.h"
 #include "gnomemeeting.h"
 #include "misc.h"
+#include "menu.h"
 
 #include <sys/time.h>
 #include <gconf/gconf-client.h>
@@ -586,10 +587,7 @@ void GMVideoGrabber::VGOpen (void)
 
     /* Enable zoom settings in the view menu */
     gnomemeeting_threads_enter ();
-    view_menu_uiinfo = (GnomeUIInfo *) g_object_get_data (G_OBJECT(gm), "view_menu_uiinfo");
-    gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [9].widget), TRUE);
-    gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [10].widget), TRUE);
-    gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [11].widget), TRUE);
+    gnomemeeting_zoom_submenu_set_sensitive (TRUE);
     gnomemeeting_threads_leave ();
   }  
 
@@ -652,10 +650,7 @@ void GMVideoGrabber::VGClose (int display_logo)
     
     /* Disable the zoom options */
     gnomemeeting_threads_enter ();
-    view_menu_uiinfo = (GnomeUIInfo *) g_object_get_data (G_OBJECT(gm), "view_menu_uiinfo");
-    gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [9].widget), FALSE);
-    gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [10].widget), FALSE);
-    gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [11].widget), FALSE);
+    gnomemeeting_zoom_submenu_set_sensitive (FALSE);
     gnomemeeting_threads_leave ();
 
 

@@ -222,6 +222,26 @@ void gnomemeeting_init_menu ()
       GNOMEUIINFO_END
     };
 
+
+  static GnomeUIInfo video_view_menu_uiinfo [] =
+    {
+      {
+	GNOME_APP_UI_ITEM,
+	N_("Local Video"), N_("Local Video Image"),
+	(void *) popup_menu_local_callback, NULL, NULL,
+	GNOME_APP_PIXMAP_NONE, NULL,
+	0, GDK_CONTROL_MASK, NULL
+      },
+      {
+	GNOME_APP_UI_ITEM,
+	N_("Remote Video"), N_("Remote Video Image"),
+	(void *) popup_menu_remote_callback, NULL, NULL,
+	GNOME_APP_PIXMAP_NONE, NULL,
+	0, GDK_CONTROL_MASK, NULL
+      },
+      GNOMEUIINFO_END,
+    };
+
  
   static GnomeUIInfo notebook_view_submenu_uiinfo [] =
     {
@@ -273,18 +293,11 @@ void gnomemeeting_init_menu ()
       },
       GNOMEUIINFO_SEPARATOR,
       {
-	GNOME_APP_UI_ITEM,
-	N_("Local Video"), N_("Local Video Image"),
-	(void *) popup_menu_local_callback, NULL, NULL,
-	GNOME_APP_PIXMAP_NONE, NULL,
-	0, GDK_CONTROL_MASK, NULL
-      },
-      {
-	GNOME_APP_UI_ITEM,
-	N_("Remote Video"), N_("Remote Video Image"),
-	(void *) popup_menu_remote_callback, NULL, NULL,
-	GNOME_APP_PIXMAP_NONE, NULL,
-	0, GDK_CONTROL_MASK, NULL
+ 	GNOME_APP_UI_RADIOITEMS,
+ 	NULL, NULL,
+ 	(void *) video_view_menu_uiinfo, NULL, NULL,
+ 	GNOME_APP_PIXMAP_NONE, NULL,
+ 	0, GDK_CONTROL_MASK, NULL
       },
       GNOMEUIINFO_SEPARATOR,
       { 
@@ -308,6 +321,7 @@ void gnomemeeting_init_menu ()
       GNOMEUIINFO_END
     };  
   
+
   static GnomeUIInfo settings_menu_uiinfo [] =
     {
       {
@@ -414,6 +428,8 @@ void gnomemeeting_init_menu ()
 		    view_menu_uiinfo);
   g_object_set_data(G_OBJECT(gm), "call_menu_uiinfo", 
 		    call_menu_uiinfo);
+  g_object_set_data(G_OBJECT(gm), "video_view_menu_uiinfo", 
+		    video_view_menu_uiinfo);
 
   gnome_app_create_menus (GNOME_APP (gm), main_menu_uiinfo);
   gnome_app_install_menu_hints (GNOME_APP (gm), main_menu_uiinfo);
@@ -422,13 +438,12 @@ void gnomemeeting_init_menu ()
   /* Update to the initial values */
   GTK_CHECK_MENU_ITEM (view_menu_uiinfo [0].widget)->active =
     gconf_client_get_bool (client, "/apps/gnomemeeting/view/left_toolbar", 0);
-
   GTK_CHECK_MENU_ITEM (view_menu_uiinfo [1].widget)->active = 
-    gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_chat_window", 0);
-
+    gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_chat_window",
+			   0);
   GTK_CHECK_MENU_ITEM (view_menu_uiinfo [3].widget)->active = 
-    gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_status_bar", 0);
-
+    gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_status_bar", 
+			   0);
   GTK_CHECK_MENU_ITEM (view_menu_uiinfo [4].widget)->active =
     gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_docklet", 0);
 
@@ -446,13 +461,11 @@ void gnomemeeting_init_menu ()
 
   GTK_CHECK_MENU_ITEM (call_menu_uiinfo [3].widget)->active =
     gconf_client_get_bool (client, "/apps/gnomemeeting/general/do_not_disturb", 0);
-
   GTK_CHECK_MENU_ITEM (call_menu_uiinfo [4].widget)->active =
     gconf_client_get_bool (client, "/apps/gnomemeeting/general/auto_answer", 0);
 
   if (GTK_CHECK_MENU_ITEM (call_menu_uiinfo [3].widget)->active)
     gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [4].widget), FALSE);
-
   if (GTK_CHECK_MENU_ITEM (call_menu_uiinfo [4].widget)->active)
     gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [3].widget), FALSE);
  
@@ -460,15 +473,44 @@ void gnomemeeting_init_menu ()
   /* Disable disconnect */
   gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [1].widget), FALSE);
 
-  /* Disable remote video and the zoom settings */
-  gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [7].widget), FALSE);
-  gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [9].widget), FALSE);
-  gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [10].widget), FALSE);
-  gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [11].widget), FALSE);
-  
+
+  gnomemeeting_video_submenu_set_sensitive (FALSE);
+  gnomemeeting_zoom_submenu_set_sensitive (FALSE);
+
   /* Pause is unsensitive when not in a call */
   gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [6].widget), FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [7].widget), FALSE);
 }
 
 
+void gnomemeeting_zoom_submenu_set_sensitive (gboolean b)
+{
+  GnomeUIInfo *view_menu_uiinfo = 
+    (GnomeUIInfo *) g_object_get_data (G_OBJECT(gm), "view_menu_uiinfo");
+
+  gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [8].widget), b);
+  gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [9].widget), b);
+  gtk_widget_set_sensitive (GTK_WIDGET (view_menu_uiinfo [10].widget), b);
+}
+
+
+void gnomemeeting_video_submenu_set_sensitive (gboolean b)
+{
+  GnomeUIInfo *video_view_menu_uiinfo = 
+    (GnomeUIInfo *) g_object_get_data (G_OBJECT(gm), "video_view_menu_uiinfo");
+
+  gtk_widget_set_sensitive (GTK_WIDGET (video_view_menu_uiinfo [1].widget), b);
+}
+
+
+void gnomemeeting_video_submenu_select (int j)
+{
+  GnomeUIInfo *video_view_menu_uiinfo = 
+    (GnomeUIInfo *) g_object_get_data (G_OBJECT(gm), "video_view_menu_uiinfo");
+
+  for (int i = 0 ; i < 2 ; i++) {
+
+    GTK_CHECK_MENU_ITEM (video_view_menu_uiinfo [i].widget)->active = (i == j);
+    gtk_widget_queue_draw (GTK_WIDGET (video_view_menu_uiinfo [i].widget)); 
+  }
+}

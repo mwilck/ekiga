@@ -1552,7 +1552,6 @@ void gnomemeeting_init_pref_window ()
 
   gtk_window_set_title (GTK_WINDOW (gw->pref_window), 
 			_("GnomeMeeting Settings"));	
-  gtk_window_set_default_size (GTK_WINDOW (gw->pref_window), 550, 400);
 
 
   /* Construct the window */
@@ -1669,8 +1668,6 @@ void gnomemeeting_init_pref_window ()
 			       GTK_TREE_VIEW_COLUMN (column));
 
   gtk_tree_view_expand_all (GTK_TREE_VIEW (tree_view));
-
-  gtk_widget_set_size_request (notebook, 500, -1);
 
 
   /* Now, add the logo as first page */

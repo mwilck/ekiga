@@ -1,3 +1,22 @@
+2002-05-10  Damien Sandras  <dsandras@seconix.com>
+
+	* gnomemeeting.schema.in: Added a key for the prefix to use
+	in the the gnome directory to save files.
+
+	* pixmaps/gnomemeeting-logo.png: Updated to a bigger logo.
+
+	* src/connection.cpp: The mute buttons are unmuted by default.
+
+	* src/endpoint.cpp: Lots of cleanups to use the new menu.cpp functions.
+	
+	* src/menu.cpp: New functions to update sensitivity and default choice
+	in the menus.
+	
+	* src/pref_window.cpp: Code cleanups for a bigger logo.
+	
+	* src/videograbber.cpp: Change sensitivity in the View menu using
+	the new functions.
+	
 2002-05-09  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* configure.in: Changed order of some libs directories, as
