@@ -1646,6 +1646,8 @@ gnomemeeting_conf_init ()
 
   gm_conf_notifier_add (AUDIO_CODECS_KEY "enable_silence_detection", 
 			silence_detection_changed_nt, NULL);
+  gm_conf_notifier_add (AUDIO_CODECS_KEY "enable_silence_detection", 
+			applicability_check_nt, NULL);
 
 
   /* Notifiers for the VIDEO_CODECS_KEY keys */
