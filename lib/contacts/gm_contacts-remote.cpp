@@ -49,7 +49,9 @@
 #define _GM_CONTACTS_H_INSIDE__
 #include "gm_contacts-remote.h"
 #include "gm_contacts-ldap.h"
+#ifdef HAS_HOWL
 #include "gm_contacts-zeroconf.h"
+#endif
 #undef _GM_CONTACTS_H_INSIDE__
 #endif
 
@@ -309,6 +311,8 @@ gnomemeeting_remote_addressbook_is_editable (GmAddressbook *addressbook)
 void
 gnomemeeting_remote_addressbook_init ()
 {
+#ifdef HAS_HOWL
   gnomemeeting_zero_addressbook_init ();
+#endif
 }
 
