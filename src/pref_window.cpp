@@ -27,9 +27,6 @@
  *   Additional code      : Miguel Rodríguez Pérez  <migrax@terra.es> 
  */
 
-#undef G_DISABLE_DEPRECATED
-#undef GTK_DISABLE_DEPRECATED
-#undef GNOME_DISABLE_DEPRECATED
 
 #include "../config.h"
 
@@ -55,7 +52,7 @@
 extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;	
 
-static void pref_window_clicked_callback (GnomeDialog *, int, gpointer);
+static void pref_window_clicked_callback (GtkDialog *, int, gpointer);
 static gint pref_window_destroy_callback (GtkWidget *, gpointer);
 static void personal_data_update_button_clicked (GtkWidget *, gpointer);
 static void codecs_list_button_clicked_callback (GtkWidget *, gpointer);
@@ -90,7 +87,7 @@ enum {
  * BEHAVIOR     :  Closes the window.
  * PRE          :  gpointer is a valid pointer to a GM_pref_window_widgets.
  */
-static void pref_window_clicked_callback (GnomeDialog *widget, int button, 
+static void pref_window_clicked_callback (GtkDialog *widget, int button, 
 					  gpointer data)
 {
   switch (button) {
@@ -307,7 +304,7 @@ tree_selection_changed_cb (GtkTreeSelection *selection,
   gtk_tree_model_get (GTK_TREE_MODEL (model),
 		      &iter, 1, &page, -1);
 
-  gtk_notebook_set_page (GTK_NOTEBOOK (data), page);
+  gtk_notebook_set_current_page (GTK_NOTEBOOK (data), page);
 }
 
 
@@ -875,7 +872,7 @@ gnomemeeting_pref_window_add_int_option_menu (GtkWidget *table,
 
     item = gtk_menu_item_new_with_label (options [cpt]);
     gtk_widget_show (item);
-    gtk_menu_append (GTK_MENU (menu), item);
+    gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
     cpt++;
   }
 
@@ -951,7 +948,7 @@ gnomemeeting_pref_window_add_string_option_menu (GtkWidget *table,
 
     item = gtk_menu_item_new_with_label (options [cpt]);
     gtk_widget_show (item);
-    gtk_menu_append (GTK_MENU (menu), item);
+    gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
     cpt++;
   }
 
@@ -985,27 +982,25 @@ gnomemeeting_pref_window_add_update_button (GtkWidget *table,
 					    GtkSignalFunc func,
 					    gchar *tooltip,  
 					    int row, int col)
-{                                                                              
-  GtkWidget *pixmap = NULL;                                                    
+{
+  GtkTooltips *tip = NULL;
   GtkWidget *button = NULL;                                                    
-  GtkTooltips *tip = NULL;                                                     
+
   GM_pref_window_widgets *pw = NULL;                                           
                                                                                
   pw = gnomemeeting_get_pref_window (gm);                                      
                                                                                
-  pixmap =  gnome_pixmap_new_from_xpm_d ((const char **) tb_jump_to_xpm);
-  button = gnomemeeting_button (_("Update"), pixmap);                          
+
+  button = gtk_button_new_from_stock (GTK_STOCK_APPLY);
                                                                                
   gtk_table_attach (GTK_TABLE (table),  button, col, col+1, row, row+1,        
                     (GtkAttachOptions) (GTK_EXPAND),                           
                     (GtkAttachOptions) (GTK_EXPAND),                           
                     GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);           
                                                                                
-  gtk_signal_connect (GTK_OBJECT (button), "clicked",                          
-                      GTK_SIGNAL_FUNC (func),                                  
-                      (gpointer) pw);                                          
-                                                                               
-                                                                               
+  g_signal_connect (G_OBJECT (button), "clicked",                          
+		    G_CALLBACK (func), (gpointer) pw);
+
   tip = gtk_tooltips_new ();                                                   
   gtk_tooltips_set_tip (tip, button, tooltip, NULL);                           
                                                                                
@@ -1029,7 +1024,7 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook)
   /* Packing widgets */                                                        
   vbox = gnomemeeting_pref_window_build_page (notebook, _("Personal Data"));   
   table = gnomemeeting_pref_window_add_table (vbox, _("Personnal Information"),
-                                              9, 3);                           
+                                              7, 3);                           
 
                                                                                
   /* Add all the fields */                                                     
@@ -1051,7 +1046,9 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook)
                                                                                
   /* Add the try button */                                                     
   pw->directory_update_button =                                                
-    gnomemeeting_pref_window_add_update_button (table, GTK_SIGNAL_FUNC (personal_data_update_button_clicked), _("Click here to update the LDAP server you are registered to with the new First Name, Last Name, E-Mail, Comment and Location or to update your alias on the Gatekeeper."), 8, 2);
+    gnomemeeting_pref_window_add_update_button (table, GTK_SIGNAL_FUNC (personal_data_update_button_clicked), _("Click here to update the LDAP server you are registered to with the new First Name, Last Name, E-Mail, Comment and Location or to update your alias on the Gatekeeper."), 6, 2);
+  gtk_container_set_border_width (GTK_CONTAINER (pw->directory_update_button),
+				  GNOMEMEETING_PAD_SMALL*2);
 }                                                                              
                                                                                
 
@@ -1532,25 +1529,24 @@ void gnomemeeting_init_pref_window ()
   GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
   GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
 
-  gw->pref_window = gnome_dialog_new (NULL, GNOME_STOCK_BUTTON_CLOSE, NULL);
-	       
-  gtk_signal_connect (GTK_OBJECT(gw->pref_window), "clicked",
-		      GTK_SIGNAL_FUNC(pref_window_clicked_callback), 
-		      (gpointer) pw);
+  gw->pref_window = gtk_dialog_new ();
+  gtk_dialog_add_button (GTK_DIALOG (gw->pref_window), GTK_STOCK_CLOSE, 0);
+
+  g_signal_connect (G_OBJECT (gw->pref_window), "response",
+ 		    G_CALLBACK (pref_window_clicked_callback), 
+ 		    (gpointer) pw);
 
   gtk_window_set_title (GTK_WINDOW (gw->pref_window), 
-			_("GnomeMeeting Preferences"));	
+			_("GnomeMeeting Settings"));	
 
 
   /* Construct the window */
   notebook = gtk_notebook_new ();
 
-  dialog_vbox = GNOME_DIALOG (gw->pref_window)->vbox;
+  dialog_vbox = GTK_DIALOG (gw->pref_window)->vbox;
 
   hpaned = gtk_hpaned_new ();
   gtk_box_pack_start (GTK_BOX (dialog_vbox), hpaned, FALSE, FALSE, 0);
-
-  gtk_window_set_policy (GTK_WINDOW (gw->pref_window), FALSE, FALSE, TRUE);
 
 
   /* Build the TreeView on the left */
@@ -1624,7 +1620,7 @@ void gnomemeeting_init_pref_window ()
   gtk_widget_set_size_request (notebook, 500, -1);
 
   /* Now, add the logo as first page */
-  pixmap = gnome_pixmap_new_from_file 
+  pixmap =  gtk_image_new_from_file 
     (GNOMEMEETING_IMAGES "/gnomemeeting-logo.png");
 
   frame = gtk_frame_new (NULL);
@@ -1640,9 +1636,10 @@ void gnomemeeting_init_pref_window ()
   gtk_notebook_set_scrollable (GTK_NOTEBOOK (notebook), TRUE);
   gtk_notebook_popup_enable (GTK_NOTEBOOK (notebook));
   gtk_notebook_set_show_tabs (GTK_NOTEBOOK (notebook), FALSE);
-  gtk_notebook_set_page (GTK_NOTEBOOK (notebook), 0);
+  gtk_notebook_set_current_page (GTK_NOTEBOOK (notebook), 0);
 
-  g_signal_connect (selection, "changed", G_CALLBACK (tree_selection_changed_cb), 
+  g_signal_connect (selection, "changed",
+		    G_CALLBACK (tree_selection_changed_cb), 
 		    notebook);
 }
 

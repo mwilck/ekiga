@@ -27,10 +27,6 @@
  *
  */
 	
-#undef G_DISABLE_DEPRECATED
-#undef GTK_DISABLE_DEPRECATED
-#undef GNOME_DISABLE_DEPRECATED
-
 #include <sys/time.h>
 
 #include "../config.h"
@@ -40,9 +36,6 @@
 #include "videograbber.h"
 #include "common.h"
 #include "misc.h"
-
-#include "../pixmaps/quickcam.xpm"
-#include "../pixmaps/sound.xpm"
 
 
 /* Declarations */
@@ -253,10 +246,16 @@ BOOL GMILSClient::Register (BOOL reg)
        != LDAP_SUCCESS)) {
     gnomemeeting_threads_enter ();
 
-    msg = g_strdup_printf (_("Error while connecting to ILS directory %s, port %s"), ldap_server, ldap_port);
-    msg_box = gnome_message_box_new (msg, GNOME_MESSAGE_BOX_ERROR,
-				     GNOME_STOCK_BUTTON_OK, NULL);
-    g_free (msg);
+    msg_box = gtk_message_dialog_new (GTK_WINDOW (gm),
+				      GTK_DIALOG_DESTROY_WITH_PARENT,
+				      GTK_MESSAGE_ERROR,
+				      GTK_BUTTONS_CLOSE,
+				      _("Error while connecting to ILS directory %s, port %s"), ldap_server, ldap_port);
+
+    g_signal_connect_swapped (GTK_OBJECT (msg_box), "response",
+			      G_CALLBACK (gtk_widget_destroy),
+			      GTK_OBJECT (msg_box));
+
     gtk_widget_show (msg_box);
 
     error = 1;
@@ -439,11 +438,16 @@ BOOL GMILSClient::Register (BOOL reg)
       if(rc == -1) {
 	gnomemeeting_threads_enter ();
 	
-	msg = g_strdup_printf (_("Error while connecting to ILS directory %s, port %s:\nNo answer from server."), ldap_server, ldap_port);
+	msg_box = gtk_message_dialog_new (GTK_WINDOW (gm),
+					  GTK_DIALOG_MODAL,
+					  GTK_MESSAGE_ERROR,
+					  GTK_BUTTONS_CLOSE,
+					  _("Error while connecting to ILS directory %s, port %s"), ldap_server, ldap_port);
 	
-	msg_box = gnome_message_box_new (msg, GNOME_MESSAGE_BOX_ERROR,
-					 GNOME_STOCK_BUTTON_OK, NULL);
-	g_free (msg);
+	g_signal_connect_swapped (GTK_OBJECT (msg_box), "response",
+				  G_CALLBACK (gtk_widget_destroy),
+				  GTK_OBJECT (msg_box));
+	
 	gtk_widget_show (msg_box);
 	      
 	error = 1;
@@ -657,15 +661,13 @@ void GMILSClient::ils_browse ()
 
 
   /* Check if the page with the ldap_server we are browsing still exists */
-  while ((page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), cj))) {
+  while ((page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), 
+					    cj))) {
      
-    label = GTK_WIDGET 
-      (g_list_first (gtk_container_children (GTK_CONTAINER
-					     (gtk_notebook_get_tab_label 
-					      (GTK_NOTEBOOK (lw->notebook), 
-					       page))))->data);
-    gtk_label_get (GTK_LABEL (label), &text_label);
-    if (!(g_strcasecmp (text_label, ldap_server))) {
+    label = gtk_notebook_get_tab_label (GTK_NOTEBOOK (lw->notebook), page);
+    label = (GtkWidget *) g_object_get_data (G_OBJECT (label), "label");
+    text_label = (gchar *) gtk_label_get_text (GTK_LABEL (label));
+    if (!(strcasecmp (text_label, ldap_server))) {
 
       page_exists = 1;
       break;
@@ -676,8 +678,7 @@ void GMILSClient::ils_browse ()
 
   if (page != NULL)
     xdap_users_list_store = 
-      GTK_LIST_STORE (gtk_object_get_data (GTK_OBJECT (page), 
-					   "list_store"));
+      GTK_LIST_STORE (g_object_get_data (G_OBJECT (page), "list_store"));
 
   /*Maybe the user closed the tab while we were waiting */
   if ((xdap_users_list_store != NULL) && (page_exists)) { 

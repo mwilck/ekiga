@@ -227,9 +227,9 @@ void gnomemeeting_init (GM_window_widgets *gw,
   /* Gnome Initialisation */
   GnomeProgram *p = gnome_program_init ("GnomeMeeting", VERSION,
 					LIBGNOMEUI_MODULE, argc, argv,
-					GNOME_PARAM_POPT_TABLE, arguments,	    
+					GNOME_PARAM_POPT_TABLE, arguments,
 					GNOME_PARAM_HUMAN_READABLE_NAME,
-					_("The GNOME text editor"),
+					_("GnomeMeeting"),
 					GNOME_PARAM_APP_DATADIR, DATADIR,
 					NULL);
 

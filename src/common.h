@@ -99,9 +99,6 @@ struct _GM_ldap_window_widgets
   int thread_count;
 
   GList *ldap_servers_list;
-
-  // pointer to GM_window_widgets ;-)
-  GM_window_widgets * gw;
 };
 
 

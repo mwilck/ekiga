@@ -262,7 +262,7 @@ gnomemeeting_history_combo_box_new (const gchar *key)
     g_object_set_data_full (G_OBJECT (combo), "history",
 			    contacts_list, gnomemeeting_free_glist_data);
 
-  g_free (contacts);
+  g_strfreev (contacts);
 
   return combo; 	
 }

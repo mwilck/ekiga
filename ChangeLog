@@ -1,5 +1,22 @@
 2002-04-29  Damien Sandras  <dsandras@seconix.com>	
 
+	* src/common.h: Removed GM_window_widgets pointer from 
+	GM_ldap_window_widgets.
+
+	* src/ils.cpp: Ported to Gnome2.
+
+	* src/ldap_window.cpp: Small code cleanups. Added the first element
+	of the list of servers as selected default.
+
+	* src/main_window.cpp: Small code cleanups.
+
+	* src/misc.cpp:  Small code cleanups.
+
+	* src/pref_window.cpp: Fixed Update button size, and use the term
+	Apply as in the HIG :(.
+	
+2002-04-29  Damien Sandras  <dsandras@seconix.com>	
+
 	* src/common.h: Removed unused widgets.
 
 	* src/config.cpp: Ported to Gnome2, and cleaned code.
@@ -10,7 +27,8 @@
 
 	* src/endpoint.cpp: Bug fix in GetAudioCodec!
 
-	* src/main_window.cpp: Changed the notebook behavior: do not use anymore gconf.
+	* src/main_window.cpp: Changed the notebook behavior: 
+	do not use anymore gconf.
 
 	* src/menu.cpp: See above.
 

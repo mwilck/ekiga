@@ -72,6 +72,8 @@ void row_activated (GtkTreeView *tree_view, GtkTreePath *path,
   GtkTreeIter tree_iter;
 
   GM_ldap_window_widgets *lw = gnomemeeting_get_ldap_window (gm);
+  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+
   gchar *text = NULL;
 
   page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook),
@@ -96,7 +98,7 @@ void row_activated (GtkTreeView *tree_view, GtkTreePath *path,
   if (MyApp->Endpoint ()->GetCallingState () == 0) {
 
     /* this function will store a copy of text */
-    gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (lw->gw->combo)->entry), text);
+    gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), text);
       
     connect_cb (NULL, NULL);
   }
@@ -110,10 +112,10 @@ void row_activated (GtkTreeView *tree_view, GtkTreePath *path,
  */
 void ldap_window_clicked (GtkDialog *widget, int button, gpointer data)
 {
-  GM_ldap_window_widgets *lw = (GM_ldap_window_widgets *) data;
+  GM_window_widgets *gw = (GM_window_widgets *) data;
 
-  if (GTK_WIDGET_VISIBLE (lw->gw->ldap_window))
-    gtk_widget_hide_all (lw->gw->ldap_window);
+  if (GTK_WIDGET_VISIBLE (gw->ldap_window))
+    gtk_widget_hide_all (gw->ldap_window);
 }
 
 
@@ -372,13 +374,15 @@ void gnomemeeting_init_ldap_window ()
   GtkWidget *refresh_image;
   GtkWidget *menu;
   GtkWidget *menu_item;
+  gchar **servers;
+  gchar *stored_contacts = NULL;
 
   /* Get the structs from the application */
   GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
   GM_ldap_window_widgets *lw = gnomemeeting_get_ldap_window (gm);
+  GConfClient *client = gconf_client_get_default ();
 
   lw->thread_count = 0;
-  lw->gw = gw;
 
   xdap_pixbuf = 
     gdk_pixbuf_new_from_xpm_data ((const gchar **) xdap_directory_xpm); 
@@ -386,18 +390,18 @@ void gnomemeeting_init_ldap_window ()
   refresh_image =  gtk_image_new_from_stock (GTK_STOCK_REFRESH, 
 					     GTK_ICON_SIZE_SMALL_TOOLBAR);
 
-  lw->gw->ldap_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_title (GTK_WINDOW (lw->gw->ldap_window), 
+  gw->ldap_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  gtk_window_set_title (GTK_WINDOW (gw->ldap_window), 
 			_("XDAP Server Browser"));
   gtk_window_set_icon (GTK_WINDOW (gw->ldap_window), xdap_pixbuf);
-  gtk_window_set_position (GTK_WINDOW (lw->gw->ldap_window), 
+  gtk_window_set_position (GTK_WINDOW (gw->ldap_window), 
 			   GTK_WIN_POS_CENTER);
-  gtk_window_set_default_size (GTK_WINDOW (lw->gw->ldap_window), 650, 350);
+  gtk_window_set_default_size (GTK_WINDOW (gw->ldap_window), 650, 350);
   g_object_unref (G_OBJECT (xdap_pixbuf));
 
   /* a vbox to put the frames, the toolbar and the user list */
   vbox = gtk_vbox_new (FALSE, GNOME_PAD_SMALL);
-  gtk_container_add (GTK_CONTAINER (lw->gw->ldap_window), vbox);
+  gtk_container_add (GTK_CONTAINER (gw->ldap_window), vbox);
 
   /* The toolbar */
   GtkWidget *handle = gtk_handle_box_new ();
@@ -410,9 +414,20 @@ void gnomemeeting_init_ldap_window ()
 
   /* ILS directories combo box */
   lw->ils_server_combo = gtk_combo_new ();
-  lw->ils_server_combo = gnomemeeting_history_combo_box_new ("/apps/gnomemeeting/"
-							     "history/ldap_servers");
+  lw->ils_server_combo = 
+    gnomemeeting_history_combo_box_new ("/apps/gnomemeeting/"
+					"history/ldap_servers");
   gtk_combo_disable_activate (GTK_COMBO(lw->ils_server_combo));
+
+  /* Set the last server as default */
+  stored_contacts = gconf_client_get_string (client,
+					     "/apps/gnomemeeting/"
+					     "history/ldap_servers",
+					     0);
+  servers = g_strsplit (stored_contacts ? (stored_contacts) : (""), "|", 0);
+  gtk_entry_set_text (GTK_ENTRY (GTK_WIDGET (GTK_COMBO(lw->ils_server_combo)->entry)), servers [0]);
+  g_strfreev (servers);
+  g_free (stored_contacts);
 
   gtk_toolbar_append_widget (GTK_TOOLBAR (toolbar), 
 			     GTK_WIDGET (lw->ils_server_combo),
@@ -513,10 +528,10 @@ void gnomemeeting_init_ldap_window ()
 		    G_CALLBACK (search_entry_activated), (gpointer) lw);
 
   g_signal_connect (G_OBJECT(gw->ldap_window), "delete_event",
-		    G_CALLBACK (ldap_window_clicked), (gpointer) lw);
+		    G_CALLBACK (ldap_window_clicked), (gpointer) gw);
 
   g_signal_connect (G_OBJECT (gw->ldap_window), "destroy",
-		    G_CALLBACK (ldap_window_clicked), (gpointer) lw);
+		    G_CALLBACK (ldap_window_clicked), (gpointer) gw);
 }
 
 
