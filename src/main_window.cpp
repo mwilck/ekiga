@@ -588,6 +588,9 @@ void gnomemeeting_init_main_window ()
   else
     gtk_widget_hide (GTK_WIDGET (gw->statusbar));
 
+  
+  gtk_widget_set_size_request (GTK_WIDGET (gm), -1, -1);
+
   g_signal_connect_after (G_OBJECT (gw->main_notebook), "switch-page",
 			  G_CALLBACK (main_notebook_page_changed), NULL);
 }

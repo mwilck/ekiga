@@ -170,6 +170,10 @@ struct _GmPrefWindow
   GtkWidget *video_device_apply_button;
   GtkWidget *g711_frames;
   GtkWidget *gsm_frames;
+  GtkWidget *forward_host;
+  GtkWidget *always_forward;
+  GtkWidget *busy_forward;
+  GtkWidget *no_answer_forward;
 
   /* Miscellaneous */
   // contains the row selected by the user

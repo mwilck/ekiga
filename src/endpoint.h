@@ -34,12 +34,6 @@
 #include <ptlib.h>
 #include <h323.h>
 #include <gnome.h>
-#include <gsmcodec.h>
-#include <mscodecs.h>
-#include <h261codec.h>
-#include <videoio.h>
-#include <gnome.h>
-#include <lpc10codec.h>
 #include <pthread.h>
 
 #include "common.h"

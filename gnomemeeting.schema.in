@@ -604,5 +604,49 @@
 	<long>1: 56Kbps, 2: ISDN, 3:DSL, 4: LAN, 5: Custom</long>
       </locale>
     </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/call_forwarding/forward_host</key>
+      <applyto>/apps/gnomemeeting/call_forwarding/forward_host</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default></default>
+      <locale name="C">
+	<short>Forward to this host</short>
+	<long>The host to forward calls to</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/call_forwarding/always_forward</key>
+      <applyto>/apps/gnomemeeting/call_forwarding/always_forward</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>bool</type>
+      <default>false</default>
+      <locale name="C">
+	<short>Always forward to the given host</short>
+	<long>Always forward to the given host</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/call_forwarding/busy_forward</key>
+      <applyto>/apps/gnomemeeting/call_forwarding/busy_forward</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>bool</type>
+      <default>false</default>
+      <locale name="C">
+	<short>Forward to the given host if busy</short>
+	<long>Forward to the given host if busy</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/call_forwarding/no_answer_forward</key>
+      <applyto>/apps/gnomemeeting/call_forwarding/no_answer_forward</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>bool</type>
+      <default>false</default>
+      <locale name="C">
+	<short>Forward to the given host if no answer</short>
+	<long>Forward to the given host if no answer</long>
+      </locale>
+    </schema>
   </schemalist>
 </gconfschemafile>
