@@ -1892,6 +1892,25 @@ void gnomemeeting_gconf_upgrade ()
   /* Disable bilinear filtering */
   if (version < 99) {
 
+    /* New iLBC codec, remove LPC-10 from the GUI 
+       because people shouldn't use it except for fun */
+    list = NULL;
+    list = g_slist_append (list, (void *) "iLBC-13k3=1");
+    list = g_slist_append (list, (void *) "MS-GSM=1");
+    list = g_slist_append (list, (void *) "iLBC-15k2=1");
+    list = g_slist_append (list, (void *) "SpeexNarrow-15k=1");
+    list = g_slist_append (list, (void *) "GSM-06.10=1");
+    list = g_slist_append (list, (void *) "SpeexNarrow-8k=1");
+    list = g_slist_append (list, (void *) "G.726-32k=1");
+    list = g_slist_append (list, (void *) "G.711-uLaw-64k=1");
+    list = g_slist_append (list, (void *) "G.711-ALaw-64k=1");
+    list = g_slist_append (list, (void *) "G.723.1=1");
+    list = g_slist_append (list, (void *) "LPC-10=0");
+    gconf_client_set_list (client, AUDIO_CODECS_KEY "codecs_list", 
+			   GCONF_VALUE_STRING, list, NULL);
+
+    g_slist_free (list);
+
     /* Disable bilinear filtering */
     gconf_client_set_bool (client, VIDEO_DISPLAY_KEY "bilinear_filtering", 
 			   false, NULL);

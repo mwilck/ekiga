@@ -366,9 +366,14 @@ gnomemeeting_codecs_list_add (GtkTreeIter iter, GtkListStore *store,
   data [1] = NULL;
   data [2] = NULL;
 
-  if (!strcmp (codec_name, "LPC-10")) {
-    data [1] = g_strdup (_("Okay"));
-    data [2] = g_strdup ("3.46 kbits");
+  if (!strcmp (codec_name, "iLBC-13k3")) {
+    data [1] = g_strdup (_("Excellent"));
+    data [2] = g_strdup ("13.33 Kbps");
+  }
+
+  if (!strcmp (codec_name, "iLBC-15k2")) {
+    data [1] = g_strdup (_("Excellent"));
+    data [2] = g_strdup ("15.2 Kbps");
   }
 
   if (!strcmp (codec_name, "SpeexNarrow-15k")) {

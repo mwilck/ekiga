@@ -57,6 +57,7 @@
 #include "dialog.h"
 
 #include <g726codec.h>
+#include <ilbccodec.h>
 #include <gsmcodec.h>
 #include <mscodecs.h>
 #include <h261codec.h>
@@ -591,6 +592,12 @@ GMH323EndPoint::AddAudioCapabilities ()
 
   if (use_pcm16_codecs && codecs_data) {
 
+    SetCapability (0, 0, 
+		   new H323_iLBC_Capability (*this,
+					     H323_iLBC_Capability::e_13k3));
+    SetCapability (0, 0, 
+		   new H323_iLBC_Capability (*this,
+					     H323_iLBC_Capability::e_15k2));
 
     SetCapability (0, 0, new SpeexNarrow5AudioCapability ());
     SetCapability (0, 0, new SpeexNarrow3AudioCapability ());
@@ -648,7 +655,6 @@ GMH323EndPoint::AddAudioCapabilities ()
     g_strfreev (couple);
     codecs_data = codecs_data->next;
   }
-
 
   capabilities.Remove (to_remove);
   capabilities.Reorder (to_reorder);
@@ -2232,26 +2238,34 @@ GMH323EndPoint::OnGatewayIPTimeout (PTimer &, INT)
 {
   PHTTPClient web_client ("GnomeMeeting");
   PString html, ip_address;
+  gboolean ip_checking = false;
 
-  if (web_client.GetTextDocument ("http://seconix.com/ip/", html)) {
+  gdk_threads_enter ();
+  ip_checking = gconf_client_get_bool (client, NAT_KEY "ip_checking", NULL);
+  gdk_threads_leave ();
 
-    if (!html.IsEmpty ()) {
+  if (ip_checking) {
 
-      PRegularExpression regex ("[0-9]*[.][0-9]*[.][0-9]*[.][0-9]*");
-      PINDEX pos, len;
+    if (web_client.GetTextDocument ("http://seconix.com/ip/", html)) {
 
-      if (html.FindRegEx (regex, pos, len)) 
-        ip_address = html.Mid (pos,len);
+      if (!html.IsEmpty ()) {
 
+	PRegularExpression regex ("[0-9]*[.][0-9]*[.][0-9]*[.][0-9]*");
+	PINDEX pos, len;
+
+	if (html.FindRegEx (regex, pos, len)) 
+	  ip_address = html.Mid (pos,len);
+
+      }
     }
-  }
 
-  if (!ip_address.IsEmpty ()
-      && gconf_client_get_bool (client, NAT_KEY "ip_checking", NULL)) {
+    if (!ip_address.IsEmpty ()) {
 
-    gdk_threads_enter ();
-    gconf_client_set_string (client, NAT_KEY "public_ip", ip_address, NULL);
-    gdk_threads_leave ();
+      gdk_threads_enter ();
+      gconf_client_set_string (client, NAT_KEY "public_ip", 
+			       (const char *) ip_address, NULL);
+      gdk_threads_leave ();
+    }
   }
 
   GatewayIPTimer.RunContinuous (PTimeInterval (0, 0, 15));

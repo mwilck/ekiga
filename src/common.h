@@ -70,7 +70,7 @@
 
 
 #define GENERAL_KEY         "/apps/gnomemeeting/general/"
-#define NAT_KEY         "/apps/gnomemeeting/nat/"
+#define NAT_KEY             "/apps/gnomemeeting/nat/"
 #define PORTS_KEY           "/apps/gnomemeeting/ports/"
 #define VIEW_KEY            "/apps/gnomemeeting/view/"
 #define VIDEO_DISPLAY_KEY   "/apps/gnomemeeting/video_display/"
@@ -102,7 +102,7 @@
 
 #define GM_MAIN_NOTEBOOK_HIDDEN 4
 
-#define GM_AUDIO_CODECS_NUMBER 9
+#define GM_AUDIO_CODECS_NUMBER 11
 
 #define GNOMEMEETING_PAD_SMALL 1
 
