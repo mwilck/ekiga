@@ -260,6 +260,9 @@ GMH323EndPoint::~GMH323EndPoint ()
   ils_client = new GMILSClient ();
   ils_client->Unregister ();
   delete (ils_client);
+
+  /* The video grabber must be removed */
+  delete (vg_int_cond_mutex);
 }
 
 
@@ -831,7 +834,7 @@ void
 GMH323EndPoint::ILSRegister (void)
 {
   /* Force the Update */
-  ILSTimer.RunContinuous (PTimeInterval (1));
+  ILSTimer.RunContinuous (PTimeInterval (5));
 }
 
 
@@ -1727,11 +1730,17 @@ GMH323EndPoint::OnILSTimeout (PTimer &, INT)
 {
   PWaitAndSignal m(ils_access_mutex);
 
+  gboolean reg = false;
+
+  gnomemeeting_threads_enter ();
+  reg = gconf_client_get_bool (GCONF_CLIENT (client), LDAP_KEY "register", 0);
+  gnomemeeting_threads_leave ();
+  
   if (!ils_client) {
     
     ils_client = new GMILSClient ();
 
-    if (gconf_client_get_bool (GCONF_CLIENT (client), LDAP_KEY "register", 0)){
+    if (reg){
 
       if (!ils_registered) {
 

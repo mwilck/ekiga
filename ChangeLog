@@ -1,5 +1,10 @@
 2003-08-26 Damien Sandras  <dsandras@seconix.com>
 
+	* src/endpoint.cpp: Added GDK locking around gconf operations in
+	OnILSTimeout. Fixed leak in destructor.
+	
+2003-08-26 Damien Sandras  <dsandras@seconix.com>
+
 	* configure.in: Added --enable-debug option.
 	
 2003-08-26  Dmitry G. Mastrukov  <dmitry@taurussoft.org>
