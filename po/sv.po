@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
-"POT-Creation-Date: 2002-05-19 13:21+0200\n"
-"PO-Revision-Date: 2002-05-19 13:21+0200\n"
+"POT-Creation-Date: 2002-05-19 18:30+0200\n"
+"PO-Revision-Date: 2002-05-19 18:30+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -23,6 +23,445 @@ msgstr "GnomeMeeting"
 #: gnomemeeting.desktop.in.h:2
 msgid "H.323 Client"
 msgstr "H.323-klient"
+
+#: gnomemeeting.schemas.in.in.h:1
+msgid "1: 56Kbps, 2: ISDN, 3:DSL, 4: LAN, 5: Custom"
+msgstr "1: 56 kb/s, 2: ISDN, 3:DSL, 4: Lokalt nätverk, 5: Anpassad"
+
+#: gnomemeeting.schemas.in.in.h:2
+msgid "A comment that will be listed in LDAP directories"
+msgstr "En kommentar som kommer att visas i LDAP-kataloger"
+
+#: gnomemeeting.schemas.in.in.h:3 src/pref_window.cpp:1176
+msgid "Always forward calls to the given host"
+msgstr "Vidarebefordra alltid samtal till den angivna värden"
+
+#: gnomemeeting.schemas.in.in.h:4
+msgid "Audio player"
+msgstr "Ljudspelare"
+
+#: gnomemeeting.schemas.in.in.h:5
+msgid "Audio player Mixer"
+msgstr "Ljudspelarmixer"
+
+#: gnomemeeting.schemas.in.in.h:6
+msgid "Audio recorder"
+msgstr "Ljudinspelare"
+
+#. The toggles
+#: gnomemeeting.schemas.in.in.h:7 src/menu.cpp:380 src/pref_window.cpp:1090
+msgid "Auto Answer"
+msgstr "Svara automatiskt"
+
+#: gnomemeeting.schemas.in.in.h:8
+msgid "Change the control panel section"
+msgstr "Ändra kontrollpanelssektionen"
+
+#: gnomemeeting.schemas.in.in.h:9
+msgid ""
+"Change the control panel section (3 means that the control panel is off)"
+msgstr "Ändra kontrollpanelssektionen (3 betyder att kontrollpanelen är av)"
+
+#: gnomemeeting.schemas.in.in.h:10
+msgid "Color Format"
+msgstr "Färgformat"
+
+#: gnomemeeting.schemas.in.in.h:11
+msgid "Color Format for the video palette"
+msgstr "Färgformat föt videopaletten"
+
+#: gnomemeeting.schemas.in.in.h:12 src/ldap_window.cpp:651
+msgid "Comment"
+msgstr "Kommentar"
+
+#: gnomemeeting.schemas.in.in.h:13
+msgid "Display a popup window every time you receive a call"
+msgstr "Visa ett popupfönster varje gång du får ett samtal"
+
+#: gnomemeeting.schemas.in.in.h:14
+msgid "Do not disturb"
+msgstr "Stör inte"
+
+#: gnomemeeting.schemas.in.in.h:15
+msgid "E-Mail address"
+msgstr "E-postadress"
+
+#: gnomemeeting.schemas.in.in.h:16
+msgid "Enable FPS"
+msgstr "Aktivera ramar per sekund"
+
+#: gnomemeeting.schemas.in.in.h:17
+msgid "Enable Silence Detection for G.711 and GSM"
+msgstr "Aktivera tystnadsdetektering för G.711 och GSM"
+
+#: gnomemeeting.schemas.in.in.h:18
+msgid "Enable Video Bitrate Limitation"
+msgstr "Aktivera bithastighetsbegränsning för video"
+
+#: gnomemeeting.schemas.in.in.h:19 src/pref_window.cpp:1536
+msgid "Enable Video Transmission"
+msgstr "Aktivera videoöverföring"
+
+#: gnomemeeting.schemas.in.in.h:20
+msgid "Enable registering to the LDAP server"
+msgstr "Aktivera registrering till LDAP-servern"
+
+#: gnomemeeting.schemas.in.in.h:21
+msgid "Enable the limit on the number of frames per second"
+msgstr "Aktivera begränsningen på antalet ramar per sekund"
+
+#: gnomemeeting.schemas.in.in.h:22
+msgid "Enable the video bitrate limitation for calls"
+msgstr "Aktivera bithastighetsbegränsningen på video för samtal"
+
+#: gnomemeeting.schemas.in.in.h:23
+msgid "Enable the video transmission for calls"
+msgstr "Aktivera videoöverföringen för samtal"
+
+#: gnomemeeting.schemas.in.in.h:24
+msgid "Fake Setting"
+msgstr "Falsk inställning"
+
+#: gnomemeeting.schemas.in.in.h:25
+msgid "Fast Start"
+msgstr "Snabbstart"
+
+#: gnomemeeting.schemas.in.in.h:26 src/ldap_window.cpp:615
+msgid "First Name"
+msgstr "Förnamn"
+
+#: gnomemeeting.schemas.in.in.h:27 src/pref_window.cpp:1182
+msgid "Forward calls to the given host if busy"
+msgstr "Vidarebefordra samtal till den angivna värden om upptagen"
+
+#: gnomemeeting.schemas.in.in.h:28 src/pref_window.cpp:1179
+msgid "Forward calls to the given host if no answer"
+msgstr "Vidarebefordra samtal till den angivna värden om inget svar"
+
+#: gnomemeeting.schemas.in.in.h:29
+msgid "Forward calls to this host"
+msgstr "Vidarebefordra samtal till denna värd"
+
+#: gnomemeeting.schemas.in.in.h:30
+msgid "H.245 Tunnelling"
+msgstr "H.245-tunnling"
+
+#: gnomemeeting.schemas.in.in.h:31 src/pref_window.cpp:1558
+msgid ""
+"Here you can choose the number of blocks (that haven't changed) transmitted "
+"with each frame. These blocks fill in the background."
+msgstr ""
+"Här kan du välja antalet (oförändrade) block som överförs med varje ram. "
+"Dessa block fyller i bakgrunden."
+
+#: gnomemeeting.schemas.in.in.h:32
+msgid "If enabled, a sound is played on incoming calls."
+msgstr ""
+"Om detta är aktiverat kommer ett ljud att spelas då ett samtal tas emot."
+
+#: gnomemeeting.schemas.in.in.h:33
+msgid "If enabled, calls will be established in Fast Start mode."
+msgstr "Om detta är aktiverat kommer samtal att etableras i snabbstartsläget."
+
+#: gnomemeeting.schemas.in.in.h:34
+msgid "If enabled, calls will be established with H.245 Tunnelling."
+msgstr ""
+"Om detta är aktiverat kommer samtal att etableras med H.245-tunnelling."
+
+#: gnomemeeting.schemas.in.in.h:35 src/pref_window.cpp:1090
+msgid "If enabled, incoming calls will be automatically answered."
+msgstr ""
+"Om detta är aktiverat kommer inkommande samtal att automatiskt besvaras."
+
+#: gnomemeeting.schemas.in.in.h:36 src/pref_window.cpp:1092
+msgid "If enabled, incoming calls will be automatically refused."
+msgstr "Om detta är aktiverat kommer inkommande samtal automatiskt att vägras."
+
+#: gnomemeeting.schemas.in.in.h:37
+msgid "Incoming Call Sound"
+msgstr "Ljud för inkommande samtal"
+
+#: gnomemeeting.schemas.in.in.h:38
+msgid "Jitter buffer"
+msgstr "Jitter-buffert"
+
+#: gnomemeeting.schemas.in.in.h:39
+msgid "Jitter buffer for audio reception in ms"
+msgstr "Jitter-buffert för ljudanrop i ms"
+
+#: gnomemeeting.schemas.in.in.h:40
+msgid "Kind of network selected in the druid"
+msgstr "Typ av nätverk som valts i guiden"
+
+#: gnomemeeting.schemas.in.in.h:41
+msgid "LDAP Server"
+msgstr "LDAP-server"
+
+#: gnomemeeting.schemas.in.in.h:42 src/ldap_window.cpp:624
+msgid "Last Name"
+msgstr "Efternamn"
+
+#: gnomemeeting.schemas.in.in.h:43
+msgid "Limitation on the number of transmitted frames grabbed by the grabber"
+msgstr "Begränsning på antalet överförda ramar som fångas av fångaren"
+
+#: gnomemeeting.schemas.in.in.h:44
+msgid "Listen Port"
+msgstr "Lyssningsport"
+
+#: gnomemeeting.schemas.in.in.h:45 src/ldap_window.cpp:642
+msgid "Location"
+msgstr "Plats"
+
+#: gnomemeeting.schemas.in.in.h:46
+msgid "Maximum Video Bandwidth"
+msgstr "Maximal videobandbredd"
+
+#: gnomemeeting.schemas.in.in.h:47
+msgid "Number of background blocks transmitted at a time"
+msgstr "Antalet bkgrundsblock som överförs på en gång"
+
+#: gnomemeeting.schemas.in.in.h:48
+msgid "Number of entries to store in history boxes"
+msgstr "Antalet poster att spara i historikfälten"
+
+#: gnomemeeting.schemas.in.in.h:49
+msgid "Number of frames for G.711"
+msgstr "Antalet ramar för G.711"
+
+#: gnomemeeting.schemas.in.in.h:50
+msgid "Number of frames for GSM"
+msgstr "Antalet ramar för GSM"
+
+#: gnomemeeting.schemas.in.in.h:51
+msgid "Number of frames transmitted in each packet for the G.711 codec"
+msgstr ""
+"Antalet ramar som överförs i varje paket för G.711-komprimeringsmetoden"
+
+#: gnomemeeting.schemas.in.in.h:52
+msgid "Number of frames transmitted in each packet for the GSM codec"
+msgstr "Antalet ramar som överförs i varje paket för GSM-komprimeringsmetoden"
+
+#: gnomemeeting.schemas.in.in.h:53
+msgid "Popup on incoming calls"
+msgstr "popupfönster vid inkommande samtal"
+
+#: gnomemeeting.schemas.in.in.h:54
+msgid "Received Video Quality Hint"
+msgstr "Tips för mottagen videokvalitet"
+
+#: gnomemeeting.schemas.in.in.h:55
+msgid "Register"
+msgstr "Registrera"
+
+#: gnomemeeting.schemas.in.in.h:56
+msgid "Show a docklet in the gnome-panel or KDE systray"
+msgstr "Visa en docka i gnome-panelen eller KDE-systempanelen"
+
+#: gnomemeeting.schemas.in.in.h:57
+msgid "Show a nice window every time GnomeMeeting starts"
+msgstr "Visa ett trevligt fönster varje gång GnomeMeeting startar"
+
+#: gnomemeeting.schemas.in.in.h:58
+msgid "Show a status bar at the bottom of the main window"
+msgstr "Visa en statusrad nederst på huvudfönstret"
+
+#: gnomemeeting.schemas.in.in.h:59
+msgid "Show chat window"
+msgstr "Visa chattfönster"
+
+#: gnomemeeting.schemas.in.in.h:60
+msgid "Show docklet"
+msgstr "Visa docka"
+
+#: gnomemeeting.schemas.in.in.h:61
+msgid "Show left toolbar"
+msgstr "Visa vänster verktygsrad"
+
+#: gnomemeeting.schemas.in.in.h:62
+msgid "Show only the docklet window at startup"
+msgstr "Visa endast dockfönstret vid uppstart"
+
+#: gnomemeeting.schemas.in.in.h:63
+msgid "Show splash screen at startup"
+msgstr "Visa startbild vid uppstart"
+
+#: gnomemeeting.schemas.in.in.h:64
+msgid "Show status bar"
+msgstr "Visa statusrad"
+
+#: gnomemeeting.schemas.in.in.h:65
+msgid "Show the chat window in the main window"
+msgstr "Visa chattfönstret i huvudfönstret"
+
+#: gnomemeeting.schemas.in.in.h:66
+msgid "Show the left toolbar on the left of the main window"
+msgstr "Visa vänster verktygsrad till vänster om huvudfönstret"
+
+#: gnomemeeting.schemas.in.in.h:67
+msgid "The Audio Codecs List"
+msgstr "Listan med ljudkomprimeringsmetoder"
+
+#: gnomemeeting.schemas.in.in.h:68
+msgid "The E-Mail address that will be listed in the directories"
+msgstr "E-postadressen som kommer att visas i katalogerna"
+
+#: gnomemeeting.schemas.in.in.h:69
+msgid "The Gatekeeper to register to"
+msgstr "Portvakten att registrera till"
+
+#: gnomemeeting.schemas.in.in.h:70
+msgid "The ID of the Gatekeeper to register to"
+msgstr "ID för portvakten att registrera till"
+
+#: gnomemeeting.schemas.in.in.h:71
+msgid "The LDAP Server to register to"
+msgstr "LDAP-servern att registrera till"
+
+#: gnomemeeting.schemas.in.in.h:72
+msgid "The Location that will be published in the LDAP directories"
+msgstr "Platsen som kommer att publiceras i LDAP-kataloger"
+
+#: gnomemeeting.schemas.in.in.h:73
+msgid "The Maximum Video Bandwidth to use"
+msgstr "Maximal videobandbredd att använda"
+
+#: gnomemeeting.schemas.in.in.h:74
+msgid "The Method to use to register to the Gatekeeper"
+msgstr "Metoden att använda vid registrering till portvakten"
+
+#: gnomemeeting.schemas.in.in.h:75
+msgid "The Video Channel"
+msgstr "Videokanalen"
+
+#: gnomemeeting.schemas.in.in.h:76
+msgid "The Video Device to use for recording"
+msgstr "Videoenheten att använda vid inspelning"
+
+#: gnomemeeting.schemas.in.in.h:77
+msgid "The Video Format: PAL, NTSC, SECAM, Auto"
+msgstr "Videoformatet: PAL, NTSC, SECAM, Auto"
+
+#: gnomemeeting.schemas.in.in.h:78
+msgid "The Video Quality to request to the remote"
+msgstr "Videokvaliteten som ska begäras från fjärrparten"
+
+#: gnomemeeting.schemas.in.in.h:79
+msgid "The Video Size: QCIF (0) or CIF (1)"
+msgstr "Videostorleken: QCIF (0) eller CIF (1)"
+
+#: gnomemeeting.schemas.in.in.h:80
+msgid "The alias to use when registering"
+msgstr "Aliaset att använda vid registrering"
+
+#: gnomemeeting.schemas.in.in.h:81
+msgid ""
+"The alias to use when registering. People will use this alias when calling "
+"you."
+msgstr ""
+"Aliaset att använda vid registrering. Folk kommer att använda detta alias då "
+"de kontaktar dig."
+
+#: gnomemeeting.schemas.in.in.h:82
+msgid "The device to use to play audio"
+msgstr "Enheten att använda för uppspelning av ljud"
+
+#: gnomemeeting.schemas.in.in.h:83
+msgid "The device to use to record audio"
+msgstr "Enheten att använda för inspelning av ljud"
+
+#: gnomemeeting.schemas.in.in.h:84
+msgid "The host to forward calls to"
+msgstr "Värden att vidarebefordra samtal till"
+
+#: gnomemeeting.schemas.in.in.h:85
+msgid "The hostname of the Gatekeeper to register to"
+msgstr "Värdnamnet för portvakten att registrera till"
+
+#: gnomemeeting.schemas.in.in.h:86
+msgid "The list of ILS servers"
+msgstr "Listan över ILS-servrar"
+
+#: gnomemeeting.schemas.in.in.h:87
+msgid "The list of called hosts"
+msgstr "Listan över anropade värdar"
+
+#: gnomemeeting.schemas.in.in.h:88
+msgid "The list of used ILS servers"
+msgstr "Listan över använda ILS-servrar"
+
+#: gnomemeeting.schemas.in.in.h:89
+msgid "The mixer to use for the device that is used to play audio"
+msgstr "Ljudmixern som ska användas för ljudspelarenheten"
+
+#: gnomemeeting.schemas.in.in.h:90
+msgid "The mixer to use for the device that is used to record audio"
+msgstr "Ljudmixern som ska användas för ljudinspelningsenheten"
+
+#: gnomemeeting.schemas.in.in.h:91
+msgid ""
+"The port to listen to for incoming connections. GnomeMeeting needs to be "
+"restarted for the new value to take effect."
+msgstr ""
+"Porten att lyssna på för inkommande anslutningar. GnomeMeeting måste startas "
+"om för att detta nya värde ska börja gälla."
+
+#: gnomemeeting.schemas.in.in.h:92
+msgid ""
+"The prefix that will be used to save pictures of the conversation. That "
+"prefix is followed by the snapshot number."
+msgstr ""
+"Prefixet som kommer att användas för sparande av bilder på konversationen. "
+"Det prefixet följs av numret på ögonblicksbilden."
+
+#: gnomemeeting.schemas.in.in.h:93
+msgid "The save prefix"
+msgstr "Sparandeprefixet"
+
+#: gnomemeeting.schemas.in.in.h:94
+msgid "The transmitted video quality hint"
+msgstr "Tipset för överförd videokvalitet"
+
+#: gnomemeeting.schemas.in.in.h:95
+msgid "The user's first name that will be used in the directories"
+msgstr "Användarens förnamn som kommer att användas i katalogerna"
+
+#: gnomemeeting.schemas.in.in.h:96
+msgid "This need the show_docklet option set to true to have effect"
+msgstr ""
+"Detta kräver att alternativet show_docklet är sant för att ha någon effekt"
+
+#: gnomemeeting.schemas.in.in.h:97
+msgid "Transmitted frames per second"
+msgstr "Överförda ramar per sekund"
+
+#: gnomemeeting.schemas.in.in.h:98 src/ldap_window.cpp:660
+msgid "Version"
+msgstr "Version"
+
+#: gnomemeeting.schemas.in.in.h:99
+msgid "Video Channel"
+msgstr "Videokanal"
+
+#: gnomemeeting.schemas.in.in.h:100
+msgid "Video Device"
+msgstr "Videoenhet"
+
+#: gnomemeeting.schemas.in.in.h:101
+msgid "Video Format"
+msgstr "Videoformat"
+
+#: gnomemeeting.schemas.in.in.h:102 src/pref_window.cpp:1323
+msgid "Video Preview"
+msgstr "Förhandsgranskning av video"
+
+#: gnomemeeting.schemas.in.in.h:103
+msgid "Video Quality"
+msgstr "Videokvalitet"
+
+#: gnomemeeting.schemas.in.in.h:104
+msgid "Video Size"
+msgstr "Videostorlek"
 
 #. The toggles
 #: sounds/GnomeMeeting.soundlist.in.h:2 src/pref_window.cpp:1102
@@ -436,7 +875,7 @@ msgstr "T1/Lokalt nätverk"
 
 #: src/druid.cpp:505
 msgid "Custom"
-msgstr "Anpassat"
+msgstr "Anpassad"
 
 #: src/druid.cpp:556
 msgid "First Time Configuration Druid"
@@ -786,29 +1225,9 @@ msgstr "L"
 msgid "V"
 msgstr "V"
 
-#: src/ldap_window.cpp:615
-msgid "First Name"
-msgstr "Förnamn"
-
-#: src/ldap_window.cpp:624
-msgid "Last Name"
-msgstr "Efternamn"
-
 #: src/ldap_window.cpp:633
 msgid "E-Mail"
 msgstr "E-post"
-
-#: src/ldap_window.cpp:642
-msgid "Location"
-msgstr "Plats"
-
-#: src/ldap_window.cpp:651
-msgid "Comment"
-msgstr "Kommentar"
-
-#: src/ldap_window.cpp:660
-msgid "Version"
-msgstr "Version"
 
 #: src/ldap_window.cpp:670
 msgid "IP"
@@ -1045,11 +1464,6 @@ msgstr "Stör inte"
 msgid "Aut_o Answer"
 msgstr "Svara aut_omatiskt"
 
-#. The toggles
-#: src/menu.cpp:380 src/pref_window.cpp:1090
-msgid "Auto Answer"
-msgstr "Svara automatiskt"
-
 #: src/menu.cpp:389
 msgid "_Audio Mute"
 msgstr "Tysta _ljud"
@@ -1194,15 +1608,6 @@ msgstr ""
 msgid "Behavior"
 msgstr "Uppförande"
 
-#: src/pref_window.cpp:1090
-msgid "If enabled, incoming calls will be automatically answered."
-msgstr ""
-"Om detta är aktiverat kommer inkommande samtal att automatiskt besvaras."
-
-#: src/pref_window.cpp:1092
-msgid "If enabled, incoming calls will be automatically refused."
-msgstr "Om detta är aktiverat kommer inkommande samtal automatiskt att vägras."
-
 #: src/pref_window.cpp:1094
 msgid "Popup window"
 msgstr "Popupfönster"
@@ -1308,10 +1713,6 @@ msgstr ""
 "Ange här den värd där samtal ska vidarebefordras i de fall som anges nedan"
 
 #: src/pref_window.cpp:1176
-msgid "Always forward calls to the given host"
-msgstr "Vidarebefordra alltid samtal till den angivna värden"
-
-#: src/pref_window.cpp:1176
 msgid ""
 "If enabled, all incoming calls will always be forwarded to the host that is "
 "specified in the field below."
@@ -1320,20 +1721,12 @@ msgstr ""
 "till den värd som är angiven i fältet nedan."
 
 #: src/pref_window.cpp:1179
-msgid "Forward calls to the given host if no answer"
-msgstr "Vidarebefordra samtal till den angivna värden om inget svar"
-
-#: src/pref_window.cpp:1179
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you don't answer the call."
 msgstr ""
 "Om detta är aktiverat kommer alla inkommande samtal att vidarebefordras till "
 "den värd som är angiven nedan om du inte svarar på samtalet."
-
-#: src/pref_window.cpp:1182
-msgid "Forward calls to the given host if busy"
-msgstr "Vidarebefordra samtal till den angivna värden om upptagen"
 
 #: src/pref_window.cpp:1182
 msgid ""
@@ -1491,10 +1884,6 @@ msgid "Here you can choose the transmitted video format."
 msgstr "Här kan du välja det överförda videoformatet."
 
 #: src/pref_window.cpp:1323
-msgid "Video Preview"
-msgstr "Förhandsgranskning av video"
-
-#: src/pref_window.cpp:1323
 msgid ""
 "If enabled, the video preview mode will be set activated and you will be "
 "able to see yourself without being in a call."
@@ -1579,10 +1968,6 @@ msgstr ""
 "Aktivera/inaktivera begränsningen på antalet ramar som överförs per sekund."
 
 #: src/pref_window.cpp:1536
-msgid "Enable Video Transmission"
-msgstr "Aktivera videoöverföring"
-
-#: src/pref_window.cpp:1536
 msgid "Enable/disable the video transmission."
 msgstr "Aktivera/inaktivera videoöverföringen."
 
@@ -1618,14 +2003,6 @@ msgstr ""
 #: src/pref_window.cpp:1556
 msgid "Transmitted Background Blocks:"
 msgstr "Överförda bakgrundsblock:"
-
-#: src/pref_window.cpp:1558
-msgid ""
-"Here you can choose the number of blocks (that haven't changed) transmitted "
-"with each frame. These blocks fill in the background."
-msgstr ""
-"Här kan du välja antalet (oförändrade) block som överförs med varje ram. "
-"Dessa block fyller i bakgrunden."
 
 #: src/pref_window.cpp:1599
 msgid "GnomeMeeting Settings"
@@ -1773,6 +2150,36 @@ msgstr "Fel med ramhastigheten."
 msgid "Video Device Closed"
 msgstr "Videoenhet stängd"
 
+#, fuzzy
+#~ msgid "If enabled, incoming calls will be auto-answered."
+#~ msgstr ""
+#~ "Om detta är aktiverat kommer inkommande samtal att automatiskt besvaras."
+
+#, fuzzy
+#~ msgid "If enabled, incoming calls will be automatically rejected."
+#~ msgstr ""
+#~ "Om detta är aktiverat kommer inkommande samtal automatiskt att vägras."
+
+#~ msgid "Always forward to the given host"
+#~ msgstr "Vidarebefordra alltid till den angivna värden"
+
+#~ msgid "Forward to the given host if busy"
+#~ msgstr "Vidarebefordra till den angivna värden om upptagen"
+
+#~ msgid "Forward to the given host if no answer"
+#~ msgstr "Vidarebefordra till den angivna värden om inget svar"
+
+#~ msgid "Forward to this host"
+#~ msgstr "Vidarebefordra till denna värd"
+
+#, fuzzy
+#~ msgid ""
+#~ "Here you can choose the number of blocks (that haven't changed) "
+#~ "transmitted with each frame. These blocks fill in the background"
+#~ msgstr ""
+#~ "Här kan du välja antalet (oförändrade) block som överförs med varje ram. "
+#~ "Dessa block fyller i bakgrunden."
+
 #~ msgid "Shutting down gconf daemon"
 #~ msgstr "Stänger ner gconf-demonen"
 
@@ -1790,9 +2197,6 @@ msgstr "Videoenhet stängd"
 
 #~ msgid "This enables H.245 Tunnelling mode."
 #~ msgstr "Detta aktiverar H.245-tunnlingsläget."
-
-#~ msgid "Connection will be established in Fast Start mode."
-#~ msgstr "Anlutningen kommer att etableras i snabbstartsläget."
 
 # Detta är felrapporterat som
 # http://bugzilla.gnome.org/show_bug.cgi?id=82191
@@ -1918,9 +2322,6 @@ msgstr "Videoenhet stängd"
 #~ msgid "Update"
 #~ msgstr "Uppdatera"
 
-#~ msgid "Show Chat Window"
-#~ msgstr "Visa chattfönster"
-
 #~ msgid "If enabled, the chat window will be displayed at startup time."
 #~ msgstr "Om detta är aktiverat kommer chattfönstret att visas vid uppstart."
 
@@ -1930,14 +2331,8 @@ msgstr "Videoenhet stängd"
 #~ msgid "If enabled, the control panel is displayed."
 #~ msgstr "Om detta är aktiverat visas kontrollpanelen."
 
-#~ msgid "Show Status Bar"
-#~ msgstr "Visa statusrad"
-
 #~ msgid "If enabled, the statusbar is displayed."
 #~ msgstr "Om detta är aktiverat visas statusraden."
-
-#~ msgid "Show Docklet"
-#~ msgstr "Visa docka"
 
 #~ msgid ""
 #~ "If enabled, there is support for a docklet in the Gnome or KDE panel."
@@ -1950,9 +2345,6 @@ msgstr "Videoenhet stängd"
 
 #~ msgid "Codecs Settings"
 #~ msgstr "Inställningar för komprimeringsmetoder"
-
-#~ msgid "Enable"
-#~ msgstr "Aktivera"
 
 #~ msgid ""
 #~ "Use this button to add the selected codec to the available codecs list"
@@ -1991,10 +2383,6 @@ msgstr "Videoenhet stängd"
 #~ msgid "GSM Codec Settings"
 #~ msgstr "Inställningar för GSM-komprimeringsmetoder"
 
-#~ msgid "Enable silence detection for the G.711 based codecs"
-#~ msgstr ""
-#~ "Aktivera tystnadsdetektering för de G.711-baserade komprimeringsmetoderna"
-
 #~ msgid "G.711 Codec Settings"
 #~ msgstr "Inställningar för G.711-komprimeringsmetod"
 
@@ -2003,9 +2391,6 @@ msgstr "Videoenhet stängd"
 
 #~ msgid "Limit the video transmission to"
 #~ msgstr "Begränsa videoöverföringen till"
-
-#~ msgid "frame(s) per second"
-#~ msgstr "ram(ar) per sekund"
 
 #~ msgid ""
 #~ "Here you can set a limit to the number of frames that will be transmitted "
@@ -2025,9 +2410,6 @@ msgstr "Videoenhet stängd"
 
 #~ msgid "Received Video Quality should be"
 #~ msgstr "Mottagen videokvalitet bör vara"
-
-#~ msgid "The video quality hint to request to the remote"
-#~ msgstr "Videokvalitetstipset som ska begäras från fjärrparten"
 
 #~ msgid "Limit the bandwidth to"
 #~ msgstr "Begränsa bandbredden till"
@@ -2095,9 +2477,6 @@ msgstr "Videoenhet stängd"
 #~ msgid "Call the selected user"
 #~ msgstr "Ring upp den markerade användaren"
 
-#~ msgid "Show Left Toolbar"
-#~ msgstr "Visa vänster verktygsrad"
-
 #~ msgid "If enabled, the left toolbar will be displayed at startup time"
 #~ msgstr ""
 #~ "Om detta är aktiverat kommer den vänstra verktygsraden att visas vid "
@@ -2105,9 +2484,6 @@ msgstr "Videoenhet stängd"
 
 #~ msgid "GnomeMeeting General Data"
 #~ msgstr "Allmän GnomeMeeting-data"
-
-#~ msgid "User Settings"
-#~ msgstr "Användarinställningar"
 
 #~ msgid "Directories Settings"
 #~ msgstr "Kataloginställningar"
@@ -2344,9 +2720,6 @@ msgstr "Videoenhet stängd"
 #~ msgid "Updated blocks:"
 #~ msgstr "Uppdaterade block:"
 
-#~ msgid "Max. Video Bandwidth:"
-#~ msgstr "Maximal videobandbredd:"
-
 #~ msgid "Bandwidth Limitation"
 #~ msgstr "Bandbreddsbegränsning"
 
@@ -2371,9 +2744,6 @@ msgstr "Videoenhet stängd"
 #~ msgid "Starting the listener thread"
 #~ msgstr "Startar lyssnartråden"
 
-#~ msgid "Registering to the Gatekeeper"
-#~ msgstr "Registrerar till portvakten"
-
 #~ msgid "Sorry, no ldap server specified!"
 #~ msgstr "Tyvärr, ingen ldap-server är angiven!"
 
@@ -2394,9 +2764,6 @@ msgstr "Videoenhet stängd"
 #~ "Välkommen till den nya 0.12.2-versionen av GnomeMeeting.\n"
 #~ "Standardinställningar för de nya alternativen\n"
 #~ "har sparats i konfigurationen."
-
-#~ msgid "Listen Port:"
-#~ msgstr "Lyssningsport:"
 
 #~ msgid "The port that GnomeMeeting should listen on"
 #~ msgstr "Porten som GnomeMeeting ska lyssna på"
