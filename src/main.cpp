@@ -153,7 +153,7 @@ void GnomeMeeting::Connect()
 	  endpoint->SetCurrentCallToken (current_call_token);
 	  endpoint->SetCallingState (1);
 	  gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
-	  msg = g_strdup_printf (_("Call %d : calling %s"), 
+	  msg = g_strdup_printf (_("Call %d: calling %s"), 
 				 call_number,
 				 (const char *) call_address);
 	  GM_log_insert (gw->log_text, msg);
