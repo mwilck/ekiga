@@ -151,7 +151,6 @@ GtkWidget *gnomemeeting_text_chat_new (GmTextChat *chat)
   GtkWidget *table = NULL;
   GtkWidget *frame = NULL;
   GtkWidget *hbox = NULL;
-  GtkWidget *clear_button = NULL;
   GtkWidget *image = NULL;
   GtkWidget *chat_window = NULL;
 
@@ -161,17 +160,15 @@ GtkWidget *gnomemeeting_text_chat_new (GmTextChat *chat)
   /* Get the structs from the application */
   chat_window = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (chat_window), GTK_SHADOW_NONE);
-  gtk_container_set_border_width (GTK_CONTAINER (chat_window), 7);
   table = gtk_table_new (1, 3, FALSE);
   
-  gtk_container_set_border_width (GTK_CONTAINER (table), 2);
+  gtk_container_set_border_width (GTK_CONTAINER (table), 0);
   gtk_container_add (GTK_CONTAINER (chat_window), table);
 
   scr = gtk_scrolled_window_new (NULL, NULL);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scr),
 				  GTK_POLICY_AUTOMATIC,
 				  GTK_POLICY_ALWAYS);
-  gtk_widget_set_size_request (GTK_WIDGET (scr), 245, 133);
 
   chat->text_view = gtk_text_view_new ();
   gtk_text_view_set_editable (GTK_TEXT_VIEW (chat->text_view), FALSE);
@@ -221,20 +218,12 @@ GtkWidget *gnomemeeting_text_chat_new (GmTextChat *chat)
   gtk_widget_set_size_request (GTK_WIDGET (entry), 245, -1);
   gtk_box_pack_start (GTK_BOX (hbox), entry, FALSE, FALSE, 0);
 
-  clear_button = gtk_button_new ();
-  image = gtk_image_new_from_stock (GTK_STOCK_CLEAR, GTK_ICON_SIZE_MENU);
-  gtk_container_add (GTK_CONTAINER (clear_button), image);
-  gtk_box_pack_start (GTK_BOX (hbox), clear_button, FALSE, FALSE, 2);
-
   gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (hbox), 
 		    0, 1, 2, 3,
 		    (GtkAttachOptions) (GTK_FILL),
 		    (GtkAttachOptions) (GTK_FILL),
 		    0, 0);
 
-  g_signal_connect (GTK_OBJECT (clear_button), "clicked",
-		    G_CALLBACK (gnomemeeting_text_chat_clear), chat);
-    
   g_signal_connect (GTK_OBJECT (entry), "activate",
 		    G_CALLBACK (chat_entry_activate), chat->text_view);
 

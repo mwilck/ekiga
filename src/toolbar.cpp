@@ -251,12 +251,9 @@ GtkWidget *gnomemeeting_init_left_toolbar (void)
 			   GTK_SIGNAL_FUNC (gnomemeeting_component_view),
 			   (gpointer) gw->ldap_window); 
 
-
-  gtk_toolbar_append_space (GTK_TOOLBAR (left_toolbar));
-
   gtk_toolbar_set_style (GTK_TOOLBAR (left_toolbar), GTK_TOOLBAR_ICONS);
- 
 
+  
   /* Video Preview Button */
   gw->preview_button = gtk_toggle_button_new ();
 
@@ -326,7 +323,6 @@ GtkWidget *gnomemeeting_init_left_toolbar (void)
 			     gw->video_chan_button, NULL, NULL);
 
   gtk_widget_show_all (GTK_WIDGET (gw->preview_button));
-
   gtk_widget_show_all (GTK_WIDGET (gw->audio_chan_button));
   gtk_widget_show_all (GTK_WIDGET (gw->video_chan_button));
 

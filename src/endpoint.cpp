@@ -1236,7 +1236,7 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 			   (gchar *)_("H.245 Tunnelling enabled"));
   gnomemeeting_log_insert (gw->history_text_view, msg);
 
-  gtk_entry_set_text (GTK_ENTRY (gw->remote_name), (const char *) utf8_name);
+  gtk_label_set_text (GTK_LABEL (gw->remote_name), (const char *) utf8_name);
 
   if (docklet_timeout != 0) {
 
@@ -1588,7 +1588,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
  
   /* We update the stats part */
   gnomemeeting_threads_enter ();
-  gtk_entry_set_text (GTK_ENTRY (gw->remote_name), "");
+  gtk_label_set_text (GTK_LABEL (gw->remote_name), "");
 
   gtk_widget_queue_draw_area (gw->stats_drawing_area, 0, 0, GTK_WIDGET (gw->stats_drawing_area)->allocation.width, GTK_WIDGET (gw->stats_drawing_area)->allocation.height);
   gtk_label_set_text (GTK_LABEL (gw->stats_label), _("Lost packets:\nLate packets:\nRound-trip delay:\nJitter buffer:"));
