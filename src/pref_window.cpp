@@ -61,6 +61,9 @@ static void gnomemeeting_codecs_list_add (GtkTreeIter, GtkListStore *,
 
 static void codecs_list_fixed_toggled (GtkCellRendererToggle *, gchar *, 
 				       gpointer);
+static void video_image_browse_clicked (GtkWidget *, gpointer);
+static void file_selector_clicked (GtkFileSelection *, gpointer);
+
 
 static void gnomemeeting_init_pref_window_general (GtkWidget *);
 static void gnomemeeting_init_pref_window_interface (GtkWidget *);
@@ -477,6 +480,57 @@ tree_selection_changed_cb (GtkTreeSelection *selection,
   gtk_label_set_text (GTK_LABEL (label), name);
 
   gtk_notebook_set_current_page (GTK_NOTEBOOK (data), page);
+}
+
+
+/* DESCRIPTION  :  This callback is called when the user clicks
+ *                 on a button of the file selector.
+ * BEHAVIOR     :  It sets the selected filename in the video_image entry.
+ * PRE          :  data = the file selector.
+ */
+static void  
+file_selector_clicked (GtkFileSelection *selector, gpointer data) 
+{
+  GmPrefWindow *pw = NULL;
+  gchar *filename = NULL;
+
+  pw = gnomemeeting_get_pref_window (gm);
+  filename = (gchar *)
+    gtk_file_selection_get_filename (GTK_FILE_SELECTION (data));
+  
+  gtk_entry_set_text (GTK_ENTRY (pw->video_image), filename);
+}
+
+
+/* DESCRIPTION  :  This callback is called when the user clicks
+ *                 on the browse button.
+ * BEHAVIOR     :  It displays the file selector widget.
+ * PRE          :  /
+ */
+static void
+video_image_browse_clicked (GtkWidget *b, gpointer data)
+{
+  GtkWidget *selector = NULL;
+
+  selector = gtk_file_selection_new (_("Please choose the video image"));
+
+  gtk_widget_show (selector);
+
+  g_signal_connect (G_OBJECT (GTK_FILE_SELECTION (selector)->ok_button),
+		    "clicked",
+		    G_CALLBACK (file_selector_clicked),
+		    (gpointer) selector);
+     
+  /* Ensure that the dialog box is destroyed when the user clicks a button. */
+  g_signal_connect_swapped (G_OBJECT (GTK_FILE_SELECTION (selector)->ok_button),
+			    "clicked",
+			    G_CALLBACK (gtk_widget_destroy),
+			    (gpointer) selector);
+
+  g_signal_connect_swapped (G_OBJECT (GTK_FILE_SELECTION (selector)->cancel_button),
+			    "clicked",
+			    G_CALLBACK (gtk_widget_destroy),
+			    (gpointer) selector);
 }
 
 
@@ -1534,7 +1588,7 @@ static void gnomemeeting_init_pref_window_video_devices (GtkWidget *notebook)
 
 
   /* The video devices related options */
-  table = gnomemeeting_pref_window_add_table (vbox, _("Video Devices"), 6, 2);
+  table = gnomemeeting_pref_window_add_table (vbox, _("Video Devices"), 6, 3);
 
   /* The video device */
   gconf_string =  gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/video_recorder", NULL);
@@ -1577,6 +1631,19 @@ static void gnomemeeting_init_pref_window_video_devices (GtkWidget *notebook)
   pw->video_preview =
     gnomemeeting_pref_window_add_toggle (table, _("Video Preview"), "/apps/gnomemeeting/devices/video_preview", _("If enabled, the video preview mode will be set activated and you will be able to see yourself without being in a call."), 6, 0);
 
+
+  /* The file selector button */
+  button = gtk_button_new_with_label (_("Browse"));
+  gtk_table_attach (GTK_TABLE (table), button, 2, 3, 5, 6,         
+                    (GtkAttachOptions) (GTK_SHRINK | GTK_FILL),                
+                    (GtkAttachOptions) (GTK_SHRINK | GTK_FILL),                
+                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);  
+
+  g_signal_connect (G_OBJECT (button), "clicked",
+		    G_CALLBACK (video_image_browse_clicked),
+		    NULL);
+
+
   /* That button will refresh the devices list */
   button = gtk_button_new_from_stock (GTK_STOCK_REFRESH);
   table2 = gtk_table_new (1, 6, TRUE);
@@ -1584,8 +1651,8 @@ static void gnomemeeting_init_pref_window_video_devices (GtkWidget *notebook)
   gtk_table_attach (GTK_TABLE (table2), button, 5, 6, 0, 1,         
                     (GtkAttachOptions) (GTK_SHRINK | GTK_FILL),                
                     (GtkAttachOptions) (GTK_SHRINK | GTK_FILL),                
-                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);  
-
+                    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
+  
   g_signal_connect (G_OBJECT (button), "clicked",
 		    G_CALLBACK (refresh_devices), NULL);
 }

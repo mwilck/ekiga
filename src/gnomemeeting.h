@@ -79,9 +79,9 @@ class GnomeMeeting : public PProcess
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  To refuse a call, or interrupt the current call.
-   * PRE          :  /
+   * PRE          :  The reason why the call was not disconnected.
    */
-  void Disconnect ();
+  void Disconnect (H323Connection::CallEndReason = H323Connection::EndedByLocalUser);
 
 		
   /* Needed for PProcess */

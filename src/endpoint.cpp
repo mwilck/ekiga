@@ -126,8 +126,10 @@ static gint IncomingCallTimeout (gpointer data)
   }
   else {
 
-    if (MyApp->Endpoint ()->GetCallingState () == 3)
-      MyApp->Disconnect ();
+    if (MyApp->Endpoint ()->GetCallingState () == 3) {
+
+      MyApp->Disconnect (H323Connection::EndedByNoAnswer);
+    }
   }
   g_free (forward_host_gconf);
 
@@ -1305,7 +1307,7 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
     break;
 
   case H323Connection::EndedByNoAnswer :
-    msg = g_strdup (_("Remote party did not answer your call"));
+    msg = g_strdup (_("Remote party did not answer your call in the required time"));
     break;
     
   case H323Connection::EndedByTransportFail :

@@ -161,7 +161,7 @@ GnomeMeeting::Connect()
 }
 
 
-void GnomeMeeting::Disconnect ()
+void GnomeMeeting::Disconnect (H323Connection::CallEndReason reason)
 {
   /* If somebody is calling us, then we do not accept the connection
      else we finish it */
@@ -195,7 +195,7 @@ void GnomeMeeting::Disconnect ()
 			       _("Trying to stop calling"));
       gnomemeeting_threads_leave ();
 
-      endpoint->ClearCall (current_call_token);
+      endpoint->ClearCall (current_call_token, reason);
     }
     else {
 
@@ -211,7 +211,7 @@ void GnomeMeeting::Disconnect ()
 	gnomemeeting_threads_leave ();
 
 	/* End of Call */
-	endpoint->ClearAllCalls (H323Connection::EndedByLocalUser, FALSE);
+	endpoint->ClearAllCalls (reason, FALSE);
       }
       else {
 
@@ -222,7 +222,12 @@ void GnomeMeeting::Disconnect ()
 				      0);
 	gnomemeeting_threads_leave ();
 
-	connection->AnsweringCall (H323Connection::AnswerCallDenied);	
+	/* Either the user clicks on disconnect when we are called,
+	   either the reason is different */
+	if (reason == H323Connection::EndedByLocalUser)
+	  connection->AnsweringCall (H323Connection::AnswerCallDenied);
+	else
+	  endpoint->ClearAllCalls (reason, FALSE);
       }
     }
   } 

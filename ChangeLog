@@ -1,3 +1,17 @@
+2002-09-15  Damien Sandras  <dsandras@seconix.com>
+
+	* src/endpoint.cpp: Improved call end messages. No answer leads to
+	"Did not answer your call in the required time", instead of "Did not
+	accept your call".
+	
+	* src/gnomemeeting.cpp: Changed the signature and the body of 
+	Disconnect () to accept a valid call end reason.
+	
+	* src/gnomemeeting.h: See above.
+	
+	* src/pref_window.cpp: Added a browse button to choose the video
+	image.
+	
 2002-09-14  Damien Sandras  <dsandras@seconix.com>
 
 	* pixmaps/text_logo.xpm: Made the logo smaller.
