@@ -1,19 +1,25 @@
 # Greek translation for gnomemeeting.
 # Copyright (C) 2001 Free Software Foundation.
 # Simos Xenitellis <simos@hellug.gr>, 2001.
-# 
+# Nikos Charonitakis <charosn@her.forthnet.gr>, 2003.
+# simos init translation 18 messages
+# nikos start updating   59 messages 21jul03
+#
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting 0.12.2\n"
-"POT-Creation-Date: 2002-10-14 10:26+0200\n"
-"PO-Revision-Date: 2001-12-29 19:56+0000\n"
-"Last-Translator: Simos Xenitellis <simos@hellug.gr>\n"
+"POT-Creation-Date: 2003-07-21 00:48+0300\n"
+"PO-Revision-Date: 2003-07-21 00:59-0200\n"
+"Last-Translator: Nikos Charonitakis <charosn@her.fothnet.gr>\n"
 "Language-Team: Greek <nls@tux.hellug.gr>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:916 src/main_window.cpp:920
+#. Add the window icon and title
+#: gnomemeeting.desktop.in.h:1
+#: src/main_window.cpp:1265
 #, fuzzy
 msgid "GnomeMeeting"
 msgstr "Συνάντηση"
@@ -32,696 +38,836 @@ msgid "1: 56Kbps, 2: ISDN, 3:DSL, 4: LAN, 5: Custom"
 msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:2
-msgid "A comment that will be listed in LDAP directories"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:3 src/pref_window.cpp:1397
 msgid "Always forward calls to the given host"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:4
+#: gnomemeeting.schemas.in.in.h:3
 #, fuzzy
 msgid "Audio player"
 msgstr "Επιλογές Ηχητικής Ειδοποίησης"
 
-#: gnomemeeting.schemas.in.in.h:5
+#: gnomemeeting.schemas.in.in.h:4
 #, fuzzy
-msgid "Audio player Mixer"
+msgid "Audio player mixer"
 msgstr "Μέγεθος Σ&ελίδας:"
 
-#: gnomemeeting.schemas.in.in.h:6
+#: gnomemeeting.schemas.in.in.h:5
 #, fuzzy
 msgid "Audio recorder"
 msgstr "CD Μουσικής"
 
-#. The toggles
-#: gnomemeeting.schemas.in.in.h:7 src/menu.cpp:466 src/pref_window.cpp:1288
-#: src/tray.cpp:191
+#: gnomemeeting.schemas.in.in.h:6
 #, fuzzy
-msgid "Auto Answer"
-msgstr "Αυτόματα Απών"
+msgid "Audio recorder mixer"
+msgstr "CD Μουσικής"
+
+#: gnomemeeting.schemas.in.in.h:7
+msgid "Automatic echo cancellation"
+msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:8
-msgid "Automatic Echo Cancellation"
+#: src/menu.cpp:911
+msgid "Automatically answer calls"
 msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:9
-msgid "Change the control panel section"
+#: src/pref_window.cpp:867
+msgid "Automatically clear the text chat at the end of calls"
 msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:10
-msgid ""
-"Change the control panel section (3 means that the control panel is off)"
+msgid "Change the control panel section"
 msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:11
+msgid "Change the control panel section (4 means that the control panel is off)"
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:12
+#: src/pref_window.cpp:1427
+msgid "Choose the number of blocks (that have not changed) transmitted with each frame. These blocks fill in the background."
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:13
 #, fuzzy
 msgid "Color Format"
 msgstr "Μορφή ώρας"
 
-#: gnomemeeting.schemas.in.in.h:12
+#: gnomemeeting.schemas.in.in.h:14
 msgid "Color Format for the video palette"
 msgstr ""
 
 #
-#: gnomemeeting.schemas.in.in.h:13 src/ldap_window.cpp:611
+#: gnomemeeting.schemas.in.in.h:15
+#: src/ldap_window.cpp:2572
 msgid "Comment"
 msgstr "Σχόλιο"
 
-#: gnomemeeting.schemas.in.in.h:14
+#: gnomemeeting.schemas.in.in.h:16
+#: src/pref_window.cpp:974
+msgid "Connection will be established in Fast Start mode. Fast Start is a new way to start calls faster that was introduced in H.323v2. It is not supported by Netmeeting and using both Fast Start and H.245 Tunnelling can crash some versions of Netmeeting."
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:17
 msgid "Country code"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:15
-msgid "Display a popup window every time you receive a call"
+#: gnomemeeting.schemas.in.in.h:18
+msgid "Display a popup window when receiving a call"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:16
+#: gnomemeeting.schemas.in.in.h:19
+#: src/menu.cpp:446
 #, fuzzy
 msgid "Do not disturb"
 msgstr "Μην Ενοχλείτε"
 
 #
-#: gnomemeeting.schemas.in.in.h:17
+#: gnomemeeting.schemas.in.in.h:20
 #, fuzzy
-msgid "E-Mail address"
+msgid "E-mail address"
 msgstr "Ηλεκτρονική Διεύθυνση:"
 
-#: gnomemeeting.schemas.in.in.h:18
+#: gnomemeeting.schemas.in.in.h:21
 #, fuzzy
-msgid "Enable FPS"
+msgid "Enable 'Fast Start'"
 msgstr "Ενεργοποίηση γρήγορης αναζήτησης"
 
-#: gnomemeeting.schemas.in.in.h:19
-#, fuzzy
-msgid "Enable Silence Detection for G.711 and GSM"
-msgstr "Ενεργοποίηση παράτασης για "
-
-#: gnomemeeting.schemas.in.in.h:20 src/pref_window.cpp:1869
-#, fuzzy
-msgid "Enable Video Transmission"
-msgstr "Δικαιώματα"
-
-#: gnomemeeting.schemas.in.in.h:21
-msgid "Enable or disable bilinear filtering"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:22 src/pref_window.cpp:1315
-msgid ""
-"Enable or disable bilinear interpolation when rendering video images (it has "
-"no effect on fullscreen)."
+#: gnomemeeting.schemas.in.in.h:22
+msgid "Enable H.245 tunnelling"
 msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:23
-msgid "Enable registering to the LDAP server"
-msgstr ""
+#, fuzzy
+msgid "Enable IP translation"
+msgstr "Μετάφραση"
 
 #: gnomemeeting.schemas.in.in.h:24
-msgid "Enable the limit on the number of frames per second"
-msgstr ""
+#, fuzzy
+msgid "Enable bilinear filtering on displayed video"
+msgstr "Ενεργοποίηση κουμπιού απόκρυψης"
 
 #: gnomemeeting.schemas.in.in.h:25
-msgid "Enable the video transmission for calls"
+#: src/pref_window.cpp:862
+msgid "Enable or disable bilinear interpolation when rendering video images (this has no effect in fullscreen mode)."
 msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:26
 #, fuzzy
-msgid "Fast Start"
-msgstr "Ενεργοποίηση γρήγορης αναζήτησης"
+msgid "Enable registering"
+msgstr "Εγγραφή"
 
-#: gnomemeeting.schemas.in.in.h:27 src/ldap_window.cpp:563
-msgid "First Name"
-msgstr "Όνομα"
+#: gnomemeeting.schemas.in.in.h:27
+#, fuzzy
+msgid "Enable silence detection"
+msgstr "Ενεργοποίηση κουμπιού απόκρυψης"
 
-#: gnomemeeting.schemas.in.in.h:28 src/pref_window.cpp:1403
-msgid "Forward calls to the given host if busy"
-msgstr ""
+#: gnomemeeting.schemas.in.in.h:28
+#, fuzzy
+msgid "Enable video reception"
+msgstr "Ενεργοποίηση κουμπιού απόκρυψης"
 
-#: gnomemeeting.schemas.in.in.h:29 src/pref_window.cpp:1400
-msgid "Forward calls to the given host if no answer"
-msgstr ""
+#: gnomemeeting.schemas.in.in.h:29
+#, fuzzy
+msgid "Enable video transmission"
+msgstr "Δικαιώματα"
 
 #: gnomemeeting.schemas.in.in.h:30
-msgid "Forward calls to this host"
+#: src/pref_window.cpp:784
+msgid "Enter a comment about yourself for the user directory."
 msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:31
-msgid "Fullscreen Height"
+#: src/pref_window.cpp:1060
+msgid "Enter the public IP of your NAT/PAT router if you want to use IP translation. If you are registered to ils.seconix.com, GnomeMeeting will automatically fetch the public IP using the ILS service."
 msgstr ""
 
+#
 #: gnomemeeting.schemas.in.in.h:32
-msgid "Fullscreen Width"
-msgstr ""
+#: src/pref_window.cpp:779
+#, fuzzy
+msgid "Enter your e-mail address."
+msgstr "Διεύθυνση αποστολέα:"
 
 #: gnomemeeting.schemas.in.in.h:33
-msgid "H.245 Tunnelling"
-msgstr ""
+#: src/pref_window.cpp:769
+#, fuzzy
+msgid "Enter your first name."
+msgstr "Εισάγετε όνομα νέου _φύλλου:"
 
-#: gnomemeeting.schemas.in.in.h:34 src/pref_window.cpp:1891
-msgid ""
-"Here you can choose the number of blocks (that haven't changed) transmitted "
-"with each frame. These blocks fill in the background."
-msgstr ""
+#: gnomemeeting.schemas.in.in.h:34
+#: src/pref_window.cpp:774
+#, fuzzy
+msgid "Enter your last name."
+msgstr "Εισάγετε όνομα νέου _φύλλου:"
 
 #: gnomemeeting.schemas.in.in.h:35
-#, fuzzy
-msgid "IP Translation"
-msgstr "Μετάφραση"
-
-#: gnomemeeting.schemas.in.in.h:36 src/pref_window.cpp:1541
-msgid ""
-"If enabled, GnomeMeeting will use the Quicknet device instead of the regular "
-"soundcard during calls."
+#: src/pref_window.cpp:789
+msgid "Enter your location (country or city) for the user directory."
 msgstr ""
 
+#: gnomemeeting.schemas.in.in.h:36
+msgid "First name"
+msgstr "Όνομα"
+
 #: gnomemeeting.schemas.in.in.h:37
-msgid "If enabled, a sound is played on incoming calls."
+msgid "Forward calls to host"
 msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:38
-msgid "If enabled, calls will be established in Fast Start mode."
+msgid "Forward calls to the given host if busy"
 msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:39
-msgid "If enabled, calls will be established with H.245 Tunnelling."
+msgid "Forward calls to the given host if no answer"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:40 src/pref_window.cpp:1288
-msgid "If enabled, incoming calls will be automatically answered."
+#: gnomemeeting.schemas.in.in.h:40
+msgid "Fullscreen height"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:41 src/pref_window.cpp:1290
-msgid "If enabled, incoming calls will be automatically refused."
+#: gnomemeeting.schemas.in.in.h:41
+msgid "Fullscreen width"
 msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:42
+#: src/pref_window.cpp:1001
 #, fuzzy
-msgid "Image"
-msgstr "Μεγάλο"
+msgid "Gatekeeper ID"
+msgstr "Δε βρέθηκαν ταιριάσματα."
 
 #: gnomemeeting.schemas.in.in.h:43
 #, fuzzy
-msgid "Incoming Call Sound"
-msgstr "Εισερχόμενη Αλληλογραφία"
+msgid "Gatekeeper alias"
+msgstr "Γενικές Ρυθμίσεις"
 
 #: gnomemeeting.schemas.in.in.h:44
-msgid "Jitter buffer"
-msgstr ""
+#: src/pref_window.cpp:1000
+#, fuzzy
+msgid "Gatekeeper host"
+msgstr "Δε βρέθηκαν ταιριάσματα."
 
 #: gnomemeeting.schemas.in.in.h:45
-msgid "Jitter buffer for audio reception in ms"
-msgstr ""
+#, fuzzy
+msgid "Gatekeeper password"
+msgstr "Δε βρέθηκαν ταιριάσματα."
 
 #: gnomemeeting.schemas.in.in.h:46
-msgid "Kind of network selected in the druid"
+msgid "If enabled, GnomeMeeting will play a sound when receiving an incoming call (the sound to play is chosen in the Gnome Control Center)."
 msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:47
-#, fuzzy
-msgid "LDAP Server"
-msgstr "Διακομιστής LDAP"
+#: src/pref_window.cpp:826
+msgid "If enabled, GnomeMeeting will start hidden. The docklet must be enabled."
+msgstr ""
 
-#
-#: gnomemeeting.schemas.in.in.h:48 src/ldap_window.cpp:575
-#, fuzzy
-msgid "Last Name"
-msgstr "Επώνυμο:"
+#: gnomemeeting.schemas.in.in.h:48
+#: src/pref_window.cpp:840
+msgid "If enabled, a popup window will be displayed when receiving an incoming call."
+msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:49
-msgid "Limitation on the number of transmitted frames grabbed by the grabber"
+#: src/pref_window.cpp:939
+msgid "If enabled, all incoming calls will be forwarded to the host that is specified in the field below if you already are in a call or if you are in Do Not Disturb mode."
 msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:50
-msgid "Listen Port"
+#: src/pref_window.cpp:936
+msgid "If enabled, all incoming calls will be forwarded to the host that is specified in the field below if you do not answer the call."
 msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:51
-#, fuzzy
-msgid "Local Video Popup Height"
-msgstr "Φόρτωση _Εικόνων"
+#: src/pref_window.cpp:933
+msgid "If enabled, all incoming calls will be forwarded to the host that is specified in the field below."
+msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:52
-#, fuzzy
-msgid "Local Video Popup Width"
-msgstr "Φόρτωση _Εικόνων"
+#: src/pref_window.cpp:1401
+msgid "If enabled, allows video to be received during a call."
+msgstr ""
 
-#
-#: gnomemeeting.schemas.in.in.h:53 src/ldap_window.cpp:599
-msgid "Location"
-msgstr "Τοποθεσία"
+#: gnomemeeting.schemas.in.in.h:53
+#: src/pref_window.cpp:834
+msgid "If enabled, incoming calls will be automatically answered."
+msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:54
-msgid "Number of background blocks transmitted at a time"
+#: src/pref_window.cpp:837
+msgid "If enabled, incoming calls will be automatically refused."
 msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:55
-msgid "Number of entries to store in history boxes"
+#: src/pref_window.cpp:896
+msgid "If enabled, register with the selected user directory."
 msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:56
-msgid "Number of frames for G.711"
-msgstr ""
+#: src/pref_window.cpp:823
+#, fuzzy
+msgid "If enabled, the splash screen will be displayed when GnomeMeeting starts."
+msgstr "Εμφάνιση/απόκρυψη γραμμής μενού."
 
 #: gnomemeeting.schemas.in.in.h:57
-msgid "Number of frames for GSM"
+#: src/pref_window.cpp:867
+msgid "If enabled, the text chat will automatically be cleared at the end of calls."
 msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:58
-msgid "Number of frames transmitted in each packet for the G.711 codec"
-msgstr ""
+#: src/pref_window.cpp:1371
+#, fuzzy
+msgid "If enabled, use silence detection with the GSM and G.711 codecs."
+msgstr "Ενεργοποίηση παράτασης για "
 
 #: gnomemeeting.schemas.in.in.h:59
-msgid "Number of frames transmitted in each packet for the GSM codec"
+#: src/pref_window.cpp:1398
+msgid "If enabled, video is transmitted during a call."
 msgstr ""
 
-#
 #: gnomemeeting.schemas.in.in.h:60
-#, fuzzy
-msgid "Popup on incoming calls"
-msgstr "Λήψη νέων εισερχομένων μηνυμάτων"
+#: src/pref_window.cpp:899
+msgid "If enabled, your details are shown to people browsing the user directory. If disabled, you are not visible to users browsing the user directory, but they can still use the callto URL to call you."
+msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:61
-msgid "Public IP"
+msgid "Kind of network selected in the druid"
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:62
+msgid "Last name"
+msgstr "Επώνυμο"
+
+#: gnomemeeting.schemas.in.in.h:63
+msgid "Listen Port"
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:64
+#, fuzzy
+msgid "Local video window height"
+msgstr "Φόρτωση _Εικόνων"
+
+#: gnomemeeting.schemas.in.in.h:65
+#, fuzzy
+msgid "Local video window width"
+msgstr "Φόρτωση _Εικόνων"
+
+#
+#: gnomemeeting.schemas.in.in.h:66
+#: src/ldap_window.cpp:2585
+msgid "Location"
+msgstr "Τοποθεσία"
+
+#: gnomemeeting.schemas.in.in.h:67
+msgid "Maximum jitter buffer"
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:68
+#, fuzzy
+msgid "Maximum video bandwidth"
+msgstr "Μέγιστο πλάτος προσώπου: "
+
+#: gnomemeeting.schemas.in.in.h:69
+msgid "Minimum jitter buffer"
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:70
+#, fuzzy
+msgid "Minimum transmitted FPS"
+msgstr "Μεταφρασμενο κείμενο:"
+
+#: gnomemeeting.schemas.in.in.h:71
+#, fuzzy
+msgid "Minimum transmitted video quality"
+msgstr "Μεταφρασμενο κείμενο:"
+
+#: gnomemeeting.schemas.in.in.h:72
+msgid "Number of entries to store in history boxes"
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:73
+msgid "Number of frames for G.711"
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:74
+msgid "Number of frames for GSM"
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:75
+msgid "Number of frames transmitted in each packet for the G.711 codec."
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:76
+msgid "Number of frames transmitted in each packet for the GSM codec."
 msgstr ""
 
 #
-#. The Quicknet devices related options
-#: gnomemeeting.schemas.in.in.h:62 src/pref_window.cpp:1531
+#: gnomemeeting.schemas.in.in.h:77
 #, fuzzy
-msgid "Quicknet Device"
-msgstr "Συσκευή"
+msgid "Play a sound on incoming calls"
+msgstr "Λήψη νέων εισερχομένων μηνυμάτων"
 
-#: gnomemeeting.schemas.in.in.h:63
+#: gnomemeeting.schemas.in.in.h:78
+msgid "Public IP of the NAT/PAT router"
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:79
 #, fuzzy
 msgid "Received Video Quality Hint"
 msgstr "Λήψη Μηνύματος"
 
-#: gnomemeeting.schemas.in.in.h:64
-msgid "Register"
-msgstr "Εγγραφή"
-
-#: gnomemeeting.schemas.in.in.h:65
+#: gnomemeeting.schemas.in.in.h:80
 #, fuzzy
-msgid "Remote Video Popup Height"
+msgid "Registering method"
+msgstr "Καταχωρηθείτε Τώρα"
+
+#: gnomemeeting.schemas.in.in.h:81
+#: src/pref_window.cpp:1028
+#, fuzzy
+msgid "Registering method to use"
+msgstr "Χρήστης για να τεθεί"
+
+#: gnomemeeting.schemas.in.in.h:82
+#, fuzzy
+msgid "Remote video window height"
 msgstr "Α_φαίρεση Εικόνας Χρήστη"
 
-#: gnomemeeting.schemas.in.in.h:66
+#: gnomemeeting.schemas.in.in.h:83
 #, fuzzy
-msgid "Remote Video Popup Width"
+msgid "Remote video window width"
 msgstr "Α_φαίρεση Εικόνας Χρήστη"
 
-#: gnomemeeting.schemas.in.in.h:67
+#: gnomemeeting.schemas.in.in.h:84
 msgid "Revision of the schema file"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:68
-msgid "Show a docklet in the gnome-panel or KDE systray"
+#: gnomemeeting.schemas.in.in.h:85
+#: src/druid.cpp:792
+#: src/pref_window.cpp:1098
+#, fuzzy
+msgid "Select the audio player device to use."
+msgstr "Εισάγετε την κωδικοποίηση προς χρήση"
+
+#: gnomemeeting.schemas.in.in.h:86
+#: src/druid.cpp:799
+#: src/pref_window.cpp:1105
+#, fuzzy
+msgid "Select the audio recorder device to use."
+msgstr "Εισάγετε την κωδικοποίηση προς χρήση"
+
+#: gnomemeeting.schemas.in.in.h:87
+#: src/pref_window.cpp:1176
+msgid "Select the format for video cameras. (Does not apply to most USB cameras)."
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:69
-msgid "Show a nice window every time GnomeMeeting starts"
+#: gnomemeeting.schemas.in.in.h:88
+#: src/druid.cpp:795
+#: src/pref_window.cpp:1101
+#, fuzzy
+msgid "Select the mixer to use to change the volume of the audio player."
+msgstr "Ο δίσκος αρνήθηκε να αλλάξει τις ρυθμίσεις του."
+
+#: gnomemeeting.schemas.in.in.h:89
+#: src/druid.cpp:802
+#: src/pref_window.cpp:1108
+#, fuzzy
+msgid "Select the mixer to use to change the volume of the audio recorder."
+msgstr "Ο δίσκος αρνήθηκε να αλλάξει τις ρυθμίσεις του."
+
+#: gnomemeeting.schemas.in.in.h:90
+#: src/pref_window.cpp:1173
+msgid "Select the transmitted video size: Small (QCIF 176x144) or Large (CIF 352x288)."
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:70
+#: gnomemeeting.schemas.in.in.h:91
+#: src/pref_window.cpp:1166
+msgid "Select the video device to use. Using an invalid video device or \"Picture\" for video transmission will transmit a test picture."
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:92
 msgid "Show a status bar at the bottom of the main window"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:71
+#: gnomemeeting.schemas.in.in.h:93
 #, fuzzy
 msgid "Show chat window"
 msgstr "Εμφάνιση/Απόκρυψη Παραθύρου Επεξεργασίας"
 
-#: gnomemeeting.schemas.in.in.h:72
-#, fuzzy
-msgid "Show docklet"
-msgstr "Εμφάνιση Λεπτομερειών"
-
-#: gnomemeeting.schemas.in.in.h:73
-msgid "Show left toolbar"
+#: gnomemeeting.schemas.in.in.h:94
+msgid "Show my details to other registered users"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:74
-msgid "Show only the docklet window at startup"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:75
+#: gnomemeeting.schemas.in.in.h:95
 #, fuzzy
-msgid "Show splash screen at startup"
+msgid "Show splash screen"
 msgstr "Εμφάνιση Διαχωρισμού Οθόνης"
 
-#: gnomemeeting.schemas.in.in.h:76
+#: gnomemeeting.schemas.in.in.h:96
 #, fuzzy
 msgid "Show status bar"
 msgstr "Εμφάνιση Γραμμής Κατάστασης"
 
-#: gnomemeeting.schemas.in.in.h:77
+#: gnomemeeting.schemas.in.in.h:97
 #, fuzzy
 msgid "Show the chat window in the main window"
 msgstr "Εμφάνιση/Απόκρυψη Παραθύρου Επεξεργασίας"
 
-#: gnomemeeting.schemas.in.in.h:78
-msgid "Show the left toolbar on the left of the main window"
+#: gnomemeeting.schemas.in.in.h:98
+msgid "Start hidden"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:79
+#: gnomemeeting.schemas.in.in.h:99
+#: src/menu.cpp:616
+#: src/menu.cpp:860
+msgid "Switch to fullscreen"
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:100
+msgid "Switch to fullscreen for images displayed in the main GUI."
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:101
 msgid "TCP Port Range"
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:80
+#: gnomemeeting.schemas.in.in.h:102
 #, fuzzy
 msgid "The Audio Codecs List"
 msgstr "CD Μουσικής"
 
-#: gnomemeeting.schemas.in.in.h:81 src/pref_window.cpp:1535
-msgid ""
-"The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic "
-"Gain Compensation. Choosing Automatic Gain Compensation modulates the volume "
-"for best quality."
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:82
-msgid "The E-Mail address that will be listed in the directories"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:83
-#, fuzzy
-msgid "The Gatekeeper to register to"
-msgstr "Δεν υπάρχει κατάλογος για αποκατάσταση από."
-
-#: gnomemeeting.schemas.in.in.h:84
-#, fuzzy
-msgid "The ID of the Gatekeeper to register to"
-msgstr "Δεν υπάρχει κατάλογος για αποκατάσταση από."
-
-#: gnomemeeting.schemas.in.in.h:85
-#, fuzzy
-msgid "The LDAP Server to register to"
-msgstr "Δεν υπάρχει κατάλογος για αποκατάσταση από."
-
-#: gnomemeeting.schemas.in.in.h:86
-msgid "The Location that will be published in the LDAP directories"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:87
-msgid "The Method to use to register to the Gatekeeper"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:88
-msgid "The Quicknet Device to use during calls."
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:89
-#, fuzzy
-msgid "The Video Channel"
-msgstr "Κανάλι"
-
-#: gnomemeeting.schemas.in.in.h:90
-#, fuzzy
-msgid "The Video Device to use for recording"
-msgstr "Ο δίσκος αρνήθηκε να αλλάξει τις ρυθμίσεις του."
-
-#: gnomemeeting.schemas.in.in.h:91
-msgid "The Video Format: PAL, NTSC, SECAM, Auto"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:92
-msgid "The Video Quality to request to the remote"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:93
-msgid "The Video Size: QCIF (0) or CIF (1)"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:94
-msgid "The alias to use when registering"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:95
-msgid ""
-"The alias to use when registering. People will use this alias when calling "
-"you."
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:96
-msgid "The default video view"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:97
-msgid ""
-"The default video view (0: Local, 1: Remote, 2: Both incrusted, 3: Both with "
-"local in popup, 4: Both)"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:98
-msgid "The device to use to play audio"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:99
-#, fuzzy
-msgid "The device to use to record audio"
-msgstr "Ο δίσκος αρνήθηκε να αλλάξει τις ρυθμίσεις του."
-
-#: gnomemeeting.schemas.in.in.h:100
-msgid "The height of the local video popup"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:101
-msgid ""
-"The height of the picture displayed when being in fullscreen (using SDL)"
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:102
-msgid "The height of the remote video popup"
-msgstr ""
-
 #: gnomemeeting.schemas.in.in.h:103
-msgid "The host to forward calls to"
+#: src/pref_window.cpp:1118
+msgid "The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic Gain Compensation. Choosing Automatic Gain Compensation modulates the volume for best quality."
 msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:104
-msgid "The hostname of the Gatekeeper to register to"
+#: src/pref_window.cpp:1021
+msgid "The Gatekeeper alias to use when registering (string, or E164 ID if only 0123456789#)."
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:105 src/pref_window.cpp:1635
-msgid ""
-"The image to transmit if the Picture device is selected as video device or "
-"if the opening of the device fails (none specified = default GnomeMeeting "
-"logo)."
-msgstr ""
+#: gnomemeeting.schemas.in.in.h:105
+#: src/pref_window.cpp:1018
+#, fuzzy
+msgid "The Gatekeeper host to register with."
+msgstr "Δεν υπάρχει κατάλογος για αποκατάσταση από."
 
 #: gnomemeeting.schemas.in.in.h:106
-msgid "The list of ILS servers"
-msgstr ""
+#: src/pref_window.cpp:1015
+#, fuzzy
+msgid "The Gatekeeper identifier to register with."
+msgstr "Δεν υπάρχει κατάλογος για αποκατάσταση από."
 
 #: gnomemeeting.schemas.in.in.h:107
-msgid "The list of called URLs"
+#: src/pref_window.cpp:1024
+msgid "The Gatekeeper password to use for H.235 authentication to the Gatekeeper."
 msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:108
-msgid "The list of used ILS servers"
+msgid "The Video Quality to request to the remote"
 msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:109
-msgid "The mixer to use for the device that is used to play audio"
+msgid "The default video view"
 msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:110
-msgid "The mixer to use for the device that is used to record audio"
+msgid "The default video view (0: Local, 1: Remote, 2: Both incrusted, 3: Both with local video in a separate window, 4: Both)"
 msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:111
-msgid ""
-"The port to listen to for incoming connections. GnomeMeeting needs to be "
-"restarted for the new value to take effect."
+msgid "The height of the local video window"
 msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:112
-msgid ""
-"The prefix that will be used to save pictures of the conversation. That "
-"prefix is followed by the snapshot number."
+msgid "The height of the remote video window"
 msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:113
-msgid ""
-"The range of TCP ports beside the listen_port that GnomeMeeting will use for "
-"incoming connections. You can change the TCP port range if you are using IP "
-"translation and if you need to have several GnomeMeeting running behind your "
-"NAT/PAT router. GnomeMeeting needs to be restarted for the new values to "
-"take effect."
+#: src/pref_window.cpp:926
+msgid "The host where calls should be forwarded to in the cases selected above."
 msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:114
-msgid ""
-"The range of UDP ports that GnomeMeeting will use for incoming connections. "
-"You can change the UDP port range if you are using IP translation and if you "
-"need to have several GnomeMeeting running behind your NAT/PAT router. "
-"GnomeMeeting needs to be restarted for the new values to take effect."
+#: src/pref_window.cpp:857
+msgid "The image height for fullscreen."
 msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:115
-msgid "The save prefix"
+#: src/pref_window.cpp:1179
+msgid "The image to transmit if \"Picture\" is selected for the video device or if the opening of the device fails. Leave blank to use the default GnomeMeeting logo."
 msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:116
-#, fuzzy
-msgid "The transmitted video quality hint"
-msgstr "Μεταφρασμενο κείμενο:"
+#: src/pref_window.cpp:856
+msgid "The image width for fullscreen."
+msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:117 src/pref_window.cpp:1538
-msgid ""
-"The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)."
+#: gnomemeeting.schemas.in.in.h:117
+msgid "The list of called URLs"
 msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:118
-msgid "The user's first name that will be used in the directories"
+msgid "The list of groups"
 msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:119
-msgid "The width of the local video popup"
+#: src/pref_window.cpp:1367
+msgid "The maximum jitter buffer size for audio reception (in ms)."
 msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:120
-msgid "The width of the picture displayed when being in fullscreen (using SDL)"
+#: src/pref_window.cpp:1409
+msgid "The maximum video bandwidth in kbytes/s. The video quality and the number of transmitted frames per second will be dynamically adjusted above their minimum during calls to try to minimize the bandwidth to the given value."
 msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:121
-msgid "The width of the remote video popup"
+#: src/pref_window.cpp:1366
+msgid "The minimum jitter buffer size for audio reception (in ms)."
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:122 src/pref_window.cpp:1426
-msgid ""
-"This enables IP translation. IP translation is useful if GnomeMeeting is "
-"running behind a NAT/PAT router. You have to put the public IP of the router "
-"in the field below. If you are registered to ils.seconix.com, GnomeMeeting "
-"will automatically fetch the public IP using the ILS service. If your router "
-"natively supports H.323, you can disable this."
-msgstr ""
-
-#: gnomemeeting.schemas.in.in.h:123
-msgid "This need the show_docklet option set to true to have effect"
+#: gnomemeeting.schemas.in.in.h:122
+#: src/pref_window.cpp:1422
+msgid "The minimum number of video frames to transmit each second when trying to minimize the bandwidth."
 msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:124
-msgid "Transmitted frames per second"
+#, no-c-format
+msgid "The minimum transmitted video quality to keep when trying to minimize the used bandwidth: choose 100% on a LAN for the best quality, 1% being the worst quality."
 msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:125
-msgid "UDP Port Range"
+msgid "The port to listen to for incoming connections. GnomeMeeting needs to be restarted for the new value to take effect."
 msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:126
-msgid "Use Quicknet Device"
+msgid "The prefix that will be used to save pictures of the conversation. That prefix is followed by the snapshot number."
 msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:127 src/ldap_window.cpp:623
-msgid "Version"
+#: gnomemeeting.schemas.in.in.h:127
+msgid "The range of TCP ports beside the listen_port that GnomeMeeting will use for the H.245 channel. You can change the TCP port range if you are using IP translation and if you need to have several GnomeMeeting running behind your NAT/PAT router. GnomeMeeting needs to be restarted for the new values to take effect. This port range has no effect if both participants to the conference are using H.245 Tunneling."
 msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:128
-#, fuzzy
-msgid "Video Channel"
-msgstr "Κανάλι"
+msgid "The range of UDP ports that GnomeMeeting will use for RTP (audio and video communication channels). You can change the UDP port range if you are using IP translation and if you need to have several GnomeMeeting running behind your NAT/PAT router. GnomeMeeting needs to be restarted for the new values to take effect."
+msgstr ""
 
-#
 #: gnomemeeting.schemas.in.in.h:129
-#, fuzzy
-msgid "Video Device"
-msgstr "Συσκευή"
+msgid "The range of UDP ports that GnomeMeeting will use when registering to gatekeepers. You can change the UDP port range if you are using IP translation and if you need to have several GnomeMeeting running behind your NAT/PAT router. GnomeMeeting needs to be restarted for the new values to take effect. This port range has no effect if you are not registering to a gatekeeper."
+msgstr ""
 
 #: gnomemeeting.schemas.in.in.h:130
-#, fuzzy
-msgid "Video Format"
-msgstr "Μορφή ώρας"
+msgid "The save prefix"
+msgstr ""
 
-#: gnomemeeting.schemas.in.in.h:131 src/pref_window.cpp:1639
+#: gnomemeeting.schemas.in.in.h:131
+#: src/pref_window.cpp:1121
+msgid "The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)."
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:132
+#: src/pref_window.cpp:893
+#, fuzzy
+msgid "The user directory server to register with."
+msgstr "Δεν υπάρχει κατάλογος για αποκατάσταση από."
+
+#: gnomemeeting.schemas.in.in.h:133
+#: src/pref_window.cpp:1170
+msgid "The video channel number to use (to select camera, tv or other sources)."
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:134
+msgid "The width of the local video window"
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:135
+msgid "The width of the remote video window"
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:136
+msgid "The zoom value"
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:137
+msgid "The zoom value to apply to images displayed in the main GUI (can be 0.50, 1.00, or 2.00)."
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:138
+#: src/pref_window.cpp:971
+msgid "This enables H.245 Tunnelling mode. In H.245 Tunnelling mode H.245 messages are encapsulated into the the H.225 channel (port 1720). This saves one TCP connection during calls. H.245 Tunnelling was introduced in H.323v2 and Netmeeting does not support it. Using both Fast Start and H.245 Tunnelling can crash some versions of Netmeeting."
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:139
+#: src/pref_window.cpp:1057
+msgid "This enables IP translation. IP translation is useful if GnomeMeeting is running behind a NAT/PAT router. You have to put the public IP of the router in the field below. If you are registered to ils.seconix.com, GnomeMeeting will automatically fetch the public IP using the ILS service. If your router natively supports H.323, you can disable this."
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:140
+msgid "This permits to set the mode for User Input Capabilities. The values can be \"All\" (0), \"None\" (1), \"rfc2833\" (2), \"Signal\" (3) or \"String\" (4) (default is \"All\"). Choosing other values than \"All\", \"String\" or \"rfc2833\" disables the Text Chat."
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:141
+#, fuzzy
+msgid "Transmitted background blocks"
+msgstr "Μεταφρασμενο κείμενο:"
+
+#: gnomemeeting.schemas.in.in.h:142
+msgid "UDP Port Range"
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:143
+msgid "User Input Capabilities type"
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:144
+#, fuzzy
+msgid "User directory"
+msgstr "Δεν είναι κατάλογος"
+
+#: gnomemeeting.schemas.in.in.h:145
+#: src/ldap_window.cpp:2609
+msgid "Version"
+msgstr ""
+
+#: gnomemeeting.schemas.in.in.h:146
 #, fuzzy
 msgid "Video Preview"
 msgstr "Ανανέωση Προεπισκόπησης"
 
-#: gnomemeeting.schemas.in.in.h:132
+#: gnomemeeting.schemas.in.in.h:147
 #, fuzzy
-msgid "Video Quality"
-msgstr "Λήψη Μηνύματος"
+msgid "Video channel"
+msgstr "Κανάλι"
 
-#: gnomemeeting.schemas.in.in.h:133
+#
+#: gnomemeeting.schemas.in.in.h:148
 #, fuzzy
-msgid "Video Size"
+msgid "Video device"
+msgstr "Συσκευή"
+
+#: gnomemeeting.schemas.in.in.h:149
+#, fuzzy
+msgid "Video format"
+msgstr "Μορφή ώρας"
+
+#: gnomemeeting.schemas.in.in.h:150
+#, fuzzy
+msgid "Video image"
+msgstr "Φόρτωση _Εικόνων"
+
+#: gnomemeeting.schemas.in.in.h:151
+#, fuzzy
+msgid "Video size"
 msgstr "Μέγεθος Αρχείου:"
 
-#: gnomemeeting.schemas.in.in.h:134
-msgid ""
-"You can put here the public IP of your NAT/PAT router if you want to use IP "
-"translation. If you are registered to ils.seconix.com, GnomeMeeting will "
-"automatically fetch the public IP using the ILS service."
-msgstr ""
-
-#: lib/dialog.c:131
+#: lib/dialog.c:182
 msgid "Do not show this dialog again"
 msgstr ""
 
-#. The toggles
-#: sounds/gnomemeeting.soundlist.in.h:1 src/pref_window.cpp:1323
-#, fuzzy
+#: sounds/gnomemeeting.soundlist.in.h:1
 msgid "Incoming Call"
-msgstr "Εισερχόμενη Αλληλογραφία"
+msgstr "Εισερχόμενη Κλήση"
 
 #: sounds/gnomemeeting.soundlist.in.h:2
 #, fuzzy
 msgid "gnomemeeting"
 msgstr "Συνάντηση"
 
-#: src/callbacks.cpp:122
+#: src/callbacks.cpp:87
+msgid "_Retrieve Call"
+msgstr ""
+
+#: src/callbacks.cpp:100
+#: src/menu.cpp:458
+msgid "_Hold Call"
+msgstr ""
+
+#
+#: src/callbacks.cpp:141
+#: src/ldap_window.cpp:708
+#, fuzzy
+msgid "Edit the contact information"
+msgstr "Προσωπικά"
+
+#: src/callbacks.cpp:144
+#: src/menu.cpp:463
+msgid "_Transfer Call"
+msgstr ""
+
+#: src/callbacks.cpp:165
+msgid "Forward call to:"
+msgstr ""
+
+#: src/callbacks.cpp:260
+#: src/menu.cpp:470
+msgid "Suspend _Audio"
+msgstr ""
+
+#: src/callbacks.cpp:261
+msgid "Resume _Audio"
+msgstr ""
+
+#: src/callbacks.cpp:262
+#, fuzzy
+msgid "Audio transmission: suspended"
+msgstr "Δικαιώματα"
+
+#: src/callbacks.cpp:263
+#, fuzzy
+msgid "Audio transmission: resumed"
+msgstr "Δικαιώματα"
+
+#: src/callbacks.cpp:272
+#: src/menu.cpp:475
+msgid "Suspend _Video"
+msgstr ""
+
+#: src/callbacks.cpp:273
+#, fuzzy
+msgid "Resume _Video"
+msgstr "Α_φαίρεση Εικόνας Χρήστη"
+
+#: src/callbacks.cpp:274
+#, fuzzy
+msgid "Video transmission: suspended"
+msgstr "Δικαιώματα"
+
+#: src/callbacks.cpp:275
+#, fuzzy
+msgid "Video transmission: resumed"
+msgstr "Δικαιώματα"
+
+#: src/callbacks.cpp:381
 #, fuzzy
 msgid "Code Contributors:"
 msgstr "Συνεργάτες του GNOME:"
 
-#: src/callbacks.cpp:128
+#: src/callbacks.cpp:389
+msgid "Artwork:"
+msgstr ""
+
+#: src/callbacks.cpp:392
 #, fuzzy
 msgid "Contributors:"
 msgstr "Συνεργάτες του GNOME:"
 
-#: src/callbacks.cpp:149
+#: src/callbacks.cpp:418
 msgid "Internationalisation Maintainer:"
 msgstr ""
 
 #. Translators: Please write translator credits here, and
 #. * seperate names with \n
-#: src/callbacks.cpp:166
+#: src/callbacks.cpp:436
 msgid "translator_credits"
 msgstr ""
 
 #. Translators: Please test to see if your translation
 #. * looks OK and fits within the box
-#: src/callbacks.cpp:178
+#: src/callbacks.cpp:447
 msgid ""
 "GnomeMeeting is a full-featured H.323\n"
 "video conferencing application."
 msgstr ""
 
-#: src/callbacks.cpp:216
-msgid ""
-"An error has happened in the configuration backend.\n"
-"Maybe some of your settings won't be saved."
-msgstr ""
-
-#: src/chat_window.cpp:148 src/menu.cpp:355
-msgid "Text Chat"
-msgstr ""
-
-#: src/chat_window.cpp:194
+#: src/chat_window.cpp:209
 msgid "Send Message:"
-msgstr ""
-
-#: src/cleaner.cpp:79
-#, fuzzy
-msgid "Quit in progress..."
-msgstr "Εκτέλεση..."
-
-#: src/cleaner.cpp:93
-msgid ""
-"Warning! GnomeMeeting can't disconnect from the remote party due to a bug in "
-"OpenH323.\n"
-"Forcing the exit in 3 seconds!\n"
 msgstr ""
 
 #: src/config-tool-i18n.h:1
@@ -753,7 +899,8 @@ msgstr ""
 msgid "Removing $HOME/.gconf/apps/gnomemeeting"
 msgstr ""
 
-#: src/config-tool-i18n.h:6 src/config-tool-i18n.h:11
+#: src/config-tool-i18n.h:6
+#: src/config-tool-i18n.h:11
 #: src/config-tool-i18n.h:13
 msgid "Shutting down GConf daemon"
 msgstr ""
@@ -811,2142 +958,2371 @@ msgid "  --clean                remove all user settings"
 msgstr ""
 
 #: src/config-tool-i18n.h:19
-msgid ""
-"  --install-schemas      install schemas with default settings (run as root)"
+msgid "  --install-schemas      install schemas with default settings (run as root)"
 msgstr ""
 
 #: src/config-tool-i18n.h:20
-msgid ""
-"  --clean-schemas        remove schemas with default settings (run as root)"
+msgid "  --clean-schemas        remove schemas with default settings (run as root)"
 msgstr ""
 
 #: src/config-tool-i18n.h:21
-msgid ""
-"  --fix-permissions      fix permissions of GConf repository (run as root)"
+msgid "  --fix-permissions      fix permissions of GConf repository (run as root)"
 msgstr ""
 
-#. Set recording source and set micro to record
-#. Translators: This is shown in the history.
-#: src/config.cpp:412
-#, c-format
-msgid "Set Audio Mixer for player to %s"
-msgstr ""
-
-#. Translators: This is shown in the history.
-#: src/config.cpp:418
-#, c-format
-msgid "Set Audio Mixer for recorder to %s"
-msgstr ""
-
-#: src/config.cpp:447
+#: src/config.cpp:409
 msgid "Changing this setting will only affect new calls"
 msgstr ""
 
-#: src/config.cpp:587
+#: src/config.cpp:409
+msgid "You have changed a setting that doesn't permit to GnomeMeeting to apply the new change to the current call. Your new setting will only take effect for the next call."
+msgstr ""
+
+#: src/config.cpp:591
 #, fuzzy
 msgid "Disabled Silence Detection"
 msgstr "Απενεργοποίηση του Firewall - χωρίς προστασία"
 
-#: src/config.cpp:593
+#: src/config.cpp:597
 #, fuzzy
 msgid "Enabled Silence Detection"
 msgstr "Ενεργοποίηση κουμπιού απόκρυψης"
 
-#: src/config.cpp:994
+#: src/config.cpp:1259
 msgid ""
 "You need to specify an host to forward calls to!\n"
 "Disabling forwarding."
 msgstr ""
 
-#: src/connection.cpp:93
+#: src/config.cpp:1459
+msgid ""
+"An error has happened in the configuration backend.\n"
+"Maybe some of your settings won't be saved."
+msgstr ""
+
+#: src/connection.cpp:112
 msgid "Started New Logical Channel..."
 msgstr ""
 
-#: src/connection.cpp:100
+#: src/connection.cpp:119
 #, fuzzy, c-format
 msgid "Sending %s"
 msgstr "Αποστέλλεται \"%s\""
 
-#: src/connection.cpp:119
+#: src/connection.cpp:138
 #, fuzzy, c-format
 msgid "Enabled silence detection for %s"
 msgstr "Ενεργοποίηση παράτασης για "
 
-#: src/connection.cpp:122
+#: src/connection.cpp:141
 #, c-format
 msgid "Disabled silence detection for %s"
 msgstr ""
 
-#: src/connection.cpp:138
+#: src/connection.cpp:157
 #, fuzzy, c-format
 msgid "Receiving %s"
 msgstr "Γίνεται Λήψη Μηνυμάτων"
 
-#: src/connection.cpp:166
+#: src/connection.cpp:187
 #, c-format
 msgid "Requesting remote to send video quality: %d%%"
 msgstr ""
 
-#: src/connection.cpp:191
+#: src/connection.cpp:212
 #, fuzzy
 msgid "Request ok"
 msgstr "Λήξη αίτησης!"
 
-#: src/connection.cpp:222 src/connection.cpp:224
-#, fuzzy
-msgid "Audio Channel:  Sending"
-msgstr "Ρυθμίσεις Παραθύρου Καναλιών"
-
-#: src/connection.cpp:231 src/connection.cpp:233
-msgid "Audio Channel:  Paused"
-msgstr ""
-
-#: src/connection.cpp:255 src/connection.cpp:257
-#, fuzzy
-msgid "Video Channel:  Sending"
-msgstr "Τηλεσυνδιάσκεψη"
-
-#: src/connection.cpp:263 src/connection.cpp:265
-#, fuzzy
-msgid "Video Channel:  Paused"
-msgstr "Προβολή ως Αλλαγή Κωδικού"
-
-#: src/connection.cpp:314 src/connection.cpp:316
-msgid "Auto Rejecting Incoming Call"
-msgstr ""
-
-#: src/connection.cpp:317 src/endpoint.cpp:1128
-msgid "Auto Rejected"
-msgstr ""
-
-#: src/connection.cpp:329 src/connection.cpp:331
+#: src/connection.cpp:244
+#: src/connection.cpp:246
 msgid "Auto Answering Incoming Call"
 msgstr ""
 
-#: src/druid.cpp:207
-msgid ""
-"You chose to NOT use the GnomeMeeting ILS directory. Other users will not be "
-"able to contact you if you don't register to a directory service."
+#: src/connection.cpp:337
+#: src/connection.cpp:338
+#: src/urlhandler.cpp:76
+#: src/urlhandler.cpp:77
+msgid "Call transfer failed"
 msgstr ""
 
-#
-#: src/druid.cpp:382
-#, fuzzy
-msgid "Personal Data - Page 2/4"
-msgstr "Προσωπικά"
-
-#: src/druid.cpp:390
-msgid ""
-"Please enter information about yourself. This information will be used when "
-"connecting to remote H.323 software, and to register in the directory of "
-"GnomeMeeting users. The directory is used to register users when they are "
-"using GnomeMeeting so that you can call them, and they can call you."
+#: src/connection.cpp:337
+msgid "The remote user tried to transfer your call to another user, but it failed."
 msgstr ""
 
-#
-#: src/druid.cpp:398 src/pref_window.cpp:1233
-msgid "First Name:"
-msgstr "Όνομα:"
-
-#
-#: src/druid.cpp:401 src/pref_window.cpp:1236
-msgid "Last Name:"
-msgstr "Επώνυμο:"
-
-#
-#: src/druid.cpp:403 src/pref_window.cpp:1241
-#, fuzzy
-msgid "E-mail Address:"
-msgstr "Ηλεκτρονική Διεύθυνση:"
-
-#
-#: src/druid.cpp:405 src/pref_window.cpp:1243
-msgid "Comment:"
-msgstr "Σχόλιο:"
-
-#
-#: src/druid.cpp:407 src/pref_window.cpp:1245
-msgid "Location:"
-msgstr "Τοποθεσία:"
-
-#: src/druid.cpp:410
-msgid "Do not register me to the GnomeMeeting ILS directory"
-msgstr ""
-
-#: src/druid.cpp:455
-msgid "Connection Type - Page 3/4"
-msgstr ""
-
-#: src/druid.cpp:465
-msgid ""
-"Please enter your connection type. This setting is used to set default "
-"settings following your bandwidth. It will set good global settings but it "
-"is however possible to tweak and change some of them to obtain a better "
-"result in each particular case."
-msgstr ""
-
-#: src/druid.cpp:473
+#: src/druid.cpp:517
+#: src/druid.cpp:699
 msgid "56K modem"
-msgstr ""
+msgstr "56K modem"
 
-#: src/druid.cpp:481
+#: src/druid.cpp:521
+#: src/druid.cpp:703
 msgid "ISDN"
+msgstr "ISDN"
+
+#: src/druid.cpp:525
+msgid "xDSL/Cable"
 msgstr ""
 
-#: src/druid.cpp:489
-msgid "DSL/Cable"
-msgstr ""
-
-#: src/druid.cpp:497
+#: src/druid.cpp:529
+#: src/druid.cpp:711
 msgid "T1/LAN"
-msgstr ""
+msgstr "T1/LAN"
 
-#: src/druid.cpp:505
-msgid "Custom"
-msgstr ""
-
-#: src/druid.cpp:556
-msgid "First Time Configuration Druid"
+#: src/druid.cpp:533
+#: src/druid.cpp:715
+msgid "Other"
 msgstr ""
 
 #: src/druid.cpp:566
-msgid "GnomeMeeting Configuration Assistant - Page 1/4"
-msgstr ""
-
-#: src/druid.cpp:569
+#, c-format
 msgid ""
-"Welcome to the GnomeMeeting general configuration druid. The following steps "
-"will set up GnomeMeeting by asking a few simple questions. Once you have "
-"completed these steps, you can always change them later in the preferences. "
+"You have now finished the GnomeMeeting configuration. All the settings can be changed in the GnomeMeeting preferences. Enjoy!\n"
+"\n"
+"\n"
+"Configuration Summary:\n"
+"\n"
+"Username:  %s %s\n"
+"Connection type:  %s\n"
+"Audio player:  %s\n"
+"Audio recorder:  %s\n"
+"Video player: %s\n"
+"My Callto URL: %s\n"
+"PC-To-Phone calls: %s"
 msgstr ""
 
-#: src/druid.cpp:575
+#: src/druid.cpp:566
+#, fuzzy
+msgid "Enabled"
+msgstr "Ενεργοποίηση γρήγορης αναζήτησης"
+
+#: src/druid.cpp:566
+msgid "Disabled"
+msgstr ""
+
+#
+#: src/druid.cpp:600
+#, fuzzy, c-format
+msgid "Personal Information - page %d/%d"
+msgstr "Προσωπικά"
+
+#: src/druid.cpp:609
 msgid ""
-"You have successfully set up GnomeMeeting. Enjoy!\n"
-"   -- The GnomeMeeting development team"
+"Please enter your first name and surname, they will be used when connecting to other audio/video conferencing software.\n"
+"\n"
+"Your e-mail address is used to provide you with a callto address that your friends can use to call you without knowing your IP address.\n"
+"\n"
+"No information is made public unless you allow it to be published on the directory of online GnomeMeeting users."
 msgstr ""
 
-#: src/druid.cpp:605
-msgid "Done! - Page 4/4"
+#
+#. The user fields
+#: src/druid.cpp:613
+#: src/pref_window.cpp:765
+#, fuzzy
+msgid "Personal Information"
+msgstr "Προσωπικά"
+
+#
+#: src/druid.cpp:616
+msgid "First _name:"
+msgstr "_Όνομα:"
+
+#: src/druid.cpp:622
+msgid "_Surname:"
 msgstr ""
 
-#: src/endpoint.cpp:119
+#. The callto url
+#: src/druid.cpp:630
+msgid "Callto URL"
+msgstr ""
+
+#
+#: src/druid.cpp:633
+#: src/pref_window.cpp:779
+#, fuzzy
+msgid "E-_mail address:"
+msgstr "Ηλεκτρονική Διεύθυνση:"
+
+#. The ILS registering
+#: src/druid.cpp:640
+msgid "Directory of Online GnomeMeeting Users"
+msgstr ""
+
+#: src/druid.cpp:642
+msgid "Publish my information on the directory of online GnomeMeeting users"
+msgstr ""
+
+#: src/druid.cpp:683
+#, c-format
+msgid "Network Connection - page %d/%d"
+msgstr ""
+
+#: src/druid.cpp:694
+msgid "Please select your network connection type. This is used to set default video settings for your bandwidth. It is possible to change these defaults later."
+msgstr ""
+
+#. Connection type
+#: src/druid.cpp:698
+#, fuzzy
+msgid "Connection Type"
+msgstr "Συνδεδεμένο"
+
+#: src/druid.cpp:707
+msgid "DSL/Cable"
+msgstr ""
+
+#: src/druid.cpp:775
+#, fuzzy, c-format
+msgid "Audio Devices - page %d/%d"
+msgstr "CD Μουσικής"
+
+#: src/druid.cpp:785
+msgid "Please choose the audio devices to use during the GnomeMeeting session. You can also choose to use a Quicknet device instead of the soundcard, but the \"Test Audio\" button will only work for soundcards. Notice that some webcams models have an internal microphone that can be used with GnomeMeeting."
+msgstr ""
+
+#. The Audio devices
+#: src/druid.cpp:789
+#: src/pref_window.cpp:1093
+#: src/pref_window.cpp:1609
+#, fuzzy
+msgid "Audio Devices"
+msgstr "CD Μουσικής"
+
+#: src/druid.cpp:792
+#, fuzzy
+msgid "Audio player:"
+msgstr "Επιλογές Ηχητικής Ειδοποίησης"
+
+#: src/druid.cpp:795
+#, fuzzy
+msgid "Audio player mixer:"
+msgstr "Μέγεθος Σ&ελίδας:"
+
+#: src/druid.cpp:799
+#, fuzzy
+msgid "Audio recorder:"
+msgstr "CD Μουσικής"
+
+#: src/druid.cpp:802
+#, fuzzy
+msgid "Audio recorder mixer:"
+msgstr "CD Μουσικής"
+
+#. Test button
+#: src/druid.cpp:806
+msgid "Click here to test your audio devices:"
+msgstr ""
+
+#: src/druid.cpp:808
+msgid "Test Audio"
+msgstr ""
+
+#
+#: src/druid.cpp:851
+#, fuzzy, c-format
+msgid "Video Devices - page %d/%d"
+msgstr "Συσκευή"
+
+#: src/druid.cpp:861
+msgid "Please choose the video device to use during the GnomeMeeting session. Click on the \"Test Video\" button to check if your setup is correct and if your driver is supported by GnomeMeeting. You can only test the correctness of your driver if the selected device is not already in use."
+msgstr ""
+
+#
+#. The Video device
+#: src/druid.cpp:865
+#: src/pref_window.cpp:1162
+#: src/pref_window.cpp:1614
+#, fuzzy
+msgid "Video Devices"
+msgstr "Συσκευή"
+
+#
+#: src/druid.cpp:868
+#: src/pref_window.cpp:1166
+#, fuzzy
+msgid "Video device:"
+msgstr "Συσκευή:"
+
+#: src/druid.cpp:868
+msgid "Enter the video device to use. Using an invalid video device for video transmission will transmit a test picture."
+msgstr ""
+
+#. Test button
+#: src/druid.cpp:872
+#, fuzzy
+msgid "Test Video"
+msgstr "Α_φαίρεση Εικόνας Χρήστη"
+
+#: src/druid.cpp:916
+#, c-format
+msgid "PC-To-Phone Setup - page %d/%d"
+msgstr ""
+
+#: src/druid.cpp:926
+msgid "You can make calls to regular phones and cell numbers worldwide using GnomeMeeting and the MicroTelco service from Quicknet Technologies. To enable this you need to enter your MicroTelco Account number and PIN below, then enable registering to the MicroTelco service. Please visit the GnomeMeeting website for more information."
+msgstr ""
+
+#: src/druid.cpp:931
+msgid "PC-To-Phone Setup"
+msgstr ""
+
+#: src/druid.cpp:934
+msgid "Account number:"
+msgstr ""
+
+#: src/druid.cpp:937
+msgid "Password:"
+msgstr "Συνθηματικό"
+
+#: src/druid.cpp:944
+msgid "Register to the MicroTelco service"
+msgstr ""
+
+#: src/druid.cpp:962
+msgid "Click on one of the following links to get more information about your existing MicroTelco account, or to create a new account."
+msgstr ""
+
+#: src/druid.cpp:966
+msgid "Get an account"
+msgstr ""
+
+#: src/druid.cpp:968
+msgid "Buy a card"
+msgstr ""
+
+#: src/druid.cpp:998
+msgid "First Time Configuration Druid"
+msgstr ""
+
+#: src/druid.cpp:1005
+#, c-format
+msgid "Configuration Druid - page %d/%d"
+msgstr ""
+
+#: src/druid.cpp:1008
+msgid ""
+"This is the GnomeMeeting general configuration druid. The following steps will set up GnomeMeeting by asking a few simple questions.\n"
+"\n"
+"Once you have completed these steps, you can always change them later by selecting Preferences in the Edit menu."
+msgstr ""
+
+#: src/druid.cpp:1047
+#, c-format
+msgid "Configuration complete - page %d/%d"
+msgstr ""
+
+#: src/endpoint.cpp:117
 #, c-format
 msgid "Forwarding Call to %s (No Answer)"
 msgstr ""
 
-#: src/endpoint.cpp:124 src/endpoint.cpp:985 src/endpoint.cpp:1086
-#: src/endpoint.cpp:1110
+#: src/endpoint.cpp:121
+#: src/endpoint.cpp:1468
 msgid "Call forwarded"
 msgstr ""
 
-#. GM is started
-#: src/endpoint.cpp:231
-#, c-format
-msgid "Started GnomeMeeting V%d.%d for %s\n"
-msgstr ""
-
-#: src/endpoint.cpp:318 src/endpoint.cpp:324
+#. Player is always a correct sound device, thanks to
+#. gnomemeeting_add_string_option_menu
+#: src/endpoint.cpp:314
 #, c-format
 msgid "Set Audio player device to %s"
 msgstr ""
 
-#. Translators: This is shown in the history.
-#: src/endpoint.cpp:341 src/endpoint.cpp:351
+#: src/endpoint.cpp:325
 #, c-format
 msgid "Set Audio recorder device to %s"
 msgstr ""
 
-#: src/endpoint.cpp:368
-msgid "Disabling H.245 Tunnelling"
-msgstr ""
-
-#: src/endpoint.cpp:370
+#: src/endpoint.cpp:342
 msgid "Enabling H.245 Tunnelling"
 msgstr ""
 
-#: src/endpoint.cpp:384
-#, fuzzy
-msgid "Disabling Fast Start"
-msgstr "Ενεργοποίηση γρήγορης αναζήτησης"
+#: src/endpoint.cpp:343
+msgid "Disabling H.245 Tunnelling"
+msgstr ""
 
-#: src/endpoint.cpp:386
+#: src/endpoint.cpp:353
 #, fuzzy
 msgid "Enabling Fast Start"
 msgstr "Ενεργοποίηση γρήγορης αναζήτησης"
 
-#: src/endpoint.cpp:413
-#, c-format
-msgid "Using Quicknet device %s"
-msgstr ""
-
-#: src/endpoint.cpp:480
+#: src/endpoint.cpp:354
 #, fuzzy
-msgid "Error while opening the Quicknet device. Disabling Quicknet device."
-msgstr "Σφάλμα κατά την αντιγραφή."
-
-#: src/endpoint.cpp:981
-#, c-format
-msgid "Forwarding Call to %s"
-msgstr ""
-
-#: src/endpoint.cpp:994
-#, c-format
-msgid "Error forwarding call to %s"
-msgstr ""
+msgid "Disabling Fast Start"
+msgstr "Ενεργοποίηση γρήγορης αναζήτησης"
 
 #. Update the history and status bar
-#: src/endpoint.cpp:1063
+#: src/endpoint.cpp:945
 #, fuzzy, c-format
 msgid "Call from %s using %s"
 msgstr "Μήνυμα από τον/την %s"
 
-#: src/endpoint.cpp:1082
+#: src/endpoint.cpp:960
 #, c-format
-msgid "Forwarding Call from %s to %s (Forward All Calls)"
+msgid "Forwarding call from %s to %s (Forward all calls)"
 msgstr ""
 
-#: src/endpoint.cpp:1104
+#: src/endpoint.cpp:968
 #, c-format
-msgid "Forwarding Call from %s to %s (Busy)"
+msgid "Auto rejecting incoming call from %s (Do not disturb)"
 msgstr ""
 
-#: src/endpoint.cpp:1123
+#: src/endpoint.cpp:980
 #, c-format
-msgid "Auto Rejecting Incoming Call from %s (Busy)"
+msgid "Forwarding call from %s to %s (Busy)"
 msgstr ""
 
-#. Connected
-#: src/endpoint.cpp:1264
+#. there is no forwarding, so reject the call
+#: src/endpoint.cpp:989
+#, c-format
+msgid "Auto rejecting incoming call from %s (Busy)"
+msgstr ""
+
+#: src/endpoint.cpp:1013
+msgid "Auto Rejected"
+msgstr ""
+
+#: src/endpoint.cpp:1022
+#, fuzzy
+msgid "Call Forwarded"
+msgstr "Πελάτης Αλληλογραφίας"
+
+#: src/endpoint.cpp:1226
 #, fuzzy, c-format
 msgid "Connected with %s using %s"
 msgstr "συγκρούεται με %s %s %s"
 
-#: src/endpoint.cpp:1270
+#: src/endpoint.cpp:1228
 msgid "Connected"
 msgstr "Συνδεδεμένο"
 
-#: src/endpoint.cpp:1273
-#, fuzzy
-msgid "Fast start enabled"
-msgstr "Ενεργοποίηση ενημέρωσης"
-
-#: src/endpoint.cpp:1275
+#: src/endpoint.cpp:1231
 #, fuzzy
 msgid "Fast start disabled"
 msgstr "Απενεργοποίηση Χρήστη"
 
-#: src/endpoint.cpp:1279
-msgid "H.245 Tunnelling enabled"
-msgstr ""
+#: src/endpoint.cpp:1232
+#, fuzzy
+msgid "Fast start enabled"
+msgstr "Ενεργοποίηση ενημέρωσης"
 
-#: src/endpoint.cpp:1282
+#: src/endpoint.cpp:1235
 msgid "H.245 Tunnelling disabled"
 msgstr ""
 
-#: src/endpoint.cpp:1384
-msgid "Remote party has cleared the call"
+#: src/endpoint.cpp:1236
+msgid "H.245 Tunnelling enabled"
 msgstr ""
 
-#: src/endpoint.cpp:1388
-msgid "Remote party has stopped calling"
+#: src/endpoint.cpp:1432
+msgid "Local user cleared the call"
 msgstr ""
 
-#: src/endpoint.cpp:1392 src/endpoint.cpp:1416
-msgid "Remote party did not accept your call"
+#: src/endpoint.cpp:1435
+msgid "Remote user cleared the call"
 msgstr ""
 
-#: src/endpoint.cpp:1396
-msgid "Remote party was busy"
+#: src/endpoint.cpp:1438
+#: src/endpoint.cpp:1441
+msgid "Remote user did not accept the call"
 msgstr ""
 
-#: src/endpoint.cpp:1400
+#: src/endpoint.cpp:1444
+msgid "Local user did not accept the call"
+msgstr ""
+
+#: src/endpoint.cpp:1447
+#, fuzzy
+msgid "The Gatekeeper cleared the call"
+msgstr "Δεν υπάρχει κατάλογος για αποκατάσταση από."
+
+#: src/endpoint.cpp:1450
+msgid "Call not answered in the required time"
+msgstr ""
+
+#: src/endpoint.cpp:1453
+msgid "Remote user has stopped calling"
+msgstr ""
+
+#: src/endpoint.cpp:1456
+msgid "Abnormal call termination"
+msgstr ""
+
+#: src/endpoint.cpp:1459
+#, fuzzy
+msgid "Could not connect to remote host"
+msgstr "Δεν ήταν δυνατή η εύρεση του πεδίου 'Από' στην διεύθυνση"
+
+#: src/endpoint.cpp:1462
+msgid "Insufficient bandwidth"
+msgstr ""
+
+#: src/endpoint.cpp:1465
+msgid "No common codec"
+msgstr ""
+
+#: src/endpoint.cpp:1471
+msgid "Security check Failed"
+msgstr ""
+
+#: src/endpoint.cpp:1474
+msgid "Local user is busy"
+msgstr ""
+
+#: src/endpoint.cpp:1477
+#, fuzzy
+msgid "Remote user is busy"
+msgstr "Διαγρ. Χρήστη"
+
+#: src/endpoint.cpp:1480
+#: src/endpoint.cpp:1483
 msgid "Congested link to remote party"
 msgstr ""
 
-#: src/endpoint.cpp:1404
-msgid "The call was not answered in the required time"
+#: src/endpoint.cpp:1486
+msgid "Remote user is unreachable"
 msgstr ""
 
-#: src/endpoint.cpp:1408
-msgid "This call ended abnormally"
+#: src/endpoint.cpp:1489
+msgid "Remote user is not running GnomeMeeting"
 msgstr ""
 
-#: src/endpoint.cpp:1412
+#: src/endpoint.cpp:1492
 #, fuzzy
-msgid "Could not find common codec with remote party"
-msgstr "Δεν ήταν δυνατή η εύρεση του πεδίου 'Από' στην διεύθυνση"
+msgid "Remote host is offline"
+msgstr "Δε θα έπρεπε να φτάσει σε αυτήν την κατάσταση"
 
-#
-#: src/endpoint.cpp:1420
+#: src/endpoint.cpp:1495
 #, fuzzy
-msgid "Refused incoming call"
-msgstr "Λήψη νέων εισερχομένων μηνυμάτων"
+msgid "Temporary failure"
+msgstr "Προσωρινή αποτυχία"
 
-#: src/endpoint.cpp:1424 src/urlhandler.cpp:176 src/urlhandler.cpp:177
+#: src/endpoint.cpp:1498
+#: src/urlhandler.cpp:366
 #, fuzzy
 msgid "User not found"
 msgstr "το %s δε βρέθηκε\n"
 
-#: src/endpoint.cpp:1428
-msgid "Call ended: insufficient bandwidth"
-msgstr ""
-
-#: src/endpoint.cpp:1432
-#, fuzzy
-msgid "Remote party could not be reached"
-msgstr "Δε θα έπρεπε να φτάσει σε αυτήν την κατάσταση"
-
-#: src/endpoint.cpp:1436
-#, fuzzy
-msgid "Remote party is offline"
-msgstr "Δε θα έπρεπε να φτάσει σε αυτήν την κατάσταση"
-
-#: src/endpoint.cpp:1440
-#, fuzzy
-msgid "Transport Error calling"
-msgstr "Απόπειρα ανάθεσης σε προστατευμένο αναγνωριστικό"
-
-#: src/endpoint.cpp:1444
+#: src/endpoint.cpp:1502
 #, fuzzy
 msgid "Call completed"
 msgstr "Ολοκληρώθηκε"
 
-#: src/endpoint.cpp:1455
-#, c-format
-msgid "Call duration: %.2ld:%.2ld:%.2ld"
-msgstr ""
-
-#. The second one with some labels
-#: src/endpoint.cpp:1549 src/main_window.cpp:1411
+#: src/endpoint.cpp:1594
+#: src/main_window.cpp:1362
 msgid ""
-"Sent/Received:\n"
-"Lost/Late Packets:\n"
-"Round trip delay:"
+"Lost packets:\n"
+"Late packets:\n"
+"Round-trip delay:\n"
+"Jitter buffer:"
 msgstr ""
 
-#: src/endpoint.cpp:1668
+#: src/endpoint.cpp:1773
 msgid "Attaching lid hardware to codec"
 msgstr ""
 
-#: src/endpoint.cpp:1688
+#: src/endpoint.cpp:1788
+#, fuzzy
+msgid "Could not open audio channel for audio transmission"
+msgstr "Δικαιώματα"
+
+#: src/endpoint.cpp:1788
 msgid ""
-"Could not open audio channel for audio transmission (soundcard busy?).\n"
-"Disabling audio transmission."
+"An error occured while trying to record from the soundcard for the audio transmission. Please check that your soundcard is not busy and that your driver supports full-duplex.\n"
+"The audio transmission has been disabled."
 msgstr ""
 
-#: src/endpoint.cpp:1690
+#: src/endpoint.cpp:1790
+#, fuzzy
+msgid "Could not open audio channel for audio reception"
+msgstr "Το αρχείο %s δε βρέθηκε"
+
+#: src/endpoint.cpp:1790
 msgid ""
-"Could not open audio channel for audio reception (soundcard busy?).\n"
-"Disabling audio reception."
+"An error occured while trying to play audio to the soundcard for the audio reception. Please check that your soundcard is not busy and that your driver supports full-duplex.\n"
+"The audio reception has been disabled."
 msgstr ""
 
-#: src/gatekeeper.cpp:112
+#: src/gatekeeper.cpp:137
+#, c-format
+msgid "Unregistered from gatekeeper %s"
+msgstr ""
+
+#: src/gatekeeper.cpp:151
+#, fuzzy
+msgid "Invalid gatekeeper hostname"
+msgstr "Δε βρέθηκαν ταιριάσματα."
+
+#: src/gatekeeper.cpp:151
 msgid ""
 "Please provide a hostname to use for the gatekeeper.\n"
 "Disabling registering."
 msgstr ""
 
-#: src/gatekeeper.cpp:130 src/gatekeeper.cpp:197 src/gatekeeper.cpp:237
-#, c-format
-msgid "Gatekeeper set to %s"
-msgstr ""
+#: src/gatekeeper.cpp:159
+#, fuzzy
+msgid "Invalid gatekeeper ID"
+msgstr "Δε βρέθηκαν ταιριάσματα."
 
-#: src/gatekeeper.cpp:142
-#, fuzzy, c-format
-msgid "Error while registering with Gatekeeper at %s."
-msgstr ""
-"Σφάλμα κατά την εκτέλεση της λειτουργίας:\n"
-"%s"
-
-#: src/gatekeeper.cpp:180
+#: src/gatekeeper.cpp:159
 msgid ""
 "Please provide a valid ID for the gatekeeper.\n"
 "Disabling registering."
 msgstr ""
 
+#: src/gatekeeper.cpp:206
+msgid "Another user already exists with the same alias, please use another alias."
+msgstr ""
+
 #: src/gatekeeper.cpp:209
+msgid "You are not allowed to register to the gatekeeper. Please check your login, password and firewall."
+msgstr ""
+
+#: src/gatekeeper.cpp:212
+msgid "There was a transport error."
+msgstr ""
+
+#: src/gatekeeper.cpp:215
+#: src/gatekeeper.cpp:220
+msgid "No gatekeeper corresponding to your options has been found."
+msgstr ""
+
+#: src/gatekeeper.cpp:222
 #, fuzzy
-msgid "Error while registering with Gatekeeper."
+msgid "Error while registering with gatekeeper"
 msgstr "Σφάλμα κατά την επικοινωνία με τον εξυπηρετητή ημερολογίου"
 
-#: src/gatekeeper.cpp:255
-#, fuzzy
-msgid "No gatekeeper found"
-msgstr "Δε βρέθηκαν ταιριάσματα."
+#: src/gatekeeper.cpp:240
+#, c-format
+msgid "Gatekeeper set to %s"
+msgstr ""
+
+#: src/gnomemeeting.cpp:86
+msgid "Notification area not detected"
+msgstr ""
+
+#: src/gnomemeeting.cpp:86
+msgid "You have chosen to start GnomeMeeting hidden, however the notification area is not present in your panel, GnomeMeeting can thus not start hidden."
+msgstr ""
 
 #
-#: src/gnomemeeting.cpp:115
+#: src/gnomemeeting.cpp:183
 #, fuzzy
 msgid "Answering incoming call"
 msgstr "Λήψη νέων εισερχομένων μηνυμάτων"
 
-#: src/gnomemeeting.cpp:195 src/toolbar.cpp:122
+#: src/gnomemeeting.cpp:254
 #, fuzzy
 msgid "Trying to stop calling"
 msgstr "Απόπειρα ανάθεσης σε προστατευμένο αναγνωριστικό"
 
-#: src/gnomemeeting.cpp:208
+#: src/gnomemeeting.cpp:267
 #, fuzzy
 msgid "Stopping current call"
 msgstr "Παύση Φόρτωσης της τρέχουσας σελίδας"
 
-#: src/gnomemeeting.cpp:220
+#: src/gnomemeeting.cpp:279
 #, fuzzy
 msgid "Refusing Incoming call"
 msgstr "Εισερχόμενη Αλληλογραφία"
 
-#: src/ils.cpp:115
+#. no error if Picture is choosen as video device
+#: src/gnomemeeting.cpp:310
+#: src/videograbber.cpp:366
+#: src/videograbber.cpp:683
+msgid "Picture"
+msgstr "Εικόνα"
+
+#: src/gnomemeeting.cpp:418
+#, fuzzy
+msgid "Error while starting the listener"
+msgstr "Σφάλμα κατά την επικοινωνία με τον εξυπηρετητή ημερολογίου"
+
+#: src/gnomemeeting.cpp:418
+msgid "You will not be able to receive incoming calls. Please check that no other program is already running on the port used by GnomeMeeting."
+msgstr ""
+
+#. GM is started
+#: src/gnomemeeting.cpp:495
 #, c-format
-msgid "Parse error: %d %s."
+msgid "Started GnomeMeeting V%d.%d for %s\n"
+msgstr ""
+
+#: src/ils.cpp:119
+msgid "Parse error"
+msgstr ""
+
+#: src/ils.cpp:119
+#, c-format
+msgid "There was an error while processing the registering to the user directory: %d %s."
 msgstr ""
 
 #. No need to display that for unregistering
-#: src/ils.cpp:249
-msgid ""
-"Please provide your first name, last name, comment, e-mail and location "
-"details in the Personal Data section in order to be able to register to the "
-"XDAP server."
+#: src/ils.cpp:233
+#, fuzzy
+msgid "Invalid parameters"
+msgstr "Μη έγκυροι παράμετροι"
+
+#: src/ils.cpp:233
+msgid "Please provide your first name and e-mail in the Personal Data section in order to be able to register to the user directory."
 msgstr ""
 
-#: src/ils.cpp:285
-msgid "Operation impossible since there is no XDAP server specified."
+#: src/ils.cpp:268
+#, fuzzy
+msgid "Invalid user directory"
+msgstr "Είναι κατάλογος"
+
+#: src/ils.cpp:268
+msgid "Operation impossible since there is no user directory specified."
 msgstr ""
 
-#: src/ils.cpp:350 src/ils.cpp:857
+#: src/ils.cpp:334
+#: src/ils.cpp:921
 #, c-format
 msgid "Contacting %s..."
 msgstr ""
 
-#: src/ils.cpp:363
-msgid "Failed to parse XML file."
+#: src/ils.cpp:347
+msgid "Failed to parse XML file"
 msgstr ""
 
-#: src/ils.cpp:375
+#: src/ils.cpp:347
+msgid "There was an error while parsing the XML file. Please make sure that it is correctly installed in your system."
+msgstr ""
+
+#
+#: src/ils.cpp:358
+#, fuzzy
+msgid "Bad information"
+msgstr "Προσωπικά"
+
+#: src/ils.cpp:358
 #, c-format
 msgid "Bad ldap information from XML file: %s."
 msgstr ""
 
-#: src/ils.cpp:386 src/ils.cpp:870
+#: src/ils.cpp:367
+#: src/ils.cpp:377
+#: src/ils.cpp:386
+msgid "Cannot contact the user directory"
+msgstr ""
+
+#: src/ils.cpp:367
 #, c-format
-msgid "Failed to open ldap server %s:%d."
+msgid "Failed to contact the user directory %s:%d."
 msgstr ""
 
-#: src/ils.cpp:398 src/ils.cpp:883
-msgid "Failed to set time limit on ldap operations."
+#: src/ils.cpp:377
+msgid "Failed to set a time limit on operations."
 msgstr ""
 
-#: src/ils.cpp:408
+#: src/ils.cpp:386
 #, c-format
-msgid "Failed to bind to ldap server: %s."
+msgid "Failed to bind to user directory: %s."
 msgstr ""
 
-#: src/ils.cpp:434
+#: src/ils.cpp:417
 #, c-format
 msgid "Successfully registered to %s."
 msgstr ""
 
-#: src/ils.cpp:465
+#: src/ils.cpp:453
 #, c-format
 msgid "Updated information on %s."
 msgstr ""
 
-#: src/ils.cpp:475
+#: src/ils.cpp:463
 #, c-format
 msgid "Successfully unregistered from %s."
 msgstr ""
 
-#: src/ils.cpp:499
+#: src/ils.cpp:495
 #, fuzzy, c-format
 msgid "Error while registering to %s."
 msgstr "Σφάλμα κατά την επικοινωνία με τον εξυπηρετητή ημερολογίου"
 
-#: src/ils.cpp:502
+#: src/ils.cpp:498
 #, fuzzy, c-format
 msgid "Error while unregistering from %s."
 msgstr "Σφάλμα κατά την επικοινωνία με τον εξυπηρετητή ημερολογίου"
 
-#: src/ils.cpp:894
+#: src/ils.cpp:929
 #, c-format
-msgid "Failed to bind to ldap server %s: %s."
+msgid "Failed to contact LDAP server %s:%d."
 msgstr ""
 
-#: src/ils.cpp:904
+#: src/ils.cpp:942
+msgid "Failed to set time limit on LDAP operations."
+msgstr ""
+
+#: src/ils.cpp:952
+#, c-format
+msgid "Failed to contact to LDAP server %s: %s."
+msgstr ""
+
+#: src/ils.cpp:962
 #, fuzzy, c-format
-msgid "Fetching user information from %s."
+msgid "Fetching online users list from %s."
 msgstr "Λήψη πληροφορίες περίληψης για νέα μηνύματα"
 
-#: src/ils.cpp:1171
+#: src/ils.cpp:981
+#, c-format
+msgid "Connection to %s lost..."
+msgstr ""
+
+#: src/ils.cpp:984
+#, fuzzy
+msgid "Could not fetch online users list."
+msgstr "Αδύνατο το άνοιγμα φακέλου στο `%s'"
+
+#: src/ils.cpp:1210
+#, c-format
+msgid "Search completed: %d user(s) listed on a total of %d user(s) from %s."
+msgstr ""
+
+#: src/ils.cpp:1215
 #, c-format
 msgid "Search completed: %d user(s) found on %s."
 msgstr ""
 
-#: src/ils.cpp:1188
-#, c-format
-msgid "Failed to contact %s."
+#
+#: src/ldap_window.cpp:725
+msgid "Name:"
+msgstr "Όνομα:"
+
+#: src/ldap_window.cpp:745
+msgid "URL:"
+msgstr "URL:"
+
+#: src/ldap_window.cpp:772
+msgid "Speed Dial:"
 msgstr ""
 
-#. if it was the first "No directory" page, destroy it
-#: src/ldap_window.cpp:228 src/ldap_window.cpp:453
-#, fuzzy
-msgid "No directory"
-msgstr "Δεν είναι κατάλογος"
+#: src/ldap_window.cpp:796
+msgid "Groups:"
+msgstr ""
 
-#: src/ldap_window.cpp:352
+#: src/ldap_window.cpp:912
+msgid "Invalid user name or URL"
+msgstr ""
+
+#: src/ldap_window.cpp:912
+msgid "Please provide a valid name and URL for the contact you want to add to the address book."
+msgstr ""
+
+#: src/ldap_window.cpp:920
+msgid "Invalid group"
+msgstr ""
+
+#: src/ldap_window.cpp:920
+msgid "You have to select a group to which you want to add your contact."
+msgstr ""
+
+#: src/ldap_window.cpp:934
+msgid "Invalid speed dial"
+msgstr ""
+
+#: src/ldap_window.cpp:934
+msgid "Another contact with the same speed dial already exists in the address book."
+msgstr ""
+
+#: src/ldap_window.cpp:946
+msgid "Invalid URL"
+msgstr "Μη Έγκυρο URL"
+
+#: src/ldap_window.cpp:946
+msgid "Another contact with the same URL already exists in the address book."
+msgstr ""
+
+#: src/ldap_window.cpp:1073
+#, c-format
+msgid "Add %s to Address Book"
+msgstr ""
+
+#: src/ldap_window.cpp:1093
+#: src/ldap_window.cpp:2258
+msgid "C_all Contact"
+msgstr ""
+
+#: src/ldap_window.cpp:1098
+#: src/ldap_window.cpp:2262
+msgid "_Tranfer Call to Contact"
+msgstr ""
+
+#: src/ldap_window.cpp:1109
+#: src/ldap_window.cpp:2280
+msgid "Contact _Properties"
+msgstr ""
+
+#
+#: src/ldap_window.cpp:1115
+#: src/ldap_window.cpp:2244
+msgid "_Delete"
+msgstr "_Διαγραφή"
+
+#: src/ldap_window.cpp:1220
+msgid "Add a new server"
+msgstr ""
+
+#: src/ldap_window.cpp:1221
 #, fuzzy
-msgid "XDAP Server Browser"
+msgid "Enter the server name:"
+msgstr "Εισάγετε όνομα νέου _φύλλου:"
+
+#: src/ldap_window.cpp:1222
+msgid "Sorry but there is already a server with the same name in the address book."
+msgstr ""
+
+#: src/ldap_window.cpp:1227
+msgid "Add a new group"
+msgstr ""
+
+#: src/ldap_window.cpp:1228
+#, fuzzy
+msgid "Enter the group name:"
+msgstr "Εισάγετε όνομα νέου _φύλλου:"
+
+#: src/ldap_window.cpp:1229
+msgid "Sorry but there is already a group with the same name in the address book."
+msgstr ""
+
+#: src/ldap_window.cpp:1264
+msgid "Invalid server or group name"
+msgstr ""
+
+#: src/ldap_window.cpp:1350
+#, c-format
+msgid "Are you sure you want to delete server %s?"
+msgstr ""
+
+#: src/ldap_window.cpp:1356
+#, c-format
+msgid "Are you sure you want to delete group %s and all its contacts?"
+msgstr ""
+
+#: src/ldap_window.cpp:1539
+msgid "New server"
+msgstr ""
+
+#: src/ldap_window.cpp:1548
+msgid "New group"
+msgstr ""
+
+#: src/ldap_window.cpp:1557
+msgid "_Find"
+msgstr "_Εύρεση"
+
+#
+#: src/ldap_window.cpp:1562
+#: src/ldap_window.cpp:1576
+msgid "Delete"
+msgstr "Διαγραφή"
+
+#: src/ldap_window.cpp:1571
+msgid "New contact"
+msgstr "Νέα επαφή"
+
+#: src/ldap_window.cpp:2212
+#, fuzzy
+msgid "GnomeMeeting Address Book"
+msgstr "Συνάντηση"
+
+#
+#: src/ldap_window.cpp:2230
+msgid "_File"
+msgstr "_Αρχείο"
+
+#: src/ldap_window.cpp:2232
+#, fuzzy
+msgid "New _Server"
 msgstr "Διακομιστής LDAP"
 
-#. Find button
-#: src/ldap_window.cpp:375
-msgid "Find users on"
+#: src/ldap_window.cpp:2237
+msgid "New _Group"
+msgstr "Νέα _Ομάδα"
+
+#: src/ldap_window.cpp:2250
+msgid "_Close"
 msgstr ""
 
-#. Text label
-#. Translators: Please keep the 2* 2 spaces
-#: src/ldap_window.cpp:393
-msgid "  whose  "
+#
+#: src/ldap_window.cpp:2256
+#, fuzzy
+msgid "C_ontact"
+msgstr "Σύνδεση"
+
+#: src/ldap_window.cpp:2268
+msgid "New _Contact"
+msgstr "Νέα _Επαφή"
+
+#: src/ldap_window.cpp:2273
+msgid "Add Contact to _Address Book"
 msgstr ""
-
-#: src/ldap_window.cpp:401
-#, fuzzy
-msgid "first name contains"
-msgstr "όνομα"
-
-#: src/ldap_window.cpp:405
-#, fuzzy
-msgid "last name contains"
-msgstr "επώνυμο"
-
-#: src/ldap_window.cpp:409
-msgid "e-mail contains"
-msgstr ""
-
-#. Ldap users list
-#: src/ldap_window.cpp:442
-#, fuzzy
-msgid "ILS Users List"
-msgstr "Λίστα χρηστών"
 
 #. Translators: This is "S" as in "Status"
-#: src/ldap_window.cpp:534
+#: src/ldap_window.cpp:2530
 msgid "S"
 msgstr ""
 
 #. Translators: This is "A" as in "Audio"
-#: src/ldap_window.cpp:544 src/pref_window.cpp:1722
+#: src/ldap_window.cpp:2540
+#: src/pref_window.cpp:1254
 #, fuzzy
 msgid "A"
 msgstr "ΜΗΔΙΑΘΕΣΙΜΟΣ"
 
 #. Translators: This is "V" as in "Video"
-#: src/ldap_window.cpp:554
+#: src/ldap_window.cpp:2550
 msgid "V"
 msgstr ""
 
-#: src/ldap_window.cpp:587
-#, fuzzy
-msgid "E-Mail"
-msgstr "Ηλεκ. Διεύθ."
+#
+#: src/ldap_window.cpp:2559
+#: src/ldap_window.cpp:2633
+#: src/pref_window.cpp:1268
+msgid "Name"
+msgstr "Όνομα"
 
-#: src/ldap_window.cpp:636
+#: src/ldap_window.cpp:2597
+#: src/ldap_window.cpp:2645
+#: src/tools.cpp:237
+msgid "URL"
+msgstr "URL"
+
+#: src/ldap_window.cpp:2620
 msgid "IP"
 msgstr "IP"
 
-#: src/main_window.cpp:251
+#: src/ldap_window.cpp:2658
+msgid "Speed Dial"
+msgstr ""
+
+#: src/ldap_window.cpp:2711
+msgid "Find all contacts"
+msgstr ""
+
+#: src/ldap_window.cpp:2716
+#, fuzzy
+msgid "First name contains"
+msgstr "όνομα"
+
+#: src/ldap_window.cpp:2720
+#, fuzzy
+msgid "Last name contains"
+msgstr "επώνυμο"
+
+#: src/ldap_window.cpp:2724
+#, fuzzy
+msgid "E-mail contains"
+msgstr "επώνυμο"
+
+#: src/ldap_window.cpp:2909
+msgid "Servers"
+msgstr "Εξυπηρετητές"
+
+#: src/ldap_window.cpp:2955
+msgid "Groups"
+msgstr "Ομάδες"
+
+#: src/lid.cpp:132
+#, c-format
+msgid "Using Quicknet device %s"
+msgstr ""
+
+#: src/lid.cpp:174
+#, fuzzy
+msgid "Error while opening the Quicknet device."
+msgstr "Σφάλμα κατά την αντιγραφή."
+
+#: src/lid.cpp:174
+msgid "Please check that your driver is correctly installed and that the device is working correctly."
+msgstr ""
+
+#: src/lid.cpp:279
+#: src/lid.cpp:280
+msgid "Phone is off hook"
+msgstr ""
+
+#: src/lid.cpp:309
+#: src/lid.cpp:310
+msgid "Phone is on hook"
+msgstr ""
+
+#: src/main_window.cpp:255
 #, c-format
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr ""
 
-#: src/main_window.cpp:288
+#: src/main_window.cpp:292
 #, c-format
 msgid ""
-"Sent/Received: %.3f Mb/%.3f Mb\n"
-"Lost/Late Packets: %d/%d\n"
-"Round trip delay: %d ms"
+"Lost packets: %.1f %%\n"
+"Late packets: %.1f %%\n"
+"Round-trip delay: %d ms\n"
+"Jitter buffer: %d ms"
 msgstr ""
 
-#: src/main_window.cpp:442
-msgid "Tr. Aud."
+#: src/main_window.cpp:486
+#, c-format
+msgid "Total: %.2f MB"
 msgstr ""
 
-#: src/main_window.cpp:469
-msgid "Re. Aud."
+#: src/main_window.cpp:605
+#, fuzzy
+msgid "Cannot run GnomeMeeting"
+msgstr "Περί του GnomeMeeting"
+
+#: src/main_window.cpp:605
+msgid "GnomeMeeting is already running, if you want it to call a given callto URL, please use \"gnomemeeting -c URL\"."
 msgstr ""
 
-#: src/main_window.cpp:496
-msgid "Tr. Vid."
+#: src/main_window.cpp:657
+msgid "It appears that you do not have gnomemeeting.server installed in a valid location. Factory mode disabled.\n"
 msgstr ""
 
-#: src/main_window.cpp:523
-msgid "Re. Vid."
+#: src/main_window.cpp:661
+msgid "Error registering GnomeMeeting with the activation service; factory mode disabled.\n"
 msgstr ""
 
-#: src/main_window.cpp:665
-msgid ""
-"It appears that you do not have gnomemeeting.server installed in a valid "
-"location. Factory mode disabled.\n"
-msgstr ""
-
-#: src/main_window.cpp:669
-msgid ""
-"Error registering gnomemeeting with the activation service; factory mode "
-"disabled.\n"
-msgstr ""
-
-#: src/main_window.cpp:709
+#: src/main_window.cpp:701
 msgid "Failed to retrieve gnomemeeting server from activation server\n"
 msgstr ""
 
-#: src/main_window.cpp:903
-#, fuzzy
-msgid "Prints debug messages in the console (level between 1 and 6)"
-msgstr "Επικόλληση μηνύματος στο πρόχειρο"
-
-#: src/main_window.cpp:906
-msgid "Makes GnomeMeeting call the given callto:// URL"
-msgstr ""
-
-#. We can't use gnomemeeting_error_dialog here, cause we need the
-#. dialog_run and dialog_run can't be used in gnomemeeting_error_dialog
-#. because it doesn't work in threads
-#: src/main_window.cpp:949
-#, c-format
-msgid ""
-"GnomeMeeting got %d for the GConf key \"/apps/gnomemeeting/gconf_test_age\", "
-"but %d was expected.\n"
-"\n"
-"That key represents the revision of GnomeMeeting setting. If it doesn't "
-"correspond to the expected value, it means that your GConf schemas have not "
-"been correctly installed or the that permissions are not correct.\n"
-"\n"
-"Please check the FAQ (http://www.gnomemeeting.org/faq.php), the "
-"throubleshoot section of the GConf site (http://www.gnome.org/projects/"
-"gconf/) or the mailing list archives for more information (http://mail.gnome."
-"org).\n"
-"\n"
-"Using 'gnomemeeting-config-tool' could help you to fix this problem."
-msgstr ""
-
-#: src/main_window.cpp:993
-msgid ""
-"GnomeMeeting just set the new Speex audio codec as default. Speex is a high "
-"quality, GPL audio codec introduced in GnomeMeeting 0.94."
-msgstr ""
-
-#: src/main_window.cpp:1015
-msgid ""
-"GnomeMeeting just installed an URL handler for callto:// URLs. callto URLs "
-"are an easy way to call people on the internet using GnomeMeeting. They are "
-"now available to all Gnome programs able to cope with URLs. You can for "
-"example create an URL launcher on the Gnome panel of the form \"callto://ils."
-"seconix.com/me@foo.com\" to call the person registered on the ILS server ils."
-"seconix.com with the me@foo.com e-mail address."
-msgstr ""
-
-#: src/main_window.cpp:1145
-msgid ""
-"Could not start the listener thread. You will not be able to receive "
-"incoming calls."
-msgstr ""
-
-#: src/main_window.cpp:1311 src/menu.cpp:292 src/menu.cpp:688
+#: src/main_window.cpp:1191
+#: src/menu.cpp:566
+#: src/menu.cpp:815
 #, fuzzy
 msgid "Local Video"
 msgstr "Φόρτωση _Εικόνων"
 
-#: src/main_window.cpp:1321 src/menu.cpp:299 src/menu.cpp:695
+#: src/main_window.cpp:1197
+#: src/menu.cpp:572
+#: src/menu.cpp:820
 #, fuzzy
 msgid "Remote Video"
 msgstr "Α_φαίρεση Εικόνας Χρήστη"
 
-#: src/main_window.cpp:1385 src/main_window.cpp:1415 src/menu.cpp:253
+#: src/main_window.cpp:1366
+#: src/menu.cpp:526
 msgid "Statistics"
+msgstr "Στατιστικά"
+
+#: src/main_window.cpp:1432
+msgid "Dialpad"
 msgstr ""
 
-#. Webcam Control Frame
-#: src/main_window.cpp:1443
-#, fuzzy
-msgid "Video Settings"
-msgstr "Ρυθμίσεις Ήχου"
-
-#: src/main_window.cpp:1474
+#: src/main_window.cpp:1489
 msgid "Adjust brightness"
 msgstr ""
 
-#: src/main_window.cpp:1500
+#: src/main_window.cpp:1515
 msgid "Adjust whiteness"
 msgstr ""
 
-#: src/main_window.cpp:1526
+#: src/main_window.cpp:1541
 #, fuzzy
 msgid "Adjust color"
 msgstr "Παραμετροποιημένα χρώματα"
 
-#: src/main_window.cpp:1552
+#: src/main_window.cpp:1567
 #, fuzzy
 msgid "Adjust contrast"
 msgstr "Αντίθεση χρώματος"
 
-#: src/main_window.cpp:1559
+#: src/main_window.cpp:1575
 #, fuzzy
 msgid "Video"
 msgstr "Μέγεθος Αρχείου:"
 
-#: src/main_window.cpp:1586
-msgid "Audio Settings"
-msgstr "Ρυθμίσεις Ήχου"
-
-#: src/main_window.cpp:1641
+#: src/main_window.cpp:1665
 msgid "Audio"
 msgstr ""
 
-#: src/menu.cpp:232
-msgid "_Save"
+#: src/main_window.cpp:1708
+#, fuzzy
+msgid "Prints debug messages in the console (level between 1 and 6)"
+msgstr "Επικόλληση μηνύματος στο πρόχειρο"
+
+#: src/main_window.cpp:1711
+msgid "Makes GnomeMeeting call the given URL"
 msgstr ""
 
-#: src/menu.cpp:232
-msgid "Save A Snapshot of the Current Video"
+#: src/main_window.cpp:1757
+msgid "No usable audio devices detected"
 msgstr ""
 
-#: src/menu.cpp:240
-msgid "_Quit"
-msgstr "_Τέλος"
-
-#: src/menu.cpp:240
-#, fuzzy
-msgid "Quit GnomeMeeting"
-msgstr "Τερματισμός του GnoRPM"
-
-#: src/menu.cpp:254
-msgid "View Audio/Video transmission and reception statistics"
+#: src/main_window.cpp:1757
+msgid "GnomeMeeting didn't find any usable sound devices. You need to install and setup a soundcard or a Quicknet card in order to be able to use GnomeMeeting. Please check your driver settings and permissions."
 msgstr ""
 
-#: src/menu.cpp:262
-#, fuzzy
-msgid "_Audio Settings"
-msgstr "Ρυθμίσεις Ήχου"
-
-#: src/menu.cpp:262
-#, fuzzy
-msgid "View Audio Settings"
-msgstr "Ρυθμίσεις Ήχου"
-
-#: src/menu.cpp:270
-msgid "_Video Settings"
-msgstr "Ρυθμίσεις _Βίντεο"
-
-#: src/menu.cpp:270
-#, fuzzy
-msgid "View Video Settings"
-msgstr "Ρυθμίσεις Οδηγού Γραφείου"
-
-#: src/menu.cpp:278 src/pref_window.cpp:1451
-msgid "Off"
+#: src/main_window.cpp:1777
+msgid "Gconf key error"
 msgstr ""
 
-#: src/menu.cpp:278
-#, fuzzy
-msgid "Hide the control panel"
-msgstr "Εμφάνιση της επόμενης σελίδας"
-
-#: src/menu.cpp:292 src/menu.cpp:688
-#, fuzzy
-msgid "Local Video Image"
-msgstr "Φόρτωση _Εικόνων"
-
-#: src/menu.cpp:299 src/menu.cpp:695
-#, fuzzy
-msgid "Remote Video Image"
-msgstr "Α_φαίρεση Εικόνας Χρήστη"
-
-#: src/menu.cpp:306 src/menu.cpp:702
-#, fuzzy
-msgid "Both (Local Video Incrusted)"
-msgstr "Φόρτωση _Εικόνων"
-
-#: src/menu.cpp:306 src/menu.cpp:313 src/menu.cpp:321 src/menu.cpp:702
-#: src/menu.cpp:709 src/menu.cpp:717
-#, fuzzy
-msgid "Both Video Images"
-msgstr "Φόρτωση _Εικόνων"
-
-#: src/menu.cpp:313 src/menu.cpp:709
-msgid "Both (Local Video in New Window)"
+#: src/main_window.cpp:1777
+msgid ""
+"GnomeMeeting got an invalid value for the GConf key \"/apps/gnomemeeting/gconf_test_age\".\n"
+"\n"
+"It probably means that your GConf schemas have not been correctly installed or the that permissions are not correct.\n"
+"\n"
+"Please check the FAQ (http://www.gnomemeeting.org/faq.php), the throubleshoot section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org) about this problem."
 msgstr ""
 
-#: src/menu.cpp:320 src/menu.cpp:716
-msgid "Both (Local and Remote Video in New Windows)"
-msgstr ""
-
-#: src/menu.cpp:347
-msgid "Toolbar"
-msgstr ""
+#: src/menu.cpp:432
+msgid "C_all"
+msgstr "Κ_λήση"
 
 #
-#: src/menu.cpp:347
-#, fuzzy
-msgid "View/Hide the Toolbar"
-msgstr "Εμφάνιση πίνακα βαθμολογίας"
-
-#: src/menu.cpp:355
-#, fuzzy
-msgid "View/Hide the Text Chat Window"
-msgstr "Εμφάνιση ή απόκρυψη μπάρας κατάστασης"
-
-#: src/menu.cpp:361 src/toolbar.cpp:218
-#, fuzzy
-msgid "Control Panel"
-msgstr "Κέντρο Ελέγχου"
-
-#: src/menu.cpp:364
-#, fuzzy
-msgid "Status Bar"
-msgstr "_Γραμμή Κατάστασης"
-
-#: src/menu.cpp:364
-#, fuzzy
-msgid "View/Hide the Status Bar"
-msgstr "Εμφάνιση ή απόκρυψη μπάρας κατάστασης"
-
-#: src/menu.cpp:372
-msgid "Tray Icon"
-msgstr ""
-
-#
-#: src/menu.cpp:372
-#, fuzzy
-msgid "View/Hide the Tray Icon"
-msgstr "Εμφάνιση πίνακα βαθμολογίας"
-
-#: src/menu.cpp:388 src/menu.cpp:737
-#, fuzzy
-msgid "Zoom In"
-msgstr "Εστίαση 2χ"
-
-#: src/menu.cpp:394 src/menu.cpp:743
-#, fuzzy
-msgid "Zoom Out"
-msgstr "Εστίαση 2χ"
-
-#
-#: src/menu.cpp:400 src/menu.cpp:749
-#, fuzzy
-msgid "Normal Size"
-msgstr "Κανονικό"
-
-#: src/menu.cpp:408 src/menu.cpp:757
-msgid "Toggle Fullscreen"
-msgstr ""
-
-#: src/menu.cpp:422
-msgid "Configuration Assistant"
-msgstr ""
-
-#: src/menu.cpp:422
-msgid "Start The Configuration Assistant"
-msgstr ""
-
-#: src/menu.cpp:430
-msgid "_Preferences..."
-msgstr ""
-
-#
-#: src/menu.cpp:430
-#, fuzzy
-msgid "Change Your Preferences"
-msgstr "Ρύθμιση προτιμίσεων χρήστη"
-
-#
-#: src/menu.cpp:443
+#: src/menu.cpp:434
+#: src/menu.cpp:894
 #, fuzzy
 msgid "_Connect"
 msgstr "Σύνδεση"
 
-#: src/menu.cpp:443 src/tray.cpp:167
+#: src/menu.cpp:434
+#: src/menu.cpp:894
 #, fuzzy
-msgid "Create A New Connection"
+msgid "Create a new connection"
 msgstr "Δημιουργία Νέου Χρώματος:"
 
 #
-#: src/menu.cpp:450
+#: src/menu.cpp:439
+#: src/menu.cpp:899
 #, fuzzy
 msgid "_Disconnect"
 msgstr "Αποσύνδεση"
 
 #
-#: src/menu.cpp:450 src/tray.cpp:174
+#: src/menu.cpp:439
+#: src/menu.cpp:899
 #, fuzzy
-msgid "Close The Current Connection"
+msgid "Close the current connection"
 msgstr "Κλείσιμο τρέχουσας σύνδεσης"
 
-#: src/menu.cpp:458
+#: src/menu.cpp:446
+#: src/menu.cpp:906
 #, fuzzy
 msgid "Do _Not Disturb"
 msgstr "Μην Ενοχλείτε"
 
-#: src/menu.cpp:458 src/pref_window.cpp:1290 src/tray.cpp:183
-msgid "Do Not Disturb"
-msgstr "Μην Ενοχλείτε"
-
-#: src/menu.cpp:466
+#: src/menu.cpp:451
+#: src/menu.cpp:911
 #, fuzzy
 msgid "Aut_o Answer"
 msgstr "Αυτόματα Απών"
 
-#: src/menu.cpp:475
+#
+#: src/menu.cpp:451
 #, fuzzy
-msgid "_Audio Mute"
-msgstr "Ρυθμίσεις Ήχου"
+msgid "Auto answer incoming call"
+msgstr "Λήψη νέων εισερχομένων μηνυμάτων"
+
+#: src/menu.cpp:458
+#, fuzzy
+msgid "Hold the current call"
+msgstr "Παύση Φόρτωσης της τρέχουσας σελίδας"
+
+#: src/menu.cpp:463
+#, fuzzy
+msgid "Transfer the current call"
+msgstr "Απόπειρα ανάθεσης σε προστατευμένο αναγνωριστικό"
+
+#: src/menu.cpp:470
+#, fuzzy
+msgid "Suspend or resume the audio transmission"
+msgstr "Δικαιώματα"
 
 #: src/menu.cpp:475
 #, fuzzy
-msgid "Mute the audio transmission"
+msgid "Suspend or resume the video transmission"
 msgstr "Δικαιώματα"
 
 #: src/menu.cpp:482
-#, fuzzy
-msgid "_Video Mute"
-msgstr "Μέγεθος Αρχείου:"
+msgid "_Save Current Picture"
+msgstr ""
 
 #: src/menu.cpp:482
+msgid "Save a snapshot of the current video"
+msgstr ""
+
+#: src/menu.cpp:488
+#: src/menu.cpp:951
+msgid "_Quit"
+msgstr "_Τέλος"
+
+#: src/menu.cpp:488
+#: src/menu.cpp:951
 #, fuzzy
-msgid "Mute the video transmission"
-msgstr "Δικαιώματα"
+msgid "Quit GnomeMeeting"
+msgstr "Τερματισμός του GnoRPM"
+
+#: src/menu.cpp:491
+msgid "_Edit"
+msgstr "_Επεξεργασία"
 
 #: src/menu.cpp:494
-#, fuzzy
-msgid "XDAP Browser"
-msgstr "Διακομιστής LDAP"
+#: src/menu.cpp:499
+msgid "Configuration Druid"
+msgstr ""
 
-#: src/menu.cpp:502
+#: src/menu.cpp:494
+#: src/menu.cpp:499
+msgid "Run the configuration druid"
+msgstr ""
+
+#: src/menu.cpp:506
+#: src/menu.cpp:932
+msgid "_Preferences..."
+msgstr "_Προτιμήσεις..."
+
+#
+#: src/menu.cpp:506
+#: src/menu.cpp:932
+#, fuzzy
+msgid "Change your preferences"
+msgstr "Ρύθμιση προτιμίσεων χρήστη"
+
+#
+#: src/menu.cpp:511
+msgid "_View"
+msgstr "_Προβολή"
+
+#. Text Chat
+#: src/menu.cpp:513
+#: src/pref_window.cpp:865
+msgid "Text Chat"
+msgstr ""
+
+#: src/menu.cpp:513
+#, fuzzy
+msgid "View/Hide the text chat window"
+msgstr "Εμφάνιση ή απόκρυψη μπάρας κατάστασης"
+
+#: src/menu.cpp:518
+msgid "Status Bar"
+msgstr "Γραμμή Κατάστασης"
+
+#: src/menu.cpp:518
+#, fuzzy
+msgid "View/Hide the status bar"
+msgstr "Εμφάνιση ή απόκρυψη μπάρας κατάστασης"
+
+#: src/menu.cpp:524
+#, fuzzy
+msgid "Control Panel"
+msgstr "Κέντρο Ελέγχου"
+
+#: src/menu.cpp:527
+msgid "View audio/video transmission and reception statistics"
+msgstr ""
+
+#: src/menu.cpp:533
+msgid "_Dialpad"
+msgstr ""
+
+#: src/menu.cpp:533
+msgid "View the dialpad"
+msgstr ""
+
+#: src/menu.cpp:539
+#, fuzzy
+msgid "_Audio Settings"
+msgstr "Ρυθμίσεις Ήχου"
+
+#: src/menu.cpp:539
+#, fuzzy
+msgid "View audio settings"
+msgstr "Ρυθμίσεις Ήχου"
+
+#: src/menu.cpp:545
+msgid "_Video Settings"
+msgstr "Ρυθμίσεις _Βίντεο"
+
+#: src/menu.cpp:545
+#, fuzzy
+msgid "View video settings"
+msgstr "Ρυθμίσεις Οδηγού Γραφείου"
+
+#: src/menu.cpp:551
+#: src/pref_window.cpp:1077
+msgid "Off"
+msgstr ""
+
+#: src/menu.cpp:551
+#, fuzzy
+msgid "Hide the control panel"
+msgstr "Εμφάνιση της επόμενης σελίδας"
+
+#: src/menu.cpp:559
+msgid "_Clear text chat"
+msgstr ""
+
+#: src/menu.cpp:559
+msgid "Clear the text chat"
+msgstr ""
+
+#: src/menu.cpp:566
+#, fuzzy
+msgid "Local video image"
+msgstr "Φόρτωση _Εικόνων"
+
+#: src/menu.cpp:572
+#, fuzzy
+msgid "Remote video image"
+msgstr "Α_φαίρεση Εικόνας Χρήστη"
+
+#: src/menu.cpp:578
+#: src/menu.cpp:825
+#, fuzzy
+msgid "Both (Local Video Incrusted)"
+msgstr "Φόρτωση _Εικόνων"
+
+#: src/menu.cpp:578
+#: src/menu.cpp:584
+#: src/menu.cpp:591
+#, fuzzy
+msgid "Both video images"
+msgstr "Φόρτωση _Εικόνων"
+
+#: src/menu.cpp:584
+#: src/menu.cpp:830
+msgid "Both (Local Video in New Window)"
+msgstr ""
+
+#: src/menu.cpp:590
+msgid "Both (Both in New Windows)"
+msgstr ""
+
+#: src/menu.cpp:599
+#: src/menu.cpp:843
+#, fuzzy
+msgid "Zoom In"
+msgstr "Εστίαση 2χ"
+
+#: src/menu.cpp:599
+#, fuzzy
+msgid "Zoom in"
+msgstr "Εστίαση 2χ"
+
+#: src/menu.cpp:604
+#: src/menu.cpp:848
+#, fuzzy
+msgid "Zoom Out"
+msgstr "Εστίαση 2χ"
+
+#: src/menu.cpp:604
+#, fuzzy
+msgid "Zoom out"
+msgstr "Εστίαση 2χ"
+
+#
+#: src/menu.cpp:609
+#: src/menu.cpp:853
+msgid "Normal Size"
+msgstr "Κανονικό Μέγεθος"
+
+#
+#: src/menu.cpp:609
+msgid "Normal size"
+msgstr "Κανονικό μέγεθος"
+
+#: src/menu.cpp:616
+#: src/menu.cpp:860
+msgid "Fullscreen"
+msgstr "Πλήρης οθόνη"
+
+#: src/menu.cpp:621
+msgid "_Tools"
+msgstr "_Εργαλεία"
+
+#: src/menu.cpp:623
+#: src/menu.cpp:918
+msgid "Address _Book"
+msgstr ""
+
+#: src/menu.cpp:623
+#: src/menu.cpp:918
+#: src/toolbar.cpp:246
+msgid "Open the address book"
+msgstr ""
+
+#: src/menu.cpp:630
 #, fuzzy
 msgid "Generic History"
 msgstr "Ιστορικό"
 
-#: src/menu.cpp:502
+#: src/menu.cpp:630
 msgid "View the operations history"
 msgstr ""
 
-#: src/menu.cpp:509 src/tools.cpp:56 src/tools.cpp:62
+#: src/menu.cpp:635
+#: src/menu.cpp:925
+#: src/tools.cpp:191
 #, fuzzy
 msgid "Calls History"
 msgstr "Ιστορικό"
 
 #
-#: src/menu.cpp:509
+#: src/menu.cpp:635
+#: src/menu.cpp:925
 #, fuzzy
 msgid "View the calls history"
 msgstr "Εμφάνιση πίνακα βαθμολογίας"
 
-#: src/menu.cpp:522
+#: src/menu.cpp:642
+msgid "Consult MicroTelco Account"
+msgstr ""
+
+#: src/menu.cpp:642
+msgid "View the details of your account"
+msgstr ""
+
+#
+#: src/menu.cpp:647
+msgid "_Help"
+msgstr "_Βοήθεια"
+
+#: src/menu.cpp:650
+#: src/menu.cpp:655
+#: src/menu.cpp:940
+#: src/menu.cpp:945
 #, fuzzy
 msgid "_About GnomeMeeting"
 msgstr "Περί του GnomeMeeting"
 
-#: src/menu.cpp:522
+#: src/menu.cpp:650
+#: src/menu.cpp:655
+#: src/menu.cpp:940
+#: src/menu.cpp:945
 #, fuzzy
 msgid "View information about GnomeMeeting"
 msgstr "Περί του GnomeMeeting"
 
-#
-#: src/menu.cpp:533
-msgid "_File"
-msgstr "_Αρχείο"
-
-#: src/menu.cpp:534
+#: src/menu.cpp:815
 #, fuzzy
-msgid "_Edit"
-msgstr "_Τέλος"
+msgid "Local Video Image"
+msgstr "Φόρτωση _Εικόνων"
 
-#
-#: src/menu.cpp:535
-msgid "_View"
-msgstr "_Προβολή"
-
-#: src/menu.cpp:536
+#: src/menu.cpp:820
 #, fuzzy
-msgid "C_all"
-msgstr "Μικρό"
+msgid "Remote Video Image"
+msgstr "Α_φαίρεση Εικόνας Χρήστη"
 
-#: src/menu.cpp:537
-msgid "_Tools"
+#: src/menu.cpp:825
+#: src/menu.cpp:830
+#: src/menu.cpp:836
+#, fuzzy
+msgid "Both Video Images"
+msgstr "Φόρτωση _Εικόνων"
+
+#: src/menu.cpp:835
+msgid "Both (Local and Remote Video in New Windows)"
 msgstr ""
 
-#
-#: src/menu.cpp:538
-msgid "_Help"
-msgstr "_Βοήθεια"
+#: src/menu.cpp:906
+msgid "Do not disturb (reject incoming calls)"
+msgstr ""
 
-#: src/misc.cpp:211
+#: src/misc.cpp:175
 #, c-format
 msgid "Error: %s\n"
 msgstr ""
 
-#: src/misc.cpp:214
-#, fuzzy
-msgid "GnomeMeeting Error"
-msgstr "Συνάντηση"
-
-#: src/misc.cpp:217
-#, fuzzy
-msgid "Ignore"
-msgstr "Πληροφορίες"
-
-#: src/misc.cpp:257
+#: src/misc.cpp:219
 #, fuzzy, c-format
 msgid ""
 "Call from %s\n"
 "using %s"
 msgstr "Μήνυμα από τον/την %s"
 
-#
-#: src/misc.cpp:263 src/tray.cpp:167
-msgid "Connect"
-msgstr "Σύνδεση"
-
-#
-#: src/misc.cpp:265 src/tray.cpp:174
-msgid "Disconnect"
-msgstr "Αποσύνδεση"
-
-#. no error if Picture is choosen as video device
-#: src/pref_window.cpp:216 src/pref_window.cpp:1609 src/videograbber.cpp:482
-msgid "Picture"
+#: src/misc.cpp:227
+msgid "Reject"
 msgstr ""
 
-#: src/pref_window.cpp:532
+#: src/misc.cpp:229
+msgid "Accept"
+msgstr ""
+
+#: src/pref_window.cpp:449
 msgid "Please choose the video image"
 msgstr ""
 
 #
-#: src/pref_window.cpp:652
+#: src/pref_window.cpp:483
 msgid "Okay"
 msgstr "Εντάξει"
 
-#: src/pref_window.cpp:658 src/pref_window.cpp:674 src/pref_window.cpp:679
+#: src/pref_window.cpp:488
+#: src/pref_window.cpp:503
+#: src/pref_window.cpp:508
 msgid "Excellent"
 msgstr ""
 
-#: src/pref_window.cpp:663 src/pref_window.cpp:669 src/pref_window.cpp:684
-#: src/pref_window.cpp:689 src/pref_window.cpp:694
+#: src/pref_window.cpp:493
+#: src/pref_window.cpp:498
+#: src/pref_window.cpp:513
+#: src/pref_window.cpp:518
 msgid "Good Quality"
 msgstr ""
 
-#
-#: src/pref_window.cpp:1227
-#, fuzzy
-msgid "Personal Information"
-msgstr "Προσωπικά"
-
-#: src/pref_window.cpp:1233
-#, fuzzy
-msgid "Enter your first name."
-msgstr "Εισάγετε όνομα νέου _φύλλου:"
-
-#: src/pref_window.cpp:1236
-#, fuzzy
-msgid "Enter your last name."
-msgstr "Εισάγετε όνομα νέου _φύλλου:"
-
-#: src/pref_window.cpp:1239
-#, fuzzy
-msgid "Gatekeeper alias: "
-msgstr "Γενικές Ρυθμίσεις"
-
-#: src/pref_window.cpp:1239
-msgid ""
-"The Gatekeeper Alias to use when registering (string, or E164 ID if only "
-"0123456789#)."
+#: src/pref_window.cpp:523
+msgid "Excellent Quality"
 msgstr ""
 
 #
-#: src/pref_window.cpp:1241
-#, fuzzy
-msgid "Enter your e-mail address."
-msgstr "Διεύθυνση αποστολέα:"
+#: src/pref_window.cpp:769
+msgid "_First name:"
+msgstr "_Όνομα:"
 
-#: src/pref_window.cpp:1243
-msgid "Here you can fill in a comment about yourself for ILS directories."
+#: src/pref_window.cpp:774
+msgid "Sur_name:"
 msgstr ""
 
-#: src/pref_window.cpp:1245
+#
+#: src/pref_window.cpp:784
 #, fuzzy
-msgid "Where do you call from?"
-msgstr "Που θέλετε να το τοποθετήσετε; "
+msgid "_Comment:"
+msgstr "Σχόλιο:"
 
-#: src/pref_window.cpp:1250
-msgid ""
-"Click here to update the LDAP server you are registered to with the new "
-"First Name, Last Name, E-Mail, Comment and Location or to update your alias "
-"on the Gatekeeper."
+#
+#: src/pref_window.cpp:789
+msgid "_Location:"
+msgstr "_Τοποθεσία:"
+
+#: src/pref_window.cpp:795
+#: src/pref_window.cpp:1031
+msgid "_Apply"
+msgstr "_Εφαρμογή"
+
+#: src/pref_window.cpp:795
+msgid "Click here to update the user directory you are registered to with the new First Name, Last Name, E-Mail, Comment and Location or to update your alias on the Gatekeeper."
 msgstr ""
 
-#: src/pref_window.cpp:1276
+#: src/pref_window.cpp:820
 #, fuzzy
 msgid "GnomeMeeting GUI"
 msgstr "Συνάντηση"
 
-#: src/pref_window.cpp:1278
+#: src/pref_window.cpp:823
 #, fuzzy
-msgid "Show Splash Screen"
+msgid "_Show splash screen"
 msgstr "Εμφάνιση Διαχωρισμού Οθόνης"
 
-#: src/pref_window.cpp:1278
-#, fuzzy
-msgid "If enabled, the splash screen will be displayed at startup time."
-msgstr "Εμφάνιση/απόκρυψη γραμμής μενού."
-
-#: src/pref_window.cpp:1280
-msgid "Start Hidden"
-msgstr ""
-
-#: src/pref_window.cpp:1280
-msgid ""
-"If enabled, GnomeMeeting will start hidden. The docklet must be enabled."
+#: src/pref_window.cpp:826
+msgid "Start _hidden"
 msgstr ""
 
 #. Packing widget
-#: src/pref_window.cpp:1284
+#: src/pref_window.cpp:830
 msgid "Behavior"
 msgstr "Συμπεριφορά"
 
-#
-#: src/pref_window.cpp:1292
-#, fuzzy
-msgid "Popup window"
-msgstr "Προηγούμενο παράθυρο"
+#: src/pref_window.cpp:834
+msgid "_Automatically answer calls"
+msgstr ""
 
-#: src/pref_window.cpp:1292
-msgid "If enabled, a popup will be displayed when receiving an incoming call"
+#: src/pref_window.cpp:837
+#, fuzzy
+msgid "Do _not disturb"
+msgstr "Μην Ενοχλείτε"
+
+#: src/pref_window.cpp:840
+msgid "Display a po_pup window when receiving a call"
 msgstr ""
 
 #
 #. Packing widget
-#: src/pref_window.cpp:1297
+#: src/pref_window.cpp:844
 #, fuzzy
 msgid "Video Display"
 msgstr "Συσκευή"
 
-#: src/pref_window.cpp:1302
-msgid "Fullscreen Width:"
+#. Translators: the full sentence is Use a fullscreen size
+#. of X by Y pixels
+#: src/pref_window.cpp:849
+msgid "Use a fullscreen size of"
 msgstr ""
 
-#: src/pref_window.cpp:1304
-msgid "The image width for fullscreeen."
+#: src/pref_window.cpp:851
+msgid "by"
 msgstr ""
 
-#: src/pref_window.cpp:1308
-msgid "Fullscreen Height:"
-msgstr ""
-
-#: src/pref_window.cpp:1310
-msgid "The image height for fullscreeen."
-msgstr ""
-
-#: src/pref_window.cpp:1315
+#: src/pref_window.cpp:853
 #, fuzzy
-msgid "Enable bilinear filtering"
+msgid "pixels"
+msgstr "εικονοστοιχεία"
+
+#: src/pref_window.cpp:862
+#, fuzzy
+msgid "Enable bilinear _filtering on displayed video"
 msgstr "Ενεργοποίηση κουμπιού απόκρυψης"
 
-#. Packing widget
-#: src/pref_window.cpp:1319
-msgid "Sound"
-msgstr "Ιδιότητες του Ήχου"
+#
+#: src/pref_window.cpp:888
+#, fuzzy
+msgid "User Directory"
+msgstr "Κατάλογος"
 
-#: src/pref_window.cpp:1323
-msgid ""
-"If enabled, GnomeMeeting will play a sound when receiving an incoming call "
-"(the sound to play is chosen in the Gnome Control Center)."
+#: src/pref_window.cpp:893
+#, fuzzy
+msgid "User directory:"
+msgstr "Είναι κατάλογος"
+
+#: src/pref_window.cpp:896
+#, fuzzy
+msgid "Enable _registering"
+msgstr "Εγγραφή"
+
+#: src/pref_window.cpp:899
+msgid "_Allow others to see my details in the directory"
 msgstr ""
 
-#: src/pref_window.cpp:1335
+#: src/pref_window.cpp:921
+#: src/pref_window.cpp:1560
+#, fuzzy
+msgid "Call Forwarding"
+msgstr "Πελάτης Αλληλογραφίας"
+
+#: src/pref_window.cpp:926
+msgid "Forward calls to _host:"
+msgstr ""
+
+#: src/pref_window.cpp:933
+msgid "_Always forward calls to the given host"
+msgstr ""
+
+#: src/pref_window.cpp:936
+msgid "Forward calls to the given host if _no answer"
+msgstr ""
+
+#: src/pref_window.cpp:939
+msgid "Forward calls to the given host if _busy"
+msgstr ""
+
+#: src/pref_window.cpp:953
+msgid "All"
+msgstr ""
+
+#: src/pref_window.cpp:954
+msgid "None"
+msgstr ""
+
+#: src/pref_window.cpp:955
+msgid "rfc2833"
+msgstr "rfc2833"
+
+#: src/pref_window.cpp:956
+msgid "Signal"
+msgstr ""
+
+#
+#: src/pref_window.cpp:957
+#, fuzzy
+msgid "String"
+msgstr "_Ρυθμίσεις"
+
+#
+#: src/pref_window.cpp:967
+#, fuzzy
+msgid "H.323 Version 2 Settings"
+msgstr "Προχωρημένες ρυθμίσεις"
+
+#: src/pref_window.cpp:971
+msgid "Enable H.245 _tunnelling"
+msgstr ""
+
+#: src/pref_window.cpp:974
+#, fuzzy
+msgid "Enable fast _start procedure"
+msgstr "Ενεργοποίηση γρήγορης αναζήτησης"
+
+#: src/pref_window.cpp:979
+msgid "User Input Capabilities"
+msgstr ""
+
+#: src/pref_window.cpp:982
+msgid "User Input Capabilities _type:"
+msgstr ""
+
+#: src/pref_window.cpp:982
+msgid "This permits to set the mode for User Input Capabilities. The values can be \"All\", \"None\", \"rfc2833\", \"Signal\" or \"String\" (default is \"All\"). Choosing other values than \"All\", \"String\" or \"rfc2833\" disables the Text Chat."
+msgstr ""
+
+#: src/pref_window.cpp:999
 #, fuzzy
 msgid "Do not register"
 msgstr "Μην Ενοχλείτε"
 
-#: src/pref_window.cpp:1336
-#, fuzzy
-msgid "Gatekeeper host"
-msgstr "Δε βρέθηκαν ταιριάσματα."
-
-#: src/pref_window.cpp:1337
-#, fuzzy
-msgid "Gatekeeper ID"
-msgstr "Δε βρέθηκαν ταιριάσματα."
-
-#: src/pref_window.cpp:1338
-msgid "Automatic Discover"
+#: src/pref_window.cpp:1002
+msgid "Automatically discover"
 msgstr ""
 
-#
-#: src/pref_window.cpp:1348
-#, fuzzy
-msgid "XDAP Directory"
-msgstr "Κατάλογος"
-
-#
-#: src/pref_window.cpp:1353
-#, fuzzy
-msgid "XDAP Directory:"
-msgstr "Κατάλογος"
-
-#: src/pref_window.cpp:1353
-#, fuzzy
-msgid "The XDAP server to register to."
-msgstr "Δεν υπάρχει κατάλογος για αποκατάσταση από."
-
-#: src/pref_window.cpp:1356
-#, fuzzy
-msgid "Enable Registering"
-msgstr "Εγγραφή"
-
-#: src/pref_window.cpp:1356
-msgid "If enabled, permit to register to the selected LDAP directory"
-msgstr ""
-
-#. Add fields for the gatekeeper
-#: src/pref_window.cpp:1360
+#: src/pref_window.cpp:1012
 #, fuzzy
 msgid "Gatekeeper"
 msgstr "Δε βρέθηκαν ταιριάσματα."
 
-#: src/pref_window.cpp:1363
-msgid "Gatekeeper ID:"
-msgstr ""
-
-#: src/pref_window.cpp:1363
+#: src/pref_window.cpp:1015
 #, fuzzy
-msgid "The Gatekeeper identifier to register to."
-msgstr "Δεν υπάρχει κατάλογος για αποκατάσταση από."
+msgid "Gatekeeper _ID:"
+msgstr "Δε βρέθηκαν ταιριάσματα."
 
-#: src/pref_window.cpp:1366
-msgid "Gatekeeper host:"
-msgstr ""
+#: src/pref_window.cpp:1018
+#, fuzzy
+msgid "Gatekeeper _host:"
+msgstr "Δε βρέθηκαν ταιριάσματα."
 
-#: src/pref_window.cpp:1366
-msgid "The Gatekeeper host to register to."
-msgstr ""
+#: src/pref_window.cpp:1021
+#, fuzzy
+msgid "Gatekeeper _alias:"
+msgstr "Γενικές Ρυθμίσεις"
 
-#: src/pref_window.cpp:1369
+#: src/pref_window.cpp:1024
+#, fuzzy
+msgid "Gatekeeper _password:"
+msgstr "Γενικές Ρυθμίσεις"
+
+#: src/pref_window.cpp:1028
 #, fuzzy
 msgid "Registering method:"
 msgstr "Καταχωρηθείτε Τώρα"
 
-#: src/pref_window.cpp:1369
-#, fuzzy
-msgid "Registering method to use"
-msgstr "Χρήστης για να τεθεί"
-
-#: src/pref_window.cpp:1388
-#, fuzzy
-msgid "H.323 Call Forwarding"
-msgstr "Πελάτης Αλληλογραφίας"
-
-#: src/pref_window.cpp:1394
-msgid "Forward calls to host:"
+#: src/pref_window.cpp:1031
+msgid "Click here to update your Gatekeeper settings."
 msgstr ""
 
-#: src/pref_window.cpp:1394
-msgid ""
-"Enter here the host where calls should be forwarded in the cases selected "
-"above"
-msgstr ""
-
-#: src/pref_window.cpp:1397
-msgid ""
-"If enabled, all incoming calls will always be forwarded to the host that is "
-"specified in the field below."
-msgstr ""
-
-#: src/pref_window.cpp:1400
-msgid ""
-"If enabled, all incoming calls will be forwarded to the host that is "
-"specified in the field below if you don't answer the call."
-msgstr ""
-
-#: src/pref_window.cpp:1403
-msgid ""
-"If enabled, all incoming calls will be forwarded to the host that is "
-"specified in the field below if you already are in a call or if you are in "
-"Do Not Disturb mode."
-msgstr ""
-
-#
-#: src/pref_window.cpp:1408
-#, fuzzy
-msgid "H.323 V2 Settings"
-msgstr "Προχωρημένες ρυθμίσεις"
-
-#: src/pref_window.cpp:1414
-msgid "Enable H.245 Tunnelling"
-msgstr ""
-
-#: src/pref_window.cpp:1414
-msgid ""
-"This enables H.245 Tunnelling mode. In H.245 Tunnelling mode H.245 messages "
-"are encapsulated into the the H.225 channel (port 1720). This permits "
-"sparing one random TCP port during calls. H.245 Tunnelling was introduced in "
-"H.323v2 and Netmeeting doesn't support it. Using both Fast Start and H.245 "
-"Tunnelling can crash some versions of Netmeeting."
-msgstr ""
-
-#: src/pref_window.cpp:1417
-#, fuzzy
-msgid "Enable Fast Start"
-msgstr "Ενεργοποίηση γρήγορης αναζήτησης"
-
-#: src/pref_window.cpp:1417
-msgid ""
-"Connection will be established in Fast Start mode. Fast Start is a new way "
-"to start calls faster that was introduced in H.323v2. It is not supported by "
-"Netmeeting and using both Fast Start and H.245 Tunnelling can crash some "
-"versions of Netmeeting."
-msgstr ""
-
-#: src/pref_window.cpp:1422
+#: src/pref_window.cpp:1054
 msgid "NAT/PAT Router Support"
 msgstr ""
 
-#: src/pref_window.cpp:1426
+#: src/pref_window.cpp:1057
 #, fuzzy
-msgid "Enable IP Translation"
+msgid "Enable IP _translation"
 msgstr "Μετάφραση"
 
-#: src/pref_window.cpp:1429
-msgid "Public IP of the NAT/PAT router:"
+#: src/pref_window.cpp:1060
+msgid "Public _IP of the NAT/PAT router:"
 msgstr ""
 
-#: src/pref_window.cpp:1429
-msgid ""
-"You can put here the public IP of your NAT/PAT router if you want to use IP "
-"translation.  If you are registered to ils.seconix.com, GnomeMeeting will "
-"automatically fetch the public IP using the ILS service."
-msgstr ""
-
-#: src/pref_window.cpp:1452
+#: src/pref_window.cpp:1078
 msgid "Low"
 msgstr ""
 
-#: src/pref_window.cpp:1453
+#: src/pref_window.cpp:1079
 msgid "Medium"
 msgstr ""
 
-#: src/pref_window.cpp:1454
+#: src/pref_window.cpp:1080
 msgid "High"
 msgstr ""
 
-#: src/pref_window.cpp:1455
-msgid "Automatic Gain Compensation"
+#: src/pref_window.cpp:1081
+msgid "AGC"
 msgstr ""
 
-#: src/pref_window.cpp:1471 src/pref_window.cpp:2058
-#, fuzzy
-msgid "Audio Devices"
-msgstr "CD Μουσικής"
+#: src/pref_window.cpp:1098
+msgid "Playing device:"
+msgstr ""
 
-#: src/pref_window.cpp:1491
+#: src/pref_window.cpp:1101
 #, fuzzy
-msgid "Audio Player:"
-msgstr "Παίκτες"
-
-#: src/pref_window.cpp:1491
-#, fuzzy
-msgid "Enter the audio player device to use."
-msgstr "Εισάγετε την κωδικοποίηση προς χρήση"
-
-#: src/pref_window.cpp:1499
-#, fuzzy
-msgid "Player Mixer:"
+msgid "Playing mixer:"
 msgstr "Μέγεθος Σ&ελίδας:"
 
-#: src/pref_window.cpp:1499
-msgid "The audio mixer to use to setup the volume of the audio player device."
-msgstr ""
-
-#: src/pref_window.cpp:1518
-#, fuzzy
-msgid "Audio Recorder:"
-msgstr "Εγγραφή"
-
-#: src/pref_window.cpp:1518
-#, fuzzy
-msgid "Enter the audio recorder device to use."
-msgstr "Εισάγετε την κωδικοποίηση προς χρήση"
-
 #
-#: src/pref_window.cpp:1526
+#: src/pref_window.cpp:1105
 #, fuzzy
-msgid "Recorder Mixer:"
+msgid "Recording device:"
 msgstr "Προβολή Εγγραφής"
 
-#: src/pref_window.cpp:1526
+#
+#: src/pref_window.cpp:1108
 #, fuzzy
-msgid ""
-"The audio mixer to use to setup the volume of the audio recorder device."
-msgstr "Ο δίσκος αρνήθηκε να αλλάξει τις ρυθμίσεις του."
+msgid "Recording mixer:"
+msgstr "Προβολή Εγγραφής"
 
-#: src/pref_window.cpp:1535
-msgid "Automatic Echo Cancellation:"
+#. That button will refresh the devices list
+#: src/pref_window.cpp:1111
+#: src/pref_window.cpp:1195
+#, fuzzy
+msgid "_Detect devices"
+msgstr "CD Μουσικής"
+
+#: src/pref_window.cpp:1111
+#: src/pref_window.cpp:1195
+msgid "Click here to refresh the devices list."
 msgstr ""
 
-#: src/pref_window.cpp:1538
-msgid "Country Code:"
+#
+#. The Quicknet devices related options
+#: src/pref_window.cpp:1115
+msgid "Quicknet Device"
+msgstr "Συσκευή Quicknet"
+
+#: src/pref_window.cpp:1118
+msgid "Echo _cancellation:"
 msgstr ""
 
-#: src/pref_window.cpp:1541
-msgid "Use the Quicknet Device"
+#: src/pref_window.cpp:1121
+msgid "Country _code:"
 msgstr ""
 
-#: src/pref_window.cpp:1574
+#: src/pref_window.cpp:1141
 msgid "Small"
 msgstr "Μικρό"
 
-#: src/pref_window.cpp:1575
+#: src/pref_window.cpp:1142
 msgid "Large"
 msgstr "Μεγάλο"
 
-#: src/pref_window.cpp:1577
-msgid "PAL"
+#: src/pref_window.cpp:1144
+msgid "PAL (Europe)"
+msgstr "PAL (Ευρώπη)"
+
+#: src/pref_window.cpp:1145
+msgid "NTSC (America)"
+msgstr "NTSC (Αμερική)"
+
+#: src/pref_window.cpp:1146
+msgid "SECAM (France)"
+msgstr "SECAM (Γαλλία)"
+
+#: src/pref_window.cpp:1147
+msgid "Auto"
 msgstr ""
 
-#: src/pref_window.cpp:1578
-msgid "NTSC"
-msgstr ""
-
-#: src/pref_window.cpp:1579
-msgid "SECAM"
-msgstr ""
-
-#: src/pref_window.cpp:1580
-msgid "auto"
-msgstr ""
-
-#
-#. The video devices related options
-#: src/pref_window.cpp:1598 src/pref_window.cpp:2063
+#: src/pref_window.cpp:1170
 #, fuzzy
-msgid "Video Devices"
-msgstr "Συσκευή"
-
-#
-#: src/pref_window.cpp:1613
-#, fuzzy
-msgid "Video Device:"
-msgstr "Συσκευή:"
-
-#: src/pref_window.cpp:1613
-msgid ""
-"Enter the video device to use. Using an invalid video device for video "
-"transmission will transmit a test picture."
-msgstr ""
-
-#: src/pref_window.cpp:1622
-#, fuzzy
-msgid "Video Channel:"
+msgid "Video channel:"
 msgstr "Κανάλι"
 
-#: src/pref_window.cpp:1624
-msgid "The video channel number to use (camera, tv, ...)."
-msgstr ""
-
-#: src/pref_window.cpp:1628
+#: src/pref_window.cpp:1173
 #, fuzzy
-msgid "Video Size:"
+msgid "Video size:"
 msgstr "Μέγεθος Αρχείου:"
 
-#: src/pref_window.cpp:1628
-msgid "Choose the transmitted video size: QCIF (small) or CIF (large)."
-msgstr ""
-
-#: src/pref_window.cpp:1631
+#: src/pref_window.cpp:1176
 #, fuzzy
-msgid "Video Format:"
+msgid "Video format:"
 msgstr "Μορφή ώρας"
 
-#: src/pref_window.cpp:1631
-msgid "Here you can choose the transmitted video format."
-msgstr ""
-
-#: src/pref_window.cpp:1635
+#: src/pref_window.cpp:1179
 #, fuzzy
-msgid "Video Image:"
+msgid "Video image:"
 msgstr "Φόρτωση _Εικόνων"
 
-#: src/pref_window.cpp:1639
-msgid ""
-"If enabled, the video preview mode will be set activated and you will be "
-"able to see yourself without being in a call."
-msgstr ""
-
 #. The file selector button
-#: src/pref_window.cpp:1643
-msgid "Browse"
+#: src/pref_window.cpp:1183
+msgid "Browse..."
 msgstr ""
 
 # sysdeps/names/fsusage.c:43
-#: src/pref_window.cpp:1697
+#: src/pref_window.cpp:1229
 #, fuzzy
 msgid "Available Audio Codecs"
 msgstr "Διαθέσιμα μπλοκ"
 
-#
-#: src/pref_window.cpp:1734
-msgid "Name"
-msgstr "Όνομα"
-
-#: src/pref_window.cpp:1742
+#: src/pref_window.cpp:1279
 msgid "Info"
 msgstr "Πληροφορίες"
 
 #
-#: src/pref_window.cpp:1750
+#: src/pref_window.cpp:1291
 #, fuzzy
 msgid "Bandwidth"
 msgstr "Πλάτος γεμίσματος"
 
 #. Here we add the audio codecs options
-#: src/pref_window.cpp:1810
+#: src/pref_window.cpp:1354
 #, fuzzy
 msgid "Audio Codecs Settings"
 msgstr "Ρυθμίσεις Ήχου"
 
-#: src/pref_window.cpp:1814
-msgid "Jitter Buffer:"
+#: src/pref_window.cpp:1359
+msgid "Automatically adjust _jitter buffer between"
 msgstr ""
 
-#: src/pref_window.cpp:1816
-msgid "The jitter buffer delay to buffer audio calls (in ms)."
+#: src/pref_window.cpp:1361
+msgid "and"
 msgstr ""
 
-#: src/pref_window.cpp:1820
+#: src/pref_window.cpp:1363
+msgid "ms"
+msgstr ""
+
+#: src/pref_window.cpp:1371
 #, fuzzy
-msgid "GSM Frames per packet:"
-msgstr "Πλαίσια"
-
-#: src/pref_window.cpp:1822
-msgid "The number of frames in each transmitted GSM packet."
-msgstr ""
-
-#: src/pref_window.cpp:1826
-#, fuzzy
-msgid "G.711 Frames per packet:"
-msgstr "Πλαίσια"
-
-#: src/pref_window.cpp:1828
-msgid "The number of frames in each transmitted G.711 packet."
-msgstr ""
-
-#: src/pref_window.cpp:1832
-#, fuzzy
-msgid "Enable Silence Detection"
+msgid "Enable silence _detection"
 msgstr "Ενεργοποίηση κουμπιού απόκρυψης"
 
-#: src/pref_window.cpp:1834
-#, fuzzy
-msgid "Enable/disable the silence detection for the GSM and G.711 codecs."
-msgstr "Ενεργοποίηση παράτασης για "
-
-#: src/pref_window.cpp:1855 src/pref_window.cpp:2020
+#: src/pref_window.cpp:1393
+#: src/pref_window.cpp:1550
 msgid "General Settings"
 msgstr "Γενικές Ρυθμίσεις"
 
-#: src/pref_window.cpp:1860
+#: src/pref_window.cpp:1398
 #, fuzzy
-msgid "Maximum Transmitted FPS:"
-msgstr "Μεταφρασμενο κείμενο:"
+msgid "Enable video _transmission"
+msgstr "Δικαιώματα"
 
-#: src/pref_window.cpp:1862
-msgid "The number of video frames transmitted each second."
-msgstr ""
-
-#: src/pref_window.cpp:1866
+#: src/pref_window.cpp:1401
 #, fuzzy
-msgid "Enable FPS Limitation"
-msgstr "Ενεργοποίηση γρήγορης αναζήτησης"
+msgid "Enable video _reception"
+msgstr "Ενεργοποίηση κουμπιού απόκρυψης"
 
-#: src/pref_window.cpp:1866
-msgid "Enable/disable the limit on the transmitted FPS."
-msgstr ""
-
-#: src/pref_window.cpp:1869
-msgid "Enable/disable the video transmission."
-msgstr ""
-
+#
 #. H.261 Settings
-#: src/pref_window.cpp:1873
+#: src/pref_window.cpp:1405
 #, fuzzy
-msgid "H.261 Settings"
-msgstr "Ρυθμίσεις ρολογιού"
+msgid "Bandwidth Control"
+msgstr "Πλάτος γεμίσματος"
 
-#: src/pref_window.cpp:1877
+#: src/pref_window.cpp:1409
 #, fuzzy
-msgid "Transmitted Video Quality:"
+msgid "Maximum video _bandwidth of"
+msgstr "Μέγιστο πλάτος προσώπου: "
+
+#: src/pref_window.cpp:1409
+msgid "KB/s"
+msgstr "KB/s"
+
+#: src/pref_window.cpp:1413
+#, fuzzy
+msgid "Advanced Quality Settings"
+msgstr "Γενικές Ρυθμίσεις"
+
+#: src/pref_window.cpp:1418
+#, fuzzy
+msgid "Keep a minimum video _quality of"
 msgstr "Μεταφρασμενο κείμενο:"
 
-#: src/pref_window.cpp:1879
-msgid ""
-"The transmitted video quality:  choose 100% on a LAN for the best quality, "
-"1% being the worst quality."
+#: src/pref_window.cpp:1418
+msgid "The minimum transmitted video quality to keep when trying to minimize the used bandwidth:  choose 100% on a LAN for the best quality, 1% being the worst quality."
 msgstr ""
 
-#: src/pref_window.cpp:1883
-#, fuzzy
-msgid "Received Video Quality:"
-msgstr "Λήψη Μηνύματος"
+#: src/pref_window.cpp:1418
+msgid "%"
+msgstr "%"
 
-#: src/pref_window.cpp:1885
-msgid ""
-"The received video quality:  choose 100% on a LAN for the best quality, 1% "
-"being the worst quality."
-msgstr ""
-
-#: src/pref_window.cpp:1889
+#: src/pref_window.cpp:1422
 #, fuzzy
-msgid "Transmitted Background Blocks:"
+msgid "Transmit at least"
 msgstr "Μεταφρασμενο κείμενο:"
 
-#: src/pref_window.cpp:1936
+#: src/pref_window.cpp:1422
+msgid "_frames per second"
+msgstr ""
+
+#: src/pref_window.cpp:1427
+msgid "Transmit"
+msgstr ""
+
+#: src/pref_window.cpp:1427
+msgid "background _blocks with each frame"
+msgstr ""
+
+#: src/pref_window.cpp:1468
 #, fuzzy
 msgid "GnomeMeeting Settings"
 msgstr "Συνάντηση"
 
 #
-#: src/pref_window.cpp:2011
+#: src/pref_window.cpp:1541
 msgid "General"
 msgstr "Γενικά"
 
 #
-#: src/pref_window.cpp:2015
+#: src/pref_window.cpp:1545
 #, fuzzy
 msgid "Personal Data"
 msgstr "Προσωπικά"
 
-#
-#: src/pref_window.cpp:2025
-#, fuzzy
-msgid "H.323 Advanced"
-msgstr "Προχωρημένες ρυθμίσεις"
-
-#: src/pref_window.cpp:2030
+#: src/pref_window.cpp:1555
 #, fuzzy
 msgid "Directory Settings"
 msgstr "Ρυθμίσεις επιφάνειας εργασίας"
 
-#: src/pref_window.cpp:2037
+#
+#: src/pref_window.cpp:1567
+msgid "H.323 Settings"
+msgstr "Ρυθμίσεις H.323"
+
+#: src/pref_window.cpp:1571
+#, fuzzy
+msgid "Advanced Settings"
+msgstr "Ρυθμίσεις Συσκευής"
+
+#: src/pref_window.cpp:1576
+#, fuzzy
+msgid "Gatekeeper Settings"
+msgstr "Γενικές Ρυθμίσεις"
+
+#: src/pref_window.cpp:1581
+#, fuzzy
+msgid "NAT Settings"
+msgstr "Ρυθμίσεις ΝΑΤ"
+
+#: src/pref_window.cpp:1588
 #, fuzzy
 msgid "Codecs"
 msgstr "Συμπιεσμένα"
 
-#: src/pref_window.cpp:2041
+#: src/pref_window.cpp:1592
 #, fuzzy
 msgid "Audio Codecs"
 msgstr "CD Μουσικής"
 
-#: src/pref_window.cpp:2047
+#: src/pref_window.cpp:1598
 #, fuzzy
 msgid "Video Codecs"
 msgstr "CD Μουσικής"
 
-#: src/pref_window.cpp:2054
+#: src/pref_window.cpp:1605
 #, fuzzy
 msgid "Devices"
 msgstr "CD Μουσικής"
 
 #
-#: src/pref_window.cpp:2069
+#: src/pref_window.cpp:1620
 #, fuzzy
 msgid "Section"
 msgstr "Ρυθμίσεις"
 
-#: src/toolbar.cpp:86
-msgid "Speakerphone enabled"
-msgstr ""
-
-#: src/toolbar.cpp:98
-msgid "Speakerphone disabled"
-msgstr ""
-
-#
-#: src/toolbar.cpp:200
+#: src/sound_handling.cpp:414
 #, fuzzy
-msgid "ILS Directory"
-msgstr "Κατάλογος"
+msgid "Failed to open the device"
+msgstr "Εισάγετε την κωδικοποίηση προς χρήση"
 
-#: src/toolbar.cpp:201
-msgid "Find friends on ILS"
+#: src/sound_handling.cpp:414
+#, c-format
+msgid "Impossible to open the selected audio device (%s) for playing. Please check your audio setup, the permissions and that the device is not busy."
 msgstr ""
 
-#: src/toolbar.cpp:209
-msgid "Chat"
-msgstr ""
-
-#: src/toolbar.cpp:210
-msgid "Make a text chat with your friend"
-msgstr ""
-
-#: src/toolbar.cpp:219
+#: src/sound_handling.cpp:426
 #, fuzzy
-msgid "Display the control panel"
+msgid "Failed to open the audio device"
+msgstr "Εισάγετε την κωδικοποίηση προς χρήση"
+
+#: src/sound_handling.cpp:426
+#, c-format
+msgid "Impossible to open the selected audio device (%s) for recording. Please check your audio setup, the permissions and that the device is not busy."
+msgstr ""
+
+#: src/sound_handling.cpp:445
+#: src/sound_handling.cpp:454
+#, fuzzy
+msgid "Cannot use the audio device"
+msgstr "Εισάγετε την κωδικοποίηση προς χρήση"
+
+#: src/sound_handling.cpp:445
+#, c-format
+msgid "The selected audio device (%s) was successfully opened but it is impossible to read data from this device. Please check your audio setup."
+msgstr ""
+
+#: src/sound_handling.cpp:454
+#, c-format
+msgid "The selected audio device (%s) was successfully opened but it is impossible to write data to this device. Please check your audio setup."
+msgstr ""
+
+#: src/sound_handling.cpp:471
+#, c-format
+msgid ""
+"GnomeMeeting is now recording from %s and playing back to %s. Please say \"1 2 3\" in your microphone, you should hear yourself back into the speakers in 5 seconds.\n"
+"\n"
+"Recording... Please talk."
+msgstr ""
+
+#: src/sound_handling.cpp:500
+msgid ""
+"GnomeMeeting is now playing what it is recording with a 5 seconds delay. If you don't hear yourself with the delay, you will have to fix your audio setup and probably install a full-duplex driver before calling other GnomeMeeting users.\n"
+"\n"
+"Recording and playing... Please talk."
+msgstr ""
+
+#: src/toolbar.cpp:223
+msgid "Open the text chat."
+msgstr ""
+
+#: src/toolbar.cpp:234
+#, fuzzy
+msgid "Open the control panel"
 msgstr "Εμφάνιση της επόμενης σελίδας"
 
-#: src/toolbar.cpp:311
-msgid "Click here to begin to display images from your camera device."
+#: src/toolbar.cpp:279
+msgid "Display images from your camera device."
 msgstr ""
 
-#: src/toolbar.cpp:333
-msgid "Click here to activate the speaker phone device of your Quicknet card."
+#: src/toolbar.cpp:301
+msgid "Audio transmission status. During a call, click here to suspend or resume the audio transmission."
 msgstr ""
 
-#: src/toolbar.cpp:356
-msgid ""
-"Audio Transmission Status. During a call, click here to pause the audio "
-"transmission."
+#: src/toolbar.cpp:321
+msgid "Video transmission status. During a call, click here to suspend or resume the video transmission."
 msgstr ""
 
-#: src/toolbar.cpp:376
-msgid ""
-"Video Transmission Status. During a call, click here to pause the video "
-"transmission."
+#: src/tools.cpp:179
+#, fuzzy
+msgid "Received calls"
+msgstr "Γίνεται Λήψη Μηνυμάτων"
+
+#: src/tools.cpp:179
+msgid "Given calls"
 msgstr ""
 
-#: src/tools.cpp:102 src/tools.cpp:108
+#: src/tools.cpp:179
+msgid "Unanswered calls"
+msgstr ""
+
+#: src/tools.cpp:220
+msgid "Date"
+msgstr ""
+
+#: src/tools.cpp:228
+#, fuzzy
+msgid "Remote user"
+msgstr "Διαγρ. Χρήστη"
+
+#: src/tools.cpp:247
+msgid "Call duration"
+msgstr "Διάρκεια κλήσης"
+
+#: src/tools.cpp:258
+msgid "Software"
+msgstr ""
+
+#: src/tools.cpp:311
+#: src/tools.cpp:315
 #, fuzzy
 msgid "General History"
 msgstr "Γενικές Ρυθμίσεις"
 
-#: src/tray.cpp:183
-msgid "Do Not Accept Calls"
-msgstr ""
-
-#: src/tray.cpp:191
-msgid "Automatically Answer Calls"
-msgstr ""
-
-#: src/tray.cpp:200
-#, fuzzy
-msgid "Show Main Window"
-msgstr "Εμφάνιση/Απόκρυψη Παραθύρου Επεξεργασίας"
-
-#: src/tray.cpp:200
-#, fuzzy
-msgid "Show The Main Window"
-msgstr "Εμφάνιση/Απόκρυψη Παραθύρου Επεξεργασίας"
-
-#: src/tray.cpp:277
+#: src/tray.cpp:190
 #, fuzzy
 msgid "GnomeMeeting Tray Icon"
 msgstr "Συνάντηση"
 
-#: src/urlhandler.cpp:128
-msgid "Searching for user"
+#: src/urlhandler.cpp:76
+msgid "The call transfer failed, the user was either unreachable, or simply busy when he received the call transfer request."
 msgstr ""
 
-#: src/urlhandler.cpp:152 src/urlhandler.cpp:154
-#, fuzzy
-msgid "Error while connecting to ILS directory"
-msgstr "Σφάλμα κατά την επικοινωνία με τον εξυπηρετητή ημερολογίου"
+#: src/urlhandler.cpp:268
+#, c-format
+msgid "No contact with speed dial %s# found, will call number %s instead"
+msgstr ""
 
-#: src/urlhandler.cpp:224
+#: src/urlhandler.cpp:286
+msgid "Invalid URL handler"
+msgstr ""
+
+#: src/urlhandler.cpp:286
+msgid "Please specify a valid URL handler. Currently both h323: and callto: are supported."
+msgstr ""
+
+#: src/urlhandler.cpp:314
 #, fuzzy, c-format
 msgid "Calling %s"
 msgstr "Μήνυμα από τον/την %s"
 
-#: src/videograbber.cpp:460 src/videograbber.cpp:461
+#: src/urlhandler.cpp:318
+#, c-format
+msgid "Transferring call to %s"
+msgstr ""
+
+#: src/videograbber.cpp:331
+#: src/videograbber.cpp:332
 msgid "Opening Video device"
 msgstr ""
 
-#: src/videograbber.cpp:509
+#: src/videograbber.cpp:396
 #, c-format
 msgid "Successfully opened video device %s, channel %d"
 msgstr ""
 
 #
-#: src/videograbber.cpp:512
+#: src/videograbber.cpp:399
 #, fuzzy
 msgid "Video Device Opened"
 msgstr "Συσκευή"
 
-#: src/videograbber.cpp:525
-#, c-format
-msgid ""
-"Error while opening video device %s, channel %d.\n"
-"The chosen Video Image will be transmitted during calls. If you didn't "
-"choose any image, then the default GnomeMeeting logo will be transmitted. "
-"Notice that you can always transmit a given image or the GnomeMeeting logo "
-"by choosing \"Picture\" as video device."
+#: src/videograbber.cpp:412
+#, fuzzy, c-format
+msgid "Error while opening video device %s"
+msgstr "Σφάλμα κατά την αντιγραφή."
+
+#: src/videograbber.cpp:414
+msgid "The chosen Video Image will be transmitted during calls. If you didn't choose any image, then the default GnomeMeeting logo will be transmitted. Notice that you can always transmit a given image or the GnomeMeeting logo by choosing \"Picture\" as video device."
 msgstr ""
 
-#: src/videograbber.cpp:526
+#: src/videograbber.cpp:415
 #, fuzzy
 msgid "Can't open the Video Device"
 msgstr "Εισάγετε την κωδικοποίηση προς χρήση"
 
-#: src/videograbber.cpp:531
-#, fuzzy
-msgid "Error while opening the device."
-msgstr "Σφάλμα κατά την αντιγραφή."
+#: src/videograbber.cpp:420
+msgid "There was an error while opening the device. Please check your permissions and make sure that the appropriate driver is loaded."
+msgstr ""
 
-#: src/videograbber.cpp:536
+#: src/videograbber.cpp:425
+#: src/videograbber.cpp:727
 #, fuzzy
 msgid "Your video driver doesn't support the requested video format."
 msgstr " Ο εξυπηρέτησ δεν υποστηρίζει την παρούσα έκδοση "
 
-#: src/videograbber.cpp:540
+#: src/videograbber.cpp:429
+#: src/videograbber.cpp:731
 #, fuzzy
 msgid "Could not open the chosen channel with the chosen video format."
 msgstr "Αδύνατο το άνοιγμα φακέλου στο `%s'"
 
-#: src/videograbber.cpp:544
-#, c-format
+#: src/videograbber.cpp:433
 msgid ""
-"Your driver doesn't support the %s format.\n"
-" Please check your kernel driver documentation in order to determine which "
-"Palette is supported. Set it as GnomeMeeting default with:\n"
-" gconftool --set \"/apps/gnomemeeting/devices/color_format\" YOURPALETTE --"
-"type string"
+"Your driver doesn't seem to support any of the colour formats supported by GnomeMeeting.\n"
+" Please check your kernel driver documentation in order to determine which Palette is supported. Set it as GnomeMeeting default with:\n"
+" gconftool --set \"/apps/gnomemeeting/devices/color_format\" YOURPALETTE --type string"
 msgstr ""
 
-#: src/videograbber.cpp:548
+#: src/videograbber.cpp:437
 #, fuzzy
-msgid "Error with the frame rate."
+msgid "Error while setting the frame rate."
 msgstr "Σφάλμα στη σωλήνωση."
 
-#: src/videograbber.cpp:552
+#: src/videograbber.cpp:441
 #, fuzzy
-msgid "Error with the frame size."
+msgid "Error while setting the frame size."
 msgstr "Σφάλμα στη σωλήνωση."
 
 #
-#: src/videograbber.cpp:680
+#: src/videograbber.cpp:574
 #, fuzzy
 msgid "Video Device Closed"
 msgstr "Συσκευή"
 
-#~ msgid "(C) 2000, 2001 Damien Sandras"
-#~ msgstr "Πνευματικά Δικαιώματα (C) 2000, 2001 Damien Sandras"
+#: src/videograbber.cpp:706
+#, c-format
+msgid "Test %d done"
+msgstr ""
 
+#: src/videograbber.cpp:723
+#, fuzzy, c-format
+msgid "Error while opening %s."
+msgstr "Σφάλμα κατά την αντιγραφή."
+
+#: src/videograbber.cpp:735
 #, fuzzy
-#~ msgid "Could not open the player mixer."
-#~ msgstr "Αδύνατο το άνοιγμα φακέλου στο `%s'"
+msgid "Your driver doesn't support the YUV420P color format"
+msgstr " Ο εξυπηρέτησ δεν υποστηρίζει την παρούσα έκδοση "
 
+#: src/videograbber.cpp:739
 #, fuzzy
-#~ msgid "Connect call"
-#~ msgstr "Η σύνδεση ακυρώθηκε"
+msgid "Error with the frame rate."
+msgstr "Σφάλμα στη σωλήνωση."
 
+#: src/videograbber.cpp:743
 #, fuzzy
-#~ msgid "Reinitializing the capabilities"
-#~ msgstr "Σφάλμα αρχικοποίησης του εφαρμογιδίου ελέγχου gpilotd"
+msgid "Error with the frame size."
+msgstr "Σφάλμα στη σωλήνωση."
 
-#, fuzzy
-#~ msgid "Could not find audio channel"
-#~ msgstr "Το αρχείο %s δε βρέθηκε"
+#: src/videograbber.cpp:748
+msgid "Tests OK!"
+msgstr ""
 
-#, fuzzy
-#~ msgid "Incoming call"
-#~ msgstr "Εισερχόμενη Αλληλογραφία"
-
-#, fuzzy
-#~ msgid "Connecting to ILS directory %s, port %s"
-#~ msgstr "Δεν ήταν δυνατή η δημιουργία του καταλόγου %s: %s"
-
-#, fuzzy
-#~ msgid "Error while connecting to ILS directory %s, port %s"
-#~ msgstr "Σφάλμα κατά την ανάγνωση του αρχείου %s\n"
-
-#, fuzzy
-#~ msgid "Connecting to ILS directory... Please Wait."
-#~ msgstr "Σύνδεση με τον διακομιστή LDAP..."
-
-#, fuzzy
-#~ msgid "Search completed!"
-#~ msgstr "Η αναζήτηση ολοκληρώθηκε."
-
-#, fuzzy
-#~ msgid "ILS directories to browse"
-#~ msgstr "Προσθήκη Καταλόγων στην Αρχειοθήκη"
-
-#, fuzzy
-#~ msgid "ILS directory:"
-#~ msgstr "Είναι κατάλογος"
-
-#
-#~ msgid "Refresh"
-#~ msgstr "Ανανέωση"
-
-#~ msgid "e-mail"
-#~ msgstr "ηλεκ. διεύθ."
-
-#~ msgid "location"
-#~ msgstr "τοποθεσία"
-
-#, fuzzy
-#~ msgid "Apply filter on"
-#~ msgstr "Εφαρμογή Φίλτρων"
-
-#, fuzzy
-#~ msgid "Search Filter"
-#~ msgstr "Καθορισμός φίλτρου"
-
-#, fuzzy
-#~ msgid "Last name"
-#~ msgstr "Επώνυμο"
-
-#, fuzzy
-#~ msgid "Remote host to contact"
-#~ msgstr "Αποστολή μηνύματος σε επαφή"
-
-#~ msgid "Host:"
-#~ msgstr "Σύστημα:"
-
-#, fuzzy
-#~ msgid "Remote User"
-#~ msgstr "Διαγρ. Χρήστη"
-
-#, fuzzy
-#~ msgid "History Log"
-#~ msgstr "Ιστορικό"
-
-#, fuzzy
-#~ msgid "_Remote User Info"
-#~ msgstr "Διαγρ. Χρήστη"
-
-#, fuzzy
-#~ msgid "View Remote User Info"
-#~ msgstr "  Πληρ. Χρήστη..."
-
-#~ msgid "_History"
-#~ msgstr "_Ιστορικό"
-
-#
-#, fuzzy
-#~ msgid "_Docklet"
-#~ msgstr "Ενσω_μάτωση"
-
-#
-#~ msgid "_Settings"
-#~ msgstr "_Ρυθμίσεις"
-
-#~ msgid "_About"
-#~ msgstr "_Περί"
-
-#
-#~ msgid "1:2"
-#~ msgstr "1:2"
-
-#, fuzzy
-#~ msgid "Zoom 1/2x"
-#~ msgstr "Κλίμακα 125%"
-
-#
-#~ msgid "1:1"
-#~ msgstr "1:1"
-
-#
-#~ msgid "2:1"
-#~ msgstr "2:1"
-
-#~ msgid "Local"
-#~ msgstr "Τοπικό"
-
-#~ msgid "Remote"
-#~ msgstr "Απομακρυσμένος"
-
-#
-#~ msgid "Both"
-#~ msgstr "Και τα δύο"
-
-#, fuzzy
-#~ msgid "Call This User"
-#~ msgstr "Ακύρωση αυτής της εργασίας"
-
-#, fuzzy
-#~ msgid "Call the selected user"
-#~ msgstr "Προβολή επιλεγμένου φακέλου"
-
-#, fuzzy
-#~ msgid "GnomeMeeting Preferences"
-#~ msgstr "Ρυθμίσεις Ναρκαλιευτή"
-
-#~ msgid "Device Settings"
-#~ msgstr "Ρυθμίσεις Συσκευής"
-
-#, fuzzy
-#~ msgid "Codecs Settings"
-#~ msgstr "Ρυθμίσεις ρολογιού"
-
-#
-#~ msgid "Add"
-#~ msgstr "Προσθήκη"
-
-#
-#~ msgid "Delete"
-#~ msgstr "Διαγραφή"
-
-#
-#~ msgid "Up"
-#~ msgstr "Επάνω"
-
-#
-#~ msgid "Down"
-#~ msgstr "Κάτω"
-
-#, fuzzy
-#~ msgid "Show Control Panel"
-#~ msgstr "Εμφάνιση _Πλευρικού Ταμπλώ"
-
-#, fuzzy
-#~ msgid "Show Quick Access Bar"
-#~ msgstr "Εμφάνιση Γραμμής Κατάστασης"
-
-#, fuzzy
-#~ msgid "Silence Detection"
-#~ msgstr "Ανίχνευση"
-
-#, fuzzy
-#~ msgid "GSM Codec Settings"
-#~ msgstr "Ρυθμίσεις ASClock"
-
-#, fuzzy
-#~ msgid "G.711 Codec Settings"
-#~ msgstr "Ρυθμίσεις ρολογιού"
-
-#, fuzzy
-#~ msgid "Video Codecs Settings"
-#~ msgstr "Ρυθμίσεις ρολογιού"
-
-#, fuzzy
-#~ msgid "Updated blocks:"
-#~ msgstr "Ενημέρωση λίστας"
-
-#
-#~ msgid "Update"
-#~ msgstr "Ανανέωση"
-
-#
-#~ msgid "User Settings"
-#~ msgstr "Ρυθμίσεις Χρήστη"
-
-#, fuzzy
-#~ msgid "Directories Settings"
-#~ msgstr "Ρυθμίσεις συσκευής"
-
-#, fuzzy
-#~ msgid "ILS Directory:"
-#~ msgstr "Κατάλογος:"
-
-#, fuzzy
-#~ msgid "LDAP Port:"
-#~ msgstr "Θύρα:"
-
-#, fuzzy
-#~ msgid "Maximum Bandwidth:"
-#~ msgstr "Μέγιστο πλάτος προσώπου: "
-
-#
-#, fuzzy
-#~ msgid "ILS Settings"
-#~ msgstr "Ρυθμίσεις IP"
-
-#~ msgid "Failed"
-#~ msgstr "Απέτυχε"
