@@ -1,5 +1,12 @@
 2003-04-08 Damien Sandras  <dsandras@seconix.com>
 
+	* configure.in: Removed possibility to compile without GNOME using
+	configure. That	possibility was initially present to ease the
+	win32 port, but some distributions are misusing it and disable GNOME 
+	features on purpose in GnomeMeeting. Thanks SUSE.
+	
+2003-04-08 Damien Sandras  <dsandras@seconix.com>
+
 	* lib/win32/*: Fixed headers to add copyright to Tuan for his
 	code.
 
