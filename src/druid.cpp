@@ -222,6 +222,11 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
     g_free (gk_name);
 
 
+    /* Enable Fast Start and Tunneling */
+    gconf_client_set_bool (client, GENERAL_KEY "fast_start", true, NULL);
+    gconf_client_set_bool (client, GENERAL_KEY "h245_tunneling", true, NULL);
+
+    
     cpt = 0;
     /* Automatically select the quicknet device */
     while (cpt < gw->audio_player_devices.GetSize ()) {

@@ -463,19 +463,22 @@ GMH323EndPoint::AddVideoCapabilities (int video_size)
     }
   }
   else {
-    
-    /* Capabilities we can send (if enabled), but not receive */
-    /* Add video capabilities */
-    if (video_size == 1) {
 
-      /* CIF Capability in first position */
-      AddCapability (new H323_H261Capability (0, 2, FALSE, FALSE, 6217));
-      AddCapability (new H323_H261Capability (4, 0, FALSE, FALSE, 6217));  
-    }
-    else {
+    if (enable_video_transmission) {
+      
+      /* Capabilities we can send (if enabled), but not receive */
+      /* Add video capabilities */
+      if (video_size == 1) {
 
-      AddCapability (new H323_H261Capability (4, 0, FALSE, FALSE, 6217)); 
-      AddCapability (new H323_H261Capability (0, 2, FALSE, FALSE, 6217));  
+	/* CIF Capability in first position */
+	AddCapability (new H323_H261Capability (0, 2, FALSE, FALSE, 6217));
+	AddCapability (new H323_H261Capability (4, 0, FALSE, FALSE, 6217));  
+      }
+      else {
+
+	AddCapability (new H323_H261Capability (4, 0, FALSE, FALSE, 6217)); 
+	AddCapability (new H323_H261Capability (0, 2, FALSE, FALSE, 6217));  
+      }
     }
   }
 
@@ -1675,9 +1678,6 @@ GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
                                  unsigned bufferSize,
                                  H323AudioCodec & codec)
 {
-  if (opened_audio_channels >= 2)
-    return FALSE;
-  
   gnomemeeting_threads_enter ();
 
   /* If needed , delete the timers */
