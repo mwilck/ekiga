@@ -1233,6 +1233,7 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 #endif
 
   gnomemeeting_threads_enter ();
+  gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
   connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 1);
   gnomemeeting_call_menu_connect_set_sensitive (0, FALSE);
   gnomemeeting_call_menu_functions_set_sensitive (TRUE);
@@ -1300,64 +1301,74 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   switch (connection.GetCallEndReason ()) {
 
+  case H323Connection::EndedByLocalUser :
+    msg_reason = g_strdup (_("Local user cleared the call"));
+    break;
   case H323Connection::EndedByRemoteUser :
-    msg_reason = g_strdup (_("Remote party has cleared the call"));
+    msg_reason = g_strdup (_("Remote user cleared the call"));
     break;
-    
-  case H323Connection::EndedByCallerAbort :
-    msg_reason = g_strdup (_("Remote party has stopped calling"));
-    break;
-
   case H323Connection::EndedByRefusal :
-    msg_reason = g_strdup (_("Remote party did not accept your call"));
+    msg_reason = g_strdup (_("Remote user did not accept the call"));
     break;
-
+  case H323Connection::EndedByNoAccept :
+    msg_reason = g_strdup (_("Remote user did not accept the call"));
+    break;
+  case H323Connection::EndedByAnswerDenied :
+    msg_reason = g_strdup (_("Local user did not accept the call"));
+    break;
+  case H323Connection::EndedByGatekeeper :
+    msg_reason = g_strdup (_("The Gatekeeper cleared the call"));
+    break;
+  case H323Connection::EndedByNoAnswer :
+    msg_reason = g_strdup (_("Call not answered in the required time"));
+    break;
+  case H323Connection::EndedByCallerAbort :
+    msg_reason = g_strdup (_("Remote user has stopped calling"));
+    break;
+  case H323Connection::EndedByTransportFail :
+    msg_reason = g_strdup (_("Abnormal call termination"));
+    break;
+  case H323Connection::EndedByConnectFail :
+    msg_reason = g_strdup (_("Could not connect to remote host"));
+    break;
+  case H323Connection::EndedByNoBandwidth :
+    msg_reason = g_strdup (_("Insufficient bandwidth"));
+    break;
+  case H323Connection::EndedByCapabilityExchange :
+    msg_reason = g_strdup (_("No common codec"));
+    break;
+  case H323Connection::EndedByCallForwarded :
+    msg_reason = g_strdup (_("Call forwarded"));
+    break;
+  case H323Connection::EndedBySecurityDenial :
+    msg_reason = g_strdup (_("Security check Failed"));
+    break;
+  case H323Connection::EndedByLocalBusy :
+    msg_reason = g_strdup (_("Local user is busy"));
+    break;
   case H323Connection::EndedByRemoteBusy :
-    msg_reason = g_strdup (_("Remote party was busy"));
+    msg_reason = g_strdup (_("Remote user is busy"));
     break;
-
   case H323Connection::EndedByRemoteCongestion :
     msg_reason = g_strdup (_("Congested link to remote party"));
     break;
-
-  case H323Connection::EndedByNoAnswer :
-    msg_reason = g_strdup (_("The call was not answered in the required time"));
+  case H323Connection::EndedByLocalCongestion :
+    msg_reason = g_strdup (_("Congested link to remote party"));
     break;
-    
-  case H323Connection::EndedByTransportFail :
-    msg_reason = g_strdup (_("This call ended abnormally"));
+  case H323Connection::EndedByUnreachable :
+    msg_reason = g_strdup (_("Remote user is unreachable"));
     break;
-    
-  case H323Connection::EndedByCapabilityExchange :
-    msg_reason = g_strdup (_("Could not find common codec with remote party"));
+  case H323Connection::EndedByNoEndPoint :
+    msg_reason = g_strdup (_("Remote user is not running GnomeMeeting"));
     break;
-
-  case H323Connection::EndedByNoAccept :
-    msg_reason = g_strdup (_("Remote party did not accept your call"));
+  case H323Connection::EndedByHostOffline :
+    msg_reason = g_strdup (_("Remote host is offline"));
     break;
-
-  case H323Connection::EndedByAnswerDenied :
-    msg_reason = g_strdup (_("Refused incoming call"));
+  case H323Connection::EndedByTemporaryFailure :
+    msg_reason = g_strdup (_("Temporary failure"));
     break;
-
   case H323Connection::EndedByNoUser :
     msg_reason = g_strdup (_("User not found"));
-    break;
-    
-  case H323Connection::EndedByNoBandwidth :
-    msg_reason = g_strdup (_("Call ended: insufficient bandwidth"));
-    break;
-
-  case H323Connection::EndedByUnreachable :
-    msg_reason = g_strdup (_("Remote party could not be reached"));
-    break;
-
-  case H323Connection::EndedByHostOffline :
-    msg_reason = g_strdup (_("Remote party is offline"));
-    break;
-
-  case H323Connection::EndedByConnectFail :
-    msg_reason = g_strdup (_("Transport Error calling"));
     break;
 
   default :
@@ -1491,8 +1502,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 0);
 
 
-  /* Disable Remote Video (Local video is disabled elsewhere) 
-     and select the good section */
+  /* Disable Remote Video and select the good section */
   gnomemeeting_video_submenu_set_sensitive (false, LOCAL_VIDEO, true);
   gnomemeeting_video_submenu_set_sensitive (false, REMOTE_VIDEO, true);
   gnomemeeting_video_submenu_select (0);

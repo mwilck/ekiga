@@ -65,6 +65,7 @@ extern GnomeMeeting *MyApp;
 
 
 /* Static functions */
+static void transfert_call_cb (GtkWidget *, gpointer);
 static void microtelco_consult_cb (GtkWidget *, gpointer);
 static gint popup_menu_callback (GtkWidget *, GdkEventButton *, gpointer);
 static void menu_item_selected (GtkWidget *, gpointer);
@@ -78,6 +79,98 @@ static void menu_toggle_changed (GtkWidget *, gpointer);
 
 
 /* GTK Callbacks */
+
+/* DESCRIPTION  :  This callback is called when the user chooses to forward
+ *                 a call.
+ * BEHAVIOR     :  Forward the current call.
+ * PRE          :  /
+ */
+static void
+transfert_call_cb (GtkWidget* widget, gpointer parent_window)
+{
+  GtkWidget *forward_call_popup = NULL;
+  GtkWidget *table = NULL;
+  GtkWidget *picture = NULL;
+  GtkWidget *explain_text = NULL;
+  GtkWidget *label = NULL;
+  GtkWidget *button_forward = NULL;
+  GtkWidget *button_cancel = NULL;
+  GtkWidget *entry_forward = NULL;
+
+  char *gconf_forward_value = NULL;
+  
+  GConfClient *client = gconf_client_get_default ();
+  gconf_forward_value =
+    gconf_client_get_string (GCONF_CLIENT (client),
+			     "/apps/gnomemeeting/call_forwarding/forward_host",
+			     NULL);
+  
+  
+  forward_call_popup = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  gtk_window_set_resizable (GTK_WINDOW (forward_call_popup), FALSE);
+  
+  table = gtk_table_new (3, 3, FALSE);
+  gtk_widget_show (table);
+  gtk_container_add (GTK_CONTAINER (forward_call_popup), table);
+  
+  
+  explain_text = gtk_label_new (_("Enter here the IP address or the name of the host you want to redirect the current call to."));
+  gtk_label_set_justify (GTK_LABEL (explain_text), GTK_JUSTIFY_LEFT);
+  gtk_label_set_line_wrap (GTK_LABEL (explain_text), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (explain_text), 0, 0.5);
+  gtk_widget_show (explain_text);
+  
+  label = gtk_label_new(N_("Forward call to..."));
+  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
+  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
+  gtk_widget_show (label);
+  
+  button_cancel = gtk_button_new_from_stock ("gtk-cancel");
+  gtk_widget_show (button_cancel);
+  
+  button_forward = gtk_button_new_from_stock ("gtk-jump-to");
+  gtk_widget_show (button_forward);
+  
+  entry_forward = gtk_entry_new ();
+  gtk_entry_set_text (GTK_ENTRY (entry_forward), gconf_forward_value);
+  gtk_widget_show (entry_forward);
+  
+  
+  // Ensure that the dialog box is destroyed when the user responds.
+  g_signal_connect_swapped (GTK_OBJECT (button_cancel),
+			    "clicked",
+			    G_CALLBACK (gtk_widget_destroy),
+			    GTK_OBJECT (forward_call_popup));
+  
+  // Now attach all the widgets to the table, and show them.
+  gtk_table_attach (GTK_TABLE (table), picture, 0, 1, 0, 1,
+		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
+		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 12, 12);
+  
+  gtk_table_attach (GTK_TABLE (table), explain_text, 1, 3, 0, 1,
+		    (GtkAttachOptions) (GTK_FILL),
+		    (GtkAttachOptions) (0), 12, 12);
+
+  gtk_table_attach (GTK_TABLE (table), label, 0, 1, 1, 2,
+		    (GtkAttachOptions) (0),
+		    (GtkAttachOptions) (0), 12, 6);
+  
+  gtk_table_attach (GTK_TABLE (table), entry_forward, 1, 3, 1, 2,
+		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
+		    (GtkAttachOptions) (0), 12, 6);
+
+  gtk_table_attach (GTK_TABLE (table), button_forward, 1, 2, 2, 3,
+		    (GtkAttachOptions) (0),
+		    (GtkAttachOptions) (0), 12, 6);
+  
+  gtk_table_attach (GTK_TABLE (table), button_forward, 2, 3, 2, 3,
+		    (GtkAttachOptions) (0),
+		    (GtkAttachOptions) (0), 12, 6);
+  
+  gtk_widget_show_all (forward_call_popup);  
+}
+
 
 static void
 microtelco_consult_cb (GtkWidget *widget, gpointer data)
@@ -245,6 +338,11 @@ hold_call_callback (GtkWidget *widget, gpointer data)
 	gtk_label_set_text_with_mnemonic (GTK_LABEL (child),
 					  _("_Retrieve Call"));
 
+      gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_chan_button), FALSE);
+      gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button), FALSE);
+      gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [AUDIO_PAUSE_CALL_MENU_INDICE].widget), FALSE);
+      gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [VIDEO_PAUSE_CALL_MENU_INDICE].widget), FALSE);
+      
       connection->HoldCall (TRUE);
     }
     else {
@@ -252,6 +350,11 @@ hold_call_callback (GtkWidget *widget, gpointer data)
       if (GTK_IS_LABEL (child))
 	gtk_label_set_text_with_mnemonic (GTK_LABEL (child),
 					  _("_Hold Call"));
+
+      gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_chan_button), TRUE);
+      gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button), TRUE);
+      gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [AUDIO_PAUSE_CALL_MENU_INDICE].widget), TRUE);
+      gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [VIDEO_PAUSE_CALL_MENU_INDICE].widget), TRUE);
 
       gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->audio_chan_button),
 				    FALSE);
@@ -532,6 +635,7 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 
       {_("_Transfert Call"), _("Transfert the current call"),
        NULL, 0, MENU_ENTRY, 
+       //GTK_SIGNAL_FUNC (transfert_call_cb),
        NULL,
        (gpointer) gw, NULL},
 
