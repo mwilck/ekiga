@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-01 12:01+0200\n"
-"PO-Revision-Date: 2004-09-01 17:11+0200\n"
+"POT-Creation-Date: 2004-09-06 03:53+0200\n"
+"PO-Revision-Date: 2004-09-06 11:54+0200\n"
 "Last-Translator: Jonita Prifti <jonita@jonita.net>\n"
 "Language-Team: Albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -17,8 +17,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #. Add the window icon and title
-#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:2340
-#: src/main_window.cpp:2526
+#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:2374
+#: src/main_window.cpp:2560
 msgid "GnomeMeeting"
 msgstr "GnomeMeeting"
 
@@ -585,7 +585,7 @@ msgstr "Madhësia e dritares së preferencave"
 msgid "Start hidden"
 msgstr "Nisu fshehurazi"
 
-#: gnomemeeting.schemas.in.in.h:120 src/main_window.cpp:858
+#: gnomemeeting.schemas.in.in.h:120 src/main_window.cpp:865
 msgid "Switch to fullscreen"
 msgstr "Kalo në modalitetin me ekran të plotë"
 
@@ -1221,16 +1221,16 @@ msgid ""
 "Another contact with the same speed dial already exists in your address "
 "book:\n"
 "\n"
-"<b>Contact Name</b>: %s\n"
-"<b>Contact URL</b>: %s\n"
-"<b>Contact Speed Dial</b>: %s\n"
+"<b>Name</b>: %s\n"
+"<b>URL</b>: %s\n"
+"<b>Speed Dial</b>: %s\n"
 msgstr ""
-"Një ndërlidhës tjetër me të njëjtën marrje të shpejtë gjëndet tashmë në "
-"bllokun e adresave:\n"
+"Një kontakt tjetër me të njëjtën shpejtësi lidhjeje ekziston në rubrikën "
+"tuaj:\n"
 "\n"
-"<b>Emri i Ndërlidhësit</b>: %s\n"
-"<b>URL e Ndërlidhësit</b> %s\n"
-"<b>Thirrja e Shpejtë e Ndërlidhësit</b>: %s\n"
+"<b>Emri</b>: %s\n"
+"<b>URL</b> %s\n"
+"<b>Shpejtësia e lidhjes</b>: %s\n"
 
 #: src/addressbook_window.cpp:662 src/addressbook_window.cpp:664
 #: src/druid.cpp:1762 src/pref_window.cpp:945
@@ -1243,20 +1243,19 @@ msgid ""
 "Another contact with similar information already exists in your address "
 "book:\n"
 "\n"
-"<b>Contact Name</b>: %s\n"
-"<b>Contact URL</b>: %s\n"
-"<b>Contact Speed Dial</b>: %s\n"
+"<b>Name</b>: %s\n"
+"<b>URL</b>: %s\n"
+"<b>Speed Dial</b>: %s\n"
 "\n"
 "Do you still want to add the contact?"
 msgstr ""
-"Një tjetër ndërlidhës me të dhëna të ngjashme ekziston në librin e "
-"adresave:\n"
+"Një kontakt tjetër me të dhëna të ngjashme ekziston në rubrikën tuaj:\n"
 "\n"
-"<b>Emri i Ndërlidhësit</b>: %s\n"
-"<b>URL e Ndëlidhësit</b>: %s\n"
-"<b>Thirrja e Shpejtë e Ndërlidhësit</b>: %s\n"
+"<b>Emri</b>: %s\n"
+"<b>URL</b>: %s\n"
+"<b>Shpejtësia e lidhjes</b>: %s\n"
 "\n"
-"Ende dëshiron ta shtosh ndërlidhësin?"
+"Dëshiron akoma të shtosh kontaktin?"
 
 #. Translators: This is "S" as in "Status"
 #: src/addressbook_window.cpp:824
@@ -1321,7 +1320,7 @@ msgstr "_File"
 msgid "New _Address Book"
 msgstr "Bllok _Adresash i Ri"
 
-#: src/addressbook_window.cpp:1917 src/main_window.cpp:727
+#: src/addressbook_window.cpp:1917 src/main_window.cpp:734
 msgid "_Close"
 msgstr "_Mbyll"
 
@@ -1520,7 +1519,7 @@ msgstr "Thirrjet e kryera"
 msgid "Unanswered Calls"
 msgstr "Thirrjet pa përgjigje"
 
-#: src/calls_history_window.cpp:623 src/main_window.cpp:878 src/tray.cpp:296
+#: src/calls_history_window.cpp:623 src/main_window.cpp:885 src/tray.cpp:296
 msgid "Calls History"
 msgstr "Historiku i thirrjeve"
 
@@ -1989,7 +1988,7 @@ msgid "Configuration complete - page %d/%d"
 msgstr "Konfigurimi i mbaruar - faqja %d/%d"
 
 #: src/druid.cpp:1344 src/druid.cpp:1612 src/druid.cpp:1629 src/druid.cpp:1697
-#: src/endpoint.cpp:1718 src/gnomemeeting.cpp:294 src/gnomemeeting.cpp:296
+#: src/endpoint.cpp:1726 src/gnomemeeting.cpp:294 src/gnomemeeting.cpp:296
 #: src/gnomemeeting.cpp:298 src/sound_handling.cpp:570
 #: src/sound_handling.cpp:571 src/videograbber.cpp:316
 #: src/videograbber.cpp:579
@@ -2079,148 +2078,148 @@ msgid "First Time Configuration Druid"
 msgstr "Ndihmuesi i Konfigurimit të Parë"
 
 #. Update the log and status bar
-#: src/endpoint.cpp:723
+#: src/endpoint.cpp:725
 #, c-format
 msgid "Call from %s"
 msgstr "Thirrje nga %s"
 
-#: src/endpoint.cpp:735
+#: src/endpoint.cpp:737
 #, c-format
 msgid "Forwarding call from %s to %s (Forward all calls)"
 msgstr "Transferim i thirrjes nga %s drejt %s (Transferim i të gjitha thirrjeve)"
 
 #. there is no forwarding, so reject the call
-#: src/endpoint.cpp:742 src/endpoint.cpp:763
+#: src/endpoint.cpp:744 src/endpoint.cpp:765
 #, c-format
 msgid "Rejecting call from %s (Busy)"
 msgstr "Duke refuzuar thirrjen që vjen nga %s (I zënë)"
 
-#: src/endpoint.cpp:754
+#: src/endpoint.cpp:756
 #, c-format
 msgid "Forwarding call from %s to %s (Busy)"
 msgstr "Transferim i thirrjes nga %s drejt %s (I zënë)"
 
-#: src/endpoint.cpp:772
+#: src/endpoint.cpp:774
 #, c-format
 msgid "Accepting call from %s (Free For Chat)"
 msgstr "Duke pranuar thirrje nga %s (I Lirë Për Bisedim)"
 
-#: src/endpoint.cpp:797
+#: src/endpoint.cpp:799
 msgid "Call rejected"
 msgstr "Thirrja u refuzua"
 
-#: src/endpoint.cpp:806 src/endpoint.cpp:1204 src/endpoint.cpp:2147
+#: src/endpoint.cpp:808 src/endpoint.cpp:1212 src/endpoint.cpp:2160
 msgid "Call forwarded"
 msgstr "Thirrje e transferuar"
 
-#: src/endpoint.cpp:818
+#: src/endpoint.cpp:820
 msgid "Call automatically answered"
 msgstr "Përgjigje automatike e thirrjes"
 
-#: src/endpoint.cpp:895
+#: src/endpoint.cpp:899
 #, c-format
 msgid "Forwarding call to %s"
 msgstr "Duke transferuar thirrjen tek %s"
 
-#: src/endpoint.cpp:906
+#: src/endpoint.cpp:910
 #, c-format
 msgid "Error while forwarding call to %s"
 msgstr "Gabim gjatë transferimit të thirrjes tek %s"
 
-#: src/endpoint.cpp:909
+#: src/endpoint.cpp:913
 msgid "There was an error when forwarding the call to the given host."
 msgstr "Ndodhi një gabim gjatë transferimit të thirrjes tek host i dhënë."
 
-#: src/endpoint.cpp:969
+#: src/endpoint.cpp:975
 msgid "Connected"
 msgstr "I lidhur"
 
-#: src/endpoint.cpp:971
+#: src/endpoint.cpp:977
 #, c-format
 msgid "Connected with %s using %s"
 msgstr "I lidhur me %s që përdor %s"
 
-#: src/endpoint.cpp:1168
+#: src/endpoint.cpp:1176
 msgid "Local user cleared the call"
 msgstr "Përdoruesi lokal e mbylli thirrjen"
 
-#: src/endpoint.cpp:1171
+#: src/endpoint.cpp:1179
 msgid "Remote user cleared the call"
 msgstr "Korrespondenti e mbylli thirrjen"
 
-#: src/endpoint.cpp:1174
+#: src/endpoint.cpp:1182
 msgid "Remote user did not accept the call"
 msgstr "Korrespondenti nuk e pranoi thirrjen tënd"
 
-#: src/endpoint.cpp:1177 src/endpoint.cpp:1180
+#: src/endpoint.cpp:1185 src/endpoint.cpp:1188
 msgid "Local user did not accept the call"
 msgstr "Përdoruesi lokal nuk e pranoi thirrjen tënd"
 
-#: src/endpoint.cpp:1183
+#: src/endpoint.cpp:1191
 msgid "The Gatekeeper cleared the call"
 msgstr "Gatekeeperi e mbylli thirrjen"
 
-#: src/endpoint.cpp:1186
+#: src/endpoint.cpp:1194
 msgid "Call not answered in the required time"
 msgstr "Nuk të përgjigj thirrjes në kohën që duhej"
 
-#: src/endpoint.cpp:1189
+#: src/endpoint.cpp:1197
 msgid "Remote user has stopped calling"
 msgstr "Korrespondenti e ndërpreu thirrjen"
 
-#: src/endpoint.cpp:1192
+#: src/endpoint.cpp:1200
 msgid "Abnormal call termination"
 msgstr "Mbarim anormal i thirrjes"
 
-#: src/endpoint.cpp:1195
+#: src/endpoint.cpp:1203
 msgid "Could not connect to remote host"
 msgstr "Nuk mundi të lidhet me korrespondentin"
 
-#: src/endpoint.cpp:1198
+#: src/endpoint.cpp:1206
 msgid "Insufficient bandwidth"
 msgstr "Gjerësi bande e pamjaftueshme"
 
-#: src/endpoint.cpp:1201
+#: src/endpoint.cpp:1209
 msgid "No common codec"
 msgstr "S'ka kodek të përbashkët"
 
-#: src/endpoint.cpp:1207
+#: src/endpoint.cpp:1215
 msgid "Security check Failed"
 msgstr "Dështim i verifikimit të sigurimit"
 
-#: src/endpoint.cpp:1210
+#: src/endpoint.cpp:1218
 msgid "Local user is busy"
 msgstr "Përdoruesi lokal është i zënë"
 
-#: src/endpoint.cpp:1213
+#: src/endpoint.cpp:1221
 msgid "Remote user is busy"
 msgstr "Korrespondenti ështe i zënë"
 
-#: src/endpoint.cpp:1216 src/endpoint.cpp:1219
+#: src/endpoint.cpp:1224 src/endpoint.cpp:1227
 msgid "Congested link to remote party"
 msgstr "Linja e korrespondentit  është e ngarkuar"
 
-#: src/endpoint.cpp:1222 src/endpoint.cpp:1225
+#: src/endpoint.cpp:1230 src/endpoint.cpp:1233
 msgid "Remote user is unreachable"
 msgstr "Korrespondenti nuk është i arritshëm"
 
-#: src/endpoint.cpp:1228
+#: src/endpoint.cpp:1236
 msgid "Remote host is offline"
 msgstr "Korrespondenti nuk është në lidhje"
 
-#: src/endpoint.cpp:1231
+#: src/endpoint.cpp:1239
 msgid "Temporary failure"
 msgstr "Dështim i përkohshëm"
 
-#: src/endpoint.cpp:1234 src/urlhandler.cpp:402 src/urlhandler.cpp:409
+#: src/endpoint.cpp:1242 src/urlhandler.cpp:404 src/urlhandler.cpp:411
 msgid "User not found"
 msgstr "Përdoruesi nuk u gjet"
 
-#: src/endpoint.cpp:1238
+#: src/endpoint.cpp:1246
 msgid "Call completed"
 msgstr "Thirrja u mbarua"
 
-#: src/endpoint.cpp:1338 src/main_window.cpp:969
+#: src/endpoint.cpp:1346 src/main_window.cpp:976
 msgid ""
 "Lost packets:\n"
 "Late packets:\n"
@@ -2232,11 +2231,11 @@ msgstr ""
 "Round-trip delay:\n"
 "Jitter buffer:"
 
-#: src/endpoint.cpp:1563
+#: src/endpoint.cpp:1571
 msgid "Error while starting the listener"
 msgstr "Gabim gjatë nisjes të përgtëesit"
 
-#: src/endpoint.cpp:1563
+#: src/endpoint.cpp:1571
 msgid ""
 "You will not be able to receive incoming calls. Please check that no other "
 "program is already running on the port used by GnomeMeeting."
@@ -2244,25 +2243,25 @@ msgstr ""
 "Nuk mund të merrni thirrjet që vijnë.  Ju lutem verifikoni që s'ka program "
 "tjetër duke zënë portin që përdoret nga GnomeMeeting."
 
-#: src/endpoint.cpp:1704
+#: src/endpoint.cpp:1712
 msgid "Attaching lid hardware to codec"
 msgstr "Bashkëngjitje e kodekut me LID"
 
-#: src/endpoint.cpp:1738
+#: src/endpoint.cpp:1746
 #, c-format
 msgid "Opened %s for recording with plugin %s"
 msgstr "Hapi %s për të regjistruar me plugin %s"
 
-#: src/endpoint.cpp:1739
+#: src/endpoint.cpp:1747
 #, c-format
 msgid "Opened %s for playing with plugin %s"
 msgstr "Hapi %s për të lexuar me plugin %s"
 
-#: src/endpoint.cpp:1775
+#: src/endpoint.cpp:1783
 msgid "Could not open audio channel for audio transmission"
 msgstr "Nuk mund të hapi kanalin e audios për transmetimin e zërit"
 
-#: src/endpoint.cpp:1775
+#: src/endpoint.cpp:1783
 msgid ""
 "An error occured while trying to record from the soundcard for the audio "
 "transmission. Please check that your soundcard is not busy and that your "
@@ -2274,11 +2273,11 @@ msgstr ""
 "funksiononme full-duplex.\n"
 "Transmetimi i zërit nuk ishte i aktivizuar."
 
-#: src/endpoint.cpp:1780
+#: src/endpoint.cpp:1788
 msgid "Could not open audio channel for audio reception"
 msgstr "Nuk mund të hapi kanalin e audios për marrjen e zërit"
 
-#: src/endpoint.cpp:1780
+#: src/endpoint.cpp:1788
 msgid ""
 "An error occured while trying to play audio to the soundcard for the audio "
 "reception. Please check that your soundcard is not busy and that your driver "
@@ -2290,12 +2289,12 @@ msgstr ""
 "me full-duplex.\n"
 "Marrja e zërit nuk ishte e aktivizuar."
 
-#: src/endpoint.cpp:1970
+#: src/endpoint.cpp:1981
 #, c-format
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 
-#: src/endpoint.cpp:2010
+#: src/endpoint.cpp:2021
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2308,37 +2307,37 @@ msgstr ""
 "Vonesa vajtje-ardhje: %d ms\n"
 "Jitter buffer: %d ms"
 
-#: src/endpoint.cpp:2144
+#: src/endpoint.cpp:2157
 #, c-format
 msgid "Forwarding Call to %s (No Answer)"
 msgstr "Tranferim i thirrjeve drejt %s (S'ka përgjigje)"
 
-#: src/gatekeeper.cpp:135
+#: src/gatekeeper.cpp:136
 #, c-format
 msgid "Unregistered from gatekeeper %s"
 msgstr "I çregjistruar nga gatekeeper %s"
 
-#: src/gatekeeper.cpp:150
+#: src/gatekeeper.cpp:151
 msgid "Invalid gatekeeper hostname"
 msgstr "Host Gatekeeper i pavlefshëm"
 
-#: src/gatekeeper.cpp:150
+#: src/gatekeeper.cpp:151
 msgid "Please provide a hostname to use for the gatekeeper."
 msgstr "Fut një emër hosti që do të përdoret për gatekeeper-in."
 
-#: src/gatekeeper.cpp:158
+#: src/gatekeeper.cpp:159
 msgid "Invalid gatekeeper ID"
 msgstr "Gatekeeper ID e pavlefshme"
 
-#: src/gatekeeper.cpp:158
+#: src/gatekeeper.cpp:159
 msgid "Please provide a valid ID for the gatekeeper."
 msgstr "Fut një ID të vlefshëm për gatekeeper-in."
 
-#: src/gatekeeper.cpp:205
+#: src/gatekeeper.cpp:206
 msgid "Another user already exists with the same alias, please use another alias."
 msgstr "Një përdorues tjetër ka tashmë të njejtën alias, zgjidhni një alias tjetër."
 
-#: src/gatekeeper.cpp:208
+#: src/gatekeeper.cpp:209
 msgid ""
 "You are not allowed to register to the gatekeeper. Please check your login, "
 "password and firewall."
@@ -2346,19 +2345,19 @@ msgstr ""
 "Nuk je i autorizuar të regjistrohesh në gatekeeper.  Verifikoni login,fjalën "
 "kalim dhe firewall-in."
 
-#: src/gatekeeper.cpp:211
+#: src/gatekeeper.cpp:212
 msgid "There was a transport error."
 msgstr "Ndodhi një gabim transporti."
 
-#: src/gatekeeper.cpp:214 src/gatekeeper.cpp:219
+#: src/gatekeeper.cpp:215 src/gatekeeper.cpp:220
 msgid "No gatekeeper corresponding to your options has been found."
 msgstr "Asnjë gatekeeper që i përshtatet të dhënave të tëaja nuk u gjet."
 
-#: src/gatekeeper.cpp:221
+#: src/gatekeeper.cpp:222
 msgid "Error while registering with gatekeeper"
 msgstr "Gabim gjatë regjistrimit me gatekeeper."
 
-#: src/gatekeeper.cpp:236
+#: src/gatekeeper.cpp:237
 #, c-format
 msgid "Gatekeeper set to %s"
 msgstr "Gatekeeper i vendosur në %s"
@@ -2401,11 +2400,11 @@ msgstr "Personale"
 msgid "Started GnomeMeeting V%d.%d.%d for %s\n"
 msgstr "GnomeMeeting V%d.%d.%d u nis për %s\n"
 
-#: src/ils.cpp:100
+#: src/ils.cpp:101
 msgid "Invalid parameters"
 msgstr "Parametra të pavlefshëm"
 
-#: src/ils.cpp:100
+#: src/ils.cpp:101
 msgid ""
 "Please provide your first name and e-mail in the Personal Data section in "
 "order to be able to register to the users directory."
@@ -2413,21 +2412,21 @@ msgstr ""
 "Të lutem fut emrin dhe adresën e-mail në seksionin e Informacioneve "
 "Personale për tu regjistruar në numratorin e përdoruesve."
 
-#: src/ils.cpp:134
+#: src/ils.cpp:135
 msgid "Invalid users directory"
 msgstr "Numratori i përdoruesve është i pavlefshëm"
 
-#: src/ils.cpp:134
+#: src/ils.cpp:135
 msgid "Operation impossible since there is no users directory specified."
 msgstr ""
 "Operacion i pamundur sepse asnjë numrator i përdoruesve nuk është "
 "specifikuar."
 
-#: src/ils.cpp:218
+#: src/ils.cpp:220
 msgid "Failed to parse XML file"
 msgstr "S'mundi të analizojë dosjen XML."
 
-#: src/ils.cpp:218
+#: src/ils.cpp:220
 msgid ""
 "There was an error while parsing the XML file. Please make sure that it is "
 "correctly installed in your system."
@@ -2435,20 +2434,20 @@ msgstr ""
 "Gabim gjatë analizës së dosjes XML.  Ju lutem sigurohu që kjo është e "
 "instaluar mirë në sistemin tënd."
 
-#: src/ils.cpp:229
+#: src/ils.cpp:231
 msgid "Bad information"
 msgstr "Informacione të pavlefshme"
 
-#: src/ils.cpp:229
+#: src/ils.cpp:231
 #, c-format
 msgid "Bad LDAP information from XML file: %s."
 msgstr "Informacione LDAP të gabueshme nga dosja XML: %s."
 
-#: src/ils.cpp:238 src/ils.cpp:248 src/ils.cpp:257
+#: src/ils.cpp:240 src/ils.cpp:250 src/ils.cpp:259
 msgid "Cannot contact the users directory"
 msgstr "S'mund të kontaktojë  numratorin e përdoruesve"
 
-#: src/ils.cpp:238
+#: src/ils.cpp:240
 #, c-format
 msgid ""
 "Failed to contact the users directory %s:%d. The directory is probably "
@@ -2457,26 +2456,26 @@ msgstr ""
 "Dështoi lidhja me kartelën e përdoruesve %s: %d. Ka mundësi që kartela të "
 "jetë e mbingarkuar, të lutem provo më vonë."
 
-#: src/ils.cpp:248
+#: src/ils.cpp:250
 msgid "Failed to set a time limit on operations."
 msgstr "Dështim gjatë kufizimit të kohës mbi operacionet. "
 
-#: src/ils.cpp:257
+#: src/ils.cpp:259
 #, c-format
 msgid "Failed to bind to users directory: %s."
 msgstr "Dështoi të lidhej me numratorin e përdoruesve: %s."
 
-#: src/ils.cpp:281
+#: src/ils.cpp:283
 #, c-format
 msgid "Updated information on the users directory %s."
 msgstr "Freskoi të dhënat në kartelën e përdoruesve %s."
 
-#: src/ils.cpp:285
+#: src/ils.cpp:287
 #, c-format
 msgid "Unregistered from the users directory %s."
 msgstr "I çregjistruar nga kartela e përdoruesve %s."
 
-#: src/ils.cpp:307
+#: src/ils.cpp:309
 #, c-format
 msgid "Error while registering to %s"
 msgstr "Gabim gjatë regjistrimit në %s"
@@ -2511,11 +2510,11 @@ msgstr "Telefoni është i hapur"
 msgid "Phone is on hook"
 msgstr "Telefoni është i mbyllur"
 
-#: src/log_window.cpp:117 src/main_window.cpp:873
+#: src/log_window.cpp:117 src/main_window.cpp:880
 msgid "General History"
 msgstr "Historiku i përgjithshëm"
 
-#: src/main_window.cpp:460
+#: src/main_window.cpp:467
 msgid ""
 "Enter an URL to call on the left, and click on this button to connect to the "
 "given URL"
@@ -2523,23 +2522,23 @@ msgstr ""
 "Fut një URL për të telefonuar në të majtë, pastaj klikoni në këtë buton për "
 "tu lidhur me URL e dhënë"
 
-#: src/main_window.cpp:500
+#: src/main_window.cpp:507
 msgid "Open text chat"
 msgstr "Hap tekstin e bisedës"
 
-#: src/main_window.cpp:511
+#: src/main_window.cpp:518
 msgid "Open control panel"
 msgstr "Hap panelën e kontrollit"
 
-#: src/main_window.cpp:523
+#: src/main_window.cpp:530
 msgid "Open address book"
 msgstr "Hap bllokun e adresave"
 
-#: src/main_window.cpp:547
+#: src/main_window.cpp:554
 msgid "Display images from your camera device"
 msgstr "Shfaq imazhe nga dispozitivi i kamerës"
 
-#: src/main_window.cpp:570
+#: src/main_window.cpp:577
 msgid ""
 "Audio transmission status. During a call, click here to suspend or resume "
 "the audio transmission."
@@ -2547,7 +2546,7 @@ msgstr ""
 "Gjëndja e transmetimit të audios. Gjatë thirrjes, klikoni këtu për të "
 "ndaluar ose rifilluar transmetimin e zërit."
 
-#: src/main_window.cpp:591
+#: src/main_window.cpp:598
 msgid ""
 "Video transmission status. During a call, click here to suspend or resume "
 "the video transmission."
@@ -2555,380 +2554,380 @@ msgstr ""
 "Gjëndja e transmetimit të videos. Gjatë thirrjes, klikoni këtu për të "
 "ndaluar ose rifilluar transmetimin e videos."
 
-#: src/main_window.cpp:654
+#: src/main_window.cpp:661
 msgid "C_all"
 msgstr "_Thirrje"
 
-#: src/main_window.cpp:656
+#: src/main_window.cpp:663
 msgid "C_onnect"
 msgstr "Li_dhu"
 
-#: src/main_window.cpp:656 src/tray.cpp:253
+#: src/main_window.cpp:663 src/tray.cpp:253
 msgid "Create a new connection"
 msgstr "Krijo një lidhje të re"
 
-#: src/main_window.cpp:659 src/tray.cpp:256
+#: src/main_window.cpp:666 src/tray.cpp:256
 msgid "_Disconnect"
 msgstr "_Shkëputu"
 
-#: src/main_window.cpp:660 src/tray.cpp:257
+#: src/main_window.cpp:667 src/tray.cpp:257
 msgid "Close the current connection"
 msgstr "Mbyll lidhjen e tanishme"
 
-#: src/main_window.cpp:666 src/tray.cpp:263
+#: src/main_window.cpp:673 src/tray.cpp:263
 msgid "_Available"
 msgstr "_I Lirë"
 
-#: src/main_window.cpp:667 src/tray.cpp:264
+#: src/main_window.cpp:674 src/tray.cpp:264
 msgid "Display a popup to accept the call"
 msgstr "Shfaq një dritare kur të thërrasin"
 
-#: src/main_window.cpp:672 src/tray.cpp:269
+#: src/main_window.cpp:679 src/tray.cpp:269
 msgid "Free for Cha_t"
 msgstr "I Lirë për Bisedi_m"
 
-#: src/main_window.cpp:673 src/tray.cpp:270
+#: src/main_window.cpp:680 src/tray.cpp:270
 msgid "Auto answer calls"
 msgstr "Përgjigju automatikisht thirrjeve"
 
-#: src/main_window.cpp:678 src/tray.cpp:275
+#: src/main_window.cpp:685 src/tray.cpp:275
 msgid "_Busy"
 msgstr "I _Zënë"
 
-#: src/main_window.cpp:678 src/tray.cpp:275
+#: src/main_window.cpp:685 src/tray.cpp:275
 msgid "Reject calls"
 msgstr "Thirrjet e refuzuara"
 
-#: src/main_window.cpp:683 src/tray.cpp:280
+#: src/main_window.cpp:690 src/tray.cpp:280
 msgid "_Forward"
 msgstr "_Vazhdo"
 
-#: src/main_window.cpp:683 src/tray.cpp:280
+#: src/main_window.cpp:690 src/tray.cpp:280
 msgid "Forward calls"
 msgstr "Thirrjet e transferuara"
 
-#: src/main_window.cpp:691
+#: src/main_window.cpp:698
 msgid "Speed dials"
 msgstr "Telefonatat e shpejta"
 
-#: src/main_window.cpp:695 src/main_window.cpp:1407
+#: src/main_window.cpp:702 src/main_window.cpp:1414
 msgid "_Hold Call"
 msgstr "_Pushim i thirrjes"
 
-#: src/main_window.cpp:695
+#: src/main_window.cpp:702
 msgid "Hold the current call"
 msgstr "Ndalon thirrjen e tanishme"
 
-#: src/main_window.cpp:699
+#: src/main_window.cpp:706
 msgid "_Transfer Call"
 msgstr "_Transferim i thirrjes"
 
-#: src/main_window.cpp:700
+#: src/main_window.cpp:707
 msgid "Transfer the current call"
 msgstr "Transferon thirrjen e tanishme"
 
-#: src/main_window.cpp:707 src/main_window.cpp:1441
+#: src/main_window.cpp:714 src/main_window.cpp:1448
 msgid "Suspend _Audio"
 msgstr "Pezullim i zërit"
 
-#: src/main_window.cpp:708
+#: src/main_window.cpp:715
 msgid "Suspend or resume the audio transmission"
 msgstr "Pezullon ose rimerr transmetimin e zërit"
 
-#: src/main_window.cpp:712 src/main_window.cpp:1443
+#: src/main_window.cpp:719 src/main_window.cpp:1450
 msgid "Suspend _Video"
 msgstr "Pezullim i videos"
 
-#: src/main_window.cpp:713
+#: src/main_window.cpp:720
 msgid "Suspend or resume the video transmission"
 msgstr "Pezullon ose rimerr transmetimin e videos"
 
-#: src/main_window.cpp:720
+#: src/main_window.cpp:727
 msgid "_Save Current Picture"
 msgstr "_Ruaj imazhin e tanishëm"
 
-#: src/main_window.cpp:721
+#: src/main_window.cpp:728
 msgid "Save a snapshot of the current video"
 msgstr "Regjistron një fotografi të videos së tanishme"
 
-#: src/main_window.cpp:727
+#: src/main_window.cpp:734
 msgid "Close the GnomeMeeting window"
 msgstr "Mbyll dritaren e GnomeMeeting"
 
-#: src/main_window.cpp:734 src/tray.cpp:318
+#: src/main_window.cpp:741 src/tray.cpp:318
 msgid "_Quit"
 msgstr "_Dalja"
 
-#: src/main_window.cpp:734 src/tray.cpp:319
+#: src/main_window.cpp:741 src/tray.cpp:319
 msgid "Quit GnomeMeeting"
 msgstr "Ndërpren GnomeMeeting"
 
-#: src/main_window.cpp:738
+#: src/main_window.cpp:745
 msgid "_Edit"
 msgstr "_Ndrysho"
 
-#: src/main_window.cpp:740
+#: src/main_window.cpp:747
 msgid "Configuration Druid"
 msgstr "Ndihmë për konfigurimin"
 
-#: src/main_window.cpp:741
+#: src/main_window.cpp:748
 msgid "Run the configuration druid"
 msgstr "Sjell ndihmën e konfigurimit"
 
-#: src/main_window.cpp:748 src/tray.cpp:304
+#: src/main_window.cpp:755 src/tray.cpp:304
 msgid "_Preferences"
 msgstr "_Preferimet"
 
-#: src/main_window.cpp:749 src/tray.cpp:305
+#: src/main_window.cpp:756 src/tray.cpp:305
 msgid "Change your preferences"
 msgstr "Ndrysho preferencat"
 
-#: src/main_window.cpp:754
+#: src/main_window.cpp:761
 msgid "_View"
 msgstr "_Shfaq"
 
-#: src/main_window.cpp:756 src/pref_window.cpp:711
+#: src/main_window.cpp:763 src/pref_window.cpp:711
 msgid "Text Chat"
 msgstr "Bisedë me tekst"
 
-#: src/main_window.cpp:757
+#: src/main_window.cpp:764
 msgid "View/Hide the text chat window"
 msgstr "Shfaq/fshen dritaren e bisedës"
 
-#: src/main_window.cpp:762
+#: src/main_window.cpp:769
 msgid "Status Bar"
 msgstr "Paneli i gjendjes"
 
-#: src/main_window.cpp:763
+#: src/main_window.cpp:770
 msgid "View/Hide the status bar"
 msgstr "Shfaq/Fsheh kornizën e gjendjes"
 
-#: src/main_window.cpp:769
+#: src/main_window.cpp:776
 msgid "Control Panel"
 msgstr "Paneli i Kontrollit"
 
-#: src/main_window.cpp:771 src/main_window.cpp:974
+#: src/main_window.cpp:778 src/main_window.cpp:981
 msgid "Statistics"
 msgstr "Statistikat"
 
-#: src/main_window.cpp:772
+#: src/main_window.cpp:779
 msgid "View audio/video transmission and reception statistics"
 msgstr "Shiko statistikat e transmetimit dhe të marrjes audio/video"
 
-#: src/main_window.cpp:777
+#: src/main_window.cpp:784
 msgid "_Dialpad"
 msgstr "_Tastiera"
 
-#: src/main_window.cpp:777
+#: src/main_window.cpp:784
 msgid "View the dialpad"
 msgstr "Shfaq tastierën"
 
-#: src/main_window.cpp:782
+#: src/main_window.cpp:789
 msgid "_Audio Settings"
 msgstr "Parametrat _audio"
 
-#: src/main_window.cpp:783
+#: src/main_window.cpp:790
 msgid "View audio settings"
 msgstr "Shfaq parametrat audio"
 
-#: src/main_window.cpp:788
+#: src/main_window.cpp:795
 msgid "_Video Settings"
 msgstr "Parametrat _video"
 
-#: src/main_window.cpp:789
+#: src/main_window.cpp:796
 msgid "View video settings"
 msgstr "Shfaq parametrat video"
 
-#: src/main_window.cpp:794 src/pref_window.cpp:1069
+#: src/main_window.cpp:801 src/pref_window.cpp:1069
 msgid "Off"
 msgstr "E mbyllur"
 
-#: src/main_window.cpp:794
+#: src/main_window.cpp:801
 msgid "Hide the control panel"
 msgstr "Shfaq/fshen panelën e kontrollit"
 
-#: src/main_window.cpp:802
+#: src/main_window.cpp:809
 msgid "_Clear Text Chat"
 msgstr "_Pastro Tekstin e Bisedës"
 
-#: src/main_window.cpp:803
+#: src/main_window.cpp:810
 msgid "Clear the text chat"
 msgstr "Fshin tekstin e bisedës"
 
-#: src/main_window.cpp:810 src/main_window.cpp:2480
+#: src/main_window.cpp:817 src/main_window.cpp:2514
 msgid "Local Video"
 msgstr "Video lokale"
 
-#: src/main_window.cpp:811
+#: src/main_window.cpp:818
 msgid "Local video image"
 msgstr "Figura e videos lokale"
 
-#: src/main_window.cpp:816 src/main_window.cpp:2484
+#: src/main_window.cpp:823 src/main_window.cpp:2518
 msgid "Remote Video"
 msgstr "Video e largët"
 
-#: src/main_window.cpp:817
+#: src/main_window.cpp:824
 msgid "Remote video image"
 msgstr "Figura e videos e korrepondentit"
 
-#: src/main_window.cpp:822
+#: src/main_window.cpp:829
 msgid "Both (Local Video Incrusted)"
 msgstr "Të dyja (Video lokale e futur në dritare)"
 
-#: src/main_window.cpp:823 src/main_window.cpp:830 src/main_window.cpp:837
+#: src/main_window.cpp:830 src/main_window.cpp:837 src/main_window.cpp:844
 msgid "Both video images"
 msgstr "Të dyja imazhit e videos"
 
-#: src/main_window.cpp:829
+#: src/main_window.cpp:836
 msgid "Both (Local Video in New Window)"
 msgstr "Të dyja (Video lokale në një dritare të veçantë)"
 
-#: src/main_window.cpp:836
+#: src/main_window.cpp:843
 msgid "Both (Both in New Windows)"
 msgstr "Të dyja (Të dyja videot në dritare të veçanta)"
 
-#: src/main_window.cpp:845
+#: src/main_window.cpp:852
 msgid "Zoom In"
 msgstr "Zmadho"
 
-#: src/main_window.cpp:845
+#: src/main_window.cpp:852
 msgid "Zoom in"
 msgstr "Zmadho"
 
-#: src/main_window.cpp:849
+#: src/main_window.cpp:856
 msgid "Zoom Out"
 msgstr "Zvogëlo"
 
-#: src/main_window.cpp:849
+#: src/main_window.cpp:856
 msgid "Zoom out"
 msgstr "Zvogëlo"
 
-#: src/main_window.cpp:853
+#: src/main_window.cpp:860
 msgid "Normal Size"
 msgstr "Madhësi Normale"
 
-#: src/main_window.cpp:853
+#: src/main_window.cpp:860
 msgid "Normal size"
 msgstr "Madhësi normale"
 
-#: src/main_window.cpp:858
+#: src/main_window.cpp:865
 msgid "Fullscreen"
 msgstr "Ekran të plotë"
 
-#: src/main_window.cpp:863
+#: src/main_window.cpp:870
 msgid "_Tools"
 msgstr "_Instrumentë"
 
-#: src/main_window.cpp:865 src/tray.cpp:288
+#: src/main_window.cpp:872 src/tray.cpp:288
 msgid "Address _Book"
 msgstr "_Rubrika"
 
-#: src/main_window.cpp:866 src/tray.cpp:289
+#: src/main_window.cpp:873 src/tray.cpp:289
 msgid "Open the address book"
 msgstr "Hap bllokun e adresave"
 
-#: src/main_window.cpp:874
+#: src/main_window.cpp:881
 msgid "View the operations history"
 msgstr "Shiko historikun e veprimeve"
 
-#: src/main_window.cpp:879 src/tray.cpp:297
+#: src/main_window.cpp:886 src/tray.cpp:297
 msgid "View the calls history"
 msgstr "Shiko historikun e thirrjeve"
 
-#: src/main_window.cpp:887 src/main_window.cpp:893
+#: src/main_window.cpp:894 src/main_window.cpp:900
 msgid "PC-To-Phone Account"
 msgstr "Llogaria PC-Telefon"
 
-#: src/main_window.cpp:888 src/main_window.cpp:894
+#: src/main_window.cpp:895 src/main_window.cpp:901
 msgid "Manage your PC-To-Phone account"
 msgstr "Organizo llogarinë PC-Telefon"
 
-#: src/main_window.cpp:899
+#: src/main_window.cpp:906
 msgid "_Help"
 msgstr "_Ndihmë"
 
-#: src/main_window.cpp:902 src/main_window.cpp:907
+#: src/main_window.cpp:909 src/main_window.cpp:914
 msgid "_Contents"
 msgstr "_Përmbajtja"
 
-#: src/main_window.cpp:903 src/main_window.cpp:908
+#: src/main_window.cpp:910 src/main_window.cpp:915
 msgid "Get help by reading the GnomeMeeting manual"
 msgstr "Merr ndihmë duke lexuar manualin e GnomeMeeting"
 
-#: src/main_window.cpp:913
+#: src/main_window.cpp:920
 msgid "_About"
 msgstr "_Informacione"
 
-#: src/main_window.cpp:914 src/tray.cpp:313
+#: src/main_window.cpp:921 src/tray.cpp:313
 msgid "View information about GnomeMeeting"
 msgstr "Shfaq informacionet rreth GnomeMeeting"
 
-#: src/main_window.cpp:1029
+#: src/main_window.cpp:1036
 msgid "Dialpad"
 msgstr "Tastiera"
 
-#: src/main_window.cpp:1085
+#: src/main_window.cpp:1092
 msgid "Adjust brightness"
 msgstr "Rregullon dritën"
 
-#: src/main_window.cpp:1108
+#: src/main_window.cpp:1115
 msgid "Adjust whiteness"
 msgstr "Përshtat bardhësinë e figurës"
 
-#: src/main_window.cpp:1131
+#: src/main_window.cpp:1138
 msgid "Adjust color"
 msgstr "Rregullon ngjyrën"
 
-#: src/main_window.cpp:1154
+#: src/main_window.cpp:1161
 msgid "Adjust contrast"
 msgstr "Rregullon kontrastin"
 
-#: src/main_window.cpp:1162
+#: src/main_window.cpp:1169
 msgid "Video"
 msgstr "Video"
 
-#: src/main_window.cpp:1240
+#: src/main_window.cpp:1247
 msgid "Audio"
 msgstr "Zëri"
 
-#: src/main_window.cpp:1344
+#: src/main_window.cpp:1351
 #, c-format
 msgid "Sent dtmf %c"
 msgstr "Dërgoi dtmf %c"
 
-#: src/main_window.cpp:1391
+#: src/main_window.cpp:1398
 msgid "_Retrieve Call"
 msgstr "_Rimarrje e thirrjes"
 
-#: src/main_window.cpp:1445
+#: src/main_window.cpp:1452
 msgid "Resume _Audio"
 msgstr "Rimarrje e zërit"
 
-#: src/main_window.cpp:1447
+#: src/main_window.cpp:1454
 msgid "Resume _Video"
 msgstr "Rimarrje e videos"
 
-#: src/main_window.cpp:1825
+#: src/main_window.cpp:1832
 msgid "Transfer call to:"
 msgstr "Transfero thirrjen drejt:"
 
-#: src/main_window.cpp:1826
+#: src/main_window.cpp:1833
 msgid "Transfer"
 msgstr "Transferimi"
 
-#: src/main_window.cpp:2613
+#: src/main_window.cpp:2727
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Shfaq mesazhet e debugimit në panelën e kontrollit (nivel midis 1 dhe 6)"
 
-#: src/main_window.cpp:2616
+#: src/main_window.cpp:2730
 msgid "Makes GnomeMeeting call the given URL"
 msgstr "Bën që GnomeMeeting të marri  URL callto:// të caktuar"
 
-#: src/main_window.cpp:2651
+#: src/main_window.cpp:2765
 msgid "No usable audio plugin detected"
 msgstr "Nuk u gjet asnjë plugin audio i përdorshëm"
 
-#: src/main_window.cpp:2651
+#: src/main_window.cpp:2765
 msgid ""
 "GnomeMeeting didn't find any usable audio plugin. Make sure that your "
 "installation is correct."
@@ -2936,7 +2935,7 @@ msgstr ""
 "GnomeMeeting nuk gjeti asnjë plugin zëri të përdorshëm. Sigurohu që "
 "instalimi është i saktë."
 
-#: src/main_window.cpp:2671
+#: src/main_window.cpp:2785
 #, c-format
 msgid ""
 "GnomeMeeting got an invalid value for the GConf key %s.\n"
@@ -2959,7 +2958,7 @@ msgstr ""
 "gconf/) ose arkivën e mailing listës për më shumë informacione rreth këtij "
 "problemi (http://mail.gnome.org)."
 
-#: src/main_window.cpp:2674
+#: src/main_window.cpp:2788
 msgid "Gconf key error"
 msgstr "Gabim çelësi Gconf"
 
@@ -3885,18 +3884,18 @@ msgstr ""
 "Transferimi i thirrjes dështoi, përdoruesi nuk është i arritshëm, ose ishte "
 "i zënëkur mori kërkesën e trasferimit të thirrjes."
 
-#: src/urlhandler.cpp:316
+#: src/urlhandler.cpp:318
 #, c-format
 msgid "No contact with speed dial %s# found, will call number %s instead"
 msgstr ""
 "Nuk u gjet asnjë ndërlidhës me thirrje të shpejtë %s#, do të marri numrin %s "
 "në vend të thirrjes"
 
-#: src/urlhandler.cpp:333
+#: src/urlhandler.cpp:335
 msgid "Invalid URL handler"
 msgstr "URL e pavlefshme"
 
-#: src/urlhandler.cpp:333
+#: src/urlhandler.cpp:335
 msgid ""
 "Please specify a valid URL handler. Currently both h323: and callto: are "
 "supported."
@@ -3904,12 +3903,12 @@ msgstr ""
 "Specifikoni një URL të saktë.  Tashmë h323: dhe callto: janë të dyjatë "
 "mbështetura."
 
-#: src/urlhandler.cpp:353
+#: src/urlhandler.cpp:355
 #, c-format
 msgid "Calling %s"
 msgstr "Duke thirrur %s"
 
-#: src/urlhandler.cpp:357
+#: src/urlhandler.cpp:359
 #, c-format
 msgid "Transferring call to %s"
 msgstr "Transferim i thirrjes drejt %s"
