@@ -128,6 +128,7 @@ GMILSClient::GMILSClient ()
   running = 1;
   has_to_register = 0;
   has_to_unregister = 0;
+  has_to_modify = 0;
   registered = 0;
 
   client = gconf_client_get_default ();
