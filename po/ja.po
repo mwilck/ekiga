@@ -74,13 +74,12 @@ msgid ""
 msgstr "コントロール・パネルのセクションを変更します (4: パネルを表示しない)"
 
 #: gnomemeeting.schemas.in.in.h:12 src/pref_window.cpp:1391
-#, fuzzy
 msgid ""
 "Choose the number of blocks (that have not changed) transmitted with each "
 "frame. These blocks fill in the background."
 msgstr ""
 "各フレームで発信される (変更されていない) ブロック数を選択して下さい。これら"
-"のブロック数はバックグラウンドに埋め込まれます。"
+"のブロックはバックグラウンドに埋め込まれます。"
 
 #: gnomemeeting.schemas.in.in.h:13
 msgid "Color Format"
@@ -95,17 +94,16 @@ msgid "Comment"
 msgstr "コメント"
 
 #: gnomemeeting.schemas.in.in.h:16 src/pref_window.cpp:936
-#, fuzzy
 msgid ""
 "Connection will be established in Fast Start mode. Fast Start is a new way "
 "to start calls faster that was introduced in H.323v2. It is not supported by "
 "Netmeeting and using both Fast Start and H.245 Tunnelling can crash some "
 "versions of Netmeeting."
 msgstr ""
-"Connection will be established in Fast Start mode. Fast Start is a new way "
-"to start calls faster that was introduced in H.323v2. It is not supported by "
-"Netmeeting and using both Fast Start and H.245 Tunneling can crash some "
-"versions of Netmeeting."
+"高速起動モードで接続します。高速起動モードはH.323v2で導入された、コールを"
+"早く開始する方法です。これはNetmeetingではされておらず、またNetmeetingの"
+"バージョンによっては、高速起動とH.245トンネリングを同時に使うとクラッシュ"
+"することがあります。"
 
 #: gnomemeeting.schemas.in.in.h:17
 msgid "Country code"
@@ -140,7 +138,6 @@ msgid "Enable bilinear filtering on displayed video"
 msgstr "ビデオの表示で BiLinear フィルタリングを有効にする"
 
 #: gnomemeeting.schemas.in.in.h:25 src/pref_window.cpp:824
-#, fuzzy
 msgid ""
 "Enable or disable bilinear interpolation when rendering video images (this "
 "has no effect in fullscreen mode)."
@@ -239,82 +236,74 @@ msgid ""
 "If enabled, GnomeMeeting will play a sound when receiving an incoming call "
 "(the sound to play is chosen in the Gnome Control Center)."
 msgstr ""
+"これを有効にすると、GnomeMeetingは着信時にサウンドを鳴らします。"
+"(鳴らすサウンドはGNOMEコントロールセンターで選択できます)。"
 
 #: gnomemeeting.schemas.in.in.h:47 src/pref_window.cpp:788
-#, fuzzy
 msgid ""
 "If enabled, GnomeMeeting will start hidden. The docklet must be enabled."
 msgstr ""
-"TRUE にすると、GnomeMeeting は GNOME パネルの通知エリアを隠したまま起動しま"
-"す。"
+"これを有効にすると、GnomeMeeting は GNOME パネルの通知エリアを隠したまま起動しま"
+"す。ドックレットが有効でなければなりません。"
 
 #: gnomemeeting.schemas.in.in.h:48 src/pref_window.cpp:802
-#, fuzzy
 msgid ""
 "If enabled, a popup window will be displayed when receiving an incoming call."
-msgstr "TRUE にすると、着信時にウィンドウをポップアップ表示します。"
+msgstr "これを有効にすると、着信時にウィンドウをポップアップ表示します。"
 
 #: gnomemeeting.schemas.in.in.h:49 src/pref_window.cpp:901
-#, fuzzy
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you already are in a call or if you are in "
 "Do Not Disturb mode."
 msgstr ""
-"TRUE にすると、会話中または \"離席\" の場合、次のフィールドに指定したホストへ"
+"これを有効にすると、会話中または \"離席\" の場合、次のフィールドに指定したホストへ"
 "着信を転送します。"
 
 #: gnomemeeting.schemas.in.in.h:50 src/pref_window.cpp:898
-#, fuzzy
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you do not answer the call."
 msgstr ""
-"TRUE にすると、着信に応答しない場合、次のフィールドに指定したホストへ全ての着"
+"これを有効にすると、着信に応答しない場合、次のフィールドに指定したホストへ全ての着"
 "信を転送します。"
 
 #: gnomemeeting.schemas.in.in.h:51 src/pref_window.cpp:895
-#, fuzzy
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below."
 msgstr ""
-"TRUE にすると、次のフィールドに指定したホストへ全ての着信を転送します。"
+"これを有効にすると、次のフィールドに指定したホストへ全ての着信を転送します。"
 
 #: gnomemeeting.schemas.in.in.h:52 src/pref_window.cpp:1365
 msgid "If enabled, allows video to be received during a call."
 msgstr "これを有効にすると、着信中はビデオの映像を受信できます"
 
 #: gnomemeeting.schemas.in.in.h:53 src/pref_window.cpp:796
-#, fuzzy
 msgid "If enabled, incoming calls will be automatically answered."
-msgstr "着信自動応答しました"
+msgstr "これを有効にすると、着信時に自動応答します。"
 
 #: gnomemeeting.schemas.in.in.h:54 src/pref_window.cpp:799
-#, fuzzy
 msgid "If enabled, incoming calls will be automatically refused."
 msgstr ""
-"これを有効にすると、全ての着信が上の欄に指定したホストへフォワードされます"
+"これを有効にすると、全ての着信が自動的に拒否されます。"
 
 #: gnomemeeting.schemas.in.in.h:55 src/pref_window.cpp:858
-#, fuzzy
 msgid "If enabled, register with the selected user directory."
-msgstr "TRUE にすると、選択したユーザ・ディレクトリに登録します。"
+msgstr "これを有効にすると、選択したユーザ・ディレクトリに登録します。"
 
 #: gnomemeeting.schemas.in.in.h:56 src/pref_window.cpp:785
-#, fuzzy
 msgid ""
 "If enabled, the splash screen will be displayed when GnomeMeeting starts."
 msgstr ""
-"TRUE にすると、GnomeMeeting の起動時にスプラッシュ・スクリーンが表示されま"
+"これを有効にすると、GnomeMeeting の起動時にスプラッシュ・スクリーンが表示されま"
 "す。"
 
 #: gnomemeeting.schemas.in.in.h:57 src/pref_window.cpp:829
-#, fuzzy
 msgid ""
 "If enabled, the text chat will automatically be cleared at the end of calls."
 msgstr ""
-"TRUE にすると、会話を終了したら自動的にテキスト・チャットをクリアします。"
+"これを有効にすると、会話を終了したら自動的にテキスト・チャットをクリアします。"
 
 #: gnomemeeting.schemas.in.in.h:58 src/pref_window.cpp:1335
 msgid "If enabled, use silence detection with the GSM and G.711 codecs."
@@ -344,19 +333,16 @@ msgid "Last name"
 msgstr "名字"
 
 #: gnomemeeting.schemas.in.in.h:63
-#, fuzzy
 msgid "Listen Port"
-msgstr "Listen するポート番号"
+msgstr "Listenするポート"
 
 #: gnomemeeting.schemas.in.in.h:64
-#, fuzzy
 msgid "Local video window height"
-msgstr "ローカルのビデオ・ウィンドウのサイズ"
+msgstr "ローカルのビデオ・ウィンドウの高さ"
 
 #: gnomemeeting.schemas.in.in.h:65
-#, fuzzy
 msgid "Local video window width"
-msgstr "ローカルのビデオ・ウィンドウのサイズ"
+msgstr "ローカルのビデオ・ウィンドウの幅"
 
 #: gnomemeeting.schemas.in.in.h:66 src/ldap_window.cpp:2585
 msgid "Location"
@@ -395,17 +381,14 @@ msgid "Number of frames for GSM"
 msgstr "GSM のフレーム数"
 
 #: gnomemeeting.schemas.in.in.h:75
-#, fuzzy
 msgid "Number of frames transmitted in each packet for the G.711 codec."
-msgstr "G.711 コーデックに対する１パケット辺りの発信フレーム数です。"
+msgstr "G.711 コーデックに対する1パケット辺りの発信フレーム数です。"
 
 #: gnomemeeting.schemas.in.in.h:76
-#, fuzzy
 msgid "Number of frames transmitted in each packet for the GSM codec."
-msgstr "GSM コーデックに対する１パケット辺りの発信フレーム数です。"
+msgstr "GSM コーデックに対する1パケット辺りの発信フレーム数です。"
 
 #: gnomemeeting.schemas.in.in.h:77
-#, fuzzy
 msgid "Play a sound on incoming calls"
 msgstr "着信時にサウンドを演奏する"
 
@@ -422,64 +405,59 @@ msgid "Registering method"
 msgstr "登録する方法"
 
 #: gnomemeeting.schemas.in.in.h:81 src/pref_window.cpp:990
-#, fuzzy
 msgid "Registering method to use"
 msgstr "使用する登録方法です"
 
 #: gnomemeeting.schemas.in.in.h:82
-#, fuzzy
 msgid "Remote video window height"
-msgstr "リモートのビデオ・ウィンドウのサイズ"
+msgstr "リモートのビデオ・ウィンドウの高さ"
 
 #: gnomemeeting.schemas.in.in.h:83
-#, fuzzy
 msgid "Remote video window width"
-msgstr "リモートのビデオ・ウィンドウのサイズ"
+msgstr "リモートのビデオ・ウィンドウの幅"
 
 #: gnomemeeting.schemas.in.in.h:84
 msgid "Revision of the schema file"
 msgstr "スキーマ・ファイルの版数"
 
 #: gnomemeeting.schemas.in.in.h:85 src/druid.cpp:792 src/pref_window.cpp:1060
-#, fuzzy
 msgid "Select the audio player device to use."
-msgstr "使用する音声入力デバイスを指定します"
+msgstr "使用する音声入力デバイスを指定します。"
 
 #: gnomemeeting.schemas.in.in.h:86 src/druid.cpp:799 src/pref_window.cpp:1067
-#, fuzzy
 msgid "Select the audio recorder device to use."
-msgstr "使用する音声出力デバイスを指定します"
+msgstr "使用する音声出力デバイスを指定します。"
 
 #: gnomemeeting.schemas.in.in.h:87 src/pref_window.cpp:1140
-#, fuzzy
 msgid ""
 "Select the format for video cameras. (Does not apply to most USB cameras)."
 msgstr ""
 "ビデオ・カメラのフォーマットを指定します (多くの USB カメラには適用できませ"
-"ん)"
+"ん)。"
 
 #: gnomemeeting.schemas.in.in.h:88 src/druid.cpp:795 src/pref_window.cpp:1063
 msgid "Select the mixer to use to change the volume of the audio player."
-msgstr ""
+msgstr "オーディオプレーやの音量を変更するのに使うミキサを選択します。"
 
 #: gnomemeeting.schemas.in.in.h:89 src/druid.cpp:802 src/pref_window.cpp:1070
 msgid "Select the mixer to use to change the volume of the audio recorder."
-msgstr ""
+msgstr "オーディオレコーダの音量を変更するのに使うミキサを選択します。"
 
 #: gnomemeeting.schemas.in.in.h:90 src/pref_window.cpp:1137
-#, fuzzy
 msgid ""
 "Select the transmitted video size: Small (QCIF 176x144) or Large (CIF "
 "352x288)."
 msgstr ""
 "発信する映像のサイズを指定します: Small (QCIF 176x144) または Large (CIF "
-"352x288)"
+"352x288)。"
 
 #: gnomemeeting.schemas.in.in.h:91 src/pref_window.cpp:1130
 msgid ""
 "Select the video device to use. Using an invalid video device or \"Picture\" "
 "for video transmission will transmit a test picture."
 msgstr ""
+"使用するビデオデバイスを選択してください。ビデオの送信に、正しくない"
+"ビデオデバイスや\"画像\"を選択すると、テスト用の映像を送信します。"
 
 #: gnomemeeting.schemas.in.in.h:92
 msgid "Show a status bar at the bottom of the main window"
@@ -494,9 +472,8 @@ msgid "Show my details to other registered users"
 msgstr "他の登録済みユーザへ身元情報を提供する"
 
 #: gnomemeeting.schemas.in.in.h:95
-#, fuzzy
 msgid "Show splash screen"
-msgstr "スプラッシュ・スクリーンを表示する(_S)"
+msgstr "スプラッシュ・スクリーンを表示する"
 
 #: gnomemeeting.schemas.in.in.h:96
 msgid "Show status bar"
@@ -515,14 +492,12 @@ msgid "Switch to fullscreen"
 msgstr "フルスクリーンに切り替える"
 
 #: gnomemeeting.schemas.in.in.h:100
-#, fuzzy
 msgid "Switch to fullscreen for images displayed in the main GUI."
 msgstr ""
-"着信時に、メインの GUI の中に表示している映像を自動的にフルスクリーンに切り替"
+"メインの GUI の中に表示している映像を自動的にフルスクリーンに切り替"
 "えます。"
 
 #: gnomemeeting.schemas.in.in.h:101
-#, fuzzy
 msgid "TCP Port Range"
 msgstr "TCP ポート番号の範囲"
 
@@ -541,33 +516,29 @@ msgstr ""
 "の音量に調節します"
 
 #: gnomemeeting.schemas.in.in.h:104 src/pref_window.cpp:983
-#, fuzzy
 msgid ""
 "The Gatekeeper alias to use when registering (string, or E164 ID if only "
 "0123456789#)."
 msgstr ""
 "登録時に使用するゲートキーパのエイリアスです (文字列、または 0123456789# の場"
-"合のみ E164)"
+"合のみ E164 ID)"
 
 #: gnomemeeting.schemas.in.in.h:105 src/pref_window.cpp:980
-#, fuzzy
 msgid "The Gatekeeper host to register with."
-msgstr "登録時に使用するゲートキーパのホスト名です"
+msgstr "登録時に使用するゲートキーパのホスト名です。"
 
 #: gnomemeeting.schemas.in.in.h:106 src/pref_window.cpp:977
-#, fuzzy
 msgid "The Gatekeeper identifier to register with."
-msgstr "登録時に使用するゲートキーパの ID です"
+msgstr "登録時に使用するゲートキーパの ID です。"
 
 #: gnomemeeting.schemas.in.in.h:107 src/pref_window.cpp:986
-#, fuzzy
 msgid ""
 "The Gatekeeper password to use for H.235 authentication to the Gatekeeper."
-msgstr "ゲートキーパに対する H.235 認証で使用するパスワードです"
+msgstr "ゲートキーパに対する H.235 認証で使用するパスワードです。"
 
 #: gnomemeeting.schemas.in.in.h:108
 msgid "The Video Quality to request to the remote"
-msgstr ""
+msgstr "リモートにリクエストするビデオ画質"
 
 #: gnomemeeting.schemas.in.in.h:109
 msgid "The default video view"
@@ -582,35 +553,31 @@ msgstr ""
 "ウィンドウの中にローカル、4:ローカルとリモートの両方)"
 
 #: gnomemeeting.schemas.in.in.h:111
-#, fuzzy
 msgid "The height of the local video window"
-msgstr "ローカルのビデオ・ウィンドウのサイズ"
+msgstr "ローカルのビデオ・ウィンドウの高さ"
 
 #: gnomemeeting.schemas.in.in.h:112
-#, fuzzy
 msgid "The height of the remote video window"
-msgstr "リモートのビデオ・ウィンドウのサイズ"
+msgstr "リモートのビデオ・ウィンドウの高さ"
 
 #: gnomemeeting.schemas.in.in.h:113 src/pref_window.cpp:888
-#, fuzzy
 msgid ""
 "The host where calls should be forwarded to in the cases selected above."
-msgstr "上で選択した場合に呼び出しを転送するホスト名です"
+msgstr "上で選択した場合に呼び出しを転送するホスト名です。"
 
 #: gnomemeeting.schemas.in.in.h:114 src/pref_window.cpp:819
 msgid "The image height for fullscreen."
 msgstr "フルスクリーン時の映像の高さです"
 
 #: gnomemeeting.schemas.in.in.h:115 src/pref_window.cpp:1143
-#, fuzzy
 msgid ""
 "The image to transmit if \"Picture\" is selected for the video device or if "
 "the opening of the device fails. Leave blank to use the default GnomeMeeting "
 "logo."
 msgstr ""
-"ビデオのプラグインとして \"映像\" が選択されている場合、またはデバイスのオー"
-"プンに失敗した場合に発信する画像です (空白のままにすると GnomeMeeting デフォ"
-"ルトのログを使用します)"
+"ビデオのプラグインとして \"画像\" が選択されている場合、またはデバイスのオー"
+"プンに失敗した場合に発信する画像です。空白のままにすると GnomeMeeting デフォ"
+"ルトのログを使用します。"
 
 #: gnomemeeting.schemas.in.in.h:116 src/pref_window.cpp:818
 msgid "The image width for fullscreen."
@@ -634,30 +601,28 @@ msgid ""
 "transmitted frames per second will be dynamically adjusted above their "
 "minimum during calls to try to minimize the bandwidth to the given value."
 msgstr ""
-"The maximum video bandwidth in kbytes/s. The video quality and the number of "
-"transmitted frames per second will be dynamically adjusted above their "
-"minimum during calls to try to minimize the bandwidth to the given value."
+"最大ビデオ帯域幅(キロバイト/秒)です。ビデオ画質や秒間送信フレーム数"
+"は、指定した帯域幅を最小化するために、通話中に最小値より上で動的に"
+"変更されます。"
 
 #: gnomemeeting.schemas.in.in.h:121 src/pref_window.cpp:1330
 msgid "The minimum jitter buffer size for audio reception (in ms)."
 msgstr "音声を受信するための Jitter バッファの最小値 (ミリ秒) です"
 
 #: gnomemeeting.schemas.in.in.h:122 src/pref_window.cpp:1386
-#, fuzzy
 msgid ""
 "The minimum number of video frames to transmit each second when trying to "
 "minimize the bandwidth."
-msgstr "最小限の帯域で発信を試みる時の１秒間に発信する映像の最小フレーム数です"
+msgstr "最小限の帯域で発信を試みる時の、1秒間に発信する映像の最小フレーム数です"
 
 #: gnomemeeting.schemas.in.in.h:124
-#, fuzzy, no-c-format
 msgid ""
 "The minimum transmitted video quality to keep when trying to minimize the "
 "used bandwidth: choose 100% on a LAN for the best quality, 1% being the "
 "worst quality."
 msgstr ""
 "使用する帯域を最小限にした際に保持する最小発信の映像品質です: 最高の品質は "
-"100%で、最低の品質は 1% です。"
+"LANでの100%で、最低の品質は 1% です。"
 
 #: gnomemeeting.schemas.in.in.h:125
 msgid ""
@@ -730,33 +695,28 @@ msgid ""
 msgstr "お住まいの国を示す二文字のコードです (例: JP、BE、UK、FR、DE、...)"
 
 #: gnomemeeting.schemas.in.in.h:132 src/pref_window.cpp:855
-#, fuzzy
 msgid "The user directory server to register with."
-msgstr "登録するユーザ・ディレクトリのサーバです"
+msgstr "登録するユーザ・ディレクトリのサーバです。"
 
 #: gnomemeeting.schemas.in.in.h:133 src/pref_window.cpp:1134
-#, fuzzy
 msgid ""
 "The video channel number to use (to select camera, tv or other sources)."
 msgstr ""
-"使用する映像チャンネルの番号 (カメラ、テレビ、またはその他のソース) です"
+"使用する映像チャンネルの番号 (カメラ、テレビ、またはその他のソース) です。"
 
 #: gnomemeeting.schemas.in.in.h:134
-#, fuzzy
 msgid "The width of the local video window"
-msgstr "ローカルのビデオ・ウィンドウのサイズ"
+msgstr "ローカルのビデオ・ウィンドウの幅"
 
 #: gnomemeeting.schemas.in.in.h:135
-#, fuzzy
 msgid "The width of the remote video window"
-msgstr "リモートのビデオ・ウィンドウのサイズ"
+msgstr "リモートのビデオ・ウィンドウの幅"
 
 #: gnomemeeting.schemas.in.in.h:136
 msgid "The zoom value"
 msgstr "ズーム率"
 
 #: gnomemeeting.schemas.in.in.h:137
-#, fuzzy
 msgid ""
 "The zoom value to apply to images displayed in the main GUI (can be 0.50, "
 "1.00, or 2.00)."
@@ -801,23 +761,22 @@ msgid ""
 "(default is \"All\"). Choosing other values than \"All\", \"String\" or "
 "\"rfc2833\" disables the Text Chat."
 msgstr ""
-"これは DTMF 送信のモードをセットするための許可フラグです。設定可能な値は、"
+"これは ユーザ入力性能(UIC)モードをセットするための許可フラグです。設定可能な値は、"
 "\"全て\" (0)、\"なし\" (1)、\"rfc2833\" (2)、\"シグナル\" (3)、\"文字列"
 "\" (4) (デフォルトは \"全て\") です。\"全て\"、\"文字列\" または \"rfc2833\" "
-"以外の値を選択するとチャットが無効になります。"
+"以外の値を選択するとテキストチャットが無効になります。"
 
 #: gnomemeeting.schemas.in.in.h:141
 msgid "Transmitted background blocks"
 msgstr "発信するバックグラウンド・ブロック数"
 
 #: gnomemeeting.schemas.in.in.h:142
-#, fuzzy
 msgid "UDP Port Range"
 msgstr "UDP ポート番号の範囲"
 
 #: gnomemeeting.schemas.in.in.h:143
 msgid "User Input Capabilities type"
-msgstr ""
+msgstr "ユーザ入力性能(UIC)の種類"
 
 #: gnomemeeting.schemas.in.in.h:144
 msgid "User directory"
@@ -828,7 +787,6 @@ msgid "Version"
 msgstr "バージョン"
 
 #: gnomemeeting.schemas.in.in.h:146
-#, fuzzy
 msgid "Video Preview"
 msgstr "映像プレビュー"
 
@@ -837,7 +795,6 @@ msgid "Video channel"
 msgstr "映像チャンネル"
 
 #: gnomemeeting.schemas.in.in.h:148
-#, fuzzy
 msgid "Video device"
 msgstr "映像のデバイス"
 
@@ -858,14 +815,12 @@ msgid "Do not show this dialog again"
 msgstr "次回からこのダイアログを表示しない"
 
 #: sounds/gnomemeeting.soundlist.in.h:1
-#, fuzzy
 msgid "Incoming Call"
-msgstr "着信元"
+msgstr "着信"
 
 #: sounds/gnomemeeting.soundlist.in.h:2
-#, fuzzy
 msgid "gnomemeeting"
-msgstr "GnomeMeeting"
+msgstr "gnomemeeting"
 
 #: src/callbacks.cpp:87
 msgid "_Retrieve Call"
@@ -876,7 +831,6 @@ msgid "_Hold Call"
 msgstr "保留(_H)"
 
 #: src/callbacks.cpp:141 src/ldap_window.cpp:708
-#, fuzzy
 msgid "Edit the contact information"
 msgstr "コンタクト情報の編集"
 
@@ -885,9 +839,8 @@ msgid "_Transfer Call"
 msgstr "着信の転送(_T)"
 
 #: src/callbacks.cpp:165
-#, fuzzy
 msgid "Forward call to:"
-msgstr "着信をフォワードします"
+msgstr "着信をフォワード先:"
 
 #: src/callbacks.cpp:260 src/menu.cpp:470
 msgid "Suspend _Audio"
@@ -922,7 +875,6 @@ msgid "Video transmission: resumed"
 msgstr "映像の発信: 再開中"
 
 #: src/callbacks.cpp:381
-#, fuzzy
 msgid "Code Contributors:"
 msgstr "開発の貢献者:"
 
@@ -956,7 +908,6 @@ msgid ""
 msgstr ""
 
 #: src/chat_window.cpp:205
-#, fuzzy
 msgid "Send Message:"
 msgstr "送信するメッセージ:"
 
@@ -1104,23 +1055,19 @@ msgstr ""
 "きません。新しい設定は次の呼び出しに対してのみ有効になります。"
 
 #: src/config.cpp:591
-#, fuzzy
 msgid "Disabled Silence Detection"
 msgstr "サイレンス検出は無効"
 
 #: src/config.cpp:597
-#, fuzzy
 msgid "Enabled Silence Detection"
 msgstr "サイレンス検出は有効"
 
 #: src/config.cpp:1259
-#, fuzzy
 msgid ""
 "You need to specify an host to forward calls to!\n"
 "Disabling forwarding."
 msgstr ""
-"設定ダイアログの呼び出しの転送セクションで、転送先の URL を指定して下さい！\n"
-"\n"
+"着信の転送先の URL を指定して下さい！\n"
 "転送を無効にします。"
 
 #: src/config.cpp:1459
@@ -1136,38 +1083,33 @@ msgid "Started New Logical Channel..."
 msgstr ""
 
 #: src/connection.cpp:119
-#, fuzzy, c-format
 msgid "Sending %s"
-msgstr "DTMF 送信方式"
+msgstr "%sを送信中"
 
 #: src/connection.cpp:138
-#, fuzzy, c-format
 msgid "Enabled silence detection for %s"
-msgstr "サイレンス検出は有効"
+msgstr "%sにはサイレンス検出は有効"
 
 #: src/connection.cpp:141
-#, fuzzy, c-format
 msgid "Disabled silence detection for %s"
-msgstr "サイレンス検出は無効"
+msgstr "%sにはサイレンス検出は無効"
 
 #: src/connection.cpp:157
-#, fuzzy, c-format
 msgid "Receiving %s"
-msgstr "着信"
+msgstr "%sを受信中"
 
 #: src/connection.cpp:187
 #, c-format
 msgid "Requesting remote to send video quality: %d%%"
-msgstr ""
+msgstr "リモートに送信画質をリクエストしています: %d%%"
 
 #: src/connection.cpp:212
 msgid "Request ok"
-msgstr ""
+msgstr "リクエストOK"
 
 #: src/connection.cpp:244 src/connection.cpp:246
-#, fuzzy
 msgid "Auto Answering Incoming Call"
-msgstr "着信に応答中"
+msgstr "着信に自動応答中"
 
 #: src/connection.cpp:337 src/connection.cpp:338 src/urlhandler.cpp:76
 #: src/urlhandler.cpp:77
@@ -1180,9 +1122,8 @@ msgid ""
 msgstr "リモート・ユーザが他のユーザに発信しましたが、失敗しました。"
 
 #: src/druid.cpp:517 src/druid.cpp:699
-#, fuzzy
 msgid "56K modem"
-msgstr "56k モデム"
+msgstr "56K モデム"
 
 #: src/druid.cpp:521 src/druid.cpp:703
 msgid "ISDN"
@@ -1198,10 +1139,9 @@ msgstr "T1/LAN"
 
 #: src/druid.cpp:533 src/druid.cpp:715
 msgid "Other"
-msgstr ""
+msgstr "その他"
 
 #: src/druid.cpp:566
-#, fuzzy, c-format
 msgid ""
 "You have now finished the GnomeMeeting configuration. All the settings can "
 "be changed in the GnomeMeeting preferences. Enjoy!\n"
@@ -1225,21 +1165,19 @@ msgstr ""
 "\n"
 "ユーザ名:  %s\n"
 "接続の種類:  %s\n"
-"音声マネージャ: %s\n"
 "音声の再生:  %s\n"
 "音声の録音:  %s\n"
-"映像マネージャ: %s\n"
 "映像の再生: %s\n"
 "呼び出し URL: %s\n"
+"PC-To-Phone コール: %s"
 
 #: src/druid.cpp:566
 msgid "Enabled"
-msgstr ""
+msgstr "有効"
 
 #: src/druid.cpp:566
-#, fuzzy
 msgid "Disabled"
-msgstr "ダイアルパッド"
+msgstr "無効"
 
 #: src/druid.cpp:600
 #, c-format
@@ -1264,20 +1202,17 @@ msgid "Personal Information"
 msgstr "個人の情報"
 
 #: src/druid.cpp:616
-#, fuzzy
 msgid "First _name:"
-msgstr "名前(_F):"
+msgstr "名前(_N):"
 
 #: src/druid.cpp:622
-#, fuzzy
 msgid "_Surname:"
-msgstr "名字(_N):"
+msgstr "名字(_S):"
 
 #. The callto url
 #: src/druid.cpp:630
-#, fuzzy
 msgid "Callto URL"
-msgstr "呼び出し URL - %d/%d ページ"
+msgstr "呼び出し URL"
 
 #: src/druid.cpp:633 src/pref_window.cpp:742
 msgid "E-_mail address:"
@@ -1286,16 +1221,15 @@ msgstr "E-メール・アドレス(_M):"
 #. The ILS registering
 #: src/druid.cpp:640
 msgid "Directory of Online GnomeMeeting Users"
-msgstr ""
+msgstr "オンラインのGnomeMeetingユーザのディレクトリ"
 
 #: src/druid.cpp:642
 msgid "Publish my information on the directory of online GnomeMeeting users"
-msgstr ""
+msgstr "オンラインのGnomeMeetingユーザのディレクトリに自分の情報を公開する"
 
 #: src/druid.cpp:683
-#, fuzzy, c-format
 msgid "Network Connection - page %d/%d"
-msgstr "接続の種類 - %d/%d ページ"
+msgstr "ネットワーク接続 - %d/%d ページ"
 
 #: src/druid.cpp:694
 msgid ""
@@ -1303,20 +1237,19 @@ msgid ""
 "video settings for your bandwidth. It is possible to change these defaults "
 "later."
 msgstr ""
+"ネットワーク接続の種類を選択してください。これは帯域幅ごとのデフォルトの"
+"映像設定に使います。あとでこれらのデフォルト値を変更することもできます。"
 
 #. Connection type
 #: src/druid.cpp:698
-#, fuzzy
 msgid "Connection Type"
-msgstr "接続の種類 - %d/%d ページ"
+msgstr "接続の種類"
 
 #: src/druid.cpp:707
-#, fuzzy
 msgid "DSL/Cable"
-msgstr "xDSL/ケーブル"
+msgstr "DSL/ケーブル"
 
 #: src/druid.cpp:775
-#, c-format
 msgid "Audio Devices - page %d/%d"
 msgstr "音声デバイス - %d/%d ページ"
 
@@ -1328,6 +1261,10 @@ msgid ""
 "webcams models have an internal microphone that can be used with "
 "GnomeMeeting."
 msgstr ""
+"GnomeMeetingのセッション中に使用する音声デバイスを選択してください。"
+"サウンドカードの代わりにQuicknetデバイスを使用することもできますが、"
+"\"オーディオのテスト\"ボタンはサウンドカードのときだけ動作します。"
+"GnomeMeetingで使用できるマイクロフォンを内蔵しているウェブカムもあります。"
 
 #. The Audio devices
 #: src/druid.cpp:789 src/pref_window.cpp:1055 src/pref_window.cpp:1572
@@ -1335,37 +1272,31 @@ msgid "Audio Devices"
 msgstr "音声のデバイス"
 
 #: src/druid.cpp:792
-#, fuzzy
 msgid "Audio player:"
-msgstr "音声のプラグイン:"
+msgstr "音声の再生:"
 
 #: src/druid.cpp:795
-#, fuzzy
 msgid "Audio player mixer:"
-msgstr "音声のプラグイン:"
+msgstr "音声の再生ミキサ:"
 
 #: src/druid.cpp:799
-#, fuzzy
 msgid "Audio recorder:"
-msgstr "音声のコーデック"
+msgstr "音声の録音:"
 
 #: src/druid.cpp:802
 msgid "Audio recorder mixer:"
-msgstr ""
+msgstr "音声録音ミキサ:"
 
 #. Test button
 #: src/druid.cpp:806
-#, fuzzy
 msgid "Click here to test your audio devices:"
-msgstr "ここをクリックすると、デバイス一覧を更新します"
+msgstr "ここをクリックすると音声デバイスをテストできます:"
 
 #: src/druid.cpp:808
-#, fuzzy
 msgid "Test Audio"
-msgstr "音声の再開(_A)"
+msgstr "オーディオのテスト"
 
 #: src/druid.cpp:851
-#, c-format
 msgid "Video Devices - page %d/%d"
 msgstr "映像デバイス - %d/%d ページ"
 
@@ -1376,6 +1307,11 @@ msgid ""
 "driver is supported by GnomeMeeting. You can only test the correctness of "
 "your driver if the selected device is not already in use."
 msgstr ""
+"GnomeMeetingのセッション中に使用する映像デバイスを選択してください。"
+"\"映像のテスト\"ボタンをクリックすると設定が正しいかどうか、ドライバが"
+"GnomeMeetingでサポートされているかを確認できます。"
+"選択したデバイスがまだ使われていなければ、ドライバが正しいかどうかだけを"
+"テストできます。"
 
 #. The Video device
 #: src/druid.cpp:865 src/pref_window.cpp:1126 src/pref_window.cpp:1577
@@ -1383,26 +1319,25 @@ msgid "Video Devices"
 msgstr "映像のデバイス"
 
 #: src/druid.cpp:868 src/pref_window.cpp:1130
-#, fuzzy
 msgid "Video device:"
-msgstr "映像のデバイス"
+msgstr "映像のデバイス:"
 
 #: src/druid.cpp:868
 msgid ""
 "Enter the video device to use. Using an invalid video device for video "
 "transmission will transmit a test picture."
 msgstr ""
+"使用する映像デバイスを入力してください。映像送信時に正しくない映像デバイス"
+"を使用していると、テスト用の画像を送信します。"
 
 #. Test button
 #: src/druid.cpp:872
-#, fuzzy
 msgid "Test Video"
-msgstr "リモートの映像"
+msgstr "映像のテスト"
 
 #: src/druid.cpp:916
-#, fuzzy, c-format
 msgid "PC-To-Phone Setup - page %d/%d"
-msgstr "接続の種類 - %d/%d ページ"
+msgstr "PC-To-Phoneの設定 - %d/%d ページ"
 
 #: src/druid.cpp:926
 msgid ""
@@ -1419,22 +1354,20 @@ msgstr ""
 "のホームページをご覧下さい。"
 
 #: src/druid.cpp:931
-#, fuzzy
 msgid "PC-To-Phone Setup"
-msgstr "PC-To-Phone の設定"
+msgstr "PC-To-Phoneの設定"
 
 #: src/druid.cpp:934
-#, fuzzy
 msgid "Account number:"
-msgstr "アカウント番号(_N):"
+msgstr "アカウント番号:"
 
 #: src/druid.cpp:937
 msgid "Password:"
-msgstr ""
+msgstr "パスワード:"
 
 #: src/druid.cpp:944
 msgid "Register to the MicroTelco service"
-msgstr ""
+msgstr "MicroTelcoサービスへの登録"
 
 #: src/druid.cpp:962
 msgid ""
@@ -1492,40 +1425,33 @@ msgstr "着信を転送しました"
 #. Player is always a correct sound device, thanks to
 #. gnomemeeting_add_string_option_menu
 #: src/endpoint.cpp:314
-#, fuzzy, c-format
 msgid "Set Audio player device to %s"
-msgstr "使用する音声入力デバイスを指定します"
+msgstr "音声再生デバイスを%sにします"
 
 #: src/endpoint.cpp:325
-#, fuzzy, c-format
 msgid "Set Audio recorder device to %s"
-msgstr "使用する音声出力デバイスを指定します"
+msgstr "音声録音デバイスを%sにします"
 
 #: src/endpoint.cpp:342
-#, fuzzy
 msgid "Enabling H.245 Tunnelling"
-msgstr "H.245 トンネリングを有効にする"
+msgstr "H.245 トンネリングを有効にしています"
 
 #: src/endpoint.cpp:343
-#, fuzzy
 msgid "Disabling H.245 Tunnelling"
-msgstr "H.245 トンネリングを有効にする"
+msgstr "H.245 トンネリングを無効にしています"
 
 #: src/endpoint.cpp:353
-#, fuzzy
 msgid "Enabling Fast Start"
 msgstr "'高速起動' を有効にする"
 
 #: src/endpoint.cpp:354
-#, fuzzy
 msgid "Disabling Fast Start"
-msgstr "'高速起動' を有効にする"
+msgstr "'高速起動' を無効にする"
 
 #. Update the history and status bar
 #: src/endpoint.cpp:945
-#, fuzzy, c-format
 msgid "Call from %s using %s"
-msgstr "%s からの着信"
+msgstr "%s からの着信(%sを使用)"
 
 #: src/endpoint.cpp:960
 #, c-format
@@ -1533,28 +1459,24 @@ msgid "Forwarding call from %s to %s (Forward all calls)"
 msgstr "%s からの着信を %s へ転送中です (全ての呼び出しをフォワードする)"
 
 #: src/endpoint.cpp:968
-#, fuzzy, c-format
 msgid "Auto rejecting incoming call from %s (Do not disturb)"
-msgstr "%s からの着信を拒否中です (多忙)"
+msgstr "%s からの着信を自動拒否中です (離席)"
 
 #: src/endpoint.cpp:980
 #, c-format
 msgid "Forwarding call from %s to %s (Busy)"
-msgstr "%s からの着信を %s へフォワード中です (多忙)"
+msgstr "%s からの着信を %s へ転送中です (多忙)"
 
 #. there is no forwarding, so reject the call
 #: src/endpoint.cpp:989
-#, fuzzy, c-format
 msgid "Auto rejecting incoming call from %s (Busy)"
-msgstr "%s からの着信を拒否中です (多忙)"
+msgstr "%s からの着信を自動拒否中です (多忙)"
 
 #: src/endpoint.cpp:1013
-#, fuzzy
 msgid "Auto Rejected"
-msgstr "拒否"
+msgstr "自動拒否"
 
 #: src/endpoint.cpp:1022
-#, fuzzy
 msgid "Call Forwarded"
 msgstr "着信を転送しました"
 
@@ -1568,22 +1490,18 @@ msgid "Connected"
 msgstr "接続完了"
 
 #: src/endpoint.cpp:1231
-#, fuzzy
 msgid "Fast start disabled"
 msgstr "高速起動は無効"
 
 #: src/endpoint.cpp:1232
-#, fuzzy
 msgid "Fast start enabled"
 msgstr "高速起動は有効"
 
 #: src/endpoint.cpp:1235
-#, fuzzy
 msgid "H.245 Tunnelling disabled"
 msgstr "H.245 トンネリングは無効"
 
 #: src/endpoint.cpp:1236
-#, fuzzy
 msgid "H.245 Tunnelling enabled"
 msgstr "H.245 トンネリングは有効"
 
@@ -1652,9 +1570,8 @@ msgid "Remote user is unreachable"
 msgstr "リモート・ユーザに到達しませんでした"
 
 #: src/endpoint.cpp:1489
-#, fuzzy
 msgid "Remote user is not running GnomeMeeting"
-msgstr "GnomeMeeting を起動できません"
+msgstr "リモートユーザはGnomeMeetingを起動していません"
 
 #: src/endpoint.cpp:1492
 msgid "Remote host is offline"
@@ -1730,22 +1647,22 @@ msgid "Invalid gatekeeper hostname"
 msgstr "ゲートキーパのホスト名が正しくありません"
 
 #: src/gatekeeper.cpp:151
-#, fuzzy
 msgid ""
 "Please provide a hostname to use for the gatekeeper.\n"
 "Disabling registering."
-msgstr "ゲートキーパで使用するホスト名を指定して下さい。"
+msgstr "ゲートキーパで使用するホスト名を指定して下さい。\n"
+"登録を無効にしています。"
 
 #: src/gatekeeper.cpp:159
 msgid "Invalid gatekeeper ID"
 msgstr "ゲートキーパの ID が正しくありません"
 
 #: src/gatekeeper.cpp:159
-#, fuzzy
 msgid ""
 "Please provide a valid ID for the gatekeeper.\n"
 "Disabling registering."
-msgstr "ゲートキーパの正しい ID を指定して下さい。"
+msgstr "ゲートキーパの正しい ID を指定して下さい。\n"
+"登録を無効にしています。"
 
 #: src/gatekeeper.cpp:206
 msgid ""
@@ -2391,9 +2308,8 @@ msgid "Close the current connection"
 msgstr "現在の接続を閉じます"
 
 #: src/menu.cpp:446 src/menu.cpp:906
-#, fuzzy
 msgid "Do _Not Disturb"
-msgstr "登録しない"
+msgstr "離席(_N)"
 
 #: src/menu.cpp:451 src/menu.cpp:911
 #, fuzzy
@@ -2423,7 +2339,7 @@ msgstr "映像の発信を一時停止または再開します"
 
 #: src/menu.cpp:482
 msgid "_Save Current Picture"
-msgstr "現在の映像の保存(_S)"
+msgstr "現在の画像の保存(_S)"
 
 #: src/menu.cpp:482
 msgid "Save a snapshot of the current video"
@@ -3387,17 +3303,16 @@ msgid "Error while opening video device %s"
 msgstr "映像デバイス %s を開く際にエラー"
 
 #: src/videograbber.cpp:414
-#, fuzzy
 msgid ""
 "The chosen Video Image will be transmitted during calls. If you didn't "
 "choose any image, then the default GnomeMeeting logo will be transmitted. "
 "Notice that you can always transmit a given image or the GnomeMeeting logo "
 "by choosing \"Picture\" as video device."
 msgstr ""
-"A moving GnomeMeeting logo will be transmitted during calls. Notice that you "
-"can always transmit a given image or the moving GnomeMeeting logo by "
-"choosing \"Picture\" as video plugin and \"MovingLogo\" or \"StaticPicture\" "
-"as device."
+"選択したビデオイメージは、通話中は送信されます。もし何もイメージを選択して"
+"いなければ、デフォルトのGnomeMeetingロゴが送信されます。"
+"\"画像\"をビデオデバイスとして選択しておくことで、指定したイメージや"
+"GnomeMeetingのロゴを送信することはいつでもできます。"
 
 #: src/videograbber.cpp:415
 msgid "Can't open the Video Device"
