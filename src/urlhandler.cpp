@@ -192,7 +192,7 @@ void GMURLHandler::Main ()
       gnomemeeting_statusbar_flash (gw->statusbar, _("User not found"));
     else
       if (call_address == PString ("callto:")) 
-	gnomemeeting_statusbar_flash (gw->statusbar, _("No contact with that speed dial found"));
+	gnomemeeting_statusbar_flash (gw->statusbar, _("No contact with that shortcut found"));
       else
 	gnomemeeting_statusbar_flash (gw->statusbar, "");
     
