@@ -68,13 +68,6 @@ GtkWidget *gnomemeeting_video_popup_init_menu (GtkWidget *,
 GtkWidget *gnomemeeting_tray_init_menu (GtkWidget *);
 
 
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Update the speed dials menu in the call menu given the
- *                 main menu.
- * PRE          :  /
- */
-void gnomemeeting_speed_dials_menu_update (GtkWidget *);
-
      
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Updates the main menu items that depend on the current
@@ -83,19 +76,6 @@ void gnomemeeting_speed_dials_menu_update (GtkWidget *);
  */
 void gnomemeeting_menu_update_sensitivity (unsigned);
 
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Updates the main menu items that depend on the currently
- *                 opened audio and video channels.
- * PRE          :  The first parameter is TRUE if we are updating video
- *                 channels related items, FALSE if we are updating audio
- *                 channels related items. The second parameter is TRUE
- *                 if we are transmitting audio (or video), the third is TRUE
- *                 if we are receiving audio (or video).
- */
-void gnomemeeting_menu_update_sensitivity (BOOL,
-					   BOOL,
-					   BOOL);
 
 #endif
 

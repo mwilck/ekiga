@@ -39,6 +39,7 @@
 #include "../config.h"
 
 #include "addressbook_window.h"
+#include "main_window.h"
 #include "callbacks.h"
 #include "gnomemeeting.h"
 
@@ -48,6 +49,8 @@
 #include "gm_conf.h"
 #include "gtk_menu_extensions.h"
 
+
+extern GtkWidget *gm;
 
 
 
@@ -2137,6 +2140,8 @@ gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
 
   GtkWidget *dialog = NULL;
 
+  GtkWidget *main_window = NULL;
+  
   GtkWidget *fullname_entry = NULL;
   GtkWidget *url_entry = NULL;
   GtkWidget *email_entry = NULL;
@@ -2164,6 +2169,9 @@ gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
 
   gboolean collision = TRUE;
 
+  
+  main_window = gm;
+  
 
   /* Create the dialog to easily modify the info 
    * of a specific contact */
@@ -2401,6 +2409,8 @@ gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
 	  gnomemeeting_addressbook_add_contact (new_addressbook, new_contact);
 	
 
+	
+	/* Update the address book with the content */
 	contacts = gnomemeeting_addressbook_get_contacts (new_addressbook,
 							  FALSE,
 							  NULL,
@@ -2410,6 +2420,20 @@ gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
 							
 	gm_aw_update_addressbook (addressbook_window, 
 				  new_addressbook, contacts);
+
+	g_slist_foreach (contacts, (GFunc) gm_contact_delete, NULL);
+	g_slist_free (contacts);
+
+	
+	/* Find speed dials and update the menu */
+	contacts = gnomemeeting_addressbook_get_contacts (NULL,
+							  FALSE,
+							  NULL,
+							  NULL,
+							  NULL,
+							  "*");
+							
+	gm_main_window_speed_dials_menu_update (main_window, contacts);
 
 	g_slist_foreach (contacts, (GFunc) gm_contact_delete, NULL);
 	g_slist_free (contacts);
@@ -2438,6 +2462,8 @@ gm_addressbook_window_delete_contact_dialog_run (GtkWidget *addressbook_window,
 						 GmContact *contact,
 						 GtkWidget *parent_window)
 {
+  GtkWidget *main_window = NULL;
+  
   GtkWidget *dialog = NULL;
 
   GSList *contacts = NULL;
@@ -2446,6 +2472,8 @@ gm_addressbook_window_delete_contact_dialog_run (GtkWidget *addressbook_window,
 
   g_return_if_fail (addressbook != NULL);
   g_return_if_fail (contact != NULL);
+
+  main_window = gm;
 
 
   confirm_msg = g_strdup_printf (_("Are you sure you want to delete %s from %s?"),
@@ -2476,6 +2504,19 @@ gm_addressbook_window_delete_contact_dialog_run (GtkWidget *addressbook_window,
 						      NULL,
 						      NULL);
     gm_aw_update_addressbook (addressbook_window, addressbook, contacts);
+    g_slist_foreach (contacts, (GFunc) gm_contact_delete, NULL);
+    g_slist_free (contacts);
+    
+    /* Find speed dials and update the menu */
+    contacts = gnomemeeting_addressbook_get_contacts (NULL,
+						      FALSE,
+						      NULL,
+						      NULL,
+						      NULL,
+						      "*");
+
+    gm_main_window_speed_dials_menu_update (main_window, contacts);
+
     g_slist_foreach (contacts, (GFunc) gm_contact_delete, NULL);
     g_slist_free (contacts);
 
@@ -2839,6 +2880,9 @@ gm_addressbook_window_delete_addressbook_dialog_run (GtkWidget *addressbook_wind
 						     GtkWidget *parent_window)
 {
   GtkWidget *dialog = NULL;
+  GtkWidget *main_window = NULL;
+
+  GSList *contacts = NULL;
 
   gchar *confirm_msg = NULL;
 
@@ -2846,6 +2890,9 @@ gm_addressbook_window_delete_addressbook_dialog_run (GtkWidget *addressbook_wind
   g_return_if_fail (addressbook != NULL);
 
 
+  main_window = gm;
+  
+  
   /* Create the dialog to delete the addressbook */
   confirm_msg = 
     g_strdup_printf (_("Are you sure you want to delete %s and all its contacts?"), addressbook->name);
@@ -2866,9 +2913,23 @@ gm_addressbook_window_delete_addressbook_dialog_run (GtkWidget *addressbook_wind
 
   case GTK_RESPONSE_YES:
 
-    if (gnomemeeting_addressbook_delete (addressbook))
+    if (gnomemeeting_addressbook_delete (addressbook)) {
+      
       gm_aw_delete_addressbook (addressbook_window, addressbook);
 
+      /* Find speed dials and update the menu */
+      contacts = gnomemeeting_addressbook_get_contacts (NULL,
+							FALSE,
+							NULL,
+							NULL,
+							NULL,
+							"*");
+
+      gm_main_window_speed_dials_menu_update (main_window, contacts);
+
+      g_slist_foreach (contacts, (GFunc) gm_contact_delete, NULL);
+      g_slist_free (contacts);
+    }
     break;
   }
 

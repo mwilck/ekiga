@@ -1,3 +1,12 @@
+2004-08-23  Damien Sandras  <dsandras@gnome.org>
+
+	* src/addressbook_window.cpp, src/addressbook_window.h, 
+	src/chat_window.cpp, src/connection.cpp, src/main_window.cpp, 
+	src/main_window.h, src/menu.cpp, src/menu.h, src/videograbber.cpp:
+	Moved more things from menu.* to main_window.*. Added calls to the
+	speed dials menu update function inside addressbook_window.cpp where
+	contacts and address books are modified.
+
 2004-08-23  Julien Puydt <jpuydt@free.fr>
 
 	* lib/about/gnome-about.c: Applied a patch from Christian-Manny

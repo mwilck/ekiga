@@ -51,6 +51,7 @@
 #include "gtk-text-view-addon.h"
 #include "gtk_menu_extensions.h"
 
+
 /* internal structure used by the text chat */
 typedef struct _GmTextChat
 {
@@ -59,6 +60,7 @@ typedef struct _GmTextChat
   gboolean	something_typed;
   gchar		*begin_msg;
 } GmTextChat;
+
 
 /* declaration of the static functions */
 static void gm_text_chat_destroy (gpointer chat_pointer);

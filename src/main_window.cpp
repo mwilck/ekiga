@@ -225,6 +225,17 @@ toggle_menu_changed_cb (GtkWidget *,
 			gpointer);
 
 
+/* DESCRIPTION  :  This callback is called when the user toggles an 
+ *                 item in the speed dials menu.
+ * BEHAVIOR     :  Calls the given speed dial.
+ * PRE          :  data is the speed dial as a gchar *
+ */
+static void
+speed_dial_menu_item_selected_cb (GtkWidget *,
+				  gpointer);
+
+
+
 /* Misc Functions */
 
 /* DESCRIPTION  :  /
@@ -265,35 +276,7 @@ static void gm_mw_init_audio_settings (GtkWidget *);
 
 
 
-
-
-/* For stress testing */
-//int i = 0;
-
-/* GTK Callbacks */
-/*
-gint StressTest (gpointer data)
- {
-   gdk_threads_enter ();
-
-
-   GmWindow *mw = GnomeMeeting::Process ()->GetMainWindow ();
-
-   if (!GTK_TOGGLE_BUTTON (mw->connect_button)->active) {
-
-     i++;
-     cout << "Call " << i << endl << flush;
-   }
-
-   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (mw->connect_button), 
- 				!GTK_TOGGLE_BUTTON (mw->connect_button)->active);
-
-   gdk_threads_leave ();
-   return TRUE;
-}
-*/
-
-
+/* Implementation */
 static void
 gm_mw_destroy (gpointer mw)
 {
@@ -521,13 +504,10 @@ static void
 text_chat_clear_cb (GtkWidget *widget,
 		    gpointer data)
 {
-  GmWindow *mw = NULL;
-  
   g_return_if_fail (data != NULL);
-
-  mw = GM_WINDOW (data);
   
-  gnomemeeting_text_chat_clear (mw->chat_window);
+  // FIXME
+  //gm_main_window_text_chat_clear (GTK_WIDGET (data));
 }
 
 
@@ -611,6 +591,34 @@ toggle_menu_changed_cb (GtkWidget *widget,
 }
 
 
+static void
+speed_dial_menu_item_selected_cb (GtkWidget *w,
+				  gpointer data)
+{
+  GmWindow *mw = NULL;
+  GMH323EndPoint *ep = NULL;
+  
+  gchar *url = NULL;
+    
+  mw = gm_mw_get_mw (gm); 
+  ep = GnomeMeeting::Process ()->Endpoint ();
+  
+  g_return_if_fail (data != NULL);
+
+  url = g_strdup_printf ("%s#", (gchar *) data);
+  gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (mw->combo)->entry),
+		      (gchar *) url);
+    
+  /* FIXME */
+  if (ep->GetCallingState () == GMH323EndPoint::Connected)
+    transfer_call_cb (NULL, (gpointer) url);
+  else
+    connect_cb (NULL, NULL);
+
+  g_free (url);
+}
+
+
 /* Misc functions */
 static void
 gm_mw_init_menu (GtkWidget *main_window)
@@ -628,6 +636,7 @@ gm_mw_init_menu (GtkWidget *main_window)
   bool show_status_bar = false;
   bool show_chat_window = false;
 
+  GSList *glist = NULL;
 
   g_return_if_fail (main_window != NULL);
   mw = gm_mw_get_mw (main_window);
@@ -926,7 +935,12 @@ gm_mw_init_menu (GtkWidget *main_window)
 		  mw->accel, 
 		  mw->statusbar);
 
-  gnomemeeting_speed_dials_menu_update (mw->main_menu);
+  glist = 
+    gnomemeeting_addressbook_get_contacts (NULL, FALSE, NULL, NULL, NULL, "*"); 
+  gm_main_window_speed_dials_menu_update (main_window, glist);
+  g_slist_foreach (glist, (GFunc) gm_contact_delete, NULL);
+  g_slist_free (glist);
+
   gtk_widget_show_all (GTK_WIDGET (mw->main_menu));
 }
 
@@ -1370,10 +1384,14 @@ gm_main_window_update_sensitivity (//GtkWidget *main_window,
 
   mw = GnomeMeeting::Process ()->GetMainWindow ();
   
+ 
   switch (calling_state)
     {
     case GMH323EndPoint::Standby:
 
+      gtk_menu_set_sensitive (mw->main_menu, "connect", TRUE);
+      gtk_menu_set_sensitive (mw->main_menu, "disconnect", FALSE);
+      gtk_menu_section_set_sensitive (mw->main_menu, "hold_call", FALSE);
       gtk_widget_set_sensitive (GTK_WIDGET (mw->preview_button), TRUE);
       connect_button_update_pixmap (GTK_TOGGLE_BUTTON (mw->connect_button), 0);
       break;
@@ -1381,6 +1399,8 @@ gm_main_window_update_sensitivity (//GtkWidget *main_window,
 
     case GMH323EndPoint::Calling:
 
+      gtk_menu_set_sensitive (mw->main_menu, "connect", FALSE);
+      gtk_menu_set_sensitive (mw->main_menu, "disconnect", TRUE);
       gtk_widget_set_sensitive (GTK_WIDGET (mw->preview_button), FALSE);
       connect_button_update_pixmap (GTK_TOGGLE_BUTTON (mw->connect_button), 1);
       break;
@@ -1388,6 +1408,9 @@ gm_main_window_update_sensitivity (//GtkWidget *main_window,
 
     case GMH323EndPoint::Connected:
 
+      gtk_menu_set_sensitive (mw->main_menu, "connect", FALSE);
+      gtk_menu_set_sensitive (mw->main_menu, "disconnect", TRUE);
+      gtk_menu_section_set_sensitive (mw->main_menu, "hold_call", TRUE);
       gtk_widget_set_sensitive (GTK_WIDGET (mw->preview_button), FALSE);
       connect_button_update_pixmap (GTK_TOGGLE_BUTTON (mw->connect_button), 1);
       break;
@@ -1395,6 +1418,7 @@ gm_main_window_update_sensitivity (//GtkWidget *main_window,
 
     case GMH323EndPoint::Called:
 
+      gtk_menu_set_sensitive (mw->main_menu, "disconnect", TRUE);
       gtk_widget_set_sensitive (GTK_WIDGET (mw->preview_button), FALSE);
       break;
     }
@@ -1410,20 +1434,99 @@ gm_main_window_update_sensitivity (//GtkWidget *,
   GmWindow *mw = NULL;
   GtkWidget *button = NULL;
   GtkWidget *frame = NULL;
-  
+
   mw = GnomeMeeting::Process ()->GetMainWindow ();
+
   
+  /* We are updating video related items */
   if (is_video) {
+
+  
+    /* Receiving and sending => Everything sensitive in the section control */
+    if (is_receiving && is_transmitting) {
+
+      gtk_menu_section_set_sensitive (mw->main_menu,
+				      "local_video", TRUE);
+      gtk_menu_section_set_sensitive (mw->video_popup_menu,
+				      "local_video", TRUE);
+    }
+    else {
+
+
+      /* Default to nothing being sensitive */
+      gtk_menu_section_set_sensitive (mw->main_menu,
+				      "local_video", FALSE);
+      gtk_menu_section_set_sensitive (mw->video_popup_menu,
+				      "local_video", FALSE);
+      
+      
+      /* We are sending video, but not receiving 
+       * => local must be sensitive */
+      if (is_transmitting) {
+
+	gtk_menu_set_sensitive (mw->main_menu,
+				"local_video", TRUE);
+	gtk_menu_set_sensitive (mw->video_popup_menu,
+				"local_video", TRUE);
+      }
+      /* We are receiving video, but not transmitting,
+       * => remote must be sensitive */
+      else if (is_receiving) {
+
+	gtk_menu_set_sensitive (mw->main_menu,
+				"remote_video", TRUE);
+	gtk_menu_set_sensitive (mw->video_popup_menu,
+				"remote_video", TRUE);
+      }
+      
+      
+      /* We are not transmitting, and not receiving anything,
+       * => Disable the zoom completely */
+      if (!is_receiving && !is_transmitting) {
+
+	gtk_menu_section_set_sensitive (mw->main_menu,
+					"zoom_in", FALSE);
+	gtk_menu_section_set_sensitive (mw->video_popup_menu,
+					"zoom_in", FALSE);
+	gtk_menu_set_sensitive (mw->main_menu, "save_picture", FALSE);
+      }
+      else {
+	/* Or activate it as at least something is transmitted or 
+	 * received */
+	gtk_menu_section_set_sensitive (mw->main_menu,
+					"zoom_in", TRUE);
+	gtk_menu_section_set_sensitive (mw->video_popup_menu,
+					"zoom_in", TRUE);
+	gtk_menu_set_sensitive (mw->main_menu, "save_picture", TRUE);
+      }
+    }
 
     frame = mw->video_settings_frame;
     button = mw->video_chan_button;
   }
   else {
 
+    if (is_transmitting) {
+      
+      if (!is_video) 
+	gtk_menu_set_sensitive (mw->main_menu, "suspend_audio", TRUE);
+      else
+	gtk_menu_set_sensitive (mw->main_menu, "suspend_video", TRUE);
+    }	
+    else {
+    
+      if (!is_video)
+	gtk_menu_set_sensitive (mw->main_menu, "suspend_audio", FALSE);
+      else
+	gtk_menu_set_sensitive (mw->main_menu, "suspend_audio", FALSE);
+
+    }
+    
     frame = mw->audio_volume_frame;
     button = mw->audio_chan_button;
   }
-  
+
+
   gtk_widget_set_sensitive (GTK_WIDGET (button), is_transmitting);
   gtk_widget_set_sensitive (GTK_WIDGET (frame), is_transmitting);
 }
@@ -1520,6 +1623,60 @@ gm_main_window_get_video_sliders_values (GtkWidget *main_window,
   brightness = (int) GTK_ADJUSTMENT (mw->adj_brightness)->value;
   colour = (int) GTK_ADJUSTMENT (mw->adj_colour)->value;
   contrast = (int) GTK_ADJUSTMENT (mw->adj_contrast)->value;
+}
+
+
+void
+gm_main_window_speed_dials_menu_update (GtkWidget *main_window,
+					GSList *glist)
+{
+  GmWindow *mw = NULL;
+  GmContact *contact = NULL;
+  
+  GtkWidget *item = NULL;
+  GtkWidget *menu = NULL;
+
+  GSList *glist_iter = NULL;
+  GList *old_glist_iter = NULL;
+
+  gchar *ml = NULL;  
+
+
+  g_return_if_fail (main_window != NULL);
+  
+  mw = gm_mw_get_mw (main_window);
+
+  menu = gtk_menu_get_widget (mw->main_menu, "speed_dials");
+
+  while ((old_glist_iter = GTK_MENU_SHELL (menu)->children)) 
+    gtk_container_remove (GTK_CONTAINER (menu),
+			  GTK_WIDGET (old_glist_iter->data));
+
+  glist_iter = glist;
+  while (glist_iter && glist_iter->data) {
+
+    contact = GM_CONTACT (glist_iter->data);
+
+    ml = g_strdup_printf ("<b>%s#</b>   <i>%s</i>", 
+			  contact->speeddial, 
+			  contact->fullname);
+
+    item = gtk_menu_item_new_with_label (ml);
+    gtk_label_set_markup (GTK_LABEL (gtk_bin_get_child (GTK_BIN (item))),
+			  ml);
+    gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+    gtk_widget_show (item);
+
+    g_signal_connect_data (G_OBJECT (item), "activate",
+			   GTK_SIGNAL_FUNC (speed_dial_menu_item_selected_cb),
+			   (gpointer) g_strdup (contact->speeddial),
+			   (GClosureNotify) g_free, (GConnectFlags) 0);
+
+
+    glist_iter = g_slist_next (glist_iter);
+
+    g_free (ml);
+  }
 }
 
 
@@ -1933,15 +2090,11 @@ int main (int argc, char ** argv, char ** envp)
     connect_cb (NULL, NULL);
   }
 
-  //  gtk_timeout_add (15000, (GtkFunction) StressTest, 
-  //		   NULL);
   
   /* The GTK loop */
   gtk_main ();
   gdk_threads_leave ();
 
-  //  delete (GnomeMeeting::Process ());
-  
   gm_conf_save ();
 
   return 0;

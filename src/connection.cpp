@@ -174,7 +174,6 @@ GMH323Connection::OnLogicalChannel (H323Channel *channel,
   /* Update the GUI and menus wrt opened channels */
   gnomemeeting_threads_enter ();
   gm_history_window_insert (history_window, msg);
-  gnomemeeting_menu_update_sensitivity (is_video, is_video?is_receiving_video:is_receiving_audio, is_video?is_transmitting_video:is_transmitting_audio);
   gm_main_window_update_sensitivity (is_video, is_video?is_receiving_video:is_receiving_audio, is_video?is_transmitting_video:is_transmitting_audio);
   if (!is_receiving_video && !is_transmitting_video && !preview)
     gm_main_window_update_logo (main_window);

@@ -58,6 +58,8 @@ GtkWidget *gm_addressbook_window_new ();
  * 		  address book window GMObject. The boolean should be set to
  *                TRUE in case the given contact is known to exist in the given
  *                addressbook The last argument is the parent window, if any.
+ * 		  Notice that the main window speed dials menu is updated when
+ * 		  a contact is modified or added.
  * PRE          : The given GtkWidget pointer must point to the address book
  * 		  GMObject.
  */
@@ -73,6 +75,8 @@ void gm_addressbook_window_edit_contact_dialog_run (GtkWidget *,
  * 		  given GmAddressbook based on what is selected in the given
  * 		  address book window GMObject. The last arguement is the parent
  * 		  window, if any.
+ * 		  Notice that the main window speed dials menu is updated when
+ * 		  a contact is deleted.
  * PRE          : The given GtkWidget pointer must point to the address book
  * 		  GMObject. The GmAddressbook pointer must be non-NULL, the
  * 		  GmContact pointer too.
@@ -97,6 +101,8 @@ void gm_addressbook_window_edit_addressbook_dialog_run (GtkWidget *,
 
 /* DESCRIPTION  : / 
  * BEHAVIOR     : Runs a dialog permitting to delete a GmAddressbook.
+ * 		  Notice that the main window speed dials menu is updated when
+ * 		  an address book is deleted.
  * PRE          : The given GtkWidget pointer must point to the address book
  * 		  GMObject. The GmAddressbook pointer must be non-NULL. The
  * 		  last parameter is the parent window.

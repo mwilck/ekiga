@@ -472,7 +472,7 @@ GMVideoGrabber::VGOpen (void)
     if (ep->GetCallingState () == GMH323EndPoint::Standby) {
 
       gnomemeeting_threads_enter ();      
-      gnomemeeting_menu_update_sensitivity (TRUE, FALSE, TRUE);
+      gm_main_window_update_sensitivity (TRUE, FALSE, TRUE);
       gnomemeeting_threads_leave ();
     }
   }
@@ -503,7 +503,7 @@ GMVideoGrabber::VGClose ()
     if (ep->GetCallingState () == GMH323EndPoint::Standby
 	&& !gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview")) {
 
-      gnomemeeting_menu_update_sensitivity (TRUE, FALSE, FALSE);
+      gm_main_window_update_sensitivity (TRUE, FALSE, FALSE);
       gm_main_window_update_logo (main_window);
     }
 

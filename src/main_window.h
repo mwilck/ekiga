@@ -136,6 +136,15 @@ void gm_main_window_get_volume_sliders_values (GtkWidget *,
 
 
 /* DESCRIPTION  :  /
+ * BEHAVIOR     :  Update the speed dials menu in the call menu given the
+ *                 main window GMObject and using the address book.
+ * PRE          :  The main window GMObject and the GSList of GmContacts.
+ */
+void gm_main_window_speed_dials_menu_update (GtkWidget *,
+					     GSList *);
+
+
+/* DESCRIPTION  :  /
  * BEHAVIOR     :  Builds the main window and adds the popup to the image.
  * PRE          :  Accels.
  **/
