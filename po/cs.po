@@ -9,8 +9,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting VERSION\n"
-"POT-Creation-Date: 2003-05-30 04:29+0200\n"
-"PO-Revision-Date: 2003-05-30 14:26+0200\n"
+"POT-Creation-Date: 2003-05-31 12:32+0200\n"
+"PO-Revision-Date: 2003-05-31 14:55+0200\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -19,7 +19,7 @@ msgstr ""
 
 # gnomemeeting.desktop.in.h:1 sounds/GnomeMeeting.soundlist.in.h:1
 # src/main_window.cpp:367 src/pref_window.cpp:1529
-#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:1086
+#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:1084
 msgid "GnomeMeeting"
 msgstr "GnomeMeeting"
 
@@ -98,7 +98,7 @@ msgid "Color Format for the video palette"
 msgstr "Barevný formát video palety"
 
 # src/ldap_window.cpp:529
-#: gnomemeeting.schemas.in.in.h:14 src/ldap_window.cpp:2341
+#: gnomemeeting.schemas.in.in.h:14 src/ldap_window.cpp:2344
 msgid "Comment"
 msgstr "Komentář"
 
@@ -374,7 +374,7 @@ msgid "Local Video Popup Width"
 msgstr "Šířka okna lokálního videa"
 
 # src/ldap_window.cpp:529
-#: gnomemeeting.schemas.in.in.h:63 src/ldap_window.cpp:2352
+#: gnomemeeting.schemas.in.in.h:63 src/ldap_window.cpp:2355
 msgid "Location"
 msgstr "Umístění"
 
@@ -837,7 +837,7 @@ msgstr "Typ Možností uživatelského vstupu"
 msgid "User directory"
 msgstr "Adresář uživatelů"
 
-#: gnomemeeting.schemas.in.in.h:142 src/ldap_window.cpp:2374
+#: gnomemeeting.schemas.in.in.h:142 src/ldap_window.cpp:2377
 msgid "Version"
 msgstr "Verze"
 
@@ -1270,7 +1270,7 @@ msgid "_Surname:"
 msgstr "_Příjmení:"
 
 #. The callto url
-#: src/druid.cpp:660 src/ldap_window.cpp:2412
+#: src/druid.cpp:660
 msgid "Callto URL"
 msgstr "Callto URL"
 
@@ -1715,7 +1715,7 @@ msgid "Temporary failure"
 msgstr "Dočasné selhání"
 
 # src/endpoint.cpp:626
-#: src/endpoint.cpp:1384 src/urlhandler.cpp:288
+#: src/endpoint.cpp:1384 src/urlhandler.cpp:298
 msgid "User not found"
 msgstr "Uživatel nenalezen"
 
@@ -1724,7 +1724,7 @@ msgstr "Uživatel nenalezen"
 msgid "Call completed"
 msgstr "Hovor ukončen"
 
-#: src/endpoint.cpp:1487 src/main_window.cpp:1761
+#: src/endpoint.cpp:1487 src/main_window.cpp:1759
 msgid ""
 "Lost packets:\n"
 "Late packets:\n"
@@ -1965,8 +1965,8 @@ msgid "URL:"
 msgstr "URL:"
 
 #: src/ldap_window.cpp:730
-msgid "Call shortcut:"
-msgstr "Volací zkratka:"
+msgid "Speed Dial:"
+msgstr "Rychlé vytáčení:"
 
 #: src/ldap_window.cpp:754
 msgid "Groups:"
@@ -1985,8 +1985,8 @@ msgstr "Musíte vybrat skupinu, do které chcete přidat svůj kontakt."
 
 #: src/ldap_window.cpp:887
 msgid ""
-"Another contact with the same shortcut already exists in the address book."
-msgstr "V adresáři již existuje jiný kontakt se stejnou zkratkou."
+"Another contact with the same speed_dial already exists in the address book."
+msgstr "V adresáři již existuje jiný kontakt se stejným rychlým vytáčením."
 
 #: src/ldap_window.cpp:899
 msgid "Another contact with the same URL already exists in the address book."
@@ -2108,61 +2108,60 @@ msgid "Add Contact to _Address Book"
 msgstr "Přídat kontakt do _adresáře"
 
 #. Translators: This is "S" as in "Status"
-#: src/ldap_window.cpp:2299
+#: src/ldap_window.cpp:2302
 msgid "S"
 msgstr "S"
 
 # src/ldap_window.cpp:525
 #. Translators: This is "A" as in "Audio"
-#: src/ldap_window.cpp:2309 src/pref_window.cpp:1209
+#: src/ldap_window.cpp:2312 src/pref_window.cpp:1209
 msgid "A"
 msgstr "A"
 
 # src/ldap_window.cpp:527
 #. Translators: This is "V" as in "Video"
-#: src/ldap_window.cpp:2319
+#: src/ldap_window.cpp:2322
 msgid "V"
 msgstr "V"
 
 # src/pref_window.cpp:652
-#: src/ldap_window.cpp:2328 src/ldap_window.cpp:2400 src/pref_window.cpp:1223
+#: src/ldap_window.cpp:2331 src/ldap_window.cpp:2403 src/pref_window.cpp:1223
 msgid "Name"
 msgstr "Jméno"
 
-# src/pref_window.cpp:1242
-#: src/ldap_window.cpp:2362
-msgid "Callto"
-msgstr "Callto"
+#: src/ldap_window.cpp:2365 src/ldap_window.cpp:2415
+msgid "URL"
+msgstr "URL"
 
 # src/ldap_window.cpp:529
-#: src/ldap_window.cpp:2385 src/tools.cpp:166
+#: src/ldap_window.cpp:2388 src/tools.cpp:166
 msgid "IP"
 msgstr "IP"
 
-#: src/ldap_window.cpp:2425
+#: src/ldap_window.cpp:2428
 msgid "Speed Dial"
 msgstr "Rychlé vytáčení"
 
 # src/ldap_window.cpp:419
-#: src/ldap_window.cpp:2453
+#: src/ldap_window.cpp:2480
 msgid "First name contains"
 msgstr "Jméno obsahuje"
 
 # src/ldap_window.cpp:422
-#: src/ldap_window.cpp:2457
+#: src/ldap_window.cpp:2484
 msgid "Last name contains"
 msgstr "Příjmení obsahuje"
 
-#: src/ldap_window.cpp:2461
+#: src/ldap_window.cpp:2488
 msgid "E-mail contains"
 msgstr "E-mail obsahuje"
 
 # src/ldap_window.cpp:360
-#: src/ldap_window.cpp:2624
+#: src/ldap_window.cpp:2651
 msgid "Servers"
 msgstr "Servery"
 
-#: src/ldap_window.cpp:2666
+#: src/ldap_window.cpp:2693
 msgid "Groups"
 msgstr "Skupiny"
 
@@ -2244,18 +2243,18 @@ msgid "Failed to retrieve gnomemeeting server from activation server\n"
 msgstr "Chyba při návratu gnomemeeting serveru od aktivační služby\n"
 
 # src/main_window.cpp:350
-#: src/main_window.cpp:1060
+#: src/main_window.cpp:1058
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Vypisování ladících zpráv v konzole (úroveň mezi 1 až 6)"
 
-#: src/main_window.cpp:1063
+#: src/main_window.cpp:1061
 msgid "Makes GnomeMeeting call the given given URL"
 msgstr "GnomeMeeting zavolá na zadané URL"
 
 #. We can't use gnomemeeting_error_dialog here, cause we need the
 #. dialog_run and dialog_run can't be used in gnomemeeting_error_dialog
 #. because it doesn't work in threads
-#: src/main_window.cpp:1126
+#: src/main_window.cpp:1124
 #, c-format
 msgid ""
 "GnomeMeeting got %d for the GConf key \"/apps/gnomemeeting/gconf_test_age\", "
@@ -2289,7 +2288,7 @@ msgstr ""
 #. We can't use gnomemeeting_error_dialog here, cause we need the
 #. dialog_run and dialog_run can't be used in gnomemeeting_error_dialog
 #. because it doesn't work in threads
-#: src/main_window.cpp:1167
+#: src/main_window.cpp:1165
 msgid ""
 "GnomeMeeting can't be used without audio devices. Please install a soundcard "
 "or a Quicknet card."
@@ -2298,7 +2297,7 @@ msgstr ""
 "prosím zvukovou kartu nebo kartu Quicknet."
 
 # src/main_window.cpp:442
-#: src/main_window.cpp:1405
+#: src/main_window.cpp:1403
 msgid ""
 "Could not start the listener thread. You will not be able to receive "
 "incoming calls."
@@ -2307,49 +2306,49 @@ msgstr ""
 "hovory."
 
 # src/menu.cpp:446
-#: src/main_window.cpp:1626 src/menu.cpp:707 src/menu.cpp:953
+#: src/main_window.cpp:1624 src/menu.cpp:707 src/menu.cpp:953
 msgid "Local Video"
 msgstr "Lokální video"
 
 # src/menu.cpp:453
-#: src/main_window.cpp:1632 src/menu.cpp:713 src/menu.cpp:958
+#: src/main_window.cpp:1630 src/menu.cpp:713 src/menu.cpp:958
 msgid "Remote Video"
 msgstr "Vzdálené video"
 
-#: src/main_window.cpp:1765 src/menu.cpp:674
+#: src/main_window.cpp:1763 src/menu.cpp:674
 msgid "Statistics"
 msgstr "Statistiky"
 
-#: src/main_window.cpp:1831
+#: src/main_window.cpp:1829
 msgid "Dialpad"
 msgstr "Vytáčení"
 
 # src/main_window.cpp:922
-#: src/main_window.cpp:1888
+#: src/main_window.cpp:1886
 msgid "Adjust brightness"
 msgstr "Nastavení jasu"
 
 # src/main_window.cpp:947
-#: src/main_window.cpp:1914
+#: src/main_window.cpp:1912
 msgid "Adjust whiteness"
 msgstr "Nastavení světlosti"
 
 # src/main_window.cpp:972
-#: src/main_window.cpp:1940
+#: src/main_window.cpp:1938
 msgid "Adjust color"
 msgstr "Nastavení barev"
 
 # src/main_window.cpp:997
-#: src/main_window.cpp:1966
+#: src/main_window.cpp:1964
 msgid "Adjust contrast"
 msgstr "Nastavení kontrastu"
 
 # src/pref_window.cpp:1234
-#: src/main_window.cpp:1974
+#: src/main_window.cpp:1972
 msgid "Video"
 msgstr "Obraz"
 
-#: src/main_window.cpp:2064
+#: src/main_window.cpp:2062
 msgid "Audio"
 msgstr "Zvuk"
 
@@ -3279,7 +3278,7 @@ msgstr "Obecná historie"
 msgid "GnomeMeeting Tray Icon"
 msgstr "GnomeMeeting zásuvná ikona"
 
-#: src/urlhandler.cpp:233
+#: src/urlhandler.cpp:237
 msgid ""
 "Please specify a valid URL handler. Currently both h323: and callto: are "
 "supported."
@@ -3288,14 +3287,14 @@ msgstr ""
 "callto:."
 
 # src/gnomemeeting.cpp:198
-#: src/urlhandler.cpp:252
+#: src/urlhandler.cpp:256
 #, c-format
 msgid "Calling %s"
 msgstr "Volám %s"
 
-#: src/urlhandler.cpp:291
-msgid "No contact with that shortcut found"
-msgstr "Nenalezen kontakt s touto zkratkou"
+#: src/urlhandler.cpp:271
+msgid "No contact with that speed dial found"
+msgstr "Nenalezen kontakt s tímto rychlým vytáčením"
 
 # src/videograbber.cpp:261 src/videograbber.cpp:262
 #: src/videograbber.cpp:324 src/videograbber.cpp:325
