@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-07 15:19+0200\n"
-"PO-Revision-Date: 2004-08-07 15:44+0200\n"
+"POT-Creation-Date: 2004-10-15 23:15+0200\n"
+"PO-Revision-Date: 2004-10-15 23:32+0200\n"
 "Last-Translator: Danilo Šegan <danilo@prevod.org>\n"
 "Language-Team: Serbian (sr) <gnom@prevod.org>\n"
 "MIME-Version: 1.0\n"
@@ -18,8 +18,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #. Add the window icon and title
-#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:1034
-#: src/main_window.cpp:1243
+#: gnomemeeting.desktop.in.h:1 src/main_window.cpp:3671
+#: src/main_window.cpp:3860
 msgid "GnomeMeeting"
 msgstr "Gnom Sastanak"
 
@@ -59,11 +59,11 @@ msgstr "Dodatak za zvuk"
 msgid "Automatic echo cancellation"
 msgstr "Automatsko brisanje ehoa"
 
-#: gnomemeeting.schemas.in.in.h:8 src/pref_window.cpp:928
+#: gnomemeeting.schemas.in.in.h:8 src/pref_window.cpp:716
 msgid "Automatically clear the text chat at the end of calls"
 msgstr "Automatski obriši tekstualni razgovor na kraju poziva"
 
-#: gnomemeeting.schemas.in.in.h:9 src/pref_window.cpp:1012
+#: gnomemeeting.schemas.in.in.h:9 src/pref_window.cpp:784
 msgid ""
 "Automatically reject or forward incoming calls if no answer is given after "
 "the specified amount of time (in seconds)"
@@ -101,7 +101,7 @@ msgstr ""
 msgid "Clear inactive calls"
 msgstr "Očisti neaktivne pozive"
 
-#: gnomemeeting.schemas.in.in.h:15 src/addressbook_window.cpp:810
+#: gnomemeeting.schemas.in.in.h:15 src/addressbook_window.cpp:958
 msgid "Comment"
 msgstr "Komentar"
 
@@ -207,11 +207,11 @@ msgstr ""
 "prevođenje.  Ako ste registrovani na ils.seconix.com, Gnom Sastanak će "
 "automatski dobaviti javnu IP adresu koristeći ILS servis"
 
-#: gnomemeeting.schemas.in.in.h:36 src/pref_window.cpp:867
+#: gnomemeeting.schemas.in.in.h:36 src/pref_window.cpp:663
 msgid "Enter your e-mail address"
 msgstr "Unesite vašu adresu e-pošte"
 
-#: gnomemeeting.schemas.in.in.h:37 src/pref_window.cpp:853
+#: gnomemeeting.schemas.in.in.h:37 src/pref_window.cpp:649
 msgid "Enter your first name"
 msgstr "Unesite vaše ime"
 
@@ -239,39 +239,31 @@ msgstr "Preusmeri poziv do datog domaćina ako je zauzeto"
 msgid "Forward calls to the given host if no answer"
 msgstr "Preusmeri poziv do datog domaćina ako se ne odgovara na poziv"
 
-#: gnomemeeting.schemas.in.in.h:44
-msgid "Fullscreen height"
-msgstr "Visina celog ekrana"
-
-#: gnomemeeting.schemas.in.in.h:45
-msgid "Fullscreen width"
-msgstr "Širina celog ekrana"
-
-#: gnomemeeting.schemas.in.in.h:46 src/pref_window.cpp:1229
+#: gnomemeeting.schemas.in.in.h:44 src/pref_window.cpp:986
 msgid "Gatekeeper ID"
 msgstr "ID čuvara kapije"
 
-#: gnomemeeting.schemas.in.in.h:47
+#: gnomemeeting.schemas.in.in.h:45
 msgid "Gatekeeper alias"
 msgstr "Nadimak čuvara kapije"
 
-#: gnomemeeting.schemas.in.in.h:48
+#: gnomemeeting.schemas.in.in.h:46
 msgid "Gatekeeper alias as primary alias"
 msgstr "Nadimak čuvara kapije kao osnovni nadimak"
 
-#: gnomemeeting.schemas.in.in.h:49 src/pref_window.cpp:1228
+#: gnomemeeting.schemas.in.in.h:47 src/pref_window.cpp:985
 msgid "Gatekeeper host"
 msgstr "Domaćin čuvara kapije"
 
-#: gnomemeeting.schemas.in.in.h:50
+#: gnomemeeting.schemas.in.in.h:48
 msgid "Gatekeeper password"
 msgstr "Lozinka čuvara kapije"
 
-#: gnomemeeting.schemas.in.in.h:51
+#: gnomemeeting.schemas.in.in.h:49
 msgid "Gateway/proxy host"
 msgstr "Računar izlaza/posrednika"
 
-#: gnomemeeting.schemas.in.in.h:52 src/pref_window.cpp:909
+#: gnomemeeting.schemas.in.in.h:50 src/pref_window.cpp:701
 msgid ""
 "If enabled, GnomeMeeting will start hidden provided that the notification "
 "area is present in the GNOME panel"
@@ -279,13 +271,13 @@ msgstr ""
 "Ako je uključeno, Gnom Sastanak će se pokretati sakriven ako je obaveštajna "
 "zona prisutna na Gnomovom panelu"
 
-#: gnomemeeting.schemas.in.in.h:53
+#: gnomemeeting.schemas.in.in.h:51
 msgid ""
 "If enabled, a popup window will be displayed when receiving an incoming call"
 msgstr ""
 "Ako je uključeno, iskačući prozor će se prikazati pri prijemu dolazećeg poziva"
 
-#: gnomemeeting.schemas.in.in.h:54
+#: gnomemeeting.schemas.in.in.h:52
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below"
@@ -293,7 +285,7 @@ msgstr ""
 "Ako je uključeno, svi dolazeći pozivi će biti preusmereni na domaćina koji je "
 "naznačen u polju dole"
 
-#: gnomemeeting.schemas.in.in.h:55
+#: gnomemeeting.schemas.in.in.h:53
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you already are in a call or if you are in "
@@ -302,7 +294,7 @@ msgstr ""
 "Ako je uključeno, svi dolazeći pozivi će biti preusmereni na domaćina koji je "
 "naznačen u polju dole ako ste već u pozivu ili ako ste u modu ne uznemiravaj"
 
-#: gnomemeeting.schemas.in.in.h:56
+#: gnomemeeting.schemas.in.in.h:54
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you do not answer the call"
@@ -310,11 +302,11 @@ msgstr ""
 "Ako je uključeno, svi dolazeći pozivi će biti preusmereni na domaćina koji je "
 "naznačen u polju dole ako ne odgovorite na poziv"
 
-#: gnomemeeting.schemas.in.in.h:57
+#: gnomemeeting.schemas.in.in.h:55
 msgid "If enabled, allows video to be received during a call"
 msgstr "Ako je uključeno, dozvoljava primanje videa za vreme poziva"
 
-#: gnomemeeting.schemas.in.in.h:58 src/pref_window.cpp:1008
+#: gnomemeeting.schemas.in.in.h:56 src/pref_window.cpp:780
 msgid ""
 "If enabled, calls for which no audio and video has been received in the last "
 "30 seconds are automatically cleared"
@@ -322,30 +314,30 @@ msgstr ""
 "Ako je uključeno, pozivi kod kojih nije primljen zvuk ili video u poslednjih 30 "
 "sekundi se automatski čiste"
 
-#: gnomemeeting.schemas.in.in.h:59
+#: gnomemeeting.schemas.in.in.h:57
 msgid "If enabled, register with the selected user directory"
 msgstr "Ako je uključeno, prijavi se pomoću direktorijuma izabranog korisnika"
 
-#: gnomemeeting.schemas.in.in.h:60 src/pref_window.cpp:907
+#: gnomemeeting.schemas.in.in.h:58 src/pref_window.cpp:699
 msgid ""
 "If enabled, the splash screen will be displayed when GnomeMeeting starts"
 msgstr ""
 "Ako je uključeno, poprskani ekran će biti prikazan kada Gnom Sastanak zapoćne"
 
-#: gnomemeeting.schemas.in.in.h:61 src/pref_window.cpp:928
+#: gnomemeeting.schemas.in.in.h:59 src/pref_window.cpp:716
 msgid ""
 "If enabled, the text chat will automatically be cleared at the end of calls"
 msgstr "Ako je uključeno, tekstualni razgovor će biti izbrisan na kraju poziva"
 
-#: gnomemeeting.schemas.in.in.h:62
+#: gnomemeeting.schemas.in.in.h:60
 msgid "If enabled, use silence detection with the GSM and G.711 codecs"
 msgstr "Ako je uključeno, koristi detekciju tišine sa GSM i G.711 kodiranjima"
 
-#: gnomemeeting.schemas.in.in.h:63
+#: gnomemeeting.schemas.in.in.h:61
 msgid "If enabled, video is transmitted during a call"
 msgstr "Ako je uključeno, video se prenosi za vreme poziva"
 
-#: gnomemeeting.schemas.in.in.h:64
+#: gnomemeeting.schemas.in.in.h:62
 msgid ""
 "If enabled, your details are shown to people browsing the user directory. If "
 "disabled, you are not visible to users browsing the user directory, but they "
@@ -356,170 +348,170 @@ msgstr ""
 "korisnički direktorijum, ali oni još uvek mogu da koriste poziv na URL da "
 "vas pozovu"
 
-#: gnomemeeting.schemas.in.in.h:65
+#: gnomemeeting.schemas.in.in.h:63
 msgid "Incoming call mode"
 msgstr "Režim dolazećih poziva"
 
-#: gnomemeeting.schemas.in.in.h:66
+#: gnomemeeting.schemas.in.in.h:64
 msgid "Kind of network selected in the druid"
 msgstr "Vrsta mreže odabrana u druidu"
 
-#: gnomemeeting.schemas.in.in.h:67
+#: gnomemeeting.schemas.in.in.h:65
 msgid "Last name"
 msgstr "Prezime"
 
-#: gnomemeeting.schemas.in.in.h:68
+#: gnomemeeting.schemas.in.in.h:66
 msgid "Listen port"
 msgstr "Oslušavan port"
 
-#: gnomemeeting.schemas.in.in.h:69
+#: gnomemeeting.schemas.in.in.h:67
 msgid "Local video window size"
 msgstr "Veličina prozora lokalnog videa"
 
-#: gnomemeeting.schemas.in.in.h:70 src/addressbook_window.cpp:847
+#: gnomemeeting.schemas.in.in.h:68 src/addressbook_window.cpp:998
 msgid "Location"
 msgstr "Položaj"
 
-#: gnomemeeting.schemas.in.in.h:71
+#: gnomemeeting.schemas.in.in.h:69
 msgid "Maximum jitter buffer"
 msgstr "Maksimalni jitter bafer"
 
-#: gnomemeeting.schemas.in.in.h:72
+#: gnomemeeting.schemas.in.in.h:70
 msgid "Maximum video bandwidth"
 msgstr "Maksimalna širina propusnog opsega videa"
 
-#: gnomemeeting.schemas.in.in.h:73
+#: gnomemeeting.schemas.in.in.h:71
 msgid "Minimum jitter buffer"
 msgstr "Minimalni jitter bafer"
 
-#: gnomemeeting.schemas.in.in.h:74
+#: gnomemeeting.schemas.in.in.h:72
 msgid "Minimum transmitted video quality"
 msgstr "Minimalno preneseni video kvalitet"
 
-#: gnomemeeting.schemas.in.in.h:75
+#: gnomemeeting.schemas.in.in.h:73
 msgid "Missed calls history"
 msgstr "Spisak propuštenih poziva"
 
-#: gnomemeeting.schemas.in.in.h:76
+#: gnomemeeting.schemas.in.in.h:74
 msgid "No answer timeout"
 msgstr "Nema roka za odgovor"
 
-#: gnomemeeting.schemas.in.in.h:77
+#: gnomemeeting.schemas.in.in.h:75
 msgid "Number of frames for G.711"
 msgstr "Broj okvira za G.711"
 
-#: gnomemeeting.schemas.in.in.h:78
+#: gnomemeeting.schemas.in.in.h:76
 msgid "Number of frames for GSM"
 msgstr "Broj okvira za GSM"
 
-#: gnomemeeting.schemas.in.in.h:79
+#: gnomemeeting.schemas.in.in.h:77
 msgid "Number of frames transmitted in each packet for the G.711 codec"
 msgstr "Broj okvira prenesenih u svakom paketu za G.711 kodiranje"
 
-#: gnomemeeting.schemas.in.in.h:80
+#: gnomemeeting.schemas.in.in.h:78
 msgid "Number of frames transmitted in each packet for the GSM codec"
 msgstr "Broj okvira prenesenih u svakom paketu za GSM kodiranje"
 
-#: gnomemeeting.schemas.in.in.h:81
+#: gnomemeeting.schemas.in.in.h:79
 msgid "Output device type"
 msgstr "Vrsta izlaznog uređaja"
 
-#: gnomemeeting.schemas.in.in.h:82 src/pref_window.cpp:922
+#: gnomemeeting.schemas.in.in.h:80 src/pref_window.cpp:709
 msgid "Place windows displaying video above other windows during calls"
 msgstr ""
 "Postavi prozore koji prikazuju video iznad ostalih prozora u toku razgovora"
 
-#: gnomemeeting.schemas.in.in.h:83
+#: gnomemeeting.schemas.in.in.h:81
 msgid "Placed calls history"
 msgstr "Spisak učinjenih poziva"
 
-#: gnomemeeting.schemas.in.in.h:84 src/pref_window.cpp:788
+#: gnomemeeting.schemas.in.in.h:82 src/pref_window.cpp:1849
 msgid "Play busy tone"
 msgstr "Pusti zvuk zauzeća"
 
-#: gnomemeeting.schemas.in.in.h:85 src/pref_window.cpp:779
+#: gnomemeeting.schemas.in.in.h:83 src/pref_window.cpp:1840
 msgid "Play ring tone"
 msgstr "Pusti zvuk zvonjenja"
 
-#: gnomemeeting.schemas.in.in.h:86 src/pref_window.cpp:770
+#: gnomemeeting.schemas.in.in.h:84 src/pref_window.cpp:1831
 msgid "Play sound on incoming calls"
 msgstr "Pusti zvuk na dolazeći poziv"
 
-#: gnomemeeting.schemas.in.in.h:87
+#: gnomemeeting.schemas.in.in.h:85
 msgid "Position of the local video window"
 msgstr "Položaj prozora lokalnog videa"
 
-#: gnomemeeting.schemas.in.in.h:88
+#: gnomemeeting.schemas.in.in.h:86
 msgid "Position on the screen of the PC-To-Phone window"
 msgstr "Položaj prozora Računar-sa-telefonom na ekranu"
 
-#: gnomemeeting.schemas.in.in.h:89
+#: gnomemeeting.schemas.in.in.h:87
 msgid "Position on the screen of the address book window"
 msgstr "Položaj prozora adresara na ekranu"
 
-#: gnomemeeting.schemas.in.in.h:90
+#: gnomemeeting.schemas.in.in.h:88
 msgid "Position on the screen of the calls history window"
 msgstr "Položaj prozora istorijata poziva na ekranu"
 
-#: gnomemeeting.schemas.in.in.h:91
+#: gnomemeeting.schemas.in.in.h:89
 msgid "Position on the screen of the druid window"
 msgstr "Položaj prozora pomoćnika na ekranu"
 
-#: gnomemeeting.schemas.in.in.h:92
+#: gnomemeeting.schemas.in.in.h:90
 msgid "Position on the screen of the log window"
 msgstr "Položaj prozora dnevnika na ekranu"
 
-#: gnomemeeting.schemas.in.in.h:93
+#: gnomemeeting.schemas.in.in.h:91
 msgid "Position on the screen of the main window"
 msgstr "Položaj glavnog prozora na ekranu"
 
-#: gnomemeeting.schemas.in.in.h:94
+#: gnomemeeting.schemas.in.in.h:92
 msgid "Position on the screen of the preferences window"
 msgstr "Položaj prozora sa postavkama na ekranu"
 
-#: gnomemeeting.schemas.in.in.h:95
+#: gnomemeeting.schemas.in.in.h:93
 msgid "Public IP of the NAT/PAT router"
 msgstr "Javana IP adresa od NAT/PAT rutera"
 
-#: gnomemeeting.schemas.in.in.h:96
+#: gnomemeeting.schemas.in.in.h:94
 msgid "Received calls history"
 msgstr "Spisak primljenih poziva"
 
-#: gnomemeeting.schemas.in.in.h:97
+#: gnomemeeting.schemas.in.in.h:95
 msgid "Registering method"
 msgstr "Način registrovanja"
 
-#: gnomemeeting.schemas.in.in.h:98
+#: gnomemeeting.schemas.in.in.h:96
 msgid "Remote video window position"
 msgstr "Položaj prozora daljinskog videa"
 
-#: gnomemeeting.schemas.in.in.h:99
+#: gnomemeeting.schemas.in.in.h:97
 msgid "Remote video window size"
 msgstr "Veličina prozora daljinskog videa"
 
-#: gnomemeeting.schemas.in.in.h:100
+#: gnomemeeting.schemas.in.in.h:98
 msgid "Revision of the schema file"
 msgstr "Revizija šema datoteke"
 
-#: gnomemeeting.schemas.in.in.h:101 src/pref_window.cpp:1365
+#: gnomemeeting.schemas.in.in.h:99 src/pref_window.cpp:1115
 msgid "Select the audio input device to use"
 msgstr "Odaberite uređaj koji će se koristiti za ulaz zvuka"
 
-#: gnomemeeting.schemas.in.in.h:102 src/pref_window.cpp:1359
+#: gnomemeeting.schemas.in.in.h:100 src/pref_window.cpp:1108
 msgid "Select the audio output device to use"
 msgstr "Odaberite uređaj koji će se koristiti za izlaz zvuka"
 
-#: gnomemeeting.schemas.in.in.h:103 src/pref_window.cpp:1167
-msgid "Select the audio output device to use for sound events"
-msgstr "Odaberite izlazni zvučni uređaj koji će se koristiti za zvučne događaje"
+#: gnomemeeting.schemas.in.in.h:101
+msgid "Select the audio output device to use for the ring sound event."
+msgstr "Odaberite izlazni zvučni uređaj koji će se koristiti za zvučno oglašavanje zvonjenja."
 
-#: gnomemeeting.schemas.in.in.h:104 src/pref_window.cpp:1444
+#: gnomemeeting.schemas.in.in.h:102 src/pref_window.cpp:1192
 msgid ""
 "Select the format for video cameras (does not apply to most USB cameras)"
 msgstr ""
 "Izaberite format za video kamere. (Nije primenljivo na većinu USB kamera)"
 
-#: gnomemeeting.schemas.in.in.h:105 src/pref_window.cpp:1442
+#: gnomemeeting.schemas.in.in.h:103 src/pref_window.cpp:1190
 msgid ""
 "Select the transmitted video size: Small (QCIF 176x144) or Large (CIF "
 "352x288)"
@@ -527,7 +519,7 @@ msgstr ""
 "Selektujte veličinu prenesene video slike: Mala (QCIF 176x144) ili velika "
 "(CIF 352x288)"
 
-#: gnomemeeting.schemas.in.in.h:106 src/pref_window.cpp:1436
+#: gnomemeeting.schemas.in.in.h:104 src/pref_window.cpp:1184
 msgid ""
 "Select the video input device to use. If an error occurs when using this "
 "device a test picture will be transmitted."
@@ -535,71 +527,64 @@ msgstr ""
 "Izaberite video ulaz koji će se koristiti.  Ukoliko se dogodi greška pri "
 "upotrebi ovog uređaja, preneće se probna slika."
 
-#: gnomemeeting.schemas.in.in.h:107
-msgid "Show a status bar at the bottom of the main window"
-msgstr "Prikaži liniju sa stanjem na dnu glavnog prozora"
-
-#: gnomemeeting.schemas.in.in.h:108
+#: gnomemeeting.schemas.in.in.h:105
 msgid "Show chat window"
 msgstr "Prikaži prozor za razgovor"
 
-#: gnomemeeting.schemas.in.in.h:109
+#: gnomemeeting.schemas.in.in.h:106
 msgid "Show my details to other registered users"
 msgstr "Pokaži moje detalje ostalim registrovanim korisnicima"
 
-#: gnomemeeting.schemas.in.in.h:110
+#: gnomemeeting.schemas.in.in.h:107
 msgid "Show splash screen at startup"
 msgstr "Prikaži uvodni ekran pri pokretanju"
 
-#: gnomemeeting.schemas.in.in.h:111
-msgid "Show status bar"
-msgstr "Prikaži liniju sa stanjem"
-
-#: gnomemeeting.schemas.in.in.h:112
+#: gnomemeeting.schemas.in.in.h:108
 msgid "Show the chat window in the main window"
 msgstr "Prikaži prozor za razgovor u glavnom prozoru"
 
-#: gnomemeeting.schemas.in.in.h:113
+#: gnomemeeting.schemas.in.in.h:109
 msgid "Size of the PC-To-Phone window"
 msgstr "Veličina prozora Računar-sa-telefonom"
 
-#: gnomemeeting.schemas.in.in.h:114
+#: gnomemeeting.schemas.in.in.h:110
 msgid "Size of the address book window"
 msgstr "Veličina prozora adresara"
 
-#: gnomemeeting.schemas.in.in.h:115
+#: gnomemeeting.schemas.in.in.h:111
 msgid "Size of the calls history window"
 msgstr "Veličina prozora istorijata poziva"
 
-#: gnomemeeting.schemas.in.in.h:116
+#: gnomemeeting.schemas.in.in.h:112
 msgid "Size of the druid window"
 msgstr "Veličina prozora pomoćnika"
 
-#: gnomemeeting.schemas.in.in.h:117
+#: gnomemeeting.schemas.in.in.h:113
 msgid "Size of the log window"
 msgstr "Veličina prozora dnevnika"
 
-#: gnomemeeting.schemas.in.in.h:118
+#: gnomemeeting.schemas.in.in.h:114
 msgid "Size of the preferences window"
 msgstr "Veličina prozora sa postavkama"
 
-#: gnomemeeting.schemas.in.in.h:119
+#: gnomemeeting.schemas.in.in.h:115
 msgid "Start hidden"
 msgstr "Počni skriven"
 
-#: gnomemeeting.schemas.in.in.h:120 src/menu.cpp:459 src/menu.cpp:586
+#: gnomemeeting.schemas.in.in.h:116 src/main_window.cpp:1117
+#: src/main_window.cpp:1619 src/main_window.cpp:1642
 msgid "Switch to fullscreen"
 msgstr "Prebaci u ceo ekran"
 
-#: gnomemeeting.schemas.in.in.h:121
+#: gnomemeeting.schemas.in.in.h:117
 msgid "TCP port range"
 msgstr "Opseg TCP portova"
 
-#: gnomemeeting.schemas.in.in.h:122
+#: gnomemeeting.schemas.in.in.h:118
 msgid "The Audio Codecs List"
 msgstr "Spisak zvućnih kodiranja"
 
-#: gnomemeeting.schemas.in.in.h:123 src/pref_window.cpp:1373
+#: gnomemeeting.schemas.in.in.h:119 src/pref_window.cpp:1123
 msgid ""
 "The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic "
 "Gain Compensation. Choosing Automatic Gain Compensation modulates the volume "
@@ -609,7 +594,7 @@ msgstr ""
 "postignuta izravnavanje.  Izabiranjem automatski postignutog izravnavanja "
 "jačina će biti modulovana za najbolji kvalitet."
 
-#: gnomemeeting.schemas.in.in.h:124 src/pref_window.cpp:1242
+#: gnomemeeting.schemas.in.in.h:120 src/pref_window.cpp:999
 msgid ""
 "The Gatekeeper alias to use when registering (string, or E164 ID if only "
 "0123456789#)"
@@ -617,21 +602,21 @@ msgstr ""
 "Nadimak čuvara kapije za korišćenje kod registrovanja (niz znakova ili E164 ID "
 "ako je samo 0123456789#)"
 
-#: gnomemeeting.schemas.in.in.h:125 src/pref_window.cpp:1240
+#: gnomemeeting.schemas.in.in.h:121 src/pref_window.cpp:997
 msgid "The Gatekeeper host to register with"
 msgstr "Domaćin čuvara kapije za registrovanje"
 
-#: gnomemeeting.schemas.in.in.h:126 src/pref_window.cpp:1238
+#: gnomemeeting.schemas.in.in.h:122 src/pref_window.cpp:995
 msgid "The Gatekeeper identifier to register with"
 msgstr "Identifikator čuvara kapije za registrovanje"
 
-#: gnomemeeting.schemas.in.in.h:127 src/pref_window.cpp:1245
+#: gnomemeeting.schemas.in.in.h:123 src/pref_window.cpp:1002
 msgid ""
 "The Gatekeeper password to use for H.235 authentication to the Gatekeeper"
 msgstr ""
 "Lozinka čuvara kapije da se koristi za H.235 autentikaciju za čuvara kapije"
 
-#: gnomemeeting.schemas.in.in.h:128 src/pref_window.cpp:1271
+#: gnomemeeting.schemas.in.in.h:124 src/pref_window.cpp:1024
 msgid ""
 "The Gateway host is the host to use to do H.323 calls through a gateway that "
 "will relay calls"
@@ -639,28 +624,30 @@ msgstr ""
 "Računar za izlaz je računar preko kojeg se obavljaju H.323 pozivi preko "
 "izlaza koji prenosi pozive"
 
-#: gnomemeeting.schemas.in.in.h:129
+#: gnomemeeting.schemas.in.in.h:125
 msgid "The STUN Server"
 msgstr "STUN server"
 
 # bug: s/technic/technology/
-#: gnomemeeting.schemas.in.in.h:130 src/pref_window.cpp:1307
+#: gnomemeeting.schemas.in.in.h:126 src/pref_window.cpp:1056
 msgid ""
 "The STUN server to use for STUN Support. STUN is a technic that permits to "
 "go through some types of NAT gateways."
-msgstr "STUN server za STUN podršku. STUN je tehnologija koja dopušta da se prođe kroz neke vrste maskiranja mreže."
+msgstr ""
+"STUN server za STUN podršku. STUN je tehnologija koja dopušta da se prođe "
+"kroz neke vrste maskiranja mreže."
 
-#: gnomemeeting.schemas.in.in.h:131
+#: gnomemeeting.schemas.in.in.h:127
 msgid ""
 "The audio plugin that will be used to detect the devices and manage them"
 msgstr ""
 "Dodatak za zvuk koji se koristi za prepoznavanje uređaja i njihovo upravljanje"
 
-#: gnomemeeting.schemas.in.in.h:132
+#: gnomemeeting.schemas.in.in.h:128
 msgid "The busy tone sound"
 msgstr "Zvuk zauzeća"
 
-#: gnomemeeting.schemas.in.in.h:133
+#: gnomemeeting.schemas.in.in.h:129
 msgid ""
 "The chosen sound will be played at the end of calls or calling somebody who "
 "is busy, if enabled"
@@ -668,19 +655,19 @@ msgstr ""
 "Ako je uključeno, izabrani zvuk će biti pušten po završetku poziva ili pri "
 "zvanju nekoga ko je zauzet"
 
-#: gnomemeeting.schemas.in.in.h:134
+#: gnomemeeting.schemas.in.in.h:130
 msgid "The chosen sound will be played on incoming calls, if enabled"
 msgstr "Ako je uključeno, izabrani zvuk će biti pušten na dolazeće pozive"
 
-#: gnomemeeting.schemas.in.in.h:135
+#: gnomemeeting.schemas.in.in.h:131
 msgid "The chosen sound will be played when calling somebody, if enabled"
 msgstr "Ako je uključeno, izabrani zvuk će biti pušten pri zvanju nekoga"
 
-#: gnomemeeting.schemas.in.in.h:136
+#: gnomemeeting.schemas.in.in.h:132
 msgid "The default video view"
 msgstr "Podrazumevani video pogled"
 
-#: gnomemeeting.schemas.in.in.h:137
+#: gnomemeeting.schemas.in.in.h:133
 msgid ""
 "The default video view (0: Local, 1: Remote, 2: Both incrusted, 3: Both with "
 "local video in a separate window, 4: Both)"
@@ -688,28 +675,24 @@ msgstr ""
 "Podešen video pogled (0: Lokalni, 1: Daljinski, 2: Oba presvućena, 3: Oba sa "
 "lokalnim videom u posebnom prozoru, 4: Oba)"
 
-#: gnomemeeting.schemas.in.in.h:138
+#: gnomemeeting.schemas.in.in.h:134
 msgid "The history of the last 100 missed calls"
 msgstr "Spisak poslednjih 100 propuštenih poziva"
 
-#: gnomemeeting.schemas.in.in.h:139
+#: gnomemeeting.schemas.in.in.h:135
 msgid "The history of the last 100 placed calls"
 msgstr "Spisak poslednjih 100 učinjenih poziva"
 
-#: gnomemeeting.schemas.in.in.h:140
+#: gnomemeeting.schemas.in.in.h:136
 msgid "The history of the last 100 received calls"
 msgstr "Spisak poslednjih 100 primljenih poziva"
 
-#: gnomemeeting.schemas.in.in.h:141 src/pref_window.cpp:976
+#: gnomemeeting.schemas.in.in.h:137 src/pref_window.cpp:755
 msgid "The host where calls should be forwarded to in the cases selected above"
 msgstr ""
 "Domaćin gde pozivi treba da budu preusmereni u slučajevima odabranim gore"
 
-#: gnomemeeting.schemas.in.in.h:142
-msgid "The image height for fullscreen"
-msgstr "Visina slike za ceo ekran"
-
-#: gnomemeeting.schemas.in.in.h:143 src/pref_window.cpp:1447
+#: gnomemeeting.schemas.in.in.h:138 src/pref_window.cpp:1195
 msgid ""
 "The image to transmit if \"Picture\" is selected as video plugin or if the "
 "opening of the device fails. Leave blank to use the default GnomeMeeting "
@@ -718,27 +701,19 @@ msgstr ""
 "Slika za prenos ako je „Slika“ izabrana kao video dodatak ili ako otvaranje "
 "uređaja ne uspe. Ostavite prazno za podrazumevani logotip Gnom Sastanka."
 
-#: gnomemeeting.schemas.in.in.h:144
-msgid "The image width for fullscreen"
-msgstr "Širina slike za ceo ekran"
-
-#: gnomemeeting.schemas.in.in.h:145
+#: gnomemeeting.schemas.in.in.h:139
 msgid "The incoming call sound"
 msgstr "Zvuk dolazećih poziva"
 
-#: gnomemeeting.schemas.in.in.h:146
-msgid "The list of called URLs"
-msgstr "Spisak zvanih URL-ova"
+#: gnomemeeting.schemas.in.in.h:140
+msgid "The local zoom value"
+msgstr "Lokalna vrednost uvećanja"
 
-#: gnomemeeting.schemas.in.in.h:147
-msgid "The list of groups"
-msgstr "Spisak grupa"
-
-#: gnomemeeting.schemas.in.in.h:148
+#: gnomemeeting.schemas.in.in.h:141
 msgid "The maximum jitter buffer size for audio reception (in ms)"
 msgstr "Maksimalna veličina jitter bafera za zvučni prijem (u ms)"
 
-#: gnomemeeting.schemas.in.in.h:149
+#: gnomemeeting.schemas.in.in.h:142
 msgid ""
 "The maximum video bandwidth in kbytes/s. The video quality and the number of "
 "transmitted frames per second will be dynamically adjusted above their "
@@ -749,11 +724,11 @@ msgstr ""
 "minimuma za vreme poziva pri pokušaju da se minimalizuje širina propusnog "
 "opsega na date vrednosti"
 
-#: gnomemeeting.schemas.in.in.h:150
+#: gnomemeeting.schemas.in.in.h:143
 msgid "The minimum jitter buffer size for audio reception (in ms)"
 msgstr "Minimalna veličina jitter bafera za zvučni prijem (u ms)"
 
-#: gnomemeeting.schemas.in.in.h:152
+#: gnomemeeting.schemas.in.in.h:145
 #, no-c-format
 msgid ""
 "The minimum transmitted video quality to keep when trying to minimize the "
@@ -764,7 +739,7 @@ msgstr ""
 "širine propusnog opsega: izaberite 100% za LAN za najbolji kvalitet, 1% daje "
 "najlošiji kvalitet"
 
-#: gnomemeeting.schemas.in.in.h:153 src/pref_window.cpp:1375
+#: gnomemeeting.schemas.in.in.h:146 src/pref_window.cpp:1125
 msgid ""
 "The output device type is the type of device connected to your Quicknet "
 "card. It can be either a POTS (Plain Old Telephone System) or a headset."
@@ -772,7 +747,7 @@ msgstr ""
 "Vrsta izlaznog uređaja predstavlja vrstu uređaja povezanog na vašu Quicknet "
 "karticu. Ona može biti ili SDTA (stari dobri telefonski aparat) ili slušalice"
 
-#: gnomemeeting.schemas.in.in.h:154
+#: gnomemeeting.schemas.in.in.h:147
 msgid ""
 "The port to listen to for incoming connections. GnomeMeeting needs to be "
 "restarted for the new value to take effect."
@@ -780,15 +755,15 @@ msgstr ""
 "Oslušavani port za dolazeće konekcije.  Gnom Sastanak treba da bude ponovo "
 "pokrenut da nove vrednosti budu uzete u obzir."
 
-#: gnomemeeting.schemas.in.in.h:155
+#: gnomemeeting.schemas.in.in.h:148
 msgid "The position of the local video window"
 msgstr "Položaj prozora lokalnog videa"
 
-#: gnomemeeting.schemas.in.in.h:156
+#: gnomemeeting.schemas.in.in.h:149
 msgid "The position of the remote video window"
 msgstr "Položaj prozora daljinskog videa"
 
-#: gnomemeeting.schemas.in.in.h:157
+#: gnomemeeting.schemas.in.in.h:150
 msgid ""
 "The prefix that will be used to save pictures of the conversation. That "
 "prefix is followed by the snapshot number."
@@ -796,7 +771,7 @@ msgstr ""
 "Prefiks koji će biti korišten da se snimi slika od razgovora.  Prefiks je "
 "prećen sa zahvaćenim brojem."
 
-#: gnomemeeting.schemas.in.in.h:158
+#: gnomemeeting.schemas.in.in.h:151
 msgid ""
 "The range of TCP ports beside the listen_port that GnomeMeeting will use for "
 "the H.245 channel. You can change the TCP port range if you are using IP "
@@ -812,7 +787,7 @@ msgstr ""
 "obzir.  Opseg porta nema efekat ako oba učesnika konferencije koriste H.245 "
 "tunelisanje."
 
-#: gnomemeeting.schemas.in.in.h:159
+#: gnomemeeting.schemas.in.in.h:152
 msgid ""
 "The range of UDP ports that GnomeMeeting will use for RTP (audio and video "
 "communication channels). You can change the UDP port range if you are using "
@@ -826,7 +801,7 @@ msgstr ""
 "rutera.  Gnom Sastanak treba da bude ponovo pokrenut da nove vrednosti budu "
 "uzete u obzir."
 
-#: gnomemeeting.schemas.in.in.h:160
+#: gnomemeeting.schemas.in.in.h:153
 msgid ""
 "The range of UDP ports that GnomeMeeting will use when registering to "
 "gatekeepers. You can change the UDP port range if you are using IP "
@@ -841,27 +816,31 @@ msgstr ""
 "treba da bude ponovo pokrenut da nove vrednosti budu uzete u obzir.  Opseg "
 "porta nema efekat ako niste registrovani na čuvaru kapije."
 
-#: gnomemeeting.schemas.in.in.h:161 src/pref_window.cpp:1250
+#: gnomemeeting.schemas.in.in.h:154 src/pref_window.cpp:1007
 msgid "The registering method to use"
 msgstr "Način prijavljuvanja koji se koristi"
 
-#: gnomemeeting.schemas.in.in.h:162
+#: gnomemeeting.schemas.in.in.h:155
+msgid "The remote zoom value"
+msgstr "Udaljena vrednost uvećanja"
+
+#: gnomemeeting.schemas.in.in.h:156
 msgid "The ring tone sound"
 msgstr "Zvuk zvonjenja"
 
-#: gnomemeeting.schemas.in.in.h:163
+#: gnomemeeting.schemas.in.in.h:157
 msgid "The save prefix"
 msgstr "Prefiks snimanja"
 
-#: gnomemeeting.schemas.in.in.h:164
+#: gnomemeeting.schemas.in.in.h:158
 msgid "The size of the local video window"
 msgstr "Veličina prozora lokalnog videa"
 
-#: gnomemeeting.schemas.in.in.h:165
+#: gnomemeeting.schemas.in.in.h:159
 msgid "The size of the remote video window"
 msgstr "Veličina prozora daljinskog videa"
 
-#: gnomemeeting.schemas.in.in.h:166
+#: gnomemeeting.schemas.in.in.h:160
 msgid ""
 "The sound that will be played at the end of calls or when calling somebody "
 "who is busy, if enabled"
@@ -869,34 +848,34 @@ msgstr ""
 "Ako je uključeno, zvuk koji će biti pušten po okončanju poziva ili pri zvanju "
 "nekoga ko je zauzet"
 
-#: gnomemeeting.schemas.in.in.h:167
+#: gnomemeeting.schemas.in.in.h:161
 msgid "The sound that will be played on incoming calls, if enabled"
 msgstr "Ako je uključeno, zvuk koji će biti pušten na dolazeće pozive"
 
-#: gnomemeeting.schemas.in.in.h:168
+#: gnomemeeting.schemas.in.in.h:162
 msgid "The sound that will be played when calling somebody, if enabled"
 msgstr "Ako je uključeno, zvuk koji će biti pušten pri zvanju nekoga"
 
-#: gnomemeeting.schemas.in.in.h:169
+#: gnomemeeting.schemas.in.in.h:163
 msgid "The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)"
 msgstr "Dva slova državne oznake za vašu državu (npr: YU, CA, UK, FR, DE,...)"
 
-#: gnomemeeting.schemas.in.in.h:170
+#: gnomemeeting.schemas.in.in.h:164
 msgid "The user directory server to register with"
 msgstr "Selektovani korisničkim direktorijum za registrovanje"
 
-#: gnomemeeting.schemas.in.in.h:171 src/pref_window.cpp:1440
+#: gnomemeeting.schemas.in.in.h:165 src/pref_window.cpp:1188
 msgid "The video channel number to use (to select camera, tv or other sources)"
 msgstr ""
 "Broj video kanala za upotrebu (za odabiranje kamere, TV i ostalih izvora)"
 
-#: gnomemeeting.schemas.in.in.h:172 src/pref_window.cpp:1425
+#: gnomemeeting.schemas.in.in.h:166 src/pref_window.cpp:1172
 msgid ""
 "The video plugin that will be used to detect the devices and manage them"
 msgstr ""
 "Dodatak za video koji se koristi za prepoznavanje uređaja i njihovo upravljanje"
 
-#: gnomemeeting.schemas.in.in.h:173
+#: gnomemeeting.schemas.in.in.h:167
 msgid ""
 "The way to react to incoming calls: 0 displays a popup, 1 automatically "
 "answers the call, 2 automatically rejects the call and 3 forwards the call "
@@ -906,19 +885,29 @@ msgstr ""
 "automatski odgovara na poziv, 2 automatski odbija poziv i 3 preusmerava "
 "poziv na adresu (ukoliko je data)"
 
-#: gnomemeeting.schemas.in.in.h:174
+#: gnomemeeting.schemas.in.in.h:168
 msgid "The zoom value"
 msgstr "Vrednost zuma"
 
-#: gnomemeeting.schemas.in.in.h:175
+#: gnomemeeting.schemas.in.in.h:169
+msgid ""
+"The zoom value to apply to images displayed in the local video window (can "
+"be 0.50, 1.00, or 2.00) for video"
+msgstr "Vrednost uvećanja slika koje se prikazuju u lokalnom prozoru za video (može biti 0.50, 1.00 ili 2.00)"
+
+#: gnomemeeting.schemas.in.in.h:170
 msgid ""
 "The zoom value to apply to images displayed in the main GUI (can be 0.50, "
-"1.00, or 2.00)"
-msgstr ""
-"Veličina zuma koji će se primeniti na prikazane slike u glavnom GUI (može "
-"biti 0.50, 1.00 ili 2.00)"
+"1.00, or 2.00) for video"
+msgstr "Vrednost uvećanja slika koje se prikazuju u glavnom prozoru (može biti 0.50, 1.00 ili 2.00)"
 
-#: gnomemeeting.schemas.in.in.h:176
+#: gnomemeeting.schemas.in.in.h:171
+msgid ""
+"The zoom value to apply to images displayed in the remote video window (can "
+"be 0.50, 1.00, or 2.00) for video"
+msgstr "Vrednost uvećanja slika koje se prikazuju u udaljenom prozoru za video (može biti 0.50, 1.00 ili 2.00)"
+
+#: gnomemeeting.schemas.in.in.h:172
 msgid ""
 "This enables H.245 Tunnelling mode. In H.245 Tunnelling mode H.245 messages "
 "are encapsulated into the the H.225 channel (port 1720). This saves one TCP "
@@ -932,11 +921,11 @@ msgstr ""
 "Koristeći oba brzi start i H.245 tunel može da sruši neke verzije Netmeeting-"
 "a."
 
-#: gnomemeeting.schemas.in.in.h:177 src/pref_window.cpp:1202
+#: gnomemeeting.schemas.in.in.h:173 src/pref_window.cpp:963
 msgid "This enables H.245 early in the setup"
 msgstr "Ovo uključuje H.245 rano u postavci"
 
-#: gnomemeeting.schemas.in.in.h:178
+#: gnomemeeting.schemas.in.in.h:174
 msgid ""
 "This enables IP checking from seconix.com and fills the IP in the public IP "
 "of the NAT/PAT gateway field of GnomeMeeting. The returned IP is only used "
@@ -948,7 +937,7 @@ msgstr ""
 "uključeno prevođenje mrežnih adresa. Ukoliko isključite proveru IP-a, moraćete "
 "da ručno unesete mrežu adresu vašeg izlaza u postavkama Gnom sastanka"
 
-#: gnomemeeting.schemas.in.in.h:179
+#: gnomemeeting.schemas.in.in.h:175
 msgid ""
 "This enables IP translation. IP translation is useful if GnomeMeeting is "
 "running behind a NAT/PAT router. You have to put the public IP of the router "
@@ -963,13 +952,15 @@ msgstr ""
 "prirpdno podržava H.323, možete to da isključite"
 
 # bug: s/technic/technology/
-#: gnomemeeting.schemas.in.in.h:180 src/pref_window.cpp:1305
+#: gnomemeeting.schemas.in.in.h:176 src/pref_window.cpp:1054
 msgid ""
 "This enables STUN Support. STUN is a technic that permits to go through some "
 "types of NAT gateways."
-msgstr "Ovo uključuje podršku za STUN. STUN je tehnologija koja omogućava prolaz kroz neke vrste mrežnih prevodioca adresa."
+msgstr ""
+"Ovo uključuje podršku za STUN. STUN je tehnologija koja omogućava prolaz kroz "
+"neke vrste mrežnih prevodioca adresa."
 
-#: gnomemeeting.schemas.in.in.h:181
+#: gnomemeeting.schemas.in.in.h:177
 msgid ""
 "This permits to set the mode for DTMFs sending. The values can be \"All"
 "\" (0), \"None\" (1), \"rfc2833\" (2), \"Signal\" (3) or \"String\" (4) "
@@ -981,23 +972,23 @@ msgstr ""
 "(podešeno je „All“).  Izbor neke druge vrednosti od „All“, „String“ ili "
 "„rfc2833“ isključuje tekstualni razgovor"
 
-#: gnomemeeting.schemas.in.in.h:182
+#: gnomemeeting.schemas.in.in.h:178
 msgid "Transmitted background blocks"
 msgstr "Prenosi blokove u pozadini"
 
-#: gnomemeeting.schemas.in.in.h:183
+#: gnomemeeting.schemas.in.in.h:179
 msgid "UDP port range"
 msgstr "Opseg UDP portova"
 
-#: gnomemeeting.schemas.in.in.h:184
+#: gnomemeeting.schemas.in.in.h:180
 msgid "Use the gateway"
 msgstr "Upotreba izlaza"
 
-#: gnomemeeting.schemas.in.in.h:185 src/pref_window.cpp:1273
+#: gnomemeeting.schemas.in.in.h:181 src/pref_window.cpp:1026
 msgid "Use the specified gateway to do calls"
 msgstr "Koristiti određeni izlaz za obavljanje razgovora"
 
-#: gnomemeeting.schemas.in.in.h:186
+#: gnomemeeting.schemas.in.in.h:182
 msgid ""
 "Use this option to ensure the above alias is used as the primary alias when "
 "registering with a gatekeeper. This may be required if your gatekeeper can "
@@ -1007,39 +998,39 @@ msgstr ""
 "nadimak pri prijavi čuvaru kapije. Ovo može biti obavezno ako vaš čuvar "
 "kapije ume da identifikuje samo pomoću prvog nadimka iz spiska"
 
-#: gnomemeeting.schemas.in.in.h:187
+#: gnomemeeting.schemas.in.in.h:183
 msgid "User directory"
 msgstr "Korisnički direktorijum"
 
-#: gnomemeeting.schemas.in.in.h:188
+#: gnomemeeting.schemas.in.in.h:184
 msgid "Version"
 msgstr "Verzija"
 
-#: gnomemeeting.schemas.in.in.h:189
+#: gnomemeeting.schemas.in.in.h:185
 msgid "Video channel"
 msgstr "Video kanal"
 
-#: gnomemeeting.schemas.in.in.h:190
+#: gnomemeeting.schemas.in.in.h:186
 msgid "Video format"
 msgstr "Video format"
 
-#: gnomemeeting.schemas.in.in.h:191
+#: gnomemeeting.schemas.in.in.h:187
 msgid "Video image"
 msgstr "Video slika"
 
-#: gnomemeeting.schemas.in.in.h:192
+#: gnomemeeting.schemas.in.in.h:188
 msgid "Video input device"
 msgstr "Ulazni video uređaj"
 
-#: gnomemeeting.schemas.in.in.h:193
+#: gnomemeeting.schemas.in.in.h:189
 msgid "Video plugin"
 msgstr "Dodatak za video"
 
-#: gnomemeeting.schemas.in.in.h:194
+#: gnomemeeting.schemas.in.in.h:190
 msgid "Video preview"
 msgstr "Pregled videa"
 
-#: gnomemeeting.schemas.in.in.h:195
+#: gnomemeeting.schemas.in.in.h:191
 msgid "Video size"
 msgstr "Veličina videa"
 
@@ -1064,38 +1055,6 @@ msgstr "Preveo"
 msgid "C_redits"
 msgstr "_Zasluge"
 
-#: lib/about/gnome-about.c:377
-msgid "Program name"
-msgstr "Ime programa"
-
-#: lib/about/gnome-about.c:378
-msgid "The name of the program"
-msgstr "Ime programa"
-
-#: lib/about/gnome-about.c:385
-msgid "Program version"
-msgstr "Izdanje programa"
-
-#: lib/about/gnome-about.c:386
-msgid "The version of the program"
-msgstr "Izdanje programa"
-
-#: lib/about/gnome-about.c:392
-msgid "Copyright string"
-msgstr "Tekst autorskih prava"
-
-#: lib/about/gnome-about.c:393
-msgid "Copyright information for the program"
-msgstr "Podaci o autorskim pravima za program"
-
-#: lib/about/gnome-about.c:400
-msgid "Comments string"
-msgstr "Tekst primedbe"
-
-#: lib/about/gnome-about.c:401
-msgid "Comments about the program"
-msgstr "Primedbe o programu"
-
 #: lib/about/gnome-about.c:407
 msgid "Authors"
 msgstr "Autori"
@@ -1104,22 +1063,6 @@ msgstr "Autori"
 msgid "List of authors of the programs"
 msgstr "Spisak autora programa"
 
-#: lib/about/gnome-about.c:410
-msgid "Author entry"
-msgstr "Unos autora"
-
-#: lib/about/gnome-about.c:411
-msgid "A single author entry"
-msgstr "Unos jednog autora"
-
-#: lib/about/gnome-about.c:418
-msgid "Documenters"
-msgstr "Dokumentovali"
-
-#: lib/about/gnome-about.c:419
-msgid "List of people documenting the program"
-msgstr "Spisak ljudi koji su dokumentovali program"
-
 #: lib/about/gnome-about.c:421
 msgid "Documenter entry"
 msgstr "Unos pisca dokumentacije"
@@ -1127,28 +1070,6 @@ msgstr "Unos pisca dokumentacije"
 #: lib/about/gnome-about.c:422
 msgid "A single documenter entry"
 msgstr "Unos jednog pisca dokumentacije"
-
-# bug: translator_credits should be translatable as well!
-#: lib/about/gnome-about.c:430
-msgid "Translator credits"
-msgstr ""
-"Dejan Matijević <dejan@ns.sympatico.ca>\n"
-"Danilo Šegan <danilo@prevod.org>\n"
-"\n"
-"Prevod.org — prevod na srpski jezik."
-
-#: lib/about/gnome-about.c:431
-msgid ""
-"Credits to the translators. This string should be marked as translatable"
-msgstr "Zasluge prevodioca. Ovaj tekst mora biti označen kao prevodiv."
-
-#: lib/about/gnome-about.c:438 lib/druid/gnome-druid-page-standard.c:135
-msgid "Logo"
-msgstr "Znak"
-
-#: lib/about/gnome-about.c:439
-msgid "A logo for the about box"
-msgstr "Znak za prozorče o programu"
 
 #: lib/about/gnome-about.c:518
 #, c-format
@@ -1167,6 +1088,10 @@ msgstr "Naslov"
 #: lib/druid/gnome-druid-page-standard.c:128
 msgid "Title of the druid"
 msgstr "Naslov pomoćnika"
+
+#: lib/druid/gnome-druid-page-standard.c:135
+msgid "Logo"
+msgstr "Znak"
 
 #: lib/druid/gnome-druid-page-standard.c:136
 msgid "Logo image"
@@ -1270,301 +1195,338 @@ msgstr ""
 "Dogodila se greška pri pozadinskom podešavanju.\n"
 "Neka od vaših podešavanja možda neće biti sačuvana."
 
-#: src/addressbook_window.cpp:612
+#: lib/stats_drawing_area.c:362
+#, c-format
+msgid "Total: %.2f MB"
+msgstr "Ukupno: %.2f MB"
+
+#: src/addressbook_window.cpp:747
 msgid "Contact collision"
 msgstr "Sudar kontakta"
 
-#: src/addressbook_window.cpp:614
+#: src/addressbook_window.cpp:749
 #, c-format
 msgid ""
 "Another contact with the same speed dial already exists in your address "
 "book:\n"
 "\n"
-"<b>Contact Name</b>: %s\n"
-"<b>Contact URL</b>: %s\n"
-"<b>Contact Speed Dial</b>: %s\n"
+"<b>Name</b>: %s\n"
+"<b>URL</b>: %s\n"
+"<b>Speed Dial</b>: %s\n"
 msgstr ""
-"Drugi kontakt sa istim brzim biranjem već postoji u vašem aresaru:\n"
+"Drugi kontakt sa istim brzim biranjem već postoji u vašem adresaru:\n"
 "\n"
-"<b>Ime kontakta</b>: %s\n"
-"<b>Adresa kontakta</b>: %s\n"
-"<b>Brzo biranje kontakta</b>: %s\n"
+"<b>Ime</b>: %s\n"
+"<b>Adresa</b>: %s\n"
+"<b>Brzo biranje</b>: %s\n"
 
-#: src/addressbook_window.cpp:614 src/addressbook_window.cpp:616
-#: src/druid.cpp:853 src/pref_window.cpp:1185
+#: src/addressbook_window.cpp:749 src/addressbook_window.cpp:751
+#: src/druid.cpp:1839 src/pref_window.cpp:948
 msgid "None"
 msgstr "Ništa"
 
-#: src/addressbook_window.cpp:616
+#: src/addressbook_window.cpp:751
 #, c-format
 msgid ""
 "Another contact with similar information already exists in your address "
 "book:\n"
 "\n"
-"<b>Contact Name</b>: %s\n"
-"<b>Contact URL</b>: %s\n"
-"<b>Contact Speed Dial</b>: %s\n"
+"<b>Name</b>: %s\n"
+"<b>URL</b>: %s\n"
+"<b>Speed Dial</b>: %s\n"
 "\n"
 "Do you still want to add the contact?"
 msgstr ""
-"Drugi kontakt sa sličnim podacima već postoji u vašem aresaru:\n"
+"Drugi kontakt sa sličnim podacima već postoji u vašem adresaru:\n"
 "\n"
-"<b>Ime kontakta</b>: %s\n"
-"<b>Adresa kontakta</b>: %s\n"
-"<b>Brzo biranje kontakta</b>: %s\n"
+"<b>Ime</b>: %s\n"
+"<b>Adresa</b>: %s\n"
+"<b>Brzo biranje</b>: %s\n"
 "\n"
 "Da li i dalje želite da dodate ovaj kontakt?"
 
 #  Translators: This is "S" as in "Status"
 #. Translators: This is "S" as in "Status"
-#: src/addressbook_window.cpp:774
+#: src/addressbook_window.cpp:919
 msgid "S"
 msgstr "S"
 
-#: src/addressbook_window.cpp:785 src/pref_window.cpp:445
+#: src/addressbook_window.cpp:930 src/pref_window.cpp:509
 msgid "Name"
 msgstr "Ime"
 
-#: src/addressbook_window.cpp:797
+#: src/addressbook_window.cpp:944
 msgid "URL"
 msgstr "Adresa (URL)"
 
-#: src/addressbook_window.cpp:823 src/calls_history_window.cpp:742
+#: src/addressbook_window.cpp:972 src/calls_history_window.cpp:705
 msgid "Software"
 msgstr "Programi"
 
-#: src/addressbook_window.cpp:836
+#: src/addressbook_window.cpp:986
 msgid "E-Mail"
 msgstr "E-pošta"
 
-#: src/addressbook_window.cpp:860
+#: src/addressbook_window.cpp:1012
 msgid "Categories"
 msgstr "Kategorije"
 
-#: src/addressbook_window.cpp:873
+#: src/addressbook_window.cpp:1026
 msgid "Speed Dial"
 msgstr "Brzo biranje"
 
-#: src/addressbook_window.cpp:1204 src/addressbook_window.cpp:1234
-#: src/addressbook_window.cpp:1729 src/calls_history_window.cpp:238
+#: src/addressbook_window.cpp:1059
+msgid "Find all contacts"
+msgstr "Traži sve kontakte"
+
+#: src/addressbook_window.cpp:1064
+msgid "Name contains"
+msgstr "Ime sadrži"
+
+#: src/addressbook_window.cpp:1068
+msgid "URL contains"
+msgstr "Adresa sadrži"
+
+#: src/addressbook_window.cpp:1074
+msgid "Belongs to category"
+msgstr "Pripada kategoriji"
+
+#: src/addressbook_window.cpp:1446 src/addressbook_window.cpp:1476
+#: src/addressbook_window.cpp:2215 src/calls_history_window.cpp:275
 msgid "C_all Contact"
 msgstr "_Kontakt lista"
 
-#: src/addressbook_window.cpp:1209 src/addressbook_window.cpp:1239
+#: src/addressbook_window.cpp:1451 src/addressbook_window.cpp:1481
 msgid "_Copy URL to clipboard"
 msgstr "U_množi adresu u spisak isečaka"
 
-#: src/addressbook_window.cpp:1216 src/addressbook_window.cpp:1715
+#: src/addressbook_window.cpp:1458 src/addressbook_window.cpp:1516
+#: src/addressbook_window.cpp:2201
 msgid "_Properties"
 msgstr "O_sobine"
 
-#: src/addressbook_window.cpp:1223 src/addressbook_window.cpp:1710
+#: src/addressbook_window.cpp:1465 src/addressbook_window.cpp:1523
+#: src/addressbook_window.cpp:2196
 msgid "_Delete"
 msgstr "O_briši"
 
-#: src/addressbook_window.cpp:1246 src/addressbook_window.cpp:1739
-#: src/calls_history_window.cpp:245
+#: src/addressbook_window.cpp:1488 src/addressbook_window.cpp:2225
+#: src/calls_history_window.cpp:282
 msgid "Add Contact to _Address Book"
 msgstr "Dodaj kontakt u adresar"
 
-#: src/addressbook_window.cpp:1674
+#: src/addressbook_window.cpp:1748
+#, c-format
+msgid "Error while fetching users list from %s"
+msgstr "Greška pri preuzimanju spiska korisnika sa %s"
+
+# bug: plural-forms
+#: src/addressbook_window.cpp:1752
+#, c-format
+msgid "Found %d user in %s"
+msgstr "Nađoh %d korisnika u %s"
+
+# bug: plural-forms
+#: src/addressbook_window.cpp:1753
+#, c-format
+msgid "Found %d users in %s"
+msgstr "Nađoh %d korisnika u %s"
+
+# bug: plural-forms
+#: src/addressbook_window.cpp:1756
+#, c-format
+msgid "Found %d user in %s for a total of %d users"
+msgstr "Nađoh %d korisnika u %s od ukupno %d korisnika"
+
+# bug: plural-forms
+#: src/addressbook_window.cpp:1756
+#, c-format
+msgid "Found %d users in %s for a total of %d users"
+msgstr "Nađoh %d korisnika u %s od ukupno %d korisnika"
+
+#: src/addressbook_window.cpp:2160
 msgid "Address Book"
 msgstr "Adresar"
 
-#: src/addressbook_window.cpp:1701
+#: src/addressbook_window.cpp:2187
 msgid "_File"
 msgstr "_Datoteka"
 
-#: src/addressbook_window.cpp:1703
+#: src/addressbook_window.cpp:2189
 msgid "New _Address Book"
 msgstr "Novi _adresar"
 
-#: src/addressbook_window.cpp:1722 src/menu.cpp:328
+#: src/addressbook_window.cpp:2208 src/main_window.cpp:999
 msgid "_Close"
 msgstr "_Zatvori"
 
-#: src/addressbook_window.cpp:1727
+#: src/addressbook_window.cpp:2213
 msgid "C_ontact"
 msgstr "Kontakt"
 
-#: src/addressbook_window.cpp:1735
+#: src/addressbook_window.cpp:2221
 msgid "New _Contact"
 msgstr "Novi kontakt"
 
-#: src/addressbook_window.cpp:1812
+#: src/addressbook_window.cpp:2298
 msgid "On LDAP servers"
 msgstr "Na LDAP serverima"
 
 #. Init the address book
-#: src/addressbook_window.cpp:1820 src/gnomemeeting.cpp:422
+#: src/addressbook_window.cpp:2306 src/gnomemeeting.cpp:399
 msgid "On This Computer"
 msgstr "Na ovom računaru"
 
-#: src/addressbook_window.cpp:1849
-msgid "Find all contacts"
-msgstr "Traži sve kontakte"
-
-#: src/addressbook_window.cpp:1854
-msgid "Name contains"
-msgstr "Ime sadrži"
-
-#: src/addressbook_window.cpp:1858
-msgid "URL contains"
-msgstr "Adresa sadrži"
-
-#: src/addressbook_window.cpp:1862
-msgid "Belongs to category"
-msgstr "Pripada kategoriji"
-
-#: src/addressbook_window.cpp:1992
+#: src/addressbook_window.cpp:2425
 msgid "Edit the Contact Information"
 msgstr "Uredi podatke kontakta"
 
-#: src/addressbook_window.cpp:2013 src/addressbook_window.cpp:2397
+#: src/addressbook_window.cpp:2446 src/addressbook_window.cpp:2903
 msgid "Name:"
 msgstr "Ime:"
 
-#: src/addressbook_window.cpp:2033
+#: src/addressbook_window.cpp:2466
 msgid "URL:"
 msgstr "Adresa (URL):"
 
-#: src/addressbook_window.cpp:2053
+#: src/addressbook_window.cpp:2486
 msgid "Email:"
 msgstr "E-pošta:"
 
-#: src/addressbook_window.cpp:2074
+#: src/addressbook_window.cpp:2507
 msgid "Speed Dial:"
 msgstr "Brzo biranje:"
 
-#: src/addressbook_window.cpp:2096
+#: src/addressbook_window.cpp:2529
 msgid "Categories:"
 msgstr "Kategorije:"
 
-#: src/addressbook_window.cpp:2121
+#: src/addressbook_window.cpp:2554
 msgid "Local Addressbook:"
 msgstr "Lokalni adresar:"
 
-#: src/addressbook_window.cpp:2272
+#: src/addressbook_window.cpp:2722 src/addressbook_window.cpp:3206
+msgid "Missing information"
+msgstr "Nedostaju podaci"
+
+#: src/addressbook_window.cpp:2722
+msgid ""
+"Please make sure to provide at least a full name or an URL for the contact."
+msgstr "Proverite da li ste uneli bar puno ime ili adresu kontakta."
+
+#: src/addressbook_window.cpp:2756
 #, c-format
 msgid "Are you sure you want to delete %s from %s?"
 msgstr "Da li ste sigurni da želite da uklonite %s iz %s?"
 
-#: src/addressbook_window.cpp:2380
+#: src/addressbook_window.cpp:2882
+msgid "Edit an address book"
+msgstr "Uredi adresar"
+
+#: src/addressbook_window.cpp:2883
 msgid "Add an address book"
 msgstr "Dodaj adresar"
 
-#: src/addressbook_window.cpp:2418
+#: src/addressbook_window.cpp:2928
 msgid "Type:"
 msgstr "Vrsta:"
 
-#: src/addressbook_window.cpp:2425
+#: src/addressbook_window.cpp:2935
 msgid "Local"
 msgstr "Lokalni"
 
-#: src/addressbook_window.cpp:2430
+#: src/addressbook_window.cpp:2940
 msgid "Remote LDAP"
 msgstr "Udaljeni LDAP"
 
-#: src/addressbook_window.cpp:2435
+#: src/addressbook_window.cpp:2945
 msgid "Remote ILS"
 msgstr "Udaljeni ILS"
 
-#: src/addressbook_window.cpp:2467
-msgid "Search Scope:"
-msgstr "Opseg pretrage:"
-
-#: src/addressbook_window.cpp:2474
-msgid "Subtree"
-msgstr "Podstablo"
-
-#: src/addressbook_window.cpp:2479
-msgid "One Level"
-msgstr "Jedan nivo"
-
-#: src/addressbook_window.cpp:2509
+#: src/addressbook_window.cpp:2978
 msgid "Hostname:"
 msgstr "Ime računara:"
 
-#: src/addressbook_window.cpp:2530
+#: src/addressbook_window.cpp:3001
 msgid "Port:"
 msgstr "Port:"
 
-#: src/addressbook_window.cpp:2553
+#: src/addressbook_window.cpp:3026
 msgid "Base DN:"
 msgstr "Osnovno ime domena:"
 
-#: src/addressbook_window.cpp:2574
+#: src/addressbook_window.cpp:3049
+msgid "Search Scope:"
+msgstr "Opseg pretrage:"
+
+#: src/addressbook_window.cpp:3056
+msgid "Subtree"
+msgstr "Podstablo"
+
+#: src/addressbook_window.cpp:3061
+msgid "One Level"
+msgstr "Jedan nivo"
+
+#: src/addressbook_window.cpp:3093
 msgid "Search Attribute:"
 msgstr "Pretraži atribut:"
 
-#: src/addressbook_window.cpp:2672
+#: src/addressbook_window.cpp:3206
+msgid "Please make sure to fill in all requested fields."
+msgstr "Proverite da li ste popunili sva obavezna polja."
+
+#: src/addressbook_window.cpp:3249
 #, c-format
 msgid "Are you sure you want to delete %s and all its contacts?"
 msgstr "Da li ste sigurni da želite da uklonite %s i sve njene kontakte?"
 
-#: src/callbacks.cpp:86
-msgid "_Retrieve Call"
-msgstr "Pov_ratiti poziv"
+#: src/bonobo_component.cpp:114
+msgid "Cannot run GnomeMeeting"
+msgstr "Ne mogu da pokrenem Gnom Sastanak"
 
-#: src/callbacks.cpp:99 src/menu.cpp:298
-msgid "_Hold Call"
-msgstr "_Zadrži poziv"
+#: src/bonobo_component.cpp:114
+msgid ""
+"GnomeMeeting is already running, if you want it to call a given callto or "
+"h323 URL, please use \"gnomemeeting -c URL\"."
+msgstr ""
+"Gnom Sastanak je već pokrenut, ako želite da uputi poziv na datu adresu, "
+"koristite „gnomemeeting -c ADRESA“."
 
-#: src/callbacks.cpp:128
-msgid "Transfer call to:"
-msgstr "Prosledi poziv do:"
+#: src/bonobo_component.cpp:167
+msgid ""
+"It appears that you do not have gnomemeeting.server installed in a valid "
+"location. Factory mode disabled.\n"
+msgstr ""
+"Izgleda da nemate gnomemeeting.server instaliran u ispravnoj lokaciji.  "
+"Fabrika mod isključen.\n"
 
-#: src/callbacks.cpp:129
-msgid "Transfer"
-msgstr "Preusmeri"
+#: src/bonobo_component.cpp:171
+msgid ""
+"Error registering GnomeMeeting with the activation service; factory mode "
+"disabled.\n"
+msgstr ""
+"Greška pri registrovanju Gnom Sastanka sa servisom za pokretanje.  Fabrika mod "
+"isključen.\n"
 
-#: src/callbacks.cpp:231 src/menu.cpp:308
-msgid "Suspend _Audio"
-msgstr "Obustavi zvuk"
+#: src/bonobo_component.cpp:211
+msgid "Failed to retrieve gnomemeeting server from activation server\n"
+msgstr "Nije uspeo da pozove gnomemeeting server od servera za pokretanje\n"
 
-#: src/callbacks.cpp:232
-msgid "Resume _Audio"
-msgstr "Nastavi zvuk"
-
-#: src/callbacks.cpp:233
-msgid "Audio transmission: suspended"
-msgstr "Zvućni prenos: obustavljen"
-
-#: src/callbacks.cpp:234
-msgid "Audio transmission: resumed"
-msgstr "Zvućni prenos: nastavljen"
-
-#: src/callbacks.cpp:245 src/menu.cpp:313
-msgid "Suspend _Video"
-msgstr "Obustavi video"
-
-#: src/callbacks.cpp:246
-msgid "Resume _Video"
-msgstr "Nastavi video"
-
-#: src/callbacks.cpp:247
-msgid "Video transmission: suspended"
-msgstr "Video prenos: obustavljen"
-
-#: src/callbacks.cpp:248
-msgid "Video transmission: resumed"
-msgstr "Video prenos: nastavljen"
-
-#: src/callbacks.cpp:385
+#: src/callbacks.cpp:119
 msgid "Code contributors:"
 msgstr "Doprineli programiranjem:"
 
-#: src/callbacks.cpp:397
+#: src/callbacks.cpp:131
 msgid "Artwork:"
 msgstr "Umetnićki rad:"
 
-#: src/callbacks.cpp:401
+#: src/callbacks.cpp:135
 msgid "Contributors:"
 msgstr "Saradnici:"
 
 #. Translators: Please write translator credits here, and
 #. * seperate names with \n
-#: src/callbacks.cpp:437
+#: src/callbacks.cpp:171
 msgid "translator_credits"
 msgstr ""
 "Dejan Matijević <dejan@ns.sympatico.ca>\n"
@@ -1574,7 +1536,7 @@ msgstr ""
 
 #. Translators: Please test to see if your translation
 #. * looks OK and fits within the box
-#: src/callbacks.cpp:448
+#: src/callbacks.cpp:182
 msgid ""
 "GnomeMeeting is full-featured H.323 compatible videoconferencing, VoIP and "
 "IP-Telephony application that allows you to make audio and video calls to "
@@ -1584,71 +1546,71 @@ msgstr ""
 "VoIP i Internet telefonijom, koji omogućava da činite zvučne i video pozive "
 "udaljenim korisnicima sa H.323 hardverom ili softverom."
 
-#: src/calls_history_window.cpp:648
+#: src/calls_history_window.cpp:614
 msgid "Received Calls"
 msgstr "Primljeni pozivi"
 
-#: src/calls_history_window.cpp:648
+#: src/calls_history_window.cpp:614
 msgid "Placed Calls"
 msgstr "Ostvareni pozivi"
 
-#: src/calls_history_window.cpp:648
-msgid "Unanswered Calls"
-msgstr "Neodgovoreni pozivi"
+#: src/calls_history_window.cpp:614
+msgid "Missed Calls"
+msgstr "Propušteni pozivi"
 
-#: src/calls_history_window.cpp:665 src/menu.cpp:479 src/menu.cpp:656
+#: src/calls_history_window.cpp:626 src/main_window.cpp:1137 src/tray.cpp:298
 msgid "Calls History"
 msgstr "Istorijat poziva"
 
-#: src/calls_history_window.cpp:706
+#: src/calls_history_window.cpp:669
 msgid "Date"
 msgstr "Datum"
 
-#: src/calls_history_window.cpp:714
+#: src/calls_history_window.cpp:677
 msgid "Remote User"
 msgstr "Daljinski korisnik"
 
-#: src/calls_history_window.cpp:723
+#: src/calls_history_window.cpp:686
 msgid "Call Duration"
 msgstr "Trajanje poziva"
 
-#: src/calls_history_window.cpp:733
+#: src/calls_history_window.cpp:696
 msgid "Call End Reason"
 msgstr "Razlog završetka razgovora"
 
 #. shouldn't happen...
-#: src/chat_window.cpp:249
+#: src/chat_window.cpp:240
 #, c-format
 msgid "---- Call begins at %s\n"
 msgstr "—— Poziv počinje u %s\n"
 
 #. prepare the message to be displayed
-#: src/chat_window.cpp:284
+#: src/chat_window.cpp:275
 #, c-format
 msgid "---- Call ends at %s\n"
 msgstr "—— Poziv se završava u %s\n"
 
-#: src/chat_window.cpp:421
+#: src/chat_window.cpp:408
 msgid "Open URI"
 msgstr "Otvori adresu"
 
-#: src/chat_window.cpp:424 src/chat_window.cpp:440
+#: src/chat_window.cpp:411 src/chat_window.cpp:427
 msgid "Copy Link Location"
 msgstr "Umnoži putanju veze"
 
-#: src/chat_window.cpp:436
+#: src/chat_window.cpp:423
 msgid "Connect to"
 msgstr "Poveži se sa"
 
-#: src/chat_window.cpp:438
+#: src/chat_window.cpp:425
 msgid "Add to Address Book"
 msgstr "Dodaj u adresar"
 
-#: src/chat_window.cpp:458
+#: src/chat_window.cpp:445
 msgid "Copy Equation"
 msgstr "Umnoži jednačinu"
 
-#: src/chat_window.cpp:473
+#: src/chat_window.cpp:460
 msgid "Send message:"
 msgstr "Pošalji poruku:"
 
@@ -1779,11 +1741,11 @@ msgstr ""
 "  --popravlja-ovlašćenja   popravlja ovlašćenja od GConf spremišta (pokrenuti "
 "kao administrator)"
 
-#: src/config.cpp:305 src/config.cpp:549
+#: src/config.cpp:230 src/config.cpp:491
 msgid "Changing this setting will only affect new calls"
 msgstr "Menjanje ovog podešavanja će se odraziti samo na nove pozive"
 
-#: src/config.cpp:306 src/config.cpp:550
+#: src/config.cpp:231 src/config.cpp:492
 msgid ""
 "You have changed a setting that doesn't permit to GnomeMeeting to apply the "
 "new change to the current call. Your new setting will only take effect for "
@@ -1793,51 +1755,51 @@ msgstr ""
 "promenu na trenutni poziv.  Vaše novo podešavanje će imati efekat pri "
 "sledećem pozivu."
 
-#: src/config.cpp:368
+#: src/config.cpp:301
 msgid "H.245 Tunneling disabled"
 msgstr "H.245 tunel isključen"
 
-#: src/config.cpp:369
+#: src/config.cpp:302
 msgid "H.245 Tunneling enabled"
 msgstr "H.245 tunel uključen"
 
-#: src/config.cpp:398
+#: src/config.cpp:333
 msgid "Early H.245 disabled"
 msgstr "Rani H.245 isključen"
 
-#: src/config.cpp:399
+#: src/config.cpp:334
 msgid "Early H.245 enabled"
 msgstr "Rani H.245 uključen"
 
-#: src/config.cpp:428
+#: src/config.cpp:365
 msgid "Fast Start disabled"
 msgstr "Brzi start isključen"
 
-#: src/config.cpp:429
+#: src/config.cpp:366
 msgid "Fast Start enabled"
 msgstr "Brzi start uključen"
 
-#: src/config.cpp:460
+#: src/config.cpp:398
 msgid "No gateway or proxy specified"
 msgstr "Nije naveden izlaz ili posrednik"
 
-#: src/config.cpp:460
+#: src/config.cpp:398
 msgid "You need to specify a host to use as gateway or proxy."
 msgstr "Morate navesti računar koji koristite za posrednika ili izlaz."
 
-#: src/config.cpp:608
+#: src/config.cpp:550
 msgid "Disabled silence detection"
 msgstr "Isključi pronalaženje tišine"
 
-#: src/config.cpp:614
+#: src/config.cpp:556
 msgid "Enabled silence detection"
 msgstr "Uključi pronalaženje tišine"
 
-#: src/config.cpp:1161
+#: src/config.cpp:1106
 msgid "Forward URL not specified"
 msgstr "Nije navedena adresa za preusmeravanje"
 
-#: src/config.cpp:1162
+#: src/config.cpp:1107
 msgid ""
 "You need to specify an URL where to forward calls in the call forwarding "
 "section of the preferences!\n"
@@ -1849,109 +1811,278 @@ msgstr ""
 "\n"
 "Isključuje preusmeravanje."
 
-#: src/config.cpp:1219
-msgid "STUN Server error"
-msgstr "Greška na STUN serveru"
-
-#: src/config.cpp:1219
-msgid "You have to specify a valid STUN server in order to use STUN support"
-msgstr "Morate navesti ispravan STUN server da biste koristi STUN podršku"
-
-#: src/connection.cpp:154
+#: src/connection.cpp:155
 #, c-format
 msgid "Opened codec %s for transmission"
 msgstr "Otvorio sam kodiranje %s za prenos"
 
-#: src/connection.cpp:157
+#: src/connection.cpp:158
 #, c-format
 msgid "Closed codec %s which was opened for transmission"
 msgstr "Zatvorio sam kodiranje %s koje je otvoreno radi prenosa"
 
-#: src/connection.cpp:161
+#: src/connection.cpp:162
 #, c-format
 msgid "Opened codec %s for reception"
 msgstr "Otvorio sam kodiranje %s za prijem"
 
-#: src/connection.cpp:164
+#: src/connection.cpp:165
 #, c-format
 msgid "Closed codec %s which was opened for reception"
 msgstr "Zatvorio sam kodiranje %s koje je otvoreno za prijem"
 
-#: src/connection.cpp:202
+#: src/connection.cpp:203
 #, c-format
 msgid "Failure opening %s for transmission, will try with next common codec"
 msgstr "Greška pri otvaranju %s za prenos, pokušaće sledeće zajedničko kodiranje"
 
-#: src/connection.cpp:203
+#: src/connection.cpp:204
 #, c-format
 msgid "Failure opening %s for reception, will try with next common codec"
 msgstr "Greška pri otvaranju %s za prijem, pokušaće sledeće zajedničko kodiranje"
 
-#: src/connection.cpp:316 src/connection.cpp:317 src/urlhandler.cpp:77
+#: src/connection.cpp:326 src/connection.cpp:327 src/urlhandler.cpp:77
 #: src/urlhandler.cpp:78
 msgid "Call transfer failed"
 msgstr "Neuspešano prebacivanje poziva"
 
-#: src/connection.cpp:316
+#: src/connection.cpp:326
 msgid ""
 "The remote user tried to transfer your call to another user, but it failed."
 msgstr ""
 "Daljinski korisnik je pokašao da prebaci vaš poziv do drugog korisnika, ali "
 "nije uspeo."
 
-#: src/druid.cpp:319 src/druid.cpp:726 src/druid.cpp:743 src/druid.cpp:798
-#: src/endpoint.cpp:1660 src/gnomemeeting.cpp:299 src/gnomemeeting.cpp:301
-#: src/gnomemeeting.cpp:303 src/sound_handling.cpp:558
-#: src/sound_handling.cpp:559 src/videograbber.cpp:311
-#: src/videograbber.cpp:574
+#: src/druid.cpp:602
+msgid ""
+"This is the GnomeMeeting general configuration druid. The following steps "
+"will set up GnomeMeeting by asking a few simple questions.\n"
+"\n"
+"Once you have completed these steps, you can always change them later by "
+"selecting Preferences in the Edit menu."
+msgstr ""
+"Ovo je Gnom Sastanakov opšti druid podešavač.  Sledeći koraci će podesiti "
+"Gnom Sastanak pitajući nekoliko jednostavnih pitanja.\n"
+"\n"
+"Jednom kada završite ove korake, kasnije uvek možete da ih promenite "
+"odabiranjem karakteristika u uredi meniju."
+
+#: src/druid.cpp:614
+#, c-format
+msgid "Configuration Druid - page 1/%d"
+msgstr "Pomoćnik za podešavanje — strana 1/%d"
+
+#: src/druid.cpp:656
+#, c-format
+msgid "Personal Information - page %d/%d"
+msgstr "Lični podaci — strana %d/%d"
+
+#. The user fields
+#: src/druid.cpp:669
+msgid "Please enter your first name and your surname:"
+msgstr "Unesite vaše ime i prezime:"
+
+#: src/druid.cpp:677
+msgid ""
+"Your first name and surname will be used when connecting to other VoIP and "
+"videoconferencing software."
+msgstr ""
+"Vaše ime i prezime će se koristiti pri povezivanju sa ostalim VoIP i "
+"konferencijskim programima."
+
+#: src/druid.cpp:722
+#, c-format
+msgid "Callto URL - page %d/%d"
+msgstr "Adresa za poziv — strana %d/%d"
+
+#: src/druid.cpp:733
+msgid "Please enter your e-mail address:"
+msgstr "Unesite adresu vaše e-pošte:"
+
+#: src/druid.cpp:741
+msgid ""
+"Your e-mail address is used when registering to the GnomeMeeting users "
+"directory. It is used to create a callto address permitting your contacts to "
+"easily call you wherever you are."
+msgstr ""
+"Adresa vaše e-pošte se koristi pri prijavljivanju u imenik korisnika Gnom "
+"sastanka. Koristi se za obrazovanje pozivnih adresa koje vam dozvoljavaju da "
+"vas vaši poznanici lako pozovu gde god da ste."
+
+#: src/druid.cpp:750
+msgid ""
+"I don't want to register to the GnomeMeeting users directory and get a "
+"callto address"
+msgstr ""
+"Ne želim da se prijavim u imenik korisnika Gnom sastanka i da dobijem "
+"pozivnu adresu"
+
+#: src/druid.cpp:799
+#, c-format
+msgid "Connection Type - page %d/%d"
+msgstr "Vrsta veze — strana %d/%d"
+
+#. The connection type
+#: src/druid.cpp:811
+msgid "Please choose your connection type:"
+msgstr "Izaberite vrstu vaše veze:"
+
+#: src/druid.cpp:819
+msgid ""
+"The connection type will permit determining the best quality settings that "
+"GnomeMeeting will use during calls. You can later change the settings "
+"individually in the preferences window."
+msgstr ""
+"Vrsta veze dozvoljava određivanje podešavanja sa najboljim kvalitetom koje će "
+"Gnom sastanak koristiti za pozive. Naknadno možete izmeniti pojedinačna "
+"podešavanja među postavkama."
+
+# bug: NAT = Network Address Translation?
+#: src/druid.cpp:857
+#, c-format
+msgid "NAT Type - page %d/%d"
+msgstr "Vrsta NAT-a — strana %d/%d"
+
+# bug: NAT = Network Address Translation
+#: src/druid.cpp:867
+msgid "Click here to detect your NAT Type:"
+msgstr "Kliknite ovde da otkrijete vrstu NAT-a koji koristite:"
+
+# bug: NAT = Network Address Translation
+#: src/druid.cpp:871
+msgid "Detect NAT Type"
+msgstr "Otkrij vrstu NAT-a"
+
+# bug: NAT = Network Address Translation
+# bug: s/will permit to assist you/will assist you/
+#: src/druid.cpp:875
+msgid ""
+"The NAT type detection will permit to assist you in configuring your NAT "
+"router to be able to do calls with GnomeMeeting."
+msgstr "Otkrivanje vrste NAT-a će vam pomoći da podesite vaš NAT usmerivač kako bi dopuštao pozive iz Gnom sastanka."
+
+#: src/druid.cpp:916
+#, c-format
+msgid "Audio Manager - page %d/%d"
+msgstr "Upravljanje zvukom — strana %d/%d"
+
+#. The Audio devices
+#: src/druid.cpp:928
+msgid "Please choose your audio manager:"
+msgstr "Izaberite upravljač vašim zvukom:"
+
+#: src/druid.cpp:936
+msgid ""
+"The audio manager is the plugin that will manage your audio devices, ALSA is "
+"probably the best choice when available."
+msgstr ""
+"Upravljač zvukom je dodatak koji barata vašim zvučnim uređajima, ALSA je "
+"sigurno najbolje rešenje ako je dostupna."
+
+#: src/druid.cpp:975
+#, c-format
+msgid "Audio Devices - page %d/%d"
+msgstr "Zvučni uređaj - strana %d/%d"
+
+#. The Audio devices
+#: src/druid.cpp:987
+msgid "Please choose the audio output device:"
+msgstr "Izaberite izlazni uređaj za zvuk:"
+
+#: src/druid.cpp:995
+msgid ""
+"The audio output device is the device managed by the audio manager that will "
+"be used to play audio."
+msgstr ""
+"Izlazni uređaj za zvuk je uređaj kojim barata upravljač zvukom, a koji se "
+"koristi za puštanje zvuka."
+
+#: src/druid.cpp:1005
+msgid "Please choose the audio input device:"
+msgstr "Izaberite ulazni uređaj za zvuk:"
+
+#: src/druid.cpp:1013
+msgid ""
+"The audio input device is the device managed by the audio manager that will "
+"be used to record your voice."
+msgstr ""
+"Ulazni uređaj za zvuk je uređaj kojim barata upravljač zvukom, a koji se "
+"koristi za snimanje vašeg glasa."
+
+#: src/druid.cpp:1026 src/druid.cpp:1160
+msgid "Test Settings"
+msgstr "Proba podešavanja"
+
+#: src/druid.cpp:1070
+#, c-format
+msgid "Video Manager - page %d/%d"
+msgstr "Upravljanje videom — strana %d/%d"
+
+#. The Audio devices
+#: src/druid.cpp:1082
+msgid "Please choose your video manager:"
+msgstr "Izaberite upravljača vašim videom:"
+
+#: src/druid.cpp:1090
+msgid ""
+"The video manager is the plugin that will manage your video devices, "
+"Video4Linux is the most common choice if you own a webcam."
+msgstr ""
+"Upravljač videom je dodatak koji barata vašim video uređajima, Video4Linuks "
+"je najčešći izbor ukoliko imate veb kameru."
+
+#: src/druid.cpp:1128
+#, c-format
+msgid "Video Devices - page %d/%d"
+msgstr "Video uređaji — strana %d/%d"
+
+#. The Video devices
+#: src/druid.cpp:1140
+msgid "Please choose the video input device:"
+msgstr "Izaberite ulazni uređaj za video:"
+
+#: src/druid.cpp:1148
+msgid ""
+"The video input device is the device managed by the video manager that will "
+"be used to capture video."
+msgstr ""
+"Ulazni uređaj za video je uređaj kojim barata upravljač videom, a koji se "
+"koristi za snimanje videa."
+
+#: src/druid.cpp:1196
+#, c-format
+msgid "Configuration complete - page %d/%d"
+msgstr "Konfiguracija kompetna - strana %d/%d"
+
+#: src/druid.cpp:1433 src/druid.cpp:1693 src/druid.cpp:1710 src/druid.cpp:1776
+#: src/endpoint.cpp:1730 src/gnomemeeting.cpp:253 src/gnomemeeting.cpp:255
+#: src/gnomemeeting.cpp:257 src/sound_handling.cpp:573
+#: src/sound_handling.cpp:574 src/videograbber.cpp:310
+#: src/videograbber.cpp:573
 msgid "No device found"
 msgstr "Nisam našao uređaj"
 
-#: src/druid.cpp:380
-msgid "Welcome to GnomeMeeting 1.00!"
-msgstr "Dobrodošli u Gnom Sastanak 1.00!"
-
-#: src/druid.cpp:380
-msgid ""
-"Congratulations, you have just successfully launched GnomeMeeting 1.00 for "
-"the first time.\n"
-"GnomeMeeting is the leading VoIP, videoconferencing and telephony software "
-"for Unix.\n"
-"\n"
-"Thanks to all of you who have helped us along the road to our golden 1.00 "
-"release!\n"
-"\n"
-"The GnomeMeeting Team."
-msgstr ""
-"Čestitamo, upravo ste po prvi put uspešno pokrenuli Gnom sastanak 1.00.\n"
-"Gnom sastanak je vodeći program za VoIP, video konferencije i telefoniju za "
-"Unikse.\n"
-"\n"
-"Hvala svima koji su pomogli na putu do našeg zlatnog izdanja 1.00!\n"
-"\n"
-"Tim Gnom sastanka."
-
-#: src/druid.cpp:614
+#: src/druid.cpp:1563
 msgid "56k Modem"
 msgstr "56k modem"
 
-#: src/druid.cpp:615
+#: src/druid.cpp:1564
 msgid "ISDN"
 msgstr "ISDN"
 
-#: src/druid.cpp:616
+#: src/druid.cpp:1565
 msgid "xDSL/Cable"
 msgstr "xDSL/Kabl"
 
-#: src/druid.cpp:617
+#: src/druid.cpp:1566
 msgid "T1/LAN"
 msgstr "T1/LAN"
 
-#: src/druid.cpp:618
+#: src/druid.cpp:1567
 msgid "Keep current settings"
 msgstr "Zadrži tekuća podešavanja"
 
-#: src/druid.cpp:853
+#: src/druid.cpp:1839
 #, c-format
 msgid ""
 "You have now finished the GnomeMeeting configuration. All the settings can "
@@ -1969,7 +2100,8 @@ msgid ""
 "Video input: %s\n"
 "Callto URL: %s\n"
 msgstr ""
-"Završili ste podešavanje Gnom sastanka.  Sva podešavanja se mogu promeniti u postavkama Gnom sastanka.  Uživajte!\n"
+"Završili ste podešavanje Gnom sastanka.  Sva podešavanja se mogu promeniti u "
+"postavkama Gnom sastanka.  Uživajte!\n"
 "\n"
 "\n"
 "Pregled podešavanja:\n"
@@ -1983,347 +2115,170 @@ msgstr ""
 "Ulaz videa:  %s\n"
 "Adresa za pozive:  %s\n"
 
-#: src/druid.cpp:872
-msgid ""
-"This is the GnomeMeeting general configuration druid. The following steps "
-"will set up GnomeMeeting by asking a few simple questions.\n"
-"\n"
-"Once you have completed these steps, you can always change them later by "
-"selecting Preferences in the Edit menu."
-msgstr ""
-"Ovo je Gnom Sastanakov opšti druid podešavač.  Sledeći koraci će podesiti "
-"Gnom Sastanak pitajući nekoliko jednostavnih pitanja.\n"
-"\n"
-"Jednom kada završite ove korake, kasnije uvek možete da ih promenite "
-"odabiranjem karakteristika u uredi meniju."
-
-#: src/druid.cpp:878
-#, c-format
-msgid "Configuration Druid - page 1/%d"
-msgstr "Pomoćnik za podešavanje — strana 1/%d"
-
-#: src/druid.cpp:914
-#, c-format
-msgid "Personal Information - page %d/%d"
-msgstr "Lični podaci — strana %d/%d"
-
-#. The user fields
-#: src/druid.cpp:927
-msgid "Please enter your first name and your surname:"
-msgstr "Unesite vaše ime i prezime:"
-
-#: src/druid.cpp:935
-msgid ""
-"Your first name and surname will be used when connecting to other VoIP and "
-"videoconferencing software."
-msgstr ""
-"Vaše ime i prezime će se koristiti pri povezivanju sa ostalim VoIP i "
-"konferencijskim programima."
-
-#: src/druid.cpp:974
-#, c-format
-msgid "Callto URL - page %d/%d"
-msgstr "Adresa za poziv — strana %d/%d"
-
-#: src/druid.cpp:985
-msgid "Please enter your e-mail address:"
-msgstr "Unesite adresu vaše e-pošte:"
-
-#: src/druid.cpp:993
-msgid ""
-"Your e-mail address is used when registering to the GnomeMeeting users "
-"directory. It is used to create a callto address permitting your contacts to "
-"easily call you wherever you are."
-msgstr ""
-"Adresa vaše e-pošte se koristi pri prijavljivanju u imenik korisnika Gnom "
-"sastanka. Koristi se za obrazovanje pozivnih adresa koje vam dozvoljavaju da "
-"vas vaši poznanici lako pozovu gde god da ste."
-
-#: src/druid.cpp:1002
-msgid ""
-"I don't want to register to the GnomeMeeting users directory and get a "
-"callto address"
-msgstr ""
-"Ne želim da se prijavim u imenik korisnika Gnom sastanka i da dobijem "
-"pozivnu adresu"
-
-#: src/druid.cpp:1044
-#, c-format
-msgid "Connection Type - page %d/%d"
-msgstr "Vrsta veze — strana %d/%d"
-
-#. The connection type
-#: src/druid.cpp:1056
-msgid "Please choose your connection type:"
-msgstr "Izaberite vrstu vaše veze:"
-
-#: src/druid.cpp:1064
-msgid ""
-"The connection type will permit determining the best quality settings that "
-"GnomeMeeting will use during calls. You can later change the settings "
-"individually in the preferences window."
-msgstr ""
-"Vrsta veze dozvoljava određivanje podešavanja sa najboljim kvalitetom koje će "
-"Gnom sastanak koristiti za pozive. Naknadno možete izmeniti pojedinačna "
-"podešavanja među postavkama."
-
-#: src/druid.cpp:1096
-#, c-format
-msgid "Audio Manager - page %d/%d"
-msgstr "Upravljanje zvukom — strana %d/%d"
-
-#. The Audio devices
-#: src/druid.cpp:1108
-msgid "Please choose your audio manager:"
-msgstr "Izaberite upravljač vašim zvukom:"
-
-#: src/druid.cpp:1116
-msgid ""
-"The audio manager is the plugin that will manage your audio devices, ALSA is "
-"probably the best choice when available."
-msgstr ""
-"Upravljač zvukom je dodatak koji barata vašim zvučnim uređajima, ALSA je "
-"sigurno najbolje rešenje ako je dostupna."
-
-#: src/druid.cpp:1150
-#, c-format
-msgid "Audio Devices - page %d/%d"
-msgstr "Zvučni uređaj - strana %d/%d"
-
-#. The Audio devices
-#: src/druid.cpp:1162
-msgid "Please choose the audio output device:"
-msgstr "Izaberite izlazni uređaj za zvuk:"
-
-#: src/druid.cpp:1170
-msgid ""
-"The audio output device is the device managed by the audio manager that will "
-"be used to play audio."
-msgstr ""
-"Izlazni uređaj za zvuk je uređaj kojim barata upravljač zvukom, a koji se "
-"koristi za puštanje zvuka."
-
-#: src/druid.cpp:1180
-msgid "Please choose the audio input device:"
-msgstr "Izaberite ulazni uređaj za zvuk:"
-
-#: src/druid.cpp:1188
-msgid ""
-"The audio input device is the device managed by the audio manager that will "
-"be used to record your voice."
-msgstr ""
-"Ulazni uređaj za zvuk je uređaj kojim barata upravljač zvukom, a koji se "
-"koristi za snimanje vašeg glasa."
-
-#: src/druid.cpp:1201 src/druid.cpp:1325
-msgid "Test Settings"
-msgstr "Proba podešavanja"
-
-#: src/druid.cpp:1240
-#, c-format
-msgid "Video Manager - page %d/%d"
-msgstr "Upravljanje videom — strana %d/%d"
-
-#. The Audio devices
-#: src/druid.cpp:1252
-msgid "Please choose your video manager:"
-msgstr "Izaberite upravljača vašim videom:"
-
-#: src/druid.cpp:1260
-msgid ""
-"The video manager is the plugin that will manage your video devices, "
-"Video4Linux is the most common choice if you own a webcam."
-msgstr ""
-"Upravljač videom je dodatak koji barata vašim video uređajima, Video4Linuks "
-"je najčešći izbor ukoliko imate veb kameru."
-
-#: src/druid.cpp:1293
-#, c-format
-msgid "Video Devices - page %d/%d"
-msgstr "Video uređaji — strana %d/%d"
-
-#. The Video devices
-#: src/druid.cpp:1305
-msgid "Please choose the video input device:"
-msgstr "Izaberite ulazni uređaj za video:"
-
-#: src/druid.cpp:1313
-msgid ""
-"The video input device is the device managed by the video manager that will "
-"be used to capture video."
-msgstr ""
-"Ulazni uređaj za video je uređaj kojim barata upravljač videom, a koji se "
-"koristi za snimanje videa."
-
-#: src/druid.cpp:1352
-#, c-format
-msgid "Configuration complete - page %d/%d"
-msgstr "Konfiguracija kompetna - strana %d/%d"
-
-#: src/druid.cpp:1379
+#: src/druid.cpp:1881
 msgid "First Time Configuration Druid"
 msgstr "Konfiguracija Druida prvi put"
 
 #. Update the log and status bar
-#: src/endpoint.cpp:706
+#: src/endpoint.cpp:742
 #, c-format
 msgid "Call from %s"
 msgstr "Poziv od %s"
 
-#: src/endpoint.cpp:718
+#: src/endpoint.cpp:754
 #, c-format
 msgid "Forwarding call from %s to %s (Forward all calls)"
 msgstr "Preusmeravanje poziva od %s do %s (Preusmeri sve pozive)"
 
 #  there is no forwarding, so reject the call
 #. there is no forwarding, so reject the call
-#: src/endpoint.cpp:725 src/endpoint.cpp:746
+#: src/endpoint.cpp:761 src/endpoint.cpp:782
 #, c-format
 msgid "Rejecting call from %s (Busy)"
 msgstr "Odbijam poziv od %s (zauzeto)"
 
-#: src/endpoint.cpp:737
+#: src/endpoint.cpp:773
 #, c-format
 msgid "Forwarding call from %s to %s (Busy)"
 msgstr "Preusmeravanje poziva od %s do %s (Zauzeto)"
 
-#: src/endpoint.cpp:755
+#: src/endpoint.cpp:791
 #, c-format
 msgid "Accepting call from %s (Free For Chat)"
 msgstr "Prihvatam poziv od %s (slobodan za ćaskanje)"
 
-#: src/endpoint.cpp:780
+#: src/endpoint.cpp:816
 msgid "Call rejected"
 msgstr "Poziv odbijen"
 
-#: src/endpoint.cpp:789 src/endpoint.cpp:1160 src/endpoint.cpp:2102
+#: src/endpoint.cpp:825 src/endpoint.cpp:1220 src/endpoint.cpp:2153
 msgid "Call forwarded"
 msgstr "Poziv preusmeren"
 
-#: src/endpoint.cpp:801
+#: src/endpoint.cpp:837
 msgid "Call automatically answered"
 msgstr "Automatski odgovoreno na poziv"
 
-#: src/endpoint.cpp:871
+#: src/endpoint.cpp:921
 #, c-format
 msgid "Forwarding call to %s"
 msgstr "Prosleđuje poziv za %s"
 
-#: src/endpoint.cpp:882
+#: src/endpoint.cpp:932
 #, c-format
 msgid "Error while forwarding call to %s"
 msgstr "Greška pri prosleđivanju poziva za %s"
 
-#: src/endpoint.cpp:885
+#: src/endpoint.cpp:935
 msgid "There was an error when forwarding the call to the given host."
 msgstr "Došlo je do greške pri prosleđivanju poziva na dati računar."
 
-#: src/endpoint.cpp:935
+#: src/endpoint.cpp:1025
 msgid "Connected"
 msgstr "Veza uspostavljena"
 
-#: src/endpoint.cpp:937
+#: src/endpoint.cpp:1027
 #, c-format
 msgid "Connected with %s using %s"
 msgstr "Konektovan sa %s koristeći %s"
 
-#: src/endpoint.cpp:1124
+#: src/endpoint.cpp:1184
 msgid "Local user cleared the call"
 msgstr "Lokalani korisnik je poništio poziv"
 
-#: src/endpoint.cpp:1127
+#: src/endpoint.cpp:1187
 msgid "Remote user cleared the call"
 msgstr "Daljinski korisnik je poništio poziv"
 
-#: src/endpoint.cpp:1130
+#: src/endpoint.cpp:1190
 msgid "Remote user did not accept the call"
 msgstr "Daljinski korisnik nije prihvatio poziv"
 
-#: src/endpoint.cpp:1133 src/endpoint.cpp:1136
+#: src/endpoint.cpp:1193 src/endpoint.cpp:1196
 msgid "Local user did not accept the call"
 msgstr "Lokalni korisnik nije prihvatio poziv"
 
-#: src/endpoint.cpp:1139
+#: src/endpoint.cpp:1199
 msgid "The Gatekeeper cleared the call"
 msgstr "Čuvar kapije je poništio poziv"
 
-#: src/endpoint.cpp:1142
+#: src/endpoint.cpp:1202
 msgid "Call not answered in the required time"
 msgstr "Na poziv nije odgovoreno u zahtevanom vremenu"
 
-#: src/endpoint.cpp:1145
+#: src/endpoint.cpp:1205
 msgid "Remote user has stopped calling"
 msgstr "Daljinski korisnik je zaustavio poziv"
 
-#: src/endpoint.cpp:1148
+#: src/endpoint.cpp:1208
 msgid "Abnormal call termination"
 msgstr "Nenormalan prekid poziva"
 
-#: src/endpoint.cpp:1151
+#: src/endpoint.cpp:1211
 msgid "Could not connect to remote host"
 msgstr "Ne može se povezati na daljinskog domaćina"
 
-#: src/endpoint.cpp:1154
+#: src/endpoint.cpp:1214
 msgid "Insufficient bandwidth"
 msgstr "Nedovoljna širina propusnog opsega"
 
-#: src/endpoint.cpp:1157
+#: src/endpoint.cpp:1217
 msgid "No common codec"
 msgstr "Neuobičajen kodeks"
 
-#: src/endpoint.cpp:1163
+#: src/endpoint.cpp:1223
 msgid "Security check Failed"
 msgstr "Neuspešna sigurnosna provera"
 
-#: src/endpoint.cpp:1166
+#: src/endpoint.cpp:1226
 msgid "Local user is busy"
 msgstr "Lokalni korisnik je zauzet"
 
-#: src/endpoint.cpp:1169
+#: src/endpoint.cpp:1229
 msgid "Remote user is busy"
 msgstr "Daljinski korisnik je zauzet"
 
-#: src/endpoint.cpp:1172 src/endpoint.cpp:1175
+#: src/endpoint.cpp:1232 src/endpoint.cpp:1235
 msgid "Congested link to remote party"
 msgstr "Prepuna veza do daljinske strane"
 
-#: src/endpoint.cpp:1178 src/endpoint.cpp:1181
+#: src/endpoint.cpp:1238 src/endpoint.cpp:1241
 msgid "Remote user is unreachable"
 msgstr "Daljinski korisnik je nedostižan"
 
-#: src/endpoint.cpp:1184
+#: src/endpoint.cpp:1244
 msgid "Remote host is offline"
 msgstr "Daljinski korisnik nije priključen"
 
-#: src/endpoint.cpp:1187
+#: src/endpoint.cpp:1247
 msgid "Temporary failure"
 msgstr "Privremena greška"
 
-#: src/endpoint.cpp:1190 src/urlhandler.cpp:392 src/urlhandler.cpp:399
+#: src/endpoint.cpp:1250 src/urlhandler.cpp:469 src/urlhandler.cpp:475
 msgid "User not found"
 msgstr "Korisnik nije pronađen"
 
-#: src/endpoint.cpp:1194
+#: src/endpoint.cpp:1254
 msgid "Call completed"
 msgstr "Poziv završen"
 
-#: src/endpoint.cpp:1289 src/main_window.cpp:1334
-msgid ""
-"Lost packets:\n"
-"Late packets:\n"
-"Round-trip delay:\n"
-"Jitter buffer:"
-msgstr ""
-"Izgubljeni paketi:\n"
-"Kasni paketi:\n"
-"Trajanje povratnog puta:\n"
-"Jitter bafer:"
+# bug: plural-forms
+#: src/endpoint.cpp:1277
+#, c-format
+msgid "Missed %d call"
+msgstr "Propušten %d poziv"
 
-#: src/endpoint.cpp:1511
+# bug: plural-forms
+#: src/endpoint.cpp:1278
+#, c-format
+msgid "Missed %d calls"
+msgstr "Propušten %d poziva"
+
+#: src/endpoint.cpp:1573
 msgid "Error while starting the listener"
 msgstr "Greška pri pokretanju slušača"
 
-#: src/endpoint.cpp:1511
+#: src/endpoint.cpp:1573
 msgid ""
 "You will not be able to receive incoming calls. Please check that no other "
 "program is already running on the port used by GnomeMeeting."
@@ -2331,25 +2286,25 @@ msgstr ""
 "Nećete moći da primate pozive.  Proverite da neki drugi program nije "
 "trenutno pokrenut na portu koji koristi Gnom Sastanak."
 
-#: src/endpoint.cpp:1646
+#: src/endpoint.cpp:1716
 msgid "Attaching lid hardware to codec"
 msgstr "Zakačiti lid hardware na kodeks"
 
-#: src/endpoint.cpp:1680
+#: src/endpoint.cpp:1750
 #, c-format
 msgid "Opened %s for recording with plugin %s"
 msgstr "Otvorio sam %s radi snimanja pomoću dodatka %s"
 
-#: src/endpoint.cpp:1681
+#: src/endpoint.cpp:1751
 #, c-format
 msgid "Opened %s for playing with plugin %s"
 msgstr "Otvorio sam %s radi puštanja pomoću dodatka %s"
 
-#: src/endpoint.cpp:1717
+#: src/endpoint.cpp:1787
 msgid "Could not open audio channel for audio transmission"
 msgstr "Ne može da otvori zvučni kanal za zvučni prenos"
 
-#: src/endpoint.cpp:1717
+#: src/endpoint.cpp:1787
 msgid ""
 "An error occured while trying to record from the soundcard for the audio "
 "transmission. Please check that your soundcard is not busy and that your "
@@ -2361,11 +2316,11 @@ msgstr ""
 "podržava full-duplex.\n"
 "Zvučni prenos isključen."
 
-#: src/endpoint.cpp:1722
+#: src/endpoint.cpp:1792
 msgid "Could not open audio channel for audio reception"
 msgstr "Ne može da otvori zvučni kanal za zvučni prijem"
 
-#: src/endpoint.cpp:1722
+#: src/endpoint.cpp:1792
 msgid ""
 "An error occured while trying to play audio to the soundcard for the audio "
 "reception. Please check that your soundcard is not busy and that your driver "
@@ -2377,12 +2332,643 @@ msgstr ""
 "vaš drajver podržava full-duplex.\n"
 "Zvučni prijem isključen."
 
-#: src/endpoint.cpp:1934
+#: src/endpoint.cpp:1982
 #, c-format
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "%.2ld:%.2ld:%.2ld  Z:%.2f/%.2f   V:%.2f/%.2f"
 
-#: src/endpoint.cpp:1976
+#: src/endpoint.cpp:2150
+#, c-format
+msgid "Forwarding Call to %s (No Answer)"
+msgstr "Preusmeravanje poziva na %s (Ne odgovaranje)"
+
+#: src/gatekeeper.cpp:133
+#, c-format
+msgid "Unregistered from gatekeeper %s"
+msgstr "Neregistrovan od čuvara kapije %s"
+
+#: src/gatekeeper.cpp:148
+msgid "Invalid gatekeeper hostname"
+msgstr "Neispravno ime čuvara kapije domaćina"
+
+#: src/gatekeeper.cpp:148
+msgid "Please provide a hostname to use for the gatekeeper."
+msgstr "Obezbedite ime domaćina za upotrebu čuvara kapije."
+
+#: src/gatekeeper.cpp:156
+msgid "Invalid gatekeeper ID"
+msgstr "Neispravan ID čuvara kapije "
+
+#: src/gatekeeper.cpp:156
+msgid "Please provide a valid ID for the gatekeeper."
+msgstr "Obezbedite ispravan IB za čuvara kapije."
+
+#: src/gatekeeper.cpp:203
+msgid ""
+"Another user already exists with the same alias, please use another alias."
+msgstr "Već postoji drugi korisnik sa istim nadimkom, uzmite drugi nadimak."
+
+#: src/gatekeeper.cpp:206
+msgid ""
+"You are not allowed to register to the gatekeeper. Please check your login, "
+"password and firewall."
+msgstr ""
+"Nije vam dozvoljeno registrovanje sa čuvarem kapije.  Proverite vaše ime, "
+"lozinku i vatreni zid."
+
+#: src/gatekeeper.cpp:209
+msgid "There was a transport error."
+msgstr "Dogodila se greška prilikom transporta."
+
+#: src/gatekeeper.cpp:212 src/gatekeeper.cpp:217
+msgid "No gatekeeper corresponding to your options has been found."
+msgstr "Nijedan čuvar kapije nije nađen prateći vaše opcije."
+
+#: src/gatekeeper.cpp:219
+msgid "Error while registering with gatekeeper"
+msgstr "Greška pri registrovanju sa čuvarem kapije"
+
+#: src/gatekeeper.cpp:234
+#, c-format
+msgid "Gatekeeper set to %s"
+msgstr "Čuvar kapije podešen na %s"
+
+#: src/gnomemeeting.cpp:86
+msgid "Notification area not detected"
+msgstr "Prostor za napomene nije detektovan"
+
+#: src/gnomemeeting.cpp:86
+msgid ""
+"You have chosen to start GnomeMeeting hidden, however the notification area "
+"is not present in your panel, GnomeMeeting can thus not start hidden."
+msgstr ""
+"Vi ste izabrali da pokrenete Gnom Sastanak sakriven, ali prostor za napomene "
+"nije prisutan na vašem panelu, zato Gnom Sastanak nemože da se pokrene "
+"sakriven."
+
+#: src/gnomemeeting.cpp:149
+msgid "Answering incoming call"
+msgstr "Odgovaranje na dolazeći poziv"
+
+#: src/gnomemeeting.cpp:171
+msgid "Trying to stop calling"
+msgstr "Pokušavanje zaustavljanja poziva"
+
+#: src/gnomemeeting.cpp:180
+msgid "Stopping current call"
+msgstr "Zaustavljanje trenutnog poziva"
+
+#: src/gnomemeeting.cpp:186
+msgid "Refusing Incoming call"
+msgstr "Odbacivanje dolazećeg poziva"
+
+#: src/gnomemeeting.cpp:399
+msgid "Personal"
+msgstr "Lični"
+
+#: src/gnomemeeting.cpp:455
+#, c-format
+msgid "Started GnomeMeeting V%d.%d.%d for %s\n"
+msgstr "Pokrenut Gnom Sastanak V%d.%d.%d za %s\n"
+
+#: src/ils.cpp:101
+msgid "Invalid parameters"
+msgstr "Netačni parametri"
+
+#: src/ils.cpp:101
+msgid ""
+"Please provide your first name and e-mail in the Personal Data section in "
+"order to be able to register to the users directory."
+msgstr ""
+"Unesite vaše ime i e-poštu u odeljku ličnih podataka kako bi mogli da se "
+"prijavite u direktorijum korisnika."
+
+#: src/ils.cpp:140
+msgid "Invalid users directory"
+msgstr "Neispravan direktorijum korisnika"
+
+#: src/ils.cpp:140
+msgid "Operation impossible since there is no users directory specified."
+msgstr "Radnja je nemoguća zato što nije određen direktorijum korisnika."
+
+#: src/ils.cpp:226
+msgid "Failed to parse XML file"
+msgstr "Nije uspeo da obradi XML datoteku"
+
+#: src/ils.cpp:226
+msgid ""
+"There was an error while parsing the XML file. Please make sure that it is "
+"correctly installed in your system."
+msgstr ""
+"Dogodila se greška prilikom reščlanjavanja XML datoteke.  Uverite se da je "
+"pravilno instaliran na vaš sistem."
+
+#: src/ils.cpp:237
+msgid "Bad information"
+msgstr "Loši podaci"
+
+#: src/ils.cpp:237
+#, c-format
+msgid "Bad LDAP information from XML file: %s."
+msgstr "Loši LDAP podaci iz XML datoteke: %s."
+
+#: src/ils.cpp:246 src/ils.cpp:256 src/ils.cpp:265
+msgid "Cannot contact the users directory"
+msgstr "Ne može da kontaktira korisnički direktorijum"
+
+#: src/ils.cpp:246
+#, c-format
+msgid ""
+"Failed to contact the users directory %s:%d. The directory is probably "
+"currently overloaded, please try again later."
+msgstr ""
+"Nisam uspeo da se povežem sa korisničkim imenikom %s:%d. Imenik je verovatno "
+"sada preopterećen, pokušajte kasnije."
+
+#: src/ils.cpp:256
+msgid "Failed to set a time limit on operations."
+msgstr "Nije uspeo da podesi vremenski limit na radnje."
+
+#: src/ils.cpp:265
+#, c-format
+msgid "Failed to bind to users directory: %s."
+msgstr "Ne mogu da se vežem za direktorijum korisnika: %s."
+
+#: src/ils.cpp:289
+#, c-format
+msgid "Updated information on the users directory %s."
+msgstr "Osveženi podaci o direktorijumu korisnika %s."
+
+#: src/ils.cpp:293
+#, c-format
+msgid "Unregistered from the users directory %s."
+msgstr "Odjavljen iz direktorijuma korisnika %s."
+
+#: src/ils.cpp:315
+#, c-format
+msgid "Error while registering to %s"
+msgstr "Greška pri prijavi u %s"
+
+#: src/lid.cpp:118
+#, c-format
+msgid "Opened Quicknet device %s"
+msgstr "Otvoren Quicknet uređaj %s"
+
+#: src/lid.cpp:141
+msgid "Error while opening the Quicknet device."
+msgstr "Greška pri otvaranju Quicknet uređaja."
+
+#: src/lid.cpp:141
+msgid ""
+"Please check that your driver is correctly installed and that the device is "
+"working correctly."
+msgstr ""
+"Proverite da li je vaš drajver pravilno instaliran i da li uređaj radi "
+"ispravno."
+
+#: src/lid.cpp:170
+#, c-format
+msgid "Closed Quicknet device %s"
+msgstr "Zatvoren Quicknet uređaj %s"
+
+#: src/lid.cpp:265 src/lid.cpp:266
+msgid "Phone is off hook"
+msgstr "Telefon iskopčan"
+
+#: src/lid.cpp:304 src/lid.cpp:305
+msgid "Phone is on hook"
+msgstr "Telefon ukopčan"
+
+#: src/log_window.cpp:117 src/main_window.cpp:1132
+msgid "General History"
+msgstr "Opšti istorijat"
+
+#: src/main_window.cpp:698
+msgid ""
+"Enter an URL to call on the left, and click on this button to connect to the "
+"given URL"
+msgstr ""
+"Unesite adresu koju pozivate levo, i kliknite na ovo dugme da se povežete sa "
+"njom"
+
+#: src/main_window.cpp:744
+msgid "Open text chat"
+msgstr "Otvori tekstualni razgovor"
+
+#: src/main_window.cpp:768
+msgid "Open control panel"
+msgstr "Otvori upravljački panel"
+
+#: src/main_window.cpp:787
+msgid "Open address book"
+msgstr "Otvori adresar"
+
+#: src/main_window.cpp:808
+msgid "Display images from your camera device"
+msgstr "Prikaži slike sa vaše kamere"
+
+#: src/main_window.cpp:834
+msgid ""
+"Audio transmission status. During a call, click here to suspend or resume "
+"the audio transmission."
+msgstr ""
+"Status zvučnog prenosa.  Za vreme poziva, kliknite ovde da zaustavite ili "
+"nastavite zvučni prenos."
+
+#: src/main_window.cpp:857
+msgid ""
+"Video transmission status. During a call, click here to suspend or resume "
+"the video transmission."
+msgstr ""
+"Status video prenosa.  Za vreme poziva, kliknite ovde da zaustavite ili "
+"nastavite video prenos."
+
+#: src/main_window.cpp:926
+msgid "C_all"
+msgstr "Poziv"
+
+#: src/main_window.cpp:928
+msgid "C_onnect"
+msgstr "Us_postavi vezu"
+
+#: src/main_window.cpp:928 src/tray.cpp:255
+msgid "Create a new connection"
+msgstr "Napravi novu vezu "
+
+#: src/main_window.cpp:931 src/tray.cpp:258
+msgid "_Disconnect"
+msgstr "_Raskini vezu"
+
+#: src/main_window.cpp:932 src/tray.cpp:259
+msgid "Close the current connection"
+msgstr "Zatvori trenutnu konekciju"
+
+#: src/main_window.cpp:938 src/tray.cpp:265
+msgid "_Available"
+msgstr "_Dostupan"
+
+#: src/main_window.cpp:939 src/tray.cpp:266
+msgid "Display a popup to accept the call"
+msgstr "Prikaži iskačući prozor za prijem poziva"
+
+#: src/main_window.cpp:944 src/tray.cpp:271
+msgid "Free for Cha_t"
+msgstr "Slobodan za raz_govor"
+
+#: src/main_window.cpp:945 src/tray.cpp:272
+msgid "Auto answer calls"
+msgstr "Automatski odgovara na pozive"
+
+#: src/main_window.cpp:950 src/tray.cpp:277
+msgid "_Busy"
+msgstr "_Zauzet"
+
+#: src/main_window.cpp:950 src/tray.cpp:277
+msgid "Reject calls"
+msgstr "Odbija pozivi"
+
+#: src/main_window.cpp:955 src/tray.cpp:282
+msgid "_Forward"
+msgstr "_Preusmerava"
+
+#: src/main_window.cpp:955 src/tray.cpp:282
+msgid "Forward calls"
+msgstr "Preusmerava pozive"
+
+#: src/main_window.cpp:963
+msgid "Speed dials"
+msgstr "Brzo biranje"
+
+#: src/main_window.cpp:967 src/main_window.cpp:2864
+msgid "_Hold Call"
+msgstr "_Zadrži poziv"
+
+#: src/main_window.cpp:967
+msgid "Hold the current call"
+msgstr "Zadrži trenutni poziv"
+
+#: src/main_window.cpp:971
+msgid "_Transfer Call"
+msgstr "Preusmeri poziv"
+
+#: src/main_window.cpp:972
+msgid "Transfer the current call"
+msgstr "Prebaci trenutni poziv"
+
+#: src/main_window.cpp:979 src/main_window.cpp:2898
+msgid "Suspend _Audio"
+msgstr "Obustavi zvuk"
+
+#: src/main_window.cpp:980
+msgid "Suspend or resume the audio transmission"
+msgstr "Zaustavlja ili nastavlja zvučni prenos"
+
+#: src/main_window.cpp:984 src/main_window.cpp:2900
+msgid "Suspend _Video"
+msgstr "Obustavi video"
+
+#: src/main_window.cpp:985
+msgid "Suspend or resume the video transmission"
+msgstr "Zaustavlja ili nastavlja video prenos"
+
+#: src/main_window.cpp:992
+msgid "_Save Current Picture"
+msgstr "Snimi trenutnu sliku"
+
+#: src/main_window.cpp:993
+msgid "Save a snapshot of the current video"
+msgstr "Snimi tekuće stanje videa"
+
+#: src/main_window.cpp:999
+msgid "Close the GnomeMeeting window"
+msgstr "Zatvori prozor Gnom Sastanka"
+
+#: src/main_window.cpp:1006 src/tray.cpp:320
+msgid "_Quit"
+msgstr "_Izađi"
+
+#: src/main_window.cpp:1006 src/tray.cpp:321
+msgid "Quit GnomeMeeting"
+msgstr "Izađi iz Gnom Sastanaka"
+
+#: src/main_window.cpp:1010
+msgid "_Edit"
+msgstr "_Uređivanje"
+
+#: src/main_window.cpp:1012
+msgid "Configuration Druid"
+msgstr "Konfiguracija Druida"
+
+#: src/main_window.cpp:1013
+msgid "Run the configuration druid"
+msgstr "Pokreni konfiguraciju Druida"
+
+#: src/main_window.cpp:1020 src/tray.cpp:306
+msgid "_Preferences"
+msgstr "_Postavke"
+
+#: src/main_window.cpp:1021 src/tray.cpp:307
+msgid "Change your preferences"
+msgstr "Izmenite vaše postavke"
+
+#: src/main_window.cpp:1026
+msgid "_View"
+msgstr "P_regled"
+
+#: src/main_window.cpp:1028 src/pref_window.cpp:714
+msgid "Text Chat"
+msgstr "Tekstualni razgovor"
+
+#: src/main_window.cpp:1029
+msgid "View/Hide the text chat window"
+msgstr "Pogledaj ili skloni prozor tekstualnog razgovora"
+
+#: src/main_window.cpp:1035
+msgid "Control Panel"
+msgstr "Panel elemenata"
+
+#: src/main_window.cpp:1037 src/main_window.cpp:1240
+msgid "Statistics"
+msgstr "Statistika"
+
+#: src/main_window.cpp:1038
+msgid "View audio/video transmission and reception statistics"
+msgstr "Pregled statistike zvučnog/video prenosa i prijema"
+
+#: src/main_window.cpp:1043
+msgid "_Dialpad"
+msgstr "Brojčanik"
+
+#: src/main_window.cpp:1043
+msgid "View the dialpad"
+msgstr "Pogledaj brojčanik"
+
+#: src/main_window.cpp:1048
+msgid "_Audio Settings"
+msgstr "Podešavanja zvuka"
+
+#: src/main_window.cpp:1049
+msgid "View audio settings"
+msgstr "Pregled podešenosti zvuka"
+
+#: src/main_window.cpp:1054
+msgid "_Video Settings"
+msgstr "Podešavanja videa"
+
+#: src/main_window.cpp:1055
+msgid "View video settings"
+msgstr "Pregled podešenosti videa"
+
+#: src/main_window.cpp:1060 src/pref_window.cpp:1074
+msgid "Off"
+msgstr "Isključeno"
+
+#: src/main_window.cpp:1060
+msgid "Hide the control panel"
+msgstr "Sakrij panel elemanata"
+
+#: src/main_window.cpp:1068
+msgid "_Clear Text Chat"
+msgstr "Očisti _tekstualni razgovor"
+
+#: src/main_window.cpp:1069
+msgid "Clear the text chat"
+msgstr "Očisti tekstualni razgovor"
+
+#: src/main_window.cpp:1076 src/main_window.cpp:3812
+msgid "Local Video"
+msgstr "Lokalni video"
+
+#: src/main_window.cpp:1077
+msgid "Local video image"
+msgstr "Lokalni video snimak"
+
+#: src/main_window.cpp:1082 src/main_window.cpp:3818
+msgid "Remote Video"
+msgstr "Daljinski video"
+
+#: src/main_window.cpp:1083
+msgid "Remote video image"
+msgstr "Daljinski video snimak"
+
+#: src/main_window.cpp:1088
+msgid "Both (Local Video Incrusted)"
+msgstr "Oba (Obložen lokalni video)"
+
+#: src/main_window.cpp:1089 src/main_window.cpp:1096
+msgid "Both video images"
+msgstr "Oba video snimka"
+
+#: src/main_window.cpp:1095
+msgid "Both (Both in New Windows)"
+msgstr "Oba (Oba u novom prozoru)"
+
+#: src/main_window.cpp:1104 src/main_window.cpp:1606 src/main_window.cpp:1629
+msgid "Zoom In"
+msgstr "Uvećaj"
+
+#: src/main_window.cpp:1104 src/main_window.cpp:1606 src/main_window.cpp:1629
+msgid "Zoom in"
+msgstr "Uvećaj"
+
+#: src/main_window.cpp:1108 src/main_window.cpp:1610 src/main_window.cpp:1633
+msgid "Zoom Out"
+msgstr "Umanji"
+
+#: src/main_window.cpp:1108 src/main_window.cpp:1610 src/main_window.cpp:1633
+msgid "Zoom out"
+msgstr "Umanji"
+
+#: src/main_window.cpp:1112 src/main_window.cpp:1614 src/main_window.cpp:1637
+msgid "Normal Size"
+msgstr "Normalna veličina"
+
+#: src/main_window.cpp:1112 src/main_window.cpp:1614 src/main_window.cpp:1637
+msgid "Normal size"
+msgstr "Normalna veličina"
+
+#: src/main_window.cpp:1117 src/main_window.cpp:1619 src/main_window.cpp:1642
+msgid "Fullscreen"
+msgstr "Ceo ekran"
+
+#: src/main_window.cpp:1122
+msgid "_Tools"
+msgstr "Alati"
+
+#: src/main_window.cpp:1124 src/tray.cpp:290
+msgid "Address _Book"
+msgstr "Adresar"
+
+#: src/main_window.cpp:1125 src/tray.cpp:291
+msgid "Open the address book"
+msgstr "Otvori adresar"
+
+#: src/main_window.cpp:1133
+msgid "View the operations history"
+msgstr "Pogledaj istorijat radnji"
+
+#: src/main_window.cpp:1138 src/tray.cpp:299
+msgid "View the calls history"
+msgstr "Pogledaj istorijat poziva"
+
+#: src/main_window.cpp:1146 src/main_window.cpp:1152
+msgid "PC-To-Phone Account"
+msgstr "Podešavanje za Računar-sa-telefonom"
+
+#: src/main_window.cpp:1147 src/main_window.cpp:1153
+msgid "Manage your PC-To-Phone account"
+msgstr "Upravljajte vašim nalogom za računar-sa-telefonom"
+
+#: src/main_window.cpp:1158
+msgid "_Help"
+msgstr "_Pomoć"
+
+#: src/main_window.cpp:1161 src/main_window.cpp:1172
+msgid "_Contents"
+msgstr "_Sadržaj"
+
+#: src/main_window.cpp:1162 src/main_window.cpp:1173
+msgid "Get help by reading the GnomeMeeting manual"
+msgstr "Pomognite sebi čitanjem uputstva za Gnom sastanak"
+
+#: src/main_window.cpp:1166 src/main_window.cpp:1177
+msgid "_About"
+msgstr "_O programu"
+
+#: src/main_window.cpp:1167 src/main_window.cpp:1178 src/tray.cpp:315
+msgid "View information about GnomeMeeting"
+msgstr "Prikaži podatke o Gnom Sastanku"
+
+#: src/main_window.cpp:1235 src/main_window.cpp:4002
+msgid ""
+"Lost packets:\n"
+"Late packets:\n"
+"Round-trip delay:\n"
+"Jitter buffer:"
+msgstr ""
+"Izgubljeni paketi:\n"
+"Kasni paketi:\n"
+"Trajanje povratnog puta:\n"
+"Jitter bafer:"
+
+#: src/main_window.cpp:1295
+msgid "Dialpad"
+msgstr "Brojčanik"
+
+#: src/main_window.cpp:1351
+msgid "Adjust brightness"
+msgstr "Podesiti svetlinu"
+
+#: src/main_window.cpp:1374
+msgid "Adjust whiteness"
+msgstr "Podesi belilo"
+
+#: src/main_window.cpp:1397
+msgid "Adjust color"
+msgstr "Podesi boje"
+
+#: src/main_window.cpp:1420
+msgid "Adjust contrast"
+msgstr "Podesiti kontrast"
+
+#: src/main_window.cpp:1429
+msgid "Video"
+msgstr "Video"
+
+#: src/main_window.cpp:1507
+msgid "Audio"
+msgstr "Zvuk"
+
+#: src/main_window.cpp:2801
+#, c-format
+msgid "Sent dtmf %c"
+msgstr "Poslah DTMF %c"
+
+#: src/main_window.cpp:2848
+msgid "_Retrieve Call"
+msgstr "Pov_ratiti poziv"
+
+#: src/main_window.cpp:2902
+msgid "Resume _Audio"
+msgstr "Nastavi zvuk"
+
+#: src/main_window.cpp:2904
+msgid "Resume _Video"
+msgstr "Nastavi video"
+
+#: src/main_window.cpp:3516
+msgid "Transfer call to:"
+msgstr "Prosledi poziv do:"
+
+#: src/main_window.cpp:3517
+msgid "Transfer"
+msgstr "Preusmeri"
+
+#: src/main_window.cpp:3587
+msgid "Reject"
+msgstr "Odbaci"
+
+#: src/main_window.cpp:3589
+msgid "Accept"
+msgstr "Prihvati"
+
+#: src/main_window.cpp:3596
+msgid "Incoming call from"
+msgstr "Dolazeći poziv od"
+
+#: src/main_window.cpp:3609
+msgid "Remote URL:"
+msgstr "Udaljena adresa:"
+
+#: src/main_window.cpp:3621
+msgid "Remote Application:"
+msgstr "Udaljeni program:"
+
+#: src/main_window.cpp:3933
+msgid "Click to clear"
+msgstr "Kliknite da očistite"
+
+#: src/main_window.cpp:4028
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2395,313 +2981,27 @@ msgstr ""
 "Trajanje povratnog puta: %d ms\n"
 "Jitter bafer: %d ms"
 
-#: src/endpoint.cpp:2099
-#, c-format
-msgid "Forwarding Call to %s (No Answer)"
-msgstr "Preusmeravanje poziva na %s (Ne odgovaranje)"
-
-#: src/gatekeeper.cpp:131
-#, c-format
-msgid "Unregistered from gatekeeper %s"
-msgstr "Neregistrovan od čuvara kapije %s"
-
-#: src/gatekeeper.cpp:146
-msgid "Invalid gatekeeper hostname"
-msgstr "Neispravno ime čuvara kapije domaćina"
-
-#: src/gatekeeper.cpp:146
-msgid "Please provide a hostname to use for the gatekeeper."
-msgstr "Obezbedite ime domaćina za upotrebu čuvara kapije."
-
-#: src/gatekeeper.cpp:154
-msgid "Invalid gatekeeper ID"
-msgstr "Neispravan ID čuvara kapije "
-
-#: src/gatekeeper.cpp:154
-msgid "Please provide a valid ID for the gatekeeper."
-msgstr "Obezbedite ispravan IB za čuvara kapije."
-
-#: src/gatekeeper.cpp:201
-msgid ""
-"Another user already exists with the same alias, please use another alias."
-msgstr "Već postoji drugi korisnik sa istim nadimkom, uzmite drugi nadimak."
-
-#: src/gatekeeper.cpp:204
-msgid ""
-"You are not allowed to register to the gatekeeper. Please check your login, "
-"password and firewall."
-msgstr ""
-"Nije vam dozvoljeno registrovanje sa čuvarem kapije.  Proverite vaše ime, "
-"lozinku i vatreni zid."
-
-#: src/gatekeeper.cpp:207
-msgid "There was a transport error."
-msgstr "Dogodila se greška prilikom transporta."
-
-#: src/gatekeeper.cpp:210 src/gatekeeper.cpp:215
-msgid "No gatekeeper corresponding to your options has been found."
-msgstr "Nijedan čuvar kapije nije nađen prateći vaše opcije."
-
-#: src/gatekeeper.cpp:217
-msgid "Error while registering with gatekeeper"
-msgstr "Greška pri registrovanju sa čuvarem kapije"
-
-#: src/gatekeeper.cpp:232
-#, c-format
-msgid "Gatekeeper set to %s"
-msgstr "Čuvar kapije podešen na %s"
-
-#: src/gnomemeeting.cpp:90
-msgid "Notification area not detected"
-msgstr "Prostor za napomene nije detektovan"
-
-#: src/gnomemeeting.cpp:90
-msgid ""
-"You have chosen to start GnomeMeeting hidden, however the notification area "
-"is not present in your panel, GnomeMeeting can thus not start hidden."
-msgstr ""
-"Vi ste izabrali da pokrenete Gnom Sastanak sakriven, ali prostor za napomene "
-"nije prisutan na vašem panelu, zato Gnom Sastanak nemože da se pokrene "
-"sakriven."
-
-#: src/gnomemeeting.cpp:168
-msgid "Answering incoming call"
-msgstr "Odgovaranje na dolazeći poziv"
-
-#: src/gnomemeeting.cpp:218
-msgid "Trying to stop calling"
-msgstr "Pokušavanje zaustavljanja poziva"
-
-#: src/gnomemeeting.cpp:229
-msgid "Stopping current call"
-msgstr "Zaustavljanje trenutnog poziva"
-
-#: src/gnomemeeting.cpp:239
-msgid "Refusing Incoming call"
-msgstr "Odbacivanje dolazećeg poziva"
-
-#: src/gnomemeeting.cpp:422
-msgid "Personal"
-msgstr "Lični"
-
-#: src/gnomemeeting.cpp:480
-#, c-format
-msgid "Started GnomeMeeting V%d.%d.%d for %s\n"
-msgstr "Pokrenut Gnom Sastanak V%d.%d.%d za %s\n"
-
-#: src/ils.cpp:102
-msgid "Invalid parameters"
-msgstr "Netačni parametri"
-
-#: src/ils.cpp:102
-msgid ""
-"Please provide your first name and e-mail in the Personal Data section in "
-"order to be able to register to the users directory."
-msgstr "Unesite vaše ime i e-poštu u odeljku ličnih podataka kako bi mogli da se prijavite u direktorijum korisnika."
-
-#: src/ils.cpp:136
-msgid "Invalid users directory"
-msgstr "Neispravan direktorijum korisnika"
-
-#: src/ils.cpp:136
-msgid "Operation impossible since there is no users directory specified."
-msgstr "Radnja je nemoguća zato što nije određen direktorijum korisnika."
-
-#: src/ils.cpp:215
-msgid "Failed to parse XML file"
-msgstr "Nije uspeo da obradi XML datoteku"
-
-#: src/ils.cpp:215
-msgid ""
-"There was an error while parsing the XML file. Please make sure that it is "
-"correctly installed in your system."
-msgstr ""
-"Dogodila se greška prilikom reščlanjavanja XML datoteke.  Uverite se da je "
-"pravilno instaliran na vaš sistem."
-
-#: src/ils.cpp:226
-msgid "Bad information"
-msgstr "Loši podaci"
-
-#: src/ils.cpp:226
-#, c-format
-msgid "Bad LDAP information from XML file: %s."
-msgstr "Loši LDAP podaci iz XML datoteke: %s."
-
-#: src/ils.cpp:235 src/ils.cpp:245 src/ils.cpp:254
-msgid "Cannot contact the users directory"
-msgstr "Ne može da kontaktira korisnički direktorijum"
-
-#: src/ils.cpp:235
-#, c-format
-msgid ""
-"Failed to contact the users directory %s:%d. The directory is probably "
-"currently overloaded, please try again later."
-msgstr ""
-"Nisam uspeo da se povežem sa korisničkim imenikom %s:%d. Imenik je verovatno "
-"sada preopterećen, pokušajte kasnije."
-
-#: src/ils.cpp:245
-msgid "Failed to set a time limit on operations."
-msgstr "Nije uspeo da podesi vremenski limit na radnje."
-
-#: src/ils.cpp:254
-#, c-format
-msgid "Failed to bind to users directory: %s."
-msgstr "Ne mogu da se vežem za direktorijum korisnika: %s."
-
-#: src/ils.cpp:278
-#, c-format
-msgid "Updated information on the users directory %s."
-msgstr "Osveženi podaci o direktorijumu korisnika %s."
-
-#: src/ils.cpp:282
-#, c-format
-msgid "Unregistered from the users directory %s."
-msgstr "Odjavljen iz direktorijuma korisnika %s."
-
-#: src/ils.cpp:304
-#, c-format
-msgid "Error while registering to %s"
-msgstr "Greška pri prijavi u %s"
-
-#: src/lid.cpp:135
-#, c-format
-msgid "Opened Quicknet device %s"
-msgstr "Otvoren Quicknet uređaj %s"
-
-#: src/lid.cpp:158
-msgid "Error while opening the Quicknet device."
-msgstr "Greška pri otvaranju Quicknet uređaja."
-
-#: src/lid.cpp:158
-msgid ""
-"Please check that your driver is correctly installed and that the device is "
-"working correctly."
-msgstr ""
-"Proverite da li je vaš drajver pravilno instaliran i da li uređaj radi "
-"ispravno."
-
-#: src/lid.cpp:186
-#, c-format
-msgid "Closed Quicknet device %s"
-msgstr "Zatvoren Quicknet uređaj %s"
-
-#: src/lid.cpp:277 src/lid.cpp:278
-msgid "Phone is off hook"
-msgstr "Telefon iskopčan"
-
-#: src/lid.cpp:313 src/lid.cpp:314
-msgid "Phone is on hook"
-msgstr "Telefon ukopčan"
-
-#: src/log_window.cpp:60 src/menu.cpp:474
-msgid "General History"
-msgstr "Opšti istorijat"
-
-#: src/main_window.cpp:501
-#, c-format
-msgid "Total: %.2f MB"
-msgstr "Ukupno: %.2f MB"
-
-#: src/main_window.cpp:585
-msgid "Cannot run GnomeMeeting"
-msgstr "Ne mogu da pokrenem Gnom Sastanak"
-
-#: src/main_window.cpp:585
-msgid ""
-"GnomeMeeting is already running, if you want it to call a given callto or "
-"h323 URL, please use \"gnomemeeting -c URL\"."
-msgstr ""
-"Gnom Sastanak je već pokrenut, ako želite da uputi poziv na datu adresu, "
-"koristite „gnomemeeting -c ADRESA“."
-
-#: src/main_window.cpp:638
-msgid ""
-"It appears that you do not have gnomemeeting.server installed in a valid "
-"location. Factory mode disabled.\n"
-msgstr ""
-"Izgleda da nemate gnomemeeting.server instaliran u ispravnoj lokaciji.  "
-"Fabrika mod isključen.\n"
-
-#: src/main_window.cpp:642
-msgid ""
-"Error registering GnomeMeeting with the activation service; factory mode "
-"disabled.\n"
-msgstr ""
-"Greška pri registrovanju Gnom Sastanka sa servisom za pokretanje.  Fabrika mod "
-"isključen.\n"
-
-#: src/main_window.cpp:682
-msgid "Failed to retrieve gnomemeeting server from activation server\n"
-msgstr "Nije uspeo da pozove gnomemeeting server od servera za pokretanje\n"
-
-#: src/main_window.cpp:811
-#, c-format
-msgid "Sent dtmf %c"
-msgstr "Poslah DTMF %c"
-
-#: src/main_window.cpp:1198 src/menu.cpp:411 src/menu.cpp:538
-msgid "Local Video"
-msgstr "Lokalni video"
-
-#: src/main_window.cpp:1202 src/menu.cpp:417 src/menu.cpp:544
-msgid "Remote Video"
-msgstr "Daljinski video"
-
-#: src/main_window.cpp:1339 src/menu.cpp:372
-msgid "Statistics"
-msgstr "Statistika"
-
-#: src/main_window.cpp:1395
-msgid "Dialpad"
-msgstr "Brojčanik"
-
-#: src/main_window.cpp:1450
-msgid "Adjust brightness"
-msgstr "Podesiti svetlinu"
-
-#: src/main_window.cpp:1473
-msgid "Adjust whiteness"
-msgstr "Podesi belilo"
-
-#: src/main_window.cpp:1496
-msgid "Adjust color"
-msgstr "Podesi boje"
-
-#: src/main_window.cpp:1519
-msgid "Adjust contrast"
-msgstr "Podesiti kontrast"
-
-#: src/main_window.cpp:1527
-msgid "Video"
-msgstr "Video"
-
-#: src/main_window.cpp:1605
-msgid "Audio"
-msgstr "Zvuk"
-
-#: src/main_window.cpp:1668
+#: src/main_window.cpp:4138
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Prikazuje poruke za rešavanje problema u konzoli (nivoi između 1 i 6)"
 
-#: src/main_window.cpp:1671
+#: src/main_window.cpp:4141
 msgid "Makes GnomeMeeting call the given URL"
 msgstr "Pravi Gnom Sastanak poziv do datot URL"
 
-#: src/main_window.cpp:1706
-msgid "No usable audio manager detected"
-msgstr "Nisam pronašao upotrebljivog upravnika zvukom"
+#: src/main_window.cpp:4176
+msgid "No usable audio plugin detected"
+msgstr "Nisam pronašao upotrebljiv zvučni uređaj"
 
-#: src/main_window.cpp:1706
+#: src/main_window.cpp:4176
 msgid ""
-"GnomeMeeting didn't find any usable sound manager. Make sure that your "
+"GnomeMeeting didn't find any usable audio plugin. Make sure that your "
 "installation is correct."
 msgstr ""
-"Gnom sastanak ne može da pronađe upotrebljivog upravnika zvukom. Proverite da "
-"li je vaša instalacija ispravna."
+"Gnom sastanak ne može da pronađe upotrebljiv zvučni uređaj. Proverite da li "
+"je vaša instalacija ispravna."
 
-#: src/main_window.cpp:1726
+#: src/main_window.cpp:4198
 #, c-format
 msgid ""
 "GnomeMeeting got an invalid value for the GConf key %s.\n"
@@ -2723,475 +3023,143 @@ msgstr ""
 "problema sa GKonf stranice (http://www.gnome.org/projects/gconf/) ili arhivu "
 "poštanske liste za više podataka (http://mail.gnome.org) o ovom problemu."
 
-#: src/main_window.cpp:1729
+#: src/main_window.cpp:4201
 msgid "Gconf key error"
 msgstr "Gconf greška ključa"
 
-#: src/menu.cpp:257
-msgid "C_all"
-msgstr "Poziv"
-
-#: src/menu.cpp:259
-msgid "C_onnect"
-msgstr "Us_postavi vezu"
-
-#: src/menu.cpp:259 src/menu.cpp:613
-msgid "Create a new connection"
-msgstr "Napravi novu vezu "
-
-#: src/menu.cpp:262 src/menu.cpp:616
-msgid "_Disconnect"
-msgstr "_Raskini vezu"
-
-#: src/menu.cpp:263 src/menu.cpp:617
-msgid "Close the current connection"
-msgstr "Zatvori trenutnu konekciju"
-
-#: src/menu.cpp:269 src/menu.cpp:623
-msgid "_Available"
-msgstr "_Dostupan"
-
-#: src/menu.cpp:270 src/menu.cpp:624
-msgid "Display a popup to accept the call"
-msgstr "Prikaži iskačući prozor za prijem poziva"
-
-#: src/menu.cpp:275 src/menu.cpp:629
-msgid "Free for Cha_t"
-msgstr "Slobodan za raz_govor"
-
-#: src/menu.cpp:276 src/menu.cpp:630
-msgid "Auto answer calls"
-msgstr "Automatski odgovara na pozive"
-
-#: src/menu.cpp:281 src/menu.cpp:635
-msgid "_Busy"
-msgstr "_Zauzet"
-
-#: src/menu.cpp:281 src/menu.cpp:635
-msgid "Reject calls"
-msgstr "Odbija pozivi"
-
-#: src/menu.cpp:286 src/menu.cpp:640
-msgid "_Forward"
-msgstr "_Preusmerava"
-
-#: src/menu.cpp:286 src/menu.cpp:640
-msgid "Forward calls"
-msgstr "Preusmerava pozive"
-
-#: src/menu.cpp:294
-msgid "Speed dials"
-msgstr "Brzo biranje"
-
-#: src/menu.cpp:298
-msgid "Hold the current call"
-msgstr "Zadrži trenutni poziv"
-
-#: src/menu.cpp:301
-msgid "_Transfer Call"
-msgstr "Preusmeri poziv"
-
-#: src/menu.cpp:302
-msgid "Transfer the current call"
-msgstr "Prebaci trenutni poziv"
-
-#: src/menu.cpp:309
-msgid "Suspend or resume the audio transmission"
-msgstr "Zaustavlja ili nastavlja zvučni prenos"
-
-#: src/menu.cpp:314
-msgid "Suspend or resume the video transmission"
-msgstr "Zaustavlja ili nastavlja video prenos"
-
-#: src/menu.cpp:321
-msgid "_Save Current Picture"
-msgstr "Snimi trenutnu sliku"
-
-#: src/menu.cpp:322
-msgid "Save a snapshot of the current video"
-msgstr "Snimi tekuće stanje videa"
-
-#: src/menu.cpp:328
-msgid "Close the GnomeMeeting window"
-msgstr "Zatvori prozor Gnom Sastanka"
-
-#: src/menu.cpp:335 src/menu.cpp:678
-msgid "_Quit"
-msgstr "_Izađi"
-
-#: src/menu.cpp:335 src/menu.cpp:679
-msgid "Quit GnomeMeeting"
-msgstr "Izađi iz Gnom Sastanaka"
-
-#: src/menu.cpp:339
-msgid "_Edit"
-msgstr "_Uređivanje"
-
-#: src/menu.cpp:341
-msgid "Configuration Druid"
-msgstr "Konfiguracija Druida"
-
-#: src/menu.cpp:342
-msgid "Run the configuration druid"
-msgstr "Pokreni konfiguraciju Druida"
-
-#: src/menu.cpp:349 src/menu.cpp:664
-msgid "_Preferences"
-msgstr "_Postavke"
-
-#: src/menu.cpp:350 src/menu.cpp:665
-msgid "Change your preferences"
-msgstr "Izmenite vaše postavke"
-
-#: src/menu.cpp:355
-msgid "_View"
-msgstr "P_regled"
-
-#: src/menu.cpp:357 src/pref_window.cpp:926
-msgid "Text Chat"
-msgstr "Tekstualni razgovor"
-
-#: src/menu.cpp:358
-msgid "View/Hide the text chat window"
-msgstr "Pogledaj ili skloni prozor tekstualnog razgovora"
-
-#: src/menu.cpp:363
-msgid "Status Bar"
-msgstr "Linija stanja"
-
-#: src/menu.cpp:364
-msgid "View/Hide the status bar"
-msgstr "Pogledaj ili skloni liniju stanja"
-
-#: src/menu.cpp:370
-msgid "Control Panel"
-msgstr "Panel elemenata"
-
-#: src/menu.cpp:373
-msgid "View audio/video transmission and reception statistics"
-msgstr "Pregled statistike zvučnog/video prenosa i prijema"
-
-#: src/menu.cpp:378
-msgid "_Dialpad"
-msgstr "Brojčanik"
-
-#: src/menu.cpp:378
-msgid "View the dialpad"
-msgstr "Pogledaj brojčanik"
-
-#: src/menu.cpp:383
-msgid "_Audio Settings"
-msgstr "Podešavanja zvuka"
-
-#: src/menu.cpp:384
-msgid "View audio settings"
-msgstr "Pregled podešenosti zvuka"
-
-#: src/menu.cpp:389
-msgid "_Video Settings"
-msgstr "Podešavanja videa"
-
-#: src/menu.cpp:390
-msgid "View video settings"
-msgstr "Pregled podešenosti videa"
-
-#: src/menu.cpp:395 src/pref_window.cpp:1326
-msgid "Off"
-msgstr "Isključeno"
-
-#: src/menu.cpp:395
-msgid "Hide the control panel"
-msgstr "Sakrij panel elemanata"
-
-#: src/menu.cpp:403
-msgid "_Clear Text Chat"
-msgstr "Očisti _tekstualni razgovor"
-
-#: src/menu.cpp:404
-msgid "Clear the text chat"
-msgstr "Očisti tekstualni razgovor"
-
-#: src/menu.cpp:412 src/menu.cpp:539
-msgid "Local video image"
-msgstr "Lokalni video snimak"
-
-#: src/menu.cpp:418 src/menu.cpp:545
-msgid "Remote video image"
-msgstr "Daljinski video snimak"
-
-#: src/menu.cpp:423 src/menu.cpp:550
-msgid "Both (Local Video Incrusted)"
-msgstr "Oba (Obložen lokalni video)"
-
-#: src/menu.cpp:424 src/menu.cpp:431 src/menu.cpp:438 src/menu.cpp:551
-#: src/menu.cpp:558 src/menu.cpp:565
-msgid "Both video images"
-msgstr "Oba video snimka"
-
-#: src/menu.cpp:430 src/menu.cpp:557
-msgid "Both (Local Video in New Window)"
-msgstr "Oba (Lokalni video u novom prozoru)"
-
-#: src/menu.cpp:437 src/menu.cpp:564
-msgid "Both (Both in New Windows)"
-msgstr "Oba (Oba u novom prozoru)"
-
-#: src/menu.cpp:446 src/menu.cpp:573
-msgid "Zoom In"
-msgstr "Uvećaj"
-
-#: src/menu.cpp:446 src/menu.cpp:573
-msgid "Zoom in"
-msgstr "Uvećaj"
-
-#: src/menu.cpp:450 src/menu.cpp:577
-msgid "Zoom Out"
-msgstr "Umanji"
-
-#: src/menu.cpp:450 src/menu.cpp:577
-msgid "Zoom out"
-msgstr "Umanji"
-
-#: src/menu.cpp:454 src/menu.cpp:581
-msgid "Normal Size"
-msgstr "Normalna veličina"
-
-#: src/menu.cpp:454 src/menu.cpp:581
-msgid "Normal size"
-msgstr "Normalna veličina"
-
-#: src/menu.cpp:459 src/menu.cpp:586
-msgid "Fullscreen"
-msgstr "Ceo ekran"
-
-#: src/menu.cpp:464
-msgid "_Tools"
-msgstr "Alati"
-
-#: src/menu.cpp:466 src/menu.cpp:648
-msgid "Address _Book"
-msgstr "Adresar"
-
-#: src/menu.cpp:467 src/menu.cpp:649
-msgid "Open the address book"
-msgstr "Otvori adresar"
-
-#: src/menu.cpp:475
-msgid "View the operations history"
-msgstr "Pogledaj istorijat radnji"
-
-#: src/menu.cpp:480 src/menu.cpp:657
-msgid "View the calls history"
-msgstr "Pogledaj istorijat poziva"
-
-#: src/menu.cpp:488 src/menu.cpp:494
-msgid "PC-To-Phone Account"
-msgstr "Podešavanje za Računar-sa-telefonom"
-
-#: src/menu.cpp:489 src/menu.cpp:495
-msgid "Manage your PC-To-Phone account"
-msgstr "Upravljajte vašim nalogom za računar-sa-telefonom"
-
-#: src/menu.cpp:500
-msgid "_Help"
-msgstr "_Pomoć"
-
-#: src/menu.cpp:503 src/menu.cpp:508
-msgid "_Contents"
-msgstr "_Sadržaj"
-
-#: src/menu.cpp:504 src/menu.cpp:509
-msgid "Get help by reading the GnomeMeeting manual"
-msgstr "Pomognite sebi čitanjem uputstva za Gnom sastanak"
-
-#: src/menu.cpp:514
-msgid "_About"
-msgstr "_O programu"
-
-#: src/menu.cpp:515 src/menu.cpp:673
-msgid "View information about GnomeMeeting"
-msgstr "Prikaži podatke o Gnom Sastanku"
-
-#: src/menu.cpp:613
-msgid "_Connect"
-msgstr "Us_postavi vezu"
-
-#: src/menu.cpp:672
-msgid "_About..."
-msgstr "_O programu..."
-
-#: src/misc.cpp:143
+#: src/misc.cpp:113
 msgid "Generic error"
 msgstr "Opšta greška"
 
-#: src/misc.cpp:187
-msgid "Reject"
-msgstr "Odbaci"
-
-#: src/misc.cpp:189
-msgid "Accept"
-msgstr "Prihvati"
-
-#: src/misc.cpp:196
-msgid "Incoming call from"
-msgstr "Dolazeći poziv od"
-
-#: src/misc.cpp:209
-msgid "Remote URL:"
-msgstr "Udaljena adresa:"
-
-#: src/misc.cpp:221
-msgid "Remote Application:"
-msgstr "Udaljeni program:"
-
-#: src/pref_window.cpp:314 src/pref_window.cpp:342
-msgid "Choose a Picture"
-msgstr "Izaberite sliku"
-
 #  Translators: This is "A" as in "Audio"
-#: src/pref_window.cpp:431 src/pref_window.cpp:1085
+#: src/pref_window.cpp:495 src/pref_window.cpp:853
 msgid "A"
 msgstr "Z"
 
-#: src/pref_window.cpp:456
+#: src/pref_window.cpp:520
 msgid "Bandwidth"
 msgstr "Širina propusnog opsega"
 
-#: src/pref_window.cpp:847
+#: src/pref_window.cpp:642
 msgid "Personal Information"
 msgstr "Lični podaci"
 
-#: src/pref_window.cpp:851
+#: src/pref_window.cpp:647
 msgid "_First name:"
 msgstr "_Ime:"
 
-#: src/pref_window.cpp:858
+#: src/pref_window.cpp:654
 msgid "Sur_name:"
 msgstr "_Prezime:"
 
-#: src/pref_window.cpp:860
+#: src/pref_window.cpp:656
 msgid "Enter your surname"
 msgstr "Unesite vaše prezime"
 
-#: src/pref_window.cpp:865
+#: src/pref_window.cpp:661
 msgid "E-_mail address:"
 msgstr "Adresa e-pošte:"
 
-#: src/pref_window.cpp:872
+#: src/pref_window.cpp:668
 msgid "_Comment:"
 msgstr "_Napomena:"
 
-#: src/pref_window.cpp:874
+#: src/pref_window.cpp:670
 msgid "Enter a comment about yourself"
 msgstr "Unesite primedbu o sebi"
 
-#: src/pref_window.cpp:879
+#: src/pref_window.cpp:675
 msgid "_Location:"
 msgstr "_Mesto:"
 
-#: src/pref_window.cpp:881
+#: src/pref_window.cpp:677
 msgid "Enter your country or city"
 msgstr "Unesite vašu državu ili grad"
 
 #. Add the update button
-#: src/pref_window.cpp:887 src/pref_window.cpp:1252
+#: src/pref_window.cpp:683 src/pref_window.cpp:1009 src/pref_window.cpp:1058
 msgid "_Apply"
 msgstr "Pr_imeni"
 
-#: src/pref_window.cpp:887
+#: src/pref_window.cpp:683
 msgid ""
 "Click here to update the users directory you are registered to with the new "
 "First Name, Last Name, E-Mail, Comment and Location or to update your alias "
 "on the Gatekeeper"
-msgstr "Kliknite ovde da osvežite direktorijum korisnika u koji ste prijavljeni sa novim imenom, prezimenom, e-poštom, napomenom i položajem ili da obnovite vaš nadimak na čuvaru kapije"
+msgstr ""
+"Kliknite ovde da osvežite direktorijum korisnika u koji ste prijavljeni sa "
+"novim imenom, prezimenom, e-poštom, napomenom i položajem ili da obnovite "
+"vaš nadimak na čuvaru kapije"
 
-#: src/pref_window.cpp:905
+#: src/pref_window.cpp:697
 msgid "GnomeMeeting GUI"
 msgstr "Sučelje Gnomovog Sastanka"
 
-#: src/pref_window.cpp:907
+#: src/pref_window.cpp:699
 msgid "_Show splash screen"
 msgstr "Pr_ikaži naslovni ekran"
 
-#: src/pref_window.cpp:909
+#: src/pref_window.cpp:701
 msgid "Start _hidden"
 msgstr "Počni _skriven"
 
-#: src/pref_window.cpp:914
+#: src/pref_window.cpp:707
 msgid "Video Display"
 msgstr "Video prikaz"
 
-#. Translators: the full sentence is Use a fullscreen size
-#. of X by Y pixels
-#: src/pref_window.cpp:919
-msgid "Use a fullscreen size of"
-msgstr "Koristi veličinu punog ekrana od"
-
-#: src/pref_window.cpp:919
-msgid "by"
-msgstr "sa"
-
-#: src/pref_window.cpp:919
-msgid "pixels"
-msgstr "tačaka"
-
-#: src/pref_window.cpp:919
-msgid "The image width for fullscreen."
-msgstr "Širina slike za ceo ekran."
-
-#: src/pref_window.cpp:919
-msgid "The image height for fullscreen."
-msgstr "Visina slike za ceo ekran."
-
-#: src/pref_window.cpp:922
+#: src/pref_window.cpp:709
 msgid "Place windows displaying video _above other windows"
 msgstr "Postavi prozore koji prikazuju video _iznad ostalih prozora"
 
-#: src/pref_window.cpp:946
+#: src/pref_window.cpp:729
 msgid "Users Directory"
 msgstr "Direktorijum korisnika"
 
 #. Add all the fields
-#: src/pref_window.cpp:950
+#: src/pref_window.cpp:733
 msgid "Users directory:"
 msgstr "Direktorijum korisnika:"
 
-#: src/pref_window.cpp:950
+#: src/pref_window.cpp:733
 msgid "The users directory server to register with"
 msgstr "Server direktorijuma korisnika na koji se prijaviti"
 
-#: src/pref_window.cpp:952
+#: src/pref_window.cpp:735
 msgid "Enable _registering"
 msgstr "Omogući _prijavu"
 
-#: src/pref_window.cpp:952
+#: src/pref_window.cpp:735
 msgid "If enabled, register with the selected users directory"
 msgstr "Ako je uključeno, prijavi se u izabrani direktorijum korisnika"
 
-#: src/pref_window.cpp:954
+#: src/pref_window.cpp:737
 msgid "_Publish my details in the users directory when registering"
 msgstr "_Objavi moje detalje u imeniku korisnika pri registraciji"
 
-#: src/pref_window.cpp:954
+#: src/pref_window.cpp:737
 msgid ""
 "If enabled, your details are shown to people browsing the users directory. "
 "If disabled, you are not visible to users browsing the users directory, but "
 "they can still use the callto URL to call you."
-msgstr "Ako je uključeno, vaši detalji su prikazani ljudima koji pretražuju korisnički direktorijum.  Ako je isključeno, vi ste nevidljivi ljudima koji pretražuju korisnički direktorijum, ali oni još uvek mogu da koriste „callto“ adrese da vas pozovu."
+msgstr ""
+"Ako je uključeno, vaši detalji su prikazani ljudima koji pretražuju korisnički "
+"direktorijum.  Ako je isključeno, vi ste nevidljivi ljudima koji pretražuju "
+"korisnički direktorijum, ali oni još uvek mogu da koriste „callto“ adrese da "
+"vas pozovu."
 
-#: src/pref_window.cpp:971 src/pref_window.cpp:1744
+#: src/pref_window.cpp:750 src/pref_window.cpp:1919
 msgid "Call Forwarding"
 msgstr "Preusmeravanje poziva"
 
-#: src/pref_window.cpp:976
+#: src/pref_window.cpp:755
 msgid "Forward calls to _host:"
 msgstr "Preusmeri poziv do domaćina:"
 
-#: src/pref_window.cpp:981
+#: src/pref_window.cpp:760
 msgid "_Always forward calls to the given host"
 msgstr "Uvek prosledi pozive do datog domaćina"
 
-#: src/pref_window.cpp:981
+#: src/pref_window.cpp:760
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field above"
@@ -3199,11 +3167,11 @@ msgstr ""
 "Ako je uključeno, svi dolazeći pozivi će biti preusmereni na računar koji je "
 "naznačen u polju iznad"
 
-#: src/pref_window.cpp:983
+#: src/pref_window.cpp:762
 msgid "Forward calls to the given host if _no answer"
 msgstr "Preusmeri poziv do datog domaćina ako se ne odgovara"
 
-#: src/pref_window.cpp:983
+#: src/pref_window.cpp:762
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field above if you do not answer the call"
@@ -3211,11 +3179,11 @@ msgstr ""
 "Ako je uključeno, svi dolazeći pozivi će biti preusmereni na računar koji je "
 "naznačen u polju gore ako ne odgovorite na poziv"
 
-#: src/pref_window.cpp:985
+#: src/pref_window.cpp:764
 msgid "Forward calls to the given host if _busy"
 msgstr "Preusmeri poziv do datog domaćina ako je zauzeto"
 
-#: src/pref_window.cpp:985
+#: src/pref_window.cpp:764
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field above if you already are in a call or if you are in "
@@ -3225,77 +3193,81 @@ msgstr ""
 "naznačen u polju gore ako ste već u pozivu ili ako ne želite da budete "
 "uznemiravani"
 
-#: src/pref_window.cpp:1004 src/pref_window.cpp:1725
+#: src/pref_window.cpp:776 src/pref_window.cpp:1900
 msgid "Call Options"
 msgstr "Opcije poziva"
 
 #. Add all the fields
-#: src/pref_window.cpp:1008
+#: src/pref_window.cpp:780
 msgid "Automatically _clear calls after 30 seconds of inactivity"
 msgstr "Automatski _očisti pozive nakon 30 sekundi neaktivnosti"
 
 # bug: plural-forms
 #. Translators: the full sentence is Reject or forward
 #. unanswered incoming calls after X s (seconds)
-#: src/pref_window.cpp:1012
+#: src/pref_window.cpp:784
 msgid "Reject or forward unanswered incoming calls after "
 msgstr "Odbij ili prosledi neodgovorene pozive nakon "
 
 # bug: plural-forms
-#: src/pref_window.cpp:1012
+#: src/pref_window.cpp:784
 msgid "seconds"
 msgstr "sekundi"
 
-#: src/pref_window.cpp:1048
+#: src/pref_window.cpp:816
 msgid "GnomeMeeting Sound Events"
 msgstr "Zvučni događaji za Gnom Sastanak"
 
-#: src/pref_window.cpp:1097 src/pref_window.cpp:1106 src/pref_window.cpp:1115
+#: src/pref_window.cpp:865 src/pref_window.cpp:874 src/pref_window.cpp:883
 msgid "Event"
 msgstr "Događaj"
 
-#: src/pref_window.cpp:1126
+#: src/pref_window.cpp:894
 msgid "Sound to play:"
 msgstr "Zvuk da pusti:"
 
-#: src/pref_window.cpp:1139
+#: src/pref_window.cpp:907
 msgid "Play"
 msgstr "Pusti"
 
-#: src/pref_window.cpp:1162
+#: src/pref_window.cpp:930
 msgid "Output Device"
 msgstr "Izlazni uređaj"
 
-#: src/pref_window.cpp:1167 src/pref_window.cpp:1359
+#: src/pref_window.cpp:936 src/pref_window.cpp:1108
 msgid "Output device:"
 msgstr "Izlazni uređaj:"
 
-#: src/pref_window.cpp:1184
+#: src/pref_window.cpp:936
+msgid "Select the audio output device to use for the ring sound event"
+msgstr "Odaberite izlazni zvučni uređaj koji će se koristiti za zvonjenje"
+
+#: src/pref_window.cpp:947
 msgid "All"
 msgstr "Sve"
 
-#: src/pref_window.cpp:1186
+#: src/pref_window.cpp:949
 msgid "rfc2833"
 msgstr "rfc2833"
 
-#: src/pref_window.cpp:1187
+#: src/pref_window.cpp:950
 msgid "Signal"
 msgstr "Signal"
 
-#: src/pref_window.cpp:1188
+#: src/pref_window.cpp:951
 msgid "String"
 msgstr "Niz znakova"
 
-#: src/pref_window.cpp:1197
+#: src/pref_window.cpp:958
 msgid "H.323 Version 2 Settings"
 msgstr "H.323 Verzija 2 Podešavanja"
 
 #. The toggles
-#: src/pref_window.cpp:1200
+#: src/pref_window.cpp:961
 msgid "Enable H.245 _tunneling"
 msgstr "Omogući H.245 _tunel"
 
-#: src/pref_window.cpp:1200
+#: src/pref_window.cpp:961
 msgid ""
 "This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
 "are encapsulated into the the H.225 channel (port 1720). This saves one TCP "
@@ -3309,15 +3281,15 @@ msgstr ""
 "Upotreba i brzog pokretanja i H.245 tunela može da sruši neke verzije "
 "Netmeeting-a."
 
-#: src/pref_window.cpp:1202
+#: src/pref_window.cpp:963
 msgid "Enable _early H.245"
 msgstr "Uključi _rani H.245"
 
-#: src/pref_window.cpp:1204
+#: src/pref_window.cpp:965
 msgid "Enable fast _start procedure"
 msgstr "Uključi proceduru brzi start"
 
-#: src/pref_window.cpp:1204
+#: src/pref_window.cpp:965
 msgid ""
 "Connection will be established in Fast Start mode. Fast Start is a new way "
 "to start calls faster that was introduced in H.323v2. It is not supported by "
@@ -3329,15 +3301,15 @@ msgstr ""
 "Netmeeting-u i upotreba i brzog pokretanja i N.245 tunela može da sruši neke "
 "verzije Netmeeting-a."
 
-#: src/pref_window.cpp:1210
+#: src/pref_window.cpp:971
 msgid "DTMF Sending"
 msgstr "Slanje DTMF-a"
 
-#: src/pref_window.cpp:1212
+#: src/pref_window.cpp:973
 msgid "_Send DTMF as:"
 msgstr "_Pošalji DTMF kao:"
 
-#: src/pref_window.cpp:1212
+#: src/pref_window.cpp:973
 msgid ""
 "This permits to set the mode for DTMFs sending. The values can be \"All\", "
 "\"None\", \"rfc2833\", \"Signal\" or \"String\" (default is \"All\"). "
@@ -3349,39 +3321,39 @@ msgstr ""
 "druge vrednosti osim „All“, „String“ ili „rfc2833“ isključuje se tekstualni "
 "razgovor."
 
-#: src/pref_window.cpp:1227
+#: src/pref_window.cpp:984
 msgid "Do not register"
 msgstr "Ne registruj"
 
-#: src/pref_window.cpp:1230
+#: src/pref_window.cpp:987
 msgid "Automatically discover"
 msgstr "Automatski prepoznaj"
 
-#: src/pref_window.cpp:1236
+#: src/pref_window.cpp:993
 msgid "Gatekeeper"
 msgstr "Čuvar kapije"
 
-#: src/pref_window.cpp:1238
+#: src/pref_window.cpp:995
 msgid "Gatekeeper _ID:"
 msgstr "ID čuvara kapije"
 
-#: src/pref_window.cpp:1240
+#: src/pref_window.cpp:997
 msgid "Gatekeeper _host:"
 msgstr "Ime domaćina čuvara kapije"
 
-#: src/pref_window.cpp:1242
+#: src/pref_window.cpp:999
 msgid "Gatekeeper _alias:"
 msgstr "Nadimak čuvara kapije"
 
-#: src/pref_window.cpp:1245
+#: src/pref_window.cpp:1002
 msgid "Gatekeeper _password:"
 msgstr "Lozinka čuvara kapije"
 
-#: src/pref_window.cpp:1248
+#: src/pref_window.cpp:1005
 msgid "Register this alias as the primary alias with the gatekeeper"
 msgstr "Prijavi ovaj nadimak kao osnovni nadimak za čuvara kapije"
 
-#: src/pref_window.cpp:1248
+#: src/pref_window.cpp:1005
 msgid ""
 "Use this option to ensure the above alias is used as the primary alias when "
 "registering with a gatekeeper. This may be required if your gatekeeper can "
@@ -3391,35 +3363,35 @@ msgstr ""
 "nadimak pri prijavi čuvaru kapije. Ovo može biti obavezno ako vaš čuvar "
 "kapije ume da identifikuje samo pomoću prvog nadimka iz spiska."
 
-#: src/pref_window.cpp:1250
+#: src/pref_window.cpp:1007
 msgid "Registering method:"
 msgstr "Način registrovanja"
 
-#: src/pref_window.cpp:1252
+#: src/pref_window.cpp:1009
 msgid "Click here to update your Gatekeeper settings"
 msgstr "Kliknite ovde da obnovite podešavanja čuvara kapije"
 
-#: src/pref_window.cpp:1269
+#: src/pref_window.cpp:1022
 msgid "Gateway/Proxy"
 msgstr "Izlaz/posrednik"
 
-#: src/pref_window.cpp:1271
+#: src/pref_window.cpp:1024
 msgid "Gateway / Proxy host:"
 msgstr "Izlaz/posrednik domaćin:"
 
-#: src/pref_window.cpp:1273
+#: src/pref_window.cpp:1026
 msgid "Use gateway or proxy"
 msgstr "Koristi izlaz ili posrednika"
 
-#: src/pref_window.cpp:1291
+#: src/pref_window.cpp:1040
 msgid "IP Translation"
 msgstr "Prevođenje mrežnih adresa"
 
-#: src/pref_window.cpp:1293
+#: src/pref_window.cpp:1042
 msgid "Enable IP _translation"
 msgstr "Omogući prevođenje IP adresa"
 
-#: src/pref_window.cpp:1293
+#: src/pref_window.cpp:1042
 msgid ""
 "This enables IP translation. IP translation is useful if GnomeMeeting is "
 "running behind a NAT/PAT router. You have to put the public IP of the router "
@@ -3433,11 +3405,11 @@ msgstr ""
 "automatski dobaviti javnu IP adresu koristeći ILS servis.  Ako vaš ruter "
 "prirpdno podržava H.323, možete to da isključite."
 
-#: src/pref_window.cpp:1295
+#: src/pref_window.cpp:1044
 msgid "Enable _automatic IP checking"
 msgstr "Omogući _samoproveru mrežnih adresa"
 
-#: src/pref_window.cpp:1295
+#: src/pref_window.cpp:1044
 msgid ""
 "This enables IP checking from seconix.com and fills the IP in the public IP "
 "of the NAT/PAT gateway field of GnomeMeeting. The returned IP is only used "
@@ -3449,11 +3421,11 @@ msgstr ""
 "uključeno prevođenje mrežnih adresa. Ukoliko isključite proveru IP-a, moraćete "
 "da ručno unesete mrežu adresu vašeg izlaza u postavkama Gnom sastanka."
 
-#: src/pref_window.cpp:1297
+#: src/pref_window.cpp:1046
 msgid "Public _IP of the NAT/PAT router:"
 msgstr "Javna IP adresa od NAT/PAT rutera:"
 
-#: src/pref_window.cpp:1297
+#: src/pref_window.cpp:1046
 msgid ""
 "Enter the public IP of your NAT/PAT router if you want to use IP "
 "translation. If you are registered to ils.seconix.com, GnomeMeeting will "
@@ -3463,220 +3435,228 @@ msgstr ""
 "prevođenje.  Ako ste registrovani na ils.seconix.com, Gnom Sastanak će "
 "automatski dobaviti javnu IP adresu koristeći ILS servis."
 
-#: src/pref_window.cpp:1303
+# bug: STUN?
+#: src/pref_window.cpp:1052
 msgid "STUN Support"
 msgstr "STUN podrška"
 
-#: src/pref_window.cpp:1305
+# bug: STUN?
+#: src/pref_window.cpp:1054
 msgid "Enable _STUN Support"
 msgstr "Uključi _STUN podršku"
 
-#: src/pref_window.cpp:1307
+# bug: STUN?
+#: src/pref_window.cpp:1056
 msgid "STUN Se_rver:"
 msgstr "STU_N server:"
 
-#: src/pref_window.cpp:1327
+# bug: STUN?
+#: src/pref_window.cpp:1058
+msgid "Click here to update your STUN Server settings"
+msgstr "Kliknite ovde da dopunite podešavanja STUN servera"
+
+#: src/pref_window.cpp:1075
 msgid "Low"
 msgstr "Nizak"
 
-#: src/pref_window.cpp:1328
+#: src/pref_window.cpp:1076
 msgid "Medium"
 msgstr "Srednji"
 
-#: src/pref_window.cpp:1329
+#: src/pref_window.cpp:1077
 msgid "High"
 msgstr "Visok"
 
-#: src/pref_window.cpp:1330
+#: src/pref_window.cpp:1078
 msgid "AGC"
 msgstr "AGC"
 
-#: src/pref_window.cpp:1333
+#: src/pref_window.cpp:1081
 msgid "POTS"
 msgstr "SDTA"
 
-#: src/pref_window.cpp:1334
+#: src/pref_window.cpp:1082
 msgid "Headset"
 msgstr "Slušalice"
 
-#: src/pref_window.cpp:1343
+#: src/pref_window.cpp:1090
 msgid "Audio Plugin"
 msgstr "Dodatak za zvuk"
 
-#: src/pref_window.cpp:1347
+#: src/pref_window.cpp:1095
 msgid "Audio plugin:"
 msgstr "Dodatak za zvuk:"
 
-#: src/pref_window.cpp:1347
+#: src/pref_window.cpp:1095
 msgid ""
 "The audio plugin that will be used to detect the devices and manage them."
 msgstr ""
 "Dodatak za zvuk koji se koristi za prepoznavanje uređaja i njihovo upravljanje."
 
-#: src/pref_window.cpp:1353 src/pref_window.cpp:1769
+#: src/pref_window.cpp:1101 src/pref_window.cpp:1944
 msgid "Audio Devices"
 msgstr "Zvučni uređaji"
 
-#: src/pref_window.cpp:1365 src/pref_window.cpp:1436
+#: src/pref_window.cpp:1115 src/pref_window.cpp:1184
 msgid "Input device:"
 msgstr "Ulazni uređaj:"
 
-#: src/pref_window.cpp:1371
+#: src/pref_window.cpp:1121
 msgid "Quicknet Hardware"
 msgstr "Quicknet uređaj"
 
-#: src/pref_window.cpp:1373
+#: src/pref_window.cpp:1123
 msgid "Echo _cancellation:"
 msgstr "Brisanje eha:"
 
-#: src/pref_window.cpp:1375
+#: src/pref_window.cpp:1125
 msgid "Output device type:"
 msgstr "Vrsta izlaznog uređaja:"
 
-#: src/pref_window.cpp:1378
+#: src/pref_window.cpp:1128
 msgid "Country _code:"
 msgstr "Državna _oznaka:"
 
-#: src/pref_window.cpp:1378
+#: src/pref_window.cpp:1128
 msgid ""
 "The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)."
 msgstr "Dva slova državne oznake za vašu državu (npr: YU, CA, UK, FR, DE,...)."
 
 #. That button will refresh the devices list
-#: src/pref_window.cpp:1385 src/pref_window.cpp:1461
+#: src/pref_window.cpp:1135 src/pref_window.cpp:1209
 msgid "_Detect devices"
 msgstr "Pro_nađi uređaje"
 
-#: src/pref_window.cpp:1385
+#: src/pref_window.cpp:1135
 msgid "Click here to refresh the devices list"
 msgstr "Kliknite ovde da obnovite spisak uređaja"
 
-#: src/pref_window.cpp:1406
+#: src/pref_window.cpp:1153
 msgid "Small"
 msgstr "Mali"
 
-#: src/pref_window.cpp:1407
+#: src/pref_window.cpp:1154
 msgid "Large"
 msgstr "Veliki"
 
-#: src/pref_window.cpp:1409
+#: src/pref_window.cpp:1156
 msgid "PAL (Europe)"
 msgstr "PAL (Evropa)"
 
-#: src/pref_window.cpp:1410
+#: src/pref_window.cpp:1157
 msgid "NTSC (America)"
 msgstr "NTSC (Amerika)"
 
-#: src/pref_window.cpp:1411
+#: src/pref_window.cpp:1158
 msgid "SECAM (France)"
 msgstr "SECAM (Francuska)"
 
-#: src/pref_window.cpp:1412
+#: src/pref_window.cpp:1159
 msgid "Auto"
 msgstr "Automatski"
 
-#: src/pref_window.cpp:1422
+#: src/pref_window.cpp:1168
 msgid "Video Plugin"
 msgstr "Dodatak za video"
 
-#: src/pref_window.cpp:1425
+#: src/pref_window.cpp:1172
 msgid "Video plugin:"
 msgstr "Dodatak za video:"
 
-#: src/pref_window.cpp:1431 src/pref_window.cpp:1773
+#: src/pref_window.cpp:1178 src/pref_window.cpp:1948
 msgid "Video Devices"
 msgstr "Video uređaji"
 
 #. Video Channel
-#: src/pref_window.cpp:1440
+#: src/pref_window.cpp:1188
 msgid "Channel:"
 msgstr "Kanal:"
 
-#: src/pref_window.cpp:1442
+#: src/pref_window.cpp:1190
 msgid "Size:"
 msgstr "Veličina:"
 
-#: src/pref_window.cpp:1444
+#: src/pref_window.cpp:1192
 msgid "Format:"
 msgstr "Oblik:"
 
-#: src/pref_window.cpp:1447
+#: src/pref_window.cpp:1195
 msgid "Image:"
 msgstr "Slika:"
 
-#: src/pref_window.cpp:1461
+#: src/pref_window.cpp:1209
 msgid "Click here to refresh the devices list."
 msgstr "Kliknite ovde da obnovite listu uređaja."
 
-#: src/pref_window.cpp:1488
+#: src/pref_window.cpp:1232
 msgid "Available Audio Codecs"
 msgstr "Dostupni zvučni kodeksi"
 
-#: src/pref_window.cpp:1503
+#: src/pref_window.cpp:1247
 msgid "Audio Codecs Settings"
 msgstr "Podešavanje zvučnih kodeksa"
 
 #. Translators: the full sentence is Automatically adjust jitter buffer
 #. between X and Y ms
-#: src/pref_window.cpp:1507
+#: src/pref_window.cpp:1251
 msgid "Automatically adjust _jitter buffer between"
 msgstr "Automatski podesi jitter bafer između"
 
-#: src/pref_window.cpp:1507
+#: src/pref_window.cpp:1251
 msgid "and"
 msgstr "i"
 
-#: src/pref_window.cpp:1507
+#: src/pref_window.cpp:1251
 msgid "ms"
 msgstr "ms"
 
-#: src/pref_window.cpp:1507
+#: src/pref_window.cpp:1251
 msgid "The minimum jitter buffer size for audio reception (in ms)."
 msgstr "Minimalna veličina jitter bafera za zvučni prijem (u ms)."
 
-#: src/pref_window.cpp:1507
+#: src/pref_window.cpp:1251
 msgid "The maximum jitter buffer size for audio reception (in ms)."
 msgstr "Maksimalna veličina jitter bafera za zvučni prijem (u ms)."
 
-#: src/pref_window.cpp:1509
+#: src/pref_window.cpp:1253
 msgid "Enable silence _detection"
 msgstr "Omogući pronalaženje tišine"
 
-#: src/pref_window.cpp:1509
+#: src/pref_window.cpp:1253
 msgid "If enabled, use silence detection with the GSM and G.711 codecs."
 msgstr "Ako je uključeno, koristi detekciju tišine sa GSM i G.711 kodeksima."
 
-#: src/pref_window.cpp:1527 src/pref_window.cpp:1716
+#: src/pref_window.cpp:1265 src/pref_window.cpp:1891
 msgid "General Settings"
 msgstr "Opšta podešavanja"
 
 #. Add fields
-#: src/pref_window.cpp:1531
+#: src/pref_window.cpp:1269
 msgid "Enable video _transmission"
 msgstr "Omogući video transmisiju"
 
-#: src/pref_window.cpp:1531
+#: src/pref_window.cpp:1269
 msgid "If enabled, video is transmitted during a call."
 msgstr "Ako je uključeno, video se prenosi za vreme poziva."
 
-#: src/pref_window.cpp:1533
+#: src/pref_window.cpp:1271
 msgid "Enable video _reception"
 msgstr "Omogući video prijem"
 
-#: src/pref_window.cpp:1533
+#: src/pref_window.cpp:1271
 msgid "If enabled, allows video to be received during a call."
 msgstr "Ako je uključeno, dozvoljava primanje videa za vreme poziva."
 
-#: src/pref_window.cpp:1538
+#: src/pref_window.cpp:1276
 msgid "Bandwidth Control"
 msgstr "Kontrola širine propusnog opsega"
 
 #. Translators: the full sentence is Maximum video bandwidth of X kB/s
-#: src/pref_window.cpp:1541
+#: src/pref_window.cpp:1279
 msgid "Maximum video _bandwidth of"
 msgstr "Maksimalna širina propusnog opsega videa od"
 
-#: src/pref_window.cpp:1541
+#: src/pref_window.cpp:1279
 msgid ""
 "The maximum video bandwidth in kbytes/s. The video quality and the number of "
 "transmitted frames per second will be dynamically adjusted above their "
@@ -3687,24 +3667,24 @@ msgstr ""
 "minimuma za vreme poziva pri pokušaju da se minimalizuje širina propusnog "
 "opsega na date vrednosti."
 
-#: src/pref_window.cpp:1541
+#: src/pref_window.cpp:1279
 msgid "kB/s"
 msgstr "KB/s"
 
-#: src/pref_window.cpp:1547
+#: src/pref_window.cpp:1285
 msgid "Advanced Quality Settings"
 msgstr "Napredno podešavanje kvaliteta"
 
 #. Translators: the full sentence is Keep a minimum video quality of X %
-#: src/pref_window.cpp:1550
+#: src/pref_window.cpp:1288
 msgid "Frame Rate"
 msgstr "Brzina kadrova"
 
-#: src/pref_window.cpp:1550
+#: src/pref_window.cpp:1288
 msgid "Picture Quality"
 msgstr "Kvalitet slike"
 
-#: src/pref_window.cpp:1550
+#: src/pref_window.cpp:1288
 msgid ""
 "Choose if you want to favour speed or quality for the transmitted video."
 msgstr "Izaberite da li vam je važnija brzina ili kakvoća prenetog videa."
@@ -3712,87 +3692,93 @@ msgstr "Izaberite da li vam je važnija brzina ili kakvoća prenetog videa."
 # bug: bad! needs plural forms!!!
 #. Translators: the full sentence is Transmit X background blocks with each
 #. frame
-#: src/pref_window.cpp:1554
+#: src/pref_window.cpp:1292
 msgid "Transmit"
 msgstr "Prenesi"
 
-#: src/pref_window.cpp:1554
+#: src/pref_window.cpp:1292
 msgid ""
 "Choose the number of blocks (that have not changed) transmitted with each "
 "frame. These blocks fill in the background."
-msgstr "Izaberite broj blokova (koji nisu promenjeni) koji se prenose uz svaki kadar. Ovi blokovi se popunjavaju u pozadini."
+msgstr ""
+"Izaberite broj blokova (koji nisu promenjeni) koji se prenose uz svaki kadar. "
+"Ovi blokovi se popunjavaju u pozadini."
 
 # bug: BAD! needs plural forms!
-#: src/pref_window.cpp:1554
+#: src/pref_window.cpp:1292
 msgid "background _blocks with each frame"
 msgstr "pozadinskih blokova sa svakim okvirom"
 
-#: src/pref_window.cpp:1710
+#: src/pref_window.cpp:1480 src/pref_window.cpp:1508
+msgid "Choose a Picture"
+msgstr "Izaberite sliku"
+
+#: src/pref_window.cpp:1885
 msgid "General"
 msgstr "Opšte"
 
-#: src/pref_window.cpp:1711
+#: src/pref_window.cpp:1886
 msgid "Personal Data"
 msgstr "Lični podaci"
 
-#: src/pref_window.cpp:1721
+#: src/pref_window.cpp:1896
 msgid "Directory Settings"
 msgstr "Podešavanje direktorijuma"
 
-#: src/pref_window.cpp:1729
+#: src/pref_window.cpp:1904
 msgid "NAT Settings"
 msgstr "Podešavanje NAT"
 
-#: src/pref_window.cpp:1734
+#: src/pref_window.cpp:1909
 msgid "Sound Events"
 msgstr "Zvučni događaji"
 
-#: src/pref_window.cpp:1738
+#: src/pref_window.cpp:1913
 msgid "H.323 Settings"
 msgstr "H.323 Podešavanja"
 
-#: src/pref_window.cpp:1740
+#: src/pref_window.cpp:1915
 msgid "Advanced Settings"
 msgstr "Napredna podešenja"
 
-#: src/pref_window.cpp:1749
+#: src/pref_window.cpp:1924
 msgid "Gatekeeper Settings"
 msgstr "Podešavanja izlaza"
 
-#: src/pref_window.cpp:1754
+#: src/pref_window.cpp:1929
 msgid "Gateway / Proxy Settings"
 msgstr "Podešavanja izlaza/posrednika"
 
-#: src/pref_window.cpp:1758
+#: src/pref_window.cpp:1933
 msgid "Codecs"
 msgstr "Kodeksi"
 
-#: src/pref_window.cpp:1760
+#: src/pref_window.cpp:1935
 msgid "Audio Codecs"
 msgstr "Zvučni kodeksi"
 
-#: src/pref_window.cpp:1764
+#: src/pref_window.cpp:1939
 msgid "Video Codecs"
 msgstr "Video kodeksi"
 
-#: src/pref_window.cpp:1768
+#: src/pref_window.cpp:1943
 msgid "Devices"
 msgstr "Uređaji"
 
-#: src/sound_handling.cpp:322
+#: src/sound_handling.cpp:333
 msgid "Opening device for playing"
 msgstr "Otvara uređaj radi puštanja"
 
-#: src/sound_handling.cpp:324
+#: src/sound_handling.cpp:335
 msgid "Opening device for recording"
 msgstr "Otvara uređaj radi snimanja"
 
-#: src/sound_handling.cpp:336 src/sound_handling.cpp:338
-#: src/videograbber.cpp:697
+#: src/sound_handling.cpp:347 src/sound_handling.cpp:349
+#: src/videograbber.cpp:696
 msgid "Failed to open the device"
 msgstr "Ne može da otvori uređaj"
 
-#: src/sound_handling.cpp:336
+#: src/sound_handling.cpp:347
 #, c-format
 msgid ""
 "Impossible to open the selected audio device (%s) for recording. Please "
@@ -3801,7 +3787,7 @@ msgstr ""
 "Nemoguće da otvori određen zvučni uređaj (%s) za snimanje.  Proverite vaše "
 "podešavanje zvuka, ovlaštenja i da li je uređaj zauzet."
 
-#: src/sound_handling.cpp:338
+#: src/sound_handling.cpp:349
 #, c-format
 msgid ""
 "Impossible to open the selected audio device (%s) for playing. Please check "
@@ -3810,11 +3796,11 @@ msgstr ""
 "Nemoguće da otvori određen zvučni uređaj (%s) za reprodukciju.  Proverite "
 "vaše podešavanje zvuka, ovlaštenja i da li je uređaj zauzet."
 
-#: src/sound_handling.cpp:377 src/sound_handling.cpp:453
+#: src/sound_handling.cpp:388 src/sound_handling.cpp:464
 msgid "Cannot use the audio device"
 msgstr "Ne može da koristi zvučni uređaj"
 
-#: src/sound_handling.cpp:377
+#: src/sound_handling.cpp:388
 #, c-format
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
@@ -3823,15 +3809,15 @@ msgstr ""
 "Određen zvučni uređaj (%s) je uspešno otvoren ali je nemoguće čitati podatke "
 "sa ovog uređaja.  Proverite vaša zvučna podešavanja."
 
-#: src/sound_handling.cpp:386
+#: src/sound_handling.cpp:397
 msgid "Recording your voice"
 msgstr "Snimanje vašeg glasa"
 
-#: src/sound_handling.cpp:428
+#: src/sound_handling.cpp:439
 msgid "Recording and playing back"
 msgstr "Snimanje i puštanje"
 
-#: src/sound_handling.cpp:453
+#: src/sound_handling.cpp:464
 #, c-format
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
@@ -3840,7 +3826,7 @@ msgstr ""
 "Određen zvučni uređaj (%s) je uspešno otvoren ali je nemoguće snimati "
 "podatke na ovaj uređaj.  Proverite vaša zvučna podešavanja."
 
-#: src/sound_handling.cpp:577
+#: src/sound_handling.cpp:592
 #, c-format
 msgid ""
 "GnomeMeeting is now recording from %s and playing back to %s. Please say \"1 "
@@ -3850,51 +3836,116 @@ msgstr ""
 "Gnom Sastanak sada snima sa %s i pušta na %s.  Recite „1 2 3“ u vaš "
 "mikrofon, i treba da da čujete sebe sa zvučnika za 4 sekundi."
 
-#: src/toolbar.cpp:165
+# bug: NAT
+#: src/stunclient.cpp:101
+msgid "Unknown NAT"
+msgstr "Nepoznat NAT"
+
+# bug: NAT
+#: src/stunclient.cpp:101
+msgid "Open NAT"
+msgstr "Otvori NAT"
+
+# bug: NAT, Cone???
+#: src/stunclient.cpp:102
+msgid "Cone NAT"
+msgstr "Kupa NAT"
+
+# bug: NAT
+#: src/stunclient.cpp:102
+msgid "Restricted NAT"
+msgstr "Ograničeni NAT"
+
+# bug: NAT
+#: src/stunclient.cpp:102
+msgid "Port Restricted NAT"
+msgstr "NAT ograničenja po portu"
+
+# bug: NAT
+#: src/stunclient.cpp:103
+msgid "Symmetric NAT"
+msgstr "Simetrični NAT"
+
+#: src/stunclient.cpp:103
+msgid "Symmetric Firewall"
+msgstr "Simetrični štit"
+
+#: src/stunclient.cpp:103
+msgid "Blocked"
+msgstr "Blokiran"
+
+#: src/stunclient.cpp:104
+msgid "Partially Blocked"
+msgstr "Delimično blokiran"
+
+# bug: STUN
+#: src/stunclient.cpp:119 src/stunclient.cpp:231
+msgid "Removed STUN server"
+msgstr "Uklonjen STUN server"
+
+# bug: STUN
+#: src/stunclient.cpp:136
+#, c-format
+msgid "Set STUN server to %s (%s)"
+msgstr "Postavi STUN server na %s (%s)"
+
+#: src/stunclient.cpp:154
 msgid ""
-"Enter an URL to call on the left, and click on this button to connect to the "
-"given URL"
-msgstr ""
-"Unesite adresu koju pozivate levo, i kliknite na ovo dugme da se povežete sa "
-"njom"
+"GnomeMeeting couldn't detect the type of NAT you are using, the most "
+"appropriate method if your router doesn't natively support H.323 is probably "
+"to forward the required ports and to use IP translation or to use an H.323 "
+"gatekeeper in proxy mode."
+msgstr "Gnom sastanak ne može da prepozna vrstu NAT-a koji koristite, najpogodniji način ukoliko vaš ruter sam ne podržava H.323 je da prosleđujete željene portove pomoću prevođenja IP-a ili da koristite čuvar H.323 kapije u posredničkom režimu."
 
-#: src/toolbar.cpp:211
-msgid "Open text chat"
-msgstr "Otvori tekstualni razgovor"
-
-#: src/toolbar.cpp:222
-msgid "Open control panel"
-msgstr "Otvori upravljački panel"
-
-#: src/toolbar.cpp:234
-msgid "Open address book"
-msgstr "Otvori adresar"
-
-#: src/toolbar.cpp:258
-msgid "Display images from your camera device"
-msgstr "Prikaži slike sa vaše kamere"
-
-#: src/toolbar.cpp:280
+#: src/stunclient.cpp:158
 msgid ""
-"Audio transmission status. During a call, click here to suspend or resume "
-"the audio transmission."
-msgstr ""
-"Status zvučnog prenosa.  Za vreme poziva, kliknite ovde da zaustavite ili "
-"nastavite zvučni prenos."
+"Your system doesn't need any specific configuration as long as you don't "
+"have a local firewall blocking the ports required by GnomeMeeting."
+msgstr "Za vaš sistem nije potrebno nikakvo naročito podešavanje ako ne koristite lokalni štit koji blokira portove koje koristi Gnom sastanak."
 
-#: src/toolbar.cpp:300
+#: src/stunclient.cpp:163
 msgid ""
-"Video transmission status. During a call, click here to suspend or resume "
-"the video transmission."
-msgstr ""
-"Status video prenosa.  Za vreme poziva, kliknite ovde da zaustavite ili "
-"nastavite video prenos."
+"GnomeMeeting detected Symmetric NAT/Symmetric Firewall. The most appropriate "
+"method if your router doesn't natively support H.323 is to forward the "
+"required ports to change your Symmetric NAT/Symmetric Firewall into Cone NAT "
+"and run this test again. It should report Cone NAT, and allow GnomeMeeting "
+"to be used with a STUN Server. If it doesn't report Cone NAT after the port "
+"forwarding has been done, then it means it didn't work."
+msgstr "Gnom sastanak je otkrio simetrični NAT/simetrični štit. Najpogodniji način, ukoliko vaš ruter sam ne podržava H.323 je da prosleđujete željene portove radi izmene vašeg simetričnog NAT/simetričnog štita u kupasti NAT i da ponovo pokrenete ovu probu. Treba da prijavi kupasti NAT, i da omogući da se Gnom sastanak koristi uz STUN server. Ukoliko ne prijavi kupasti NAT nakon što je izvršeno prosleđivanje portova, to znači da ne radi."
 
-#: src/tools.cpp:175 src/tools.cpp:189
+#: src/stunclient.cpp:167
+#, c-format
+msgid ""
+"GnomeMeeting detected %s. Using a STUN server is most probably the most "
+"appropriate method if your router doesn't natively support H.323.\n"
+"Notice that STUN support is not enough if you want to contact H.323 clients "
+"that do not support H.245 Tunneling like Netmeeting.\n"
+"\n"
+"Enable STUN Support?"
+msgstr ""
+"Gnom sastanak je otkrio %s. Najpogodniji način, ukoliko vaš ruter sam ne podržava H.323 je da koristite STUN server.\n"
+"Obratite pažnju da STUN podrška nije dovoljna za kontaktiranje H.323 klijenata koji ne podržavaju H.245 tunele kao što je Netmeeting.\n"
+"\n"
+"Uključiti STUN podršku?"
+
+#: src/stunclient.cpp:174 src/stunclient.cpp:186
+msgid "NAT Detection Successfull"
+msgstr "Uspešno prepoznavanje NAT-a"
+
+#: src/stunclient.cpp:196
+msgid "The type of NAT was successfully detected"
+msgstr "Vrsta NAT-a je uspešno otkrivena"
+
+#: src/stunclient.cpp:220
+#, c-format
+msgid "Set STUN server to %s"
+msgstr "Postavi STUN server na %s"
+
+#: src/tools.cpp:177 src/tools.cpp:191
 msgid "PC-To-Phone Settings"
 msgstr "Podešavanja za Računar-sa-telefonom"
 
-#: src/tools.cpp:178
+#: src/tools.cpp:180
 msgid ""
 "You can make calls to regular phones and cell numbers worldwide using "
 "GnomeMeeting and the MicroTelco service from Quicknet Technologies. To "
@@ -3908,27 +3959,27 @@ msgstr ""
 "i  PIN dole, onda uključite registrovanje na MicroTelco servis.  Posetite Gnom "
 "Sastanak veb sajt za više informacija."
 
-#: src/tools.cpp:191
+#: src/tools.cpp:193
 msgid "Account _number:"
 msgstr "Broj _računa:"
 
-#: src/tools.cpp:191
+#: src/tools.cpp:193
 msgid "Use your MicroTelco account number"
 msgstr "Koristite broj vašeg MicroTelco naloga"
 
-#: src/tools.cpp:194
+#: src/tools.cpp:196
 msgid "_Pin:"
 msgstr "_Pin:"
 
-#: src/tools.cpp:194
+#: src/tools.cpp:196
 msgid "Use your MicroTelco PIN"
 msgstr "Koristite vaš MicroTelco PIN"
 
-#: src/tools.cpp:198
+#: src/tools.cpp:200
 msgid "Use PC-To-Phone service"
 msgstr "Koristi uslugu računar-sa-telefonom"
 
-#: src/tools.cpp:203
+#: src/tools.cpp:205
 msgid ""
 "Click on one of the following links to get more information about your "
 "existing MicroTelco account, or to create a new account."
@@ -3936,21 +3987,29 @@ msgstr ""
 "Kliknite na sledeće veze da dobijete više informacija o vašem postojećem "
 "MicroTelco nalogu ili da napravite novi nalog."
 
-#: src/tools.cpp:207
+#: src/tools.cpp:209
 msgid "Get an account"
 msgstr "Dobiti nalog"
 
-#: src/tools.cpp:209
+#: src/tools.cpp:211
 msgid "Buy a card"
 msgstr "Kupiti karticu"
 
-#: src/tools.cpp:214
+#: src/tools.cpp:216
 msgid "Consult my account details"
 msgstr "Pogledaj detalje mog naloga"
 
-#: src/tray.cpp:193
+#: src/tray.cpp:241
 msgid "GnomeMeeting Tray Icon"
 msgstr "Gnom Sastanak ikonice na panelu"
+
+#: src/tray.cpp:255
+msgid "_Connect"
+msgstr "Us_postavi vezu"
+
+#: src/tray.cpp:314
+msgid "_About..."
+msgstr "_O programu..."
 
 #: src/urlhandler.cpp:77
 msgid ""
@@ -3960,49 +4019,49 @@ msgstr ""
 "Prenos poziva nije uspeo, korisnik nije dostupan ili je jednostavno bilo "
 "zauzeto kada je primio zahtev za prenos poziva."
 
-#: src/urlhandler.cpp:306
+#: src/urlhandler.cpp:391
 #, c-format
 msgid "No contact with speed dial %s# found, will call number %s instead"
 msgstr "Neje nađen kontakt sa brzim biranjem %s# umesto će zvati %s"
 
-#: src/urlhandler.cpp:323
+#: src/urlhandler.cpp:407
 msgid "Invalid URL handler"
 msgstr "Pogrešna URL ručka"
 
-#: src/urlhandler.cpp:323
+#: src/urlhandler.cpp:407
 msgid ""
 "Please specify a valid URL handler. Currently both h323: and callto: are "
 "supported."
 msgstr ""
 "Odredite ispravnu URL ručku.  Trenutno oba h323: i poziv do: su podržani."
 
-#: src/urlhandler.cpp:343
+#: src/urlhandler.cpp:420
 #, c-format
 msgid "Calling %s"
 msgstr "Poziva %s"
 
-#: src/urlhandler.cpp:347
+#: src/urlhandler.cpp:424
 #, c-format
 msgid "Transferring call to %s"
 msgstr "Prosleđuje poziv do %s"
 
-#: src/videograbber.cpp:320
+#: src/videograbber.cpp:319
 #, c-format
 msgid "Opening video device %s with plugin %s"
 msgstr "Otvaram video uređaj %s pomoću dodatka %s"
 
-#: src/videograbber.cpp:348
+#: src/videograbber.cpp:347
 #, c-format
 msgid "Successfully opened video device %s, channel %d"
 msgstr "Uspešno otvoren video uređaj %s, kanal %d"
 
-#: src/videograbber.cpp:359
+#: src/videograbber.cpp:358
 #, c-format
 msgid "Error while opening video device %s"
 msgstr "Greška pri otvaranju video uređaja %s"
 
 #. Translators: Do not translate MovingLogo and Picture
-#: src/videograbber.cpp:363
+#: src/videograbber.cpp:362
 msgid ""
 "A moving GnomeMeeting logo will be transmitted during calls. Notice that you "
 "can always transmit a given image or the moving GnomeMeeting logo by "
@@ -4013,11 +4072,11 @@ msgstr ""
 "poslati datu sliku ili pokretni logo Gnom sastanka izborom „Slika“ za video "
 "dodatak i „PokretniLogo“ ili „StatičnaSlika“ za uređaj."
 
-#: src/videograbber.cpp:365
+#: src/videograbber.cpp:364
 msgid "Couldn't open the video device"
 msgstr "Ne mogu da otvorim video uređaj"
 
-#: src/videograbber.cpp:369
+#: src/videograbber.cpp:368
 msgid ""
 "There was an error while opening the device. Please check your permissions "
 "and make sure that the appropriate driver is loaded."
@@ -4025,15 +4084,15 @@ msgstr ""
 "Dogodila se greška prilikom otvaranja uređaja.  Proverite ovlašćenja i uverite "
 "se da je odgovarajući drajver natovaren."
 
-#: src/videograbber.cpp:373 src/videograbber.cpp:675
+#: src/videograbber.cpp:372 src/videograbber.cpp:674
 msgid "Your video driver doesn't support the requested video format."
 msgstr "Vaš video drajver nepodržava zahtevani video format."
 
-#: src/videograbber.cpp:377
+#: src/videograbber.cpp:376
 msgid "Could not open the chosen channel."
 msgstr "Ne mogu da otvorim izabrani kanal."
 
-#: src/videograbber.cpp:381
+#: src/videograbber.cpp:380
 msgid ""
 "Your driver doesn't seem to support any of the colour formats supported by "
 "GnomeMeeting.\n"
@@ -4045,23 +4104,23 @@ msgstr ""
 " Proverite dokumentaciju vašeg drajvera u jezgru da odredite koje palete su "
 "podržane."
 
-#: src/videograbber.cpp:385
+#: src/videograbber.cpp:384
 msgid "Error while setting the frame rate."
 msgstr "Greška prilikom podešavanja brzine okvira u sekundi."
 
-#: src/videograbber.cpp:389
+#: src/videograbber.cpp:388
 msgid "Error while setting the frame size."
 msgstr "Greška prilikom podešavanja veličine okvira."
 
-#: src/videograbber.cpp:429
+#: src/videograbber.cpp:428
 msgid "Opened the video device using the \"Picture\" video plugin"
 msgstr "Otvoren video uređaj uz video dodatak „Slika“"
 
-#: src/videograbber.cpp:575
+#: src/videograbber.cpp:574
 msgid "Picture"
 msgstr "Slika"
 
-#: src/videograbber.cpp:587
+#: src/videograbber.cpp:586
 #, c-format
 msgid ""
 "GnomeMeeting is now testing the %s video device. If you experience machine "
@@ -4070,39 +4129,191 @@ msgstr ""
 "Gnom sastanak sada isprobava video uređaj %s. Ukoliko mašina zaglavi, onda "
 "prijavite grešku autoru drajvera za video."
 
-#: src/videograbber.cpp:649
+#: src/videograbber.cpp:648
 #, c-format
 msgid "Test %d done"
 msgstr "Gotov %d. test"
 
-#: src/videograbber.cpp:651
+#: src/videograbber.cpp:650
 #, c-format
 msgid "Test %d failed"
 msgstr "Neuspešan %d. test"
 
-#: src/videograbber.cpp:670
+#: src/videograbber.cpp:669
 #, c-format
 msgid "Error while opening %s."
 msgstr "Greška kod otvaranja %s."
 
-#: src/videograbber.cpp:679
+#: src/videograbber.cpp:678
 msgid "Could not open the chosen channel with the chosen video format."
 msgstr "Ne može da otvori izabrani kanal sa izabranim video formatom."
 
-#: src/videograbber.cpp:683
+#: src/videograbber.cpp:682
 msgid ""
 "Your driver doesn't support any of the color formats tried by GnomeMeeting"
 msgstr ""
 "Vaš drajver ne podržava nijedan od formata boja koje je pokušao da koristi "
 "Gnom Sastanak"
 
-#: src/videograbber.cpp:687
+#: src/videograbber.cpp:686
 msgid "Error with the frame rate."
 msgstr "Greška sa brojem okvira u sekundi."
 
-#: src/videograbber.cpp:691
+#: src/videograbber.cpp:690
 msgid "Error with the frame size."
 msgstr "Greška sa veličinom okvira."
+
+#~ msgid "Fullscreen height"
+#~ msgstr "Visina celog ekrana"
+
+#~ msgid "Fullscreen width"
+#~ msgstr "Širina celog ekrana"
+
+#~ msgid "Show a status bar at the bottom of the main window"
+#~ msgstr "Prikaži liniju sa stanjem na dnu glavnog prozora"
+
+#~ msgid "Show status bar"
+#~ msgstr "Prikaži liniju sa stanjem"
+
+#~ msgid "The image height for fullscreen"
+#~ msgstr "Visina slike za ceo ekran"
+
+#~ msgid "The image width for fullscreen"
+#~ msgstr "Širina slike za ceo ekran"
+
+#~ msgid "The list of called URLs"
+#~ msgstr "Spisak zvanih URL-ova"
+
+#~ msgid "The list of groups"
+#~ msgstr "Spisak grupa"
+
+#~ msgid "Program name"
+#~ msgstr "Ime programa"
+
+#~ msgid "The name of the program"
+#~ msgstr "Ime programa"
+
+#~ msgid "Program version"
+#~ msgstr "Izdanje programa"
+
+#~ msgid "The version of the program"
+#~ msgstr "Izdanje programa"
+
+#~ msgid "Copyright string"
+#~ msgstr "Tekst autorskih prava"
+
+#~ msgid "Copyright information for the program"
+#~ msgstr "Podaci o autorskim pravima za program"
+
+#~ msgid "Comments string"
+#~ msgstr "Tekst primedbe"
+
+#~ msgid "Comments about the program"
+#~ msgstr "Primedbe o programu"
+
+#~ msgid "Author entry"
+#~ msgstr "Unos autora"
+
+#~ msgid "A single author entry"
+#~ msgstr "Unos jednog autora"
+
+#~ msgid "Documenters"
+#~ msgstr "Dokumentovali"
+
+#~ msgid "List of people documenting the program"
+#~ msgstr "Spisak ljudi koji su dokumentovali program"
+
+# bug: translator_credits should be translatable as well!
+#~ msgid "Translator credits"
+#~ msgstr ""
+#~ "Dejan Matijević <dejan@ns.sympatico.ca>\n"
+#~ "Danilo Šegan <danilo@prevod.org>\n"
+#~ "\n"
+#~ "Prevod.org — prevod na srpski jezik."
+
+#~ msgid ""
+#~ "Credits to the translators. This string should be marked as translatable"
+#~ msgstr "Zasluge prevodioca. Ovaj tekst mora biti označen kao prevodiv."
+
+#~ msgid "A logo for the about box"
+#~ msgstr "Znak za prozorče o programu"
+
+#~ msgid "Audio transmission: suspended"
+#~ msgstr "Zvućni prenos: obustavljen"
+
+#~ msgid "Audio transmission: resumed"
+#~ msgstr "Zvućni prenos: nastavljen"
+
+#~ msgid "Video transmission: suspended"
+#~ msgstr "Video prenos: obustavljen"
+
+#~ msgid "Video transmission: resumed"
+#~ msgstr "Video prenos: nastavljen"
+
+#~ msgid "Unanswered Calls"
+#~ msgstr "Neodgovoreni pozivi"
+
+#~ msgid "STUN Server error"
+#~ msgstr "Greška na STUN serveru"
+
+#~ msgid "You have to specify a valid STUN server in order to use STUN support"
+#~ msgstr "Morate navesti ispravan STUN server da biste koristi STUN podršku"
+
+#~ msgid "Welcome to GnomeMeeting 1.00!"
+#~ msgstr "Dobrodošli u Gnom Sastanak 1.00!"
+
+#~ msgid ""
+#~ "Congratulations, you have just successfully launched GnomeMeeting 1.00 "
+#~ "for the first time.\n"
+#~ "GnomeMeeting is the leading VoIP, videoconferencing and telephony "
+#~ "software for Unix.\n"
+#~ "\n"
+#~ "Thanks to all of you who have helped us along the road to our golden 1.00 "
+#~ "release!\n"
+#~ "\n"
+#~ "The GnomeMeeting Team."
+#~ msgstr ""
+#~ "Čestitamo, upravo ste po prvi put uspešno pokrenuli Gnom sastanak 1.00.\n"
+#~ "Gnom sastanak je vodeći program za VoIP, video konferencije i telefoniju "
+#~ "za Unikse.\n"
+#~ "\n"
+#~ "Hvala svima koji su pomogli na putu do našeg zlatnog izdanja 1.00!\n"
+#~ "\n"
+#~ "Tim Gnom sastanka."
+
+#~ msgid "No usable audio manager detected"
+#~ msgstr "Nisam pronašao upotrebljivog upravnika zvukom"
+
+#~ msgid ""
+#~ "GnomeMeeting didn't find any usable sound manager. Make sure that your "
+#~ "installation is correct."
+#~ msgstr ""
+#~ "Gnom sastanak ne može da pronađe upotrebljivog upravnika zvukom. Proverite "
+#~ "da li je vaša instalacija ispravna."
+
+#~ msgid "Status Bar"
+#~ msgstr "Linija stanja"
+
+#~ msgid "View/Hide the status bar"
+#~ msgstr "Pogledaj ili skloni liniju stanja"
+
+#~ msgid "Both (Local Video in New Window)"
+#~ msgstr "Oba (Lokalni video u novom prozoru)"
+
+#~ msgid "Use a fullscreen size of"
+#~ msgstr "Koristi veličinu punog ekrana od"
+
+#~ msgid "by"
+#~ msgstr "sa"
+
+#~ msgid "pixels"
+#~ msgstr "tačaka"
+
+#~ msgid "The image width for fullscreen."
+#~ msgstr "Širina slike za ceo ekran."
+
+#~ msgid "The image height for fullscreen."
+#~ msgstr "Visina slike za ceo ekran."
 
 #~ msgid "Minimum transmitted FPS"
 #~ msgstr "Minimalan prenos FTS"
@@ -4330,11 +4541,6 @@ msgstr "Greška sa veličinom okvira."
 
 #~ msgid "Connection to %s lost"
 #~ msgstr "Veza sa %s prekinuta"
-
-# bug: plural-forms
-#~ msgid "Search completed: %d user(s) listed on a total of %d user(s) from %s"
-#~ msgstr ""
-#~ "Potraga završena: %d korisnika na listi od ukupno %d korisnika na %s"
 
 # bug: plural-forms
 #~ msgid "Search completed: %d user(s) found on %s"
@@ -4688,16 +4894,6 @@ msgstr "Greška sa veličinom okvira."
 #~ msgid "Set Audio player device to %s"
 #~ msgstr "Podesite uređaj za reprodukciju zvuka na %s"
 
-#~ msgid "No usable audio device detected"
-#~ msgstr "Nisam pronašao upotrebljiv zvučni uređaj"
-
-#~ msgid ""
-#~ "GnomeMeeting didn't find any usable sound device. Make sure that your "
-#~ "installation is correct."
-#~ msgstr ""
-#~ "Gnom sastanak ne može da pronađe upotrebljiv zvučni uređaj. Proverite da "
-#~ "li je vaša instalacija ispravna."
-
 #~ msgid "Registration Time-To-Live of "
 #~ msgstr "Vreme-života (TTL) registracije za "
 
@@ -4809,9 +5005,6 @@ msgstr "Greška sa veličinom okvira."
 
 #~ msgid "Audio recorder:"
 #~ msgstr "Snimanje zvuka:"
-
-#~ msgid "Click here to test your audio devices:"
-#~ msgstr "Kliknite ovde da testirate vaš zvučni uređaj:"
 
 #~ msgid "Test Audio"
 #~ msgstr "Zvučni test"
@@ -5051,9 +5244,6 @@ msgstr "Greška sa veličinom okvira."
 
 #~ msgid "Successfully unregistered from %s."
 #~ msgstr "Uspešno odregistrovan sa %s."
-
-#~ msgid "Error while unregistering from %s."
-#~ msgstr "Greška pri odregistrovavanju sa %s."
 
 #~ msgid "Enable bilinear _filtering on displayed video"
 #~ msgstr "Uključi bilinearni filter na prikazani video"
