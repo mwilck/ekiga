@@ -1,4 +1,4 @@
-/* -*- Mode: C++; indent-tabs-mode: t; c-basic-offset: 8; tab-width: 8 -*- */
+
 /* e-splash.cpp
  *
  * Copyright (C) 2000, 2001 Ximian, Inc.
@@ -60,7 +60,7 @@ struct _ESplashPrivate {
 
 /* Layout constants.  These need to be changed if the splash changes.  */
 
-#define ICON_Y    180
+#define ICON_Y    230
 #define ICON_SIZE 48
 
 

@@ -64,9 +64,6 @@ static void video_transmission_option_changed_callback (GtkToggleButton *,
 							gpointer);
 static void video_bandwidth_limit_option_changed_callback (GtkToggleButton *, 
 							   gpointer);
-static void adjustment_changed (GtkAdjustment *, gpointer);
-static void entry_changed (GtkEditable  *, gpointer);
-static void toggle_changed (GtkCheckButton *, gpointer);
 static void gatekeeper_option_changed (GtkWidget *, gpointer);
 static void register_button_clicked (GtkCheckButton *, gpointer);
 static void gatekeeper_option_type_changed_callback (GtkWidget *, gpointer);
@@ -90,7 +87,6 @@ static void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *, int,
 							options *);
 static void gnomemeeting_init_pref_window_codecs_settings (GtkWidget *, int, 
 							   options *);
-static void gnomemeeting_update_pref_window_sensitivity (void);
 static void apply_options (options *);
 static void add_codec (GtkWidget *, gchar *, gchar *);
 
@@ -361,58 +357,6 @@ static void video_bandwidth_limit_option_changed_callback (GtkToggleButton *butt
   }
 }
 
-/* DESCRIPTION  :  This callback is called when the user changes
- *                 the entry
- * BEHAVIOR     :  It updates the gconf cache
- * PRE          :  data is the gconf key
- */
-static void entry_changed (GtkEditable  *e, gpointer data)
-{
-  GConfClient *client = gconf_client_get_default ();
-  gchar *key = (gchar *) data;
- 
-  gconf_client_set_string (GCONF_CLIENT (client),
-			   key,
-			   gtk_entry_get_text (GTK_ENTRY (e)), 
-			   NULL);
-
-  gnomemeeting_update_pref_window_sensitivity ();
-}
-
-
-/* DESCRIPTION  :  This callback is called when the user changes
- *                 the adjustment value
- * BEHAVIOR     :  It updates the gconf cache
- * PRE          :  /
- */
-static void adjustment_changed (GtkAdjustment  *adj, gpointer data)
-{
-  GConfClient *client = gconf_client_get_default ();
-  gchar *key = (gchar *) data;
-
-  gconf_client_set_int (GCONF_CLIENT (client),
-			key,
-			(int) adj->value, NULL);
-}
-
-
-/* DESCRIPTION  :  This callback is called when the user changes
- *                 the toggle value
- * BEHAVIOR     :  It updates the gconf cache
- * PRE          :  /
- */
-static void toggle_changed (GtkCheckButton  *but, gpointer data)
-{
-  GConfClient *client = gconf_client_get_default ();
-  gchar *key = (gchar *) data;
-
-  gconf_client_set_bool (GCONF_CLIENT (client),
-			 key,
-			 gtk_toggle_button_get_active 
-			 (GTK_TOGGLE_BUTTON (but)), 
-			 NULL);
-}
-
 
 /* DESCRIPTION  :  This callback is called when the user changes the gk
  *                 discover type.
@@ -531,17 +475,6 @@ static void show_docklet_clicked_callback (GtkCheckButton *button, gpointer data
 			 GTK_TOGGLE_BUTTON (button)->active, 0);
 }
 
-/* DESCRIPTION  :  This callback is called when the user changes any
- *                 the pref to show/not show a popup in an incoming call
- * BEHAVIOR     :  Writes the new value to the gconf database
- * PRE          :  gpointer is a valid pointer to the gconfclient
- */
-static void show_popup_clicked_callback (GtkCheckButton *button, gpointer data)
-{
-  gconf_client_set_bool (GCONF_CLIENT (data),
-			 "/apps/gnomemeeting/view/show_popup",
-			 GTK_TOGGLE_BUTTON (button)->active, 0);
-}
 
 /* DESCRIPTION  :  This callback is called when something toggles the 
  *                 corresponding option in gconf.
@@ -702,8 +635,6 @@ void gnomemeeting_init_pref_window (int calling_state, options *opts)
 		      GTK_SIGNAL_FUNC (menu_ctree_row_seletected_callback), 
 		      notebook);
 
-  /* Update the sensitivity of widgets */
-  gnomemeeting_update_pref_window_sensitivity ();
 
   /* Now, add the logo as first page */
   pixmap = gnome_pixmap_new_from_file 
@@ -1106,26 +1037,20 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook,
   
 
   /* Popup display */
-  GtkWidget *popup = gtk_check_button_new_with_label (_("Popup window"));
-  gtk_table_attach (GTK_TABLE (table), popup, 1, 2, 0, 1,
+  pw->incoming_call_popup = gtk_check_button_new_with_label (_("Popup window"));
+  gtk_table_attach (GTK_TABLE (table), pw->incoming_call_popup, 1, 2, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);	
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (popup), 
-				gconf_client_get_bool (client,
-						       "/apps/gnomemeeting/view/show_popup", 0));
-  gtk_widget_set_sensitive (GTK_WIDGET (popup),
-			    gconf_client_key_is_writable (client,
-							  "/apps/gnomemeeting/view/show_popup", 0));
-  gtk_signal_connect (GTK_OBJECT (popup), "clicked",
-		      GTK_SIGNAL_FUNC (show_popup_clicked_callback), 
-		      (gpointer) client);
+		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_popup",
-			   view_widget_changed, popup, 0, 0);
-
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->incoming_call_popup), gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_popup", 0));
+  
+  gtk_signal_connect (GTK_OBJECT(pw->incoming_call_popup), "clicked",
+		      GTK_SIGNAL_FUNC (toggle_changed), 
+		      (gpointer) "/apps/gnomemeeting/view/show_popup");
+	
   tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, popup,
+  gtk_tooltips_set_tip (tip, pw->incoming_call_popup,
 			_("If enabled, a popup will be displayed when receiving an incoming call"), NULL);
 
 
@@ -1162,7 +1087,12 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);	
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->ht), opts->ht);
+
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->ht), gconf_client_get_bool (client, "/apps/gnomemeeting/general/h245_tunneling", 0));
+  
+  gtk_signal_connect (GTK_OBJECT(pw->ht), "clicked",
+		      GTK_SIGNAL_FUNC (toggle_changed), 
+		      (gpointer) "/apps/gnomemeeting/general/h245_tunneling");
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->ht,
@@ -1175,7 +1105,13 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);	
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->fs), opts->fs);
+
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->fs), gconf_client_get_bool (client, "/apps/gnomemeeting/general/fast_start", 0));
+  
+  gtk_signal_connect (GTK_OBJECT(pw->fs), "clicked",
+		      GTK_SIGNAL_FUNC (toggle_changed), 
+		      (gpointer) "/apps/gnomemeeting/general/fast_start");
+  
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->fs,
@@ -1199,8 +1135,12 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);	
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->incoming_call_sound), 
-				opts->incoming_call_sound);
+
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->incoming_call_sound), gconf_client_get_bool (client, "/apps/gnomemeeting/general/h245_tunneling", 0));
+  
+  gtk_signal_connect (GTK_OBJECT(pw->incoming_call_sound), "clicked",
+		      GTK_SIGNAL_FUNC (toggle_changed), 
+		      (gpointer) "/apps/gnomemeeting/general/incoming_call_sound");
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->incoming_call_sound,
@@ -2015,10 +1955,6 @@ static void gnomemeeting_init_pref_window_directories (GtkWidget *notebook,
   gtk_tooltips_set_tip (tip, pw->ldap_server,
 			_("The ILS directory to register to"), NULL);
 
-  gtk_signal_connect (GTK_OBJECT (pw->ldap_server), "changed",
-		      GTK_SIGNAL_FUNC (ldap_option_changed_callback), 
-		      (gpointer) pw);
-
 
   /* ILS port */
   label = gtk_label_new (_("LDAP Port:"));
@@ -2038,10 +1974,6 @@ static void gnomemeeting_init_pref_window_directories (GtkWidget *notebook,
   gtk_tooltips_set_tip (tip, pw->ldap_port,
 			_("The corresponding port: 389 is the standard port"), NULL);
 
- //  gtk_signal_connect (GTK_OBJECT (pw->ldap_port), "changed",
-// 		      GTK_SIGNAL_FUNC (ldap_option_changed_callback), 
-// 		      (gpointer) pw);
-
 
   /* Use ILS */ 
   pw->ldap = gtk_check_button_new_with_label (_("Register"));
@@ -2049,6 +1981,7 @@ static void gnomemeeting_init_pref_window_directories (GtkWidget *notebook,
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
+
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pw->ldap), 
 				gconf_client_get_bool (GCONF_CLIENT (client),
 						       "/apps/gnomemeeting/ldap/register", NULL));
@@ -2202,11 +2135,14 @@ static void gnomemeeting_init_pref_window_devices (GtkWidget *notebook,
   GList *audio_player_devices_list = NULL;
   GList *audio_recorder_devices_list = NULL;
   GList *video_devices_list = NULL;
+  gchar *gconf_string = NULL;
   GtkTooltips *tip;
-
+  int default_present = 0;
 
   /* Get the data */
   GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
+  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+  GConfClient *client = gconf_client_get_default ();
 
   vbox = gtk_vbox_new (FALSE, GNOME_PAD_SMALL);
 
@@ -2251,25 +2187,39 @@ static void gnomemeeting_init_pref_window_devices (GtkWidget *notebook,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
 
-  for (int i = pw->gw->audio_player_devices.GetSize () - 1 ; i >= 0; i--) {
-    if (pw->gw->audio_player_devices [i] != PString (opts->audio_player)) {
-      audio_player_devices_list = g_list_prepend 
+  /* Build the list from the auto-detected devices */
+  gconf_string =  gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/audio_player", NULL);
+
+  for (int i = gw->audio_player_devices.GetSize () - 1; i >= 0; i--) {
+  
+    if (gconf_string != NULL)
+      if (!strcmp (gconf_string, gw->audio_player_devices [i]))
+	default_present = 1;
+
+    audio_player_devices_list = g_list_prepend 
 	(audio_player_devices_list, 
-	 g_strdup (pw->gw->audio_player_devices [i]));
-    }  
+	 g_strdup (gw->audio_player_devices [i]));
   }
 
-  audio_player_devices_list = 
-    g_list_prepend (audio_player_devices_list, opts->audio_player);
   gtk_combo_set_popdown_strings (GTK_COMBO (pw->audio_player), 
 				 audio_player_devices_list);
+  gtk_entry_set_editable (GTK_ENTRY (GTK_COMBO (pw->audio_player)->entry),
+			  FALSE);
+
+  if (default_present)
+    gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (pw->audio_player)->entry),
+			gconf_string);
+    
+  g_free (gconf_string);
+
+  gtk_signal_connect (GTK_OBJECT (GTK_COMBO (pw->audio_player)->entry), 
+		      "changed",
+		      GTK_SIGNAL_FUNC (entry_changed), 
+		      (gpointer) "/apps/gnomemeeting/devices/audio_player");
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, GTK_COMBO (pw->audio_player)->entry, 
 			_("Enter the audio player device to use"), NULL);
-
-  gtk_signal_connect (GTK_OBJECT(GTK_COMBO (pw->audio_player)->entry), "changed",
-		      GTK_SIGNAL_FUNC (audio_option_changed_callback), (gpointer) pw);
 
 
   /* Audio Recorder Device */
@@ -2285,26 +2235,41 @@ static void gnomemeeting_init_pref_window_devices (GtkWidget *notebook,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
 
-  for (int i = pw->gw->audio_recorder_devices.GetSize () - 1; i >= 0; i--) {
-    if (pw->gw->audio_recorder_devices [i] != PString (opts->audio_recorder)) {
-      audio_recorder_devices_list = g_list_prepend 
+  gconf_string =  gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/audio_recorder", NULL);
+  
+  default_present = 0;
+
+  for (int i = gw->audio_recorder_devices.GetSize () - 1; i >= 0; i--) {
+  
+    if (gconf_string != NULL)
+      if (!strcmp (gconf_string, gw->audio_recorder_devices [i]))
+	default_present = 1;
+
+    audio_recorder_devices_list = g_list_prepend 
 	(audio_recorder_devices_list, 
-	 g_strdup (pw->gw->audio_recorder_devices [i]));
-    }  
+	 g_strdup (gw->audio_recorder_devices [i]));
   }
 
-  audio_recorder_devices_list = g_list_prepend (audio_recorder_devices_list, 
-						opts->audio_recorder);
   gtk_combo_set_popdown_strings (GTK_COMBO (pw->audio_recorder), 
 				 audio_recorder_devices_list);
+  gtk_entry_set_editable (GTK_ENTRY (GTK_COMBO (pw->audio_recorder)->entry),
+			  FALSE);
+
+  if (default_present)
+    gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (pw->audio_recorder)->entry),
+			gconf_string);
+    
+  g_free (gconf_string);
+
+  gtk_signal_connect (GTK_OBJECT (GTK_COMBO (pw->audio_recorder)->entry), 
+		      "changed",
+		      GTK_SIGNAL_FUNC (entry_changed), 
+		      (gpointer) "/apps/gnomemeeting/devices/audio_recorder");
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, GTK_COMBO (pw->audio_recorder)->entry, 
 			_("Enter the audio recorder device to use"), NULL);
 
-  gtk_signal_connect (GTK_OBJECT(GTK_COMBO (pw->audio_recorder)->entry), "changed",
-		      GTK_SIGNAL_FUNC (audio_option_changed_callback), (gpointer) pw);
-    
 
   /* Audio Mixers */
   label = gtk_label_new (_("Player Mixer:"));
@@ -2319,15 +2284,22 @@ static void gnomemeeting_init_pref_window_devices (GtkWidget *notebook,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
 
-  gtk_entry_set_text (GTK_ENTRY (pw->audio_player_mixer), 
-		      opts->audio_player_mixer);
+  gconf_string =  gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/audio_player_mixer", NULL);
+
+  if (gconf_string != NULL)
+    gtk_entry_set_text (GTK_ENTRY (pw->audio_player_mixer), 
+			gconf_string);
+
+  g_free (gconf_string);
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->audio_player_mixer,
 			_("The audio mixer to use for player settings"), NULL);
 
-  gtk_signal_connect (GTK_OBJECT (pw->audio_player_mixer), "changed",
-		      GTK_SIGNAL_FUNC (audio_option_changed_callback), (gpointer) pw);
+  gtk_signal_connect (GTK_OBJECT (pw->audio_player_mixer), 
+		      "changed",
+		      GTK_SIGNAL_FUNC (entry_changed), 
+		      (gpointer) "/apps/gnomemeeting/devices/audio_player_mixer");
 
 
   label = gtk_label_new (_("Recorder Mixer:"));
@@ -2342,15 +2314,22 @@ static void gnomemeeting_init_pref_window_devices (GtkWidget *notebook,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
 
-  gtk_entry_set_text (GTK_ENTRY (pw->audio_recorder_mixer), 
-		      opts->audio_recorder_mixer);
+  gconf_string =  gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/devices/audio_recorder_mixer", NULL);
+
+  if (gconf_string != NULL)
+    gtk_entry_set_text (GTK_ENTRY (pw->audio_recorder_mixer), 
+			gconf_string);
+
+  g_free (gconf_string);
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, pw->audio_recorder_mixer,
 			_("The audio mixer to use for recorder settings"), NULL);
 
-  gtk_signal_connect (GTK_OBJECT (pw->audio_recorder_mixer), "changed",
-		      GTK_SIGNAL_FUNC (audio_option_changed_callback), (gpointer) pw);
+  gtk_signal_connect (GTK_OBJECT (pw->audio_recorder_mixer), 
+		      "changed",
+		      GTK_SIGNAL_FUNC (entry_changed), 
+		      (gpointer) "/apps/gnomemeeting/devices/audio_recorder_mixer");
 
 
   /* Video device */
@@ -2430,70 +2409,6 @@ static void gnomemeeting_init_pref_window_devices (GtkWidget *notebook,
   label = gtk_label_new (_("Device Settings"));
 
   gtk_notebook_append_page (GTK_NOTEBOOK(notebook), general_frame, label);
-}
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  It updates the sensitivity of the pw->ldap toggle following if
- *                 all recquired values are present or not.
- * PRE          :  data is the gconf key
- */
-static void gnomemeeting_update_pref_window_sensitivity ()
-{
-  gchar *gconf_string = NULL;
-  BOOL no_error = TRUE;
-
-  /* Get interesting data */
-  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
-  GConfClient *client = gconf_client_get_default ();
-
-  /* Checks if the server name is ok */
-  gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
-					   "/apps/gnomemeeting/ldap/ldap_server", 
-					   NULL);
-  
-  if ((gconf_string == NULL) || (!strcmp (gconf_string, ""))) 
-    no_error = FALSE;
-  
-  g_free (gconf_string);
-  
-  /* Check if there is a first name */
-  gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
-					   "/apps/gnomemeeting/personnal_data/firstname", 
-					   NULL);
-
-  if ((gconf_string == NULL) || (!strcmp (gconf_string, ""))) 
-    no_error = FALSE;
-    
-  g_free (gconf_string);
-  
-  
-  /* Check if there is a mail */
-  gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
-					   "/apps/gnomemeeting/personnal_data/mail", 
-					   NULL);
-
-  if ((gconf_string == NULL) || (!strcmp (gconf_string, ""))) 
-    no_error = FALSE;
-  
-  g_free (gconf_string);
-
-  if (no_error) {
-    
-    gtk_widget_set_sensitive (GTK_WIDGET (pw->ldap), TRUE);
-
-    /* Make the update button sensitive only if the register button is sensitive too */
-    if (gconf_client_get_bool (GCONF_CLIENT (client), 
-			       "/apps/gnomemeeting/ldap/register", 0))
-      gtk_widget_set_sensitive (GTK_WIDGET (pw->directory_update_button), TRUE);
-    else
-      gtk_widget_set_sensitive (GTK_WIDGET (pw->directory_update_button), FALSE);
-  }
-  else {
-
-    gtk_widget_set_sensitive (GTK_WIDGET (pw->ldap), FALSE);
-    gtk_widget_set_sensitive (GTK_WIDGET (pw->directory_update_button), FALSE);
-  }
 }
 
 
@@ -2603,51 +2518,6 @@ static void apply_options (options *opts)
 
  
   /* Change the audio mixer source */
-  if (pw->audio_mixer_changed) {
-    gchar *text;
-    
-    /* We set the new mixer in the object as data, because me do not want
-       to keep it in memory */
-    gtk_object_remove_data (GTK_OBJECT (pw->gw->adj_play), 
-			    "audio_player_mixer");
-    gtk_object_set_data (GTK_OBJECT (pw->gw->adj_play), "audio_player_mixer", 
-			 g_strdup (opts->audio_player_mixer));
-
-    gtk_object_remove_data (GTK_OBJECT (pw->gw->adj_rec), 
-			    "audio_recorder_mixer");
-    gtk_object_set_data (GTK_OBJECT (pw->gw->adj_rec), "audio_recorder_mixer", 
-			 g_strdup (opts->audio_recorder_mixer));
-
-    /* We are sure that those mixers are ok, it has been checked */
-    gnomemeeting_volume_get (opts->audio_player_mixer, 0, &vol_play);
-    gnomemeeting_volume_get (opts->audio_recorder_mixer, 1, &vol_rec);
-
-    gtk_adjustment_set_value (GTK_ADJUSTMENT (pw->gw->adj_play),
-			      vol_play / 257);
-    gtk_adjustment_set_value (GTK_ADJUSTMENT (pw->gw->adj_rec),
-			      vol_rec / 257);
-       
-    /* Set recording source and set micro to record */
-    MyApp->Endpoint()->SetSoundChannelPlayDevice(opts->audio_player);
-    MyApp->Endpoint()->SetSoundChannelRecordDevice(opts->audio_recorder);
-
-    /* Translators: This is shown in the history. */
-    text = g_strdup_printf (_("Set Audio player device to %s"), 
-			    opts->audio_player);
-    gnomemeeting_log_insert (text);
-    g_free (text);
-
-    /* Translators: This is shown in the history. */
-    text = g_strdup_printf (_("Set Audio recorder device to %s"), 
-			    opts->audio_recorder);
-    gnomemeeting_log_insert (text);
-    g_free (text);
-    
-    gnomemeeting_set_recording_source (opts->audio_recorder_mixer, 0); 
-    
-    pw->audio_mixer_changed = 0;
-  }
-
 
   /* Change video settings if vid_tr is enables */
   if (pw->vid_tr_changed)

@@ -49,6 +49,9 @@ static void entry_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static void tr_vq_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static void tr_ub_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static void register_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
+static void audio_mixer_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
+static void audio_device_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
+static void gnomemeeting_update_pref_window_sensitivity (void);
 
 
 /* DESCRIPTION  :  This callback is called to update the fps limitation.
@@ -157,17 +160,133 @@ static void entry_changed_nt (GConfClient *client, guint cid,
 			      GConfEntry *entry, gpointer data)
 {
   GtkWidget *e = GTK_WIDGET (data);
-  guint signal_id;
-
-  cout << "ici" << endl << flush;
+  
 
   if (entry->value->type == GCONF_VALUE_STRING) {
    
     /* We set the new value for the widget */
-    signal_id = gtk_signal_lookup ("changed", GTK_TYPE_ENTRY);
-    gtk_signal_handler_block (GTK_OBJECT (e), signal_id);
-    gtk_entry_set_text (GTK_ENTRY (e), gconf_value_get_string (entry->value));
-    gtk_signal_handler_unblock (GTK_OBJECT (e), signal_id);
+    /*gtk_signal_handler_block_by_func (GTK_OBJECT (e),
+				      GTK_SIGNAL_FUNC (entry_changed), 
+				      (gpointer) "/apps/gnomemeeting/personnal_data/firstname"); */
+    cout << "Lumi says: Please fix me" << endl << flush;
+    /*gtk_signal_handler_unblock_by_func (GTK_OBJECT (e),
+					GTK_SIGNAL_FUNC (entry_changed), 
+					(gpointer) "/apps/gnomemeeting/personnal_data/firstname");*/
+  
+  }
+}
+
+
+/* DESCRIPTION  :  This notifier is called when the gconf database data
+ *                 associated with the mixers changes.
+ * BEHAVIOR     :  It updates the widget, updates the sliders.
+ * PRE          :  /
+ */
+static void audio_mixer_changed_nt (GConfClient *client, guint cid, 
+				    GConfEntry *entry, gpointer data)
+{
+  GtkWidget *e = GTK_WIDGET (data);
+  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
+  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+  int vol_play = 0, vol_rec = 0;
+  gchar *player = NULL, *recorder = NULL;
+  gchar *player_mixer = NULL, *recorder_mixer = NULL;
+  gchar *text = NULL;
+
+  /* We need to test if the string entry can be valid */ 
+  if ((entry->value->type == GCONF_VALUE_STRING)
+      && ((!strcmp (gconf_value_get_string (entry->value), "/dev/mixer"))
+      || (!strcmp (gconf_value_get_string (entry->value), "/dev/mixer3"))
+      || (!strcmp (gconf_value_get_string (entry->value), "/dev/mixer2"))
+      || (!strcmp (gconf_value_get_string (entry->value), "/dev/mixer1"))
+      || (!strcmp (gconf_value_get_string (entry->value), "/dev/mixer0")))) {
+   
+
+    /* First we check if the device is in the combo list and
+       add it as default in the pref window if he is present */
+    /* FIX ME
+      gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (pw->audio_player)->entry),
+                        gconf_value_get_string (entry->value));
+    */
+
+    player_mixer = gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_player_mixer", NULL);
+    recorder_mixer = gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_recorder_mixer", NULL);
+
+    player = gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_player", NULL);
+    recorder = gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_recorder", NULL);
+
+
+    /* Get the volumes for the mixers */
+    gnomemeeting_volume_get (player_mixer, 0, &vol_play);
+    gnomemeeting_volume_get (recorder_mixer, 1, &vol_rec);
+
+    gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_play),
+                              vol_play / 257);
+    gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_rec),
+                              vol_rec / 257);
+
+    /* Set recording source and set micro to record */
+    //    MyApp->Endpoint()->SetSoundChannelPlayDevice (player);
+    //MyApp->Endpoint()->SetSoundChannelRecordDevice (recorder);
+
+    /* Translators: This is shown in the history. */
+    text = g_strdup_printf (_("Set Audio Mixer for player to %s"),
+                            player_mixer);
+    gnomemeeting_log_insert (text);
+    g_free (text);
+
+    /* Translators: This is shown in the history. */
+    text = g_strdup_printf (_("Set Audio Mixer for recorder to %s"),
+                            recorder_mixer);
+    gnomemeeting_log_insert (text);
+    g_free (text);
+
+    gnomemeeting_set_recording_source (recorder_mixer, 0);
+  
+    g_free (player);
+    g_free (recorder);
+    g_free (player_mixer);
+    g_free (recorder_mixer);
+  }
+}
+
+
+/* DESCRIPTION  :  This notifier is called when the gconf database data
+ *                 associated with the audio devices changes.
+ * BEHAVIOR     :  It updates the widget, updates the endpoint and displays
+ *                 a message in the history.
+ * PRE          :  /
+ */
+static void audio_device_changed_nt (GConfClient *client, guint cid, 
+				     GConfEntry *entry, gpointer data)
+{
+  gchar *text;
+  gchar *player = NULL, *recorder = NULL;
+  
+  if (entry->value->type = GCONF_VALUE_STRING) {
+
+    player = gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_player", NULL);
+    recorder = gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_recorder", NULL);
+
+    /* Set recording source and set micro to record */
+    if (player != NULL)
+      MyApp->Endpoint()->SetSoundChannelPlayDevice (player);
+    if (recorder != NULL)
+      MyApp->Endpoint()->SetSoundChannelRecordDevice (recorder);
+
+    /* Translators: This is shown in the history. */
+    text = g_strdup_printf (_("Set Audio Player to %s"),
+                            player);
+    gnomemeeting_log_insert (text);
+    g_free (text);
+
+    /* Translators: This is shown in the history. */
+    text = g_strdup_printf (_("Set Audio Recorder to %s"),
+                            recorder);
+    gnomemeeting_log_insert (text);
+    g_free (text);
+    g_free (player);
+    g_free (recorder);
   }
 }
 
@@ -293,11 +412,147 @@ void gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, "/apps/gnomemeeting/personnal_data/firstname",
 			   entry_changed_nt, pw->firstname, 0, 0);
 
+  gconf_client_notify_add (client, "/apps/gnomemeeting/personnal_data/mail",
+			   entry_changed_nt, pw->mail, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/personnal_data/surname",
+			   entry_changed_nt, pw->surname, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/personnal_data/location",
+			   entry_changed_nt, pw->location, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/personnal_data/comment",
+			   entry_changed_nt, pw->comment, 0, 0);
+
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/auto_answer",
 			   toggle_changed_nt, pw->aa, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/do_not_disturb",
 			   toggle_changed_nt, pw->dnd, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/general/h245_tunneling",
+			   toggle_changed_nt, pw->ht, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/general/fast_start",
+			   toggle_changed_nt, pw->fs, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/general/incoming_call_sound", toggle_changed_nt, pw->incoming_call_sound, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_popup", toggle_changed_nt, pw->incoming_call_popup, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_player", audio_device_changed_nt, pw->audio_player, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_recorder", audio_device_changed_nt, pw->audio_recorder, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_player_mixer", audio_mixer_changed_nt, pw->audio_player_mixer, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_recorder_mixer", audio_mixer_changed_nt, pw->audio_recorder_mixer, 0, 0);
+}
+
+
+void entry_changed (GtkEditable  *e, gpointer data)
+{
+  GConfClient *client = gconf_client_get_default ();
+  gchar *key = (gchar *) data;
+
+  gconf_client_set_string (GCONF_CLIENT (client),
+                           key,
+                           gtk_entry_get_text (GTK_ENTRY (e)),
+                           NULL);
+
+  gnomemeeting_update_pref_window_sensitivity ();
+}
+
+
+void adjustment_changed (GtkAdjustment *adj, gpointer data)
+{
+  GConfClient *client = gconf_client_get_default ();
+  gchar *key = (gchar *) data;
+
+  gconf_client_set_int (GCONF_CLIENT (client),
+                        key,
+                        (int) adj->value, NULL);
+}
+
+
+void toggle_changed (GtkCheckButton *but, gpointer data)
+{
+  GConfClient *client = gconf_client_get_default ();
+  gchar *key = (gchar *) data;
+
+  gconf_client_set_bool (GCONF_CLIENT (client),
+                         key,
+                         gtk_toggle_button_get_active
+                         (GTK_TOGGLE_BUTTON (but)),
+                         NULL);
+}
+
+
+
+/* DESCRIPTION  :  /                                                          
+ * BEHAVIOR     :  It updates the sensitivity of the pw->ldap toggle following
+ *                 if all recquired values are present or not.                 
+ * PRE          :  data is the gconf key                                      
+ */
+static void gnomemeeting_update_pref_window_sensitivity ()
+{
+  gchar *gconf_string = NULL;
+  BOOL no_error = TRUE;
+
+  /* Get interesting data */
+  GM_pref_window_widgets *pw = gnomemeeting_get_pref_window (gm);
+  GConfClient *client = gconf_client_get_default ();
+  /* Checks if the server name is ok */
+  gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
+                                           "/apps/gnomemeeting/ldap/ldap_server\
+",
+                                           NULL);
+
+  if ((gconf_string == NULL) || (!strcmp (gconf_string, "")))
+    no_error = FALSE;
+
+  g_free (gconf_string);
+
+  /* Check if there is a first name */
+  gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
+                                           "/apps/gnomemeeting/personnal_data/f\
+irstname",
+                                           NULL);
+
+  if ((gconf_string == NULL) || (!strcmp (gconf_string, "")))
+    no_error = FALSE;
+
+  g_free (gconf_string);
+
+  /* Check if there is a mail */
+  gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
+                                           "/apps/gnomemeeting/personnal_data/m\
+ail",
+                                           NULL);
+
+  if ((gconf_string == NULL) || (!strcmp (gconf_string, "")))
+    no_error = FALSE;
+
+  g_free (gconf_string);
+
+  if (no_error) {
+
+    gtk_widget_set_sensitive (GTK_WIDGET (pw->ldap), TRUE);
+    /* Make the update button sensitive only if the register button is sensitiv\
+       e too */
+    if (gconf_client_get_bool (GCONF_CLIENT (client),
+                               "/apps/gnomemeeting/ldap/register", 0))
+      gtk_widget_set_sensitive (GTK_WIDGET (pw->directory_update_button), TRUE)\
+	;
+    else
+      gtk_widget_set_sensitive (GTK_WIDGET (pw->directory_update_button), FALSE\
+				);
+  }
+  else {
+
+    gtk_widget_set_sensitive (GTK_WIDGET (pw->ldap), FALSE);
+    gtk_widget_set_sensitive (GTK_WIDGET (pw->directory_update_button), FALSE);
+  }
 }
 
 

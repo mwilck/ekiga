@@ -189,6 +189,7 @@ gint expose_event (GtkWidget *widget, GdkEventExpose *event, gpointer data)
  */
 void audio_volume_changed (GtkAdjustment *adjustment, gpointer data)
 {
+  GConfClient *client = gconf_client_get_default ();
   int vol_play, vol_rec;
   char *audio_recorder_mixer;
   char *audio_player_mixer;
@@ -199,14 +200,14 @@ void audio_volume_changed (GtkAdjustment *adjustment, gpointer data)
   vol_rec =  (int) (GTK_ADJUSTMENT (gw->adj_rec)->value) * 257;
 
   /* return a pointer to the data, not a copy => no need to free */
-  audio_player_mixer = (gchar *) 
-    gtk_object_get_data (GTK_OBJECT (gw->adj_play), "audio_player_mixer");
-
-  audio_recorder_mixer = (gchar *) 
-    gtk_object_get_data (GTK_OBJECT (gw->adj_rec), "audio_recorder_mixer");
+  audio_player_mixer = gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_player_mixer", NULL);
+  audio_recorder_mixer = gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_recorder_mixer", NULL);
   
   gnomemeeting_volume_set (audio_player_mixer, 0, &vol_play);
   gnomemeeting_volume_set (audio_recorder_mixer, 1, &vol_rec);
+
+  g_free (audio_player_mixer);
+  g_free (audio_recorder_mixer);
 }
 
 
@@ -1145,6 +1146,7 @@ void gnomemeeting_init_main_window_audio_settings (options *opts)
   int vol = 0;
 
   GtkWidget *frame;
+  GConfClient *client = gconf_client_get_default ();
 
   GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
 
@@ -1162,9 +1164,10 @@ void gnomemeeting_init_main_window_audio_settings (options *opts)
 		    (GtkAttachOptions) NULL,
 		    GNOME_PAD_SMALL, 0);
 
-  gnomemeeting_volume_get (opts->audio_player_mixer, 0, &vol);
-  vol = vol * 100 / 25700;
-  gw->adj_play = gtk_adjustment_new (vol, 0.0, 100.0, 1.0, 5.0, 1.0);
+  gchar *player_mixer = gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_player_mixer", NULL);
+  gnomemeeting_volume_get (player_mixer, 0, &vol);
+  g_free (player_mixer);
+  gw->adj_play = gtk_adjustment_new (vol / 257, 0.0, 100.0, 1.0, 5.0, 1.0);
   hscale_play = gtk_hscale_new (GTK_ADJUSTMENT (gw->adj_play));
   gtk_scale_set_value_pos (GTK_SCALE (hscale_play),GTK_POS_RIGHT); 
   gtk_scale_set_draw_value (GTK_SCALE (hscale_play), TRUE);
@@ -1181,9 +1184,10 @@ void gnomemeeting_init_main_window_audio_settings (options *opts)
 		    (GtkAttachOptions) NULL,
 		    GNOME_PAD_SMALL, 0);
 
-  gnomemeeting_volume_get (opts->audio_recorder_mixer, 1, &vol);
-  vol = vol * 100 / 25700;
-  gw->adj_rec = gtk_adjustment_new (vol, 0.0, 100.0, 1.0, 5.0, 1.0);
+  gchar *recorder_mixer = gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_recorder_mixer", NULL);
+  gnomemeeting_volume_get (recorder_mixer, 0, &vol);
+  g_free (recorder_mixer);
+  gw->adj_rec = gtk_adjustment_new (vol / 257, 0.0, 100.0, 1.0, 5.0, 1.0);
   hscale_rec = gtk_hscale_new (GTK_ADJUSTMENT (gw->adj_rec));
   gtk_scale_set_value_pos (GTK_SCALE (hscale_rec),GTK_POS_RIGHT); 
   gtk_scale_set_draw_value (GTK_SCALE (hscale_rec), TRUE);

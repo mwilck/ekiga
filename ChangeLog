@@ -1,3 +1,12 @@
+2001-12-23  Damien Sandras  <dsandras@seconix.com>
+
+	* src/config.cpp, src/connection.cpp, src/endpoint.cpp, src/main_window.cpp,
+	src/pre_window.cpp: Too many changes to detail here, but added gconf support
+	for the audio devices and the mixers (fixed bug in pwlib too), for the
+	fast start, H245 Tunneling option, for the popup, for the incoming call 
+	sound.
+	* src/e-splash.cpp: Changed position of the icons.
+	
 2001-12-19  Damien Sandras  <dsandras@seconix.com>
 
 	* src/pref_window.cpp, src/config.cpp, src/main_window.cpp: 
@@ -8,10 +17,8 @@
 2001-12-19  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* src/e-splash.cpp (ICON_Y): Change pixmap location
-
 	* src/main_window.cpp: Removed #include "splash.h"
 	(gnomemeeting_init): Move to evo splash
-
 	* src/Makefile.am (gnomemeeting_SOURCES): Don't compile
 	splash.cpp and splash.h anymore
 
@@ -24,7 +31,6 @@
 
 	* Makefile.am (install-schemas): shutdown gconf after
 	installing the schema
-
 	* gnomemeeting.schema: Corrected some little typos
 
 2001-12-17  Miguel Rodríguez Pérez  <migrax@terra.es>

@@ -276,6 +276,7 @@ BOOL GMH323EndPoint::StartListener ()
 
 BOOL GMH323EndPoint::Initialise ()
 {
+  GConfClient *client = gconf_client_get_default ();
   gchar *name = NULL;
 
   /* Set the various options */
@@ -296,7 +297,7 @@ BOOL GMH323EndPoint::Initialise ()
   }
 
   disableFastStart = 1;
-  disableH245Tunneling = !opts->ht;
+  disableH245Tunneling = !gconf_client_get_bool (client, "/apps/gnomemeeting/general/h245_tunneling", 0);
   
   received_video_device = NULL;
   transmitted_video_device = NULL;
@@ -543,6 +544,7 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection, 
 						const PString & token)
 {
+  GConfClient *client = gconf_client_get_default ();
   PString name = connection.GetRemotePartyName();
   PString app = connection.GetRemoteApplication ();
   const char * remotePartyName = (const char *) name;
@@ -566,7 +568,7 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 
   gnome_appbar_push (GNOME_APPBAR (gw->statusbar), _("Connected"));
 
-  if (opts->fs == 1)    
+  if (gconf_client_get_bool (client, "/apps/gnomemeeting/general/fast_start", 0))    
     gnomemeeting_log_insert (_("Fast start enabled"));
   else
     gnomemeeting_log_insert (_("Fast start disabled"));

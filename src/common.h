@@ -121,7 +121,7 @@ struct _GM_window_widgets
   GtkWidget *ldap_window;
   GtkWidget *preview_button;
   GtkWidget *silence_detection_button;
-  GtkWidget *video_chan_button;
+ GtkWidget *video_chan_button;
   GtkWidget *audio_chan_button;
   GList *old_contacts_list;
   GtkWidget *left_arrow;
@@ -180,7 +180,7 @@ struct _GM_pref_window_widgets
   // Toggle to show the notebook at startup time
   GtkWidget *show_notebook;
   // Toggle to popup a window when receiving an incoming call
-  GtkWidget *popup;
+  GtkWidget *incoming_call_popup;
   // Toggle to enable video preview or not
   GtkWidget *video_preview;
   // Toggle to play or not a sound when receiving an incoming call

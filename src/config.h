@@ -49,6 +49,30 @@
 void gnomemeeting_init_gconf (GConfClient *);
 
 
+/* DESCRIPTION  :  This callback is called when the user changes
+ *                 an entry
+ * BEHAVIOR     :  Updates the gconf cache
+ * PRE          :  data is the gconf key
+ */
+void entry_changed (GtkEditable  *, gpointer);
+
+
+/* DESCRIPTION  :  This callback is called when the user changes               
+ *                 the adjustment value                                        
+ * BEHAVIOR     :  It updates the gconf cache                                  
+ * PRE          :  /                                                           
+ */
+void adjustment_changed (GtkAdjustment  *, gpointer);
+
+
+/* DESCRIPTION  :  This callback is called when the user changes               
+ *                 the toggle value                                            
+ * BEHAVIOR     :  It updates the gconf cache                                  
+ * PRE          :  /                                                           
+ */
+void toggle_changed (GtkCheckButton  *, gpointer);
+
+
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Store the configuration parameters from the 
  *                 options structure in the gnomemeeting config file.

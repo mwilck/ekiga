@@ -93,7 +93,7 @@
       <applyto>/apps/gnomemeeting/personnal_data/firstname</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
-      <default> </default>
+      <default></default>
       <locale name="C">
 	<short>First Name</short>
 	<long>The user's first name that will be used in the directories</long>
@@ -104,7 +104,7 @@
       <applyto>/apps/gnomemeeting/personnal_data/lastname</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
-      <default> </default>
+      <default></default>
       <locale name="C">
 	<short>Last Name</short>
 	<long>The user's first name that will be used in the directories</long>
@@ -115,7 +115,7 @@
       <applyto>/apps/gnomemeeting/personnal_data/comment</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
-      <default> </default>
+      <default></default>
       <locale name="C">
 	<short>Comment</short>
 	<long>A comment that will be listed in LDAP directories</long>
@@ -126,7 +126,7 @@
       <applyto>/apps/gnomemeeting/personnal_data/location</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
-      <default> </default>
+      <default></default>
       <locale name="C">
 	<short>Location</short>
 	<long>The Location that will be published in the LDAP directories</long>
@@ -137,7 +137,7 @@
       <applyto>/apps/gnomemeeting/personnal_data/mail</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
-      <default> </default>
+      <default></default>
       <locale name="C">
 	<short>E-Mail address</short>
 	<long>The E-Mail address that will be listed in the directories</long>
@@ -185,6 +185,83 @@
       <locale name="C">
 	<short>Do not disturb</short>
 	<long>If enabled, incoming calls will be automatically rejected</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/general/h245_tunneling</key>
+      <applyto>/apps/gnomemeeting/general/h245_tunneling</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>bool</type>
+      <default>0</default>
+      <locale name="C">
+	<short>H.245 Tunneling</short>
+	<long>If enabled, call will be established with H.245 Tunneling</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/general/fast_start</key>
+      <applyto>/apps/gnomemeeting/general/fast_start</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>bool</type>
+      <default>0</default>
+      <locale name="C">
+	<short>Fast Start</short>
+	<long>If enabled, call will be established in Fast Start mode</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/general/incoming_call_sound</key>
+      <applyto>/apps/gnomemeeting/general/incoming_call_sound</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>bool</type>
+      <default>1</default>
+      <locale name="C">
+	<short>Incoming Call Sound</short>
+	<long>If enabled, a sound is played on incoming calls</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/devices/audio_player</key>
+      <applyto>/apps/gnomemeeting/devices/audio_player</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default></default>
+      <locale name="C">
+	<short>Audio player</short>
+	<long>The device to use to play audio</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/devices/audio_recorder</key>
+      <applyto>/apps/gnomemeeting/devices/audio_recorder</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default></default>
+      <locale name="C">
+	<short>Audio recorder</short>
+	<long>The device to use to record audio</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/devices/audio_player_mixer</key>
+      <applyto>/apps/gnomemeeting/devices/audio_player_mixer</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default>/dev/mixer</default>
+      <locale name="C">
+	<short>Audio player Mixer</short>
+	<long>The mixer to use for the device that is used to play audio</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/devices/audio_recoder_mixer</key>
+      <applyto>/apps/gnomemeeting/devices/audio_recorder_mixer</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default>/dev/mixer</default>
+      <locale name="C">
+	<short>Audio player Mixer</short>
+	<long>The mixer to use for the device that is used to record audio</long>
       </locale>
     </schema>
   </schemalist>
