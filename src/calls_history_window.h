@@ -77,10 +77,13 @@ void gm_calls_history_clear (int);
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Returns the list of all contacts for all calls. 
+ * BEHAVIOR     :  Returns the list of the last n contacts for all calls, 
+ * 		   unique or not. 
  * PRE          :  /
  */
-GSList *gm_calls_history_get_calls (int);
+GSList *gm_calls_history_get_calls (int,
+				    int,
+				    gboolean);
 
 
 

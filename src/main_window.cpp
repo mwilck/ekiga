@@ -3453,7 +3453,7 @@ gm_main_window_urls_history_update (GtkWidget *main_window)
   g_value_set_int (&val, -1);
   g_object_set_property (G_OBJECT (mw->combo), "active", &val);
 
-  c2 = gm_calls_history_get_calls (PLACED_CALL);
+  c2 = gm_calls_history_get_calls (PLACED_CALL, 10, TRUE);
 
   history_model = 
     gtk_combo_box_get_model (GTK_COMBO_BOX (mw->combo));
@@ -3465,8 +3465,7 @@ gm_main_window_urls_history_update (GtkWidget *main_window)
     c = GM_CONTACT (iter->data);
     if (c->url && strcmp (c->url, "")) {
 
-      if (cpt >= g_slist_length (c2) - 10)
-	gtk_combo_box_prepend_text (GTK_COMBO_BOX (mw->combo), c->url);
+      gtk_combo_box_prepend_text (GTK_COMBO_BOX (mw->combo), c->url);
       cpt++;
     }
     
@@ -3491,7 +3490,7 @@ gm_main_window_urls_history_update (GtkWidget *main_window)
   
   
   /* Get the full calls history */
-  c2 = gm_calls_history_get_calls (MAX_VALUE_CALL);
+  c2 = gm_calls_history_get_calls (MAX_VALUE_CALL, -1, FALSE);
   contacts = g_slist_concat (c1, c2);
 
   completion = 

@@ -1,5 +1,13 @@
 2004-10-16  Damien Sandras  <dsandras@gnome.org>
 
+	* src/calls_history_window.cpp, src/calls_history_window.h, 
+	src/main_window.cpp: Only display the last 10 unique calls in the URL
+	bar. Changed API so that the number of returned calls can be
+	specified, with the fact that the list should only contain items with
+	unique URLs or not.
+
+2004-10-16  Damien Sandras  <dsandras@gnome.org>
+
 	* src/common.h, src/gdkvideoio.cpp, src/main_window.cpp: Added
 	"Side-By-Side" view to display remote and local video side-by-side.
 	Fixes suggestion #131123.

@@ -45,6 +45,7 @@
 #include "calls_history_window.h"
 #include "gnomemeeting.h"
 #include "callbacks.h" 
+#include "urlhandler.h"
 #include "misc.h"
 
 #include <contacts/gm_contacts.h>
@@ -187,6 +188,14 @@ static void add_contact_cb (GtkWidget *,
  */
 static GmContact *dnd_get_contact (GtkWidget *widget, 
 				   gpointer data);
+
+
+/* DESCRIPTION  :  This function is called to compare 1 GmContact to an URL.
+ * BEHAVIOR     :  Returns 0 if both URLs are equal.
+ * PRE          :  /
+ */
+static gint contact_compare_cb (gconstpointer a,
+				gconstpointer b);
 
 
 /* DESCRIPTION  :  This callback is called when one of the calls history 	 *                 config value changes. 	 
@@ -572,6 +581,29 @@ add_contact_cb (GtkWidget *w,
 }
 
 
+static gint 
+contact_compare_cb (gconstpointer a,
+		    gconstpointer b)
+{
+  GmContact *aa = NULL;
+  
+  if (!a || !b)
+    return 1;
+  
+  aa = GM_CONTACT (a);
+  
+  if (aa->url && b) {
+  
+    if (GMURL (aa->url) == GMURL ((char *) b))
+      return 0;
+    else
+      return 1;
+  }
+  else 
+    return 1;
+}
+
+
 static void 	 
 calls_history_changed_nt (gpointer id, 	 
 			  GmConfEntry *entry, 	 
@@ -847,7 +879,9 @@ gm_calls_history_clear (int i)
 
 
 GSList *
-gm_calls_history_get_calls (int j)
+gm_calls_history_get_calls (int j,
+			    int n,
+			    gboolean unique)
 {
   GmContact *contact = NULL;
 
@@ -856,6 +890,10 @@ gm_calls_history_get_calls (int j)
 
   gchar **call_data = NULL;
   gchar *conf_key = NULL;
+
+  gboolean found = FALSE;
+  
+  int cpt = 0;
 
 
   for (int i = 0 ; i < MAX_VALUE_CALL ; i++) {
@@ -880,7 +918,19 @@ gm_calls_history_get_calls (int j)
 	  if (call_data [2])
 	    contact->url = g_strdup (call_data [2]);
 
-	  result = g_slist_append (result, (gpointer) contact);
+	  if (n == -1 || cpt < n) {
+	  
+	    found = (g_slist_find_custom (result, 
+					  (gconstpointer) contact->url,
+					  (GCompareFunc) contact_compare_cb) 
+		     != NULL);
+
+	    if ((unique && !found) || (!unique)) {
+	      
+	      result = g_slist_append (result, (gpointer) contact);
+	      cpt ++;
+	    }
+	  }
 	}
 
 	g_strfreev (call_data);
