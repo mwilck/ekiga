@@ -87,8 +87,8 @@ static void video_preview_changed_nt (GConfClient *, guint, GConfEntry *,
 				      gpointer);
 static void audio_codecs_list_changed_nt (GConfClient *, guint, GConfEntry *, 
 					  gpointer);
-static void contacts_servers_list_changed_nt (GConfClient *, guint,
-					      GConfEntry *, gpointer);
+static void contacts_list_changed_nt (GConfClient *, guint, GConfEntry *, 
+				      gpointer);
 static void view_widget_changed_nt (GConfClient *, guint, GConfEntry *, 
 				    gpointer);
 static void audio_codec_setting_changed_nt (GConfClient *, guint, 
@@ -912,8 +912,8 @@ static void audio_codecs_list_changed_nt (GConfClient *client, guint cid,
  * BEHAVIOR     :  It updates the tree_view widget and the notebook pages.
  * PRE          :  /
  */
-static void contacts_servers_list_changed_nt (GConfClient *client, guint cid,
-					      GConfEntry *e, gpointer data)
+static void contacts_list_changed_nt (GConfClient *client, guint cid,
+				      GConfEntry *e, gpointer data)
 { 
   GmLdapWindow *lw = NULL;
 
@@ -922,29 +922,35 @@ static void contacts_servers_list_changed_nt (GConfClient *client, guint cid,
   GtkTreeModel *model = NULL;
   GtkTreeIter iter, child_iter;
   
-  GSList *ldap_servers_list = NULL;
-  GSList *ldap_servers_list_iter = NULL;
+  GSList *contacts_list = NULL;
+  GSList *contacts_list_iter = NULL;
 
   gboolean non_empty = false;
   gboolean found = false;
   int cpt = 0;
   int page_num = -1;
+  const char *gconf_key = NULL;
+  gchar *path = NULL;
   
   
   if (e->value->type == GCONF_VALUE_LIST) {
-   
+  
     gdk_threads_enter ();
-
+    gconf_key = gconf_entry_get_key (e);
+ 
     lw = gnomemeeting_get_ldap_window (gm);
-    ldap_servers_list = 
-      gconf_client_get_list (client, CONTACTS_SERVERS_KEY "ldap_servers_list",
-			     GCONF_VALUE_STRING, NULL);   
+    contacts_list = 
+      gconf_client_get_list (client, gconf_key, GCONF_VALUE_STRING, NULL);   
     model = gtk_tree_view_get_model (GTK_TREE_VIEW (lw->tree_view));
     
     /* Populate the GtkTreeStore and create the corresponding notebook 
      * pages */
-    ldap_servers_list_iter = ldap_servers_list;
-    gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter);
+    contacts_list_iter = contacts_list;
+    path = g_strdup_printf ("%d", GPOINTER_TO_INT (data));
+    gtk_tree_model_get_iter_from_string (GTK_TREE_MODEL (model), &iter, 
+					 path);
+    g_free (path);
+    
     non_empty = 
       gtk_tree_model_iter_children (GTK_TREE_MODEL (model), 
 				    &child_iter, &iter);
@@ -954,22 +960,22 @@ static void contacts_servers_list_changed_nt (GConfClient *client, guint cid,
       gtk_tree_store_remove (GTK_TREE_STORE (model), &child_iter);
   
     /* Clean the notebook from pages that disappeared from the list */
-    while ((page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), 
+/*    while ((page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), 
 					      cpt))){
       gchar *server_name2 =  
 	(gchar *) g_object_get_data (G_OBJECT (page), "server_name");
 
-      ldap_servers_list_iter = ldap_servers_list;
+      contacts_list_iter = contacts_list;
       found = false;
-      while (server_name2 && ldap_servers_list_iter) {
+      while (server_name2 && contacts_list_iter) {
 
-	if (!strcmp (server_name2, (char *) ldap_servers_list_iter->data)) {
+	if (!strcmp (server_name2, (char *) contacts_list_iter->data)) {
 	 
 	  found = true;
 	  break;
 	}
       	
-	ldap_servers_list_iter = ldap_servers_list_iter->next;
+	contacts_list_iter = contacts_list_iter->next;
       }
   
       if (!found) {
@@ -980,13 +986,13 @@ static void contacts_servers_list_changed_nt (GConfClient *client, guint cid,
       
       cpt++;
     }
-
+*/
     
-    ldap_servers_list_iter = ldap_servers_list;
+    contacts_list_iter = contacts_list;
     /* Add all servers to the notebook if they are not already present */
-    while (ldap_servers_list_iter) {
+    while (contacts_list_iter) {
 
-      const char *server_name = (const char *) ldap_servers_list_iter->data;
+      const char *server_name = (const char *) contacts_list_iter->data;
  
       /* This will only add a page to the notebook if there was no page
        * for the given server name */
@@ -996,7 +1002,7 @@ static void contacts_servers_list_changed_nt (GConfClient *client, guint cid,
       gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
       gtk_tree_store_set (GTK_TREE_STORE (model), &child_iter, 0, 
 			  server_name, 1, server_name, 2, page_num, -1);
-      ldap_servers_list_iter = ldap_servers_list_iter->next;
+      contacts_list_iter = contacts_list_iter->next;
 
       cpt++;
     }
@@ -1005,7 +1011,7 @@ static void contacts_servers_list_changed_nt (GConfClient *client, guint cid,
  
     gdk_threads_leave ();
 
-    g_slist_free (ldap_servers_list);
+    g_slist_free (contacts_list);
   }
 }
 
@@ -1420,7 +1426,11 @@ void gnomemeeting_init_gconf (GConfClient *client)
 
   /* LDAP Window */
   gconf_client_notify_add (client, CONTACTS_SERVERS_KEY "ldap_servers_list",
-			   contacts_servers_list_changed_nt, NULL, 0, 0);	     
+			   contacts_list_changed_nt, 
+			   GINT_TO_POINTER (CONTACTS_SERVERS), 0, 0);	    
+  gconf_client_notify_add (client, CONTACTS_GROUPS_KEY "groups_list",
+			   contacts_list_changed_nt, 
+			   GINT_TO_POINTER (CONTACTS_GROUPS), 0, 0);	     
 }
 
 

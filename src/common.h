@@ -48,6 +48,7 @@
 #define AUDIO_SETTINGS_KEY  "/apps/gnomemeeting/audio_settings/"
 #define DEVICES_KEY         "/apps/gnomemeeting/devices/"
 #define CONTACTS_SERVERS_KEY "/apps/gnomemeeting/contacts/servers/"
+#define CONTACTS_GROUPS_KEY "/apps/gnomemeeting/contacts/groups/"
 
 #define GM_CIF_WIDTH   352
 #define GM_CIF_HEIGHT  288
@@ -90,6 +91,8 @@ typedef struct _GmLdapWindow GmLdapWindow;
 typedef struct _GmTextChat GmTextChat;
 typedef struct _GmRtpData GmRtpData;
 typedef struct _GmCommandLineOptions GmCommandLineOptions;
+
+enum {CONTACTS_SERVERS, CONTACTS_GROUPS};
 
 
 struct _GmTextChat

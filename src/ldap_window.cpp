@@ -57,28 +57,45 @@ static void tree_selection_changed_cb (GtkTreeSelection *, gpointer);
 /* GTK Callbacks */
 
 static void
-new_server_callback (GtkWidget *widget, gpointer data)
+new_contact_callback (GtkWidget *widget, gpointer data)
 {
   GmWindow *gw = NULL;
   GtkWidget *dialog = NULL;
   GtkWidget *label = NULL;
   GtkWidget *entry = NULL;
   GConfClient *client = NULL;
-  GSList *ldap_servers_list = NULL;
+  GSList *contacts_list = NULL;
 
   gchar *entry_text = NULL;
   gint result = 0;
 
+  gchar *dialog_text = NULL;
+  gchar *dialog_title = NULL;
+  gchar *gconf_key = NULL;
+  
   gw = gnomemeeting_get_main_window (gm);
   client = gconf_client_get_default ();
 
-  dialog = gtk_dialog_new_with_buttons (_("Add new server"), 
+  if (GPOINTER_TO_INT (data) == CONTACTS_SERVERS) {
+
+    dialog_title = g_strdup (_("Add a new server"));
+    dialog_text = g_strdup (_("Enter the server name:"));
+    gconf_key = g_strdup (CONTACTS_SERVERS_KEY "ldap_servers_list");
+  }
+  else {
+
+    dialog_title = g_strdup (_("Add a new group"));
+    dialog_text = g_strdup (_("Enter the group name:"));
+    gconf_key = g_strdup (CONTACTS_GROUPS_KEY "groups_list"); 
+  }
+    
+  dialog = gtk_dialog_new_with_buttons (dialog_title, 
 					GTK_WINDOW (gw->ldap_window),
 					GTK_DIALOG_DESTROY_WITH_PARENT,
 					GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
 					GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
 					NULL);
-  label = gtk_label_new (_("Enter new server name:"));
+  label = gtk_label_new (dialog_text);
   entry = gtk_entry_new ();
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG(dialog)->vbox), label,
 		      FALSE, FALSE, 4);
@@ -93,68 +110,88 @@ new_server_callback (GtkWidget *widget, gpointer data)
 
     case GTK_RESPONSE_ACCEPT:
 	 
-      ldap_servers_list =
-	gconf_client_get_list (client, 
-			       CONTACTS_SERVERS_KEY "ldap_servers_list",
-			       GCONF_VALUE_STRING, NULL); 
+      contacts_list =
+	gconf_client_get_list (client, gconf_key, GCONF_VALUE_STRING, NULL); 
 
       entry_text = (gchar *) gtk_entry_get_text (GTK_ENTRY (entry));
 
       if (!entry_text || !strcmp (entry_text, ""))
-	ldap_servers_list = 
-	  g_slist_append (ldap_servers_list, _("New server"));
+	contacts_list = g_slist_append (contacts_list, _("No Name"));
       else
-	ldap_servers_list = 
-	  g_slist_append (ldap_servers_list, entry_text);
+	contacts_list = g_slist_append (contacts_list, entry_text);
       
-      gconf_client_set_list (client, 
-			     CONTACTS_SERVERS_KEY "ldap_servers_list",
-			     GCONF_VALUE_STRING, ldap_servers_list, NULL);
+      gconf_client_set_list (client, gconf_key, GCONF_VALUE_STRING, 
+			     contacts_list, NULL);
   
-      g_slist_free (ldap_servers_list);
+      g_slist_free (contacts_list);
 		              
       break;
   }
 
+  g_free (dialog_title);
+  g_free (dialog_text);
+  g_free (gconf_key);
   gtk_widget_destroy (dialog);
 }
 
 
 static void
-delete_server_callback (GtkWidget *widget, gpointer data)
+delete_contact_callback (GtkWidget *widget, gpointer data)
 {
-  GmWindow *gw = NULL;
-  GConfClient *client = NULL;
-  GSList *ldap_servers_list = NULL;
-  GSList *ldap_servers_list_iter = NULL;
+  GmLdapWindow *lw = NULL;
   
-  gw = gnomemeeting_get_main_window (gm);
+  GConfClient *client = NULL;
+
+  GSList *contacts_list = NULL;
+  GSList *contacts_list_iter = NULL;
+ 
+  GtkTreePath *path = NULL;
+  GtkTreeIter iter;
+  GtkTreeModel *model = NULL;
+  
+  gchar *gconf_key = NULL;
+  gchar *name = NULL;
+  
+  lw = gnomemeeting_get_ldap_window (gm);
   client = gconf_client_get_default ();
 
-  ldap_servers_list =
-    gconf_client_get_list (client, CONTACTS_SERVERS_KEY "ldap_servers_list",
-			   GCONF_VALUE_STRING, NULL); 
+  path = gtk_tree_path_new_from_string ((gchar *) data);
+  model = gtk_tree_view_get_model (GTK_TREE_VIEW (lw->tree_view));
+  gtk_tree_model_get_iter (GTK_TREE_MODEL (model), &iter, path);
+  gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 0, &name, -1);
+  
+  if (gtk_tree_path_get_depth (path) >= 2)
+    if (gtk_tree_path_get_indices (path) [0] == 0)
+      gconf_key = g_strdup (CONTACTS_SERVERS_KEY "ldap_servers_list");
+    else
+      gconf_key = g_strdup (CONTACTS_GROUPS_KEY "groups_list");
+  
+  contacts_list =
+    gconf_client_get_list (client, gconf_key, GCONF_VALUE_STRING, NULL); 
 
   
-  ldap_servers_list_iter = ldap_servers_list;
-  while (data && ldap_servers_list_iter) {
+  contacts_list_iter = contacts_list;
+  while (name && contacts_list_iter) {
     
-    if (!strcmp ((char *) data, (char *) ldap_servers_list_iter->data)) {      
-      ldap_servers_list = 
-	g_slist_remove_link (ldap_servers_list, ldap_servers_list_iter);
-      g_slist_free (ldap_servers_list_iter);
-
+    if (!strcmp ((char *) name, (char *) contacts_list_iter->data)) {      
+      contacts_list = 
+	g_slist_remove_link (contacts_list, contacts_list_iter);
+      g_slist_free (contacts_list_iter);
+      
       /* Only remove the selected server */
       break;
     }
   
-    ldap_servers_list_iter = ldap_servers_list_iter->next;
+    contacts_list_iter = contacts_list_iter->next;
   }
   
-  gconf_client_set_list (client, CONTACTS_SERVERS_KEY "ldap_servers_list",
-			 GCONF_VALUE_STRING, ldap_servers_list, NULL);
+  gconf_client_set_list (client, gconf_key, GCONF_VALUE_STRING, 
+			 contacts_list, NULL);
   
-  g_slist_free (ldap_servers_list);
+  gtk_tree_path_free (path);
+  g_free (data);
+  g_slist_free (contacts_list);
+  g_free (gconf_key);
 }
 
 
@@ -265,11 +302,10 @@ tree_selection_changed_cb (GtkTreeSelection *selection, gpointer data)
 
       if (gtk_tree_path_get_depth (path) >= 2) {
 
-	if (gtk_tree_path_get_indices (path) [0] == 0)
-	  gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 0, &name,
-			      1, &name, 2, &page_num, -1);
+	gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 0, &name,
+			    1, &name, 2, &page_num, -1);
 
-	if (page_num != - 1) 
+	if (page_num != -1) 
 	  gtk_notebook_set_current_page (GTK_NOTEBOOK (lw->notebook), 
 					 page_num);
       }
@@ -359,16 +395,14 @@ contacts_tree_view_event_after_callback (GtkWidget *w, GdkEventButton *e,
   GtkWidget *menu = NULL;
   GtkTreeSelection *selection = NULL;
   GtkTreeView *tree_view = NULL;
-  GtkTreeModel *model = NULL;
   GtkTreePath *path = NULL;
-  GtkTreeIter iter;
 
   GtkWidget *page = NULL;
   
   GMILSBrowser *ils_browser = NULL;
   GmLdapWindow *lw = gnomemeeting_get_ldap_window (gm);
   
-  gchar *name = NULL;
+  gchar *path_string = NULL;
   int page_num = 0;
   
   tree_view = GTK_TREE_VIEW (w);
@@ -388,33 +422,44 @@ contacts_tree_view_event_after_callback (GtkWidget *w, GdkEventButton *e,
 	  gtk_tree_selection_path_is_selected (selection, path)) {
 	
 	menu = gtk_menu_new ();
-	
-	gtk_tree_selection_get_selected (selection, &model, &iter);
-	gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 
-			    0, &name, 2, &page_num, -1);
-	
-	MenuEntry delete_server_menu [] =
-	  {
-	    {_("Delete"), NULL,
-	     GTK_STOCK_DELETE, 0, MENU_ENTRY, 
-	     GTK_SIGNAL_FUNC (delete_server_callback), 
-	     (gpointer) name, NULL},
-	    {NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL},
-	  };
+
+	path_string = gtk_tree_path_to_string (path);	
 	
 	MenuEntry new_server_menu [] =
 	  {
-	    {_("New"), NULL,
+	    {_("New server"), NULL,
 	     GTK_STOCK_NEW, 0, MENU_ENTRY, 
-	     GTK_SIGNAL_FUNC (new_server_callback), 
-	     NULL, NULL},
+	     GTK_SIGNAL_FUNC (new_contact_callback), 
+	     GINT_TO_POINTER (CONTACTS_SERVERS), NULL},
 	    {NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL}
 	  };
 	
+	MenuEntry new_group_menu [] =
+	  {
+	    {_("New group"), NULL,
+	     GTK_STOCK_NEW, 0, MENU_ENTRY, 
+	     GTK_SIGNAL_FUNC (new_contact_callback), 
+	     GINT_TO_POINTER (CONTACTS_GROUPS), NULL},
+	    {NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL}
+	  };
+	
+	MenuEntry delete_contact_menu [] =
+	  {
+	    {_("Delete"), NULL,
+	     GTK_STOCK_DELETE, 0, MENU_ENTRY, 
+	     GTK_SIGNAL_FUNC (delete_contact_callback), 
+	     (gpointer) path_string, NULL},
+	    {NULL, NULL, NULL, 0, MENU_END, NULL, NULL, NULL},
+	  };
+	
+	
 	if (gtk_tree_path_get_depth (path) >= 2)
-	  gnomemeeting_build_menu (menu, delete_server_menu, NULL);
+	  gnomemeeting_build_menu (menu, delete_contact_menu, NULL);
 	else
-	  gnomemeeting_build_menu (menu, new_server_menu, NULL);
+	  if (gtk_tree_path_get_indices (path) [0] == 0) 
+	    gnomemeeting_build_menu (menu, new_server_menu, NULL);
+	  else
+	    gnomemeeting_build_menu (menu, new_group_menu, NULL);
 
 	/* Set the delete to unsensitive if a search is running */
 	if (page_num != - 1) {
@@ -429,7 +474,7 @@ contacts_tree_view_event_after_callback (GtkWidget *w, GdkEventButton *e,
 						  "GMILSBrowser");
 
 	  if (ils_browser || page_num == -1) 
-	    gtk_widget_set_sensitive (GTK_WIDGET (delete_server_menu [0].widget), FALSE);
+	    gtk_widget_set_sensitive (GTK_WIDGET (delete_contact_menu [0].widget), FALSE);
 	}
 	
 	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL,
@@ -466,7 +511,9 @@ void gnomemeeting_init_ldap_window ()
   GtkTreeIter child_iter;
 
   GSList *ldap_servers_list = NULL;
+  GSList *groups_list = NULL;
   GSList *ldap_servers_list_iter = NULL;
+  GSList *groups_list_iter = NULL;
 
   int p = 0, cpt = 0;
 
@@ -514,15 +561,6 @@ void gnomemeeting_init_ldap_window ()
   gtk_tree_selection_set_mode (GTK_TREE_SELECTION (selection),
 			       GTK_SELECTION_BROWSE);
 
-  gtk_tree_store_append (GTK_TREE_STORE (model), &iter, NULL);
-  gtk_tree_store_set (GTK_TREE_STORE (model),
-		      &iter, 0, _("Servers"), 1, _("Servers"), 2, 0, -1);
-
-  ldap_servers_list =
-    gconf_client_get_list (client, CONTACTS_SERVERS_KEY "ldap_servers_list",
-			   GCONF_VALUE_STRING, NULL); 
-    
-
   cell = gtk_cell_renderer_text_new ();
   column = gtk_tree_view_column_new_with_attributes (_("Contacts"),
 						     cell, "text", 0, NULL);
@@ -544,8 +582,15 @@ void gnomemeeting_init_ldap_window ()
   gtk_box_pack_start (GTK_BOX (vbox), lw->notebook, 
 		      TRUE, TRUE, 0);
 
-  /* Populate the GtkTreeStore and create the corresponding notebook 
-     pages */
+  /* Populate the tree view : servers */
+  gtk_tree_store_append (GTK_TREE_STORE (model), &iter, NULL);
+  gtk_tree_store_set (GTK_TREE_STORE (model),
+		      &iter, 0, _("Servers"), 1, _("Servers"), 2, 0, -1);
+
+  ldap_servers_list =
+    gconf_client_get_list (client, CONTACTS_SERVERS_KEY "ldap_servers_list",
+			   GCONF_VALUE_STRING, NULL); 
+    
   ldap_servers_list_iter = ldap_servers_list;
   while (ldap_servers_list_iter) {
 
@@ -566,6 +611,37 @@ void gnomemeeting_init_ldap_window ()
     cpt++;
   }
   g_slist_free (ldap_servers_list);
+
+  /* Populate the tree view : groups */
+  gtk_tree_store_append (GTK_TREE_STORE (model), &iter, NULL);
+  gtk_tree_store_set (GTK_TREE_STORE (model),
+		      &iter, 0, _("Groups"), 1, _("Groups"), 2, 0, -1);
+
+  groups_list =
+    gconf_client_get_list (client, CONTACTS_GROUPS_KEY "groups_list",
+			   GCONF_VALUE_STRING, NULL); 
+    
+  groups_list_iter = groups_list;
+  while (groups_list_iter) {
+
+    /* This will only add a notebook page if the server was not already
+     * present */
+    p = 
+      gnomemeeting_init_ldap_window_notebook ((char *)
+					      groups_list_iter->data);
+
+    gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
+    gtk_tree_store_set (GTK_TREE_STORE (model),
+			&child_iter, 
+			0, groups_list_iter->data, 
+			1, groups_list_iter->data, 
+			2, p, -1);
+
+    groups_list_iter = groups_list_iter->next;
+    cpt++;
+  }
+  g_slist_free (groups_list);
+
 
   gtk_tree_view_expand_all (GTK_TREE_VIEW (lw->tree_view));
   g_signal_connect (G_OBJECT (selection), "changed",
@@ -853,7 +929,8 @@ int gnomemeeting_init_ldap_window_notebook (gchar *text_label)
   statusbar = gtk_statusbar_new ();
   gtk_box_pack_start (GTK_BOX (vbox), scroll, TRUE, TRUE, 0);
   gtk_box_pack_start (GTK_BOX (vbox), statusbar, FALSE, FALSE, 0);
-
+  gtk_statusbar_set_has_resize_grip (GTK_STATUSBAR (statusbar), FALSE);
+  
   gtk_notebook_append_page (GTK_NOTEBOOK (lw->notebook), vbox, NULL);
   gtk_widget_show_all (GTK_WIDGET (lw->notebook));
   gtk_notebook_set_show_tabs (GTK_NOTEBOOK (lw->notebook), FALSE);
