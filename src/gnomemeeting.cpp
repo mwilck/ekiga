@@ -74,7 +74,7 @@ GnomeMeeting::GnomeMeeting ()
 
 GnomeMeeting::~GnomeMeeting()
 {
-  delete (endpoint);
+
 }
 
 

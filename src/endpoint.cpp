@@ -237,8 +237,8 @@ GMH323EndPoint::GMH323EndPoint ()
 
 GMH323EndPoint::~GMH323EndPoint ()
 {
-  /* grabber and ILS threads are deleted in the
-     cleaner */
+  delete (ils_client);
+  delete (video_grabber);
 
 #ifdef HAS_IXJ  
   if (lid) {

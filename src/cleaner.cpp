@@ -64,15 +64,13 @@ GMThreadsCleaner::~GMThreadsCleaner ()
 
 void GMThreadsCleaner::Main ()
 {
-  GMILSClient *ils_client = (GMILSClient *) 
-    MyApp->Endpoint ()->GetILSClient();
-
-  GMVideoGrabber *video_grabber = (GMVideoGrabber *) 
-    MyApp->Endpoint ()->GetVideoGrabber ();
-
   GMH323EndPoint *endpoint = MyApp->Endpoint ();
 
   gnomemeeting_threads_enter ();
+
+  gint timeout = 
+    GPOINTER_TO_INT (g_object_get_data (G_OBJECT (gm), "timeout"));
+  gtk_timeout_remove (timeout);
 
   gnome_appbar_push (GNOME_APPBAR (gw->statusbar), _("Quit in progress..."));
 
@@ -82,9 +80,11 @@ void GMThreadsCleaner::Main ()
 
   gnomemeeting_threads_leave ();
 
-  delete (ils_client);
-  delete (video_grabber);
-  
+  while (endpoint->GetCallingState ())
+    Current ()->Sleep (50);
+
+  delete (endpoint);
+
   gnomemeeting_threads_enter ();
   gtk_main_quit ();
   gnomemeeting_threads_leave ();

@@ -1725,7 +1725,8 @@ int main (int argc, char ** argv, char ** envp)
 
   /* Quick hack to make the GUI refresh even on high load from the other
      threads */
-  gtk_timeout_add (500, (GtkFunction) AppbarUpdate, rtp);
+  gint timeout = gtk_timeout_add (500, (GtkFunction) AppbarUpdate, rtp);
+  g_object_set_data (G_OBJECT (gm), "timeout", GINT_TO_POINTER (timeout));
 
 //   gtk_timeout_add (10000, (GtkFunction) StressTest, 
 // 		   NULL);

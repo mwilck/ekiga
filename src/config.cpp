@@ -1,6 +1,6 @@
 
 /* GnomeMeeting -- A Video-Conferencing application
- * Copyright (C) 2000-2001 Damien Sandras
+ * Copyright (C) 2000-2002 Damien Sandras
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -370,7 +370,8 @@ static void view_widget_changed_nt (GConfClient *client, guint cid,
 }
 
 
-/* DESCRIPTION  :  This callback is called when something changes for the mixers.
+/* DESCRIPTION  :  This callback is called when something changes for the 
+ *                 mixers.
  * BEHAVIOR     :  It updates the GUI to use the new values.
  * PRE          :  /
  */
