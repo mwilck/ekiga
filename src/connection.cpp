@@ -78,7 +78,7 @@ GMH323Connection::GMH323Connection (GMH323EndPoint & ep,
 			  AUDIO_SETTINGS_KEY "max_jitter_buffer", NULL);
   gnomemeeting_threads_leave ();
 
-  SetAudioJitterDelay (min_jitter, max_jitter);
+  SetAudioJitterDelay (PMAX (min_jitter, 20), PMIN (max_jitter, 1000));
 }
 
 

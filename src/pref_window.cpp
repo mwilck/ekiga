@@ -1365,7 +1365,7 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
 				     AUDIO_SETTINGS_KEY "max_jitter_buffer",
 				     _("The minimum jitter buffer size for audio reception (in ms)."),
 				     _("The maximum jitter buffer size for audio reception (in ms)."),
-				     20.0, 20.0, 2000.0, 2000.0, 1.0, 0);
+				     20.0, 20.0, 1000.0, 1000.0, 1.0, 0);
   
   pw->sd = 
     gnomemeeting_table_add_toggle (table, _("Enable silence _detection"), AUDIO_SETTINGS_KEY "sd", _("If enabled, use silence detection with the GSM and G.711 codecs."), 1);

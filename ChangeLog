@@ -1,5 +1,10 @@
 2003-06-19 Damien Sandras  <dsandras@seconix.com>
 
+	* src/connection.cpp, src/pref_window.cpp: Make sure that people
+	don't use a jitter of more than 1 second.
+	
+2003-06-19 Damien Sandras  <dsandras@seconix.com>
+
 	* src/tray.cpp: Fixed bug when the tray is clicked: do not show the
 	whole GnomeMeeting, but only required and selected components.
 
