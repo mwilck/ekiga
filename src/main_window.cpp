@@ -86,6 +86,55 @@
 extern GtkWidget *gm;
 
 
+struct _GmWindow
+{
+  GtkObject *adj_input_volume;
+  GtkObject *adj_output_volume;
+  GtkWidget *audio_volume_frame;
+
+  GtkObject *adj_whiteness;
+  GtkObject *adj_brightness;
+  GtkObject *adj_colour;
+  GtkObject *adj_contrast;
+  GtkWidget *video_settings_frame;
+  
+  GtkTooltips *tips;
+  GtkAccelGroup *accel;
+
+  GtkWidget *main_menu;
+  
+#ifdef DISABLE_GNOME
+  GtkWidget *window_vbox;
+  GtkWidget *window_hbox;
+#endif
+
+  GtkWidget *statusbar;
+  GtkWidget *remote_name;
+  GtkWidget *combo;
+  GtkWidget *main_notebook;
+  GtkWidget *main_video_image;
+  GtkWidget *local_video_image;
+  GtkWidget *local_video_window;
+  GtkWidget *remote_video_image;
+  GtkWidget *remote_video_window;
+  GtkWidget *video_frame;
+  GtkWidget *preview_button;
+  GtkWidget *connect_button;
+  GtkWidget *video_chan_button;
+  GtkWidget *audio_chan_button;
+  GtkWidget *incoming_call_popup;
+  GtkWidget *transfer_call_popup;
+  GtkWidget *stats_label;
+  GtkWidget *stats_drawing_area;
+};
+
+
+typedef struct _GmWindow GmWindow;
+
+
+#define GM_WINDOW(x) (GmWindow *) (x)
+
+
 /* GUI Functions */
 
 
@@ -2711,7 +2760,8 @@ gm_main_window_new (GmWindow *mw)
 
 
   /* The GMObject data */
-  //mw = new GmWindow ();
+  mw = new GmWindow ();
+  mw->incoming_call_popup = mw->transfer_call_popup = NULL;
   g_object_set_data_full (G_OBJECT (window), "GMObject", 
 			  mw, (GDestroyNotify) gm_mw_destroy);
 

@@ -103,14 +103,8 @@ GnomeMeeting::GnomeMeeting ()
   endpoint = NULL;
   url_handler = NULL;
 
-  /* Init the different structures */
-  gw = new GmWindow ();
-
-  addressbook_window = NULL;
   
-  gw->incoming_call_popup = 
-    gw->transfer_call_popup = 
-    NULL;
+  addressbook_window = NULL;
 
   GM = this;
   
