@@ -1,3 +1,4 @@
+
 /*
  * GnomeMeeting -- A Video-Conferencing application
  *
@@ -1224,6 +1225,8 @@ void gnomemeeting_init_main_window ()
   gtk_notebook_set_tab_pos (GTK_NOTEBOOK (gw->main_notebook), GTK_POS_BOTTOM);
   gtk_notebook_popup_enable (GTK_NOTEBOOK (gw->main_notebook));
   gtk_notebook_set_show_tabs (GTK_NOTEBOOK (gw->main_notebook), TRUE);
+  gtk_notebook_set_scrollable (GTK_NOTEBOOK (gw->main_notebook), TRUE);
+
 
   gnomemeeting_init_main_window_stats ();
   gnomemeeting_init_main_window_log ();
@@ -1712,8 +1715,8 @@ int main (int argc, char ** argv, char ** envp)
      threads */
   gtk_timeout_add (500, (GtkFunction) AppbarUpdate, rtp);
 
-  // gtk_timeout_add (10000, (GtkFunction) StressTest, 
-// 		   NULL);
+  //  gtk_timeout_add (10000, (GtkFunction) StressTest, 
+  //	   NULL);
   
 
   /* The GTK loop */
