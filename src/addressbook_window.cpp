@@ -2629,13 +2629,6 @@ gm_addressbook_window_edit_addressbook_dialog_run (GtkWidget *addressbook_window
 		   "%255s %255s %255s %255s %255s", 
 		   default_prefix, default_hostname, 
 		   default_port, default_base, default_scope);
-
-    /* If we have no "scope", then it means there was no base, hackish */
-    if (done == 4 && !strcmp (default_scope, "")) {
-
-      strncpy (default_scope, default_base, 255);
-      strcpy (default_base, "");
-    }
   }
 
 
