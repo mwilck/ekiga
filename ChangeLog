@@ -1,5 +1,15 @@
 2001-12-19  Miguel Rodríguez Pérez  <migrax@terra.es>
 
+	* src/e-splash.cpp (ICON_Y): Change pixmap location
+
+	* src/main_window.cpp: Removed #include "splash.h"
+	(gnomemeeting_init): Move to evo splash
+
+	* src/Makefile.am (gnomemeeting_SOURCES): Don't compile
+	splash.cpp and splash.h anymore
+
+2001-12-19  Miguel Rodríguez Pérez  <migrax@terra.es>
+	
 	* Makefile.am (install-data-local): it is data, 
 	not dada ;)
 

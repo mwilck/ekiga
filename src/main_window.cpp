@@ -39,7 +39,6 @@ extern "C" {
 #include "gnomemeeting.h"
 #include "callbacks.h"
 #include "docklet.h"
-#include "splash.h"
 #include "ils.h"
 #include "common.h"
 #include "menu.h"
@@ -51,6 +50,7 @@ extern "C" {
 #include "pref_window.h"
 #include "config.h"
 #include "misc.h"
+#include "e-splash.h"
 
 #include <gconf/gconf-client.h>
 
@@ -417,66 +417,124 @@ void gnomemeeting_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
   gw->docklet = gnomemeeting_init_docklet ();
 
   /* Init the splash screen */
-  gw->splash_win = gnomemeeting_splash_init ();
-
+  gw->splash_win = e_splash_new ();
+  gtk_signal_connect (GTK_OBJECT (gw->splash_win), "delete_event",
+		      GTK_SIGNAL_FUNC (gtk_widget_hide_on_delete), 0);
+  int icon_index = 0;
+  if (opts->show_splash) {
+    // We whow the splash screen
+    gtk_widget_show (gw->splash_win);
+    while (gtk_events_pending ())
+      gtk_main_iteration ();
+    // Now we load all the icons
+    // FIXME: Icon for audio/video devices
+    GdkPixbuf *icon_pixbuf = gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES
+						       "/gnomemeeting-logo-icon.png");
+    e_splash_add_icon (E_SPLASH (gw->splash_win), icon_pixbuf);
+    gdk_pixbuf_unref (icon_pixbuf);
+    // FIXME: Icon for main-interface
+    icon_pixbuf = gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES
+					     "/gnomemeeting-logo-icon.png");
+    e_splash_add_icon (E_SPLASH (gw->splash_win), icon_pixbuf);
+    gdk_pixbuf_unref (icon_pixbuf);
+    // FIXME: Icon for Audio capabilities
+    icon_pixbuf = gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES
+					    "/gnomemeeting-logo-icon.png");
+    e_splash_add_icon (E_SPLASH (gw->splash_win), icon_pixbuf);
+    gdk_pixbuf_unref (icon_pixbuf);
+    // FIXME: Icon for Video capabilities
+    icon_pixbuf = gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES
+					    "/gnomemeeting-logo-icon.png");
+    e_splash_add_icon (E_SPLASH (gw->splash_win), icon_pixbuf);
+    gdk_pixbuf_unref (icon_pixbuf);
+    // FIXME: Icon for ILS directory
+    if (gconf_client_get_int (GCONF_CLIENT (client), "/apps/gnomemeeting/ldap/register", NULL)) {
+      icon_pixbuf = gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES
+					      "/gnomemeeting-logo-icon.png");
+      e_splash_add_icon (E_SPLASH (gw->splash_win), icon_pixbuf);
+      gdk_pixbuf_unref (icon_pixbuf); 
+    }
+    // FIXME: Icon for listener thread
+    icon_pixbuf = gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES
+					    "/gnomemeeting-logo-icon.png");
+    e_splash_add_icon (E_SPLASH (gw->splash_win), icon_pixbuf);
+    gdk_pixbuf_unref (icon_pixbuf);
+    // FIXME: Icon for Gatekeeper
+    icon_pixbuf = gdk_pixbuf_new_from_file (GNOMEMEETING_IMAGES
+					    "/gnomemeeting-logo-icon.png");
+    e_splash_add_icon (E_SPLASH (gw->splash_win), icon_pixbuf);
+    gdk_pixbuf_unref (icon_pixbuf);
+    while (gtk_events_pending ())
+      gtk_main_iteration ();
+  }
+  
   /* Search for devices */
-  if (opts->show_splash)
-    gnomemeeting_splash_advance_progress (gw->splash_win, 
-				_("Detecting available audio and video devices"), 0.15);
-
+  if (opts->show_splash) {
+    e_splash_set_icon_highlight (E_SPLASH (gw->splash_win), icon_index++, true);
+    while (gtk_events_pending ())
+      gtk_main_iteration ();
+  }
+  
   gw->audio_player_devices = 
     PSoundChannel::GetDeviceNames (PSoundChannel::Player);
   gw->audio_recorder_devices = 
     PSoundChannel::GetDeviceNames (PSoundChannel::Recorder);
   gw->video_devices = PVideoInputDevice::GetInputDeviceNames ();
-
+  
   /* Main interface creation */
   if (opts->show_splash) {
-    gnomemeeting_splash_advance_progress (gw->splash_win, 
-				_("Building main interface"), 0.30);
+    e_splash_set_icon_highlight (E_SPLASH (gw->splash_win), icon_index++, true);
+    while (gtk_events_pending ())
+      gtk_main_iteration ();
   }
-
+  
   /* Build the interface */
   gnomemeeting_init_main_window (opts, client);
   gnomemeeting_init_ldap_window (opts);
   gnomemeeting_init_pref_window (0, opts);
   gnomemeeting_init_menu ();
   gnomemeeting_init_toolbar ();	
-
+  
   /* Launch the GnomeMeeting H.323 part */
   static GnomeMeeting instance (opts);
   endpoint = MyApp->Endpoint ();
   endpoint->Initialise ();
-
+  
   if (debug)
     PTrace::Initialise (4);
-
-  if (opts->show_splash)
-    gnomemeeting_splash_advance_progress (gw->splash_win, _("Adding Audio Capabilities"), 
-				0.45);
+  
+  if (opts->show_splash) {
+    e_splash_set_icon_highlight (E_SPLASH (gw->splash_win), icon_index++, true);
+    while (gtk_events_pending ())
+      gtk_main_iteration ();
+  }
   endpoint->AddAudioCapabilities ();
-
-  if (opts->show_splash)
-    gnomemeeting_splash_advance_progress (gw->splash_win, _("Adding Video Capabilities"), 
-				0.60);
+  
+  if (opts->show_splash) {
+    e_splash_set_icon_highlight (E_SPLASH (gw->splash_win), icon_index++, true);
+    while (gtk_events_pending ())
+      gtk_main_iteration ();
+  }
   endpoint->AddVideoCapabilities (opts->video_size);
-
+  
   /* The LDAP part, if needed */
   if (gconf_client_get_int (GCONF_CLIENT (client), "/apps/gnomemeeting/ldap/register", NULL)) {
-    if (opts->show_splash)
-      gnomemeeting_splash_advance_progress (gw->splash_win, 
-				  _("Registering to ILS directory"), 
-				  0.70);
+    if (opts->show_splash) {
+      e_splash_set_icon_highlight (E_SPLASH (gw->splash_win), icon_index++, true);
+      while (gtk_events_pending ())
+	gtk_main_iteration ();
+    }
     GMILSClient *gm_ils_client = (GMILSClient *) endpoint->GetILSClient ();
     gm_ils_client->Register ();
   }
   
   /* Run the listener thread */
-  if (opts->show_splash)
-    gnomemeeting_splash_advance_progress (gw->splash_win, 
-				_("Starting the listener thread"), 
-				0.80);
-
+  if (opts->show_splash) {
+      e_splash_set_icon_highlight (E_SPLASH (gw->splash_win), icon_index++, true);
+      while (gtk_events_pending ())
+	gtk_main_iteration ();
+  }
+  
   if (!endpoint->StartListener ()) {
     GtkWidget *msg_box = gnome_message_box_new (_("Could not start the listener thread. You will not be able to receive incoming calls."), GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
 
@@ -485,11 +543,12 @@ void gnomemeeting_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
 
   /* Register to the Gatekeeper */
   if (opts->gk) {
-    if (opts->show_splash)
-      gnomemeeting_splash_advance_progress (gw->splash_win, 
-				  _("Registering to the Gatekeeper"), 
-				  0.90);
-
+    if (opts->show_splash) {
+	e_splash_set_icon_highlight (E_SPLASH (gw->splash_win), icon_index++, true);
+	while (gtk_events_pending ())
+	  gtk_main_iteration ();
+    }
+    
     endpoint->GatekeeperRegister ();
   }
   
@@ -511,10 +570,6 @@ void gnomemeeting_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
 
   /* Set the right recording source : mic */
   gnomemeeting_set_recording_source (opts->audio_recorder_mixer, 0); 
-
-  if (opts->show_splash)
-    gnomemeeting_splash_advance_progress (gw->splash_win, 
-				_("Done!"), 0.9999);
 
   gtk_widget_show (GTK_WIDGET (gm));
   
@@ -539,7 +594,7 @@ void gnomemeeting_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
   gtk_widget_push_visual(gdk_rgb_get_visual());
   gtk_widget_push_colormap(gdk_rgb_get_cmap());
   gnome_window_icon_set_from_file 
-    (GTK_WINDOW (gm), "/usr/share/pixmaps/gnomemeeting-logo-icon.png");
+    (GTK_WINDOW (gm), GNOMEMEETING_IMAGES "gnomemeeting-logo-icon.png");
 
   if (gw->splash_win)
     gtk_widget_destroy (gw->splash_win);

@@ -60,8 +60,8 @@ struct _ESplashPrivate {
 
 /* Layout constants.  These need to be changed if the splash changes.  */
 
-#define ICON_Y    280
-#define ICON_SIZE 32
+#define ICON_Y    180
+#define ICON_SIZE 48
 
 
 /* BackingStore support.  */
