@@ -247,12 +247,6 @@ CPPFLAGS="$CPPFLAGS_save"
 
 
 dnl ###########################################################################
-dnl --enable-firewire
-dnl ###########################################################################
-AC_ARG_ENABLE(firewire, [  --enable-firewire       Enable Firewire support.], enable_firewire="$enable_val", enable_firewire="no")
-
-
-dnl ###########################################################################
 dnl   Check for SDL
 dnl ###########################################################################
 
@@ -375,7 +369,9 @@ if test -e "/usr/include/libdc1394/dc1394_control.h" -a "${firewire}" != "no"; t
    HAS_FIREWIRE="enabled"
    H323_CFLAGS="$H323_CFLAGS -DTRY_1394DC -DTRY_1394AVC"
 else
+if test "${firewire}" != "no"; then
 AC_MSG_ERROR([***Firewire headers not found.])
+fi
 fi
 
 
