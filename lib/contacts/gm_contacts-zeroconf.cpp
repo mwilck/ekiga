@@ -38,10 +38,19 @@
 
 
 #include <howl.h>
+
+/* HOWL bug */
+#undef PACKAGE
+#undef PACKAGE_STRING
+#undef PACKAGE_NAME
+#undef PACKAGE_TARNAME
+#undef PACKAGE_VERSION
+#undef PACKAGE_BUGREPORT
+#undef VERSION
+
 #include <stdio.h>
 
-#include "gm_contacts-zeroconf.h"
-
+#include "../../config.h"
 
 #ifndef _
 #include <libintl.h>
@@ -52,6 +61,9 @@
 #define N_(String) (String)
 #endif
 #endif
+
+
+#include "gm_contacts-zeroconf.h"
 
 
 

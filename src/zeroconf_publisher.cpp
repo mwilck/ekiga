@@ -121,6 +121,7 @@ GMZeroconfPublisher::~GMZeroconfPublisher()
     sw_discovery_stop_run (discovery);
     sw_discovery_fina (discovery);
   }
+
   PWaitAndSignal m(quit_mutex);
 }
 
@@ -246,7 +247,7 @@ GMZeroconfPublisher::GetPersonalData()
   err = 
     sw_text_record_add_key_and_string_value (text_record, "software", 
 					     "GnomeMeeting");
-  sw_check_okay(err, exit);
+  sw_check_okay (err, exit);
 
 exit:
   return err;
@@ -274,7 +275,7 @@ GMZeroconfPublisher::Start ()
 
 
 int 
-GMZeroconfPublisher::Stop()
+GMZeroconfPublisher::Stop ()
 {
   sw_result err = SW_FALSE;
 
