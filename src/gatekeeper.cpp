@@ -194,18 +194,33 @@ void GMH323Gatekeeper::Main ()
       
     /* Registering failed */
     gnomemeeting_threads_enter ();
-    msg = g_strdup (_("Error while registering with Gatekeeper."));
 
     if (!no_error) {
 
+      gatekeeper = endpoint->GetGatekeeper ();
+      if (gatekeeper) {
+
+	switch (gatekeeper->GetRegistrationFailReason()) {
+
+	case H323Gatekeeper::DuplicateAlias :
+	  msg = g_strdup (_("Error while registering with gatekeeper: another user already exists with the same alias."));
+	  break;
+	case H323Gatekeeper::SecurityDenied :
+	  msg = g_strdup (_("Error while registering with gatekeeper: you are not allowed to register to the gatekeeper."));
+	  break;
+	case H323Gatekeeper::TransportError :
+	  msg = g_strdup (_("Error while registering with gatekeeper: transport error."));
+	  break;
+	default :
+	  msg = g_strdup (_("Error while registering with gatekeeper."));
+	  break;
+	}
+      }
+      else
+	msg = g_strdup (_("Error while registering with gatekeeper."));
+
       gnomemeeting_error_dialog (GTK_WINDOW (gm), msg);
       gnomemeeting_log_insert (gw->history_text_view, msg);
-
-      gatekeeper = endpoint->GetGatekeeper ();
-      if (gatekeeper)
-	cout << "hehe" << endl << flush;
-      else
-	cout << "ko" << endl << flush;
     }
     
     gconf_client_set_int (client, GATEKEEPER_KEY "registering_method",

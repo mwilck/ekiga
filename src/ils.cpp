@@ -815,7 +815,8 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
 /* The browser methods */
 
 GMILSBrowser::GMILSBrowser (GmLdapWindowPage *lwpage,
-			    gchar *server, gchar *filter)
+			    gchar *server,
+			    gchar *filter)
   :PThread (1000, AutoDeleteThread)
 {
   lw = gnomemeeting_get_ldap_window (gm);
@@ -827,7 +828,8 @@ GMILSBrowser::GMILSBrowser (GmLdapWindowPage *lwpage,
     ldap_server = NULL;
 
   if (filter)
-    search_filter = g_convert (filter, strlen (filter), "ISO-8859-1", "UTF-8",
+    search_filter = g_convert (filter, strlen (filter),
+			       "ISO-8859-1", "UTF-8",
 			       NULL, NULL, NULL);
   else
     search_filter = NULL;
@@ -851,39 +853,41 @@ GMILSBrowser::~GMILSBrowser ()
 
 void GMILSBrowser::Main ()
 {
-  char *datas [] = {NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL};
   char *attrs [] = { "surname", "givenname", "comment", "location", 
 		     "rfc822mailbox", "sipaddress", "ilsa32833566", 
 		     "ilsa32964638", "ilsa26279966", "ilsa26214430", 
-		     "sport", "sappid", "xstatus", 
-		     NULL };
+		     "sport", "sappid", "xstatus", NULL};
 
-  char **ldv;
+  char **char_ldap_data [] = {NULL, NULL, NULL, NULL, NULL, NULL};
+  char **bool_ldap_data [] = {NULL, NULL, NULL};
+  bool b_ldap_data [] = {false, false, false};
+  char * utf8_char_ldap_data [] = {NULL, NULL, NULL, NULL, NULL, NULL};
 
+  gchar **num_users = NULL;
+  char **sipaddress = NULL;
+  char **ilsa26279966 = NULL;
+  char **sport = NULL;
+  char **xstatus = NULL;
+  gchar *utf8_username = NULL;
+  gchar *utf8_remote_app = NULL;
+  gchar *utf8_callto = NULL;
+    
   int rc = 0;
   LDAPMessage *res = NULL, *e = NULL;
 
+  unsigned int v = 0, a = 0, b = 0, c = 0;
+  unsigned int part1 = 0, part2 = 0, part3 = 0, part4 = 0;
   unsigned long int nmip = 0;
-  int part1;
-  int part2;
-  int part3;
-  int part4;
   int port = 1720;
   int users_nbr = 0;
-  bool audio = false;
-  bool video = false; 
-  bool available = true;
 
-  char ip [16];
-  gchar *msg = NULL;
   gchar *color = NULL;
   gchar *filter = NULL;
-  gchar *name = NULL;
-  gchar *callto = NULL;
-  gchar **num_users = NULL;
+  gchar *ip = NULL;
 
   LDAP *ldap_connection = NULL;
   GdkPixbuf *status_icon = NULL;
+  GtkListStore *users_list_store = NULL;
   GtkTreeIter list_iter;
 
   GmWindow *gw = NULL;
@@ -894,22 +898,22 @@ void GMILSBrowser::Main ()
   bool no_error = TRUE;
 
   lwp->search_quit_mutex.Wait ();
-  msg = g_strdup_printf (_("Contacting %s..."), ldap_server);
 
   gnomemeeting_threads_enter ();
-  gw = gnomemeeting_get_main_window (gm);
-  
-  gnomemeeting_statusbar_push (lwp->statusbar, msg);
-  g_free (msg);
+  gw = gnomemeeting_get_main_window (gm);  
+  users_list_store =
+    GTK_LIST_STORE (gtk_tree_view_get_model (GTK_TREE_VIEW (lwp->tree_view)));
+  gnomemeeting_statusbar_push (lwp->statusbar,
+			       _("Contacting %s..."), ldap_server);
   gnomemeeting_threads_leave ();
 
   /* must be able to reach ldap server */
   if (!(ldap_connection = ldap_init (ldap_server, 389))) {
       
     gnomemeeting_threads_enter ();
-    gnomemeeting_error_dialog (GTK_WINDOW (gw->ldap_window),
-			       _("Failed to open ldap server %s:%d."),
-			       ldap_server, "389");
+      gnomemeeting_statusbar_push (lwp->statusbar,
+				   _("Failed to contact LDAP server %s:%d."),
+				   ldap_server, "389");
     gnomemeeting_threads_leave ();
 
     no_error = FALSE;
@@ -920,8 +924,8 @@ void GMILSBrowser::Main ()
 	   != LDAP_OPT_SUCCESS) {
      
     gnomemeeting_threads_enter ();
-    gnomemeeting_error_dialog (GTK_WINDOW (gw->ldap_window),
-			       _("Failed to set time limit on ldap operations."));
+    gnomemeeting_statusbar_push (lwp->statusbar,
+				 _("Failed to set time limit on LDAP operations."));
     gnomemeeting_threads_leave ();
     
     no_error = FALSE;  
@@ -931,8 +935,8 @@ void GMILSBrowser::Main ()
 			      LDAP_AUTH_SIMPLE))) {
     
     gnomemeeting_threads_enter ();
-    gnomemeeting_error_dialog (GTK_WINDOW (gw->ldap_window),
-			       _("Failed to bind to ldap server %s: %s."),
+    gnomemeeting_statusbar_push (lwp->statusbar,
+			       _("Failed to contact to LDAP server %s: %s."),
 			       ldap_server, ldap_err2string (rc));
     gnomemeeting_threads_leave ();
     
@@ -942,288 +946,255 @@ void GMILSBrowser::Main ()
   else {
     
     gnomemeeting_threads_enter ();        
-    msg = g_strdup_printf (_("Fetching user information from %s."),
-			   ldap_server);
-    gnomemeeting_statusbar_push (lwp->statusbar, msg);
+    gnomemeeting_statusbar_push (lwp->statusbar,
+				 _("Fetching online users list from %s."),
+				 ldap_server);
     gnomemeeting_threads_leave ();
-    g_free (msg);
 
     if (search_filter)
       filter = g_strdup_printf ("(&(cn=%%)%s)", search_filter);
     else
       filter = g_strdup ("(&(cn=%))");
 
-
-    rc = ldap_search_s (ldap_connection, "objectClass=RTPerson", 
-			LDAP_SCOPE_BASE,
-			filter,	attrs, 0, &res); 
+    rc =
+      ldap_search_s (ldap_connection, "objectClass=RTPerson", 
+		     LDAP_SCOPE_BASE,
+		     filter, attrs, 0, &res); 
     g_free (filter);
 
-    for (int i = 0 ; i < 9 ; i++)
-      datas [i] = NULL;
-
-    /* Maybe the user closed the tab while we were waiting */
-    if (lwp->users_list_store != NULL && res) { 
+    gnomemeeting_threads_enter ();
+    if (rc != 0)
+      if (rc == LDAP_SERVER_DOWN) 
+	gnomemeeting_statusbar_push (lwp->statusbar,
+				     _("Connection to %s lost..."),
+				     ldap_server);
+      else
+	gnomemeeting_statusbar_push (lwp->statusbar,
+				     _("Could not fetch online users list."));
+    gnomemeeting_threads_leave ();
+    
+    if (rc == 0 && users_list_store != NULL && res) { 
 
       gnomemeeting_threads_enter ();
       gtk_tree_view_set_model (GTK_TREE_VIEW (lwp->tree_view), NULL);
-      gtk_list_store_clear (GTK_LIST_STORE (lwp->users_list_store));
+      gtk_list_store_clear (GTK_LIST_STORE (users_list_store));
       gnomemeeting_threads_leave ();
 	
-      for (e = ldap_first_entry(ldap_connection, res); 
-	   e != NULL; e = ldap_next_entry(ldap_connection, e)) {
+      for (e = ldap_first_entry (ldap_connection, res); 
+	   e != NULL;
+	   e = ldap_next_entry (ldap_connection, e)) {
 	
 	users_nbr++;
 
-	ldv = ldap_get_values (ldap_connection, e, "surname");
-	if ((ldv != NULL)&&(ldv [0] != NULL)) {
+	char_ldap_data [0] = ldap_get_values(ldap_connection, e, "givenname");
+	char_ldap_data [1] = ldap_get_values (ldap_connection, e, "surname");
+	char_ldap_data [2] = ldap_get_values(ldap_connection, e, "location");
+	char_ldap_data [3] = ldap_get_values(ldap_connection, e, "comment");
+	char_ldap_data [4] = ldap_get_values(ldap_connection, e, "sappid");
+	char_ldap_data [5] =
+	  ldap_get_values(ldap_connection, e, "rfc822mailbox");
+	bool_ldap_data [0] =
+	  ldap_get_values(ldap_connection, e, "ilsa32964638"); /* video */
+	bool_ldap_data [1] =
+	  ldap_get_values(ldap_connection, e, "ilsa32833566"); /* audio */
+	bool_ldap_data [2] =
+	  ldap_get_values(ldap_connection, e, "ilsa26214430"); /* available */
+
+	sport = ldap_get_values(ldap_connection, e, "sport");
+	xstatus = ldap_get_values(ldap_connection, e, "xstatus");
+	ilsa26279966 = ldap_get_values(ldap_connection, e, "ilsa26279966");
+	sipaddress = ldap_get_values(ldap_connection, e, "sipaddress");
+
+
+	/* Free it here because we need to keep the last value to use it
+	   after the for */
+	if (num_users)
+	  g_strfreev (num_users);
 	
-	  datas [3] = 
-	    g_strdup (ldv [0]);
-	  ldap_value_free (ldv);
-	}      
-	
-	ldv = ldap_get_values(ldap_connection, e, "givenname");
-	if ((ldv != NULL)&&(ldv [0] != NULL)) {
+
+	/* char LDAP data, to be converted to UTF-8 if not valid */
+	for (int i = 0 ; i < 6 ; i++) {
 	  
-	  datas [2] = g_strdup (ldv [0]);
-	  ldap_value_free (ldv);
-	}
-	
-	ldv = ldap_get_values(ldap_connection, e, "location");
-	if ((ldv != NULL)&&(ldv [0] != NULL)) {
+	  if (char_ldap_data [i] && char_ldap_data [i] [0]) {
 	  
-	  datas [5] = g_strdup (ldv [0]);
-	  ldap_value_free (ldv);
+	    if (!g_utf8_validate (char_ldap_data [i] [0], -1, NULL))
+	      utf8_char_ldap_data [i] =
+		gnomemeeting_from_iso88591_to_utf8 (PString (char_ldap_data [i] [0]));
+	    else
+	      utf8_char_ldap_data [i] =
+		g_strdup (char_ldap_data [i] [0]);
+	    
+	    ldap_value_free (char_ldap_data [i]);
+	    char_ldap_data [i] = NULL;
+	  }
 	}
-	
-	ldv = ldap_get_values(ldap_connection, e, "comment");
-	if ((ldv != NULL)&&(ldv [0] != NULL)) {
+
+
+	/* bool LDAP data */
+	for (int i = 0 ; i < 3 ; i++) {
+
+	  if (bool_ldap_data [i] && bool_ldap_data [i] [0]) {
+	    
+	    b_ldap_data [i] = (bool) atoi (bool_ldap_data [i] [0]);
+	    ldap_value_free (bool_ldap_data [i]);
+	    bool_ldap_data [i] = NULL;
+	  }
+	}
+
+
+	/* Number of users: seconix.com specific */
+	if (xstatus && xstatus [0]) {
+
+	  num_users = g_strsplit (xstatus [0], ",", 0);
+	  ldap_value_free (xstatus);
+	  xstatus = NULL;
+	}
+
+
+	/* Remote application port */
+	if (sport && sport [0]) {
+
+	  port = atoi (sport [0]);
+
+	  /* Ignore data port */
+	  if (port == 1503 && sport [1])
+	    port = atoi (sport [1]);
 	  
-	  datas [6] = 
-	    g_strdup (ldv [0]);
-	  ldap_value_free (ldv);
+	  ldap_value_free (sport);
+	  sport = NULL;
 	}
 
-	ldv = ldap_get_values(ldap_connection, e, "sappid");
-	if ((ldv != NULL)&&(ldv [0] != NULL)) {
+
+	/* Remote IP */
+	if (sipaddress && sipaddress [0]) {
+
+	  nmip = strtoul (sipaddress [0], NULL, 10);
+	  part1 = (nmip & 0xff000000) >> 24;
+	  part2 = (nmip & 0x00ff0000) >> 16;
+	  part3 = (nmip & 0x0000ff00) >> 8;
+	  part4 = nmip & 0x000000ff;
+
+	  ip =
+	    g_strdup_printf ("%d.%d.%d.%d:%d",
+			     part4, part3, part2, part1, port);
+
+	  ldap_value_free (sipaddress);
+	  sipaddress = NULL;
+	}
+
+
+	/* Remote application name and version */
+	if (ilsa26279966 && ilsa26279966 [0]) {
 	  
-	  datas [7]  =
-	    g_strdup (ldv [0]);
-	  ldap_value_free (ldv);
-	}
-
-
-	ldv = ldap_get_values(ldap_connection, e, "sport");
-	if ((ldv != NULL)&&(ldv [0] != NULL)) {
-
-	  port = atoi (ldv [0]);	
-
-	  /* Ugly hack because Netmeeting sucks, it registers
-	     random ports to ILS, but it only supports 1720 */
-	  if (datas [7]&&!strcmp (datas [7], "ms-netmeeting")&&port == 1503)
-	    port = 1720;
-
-	  ldap_value_free (ldv);
-	}
-
-
-	/* Sent one time only by ils.seconix.com only */
-	ldv = ldap_get_values(ldap_connection, e, "xstatus");
-	if ((ldv != NULL)&&(ldv [0] != NULL)) {
-
-	  num_users = g_strsplit (ldv [0], ",", 0);
-
-	  ldap_value_free (ldv);
-	}
-
-	
-	ldv = ldap_get_values(ldap_connection, e, "ilsa26279966");
-	if ((ldv != NULL)&&(ldv [0] != NULL)) {
-
-	  gchar *value =
-	    g_strdup (ldv [0]);
-	
-	  unsigned int v, a, b, c;
-	  v = atoi (value);
+	  v = atoi (ilsa26279966 [0]);
 	  a = (v & 0xff000000) >> 24;
 	  b = (v & 0x00ff0000) >> 16;
 	  c = v & 0x0000ffff;
-	  g_free (value);
-	  
-	  if (datas [7] != NULL)
-	    datas [7] = g_strdup_printf ("%s %d.%d.%d", datas [7], a, b, c); 
-	  else
-	    datas [7] = g_strdup_printf ("%d.%d.%d", a, b, c); 
-	  
-	  ldap_value_free (ldv);
-	}
-	
-	ldv = ldap_get_values(ldap_connection, e, "rfc822mailbox");
-	if ((ldv != NULL)&&(ldv [0] != NULL)) {
-	
-	  datas [4] = g_strdup (ldv [0]);
-	  ldap_value_free (ldv);
-	}
 
-	
-	ldv = ldap_get_values(ldap_connection, e, "sipaddress");
-	if ((ldv != NULL)&&(ldv [0] != NULL)) {
-	
-	  nmip = strtoul (ldv [0], NULL, 10);
-	  ldap_value_free (ldv);
-	}
+	  utf8_remote_app =
+	    g_strdup_printf ("%s %d.%d.%d",
+			     utf8_char_ldap_data [4] ?
+			     utf8_char_ldap_data [4] : "",
+			     a, b, c); 
 
-	part1 = (nmip & 0xff000000) >> 24;
-	part2 = (nmip & 0x00ff0000) >> 16;
-	part3 = (nmip & 0x0000ff00) >> 8;
-	part4 = nmip & 0x000000ff;
-	
-	sprintf (ip, "%d.%d.%d.%d:%d", part4, part3, part2, part1, port);
-	/* ip will be freed (char ip [16]), so we make a copy in datas [7] */
-	
-	datas [8] = g_strdup ((char *) ip);
-	
-	
-	/* Video Capable ? */
-	ldv = ldap_get_values(ldap_connection, e, "ilsa32964638");
-	if ((ldv != NULL)&&(ldv [0] != NULL)) {
-	  
-	  video = 
-	    (bool)atoi (ldv [0]);
-	  ldap_value_free (ldv);
-	}
-      
-
-	/* Audio Capable ? */
-	ldv = ldap_get_values(ldap_connection, e, "ilsa32833566");
-	if ((ldv != NULL)&&(ldv [0] != NULL)) {
-	  
-	  audio = 
-	    (bool)atoi (ldv [0]);
-	  ldap_value_free (ldv);
-	}
-      
-
-	/* Busy ? */
-	ldv = ldap_get_values(ldap_connection, e, "ilsa26214430");
-	if ((ldv != NULL)&&(ldv [0] != NULL)) {
-	  
-	  available = 
-	    !(bool) atoi (ldv [0]);
-	  ldap_value_free (ldv);
+	  ldap_value_free (ilsa26279966);
+	  ilsa26279966 = NULL;
 	}
 	
 
+	/* Status icon */
 	gnomemeeting_threads_enter ();
-	if (available) {
+	if (!b_ldap_data [2]) {
 
-	  status_icon = gtk_widget_render_icon 
-	    (lwp->tree_view, 
-	     GM_STOCK_STATUS_AVAILABLE,
-	     GTK_ICON_SIZE_MENU, NULL);
+	  status_icon =
+	    gtk_widget_render_icon (lwp->tree_view, 
+				    GM_STOCK_STATUS_AVAILABLE,
+				    GTK_ICON_SIZE_MENU, NULL);
 	  color = g_strdup ("black");
 	} 
         else {
 	 
-	  status_icon = gtk_widget_render_icon 
-	    (lwp->tree_view, 
-	     GM_STOCK_STATUS_OCCUPIED,
-	     GTK_ICON_SIZE_MENU, NULL);
+	  status_icon =
+	    gtk_widget_render_icon (lwp->tree_view, 
+				    GM_STOCK_STATUS_OCCUPIED,
+				    GTK_ICON_SIZE_MENU, NULL);
 	  color = g_strdup ("darkred");
-        }
-        
+        }        
 	gnomemeeting_threads_leave ();
 
-				
-	/* Check if the window is still present or not */
-	if (lw) {
+	utf8_username =
+	  g_strdup_printf ("%s %s",
+			   utf8_char_ldap_data [0] ?
+			   utf8_char_ldap_data [0] : "",
+			   utf8_char_ldap_data [1] ?
+			   utf8_char_ldap_data [1] : "");
+	utf8_callto =
+	  g_strdup_printf ("callto:%s/%s",
+			   ldap_server,
+			   utf8_char_ldap_data [5] ?
+			   utf8_char_ldap_data [5] : "");
+
+	gnomemeeting_threads_enter ();
+	gtk_list_store_append (users_list_store, &list_iter);
+	gtk_list_store_set (users_list_store, &list_iter,
+			    COLUMN_ILS_STATUS, status_icon,
+			    COLUMN_ILS_AUDIO, b_ldap_data [1],
+			    COLUMN_ILS_VIDEO, b_ldap_data [0],
+			    COLUMN_ILS_NAME, utf8_username,
+			    COLUMN_ILS_CALLTO, utf8_callto,
+			    COLUMN_ILS_LOCATION, utf8_char_ldap_data [2],
+			    COLUMN_ILS_COMMENT, utf8_char_ldap_data [3],
+			    COLUMN_ILS_VERSION, utf8_remote_app,
+			    COLUMN_ILS_IP, ip ? ip : "",
+			    COLUMN_ILS_COLOR, color,
+			    -1);
+	gnomemeeting_threads_leave ();
+
+
+	/* Free some memory and put the variables in their initial state */
+	for (int i = 0 ; i < 6 ; i++) {
 	  
-	  gchar *utf8_data [7] = {NULL, NULL, NULL, NULL, NULL, NULL, NULL};
+	  if (utf8_char_ldap_data [i])
+	    free (utf8_char_ldap_data [i]);
 
-	  
-	  for (int j = 0 ; j < 7 ; j++) {
-	    
-	    /* Strings are already UTF-8-encoded for LDAP v3,
-	       but Microsoft ILS doesn't take care of that */
-	    if (datas [j + 2]) {
-	      
-	      /* If valid UTF-8, ok */
-	      if (g_utf8_validate (datas [j + 2], -1, NULL))
-		utf8_data [j] = g_strdup (datas [j+2]);
-	      else
-		utf8_data [j] = 
-		  gnomemeeting_from_iso88591_to_utf8 (PString (datas [j+2]));
-	    }
-	  }
-
-	  /* The user name and callto */
-	  name = g_strdup_printf ("%s %s", utf8_data [0], utf8_data [1]);
-	  callto = g_strdup_printf ("callto:%s/%s",
-				    ldap_server, utf8_data [2]);
-
-	  gnomemeeting_threads_enter ();
-
- 	  gtk_list_store_append (lwp->users_list_store, &list_iter);
-
-	  gtk_list_store_set (lwp->users_list_store, &list_iter,
-			      COLUMN_ILS_STATUS, status_icon,
-			      COLUMN_ILS_AUDIO, audio,
-			      COLUMN_ILS_VIDEO, video,
-			      COLUMN_ILS_NAME, name,
-			      COLUMN_ILS_CALLTO, callto,
-			      COLUMN_ILS_LOCATION, utf8_data [3],
-			      COLUMN_ILS_COMMENT, utf8_data [4],
-			      COLUMN_ILS_VERSION, utf8_data [5],
-			      COLUMN_ILS_IP, utf8_data [6],
-			      COLUMN_ILS_COLOR, color,
-			      -1);
-          
-	  gnomemeeting_threads_leave ();
-	  
-	  for (int k = 0 ; k < 7 ; k++)
-	    if (utf8_data [k])
-	      g_free (utf8_data [k]);
-	  
+	  utf8_char_ldap_data [i] = NULL;
 	}
 
-	g_object_unref (status_icon);
+	for (int i = 0 ; i < 3 ; i++) {
+
+	  b_ldap_data [i] = false;
+	}
+	
+	g_free (ip);
 	g_free (color);
-	g_free (name);
-	g_free (callto);
+	g_free (utf8_username);
+	g_free (utf8_remote_app);
+	g_free (utf8_callto);
+	ip = NULL;
+	color = NULL;
+	utf8_username = NULL;
+	utf8_remote_app = NULL;
+	utf8_callto = NULL;
 
-	for (int j = 2 ; j <= 8 ; j++) {
-	  
-	  if (datas [j] != NULL)
-	    g_free (datas [j]);
-	  
-	  datas [j] = NULL;
-	}
-
-
+	gnomemeeting_threads_enter ();
+	g_object_unref (status_icon);
+	gnomemeeting_threads_leave ();
       } /* end of for */
 
       gnomemeeting_threads_enter ();
       gtk_tree_view_set_model (GTK_TREE_VIEW (lwp->tree_view),
-			       GTK_TREE_MODEL (lwp->users_list_store));
-      gnomemeeting_threads_leave ();
+			       GTK_TREE_MODEL (users_list_store));
 
-      gnomemeeting_threads_enter ();
       if (num_users && num_users [1]) {
-	
-	msg =
-	  g_strdup_printf (_("Search completed: %d user(s) listed on a total of %d user(s) from %s."),
-			   users_nbr, PMAX (atoi (num_users [1]), users_nbr), ldap_server);
+
+	gnomemeeting_statusbar_push (lwp->statusbar, _("Search completed: %d user(s) listed on a total of %d user(s) from %s."), users_nbr, PMAX (atoi (num_users [1]), users_nbr), ldap_server);
+
 	g_strfreev (num_users);
       }
       else
-	msg = g_strdup_printf (_("Search completed: %d user(s) found on %s."),
-			       users_nbr, ldap_server);
-	
-      gnomemeeting_statusbar_push (lwp->statusbar, msg); 
-      g_free (msg);
+	gnomemeeting_statusbar_push (lwp->statusbar, _("Search completed: %d user(s) found on %s."), users_nbr, ldap_server);
+
       gnomemeeting_threads_leave ();
-      
     }
   }
 
@@ -1232,12 +1203,4 @@ void GMILSBrowser::Main ()
     ldap_msgfree (res);
     ldap_unbind (ldap_connection);
   }
-  else {
-    
-    gnomemeeting_threads_enter ();
-    msg = g_strdup_printf (_("Failed to contact %s."), ldap_server);
-    gnomemeeting_statusbar_push (lwp->statusbar, msg);
-    g_free (msg);
-    gnomemeeting_threads_leave ();
-  } 
 }

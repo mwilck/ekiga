@@ -1192,7 +1192,8 @@ contacts_sections_list_group_content_changed_nt (GConfClient *client,
   int cpt = 0;
 
   GtkWidget *page = NULL;
-
+  GtkListStore *list_store = NULL;
+  
   GmLdapWindow *lw = NULL;
   GmLdapWindowPage *lwp = NULL;
   
@@ -1226,10 +1227,12 @@ contacts_sections_list_group_content_changed_nt (GConfClient *client,
 	  cpt++;
 	}
 
-	if (lwp) 
-	  gnomemeeting_addressbook_group_populate (lwp->users_list_store,
-						   group_name);
-	
+	if (lwp) {
+
+	  list_store =
+	    GTK_LIST_STORE (gtk_tree_view_get_model (GTK_TREE_VIEW (lwp->tree_view)));
+	  gnomemeeting_addressbook_group_populate (list_store, group_name);
+	}
 	g_free (group_name);
       }
 

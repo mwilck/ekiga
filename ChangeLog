@@ -1,3 +1,20 @@
+2003-05-29 Damien Sandras  <dsandras@seconix.com>
+
+	* src/common.h: Removed unneeded users_list_store variable from
+	the structure.
+	
+	* src/config.cpp: Changes in consequence.
+	
+	* src/gatekeeper.cpp: Display more precise error messages when
+	the registration fails.
+	
+	* src/ils.cpp: Changes in consequence of the changes in common.h.
+	Rewrite and improvements in the LDAP browser.
+	
+	* src/ldap_window.cpp: Made keyboard navigation possible between
+	contacts sections. Fixed the groups list size in the Add/Modify
+	window.
+	
 2003-05-29  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* src/ils.cpp (Search): 

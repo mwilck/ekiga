@@ -121,6 +121,9 @@ static void new_contact_section_cb (GtkWidget *,
 static void delete_contact_section_cb (GtkWidget *,
 				       gpointer);
 
+static void contact_section_changed_cb (GtkTreeSelection *,
+					gpointer);
+
 static gint contact_section_clicked_cb (GtkWidget *,
 					GdkEventButton *,
 					gpointer);
@@ -222,9 +225,8 @@ dnd_drag_motion_cb (GtkWidget *tree_view,
 	    
 	gtk_tree_model_get_value (model, &iter, 
 				  COLUMN_CONTACT_SECTION_NAME, &value);
-	group_name = g_strdup (g_value_get_string (&value));
+	group_name = g_utf8_strdown (g_value_get_string (&value), -1);
 	g_value_unset (&value);
-
 
 	/* If the user doesn't belong to the selected group and if
 	   the selected row corresponds to a group and not a server */
@@ -783,10 +785,11 @@ addressbook_edit_contact_dialog_new (const char *contact_name,
 				  GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
   gtk_container_add (GTK_CONTAINER (scroll), tree_view);
   gtk_container_add (GTK_CONTAINER (frame), scroll);
-
+  gtk_widget_set_size_request (GTK_WIDGET (frame), -1, 90);
+  
   gtk_table_attach (GTK_TABLE (table), frame, 1, 2, 3, 4, 
-		    (GtkAttachOptions) (GTK_FILL),
-		    (GtkAttachOptions) (GTK_FILL),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
 
   
@@ -821,7 +824,7 @@ addressbook_edit_contact_dialog_new (const char *contact_name,
   
   /* Pack the gtk entries and the list store in the window */
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG (edit_dialog->dialog)->vbox), table,
-		      FALSE, FALSE, GNOMEMEETING_PAD_SMALL);
+		      FALSE, FALSE, 3 * GNOMEMEETING_PAD_SMALL);
   gtk_widget_show_all (edit_dialog->dialog);
 
   return edit_dialog;
@@ -1349,6 +1352,60 @@ delete_contact_section_cb (GtkWidget *widget,
 }
 
 
+/* DESCRIPTION  :  This callback is called when there is a "changed" event
+ *                 signal on one of the contact section.
+ * BEHAVIOR     :  Selects the right notebook page and updates the menu.
+ * PRE          :  /
+ */
+static void
+contact_section_changed_cb (GtkTreeSelection *selection,
+			    gpointer data)
+{
+  GtkWidget *page = NULL;
+  GtkTreeSelection *lselection = NULL;
+  GtkTreeModel *model = NULL;
+  GtkTreeIter iter;
+
+  gint page_num = -1;
+
+  GmLdapWindow *lw = NULL;
+  GmLdapWindowPage *lwp = NULL;
+
+  lw = gnomemeeting_get_ldap_window (gm);
+
+  /* Update the sensitivity of DELETE */
+  update_menu_sensitivity (false, true, false);
+
+  if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
+
+    gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 
+			COLUMN_NOTEBOOK_PAGE, &page_num, -1);
+    
+    /* Selectes the good notebook page for the contact section */
+    if (page_num != -1) {
+
+      /* Selects the good notebook page */
+      gtk_notebook_set_current_page (GTK_NOTEBOOK (lw->notebook), 
+				     page_num);
+	
+      /* Unselect all rows of the list store in that notebook page */
+      page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), 
+					page_num);
+      lwp = gnomemeeting_get_ldap_window_page (page);
+	
+      if (lwp->tree_view) {
+	  
+	lselection =
+	  gtk_tree_view_get_selection (GTK_TREE_VIEW (lwp->tree_view));
+	  
+	if (lselection)
+	  gtk_tree_selection_unselect_all (GTK_TREE_SELECTION (lselection));
+      }
+    }
+  }
+}
+
+
 /* DESCRIPTION  :  This callback is called when there is an "event_after"
  *                 signal on one of the contact section.
  * BEHAVIOR     :  Displays a popup menu with the required options.
@@ -1356,25 +1413,21 @@ delete_contact_section_cb (GtkWidget *widget,
  */
 static gint
 contact_section_clicked_cb (GtkWidget *w,
-				GdkEventButton *e,
-				gpointer data)
+			    GdkEventButton *e,
+			    gpointer data)
 {
   GmLdapWindow *lw = NULL;
-  GmLdapWindowPage *lwp = NULL;
 
   GtkWidget *menu = NULL;
-  GtkWidget *page = NULL;
   
   GtkTreeSelection *selection = NULL;
-  GtkTreeSelection *lselection = NULL;
   GtkTreeModel *model = NULL;
   GtkTreeView *tree_view = NULL;
   GtkTreePath *path = NULL;
   GtkTreeIter iter;
 
+  gint page_num;
   gchar *path_string = NULL;
-  gchar *group_name = NULL;
-  int page_num = -1;
   
   tree_view = GTK_TREE_VIEW (w);
 
@@ -1383,43 +1436,19 @@ contact_section_clicked_cb (GtkWidget *w,
 
   lw = gnomemeeting_get_ldap_window (gm);
 
-  if (e->type == GDK_BUTTON_PRESS || e->type == GDK_EXPOSE) {
+  if (e->type == GDK_BUTTON_PRESS || e->type == GDK_KEY_PRESS) {
 
     if (gtk_tree_view_get_path_at_pos (tree_view, (int) e->x, (int) e->y,
 				       &path, NULL, NULL, NULL)) {
 
-      selection = gtk_tree_view_get_selection (tree_view);
-      model = gtk_tree_view_get_model (GTK_TREE_VIEW (tree_view));
-      if (gtk_tree_selection_get_selected (selection, &model, &iter)) 
+      
+      model = gtk_tree_view_get_model (GTK_TREE_VIEW (lw->tree_view));
+      selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (lw->tree_view));
+      
+      if (selection &&
+	  gtk_tree_selection_get_selected (selection, &model, &iter)) 
 	gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 
-			    COLUMN_CONTACT_SECTION_NAME, &group_name, 
 			    COLUMN_NOTEBOOK_PAGE, &page_num, -1);
-
-      /* Update the sensitivity of DELETE */
-      update_menu_sensitivity (false, true, false);
-
-      /* Selectes the good notebook page for the contact section */
-      if (page_num != -1) {
-
-	/* Selects the good notebook page */
-	gtk_notebook_set_current_page (GTK_NOTEBOOK (lw->notebook), 
-				       page_num);
-	
-	/* Unselect all rows of the list store in that notebook page */
-	page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), 
-					  page_num);
-	lwp = gnomemeeting_get_ldap_window_page (page);
-	
-	if (lwp->tree_view) {
-	  
-	  lselection =
-	    gtk_tree_view_get_selection (GTK_TREE_VIEW (lwp->tree_view));
-	  
-	  if (lselection)
-	    gtk_tree_selection_unselect_all (GTK_TREE_SELECTION (lselection));
-	}
-      }
-
       
       /* If it is a right-click, then popup a menu */
       if (e->type == GDK_BUTTON_PRESS && e->button == 3 && 
@@ -1502,7 +1531,6 @@ contact_section_clicked_cb (GtkWidget *w,
       }
 
       gtk_tree_path_free (path);
-      g_free (group_name);
     }
   }
 
@@ -1856,7 +1884,7 @@ get_selected_contact_info (gchar **contact_section,
     // should be freed
       
     selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (lwp->tree_view));
-    model = GTK_TREE_MODEL (lwp->users_list_store);
+    model = gtk_tree_view_get_model (GTK_TREE_VIEW (lwp->tree_view));
     
     if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
       
@@ -1865,11 +1893,11 @@ get_selected_contact_info (gchar **contact_section,
       if (lwp->page_type == CONTACTS_SERVERS) {
 
 	if (contact_name)
-	  gtk_tree_model_get (GTK_TREE_MODEL (lwp->users_list_store), &iter, 
+	  gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 
 			      COLUMN_ILS_NAME, contact_name, -1);
 
 	if (contact_callto)
-	  gtk_tree_model_get (GTK_TREE_MODEL (lwp->users_list_store), &iter, 
+	  gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 
 			      COLUMN_ILS_CALLTO, contact_callto, -1);
 
 	if (is_group)
@@ -1878,15 +1906,15 @@ get_selected_contact_info (gchar **contact_section,
       else {
 
 	if (contact_name)
-	  gtk_tree_model_get (GTK_TREE_MODEL (lwp->users_list_store), &iter, 
+	  gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 
 			      COLUMN_NAME, contact_name, -1);
 	
 	if (contact_callto)
-	  gtk_tree_model_get (GTK_TREE_MODEL (lwp->users_list_store), &iter, 
+	  gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 
 			      COLUMN_CALLTO, contact_callto, -1);
 
 	if (contact_speed_dial)
-	  gtk_tree_model_get (GTK_TREE_MODEL (lwp->users_list_store), &iter, 
+	  gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, 
 			      COLUMN_SPEED_DIAL, contact_speed_dial, -1);
 
 	if (is_group)
@@ -1975,7 +2003,7 @@ gnomemeeting_init_ldap_window ()
   GtkWidget *menubar = NULL;
   GtkWidget *scroll = NULL;
   GdkPixbuf *icon = NULL;
-
+  
   GtkCellRenderer *cell = NULL;
   GtkTreeSelection *selection = NULL;
   GtkTreeViewColumn *column = NULL;
@@ -2097,7 +2125,7 @@ gnomemeeting_init_ldap_window ()
 				  GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
   gtk_container_add (GTK_CONTAINER (frame), scroll);
 
-  lw->tree_view = gtk_tree_view_new ();
+  lw->tree_view = gtk_tree_view_new ();  
   gtk_tree_view_set_model (GTK_TREE_VIEW (lw->tree_view), 
 			   GTK_TREE_MODEL (model));
   selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (lw->tree_view));
@@ -2136,7 +2164,7 @@ gnomemeeting_init_ldap_window ()
   /* Populate the tree_viw with groups and servers */
   gnomemeeting_addressbook_sections_populate ();
 
- 
+
   /* Drag and Drop Setup */
   gtk_drag_dest_set (GTK_WIDGET (lw->tree_view), GTK_DEST_DEFAULT_ALL,
 		     dnd_targets, 1,
@@ -2151,7 +2179,9 @@ gnomemeeting_init_ldap_window ()
 		    G_CALLBACK (contact_section_activated_cb), NULL);  
 
   /* Click or right-click on a server name or on a contact group */
-  g_signal_connect_object (G_OBJECT (lw->tree_view), "event-after",
+  g_signal_connect (G_OBJECT (selection), "changed",
+		    G_CALLBACK (contact_section_changed_cb), NULL);
+  g_signal_connect_object (G_OBJECT (lw->tree_view), "event_after",
 			   G_CALLBACK (contact_section_clicked_cb), 
 			   NULL, (GConnectFlags) 0);
 
@@ -2199,7 +2229,7 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
     
   GConfClient *client = NULL;
   
-  /* For the GTK TreeView */
+  GtkListStore *users_list_store = NULL;
   GtkTreeViewColumn *column = NULL;
   GtkCellRenderer *renderer = NULL;
 
@@ -2237,13 +2267,13 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
   lwp->page_type = type;
   
   if (type == CONTACTS_SERVERS)
-    lwp->users_list_store = 
+    users_list_store = 
       gtk_list_store_new (NUM_COLUMNS_SERVERS, GDK_TYPE_PIXBUF, G_TYPE_BOOLEAN,
 			  G_TYPE_BOOLEAN, G_TYPE_STRING, G_TYPE_STRING,
 			  G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING,
 			  G_TYPE_STRING, G_TYPE_STRING);
   else
-    lwp->users_list_store = 
+    users_list_store = 
       gtk_list_store_new (NUM_COLUMNS_GROUPS, G_TYPE_STRING, G_TYPE_STRING,
 			  G_TYPE_STRING);
 
@@ -2256,7 +2286,7 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
 				  GTK_POLICY_AUTOMATIC);
 
   lwp->tree_view = 
-    gtk_tree_view_new_with_model (GTK_TREE_MODEL (lwp->users_list_store));
+    gtk_tree_view_new_with_model (GTK_TREE_MODEL (users_list_store));
   gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (lwp->tree_view), TRUE);
   gtk_tree_view_set_search_column (GTK_TREE_VIEW (lwp->tree_view),
 				   COLUMN_ILS_NAME);
@@ -2492,9 +2522,8 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
 			       
   /* If the type of page is "groups", then we populate the page */
   if (type == CONTACTS_GROUPS) 
-    gnomemeeting_addressbook_group_populate (lwp->users_list_store,
+    gnomemeeting_addressbook_group_populate (users_list_store,
 					     text_label);
-  
   
   /* Signal to call the person on the double-clicked row */
   g_signal_connect (G_OBJECT (lwp->tree_view), "row_activated", 

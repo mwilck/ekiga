@@ -215,7 +215,6 @@ struct _GmLdapWindow
 
 struct _GmLdapWindowPage
 {
-  GtkListStore *users_list_store;
   GtkWidget *tree_view;
   GtkWidget *statusbar;
   GtkWidget *option_menu;
