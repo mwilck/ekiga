@@ -1,5 +1,33 @@
 2002-12-22 Damien Sandras  <dsandras@seconix.com>
 
+	* configure.in: Incremented SCHEMA_AGE.
+	
+	* gnomemeeting.schemas.in.in: Added key to enable/disable video 
+	reception. Useful for dialup users.
+
+	* src/common.h: Removed widgets for g.711 and GSM frames. Added widget
+	for video reception.
+
+	* src/config.cpp: Added notifier for video reception changes. Removed
+	some of the notifiers for G.711 frames and GSM frames. They were 
+	removed from the preferences, but still exist in GConf. They were
+	not really useful for users, even for advanced users.
+
+	* src/druid.cpp: Fixed bug reported by Fabrice Alphonso: the connection
+	type is now remembered between sessions and settings are not broken
+	when the druid is shown.
+
+	* src/endpoint.cpp: Added code to support disabling video reception.
+
+	* src/misc.cpp: Removed frames again.
+
+	* src/pref_window.cpp: Improved window layout without frames anymore.
+
+	* src/sound_handling.cpp: Applied patch that fixes mic selection
+	when dsp0 is not present, thanks to Jonny Strom aka Johnny.
+
+2002-12-22 Damien Sandras  <dsandras@seconix.com>
+
 	* configure.in: Fixed IPv6 detection stuff.
 
 	* src/cleaner.cpp: Saves the local and remote video popup sizes

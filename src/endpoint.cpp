@@ -422,32 +422,52 @@ void
 GMH323EndPoint::AddVideoCapabilities (int video_size)
 {
   BOOL enable_video_transmission = FALSE;
+  BOOL enable_video_reception = TRUE;
 
+  /* Enable video transmission / reception */
+  enable_video_transmission = 
+    gconf_client_get_bool (client, 
+			   VIDEO_SETTINGS_KEY "enable_video_transmission", 0);
+  enable_video_reception = 
+    gconf_client_get_bool (client, 
+			   VIDEO_SETTINGS_KEY "enable_video_reception", 0);
 
-  /* Add video capabilities */
-  if (video_size == 1) {
+  
+  /* Capabilities we can send and receive */
+  if (enable_video_reception) {
+    
+    /* Add video capabilities */
+    if (video_size == 1) {
 
-    /* CIF Capability in first position */
-    SetCapability(0, 1, 
-		  new H323_H261Capability (0, 2, FALSE, FALSE, 6217));
+      /* CIF Capability in first position */
+      SetCapability (0, 1, new H323_H261Capability (0, 2, FALSE, FALSE, 6217));
+      SetCapability (0, 1, new H323_H261Capability (4, 0, FALSE, FALSE, 6217));
+    }
+    else {
 
-    SetCapability(0, 1, 
-		  new H323_H261Capability (4, 0, FALSE, FALSE, 6217));
+      SetCapability (0, 1, new H323_H261Capability (4, 0, FALSE, FALSE, 6217)); 
+      SetCapability (0, 1, new H323_H261Capability (0, 2, FALSE, FALSE, 6217));
+    }
   }
   else {
     
-    SetCapability(0, 1, 
-		  new H323_H261Capability (4, 0, FALSE, FALSE, 6217)); 
-    
-    SetCapability(0, 1, 
-		  new H323_H261Capability (0, 2, FALSE, FALSE, 6217));
+    /* Capabilities we can send (if enabled), but not receive */
+    /* Add video capabilities */
+    if (video_size == 1) {
+
+      /* CIF Capability in first position */
+      AddCapability (new H323_H261Capability (0, 2, FALSE, FALSE, 6217));
+      AddCapability (new H323_H261Capability (4, 0, FALSE, FALSE, 6217));  
+    }
+    else {
+
+      AddCapability (new H323_H261Capability (4, 0, FALSE, FALSE, 6217)); 
+      AddCapability (new H323_H261Capability (0, 2, FALSE, FALSE, 6217));  
+    }
   }
 
 
   /* Enable video transmission */
-  enable_video_transmission = 
-    gconf_client_get_bool (client, 
-			   VIDEO_SETTINGS_KEY "enable_video_transmission", 0);
   autoStartTransmitVideo = enable_video_transmission;
 }
 

@@ -452,7 +452,8 @@ static void ht_fs_changed_nt (GConfClient *client, guint cid,
 
 
 /* DESCRIPTION  :  This notifier is called when the gconf database data
- *                 associated with the enable_video_transmission key changes.
+ *                 associated with the enable_video_transmission key changes or
+ *                 enable_video_reception.
  * BEHAVIOR     :  It updates the endpoint, and updates the registering on ILS.
  * PRE          :  /
  */
@@ -1378,13 +1379,9 @@ void gnomemeeting_init_gconf (GConfClient *client)
 			   0, 0);
 
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/gsm_frames", audio_codec_setting_changed_nt, pw->gsm_frames, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/gsm_frames", applicability_check_nt, pw->gsm_frames, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/gsm_frames", adjustment_changed_nt, pw->gsm_frames, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/gsm_frames", audio_codec_setting_changed_nt, NULL, 0, 0);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/g711_frames", audio_codec_setting_changed_nt, pw->g711_frames, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/g711_frames", applicability_check_nt, pw->g711_frames, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/g711_frames", adjustment_changed_nt, pw->g711_frames, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/g711_frames", audio_codec_setting_changed_nt, NULL, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/sd", silence_detection_changed_nt, pw->sd, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/sd", toggle_changed_nt, pw->sd, 0, 0);
@@ -1394,6 +1391,11 @@ void gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/tr_fps", fps_limit_changed_nt, pw->tr_fps, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/tr_fps", adjustment_changed_nt, pw->tr_fps, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/tr_fps", network_settings_changed_nt, 0, 0, 0);
+
+  gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/enable_video_reception", applicability_check_nt, pw->vid_re, 0, 0);	     
+  gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/enable_video_reception", toggle_changed_nt, pw->vid_re, 0, 0);	     
+  gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/enable_video_reception", network_settings_changed_nt, 0, 0, 0);	     
+  gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/enable_video_reception", enable_vid_tr_changed_nt, 0, 0, 0);	     
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/enable_video_transmission", applicability_check_nt, pw->vid_tr, 0, 0);	     
   gconf_client_notify_add (client, "/apps/gnomemeeting/video_settings/enable_video_transmission", toggle_changed_nt, pw->vid_tr, 0, 0);	     

@@ -641,6 +641,17 @@
 	<long>The image to transmit if the Picture device is selected as video device or if the opening of the device fails (none specified = default GnomeMeeting logo).</long>
       </locale>
     </schema>
+     <schema>
+      <key>/schemas/apps/gnomemeeting/video_settings/enable_video_reception</key>
+      <applyto>/apps/gnomemeeting/video_settings/enable_video_reception</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>bool</type>
+      <default>1</default>
+      <locale name="C">
+	<short>Enable Video Reception</short>
+	<long>Enable the video reception for calls</long>
+      </locale>
+    </schema>
     <schema>
       <key>/schemas/apps/gnomemeeting/video_settings/enable_video_transmission</key>
       <applyto>/apps/gnomemeeting/video_settings/enable_video_transmission</applyto>

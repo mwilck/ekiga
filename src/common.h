@@ -196,6 +196,7 @@ struct _GmPrefWindow
   GtkWidget    *bps_frame;
   GtkWidget    *tr_fps;
   GtkWidget    *vid_tr;
+  GtkWidget    *vid_re;
   GtkWidget    *sd;
   GtkWidget    *min_jitter_buffer;
   GtkWidget    *max_jitter_buffer;
@@ -232,8 +233,6 @@ struct _GmPrefWindow
   GtkWidget    *show_docklet;
   GtkWidget    *directory_update_button;
   GtkWidget    *video_device_apply_button;
-  GtkWidget    *g711_frames;
-  GtkWidget    *gsm_frames;
   GtkWidget    *forward_host;
   GtkWidget    *always_forward;
   GtkWidget    *busy_forward;

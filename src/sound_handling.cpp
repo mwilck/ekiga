@@ -104,16 +104,16 @@ gnomemeeting_mixers_mic_select (void)
 
     mixerfd = open (mixer, O_RDWR);
 
-    if (mixerfd == -1)
-      break;
-                                                                               
-    if (ioctl (mixerfd, SOUND_MIXER_READ_RECSRC, &rcsrc) == -1)
-      rcsrc = 0;
+    if (!(mixerfd == -1)) {
+      
+      if (ioctl (mixerfd, SOUND_MIXER_READ_RECSRC, &rcsrc) == -1)
+        rcsrc = 0;
     
-    rcsrc = SOUND_MASK_MIC;                         
-    ioctl (mixerfd, SOUND_MIXER_WRITE_RECSRC, &rcsrc);
+      rcsrc = SOUND_MASK_MIC;                         
+      ioctl (mixerfd, SOUND_MIXER_WRITE_RECSRC, &rcsrc);
     
-    close (mixerfd);
+      close (mixerfd);
+    }
   }
 }
 

@@ -497,7 +497,7 @@ gnomemeeting_table_add_toggle (GtkWidget *table,
 
                                                                                
   toggle = gtk_check_button_new_with_label (label_txt);                        
-  gtk_table_attach (GTK_TABLE (table), toggle, col, col+1, row, row+1,         
+  gtk_table_attach (GTK_TABLE (table), toggle, col, col+2, row, row+1,         
                     (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
                     (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                
                     GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);           
@@ -741,10 +741,11 @@ gnomemeeting_vbox_add_table (GtkWidget *vbox,
   PangoAttribute *attr = NULL;
    
   
-  frame = gtk_frame_new (frame_name);                                           
+  frame = gtk_frame_new (frame_name);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
   
   attrs = pango_attr_list_new ();
-  attr = pango_attr_weight_new (PANGO_WEIGHT_LIGHT);
+  attr = pango_attr_weight_new (PANGO_WEIGHT_BOLD);
   attr->start_index = 0;
   attr->end_index = strlen (frame_name);
   pango_attr_list_insert (attrs, attr);

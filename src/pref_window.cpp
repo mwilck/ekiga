@@ -835,7 +835,7 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook)
 
                                                                                
   /* Packing widget */                                                         
-  table = gnomemeeting_vbox_add_table (vbox, _("Behavior"), 3, 1);      
+  table = gnomemeeting_vbox_add_table (vbox, _("Behavior"), 3, 2);      
                                                                                
                                                                                
   /* The toggles */
@@ -849,7 +849,7 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook)
 
   /* Packing widget */                                                         
   table = gnomemeeting_vbox_add_table (vbox, _("Video Display"), 
-					      3, 1);  
+					      3, 2);  
                                                                                
 #ifdef HAS_SDL  
   pw->fullscreen_width =
@@ -866,15 +866,15 @@ static void gnomemeeting_init_pref_window_interface (GtkWidget *notebook)
 #endif
 
   pw->bilinear_filtering =
-    gnomemeeting_table_add_toggle (table, _("Enable bilinear filtering"), "/apps/gnomemeeting/video_display/bilinear_filtering", _("Enable or disable bilinear interpolation when rendering video images (it has no effect on fullscreen)."), 3, 0);
+    gnomemeeting_table_add_toggle (table, _("Enable bilinear filtering on displayed video"), "/apps/gnomemeeting/video_display/bilinear_filtering", _("Enable or disable bilinear interpolation when rendering video images (it has no effect on fullscreen)."), 3, 0);
 
 
   /* Packing widget */                                                         
   table = gnomemeeting_vbox_add_table (vbox, _("Sound"),                
-                                              1, 1);                           
+                                              1, 2);                           
                                                                                
   /* The toggles */                                                            
-  pw->incoming_call_sound = gnomemeeting_table_add_toggle (table, _("Incoming Call"), "/apps/gnomemeeting/general/incoming_call_sound", _("If enabled, GnomeMeeting will play a sound when receiving an incoming call (the sound to play is chosen in the Gnome Control Center)."), 0, 0);
+  pw->incoming_call_sound = gnomemeeting_table_add_toggle (table, _("Play a sound on incoming calls"), "/apps/gnomemeeting/general/incoming_call_sound", _("If enabled, GnomeMeeting will play a sound when receiving an incoming call (the sound to play is chosen in the Gnome Control Center)."), 0, 0);
 }
 
 
@@ -1016,7 +1016,7 @@ static void gnomemeeting_init_pref_window_audio_devices (GtkWidget *notebook)
 		   _("Low"),
 		   _("Medium"),
 		   _("High"),
-		   _("Automatic Gain Compensation"),
+		   _("AGC"),
 		   NULL};
 
   gchar *audio_player_devices_list [20];
@@ -1082,13 +1082,13 @@ static void gnomemeeting_init_pref_window_audio_devices (GtkWidget *notebook)
 					      3, 2);
 
   pw->lid_aec =
-    gnomemeeting_table_add_int_option_menu (table, _("Automatic Echo Cancellation:"), aec, "/apps/gnomemeeting/devices/lid_aec", _("The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic Gain Compensation. Choosing Automatic Gain Compensation modulates the volume for best quality."), 0);
+    gnomemeeting_table_add_int_option_menu (table, _("Automatic Echo Cancellation:"), aec, "/apps/gnomemeeting/devices/lid_aec", _("The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic Gain Compensation. Choosing Automatic Gain Compensation modulates the volume for best quality."), 1);
 
   pw->lid_country =
-    gnomemeeting_table_add_entry (table, _("Country Code:"), "/apps/gnomemeeting/devices/lid_country", _("The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)."), 1);
+    gnomemeeting_table_add_entry (table, _("Country Code:"), "/apps/gnomemeeting/devices/lid_country", _("The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)."), 2);
 
   pw->lid =
-    gnomemeeting_table_add_toggle (table, _("Use the Quicknet Device"), "/apps/gnomemeeting/devices/lid", _("If enabled, GnomeMeeting will use the Quicknet device instead of the regular soundcard during calls."), 2, 0);
+    gnomemeeting_table_add_toggle (table, _("Use the Quicknet Device"), "/apps/gnomemeeting/devices/lid", _("If enabled, GnomeMeeting will use the Quicknet device instead of the regular soundcard during calls."), 0, 0);
 #endif
 
 
@@ -1352,30 +1352,18 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
 
 
   /* Here we add the audio codecs options */
-  table = gnomemeeting_vbox_add_table (vbox, _("Audio Codecs Settings"), 5, 2);
-
-  pw->gsm_frames =
-     gnomemeeting_table_add_spin (table, _("GSM Frames per packet:"),       
- 				       "/apps/gnomemeeting/audio_settings/gsm_frames",
-					_("The number of frames in each transmitted GSM packet."),
- 				       1.0, 7.0, 1.0, 0);
-
-  pw->g711_frames =
-     gnomemeeting_table_add_spin (table, _("G.711 Frames per packet:"),       
- 				       "/apps/gnomemeeting/audio_settings/g711_frames",
-					_("The number of frames in each transmitted G.711 packet."),
- 				       11.0, 240.0, 1.0, 1);
-
+  table = gnomemeeting_vbox_add_table (vbox, _("Audio Codecs Settings"), 3, 2);
+  
   pw->sd = 
     gnomemeeting_table_add_toggle (table, _("Enable Silence Detection"),       
  				       "/apps/gnomemeeting/audio_settings/sd",
-					_("Enable/disable the silence detection for the GSM and G.711 codecs."), 4, 0);
+					_("Enable/disable the silence detection for the GSM and G.711 codecs."), 2, 0);
 
   pw->min_jitter_buffer =
-    gnomemeeting_table_add_spin (table, _("Minimal Jitter Buffer:"), AUDIO_SETTINGS_KEY "min_jitter_buffer", _("The minimal jitter buffer size for audio reception (in ms)."), 20.0, 1000.0, 1.0, 2);
+    gnomemeeting_table_add_spin (table, _("Minimal Jitter Buffer:"), AUDIO_SETTINGS_KEY "min_jitter_buffer", _("The minimal jitter buffer size for audio reception (in ms)."), 20.0, 1000.0, 1.0, 0);
 
   pw->max_jitter_buffer =
-    gnomemeeting_table_add_spin (table, _("Maximal Jitter Buffer:"), AUDIO_SETTINGS_KEY "max_jitter_buffer", _("The maximal jitter buffer size for audio reception (in ms)."), 20.0, 1000.0, 1.0, 3);
+    gnomemeeting_table_add_spin (table, _("Maximal Jitter Buffer:"), AUDIO_SETTINGS_KEY "max_jitter_buffer", _("The maximal jitter buffer size for audio reception (in ms)."), 20.0, 1000.0, 1.0, 1);
 }
                                                                                
 
@@ -1397,15 +1385,18 @@ void gnomemeeting_init_pref_window_video_codecs (GtkWidget *notebook)
   vbox =  gtk_vbox_new (FALSE, 4);
   gtk_notebook_append_page (GTK_NOTEBOOK(notebook), vbox, NULL);  
   table = gnomemeeting_vbox_add_table (vbox, _("General Settings"),
-                                              1, 1);                           
+                                              2, 2);                           
 
   /* Add fields */
   pw->vid_tr = 
-    gnomemeeting_table_add_toggle (table, _("Enable Video Transmission"), "/apps/gnomemeeting/video_settings/enable_video_transmission", _("Enable/disable the video transmission."), 2, 0);
+    gnomemeeting_table_add_toggle (table, _("Enable Video Transmission"), "/apps/gnomemeeting/video_settings/enable_video_transmission", _("Enable/disable the video transmission."), 0, 0);
+
+  pw->vid_re = 
+    gnomemeeting_table_add_toggle (table, _("Enable Video Reception"), "/apps/gnomemeeting/video_settings/enable_video_reception", _("Enable/disable the video reception."), 1, 0);
 
 
   /* H.261 Settings */
-  table = gnomemeeting_vbox_add_table (vbox, _("Bandwidth Control"), 4, 1);       
+  table = gnomemeeting_vbox_add_table (vbox, _("Bandwidth control"), 1, 1);       
 
   pw->maximum_video_bandwidth =
     gnomemeeting_table_add_spin (table, _("Maximum video bandwidth:"), 
@@ -1413,49 +1404,53 @@ void gnomemeeting_init_pref_window_video_codecs (GtkWidget *notebook)
 				 _("The maximum video bandwidth in kbytes/s. The video quality and the number of transmitted frames per second will be dynamically adjusted above their minimum during calls to try to minimize the bandwidth to the given value"), 2.0, 100.0, 1.0, 0);
 
 
+  
+  table = gnomemeeting_vbox_add_table (vbox, _("Advanced quality settings"), 3, 1);       
+
   pw->tr_vq =
     gnomemeeting_table_add_spin (table, _("Minimum Transmitted Video Quality:"),       
  				       "/apps/gnomemeeting/video_settings/tr_vq",
 				       _("The minimum transmitted video quality to keep when trying to minimize the used bandwidth:  choose 100% on a LAN for the best quality, 1% being the worst quality."),
- 				       1.0, 100.0, 1.0, 1);
+ 				       1.0, 100.0, 1.0, 0);
 
   pw->tr_fps =
     gnomemeeting_table_add_spin (table, _("Minimum Transmitted FPS:"),       
  				       "/apps/gnomemeeting/video_settings/tr_fps",
 				       _("The minimum number of video frames to transmit each second when trying to minimize the bandwidth."),
- 				       1.0, 30.0, 1.0, 2);
+ 				       1.0, 30.0, 1.0, 1);
 
   pw->tr_ub =
     gnomemeeting_table_add_spin (table, _("Transmitted Background Blocks:"),       
  				       "/apps/gnomemeeting/video_settings/tr_ub",
 				       _("Here you can choose the number of blocks (that haven't changed) transmitted with each frame. These blocks fill in the background."),
- 				       1.0, 99.0, 1.0, 3);
+ 				       1.0, 99.0, 1.0, 2);
 }                                                                              
 
             
 void gnomemeeting_init_pref_window ()
 {
-  GtkTreeSelection *selection;
-  GtkCellRenderer *cell;
-  GtkWidget *tree_view;
-  GtkTreeViewColumn *column;
-  GtkTreeStore *model;
+  GtkTreeSelection *selection = NULL;
+  GtkCellRenderer *cell = NULL;
+  GtkWidget *tree_view = NULL;
+  GtkTreeViewColumn *column = NULL;
+  GtkTreeStore *model = NULL;
   GtkTreeIter iter;
   GtkTreeIter child_iter;
 
-  GtkWidget *event_box, *hbox, *vbox;
-  GtkWidget *frame;
-  GtkWidget *pixmap;
-  GtkWidget *label;
+  GtkWidget *event_box = NULL, *hbox = NULL, *vbox = NULL;
+  GtkWidget *frame = NULL;
+  GtkWidget *pixmap = NULL;
+  GtkWidget *label = NULL;
+  GtkWidget *hsep = NULL;
 
-  PangoAttrList     *attrs; 
-  PangoAttribute    *attr; 
+  PangoAttrList *attrs = NULL; 
+  PangoAttribute *attr = NULL; 
 
   /* The notebook on the right */
-  GtkWidget *notebook;
+  GtkWidget *notebook = NULL;
 
   /* Box inside the prefs window */
-  GtkWidget *dialog_vbox;
+  GtkWidget *dialog_vbox = NULL;
  
   /* Get the data */
   GmWindow *gw = gnomemeeting_get_main_window (gm);
@@ -1505,27 +1500,23 @@ void gnomemeeting_init_pref_window ()
 
   /* Some design stuff to put the notebook pages in it */
   frame = gtk_frame_new (NULL);
+  gtk_container_set_border_width (GTK_CONTAINER (frame), 2);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
   gtk_box_pack_start (GTK_BOX (hbox), frame, TRUE, TRUE, 0);
   gtk_widget_show (frame);
   
-  vbox = gtk_vbox_new (FALSE, 4);
+  vbox = gtk_vbox_new (FALSE, 0);
   gtk_container_add (GTK_CONTAINER (frame), vbox);
   gtk_widget_show (vbox);
-
-  frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
-  gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, TRUE, 0);
-  gtk_widget_show (frame);
-    
-  hbox = gtk_hbox_new (FALSE, 4);
-  gtk_container_set_border_width (GTK_CONTAINER (hbox), 4);
-  gtk_container_add (GTK_CONTAINER (frame), hbox);
-  gtk_widget_show (hbox);
-    
+  
+  
   label = gtk_label_new (NULL);
+  frame = gtk_frame_new (NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_NONE);
+  gtk_container_set_border_width (GTK_CONTAINER (frame), 4);
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
+  gtk_container_add (GTK_CONTAINER (frame), label);
+  gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
   attrs = pango_attr_list_new ();
   attr = pango_attr_scale_new (PANGO_SCALE_LARGE);
   attr->start_index = 0;
@@ -1539,6 +1530,8 @@ void gnomemeeting_init_pref_window ()
   pango_attr_list_unref (attrs);
   gtk_widget_show (label);
 
+  hsep = gtk_hseparator_new ();
+  gtk_box_pack_start (GTK_BOX (vbox), hsep, FALSE, FALSE, 0); 
   gtk_box_pack_start (GTK_BOX (vbox), notebook, FALSE, FALSE, 0);
 
   g_object_set_data (G_OBJECT (gw->pref_window), "section_label", label);

@@ -402,7 +402,10 @@ gnomemeeting_druid_radio_changed (GtkToggleButton *b, gpointer data)
     gconf_client_set_bool (client, 
 			   VIDEO_SETTINGS_KEY "enable_video_transmission", 
 			   0, NULL);
-  }
+    gconf_client_set_bool (client, 
+			   VIDEO_SETTINGS_KEY "enable_video_reception", 
+			   0, NULL);
+ }
 
   /* ISDN */
   if (selection == 2) {
@@ -415,6 +418,9 @@ gnomemeeting_druid_radio_changed (GtkToggleButton *b, gpointer data)
     gconf_client_set_int (client, VIDEO_SETTINGS_KEY "re_vq", 30, NULL);
     gconf_client_set_bool (client, 
 			   VIDEO_SETTINGS_KEY "enable_video_transmission", 
+			   1, NULL);
+    gconf_client_set_bool (client, 
+			   VIDEO_SETTINGS_KEY "enable_video_reception", 
 			   1, NULL);
   }
 
@@ -430,7 +436,10 @@ gnomemeeting_druid_radio_changed (GtkToggleButton *b, gpointer data)
     gconf_client_set_bool (client, 
 			   VIDEO_SETTINGS_KEY "enable_video_transmission", 
 			   1, NULL);
-  }
+    gconf_client_set_bool (client, 
+			   VIDEO_SETTINGS_KEY "enable_video_reception", 
+			   1, NULL);
+}
 
   /* LAN */
   if (selection == 4) {
@@ -443,6 +452,9 @@ gnomemeeting_druid_radio_changed (GtkToggleButton *b, gpointer data)
 			  80, NULL);
     gconf_client_set_bool (client, 
 			   VIDEO_SETTINGS_KEY "enable_video_transmission", 
+			   1, NULL);
+    gconf_client_set_bool (client, 
+			   VIDEO_SETTINGS_KEY "enable_video_reception", 
 			   1, NULL);
   }
 
@@ -679,48 +691,30 @@ gnomemeeting_init_druid_connection_type_page (GnomeDruid *druid, int p, int t)
   table = gnomemeeting_vbox_add_table (vbox, _("Connection Type"), 1, 1);
   radio1 = gtk_radio_button_new_with_label (NULL, _("56K modem"));
   gtk_box_pack_start (GTK_BOX (box), radio1, TRUE, TRUE, 0);
-  g_signal_connect (G_OBJECT (radio1), "toggled",
-		    G_CALLBACK (gnomemeeting_druid_radio_changed), 
-		    GINT_TO_POINTER (1));
-
   radio2 = 
     gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (radio1), 
 						 _("ISDN"));
   gtk_box_pack_start (GTK_BOX (box), radio2, TRUE, TRUE, 0);
-  g_signal_connect (G_OBJECT (radio2), "toggled",
-		    G_CALLBACK (gnomemeeting_druid_radio_changed), 
-		    GINT_TO_POINTER (2));
-
   radio3 = 
     gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (radio1), 
 						 _("DSL/Cable"));
   gtk_box_pack_start (GTK_BOX (box), radio3, TRUE, TRUE, 0);
-  g_signal_connect (G_OBJECT (radio3), "toggled",
-		    G_CALLBACK (gnomemeeting_druid_radio_changed), 
-		    GINT_TO_POINTER (3));
-
   radio4 = 
     gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (radio1), 
 						 _("T1/LAN"));
   gtk_box_pack_start (GTK_BOX (box), radio4, TRUE, TRUE, 0);
-  g_signal_connect (G_OBJECT (radio4), "toggled",
-		    G_CALLBACK (gnomemeeting_druid_radio_changed), 
-		    GINT_TO_POINTER (4));
-
   radio5= 
     gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (radio1), 
 						 _("Custom"));
   gtk_box_pack_start (GTK_BOX (box), radio5, TRUE, TRUE, 0);
-  g_signal_connect (G_OBJECT (radio5), "toggled",
-		    G_CALLBACK (gnomemeeting_druid_radio_changed), 
-		    GINT_TO_POINTER (5));
 
   gtk_table_attach (GTK_TABLE (table), box, 0, 1, 0, 1,
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
 
-
+  
+  /* Type of network */
   int net_selected = 
     gconf_client_get_int (client, GENERAL_KEY "kind_of_net", NULL);
   GtkWidget *selected_button = radio1;
@@ -741,12 +735,25 @@ gnomemeeting_init_druid_connection_type_page (GnomeDruid *druid, int p, int t)
   
   }
 
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (selected_button), true); 
 
-  /* Write the appropiate defaults */
-  gnomemeeting_druid_radio_changed (GTK_TOGGLE_BUTTON (selected_button), 
-				    GINT_TO_POINTER (net_selected));
-  
+  /* Update the buttons to the right value and connect signals */
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (selected_button), true); 
+  g_signal_connect (G_OBJECT (radio1), "toggled",
+		    G_CALLBACK (gnomemeeting_druid_radio_changed), 
+		    GINT_TO_POINTER (1));
+  g_signal_connect (G_OBJECT (radio2), "toggled",
+		    G_CALLBACK (gnomemeeting_druid_radio_changed), 
+		    GINT_TO_POINTER (2));
+  g_signal_connect (G_OBJECT (radio3), "toggled",
+		    G_CALLBACK (gnomemeeting_druid_radio_changed), 
+		    GINT_TO_POINTER (3));
+  g_signal_connect (G_OBJECT (radio4), "toggled",
+		    G_CALLBACK (gnomemeeting_druid_radio_changed), 
+		    GINT_TO_POINTER (4));
+  g_signal_connect (G_OBJECT (radio5), "toggled",
+		    G_CALLBACK (gnomemeeting_druid_radio_changed), 
+		    GINT_TO_POINTER (5));
+
   gtk_box_pack_start (GTK_BOX (page_standard->vbox), GTK_WIDGET (vbox), 
 		      TRUE, TRUE, 8);
 }
