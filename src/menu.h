@@ -47,10 +47,18 @@ void gnomemeeting_init_menu ();
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Changes sensitivity in the zoom section of the view menu
- *                 and of the popup menu.
+ *                 and of the popup menu. 
  * PRE          :  /
  */
 void gnomemeeting_zoom_submenu_set_sensitive (gboolean);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Changes sensitivity of the full screen option of 
+ *                 the view menu and of the popup menu. 
+ * PRE          :  /
+ */
+void gnomemeeting_fullscreen_option_set_sensitive (gboolean);
 
 
 /* DESCRIPTION  :  /

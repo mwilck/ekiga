@@ -594,9 +594,10 @@ void GMVideoGrabber::VGOpen (void)
     }
 
 
-    /* Enable zoom settings in the view menu */
+    /* Enable zoom and fullscreen settings in the view menu */
     gnomemeeting_threads_enter ();
     gnomemeeting_zoom_submenu_set_sensitive (TRUE);
+    gnomemeeting_fullscreen_option_set_sensitive (TRUE);
     gnomemeeting_threads_leave ();
   }  
 
@@ -657,9 +658,10 @@ void GMVideoGrabber::VGClose (int display_logo)
     gnomemeeting_threads_leave ();
     
     
-    /* Disable the zoom options */
+    /* Disable the zoom and fullscreen options */
     gnomemeeting_threads_enter ();
     gnomemeeting_zoom_submenu_set_sensitive (FALSE);
+    gnomemeeting_fullscreen_option_set_sensitive (FALSE);
     gnomemeeting_threads_leave ();
 
 

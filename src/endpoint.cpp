@@ -1342,6 +1342,7 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
     gnomemeeting_threads_enter ();
     gnomemeeting_zoom_submenu_set_sensitive (FALSE);
+    gnomemeeting_fullscreen_option_set_sensitive (FALSE);
     gnomemeeting_init_main_window_logo ();
     gnomemeeting_threads_leave ();
   }
@@ -1531,6 +1532,7 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 
      /* Updates the view menu */
      gnomemeeting_zoom_submenu_set_sensitive (TRUE);
+     gnomemeeting_fullscreen_option_set_sensitive (TRUE);
 
      /* Default Codecs Settings */
      codec.SetTxQualityLevel (-1);
@@ -1567,6 +1569,7 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 
       /* Update menus */
       gnomemeeting_zoom_submenu_set_sensitive (TRUE);
+      gnomemeeting_fullscreen_option_set_sensitive (TRUE);
       gnomemeeting_video_submenu_set_sensitive (TRUE);
       gnomemeeting_video_submenu_select (1);
       

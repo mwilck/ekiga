@@ -62,15 +62,17 @@ GDKVideoOutputDevice::GDKVideoOutputDevice(GmWindow *w)
   transmitted_frame_number = 0;
   received_frame_number = 0;
 
+  gw = w;
+
   /* Used to distinguish between input and output device. */
   device_id = 0; 
 
 #ifdef HAS_SDL
   screen = NULL;
   overlay = NULL;
-#endif
 
-  gw = w;
+  gw->fullscreen = 0;
+#endif
 }
 
 
@@ -79,15 +81,17 @@ GDKVideoOutputDevice::GDKVideoOutputDevice(int idno, GmWindow *w)
   transmitted_frame_number = 0;
   received_frame_number = 0;
 
+  gw = w;
+
   /* Used to distinguish between input and output device. */
   device_id = idno; 
 
 #ifdef HAS_SDL
   screen = NULL;
   overlay = NULL;
-#endif
 
-  gw = w;
+  gw->fullscreen = 0;
+#endif
 }
 
 
@@ -107,6 +111,8 @@ GDKVideoOutputDevice::~GDKVideoOutputDevice()
     overlay = NULL;
     SDL_Quit ();
   }
+
+  gw->fullscreen = 0;
 #endif
 }
 
@@ -140,6 +146,7 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
 
   static int fs_device = 0;
 #endif
+
 
   /* Take the mutexes before the redraw */
   redraw_mutex.Wait ();
@@ -235,15 +242,28 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
   SDL_Event event;
   
   /* If we are in full screen, check that "Esc" is not pressed */
-  if (has_to_fs) 
+  if (has_to_fs)
     while (SDL_PollEvent (&event)) {
   
-      if ((event.type == SDL_KEYDOWN)&&(event.key.keysym.sym == SDLK_ESCAPE)) {
+      if (event.type == SDL_KEYDOWN) {
 
-	has_to_fs = !has_to_fs;
-	gw->fullscreen = has_to_fs;
-	has_to_switch_fs = true;
+	/* Exit Full Screen */
+	if ((event.key.keysym.sym == SDLK_ESCAPE) ||
+	    (event.key.keysym.sym == SDLK_f)) {
+
+	  has_to_fs = !has_to_fs;
+	  gw->fullscreen = has_to_fs;
+	  has_to_switch_fs = true;
+	}
+
+	if (event.key.keysym.sym == SDLK_PLUS) {
+	
+	  if (gw->zoom * 2 <= 2)
+	    gw->zoom = gw->zoom * 2;
+	}
+
       }
+
     }
   
 
