@@ -2285,13 +2285,11 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
     
     /* The maximum quality corresponds to the lowest quality indice, 1
        and the lowest quality corresponds to 24 */
-    codec.SetTxMinQuality (1);
-    codec.SetTxMaxQuality (vq);
+    codec.SetTxQualityLevel (vq);
     codec.SetBackgroundFill (bf);   
     codec.SetMaxBitRate (bitrate * 8 * 1024);
     codec.SetTargetFrameTimeMs (0);
-    codec.SetVideoMode (H323VideoCodec::DynamicVideoQuality | 
-			H323VideoCodec::AdaptivePacketDelay |
+    codec.SetVideoMode (H323VideoCodec::AdaptivePacketDelay |
 			codec.GetVideoMode());
 
     /* Needed to be able to stop start the channel on-the-fly. When

@@ -1522,7 +1522,7 @@ gnomemeeting_init_pref_window_video_codecs (GtkWidget *window,
 				_("Advanced Quality Settings"), 3, 1);
   
   /* Translators: the full sentence is Keep a minimum video quality of X % */
-  gnome_prefs_scale_new (subsection, _("Speed"), _("Quality"), VIDEO_CODECS_KEY "transmitted_video_quality", _("Choose if you want to favour speed or quality for the transmitted video."), 1.0, 100.0, 1.0, 0);
+  gnome_prefs_scale_new (subsection, _("Frame Rate"), _("Picture Quality"), VIDEO_CODECS_KEY "transmitted_video_quality", _("Choose if you want to favour speed or quality for the transmitted video."), 1.0, 100.0, 1.0, 0);
 				 
   /* Translators: the full sentence is Transmit X background blocks with each
      frame */

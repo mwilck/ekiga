@@ -739,9 +739,9 @@ tr_vq_changed_nt (gpointer id,
 
       /* We update the video quality */
       vq = 25 - (int) ((double) (int) gm_conf_entry_get_int (entry) / 100 * 24);
-  
+
       if (vc)
-	vc->SetTxMaxQuality (vq);
+	vc->SetTxQualityLevel (vq);
 
       connection->Unlock ();
     }
