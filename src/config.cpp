@@ -363,7 +363,7 @@ static void audio_device_changed_nt (GConfClient *client, guint cid,
 
 /* DESCRIPTION  :  This callback is called when the "register" gconf value changes.
  *                 The "register" value can change if the user plays with the button,
- *                 or if he clicks on "Update" in Personnal data, or if he uses
+ *                 or if he clicks on "Update" in Personal data, or if he uses
  *                 gconftool.
  * BEHAVIOR     :  It registers to the LDAP server, IF all recquired fields are
  *                 available.
@@ -407,7 +407,7 @@ static void register_changed_nt (GConfClient *client, guint cid,
 
       /* Check if there is a first name */
       gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
-					       "/apps/gnomemeeting/personnal_data/firstname", 
+					       "/apps/gnomemeeting/personal_data/firstname", 
 					       NULL);
 
       if ((gconf_string == NULL) || (!strcmp (gconf_string, ""))) {
@@ -421,7 +421,7 @@ static void register_changed_nt (GConfClient *client, guint cid,
 
       /* Check if there is a mail */
       gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
-					       "/apps/gnomemeeting/personnal_data/mail", 
+					       "/apps/gnomemeeting/personal_data/mail", 
 					       NULL);
 
       if ((gconf_string == NULL) || (!strcmp (gconf_string, ""))) {
@@ -481,19 +481,19 @@ void gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, "/apps/gnomemeeting/ldap/register",
 			   register_changed_nt, pw, 0, 0);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/personnal_data/firstname",
+  gconf_client_notify_add (client, "/apps/gnomemeeting/personal_data/firstname",
 			   entry_changed_nt, pw->firstname, 0, 0);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/personnal_data/mail",
+  gconf_client_notify_add (client, "/apps/gnomemeeting/personal_data/mail",
 			   entry_changed_nt, pw->mail, 0, 0);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/personnal_data/lastname",
+  gconf_client_notify_add (client, "/apps/gnomemeeting/personal_data/lastname",
 			   entry_changed_nt, pw->surname, 0, 0);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/personnal_data/location",
+  gconf_client_notify_add (client, "/apps/gnomemeeting/personal_data/location",
 			   entry_changed_nt, pw->location, 0, 0);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/personnal_data/comment",
+  gconf_client_notify_add (client, "/apps/gnomemeeting/personal_data/comment",
 			   entry_changed_nt, pw->comment, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/auto_answer",
@@ -587,7 +587,7 @@ static void gnomemeeting_update_pref_window_sensitivity ()
 
   /* Check if there is a first name */
   gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
-                                           "/apps/gnomemeeting/personnal_data/f\
+                                           "/apps/gnomemeeting/personal_data/f\
 irstname",
                                            NULL);
 
@@ -598,7 +598,7 @@ irstname",
 
   /* Check if there is a mail */
   gconf_string =  gconf_client_get_string (GCONF_CLIENT (client),
-                                           "/apps/gnomemeeting/personnal_data/m\
+                                           "/apps/gnomemeeting/personal_data/m\
 ail",
                                            NULL);
 

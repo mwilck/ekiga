@@ -167,19 +167,19 @@ void GMILSClient::UpdateConfig ()
 					  "/apps/gnomemeeting/ldap/ldap_server", 
 					  NULL);
   firstname =  gconf_client_get_string (GCONF_CLIENT (client),
-					"/apps/gnomemeeting/personnal_data/firstname", 
+					"/apps/gnomemeeting/personal_data/firstname", 
 					NULL);
   surname =  gconf_client_get_string (GCONF_CLIENT (client),
-				      "/apps/gnomemeeting/personnal_data/lastname", 
+				      "/apps/gnomemeeting/personal_data/lastname", 
 				      NULL);
   mail =  gconf_client_get_string (GCONF_CLIENT (client),
-				   "/apps/gnomemeeting/personnal_data/mail", 
+				   "/apps/gnomemeeting/personal_data/mail", 
 				   NULL);
   comment =  gconf_client_get_string (GCONF_CLIENT (client),
-				      "/apps/gnomemeeting/personnal_data/comment", 
+				      "/apps/gnomemeeting/personal_data/comment", 
 				      NULL);
   location =  gconf_client_get_string (GCONF_CLIENT (client),
-				       "/apps/gnomemeeting/personnal_data/location", 
+				       "/apps/gnomemeeting/personal_data/location", 
 				       NULL);
 }
 

@@ -5,7 +5,7 @@
       <applyto>/apps/gnomemeeting/view/show_status_bar</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
-      <default>1</default>
+      <default>true</default>
       <locale name="C">
 	<short>Show the status bar</short>
 	<long>Show a status bar at the bottom of the main window</long>
@@ -16,7 +16,7 @@
       <applyto>/apps/gnomemeeting/view/show_quick_bar</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
-      <default>1</default>
+      <default>true</default>
       <locale name="C">
 	<short>Show the quickbar</short>
 	<long>Show a quickbar in the main window</long>
@@ -27,7 +27,7 @@
       <applyto>/apps/gnomemeeting/view/show_control_panel</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
-      <default>1</default>
+      <default>true</default>
       <locale name="C">
 	<short>Show a control panel</short>
 	<long>Show a control panel in the main window</long>
@@ -38,7 +38,7 @@
       <applyto>/apps/gnomemeeting/view/show_docklet</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
-      <default>1</default>
+      <default>true</default>
       <locale name="C">
 	<short>Show the docklet</short>
 	<long>Show a docklet in the gnome-panel or KDE systray</long>
@@ -89,8 +89,8 @@
       </locale>
     </schema>
     <schema>	
-      <key>/schemas/apps/gnomemeeting/personnal_data/firstname</key>
-      <applyto>/apps/gnomemeeting/personnal_data/firstname</applyto>
+      <key>/schemas/apps/gnomemeeting/personal_data/firstname</key>
+      <applyto>/apps/gnomemeeting/personal_data/firstname</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default></default>
@@ -100,8 +100,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/personnal_data/lastname</key>
-      <applyto>/apps/gnomemeeting/personnal_data/lastname</applyto>
+      <key>/schemas/apps/gnomemeeting/personal_data/lastname</key>
+      <applyto>/apps/gnomemeeting/personal_data/lastname</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default></default>
@@ -111,8 +111,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/personnal_data/comment</key>
-      <applyto>/apps/gnomemeeting/personnal_data/comment</applyto>
+      <key>/schemas/apps/gnomemeeting/personal_data/comment</key>
+      <applyto>/apps/gnomemeeting/personal_data/comment</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default></default>
@@ -122,8 +122,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/personnal_data/location</key>
-      <applyto>/apps/gnomemeeting/personnal_data/location</applyto>
+      <key>/schemas/apps/gnomemeeting/personal_data/location</key>
+      <applyto>/apps/gnomemeeting/personal_data/location</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default></default>
@@ -133,8 +133,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/personnal_data/mail</key>
-      <applyto>/apps/gnomemeeting/personnal_data/mail</applyto>
+      <key>/schemas/apps/gnomemeeting/personal_data/mail</key>
+      <applyto>/apps/gnomemeeting/personal_data/mail</applyto>
       <owner>GnomeMeeting</owner>
       <type>string</type>
       <default></default>
@@ -159,7 +159,7 @@
       <applyto>/apps/gnomemeeting/ldap/register</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
-      <default>0</default>
+      <default>false</default>
       <locale name="C">
 	<short>Register</short>
 	<long>Enables registering to the LDAP server</long>
@@ -170,7 +170,7 @@
       <applyto>/apps/gnomemeeting/general/auto_answer</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
-      <default>0</default>
+      <default>false</default>
       <locale name="C">
 	<short>Auto Answer</short>
 	<long>If enabled, incoming calls will be auto-answered</long>
@@ -181,7 +181,7 @@
       <applyto>/apps/gnomemeeting/general/do_not_disturb</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
-      <default>0</default>
+      <default>false</default>
       <locale name="C">
 	<short>Do not disturb</short>
 	<long>If enabled, incoming calls will be automatically rejected</long>
@@ -192,7 +192,7 @@
       <applyto>/apps/gnomemeeting/general/h245_tunneling</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
-      <default>0</default>
+      <default>false</default>
       <locale name="C">
 	<short>H.245 Tunneling</short>
 	<long>If enabled, call will be established with H.245 Tunneling</long>
@@ -203,7 +203,7 @@
       <applyto>/apps/gnomemeeting/general/fast_start</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
-      <default>0</default>
+      <default>false</default>
       <locale name="C">
 	<short>Fast Start</short>
 	<long>If enabled, call will be established in Fast Start mode</long>
@@ -214,7 +214,7 @@
       <applyto>/apps/gnomemeeting/general/incoming_call_sound</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
-      <default>1</default>
+      <default>true</default>
       <locale name="C">
 	<short>Incoming Call Sound</short>
 	<long>If enabled, a sound is played on incoming calls</long>
