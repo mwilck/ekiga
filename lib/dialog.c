@@ -32,7 +32,8 @@
  *                          to create dialogs for GnomeMeeting.
  */
 
-
+#include <config.h>
+#include <libgnome/gnome-i18n.h>
 #include <gtk/gtk.h>
 #include <glib.h>
 #include <stdio.h>
@@ -127,7 +128,7 @@ gnomemeeting_warning_dialog_on_widget (GtkWindow *parent,
   }
   
   button = 
-    gtk_check_button_new_with_label ("Do not show this dialog again");
+    gtk_check_button_new_with_label (_("Do not show this dialog again"));
   
   g_signal_connect (G_OBJECT (button), "toggled",
                     G_CALLBACK (popup_toggle_changed),

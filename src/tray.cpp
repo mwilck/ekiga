@@ -274,7 +274,7 @@ GObject *gnomemeeting_init_tray ()
   EggTrayIcon *tray_icon;
   GConfClient *client = gconf_client_get_default ();
 
-  tray_icon = egg_tray_icon_new ("GnomeMeeting Tray Icon");
+  tray_icon = egg_tray_icon_new (_("GnomeMeeting Tray Icon"));
 
   gnomemeeting_build_tray (GTK_CONTAINER (tray_icon));
   
