@@ -284,7 +284,7 @@ void gnomemeeting_init_toolbar ()
   gw->preview_button = gtk_toggle_button_new ();
 
   image = gtk_image_new_from_stock (GM_STOCK_VIDEO_PREVIEW, 
-                                    GTK_ICON_SIZE_SMALL_TOOLBAR);
+                                    GTK_ICON_SIZE_MENU);
 
   gtk_container_add (GTK_CONTAINER (gw->preview_button), GTK_WIDGET (image));
 
@@ -313,7 +313,7 @@ void gnomemeeting_init_toolbar ()
   gw->speaker_phone_button = gtk_toggle_button_new ();
 
   image = gtk_image_new_from_stock (GM_STOCK_SPEAKER_PHONE, 
-                                    GTK_ICON_SIZE_SMALL_TOOLBAR);
+                                    GTK_ICON_SIZE_MENU);
 
   gtk_container_add (GTK_CONTAINER (gw->speaker_phone_button), 
 		     GTK_WIDGET (image));
@@ -335,7 +335,7 @@ void gnomemeeting_init_toolbar ()
   gw->audio_chan_button = gtk_toggle_button_new ();
  
   image = gtk_image_new_from_stock (GM_STOCK_AUDIO_MUTE, 
-                                    GTK_ICON_SIZE_SMALL_TOOLBAR);
+                                    GTK_ICON_SIZE_MENU);
 
   gtk_container_add (GTK_CONTAINER (gw->audio_chan_button), 
 		     GTK_WIDGET (image));
@@ -357,7 +357,7 @@ void gnomemeeting_init_toolbar ()
   gw->video_chan_button = gtk_toggle_button_new ();
 
   image = gtk_image_new_from_stock (GM_STOCK_QUICKCAM,
-				    GTK_ICON_SIZE_SMALL_TOOLBAR);
+				    GTK_ICON_SIZE_MENU);
   gtk_container_add (GTK_CONTAINER (gw->video_chan_button), 
 		     GTK_WIDGET (image));
 
