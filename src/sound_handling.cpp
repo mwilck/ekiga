@@ -68,14 +68,16 @@
 #include <ptclib/pwavfile.h>
 #include <cmath>
 
-
+#ifndef DISABLE_GNOME
 static void dialog_response_cb (GtkWidget *, gint, gpointer);
-  
+#endif
+
 extern GtkWidget *gm;
 
 
 /* The GTK callbacks */
-void dialog_response_cb (GtkWidget *w, gint, gpointer data)
+#ifndef DISABLE_GNOME
+static void dialog_response_cb (GtkWidget *w, gint, gpointer data)
 {
   GmDruidWindow *dw = NULL;
 
@@ -86,7 +88,7 @@ void dialog_response_cb (GtkWidget *w, gint, gpointer data)
 
   gtk_widget_hide (w);
 }
-
+#endif
 
 /* The functions */
 void 

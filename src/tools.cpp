@@ -52,12 +52,11 @@
 
 extern GtkWidget *gm;
 
-static void pc_to_phone_window_response_cb (GtkWidget *,
-					    gint,
-					    gpointer);
+#ifndef DISABLE_GNOME
+static void pc_to_phone_window_response_cb (GtkWidget *, gint, gpointer);
 
-static void microtelco_consult_cb (GtkWidget *,
-				   gpointer);
+static void microtelco_consult_cb (GtkWidget *, gpointer);
+#endif
 
 static void dnd_drag_data_get_cb (GtkWidget *,
 				  GdkDragContext *,
@@ -79,6 +78,7 @@ static void find_button_clicked_cb (GtkButton *,
  *                 (if not cancel), ie change the settings and register to gk.
  * PRE          :  /
  */
+#ifndef DISABLE_GNOME
 static void
 pc_to_phone_window_response_cb (GtkWidget *w,
 				gint response,
@@ -110,6 +110,7 @@ pc_to_phone_window_response_cb (GtkWidget *w,
     ep->GatekeeperRegister ();
   }
 }
+#endif
 
 
 /* DESCRIPTION  :  This callback is called when the user clicks on the link
@@ -118,11 +119,11 @@ pc_to_phone_window_response_cb (GtkWidget *w,
  *                 with the GNOME preferred browser.
  * PRE          :  /
  */
+#ifndef DISABLE_GNOME
 static void
 microtelco_consult_cb (GtkWidget *widget,
 		       gpointer data)
 {
-#ifndef DISABLE_GNOME
   gchar *tmp_filename = NULL;
   gchar *filename = NULL;
   gchar *account = NULL;
@@ -162,9 +163,8 @@ microtelco_consult_cb (GtkWidget *widget,
   g_free (buffer);
   g_free (account);
   g_free (pin);
-#endif
 }
-
+#endif
 
 /* DESCRIPTION  :  This callback is called when the user has released the drag.
  * BEHAVIOR     :  Puts the required data into the selection_data, we put

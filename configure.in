@@ -463,6 +463,11 @@ pixmaps/Makefile
 sounds/Makefile
 xdap_data/Makefile)
 
+if test x"${disable_gnome}" = xyes; then
+AC_OUTPUT(
+lib/druid/Makefile)
+fi
+
 if test x"${disable_gnome}" = xno ; then
 AC_OUTPUT(
 help/Makefile

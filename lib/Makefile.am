@@ -31,6 +31,7 @@ libgnomemeeting_la_SOURCES =				\
 
 if DISABLE_GNOME
 libgnomemeeting_la_SOURCES += gm_conf-glib.c
+SUBDIRS += druid
 else
 libgnomemeeting_la_SOURCES += gm_conf-gconf.c
 endif
@@ -47,3 +48,6 @@ INCLUDES =						\
 
 libgnomemeeting_la_LDFLAGS = -export-dynamic
 libgnomemeeting_la_LIBADD = widgets/libgmwidgets.la xdap/libxdap.la 
+if DISABLE_GNOME
+libgnomemeeting_la_LIBADD += druid/libdruid.la
+endif

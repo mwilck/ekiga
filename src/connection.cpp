@@ -41,6 +41,7 @@
 #include "connection.h"
 #include "endpoint.h"
 #include "gnomemeeting.h"
+#include "menu.h"
 #include "misc.h"
 #include "tools.h"
 #include "chat_window.h"
@@ -270,7 +271,7 @@ void GMH323Connection::OnUserInputString(const PString & value)
 
   gnomemeeting_threads_enter ();
   if (utf8_remote && strcmp (utf8_remote, "")) 
-    gnomemeeting_text_chat_insert (utf8_remote, val, 1);
+    gnomemeeting_text_chat_insert (gw->chat_window, utf8_remote, val, 1);
   
   if (!GTK_WIDGET_VISIBLE (gw->chat_window))
     gm_conf_set_bool (USER_INTERFACE_KEY "main_window/show_chat_window", true);

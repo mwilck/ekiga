@@ -41,6 +41,7 @@
 
 #include "videograbber.h"
 #include "gnomemeeting.h"
+#include "menu.h"
 #include "misc.h"
 #include "tools.h"
 

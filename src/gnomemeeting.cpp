@@ -43,6 +43,7 @@
 #include "ils.h"
 #include "urlhandler.h"
 #include "ldap_window.h"
+#include "menu.h"
 #include "pref_window.h"
 #include "chat_window.h"
 #include "druid.h"
@@ -107,7 +108,6 @@ GnomeMeeting::GnomeMeeting ()
   pw = new GmPrefWindow ();
   lw = new GmLdapWindow ();
   dw = new GmDruidWindow ();
-  chat = new GmTextChat ();
   chw = new GmCallsHistoryWindow ();
   rtp = new GmRtpData ();
 
@@ -115,9 +115,7 @@ GnomeMeeting::GnomeMeeting ()
   gw->docklet = gw->ldap_window = gw->pref_window = gw->calls_history_window =
     gw->splash_win = gw->incoming_call_popup = gw->transfer_call_popup =
     gw->log_window = gw->audio_transmission_popup = gw->audio_reception_popup =
-#ifndef DISABLE_GNOME
     gw->druid_window =
-#endif
     NULL;
 
   GM = this;
@@ -153,16 +151,13 @@ GnomeMeeting::~GnomeMeeting()
     gtk_widget_destroy (gw->calls_history_window);
   if (gm)
     gtk_widget_destroy (gm);
-#ifndef DISABLE_GNOME
   if (gw->druid_window)
     gtk_widget_destroy (gw->druid_window);
-#endif
   
   delete (gw);
   delete (pw);
   delete (lw);
   delete (dw);
-  delete (chat);
   delete (chw);
   delete (rtp);
 }
@@ -390,13 +385,6 @@ GnomeMeeting::GetCallsHistoryWindow ()
 }
 
 
-GmTextChat *
-GnomeMeeting::GetTextChat ()
-{
-  return chat;
-}
-
-
 GmRtpData *
 GnomeMeeting::GetRtpData ()
 {
@@ -432,17 +420,16 @@ void GnomeMeeting::BuildGUI ()
   
   /* Build the GUI */
   gnomemeeting_stock_icons_init ();
+  gw->chat_window = gnomemeeting_text_chat_new ();
   gw->tips = gtk_tooltips_new ();
   gw->log_window = gnomemeeting_log_window_new ();
   gw->calls_history_window = gnomemeeting_calls_history_window_new (chw);
   gw->pc_to_phone_window = gnomemeeting_pc_to_phone_window_new ();  
   gw->pref_window = gnomemeeting_pref_window_new (pw);  
   gw->ldap_window = gnomemeeting_ldap_window_new (lw);
-#ifndef DISABLE_GNOME
   gw->druid_window = gnomemeeting_druid_window_new (dw);
-#endif
 #ifndef WIN32
-  gw->docklet = gnomemeeting_init_tray ();
+  gw->docklet = gnomemeeting_tray_new ();
   gw->tray_popup_menu = gnomemeeting_tray_init_menu (gw->docklet);
 #endif
   gnomemeeting_main_window_new (gw);

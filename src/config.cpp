@@ -47,6 +47,7 @@
 #include "endpoint.h"
 #include "gnomemeeting.h"
 #include "lid.h"
+#include "menu.h"
 #include "pref_window.h"
 #include "ldap_window.h"
 #include "tray.h"
@@ -1624,8 +1625,8 @@ gnomemeeting_conf_init ()
 			view_widget_changed_nt, gw->statusbar);
 
   gm_conf_notifier_add (USER_INTERFACE_KEY "main_window/show_chat_window",
-			menu_toggle_changed_nt,
-			gtk_menu_get_widget (gw->main_menu, "text_chat"));
+			menu_toggle_changed_nt, gtk_menu_get_widget (gw->main_menu, "text_chat"));
+
   gm_conf_notifier_add (USER_INTERFACE_KEY "main_window/show_chat_window",
 			view_widget_changed_nt, gw->chat_window);
 

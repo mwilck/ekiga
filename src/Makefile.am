@@ -56,11 +56,7 @@ gnomemeeting_SOURCES =		\
 	codec_info.h
 
 
-if DISABLE_GNOME
-gnomemeeting_SOURCES +=
-else
 gnomemeeting_SOURCES += druid.cpp druid.h
-endif
 
 gnomemeeting_LDADD = \
 	@GNOMEMEETING_LIBS@ \

@@ -43,47 +43,41 @@
 
 #include "common.h"
 
-
 G_BEGIN_DECLS
-
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Initializes the text chat view.
  * PRE          :  /
  */
 GtkWidget *
-gnomemeeting_text_chat_new (GmTextChat *);
+gnomemeeting_text_chat_new ();
 
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Clears the text chat view.
- * PRE          :  The first parameter is fictive so that the function
- *                 can be used in a callback.
+ * PRE          :  /
  */
 void
-gnomemeeting_text_chat_clear (GtkWidget *,
-			      GmTextChat *);
+gnomemeeting_text_chat_clear (GtkWidget *);
 
 
 /* DESCRIPTION: /
  * BEHAVIOR :  Signals the text chat that a connection begins or ends
  */
 void
-gnomemeeting_text_chat_call_start_notification (void);
+gnomemeeting_text_chat_call_start_notification (GtkWidget *);
 void
-gnomemeeting_text_chat_call_stop_notification (void);
+gnomemeeting_text_chat_call_stop_notification (GtkWidget *);
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Displays the colored text chat message,
- *		with some enhancements (context menu
- *		for uris, graphics for smileys, etc)
- * PRE          :  The name of the user, the name of the remote user,
+ *		   with some enhancements (context menu
+ *		   for uris, graphics for smileys, etc)
+ * PRE          :  The name of the (local or remote) user, the message and
  *                 0 for local user string, 1 for remote user received string.
  */
 void
-gnomemeeting_text_chat_insert (PString,
-			       PString,
-			       int);
+gnomemeeting_text_chat_insert (GtkWidget *, PString, PString, int);
 
 G_END_DECLS
 

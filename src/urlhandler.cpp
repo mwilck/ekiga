@@ -50,7 +50,6 @@
 #include "tools.h"
 
 #include "dialog.h"
-#include "gtk_menu_extensions.h"
 #include "gm_conf.h"
 
 /* Declarations */

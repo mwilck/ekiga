@@ -66,30 +66,40 @@
 #endif
 
 
-/* this is needed in order to really hide gconf */
+/* this is needed in order to really hide gconf: one needs to be able to
+ * call the GmConfNotifier from inside a gconf notifier, so we hide the real notifier
+ * and its associated user data into the user data of a gconf notifier, that will do
+ * the unwrapping, and call the real stuff */
 
 typedef struct _GConfNotifierWrap GConfNotifierWrap;
-struct _GConfNotifierWrap {
-  
+
+struct _GConfNotifierWrap {  
   GmConfNotifier real_notifier;
   gpointer real_user_data;
 };
 
-
 static GConfNotifierWrap *gconf_notifier_wrapper_new (GmConfNotifier, 
                                                       gpointer);
 
+/* gpointer, because it is a callback */
 static void gconf_notifier_wrapper_destroy (gpointer);
 
+/* this is the universal gconf notifier, that interprets its fourth
+ * argument as a GConfNotifierWrap*, and uses it */
 static void gconf_notifier_wrapper_trigger (GConfClient *,
                                             guint,
                                             GConfEntry *,
                                             gpointer);
 
+
+/* this function is called whenever an error occurs in gconf: it allows
+ * to use NULL as error callback in every other call */
 static void gconf_error_callback (GConfClient *,
                                   GError *);
 
 
+/* this functions expects a non-NULL conf notifier, and wraps it for
+ * use by the universal gconf notifier */
 static GConfNotifierWrap *
 gconf_notifier_wrapper_new (GmConfNotifier notifier, 
                             gpointer user_data)
@@ -105,7 +115,7 @@ gconf_notifier_wrapper_new (GmConfNotifier notifier,
   return result;
 }
 
-
+/* this function is automatically called to free the notifiers' wrappers */
 static void
 gconf_notifier_wrapper_destroy (gpointer wrapper)
 {
@@ -113,6 +123,9 @@ gconf_notifier_wrapper_destroy (gpointer wrapper)
 }
 
 
+/* this is the universal gconf notification unwrapper: it
+ * expects a wrapped gm conf notifier in its user_data argument,
+ * and calls it  */
 static void        
 gconf_notifier_wrapper_trigger (GConfClient *client,
 				guint identifier,
@@ -150,7 +163,7 @@ gconf_error_callback (GConfClient *client,
 }
 
 
-/* From now on, the rest is just calling the wrapped function */
+/* From now on, the rest is just calling the gconf functions, just checking for the key's validity */
 void
 gm_conf_set_bool (const gchar *key,
 		  const gboolean b)

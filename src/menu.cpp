@@ -59,6 +59,8 @@ extern GtkWidget *gm;
 
 
 /* Static functions */
+static void text_chat_clear_cb (GtkWidget *,
+				gpointer);
 static void zoom_changed_callback (GtkWidget *,
 				   gpointer);
 
@@ -80,6 +82,22 @@ static void toggle_menu_changed (GtkWidget *,
 
 
 /* GTK Callbacks */
+/* DESCRIPTION  :  This callback is called when the user clicks on the
+ *                 clear text chat menu entry
+ * BEHAVIOR     :  clears text chat
+ * PRE          :  /
+ */
+static void 
+text_chat_clear_cb (GtkWidget *widget,
+		    gpointer data)
+{
+  GtkWidget *chat_window = NULL;
+
+  chat_window = GTK_WIDGET (data);
+  gnomemeeting_text_chat_clear (chat_window);
+}
+
+
 /* DESCRIPTION  :  This callback is called when the user changes the zoom
  *                 factor in the menu.
  * BEHAVIOR     :  Sets zoom to 1:2 if data == 0, 1:1 if data == 1, 
@@ -212,7 +230,6 @@ GtkWidget *
 gnomemeeting_init_menu (GtkAccelGroup *accel)
 {
   GmWindow *gw = NULL;
-  GmTextChat *chat = NULL;
 
   GtkWidget *menubar = NULL;
 
@@ -221,7 +238,6 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
   bool show_status_bar = false;
   bool show_chat_window = false;
 
-  chat = GnomeMeeting::Process ()->GetTextChat ();
   gw = GnomeMeeting::Process ()->GetMainWindow ();
   
   menubar = gtk_menu_bar_new ();
@@ -322,18 +338,11 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 
       GTK_MENU_NEW (_("_Edit")),
 
-#ifndef DISABLE_GNOME
       GTK_MENU_ENTRY("configuration_druid", _("Configuration Druid"),
 		     _("Run the configuration druid"),
 		     NULL, 0, 
 		     GTK_SIGNAL_FUNC (show_window_cb),
 		     (gpointer) gw->druid_window, TRUE),
-#else
-      GTK_MENU_ENTRY("configuration_druid", _("Configuration Druid"),
-		     _("Run the configuration druid"),
-		     NULL, 0, 
-		     NULL, NULL, FALSE),
-#endif
 
       GTK_MENU_SEPARATOR,
 
@@ -394,8 +403,8 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
       GTK_MENU_ENTRY("clear_text_chat", _("_Clear Text Chat"),
 		     _("Clear the text chat"), 
 		     GTK_STOCK_CLEAR, 'L',
-		     GTK_SIGNAL_FUNC (gnomemeeting_text_chat_clear),
-		     (gpointer) chat, FALSE),
+		     GTK_SIGNAL_FUNC (text_chat_clear_cb),
+		     (gpointer) gw->chat_window, FALSE),
 
       GTK_MENU_SEPARATOR,
 

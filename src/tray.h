@@ -52,7 +52,7 @@ G_BEGIN_DECLS
  * BEHAVIOR     :  Init the tray.
  * PRE          :  / 
  */
-GtkWidget *gnomemeeting_init_tray ();
+GtkWidget *gnomemeeting_tray_new ();
 
 
 /* DESCRIPTION  :  /

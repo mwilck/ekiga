@@ -144,14 +144,6 @@ class GnomeMeeting : public PProcess
 
 
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns a pointer to the GmTextChat
-   *                 structure of widgets.
-   * PRE          :  /
-   */
-  GmTextChat *GetTextChat ();
-
-
-  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns a pointer to the GmRtpData
    *                 structure of widgets.
    * PRE          :  /
@@ -201,7 +193,6 @@ class GnomeMeeting : public PProcess
   GmDruidWindow *dw;
   GmCallsHistoryWindow *chw;
   GmPrefWindow *pw;
-  GmTextChat *chat;
   GmRtpData *rtp;
 
   PMutex ep_var_mutex;

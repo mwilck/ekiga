@@ -121,7 +121,7 @@ tray_icon_destroyed (GtkWidget *tray,
   if (tray != gw->docklet)
     return TRUE;
   
-  gw->docklet = gnomemeeting_init_tray ();
+  gw->docklet = gnomemeeting_tray_new ();
 
   gnomemeeting_window_show (gm);
 
@@ -169,7 +169,7 @@ tray_clicked_callback (GtkWidget *w,
 
 /* The functions */
 GtkWidget *
-gnomemeeting_init_tray ()
+gnomemeeting_tray_new ()
 {
   GtkWidget *tray_icon = NULL;
   GtkWidget *event_box = NULL;

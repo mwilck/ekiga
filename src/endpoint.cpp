@@ -44,6 +44,7 @@
 #include "urlhandler.h"
 #include "ils.h"
 #include "lid.h"
+#include "menu.h"
 #include "gnomemeeting.h"
 #include "sound_handling.h"
 #include "tray.h"
@@ -56,7 +57,6 @@
 #include "tools.h"
 
 #include "dialog.h"
-#include "gtk_menu_extensions.h"
 #include "gm_conf.h"
 
 #include <g726codec.h>
@@ -82,7 +82,6 @@ GMH323EndPoint::GMH323EndPoint ()
   /* Get the GTK structures */
   gw = GnomeMeeting::Process ()->GetMainWindow ();
   lw = GnomeMeeting::Process ()->GetLdapWindow ();
-  chat = GnomeMeeting::Process ()->GetTextChat ();
   
   /* Initialise the endpoint paramaters */
   video_grabber = NULL;
@@ -947,7 +946,6 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   BOOL reg = FALSE;
   BOOL forward_on_busy = FALSE;
   IncomingCallMode icm = AVAILABLE;
-
   
 #ifdef HAS_IXJ
   GMLid *l = NULL;
@@ -978,7 +976,7 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   gnomemeeting_statusbar_push (gw->statusbar, _("Connected"));
   gnomemeeting_log_insert (_("Connected with %s using %s"), 
 			 utf8_name, utf8_app);
-  gnomemeeting_text_chat_call_start_notification ();
+  gnomemeeting_text_chat_call_start_notification (GnomeMeeting::Process ()->GetMainWindow ()->chat_window);
 
   gtk_label_set_text (GTK_LABEL (gw->remote_name), (const char *) utf8_name);
   gtk_window_set_title (GTK_WINDOW (gw->remote_video_window), 
@@ -1270,7 +1268,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
 
   gnomemeeting_log_insert (msg_reason);
-  gnomemeeting_text_chat_call_stop_notification ();
+  gnomemeeting_text_chat_call_stop_notification (GnomeMeeting::Process ()->GetMainWindow ()->chat_window);
   gnomemeeting_statusbar_flash (gw->statusbar, msg_reason);
   gnomemeeting_threads_leave ();
 
@@ -1338,7 +1336,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   
   /* We empty the text chat buffer */
   if (auto_clear_text_chat)
-    gnomemeeting_text_chat_clear (NULL, chat);
+    gnomemeeting_text_chat_clear (GnomeMeeting::Process ()->GetMainWindow ()->chat_window);
 
 
   /* set-on-top to False */

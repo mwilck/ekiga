@@ -49,6 +49,9 @@
 #include <gnome.h>
 #else
 #include <gtk/gtk.h>
+#include "druid/gnome-druid.h"
+#include "druid/gnome-druid-page-edge.h"
+#include "druid/gnome-druid-page-standard.h"
 #endif
 
 #ifdef WIN32
@@ -56,9 +59,6 @@
 #define strcasecmp strcmpi
 #define vsnprintf _vsnprintf
 #endif
-
-#include "menu.h"
-
 
 #define GENERAL_KEY         "/apps/gnomemeeting/general/"
 
@@ -114,7 +114,6 @@ typedef struct _GmWindow GmWindow;
 typedef struct _GmPrefWindow GmPrefWindow;
 typedef struct _GmLdapWindow GmLdapWindow;
 typedef struct _GmLdapWindowPage GmLdapWindowPage;
-typedef struct _GmTextChat GmTextChat;
 typedef struct _GmDruidWindow GmDruidWindow;
 typedef struct _GmCallsHistoryWindow GmCallsHistoryWindow;
 typedef struct _GmRtpData GmRtpData;
@@ -148,16 +147,6 @@ typedef enum {
   CLOSED,
   NUM_SECTIONS
 } ControlPanelSection;
-
-
-struct _GmTextChat
-{
-  GtkWidget     *text_view;
-  GtkTextBuffer *text_buffer;
-  gboolean	something_typed;
-  gchar		*begin_msg;
-};
-
 
 struct _GmRtpData
 {
@@ -259,9 +248,7 @@ struct _GmLdapWindowPage
 
 struct _GmDruidWindow
 {
-#ifndef DISABLE_GNOME
   GnomeDruid *druid;
-#endif
   GtkWidget *ils_register;
   GtkWidget *audio_test_button;
   GtkWidget *video_test_button;
@@ -278,9 +265,7 @@ struct _GmDruidWindow
   GtkWidget *name;
   GtkWidget *use_callto;
   GtkWidget *mail;
-#ifndef DISABLE_GNOME
   GnomeDruidPageEdge *page_edge;
-#endif
 };
 
 

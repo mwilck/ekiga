@@ -42,6 +42,7 @@
 #include "gnomemeeting.h"
 #include "chat_window.h"
 #include "config.h"
+#include "menu.h"
 #include "misc.h"
 #include "toolbar.h"
 #include "callbacks.h"
@@ -968,17 +969,14 @@ gnomemeeting_main_window_new (GmWindow *gw)
   GtkWidget *event_box = NULL;
   GtkWidget *main_toolbar = NULL;
   GtkWidget *left_toolbar = NULL;
+  GtkWidget *chat_window = NULL;
 
   int main_notebook_section = 0;
-
-  GmTextChat *chat = NULL;
 
   static GtkTargetEntry dnd_targets [] =
   {
     {"text/plain", GTK_TARGET_SAME_APP, 0}
   };
-
-  chat = GnomeMeeting::Process ()->GetTextChat ();
   
   accel = gtk_accel_group_new ();
   gtk_window_add_accel_group (GTK_WINDOW (window), accel);
@@ -1163,14 +1161,14 @@ gnomemeeting_main_window_new (GmWindow *gw)
 
 
   /* The Chat Window */
-  gw->chat_window = gnomemeeting_text_chat_new (chat);
-  gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (gw->chat_window), 
+  chat_window = GnomeMeeting::Process ()->GetMainWindow ()->chat_window;
+  gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (chat_window), 
  		    2, 4, 0, 3,
  		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
  		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
  		    6, 6);
   if (gm_conf_get_bool (USER_INTERFACE_KEY "main_window/show_chat_window"))
-    gtk_widget_show_all (GTK_WIDGET (gw->chat_window));
+    gtk_widget_show_all (GTK_WIDGET (chat_window));
   
   gtk_widget_set_size_request (GTK_WIDGET (gw->main_notebook),
 			       GM_QCIF_WIDTH + GM_FRAME_SIZE, -1);

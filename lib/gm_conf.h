@@ -60,8 +60,12 @@ typedef enum {
   GM_CONF_LIST,  /* list of strings! */
 } GmConfEntryType;
 
+/* this is implementation-dependant */
 typedef struct _GmConfEntry GmConfEntry;
 
+/* a notifier gets an identifier of itself, the conf entry
+ * that triggered its call, and the user data that was given when
+ * it was added */
 typedef void (*GmConfNotifier) (gpointer identifier,
 			        GmConfEntry *entry,
 			        gpointer user_data);
@@ -71,17 +75,21 @@ typedef void (*GmConfNotifier) (gpointer identifier,
 void gm_conf_init (int argc, char **argv); /* don't try anything before! */
 void gm_conf_save (); /* to forcibly save */
 
-/* to accept/refuse that the notifiers get fired */
+/* to accept/refuse that the notifiers get fired
+ * the configuration is still readable/writable, but
+ * the change aren't propagated to the gui */
 void gm_conf_watch ();
 void gm_conf_unwatch ();
 
 /* to set/unset notifiers */
+/* sets a notifier on namespac, calling func, with user_data*/
 gpointer gm_conf_notifier_add (const gchar *namespac, 
 			      GmConfNotifier func,
 			      gpointer user_data);
 void gm_conf_notifier_remove (gpointer identifier);
  
-/* used to manipulate entries in notifiers */
+/* used to manipulate entries, as obtained as second
+ * argument by the notifiers */
 GmConfEntryType gm_conf_entry_get_type (GmConfEntry *);
 const gchar *gm_conf_entry_get_key (GmConfEntry *);
 gboolean gm_conf_entry_get_bool (GmConfEntry *);
@@ -89,7 +97,11 @@ gint gm_conf_entry_get_int (GmConfEntry *);
 const gchar *gm_conf_entry_get_string (GmConfEntry *);
 const GSList *gm_conf_entry_get_list (GmConfEntry *);
 
-/* used to get/set data in the config, under various formats */
+/* the following functions are used to get/set keys in the config */
+
+/* all of those get a key name as first argument 
+ * when the name matches "*_set_*", then the second argument
+ * is the value to set, and will be copied */
 void gm_conf_set_bool (const gchar *, const gboolean);
 gboolean gm_conf_get_bool (const gchar *);
 void gm_conf_set_int (const gchar *, const int);

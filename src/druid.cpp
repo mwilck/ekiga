@@ -1250,7 +1250,6 @@ gnomemeeting_druid_window_new (GmDruidWindow *dw)
 {
   GtkWidget *window = NULL;
   
-#ifndef DISABLE_GNOME
   gchar *title = NULL;
 
   GnomeDruidPageEdge *page_final = NULL;
@@ -1330,7 +1329,6 @@ gnomemeeting_druid_window_new (GmDruidWindow *dw)
 		    G_CALLBACK (gnomemeeting_druid_destroy), NULL);
 
   gtk_widget_show_all (GTK_WIDGET (dw->druid));
-#endif
 
   return window;
 }

@@ -627,7 +627,6 @@ class GMH323EndPoint : public H323EndPoint
 
   GmWindow *gw; 
   GmLdapWindow *lw;
-  GmTextChat *chat;
 
 
   /* The encoding video grabber */

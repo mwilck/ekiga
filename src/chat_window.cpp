@@ -43,19 +43,49 @@
 #include "chat_window.h"
 #include "ldap_window.h"
 #include "gnomemeeting.h"
-#include "ldap_window.h"
 #include "callbacks.h"
 #include "misc.h"
-#include "menu.h"
-#include "callbacks.h"
 
 #include "gtk-text-tag-addon.h"
 #include "gtk-text-buffer-addon.h"
 #include "gtk-text-view-addon.h"
 #include "gtk_menu_extensions.h"
 
-extern GtkWidget *gm;
+/* internal structure used by the text chat */
+typedef struct _GmTextChat
+{
+  GtkWidget     *text_view;
+  GtkTextBuffer *text_buffer;
+  gboolean	something_typed;
+  gchar		*begin_msg;
+} GmTextChat;
 
+/* declaration of the static functions */
+static void gm_text_chat_destroy (gpointer chat_pointer);
+static void open_uri_callback (const gchar *uri);
+static void copy_uri_callback (const gchar *uri);
+static void connect_uri_callback (const gchar *uri);
+static void add_uri_callback (const gchar *uri);
+static void chat_entry_activate (GtkEditable *w, gpointer data);
+
+
+/* DESCRIPTION  :  Called when the chat window is destroyed
+ * BEHAVIOR     :  Frees the GmTextChat* that is embedded in the window
+ * PRE          :  /
+ */
+static void
+gm_text_chat_destroy (gpointer chat_pointer)
+{
+  GmTextChat *chat = (GmTextChat *)chat_pointer;
+
+  g_return_if_fail (chat != NULL);
+  
+  if (chat->begin_msg != NULL) {
+     g_free (chat->begin_msg);
+     chat->begin_msg = NULL;
+  }
+  delete chat;
+}
 
 #ifndef DISABLE_GNOME
 /* DESCRIPTION  :  Called when an URL is clicked.
@@ -65,8 +95,9 @@ extern GtkWidget *gm;
 static void
 open_uri_callback (const gchar *uri)
 {
-  if (uri)
-    gnome_url_show (uri, NULL);
+  g_return_if_fail (uri != NULL);
+  
+  gnome_url_show (uri, NULL);
 }
 #endif
 
@@ -78,12 +109,12 @@ open_uri_callback (const gchar *uri)
 static void
 copy_uri_callback (const gchar *uri)
 {
-  if (uri) {
-    gtk_clipboard_set_text (gtk_clipboard_get (GDK_SELECTION_PRIMARY),
-			    uri, -1);
-    gtk_clipboard_set_text (gtk_clipboard_get (GDK_SELECTION_CLIPBOARD),
-			    uri, -1);
-  }
+  g_return_if_fail (uri != NULL);
+
+  gtk_clipboard_set_text (gtk_clipboard_get (GDK_SELECTION_PRIMARY),
+			  uri, -1);
+  gtk_clipboard_set_text (gtk_clipboard_get (GDK_SELECTION_CLIPBOARD),
+			  uri, -1);
 }
 
 
@@ -97,23 +128,16 @@ connect_uri_callback (const gchar *uri)
   GMH323EndPoint *ep = NULL;
   GmWindow *gw = NULL;
   
-  ep = GnomeMeeting::Process ()->Endpoint ();
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
-    
-  if (uri) {
+  g_return_if_fail (uri != NULL);
 
-    if (ep->GetCallingState () == GMH323EndPoint::Standby) {
-
-      gw = GnomeMeeting::Process ()->GetMainWindow ();
-      gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry),
-			  uri);
-      
-      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->connect_button),
-				    true);
-    }
-    else if (ep->GetCallingState () == GMH323EndPoint::Connected)
-      transfer_call_cb (NULL, (gpointer) uri);
+  if (ep->GetCallingState () == GMH323EndPoint::Standby) {    
+    gw = GnomeMeeting::Process ()->GetMainWindow ();
+    gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), uri);
+    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->connect_button),
+				  true);
   }
+  else if (ep->GetCallingState () == GMH323EndPoint::Connected)
+    transfer_call_cb (NULL, (gpointer) uri);
 }
 
 
@@ -124,8 +148,9 @@ connect_uri_callback (const gchar *uri)
 static void
 add_uri_callback (const gchar *uri)
 {
-  if (uri)
-    gnomemeeting_addressbook_edit_contact_dialog ((gchar *) uri);
+  g_return_if_fail (uri != NULL);
+
+  gnomemeeting_addressbook_edit_contact_dialog ((gchar *) uri);
 }  
 
 
@@ -138,6 +163,7 @@ chat_entry_activate (GtkEditable *w,
 		     gpointer data)
 {
   GMH323EndPoint *endpoint = GnomeMeeting::Process ()->Endpoint ();
+  GtkWidget *chat_window = GnomeMeeting::Process ()->GetMainWindow ()->chat_window;
   PString s;
     
   if (endpoint) {
@@ -169,7 +195,7 @@ chat_entry_activate (GtkEditable *w,
 	  utf8_local = gnomemeeting_from_iso88591_to_utf8 (local);
 
 	if (utf8_local)
-	  gnomemeeting_text_chat_insert (utf8_local, s, 0);
+	  gnomemeeting_text_chat_insert (chat_window, utf8_local, s, 0);
 	g_free (utf8_local);
                 
 	gtk_entry_set_text (GTK_ENTRY (w), "");
@@ -180,30 +206,30 @@ chat_entry_activate (GtkEditable *w,
   }
 }
 
-void gnomemeeting_text_chat_clear (GtkWidget *w,
-				   GmTextChat *chat)
+void gnomemeeting_text_chat_clear (GtkWidget *chat_window)
 {
   GmWindow *gw = NULL;
+  GmTextChat *chat = NULL;
   GtkTextIter start_iter, end_iter;
 
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
+  g_return_if_fail (chat_window != NULL);
   
+  chat = (GmTextChat *)g_object_get_data (G_OBJECT (chat_window), "GMObject");
   gtk_text_buffer_get_start_iter (chat->text_buffer, &start_iter);
   gtk_text_buffer_get_end_iter (chat->text_buffer, &end_iter);
 
   gtk_text_buffer_delete (chat->text_buffer, &start_iter, &end_iter);
 
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
   gtk_menu_set_sensitive (gw->main_menu, "clear_text_chat", FALSE);
 }
 
 void
-gnomemeeting_text_chat_call_start_notification (void)
+gnomemeeting_text_chat_call_start_notification (GtkWidget *chat_window)
 {
   GmTextChat *chat = NULL;
-  GmWindow *gw = NULL;
 
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
-  chat = GnomeMeeting::Process ()->GetTextChat ();
+  g_return_if_fail (chat_window != NULL);
 	
   // find the time at which the event occured
   time_t *timeptr;
@@ -216,6 +242,7 @@ gnomemeeting_text_chat_call_start_notification (void)
   strftime(time_str, 20, "%H:%M:%S", localtime (timeptr));
 
   // prepare the message
+  chat = (GmTextChat *)g_object_get_data (G_OBJECT (chat_window), "GMObject");
   if (chat->begin_msg) g_free (chat->begin_msg); // shouldn't happen...
   chat->begin_msg = g_strdup_printf ("---- Call begins at %s\n", time_str);
 
@@ -227,12 +254,13 @@ gnomemeeting_text_chat_call_start_notification (void)
 }
 
 void
-gnomemeeting_text_chat_call_stop_notification (void)
+gnomemeeting_text_chat_call_stop_notification (GtkWidget *chat_window)
 {
   GtkTextIter iter;
   GmTextChat *chat = NULL;
-  GmWindow *gw = NULL;
   gchar *text = NULL;
+
+  g_return_if_fail (chat_window != NULL);
 
   // find the time at which the event occured	
   time_t *timeptr;
@@ -248,8 +276,7 @@ gnomemeeting_text_chat_call_stop_notification (void)
   text = g_strdup_printf ("---- Call ends at %s\n", time_str);
 
   // displays the message
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
-  chat = GnomeMeeting::Process ()->GetTextChat ();
+  chat = (GmTextChat *)g_object_get_data (G_OBJECT (chat_window), "GMObject");
   gtk_text_buffer_get_end_iter (chat->text_buffer, &iter);
 
   if (chat->something_typed == TRUE)
@@ -261,20 +288,18 @@ gnomemeeting_text_chat_call_stop_notification (void)
 }
 
 void 
-gnomemeeting_text_chat_insert (PString local,
-			       PString str,
-			       int user)
+gnomemeeting_text_chat_insert (GtkWidget *chat_window, PString name,
+			       PString str, int user)
 {
   gchar *msg = NULL;
   GtkTextIter iter;
   GtkTextMark *mark;
-  
   GmTextChat *chat = NULL;
   GmWindow *gw = NULL;
 
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
-  chat = GnomeMeeting::Process ()->GetTextChat ();
+  g_return_if_fail (chat_window != NULL);
 
+  chat = (GmTextChat *)g_object_get_data (G_OBJECT (chat_window), "GMObject");
   gtk_text_buffer_get_end_iter (chat->text_buffer, &iter);
 
   // delayed call begin notification first!
@@ -287,7 +312,7 @@ gnomemeeting_text_chat_insert (PString local,
     }
   }
 
-  msg = g_strdup_printf ("%s: ", (const char *) local);
+  msg = g_strdup_printf ("%s: ", (const char *) name);
 
   if (user == 1)
     gtk_text_buffer_insert_with_tags_by_name (chat->text_buffer, &iter, msg, 
@@ -308,12 +333,13 @@ gnomemeeting_text_chat_insert (PString local,
   gtk_text_view_scroll_to_mark (GTK_TEXT_VIEW (chat->text_view), mark, 
 				0.0, FALSE, 0,0);
 
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
   gtk_menu_set_sensitive (gw->main_menu, "clear_text_chat", TRUE);
 }
 
 
 GtkWidget *
-gnomemeeting_text_chat_new (GmTextChat *chat)
+gnomemeeting_text_chat_new ()
 {
   GtkWidget *entry = NULL;
   GtkWidget *scr = NULL;
@@ -322,14 +348,19 @@ gnomemeeting_text_chat_new (GmTextChat *chat)
   GtkWidget *frame = NULL;
   GtkWidget *hbox = NULL;
   GtkWidget *chat_window = NULL;
-
-  GtkTextIter  iter;
+  GmTextChat *chat = NULL;
+  GtkTextIter iter;
   GtkTextMark *mark = NULL;
   GtkTextTag *regex_tag = NULL;
 
 
   /* Get the structs from the application */
+  chat = new GmTextChat ();
   chat_window = gtk_frame_new (NULL);
+  g_object_set_data_full (G_OBJECT (chat_window), "GMObject",
+                          (gpointer) chat,
+			  (GDestroyNotify) (gm_text_chat_destroy));
+
   gtk_frame_set_shadow_type (GTK_FRAME (chat_window), GTK_SHADOW_NONE);
   table = gtk_table_new (1, 3, FALSE);
   
