@@ -306,33 +306,48 @@ GtkWidget*
 gnomemeeting_history_combo_box_new (GM_window_widgets* gw)
 {
   GtkWidget* combo;
-  //GList* contacts_list;
   gchar **contacts;
   int i;		
   combo = gtk_combo_new ();
-
-  gw->old_contacts_list = NULL;
+  gchar *stored_contacts;
+  GList *contacts_list;
+  GConfClient *client = gconf_client_get_default ();
+  stored_contacts = gconf_client_get_string (client,
+					     "/apps/gnomemeeting/history/called_hosts",
+					     0);
+  contacts_list = NULL;
   /* We read the history on the hard disk */
-  cout << "FIX ME: history" << endl << flush;
-  contacts = g_strsplit ("", ":", 0);
   
+  contacts = g_strsplit (stored_contacts ? (stored_contacts) : (""), ":", 0);
+  if (stored_contacts)
+    g_free (stored_contacts);
   for (i = 0 ; contacts [i] != NULL ; i++)
-    gw->old_contacts_list = g_list_append (gw->old_contacts_list, 
-					   contacts [i]);
+    contacts_list = g_list_append (contacts_list, 
+				   contacts [i]);
      
-  if (gw->old_contacts_list != NULL)
+  if (contacts_list != NULL)
     gtk_combo_set_popdown_strings (GTK_COMBO (combo), 
-				   gw->old_contacts_list);
+				   contacts_list);
 
-  gtk_entry_set_text(GTK_ENTRY(GTK_COMBO(combo)->entry),""); 
+  gtk_entry_set_text(GTK_ENTRY(GTK_COMBO(combo)->entry), ""); 
+  if (contacts_list)
+    gtk_object_set_data_full (GTK_OBJECT (combo), "history",
+			      contacts_list, g_list_free);
   return combo; 
 	
 }
 
-
+/* DESCRIPTION   :  /
+ * BEHAVIOR      : Add a new entry to the history combo and saves it
+ *                 in the gconf db.
+ * PRE           : key is the gconf key used to store the history.
+ */
 void 
-gnomemeeting_add_contact_entry(GM_window_widgets* gw, int max_contacts)
+gnomemeeting_history_combo_box_add_entry(GtkCombo *combo, const gchar *key,
+					 const gchar *new_entry)
 {
+// FIXME: Use gnomemeeting_history_combo_add_entry
+#if 0
   int found = 0;
   int i = 0;
   gchar *text_label, *entry_content, *text;
@@ -357,7 +372,7 @@ gnomemeeting_add_contact_entry(GM_window_widgets* gw, int max_contacts)
   gtk_list_clear_items (GTK_LIST (GTK_COMBO(gw->combo)->list), 
 			0, -1);
   /* if the entry is not in the list */
-  while (text = (gchar *) g_list_nth_data (gw->old_contacts_list, i))
+  while (text = (gchar *) g_list_nth_data (contacts_list, i))
     {
       /* do not free text, it is not a copy */
       if (!g_strcasecmp (text, entry_content))
@@ -388,7 +403,7 @@ gnomemeeting_add_contact_entry(GM_window_widgets* gw, int max_contacts)
   /* if found, it is not added in the GList, we can free it */
   if (found)
     g_free (entry_content);
-
+#endif
 }
 
 static void popup_toggle_changed (GtkCheckButton *but, gpointer data)

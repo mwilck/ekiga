@@ -1,3 +1,23 @@
+2002-01-14  Miguel Rodríguez Pérez  <migrax@terra.es>
+
+	* src/misc.h: Don't inclue "gnome.h", just includo what 
+	we really need.
+
+	* src/gnomemeeting.h (class GnomeMeeting): 
+	Constify AddContactIP
+
+	* src/misc.h	
+	* src/gnomemeeting.cpp (AddContactIP): 
+	s/gnomemeeting_add_contact_entry/gnomemeeting_history_combo_add_entry/
+
+	* src/common.h (struct _GM_window_widgets): Removed the old_contacts_list
+	list from here
+
+	* src/misc.cpp (gnomemeeting_history_combo_box_new): Read
+	the history from gconf
+
+	* gnomemeeting.schema: Added two new keys
+
 2002-01-13  Damien Sandras  <dsandras@seconix.com>
 
 	* src/cleaner.cpp: Force termination even if OpenH323 "bugs".

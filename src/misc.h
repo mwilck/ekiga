@@ -33,7 +33,8 @@
 #define _MISC_H_
 
 
-#include <gnome.h>
+#include <gtk/gtkcombo.h>
+#include <gtk/gtkwidget.h>
 #include "common.h"
 
 
@@ -142,8 +143,13 @@ void gnomemeeting_disable_disconnect ();
 extern GtkWidget* 
 gnomemeeting_history_combo_box_new (GM_window_widgets* gw);
 
-extern void 
-gnomemeeting_add_contact_entry(GM_window_widgets *gw, int max_contacts);
+/* DESCRIPTION   :  /
+ * BEHAVIOR      : Add a new entry to the history combo and saves it
+ *                 in the gconf db.
+ * PRE           : /
+ */
+void 
+gnomemeeting_history_combo_box_add_entry (GtkCombo *, const gchar *, const gchar *);
 
 void gnomemeeting_warning_popup (GtkWidget *, gchar *);
 #endif

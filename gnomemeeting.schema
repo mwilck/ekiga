@@ -407,5 +407,26 @@
 	<long>The Video Quality to request to the remote</long>
       </locale>
     </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/history/called_hosts</key>
+      <applyto>/apps/gnomemeeting/history/called_hosts</applyto>
+      <owner>GnomeMeeting</owner>
+      <type>string</type>
+      <default></default>
+      <locale name="C">
+	<short>The list of called hosts</short>
+	<long>The list of called hosts</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/gnomemeeting/history/entries</key>
+      <applyto>/apps/gnomemeeting/history/entries</applyto>
+      <type>int</type>
+      <default>10</default>
+      <locale name="C">
+	<short>Number of entries to store in history boxes</short>
+	<long>Number of entries to store in history boxes</long>
+      </locale>
+    </schema>
   </schemalist>
 </gconfschemafile>

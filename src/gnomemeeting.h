@@ -88,7 +88,7 @@ class GnomeMeeting : public PProcess
    * BEHAVIOR     :  Add the current IP to the history in the combo.
    * PRE          :  /
    */
-  void AddContactIP (char *);
+  void AddContactIP (const char *);
 
   
   /* Needed for PProcess */
