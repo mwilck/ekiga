@@ -81,13 +81,10 @@ static void url_combo_changed (GtkEditable  *e, gpointer data)
  */
 static void connect_button_clicked (GtkToggleButton *w, gpointer data)
 {
-  if (gtk_toggle_button_get_active (w))
-    if (GnomeMeeting::Process ()->Endpoint ()->GetCallingState () == GMH323EndPoint::Standby) 
-      GnomeMeeting::Process ()->Connect ();
-    else 
-      connect_button_update_pixmap (w, 1);
+  if (gtk_toggle_button_get_active (w))  
+    connect_cb (NULL, NULL);  
   else
-    GnomeMeeting::Process ()->Disconnect ();
+    disconnect_cb (NULL, NULL);
 }
 
 

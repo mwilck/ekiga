@@ -1,3 +1,20 @@
+2004-02-09 Damien Sandras  <dsandras@seconix.com>
+
+	* lib/gconf_widgets_extensions.c, lib/gconf_widgets_extensions.h,
+	lib/gnome_prefs_window.c: Made entries react when they are "activated"
+	so that the key is updated in that case too.
+	
+	* src/config.cpp: Added support for X.XX.X versions to 
+	gnomemeeting_gconf_upgrade.
+	
+	* src/pref_window.cpp: Simulate an activate event on the entry when
+	a sound or a picture has been chosen with the file selector.
+	
+	* src/sound_handling.cpp: Suspend ESD when a sound has to be played.
+	
+	* src/toolbar.cpp: Fixed bug with the button preventing it to
+	answer a call when being called.
+	
 2004-02-09 Kilian Krause <kk@verfaction.de>
 
 	Last-minute patch provided by Damien Sandras  <dsandras@seconix.com>:

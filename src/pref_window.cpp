@@ -374,20 +374,22 @@ static void codecs_list_info_button_clicked_callback (GtkWidget *widget,
 /* DESCRIPTION  :  This callback is called when the user clicks
  *                 on a button of the file selector.
  * BEHAVIOR     :  It sets the selected filename in the good entry (given
- *                 as data of the object because of the bad API).
+ *                 as data of the object because of the bad API). Emits the
+ *                 focus-out-event to simulate it.
  * PRE          :  data = the file selector.
  */
 static void  
 file_selector_clicked (GtkFileSelection *b, gpointer data) 
 {
   gchar *filename = NULL;
-
   
   filename =
     (gchar *) gtk_file_selection_get_filename (GTK_FILE_SELECTION (data));
 
   gtk_entry_set_text (GTK_ENTRY (g_object_get_data (G_OBJECT (data), "entry")),
 		      filename);
+
+  g_signal_emit_by_name (G_OBJECT (g_object_get_data (G_OBJECT (data), "entry")), "activate");
 }
 
 

@@ -169,7 +169,9 @@ GMSoundEvent::GMSoundEvent (PString ev)
 {
   event = ev;
 
+  gnomemeeting_sound_daemons_suspend ();
   Main ();
+  gnomemeeting_sound_daemons_resume ();
 }
 
 

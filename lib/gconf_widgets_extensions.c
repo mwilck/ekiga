@@ -47,11 +47,18 @@
  *
  */
 
+void
+entry_activate_changed (GtkWidget *w,
+                        gpointer data)
+{
+  entry_focus_changed (w, NULL, data);
+}
+
 
 gboolean
-entry_changed (GtkWidget  *w,
-	       GdkEventFocus *ev,
-	       gpointer data)
+entry_focus_changed (GtkWidget  *w,
+                     GdkEventFocus *ev,
+                     gpointer data)
 {
   GConfClient *client = NULL; 
   gchar *key = NULL;
@@ -98,13 +105,23 @@ entry_changed_nt (GConfClient *client,
       g_signal_handlers_block_matched (G_OBJECT (e),
 				       G_SIGNAL_MATCH_FUNC,
 				       0, 0, NULL,
-				       (gpointer) entry_changed,
+				       (gpointer) entry_focus_changed,
+				       NULL);
+      g_signal_handlers_block_matched (G_OBJECT (e),
+				       G_SIGNAL_MATCH_FUNC,
+				       0, 0, NULL,
+				       (gpointer) entry_activate_changed,
 				       NULL);
       gtk_entry_set_text (GTK_ENTRY (e), current_value);
       g_signal_handlers_unblock_matched (G_OBJECT (e),
 					 G_SIGNAL_MATCH_FUNC,
 					 0, 0, NULL,
-					 (gpointer) entry_changed,
+					 (gpointer) entry_activate_changed,
+					 NULL);
+      g_signal_handlers_unblock_matched (G_OBJECT (e),
+					 G_SIGNAL_MATCH_FUNC,
+					 0, 0, NULL,
+					 (gpointer) entry_focus_changed,
 					 NULL);
     }
 
