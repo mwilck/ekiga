@@ -779,14 +779,15 @@ gnomemeeting_init_druid_audio_devices_page (GnomeDruid *druid, int p, int t)
   GtkWidget *table = NULL;
   GtkWidget *label = NULL;
 
+  GConfClient *client = gconf_client_get_default ();
+
   GmDruidWindow *dw = gnomemeeting_get_druid_window (gm);
+  GmWindow *gw = gnomemeeting_get_main_window (gm);
   
   gchar *title = NULL;
   gchar *player = NULL;
   
   GnomeDruidPageStandard *page_standard = NULL;
-
-  GmWindow *gw = gnomemeeting_get_main_window (gm);
 
   page_standard = 
     GNOME_DRUID_PAGE_STANDARD (gnome_druid_page_standard_new ());
