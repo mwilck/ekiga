@@ -409,7 +409,7 @@ gnomemeeting_local_addressbook_get_contacts (GmAddressbook *addbook,
 			       categorie);
 
   if (cpt == 0)
-    queries [cpt++] = e_book_query_field_exists (E_CONTACT_FULLNAME);
+    queries [cpt++] = e_book_query_field_exists (E_CONTACT_FULL_NAME);
 
   query = e_book_query_or (cpt, queries, TRUE);
 
