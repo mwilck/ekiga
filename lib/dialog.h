@@ -17,12 +17,21 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  *
- *  Started: Mon 17 June 2002, includes code from ?
  *
  *  Authors: Damien Sandras <dsandras@seconix.com>
  *           Jorn Baayen <jorn@nl.linux.com>
  *           Kenneth Christiansen <kenneth@gnu.org>
  */
+
+/*
+ *                         dialog.h  -  description
+ *                         ------------------------
+ *   begin                : Mon Jun 17 2002
+ *   copyright            : (C) 2000-2002 by Damien Sandras
+ *   description          : This file contains all the functions needed to
+ *                          to create dialogs for GnomeMeeting.
+ */
+
 
 #ifndef __GM_DIALOG_H
 #define __GM_DIALOG_H
@@ -60,6 +69,7 @@ void gnomemeeting_warning_dialog_on_widget (GtkWindow *parent,
                                             GtkWidget *widget, 
                                             const char *format, ...);
 
+
 /**
  * gnomemeeting_error_dialog:
  *
@@ -69,6 +79,7 @@ void gnomemeeting_warning_dialog_on_widget (GtkWindow *parent,
  **/
 void gnomemeeting_error_dialog   (GtkWindow *parent, const char *format, ...);
 
+
 /**
  * gnomemeeting_warning_dialog:
  *
@@ -77,6 +88,7 @@ void gnomemeeting_error_dialog   (GtkWindow *parent, const char *format, ...);
  * Constructs and shows a warning dialog.
  **/
 void gnomemeeting_warning_dialog (GtkWindow *parent, const char *format, ...);
+
 
 /**
  * gnomemeeting_message_dialog:

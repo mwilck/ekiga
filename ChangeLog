@@ -1,8 +1,20 @@
+2002-06-20  Damien Sandras  <dsandras@seconix.com>
+
+	* lib/dialog.c: Fixed old bug in the dialog with "Do not show again"
+	toggle that was introduced when the data associated to the widget
+	was converted from (gchar *) to int. That prevents to see if there
+	is data or not, and thus, even if the user choose to display again
+	the warning next time, the default choice will not be what he chose
+	the next time that the popup appears. 
+	Fixed headers.
+
+	* lib/dialog.h: Fixed headers.
+	
 2002-06-20  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* configure.in (BUILD_NUMBER): Increment SCHEMA_AGE
 
-2002-06-18  Damien Sandras  <dsandras@seconix.com>
+2002-06-20  Damien Sandras  <dsandras@seconix.com>
 
 	* src/common.h: Removed unuseful GList.
 	* src/main_window.cpp: Removed unuseful GList.

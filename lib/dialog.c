@@ -17,12 +17,21 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  *
- *  Started: Mon 17 June 2002, includes code from ?
  *
  *  Authors: Damien Sandras <dsandras@seconix.com>
  *           Jorn Baayen <jorn@nl.linux.com>
  *           Kenneth Christiansen <kenneth@gnu.org>
  */
+
+/*
+ *                         dialog.c  -  description
+ *                         ------------------------
+ *   begin                : Mon Jun 17 2002
+ *   copyright            : (C) 2000-2002 by Damien Sandras
+ *   description          : This file contains all the functions needed to
+ *                          to create dialogs for GnomeMeeting.
+ */
+
 
 #include <gtk/gtk.h>
 #include <glib.h>
@@ -34,6 +43,7 @@
 
 static void gnomemeeting_dialog (GtkWindow *parent, const char *format, 
                                  va_list args, GtkMessageType type);
+
 
 void
 gnomemeeting_error_dialog (GtkWindow *parent, const char *format, ...)
@@ -47,6 +57,7 @@ gnomemeeting_error_dialog (GtkWindow *parent, const char *format, ...)
   va_end (args);
 }
 
+
 void
 gnomemeeting_warning_dialog (GtkWindow *parent, const char *format, ...)
 {
@@ -58,6 +69,7 @@ gnomemeeting_warning_dialog (GtkWindow *parent, const char *format, ...)
   
   va_end (args);
 }
+
 
 void
 gnomemeeting_message_dialog (GtkWindow *parent, const char *format, ...)
@@ -75,43 +87,19 @@ gnomemeeting_message_dialog (GtkWindow *parent, const char *format, ...)
 static void 
 popup_toggle_changed (GtkCheckButton *button, gpointer data)
 {
-  if (GTK_TOGGLE_BUTTON (button)->active)
-  {
+  if (GTK_TOGGLE_BUTTON (button)->active) {
+
     /* changed to 'hide' */
-    g_object_set_data (G_OBJECT (data), "widget_data", GINT_TO_POINTER (1));
+    g_object_set_data (G_OBJECT (data), "widget_data", (gpointer) "1" );
   }
-  else
-  {
+  else  {
+
     /* changed to 'show' */
-    g_object_set_data (G_OBJECT (data), "widget_data", GINT_TO_POINTER (0));
+    g_object_set_data (G_OBJECT (data), "widget_data", (gpointer) "0");
   }
 }
 
-/**
- * gnomemeeting_warning_dialog_on_widget:
- *
- * @parent: The parent of the dialog
- * @widget: The widget to associate the warning with.
- * @format: String containing printf like syntax.
- * @ ...  : Variables of different kinds called from the 
- *          format line.
- *
- * Only shows a dialog if the users has not clicked on
- * 'Do not show this dialog again' when associated with 
- * the same widget. 
- *
- * This can be useful in certain situations. For instance
- * you might have a toggle button for a setting that is not
- * allowed to change while the app is in a certain state.
- * When you change the toggle it checks if the change is 
- * allowed or else it calls this function associating it  
- * with the toggle button. If the user chooses to ignore 
- * the dialog in the rest of the session, then this dialog 
- * will not popup with new calls to this function when 
- * associating with the same toggle button.
- *
- * This function only works in the current session.
- **/
+
 void 
 gnomemeeting_warning_dialog_on_widget (GtkWindow *parent, 
                                        GtkWidget *widget,
@@ -121,17 +109,18 @@ gnomemeeting_warning_dialog_on_widget (GtkWindow *parent,
   GtkWidget *button = NULL;
   GtkWidget *dialog;
   char       buffer[1025];
-  gint       allow_warnings;
+  gchar     *do_not_show;
   
   va_start (args, format);
   
   g_return_if_fail (widget != NULL);
-  
-  /* if not set, allow_warnings will get the value of 0 */
-  allow_warnings = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), 
-                                                       "widget_data"));
-  
-  if (allow_warnings != 0)
+
+
+  /* if not set, do_not_show will get the value of 0 */
+  do_not_show = (gchar *) g_object_get_data (G_OBJECT (widget), "widget_data");
+
+
+  if ((do_not_show)&&(!strcmp (do_not_show, "1")))
   {
     /* doesn't show warning dialog as state is 'hide' */
     return;
@@ -142,10 +131,16 @@ gnomemeeting_warning_dialog_on_widget (GtkWindow *parent,
   g_signal_connect (G_OBJECT (button), "toggled",
                     G_CALLBACK (popup_toggle_changed),
                     widget);
-  
-  /* automatically calls the popup_toggle_changed callback function 
-   * and is get set to 'hide', so no reason to hide it manually. */
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), TRUE);
+
+  if ((do_not_show == NULL)||(!strcmp (do_not_show, "1"))) {
+
+    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), TRUE);
+    g_object_set_data (G_OBJECT (widget), "widget_data", "1");
+  }
+  else
+    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), FALSE);
+
+    
   
   vsnprintf (buffer, 1024, format, args);
   
