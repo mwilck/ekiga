@@ -80,7 +80,7 @@ void gm_calls_history_clear (int);
  * BEHAVIOR     :  Returns the list of all contacts for all calls. 
  * PRE          :  /
  */
-GSList *gm_calls_history_get_calls ();
+GSList *gm_calls_history_get_calls (int);
 
 
 

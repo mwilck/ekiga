@@ -565,7 +565,7 @@ gm_mw_init_toolbars (GtkWidget *main_window)
 
   /* URL bar */
   /* Entry */
-  mw->combo = gtk_entry_new ();
+  mw->combo = gtk_combo_box_entry_new_text ();
   completion = gtk_entry_completion_new ();
   
   list_store = gtk_list_store_new (3, 
@@ -576,17 +576,18 @@ gm_mw_init_toolbars (GtkWidget *main_window)
   gtk_entry_completion_set_model (GTK_ENTRY_COMPLETION (completion),
 				  GTK_TREE_MODEL (list_store));
   gtk_entry_completion_set_text_column (GTK_ENTRY_COMPLETION (completion), 2);
-  gtk_entry_set_completion (GTK_ENTRY (mw->combo), completion);
+  gtk_entry_set_completion (GTK_ENTRY (GTK_BIN (mw->combo)->child), completion);
 
   gtk_entry_completion_set_match_func (GTK_ENTRY_COMPLETION (completion),
 				       found_url_cb, 
 				       (gpointer) list_store,
 				       NULL);
-  gtk_entry_set_text (GTK_ENTRY (mw->combo), GMURL ().GetDefaultURL ());
+  gtk_entry_set_text (GTK_ENTRY (GTK_BIN (mw->combo)->child), 
+		      GMURL ().GetDefaultURL ());
   gm_main_window_urls_history_update (main_window);
-  g_signal_connect (G_OBJECT (mw->combo), "changed", 
+  g_signal_connect (G_OBJECT (GTK_BIN (mw->combo)->child), "changed", 
 		    GTK_SIGNAL_FUNC (url_changed_cb), (gpointer) main_window);
-  g_signal_connect (G_OBJECT (mw->combo), "activate", 
+  g_signal_connect (G_OBJECT (GTK_BIN (mw->combo)->child), "activate", 
 		    GTK_SIGNAL_FUNC (url_activated_cb), NULL);
   g_signal_connect (G_OBJECT (completion), "match-selected", 
 		    GTK_SIGNAL_FUNC (url_selected_cb), NULL);
@@ -594,7 +595,7 @@ gm_mw_init_toolbars (GtkWidget *main_window)
   /* Connect button */
   hbox = gtk_hbox_new (FALSE, 2);
 
-  gtk_box_pack_start (GTK_BOX (hbox), mw->combo, TRUE, TRUE, 1);
+  gtk_box_pack_start (GTK_BOX (hbox), mw->combo, TRUE, TRUE, 4);
   gtk_box_pack_start (GTK_BOX (hbox), toolbar, FALSE, FALSE, 1);
  
   gtk_container_set_border_width (GTK_CONTAINER (toolbar), 2);
@@ -2885,17 +2886,41 @@ gm_main_window_urls_history_update (GtkWidget *main_window)
   GSList *contacts = NULL;
   GSList *iter = NULL;
 
+  int cpt = 0;
+
   gchar *entry = NULL;
   
   g_return_if_fail (main_window != NULL);
   
   mw = gm_mw_get_mw (main_window);
   
-  completion = gtk_entry_get_completion (GTK_ENTRY (mw->combo));
+  completion = 
+    gtk_entry_get_completion (GTK_ENTRY (GTK_BIN (mw->combo)->child));
   list_store = GTK_LIST_STORE (gtk_entry_completion_get_model (GTK_ENTRY_COMPLETION (completion)));
   gtk_list_store_clear (GTK_LIST_STORE (list_store));
 
   
+  /* Get the placed calls history */
+  c2 = gm_calls_history_get_calls (PLACED_CALL);
+  gtk_list_store_clear (GTK_LIST_STORE (gtk_combo_box_get_model (GTK_COMBO_BOX (mw->combo))));
+  iter = c2;
+  while (iter && cpt < 10) {
+    
+    c = GM_CONTACT (iter->data);
+    if (c->url && strcmp (c->url, "")) {
+
+      gtk_combo_box_prepend_text (GTK_COMBO_BOX (mw->combo), c->url);
+      cpt++;
+    }
+    
+    iter = g_slist_next (iter);
+  }
+  g_slist_foreach (c2, (GFunc) gm_contact_delete, NULL);
+  g_slist_free (c2);
+  c2 = NULL;
+  
+
+  /* Get the full address book */
   c1 = gnomemeeting_addressbook_get_contacts (NULL,
 					      FALSE,
 					      NULL,
@@ -2903,7 +2928,9 @@ gm_main_window_urls_history_update (GtkWidget *main_window)
 					      NULL,
 					      NULL);
   
-  c2 = gm_calls_history_get_calls ();
+  
+  /* Get the full calls history */
+  c2 = gm_calls_history_get_calls (MAX_VALUE_CALL);
   contacts = g_slist_concat (c1, c2);
 
 
@@ -3391,7 +3418,7 @@ gm_main_window_set_call_url (GtkWidget *main_window,
 
   g_return_if_fail (mw != NULL);
  
-  gtk_entry_set_text (GTK_ENTRY (mw->combo), url);
+  gtk_entry_set_text (GTK_ENTRY (GTK_BIN (mw->combo)->child), url);
 }
 
 
@@ -3406,7 +3433,7 @@ gm_main_window_get_call_url (GtkWidget *main_window)
 
   g_return_val_if_fail (mw != NULL, NULL);
  
-  return gtk_entry_get_text (GTK_ENTRY (mw->combo));
+  return gtk_entry_get_text (GTK_ENTRY (GTK_BIN (mw->combo)->child));
 }
 
 

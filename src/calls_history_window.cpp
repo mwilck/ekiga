@@ -847,7 +847,7 @@ gm_calls_history_clear (int i)
 
 
 GSList *
-gm_calls_history_get_calls ()
+gm_calls_history_get_calls (int j)
 {
   GmContact *contact = NULL;
 
@@ -860,33 +860,37 @@ gm_calls_history_get_calls ()
 
   for (int i = 0 ; i < MAX_VALUE_CALL ; i++) {
 
-    conf_key = gm_chw_get_conf_key (i);
-    calls_list = gm_conf_get_string_list (conf_key);
+    if (j == MAX_VALUE_CALL
+	|| j == i)  {
 
-    while (calls_list && calls_list->data) {
-      
-      call_data = g_strsplit ((char *) calls_list->data, "|", 0);
-      
-      if (call_data) {
-	
-	contact = gm_contact_new ();
-	
-	if (call_data [1])
-	  contact->fullname = g_strdup (call_data [1]);
-	
-	if (call_data [2])
-	  contact->url = g_strdup (call_data [2]);
-      
-	result = g_slist_append (result, (gpointer) contact);
+      conf_key = gm_chw_get_conf_key (i);
+      calls_list = gm_conf_get_string_list (conf_key);
+
+      while (calls_list && calls_list->data) {
+
+	call_data = g_strsplit ((char *) calls_list->data, "|", 0);
+
+	if (call_data) {
+
+	  contact = gm_contact_new ();
+
+	  if (call_data [1])
+	    contact->fullname = g_strdup (call_data [1]);
+
+	  if (call_data [2])
+	    contact->url = g_strdup (call_data [2]);
+
+	  result = g_slist_append (result, (gpointer) contact);
+	}
+
+	g_strfreev (call_data);
+
+	calls_list = g_slist_next (calls_list);
       }
-      
-      g_strfreev (call_data);
 
-      calls_list = g_slist_next (calls_list);
+      g_slist_foreach (calls_list, (GFunc) g_free, NULL);
+      g_slist_free (calls_list);
     }
-
-    g_slist_foreach (calls_list, (GFunc) g_free, NULL);
-    g_slist_free (calls_list);
   }
 
 
