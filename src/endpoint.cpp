@@ -1227,6 +1227,7 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   opened_video_channels = 0;
   opened_audio_channels = 0;
 
+  gnomemeeting_threads_enter ();
 
   switch (connection.GetCallEndReason ()) {
 

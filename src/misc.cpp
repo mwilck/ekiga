@@ -351,12 +351,11 @@ void gnomemeeting_statusbar_flash (GtkWidget *widget, const char *msg, ...)
 {
   va_list args;
   char buffer [1025];
-  GmWindow *gw = gnomemeeting_get_main_window (widget);
 
   va_start (args, msg);
   vsnprintf (buffer, 1024, msg, args);
 
-  gnome_appbar_clear_stack (GNOME_APPBAR (gw->statusbar));
+  gnome_appbar_clear_stack (GNOME_APPBAR (GNOME_APP (widget)->statusbar));
   gnome_app_flash (GNOME_APP (widget), buffer);
 
   va_end (args);

@@ -127,6 +127,7 @@ gnomemeeting_incoming_call_popup_new (gchar *, gchar *);
 
 /* DESCRIPTION   :  /
  * BEHAVIOR      : Flashes a message on the statusbar during a few seconds.
+ *                 Removes the previous message.
  * PRE           : The GnomeApp, followed by printf syntax format.
  */
 void gnomemeeting_statusbar_flash (GtkWidget *, const char *, ...);
