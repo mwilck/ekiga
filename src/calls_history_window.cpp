@@ -490,6 +490,7 @@ add_contact_cb (GtkWidget *w,
     gm_addressbook_window_edit_contact_dialog_run (addressbook_window,
 						   NULL, 
 						   contact, 
+						   FALSE,
 						   calls_history_window);
     gm_contact_delete (contact);  
   }

@@ -55,14 +55,16 @@ GtkWidget *gm_addressbook_window_new ();
 /* DESCRIPTION  : / 
  * BEHAVIOR     : Runs a dialog permitting to edit or add a GmContact to the
  * 		  given GmAddressbook based on what is selected in the given
- * 		  address book window GMObject. The last arguement is the parent
- * 		  window, if any.
+ * 		  address book window GMObject. The boolean should be set to
+ *                TRUE in case the given contact is known to exist in the given
+ *                addressbook The last argument is the parent window, if any.
  * PRE          : The given GtkWidget pointer must point to the address book
  * 		  GMObject.
  */
 void gm_addressbook_window_edit_contact_dialog_run (GtkWidget *,
 						    GmAddressbook *,
 						    GmContact *,
+						    gboolean,
 						    GtkWidget *);
 
 

@@ -1329,6 +1329,7 @@ new_contact_cb (GtkWidget *w,
     gm_addressbook_window_edit_contact_dialog_run (addressbook,
 						   abook, 
 						   NULL, 
+						   FALSE,
 						   addressbook);
 
     gm_addressbook_delete (abook);
@@ -1390,7 +1391,7 @@ properties_cb (GtkWidget *w,
 {
   GmContact *contact = NULL;
   GmAddressbook *abook = NULL;
-
+  gboolean edit_existing = FALSE;
   GtkWidget *addressbook_window = NULL;
 
   g_return_if_fail (data != NULL);
@@ -1399,11 +1400,13 @@ properties_cb (GtkWidget *w,
 
   contact = gm_aw_get_selected_contact (addressbook_window);
   abook = gm_aw_get_selected_addressbook (addressbook_window);
+  edit_existing = gnomemeeting_addressbook_is_local (abook);
 
   if (contact)
     gm_addressbook_window_edit_contact_dialog_run (addressbook_window,
 						   abook, 
 						   contact, 
+						   edit_existing,
 						   addressbook_window);
   else if (abook)
     gm_addressbook_window_edit_addressbook_dialog_run (addressbook_window,
@@ -1948,6 +1951,7 @@ void
 gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
 					       GmAddressbook *addressbook,
 					       GmContact *contact,
+					       gboolean edit_existing_contact,
 					       GtkWidget *parent_window)
 {
   GmContact *new_contact = NULL;
@@ -1978,7 +1982,6 @@ gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
   gint current_menu_index = -1;
   gint pos = 0;
 
-  gboolean edit_local_contact = FALSE;
   gboolean collision = TRUE;
 
 
@@ -2089,12 +2092,7 @@ gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
 
   /* The different local addressbooks are not displayed when
    * we are editing a contact from a local addressbook */
-  edit_local_contact = 
-    (addressbook 
-     && gnomemeeting_addressbook_is_local (addressbook)
-     && contact);
-
-  if (!edit_local_contact) {
+  if (!edit_existing_contact) {
 
     label = gtk_label_new (NULL);
     gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
@@ -2167,7 +2165,7 @@ gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
 	g_strdup (gtk_entry_get_text (GTK_ENTRY (url_entry)));
 
       /* We were editing an existing contact */
-      if (edit_local_contact) {
+      if (edit_existing_contact) {
 
 	/* We keep the old UID */
 	new_contact->uid = g_strdup (contact->uid);
@@ -2186,14 +2184,14 @@ gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
       }
 
       /* We are editing an existing contact, compare with the old values */
-      if (edit_local_contact)
+      if (edit_existing_contact)
 	collision = gm_aw_check_contact_collision (new_contact, contact);
       else /* We are adding a new contact */ 
 	collision = gm_aw_check_contact_collision (new_contact, NULL);
 	
       if (!collision) {
 
-	if (edit_local_contact)
+	if (edit_existing_contact)
 	  gnomemeeting_addressbook_modify_contact (new_addressbook, 
 						   new_contact);
 	else 
