@@ -1,3 +1,14 @@
+2002-05-02  Kenneth Rohde Christiansen  <kenneth@gnu.org>
+
+	* src/chat_window.cpp (gnomemeeting_chat_window_text_insert):
+	(gnomemeeting_init_chat_window): Removed deprecated stuff and
+	ported to GtkTextView|Buffer|Tag|Mark|Iter
+
+	* common.h (struct _GM_window_widgets): Added some new fields and
+	changes some old ones.
+
+	* endpoint.cpp: Ported to my new changes.
+
 2002-05-01  Damien Sandras  <dsandras@seconix.com>
 
 	* src/druid.cpp, src/druid.h: Changed the API for the druid. Needs
@@ -102,6 +113,7 @@
 
 	* src/menu.cpp: See above.
 
+>>>>>>> 1.317
 2002-04-27  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* src/videograbber.cpp (VGOpen): s/SetVideoDeviceParams/SetVideoChannelFormat to make

@@ -70,7 +70,8 @@ struct _GM_window_widgets
   GtkWidget *pref_window;
   GtkWidget *ldap_window;
   GtkWidget *chat_window;
-  GtkWidget *chat_text;
+  GtkWidget *chat_view;
+  GtkTextBuffer *chat_buffer;
   GtkWidget *preview_button;
   GtkWidget *connect_button;
   GtkWidget *video_chan_button;

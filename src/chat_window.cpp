@@ -28,11 +28,6 @@
  *
  */
 
-#define GTK_ENABLE_BROKEN
-#undef G_DISABLE_DEPRECATED
-#undef GTK_DISABLE_DEPRECATED
-#undef GDK_DISABLE_DEPRECATED
-#undef GNOME_DISABLE_DEPRECATED
 #include "../config.h"
 
 
@@ -59,7 +54,12 @@ static void chat_entry_activate (GtkEditable *w, gpointer data)
 
   GMH323EndPoint *endpoint = MyApp->Endpoint ();
   PString s;
-  
+
+  // For testing purposes.
+  s = PString (gtk_entry_get_text (GTK_ENTRY (w)));
+  gnomemeeting_chat_window_text_insert ("Kenneth", s, 0);
+  gtk_entry_set_text (GTK_ENTRY (w), "");
+
   if (endpoint) {
 
     PString local = endpoint->GetLocalUserName ();
@@ -90,52 +90,48 @@ static void chat_entry_activate (GtkEditable *w, gpointer data)
 }
 
 
-void gnomemeeting_chat_window_text_insert (PString local, PString s, int user)
+void gnomemeeting_chat_window_text_insert (PString local, PString str, int user)
 {
   gchar *msg = NULL;
-  GtkAdjustment *vertical_adjustment;
-  GdkColormap *cmap;
-  GdkColor color;
-  GdkFont *lucida_font;
+  GtkTextIter iter;
+  GtkTextMark *mark;
+  static gboolean first = TRUE;
+
   GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
 
-  /* Get the system color map and allocate the color red */
-  cmap = gdk_colormap_get_system();
+  gtk_text_buffer_get_end_iter (gw->chat_buffer, &iter);
 
-  if (user == 0) {
-
-    color.red = 0;
-    color.green = 0;
-    color.blue = 0xffff;
+  if (first) 
+  {
+          msg = g_strdup_printf ("%s: ", (const char *) local);
+          first = FALSE;
   }
-  else {
+  else
+  msg = g_strdup_printf ("\n%s: ", (const char *) local);
 
-  color.red = 0xffff;
-  color.green = 0;
-  color.blue = 0;
+  if (user == 1)
+  {
+          gtk_text_buffer_insert_with_tags_by_name (gw->chat_buffer, &iter, 
+                                                    msg, -1,                         
+                                                    "primary-user", NULL);
+  } else {
+          gtk_text_buffer_insert_with_tags_by_name (gw->chat_buffer, &iter, 
+                                                    msg, -1,                         
+                                                    "secondary-user", NULL);
   }
-
-  gdk_color_alloc(cmap, &color);
-  lucida_font = gdk_font_load ("-b&h-lucida-bold-r-normal-*-*-100-*-*-p-*-iso8859-1");
-
-  cout << "FIX ME:chat_window.cpp : 117" << endl << flush;
-  gtk_text_freeze (GTK_TEXT (gw->chat_text));
-  msg = g_strdup_printf ("%s: ", (const char*) local);
-  gtk_text_insert (GTK_TEXT (gw->chat_text), lucida_font, &color, 
- 		   NULL, msg, -1);
-  g_free (msg);
   
-  msg = g_strdup_printf ("%s\n", (const char*) s);
-  gtk_text_insert (GTK_TEXT (gw->chat_text), NULL, 
- 		   &gw->chat_text->style->black, NULL, msg, -1);
   g_free (msg);
-  gtk_text_thaw (GTK_TEXT (gw->chat_text));
-  
-  vertical_adjustment = GTK_ADJUSTMENT(GTK_TEXT (gw->chat_text)->vadj);
-  gtk_adjustment_set_value(vertical_adjustment,
- 			   vertical_adjustment->upper
- 			   - vertical_adjustment->lower
- 			   - vertical_adjustment->page_size);
+
+  msg = g_strdup_printf ("%s", (const char *) str);
+
+  gtk_text_buffer_insert (gw->chat_buffer, &iter, msg, -1);
+
+  g_free (msg);
+
+  mark = gtk_text_buffer_get_mark (gw->chat_buffer, "current-position");
+
+  gtk_text_view_scroll_to_mark (GTK_TEXT_VIEW (gw->chat_view), mark, 
+                                0.0, FALSE, 0,0);
 }
 
 
@@ -145,12 +141,16 @@ void gnomemeeting_init_chat_window ()
   GtkWidget *scr;
   GtkWidget *label;
   GtkWidget *table;
-  GtkWidget *view;
+
+  GtkTextTag *primary_user;
+  GtkTextTag *secondary_user;
+
+  GtkTextIter  iter;
+  GtkTextMark *mark;
 
   /* Get the structs from the application */
   GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
 
-  view = gtk_text_view_new ();
   gw->chat_window = gtk_frame_new (_("Text Chat"));
 
   table = gtk_table_new (1, 3, FALSE);
@@ -163,14 +163,27 @@ void gnomemeeting_init_chat_window ()
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scr),
 				  GTK_POLICY_AUTOMATIC,
 				  GTK_POLICY_ALWAYS);
-  gtk_widget_set_usize (GTK_WIDGET (scr), 225, 0);
+  gtk_widget_set_size_request (GTK_WIDGET (scr), 225, -1);
 
-  gw->chat_text = gtk_text_new (NULL, NULL);
-  gtk_text_set_line_wrap (GTK_TEXT (gw->chat_text), TRUE);
-  gtk_text_set_word_wrap (GTK_TEXT (gw->chat_text), TRUE);
-  gtk_text_set_editable (GTK_TEXT (gw->chat_text), FALSE);
+  gw->chat_view = gtk_text_view_new ();
+  gtk_text_view_set_editable (GTK_TEXT_VIEW (gw->chat_view), FALSE);
+  gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (gw->chat_view), GTK_WRAP_WORD);
+
+  gw->chat_buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (gw->chat_view));
+
+  gtk_text_buffer_get_end_iter (gw->chat_buffer, &iter);
   
-  gtk_container_add (GTK_CONTAINER (scr), gw->chat_text);
+  mark = gtk_text_buffer_create_mark (gw->chat_buffer, "current-position", &iter, FALSE);
+
+  gtk_text_buffer_create_tag (gw->chat_buffer, "primary-user",
+			      "foreground", "red", 
+                              "weight", 900, NULL); 
+
+  gtk_text_buffer_create_tag (gw->chat_buffer, "secondary-user",
+			      "foreground", "blue", 
+                              "weight", 900, NULL);
+
+  gtk_container_add (GTK_CONTAINER (scr), gw->chat_view);
   
   gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (scr), 
  		    0, 1, 0, 1,
@@ -188,14 +201,14 @@ void gnomemeeting_init_chat_window ()
 		    0, 0);
 
   entry = gtk_entry_new ();
-  gtk_widget_set_usize (GTK_WIDGET (entry), 225, 0);
+  gtk_widget_set_size_request (GTK_WIDGET (entry), 225, -1);
   gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (entry), 
 		    0, 1, 2, 3,
 		    (GtkAttachOptions) (NULL),
 		    (GtkAttachOptions) (NULL),
 		    0, 0);
 
-  gtk_signal_connect (GTK_OBJECT (entry), "activate",
-		      GTK_SIGNAL_FUNC (chat_entry_activate), gw->chat_text);
+  g_signal_connect (GTK_OBJECT (entry), "activate",
+                    G_CALLBACK (chat_entry_activate), gw->chat_view);
 
 }
