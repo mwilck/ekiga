@@ -28,6 +28,12 @@
  *
  */
 
+// #define G_DISABLE_DEPRECATED					
+// #define GDK_DISABLE_DEPRECATED
+// #define GTK_DISABLE_DEPRECATED
+// #define GDK_PIXBUF_DISABLE_DEPRECATED
+// #define GNOME_DISABLE_DEPRECATED	
+
 #include "../config.h"
 
 
@@ -40,7 +46,7 @@
 
 #include "../pixmaps/connect.xpm"
 #include "../pixmaps/disconnect.xpm"
-#include "../pixmaps/ils.xpm"
+#include "../pixmaps/xdap-directory.xpm"
 #include "../pixmaps/settings.xpm"
 #include "../pixmaps/gnome-chat.xpm"
 #include "../pixmaps/eye.xpm"
@@ -81,22 +87,19 @@ static void connect_button_clicked (GtkToggleButton *w, gpointer data)
 
 void connect_button_update_pixmap (GtkToggleButton *w, int pressed)
 {
-  GtkWidget *pixmap = NULL;
-  GdkPixmap *Pixmap = NULL;
-  GdkBitmap *mask = NULL;
+  GtkWidget *image = NULL;
   GdkPixbuf *pixbuf = NULL;
 
   GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
 
-  pixmap = (GtkWidget *) 
-    gtk_object_get_data (GTK_OBJECT (w), "pixmap");
+  image = (GtkWidget *) 
+    g_object_get_data (G_OBJECT (w), "image");
   
-  if (pixmap != NULL)	{
+  if (image != NULL)	{
 
     if (pressed == 1) {
 
-      pixbuf = 
-	gdk_pixbuf_new_from_xpm_data ((const char **) connect_xpm);
+      pixbuf = gdk_pixbuf_new_from_xpm_data ((const char **) connect_xpm);
 
       /* Block the signal */
       g_signal_handlers_block_by_func (G_OBJECT (w), 
@@ -109,9 +112,8 @@ void connect_button_update_pixmap (GtkToggleButton *w, int pressed)
     }
     else {
 
-      pixbuf = 
-	gdk_pixbuf_new_from_xpm_data ((const char **) disconnect_xpm);
-      
+      pixbuf = gdk_pixbuf_new_from_xpm_data ((const char **) disconnect_xpm);
+  
       g_signal_handlers_block_by_func (G_OBJECT (w), 
 				       connect_button_clicked, 
 				       (gpointer) gw->connect_button);
@@ -123,16 +125,15 @@ void connect_button_update_pixmap (GtkToggleButton *w, int pressed)
 
     if (pixbuf) {
 
-      gdk_pixbuf_render_pixmap_and_mask (pixbuf, &Pixmap, &mask, 127);
-    
-      gtk_pixmap_set (GTK_PIXMAP (pixmap), Pixmap, mask);
-      gtk_object_remove_data (GTK_OBJECT (w), "pixmap");
-      gtk_object_set_data (GTK_OBJECT (w), "pixmap", pixmap);
+      gtk_image_set_from_pixbuf (GTK_IMAGE (image), GDK_PIXBUF (pixbuf));
+      gtk_widget_queue_draw (GTK_WIDGET (image));
+
+      gdk_pixbuf_unref (pixbuf);
     }
     else {
 
       GTK_TOGGLE_BUTTON (w)->active = !GTK_TOGGLE_BUTTON (w)->active; 
-      gtk_widget_draw (GTK_WIDGET (w), NULL);
+      gtk_widget_queue_draw (GTK_WIDGET (w));
     }
   }
 }
@@ -163,6 +164,7 @@ void gnomemeeting_init_toolbar ()
   GdkPixmap *Pixmap;
   GdkBitmap *mask;
   GdkPixbuf *pixbuf;
+  GtkWidget *image;
   GtkWidget *hbox;
 
   GtkTooltips *tip;
@@ -176,7 +178,7 @@ void gnomemeeting_init_toolbar ()
 	GNOME_APP_UI_ITEM,
 	N_("ILS Directory"), N_("Find friends on ILS"),
 	(void *) gnomemeeting_component_view, gw->ldap_window, NULL,
-	GNOME_APP_PIXMAP_DATA, ils_xpm,
+	GNOME_APP_PIXMAP_DATA, xdap_directory_xpm,
 	NULL, GDK_CONTROL_MASK, NULL
 	},
         {
@@ -207,8 +209,8 @@ void gnomemeeting_init_toolbar ()
   gtk_combo_set_use_arrows_always (GTK_COMBO(gw->combo), TRUE);
 
   gtk_combo_disable_activate (GTK_COMBO (gw->combo));
-  gtk_signal_connect (GTK_OBJECT (GTK_COMBO (gw->combo)->entry), "activate",
-  		      GTK_SIGNAL_FUNC (connect_cb), NULL);
+  g_signal_connect (G_OBJECT (GTK_COMBO (gw->combo)->entry), "activate",
+  		    G_CALLBACK (connect_cb), NULL);
 
 
   /* Both toolbars */
@@ -220,31 +222,33 @@ void gnomemeeting_init_toolbar ()
   gtk_box_pack_start (GTK_BOX (hbox), toolbar, FALSE, FALSE, 1);
 
   gnome_app_add_docked (GNOME_APP (gm), hbox, "main_toolbar",
- 			BONOBO_DOCK_ITEM_BEH_EXCLUSIVE,
- 			BONOBO_DOCK_TOP, 1, 0, 0);
+  			BONOBO_DOCK_ITEM_BEH_EXCLUSIVE,
+  			BONOBO_DOCK_TOP, 1, 0, 0);
 
   gtk_container_set_border_width (GTK_CONTAINER (toolbar), 2);
 
   gw->connect_button = gtk_toggle_button_new ();
-  pixbuf =  gdk_pixbuf_new_from_xpm_data ((const char **) disconnect_xpm);
-  gdk_pixbuf_render_pixmap_and_mask (pixbuf, &Pixmap, &mask, 127);
-  pixmap = gtk_pixmap_new (Pixmap, mask);
-  gtk_container_add (GTK_CONTAINER (gw->connect_button), pixmap);
+  
+  pixbuf = 
+    gdk_pixbuf_new_from_xpm_data ((const char **) disconnect_xpm);
+  image = gtk_image_new_from_pixbuf (pixbuf);
+  gtk_container_add (GTK_CONTAINER (gw->connect_button), GTK_WIDGET (image));
+  gdk_pixbuf_unref (pixbuf);
+  g_object_set_data (G_OBJECT (gw->connect_button), "image", image);
 
-  gtk_pixmap_set (GTK_PIXMAP (pixmap), Pixmap, mask);
-  gtk_object_set_data (GTK_OBJECT (gw->connect_button), "pixmap", pixmap);
+  gtk_widget_set_size_request (GTK_WIDGET (gw->connect_button), 28, 28);
 
-  gtk_widget_set_usize (GTK_WIDGET (gw->connect_button), 28, 28);
-  gtk_toolbar_append_widget (GTK_TOOLBAR (toolbar), gw->connect_button, NULL, NULL);
+  gtk_toolbar_append_widget (GTK_TOOLBAR (toolbar), gw->connect_button,
+			     NULL, NULL);
 
-  gtk_signal_connect (GTK_OBJECT (gw->connect_button), "clicked",
-                      GTK_SIGNAL_FUNC (connect_button_clicked), 
-		      gw->connect_button);
+  g_signal_connect (G_OBJECT (gw->connect_button), "clicked",
+                    G_CALLBACK (connect_button_clicked), 
+		    gw->connect_button);
 
   GtkWidget *toolbar2 = gtk_toolbar_new ();
 
   gnome_app_fill_toolbar(GTK_TOOLBAR (toolbar2), left_toolbar, NULL);
-  gnome_app_add_toolbar (GNOME_APP (gm), GTK_TOOLBAR(toolbar2),
+  gnome_app_add_toolbar (GNOME_APP (gm), GTK_TOOLBAR (toolbar2),
  			 "left_toolbar", BONOBO_DOCK_ITEM_BEH_EXCLUSIVE,
  			 BONOBO_DOCK_LEFT, 3, 0, 0);
 
@@ -252,18 +256,17 @@ void gnomemeeting_init_toolbar ()
   /* Video Preview Button */
   gw->preview_button = gtk_toggle_button_new ();
 
-  pixmap = gnome_pixmap_new_from_xpm_d ((const gchar **) eye_xpm);
-  gtk_container_add (GTK_CONTAINER (gw->preview_button), pixmap);
+  pixbuf = 
+    gdk_pixbuf_new_from_xpm_data ((const char **) eye_xpm);
+  image = gtk_image_new_from_pixbuf (pixbuf);
+  gtk_container_add (GTK_CONTAINER (gw->preview_button), GTK_WIDGET (image));
+  gdk_pixbuf_unref (pixbuf);
 
-  gtk_widget_set_usize (GTK_WIDGET (gw->preview_button), 24, 24);
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->preview_button), gconf_client_get_bool (client, "/apps/gnomemeeting/devices/video_preview", NULL));
 
-  GTK_TOGGLE_BUTTON (gw->preview_button)->active = 
-    gconf_client_get_bool (client, "/apps/gnomemeeting/devices/video_preview", 
-			   NULL);
-
-  gtk_signal_connect (GTK_OBJECT (gw->preview_button), "clicked",
-                      GTK_SIGNAL_FUNC (toggle_changed), 
-		      (gpointer) "/apps/gnomemeeting/devices/video_preview");
+  g_signal_connect (G_OBJECT (gw->preview_button), "clicked",
+		    G_CALLBACK (toggle_changed), 
+		    (gpointer) "/apps/gnomemeeting/devices/video_preview");
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, gw->preview_button,
@@ -276,15 +279,17 @@ void gnomemeeting_init_toolbar ()
   /* Audio Channel Button */
   gw->audio_chan_button = gtk_toggle_button_new ();
 
-  pixmap = gnome_pixmap_new_from_xpm_d ((const gchar **) speaker_xpm);
-  gtk_container_add (GTK_CONTAINER (gw->audio_chan_button), pixmap);
-
-  gtk_widget_set_usize (GTK_WIDGET (gw->audio_chan_button), 24, 24);
+  pixbuf = 
+    gdk_pixbuf_new_from_xpm_data ((const char **) speaker_xpm);
+  image = gtk_image_new_from_pixbuf (pixbuf);
+  gtk_container_add (GTK_CONTAINER (gw->audio_chan_button), 
+		     GTK_WIDGET (image));
+  gdk_pixbuf_unref (pixbuf);
 
   gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_chan_button), FALSE);
 
-  gtk_signal_connect (GTK_OBJECT (gw->audio_chan_button), "clicked",
-                      GTK_SIGNAL_FUNC (pause_audio_callback), gw);
+  g_signal_connect (G_OBJECT (gw->audio_chan_button), "clicked",
+		    G_CALLBACK (pause_audio_callback), gw);
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, gw->audio_chan_button,
@@ -297,15 +302,17 @@ void gnomemeeting_init_toolbar ()
   /* Video Channel Button */
   gw->video_chan_button = gtk_toggle_button_new ();
 
-  pixmap = gnome_pixmap_new_from_xpm_d ((const gchar **) quickcam_xpm);
-  gtk_container_add (GTK_CONTAINER (gw->video_chan_button), pixmap);
-
-  gtk_widget_set_usize (GTK_WIDGET (gw->video_chan_button), 24, 24);
+  pixbuf = 
+    gdk_pixbuf_new_from_xpm_data ((const char **) quickcam_xpm);
+  image = gtk_image_new_from_pixbuf (pixbuf);
+  gtk_container_add (GTK_CONTAINER (gw->video_chan_button), 
+		     GTK_WIDGET (image));
+  gdk_pixbuf_unref (pixbuf);
 
   gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button), FALSE);
 
-  gtk_signal_connect (GTK_OBJECT (gw->video_chan_button), "clicked",
-                      GTK_SIGNAL_FUNC (pause_video_callback), gw);
+  g_signal_connect (G_OBJECT (gw->video_chan_button), "clicked",
+		    G_CALLBACK (pause_video_callback), gw);
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, gw->video_chan_button,

@@ -29,7 +29,6 @@
  *
  */
 
-
 #include "../config.h"
 
 #include "ldap_window.h"
@@ -44,20 +43,17 @@
 
 #include "../pixmaps/ldap_refresh.xpm"
 #include "../pixmaps/small-close.xpm"
-
+#include "../pixmaps/xdap-directory.xpm"
 
 /* Declarations */
 
 extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;	
 
-static void ldap_window_clicked (GnomeDialog *, int, gpointer);
+static void ldap_window_clicked (GtkDialog *, int, gpointer);
 static void search_entry_modified (GtkWidget *, gpointer);
+static void search_entry_activated (GtkEntry *, gpointer);
 static void refresh_button_clicked (GtkButton *, gpointer);
-static void apply_filter_button_clicked (GtkButton *, gpointer);
-static void ldap_clist_row_selected (GtkWidget *, gint, gint,
-				     GdkEventButton *, gpointer);
-static void ldap_clist_column_clicked (GtkCList *, gint, gpointer);
 static void ldap_page_close_button_clicked (GtkWidget *, gpointer);
 static void gnomemeeting_init_ldap_window_notebook (int, gchar *);
 
@@ -69,7 +65,7 @@ static void gnomemeeting_init_ldap_window_notebook (int, gchar *);
  * BEHAVIOR     :  Hide the window.
  * PRE          :  gpointer is a valid pointer to a GM_ldap_window_widgets.
  */
-void ldap_window_clicked (GnomeDialog *widget, int button, gpointer data)
+void ldap_window_clicked (GtkDialog *widget, int button, gpointer data)
 {
   GM_ldap_window_widgets *lw = (GM_ldap_window_widgets *) data;
 
@@ -80,88 +76,35 @@ void ldap_window_clicked (GnomeDialog *widget, int button, gpointer data)
 
 /* DESCRIPTION  :  This callback is called when the user has modified
  *                 the search entry field.
- * BEHAVIOR     :  Reset the search counter.
+ * BEHAVIOR     :  Select the first entry of the XDAP users list.
  * PRE          :  gpointer is a valid pointer to a GM_ldap_window_widgets.
  */
 void search_entry_modified (GtkWidget *widget, gpointer data)
 {
-  GM_ldap_window_widgets *lw = (GM_ldap_window_widgets *) data;
-  GtkWidget *page, *clist;
-  int current_page;
+  GtkWidget *page = NULL;
+  GtkTreeView *tree_view = NULL;
+  GtkTreeSelection *selection = NULL;
+  GtkTreePath *root;
+  GtkTreeIter tree_iter;
+
+  int current_page = 0;
+
+  GM_ldap_window_widgets *lw = gnomemeeting_get_ldap_window (gm);
 
   current_page = gtk_notebook_get_current_page (GTK_NOTEBOOK (lw->notebook));
+  page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), current_page);
 
-  page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook),
-				    current_page);
-  clist = GTK_WIDGET (gtk_object_get_data (GTK_OBJECT (page), "ldap_users_clist"));
-  gtk_object_set_data (GTK_OBJECT (clist),
-		       "last_selected_row", GINT_TO_POINTER (-1));
-}
+  tree_view =
+    GTK_TREE_VIEW (g_object_get_data (G_OBJECT (page), "tree_view"));
 
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view));
 
-/* DESCRIPTION  :  This callback is called when the user clicks
- *                 on a column of the users list.
- * BEHAVIOR     :  Reorder the column using an ascending or descending sort.
- * PRE          :  gpointer is a valid pointer to a GM_ldap_window_widgets
- */
-void ldap_clist_column_clicked (GtkCList *clist, gint column, gpointer data)
-{
-  GM_ldap_window_widgets *lw = (GM_ldap_window_widgets *) data;  
-  int current_page, sorted_column, sorted_order;
-
-  current_page = gtk_notebook_get_current_page (GTK_NOTEBOOK (lw->notebook));
-  sorted_column = GPOINTER_TO_INT (gtk_object_get_data (GTK_OBJECT (clist),
-							"sorted_column"));
-  sorted_order = GPOINTER_TO_INT (gtk_object_get_data (GTK_OBJECT (clist),
-							"sorted_order"));
-
-  if (column > 1) {
-
-      if (sorted_column != column) {
-	  gtk_clist_set_sort_column (GTK_CLIST (clist), column);
-	  gtk_clist_set_sort_type (GTK_CLIST (clist), GTK_SORT_ASCENDING);
-	  gtk_clist_sort (GTK_CLIST (clist));
-	  gtk_object_set_data (GTK_OBJECT (clist), "sorted_column",
-			       GINT_TO_POINTER (column));
-	  gtk_object_set_data (GTK_OBJECT (clist), "sorted_order",
-			       GINT_TO_POINTER (0));
-      }
-      else {
-	if (sorted_order == 0) {
-	  gtk_object_set_data (GTK_OBJECT (clist), "sorted_order",
-			       GINT_TO_POINTER (1));
-	  gtk_clist_set_sort_type (GTK_CLIST (clist), GTK_SORT_DESCENDING);
-	  gtk_clist_sort (GTK_CLIST (clist));
-	}
-	else {
-	  gtk_object_set_data (GTK_OBJECT (clist), "sorted_order",
-			       GINT_TO_POINTER (0));
-	  gtk_clist_set_sort_type (GTK_CLIST (clist), GTK_SORT_ASCENDING);
-	  gtk_clist_sort (GTK_CLIST (clist));
-	}	      
-      }
-  }
-  
-  gtk_object_set_data (GTK_OBJECT (clist), "last_selected_row",
-		       GINT_TO_POINTER (0));
-}
-
-
-/* DESCRIPTION  :  This callback is called when the user selects
- *                 a row in the users list.
- * BEHAVIOR     :  Simply selects the row and put the selected row number in a
- *                 variable.
- * PRE          :  gpointer is a valid pointer to a GM_ldap_window_widgets
- */
-void ldap_clist_row_selected (GtkWidget *widget, gint row, gint column, 
-			      GdkEventButton *event, gpointer data)
-{
-  GM_ldap_window_widgets *lw = (GM_ldap_window_widgets *) data;
-  int current_page;
-
-  current_page = gtk_notebook_get_current_page (GTK_NOTEBOOK (lw->notebook));
-  gtk_object_set_data (GTK_OBJECT (widget), "last_selected_row", 
-		       GINT_TO_POINTER (row));
+  root = gtk_tree_path_new_root ();
+  gtk_tree_selection_select_path (GTK_TREE_SELECTION (selection), 
+				  root); 
+  gtk_tree_selection_get_selected (GTK_TREE_SELECTION (selection), NULL,
+				   &tree_iter);
+  gtk_tree_path_free (root);
 }
 
 
@@ -177,6 +120,7 @@ void refresh_button_clicked (GtkButton *button, gpointer data)
   GMH323EndPoint *endpoint = MyApp->Endpoint ();
   GMILSClient *ils_client = (GMILSClient *) endpoint->GetILSClient ();
 
+  GtkListStore *xdap_users_list_store;
   GtkWidget *page;
   GtkWidget *label;
 
@@ -191,7 +135,7 @@ void refresh_button_clicked (GtkButton *button, gpointer data)
     (GTK_ENTRY (GTK_COMBO (lw->ils_server_combo)->entry)));  
 
   /* if it is an empty entry_content, return */
-  if (!g_strcasecmp (entry_content, "")) {
+  if (!strcasecmp (entry_content, "")) {
       lw->thread_count = 0;
       g_free (entry_content);
       return;
@@ -211,17 +155,15 @@ void refresh_button_clicked (GtkButton *button, gpointer data)
 	    gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook),
 				       page_num)) != NULL) {
 
-      label = GTK_WIDGET 
-	(g_list_first (gtk_container_children (GTK_CONTAINER
-					       (gtk_notebook_get_tab_label 
-						(GTK_NOTEBOOK (lw->notebook), 
-						 page))))->data);
-      gtk_label_get (GTK_LABEL (label), &text_label);
+      label = gtk_notebook_get_tab_label (GTK_NOTEBOOK (lw->notebook), page);
+      label = (GtkWidget *) g_object_get_data (G_OBJECT (label), "label");
+
+      text_label = (gchar *) gtk_label_get_text (GTK_LABEL (label));
       ldap_server = (gchar *) gtk_entry_get_text 
 	(GTK_ENTRY (GTK_COMBO (lw->ils_server_combo)->entry));
-      
+
       /* if there is a page with the current ils server, that's ok */
-      if (!g_strcasecmp (text_label, ldap_server)) {
+      if ((text_label) && (ldap_server) && (!strcasecmp (text_label, ldap_server))) {
 
 	found = 1;
 	break;
@@ -231,48 +173,55 @@ void refresh_button_clicked (GtkButton *button, gpointer data)
     }
 
     if (!found) {
+
+      cout << "1" << endl << flush;
       gnomemeeting_init_ldap_window_notebook (page_num, ldap_server);
-      
+            cout << "1" << endl << flush;
       /* if it was the first "No directory" page, destroy it */
-      if ((page_num == 1)&&(!g_strcasecmp (_("No directory"), text_label))) 
+      if ((page_num == 1)&&(!strcasecmp (_("No directory"), text_label))) 
 	gtk_notebook_remove_page (GTK_NOTEBOOK (lw->notebook), 0);
     }
     else
-      gtk_notebook_set_page (GTK_NOTEBOOK (lw->notebook), page_num);
+      gtk_notebook_set_current_page (GTK_NOTEBOOK (lw->notebook), page_num);
 
     GtkWidget *page, *clist;
     page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), 
 				      gtk_notebook_get_current_page (GTK_NOTEBOOK
 								     (lw->notebook)));
-    clist = GTK_WIDGET (gtk_object_get_data (GTK_OBJECT (page),
-					     "ldap_users_clist"));
-    gtk_clist_freeze (GTK_CLIST (clist));
-    gtk_clist_clear (GTK_CLIST (clist));
-    gtk_clist_thaw (GTK_CLIST (clist));
+
+    xdap_users_list_store = 
+      GTK_LIST_STORE (g_object_get_data (G_OBJECT (page), "list_store"));
+    gtk_list_store_clear (xdap_users_list_store);
 
     ils_client->ils_browse (page_num);
   }   
 }
 
 
-/* DESCRIPTION  :  This callback is called when the user clicks on the apply
- *                 filter button
- * BEHAVIOR     :  make an incremental search on the entry content
- * PRE          :  gpointer is a valid pointer to a GM_ldap_window_widgets
+/* DESCRIPTION  :  This callback is called when the user types enter in the 
+ *                 search entry.
+ * BEHAVIOR     :  make an incremental search on the entry content.
+ * PRE          :  gpointer is a valid pointer to a GM_ldap_window_widgets.
  */
-void apply_filter_button_clicked (GtkButton *button, gpointer data)
+void search_entry_activated (GtkEntry *e, gpointer data)
 {
   GM_ldap_window_widgets *lw = (GM_ldap_window_widgets *) data;
 
   /* should not be freed : entry is a pointer to the text part of an entry
      and text is a pointer to the text part of a clist */
   gchar *entry = NULL, *text = NULL;
-  GtkWidget *active_item, *page, *clist;
+  GtkWidget *active_item, *page;
+  GtkListStore *xdap_users_list = NULL;
+  GtkTreeSelection *selection = NULL;
+  GtkTreeView *tree_view = NULL;
+  GtkTreeIter tree_iter;
+  GtkTreePath *path = NULL;
 
   int current_page;
-  int cpt = 0, col = 0;
-  int last_selected_col, last_selected_row;
+  int col = 0;
+  bool not_last = 1;
 
+  /* Determine the column to search */
   active_item = gtk_menu_get_active (GTK_MENU (GTK_OPTION_MENU 
 					       (lw->option_menu)->menu));
 
@@ -281,40 +230,66 @@ void apply_filter_button_clicked (GtkButton *button, gpointer data)
 		      active_item)
         + 2;
 
-  /* we will make a search on the current page */
+
+  /* We will make a search on the current page */
   current_page = gtk_notebook_get_current_page (GTK_NOTEBOOK (lw->notebook));
   page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), current_page);
-  clist = GTK_WIDGET (gtk_object_get_data (GTK_OBJECT (page), "ldap_users_clist"));
-  last_selected_col = GPOINTER_TO_INT (gtk_object_get_data (GTK_OBJECT (clist),
-							    "last_selected_col"));
-  last_selected_row = GPOINTER_TO_INT (gtk_object_get_data (GTK_OBJECT (clist),
-							    "last_selected_row"));
 
-  if (col != last_selected_col) {
-    gtk_object_set_data (GTK_OBJECT (clist), "last_selected_row",
-			 GINT_TO_POINTER (-1));
-    last_selected_row = -1;
+  
+  /* Get data for the current page */
+  xdap_users_list = 
+    GTK_LIST_STORE (g_object_get_data (G_OBJECT (page), "list_store"));
+  tree_view =
+    GTK_TREE_VIEW (g_object_get_data (G_OBJECT (page), "tree_view"));
+
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view));
+
+
+  /* Sets the iter to the selected row, if any */
+  gtk_tree_selection_get_selected (GTK_TREE_SELECTION (selection), NULL,
+				   &tree_iter);
+  
+  /* If nothing was selected by the user, the iter will not be set,
+     select the first one */
+  if (!gtk_tree_selection_iter_is_selected (GTK_TREE_SELECTION (selection),
+					    &tree_iter)) {
+
+    GtkTreePath *root;
+
+    root = gtk_tree_path_new_root ();
+    gtk_tree_selection_select_path (GTK_TREE_SELECTION (selection), 
+				    root); 
+    gtk_tree_selection_get_selected (GTK_TREE_SELECTION (selection), NULL,
+				     &tree_iter);
+    gtk_tree_path_free (root);
   }
-  
-  entry = (gchar *) gtk_entry_get_text (GTK_ENTRY (lw->search_entry));
-  
-  for (cpt = last_selected_row + 1; cpt < GTK_CLIST (clist)->rows; cpt++) {
-    gtk_clist_get_text (GTK_CLIST (clist), cpt, col, &text);
-    
-    if (text && !strcasecmp (entry, text)) {
 
-      gtk_clist_select_row (GTK_CLIST (clist), cpt, col);
-      gtk_object_set_data (GTK_OBJECT (clist), "last_selected_row",
-			   GINT_TO_POINTER (cpt));
-      gtk_object_set_data (GTK_OBJECT (clist), "last_selected_col",
-			   GINT_TO_POINTER (col));
-      
-      gtk_clist_moveto (GTK_CLIST (clist), cpt, 0, 0, 0);
-      
-      break;
+ 
+  /* What to search for */
+  entry = (gchar *) gtk_entry_get_text (GTK_ENTRY (lw->search_entry));
+
+  while ((not_last) && (entry != NULL)) {
+
+    gtk_tree_model_get (GTK_TREE_MODEL (xdap_users_list), &tree_iter,
+			col, &text, -1);
+
+    if ((text) && (!strcasecmp (text, entry))) {
+
+      gtk_tree_selection_select_iter (GTK_TREE_SELECTION (selection), 
+				      &tree_iter); 
+      path = gtk_tree_model_get_path (GTK_TREE_MODEL (xdap_users_list), 
+				      &tree_iter);
+      gtk_tree_view_scroll_to_cell (GTK_TREE_VIEW (tree_view),
+                                    path, NULL, true, 0.5, 0.5);
+      gtk_tree_path_free (path);
+      break; 
     }
+
+    not_last = gtk_tree_model_iter_next (GTK_TREE_MODEL (xdap_users_list), 
+					 &tree_iter);
   }
 }
+
 
 /* DESCRIPTION  :  This callback is called when the user clicks the close
  *                 on any notebook tab
@@ -325,7 +300,7 @@ static void ldap_page_close_button_clicked (GtkWidget *button, gpointer data)
 {
   int page_number;
   GM_ldap_window_widgets *lw = (GM_ldap_window_widgets *) data;
-  GtkWidget *page = GTK_WIDGET (gtk_object_get_data (GTK_OBJECT (button), "page"));
+  GtkWidget *page = GTK_WIDGET (g_object_get_data (G_OBJECT (button), "page"));
 
   page_number = gtk_notebook_page_num (GTK_NOTEBOOK (lw->notebook), page);
 
@@ -343,7 +318,8 @@ void gnomemeeting_init_ldap_window ()
   GtkWidget *table, *entry_table;
   GtkWidget *vbox;
   GtkWidget *frame;
-  GtkWidget *apply_filter_button;
+  GdkPixbuf *refresh_pixbuf;
+  GdkPixbuf *xdap_pixbuf;
   GtkWidget *who_pixmap;
   GtkWidget *menu;
   GtkWidget *menu_item;
@@ -355,16 +331,22 @@ void gnomemeeting_init_ldap_window ()
   lw->thread_count = 0;
   lw->gw = gw;
 
-  who_pixmap =  gnome_pixmap_new_from_xpm_d ((const gchar **) ldap_refresh_xpm);
+  refresh_pixbuf = 
+    gdk_pixbuf_new_from_xpm_data ((const gchar **) ldap_refresh_xpm); 
+  xdap_pixbuf = 
+    gdk_pixbuf_new_from_xpm_data ((const gchar **) xdap_directory_xpm); 
+
+  who_pixmap =  gtk_image_new_from_pixbuf (refresh_pixbuf);
+  gdk_pixbuf_unref (refresh_pixbuf);
 
   lw->gw->ldap_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_policy (GTK_WINDOW (lw->gw->ldap_window), 
-			 FALSE, TRUE, TRUE);
   gtk_window_set_title (GTK_WINDOW (lw->gw->ldap_window), 
-			_("LDAP Server Browser"));
+			_("XDAP Server Browser"));
+  gtk_window_set_icon (GTK_WINDOW (gw->ldap_window), xdap_pixbuf);
   gtk_window_set_position (GTK_WINDOW (lw->gw->ldap_window), 
 			   GTK_WIN_POS_CENTER);
-  gtk_window_set_default_size (GTK_WINDOW (lw->gw->ldap_window), 450, 350);
+  gtk_window_set_default_size (GTK_WINDOW (lw->gw->ldap_window), 650, 350);
+  gdk_pixbuf_unref (xdap_pixbuf);
 
   /* a vbox to put the frames and the user list */
   vbox = gtk_vbox_new (FALSE, GNOME_PAD_SMALL);
@@ -409,16 +391,16 @@ void gnomemeeting_init_ldap_window ()
   /* option menu */
   menu = gtk_menu_new ();
   menu_item = gtk_menu_item_new_with_label (_("first name"));
-  gtk_menu_append (GTK_MENU (menu), menu_item);
+  gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
 
   menu_item = gtk_menu_item_new_with_label (_("last name"));
-  gtk_menu_append (GTK_MENU (menu), menu_item);
+  gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
 
   menu_item = gtk_menu_item_new_with_label (_("e-mail"));
-  gtk_menu_append (GTK_MENU (menu), menu_item);
+  gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
 
   menu_item = gtk_menu_item_new_with_label (_("location"));
-  gtk_menu_append (GTK_MENU (menu), menu_item);
+  gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
 
   lw->option_menu = gtk_option_menu_new ();
   gtk_option_menu_set_menu (GTK_OPTION_MENU (lw->option_menu),
@@ -436,14 +418,6 @@ void gnomemeeting_init_ldap_window ()
 
   gtk_table_attach (GTK_TABLE (entry_table), lw->search_entry, 4, 8, 0, 2,
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 
-		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
-		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
-
-  /* the filter button */
-  apply_filter_button = gtk_button_new_with_label (_("Apply filter on"));
-
-  gtk_table_attach (GTK_TABLE (entry_table), apply_filter_button, 0, 1, 0, 2,
-		    (GtkAttachOptions) (GTK_FILL), 
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
 
@@ -474,27 +448,26 @@ void gnomemeeting_init_ldap_window ()
   gtk_container_set_border_width (GTK_CONTAINER (lw->statusbar), 0);
 
   /* Signals */
-  gtk_signal_connect (GTK_OBJECT (GTK_COMBO (lw->ils_server_combo)->entry), 
-		      "activate",
-		      GTK_SIGNAL_FUNC (refresh_button_clicked),
-		      (gpointer) lw);
+  g_signal_connect (G_OBJECT (GTK_COMBO (lw->ils_server_combo)->entry), 
+		    "activate",
+		    G_CALLBACK (refresh_button_clicked),
+		    (gpointer) lw);
 
-  gtk_signal_connect (GTK_OBJECT (lw->refresh_button), "pressed",
-		      GTK_SIGNAL_FUNC (refresh_button_clicked), 
-		      (gpointer) lw);
+  g_signal_connect (G_OBJECT (lw->refresh_button), "pressed",
+		    G_CALLBACK (refresh_button_clicked), 
+		    (gpointer) lw);
 
-  gtk_signal_connect (GTK_OBJECT (apply_filter_button), "pressed",
-		      GTK_SIGNAL_FUNC (apply_filter_button_clicked), 
-		      (gpointer) lw);
+  g_signal_connect (G_OBJECT(lw->search_entry), "changed",
+		    G_CALLBACK (search_entry_modified), (gpointer) lw);
 
-  gtk_signal_connect (GTK_OBJECT(lw->search_entry), "changed",
-		      GTK_SIGNAL_FUNC(search_entry_modified), (gpointer) lw);
+  g_signal_connect (G_OBJECT(lw->search_entry), "activate",
+		    G_CALLBACK (search_entry_activated), (gpointer) lw);
 
-  gtk_signal_connect (GTK_OBJECT(gw->ldap_window), "delete_event",
-		     GTK_SIGNAL_FUNC(ldap_window_clicked), (gpointer) lw);
+  g_signal_connect (G_OBJECT(gw->ldap_window), "delete_event",
+		    G_CALLBACK (ldap_window_clicked), (gpointer) lw);
 
-  gtk_signal_connect (GTK_OBJECT (gw->ldap_window), "destroy",
-		      GTK_SIGNAL_FUNC (ldap_window_clicked), (gpointer) lw);
+  g_signal_connect (G_OBJECT (gw->ldap_window), "destroy",
+		    G_CALLBACK (ldap_window_clicked), (gpointer) lw);
 }
 
 
@@ -509,31 +482,28 @@ void gnomemeeting_init_ldap_window_notebook (int page_num, gchar *text_label)
   GtkWidget *scroll;
   GtkWidget *close_button;
   GtkWidget *hbox;
+  GtkWidget *close_image;
   GdkPixbuf *close_cross;
-  GtkPixmap *close_gtkpixmap;
-  GdkPixmap *close_pixmap;
-  GdkBitmap *close_bitmap;
+
+  /* For the GTK TreeView */
+  GtkWidget *tree_view;
+  GtkTreePath *tree_path;
+  GtkListStore *xdap_users_list_store;
+  GtkTreeViewColumn *column;
+  GtkCellRenderer *renderer;
 
   GM_ldap_window_widgets *lw = gnomemeeting_get_ldap_window (gm);
   
-  /* FIXME: How about an icons instead of text for audio and video
-     here and a tick/cross in the list? */
-  gchar * clist_titles [] = 
-    {
-     /* Translators: This is as in "Audio". */
-     N_("A"),
-     /* Translators: This is as in "Video". */
-     N_("V"),
-     N_("First Name"), N_("Last name"), N_("E-mail"), 
-     N_("Location"), N_("Comment"), N_("Version"), N_("IP")};
-
-  /* Intl */
-  for (int i = 0 ; i < 9 ; i++)
-    clist_titles [i] = gettext (clist_titles [i]);
-
-  clist = gtk_clist_new_with_titles (9, clist_titles);
-  gtk_object_set_data (GTK_OBJECT (clist), "last_selected_row",
-		       GINT_TO_POINTER (-1));
+  xdap_users_list_store = gtk_list_store_new (NUM_COLUMNS,
+					      G_TYPE_BOOLEAN,
+					      G_TYPE_BOOLEAN,
+					      G_TYPE_STRING,
+					      G_TYPE_STRING,
+					      G_TYPE_STRING,
+					      G_TYPE_STRING,
+					      G_TYPE_STRING,
+					      G_TYPE_STRING,
+					      G_TYPE_STRING);
 
   scroll = gtk_scrolled_window_new (NULL, NULL);
 
@@ -541,28 +511,115 @@ void gnomemeeting_init_ldap_window_notebook (int page_num, gchar *text_label)
 				  GTK_POLICY_AUTOMATIC,
 				  GTK_POLICY_AUTOMATIC);
 
-  for (int i = 0; i < 10; i++)
-    gtk_clist_set_column_auto_resize (GTK_CLIST (clist), i, true);
+  tree_view = 
+    gtk_tree_view_new_with_model (GTK_TREE_MODEL (xdap_users_list_store));
+  gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (tree_view), TRUE);
+  gtk_tree_view_set_search_column (GTK_TREE_VIEW (tree_view),
+				   COLUMN_FIRSTNAME);
 
-  gtk_clist_set_shadow_type (GTK_CLIST (clist), GTK_SHADOW_IN);
+  /* Set all Colums */
+  renderer = gtk_cell_renderer_toggle_new ();
+  column = gtk_tree_view_column_new_with_attributes (_("A"),
+						     renderer,
+						     "active", 
+						     COLUMN_AUDIO,
+						     NULL);
+  gtk_tree_view_column_set_sort_column_id (column, COLUMN_AUDIO);
+  gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 25);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
 
-  gtk_container_add (GTK_CONTAINER (scroll), clist);
-  gtk_container_set_border_width (GTK_CONTAINER (clist), GNOME_PAD_SMALL);
+  renderer = gtk_cell_renderer_toggle_new ();
+  column = gtk_tree_view_column_new_with_attributes (_("V"),
+						     renderer,
+						     "active", 
+						     COLUMN_VIDEO,
+						     NULL);
+  gtk_tree_view_column_set_sort_column_id (column, COLUMN_VIDEO);
+  gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 25);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
 
-  /* The popup menu */
-  gnomemeeting_init_ldap_window_popup_menu (clist);
+  renderer = gtk_cell_renderer_text_new ();
+  column = gtk_tree_view_column_new_with_attributes (_("First Name"),
+						     renderer,
+						     "text", 
+						     COLUMN_FIRSTNAME,
+						     NULL);
+  gtk_tree_view_column_set_sort_column_id (column, COLUMN_FIRSTNAME);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
 
+  renderer = gtk_cell_renderer_text_new ();
+  column = gtk_tree_view_column_new_with_attributes (_("Last Name"),
+						     renderer,
+						     "text", 
+						     COLUMN_LASTNAME,
+						     NULL);
+  gtk_tree_view_column_set_sort_column_id (column, COLUMN_LASTNAME);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+
+  renderer = gtk_cell_renderer_text_new ();
+  column = gtk_tree_view_column_new_with_attributes (_("E-Mail"),
+						     renderer,
+						     "text", 
+						     COLUMN_EMAIL,
+						     NULL);
+  gtk_tree_view_column_set_sort_column_id (column, COLUMN_EMAIL);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+
+  renderer = gtk_cell_renderer_text_new ();
+  column = gtk_tree_view_column_new_with_attributes (_("Location"),
+						     renderer,
+						     "text", 
+						     COLUMN_LOCATION,
+						     NULL);
+  gtk_tree_view_column_set_sort_column_id (column, COLUMN_LOCATION);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+
+  renderer = gtk_cell_renderer_text_new ();
+  column = gtk_tree_view_column_new_with_attributes (_("Comment"),
+						     renderer,
+						     "text", 
+						     COLUMN_COMMENT,
+						     NULL);
+  gtk_tree_view_column_set_sort_column_id (column, COLUMN_COMMENT);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+
+  renderer = gtk_cell_renderer_text_new ();
+  column = gtk_tree_view_column_new_with_attributes (_("Version"),
+						     renderer,
+						     "text", 
+						     COLUMN_VERSION,
+						     NULL);
+  gtk_tree_view_column_set_sort_column_id (column, COLUMN_VERSION);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+
+
+  renderer = gtk_cell_renderer_text_new ();
+  column = gtk_tree_view_column_new_with_attributes (_("IP"),
+						     renderer,
+						     "text", 
+						     COLUMN_IP,
+						     NULL);
+  gtk_tree_view_column_set_sort_column_id (column, COLUMN_IP);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+
+  gtk_container_add (GTK_CONTAINER (scroll), tree_view);
+  gtk_container_set_border_width (GTK_CONTAINER (tree_view), GNOME_PAD_SMALL);
+
+  cout << "FIX ME: gnomemeeting_init_ldap_popup_menu, remove it" << endl <<flush;
   /* The page's "label" */
   hbox = gtk_hbox_new (false, 0);
   label = gtk_label_new (text_label);
+
+  /* Put a reference to the label in the hbox, we need it later */
+  g_object_set_data (G_OBJECT (hbox), "label", (gpointer) label);
+
   close_button = gtk_button_new ();
   gtk_button_set_relief (GTK_BUTTON (close_button), GTK_RELIEF_NONE);
   close_cross = gdk_pixbuf_new_from_xpm_data (small_close_xpm);
-  gdk_pixbuf_render_pixmap_and_mask (close_cross, &close_pixmap, 
-				     &close_bitmap, 127);
+  close_image = gtk_image_new_from_pixbuf (close_cross);
   gdk_pixbuf_unref (close_cross);
-  close_gtkpixmap = GTK_PIXMAP (gtk_pixmap_new (close_pixmap, close_bitmap));
-  gtk_container_add (GTK_CONTAINER (close_button), GTK_WIDGET (close_gtkpixmap));
+  gtk_container_add (GTK_CONTAINER (close_button), 
+		     GTK_WIDGET (close_image));
   gtk_widget_show_all (close_button);
 
   gtk_box_pack_start (GTK_BOX (hbox), label, true, true, 0);
@@ -572,31 +629,28 @@ void gnomemeeting_init_ldap_window_notebook (int page_num, gchar *text_label)
   gtk_widget_show (close_button);
   gtk_widget_show (hbox);
 
+
   /* Append the page to the notebook */
-  gtk_widget_show (clist);
+  gtk_widget_show (tree_view);
   gtk_widget_show (scroll);
   gtk_notebook_append_page (GTK_NOTEBOOK (lw->notebook), scroll, hbox);
 
-  gtk_signal_connect (GTK_OBJECT (clist), 
-		      "select_row",
-		      GTK_SIGNAL_FUNC (ldap_clist_row_selected), 
-		      (gpointer) lw);
+  g_signal_connect (G_OBJECT (close_button), "clicked",
+		    G_CALLBACK (ldap_page_close_button_clicked),
+		    (gpointer) lw);
 
-  gtk_signal_connect (GTK_OBJECT (clist), 
-		      "click-column",
-		      GTK_SIGNAL_FUNC (ldap_clist_column_clicked), 
-		      (gpointer) lw);
-
-  gtk_signal_connect (GTK_OBJECT (close_button),
-		      "clicked",
-		      GTK_SIGNAL_FUNC (ldap_page_close_button_clicked),
-		      (gpointer) lw);
-
-  gtk_notebook_set_page (GTK_NOTEBOOK (lw->notebook), page_num);
+  gtk_notebook_set_current_page (GTK_NOTEBOOK (lw->notebook), page_num);
   page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (lw->notebook), page_num);
-  gtk_object_set_data (GTK_OBJECT (page), "ldap_users_clist", clist);
+
 
   /* We need this to identify the page when the user clicks the
      close button */
-  gtk_object_set_data (GTK_OBJECT (close_button), "page", page);
+  g_object_set_data (G_OBJECT (close_button), "page", 
+		     GINT_TO_POINTER (page));
+
+  /* Store the list_store and the tree view as data for the page */
+  g_object_set_data (G_OBJECT (page), "list_store", 
+		     (gpointer) (xdap_users_list_store));
+  g_object_set_data (G_OBJECT (page), "tree_view",
+		     (gpointer) (tree_view));
 }

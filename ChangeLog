@@ -1,3 +1,16 @@
+2002-03-25  Damien Sandras  <dsandras@seconix.com>	
+
+	* src/ldap_window.cpp: Removed all deprecated calls and ported to
+	GtkTreeView the list and the search. Changing the search filter
+	resets the search, and typing Enter do an incremental search.
+	What a job!
+	
+	* src/toolbar.cpp: Removed all deprecated calls.
+
+	* src/gnomemeeting.cpp: Removed the stress test.
+
+	* src/ils.cpp: Ported to GtkTreeView.
+	
 2002-03-23  Damien Sandras  <dsandras@seconix.com>	
 
 	* Removed intl and macros from CVS, Eeek!

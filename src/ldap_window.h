@@ -45,6 +45,21 @@
 #include <ptlib.h>
 
 
+enum {
+
+  COLUMN_AUDIO,
+  COLUMN_VIDEO,
+  COLUMN_FIRSTNAME,
+  COLUMN_LASTNAME,
+  COLUMN_EMAIL,
+  COLUMN_LOCATION,
+  COLUMN_COMMENT,
+  COLUMN_VERSION,
+  COLUMN_IP,
+  NUM_COLUMNS
+};
+
+ 
 /* The functions  */
 
 /* DESCRIPTION  :  /

@@ -52,20 +52,11 @@ static int gnomemeeting_ldap_window_appbar_update (gpointer);
 /* Callbacks */
 int gnomemeeting_ldap_window_appbar_update (gpointer data) 
 {
-  float val;
   GtkWidget *statusbar = (GtkWidget *) data;
   
-  cout << "FIX me : ils.cpp:58" << endl << flush;
-//  GtkProgress *progress = gnome_appbar_get_progress (GNOME_APPBAR (statusbar));
+  GtkProgressBar *progress = gnome_appbar_get_progress (GNOME_APPBAR (statusbar));
 
-//  val = gtk_progress_get_value(GTK_PROGRESS (progress));
-  
-  val += 0.5;
-  
-  if (val > 100) 
-    val = 0;
-   
-//  gtk_progress_set_value(GTK_PROGRESS(progress), val);
+  gtk_progress_bar_pulse (GTK_PROGRESS_BAR (progress));
    
   return 1;
 }
@@ -539,14 +530,13 @@ void GMILSClient::ils_browse ()
   gchar *ldap_server = NULL;
   gchar *text_label = NULL;
 
-  GdkPixmap *quickcam;
-  GdkBitmap *quickcam_mask;
-  GdkPixmap *sound;
-  GdkBitmap *sound_mask;
-  GtkProgress *progress;
+  GtkProgressBar *progress;
   guint ils_timeout;
   GtkWidget *page = NULL, *clist = NULL, *label = NULL;
+  GtkListStore *xdap_users_list_store = NULL;
+  GtkTreeIter list_iter;
   int curr_page;
+  bool audio = false, video = false;
 
   gnomemeeting_threads_enter ();
   gtk_widget_set_sensitive (GTK_WIDGET (lw->refresh_button), FALSE);
@@ -572,27 +562,19 @@ void GMILSClient::ils_browse ()
   }
 
   gnomemeeting_threads_enter ();
-  cout << "Fix me: ils.cpp: 575" << endl << flush;
-//  progress = gnome_appbar_get_progress (GNOME_APPBAR (lw->statusbar));
+
+  progress = gnome_appbar_get_progress (GNOME_APPBAR (lw->statusbar));
   
-  quickcam = gdk_pixmap_create_from_xpm_d (gm->window, &quickcam_mask,
-					   NULL,
-					   (gchar **) quickcam_xpm);
-
-  sound = gdk_pixmap_create_from_xpm_d (gm->window, &sound_mask,
-					NULL,
-					(gchar **) sound_xpm); 
-
   gnome_appbar_push (GNOME_APPBAR (lw->statusbar), 
 		     _("Connecting to ILS directory... Please Wait."));
 
+
   /* We add a timeout to make the status indicator move in activity mode */
-//  gtk_progress_set_activity_mode (GTK_PROGRESS (progress), TRUE);
-//  gtk_progress_bar_set_activity_step (GTK_PROGRESS_BAR (progress), 4);
   ils_timeout = gtk_timeout_add (50, gnomemeeting_ldap_window_appbar_update, 
 				 lw->statusbar);
 
   gnomemeeting_threads_leave ();
+
 
   /* Opens the connection to the ILS directory */
   ldap_connection = ldap_open (ldap_server, 389);
@@ -606,8 +588,6 @@ void GMILSClient::ils_browse ()
     
     /* Remove the timeout */
     gtk_timeout_remove (ils_timeout);
-//    gtk_progress_set_activity_mode (GTK_PROGRESS (progress), FALSE);
-//    gtk_progress_set_value(GTK_PROGRESS(progress), 0);
     
     gnomemeeting_threads_leave ();
     
@@ -627,9 +607,7 @@ void GMILSClient::ils_browse ()
     
     /* Remove the timeout */
     gtk_timeout_remove (ils_timeout);
-    gtk_progress_set_activity_mode (GTK_PROGRESS (progress), FALSE);
-    gtk_progress_set_value(GTK_PROGRESS(progress), 0);
-    
+        
     /* Remove the current page */
     gtk_notebook_remove_page (GTK_NOTEBOOK (lw->notebook), page_num);
     if (page_num == 1)
@@ -649,9 +627,6 @@ void GMILSClient::ils_browse ()
 
   gnome_appbar_push (GNOME_APPBAR (lw->statusbar), 
 		     _("Fetching users' information... Please Wait."));
-
-  /* Make the progress bar in activity mode go faster */
-  gtk_progress_bar_set_activity_step (GTK_PROGRESS_BAR (progress), 20);
 
   gnomemeeting_threads_leave ();
 
@@ -693,13 +668,13 @@ void GMILSClient::ils_browse ()
   }
 
   if (page != NULL)
-    clist = GTK_WIDGET (gtk_object_get_data (GTK_OBJECT (page), 
-					     "ldap_users_clist"));
+    xdap_users_list_store = 
+      GTK_LIST_STORE (gtk_object_get_data (GTK_OBJECT (page), 
+					   "list_store"));
 
   /*Maybe the user closed the tab while we were waiting */
-  if ((clist != NULL)&&(page_exists)) { 
+  if ((xdap_users_list_store != NULL) && (page_exists)) { 
     
-    gtk_clist_freeze (GTK_CLIST (clist));
     for (e = ldap_first_entry(ldap_connection, res); 
 	 e != NULL; e = ldap_next_entry(ldap_connection, e)) {
       
@@ -783,40 +758,55 @@ void GMILSClient::ils_browse ()
       
       datas [8] = g_strdup ((char *) ip);
       
-      /* Check if the window is still present or not */
-      if (lw)
-	gtk_clist_append (GTK_CLIST (clist), 
-			  (gchar **) datas);
-          
+
       /* Video Capable ? */
       if (ldap_get_values(ldap_connection, e, "ilsa32964638") != NULL) {
 	
-	nmip = atoi (ldap_get_values(ldap_connection, e, "ilsa32964638") [0]);
-	ldap_value_free (ldap_get_values (ldap_connection, e, "ilsa32964638"));
+ 	video = 
+	  (bool)atoi (ldap_get_values(ldap_connection, e, "ilsa32964638") [0]);
+ 	ldap_value_free (ldap_get_values (ldap_connection, e, "ilsa32964638"));
       }
       
-      if (nmip == 1) {
-	
-	if (lw)
-	  gtk_clist_set_pixmap (GTK_CLIST (clist), 
-				GTK_CLIST (clist)->rows - 1, 1, 
-				quickcam, quickcam_mask);
-      }
-      
+
       /* Audio Capable ? */
       if (ldap_get_values(ldap_connection, e, "ilsa32833566") != NULL) {
 	
-	nmip = atoi (ldap_get_values(ldap_connection, e, "ilsa32833566") [0]);
-	ldap_value_free (ldap_get_values (ldap_connection, e, "ilsa32833566"));
+ 	audio = 
+	  (bool)atoi (ldap_get_values(ldap_connection, e, "ilsa32833566") [0]);
+ 	ldap_value_free (ldap_get_values (ldap_connection, e, "ilsa32833566"));
       }
       
-      if (nmip == 1) {
-	
-	if (lw)
-	  gtk_clist_set_pixmap (GTK_CLIST (clist), 
-				GTK_CLIST (clist)->rows - 1, 0, 
-				sound, sound_mask);
-      }
+
+      /* Check if the window is still present or not */
+      if (lw) {
+
+	gchar *utf8_data [7] = {NULL, NULL, NULL, NULL, NULL, NULL, NULL};
+
+ 	for (int j = 0 ; j < 7 ; j++) 
+
+	  if (datas [j + 2])
+	    utf8_data [j] = g_locale_to_utf8 (datas [j + 2], 
+					      strlen (datas [j + 2]), 
+					      NULL, NULL, NULL);
+
+	gtk_list_store_append (xdap_users_list_store, &list_iter);
+	gtk_list_store_set (xdap_users_list_store, &list_iter,
+			    COLUMN_AUDIO, audio,
+			    COLUMN_VIDEO, video,
+			    COLUMN_FIRSTNAME, utf8_data [0],
+ 			    COLUMN_LASTNAME, utf8_data [1],
+ 			    COLUMN_EMAIL, utf8_data [2],
+ 			    COLUMN_COMMENT, utf8_data [3],
+ 			    COLUMN_LOCATION, utf8_data [4],
+ 			    COLUMN_VERSION, utf8_data [5],
+ 			    COLUMN_IP, utf8_data [6],
+			    -1);
+
+	for (int j = 0 ; j < 7 ; j++)
+	  if (utf8_data [j])
+	    g_free (utf8_data [j]);
+
+      }   
       
       for (int j = 2 ; j <= 8 ; j++) {
 	
@@ -825,14 +815,11 @@ void GMILSClient::ils_browse ()
 	
 	datas [j] = NULL;
       }
+
     } /* end of for */
-    
-    gtk_clist_thaw (GTK_CLIST (clist));
   }
 
   /* Make the progress bar in activity mode go faster */
-  gtk_progress_bar_set_activity_step (GTK_PROGRESS_BAR (progress), 5);
-  
   ldap_msgfree (res);
   ldap_unbind (ldap_connection);
 
@@ -842,10 +829,9 @@ void GMILSClient::ils_browse ()
 
   /* Remove the timeout */
   gtk_timeout_remove (ils_timeout);
-  gtk_progress_set_activity_mode (GTK_PROGRESS (progress), FALSE);
-  gtk_progress_set_value(GTK_PROGRESS(progress), 0);
 
-  // Enable sensitivity
+
+  /* Enable sensitivity */
   gtk_widget_set_sensitive (GTK_WIDGET (lw->refresh_button), TRUE);
   gnomemeeting_threads_leave ();
 }
