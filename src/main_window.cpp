@@ -319,7 +319,8 @@ video_window_shown_cb (GtkWidget *w, gpointer data)
   client = gconf_client_get_default ();
 
   if (gconf_client_get_bool (GCONF_CLIENT (client), 
-			     VIDEO_DISPLAY_KEY "stay_on_top", NULL))
+			     VIDEO_DISPLAY_KEY "stay_on_top", NULL)
+      && MyApp->Endpoint ()->GetCallingState () == 2)
     gdk_window_set_always_on_top (GDK_WINDOW (w->window), TRUE);
 }
 

@@ -331,7 +331,8 @@ void GMVideoGrabber::VGOpen (void)
     gnomemeeting_statusbar_flash (gw->statusbar, _("Opening Video device"));
     gnomemeeting_log_insert (gw->history_text_view, _("Opening Video device"));
     gnomemeeting_threads_leave ();
-    
+
+#ifndef TRY_PLUGINS    
 #ifdef TRY_1394AVC
     if (video_device == "/dev/raw1394" ||
        strncmp (video_device, "/dev/video1394", 14) == 0) {
@@ -348,6 +349,7 @@ void GMVideoGrabber::VGOpen (void)
       {
 	 grabber = new PVideoInputDevice();
       }
+#endif
 
     if (video_size == 0) { 
       
@@ -360,7 +362,6 @@ void GMVideoGrabber::VGOpen (void)
       width = GM_CIF_WIDTH; 
     }
     
-    grabber->SetPreferredColourFormat (color_format);
 
     /* no error if Picture is choosen as video device */
     if (!strcmp (video_device, _("Picture")))
@@ -368,8 +369,14 @@ void GMVideoGrabber::VGOpen (void)
 
     if (error_code != -2) {
 
+#ifndef TRY_PLUGINS
       if (!grabber->Open (video_device, FALSE))
 	error_code = 0;
+#else
+      grabber = PVideoInputManager::GetOpenedDevice(video_device, FALSE);
+      if (grabber == NULL)
+	error_code = 0;
+#endif
       else
 	if (!grabber->SetFrameSizeConverter (width, height, FALSE))
 	  error_code = 5;
@@ -430,7 +437,7 @@ void GMVideoGrabber::VGOpen (void)
 	  break;
       
 	case 3:
-	  msg = g_strconcat (msg, "\n\n", g_strdup_printf(_("Your driver doesn't seem to support any of the colour formats supported by GnomeMeeting.\n Please check your kernel driver documentation in order to determine which Palette is supported. Set it as GnomeMeeting default with:\n gconftool --set \"/apps/gnomemeeting/devices/color_format\" YOURPALETTE --type string")), NULL);
+	  msg = g_strconcat (msg, "\n\n", g_strdup_printf(_("Your driver doesn't seem to support any of the colour formats supported by GnomeMeeting.\n Please check your kernel driver documentation in order to determine which Palette is supported.")), NULL);
 	  break;
       
 	case 4:
@@ -656,6 +663,7 @@ void GMVideoTester::Main ()
   gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (dw->progress), 0.0);
   gnomemeeting_threads_leave ();
 
+#ifndef TRY_PLUGINS
 #ifdef TRY_1394AVC
     if (video_device == "/dev/raw1394" ||
        strncmp (video_device, "/dev/video1394", 14) == 0) {
@@ -672,6 +680,7 @@ void GMVideoTester::Main ()
       {
 	 grabber = new PVideoInputDevice();
       }
+#endif
   
   while (cpt <= 3) {
 
@@ -681,9 +690,14 @@ void GMVideoTester::Main ()
     gdk_threads_leave ();
     
     if (strcmp (video_device, _("Picture"))) {
-      
+#ifndef TRY_PLUGINS      
       if (!grabber->Open (video_device, FALSE))
 	error_code = 0;
+#else
+	grabber = PVideoInputManager::GetOpenedDevice(video_device, FALSE);
+      if (!grabber)
+	error_code = 0;
+#endif
       else
 	if (!grabber->SetFrameSizeConverter (width, height, FALSE))
 	  error_code = 5;
@@ -732,7 +746,7 @@ void GMVideoTester::Main ()
       break;
       
     case 3:
-      msg = g_strdup_printf (_("Your driver doesn't support the YUV420P color format"));
+      msg = g_strdup_printf (_("Your driver doesn't support any of the color formats tried by GnomeMeeting"));
       break;
       
     case 4:
