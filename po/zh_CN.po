@@ -11,13 +11,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-11-21 20:36+0100\n"
+"POT-Creation-Date: 2004-11-24 11:55+0100\n"
 "PO-Revision-Date: 2004-11-22 08:08+0800\n"
 "Last-Translator: Funda Wang <fundawang@linux.net.cn>\n"
 "Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #. Add the window icon and title
 #: gnomemeeting.desktop.in.h:1 src/main_window.cpp:3710
@@ -814,8 +815,7 @@ msgstr "如果启用，这个声音将会在呼叫某人时播放"
 msgid ""
 "The time after which GnomeMeeting will renew its registration with the "
 "gatekeeper"
-msgstr ""
-"GnomeMeeting 在关守续约的时间间隔"
+msgstr "GnomeMeeting 在关守续约的时间间隔"
 
 #: gnomemeeting.schemas.in.in.h:165
 msgid "The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)"
@@ -1074,7 +1074,7 @@ msgid "None"
 msgstr "无"
 
 #: src/addressbook_window.cpp:778
-#,  c-format
+#, c-format
 msgid ""
 "Another contact with similar information already exists in your address "
 "book:\n"
@@ -1136,7 +1136,7 @@ msgid "Belongs to category"
 msgstr "属于类别"
 
 #: src/addressbook_window.cpp:1474 src/addressbook_window.cpp:1504
-#: src/addressbook_window.cpp:2271 src/calls_history_window.cpp:284
+#: src/addressbook_window.cpp:2276 src/calls_history_window.cpp:284
 msgid "C_all Contact"
 msgstr "呼叫联系人(_A)"
 
@@ -1145,17 +1145,17 @@ msgid "_Copy URL to clipboard"
 msgstr "将 URL 复制到剪贴板(_C)"
 
 #: src/addressbook_window.cpp:1486 src/addressbook_window.cpp:1544
-#: src/addressbook_window.cpp:2257
+#: src/addressbook_window.cpp:2262
 msgid "_Properties"
 msgstr "属性(_P)"
 
 # src/pref_window.cpp:814
 #: src/addressbook_window.cpp:1493 src/addressbook_window.cpp:1551
-#: src/addressbook_window.cpp:2252
+#: src/addressbook_window.cpp:2257
 msgid "_Delete"
 msgstr "删除(_D)"
 
-#: src/addressbook_window.cpp:1516 src/addressbook_window.cpp:2281
+#: src/addressbook_window.cpp:1516 src/addressbook_window.cpp:2286
 #: src/calls_history_window.cpp:291
 msgid "Add Contact to _Address Book"
 msgstr "将联系人添加到地址簿(_A)"
@@ -1166,159 +1166,150 @@ msgid "Error while fetching users list from %s"
 msgstr "从 %s 获取用户列表出错"
 
 #: src/addressbook_window.cpp:1780
-#, c-format
+#, , c-format
 msgid "Found %d user in %s"
-msgstr "在 %2$s 找到了 %1$d 个用户"
-
-#: src/addressbook_window.cpp:1781
-#, c-format
-msgid "Found %d users in %s"
-msgstr "在 %2$s 找到了 %1$d 个用户"
+msgid_plural "Found %d users in %s"
+msgstr[0] "在 %2$s 找到了 %1$d 个用户"
 
 #: src/addressbook_window.cpp:1784
 #, c-format
 msgid "Found %d user in %s for a total of %d users"
-msgstr "在 %2$s 找到了 %1$d 个用户，共 %3$d个用户"
+msgid_plural "Found %d users in %s for a total of %d users"
+msgstr[0] "在 %2$s 找到了 %1$d 个用户，共 %3$d个用户"
 
-#: src/addressbook_window.cpp:1784
-#, c-format
-msgid "Found %d users in %s for a total of %d users"
-msgstr "在 %2$s 找到了 %1$d 个用户，共 %3$d个用户"
-
-#: src/addressbook_window.cpp:2216
+#: src/addressbook_window.cpp:2221
 msgid "Address Book"
 msgstr "地址簿"
 
-#: src/addressbook_window.cpp:2243
+#: src/addressbook_window.cpp:2248
 msgid "_File"
 msgstr "文件(_F)"
 
-#: src/addressbook_window.cpp:2245
+#: src/addressbook_window.cpp:2250
 msgid "New _Address Book"
 msgstr "新建地址簿(_A)"
 
-#: src/addressbook_window.cpp:2264 src/main_window.cpp:1007
+#: src/addressbook_window.cpp:2269 src/main_window.cpp:1007
 msgid "_Close"
 msgstr "关闭(_C)"
 
-#: src/addressbook_window.cpp:2269
+#: src/addressbook_window.cpp:2274
 msgid "C_ontact"
 msgstr "联系人(_O)"
 
-#: src/addressbook_window.cpp:2277
+#: src/addressbook_window.cpp:2282
 msgid "New _Contact"
 msgstr "新建联系人(_C)"
 
-#: src/addressbook_window.cpp:2354
+#: src/addressbook_window.cpp:2359
 msgid "Remote Contacts"
 msgstr "远程联系人"
 
-#: src/addressbook_window.cpp:2362
+#: src/addressbook_window.cpp:2367
 msgid "Local Contacts"
 msgstr "本地联系人"
 
-#: src/addressbook_window.cpp:2485
+#: src/addressbook_window.cpp:2490
 msgid "Edit the Contact Information"
 msgstr "编辑联系人信息"
 
-#: src/addressbook_window.cpp:2506 src/addressbook_window.cpp:2966
+#: src/addressbook_window.cpp:2511 src/addressbook_window.cpp:2971
 msgid "Name:"
 msgstr "姓名："
 
-#: src/addressbook_window.cpp:2526
+#: src/addressbook_window.cpp:2531
 msgid "URL:"
 msgstr "URL："
 
-#: src/addressbook_window.cpp:2546
+#: src/addressbook_window.cpp:2551
 msgid "Email:"
 msgstr "电子邮件："
 
-#: src/addressbook_window.cpp:2567
+#: src/addressbook_window.cpp:2572
 msgid "Speed Dial:"
 msgstr "快速拨号："
 
-#: src/addressbook_window.cpp:2589
+#: src/addressbook_window.cpp:2594
 msgid "Categories:"
 msgstr "类别："
 
-#: src/addressbook_window.cpp:2614
+#: src/addressbook_window.cpp:2619
 msgid "Local Addressbook:"
 msgstr "本地地址簿："
 
-#: src/addressbook_window.cpp:2775 src/addressbook_window.cpp:3269
+#: src/addressbook_window.cpp:2780 src/addressbook_window.cpp:3274
 msgid "Missing information"
 msgstr "缺少信息"
 
-#: src/addressbook_window.cpp:2775
+#: src/addressbook_window.cpp:2780
 msgid ""
 "Please make sure to provide at least a full name or an URL for the contact."
-msgstr ""
-"请确定至少为联系人提供了全名或 URL。"
+msgstr "请确定至少为联系人提供了全名或 URL。"
 
-#: src/addressbook_window.cpp:2819
+#: src/addressbook_window.cpp:2824
 #, c-format
 msgid "Are you sure you want to delete %s from %s?"
 msgstr "您确定想要从 %2$s 中删除 %1$s 吗？"
 
-#: src/addressbook_window.cpp:2945
+#: src/addressbook_window.cpp:2950
 msgid "Edit an address book"
 msgstr "编辑地址簿"
 
-#: src/addressbook_window.cpp:2946
+#: src/addressbook_window.cpp:2951
 msgid "Add an address book"
 msgstr "添加地址簿"
 
-#: src/addressbook_window.cpp:2991
+#: src/addressbook_window.cpp:2996
 msgid "Type:"
 msgstr "类型："
 
-#: src/addressbook_window.cpp:2998
+#: src/addressbook_window.cpp:3003
 msgid "Local"
 msgstr "本地"
 
 # src/main_window.cpp:854 src/main_window.cpp:879
-#: src/addressbook_window.cpp:3003
+#: src/addressbook_window.cpp:3008
 msgid "Remote LDAP"
 msgstr "远程 LDAP"
 
 # src/main_window.cpp:854 src/main_window.cpp:879
-#: src/addressbook_window.cpp:3008
+#: src/addressbook_window.cpp:3013
 msgid "Remote ILS"
 msgstr "远程 ILS"
 
-#: src/addressbook_window.cpp:3041
+#: src/addressbook_window.cpp:3046
 msgid "Hostname:"
 msgstr "主机名："
 
-#: src/addressbook_window.cpp:3064
+#: src/addressbook_window.cpp:3069
 msgid "Port:"
 msgstr "端口："
 
-#: src/addressbook_window.cpp:3089
+#: src/addressbook_window.cpp:3094
 msgid "Base DN:"
 msgstr "基 DN："
 
-#: src/addressbook_window.cpp:3112
+#: src/addressbook_window.cpp:3117
 msgid "Search Scope:"
 msgstr "搜索范围："
 
-#: src/addressbook_window.cpp:3119
+#: src/addressbook_window.cpp:3124
 msgid "Subtree"
 msgstr "子树"
 
-#: src/addressbook_window.cpp:3124
+#: src/addressbook_window.cpp:3129
 msgid "One Level"
 msgstr "一级"
 
-#: src/addressbook_window.cpp:3156
+#: src/addressbook_window.cpp:3161
 msgid "Search Attribute:"
 msgstr "搜索属性："
 
-#: src/addressbook_window.cpp:3269
+#: src/addressbook_window.cpp:3274
 msgid "Please make sure to fill in all requested fields."
 msgstr "请确定填入了全部所需内容。"
 
-#: src/addressbook_window.cpp:3312
+#: src/addressbook_window.cpp:3317
 #, c-format
 msgid "Are you sure you want to delete %s and all its contacts?"
 msgstr "您确定想要删除群组 %s 及其全部联系人？"
@@ -1775,8 +1766,7 @@ msgstr "检测 NAT 类型"
 msgid ""
 "The NAT type detection will permit to assist you in configuring your NAT "
 "router to be able to do calls with GnomeMeeting."
-msgstr ""
-"NAT 类型检测将帮助您配置您的 NAT 路由器，以便通过 GnomeMeeting 通话。"
+msgstr "NAT 类型检测将帮助您配置您的 NAT 路由器，以便通过 GnomeMeeting 通话。"
 
 #: src/druid.cpp:915
 #, c-format
@@ -2079,12 +2069,8 @@ msgstr "呼叫完成"
 #: src/endpoint.cpp:1365
 #, c-format
 msgid "Missed %d call"
-msgstr "%d 通未接来电"
-
-#: src/endpoint.cpp:1366
-#, c-format
-msgid "Missed %d calls"
-msgstr "%d 通未接来电"
+msgid_plural "Missed %d calls"
+msgstr[0] "%d 通未接来电"
 
 #: src/endpoint.cpp:1665
 msgid "Error while starting the listener"
@@ -3669,10 +3655,9 @@ msgid ""
 msgstr ""
 "STUN test result: %s.\n"
 "\n"
-"GnomeMeeting 无法检测到您使用的 NAT 类型。如果您的路由器"
-"自身不支持 H.323，最适合的方法是将所请求的端口转发到您的内网计算机；"
-"而如果您在 NAT 路由器之后，则应使用 IP 转换。您还必须确定您没有"
-"运行本地防火墙。"
+"GnomeMeeting 无法检测到您使用的 NAT 类型。如果您的路由器自身不支持 H.323，最"
+"适合的方法是将所请求的端口转发到您的内网计算机；而如果您在 NAT 路由器之后，则"
+"应使用 IP 转换。您还必须确定您没有运行本地防火墙。"
 
 #: src/stunclient.cpp:163
 #, c-format
@@ -3682,8 +3667,10 @@ msgid ""
 "Your system does not need any specific configuration as long as you do not "
 "have a local firewall blocking the ports required by GnomeMeeting."
 msgstr ""
-"STUN 测试结果：%s。\n\n"
-"您的系统无需任何特定配置，只要您所运行的本地防火墙没有屏蔽 GnomeMeeting 所用的端口。"
+"STUN 测试结果：%s。\n"
+"\n"
+"您的系统无需任何特定配置，只要您所运行的本地防火墙没有屏蔽 GnomeMeeting 所用"
+"的端口。"
 
 #: src/stunclient.cpp:168
 msgid ""
@@ -3695,12 +3682,11 @@ msgid ""
 "If it does not report Cone NAT, then it means that there is a problem in "
 "your forwarding rules."
 msgstr ""
-"GnomeMeeting 检测到了对称 NAT。如果您的路由器"
-"自身不支持 H.323，最适合的方法是将所请求的端口转发到您的内网计算机，"
-"以便将您的对称 NAT 更改为锥形 NAT。在您做了端口转发之后，请再次运行"
-"此测试。GnomeMeeting 应该报告为锥形 NAT，这样就可以启用 STUN 支持来"
-"使用 GnomeMeeting 了。如果没有报告为锥形 NAT，那么意味着您的转发规则"
-"存在问题。"
+"GnomeMeeting 检测到了对称 NAT。如果您的路由器自身不支持 H.323，最适合的方法是"
+"将所请求的端口转发到您的内网计算机，以便将您的对称 NAT 更改为锥形 NAT。在您做"
+"了端口转发之后，请再次运行此测试。GnomeMeeting 应该报告为锥形 NAT，这样就可以"
+"启用 STUN 支持来使用 GnomeMeeting 了。如果没有报告为锥形 NAT，那么意味着您的"
+"转发规则存在问题。"
 
 #: src/stunclient.cpp:173
 #, c-format
@@ -3715,10 +3701,12 @@ msgid ""
 "\n"
 "Enable STUN Support?"
 msgstr ""
-"STUN 测试结果：%s。\n\n"
+"STUN 测试结果：%s。\n"
+"\n"
 "如果您的路由器自身不支持 H.323，最适合的方法就是使用 STUN 服务器。\n"
-"请注意，如果您想要连接不支持 H.245 隧道的 H.323 客户(比如 NetMeeting)，"
-"STUN 支持是不够的。在这种情况下，您需要使用传统的 IP 转换和端口转发。\n\n"
+"请注意，如果您想要连接不支持 H.245 隧道的 H.323 客户(比如 NetMeeting)，STUN "
+"支持是不够的。在这种情况下，您需要使用传统的 IP 转换和端口转发。\n"
+"\n"
 "启用 STUN 支持吗？"
 
 #: src/stunclient.cpp:182 src/stunclient.cpp:196
@@ -3748,9 +3736,10 @@ msgid ""
 "Please make sure you are using the URL below to get your account otherwise "
 "the service will not work."
 msgstr ""
-"您可以使用 GnomeMeeting 来连接到普通的传统电话系统。要启"
-"用此服务，您需要在下面的 URL 注册账户，然后输入您的账户号码和 PIN，"
-"最后允许注册 GnomeMeeting PC-To-Phone 服务。\n\n"
+"您可以使用 GnomeMeeting 来连接到普通的传统电话系统。要启用此服务，您需要在下"
+"面的 URL 注册账户，然后输入您的账户号码和 PIN，最后允许注册 GnomeMeeting PC-"
+"To-Phone 服务。\n"
+"\n"
 "请确定您是使用下面的 URL 获得的账户，否则服务无法工作。"
 
 #: src/tools.cpp:194
@@ -3949,3 +3938,11 @@ msgstr "帧速率错误。"
 msgid "Error with the frame size."
 msgstr "帧大小错误。"
 
+#~ msgid "Found %d users in %s"
+#~ msgstr "在 %2$s 找到了 %1$d 个用户"
+
+#~ msgid "Found %d users in %s for a total of %d users"
+#~ msgstr "在 %2$s 找到了 %1$d 个用户，共 %3$d个用户"
+
+#~ msgid "Missed %d calls"
+#~ msgstr "%d 通未接来电"
