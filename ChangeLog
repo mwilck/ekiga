@@ -1,5 +1,16 @@
 2001-08-25  Christian Rose  <menthos@menthos.com>
 
+	* Makefile, intl/Makefile, pixmaps/Makefile, po/Makefile,
+	sounds/Makefile, src/Makefile, config.h, config.status: Removed these
+	files.
+
+	* po/.cvsignore: Added Makefile to this file.
+
+	* .cvsignore, intl/.cvsignore, pixmaps/.cvsignore, sounds/.cvsignore,
+	src/.cvsignore: Added .cvsignore files.
+
+2001-08-25  Christian Rose  <menthos@menthos.com>
+
 	* src/callbacks.cpp: Fixed a message.
 
 2001-08-25  Christian Rose  <menthos@menthos.com>
@@ -29,7 +40,8 @@
 
 2001-08-25  Roger Hardiman  <roger@freebsd.org>
 	
-	* src/config.cpp:  Fixed the bug that made 0.10 crash with 0.9 configuration files.
+	* src/config.cpp:  Fixed the bug that made 0.10 crash with 0.9
+	configuration files.
 
 2001-08-25  Christian Rose  <menthos@menthos.com>
 
@@ -51,7 +63,9 @@
 2001-08-24  Christian Rose  <menthos@menthos.com>
 
 	* configure.in: Added sv to ALL_LINGUAS.
+
 	* po/ChangeLog: Added.
+
 	* src/applet.cpp, src/connection.cpp, src/endpoint.cpp,
 	src/gdkvideoio.cpp, src/ldap.cpp, src/main_interface.cpp,
 	src/menu.cpp, src/preferences.cpp: String changes, made some
