@@ -1494,6 +1494,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
       
       MyApp->RemoveVideoGrabber ();
       gnomemeeting_threads_enter ();
+      gnomemeeting_init_main_window_logo (gw->main_video_image);
       gnomemeeting_zoom_submenu_set_sensitive (FALSE);
 #ifdef HAS_SDL
       gnomemeeting_fullscreen_option_set_sensitive (FALSE);

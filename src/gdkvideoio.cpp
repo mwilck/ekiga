@@ -46,8 +46,6 @@
 #include "menu.h"
 
 #define new PNEW
-#define LIMIT(x) (BYTE)(((x>0xffffff)?0xff0000:((x<=0xffff)?0:x&0xff0000))>>16)
-
 
 /* Global Variables */
 
@@ -55,15 +53,9 @@ extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;
 
 
-
-
 /* The Methods */
-
 GDKVideoOutputDevice::GDKVideoOutputDevice(GmWindow *w)
 {
-  transmitted_frame_number = 0;
-  received_frame_number = 0;
-
   gw = w;
 
   /* Used to distinguish between input and output device. */
@@ -79,9 +71,6 @@ GDKVideoOutputDevice::GDKVideoOutputDevice(GmWindow *w)
 
 GDKVideoOutputDevice::GDKVideoOutputDevice(int idno, GmWindow *w)
 {
-  transmitted_frame_number = 0;
-  received_frame_number = 0;
-
   gw = w;
 
   /* Used to distinguish between input and output device. */
@@ -121,7 +110,7 @@ GDKVideoOutputDevice::~GDKVideoOutputDevice()
 }
 
 
-BOOL GDKVideoOutputDevice::Redraw (const void * frame)
+BOOL GDKVideoOutputDevice::Redraw ()
 {
   GtkWidget *image = NULL;
   GdkPixbuf *src_pic = NULL;
@@ -315,7 +304,7 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
   
   /* The real size picture */
   tmp =  
-    gdk_pixbuf_new_from_data ((const guchar *) frame,
+    gdk_pixbuf_new_from_data ((const guchar *) frameStore,
 			      GDK_COLORSPACE_RGB, FALSE, 8, frameWidth,
 			      frameHeight, frameWidth * 3, NULL, NULL);
   src_pic = gdk_pixbuf_copy (tmp);
@@ -440,8 +429,6 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
   /* Display local in a SDL window, or the selected device in fullscreen */
   if ( (has_to_fs) && (device_id == fs_device) ) {
   
-    unsigned char *base;
-
     gnomemeeting_threads_enter ();
     sdl_mutex.Wait ();
    
@@ -457,8 +444,6 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
       has_to_switch_fs = false;
     }
 
-    base = (unsigned char *) frame;
-    
 
     /* SDL interprets each pixel as a 32-bit number, so our masks must depend
        on the endianness (byte order) of the machine */
@@ -548,24 +533,10 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
   }
 
 
-  if (device_id == 0) {
-    received_frame_number++;
-  }
-
-
-  if (device_id == 1) {
-    transmitted_frame_number++;
-  }
-
-
   gnomemeeting_threads_enter ();
-
-
   g_object_unref (G_OBJECT (src_pic));
   if (unref) 
     g_object_unref (G_OBJECT (zoomed_pic));
-  
-
   gnomemeeting_threads_leave ();
 
   redraw_mutex.Signal ();
@@ -603,99 +574,9 @@ BOOL GDKVideoOutputDevice::SetFrameData(
   if (!endFrame)
     return FALSE;
 
-  unsigned size;
-
-  size = width * height;
-
-  // get pointers to the data
-  const BYTE * yplane  = (BYTE *)data;
-  const BYTE * uplane  = yplane + size;
-  const BYTE * vplane  = yplane + size + (size >> 2);
-
-  // get temporary buffers
-  PBYTEArray rgbLine(width*3);  // draw 2 lines at once
-  PBYTEArray rgbLine2(width*3); // draw 2 lines at once
-
-  for (y = 0; y < height; y+=2) {
-
-    const BYTE * yline  = yplane + (y * width);
-    const BYTE * yline2 = yline  + width;
-    const BYTE * uline  = uplane + ((y >> 1) * (width >> 1));
-    const BYTE * vline  = vplane + ((y >> 1) * (width >> 1));
-        
-    BYTE * rgb  = rgbLine.GetPointer();
-    BYTE * rgb2 = rgbLine2.GetPointer();
-
-    for (x = 0; x < width; x+=2) {
-          long Cr = *uline++ - 128;     // calculate once for 4 pixels
-          long Cb = *vline++ - 128;
-          long lrc = 104635 * Cb;
-          long lgc = -25690 * Cr + -53294 * Cb;
-          long lbc = 132278 * Cr;
-
-          if (false)  
-          {
-                  long tmp;     // exchange red component and blue component
-                  tmp=lrc;
-                  lrc=lbc;
-                  lbc=tmp;
-          }
-          
-          long Y  = *yline++ - 16;      // calculate for every pixel
-	  if (Y < 0)
-	    Y = 0;
-          long l  = 76310 * Y;
-          long lr = l + lrc;
-          long lg = l + lgc;
-          long lb = l + lbc;
-
-	  *rgb++ = LIMIT(lr);
-	  *rgb++ = LIMIT(lg);
-	  *rgb++ = LIMIT(lb);         
-          
-	  Y  = *yline++ - 16;       // calculate for every pixel
-	  if (Y < 0)
-	    Y = 0;
-          l  = 76310 * Y;
-          lr = l + lrc;
-          lg = l + lgc;
-          lb = l + lbc;
-
-          *rgb++ = LIMIT(lr);
-	  *rgb++ = LIMIT(lg);
-	  *rgb++ = LIMIT(lb);         
-          
-          Y  = *yline2++ - 16;     // calculate for every pixel
-	  if (Y < 0)
-	    Y = 0;
-          l  = 76310 * Y;
-          lr = l + lrc;
-          lg = l + lgc;
-          lb = l + lbc;
-
-	  *rgb2++ = LIMIT(lr);
-	  *rgb2++ = LIMIT(lg);
-	  *rgb2++ = LIMIT(lb);        
-          
-	  Y  = *yline2++ - 16;      // calculate for every pixel
-	  if (Y < 0)
-	    Y = 0;
-          l  = 76310 * Y;
-          lr = l + lrc;
-          lg = l + lgc;
-          lb = l + lbc;
-
-          *rgb2++ = LIMIT(lr);
-	  *rgb2++ = LIMIT(lg);
-	  *rgb2++ = LIMIT(lb);        
-    }
-
-    PINDEX offs = 3 * (0 + (y * width));
-    memcpy (frameStore.GetPointer() + offs, rgbLine, width*3);
-    offs = 3 * (0 + ((y+1) * width));
-    memcpy (frameStore.GetPointer() + offs, rgbLine2, width*3);
-  }
-
+  if (converter)
+    converter->Convert (data, frameStore.GetPointer ());
+  
   EndFrame ();
   
   return TRUE;
@@ -704,8 +585,16 @@ BOOL GDKVideoOutputDevice::SetFrameData(
 
 BOOL GDKVideoOutputDevice::EndFrame()
 {
-  Redraw (frameStore);
+  Redraw ();
   
   return TRUE;
 }
 
+
+BOOL GDKVideoOutputDevice::SetColourFormat (const PString & colour_format)
+{
+  if (colour_format == "BGR24")
+    return PVideoOutputDevice::SetColourFormat (colour_format);
+
+  return FALSE;  
+}

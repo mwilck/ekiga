@@ -77,56 +77,72 @@ class GDKVideoOutputDevice : public PVideoOutputDeviceRGB
   ~GDKVideoOutputDevice ();
 
 
-  /**Open the device given the device name.
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Open the device given the device name.
+   * PRE          :  Device name to open, immediately start device.
    */
-  virtual BOOL Open(
-		    const PString & deviceName,   /// Device name to open
-		    BOOL startImmediate = TRUE    /// Immediately start device
-		    )
-    {return TRUE; }
-
-  /**Get a list of all of the drivers available.
-   */
-  virtual PStringList GetDeviceNames() const;
-
-  /**Get the maximum frame size in bytes.
-
-  Note a particular device may be able to provide variable length
-  frames (eg motion JPEG) so will be the maximum size of all frames.
-  */
-  virtual PINDEX GetMaxFrameBytes()
-    { return 352 * 288 * 3 * 2; }
+  BOOL Open (const PString &, BOOL) { return TRUE; }
 
   
-  /* Same as in H323VideoDevice.
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Return a list of all of the drivers available.
+   * PRE          :  /
    */
-  virtual BOOL Redraw(const void * frame);
+  PStringList GetDeviceNames() const;
 
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Get the maximum frame size in bytes.
+   * PRE          :  /
+   */
+  PINDEX GetMaxFrameBytes() { return 352 * 288 * 3 * 2; }
+
+  
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns TRUE if the output device is open.
+   * PRE          :  /
+   */
   BOOL IsOpen ();
-  BOOL SetFrameData(
-		    unsigned x,
-		    unsigned y,
-		    unsigned width,
-		    unsigned height,
-		    const BYTE * data,
-		    BOOL endFrame = TRUE
-		    ) ;
 
-  /**Indicate frame may be displayed.
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  If data for the end frame is received, then we convert
+   *                 it from to RGB32 and we display it.
+   * PRE          :  x and y positions in the picture (>=0),
+   *                 width and height (>=0),
+   *                 the data, and a boolean indicating if it is the end
+   *                 frame or not.
+   */
+  BOOL SetFrameData (unsigned, unsigned, unsigned, unsigned,
+		     const BYTE *, BOOL);
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns TRUE if the colour format is supported (ie RGB24).
+   * PRE          :  /
+   */
+  BOOL SetColourFormat (const PString &);
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Displays the current frame.
+   * PRE          :  /
    */
   BOOL EndFrame();
   
  protected:
 
-  /* Same as in H323VideoDevice */
-  BOOL WriteLineSegment(int x, int y, unsigned len, const BYTE * data);
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Redraw the frame given as parameter.
+   * PRE          :  /
+   */
+  BOOL Redraw ();
+
 
   int device_id;      /* The current device : encoding or not */
-  int transmitted_frame_number;
-  int received_frame_number;
-
-  PBYTEArray buffer;  /* The RGB24 buffer; contains the images */
   int display_config; /* Current display : local or remote or both */
+
   PMutex redraw_mutex;
 
 #ifdef HAS_SDL
