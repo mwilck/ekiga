@@ -38,7 +38,6 @@
 #include "common.h"
 #include "ils.h"
 #include "misc.h"
-#include "sound-handling.h"
 #include "misc.h"
 
 #include <gconf/gconf-client.h>

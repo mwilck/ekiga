@@ -1,4 +1,5 @@
-/*  sound_handling.c
+
+/*  sound_handling.cpp
  *
  *  GnomeMeeting -- A Video-Conferencing application
  *  Copyright (C) 2000-2002 Damien Sandras
@@ -16,12 +17,16 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
+ 
+/*
+ *                         sound_handling.h  -  description
+ *                         --------------------------------
+ *   begin                : Thu Nov 22 2001
+ *   copyright            : (C) 2000-2002 by Damien Sandras
+ *   description          : This file contains sound handling functions.
+ *   email                : dsandras@seconix.com
  *
- *
- *  Authors: Damien Sandras <dsandras@seconix.com>
- *
- *  Begin: Mon Jun 17 2002 (original: Thu Nov 22 2001, Tue Mar 8 2001)
- *  Desc:  Sound handling functions.
  */
 
 #ifndef __GM_SOUND_HANDLING_H

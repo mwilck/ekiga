@@ -1,5 +1,20 @@
 2002-09-25  Damien Sandras  <dsandras@seconix.com>
 
+	* po/POTFILES.in: Changed sound-handling.* to sound_handling.*
+	to conform with the whole GM.
+	
+	* src/Makefile.am: See above.
+
+	* src/config.cpp, src/endpoint.cpp, src/main_window.cpp, 
+	src/pref_window.cpp: Same as above.
+
+	* src/vfakeio.cpp: Fixed warnings.
+
+	* src/sound-handling.* renamed to src/sound_handling.*. Changed the
+	headers to conform with GM.
+
+2002-09-25  Damien Sandras  <dsandras@seconix.com>
+
 	* configure.in: Incremented SCHEMA_AGE.
 
 	* gnomemeeting.schemas.in.in: Added gconf values for bilinear 

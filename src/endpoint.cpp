@@ -38,7 +38,7 @@
 #include "common.h"
 #include "connection.h"
 #include "tray.h"
-#include "sound-handling.h"
+#include "sound_handling.h"
 #include "videograbber.h"
 #include "gatekeeper.h"
 #include "callbacks.h"

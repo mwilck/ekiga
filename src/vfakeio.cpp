@@ -68,7 +68,7 @@ static void RGBtoYUV420PSameSize (const BYTE * rgb,
   BYTE * vplane  = yuv + planeSize + (planeSize >> 2);
   const BYTE * rgbIndex = rgb;
 
-  for (unsigned y = 0; y < srcFrameHeight; y++) {
+  for (int y = 0; y < (int) srcFrameHeight; y++) {
     BYTE * yline  = yplane + (y * srcFrameWidth);
     BYTE * uline  = uplane + ((y >> 1) * halfWidth);
     BYTE * vline  = vplane + ((y >> 1) * halfWidth);
@@ -76,7 +76,7 @@ static void RGBtoYUV420PSameSize (const BYTE * rgb,
     if (flip)
       rgbIndex = rgb + (srcFrameWidth*(srcFrameHeight-1-y)*rgbIncrement);
 
-    for (unsigned x = 0; x < srcFrameWidth; x+=2) {
+    for (int x = 0; x < (int) srcFrameWidth; x+=2) {
       rgbtoyuv(rgbIndex[0], rgbIndex[1], rgbIndex[2],*yline, *uline, *vline);
       rgbIndex += rgbIncrement;
       yline++;

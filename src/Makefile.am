@@ -23,8 +23,8 @@ gnomemeeting_SOURCES =		\
 	toolbar.h		\
 	pref_window.cpp		\
 	pref_window.h		\
-	sound-handling.cpp	\
-	sound-handling.h	\
+	sound_handling.cpp	\
+	sound_handling.h	\
 	videograbber.h		\
 	videograbber.cpp	\
 	config.h		\
