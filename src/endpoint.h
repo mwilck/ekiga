@@ -623,6 +623,8 @@ class GMH323EndPoint : public H323EndPoint
   PMutex lid_access_mutex;
   PMutex at_access_mutex;
   PMutex lca_access_mutex;
+
+  PMutex sound_event_mutex;
   
 #ifdef HAS_IXJ
   GMLid *lid;

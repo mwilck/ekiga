@@ -1606,6 +1606,7 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
 
      if (device.Find (_("No device found")) == P_MAX_INDEX) {
 
+       sound_event_mutex.Wait ();
        sound_channel = 
 	 PSoundChannel::CreateOpenedChannel (plugin,
 					     device,
@@ -1613,7 +1614,8 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
 					     PSoundChannel::Recorder
 					     : PSoundChannel::Player, 
 					     1, 8000, 16); 
-
+       sound_event_mutex.Signal ();
+       
        if (sound_channel) {
 
 	 /* Translators : the full sentence is "Opening %s for playing with
@@ -2091,8 +2093,9 @@ GMH323EndPoint::OnCallPending (PTimer &,
     if (psound_file.Find ("/") == P_MAX_INDEX)
       psound_file = "/usr/share/sounds/gnomemeeting/" + psound_file;
 
-    PWAVFile wav (psound_file);
+    PWAVFile wav (psound_file, PFile::ReadOnly);
 
+    sound_event_mutex.Wait ();
     if (is_ringing && wav.IsValid ()) {
 
       channel =
@@ -2116,7 +2119,8 @@ GMH323EndPoint::OnCallPending (PTimer &,
 	delete (channel);
       }
     }
-
+    sound_event_mutex.Signal ();
+    
     g_free (sound_file);
   }
   

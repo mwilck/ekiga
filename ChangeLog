@@ -1,3 +1,9 @@
+2003-12-01 Damien Sandras  <dsandras@seconix.com>
+
+	* src/endpoint.cpp, src/endpoint.h: Open sound in ReadOnly mode 
+	and use mute for sound events to make sure only one is played at a time
+	and that only one channel is used at a time.
+	
 2003-11-30 Damien Sandras  <dsandras@seconix.com>
 
 	* configure.in: Incremented SCHEMA_AGE.
