@@ -47,9 +47,9 @@
 #define GM_MAIN_NOTEBOOK_HIDDEN 3
 
 #ifdef SPEEX_CODEC
-#define GM_AUDIO_CODECS_NUMBER 9
+#define GM_AUDIO_CODECS_NUMBER 8
 #else
-#define GM_AUDIO_CODECS_NUMBER 7
+#define GM_AUDIO_CODECS_NUMBER 6
 #endif
 
 #define GM_WINDOW(x) (GmWindow *)(x)
