@@ -28,6 +28,9 @@
  *
  */
 
+#include "../config.h"
+
+
 #include "toolbar.h"
 #include "callbacks.h"
 #include "gnomemeeting.h"

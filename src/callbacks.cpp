@@ -208,7 +208,7 @@ void ldap_popup_menu_callback (GtkWidget *widget, gpointer data)
     /* text doesn't need to be freed, it is a pointer to the data */
     gtk_clist_get_text (GTK_CLIST (ldap_users_clist),
 			last_selected_row,
-			7, &text);
+			8, &text);
     
     /* if we are waiting for a call, add the IP
        to the history, and call that user       */

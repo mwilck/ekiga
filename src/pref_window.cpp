@@ -1747,7 +1747,7 @@ void gnomemeeting_init_pref_window_general (GtkWidget *notebook)
 		    (GtkAttachOptions) (GTK_EXPAND),
 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
 
-  gtk_widget_set_usize (GTK_WIDGET (pw->directory_update_button), 85, 28);
+  gtk_widget_set_usize (GTK_WIDGET (pw->directory_update_button), 120, 28);
 
   gtk_signal_connect (GTK_OBJECT (pw->directory_update_button), "clicked",
 		      GTK_SIGNAL_FUNC (personal_data_update_button_clicked), 
@@ -2046,7 +2046,7 @@ static void gnomemeeting_init_pref_window_directories (GtkWidget *notebook)
 		    (GtkAttachOptions) (GTK_EXPAND),
 		    GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
 
-  gtk_widget_set_usize (GTK_WIDGET (pw->gatekeeper_update_button), 85, 28);
+  gtk_widget_set_usize (GTK_WIDGET (pw->gatekeeper_update_button), 120, 28);
 
   gtk_signal_connect (GTK_OBJECT (pw->gatekeeper_update_button), "clicked",
 		      GTK_SIGNAL_FUNC (gatekeeper_update_button_clicked), 
