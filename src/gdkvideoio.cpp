@@ -175,7 +175,18 @@ BOOL GDKVideoOutputDevice::Redraw ()
   else if (display == BOTH_INCRUSTED) {
     
     rzoom = zoom;
-    lzoom = (rf_height / 3.00) / lf_height * rzoom;
+    if (lf_height != 0)
+      lzoom = (double) (rf_height / 3.00) / lf_height * rzoom;
+    else
+      lzoom = 0;
+  }
+  else if (display == BOTH_SIDE) {
+
+    rzoom = zoom;
+    if (lf_height != 0)
+      lzoom = (double) rf_height / lf_height * rzoom;
+    else
+      lzoom = 0;
   }
   
   gm_main_window_update_video (main_window,

@@ -1085,7 +1085,13 @@ gm_mw_init_menu (GtkWidget *main_window)
 			   GTK_SIGNAL_FUNC (radio_menu_changed_cb), 
 			   (gpointer) VIDEO_DISPLAY_KEY "video_view",
 			   FALSE, FALSE),
-      GTK_MENU_RADIO_ENTRY("both_incrusted", _("Both (Local Video Incrusted)"),
+      GTK_MENU_RADIO_ENTRY("both_incrusted", _("Both (Picture-in-Picture)"),
+			   _("Both video images"),
+			   NULL, 0, 
+			   GTK_SIGNAL_FUNC (radio_menu_changed_cb), 
+			   (gpointer) VIDEO_DISPLAY_KEY "video_view",
+			   FALSE, FALSE),
+      GTK_MENU_RADIO_ENTRY("both_side_by_side", _("Both (Side-by-Side)"),
 			   _("Both video images"),
 			   NULL, 0, 
 			   GTK_SIGNAL_FUNC (radio_menu_changed_cb), 
@@ -2603,6 +2609,42 @@ gm_main_window_update_video (GtkWidget *main_window,
       g_object_unref (zrsrc_pic);
       g_object_unref (zlsrc_pic);
     }
+    break;
+
+  case BOTH_SIDE:
+
+    if (zlsrc_pic && zrsrc_pic) {
+
+      GdkPixbuf *tmp_pixbuf = 
+	gdk_pixbuf_new (GDK_COLORSPACE_RGB, FALSE, 8, 
+			(int) (rf_width * rzoom * 2), 
+			(int) (rf_height * rzoom));
+
+      gdk_pixbuf_copy_area (zrsrc_pic,
+			    0, 0,
+			    (int) (rf_width * rzoom), 
+			    (int) (rf_height * rzoom),
+			    tmp_pixbuf,
+			    0, 0);
+			    
+      gdk_pixbuf_copy_area (zlsrc_pic,
+			    0, 0,
+			    (int) (rf_width * rzoom), 
+			    (int) (rf_height * rzoom),
+			    tmp_pixbuf,
+			    (int) (rf_width * rzoom), 0);
+      
+      gtk_widget_set_size_request (GTK_WIDGET (mw->video_frame),
+				   (int) (rf_width * rzoom * 2),
+				   (int) (rf_height * rzoom));
+      
+      gtk_image_set_from_pixbuf (GTK_IMAGE (mw->main_video_image), 
+				 GDK_PIXBUF (tmp_pixbuf));
+      g_object_unref (zrsrc_pic);
+      g_object_unref (zlsrc_pic);
+      g_object_unref (tmp_pixbuf);
+    }
+
     break;
 
   case BOTH:

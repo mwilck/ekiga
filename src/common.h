@@ -63,7 +63,6 @@
 
 
 #define GENERAL_KEY         "/apps/gnomemeeting/general/"
-
 #define USER_INTERFACE_KEY "/apps/gnomemeeting/general/user_interface/"
 #define VIDEO_DISPLAY_KEY USER_INTERFACE_KEY "video_display/"
 #define SOUND_EVENTS_KEY  "/apps/gnomemeeting/general/sound_events/"
@@ -139,8 +138,8 @@ enum {
   LOCAL_VIDEO, 
   REMOTE_VIDEO, 
   BOTH_INCRUSTED, 
-  BOTH,
   BOTH_SIDE,
+  BOTH,
   FULLSCREEN
 };
 
