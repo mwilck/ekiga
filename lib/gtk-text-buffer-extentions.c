@@ -17,18 +17,29 @@ gtk_text_buffer_insert_with_emoticons (GtkTextBuffer *buf,
 {
   typedef enum {
     GM_EMOTICON_STATE_NO_SMILEY,
+
     GM_EMOTICON_EYES_NORMAL,
-    GM_EMOTICON_EYES_ONE_CLOSED,
-    GM_EMOTICON_HUGE_EYES,
+    GM_EMOTICON_EYES_BLINKY,
+    GM_EMOTICON_EYES_HUGE,
         
-    /* Noses and tears are ignored */
+    GM_EMOTICON_EYES_NORMAL_WITH_NOSE,
+    GM_EMOTICON_EYES_NORMAL_WITH_TEAR,
         
-    GM_EMOTICON_STATE_BIG_SMILE,  /* ;D  */
-    GM_EMOTICON_STATE_SHOCKED,    /* ;O  */
-    GM_EMOTICON_STATE_SMILING,    /* :)  */
-    GM_EMOTICON_STATE_EYE_BLINK,  /* ;)  */
-    GM_EMOTICON_STATE_BIG_EYES,   /* 8)  */
-    GM_EMOTICON_STATE_LOOKING_SAD /* :(  */
+    GM_EMOTICON_STATE_FACE1,  /* :)  */
+    GM_EMOTICON_STATE_FACE2,  /* 8)  */
+    GM_EMOTICON_STATE_FACE3,  /* ;)  */
+    GM_EMOTICON_STATE_FACE4,  /* :(  */
+    GM_EMOTICON_STATE_FACE5,  /* :0  */
+    GM_EMOTICON_STATE_FACE6,  /* :D  */
+    GM_EMOTICON_STATE_FACE7,  /* :-) */
+    GM_EMOTICON_STATE_FACE8,  /* :|  */
+    GM_EMOTICON_STATE_FACE9,  /* :/  */
+    GM_EMOTICON_STATE_FACE10, /* :P  */
+    GM_EMOTICON_STATE_FACE11, /* :'( */
+
+
+    GM_EMOTICON_STATE_FACE12,  /* ;D  */
+    GM_EMOTICON_STATE_FACE13,  /* ;O  */
   } GmEmoticonState;
     
   GdkPixbuf *emoticon;
@@ -50,27 +61,53 @@ gtk_text_buffer_insert_with_emoticons (GtkTextBuffer *buf,
       switch (state)
         {
         case GM_EMOTICON_EYES_NORMAL:
-        case GM_EMOTICON_EYES_ONE_CLOSED:
-        case GM_EMOTICON_HUGE_EYES:
+        case GM_EMOTICON_EYES_NORMAL_WITH_NOSE:
+        case GM_EMOTICON_EYES_NORMAL_WITH_TEAR:      
+        case GM_EMOTICON_EYES_BLINKY:
+        case GM_EMOTICON_EYES_HUGE:
 	  switch (*iter)
             {
             case '-':
-	      /* ignoring noses and tears*/
+              if (state == GM_EMOTICON_EYES_NORMAL)
+                      state = GM_EMOTICON_EYES_NORMAL_WITH_NOSE;
+	      break;
+
+            case '\'':
+              if (state == GM_EMOTICON_EYES_NORMAL)
+                      state = GM_EMOTICON_EYES_NORMAL_WITH_TEAR;
+	      break;
+                
+            case '(':
+              emoticon_end = iter + 1;
+              if (state == GM_EMOTICON_EYES_NORMAL_WITH_TEAR)
+                      state = GM_EMOTICON_STATE_FACE11;
+              else
+                      state = GM_EMOTICON_STATE_FACE4;
+	      break;
+                
+            case '0': case 'O': case 'o':
+	      emoticon_end = iter + 1;
+	      state = GM_EMOTICON_STATE_FACE5;
 	      break;
                 
             case 'D':
 	      emoticon_end = iter + 1;
-	      state = GM_EMOTICON_STATE_BIG_SMILE;
+	      state = GM_EMOTICON_STATE_FACE6;
+	      break;
+
+            case '|':
+	      emoticon_end = iter + 1;
+	      state = GM_EMOTICON_STATE_FACE8;
 	      break;
                 
-            case '0': case 'O':
+            case '\\': case '/':
 	      emoticon_end = iter + 1;
-	      state = GM_EMOTICON_STATE_SHOCKED;
+	      state = GM_EMOTICON_STATE_FACE9;
 	      break;
                 
-            case '(':
+            case 'P': case 'p':
 	      emoticon_end = iter + 1;
-	      state = GM_EMOTICON_STATE_LOOKING_SAD;
+	      state = GM_EMOTICON_STATE_FACE10;
 	      break;
                 
             case ')':
@@ -78,18 +115,23 @@ gtk_text_buffer_insert_with_emoticons (GtkTextBuffer *buf,
                 {
                 case GM_EMOTICON_EYES_NORMAL:
 		  emoticon_end = iter + 1;
-		  state = GM_EMOTICON_STATE_SMILING;
+		  state = GM_EMOTICON_STATE_FACE1;
 		  break;
                     
-                case GM_EMOTICON_EYES_ONE_CLOSED:
+                case GM_EMOTICON_EYES_BLINKY:
 		  emoticon_end = iter + 1;
-		  state = GM_EMOTICON_STATE_EYE_BLINK;
+		  state = GM_EMOTICON_STATE_FACE3;
 		  break;
                                         
-                case GM_EMOTICON_HUGE_EYES:
+                case GM_EMOTICON_EYES_HUGE:
 		  emoticon_end = iter + 1;
-		  state = GM_EMOTICON_STATE_BIG_EYES;
+		  state = GM_EMOTICON_STATE_FACE2;
 		  break;
+
+                case GM_EMOTICON_EYES_NORMAL_WITH_NOSE:
+                  emoticon_end = iter + 1;  
+                  state = GM_EMOTICON_STATE_FACE7;
+                  break;
                 }
 	      break;
                 
@@ -105,7 +147,7 @@ gtk_text_buffer_insert_with_emoticons (GtkTextBuffer *buf,
                 
             case ';':
 	      emoticon_start = iter;
-	      state = GM_EMOTICON_EYES_ONE_CLOSED;
+	      state = GM_EMOTICON_EYES_BLINKY;
 	      break;
                 
             case ':':
@@ -115,7 +157,7 @@ gtk_text_buffer_insert_with_emoticons (GtkTextBuffer *buf,
                 
             case '8':
 	      emoticon_start = iter;
-	      state = GM_EMOTICON_HUGE_EYES;
+	      state = GM_EMOTICON_EYES_HUGE;
 	      break;       
                 
             default:
@@ -123,72 +165,128 @@ gtk_text_buffer_insert_with_emoticons (GtkTextBuffer *buf,
             }
 	  break;
             
-        case GM_EMOTICON_STATE_BIG_SMILE:   /* ;D  */
+
+        case GM_EMOTICON_STATE_FACE1:  /* :)  */
 	  *emoticon_start = '\0';
             
 	  gtk_text_buffer_insert (buf, bufiter, str, -1);
-	  emoticon = gdk_pixbuf_new_from_inline (-1, inline_smiley_one, FALSE, NULL);
+	  emoticon = gdk_pixbuf_new_from_inline (-1, gm_emoticon_face1, FALSE, NULL);
 	  gtk_text_buffer_insert_pixbuf (buf, bufiter, emoticon);
             
 	  str = emoticon_end;
 	  state = GM_EMOTICON_STATE_NO_SMILEY;
 	  break;
-            
-        case GM_EMOTICON_STATE_SHOCKED:     /* ;O  */
+
+        case GM_EMOTICON_STATE_FACE2:  /* 8)  */
 	  *emoticon_start = '\0';
             
 	  gtk_text_buffer_insert (buf, bufiter, str, -1);
-	  emoticon = gdk_pixbuf_new_from_inline (-1, inline_smiley_two, FALSE, NULL);
+	  emoticon = gdk_pixbuf_new_from_inline (-1, gm_emoticon_face2, FALSE, NULL);
 	  gtk_text_buffer_insert_pixbuf (buf, bufiter, emoticon);
             
 	  str = emoticon_end;
 	  state = GM_EMOTICON_STATE_NO_SMILEY;
 	  break;
-            
-        case GM_EMOTICON_STATE_SMILING:     /* :)  */
+
+        case GM_EMOTICON_STATE_FACE3:  /* ;)  */
 	  *emoticon_start = '\0';
             
 	  gtk_text_buffer_insert (buf, bufiter, str, -1);
-	  emoticon = gdk_pixbuf_new_from_inline (-1, inline_smiley_three, FALSE, NULL);
+	  emoticon = gdk_pixbuf_new_from_inline (-1, gm_emoticon_face3, FALSE, NULL);
 	  gtk_text_buffer_insert_pixbuf (buf, bufiter, emoticon);
             
 	  str = emoticon_end;
 	  state = GM_EMOTICON_STATE_NO_SMILEY;
 	  break;
-            
-        case GM_EMOTICON_STATE_EYE_BLINK:   /* ;)  */
+
+        case GM_EMOTICON_STATE_FACE4:  /* :(  */
 	  *emoticon_start = '\0';
-                        
+            
 	  gtk_text_buffer_insert (buf, bufiter, str, -1);
-	  emoticon = gdk_pixbuf_new_from_inline (-1, inline_smiley_four, FALSE, NULL);
+	  emoticon = gdk_pixbuf_new_from_inline (-1, gm_emoticon_face4, FALSE, NULL);
 	  gtk_text_buffer_insert_pixbuf (buf, bufiter, emoticon);
             
 	  str = emoticon_end;
 	  state = GM_EMOTICON_STATE_NO_SMILEY;
 	  break;
-            
-        case GM_EMOTICON_STATE_BIG_EYES:    /* 8)  */
+
+        case GM_EMOTICON_STATE_FACE5:  /* :0  */
 	  *emoticon_start = '\0';
             
 	  gtk_text_buffer_insert (buf, bufiter, str, -1);
-	  emoticon = gdk_pixbuf_new_from_inline (-1, inline_smiley_five, FALSE, NULL);
+	  emoticon = gdk_pixbuf_new_from_inline (-1, gm_emoticon_face5, FALSE, NULL);
 	  gtk_text_buffer_insert_pixbuf (buf, bufiter, emoticon);
             
 	  str = emoticon_end;
 	  state = GM_EMOTICON_STATE_NO_SMILEY;
 	  break;
-            
-        case GM_EMOTICON_STATE_LOOKING_SAD: /* :(  */
+
+        case GM_EMOTICON_STATE_FACE6:  /* :D  */
 	  *emoticon_start = '\0';
             
 	  gtk_text_buffer_insert (buf, bufiter, str, -1);
-	  emoticon = gdk_pixbuf_new_from_inline (-1, inline_smiley_six, FALSE, NULL);
+	  emoticon = gdk_pixbuf_new_from_inline (-1, gm_emoticon_face6, FALSE, NULL);
 	  gtk_text_buffer_insert_pixbuf (buf, bufiter, emoticon);
             
 	  str = emoticon_end;
 	  state = GM_EMOTICON_STATE_NO_SMILEY;
 	  break;
+
+        case GM_EMOTICON_STATE_FACE7:  /* :-) */
+	  *emoticon_start = '\0';
             
+	  gtk_text_buffer_insert (buf, bufiter, str, -1);
+	  emoticon = gdk_pixbuf_new_from_inline (-1, gm_emoticon_face7, FALSE, NULL);
+	  gtk_text_buffer_insert_pixbuf (buf, bufiter, emoticon);
+            
+	  str = emoticon_end;
+	  state = GM_EMOTICON_STATE_NO_SMILEY;
+	  break;
+
+        case GM_EMOTICON_STATE_FACE8:  /* :|  */
+	  *emoticon_start = '\0';
+            
+	  gtk_text_buffer_insert (buf, bufiter, str, -1);
+	  emoticon = gdk_pixbuf_new_from_inline (-1, gm_emoticon_face8, FALSE, NULL);
+	  gtk_text_buffer_insert_pixbuf (buf, bufiter, emoticon);
+            
+	  str = emoticon_end;
+	  state = GM_EMOTICON_STATE_NO_SMILEY;
+	  break;
+
+        case GM_EMOTICON_STATE_FACE9:  /* :/  */
+	  *emoticon_start = '\0';
+            
+	  gtk_text_buffer_insert (buf, bufiter, str, -1);
+	  emoticon = gdk_pixbuf_new_from_inline (-1, gm_emoticon_face9, FALSE, NULL);
+	  gtk_text_buffer_insert_pixbuf (buf, bufiter, emoticon);
+            
+	  str = emoticon_end;
+	  state = GM_EMOTICON_STATE_NO_SMILEY;
+	  break;
+
+        case GM_EMOTICON_STATE_FACE10: /* :P  */
+	  *emoticon_start = '\0';
+            
+	  gtk_text_buffer_insert (buf, bufiter, str, -1);
+	  emoticon = gdk_pixbuf_new_from_inline (-1, gm_emoticon_face10, FALSE, NULL);
+	  gtk_text_buffer_insert_pixbuf (buf, bufiter, emoticon);
+            
+	  str = emoticon_end;
+	  state = GM_EMOTICON_STATE_NO_SMILEY;
+	  break;
+
+        case GM_EMOTICON_STATE_FACE11: /* :'( */
+	  *emoticon_start = '\0';
+            
+	  gtk_text_buffer_insert (buf, bufiter, str, -1);
+	  emoticon = gdk_pixbuf_new_from_inline (-1, gm_emoticon_face11, FALSE, NULL);
+	  gtk_text_buffer_insert_pixbuf (buf, bufiter, emoticon);
+            
+	  str = emoticon_end;
+	  state = GM_EMOTICON_STATE_NO_SMILEY;
+	  break;
+
         default:
 	  break;
         }
