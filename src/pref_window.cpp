@@ -1180,10 +1180,10 @@ gnomemeeting_init_pref_window_video_devices (GtkWidget *notebook)
 
 
   /* The file selector button */
-  button = gtk_button_new_with_label (_("Browse..."));
+  button = gtk_button_new_with_label (_("Choose a picture"));
   gtk_table_attach (GTK_TABLE (table), button, 2, 3, 4, 5,
-                    (GtkAttachOptions) (NULL),
-                    (GtkAttachOptions) (NULL),
+                    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+                    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
                     GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);
 
   g_signal_connect (G_OBJECT (button), "clicked",

@@ -1042,7 +1042,7 @@ gnomemeeting_vbox_add_table (GtkWidget *vbox,
   gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
   gtk_box_pack_start (GTK_BOX (hbox), table, FALSE, FALSE, 0);
                                                                                
-  gtk_table_set_row_spacings (GTK_TABLE (table), 1);     
+  gtk_table_set_row_spacings (GTK_TABLE (table), 2);     
   gtk_table_set_col_spacings (GTK_TABLE (table), 6);     
   
   return table;
