@@ -115,16 +115,6 @@ GMH323Connection::OnLogicalChannel (H323Channel *channel,
   
   PWaitAndSignal m(channels);
 
-  if (!is_closing) {
-    
-    if (!H323Connection::OnStartLogicalChannel (*channel))
-      return FALSE;
-  }
-  else {
-
-    H323Connection::OnClosedLogicalChannel (*channel);
-  }
-
   is_video = (channel->GetCodec ()->IsDescendant (H323VideoCodec::Class ()));
   is_encoding = (channel->GetDirection () == H323Channel::IsTransmitter);
   codec_name = channel->GetCapability ().GetFormatName ();
@@ -148,6 +138,15 @@ GMH323Connection::OnLogicalChannel (H323Channel *channel,
       || opened_audio_channels < 0 || opened_video_channels < 0)
     return FALSE;
 
+  if (!is_closing) {
+    
+    if (!H323Connection::OnStartLogicalChannel (*channel))
+      return FALSE;
+  }
+  else {
+
+    H323Connection::OnClosedLogicalChannel (*channel);
+  }
 
   /* Do not optimize, easier for translators */
   if (is_encoding)
