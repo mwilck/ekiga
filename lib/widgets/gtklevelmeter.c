@@ -184,6 +184,25 @@ gtk_levelmeter_destroy (GtkObject *object)
     lm->colorEntries = NULL;
   }
 
+  if (lm->offscreen_image) {
+
+    g_object_unref (lm->offscreen_image);
+    lm->offscreen_image = NULL;
+  }
+
+  if (lm->offscreen_image_hl) {
+
+    g_object_unref (lm->offscreen_image_hl);
+    lm->offscreen_image_hl = NULL;
+  }
+
+  if (lm->offscreen_image_dark) {
+
+    g_object_unref (lm->offscreen_image_dark);
+    lm->offscreen_image_dark = NULL;
+  }
+
+
   if (GTK_OBJECT_CLASS (parent_class)->destroy)
     (*GTK_OBJECT_CLASS (parent_class)->destroy) (object);
 }
@@ -196,7 +215,8 @@ gtk_levelmeter_set_level (GtkLevelMeter* lm,
 {
   lm->level = level;
   lm->peak = peak;
-  gtk_levelmeter_paint (lm);
+  if (GTK_WIDGET_REALIZED (lm))
+    gtk_levelmeter_paint (lm);
 }
 
 
