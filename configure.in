@@ -1,4 +1,4 @@
-AC_INIT(gnomemeeting-snapshot, 1.3.1, http://bugzilla.gnome.org/enter_bug.cgi?product=gnomemeeting)
+AC_INIT(gnomemeeting, 1.3.1, http://bugzilla.gnome.org/enter_bug.cgi?product=gnomemeeting)
 AC_CANONICAL_TARGET
 AC_PREREQ(2.53)
 AC_CONFIG_SRCDIR(src/gnomemeeting.cpp)
@@ -298,15 +298,15 @@ if test "x${OPAL_VERSION}" != "x${OPAL_REC_VERSION}"; then
 fi
 
 dnl Checking for plugins support in PWLIB
-dnl AC_MSG_CHECKING(for Quicknet support in Opal);
-dnl OPAL_IXJ_SUPPORT=`cat ${with_opal_dir}/include/opal/opalbuildopts.h | grep "HAS_IXJ 1" | cut -f2  -d ' '`
-dnl if test "x${OPAL_IXJ_SUPPORT}" != "x1"; then
-dnl	AC_MSG_RESULT(no);
-dnl	AC_MSG_ERROR(Sorry but the Opal version you are using doesn't support Quicknet devices);
-dnl else
-dnl	AC_MSG_RESULT(yes);
-dnl        HAS_IXJ="enabled";
-dnl fi
+AC_MSG_CHECKING(for Quicknet support in Opal);
+OPAL_IXJ_SUPPORT=`cat ${with_opal_dir}/include/opal/opal/buildopts.h | grep "HAS_IXJ 1" | cut -f2  -d ' '`
+if test "x${OPAL_IXJ_SUPPORT}" != "x1"; then
+	AC_MSG_RESULT(no);
+	AC_MSG_ERROR(Sorry but the Opal version you are using doesn't support Quicknet devices);
+else
+	AC_MSG_RESULT(yes);
+        HAS_IXJ="enabled";
+fi
 
 
 dnl ###########################################################################
