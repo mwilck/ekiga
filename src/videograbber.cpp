@@ -705,7 +705,7 @@ void GMVideoGrabber::VGClose (int display_logo)
 
   /* Quick Hack for buggy drivers that return from the ioctl before the device
      is really closed */
-  PThread::Current ()->Sleep (500);
+  PThread::Current ()->Sleep (1000);
 
   device_mutex.Signal ();
   grabbing_mutex.Signal ();
