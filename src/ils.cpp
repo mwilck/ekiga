@@ -882,6 +882,7 @@ void GMILSBrowser::Main ()
   gchar *filter = NULL;
   gchar *name = NULL;
   gchar *callto = NULL;
+  gchar **num_users = NULL;
   
   GtkWidget *statusbar = NULL;
   GtkListStore *xdap_users_list_store = NULL;
@@ -1053,11 +1054,12 @@ void GMILSBrowser::Main ()
 	  ldap_value_free (ldv);
 	}
 
-	
+
+	/* Sent one time only by ils.seconix.com only */
 	ldv = ldap_get_values(ldap_connection, e, "xstatus");
 	if ((ldv != NULL)&&(ldv [0] != NULL)) {
 
-	  cout << (char *) ldv [0] << endl << flush;
+	  num_users = g_strsplit (ldv [0], ",", 0);
 
 	  ldap_value_free (ldv);
 	}
@@ -1231,8 +1233,17 @@ void GMILSBrowser::Main ()
 
 
       gnomemeeting_threads_enter ();
-      msg = g_strdup_printf (_("Search completed: %d user(s) found on %s."),
-			     users_nbr, ldap_server);
+      if (num_users && num_users [1]) {
+	
+	msg =
+	  g_strdup_printf (_("Search completed: %d user(s) listed on a total of %d user(s) from %s."),
+			   users_nbr, PMAX (atoi (num_users [1]), users_nbr), ldap_server);
+	g_strfreev (num_users);
+      }
+      else
+	msg = g_strdup_printf (_("Search completed: %d user(s) found on %s."),
+			       users_nbr, ldap_server);
+	
       gnomemeeting_statusbar_push (statusbar, msg); 
       g_free (msg);
       gnomemeeting_threads_leave ();

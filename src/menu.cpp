@@ -232,7 +232,7 @@ video_view_changed_callback (GtkWidget *widget, gpointer data)
 
     right_menu = gnomemeeting_menu;
     bad_menu = video_menu;
-    i = 18;
+    i = VIDEO_VIEW_MENU_INDICE;
     j = 0;
   }
   else {
@@ -240,7 +240,7 @@ video_view_changed_callback (GtkWidget *widget, gpointer data)
     right_menu = video_menu;
     bad_menu = gnomemeeting_menu;
     i = 0;
-    j = 18;
+    j = VIDEO_VIEW_MENU_INDICE;
   }
 
   
@@ -278,7 +278,7 @@ view_menu_toggles_changed (GtkWidget *widget, gpointer data)
   if (GTK_CHECK_MENU_ITEM (widget)->active) {
 
     for (int i = 0; i <= GM_MAIN_NOTEBOOK_HIDDEN; i++) 
-      if (GTK_CHECK_MENU_ITEM (gnomemeeting_menu [i+12].widget)->active) 
+      if (GTK_CHECK_MENU_ITEM (gnomemeeting_menu [i+CONTROL_PANEL_VIEW_MENU_INDICE].widget)->active) 
  	active = i;
   }
 
@@ -422,8 +422,44 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
   
   static MenuEntry gnomemeeting_menu [] =
     {
-      {_("_File"), NULL, NULL, 0, MENU_NEW, NULL, NULL, NULL},
+      {_("C_all"), NULL, NULL, 0, MENU_NEW, NULL, NULL, NULL},
 
+      {_("_Connect"), _("Create a new connection"), 
+       GM_STOCK_CONNECT, 'c', MENU_ENTRY, 
+       GTK_SIGNAL_FUNC (connect_cb),
+       gw, NULL},
+
+      {_("_Disconnect"), _("Close the current connection"), 
+       GM_STOCK_DISCONNECT, 'd', MENU_ENTRY, 
+       GTK_SIGNAL_FUNC (disconnect_cb),
+       gw, NULL},
+
+      {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
+
+      {_("Do _Not Disturb"), _("Do not disturb"),
+       NULL, 'n', MENU_ENTRY_TOGGLE, 
+       GTK_SIGNAL_FUNC (menu_toggle_changed),
+       (gpointer) "/apps/gnomemeeting/general/do_not_disturb", NULL},
+
+      {_("Aut_o Answer"), _("Auto answer"),
+       NULL, 'o', MENU_ENTRY_TOGGLE, 
+       GTK_SIGNAL_FUNC (menu_toggle_changed),
+       (gpointer) "/apps/gnomemeeting/general/auto_answer", NULL},
+
+      {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
+
+      {_("_Audio Mute"), _("Mute the audio transmission"),
+       NULL, 0, MENU_ENTRY, 
+       GTK_SIGNAL_FUNC (pause_audio_callback),
+       (gpointer) gw, NULL},
+
+      {_("_Video Mute"), _("Mute the video transmission"),
+       NULL, 0, MENU_ENTRY, 
+       GTK_SIGNAL_FUNC (pause_video_callback),
+       (gpointer) gw, NULL},
+
+      {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
+      
       {_("_Save"), _("Save a snapshot of the current video"), GTK_STOCK_SAVE, 
        'S', MENU_ENTRY, 
        GTK_SIGNAL_FUNC (save_callback), NULL, NULL},
@@ -549,42 +585,6 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
        GTK_SIGNAL_FUNC (fullscreen_changed_callback),
        NULL, NULL},
 
-      {_("C_all"), NULL, NULL, 0, MENU_NEW, NULL, NULL, NULL},
-
-      {_("_Connect"), _("Create a new connection"), 
-       GM_STOCK_CONNECT, 'c', MENU_ENTRY, 
-       GTK_SIGNAL_FUNC (connect_cb),
-       gw, NULL},
-
-      {_("_Disconnect"), _("Close the current connection"), 
-       GM_STOCK_DISCONNECT, 'd', MENU_ENTRY, 
-       GTK_SIGNAL_FUNC (disconnect_cb),
-       gw, NULL},
-
-      {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
-
-      {_("Do _Not Disturb"), _("Do not disturb"),
-       NULL, 'n', MENU_ENTRY_TOGGLE, 
-       GTK_SIGNAL_FUNC (menu_toggle_changed),
-       (gpointer) "/apps/gnomemeeting/general/do_not_disturb", NULL},
-
-      {_("Aut_o Answer"), _("Auto answer"),
-       NULL, 'o', MENU_ENTRY_TOGGLE, 
-       GTK_SIGNAL_FUNC (menu_toggle_changed),
-       (gpointer) "/apps/gnomemeeting/general/auto_answer", NULL},
-
-      {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
-
-      {_("_Audio Mute"), _("Mute the audio transmission"),
-       NULL, 0, MENU_ENTRY, 
-       GTK_SIGNAL_FUNC (pause_audio_callback),
-       (gpointer) gw, NULL},
-
-      {_("_Video Mute"), _("Mute the video transmission"),
-       NULL, 0, MENU_ENTRY, 
-       GTK_SIGNAL_FUNC (pause_video_callback),
-       (gpointer) gw, NULL},
-
       {_("_Tools"), NULL, NULL, 0, MENU_NEW, NULL, NULL, NULL},
 
       {_("XDAP Browser"), _("XDAP browser"),
@@ -629,33 +629,32 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
     };
 
   gnomemeeting_build_menu (menubar, gnomemeeting_menu, accel);
-
   gtk_widget_show_all (GTK_WIDGET (menubar));
   
   g_object_set_data(G_OBJECT(gm), "gnomemeeting_menu", 
 		    gnomemeeting_menu);
 
   /* Update to the initial values */
-  GTK_CHECK_MENU_ITEM (gnomemeeting_menu [9].widget)->active = 
+  GTK_CHECK_MENU_ITEM (gnomemeeting_menu [CHAT_WINDOW_VIEW_MENU_INDICE].widget)->active = 
     gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_chat_window",
 			   0);
-  GTK_CHECK_MENU_ITEM (gnomemeeting_menu [10].widget)->active = 
+  GTK_CHECK_MENU_ITEM (gnomemeeting_menu [STATUS_BAR_VIEW_MENU_INDICE].widget)->active = 
     gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_status_bar", 
 			   0);
   
   for (int i = 0 ; i <= GM_MAIN_NOTEBOOK_HIDDEN ; i++) {
     
     if (gconf_client_get_int (client, "/apps/gnomemeeting/view/control_panel_section", 0) == i) 
-      GTK_CHECK_MENU_ITEM (gnomemeeting_menu [12+i].widget)->active = TRUE;
+      GTK_CHECK_MENU_ITEM (gnomemeeting_menu [CONTROL_PANEL_VIEW_MENU_INDICE+i].widget)->active = TRUE;
     else
-      GTK_CHECK_MENU_ITEM (gnomemeeting_menu [12+i].widget)->active = FALSE;
+      GTK_CHECK_MENU_ITEM (gnomemeeting_menu [CONTROL_PANEL_VIEW_MENU_INDICE+i].widget)->active = FALSE;
 
-    gtk_widget_queue_draw (GTK_WIDGET (gnomemeeting_menu [12+i].widget));
+    gtk_widget_queue_draw (GTK_WIDGET (gnomemeeting_menu [CONTROL_PANEL_VIEW_MENU_INDICE+i].widget));
   }
   
-  GTK_CHECK_MENU_ITEM (gnomemeeting_menu [33].widget)->active =
+  GTK_CHECK_MENU_ITEM (gnomemeeting_menu [DND_CALL_MENU_INDICE].widget)->active =
     gconf_client_get_bool (client, "/apps/gnomemeeting/general/do_not_disturb", 0);
-  GTK_CHECK_MENU_ITEM (gnomemeeting_menu [34].widget)->active =
+  GTK_CHECK_MENU_ITEM (gnomemeeting_menu [AA_CALL_MENU_INDICE].widget)->active =
     gconf_client_get_bool (client, "/apps/gnomemeeting/general/auto_answer", 
   		   0);
   
@@ -666,15 +665,15 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
   gnomemeeting_call_menu_pause_set_sensitive (FALSE);
 
 #ifdef DISABLE_GNOME
-  gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [4].widget), FALSE);
-  gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [46].widget), FALSE);
+  gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [DRUID_EDIT_MENU_INDICE].widget), FALSE);
+  gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [ABOUT_HELP_MENU_INDICE].widget), FALSE);
 #endif
 
 #ifndef DISABLE_GNOME
   if (!gconf_client_get_bool (client, SERVICES_KEY "enable_microtelco", 0)) {
 
-    gtk_widget_hide (GTK_WIDGET (gnomemeeting_menu [43].widget));
-    gtk_widget_hide (GTK_WIDGET (gnomemeeting_menu [44].widget));
+    gtk_widget_hide (GTK_WIDGET (gnomemeeting_menu [MICROTELCO1_TOOLS_MENU_INDICE].widget));
+    gtk_widget_hide (GTK_WIDGET (gnomemeeting_menu [MICROTELCO2_TOOLS_MENU_INDICE].widget));
   }
 #endif
 
@@ -690,7 +689,7 @@ gnomemeeting_zoom_submenu_set_sensitive (gboolean b)
 
   for (int i = 0 ; i < 3 ; i++) {
 
-    gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [i+24].widget), b);
+    gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [i+ZOOM_VIEW_MENU_INDICE].widget), b);
     gtk_widget_set_sensitive (GTK_WIDGET (video_menu [i+5].widget), b);
   }
 }
@@ -705,13 +704,13 @@ gnomemeeting_fullscreen_option_set_sensitive (gboolean b)
 
   if (b == FALSE) {
 
-    gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [28].widget), b);
+    gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [FULLSCREEN_VIEW_MENU_INDICE].widget), b);
     gtk_widget_set_sensitive (GTK_WIDGET (video_menu [9].widget), b);
   }
 #ifdef HAS_SDL
   else {
 
-    gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [28].widget), b);
+    gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [FULLSCREEN_VIEW_MENU_INDICE].widget), b);
     gtk_widget_set_sensitive (GTK_WIDGET (video_menu [9].widget), b);
   }
 #endif
@@ -734,7 +733,7 @@ gnomemeeting_video_submenu_set_sensitive (gboolean b, int j, gboolean both)
 
   while (cpt <= limit) {
 
-    gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [cpt+18].widget), 
+    gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [cpt+VIDEO_VIEW_MENU_INDICE].widget), 
 			      b);
     gtk_widget_set_sensitive (GTK_WIDGET (video_menu [cpt].widget), 
 			      b);
@@ -756,9 +755,9 @@ gnomemeeting_video_submenu_select (int j)
     GTK_CHECK_MENU_ITEM (video_menu [i].widget)->active = (i == j);
     gtk_widget_queue_draw (GTK_WIDGET (video_menu [i].widget)); 
 
-    GTK_CHECK_MENU_ITEM (gnomemeeting_menu [i+18].widget)->active 
+    GTK_CHECK_MENU_ITEM (gnomemeeting_menu [i+VIDEO_VIEW_MENU_INDICE].widget)->active 
       = (i == j);
-    gtk_widget_queue_draw (GTK_WIDGET (gnomemeeting_menu [i+18].widget)); 
+    gtk_widget_queue_draw (GTK_WIDGET (gnomemeeting_menu [i+VIDEO_VIEW_MENU_INDICE].widget)); 
   }
 
 }
@@ -928,7 +927,7 @@ gnomemeeting_call_menu_connect_set_sensitive (int i, bool b)
   MenuEntry *gnomemeeting_menu = gnomemeeting_get_menu (gm);
   MenuEntry *tray_menu = gnomemeeting_get_tray_menu (gm);
 
-  gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [30+i].widget), b);
+  gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [CONNECT_CALL_MENU_INDICE+i].widget), b);
   gtk_widget_set_sensitive (GTK_WIDGET (tray_menu [i].widget), b);
 }
 
@@ -938,8 +937,8 @@ gnomemeeting_call_menu_pause_set_sensitive (bool b)
 {
   MenuEntry *gnomemeeting_menu = gnomemeeting_get_menu (gm);
 
-  gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [36].widget), b);
-  gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [37].widget), b);
+  gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [AUDIO_PAUSE_CALL_MENU_INDICE].widget), b);
+  gtk_widget_set_sensitive (GTK_WIDGET (gnomemeeting_menu [VIDEO_PAUSE_CALL_MENU_INDICE].widget), b);
 }
 
 

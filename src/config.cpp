@@ -214,11 +214,11 @@ static void menu_radio_changed_nt (GConfClient *client, guint cid,
     for (int i = 0 ; i <= GM_MAIN_NOTEBOOK_HIDDEN ; i++) {
 
       if (gconf_value_get_int (entry->value) == i)
-	GTK_CHECK_MENU_ITEM (e [12+i].widget)->active = TRUE;
+	GTK_CHECK_MENU_ITEM (e [CONTROL_PANEL_VIEW_MENU_INDICE+i].widget)->active = TRUE;
       else
-	GTK_CHECK_MENU_ITEM (e [12+i].widget)->active = FALSE;
+	GTK_CHECK_MENU_ITEM (e [CONTROL_PANEL_VIEW_MENU_INDICE+i].widget)->active = FALSE;
 
-      gtk_widget_queue_draw (GTK_WIDGET (e [12+i].widget));
+      gtk_widget_queue_draw (GTK_WIDGET (e [CONTROL_PANEL_VIEW_MENU_INDICE+i].widget));
     }
     
     gdk_threads_leave (); 
@@ -457,13 +457,13 @@ static void microtelco_enabled_nt (GConfClient *client, guint cid,
 
     if (gconf_value_get_bool (entry->value)) {
 
-      gtk_widget_show (GTK_WIDGET (gnomemeeting_menu [43].widget));
-      gtk_widget_show (GTK_WIDGET (gnomemeeting_menu [44].widget));
+      gtk_widget_show (GTK_WIDGET (gnomemeeting_menu [MICROTELCO1_TOOLS_MENU_INDICE].widget));
+      gtk_widget_show (GTK_WIDGET (gnomemeeting_menu [MICROTELCO2_TOOLS_MENU_INDICE].widget));
     }
     else {
 
-      gtk_widget_hide (GTK_WIDGET (gnomemeeting_menu [43].widget));
-      gtk_widget_hide (GTK_WIDGET (gnomemeeting_menu [44].widget));
+      gtk_widget_hide (GTK_WIDGET (gnomemeeting_menu [MICROTELCO1_TOOLS_MENU_INDICE].widget));
+      gtk_widget_hide (GTK_WIDGET (gnomemeeting_menu [MICROTELCO2_TOOLS_MENU_INDICE].widget));
     }
     
     gdk_threads_leave ();
@@ -1467,13 +1467,13 @@ void gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, "/apps/gnomemeeting/view/control_panel_section", menu_radio_changed_nt, gnomemeeting_menu, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/view/control_panel_section", main_notebook_changed_nt, NULL, 0, 0);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_status_bar", menu_toggle_changed_nt, gnomemeeting_menu [10].widget, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_status_bar", menu_toggle_changed_nt, gnomemeeting_menu [STATUS_BAR_VIEW_MENU_INDICE].widget, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_status_bar", view_widget_changed_nt, gw->statusbar, 0, 0);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_chat_window", menu_toggle_changed_nt, gnomemeeting_menu [9].widget, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_chat_window", menu_toggle_changed_nt, gnomemeeting_menu [CHAT_WINDOW_VIEW_MENU_INDICE].widget, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/view/show_chat_window", view_widget_changed_nt, gw->chat_window, 0, 0);
 
-  gconf_client_notify_add (client, "/apps/gnomemeeting/general/auto_answer", menu_toggle_changed_nt, gnomemeeting_menu [34].widget, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/general/auto_answer", menu_toggle_changed_nt, gnomemeeting_menu [AA_CALL_MENU_INDICE].widget, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/auto_answer", 
 			   menu_toggle_changed_nt,
 			   tray_menu [4].widget,
@@ -1481,7 +1481,7 @@ void gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/auto_answer", toggle_changed_nt, pw->aa, 0, 0);
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/do_not_disturb", toggle_changed_nt, pw->dnd, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/general/do_not_disturb", menu_toggle_changed_nt, gnomemeeting_menu [33].widget, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/general/do_not_disturb", menu_toggle_changed_nt, gnomemeeting_menu [DND_CALL_MENU_INDICE].widget, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/do_not_disturb",
 			   menu_toggle_changed_nt, 
 			   tray_menu [3].widget,

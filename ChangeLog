@@ -1,3 +1,19 @@
+2003-01-07 Damien Sandras  <dsandras@seconix.com>
+
+	* src/menu.h: Added #define for important menu items that can be
+	unsensitivised.
+	
+        * src/config.cpp: Use the new #defines.
+
+	* src/ils.cpp: Displays the total number of users (invisible) if
+	the ILS servers permits it.
+
+	* src/menu.cpp: Move the "Call" menu in first position. Remove the
+	"File" menu.
+	
+	* src/urlhandler.cpp: Now also able to call users who do not use
+	a "@" in their email to register.
+	
 2003-01-07  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* lib/e-splash.c (e_splash_new): Add an icon to the splash window.

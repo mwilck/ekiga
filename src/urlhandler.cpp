@@ -77,7 +77,6 @@ void GMURLHandler::Main ()
 {
   PString call_address;
   GMILSClient *ils_client = NULL;
-  PINDEX at;
   PINDEX slash;
   PINDEX callto;
   PString tmp_url;
@@ -106,12 +105,10 @@ void GMURLHandler::Main ()
 
   call_address = url;
 
-  at = url.Find ('@');
   slash = url.Find ('/');
-
   
   /* We have a callto URL of the form : ils_server(:port)/mail */
-  if ((at != P_MAX_INDEX) && (slash != P_MAX_INDEX)) {
+  if (slash != P_MAX_INDEX) {
 
     quit_mutex.Wait ();
     /* We disable the connect button and the connect menu 
@@ -139,7 +136,7 @@ void GMURLHandler::Main ()
 
     /* Search for the user on ILS */
     ils_client = GM_ILS_CLIENT (endpoint->GetILSClientThread ());
-
+    
     ip =
       ils_client->Search ((gchar *) (const char *) ils_server, 
 			  (gchar *) (const char *) ils_port, 
