@@ -44,10 +44,10 @@ void gnomemeeting_init_pref_window ();
 
 
 /* DESCRIPTION  :  / 
- * BEHAVIOR     :  Add the codecs (3rd parameter) to the codecs clist. 
+ * BEHAVIOR     :  Add the codecs to the codecs clist. 
  * PRE          :  /
  */
-void gnomemeeting_codecs_list_build (GtkListStore *, gchar *);
+void gnomemeeting_codecs_list_build (GtkListStore *);
 
 void entry_changed (GtkEditable  *, gpointer);
 void adjustment_changed (GtkAdjustment *, gpointer);

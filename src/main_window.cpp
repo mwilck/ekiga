@@ -970,11 +970,23 @@ gnomemeeting_init (GmWindow *gw,
   /* New Speex Audio codec in 0.94 */
   if (gconf_client_get_int (client, GENERAL_KEY "version", NULL) < 94) {
 
-      gconf_client_set_string (GCONF_CLIENT (client),
-			     "/apps/gnomemeeting/audio_codecs/list",
-			     "Speex-8.4k=1:MS-GSM=1:Speex-15k=1:GSM-06.10=1:G.726-32k=1:G.711-uLaw-64k=1:G.711-ALaw-64k=1:LPC10=1", 0);
+    GSList *list = NULL;
 
-      gnomemeeting_message_dialog (GTK_WINDOW (gm), _("GnomeMeeting just set the new Speex audio codec as default. Speex is a high quality, GPL audio codec introduced in GnomeMeeting 0.94."));
+    list = g_slist_append (list, (void *) "Speex-8.4k=1");
+    list = g_slist_append (list, (void *) "MS-GSM=1");
+    list = g_slist_append (list, (void *) "Speex-15k=1");
+    list = g_slist_append (list, (void *) "GSM-06.10=1");
+    list = g_slist_append (list, (void *) "G.726-32k=1");
+    list = g_slist_append (list, (void *) "G.711-uLaw-64k=1");
+    list = g_slist_append (list, (void *) "G.711-ALaw-64k=1");
+    list = g_slist_append (list, (void *) "LPC10=1");
+    gconf_client_set_list (GCONF_CLIENT (client),
+			   "/apps/gnomemeeting/audio_codecs/codecs_list", 
+			   GCONF_VALUE_STRING, list, NULL);
+
+    g_slist_free (list);
+
+    gnomemeeting_message_dialog (GTK_WINDOW (gm), _("GnomeMeeting just set the new Speex audio codec as default. Speex is a high quality, GPL audio codec introduced in GnomeMeeting 0.94."));
   }
 #endif
 

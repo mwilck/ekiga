@@ -366,19 +366,16 @@ static void codecs_list_button_clicked_callback (GtkWidget *widget,
   GtkTreeIter iter;
   GtkTreeView *tree_view = NULL;
   GtkTreeSelection *selection = NULL;
-  gchar *gconf_data = NULL;
+  GSList *codecs_data = NULL;
+  GSList *codecs_data_element = NULL;
+  GSList *codecs_data_iter = NULL;
   gchar *selected_codec_name = NULL;
-  gchar *codecs_data = NULL;
-  gchar **codecs;
-  gchar *temp = NULL;
-  gchar *tmp =NULL;
+  gchar **couple;
   int codec_pos = 0;
-  int cpt = 0;
   int operation = 0;
-  int current_row = 0;
 
   client = gconf_client_get_default ();
-  gconf_data = g_strdup ("");
+
 
   /* Get the current selected codec name, there is always one */
   tree_view = GTK_TREE_VIEW (g_object_get_data (G_OBJECT (data), "tree_view"));
@@ -388,6 +385,7 @@ static void codecs_list_button_clicked_callback (GtkWidget *widget,
 				   &iter);
   gtk_tree_model_get (GTK_TREE_MODEL (data), &iter,
 		      COLUMN_NAME, &selected_codec_name, -1);
+
 
   /* We set the selected codec name as data of the list store, to select 
      it again once the codecs list has been rebuilt */
@@ -401,71 +399,74 @@ static void codecs_list_button_clicked_callback (GtkWidget *widget,
   /* Read all codecs, build the gconf data for the key, after having 
      set the selected codec one row above its current plance */
   codecs_data =
-    gconf_client_get_string (client, 
-			     "/apps/gnomemeeting/audio_codecs/list", NULL);
+    gconf_client_get_list (client, 
+			   "/apps/gnomemeeting/audio_codecs/codecs_list", 
+			   GCONF_VALUE_STRING, NULL);
 
-  /* We are adding the codecs */
-  codecs = g_strsplit (codecs_data, ":", 0);
+  codecs_data_iter = codecs_data;
+  while (codecs_data_iter) {
+    
+    couple = g_strsplit ((gchar *) codecs_data_iter->data, "=", 0);
 
-  for (cpt = 0 ; ((codecs [cpt] != NULL) && (current_row < GM_AUDIO_CODECS_NUMBER)) ; cpt++) {
+    if (couple [0]) {
 
-    gchar **couple = g_strsplit (codecs [cpt], "=", 0);
+      if (!strcmp (couple [0], selected_codec_name)) {
 
-    if (couple [0])
-      if (!strcmp (couple [0], selected_codec_name)) codec_pos = current_row;
+	g_strfreev (couple);
 
-    g_strfreev (couple);
+	break;
+      }
 
-    current_row++;
+      codec_pos++;
+    }
+
+    codecs_data_iter = codecs_data_iter->next;
   }
 
-  if (!strcmp ((gchar *) g_object_get_data (G_OBJECT (widget), "operation"), "up"))
+  
+  if (!strcmp ((gchar *) g_object_get_data (G_OBJECT (widget), "operation"), 
+	       "up"))
     operation = 1;
+
 
   /* The selected codec is at pos codec_pos, we will build the gconf key data,
      and set that codec one pos up or one pos down */
   if (((codec_pos == 0)&&(operation == 1))||
       ((codec_pos == GM_AUDIO_CODECS_NUMBER - 1)&&(operation == 0))) {
 
-    g_strfreev (codecs);
-    g_free (codecs_data);
-    g_free (gconf_data);
+    g_slist_free (codecs_data);
 
     return;
   }
 
-
+  
   if (operation == 1) {
 
-    temp = codecs [codec_pos - 1];
-    codecs [codec_pos - 1] = codecs [codec_pos];
-    codecs [codec_pos] = temp;
+    
+    codecs_data_element = g_slist_nth (codecs_data, codec_pos);
+    codecs_data = g_slist_remove_link (codecs_data, codecs_data_element);
+    codecs_data = 
+      g_slist_insert (codecs_data, (gchar *) codecs_data_element->data, 
+		      codec_pos - 1);
+    g_slist_free (codecs_data_element);
   }
   else {
-
-    temp = codecs [codec_pos + 1];
-    codecs [codec_pos + 1] = codecs [codec_pos];
-    codecs [codec_pos] = temp;
+    
+    codecs_data_element = g_slist_nth (codecs_data, codec_pos);
+    codecs_data = g_slist_remove_link (codecs_data, codecs_data_element);
+    codecs_data = 
+      g_slist_insert (codecs_data, (gchar *) codecs_data_element->data, 
+		      codec_pos + 1);
+    g_slist_free (codecs_data_element);    
   }
 
 
-  for (cpt = 0 ; cpt < GM_AUDIO_CODECS_NUMBER && codecs [cpt]; cpt++) {
+  gconf_client_set_list (client, 
+			 "/apps/gnomemeeting/audio_codecs/codecs_list", 
+			 GCONF_VALUE_STRING, codecs_data, NULL);
 
-    tmp = g_strconcat (gconf_data, codecs [cpt], ":",  NULL);
-
-    if (gconf_data)
-      g_free (gconf_data);
-
-    gconf_data = tmp;
-    /* do not free codecs, they are pointers to the list_store fields */
-  }
-  g_strfreev (codecs);
-  g_free (codecs_data);
-
-  gconf_client_set_string (client, "/apps/gnomemeeting/audio_codecs/list", 
-			   gconf_data, NULL);
-
-  g_free (gconf_data);
+  
+  g_slist_free (codecs_data);
 }
 
 
@@ -717,17 +718,14 @@ codecs_list_fixed_toggled (GtkCellRendererToggle *cell, gchar *path_str, gpointe
   GtkTreeModel *model = (GtkTreeModel *) data;
   GtkTreePath *path = gtk_tree_path_new_from_string (path_str);
   GtkTreeIter iter;
-  gchar **codecs, **couple;
-  gchar *codecs_data = NULL;
-  gchar *tmp = NULL;
-  gchar *gconf_data = NULL;
+  gchar *codec_new = NULL, **couple;
+  GSList *codecs_data = NULL, *codecs_data_iter = NULL;
+  GSList *codecs_data_element = NULL;
   GConfClient *client = NULL;
   gboolean fixed;
   gchar *selected_codec_name = NULL;
-  int cpt = 0;
   int current_row = 0;
 
-  gconf_data = g_strdup ("");
   client = gconf_client_get_default ();
 
   /* get toggled iter */
@@ -737,8 +735,8 @@ codecs_list_fixed_toggled (GtkCellRendererToggle *cell, gchar *path_str, gpointe
   fixed ^= 1;
   gtk_tree_path_free (path);
 
-  /* We set the selected codec name as data of the list store, to select it again
-     once the codecs list has been rebuilt */
+  /* We set the selected codec name as data of the list store, 
+     to select it again once the codecs list has been rebuilt */
   g_object_set_data (G_OBJECT (data), "selected_codec", 
 		     (gpointer) selected_codec_name); 
   /* Stores a copy of the pointer,
@@ -749,59 +747,55 @@ codecs_list_fixed_toggled (GtkCellRendererToggle *cell, gchar *path_str, gpointe
   /* Read all codecs, build the gconf data for the key, 
      after having set the selected codec
      one row above its current plance */
-  codecs_data = gconf_client_get_string (client, 
-					 "/apps/gnomemeeting/audio_codecs/list", NULL);
+  codecs_data = 
+    gconf_client_get_list (client, 
+			   "/apps/gnomemeeting/audio_codecs/codecs_list", 
+			   GCONF_VALUE_STRING, NULL);
 
   /* We are reading the codecs */
-  codecs = g_strsplit (codecs_data, ":", 0);
-
-  for (cpt = 0 ; ((codecs [cpt] != NULL) && (current_row < GM_AUDIO_CODECS_NUMBER)) ; cpt++) {
-
+  codecs_data_iter = codecs_data;
+  while (codecs_data_iter) {
     
-    couple = g_strsplit (codecs [cpt], "=", 0);
+    couple = g_strsplit ((gchar *) codecs_data_iter->data, "=", 0);
 
     if (couple [0]) {
 
       if (!strcmp (couple [0], selected_codec_name)) {
 
-	g_free (couple [1]);
-	couple [1] = g_strdup_printf ("%d", (int) fixed);
-	codecs [cpt] = g_strconcat (couple [0], "=", couple [1],  NULL);
+	gchar *v = g_strdup_printf ("%d", (int) fixed);
+	codec_new = g_strconcat (couple [0], "=", v,  NULL);
+	g_free (v);
 	g_strfreev (couple);
+
+	break;
       }
 
       current_row++;
     }
+
+    g_strfreev (couple);
+
+    codecs_data_iter = codecs_data_iter->next;
   }  
 
 
   /* Rebuilt the gconf_key with the update values */
-  current_row = 0;
-  for (cpt = 0 ; current_row < GM_AUDIO_CODECS_NUMBER && codecs [cpt]; cpt++) {
+  codecs_data_element = g_slist_nth (codecs_data, current_row); 
+  codecs_data = g_slist_remove_link (codecs_data, codecs_data_element);
+  codecs_data = g_slist_insert (codecs_data, codec_new, current_row);
+  
+  g_slist_free (codecs_data_element);
+  
+  gconf_client_set_list (client, "/apps/gnomemeeting/audio_codecs/codecs_list",
+			 GCONF_VALUE_STRING, codecs_data, NULL);
 
-    tmp = g_strconcat (gconf_data, codecs [cpt], ":",  NULL);
-
-    if (gconf_data)
-      g_free (gconf_data);
-
-    gconf_data = tmp;
-    /* do not free codecs, they are pointers to the list_store fields */
-
-    current_row++;
-  }
-  g_strfreev (codecs);
-  g_free (codecs_data);
-
-  gconf_client_set_string (client, "/apps/gnomemeeting/audio_codecs/list", 
-			   gconf_data, NULL);
-
-  g_free (gconf_data);
+  g_slist_free (codecs_data);
+  g_free (codec_new);
 }
 
 
 /* Misc functions */
-void gnomemeeting_codecs_list_build (GtkListStore *codecs_list_store, 
-				     gchar *codecs_data)
+void gnomemeeting_codecs_list_build (GtkListStore *codecs_list_store) 
 {
   GtkTreeView *tree_view = NULL;
   GtkTreeSelection *selection = NULL;
@@ -810,23 +804,15 @@ void gnomemeeting_codecs_list_build (GtkListStore *codecs_list_store,
   int selected_row = 0;
   int current_row = 0;
   gchar *cselect_row;
-
-  static const gchar * const available_codecs[] = {
-#ifdef SPEEX_CODEC
-    "Speex-5.9k",
-    "Speex-8.4k",
-#endif
-    "GSM-06.10",
-    "MS-GSM",
-    "G.726-32k",
-    "G.711-uLaw-64k",
-    "G.711-ALaw-64k",
-    "LPC10",
-    NULL
-  };
-
   gchar *selected_codec = NULL;
-  gchar **codecs;
+
+  GSList *codecs_data = NULL;
+  GConfClient *client = gconf_client_get_default ();
+
+  codecs_data = 
+    gconf_client_get_list (client, 
+			   "/apps/gnomemeeting/audio_codecs/codecs_list", 
+			   GCONF_VALUE_STRING, NULL);
 
   selected_codec = (gchar *) g_object_get_data (G_OBJECT (codecs_list_store), 
 						"selected_codec");
@@ -834,66 +820,33 @@ void gnomemeeting_codecs_list_build (GtkListStore *codecs_list_store,
   gtk_list_store_clear (GTK_LIST_STORE (codecs_list_store));
 
   /* We are adding the codecs */
-  codecs = g_strsplit (codecs_data, ":", 0);
+  while (codecs_data) {
 
-  for (int i = 0 ; ((codecs [i] != NULL)&&(i<GM_AUDIO_CODECS_NUMBER)) ; i++) {
+    gchar **couple = g_strsplit ((gchar *) codecs_data->data, "=", 0);
 
-    gchar **couple = g_strsplit (codecs [i], "=", 0);
-
-    if ((couple [0] != NULL) && (couple [1] != NULL)) {
-
+    if ((couple [0]) && (couple [1]))
       gnomemeeting_codecs_list_add (list_iter, codecs_list_store, 
-				    couple [0], atoi (couple [1])); 
+				    couple [0], atoi (couple [1]));     
 
-      if ((selected_codec) && (!strcmp (selected_codec, couple [0]))) 
-	selected_row = current_row;
-      
-      g_strfreev (couple);
+    if ((selected_codec) && (!strcmp (selected_codec, couple [0]))) 
+      selected_row = current_row;
 
-      current_row++;
-    }
+    g_strfreev (couple);
+    codecs_data = codecs_data->next;
+    current_row++;
   }
 
-  /* This algo needs to be improved */
-  for (int i = 0; available_codecs[i] != NULL; i++) {
-    bool found = false;
-
-    for (int j = 0; ((codecs[j] != NULL)&&(j<GM_AUDIO_CODECS_NUMBER)) ; j++) {
       
-      gchar **couple = g_strsplit (codecs[j], "=", 0);
-
-      if ((couple [0] != NULL) && (couple [1] != NULL))
-	if (!strcmp (available_codecs[i], couple[0])) {
-
-	  found = true;
-	  g_strfreev (couple);
-	  
-	  break;
-	}
-
-      g_strfreev (couple);
-    }
-
-    
-    if (!found) {
-
-      gnomemeeting_codecs_list_add (list_iter, codecs_list_store, 
-				    available_codecs [i], 0); 
-    }
-
-  }
-
-  g_strfreev (codecs);
-
   cselect_row = g_strdup_printf("%d", selected_row);
   tree_path = gtk_tree_path_new_from_string (cselect_row);
   tree_view = GTK_TREE_VIEW (g_object_get_data (G_OBJECT (codecs_list_store), 
-						      "tree_view"));
+						"tree_view"));
   selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view));
-	
+  
   gtk_tree_selection_select_path (GTK_TREE_SELECTION (selection), tree_path);
-
+  
   g_free (cselect_row);
+  g_slist_free (codecs_data);
 
   gtk_tree_path_free (tree_path);
 }
@@ -1711,8 +1664,6 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
   GtkWidget *button2 = NULL;
   GtkWidget *frame = NULL;
 
-  gchar *codecs_data = NULL;
-
   int width = 80;
   GtkRequisition size_request1, size_request2;
 
@@ -1724,7 +1675,6 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
 
   /* Get the data */                                                           
   GmPrefWindow *pw = gnomemeeting_get_pref_window (gm);
-  GConfClient *client = gconf_client_get_default ();
 
 
   /* Packing widgets */                                                        
@@ -1747,7 +1697,8 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
 				   COLUMN_FIRSTNAME);
   
   frame = gtk_frame_new (NULL);
-  gtk_container_set_border_width (GTK_CONTAINER (frame), 2*GNOMEMEETING_PAD_SMALL);
+  gtk_container_set_border_width (GTK_CONTAINER (frame), 
+				  2*GNOMEMEETING_PAD_SMALL);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
   gtk_container_add (GTK_CONTAINER (frame), tree_view);
   gtk_container_set_border_width (GTK_CONTAINER (tree_view), 0);
@@ -1794,16 +1745,12 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
 
 
   /* Here we add the codec buts in the order they are in the config file */
-  codecs_data = gconf_client_get_string (client, 
-					 "/apps/gnomemeeting/audio_codecs/list", NULL);
-
   gtk_table_attach (GTK_TABLE (table),  frame, 0, 1, 0, 8,        
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
                     GNOMEMEETING_PAD_SMALL, GNOMEMEETING_PAD_SMALL);           
 
-  gnomemeeting_codecs_list_build (pw->codecs_list_store, codecs_data);
-
+  gnomemeeting_codecs_list_build (pw->codecs_list_store);
 
   button1 = gtk_button_new_from_stock (GTK_STOCK_GO_UP);
   gtk_table_attach (GTK_TABLE (table),  button1, 1, 2, 3, 4,        
@@ -1876,10 +1823,10 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
                                                                                
 
 /* BEHAVIOR     :  It builds the notebook page for video codecs settings.
- *                 it adds it to the notebook.                                     
+ *                 it adds it to the notebook.          
  * PRE          :  The notebook.                                               
  */                                                                            
-void gnomemeeting_init_pref_window_video_codecs (GtkWidget *notebook)               
+void gnomemeeting_init_pref_window_video_codecs (GtkWidget *notebook) 
 {                                                                              
   GtkWidget *vbox = NULL;                                                      
   GtkWidget *table = NULL;                                                     

@@ -130,7 +130,6 @@ struct _GmLdapWindow
   GtkWidget *ils_server_combo;
   GtkWidget *notebook;
   GtkWidget *option_menu;
-  GtkWidget *refresh_button;
   
   int        thread_count;
 };

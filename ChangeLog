@@ -1,3 +1,32 @@
+2002-10-06 Damien Sandras  <dsandras@seconix.com>
+
+	* src/common.h: Removed unused stuff.
+	
+	* src/config.cpp: The audio codecs list is now a GSList.
+
+	* src/endpoint.cpp: See above.
+	
+	* src/gnomemeeting-config-tool.in: Fixed bug when the 
+	"Please answer YES" text is not translated. It was expecting a
+	translated answer.
+	
+	* src/ils.cpp: It is now possible to apply a filter when refreshing
+	the ILS server.
+
+	* src/ils.h: See above.
+	
+	* src/ldap_window.cpp: See above.
+	
+	* src/main_window.cpp: Fix for speex (the codec is not in the gconf
+	schema and is added the first time that 0.94 is run).
+	
+	* src/pref_window.cpp, src/pref_window.h: The audio codecs 
+	list is now a GSList.
+
+	* gnomemeeting.schemas.in.in: Changed codecs key to a list.
+
+	* configure.in: Incremented SCHEMA_AGE.
+	
 2002-10-04 Damien Sandras  <dsandras@seconix.com>
 
 	* lib/xdap/xdap.c: Moved the UTF8 -> ISO-8859-1 conversion there 

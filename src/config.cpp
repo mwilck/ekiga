@@ -939,16 +939,15 @@ static void audio_codecs_list_changed_nt (GConfClient *client, guint cid,
   GmPrefWindow *pw = NULL;
   int video_size = 0;
   
-  if (entry->value->type == GCONF_VALUE_STRING) {
+  if (entry->value->type == GCONF_VALUE_LIST) {
    
     gdk_threads_enter ();
 
     pw = gnomemeeting_get_pref_window (gm);
 
     /* We set the new value for the widget */
-    gnomemeeting_codecs_list_build (pw->codecs_list_store, 
-				    (gchar *) gconf_value_get_string (entry->value));
-
+    gnomemeeting_codecs_list_build (pw->codecs_list_store);
+    
     /* We update the capabilities */
     MyApp->Endpoint ()->RemoveAllCapabilities ();
     MyApp->Endpoint ()->AddAudioCapabilities ();
@@ -1325,7 +1324,7 @@ void gnomemeeting_init_gconf (GConfClient *client)
 
 
   /* gnomemeeting_pref_window_audio_codecs */
-  gconf_client_notify_add (client, "/apps/gnomemeeting/audio_codecs/list", audio_codecs_list_changed_nt, pw->codecs_list_store, 0, 0);	     
+  gconf_client_notify_add (client, "/apps/gnomemeeting/audio_codecs/codecs_list", audio_codecs_list_changed_nt, pw->codecs_list_store, 0, 0);	     
 
   gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/jitter_buffer", jitter_buffer_changed_nt, pw->jitter_buffer, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/audio_settings/jitter_buffer", adjustment_changed_nt, pw->jitter_buffer, 0, 0);

@@ -168,11 +168,12 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/gnomemeeting/audio_codecs/list</key>
-      <applyto>/apps/gnomemeeting/audio_codecs/list</applyto>
+      <key>/schemas/apps/gnomemeeting/audio_codecs/codecs_list</key>
+      <applyto>/apps/gnomemeeting/audio_codecs/codecs_list</applyto>
       <owner>GnomeMeeting</owner>
-      <type>string</type>
-      <default>Speex-8.4k=1:MS-GSM=1:Speex-15k=1:GSM-06.10=1:G.726-32k=1:G.711-uLaw-64k=1:G.711-ALaw-64k=1:LPC10=1</default>
+      <type>list</type>
+      <list_type>string</list_type>
+      <default>[MS-GSM=1,GSM-06.10=1,G.726-32k=1,G.711-uLaw-64k=1,G.711-ALaw-64k=1,LPC10=1]</default>
       <locale name="C">
 	<short>The Audio Codecs List</short>
 	<long>The Audio Codecs List</long>
@@ -337,7 +338,7 @@
       <applyto>/apps/gnomemeeting/video_display/bilinear_filtering</applyto>
       <owner>GnomeMeeting</owner>
       <type>bool</type>
-      <default>false</default>
+      <default>true</default>
       <locale name="C">
 	<short>Enable or disable bilinear filtering</short>
 	<long>Enable or disable bilinear interpolation when rendering video images (it has no effect on fullscreen).</long>

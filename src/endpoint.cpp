@@ -561,8 +561,8 @@ GMH323EndPoint::AddVideoCapabilities (int video_size)
 void 
 GMH323EndPoint::AddAudioCapabilities ()
 {
-  gchar **codecs;
-  gchar *clist_data = NULL;
+  gchar **couple;
+  GSList *codecs_data = NULL;
   BOOL use_pcm16_codecs = TRUE;
 
 #ifdef HAS_IXJ
@@ -581,20 +581,25 @@ GMH323EndPoint::AddAudioCapabilities ()
 
 
   /* Add or not the audio capabilities */ 
-  clist_data = gconf_client_get_string (client, "/apps/gnomemeeting/audio_codecs/list", NULL);
+  codecs_data = 
+    gconf_client_get_list (client, 
+			   "/apps/gnomemeeting/audio_codecs/codecs_list", 
+			   GCONF_VALUE_STRING, NULL);
   
-  codecs = g_strsplit (clist_data, ":", 0);
-
   int g711_frames = 
-    gconf_client_get_int (client, "/apps/gnomemeeting/audio_settings/g711_frames", NULL);
+    gconf_client_get_int (client, 
+			  "/apps/gnomemeeting/audio_settings/g711_frames", 
+			  NULL);
   int gsm_frames = 
-    gconf_client_get_int (client, "/apps/gnomemeeting/audio_settings/gsm_frames", NULL);
+    gconf_client_get_int (client, 
+			  "/apps/gnomemeeting/audio_settings/gsm_frames", 
+			  NULL);
 
 
   /* Let's go */
-  for (int i = 0 ; ((codecs [i] != NULL) && (i < GM_AUDIO_CODECS_NUMBER)) && (use_pcm16_codecs) ; i++) {
+  while (codecs_data) {
     
-    gchar **couple = g_strsplit (codecs [i], "=", 0);
+    couple = g_strsplit ((gchar *) codecs_data->data, "=", 0);
 
     if ((couple [0] != NULL)&&(couple [1] != NULL)) {
 
@@ -669,10 +674,10 @@ GMH323EndPoint::AddAudioCapabilities ()
     }	
     
     g_strfreev (couple);
+    codecs_data = codecs_data->next;
   }
 
-  g_strfreev (codecs);
-  g_free (clist_data);
+  g_slist_free (codecs_data);
 }
 
 

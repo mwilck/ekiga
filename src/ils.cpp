@@ -21,7 +21,7 @@
  *                         ils.cpp  -  description
  *                         -----------------------
  *   begin                : Sun Sep 23 2001
- *   copyright            : (C) 2000-2001 by Damien Sandras
+ *   copyright            : (C) 2000-2002 by Damien Sandras
  *   description          : The ldap thread.
  *   email                : dsandras@seconix.com
  *
@@ -730,7 +730,7 @@ xmlEntityPtr xdap_getentity (void *ctx, const xmlChar * name)
 
 /* The browser methods */
 
-GMILSBrowser::GMILSBrowser (gchar *server)
+GMILSBrowser::GMILSBrowser (gchar *server, gchar *filter)
   :PThread (1000, AutoDeleteThread)
 {
   lw = gnomemeeting_get_ldap_window (gm);
@@ -739,6 +739,11 @@ GMILSBrowser::GMILSBrowser (gchar *server)
     ldap_server = g_strdup (server);
   else
     ldap_server = NULL;
+
+  if (filter)
+    search_filter = g_strdup (filter);
+  else
+    search_filter = NULL;
 
   page = NULL;
 
@@ -750,6 +755,9 @@ GMILSBrowser::~GMILSBrowser ()
 {
   if (ldap_server) 
     g_free (ldap_server);
+
+  if (search_filter)
+    g_free (search_filter);
 
   /* Removes the data associated with the page */
   if (page)
@@ -788,6 +796,7 @@ void GMILSBrowser::Main ()
   gchar *text_label = NULL;
   gchar *msg = NULL;
   gchar *color = NULL;
+  gchar *filter = NULL;
 
   GtkWidget *label = NULL;
   GtkWidget *tab_label = NULL;
@@ -857,11 +866,16 @@ void GMILSBrowser::Main ()
     gnomemeeting_threads_leave ();
     g_free (msg);
 
+    if (search_filter)
+      filter = g_strdup_printf ("(&(cn=%%)%s)", search_filter);
+    else
+      filter = g_strdup ("(&(cn=%))");
+
     rc = ldap_search_s (ldap_connection, "objectClass=RTPerson", 
 			LDAP_SCOPE_BASE,
-			"(&(cn=%))",
-			attrs, 0, &res); 
-  
+			filter,	attrs, 0, &res); 
+    g_free (filter);
+
     for (int i = 0 ; i < 9 ; i++)
       datas [i] = NULL;
     
@@ -885,15 +899,15 @@ void GMILSBrowser::Main ()
     
     /* If we found a page, we have the LIST_STORE, if not, we can clean
        the statusbar */
-    if (page != NULL)
-    {
-            xdap_users_list_store = 
-                    GTK_LIST_STORE (g_object_get_data (G_OBJECT (page), "list_store"));
-            xdap_users_tree_view =
-                    GTK_WIDGET (g_object_get_data (G_OBJECT (page), "tree_view"));
+    if (page != NULL) {
+
+      xdap_users_list_store = 
+	GTK_LIST_STORE (g_object_get_data (G_OBJECT (page), "list_store"));
+      xdap_users_tree_view =
+	GTK_WIDGET (g_object_get_data (G_OBJECT (page), "tree_view"));
     }
     
-      else
+    else
       gnome_appbar_clear_stack (GNOME_APPBAR (lw->statusbar));
 
     gnomemeeting_threads_leave ();

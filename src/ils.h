@@ -21,7 +21,7 @@
  *                         ils.h  -  description
  *                         ---------------------
  *   begin                : Sun Sep 23 2001
- *   copyright            : (C) 2000-2001 by Damien Sandras
+ *   copyright            : (C) 2000-2002 by Damien Sandras
  *   description          : The ldap thread.
  *   email                : dsandras@seconix.com
  *
@@ -95,8 +95,9 @@ class GMILSBrowser : public PThread
   /* DESCRIPTION  :  The constructor.
    * BEHAVIOR     :  Initialise the parameters.
    * PRE          :  The LDAP Server to browse (non-empty string).
+   *                 The search filter, can be NULL (no filter).
    */
-  GMILSBrowser (gchar *);
+  GMILSBrowser (gchar *, gchar * = NULL);
 
 
   /* DESCRIPTION  :  The destructor.
@@ -120,6 +121,7 @@ class GMILSBrowser : public PThread
   GmLdapWindow *lw;
   LDAP *ldap_connection;
   gchar *ldap_server;
+  gchar *search_filter;
   int rc;
 };
 #endif
