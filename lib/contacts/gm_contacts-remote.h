@@ -37,6 +37,11 @@
  */
 
 
+#if !defined (_GM_CONTACTS_H_INSIDE__)
+#error "Only <contacts/gm_contacts.h> can be included directly."
+#endif
+
+
 #include <glib.h>
 #include "gm_contacts.h"
 

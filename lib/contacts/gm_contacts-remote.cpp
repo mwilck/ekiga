@@ -42,7 +42,11 @@
 #include <lib/gm_conf.h>
 
 #include "gm_contacts.h"
+#ifndef _GM_CONTACTS_H_INSIDE__
+#define _GM_CONTACTS_H_INSIDE__
 #include "gm_contacts-remote.h"
+#undef _GM_CONTACTS_H_INSIDE__
+#endif
 
 
 GSList *

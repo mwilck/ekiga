@@ -43,7 +43,7 @@
 #include "gnomemeeting.h"
 
 #include "stock-icons.h"
-#include "contacts/gm_contacts.h"
+#include <contacts/gm_contacts.h>
 #include "gm_conf.h"
 #include "gtk_menu_extensions.h"
 

@@ -64,12 +64,31 @@
 #endif
 
 
-static GtkWidget *
-gnomemeeting_dialog (GtkWindow *parent,
-		     const char *primary_text,
-		     const char *format, 
-		     va_list args,
-		     GtkMessageType type);
+#ifdef WIN32
+static gboolean thread_safe_widget_show (gpointer);
+#endif
+
+
+static GtkWidget *gnomemeeting_dialog (GtkWindow *,
+				       const char *,
+				       const char *, 
+				       va_list,
+				       GtkMessageType);
+
+/**/
+#ifdef WIN32
+static gboolean
+thread_safe_widget_show (gpointer data)
+{
+  g_return_val_if_fail (data != NULL, FALSE);
+
+  gdk_threads_enter ();
+  gtk_widget_show_all (GTK_WIDGET (data));
+  gdk_threads_leave ();
+
+  return FALSE;
+}
+#endif
 
 
 GtkWidget *
@@ -218,7 +237,11 @@ gnomemeeting_warning_dialog_on_widget (GtkWindow *parent,
   gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), 
                      button);
   
+#ifdef WIN32
+  g_idle_add (thread_safe_widget_show, (gpointer) dialog);
+#else
   gtk_widget_show_all (dialog);
+#endif
 
   g_signal_connect_data (GTK_OBJECT (dialog), "response",
 			 GTK_SIGNAL_FUNC (warning_dialog_destroyed_cb),
@@ -280,7 +303,11 @@ gnomemeeting_dialog (GtkWindow *parent,
                             G_CALLBACK (gtk_widget_destroy),
                             GTK_OBJECT (dialog));
   
+#ifdef WIN32
+  g_idle_add (thread_safe_widget_show, (gpointer) dialog);
+#else
   gtk_widget_show_all (dialog);
+#endif
 
   g_free (dialog_text);
   g_free (primary_text);
