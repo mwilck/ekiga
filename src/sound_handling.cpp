@@ -41,6 +41,7 @@
 #include "gnomemeeting.h"
 #include "sound_handling.h"
 #include "endpoint.h"
+#include "lid.h"
 #include "misc.h"
 #include "dialog.h"
 #include "gconf_widgets_extensions.h"
@@ -265,6 +266,18 @@ void GMAudioRP::Main ()
 {
   PSoundChannel *channel = NULL;
   GmWindow *gw = NULL;
+
+#ifdef HAS_IXJ
+  /* We only have one GMLid thread, so use class variables instead
+     of instance variables. We do not need full-duplex for the Quicknet
+     test anyway */
+  static GMLid *l = NULL;
+  static OpalLineInterfaceDevice *lid = NULL;
+  static PMutex lid_mutex;
+  PINDEX i;
+#endif
+  
+  GMH323EndPoint *ep = NULL;
   
   gchar *msg = NULL;
   char *buffer = NULL;
@@ -279,19 +292,33 @@ void GMAudioRP::Main ()
   thread_sync_point.Signal ();
   
   gw = GnomeMeeting::Process ()->GetMainWindow ();
-
+  ep = GnomeMeeting::Process ()->Endpoint ();
+    
   buffer = (char *) malloc (640);
   memset (buffer, '0', sizeof (buffer));
 
-  /* We try to open the selected devices */
-  channel = 
-    PSoundChannel::CreateOpenedChannel (driver_name,
-					device_name,
-					is_encoding ?
-					PSoundChannel::Recorder
-					: PSoundChannel::Player,
-					1, 8000, 16);
+  /* We try to open the selected device */
+  if (driver_name != "Quicknet") 
+    channel = 
+      PSoundChannel::CreateOpenedChannel (driver_name,
+					  device_name,
+					  is_encoding ?
+					  PSoundChannel::Recorder
+					  : PSoundChannel::Player,
+					  1, 8000, 16);
+#ifdef HAS_IXJ
+  else {
 
+    lid_mutex.Wait ();
+    if (!l) 
+      l = ep->CreateLid (device_name);
+    
+    if (l)
+      lid = l->GetLidDevice ();
+    lid_mutex.Signal ();
+  }
+#endif
+  
   if (!is_encoding)
     msg = g_strdup_printf ("<b>%s</b>", _("Opening device for playing"));
   else
@@ -302,7 +329,8 @@ void GMAudioRP::Main ()
   gdk_threads_leave ();
   g_free (msg);
 
-  if (!channel) {
+  if ((driver_name != "Quicknet" && !channel)
+      || (driver_name == "Quicknet" && !lid || !lid->IsOpen ())) {
 
     gdk_threads_enter ();  
     if (is_encoding)
@@ -314,14 +342,37 @@ void GMAudioRP::Main ()
   else {
 
     nbr_opened_channels++;
-    
-    channel->SetBuffers (640, 2);
 
+    if (driver_name != "Quicknet")
+      channel->SetBuffers (640, 2);
+#ifdef HAS_IXJ
+    else {
+
+      if (lid) {
+	
+	lid->SetReadFrameSize (0, 640);
+	lid->SetReadFormat (0, OpalPCM16);
+	lid->SetWriteFrameSize (0, 640);
+	lid->SetWriteFormat (0, OpalPCM16);
+      }
+    }
+#endif
+    
     while (!stop) {
 
+#ifdef HAS_IXJ
+      l = ep->GetLid ();
+      if (l)
+	lid = l->GetLidDevice ();
+#endif
+      
       if (is_encoding) {
 
-	if (!channel->Read ((void *) buffer, 640)) {
+	if ((driver_name != "Quicknet"
+	     && !channel->Read ((void *) buffer, 640))
+	    || (driver_name == "Quicknet"
+		&& lid
+		&& !lid->ReadFrame (0, (void *) buffer, i)))  {
       
 	  gdk_threads_enter ();  
 	  gnomemeeting_error_dialog (GTK_WINDOW (gw->druid_window), _("Cannot use the audio device"), _("The selected audio device (%s) was successfully opened but it is impossible to read data from this device. Please check your audio setup."), (const char*) device_name);
@@ -377,7 +428,11 @@ void GMAudioRP::Main ()
 	
 	  buffer_pos += 640;
 
-	  if (!channel->Write ((void *) buffer, 640)) {
+	  if ((driver_name != "Quicknet"
+	       && !channel->Write ((void *) buffer, 640))
+	      || (driver_name == "Quicknet"
+		  && lid
+		  && !lid->WriteFrame (0, (const void *) buffer, 640, i)))  {
       
 	    gdk_threads_enter ();  
 	    gnomemeeting_error_dialog (GTK_WINDOW (gw->druid_window), _("Cannot use the audio device"), _("The selected audio device (%s) was successfully opened but it is impossible to write data to this device. Please check your audio setup."), (const char*) device_name);
@@ -392,6 +447,11 @@ void GMAudioRP::Main ()
 
       if (buffer_pos >= 80000)
 	buffer_pos = 0;	
+
+#ifdef HAS_IXJ
+      if (l)
+	l->Unlock ();
+#endif
     }
   }
 
@@ -400,10 +460,11 @@ void GMAudioRP::Main ()
     channel->Close ();
     delete (channel);
   }
-
+  
   nbr_opened_channels = PMAX (nbr_opened_channels--, 0);
 
   free (buffer);
+  l = NULL;
 }
 
 

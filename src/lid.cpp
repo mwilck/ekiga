@@ -74,14 +74,17 @@ transfer_callback_cb (gpointer data)
 
 
 #ifdef HAS_IXJ
-GMLid::GMLid ()
+GMLid::GMLid (PString d)
   :PThread (1000, NoAutoDeleteThread)
 {
   stop = 0;
   lid = NULL;
 
+  dev_name = d;
+
   /* Open the device */
   Open ();
+
   this->Resume ();
   thread_sync_point.Wait ();
 } 
@@ -91,14 +94,13 @@ GMLid::~GMLid ()
 {
   stop = 1;
   PWaitAndSignal m(quit_mutex);
-
+  
   Close ();
 }
 
 
 void GMLid::Open ()
 {  
-  gchar *lid_device = NULL;
   gchar *lid_country = NULL;
   int lid_aec = 0;
   
@@ -114,17 +116,14 @@ void GMLid::Open ()
 
   if (!lid) {
 
+    /* We use the default settings, but the device name provided as argument */
     gnomemeeting_threads_enter ();
-    lid_device = gconf_get_string (AUDIO_DEVICES_KEY "input_device");
     lid_country = gconf_get_string (AUDIO_DEVICES_KEY "lid_country_code");
     lid_aec = gconf_get_int (AUDIO_DEVICES_KEY "lid_echo_cancellation_level");
        gnomemeeting_threads_leave ();
 
-    if (lid_device == NULL)
-      lid_device = g_strdup ("/dev/phone0");
-
     lid = new OpalIxJDevice;
-    if (lid->Open (lid_device)) {
+    if (lid->Open (dev_name)) {
       
       gchar *msg = NULL;
       msg = g_strdup_printf (_("Using Quicknet device %s"), 
@@ -172,6 +171,8 @@ void GMLid::Open ()
       gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Error while opening the Quicknet device."), _("Please check that your driver is correctly installed and that the device is working correctly."));
       gnomemeeting_threads_leave ();
     }
+
+    g_free (lid_country);
   }
 }
 
@@ -209,7 +210,7 @@ void GMLid::Main ()
 
   PWaitAndSignal m(quit_mutex);
   thread_sync_point.Signal ();
-  cout << "ici" << endl <<flush;
+  
   /* Check the initial hook status. */
   OffHook = lastOffHook = lid->IsLineOffHook (OpalIxJDevice::POTSLine);
 

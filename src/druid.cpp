@@ -526,6 +526,8 @@ gnomemeeting_druid_page_prepare (GnomeDruidPage *page,
   GmWindow *gw = NULL;
   GmDruidWindow *dw = NULL;
 
+  GmH323EndPoint *ep = NULL;
+  
   gchar *name = NULL;
   gchar *firstname = NULL;
   gchar *lastname = NULL;
@@ -558,6 +560,7 @@ gnomemeeting_druid_page_prepare (GnomeDruidPage *page,
   
   dw = GnomeMeeting::Process ()->GetDruidWindow ();
   gw = GnomeMeeting::Process ()->GetMainWindow ();
+  ep = GnomeMeeting::Process ()->Endpoint ();
 
   if (GPOINTER_TO_INT (data) == 1) {
     
@@ -642,8 +645,11 @@ gnomemeeting_druid_page_prepare (GnomeDruidPage *page,
     recorder = gconf_get_string (AUDIO_DEVICES_KEY "input_device");
     
     gnomemeeting_sound_daemons_suspend ();
-    devices = PSoundChannel::GetDeviceNames (audio_manager,
-					     PSoundChannel::Player);
+    if (PString ("Quicknet") == audio_manager)
+      devices = OpalIxJDevice::GetDeviceNames ();
+    else
+      devices = PSoundChannel::GetDeviceNames (audio_manager,
+					       PSoundChannel::Player);
     if (devices.GetSize () == 0) {
 
       devices += PString (_("No device found"));
@@ -656,8 +662,11 @@ gnomemeeting_druid_page_prepare (GnomeDruidPage *page,
     option_menu_update (dw->audio_player, array, player);
     free (array);
 
-    devices = PSoundChannel::GetDeviceNames (audio_manager,
-					     PSoundChannel::Recorder);
+    if (PString ("Quicknet") == audio_manager)
+      devices = OpalIxJDevice::GetDeviceNames ();
+    else
+      devices = PSoundChannel::GetDeviceNames (audio_manager,
+					       PSoundChannel::Recorder);
     if (devices.GetSize () == 0) {
 
       devices += PString (_("No device found"));
@@ -675,6 +684,9 @@ gnomemeeting_druid_page_prepare (GnomeDruidPage *page,
     
     g_free (player);
     g_free (recorder);
+
+    if (ep->GetCallingState () != GmH323EndPoint::Standby)
+      gtk_widget_set_sensitive (GTK_WIDGET (dw->audio_test_button), FALSE);
   }
   else if (GPOINTER_TO_INT (data) == 8) {
 
@@ -708,6 +720,9 @@ gnomemeeting_druid_page_prepare (GnomeDruidPage *page,
     gdk_window_set_cursor (GTK_WIDGET (gw->druid_window)->window, NULL);
    
     g_free (recorder);
+
+    if (ep->GetCallingState () != GmH323EndPoint::Standby)
+      gtk_widget_set_sensitive (GTK_WIDGET (dw->video_test_button), FALSE);
   }
   else if (GPOINTER_TO_INT (data) == 9) {
 

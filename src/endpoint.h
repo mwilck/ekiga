@@ -493,9 +493,9 @@ class GMH323EndPoint : public H323EndPoint
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Create a new Lid.
-   * PRE          :  /
+   * PRE          :  Non-empty device name.
    */
-  GMLid *CreateLid ();
+  GMLid *CreateLid (PString);
 #endif
 
 

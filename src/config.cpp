@@ -909,7 +909,7 @@ audio_device_changed_nt (GConfClient *client,
 		    AUDIO_DEVICES_KEY "input_device")) {
       
       if (dev.Find ("phone") != P_MAX_INDEX)
-	ep->CreateLid ();
+	ep->CreateLid (dev);
       else 
 	ep->RemoveLid ();
     }

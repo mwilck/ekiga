@@ -56,7 +56,8 @@ class GMLid : public PThread
 
  public:
 
-  GMLid ();
+  GMLid (PString);
+  
   ~GMLid ();
 
   void Main ();
@@ -89,7 +90,8 @@ class GMLid : public PThread
   PMutex device_access_mutex;
   PMutex quit_mutex;
   PSyncPoint thread_sync_point;
-  
+
+  PString dev_name;
   int stop;
 };
 #endif

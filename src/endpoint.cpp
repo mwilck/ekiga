@@ -235,7 +235,7 @@ void GMH323EndPoint::UpdateDevices ()
 #ifdef HAS_IXJ
     /* Use the quicknet card if needed */
     if (use_lid) 
-      CreateLid ();
+      CreateLid (audio_input);
     else
       RemoveLid ();
 #endif
@@ -2409,14 +2409,14 @@ GMH323EndPoint::GetLid (void)
 
 
 GMLid *
-GMH323EndPoint::CreateLid (void)
+GMH323EndPoint::CreateLid (PString lid_device)
 {
   PWaitAndSignal m(lid_access_mutex);
-
+  
   if (lid)
     delete (lid);
 
-  lid = new GMLid ();
+  lid = new GMLid (lid_device);
 
   return lid;
 }
