@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: gnomemeeting\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-04-21 04:01+0200\n"
-"PO-Revision-Date: 2004-04-21 14:45+0200\n"
+"PO-Revision-Date: 2004-08-18 04:14+0200\n"
 "Last-Translator: Josep Puigdemont <baldrick@terra.es>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
 "MIME-Version: 1.0\n"
@@ -1065,7 +1065,7 @@ msgstr ""
 
 #: src/callbacks.cpp:86
 msgid "_Retrieve Call"
-msgstr "Accepta la t_rucada"
+msgstr "_Recupera la trucada"
 
 #: src/callbacks.cpp:99 src/menu.cpp:298
 msgid "_Hold Call"
@@ -1687,7 +1687,7 @@ msgid "Keep current settings"
 msgstr "Mantingues les preferències actuals"
 
 #: src/druid.cpp:747
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "You have now finished the GnomeMeeting configuration. All the settings can "
 "be changed in the GnomeMeeting preferences. Enjoy!\n"
@@ -1716,7 +1716,7 @@ msgstr ""
 "Reproductor d'àudio: %s\n"
 "Enregistrador d'àudio: %s\n"
 "Gestor de vídeo: %s\n"
-"Reproductor de vídeo: %s\n"
+"Entrada de vídeo: %s\n"
 "URL callto: %s\n"
 
 #: src/druid.cpp:747 src/pref_window.cpp:1217
@@ -1879,9 +1879,9 @@ msgid "First Time Configuration Druid"
 msgstr "Assistent per a la primera configuració"
 
 #: src/druid.cpp:1268
-#, c-format
+#, fuzzy, c-format
 msgid "Configuration Druid - page %d/%d"
-msgstr "Assistent per a la configuració - pàgina %d/%d"
+msgstr "Assistent per a la configuració - pàgina 1/%d"
 
 #: src/druid.cpp:1271
 msgid ""
@@ -2387,11 +2387,11 @@ msgid "Invalid speed dial"
 msgstr "Tecla de marcatge ràpid no vàlida"
 
 #: src/ldap_window.cpp:923
+#, fuzzy
 msgid ""
 "Another contact with the same speed dial already exists in the address book."
 msgstr ""
-"Hi ha un altre usuari a la llibreta d'adreces amb la mateixa tecla de "
-"marcatge ràpid."
+"Ja hi ha un altre usuari registrat a la llibreta d'adreces amb aquesta URL."
 
 #: src/ldap_window.cpp:935
 msgid "Invalid URL"
@@ -2421,12 +2421,14 @@ msgid "_Tranfer Call to Contact"
 msgstr "_Transfereix trucada al contacte"
 
 #: src/ldap_window.cpp:1121 src/ldap_window.cpp:2579
+#, fuzzy
 msgid "Contact _Properties"
-msgstr "_Propietats del contacte"
+msgstr "_Propietats"
 
 #: src/ldap_window.cpp:1127
+#, fuzzy
 msgid "Copy URL to the Clipboard"
-msgstr "Copia la URL al porta-retalls"
+msgstr "_Copia la URL al porta-retalls"
 
 #: src/ldap_window.cpp:1133 src/ldap_window.cpp:1573 src/ldap_window.cpp:2541
 msgid "_Delete"
@@ -2468,9 +2470,9 @@ msgid "Please enter a new name for server %s:"
 msgstr "Indiqueu un nom nou per al servidor %s:"
 
 #: src/ldap_window.cpp:1343
-#, c-format
+#, fuzzy, c-format
 msgid "Are you sure you want to delete server %s?"
-msgstr "Esteu segur que voleu esborrar el servidor %s?"
+msgstr "Esteu segur que voleu esborrar %s de %s?"
 
 #: src/ldap_window.cpp:1352
 #, c-format
@@ -2478,13 +2480,14 @@ msgid "Please enter a new name for group %s:"
 msgstr "Indiqueu un nom nou per al grup %s:"
 
 #: src/ldap_window.cpp:1354
-#, c-format
+#, fuzzy, c-format
 msgid "Are you sure you want to delete group %s and all its contacts?"
-msgstr "Esteu segur que voleu esborrar el grup %s amb tots els contactes?"
+msgstr "Esteu segur que voleu esborrar %s i tots els seus contactes?"
 
 #: src/ldap_window.cpp:1541
+#, fuzzy
 msgid "New Server"
-msgstr "Afegeix servidor"
+msgstr "Afegeix _servidor"
 
 #: src/ldap_window.cpp:1551
 msgid "New Group"
@@ -2578,12 +2581,14 @@ msgid "First name contains"
 msgstr "El nom conté"
 
 #: src/ldap_window.cpp:3019
+#, fuzzy
 msgid "Last name contains"
-msgstr "El cognom conté"
+msgstr "El nom conté"
 
 #: src/ldap_window.cpp:3023
+#, fuzzy
 msgid "E-mail contains"
-msgstr "L'adreça electrònica conté"
+msgstr "El nom conté"
 
 #: src/ldap_window.cpp:3202
 msgid "Servers"
@@ -2871,7 +2876,7 @@ msgstr "Canvia les preferències"
 
 #: src/menu.cpp:355
 msgid "_View"
-msgstr "_Visualització"
+msgstr "_Visualitza"
 
 #: src/menu.cpp:357 src/pref_window.cpp:973
 msgid "Text Chat"
@@ -4151,1047 +4156,1346 @@ msgstr "Hi ha hagut un error en el ràtio de quadres."
 msgid "Error with the frame size."
 msgstr "Hi ha hagut un error en la mida del quadre"
 
-#~ msgid "Cannot contact the user directory"
-#~ msgstr "No s'ha pogut contactar amb el directori d'usuaris"
+msgid "Cannot contact the user directory"
+msgstr "No s'ha pogut contactar amb el directori d'usuaris"
 
-#~ msgid "_About GnomeMeeting"
-#~ msgstr "_Quant a GnomeMeeting"
+msgid "_About GnomeMeeting"
+msgstr "_Quant a GnomeMeeting"
+
+msgid ""
+"The minimum transmitted video quality to keep when trying to minimize the "
+"used bandwidth:  choose 100% on a LAN for the best quality, 1% being the "
+"worst quality"
+msgstr ""
+"Qualitat de vídeo mínima transmesa que vulgueu mantenir quan s'intenti "
+"minimitzar l'ample de banda: escolliu 100% en una LAN per a la millor "
+"qualitat, essent-ne l'1% la pitjor"
+
+msgid "Received Calls"
+msgstr "Trucades rebudes"
+
+msgid "Placed Calls"
+msgstr "Trucades fetes"
+
+msgid "Unanswered Calls"
+msgstr "Trucades no contestades"
+
+msgid "Date"
+msgstr "Data"
+
+msgid "Remote User"
+msgstr "Usuari remot"
+
+msgid "Call Duration"
+msgstr "Durada de la trucada"
+
+msgid "Call End Reason"
+msgstr "Motiu de finalització"
+
+msgid "Software"
+msgstr "Programari"
+
+msgid "Play or not the busy tone sound"
+msgstr "Reproduir o no el so d'ocupat"
+
+msgid "Play or not the incoming call sound"
+msgstr "Reproduir o no el so per a trucades entrants"
+
+msgid "Play or not the ring tone sound"
+msgstr "Reproduir o no el so del timbre"
+
+msgid "Position on the screen of the general history window"
+msgstr "Posició en pantalla de la finestra de l'historial"
+
+msgid "Size of the general history window"
+msgstr "Mida de la finestra de l'historial general"
+
+msgid "Couldn't compile http/ftp regex!"
+msgstr "No s'ha pogut compilar l'expressió regex http/ftp!"
+
+msgid "Couldn't compile smiley regex!"
+msgstr "No s'ha pogut compilar l'expressió regex per l'emoticona."
+
+msgid "Couldn't compile latex regex!"
+msgstr "No s'ha pogut compilar expressió regex latex."
+
+msgid "Enabled Silence Detection"
+msgstr "S'ha habilitat la detecció de silenci"
+
+msgid "Failed to restart the video channel"
+msgstr "No s'ha pogut reiniciar el canal de vídeo"
+
+msgid ""
+"You have changed a video device related setting during a call. That requires "
+"to restart the video transmission channel, but it failed."
+msgstr ""
+"Heu canviat les preferències relacionades amb el dispositiu de vídeo mentre "
+"estàveu fent una trucada. Això requeria que es reiniciés el canal de "
+"transmissió de vídeo, però s'ha produït un error al fer-ho."
+
+msgid "transmission"
+msgstr "transmissió"
+
+msgid "reception"
+msgstr "recepció"
+
+msgid "Test those settings"
+msgstr "Prova aquests paràmetres"
+
+msgid "recording"
+msgstr "enregistrant"
+
+msgid "playing"
+msgstr "reproduint"
+
+msgid "New server"
+msgstr "Afegeix servidor"
+
+msgid "New group"
+msgstr "Afegeix grup"
+
+msgid "New contact"
+msgstr "Afegeixi contacte"
+
+msgid "GnomeMeeting Address Book"
+msgstr "Llibreta d'adreces del GnomeMeeting"
+
+msgid "Please choose the video image"
+msgstr "Escolliu la imatge de vídeo"
+
+msgid "Calls Clearing"
+msgstr "Finalització de trucades"
+
+msgid ""
+"Select the video device to use. Using an invalid video device or \"Picture\" "
+"for video transmission will transmit a test picture."
+msgstr ""
+"Indiqueu el dispositiu de vídeo que vulgueu fer servir. Si n'indiqueu un "
+"d'incorrecte o \"Imatge\" el GnomeMeeting transmetrà una imatge de prova."
+
+msgid "Local video window height"
+msgstr "Alçada de la finestra pel vídeo local"
+
+msgid "Number of entries to store in history boxes"
+msgstr "Número d'entrades que es guardadaran a l'historial"
+
+msgid "Received Video Quality Hint"
+msgstr "Qualitat de video rebuda suggerida"
+
+msgid "Remote video window height"
+msgstr "Alçada de la finestra pel vídeo remot"
+
+msgid "Show splash screen"
+msgstr "Mostra pantalla flaix"
+
+msgid "The Video Quality to request to the remote"
+msgstr "La qualitat de video que es suggerirà al vostre interlocutor"
+
+msgid "The height of the local video window"
+msgstr "L'alçada de la finestra pel vídeo local"
+
+msgid "The height of the remote video window"
+msgstr "L'alçada de la finestra pel vídeo remot"
+
+msgid "User Input Capabilities type"
+msgstr "Tipus d'User Input Capabilities"
+
+msgid "Remote user is not running GnomeMeeting"
+msgstr "L'usuari remot no fa servir GnomeMeeting"
+
+msgid "Forward call to:"
+msgstr "Desviar trucades a:"
+
+msgid ""
+"If enabled, GnomeMeeting will play a sound when receiving an incoming call "
+"(the sound to play is chosen in the Gnome Control Center)."
+msgstr ""
+"Si s'activa, el GnomeMeeting reproduirà un so quan rebeu una trucada (aquest "
+"so es pot canviar en el Centre de Control del Gnome)."
+
+msgid ""
+"If enabled, GnomeMeeting will start hidden. The docklet must be enabled."
+msgstr ""
+"Si s'activa, el GnomeMeeting s'iniciarà amagat. El docklet ha d'estar "
+"activat."
+
+msgid "Play a sound on incoming calls"
+msgstr "Reproduir un so per trucades entrants"
+
+msgid "Open Link"
+msgstr "Obre l'enllaç"
+
+msgid "Copy Link Address"
+msgstr "Copia l'adreça de l'enllaç"
+
+msgid "Incoming Call"
+msgstr "Trucada entrant"
+
+msgid "gnomemeeting"
+msgstr "gnomemeeting"
+
+msgid "Internationalisation Maintainer:"
+msgstr "Coordinador per a la internacionalització:"
+
+msgid ""
+"GnomeMeeting is a full-featured H.323\n"
+"video conferencing application."
+msgstr ""
+"El GnomeMeeting és una aplicació per a\n"
+"videoconferència completament\n"
+"compatible amb el protocol H.323."
+
+msgid "Started transmission of %s"
+msgstr "S'ha iniciat la transmissió de %s"
+
+msgid "Stopped transmission of %s"
+msgstr "S'ha aturat la transmissió de %s"
+
+msgid "Started reception of %s"
+msgstr "S'ha iniciat la recepció de %s"
+
+msgid "Stopped reception of %s"
+msgstr "S'ha aturat la recepció de %s"
+
+msgid "View the details of your account"
+msgstr "Veure els detalls del seu compte"
+
+msgid "Choose a file to play"
+msgstr "Escolliu un fitxer per reproduir"
+
+msgid "User Input Capabilities"
+msgstr "User Input Capabilites"
+
+#, fuzzy
+msgid "T_ype:"
+msgstr "Tipus:"
+
+msgid "Audio player mixer"
+msgstr "Mesclador d'àudio"
+
+msgid "Audio recorder"
+msgstr "Gravadora d'àudio"
+
+msgid "Audio recorder mixer"
+msgstr "Mesclador de la gravadora d'àudio"
+
+msgid "Color Format for the video palette"
+msgstr "Format del color per a la paleta de vídeo"
+
+msgid "Do not disturb"
+msgstr "No molesteu"
+
+msgid "If enabled, incoming calls will be automatically answered."
+msgstr "Si s'activa, les trucades entrants s'acceptaran automàticament."
+
+msgid "If enabled, incoming calls will be automatically refused."
+msgstr "Si s'activa, les trucades entrants es descartaran automàticament."
+
+msgid "Select the audio recorder device to use."
+msgstr "Indiqueu el dispositiu gravador d'àudio que vulgueu utilitzar."
+
+msgid "Select the mixer to use to change the volume of the audio player."
+msgstr ""
+" Seleccioneu el mesclador que vulgueu fer servir per canviar el volum del  "
+"reproductor d'àudio."
+
+msgid "Select the mixer to use to change the volume of the audio recorder."
+msgstr ""
+"Seleccioneu el mesclador que vulgueu fer servir per canviar el volum de la "
+"gravadora d'àudio."
+
+msgid "Started New Logical Channel..."
+msgstr "S'ha iniciat un nou canal lògic..."
+
+msgid "Enabled silence detection for %s"
+msgstr "S'ha activat la detecció de silenci per a %s"
+
+msgid "Disabled silence detection for %s"
+msgstr "S'ha desactivat la detecció de silenci per a %s"
+
+msgid "Receiving %s"
+msgstr "S'està rebent %s"
+
+msgid "Requesting remote to send video quality: %d%%"
+msgstr "S'està suggerit a l'interlocutor que enviï una qualitat de vídeo: %d%%"
+
+msgid "Request ok"
+msgstr "Sol·licitut ok"
+
+msgid "Auto Answering Incoming Call"
+msgstr "S'està contestant automàticament la trucada entrant"
+
+msgid "Other"
+msgstr "Altres"
+
+msgid "Enabled"
+msgstr "Activades"
+
+msgid "Disabled"
+msgstr "Desactivades"
+
+msgid ""
+"Please enter your first name and surname, they will be used when connecting "
+"to other audio/video conferencing software.\n"
+"\n"
+"Your e-mail address is used to provide you with a callto address that your "
+"friends can use to call you without knowing your IP address.\n"
+"\n"
+"No information is made public unless you allow it to be published on the "
+"directory of online GnomeMeeting users."
+msgstr ""
+"Indiqueu el nom i cognom que es faran servir quan us connecteu a algun altre "
+"programari de videoconferència.\n"
+"\n"
+"El vostre correu electrònic es fa servir per proporcionar una adreça callto "
+"que els vostres amics poden fer servir sense necessitat d'haver de saber la "
+"vostra adreça d'IP.\n"
+"\n"
+"No es farà pública cap tipus d'informació en els directoris d'usuari del "
+"GnomeMeeting a no ser que vostè ho autoritzi."
+
+#, fuzzy
+msgid "First _name:"
+msgstr "_Nom:"
+
+msgid "Callto URL"
+msgstr "URL callto"
+
+msgid "Directory of Online GnomeMeeting Users"
+msgstr "Directori d'usuaris en línia del GnomeMeeting"
+
+msgid "Publish my information on the directory of online GnomeMeeting users"
+msgstr ""
+"Fes pública informació meva en el directori d'usuaris en línia del "
+"GnomeMeeting"
+
+msgid ""
+"Please select your network connection type. This is used to set default "
+"video settings for your bandwidth. It is possible to change these defaults "
+"later."
+msgstr ""
+"Indiqueu el tipus de xarxa. Aquesta informació es farà servir  per decidir "
+"els paràmetres de vídeo i d'ample de banda per defece. És  possible canviar "
+"aquest valors més endavant."
+
+msgid "Connection Type"
+msgstr "Tipus de connexió"
+
+msgid "DSL/Cable"
+msgstr "DSL/Cable"
+
+msgid ""
+"Please choose the audio devices to use during the GnomeMeeting session. You "
+"can also choose to use a Quicknet device instead of the soundcard, but the "
+"\"Test Audio\" button will only work for soundcards. Notice that some "
+"webcams models have an internal microphone that can be used with "
+"GnomeMeeting."
+msgstr ""
+"Indiqueu el dispositiu d'àudio que el GnomeMeeting farà servir. També podeu "
+"escollir un dispositiu Quicknet enlloc d'una targeta de so, però el botó "
+"\"Prova l'àudio\" només funcionarà per targetes de so. Algunes webcams "
+"porten incorporat un micròfon que també es pot fer servir amb el "
+"GnomeMeeting."
+
+msgid "Audio player mixer:"
+msgstr "Mesclador d'àudio:"
+
+msgid "Audio recorder:"
+msgstr "Enregistrador d'àudio:"
+
+msgid "Audio recorder mixer:"
+msgstr "Mesclador per l'enregistrador d'àudio:"
+
+msgid "Click here to test your audio devices:"
+msgstr "Premeu aquí per provar els dispositius d'àudio:"
+
+msgid "Test Audio"
+msgstr "Prova l'àudio"
+
+msgid ""
+"Please choose the video device to use during the GnomeMeeting session. Click "
+"on the \"Test Video\" button to check if your setup is correct and if your "
+"driver is supported by GnomeMeeting. You can only test the correctness of "
+"your driver if the selected device is not already in use."
+msgstr ""
+"Indiqueu el dispositiu de vídeo que el GnomeMeeting farà servir. Premeu el "
+"botó \"Prova el Vídeo\" per comprovar que la vostra configuració és "
+"correcte, i que el programa de control funciona amb el GnomeMeeting. Només "
+"podreu fer la prova si el dispositiu no està sent usat en el moment de la "
+"prova."
+
+msgid "Video device:"
+msgstr "Dispositiu de vídeo:"
+
+msgid ""
+"Enter the video device to use. Using an invalid video device for video "
+"transmission will transmit a test picture."
+msgstr ""
+"Indiqueu el dispositiu de vídeo que vulgueu fer servir. Si n'indiqueu un "
+"d'incorrecte el GnomeMeeting transmetrà una imatge de prova."
+
+msgid "Test Video"
+msgstr "Prova el Vídeo"
+
+msgid "PC-To-Phone Setup - page %d/%d"
+msgstr "Configuració de PC-a-Telèfon - pàgina %d/%d"
+
+msgid "Password:"
+msgstr "Contrasenya:"
+
+msgid "Register to the MicroTelco service"
+msgstr "Registra'm el servei MicroTelco"
+
+msgid "Set Audio player device to %s"
+msgstr "S'utilitzarà el dispositiu d'àudio %s"
+
+msgid "Set Audio recorder device to %s"
+msgstr "S'utilitzarà l'enregistrador d'àudio %s"
+
+msgid "Enabling H.245 Tunnelling"
+msgstr "S'està activant la tunelització H.245"
+
+msgid "Disabling H.245 Tunnelling"
+msgstr "S'esta desactivant la tunelització H.245"
+
+msgid "Enabling Fast Start"
+msgstr "S'està activant l'arrencada ràpida"
+
+msgid "Disabling Fast Start"
+msgstr "S'està desactivant l'arrencada ràpida"
+
+msgid "Auto rejecting incoming call from %s (Do not disturb)"
+msgstr "Descartant automàticament la trucada entrant de %s (No molesteu)"
+
+msgid "Auto Rejected"
+msgstr "Es descartaran trucades entrants"
+
+msgid "Parse error"
+msgstr "Error d'anàlisi"
+
+msgid ""
+"There was an error while processing the registering to the user directory: %"
+"d %s."
+msgstr " S'ha produit un error al processar el registre al directori: %·d·%s."
+
+msgid "Contacting %s..."
+msgstr "S'està contactant %s..."
+
+msgid "Failed to contact the user directory %s:%d."
+msgstr "Impossible obrir el directori d'usuaris %s:%d"
+
+msgid "Successfully registered to %s."
+msgstr "S'ha registrat amb èxit a %s."
+
+msgid "Successfully unregistered from %s."
+msgstr "Us heu desenregistrat amb èxit de %s."
+
+msgid "Error while unregistering from %s."
+msgstr "Hi ha hagut un error al desenregistrar-se de %s."
+
+msgid ""
+"GnomeMeeting didn't find any usable sound devices. You need to install and "
+"setup a soundcard or a Quicknet card in order to be able to use "
+"GnomeMeeting. Please check your driver settings and permissions."
+msgstr ""
+"El GnomeMeeting no ha pogut trobar cap dispositiu d'àudio que pugui fer "
+"servir. Caldrà que instal·leu una targeta de so o una Quicknet per tal de "
+"poder utilitzar el GnomeMeeting. Consulteu els paràmetres del controlador i "
+"els permisos."
+
+msgid "Do _Not Disturb"
+msgstr "_No molesteu"
+
+msgid "Aut_o Answer"
+msgstr "Contesta aut_omàticament"
+
+msgid "Local Video Image"
+msgstr "Imatge de vídeo local"
+
+msgid "Remote Video Image"
+msgstr "Imatge de vídeo remota"
+
+msgid "Both Video Images"
+msgstr "Ambúes imatges de vídeo"
+
+msgid "Both (Local and Remote Video in New Windows)"
+msgstr "Ambdúes (vídeos local i remot en noves finestres)"
+
+msgid "Do not disturb (reject incoming calls)"
+msgstr "No molestar (refusar trucades entrants)"
+
+msgid "Error: %s\n"
+msgstr "Error: %s\n"
+
+msgid ""
+"Call from %s\n"
+"using %s"
+msgstr ""
+"Trucada de %s\n"
+"usant %s"
+
+msgid "Okay"
+msgstr "Acceptable"
+
+msgid "Good Quality"
+msgstr "Bona qualitat"
+
+msgid "Excellent Quality"
+msgstr "Qualitat Excel·lent"
+
+msgid "Behavior"
+msgstr "Comportament"
+
+msgid "_Automatically answer calls"
+msgstr "Contesta les trucades _automàticament"
+
+msgid "Do _not disturb"
+msgstr "_No molesteu"
+
+msgid "Display a po_pup window when receiving a call"
+msgstr "Finestra emergent _per trucades entrants"
+
+msgid "Enable bilinear _filtering on displayed video"
+msgstr "Activa el _filtre bilineal en el vídeo mostrat"
+
+msgid "User Input Capabilities _type:"
+msgstr "_Tipus d'User Input Capabilities:"
+
+msgid "Playing mixer:"
+msgstr "Mesclador del reproductor:"
+
+msgid "Video format:"
+msgstr "Format de vídeo:"
+
+msgid "Video image:"
+msgstr "Imatge de vídeo:"
+
+msgid "Failed to open the audio device"
+msgstr "No s'ha pogut obrir el dispositiu d'àudio"
+
+msgid ""
+"GnomeMeeting is now playing what it is recording with a 5 seconds delay. If "
+"you don't hear yourself with the delay, you will have to fix your audio "
+"setup and probably install a full-duplex driver before calling other "
+"GnomeMeeting users.\n"
+"\n"
+"Recording and playing... Please talk."
+msgstr ""
+"El GnomeMeeting reprodueix el que ha enregistrat amb una diferència de 5  "
+"segons. Si no us sentiu a vostè mateix amb endarreriment, haureu d'arreglar  "
+"la vostra configuració del so, i possiblement haureu d'instal·lar un  "
+"programa de control full-duplex abans de poder trucar altres usuaris del  "
+"GnomeMeeting. \n"
+" \n"
+"Enregistrant i reproduint... Parleu, si us plau."
+
+msgid "Given calls"
+msgstr "Trucades fetes"
+
+msgid "Video Device Opened"
+msgstr "S'ha obert el dispositiu de vídeo"
+
+msgid "Video Device Closed"
+msgstr "S'ha tancat el dispositiu de vídeo"
+
+msgid "Tests OK!"
+msgstr "Proves OK!"
+
+msgid "Quit in progress..."
+msgstr "S'està sortint..."
+
+msgid "Audio Channel:  Sending"
+msgstr "Canal d'àudio:  S'està enviant"
+
+msgid "Audio Channel:  Paused"
+msgstr "Canal d'àudio:  Aturat"
+
+msgid "Video Channel:  Sending"
+msgstr "Canal de vídeo:  s'està enviant"
+
+msgid "Video Channel:  Paused"
+msgstr "Canal de vídeo:  Aturat"
+
+msgid ""
+"You chose to NOT use the GnomeMeeting ILS directory. Other users will not be "
+"able to contact you if you don't register to a directory service."
+msgstr ""
+"Heu escollit NO fer ús del directori ILS del GnomeMeeting. Altres usuaris no "
+"podran contactar amb vostè si no us registreu a un servei de directori."
+
+msgid "This call ended abnormally"
+msgstr "La trucada ha finalitzat anormalment"
+
+msgid "Refused incoming call"
+msgstr "S'ha refusat la trucada entrant"
+
+msgid "Remote party could not be reached"
+msgstr "El GnomeMeeting s'ha pogut connectar amb el vostre interlocutor"
+
+msgid "Call duration: %.2ld:%.2ld:%.2ld"
+msgstr "La trucada ha durat: %.2ld:%.2ld:%.2ld"
+
+msgid ""
+"Sent/Received:\n"
+"Lost/Late Packets:\n"
+"Round trip delay:\n"
+"Jitter Buffer:"
+msgstr ""
+"Enviat/Rebut:\n"
+"Paquets Perduts/Tard\n"
+"Round trip delay:\n"
+"Jitter Buffer:"
+
+msgid "Error while registering with Gatekeeper at %s."
+msgstr "Hi ha hagut un error al registrar-vos al gatekeeper a %s."
+
+msgid "callto URL:"
+msgstr "URL callto:"
+
+msgid "_Refresh"
+msgstr "_Refresca"
+
+msgid "Call this user"
+msgstr "Truca aquest usuari"
+
+msgid "Edit this user information"
+msgstr "Edita la informació d'aquest usuari"
+
+msgid "Delete this user"
+msgstr "Esborra aquest usuari"
+
+msgid "Add to group"
+msgstr "Afegeix al grup"
+
+msgid ""
+"GnomeMeeting can't be used without audio devices. Please install a soundcard "
+"or a Quicknet card."
+msgstr ""
+"No es pot utilitzar el GnomeMeeting sense dispositius d'àudio. Instal·leu "
+"una targeta de so o una targeta Quicknet."
+
+msgid ""
+"GnomeMeeting just installed an URL handler for callto:// URLs. callto URLs "
+"are an easy way to call people on the internet using GnomeMeeting. They are "
+"now available to all GNOME programs able to cope with URLs. You can for "
+"example create an URL launcher on the GNOME panel of the form \"callto://ils."
+"seconix.com/me@foo.com\" to call the person registered on the ILS server ils."
+"seconix.com with the me@foo.com e-mail address."
+msgstr ""
+"El GnomeMeeting acava d'instal·lar un gestor per a URL del tipus callto://, "
+"aquesta és una manera senzilla de trucar gent per internet amb el "
+"GnomeMeeting. Ara estarà disponible per tots els programes del Gnome que "
+"poden manegar URL. Per exemple, podeu crear un accés ràpid d'URL en el "
+"panell del Gnome, així: \"callto://ils.seconix. com/jo@foo.com\" per trucar "
+"a una persona registrada al servidor ILS ils. seconix.com que tingui per "
+"adreça de correu jo@foo.com."
+
+msgid ""
+"Could not start the listener thread. You will not be able to receive "
+"incoming calls."
+msgstr ""
+"No s'ha pogut iniciar el fil encarregat de rebre connexions. No podreu rebre "
+"trucades entrants."
+
+msgid "_Audio Mute"
+msgstr "Silenci_a l'àudio"
+
+msgid "_Video Mute"
+msgstr "Atura el _vídeo"
+
+msgid "Disconnect"
+msgstr "Desconnecta"
+
+msgid "E-mail address:"
+msgstr "Adreça electrònica:"
+
+msgid "Fullscreen width:"
+msgstr "Amplada a pantalla completa:"
+
+msgid "Fullscreen height:"
+msgstr "Alçada a pantalla completa:"
+
+msgid "Sound"
+msgstr "So"
+
+msgid "Browse..."
+msgstr "Navega..."
+
+msgid "Minimum jitter buffer:"
+msgstr "Memòria intermèdia mínima pel jitter"
+
+msgid "Maximum jitter buffer:"
+msgstr "Memòria intermèdeia màxima pel jitter"
+
+msgid "Maximum video bandwidth:"
+msgstr "Ample de banda màxim pel vídeo:"
+
+msgid "Minimum transmitted video quality:"
+msgstr "Qualitat de vídeo transmesa:"
+
+msgid "Minimum transmitted FPS:"
+msgstr "Màxim FPS transmesos:"
+
+msgid "Transmitted background blocks:"
+msgstr "Blocs de fons transmesos:"
+
+msgid "H.323 Advanced"
+msgstr "H.323 Avançat"
+
+msgid "Speaker phone enabled"
+msgstr "Speaker phone activat"
+
+msgid "Speaker phone disabled"
+msgstr "Speaker phone desactivat"
+
+msgid "Find friends on the ILS directory service"
+msgstr "Busca amics a l'ILS"
+
+msgid "Make a text chat with your friend"
+msgstr "Fer un xat de text amb el vostre interlocutor"
+
+msgid "Display the control panel"
+msgstr "Mostra el panell de control"
+
+msgid "Click here to activate the speaker phone device of your Quicknet card."
+msgstr ""
+"Feu clic aquí per tal d'activar l'altaveu del telèfon del vostre dispositiu "
+"Quicknet."
+
+msgid "Searching for user"
+msgstr "Buscant l'usuari"
+
+msgid "Error while connecting to ILS directory"
+msgstr "Hi ha hagut un error al connectar al directory ILS"
+
+msgid "User is offline"
+msgstr "L'interlocutor no està en línia"
+
+msgid "Error while opening the device."
+msgstr "Hi ha hagut un error obrint el dispositiu"
+
+msgid ""
+"\"If enabled, GnomeMeeting will play a sound when receiving an incoming call "
+"(the sound to play is chosen in the Gnome Control Center)."
+msgstr ""
+"\"Si s'activa, el GnomeMeeting reproduirà un so quan rebeu una trucada "
+"(aquest so es pot canviar en el Centre de Control del Gnome)."
+
+msgid "No data received in 10 seconds, clearing call"
+msgstr "No s'han rebut dades durant 10 segons, s'està tallant la trucada"
+
+msgid "A comment that will be listed in LDAP directories"
+msgstr "Un comentari que es mostrarà en el directori LDAP"
+
+#, fuzzy
+msgid "Auto Answer"
+msgstr "Contesta aut_omàticament"
+
+msgid "Display a popup window every time you receive a call"
+msgstr "Mostra una finestra emergent cada vegada que rebi una trucada"
+
+msgid "Enable Silence Detection for G.711 and GSM"
+msgstr "Activa la detecció de silenci per G.711 i GSM"
+
+msgid "Enable or disable bilinear filtering"
+msgstr "Activa o desactiva la filtració bilinear"
+
+msgid "Enable registering to the LDAP server"
+msgstr "Activa el registe al servidor LDAP"
+
+msgid "Enable the limit on the number of frames per second"
+msgstr "Activa el límit de quadres per segon transmesos"
+
+msgid "Fast Start"
+msgstr "Arrencada ràpida"
+
+msgid "Forward calls to this host"
+msgstr "Desvia les trucades a aquest ordinador"
+
+msgid "H.245 Tunnelling"
+msgstr "Tunelització H.245"
+
+msgid "IP Translation"
+msgstr "Traducció d'adreces d'IP"
+
+msgid ""
+"If enabled, GnomeMeeting will use the Quicknet device instead of the regular "
+"soundcard during calls."
+msgstr ""
+"Si s'activa, el GnomeMeeting utilitzarà el dispositiu Quicknet enlloc de la "
+"targeta de so durant les trucades."
+
+msgid "If enabled, calls will be established with H.245 Tunnelling."
+msgstr ""
+"Si s'activa, les trucades s'establirant mitjançant la tunelització H.245."
+
+msgid "Limitation on the number of transmitted frames grabbed by the grabber"
+msgstr "Limitació en el número de quadres transmesos que arreplega el grabber"
+
+msgid "Public IP"
+msgstr "Adreça IP pública"
+
+msgid "Register"
+msgstr "Registre"
+
+msgid "Show a nice window every time GnomeMeeting starts"
+msgstr "Mostra una finestra emergent cada vegada que el GnomeMeeting arrenqui"
+
+msgid "The E-Mail address that will be listed in the directories"
+msgstr "L'adreça electrònica que es mostrarà en el directori"
+
+msgid "The LDAP Server to register to"
+msgstr "El servidor LDAP on registrar-se"
+
+msgid "The Location that will be published in the LDAP directories"
+msgstr "La població que es publicarà en el directori LDAP"
+
+msgid "The Quicknet Device to use during calls."
+msgstr "El dispositiu Quicknet que es farà servir durant les trucades"
+
+msgid "The Video Channel"
+msgstr "El canal de vídeo"
+
+msgid "The Video Format: PAL, NTSC, SECAM, Auto"
+msgstr "El format de vídeo: PAL, NTSC, SECAM, Auto"
+
+msgid "The Video Size: QCIF (0) or CIF (1)"
+msgstr "La mida del vídeo: QCIF (0) o CIF (1)"
+
+msgid "The alias to use when registering"
+msgstr "L'àlies que voleu fer servir al registrar-vos"
+
+msgid ""
+"The alias to use when registering. People will use this alias when calling "
+"you."
+msgstr ""
+"L'àlies que voleu fer servir al registrar-vos. La gent farà servir aquest "
+"àlies quan us vulguin trucar."
+
+msgid "The device to use to play audio"
+msgstr "El dispositiu per a reproduir àudio"
+
+msgid "The device to use to record audio"
+msgstr "El dispositiu per a gravar àudio"
+
+msgid ""
+"The height of the picture displayed when being in fullscreen (using SDL)"
+msgstr "L'alçada de la imatge a pantalla completa (usant SDL)"
+
+msgid "The host to forward calls to"
+msgstr "L'ordinador on desviar les trucades"
+
+msgid "The list of used ILS servers"
+msgstr "La llista de servidors ILS emprats"
+
+msgid "The user's first name that will be used in the directories"
+msgstr "El nom de l'usuari que es farà servir en els directoris"
+
+msgid "The width of the picture displayed when being in fullscreen (using SDL)"
+msgstr ""
+"L'amplada de la imatge mostrada quan estigui a pantalla completa (usant SDL)"
+
+msgid "Use Quicknet Device"
+msgstr "Fes servir el dispositiu Quicknet"
+
+#, fuzzy
+msgid "Video Quality"
+msgstr "Qualitat de vídeo rebuda:"
+
+msgid "Auto Rejecting Incoming Call"
+msgstr "Descartant automàticament la trucada entrant"
+
+msgid "Custom"
+msgstr "Personalitzada"
+
+msgid ""
+"Please enter information about yourself. This information will be used when "
+"connecting to remote H.323 software, and to register in the directory of "
+"GnomeMeeting users. The directory is used to register online users and is an "
+"easy way to find your friends."
+msgstr ""
+"Indiqueu informació personal vostre. Aquesta informació s'usarà quan us "
+"connecteu a un programari H.323 remot, i també quan us registreu a un "
+"directori d'usuaris de GnomeMeeting. El directori s'utilitza per tal de "
+"registrar usuaris en línia, fent fàcil la localització dels vostres amics."
+
+msgid "Last Name:"
+msgstr "Cognom:"
+
+msgid "Do not register me to ILS"
+msgstr "No em registris a l'ILS"
+
+msgid "Audio Recorder:"
+msgstr "Gravadora d'àudio"
+
+msgid "Voice echo"
+msgstr "Eco de so"
+
+msgid "Click here to test your video device conformity:"
+msgstr "Premeu aquí per comprovar el bon funcionament del dispositiu de vídeo:"
+
+msgid "Video Test"
+msgstr "Prova de Vídeo"
+
+#, fuzzy
+msgid "XDAP Server Browser"
+msgstr "Navegador XDAP"
+
+msgid "Find users on"
+msgstr "Cerca usuaris a"
+
+msgid "  whose  "
+msgstr "  dels quals"
+
+msgid "ILS Users List"
+msgstr "Llista d'usuaris de l'ILS"
+
+msgid "E-Mail"
+msgstr "Adreça electrònica"
+
+msgid "Error while opening the Quicknet device. Disabling Quicknet device."
+msgstr ""
+"Hi ha hagut un error a l'obrir el dispositiu Quicknet. S'està desactivant."
+
+msgid ""
+"GnomeMeeting just set the new Speex audio codec as default. Speex is a high "
+"quality, GPL audio codec introduced in GnomeMeeting 0.94."
+msgstr ""
+"El GnomeMeeting acaba d'especificar el còdec Speex com a còdec per defecte. "
+"L'Speex és un còdec GPL de gran qualitat introduït en la versió 0.94."
+
+msgid "Video Settings"
+msgstr "Preferències de vídeo"
+
+msgid ""
+"Click here to begin to display images from your camera device and be able to "
+"change the settings."
+msgstr ""
+"Feu clic aquí per fer una visualització prèvia de les imatges capturades pel "
+"dipsositiu de vídeo, i veure l'efecte dels paràmtres escollits."
+
+msgid "Audio Test"
+msgstr "Prova d'àudio"
+
+msgid "_Save"
+msgstr "De_sa"
+
+msgid "Configuration Assistant"
+msgstr "Assistent per a la configuració"
+
+msgid "Start The Configuration Assistant"
+msgstr "Inicia l'assistent per a la configuració"
+
+msgid "Toolbar"
+msgstr "Barra d'eines"
+
+msgid "View/Hide the Toolbar"
+msgstr "Veure/Amagar barra d'eines"
+
+msgid "Do Not Disturb"
+msgstr "No molestar"
+
+msgid "XDAP Browser"
+msgstr "Navegador XDAP"
+
+msgid "Where do you call from?"
+msgstr "Des d'on truqueu?"
+
+msgid "Popup window"
+msgstr "Finestra emergent"
+
+msgid "XDAP Directory:"
+msgstr "Directori XDAP:"
+
+msgid "Automatic Gain Compensation"
+msgstr "Compensació de guany automàtica"
+
+msgid "Country Code:"
+msgstr "Codi del país:"
+
+msgid "Use the Quicknet Device"
+msgstr "Fes servir el dispositiu QuickNet"
+
+msgid "PAL"
+msgstr "PAL"
+
+msgid "NTSC"
+msgstr "NTSC"
+
+msgid "SECAM"
+msgstr "SECAM"
+
+msgid "Here you can choose the transmitted video format."
+msgstr "Aquí podeu escollir el format de vídeo transmès."
+
+msgid "GSM Frames per packet:"
+msgstr "Quadres GSM per paquet:"
+
+msgid "The number of frames in each transmitted GSM packet."
+msgstr "El nombre de quadres en cada paquet GSM transmès."
+
+msgid "G.711 Frames per packet:"
+msgstr "Quadres G.711 per paquet:"
+
+msgid "The number of frames in each transmitted G.711 packet."
+msgstr "El nombre de quadres en cada paquet G.711 transmès."
+
+msgid "Dynamic Jitter Buffer"
+msgstr "Memòria intermèdia dinàmica pel jitter"
+
+msgid "Minimal Jitter Buffer:"
+msgstr "Memòria int. pel jitter mínima:"
+
+msgid "Maximal Jitter Buffer:"
+msgstr "Memòria int. pel jitter màxima:"
+
+msgid "Enable FPS Limitation"
+msgstr "Activa la limitacio de FPS"
+
+msgid "Enable/disable the limit on the transmitted FPS."
+msgstr "Activa/Desactiva la limitació de FPS transmesos."
+
+msgid "Enable/disable the video transmission."
+msgstr "Activa/Desactiva la transmissió de vídeo."
+
+msgid "H.261 Settings"
+msgstr "Paràmetres H.261"
+
+msgid "Received Video Quality:"
+msgstr "Qualitat de vídeo rebuda:"
+
+msgid ""
+"The received video quality:  choose 100% on a LAN for the best quality, 1% "
+"being the worst quality."
+msgstr ""
+"Qualitat de vídeo rebuda:  escolliu 100% en una LAN per a la millor "
+"qualitat,1% és la pitjor qualitat."
+
+msgid ""
+"GnomeMeeting is now recording from %s and playing back to %s. Please speak "
+"in your microphone, you should hear yourself back into the speakers. Please "
+"make sure that what you hear is not the electronic feedback but your real "
+"recorded voice. If you don't hear yourself speaking, please fix your audio "
+"setup before using GnomeMeeting or others won't hear you. You can use the "
+"sliders in the control panel to adjust the volume of the speakers and of the "
+"microphone."
+msgstr ""
+"El GnomeMeeting està gravant de %s i reproduint a %s. Parleu pel micròfon, "
+"una mica més tar hauríeu de poder sentir el que heu dit pelsaltaveus. "
+"Assegureu-vos del que sentiu no és una realimentació electrònica, isí la "
+"seva veu gravada. Si no us sentiu parlar, arregleu la configuració d'àudio "
+"del vostre sistema o el vostre interlocutor no us podrà sentir. Podeu fer "
+"servirles barres desplaçadores del panell de control tant per ajustar el "
+"volum dels altaveus com del micròfon."
+
+msgid ""
+"GnomeMeeting successfully tested your video device. The driver seems to be "
+"usable for videoconferencing with GnomeMeeting."
+msgstr ""
+"El GnomeMeeting ha comprovat amb èxit el vostre dispositiu de vídeo. El "
+"programa de control sembla que es pot fer servir per a videoconferència amb "
+"el GnomeMeeting."
+
+#~ msgid "Enable STUN Support"
+#~ msgstr "Habilita suport per a STUN"
+
+#~ msgid "Select the audio output device to use for sound events"
+#~ msgstr ""
+#~ "Seleccioneu el dispositiu d'àudio de sortida per esdeveniments sonors"
+
+#~ msgid "The STUN Server"
+#~ msgstr "El servidor STUN"
 
 #~ msgid ""
-#~ "The minimum transmitted video quality to keep when trying to minimize the "
-#~ "used bandwidth:  choose 100% on a LAN for the best quality, 1% being the "
-#~ "worst quality"
+#~ "The STUN server to use for STUN Support. STUN is a technic that permits "
+#~ "to go through some types of NAT gateways."
 #~ msgstr ""
-#~ "Qualitat de vídeo mínima transmesa que vulgueu mantenir quan s'intenti "
-#~ "minimitzar l'ample de banda: escolliu 100% en una LAN per a la millor "
-#~ "qualitat, essent-ne l'1% la pitjor"
-
-#~ msgid "Received Calls"
-#~ msgstr "Trucades rebudes"
-
-#~ msgid "Placed Calls"
-#~ msgstr "Trucades fetes"
-
-#~ msgid "Unanswered Calls"
-#~ msgstr "Trucades no contestades"
-
-#~ msgid "Date"
-#~ msgstr "Data"
-
-#~ msgid "Remote User"
-#~ msgstr "Usuari remot"
-
-#~ msgid "Call Duration"
-#~ msgstr "Durada de la trucada"
-
-#~ msgid "Call End Reason"
-#~ msgstr "Motiu de finalització"
-
-#~ msgid "Software"
-#~ msgstr "Programari"
-
-#~ msgid "Play or not the busy tone sound"
-#~ msgstr "Reproduir o no el so d'ocupat"
-
-#~ msgid "Play or not the incoming call sound"
-#~ msgstr "Reproduir o no el so per a trucades entrants"
-
-#~ msgid "Play or not the ring tone sound"
-#~ msgstr "Reproduir o no el so del timbre"
-
-#~ msgid "Position on the screen of the general history window"
-#~ msgstr "Posició en pantalla de la finestra de l'historial"
-
-#~ msgid "Size of the general history window"
-#~ msgstr "Mida de la finestra de l'historial general"
-
-#~ msgid "Couldn't compile http/ftp regex!"
-#~ msgstr "No s'ha pogut compilar l'expressió regex http/ftp!"
-
-#~ msgid "Couldn't compile smiley regex!"
-#~ msgstr "No s'ha pogut compilar l'expressió regex per l'emoticona."
-
-#~ msgid "Couldn't compile latex regex!"
-#~ msgstr "No s'ha pogut compilar expressió regex latex."
-
-#~ msgid "Enabled Silence Detection"
-#~ msgstr "S'ha habilitat la detecció de silenci"
-
-#~ msgid "Failed to restart the video channel"
-#~ msgstr "No s'ha pogut reiniciar el canal de vídeo"
+#~ "El servidor STUN per utilitzar el suport STUN. STUN és una tècnica que "
+#~ "permet atravessar alguns tipus de passarel·les NAT."
 
 #~ msgid ""
-#~ "You have changed a video device related setting during a call. That "
-#~ "requires to restart the video transmission channel, but it failed."
+#~ "This enables STUN Support. STUN is a technic that permits to go through "
+#~ "some types of NAT gateways."
 #~ msgstr ""
-#~ "Heu canviat les preferències relacionades amb el dispositiu de vídeo "
-#~ "mentre estàveu fent una trucada. Això requeria que es reiniciés el canal "
-#~ "de transmissió de vídeo, però s'ha produït un error al fer-ho."
+#~ "Això habilita el suport per a STUN. STUN és una tècnica que permet "
+#~ "atravessar alguns tipus de passarel·les NAT."
 
-#~ msgid "transmission"
-#~ msgstr "transmissió"
+#~ msgid "Credits"
+#~ msgstr "Crèdits"
 
-#~ msgid "reception"
-#~ msgstr "recepció"
+#~ msgid "Written by"
+#~ msgstr "Escrit per"
 
-#~ msgid "Test those settings"
-#~ msgstr "Prova aquests paràmetres"
+#~ msgid "Documented by"
+#~ msgstr "Documentat per"
 
-#~ msgid "recording"
-#~ msgstr "enregistrant"
+#~ msgid "Translated by"
+#~ msgstr "Traduït per"
 
-#~ msgid "playing"
-#~ msgstr "reproduint"
+#~ msgid "C_redits"
+#~ msgstr "C_rèdits"
 
-#~ msgid "New server"
-#~ msgstr "Afegeix servidor"
+#~ msgid "Program name"
+#~ msgstr "Nom del programa"
 
-#~ msgid "New group"
-#~ msgstr "Afegeix grup"
+#~ msgid "The name of the program"
+#~ msgstr "El nom del programa"
 
-#~ msgid "New contact"
-#~ msgstr "Afegeixi contacte"
+#~ msgid "Program version"
+#~ msgstr "Versió del programa"
 
-#~ msgid "GnomeMeeting Address Book"
-#~ msgstr "Llibreta d'adreces del GnomeMeeting"
+#~ msgid "The version of the program"
+#~ msgstr "La versió del programa"
 
-#~ msgid "Please choose the video image"
-#~ msgstr "Escolliu la imatge de vídeo"
+#~ msgid "Copyright string"
+#~ msgstr "Cadena dels drets d'autor"
 
-#~ msgid "Calls Clearing"
-#~ msgstr "Finalització de trucades"
+#~ msgid "Copyright information for the program"
+#~ msgstr "Informació sobre els drets d'autor (copyright) del programa"
+
+#~ msgid "Comments string"
+#~ msgstr "Cadena pel comentari"
+
+#~ msgid "Comments about the program"
+#~ msgstr "Comentaris sobre el programa"
+
+#~ msgid "Authors"
+#~ msgstr "Autors"
+
+#~ msgid "List of authors of the programs"
+#~ msgstr "Llista dels autors dels programes"
+
+#~ msgid "Author entry"
+#~ msgstr "Entrada d'autor"
+
+#~ msgid "A single author entry"
+#~ msgstr "Una entrada per a un sol autor"
+
+#~ msgid "Documenters"
+#~ msgstr "Documentadors"
+
+#~ msgid "List of people documenting the program"
+#~ msgstr "Llista de gent que documenta el programa"
+
+#~ msgid "Documenter entry"
+#~ msgstr "Entrada del documentador"
+
+#~ msgid "A single documenter entry"
+#~ msgstr "Una entrada per a un sol documentador"
+
+#~ msgid "Translator credits"
+#~ msgstr "Josep Puigdemont i Casamajó <josep@imatge-sintetica.com>"
 
 #~ msgid ""
-#~ "Select the video device to use. Using an invalid video device or \"Picture"
-#~ "\" for video transmission will transmit a test picture."
+#~ "Credits to the translators. This string should be marked as translatable"
 #~ msgstr ""
-#~ "Indiqueu el dispositiu de vídeo que vulgueu fer servir. Si n'indiqueu un "
-#~ "d'incorrecte o \"Imatge\" el GnomeMeeting transmetrà una imatge de prova."
+#~ "Crèdits per a la traducció. aquesta cadena s'ha de marcar com a traduible"
 
-#~ msgid "Local video window height"
-#~ msgstr "Alçada de la finestra pel vídeo local"
+#~ msgid "Logo"
+#~ msgstr "Logotip"
 
-#~ msgid "Number of entries to store in history boxes"
-#~ msgstr "Número d'entrades que es guardadaran a l'historial"
+#~ msgid "A logo for the about box"
+#~ msgstr "Un logotip per a la caixa de 'Quant a...'"
 
-#~ msgid "Received Video Quality Hint"
-#~ msgstr "Qualitat de video rebuda suggerida"
+#~ msgid "About %s"
+#~ msgstr "Quant a %s"
 
-#~ msgid "Remote video window height"
-#~ msgstr "Alçada de la finestra pel vídeo remot"
+#~ msgid "Title"
+#~ msgstr "Títol"
 
-#~ msgid "Show splash screen"
-#~ msgstr "Mostra pantalla flaix"
+#~ msgid "Title of the druid"
+#~ msgstr "Títol de l'assistent"
 
-#~ msgid "The Video Quality to request to the remote"
-#~ msgstr "La qualitat de video que es suggerirà al vostre interlocutor"
+#~ msgid "Logo image"
+#~ msgstr "Imatge del logotip"
 
-#~ msgid "The height of the local video window"
-#~ msgstr "L'alçada de la finestra pel vídeo local"
+#~ msgid "Top Watermark"
+#~ msgstr "Marca d'aigua superior"
 
-#~ msgid "The height of the remote video window"
-#~ msgstr "L'alçada de la finestra pel vídeo remot"
+#~ msgid "Watermark image for the top"
+#~ msgstr "Marca d'aigua per a la part superior"
 
-#~ msgid "User Input Capabilities type"
-#~ msgstr "Tipus d'User Input Capabilities"
+#~ msgid "Title Foreground"
+#~ msgstr "Títol pel primer plà"
 
-#~ msgid "Remote user is not running GnomeMeeting"
-#~ msgstr "L'usuari remot no fa servir GnomeMeeting"
+#~ msgid "Foreground color of the title"
+#~ msgstr "Color del primer plà per al títol"
 
-#~ msgid "Forward call to:"
-#~ msgstr "Desviar trucades a:"
+#~ msgid "Title Foreground Color"
+#~ msgstr "Color del primer plà del títol"
+
+#~ msgid "Foreground color of the title as a GdkColor"
+#~ msgstr "Color del primer plà per al títol com a GdkColor"
+
+#~ msgid "Background Color"
+#~ msgstr "Color de fons"
+
+#~ msgid "Background color"
+#~ msgstr "Color de fons"
+
+#~ msgid "Background color as a GdkColor"
+#~ msgstr "Color de fons com a GdkColor"
+
+#~ msgid "Logo Background Color"
+#~ msgstr "Color de fons del logotip"
+
+#~ msgid "Logo Background color"
+#~ msgstr "Color de fons del logotip"
+
+#~ msgid "Logo Background color as a GdkColor"
+#~ msgstr "Color de fons del logotip com a GdkColor"
+
+#~ msgid "Show Finish"
+#~ msgstr "Mostra Finalitza"
+
+#~ msgid "Show the 'Finish' button instead of the 'Next' button"
+#~ msgstr "Mostra el butó 'Finalitza' enlloc del botó 'Next'"
+
+#~ msgid "Show Help"
+#~ msgstr "Mostra Ajuda"
+
+#~ msgid "Show the 'Help' button"
+#~ msgstr "Mostra el botó 'Ajuda'"
+
+#~ msgid "Contact collision"
+#~ msgstr "El contacte ja existeix"
 
 #~ msgid ""
-#~ "If enabled, GnomeMeeting will play a sound when receiving an incoming "
-#~ "call (the sound to play is chosen in the Gnome Control Center)."
-#~ msgstr ""
-#~ "Si s'activa, el GnomeMeeting reproduirà un so quan rebeu una trucada "
-#~ "(aquest so es pot canviar en el Centre de Control del Gnome)."
-
-#~ msgid ""
-#~ "If enabled, GnomeMeeting will start hidden. The docklet must be enabled."
-#~ msgstr ""
-#~ "Si s'activa, el GnomeMeeting s'iniciarà amagat. El docklet ha d'estar "
-#~ "activat."
-
-#~ msgid "Play a sound on incoming calls"
-#~ msgstr "Reproduir un so per trucades entrants"
-
-#~ msgid "Open Link"
-#~ msgstr "Obre l'enllaç"
-
-#~ msgid "Copy Link Address"
-#~ msgstr "Copia l'adreça de l'enllaç"
-
-#~ msgid "Incoming Call"
-#~ msgstr "Trucada entrant"
-
-#~ msgid "gnomemeeting"
-#~ msgstr "gnomemeeting"
-
-#~ msgid "Internationalisation Maintainer:"
-#~ msgstr "Coordinador per a la internacionalització:"
-
-#~ msgid ""
-#~ "GnomeMeeting is a full-featured H.323\n"
-#~ "video conferencing application."
-#~ msgstr ""
-#~ "El GnomeMeeting és una aplicació per a\n"
-#~ "videoconferència completament\n"
-#~ "compatible amb el protocol H.323."
-
-#~ msgid "Started transmission of %s"
-#~ msgstr "S'ha iniciat la transmissió de %s"
-
-#~ msgid "Stopped transmission of %s"
-#~ msgstr "S'ha aturat la transmissió de %s"
-
-#~ msgid "Started reception of %s"
-#~ msgstr "S'ha iniciat la recepció de %s"
-
-#~ msgid "Stopped reception of %s"
-#~ msgstr "S'ha aturat la recepció de %s"
-
-#~ msgid "View the details of your account"
-#~ msgstr "Veure els detalls del seu compte"
-
-#~ msgid "Choose a file to play"
-#~ msgstr "Escolliu un fitxer per reproduir"
-
-#~ msgid "User Input Capabilities"
-#~ msgstr "User Input Capabilites"
-
-#~ msgid "T_ype:"
-#~ msgstr "_Escriu:"
-
-#~ msgid "Audio player mixer"
-#~ msgstr "Mesclador d'àudio"
-
-#~ msgid "Audio recorder"
-#~ msgstr "Gravadora d'àudio"
-
-#~ msgid "Audio recorder mixer"
-#~ msgstr "Mesclador de la gravadora d'àudio"
-
-#~ msgid "Color Format for the video palette"
-#~ msgstr "Format del color per a la paleta de vídeo"
-
-#~ msgid "Do not disturb"
-#~ msgstr "No molesteu"
-
-#~ msgid "If enabled, incoming calls will be automatically answered."
-#~ msgstr "Si s'activa, les trucades entrants s'acceptaran automàticament."
-
-#~ msgid "If enabled, incoming calls will be automatically refused."
-#~ msgstr "Si s'activa, les trucades entrants es descartaran automàticament."
-
-#~ msgid "Select the audio recorder device to use."
-#~ msgstr "Indiqueu el dispositiu gravador d'àudio que vulgueu utilitzar."
-
-#~ msgid "Select the mixer to use to change the volume of the audio player."
-#~ msgstr ""
-#~ " Seleccioneu el mesclador que vulgueu fer servir per canviar el volum "
-#~ "del  reproductor d'àudio."
-
-#~ msgid "Select the mixer to use to change the volume of the audio recorder."
-#~ msgstr ""
-#~ "Seleccioneu el mesclador que vulgueu fer servir per canviar el volum de "
-#~ "la gravadora d'àudio."
-
-#~ msgid "Started New Logical Channel..."
-#~ msgstr "S'ha iniciat un nou canal lògic..."
-
-#~ msgid "Enabled silence detection for %s"
-#~ msgstr "S'ha activat la detecció de silenci per a %s"
-
-#~ msgid "Disabled silence detection for %s"
-#~ msgstr "S'ha desactivat la detecció de silenci per a %s"
-
-#~ msgid "Receiving %s"
-#~ msgstr "S'està rebent %s"
-
-#~ msgid "Requesting remote to send video quality: %d%%"
-#~ msgstr ""
-#~ "S'està suggerit a l'interlocutor que enviï una qualitat de vídeo: %d%%"
-
-#~ msgid "Request ok"
-#~ msgstr "Sol·licitut ok"
-
-#~ msgid "Auto Answering Incoming Call"
-#~ msgstr "S'està contestant automàticament la trucada entrant"
-
-#~ msgid "Other"
-#~ msgstr "Altres"
-
-#~ msgid "Enabled"
-#~ msgstr "Activades"
-
-#~ msgid "Disabled"
-#~ msgstr "Desactivades"
-
-#~ msgid ""
-#~ "Please enter your first name and surname, they will be used when "
-#~ "connecting to other audio/video conferencing software.\n"
+#~ "Another contact with the same speed dial already exists in your address "
+#~ "book:\n"
 #~ "\n"
-#~ "Your e-mail address is used to provide you with a callto address that "
-#~ "your friends can use to call you without knowing your IP address.\n"
+#~ "<b>Contact Name</b>: %s\n"
+#~ "<b>Contact URL</b>: %s\n"
+#~ "<b>Contact Speed Dial</b>: %s\n"
+#~ msgstr ""
+#~ "Hi ha un altre usuari a la llibreta d'adreces amb la mateixa tecla de "
+#~ "marcatge ràpid:\n"
 #~ "\n"
-#~ "No information is made public unless you allow it to be published on the "
-#~ "directory of online GnomeMeeting users."
-#~ msgstr ""
-#~ "Indiqueu el nom i cognom que es faran servir quan us connecteu a algun "
-#~ "altre programari de videoconferència.\n"
+#~ "<b>Nom del contacte</b>: %s\n"
+#~ "<b>URL del contacte</b>: %s\n"
+#~ "<b>Tecla de marcatge ràpid</b>: %s\n"
+
+#~ msgid ""
+#~ "Another contact with similar information already exists in your address "
+#~ "book:\n"
 #~ "\n"
-#~ "El vostre correu electrònic es fa servir per proporcionar una adreça "
-#~ "callto que els vostres amics poden fer servir sense necessitat d'haver de "
-#~ "saber la vostra adreça d'IP.\n"
+#~ "<b>Contact Name</b>: %s\n"
+#~ "<b>Contact URL</b>: %s\n"
+#~ "<b>Contact Speed Dial</b>: %s\n"
 #~ "\n"
-#~ "No es farà pública cap tipus d'informació en els directoris d'usuari del "
-#~ "GnomeMeeting a no ser que vostè ho autoritzi."
-
-#~ msgid "First _name:"
-#~ msgstr "_Nom:"
-
-#~ msgid "Callto URL"
-#~ msgstr "URL callto"
-
-#~ msgid "Directory of Online GnomeMeeting Users"
-#~ msgstr "Directori d'usuaris en línia del GnomeMeeting"
-
-#~ msgid "Publish my information on the directory of online GnomeMeeting users"
+#~ "Do you still want to add the contact?"
 #~ msgstr ""
-#~ "Fes pública informació meva en el directori d'usuaris en línia del "
-#~ "GnomeMeeting"
-
-#~ msgid ""
-#~ "Please select your network connection type. This is used to set default "
-#~ "video settings for your bandwidth. It is possible to change these "
-#~ "defaults later."
-#~ msgstr ""
-#~ "Indiqueu el tipus de xarxa. Aquesta informació es farà servir  per "
-#~ "decidir els paràmetres de vídeo i d'ample de banda per defece. És  "
-#~ "possible canviar aquest valors més endavant."
-
-#~ msgid "Connection Type"
-#~ msgstr "Tipus de connexió"
-
-#~ msgid "DSL/Cable"
-#~ msgstr "DSL/Cable"
-
-#~ msgid ""
-#~ "Please choose the audio devices to use during the GnomeMeeting session. "
-#~ "You can also choose to use a Quicknet device instead of the soundcard, "
-#~ "but the \"Test Audio\" button will only work for soundcards. Notice that "
-#~ "some webcams models have an internal microphone that can be used with "
-#~ "GnomeMeeting."
-#~ msgstr ""
-#~ "Indiqueu el dispositiu d'àudio que el GnomeMeeting farà servir. També "
-#~ "podeu escollir un dispositiu Quicknet enlloc d'una targeta de so, però el "
-#~ "botó \"Prova l'àudio\" només funcionarà per targetes de so. Algunes "
-#~ "webcams porten incorporat un micròfon que també es pot fer servir amb el "
-#~ "GnomeMeeting."
-
-#~ msgid "Audio player mixer:"
-#~ msgstr "Mesclador d'àudio:"
-
-#~ msgid "Audio recorder:"
-#~ msgstr "Enregistrador d'àudio:"
-
-#~ msgid "Audio recorder mixer:"
-#~ msgstr "Mesclador per l'enregistrador d'àudio:"
-
-#~ msgid "Click here to test your audio devices:"
-#~ msgstr "Premeu aquí per provar els dispositius d'àudio:"
-
-#~ msgid "Test Audio"
-#~ msgstr "Prova l'àudio"
-
-#~ msgid ""
-#~ "Please choose the video device to use during the GnomeMeeting session. "
-#~ "Click on the \"Test Video\" button to check if your setup is correct and "
-#~ "if your driver is supported by GnomeMeeting. You can only test the "
-#~ "correctness of your driver if the selected device is not already in use."
-#~ msgstr ""
-#~ "Indiqueu el dispositiu de vídeo que el GnomeMeeting farà servir. Premeu "
-#~ "el botó \"Prova el Vídeo\" per comprovar que la vostra configuració és "
-#~ "correcte, i que el programa de control funciona amb el GnomeMeeting. "
-#~ "Només podreu fer la prova si el dispositiu no està sent usat en el moment "
-#~ "de la prova."
-
-#~ msgid "Video device:"
-#~ msgstr "Dispositiu de vídeo:"
-
-#~ msgid ""
-#~ "Enter the video device to use. Using an invalid video device for video "
-#~ "transmission will transmit a test picture."
-#~ msgstr ""
-#~ "Indiqueu el dispositiu de vídeo que vulgueu fer servir. Si n'indiqueu un "
-#~ "d'incorrecte el GnomeMeeting transmetrà una imatge de prova."
-
-#~ msgid "Test Video"
-#~ msgstr "Prova el Vídeo"
-
-#~ msgid "PC-To-Phone Setup - page %d/%d"
-#~ msgstr "Configuració de PC-a-Telèfon - pàgina %d/%d"
-
-#~ msgid "Password:"
-#~ msgstr "Contrasenya:"
-
-#~ msgid "Register to the MicroTelco service"
-#~ msgstr "Registra'm el servei MicroTelco"
-
-#~ msgid "Set Audio player device to %s"
-#~ msgstr "S'utilitzarà el dispositiu d'àudio %s"
-
-#~ msgid "Set Audio recorder device to %s"
-#~ msgstr "S'utilitzarà l'enregistrador d'àudio %s"
-
-#~ msgid "Enabling H.245 Tunnelling"
-#~ msgstr "S'està activant la tunelització H.245"
-
-#~ msgid "Disabling H.245 Tunnelling"
-#~ msgstr "S'esta desactivant la tunelització H.245"
-
-#~ msgid "Enabling Fast Start"
-#~ msgstr "S'està activant l'arrencada ràpida"
-
-#~ msgid "Disabling Fast Start"
-#~ msgstr "S'està desactivant l'arrencada ràpida"
-
-#~ msgid "Auto rejecting incoming call from %s (Do not disturb)"
-#~ msgstr "Descartant automàticament la trucada entrant de %s (No molesteu)"
-
-#~ msgid "Auto Rejected"
-#~ msgstr "Es descartaran trucades entrants"
-
-#~ msgid "Parse error"
-#~ msgstr "Error d'anàlisi"
-
-#~ msgid ""
-#~ "There was an error while processing the registering to the user "
-#~ "directory: %d %s."
-#~ msgstr ""
-#~ " S'ha produit un error al processar el registre al directori: %·d·%s."
-
-#~ msgid "Contacting %s..."
-#~ msgstr "S'està contactant %s..."
-
-#~ msgid "Failed to contact the user directory %s:%d."
-#~ msgstr "Impossible obrir el directori d'usuaris %s:%d"
-
-#~ msgid "Successfully registered to %s."
-#~ msgstr "S'ha registrat amb èxit a %s."
-
-#~ msgid "Successfully unregistered from %s."
-#~ msgstr "Us heu desenregistrat amb èxit de %s."
-
-#~ msgid "Error while unregistering from %s."
-#~ msgstr "Hi ha hagut un error al desenregistrar-se de %s."
-
-#~ msgid ""
-#~ "GnomeMeeting didn't find any usable sound devices. You need to install "
-#~ "and setup a soundcard or a Quicknet card in order to be able to use "
-#~ "GnomeMeeting. Please check your driver settings and permissions."
-#~ msgstr ""
-#~ "El GnomeMeeting no ha pogut trobar cap dispositiu d'àudio que pugui fer "
-#~ "servir. Caldrà que instal·leu una targeta de so o una Quicknet per tal de "
-#~ "poder utilitzar el GnomeMeeting. Consulteu els paràmetres del controlador "
-#~ "i els permisos."
-
-#~ msgid "Do _Not Disturb"
-#~ msgstr "_No molesteu"
-
-#~ msgid "Aut_o Answer"
-#~ msgstr "Contesta aut_omàticament"
-
-#~ msgid "Local Video Image"
-#~ msgstr "Imatge de vídeo local"
-
-#~ msgid "Remote Video Image"
-#~ msgstr "Imatge de vídeo remota"
-
-#~ msgid "Both Video Images"
-#~ msgstr "Ambúes imatges de vídeo"
-
-#~ msgid "Both (Local and Remote Video in New Windows)"
-#~ msgstr "Ambdúes (vídeos local i remot en noves finestres)"
-
-#~ msgid "Do not disturb (reject incoming calls)"
-#~ msgstr "No molestar (refusar trucades entrants)"
-
-#~ msgid "Error: %s\n"
-#~ msgstr "Error: %s\n"
-
-#~ msgid ""
-#~ "Call from %s\n"
-#~ "using %s"
-#~ msgstr ""
-#~ "Trucada de %s\n"
-#~ "usant %s"
-
-#~ msgid "Okay"
-#~ msgstr "Acceptable"
-
-#~ msgid "Good Quality"
-#~ msgstr "Bona qualitat"
-
-#~ msgid "Excellent Quality"
-#~ msgstr "Qualitat Excel·lent"
-
-#~ msgid "Behavior"
-#~ msgstr "Comportament"
-
-#~ msgid "_Automatically answer calls"
-#~ msgstr "Contesta les trucades _automàticament"
-
-#~ msgid "Do _not disturb"
-#~ msgstr "_No molesteu"
-
-#~ msgid "Display a po_pup window when receiving a call"
-#~ msgstr "Finestra emergent _per trucades entrants"
-
-#~ msgid "Enable bilinear _filtering on displayed video"
-#~ msgstr "Activa el _filtre bilineal en el vídeo mostrat"
-
-#~ msgid "User Input Capabilities _type:"
-#~ msgstr "_Tipus d'User Input Capabilities:"
-
-#~ msgid "Playing mixer:"
-#~ msgstr "Mesclador del reproductor:"
-
-#~ msgid "Video format:"
-#~ msgstr "Format de vídeo:"
-
-#~ msgid "Video image:"
-#~ msgstr "Imatge de vídeo:"
-
-#~ msgid "Failed to open the audio device"
-#~ msgstr "No s'ha pogut obrir el dispositiu d'àudio"
-
-#~ msgid ""
-#~ "GnomeMeeting is now playing what it is recording with a 5 seconds delay. "
-#~ "If you don't hear yourself with the delay, you will have to fix your "
-#~ "audio setup and probably install a full-duplex driver before calling "
-#~ "other GnomeMeeting users.\n"
+#~ "Hi ha un altre contacte amb informació similar a la llibreta d'adreces:\n"
 #~ "\n"
-#~ "Recording and playing... Please talk."
-#~ msgstr ""
-#~ "El GnomeMeeting reprodueix el que ha enregistrat amb una diferència de 5  "
-#~ "segons. Si no us sentiu a vostè mateix amb endarreriment, haureu "
-#~ "d'arreglar  la vostra configuració del so, i possiblement haureu "
-#~ "d'instal·lar un  programa de control full-duplex abans de poder trucar "
-#~ "altres usuaris del  GnomeMeeting. \n"
-#~ " \n"
-#~ "Enregistrant i reproduint... Parleu, si us plau."
+#~ "<b>Nom del contacte</b>: %s\n"
+#~ "<b>URL del contacte</b>: %s\n"
+#~ "<b>Tecla ràpida del contacte</b>: %s\n"
+#~ "\n"
+#~ "Encara voleu afegir el contacte?"
 
-#~ msgid "Given calls"
-#~ msgstr "Trucades fetes"
+#~ msgid "Categories"
+#~ msgstr "Categories"
 
-#~ msgid "Video Device Opened"
-#~ msgstr "S'ha obert el dispositiu de vídeo"
+#~ msgid "New _Address Book"
+#~ msgstr "_Afegeix llibreta d'adreces"
 
-#~ msgid "Video Device Closed"
-#~ msgstr "S'ha tancat el dispositiu de vídeo"
+#~ msgid "On LDAP servers"
+#~ msgstr "A servidors LDAP"
 
-#~ msgid "Tests OK!"
-#~ msgstr "Proves OK!"
+#~ msgid "On This Computer"
+#~ msgstr "A aquest ordinador"
 
-#~ msgid "Quit in progress..."
-#~ msgstr "S'està sortint..."
+#~ msgid "URL contains"
+#~ msgstr "L'URL conté"
 
-#~ msgid "Audio Channel:  Sending"
-#~ msgstr "Canal d'àudio:  S'està enviant"
+#~ msgid "Belongs to category"
+#~ msgstr "Pertany a la categoria"
 
-#~ msgid "Audio Channel:  Paused"
-#~ msgstr "Canal d'àudio:  Aturat"
-
-#~ msgid "Video Channel:  Sending"
-#~ msgstr "Canal de vídeo:  s'està enviant"
-
-#~ msgid "Video Channel:  Paused"
-#~ msgstr "Canal de vídeo:  Aturat"
-
-#~ msgid ""
-#~ "You chose to NOT use the GnomeMeeting ILS directory. Other users will not "
-#~ "be able to contact you if you don't register to a directory service."
-#~ msgstr ""
-#~ "Heu escollit NO fer ús del directori ILS del GnomeMeeting. Altres usuaris "
-#~ "no podran contactar amb vostè si no us registreu a un servei de directori."
-
-#~ msgid "This call ended abnormally"
-#~ msgstr "La trucada ha finalitzat anormalment"
-
-#~ msgid "Refused incoming call"
-#~ msgstr "S'ha refusat la trucada entrant"
-
-#~ msgid "Remote party could not be reached"
-#~ msgstr "El GnomeMeeting s'ha pogut connectar amb el vostre interlocutor"
-
-#~ msgid "Call duration: %.2ld:%.2ld:%.2ld"
-#~ msgstr "La trucada ha durat: %.2ld:%.2ld:%.2ld"
-
-#~ msgid ""
-#~ "Sent/Received:\n"
-#~ "Lost/Late Packets:\n"
-#~ "Round trip delay:\n"
-#~ "Jitter Buffer:"
-#~ msgstr ""
-#~ "Enviat/Rebut:\n"
-#~ "Paquets Perduts/Tard\n"
-#~ "Round trip delay:\n"
-#~ "Jitter Buffer:"
-
-#~ msgid "Error while registering with Gatekeeper at %s."
-#~ msgstr "Hi ha hagut un error al registrar-vos al gatekeeper a %s."
-
-#~ msgid "callto URL:"
-#~ msgstr "URL callto:"
-
-#~ msgid "_Refresh"
-#~ msgstr "_Refresca"
-
-#~ msgid "Call this user"
-#~ msgstr "Truca aquest usuari"
-
-#~ msgid "Edit this user information"
-#~ msgstr "Edita la informació d'aquest usuari"
-
-#~ msgid "Delete this user"
-#~ msgstr "Esborra aquest usuari"
-
-#~ msgid "Add to group"
-#~ msgstr "Afegeix al grup"
-
-#~ msgid ""
-#~ "GnomeMeeting can't be used without audio devices. Please install a "
-#~ "soundcard or a Quicknet card."
-#~ msgstr ""
-#~ "No es pot utilitzar el GnomeMeeting sense dispositius d'àudio. Instal·leu "
-#~ "una targeta de so o una targeta Quicknet."
-
-#~ msgid ""
-#~ "GnomeMeeting just installed an URL handler for callto:// URLs. callto "
-#~ "URLs are an easy way to call people on the internet using GnomeMeeting. "
-#~ "They are now available to all GNOME programs able to cope with URLs. You "
-#~ "can for example create an URL launcher on the GNOME panel of the form "
-#~ "\"callto://ils.seconix.com/me@foo.com\" to call the person registered on "
-#~ "the ILS server ils.seconix.com with the me@foo.com e-mail address."
-#~ msgstr ""
-#~ "El GnomeMeeting acava d'instal·lar un gestor per a URL del tipus "
-#~ "callto://, aquesta és una manera senzilla de trucar gent per internet amb "
-#~ "el GnomeMeeting. Ara estarà disponible per tots els programes del Gnome "
-#~ "que poden manegar URL. Per exemple, podeu crear un accés ràpid d'URL en "
-#~ "el panell del Gnome, així: \"callto://ils.seconix. com/jo@foo.com\" per "
-#~ "trucar a una persona registrada al servidor ILS ils. seconix.com que "
-#~ "tingui per adreça de correu jo@foo.com."
-
-#~ msgid ""
-#~ "Could not start the listener thread. You will not be able to receive "
-#~ "incoming calls."
-#~ msgstr ""
-#~ "No s'ha pogut iniciar el fil encarregat de rebre connexions. No podreu "
-#~ "rebre trucades entrants."
-
-#~ msgid "_Audio Mute"
-#~ msgstr "Silenci_a l'àudio"
-
-#~ msgid "_Video Mute"
-#~ msgstr "Atura el _vídeo"
-
-#~ msgid "Disconnect"
-#~ msgstr "Desconnecta"
-
-#~ msgid "E-mail address:"
-#~ msgstr "Adreça electrònica:"
-
-#~ msgid "Fullscreen width:"
-#~ msgstr "Amplada a pantalla completa:"
-
-#~ msgid "Fullscreen height:"
-#~ msgstr "Alçada a pantalla completa:"
-
-#~ msgid "Sound"
-#~ msgstr "So"
-
-#~ msgid "Browse..."
-#~ msgstr "Navega..."
-
-#~ msgid "Minimum jitter buffer:"
-#~ msgstr "Memòria intermèdia mínima pel jitter"
-
-#~ msgid "Maximum jitter buffer:"
-#~ msgstr "Memòria intermèdeia màxima pel jitter"
-
-#~ msgid "Maximum video bandwidth:"
-#~ msgstr "Ample de banda màxim pel vídeo:"
-
-#~ msgid "Minimum transmitted video quality:"
-#~ msgstr "Qualitat de vídeo transmesa:"
-
-#~ msgid "Minimum transmitted FPS:"
-#~ msgstr "Màxim FPS transmesos:"
-
-#~ msgid "Transmitted background blocks:"
-#~ msgstr "Blocs de fons transmesos:"
-
-#~ msgid "H.323 Advanced"
-#~ msgstr "H.323 Avançat"
-
-#~ msgid "Speaker phone enabled"
-#~ msgstr "Speaker phone activat"
-
-#~ msgid "Speaker phone disabled"
-#~ msgstr "Speaker phone desactivat"
-
-#~ msgid "Find friends on the ILS directory service"
-#~ msgstr "Busca amics a l'ILS"
-
-#~ msgid "Make a text chat with your friend"
-#~ msgstr "Fer un xat de text amb el vostre interlocutor"
-
-#~ msgid "Display the control panel"
-#~ msgstr "Mostra el panell de control"
-
-#~ msgid ""
-#~ "Click here to activate the speaker phone device of your Quicknet card."
-#~ msgstr ""
-#~ "Feu clic aquí per tal d'activar l'altaveu del telèfon del vostre "
-#~ "dispositiu Quicknet."
-
-#~ msgid "Searching for user"
-#~ msgstr "Buscant l'usuari"
-
-#~ msgid "Error while connecting to ILS directory"
-#~ msgstr "Hi ha hagut un error al connectar al directory ILS"
-
-#~ msgid "User is offline"
-#~ msgstr "L'interlocutor no està en línia"
-
-#~ msgid "Error while opening the device."
-#~ msgstr "Hi ha hagut un error obrint el dispositiu"
-
-#~ msgid ""
-#~ "\"If enabled, GnomeMeeting will play a sound when receiving an incoming "
-#~ "call (the sound to play is chosen in the Gnome Control Center)."
-#~ msgstr ""
-#~ "\"Si s'activa, el GnomeMeeting reproduirà un so quan rebeu una trucada "
-#~ "(aquest so es pot canviar en el Centre de Control del Gnome)."
-
-#~ msgid "No data received in 10 seconds, clearing call"
-#~ msgstr "No s'han rebut dades durant 10 segons, s'està tallant la trucada"
-
-#~ msgid "A comment that will be listed in LDAP directories"
-#~ msgstr "Un comentari que es mostrarà en el directori LDAP"
-
-#~ msgid "Auto Answer"
-#~ msgstr "Contesta automàticament"
-
-#~ msgid "Display a popup window every time you receive a call"
-#~ msgstr "Mostra una finestra emergent cada vegada que rebi una trucada"
-
-#~ msgid "Enable Silence Detection for G.711 and GSM"
-#~ msgstr "Activa la detecció de silenci per G.711 i GSM"
-
-#~ msgid "Enable or disable bilinear filtering"
-#~ msgstr "Activa o desactiva la filtració bilinear"
-
-#~ msgid "Enable registering to the LDAP server"
-#~ msgstr "Activa el registe al servidor LDAP"
-
-#~ msgid "Enable the limit on the number of frames per second"
-#~ msgstr "Activa el límit de quadres per segon transmesos"
-
-#~ msgid "Fast Start"
-#~ msgstr "Arrencada ràpida"
-
-#~ msgid "Forward calls to this host"
-#~ msgstr "Desvia les trucades a aquest ordinador"
-
-#~ msgid "H.245 Tunnelling"
-#~ msgstr "Tunelització H.245"
-
-#~ msgid "IP Translation"
-#~ msgstr "Traducció d'adreces d'IP"
-
-#~ msgid ""
-#~ "If enabled, GnomeMeeting will use the Quicknet device instead of the "
-#~ "regular soundcard during calls."
-#~ msgstr ""
-#~ "Si s'activa, el GnomeMeeting utilitzarà el dispositiu Quicknet enlloc de "
-#~ "la targeta de so durant les trucades."
-
-#~ msgid "If enabled, calls will be established with H.245 Tunnelling."
-#~ msgstr ""
-#~ "Si s'activa, les trucades s'establirant mitjançant la tunelització H.245."
-
-#~ msgid ""
-#~ "Limitation on the number of transmitted frames grabbed by the grabber"
-#~ msgstr ""
-#~ "Limitació en el número de quadres transmesos que arreplega el grabber"
-
-#~ msgid "Public IP"
-#~ msgstr "Adreça IP pública"
-
-#~ msgid "Register"
-#~ msgstr "Registre"
-
-#~ msgid "Show a nice window every time GnomeMeeting starts"
-#~ msgstr ""
-#~ "Mostra una finestra emergent cada vegada que el GnomeMeeting arrenqui"
-
-#~ msgid "The E-Mail address that will be listed in the directories"
-#~ msgstr "L'adreça electrònica que es mostrarà en el directori"
-
-#~ msgid "The LDAP Server to register to"
-#~ msgstr "El servidor LDAP on registrar-se"
-
-#~ msgid "The Location that will be published in the LDAP directories"
-#~ msgstr "La població que es publicarà en el directori LDAP"
-
-#~ msgid "The Quicknet Device to use during calls."
-#~ msgstr "El dispositiu Quicknet que es farà servir durant les trucades"
-
-#~ msgid "The Video Channel"
-#~ msgstr "El canal de vídeo"
-
-#~ msgid "The Video Format: PAL, NTSC, SECAM, Auto"
-#~ msgstr "El format de vídeo: PAL, NTSC, SECAM, Auto"
-
-#~ msgid "The Video Size: QCIF (0) or CIF (1)"
-#~ msgstr "La mida del vídeo: QCIF (0) o CIF (1)"
-
-#~ msgid "The alias to use when registering"
-#~ msgstr "L'àlies que voleu fer servir al registrar-vos"
-
-#~ msgid ""
-#~ "The alias to use when registering. People will use this alias when "
-#~ "calling you."
-#~ msgstr ""
-#~ "L'àlies que voleu fer servir al registrar-vos. La gent farà servir aquest "
-#~ "àlies quan us vulguin trucar."
-
-#~ msgid "The device to use to play audio"
-#~ msgstr "El dispositiu per a reproduir àudio"
-
-#~ msgid "The device to use to record audio"
-#~ msgstr "El dispositiu per a gravar àudio"
-
-#~ msgid ""
-#~ "The height of the picture displayed when being in fullscreen (using SDL)"
-#~ msgstr "L'alçada de la imatge a pantalla completa (usant SDL)"
-
-#~ msgid "The host to forward calls to"
-#~ msgstr "L'ordinador on desviar les trucades"
-
-#~ msgid "The list of used ILS servers"
-#~ msgstr "La llista de servidors ILS emprats"
-
-#~ msgid "The user's first name that will be used in the directories"
-#~ msgstr "El nom de l'usuari que es farà servir en els directoris"
-
-#~ msgid ""
-#~ "The width of the picture displayed when being in fullscreen (using SDL)"
-#~ msgstr ""
-#~ "L'amplada de la imatge mostrada quan estigui a pantalla completa (usant "
-#~ "SDL)"
-
-#~ msgid "Use Quicknet Device"
-#~ msgstr "Fes servir el dispositiu Quicknet"
-
-#~ msgid "Video Quality"
-#~ msgstr "Qualitat de vídeo"
-
-#~ msgid "Auto Rejecting Incoming Call"
-#~ msgstr "Descartant automàticament la trucada entrant"
-
-#~ msgid "Custom"
-#~ msgstr "Personalitzada"
-
-#~ msgid ""
-#~ "Please enter information about yourself. This information will be used "
-#~ "when connecting to remote H.323 software, and to register in the "
-#~ "directory of GnomeMeeting users. The directory is used to register online "
-#~ "users and is an easy way to find your friends."
-#~ msgstr ""
-#~ "Indiqueu informació personal vostre. Aquesta informació s'usarà quan us "
-#~ "connecteu a un programari H.323 remot, i també quan us registreu a un "
-#~ "directori d'usuaris de GnomeMeeting. El directori s'utilitza per tal de "
-#~ "registrar usuaris en línia, fent fàcil la localització dels vostres amics."
-
-#~ msgid "Last Name:"
-#~ msgstr "Cognom:"
-
-#~ msgid "Do not register me to ILS"
-#~ msgstr "No em registris a l'ILS"
-
-#~ msgid "Audio Recorder:"
-#~ msgstr "Gravadora d'àudio"
-
-#~ msgid "Voice echo"
-#~ msgstr "Eco de so"
-
-#~ msgid "Click here to test your video device conformity:"
-#~ msgstr ""
-#~ "Premeu aquí per comprovar el bon funcionament del dispositiu de vídeo:"
-
-#~ msgid "Video Test"
-#~ msgstr "Prova de Vídeo"
-
-#~ msgid "XDAP Server Browser"
-#~ msgstr "Explorador per servidors XDAP"
-
-#~ msgid "Find users on"
-#~ msgstr "Cerca usuaris a"
-
-#~ msgid "  whose  "
-#~ msgstr "  dels quals"
-
-#~ msgid "ILS Users List"
-#~ msgstr "Llista d'usuaris de l'ILS"
-
-#~ msgid "E-Mail"
+#~ msgid "Email:"
 #~ msgstr "Adreça electrònica"
 
-#~ msgid "Error while opening the Quicknet device. Disabling Quicknet device."
+#~ msgid "Categories:"
+#~ msgstr "Categories:"
+
+#~ msgid "Local Addressbook:"
+#~ msgstr "Llibreta d'adreces local:"
+
+#~ msgid "Add an address book"
+#~ msgstr "Afegeix una llibreta d'adreces"
+
+#~ msgid "Local"
+#~ msgstr "Local"
+
+#~ msgid "Remote LDAP"
+#~ msgstr "LDAP remot:"
+
+#~ msgid "Remote ILS"
+#~ msgstr "ILS remot:"
+
+#~ msgid "Search Scope:"
+#~ msgstr "Àmbit de la cerca:"
+
+#~ msgid "Subtree"
+#~ msgstr "Subàrbre"
+
+#~ msgid "One Level"
+#~ msgstr "Un nivell"
+
+#~ msgid "Hostname:"
+#~ msgstr "Ordinador:"
+
+#~ msgid "Port:"
+#~ msgstr "Port:"
+
+#~ msgid "Base DN:"
+#~ msgstr "Base DN:"
+
+#~ msgid "Search Attribute:"
+#~ msgstr "Atribut de la cerca:"
+
+#~ msgid "---- Call begins at %s\n"
+#~ msgstr "---- La trucada comença a %s\n"
+
+#~ msgid "---- Call ends at %s\n"
+#~ msgstr "---- La trucada acaba a %s\n"
+
+#~ msgid "STUN Server error"
+#~ msgstr "Error del servidor STUN"
+
+#~ msgid "You have to specify a valid STUN server in order to use STUN support"
 #~ msgstr ""
-#~ "Hi ha hagut un error a l'obrir el dispositiu Quicknet. S'està desactivant."
+#~ "Heu d'indicar un servidor STUN vàlid per tal de poder usar el servei STUN"
+
+#~ msgid "Personal"
+#~ msgstr "Personal"
+
+#~ msgid "Output Device"
+#~ msgstr "Dispositiu de sortida"
+
+#~ msgid "STUN Support"
+#~ msgstr "Suport per a STUN"
+
+#~ msgid "Enable _STUN Support"
+#~ msgstr "Habilita el suport per a _STUN"
+
+#~ msgid "STUN Se_rver:"
+#~ msgstr "Servidor STUN"
+
+#~ msgid "Frame Rate"
+#~ msgstr "Velocitat dels quadres"
+
+#~ msgid "Picture Quality"
+#~ msgstr "Qualitat de la imatge"
 
 #~ msgid ""
-#~ "GnomeMeeting just set the new Speex audio codec as default. Speex is a "
-#~ "high quality, GPL audio codec introduced in GnomeMeeting 0.94."
+#~ "Choose if you want to favour speed or quality for the transmitted video."
 #~ msgstr ""
-#~ "El GnomeMeeting acaba d'especificar el còdec Speex com a còdec per "
-#~ "defecte. L'Speex és un còdec GPL de gran qualitat introduït en la versió "
-#~ "0.94."
-
-#~ msgid "Video Settings"
-#~ msgstr "Preferències de vídeo"
+#~ "Escolliu si voleu afavorir la velocitat o la qualitat per a la "
+#~ "transmissió del vídeo."
 
 #~ msgid ""
-#~ "Click here to begin to display images from your camera device and be able "
-#~ "to change the settings."
+#~ "Choose the number of blocks (that have not changed) transmitted with each "
+#~ "frame. These blocks fill in the background."
 #~ msgstr ""
-#~ "Feu clic aquí per fer una visualització prèvia de les imatges capturades "
-#~ "pel dipsositiu de vídeo, i veure l'efecte dels paràmtres escollits."
-
-#~ msgid "Audio Test"
-#~ msgstr "Prova d'àudio"
-
-#~ msgid "_Save"
-#~ msgstr "De_sa"
-
-#~ msgid "Configuration Assistant"
-#~ msgstr "Assistent per a la configuració"
-
-#~ msgid "Start The Configuration Assistant"
-#~ msgstr "Inicia l'assistent per a la configuració"
-
-#~ msgid "Toolbar"
-#~ msgstr "Barra d'eines"
-
-#~ msgid "View/Hide the Toolbar"
-#~ msgstr "Veure/Amagar barra d'eines"
-
-#~ msgid "Do Not Disturb"
-#~ msgstr "No molestar"
-
-#~ msgid "XDAP Browser"
-#~ msgstr "Navegador XDAP"
-
-#~ msgid "Where do you call from?"
-#~ msgstr "Des d'on truqueu?"
-
-#~ msgid "Popup window"
-#~ msgstr "Finestra emergent"
-
-#~ msgid "XDAP Directory:"
-#~ msgstr "Directori XDAP:"
-
-#~ msgid "Automatic Gain Compensation"
-#~ msgstr "Compensació de guany automàtica"
-
-#~ msgid "Country Code:"
-#~ msgstr "Codi del país:"
-
-#~ msgid "Use the Quicknet Device"
-#~ msgstr "Fes servir el dispositiu QuickNet"
-
-#~ msgid "PAL"
-#~ msgstr "PAL"
-
-#~ msgid "NTSC"
-#~ msgstr "NTSC"
-
-#~ msgid "SECAM"
-#~ msgstr "SECAM"
-
-#~ msgid "Here you can choose the transmitted video format."
-#~ msgstr "Aquí podeu escollir el format de vídeo transmès."
-
-#~ msgid "GSM Frames per packet:"
-#~ msgstr "Quadres GSM per paquet:"
-
-#~ msgid "The number of frames in each transmitted GSM packet."
-#~ msgstr "El nombre de quadres en cada paquet GSM transmès."
-
-#~ msgid "G.711 Frames per packet:"
-#~ msgstr "Quadres G.711 per paquet:"
-
-#~ msgid "The number of frames in each transmitted G.711 packet."
-#~ msgstr "El nombre de quadres en cada paquet G.711 transmès."
-
-#~ msgid "Dynamic Jitter Buffer"
-#~ msgstr "Memòria intermèdia dinàmica pel jitter"
-
-#~ msgid "Minimal Jitter Buffer:"
-#~ msgstr "Memòria int. pel jitter mínima:"
-
-#~ msgid "Maximal Jitter Buffer:"
-#~ msgstr "Memòria int. pel jitter màxima:"
-
-#~ msgid "Enable FPS Limitation"
-#~ msgstr "Activa la limitacio de FPS"
-
-#~ msgid "Enable/disable the limit on the transmitted FPS."
-#~ msgstr "Activa/Desactiva la limitació de FPS transmesos."
-
-#~ msgid "Enable/disable the video transmission."
-#~ msgstr "Activa/Desactiva la transmissió de vídeo."
-
-#~ msgid "H.261 Settings"
-#~ msgstr "Paràmetres H.261"
-
-#~ msgid "Received Video Quality:"
-#~ msgstr "Qualitat de vídeo rebuda:"
-
-#~ msgid ""
-#~ "The received video quality:  choose 100% on a LAN for the best quality, "
-#~ "1% being the worst quality."
-#~ msgstr ""
-#~ "Qualitat de vídeo rebuda:  escolliu 100% en una LAN per a la millor "
-#~ "qualitat,1% és la pitjor qualitat."
-
-#~ msgid ""
-#~ "GnomeMeeting is now recording from %s and playing back to %s. Please "
-#~ "speak in your microphone, you should hear yourself back into the "
-#~ "speakers. Please make sure that what you hear is not the electronic "
-#~ "feedback but your real recorded voice. If you don't hear yourself "
-#~ "speaking, please fix your audio setup before using GnomeMeeting or others "
-#~ "won't hear you. You can use the sliders in the control panel to adjust "
-#~ "the volume of the speakers and of the microphone."
-#~ msgstr ""
-#~ "El GnomeMeeting està gravant de %s i reproduint a %s. Parleu pel "
-#~ "micròfon, una mica més tar hauríeu de poder sentir el que heu dit "
-#~ "pelsaltaveus. Assegureu-vos del que sentiu no és una realimentació "
-#~ "electrònica, isí la seva veu gravada. Si no us sentiu parlar, arregleu la "
-#~ "configuració d'àudio del vostre sistema o el vostre interlocutor no us "
-#~ "podrà sentir. Podeu fer servirles barres desplaçadores del panell de "
-#~ "control tant per ajustar el volum dels altaveus com del micròfon."
-
-#~ msgid ""
-#~ "GnomeMeeting successfully tested your video device. The driver seems to "
-#~ "be usable for videoconferencing with GnomeMeeting."
-#~ msgstr ""
-#~ "El GnomeMeeting ha comprovat amb èxit el vostre dispositiu de vídeo. El "
-#~ "programa de control sembla que es pot fer servir per a videoconferència "
-#~ "amb el GnomeMeeting."
+#~ "Escolliu el nombre de blocs (que no hagin canviat) transmesos en cada "
+#~ "quadre. Aquests blocs emplenen el fons."
