@@ -1,6 +1,18 @@
 2005-02-21  Damien Sandras  <dsandras@gnome.org>
 
 	* configure.in: Fixed multiarch building thanks to Fred Crozat.
+	
+	* src/h323endpoint.*: Removed GatekeeperRegister due to the new 
+	GMAccountsManager changes.
+
+	* src/tools.cpp: Removed GatekeeperRegister function.
+
+	* src/pref_window.cpp: Added support to add H.323 gatekeepers as
+	accounts.
+
+	* src/Makefile.am: Removed h323gatekeeper.* building.
+
+	* srC/accounts.*: Added H.323 support.
 
 2005-02-20  Damien Sandras  <dsandras@gnome.org>
 
