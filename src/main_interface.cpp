@@ -186,14 +186,19 @@ void left_arrow_clicked (GtkWidget *w, gpointer data)
 
   GnomeUIInfo *notebook_view_uiinfo = (GnomeUIInfo *) object;
 
+  int current_page = gtk_notebook_get_current_page (GTK_NOTEBOOK (gw->main_notebook));
+
   GTK_CHECK_MENU_ITEM (notebook_view_uiinfo [0].widget)->active =
-    (gtk_notebook_get_current_page (GTK_NOTEBOOK (gw->main_notebook)) == 0);
+    (current_page == 0);
   GTK_CHECK_MENU_ITEM (notebook_view_uiinfo [1].widget)->active = 
-    (gtk_notebook_get_current_page (GTK_NOTEBOOK (gw->main_notebook)) == 1);
+    (current_page == 1);
   GTK_CHECK_MENU_ITEM (notebook_view_uiinfo [2].widget)->active = 
-    (gtk_notebook_get_current_page (GTK_NOTEBOOK (gw->main_notebook)) == 2);
+    (current_page == 2);
   GTK_CHECK_MENU_ITEM (notebook_view_uiinfo [3].widget)->active =
-    (gtk_notebook_get_current_page (GTK_NOTEBOOK (gw->main_notebook)) == 3);
+    (current_page == 3);
+
+  gtk_widget_set_sensitive (w, current_page != 0);
+  gtk_widget_set_sensitive (gw->right_arrow, true);
 }
 
 
@@ -209,14 +214,19 @@ void right_arrow_clicked (GtkWidget *w, gpointer data)
 
   GnomeUIInfo *notebook_view_uiinfo = (GnomeUIInfo *) object;
 
+  int current_page = gtk_notebook_get_current_page (GTK_NOTEBOOK (gw->main_notebook));
+
   GTK_CHECK_MENU_ITEM (notebook_view_uiinfo [0].widget)->active =
-    (gtk_notebook_get_current_page (GTK_NOTEBOOK (gw->main_notebook)) == 0);
+    (current_page == 0);
   GTK_CHECK_MENU_ITEM (notebook_view_uiinfo [1].widget)->active = 
-    (gtk_notebook_get_current_page (GTK_NOTEBOOK (gw->main_notebook)) == 1);
+    (current_page == 1);
   GTK_CHECK_MENU_ITEM (notebook_view_uiinfo [2].widget)->active = 
-    (gtk_notebook_get_current_page (GTK_NOTEBOOK (gw->main_notebook)) == 2);
+    (current_page == 2);
   GTK_CHECK_MENU_ITEM (notebook_view_uiinfo [3].widget)->active =
-    (gtk_notebook_get_current_page (GTK_NOTEBOOK (gw->main_notebook)) == 3);
+    (current_page == 3);
+
+  gtk_widget_set_sensitive (w, current_page != 3);
+  gtk_widget_set_sensitive (gw->left_arrow, true);
 }
 
 
@@ -435,7 +445,6 @@ void GM_main_interface_init (GM_window_widgets *gw, options *opts)
   GtkWidget *table, *table_in;	
   GtkWidget *frame;
   GtkWidget *pixmap;
-  GtkWidget *left_arrow, *right_arrow;
   GtkWidget *handle_box;
 
   GtkTooltips *tip;
@@ -626,45 +635,46 @@ void GM_main_interface_init (GM_window_widgets *gw, options *opts)
 			_("This button permits enabling/disabling of silence detection during calls."), NULL);
 
   /* Left arrow */
-  left_arrow = gtk_button_new ();
+  gw->left_arrow = gtk_button_new ();
 
   pixmap = gnome_pixmap_new_from_xpm_d ((char **) left_arrow_xpm);
-  gtk_container_add (GTK_CONTAINER (left_arrow), pixmap);
+  gtk_container_add (GTK_CONTAINER (gw->left_arrow), pixmap);
 
-  gtk_widget_set_usize (GTK_WIDGET (left_arrow), 24, 24);
+  gtk_widget_set_usize (GTK_WIDGET (gw->left_arrow), 24, 24);
 
   gtk_table_attach (GTK_TABLE (table_in), 
-		    left_arrow, 4, 5, 0, 1,
+		    gw->left_arrow, 4, 5, 0, 1,
 		    (GtkAttachOptions) NULL,
 		    (GtkAttachOptions) NULL,
 		    2, 2);
 
-  gtk_signal_connect (GTK_OBJECT (left_arrow), "clicked",
+  gtk_signal_connect (GTK_OBJECT (gw->left_arrow), "clicked",
 		      GTK_SIGNAL_FUNC (left_arrow_clicked), gw);
 
   tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, left_arrow,
+  gtk_tooltips_set_tip (tip, gw->left_arrow,
 			_("Click here to display the previous section of the Control Panel."), NULL);
+  gtk_widget_set_sensitive (gw->left_arrow, false);
 
   /* Right arrow */
-  right_arrow = gtk_button_new ();
+  gw->right_arrow = gtk_button_new ();
 
   pixmap = gnome_pixmap_new_from_xpm_d ((char **) right_arrow_xpm);
-  gtk_container_add (GTK_CONTAINER (right_arrow), pixmap);
+  gtk_container_add (GTK_CONTAINER (gw->right_arrow), pixmap);
 
-  gtk_widget_set_usize (GTK_WIDGET (right_arrow), 24, 24);
+  gtk_widget_set_usize (GTK_WIDGET (gw->right_arrow), 24, 24);
 
   gtk_table_attach (GTK_TABLE (table_in), 
-		    right_arrow, 5, 6, 0, 1,
+		    gw->right_arrow, 5, 6, 0, 1,
 		    (GtkAttachOptions) NULL,
 		    (GtkAttachOptions) NULL,
 		    2, 2);
 
-  gtk_signal_connect (GTK_OBJECT (right_arrow), "clicked",
+  gtk_signal_connect (GTK_OBJECT (gw->right_arrow), "clicked",
 		      GTK_SIGNAL_FUNC (right_arrow_clicked), gw);
 
   tip = gtk_tooltips_new ();
-  gtk_tooltips_set_tip (tip, right_arrow,
+  gtk_tooltips_set_tip (tip, gw->right_arrow,
 			_("Click here to display the next section of the Control Panel."), NULL);
 
 

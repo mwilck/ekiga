@@ -1,3 +1,13 @@
+2001-11-24  Miguel Rodríguez Pérez  <migrax@terra.es>
+
+	* src/main_interface.cpp (left_arrow_clicked): 
+	(right_arrow_clicked): Make right_arrow and left_arrow sensitive
+	acording to the selected page in the notebook
+
+	* src/common.h (struct _GM_window_widgets): Added left_arrow and right_arrow
+	
+	* src/main_interface.cpp (GM_main_interface_init): Make left_arrow insensitive
+
 2001-11-23  Damien Sandras  <dsandras@seconix.com>
 
 	* src/endpoint.cpp: Fixed a bug with the sound. The incoming sound 

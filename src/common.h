@@ -123,6 +123,8 @@ struct _GM_window_widgets
   GtkWidget *silence_detection_button;
   GtkWidget *video_chan_button;
   GtkWidget *audio_chan_button;
+  GtkWidget *left_arrow;
+  GtkWidget *right_arrow;
   GtkWidget *incoming_call_popup;
 
   int video_grabber_thread_count;
