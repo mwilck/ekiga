@@ -159,7 +159,7 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
   GConfClient *client = NULL;
   gchar *gconf_string = NULL;
   gchar *gk_name = NULL;
-  int cpt = 1;
+  int cpt = 1, registering_method = 0;
   
   GSList *group = NULL;
   
@@ -223,7 +223,6 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
     }
 
     g_free (gconf_string);   
-    g_free (gk_name);
 
 
     /* Enable Fast Start and Tunneling */
@@ -247,8 +246,25 @@ gnomemeeting_druid_quit (GtkWidget *w, gpointer data)
       cpt++;
     }
   }
-  else
+  else {
+
+    gk_name =
+      gconf_client_get_string (client, GATEKEEPER_KEY "gk_host", NULL);
+    registering_method =
+      gconf_client_get_int (client, GATEKEEPER_KEY "registering_method", NULL);
+				       
     gconf_client_set_bool (client, SERVICES_KEY "enable_microtelco", false, 0);
+
+    if (gk_name && !strcmp (gk_name, "gk.microtelco.com")
+	&& registering_method == 1) {
+
+      gconf_client_set_int (client, GATEKEEPER_KEY "registering_method", 0, 0);
+      MyApp->Endpoint ()->SetUserNameAndAlias ();
+      MyApp->Endpoint ()->RemoveGatekeeper (0);
+    }
+
+    g_free (gk_name);
+  }
 
   gtk_widget_hide_all (GTK_WIDGET (gw->druid_window));
   gnome_druid_set_page (dw->druid, GNOME_DRUID_PAGE (dw->page_edge));
@@ -919,7 +935,6 @@ gnomemeeting_init_druid_ixj_device_page (GnomeDruid *druid, int p, int t)
 {
   GtkWidget *table = NULL;
   GtkWidget *href = NULL;
-  GtkWidget *entry = NULL;
   GtkWidget *vbox = NULL;
   GtkWidget *label = NULL;
 
@@ -951,18 +966,20 @@ gnomemeeting_init_druid_ixj_device_page (GnomeDruid *druid, int p, int t)
   table =
     gnomemeeting_vbox_add_table (vbox, _("PC-To-Phone Setup"), 3, 4);
 
-  entry = 
+  dw->gk_alias = 
     gnomemeeting_table_add_entry (table, _("Account number:"), 
 				  GATEKEEPER_KEY "gk_alias", NULL, 0);
-  entry = 
+  dw->gk_password = 
     gnomemeeting_table_add_entry (table, _("Password:"), 
 				  GATEKEEPER_KEY "gk_password", NULL, 1);
-  gtk_entry_set_visibility (GTK_ENTRY (entry), FALSE);
+  gtk_entry_set_visibility (GTK_ENTRY (dw->gk_password), FALSE);
 
 
   /* The register toggle */
   dw->enable_microtelco =
     gtk_check_button_new_with_label (_("Register to the MicroTelco service"));
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (dw->enable_microtelco),
+				gconf_client_get_bool (client, SERVICES_KEY "enable_microtelco", NULL));
   gtk_table_attach (GTK_TABLE (table), dw->enable_microtelco,
 		    0, 2, 2, 3,
                     (GtkAttachOptions) (GTK_FILL | GTK_SHRINK),                

@@ -1,3 +1,15 @@
+2003-01-26 Damien Sandras  <dsandras@seconix.com>
+
+	* src/common.h: Added widgets for gk_alias and gk_password in the
+	druid.
+
+	* src/config.cpp: Updates the 2 previous widgets when the key changes.
+
+	* src/druid.cpp: Unregister from GK if gk was microtelco.com
+	and if microtelco is disabled in the druid.
+	
+	* src/gatekeeper.cpp: Code cleanups.
+	
 2003-01-25  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* lib/gtk-text-buffer-extentions.c

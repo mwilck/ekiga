@@ -189,6 +189,10 @@ void GMH323Gatekeeper::Main ()
   /* Register using the gatekeeper ID */
   if (method == 2) {
 
+    /* We disable microtelco if it was enabled */
+    gconf_client_set_bool (client, SERVICES_KEY "enable_microtelco",
+			   false, 0);
+
     gconf_string = gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/gatekeeper/gk_id", 0);
 
     if ((gconf_string == NULL) || (!strcmp ("", gconf_string))) {
@@ -254,6 +258,10 @@ void GMH323Gatekeeper::Main ()
   /* Register after trying to discover the Gatekeeper */
   if (method == 3) {
 
+    /* We disable microtelco if it was enabled */
+    gconf_client_set_bool (client, SERVICES_KEY "enable_microtelco",
+			   false, 0);
+
     if (MyApp->Endpoint ()->DiscoverGatekeeper ()) {
  
       msg = g_strdup_printf (_("Gatekeeper set to %s"), 
@@ -286,4 +294,9 @@ void GMH323Gatekeeper::Main ()
       gconf_client_set_int (GCONF_CLIENT (client), "/apps/gnomemeeting/gatekeeper/registering_method", 0, NULL);
     }
   }
+
+  if (method == 0)
+    /* We disable microtelco if it was enabled */
+    gconf_client_set_bool (client, SERVICES_KEY "enable_microtelco",
+			   false, 0);
 }

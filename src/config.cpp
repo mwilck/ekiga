@@ -1436,6 +1436,8 @@ void gnomemeeting_init_gconf (GConfClient *client)
   /* gnomemeeting_init_pref_window_general */
   gconf_client_notify_add (client, "/apps/gnomemeeting/gatekeeper/gk_alias",
 			   entry_changed_nt, pw->gk_alias, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/gatekeeper/gk_alias",
+			   entry_changed_nt, dw->gk_alias, 0, 0);
 
   gconf_client_notify_add (client, 
 			   "/apps/gnomemeeting/personal_data/firstname",
@@ -1541,6 +1543,9 @@ void gnomemeeting_init_gconf (GConfClient *client)
 			   entry_changed_nt, pw->gk_id, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/gatekeeper/gk_password",
 			   entry_changed_nt, pw->gk_password, 0, 0);
+  gconf_client_notify_add (client, "/apps/gnomemeeting/gatekeeper/gk_password",
+			   entry_changed_nt, dw->gk_password, 0, 0);
+
   gconf_client_notify_add (client, "/apps/gnomemeeting/gatekeeper/registering_method", int_option_menu_changed_nt, pw->gk, 0, 0);
 
 

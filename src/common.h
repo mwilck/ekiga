@@ -202,6 +202,8 @@ struct _GmDruidWindow
   GtkWidget *audio_recorder;
   GtkWidget *audio_recorder_mixer;
   GtkWidget *video_device;
+  GtkWidget *gk_alias;
+  GtkWidget *gk_password;
 #ifndef DISABLE_GNOME
   GnomeDruidPageEdge *page_edge;
 #endif
