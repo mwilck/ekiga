@@ -501,22 +501,23 @@ static void gnomemeeting_init_druid_connection_type_page (GnomeDruid *druid)
 
   if (gconf_client_get_bool (client, "/apps/gnomemeeting/general/net_is_custom", NULL))
     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (radio5), true);
-
-  /* Defaults to the defaults for dialup users */
-  gconf_client_set_int (client, "/apps/gnomemeeting/video_settings/tr_fps",
-			1, NULL);
-  gconf_client_set_int (client, "/apps/gnomemeeting/video_settings/tr_vq",
-			10, NULL);
-  gconf_client_set_int (client, "/apps/gnomemeeting/video_settings/re_vq",
-			10, NULL);
-  gconf_client_set_int (client, 
-			"/apps/gnomemeeting/audio_settings/jitter_buffer",
-			200, NULL);
-  gconf_client_set_bool (client, 
-			 "/apps/gnomemeeting/video_settings/enable_fps",
-			 0, NULL);
-  gconf_client_set_bool (client, 
-			 "/apps/gnomemeeting/video_settings/enable_video_transmission", 0, NULL);
+  else {
+    /* Defaults to the defaults for dialup users */
+    gconf_client_set_int (client, "/apps/gnomemeeting/video_settings/tr_fps",
+			  1, NULL);
+    gconf_client_set_int (client, "/apps/gnomemeeting/video_settings/tr_vq",
+			  10, NULL);
+    gconf_client_set_int (client, "/apps/gnomemeeting/video_settings/re_vq",
+			  10, NULL);
+    gconf_client_set_int (client, 
+			  "/apps/gnomemeeting/audio_settings/jitter_buffer",
+			  200, NULL);
+    gconf_client_set_bool (client, 
+			   "/apps/gnomemeeting/video_settings/enable_fps",
+			   0, NULL);
+    gconf_client_set_bool (client, 
+			   "/apps/gnomemeeting/video_settings/enable_video_transmission", 0, NULL);
+  }
   
   gtk_table_attach (GTK_TABLE (table), box, 0, 2, 1, 2,
 		    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 
