@@ -276,7 +276,6 @@ void GMAudioRP::Main ()
      of instance variables. We do not need full-duplex for the Quicknet
      test anyway */
   static GMLid *l = NULL;
-  static OpalLineInterfaceDevice *lid = NULL;
   static PMutex lid_mutex;
   PINDEX i;
 #endif
@@ -321,9 +320,6 @@ void GMAudioRP::Main ()
     lid_mutex.Wait ();
     if (!l) 
       l = ep->CreateLid (device_name);
-    
-    if (l)
-      lid = l->GetLidDevice ();
     lid_mutex.Signal ();
   }
 #endif
@@ -339,7 +335,7 @@ void GMAudioRP::Main ()
   g_free (msg);
 
   if ((driver_name != "Quicknet" && !channel)
-      || (driver_name == "Quicknet" && (!lid || !lid->IsOpen ()))) {
+      || (driver_name == "Quicknet" && (!l || !l->IsOpen ()))) {
 
     gdk_threads_enter ();  
     if (is_encoding)
@@ -357,12 +353,12 @@ void GMAudioRP::Main ()
 #ifdef HAS_IXJ
     else {
 
-      if (lid) {
+      if (l) {
 	
-	lid->SetReadFrameSize (0, 640);
-	lid->SetReadFormat (0, OpalPCM16);
-	lid->SetWriteFrameSize (0, 640);
-	lid->SetWriteFormat (0, OpalPCM16);
+	l->SetReadFrameSize (0, 640);
+	l->SetReadFormat (0, OpalPCM16);
+	l->SetWriteFrameSize (0, 640);
+	l->SetWriteFormat (0, OpalPCM16);
       }
     }
 #endif
@@ -371,8 +367,6 @@ void GMAudioRP::Main ()
 
 #ifdef HAS_IXJ
       l = ep->GetLid ();
-      if (l)
-	lid = l->GetLidDevice ();
 #endif
       
       if (is_encoding) {
@@ -380,8 +374,8 @@ void GMAudioRP::Main ()
 	if ((driver_name != "Quicknet"
 	     && !channel->Read ((void *) buffer, 640))
 	    || (driver_name == "Quicknet"
-		&& lid
-		&& !lid->ReadFrame (0, (void *) buffer, i)))  {
+		&& l
+		&& !l->ReadFrame (0, (void *) buffer, i)))  {
       
 	  gdk_threads_enter ();  
 	  gnomemeeting_error_dialog (GTK_WINDOW (gw->druid_window), _("Cannot use the audio device"), _("The selected audio device (%s) was successfully opened but it is impossible to read data from this device. Please check your audio setup."), (const char*) device_name);
@@ -456,8 +450,8 @@ void GMAudioRP::Main ()
 	  if ((driver_name != "Quicknet"
 	       && !channel->Write ((void *) buffer, 640))
 	      || (driver_name == "Quicknet"
-		  && lid
-		  && !lid->WriteFrame (0, (const void *) buffer, 640, i)))  {
+		  && l
+		  && !l->WriteFrame (0, (const void *) buffer, 640, i)))  {
       
 	    gdk_threads_enter ();  
 	    gnomemeeting_error_dialog (GTK_WINDOW (gw->druid_window), _("Cannot use the audio device"), _("The selected audio device (%s) was successfully opened but it is impossible to write data to this device. Please check your audio setup."), (const char*) device_name);
@@ -571,6 +565,8 @@ void GMAudioTester::Main ()
       || audio_recorder == PString (_("No device found"))
       || audio_player == PString (_("No device found")))
     return;
+
+  gnomemeeting_sound_daemons_suspend ();
   
   buffer_ring = (char *) malloc (8000 /*Hz*/ * 5 /*s*/ * 2 /*16bits*/);
 
@@ -629,6 +625,8 @@ void GMAudioTester::Main ()
     gtk_widget_destroy (test_dialog);
   gdk_threads_leave ();
 
+  gnomemeeting_sound_daemons_resume ();
+  
   free (buffer_ring);
 #endif
 }

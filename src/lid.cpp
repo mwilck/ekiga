@@ -79,7 +79,6 @@ GMLid::GMLid (PString d)
   :PThread (1000, NoAutoDeleteThread)
 {
   stop = FALSE;
-  lid = NULL;
 
   dev_name = d;
 
@@ -101,32 +100,38 @@ GMLid::~GMLid ()
 }
 
 
-void
+BOOL
 GMLid::Open ()
 {
+  GMH323EndPoint *ep = NULL;
   GmWindow *gw = NULL;
+
   gchar *msg = NULL;
   gchar *lid_country = NULL;
 
   int lid_aec = 0;
+  int lid_odt = 0;
+
+  BOOL return_val = FALSE;
 
   PWaitAndSignal m(device_access_mutex);
   
   gw = GnomeMeeting::Process ()->GetMainWindow ();
-
-  if (!lid) {
+  ep = GnomeMeeting::Process ()->Endpoint ();
+  
+  if (!IsOpen ()) {
 
     /* We use the default settings, but the device name provided as argument */
     gnomemeeting_threads_enter ();
     lid_country = gconf_get_string (AUDIO_DEVICES_KEY "lid_country_code");
     lid_aec = gconf_get_int (AUDIO_DEVICES_KEY "lid_echo_cancellation_level");
+    lid_odt = gconf_get_int (AUDIO_DEVICES_KEY "lid_output_device_type");
     gnomemeeting_threads_leave ();
 
-    lid = new OpalIxJDevice;
-    if (lid->Open (dev_name)) {
+    if (OpalIxJDevice::Open (dev_name)) {
       
       msg = g_strdup_printf (_("Opened Quicknet device %s"), 
-			     (const char *) lid->GetName ());
+			     (const char *) GetName ());
       
       gnomemeeting_threads_enter ();
       gnomemeeting_log_insert (gw->history_text_view, msg);
@@ -135,26 +140,35 @@ GMLid::Open ()
       g_free (msg);
       
       if (lid_country)
-	lid->SetCountryCodeName(lid_country);
+	SetCountryCodeName(lid_country);
       
-      lid->SetAEC (0, (OpalLineInterfaceDevice::AECLevels) lid_aec);
-      lid->StopTone (0);
-      lid->SetLineToLineDirect (0, 1, FALSE);
-
+      SetAEC (0, (OpalLineInterfaceDevice::AECLevels) lid_aec);
+      StopTone (0);
+      SetLineToLineDirect (0, 1, FALSE);
+      if (lid_odt == 0) // POTS
+	EnableAudio (0, TRUE);
+      else 
+	EnableAudio (0, FALSE);
+      
+      return_val = TRUE;
     }
     else {
       
       gnomemeeting_threads_enter ();
       gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Error while opening the Quicknet device."), _("Please check that your driver is correctly installed and that the device is working correctly."));
       gnomemeeting_threads_leave ();
-    }
 
-    g_free (lid_country);
+      return_val = FALSE;
+    }
   }
+
+  g_free (lid_country);
+  
+  return return_val;
 }
 
 
-void
+BOOL
 GMLid::Close ()
 {
   GmWindow *gw = NULL;
@@ -164,13 +178,13 @@ GMLid::Close ()
 
   gw = GnomeMeeting::Process ()->GetMainWindow ();
   
-  if (lid && lid->IsOpen ()) {
+  if (IsOpen ()) {
 
     msg =
       g_strdup_printf (_("Closed Quicknet device %s"), 
-		       (const char *) lid->GetName ());
+		       (const char *) GetName ());
 
-    lid->Close ();
+    OpalIxJDevice::Close ();
 
     gnomemeeting_threads_enter ();
     gnomemeeting_log_insert (gw->history_text_view, msg);
@@ -178,6 +192,8 @@ GMLid::Close ()
   }
 
   g_free (msg);
+
+  return TRUE;
 }
 
 
@@ -214,8 +230,7 @@ GMLid::Main ()
 
   
   /* Check the initial hook status. */
-  if (lid)
-    off_hook = last_off_hook = lid->IsLineOffHook (OpalIxJDevice::POTSLine);
+  off_hook = last_off_hook = IsLineOffHook (OpalIxJDevice::POTSLine);
 
   gnomemeeting_threads_enter ();
   lid_odt = gconf_get_int (AUDIO_DEVICES_KEY "lid_output_device_type");
@@ -224,9 +239,9 @@ GMLid::Main ()
 
   /* Update the mixers if the lid is used */
   gnomemeeting_threads_enter ();
-  lid->GetPlayVolume (0, vol);
+  GetPlayVolume (0, vol);
   GTK_ADJUSTMENT (gw->adj_play)->value = (int) (vol);
-  lid->GetRecordVolume (0, vol);
+  GetRecordVolume (0, vol);
   GTK_ADJUSTMENT (gw->adj_rec)->value = (int) (vol);
   gtk_widget_queue_draw (GTK_WIDGET (gw->audio_settings_frame));
 
@@ -236,16 +251,16 @@ GMLid::Main ()
   gnomemeeting_threads_leave ();
 
 
-  while (lid && lid->IsOpen() && !stop) {
+  while (IsOpen() && !stop) {
 
     calling_state = endpoint->GetCallingState ();
 
-    off_hook = lid->IsLineOffHook (0);
+    off_hook = IsLineOffHook (0);
     now = PTime ();
 
 
     /* If there is a DTMF, trigger the dialpad event */
-    c = lid->ReadDTMF (0);
+    c = ReadDTMF (0);
     if (c) {
 
       gnomemeeting_threads_enter ();
@@ -276,11 +291,11 @@ GMLid::Main ()
 
 	if (lid_odt == 0) { /* POTS: Play a dial tone */
 
-	  lid->PlayTone (0, OpalLineInterfaceDevice::DialTone);
-	  lid->EnableAudio (0, TRUE);
+	  PlayTone (0, OpalLineInterfaceDevice::DialTone);
+	  EnableAudio (0, TRUE);
 	}
 	else
-	  lid->EnableAudio (0, FALSE);
+	  EnableAudio (0, FALSE);
 
 	gnomemeeting_threads_enter ();
 	url = gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry)); 
@@ -305,7 +320,7 @@ GMLid::Main ()
 			  GMURL ().GetDefaultURL ());
       gnomemeeting_threads_leave ();
 
-      lid->RingLine (0, 0);
+      RingLine (0, 0);
 
       /* If we are in a call, or calling, we disconnect */
       if (calling_state == GMH323EndPoint::Connected
@@ -377,74 +392,56 @@ GMLid::UpdateState (GMH323EndPoint::CallingState i)
   
   lid_odt = gconf_get_int (AUDIO_DEVICES_KEY "lid_output_device_type");
   
-  if (lid && lid->IsOpen ()) {
+  if (IsOpen ()) {
     
     switch (i) {
 
     case GMH323EndPoint::Calling:
-      lid->RingLine (0, 0);
-      lid->StopTone (0);
-      lid->PlayTone (0, OpalLineInterfaceDevice::RingTone);
+      RingLine (0, 0);
+      StopTone (0);
+      PlayTone (0, OpalLineInterfaceDevice::RingTone);
       
       break;
 
     case GMH323EndPoint::Called: 
 
       if (lid_odt == 0)
-	lid->RingLine (OpalIxJDevice::POTSLine, 0x33);
+	RingLine (OpalIxJDevice::POTSLine, 0x33);
       else
-	lid->RingLine (0, 0);
+	RingLine (0, 0);
       break;
 
     case GMH323EndPoint::Standby: /* Busy */
-      lid->RingLine (0, 0);
-      lid->StopTone (0);
-      lid->PlayTone (0, OpalLineInterfaceDevice::BusyTone);
+      RingLine (0, 0);
+      PlayTone (0, OpalLineInterfaceDevice::BusyTone);
       if (lid_odt == 1) 
 	PThread::Current ()->Sleep (2800);
-
-      lid->StopTone (0);
+      StopTone (0);
       
       break;
 
     case GMH323EndPoint::Connected:
 
-      lid->RingLine (0, 0);
-      lid->StopTone (0);
-      lid->SetRemoveDTMF (0, TRUE);      
+      RingLine (0, 0);
+      StopTone (0);
+      SetRemoveDTMF (0, TRUE);      
     }
 
     if (lid_odt == 0) // POTS
-      lid->EnableAudio (0, TRUE);
+      EnableAudio (0, TRUE);
     else 
-      lid->EnableAudio (0, FALSE);
+      EnableAudio (0, FALSE);
   }
-}
-
-
-void
-GMLid::SetAEC (OpalLineInterfaceDevice::AECLevels level)
-{
-  if (lid && lid->IsOpen ())
-    lid->SetAEC (0, level);
-}
-
-
-void
-GMLid::SetCountryCodeName (const PString &d)
-{
-  if (lid && lid->IsOpen ())
-    lid->SetCountryCodeName (d);
 }
 
 
 void
 GMLid::SetVolume (int x, int y)
 {
-  if (lid && lid->IsOpen ()) {
+  if (IsOpen ()) {
 
-    lid->SetPlayVolume (0, x);
-    lid->SetRecordVolume (0, y);
+    SetPlayVolume (0, x);
+    SetRecordVolume (0, y);
   }
 }
 
@@ -452,26 +449,19 @@ GMLid::SetVolume (int x, int y)
 void
 GMLid::PlayDTMF (const char *digits)
 {
-  if (lid && lid->IsOpen () && digits) {
+  if (IsOpen () && digits) {
 
-    lid->StopTone (0);
-    lid->PlayDTMF (0, digits);
+    StopTone (0);
+    OpalIxJDevice::PlayDTMF (0, digits);
   }
-}
-
-
-OpalLineInterfaceDevice *
-GMLid::GetLidDevice ()
-{
-  return lid;
 }
 
 
 BOOL
 GMLid::areSoftwareCodecsSupported ()
 {
-  if (lid && lid->IsOpen ())
-    return (lid->GetMediaFormats ().GetValuesIndex (OpalMediaFormat(OPAL_PCM16)) 
+  if (IsOpen ())
+    return (GetMediaFormats ().GetValuesIndex (OpalMediaFormat(OPAL_PCM16)) 
 	    != P_MAX_INDEX);
   else
     return TRUE;

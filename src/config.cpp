@@ -1499,7 +1499,7 @@ lid_aec_changed_nt (GConfClient *client, guint, GConfEntry *entry, gpointer)
 
     if (lid) {
 
-      lid->SetAEC ((OpalLineInterfaceDevice::AECLevels) lid_aec);
+      lid->SetAEC (0, (OpalLineInterfaceDevice::AECLevels) lid_aec);
       lid->Unlock ();
     }
   }
@@ -1550,7 +1550,6 @@ lid_output_device_type_changed_nt (GConfClient *client,
   GMH323EndPoint *ep = NULL;
 
   GMLid *lid = NULL;
-  OpalLineInterfaceDevice *lid_device = NULL;
   
   if (entry->value->type == GCONF_VALUE_INT) {
     
@@ -1559,15 +1558,10 @@ lid_output_device_type_changed_nt (GConfClient *client,
 
     if (lid) {
 
-      lid_device = lid->GetLidDevice ();
-
-      if (lid_device) {
-
-	if (gconf_value_get_int (entry->value) == 0) // POTS
-	  lid_device->EnableAudio (0, FALSE);
+      if (gconf_value_get_int (entry->value) == 0) // POTS
+	  lid->EnableAudio (0, FALSE);
 	else
-	  lid_device->EnableAudio (0, TRUE);
-      }
+	  lid->EnableAudio (0, TRUE);
       
       lid->Unlock ();
     }

@@ -49,7 +49,7 @@
 #include <ixjlid.h>
 
 
-class GMLid : public PThread
+class GMLid : public PThread, public OpalIxJDevice
 {
   PCLASSINFO(GMLid, PThread);
 
@@ -79,22 +79,6 @@ class GMLid : public PThread
 
 
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Changes the Automatic Echo Cancellation level (Off,
-   *                 Low, Medium, High, AGC).
-   * PRE          :  /
-   */
-  void SetAEC (OpalLineInterfaceDevice::AECLevels);
-
-  
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Changes the Automatic Echo Cancellation level (Off,
-   *                 Low, Medium, High, AGC).
-   * PRE          :  /
-   */
-  void SetCountryCodeName (const PString &);
-
-
-  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Plays a DTMF after having stopped any tone.
    * PRE          :  /
    */
@@ -119,14 +103,6 @@ class GMLid : public PThread
 
 
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns the OpalLineInterfaceDevice associated with the
-   *                 LID.
-   * PRE          :  /
-   */
-  OpalLineInterfaceDevice *GetLidDevice ();
-
-
-  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Lock the LID, preventing it to be Opened or Closed.
    * PRE          :  /
    */
@@ -147,14 +123,14 @@ class GMLid : public PThread
    *                 in the generic history and failure messages in popups.
    * PRE          :  /
    */
-  void Open ();
+  BOOL Open ();
 
   
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Closes the currently opened Line Interface Device.
    * PRE          :  /
    */
-  void Close ();
+  BOOL Close ();
 
 
   /* DESCRIPTION  :  /
@@ -167,7 +143,6 @@ class GMLid : public PThread
 
 
   /* Internal variables */
-  OpalLineInterfaceDevice *lid;
   PMutex device_access_mutex;
   PMutex quit_mutex;
   PSyncPoint thread_sync_point;

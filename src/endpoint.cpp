@@ -430,12 +430,8 @@ GMH323EndPoint::AddAudioCapabilities ()
 #ifdef HAS_IXJ
   if ((l = GetLid ())) {
 
-    OpalLineInterfaceDevice *lid_device = NULL;
-
-    lid_device = l->GetLidDevice ();
-
-    if (lid_device && lid_device->IsOpen ())
-      H323_LIDCapability::AddAllCapabilities (*lid_device, capabilities, 0, 0);
+    if (l->IsOpen ())
+      H323_LIDCapability::AddAllCapabilities (*l, capabilities, 0, 0);
 
     l->Unlock ();
   }
@@ -1295,7 +1291,6 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   gnomemeeting_main_window_enable_statusbar_progress (false);
   gnomemeeting_threads_leave ();
   
-  
   /* Play Busy Tone */
 #ifdef HAS_IXJ
   l = GetLid ();
@@ -1641,15 +1636,11 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
 
 #ifdef HAS_IXJ
   GMLid *l = NULL;
-  OpalLineInterfaceDevice *lid_device = NULL;
-
-  if ((l = GetLid ())) 
-    lid_device = l->GetLidDevice ();
 
   /* If we are using a hardware LID, connect the audio stream to the LID */
-  if (lid_device && lid_device->IsOpen()) {
+  if ((l = GetLid ()) && l->IsOpen()) {
 
-    if (!codec.AttachChannel (new OpalLineChannel (*lid_device,
+    if (!codec.AttachChannel (new OpalLineChannel (*l,
 						   OpalIxJDevice::POTSLine,
 						   codec))) {
 
