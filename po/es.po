@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: GnomeMeeting 0.10\n"
-"POT-Creation-Date: 2001-09-13 04:32+0200\n"
+"POT-Creation-Date: 2001-09-20 15:46+0200\n"
 "PO-Revision-Date: 2001-08-26 16:57+0200\n"
 "Last-Translator: José Carlos García Sogo <jsogo@arrakis.es>\n"
 "Language-Team: Spanish <es@li.org>\n"
@@ -14,15 +14,30 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: gnomemeeting.desktop.in.h:1 sounds/GnomeMeeting.soundlist.in.h:1
+#, fuzzy
+msgid "GnomeMeeting"
+msgstr "Salir de GnomeMeeting"
+
+#: gnomemeeting.desktop.in.h:2
+msgid "H.323 Client"
+msgstr ""
+
+#. Auto Answer toggle button
+#: sounds/GnomeMeeting.soundlist.in.h:2 src/preferences.cpp:740
+#, fuzzy
+msgid "Incoming Call"
+msgstr "Llamada _entrante"
+
 #: src/applet.cpp:112
 msgid "Can't create applet!\n"
 msgstr "¡No se pudo crear el applet!\n"
 
-#: src/applet.cpp:135 src/toolbar.cpp:37
+#: src/applet.cpp:135 src/endpoint.cpp:456 src/toolbar.cpp:37
 msgid "Connect"
 msgstr "Conectar"
 
-#: src/applet.cpp:140 src/toolbar.cpp:44
+#: src/applet.cpp:140 src/endpoint.cpp:456 src/toolbar.cpp:44
 msgid "Disconnect"
 msgstr "Desconectar"
 
@@ -30,11 +45,18 @@ msgstr "Desconectar"
 msgid "Toggle main window"
 msgstr "Cambiar a ventana principal"
 
-#: src/callbacks.cpp:131
+#: src/callbacks.cpp:144
 msgid "Contributors:"
 msgstr "Colaboradores:"
 
-#: src/callbacks.cpp:136
+#. Translators: If your encoding allows it, use iacute (U00ED) for
+#. the 'i' of 'Rodriguez' and eacute (U00E9) for the first 'e' of
+#. 'Perez'.
+#: src/callbacks.cpp:151
+msgid "Miguel Rodriguez Perez <migrax@terra.es>"
+msgstr ""
+
+#: src/callbacks.cpp:154
 msgid "I18n Maintainer:"
 msgstr ""
 
@@ -42,11 +64,11 @@ msgstr ""
 #. copyright character if your character set allows it
 #. (Hint: iso-8859-1 is one of the character sets that
 #. has this symbol).
-#: src/callbacks.cpp:150
+#: src/callbacks.cpp:168
 msgid "(C) 2000, 2001 Damien Sandras"
 msgstr "© 2000, 2001 Damien Sandras"
 
-#: src/callbacks.cpp:152
+#: src/callbacks.cpp:170
 #, fuzzy
 msgid ""
 "GnomeMeeting is an H.323 compliant program for GNOME.\n"
@@ -55,35 +77,45 @@ msgstr ""
 "GnomeMeeting es un programa complementario a H.323 para GNOME\n"
 "Este programa no está soportado por Microsoft©."
 
-#: src/callbacks.cpp:168
+#: src/callbacks.cpp:186
 msgid ""
 "A call is currently in progress, please disconnect before trying to quit."
 msgstr ""
 
-#: src/callbacks.cpp:176
+#: src/callbacks.cpp:194
 msgid "Are you sure you want to quit?"
 msgstr "¿Está seguro de que desea salir?"
 
-#: src/config.cpp:231
+#: src/config.cpp:250
 msgid "Sorry, no ldap server specified!"
 msgstr "Perdón, ¡no especificó ningún servidor LDAP!"
 
-#: src/config.cpp:241
+#: src/config.cpp:260
 msgid "Sorry, invalid ldap server port!"
 msgstr "Perdón, puerto del servidor LDAP inválido"
 
-#: src/config.cpp:249
+#: src/config.cpp:268
 msgid "Please provide your first name!"
 msgstr "Escriba su nombre."
 
-#: src/config.cpp:257
+#: src/config.cpp:276
 msgid "Please provide a valid e-mail!"
 msgstr "Por favor, escriba un email válido."
 
-#: src/config.cpp:271 src/config.cpp:280
+#: src/config.cpp:290 src/config.cpp:299
 #, fuzzy
 msgid "Could not open the player mixer."
 msgstr "No se pudo abrir la mesa de mezclas."
+
+#: src/config.cpp:333
+msgid ""
+"Impossible to register to an empty host. Please specify to host to contact "
+"to register with the gatekeeper."
+msgstr ""
+
+#: src/config.cpp:344
+msgid "Please specify a Gatekeeper ID to contact to register."
+msgstr ""
 
 #: src/connection.cpp:78
 msgid "Started New Logical Channel..."
@@ -125,156 +157,174 @@ msgstr "No contestar ninguna llamada"
 msgid "Auto Answering Incoming Call"
 msgstr "Aceptar llamadas automáticamente"
 
-#: src/endpoint.cpp:136 src/endpoint.cpp:152
+#: src/endpoint.cpp:138 src/endpoint.cpp:154
 msgid "Added H.261 CIF capability"
 msgstr "Capacidad de H.261 CIF añadida"
 
-#: src/endpoint.cpp:141 src/endpoint.cpp:148
+#: src/endpoint.cpp:143 src/endpoint.cpp:150
 msgid "Added H.261 QCIF capability"
 msgstr "Capacidad de H.261 QCIF añadida"
 
-#: src/endpoint.cpp:162
+#: src/endpoint.cpp:164
 msgid "Reinitialize the capabilities"
 msgstr "Reiniciar capacidades"
 
-#: src/endpoint.cpp:171
+#: src/endpoint.cpp:173
 msgid "Added MS-GSM capability"
 msgstr "Capacidad de MS-GSM añadida"
 
-#: src/endpoint.cpp:179
+#: src/endpoint.cpp:181
 msgid "Added G.711-uLaw capability"
 msgstr "Capacidad de G.711-uLaw añadida"
 
-#: src/endpoint.cpp:187
+#: src/endpoint.cpp:189
 msgid "Added G.711-ALaw capability"
 msgstr "Capacidad de G.711-ALaw añadida"
 
-#: src/endpoint.cpp:194
+#: src/endpoint.cpp:196
 msgid "Added GSM-06.10 capability"
 msgstr "Capacidad de GSM-06.10 añadida"
 
-#: src/endpoint.cpp:200
+#: src/endpoint.cpp:202
 msgid "Added LPC10 capability"
 msgstr "Capacidad de LPC10 añadida"
 
-#. Translators: This is shown in the history.
-#: src/endpoint.cpp:282
-#, fuzzy, c-format
-msgid "Set Audio player device to %s"
-msgstr "Simplemente introduzca el dispositivo de audio a usar"
-
-#. Translators: This is shown in the history.
-#: src/endpoint.cpp:287
-#, c-format
-msgid "Set Audio recorder device to %s"
+#: src/endpoint.cpp:328 src/endpoint.cpp:333
+msgid "Could not find audio channel"
 msgstr ""
 
+#: src/endpoint.cpp:342
+#, fuzzy
+msgid "Disabled Silence Detection"
+msgstr "Activar detector de _silencio"
+
+#: src/endpoint.cpp:347
+#, fuzzy
+msgid "Enabled Silence Detection"
+msgstr "Activar detector de _silencio"
+
 #. only a pointer => destroyed with the PString
-#: src/endpoint.cpp:388
+#: src/endpoint.cpp:424
 #, fuzzy, c-format
 msgid "Call from %s"
 msgstr "Llamada de: "
 
-#: src/endpoint.cpp:446
+#: src/endpoint.cpp:455
+#, fuzzy
+msgid "Incoming call"
+msgstr "Llamada _entrante"
+
+#: src/endpoint.cpp:505
 #, fuzzy, c-format
 msgid "Connected with %s using %s"
 msgstr "Conectado con "
 
-#: src/endpoint.cpp:452
+#: src/endpoint.cpp:511
 msgid "Connected"
 msgstr "Conectado"
 
-#: src/endpoint.cpp:455
+#: src/endpoint.cpp:514
 msgid "Fast start enabled"
 msgstr "Inicio rápido activado"
 
-#: src/endpoint.cpp:457
+#: src/endpoint.cpp:516
 msgid "Fast start disabled"
 msgstr "Inicio rápido desactivado"
 
-#: src/endpoint.cpp:460
+#: src/endpoint.cpp:519
 msgid "H.245 Tunnelling enabled"
 msgstr "H.245 Tunnelling activado"
 
-#: src/endpoint.cpp:462
+#: src/endpoint.cpp:521
 msgid "H.245 Tunnelling disabled"
 msgstr "H.245 Tunnelling desactivado"
 
-#: src/endpoint.cpp:513
+#: src/endpoint.cpp:572
 msgid "Remote party has cleared the call"
 msgstr "La otra parte ha colgado"
 
-#: src/endpoint.cpp:518
+#: src/endpoint.cpp:577
 msgid "Remote party has stopped calling"
 msgstr "La otra parte dejó de llamar"
 
-#: src/endpoint.cpp:523 src/endpoint.cpp:543
+#: src/endpoint.cpp:582 src/endpoint.cpp:602
 msgid "Remote party did not accept your call"
 msgstr "La otra parte no aceptó su llamada"
 
-#: src/endpoint.cpp:528
+#: src/endpoint.cpp:587
 msgid "Remote party did not answer your call"
 msgstr "La otra parte no contestó a su llamada"
 
-#: src/endpoint.cpp:533
+#: src/endpoint.cpp:592
 msgid "This call ended abnormally"
 msgstr "Esta llamada finalizó abruptamente"
 
-#: src/endpoint.cpp:538
+#: src/endpoint.cpp:597
 msgid "Could not find common codec with remote party"
 msgstr "No hay un códec en común con la otra parte"
 
-#: src/endpoint.cpp:548
+#: src/endpoint.cpp:607
 msgid "Refused incoming call"
 msgstr "Llamada entrante ignorada"
 
-#: src/endpoint.cpp:553
+#: src/endpoint.cpp:612
 msgid "User not found"
 msgstr "Usuario no encotrado"
 
-#: src/endpoint.cpp:558
+#: src/endpoint.cpp:617
 msgid "Call ended: insufficient bandwidth"
 msgstr "Llamada cancelada: insuficiente ancho de banda"
 
-#: src/endpoint.cpp:566
+#: src/endpoint.cpp:625
 msgid "Remote party could not be reached"
 msgstr "La otra parte no puede ser alcanzada"
 
-#: src/endpoint.cpp:571
+#: src/endpoint.cpp:630
 msgid "Remote party is not online"
 msgstr "La otra parte no está en linea"
 
-#: src/endpoint.cpp:576
+#: src/endpoint.cpp:635
 msgid "No phone running for remote party"
 msgstr "Ningún teléfono ejecutándose remotamente"
 
-#: src/endpoint.cpp:581
+#: src/endpoint.cpp:640
 msgid "Transport error calling"
 msgstr "Error en transporte de llamada"
 
-#: src/endpoint.cpp:587 src/endpoint.cpp:590
+#: src/endpoint.cpp:646 src/endpoint.cpp:649
 msgid "Call completed"
 msgstr "Llamada concluida"
 
-#: src/endpoint.cpp:760 src/webcam.cpp:169
+#: src/endpoint.cpp:829 src/webcam.cpp:169
 #, c-format
 msgid "Successfully opened video device %s, channel %d"
 msgstr ""
 
-#: src/endpoint.cpp:772 src/webcam.cpp:181
+#: src/endpoint.cpp:841 src/webcam.cpp:181
 #, c-format
 msgid ""
 "Error while opening video device %s, channel %d. A test image will be "
 "transmitted."
 msgstr ""
 
-#: src/gdkvideoio.cpp:213
-msgid "Transmitted FPS: "
-msgstr "FPS transmitidos:"
+#: src/gatekeeper.cpp:58 src/gatekeeper.cpp:89 src/gatekeeper.cpp:118
+#, fuzzy, c-format
+msgid "Gatekeeper set to %s"
+msgstr "Opciones en general"
 
-#: src/gdkvideoio.cpp:219
-msgid "Received FPS: "
-msgstr "FPS recibidos:"
+#: src/gatekeeper.cpp:69
+#, fuzzy, c-format
+msgid "Error while registering with Gatekeeper at %s."
+msgstr "Ocurrió un error mientras se conectaba al directorio ILS"
+
+#: src/gatekeeper.cpp:100
+#, fuzzy, c-format
+msgid "Error while registering with Gatekeeper %s."
+msgstr "Ocurrió un error mientras se conectaba al directorio ILS"
+
+#: src/gatekeeper.cpp:130
+msgid "No gatekeeper found."
+msgstr ""
 
 #. Translators: This is as in "Audio".
 #: src/ldap.cpp:252
@@ -357,144 +407,169 @@ msgstr "Ocurrió un error mientras se conectaba al directorio ILS"
 msgid "Successfully initiated registering to ILS directory"
 msgstr "Registro exitoso en el directorio ILS"
 
-#: src/main.cpp:135
+#: src/main.cpp:162
 msgid "Answering incoming call"
 msgstr "Contestando llamada entrante"
 
-#: src/main.cpp:156
+#: src/main.cpp:183
 #, c-format
 msgid "Call %d: calling %s"
 msgstr ""
 
-#: src/main.cpp:182
+#: src/main.cpp:209
 msgid "Trying to stop calling"
 msgstr "Intentando detener la llamada"
 
-#: src/main.cpp:185 src/main.cpp:196
+#: src/main.cpp:212 src/main.cpp:223
 #, fuzzy
 msgid "Failed to stop current call"
 msgstr "Suspendiendo la llamada actual"
 
-#: src/main.cpp:193
+#: src/main.cpp:220
 msgid "Stopping current call"
 msgstr "Suspendiendo la llamada actual"
 
-#: src/main.cpp:200
+#: src/main.cpp:227
 msgid "Refusing incoming call"
 msgstr "Ignorando la llamada entrante"
 
-#: src/main_interface.cpp:224
+#: src/main_interface.cpp:235
 msgid "Startup without applet support"
 msgstr "Inicio sin soporrte de applets"
 
-#: src/main_interface.cpp:226
+#: src/main_interface.cpp:237
 msgid "Prints debug messages in the console"
 msgstr ""
 
-#: src/main_interface.cpp:263
+#: src/main_interface.cpp:274
 msgid "Building main interface"
 msgstr "Cargando interface maestro"
 
-#: src/main_interface.cpp:276
+#: src/main_interface.cpp:289
 msgid "Adding Audio Capabilities"
 msgstr "Añadiendo capacidad de audio"
 
-#: src/main_interface.cpp:281
+#: src/main_interface.cpp:294
 msgid "Adding Video Capabilities"
 msgstr "Añadiendo capacidad de vídeo"
 
-#: src/main_interface.cpp:288 src/preferences.cpp:1710
+#: src/main_interface.cpp:302 src/preferences.cpp:1855
 msgid "Registering to ILS directory"
 msgstr "Registrando en directorio ILS"
 
-#: src/main_interface.cpp:296
+#: src/main_interface.cpp:310
 #, fuzzy
 msgid "Starting the listener thread"
 msgstr "Iniciando auditor"
 
-#: src/main_interface.cpp:301
+#: src/main_interface.cpp:315
 msgid ""
 "Could not start the listener thread, you will not be able to receive "
 "incoming calls."
 msgstr ""
 
-#: src/main_interface.cpp:308
+#: src/main_interface.cpp:326
+#, fuzzy
+msgid "Registering to the Gatekeeper"
+msgstr "Registrando en directorio ILS"
+
+#: src/main_interface.cpp:336
+msgid "Initialising audio devices"
+msgstr ""
+
+#. Translators: This is shown in the history.
+#: src/main_interface.cpp:348 src/preferences.cpp:1892
+#, fuzzy, c-format
+msgid "Set Audio player device to %s"
+msgstr "Simplemente introduzca el dispositivo de audio a usar"
+
+#. Translators: This is shown in the history.
+#: src/main_interface.cpp:353 src/preferences.cpp:1897
+#, c-format
+msgid "Set Audio recorder device to %s"
+msgstr ""
+
+#: src/main_interface.cpp:363
 #, fuzzy
 msgid "Done!"
 msgstr "¡Hecho!"
 
 #. The remote IP field
-#: src/main_interface.cpp:365
+#: src/main_interface.cpp:417
 msgid "Remote host to contact"
 msgstr "Host remoto al que llamar"
 
-#: src/main_interface.cpp:379
+#: src/main_interface.cpp:431
 msgid "Host:"
 msgstr "Host:"
 
-#: src/main_interface.cpp:465
+#: src/main_interface.cpp:517
 msgid "Click here to begin to display images from your camera device."
 msgstr ""
 
-#: src/main_interface.cpp:487
+#: src/main_interface.cpp:539
 msgid ""
 "Audio Transmission Status. During a call, click here to pause the audio "
 "transmission."
 msgstr ""
 
-#: src/main_interface.cpp:509
+#: src/main_interface.cpp:561
 msgid ""
 "Video Transmission Status. During a call, click here to pause the video "
 "transmission."
 msgstr ""
 
-#: src/main_interface.cpp:531
+#: src/main_interface.cpp:583
+msgid "This button permits to enable / disable silence detection during calls"
+msgstr ""
+
+#: src/main_interface.cpp:604
 msgid "Click here to display the previous section of the Control Panel."
 msgstr ""
 
-#: src/main_interface.cpp:552
+#: src/main_interface.cpp:625
 msgid "Click here to display the next section of the Control Panel."
 msgstr ""
 
-#: src/main_interface.cpp:573 src/preferences.cpp:437
+#: src/main_interface.cpp:646 src/preferences.cpp:458
 msgid "Info"
 msgstr "Info"
 
-#: src/main_interface.cpp:577 src/main_interface.cpp:602
+#: src/main_interface.cpp:650 src/main_interface.cpp:675
 #, fuzzy
 msgid "Remote User"
 msgstr "Información de usuario remoto"
 
-#: src/main_interface.cpp:617
+#: src/main_interface.cpp:690
 msgid "History Log"
 msgstr "Historial de operaciones"
 
-#: src/main_interface.cpp:637
+#: src/main_interface.cpp:710
 msgid "History"
 msgstr "Historial"
 
 #. Webcam Control Frame
-#: src/main_interface.cpp:660 src/main_interface.cpp:772
+#: src/main_interface.cpp:733 src/main_interface.cpp:845
 msgid "Video Settings"
 msgstr "Opciones de Vídeo"
 
-#: src/main_interface.cpp:690
+#: src/main_interface.cpp:763
 msgid "Adjust brightness"
 msgstr "Ajustar brillo"
 
-#: src/main_interface.cpp:715
+#: src/main_interface.cpp:788
 msgid "Adjust whiteness"
 msgstr "Ajustar claridad"
 
-#: src/main_interface.cpp:740
+#: src/main_interface.cpp:813
 msgid "Adjust color"
 msgstr "Ajustar color"
 
-#: src/main_interface.cpp:765
+#: src/main_interface.cpp:838
 msgid "Adjust contrast"
 msgstr "Ajustar contraste"
 
-#: src/main_interface.cpp:793 src/main_interface.cpp:851
+#: src/main_interface.cpp:866 src/main_interface.cpp:924
 msgid "Audio Settings"
 msgstr "Opciones de Sonido"
 
@@ -623,192 +698,201 @@ msgstr "Ambos"
 msgid "Both Video Images"
 msgstr "Ambas imágenes de vídeo"
 
-#: src/preferences.cpp:205
+#: src/preferences.cpp:206
 msgid "Impossible to open this device."
 msgstr "Fue imposible abrir este dispositivo."
 
-#: src/preferences.cpp:208
+#: src/preferences.cpp:209
 msgid "These settings are correct."
 msgstr "Estas configuraciones son correctas."
 
-#: src/preferences.cpp:233 src/toolbar.cpp:60
+#: src/preferences.cpp:242 src/toolbar.cpp:60
 msgid "Settings"
 msgstr "Opciones"
 
-#: src/preferences.cpp:276
+#: src/preferences.cpp:287
 msgid "GnomeMeeting Preferences"
 msgstr "Opciones de GnomeMeeting"
 
 #. All the notebook pages
-#: src/preferences.cpp:293
+#: src/preferences.cpp:304
 msgid "General"
 msgstr "General"
 
-#: src/preferences.cpp:303 src/preferences.cpp:720
+#: src/preferences.cpp:314 src/preferences.cpp:754
 msgid "General Settings"
 msgstr "Opciones en general"
 
 #. The End
-#: src/preferences.cpp:314 src/preferences.cpp:1081
+#: src/preferences.cpp:325 src/preferences.cpp:1115
 msgid "User Settings"
 msgstr "Opciones de usuario"
 
 #. Advanced Settings
-#: src/preferences.cpp:325 src/preferences.cpp:1110 src/preferences.cpp:1219
+#: src/preferences.cpp:336 src/preferences.cpp:1144 src/preferences.cpp:1253
 msgid "Advanced Settings"
 msgstr "Opciones Avanzadas"
 
 #. ILS settings
-#: src/preferences.cpp:336 src/preferences.cpp:1246 src/preferences.cpp:1320
+#: src/preferences.cpp:347 src/preferences.cpp:1280 src/preferences.cpp:1354
 msgid "ILS Settings"
 msgstr "Opciones ILS"
 
+#. Gatekeeper settings
+#: src/preferences.cpp:357 src/preferences.cpp:1382 src/preferences.cpp:1471
+#, fuzzy
+msgid "Gatekeeper Settings"
+msgstr "Opciones en general"
+
 #. The End
-#: src/preferences.cpp:346 src/preferences.cpp:1572
+#: src/preferences.cpp:367 src/preferences.cpp:1718
 msgid "Device Settings"
 msgstr "Dispositivos"
 
-#: src/preferences.cpp:356
+#: src/preferences.cpp:377
 msgid "Codecs"
 msgstr "Códecs"
 
-#: src/preferences.cpp:366 src/preferences.cpp:571
+#: src/preferences.cpp:387 src/preferences.cpp:592
 msgid "Audio Codecs"
 msgstr "Códecs de Audio"
 
-#: src/preferences.cpp:379 src/preferences.cpp:907
+#: src/preferences.cpp:400 src/preferences.cpp:941
 msgid "Video Codecs"
 msgstr "Códecs de Vídeo"
 
-#: src/preferences.cpp:437
+#: src/preferences.cpp:458
 msgid "Name"
 msgstr "Nombre"
 
-#: src/preferences.cpp:437
+#: src/preferences.cpp:458
 msgid "Bandwidth"
 msgstr "Ancho de Banda"
 
 #. In this table we put the frame
-#: src/preferences.cpp:451
+#: src/preferences.cpp:472
 msgid "Available Codecs"
 msgstr "Códecs disponibles"
 
 #. BUTTONS
 #. Add
-#: src/preferences.cpp:492
+#: src/preferences.cpp:513
 #, fuzzy
 msgid "Add"
 msgstr "_Añadir"
 
-#: src/preferences.cpp:506
+#: src/preferences.cpp:527
 msgid "Use this button to add the selected codec to the available codecs list"
 msgstr ""
 "Use este botón para añadir el códec seleccionado a la lista de códecs "
 "existentes"
 
 #. Del
-#: src/preferences.cpp:510
+#: src/preferences.cpp:531
 #, fuzzy
 msgid "Delete"
 msgstr "_Eliminar"
 
-#: src/preferences.cpp:524
+#: src/preferences.cpp:545
 msgid ""
 "Use this button to remove the selected codec from the available codecs list"
 msgstr ""
 "Use este botón para eleminar el códec seleccionado de la lista de códecs"
 
 #. Up
-#: src/preferences.cpp:528
+#: src/preferences.cpp:549
 #, fuzzy
 msgid "Up"
 msgstr "_Subir"
 
-#: src/preferences.cpp:542
+#: src/preferences.cpp:563
 msgid "Use this button to move down the selected codec in the preference order"
 msgstr ""
 "Use este botón para desplazar hacia abajo el códec seleccionado en orden de "
 "preferencia"
 
 #. Down
-#: src/preferences.cpp:546
+#: src/preferences.cpp:567
 #, fuzzy
 msgid "Down"
 msgstr "_Bajar"
 
-#: src/preferences.cpp:560
+#: src/preferences.cpp:581
 msgid "Use this button to move up the selected codec in the preference order"
 msgstr ""
 "Use este botón para desplazar hacia arriba el códec seleccionado en orden de "
 "preferencia"
 
 #. Show / hide splash screen at startup
-#: src/preferences.cpp:613
+#: src/preferences.cpp:634
 #, fuzzy
 msgid "Show Splash Screen"
 msgstr "_Mostrar ventana de bienvenida"
 
-#: src/preferences.cpp:623
+#: src/preferences.cpp:644
 msgid "If enabled, the splash screen will be displayed at startup time"
 msgstr "Si se activa, la ventana de bienvenida será desplegada en el inicio"
 
 #. Show / hide the notebook at startup
-#: src/preferences.cpp:627
+#: src/preferences.cpp:648
 msgid "Show Control Panel"
 msgstr ""
 
-#: src/preferences.cpp:637
+#: src/preferences.cpp:658
 #, fuzzy
 msgid "If enabled, the control panel is displayed"
 msgstr "Si se activa, el Notebook será desplegado"
 
 #. Show / hide the statusbar at startup
-#: src/preferences.cpp:641
+#: src/preferences.cpp:662
 #, fuzzy
 msgid "Show Status Bar"
 msgstr "Mostrar _barra de estado"
 
-#: src/preferences.cpp:651
+#: src/preferences.cpp:672
 msgid "If enabled, the statusbar is displayed"
 msgstr "Si se activa, se mostrará la barra de estado"
 
 #. Behavior
-#: src/preferences.cpp:654
+#: src/preferences.cpp:675
 msgid "Behavior"
 msgstr "Comportamiento"
 
 #. Auto Answer toggle button
-#: src/preferences.cpp:667
+#: src/preferences.cpp:688
 #, fuzzy
 msgid "Auto Answer"
 msgstr "Aceptar _llamadas automáticamente"
 
-#: src/preferences.cpp:676
+#: src/preferences.cpp:697
 msgid "If enabled, incoming calls will be automatically answered"
 msgstr "Si se activa, responderá a llamadas automáticamente"
 
 #. DND toggle button
-#: src/preferences.cpp:680
+#: src/preferences.cpp:701
 #, fuzzy
 msgid "Do Not Disturb"
 msgstr "No _Molestar"
 
-#: src/preferences.cpp:689
+#: src/preferences.cpp:710
 msgid "If enabled, incoming calls will be automatically refused"
 msgstr "Si se activa, no aceptará ninguna llamada."
 
+#. Popup display
+#: src/preferences.cpp:714
+msgid "Popup window"
+msgstr ""
+
+#: src/preferences.cpp:723
+msgid "If enabled, a popup will be displayed when receiving an incoming call"
+msgstr ""
+
 #. Play Sound
-#: src/preferences.cpp:693
+#: src/preferences.cpp:727
 msgid "Sound"
 msgstr "Sonido"
 
-#. Auto Answer toggle button
-#: src/preferences.cpp:706
-#, fuzzy
-msgid "Incoming Call"
-msgstr "Llamada _entrante"
-
-#: src/preferences.cpp:716
+#: src/preferences.cpp:750
 msgid ""
 "If enabled, GnomeMeeting will play a sound when receiving an incoming call "
 "(the sound to play is choosen in the Gnome Control Center)"
@@ -818,42 +902,42 @@ msgstr ""
 
 #. In this table we put the frame
 #. *** Transmitted Video Settings Frame ***
-#: src/preferences.cpp:753
+#: src/preferences.cpp:787
 msgid "Transmitted Video Codecs"
 msgstr "Vídeo Codecs Trasmitidos"
 
 #. Video Size Option Menu
-#: src/preferences.cpp:765
+#: src/preferences.cpp:799
 msgid "Video Size:"
 msgstr "Tamaño de vídeo:"
 
-#: src/preferences.cpp:773
+#: src/preferences.cpp:807
 msgid "Small"
 msgstr "Pequeño"
 
-#: src/preferences.cpp:775
+#: src/preferences.cpp:809
 msgid "Large"
 msgstr "Grande"
 
-#: src/preferences.cpp:787
+#: src/preferences.cpp:821
 msgid "Here you can choose the transmitted video size"
 msgstr "Aquí puede escoger el tamaño del vídeo"
 
 #. Video Format Option Menu
-#: src/preferences.cpp:791
+#: src/preferences.cpp:825
 msgid "Video Format:"
 msgstr "Formato de vídeo:"
 
-#: src/preferences.cpp:813
+#: src/preferences.cpp:847
 msgid "Here you can choose the transmitted video format"
 msgstr "Aquí puede escoger el formato de video a transmitir"
 
 #. Transmitted Video Quality
-#: src/preferences.cpp:817 src/preferences.cpp:1197
+#: src/preferences.cpp:851 src/preferences.cpp:1231
 msgid "Video Quality:"
 msgstr "Calidad de vídeo:"
 
-#: src/preferences.cpp:835
+#: src/preferences.cpp:869
 msgid ""
 "Here you can choose the transmitted video quality:  choose 1 on a LAN for "
 "the best quality, 31 being the worst quality"
@@ -862,11 +946,11 @@ msgstr ""
 "calidad, siendo 31 la peor calidad"
 
 #. Updated blocks / frame
-#: src/preferences.cpp:839
+#: src/preferences.cpp:873
 msgid "Updated blocks:"
 msgstr "Actualizar bloques:"
 
-#: src/preferences.cpp:857
+#: src/preferences.cpp:891
 msgid ""
 "Here you can choose the number of blocks (that haven't changed) transmitted "
 "with each frame. These blocks fill in the background."
@@ -875,122 +959,122 @@ msgstr ""
 "en cada cuadro. Estos bloques llenan el fondo de la imagen"
 
 #. Transmitted FPS
-#: src/preferences.cpp:861
+#: src/preferences.cpp:895
 msgid "Transmitted FPS:"
 msgstr "FPS transmitidos:"
 
-#: src/preferences.cpp:879
+#: src/preferences.cpp:913
 msgid "Here you can choose the number of frames transmitted by second"
 msgstr "Escoja aquí el número de cuadros (imágenes) por segundo que transmite"
 
 #. *** Enable Video Transmission ***
-#: src/preferences.cpp:883
+#: src/preferences.cpp:917
 msgid "Video Transmission"
 msgstr "Envío de vídeo"
 
-#: src/preferences.cpp:891
+#: src/preferences.cpp:925
 #, fuzzy
 msgid "Enable Video Transmission"
 msgstr "Activar Transmisión de _Vídeo"
 
-#: src/preferences.cpp:904
+#: src/preferences.cpp:938
 msgid "Here you can choose to enable or disable video transmission"
 msgstr "Elija aquí si activar o no la transmisión de vídeo"
 
 #. User Name entry
-#: src/preferences.cpp:947
+#: src/preferences.cpp:981
 msgid "First Name:"
 msgstr "Nombre:"
 
-#: src/preferences.cpp:963
+#: src/preferences.cpp:997
 #, fuzzy
 msgid "Enter your first name"
 msgstr "Sólamente escriba su nombre."
 
 #. Surname entry (LDAP)
-#: src/preferences.cpp:970
+#: src/preferences.cpp:1004
 msgid "Last name:"
 msgstr "Apellido:"
 
-#: src/preferences.cpp:986
+#: src/preferences.cpp:1020
 #, fuzzy
 msgid "Enter your last name"
 msgstr "Sólamente escriba su apellido."
 
 #. E-mail (LDAP)
-#: src/preferences.cpp:993
+#: src/preferences.cpp:1027
 msgid "E-mail address:"
 msgstr "Correo electrónico:"
 
-#: src/preferences.cpp:1009
+#: src/preferences.cpp:1043
 #, fuzzy
 msgid "Enter your e-mail address"
 msgstr "Sólamente escriba su correo electrónico"
 
 #. Comment (LDAP)
-#: src/preferences.cpp:1016
+#: src/preferences.cpp:1050
 msgid "Comment:"
 msgstr "Comentario:"
 
-#: src/preferences.cpp:1032
+#: src/preferences.cpp:1066
 #, fuzzy
 msgid "Here you can fill in a comment about yourself for ILS directories"
 msgstr "Puede añadir un comentario sobre sí mismo en el directorio ILS."
 
 #. Location
-#: src/preferences.cpp:1039
+#: src/preferences.cpp:1073
 msgid "Location:"
 msgstr "Lugar:"
 
-#: src/preferences.cpp:1055
+#: src/preferences.cpp:1089
 msgid "Where do you call from?"
 msgstr "¿Desde dónde llama?"
 
 #. Port Entry
-#: src/preferences.cpp:1062
+#: src/preferences.cpp:1096
 msgid "Listen Port:"
 msgstr "Puerto:"
 
-#: src/preferences.cpp:1077
+#: src/preferences.cpp:1111
 msgid "The port that GnomeMeeting should listen on"
 msgstr "Puerto en el que debe escuchar GnomeMeeting"
 
 #. H245 Tunnelling button
-#: src/preferences.cpp:1124
+#: src/preferences.cpp:1158
 #, fuzzy
 msgid "Enable H.245 Tunnelling"
 msgstr "Activar _H.245 Tunnelling"
 
-#: src/preferences.cpp:1133
+#: src/preferences.cpp:1167
 msgid "This enables H.245 Tunnelling mode"
 msgstr "Esto activa el modo H.245 Tunnelling"
 
 #. Fast Start button
-#: src/preferences.cpp:1137
+#: src/preferences.cpp:1171
 #, fuzzy
 msgid "Enable Fast Start"
 msgstr "Activar Inicio _Rápido"
 
-#: src/preferences.cpp:1146
+#: src/preferences.cpp:1180
 msgid "Connection will be established in Fast Start mode"
 msgstr "La conexión sera establecida en modo de Inicio Rápido"
 
 #. Max Used Bandwidth spin button
-#: src/preferences.cpp:1150
+#: src/preferences.cpp:1184
 msgid "Maximum Bandwidth:"
 msgstr "Max. An. Banda:"
 
-#: src/preferences.cpp:1168
+#: src/preferences.cpp:1202
 msgid "The maximum bandwidth that should be used for the communication"
 msgstr "El máximo ancho de banda a usar para la comunicación"
 
 #. Silence Detection
-#: src/preferences.cpp:1172
+#: src/preferences.cpp:1206
 #, fuzzy
 msgid "Enable Silence Detection"
 msgstr "Activar detector de _silencio"
 
-#: src/preferences.cpp:1181
+#: src/preferences.cpp:1215
 msgid ""
 "Enable or disable silence detection.  If silence detection is enabled, "
 "silences will not be transmitted over the Internet."
@@ -999,121 +1083,166 @@ msgstr ""
 "será transmitido por Internet"
 
 #. *** Received Video Settings Frame ***
-#: src/preferences.cpp:1185
+#: src/preferences.cpp:1219
 msgid "Received Video Codecs"
 msgstr "Códecs de Vídeo recibidos"
 
-#: src/preferences.cpp:1215
+#: src/preferences.cpp:1249
 msgid "The video quality to request from the remote party"
 msgstr "Calidad de vídeo a solicitar al extremo remoto"
 
 #. ILS server
-#: src/preferences.cpp:1260
+#: src/preferences.cpp:1294
 msgid "ILS Directory:"
 msgstr "Directorio ILS:"
 
-#: src/preferences.cpp:1275
+#: src/preferences.cpp:1309
 msgid "The ILS directory to connect to"
 msgstr "A qué directorio ILS conectar..."
 
 #. ILS port
-#: src/preferences.cpp:1282
+#: src/preferences.cpp:1316
 msgid "ILS Port:"
 msgstr "Puerto ILS:"
 
-#: src/preferences.cpp:1297
+#: src/preferences.cpp:1331
 msgid "The corresponding port: 389 is the standard port"
 msgstr "El puerto correspondiente: 389 es el estándar"
 
 #. Use ILS
-#: src/preferences.cpp:1304
+#: src/preferences.cpp:1338
 #, fuzzy
 msgid "Register to ILS directory"
 msgstr "_Registrar en directorio ILS"
 
-#: src/preferences.cpp:1316
+#: src/preferences.cpp:1350
 msgid "If enabled, permit to register to the selected ILS directory"
 msgstr "Si lo activa, se registrará en el directorio ILS seleccionado"
 
+#. Gatekeeper ID
+#: src/preferences.cpp:1395
+msgid "Gatekeeper ID"
+msgstr ""
+
+#: src/preferences.cpp:1410
+msgid "The Gatekeeper identifier."
+msgstr ""
+
+#. Gatekeeper Host
+#: src/preferences.cpp:1417
+msgid "Gatekeeper host"
+msgstr ""
+
+#: src/preferences.cpp:1432
+msgid "The Gatekeeper host to register to."
+msgstr ""
+
+#. GK registering method
+#: src/preferences.cpp:1439
+#, fuzzy
+msgid "Registering method"
+msgstr "Registrando en directorio ILS"
+
+#: src/preferences.cpp:1447
+msgid "Do not register to a Gatekeeper"
+msgstr ""
+
+#: src/preferences.cpp:1449
+msgid "Register using the Gatekeeper host"
+msgstr ""
+
+#: src/preferences.cpp:1451
+msgid "Register using the Gatekeeper ID"
+msgstr ""
+
+#: src/preferences.cpp:1453
+msgid "Try to discover the Gatekeeper"
+msgstr ""
+
+#: src/preferences.cpp:1468
+#, fuzzy
+msgid "Registering method to use"
+msgstr "Registrando en directorio ILS"
+
 #. Audio device
-#: src/preferences.cpp:1352
+#: src/preferences.cpp:1501
 #, fuzzy
 msgid "Audio Devices"
 msgstr "Dispositivo de Sonido"
 
 #. Audio Device
-#: src/preferences.cpp:1366
+#: src/preferences.cpp:1515
 msgid "Player:"
 msgstr ""
 
-#: src/preferences.cpp:1397
+#: src/preferences.cpp:1543
 #, fuzzy
 msgid "Enter the audio player device to use"
 msgstr "Simplemente introduzca el dispositivo de audio a usar"
 
 #. Audio Recorder Device
-#: src/preferences.cpp:1401
+#: src/preferences.cpp:1550
 msgid "Recorder:"
 msgstr ""
 
-#: src/preferences.cpp:1434
+#: src/preferences.cpp:1580
 #, fuzzy
 msgid "Enter the audio recorder device to use"
 msgstr "Simplemente introduzca el dispositivo de audio a usar"
 
 #. Audio Mixers
-#: src/preferences.cpp:1438
+#: src/preferences.cpp:1587
 msgid "Player Mixer:"
 msgstr ""
 
-#: src/preferences.cpp:1455
+#: src/preferences.cpp:1604
 msgid "The audio mixer to use for player settings"
 msgstr ""
 
-#: src/preferences.cpp:1461
+#: src/preferences.cpp:1610
 msgid "Recorder Mixer:"
 msgstr ""
 
-#: src/preferences.cpp:1478
+#: src/preferences.cpp:1627
 msgid "The audio mixer to use for recorder settings"
 msgstr ""
 
 #. Video device
-#: src/preferences.cpp:1485
+#: src/preferences.cpp:1634
 msgid "Video Device"
 msgstr "Dispositivo de Vídeo"
 
 #. Video Device
-#: src/preferences.cpp:1499
+#: src/preferences.cpp:1648
 msgid "Video Device:"
 msgstr "Tamaño de vídeo:"
 
-#: src/preferences.cpp:1527
+#: src/preferences.cpp:1673
 #, fuzzy
 msgid "Enter the video device to use"
 msgstr "Simplemente introduzca el dispositivo de vídeo a usar"
 
 #. Video channel spin button
-#: src/preferences.cpp:1534
+#: src/preferences.cpp:1680
 msgid "Video Channel:"
 msgstr "Canal de Vídeo:"
 
-#: src/preferences.cpp:1554
+#: src/preferences.cpp:1700
 msgid "The video channel number to use (camera, tv, ...)"
 msgstr "El canal de vídeo a usar (cámara, tv, ...)"
 
 #. Device test button
-#: src/preferences.cpp:1560
+#: src/preferences.cpp:1706
 #, fuzzy
 msgid "Video Test"
 msgstr "_Probar el vídeo"
 
-#: src/preferences.cpp:1632
+#: src/preferences.cpp:1778
 msgid "Okay"
 msgstr "OK"
 
-#: src/preferences.cpp:1638 src/preferences.cpp:1644 src/preferences.cpp:1650
-#: src/preferences.cpp:1656
+#: src/preferences.cpp:1784 src/preferences.cpp:1790 src/preferences.cpp:1796
+#: src/preferences.cpp:1802
 msgid "Good Quality"
 msgstr "Buena calidad"
 
@@ -1124,6 +1253,12 @@ msgstr "Directorio ILS"
 #: src/toolbar.cpp:52
 msgid "Find friends on ILS"
 msgstr "Buscar amigos en ILS"
+
+#~ msgid "Transmitted FPS: "
+#~ msgstr "FPS transmitidos:"
+
+#~ msgid "Received FPS: "
+#~ msgstr "FPS recibidos:"
 
 #~ msgid "Could not start listener."
 #~ msgstr "No se pudo iniciar el auditor."

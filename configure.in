@@ -1,6 +1,6 @@
 AC_INIT(src/main.cpp)
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE(GnomeMeeting, 0.11)
+AM_INIT_AUTOMAKE(GnomeMeeting, 0.12)
 AM_MAINTAINER_MODE
 AM_ACLOCAL_INCLUDE(macros)
 AM_PROG_XML_I18N_TOOLS
@@ -70,7 +70,7 @@ else
 	AC_MSG_ERROR([You need PTLib to enjoy GnomeMeeting])
 fi
 
-H323_LIBS="-loh323 -ldl -lpt -lpthread -lssl -lcrypto"
+H323_LIBS="-lh323_linux_x86_d -ldl -lpt_linux_x86_d -lpthread -lssl -lcrypto"
 
 dnl ***************************************
 dnl OpenH323
@@ -132,7 +132,7 @@ dnl * -D_DEBUG -DPMEMORY_CHECK=1 -DPTRACING -Wall -g
 dnl *************************************************************************
 
 
-H323_CFLAGS="-DP_LINUX -D_REENTRANT -DP_HAS_SEMAPHORES -DP_PTHREADS -DPBYTE_ORDER=PLITTLE_ENDIAN -DHAS_OSS -O2"
+H323_CFLAGS="-DP_LINUX -D_REENTRANT -DP_HAS_SEMAPHORES -DP_PTHREADS -DPBYTE_ORDER=PLITTLE_ENDIAN -DHAS_OSS -O2 -D_DEBUG -DPMEMORY_CHECK=1 -DPTRACING -Wall -g"
 
 
 dnl *********************************************************************

@@ -43,6 +43,7 @@
 #include "../pixmaps/quickcam.xpm"
 #include "../pixmaps/left_arrow.xpm"
 #include "../pixmaps/right_arrow.xpm"
+#include "../pixmaps/sample.xpm"
 
 
 /******************************************************************************/
@@ -51,6 +52,7 @@
 
 extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;	
+
 /******************************************************************************/
 
 
@@ -195,6 +197,14 @@ void right_arrow_clicked (GtkWidget *w, gpointer data)
   GM_window_widgets *gw = (GM_window_widgets *) data;
 
   gtk_notebook_next_page (GTK_NOTEBOOK (gw->main_notebook));
+}
+
+
+void silence_detection_button_clicked (GtkWidget *w, gpointer data)
+{
+  GM_window_widgets *gw = (GM_window_widgets *) data;
+
+  MyApp->Endpoint ()->ChangeSilenceDetection ();
 }
 
 /******************************************************************************/
@@ -550,6 +560,27 @@ void GM_main_interface_init (GM_window_widgets *gw, options *opts)
   gtk_tooltips_set_tip (tip, gw->video_chan_button,
 			_("Video Transmission Status. During a call, click here to pause the video transmission."), NULL);
 
+  /* Silence Detection Button */
+  gw->silence_detection_button = gtk_toggle_button_new ();
+
+  pixmap = gnome_pixmap_new_from_xpm_d ((char **) sample_xpm);
+  gtk_container_add (GTK_CONTAINER (gw->silence_detection_button), pixmap);
+
+  gtk_widget_set_usize (GTK_WIDGET (gw->silence_detection_button), 24, 24);
+  gtk_table_attach (GTK_TABLE (table_in), 
+		    gw->silence_detection_button, 3, 4, 0, 1,
+		    (GtkAttachOptions) NULL,
+		    (GtkAttachOptions) NULL,
+		    2, 2);
+
+  gtk_widget_set_sensitive (GTK_WIDGET (gw->silence_detection_button), FALSE);
+
+  gtk_signal_connect (GTK_OBJECT (gw->silence_detection_button), "clicked",
+                      GTK_SIGNAL_FUNC (silence_detection_button_clicked), gw);
+
+  tip = gtk_tooltips_new ();
+  gtk_tooltips_set_tip (tip, gw->silence_detection_button,
+			_("This button permits to enable / disable silence detection during calls"), NULL);
 
   /* Left arrow */
   left_arrow = gtk_button_new ();
@@ -560,7 +591,7 @@ void GM_main_interface_init (GM_window_widgets *gw, options *opts)
   gtk_widget_set_usize (GTK_WIDGET (left_arrow), 24, 24);
 
   gtk_table_attach (GTK_TABLE (table_in), 
-		    left_arrow, 3, 4, 0, 1,
+		    left_arrow, 4, 5, 0, 1,
 		    (GtkAttachOptions) NULL,
 		    (GtkAttachOptions) NULL,
 		    2, 2);
@@ -581,7 +612,7 @@ void GM_main_interface_init (GM_window_widgets *gw, options *opts)
   gtk_widget_set_usize (GTK_WIDGET (right_arrow), 24, 24);
 
   gtk_table_attach (GTK_TABLE (table_in), 
-		    right_arrow, 4, 5, 0, 1,
+		    right_arrow, 5, 6, 0, 1,
 		    (GtkAttachOptions) NULL,
 		    (GtkAttachOptions) NULL,
 		    2, 2);

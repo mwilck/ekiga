@@ -83,10 +83,13 @@ void pref_callback (GtkWidget *widget, gpointer data)
 
   if (gw->pref_window == NULL)
     {
-      // First we stop the video preview
-      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->preview_button),
-				    FALSE);
-      MyApp->Endpoint ()->StopVideoGrabber ();
+      // First we stop the video preview, if we are not in a call
+      if (call_state == 0)
+	{
+	  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->preview_button),
+					FALSE);
+	  MyApp->Endpoint ()->StopVideoGrabber ();
+	}
 
       GMPreferences (call_state, gw);
     }

@@ -289,8 +289,8 @@ void GMH323EndPoint::ReInitialise ()
   // Set the various options
   read_config (opts);
 
-
-  Initialise ();
+  if (CallingState () == 0)
+    Initialise ();
 }
 
 
@@ -310,6 +310,47 @@ H323Connection *GMH323EndPoint::Connection ()
 GMH323Webcam *GMH323EndPoint::Webcam (void)
 {
   return (GMH323Webcam *) webcam;
+}
+
+
+void GMH323EndPoint::ChangeSilenceDetection (void)
+{
+  if (!CallToken ().IsEmpty())
+    {
+      H323Connection * connection = Connection ();
+      
+      if (connection != NULL) 
+	{
+	  H323Channel * chan = 
+	    connection->FindChannel (RTP_Session::DefaultAudioSessionID, FALSE);
+
+	  if (chan == NULL)
+	    GM_log_insert (gw->log_text, _("Could not find audio channel"));
+	  else 
+	    {
+	      H323Codec * rawCodec  = chan->GetCodec();
+	      if (!rawCodec->IsDescendant (H323AudioCodec::Class()))
+		GM_log_insert (gw->log_text, _("Could not find audio channel"));
+	      else 
+		{
+                  H323AudioCodec * codec = (H323AudioCodec *) rawCodec;
+		  H323AudioCodec::SilenceDetectionMode mode = codec->GetSilenceDetectionMode();
+
+                  if (mode == H323AudioCodec::AdaptiveSilenceDetection) 
+		    {
+		      mode = H323AudioCodec::NoSilenceDetection;
+		      GM_log_insert (gw->log_text, _("Disabled Silence Detection"));
+		    } 
+		  else 
+		    {
+		      mode = H323AudioCodec::AdaptiveSilenceDetection;
+		      GM_log_insert (gw->log_text, _("Enabled Silence Detection"));
+		    }
+                  codec->SetSilenceDetectionMode(mode);
+                }
+	    }
+	} 
+    }
 }
 
 
@@ -612,7 +653,7 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   SetCurrentConnection (NULL);
   SetCallingState (0);
 
-  /* Remove the timers if needed */
+  /* Remove the timers if needed and clear the applet */
   if (applet_timeout != 0)
     gtk_timeout_remove (applet_timeout);
 
@@ -632,9 +673,11 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   
   gdk_threads_enter ();
 
+  /* Disable / enable buttons */
   gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame), FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), TRUE);
   gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_chan_button), FALSE);
+  gtk_widget_set_sensitive (GTK_WIDGET (gw->silence_detection_button), FALSE);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->audio_chan_button), FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button), FALSE);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->video_chan_button), FALSE);
@@ -677,18 +720,26 @@ BOOL GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
     gtk_timeout_remove (sound_timeout);
   sound_timeout = 0;
 
+  /* Clear the applet */
   if (gw->applet != NULL)
     {
       GM_applet_set_content (gw->applet, 0);
       applet_widget_set_tooltip (APPLET_WIDGET (gw->applet), NULL);
     }
 
+  /* Enable the possibility to pause the transmission audio channel and to */
+  /* change the silence detection mode                                     */
   if (isEncoding)
     {
       gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_chan_button),
 				TRUE);
-      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->audio_chan_button),
+      gtk_widget_set_sensitive (GTK_WIDGET (gw->silence_detection_button),
+				TRUE);
+
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->silence_detection_button),
 				    TRUE);
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->silence_detection_button),
+				    opts->sd);
     }
 
   gdk_threads_leave ();

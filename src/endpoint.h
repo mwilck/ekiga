@@ -256,6 +256,7 @@ class GMH323EndPoint : public H323EndPoint
 
   PVideoInputDevice *Grabber ();
 
+  void ChangeSilenceDetection (void);
   void StartVideoGrabber (void);  
   void StopVideoGrabber (int = 1);
 

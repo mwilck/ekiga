@@ -305,7 +305,7 @@ gboolean check_config_from_struct (GM_pref_window_widgets *pw)
 
 
   // Check video settings if vid_tr is enables
-  if (pw->vid_tr_changed)
+/*  if (pw->vid_tr_changed)
     {
       if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pw->vid_tr)))
 	{
@@ -316,7 +316,7 @@ gboolean check_config_from_struct (GM_pref_window_widgets *pw)
 					     GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
 	}
     }
-
+*/
 
   // Check Gatekeeper Settings
   if (pw->gk_changed)

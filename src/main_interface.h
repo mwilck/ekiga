@@ -91,6 +91,13 @@ void left_arrow_clicked (GtkWidget *, gpointer);
 // PRE          :  /
 void right_arrow_clicked (GtkWidget *, gpointer);
 
+
+// DESCRIPTION  :  This callback is called when the user clicks 
+//                 on the silence detection button during a call
+// BEHAVIOR     :  Enables/Disables silence detection
+// PRE          :  /
+void silence_detection_button_clicked (GtkWidget *, gpointer);
+
 /******************************************************************************/
 /* The functions to build the main window                                     */
 /******************************************************************************/
