@@ -39,7 +39,6 @@
 #include "../config.h"
 
 #include "h323endpoint.h"
-#include "h323gatekeeper.h"
 #include "gnomemeeting.h"
 
 #include "misc.h"
@@ -55,14 +54,11 @@
 GMH323EndPoint::GMH323EndPoint (GMEndPoint & ep)
 	: H323EndPoint (ep), endpoint (ep)
 {
-  gk = NULL;
 }
 
 
 GMH323EndPoint::~GMH323EndPoint ()
 {
-  if (gk)
-    delete (gk);
 }
 
 
@@ -87,36 +83,11 @@ GMH323EndPoint::Init ()
   /* Start the listener */
   if (!StartListener ()) 
     gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Error while starting the listener for the H.323 protocol"), _("You will not be able to receive incoming H.323 calls. Please check that no other program is already running on the port used by GnomeMeeting."));
-
   
-  /* Register to gatekeeper */
-  if (gm_conf_get_int (H323_KEY "gatekeeper_registering_method"))
-    GatekeeperRegister ();
-  
-
   /* Initialise internal parameters */
   DisableH245Tunneling (!h245_tunneling);
   DisableFastStart (!fast_start);
   DisableH245inSetup (!early_h245);
-}
-
-
-void
-GMH323EndPoint::GatekeeperRegister ()
-{
-  int timeout = 0;
-
-  gnomemeeting_threads_enter ();   
-  timeout = gm_conf_get_int (H323_KEY "gatekeeper_registration_timeout");
-  gnomemeeting_threads_leave ();
-
-  if (gk)
-    delete (gk);
-
-  registrationTimeToLive =
-    PTimeInterval (0, PMAX (120, PMIN (3600, timeout * 60)));
-
-  gk = new GMH323Gatekeeper ();
 }
 
 
@@ -146,14 +117,6 @@ void
 GMH323EndPoint::SetUserNameAndAlias ()
 {
   PString default_local_name;
-  
-  gchar *alias = NULL;
-
-  
-  gnomemeeting_threads_enter ();
-  alias = gm_conf_get_string (H323_KEY "gatekeeper_login");  
-  gnomemeeting_threads_leave ();
-
 
   default_local_name = endpoint.GetDefaultDisplayName ();
 
@@ -162,11 +125,6 @@ GMH323EndPoint::SetUserNameAndAlias ()
     SetDefaultDisplayName (default_local_name);
     SetLocalUserName (default_local_name);
   }
-  
-  if (!PString (alias).IsEmpty ()) 
-    AddAliasName (alias);
-  
-  g_free (alias);
 }
 
 

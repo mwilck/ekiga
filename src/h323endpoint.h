@@ -74,15 +74,6 @@ class GMH323EndPoint : public H323EndPoint
    * PRE          :  /
    */
   void Init ();
-
-  
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Register to (or unregister from) the gatekeeper 
-   *                 given in the options, if any. Starts or stop the force
-   *                 renewal timer.
-   * PRE          :  /
-   */
-  void GatekeeperRegister (void);
   
   
   /* DESCRIPTION  :  /
@@ -125,7 +116,6 @@ class GMH323EndPoint : public H323EndPoint
  private:
 
   GMEndPoint & endpoint;
-  GMH323Gatekeeper *gk;
 };
 
 #endif
