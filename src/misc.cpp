@@ -546,7 +546,7 @@ gnomemeeting_incoming_call_popup_new (gchar * utf8_name,
   g_signal_connect (G_OBJECT (b2), "clicked",
 		    G_CALLBACK (disconnect_cb), gw);
 
-  g_signal_connect (G_OBJECT (widget), "destroy",
+  g_signal_connect (G_OBJECT (widget), "delete-event",
 		    G_CALLBACK (disconnect_cb), gw);
   
   gtk_window_set_transient_for (GTK_WINDOW (widget),

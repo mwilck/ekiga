@@ -1312,8 +1312,13 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
     
     if (vg->IsOpened ())
       vg->Close ();
+
+    gnomemeeting_threads_enter ();
     gnomemeeting_zoom_submenu_set_sensitive (FALSE);
+    gnomemeeting_init_main_window_logo ();
+    gnomemeeting_threads_leave ();
   }
+
 
   gnomemeeting_threads_enter ();
   gtk_entry_set_text (GTK_ENTRY (gw->remote_name), "");
