@@ -384,7 +384,6 @@ class GMH323EndPoint : public H323EndPoint
   int docklet_timeout; 
   int sound_timeout; 
   int display_config; 
-  int snapshot_number;
 
   GDKVideoOutputDevice *transmitted_video_device; 
   GDKVideoOutputDevice *received_video_device; 

@@ -165,7 +165,6 @@ GMH323EndPoint::GMH323EndPoint ()
 #endif
 
   listener = NULL;
-  snapshot_number = 0;
 
   docklet_timeout = 0;
   sound_timeout = 0;
@@ -1589,19 +1588,27 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 void 
 GMH323EndPoint::SavePicture (void)
 { 
-  GdkPixbuf *pic = 
-    gtk_image_get_pixbuf (GTK_IMAGE (gw->main_video_image));
-  gchar *prefix = 
-    gconf_client_get_string (client, GENERAL_KEY "save_prefix", NULL);
-  gchar *dirname = (gchar *) g_get_home_dir ();
-  gchar *filename = g_strdup_printf ("%s/%s%d.png", dirname, prefix, 
-				     snapshot_number);
+  PTime ts = PTime ();
+  GdkPixbuf *pic = NULL;
+  gchar *prefix = NULL;
+  gchar *dirname = NULL;
+  gchar *filename = NULL;
+  
+  prefix = gconf_client_get_string (client, GENERAL_KEY "save_prefix", NULL);
+  dirname = (gchar *) g_get_home_dir ();
+  pic = gtk_image_get_pixbuf (GTK_IMAGE (gw->main_video_image));
 
-  snapshot_number++;
-
-  gdk_pixbuf_save (pic, filename, "png", NULL, NULL);
-  g_free (prefix);
-  g_free (filename);
+  if (pic && prefix && dirname) {
+    
+    filename = g_strdup_printf ("%s/%s%.2d_%.2d_%.2d-%.2d%.2d%.2d.png",
+				dirname, prefix,
+				ts.GetYear(), ts.GetMonth(), ts.GetDay(),
+				ts.GetHour(), ts.GetMinute(), ts.GetSecond());
+	
+    gdk_pixbuf_save (pic, filename, "png", NULL, NULL);
+    g_free (prefix);
+    g_free (filename);
+  }
 }
 
 
