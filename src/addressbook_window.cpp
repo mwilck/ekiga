@@ -215,12 +215,15 @@ static void gm_aw_modify_addressbook (GtkWidget *,
 
 /* DESCRIPTION  : / 
  * BEHAVIOR     : Updates the content of the given GmAddressbook in the 
- * 		  address book window GMObject.
+ * 		  address book window GMObject with the given GSList of 
+ * 		  contacts.
  * PRE          : The given GtkWidget pointer must point to the address book
- * 		  GMObject. Non-NULL pointer to a GmAddressbook.
+ * 		  GMObject. Non-NULL pointer to a GmAddressbook. Non-NULL 
+ * 		  pointer to a GSList of GmContacts.
  */
 static void gm_aw_update_addressbook (GtkWidget *, 
-				      GmAddressbook *);
+				      GmAddressbook *,
+				      GSList *);
 
 
 /* DESCRIPTION  : / 
@@ -637,6 +640,8 @@ gm_aw_add_addressbook (GtkWidget *addressbook_window,
   GtkTreeSelection *selection = NULL;
   GtkTreeIter iter, child_iter;
 
+  GSList *contacts = NULL;
+
   gboolean is_local = FALSE;
   int pos = 0;
 
@@ -849,9 +854,18 @@ gm_aw_add_addressbook (GtkWidget *addressbook_window,
 
 
   /* Update the address book content in the GUI */
-  if (gnomemeeting_addressbook_is_local (addressbook)) 
+
+  if (gnomemeeting_addressbook_is_local (addressbook)) {
+   
+    contacts =
+      gnomemeeting_addressbook_get_contacts (addressbook, FALSE, 
+					     NULL, NULL, NULL, NULL);
     gm_aw_update_addressbook (addressbook_window,
-			      addressbook);
+			      addressbook,
+			      contacts);
+    g_slist_foreach (contacts, (GFunc) gm_contact_delete, NULL);
+    g_slist_free (contacts);
+  }
 }
 
 
@@ -958,12 +972,12 @@ gm_aw_modify_addressbook (GtkWidget *addressbook_window,
 
 static void
 gm_aw_update_addressbook (GtkWidget *addressbook_window,
-			  GmAddressbook *addressbook)
+			  GmAddressbook *addressbook,
+			  GSList *contacts)
 {
   GmAddressbookWindow *aw = NULL;
   GmAddressbookWindowPage *awp = NULL;
 
-  GSList *contacts = NULL;
   GSList *l = NULL;
 
   GmContact *contact = NULL;
@@ -976,9 +990,6 @@ gm_aw_update_addressbook (GtkWidget *addressbook_window,
   GdkPixbuf *status_icon = NULL;
 
   int page_num = -1;
-  int opt = -1;
-
-  const char *filter = NULL;
 
   g_return_if_fail (addressbook_window != NULL && addressbook != NULL);
 
@@ -1007,16 +1018,7 @@ gm_aw_update_addressbook (GtkWidget *addressbook_window,
 
   gtk_list_store_clear (GTK_LIST_STORE (model));
 
-  /* Get the search parameters from the addressbook_window */
-  opt = gtk_option_menu_get_history (GTK_OPTION_MENU (aw->aw_option_menu));
-  filter = gtk_entry_get_text (GTK_ENTRY (aw->aw_search_entry));
-  contacts = 
-    gnomemeeting_addressbook_get_contacts (addressbook, 
-					   TRUE,
-					   (opt == 1)?(gchar *) filter:NULL,
-					   (opt == 2)?(gchar *) filter:NULL,
-					   (opt == 3)?(gchar *) filter:NULL,
-					   NULL);
+
   l = contacts;
   while (l) {
 
@@ -1062,9 +1064,6 @@ gm_aw_update_addressbook (GtkWidget *addressbook_window,
 
     l = g_slist_next (l);
   }
-
-  g_slist_foreach (contacts, (GFunc) gm_contact_delete, NULL);
-  g_slist_free (contacts);
 }
 
 
@@ -1304,10 +1303,27 @@ public:
     void Main ()
       { 
 	PWaitAndSignal m(quit_mutex);
+	
+	/* Get the search parameters from the addressbook_window */
+	//GmAddressbookWindow *aw = gm_aw_get_aw (addressbook_window);
+	//int opt = gtk_option_menu_get_history (GTK_OPTION_MENU (aw->aw_option_menu));
+	//char *filter = gtk_entry_get_text (GTK_ENTRY (aw->aw_search_entry));
 	gdk_threads_enter ();
 	addressbook = gm_aw_get_selected_addressbook (addressbook_window);
+	gdk_threads_leave ();
+	
+	GSList *contacts = 
+	  gnomemeeting_addressbook_get_contacts (addressbook, 
+						 TRUE,
+						 NULL,
+						 NULL,
+						 NULL,
+						 NULL);
+	
+	gdk_threads_enter ();
 	gm_aw_update_addressbook (addressbook_window, 
-				  addressbook);
+				  addressbook,
+				  contacts);
 	gm_addressbook_delete (addressbook);
 	gdk_threads_leave ();
       }
@@ -1742,6 +1758,7 @@ gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
   GmAddressbook *addc = NULL;
   GmAddressbook *new_addressbook = NULL;
 
+  GSList *contacts = NULL;
   GSList *list = NULL;
   GSList *l = NULL;
 
@@ -1976,7 +1993,18 @@ gm_addressbook_window_edit_contact_dialog_run (GtkWidget *addressbook_window,
 	  
 	  gnomemeeting_addressbook_add_contact (new_addressbook, new_contact);
 	}
-	gm_aw_update_addressbook (addressbook_window, new_addressbook);
+
+	contacts = gnomemeeting_addressbook_get_contacts (new_addressbook,
+							  FALSE,
+							  NULL,
+							  NULL,
+							  NULL,
+							  NULL);
+							
+	gm_aw_update_addressbook (addressbook_window, new_addressbook, contacts);
+
+	g_slist_foreach (contacts, (GFunc) gm_contact_delete, NULL);
+	g_slist_free (contacts);
       }
 
       gm_contact_delete (new_contact);
@@ -2004,6 +2032,8 @@ gm_addressbook_window_delete_contact_dialog_run (GtkWidget *addressbook_window,
 {
   GtkWidget *dialog = NULL;
 
+  GSList *contacts = NULL;
+
   gchar *confirm_msg = NULL;
 
   g_return_if_fail (addressbook != NULL);
@@ -2030,7 +2060,16 @@ gm_addressbook_window_delete_contact_dialog_run (GtkWidget *addressbook_window,
   case GTK_RESPONSE_YES:
 
     gnomemeeting_addressbook_delete_contact (addressbook, contact);
-    gm_aw_update_addressbook (addressbook_window, addressbook);
+    
+    contacts = gnomemeeting_addressbook_get_contacts (addressbook, 
+						      FALSE,
+						      NULL,
+						      NULL,
+						      NULL,
+						      NULL);
+    gm_aw_update_addressbook (addressbook_window, addressbook, contacts);
+    g_slist_foreach (contacts, (GFunc) gm_contact_delete, NULL);
+    g_slist_free (contacts);
 
     break;
   }
