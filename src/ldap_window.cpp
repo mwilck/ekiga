@@ -418,6 +418,8 @@ edit_contact_cb (GtkWidget *widget,
   gchar *group_name = NULL;
   gchar *label_text = NULL;
 
+  PString other_speed_dial;
+  
   gboolean selected = false;
   gboolean is_group = false;
   int result = 0;
@@ -603,7 +605,7 @@ edit_contact_cb (GtkWidget *widget,
     if (!strcmp (gtk_entry_get_text (GTK_ENTRY (name_entry)), "")
 	|| !strcmp (gtk_entry_get_text (GTK_ENTRY (callto_entry)), "")
 	|| !strcmp (gtk_entry_get_text (GTK_ENTRY (callto_entry)), "callto://")){
-      gnomemeeting_error_dialog (GTK_WINDOW (gw->ldap_window), _("Please provide a valid name and callto for the user"));
+      gnomemeeting_error_dialog (GTK_WINDOW (gw->ldap_window), _("Please provide a valid name and callto for the contact."));
       break;
     }
 	
@@ -663,14 +665,27 @@ edit_contact_cb (GtkWidget *widget,
 	  /* If we are adding a new user for a selected group and that he
 	     already belongs to that group, then display a warning */
 	  if (GPOINTER_TO_INT (data) == 1 && selected
-	      && is_contact_member_of_group (contact_callto, group_name))
-	    gnomemeeting_error_dialog (GTK_WINDOW (gw->ldap_window), _("Another user with the callto %s already exists in group %s."), contact_callto, group_name);
+	      && is_contact_member_of_group (contact_callto, group_name)) {
+	    
+	    gnomemeeting_error_dialog (GTK_WINDOW (gw->ldap_window), _("Another contact with the callto %s already exists in group %s."), contact_callto, group_name);
+	  }
+	  else {
 
-	  if ((GPOINTER_TO_INT (data) == 1 && selected)
-	      || (GPOINTER_TO_INT (data) == 0))
-	    gconf_client_set_list (client, gconf_key, GCONF_VALUE_STRING,
-				   group_content, NULL);
+	    other_speed_dial =
+	      gnomemeeting_addressbook_get_speed_dial_url (gtk_entry_get_text (GTK_ENTRY (speed_dial_entry)));
+	    
+	    if (!other_speed_dial.IsEmpty () 
+		&& other_speed_dial != PString (contact_callto)) {
 
+	      if (selected)
+		gnomemeeting_error_dialog (GTK_WINDOW (gw->ldap_window), _("Another contact with the same speed dial already exists."));
+	    }
+	    else
+	      if ((GPOINTER_TO_INT (data) == 1 && selected)
+		  || (GPOINTER_TO_INT (data) == 0))
+		gconf_client_set_list (client, gconf_key, GCONF_VALUE_STRING,
+				       group_content, NULL);
+	  }	  
 	  groups_nbr++;
 	}
 	
@@ -1647,23 +1662,13 @@ gnomemeeting_init_ldap_window ()
   GtkWidget *vbox = NULL;
   GtkWidget *frame = NULL;
   GtkWidget *menubar = NULL;
+
   GdkPixbuf *xdap_pixbuf = NULL;
-  GdkPixbuf *contact_icon = NULL;
+
   GtkCellRenderer *cell = NULL;
   GtkTreeSelection *selection = NULL;
   GtkTreeViewColumn *column = NULL;
   GtkTreeStore *model = NULL;
-  GtkTreePath *path = NULL;
-  GtkTreeIter iter;
-  GtkTreeIter child_iter;
-
-  GSList *ldap_servers_list = NULL;
-  GSList *groups_list = NULL;
-  GSList *ldap_servers_list_iter = NULL;
-  GSList *groups_list_iter = NULL;
-
-  gchar *markup = NULL;
-  int p = 0, cpt = 0;
 
   GmWindow *gw = NULL;
   GmLdapWindow *lw = NULL;
@@ -1793,7 +1798,6 @@ gnomemeeting_init_ldap_window ()
   gtk_tree_view_append_column (GTK_TREE_VIEW (lw->tree_view),
 			       GTK_TREE_VIEW_COLUMN (column));
 
-
   /* a vbox to put the frames and the user list */
   vbox = gtk_vbox_new (FALSE, 0);
   gtk_box_pack_start (GTK_BOX (hbox), vbox, TRUE, TRUE, 0);
@@ -1804,96 +1808,11 @@ gnomemeeting_init_ldap_window ()
   gtk_box_pack_start (GTK_BOX (vbox), lw->notebook, 
 		      TRUE, TRUE, 0);
 
-  /* Populate the tree view : servers */
-  gtk_tree_store_append (GTK_TREE_STORE (model), &iter, NULL);
-  markup = g_strdup_printf("<span weight='bold'>%s</span>", _("Servers"));
-  contact_icon = 
-    gtk_widget_render_icon (lw->tree_view, GM_STOCK_REMOTE_CONTACT,
-			    GTK_ICON_SIZE_MENU, NULL);
-  gtk_tree_store_set (GTK_TREE_STORE (model),
-		      &iter, COLUMN_CONTACT_SECTION_NAME, markup, 
-		      COLUMN_NOTEBOOK_PAGE, 0, 
-		      COLUMN_PIXBUF_VISIBLE, FALSE, -1);
-
-  ldap_servers_list =
-    gconf_client_get_list (client, CONTACTS_KEY "ldap_servers_list",
-			   GCONF_VALUE_STRING, NULL); 
-    
-  ldap_servers_list_iter = ldap_servers_list;
-  while (ldap_servers_list_iter) {
-
-    /* This will only add a notebook page if the server was not already
-     * present */
-    p = 
-      gnomemeeting_init_ldap_window_notebook ((char *)
-					      ldap_servers_list_iter->data,
-					      CONTACTS_SERVERS);
-
-    gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
-    gtk_tree_store_set (GTK_TREE_STORE (model),
-			&child_iter, 
-			COLUMN_PIXBUF, contact_icon,
-			COLUMN_CONTACT_SECTION_NAME, ldap_servers_list_iter->data, 
-			COLUMN_NOTEBOOK_PAGE, p, 
-			COLUMN_PIXBUF_VISIBLE, TRUE, -1);
-
-    ldap_servers_list_iter = ldap_servers_list_iter->next;
-    cpt++;
-  }
-  g_slist_free (ldap_servers_list);
-  g_object_unref (contact_icon);
-  g_free (markup);
-
-
-  /* Populate the tree view : groups */
-  gtk_tree_store_append (GTK_TREE_STORE (model), &iter, NULL);
-  markup = g_strdup_printf("<span weight='bold'>%s</span>", _("Groups"));
-  contact_icon = 
-    gtk_widget_render_icon (lw->tree_view, GM_STOCK_LOCAL_CONTACT,
-			    GTK_ICON_SIZE_MENU, NULL);
-  gtk_tree_store_set (GTK_TREE_STORE (model),
-		      &iter, COLUMN_CONTACT_SECTION_NAME, markup, 
-		      COLUMN_NOTEBOOK_PAGE, 0, 
-		      COLUMN_PIXBUF_VISIBLE, FALSE, -1);
-
-  groups_list =
-    gconf_client_get_list (client, CONTACTS_KEY "groups_list",
-			   GCONF_VALUE_STRING, NULL); 
-    
-  groups_list_iter = groups_list;
-  while (groups_list_iter) {
-
-    /* This will only add a notebook page if the server was not already
-     * present */
-    p = 
-      gnomemeeting_init_ldap_window_notebook ((char *)
-					      groups_list_iter->data,
-					      CONTACTS_GROUPS);
-
-    gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
-    gtk_tree_store_set (GTK_TREE_STORE (model),
-			&child_iter, 
-			COLUMN_PIXBUF, contact_icon,
-			COLUMN_CONTACT_SECTION_NAME, groups_list_iter->data, 
-			COLUMN_NOTEBOOK_PAGE, p,
-			COLUMN_PIXBUF_VISIBLE, TRUE, -1);
-
-    groups_list_iter = groups_list_iter->next;
-    cpt++;
-  }
-  g_slist_free (groups_list);
-  g_object_unref (contact_icon);
-  g_free (markup);
-
-
-  /* Expand servers and groups */
-  path = gtk_tree_path_new_from_string ("0:0");
-  gtk_tree_view_expand_all (GTK_TREE_VIEW (lw->tree_view));
-  gtk_tree_view_set_cursor (GTK_TREE_VIEW (lw->tree_view), path,
-			    NULL, false);
-  gtk_tree_path_free (path);
-
   
+  /* Populate the tree_viw with groups and servers */
+  gnomemeeting_addressbook_sections_populate ();
+
+ 
   /* Drag and Drop Setup */
   gtk_drag_dest_set (GTK_WIDGET (lw->tree_view), GTK_DEST_DEFAULT_ALL,
 		     dnd_targets, 1,
@@ -2037,8 +1956,7 @@ gnomemeeting_init_ldap_window_notebook (gchar *text_label,
 					COLUMN_ILS_COLOR);
     gtk_tree_view_column_set_resizable (column, true);
     gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
-    g_object_set (G_OBJECT (renderer), "weight", "bold",
-		  "style", PANGO_STYLE_ITALIC, NULL);
+    g_object_set (G_OBJECT (renderer), "weight", "bold", NULL);
 
     renderer = gtk_cell_renderer_text_new ();
     column = gtk_tree_view_column_new_with_attributes (_("Comment"),
@@ -2318,9 +2236,129 @@ gnomemeeting_addressbook_group_populate (GtkListStore *list_store,
   g_free (gconf_key);
   g_slist_free (group_content);
 }
-					      
 
-PString gnomemeeting_addressbook_get_speed_dial_url (PString url)
+
+void
+gnomemeeting_addressbook_sections_populate ()
+{
+  GtkTreeModel *model = NULL;
+  GtkTreePath *path = NULL;
+  GtkTreeIter iter, child_iter;
+
+  GdkPixbuf *contact_icon = NULL;
+
+  gchar *markup = NULL;
+
+  GSList *ldap_servers_list = NULL;
+  GSList *ldap_servers_list_iter = NULL;
+  GSList *groups_list = NULL;
+  GSList *groups_list_iter = NULL;
+
+  GConfClient *client = NULL;
+  GmLdapWindow *lw = NULL;
+
+  int p = 0, cpt = 0;
+  
+  lw = gnomemeeting_get_ldap_window (gm);
+  client = gconf_client_get_default ();
+  model = gtk_tree_view_get_model (GTK_TREE_VIEW (lw->tree_view));
+
+  gtk_tree_store_clear (GTK_TREE_STORE (model));
+  
+  /* Populate the tree view : servers */
+  gtk_tree_store_append (GTK_TREE_STORE (model), &iter, NULL);
+  markup = g_strdup_printf("<b>%s</b>", _("Servers"));
+  contact_icon = 
+    gtk_widget_render_icon (lw->tree_view, GM_STOCK_REMOTE_CONTACT,
+			    GTK_ICON_SIZE_MENU, NULL);
+  gtk_tree_store_set (GTK_TREE_STORE (model),
+		      &iter, COLUMN_CONTACT_SECTION_NAME, markup, 
+		      COLUMN_NOTEBOOK_PAGE, 0, 
+		      COLUMN_PIXBUF_VISIBLE, FALSE, -1);
+
+  ldap_servers_list =
+    gconf_client_get_list (client, CONTACTS_KEY "ldap_servers_list",
+			   GCONF_VALUE_STRING, NULL); 
+    
+  ldap_servers_list_iter = ldap_servers_list;
+  while (ldap_servers_list_iter) {
+
+    /* This will only add a notebook page if the server was not already
+     * present */
+    p = 
+      gnomemeeting_init_ldap_window_notebook ((char *)
+					      ldap_servers_list_iter->data,
+					      CONTACTS_SERVERS);
+
+    gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
+    gtk_tree_store_set (GTK_TREE_STORE (model),
+			&child_iter, 
+			COLUMN_PIXBUF, contact_icon,
+			COLUMN_CONTACT_SECTION_NAME,
+			ldap_servers_list_iter->data, 
+			COLUMN_NOTEBOOK_PAGE, p, 
+			COLUMN_PIXBUF_VISIBLE, TRUE, -1);
+
+    ldap_servers_list_iter = ldap_servers_list_iter->next;
+    cpt++;
+  }
+  g_slist_free (ldap_servers_list);
+  g_object_unref (contact_icon);
+  g_free (markup);
+
+
+  /* Populate the tree view : groups */
+  gtk_tree_store_append (GTK_TREE_STORE (model), &iter, NULL);
+  markup = g_strdup_printf("<b>%s</b>", _("Groups"));
+  contact_icon = 
+    gtk_widget_render_icon (lw->tree_view, GM_STOCK_LOCAL_CONTACT,
+			    GTK_ICON_SIZE_MENU, NULL);
+  gtk_tree_store_set (GTK_TREE_STORE (model),
+		      &iter, COLUMN_CONTACT_SECTION_NAME, markup, 
+		      COLUMN_NOTEBOOK_PAGE, 0, 
+		      COLUMN_PIXBUF_VISIBLE, FALSE, -1);
+
+  groups_list =
+    gconf_client_get_list (client, CONTACTS_KEY "groups_list",
+			   GCONF_VALUE_STRING, NULL); 
+    
+  groups_list_iter = groups_list;
+  while (groups_list_iter) {
+
+    /* This will only add a notebook page if the server was not already
+     * present */
+    p = 
+      gnomemeeting_init_ldap_window_notebook ((char *)
+					      groups_list_iter->data,
+					      CONTACTS_GROUPS);
+
+    gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
+    gtk_tree_store_set (GTK_TREE_STORE (model),
+			&child_iter, 
+			COLUMN_PIXBUF, contact_icon,
+			COLUMN_CONTACT_SECTION_NAME, groups_list_iter->data, 
+			COLUMN_NOTEBOOK_PAGE, p,
+			COLUMN_PIXBUF_VISIBLE, TRUE, -1);
+
+    groups_list_iter = groups_list_iter->next;
+    cpt++;
+  }
+  g_slist_free (groups_list);
+  g_object_unref (contact_icon);
+  g_free (markup);
+
+
+  /* Expand servers and groups */
+  path = gtk_tree_path_new_from_string ("0:0");
+  gtk_tree_view_expand_all (GTK_TREE_VIEW (lw->tree_view));
+  gtk_tree_view_set_cursor (GTK_TREE_VIEW (lw->tree_view), path,
+			    NULL, false);
+  gtk_tree_path_free (path);
+}
+
+
+PString
+gnomemeeting_addressbook_get_speed_dial_url (PString url)
 {
   gchar *group_content_gconf_key = NULL;
   char **contact_info = NULL;

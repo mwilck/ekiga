@@ -103,10 +103,20 @@ int gnomemeeting_init_ldap_window_notebook (gchar *, int);
 
 /* DESCRIPTION  :  / 
  * BEHAVIOR     :  Fills in the GtkListStore with the members of the group
- *                 given as parameter.
+ *                 given as second parameter.
  * PRE          :  /
  */
 void gnomemeeting_addressbook_group_populate (GtkListStore *, char *);
+
+
+/* DESCRIPTION  :  / 
+ * BEHAVIOR     :  Fills in the arborescence of servers and groups.
+ * PRE          :  /
+ */
+void gnomemeeting_addressbook_sections_populate ();
+
+
+
 
 PString gnomemeeting_addressbook_get_speed_dial_url (PString);
 #endif

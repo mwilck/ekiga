@@ -1,3 +1,16 @@
+2003-05-13 Damien Sandras  <dsandras@seconix.com>
+
+	* lib/gtk-text-buffer-extentions.c: Fixed bug with gcc-2.95.
+
+	* src/config.cpp: Make use of the new API in ldap_window.h.
+
+	* src/ldap_window.cpp, src/ldap_window.h: New API to rebuild
+	the servers and groups list. Make sure people can not add or
+	modify a contact to an already existing speed dial. 
+	
+	* src/urlhandler.cpp: Make sure that a message is displayed if 
+	a speed dial does not exist when calling somebody.
+		
 2003-05-13  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* lib/gtk-text-buffer-extentions.c: Do not create and destroy the

@@ -119,9 +119,10 @@ void GMURLHandler::Main ()
   
   /* If it is a speed dial (# at the end of the URL), then we use it */
   url.Replace ("callto://", "");
-  if (url.Find ('#') == url.GetLength () - 1)
+  if (url.Find ('#') == url.GetLength () - 1) 
     call_address =
-      gnomemeeting_addressbook_get_speed_dial_url (url.Left (url.GetLength () -1));
+      gnomemeeting_addressbook_get_speed_dial_url (url.Left (url.GetLength ()
+							     -1));
   else
     call_address = url;
 
@@ -162,8 +163,10 @@ void GMURLHandler::Main ()
   
   /* Connect to the URL */
   endpoint->SetCallingState (1);
-  con = 
-    endpoint->MakeCallLocked (call_address, current_call_token);
+
+  if (call_address != PString ("callto:"))
+    con = 
+      endpoint->MakeCallLocked (call_address, current_call_token);
   if (con) {
     
     endpoint->SetCurrentConnection (con);
@@ -188,7 +191,10 @@ void GMURLHandler::Main ()
     if (call_address.Find ("+type=directory") != P_MAX_INDEX)
       gnomemeeting_statusbar_flash (gw->statusbar, _("User not found"));
     else
-      gnomemeeting_statusbar_flash (gw->statusbar, "");
+      if (call_address == PString ("callto:")) 
+	gnomemeeting_statusbar_flash (gw->statusbar, _("No contact with that speed dial found"));
+      else
+	gnomemeeting_statusbar_flash (gw->statusbar, "");
     
     gnomemeeting_threads_leave ();
   }

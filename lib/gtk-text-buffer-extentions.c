@@ -41,6 +41,7 @@
 #include <string.h>
 #include "../pixmaps/inline_emoticons.h"
 
+
 /**
  * struct smile_detect
  * @code : the code of the symbol
@@ -55,6 +56,7 @@ typedef struct smile_detect_ {
   struct smile_detect_ **children;
 } smile_detect;
 
+
 /**
  * add_new_children
  * @code : the code of the symbol
@@ -67,11 +69,13 @@ static smile_detect *
 add_new_children (char code,    
 		  smile_detect *parent) 
 {
+  smile_detect *node = NULL;
+  
   parent->children = 
     (smile_detect **) g_realloc (parent->children, 
 				 (parent->n_children + 1) * 
 				 sizeof (smile_detect *));
-  smile_detect *node = (smile_detect *) g_malloc (sizeof (smile_detect));
+  node = (smile_detect *) g_malloc (sizeof (smile_detect));
   parent->children[parent->n_children++] = node;
     
   node->code = code;
