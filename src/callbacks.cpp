@@ -389,6 +389,8 @@ void about_callback (GtkWidget *widget, gpointer parent_window)
       "Sébastien Josset <Sebastien.Josset@space.alcatel.fr>",
       "Stefan Bruëns <lurch@gmx.li>",
       "Tuan <tuan@info.ucl.ac.be>",
+      "Xavier Ricco <ricco@mulitel.be>",
+      "Julien Hamaide <hamaide@multitel.be>",
       "",
       N_("Artwork:"),
       "Jakub Steiner <jimmac@ximian.com>",

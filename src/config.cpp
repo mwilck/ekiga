@@ -1551,12 +1551,11 @@ gnomemeeting_conf_init ()
   gm_conf_watch ();
 
     
-#ifndef WIN32
   conf_test = gm_conf_get_int (GENERAL_KEY "gconf_test_age");
   
   if (conf_test != SCHEMA_AGE) 
     return FALSE;
-#endif
+
 
   /* There are in general 2 notifiers to attach to each widget :
    * - the notifier that will update the widget itself to the new key,

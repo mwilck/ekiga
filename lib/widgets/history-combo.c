@@ -38,6 +38,11 @@
 
 #define GM_HISTORY_ENTRIES_NUM 10
 
+#ifndef WIN32
+#define stricmp	strcasecmp
+#endif
+
+
 static void gm_history_combo_class_init   (GmHistoryComboClass *klass);
 static void gm_history_combo_init         (GmHistoryCombo *combo);
 static void gm_history_combo_construct    (GmHistoryCombo *combo);

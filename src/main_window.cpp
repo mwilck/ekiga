@@ -1586,9 +1586,7 @@ int main (int argc, char ** argv, char ** envp)
 
   /* Initialize gettext */
   textdomain (GETTEXT_PACKAGE);
-#ifndef WIN32
   bindtextdomain (GETTEXT_PACKAGE, GNOMELOCALEDIR);
-#endif
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 
   

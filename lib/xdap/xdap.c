@@ -15,6 +15,10 @@
 
 #include "xdap.h"
 
+#ifndef WIN32
+#define stricmp	strcasecmp
+#endif
+
 static int doldapop (LDAP *, xmlDocPtr, int, xmlNodePtr, int, char *, int,
 		     char *, char **, int);
 static int addattr (LDAPMod **, int *, char *, char *, int);

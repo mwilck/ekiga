@@ -43,7 +43,11 @@
 
 #include "tray.h"
 #include "gnomemeeting.h"
+
+#ifndef WIN32
 #include "eggtrayicon.h"
+#endif
+
 #include "menu.h"
 #include "callbacks.h"
 #include "misc.h"
@@ -183,7 +187,11 @@ gnomemeeting_tray_new ()
    * to the object so that it is deleted when the object is
    * destroyed
    */
+#ifdef WIN32
+  tray_icon = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+#else
   tray_icon = GTK_WIDGET (egg_tray_icon_new (_("GnomeMeeting Tray Icon")));
+#endif
 
   event_box = gtk_event_box_new ();
   gt->image = gtk_image_new_from_stock (GM_STOCK_STATUS_AVAILABLE,
