@@ -350,7 +350,9 @@ BOOL GMILSClient::Register (int reg)
     msg = g_strdup_printf (_("Contacting %s..."), ldap_server);
 
     gnomemeeting_threads_enter ();
-    gnomemeeting_statusbar_flash (gm, msg);
+    if (reg != 2)
+      gnomemeeting_statusbar_flash (gm, msg);
+    gnomemeeting_log_insert (gw->history_text_view, msg);    
     g_free (msg);
     gnomemeeting_threads_leave ();
 
@@ -479,7 +481,8 @@ BOOL GMILSClient::Register (int reg)
       }
 
       gnomemeeting_threads_enter ();
-      gnomemeeting_statusbar_flash (gm, msg);
+      if (reg != 2)
+	gnomemeeting_statusbar_flash (gm, msg);
       gnomemeeting_log_insert (gw->history_text_view, msg);
       g_free (msg);
       gnomemeeting_threads_leave ();      

@@ -1,5 +1,12 @@
 2002-10-15 Damien Sandras  <dsandras@seconix.com>
 
+	* src/ils.cpp: The messages like "contacted ils server" and "updated
+	info on ils server" are now displayed in the history, but not anymore
+	in the statusbar for single updates as it prevents to see some other
+	and more useful messages.
+	
+2002-10-15 Damien Sandras  <dsandras@seconix.com>
+
 	* src/gnomemeeting.cpp: Removed dummy SHA1 code that was preventing
 	GM to register succesfully with H.235 authentication. Thanks a lot
 	to Roger for finding this very weird and hard bug!
