@@ -1,5 +1,10 @@
 2003-02-24 Damien Sandras  <dsandras@seconix.com>
 
+	* src/ils.cpp, src/ils.h: Do not use class variables for the search
+	as it prevents two searches to occur at the same time.
+	
+2003-02-24 Damien Sandras  <dsandras@seconix.com>
+
 	* src/ils.cpp: Added timeout for search.
 	
 2003-02-24 Damien Sandras  <dsandras@seconix.com>

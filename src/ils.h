@@ -76,8 +76,6 @@ protected:
 
   PTime starttime;
   LDAP *ldap_connection;
-  LDAP *ldap_search_connection;
-  int rc_search_connection;
   PMutex quit_mutex;
 
   GConfClient *client;

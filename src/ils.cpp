@@ -142,10 +142,6 @@ GMILSClient::GMILSClient ()
 
   client = gconf_client_get_default ();
 
-
-  ldap_search_connection = NULL;
-  rc_search_connection = -1;
-
   Resume ();
 }
 
@@ -520,6 +516,9 @@ BOOL GMILSClient::Register (int reg)
 
 gchar *GMILSClient::Search (gchar *ldap_server, gchar *ldap_port, gchar *mail)
 {
+  LDAP *ldap_search_connection = NULL;
+  int rc_search_connection = -1;
+
   char *attrs [] = { "rfc822mailbox", "sappid", "sipaddress", "sport", NULL };
   char **ldv = NULL;
  
@@ -544,13 +543,6 @@ gchar *GMILSClient::Search (gchar *ldap_server, gchar *ldap_port, gchar *mail)
       ||((!strcmp (mail, ""))&&(mail)))
     return NULL;
  
-
-  if ((ldap_search_connection != NULL)||(rc_search_connection != -1)) {
-    
-    ldap_abandon (ldap_search_connection, rc_search_connection);
-	
-  }
-
 
   /* must be able to reach ldap server */
   if (!(ldap_search_connection = ldap_init (ldap_server, atoi (ldap_port)))) {
