@@ -190,7 +190,6 @@ void gnomemeeting_text_chat_clear (GtkWidget *w,
   gtk_text_buffer_get_end_iter (chat->text_buffer, &end_iter);
 
   gtk_text_buffer_delete (chat->text_buffer, &start_iter, &end_iter);
-  chat->buffer_is_empty = TRUE;
 
   gtk_menu_set_sensitive (gw->main_menu, "clear_text_chat", FALSE);
 }
@@ -213,13 +212,7 @@ gnomemeeting_text_chat_insert (PString local,
 
   gtk_text_buffer_get_end_iter (chat->text_buffer, &iter);
 
-  if (chat->buffer_is_empty)
-  {
-    msg = g_strdup_printf ("%s: ", (const char *) local);
-    chat->buffer_is_empty = FALSE;
-  }
-  else
-    msg = g_strdup_printf ("\n%s: ", (const char *) local);
+  msg = g_strdup_printf ("%s: ", (const char *) local);
 
   if (user == 1)
     gtk_text_buffer_insert_with_tags_by_name (chat->text_buffer, &iter, msg, 
@@ -232,6 +225,8 @@ gnomemeeting_text_chat_insert (PString local,
   
   gtk_text_buffer_insert_with_regex (chat->text_buffer, &iter, 
 					 (const char *) str);
+
+  gtk_text_buffer_insert (chat->text_buffer, &iter, "\n", -1);
 
   mark = gtk_text_buffer_get_mark (chat->text_buffer, "current-position");
 
@@ -379,8 +374,6 @@ gnomemeeting_text_chat_new (GmTextChat *chat)
 
   g_signal_connect (GTK_OBJECT (entry), "activate",
 		    G_CALLBACK (chat_entry_activate), chat->text_view);
-
-  chat->buffer_is_empty = TRUE;
 
   return chat_window;
 }

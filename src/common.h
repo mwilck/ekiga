@@ -160,7 +160,6 @@ struct _GmTextChat
 {
   GtkWidget     *text_view;
   GtkTextBuffer *text_buffer;
-  gboolean       buffer_is_empty;
 };
 
 
