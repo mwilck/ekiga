@@ -10,8 +10,7 @@ INCLUDES =						\
 	-DG_LOG_DOMAIN=\"GnomeMeeting\"		 	\
 	-DSHARE_DIR=\"$(pkgdatadir)\"			\
 	-I$(top_srcdir) 				\
-	$(GNOMEMEETING_CFLAGS)				\
-	$(GNOMEMEETING_INCLUDES)
+	$(GNOMEMEETING_CFLAGS)				
 
 libxdap_la_LDFLAGS = -export-dynamic
 libxdap_la_LIDADD = 
