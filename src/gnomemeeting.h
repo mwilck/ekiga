@@ -140,14 +140,6 @@ class GnomeMeeting : public PProcess
 
 
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns a pointer to the GmRtpData
-   *                 structure of widgets.
-   * PRE          :  /
-   */
-  GmRtpData *GetRtpData ();
-  
-  
-  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns a pointer to the history window.
    * PRE          :  /
    */
@@ -237,7 +229,6 @@ class GnomeMeeting : public PProcess
   PThread *url_handler;
   
   GmWindow *gw;
-  GmRtpData *rtp;
 
   PMutex ep_var_mutex;
   PMutex dev_access_mutex;

@@ -55,6 +55,7 @@
 #include "pref_window.h"
 #include "main_window.h"
 #include "calls_history_window.h"
+#include "stats_drawing_area.h"
 
 #include "dialog.h"
 #include "gm_conf.h"
@@ -1092,13 +1093,10 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   IncomingCallMode icm = AVAILABLE;
 
-  GmRtpData *rtp = NULL;
-
 #ifdef HAS_IXJ
   GMLid *l = NULL;
 #endif
 
-  rtp = GnomeMeeting::Process ()->GetRtpData ();
   calls_history_window = GnomeMeeting::Process ()->GetCallsHistoryWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
 
@@ -1308,8 +1306,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   /* We update the stats part */  
   gnomemeeting_threads_enter ();
-  memset ((void *) rtp, 0, sizeof (struct _GmRtpData));
-  gtk_widget_queue_draw_area (gw->stats_drawing_area, 0, 0, GTK_WIDGET (gw->stats_drawing_area)->allocation.width, GTK_WIDGET (gw->stats_drawing_area)->allocation.height);
+  stats_drawing_area_clear (gw->stats_drawing_area);
   gtk_label_set_text (GTK_LABEL (gw->stats_label), _("Lost packets:\nLate packets:\nRound-trip delay:\nJitter buffer:"));
 
   /* set-on-top to False */
@@ -1855,7 +1852,6 @@ GMH323EndPoint::OnRTPTimeout (PTimer &, INT)
 
   H323Connection *con = NULL;
 
-  GmRtpData *rtp = NULL; 
   GmWindow *gw = NULL;
 
   gchar *msg = NULL;
@@ -1875,7 +1871,6 @@ GMH323EndPoint::OnRTPTimeout (PTimer &, INT)
   float transmitted_audio_speed = 0;
   float transmitted_video_speed = 0;
 
-  rtp = GnomeMeeting::Process ()->GetRtpData ();
   gw = GnomeMeeting::Process ()->GetMainWindow ();
 
   con = FindConnectionWithLock (GetCurrentCallToken ());
@@ -1924,37 +1919,6 @@ GMH323EndPoint::OnRTPTimeout (PTimer &, INT)
 				     - last_video_octets_transmitted)/ 1024;
 
   
-  /* update the rtp structure */
-  if ((rtp->tr_audio_bytes == 0) && (rtp->tr_audio_pos == 0))
-    rtp->tr_audio_bytes = new_audio_octets_transmitted;
-  rtp->tr_audio_speed [rtp->tr_audio_pos] = transmitted_audio_speed;
-  rtp->tr_audio_bytes = new_audio_octets_transmitted;
-  rtp->tr_audio_pos++;
-  if (rtp->tr_audio_pos >= 50) rtp->tr_audio_pos = 0;
-  
-  if ((rtp->re_audio_bytes == 0) && (rtp->re_audio_pos == 0))
-    rtp->re_audio_bytes = new_audio_octets_received;
-  rtp->re_audio_speed [rtp->re_audio_pos] = received_audio_speed;
-  rtp->re_audio_bytes = new_audio_octets_received;  
-  rtp->re_audio_pos++;
-  if (rtp->re_audio_pos >= 50) rtp->re_audio_pos = 0;
-
-  new_video_octets_received = video_session->GetOctetsReceived();
-  if ((rtp->tr_video_bytes == 0) && (rtp->tr_video_pos == 0)) 
-    rtp->tr_video_bytes = new_video_octets_transmitted;
-  rtp->tr_video_speed [rtp->tr_video_pos] = transmitted_video_speed;
-  rtp->tr_video_bytes = new_video_octets_transmitted;
-  rtp->tr_video_pos++;
-  if (rtp->tr_video_pos >= 50) rtp->tr_video_pos = 0;
-
-  if ((rtp->re_video_bytes == 0) && (rtp->re_video_pos == 0)) 
-    rtp->re_video_bytes = new_video_octets_received;
-  rtp->re_video_speed [rtp->re_video_pos] = received_video_speed;
-  rtp->re_video_bytes = new_video_octets_received;
-  rtp->re_video_pos++;
-  if (rtp->re_video_pos >= 50) rtp->re_video_pos = 0;
-  
-
   /* If we didn't receive any audio and video data this time,
      then we start the timer */
   if (new_audio_octets_received == last_audio_octets_received
@@ -2017,7 +1981,12 @@ GMH323EndPoint::OnRTPTimeout (PTimer &, INT)
   g_free (stats_msg);
 
   if (gm_conf_get_int (USER_INTERFACE_KEY "main_window/control_panel_section") == 0)
-    gtk_widget_queue_draw_area (gw->stats_drawing_area, 0, 0, GTK_WIDGET (gw->stats_drawing_area)->allocation.width, GTK_WIDGET (gw->stats_drawing_area)->allocation.height);
+    stats_drawing_area_new_data (gw->stats_drawing_area,
+				 new_video_octets_received,
+				 new_video_octets_transmitted,
+				 new_audio_octets_received,
+				 new_audio_octets_transmitted);
+
   gdk_threads_leave ();
 
 

@@ -111,7 +111,6 @@
 
 
 typedef struct _GmWindow GmWindow;
-typedef struct _GmRtpData GmRtpData;
 
 
 /* Incoming Call Mode */
@@ -135,22 +134,6 @@ typedef enum {
   CLOSED,
   NUM_SECTIONS
 } ControlPanelSection;
-
-struct _GmRtpData
-{
-  int   tr_audio_bytes;
-  float tr_audio_speed [100];
-  int   tr_audio_pos;
-  float tr_video_speed [100];
-  int   tr_video_pos;
-  int   tr_video_bytes;
-  int   re_audio_bytes;
-  float re_audio_speed [100];
-  int   re_audio_pos;
-  int   re_video_bytes;
-  float re_video_speed [100];
-  int   re_video_pos;
-};
 
 
 struct _GmWindow
@@ -195,7 +178,6 @@ struct _GmWindow
   GtkWidget *stats_label;
   GtkWidget *stats_drawing_area;
 
-  GdkColor colors [6];
 };
 
 

@@ -1,5 +1,15 @@
 2004-08-18  Julien Puydt  <jpuydt@free.fr>
 
+	* lib/stats_drawing_area.h, lib/stats_drawing_area.c: Made a GObject
+	with the existing code in src/main_window.cpp and src/endpoint.cpp,
+	and cleaned it.
+	* lib/Makefile.am: Compile the previous.
+	* src/common.h, src/gnomemeeting.cpp, src/gnomemeeting.h,
+	src/endpoint.cpp, src/main_window.cpp: Wiped out the old stats drawing
+	code, and any reference to GmRtpData.
+
+2004-08-18  Julien Puydt  <jpuydt@free.fr>
+
 	* src/endpoint.h: Added last_*_octets_transmitted, so the endpoint
 	can compute speeds.
 	* src/endpoint.cpp: The computation of speeds now doesn't use GmRtpData

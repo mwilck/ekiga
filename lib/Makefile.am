@@ -27,7 +27,9 @@ libgnomemeeting_la_SOURCES =				\
 	e-splash.c					\
 	e-splash.h					\
 	eggtrayicon.h					\
-	eggtrayicon.c
+	eggtrayicon.c					\
+	stats_drawing_area.h				\
+	stats_drawing_area.c
 
 if DISABLE_GNOME
 libgnomemeeting_la_SOURCES += gm_conf-glib.c

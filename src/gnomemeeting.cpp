@@ -107,9 +107,6 @@ GnomeMeeting::GnomeMeeting ()
 
   /* Init the different structures */
   gw = new GmWindow ();
-  rtp = new GmRtpData ();
-
-  memset ((void *) rtp, 0, sizeof (struct _GmRtpData));
 
   addressbook_window = NULL;
   
@@ -151,8 +148,7 @@ GnomeMeeting::~GnomeMeeting()
     gtk_widget_destroy (gm);
   if (druid_window)
     gtk_widget_destroy (druid_window);
-  
-  delete (rtp);
+
 }
 
 
@@ -385,13 +381,6 @@ GtkWidget *
 GnomeMeeting::GetAddressbookWindow ()
 {
   return addressbook_window;
-}
-
-
-GmRtpData *
-GnomeMeeting::GetRtpData ()
-{
-  return rtp;
 }
 
 

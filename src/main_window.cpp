@@ -55,6 +55,7 @@
 #include "stock-icons.h"
 #include "gm_conf.h"
 #include "contacts/gm_contacts.h"
+#include "stats_drawing_area.h"
 
 
 #include "../pixmaps/text_logo.xpm"
@@ -144,12 +145,6 @@ static void dnd_call_contact_cb (GtkWidget *widget,
 				 gint x, 
 				 gint y, 
 				 gpointer data);
-
-
-/* FIXME: move to a GObject */
-static gboolean stats_drawing_area_exposed_cb (GtkWidget *,
-					       GdkEventExpose *,
-					       gpointer);
 
 
 /* FIXME: DBUS? */
@@ -410,217 +405,6 @@ video_settings_changed_cb (GtkAdjustment *adjustment,
 }
 
 
-static gboolean 
-stats_drawing_area_exposed_cb (GtkWidget *drawing_area, 
-			       GdkEventExpose *event,
-			       gpointer data)
-{
-  GmWindow *mw = NULL;
-  
-  GdkSegment s [50];
-  gboolean success [256];
-
-  static PangoLayout *pango_layout = NULL;
-  static PangoContext *pango_context = NULL;
-  static GdkGC *gc = NULL;
-  static GdkColormap *colormap = NULL;
-
-  gchar *pango_text = NULL;
-  
-  int x = 0, y = 0;
-  int cpt = 0;
-  int pos = 0;
-  
-  GmRtpData *rtp = GnomeMeeting::Process ()->GetRtpData (); 
-  GdkPoint points [50];
-
-  int width_step = (int) GTK_WIDGET (drawing_area)->allocation.width / 40;
-  x = width_step;
-  int allocation_height = GTK_WIDGET (drawing_area)->allocation.height;
-  float height_step = allocation_height;
-
-  float max_tr_video = 1;
-  float max_tr_audio = 1;
-  float max_re_video = 1;
-  float max_re_audio = 1;
-
-
-  g_return_val_if_fail (data != NULL, FALSE);
-  mw = gm_mw_get_mw (GTK_WIDGET (data));
-  
-  if (!gc)
-    gc = gdk_gc_new (mw->stats_drawing_area->window);
-
-  if (!colormap) {
-
-    colormap = gdk_drawable_get_colormap (mw->stats_drawing_area->window);
-    gdk_colormap_alloc_colors (colormap, mw->colors, 6, FALSE, TRUE, success);
-  }
-
-  gdk_gc_set_foreground (gc, &mw->colors [0]);
-  gdk_draw_rectangle (drawing_area->window,
-		      gc,
-		      TRUE, 0, 0, 
-		      GTK_WIDGET (drawing_area)->allocation.width,
-		      GTK_WIDGET (drawing_area)->allocation.height);
-
-  gdk_gc_set_foreground (gc, &mw->colors [1]);
-  gdk_gc_set_line_attributes (gc, 1, GDK_LINE_SOLID, 
-			      GDK_CAP_ROUND, GDK_JOIN_BEVEL);
-  
-  while ((y < GTK_WIDGET (drawing_area)->allocation.height)&&(cpt < 50)) {
-
-    s [cpt].x1 = 0;
-    s [cpt].x2 = GTK_WIDGET (drawing_area)->allocation.width;
-    s [cpt].y1 = y;
-    s [cpt].y2 = y;
-      
-    y = y + 21;
-    cpt++;
-  }
- 
-  gdk_draw_segments (GDK_DRAWABLE (drawing_area->window), gc, s, cpt);
-
-  cpt = 0;
-  while ((x < GTK_WIDGET (drawing_area)->allocation.width)&&(cpt < 50)) {
-
-    s [cpt].x1 = x;
-    s [cpt].x2 = x;
-    s [cpt].y1 = 0;
-    s [cpt].y2 = GTK_WIDGET (drawing_area)->allocation.height;
-      
-    x = x + 21;
-    cpt++;
-  }
- 
-  gdk_draw_segments (GDK_DRAWABLE (drawing_area->window), gc, s, cpt);
-  gdk_window_set_background (drawing_area->window, &mw->colors [0]);
-
-
-  /* Compute the height_step */
-  if (GnomeMeeting::Process ()->Endpoint ()->GetCallingState () == GMH323EndPoint::Connected) {
-
-    for (cpt = 0 ; cpt < 50 ; cpt++) {
-    
-      if (rtp->tr_audio_speed [cpt] > max_tr_audio)
-	max_tr_audio = rtp->tr_audio_speed [cpt];
-      if (rtp->re_audio_speed [cpt] > max_re_audio)
-	max_re_audio = rtp->re_audio_speed [cpt];
-      if (rtp->tr_video_speed [cpt] > max_tr_video)
-	max_tr_video = rtp->tr_video_speed [cpt];
-      if (rtp->re_video_speed [cpt] > max_re_video)
-	max_re_video = rtp->re_video_speed [cpt];    
-    }
-    if (max_re_video > allocation_height / height_step)
-      height_step = allocation_height / max_re_video;
-    if (max_re_audio > allocation_height / height_step)
-      height_step = allocation_height / max_re_audio;
-    if (max_tr_video > allocation_height / height_step)
-      height_step = allocation_height /  max_tr_video;
-    if (max_tr_audio > allocation_height / height_step)
-      height_step = allocation_height / max_tr_audio;
-
-    gdk_gc_set_line_attributes (gc, 2, GDK_LINE_SOLID, 
-				GDK_CAP_ROUND, GDK_JOIN_BEVEL);
-
-    /* Transmitted audio */
-    gdk_gc_set_foreground (gc, &mw->colors [3]);
-    pos = rtp->tr_audio_pos;
-    for (cpt = 0 ; cpt < 50 ; cpt++) {
-
-      points [cpt].x = cpt * width_step;
-
-      points [cpt].y = allocation_height -
-	(gint) (rtp->tr_audio_speed [pos] * height_step);
-      pos++;
-
-      if (pos >= 50) pos = 0;
-    }
-    gdk_draw_lines (GDK_DRAWABLE (drawing_area->window), gc, points, 50);
-
-
-    /* Received audio */
-    gdk_gc_set_foreground (gc, &mw->colors [5]);
-    pos = rtp->re_audio_pos;
-    for (cpt = 0 ; cpt < 50 ; cpt++) {
-
-      points [cpt].x = cpt * width_step;
-
-      points [cpt].y = allocation_height -
-	(gint) (rtp->re_audio_speed [pos] * height_step);
-      pos++;
-
-      if (pos >= 50) pos = 0;
-    }
-    gdk_draw_lines (GDK_DRAWABLE (drawing_area->window), gc, points, 50);
-
-
-    /* Transmitted video */
-    gdk_gc_set_foreground (gc, &mw->colors [4]);
-    pos = rtp->tr_video_pos;
-    for (cpt = 0 ; cpt < 50 ; cpt++) {
-
-      points [cpt].x = cpt * width_step;
-
-      points [cpt].y = allocation_height -
-	(gint) (rtp->tr_video_speed [pos] * height_step);
-      pos++;
-
-      if (pos >= 50) pos = 0;
-    }
-    gdk_draw_lines (GDK_DRAWABLE (drawing_area->window), gc, points, 50);
-
-
-    /* Received video */
-    gdk_gc_set_foreground (gc, &mw->colors [2]);
-    pos = rtp->re_video_pos;
-    for (cpt = 0 ; cpt < 50 ; cpt++) {
-
-      points [cpt].x = cpt * width_step;
-
-      points [cpt].y = allocation_height -
-	(gint) (rtp->re_video_speed [pos] * height_step);
-      pos++;
-
-      if (pos >= 50) pos = 0;
-    }
-    gdk_draw_lines (GDK_DRAWABLE (drawing_area->window), gc, points, 50);
-
-
-    /* Text */
-    if (!pango_context)
-      pango_context = gtk_widget_get_pango_context (GTK_WIDGET (drawing_area));
-    if (!pango_layout)
-      pango_layout = pango_layout_new (pango_context);
-
-    pango_text =
-      g_strdup_printf (_("Total: %.2f MB"),
-		       (float) (rtp->tr_video_bytes+rtp->tr_audio_bytes
-		       +rtp->re_video_bytes+rtp->re_audio_bytes)
-		       / (1024*1024));
-    pango_layout_set_text (pango_layout, pango_text, strlen (pango_text));
-    gdk_draw_layout_with_colors (GDK_DRAWABLE (drawing_area->window),
-				 gc, 5, 2,
-				 pango_layout,
-				 &mw->colors [5], &mw->colors [0]);
-    g_free (pango_text);
-  }
-  else {
-
-    for (cpt = 0 ; cpt < 50 ; cpt++) {
-
-      rtp->re_audio_speed [pos] = 0;
-      rtp->re_video_speed [pos] = 0;
-      rtp->tr_audio_speed [pos] = 0;
-      rtp->tr_video_speed [pos] = 0;
-    }    
-  }
-
-
-  return TRUE;
-}
-
-
 /* Factory stuff */
 
 #ifndef DISABLE_GNOME
@@ -870,43 +654,14 @@ gm_mw_init_stats (GtkWidget *main_window)
   gtk_frame_set_shadow_type (GTK_FRAME (frame2), GTK_SHADOW_IN);
 
   vbox = gtk_vbox_new (FALSE, 6);
-  mw->stats_drawing_area = gtk_drawing_area_new ();
+  mw->stats_drawing_area = stats_drawing_area_new ();
 
   gtk_box_pack_start (GTK_BOX (vbox), frame2, FALSE, TRUE, 0);
   gtk_container_add (GTK_CONTAINER (frame2), mw->stats_drawing_area);
 
   gtk_widget_set_size_request (GTK_WIDGET (frame2), GM_QCIF_WIDTH, 47);
-  mw->colors [0].red = 0;
-  mw->colors [0].green = 0;
-  mw->colors [0].blue = 0;
 
-  mw->colors [1].red = 169;
-  mw->colors [1].green = 38809;
-  mw->colors [1].blue = 52441;
-
-  mw->colors [2].red = 0;
-  mw->colors [2].green = 65535;
-  mw->colors [2].blue = 0;
-  
-  mw->colors [3].red = 65535;
-  mw->colors [3].green = 0;
-  mw->colors [3].blue = 0;
-
-  mw->colors [4].red = 0;
-  mw->colors [4].green = 0;
-  mw->colors [4].blue = 65535;
-
-  mw->colors [5].red = 65535;
-  mw->colors [5].green = 54756;
-  mw->colors [5].blue = 0;
-
-  g_signal_connect (G_OBJECT (mw->stats_drawing_area), "expose_event",
-		    G_CALLBACK (stats_drawing_area_exposed_cb), 
-		    main_window);
-
-  gtk_widget_queue_draw_area (mw->stats_drawing_area, 0, 0, 
-			      GTK_WIDGET (mw->stats_drawing_area)->allocation.width, 
-			      GTK_WIDGET (mw->stats_drawing_area)->allocation.height);
+  gtk_widget_queue_draw (mw->stats_drawing_area);
 
 
   /* The second one with some labels */
