@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
-"POT-Creation-Date: 2002-06-25 11:14+0200\n"
-"PO-Revision-Date: 2002-06-25 11:14+0200\n"
+"POT-Creation-Date: 2002-06-27 11:29+0200\n"
+"PO-Revision-Date: 2002-06-27 11:29+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -49,7 +49,7 @@ msgid "Audio recorder"
 msgstr "Ljudinspelare"
 
 #. The toggles
-#: gnomemeeting.schemas.in.in.h:7 src/menu.cpp:387 src/pref_window.cpp:1235
+#: gnomemeeting.schemas.in.in.h:7 src/menu.cpp:467 src/pref_window.cpp:1235
 msgid "Auto Answer"
 msgstr "Svara automatiskt"
 
@@ -543,7 +543,7 @@ msgstr ""
 "Ett fel inträffade i konfigurationsbackenden\n"
 "En del av dina inställningar kommer kanske inte att lagras"
 
-#: src/chat_window.cpp:362 src/menu.cpp:285
+#: src/chat_window.cpp:362 src/menu.cpp:358
 msgid "Text Chat"
 msgstr "Textchatt"
 
@@ -802,7 +802,7 @@ msgstr "Svarar automatiskt på inkommande samtal"
 msgid "Connect"
 msgstr "Anslut"
 
-#: src/docklet.cpp:137 src/menu.cpp:364
+#: src/docklet.cpp:137 src/menu.cpp:444
 msgid "Create A New Connection"
 msgstr "Skapa en ny anslutning"
 
@@ -810,7 +810,7 @@ msgstr "Skapa en ny anslutning"
 msgid "Disconnect"
 msgstr "Koppla från"
 
-#: src/docklet.cpp:144 src/menu.cpp:371
+#: src/docklet.cpp:144 src/menu.cpp:451
 msgid "Close The Current Connection"
 msgstr "Stäng den nuvarande anslutningen"
 
@@ -1101,7 +1101,7 @@ msgstr "Transportfel vid anrop"
 msgid "Call completed"
 msgstr "Samtalet färdigt"
 
-#: src/endpoint.cpp:1483
+#: src/endpoint.cpp:1484
 msgid "Attaching lid hardware to codec"
 msgstr "Fäster bländarhårdvara vid komprimeringsmetoden"
 
@@ -1334,7 +1334,7 @@ msgstr ""
 msgid "History Log"
 msgstr "Historiklogg"
 
-#: src/main_window.cpp:950 src/menu.cpp:192
+#: src/main_window.cpp:950 src/menu.cpp:265
 msgid "History"
 msgstr "Historik"
 
@@ -1371,199 +1371,203 @@ msgstr "Ljudinställningar"
 msgid "Audio"
 msgstr "Ljud"
 
-#: src/menu.cpp:171
+#: src/menu.cpp:244
 msgid "_Save"
 msgstr "_Spara"
 
-#: src/menu.cpp:171
+#: src/menu.cpp:244
 msgid "Save A Snapshot of the Current Video"
 msgstr "Spara en ögonblicksbild av den aktuella videobilden"
 
-#: src/menu.cpp:179
+#: src/menu.cpp:252
 msgid "_Quit"
 msgstr "_Avsluta"
 
-#: src/menu.cpp:179
+#: src/menu.cpp:252
 msgid "Quit GnomeMeeting"
 msgstr "Avsluta GnomeMeeting"
 
-#: src/menu.cpp:192
+#: src/menu.cpp:265
 msgid "View the log"
 msgstr "Visa loggen"
 
-#: src/menu.cpp:200
+#: src/menu.cpp:273
 msgid "_Audio Settings"
 msgstr "_Ljudinställningar"
 
-#: src/menu.cpp:200
+#: src/menu.cpp:273
 msgid "View Audio Settings"
 msgstr "Visa ljudinställningar"
 
-#: src/menu.cpp:208
+#: src/menu.cpp:281
 msgid "_Video Settings"
 msgstr "_Videoinställningar"
 
-#: src/menu.cpp:208
+#: src/menu.cpp:281
 msgid "View Video Settings"
 msgstr "Visa videoinställningar"
 
-#: src/menu.cpp:216 src/pref_window.cpp:1363
+#: src/menu.cpp:289 src/pref_window.cpp:1363
 msgid "Off"
 msgstr "Av"
 
-#: src/menu.cpp:216
+#: src/menu.cpp:289
 msgid "Hide the control panel"
 msgstr "Dölj kontrollpanelen"
 
-#: src/menu.cpp:230
+#: src/menu.cpp:303 src/menu.cpp:654
 msgid "Local Video"
 msgstr "Lokal video"
 
-#: src/menu.cpp:230
+#: src/menu.cpp:303 src/menu.cpp:654
 msgid "Local Video Image"
 msgstr "Lokal videobild"
 
-#: src/menu.cpp:237
+#: src/menu.cpp:310 src/menu.cpp:661
 msgid "Remote Video"
 msgstr "Fjärrvideo"
 
-#: src/menu.cpp:237
+#: src/menu.cpp:310 src/menu.cpp:661
 msgid "Remote Video Image"
 msgstr "Fjärrvideobild"
 
-#: src/menu.cpp:244
+#: src/menu.cpp:317 src/menu.cpp:668
 msgid "Both (Local Video Incrusted)"
 msgstr "Båda (lokal videobild överlagrad)"
 
-#: src/menu.cpp:244 src/menu.cpp:251
+#: src/menu.cpp:317 src/menu.cpp:324 src/menu.cpp:668 src/menu.cpp:675
 msgid "Both Video Images"
 msgstr "Båda videobilder"
 
-#: src/menu.cpp:251
+#: src/menu.cpp:324 src/menu.cpp:675
 msgid "Both (Local Video in New Window)"
 msgstr "Båda (lokal videobild i nytt fönster)"
 
-#: src/menu.cpp:277
+#: src/menu.cpp:350
 msgid "Toolbar"
 msgstr "Verktygsrad"
 
-#: src/menu.cpp:277
+#: src/menu.cpp:350
 msgid "View/Hide the Toolbar"
 msgstr "Visa/Dölj vertygsraden"
 
-#: src/menu.cpp:285
+#: src/menu.cpp:358
 msgid "View/Hide the Text Chat Window"
 msgstr "Visa/Dölj textchattfönstret"
 
-#: src/menu.cpp:291 src/toolbar.cpp:211
+#: src/menu.cpp:364 src/toolbar.cpp:211
 msgid "Control Panel"
 msgstr "Kontrollpanel"
 
-#: src/menu.cpp:294
+#: src/menu.cpp:367
 msgid "Status Bar"
 msgstr "Statusrad"
 
-#: src/menu.cpp:294
+#: src/menu.cpp:367
 msgid "View/Hide the Status Bar"
 msgstr "Visa/Dölj statusraden"
 
-#: src/menu.cpp:302
+#: src/menu.cpp:375
 msgid "Docklet"
 msgstr "Docka"
 
-#: src/menu.cpp:302
+#: src/menu.cpp:375
 msgid "View/Hide the Docklet"
 msgstr "Visa/Dölj dockan"
 
-#: src/menu.cpp:318 src/menu.cpp:554
+#: src/menu.cpp:391 src/menu.cpp:695
 msgid "Zoom In"
 msgstr "Zooma in"
 
-#: src/menu.cpp:324 src/menu.cpp:560
+#: src/menu.cpp:397 src/menu.cpp:701
 msgid "Zoom Out"
 msgstr "Zooma ut"
 
-#: src/menu.cpp:330 src/menu.cpp:566
+#: src/menu.cpp:403 src/menu.cpp:707
 msgid "Normal Size"
 msgstr "Normal storlek"
 
-#: src/menu.cpp:343
+#: src/menu.cpp:410 src/menu.cpp:714
+msgid "Toggle Fullscreen"
+msgstr "Växla helskärmsläge"
+
+#: src/menu.cpp:423
 msgid "Configuration Assistant"
 msgstr "Konfigurationsassistent"
 
-#: src/menu.cpp:343
+#: src/menu.cpp:423
 msgid "Start The Configuration Assistant"
 msgstr "Starta konfigurationsassistenten"
 
-#: src/menu.cpp:351
+#: src/menu.cpp:431
 msgid "_Preferences..."
 msgstr "_Inställningar..."
 
-#: src/menu.cpp:351
+#: src/menu.cpp:431
 msgid "Change Your Preferences"
 msgstr "Ändra dina inställningar"
 
-#: src/menu.cpp:364
+#: src/menu.cpp:444
 msgid "_Connect"
 msgstr "_Anslut"
 
-#: src/menu.cpp:371
+#: src/menu.cpp:451
 msgid "_Disconnect"
 msgstr "_Koppla från"
 
-#: src/menu.cpp:379
+#: src/menu.cpp:459
 msgid "Do _Not Disturb"
 msgstr "Stör i_nte"
 
-#: src/menu.cpp:379 src/pref_window.cpp:1237
+#: src/menu.cpp:459 src/pref_window.cpp:1237
 msgid "Do Not Disturb"
 msgstr "Stör inte"
 
-#: src/menu.cpp:387
+#: src/menu.cpp:467
 msgid "Aut_o Answer"
 msgstr "Svara aut_omatiskt"
 
-#: src/menu.cpp:396
+#: src/menu.cpp:476
 msgid "_Audio Mute"
 msgstr "Tysta _ljud"
 
-#: src/menu.cpp:396
+#: src/menu.cpp:476
 msgid "Mute the audio transmission"
 msgstr "Tysta ljudöverföringen"
 
-#: src/menu.cpp:403
+#: src/menu.cpp:483
 msgid "_Video Mute"
 msgstr "Tysta _video"
 
-#: src/menu.cpp:403
+#: src/menu.cpp:483
 msgid "Mute the video transmission"
 msgstr "Tysta videoöverföringen"
 
-#: src/menu.cpp:416
+#: src/menu.cpp:496
 msgid "_About GnomeMeeting"
 msgstr "_Om GnomeMeeting"
 
-#: src/menu.cpp:416
+#: src/menu.cpp:496
 msgid "View information about GnomeMeeting"
 msgstr "Visa information om GnomeMeeting"
 
-#: src/menu.cpp:427
+#: src/menu.cpp:507
 msgid "_File"
 msgstr "_Arkiv"
 
-#: src/menu.cpp:428
+#: src/menu.cpp:508
 msgid "_Edit"
 msgstr "_Redigera"
 
-#: src/menu.cpp:429
+#: src/menu.cpp:509
 msgid "_View"
 msgstr "_Visa"
 
-#: src/menu.cpp:430
+#: src/menu.cpp:510
 msgid "C_all"
 msgstr "_Samtal"
 
-#: src/menu.cpp:431
+#: src/menu.cpp:511
 msgid "_Help"
 msgstr "_Hjälp"
 
@@ -2260,7 +2264,7 @@ msgstr "Fel med ramhastigheten."
 msgid "Error with the frame size."
 msgstr "Fel med ramhastigheten."
 
-#: src/videograbber.cpp:651
+#: src/videograbber.cpp:652
 msgid "Video Device Closed"
 msgstr "Videoenhet stängd"
 
