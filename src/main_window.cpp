@@ -1228,7 +1228,6 @@ gnomemeeting_init (GmWindow *gw,
   gw->tips = gtk_tooltips_new ();
 
 
-#ifdef SPEEX_CODEC
   /* New Speex Audio codec in 0.95 (all Unix versions of 0.95 will have it)
      Also enable Fast Start and enable Tunneling */
   if (gconf_client_get_int (client, GENERAL_KEY "version", NULL) < 95) {
@@ -1253,7 +1252,6 @@ gnomemeeting_init (GmWindow *gw,
     gconf_client_set_bool (client, GENERAL_KEY "fast_start", false, NULL);
     gconf_client_set_bool (client, GENERAL_KEY "h245_tunneling", true, NULL);
   }
-#endif
 
   
   /* Install the URL Handler */

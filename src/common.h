@@ -91,11 +91,7 @@
 
 #define GM_MAIN_NOTEBOOK_HIDDEN 4
 
-#ifdef SPEEX_CODEC
 #define GM_AUDIO_CODECS_NUMBER 9
-#else
-#define GM_AUDIO_CODECS_NUMBER 7
-#endif
 
 #define GNOMEMEETING_PAD_SMALL 1
 

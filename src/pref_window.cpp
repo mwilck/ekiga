@@ -472,7 +472,6 @@ gnomemeeting_codecs_list_add (GtkTreeIter iter, GtkListStore *store,
     data [2] = g_strdup ("3.46 kbits");
   }
 
-#ifdef SPEEX_CODEC
   if (!strcmp (codec_name, "SpeexNarrow-15k")) {
     data [1] = g_strdup (_("Excellent"));
     data [2] = g_strdup ("15 Kbps");
@@ -482,7 +481,6 @@ gnomemeeting_codecs_list_add (GtkTreeIter iter, GtkListStore *store,
     data [1] = g_strdup (_("Good Quality"));
     data [2] = g_strdup ("8 Kbps");
   }
-#endif
 
   if (!strcmp (codec_name, "MS-GSM")) {
     data [1] = g_strdup (_("Good Quality"));

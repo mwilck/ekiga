@@ -56,10 +56,7 @@
 #include <mscodecs.h>
 #include <h261codec.h>
 #include <lpc10codec.h>
-
-#ifdef SPEEX_CODEC
 #include <speexcodec.h>
-#endif
 
 #define new PNEW
 
@@ -547,10 +544,9 @@ GMH323EndPoint::AddAudioCapabilities ()
 
   if (use_pcm16_codecs && codecs_data) {
 
-#ifdef SPEEX_CODEC
+
     SetCapability (0, 0, new SpeexNarrow5AudioCapability ());
     SetCapability (0, 0, new SpeexNarrow3AudioCapability ());
-#endif
 
     SetCapability (0, 0, gsm_capa = new MicrosoftGSMAudioCapability);
     gsm_capa->SetTxFramesInPacket (gsm_frames);
