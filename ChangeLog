@@ -1,3 +1,28 @@
+2002-02-11  Damien Sandras  <dsandras@seconix.com>
+
+	* src/cleaner.cpp: Changed the use of gdk_threads_enter to
+	gnomemeeting_threads_enter.
+
+	* src/connection.cpp: Changed the use of gdk_threads_enter to
+	gnomemeeting_threads_enter.
+
+	* src/endpoint.cpp: Changed the use of gdk_threads_enter to
+	gnomemeeting_threads_enter.
+
+	* src/gatekeeper.cpp: Changed the use of gdk_threads_enter to
+	gnomemeeting_threads_enter. Added check to not add an empty alias.
+
+	* src/ils.cpp: Changed the use of gdk_threads_enter to
+	gnomemeeting_threads_enter.
+
+	* src/misc.cpp: Added gnomemeeting_threads_enter/leave.
+
+	* src/misc.h: Added gnomemeeting_threads_enter/leave.
+
+	* src/videograbber.cpp: Changed the use of gdk_threads_enter to
+	gnomemeeting_threads_enter.
+
+	
 2002-02-10  Damien Sandras  <dsandras@seconix.com>
 
 	* src/endpoint.cpp, src/gatekeeper.cpp: AddAliasNames fixes.

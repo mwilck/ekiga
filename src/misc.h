@@ -38,6 +38,24 @@
 #include "common.h"
 
 
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Takes the GDK lock if we are not in the main thread.
+ * PRE          :  Must not be called instead of gdk_threads_enter in timers
+ *                 or idle functions, because they are executed in the main
+ *                 thread.
+ */
+void gnomemeeting_threads_enter ();
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Releases the GDK lock if we are not in the main thread.
+ * PRE          :  Must not be called instead of gdk_threads_leave in timers
+ *                 or idle functions, because they are executed in the main
+ *                 thread.
+ */
+void gnomemeeting_threads_leave ();
+
+
 /* DESCRIPTION  :  / 
  * BEHAVIOR     :  Creates a button with the GtkWidget * as pixmap and the label
  *                 as label.

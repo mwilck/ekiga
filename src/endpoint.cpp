@@ -558,12 +558,12 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 
   msg = g_strdup_printf (_("Call from %s"), remotePartyName);
 
-  gdk_threads_enter ();
+  gnomemeeting_threads_enter ();
   gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
 		     (gchar *) msg);
 			 
   gnomemeeting_log_insert (msg);
-  gdk_threads_leave ();
+  gnomemeeting_threads_leave ();
 
   /* if we are already in a call */
   if (!(GetCurrentCallToken ().IsEmpty ())) {
@@ -576,7 +576,7 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
     (connection.GetCallToken ());
   current_connection->Unlock ();
 
-  gdk_threads_enter ();
+  gnomemeeting_threads_enter ();
 
   if ((docklet_timeout == 0)) {
 
@@ -628,7 +628,7 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
 
   gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
 
-  gdk_threads_leave ();
+  gnomemeeting_threads_leave ();
 
 
   SetCurrentCallToken (connection.GetCallToken());
@@ -645,7 +645,7 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   const char * remoteApp = (const char *) app;
   char *msg;
 
-  gdk_threads_enter ();
+  gnomemeeting_threads_enter ();
 
   msg = g_strdup_printf (_("Connected with %s using %s"), 
 			 remotePartyName, remoteApp);
@@ -691,7 +691,7 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->connect_button),
 				TRUE);
 
-  gdk_threads_leave ();
+  gnomemeeting_threads_leave ();
 
   calling_state = 2;
 
@@ -711,7 +711,7 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   else
     exit = 1;
 
-  gdk_threads_enter ();
+  gnomemeeting_threads_enter ();
 
   switch (connection.GetCallEndReason ()) {
 
@@ -796,7 +796,7 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   
   gnomemeeting_log_insert (_("Call completed"));
 
-  gdk_threads_leave ();
+  gnomemeeting_threads_leave ();
 
 
  /* If we are called because the current call has ended and not another
@@ -804,7 +804,7 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   if (exit == 1) 
     return;
 
-  gdk_threads_enter ();
+  gnomemeeting_threads_enter ();
   gtk_entry_set_text (GTK_ENTRY (gw->remote_name), "");
   
   SetCurrentConnection (NULL);
@@ -825,9 +825,9 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   gnomemeeting_docklet_set_content (gw->docklet, 0);
   
-  gdk_threads_leave ();
+  gnomemeeting_threads_leave ();
   
-  gdk_threads_enter ();
+  gnomemeeting_threads_enter ();
 
   /* Disable / enable buttons */
   if (!gconf_client_get_bool (client, "/apps/gnomemeeting/devices/video_preview", 0))
@@ -856,7 +856,7 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   /* Try to update the config if some settings were changed during the call */
   UpdateConfig ();
 
-  gdk_threads_leave ();
+  gnomemeeting_threads_leave ();
 
   /* Reset the Video Grabber, if preview, else close it */
   GMVideoGrabber *vg = (GMVideoGrabber *) video_grabber;
@@ -890,7 +890,7 @@ BOOL GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
 				      H323AudioCodec & codec)
 {
   int esd_client = 0;
-  gdk_threads_enter ();
+  gnomemeeting_threads_enter ();
 
   /* If needed , delete the timers */
   if (docklet_timeout != 0)
@@ -904,7 +904,7 @@ BOOL GMH323EndPoint::OpenAudioChannel(H323Connection & connection,
   /* Clear the docklet */
   gnomemeeting_docklet_set_content (gw->docklet, 0);
 
-  gdk_threads_leave ();
+  gnomemeeting_threads_leave ();
 
   
   /* Put esd into standby mode */
@@ -947,7 +947,7 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 
      vg->Stop ();
      
-     gdk_threads_enter ();
+     gnomemeeting_threads_enter ();
      SetCurrentDisplay (0);
      
      GtkWidget *object = (GtkWidget *) 
@@ -964,7 +964,7 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
      gtk_widget_draw (GTK_WIDGET (display_uiinfo [1].widget), NULL);
      gtk_widget_draw (GTK_WIDGET (display_uiinfo [2].widget), NULL);
 
-     gdk_threads_leave ();
+     gnomemeeting_threads_leave ();
      
      /* Codecs Settings */
      if (gconf_client_get_bool (client, "/apps/gnomemeeting/video_settings/enable_vb", NULL))
@@ -979,12 +979,12 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
        codec.SetBackgroundFill (gconf_client_get_int (client, "/apps/gnomemeeting/video_settings/tr_ub", 0));   
      }
      
-     gdk_threads_enter ();
+     gnomemeeting_threads_enter ();
      gtk_widget_set_sensitive (GTK_WIDGET (gw->video_chan_button),
 			       TRUE);
      
      GTK_TOGGLE_BUTTON (gw->video_chan_button)->active = TRUE;
-     gdk_threads_leave ();
+     gnomemeeting_threads_leave ();
 
      return codec.AttachChannel (channel, FALSE); 
   }
@@ -1003,7 +1003,7 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
       if (vg->IsOpened ())
 	vg->Stop ();
       
-      gdk_threads_enter ();
+      gnomemeeting_threads_enter ();
       SetCurrentDisplay (0);
       
       GtkWidget *object = (GtkWidget *) 
@@ -1017,7 +1017,7 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
       GTK_CHECK_MENU_ITEM (display_uiinfo [2].widget)->active = FALSE;
       
       SetCurrentDisplay (1); 
-      gdk_threads_leave ();
+      gnomemeeting_threads_leave ();
       
       return codec.AttachChannel (channel);
     }

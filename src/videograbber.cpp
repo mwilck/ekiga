@@ -86,7 +86,7 @@ GMVideoGrabber::~GMVideoGrabber ()
      has exited */
   quit_mutex.Wait ();
 
-  gdk_threads_enter ();
+  gnomemeeting_threads_enter ();
 
   /* Disable the video settings frame */
   gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame),
@@ -101,7 +101,7 @@ GMVideoGrabber::~GMVideoGrabber ()
   /* Display the logo */
   gnomemeeting_init_main_window_logo ();
 
-  gdk_threads_leave ();
+  gnomemeeting_threads_leave ();
 }
 
 
@@ -159,10 +159,10 @@ void GMVideoGrabber::Main ()
   /* Disable the video preview button
      It will be reenabled in the constructeur
      that must be called just after the Main method exits. */
-  gdk_threads_enter ();
+  gnomemeeting_threads_enter ();
   gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (pw->video_preview), FALSE);
-  gdk_threads_leave ();
+  gnomemeeting_threads_leave ();
   
   /* if opened, we close */
   if (is_opened == 1) {
@@ -362,7 +362,7 @@ void GMVideoGrabber::VGOpen (void)
   if (!is_opened) {
 
     /* Disable the video preview button while opening */
-    gdk_threads_enter ();
+    gnomemeeting_threads_enter ();
     gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
     gtk_widget_set_sensitive (GTK_WIDGET (pw->video_preview), FALSE);
     gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
@@ -498,7 +498,7 @@ void GMVideoGrabber::VGOpen (void)
     }
   }  
 
-  gdk_threads_leave ();
+  gnomemeeting_threads_leave ();
 
   device_mutex.Signal ();
 }
@@ -513,10 +513,10 @@ void GMVideoGrabber::VGClose (int display_logo)
     is_grabbing = 0;
 
     /* Disable the video preview button while closing */
-    gdk_threads_enter ();
+    gnomemeeting_threads_enter ();
     gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
     gtk_widget_set_sensitive (GTK_WIDGET (pw->video_preview), FALSE);
-    gdk_threads_leave ();
+    gnomemeeting_threads_leave ();
     
     grabbing_mutex.Wait ();
     
@@ -531,7 +531,7 @@ void GMVideoGrabber::VGClose (int display_logo)
     is_opened = 0;
   
     /* Enable video preview button */
-    gdk_threads_enter ();
+    gnomemeeting_threads_enter ();
   
     /* Enable the video preview button  */
     gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), TRUE);
@@ -545,7 +545,7 @@ void GMVideoGrabber::VGClose (int display_logo)
     gtk_widget_set_sensitive (GTK_WIDGET (gw->video_settings_frame),
 			      FALSE);
   
-    gdk_threads_leave ();
+    gnomemeeting_threads_leave ();
     
     /* Initialisation */
     grabber = NULL;

@@ -73,7 +73,7 @@ void GMH323Gatekeeper::Main ()
   gconf_string = gconf_client_get_string (GCONF_CLIENT (client), "/apps/gnomemeeting/gatekeeper/gk_alias", 0);
 
   /* set the alias */
-  if (gconf_string != NULL) {
+  if ((gconf_string != NULL)&&(strcmp ("", gconf_string))) {
 
     /* Remove the old aliases */
     for (int i = endpoint->GetAliasNames ().GetSize () - 1; i >= 1; i--) 
@@ -87,9 +87,9 @@ void GMH323Gatekeeper::Main ()
   gconf_string = NULL;
 
   /* Fetch the needed data */
-  gdk_threads_enter ();
+  gnomemeeting_threads_enter ();
   pw = gnomemeeting_get_pref_window (gm);
-  gdk_threads_leave ();
+  gnomemeeting_threads_leave ();
   
 
   /* Use the hostname */
@@ -99,10 +99,10 @@ void GMH323Gatekeeper::Main ()
 
     if (gconf_string == NULL) {
      
-      gdk_threads_enter ();
+      gnomemeeting_threads_enter ();
       msg_box = gnome_message_box_new (_("Please provide a hostname to use for the gatekeeper"), GNOME_MESSAGE_BOX_ERROR, GNOME_STOCK_BUTTON_OK, NULL);
       gtk_widget_show (msg_box);
-      gdk_threads_leave ();
+      gnomemeeting_threads_leave ();
 
       return;
     }
@@ -115,9 +115,9 @@ void GMH323Gatekeeper::Main ()
 			     (const char*) MyApp->Endpoint ()
 			     ->GetGatekeeper ()->GetName ());
 	  
-      gdk_threads_enter ();
+      gnomemeeting_threads_enter ();
       gnomemeeting_log_insert (msg);
-      gdk_threads_leave ();
+      gnomemeeting_threads_leave ();
       
       g_free (msg);
     } 
@@ -125,21 +125,21 @@ void GMH323Gatekeeper::Main ()
 
       msg = g_strdup_printf (_("Error while registering with Gatekeeper at %s."), gconf_string);
       
-      gdk_threads_enter ();
+      gnomemeeting_threads_enter ();
       msg_box = gnome_message_box_new (msg, GNOME_MESSAGE_BOX_ERROR, 
 				       "OK", NULL);
       
       gtk_widget_show (msg_box);
-      gdk_threads_leave ();
+      gnomemeeting_threads_leave ();
       
       g_free (msg);
     }
 
     g_free (gconf_string);
 
-    gdk_threads_enter ();
+    gnomemeeting_threads_enter ();
     gtk_widget_set_sensitive (GTK_WIDGET (pw->gatekeeper_update_button), FALSE);
-    gdk_threads_leave ();
+    gnomemeeting_threads_leave ();
   }
   
 
@@ -150,10 +150,10 @@ void GMH323Gatekeeper::Main ()
 
     if (gconf_string == NULL) {
      
-      gdk_threads_enter ();
+      gnomemeeting_threads_enter ();
       msg_box = gnome_message_box_new (_("Please provide a valid ID for the gatekeeper"), GNOME_MESSAGE_BOX_ERROR, GNOME_STOCK_BUTTON_OK, NULL);
       gtk_widget_show (msg_box);
-      gdk_threads_leave ();
+      gnomemeeting_threads_leave ();
 
       return;
     }
@@ -165,9 +165,9 @@ void GMH323Gatekeeper::Main ()
 			     (const char*) MyApp->Endpoint ()
 			     ->GetGatekeeper ()->GetName ());
 
-      gdk_threads_enter ();
+      gnomemeeting_threads_enter ();
       gnomemeeting_log_insert (msg);
-      gdk_threads_leave ();
+      gnomemeeting_threads_leave ();
       
       g_free (msg);
     } 
@@ -176,19 +176,19 @@ void GMH323Gatekeeper::Main ()
       msg = g_strdup_printf (_("Error while registering with Gatekeeper %s."),
 			     "");
       
-      gdk_threads_enter ();
+      gnomemeeting_threads_enter ();
       msg_box = gnome_message_box_new (msg, GNOME_MESSAGE_BOX_ERROR, 
 				       "OK", NULL);
 	  
       gtk_widget_show (msg_box);
-      gdk_threads_leave ();
+      gnomemeeting_threads_leave ();
       
       g_free (msg);
     }
 
-    gdk_threads_enter ();
+    gnomemeeting_threads_enter ();
     gtk_widget_set_sensitive (GTK_WIDGET (pw->gatekeeper_update_button), FALSE);
-    gdk_threads_leave ();
+    gnomemeeting_threads_leave ();
   }
   
 
@@ -202,24 +202,24 @@ void GMH323Gatekeeper::Main ()
 			     (const char*) MyApp->Endpoint ()
 			     ->GetGatekeeper ()->GetName ());
 
-      gdk_threads_enter ();
+      gnomemeeting_threads_enter ();
       gnomemeeting_log_insert (msg);
-      gdk_threads_leave ();
+      gnomemeeting_threads_leave ();
       
       g_free (msg);
     } 
     else {
 
-      gdk_threads_enter ();
+      gnomemeeting_threads_enter ();
       msg_box = gnome_message_box_new (_("No gatekeeper found."), 
 				       GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
       
       gtk_widget_show (msg_box);
-      gdk_threads_leave ();
+      gnomemeeting_threads_leave ();
     }
 
-    gdk_threads_enter ();
+    gnomemeeting_threads_enter ();
     gtk_widget_set_sensitive (GTK_WIDGET (pw->gatekeeper_update_button), FALSE);
-    gdk_threads_leave ();
+    gnomemeeting_threads_leave ();
   }
 }

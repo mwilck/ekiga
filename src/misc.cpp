@@ -64,6 +64,38 @@ void gnomemeeting_free_glist_data (gpointer user_data)
 }
 
 
+void gnomemeeting_threads_enter () {
+
+  if (PThread::Current ()->GetThreadName () != "gnomemeeting") {
+    
+    PTRACE(3, "Will Take GDK Lock");
+    gdk_threads_enter ();
+    PTRACE(3, "GDK Lock Taken");
+  }
+  else {
+
+    PTRACE(3, "Ignore GDK Lock request : Main Thread");
+  }
+    
+}
+
+
+void gnomemeeting_threads_leave () {
+
+  if (PThread::Current ()->GetThreadName () != "gnomemeeting") {
+
+    PTRACE(3, "Will Release GDK Lock");
+    gdk_threads_leave ();
+    PTRACE(3, "GDK Lock Released");
+  }
+  else {
+
+    PTRACE(3, "Ignore GDK UnLock request : Main Thread");
+  }
+    
+}
+
+
 GtkWidget *gnomemeeting_button (gchar *lbl, GtkWidget *pixmap)
 {
   GtkWidget *button;

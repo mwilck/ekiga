@@ -83,9 +83,9 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
   if (!H323Connection::OnStartLogicalChannel (channel))
     return FALSE;
   
-  gdk_threads_enter ();
+  gnomemeeting_threads_enter ();
   gnomemeeting_log_insert (_("Started New Logical Channel..."));
-  gdk_threads_leave ();
+  gnomemeeting_threads_leave ();
   
   switch (channel.GetDirection ()) {
     
@@ -98,9 +98,9 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
     else
       transmitted_audio = &channel;
 
-    gdk_threads_enter ();
+    gnomemeeting_threads_enter ();
     gnomemeeting_log_insert (msg);
-    gdk_threads_leave ();
+    gnomemeeting_threads_leave ();
     
     g_free (msg);
     
@@ -130,14 +130,14 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
 	msg = g_strdup_printf (_("Disabled silence detection for %s"), 
 			       (const char *) name);
       
-      gdk_threads_enter ();
+      gnomemeeting_threads_enter ();
       gnomemeeting_log_insert (msg);
       gtk_widget_set_sensitive (GTK_WIDGET (gw->audio_chan_button),
 				TRUE);
 
       GTK_TOGGLE_BUTTON (gw->audio_chan_button)->active = TRUE;
       gtk_widget_draw (GTK_WIDGET (gw->audio_chan_button), NULL);
-      gdk_threads_leave ();
+      gnomemeeting_threads_leave ();
       
       g_free (msg);
     }
@@ -148,9 +148,9 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
     msg = g_strdup_printf (_("Receiving %s"), 
 			   (const char *) name);
     
-    gdk_threads_enter ();
+    gnomemeeting_threads_enter ();
     gnomemeeting_log_insert (msg);
-    gdk_threads_leave ();
+    gnomemeeting_threads_leave ();
     
     g_free (msg);
     
@@ -169,10 +169,10 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
     if (channel.GetCodec ()->IsDescendant(H323VideoCodec::Class()) 
 	&& (re_vq >= 0)) {
 
-      gdk_threads_enter ();
+      gnomemeeting_threads_enter ();
       msg = g_strdup_printf (_("Requesting remote to send video quality : %d/31"), re_vq);
       gnomemeeting_log_insert (msg);
-      gdk_threads_leave ();
+      gnomemeeting_threads_leave ();
       
       g_free (msg);
 				 
@@ -191,9 +191,9 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
       value = re_vq;
       WriteControlPDU(pdu);
       
-      gdk_threads_enter ();
+      gnomemeeting_threads_enter ();
       gnomemeeting_log_insert (_("Request ok"));
-      gdk_threads_leave ();
+      gnomemeeting_threads_leave ();
     }  
   }
 		
@@ -268,11 +268,11 @@ GMH323Connection::OnAnswerCall (const PString & caller,
   if (gconf_client_get_bool 
       (client, "/apps/gnomemeeting/general/do_not_disturb", 0)) {
 
-    gdk_threads_enter ();
+    gnomemeeting_threads_enter ();
     gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
 		       _("Auto Rejecting Incoming Call"));
     gnomemeeting_log_insert (_("Auto Rejecting Incoming Call"));
-    gdk_threads_leave ();
+    gnomemeeting_threads_leave ();
     
     return AnswerCallDenied;
   }
@@ -281,11 +281,11 @@ GMH323Connection::OnAnswerCall (const PString & caller,
   if (gconf_client_get_bool 
       (client, "/apps/gnomemeeting/general/auto_answer", 0)) {
 
-    gdk_threads_enter ();
+    gnomemeeting_threads_enter ();
     gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
 		       _("Auto Answering Incoming Call"));
     gnomemeeting_log_insert (_("Auto Answering Incoming Call"));
-    gdk_threads_leave ();
+    gnomemeeting_threads_leave ();
     
     return AnswerCallNow;
   }
@@ -301,9 +301,9 @@ void GMH323Connection::OnUserInputString(const PString & value)
   
   msg = g_strdup_printf ("%s: %s\n", (const char *) remote, (const char *) value);
 
-  gdk_threads_enter ();
+  gnomemeeting_threads_enter ();
   gtk_text_insert (GTK_TEXT (gw->chat_text), NULL, NULL, NULL, msg, -1);
-  gdk_threads_leave ();
+  gnomemeeting_threads_leave ();
 
   g_free (msg);
 }

@@ -73,7 +73,7 @@ void GMThreadsCleaner::Main ()
 
   GMH323EndPoint *endpoint = MyApp->Endpoint ();
 
-  gdk_threads_enter ();
+  gnomemeeting_threads_enter ();
 
   gnome_appbar_push (GNOME_APPBAR (gw->statusbar), _("Quit in progress..."));
   gnomemeeting_log_insert (_("Quit in progress..."));
@@ -81,7 +81,7 @@ void GMThreadsCleaner::Main ()
   /* Synchronous End of Call */
   endpoint->ClearAllCalls (H323Connection::EndedByLocalUser, FALSE);
 
-  gdk_threads_leave ();
+  gnomemeeting_threads_leave ();
 
   while (MyApp->Endpoint ()->GetCallingState () != 0) {
    
@@ -99,7 +99,7 @@ void GMThreadsCleaner::Main ()
   delete (ils_client);
   delete (video_grabber);
 
-  gdk_threads_enter ();
+  gnomemeeting_threads_enter ();
   gtk_main_quit ();
-  gdk_threads_leave ();
+  gnomemeeting_threads_leave ();
 }
