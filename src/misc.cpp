@@ -112,9 +112,7 @@ GtkWidget *gnomemeeting_button (gchar *lbl, GtkWidget *pixmap)
   gtk_box_pack_start(GTK_BOX (hbox2), label, TRUE, TRUE, GNOME_PAD_SMALL);
   
   gtk_container_add (GTK_CONTAINER (button), hbox2);
-  
-  gtk_widget_set_usize (GTK_WIDGET (button), 80, 25);
-  
+    
   gtk_widget_show (pixmap);
   gtk_widget_show (label);
   gtk_widget_show (hbox2);

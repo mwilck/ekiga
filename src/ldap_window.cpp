@@ -395,7 +395,6 @@ void gnomemeeting_init_ldap_window ()
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
 
   lw->refresh_button = gnomemeeting_button (_("Refresh"), who_pixmap);
-  gtk_widget_set_usize (GTK_WIDGET (lw->refresh_button), 120, 30);
 
   gtk_table_attach (GTK_TABLE (table), lw->refresh_button, 2, 3, 0, 1,
 		    (GtkAttachOptions) NULL, 
