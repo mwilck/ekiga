@@ -999,7 +999,7 @@ void GMILSBrowser::Main ()
     
     
     /* Maybe the user closed the tab while we were waiting */
-    if ((xdap_users_list_store != NULL) && (page_exists)) { 
+    if ((xdap_users_list_store != NULL) && (res) && (page_exists)) { 
       
       for (e = ldap_first_entry(ldap_connection, res); 
 	   e != NULL; e = ldap_next_entry(ldap_connection, e)) {
