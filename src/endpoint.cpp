@@ -603,10 +603,7 @@ GMH323EndPoint::AddAudioCapabilities ()
     H323_LIDCapability::AddAllCapabilities (*lid, capabilities, 0, 0);
 
     /* If the LID can do PCM16 we can use the software codecs like GSM too */
-    use_pcm16_codecs = lid->GetMediaFormats ().GetValuesIndex (OpalMediaFormat(OPAL_PCM16)) != P_MAX_INDEX;
-    
-    /* Not well supported with my Quicknet Card => do not use them */
-    use_pcm16_codecs = FALSE;
+    use_pcm16_codecs = lid->GetMediaFormats ().GetValuesIndex (OpalMediaFormat(OPAL_PCM16)) != P_MAX_INDEX;    
   }
 #endif
 

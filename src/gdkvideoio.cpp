@@ -272,7 +272,7 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
       SDL_Init (SDL_INIT_VIDEO);
 
   sdl_mutex.Signal ();
-#endif
+
 
 
   if (has_to_fs) {
@@ -286,6 +286,7 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
 			    "/apps/gnomemeeting/video_display/fullscreen_height", 
 			    NULL);
     }
+#endif
 
   
   if ((int) (buffer.GetSize ()) != (int) (frameWidth * frameHeight * 3))
