@@ -2060,6 +2060,7 @@ void
 GMH323EndPoint::OnCallPending (PTimer &,
 			       INT) 
 {
+  /*
   GmWindow *gw = NULL;
   PSoundChannel *channel = NULL;
   
@@ -2105,6 +2106,7 @@ GMH323EndPoint::OnCallPending (PTimer &,
     }
   }
   g_free (device);
+  */
 }
 
 
