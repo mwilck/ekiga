@@ -50,13 +50,22 @@ void g_options_free (options *);
 
 
 // DESCRIPTION  :  /
-// BEHAVIOR     :  Read the configuration from the widgets and returns
+// BEHAVIOR     :  Read the configuration from the preferences widgets and returns
 //                 the corresponding options struct
 //                 !!!!!!! config in this structure should no be freed,
 //                 it contains pointers to the text fields of the widgets,
 //                 which will be destroyed with the pref window
 // PRE          :  valid GM_pref_window_widgets
 options * read_config_from_struct (GM_pref_window_widgets *);
+
+
+// DESCRIPTION  :  /
+// BEHAVIOR     :  Read the configuration from the main GUI and from the ILS window
+//                 !!!!!!! config in this structure should no be freed,
+//                 it contains pointers to the text fields of the widgets,
+//                 which will be destroyed with the pref window
+// PRE          :  valid GM_window_widgets, and GM_ldap_window_widgets, and options
+void read_config_from_gui (GM_window_widgets *, GM_ldap_window_widgets *, options *);
 
 
 // DESCRIPTION  :  /

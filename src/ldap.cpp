@@ -27,6 +27,7 @@
 #include "main_interface.h"
 // Needed for add_button, to be changed !!!
 #include "preferences.h"
+#include "menu.h"
 
 #include "../pixmaps/quickcam.xpm"
 #include "../pixmaps/sound.xpm"
@@ -113,7 +114,8 @@ void ldap_clist_row_selected (GtkWidget *widget, gint row,
 
   current_page = gtk_notebook_get_current_page (GTK_NOTEBOOK (lw->notebook));
 
-  lw->last_selected_row [current_page] = (int) row;		
+  lw->last_selected_row [current_page] = (int) row;	
+  lw->current_page = current_page;
 }
 
 
@@ -156,11 +158,13 @@ void refresh_button_clicked (GtkButton *button, gpointer data)
   if (!found)
     /* this will not store a copy of entry_content, but entry_content itself */
     lw->ldap_servers_list = g_list_prepend (lw->ldap_servers_list, entry_content);
-  else
-    g_free (entry_content);
-    
+     
   gtk_combo_set_popdown_strings (GTK_COMBO (lw->ils_server_combo), lw->ldap_servers_list);
   gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (lw->ils_server_combo)->entry), entry_content);
+
+  /* if found, it is not added in the GList, we can free it */
+  if (found)
+    g_free (entry_content);
 
   found = 0;
 
@@ -203,6 +207,8 @@ void refresh_button_clicked (GtkButton *button, gpointer data)
       gtk_clist_freeze (GTK_CLIST (lw->ldap_users_clist [page_num]));
       gtk_clist_clear (GTK_CLIST (lw->ldap_users_clist [page_num]));
       gtk_clist_thaw (GTK_CLIST (lw->ldap_users_clist [page_num]));
+
+      lw->current_page = page_num;
 
       ils_client->ils_browse (lw, page_num);
     }   
@@ -265,7 +271,7 @@ void apply_filter_button_clicked (GtkButton *button, gpointer data)
 /* The functions                                                              */
 /******************************************************************************/
 
-void GM_ldap_init (GM_window_widgets *gw, GM_ldap_window_widgets *lw)
+void GM_ldap_init (GM_window_widgets *gw, GM_ldap_window_widgets *lw, options *opts)
 {
   GtkWidget *table, *entry_table;
   GtkWidget *vbox;
@@ -274,6 +280,9 @@ void GM_ldap_init (GM_window_widgets *gw, GM_ldap_window_widgets *lw)
   GtkWidget *who_pixmap;
   GtkWidget *menu;
   GtkWidget *menu_item;
+
+  gchar **servers;
+  int i = 0;
 
   lw->thread_count = 0;
   lw->gw = gw;
@@ -310,6 +319,14 @@ void GM_ldap_init (GM_window_widgets *gw, GM_ldap_window_widgets *lw)
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    GNOME_PAD_SMALL, GNOME_PAD_SMALL);
+
+  /* We read the history on the hard disk */
+  servers = g_strsplit (opts->ldap_servers_list, ":", 0);
+
+  for (i = 0 ; servers [i] != NULL ; i++)
+    lw->ldap_servers_list = g_list_append (lw->ldap_servers_list, servers [i]);
+     
+  gtk_combo_set_popdown_strings (GTK_COMBO (lw->ils_server_combo), lw->ldap_servers_list);
 
   lw->refresh_button = add_button (_("Refresh"), who_pixmap);
   gtk_widget_set_usize (GTK_WIDGET (lw->refresh_button), 90, 30);

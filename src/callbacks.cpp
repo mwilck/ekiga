@@ -175,23 +175,6 @@ void quit_callback (GtkWidget *widget, gpointer data)
   GM_window_widgets *gw = (GM_window_widgets *) data;
 
   new GMThreadsCleaner (gw);
-/*
-  if (MyApp->Endpoint ()->CallingState () != 0)
-    {
-      GtkWidget *msg_box;
-
-      msg_box = gnome_message_box_new (_("A call is currently in progress, please disconnect before trying to quit."),   GNOME_MESSAGE_BOX_ERROR, "OK", NULL);
-
-      gtk_widget_show (GTK_WIDGET (msg_box));
-    }
-  else
-    {
-      MyApp->Endpoint ()->StopVideoGrabber ();
-
-      gnome_app_question (GNOME_APP(gm), _("Are you sure you want to quit?"),
-			  gtk_main_quit_callback, gw);
-    }
-*/
 }  
 
 

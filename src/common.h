@@ -128,7 +128,9 @@ struct _GM_ldap_window_widgets
   // the last selected row and column
   int last_selected_row [25];
   int last_selected_col [25];
-  
+
+  int current_page;
+
   // the sorted column number
   int sorted_column [25];
 

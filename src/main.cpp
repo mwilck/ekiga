@@ -276,9 +276,13 @@ int main (int argc, char ** argv, char ** envp)
 
   gtk_main ();
 
+  read_config_from_gui (gw, lw, opts);
+
   // We delete what we allocated, 
   // and save the options before to quit
   store_config (opts);
+
+  g_options_free (opts);
   delete (opts);
   delete (gw);
   delete (lw);

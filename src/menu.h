@@ -34,11 +34,17 @@ void GM_menu_init (GtkWidget *, GM_window_widgets *);
 
 
 // DESCRIPTION  :  /
-// BEHAVIOR     :  Creates the popup menu and add it the gtk_drawing_area
-//                 that will contain the webcam image
-// PRE          :  gpointer is a valid pointer to the GM_window_widgets
+// BEHAVIOR     :  Creates the popup menu and attach it to the GtkWidget
+//                 given as parameter (for the gtk_drawing_area)
+// PRE          :  
 void GM_popup_menu_init (GtkWidget *);
 
+
+// DESCRIPTION  :  /
+// BEHAVIOR     :  Creates the popup menu and attach it to the GtkWidget
+//                 given as parameter (for the ldap window)
+// PRE          :  
+void GM_ldap_popup_menu_init (GtkWidget *, GM_ldap_window_widgets *);
 /******************************************************************************/
 
 #endif

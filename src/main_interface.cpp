@@ -253,7 +253,7 @@ void GM_init (GM_window_widgets *gw, GM_ldap_window_widgets *lw, options *opts,
   gw->docklet = GM_docklet_init ();
 
   GM_main_interface_init (gw, opts);
-  GM_ldap_init (gw, lw);
+  GM_ldap_init (gw, lw, opts);
 
   // Launch the GnomeMeeting H.323 part
   static GnomeMeeting instance (gw, opts);

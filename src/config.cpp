@@ -74,6 +74,7 @@ void store_config (options *opts)
   gnome_config_set_int ("LDAPSettings/ldap", opts->ldap);
   gnome_config_set_string ("LDAPSettings/ldap_server", opts->ldap_server);
   gnome_config_set_string ("LDAPSettings/ldap_port", opts->ldap_port);
+  gnome_config_set_string ("LDAPSettings/ldap_servers_list", opts->ldap_servers_list);
 
   gnome_config_set_int ("GKSettings/gk", opts->gk);
   gnome_config_set_string ("GKSettings/gk_host", opts->gk_host);
@@ -156,7 +157,8 @@ void read_config (options *opts)
   opts->ldap = gnome_config_get_int ("LDAPSettings/ldap");
   opts->ldap_server = gnome_config_get_string ("LDAPSettings/ldap_server");
   opts->ldap_port = gnome_config_get_string ("LDAPSettings/ldap_port");
-
+  opts->ldap_servers_list = gnome_config_get_string ("LDAPSettings/ldap_servers_list");
+  
   opts->gk = gnome_config_get_int ("GKSettings/gk");
   opts->gk_host = gnome_config_get_string ("GKSettings/gk_host");
   opts->gk_id = gnome_config_get_string ("GKSettings/gk_id");
@@ -207,6 +209,9 @@ void read_config (options *opts)
 
   if (opts->gk_id == NULL)
     opts->gk_id = g_strdup ("");
+
+  if (opts->ldap_servers_list == NULL)
+    opts->ldap_servers_list = g_strdup ("");
 }
 
 
@@ -225,6 +230,7 @@ void g_options_free (options *opts)
   g_free (opts->audio_player_mixer);
   g_free (opts->audio_recorder_mixer);
   g_free (opts->video_device);
+  g_free (opts->ldap_servers_list);
 
   for (int i = 0 ; i < 5 ; i++)
     for (int j = 0 ; j < 2 ; j++)
@@ -465,6 +471,29 @@ options * read_config_from_struct (GM_pref_window_widgets *pw)
 }
 
 
+void read_config_from_gui (GM_window_widgets *gw, GM_ldap_window_widgets *lw, options *opts)
+{
+  int i = 0;
+  gchar *old_pointer = NULL;
+  gchar *text = NULL;
+
+  /* Free the old values, we will read from the GUI */
+  g_free (opts->ldap_servers_list);
+  opts->ldap_servers_list = NULL;
+
+  opts->video_preview = gtk_toggle_button_get_active 
+    (GTK_TOGGLE_BUTTON (gw->preview_button));
+
+  while (text = (gchar *) g_list_nth_data (lw->ldap_servers_list, i))
+    {
+      old_pointer = opts->ldap_servers_list;
+      opts->ldap_servers_list = g_strconcat (text, ":", old_pointer, NULL);
+      g_free (old_pointer);
+      i++;
+    }
+}
+
+
 int config_first_time (void)
 {
   gnome_config_push_prefix ("gnomemeeting/");
@@ -516,6 +545,7 @@ void init_config (void)
   gnome_config_set_int ("LDAPSettings/ldap", 0);
   gnome_config_set_string ("LDAPSettings/ldap_server", "");
   gnome_config_set_string ("LDAPSettings/ldap_port", "389");
+  gnome_config_set_string ("LDAPSettings/ldap_servers_list", "ils.advalvas.be:ils.pi.be:ils.netmeetinghq.com:");
 
   gnome_config_set_int ("GKSettings/gk", 0);
   gnome_config_set_string ("GKSettings/gk_host", "");

@@ -95,7 +95,7 @@ void ldap_clist_column_clicked (GtkCList *, gint, gpointer);
 // BEHAVIOR     :  builds the ILS window
 // PRE          :  GM_window_widgets is a valid pointer to a
 //                 GM_window_widgets
-void GM_ldap_init (GM_window_widgets *, GM_ldap_window_widgets *);
+void GM_ldap_init (GM_window_widgets *, GM_ldap_window_widgets *, options *);
 
 void GM_ldap_init_notebook (GM_ldap_window_widgets *, int, gchar *);
 /******************************************************************************/
