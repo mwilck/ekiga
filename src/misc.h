@@ -138,6 +138,8 @@ gchar *
 gnomemeeting_from_iso88591_to_utf8 (PString);
 
 
+gchar *gnomemeeting_get_utf8 (PString);
+
 GtkWidget *
 gnomemeeting_table_add_entry (GtkWidget *, gchar *, gchar *, gchar *, int);
 

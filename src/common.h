@@ -29,6 +29,18 @@
 #include <ptlib.h>
 #include <iostream>
 
+#define GENERAL_KEY         "/apps/gnomemeeting/general/"
+#define VIEW_KEY            "/apps/gnomemeeting/view/"
+#define DEVICES_KEY         "/apps/gnomemeeting/devices/"
+#define PERSONAL_DATA_KEY   "/apps/gnomemeeting/personal_data/"
+#define LDAP_KEY            "/apps/gnomemeeting/ldap/"
+#define GATEKEEPER_KEY      "/apps/gnomemeeting/gatekeeper/"
+#define CALL_FORWARDING_KEY "/apps/gnomemeeting/call_forwarding/"
+#define VIDEO_SETTINGS_KEY  "/apps/gnomemeeting/video_settings/"
+#define AUDIO_CODECS_KEY    "/apps/gnomemeeting/audio_codecs/"
+#define AUDIO_SETTINGS_KEY  "/apps/gnomemeeting/audio_settings/"
+#define DEVICES_KEY         "/apps/gnomemeeting/devices/"
+
 
 #define GM_CIF_WIDTH   352
 #define GM_CIF_HEIGHT  288

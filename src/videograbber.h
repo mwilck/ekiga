@@ -54,6 +54,8 @@
 #include "config.h"
 #include "common.h"
 
+#define GM_VIDEO_GRABBER(x) (GMVideoGrabber *)(x)
+
 
 class GMVideoGrabber : public PThread
 {

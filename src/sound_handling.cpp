@@ -31,9 +31,7 @@
 
 
 #include "sound_handling.h"
-
 #include "common.h"
-#include "gnomemeeting.h"
 #include "endpoint.h"
 #include "misc.h"
 #include "tray.h"
@@ -56,120 +54,9 @@
 
 
 extern GtkWidget *gm;
-extern GnomeMeeting *MyApp;
 
 
 /* The functions */
-
-int 
-gnomemeeting_volume_set (char *mixer, int source, int *volume)
-{
-  int res, mixerfd;
-
-#ifdef HAS_IXJ
-  OpalLineInterfaceDevice *lid = NULL;
-
-  if (!strcmp (mixer, "/dev/phone0")) 
-  {
-    unsigned vol = 0;
-
-    if ((MyApp) && (MyApp->Endpoint ()))
-	lid = MyApp->Endpoint ()->GetLidDevice ();
-
-    if (source == SOURCE_AUDIO) 
-      if (lid)
-	lid->SetPlayVolume (0, vol);
-
-    if (source == SOURCE_MIC)
-      if (lid)
-	lid->SetRecordVolume (0, vol);
-
-    *volume = (int) vol;
-  }
-  else {
-#endif
-
-    mixerfd = open (mixer, O_RDWR); 
-      
-    if (mixerfd == -1)
-      return -1;
-
-    if (source == SOURCE_AUDIO)
-      res = ioctl (mixerfd, MIXER_WRITE (SOUND_MIXER_VOLUME), volume);
-
-    if (source == SOURCE_MIC)
-      res = ioctl (mixerfd, MIXER_WRITE (SOUND_MIXER_MIC), volume);
-
-    close (mixerfd);
-
-#ifdef HAS_IXJ
-  }
-#endif
-
-  return 0;
-}
-
-
-int 
-gnomemeeting_volume_get (char *mixer, int source, int *volume)
-{
-
-  return TRUE;
-}
-
-
-int 
-gnomemeeting_set_recording_source (char *mixer, int source)
-{
-  int mixerfd = -1;
-  int rcsrc;
-  
-  if (mixer)
-    mixerfd = open (mixer, O_RDWR);
-      
-  if (mixerfd == -1)
-      return -1;
-
-  if (ioctl (mixerfd, SOUND_MIXER_READ_RECSRC, &rcsrc))
-    rcsrc = 0;
-
-  if (source == SOURCE_AUDIO) {
-    rcsrc |= SOUND_MASK_MIC;
-    ioctl (mixerfd, SOUND_MIXER_WRITE_RECSRC, &rcsrc);
-  }
-
-  close (mixerfd);
-
-  return 0;
-}
-
-
-int 
-gnomemeeting_get_mixer_name (char *mixer, char **name)
-{
-
-#ifdef __FreeBSD__
-  strcpy (*name,"/dev/mixer");
-#else
-
-  int mixerfd, res;
-  mixer_info info;
-
-  mixerfd = open (mixer, O_RDWR);
-      
-  if (mixerfd == -1)
-      return -1;
-  
-  res = ioctl(mixerfd, SOUND_MIXER_INFO, &info);
-  *name = g_strdup (info.name);
-
-
-  close (mixerfd);
-#endif
-  return 0;
-}
-
-
 void 
 gnomemeeting_sound_daemons_suspend (void)
 {
@@ -276,6 +163,13 @@ void GMAudioTester::Main ()
 
     stop = TRUE;
   }
+  else {
+    
+    gdk_threads_enter ();
+    gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_play), 
+			      GetPlayerVolume ());
+    gdk_threads_leave ();
+  }
 
   if (!recorder->Open (ep->GetSoundChannelRecordDevice (), 
 		       PSoundChannel::Recorder,
@@ -287,6 +181,14 @@ void GMAudioTester::Main ()
 
     stop = TRUE;
   }
+  else {
+    
+    gdk_threads_enter ();
+    gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_rec), 
+			      GetRecorderVolume ());
+    gdk_threads_leave ();
+  }
+
 
 
   quit_mutex.Wait ();
@@ -336,6 +238,17 @@ void GMAudioTester::Main ()
 }
 
 
+int GMAudioTester::GetPlayerVolume ()
+{
+  unsigned int vol = 0;
+
+  if (player)
+    player->GetVolume (vol);
+
+  return vol;
+}
+
+
 BOOL GMAudioTester::SetPlayerVolume (int vol)
 {
   if (player) {
@@ -345,6 +258,17 @@ BOOL GMAudioTester::SetPlayerVolume (int vol)
   }
 
   return FALSE;
+}
+
+
+int GMAudioTester::GetRecorderVolume ()
+{
+  unsigned int vol = 0;
+
+  if (recorder)
+    recorder->GetVolume (vol);
+
+  return vol;
 }
 
 

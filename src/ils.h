@@ -41,8 +41,9 @@
 #include <gconf/gconf-client.h>
 
 #include "common.h"
-
 #include "xdap.h"
+
+#define GM_ILS_CLIENT(x) (GMILSClient *)(x)
 
 
 class GMILSClient : public PThread

@@ -138,7 +138,7 @@ void GMURLHandler::Main ()
     mail = url.Mid (slash + 1, P_MAX_INDEX);
 
     /* Search for the user on ILS */
-    ils_client = (GMILSClient *) endpoint->GetILSClient ();
+    ils_client = GM_ILS_CLIENT (endpoint->GetILSClientThread ());
 
     ip =
       ils_client->Search ((gchar *) (const char *) ils_server, 

@@ -54,41 +54,13 @@
 #include <fcntl.h>
 #include <ptlib.h>
 
+
+#define GM_AUDIO_TESTER(x) (GMAudioTester *)(x)
+
 enum { SOURCE_AUDIO, SOURCE_MIC };
 
 
 /* The functions */
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Set the given source of the given mixer to the given volume
- * PRE          :  First param = mixer, Second = source (SOURCE_AUDIO or
- *                 SOURCE_MIC), Third, the volume
- */
-int gnomemeeting_volume_set (char *, int, int *);
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Get the volume for the given source of the given mixer, returns
- *                 -1 if error.
- * PRE          :  First param = mixer, Second = source (SOURCE_AUDIO or
- *                 SOURCE_MIC), Third, the volume
- */
-int gnomemeeting_volume_get (char *, int, int *);
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Set the recording source
- * PRE          :  First param = mixer, Second = source (SOURCE_AUDIO or
- *                 SOURCE_MIC)
- */
-int gnomemeeting_set_recording_source (char *, int);
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Get the device name
- * PRE          :  First param = mixer, Second = char ** to contain the name
- */
-int gnomemeeting_get_mixer_name (char *, char **);
 
 /* DESCRIPTION   :  /
  * BEHAVIOR      : Puts ESD (and Artsd if support compiled in) into standby 
@@ -142,7 +114,13 @@ public:
   BOOL SetPlayerVolume (int);
 
 
+  int GetPlayerVolume ();
+
+
   BOOL SetRecorderVolume (int);
+
+
+  int GetRecorderVolume ();
 
 
   void Main ();
@@ -163,5 +141,4 @@ protected:
 
   GMH323EndPoint *ep;
 };
-
 #endif

@@ -67,7 +67,6 @@ static void adjustment_changed_nt (GConfClient *, guint, GConfEntry *, gpointer)
 static void applicability_check_nt (GConfClient *, guint, GConfEntry *, gpointer);
 static void main_notebook_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static void fps_limit_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
-static void audio_mixer_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static void tr_vq_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static void tr_ub_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static void jitter_buffer_changed_nt (GConfClient*, guint, GConfEntry *, 
@@ -245,8 +244,8 @@ static void menu_toggle_changed_nt (GConfClient *client, guint cid,
 
 /* DESCRIPTION  :  Generic notifiers for int-based option_menus.
  *                 This callback is called when a specific key of
- *                 the gconf database associated with an option menu changes, this
- *                 only updates the menu.
+ *                 the gconf database associated with an option menu changes,
+ *                 it only updates the menu.
  * BEHAVIOR     :  It only updates the widget.
  * PRE          :  /
  */
@@ -376,66 +375,6 @@ static void view_widget_changed_nt (GConfClient *client, guint cid,
 }
 
 
-/* DESCRIPTION  :  This callback is called when something changes for the 
- *                 mixers.
- * BEHAVIOR     :  It updates the GUI to use the new values.
- * PRE          :  /
- */
-static void audio_mixer_changed_nt (GConfClient *client, guint cid, 
-				    GConfEntry *entry, gpointer data)
-{
-  gchar *player_mixer = NULL;
-  gchar *recorder_mixer = NULL;
-  gchar *text = NULL;
-  int vol_play = 0, vol_rec = 0;
-
-  GmWindow *gw = NULL;
-
-  player_mixer = 
-    gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_player_mixer", 0);
-  recorder_mixer = 
-    gconf_client_get_string (client, "/apps/gnomemeeting/devices/audio_recorder_mixer", 0);
-
-  if (entry->value->type == GCONF_VALUE_STRING) {
-
-    gdk_threads_enter ();
-
-    gw = gnomemeeting_get_main_window (gm);
-
-    /* Get the volumes for the mixers */
-    gnomemeeting_volume_get (player_mixer, 0, &vol_play);
-    gnomemeeting_volume_get (recorder_mixer, 1, &vol_rec);
-    
-    gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_play),
-			      (int) (vol_play / 257));
-    gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_rec),
-			      (int) (vol_rec / 257));
-    
-    gnomemeeting_set_recording_source (recorder_mixer, 0); 
-
-    /* Set recording source and set micro to record */
-    /* Translators: This is shown in the history. */
-    text = g_strdup_printf (_("Set Audio Mixer for player to %s"),
-			    player_mixer);
-    gnomemeeting_log_insert (gw->history_text_view, text);
-    g_free (text);
-    
-    /* Translators: This is shown in the history. */
-    text = g_strdup_printf (_("Set Audio Mixer for recorder to %s"),
-			    recorder_mixer);
-    gnomemeeting_log_insert (gw->history_text_view, text);
-    g_free (text);
-
-    gnomemeeting_set_recording_source (recorder_mixer, 0);
-
-    g_free (player_mixer);
-    g_free (recorder_mixer);
-  
-    gdk_threads_leave ();
-  }
-}
-
-
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Displays a popup if we are in a call.
  * PRE          :  /
@@ -518,12 +457,11 @@ static void enable_vid_tr_changed_nt (GConfClient *client, guint cid,
 				      GConfEntry *entry, gpointer data)
 {
   GMH323EndPoint *endpoint = MyApp->Endpoint ();
-  GMILSClient *ils_client = (GMILSClient *) endpoint->GetILSClient ();
 
   if (entry->value->type == GCONF_VALUE_BOOL) {
 
     if (gconf_client_get_bool (client, "/apps/gnomemeeting/ldap/register", 0))
-      ils_client->Modify ();
+      (GM_ILS_CLIENT (endpoint->GetILSClientThread ()))->Modify ();
 
     gdk_threads_enter ();
     MyApp->Endpoint ()->UpdateConfig ();
@@ -621,7 +559,7 @@ static void fps_limit_changed_nt (GConfClient *client, guint cid,
     gdk_threads_enter ();
   
     /* We update the current frame rate */
-    vg = MyApp->Endpoint ()->GetVideoGrabber ();
+    vg = GM_VIDEO_GRABBER (MyApp->Endpoint ()->GetVideoGrabberThread ());
   
     if ((vg != NULL)
 	&&(gconf_client_get_bool (client, 
@@ -827,7 +765,7 @@ static void video_device_setting_changed_nt (GConfClient *client, guint cid,
     /* We reset the video device */
     if (MyApp->Endpoint ()->GetCallingState () == 0) {
     
-      vg = MyApp->Endpoint ()->GetVideoGrabber ();
+      vg = GM_VIDEO_GRABBER (MyApp->Endpoint ()->GetVideoGrabberThread ());
 
       if (vg)
 	vg->Reset ();
@@ -854,7 +792,7 @@ static void video_preview_changed_nt (GConfClient *client, guint cid,
     /* We reset the video device */
     if (MyApp->Endpoint ()->GetCallingState () == 0) {
     
-      vg = MyApp->Endpoint ()->GetVideoGrabber ();
+      vg = GM_VIDEO_GRABBER (MyApp->Endpoint ()->GetVideoGrabberThread ());
     
       if (gconf_value_get_bool (entry->value)) {
 
@@ -888,7 +826,7 @@ static void enable_fps_changed_nt (GConfClient *client, guint cid,
     gdk_threads_enter ();
   
     /* Update the value */
-    vg = MyApp->Endpoint ()->GetVideoGrabber ();
+    vg = GM_VIDEO_GRABBER (MyApp->Endpoint ()->GetVideoGrabberThread ());
   
     if (vg) {
     
@@ -997,7 +935,7 @@ static void register_changed_nt (GConfClient *client, guint cid,
 				 GConfEntry *entry, gpointer data)
 {
   GMH323EndPoint *endpoint = MyApp->Endpoint ();
-  GMILSClient *ils_client = (GMILSClient *) endpoint->GetILSClient ();
+  GMILSClient *ils_client = GM_ILS_CLIENT (endpoint->GetILSClientThread ());
 
   if (entry->value->type == GCONF_VALUE_BOOL) {
 
@@ -1023,7 +961,7 @@ static void do_not_disturb_changed_nt (GConfClient *client, guint cid,
 				       GConfEntry *entry, gpointer data)
 {
   GMH323EndPoint *endpoint = MyApp->Endpoint ();
-  GMILSClient *ils_client = (GMILSClient *) endpoint->GetILSClient ();
+  GMILSClient *ils_client = GM_ILS_CLIENT (endpoint->GetILSClientThread ());
   GmWindow *gw = NULL;
 
   if (entry->value->type == GCONF_VALUE_BOOL) {
@@ -1270,12 +1208,6 @@ void gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_preview", video_preview_changed_nt, gw->preview_button, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_preview", toggle_changed_nt, gw->video_test_button, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/video_preview", applicability_check_nt, gw->preview_button, 0, 0);
-
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_player_mixer", entry_changed_nt, pw->audio_player_mixer, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_player_mixer", audio_mixer_changed_nt, pw->audio_player_mixer, 0, 0);
-
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_recorder_mixer", entry_changed_nt, pw->audio_recorder_mixer, 0, 0);
-  gconf_client_notify_add (client, "/apps/gnomemeeting/devices/audio_recorder_mixer", audio_mixer_changed_nt, pw->audio_recorder_mixer, 0, 0);
 
 #ifdef HAS_IXJ
   gconf_client_notify_add (client, "/apps/gnomemeeting/devices/lid_country", entry_changed_nt, pw->lid_country, 0, 0);

@@ -1,3 +1,38 @@
+2002-11-27 Damien Sandras  <dsandras@seconix.com>
+
+	* src/common.h: Code cleanups.
+
+	* src/endpoint.cpp, src/endpoint.h: Changed the API of the class to
+	improve things. Added mutexes to improve stability. See endpoint.h
+	for new functions. Removed the mixers from the class and make use
+	of the dsp* directly. Many code cleanups. Uses less headers.
+	
+	* src/config.cpp: Code cleanups consecutive to the changes in
+	endpoint.h .
+	
+	* src/connection.cpp: See above.
+	
+	* src/druid.cpp: See above.
+
+	* src/ils.cpp, src/ils.h: See above. Added convenience Macro.
+
+	* src/main_window.cpp: See above. Removed the use of the mixers to
+	directly use the dsp's.
+	
+	* src/misc.cpp, src/misc.h: Added convenience function that returns
+	a valid UTF-8 string from an UTF-8 or ISO-8859-1 PString.
+	
+	* src/pref_window.cpp: See above.
+	
+	* src/sound_handling.cpp, src/sound_handling.h: Removed unused 
+	functions. Added convenience Macro.
+
+	* src/toolbar.cpp: See above.
+	
+	* src/urlhandler.cpp: See above.
+	
+	* src/videograbber.h: Added convenience Macro.
+	
 2002-11-26 Damien Sandras  <dsandras@seconix.com>
 
 	* src/druid.cpp: Fixed bug: Next is set to sensitive when needed. It

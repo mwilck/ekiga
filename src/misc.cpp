@@ -406,6 +406,19 @@ gchar *gnomemeeting_from_iso88591_to_utf8 (PString iso_string)
 }
 
 
+gchar *gnomemeeting_get_utf8 (PString str)
+{
+  gchar *utf8_str = NULL;
+
+  if (g_utf8_validate ((gchar *) (const unsigned char*) str, -1, NULL))
+    utf8_str = g_strdup ((char *) (const char *) (str));
+  else
+    utf8_str = gnomemeeting_from_iso88591_to_utf8 (str);
+
+  return utf8_str;
+}
+
+
 GtkWidget *
 gnomemeeting_table_add_entry (GtkWidget *table,        
 			      gchar *label_txt,        

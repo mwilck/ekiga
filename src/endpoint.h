@@ -1,6 +1,6 @@
 
 /* GnomeMeeting -- A Video-Conferencing application
- * Copyright (C) 2000-2001 Damien Sandras
+ * Copyright (C) 2000-2002 Damien Sandras
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,8 +21,8 @@
  *                         endpoint.h  -  description
  *                         --------------------------
  *   begin                : Sat Dec 23 2000
- *   copyright            : (C) 2000-2001 by Damien Sandras
- *   description          : This file contains miscellaneous functions.
+ *   copyright            : (C) 2000-2002 by Damien Sandras
+ *   description          : This file contains the endpoint methods.
  *   email                : dsandras@seconix.com
  *
  */
@@ -31,19 +31,17 @@
 #ifndef _ENDPOINT_H_
 #define _ENDPOINT_H_
 
+#include "common.h"
+#include "gdkvideoio.h"
+
 #include <ptlib.h>
 #include <h323.h>
 #include <gtk/gtk.h>
-#include <pthread.h>
+#include <gconf/gconf-client.h>
 
 #ifdef HAS_IXJ
 #include <ixjlid.h>
 #endif
-
-#include "common.h"
-#include "videograbber.h"
-#include "gdkvideoio.h"
-#include "ldap_window.h"
 
  
 class GMH323EndPoint : public H323EndPoint
@@ -54,8 +52,7 @@ class GMH323EndPoint : public H323EndPoint
  public:
   
   /* DESCRIPTION  :  The constructor.
-   * BEHAVIOR     :  Creates the local endpoint.
-   *                 Initialise the variables, VideoGrabber and ILSClient..
+   * BEHAVIOR     :  Creates the local endpoint and initialises the variables
    * PRE          :  /
    */
   GMH323EndPoint ();
@@ -77,10 +74,6 @@ class GMH323EndPoint : public H323EndPoint
    */
   void UpdateConfig ();
 
-
-  /* COMMON NOTICE :
-     The following virtual functions override from H323EndPoint */
-
   
   /* DESCRIPTION  :  This callback is called if we create a connection
    *                 or if somebody calls and we accept the call.
@@ -99,8 +92,8 @@ class GMH323EndPoint : public H323EndPoint
    *
    * PRE          :  /
    */
-  virtual BOOL OnIncomingCall(H323Connection &, const H323SignalPDU &,
-			      H323SignalPDU &);
+  virtual BOOL OnIncomingCall (H323Connection &, const H323SignalPDU &,
+			       H323SignalPDU &);
 
 
   /* DESCRIPTION  :  This callback is called when a call is forwarded.
@@ -112,13 +105,12 @@ class GMH323EndPoint : public H323EndPoint
 
   
   /* DESCRIPTION  :  This callback is called when the connection is 
-   *                  established and everything is ok.
+   *                 established and everything is ok.
    *                 It means that a connection to a remote endpoint is ok,
    *                 with one control channel and x >= 0 logical channel(s)
    *                 opened
    * BEHAVIOR     :  Sets the proper values for the current connection 
-   *                 parameters
-   *                 (and updates the docklet, log window and statusbar)
+   *                 parameters (and updates the GUI)
    * PRE          :  /
    */
   virtual void OnConnectionEstablished (H323Connection &,
@@ -128,8 +120,7 @@ class GMH323EndPoint : public H323EndPoint
   /* DESCRIPTION  :  This callback is called when the connection to a remote
    *                 endpoint is cleared.
    * BEHAVIOR     :  Sets the proper values for the current connection 
-   *                 parameters
-   *                 (and updates the docklet, log window and statusbar)
+   *                 parameters and updates the GUI.
    * PRE          :  /
    */
   virtual void OnConnectionCleared (H323Connection &,
@@ -180,7 +171,7 @@ class GMH323EndPoint : public H323EndPoint
 
   
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Add audio capabilities following the config file.
+   * BEHAVIOR     :  Add audio capabilities following the user config.
    * PRE          :  /
    */
   void AddAudioCapabilities (void);
@@ -196,7 +187,7 @@ class GMH323EndPoint : public H323EndPoint
 
 
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Saves the current displayed picture in a file.
+   * BEHAVIOR     :  Saves the currently displayed picture in a file.
    * PRE          :  / 
    */
   void SavePicture (void);
@@ -224,9 +215,8 @@ class GMH323EndPoint : public H323EndPoint
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Return the current IP of the endpoint, 
-   *                 even if the endpoint
-   *                 is listening on many interfaces
-   * PRE          :  EndPoint has to be initialised
+   *                 even if the endpoint is listening on many interfaces
+   * PRE          :  /
    */
   gchar *GetCurrentIP (void);
 
@@ -235,13 +225,59 @@ class GMH323EndPoint : public H323EndPoint
    * BEHAVIOR     :  Translate to packets to the IP of the gateway.
    * PRE          :  /
    */
-  virtual void TranslateTCPAddress(PIPSocket::Address &localAddr,
-				   const PIPSocket::Address &remoteAddr);
+  virtual void TranslateTCPAddress(PIPSocket::Address &,
+				   const PIPSocket::Address &);
 
+  
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Sets the volume for the recording channel. Returns FALSE
+   *                 if it fails. The volume is set for the GMAudioTester 
+   *                 channels if there is one running.
+   * PRE          :  0 <= int <= 100
+   */
   BOOL SetRecorderVolume (int);
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Get the volume for the recording channel if any.
+   * PRE          :  /
+   */
+  int GetRecorderVolume ();
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Sets the volume for the playing channel. Returns FALSE
+   *                 if it fails. The volume is set for the GMAudioTester 
+   *                 channels if there is one running.
+   * PRE          :  0 <= int <= 100
+   */
   BOOL SetPlayerVolume (int);
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Get the volume for the playing channel if any.
+   * PRE          :  /
+   */
+  int GetPlayerVolume ();
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Starts an audio tester that will play any recorded
+   *                 sound to the speakers in real time. Can be used to
+   *                 check if the audio volumes are correct before 
+   *                 a conference.
+   * PRE          :  /
+   */
   void StopAudioTester ();
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Stops the current audio tester if any.
+   *                 a conference.
+   * PRE          :  /
+   */
   void StartAudioTester ();
+
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Return the current connection or 
@@ -269,7 +305,7 @@ class GMH323EndPoint : public H323EndPoint
   
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Return the number of video channels in use.
-   *                 0 if there is no one, or if we are in a call.
+   *                 0 if there is no one, or if we are not in a call.
    * PRE          :  /
    */
   int GetVideoChannelsNumber (void);
@@ -300,14 +336,14 @@ class GMH323EndPoint : public H323EndPoint
   
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Set the current call token.
-   * PRE          :  a valid PString for a call token (given by OpenH323)
+   * PRE          :  A valid PString for a call token.
    */
   void SetCurrentCallToken (PString);
 
   
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Return the current call token that will be empty if
-   *                 no call is in progress (can be tested with .isEmpty ())
+   * BEHAVIOR     :  Return the current call token (empty if
+   *                 no call is in progress).
    * PRE          :  /
    */
   PString GetCurrentCallToken (void);
@@ -329,24 +365,25 @@ class GMH323EndPoint : public H323EndPoint
 
 
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Return the current webcam grabbing device.
+   * BEHAVIOR     :  Return the current video grabber device thread.
    * PRE          :  /
    */
-  GMVideoGrabber *GetVideoGrabber (void);
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Enable or not the video transmission
-   * PRE          :  /
-   */
-  void EnableVideoTransmission (bool);
+  PThread *GetVideoGrabberThread (void);
 
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Return the current ILS/LDAP client thread.
    * PRE          :  /
    */
-  PThread* GetILSClient ();
+  PThread* GetILSClientThread ();
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Set the local user name following the firstname and last 
+   *                 name stored by gconf, set the gatekeeper alias.
+   * PRE          :  /
+   */
+  void SetUserNameAndAlias ();
 
 
 #ifdef HAS_IXJ
@@ -354,7 +391,7 @@ class GMH323EndPoint : public H323EndPoint
    * BEHAVIOR     :  Return the current Lid Thread.
    * PRE          :  /
    */
-  PThread* GetLidThread ();
+  PThread *GetLidThread ();
 
 
   /* DESCRIPTION  :  /
@@ -370,12 +407,13 @@ class GMH323EndPoint : public H323EndPoint
   PString current_call_token;  
   H323Connection *current_connection;  
   H323ListenerTCP *listener;  
+
   int calling_state; 
   int docklet_timeout; 
   int sound_timeout; 
   int display_config; 
-  int codecs_count;
   int snapshot_number;
+
   GDKVideoOutputDevice *transmitted_video_device; 
   GDKVideoOutputDevice *received_video_device; 
 
@@ -385,14 +423,15 @@ class GMH323EndPoint : public H323EndPoint
   GmWindow *gw; 
   GmLdapWindow *lw;
   GmTextChat *chat;
+  GConfClient *client;
 
   PThread *ils_client;
   PThread *video_grabber;
   PThread *audio_tester;
-  GConfClient *client;
 
-  PMutex var_mutex;
+  PMutex var_access_mutex;
   PMutex quit_mutex;
+
   int opened_audio_channels;
   int opened_video_channels;
 

@@ -45,6 +45,7 @@
 #include "dialog.h"
 #include "gnomemeeting.h"
 #include "misc.h"
+#include "videograbber.h"
 #include "sound_handling.h"
 
 

@@ -37,6 +37,7 @@
 #include "misc.h" 
 #include "stock-icons.h"
 #include "history-combo.h"
+#include "config.h"
 
 #ifndef DISABLE_GNOME
 #include <gnome.h>

@@ -38,6 +38,7 @@
 #include "config.h"
 #include "endpoint.h"
 #include "common.h"
+#include "videograbber.h"
 #include "misc.h"
 
 #include <gconf/gconf-client.h>
@@ -304,9 +305,8 @@ GMH323Connection::OnAnswerCall (const PString & caller,
   /* We Make sure that the grabbing stops. We must do that here, 
      in OpenVideoChannel it is too late */
   GMVideoGrabber *vg = 
-    (GMVideoGrabber *) MyApp->Endpoint ()->GetVideoGrabber ();
+    GM_VIDEO_GRABBER (MyApp->Endpoint ()->GetVideoGrabberThread ());
   vg->Stop ();
-
 
   PThread::Current ()->Sleep (500);
   

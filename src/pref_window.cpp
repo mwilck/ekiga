@@ -38,7 +38,6 @@
 #include "common.h"
 #include "ils.h"
 #include "misc.h"
-#include "misc.h"
 
 #include <gconf/gconf-client.h>
 #ifndef DISABLE_GNOME
@@ -269,11 +268,6 @@ static gint pref_window_destroy_callback (GtkWidget *widget, GdkEvent *ev,
 static void personal_data_update_button_clicked (GtkWidget *widget, 
 						  gpointer data)
 {
-  gchar *firstname = NULL;
-  gchar *lastname = NULL;
-  gchar *local_name = NULL;
-  gchar *alias_ = NULL;
-  PString alias;
   GConfClient *client = gconf_client_get_default ();
 
   
@@ -284,59 +278,20 @@ static void personal_data_update_button_clicked (GtkWidget *widget,
 			     "/apps/gnomemeeting/ldap/register", 0)) {
 
     GMILSClient *ils_client = 
-      (GMILSClient *) MyApp->Endpoint ()->GetILSClient ();
+      (GMILSClient *) MyApp->Endpoint ()->GetILSClientThread ();
     ils_client->Modify ();
   }
 
 
   /* 2 */
   /* Set the local User name */
-  firstname =
-    gconf_client_get_string (client, 
-			     "/apps/gnomemeeting/personal_data/firstname", 
-			     0);
-  lastname =
-    gconf_client_get_string (client, 
-			     "/apps/gnomemeeting/personal_data/lastname", 0);
-
-  if ((firstname) && (lastname) && (strcmp (firstname, ""))) {
-    
-    local_name = g_strconcat (firstname, " ", lastname, NULL);
-  }
-  else 
-    local_name = 
-      g_strdup ((const char *) MyApp->Endpoint ()->GetLocalUserName ());
-  
-  alias_ = 
-    gconf_client_get_string (client, 
-			     "/apps/gnomemeeting/gatekeeper/gk_alias", 0);
-  if (alias_ != NULL)
-    alias = PString (alias_);
-  
-
-  /* It is the first alias for the gatekeeper */
-  if (local_name != NULL) {
-
-    MyApp->Endpoint ()->SetLocalUserName (local_name);    
-  }
-
-  
-  /* Add the old alias (SetLocalUserName removes it) */
-  if (!alias.IsEmpty ()) {
-
-    MyApp->Endpoint ()->AddAliasName (alias);
-  }
+  MyApp->Endpoint ()->SetUserNameAndAlias ();
 
   /* Remove the current Gatekeeper */
   MyApp->Endpoint ()->RemoveGatekeeper(0);
     
   /* Register the current Endpoint to the Gatekeeper */
   MyApp->Endpoint ()->GatekeeperRegister ();
-
-  g_free (alias_);
-  g_free (firstname);
-  g_free (lastname);
-  g_free (local_name);
 }
 
 
@@ -1283,8 +1238,8 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
   vbox =  gtk_vbox_new (FALSE, 4);
   gtk_notebook_append_page (GTK_NOTEBOOK(notebook), vbox, NULL);  
   table = gnomemeeting_vbox_add_table (vbox, 
-					      _("Available Audio Codecs"), 
-					      8, 2);
+				       _("Available Audio Codecs"), 
+				       8, 2);
 
   pw->codecs_list_store = gtk_list_store_new (COLUMN_NUMBER,
 					      G_TYPE_BOOLEAN,
@@ -1295,8 +1250,7 @@ void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
   tree_view = 
     gtk_tree_view_new_with_model (GTK_TREE_MODEL (pw->codecs_list_store));
   gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (tree_view), TRUE);
-  gtk_tree_view_set_search_column (GTK_TREE_VIEW (tree_view),
-				   COLUMN_FIRSTNAME);
+  gtk_tree_view_set_search_column (GTK_TREE_VIEW (tree_view),0);
   
   frame = gtk_frame_new (NULL);
   gtk_container_set_border_width (GTK_CONTAINER (frame), 

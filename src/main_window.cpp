@@ -34,6 +34,7 @@
 
 
 #include "main_window.h"
+#include "ldap_window.h"
 #include "gnomemeeting.h"
 #include "callbacks.h"
 #include "tray.h"
@@ -81,13 +82,6 @@
 #endif
 
 #define ACT_IID "OAFIID:GNOME_gnomemeeting_Factory"
-
-#define GENERAL_KEY         "/apps/gnomemeeting/general/"
-#define VIEW_KEY            "/apps/gnomemeeting/view/"
-#define DEVICE_KEY         "/apps/gnomemeeting/devices/"
-#define PERSONAL_KEY   "/apps/gnomemeeting/personal_data/"
-#define LDAP_KEY            "/apps/gnomemeeting/ldap/"
-#define GATEKEEPER_KEY      "/apps/gnomemeeting/gatekeeper/"
 
 
 /* Declarations */
@@ -709,7 +703,8 @@ void
 brightness_changed (GtkAdjustment *adjustment, gpointer data)
 { 
   GmWindow *gw = GM_WINDOW (data);
-  GMVideoGrabber *video_grabber = MyApp->Endpoint ()->GetVideoGrabber ();
+  GMVideoGrabber *video_grabber = 
+    GM_VIDEO_GRABBER (MyApp->Endpoint ()->GetVideoGrabberThread ());
 
   int brightness;
 
@@ -729,7 +724,8 @@ void
 whiteness_changed (GtkAdjustment *adjustment, gpointer data)
 { 
   GmWindow *gw = GM_WINDOW (data);
-  GMVideoGrabber *video_grabber = MyApp->Endpoint ()->GetVideoGrabber ();
+  GMVideoGrabber *video_grabber = 
+    GM_VIDEO_GRABBER (MyApp->Endpoint ()->GetVideoGrabberThread ());
 
   int whiteness;
 
@@ -749,7 +745,8 @@ void
 colour_changed (GtkAdjustment *adjustment, gpointer data)
 { 
   GmWindow *gw = GM_WINDOW (data);
-  GMVideoGrabber *video_grabber = MyApp->Endpoint ()->GetVideoGrabber ();
+  GMVideoGrabber *video_grabber = 
+        GM_VIDEO_GRABBER (MyApp->Endpoint ()->GetVideoGrabberThread ());
 
   int colour;
 
@@ -769,7 +766,8 @@ void
 contrast_changed (GtkAdjustment *adjustment, gpointer data)
 { 
   GmWindow *gw = GM_WINDOW (data);
-  GMVideoGrabber *video_grabber = MyApp->Endpoint ()->GetVideoGrabber ();
+  GMVideoGrabber *video_grabber = 
+    GM_VIDEO_GRABBER (MyApp->Endpoint ()->GetVideoGrabberThread ());
 
   int contrast;
 
@@ -832,9 +830,6 @@ gnomemeeting_init (GmWindow *gw,
                    int argc, char ** argv, char ** envp)
 {
   GMH323EndPoint *endpoint = NULL;
-  gchar *firstname = NULL;
-  gchar *lastname = NULL;
-  gchar *alias = NULL;
   bool show_splash = TRUE;
   GConfClient *client = NULL;
   GtkAccelGroup *accel = NULL;
@@ -1042,46 +1037,15 @@ gnomemeeting_init (GmWindow *gw,
 
 
   /* Start the video preview */
-  if (gconf_client_get_bool (client, DEVICE_KEY "video_preview", NULL)) {
+  if (gconf_client_get_bool (client, DEVICES_KEY "video_preview", NULL)) {
     GMVideoGrabber *vg = NULL;
-    vg = MyApp->Endpoint ()->GetVideoGrabber ();
+    vg = GM_VIDEO_GRABBER (MyApp->Endpoint ()->GetVideoGrabberThread ());
     
     if (vg)
       vg->Open (TRUE);
   }
 
-
-  /* Set the local User name */
-  firstname = gconf_client_get_string (client, PERSONAL_KEY "firstname", 0);
-  lastname  = gconf_client_get_string (client, PERSONAL_KEY "lastname", 0);
-  
-  if ((firstname) && (lastname) && (strcmp (firstname, ""))) 
-  { 
-    gchar *local_name = NULL;
-    local_name = g_strconcat (firstname, " ", lastname, NULL);
-
-    /* It is the first alias for the gatekeeper */
-    if (local_name != NULL) {
-
-      endpoint->SetLocalUserName (local_name);
-    }
-
-    g_free (firstname);
-    g_free (lastname);
-    g_free (local_name);
-  }
-
-  alias = gconf_client_get_string (client, GATEKEEPER_KEY "gk_alias", 0);
-  
-  if (alias != NULL) {
-    
-    PString Alias = PString (alias);
-    
-    if (!Alias.IsEmpty ())
-      endpoint->AddAliasName (Alias);
-  }
-  g_free (alias);
-
+  endpoint->SetUserNameAndAlias ();
 
   /* Register to gatekeeper */
   if (gconf_client_get_int (client, GATEKEEPER_KEY "registering_method", 0))
@@ -1091,7 +1055,8 @@ gnomemeeting_init (GmWindow *gw,
   /* The LDAP part, if needed */
   if (gconf_client_get_bool (GCONF_CLIENT (client), LDAP_KEY "register", NULL)) 
   {
-      GMILSClient *gm_ils_client = (GMILSClient *) endpoint->GetILSClient ();
+      GMILSClient *gm_ils_client = 
+	GM_ILS_CLIENT (endpoint->GetILSClientThread ());
       gm_ils_client->Register ();
   }
   
@@ -1659,10 +1624,6 @@ void gnomemeeting_init_main_window_audio_settings ()
   GtkWidget *audio_table;
   GtkWidget *main_table;
 
-  int vol = 0;
-
-  GConfClient *client = gconf_client_get_default ();
-
   GmWindow *gw = gnomemeeting_get_main_window (gm);
 
 
@@ -1670,23 +1631,22 @@ void gnomemeeting_init_main_window_audio_settings ()
   main_table = gtk_table_new (2, 4, FALSE);
 
   gw->audio_settings_frame = gtk_frame_new (_("Audio Settings"));
-  gtk_frame_set_shadow_type (GTK_FRAME (gw->audio_settings_frame), GTK_SHADOW_ETCHED_OUT);
+  gtk_frame_set_shadow_type (GTK_FRAME (gw->audio_settings_frame), 
+			     GTK_SHADOW_ETCHED_OUT);
 
   audio_table = gtk_table_new (4, 4, TRUE);
   gtk_container_add (GTK_CONTAINER (gw->audio_settings_frame), audio_table);
   gtk_container_set_border_width (GTK_CONTAINER (gw->audio_settings_frame), 0);
 
   gtk_table_attach (GTK_TABLE (audio_table), 
-                    gtk_image_new_from_stock (GM_STOCK_VOLUME, GTK_ICON_SIZE_SMALL_TOOLBAR), 
+                    gtk_image_new_from_stock (GM_STOCK_VOLUME, 
+					      GTK_ICON_SIZE_SMALL_TOOLBAR), 
                     0, 1, 0, 1,
 		    (GtkAttachOptions) NULL,
 		    (GtkAttachOptions) NULL,
 		    0, 0);
 
-  gchar *player_mixer = gconf_client_get_string (client, DEVICE_KEY "audio_player_mixer", NULL);
-  gnomemeeting_volume_get (player_mixer, 0, &vol);
-  g_free (player_mixer);
-  gw->adj_play = gtk_adjustment_new (vol / 257, 0.0, 100.0, 1.0, 5.0, 1.0);
+  gw->adj_play = gtk_adjustment_new (0.0, 0.0, 100.0, 1.0, 5.0, 1.0);
   hscale_play = gtk_hscale_new (GTK_ADJUSTMENT (gw->adj_play));
   gtk_scale_set_value_pos (GTK_SCALE (hscale_play),GTK_POS_RIGHT); 
   gtk_scale_set_draw_value (GTK_SCALE (hscale_play), TRUE);
@@ -1705,10 +1665,7 @@ void gnomemeeting_init_main_window_audio_settings ()
 		    (GtkAttachOptions) NULL,
 		    0, 0);
 
-  gchar *recorder_mixer = gconf_client_get_string (client, DEVICE_KEY "audio_recorder_mixer", NULL);
-  gnomemeeting_volume_get (recorder_mixer, 1, &vol);
-  g_free (recorder_mixer);
-  gw->adj_rec = gtk_adjustment_new (vol / 257, 0.0, 100.0, 1.0, 5.0, 1.0);
+  gw->adj_rec = gtk_adjustment_new (0.0 / 257, 0.0, 100.0, 1.0, 5.0, 1.0);
   hscale_rec = gtk_hscale_new (GTK_ADJUSTMENT (gw->adj_rec));
   gtk_scale_set_value_pos (GTK_SCALE (hscale_rec),GTK_POS_RIGHT); 
   gtk_scale_set_draw_value (GTK_SCALE (hscale_rec), TRUE);

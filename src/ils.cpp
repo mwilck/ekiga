@@ -31,6 +31,7 @@
 #include "../config.h"
 
 #include "ils.h"
+#include "ldap_window.h"
 #include "gnomemeeting.h"
 #include "common.h"
 #include "misc.h"
