@@ -1,4 +1,4 @@
-#include <gnome.h>
+#include <gtk/gtk.h>
 #include "../pixmaps/inline_emoticons.h"
 
 #ifndef __GTK_TEXT_BUFFER_EXT_H

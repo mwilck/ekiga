@@ -35,7 +35,11 @@
 #include "../config.h"
 #include <gtk/gtk.h>
 #include <glib.h>
-#include <libgnome/gnome-i18n.h>
+
+#ifndef DISABLE_GNOME
+#include <gnome.h>
+#endif
+
 #include <stdio.h>
 #include <string.h>
 #include <stdarg.h>
