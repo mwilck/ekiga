@@ -157,7 +157,7 @@ AC_CHECK_LIB(ldap, ldap_simple_bind, LIBS="-lldap -llber $LIBS", AC_MSG_ERROR([*
 dnl #########################################################################
 dnl  Support for internationalization
 dnl ########################################################################
-ALL_LINGUAS="es fr gl it sv wa"
+ALL_LINGUAS="es fr gl it sv wa zh_TW"
 AM_GNOME_GETTEXT
 
 AC_SUBST(GNOMEMEETING_LDADD)
