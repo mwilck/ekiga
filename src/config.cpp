@@ -1406,27 +1406,40 @@ incoming_call_mode_changed_nt (GConfClient *client,
 			       GConfEntry *entry,
 			       gpointer data)
 {
-  GMH323EndPoint *endpoint = GnomeMeeting::Process ()->Endpoint ();
   GmWindow *gw = NULL;
 
+  GMH323EndPoint::CallingState calling_state = GMH323EndPoint::Standby;
+  GMH323EndPoint *ep = NULL;
+
+  gboolean forward_on_busy = FALSE;
+
+  ep = GnomeMeeting::Process ()->Endpoint ();
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
+
+  
   if (entry->value->type == GCONF_VALUE_INT) {
 
+    calling_state = ep->GetCallingState ();
+    
     gdk_threads_enter ();
-    if (gconf_client_get_bool (client, LDAP_KEY "enable_registering", 0))
-      endpoint->ILSRegister ();
 
-    gw = GnomeMeeting::Process ()->GetMainWindow ();
+    /* Update ILS */
+    if (gconf_get_bool (LDAP_KEY "enable_registering"))
+      ep->ILSRegister ();
 
     if (gconf_value_get_int (entry->value) == FORWARD)
-      gconf_client_set_bool (client, CALL_FORWARDING_KEY "always_forward",
-			     true, NULL);
+      gconf_set_bool (CALL_FORWARDING_KEY "always_forward", TRUE);
     else
-      gconf_client_set_bool (client, CALL_FORWARDING_KEY "always_forward",
-			     false, NULL);
-    /*    if (gconf_value_get_bool (entry->value))
-      gnomemeeting_tray_set_content (gw->docklet, 2);
-    else
-    gnomemeeting_tray_set_content (gw->docklet, 0);*/
+      gconf_set_bool (CALL_FORWARDING_KEY "always_forward", FALSE);
+   
+    forward_on_busy = gconf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
+       
+    /* Update the tray icon */
+    gnomemeeting_tray_update (gw->docklet, calling_state, 
+                              (IncomingCallMode)
+                              gconf_value_get_int (entry->value), 
+                              forward_on_busy);
+    
     gdk_threads_leave ();
   }
 }

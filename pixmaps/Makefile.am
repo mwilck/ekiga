@@ -46,8 +46,11 @@ IMAGES_FILES= \
 	speaker-phone.png \
 	video-mute.png \
 	status-available-16.png \
+	status-in-a-call-16.png \
+	status-free-for-chat-16.png \
 	status-ringing-16.png \
-	status-occupied-16.png \
+	status-busy-16.png \
+	status-forward-16.png \
 	druid_audio.png \
 	druid_video.png \
 	druid_ixj.png \
@@ -79,7 +82,10 @@ IMAGES= \
 	gm_video_mute_stock_data video-mute.png \
 	gm_status_available_stock_data status-available-16.png \
 	gm_status_ringing_stock_data status-ringing-16.png \
-	gm_status_occupied_stock_data status-occupied-16.png \
+	gm_status_in_a_call_stock_data status-in-a-call-16.png \
+	gm_status_forward_stock_data status-forward-16.png \
+	gm_status_busy_stock_data status-busy-16.png \
+	gm_status_free_for_chat_stock_data status-free-for-chat-16.png \
 	gm_druid_audio_stock_data druid_audio.png \
 	gm_druid_video_stock_data druid_video.png \
 	gm_druid_ixj_stock_data druid_ixj.png \

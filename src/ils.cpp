@@ -885,7 +885,7 @@ void GMILSBrowser::Main ()
 	 
 	status_icon =
 	  gtk_widget_render_icon (lwp->tree_view, 
-				  GM_STOCK_STATUS_OCCUPIED,
+				  GM_STOCK_STATUS_BUSY,
 				  GTK_ICON_SIZE_MENU, NULL);
 	color = g_strdup ("#8a8a8a");
       }        

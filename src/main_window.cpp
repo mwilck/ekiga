@@ -764,7 +764,7 @@ gm_quit_callback (GtkWidget *widget, GdkEvent *event,
   gboolean b;
   GmWindow *gw = GnomeMeeting::Process ()->GetMainWindow ();
 
-  b = gnomemeeting_tray_is_visible (gw->docklet);
+  b = gnomemeeting_tray_is_embedded (gw->docklet);
 
   if (!b)
     quit_callback (NULL, data);

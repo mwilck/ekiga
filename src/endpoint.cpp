@@ -921,11 +921,14 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   gchar *utf8_name = NULL;
   gchar *utf8_local_name = NULL;
   BOOL reg = FALSE;
+  BOOL forward_on_busy = FALSE;
+  IncomingCallMode icm = AVAILABLE;
 
+  
 #ifdef HAS_IXJ
   GMLid *l = NULL;
 #endif
-
+  
   
   /* Start refreshing the stats */
   RTPTimer.RunContinuous (PTimeInterval (0, 1));
@@ -939,6 +942,9 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   /* Get the gconf settings */
   gnomemeeting_threads_enter ();
   reg = gconf_get_bool (LDAP_KEY "enable_registering");
+  icm = 
+    (IncomingCallMode) gconf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
+  forward_on_busy = gconf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
   gnomemeeting_threads_leave ();
   
   
@@ -1003,7 +1009,8 @@ GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   gnomemeeting_addressbook_update_menu_sensitivity ();
   gnomemeeting_main_window_update_sensitivity (GMH323EndPoint::Connected);
   gnomemeeting_menu_update_sensitivity (GMH323EndPoint::Connected);
-  gnomemeeting_tray_set_content (gw->docklet, 2);
+  gnomemeeting_tray_update (gw->docklet, GMH323EndPoint::Connected, 
+                            icm, forward_on_busy);
   gnomemeeting_threads_leave ();
 
   
@@ -1088,6 +1095,9 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   BOOL reg = FALSE;
   BOOL stay_on_top = FALSE;
   BOOL not_current = FALSE;
+  BOOL forward_on_busy = FALSE;
+
+  IncomingCallMode icm = AVAILABLE;
 
   GmRtpData *rtp = NULL;
 
@@ -1107,6 +1117,10 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
     gconf_get_bool (USER_INTERFACE_KEY "auto_clear_text_chat");
   reg = gconf_get_bool (LDAP_KEY "enable_registering");
   stay_on_top = gconf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top");
+  icm = (IncomingCallMode)
+    gconf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
+  forward_on_busy =
+    gconf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
   gnomemeeting_threads_leave ();
 
 
@@ -1316,10 +1330,12 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   gw->audio_transmission_popup = NULL;
 
   
-  /* No Audio reception or transmission */
+  /* We update the GUI */
   gnomemeeting_menu_update_sensitivity (GMH323EndPoint::Standby);
   gnomemeeting_main_window_update_sensitivity (GMH323EndPoint::Standby);
   gnomemeeting_addressbook_update_menu_sensitivity ();
+  gnomemeeting_tray_update (gw->docklet, GMH323EndPoint::Standby, 
+                            icm, forward_on_busy);
   gnomemeeting_threads_leave ();
   
   gnomemeeting_sound_daemons_resume ();
@@ -2139,7 +2155,7 @@ GMH323EndPoint::OnCallPending (PTimer &,
   gw = GnomeMeeting::Process ()->GetMainWindow ();
 
   gdk_threads_enter ();
-  gnomemeeting_tray_flash (gw->docklet);
+  gnomemeeting_tray_ring (gw->docklet);
   is_ringing = gnomemeeting_tray_is_ringing (gw->docklet);
   gdk_threads_leave ();
 
@@ -2435,3 +2451,4 @@ GMH323EndPoint::TransferCallWait ()
   while (!GetTransferCallToken ().IsEmpty ())
     PThread::Current ()->Sleep (100);
 }
+          

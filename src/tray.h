@@ -30,11 +30,11 @@
  *                         tray.h  -  description
  *                         ----------------------
  *   begin                : Wed Oct 3 2001
- *   copyright            : (C) 2000-2002 by Miguel Rodríguez
+ *   copyright            : (C) 2000-2004 by Damien Sandras, 2002 by Miguel
+ *                          Rodríguez
  *   description          : This file contains all functions needed for
  *                          system tray icon.
- *   Additional code      : migrax@terra.es (all the new code)
- *                          dsandras@seconix.com (old applet code).
+ *   Additional code      : migrax@terra.es
  *
  */
 
@@ -43,59 +43,48 @@
 #define _TRAY_H_
 
 #include "common.h"
+#include "endpoint.h"
 
 
 G_BEGIN_DECLS
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  If current picture in the tray is globe,
- *                 then displays globe2, else displays globe
- * PRE          :  /
- */
-void gnomemeeting_tray_flash (GtkWidget *);
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Init the tray and menus and callbacks (for this tray icon)
- * PRE          :  The GtkAccelGroup.
+ * BEHAVIOR     :  Init the tray.
+ * PRE          :  / 
  */
 GtkWidget *gnomemeeting_init_tray ();
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  If int = 0, displays the available icon.
- *                 If int = 1, displays the ringing icon and plays a sound.
- *                 If int = 2, displays the busy icon.
- * PRE          :  /
+ * BEHAVIOR     :  Updates the tray icon following the current calling state, 
+ *                 the incoming call mode and forward on busy setting.
+ * PRE          :  A valid current calling state and a valid incoming call mode
+ *                 or the tray icon won't be updated at all. A valid tray icon.
  */
-void gnomemeeting_tray_set_content (GtkWidget *, int);
+void gnomemeeting_tray_update (GtkWidget *,
+                               GMH323EndPoint::CallingState, 
+                               IncomingCallMode,
+                               BOOL = FALSE);
 
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Show the tray icon.
- * PRE          :  /
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Displays the ringing icon or not.
+ * PRE          : A valid tray icon.
  */
-void gnomemeeting_tray_show (GtkWidget *);
+void gnomemeeting_tray_ring (GtkWidget *);
 
 
 /* DESCRIPTION  : /
- * BEHAVIOR     : Hide the tray window
- * PRE          : /
+ * BEHAVIOR     : Returns true if the tray shows a rining phone.
+ * PRE          : A valid tray icon.
  */
-void gnomemeeting_tray_hide (GtkWidget *);
+gboolean gnomemeeting_tray_is_ringing (GtkWidget *);
 
 
-/* DESCRIPTION  : Returns true if the tray shows a rining phone
- * BEHAVIOR     : 
- * PRE          : /
+/* DESCRIPTION  : / 
+ * BEHAVIOR     : Returns true if the tray is embedded in the panel.
+ * PRE          : A valid tray icon.
  */
-gboolean gnomemeeting_tray_is_ringing (GtkWidget *tray);
-
-/* DESCRIPTION  : Returns true if the tray is visible
- * BEHAVIOR     : 
- * PRE          : /
- */
-gboolean gnomemeeting_tray_is_visible (GtkWidget *tray);
+gboolean gnomemeeting_tray_is_embedded (GtkWidget *);
 
 G_END_DECLS
 

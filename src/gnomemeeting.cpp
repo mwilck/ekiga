@@ -81,7 +81,7 @@ gnomemeeting_tray_hack (gpointer data)
 
   gw = GnomeMeeting::Process ()->GetMainWindow ();
   
-  if (!gnomemeeting_tray_is_visible (gw->docklet)) {
+  if (!gnomemeeting_tray_is_embedded (gw->docklet)) {
 
     gnomemeeting_error_dialog (GTK_WINDOW (gm), _("Notification area not detected"), _("You have chosen to start GnomeMeeting hidden, however the notification area is not present in your panel, GnomeMeeting can thus not start hidden."));
     gnomemeeting_window_show (gm);
@@ -447,6 +447,7 @@ void GnomeMeeting::BuildGUI ()
 #endif
 #ifndef WIN32
   gw->docklet = gnomemeeting_init_tray ();
+  gw->tray_popup_menu = gnomemeeting_tray_init_menu (gw->docklet);
 #endif
   gnomemeeting_main_window_new (gw);
 
