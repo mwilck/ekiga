@@ -245,7 +245,7 @@ view_menu_toggles_changed (GtkWidget *widget, gpointer data)
   if (GTK_CHECK_MENU_ITEM (widget)->active) {
 
     for (int i = 0; i <= GM_MAIN_NOTEBOOK_HIDDEN; i++) 
-      if (GTK_CHECK_MENU_ITEM (gnomemeeting_menu [i+14].widget)->active) 
+      if (GTK_CHECK_MENU_ITEM (gnomemeeting_menu [i+13].widget)->active) 
  	active = i;
   }
 
@@ -616,11 +616,11 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
   for (int i = 0 ; i <= GM_MAIN_NOTEBOOK_HIDDEN ; i++) {
     
     if (gconf_client_get_int (client, "/apps/gnomemeeting/view/control_panel_section", 0) == i) 
-      GTK_CHECK_MENU_ITEM (gnomemeeting_menu [14+i].widget)->active = TRUE;
+      GTK_CHECK_MENU_ITEM (gnomemeeting_menu [13+i].widget)->active = TRUE;
     else
-      GTK_CHECK_MENU_ITEM (gnomemeeting_menu [14+i].widget)->active = FALSE;
+      GTK_CHECK_MENU_ITEM (gnomemeeting_menu [13+i].widget)->active = FALSE;
 
-    gtk_widget_queue_draw (GTK_WIDGET (gnomemeeting_menu [14+i].widget));
+    gtk_widget_queue_draw (GTK_WIDGET (gnomemeeting_menu [13+i].widget));
   }
   
   GTK_CHECK_MENU_ITEM (gnomemeeting_menu [34].widget)->active =

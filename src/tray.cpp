@@ -122,15 +122,11 @@ gnomemeeting_build_tray (GtkContainer *tray_icon, GtkAccelGroup *accel)
 GObject *gnomemeeting_init_tray (GtkAccelGroup *accel)
 {
   EggTrayIcon *tray_icon;
-  GConfClient *client = gconf_client_get_default ();
 
   tray_icon = egg_tray_icon_new (_("GnomeMeeting Tray Icon"));
 
   gnomemeeting_build_tray (GTK_CONTAINER (tray_icon), accel);
-  
-  if (gconf_client_get_bool (client, 
-			     "/apps/gnomemeeting/view/show_docklet", 0))
-    gnomemeeting_tray_show (G_OBJECT (tray_icon));
+  gnomemeeting_tray_show (G_OBJECT (tray_icon));
 
   return G_OBJECT (tray_icon);
 }

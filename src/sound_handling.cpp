@@ -92,24 +92,29 @@ gnomemeeting_mixers_mic_select (void)
 {
   int rcsrc = 0;
   int mixerfd = -1;                                                            
-  int cpt = 0;
-                                                                             
-  PString mixer = PString ("/dev/mixer1");
+  int cpt = -1;
+                                                                       
+  PString mixer_name = PString ("/dev/mixer");
+  PString mixer = mixer_name;
 
+  for (cpt = -1 ; cpt < 10 ; cpt++) {
 
-  mixerfd = open (mixer, O_RDWR);
-  /*
-  if (mixerfd == -1)
-    break;
-  */                                                                           
+    if (cpt != -1)
+      mixer = mixer_name + PString (cpt);
+
+    mixerfd = open (mixer, O_RDWR);
+
+    if (mixerfd == -1)
+      break;
                                                                                
-  if (ioctl (mixerfd, SOUND_MIXER_READ_RECSRC, &rcsrc) == -1)
-    rcsrc = 0;
-
-  rcsrc |= SOUND_MASK_MIC;                         
-  ioctl (mixerfd, SOUND_MIXER_WRITE_RECSRC, &rcsrc);
-  
-  close (mixerfd);
+    if (ioctl (mixerfd, SOUND_MIXER_READ_RECSRC, &rcsrc) == -1)
+      rcsrc = 0;
+    
+    rcsrc |= SOUND_MASK_MIC;                         
+    ioctl (mixerfd, SOUND_MIXER_WRITE_RECSRC, &rcsrc);
+    
+    close (mixerfd);
+  }
 }
 
 

@@ -202,11 +202,11 @@ static void menu_radio_changed_nt (GConfClient *client, guint cid,
     for (int i = 0 ; i <= GM_MAIN_NOTEBOOK_HIDDEN ; i++) {
 
       if (gconf_value_get_int (entry->value) == i)
-	GTK_CHECK_MENU_ITEM (e [14+i].widget)->active = TRUE;
+	GTK_CHECK_MENU_ITEM (e [13+i].widget)->active = TRUE;
       else
-	GTK_CHECK_MENU_ITEM (e [14+i].widget)->active = FALSE;
+	GTK_CHECK_MENU_ITEM (e [13+i].widget)->active = FALSE;
 
-      gtk_widget_queue_draw (GTK_WIDGET (e [14+i].widget));
+      gtk_widget_queue_draw (GTK_WIDGET (e [13+i].widget));
     }
    
     

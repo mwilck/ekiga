@@ -108,12 +108,15 @@ static void brightness_changed         (GtkAdjustment *, gpointer);
 static void whiteness_changed          (GtkAdjustment *, gpointer);
 static void colour_changed             (GtkAdjustment *, gpointer);
 static void contrast_changed           (GtkAdjustment *, gpointer);
+static void dialpad_button_clicked     (GtkButton *, gpointer);
 
 static void gnomemeeting_init_main_window (GtkAccelGroup *accel);
 static gint gm_quit_callback (GtkWidget *, GdkEvent *, gpointer);
 static void gnomemeeting_init_main_window_video_settings ();
 static void gnomemeeting_init_main_window_audio_settings ();
 static void gnomemeeting_init_main_window_stats ();
+static void gnomemeeting_init_main_window_dialpad ();
+
 
 /* For stress testing */
 int i = 0;
@@ -778,6 +781,93 @@ contrast_changed (GtkAdjustment *adjustment, gpointer data)
 
 
 /**
+ * DESCRIPTION  :  This callback is called when the user 
+ *                 clicks on the dialpad button.
+ * BEHAVIOR     :  Puts it in the URL at the right place, and also sends 
+ *                 the corresponding UserInput if we are in a connection.
+ * PRE          :  gpointer is a valid pointer containing the button pressed
+ *                 symbol (char *).
+ **/
+void 
+dialpad_button_clicked (GtkButton *button, gpointer data)
+{ 
+  GMH323EndPoint *endpoint = NULL;
+
+  const gchar *button_text = NULL;
+  const gchar *url = NULL;
+  PString url_;
+  PString new_url;
+  PINDEX at;
+  PINDEX dot;
+  PINDEX callto;
+
+  GmWindow *gw = NULL;
+
+  gw = gnomemeeting_get_main_window (gm);
+  endpoint = MyApp->Endpoint ();
+
+  button_text = gtk_button_get_label (GTK_BUTTON (button));
+  url = gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry)); 
+  
+  if (button_text) {
+
+    /* Update the callto part of the GUI */
+    if (url) {
+      
+      url_ = PString (url);
+      callto = url_.FindLast ("//");
+      dot = url_.FindLast ('.');
+
+      /* We remove the callto:// part if any */
+      if (callto != P_MAX_INDEX) 
+	url_ = url_.Mid (callto + 2, P_MAX_INDEX);
+
+      at = url_.FindLast ('@');
+
+      /* We have 3 types of URL */
+      /* The URL only contained the callto */
+      if (url_.IsEmpty ())
+	new_url = PString ("callto://") + PString (button_text);
+      /* The URL contained a callto, and contains a part behind the @ */
+      else if (at != P_MAX_INDEX) {
+
+	new_url = PString ("callto://") + url_.Mid (0, at) 
+	  + PString (button_text) + url_.Mid (at, P_MAX_INDEX);
+
+      /* The URL only contained a hostname */
+      } else if (dot != P_MAX_INDEX) {
+
+	new_url = PString ("callto://") + PString (button_text) 
+	  + PString ("@") + url_;
+
+      /* The URL didn't contain a hostname, but something else (alias?) */
+      } else {
+	
+	new_url = PString ("callto://") + url_ + PString (button_text);
+      }
+    }
+    else
+      new_url = PString ("callto://") + PString (button_text);
+  
+    gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), new_url);
+
+    
+    /* Now we send the pressed key as UserInput */
+    if (endpoint) {
+        
+      if (endpoint->GetCallingState () == 2) {
+            
+	H323Connection *connection = endpoint->GetCurrentConnection ();
+            
+	if (connection != NULL)                  
+	  connection->SendUserInput (PString (button_text));
+      }
+    }
+  }
+}
+
+
+/**
  * DESCRIPTION  :  This callback is called when the user tries to close
  *                 the application using the window manager.
  * BEHAVIOR     :  Calls the real callback if the notification icon is 
@@ -1229,6 +1319,7 @@ void gnomemeeting_init_main_window (GtkAccelGroup *accel)
 
 
   gnomemeeting_init_main_window_stats ();
+  gnomemeeting_init_main_window_dialpad ();
   gnomemeeting_init_main_window_audio_settings ();
   gnomemeeting_init_main_window_video_settings ();
 
@@ -1426,6 +1517,72 @@ void gnomemeeting_init_main_window_stats ()
   gtk_box_pack_start (GTK_BOX (vbox), gw->stats_label, FALSE, TRUE, 0);
   
   label = gtk_label_new (_("Statistics"));
+
+  gtk_notebook_append_page (GTK_NOTEBOOK (gw->main_notebook), frame, label);
+}
+
+
+/**
+ * DESCRIPTION  :  /
+ * BEHAVIOR     :  Builds the dialpad part of the main window.
+ * PRE          :  /
+ **/
+void gnomemeeting_init_main_window_dialpad ()
+{
+  GtkWidget *frame = NULL;
+  GtkWidget *label = NULL;
+  GtkWidget *table = NULL;
+  GtkWidget *button = NULL;
+
+  gchar *button_text = NULL;
+  int i = 0;
+  int j = 0;
+  int j2 = 0;
+
+  GmWindow *gw = gnomemeeting_get_main_window (gm);
+
+  frame = gtk_frame_new (_("Dialpad"));
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_ETCHED_OUT);
+
+  table = gtk_table_new (4, 3, TRUE);
+  gtk_container_add (GTK_CONTAINER (frame), table);
+  gtk_container_set_border_width (GTK_CONTAINER (table), 2);
+
+  for (i = 1 ; i < 4 ; i++) {
+    for (j = 0 ; j < 4 ; j++) {
+      if (j == 0) {
+
+	if (i == 1)
+	  button_text = g_strdup ("*");
+	else if (i == 2)
+	  button_text = g_strdup ("0");
+	else if (i == 3)
+	  button_text = g_strdup ("#");
+	
+	j2 = 3;
+      }
+      else {
+
+	j2 = j - 1;
+	button_text = g_strdup_printf ("%d", (j - 1) * 3 + i);
+      }
+
+      button = gtk_button_new_with_label (button_text);
+
+      gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (button), 
+			i - 1, i, j2, j2+1,
+			(GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+			(GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+			5, 1);
+
+      g_signal_connect (G_OBJECT (button), "clicked",
+			GTK_SIGNAL_FUNC (dialpad_button_clicked), NULL);
+
+      g_free (button_text);
+    }
+  }
+  
+  label = gtk_label_new (_("Dialpad"));
 
   gtk_notebook_append_page (GTK_NOTEBOOK (gw->main_notebook), frame, label);
 }

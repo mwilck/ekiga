@@ -1,3 +1,21 @@
+2002-12-01 Damien Sandras  <dsandras@seconix.com>
+
+	* src/common.h: Removed unused widgets.
+	
+	* src/config.cpp: Fixed the menu notifiers.
+	
+	* src/main_window.cpp: Calls function to enable the micro as recording
+	entry for all available mixers. Added a dialpad like in professional
+	PC-to-Phone applications. Able to send key pressed as User Inputs
+	and to add them into the callto URL at the right place.
+	
+	* src/menu.cpp: Removed the notification icon from view menu. 
+	
+	* src/sound_handling.cpp: Added function to enable the micro as
+	recording entry for all available mixers.
+	
+	* src/tray.cpp: Always show the notification icon.
+
 2002-11-30 Damien Sandras  <dsandras@seconix.com>
 
 	* src/main_window.cpp: Select the mic as recording source.
