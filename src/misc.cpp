@@ -250,7 +250,7 @@ void gnomemeeting_disable_connect ()
   GnomeUIInfo *main_toolbar = (GnomeUIInfo *) object;
 
   gtk_widget_set_sensitive (main_toolbar [0].widget, FALSE);
-  gtk_widget_set_sensitive (main_toolbar [3].widget, FALSE);
+  gtk_widget_set_sensitive (main_toolbar [5].widget, TRUE);
 
   object = (GtkWidget *) gtk_object_get_data (GTK_OBJECT (gm),
 					      "file_menu_uiinfo");
@@ -271,7 +271,7 @@ void gnomemeeting_enable_connect ()
   GnomeUIInfo *main_toolbar = (GnomeUIInfo *) object;
 
   gtk_widget_set_sensitive (main_toolbar [0].widget, TRUE);
-  gtk_widget_set_sensitive (main_toolbar [3].widget, TRUE);
+  gtk_widget_set_sensitive (main_toolbar [5].widget, FALSE);
 
   object = (GtkWidget *) gtk_object_get_data (GTK_OBJECT (gm),
 					      "file_menu_uiinfo");

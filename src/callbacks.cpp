@@ -112,6 +112,17 @@ void ldap_callback (GtkButton *button, gpointer data)
 }
 
 
+void chat_callback (GtkButton *button, gpointer data)
+{
+  GM_window_widgets *gw = (GM_window_widgets *) data;
+  
+  if (!GTK_WIDGET_VISIBLE (gw->chat_window))
+    gtk_widget_show_all (gw->chat_window);
+  else
+    gtk_widget_hide_all (gw->chat_window);
+}
+
+
 void connect_cb (GtkWidget *widget, gpointer data)
 {	
   if (MyApp->Endpoint ()->GetCallingState () == 0)

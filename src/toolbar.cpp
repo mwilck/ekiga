@@ -38,6 +38,7 @@
 #include "../pixmaps/disconnect.xpm"
 #include "../pixmaps/ils.xpm"
 #include "../pixmaps/settings.xpm"
+#include "../pixmaps/gnome-chat.xpm"
 
 
 /* Declarations */
@@ -78,6 +79,14 @@ void gnomemeeting_init_toolbar ()
 	'I', GDK_CONTROL_MASK, NULL
 	},
 	GNOMEUIINFO_SEPARATOR,
+        {
+	GNOME_APP_UI_ITEM,
+	N_("Chat"), N_("Make a text chat with your friend"),
+	(void *)chat_callback, gw, NULL,
+	GNOME_APP_PIXMAP_DATA, gnome_chat_xpm,
+	'C', GDK_CONTROL_MASK, NULL
+	},
+	GNOMEUIINFO_SEPARATOR,
 	{
 	GNOME_APP_UI_ITEM,
 	N_("Settings"), N_("Change Your Preferences"),
@@ -91,4 +100,7 @@ void gnomemeeting_init_toolbar ()
 
   gtk_object_set_data(GTK_OBJECT (gm), "toolbar", main_toolbar);
   gnome_app_create_toolbar (GNOME_APP (gm), main_toolbar);
+
+  /* Disable chat on creation as we are not connected */
+  gtk_widget_set_sensitive (main_toolbar [5].widget, FALSE);
 }
