@@ -1006,7 +1006,7 @@ delete_contact_from_group_cb (GtkWidget *widget,
       && is_group) {
 
     confirm_msg =
-      g_strdup_printf (_("Are you sure you want to remove %s [%s] from group %s?"), contact_name, contact_url, contact_section);
+      g_strdup_printf (_("Are you sure you want to remove %s [%s] from this group?"), contact_name, contact_url);
     dialog =
       gtk_message_dialog_new (GTK_WINDOW (gw->ldap_window),
 			      GTK_DIALOG_MODAL, GTK_MESSAGE_QUESTION,
