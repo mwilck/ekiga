@@ -70,6 +70,9 @@ void GMThreadsCleaner::Main ()
 
   GMVideoGrabber *video_grabber = (GMVideoGrabber *) 
     MyApp->Endpoint ()->GetVideoGrabber ();
+ 
+  PThread *lid_thread = (PThread *)
+    MyApp->Endpoint ()->GetLidThread ();
 
   GMH323EndPoint *endpoint = MyApp->Endpoint ();
 
@@ -101,6 +104,7 @@ void GMThreadsCleaner::Main ()
   
   delete (ils_client);
   delete (video_grabber);
+  delete (lid_thread);
 
   gnomemeeting_threads_enter ();
   gtk_main_quit ();
