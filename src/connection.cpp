@@ -295,8 +295,10 @@ GMH323Connection::OnAnswerCall (const PString & caller,
 
   /* We Make sure that the grabbing stops. We must do that here, 
      in OpenVideoChannel it is too late */
-  GMVideoGrabber *vg = (GMVideoGrabber *) MyApp->Endpoint ()->GetVideoGrabber ();
+  GMVideoGrabber *vg = 
+    (GMVideoGrabber *) MyApp->Endpoint ()->GetVideoGrabber ();
   vg->Stop ();
+
 
   PThread::Current ()->Sleep (500);
   

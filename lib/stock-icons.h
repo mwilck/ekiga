@@ -28,21 +28,22 @@
 
 G_BEGIN_DECLS
 
-#define GM_STOCK_ILS_DIRECTORY "gm_ils_directory_stock"
-#define GM_STOCK_TEXT_CHAT     "gm_text_chat_stock"
-#define GM_STOCK_CONTROL_PANEL "gm_control_panel_stock"
-#define GM_STOCK_CONNECT       "gm_connect_stock"
-#define GM_STOCK_DISCONNECT    "gm_disconnect_stock"
-#define GM_STOCK_VIDEO_PREVIEW "gm_video_preview_stock"
-#define GM_STOCK_AUDIO_MUTE    "gm_audio_mute_stock"
-#define GM_STOCK_VOLUME        "gm_volume_stock"
-#define GM_STOCK_MICROPHONE    "gm_microphone_stock"
-#define GM_STOCK_SPEAKER_PHONE "gm_speaker_phone_stock"
-#define GM_STOCK_QUICKCAM      "gm_quickcam_stock"
-#define GM_STOCK_AVAILABLE     "gm_available_stock"
-#define GM_STOCK_OCCUPIED      "gm_occupied_stock"
-#define GM_STOCK_TRAY_DEFAULT  "gm_tray_default_stock"
-#define GM_STOCK_TRAY_FLASH    "gm_tray_flash_stock"
+#define GM_STOCK_ILS_DIRECTORY   "gm_ils_directory_stock"
+#define GM_STOCK_TEXT_CHAT       "gm_text_chat_stock"
+#define GM_STOCK_CONTROL_PANEL   "gm_control_panel_stock"
+#define GM_STOCK_CONNECT         "gm_connect_stock"
+#define GM_STOCK_DISCONNECT      "gm_disconnect_stock"
+#define GM_STOCK_VIDEO_PREVIEW   "gm_video_preview_stock"
+#define GM_STOCK_AUDIO_MUTE      "gm_audio_mute_stock"
+#define GM_STOCK_VOLUME          "gm_volume_stock"
+#define GM_STOCK_MICROPHONE      "gm_microphone_stock"
+#define GM_STOCK_SPEAKER_PHONE   "gm_speaker_phone_stock"
+#define GM_STOCK_QUICKCAM        "gm_quickcam_stock"
+#define GM_STOCK_AVAILABLE       "gm_available_stock"
+#define GM_STOCK_OCCUPIED        "gm_occupied_stock"
+#define GM_STOCK_PANEL_AVAILABLE "gm_panel_available_stock"
+#define GM_STOCK_PANEL_BUSY      "gm_panel_busy_stock"
+#define GM_STOCK_PANEL_RING      "gm_panel_ring_stock"
 
 
 void gnomemeeting_stock_icons_init (void);

@@ -1013,7 +1013,13 @@ gnomemeeting_init (GmWindow *gw,
   /* Startup Process */
   gnomemeeting_stock_icons_init ();
 
+
+  /* Init the tray icon */
   gw->docklet = GTK_WIDGET (gnomemeeting_init_tray ());
+  if (gconf_client_get_bool 
+      (client, "/apps/gnomemeeting/general/do_not_disturb", 0)) 
+    gnomemeeting_tray_set_content (G_OBJECT (gw->docklet), 2);
+
 
   /* Init the splash screen */
   gw->splash_win = e_splash_new ();

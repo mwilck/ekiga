@@ -1,5 +1,42 @@
 2002-09-02  Damien Sandras  <dsandras@seconix.com>
 
+	* lib/stock-icons.c: Added 3 panel icons from Jimmac, thanks!
+
+	* lib/stock-icons.h: same
+
+	* pixmaps/Makefile.am: same.
+
+	* pixmaps/globe-12.xpm, pixmaps/globe-22.xpm, pixmaps/globe-24.xpm,
+	pixmaps/globe-36.xpm, pixmaps/globe2-12.xpm, pixmaps/globe2-22.xpm,
+	pixmaps/globe2-24.xpm, pixmaps/globe2-36.xpm: Removed.
+
+	* pixmaps/gnomemeeting-logo-icon.png: Updated to the new icon from
+	Jimmac thanks!!!
+
+	* pixmaps/panel-available-16.png, pixmaps/panel-busy-16.png, 
+	pixmaps/panel-ring-16.png: Added those 3 great icons from Jakub.
+	
+	* src/callbacks.cpp: Tweaked the about box code.
+	
+	* src/config.cpp: Getting in DND changes the icon in the system tray.
+	
+	* src/connection.cpp: Cleanups.
+	
+	* src/endpoint.cpp: When a call is refused because you are DND, or
+	when a call is reject because you want it, do not touch to ILS settings
+	or to the camera. Udpate the system tray if you are busy, connected or
+	not.
+
+	* src/main_window.cpp: Set the appropriate icon in the system tray.
+	
+	* src/misc.cpp: Fixed PlaySound.
+	
+	* src/tray.cpp: Cleaned the code! Was needed ;) Added a third state
+	to the system tray: not available.
+	* src/tray.h: Same.
+
+2002-09-02  Damien Sandras  <dsandras@seconix.com>
+
 	* src/calls_history_window.cpp: Do not associated the destroy event
 	to a hide. Delete event is called when the window is deleted. Just
 	hide in that case, so that we can make a destroy at the end of the

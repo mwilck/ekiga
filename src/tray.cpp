@@ -54,6 +54,7 @@ static int tray_clicked (GtkWidget *, GdkEventButton *, gpointer);
 static void gnomemeeting_init_tray_popup_menu (GtkWidget *);
 static void gnomemeeting_build_tray (GtkContainer *);
 
+
 /* GTK Callbacks */
 
 /* DESCRIPTION  :  This callback is called when the user chooses
@@ -164,7 +165,8 @@ static void gnomemeeting_build_tray (GtkContainer *tray_icon)
 {
   GtkWidget *image;
 
-  image = gtk_image_new_from_stock (GM_STOCK_TRAY_DEFAULT, GTK_ICON_SIZE_SMALL_TOOLBAR);
+  image = gtk_image_new_from_stock (GM_STOCK_PANEL_AVAILABLE,
+				    GTK_ICON_SIZE_MENU);
 
   GtkWidget *eventbox = gtk_event_box_new ();
   
@@ -179,7 +181,8 @@ static void gnomemeeting_build_tray (GtkContainer *tray_icon)
   gtk_widget_show (eventbox);
   
   /* add the status to the plug */
-  g_object_set_data (G_OBJECT (tray_icon), "pixmapg", image);
+  g_object_set_data (G_OBJECT (tray_icon), "image", image);
+  g_object_set_data (G_OBJECT (tray_icon), "available", GINT_TO_POINTER (1));
   gtk_container_add (GTK_CONTAINER (eventbox), image);
   gtk_container_add (tray_icon, eventbox);
   
@@ -188,10 +191,7 @@ static void gnomemeeting_build_tray (GtkContainer *tray_icon)
 }
 
 
-/* DESCRIPTION  :  Creates the tray icon widget
- * BEHAVIOR     :  Creater the tray icon and sets it up
- * PRE          :  /
- */
+/* The functions */
 GObject *gnomemeeting_init_tray ()
 {
   EggTrayIcon *tray_icon;
@@ -208,81 +208,69 @@ GObject *gnomemeeting_init_tray ()
 }
 
 
-/* DESCRIPTION  :  Changes the image displayed in the tray icon
- * BEHAVIOR     :  /
- * PRE          :  Choice must be 0 or 1.
- */
 void gnomemeeting_tray_set_content (GObject *tray, int choice)
 {
   gpointer image = NULL;
 
-  /* if choice = 0, set the world as content
-     if choice = 1, set the globe2 as content */
+  /* if choice = 0, set the phone as content
+     if choice = 1, set the ringing phone as content */
   if (choice == 0)  {
-    image = g_object_get_data (tray, "pixmapm");
+    image = g_object_get_data (tray, "image");
   
-    /* if the world was not already the pixmap */
+    /* if that was was not already the pixmap */
     if (image != NULL)	{
-      gtk_image_set_from_stock (GTK_IMAGE (image), GM_STOCK_TRAY_DEFAULT, 
-				GTK_ICON_SIZE_SMALL_TOOLBAR);
-
-      g_object_set_data (tray, "pixmapm", NULL);
-      g_object_set_data (tray, "pixmapg", image);
+      gtk_image_set_from_stock (GTK_IMAGE (image), GM_STOCK_PANEL_AVAILABLE, 
+				GTK_ICON_SIZE_MENU);
+      g_object_set_data (tray, "available", GINT_TO_POINTER (1));
     }
   }
 
   if (choice == 1) {
 
-    image = g_object_get_data (tray,
-			       "pixmapg");
+    image = g_object_get_data (tray, "image");
     
     if (image != NULL)	{
-      gtk_image_set_from_stock (GTK_IMAGE (image), GM_STOCK_TRAY_FLASH,
-				GTK_ICON_SIZE_SMALL_TOOLBAR);
+      gtk_image_set_from_stock (GTK_IMAGE (image), GM_STOCK_PANEL_RING,
+				GTK_ICON_SIZE_MENU);
+      g_object_set_data (tray, "available", GINT_TO_POINTER (0));
+    }
+  }
 
-      g_object_set_data (tray, "pixmapg", NULL);
-      g_object_set_data (tray, "pixmapm", image);
+  if (choice == 2) {
+
+    image = g_object_get_data (tray, "image");
+
+    if (image != NULL) {
+      gtk_image_set_from_stock (GTK_IMAGE (image), GM_STOCK_PANEL_BUSY,
+				GTK_ICON_SIZE_MENU);
+      g_object_set_data (tray, "available", GINT_TO_POINTER (0));
     }
   }
 }
 
 
-/* DESCRIPTION  :  Shows the tray icon
- * BEHAVIOR     :  /
- * PRE          :  /
- */
 void gnomemeeting_tray_show (GObject *tray)
 {
   gtk_widget_show (GTK_WIDGET (tray));
 }
 
 
-/* DESCRIPTION  :  Hides the tray icon
- * BEHAVIOR     :  /
- * PRE          :  /
- */
 void gnomemeeting_tray_hide (GObject *tray)
 {
   gtk_widget_hide (GTK_WIDGET (tray));
 }
 
 
-/* DESCRIPTION  :  Changes the content of the tray icon
- *                 based on the current one. Calling this function
- *                 from a timer created a flash effect in the tray icon.
- * BEHAVIOR     :  /
- * PRE          :  /
- */
 gint gnomemeeting_tray_flash (GObject *tray)
 {
-  gpointer object;
+  gpointer data;
 
   /* we can't call gnomemeeting_threads_enter as idles and timers
      are executed in the main thread */
   gdk_threads_enter ();
-  object = g_object_get_data (tray, "pixmapg");
+  data = g_object_get_data (tray, "available");
 
-  if (object != NULL) {
+  if (GPOINTER_TO_INT (data) == 1) {
     gnomemeeting_tray_set_content (tray, 1);
   } else {
     gnomemeeting_tray_set_content (tray, 0);

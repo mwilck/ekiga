@@ -161,7 +161,8 @@ void about_callback (GtkWidget *widget, gpointer parent_window)
    * seperate names with \n */
   const char *translator_credits = _("translator_credits");
 
-  file = gnome_program_locate_file (NULL, GNOME_FILE_DOMAIN_PIXMAP, "gnomemeeting-logo-icon.png", TRUE, NULL);
+  file = gnome_program_locate_file (NULL, GNOME_FILE_DOMAIN_PIXMAP, 
+				    "gnomemeeting-logo-icon.png", TRUE, NULL);
   pixbuf = gdk_pixbuf_new_from_file (file, NULL);
   g_free(file);
 
@@ -179,7 +180,6 @@ void about_callback (GtkWidget *widget, gpointer parent_window)
                           "Damien Sandras <dsandras@seconix.com>",
 			  pixbuf);
 
-  
   g_object_unref (pixbuf);
 
   gtk_window_set_transient_for (GTK_WINDOW (abox), GTK_WINDOW (parent_window));

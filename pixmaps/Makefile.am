@@ -17,8 +17,9 @@ IMAGE_FILES = \
 	speaker-phone.png \
 	available.png \
 	occupied.png \
-	globe-22.xpm \
-	globe2-22.xpm 
+	panel-available-16.png	\
+	panel-ring-16.png	\
+	panel-busy-16.png
 
 
 IMAGES= \
@@ -35,8 +36,9 @@ IMAGES= \
 	gm_quickcam_stock_data quickcam.xpm \
 	gm_occupied_stock_data occupied.png \
 	gm_available_stock_data available.png \
-	gm_tray_default_stock_data globe-22.xpm \
-	gm_tray_flash_stock_data globe2-22.xpm 
+	gm_panel_available_stock_data panel-available-16.png \
+	gm_panel_ring_stock_data panel-ring-16.png \
+	gm_panel_busy_stock_data panel-busy-16.png 
 
 noinst_DATA = inlines.h
 

@@ -53,8 +53,9 @@ GObject *gnomemeeting_init_tray (void);
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  If int = 1, displays globe2 and plays a sound, else displays
- *                 globe
+ * BEHAVIOR     :  If int = 0, displays the available icon.
+ *                 If int = 1, displays the ringing icon and plays a sound.
+ *                 If int = 2, displays the busy icon.
  * PRE          :  /
  */
 void gnomemeeting_tray_set_content (GObject *, int);

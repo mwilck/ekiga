@@ -64,8 +64,9 @@ gnomemeeting_stock_icons_init (void)
 		{ GM_STOCK_QUICKCAM,      gm_quickcam_stock_data },
 		{ GM_STOCK_AVAILABLE,     gm_available_stock_data },
 		{ GM_STOCK_OCCUPIED,      gm_occupied_stock_data },
-		{ GM_STOCK_TRAY_DEFAULT,  gm_tray_default_stock_data },
-		{ GM_STOCK_TRAY_FLASH,    gm_tray_flash_stock_data }
+		{ GM_STOCK_PANEL_AVAILABLE, gm_panel_available_stock_data },
+		{ GM_STOCK_PANEL_RING,    gm_panel_ring_stock_data},
+		{ GM_STOCK_PANEL_BUSY,    gm_panel_busy_stock_data},
 	};
 
 	factory = gtk_icon_factory_new ();

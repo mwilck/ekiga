@@ -965,6 +965,21 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
     forward_host = PString ("");
 
 
+  /* Update the history and status bar */
+  msg = g_strdup_printf (_("Call from %s using %s"), 
+			 (const char *) utf8_name,
+			 (const char *) utf8_app);
+
+  gnomemeeting_threads_enter ();
+  gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
+		     (gchar *) msg);
+			 
+  gnomemeeting_log_insert (gw->history_text_view, msg);
+  gnomemeeting_log_insert (gw->calls_history_text_view, msg);
+  gnomemeeting_threads_leave ();
+  g_free (msg);
+
+
   /* if we have enabled call forwarding for all calls, do the forward */
   if ((!forward_host.IsEmpty())&&(always_forward)) {
 
@@ -1084,21 +1099,6 @@ BOOL GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   }
 
 
-  /* Update the history and status bar */
-  msg = g_strdup_printf (_("Call from %s using %s"), 
-			 (const char *) utf8_name,
-			 (const char *) utf8_app);
-
-  gnomemeeting_threads_enter ();
-  gnome_appbar_push (GNOME_APPBAR (gw->statusbar), 
-		     (gchar *) msg);
-			 
-  gnomemeeting_log_insert (gw->history_text_view, msg);
-  gnomemeeting_log_insert (gw->calls_history_text_view, msg);
-  gnomemeeting_threads_leave ();
-  g_free (msg);
-
-
   /* Incoming Call Popup, if needed */
   if (gconf_client_get_bool (client, "/apps/gnomemeeting/view/show_popup", 0) 
       && (!aa) && (!dnd)) {
@@ -1215,9 +1215,7 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   }
 #endif
 
-  gnomemeeting_tray_set_content (G_OBJECT (gw->docklet), 0);
   connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 1);
-
 
   /* Enable the mute functions in the call menu */
   GnomeUIInfo *call_menu_uiinfo =
@@ -1225,10 +1223,17 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
   gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [6].widget), TRUE);
   gtk_widget_set_sensitive (GTK_WIDGET (call_menu_uiinfo [7].widget), TRUE);
 
+  gnomemeeting_threads_leave ();
+
 
   /* Update ILS if needed */
   if (gconf_client_get_bool (client, "/apps/gnomemeeting/ldap/register", 0))
     ((GMILSClient *) (ils_client))->Modify ();
+
+  gnomemeeting_threads_enter ();
+
+  /* Update the icon in the tray */
+  gnomemeeting_tray_set_content (G_OBJECT (gw->docklet), 2);
 
 
   /* If popup, destroy it */
@@ -1253,14 +1258,14 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 {
   gchar *msg = NULL;
   PTimeInterval t;
-  int exit = 0; /* do not exit */
   GtkTextIter start_iter, end_iter;
 
+  /* If we are called because the current incoming call has ended and 
+     not another call, ok, else do nothing */
+  if (GetCurrentCallToken () == clearedCallToken) {
 
-  /* If we are called because the current call has ended and not another
-     call, do nothing */
-  if (GetCurrentCallToken () == clearedCallToken) 
     SetCurrentCallToken (PString ());
+  }
   else {
 
     gnomemeeting_threads_enter ();
@@ -1350,7 +1355,7 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   if (connection.GetConnectionStartTime ().GetTimeInSeconds () > 0) {
 
     t = PTime () - connection.GetConnectionStartTime();
-    msg = g_strdup_printf (_("Call duration: %.2ld:%.2ld:%.2ld\n\n"),
+    msg = g_strdup_printf (_("Call duration: %.2ld:%.2ld:%.2ld"),
 			   (long) t.GetHours (), (long) t.GetMinutes () % 60,
 			   (long) t.GetSeconds () % 60);
     gnomemeeting_log_insert (gw->history_text_view, msg);
@@ -1368,16 +1373,47 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   gnomemeeting_threads_leave ();
 
 
-  /* Update ILS if needed */
-  if (gconf_client_get_bool (client, "/apps/gnomemeeting/ldap/register", 0))
-    ((GMILSClient *) (ils_client))->Modify ();
+  /* Update the tray icon */
+  gnomemeeting_threads_enter ();
+  if (gconf_client_get_bool 
+      (client, "/apps/gnomemeeting/general/do_not_disturb", 0)) 
+    gnomemeeting_tray_set_content (G_OBJECT (gw->docklet), 2);
+  else
+    gnomemeeting_tray_set_content (G_OBJECT (gw->docklet), 0);
+  gnomemeeting_threads_leave ();
 
 
-  /* If we are called because the current call has ended and not another
-     call, return */
-  if (exit == 1) 
-    return;
+  /* No need to do all that if we are simply receiving an incoming call
+     that was rejected in connection.cpp because of(DND) */
+  if (GetCallingState () != 3) {
 
+    /* Update ILS if needed */
+    if (gconf_client_get_bool (client, "/apps/gnomemeeting/ldap/register", 0))
+      ((GMILSClient *) (ils_client))->Modify ();
+  
+    /* Reset the Video Grabber, if preview, else close it */
+    GMVideoGrabber *vg = (GMVideoGrabber *) video_grabber;
+    if (gconf_client_get_bool (client, 
+			       "/apps/gnomemeeting/devices/video_preview", 0)) {
+
+      vg->Close (TRUE);
+      vg->Open (TRUE, TRUE); /* Grab and do a synchronous opening
+				in this thread */
+    }
+    else {
+    
+      if (vg->IsOpened ())
+	vg->Close ();
+
+      gnomemeeting_threads_enter ();
+      gnomemeeting_zoom_submenu_set_sensitive (FALSE);
+#ifdef HAS_SDL
+      gnomemeeting_fullscreen_option_set_sensitive (FALSE);
+#endif
+      gnomemeeting_init_main_window_logo ();
+      gnomemeeting_threads_leave ();
+    }
+  }
 
   /* Play Busy Tone */
 #ifdef HAS_IXJ
@@ -1391,29 +1427,15 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   }
 #endif
 
+  /* We destroy the incoming call popup if any */
+  gnomemeeting_threads_enter ();
+  if (gw->incoming_call_popup) {
 
-  /* Reset the Video Grabber, if preview, else close it */
-  GMVideoGrabber *vg = (GMVideoGrabber *) video_grabber;
-  if (gconf_client_get_bool (client, 
-			     "/apps/gnomemeeting/devices/video_preview", 0)) {
-
-    vg->Close (TRUE);
-    vg->Open (TRUE, TRUE); /* Grab and do a synchronous opening
-			      in this thread */
+    gtk_widget_destroy (gw->incoming_call_popup);
+    gw->incoming_call_popup = NULL;
   }
-  else {
-    
-    if (vg->IsOpened ())
-      vg->Close ();
+  gnomemeeting_threads_leave ();
 
-    gnomemeeting_threads_enter ();
-    gnomemeeting_zoom_submenu_set_sensitive (FALSE);
-#ifdef HAS_SDL
-    gnomemeeting_fullscreen_option_set_sensitive (FALSE);
-#endif
-    gnomemeeting_init_main_window_logo ();
-    gnomemeeting_threads_leave ();
-  }
 
 
   /* We update the stats part */
@@ -1423,14 +1445,6 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   gtk_widget_queue_draw_area (gw->stats_drawing_area, 0, 0, GTK_WIDGET (gw->stats_drawing_area)->allocation.width, GTK_WIDGET (gw->stats_drawing_area)->allocation.height);
   gtk_label_set_text (GTK_LABEL (gw->stats_label), _("Sent/Received:\nLost/Late Packets:\nRound trip delay:"));
 
-
-  /* We destroy the incoming call popup if any */
-  if (gw->incoming_call_popup) {
-
-    gtk_widget_destroy (gw->incoming_call_popup);
-    gw->incoming_call_popup = NULL;
-  }
-
   
   /* We empty the text chat buffer */ 
   gtk_text_buffer_get_start_iter (chat->text_buffer, &start_iter);
@@ -1438,9 +1452,6 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   gtk_text_buffer_delete (chat->text_buffer, &start_iter, &end_iter);
   chat->buffer_is_empty = TRUE;
-
-  SetCurrentConnection (NULL);
-  SetCallingState (0);
 
   connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 0);
 
@@ -1470,8 +1481,6 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
     gtk_timeout_remove (sound_timeout);
   
   sound_timeout = 0;
-
-  gnomemeeting_tray_set_content (G_OBJECT (gw->docklet), 0);
   
   gnomemeeting_threads_leave ();
   
@@ -1496,9 +1505,12 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   gnomemeeting_threads_leave ();
 
-  /* Try to update the config if some settings were changed during the call */
+  /* Try to update the config if some settings were changed 
+     during the call */
   UpdateConfig ();
-  
+
+  SetCurrentConnection (NULL);
+  SetCallingState (0);
 }
 
 

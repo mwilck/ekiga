@@ -44,7 +44,7 @@
 #include "main_window.h"
 #include "ils.h"
 #include "dialog.h"
-
+#include "tray.h"
 
 
 /* Declarations */
@@ -1034,7 +1034,7 @@ static void register_changed_nt (GConfClient *client, guint cid,
 /* DESCRIPTION  :  This callback is called when the "do_not_disturb" 
  *                 gconf value changes.
  * BEHAVIOR     :  Simply issued a modify request if we are regitered to an ILS
- *                 directory.
+ *                 directory, and also modifies the tray icon.
  * PRE          :  /
  */
 static void do_not_disturb_changed_nt (GConfClient *client, guint cid, 
@@ -1042,11 +1042,21 @@ static void do_not_disturb_changed_nt (GConfClient *client, guint cid,
 {
   GMH323EndPoint *endpoint = MyApp->Endpoint ();
   GMILSClient *ils_client = (GMILSClient *) endpoint->GetILSClient ();
+  GmWindow *gw = NULL;
 
   if (entry->value->type == GCONF_VALUE_BOOL) {
 
     if (gconf_client_get_bool (client, "/apps/gnomemeeting/ldap/register", 0))
       ils_client->Modify ();
+
+    gdk_threads_enter ();
+    gw = gnomemeeting_get_main_window (gm);
+
+    if (gconf_value_get_bool (entry->value))
+      gnomemeeting_tray_set_content (G_OBJECT (gw->docklet), 2);
+    else
+      gnomemeeting_tray_set_content (G_OBJECT (gw->docklet), 0);
+    gdk_threads_leave ();
   }
 }
 
@@ -1198,6 +1208,7 @@ void gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/do_not_disturb", toggle_changed_nt, pw->dnd, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/do_not_disturb", menu_toggle_changed_nt, call_menu [3].widget, 0, 0);
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/do_not_disturb", do_not_disturb_changed_nt, pw->dnd, 0, 0);
+
 
 #ifdef HAS_SDL
   gconf_client_notify_add (client, "/apps/gnomemeeting/general/fullscreen_width", adjustment_changed_nt, pw->fullscreen_width, 0, 0);

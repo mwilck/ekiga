@@ -224,20 +224,20 @@ void gnomemeeting_init_main_window_logo ()
 
 gint PlaySound (GtkWidget *widget)
 {
-  void *object = NULL;
+  gpointer data;
 
   if (widget != NULL) {
 
-    /* First we check if it is the phone or the globe that is displayed.
+    /* First we check the current displayed image in the systray.
        We can't call gnomemeeting_threads_enter as idles and timers
        are executed in the main thread */
     gdk_threads_enter ();
-    object = g_object_get_data (G_OBJECT (widget), "pixmapg");
+    data = g_object_get_data (G_OBJECT (widget), "available");
     gdk_threads_leave ();
   }
 
-  /* If the applet contents the phone pixmap */
-  if (object == NULL) {
+  /* If the systray icon contains the ringing pic */
+  if (GPOINTER_TO_INT (data) == 0) {
 
     gnome_triggers_do ("", "program", "gnomemeeting", 
 		       "incoming_call", NULL);
