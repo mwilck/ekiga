@@ -42,7 +42,7 @@
 
 /* Declarations */
 extern GtkWidget *gm;
-static void free_g_list_data (GList *list);
+static void free_g_list_data (gpointer);
 
 /* The functions */
 
@@ -51,8 +51,10 @@ static void free_g_list_data (GList *list);
  * BEHAVIOR      : Frees data in a double linked list
  * PRE           : the list must have dinamically alocated data
  */
-static void free_g_list_data (GList *list)
+static void free_g_list_data (gpointer user_data)
 {
+  GList *list = (GList *) user_data;
+
   while (list) {
     g_free (list->data);
     list = list->next;
@@ -361,9 +363,9 @@ void
 gnomemeeting_history_combo_box_add_entry(GtkCombo *combo, const gchar *key,
 					 const gchar *new_entry)
 {
-  bool found = false, contacts_were_null;
-  int max_contacts;
-  gchar *entry_content, *text;
+  bool found = false;
+  unsigned int max_contacts;
+  gchar *entry_content;
   GList *contacts_list;
   GConfClient *client;
   
@@ -451,7 +453,6 @@ void gnomemeeting_warning_popup (GtkWidget *w, gchar *m)
   gchar *widget_data = NULL;
   GtkWidget *msg_box = NULL;
   GtkWidget *toggle_button = NULL;
-  int ret = 0;
 
   msg = g_strdup (m);
      
