@@ -1,3 +1,16 @@
+2001-10-02  Damien Sandras  <dsandras@seconix.com>
+
+	* src/webcam.cpp: Added missing #include "../config.h" for translators.
+	Added support for a reset() method that resets the VideoGrabber with other values.
+	* src/config.cpp: Added support for the reset method, you can now change the video
+	device in the preferences while the video preview mode is on. It will simply change
+	the device and display images from the new device.
+	* src/main_interface.cpp: Changed some initialisation messages.
+	* src/callbacks.cpp: Video preview is no more disabled when calling the preferences
+	window as it is now possible to change video options on the fly.
+	* ChangeLog: Updated it because previous commits were made while the ChangeLog was not
+	saved.
+	
 2001-10-02  Christian Rose  <menthos@menthos.com>
 
 	* LICENSE: Line-wrapped to fit 80 character width.
