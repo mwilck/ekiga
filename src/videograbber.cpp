@@ -569,7 +569,7 @@ void GMVideoTester::Main ()
   test_dialog =
     gtk_dialog_new_with_buttons ("Video test running",
 				 GTK_WINDOW (gw->druid_window),
-				 (enum GtkDialogFlags) (GTK_DIALOG_MODAL),
+				 (GtkDialogFlags) (GTK_DIALOG_MODAL),
 				 GTK_STOCK_OK,
 				 GTK_RESPONSE_ACCEPT,
 				 NULL);
