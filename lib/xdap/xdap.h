@@ -5,6 +5,10 @@
  * Licensed under version 2 or later of the GNU GPL
  */
 
+
+#ifndef __XDAP_H_
+#define __XDAP_H_
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -15,10 +19,9 @@
 #include <lber.h>
 #include <ldap.h>
 
+#include <glib.h>
 #include <unistd.h>
 
-#ifndef __XDAP_H_
-#define __XDAP_H_
 
 G_BEGIN_DECLS
 
@@ -89,6 +92,7 @@ int dbgmask;			/* Debug mask */
 /* Hacks */
 #define MAXATTRS 200
 #define MAXOPS 20
+
 
 xmlDocPtr parseonly (char *, xmlEntityPtr (*)(void *, const xmlChar *),
 		     xmlEntityPtr (**)(void *, const xmlChar *), int);
