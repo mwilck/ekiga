@@ -131,7 +131,7 @@ quit_callback (GtkWidget *,
 
 
 /* DESCRIPTION  :  Quit callback.
- * BEHAVIOR     :  Quit  or not.
+ * BEHAVIOR     :  Disconnects, then simply call gtk_main_quit.
  * PRE          :  /
  */
 void

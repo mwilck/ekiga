@@ -826,9 +826,7 @@ static void jitter_buffer_changed_nt (GConfClient *client, guint cid,
 
 /* DESCRIPTION  :  This notifier is called when the gconf database data
  *                 associated with the audio or video manager changes.
- * BEHAVIOR     :  Updates the devices list for the new manager if 
- *                 we are not in a call. If we are in a call, it will be
- *                 done after that call.
+ * BEHAVIOR     :  Updates the devices list for the new manager.
  * PRE          :  /
  */
 static void
@@ -837,31 +835,23 @@ manager_changed_nt (GConfClient *client,
 		    GConfEntry *entry,
 		    gpointer data)
 {
-  GMH323EndPoint *ep = NULL;
-
-  ep = GnomeMeeting::Process ()->Endpoint ();
-  
   if (entry->value->type == GCONF_VALUE_STRING) {
 
-    if (ep->GetCallingState () == GMH323EndPoint::Standby) {
+    GnomeMeeting::Process ()->DetectDevices ();
 
-      gdk_threads_enter ();
-      ep->UpdateDevices ();
-      gdk_threads_leave (); 
-    }
+    gdk_threads_enter ();
+    gnomemeeting_pref_window_update_devices_list ();
+    gdk_threads_leave ();
   }
 }
 
 
 /* DESCRIPTION  :  This notifier is called when the gconf database data
  *                 associated with the audio devices changes.
- * BEHAVIOR     :  It updates the endpoint and displays
- *                 a message in the history. If the device is not valid,
- *                 i.e. the user erroneously used gconftool, a message is
- *                 displayed. Notice that the code ensures that either no
- *                 no Quicknet device is used, or it is used for both devices.
+ * BEHAVIOR     :  Ensures that either no Quicknet device is used,
+ *                 or it is used for both devices.
  *                 It also disables the druid test buttons for cases where
- *                 a test is not possible (no device found or quicknet).
+ *                 a test is not possible (Quicknet).
  *                 Notice that audio devices can not be changed during a call.
  * PRE          :  /
  */
@@ -895,13 +885,6 @@ audio_device_changed_nt (GConfClient *client,
       
     dev = PString (gconf_value_get_string (entry->value));
 
-
-    /* Disable the druid button if no device is found */
-    if (dev.Find (_("No device found")) == P_MAX_INDEX) 
-      gtk_widget_set_sensitive (GTK_WIDGET (dw->audio_test_button), TRUE);
-    else
-      gtk_widget_set_sensitive (GTK_WIDGET (dw->audio_test_button), FALSE);
-	
 
     /* If one of the devices that we are using is a quicknet device,
        we update the other devices too */
@@ -948,18 +931,6 @@ audio_device_changed_nt (GConfClient *client,
       }
     }
     gdk_threads_leave ();
-
-    /* We reset the capabilities if a Quicknet card is used because they could
-       have changed. */
-    if (use_lid)
-      ep->AddAllCapabilities ();
-    
-    if (ep->GetCallingState () == GMH323EndPoint::Standby) {
-
-      gdk_threads_enter ();
-      ep->UpdateDevices ();
-      gdk_threads_leave ();
-    }
   }
 }
 
@@ -979,7 +950,8 @@ video_device_changed_nt (GConfClient *client,
 			 gpointer data)
 {
   GMH323EndPoint *ep = NULL;
-
+  BOOL preview = FALSE;
+  
   ep = GnomeMeeting::Process ()->Endpoint ();
   
   if ((entry->value->type == GCONF_VALUE_STRING) ||
@@ -988,8 +960,11 @@ video_device_changed_nt (GConfClient *client,
     if (ep && ep->GetCallingState () == GMH323EndPoint::Standby) {
 
       gdk_threads_enter ();
-      ep->UpdateDevices ();
+      preview = gconf_get_bool (DEVICES_KEY "video_preview");
       gdk_threads_leave ();
+
+      if (preview)
+	ep->CreateVideoGrabber ();
     }
   }
 }
@@ -998,9 +973,9 @@ video_device_changed_nt (GConfClient *client,
 /* DESCRIPTION  :  This callback is called when a video device setting changes
  *                 in the gconf database.
  * BEHAVIOR     :  It resets the video transmission if any, or resets the
- *                 video device otherwise. Notice that
+ *                 video device if preview is enabled otherwise. Notice that
  *                 the video device can't be changed during calls, but its
- *                 settings can be changed.
+ *                 settings can be changed. It also updates the capabilities.
  * PRE          :  /
  */
 static void 
@@ -1012,6 +987,7 @@ video_device_setting_changed_nt (GConfClient *client,
   PString name;
 
   int max_try = 0;
+  BOOL preview = FALSE;
   BOOL no_error = FALSE;
 
   GMH323EndPoint *ep = NULL;
@@ -1027,8 +1003,11 @@ video_device_setting_changed_nt (GConfClient *client,
     if (ep && ep->GetCallingState () == GMH323EndPoint::Standby) {
 
       gdk_threads_enter ();
-      ep->UpdateDevices ();
+      preview = gconf_get_bool (DEVICES_KEY "video_preview");
       gdk_threads_leave ();
+
+      if (preview)
+	ep->CreateVideoGrabber ();
     }
     else if (ep->GetCallingState () == GMH323EndPoint::Connected) {
 
@@ -1656,6 +1635,9 @@ gboolean gnomemeeting_init_gconf (GConfClient *client)
   gconf_client_notify_add (client, DEVICES_KEY "video_recorder", 
 			   video_device_changed_nt, 
 			   NULL, NULL, NULL);
+  gconf_client_notify_add (client, DEVICES_KEY "video_recorder",
+			   applicability_check_nt,
+			   pw->video_device, 0, 0);
 
   gconf_client_notify_add (client, DEVICES_KEY "video_channel", 
 			   video_device_setting_changed_nt, 

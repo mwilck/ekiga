@@ -113,10 +113,9 @@ class GMH323EndPoint : public H323EndPoint
    * BEHAVIOR     :  Creates a video grabber.
    * PRE          :  If TRUE, then the grabber will start
    *                 grabbing after its creation. If TRUE,
-   *                 then the opening is done sync. If TRUE, then the channel
-   *                 will be autodeleted.
+   *                 then the opening is done sync.
    */  
-  GMVideoGrabber *CreateVideoGrabber (BOOL = TRUE, BOOL = FALSE, BOOL = TRUE);
+  GMVideoGrabber *CreateVideoGrabber (BOOL = TRUE, BOOL = FALSE);
 
 
   /* DESCRIPTION  :  /

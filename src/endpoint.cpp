@@ -175,11 +175,13 @@ void GMH323EndPoint::UpdateDevices ()
 
 
   /* Get the gconf settings */
+  gnomemeeting_threads_enter ();
   manager = gconf_get_string (DEVICES_KEY "audio_manager");
   player = gconf_get_string (DEVICES_KEY "audio_player");
   recorder = gconf_get_string (DEVICES_KEY "audio_recorder");
   preview = gconf_get_bool (DEVICES_KEY "video_preview");
-
+  gnomemeeting_threads_leave ();
+  
   if (!manager || !player || !recorder)
     return;
   
@@ -196,45 +198,19 @@ void GMH323EndPoint::UpdateDevices ()
       use_lid = true;
     }
 
-
     /* Video preview */
-    if (preview) {
-      gdk_threads_leave ();
+    if (preview) 
+      CreateVideoGrabber (TRUE, TRUE);
+    else
       RemoveVideoGrabber ();
-      CreateVideoGrabber ();
-      gdk_threads_enter ();
-    }
 
     
-    /* Update the prefs window */
-    if (manager && (GetSoundChannelManager () != manager)) {
-
-      SetSoundChannelManager (manager);
-      gnomemeeting_pref_window_refresh_devices_list (NULL, NULL);
-    }
-
-
-    /* Set recording source and set micro to record if no LID is used */
-    if (!use_lid) {
-
-      /* Change that setting only if needed */
-      if (player && (GetSoundChannelPlayDevice () != player)) 
-	SetSoundChannelPlayDevice (player);
-
-      /* Change that setting only if needed */
-      if (recorder && (GetSoundChannelRecordDevice ()!= recorder)) 
-	SetSoundChannelRecordDevice (recorder);
-    }
-    
-
 #ifdef HAS_IXJ
     /* Use the quicknet card if needed */
-    gdk_threads_leave ();
     if (use_lid) 
       CreateLid ();
     else
       RemoveLid ();
-    gdk_threads_enter ();
 #endif
   }
 
@@ -590,16 +566,14 @@ GMH323EndPoint::StopAudioTester ()
 
 GMVideoGrabber *
 GMH323EndPoint::CreateVideoGrabber (BOOL start_grabbing,
-				    BOOL synchronous,
-				    BOOL delete_channel)
+				    BOOL synchronous)
 {
   PWaitAndSignal m(vg_access_mutex);
-  
+
   if (video_grabber)
     delete (video_grabber);
 
-  video_grabber =
-    new GMVideoGrabber (start_grabbing, synchronous, delete_channel);
+  video_grabber = new GMVideoGrabber (start_grabbing, synchronous);
 
   return video_grabber;
 }
@@ -1334,9 +1308,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 
   /* Try to update the devices use if some settings were changed 
      during the call */
-  gnomemeeting_threads_enter ();
   UpdateDevices ();
-  gnomemeeting_threads_leave ();
 }
 
 
@@ -1568,6 +1540,7 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
   unsigned int vol_play = 0;
   bool sd = FALSE;
   BOOL no_error = TRUE;
+  gchar *msg = NULL;
 
   if ((is_encoding && is_transmitting_audio)
       || (!is_encoding && is_receiving_audio))
@@ -1660,6 +1633,17 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
 
        if (sound_channel) {
 
+	 /* Translators : the full sentence is "Opening %s for playing"
+	    or "Opening %s for recording */
+	 msg = g_strdup_printf (_("Opening %s for %s"),
+				(const char *) device,
+				is_encoding ? _("recording") : _("playing"));
+
+	 gnomemeeting_threads_enter ();
+	 gnomemeeting_log_insert (gw->history_text_view, msg);
+	 gnomemeeting_threads_leave ();
+	 g_free (msg);
+
 	 /* Control the channel and attach it to the codec */
 	 sound_channel->SetBuffers (bufferSize, soundChannelBuffers);
 	 no_error = codec.AttachChannel (sound_channel);
@@ -1726,10 +1710,13 @@ GMH323EndPoint::SetSoundChannelPlayDevice(const PString &name)
 
   soundChannelPlayDevice = name;
 
+  
+  gnomemeeting_threads_enter ();
   text = g_strdup_printf (_("Set Audio player device to %s"), 
 			  (const char *) soundChannelPlayDevice);
   gnomemeeting_log_insert (gw->history_text_view, text);
-
+  gnomemeeting_threads_leave ();
+  
   g_free (text);
 
   return TRUE;   
@@ -1783,10 +1770,12 @@ GMH323EndPoint::SetSoundChannelRecordDevice (const PString &name)
 
   soundChannelRecordDevice = name;
 
+  gnomemeeting_threads_enter ();
   text = g_strdup_printf (_("Set Audio player device to %s"), 
 			  (const char *) soundChannelPlayDevice);
   gnomemeeting_log_insert (gw->history_text_view, text);
-
+  gnomemeeting_threads_leave ();
+  
   g_free (text);
 
   return TRUE;
@@ -2315,18 +2304,20 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 			codec.GetVideoMode());
 
 
-    /* Make sure there is a grabber */
-    RemoveVideoGrabber ();
-    CreateVideoGrabber (FALSE, TRUE, FALSE); 
-    
+    /* Make sure there is a grabber */    
     vg = GetVideoGrabber ();
+    if (!vg) {
+      
+      CreateVideoGrabber (FALSE, TRUE);
+      vg = GetVideoGrabber ();
+    }
+    
     if (vg) {
 
       channel = vg->GetVideoChannel ();
       transmitted_video_device = vg->GetEncodingDevice ();
       vg->Unlock ();
     }
-
       
 
     gnomemeeting_threads_enter ();
@@ -2334,7 +2325,7 @@ GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
     gnomemeeting_threads_leave ();
 
     if (channel)
-      result = codec.AttachChannel (channel, TRUE);
+      result = codec.AttachChannel (channel, FALSE);
 
     if (result)
       is_transmitting_video = TRUE;

@@ -54,8 +54,7 @@ extern GtkWidget *gm;
 
 /* The functions */
 GMVideoGrabber::GMVideoGrabber (BOOL start_grabbing,
-				BOOL sync,
-				BOOL del)
+				BOOL sync)
   :PThread (1000, NoAutoDeleteThread)
 {
   height = 0, width = 0;
@@ -67,11 +66,8 @@ GMVideoGrabber::GMVideoGrabber (BOOL start_grabbing,
 
   /* Internal state */
   stop = FALSE;
-  has_to_reset = 0;
-  has_to_stop = 0;
   is_grabbing = start_grabbing;
   synchronous = sync;
-  delete_channel = del;
   is_opened = FALSE;
 
   /* Initialisation */
@@ -108,9 +104,9 @@ GMVideoGrabber::~GMVideoGrabber ()
 void GMVideoGrabber::Main ()
 {
   PWaitAndSignal m(quit_mutex);
-
+  
   thread_sync_point.Signal ();
-
+ 
   if (!synchronous)
     VGOpen ();
 
@@ -275,10 +271,6 @@ void GMVideoGrabber::VGOpen (void)
 
     /* Disable the video preview button while opening */
     gnomemeeting_threads_enter ();
-    gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
-#ifndef DISABLE_GNOME
-    gtk_widget_set_sensitive (GTK_WIDGET (dw->video_test_button), FALSE);
-#endif
     gnomemeeting_log_insert (gw->history_text_view, _("Opening Video device"));
     gnomemeeting_threads_leave ();
 
@@ -401,12 +393,6 @@ void GMVideoGrabber::VGOpen (void)
       grabber->SetChannel (1);    
       grabber->SetFrameRate (6);
       grabber->SetFrameSizeConverter (width, height, FALSE);
-
-      gnomemeeting_threads_enter ();
-#ifndef DISABLE_GNOME
-      gtk_widget_set_sensitive (GTK_WIDGET (dw->video_test_button), true);
-#endif
-      gnomemeeting_threads_leave ();
       
       g_free (video_image);
     }
@@ -447,7 +433,6 @@ void GMVideoGrabber::VGOpen (void)
     if (GnomeMeeting::Process ()->Endpoint ()->GetCallingState () == GMH323EndPoint::Standby) {
 
       gnomemeeting_threads_enter ();      
-      gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), TRUE);
       gnomemeeting_menu_update_sensitivity (TRUE, FALSE, TRUE);
       gnomemeeting_threads_leave ();
     }
@@ -463,31 +448,16 @@ void GMVideoGrabber::VGClose ()
     is_grabbing = 0;
     var_mutex.Signal ();
 
-    /* Disable the video preview button while closing */
-    gnomemeeting_threads_enter ();
-    gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), FALSE);
-#ifndef DISABLE_GNOME
-    gtk_widget_set_sensitive (GTK_WIDGET (dw->video_test_button), FALSE);
-#endif
-    gnomemeeting_threads_leave ();
 
-    if (delete_channel) {
+    if (channel)
+      delete (channel);
 
-      if (channel)
-	delete (channel);
-    }
-
-
+    
     /* Enable video preview button */
     gnomemeeting_threads_enter ();
   
-    /* Enable the video preview button  */
-    gtk_widget_set_sensitive (GTK_WIDGET (gw->preview_button), TRUE);
-#ifndef DISABLE_GNOME
-    gtk_widget_set_sensitive (GTK_WIDGET (dw->video_test_button), TRUE);
-#endif
 
-    if (GnomeMeeting::Process ()->Endpoint ()->GetCallingState () == GMH323EndPoint::Standby) {
+    if (GnomeMeeting::Process ()->Endpoint ()->GetCallingState () == GMH323EndPoint::Standby && !gconf_get_bool (DEVICES_KEY "video_preview")) {
       
       gnomemeeting_menu_update_sensitivity (TRUE, FALSE, FALSE);
       gnomemeeting_init_main_window_logo (gw->main_video_image);

@@ -44,13 +44,12 @@
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Refreshes the devices list in the GUI to update it from
- *                 the GmWindow lists.
+ * BEHAVIOR     :  Refreshes the devices list in the GUI to update them from
+ *                 the GnomeMeeting available devices list.
  * PRE          :  /
  */
 void 
-gnomemeeting_pref_window_refresh_devices_list (GtkWidget *,
-					       gpointer);
+gnomemeeting_pref_window_update_devices_list ();
 
 
 /* DESCRIPTION  :  /

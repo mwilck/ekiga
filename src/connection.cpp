@@ -110,6 +110,7 @@ GMH323Connection::OnLogicalChannel (H323Channel *channel,
   PString codec_name;
   BOOL is_encoding = FALSE;
   BOOL is_video = FALSE;
+  BOOL preview = FALSE;
   
   gchar *msg = NULL;
   
@@ -119,6 +120,11 @@ GMH323Connection::OnLogicalChannel (H323Channel *channel,
   is_encoding = (channel->GetDirection () == H323Channel::IsTransmitter);
   codec_name = channel->GetCapability ().GetFormatName ();
 
+  gnomemeeting_threads_enter ();
+  preview = gconf_get_bool (DEVICES_KEY "video_preview");
+  gnomemeeting_threads_leave ();
+
+  
   if ((is_video && is_transmitting_video && is_encoding && !is_closing)
       || (is_video && !is_receiving_video && !is_encoding && is_closing)
       || (!is_video && is_transmitting_audio && is_encoding && !is_closing)
@@ -171,7 +177,7 @@ GMH323Connection::OnLogicalChannel (H323Channel *channel,
   gnomemeeting_log_insert (gw->history_text_view, msg);
   gnomemeeting_menu_update_sensitivity (is_video, is_video?is_receiving_video:is_receiving_audio, is_video?is_transmitting_video:is_transmitting_audio);
   gnomemeeting_main_window_update_sensitivity (is_video, is_video?is_receiving_video:is_receiving_audio, is_video?is_transmitting_video:is_transmitting_audio);
-  if (!is_receiving_video && !is_transmitting_video)
+  if (!is_receiving_video && !is_transmitting_video && !preview)
     gnomemeeting_init_main_window_logo (gw->main_video_image);
   gnomemeeting_threads_leave ();
   

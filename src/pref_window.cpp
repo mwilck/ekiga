@@ -55,6 +55,8 @@
 
 extern GtkWidget *gm;
 
+static void refresh_devices_list_button_clicked (GtkWidget *,
+						 gpointer);
 
 static void personal_data_update_button_clicked (GtkWidget *,
 						 gpointer);
@@ -139,6 +141,21 @@ enum {
 
 
 /* GTK Callbacks */
+
+/* DESCRIPTION  :  This callback is called when the user clicks
+ *                 on the refresh devices list button in the prefs.
+ * BEHAVIOR     :  Redetects the devices and refreshes the menu.
+ * PRE          :  /
+ */
+static void
+refresh_devices_list_button_clicked (GtkWidget *w,
+				     gpointer data)
+{
+  GnomeMeeting::Process ()->DetectDevices ();
+
+  gnomemeeting_pref_window_update_devices_list ();
+}
+
 
 /* DESCRIPTION  :  This callback is called when the user clicks
  *                 on the Update button of the Personal data Settings.
@@ -958,7 +975,7 @@ gnomemeeting_init_pref_window_audio_devices (GtkWidget *window,
 
   
   /* That button will refresh the devices list */
-  gnomemeeting_pref_window_add_update_button (container, GTK_STOCK_REFRESH, _("_Detect devices"), GTK_SIGNAL_FUNC (gnomemeeting_pref_window_refresh_devices_list), _("Click here to refresh the devices list."), 1);
+  gnomemeeting_pref_window_add_update_button (container, GTK_STOCK_REFRESH, _("_Detect devices"), GTK_SIGNAL_FUNC (refresh_devices_list_button_clicked), _("Click here to refresh the devices list."), 1);
 }
 
 
@@ -1036,7 +1053,7 @@ gnomemeeting_init_pref_window_video_devices (GtkWidget *window,
 
 
   /* That button will refresh the devices list */
-  gnomemeeting_pref_window_add_update_button (container, GTK_STOCK_REFRESH, _("_Detect devices"), GTK_SIGNAL_FUNC (gnomemeeting_pref_window_refresh_devices_list), _("Click here to refresh the devices list."), 1);
+  gnomemeeting_pref_window_add_update_button (container, GTK_STOCK_REFRESH, _("_Detect devices"), GTK_SIGNAL_FUNC (refresh_devices_list_button_clicked), _("Click here to refresh the devices list."), 1);
 }
 
 
@@ -1249,18 +1266,15 @@ gnomemeeting_init_pref_window_video_codecs (GtkWidget *window,
 
 
 void 
-gnomemeeting_pref_window_refresh_devices_list (GtkWidget *widget, 
-					       gpointer data)
+gnomemeeting_pref_window_update_devices_list ()
 {
   GmPrefWindow *pw = NULL;
-  GmWindow *gw = NULL;
 
   gchar **array = NULL;
   
-  gw = GnomeMeeting::Process ()->GetMainWindow ();
   pw = GnomeMeeting::Process ()->GetPrefWindow ();
-
-  GnomeMeeting::Process ()->DetectDevices ();
+  
+  GmWindow *gw = GnomeMeeting::Process ()->GetMainWindow ();
 
   /* The player */
   array = gw->audio_player_devices.ToCharArray ();
@@ -1287,7 +1301,8 @@ gnomemeeting_pref_window_refresh_devices_list (GtkWidget *widget,
 }
 
 
-GtkWidget *gnomemeeting_pref_window_new (GmPrefWindow *pw)
+GtkWidget *
+gnomemeeting_pref_window_new (GmPrefWindow *pw)
 {
   GtkWidget *window = NULL;
   GtkWidget *container = NULL;

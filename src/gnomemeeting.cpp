@@ -130,13 +130,13 @@ GnomeMeeting::GnomeMeeting ()
 GnomeMeeting::~GnomeMeeting()
 {
   if (endpoint) {
-    
-    endpoint->ClearAllCalls (H323Connection::EndedByLocalUser, TRUE);
+
     endpoint->RemoveVideoGrabber ();
 #ifdef HAS_IXJ
     endpoint->RemoveLid ();
 #endif
   }
+  
   RemoveEndpoint ();
 
   if (gw->ldap_window) {

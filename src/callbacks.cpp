@@ -481,8 +481,16 @@ void about_callback (GtkWidget *widget, gpointer parent_window)
 
 void quit_callback (GtkWidget *widget, gpointer data)
 {
-  GmWindow *gw = GnomeMeeting::Process ()->GetMainWindow ();
+  GmWindow *gw = NULL;
+  GMH323EndPoint *ep =NULL;
+  
+  gw = GnomeMeeting::Process ()->GetMainWindow ();
+  ep = GnomeMeeting::Process ()->Endpoint ();
 
+  gdk_threads_leave ();
+  ep->ClearAllCalls (H323Connection::EndedByLocalUser, TRUE);
+  gdk_threads_enter ();
+  
   gtk_widget_hide (gm);
   gtk_widget_hide (gw->docklet);
   gtk_widget_hide (gw->ldap_window);

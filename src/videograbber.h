@@ -56,10 +56,9 @@ class GMVideoGrabber : public PThread
    *                 fails, an error popup is displayed.
    * PRE          :  First parameter is TRUE if the VideoGrabber must grab
    *                 once opened. The second one is TRUE if the VideoGrabber
-   *                 must be opened synchronously. Last parameter is TRUE
-   *                 if the corresponding channel should be auto deleted.
+   *                 must be opened synchronously.
    */
-  GMVideoGrabber (BOOL = FALSE, BOOL = FALSE, BOOL = TRUE);
+  GMVideoGrabber (BOOL = FALSE, BOOL = FALSE);
 
 
   /* DESCRIPTION  :  The destructor.
@@ -182,9 +181,6 @@ class GMVideoGrabber : public PThread
   BOOL is_grabbing;
   BOOL synchronous;
   BOOL is_opened;
-  BOOL delete_channel;
-  int has_to_reset;
-  int has_to_stop;
 
   int video_channel;
   int video_size;
@@ -234,7 +230,7 @@ protected:
 
   GtkWidget *test_label;
   GtkWidget *test_dialog;
-  
+
   PMutex quit_mutex;
   PSyncPoint thread_sync_point;
 };
