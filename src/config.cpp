@@ -99,6 +99,7 @@ void gnomemeeting_store_config (options *opts)
   gnome_config_set_string ("LDAPSettings/ldap_port", opts->ldap_port);
   gnome_config_set_string ("LDAPSettings/ldap_servers_list", 
 			   opts->ldap_servers_list);
+  gnome_config_set_string ("MiscSettings/contacts_list", opts->old_contacts_list);
 
   gnome_config_set_int ("GKSettings/gk", opts->gk);
   gnome_config_set_string ("GKSettings/gk_host", opts->gk_host);
@@ -190,7 +191,10 @@ void gnomemeeting_read_config (options *opts)
   opts->ldap_port = gnome_config_get_string ("LDAPSettings/ldap_port=");
   opts->ldap_servers_list = 
     gnome_config_get_string ("LDAPSettings/ldap_servers_list=");
-  
+  opts->old_contacts_list =
+    gnome_config_get_string ("MiscSettings/contacts_list=");
+
+
   opts->gk = gnome_config_get_int ("GKSettings/gk");
   opts->gk_host = gnome_config_get_string ("GKSettings/gk_host=");
   opts->gk_id = gnome_config_get_string ("GKSettings/gk_id=");
@@ -515,12 +519,23 @@ void gnomemeeting_read_config_from_gui (options *opts)
   opts->ldap_servers_list = NULL;
 
   while ((text = (gchar *) g_list_nth_data (lw->ldap_servers_list, i))) {
-
     old_pointer = opts->ldap_servers_list;
     opts->ldap_servers_list = g_strconcat (text, ":", old_pointer, NULL);
     g_free (old_pointer);
     i++;
-  }
+    }
+
+  /* Free the old values, we will read from the GUI */
+  g_free (opts->old_contacts_list);
+  opts->old_contacts_list = NULL;
+  i = 0;
+  while (text = (gchar *) g_list_nth_data (gw->old_contacts_list, i))
+    {
+      old_pointer = opts->old_contacts_list;
+      opts->old_contacts_list = g_strconcat (text, ":", old_pointer, NULL);
+      g_free (old_pointer);
+      i++;
+    }
 
   /* Check options from the menus, and update the options structure */
   GtkWidget *object = (GtkWidget *) 

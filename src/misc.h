@@ -22,8 +22,9 @@
  *                         ----------------------
  *   begin                : Thu Nov 22 2001
  *   copyright            : (C) 2000-2001 by Damien Sandras
+ *                           and De Michele Cristiano
  *   description          : This file contains miscellaneous functions.
- *   email                : dsandras@seconix.com
+ *   email                : dsandras@seconix.comi, demichel@na.infn.it
  *
  */
 
@@ -138,4 +139,9 @@ void gnomemeeting_enable_disconnect ();
  */
 void gnomemeeting_disable_disconnect ();
 
+extern GtkWidget* 
+gnomemeeting_history_combo_box_new (GM_window_widgets* gw, options* opt);
+
+extern void 
+gnomemeeting_add_contact_entry(GM_window_widgets *gw, int max_contacts);
 #endif

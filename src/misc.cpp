@@ -22,14 +22,20 @@
  *                         ------------------------
  *   begin                : Thu Nov 22 2001
  *   copyright            : (C) 2000-2001 by Damien Sandras
+ *                          and De Michele Cristiano  
  *   description          : This file contains miscellaneous functions.
- *   email                : dsandras@seconix.com
+ *   email                : dsandras@seconix.comi, demichel@na.infn.it
  *
  */
 
 
 #include <ptlib.h>
 #include <gnome.h>
+#include "config.h"
+#include "main_window.h"
+#include "common.h"
+#include "pref_window.h"
+
 
 #include "misc.h"
 
@@ -314,3 +320,90 @@ void gnomemeeting_disable_disconnect ()
   gtk_widget_set_sensitive (main_toolbar [3].widget, FALSE);
   gtk_widget_set_sensitive (main_toolbar [5].widget, FALSE);
 }
+
+GtkWidget*
+gnomemeeting_history_combo_box_new (GM_window_widgets* gw, options* opts)
+{
+  GtkWidget* combo;
+  //GList* contacts_list;
+  gchar **contacts;
+  int i;		
+  combo = gtk_combo_new ();
+
+  gw->old_contacts_list = NULL;
+  /* We read the history on the hard disk */
+  contacts = g_strsplit (opts->old_contacts_list, ":", 0);
+  
+  for (i = 0 ; contacts [i] != NULL ; i++)
+    gw->old_contacts_list = g_list_append (gw->old_contacts_list, contacts [i]);
+     
+  if (gw->old_contacts_list != NULL)
+    gtk_combo_set_popdown_strings (GTK_COMBO (combo), 
+	   gw->old_contacts_list);
+
+  gtk_entry_set_text(GTK_ENTRY(GTK_COMBO(combo)->entry),""); 
+  return combo; 
+	
+}
+
+void 
+gnomemeeting_add_contact_entry(GM_window_widgets* gw, int max_contacts)
+{
+  int found = 0;
+  int i = 0;
+  gchar *text_label, *entry_content, *text;
+  GList *last_item, **polds;
+  GtkWidget* combo;
+
+  // polds means pointer to gw->olds_contacts_list
+  combo = gw->combo;
+  
+  /* we make a dup, because the entry text will change */
+  entry_content = g_strdup (gtk_entry_get_text 
+    (GTK_ENTRY (GTK_COMBO (gw->combo)->entry)));  
+  
+  /* if it is an empty entry_content, return */
+  if (!g_strcasecmp (entry_content, ""))
+    {
+      g_free (entry_content);
+      return;
+    }
+
+  /* Put the current entry in the history of the combo */
+  gtk_list_clear_items (GTK_LIST (GTK_COMBO(gw->combo)->list), 
+			0, -1);
+  /* if the entry is not in the list */
+  while (text = (gchar *) g_list_nth_data (gw->old_contacts_list, i))
+    {
+      /* do not free text, it is not a copy */
+      if (!g_strcasecmp (text, entry_content))
+	{
+	  found = 1;
+	  break;
+	}
+      i++;
+    }
+  if (!found)
+    {
+      /* this will not store a copy of entry_content, but entry_content itself */
+      gw->old_contacts_list = 
+	g_list_prepend (gw->old_contacts_list, entry_content);
+      // no more than MAX_OLD_CONTACTS: this could be configurable, it would be better!
+      if ( g_list_length(gw->old_contacts_list) > max_contacts )
+	{
+	  last_item = g_list_last(gw->old_contacts_list);
+	  gw->old_contacts_list = g_list_remove(gw->old_contacts_list, last_item->data);
+	}
+    }   
+  gtk_combo_set_popdown_strings (GTK_COMBO (gw->combo), 
+				 gw->old_contacts_list);
+  gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw->combo)->entry), 
+  		      entry_content);
+
+  /* if found, it is not added in the GList, we can free it */
+  if (found)
+    g_free (entry_content);
+
+}
+
+

@@ -77,6 +77,7 @@ struct _options
   int ldap;
   char *ldap_server;
   char *ldap_servers_list;
+  char *old_contacts_list
   char *ldap_port;
   int gk;
   int fps;
