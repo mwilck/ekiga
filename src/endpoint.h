@@ -298,6 +298,13 @@ class GMEndPoint : public OpalManager
    * PRE          :  /
    */
   void SetAudioMediaFormats ();
+  
+  
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Add video media formats following the user config.
+   * PRE          :  /
+   */
+  void SetVideoMediaFormats ();
 
 
   /* DESCRIPTION  :  /

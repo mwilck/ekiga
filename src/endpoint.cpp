@@ -334,6 +334,7 @@ void
 GMEndPoint::SetAllMediaFormats ()
 {
   SetAudioMediaFormats ();
+  SetVideoMediaFormats ();
   SetUserInputMode ();
 }
 
@@ -341,7 +342,7 @@ GMEndPoint::SetAllMediaFormats ()
 void 
 GMEndPoint::SetAudioMediaFormats ()
 {
-  PStringArray enabled;
+  PStringArray mask, order;
   GSList *codecs_data = NULL;
   
   gchar **couple = NULL;
@@ -355,8 +356,13 @@ GMEndPoint::SetAudioMediaFormats ()
     
     couple = g_strsplit ((gchar *) codecs_data->data, "=", 0);
 
-    if (couple && couple [0] && couple [1] && !strcmp (couple [1], "1")) 
-      enabled += couple [0];
+    if (couple && couple [0] && couple [1]) {
+     
+      if (!strcmp (couple [1], "1")) 
+	order += couple [0];
+      else
+	mask += couple [0];
+    }
     
     g_strfreev (couple);
     codecs_data = g_slist_next (codecs_data);
@@ -364,7 +370,19 @@ GMEndPoint::SetAudioMediaFormats ()
 
   g_slist_free (codecs_data);
 
-  SetMediaFormatOrder (enabled);
+  SetMediaFormatMask (mask);
+  SetMediaFormatOrder (order);
+}
+
+
+void 
+GMEndPoint::SetVideoMediaFormats ()
+{
+  PStringArray mask;
+
+  mask += "H.261";
+
+  SetMediaFormatMask (mask);
 }
 
 
