@@ -152,29 +152,25 @@ void GMStunClient::Main ()
     switch (stun.GetNatType ())
       {
       case 0:
-	prefered_method = g_strdup (_("GnomeMeeting could not detect the type of NAT you are using. The most appropriate method, if your router does not natively support H.323, is probably to forward the required ports to your internal machine and use IP translation."));
+      case 7:
+      case 8:
+	prefered_method = g_strdup_printf (_("STUN test result: %s.\n\nGnomeMeeting could not detect the type of NAT you are using. The most appropriate method, if your router does not natively support H.323, is probably to forward the required ports to your internal machine and use IP translation if you are behind a NAT router. Please also make sure you are not running a local firewall."), (const char *) nat_type);
 	stun_dialog = FALSE;
 	break;
 	
       case 1:
       case 6:
-	prefered_method = g_strdup (_("Your system does not need any specific configuration as long as you do not have a local firewall blocking the ports required by GnomeMeeting."));
+	prefered_method = g_strdup_printf (_("STUN test result: %s.\n\nYour system does not need any specific configuration as long as you do not have a local firewall blocking the ports required by GnomeMeeting."), (const char *) nat_type);
 	stun_dialog = FALSE;
 	break;
 
       case 5:
-	prefered_method = g_strdup (_("GnomeMeeting detected Symmetric NAT. The most appropriate method, if your router does not natively support H.323, is to forward the required ports to your internal machine in order to change your Symmetric NAT into Cone NAT. Running this test again after the port forwarding has been done should report Cone NAT and allow GnomeMeeting to be used with STUN support enabled. If it does not report Cone NAT, then it means that there is a problem in your forwarding rules."));
-	stun_dialog = FALSE;
-	break;
-
-      case 7:
-      case 8:
-	prefered_method = g_strdup (_("You do not seem to be behind a NAT gateway, however, you are running a firewall that will prevent GnomeMeeting from behaving correctly."));
+	prefered_method = g_strdup_printf (_("GnomeMeeting detected Symmetric NAT. The most appropriate method, if your router does not natively support H.323, is to forward the required ports to your internal machine in order to change your Symmetric NAT into Cone NAT. Running this test again after the port forwarding has been done should report Cone NAT and allow GnomeMeeting to be used with STUN support enabled. If it does not report Cone NAT, then it means that there is a problem in your forwarding rules."));
 	stun_dialog = FALSE;
 	break;
 	
       default:
-	prefered_method = g_strdup_printf (_("GnomeMeeting detected NAT: %s. Using a STUN server is most probably the most appropriate method if your router does not natively support H.323.\nNotice that STUN support is not sufficient if you want to contact H.323 clients that do not support H.245 Tunneling like Netmeeting. In that case you will have to use the classical IP translation and port forwarding.\n\nEnable STUN Support?"), (const char *) nat_type);
+	prefered_method = g_strdup_printf (_("STUN test result: %s.\n\nUsing a STUN server is most probably the most appropriate method if your router does not natively support H.323.\nNotice that STUN support is not sufficient if you want to contact H.323 clients that do not support H.245 Tunneling like Netmeeting. In that case you will have to use the classical IP translation and port forwarding.\n\nEnable STUN Support?"), (const char *) nat_type);
 	stun_dialog = TRUE;
 	break;
       }
