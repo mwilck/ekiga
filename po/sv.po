@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
-"POT-Creation-Date: 2001-10-21 14:11+0200\n"
-"PO-Revision-Date: 2001-10-21 14:14+0200\n"
+"POT-Creation-Date: 2001-10-23 00:06+0200\n"
+"PO-Revision-Date: 2001-10-23 00:08+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -17,7 +17,7 @@ msgstr ""
 
 #. In this table we put the frame
 #: gnomemeeting.desktop.in.h:1 sounds/GnomeMeeting.soundlist.in.h:1
-#: src/main_interface.cpp:235 src/preferences.cpp:952
+#: src/main_interface.cpp:239 src/preferences.cpp:973
 msgid "GnomeMeeting"
 msgstr "GnomeMeeting"
 
@@ -26,7 +26,7 @@ msgid "H.323 Client"
 msgstr "H.323-klient"
 
 #. Auto Answer toggle button
-#: sounds/GnomeMeeting.soundlist.in.h:2 src/preferences.cpp:723
+#: sounds/GnomeMeeting.soundlist.in.h:2 src/preferences.cpp:744
 msgid "Incoming Call"
 msgstr "Inkommande samtal"
 
@@ -45,15 +45,20 @@ msgstr "Miguel Rodríguez Pérez <migrax@terra.es>"
 msgid "I18n Maintainer:"
 msgstr "Internationaliseringsansvarig:"
 
+#. Translators: Replace "english" by your language, and my name by your name
+#: src/callbacks.cpp:149
+msgid "English Translation by Damien Sandras <dsandras@seconix.com>"
+msgstr "Svensk översättning av Christian Rose <menthos@gnu.org>"
+
 #. Translators: Please change the (C) to a real
 #. copyright character if your character set allows it
 #. (Hint: iso-8859-1 is one of the character sets that
 #. has this symbol).
-#: src/callbacks.cpp:160
+#: src/callbacks.cpp:163
 msgid "(C) 2000, 2001 Damien Sandras"
 msgstr "© 2000, 2001 Damien Sandras"
 
-#: src/callbacks.cpp:162
+#: src/callbacks.cpp:165
 msgid ""
 "GnomeMeeting is an H.323 compliant program for GNOME.\n"
 "This program is not supported by Microsoft."
@@ -61,27 +66,27 @@ msgstr ""
 "GnomeMeeting är ett H.323-kompatibelt program för GNOME.\n"
 "Detta program stöds inte av Microsoft."
 
-#: src/config.cpp:252
+#: src/config.cpp:254
 msgid "Sorry, no ldap server specified!"
 msgstr "Tyvärr, ingen ldap-server är angiven!"
 
-#: src/config.cpp:262
+#: src/config.cpp:264
 msgid "Sorry, invalid ldap server port!"
 msgstr "Tyvärr, ogiltig ldap-serverport!"
 
-#: src/config.cpp:270
+#: src/config.cpp:272
 msgid "Please provide your first name!"
 msgstr "Ange ditt förnamn!"
 
-#: src/config.cpp:278
+#: src/config.cpp:280
 msgid "Please provide a valid e-mail!"
 msgstr "Ange en giltig e-postadress!"
 
-#: src/config.cpp:292 src/config.cpp:301
+#: src/config.cpp:294 src/config.cpp:303
 msgid "Could not open the player mixer."
 msgstr "Kunde inte öppna spelarmixern."
 
-#: src/config.cpp:331
+#: src/config.cpp:333
 msgid ""
 "Cannot register to an empty host. Please specify the host to contact to "
 "register with the gatekeeper."
@@ -89,7 +94,7 @@ msgstr ""
 "Kan inte registrera till en tom värd. Ange värden att kontakta för att "
 "registrera med portvakten."
 
-#: src/config.cpp:342
+#: src/config.cpp:344
 msgid "Please specify a Gatekeeper ID to contact to register."
 msgstr "Ange ett portvakts-ID att kontakta för att registrera."
 
@@ -133,7 +138,7 @@ msgstr "Vägrar automatiskt inkommande samtal"
 msgid "Auto Answering Incoming Call"
 msgstr "Svarar automatiskt på inkommande samtal"
 
-#: src/docklet.cpp:76 src/endpoint.cpp:474 src/toolbar.cpp:37
+#: src/docklet.cpp:76 src/endpoint.cpp:439 src/toolbar.cpp:37
 msgid "Connect"
 msgstr "Anslut"
 
@@ -141,7 +146,7 @@ msgstr "Anslut"
 msgid "Connect call"
 msgstr "Koppla upp samtal"
 
-#: src/docklet.cpp:83 src/endpoint.cpp:474 src/toolbar.cpp:44
+#: src/docklet.cpp:83 src/endpoint.cpp:439 src/toolbar.cpp:44
 msgid "Disconnect"
 msgstr "Koppla från"
 
@@ -157,137 +162,137 @@ msgstr "Visa/göm huvudfönstret"
 msgid "Show/hide the main window"
 msgstr "Visa/göm huvudfönstret"
 
-#: src/endpoint.cpp:160 src/endpoint.cpp:176
+#: src/endpoint.cpp:142 src/endpoint.cpp:158
 msgid "Added H.261 CIF capability"
 msgstr "Lade till H.261 CIF-kapabilitet"
 
-#: src/endpoint.cpp:165 src/endpoint.cpp:172
+#: src/endpoint.cpp:147 src/endpoint.cpp:154
 msgid "Added H.261 QCIF capability"
 msgstr "Lade till H.261 QCIF-kapabilitet"
 
-#: src/endpoint.cpp:186
+#: src/endpoint.cpp:168
 msgid "Reinitialize the capabilities"
 msgstr "Initiera om kapabiliteterna"
 
-#: src/endpoint.cpp:195
+#: src/endpoint.cpp:177
 msgid "Added MS-GSM capability"
 msgstr "Lade till MS-GSM-kapabilitet"
 
-#: src/endpoint.cpp:203
+#: src/endpoint.cpp:185
 msgid "Added G.711-uLaw capability"
 msgstr "Lade till G.711-uLaw-kapabilitet"
 
-#: src/endpoint.cpp:211
+#: src/endpoint.cpp:193
 msgid "Added G.711-ALaw capability"
 msgstr "Lade till G.711-ALaw-kapabilitet"
 
-#: src/endpoint.cpp:218
+#: src/endpoint.cpp:200
 msgid "Added GSM-06.10 capability"
 msgstr "Lade till GSM-06.10-kapabilitet"
 
-#: src/endpoint.cpp:224
+#: src/endpoint.cpp:206
 msgid "Added LPC10 capability"
 msgstr "Lade till LPC10-kapabilitet"
 
-#: src/endpoint.cpp:350 src/endpoint.cpp:355
+#: src/endpoint.cpp:332 src/endpoint.cpp:337
 msgid "Could not find audio channel"
 msgstr "Kunde inte hitta ljudkanal"
 
-#: src/endpoint.cpp:364
+#: src/endpoint.cpp:346
 msgid "Disabled Silence Detection"
 msgstr "Deaktiverade tystnadsdetektering"
 
-#: src/endpoint.cpp:369
+#: src/endpoint.cpp:351
 msgid "Enabled Silence Detection"
 msgstr "Aktiverade tystnadsdetektering"
 
-#: src/endpoint.cpp:446
+#: src/endpoint.cpp:411
 #, c-format
 msgid "Call from %s"
 msgstr "Samtal från %s"
 
-#: src/endpoint.cpp:473
+#: src/endpoint.cpp:438
 msgid "Incoming call"
 msgstr "Inkommande samtal"
 
-#: src/endpoint.cpp:523
+#: src/endpoint.cpp:488
 #, c-format
 msgid "Connected with %s using %s"
 msgstr "Ansluten till %s med %s"
 
-#: src/endpoint.cpp:529
+#: src/endpoint.cpp:494
 msgid "Connected"
 msgstr "Ansluten"
 
-#: src/endpoint.cpp:532
+#: src/endpoint.cpp:497
 msgid "Fast start enabled"
 msgstr "Snabbstart aktiverad"
 
-#: src/endpoint.cpp:534
+#: src/endpoint.cpp:499
 msgid "Fast start disabled"
 msgstr "Snabbstart deaktiverad"
 
-#: src/endpoint.cpp:537
+#: src/endpoint.cpp:502
 msgid "H.245 Tunnelling enabled"
 msgstr "H.245-tunnling aktiverad"
 
-#: src/endpoint.cpp:539
+#: src/endpoint.cpp:504
 msgid "H.245 Tunnelling disabled"
 msgstr "H.245-tunnling deaktiverad"
 
-#: src/endpoint.cpp:586
+#: src/endpoint.cpp:551
 msgid "Remote party has cleared the call"
 msgstr "Fjärrparten har nollställt samtalet"
 
-#: src/endpoint.cpp:591
+#: src/endpoint.cpp:556
 msgid "Remote party has stopped calling"
 msgstr "Fjärrparten har slutat ringa"
 
-#: src/endpoint.cpp:596 src/endpoint.cpp:616
+#: src/endpoint.cpp:561 src/endpoint.cpp:581
 msgid "Remote party did not accept your call"
 msgstr "Fjärrparten accepterade inte ditt anrop"
 
-#: src/endpoint.cpp:601
+#: src/endpoint.cpp:566
 msgid "Remote party did not answer your call"
 msgstr "Fjärrparten svarade inte på ditt anrop"
 
-#: src/endpoint.cpp:606
+#: src/endpoint.cpp:571
 msgid "This call ended abnormally"
 msgstr "Samtalet avslutades onormalt"
 
-#: src/endpoint.cpp:611
+#: src/endpoint.cpp:576
 msgid "Could not find common codec with remote party"
 msgstr "Kunde inte hitta en komprimeringsmetod gemensam med fjärrparten"
 
-#: src/endpoint.cpp:621
+#: src/endpoint.cpp:586
 msgid "Refused incoming call"
 msgstr "Vägrade ta emot inkommande samtal"
 
-#: src/endpoint.cpp:626
+#: src/endpoint.cpp:591
 msgid "User not found"
 msgstr "Användaren kunde inte hittas"
 
-#: src/endpoint.cpp:631
+#: src/endpoint.cpp:596
 msgid "Call ended: insufficient bandwidth"
 msgstr "Samtalet avslutades: otillräcklig bandbredd"
 
-#: src/endpoint.cpp:639
+#: src/endpoint.cpp:604
 msgid "Remote party could not be reached"
 msgstr "Fjärrparten kunde inte nås"
 
-#: src/endpoint.cpp:644
+#: src/endpoint.cpp:609
 msgid "Remote party is not online"
 msgstr "Fjärrparten är inte ansluten"
 
-#: src/endpoint.cpp:649
+#: src/endpoint.cpp:614
 msgid "No phone running for remote party"
 msgstr "Ingen telefon är på hos fjärrparten"
 
-#: src/endpoint.cpp:654
+#: src/endpoint.cpp:619
 msgid "Transport error calling"
 msgstr "Transportfel vid anrop"
 
-#: src/endpoint.cpp:660 src/endpoint.cpp:663
+#: src/endpoint.cpp:625 src/endpoint.cpp:628
 msgid "Call completed"
 msgstr "Samtalet färdigt"
 
@@ -339,156 +344,156 @@ msgstr "Lyckades registrera i ILS-katalogen %s, port %s"
 msgid "Sucessfully unregistered from ILS directory %s, port %s"
 msgstr "Lyckades avregistrera från ILS-katalogen %s, port %s"
 
-#: src/ils.cpp:434
+#: src/ils.cpp:437
 msgid "Please provide an ILS directory in the window"
 msgstr "Ange en ILS-katalog i fönstret"
 
-#: src/ils.cpp:456
+#: src/ils.cpp:459
 msgid "Connecting to ILS directory... Please Wait."
 msgstr "Ansluter till ILS-katalogen... Var vänlig vänta."
 
-#: src/ils.cpp:472 src/ils.cpp:481
+#: src/ils.cpp:475 src/ils.cpp:484
 msgid "Error while connecting to ILS directory"
 msgstr "Fel vid anslutning till ILS-katalog"
 
-#: src/ils.cpp:489
+#: src/ils.cpp:492
 msgid "Fetching users' information... Please Wait."
 msgstr "Hämtar användarinformation... Var vänlig vänta."
 
-#: src/ils.cpp:507
+#: src/ils.cpp:510
 msgid "Search completed!"
 msgstr "Sökningen färdig!"
 
+#: src/ldap.cpp:164 src/ldap.cpp:349
+msgid "No directory"
+msgstr "Ingen katalog"
+
 #. ILS directories combo box
-#: src/ldap.cpp:239
+#: src/ldap.cpp:261
 msgid "ILS directories to browse"
 msgstr "ILS-kataloger att bläddra i"
 
-#: src/ldap.cpp:247
+#: src/ldap.cpp:269
 msgid "ILS directory:"
 msgstr "ILS-katalog:"
 
-#: src/ldap.cpp:260
+#: src/ldap.cpp:282
 msgid "Refresh"
 msgstr "Uppdatera"
 
-#: src/ldap.cpp:275
+#: src/ldap.cpp:297
 msgid "first name"
 msgstr "förnamn"
 
-#: src/ldap.cpp:278
+#: src/ldap.cpp:300
 msgid "last name"
 msgstr "efternamn"
 
-#: src/ldap.cpp:281
+#: src/ldap.cpp:303
 msgid "e-mail"
 msgstr "e-post"
 
-#: src/ldap.cpp:284
+#: src/ldap.cpp:306
 msgid "location"
 msgstr "plats"
 
-#: src/ldap.cpp:307
+#: src/ldap.cpp:329
 msgid "Apply filter on"
 msgstr "Tillämpa filter på"
 
 #. Ldap users list
-#: src/ldap.cpp:316
+#: src/ldap.cpp:338
 msgid "ILS Users List"
 msgstr "ILS-användarlista"
 
-#: src/ldap.cpp:327
-msgid "No directory"
-msgstr "Ingen katalog"
-
-#: src/ldap.cpp:330
+#: src/ldap.cpp:352
 msgid "Search Filter"
 msgstr "Sökfilter"
 
 #. Translators: This is as in "Audio".
-#: src/ldap.cpp:374
+#: src/ldap.cpp:389
 msgid "A"
 msgstr "L"
 
 #. Translators: This is as in "Video".
-#: src/ldap.cpp:376
+#: src/ldap.cpp:391
 msgid "V"
 msgstr "V"
 
-#: src/ldap.cpp:377
+#: src/ldap.cpp:392
 msgid "First Name"
 msgstr "Förnamn"
 
-#: src/ldap.cpp:377
+#: src/ldap.cpp:392
 msgid "Last name"
 msgstr "Efternamn"
 
-#: src/ldap.cpp:377
+#: src/ldap.cpp:392
 msgid "E-mail"
 msgstr "E-post"
 
-#: src/ldap.cpp:378
+#: src/ldap.cpp:393
 msgid "Location"
 msgstr "Plats"
 
-#: src/ldap.cpp:378
+#: src/ldap.cpp:393
 msgid "Comment"
 msgstr "Kommentar"
 
-#: src/ldap.cpp:378
+#: src/ldap.cpp:393
 msgid "IP"
 msgstr "IP"
 
-#: src/main.cpp:165
+#: src/main.cpp:148
 msgid "Answering incoming call"
 msgstr "Svarar på inkommande samtal"
 
-#: src/main.cpp:186
+#: src/main.cpp:169
 #, c-format
 msgid "Call %d: calling %s"
 msgstr "Samtal %d: ringer upp %s"
 
-#: src/main.cpp:212
+#: src/main.cpp:195
 msgid "Trying to stop calling"
 msgstr "Försöker stoppa uppringning"
 
-#: src/main.cpp:215 src/main.cpp:226
+#: src/main.cpp:198 src/main.cpp:209
 msgid "Failed to stop current call"
 msgstr "Misslyckades med att stoppa aktuellt samtal"
 
-#: src/main.cpp:223
+#: src/main.cpp:206
 msgid "Stopping current call"
 msgstr "Stoppar aktuellt samtal"
 
-#: src/main.cpp:230
+#: src/main.cpp:213
 msgid "Refusing incoming call"
 msgstr "Vägrar inkommande samtal"
 
-#: src/main_interface.cpp:216
+#: src/main_interface.cpp:220
 msgid "Prints debug messages in the console"
 msgstr "Skriv ut felsökningsmeddelanden på konsollen"
 
-#: src/main_interface.cpp:246
+#: src/main_interface.cpp:250
 msgid "Building main interface"
 msgstr "Bygger huvudgränssnittet"
 
-#: src/main_interface.cpp:265
+#: src/main_interface.cpp:269
 msgid "Adding Audio Capabilities"
 msgstr "Lägger till ljudkapabiliteter"
 
-#: src/main_interface.cpp:270
+#: src/main_interface.cpp:274
 msgid "Adding Video Capabilities"
 msgstr "Lägger till videokapabiliteter"
 
-#: src/main_interface.cpp:278
+#: src/main_interface.cpp:282
 msgid "Registering to ILS directory"
 msgstr "Registrerar i ILS-katalogen"
 
-#: src/main_interface.cpp:288
+#: src/main_interface.cpp:292
 msgid "Starting the listener thread"
 msgstr "Startar lyssnartråden"
 
-#: src/main_interface.cpp:293
+#: src/main_interface.cpp:297
 msgid ""
 "Could not start the listener thread. You will not be able to receive "
 "incoming calls."
@@ -496,43 +501,43 @@ msgstr ""
 "Kunde inte starta lyssnartråden. Du kommer inte att kunna ta emot inkommande "
 "samtal."
 
-#: src/main_interface.cpp:304
+#: src/main_interface.cpp:308
 msgid "Registering to the Gatekeeper"
 msgstr "Registrerar till portvakten"
 
-#: src/main_interface.cpp:314
+#: src/main_interface.cpp:318
 msgid "Detecting available audio and video devices"
 msgstr "Detekterar tillgängliga ljud- och videoenheter"
 
 #. Translators: This is shown in the history.
-#: src/main_interface.cpp:326 src/preferences.cpp:1889
+#: src/main_interface.cpp:330 src/preferences.cpp:1910
 #, c-format
 msgid "Set Audio player device to %s"
 msgstr "Ställde in ljudspelarenhet till %s"
 
 #. Translators: This is shown in the history.
-#: src/main_interface.cpp:331 src/preferences.cpp:1894
+#: src/main_interface.cpp:335 src/preferences.cpp:1915
 #, c-format
 msgid "Set Audio recorder device to %s"
 msgstr "Ställde in ljudinspelningsenhet till %s"
 
-#: src/main_interface.cpp:341
+#: src/main_interface.cpp:344
 msgid "Done!"
 msgstr "Klar!"
 
-#: src/main_interface.cpp:391
+#: src/main_interface.cpp:402
 msgid "Remote host to contact"
 msgstr "Fjärrvärd att kontakta"
 
-#: src/main_interface.cpp:405
+#: src/main_interface.cpp:416
 msgid "Host:"
 msgstr "Värd:"
 
-#: src/main_interface.cpp:491
+#: src/main_interface.cpp:504
 msgid "Click here to begin to display images from your camera device."
 msgstr "Klicka här för att börja visa bilder från din kameraenhet."
 
-#: src/main_interface.cpp:513
+#: src/main_interface.cpp:526
 msgid ""
 "Audio Transmission Status. During a call, click here to pause the audio "
 "transmission."
@@ -540,7 +545,7 @@ msgstr ""
 "Ljudöverföringsstatus. Under ett samtal kan du klicka här för att pausa "
 "ljudöverföringen."
 
-#: src/main_interface.cpp:535
+#: src/main_interface.cpp:548
 msgid ""
 "Video Transmission Status. During a call, click here to pause the video "
 "transmission."
@@ -548,59 +553,59 @@ msgstr ""
 "Videoöverföringsstatus. Under ett samtal kan du klicka här för att pausa "
 "videoöverföringen."
 
-#: src/main_interface.cpp:557
+#: src/main_interface.cpp:570
 msgid ""
 "This button permits enabling/disabling of silence detection during calls."
 msgstr ""
 "Denna knapp tillåter att tystnadsdetektering under samtal "
 "aktiveras/deaktiveras."
 
-#: src/main_interface.cpp:578
+#: src/main_interface.cpp:591
 msgid "Click here to display the previous section of the Control Panel."
 msgstr "Klicka här för att visa föregående sektion i kontrollpanelen."
 
-#: src/main_interface.cpp:599
+#: src/main_interface.cpp:612
 msgid "Click here to display the next section of the Control Panel."
 msgstr "Klicka här för att visa föregående sektion i kontrollpanelen."
 
-#: src/main_interface.cpp:620 src/preferences.cpp:441
+#: src/main_interface.cpp:633 src/preferences.cpp:446
 msgid "Info"
 msgstr "Info"
 
-#: src/main_interface.cpp:624 src/main_interface.cpp:649
+#: src/main_interface.cpp:637 src/main_interface.cpp:662
 msgid "Remote User"
 msgstr "Fjärranvändare"
 
-#: src/main_interface.cpp:664
+#: src/main_interface.cpp:677
 msgid "History Log"
 msgstr "Historiklogg"
 
-#: src/main_interface.cpp:684
+#: src/main_interface.cpp:697
 msgid "History"
 msgstr "Historik"
 
 #. Webcam Control Frame
-#: src/main_interface.cpp:707 src/main_interface.cpp:819
+#: src/main_interface.cpp:720 src/main_interface.cpp:832
 msgid "Video Settings"
 msgstr "Videoinställningar"
 
-#: src/main_interface.cpp:737
+#: src/main_interface.cpp:750
 msgid "Adjust brightness"
 msgstr "Justera ljusstyrka"
 
-#: src/main_interface.cpp:762
+#: src/main_interface.cpp:775
 msgid "Adjust whiteness"
 msgstr "Justera vithet"
 
-#: src/main_interface.cpp:787
+#: src/main_interface.cpp:800
 msgid "Adjust color"
 msgstr "Justera färg"
 
-#: src/main_interface.cpp:812
+#: src/main_interface.cpp:825
 msgid "Adjust contrast"
 msgstr "Justera kontrast"
 
-#: src/main_interface.cpp:840 src/main_interface.cpp:898
+#: src/main_interface.cpp:853 src/main_interface.cpp:911
 msgid "Audio Settings"
 msgstr "Ljudinställningar"
 
@@ -733,87 +738,87 @@ msgid "Settings"
 msgstr "Inställningar"
 
 #. In this table we put the frame
-#: src/preferences.cpp:269 src/preferences.cpp:605
+#: src/preferences.cpp:274 src/preferences.cpp:610
 msgid "GnomeMeeting Preferences"
 msgstr "Inställningar för GnomeMeeting"
 
 #. All the notebook pages
-#: src/preferences.cpp:287
+#: src/preferences.cpp:292
 msgid "General"
 msgstr "Allmänt"
 
-#: src/preferences.cpp:297 src/preferences.cpp:737
+#: src/preferences.cpp:302 src/preferences.cpp:758
 msgid "General Settings"
 msgstr "Allmänna inställningar"
 
 #. The End
-#: src/preferences.cpp:308 src/preferences.cpp:1098
+#: src/preferences.cpp:313 src/preferences.cpp:1119
 msgid "User Settings"
 msgstr "Användarinställningar"
 
 #. Advanced Settings
-#: src/preferences.cpp:319 src/preferences.cpp:1127 src/preferences.cpp:1236
+#: src/preferences.cpp:324 src/preferences.cpp:1148 src/preferences.cpp:1257
 msgid "Advanced Settings"
 msgstr "Avancerade inställningar"
 
 #. The End
-#: src/preferences.cpp:330 src/preferences.cpp:1337
+#: src/preferences.cpp:335 src/preferences.cpp:1358
 msgid "ILS Settings"
 msgstr "ILS-inställningar"
 
 #. Gatekeeper settings
-#: src/preferences.cpp:340 src/preferences.cpp:1365 src/preferences.cpp:1454
+#: src/preferences.cpp:345 src/preferences.cpp:1386 src/preferences.cpp:1475
 msgid "Gatekeeper Settings"
 msgstr "Portvaktsinställningar"
 
 #. The End
-#: src/preferences.cpp:350 src/preferences.cpp:1705
+#: src/preferences.cpp:355 src/preferences.cpp:1726
 msgid "Device Settings"
 msgstr "Enhetsinställningar"
 
-#: src/preferences.cpp:360
+#: src/preferences.cpp:365
 msgid "Codecs"
 msgstr "Komprimeringsmetoder"
 
-#: src/preferences.cpp:370 src/preferences.cpp:575
+#: src/preferences.cpp:375 src/preferences.cpp:580
 msgid "Audio Codecs"
 msgstr "Ljudkomprimeringsmetoder"
 
-#: src/preferences.cpp:383 src/preferences.cpp:924
+#: src/preferences.cpp:388 src/preferences.cpp:945
 msgid "Video Codecs"
 msgstr "Videokomprimeringsmetoder"
 
-#: src/preferences.cpp:441
+#: src/preferences.cpp:446
 msgid "Name"
 msgstr "Namn"
 
-#: src/preferences.cpp:441
+#: src/preferences.cpp:446
 msgid "Bandwidth"
 msgstr "Bandbredd"
 
 #. In this table we put the frame
-#: src/preferences.cpp:455
+#: src/preferences.cpp:460
 msgid "Available Codecs"
 msgstr "Tillgängliga komprimeringsmetoder"
 
 #. BUTTONS
 #. Add
-#: src/preferences.cpp:496
+#: src/preferences.cpp:501
 msgid "Add"
 msgstr "Lägg till"
 
-#: src/preferences.cpp:510
+#: src/preferences.cpp:515
 msgid "Use this button to add the selected codec to the available codecs list"
 msgstr ""
 "Använd denna knapp för att lägga till den valda komprimeringsmetoden i "
 "listan över tillgängliga komprimeringsmetoder"
 
 #. Del
-#: src/preferences.cpp:514
+#: src/preferences.cpp:519
 msgid "Delete"
 msgstr "Ta bort"
 
-#: src/preferences.cpp:528
+#: src/preferences.cpp:533
 msgid ""
 "Use this button to remove the selected codec from the available codecs list"
 msgstr ""
@@ -821,95 +826,106 @@ msgstr ""
 "listan över tillgängliga komprimeringsmetoder"
 
 #. Up
-#: src/preferences.cpp:532
+#: src/preferences.cpp:537
 msgid "Up"
 msgstr "Upp"
 
-#: src/preferences.cpp:546
+#: src/preferences.cpp:551
 msgid "Use this button to move down the selected codec in the preference order"
 msgstr ""
 "Använd denna knapp för att flytta ner den valda komprimeringsmetoden i "
 "prioritetsordning"
 
 #. Down
-#: src/preferences.cpp:550
+#: src/preferences.cpp:555
 msgid "Down"
 msgstr "Ned"
 
-#: src/preferences.cpp:564
+#: src/preferences.cpp:569
 msgid "Use this button to move up the selected codec in the preference order"
 msgstr ""
 "Använd denna knapp för att flytta upp den valda komprimeringsmetoden i "
 "prioritetsordning"
 
 #. Show / hide splash screen at startup
-#: src/preferences.cpp:617
+#: src/preferences.cpp:622
 msgid "Show Splash Screen"
 msgstr "Visa startbild"
 
-#: src/preferences.cpp:627
+#: src/preferences.cpp:632
 msgid "If enabled, the splash screen will be displayed at startup time"
 msgstr "Om detta är aktiverat kommer startbilden att visas vid uppstart"
 
 #. Show / hide the notebook at startup
-#: src/preferences.cpp:631
+#: src/preferences.cpp:636
 msgid "Show Control Panel"
 msgstr "Visa kontrollpanel"
 
-#: src/preferences.cpp:641
+#: src/preferences.cpp:646
 msgid "If enabled, the control panel is displayed"
 msgstr "Om detta är aktiverat visas kontrollpanelen"
 
 #. Show / hide the statusbar at startup
-#: src/preferences.cpp:645
+#: src/preferences.cpp:650
 msgid "Show Status Bar"
 msgstr "Visa statusrad"
 
-#: src/preferences.cpp:655
+#: src/preferences.cpp:660
 msgid "If enabled, the statusbar is displayed"
 msgstr "Om detta är aktiverat visas statusraden"
 
+#. Enable / disable video preview
+#: src/preferences.cpp:664
+msgid "Video Preview"
+msgstr "Förhandsgranskning av video"
+
+#: src/preferences.cpp:674
+msgid "If enabled, the video preview mode will be set at startup"
+msgstr ""
+"Om detta är aktiverat kommer videoförhandsgranskningsläget att användas vid "
+"uppstart"
+
 #. Behavior
-#: src/preferences.cpp:658
+#: src/preferences.cpp:679
 msgid "Behavior"
 msgstr "Uppförande"
 
 #. Auto Answer toggle button
-#: src/preferences.cpp:671
+#: src/preferences.cpp:692
 msgid "Auto Answer"
 msgstr "Svara automatiskt"
 
-#: src/preferences.cpp:680
+#: src/preferences.cpp:701
 msgid "If enabled, incoming calls will be automatically answered"
 msgstr ""
 "Om detta är aktiverat kommer inkommande samtal att automatiskt besvaras"
 
 #. DND toggle button
-#: src/preferences.cpp:684
+#: src/preferences.cpp:705
 msgid "Do Not Disturb"
 msgstr "Stör inte"
 
-#: src/preferences.cpp:693
+#: src/preferences.cpp:714
 msgid "If enabled, incoming calls will be automatically refused"
 msgstr "Om detta är aktiverat kommer inkommande samtal automatiskt att vägras"
 
 #. Popup display
-#: src/preferences.cpp:697
+#: src/preferences.cpp:718
 msgid "Popup window"
 msgstr "Popupfönster"
 
-#: src/preferences.cpp:706
+#: src/preferences.cpp:727
 msgid "If enabled, a popup will be displayed when receiving an incoming call"
 msgstr ""
 "Om detta är aktiverat kommer ett popupfönster att visas då ett samtal tas "
 "emot"
 
 #. Play Sound
-#: src/preferences.cpp:710
+#: src/preferences.cpp:731
 msgid "Sound"
 msgstr "Ljud"
 
-#: src/preferences.cpp:733
+#: src/preferences.cpp:754
 msgid ""
 "If enabled, GnomeMeeting will play a sound when receiving an incoming call "
 "(the sound to play is choosen in the Gnome Control Center)"
@@ -919,42 +935,42 @@ msgstr ""
 
 #. In this table we put the frame
 #. *** Transmitted Video Settings Frame ***
-#: src/preferences.cpp:770
+#: src/preferences.cpp:791
 msgid "Transmitted Video Codecs"
 msgstr "Komprimeringsmetoder för överförd video"
 
 #. Video Size Option Menu
-#: src/preferences.cpp:782
+#: src/preferences.cpp:803
 msgid "Video Size:"
 msgstr "Videostorlek:"
 
-#: src/preferences.cpp:790
+#: src/preferences.cpp:811
 msgid "Small"
 msgstr "Liten"
 
-#: src/preferences.cpp:792
+#: src/preferences.cpp:813
 msgid "Large"
 msgstr "Stor"
 
-#: src/preferences.cpp:804
+#: src/preferences.cpp:825
 msgid "Here you can choose the transmitted video size"
 msgstr "Här kan du välja storleken på de överförda videobilderna"
 
 #. Video Format Option Menu
-#: src/preferences.cpp:808
+#: src/preferences.cpp:829
 msgid "Video Format:"
 msgstr "Videoformat:"
 
-#: src/preferences.cpp:830
+#: src/preferences.cpp:851
 msgid "Here you can choose the transmitted video format"
 msgstr "Här kan du välja det överförda videoformatet"
 
 #. Transmitted Video Quality
-#: src/preferences.cpp:834 src/preferences.cpp:1214
+#: src/preferences.cpp:855 src/preferences.cpp:1235
 msgid "Video Quality:"
 msgstr "Videokvalitet:"
 
-#: src/preferences.cpp:852
+#: src/preferences.cpp:873
 msgid ""
 "Here you can choose the transmitted video quality:  choose 1 on a LAN for "
 "the best quality, 31 being the worst quality"
@@ -963,11 +979,11 @@ msgstr ""
 "för bästa kvalitet, 31 är sämst kvalitet"
 
 #. Updated blocks / frame
-#: src/preferences.cpp:856
+#: src/preferences.cpp:877
 msgid "Updated blocks:"
 msgstr "Uppdaterade block:"
 
-#: src/preferences.cpp:874
+#: src/preferences.cpp:895
 msgid ""
 "Here you can choose the number of blocks (that haven't changed) transmitted "
 "with each frame. These blocks fill in the background."
@@ -976,114 +992,114 @@ msgstr ""
 "Dessa block fyller i bakgrunden."
 
 #. Transmitted FPS
-#: src/preferences.cpp:878
+#: src/preferences.cpp:899
 msgid "Transmitted frames per second:"
 msgstr "Överförda ramar per sekund:"
 
-#: src/preferences.cpp:896
+#: src/preferences.cpp:917
 msgid "Here you can choose the number of frames transmitted by second"
 msgstr "Här kan du välja antalet ramar som överförs per sekund"
 
 #. *** Enable Video Transmission ***
-#: src/preferences.cpp:900
+#: src/preferences.cpp:921
 msgid "Video Transmission"
 msgstr "Videoöverföring"
 
-#: src/preferences.cpp:908
+#: src/preferences.cpp:929
 msgid "Enable Video Transmission"
 msgstr "Aktivera videoöverföring"
 
-#: src/preferences.cpp:921
+#: src/preferences.cpp:942
 msgid "Here you can choose to enable or disable video transmission"
 msgstr "Här kan du välja att aktivera eller deaktivera videoöverföring"
 
 #. User Name entry
-#: src/preferences.cpp:964
+#: src/preferences.cpp:985
 msgid "First Name:"
 msgstr "Förnamn:"
 
-#: src/preferences.cpp:980
+#: src/preferences.cpp:1001
 msgid "Enter your first name"
 msgstr "Ange ditt förnamn"
 
 #. Surname entry (LDAP)
-#: src/preferences.cpp:987
+#: src/preferences.cpp:1008
 msgid "Last name:"
 msgstr "Efternamn:"
 
-#: src/preferences.cpp:1003
+#: src/preferences.cpp:1024
 msgid "Enter your last name"
 msgstr "Ange ditt efternamn"
 
 #. E-mail (LDAP)
-#: src/preferences.cpp:1010
+#: src/preferences.cpp:1031
 msgid "E-mail address:"
 msgstr "E-postadress:"
 
-#: src/preferences.cpp:1026
+#: src/preferences.cpp:1047
 msgid "Enter your e-mail address"
 msgstr "Ange din e-postadress"
 
 #. Comment (LDAP)
-#: src/preferences.cpp:1033
+#: src/preferences.cpp:1054
 msgid "Comment:"
 msgstr "Kommentar:"
 
-#: src/preferences.cpp:1049
+#: src/preferences.cpp:1070
 msgid "Here you can fill in a comment about yourself for ILS directories"
 msgstr "Här kan du fylla i en kommentar om dig själv för ILS-kataloger"
 
 #. Location
-#: src/preferences.cpp:1056
+#: src/preferences.cpp:1077
 msgid "Location:"
 msgstr "Plats:"
 
-#: src/preferences.cpp:1072
+#: src/preferences.cpp:1093
 msgid "Where do you call from?"
 msgstr "Var ringer du ifrån?"
 
 #. Port Entry
-#: src/preferences.cpp:1079
+#: src/preferences.cpp:1100
 msgid "Listen Port:"
 msgstr "Lyssningsport:"
 
-#: src/preferences.cpp:1094
+#: src/preferences.cpp:1115
 msgid "The port that GnomeMeeting should listen on"
 msgstr "Porten som GnomeMeeting ska lyssna på"
 
 #. H245 Tunnelling button
-#: src/preferences.cpp:1141
+#: src/preferences.cpp:1162
 msgid "Enable H.245 Tunnelling"
 msgstr "Aktivera H.245-tunnling"
 
-#: src/preferences.cpp:1150
+#: src/preferences.cpp:1171
 msgid "This enables H.245 Tunnelling mode"
 msgstr "Detta aktiverar H.245-tunnlingsläget"
 
 #. Fast Start button
-#: src/preferences.cpp:1154
+#: src/preferences.cpp:1175
 msgid "Enable Fast Start"
 msgstr "Använd snabbstart"
 
-#: src/preferences.cpp:1163
+#: src/preferences.cpp:1184
 msgid "Connection will be established in Fast Start mode"
 msgstr "Anlutningen kommer att etableras i snabbstartsläget"
 
 #. Max Used Bandwidth spin button
-#: src/preferences.cpp:1167
+#: src/preferences.cpp:1188
 msgid "Maximum Bandwidth:"
 msgstr "Maximal bandbredd:"
 
-#: src/preferences.cpp:1185
+#: src/preferences.cpp:1206
 msgid "The maximum bandwidth that should be used for the communication"
 msgstr "Den maximala bandbredden som ska användas för kommunikation"
 
 #. Silence Detection
-#: src/preferences.cpp:1189
+#: src/preferences.cpp:1210
 msgid "Enable Silence Detection"
 msgstr "Aktivera tystnadsdetektering"
 
-#: src/preferences.cpp:1198
+#: src/preferences.cpp:1219
 msgid ""
 "Enable or disable silence detection.  If silence detection is enabled, "
 "silences will not be transmitted over the Internet."
@@ -1092,164 +1108,164 @@ msgstr ""
 "aktiverad kommer inte tystnad att skickas över Internet."
 
 #. *** Received Video Settings Frame ***
-#: src/preferences.cpp:1202
+#: src/preferences.cpp:1223
 msgid "Received Video Codecs"
 msgstr "Komprimeringsmetoder för mottagna videobilder"
 
-#: src/preferences.cpp:1232
+#: src/preferences.cpp:1253
 msgid "The video quality to request from the remote party"
 msgstr "Videokvaliteten som ska begäras från fjärrparten"
 
 #. ILS settings
-#: src/preferences.cpp:1263
+#: src/preferences.cpp:1284
 msgid "ILS Directory to register to"
 msgstr "ILS-katalog att registrera i"
 
 #. ILS directory
-#: src/preferences.cpp:1277
+#: src/preferences.cpp:1298
 msgid "ILS Directory:"
 msgstr "ILS-katalog:"
 
-#: src/preferences.cpp:1292
+#: src/preferences.cpp:1313
 msgid "The ILS directory to register to"
 msgstr "ILS-katalogen att registrera i"
 
 #. ILS port
-#: src/preferences.cpp:1299
+#: src/preferences.cpp:1320
 msgid "ILS Port:"
 msgstr "ILS-port:"
 
-#: src/preferences.cpp:1314
+#: src/preferences.cpp:1335
 msgid "The corresponding port: 389 is the standard port"
 msgstr "Motsvarande port: 389 är standardporten"
 
 #. Use ILS
-#: src/preferences.cpp:1321
+#: src/preferences.cpp:1342
 msgid "Register"
 msgstr "Registrera"
 
-#: src/preferences.cpp:1333
+#: src/preferences.cpp:1354
 msgid "If enabled, permit to register to the selected ILS directory"
 msgstr ""
 "Om detta är aktiverat är registrering i den valda ILS-katalogen tillåten"
 
 #. Gatekeeper ID
-#: src/preferences.cpp:1378
+#: src/preferences.cpp:1399
 msgid "Gatekeeper ID"
 msgstr "Portvakts-ID"
 
-#: src/preferences.cpp:1393
+#: src/preferences.cpp:1414
 msgid "The Gatekeeper identifier."
 msgstr "Portvaktens identifierare."
 
 #. Gatekeeper Host
-#: src/preferences.cpp:1400
+#: src/preferences.cpp:1421
 msgid "Gatekeeper host"
 msgstr "Portvaktsvärd"
 
-#: src/preferences.cpp:1415
+#: src/preferences.cpp:1436
 msgid "The Gatekeeper host to register to."
 msgstr "Portvaktsvärden att registrera till."
 
 #. GK registering method
-#: src/preferences.cpp:1422
+#: src/preferences.cpp:1443
 msgid "Registering method"
 msgstr "Registreringsmetod"
 
-#: src/preferences.cpp:1430
+#: src/preferences.cpp:1451
 msgid "Do not register to a Gatekeeper"
 msgstr "Registrera inte till en portvakt"
 
-#: src/preferences.cpp:1432
+#: src/preferences.cpp:1453
 msgid "Register using the Gatekeeper host"
 msgstr "Registrera genom att använda portvaktsvärden"
 
-#: src/preferences.cpp:1434
+#: src/preferences.cpp:1455
 msgid "Register using the Gatekeeper ID"
 msgstr "Registrera genom att använda portvaktens ID"
 
-#: src/preferences.cpp:1436
+#: src/preferences.cpp:1457
 msgid "Try to discover the Gatekeeper"
 msgstr "Försök att upptäcka portvakten"
 
-#: src/preferences.cpp:1451
+#: src/preferences.cpp:1472
 msgid "Registering method to use"
 msgstr "Registreringsmetod att använda"
 
 #. Audio device
-#: src/preferences.cpp:1484
+#: src/preferences.cpp:1505
 msgid "Audio Devices"
 msgstr "Ljudenheter"
 
 #. Audio Device
-#: src/preferences.cpp:1498
+#: src/preferences.cpp:1519
 msgid "Player:"
 msgstr "Spelare:"
 
-#: src/preferences.cpp:1526
+#: src/preferences.cpp:1547
 msgid "Enter the audio player device to use"
 msgstr "Ange den ljudspelare som ska användas"
 
 #. Audio Recorder Device
-#: src/preferences.cpp:1533
+#: src/preferences.cpp:1554
 msgid "Recorder:"
 msgstr "Inspelare:"
 
-#: src/preferences.cpp:1563
+#: src/preferences.cpp:1584
 msgid "Enter the audio recorder device to use"
 msgstr "Ange den ljudinspelningsenhet som ska användas"
 
 #. Audio Mixers
-#: src/preferences.cpp:1570
+#: src/preferences.cpp:1591
 msgid "Player Mixer:"
 msgstr "Spelarmixer:"
 
-#: src/preferences.cpp:1587
+#: src/preferences.cpp:1608
 msgid "The audio mixer to use for player settings"
 msgstr "Ljudmixerenheten som ska användas för spelarinställningar"
 
-#: src/preferences.cpp:1593
+#: src/preferences.cpp:1614
 msgid "Recorder Mixer:"
 msgstr "Inspelningsmixer:"
 
-#: src/preferences.cpp:1610
+#: src/preferences.cpp:1631
 msgid "The audio mixer to use for recorder settings"
 msgstr "Ljudmixern som ska användas för inspelningsinställningar"
 
 #. Video device
-#: src/preferences.cpp:1617
+#: src/preferences.cpp:1638
 msgid "Video Device"
 msgstr "Videoenhet"
 
 #. Video Device
-#: src/preferences.cpp:1631
+#: src/preferences.cpp:1652
 msgid "Video Device:"
 msgstr "Videoenhet:"
 
-#: src/preferences.cpp:1656
+#: src/preferences.cpp:1677
 msgid "Enter the video device to use"
 msgstr "Ange den videoenhet som ska användas"
 
 #. Video channel spin button
-#: src/preferences.cpp:1663
+#: src/preferences.cpp:1684
 msgid "Video Channel:"
 msgstr "Videokanal:"
 
-#: src/preferences.cpp:1683
+#: src/preferences.cpp:1704
 msgid "The video channel number to use (camera, tv, ...)"
 msgstr "Videokanalnumret att använda (kamera, tv, ...)"
 
 #. Device test button
-#: src/preferences.cpp:1689
+#: src/preferences.cpp:1710
 msgid "Preview Video Settings"
 msgstr "Förhandsgranska videoinställningar"
 
-#: src/preferences.cpp:1765
+#: src/preferences.cpp:1786
 msgid "Okay"
 msgstr "Okej"
 
-#: src/preferences.cpp:1771 src/preferences.cpp:1777 src/preferences.cpp:1783
-#: src/preferences.cpp:1789
+#: src/preferences.cpp:1792 src/preferences.cpp:1798 src/preferences.cpp:1804
+#: src/preferences.cpp:1810
 msgid "Good Quality"
 msgstr "Bra kvalitet"
 
