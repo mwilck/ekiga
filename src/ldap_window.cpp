@@ -1953,10 +1953,11 @@ update_menu_sensitivity (gboolean is_group,
 void
 gnomemeeting_init_ldap_window ()
 {
-  GtkWidget *hbox = NULL;
+  GtkWidget *hpaned = NULL;
   GtkWidget *vbox = NULL;
   GtkWidget *frame = NULL;
   GtkWidget *menubar = NULL;
+  GtkWidget *scroll = NULL;
   GdkPixbuf *icon = NULL;
 
   GtkCellRenderer *cell = NULL;
@@ -1990,7 +1991,7 @@ gnomemeeting_init_ldap_window ()
   gtk_window_set_icon (GTK_WINDOW (gw->ldap_window), icon);
   gtk_window_set_position (GTK_WINDOW (gw->ldap_window), 
 			   GTK_WIN_POS_CENTER);
-  gtk_window_set_default_size (GTK_WINDOW (gw->ldap_window), 650, 350);
+  gtk_window_set_default_size (GTK_WINDOW (gw->ldap_window), 670, 370);
   g_object_unref (icon);
   
   accel = gtk_accel_group_new ();
@@ -2057,24 +2058,28 @@ gnomemeeting_init_ldap_window ()
 
   
   /* A hbox to put the tree and the ldap browser */
-  hbox = gtk_hbox_new (FALSE, 6);
-  gtk_container_set_border_width (GTK_CONTAINER (hbox), 6);
-  gtk_box_pack_start (GTK_BOX (vbox), hbox, TRUE, TRUE, 0);
+  hpaned = gtk_hpaned_new ();
+  gtk_container_set_border_width (GTK_CONTAINER (hpaned), 6);
+  gtk_box_pack_start (GTK_BOX (vbox), hpaned, TRUE, TRUE, 0);
   
 
   /* The GtkTreeView that will store the contacts sections */
   frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
-  gtk_box_pack_start (GTK_BOX (hbox), frame, FALSE, FALSE, 0);
+  gtk_paned_add1 (GTK_PANED (hpaned), frame);
   model = gtk_tree_store_new (NUM_COLUMNS_CONTACTS, GDK_TYPE_PIXBUF, 
 			      G_TYPE_STRING, G_TYPE_INT, G_TYPE_BOOLEAN);
 
+  scroll = gtk_scrolled_window_new (NULL, NULL);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scroll), 
+				  GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+  gtk_container_add (GTK_CONTAINER (frame), scroll);
 
   lw->tree_view = gtk_tree_view_new ();
   gtk_tree_view_set_model (GTK_TREE_VIEW (lw->tree_view), 
 			   GTK_TREE_MODEL (model));
   selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (lw->tree_view));
-  gtk_container_add (GTK_CONTAINER (frame), lw->tree_view);
+  gtk_container_add (GTK_CONTAINER (scroll), lw->tree_view);
   gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (lw->tree_view), FALSE);
 
   gtk_tree_selection_set_mode (GTK_TREE_SELECTION (selection),
@@ -2097,7 +2102,7 @@ gnomemeeting_init_ldap_window ()
 
   /* a vbox to put the frames and the user list */
   vbox = gtk_vbox_new (FALSE, 0);
-  gtk_box_pack_start (GTK_BOX (hbox), vbox, TRUE, TRUE, 0);
+  gtk_paned_add2 (GTK_PANED (hpaned), vbox);
 
   /* We will put a GtkNotebook that will contain the contacts list */
   lw->notebook = gtk_notebook_new ();
