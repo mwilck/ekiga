@@ -442,7 +442,6 @@ class GMH323EndPoint : public H323EndPoint
 
 
   PString called_address;
-  PString remote_ip;
   PString current_call_token;
   PString transfer_call_token;
 

@@ -893,7 +893,7 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   PString forward_host;
   PString name = connection.GetRemotePartyName ();
   PString app = connection.GetRemoteApplication ();
-  const H323Transport *transport = NULL;
+
   gchar *utf8_name = NULL;
   gchar *utf8_app = NULL;
 
@@ -912,12 +912,6 @@ GMH323EndPoint::OnIncomingCall (H323Connection & connection,
   int no_answer_timeout = 0;
 
 
-  /* Get the remote IP to display in the calls history */
-  transport = connection.GetSignallingChannel ();
-  if (transport)
-    remote_ip = transport->GetRemoteAddress ().GetHostName ();
-      
-    
   /* Check the gconf keys */
   gnomemeeting_threads_enter ();
   forward_host_gconf = 
@@ -1306,9 +1300,11 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
 {
   gchar *msg_reason = NULL;
 
+  PString remote_ip;
   PString remote_name;
   PString remote_app;
 
+  const H323Transport *transport = NULL;
   H323TransportAddress address;
   
   gchar *utf8_name = NULL;
@@ -1324,6 +1320,12 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   player_channel = NULL;
   recorder_channel = NULL;
   ch_access_mutex.Signal ();
+
+
+  /* Get the remote IP to display in the calls history */
+  transport = connection.GetSignallingChannel ();
+  if (transport) 
+    remote_ip = transport->GetRemoteAddress ().GetHostName ();
 
 
   /* Get information about the remote user */
