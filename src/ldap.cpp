@@ -340,7 +340,8 @@ void GM_ldap_init (GM_window_widgets *gw, GM_ldap_window_widgets *lw, options *o
   for (i = 0 ; servers [i] != NULL ; i++)
     lw->ldap_servers_list = g_list_append (lw->ldap_servers_list, servers [i]);
      
-  gtk_combo_set_popdown_strings (GTK_COMBO (lw->ils_server_combo), lw->ldap_servers_list);
+  if (lw->ldap_servers_list != NULL)
+    gtk_combo_set_popdown_strings (GTK_COMBO (lw->ils_server_combo), lw->ldap_servers_list);
 
   lw->refresh_button = add_button (_("Refresh"), who_pixmap);
   gtk_widget_set_usize (GTK_WIDGET (lw->refresh_button), 90, 30);

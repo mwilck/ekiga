@@ -380,8 +380,8 @@ void GM_init (GM_window_widgets *gw, GM_pref_window_widgets *pw,
 
   /* if the user tries to close the window : delete_event */
   gtk_signal_connect (GTK_OBJECT (gm), "delete_event",
-		      GTK_SIGNAL_FUNC (toggle_window_callback),
-		      NULL);
+		      GTK_SIGNAL_FUNC (quit_callback),
+		      gw);
 }
 
 

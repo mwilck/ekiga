@@ -2,10 +2,10 @@
                           docklet.cpp  -  description
                              -------------------
     begin                : Wed Oct 3 2001
-    copyright            : (C) 2001 by Miguel Rodríguez
+    copyright            : (C) 2000-2001 by Damien Sandras & Miguel Rodríguez
     description          : This file contains all functions needed for
                            Gnome Panel docklet
-    email                : migrax@terra.es
+    email                : migrax@terra.es, dsandras@seconix.com
  ***************************************************************************/
 
 /***************************************************************************

@@ -197,18 +197,6 @@ void quit_callback (GtkWidget *widget, gpointer data)
 }  
 
 
-void gtk_main_quit_callback (int res, gpointer data)
-{
-   GM_window_widgets *gw = (GM_window_widgets *) data;
-
-   if (res == 0)
-     {
-       gtk_widget_hide (GTK_WIDGET (gm));
-       gtk_main_quit ();
-     }
-}
-
-
 void view_statusbar_callback (GtkWidget *widget, gpointer data)
 {
   GM_window_widgets *gw = (GM_window_widgets *) data;

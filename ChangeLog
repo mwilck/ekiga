@@ -1,3 +1,15 @@
+2001-11-06  Miguel Rodríguez Pérez  <migrax@terra.es>
+ 
+ 	* src/ldap.cpp (GM_ldap_init): Test that we have a valid list 
+	of servers before putting them in the combo box. 
+	This fixes a Gtk-Critical when we have no ILS history.
+ 	* src/callbacks.cpp (gtk_main_quit_callback): Removed. 
+	No code seems to be using it.
+ 	* src/main_interface.cpp (GM_init): Make GM close instead of 
+	hide itself when the user closes the main window.
+	* src/docklet.cpp: Changed copyright notice to readd Damien for
+	his old applet code on which the docklet code is based.
+	
 2001-11-06  Damien Sandras  <dsandras@seconix.com>
 
 	* src/config.cpp, src/endpoint.cpp: Added support for a distinction
