@@ -964,7 +964,7 @@ gm_conf_get_filename ()
 {
   gchar *final = NULL;
 
-  final = g_strdup_printf ("%s/.gnomemeeting/config.xml", g_get_home_dir ());
+  final = g_strdup_printf ("%s/.gnomemeetingrc", g_get_home_dir ());
 }
 
 
