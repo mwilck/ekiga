@@ -65,6 +65,11 @@ GDKVideoOutputDevice::GDKVideoOutputDevice(GmWindow *w)
   /* Used to distinguish between input and output device. */
   device_id = 0; 
 
+#ifdef HAS_SDL
+  screen = NULL;
+  overlay = NULL;
+#endif
+
   gw = w;
 }
 
@@ -77,22 +82,32 @@ GDKVideoOutputDevice::GDKVideoOutputDevice(int idno, GmWindow *w)
   /* Used to distinguish between input and output device. */
   device_id = idno; 
 
+#ifdef HAS_SDL
+  screen = NULL;
+  overlay = NULL;
+#endif
+
   gw = w;
 }
 
 
 GDKVideoOutputDevice::~GDKVideoOutputDevice()
 {
-  /* Display again the local image */
   redraw_mutex.Wait ();
   redraw_mutex.Signal ();
- 
-  gnomemeeting_threads_enter ();
-  gnomemeeting_video_submenu_select (0);
-  gnomemeeting_threads_leave ();
 
-  redraw_mutex.Wait ();
-  redraw_mutex.Signal ();
+#ifdef HAS_SDL
+  /* If it is needed, delete the SDL window */
+  if (screen) {
+    
+    SDL_FreeSurface (screen);
+    if (overlay)
+      SDL_FreeYUVOverlay (overlay);
+    screen = NULL;
+    overlay = NULL;
+    SDL_Quit ();
+  }
+#endif
 }
 
 
@@ -117,18 +132,14 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
   static GdkPixbuf *local_pic = NULL;
 
 
-  /* We do have 2 gdkvideoio devices, one for encoding, one for decoding,
-     but the SDL surface must be the same */
+  /* Common to the 2 instances of gdkvideoio */
 #ifdef HAS_SDL
-  static gboolean has_to_fs = false; /* Do Full Screen */
+  static gboolean has_to_fs = false;
   static gboolean has_to_switch_fs = false;
+  static gboolean old_fullscreen = false;
 
-  static SDL_Surface *screen = NULL;
-  static SDL_Overlay *overlay = NULL;
-
-  SDL_Rect dest;
+  static int fs_device = 0;
 #endif
-
 
   /* Take the mutexes before the redraw */
   redraw_mutex.Wait ();
@@ -150,7 +161,8 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
   
 #ifdef HAS_SDL
   /* If it is needed, delete the SDL window */
-  if ((display != 3) && (screen)) {
+  sdl_mutex.Wait ();
+  if ((display != 3) && (screen) && (!gw->fullscreen)) {
     
     SDL_FreeSurface (screen);
     if (overlay)
@@ -161,8 +173,9 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
   }
   else
     /* SDL init */
-    if ((display == 3) && (!screen))
+    if (((display == 3) || (gw->fullscreen)) && (!screen))
       SDL_Init (SDL_INIT_VIDEO);
+  sdl_mutex.Signal ();
 #endif
 
 
@@ -206,20 +219,46 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
   gnomemeeting_threads_leave ();
 
 
-  /* Need to go full screen or to close the SDL window ? */
 #ifdef HAS_SDL  
+  /* Need to go full screen or to close the SDL window ? */
   gnomemeeting_threads_enter ();
+  sdl_mutex.Wait ();
+  has_to_fs = gw->fullscreen;
+
+  /* Need to toggle fullscreen */
+  if (old_fullscreen == !gw->fullscreen) {
+
+    has_to_switch_fs = true;
+    old_fullscreen = gw->fullscreen;
+  }
+
   SDL_Event event;
   
-  if (display == 3)
+  /* If we are in full screen, check that "Esc" is not pressed */
+  if (has_to_fs) 
     while (SDL_PollEvent (&event)) {
   
-      if ((event.type == SDL_KEYDOWN) && (event.key.keysym.sym == SDLK_f)) {
+      if ((event.type == SDL_KEYDOWN)&&(event.key.keysym.sym == SDLK_ESCAPE)) {
 
 	has_to_fs = !has_to_fs;
+	gw->fullscreen = has_to_fs;
 	has_to_switch_fs = true;
       }
     }
+  
+
+  if (has_to_switch_fs) {
+
+    if (display == 0)
+      fs_device = 1;
+    else
+    if (display == 1)
+      fs_device = 0;
+    else
+      fs_device = display;
+  }
+    
+  sdl_mutex.Signal ();
   gnomemeeting_threads_leave ();
 #endif
 
@@ -237,10 +276,13 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
 
 
 #ifdef HAS_SDL
-  /* Display local in a SDL window */
-  if ((display == 3) && (device_id == 1)) {
+  /* Display local in a SDL window, or the selected device in fullscreen */
+  if ( ((display == 3) && (device_id == 1) && (!has_to_fs))
+       || ((has_to_fs) && (device_id == fs_device)) ) {
   
     gnomemeeting_threads_enter ();
+    sdl_mutex.Wait ();
+    /* If needed to open the screen */
     if ((!overlay) || (!screen) || (has_to_switch_fs) ||
 	(screen->w != zoomed_width) || (screen->h != zoomed_height)){
 
@@ -252,27 +294,29 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
 	SDL_ShowCursor (SDL_ENABLE);
 	has_to_switch_fs = false;
       }
-      else 
-	if (has_to_switch_fs) {
-
-	  if (frameWidth * gw->zoom < 640)
-	    screen = SDL_SetVideoMode (640, 480, 0, 
-				       SDL_SWSURFACE | SDL_HWSURFACE | 
-				       SDL_ANYFORMAT);
-	  else
-	    screen = SDL_SetVideoMode (800, 600, 0, 
-				       SDL_SWSURFACE | SDL_HWSURFACE | 
-				       SDL_ANYFORMAT);
-	    
-	  SDL_WM_ToggleFullScreen (screen);
-	  SDL_ShowCursor (SDL_DISABLE);
-	  has_to_switch_fs = false;
-	}
-
-      SDL_FreeYUVOverlay (overlay);
-      overlay = SDL_CreateYUVOverlay (frameWidth, frameHeight, 
-				      SDL_IYUV_OVERLAY, screen);
     }
+
+
+    /* Go fullscreen */
+    if (has_to_switch_fs) {
+      
+      if (frameWidth * gw->zoom < 640)
+	screen = SDL_SetVideoMode (640, 480, 0, 
+				   SDL_SWSURFACE | SDL_HWSURFACE | 
+				   SDL_ANYFORMAT);
+      else
+	screen = SDL_SetVideoMode (800, 600, 0, 
+				   SDL_SWSURFACE | SDL_HWSURFACE | 
+				   SDL_ANYFORMAT);
+      
+      SDL_WM_ToggleFullScreen (screen);
+      SDL_ShowCursor (SDL_DISABLE);
+      has_to_switch_fs = false;
+    }
+    
+    SDL_FreeYUVOverlay (overlay);
+    overlay = SDL_CreateYUVOverlay (frameWidth, frameHeight, 
+				    SDL_IYUV_OVERLAY, screen);
 
     unsigned char *base = (unsigned char *) frame;
     overlay->pixels [0] = base;
@@ -288,15 +332,16 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
     SDL_DisplayYUVOverlay (overlay, &dest);    
     SDL_UnlockYUVOverlay (overlay);
 
+    sdl_mutex.Signal ();
     gnomemeeting_threads_leave ();
   }
 #endif
 
 
-
   /* we display both of them */
   if (display == 2) {
 
+    /* What we transmit, in small */
     if (device_id == 1) {
 
       both_mutex.Wait ();
@@ -313,7 +358,7 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
       both_mutex.Signal ();
     }
 
-    /* What we transmit, in small */
+    /* What we receive, in big */
     if ((device_id == 0) && (local_pic))  {
 
       both_mutex.Wait ();

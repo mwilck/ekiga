@@ -1,3 +1,19 @@
+2002-06-25  Damien Sandras  <dsandras@seconix.com>
+
+	* src/common.h: Added variable to know if we do fs or not.
+
+	* src/gdkvideoio.cpp: SDL now complete. You can switch to full screen
+	for local and remote video, not for the rest. You can use "Esc" to
+	escape fullscreen mode. SDL stuff has been made static to be common
+	between the 2 display threads, and protected around mutexes to ensure
+	exclusive access.
+
+	* src/gdkvideoio.h: See above.
+
+	* src/menu.cpp: Added callback that disable fullscreen when it is
+	not possible to go full screen.
+
+	
 2002-06-24  Damien Sandras  <dsandras@seconix.com>
 
 	* src/gdkvideoio.cpp: The SDL window is now deleted when not needed.

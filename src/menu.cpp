@@ -112,6 +112,41 @@ static void double_zoom_callback (GtkWidget *widget, gpointer data)
 }
 
 
+/* DESCRIPTION  :  This callback is called when the user toggles fullscreen
+ *                 factor in the popup menu.
+ * BEHAVIOR     :  Toggles fullscreen.
+ * PRE          :  gpointer is a valid pointer to a GmWindow structure.
+ */
+static void toggle_fullscreen_callback (GtkWidget *widget, gpointer data)
+{
+  GmWindow *gw = gnomemeeting_get_main_window (gm);
+  gw->fullscreen = !gw->fullscreen;
+}
+
+
+/* DESCRIPTION  :  This callback is called when the user changes the current
+ *                 video view.
+ * BEHAVIOR     :  Disable fullscreen in menu if choice = Both images.
+ * PRE          :  gpointer is a valid pointer to a GmWindow structure.
+ */
+static void video_view_changed_callback (GtkWidget *widget, gpointer data)
+{
+  GnomeUIInfo *popup_menu_uiinfo = (GnomeUIInfo *)
+    g_object_get_data (G_OBJECT(gm), "popup_menu_uiinfo");
+  GnomeUIInfo *video_view_menu_uiinfo = (GnomeUIInfo *)
+    g_object_get_data (G_OBJECT(gm), "video_view_menu_uiinfo");
+
+  if (GTK_CHECK_MENU_ITEM (video_view_menu_uiinfo [2].widget)->active
+      || GTK_CHECK_MENU_ITEM (video_view_menu_uiinfo [3].widget)->active)
+    gtk_widget_set_sensitive (GTK_WIDGET (popup_menu_uiinfo [6].widget), 
+			      FALSE);
+  else
+    gtk_widget_set_sensitive (GTK_WIDGET (popup_menu_uiinfo [6].widget), 
+			      TRUE);
+
+}
+
+
 /* DESCRIPTION  :  This callback is called when the user toggles the 
  *                 corresponding option in the View Menu (it is a toggle menu)
  * BEHAVIOR     :  Sets the gconf key.
@@ -228,28 +263,28 @@ void gnomemeeting_init_menu ()
       {
 	GNOME_APP_UI_ITEM,
 	N_("Local Video"), N_("Local Video Image"),
-	(void *) NULL, NULL, NULL,
+	(void *) video_view_changed_callback, NULL, NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	0, GDK_CONTROL_MASK, NULL
       },
       {
 	GNOME_APP_UI_ITEM,
 	N_("Remote Video"), N_("Remote Video Image"),
-	(void *) NULL, NULL, NULL,
+	(void *) video_view_changed_callback, NULL, NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	0, GDK_CONTROL_MASK, NULL
       },
       {
 	GNOME_APP_UI_ITEM,
 	N_("Both (Local Video Incrusted)"), N_("Both Video Images"),
-	(void *) NULL, NULL, NULL,
+	(void *) video_view_changed_callback, NULL, NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	0, GDK_CONTROL_MASK, NULL
       },
       {
 	GNOME_APP_UI_ITEM,
 	N_("Both (Local Video in New Window)"), N_("Both Video Images"),
-	(void *) NULL, NULL, NULL,
+	(void *) video_view_changed_callback, NULL, NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	0, GDK_CONTROL_MASK, NULL
       },
@@ -567,6 +602,13 @@ void gnomemeeting_popup_menu_init (GtkWidget *widget)
 	(void *) normal_zoom_callback, NULL, NULL,
        	GNOME_APP_PIXMAP_STOCK, GTK_STOCK_ZOOM_100,
 	'=', GDK_CONTROL_MASK, NULL 
+      },
+      GNOMEUIINFO_SEPARATOR,
+      { 
+	GNOME_APP_UI_ITEM, N_("Toggle Fullscreen"), N_("Toggle Fullscreen"),
+	(void *) toggle_fullscreen_callback, NULL, NULL,
+       	GNOME_APP_PIXMAP_NONE, NULL,
+	'f', GDK_CONTROL_MASK, NULL 
       },
       GNOMEUIINFO_END
     };

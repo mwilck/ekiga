@@ -97,6 +97,15 @@ class GDKVideoOutputDevice : public H323VideoDevice
   int display_config; /* Current display : local or remote or both */
   PMutex redraw_mutex;
 
+#ifdef HAS_SDL
+  SDL_Surface *screen;
+  SDL_Overlay *overlay;
+
+  SDL_Rect dest;
+  PMutex sdl_mutex;  /* Mutex to ensure that only one thread access to the SDL
+			stuff at the same time */
+#endif
+
   GmWindow *gw;
 };
 

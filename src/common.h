@@ -107,6 +107,7 @@ struct _GmWindow
   PStringArray audio_player_devices;
  
   double zoom;
+  gboolean fullscreen;
 };
 
 
