@@ -161,7 +161,8 @@ void search_entry_modified (GtkWidget *widget, gpointer data)
  */
 void refresh_button_clicked (GtkButton *button, gpointer data)
 {
-  GM_ldap_window_widgets *lw = (GM_ldap_window_widgets *) data;
+  GM_ldap_window_widgets *lw = gnomemeeting_get_ldap_window (gm);
+
   GMH323EndPoint *endpoint = MyApp->Endpoint ();
   GMILSClient *ils_client = (GMILSClient *) endpoint->GetILSClient ();
 
@@ -251,8 +252,8 @@ void refresh_button_clicked (GtkButton *button, gpointer data)
  */
 void search_entry_activated (GtkEntry *e, gpointer data)
 {
-  GM_ldap_window_widgets *lw = (GM_ldap_window_widgets *) data;
-
+  GM_ldap_window_widgets *lw = gnomemeeting_get_ldap_window (gm);
+  
   /* should not be freed : entry is a pointer to the text part of an entry
      and text is a pointer to the text part of a clist */
   gchar *entry = NULL, *text = NULL;
@@ -375,6 +376,7 @@ void gnomemeeting_init_ldap_window ()
   GtkWidget *menu;
   GtkWidget *menu_item;
   gchar *stored_contacts = NULL;
+  gchar **servers;
 
   /* Get the structs from the application */
   GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
@@ -412,11 +414,16 @@ void gnomemeeting_init_ldap_window ()
   gtk_container_set_border_width (GTK_CONTAINER (toolbar), 0);
 
   /* ILS directories combo box */
-  lw->ils_server_combo = gtk_combo_new ();
   lw->ils_server_combo = 
-    gnomemeeting_history_combo_box_new ("/apps/gnomemeeting/"
-					"history/ldap_servers");
+    gnomemeeting_history_combo_box_new ("/apps/gnomemeeting/history/ldap_servers");
   gtk_combo_disable_activate (GTK_COMBO(lw->ils_server_combo));
+  stored_contacts = gconf_client_get_string (client, "/apps/gnomemeeting/history/ldap_servers", 0);
+  servers = g_strsplit (stored_contacts ? (stored_contacts) : (""), "|", 0);
+
+  gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (lw->ils_server_combo)->entry),
+		      servers [0]);
+  g_free (stored_contacts);
+  g_strfreev (servers);
 
   gtk_toolbar_append_widget (GTK_TOOLBAR (toolbar), 
 			     GTK_WIDGET (lw->ils_server_combo),

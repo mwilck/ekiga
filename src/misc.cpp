@@ -27,7 +27,6 @@
  *
  */
 
-#undef GTK_DISABLE_DEPRECATED
 
 #include "../config.h"
 
@@ -260,7 +259,6 @@ gnomemeeting_history_combo_box_new (const gchar *key)
     g_object_set_data_full (G_OBJECT (combo), "history",
 			    contacts_list, gnomemeeting_free_glist_data);
 
-  g_strfreev (contacts);
 
   return combo; 	
 }
@@ -339,7 +337,6 @@ gnomemeeting_history_combo_box_add_entry (GtkCombo *combo, const gchar *key,
     g_free (history);
   }   
   
-  gtk_list_clear_items (GTK_LIST (GTK_COMBO (combo)->list), 0, -1);
   gtk_combo_set_popdown_strings (GTK_COMBO (combo), 
 				 contacts_list);
   gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (combo)->entry), 
