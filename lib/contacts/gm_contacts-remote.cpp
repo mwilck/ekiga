@@ -171,15 +171,8 @@ gnomemeeting_remote_addressbook_get_contacts (GmAddressbook *addressbook,
 		 "%255s %255s %255s %255s %255s", 
 		 prefix, hostname, port, base, scope);
 
-  if (done < 4) 
+  if (done < 5) 
     return NULL;
-    
-  /* If we have no "scope", then it means there was no base, hackish */
-  if (done == 4 && !strcmp (scope, "")) {
-
-    strncpy (scope, base, 255);
-    strcpy (base, "");
-  }
   
   if (!strcmp (scope, "sub"))
     sub_scope = TRUE;

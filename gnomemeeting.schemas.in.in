@@ -762,18 +762,6 @@
 	<long>Change the control panel section (4 means that the control panel is off)</long>
       </locale>
     </schema>
-    <schema>
-      <key>/schemas/apps/gnomemeeting/general/user_interface/main_window/urls_history</key>
-      <applyto>/apps/gnomemeeting/general/user_interface/main_window/urls_history</applyto>
-      <owner>GnomeMeeting</owner>
-      <type>list</type>
-      <list_type>string</list_type>
-      <default>[]</default>
-      <locale name="C">
-	<short>The list of called URLs</short>
-	<long>The list of called URLs</long>
-      </locale>
-    </schema>
     <schema>	
       <key>/schemas/apps/gnomemeeting/general/user_interface/log_window/position</key>
       <applyto>/apps/gnomemeeting/general/user_interface/log_window/position</applyto>
@@ -1140,25 +1128,13 @@
 	<long>The minimum transmitted video quality to keep when trying to minimize the used bandwidth:  choose 100% on a LAN for the best quality, 1% being the worst quality</long>
       </locale>
     </schema>
-    <schema>
-      <key>/schemas/apps/gnomemeeting/contacts/groups_list</key>
-      <applyto>/apps/gnomemeeting/contacts/groups_list</applyto>
-      <owner>GnomeMeeting</owner>
-      <type>list</type>
-      <list_type>string</list_type>
-      <default>[Friends,Family,Work]</default>
-      <locale name="C">
-	<short>The list of groups</short>
-	<long>The list of groups</long>
-      </locale>
-    </schema>
     <schema>		
       <key>/schemas/apps/gnomemeeting/contacts/remote_addressbooks_list</key>
       <applyto>/apps/gnomemeeting/contacts/remote_addressbooks_list</applyto>
       <owner>GnomeMeeting</owner>
       <type>list</type>
       <list_type>string</list_type>
-      <default>[1086549787.11023.35@golgoth01|Seconix LDAP Server|ldap://ldap.seconix.com:389/dc=seconix\,dc=com??sub|h323IdentityURL-ID,1086536533.479.17@golgoth01|Seconix ILS Server|ils://ils.seconix.com:389/??sub|rfc822mailbox]</default>
+      <default>[1086549787.11023.35@golgoth01|Seconix LDAP Server|ldap://ldap.seconix.com:389/dc=seconix\,dc=com??sub|h323IdentityURL-ID,1086536533.479.17@golgoth01|Seconix ILS Server|ils://ils.seconix.com:389/objectClass=RTPerson??sub|rfc822mailbox]</default>
       <locale name="C">
 	<short>User directory</short>
 	<long></long>
