@@ -1,5 +1,16 @@
 2002-02-11  Damien Sandras  <dsandras@seconix.com>
 
+	* src/callbacks.cpp: The connect callbacks now call the Connect/
+	Disconnect stuff.
+
+	* src/toolbar.cpp: Added a function to update the connect button
+	contents.
+
+	* src/endpoint.cpp: Use that function here above to update the connect
+	button.
+	
+2002-02-11  Damien Sandras  <dsandras@seconix.com>
+
 	* src/cleaner.cpp: Changed the use of gdk_threads_enter to
 	gnomemeeting_threads_enter.
 

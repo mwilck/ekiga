@@ -688,9 +688,8 @@ void GMH323EndPoint::OnConnectionEstablished (H323Connection & connection,
 
   gnomemeeting_docklet_set_content (gw->docklet, 0);
 
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->connect_button),
-				TRUE);
-
+  connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 1);
+  
   gnomemeeting_threads_leave ();
 
   calling_state = 2;
@@ -810,7 +809,7 @@ void GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   SetCurrentConnection (NULL);
   SetCallingState (0);
 
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->connect_button), FALSE);
+  connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 0);
 
   /* Remove the timers if needed and clear the docklet */
   if (docklet_timeout != 0)

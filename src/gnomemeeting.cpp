@@ -188,7 +188,7 @@ void GnomeMeeting::Connect()
   
   /* We need a connection to use AnsweringCall */
   current_call_token = endpoint->GetCurrentCallToken ();
-  connection = endpoint->FindConnectionWithLock (current_call_token);
+  connection = endpoint->GetCurrentConnection ();
   
   call_address = (PString) gtk_entry_get_text 
     (GTK_ENTRY (GTK_WIDGET(GTK_COMBO(gw->combo)->entry)));
@@ -198,9 +198,10 @@ void GnomeMeeting::Connect()
     
       endpoint->SetCallingState (2);
       connection->AnsweringCall (H323Connection::AnswerCallNow);
-      connection->Unlock ();
       
       gnomemeeting_log_insert (_("Answering incoming call"));
+
+      connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 1);
   }
   else {
 
@@ -228,6 +229,7 @@ void GnomeMeeting::Connect()
 			     (const char *) call_address);
       gnomemeeting_log_insert (msg);
       gnome_appbar_push (GNOME_APPBAR (gw->statusbar), msg);
+      connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 1);
       g_free (msg);				 
     }			
   }
@@ -241,12 +243,14 @@ void GnomeMeeting::Disconnect()
   H323Connection *connection = endpoint->GetCurrentConnection ();
   PString current_call_token = endpoint->GetCurrentCallToken ();
 
+
   if (!current_call_token.IsEmpty ()) {
 
     /* if we are trying to call somebody */
     if (endpoint->GetCallingState () == 1) {
 
       gnomemeeting_log_insert (_("Trying to stop calling"));
+      connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 0);
 
       /* End of Call */
       endpoint->ClearAllCalls (H323Connection::EndedByLocalUser, FALSE);
@@ -258,13 +262,16 @@ void GnomeMeeting::Disconnect()
       if (endpoint->GetCallingState () == 2) {
 	
 	gnomemeeting_log_insert (_("Stopping current call"));
-
+	connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 
+				      0);
 	/* End of Call */
 	endpoint->ClearAllCalls (H323Connection::EndedByLocalUser, FALSE);
       }
       else {
 
 	gnomemeeting_log_insert (_("Refusing Incoming call"));
+	connect_button_update_pixmap (GTK_TOGGLE_BUTTON (gw->connect_button), 
+				      0);
 	connection->AnsweringCall (H323Connection::AnswerCallDenied);	
       }
     }

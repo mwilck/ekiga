@@ -42,4 +42,10 @@
  */
 void gnomemeeting_init_toolbar ();
 
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Updates the connect button.
+ * PRE          :  /
+ */
+void connect_button_update_pixmap (GtkToggleButton *, int);
 #endif

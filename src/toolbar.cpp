@@ -53,6 +53,15 @@ extern GtkWidget *gm;
 /* Static functions */
 static void connect_button_clicked (GtkToggleButton *w, gpointer data)
 {
+  if (gtk_toggle_button_get_active (w))
+    MyApp->Connect ();
+  else
+    MyApp->Disconnect ();
+}
+
+
+void connect_button_update_pixmap (GtkToggleButton *w, int pressed)
+{
   GtkWidget *pixmap = NULL;
   GdkPixmap *Pixmap = NULL;
   GdkBitmap *mask = NULL;
@@ -65,30 +74,28 @@ static void connect_button_clicked (GtkToggleButton *w, gpointer data)
   
   if (pixmap != NULL)	{
 
-    if (GTK_TOGGLE_BUTTON (w)->active) {
+    if (pressed == 1) {
 
-      if (strcmp (gtk_entry_get_text (GTK_ENTRY (GTK_WIDGET(GTK_COMBO(gw->combo)->entry))), "")) {
-
-	if (MyApp->Endpoint ()->GetCallingState () == 0) 
-	  MyApp->Connect ();
-
-	pixbuf = gdk_pixbuf_new_from_xpm_data ((const char **) connect_xpm);
-      }
+      pixbuf = gdk_pixbuf_new_from_xpm_data ((const char **) connect_xpm);
+      gtk_signal_handler_block_by_func (GTK_OBJECT (w),
+					GTK_SIGNAL_FUNC (connect_button_clicked), 
+				    (gpointer) gw->connect_button); 
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (w), TRUE);
+      gtk_signal_handler_unblock_by_func (GTK_OBJECT (w),
+					  GTK_SIGNAL_FUNC (connect_button_clicked), 
+					  (gpointer) gw->connect_button); 
     }
     else {
 
-      if (MyApp->Endpoint ()->GetCallingState () != 0) {
-	
-	GMH323Connection *connection = (GMH323Connection *) 
-	  MyApp->Endpoint ()->GetCurrentConnection ();
-	
-	if (connection != NULL)
-	  connection->UnPauseChannels ();
-	
-	MyApp->Disconnect();
-      }
-
       pixbuf = gdk_pixbuf_new_from_xpm_data ((const char **) disconnect_xpm);
+      gtk_signal_handler_block_by_func (GTK_OBJECT (w),
+					GTK_SIGNAL_FUNC (connect_button_clicked), 
+				    (gpointer) gw->connect_button); 
+      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (w), FALSE);
+      gtk_signal_handler_unblock_by_func (GTK_OBJECT (w),
+					  GTK_SIGNAL_FUNC (connect_button_clicked), 
+					  (gpointer) gw->connect_button); 
+
     }
 
     if (pixbuf) {
@@ -213,7 +220,8 @@ void gnomemeeting_init_toolbar ()
   gtk_toolbar_append_widget (GTK_TOOLBAR (toolbar), gw->connect_button, NULL, NULL);
 
   gtk_signal_connect (GTK_OBJECT (gw->connect_button), "clicked",
-                      GTK_SIGNAL_FUNC (connect_button_clicked), NULL);
+                      GTK_SIGNAL_FUNC (connect_button_clicked), 
+		      gw->connect_button);
 
   GtkWidget *toolbar2 = gtk_toolbar_new (GTK_ORIENTATION_VERTICAL,
 					 GTK_TOOLBAR_ICONS);

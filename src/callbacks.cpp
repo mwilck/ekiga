@@ -103,19 +103,19 @@ void gnomemeeting_component_view (GtkWidget *w, gpointer data)
 
 void connect_cb (GtkWidget *widget, gpointer data)
 {	
-  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
-
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->connect_button), 
-				TRUE);
+  MyApp->Connect ();
 }
 
 
 void disconnect_cb (GtkWidget *widget, gpointer data)
 {	
-  GM_window_widgets *gw = gnomemeeting_get_main_window (gm);
+  GMH323Connection *connection = 
+    (GMH323Connection *) MyApp->Endpoint ()->GetCurrentConnection ();
+	
+  if (connection != NULL)
+    connection->UnPauseChannels ();
 
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw->connect_button),
-				FALSE);
+  MyApp->Disconnect ();
 }
 
 
