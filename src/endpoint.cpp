@@ -688,7 +688,7 @@ void
 GMH323EndPoint::ZeroconfUpdate (void)
 {
   PWaitAndSignal m(zcp_access_mutex);
-  if (zcp) 
+  if (zcp)  
     zcp->Publish ();
 }
 #endif

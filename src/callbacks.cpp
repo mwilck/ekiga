@@ -114,15 +114,17 @@ about_callback (GtkWidget *widget,
   GdkPixbuf *pixbuf = NULL;
 	
   const gchar *authors [] = {
-      "Damien Sandras <damien.sandras@it-optics.com>",
+      "Damien Sandras <dsandras@seconix.com>",
       "",
       N_("Code contributors:"),
+      "Benjamin Levian <belevian@gmail.com>"
       "Kenneth Rohde Christiansen <kenneth@gnu.org>",
       "Julien Puydt <julien.puydt@laposte.net>",
       "Miguel Rodríguez Pérez <migrax@terra.es>",
       "Paul <paul@argo.dyndns.org>", 
       "Roger Hardiman <roger@freebsd.org>",
       "Sébastien Josset <Sebastien.Josset@space.alcatel.fr>",
+      "Sébastien Estienne <sebastien.estienne@gmail.com>",
       "Stefan Bruëns <lurch@gmx.li>",
       "Tuan <tuan@info.ucl.ac.be>",
       "Xavier Ricco <ricco@mulitel.be>",
@@ -156,8 +158,8 @@ about_callback (GtkWidget *widget,
   };
 	
   authors [2] = gettext (authors [2]);
-  authors [12] = gettext (authors [12]);
   authors [16] = gettext (authors [16]);
+  authors [20] = gettext (authors [20]);
   
   const char *documenters [] = {
     "Damien Sandras <dsandras@seconix.com>",

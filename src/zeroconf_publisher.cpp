@@ -40,13 +40,24 @@
 
 
 #include <howl.h>
+
+/* HOWL bug */
+#undef PACKAGE
+#undef PACKAGE_STRING
+#undef PACKAGE_NAME
+#undef PACKAGE_TARNAME
+#undef PACKAGE_VERSION
+#undef PACKAGE_BUGREPORT
+#undef VERSION
+
 #include <stdio.h>
 
 #include <gm_conf.h>
 
 #include "zeroconf_publisher.h"
+#include "endpoint.h"
+#include "gnomemeeting.h"
 #include "misc.h"
-
 
 
 /* Declarations */
@@ -139,6 +150,8 @@ GMZeroconfPublisher::Publish()
 int
 GMZeroconfPublisher::GetPersonalData()
 {
+  GMH323EndPoint *ep = NULL;
+  
   gchar	*lastname = NULL;
   gchar	*firstname = NULL;
   gchar	*gm_conf_gchar = NULL;
@@ -154,6 +167,9 @@ GMZeroconfPublisher::GetPersonalData()
   port = gm_conf_get_int (PORTS_KEY "listen_port");
   gnomemeeting_threads_leave ();
 
+  ep = GnomeMeeting::Process ()->Endpoint ();
+
+  
   /*  Create the fullname that will be published in Srv record */
   if (firstname && lastname && strcmp (firstname, ""))
     if (strcmp (lastname, ""))
@@ -210,7 +226,10 @@ GMZeroconfPublisher::GetPersonalData()
     }
 
   /* Incoming Call Mode */
-  gm_conf_int = gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
+  if ((ep->GetCallingState () != GMH323EndPoint::Standby)
+      || (gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode") 
+	  == DO_NOT_DISTURB))
+    gm_conf_int = 2;
   if ((gm_conf_gchar = g_strdup_printf ("%d", gm_conf_int)))
     {
       err = 

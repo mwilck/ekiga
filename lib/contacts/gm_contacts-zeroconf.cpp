@@ -285,15 +285,15 @@ gnomemeeting_zero_addressbook_get_contacts (GmAddressbook *addressbook,
   
   if (!zcb)
     return NULL;
-
-  zcb->Browse ();
   
   if (addressbook) {
     
     l = zcb->GetContacts ();
-    if (l)
+    if (l) 
       nbr = g_slist_length (l);
   }
+
+  return l;
 }
 
 
@@ -301,6 +301,7 @@ void gnomemeeting_zero_addressbook_init ()
 {
   static GMZeroconfBrowser z;
   zcb = &z;
+  zcb->Browse ();
 }
 
 
@@ -365,6 +366,7 @@ GMZeroconfBrowser::GetContacts ()
     n->email = g_strdup (c->email);
     n->url = g_strdup (c->url);
     n->comment = g_strdup (c->comment);
+    n->software = g_strdup (c->software);
     n->state = c->state;
     
     ret = g_slist_append (ret, (gpointer) n);

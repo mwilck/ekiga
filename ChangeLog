@@ -1,5 +1,19 @@
 2004-11-14  Damien Sandras  <dsandras@gnome.org>
 
+	* lib/contacts/gm_contacts-remote.cpp,  
+	lib/contacts/gm_contacts-zeroconf.cpp: Fixed bugs I had introduced
+	in the patch.
+	
+	* src/callbacks.cpp: Added Benjamin Levian and Sebastien Lestienne
+	in the About box for their contribution.
+
+	* src/endpoint.cpp: Cleanup.
+
+	* src/zeroconf_publisher.cpp: Update state accordingly to the endpoint
+	calling state.
+
+2004-11-14  Damien Sandras  <dsandras@gnome.org>
+
 	* lib/contacts/gm_contacts-zeroconf.cpp, src/zeroconf_publisher.cpp:
 	Fixed deadlock when there is no mDNSResponder running.
 
