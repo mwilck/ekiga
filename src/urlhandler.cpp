@@ -266,17 +266,8 @@ GMURLHandler::GMURLHandler (PString c,
 {
   url = GMURL (c);
 
-  answer_call = FALSE;
+  answer_call = !transfer;
   transfer_call = transfer;
-  
-  this->Resume ();
-}
-
-
-GMURLHandler::GMURLHandler ()
-  :PThread (1000, AutoDeleteThread)
-{
-  answer_call = TRUE;
   
   this->Resume ();
 }
@@ -334,15 +325,18 @@ void GMURLHandler::Main ()
   /* Answer the current call in a separate thread if we are called
    * and return 
    */
-  if (answer_call 
-      && endpoint->GetCallingState () == GMH323EndPoint::Called) {
+  if (endpoint->GetCallingState () == GMH323EndPoint::Called) {
 
     con = 
       endpoint->FindConnectionWithLock (endpoint->GetCurrentCallToken ());
 
     if (con) {
 
-      con->AnsweringCall (H323Connection::AnswerCallNow);
+      if (answer_call) 
+	con->AnsweringCall (H323Connection::AnswerCallNow);
+      else if (transfer_call) 
+	con->ForwardCall (url.GetValidURL ());
+      
       con->Unlock ();
     }
 

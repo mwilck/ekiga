@@ -183,6 +183,7 @@ static GmAddressbook *gm_aw_get_selected_addressbook (GtkWidget *);
  * BEHAVIOR     : Fills in the parameters with the current search filter type
  * 		  (search on all contacts, fullname, url, category) and
  * 		  the field to search for in the currently selected page.
+ * 		  If the filter is empty, then NULL is returned.
  * PRE          : The given GtkWidget pointer must point to the address book
  * 		  GMObject.
  */
@@ -655,13 +656,20 @@ gm_aw_get_search_filter (GtkWidget *addressbook_window,
 			 char * & filter)
 {
   GmAddressbookWindowPage *awp = NULL;
+
+  const char *entry_text = NULL;
   
   g_return_if_fail (addressbook_window);
   
   awp = gm_awp_get_current_awp (addressbook_window);
   
+  filter = NULL;
+  
   type = gtk_option_menu_get_history (GTK_OPTION_MENU (awp->awp_option_menu));
-  filter = g_strdup (gtk_entry_get_text (GTK_ENTRY (awp->awp_search_entry)));
+  entry_text = gtk_entry_get_text (GTK_ENTRY (awp->awp_search_entry));
+
+  if (strcmp (entry_text, ""))
+    filter = g_strdup (entry_text);
 }
 
 
@@ -1069,11 +1077,6 @@ gm_aw_add_addressbook (GtkWidget *addressbook_window,
   
   /* The option menu */
   menu = gtk_menu_new ();
-
-  menu_item =
-    gtk_menu_item_new_with_label (_("Find all contacts"));
-  gtk_widget_show (menu_item);
-  gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
 
   menu_item =
     gtk_menu_item_new_with_label (_("Name contains"));
@@ -1754,9 +1757,9 @@ public:
 	gnomemeeting_addressbook_get_contacts (addressbook, 
 					       nbr,
 					       TRUE,
+					       (option == 0)?filter:NULL,
 					       (option == 1)?filter:NULL,
 					       (option == 2)?filter:NULL,
-					       (option == 3)?filter:NULL,
 					       NULL);
 
       if (nbr == -1)

@@ -1272,7 +1272,7 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
     msg_reason = g_strdup (_("Call forwarded"));
     break;
   case H323Connection::EndedBySecurityDenial :
-    msg_reason = g_strdup (_("Security check Failed"));
+    msg_reason = g_strdup (_("Security check failed"));
     break;
   case H323Connection::EndedByLocalBusy :
     msg_reason = g_strdup (_("Local user is busy"));

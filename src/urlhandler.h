@@ -84,14 +84,6 @@ public:
    */
   GMURLHandler (PString, BOOL = FALSE);
 
-
-  /* DESCRIPTION  :  The constructor.
-   * BEHAVIOR     :  Initialise the parameters. GM will answer the incoming
-   *                 call (if any).
-   * PRE          :  /
-   */
-  GMURLHandler ();
-
   
   /* DESCRIPTION  :  The destructor.
    * BEHAVIOR     :  /

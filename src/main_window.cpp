@@ -3598,6 +3598,7 @@ gm_main_window_incoming_call_dialog_show (GtkWidget *main_window,
   GtkWidget *vbox = NULL;
   GtkWidget *b1 = NULL;
   GtkWidget *b2 = NULL;
+  GtkWidget *b3 = NULL;
 
   gchar *msg = NULL;
 
@@ -3611,10 +3612,13 @@ gm_main_window_incoming_call_dialog_show (GtkWidget *main_window,
   mw->incoming_call_popup = gtk_dialog_new ();
   b2 = gtk_dialog_add_button (GTK_DIALOG (mw->incoming_call_popup),
 			      _("Reject"), GTK_RESPONSE_REJECT);
+  b3 = gtk_dialog_add_button (GTK_DIALOG (mw->incoming_call_popup),
+			      _("Transfer"), GTK_RESPONSE_OK);
   b1 = gtk_dialog_add_button (GTK_DIALOG (mw->incoming_call_popup),
 			      _("Accept"), GTK_RESPONSE_ACCEPT);
 
-  gtk_dialog_set_default_response (GTK_DIALOG (mw->incoming_call_popup), 1);
+  gtk_dialog_set_default_response (GTK_DIALOG (mw->incoming_call_popup), 
+				   GTK_RESPONSE_ACCEPT);
 
   vbox = GTK_DIALOG (mw->incoming_call_popup)->vbox;
 
@@ -3661,6 +3665,19 @@ gm_main_window_incoming_call_dialog_show (GtkWidget *main_window,
 		    GTK_SIGNAL_FUNC (connect_cb), main_window);
   g_signal_connect (G_OBJECT (b2), "clicked",
 		    GTK_SIGNAL_FUNC (disconnect_cb), NULL);
+  g_signal_connect (G_OBJECT (b3), "clicked",
+		    GTK_SIGNAL_FUNC (transfer_current_call_cb), main_window);
+  
+  g_signal_connect_swapped (G_OBJECT (b1), "clicked",
+			    GTK_SIGNAL_FUNC (gtk_widget_hide), 
+			    mw->incoming_call_popup);
+  g_signal_connect_swapped (G_OBJECT (b2), "clicked",
+			    GTK_SIGNAL_FUNC (gtk_widget_hide),
+			    mw->incoming_call_popup);
+  g_signal_connect_swapped (G_OBJECT (b3), "clicked",
+			    GTK_SIGNAL_FUNC (gtk_widget_hide),
+			    mw->incoming_call_popup);
+
   g_signal_connect (G_OBJECT (mw->incoming_call_popup), "delete-event",
 		    GTK_SIGNAL_FUNC (delete_incoming_call_dialog_cb), 
 		    main_window);
