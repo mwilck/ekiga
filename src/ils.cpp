@@ -1044,14 +1044,14 @@ void GMILSBrowser::Main ()
         {
                 status_icon = gtk_widget_render_icon 
                         (xdap_users_tree_view, 
-                         GM_STOCK_AVAILABLE,
+                         GM_STOCK_STATUS_AVAILABLE,
                          GTK_ICON_SIZE_MENU, NULL);
 	} 
         else 
         {
                 status_icon = gtk_widget_render_icon 
                         (xdap_users_tree_view, 
-                         GM_STOCK_OCCUPIED,
+                         GM_STOCK_STATUS_OCCUPIED,
                          GTK_ICON_SIZE_MENU, NULL);
         }
         

@@ -296,7 +296,7 @@ void gnomemeeting_tray_set_content (GObject *tray, int choice)
   
     /* if that was was not already the pixmap */
     if (image != NULL)	{
-      gtk_image_set_from_stock (GTK_IMAGE (image), GM_STOCK_PANEL_AVAILABLE, 
+      gtk_image_set_from_stock (GTK_IMAGE (image), GM_STOCK_STATUS_AVAILABLE, 
 				GTK_ICON_SIZE_MENU);
       g_object_set_data (tray, "available", GINT_TO_POINTER (1));
     }
@@ -307,7 +307,7 @@ void gnomemeeting_tray_set_content (GObject *tray, int choice)
     image = g_object_get_data (tray, "image");
     
     if (image != NULL)	{
-      gtk_image_set_from_stock (GTK_IMAGE (image), GM_STOCK_PANEL_RING,
+      gtk_image_set_from_stock (GTK_IMAGE (image), GM_STOCK_STATUS_RINGING,
 				GTK_ICON_SIZE_MENU);
       g_object_set_data (tray, "available", GINT_TO_POINTER (0));
     }
@@ -318,7 +318,7 @@ void gnomemeeting_tray_set_content (GObject *tray, int choice)
     image = g_object_get_data (tray, "image");
 
     if (image != NULL) {
-      gtk_image_set_from_stock (GTK_IMAGE (image), GM_STOCK_PANEL_BUSY,
+      gtk_image_set_from_stock (GTK_IMAGE (image), GM_STOCK_STATUS_OCCUPIED,
 				GTK_ICON_SIZE_MENU);
       g_object_set_data (tray, "available", GINT_TO_POINTER (0));
     }

@@ -15,11 +15,9 @@ IMAGE_FILES = \
 	video-preview.png \
 	audio-mute.png \
 	speaker-phone.png \
-	available.png \
-	occupied.png \
-	panel-available-16.png	\
-	panel-ring-16.png	\
-	panel-busy-16.png
+	status-available-16.png	\
+	status-ringing-16.png	\
+	status-occupied-16.png
 
 
 IMAGES= \
@@ -36,9 +34,9 @@ IMAGES= \
 	gm_quickcam_stock_data quickcam.xpm \
 	gm_occupied_stock_data occupied.png \
 	gm_available_stock_data available.png \
-	gm_panel_available_stock_data panel-available-16.png \
-	gm_panel_ring_stock_data panel-ring-16.png \
-	gm_panel_busy_stock_data panel-busy-16.png 
+	gm_status_available_stock_data status-available-16.png \
+	gm_status_ringing_stock_data status-ringing-16.png \
+	gm_status_occupied_stock_data status-occupied-16.png 
 
 noinst_DATA = inlines.h
 
