@@ -610,8 +610,9 @@ gnomemeeting_calls_history_window_new (GmCallsHistoryWindow *chw)
   /* The hbox added below the notebook that contains the Search field,
      and the search and clear buttons */
   hbox = gtk_hbox_new (FALSE, 0);  
+  gtk_container_set_border_width (GTK_CONTAINER (hbox), 4);
   chw->search_entry = gtk_entry_new ();
-  gtk_box_pack_start (GTK_BOX (hbox), chw->search_entry, TRUE, TRUE, 6);
+  gtk_box_pack_start (GTK_BOX (hbox), chw->search_entry, TRUE, TRUE, 2);
   g_signal_connect (G_OBJECT (chw->search_entry), "activate",
 		    G_CALLBACK (find_button_clicked_cb),
 		    (gpointer) notebook);  
@@ -629,7 +630,7 @@ gnomemeeting_calls_history_window_new (GmCallsHistoryWindow *chw)
 		    (gpointer) notebook);
 
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG (window)->vbox), hbox,
-		      FALSE, FALSE, 0);  
+		      FALSE, FALSE, 0); 
 
   
   /* Generic signals */

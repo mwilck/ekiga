@@ -44,6 +44,8 @@
 #include "misc.h"
 #include "menu.h"
 
+#include "gconf_widgets_extensions.h"
+
 #include <ptlib/vconvert.h>
 
 #ifdef HAS_SDL
@@ -62,6 +64,10 @@ int GDKVideoOutputDevice::devices_nbr = 0;
 /* The Methods */
 GDKVideoOutputDevice::GDKVideoOutputDevice(int idno, GmWindow *w)
 {
+#ifdef HAS_SDL
+  BOOL start_in_fullscreen = FALSE;
+#endif
+  
   gw = w;
 
   /* Used to distinguish between input and output device. */
@@ -72,6 +78,26 @@ GDKVideoOutputDevice::GDKVideoOutputDevice(int idno, GmWindow *w)
 #ifdef HAS_SDL
   screen = NULL;
   overlay = NULL;
+
+  gnomemeeting_threads_enter ();
+  
+  /* Do we start in fullscreen or not */
+  start_in_fullscreen = 
+    gconf_get_bool (VIDEO_DISPLAY_KEY "start_in_fullscreen");
+  
+  /* Change the zoom value following we have to start in fullscreen
+   * or not */
+  if (!start_in_fullscreen) {
+    
+    if (gconf_get_float (VIDEO_DISPLAY_KEY "zoom_factor") == -1.0)
+      gconf_set_float (VIDEO_DISPLAY_KEY "zoom_factor", 1.00);
+  } 
+  else {
+
+    gconf_set_float (VIDEO_DISPLAY_KEY "zoom_factor", -1.0);
+  }
+
+  gnomemeeting_threads_leave ();
 #endif
 }
 
@@ -105,6 +131,8 @@ GDKVideoOutputDevice::~GDKVideoOutputDevice()
 
 BOOL GDKVideoOutputDevice::Redraw ()
 {
+  GMH323EndPoint *ep = NULL;
+  
   GtkWidget *image = NULL;
   GtkWidget *window = NULL;
   GdkPixbuf *src_pic = NULL;
@@ -128,7 +156,6 @@ BOOL GDKVideoOutputDevice::Redraw ()
   static double zoom = 1.0;
 
 #ifdef HAS_SDL
-  static gboolean fullscreen = false;
   static gboolean has_to_fs = false;
   static gboolean has_to_switch_fs = false;
   static gboolean old_fullscreen = false;
@@ -138,54 +165,47 @@ BOOL GDKVideoOutputDevice::Redraw ()
   SDL_Surface *blit_conf = NULL;
 #endif
 
-
+  ep = GnomeMeeting::Process ()->Endpoint ();
+  
   gnomemeeting_threads_enter ();
   client = gconf_client_get_default ();
 
+  
   /* Take the mutexes before the redraw */
   redraw_mutex.Wait ();
 
 
   /* Updates the zoom value */
-  zoom = 
-    gconf_client_get_float (client, 
-			    VIDEO_DISPLAY_KEY "zoom_factor", 
-			    NULL);
-  if (zoom != 0.5 && zoom != 1 && zoom != 2)
+  zoom = gconf_get_float (VIDEO_DISPLAY_KEY "zoom_factor");
+  
+  if (zoom != 0.5 && zoom != 1 && zoom != 2 && zoom != -1.00)
     zoom = 1.0;
 
-#ifdef HAS_SDL 
-  fullscreen =
-    gconf_client_get_bool (client, 
-			  VIDEO_DISPLAY_KEY "start_in_fullscreen", 0);
-#endif
 
+  /* If we are not in a call, then display the local video. If we
+   * are in a call, then display what GConf tells us, except if
+   * it requests to display both video streams and that there is only
+   * one available 
+   */
+  display = gconf_get_int (VIDEO_DISPLAY_KEY "video_view");
 
-  /* Let's go for the GTK stuff */
-  
-  /* What do we display: what gconf tells us except if we are not in 
-     a call, or if it is not a valid choice */
-  if (GnomeMeeting::Process ()->Endpoint ()->GetCallingState () != GMH323EndPoint::Connected) {
+  if (devices_nbr <= 1) {
 
+    if (device_id == REMOTE)
+      display = REMOTE_VIDEO;
+    else if (device_id == LOCAL)
+      display = LOCAL_VIDEO;
+  }
+
+  if (ep->GetCallingState () != GMH323EndPoint::Connected) 
     display = LOCAL_VIDEO;
-  }
-  else {
 
-    display = 
-      gconf_client_get_int (client, 
-			    VIDEO_DISPLAY_KEY "video_view", 
-			    NULL);
-
-    if (devices_nbr <= 1)
-      if (device_id == REMOTE)
-	display = REMOTE_VIDEO;
-      else if (device_id == LOCAL)
-	display = LOCAL_VIDEO;
-  }
-
+  
+  /* Update the display selection in the main and in the video popup menus */
   gtk_radio_menu_select_with_id (gw->main_menu, "local_video", display);
   gtk_radio_menu_select_with_id (gw->video_popup_menu, "local_video", display);
 
+  
   /* Show or hide the different windows if needed */
   if (display == BOTH) { /* display == BOTH */
 
@@ -260,7 +280,7 @@ BOOL GDKVideoOutputDevice::Redraw ()
 
   /* If we are in fullscreen, but that the option is not to be in
      fullscreen, delete the fullscreen SDL window */
-  if ((screen) && (!fullscreen)) {
+  if (screen && zoom != -1.00) {
     
     SDL_FreeSurface (screen);
     screen = NULL;
@@ -270,24 +290,18 @@ BOOL GDKVideoOutputDevice::Redraw ()
   else
     /* If fullscreen is selected but that we are not in fullscreen, 
        call SDL init */
-    if ((fullscreen) && (!screen))
+    if (zoom == -1.0 && !screen)
       SDL_Init (SDL_INIT_VIDEO);
 
   sdl_mutex.Signal ();
 
 
 
-  if (has_to_fs) {
+  if (zoom == -1.0) {
       
-    zoomed_width = 
-      gconf_client_get_int (client, 
-			    VIDEO_DISPLAY_KEY "fullscreen_width", 
-			    NULL);
-    zoomed_height = 
-      gconf_client_get_int (client, 
-			    VIDEO_DISPLAY_KEY "fullscreen_height", 
-			    NULL);
-    }
+    zoomed_width = gconf_get_int (VIDEO_DISPLAY_KEY "fullscreen_width");
+    zoomed_height = gconf_get_int (VIDEO_DISPLAY_KEY "fullscreen_height");
+  }
 #endif
 
   
@@ -324,7 +338,9 @@ BOOL GDKVideoOutputDevice::Redraw ()
   gtk_widget_get_size_request (GTK_WIDGET (gw->video_frame), 
 			       &image_width, &image_height);
 
-  if ( ((image_width != zoomed_width) || (image_height != zoomed_height)) 
+  if ( zoom != -1.0
+       &&
+      ((image_width != zoomed_width) || (image_height != zoomed_height)) 
        &&
       ( ((device_id == LOCAL) && (display == LOCAL_VIDEO)) ||
 	((device_id == REMOTE) && (display == REMOTE_VIDEO)) ||
@@ -342,13 +358,13 @@ BOOL GDKVideoOutputDevice::Redraw ()
   /* Need to go full screen or to close the SDL window ? */
   gnomemeeting_threads_enter ();
   sdl_mutex.Wait ();
-  has_to_fs = fullscreen;
+  has_to_fs = (zoom == -1.0);
 
   /* Need to toggle fullscreen */
-  if (old_fullscreen == !fullscreen) {
+  if (old_fullscreen == !has_to_fs) {
 
     has_to_switch_fs = true;
-    old_fullscreen = fullscreen;
+    old_fullscreen = has_to_fs;
   }
 
   SDL_Event event;
@@ -364,8 +380,8 @@ BOOL GDKVideoOutputDevice::Redraw ()
 	    (event.key.keysym.sym == SDLK_f)) {
 
 	  has_to_fs = !has_to_fs;
-	  fullscreen = has_to_fs;
-	  has_to_switch_fs = true;
+	  gconf_set_float (VIDEO_DISPLAY_KEY "zoom_factor", 1.0);
+          has_to_switch_fs = true;
 	}
       }
 
@@ -386,31 +402,33 @@ BOOL GDKVideoOutputDevice::Redraw ()
 
 
   /* We display what we transmit, or what we receive */
-  if ( (((device_id == REMOTE && display == REMOTE_VIDEO) ||
-	(device_id == LOCAL && display == LOCAL_VIDEO)) && (display != BOTH_INCRUSTED)) 
-       || ((display == BOTH_LOCAL) && (device_id == REMOTE)) ) {
-    
-    gnomemeeting_threads_enter ();
-    gtk_image_set_from_pixbuf (GTK_IMAGE (gw->main_video_image), 
- 			       GDK_PIXBUF (zoomed_pic));
-    gnomemeeting_threads_leave ();
-  }
-   
-    
-  if ( (display == BOTH) || 
-       ((display == BOTH_LOCAL) && (device_id == LOCAL)) ) {
-    
-    gnomemeeting_threads_enter ();
-    if (device_id == LOCAL)
-      gtk_image_set_from_pixbuf (GTK_IMAGE (gw->local_video_image), 
-				 GDK_PIXBUF (zoomed_pic));
-    else
-      gtk_image_set_from_pixbuf (GTK_IMAGE (gw->remote_video_image), 
-				 GDK_PIXBUF (zoomed_pic));
+  if (zoom != -1.0) {
 
-    gnomemeeting_threads_leave ();
-  }
+    if ( (((device_id == REMOTE && display == REMOTE_VIDEO) ||
+           (device_id == LOCAL && display == LOCAL_VIDEO)) && (display != BOTH_INCRUSTED)) 
+         || ((display == BOTH_LOCAL) && (device_id == REMOTE)) ) {
 
+      gnomemeeting_threads_enter ();
+      gtk_image_set_from_pixbuf (GTK_IMAGE (gw->main_video_image), 
+                                 GDK_PIXBUF (zoomed_pic));
+      gnomemeeting_threads_leave ();
+    }
+
+
+    if ( (display == BOTH) || 
+         ((display == BOTH_LOCAL) && (device_id == LOCAL)) ) {
+
+      gnomemeeting_threads_enter ();
+      if (device_id == LOCAL)
+        gtk_image_set_from_pixbuf (GTK_IMAGE (gw->local_video_image), 
+                                   GDK_PIXBUF (zoomed_pic));
+      else
+        gtk_image_set_from_pixbuf (GTK_IMAGE (gw->remote_video_image), 
+                                   GDK_PIXBUF (zoomed_pic));
+
+      gnomemeeting_threads_leave ();
+    }
+  }
 
 #ifdef HAS_SDL
   /* Display local in a SDL window, or the selected device in fullscreen */

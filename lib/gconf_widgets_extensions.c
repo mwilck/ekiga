@@ -436,6 +436,35 @@ gconf_get_int (gchar *key)
 
 
 void
+gconf_set_float (gchar *key,
+                 float v)
+{
+  GConfClient *client = NULL;
+
+  if (!key)
+    return;
+
+  client = gconf_client_get_default ();
+
+  gconf_client_set_float (client, key, v, NULL);
+}
+
+
+int
+gconf_get_float (gchar *key)
+{
+  GConfClient *client = NULL;
+
+  if (!key)
+    return 0;
+
+  client = gconf_client_get_default ();
+
+  return gconf_client_get_float (client, key, NULL);
+}
+
+
+void
 gconf_set_string_list (gchar *key,
 		       GSList *l)
 {

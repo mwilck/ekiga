@@ -225,6 +225,21 @@ int gconf_get_int (gchar *);
  * BEHAVIOR     :  Update the given GConf key to the given value.
  * PRE          :  /
  */
+void gconf_set_float (gchar *,
+                      float);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Returns the value for the given GConf key.
+ * PRE          :  /
+ */
+int gconf_get_float (gchar *);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Update the given GConf key to the given value.
+ * PRE          :  /
+ */
 void gconf_set_string_list (gchar *,
 			    GSList *);
 

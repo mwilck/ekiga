@@ -46,8 +46,10 @@
 #include "misc.h"
 #include "chat_window.h"
 #include "ldap_window.h"
+
 #include "stock-icons.h"
 #include "gtk_menu_extensions.h"
+#include "gconf_widgets_extensions.h"
 
 
 /* Declarations */
@@ -117,20 +119,13 @@ zoom_changed_callback (GtkWidget *widget,
 /* DESCRIPTION  :  This callback is called when the user toggles fullscreen
  *                 factor in the popup menu.
  * BEHAVIOR     :  Toggles fullscreen.
- * PRE          :  gpointer is a valid pointer to a GmWindow structure.
+ * PRE          :  / 
  */
 static void 
 fullscreen_changed_callback (GtkWidget *widget,
 			     gpointer data)
 {
-  GConfClient *client = gconf_client_get_default ();
-  gboolean fs = false;
-
-  fs = 
-    gconf_client_get_bool (client, 
-			   VIDEO_DISPLAY_KEY "fullscreen", 0);
-  gconf_client_set_bool (client, VIDEO_DISPLAY_KEY "fullscreen",
-			 !fs, NULL);
+  gconf_set_float (VIDEO_DISPLAY_KEY "zoom_factor", -1.0);
 }
 
 
