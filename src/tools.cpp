@@ -232,7 +232,8 @@ GtkWidget *gnomemeeting_calls_history_window_new (GmCallsHistoryWindow *chw)
 						       2,
 						       NULL);
     gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
-    g_object_set (G_OBJECT (renderer), "style", PANGO_STYLE_ITALIC, NULL);
+    g_object_set (G_OBJECT (renderer), "foreground", "blue",
+		  "underline", TRUE, NULL);
 
     renderer = gtk_cell_renderer_text_new ();
     column = gtk_tree_view_column_new_with_attributes (_("Call duration"),
@@ -241,6 +242,9 @@ GtkWidget *gnomemeeting_calls_history_window_new (GmCallsHistoryWindow *chw)
 						       3,
 						       NULL);
     gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+    if (i == 2)
+      gtk_tree_view_column_set_visible (column, false);
+
 
     renderer = gtk_cell_renderer_text_new ();
     column = gtk_tree_view_column_new_with_attributes (_("Software"),
