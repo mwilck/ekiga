@@ -299,28 +299,28 @@ void gnomemeeting_init_menu ()
       {
 	GNOME_APP_UI_ITEM,
 	N_("_Remote User Info"), N_("View Remote User Info"),
-	view_remote_user_info_callback, client, NULL,
+	(void *) view_remote_user_info_callback, client, NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	NULL, GDK_CONTROL_MASK, NULL
       },
       {
 	GNOME_APP_UI_ITEM,
 	N_("_History"), N_("View the log"),
-	view_log_callback, client, NULL,
+	(void *) view_log_callback, client, NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	NULL, GDK_CONTROL_MASK, NULL
       },
       {
 	GNOME_APP_UI_ITEM,
 	N_("_Audio Settings"), N_("View Audio Settings"),
-	view_audio_settings_callback, client, NULL,
+	(void *) view_audio_settings_callback, client, NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	NULL, GDK_CONTROL_MASK, NULL
       },
       {
 	GNOME_APP_UI_ITEM,
 	N_("_Video Settings"), N_("View Video Settings"),
-	view_video_settings_callback, client, NULL,
+	(void *) view_video_settings_callback, client, NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	NULL, GDK_CONTROL_MASK, NULL
       },
@@ -333,7 +333,7 @@ void gnomemeeting_init_menu ()
       {
 	GNOME_APP_UI_RADIOITEMS,
 	NULL, NULL,
-	notebook_view_uiinfo, NULL, NULL,
+	(void *) notebook_view_uiinfo, NULL, NULL,
 	GNOME_APP_PIXMAP_NONE, NULL,
 	0, GDK_CONTROL_MASK, NULL
       },

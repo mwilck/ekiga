@@ -95,7 +95,7 @@ GtkWidget *gnomemeeting_button (gchar *lbl, GtkWidget *pixmap)
   
   gtk_container_add (GTK_CONTAINER (button), hbox2);
   
-  gtk_widget_set_usize (GTK_WIDGET (button), 40, 25);
+  gtk_widget_set_usize (GTK_WIDGET (button), 80, 25);
   
   gtk_widget_show (pixmap);
   gtk_widget_show (label);
@@ -392,4 +392,3 @@ gnomemeeting_add_contact_entry(GM_window_widgets* gw, int max_contacts)
 
 }
 
-
