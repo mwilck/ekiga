@@ -446,7 +446,7 @@ BOOL GMILSClient::Register (int reg)
 	    if (prt != P_MAX_INDEX)
 	      IP = IP.Left (prt);
 	    
-	    if (PIPSocket::Address (IP) != PIPSocket::Address ("0.0.0.0"))
+	    if (PString ("0.0.0.0") != IP)
 	      gconf_client_set_string (client, "/apps/gnomemeeting/general/public_ip", (const char *) IP, NULL);
 	    
 	    g_free (ip);
