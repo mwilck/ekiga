@@ -1269,7 +1269,7 @@ gnomemeeting_init_pref_window_gateway (GtkWidget *window,
 
   gnome_prefs_entry_new (subsection, _("Gateway / Proxy host:"), H323_GATEWAY_KEY "host", _("The Gateway host is the host to use to do H.323 calls through a gateway that will relay calls."), 1, false);
 
-  gnome_prefs_toggle_new (subsection, _("Use gateway or proxy"), H323_GATEWAY_KEY "use_gateway", _("Use or not the specified gateway to do calls."), 2);
+  gnome_prefs_toggle_new (subsection, _("Use gateway or proxy"), H323_GATEWAY_KEY "use_gateway", _("Use the specified gateway to do calls."), 2);
 }
 
 

@@ -1604,6 +1604,14 @@ int main (int argc, char ** argv, char ** envp)
   /* GnomeMeeting main initialisation */
   static GnomeMeeting instance;
 
+  /* Debug */
+  if (debug_level != 0)
+    PTrace::Initialise (PMAX (PMIN (4, debug_level), 0));
+  /*			"gnomemeeting-debug.log",
+			PTrace::Timestamp | PTrace::Thread
+			| PTrace::Blocks | PTrace::DateAndTime);
+  */
+
   
   /* Detect the devices, exit if it fails */
   if (!GnomeMeeting::Process ()->DetectDevices ()) {
@@ -1646,14 +1654,6 @@ int main (int argc, char ** argv, char ** envp)
   }
 
   
-  /* Debug */
-  if (debug_level != 0)
-    PTrace::Initialise (PMAX (PMIN (4, debug_level), 0));
-  /*			"gnomemeeting-debug.log",
-			PTrace::Timestamp | PTrace::Thread
-			| PTrace::Blocks | PTrace::DateAndTime);
-  */
-
   /* Call the given host if needed */
   if (url) {
 

@@ -457,7 +457,7 @@ use_gateway_changed_nt (GConfClient *client,
 
     if (gateway.IsEmpty () && gconf_value_get_bool (entry->value)) {
       
-      gnomemeeting_warning_dialog (GTK_WINDOW (gw->pref_window), _("No gateway or proxy specified"), _("You need to specify an host to use as gateway or proxy."));
+      gnomemeeting_warning_dialog (GTK_WINDOW (gw->pref_window), _("No gateway or proxy specified"), _("You need to specify a host to use as gateway or proxy."));
       gconf_set_bool (H323_GATEWAY_KEY "use_gateway", FALSE);
     }
 

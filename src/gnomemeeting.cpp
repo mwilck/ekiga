@@ -301,12 +301,12 @@ GnomeMeeting::DetectDevices ()
   gnomemeeting_sound_daemons_suspend ();
 
   /* Detect the plugins */
-  gw->audio_managers = PStringArray (PSoundChannel::GetDriverNames ());
-  gw->video_managers = PVideoInputDevice::GetDriverNames ();
+  gw->audio_managers = PSoundChannel::GetDriverNames ();
+  gw->video_managers  =PVideoInputDevice::GetDriverNames ();
 
   /* Detect the devices */
-  gw->video_devices = PVideoInputDevice::GetDriversDeviceNames (video_plugin);
-
+   gw->video_devices = PVideoInputDevice::GetDriversDeviceNames (video_plugin);
+ 
   if (PString ("Quicknet") == audio_plugin) {
 
     gw->audio_recorder_devices = OpalIxJDevice::GetDeviceNames ();

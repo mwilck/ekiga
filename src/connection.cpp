@@ -198,11 +198,10 @@ GMH323Connection::OpenLogicalChannel (const H323Capability &capability,
   if (!success) {
 
     msg =
-      g_strdup_printf (_("Failure opening %s for %s, will try with next common codec"),
-		       (const char *) capability.GetFormatName (),
-		       (dir == H323Channel::IsTransmitter) ?
-		       _("transmission") : _("reception"));
-
+      g_strdup_printf ((dir == H323Channel::IsTransmitter)
+		       ? _("Failure opening %s for transmission, will try with next common codec"),
+		       : _("Failure opening %s for reception, will try with next common codec"),
+		       (const char *) capability.GetFormatName ());
     
     gnomemeeting_threads_enter ();
     gnomemeeting_log_insert (gw->history_text_view, msg);

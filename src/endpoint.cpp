@@ -1678,10 +1678,10 @@ GMH323EndPoint::OpenAudioChannel (H323Connection & connection,
 
 	  /* Translators : the full sentence is "Opening %s for playing with
 	     plugin %s" or "Opening %s for recording with plugin" */
-	  msg = g_strdup_printf (_("Opened %s for %s with plugin %s"),
-				 (const char *) device,
-				 is_encoding ? _("recording") : _("playing"),
-				 (const char *) plugin);
+	  msg = g_strdup_printf (is_encoding ?
+				 _("Opened %s for recording with plugin %s")
+				 : _("Opened %s for playing with plugin %s"),
+				 (const char *) device, (const char *) plugin);
 
 	  gnomemeeting_threads_enter ();
 	  gnomemeeting_log_insert (gw->history_text_view, msg);

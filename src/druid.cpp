@@ -774,7 +774,7 @@ gnomemeeting_init_druid_personal_data_page (GnomeDruid *druid, int p, int t)
 
   
   /* The user fields */
-  label = gtk_label_new (_("Please enter your firstname and your surname:"));
+  label = gtk_label_new (_("Please enter your first name and your surname:"));
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
 
@@ -782,7 +782,7 @@ gnomemeeting_init_druid_personal_data_page (GnomeDruid *druid, int p, int t)
   gtk_box_pack_start (GTK_BOX (vbox), dw->name, FALSE, FALSE, 0);
 
   label = gtk_label_new (NULL);
-  text = g_strdup_printf ("<i>%s</i>", _("Your firstname and surname will be used when connecting to other VoIP and videoconferencing software."));
+  text = g_strdup_printf ("<i>%s</i>", _("Your first name and surname will be used when connecting to other VoIP and videoconferencing software."));
   gtk_label_set_markup (GTK_LABEL (label), text);
   g_free (text);
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
