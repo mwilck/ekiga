@@ -38,7 +38,7 @@
 #include "config.h"
 #include "misc.h"
 #include <gconf/gconf-client.h>
-#include "misc_widgets.h"
+
 
 #define new PNEW
 
@@ -144,14 +144,11 @@ GnomeMeeting::~GnomeMeeting()
 void GnomeMeeting::AddContactIP (char *ip)
 {
   GtkWidget *li;
- // li = gtk_list_item_new_with_label (ip);
- // gtk_container_add (GTK_CONTAINER(GTK_COMBO(gw->combo)->list), li);
-//  gtk_widget_show (li);
+  li = gtk_list_item_new_with_label (ip);
+  gtk_container_add (GTK_CONTAINER(GTK_COMBO(gw->combo)->list), li);
+  gtk_widget_show (li);
   gtk_entry_set_text (GTK_ENTRY (GTK_WIDGET(GTK_COMBO(gw->combo)->entry)), 
 		      ip);
-  // 20 = max number of contacts to store on HD, put here the value 
-  // got from preferences if any
-  gnomemeeting_add_contact_entry(gw, 20);
 }
   
 
@@ -182,15 +179,12 @@ void GnomeMeeting::Connect()
   }
   else {
 
-  //  li = gtk_list_item_new_with_label (call_address);
-  //  gtk_container_add (GTK_CONTAINER(GTK_COMBO(gw->combo)->list), li);
-  //  gtk_widget_show (li);
+    li = gtk_list_item_new_with_label (call_address);
+    gtk_container_add (GTK_CONTAINER(GTK_COMBO(gw->combo)->list), li);
+    gtk_widget_show (li);
     gtk_entry_set_text (GTK_ENTRY (GTK_WIDGET(GTK_COMBO(gw->combo)->entry)),
 			call_address);
-      // 20 = max number of contacts to store on HD, put here the value 
-      // got from preferences if any
-      gnomemeeting_add_contact_entry(gw, 20);
- 
+
     /* if we call somebody */
     if (!call_address.IsEmpty ()) {
 

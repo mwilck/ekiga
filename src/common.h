@@ -77,7 +77,6 @@ struct _options
   int ldap;
   char *ldap_server;
   char *ldap_servers_list;
-  char *old_contacts_list;
   char *ldap_port;
   int gk;
   int fps;
@@ -123,7 +122,6 @@ struct _GM_window_widgets
   GtkWidget *silence_detection_button;
   GtkWidget *video_chan_button;
   GtkWidget *audio_chan_button;
-  GList *old_contacts_list;
   GtkWidget *left_arrow;
   GtkWidget *right_arrow;
   GtkWidget *incoming_call_popup;

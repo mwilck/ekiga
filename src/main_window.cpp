@@ -51,7 +51,6 @@ extern "C" {
 #include "pref_window.h"
 #include "misc.h"
 #include <gconf/gconf-client.h>
-#include "misc_widgets.h"
 
 #include "../pixmaps/speaker.xpm"
 #include "../pixmaps/mic.xpm"
@@ -602,13 +601,8 @@ void gnomemeeting_init_main_window (options *opts, GConfClient *client)
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    0, 0);
-#if 0
+
   gw->combo = gtk_combo_new ();
-#endif
-  gw->combo = gnomemeeting_history_combo_box_new(gw, opts);
-  
-  gtk_combo_set_use_arrows_always (GTK_COMBO(gw->combo), TRUE);
-  
   gtk_combo_disable_activate (GTK_COMBO (gw->combo));
   gtk_signal_connect (GTK_OBJECT (GTK_COMBO (gw->combo)->entry), "activate",
 		      GTK_SIGNAL_FUNC (connect_cb), NULL);
