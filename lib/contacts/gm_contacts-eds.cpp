@@ -582,10 +582,13 @@ gnomemeeting_local_addressbook_modify_contact (GmAddressbook *addressbook,
 
       if (e_book_open (ebook, FALSE, NULL)) {
 
-	contact = e_contact_new ();
 
 	if (ctact->uid) 
-	  e_contact_set (contact, E_CONTACT_UID, ctact->uid);
+	  e_book_get_contact (ebook, ctact->uid, &contact, NULL);
+
+	if (!contact)
+	  contact = e_contact_new ();
+	
 	if (ctact->fullname)
 	  e_contact_set (contact, E_CONTACT_FULL_NAME, ctact->fullname);
 	if (ctact->url)
