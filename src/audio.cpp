@@ -120,6 +120,9 @@ int gnomemeeting_set_recording_source (char *mixer, int source)
 
 int gnomemeeting_get_mixer_name (char *mixer, char *name)
 {
+#ifdef __FreeBSD__
+  strcpy(name,"/dev/mixer");
+#else
   int mixerfd, res;
   mixer_info info;
 
@@ -132,7 +135,7 @@ int gnomemeeting_get_mixer_name (char *mixer, char *name)
   strcpy (name, info.name);
 
   close (mixerfd);
-
+#endif
   return 0;
 }
 

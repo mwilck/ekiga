@@ -52,9 +52,7 @@ extern GtkWidget *gm;
 /* The functions */
 GMH323Connection::GMH323Connection (GMH323EndPoint & ep, 
 				    unsigned callReference)
-  :H323Connection(ep, callReference, 1, 
-		  !gconf_client_get_bool (gconf_client_get_default (),
-					  "/apps/gnomemeeting/general/h245_tunneling", 0)) 
+  :H323Connection(ep, callReference)
 {
   gw = gnomemeeting_get_main_window (gm);
 
