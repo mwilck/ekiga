@@ -251,6 +251,17 @@ static gint gm_aw_get_notebook_page (GtkWidget *,
 				     GmAddressbook *);
 
 
+/* DESCRIPTION  : / 
+ * BEHAVIOR     : Returns a popup menu to be displayed when a contact is 
+ * 		  clicked.
+ * PRE          : The given GtkWidget pointer must point to the address book
+ * 		  GMObject. The second argument must point to a valid 
+ * 		  selected GmAddressbook (if any). The 1st should be non-NULL.
+ */
+static GtkWidget *gm_aw_contact_menu_new (GtkWidget *,
+					  GmAddressbook *);
+
+
 /* Callbacks */
 
 /* DESCRIPTION  : / 
@@ -266,15 +277,24 @@ static gboolean aw_tree_selection_function_cb (GtkTreeSelection *,
 					       gboolean,
 					       gpointer);
 
+
 /* DESCRIPTION  : / 
  * BEHAVIOR     : This callback is called when a contact is double-clicked
- * 		  in the address book GMObject. It is called.
- * PRE          : /
+ * 		  in the address book GMObject. He is called.
+ * PRE          : The data must point to the address book window GmOject.  
  */
-static void call_contact_cb (GtkTreeView *,
-			     GtkTreePath *,
-			     GtkTreeViewColumn *,
-			     gpointer);
+static void call_contact1_cb (GtkWidget *,
+			      gpointer);
+
+/* DESCRIPTION  : / 
+ * BEHAVIOR     : This callback is called when a contact is double-clicked
+ * 		  in the address book GMObject. He is called.
+ * PRE          : The data must point to the address book window GmOject.  
+ */
+static void call_contact2_cb (GtkTreeView *,
+			      GtkTreePath *,
+			      GtkTreeViewColumn *,
+			      gpointer);
 
 
 /* DESCRIPTION  : / 
@@ -334,6 +354,16 @@ static void search_addressbook_cb (GtkWidget *,
 
 /* DESCRIPTION  : / 
  * BEHAVIOR     : This callback is called when the user clicks on a contact.
+ * 		  Displays a popup.
+ * PRE          : /
+ */
+static gint contact_clicked_cb (GtkWidget *,
+				GdkEventButton *,
+				gpointer);
+
+
+/* DESCRIPTION  : / 
+ * BEHAVIOR     : This callback is called when the user clicks on a contact.
  * 		  It updates the menu sensitivity of the GUI following what
  * 		  is selected.
  * PRE          : /
@@ -350,7 +380,6 @@ static void contact_selected_cb (GtkTreeSelection *,
  */
 static void addressbook_selected_cb (GtkTreeSelection *,
 				     gpointer);
-
 
 
 /* Implementation */
@@ -856,8 +885,12 @@ gm_aw_add_addressbook (GtkWidget *addressbook_window,
 		    G_CALLBACK (contact_selected_cb), 
 		    addressbook_window);
 
+  g_signal_connect (G_OBJECT (awp->awp_tree_view), "event_after",
+		    G_CALLBACK (contact_clicked_cb), 
+		    addressbook_window);
+
   g_signal_connect (G_OBJECT (awp->awp_tree_view), "row-activated",
-		    G_CALLBACK (call_contact_cb), 
+		    G_CALLBACK (call_contact2_cb), 
 		    addressbook_window); 
 
 
@@ -1088,6 +1121,7 @@ gm_aw_update_menu_sensitivity (GtkWidget *addressbook_window,
   aw = gm_aw_get_aw (addressbook_window);
 
   gtk_menu_set_sensitive (aw->aw_menu, "call", rs || ls);
+  gtk_menu_set_sensitive (aw->aw_menu, "delete", (ls || (!rs && !ls)));
   gtk_menu_set_sensitive (aw->aw_menu, "add", rs);
   gtk_menu_set_sensitive (aw->aw_menu, "properties", !rs);
 }
@@ -1139,6 +1173,72 @@ gm_aw_get_notebook_page (GtkWidget *addressbook_window,
 }
 
 
+GtkWidget *
+gm_aw_contact_menu_new (GtkWidget *addressbook_window,
+			GmAddressbook *addressbook)
+{
+  GtkWidget *menu = NULL;
+  gboolean local = TRUE;
+
+  menu = gtk_menu_new ();
+
+  
+  if (!addressbook || !gnomemeeting_addressbook_is_local (addressbook))
+    local = FALSE;
+ 
+
+  static MenuEntry contact_menu_local [] =
+    {
+      GTK_MENU_ENTRY("call", _("C_all Contact"), NULL,
+		     NULL, 0, 
+		     GTK_SIGNAL_FUNC (call_contact1_cb), 
+		     addressbook_window, TRUE),
+
+      GTK_MENU_SEPARATOR,
+
+      GTK_MENU_ENTRY("properties", _("_Properties"), NULL,
+		     GTK_STOCK_PROPERTIES, 0, 
+		     GTK_SIGNAL_FUNC (properties_cb), 
+		     addressbook_window, TRUE),
+
+      GTK_MENU_SEPARATOR,
+
+      GTK_MENU_ENTRY("delete", _("_Delete"), NULL,
+		     GTK_STOCK_DELETE, 'd', 
+		     GTK_SIGNAL_FUNC (delete_cb), 
+		     addressbook_window, TRUE),
+
+      GTK_MENU_END
+    };
+
+      
+  static MenuEntry contact_menu_not_local [] =
+    {
+      GTK_MENU_ENTRY("call", _("C_all Contact"), NULL,
+		     NULL, 0, 
+		     GTK_SIGNAL_FUNC (call_contact1_cb), 
+		     addressbook_window, TRUE),
+
+      GTK_MENU_SEPARATOR,
+
+      GTK_MENU_ENTRY("add", _("Add Contact to _Address Book"), NULL,
+		     GTK_STOCK_ADD, 0,
+		     GTK_SIGNAL_FUNC (properties_cb), 
+		     addressbook_window, TRUE),
+
+      GTK_MENU_END
+    };
+  
+  if (local)
+    gtk_build_menu (menu, contact_menu_local, NULL, NULL);
+  else
+    gtk_build_menu (menu, contact_menu_not_local, NULL, NULL);
+
+
+  return menu;
+}
+
+
 /* The Callbacks */
 static gboolean 
 aw_tree_selection_function_cb (GtkTreeSelection *selection,
@@ -1155,15 +1255,14 @@ aw_tree_selection_function_cb (GtkTreeSelection *selection,
 
 
 static void
-call_contact_cb (GtkTreeView *tree_view,
-		 GtkTreePath *arg1,
-		 GtkTreeViewColumn *arg2,
+call_contact1_cb (GtkWidget *w,
 		 gpointer data)
 {
   GtkWidget *addressbook_window = NULL;
   GmContact *contact = NULL;
 
   g_return_if_fail (data != NULL);
+
 
   addressbook_window = GTK_WIDGET (data);
 
@@ -1176,8 +1275,21 @@ call_contact_cb (GtkTreeView *tree_view,
 
     //GnomeMeeting->Connect (contact->url);
 
+    cout << "Should call " << contact->url << endl << flush;
     gm_contact_delete (contact);
   }
+}
+
+
+static void
+call_contact2_cb (GtkTreeView *tree_view,
+		 GtkTreePath *arg1,
+		 GtkTreeViewColumn *arg2,
+		 gpointer data)
+{
+  g_return_if_fail (data != NULL);
+
+  call_contact1_cb (NULL, data);
 }
 
 
@@ -1349,6 +1461,38 @@ search_addressbook_cb (GtkWidget *w,
   addressbook_window = GTK_WIDGET (data);
 
   new SearchThread (addressbook_window);
+}
+
+
+static gint
+contact_clicked_cb (GtkWidget *w,
+		    GdkEventButton *e,
+		    gpointer data)
+{
+  GtkWidget *menu = NULL;
+  
+  GmAddressbook *addressbook = NULL;
+  
+  g_return_val_if_fail (data != NULL, FALSE);
+
+  addressbook = 
+    GM_ADDRESSBOOK (gm_aw_get_selected_addressbook (GTK_WIDGET (data)));
+
+  if (e->type == GDK_BUTTON_PRESS || e->type == GDK_KEY_PRESS) {
+
+    if (e->button == 3) {
+
+      menu = gm_aw_contact_menu_new (GTK_WIDGET (data), addressbook);
+      gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL,
+		      e->button, e->time);
+      g_signal_connect (G_OBJECT (menu), "hide",
+			GTK_SIGNAL_FUNC (g_object_unref), (gpointer) menu);
+      g_object_ref (G_OBJECT (menu));
+      gtk_object_sink (GTK_OBJECT (menu));
+    }
+  }
+
+  return TRUE;
 }
 
 
