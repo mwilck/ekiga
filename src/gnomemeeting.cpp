@@ -116,7 +116,8 @@ GnomeMeeting::GnomeMeeting ()
   memset ((void *) rtp, 0, sizeof (struct _GmRtpData));
   gw->progress_timeout = 0;
   gw->ldap_window = gw->pref_window = gw->calls_history_window =
-    gw->druid_window = gw->splash_win = gw->incoming_call_popup = NULL;
+    gw->druid_window = gw->splash_win = gw->incoming_call_popup =
+    gw->history_window = NULL;
 							     
   call_number = 0;
 
