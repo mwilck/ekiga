@@ -911,7 +911,7 @@ gnomemeeting_init (GmWindow *gw,
 		      GNOME_PARAM_HUMAN_READABLE_NAME,
 		      _("GnomeMeeting"),
 		      GNOME_PARAM_APP_DATADIR, DATADIR,
-		      NULL);
+		      (void *)NULL);
 
   gm = gnome_app_new ("gnomemeeting", _("GnomeMeeting"));
 
