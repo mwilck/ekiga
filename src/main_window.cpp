@@ -644,7 +644,7 @@ void gnomemeeting_init_main_window ()
 
   gtk_signal_connect_after (GTK_OBJECT (gw->main_notebook), "switch-page",
 			    GTK_SIGNAL_FUNC (notebook_page_changed_callback), 
-			    0);
+			    gw->main_notebook);
 
   /* The drawing area that will display the webcam images */
   gw->video_frame = gtk_handle_box_new();

@@ -1,3 +1,12 @@
+2002-01-09  Miguel Rodríguez Pérez  <migrax@terra.es>
+
+	* src/main_window.cpp (gnomemeeting_init_main_window): 
+	Pass the notebook widget in the user_data to be able to
+	block the function.
+
+	* src/config.cpp (notebook_info_changed_nt): 
+	blobk notebook_page_changed_callback
+
 2002-01-08  Miguel Rodríguez Pérez  <migrax@terra.es>
 
 	* src/pref_window.cpp (gnomemeeting_init_pref_window_interface)

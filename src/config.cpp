@@ -1006,8 +1006,12 @@ static void notebook_info_changed_nt (GConfClient *client, guint,
     if (current_page < 0 || current_page > 3)
       return;
 
+    gtk_signal_handler_block_by_data (GTK_OBJECT (gw->main_notebook), 
+			      gw->main_notebook);
     gtk_notebook_set_page (GTK_NOTEBOOK (gw->main_notebook),
 			   current_page);
+    gtk_signal_handler_unblock_by_data (GTK_OBJECT (gw->main_notebook),
+				gw->main_notebook);
 
     gtk_widget_set_sensitive (GTK_WIDGET (gw->left_arrow), true);
     gtk_widget_set_sensitive (GTK_WIDGET (gw->right_arrow), true);
