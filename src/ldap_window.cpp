@@ -43,6 +43,7 @@
 #include "misc.h"
 
 #include "../pixmaps/ldap_refresh.xpm"
+#include "../pixmaps/small-close.xpm"
 
 
 /* Declarations */
@@ -503,6 +504,10 @@ void gnomemeeting_init_ldap_window_notebook (int page_num, gchar *text_label)
   GtkWidget *scroll;
   GtkWidget *close_button;
   GtkWidget *hbox;
+  GdkPixbuf *close_cross;
+  GtkPixmap *close_gtkpixmap;
+  GdkPixmap *close_pixmap;
+  GdkBitmap *close_bitmap;
 
   GM_ldap_window_widgets *lw = gnomemeeting_get_ldap_window (gm);
   
@@ -547,8 +552,16 @@ void gnomemeeting_init_ldap_window_notebook (int page_num, gchar *text_label)
   /* The page's "label" */
   hbox = gtk_hbox_new (false, 0);
   label = gtk_label_new (text_label);
-  close_button = gtk_button_new_with_label ("X"); // FIXME: Use a real
-						  // icon for this
+  close_button = gtk_button_new ();
+
+  close_cross = gdk_pixbuf_new_from_xpm_data (small_close_xpm);
+  gdk_pixbuf_render_pixmap_and_mask (close_cross, &close_pixmap, 
+				     &close_bitmap, 127);
+  gdk_pixbuf_unref (close_cross);
+  close_gtkpixmap = GTK_PIXMAP (gtk_pixmap_new (close_pixmap, close_bitmap));
+  gtk_container_add (GTK_CONTAINER (close_button), GTK_WIDGET (close_gtkpixmap));
+  gtk_widget_show_all (close_button);
+
   gtk_box_pack_start (GTK_BOX (hbox), label, true, true, 0);
   gtk_box_pack_end (GTK_BOX (hbox), close_button, false, false, 0);
 

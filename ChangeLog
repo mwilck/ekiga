@@ -1,3 +1,22 @@
+2002-02-05  Miguel Rodríguez Pérez  <migrax@terra.es>
+
+	* pixmaps/small-close.xpm: Added
+
+	* src/ldap_window.cpp (gnomemeeting_init_ldap_window_notebook): 
+	USe a real pixmap, and not a capital X for the close button anymore.
+
+2002-02-05  Miguel Rodríguez Pérez  <migrax@terra.es>
+
+	* src/ldap_window.cpp (refresh_button_clicked): Dont hide the
+	default page when it's not needed anymore, just destroy it
+
+	* src/ils.cpp (ils_browse): Added a FIXME (damien, this one's for you)
+
+	* src/ldap_window.cpp (gnomemeeting_init_ldap_window_notebook) 
+	(ldap_page_close_button_clicked): Add a close button to the tabs
+
+	* src/docklet.cpp: Corrected my surname
+
 2002-02-04  Damien Sandras  <dsandras@seconix.com>
 
 	* src/main_window.cpp: Implemented the idea of Fabrice Alphonso for
@@ -33,7 +52,7 @@
 	(apply_filter_button_clicked, gnomemeeting_init_ldap_window) 
 	(gnomemeeting_init_ldap_window_notebook): 
 	Porting to the new way of storing the lists' info
-	(apply_filter_button_clicked): MAybe fixed the filter crashing bug
+	(apply_filter_button_clicked): Maybe fixed the filter crashing bug
 
 	* src/callbacks.cpp (ldap_popup_menu_callback): 
 
