@@ -320,6 +320,8 @@ void GMVideoGrabber::SetContrast (int constrast)
 void GMVideoGrabber::GetParameters (int *whiteness, int *brightness, 
 				    int *colour, int *contrast)
 {
+  int hue;
+
   grabber->GetParameters (whiteness, brightness, colour, contrast, &hue);
 
   *whiteness = (int) *whiteness / 256;

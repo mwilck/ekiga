@@ -68,7 +68,8 @@ static void jitter_buffer_changed_nt (GConfClient*, guint, GConfEntry *,
 static gboolean register_changed (gpointer);
 static void register_changed_nt (GConfClient*, guint, GConfEntry *, gpointer);
 static gboolean audio_mixer_changed (gpointer);
-static void audio_mixer_changed_nt (GConfClient *, guint, GConfEntry *, gpointer);
+static void audio_mixer_changed_nt (GConfClient *, guint, GConfEntry *, 
+				    gpointer);
 static gboolean audio_device_changed (gpointer);
 static void audio_device_changed_nt (GConfClient *, guint, GConfEntry *, 
 				     gpointer);
@@ -84,13 +85,16 @@ static void video_option_menu_changed_nt (GConfClient *, guint, GConfEntry *,
 static gboolean video_preview_changed (gpointer);
 static void video_preview_changed_nt (GConfClient *, guint, GConfEntry *, 
 				      gpointer);
+static gboolean enable_fps_changed (gpointer);
 static void enable_fps_changed_nt (GConfClient *, guint, GConfEntry *, 
 				   gpointer);
+static gboolean enable_vb_changed (gpointer);
 static void enable_vb_changed_nt (GConfClient *, guint, GConfEntry *, 
 				  gpointer);
 static gboolean enable_vid_tr_changed (gpointer);
 static void enable_vid_tr_changed_nt (GConfClient *, guint, GConfEntry *, 
 				      gpointer);
+static gboolean audio_codecs_list_changed (gpointer);
 static void audio_codecs_list_changed_nt (GConfClient *, guint, GConfEntry *, 
 					  gpointer);
 static gboolean view_widget_changed (gpointer);
@@ -99,6 +103,7 @@ static void view_widget_changed_nt (GConfClient *, guint, GConfEntry *,
 static gboolean notebook_info_changed (gpointer);
 static void notebook_info_changed_nt (GConfClient *, guint, GConfEntry *, 
 				      gpointer);
+
 static void gnomemeeting_update_pref_window_sensitivity (void);
 
 
@@ -911,37 +916,87 @@ static void video_preview_changed_nt (GConfClient *client, guint cid,
 }
 
 
+/* Is able to modify the widgets */
+static gboolean enable_fps_changed (gpointer data)
+{
+  GM_pref_window_widgets *pw = NULL;
+  GMVideoGrabber *vg = NULL;
+  GConfClient *client = gconf_client_get_default ();
+
+  gdk_threads_enter ();
+  
+  pw = gnomemeeting_get_pref_window (gm);
+
+  /* We set the new value for the widget */
+  GTK_TOGGLE_BUTTON (pw->fps)->active = (gboolean) data;
+  gtk_widget_draw (GTK_WIDGET (pw->fps), NULL);
+
+  /* Update the value */
+  vg = MyApp->Endpoint ()->GetVideoGrabber ();
+  
+  if (vg) {
+    
+    /* Disable or enable tr fps limit */
+    if (!(gboolean) data) 
+      vg->SetFrameRate (0);
+    else
+      vg->SetFrameRate (gconf_client_get_int (client, "/apps/gnomemeeting/video_settings/tr_fps", NULL));
+  }
+
+  gdk_threads_leave ();
+
+  return FALSE;
+}
+
+
 /* DESCRIPTION  :  his callback is called when a specific key of
  *                 the gconf database associated with that toggle changes.
- * BEHAVIOR     :  It only updates the widget, and SetFrameRate to 0 to disable it
+ * BEHAVIOR     :  It only updates the widget, and SetFrameRate to 0 
+ *                 to disable it.
  * PRE          :  /
  */
 static void enable_fps_changed_nt (GConfClient *client, guint cid, 
 				   GConfEntry *entry, gpointer data)
 {
-  GtkWidget *toggle = GTK_WIDGET (data);
-  GMVideoGrabber *vg = NULL;
-
   if (entry->value->type == GCONF_VALUE_BOOL) {
    
-    /* We set the new value for the widget */
-    GTK_TOGGLE_BUTTON (toggle)->active = gconf_value_get_bool (entry->value);
-    gtk_widget_draw (GTK_WIDGET (toggle), NULL);
-
-    /* Update the value */
-    vg = MyApp->Endpoint ()->GetVideoGrabber ();
-
-    if (vg) {
-      
-      /* Disable or enable tr fps limit */
-      if (!gconf_value_get_bool (entry->value)) 
-	vg->SetFrameRate (0);
-      else
-	vg->SetFrameRate (gconf_client_get_int (client, "/apps/gnomemeeting/video_settings/tr_fps", NULL));
-    }
+    g_idle_add (enable_fps_changed, 
+		(gpointer) gconf_value_get_bool (entry->value));
   }
 }
 
+
+/* Is able to modify the widgets */
+static gboolean enable_vb_changed (gpointer data)
+{
+  H323VideoCodec *vc = NULL;
+  GConfClient *client = gconf_client_get_default ();
+  GM_pref_window_widgets *pw = NULL;
+  
+  gdk_threads_enter ();
+  
+  pw = gnomemeeting_get_pref_window (gm);
+
+  /* We set the new value for the widget */
+  GTK_TOGGLE_BUTTON (pw->vb)->active = (gboolean) data;
+  gtk_widget_draw (GTK_WIDGET (pw->vb), NULL);
+
+  /* Update the value */
+  vc = MyApp->Endpoint ()->GetCurrentVideoCodec ();
+  
+  if (vc) {
+      
+    /* Disable or enable bandwidth limit */
+    if (!(gboolean) data) 
+      vc->SetAverageBitRate (0);
+    else
+      vc->SetAverageBitRate (gconf_client_get_int (client, "/apps/gnomemeeting/video_settings/video_bandwidth", NULL) * 1024 * 8);
+  }
+  
+  gdk_threads_leave ();
+
+  return FALSE;
+}
 
 
 /* DESCRIPTION  :  This callback is called when the specific key of
@@ -953,26 +1008,10 @@ static void enable_fps_changed_nt (GConfClient *client, guint cid,
 static void enable_vb_changed_nt (GConfClient *client, guint cid, 
 				  GConfEntry *entry, gpointer data)
 {
-  GtkWidget *toggle = GTK_WIDGET (data);
-  H323VideoCodec *vc = NULL;
-
   if (entry->value->type == GCONF_VALUE_BOOL) {
    
-    /* We set the new value for the widget */
-    GTK_TOGGLE_BUTTON (toggle)->active = gconf_value_get_bool (entry->value);
-    gtk_widget_draw (GTK_WIDGET (toggle), NULL);
-
-    /* Update the value */
-    vc = MyApp->Endpoint ()->GetCurrentVideoCodec ();
-
-    if (vc) {
-      
-      /* Disable or enable bandwidth limit */
-      if (!gconf_value_get_bool (entry->value)) 
-	vc->SetAverageBitRate (0);
-      else
-	vc->SetAverageBitRate (gconf_client_get_int (client, "/apps/gnomemeeting/video_settings/video_bandwidth", NULL) * 1024 * 8);
-    }
+    g_idle_add (enable_vb_changed,
+		(gpointer) gconf_value_get_bool (entry->value));
   }
 }
 
@@ -1022,6 +1061,41 @@ static void enable_vid_tr_changed_nt (GConfClient *client, guint cid,
 }
 
 
+/* Is able to change the widgets */
+static gboolean audio_codecs_list_changed (gpointer data)
+{
+  GConfClient *client = gconf_client_get_default ();
+
+  gdk_threads_enter ();
+
+  /* We set the new value for the widget */
+  gchar **codecs;
+  codecs = g_strsplit (gconf_client_get_string (client, "/apps/gnomemeeting/audio_codecs/list", NULL), ":", 0);
+  
+  gtk_clist_freeze (GTK_CLIST (data));
+  gtk_clist_clear (GTK_CLIST (data));
+   
+  for (int i = 0 ; codecs [i] != NULL ; i++) {
+    
+    gchar **couple = g_strsplit (codecs [i], "=", 0);
+    gnomemeeting_codecs_list_add (GTK_WIDGET (data), couple [0], couple [1]);
+    g_strfreev (couple);
+  }
+
+  gtk_clist_thaw (GTK_CLIST (data));
+  g_strfreev (codecs);
+  
+  /* We update the capabilities */
+  MyApp->Endpoint ()->RemoveAllCapabilities ();
+  MyApp->Endpoint ()->AddAudioCapabilities ();
+  MyApp->Endpoint ()->AddVideoCapabilities (gconf_client_get_int (client, "/apps/gnomemeeting/devices/video_size", NULL));
+
+  gdk_threads_leave ();
+
+  return FALSE;
+}
+
+
 /* DESCRIPTION  :  This callback is called when something changes in the audio
  *                 codecs clist.
  * BEHAVIOR     :  It updates the widgets, and updates the capabilities of the
@@ -1033,27 +1107,7 @@ static void audio_codecs_list_changed_nt (GConfClient *client, guint cid,
 {  
   if (entry->value->type == GCONF_VALUE_STRING) {
    
-    /* We set the new value for the widget */
-    gchar **codecs;
-    codecs = g_strsplit (gconf_value_get_string (entry->value), ":", 0);
-
-    gtk_clist_freeze (GTK_CLIST (data));
-    gtk_clist_clear (GTK_CLIST (data));
-   
-    for (int i = 0 ; codecs [i] != NULL ; i++) {
-
-      gchar **couple = g_strsplit (codecs [i], "=", 0);
-      gnomemeeting_codecs_list_add (GTK_WIDGET (data), couple [0], couple [1]);
-      g_strfreev (couple);
-    }
-
-    gtk_clist_thaw (GTK_CLIST (data));
-    g_strfreev (codecs);
-
-    /* We update the capabilities */
-    MyApp->Endpoint ()->RemoveAllCapabilities ();
-    MyApp->Endpoint ()->AddAudioCapabilities ();
-    MyApp->Endpoint ()->AddVideoCapabilities (gconf_client_get_int (client, "/apps/gnomemeeting/devices/video_size", NULL));
+    g_idle_add (audio_codecs_list_changed, data);
   }
 }
 
@@ -1345,8 +1399,8 @@ static void notebook_info_changed_nt (GConfClient *client, guint,
   }
 }
 
-#if 0 /* Uncomment when we are under Gnome2 */
 
+#if 0 /* Uncomment when we are under Gnome2 */
 /* DESCRIPTION  :  This callback is called when something toggles the
  *                 corresponding option in gconf.
  * BEHAVIOR     :  Updated the combo strings
