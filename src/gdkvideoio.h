@@ -58,7 +58,7 @@ class GDKVideoOutputDevice : public H323VideoDevice
     // BEHAVIOR     :  scale of 1/9 if input buffer is 176x144 and returns the
     //                 corresponding buffer, scale 1/18 if input buffer is 352x288
     // PRE          :  a non-empty buffer
-    void * Resize (void *);
+    void Resize (void *, void *, double);
 
 
     // DESCRIPTION  :  /

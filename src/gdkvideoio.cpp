@@ -68,31 +68,26 @@ GDKVideoOutputDevice::GDKVideoOutputDevice(int idno, GM_window_widgets *w)
 }
 
 
-void * GDKVideoOutputDevice::Resize (void *pic)
+void GDKVideoOutputDevice::Resize (void *dst_pic, void *src_pic,
+				   double scale)
 {
-  char *picsmall = NULL;
-  char *pic_char = (char *) pic;
+  char *pic_char = (char *) src_pic;
+  char *dst_pic_char = (char *) dst_pic;
 
   int localx = 0;
   int x = 0;
-  int quotient = 9;
+  int quotient = 0;
 
-  picsmall = (char *) malloc (frameWidth * frameHeight);
-
-  if (frameWidth == GM_CIF_WIDTH)
-    quotient = 18;
- 
+  /* if we shrink the picture */
+  quotient = 3 * (int) (1 / scale);
   for (x = 0 ; x < frameWidth * frameHeight * 3; x = x + quotient)
     {
-      picsmall [localx] = pic_char [x];
-      picsmall [localx + 1] = pic_char [x + 1];
-      picsmall [localx + 2] = pic_char [x + 2];
+      dst_pic_char [localx] = pic_char [x];
+      dst_pic_char [localx + 1] = pic_char [x + 1];
+      dst_pic_char [localx + 2] = pic_char [x + 2];
       
       localx=localx + 3;
     }
-    
-
-  return (void *) picsmall;
 }
 	
 
@@ -107,39 +102,51 @@ BOOL GDKVideoOutputDevice::Redraw(const void * frame)
   GdkRectangle update_rec;
   
   void *pic = NULL;
+  void *pic2 = NULL;
   void *small_pic = NULL;
   int xpos = 0 , ypos = 0;
   
   char statusbar_msg [150];
   char tmp [5];
 
+  double zoom = 0.5;
+  int zoomed_width = (int) (frameWidth * zoom);
+  int zoomed_height = (int) (frameHeight * zoom);
+
   update_rec.x = 0;
   update_rec.y = 0;
   update_rec.width = frameWidth;
-  update_rec.height = frameHeight;
+  update_rec.height = zoomed_height;
 
   buffer.SetSize(frameWidth * frameHeight * 3);
 
   H323VideoDevice::Redraw(frame);
 
-  pic = (void *) malloc(frameWidth*frameHeight*3);
-  memcpy (pic, buffer, frameHeight*frameWidth*3);
+  /* The real size picture */
+  pic = (void *) malloc(frameWidth * frameHeight * 3);
+  memcpy (pic, buffer, frameHeight * frameWidth * 3);
+
+  /* The zoomed picture */
+  pic2 = (void *) malloc((int) (frameWidth * frameHeight * 3 * zoom));
+
+  /* We process the resize */
+  Resize (pic2, pic, zoom);
 
   // Need to redefine screen size ?
-  if (((gw->drawing_area->allocation.width != frameWidth) || 
-      (gw->drawing_area->allocation.height != frameHeight)) &&
+  if (((gw->drawing_area->allocation.width != zoomed_width) || 
+      (gw->drawing_area->allocation.height != zoomed_height)) &&
       (device_id == !display_config))
     {
       gdk_threads_enter ();
       gtk_drawing_area_size (GTK_DRAWING_AREA (gw->drawing_area), 
-			     frameWidth, frameHeight);
-  /*    gtk_widget_set_usize (GTK_WIDGET (gw->video_frame),
-			    frameWidth + GM_FRAME_SIZE, frameHeight + GM_FRAME_SIZE);*/
+			     zoomed_width, zoomed_height);
+      gtk_widget_set_usize (GTK_WIDGET (gw->video_frame),
+			    zoomed_width + GM_FRAME_SIZE, zoomed_height);
       gdk_threads_leave ();
     }
 
-  xpos = (gw->drawing_area->allocation.width - frameWidth) / 2;
-  ypos = (gw->drawing_area->allocation.height - frameHeight) / 2;
+  xpos = (gw->drawing_area->allocation.width - zoomed_width) / 2;
+  ypos = (gw->drawing_area->allocation.height - zoomed_height) / 2;
 
 
   if (((device_id == 0 && display_config == 1) ||
@@ -149,9 +156,9 @@ BOOL GDKVideoOutputDevice::Redraw(const void * frame)
     gdk_threads_enter ();
     gdk_draw_rgb_image (gw->pixmap, gw->drawing_area->style->black_gc, 
 			xpos, ypos, 
-			frameWidth, frameHeight, GDK_RGB_DITHER_NORMAL, 
-			(guchar *) pic, 
-			frameWidth*3);
+			zoomed_width, zoomed_height, GDK_RGB_DITHER_NORMAL, 
+			(guchar *) pic2, 
+			zoomed_width*3);
 
     gtk_widget_draw (gw->drawing_area, &update_rec);    
     gdk_threads_leave ();
@@ -166,9 +173,9 @@ BOOL GDKVideoOutputDevice::Redraw(const void * frame)
 	  gdk_threads_enter ();
 	  gdk_draw_rgb_image (gw->pixmap, gw->drawing_area->style->black_gc, 
 			      xpos, 
-			      ypos, frameWidth, frameHeight, 
+			      ypos, zoomed_width, zoomed_height, 
 			      GDK_RGB_DITHER_NORMAL, 
-			      (guchar *) pic, frameWidth*3);
+			      (guchar *) pic2, zoomed_width*3);
 
 	  gdk_threads_leave ();
 	}
@@ -176,14 +183,14 @@ BOOL GDKVideoOutputDevice::Redraw(const void * frame)
       // What we transmit, in small
       if (device_id == 1)
 	{
-	  small_pic = Resize (pic);
+/*	  small_pic = Resize (pic);
 	 
 	  gdk_threads_enter ();
 	  gdk_draw_rgb_image (gw->pixmap, gw->drawing_area->style->black_gc, 0, 
-			      0, frameWidth / (int) (frameWidth / 56), frameHeight / 
-			      (int) (frameWidth / 56), 
+			      0, zoomed_width / (int) (zoomed_width / 56), zoomed_height / 
+			      (int) (zoomed_width / 56), 
 			      GDK_RGB_DITHER_NORMAL, 
-			      (guchar *) small_pic, frameWidth * 3);
+			      (guchar *) small_pic, zoomed_width * 3);
 	  update_rec.x = 0;
 	  update_rec.y = 0;
 	  update_rec.width = gw->drawing_area->allocation.width;
@@ -192,7 +199,7 @@ BOOL GDKVideoOutputDevice::Redraw(const void * frame)
 	  gtk_widget_draw (gw->drawing_area, &update_rec);     
 	  gdk_threads_leave ();
 
-	  free (small_pic);
+	  free (small_pic);*/
 	}
      }
 
@@ -204,6 +211,7 @@ BOOL GDKVideoOutputDevice::Redraw(const void * frame)
 
   buffer.SetSize(0);
   free (pic);
+  free (pic2);
 	
   return TRUE;
 }

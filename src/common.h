@@ -29,7 +29,7 @@
 #define GM_SIF_HEIGHT  240
 #define GM_QSIF_WIDTH  160
 #define GM_QSIF_HEIGHT 120
-#define GM_FRAME_SIZE  0
+#define GM_FRAME_SIZE  10
 
 typedef struct _GM_window_widgets GM_window_widgets;
 typedef struct _GM_pref_window_widgets GM_pref_window_widgets;
