@@ -104,6 +104,9 @@ GMH323EndPoint::GMH323EndPoint ()
   signallingChannelCallTimeout = PTimeInterval (0, 0, 3);
     
   NoIncomingMediaTimer.SetNotifier (PCREATE_NOTIFIER (OnNoIncomingMediaTimeout));
+
+  missed_calls = 0;
+
   last_audio_octets_received = 0;
   last_video_octets_received = 0;
   last_audio_octets_transmitted = 0;
@@ -1235,13 +1238,23 @@ GMH323EndPoint::OnConnectionCleared (H323Connection & connection,
   GetRemoteConnectionInfo (connection, utf8_name, utf8_app, utf8_url);
 
   gnomemeeting_threads_enter ();
-  if (t.GetSeconds () == 0 && connection.HadAnsweredCall ())
+  if (t.GetSeconds () == 0 
+      && connection.HadAnsweredCall ()
+      && connection.GetCallEndReason () != H323Connection::EndedByLocalUser) {
+    
     gm_calls_history_window_add_call (calls_history_window,
 				      MISSED_CALL, utf8_name,
 				      utf8_url,
 				      "0",
 				      msg_reason,
 				      utf8_app);
+    mc_access_mutex.Wait ();
+    missed_calls++;
+    mc_access_mutex.Signal ();
+
+    gm_main_window_push_info_message (main_window, 
+				      "Missed %d calls", missed_calls);
+  }
   else
     if (connection.HadAnsweredCall ())
       gm_calls_history_window_add_call (calls_history_window,
@@ -2591,6 +2604,24 @@ GMH323EndPoint::SetCallVideoPause (PString callToken,
   }
 
   return result;
+}
+
+
+void
+GMH323EndPoint::ResetMissedCallsNumber ()
+{
+  PWaitAndSignal m(mc_access_mutex);
+
+  missed_calls = 0;
+}
+
+
+int
+GMH323EndPoint::GetMissedCallsNumber ()
+{
+  PWaitAndSignal m(mc_access_mutex);
+
+  return missed_calls;
 }
 
 

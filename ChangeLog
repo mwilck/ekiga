@@ -1,3 +1,14 @@
+2004-09-25  Damien Sandras  <dsandras@gnome.org>
+
+	* NEWS: Updated with CVS news.
+
+	* src/calls_history_window.cpp, src/endpoint.cpp, src/endpoint.h,
+	src/main_window.cpp, src/main_window.h: Replaced unanswered calls by
+	missed calls. Do not consider calls you actively reject as missed
+	calls. Added display of the number of missed calls in the status bar.
+	The number of missed calls is reset when you acknowledge it by
+	clicking in the status bar.
+
 2004-09-23  Damien Sandras  <dsandras@gnome.org>
 
 	* src/calls_history_window.cpp: Added #include for translations.

@@ -574,6 +574,21 @@ class GMH323EndPoint : public H323EndPoint
   BOOL SetCallVideoPause (PString callToken, 
 			  BOOL state);
   
+  
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Reset the missed calls number.
+   * PRE          :  /
+   */
+  void ResetMissedCallsNumber ();
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Return the missed calls number.
+   * PRE          :  /
+   */
+  int GetMissedCallsNumber ();
+  
+  
   /* DESCRIPTION  : /
    * BEHAVIOR     : Adds the observer to the list of GObject interested in
    *                the endpoint's signals.
@@ -708,6 +723,9 @@ class GMH323EndPoint : public H323EndPoint
   BOOL ils_registered;
 
 
+  int missed_calls;
+
+
   /* detection of no incoming data */
   int last_audio_octets_received;
   int last_video_octets_received;
@@ -737,6 +755,7 @@ class GMH323EndPoint : public H323EndPoint
   PMutex lid_access_mutex;
   PMutex at_access_mutex;
   PMutex lca_access_mutex;
+  PMutex mc_access_mutex;
 
   PMutex sound_event_mutex;
   

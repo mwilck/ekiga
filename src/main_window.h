@@ -283,6 +283,15 @@ void gm_main_window_push_message (GtkWidget *,
 
 
 /* DESCRIPTION   :  /
+ * BEHAVIOR      : Displays an info message on the statusbar. An info message
+ * 		   is only cleared when the user clicks on it.
+ * PRE           : The main window GMObject, followed by printf syntax format.
+ */
+void gm_main_window_push_info_message (GtkWidget *, 
+				       const char *, 
+				       ...);
+
+/* DESCRIPTION   :  /
  * BEHAVIOR      : Sets the given URL as called URL and updates the history.
  * PRE           : The main window GMObject.
  */

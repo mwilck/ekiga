@@ -810,7 +810,7 @@ gm_calls_history_window_new ()
   GtkListStore *list_store = NULL;
 
   gchar *label_text [3] =
-    {N_("Received Calls"), N_("Placed Calls"), N_("Unanswered Calls")};
+    {N_("Received Calls"), N_("Placed Calls"), N_("Missed Calls")};
   label_text [0] = gettext (label_text [0]);
   label_text [1] = gettext (label_text [1]);
   label_text [2] = gettext (label_text [2]);

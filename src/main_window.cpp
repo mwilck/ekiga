@@ -206,6 +206,23 @@ static void gm_mw_init_video_settings (GtkWidget *);
 static void gm_mw_init_audio_settings (GtkWidget *);
 
 
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Push a message on the main window status bar. That message
+ * 		  will only appear 4 seconds if the second parameter is TRUE,
+ * 		  and will stay until it is cleared if it is FALSE. The third
+ * 		  parameter indicates if it is an info message or a normal 
+ * 		  message. Info messages will stay until another info message
+ * 		  is displayed or until they are cleared when the user clicks
+ * 		  in the statusbar. A normal message will stay until another one
+ * 		  is displayed, even if that other one is only flashing.
+ * PRE          : /
+ */
+static void gm_mw_push_message (GtkWidget *main_window, 
+				gboolean flash_message,
+				gboolean info_message,
+				const char *msg, 
+				...);
+
 /* Callbacks */
 
 /* DESCRIPTION  :  /
@@ -424,6 +441,16 @@ static void toolbar_connect_button_clicked_cb (GtkToggleButton *,
  * PRE          :  A valid msg id.
  */
 static int statusbar_clear_msg_cb (gpointer);
+
+
+/* DESCRIPTION  :  This callback is called when the status bar is clicked.
+ * BEHAVIOR     :  Clear all info message, not normal messages. Reset the
+ * 		   endpoint missed calls number.
+ * PRE          :  The main window GMObject.
+ */
+static gboolean statusbar_clicked_cb (GtkWidget *,
+				      GdkEventButton *,
+				      gpointer);
 
 
 /* DESCRIPTION  :  This callback is called on delete event for the incoming
@@ -1350,6 +1377,56 @@ gm_mw_init_audio_settings (GtkWidget *main_window)
 }
 
 
+static void 
+gm_mw_push_message (GtkWidget *main_window, 
+		    gboolean flash_message,
+		    gboolean info_message,
+		    const char *msg, 
+		    ...)
+{
+  GmWindow *mw = NULL;
+  
+  gint id = 0;
+  gint msg_id = 0;
+  int len = 0;
+  
+  g_return_if_fail (main_window != NULL);
+
+  mw = gm_mw_get_mw (main_window);
+
+  g_return_if_fail (mw != NULL);
+  
+  
+  len = g_slist_length ((GSList *) (GTK_STATUSBAR (mw->statusbar)->messages));
+  if (info_message)
+    id = gtk_statusbar_get_context_id (GTK_STATUSBAR (mw->statusbar), 
+				       "info");
+  else
+    id = gtk_statusbar_get_context_id (GTK_STATUSBAR (mw->statusbar), 
+				       "statusbar");
+  
+  for (int i = 0 ; i < len ; i++)
+    gtk_statusbar_pop (GTK_STATUSBAR (mw->statusbar), id);
+
+  if (msg) {
+
+    va_list args;
+    char buffer [1025];
+
+    va_start (args, msg);
+    vsnprintf (buffer, 1024, msg, args);
+
+    msg_id = gtk_statusbar_push (GTK_STATUSBAR (mw->statusbar), id, buffer);
+
+    va_end (args);
+
+    if (flash_message)
+      gtk_timeout_add (4000, statusbar_clear_msg_cb, 
+		       GINT_TO_POINTER (msg_id));
+  }
+}
+
+
 /* GTK callbacks */
 
 static void 
@@ -1958,6 +2035,39 @@ statusbar_clear_msg_cb (gpointer data)
 			GPOINTER_TO_INT (data));
 
   gdk_threads_leave ();
+
+  return FALSE;
+}
+
+
+static gboolean 
+statusbar_clicked_cb (GtkWidget *widget,
+		      GdkEventButton *event,
+		      gpointer data)
+{
+  GmWindow *mw = NULL;
+
+  GMH323EndPoint *ep = NULL;
+  
+  gint len = 0;
+  gint id = 0;
+  
+  g_return_val_if_fail (data != NULL, FALSE);
+
+  mw = gm_mw_get_mw (GTK_WIDGET (data));
+
+  g_return_val_if_fail (mw != NULL, FALSE);
+  
+  ep = GnomeMeeting::Process ()->Endpoint ();
+
+  len = g_slist_length ((GSList *) (GTK_STATUSBAR (mw->statusbar)->messages));
+  id = gtk_statusbar_get_context_id (GTK_STATUSBAR (mw->statusbar), 
+				     "info");
+  
+  for (int i = 0 ; i < len ; i++)
+    gtk_statusbar_pop (GTK_STATUSBAR (mw->statusbar), id);
+
+  ep->ResetMissedCallsNumber ();
 
   return FALSE;
 }
@@ -2989,7 +3099,6 @@ gm_main_window_new ()
   GtkWidget *window = NULL;
   GtkWidget *table = NULL;	
   GtkWidget *frame = NULL;
-  GtkWidget *hbox = NULL;
   GtkWidget *vbox = NULL;
   GdkPixbuf *pixbuf = NULL;
   GtkWidget *event_box = NULL;
@@ -3035,8 +3144,23 @@ gm_main_window_new ()
 
     
   /* The statusbar */
+  event_box = gtk_event_box_new ();
   mw->statusbar = gtk_statusbar_new ();
-  gtk_widget_show (mw->statusbar);
+  gtk_statusbar_set_has_resize_grip (GTK_STATUSBAR (mw->statusbar), FALSE);
+  gtk_container_add (GTK_CONTAINER (event_box), mw->statusbar);
+
+#ifdef DISABLE_GNOME
+  gtk_box_pack_start (GTK_BOX (mw->window_vbox), event_box, 
+		      FALSE, FALSE, 0);
+#else
+  gnome_app_add_docked (GNOME_APP (window), event_box, "statusbar",
+  			BONOBO_DOCK_ITEM_BEH_EXCLUSIVE,
+  			BONOBO_DOCK_BOTTOM, 3, 0, 0);
+#endif
+  gtk_widget_show_all (event_box);
+  
+  g_signal_connect (G_OBJECT (event_box), "button-press-event",
+		    GTK_SIGNAL_FUNC (statusbar_clicked_cb), window);
 
   
   /* The main menu and the toolbars */
@@ -3126,24 +3250,6 @@ gm_main_window_new ()
   gtk_widget_show_all (GTK_WIDGET (frame));
 
   
-  /* The statusbar and the progressbar */
-  hbox = gtk_hbox_new (0, FALSE);
-#ifdef DISABLE_GNOME
-  gtk_box_pack_start (GTK_BOX (mw->window_vbox), hbox, 
-		      FALSE, FALSE, 0);
-#else
-  gnome_app_add_docked (GNOME_APP (window), hbox, "statusbar",
-  			BONOBO_DOCK_ITEM_BEH_EXCLUSIVE,
-  			BONOBO_DOCK_BOTTOM, 3, 0, 0);
-#endif
-  gtk_widget_show (hbox);
-
-  
-  gtk_statusbar_set_has_resize_grip (GTK_STATUSBAR (mw->statusbar), FALSE);
-  gtk_box_pack_start (GTK_BOX (hbox), mw->statusbar, 
-		      TRUE, TRUE, 0);
-  
-  
   /* The 2 video window popups */
   mw->local_video_window =
     gnomemeeting_video_window_new (_("Local Video"),
@@ -3227,37 +3333,10 @@ gm_main_window_flash_message (GtkWidget *main_window,
 			      const char *msg, 
 			      ...)
 {
-  GmWindow *mw = NULL;
-  
   va_list args;
-  char    buffer [1025];
-  int timeout_id = 0;
-  int msg_id = 0;
-
-  gint id = 0;
-  int len = 0;
-  
-  g_return_if_fail (main_window != NULL);
-
-  mw = gm_mw_get_mw (main_window);
-
-  g_return_if_fail (mw != NULL);
-  
-  len = g_slist_length ((GSList *) (GTK_STATUSBAR (mw->statusbar)->messages));
-  id = gtk_statusbar_get_context_id (GTK_STATUSBAR (mw->statusbar), 
-				     "statusbar");
-  
-  for (int i = 0 ; i < len ; i++)
-    gtk_statusbar_pop (GTK_STATUSBAR (mw->statusbar), id);
-
 
   va_start (args, msg);
-  vsnprintf (buffer, 1024, msg, args);
-
-  msg_id = gtk_statusbar_push (GTK_STATUSBAR (mw->statusbar), id, buffer);
-
-  timeout_id = gtk_timeout_add (4000, statusbar_clear_msg_cb, 
-				GINT_TO_POINTER (msg_id));
+  gm_mw_push_message (main_window, TRUE, FALSE, msg, args);
 
   va_end (args);
 }
@@ -3268,37 +3347,35 @@ gm_main_window_push_message (GtkWidget *main_window,
 			     const char *msg, 
 			     ...)
 {
-  GmWindow *mw = NULL;
+  va_list args;
+
+  va_start (args, msg);
+  gm_mw_push_message (main_window, FALSE, FALSE, msg, args);
+
+  va_end (args);
+}
+
+
+void 
+gm_main_window_push_info_message (GtkWidget *main_window, 
+				  const char *msg, 
+				  ...)
+{
+  gchar *info = NULL;
   
-  gint id = 0;
-  int len = 0;
+  va_list args;
+  char buffer [1025];
+
+  va_start (args, msg);
+  vsnprintf (buffer, 1024, msg, args);
+
+  info = 
+    g_strdup_printf ("%s (%s)", 
+		     buffer, _("Click to clear"));
+  gm_mw_push_message (main_window, FALSE, TRUE, info);
+  g_free (info);
   
-  g_return_if_fail (main_window != NULL);
-
-  mw = gm_mw_get_mw (main_window);
-
-  g_return_if_fail (mw != NULL);
-  
-  
-  len = g_slist_length ((GSList *) (GTK_STATUSBAR (mw->statusbar)->messages));
-  id = gtk_statusbar_get_context_id (GTK_STATUSBAR (mw->statusbar), 
-				     "statusbar");
-  
-  for (int i = 0 ; i < len ; i++)
-    gtk_statusbar_pop (GTK_STATUSBAR (mw->statusbar), id);
-
-  if (msg) {
-
-    va_list args;
-    char buffer [1025];
-
-    va_start (args, msg);
-    vsnprintf (buffer, 1024, msg, args);
-
-    gtk_statusbar_push (GTK_STATUSBAR (mw->statusbar), id, buffer);
-
-    va_end (args);
-  }
+  va_end (args);
 }
 
 
