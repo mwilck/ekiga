@@ -1,5 +1,19 @@
 2002-02-13  Damien Sandras  <dsandras@seconix.com>
 
+	* src/connection.cpp: Optimized the code.
+
+	* src/endpoint.cpp: Added use of mutex to stop the videograbber.
+
+	* src/gdkvideoio.cpp: Added mutex to wait for the redraw to finish. Added
+	Wait () method.
+
+	* src/videograbber.cpp: Added use of the new Wait () method. Do not stop
+	the channel if not needed.
+
+	* src/misc.cpp: Changed the PTRACE for Locks.
+	
+2002-02-13  Damien Sandras  <dsandras@seconix.com>
+
 	* src/pref_window.cpp: Added check to not add an empty list in the combo
 	box -> Fixed.
 

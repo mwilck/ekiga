@@ -342,7 +342,7 @@ void gnomemeeting_init (GM_window_widgets *gw,
   endpoint = MyApp->Endpoint ();
 
   if (debug)
-    PTrace::Initialise (3);
+    PTrace::Initialise (6);
 
  
   /* Start the video preview */

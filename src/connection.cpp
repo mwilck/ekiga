@@ -82,7 +82,6 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
 
   if (!H323Connection::OnStartLogicalChannel (channel))
     return FALSE;
-  
 
   gnomemeeting_threads_enter ();
   gnomemeeting_log_insert (_("Started New Logical Channel..."));
@@ -154,6 +153,7 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
     break;
   }
 
+
   /* Compute the received video quality */
   re_vq = gconf_client_get_int (GCONF_CLIENT (client), "/apps/gnomemeeting/video_settings/re_vq", NULL);
   re_vq = 32 - (int) ((double) re_vq / 100 * 31);
@@ -188,7 +188,7 @@ BOOL GMH323Connection::OnStartLogicalChannel (H323Channel & channel)
   }
 		
   opened_channels++;
-  
+
   gnomemeeting_threads_leave ();
 
   return TRUE;

@@ -230,7 +230,6 @@ class GMVideoGrabber : public PThread
   PVideoChannel *channel;
   PVideoInputDevice *grabber;
   GDKVideoOutputDevice *encoding_device;
-
   int is_running;
   int is_grabbing;
   int is_opened;

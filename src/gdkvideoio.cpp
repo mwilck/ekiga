@@ -78,6 +78,14 @@ GDKVideoOutputDevice::GDKVideoOutputDevice(int idno, GM_window_widgets *w)
 }
 
 
+
+GDKVideoOutputDevice::~GDKVideoOutputDevice()
+{
+  redraw_mutex.Wait ();
+  redraw_mutex.Signal ();
+}
+
+
 void GDKVideoOutputDevice::SetCurrentDisplay (int choice)
 {
   display_config = choice;
@@ -97,11 +105,13 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
   int zoomed_height = (int) (frameHeight * gw->zoom);
 
   /* Take the mutex before the redraw */
+
   redraw_mutex.Wait ();
 
   gnomemeeting_threads_enter ();
 
-  buffer.SetSize(frameWidth * frameHeight * 3);
+  if (buffer.GetSize () != frameWidth * frameHeight * 3)
+    buffer.SetSize(frameWidth * frameHeight * 3);
 
   H323VideoDevice::Redraw(frame);
 
@@ -230,6 +240,7 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
 
 
   redraw_mutex.Signal ();
+
 	
   return TRUE;
 }
@@ -243,3 +254,9 @@ BOOL GDKVideoOutputDevice::WriteLineSegment(int x, int y, unsigned len,
   return TRUE;
 }
 
+
+void GDKVideoOutputDevice::Wait (void)
+{
+  redraw_mutex.Wait ();
+  redraw_mutex.Signal ();
+}

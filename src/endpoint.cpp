@@ -82,7 +82,7 @@ GMH323EndPoint::GMH323EndPoint ()
   /* The gconf client */
   client = gconf_client_get_default ();
 
-  clearCallOnRoundTripFail = TRUE;
+  clearCallOnRoundTripFail = FALSE;
   
   received_video_device = NULL;
   transmitted_video_device = NULL;
@@ -248,24 +248,24 @@ void GMH323EndPoint::AddVideoCapabilities (int video_size)
 
     /* CIF Capability in first position */
     SetCapability(0, 1, 
-		  new H323_H261Capability (0, 2, FALSE, FALSE, 6217));
+		  new H323_H261Capability (0, 4, FALSE, FALSE, 6217));
 
     codecs_count++;
 
     SetCapability(0, 1, 
-		  new H323_H261Capability (4, 0, FALSE, FALSE, 6217));
+		  new H323_H261Capability (2, 0, FALSE, FALSE, 6217));
 
     codecs_count++;
   }
   else {
     
     SetCapability(0, 1, 
-		  new H323_H261Capability (4, 0, FALSE, FALSE, 6217));
+		  new H323_H261Capability (2, 0, FALSE, FALSE, 6217));
     
     codecs_count++;
     
     SetCapability(0, 1, 
-		  new H323_H261Capability (0, 2, FALSE, FALSE, 6217));
+		  new H323_H261Capability (0, 4, FALSE, FALSE, 6217));
 
     codecs_count++;
   }
@@ -919,6 +919,8 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
 
      if (!vg->IsOpened ())
        vg->Open (FALSE, TRUE); /* Do not grab, synchronous opening */
+     else
+       vg->Stop ();
 
      gnomemeeting_threads_enter ();
 
@@ -964,7 +966,9 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
      GTK_TOGGLE_BUTTON (gw->video_chan_button)->active = TRUE;
      gnomemeeting_threads_leave ();
 
-     return codec.AttachChannel (channel, FALSE); 
+     bool result = codec.AttachChannel (channel, FALSE); 
+
+     return result;
   }
   else {
 
@@ -976,7 +980,6 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
       received_video_device = new GDKVideoOutputDevice (isEncoding, gw);
       
       channel->AttachVideoPlayer (received_video_device);
-      channel->RestrictAccess ();
 
       /* Stop to grab */
       if (vg->IsOpened ())
@@ -1000,7 +1003,6 @@ BOOL GMH323EndPoint::OpenVideoChannel (H323Connection & connection,
       
       bool result = codec.AttachChannel (channel);
 
-      channel->EnableAccess ();
       return result;
     }
     else

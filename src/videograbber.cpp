@@ -127,11 +127,6 @@ void GMVideoGrabber::Main ()
       UpdateConfig ();
     }
       
-    if (has_to_stop == 1) {
-
-      VGStop ();
-    }
-
     /* The user can ask several resets */
     if (has_to_reset >= 1) {
 
@@ -158,9 +153,15 @@ void GMVideoGrabber::Main ()
       channel->Write (video_buffer, height * width * 3);
       
       grabbing_mutex.Signal ();
+
+      if (encoding_device) {
+	
+	/* Wait that the redraw has finished, then continue */
+	encoding_device->Wait ();
+      }
     }
 
-    Current()->Sleep (100);
+    Current()->Sleep (50);
   }
 
   /* Disable the video preview button
@@ -274,7 +275,15 @@ void GMVideoGrabber::Start (void)
 
 void GMVideoGrabber::Stop (void)
 {
-  has_to_stop = 1;
+  if (encoding_device != NULL) {
+
+    /* Wait that the redraw has terminated */
+    encoding_device->Wait ();
+  }
+  
+  is_grabbing = 0;
+  grabbing_mutex.Wait ();
+  grabbing_mutex.Signal ();
 }
 
 
@@ -488,7 +497,7 @@ void GMVideoGrabber::VGOpen (void)
     encoding_device->SetFrameSize (height, width);  
 
     /* Setup the video settings */
-    GetParameters (&whiteness, &brightness, &colour, &contrast);
+    //GetParameters (&whiteness, &brightness, &colour, &contrast);
  
     gtk_adjustment_set_value (GTK_ADJUSTMENT (gw->adj_brightness),
 			      brightness);
@@ -534,14 +543,13 @@ void GMVideoGrabber::VGClose (int display_logo)
     gnomemeeting_threads_leave ();
     
     grabbing_mutex.Wait ();
-    
     grabber->Close ();
-    channel->Close ();
-    
     grabbing_mutex.Signal ();
-    
+
+    /* Just wait that it has unlocked */
+    encoding_device->Wait ();
+
     delete (channel);
-  
     has_to_close = 0;
     is_opened = 0;
   
