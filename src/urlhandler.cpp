@@ -52,6 +52,7 @@
 #include "contacts/gm_contacts.h"
 #include "gm_conf.h"
 
+
 /* Declarations */
 static gint
 TransferTimeOut (gpointer data)
@@ -68,9 +69,7 @@ TransferTimeOut (gpointer data)
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   ep = GnomeMeeting::Process ()->Endpoint ();
  
-
-  if (ep)
-    call_token = ep->GetCurrentCallToken ();
+  call_token = ep->GetCurrentCallToken ();
 
   if (!call_token.IsEmpty ()) {
 
@@ -261,7 +260,8 @@ BOOL GMURL::operator != (GMURL u)
 
 
 /* The class */
-GMURLHandler::GMURLHandler (PString c, BOOL transfer)
+GMURLHandler::GMURLHandler (PString c, 
+			    BOOL transfer)
   :PThread (1000, AutoDeleteThread)
 {
   url = GMURL (c);
@@ -297,6 +297,7 @@ void GMURLHandler::Main ()
   GtkWidget *tray = NULL;
 
   GmContact *contact = NULL;
+  GSList *l = NULL;
 
   GtkWidget *calls_history_window = NULL;
   
@@ -330,8 +331,11 @@ void GMURLHandler::Main ()
   endpoint = GnomeMeeting::Process ()->Endpoint ();
 
 
-  /* Answer the current call in a separate thread if required */
-  if (answer_call && endpoint && endpoint->GetCallingState () == GMH323EndPoint::Called) {
+  /* Answer the current call in a separate thread if we are called
+   * and return 
+   */
+  if (answer_call 
+      && endpoint->GetCallingState () == GMH323EndPoint::Called) {
 
     con = 
       endpoint->FindConnectionWithLock (endpoint->GetCurrentCallToken ());
@@ -346,15 +350,20 @@ void GMURLHandler::Main ()
   }
 
 
+  /* We are not called to answer a call, but to do a call, or to 
+   * transfer a call, check if the URL to call is empty or not.
+   */
   if (url.IsEmpty ())
     return;
 
+  
+  /* Save the url */
   old_url = url;
 
+  
   /* If it is a shortcut (# at the end of the URL), then we use it */
   if (url.GetType () == "shortcut") {
 
-    GSList *l = NULL;
 
     l = gnomemeeting_addressbook_get_contacts (NULL, 
 					       nbr,
@@ -373,6 +382,8 @@ void GMURLHandler::Main ()
     else
       url = GMURL ();
     
+    
+    /* No speed dial found, call the number */
     if (url.IsEmpty ()) {
 
       gnomemeeting_threads_enter ();
@@ -387,61 +398,54 @@ void GMURLHandler::Main ()
   } 
 
 
-  if (!url.IsEmpty ()) {
+  /* The address to call */
+  call_address = url.GetValidURL ();
 
-    call_address = url.GetValidURL ();
+  if (!url.IsSupported ()) {
 
-    if (!url.IsSupported ()) {
-
-      gnomemeeting_threads_enter ();
-      gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Invalid URL handler"), _("Please specify a valid URL handler. Currently both h323: and callto: are supported."));
-      gnomemeeting_threads_leave ();
-    }
-
-  
     gnomemeeting_threads_enter ();
-    if (!call_address.IsEmpty ()) {
-
-      gm_main_window_update_calling_state (main_window, GMH323EndPoint::Calling);
-      gm_tray_update_calling_state (tray, GMH323EndPoint::Calling);
-      endpoint->SetCallingState (GMH323EndPoint::Calling);
-      
-      if (!transfer_call) {
-
-	msg = g_strdup_printf (_("Calling %s"), 
-			       (const char *) call_address);
-      }
-      else
-	msg = g_strdup_printf (_("Transferring call to %s"), 
-			       (const char *) call_address);
-      gm_history_window_insert (history_window, msg);
-      gm_main_window_push_message (main_window, msg);
-    }
-    g_free (msg);
-
+    gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Invalid URL handler"), _("Please specify a valid URL handler. Currently both h323: and callto: are supported."));
     gnomemeeting_threads_leave ();
-  
-    if (use_gateway && !gateway.IsEmpty ()) 	
-      call_address = call_address + "@" + gateway;
 
-    /* Connect to the URL */
-    if (!transfer_call) {
-
-      con = 
-	endpoint->MakeCallLocked (call_address, current_call_token);
-    }
-    else
-      if (!url.IsEmpty () && url.IsSupported ()) {
-	
-	endpoint->TransferCall (endpoint->GetCurrentCallToken (),
-				call_address);
-	g_timeout_add (11000, (GtkFunction) TransferTimeOut, NULL);
-      }
+    return;
   }
 
 
+  /* Update the history */
+  gnomemeeting_threads_enter ();
+  if (!call_address.IsEmpty ()) {
+
+    if (!transfer_call) {
+
+      msg = g_strdup_printf (_("Calling %s"), 
+			     (const char *) call_address);
+    }
+    else
+      msg = g_strdup_printf (_("Transferring call to %s"), 
+			     (const char *) call_address);
+    gm_history_window_insert (history_window, msg);
+    gm_main_window_push_message (main_window, msg);
+  }
+  g_free (msg);
+  gnomemeeting_threads_leave ();
+
+
+  /* If we are using a gateway, the real address is different */
+  if (use_gateway && !gateway.IsEmpty ()) 	
+    call_address = call_address + "@" + gateway;
+
+
+  /* Connect to the URL */
   if (!transfer_call) {
-    
+
+    /* Update the state to "calling" */
+    gm_main_window_update_calling_state (main_window, GMH323EndPoint::Calling);
+    gm_tray_update_calling_state (tray, GMH323EndPoint::Calling);
+    endpoint->SetCallingState (GMH323EndPoint::Calling);
+
+    con = 
+      endpoint->MakeCallLocked (call_address, current_call_token);
+
     /* If we have a valid URL, we a have a valid connection, if not
        we put things back in the initial state */
     if (con) {
@@ -451,12 +455,17 @@ void GMURLHandler::Main ()
     }
     else {
 
+
+      /* The call failed, put back the state to "Standby", should 
+       * be done in OnConnectionEstablished if con exists.
+       */
       gnomemeeting_threads_enter ();
       gm_tray_update_calling_state (tray, GMH323EndPoint::Standby);
-      gm_main_window_update_calling_state (main_window, GMH323EndPoint::Standby);
+      gm_main_window_update_calling_state (main_window, 
+					   GMH323EndPoint::Standby);
 
       if (call_address.Find ("+type=directory") != P_MAX_INDEX) {
-	
+
 	gm_main_window_flash_message (main_window, _("User not found"));
 	if (!transfer_call)
 	  gm_calls_history_add_call (PLACED_CALL,
@@ -466,10 +475,16 @@ void GMURLHandler::Main ()
 				     _("User not found"),
 				     NULL);
       }
-      
+
       gnomemeeting_threads_leave ();
 
       endpoint->SetCallingState (GMH323EndPoint::Standby);
     }
+  }
+  else {
+
+    endpoint->TransferCall (endpoint->GetCurrentCallToken (),
+			    call_address);
+    g_timeout_add (11000, (GtkFunction) TransferTimeOut, NULL);
   }
 }
