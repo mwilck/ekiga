@@ -649,7 +649,7 @@ static void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, button,
-			_("Use this button to move down the selected codec in the preference order"), NULL);
+			_("Use this button to move up the selected codec in the preference order"), NULL);
 
 		
   /* Down */
@@ -667,7 +667,7 @@ static void gnomemeeting_init_pref_window_audio_codecs (GtkWidget *notebook)
 
   tip = gtk_tooltips_new ();
   gtk_tooltips_set_tip (tip, button,
-			_("Use this button to move up the selected codec in the preference order"), NULL);
+			_("Use this button to move down the selected codec in the preference order"), NULL);
 
 
   label = gtk_label_new (_("Audio Codecs")); 		

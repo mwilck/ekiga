@@ -79,7 +79,7 @@ static void chat_entry_activate (GtkEditable *w, gpointer data)
       if (connection != NULL)  {
 	
 	s = PString (gtk_entry_get_text (GTK_ENTRY (w)));
- 	connection->SendUserInput (s);
+ 	connection->SendUserInput ("MSG"+s);
 
 	/* Get the system color map and allocate the color red */
 	cmap = gdk_colormap_get_system();

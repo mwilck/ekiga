@@ -308,6 +308,7 @@ GMH323Connection::OnAnswerCall (const PString & caller,
 
 void GMH323Connection::OnUserInputString(const PString & value)
 {
+  PString val;
   gchar *msg = NULL;
   GdkColormap *cmap;
   GdkColor color;
@@ -339,7 +340,11 @@ void GMH323Connection::OnUserInputString(const PString & value)
   gtk_text_insert (GTK_TEXT (gw->chat_text), lucida_font, &color, NULL, msg, -1);
   g_free (msg);
 
-  msg = g_strdup_printf ("%s\n", (const char *) value);
+  bracket = value.Find("MSG");
+  if (bracket != P_MAX_INDEX)
+    val = value.Left (bracket);
+
+  msg = g_strdup_printf ("%s\n", (const char *) val);
   gtk_text_insert (GTK_TEXT (gw->chat_text), NULL, &gw->chat_text->style->black, 
 		   NULL, msg, -1);
   g_free (msg);
