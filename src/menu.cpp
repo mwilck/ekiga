@@ -375,7 +375,7 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
     {
       {_("_File"), NULL, NULL, 0, MENU_NEW, NULL, NULL, NULL},
 
-      {_("_Save"), _("Save A Snapshot of the Current Video"), GTK_STOCK_SAVE, 
+      {_("_Save"), _("Save a snapshot of the current video"), GTK_STOCK_SAVE, 
        'S', MENU_ENTRY, 
        GTK_SIGNAL_FUNC (save_callback), NULL, NULL},
 
@@ -386,26 +386,26 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 
       {_("_Edit"), NULL, NULL, 0, MENU_NEW, NULL, NULL, NULL},
 
-      {_("Configuration druid"), _("Start The Configuration duid"),
+      {_("Configuration druid"), _("Start the configuration druid"),
        NULL, 0, MENU_ENTRY, 
        GTK_SIGNAL_FUNC (gnomemeeting_component_view),
        (gpointer) gw->druid_window, NULL},
 
       {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
 
-      {_("_Preferences..."), _("Change Your Preferences"), 
+      {_("_Preferences..."), _("Change your preferences"), 
        GTK_STOCK_PREFERENCES, 0, MENU_ENTRY, 
        GTK_SIGNAL_FUNC (gnomemeeting_component_view),
        (gpointer) gw->pref_window, NULL},
 
       {_("_View"), NULL, NULL, 0, MENU_NEW, NULL, NULL, NULL},
 
-      {_("Text Chat"), _("View/Hide the Text Chat Window"), 
+      {_("Text Chat"), _("View/Hide the text chat window"), 
        NULL, 0, MENU_ENTRY_TOGGLE, 
        GTK_SIGNAL_FUNC (menu_toggle_changed),
        (gpointer) "/apps/gnomemeeting/view/show_chat_window", NULL},
 
-      {_("Status Bar"), _("View/Hide the Status Bar"), 
+      {_("Status Bar"), _("View/Hide the status bar"), 
        NULL, 0, MENU_ENTRY_TOGGLE, 
        GTK_SIGNAL_FUNC (menu_toggle_changed),
        (gpointer) "/apps/gnomemeeting/view/show_status_bar", NULL},
@@ -413,7 +413,7 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
       {_("Control Panel"), NULL, NULL, 0, MENU_SUBMENU_NEW, NULL, NULL, NULL},
 
       {_("Statistics"), 
-       _("View Audio/Video transmission and reception statistics"),
+       _("View audio/video transmission and reception statistics"),
        NULL, 0, MENU_ENTRY_RADIO, 
        GTK_SIGNAL_FUNC (view_menu_toggles_changed), 
        (gpointer) "/apps/gnomemeeting/view/control_panel_section",
@@ -425,13 +425,13 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
        (gpointer) "/apps/gnomemeeting/view/control_panel_section",
        NULL},
 
-      {_("_Audio Settings"), _("View Audio Settings"),
+      {_("_Audio Settings"), _("View audio settings"),
        NULL, 0, MENU_ENTRY_RADIO, 
        GTK_SIGNAL_FUNC (view_menu_toggles_changed), 
        (gpointer) "/apps/gnomemeeting/view/control_panel_section",
        NULL},
 
-      {_("_Video Settings"), _("View Video Settings"),
+      {_("_Video Settings"), _("View video settings"),
        NULL, 0, MENU_ENTRY_RADIO, 
        GTK_SIGNAL_FUNC (view_menu_toggles_changed), 
        (gpointer) "/apps/gnomemeeting/view/control_panel_section",
@@ -445,32 +445,32 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 
       {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
 
-      {_("Local Video"), _("Local Video Image"),
+      {_("Local Video"), _("Local video image"),
        NULL, 0, MENU_ENTRY_RADIO, 
        GTK_SIGNAL_FUNC (video_view_changed_callback), 
        (gpointer) "view",
        NULL},
 
-      {_("Remote Video"), _("Remote Video Image"),
+      {_("Remote Video"), _("Remote video image"),
        NULL, 0, MENU_ENTRY_RADIO, 
        GTK_SIGNAL_FUNC (video_view_changed_callback), 
        (gpointer) "view",
        NULL},
 
-      {_("Both (Local Video Incrusted)"), _("Both Video Images"),
+      {_("Both (Local Video Incrusted)"), _("Both video images"),
        NULL, 0, MENU_ENTRY_RADIO, 
        GTK_SIGNAL_FUNC (video_view_changed_callback), 
        (gpointer) "view",
        NULL},
 
-      {_("Both (Local Video in New Window)"), _("Both Video Images"),
+      {_("Both (Local Video in New Window)"), _("Both video images"),
        NULL, 0, MENU_ENTRY_RADIO, 
        GTK_SIGNAL_FUNC (video_view_changed_callback), 
        (gpointer) "view",
        NULL},
 
       {_("Both (Local and Remote Video in New Windows)"), 
-       _("Both Video Images"),
+       _("Both video images"),
        NULL, 0, MENU_ENTRY_RADIO, 
        GTK_SIGNAL_FUNC (video_view_changed_callback), 
        (gpointer) "view",
@@ -478,17 +478,17 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 
       {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
 
-      {_("Zoom In"), _("Zoom In"), 
+      {_("Zoom In"), _("Zoom in"), 
        GTK_STOCK_ZOOM_IN, '+', MENU_ENTRY, 
        GTK_SIGNAL_FUNC (zoom_changed_callback),
        GINT_TO_POINTER (2), NULL},
 
-      {_("Zoom Out"), _("Zoom Out"), 
+      {_("Zoom Out"), _("Zoom out"), 
        GTK_STOCK_ZOOM_OUT, '-', MENU_ENTRY, 
        GTK_SIGNAL_FUNC (zoom_changed_callback),
        GINT_TO_POINTER (0), NULL},
 
-      {_("Normal Size"), _("Normal Size"), 
+      {_("Normal Size"), _("Normal size"), 
        GTK_STOCK_ZOOM_100, '=', MENU_ENTRY, 
        GTK_SIGNAL_FUNC (zoom_changed_callback),
        GINT_TO_POINTER (1), NULL},
@@ -502,24 +502,24 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 
       {_("C_all"), NULL, NULL, 0, MENU_NEW, NULL, NULL, NULL},
 
-      {_("_Connect"), _("Create A New Connection"), 
+      {_("_Connect"), _("Create a new connection"), 
        GM_STOCK_CONNECT, 'c', MENU_ENTRY, 
        GTK_SIGNAL_FUNC (connect_cb),
        gw, NULL},
 
-      {_("_Disconnect"), _("Close The Current Connection"), 
+      {_("_Disconnect"), _("Close the current connection"), 
        GM_STOCK_DISCONNECT, 'd', MENU_ENTRY, 
        GTK_SIGNAL_FUNC (disconnect_cb),
        gw, NULL},
 
       {NULL, NULL, NULL, 0, MENU_SEP, NULL, NULL, NULL},
 
-      {_("Do _Not Disturb"), _("Do Not Disturb"),
+      {_("Do _Not Disturb"), _("Do not disturb"),
        NULL, 'n', MENU_ENTRY_TOGGLE, 
        GTK_SIGNAL_FUNC (menu_toggle_changed),
        (gpointer) "/apps/gnomemeeting/general/do_not_disturb", NULL},
 
-      {_("Aut_o Answer"), _("Auto Answer"),
+      {_("Aut_o Answer"), _("Auto answer"),
        NULL, 'o', MENU_ENTRY_TOGGLE, 
        GTK_SIGNAL_FUNC (menu_toggle_changed),
        (gpointer) "/apps/gnomemeeting/general/auto_answer", NULL},
@@ -538,7 +538,7 @@ gnomemeeting_init_menu (GtkAccelGroup *accel)
 
       {_("_Tools"), NULL, NULL, 0, MENU_NEW, NULL, NULL, NULL},
 
-      {_("XDAP Browser"), _("XDAP Browser"),
+      {_("XDAP Browser"), _("XDAP browser"),
        NULL, 0, MENU_ENTRY, 
        GTK_SIGNAL_FUNC (gnomemeeting_component_view),
        (gpointer) gw->ldap_window, NULL},
