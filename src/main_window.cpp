@@ -281,9 +281,8 @@ void gm_mw_destroy_fullscreen_video_window (GtkWidget *);
 /* Callbacks */
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Set the current active call on hold and updates the GUI
- * 		   accordingly.
- * PRE          :  The main window GMObject as data.
+ * BEHAVIOR     :  Set the current active call on hold.
+ * PRE          :  /
  */
 static void hold_current_call_cb (GtkWidget *,
 				  gpointer);
@@ -986,8 +985,8 @@ gm_mw_init_menu (GtkWidget *main_window)
       GTK_MENU_SEPARATOR,
 
       GTK_MENU_ENTRY("hold_call", _("_Hold Call"), _("Hold the current call"),
-		     NULL, 0, 
-		     GTK_SIGNAL_FUNC (hold_current_call_cb), main_window, 
+		     NULL, 'g', 
+		     GTK_SIGNAL_FUNC (hold_current_call_cb), NULL,
 		     FALSE),
       GTK_MENU_ENTRY("transfer_call", _("_Transfer Call"),
 		     _("Transfer the current call"),
@@ -1803,9 +1802,7 @@ hold_current_call_cb (GtkWidget *widget,
 
   BOOL is_on_hold = FALSE;
   
-  g_return_if_fail (data != NULL);
   endpoint = GnomeMeeting::Process ()->Endpoint ();
-
 
   /* Release the GDK thread to prevent deadlocks, change
    * the hold state at the endpoint level.
@@ -1816,10 +1813,6 @@ hold_current_call_cb (GtkWidget *widget,
   if (endpoint->SetCallOnHold (call_token, !is_on_hold))
     is_on_hold = !is_on_hold; /* It worked */
   gdk_threads_enter ();
-
-  
-  /* Update the GUI */
-  gm_main_window_set_call_hold (GTK_WIDGET (data), is_on_hold);
 }
 
 
@@ -2860,13 +2853,10 @@ gm_main_window_set_call_hold (GtkWidget *main_window,
 
     /* Set the audio and video buttons/menu to unsensitive */
     gtk_widget_set_sensitive (GTK_WIDGET (mw->audio_chan_button), FALSE);
-    gtk_widget_set_sensitive (GTK_WIDGET (mw->video_chan_button), FALSE);
     
     gtk_menu_set_sensitive (mw->main_menu, "suspend_audio", FALSE);
-    gtk_menu_set_sensitive (mw->main_menu, "suspend_video", FALSE);
     
     gm_main_window_set_channel_pause (main_window, TRUE, FALSE);
-    gm_main_window_set_channel_pause (main_window, TRUE, TRUE);
   }
   else {
 
@@ -2875,13 +2865,10 @@ gm_main_window_set_call_hold (GtkWidget *main_window,
 					_("_Hold Call"));
 
     gtk_widget_set_sensitive (GTK_WIDGET (mw->audio_chan_button), TRUE);
-    gtk_widget_set_sensitive (GTK_WIDGET (mw->video_chan_button), TRUE);
     
     gtk_menu_set_sensitive (mw->main_menu, "suspend_audio", TRUE);
-    gtk_menu_set_sensitive (mw->main_menu, "suspend_video", TRUE);
 
     gm_main_window_set_channel_pause (main_window, FALSE, FALSE);
-    gm_main_window_set_channel_pause (main_window, FALSE, TRUE);
   }
 }
 
