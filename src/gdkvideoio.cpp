@@ -1,6 +1,6 @@
 
 /* GnomeMeeting -- A Video-Conferencing application
- * Copyright (C) 2000-2001 Damien Sandras
+ * Copyright (C) 2000-2002 Damien Sandras
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,9 +27,13 @@
  *
  */
 
-#include <sys/time.h>
-
 #include "../config.h"
+
+#ifdef HAS_SDL
+#include <SDL.h>
+#endif
+
+#include <sys/time.h>
 
 #include "gdkvideoio.h"
 #include "common.h"
@@ -61,13 +65,13 @@ GDKVideoOutputDevice::GDKVideoOutputDevice(GmWindow *w)
 
 GDKVideoOutputDevice::GDKVideoOutputDevice(int idno, GmWindow *w)
 {
- transmitted_frame_number = 0;
- received_frame_number = 0;
+  transmitted_frame_number = 0;
+  received_frame_number = 0;
 
- /* Used to distinguish between input and output device. */
- device_id = idno; 
+  /* Used to distinguish between input and output device. */
+  device_id = idno; 
 
- gw = w;
+  gw = w;
 }
 
 
@@ -97,6 +101,17 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
   int display = 0;
 
   static GdkPixbuf *local_pic = NULL;
+
+#ifdef HAS_SDL
+  static gboolean has_to_fs = false; /* Do Full Screen */
+  static gboolean has_to_switch_fs = false;
+
+  static SDL_Surface *screen = NULL;
+  static SDL_Overlay *overlay = NULL;
+
+  SDL_Rect dest;
+#endif
+
 
   /* Take the mutexes before the redraw */
   redraw_mutex.Wait ();
@@ -154,6 +169,23 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
   gnomemeeting_threads_leave ();
 
 
+  /* Need to go full screen or to close the SDL window ? */
+#ifdef HAS_SDL  
+  gnomemeeting_threads_enter ();
+  SDL_Event event;
+  
+  while (SDL_PollEvent (&event)) {
+  
+    if ((event.type == SDL_KEYDOWN) && (event.key.keysym.sym == SDLK_f)) {
+
+      has_to_fs = !has_to_fs;
+      has_to_switch_fs = true;
+    }
+  }
+  gnomemeeting_threads_leave ();
+#endif
+
+
   /* We display what we transmit, or what we receive */
   if (((device_id == 0 && display == 1) ||
       (device_id == 1 && display == 0)) &&
@@ -164,6 +196,65 @@ BOOL GDKVideoOutputDevice::Redraw (const void * frame)
  			       GDK_PIXBUF (zoomed_pic));
     gnomemeeting_threads_leave ();
   }
+
+
+#ifdef HAS_SDL
+  if (((device_id == display) && (display != 2))
+      || ((display == 2) && (device_id == 1))) {
+  
+    gnomemeeting_threads_enter ();
+
+    if ((!overlay) || (!screen) || (has_to_switch_fs) ||
+	(screen->w != zoomed_width) || (screen->h != zoomed_height)){
+
+      if (!has_to_fs) {
+
+	screen = SDL_SetVideoMode (zoomed_width, zoomed_height, 0, 
+				   SDL_SWSURFACE | SDL_HWSURFACE | 
+				   SDL_ANYFORMAT);
+	SDL_ShowCursor (SDL_ENABLE);
+	has_to_switch_fs = false;
+      }
+      else 
+	if (has_to_switch_fs) {
+
+	  if (frameWidth * gw->zoom < 640)
+	    screen = SDL_SetVideoMode (640, 480, 0, 
+				       SDL_SWSURFACE | SDL_HWSURFACE | 
+				       SDL_ANYFORMAT);
+	  else
+	    screen = SDL_SetVideoMode (800, 600, 0, 
+				       SDL_SWSURFACE | SDL_HWSURFACE | 
+				       SDL_ANYFORMAT);
+	    
+	  SDL_WM_ToggleFullScreen (screen);
+	  SDL_ShowCursor (SDL_DISABLE);
+	  has_to_switch_fs = false;
+	}
+
+      SDL_FreeYUVOverlay (overlay);
+      overlay = SDL_CreateYUVOverlay (frameWidth, frameHeight, 
+				      SDL_IYUV_OVERLAY, screen);
+    }
+
+    unsigned char *base = (unsigned char *) frame;
+    overlay->pixels [0] = base;
+    overlay->pixels [1] = base + (frameWidth * frameHeight);
+    overlay->pixels [2] = base + (frameWidth * frameHeight * 5/4);
+  
+    dest.x = (int) (screen->w - zoomed_width) / 2;
+    dest.y = (int) (screen->h - zoomed_height) / 2;
+    dest.w = zoomed_width;
+    dest.h = zoomed_height;
+
+    SDL_LockYUVOverlay (overlay);
+    SDL_DisplayYUVOverlay (overlay, &dest);    
+    SDL_UnlockYUVOverlay (overlay);
+
+    gnomemeeting_threads_leave ();
+  }
+#endif
+
 
 
   /* we display both of them */

@@ -1,6 +1,6 @@
 
 /* GnomeMeeting -- A Video-Conferencing application
- * Copyright (C) 2000-2001 Damien Sandras
+ * Copyright (C) 2000-2002 Damien Sandras
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,6 +37,10 @@
 #include <videoio.h>
 #include <gnome.h>
 #include <pthread.h>
+
+#ifdef HAS_SDL
+#include <SDL.h>
+#endif
 
 #include "common.h"
 
@@ -92,7 +96,7 @@ class GDKVideoOutputDevice : public H323VideoDevice
   PBYTEArray buffer; /* The RGB24 buffer; contains the images */
   int display_config; /* Current display : local or remote or both */
   PMutex redraw_mutex;
-    
+
   GmWindow *gw;
 };
 

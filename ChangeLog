@@ -1,3 +1,18 @@
+2002-06-23  Damien Sandras  <dsandras@seconix.com>
+
+	* src/configure.in: Added SDL detection. Still mandatory, but
+	optional soon.
+
+	* src/main_window.cpp: Added SDL initialisation.
+
+	* src/gdkvideoio.cpp: Added SDL support. It is not yet possible
+	to enable/disable the popup, but the popup displays the other
+	video stream than the one that is displayed inside GnomeMeeting.
+	The Zoom in the view menu has now effect on the video displayed in 
+	GnomeMeeting and on the video displayed in the SDL window.
+	The SDL window can be seen in fullscreen by pressing the "f" key
+	when the mouse cursor is on the SDL window.
+	
 2002-06-21  Damien Sandras  <dsandras@seconix.com>
 
 	* gnomemeeting.schemas.in.in: Fixed bug in schema about the list 

@@ -30,7 +30,6 @@
 #define _COMMON_H_
 
 #include <gtk/gtk.h>
-
 #include <ptlib.h>
 
 

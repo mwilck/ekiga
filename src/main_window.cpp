@@ -62,6 +62,11 @@
 #include <gconf/gconf-client.h>
 #include <esd.h>
 
+#ifdef HAS_SDL
+#include <SDL.h>
+#endif
+
+
 #include "../pixmaps/brightness.xpm"
 #include "../pixmaps/whiteness.xpm"
 #include "../pixmaps/contrast.xpm"
@@ -1249,6 +1254,13 @@ int main (int argc, char ** argv, char ** envp)
   bindtextdomain (GETTEXT_PACKAGE, GNOMELOCALEDIR);
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 
+  
+  /* SDL init */
+#ifdef HAS_SDL
+  SDL_Init (SDL_INIT_VIDEO);
+#endif
+
+
   /* GnomeMeeting main initialisation */
   gnomemeeting_init (gw, pw, lw, rtp, chat, clo, argc, argv, envp);
 
@@ -1269,6 +1281,10 @@ int main (int argc, char ** argv, char ** envp)
   /* The GTK loop */
   gtk_main ();
   gdk_threads_leave ();
+
+#ifdef HAS_SDL
+  SDL_Quit ();
+#endif
 
   delete (gw);
   delete (lw);
