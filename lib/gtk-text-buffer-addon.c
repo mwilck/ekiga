@@ -53,10 +53,10 @@ struct regex_match
 static void
 find_match (GtkTextTag *tag, gpointer data)
 {
-  regex_t *regex = g_object_get_data (G_OBJECT(tag), "regex");
   gint match;
   regmatch_t regmatch;
   struct regex_match *smatch = data;
+  regex_t *regex = g_object_get_data (G_OBJECT(tag), "regex");
 
   if(regex != NULL) { // we are concerned only by the tags that use the regex addon!
     match = regexec (regex, smatch->buffer, 1, &regmatch, 0);

@@ -47,14 +47,15 @@ regex_event (GtkTextTag *texttag, GObject *arg1, GdkEvent *event,
 	     GtkTextIter *iter, gpointer user_data)
 {
   if (event->type == GDK_BUTTON_PRESS && event->button.button == 3) {
-    
+    gchar *txt;
+
     GtkTextIter *start = gtk_text_iter_copy (iter);
     GtkTextIter *end = gtk_text_iter_copy (iter);
     
     gtk_text_iter_backward_to_tag_toggle (start, texttag);
     gtk_text_iter_forward_to_tag_toggle (end, texttag);
     
-    gchar *txt = gtk_text_buffer_get_slice (gtk_text_iter_get_buffer (iter),
+    txt = gtk_text_buffer_get_slice (gtk_text_iter_get_buffer (iter),
                                      start, end, FALSE);
     
     g_object_set_data_full (G_OBJECT (user_data), "clicked-regex",
@@ -79,9 +80,10 @@ static void
 regex_menu_callback (GtkMenuItem *menu_item, gpointer data)
 {
   void (*func)(gchar *);
+  gchar *txt;
+
   func = g_object_get_data (G_OBJECT(menu_item), "regex-callback");
   
-  gchar *txt;
   txt = g_object_get_data (G_OBJECT(data), "clicked-regex");
 
   g_assert (func != NULL);
@@ -142,10 +144,11 @@ gtk_text_tag_add_action_to_regex (GtkTextTag *tag,
 				       const gchar *action_name,
 				       GtkSignalFunc func)
 {
+  GtkWidget *popup, *menu_item;
+
   g_return_if_fail (action_name != NULL && func != NULL);
   g_return_if_fail (g_object_get_data (G_OBJECT(tag), "regex") != NULL);
 
-  GtkWidget *popup;
   popup = g_object_get_data (G_OBJECT(tag), "regex-popup");
 
   if (popup == NULL) {
@@ -155,7 +158,7 @@ gtk_text_tag_add_action_to_regex (GtkTextTag *tag,
     g_signal_connect (tag, "event", (GtkSignalFunc) regex_event, popup);
   }
   
-  GtkWidget *menu_item = gtk_menu_item_new_with_label (action_name);
+  menu_item = gtk_menu_item_new_with_label (action_name);
   gtk_widget_show (menu_item);
   gtk_menu_shell_append (GTK_MENU_SHELL(popup), menu_item);
   g_signal_connect_after (GTK_OBJECT(menu_item), "activate",
@@ -178,25 +181,23 @@ gtk_text_tag_add_actions_to_regex (GtkTextTag *tag,
 {
   const gchar *action_name;
   GtkSignalFunc func;
+  va_list args;
 
   if (g_object_get_data (G_OBJECT(tag), "regex") == NULL) {
     g_warning ("Missing regex for action.");
     return;
   }
 
-  va_list args;
-
   va_start (args, first_action_name);
 
   action_name = first_action_name;
-  while (action_name != NULL)
-    {
+  while (action_name != NULL) {
       func = va_arg (args, GtkSignalFunc);
       if (func == NULL)
 	break;
       gtk_text_tag_add_action_to_regex (tag, action_name, func);
       action_name = va_arg (args, gchar *);
-    }
+  }
   va_end (args);  
 }
 
