@@ -1,3 +1,25 @@
+2001-08-25  Damien Sandras  <dsandras@seconix.com>
+
+	* Changelog: Updated.
+
+	* config.log, config.sub: Removed.
+
+	* src/main_interface.cpp: Added support for a video preview button.
+
+	* src/webcam.cpp, src/webcam.h: Removed the old C functions to manage the webcam
+	and added a new multi-threaded class to cope with the camera. This class uses PWlib for
+	portability.
+
+	* src/endpoint.cpp:  The OpenVideoChannel function now uses the new webcam.cpp class.
+
+	* src/main_interface.cpp:  Added support for the new webcam.cpp class in GTK+ callbacks.
+
+	* src/preferences.cpp:  Added support for the new webcam.cpp class in apply_options.
+
+2001-08-25  Roger Hardiman  <roger@freebsd.org>
+	
+	* src/config.cpp:  Fixed the bug that made 0.10 crash with 0.9 configuration files.
+
 2001-08-25  Christian Rose  <menthos@menthos.com>
 
 	* pixmaps/.xvpics: Removed this directory.
@@ -25,35 +47,27 @@
 	C++-style comments C-style to avoid gettext bug with single
 	apostrophe in comment.
 
-Version 0.10 - 13/08/01
+2001-08-24  Damien Sandras  <dsandras@seconix.com>
  
-* GnomeMeeting 0.10 will compile with the newest versions of OpenH323
-and PWLib and with the CVS.  You need to use OpenH323 >= 1.6.0 and PWLib
->= 1.1.36
+	* src/endpoint.cpp: added OpenVideoChannel function for new 
+	libraries support
 
-* The applet is now optional. GnomeMeeting can be started with the -a
-option.
+	* src/main.cpp, src/main_interface.cpp: applet now optional.
 
-* The applet is resizeable following the panel size.
+	* src/applet.cpp: adding support for resizeable applet
 
-* The user can change the soundcard and the video device / channel to
-use.  A video test button has been added in the preferences.  If you
-click on Apply and the settings are not correct, you will have a warning
-and gnomemeeting will transmit a test picture during a call.
+	* src/preferences.cpp, src/config.cpp: added support to change soundcard and the video device
+	and video test button has been added in the preferences
 
-* It is now possible to modify the brightness, contrast, whiteness, and
-colour level during calls.
+	* src/endpoint.cpp: added support for a test image in case of failure 
 
-* Several memory leaks have been fixed.
+	* src/main_interface.cpp: added possibility to modify the brightness, contrast, whiteness, 
+	and colour level during calls.
 
-* The GnomeMeeting logo is displayed again at the end of each call
-instead of the last transmitted / received picture.
+	* src/main_interface.cpp, src/endpoint.cpp: GnomeMeeting logo is displayed again at the end of 
+	each call instead of the last transmitted / received picture.
 
-* Options were added in the view menu to switch between the "Remote User
-Info", "History", "Audio Settings", "Video Settings"
+	* src/menu.cpp: Options were added in the view menu to switch between the "Remote User
+	Info", "History", "Audio Settings", "Video Settings".
 
-* A partial spanish translation has been added.
-
-* Several compilation fixes.
-
-* ILS support has been improved.
+	* po/es.po: spanish translation has been added.
