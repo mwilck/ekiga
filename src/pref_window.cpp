@@ -51,13 +51,6 @@
 extern GtkWidget *gm;
 extern GnomeMeeting *MyApp;	
 
-static void pref_window_clicked_callback (GtkDialog *,
-					  int,
-					  gpointer);
-
-static gint pref_window_destroy_callback (GtkWidget *,
-					  GdkEvent *,
-					  gpointer);
 
 static void personal_data_update_button_clicked (GtkWidget *,
 						 gpointer);
@@ -194,37 +187,6 @@ static void refresh_devices (GtkWidget *widget, gpointer data)
   gnomemeeting_update_pstring_option_menu (pw->video_device,
 					   gw->video_devices,
 					   DEVICES_KEY "video_recorder");
-}
-
-
-/* DESCRIPTION  :  This callback is called when the user clicks on "Close"
- * BEHAVIOR     :  Closes the window.
- * PRE          :  gpointer is a valid pointer to a GmPrefWindow.
- */
-static void pref_window_clicked_callback (GtkDialog *widget, int button, 
-					  gpointer data)
-{
-  switch (button) {
-
-  case 0:
-  
-    if (widget)
-      gtk_widget_hide (GTK_WIDGET (widget));
-    
-    break;
-  }
-}
-
-
-/* DESCRIPTION  :  This callback is called when the pref window is deleted.
- * BEHAVIOR     :  Prevents the destroy, only hides the window.
- * PRE          :  /
- */
-static gint pref_window_destroy_callback (GtkWidget *widget, GdkEvent *ev,
-					  gpointer data)
-{
-  gtk_widget_hide (GTK_WIDGET (widget));
-  return (TRUE);
 }
 
 
@@ -1459,13 +1421,13 @@ GtkWidget *gnomemeeting_pref_window_new (GmPrefWindow *pw)
   window = gtk_dialog_new ();
   gtk_dialog_add_button (GTK_DIALOG (window), GTK_STOCK_CLOSE, 0);
 
-  g_signal_connect (G_OBJECT (window), "response",
- 		    G_CALLBACK (pref_window_clicked_callback), 
- 		    (gpointer) pw);
-
   g_signal_connect (G_OBJECT (window), "delete_event",
- 		    G_CALLBACK (pref_window_destroy_callback), 
- 		    (gpointer) pw);
+		    G_CALLBACK (gtk_widget_hide_on_delete), NULL);
+
+  g_signal_connect_swapped (GTK_OBJECT (window), 
+			    "response", 
+			    G_CALLBACK (gtk_widget_hide_all),
+			    (gpointer) window);
 
   gtk_window_set_title (GTK_WINDOW (window), _("GnomeMeeting Settings"));
 
